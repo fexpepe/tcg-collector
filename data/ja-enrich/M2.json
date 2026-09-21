@@ -7,812 +7,1160 @@
    "page": "Oddish (Inferno X 1)",
    "type": "Grass",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ナゾノクサ",
+   "artist": "MINAMINAMI Take",
+   "image": "https://archives.bulbagarden.net/media/upload/2/24/OddishPhantasmalFlames1.jpg"
   },
   "2": {
    "en": "Gloom",
    "page": "Gloom (Inferno X 2)",
    "type": "Grass",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "クサイハナ",
+   "artist": "Yoriyuki Ikegami",
+   "image": "https://archives.bulbagarden.net/media/upload/0/06/GloomPhantasmalFlames2.jpg"
   },
   "3": {
    "en": "Vileplume",
    "page": "Vileplume (Inferno X 3)",
    "type": "Grass",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ラフレシア",
+   "artist": "Shibuzoh.",
+   "image": "https://archives.bulbagarden.net/media/upload/a/ac/VileplumePhantasmalFlames3.jpg"
   },
   "4": {
    "en": "Mega Heracross",
    "page": "Mega Heracross ex (Inferno X 4)",
    "type": "Grass",
    "rarity": "RR",
-   "mark": ""
+   "mark": "",
+   "ja": "メガヘラクロスex",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/1/1e/MegaHeracrossexPhantasmalFlames108.jpg"
   },
   "5": {
    "en": "Lotad",
    "page": "Lotad (Inferno X 5)",
    "type": "Grass",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ハスボー",
+   "artist": "Wintr Wandr",
+   "image": "https://archives.bulbagarden.net/media/upload/e/ed/LotadPhantasmalFlames5.jpg"
   },
   "6": {
    "en": "Lombre",
    "page": "Lombre (Inferno X 6)",
    "type": "Grass",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ハスブレロ",
+   "artist": "Shigenori Negishi",
+   "image": "https://archives.bulbagarden.net/media/upload/5/55/LombrePhantasmalFlames6.jpg"
   },
   "7": {
    "en": "Ludicolo",
    "page": "Ludicolo (Inferno X 7)",
    "type": "Grass",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ルンパッパ",
+   "artist": "Jerky",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f6/LudicoloPhantasmalFlames95.jpg"
   },
   "8": {
    "en": "Genesect",
    "page": "Genesect (Inferno X 8)",
    "type": "Grass",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "ゲノセクト",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/4/4c/GenesectPhantasmalFlames8.jpg"
   },
   "9": {
    "en": "Nymble",
    "page": "Nymble (Inferno X 9)",
    "type": "Grass",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "マメバッタ",
+   "artist": "Nakamura Ippan",
+   "image": "https://archives.bulbagarden.net/media/upload/4/45/NymblePhantasmalFlames96.jpg"
   },
   "10": {
    "en": "Lokix",
    "page": "Lokix (Inferno X 10)",
    "type": "Grass",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "エクスレッグ",
+   "artist": "Taiga Kasai",
+   "image": "https://archives.bulbagarden.net/media/upload/3/33/LokixPhantasmalFlames10.jpg"
   },
   "11": {
    "en": "Charmander",
    "page": "Charmander (Inferno X 11)",
    "type": "Fire",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ヒトカゲ",
+   "artist": "HYOGONOSUKE",
+   "image": "https://archives.bulbagarden.net/media/upload/4/45/CharmanderPhantasmalFlames11.jpg"
   },
   "12": {
    "en": "Charmeleon",
    "page": "Charmeleon (Inferno X 12)",
    "type": "Fire",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "リザード",
+   "artist": "Teeziro",
+   "image": "https://archives.bulbagarden.net/media/upload/5/52/CharmeleonMEPPromo79.jpg"
   },
   "13": {
    "en": "Mega Charizard X",
    "page": "Mega Charizard X ex (Inferno X 13)",
    "type": "Fire",
    "rarity": "RR",
-   "mark": ""
+   "mark": "",
+   "ja": "メガリザードンXex",
+   "artist": "takuyoa",
+   "image": "https://archives.bulbagarden.net/media/upload/1/1a/MegaCharizardXexPhantasmalFlames13.jpg"
   },
   "14": {
    "en": "Moltres",
    "page": "Moltres (Inferno X 14)",
    "type": "Fire",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ファイヤー",
+   "artist": "Kazumasa Yasukuni",
+   "image": "https://archives.bulbagarden.net/media/upload/e/ed/MoltresPhantasmalFlames14.jpg"
   },
   "15": {
    "en": "Darumaka",
    "page": "Darumaka (Inferno X 15)",
    "type": "Fire",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ダルマッカ",
+   "artist": "NC Empire",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2b/DarumakaInfernoX15.jpg"
   },
   "16": {
    "en": "Darmanitan",
    "page": "Darmanitan (Inferno X 16)",
    "type": "Fire",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ヒヒダルマ",
+   "artist": "Uta",
+   "image": "https://archives.bulbagarden.net/media/upload/4/48/DarmanitanInfernoX16.jpg"
   },
   "17": {
    "en": "Reshiram",
    "page": "Reshiram (Inferno X 17)",
    "type": "Fire",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "レシラム",
+   "artist": "AKIRA EGAWA",
+   "image": "https://archives.bulbagarden.net/media/upload/b/be/ReshiramPhantasmalFlames17.jpg"
   },
   "18": {
    "en": "Oricorio",
    "page": "Oricorio ex (Inferno X 18)",
    "type": "Fire",
    "rarity": "RR",
-   "mark": ""
+   "mark": "",
+   "ja": "オドリドリex",
+   "artist": "Shinji Kanda",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a6/OricorioexMEPPromo24.jpg"
   },
   "19": {
    "en": "Charcadet",
    "page": "Charcadet (Inferno X 19)",
    "type": "Fire",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "カルボウ",
+   "artist": "Teeziro",
+   "image": "https://archives.bulbagarden.net/media/upload/9/94/CharcadetMEPPromo22.jpg"
   },
   "20": {
    "en": "Ceruledge",
    "page": "Ceruledge (Inferno X 20)",
    "type": "Fire",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ソウブレイズ",
+   "artist": "Anesaki Dynamic",
+   "image": "https://archives.bulbagarden.net/media/upload/b/bb/CeruledgeMEPPromo14.jpg"
   },
   "21": {
    "en": "Seel",
    "page": "Seel (Inferno X 21)",
    "type": "Water",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "パウワウ",
+   "artist": "svlt",
+   "image": "https://archives.bulbagarden.net/media/upload/a/ae/SeelInfernoX21.jpg"
   },
   "22": {
    "en": "Dewgong",
    "page": "Dewgong (Inferno X 22)",
    "type": "Water",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ジュゴン",
+   "artist": "Taira Akitsu",
+   "image": "https://archives.bulbagarden.net/media/upload/7/77/DewgongInfernoX22.jpg"
   },
   "23": {
    "en": "Swinub",
    "page": "Swinub (Inferno X 23)",
    "type": "Water",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ウリムー",
+   "artist": "imoniii",
+   "image": "https://archives.bulbagarden.net/media/upload/d/dd/SwinubInfernoX23.jpg"
   },
   "24": {
    "en": "Piloswine",
    "page": "Piloswine (Inferno X 24)",
    "type": "Water",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "イノムー",
+   "artist": "Shinya Komatsu",
+   "image": "https://archives.bulbagarden.net/media/upload/8/86/PiloswineInfernoX24.jpg"
   },
   "25": {
    "en": "Mamoswine",
    "page": "Mamoswine (Inferno X 25)",
    "type": "Water",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "マンムー",
+   "artist": "Takumi Wada",
+   "image": "https://archives.bulbagarden.net/media/upload/1/1a/MamoswineInfernoX25.jpg"
   },
   "26": {
    "en": "Suicune",
    "page": "Suicune (Inferno X 26)",
    "type": "Water",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "スイクン",
+   "artist": "Takeshi Nakamura",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c6/SuicuneInfernoX26.jpg"
   },
   "27": {
    "en": "Piplup",
    "page": "Piplup (Inferno X 27)",
    "type": "Water",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ポッチャマ",
+   "artist": "Hideki Ishikawa",
+   "image": "https://archives.bulbagarden.net/media/upload/5/5e/PiplupPhantasmalFlames27.jpg"
   },
   "28": {
    "en": "Prinplup",
    "page": "Prinplup (Inferno X 28)",
    "type": "Water",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ポッタイシ",
+   "artist": "Atsuya Uki",
+   "image": "https://archives.bulbagarden.net/media/upload/4/49/PrinplupPhantasmalFlames28.jpg"
   },
   "29": {
    "en": "Rotom",
    "page": "Rotom ex (Inferno X 29)",
    "type": "Lightning",
    "rarity": "RR",
-   "mark": ""
+   "mark": "",
+   "ja": "ロトムex",
+   "artist": "Yoshimi Miyoshi",
+   "image": "https://archives.bulbagarden.net/media/upload/1/14/RotomexInfernoX112.jpg"
   },
   "30": {
    "en": "Yamper",
    "page": "Yamper (Inferno X 30)",
    "type": "Lightning",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ワンパチ",
+   "artist": "tono",
+   "image": "https://archives.bulbagarden.net/media/upload/a/ab/YamperInfernoX86.jpg"
   },
   "31": {
    "en": "Boltund",
    "page": "Boltund (Inferno X 31)",
    "type": "Lightning",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "パルスワン",
+   "artist": "Orca",
+   "image": "https://archives.bulbagarden.net/media/upload/b/bb/BoltundInfernoX31.jpg"
   },
   "32": {
    "en": "Pawmi",
    "page": "Pawmi (Inferno X 32)",
    "type": "Lightning",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "パモ",
+   "artist": "Shimaris Yukichi",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f3/PawmiInfernoX32.jpg"
   },
   "33": {
    "en": "Pawmo",
    "page": "Pawmo (Inferno X 33)",
    "type": "Lightning",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "パモット",
+   "artist": "Taiga Kayama",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e9/PawmoInfernoX33.jpg"
   },
   "34": {
    "en": "Pawmot",
    "page": "Pawmot (Inferno X 34)",
    "type": "Lightning",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "パーモット",
+   "artist": "satoma",
+   "image": "https://archives.bulbagarden.net/media/upload/4/43/PawmotInfernoX34.jpg"
   },
   "35": {
    "en": "Misdreavus",
    "page": "Misdreavus (Inferno X 35)",
    "type": "Psychic",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ムウマ",
+   "artist": "Mousho",
+   "image": "https://archives.bulbagarden.net/media/upload/7/7e/MisdreavusInfernoX35.jpg"
   },
   "36": {
    "en": "Mismagius",
    "page": "Mismagius ex (Inferno X 36)",
    "type": "Psychic",
    "rarity": "RR",
-   "mark": ""
+   "mark": "",
+   "ja": "ムウマージex",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/f/fa/MismagiusexInfernoX97.jpg"
   },
   "37": {
    "en": "Cottonee",
    "page": "Cottonee (Inferno X 37)",
    "type": "Psychic",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "モンメン",
+   "artist": "Kariya",
+   "image": "https://archives.bulbagarden.net/media/upload/f/fb/CottoneeMEPPromo18.jpg"
   },
   "38": {
    "en": "Whimsicott",
    "page": "Whimsicott (Inferno X 38)",
    "type": "Psychic",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "エルフーン",
+   "artist": "Yuka Tanaka",
+   "image": "https://archives.bulbagarden.net/media/upload/4/48/WhimsicottMEPPromo19.jpg"
   },
   "39": {
    "en": "Zacian",
    "page": "Zacian (Inferno X 39)",
    "type": "Psychic",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "ザシアン",
+   "artist": "Shiburingaru",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a3/ZacianMEPPromo15.jpg"
   },
   "40": {
    "en": "Bramblin",
    "page": "Bramblin (Inferno X 40)",
    "type": "Psychic",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "アノクサ",
+   "artist": "Takeshi Nakamura",
+   "image": "https://archives.bulbagarden.net/media/upload/0/08/BramblinInfernoX40.jpg"
   },
   "41": {
    "en": "Brambleghast",
    "page": "Brambleghast (Inferno X 41)",
    "type": "Psychic",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "アノホラグサ",
+   "artist": "Tetsu Kayama",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f4/BrambleghastInfernoX41.jpg"
   },
   "42": {
    "en": "Paldean Tauros",
    "page": "Paldean Tauros (Inferno X 42)",
    "type": "Fighting",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "パルデアケンタロス",
+   "artist": "Souichirou Gunjima",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b4/PaldeanTaurosInfernoX42.jpg"
   },
   "43": {
    "en": "Gligar",
    "page": "Gligar (Inferno X 43)",
    "type": "Fighting",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "グライガー",
+   "artist": "Kazumasa Yasukuni",
+   "image": "https://archives.bulbagarden.net/media/upload/4/43/GligarPhantasmalFlames49.jpg"
   },
   "44": {
    "en": "Gliscor",
    "page": "Gliscor (Inferno X 44)",
    "type": "Fighting",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "グライオン",
+   "artist": "Dsuke",
+   "image": "https://archives.bulbagarden.net/media/upload/e/ec/GliscorPhantasmalFlames50.jpg"
   },
   "45": {
    "en": "Trapinch",
    "page": "Trapinch (Inferno X 45)",
    "type": "Fighting",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ナックラー",
+   "artist": "Uta",
+   "image": "https://archives.bulbagarden.net/media/upload/8/85/TrapinchInfernoX45.jpg"
   },
   "46": {
    "en": "Vibrava",
    "page": "Vibrava (Inferno X 46)",
    "type": "Fighting",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ビブラーバ",
+   "artist": "Miki Tanaka",
+   "image": "https://archives.bulbagarden.net/media/upload/7/7c/VibravaInfernoX46.jpg"
   },
   "47": {
    "en": "Flygon",
    "page": "Flygon (Inferno X 47)",
    "type": "Fighting",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "フライゴン",
+   "artist": "Oswaldo KATO",
+   "image": "https://archives.bulbagarden.net/media/upload/f/fa/FlygonMEPPromo16.jpg"
   },
   "48": {
    "en": "Sneasel",
    "page": "Sneasel (Inferno X 48)",
    "type": "Darkness",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ニューラ",
+   "artist": "Souichirou Gunjima",
+   "image": "https://archives.bulbagarden.net/media/upload/4/4e/SneaselMEPPromo20.jpg"
   },
   "49": {
    "en": "Weavile",
    "page": "Weavile (Inferno X 49)",
    "type": "Darkness",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "マニューラ",
+   "artist": "matazo",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b8/WeavileMEPPromo21.jpg"
   },
   "50": {
    "en": "Carvanha",
    "page": "Carvanha (Inferno X 50)",
    "type": "Darkness",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "キバニア",
+   "artist": "Shin Nagasawa",
+   "image": "https://archives.bulbagarden.net/media/upload/0/00/CarvanhaInfernoX50.jpg"
   },
   "51": {
    "en": "Mega Sharpedo",
    "page": "Mega Sharpedo ex (Inferno X 51)",
    "type": "Darkness",
    "rarity": "RR",
-   "mark": ""
+   "mark": "",
+   "ja": "メガサメハダーex",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/e/ec/MegaSharpedoexPhantasmalFlames113.jpg"
   },
   "52": {
    "en": "Seviper",
    "page": "Seviper (Inferno X 52)",
    "type": "Darkness",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ハブネーク",
+   "artist": "hncl",
+   "image": "https://archives.bulbagarden.net/media/upload/7/7e/SeviperPhantasmalFlames62.jpg"
   },
   "53": {
    "en": "Sandile",
    "page": "Sandile (Inferno X 53)",
    "type": "Darkness",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "メグロコ",
+   "artist": "Taiga Kasai",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a1/SandileInfernoX53.jpg"
   },
   "54": {
    "en": "Krokorok",
    "page": "Krokorok (Inferno X 54)",
    "type": "Darkness",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ワルビル",
+   "artist": "Uninori",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f1/KrokorokInfernoX54.jpg"
   },
   "55": {
    "en": "Krookodile",
    "page": "Krookodile (Inferno X 55)",
    "type": "Darkness",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ワルビアル",
+   "artist": "Ryuta Fuse",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b5/KrookodilePhantasmalFlames66.jpg"
   },
   "56": {
    "en": "Toxel",
    "page": "Toxel (Inferno X 56)",
    "type": "Darkness",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "エレズン",
+   "artist": "Mina Nakai",
+   "image": "https://archives.bulbagarden.net/media/upload/4/4e/ToxelMEPPromo78.jpg"
   },
   "57": {
    "en": "Toxtricity",
    "page": "Toxtricity (Inferno X 57)",
    "type": "Darkness",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "ストリンダー",
+   "artist": "Krgc",
+   "image": "https://archives.bulbagarden.net/media/upload/e/ee/ToxtricityMEPPromo17.jpg"
   },
   "58": {
    "en": "Empoleon",
    "page": "Empoleon ex (Inferno X 58)",
    "type": "Metal",
    "rarity": "RR",
-   "mark": ""
+   "mark": "",
+   "ja": "エンペルトex",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/f/fa/EmpoleonexInfernoX99.jpg"
   },
   "59": {
    "en": "Bronzor",
    "page": "Bronzor (Inferno X 59)",
    "type": "Metal",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ドーミラー",
+   "artist": "OKUBO",
+   "image": "https://archives.bulbagarden.net/media/upload/3/39/BronzorInfernoX59.jpg"
   },
   "60": {
    "en": "Bronzong",
    "page": "Bronzong (Inferno X 60)",
    "type": "Metal",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ドータクン",
+   "artist": "Masako Tomii",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b8/BronzongInfernoX60.jpg"
   },
   "61": {
    "en": "Togedemaru",
    "page": "Togedemaru (Inferno X 61)",
    "type": "Metal",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "トゲデマル",
+   "artist": "Orca",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c2/TogedemaruPhantasmalFlames104.jpg"
   },
   "62": {
    "en": "Duraludon",
    "page": "Duraludon (Inferno X 62)",
    "type": "Metal",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ジュラルドン",
+   "artist": "Shinji Kanda",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e6/DuraludonInfernoX62.jpg"
   },
   "63": {
    "en": "Archaludon",
    "page": "Archaludon (Inferno X 63)",
    "type": "Metal",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ブリジュラス",
+   "artist": "toriyufu",
+   "image": "https://archives.bulbagarden.net/media/upload/9/99/ArchaludonInfernoX63.jpg"
   },
   "64": {
    "en": "Jigglypuff",
    "page": "Jigglypuff (Inferno X 64)",
    "type": "Colorless",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "プリン",
+   "artist": "Naoyo Kimura",
+   "image": "https://archives.bulbagarden.net/media/upload/6/6a/JigglypuffInfernoX64.jpg"
   },
   "65": {
    "en": "Wigglytuff",
    "page": "Wigglytuff (Inferno X 65)",
    "type": "Colorless",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "プクリン",
+   "artist": "En Morikura",
+   "image": "https://archives.bulbagarden.net/media/upload/6/65/WigglytuffInfernoX65.jpg"
   },
   "66": {
    "en": "Aipom",
    "page": "Aipom (Inferno X 66)",
    "type": "Colorless",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "エイパム",
+   "artist": "Saboteri",
+   "image": "https://archives.bulbagarden.net/media/upload/8/83/AipomInfernoX66.jpg"
   },
   "67": {
    "en": "Ambipom",
    "page": "Ambipom (Inferno X 67)",
    "type": "Colorless",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "エテボース",
+   "artist": "hncl",
+   "image": "https://archives.bulbagarden.net/media/upload/1/15/AmbipomInfernoX67.jpg"
   },
   "68": {
    "en": "Smeargle",
    "page": "Smeargle (Inferno X 68)",
    "type": "Colorless",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ドーブル",
+   "artist": "REND",
+   "image": "https://archives.bulbagarden.net/media/upload/1/1b/SmeargleInfernoX68.jpg"
   },
   "69": {
    "en": "Zigzagoon",
    "page": "Zigzagoon (Inferno X 69)",
    "type": "Colorless",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ジグザグマ",
+   "artist": "Dsuke",
+   "image": "https://archives.bulbagarden.net/media/upload/1/11/ZigzagoonInfernoX69.jpg"
   },
   "70": {
    "en": "Linoone",
    "page": "Linoone (Inferno X 70)",
    "type": "Colorless",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "マッスグマ",
+   "artist": "nagimiso",
+   "image": "https://archives.bulbagarden.net/media/upload/5/51/LinooneInfernoX70.jpg"
   },
   "71": {
    "en": "Buneary",
    "page": "Buneary (Inferno X 71)",
    "type": "Colorless",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ミミロル",
+   "artist": "tono",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c3/BunearyInfernoX71.jpg"
   },
   "72": {
    "en": "Mega Lopunny",
    "page": "Mega Lopunny ex (Inferno X 72)",
    "type": "Colorless",
    "rarity": "RR",
-   "mark": ""
+   "mark": "",
+   "ja": "メガミミロップex",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/2/28/MegaLopunnyexPhantasmalFlames84.jpg"
   },
   "73": {
    "en": "Jumbo Ice Cream",
    "page": "Jumbo Ice Cream (Inferno X 73)",
    "type": "I",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ジャンボアイス",
+   "artist": "AYUMI ODASHIMA",
+   "image": "https://archives.bulbagarden.net/media/upload/c/cb/JumboIceCreamPhantasmalFlames91.jpg"
   },
   "74": {
    "en": "Blowtorch",
    "page": "Blowtorch (Inferno X 74)",
    "type": "I",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ヒートバーナー",
+   "artist": "Toyste Beach",
+   "image": "https://archives.bulbagarden.net/media/upload/3/3d/HeatBurnerInfernoX101.jpg"
   },
   "75": {
    "en": "Sacred Charm",
    "page": "Sacred Charm (Inferno X 75)",
    "type": "PT",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "せいなるおまもり",
+   "artist": "Toyste Beach",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b7/SacredCharmInfernoX75.jpg"
   },
   "76": {
    "en": "Grimsley's Move",
    "page": "Grimsley's Move (Inferno X 76)",
    "type": "Su",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ギーマの一手",
+   "artist": "GIDORA",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f0/GrimsleyMovePhantasmalFlames90.jpg"
   },
   "77": {
    "en": "Dawn",
    "page": "Dawn (Inferno X 77)",
    "type": "Su",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ヒカリ",
+   "artist": "Atsushi Furusawa",
+   "image": "https://archives.bulbagarden.net/media/upload/c/cd/DawnInfernoX115.jpg"
   },
   "78": {
    "en": "Firebreather",
    "page": "Firebreather (Inferno X 78)",
    "type": "Su",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ひふきやろう",
+   "artist": "Naoki Saito",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b1/FirebreatherInfernoX107.jpg"
   },
   "79": {
    "en": "Battle Cage",
    "page": "Battle Cage (Inferno X 79)",
    "type": "St",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "バトルコロシアム",
+   "artist": "MARINA Chikazawa",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a5/BattleColosseumInfernoX79.jpg"
   },
   "80": {
    "en": "Dizzying Valley",
    "page": "Dizzying Valley (Inferno X 80)",
    "type": "St",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "めまいの谷",
+   "artist": "AYUMI ODASHIMA",
+   "image": "https://archives.bulbagarden.net/media/upload/6/62/DizzyingValleyInfernoX80.jpg"
   },
   "81": {
    "en": "Ludicolo",
    "page": "Ludicolo (Inferno X 81)",
    "type": "Grass",
    "rarity": "AR",
-   "mark": ""
+   "mark": "",
+   "ja": "ルンパッパ",
+   "artist": "Jerky",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f6/LudicoloPhantasmalFlames95.jpg"
   },
   "82": {
    "en": "Nymble",
    "page": "Nymble (Inferno X 82)",
    "type": "Grass",
    "rarity": "AR",
-   "mark": ""
+   "mark": "",
+   "ja": "マメバッタ",
+   "artist": "Nakamura Ippan",
+   "image": "https://archives.bulbagarden.net/media/upload/4/45/NymblePhantasmalFlames96.jpg"
   },
   "83": {
    "en": "Charcadet",
    "page": "Charcadet (Inferno X 83)",
    "type": "Fire",
    "rarity": "AR",
-   "mark": ""
+   "mark": "",
+   "ja": "カルボウ",
+   "artist": "Teeziro",
+   "image": "https://archives.bulbagarden.net/media/upload/9/94/CharcadetMEPPromo22.jpg"
   },
   "84": {
    "en": "Dewgong",
    "page": "Dewgong (Inferno X 84)",
    "type": "Water",
    "rarity": "AR",
-   "mark": ""
+   "mark": "",
+   "ja": "ジュゴン",
+   "artist": "Taira Akitsu",
+   "image": "https://archives.bulbagarden.net/media/upload/7/77/DewgongInfernoX22.jpg"
   },
   "85": {
    "en": "Piplup",
    "page": "Piplup (Inferno X 85)",
    "type": "Water",
    "rarity": "AR",
-   "mark": ""
+   "mark": "",
+   "ja": "ポッチャマ",
+   "artist": "Hideki Ishikawa",
+   "image": "https://archives.bulbagarden.net/media/upload/5/5e/PiplupPhantasmalFlames27.jpg"
   },
   "86": {
    "en": "Yamper",
    "page": "Yamper (Inferno X 86)",
    "type": "Lightning",
    "rarity": "AR",
-   "mark": ""
+   "mark": "",
+   "ja": "ワンパチ",
+   "artist": "tono",
+   "image": "https://archives.bulbagarden.net/media/upload/a/ab/YamperInfernoX86.jpg"
   },
   "87": {
    "en": "Zacian",
    "page": "Zacian (Inferno X 87)",
    "type": "Psychic",
    "rarity": "AR",
-   "mark": ""
+   "mark": "",
+   "ja": "ザシアン",
+   "artist": "Shiburingaru",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a3/ZacianMEPPromo15.jpg"
   },
   "88": {
    "en": "Flygon",
    "page": "Flygon (Inferno X 88)",
    "type": "Fighting",
    "rarity": "AR",
-   "mark": ""
+   "mark": "",
+   "ja": "フライゴン",
+   "artist": "Oswaldo KATO",
+   "image": "https://archives.bulbagarden.net/media/upload/f/fa/FlygonMEPPromo16.jpg"
   },
   "89": {
    "en": "Toxtricity",
    "page": "Toxtricity (Inferno X 89)",
    "type": "Darkness",
    "rarity": "AR",
-   "mark": ""
+   "mark": "",
+   "ja": "ストリンダー",
+   "artist": "Krgc",
+   "image": "https://archives.bulbagarden.net/media/upload/e/ee/ToxtricityMEPPromo17.jpg"
   },
   "90": {
    "en": "Togedemaru",
    "page": "Togedemaru (Inferno X 90)",
    "type": "Metal",
    "rarity": "AR",
-   "mark": ""
+   "mark": "",
+   "ja": "トゲデマル",
+   "artist": "Orca",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c2/TogedemaruPhantasmalFlames104.jpg"
   },
   "91": {
    "en": "Wigglytuff",
    "page": "Wigglytuff (Inferno X 91)",
    "type": "Colorless",
    "rarity": "AR",
-   "mark": ""
+   "mark": "",
+   "ja": "プクリン",
+   "artist": "En Morikura",
+   "image": "https://archives.bulbagarden.net/media/upload/6/65/WigglytuffInfernoX65.jpg"
   },
   "92": {
    "en": "Ambipom",
    "page": "Ambipom (Inferno X 92)",
    "type": "Colorless",
    "rarity": "AR",
-   "mark": ""
+   "mark": "",
+   "ja": "エテボース",
+   "artist": "hncl",
+   "image": "https://archives.bulbagarden.net/media/upload/1/15/AmbipomInfernoX67.jpg"
   },
   "93": {
    "en": "Mega Heracross",
    "page": "Mega Heracross ex (Inferno X 93)",
    "type": "Grass",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "メガヘラクロスex",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/1/1e/MegaHeracrossexPhantasmalFlames108.jpg"
   },
   "94": {
    "en": "Mega Charizard X",
    "page": "Mega Charizard X ex (Inferno X 94)",
    "type": "Fire",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "メガリザードンXex",
+   "artist": "takuyoa",
+   "image": "https://archives.bulbagarden.net/media/upload/1/1a/MegaCharizardXexPhantasmalFlames13.jpg"
   },
   "95": {
    "en": "Oricorio",
    "page": "Oricorio ex (Inferno X 95)",
    "type": "Fire",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "オドリドリex",
+   "artist": "Shinji Kanda",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a6/OricorioexMEPPromo24.jpg"
   },
   "96": {
    "en": "Rotom",
    "page": "Rotom ex (Inferno X 96)",
    "type": "Lightning",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "ロトムex",
+   "artist": "Yoshimi Miyoshi",
+   "image": "https://archives.bulbagarden.net/media/upload/1/14/RotomexInfernoX112.jpg"
   },
   "97": {
    "en": "Mismagius",
    "page": "Mismagius ex (Inferno X 97)",
    "type": "Psychic",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "ムウマージex",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/f/fa/MismagiusexInfernoX97.jpg"
   },
   "98": {
    "en": "Mega Sharpedo",
    "page": "Mega Sharpedo ex (Inferno X 98)",
    "type": "Darkness",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "メガサメハダーex",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/e/ec/MegaSharpedoexPhantasmalFlames113.jpg"
   },
   "99": {
    "en": "Empoleon",
    "page": "Empoleon ex (Inferno X 99)",
    "type": "Metal",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "エンペルトex",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/f/fa/EmpoleonexInfernoX99.jpg"
   },
   "100": {
    "en": "Mega Lopunny",
    "page": "Mega Lopunny ex (Inferno X 100)",
    "type": "Colorless",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "メガミミロップex",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/2/28/MegaLopunnyexPhantasmalFlames84.jpg"
   },
   "101": {
    "en": "Blowtorch",
    "page": "Blowtorch (Inferno X 101)",
    "type": "I",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "ヒートバーナー",
+   "artist": "Toyste Beach",
+   "image": "https://archives.bulbagarden.net/media/upload/3/3d/HeatBurnerInfernoX101.jpg"
   },
   "102": {
    "en": "Switch",
    "page": "Switch (Inferno X 102)",
    "type": "I",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "ポケモンいれかえ",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/0/02/SwitchSunMoon160.jpg"
   },
   "103": {
    "en": "Sacred Charm",
    "page": "Sacred Charm (Inferno X 103)",
    "type": "PT",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "せいなるおまもり",
+   "artist": "Toyste Beach",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b7/SacredCharmInfernoX75.jpg"
   },
   "104": {
    "en": "Punk Helmet",
    "page": "Punk Helmet (Inferno X 104)",
    "type": "PT",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "パンクメット",
+   "artist": "Studio Bora Inc.",
+   "image": "https://archives.bulbagarden.net/media/upload/3/3a/PunkHelmetMEGAStarterSet17.jpg"
   },
   "105": {
    "en": "Grimsley's Move",
    "page": "Grimsley's Move (Inferno X 105)",
    "type": "Su",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "ギーマの一手",
+   "artist": "GIDORA",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f0/GrimsleyMovePhantasmalFlames90.jpg"
   },
   "106": {
    "en": "Dawn",
    "page": "Dawn (Inferno X 106)",
    "type": "Su",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "ヒカリ",
+   "artist": "Atsushi Furusawa",
+   "image": "https://archives.bulbagarden.net/media/upload/c/cd/DawnInfernoX115.jpg"
   },
   "107": {
    "en": "Firebreather",
    "page": "Firebreather (Inferno X 107)",
    "type": "Su",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "ひふきやろう",
+   "artist": "Naoki Saito",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b1/FirebreatherInfernoX107.jpg"
   },
   "108": {
    "en": "Battle Cage",
    "page": "Battle Cage (Inferno X 108)",
    "type": "St",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "バトルコロシアム",
+   "artist": "MARINA Chikazawa",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a5/BattleColosseumInfernoX79.jpg"
   },
   "109": {
    "en": "Ignition Energy",
    "page": "Ignition Energy (Inferno X 109)",
    "type": "Colorless",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "イグニッションエネルギー",
+   "artist": "Premium Trainer Box MEGA",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d7/IgnitionEnergyWhiteFlare86.jpg"
   },
   "110": {
    "en": "Mega Charizard X",
    "page": "Mega Charizard X ex (Inferno X 110)",
    "type": "Fire",
    "rarity": "SAR",
-   "mark": ""
+   "mark": "",
+   "ja": "メガリザードンXex",
+   "artist": "takuyoa",
+   "image": "https://archives.bulbagarden.net/media/upload/1/1a/MegaCharizardXexPhantasmalFlames13.jpg"
   },
   "111": {
    "en": "Oricorio",
    "page": "Oricorio ex (Inferno X 111)",
    "type": "Fire",
    "rarity": "SAR",
-   "mark": ""
+   "mark": "",
+   "ja": "オドリドリex",
+   "artist": "Shinji Kanda",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a6/OricorioexMEPPromo24.jpg"
   },
   "112": {
    "en": "Rotom",
    "page": "Rotom ex (Inferno X 112)",
    "type": "Lightning",
    "rarity": "SAR",
-   "mark": ""
+   "mark": "",
+   "ja": "ロトムex",
+   "artist": "Yoshimi Miyoshi",
+   "image": "https://archives.bulbagarden.net/media/upload/1/14/RotomexInfernoX112.jpg"
   },
   "113": {
    "en": "Mega Sharpedo",
    "page": "Mega Sharpedo ex (Inferno X 113)",
    "type": "Darkness",
    "rarity": "SAR",
-   "mark": ""
+   "mark": "",
+   "ja": "メガサメハダーex",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/e/ec/MegaSharpedoexPhantasmalFlames113.jpg"
   },
   "114": {
    "en": "Mega Lopunny",
    "page": "Mega Lopunny ex (Inferno X 114)",
    "type": "Colorless",
    "rarity": "SAR",
-   "mark": ""
+   "mark": "",
+   "ja": "メガミミロップex",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/2/28/MegaLopunnyexPhantasmalFlames84.jpg"
   },
   "115": {
    "en": "Dawn",
    "page": "Dawn (Inferno X 115)",
    "type": "Su",
    "rarity": "SAR",
-   "mark": ""
+   "mark": "",
+   "ja": "ヒカリ",
+   "artist": "Atsushi Furusawa",
+   "image": "https://archives.bulbagarden.net/media/upload/c/cd/DawnInfernoX115.jpg"
   },
   "116": {
    "en": "Mega Charizard X",
    "page": "Mega Charizard X ex (Inferno X 116)",
    "type": "Fire",
    "rarity": "MUR",
-   "mark": ""
+   "mark": "",
+   "ja": "メガリザードンXex",
+   "artist": "takuyoa",
+   "image": "https://archives.bulbagarden.net/media/upload/1/1a/MegaCharizardXexPhantasmalFlames13.jpg"
   }
  }
 }

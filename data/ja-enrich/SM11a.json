@@ -1,0 +1,566 @@
+{
+ "page": "Remix Bout (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Venusaur & Snivy",
+   "page": "Venusaur & Snivy-GX (Remix Bout 1)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "2": {
+   "en": "Tangela",
+   "page": "Tangela (Remix Bout 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Tangrowth",
+   "page": "Tangrowth (Remix Bout 3)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "4": {
+   "en": "Heracross",
+   "page": "Heracross (Remix Bout 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Tropius",
+   "page": "Tropius (Remix Bout 5)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Deerling",
+   "page": "Deerling (Remix Bout 6)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Sawsbuck",
+   "page": "Sawsbuck (Remix Bout 7)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "8": {
+   "en": "Charizard & Braixen",
+   "page": "Charizard & Braixen-GX (Remix Bout 8)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "9": {
+   "en": "Ponyta",
+   "page": "Ponyta (Remix Bout 9)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Rapidash",
+   "page": "Rapidash (Remix Bout 10)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "11": {
+   "en": "Entei",
+   "page": "Entei (Remix Bout 11)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "12": {
+   "en": "Victini",
+   "page": "Victini (Remix Bout 12)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "13": {
+   "en": "Tepig",
+   "page": "Tepig (Remix Bout 13)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Pignite",
+   "page": "Pignite (Remix Bout 14)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "15": {
+   "en": "Emboar",
+   "page": "Emboar (Remix Bout 15)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "16": {
+   "en": "Blastoise & Piplup",
+   "page": "Blastoise & Piplup-GX (Remix Bout 16)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "17": {
+   "en": "Psyduck",
+   "page": "Psyduck (Remix Bout 17)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "18": {
+   "en": "Golduck",
+   "page": "Golduck (Remix Bout 18)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "19": {
+   "en": "Wailmer",
+   "page": "Wailmer (Remix Bout 19)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "20": {
+   "en": "Wailord",
+   "page": "Wailord (Remix Bout 20)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "21": {
+   "en": "Kyogre",
+   "page": "Kyogre (Remix Bout 21)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "22": {
+   "en": "Phione",
+   "page": "Phione (Remix Bout 22)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "23": {
+   "en": "Duskull",
+   "page": "Duskull (Remix Bout 23)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "24": {
+   "en": "Dusclops",
+   "page": "Dusclops (Remix Bout 24)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "25": {
+   "en": "Dusknoir",
+   "page": "Dusknoir (Remix Bout 25)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "26": {
+   "en": "Rotom",
+   "page": "Rotom (Remix Bout 26)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "27": {
+   "en": "Phantump",
+   "page": "Phantump (Remix Bout 27)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "28": {
+   "en": "Trevenant",
+   "page": "Trevenant (Remix Bout 28)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "29": {
+   "en": "Dhelmise",
+   "page": "Dhelmise (Remix Bout 29)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "30": {
+   "en": "Marshadow",
+   "page": "Marshadow (Remix Bout 30)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "31": {
+   "en": "Blacephalon",
+   "page": "Blacephalon (Remix Bout 31)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "32": {
+   "en": "Groudon",
+   "page": "Groudon (Remix Bout 32)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "33": {
+   "en": "Throh",
+   "page": "Throh (Remix Bout 33)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "34": {
+   "en": "Pancham",
+   "page": "Pancham (Remix Bout 34)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "35": {
+   "en": "Pangoro",
+   "page": "Pangoro (Remix Bout 35)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "36": {
+   "en": "Crabrawler",
+   "page": "Crabrawler (Remix Bout 36)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "37": {
+   "en": "Crabominable",
+   "page": "Crabominable (Remix Bout 37)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "38": {
+   "en": "Passimian",
+   "page": "Passimian (Remix Bout 38)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "39": {
+   "en": "Alolan Meowth",
+   "page": "Alolan Meowth (Remix Bout 39)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "40": {
+   "en": "Alolan Persian",
+   "page": "Alolan Persian-GX (Remix Bout 40)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "41": {
+   "en": "Alolan Grimer",
+   "page": "Alolan Grimer (Remix Bout 41)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "42": {
+   "en": "Alolan Muk",
+   "page": "Alolan Muk (Remix Bout 42)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "43": {
+   "en": "Absol",
+   "page": "Absol (Remix Bout 43)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "44": {
+   "en": "Pawniard",
+   "page": "Pawniard (Remix Bout 44)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "45": {
+   "en": "Bisharp",
+   "page": "Bisharp (Remix Bout 45)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "46": {
+   "en": "Guzzlord",
+   "page": "Guzzlord (Remix Bout 46)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "47": {
+   "en": "Zangoose",
+   "page": "Zangoose (Remix Bout 47)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "48": {
+   "en": "Stufful",
+   "page": "Stufful (Remix Bout 48)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "49": {
+   "en": "Bewear",
+   "page": "Bewear (Remix Bout 49)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "50": {
+   "en": "Energy Retrieval",
+   "page": "Energy Retrieval (Remix Bout 50)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "51": {
+   "en": "Energy Switch",
+   "page": "Energy Switch (Remix Bout 51)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "52": {
+   "en": "Great Catcher",
+   "page": "Great Catcher (Remix Bout 52)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "53": {
+   "en": "Switch",
+   "page": "Switch (Remix Bout 53)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "54": {
+   "en": "Pokémon Communication",
+   "page": "Pokémon Communication (Remix Bout 54)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "55": {
+   "en": "Janine",
+   "page": "Janine (Remix Bout 55)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "56": {
+   "en": "Professor Oak's Setup",
+   "page": "Professor Oak's Setup (Remix Bout 56)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "57": {
+   "en": "Judge",
+   "page": "Judge (Remix Bout 57)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "58": {
+   "en": "Roller Skater",
+   "page": "Roller Skater (Remix Bout 58)",
+   "type": "Su",
+   "rarity": "C",
+   "mark": ""
+  },
+  "59": {
+   "en": "Weakness Guard Energy",
+   "page": "Weakness Guard Energy (Remix Bout 59)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "60": {
+   "en": "Draw Energy",
+   "page": "Draw Energy (Remix Bout 60)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "61": {
+   "en": "Acro Bike",
+   "page": "Acro Bike (Remix Bout 61)",
+   "type": "I",
+   "rarity": "TR",
+   "mark": ""
+  },
+  "62": {
+   "en": "Escape Board",
+   "page": "Escape Board (Remix Bout 62)",
+   "type": "I",
+   "rarity": "TR",
+   "mark": ""
+  },
+  "63": {
+   "en": "Lady",
+   "page": "Lady (Remix Bout 63)",
+   "type": "Su",
+   "rarity": "TR",
+   "mark": ""
+  },
+  "64": {
+   "en": "Welder",
+   "page": "Welder (Remix Bout 64)",
+   "type": "Su",
+   "rarity": "TR",
+   "mark": ""
+  },
+  "65": {
+   "en": "Venusaur & Snivy",
+   "page": "Venusaur & Snivy-GX (Remix Bout 65)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "66": {
+   "en": "Venusaur & Snivy",
+   "page": "Venusaur & Snivy-GX (Remix Bout 66)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "67": {
+   "en": "Charizard & Braixen",
+   "page": "Charizard & Braixen-GX (Remix Bout 67)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "68": {
+   "en": "Charizard & Braixen",
+   "page": "Charizard & Braixen-GX (Remix Bout 68)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "69": {
+   "en": "Blastoise & Piplup",
+   "page": "Blastoise & Piplup-GX (Remix Bout 69)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "70": {
+   "en": "Blastoise & Piplup",
+   "page": "Blastoise & Piplup-GX (Remix Bout 70)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "71": {
+   "en": "Alolan Persian",
+   "page": "Alolan Persian-GX (Remix Bout 71)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "72": {
+   "en": "Professor Oak's Setup",
+   "page": "Professor Oak's Setup (Remix Bout 72)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "73": {
+   "en": "Roller Skater",
+   "page": "Roller Skater (Remix Bout 73)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "74": {
+   "en": "Venusaur & Snivy",
+   "page": "Venusaur & Snivy-GX (Remix Bout 74)",
+   "type": "Grass",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "75": {
+   "en": "Charizard & Braixen",
+   "page": "Charizard & Braixen-GX (Remix Bout 75)",
+   "type": "Fire",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "76": {
+   "en": "Blastoise & Piplup",
+   "page": "Blastoise & Piplup-GX (Remix Bout 76)",
+   "type": "Water",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "77": {
+   "en": "Alolan Persian",
+   "page": "Alolan Persian-GX (Remix Bout 77)",
+   "type": "Darkness",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "78": {
+   "en": "Great Catcher",
+   "page": "Great Catcher (Remix Bout 78)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "79": {
+   "en": "Martial Arts Dojo",
+   "page": "Martial Arts Dojo (Remix Bout 79)",
+   "type": "St",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "80": {
+   "en": "Draw Energy",
+   "page": "Draw Energy (Remix Bout 80)",
+   "type": "Colorless",
+   "rarity": "UR",
+   "mark": ""
+  }
+ }
+}

@@ -1,0 +1,517 @@
+{
+ "page": "Collection Sun (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Caterpie",
+   "page": "Caterpie (Collection Sun 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Metapod",
+   "page": "Metapod (Collection Sun 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Butterfree",
+   "page": "Butterfree (Collection Sun 3)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "4": {
+   "en": "Paras",
+   "page": "Paras (Collection Sun 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Parasect",
+   "page": "Parasect (Collection Sun 5)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Bounsweet",
+   "page": "Bounsweet (Collection Sun 6)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Steenee",
+   "page": "Steenee (Collection Sun 7)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "8": {
+   "en": "Tsareena",
+   "page": "Tsareena (Collection Sun 8)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "9": {
+   "en": "Growlithe",
+   "page": "Growlithe (Collection Sun 9)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Arcanine",
+   "page": "Arcanine (Collection Sun 10)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "11": {
+   "en": "Torkoal",
+   "page": "Torkoal (Collection Sun 11)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "12": {
+   "en": "Psyduck",
+   "page": "Psyduck (Collection Sun 12)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "13": {
+   "en": "Golduck",
+   "page": "Golduck (Collection Sun 13)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "14": {
+   "en": "Shellder",
+   "page": "Shellder (Collection Sun 14)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "15": {
+   "en": "Cloyster",
+   "page": "Cloyster (Collection Sun 15)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "16": {
+   "en": "Lapras",
+   "page": "Lapras-GX (Collection Sun 16)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "17": {
+   "en": "Wishiwashi",
+   "page": "Wishiwashi (Collection Sun 17)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "18": {
+   "en": "Dewpider",
+   "page": "Dewpider (Collection Sun 18)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "19": {
+   "en": "Araquanid",
+   "page": "Araquanid (Collection Sun 19)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "20": {
+   "en": "Pyukumuku",
+   "page": "Pyukumuku (Collection Sun 20)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "21": {
+   "en": "Zubat",
+   "page": "Zubat (Collection Sun 21)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "22": {
+   "en": "Golbat",
+   "page": "Golbat (Collection Sun 22)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "23": {
+   "en": "Crobat",
+   "page": "Crobat (Collection Sun 23)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "24": {
+   "en": "Espeon",
+   "page": "Espeon-GX (Collection Sun 24)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "25": {
+   "en": "Mareanie",
+   "page": "Mareanie (Collection Sun 25)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "26": {
+   "en": "Toxapex",
+   "page": "Toxapex (Collection Sun 26)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "27": {
+   "en": "Cosmog",
+   "page": "Cosmog (Collection Sun 27)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "28": {
+   "en": "Cosmoem",
+   "page": "Cosmoem (Collection Sun 28)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "29": {
+   "en": "Makuhita",
+   "page": "Makuhita (Collection Sun 29)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "30": {
+   "en": "Hariyama",
+   "page": "Hariyama (Collection Sun 30)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "31": {
+   "en": "Passimian",
+   "page": "Passimian (Collection Sun 31)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "32": {
+   "en": "Alolan Meowth",
+   "page": "Alolan Meowth (Collection Sun 32)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "33": {
+   "en": "Alolan Persian",
+   "page": "Alolan Persian (Collection Sun 33)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "34": {
+   "en": "Sandile",
+   "page": "Sandile (Collection Sun 34)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "35": {
+   "en": "Krokorok",
+   "page": "Krokorok (Collection Sun 35)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "36": {
+   "en": "Krookodile",
+   "page": "Krookodile (Collection Sun 36)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "37": {
+   "en": "Alolan Diglett",
+   "page": "Alolan Diglett (Collection Sun 37)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "38": {
+   "en": "Alolan Dugtrio",
+   "page": "Alolan Dugtrio (Collection Sun 38)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "39": {
+   "en": "Skarmory",
+   "page": "Skarmory (Collection Sun 39)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "40": {
+   "en": "Solgaleo",
+   "page": "Solgaleo-GX (Collection Sun 40)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "41": {
+   "en": "Cutiefly",
+   "page": "Cutiefly (Collection Sun 41)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "42": {
+   "en": "Ribombee",
+   "page": "Ribombee (Collection Sun 42)",
+   "type": "Fairy",
+   "rarity": "R",
+   "mark": ""
+  },
+  "43": {
+   "en": "Kangaskhan",
+   "page": "Kangaskhan (Collection Sun 43)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "44": {
+   "en": "Eevee",
+   "page": "Eevee (Collection Sun 44)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "45": {
+   "en": "Spinda",
+   "page": "Spinda (Collection Sun 45)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "46": {
+   "en": "Lillipup",
+   "page": "Lillipup (Collection Sun 46)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "47": {
+   "en": "Herdier",
+   "page": "Herdier (Collection Sun 47)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "48": {
+   "en": "Stoutland",
+   "page": "Stoutland (Collection Sun 48)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "49": {
+   "en": "Yungoos",
+   "page": "Yungoos (Collection Sun 49)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "50": {
+   "en": "Gumshoos",
+   "page": "Gumshoos-GX (Collection Sun 50)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "51": {
+   "en": "Stufful",
+   "page": "Stufful (Collection Sun 51)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "52": {
+   "en": "Bewear",
+   "page": "Bewear (Collection Sun 52)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "53": {
+   "en": "Crushing Hammer",
+   "page": "Crushing Hammer (Collection Sun 53)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "54": {
+   "en": "Timer Ball",
+   "page": "Timer Ball (Collection Sun 54)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "55": {
+   "en": "Repel",
+   "page": "Repel (Collection Sun 55)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "56": {
+   "en": "Rotom Dex",
+   "page": "Rotom Dex (Collection Sun 56)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "57": {
+   "en": "Exp. Share",
+   "page": "Exp. Share (Collection Sun 57)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "58": {
+   "en": "Ilima",
+   "page": "Ilima (Collection Sun 58)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "59": {
+   "en": "Professor Kukui",
+   "page": "Professor Kukui (Collection Sun 59)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "60": {
+   "en": "Double Colorless Energy",
+   "page": "Double Colorless Energy (Collection Sun 60)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "61": {
+   "en": "Lapras",
+   "page": "Lapras-GX (Collection Sun 61)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "62": {
+   "en": "Espeon",
+   "page": "Espeon-GX (Collection Sun 62)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "63": {
+   "en": "Solgaleo",
+   "page": "Solgaleo-GX (Collection Sun 63)",
+   "type": "Metal",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "64": {
+   "en": "Gumshoos",
+   "page": "Gumshoos-GX (Collection Sun 64)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "65": {
+   "en": "Ilima",
+   "page": "Ilima (Collection Sun 65)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "66": {
+   "en": "Professor Kukui",
+   "page": "Professor Kukui (Collection Sun 66)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "67": {
+   "en": "Lapras",
+   "page": "Lapras-GX (Collection Sun 67)",
+   "type": "Water",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "68": {
+   "en": "Espeon",
+   "page": "Espeon-GX (Collection Sun 68)",
+   "type": "Psychic",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "69": {
+   "en": "Solgaleo",
+   "page": "Solgaleo-GX (Collection Sun 69)",
+   "type": "Metal",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "70": {
+   "en": "Gumshoos",
+   "page": "Gumshoos-GX (Collection Sun 70)",
+   "type": "Colorless",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "71": {
+   "en": "Ultra Ball",
+   "page": "Ultra Ball (Collection Sun 71)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "72": {
+   "en": "Rotom Dex",
+   "page": "Rotom Dex (Collection Sun 72)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "73": {
+   "en": "Metal Energy",
+   "page": "Metal Energy (Collection Sun 73)",
+   "type": "Metal",
+   "rarity": "UR",
+   "mark": "—"
+  }
+ }
+}

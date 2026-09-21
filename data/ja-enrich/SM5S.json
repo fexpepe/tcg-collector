@@ -1,0 +1,552 @@
+{
+ "page": "Ultra Sun (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Yanma",
+   "page": "Yanma (Ultra Sun 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Yanmega",
+   "page": "Yanmega (Ultra Sun 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Roselia",
+   "page": "Roselia (Ultra Sun 3)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "4": {
+   "en": "Roserade",
+   "page": "Roserade (Ultra Sun 4)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "5": {
+   "en": "Turtwig",
+   "page": "Turtwig (Ultra Sun 5)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Turtwig",
+   "page": "Turtwig (Ultra Sun 6)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Grotle",
+   "page": "Grotle (Ultra Sun 7)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Torterra",
+   "page": "Torterra (Ultra Sun 8)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "9": {
+   "en": "Cherubi",
+   "page": "Cherubi (Ultra Sun 9)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Cherrim",
+   "page": "Cherrim (Ultra Sun 10)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "11": {
+   "en": "Carnivine",
+   "page": "Carnivine (Ultra Sun 11)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "12": {
+   "en": "Leafeon",
+   "page": "Leafeon-GX (Ultra Sun 12)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "13": {
+   "en": "Mow Rotom",
+   "page": "Mow Rotom (Ultra Sun 13)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "14": {
+   "en": "Shaymin",
+   "page": "Shaymin (Ultra Sun 14)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "15": {
+   "en": "Magmar",
+   "page": "Magmar (Ultra Sun 15)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "16": {
+   "en": "Magmortar",
+   "page": "Magmortar (Ultra Sun 16)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "17": {
+   "en": "Chimchar",
+   "page": "Chimchar (Ultra Sun 17)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "18": {
+   "en": "Chimchar",
+   "page": "Chimchar (Ultra Sun 18)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "19": {
+   "en": "Monferno",
+   "page": "Monferno (Ultra Sun 19)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "20": {
+   "en": "Infernape",
+   "page": "Infernape (Ultra Sun 20)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "21": {
+   "en": "Heat Rotom",
+   "page": "Heat Rotom (Ultra Sun 21)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "22": {
+   "en": "Salandit",
+   "page": "Salandit (Ultra Sun 22)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "23": {
+   "en": "Salazzle",
+   "page": "Salazzle (Ultra Sun 23)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "24": {
+   "en": "Turtonator",
+   "page": "Turtonator (Ultra Sun 24)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "25": {
+   "en": "Murkrow",
+   "page": "Murkrow (Ultra Sun 25)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "26": {
+   "en": "Honchkrow",
+   "page": "Honchkrow (Ultra Sun 26)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "27": {
+   "en": "Sneasel",
+   "page": "Sneasel (Ultra Sun 27)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "28": {
+   "en": "Weavile",
+   "page": "Weavile (Ultra Sun 28)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "29": {
+   "en": "Stunky",
+   "page": "Stunky (Ultra Sun 29)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "30": {
+   "en": "Skuntank",
+   "page": "Skuntank (Ultra Sun 30)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "31": {
+   "en": "Darkrai",
+   "page": "Darkrai ♢ (Ultra Sun 31)",
+   "type": "Darkness",
+   "rarity": "PR",
+   "mark": ""
+  },
+  "32": {
+   "en": "Alolan Diglett",
+   "page": "Alolan Diglett (Ultra Sun 32)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "33": {
+   "en": "Alolan Dugtrio",
+   "page": "Alolan Dugtrio (Ultra Sun 33)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "34": {
+   "en": "Magnemite",
+   "page": "Magnemite (Ultra Sun 34)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "35": {
+   "en": "Magnemite",
+   "page": "Magnemite (Ultra Sun 35)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "36": {
+   "en": "Magneton",
+   "page": "Magneton (Ultra Sun 36)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "37": {
+   "en": "Magnezone",
+   "page": "Magnezone (Ultra Sun 37)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "38": {
+   "en": "Shieldon",
+   "page": "Shieldon (Ultra Sun 38)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "39": {
+   "en": "Bastiodon",
+   "page": "Bastiodon (Ultra Sun 39)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "40": {
+   "en": "Bronzor",
+   "page": "Bronzor (Ultra Sun 40)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "41": {
+   "en": "Bronzong",
+   "page": "Bronzong (Ultra Sun 41)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "42": {
+   "en": "Heatran",
+   "page": "Heatran (Ultra Sun 42)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "43": {
+   "en": "Solgaleo",
+   "page": "Solgaleo ♢ (Ultra Sun 43)",
+   "type": "Metal",
+   "rarity": "PR",
+   "mark": ""
+  },
+  "44": {
+   "en": "Dusk Mane Necrozma",
+   "page": "Dusk Mane Necrozma-GX (Ultra Sun 44)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "45": {
+   "en": "Dialga",
+   "page": "Dialga-GX (Ultra Sun 45)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "46": {
+   "en": "Lickitung",
+   "page": "Lickitung (Ultra Sun 46)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "47": {
+   "en": "Lickilicky",
+   "page": "Lickilicky (Ultra Sun 47)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "48": {
+   "en": "Eevee",
+   "page": "Eevee (Ultra Sun 48)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "49": {
+   "en": "Glameow",
+   "page": "Glameow (Ultra Sun 49)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "50": {
+   "en": "Purugly",
+   "page": "Purugly (Ultra Sun 50)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "51": {
+   "en": "Fan Rotom",
+   "page": "Fan Rotom (Ultra Sun 51)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "52": {
+   "en": "Oranguru",
+   "page": "Oranguru (Ultra Sun 52)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "53": {
+   "en": "Potion",
+   "page": "Potion (Ultra Sun 53)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "54": {
+   "en": "Pal Pad",
+   "page": "Pal Pad (Ultra Sun 54)",
+   "type": "I",
+   "rarity": "C",
+   "mark": ""
+  },
+  "55": {
+   "en": "Unidentified Fossil",
+   "page": "Unidentified Fossil (Ultra Sun 55)",
+   "type": "I",
+   "rarity": "C",
+   "mark": ""
+  },
+  "56": {
+   "en": "Nest Ball",
+   "page": "Nest Ball (Ultra Sun 56)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "57": {
+   "en": "Pokémon Catcher",
+   "page": "Pokémon Catcher (Ultra Sun 57)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "58": {
+   "en": "Missing Clover",
+   "page": "Missing Clover (Ultra Sun 58)",
+   "type": "I",
+   "rarity": "C",
+   "mark": ""
+  },
+  "59": {
+   "en": "Cyrus",
+   "page": "Cyrus ♢ (Ultra Sun 59)",
+   "type": "Su",
+   "rarity": "PR",
+   "mark": ""
+  },
+  "60": {
+   "en": "Gardenia",
+   "page": "Gardenia (Ultra Sun 60)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "61": {
+   "en": "Pokémon Fan Club",
+   "page": "Pokémon Fan Club (Ultra Sun 61)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "62": {
+   "en": "Mars",
+   "page": "Mars (Ultra Sun 62)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "63": {
+   "en": "Lillie",
+   "page": "Lillie (Ultra Sun 63)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "64": {
+   "en": "Mt. Coronet",
+   "page": "Mt. Coronet (Ultra Sun 64)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "65": {
+   "en": "Double Colorless Energy",
+   "page": "Double Colorless Energy (Ultra Sun 65)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "66": {
+   "en": "Unit Energy",
+   "page": "Unit Energy GRW (Ultra Sun 66)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "67": {
+   "en": "Leafeon",
+   "page": "Leafeon-GX (Ultra Sun 67)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "68": {
+   "en": "Dusk Mane Necrozma",
+   "page": "Dusk Mane Necrozma-GX (Ultra Sun 68)",
+   "type": "Metal",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "69": {
+   "en": "Dialga",
+   "page": "Dialga-GX (Ultra Sun 69)",
+   "type": "Dragon",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "70": {
+   "en": "Gardenia",
+   "page": "Gardenia (Ultra Sun 70)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "71": {
+   "en": "Pokémon Fan Club",
+   "page": "Pokémon Fan Club (Ultra Sun 71)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "72": {
+   "en": "Mars",
+   "page": "Mars (Ultra Sun 72)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "73": {
+   "en": "Leafeon",
+   "page": "Leafeon-GX (Ultra Sun 73)",
+   "type": "Grass",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "74": {
+   "en": "Dusk Mane Necrozma",
+   "page": "Dusk Mane Necrozma-GX (Ultra Sun 74)",
+   "type": "Metal",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "75": {
+   "en": "Dialga",
+   "page": "Dialga-GX (Ultra Sun 75)",
+   "type": "Dragon",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "76": {
+   "en": "Peeking Red Card",
+   "page": "Peeking Red Card (Ultra Sun 76)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "77": {
+   "en": "Missing Clover",
+   "page": "Missing Clover (Ultra Sun 77)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "78": {
+   "en": "Unit Energy",
+   "page": "Unit Energy GRW (Ultra Sun 78)",
+   "type": "Colorless",
+   "rarity": "UR",
+   "mark": ""
+  }
+ }
+}

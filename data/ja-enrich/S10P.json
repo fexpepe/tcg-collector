@@ -1,0 +1,622 @@
+{
+ "page": "Space Juggler (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Beedrill",
+   "page": "Beedrill V (Space Juggler 1)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "2": {
+   "en": "Hisuian Voltorb",
+   "page": "Hisuian Voltorb (Space Juggler 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Hisuian Electrode",
+   "page": "Hisuian Electrode (Space Juggler 3)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "4": {
+   "en": "Kricketot",
+   "page": "Kricketot (Space Juggler 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Kricketune",
+   "page": "Kricketune (Space Juggler 5)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "6": {
+   "en": "Rowlet",
+   "page": "Rowlet (Space Juggler 6)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Dartrix",
+   "page": "Dartrix (Space Juggler 7)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Blipbug",
+   "page": "Blipbug (Space Juggler 8)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "9": {
+   "en": "Dottler",
+   "page": "Dottler (Space Juggler 9)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Orbeetle",
+   "page": "Orbeetle (Space Juggler 10)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "11": {
+   "en": "Ponyta",
+   "page": "Ponyta (Space Juggler 11)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "12": {
+   "en": "Rapidash",
+   "page": "Rapidash (Space Juggler 12)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "13": {
+   "en": "Torkoal",
+   "page": "Torkoal (Space Juggler 13)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Heatran",
+   "page": "Heatran V (Space Juggler 14)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "15": {
+   "en": "Heatran",
+   "page": "Heatran VMAX (Space Juggler 15)",
+   "type": "Fire",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "16": {
+   "en": "Psyduck",
+   "page": "Psyduck (Space Juggler 16)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Golduck",
+   "page": "Golduck (Space Juggler 17)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "18": {
+   "en": "Luvdisc",
+   "page": "Luvdisc (Space Juggler 18)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "19": {
+   "en": "Regice",
+   "page": "Regice (Space Juggler 19)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "20": {
+   "en": "Shellos",
+   "page": "Shellos (Space Juggler 20)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "21": {
+   "en": "Glaceon",
+   "page": "Glaceon (Space Juggler 21)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "22": {
+   "en": "Origin Forme Palkia",
+   "page": "Origin Forme Palkia V (Space Juggler 22)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "23": {
+   "en": "Origin Forme Palkia",
+   "page": "Origin Forme Palkia VSTAR (Space Juggler 23)",
+   "type": "Water",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "24": {
+   "en": "Bergmite",
+   "page": "Bergmite (Space Juggler 24)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "25": {
+   "en": "Hisuian Avalugg",
+   "page": "Hisuian Avalugg (Space Juggler 25)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "26": {
+   "en": "Togepi",
+   "page": "Togepi (Space Juggler 26)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "27": {
+   "en": "Togetic",
+   "page": "Togetic (Space Juggler 27)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "28": {
+   "en": "Togekiss",
+   "page": "Togekiss (Space Juggler 28)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "29": {
+   "en": "Uxie",
+   "page": "Uxie (Space Juggler 29)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "30": {
+   "en": "Mesprit",
+   "page": "Mesprit (Space Juggler 30)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "31": {
+   "en": "Azelf",
+   "page": "Azelf (Space Juggler 31)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "32": {
+   "en": "Inkay",
+   "page": "Inkay (Space Juggler 32)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "33": {
+   "en": "Malamar",
+   "page": "Malamar (Space Juggler 33)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "34": {
+   "en": "Makuhita",
+   "page": "Makuhita (Space Juggler 34)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "35": {
+   "en": "Hariyama",
+   "page": "Hariyama (Space Juggler 35)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "36": {
+   "en": "Regirock",
+   "page": "Regirock (Space Juggler 36)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "37": {
+   "en": "Gastrodon",
+   "page": "Gastrodon (Space Juggler 37)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "38": {
+   "en": "Carbink",
+   "page": "Carbink (Space Juggler 38)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "39": {
+   "en": "Hisuian Decidueye",
+   "page": "Hisuian Decidueye (Space Juggler 39)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "40": {
+   "en": "Kleavor",
+   "page": "Kleavor V (Space Juggler 40)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "41": {
+   "en": "Kleavor",
+   "page": "Kleavor VSTAR (Space Juggler 41)",
+   "type": "Fighting",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "42": {
+   "en": "Hisuian Sneasel",
+   "page": "Hisuian Sneasel (Space Juggler 42)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "43": {
+   "en": "Hisuian Sneasler",
+   "page": "Hisuian Sneasler (Space Juggler 43)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "44": {
+   "en": "Hisuian Sneasler",
+   "page": "Hisuian Sneasler V (Space Juggler 44)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "45": {
+   "en": "Darkrai",
+   "page": "Darkrai (Space Juggler 45)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "46": {
+   "en": "Shieldon",
+   "page": "Shieldon (Space Juggler 46)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "47": {
+   "en": "Bastiodon",
+   "page": "Bastiodon (Space Juggler 47)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "48": {
+   "en": "Bronzor",
+   "page": "Bronzor (Space Juggler 48)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "49": {
+   "en": "Bronzong",
+   "page": "Bronzong (Space Juggler 49)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "50": {
+   "en": "Magearna",
+   "page": "Magearna (Space Juggler 50)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "51": {
+   "en": "Regidrago",
+   "page": "Regidrago (Space Juggler 51)",
+   "type": "Dragon",
+   "rarity": "U",
+   "mark": ""
+  },
+  "52": {
+   "en": "Lickitung",
+   "page": "Lickitung (Space Juggler 52)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "53": {
+   "en": "Lickilicky",
+   "page": "Lickilicky (Space Juggler 53)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "54": {
+   "en": "Eevee",
+   "page": "Eevee (Space Juggler 54)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "55": {
+   "en": "Teddiursa",
+   "page": "Teddiursa (Space Juggler 55)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "56": {
+   "en": "Ursaring",
+   "page": "Ursaring (Space Juggler 56)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "57": {
+   "en": "Ursaluna",
+   "page": "Ursaluna (Space Juggler 57)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "58": {
+   "en": "Oranguru",
+   "page": "Oranguru V (Space Juggler 58)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "59": {
+   "en": "Komala",
+   "page": "Komala (Space Juggler 59)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "60": {
+   "en": "Energy Loto",
+   "page": "Energy Loto (Space Juggler 60)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "61": {
+   "en": "Unidentified Fossil",
+   "page": "Unidentified Fossil (Space Juggler 61)",
+   "type": "I",
+   "rarity": "C",
+   "mark": ""
+  },
+  "62": {
+   "en": "Hisuian Heavy Ball",
+   "page": "Hisuian Heavy Ball (Space Juggler 62)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "63": {
+   "en": "Supereffective Glasses",
+   "page": "Supereffective Glasses (Space Juggler 63)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "64": {
+   "en": "Irida",
+   "page": "Irida (Space Juggler 64)",
+   "type": "Su",
+   "rarity": "R",
+   "mark": ""
+  },
+  "65": {
+   "en": "Grant",
+   "page": "Grant (Space Juggler 65)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "66": {
+   "en": "Choy",
+   "page": "Choy (Space Juggler 66)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "67": {
+   "en": "Temple of Sinnoh",
+   "page": "Temple of Sinnoh (Space Juggler 67)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "68": {
+   "en": "Beedrill",
+   "page": "Beedrill V (Space Juggler 68)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "69": {
+   "en": "Beedrill",
+   "page": "Beedrill V (Space Juggler 69)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "70": {
+   "en": "Origin Forme Palkia",
+   "page": "Origin Forme Palkia V (Space Juggler 70)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "71": {
+   "en": "Origin Forme Palkia",
+   "page": "Origin Forme Palkia V (Space Juggler 71)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "72": {
+   "en": "Heatran",
+   "page": "Heatran V (Space Juggler 72)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "73": {
+   "en": "Kleavor",
+   "page": "Kleavor V (Space Juggler 73)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "74": {
+   "en": "Hisuian Sneasler",
+   "page": "Hisuian Sneasler V (Space Juggler 74)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "75": {
+   "en": "Hisuian Sneasler",
+   "page": "Hisuian Sneasler V (Space Juggler 75)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "76": {
+   "en": "Oranguru",
+   "page": "Oranguru V (Space Juggler 76)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "77": {
+   "en": "Irida",
+   "page": "Irida (Space Juggler 77)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "78": {
+   "en": "Grant",
+   "page": "Grant (Space Juggler 78)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "79": {
+   "en": "Choy",
+   "page": "Choy (Space Juggler 79)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "80": {
+   "en": "Heatran",
+   "page": "Heatran VMAX (Space Juggler 80)",
+   "type": "Fire",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "81": {
+   "en": "Origin Forme Palkia",
+   "page": "Origin Forme Palkia VSTAR (Space Juggler 81)",
+   "type": "Water",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "82": {
+   "en": "Kleavor",
+   "page": "Kleavor VSTAR (Space Juggler 82)",
+   "type": "Fighting",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "83": {
+   "en": "Irida",
+   "page": "Irida (Space Juggler 83)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "84": {
+   "en": "Grant",
+   "page": "Grant (Space Juggler 84)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "85": {
+   "en": "Choy",
+   "page": "Choy (Space Juggler 85)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "86": {
+   "en": "Origin Forme Palkia",
+   "page": "Origin Forme Palkia VSTAR (Space Juggler 86)",
+   "type": "Water",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "87": {
+   "en": "Temple of Sinnoh",
+   "page": "Temple of Sinnoh (Space Juggler 87)",
+   "type": "St",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "88": {
+   "en": "Double Turbo Energy",
+   "page": "Double Turbo Energy (Space Juggler 88)",
+   "type": "Colorless",
+   "rarity": "UR",
+   "mark": ""
+  }
+ }
+}

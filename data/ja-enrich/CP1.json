@@ -7,147 +7,210 @@
    "page": "Team Magma's Numel (Double Crisis 1)",
    "type": "Fire",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "マグマ団のドンメル",
+   "artist": "Akira Komayama",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c9/TeamMagmaNumelDoubleCrisis1.jpg"
   },
   "2": {
    "en": "Team Magma's Camerupt",
    "page": "Team Magma's Camerupt (Double Crisis 2)",
    "type": "Fire",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "マグマ団のバクーダ",
+   "artist": "Shin Nagasawa",
+   "image": "https://archives.bulbagarden.net/media/upload/9/93/TeamMagmaCameruptDoubleCrisis2.jpg"
   },
   "3": {
    "en": "Team Aqua's Spheal",
    "page": "Team Aqua's Spheal (Double Crisis 3)",
    "type": "Water",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "アクア団のタマザラシ",
+   "artist": "Sanosuke Sakuma",
+   "image": "https://archives.bulbagarden.net/media/upload/6/64/TeamAquaSphealDoubleCrisis3.jpg"
   },
   "4": {
    "en": "Team Aqua's Sealeo",
    "page": "Team Aqua's Sealeo (Double Crisis 4)",
    "type": "Water",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "アクア団のトドグラー",
+   "artist": "Naoki Saito",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f7/TeamAquaSealeoDoubleCrisis4.jpg"
   },
   "5": {
    "en": "Team Aqua's Walrein",
    "page": "Team Aqua's Walrein (Double Crisis 5)",
    "type": "Water",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "アクア団のトドゼルガ",
+   "artist": "Hitoshi Ariga",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e0/TeamAquaWalreinDoubleCrisis5.jpg"
   },
   "6": {
    "en": "Team Aqua's Kyogre",
    "page": "Team Aqua's Kyogre-EX (Double Crisis 6)",
    "type": "Water",
    "rarity": "Rare Holo ex",
-   "mark": ""
+   "mark": "",
+   "ja": "アクア団のカイオーガEX",
+   "artist": "nagimiso",
+   "image": "https://archives.bulbagarden.net/media/upload/e/ec/TeamAquaKyogreEXDoubleCrisis6.jpg"
   },
   "7": {
    "en": "Team Aqua's Grimer",
    "page": "Team Aqua's Grimer (Double Crisis 7)",
    "type": "Psychic",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "アクラ団のベトベター",
+   "artist": "kawayoo",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e3/TeamAquaGrimerDoubleCrisis7.jpg"
   },
   "8": {
    "en": "Team Aqua's Muk",
    "page": "Team Aqua's Muk (Double Crisis 8)",
    "type": "Psychic",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "アクラ団のベトベトン",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/b/be/TeamAquaMukDoubleCrisis8.jpg"
   },
   "9": {
    "en": "Team Aqua's Seviper",
    "page": "Team Aqua's Seviper (Double Crisis 9)",
    "type": "Psychic",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "アクア団のハブネーク",
+   "artist": "Naoki Saito",
+   "image": "https://archives.bulbagarden.net/media/upload/a/ad/TeamAquaSeviperDoubleCrisis9.jpg"
   },
   "10": {
    "en": "Team Magma's Baltoy",
    "page": "Team Magma's Baltoy (Double Crisis 10)",
    "type": "Psychic",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "マグマ団のヤジロン",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/9/96/TeamMagmaBaltoyDoubleCrisis10.jpg"
   },
   "11": {
    "en": "Team Magma's Claydol",
    "page": "Team Magma's Claydol (Double Crisis 11)",
    "type": "Psychic",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "マグマ団のネンドール",
+   "artist": "Masakazu Fukuda",
+   "image": "https://archives.bulbagarden.net/media/upload/4/44/TeamMagmaClaydolDoubleCrisis11.jpg"
   },
   "12": {
    "en": "Team Magma's Aron",
    "page": "Team Magma's Aron (Double Crisis 12)",
    "type": "Fighting",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "マグマ団のココドラ",
+   "artist": "Akira Komayama",
+   "image": "https://archives.bulbagarden.net/media/upload/5/5a/TeamMagmaAronDoubleCrisis12.jpg"
   },
   "13": {
    "en": "Team Magma's Lairon",
    "page": "Team Magma's Lairon (Double Crisis 13)",
    "type": "Fighting",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "マグマ団のコドラ",
+   "artist": "Masakazu Fukuda",
+   "image": "https://archives.bulbagarden.net/media/upload/4/49/TeamMagmaLaironDoubleCrisis13.jpg"
   },
   "14": {
    "en": "Team Magma's Aggron",
    "page": "Team Magma's Aggron (Double Crisis 14)",
    "type": "Fighting",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "マグマ団のボスゴドラ",
+   "artist": "TOKIYA",
+   "image": "https://archives.bulbagarden.net/media/upload/8/8d/TeamMagmaAggronDoubleCrisis14.jpg"
   },
   "15": {
    "en": "Team Magma's Groudon",
    "page": "Team Magma's Groudon-EX (Double Crisis 15)",
    "type": "Fighting",
    "rarity": "Rare Holo ex",
-   "mark": ""
+   "mark": "",
+   "ja": "マグマ団のグラードンEX",
+   "artist": "nagimiso",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f4/TeamMagmaGroudonEXDoubleCrisis15.jpg"
   },
   "16": {
    "en": "Team Aqua's Poochyena",
    "page": "Team Aqua's Poochyena (Double Crisis 16)",
    "type": "Darkness",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "アクア団のポチエナ",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/c/cf/TeamAquaPoochyenaDoubleCrisis16.jpg"
   },
   "17": {
    "en": "Team Magma's Poochyena",
    "page": "Team Magma's Poochyena (Double Crisis 17)",
    "type": "Darkness",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "マグマ団のポチエナ",
+   "artist": "TOKIYA",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d9/TeamMagmaPoochyenaDoubleCrisis17.jpg"
   },
   "18": {
    "en": "Team Aqua's Mightyena",
    "page": "Team Aqua's Mightyena (Double Crisis 18)",
    "type": "Darkness",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "アクア団のグラエナ",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/1/1a/TeamAquaMightyenaDoubleCrisis18.jpg"
   },
   "19": {
    "en": "Team Magma's Mightyena",
    "page": "Team Magma's Mightyena (Double Crisis 19)",
    "type": "Darkness",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "マグマ団のグラエナ",
+   "artist": "Hitoshi Ariga",
+   "image": "https://archives.bulbagarden.net/media/upload/1/1b/TeamMagmaMightyenaDoubleCrisis19.jpg"
   },
   "20": {
    "en": "Team Aqua's Carvanha",
    "page": "Team Aqua's Carvanha (Double Crisis 20)",
    "type": "Darkness",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "アクラ団のキバニア",
+   "artist": "Sanosuke Sakuma",
+   "image": "https://archives.bulbagarden.net/media/upload/6/63/TeamAquaCarvanhaDoubleCrisis20.jpg"
   },
   "21": {
    "en": "Team Aqua's Sharpedo",
    "page": "Team Aqua's Sharpedo (Double Crisis 21)",
    "type": "Darkness",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "アクラ団のサメハダー",
+   "artist": "kawayoo",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b1/TeamAquaSharpedoDoubleCrisis21.jpg"
   },
   "22": {
    "en": "Team Magma's Zangoose",
@@ -161,84 +224,120 @@
    "page": "Aqua Diffuser (Double Crisis 23)",
    "type": "I",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "アクアディフューザー",
+   "artist": "Toyste Beach",
+   "image": "https://archives.bulbagarden.net/media/upload/9/99/AquaDiffuserDoubleCrisis25.jpg"
   },
   "24": {
    "en": "Magma Pointer",
    "page": "Magma Pointer (Double Crisis 24)",
    "type": "I",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "マグマポインター",
+   "artist": "Toyste Beach",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b4/MagmaPointerDoubleCrisis26.jpg"
   },
   "25": {
    "en": "Team Aqua Admin",
    "page": "Team Aqua Admin (Double Crisis 25)",
    "type": "Su",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "アクア団の幹部",
+   "artist": "GAME FREAK inc.",
+   "image": "https://archives.bulbagarden.net/media/upload/2/22/TeamAquaAdminDoubleCrisis25.jpg"
   },
   "26": {
    "en": "Team Aqua Grunt",
    "page": "Team Aqua Grunt (Double Crisis 26)",
    "type": "Su",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "アクア団のしたっぱ",
+   "artist": "GAME FREAK inc.",
+   "image": "https://archives.bulbagarden.net/media/upload/f/fd/TeamAquaGruntDoubleCrisis26.jpg"
   },
   "27": {
    "en": "Team Aqua's Great Ball",
    "page": "Team Aqua's Great Ball (Double Crisis 27)",
    "type": "I",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "アクア団のスーパーボール",
+   "artist": "Toyste Beach",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f3/TeamAquaGreatBallDoubleCrisis27.jpg"
   },
   "28": {
    "en": "Team Aqua's Secret Base",
    "page": "Team Aqua's Secret Base (Double Crisis 28)",
    "type": "St",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "アクア団の秘密基地",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c1/TeamAquaSecretBaseDoubleCrisis28.jpg"
   },
   "29": {
    "en": "Team Magma Admin",
    "page": "Team Magma Admin (Double Crisis 29)",
    "type": "Su",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "マグマ団の幹部",
+   "artist": "GAME FREAK inc.",
+   "image": "https://archives.bulbagarden.net/media/upload/a/af/TeamMagmaAdminDoubleCrisis29.jpg"
   },
   "30": {
    "en": "Team Magma Grunt",
    "page": "Team Magma Grunt (Double Crisis 30)",
    "type": "Su",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "マグマ団のしたっぱ",
+   "artist": "GAME FREAK inc.",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e0/TeamMagmaGruntDoubleCrisis30.jpg"
   },
   "31": {
    "en": "Team Magma's Great Ball",
    "page": "Team Magma's Great Ball (Double Crisis 31)",
    "type": "I",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "マグマ団のスーパーボール",
+   "artist": "Toyste Beach",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f6/TeamMagmaGreatBallDoubleCrisis31.jpg"
   },
   "32": {
    "en": "Team Magma's Secret Base",
    "page": "Team Magma's Secret Base (Double Crisis 32)",
    "type": "St",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "マグマ団の秘密基地",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/0/0c/TeamMagmaSecretBaseDoubleCrisis32.jpg"
   },
   "33": {
    "en": "Double Aqua Energy",
    "page": "Double Aqua Energy (Double Crisis 33)",
    "type": "Water",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "ダブルアクアエネルギー",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/1/10/DoubleAquaEnergyDoubleCrisis33.jpg"
   },
   "34": {
    "en": "Double Magma Energy",
    "page": "Double Magma Energy (Double Crisis 34)",
    "type": "Fighting",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "ダブルマグマエネルギー",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/4/43/DoubleMagmaEnergyDoubleCrisis34.jpg"
   }
  }
 }

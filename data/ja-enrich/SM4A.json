@@ -1,0 +1,440 @@
+{
+ "page": "Ultradimensional Beasts (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Weedle",
+   "page": "Weedle (Ultradimensional Beasts 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Kakuna",
+   "page": "Kakuna (Ultradimensional Beasts 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Beedrill",
+   "page": "Beedrill (Ultradimensional Beasts 3)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "4": {
+   "en": "Exeggcute",
+   "page": "Exeggcute (Ultradimensional Beasts 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Shelmet",
+   "page": "Shelmet (Ultradimensional Beasts 5)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Accelgor",
+   "page": "Accelgor (Ultradimensional Beasts 6)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Magikarp",
+   "page": "Magikarp (Ultradimensional Beasts 7)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Gyarados",
+   "page": "Gyarados-GX (Ultradimensional Beasts 8)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "9": {
+   "en": "Swinub",
+   "page": "Swinub (Ultradimensional Beasts 9)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Piloswine",
+   "page": "Piloswine (Ultradimensional Beasts 10)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "11": {
+   "en": "Mamoswine",
+   "page": "Mamoswine (Ultradimensional Beasts 11)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "12": {
+   "en": "Feebas",
+   "page": "Feebas (Ultradimensional Beasts 12)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "13": {
+   "en": "Milotic",
+   "page": "Milotic (Ultradimensional Beasts 13)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "14": {
+   "en": "Regice",
+   "page": "Regice (Ultradimensional Beasts 14)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "15": {
+   "en": "Pikachu",
+   "page": "Pikachu (Ultradimensional Beasts 15)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "16": {
+   "en": "Alolan Raichu",
+   "page": "Alolan Raichu (Ultradimensional Beasts 16)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "17": {
+   "en": "Misdreavus",
+   "page": "Misdreavus (Ultradimensional Beasts 17)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "18": {
+   "en": "Mismagius",
+   "page": "Mismagius (Ultradimensional Beasts 18)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "19": {
+   "en": "Spoink",
+   "page": "Spoink (Ultradimensional Beasts 19)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "20": {
+   "en": "Grumpig",
+   "page": "Grumpig (Ultradimensional Beasts 20)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "21": {
+   "en": "Oranguru",
+   "page": "Oranguru (Ultradimensional Beasts 21)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "22": {
+   "en": "Nihilego",
+   "page": "Nihilego-GX (Ultradimensional Beasts 22)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "23": {
+   "en": "Mankey",
+   "page": "Mankey (Ultradimensional Beasts 23)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "24": {
+   "en": "Primeape",
+   "page": "Primeape (Ultradimensional Beasts 24)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "25": {
+   "en": "Regirock",
+   "page": "Regirock (Ultradimensional Beasts 25)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "26": {
+   "en": "Stufful",
+   "page": "Stufful (Ultradimensional Beasts 26)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "27": {
+   "en": "Bewear",
+   "page": "Bewear (Ultradimensional Beasts 27)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "28": {
+   "en": "Houndour",
+   "page": "Houndour (Ultradimensional Beasts 28)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "29": {
+   "en": "Houndoom",
+   "page": "Houndoom (Ultradimensional Beasts 29)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "30": {
+   "en": "Deino",
+   "page": "Deino (Ultradimensional Beasts 30)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "31": {
+   "en": "Zweilous",
+   "page": "Zweilous (Ultradimensional Beasts 31)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "32": {
+   "en": "Hydreigon",
+   "page": "Hydreigon (Ultradimensional Beasts 32)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "33": {
+   "en": "Guzzlord",
+   "page": "Guzzlord-GX (Ultradimensional Beasts 33)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "34": {
+   "en": "Jigglypuff",
+   "page": "Jigglypuff (Ultradimensional Beasts 34)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "35": {
+   "en": "Wigglytuff",
+   "page": "Wigglytuff (Ultradimensional Beasts 35)",
+   "type": "Fairy",
+   "rarity": "U",
+   "mark": ""
+  },
+  "36": {
+   "en": "Xerneas",
+   "page": "Xerneas (Ultradimensional Beasts 36)",
+   "type": "Fairy",
+   "rarity": "R",
+   "mark": ""
+  },
+  "37": {
+   "en": "Alolan Exeggutor",
+   "page": "Alolan Exeggutor-GX (Ultradimensional Beasts 37)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "38": {
+   "en": "Jangmo-o",
+   "page": "Jangmo-o (Ultradimensional Beasts 38)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "39": {
+   "en": "Hakamo-o",
+   "page": "Hakamo-o (Ultradimensional Beasts 39)",
+   "type": "Dragon",
+   "rarity": "U",
+   "mark": ""
+  },
+  "40": {
+   "en": "Kommo-o",
+   "page": "Kommo-o (Ultradimensional Beasts 40)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "41": {
+   "en": "Miltank",
+   "page": "Miltank (Ultradimensional Beasts 41)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "42": {
+   "en": "Swablu",
+   "page": "Swablu (Ultradimensional Beasts 42)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "43": {
+   "en": "Altaria",
+   "page": "Altaria (Ultradimensional Beasts 43)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "44": {
+   "en": "Bunnelby",
+   "page": "Bunnelby (Ultradimensional Beasts 44)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "45": {
+   "en": "Diggersby",
+   "page": "Diggersby (Ultradimensional Beasts 45)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "46": {
+   "en": "Dashing Pouch",
+   "page": "Dashing Pouch (Ultradimensional Beasts 46)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "47": {
+   "en": "Lusamine",
+   "page": "Lusamine (Ultradimensional Beasts 47)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "48": {
+   "en": "Sea of Nothingness",
+   "page": "Sea of Nothingness (Ultradimensional Beasts 48)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "49": {
+   "en": "Devoured Field",
+   "page": "Devoured Field (Ultradimensional Beasts 49)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "50": {
+   "en": "Counter Energy",
+   "page": "Counter Energy (Ultradimensional Beasts 50)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "51": {
+   "en": "Gyarados",
+   "page": "Gyarados-GX (Ultradimensional Beasts 51)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "52": {
+   "en": "Nihilego",
+   "page": "Nihilego-GX (Ultradimensional Beasts 52)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "53": {
+   "en": "Guzzlord",
+   "page": "Guzzlord-GX (Ultradimensional Beasts 53)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "54": {
+   "en": "Alolan Exeggutor",
+   "page": "Alolan Exeggutor-GX (Ultradimensional Beasts 54)",
+   "type": "Dragon",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "55": {
+   "en": "Lusamine",
+   "page": "Lusamine (Ultradimensional Beasts 55)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "56": {
+   "en": "Gyarados",
+   "page": "Gyarados-GX (Ultradimensional Beasts 56)",
+   "type": "Water",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "57": {
+   "en": "Nihilego",
+   "page": "Nihilego-GX (Ultradimensional Beasts 57)",
+   "type": "Psychic",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "58": {
+   "en": "Guzzlord",
+   "page": "Guzzlord-GX (Ultradimensional Beasts 58)",
+   "type": "Darkness",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "59": {
+   "en": "Alolan Exeggutor",
+   "page": "Alolan Exeggutor-GX (Ultradimensional Beasts 59)",
+   "type": "Dragon",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "60": {
+   "en": "Wishful Baton",
+   "page": "Wishful Baton (Ultradimensional Beasts 60)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "61": {
+   "en": "Counter Energy",
+   "page": "Counter Energy (Ultradimensional Beasts 61)",
+   "type": "Colorless",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "62": {
+   "en": "Water Energy",
+   "page": "Water Energy (Ultradimensional Beasts 62)",
+   "type": "Water",
+   "rarity": "UR",
+   "mark": "—"
+  }
+ }
+}

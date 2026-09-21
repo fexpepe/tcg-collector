@@ -1,0 +1,468 @@
+{
+ "page": "Facing a New Trial (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Bellsprout",
+   "page": "Bellsprout (Facing a New Trial 1)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "2": {
+   "en": "Weepinbell",
+   "page": "Weepinbell (Facing a New Trial 2)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "3": {
+   "en": "Victreebel",
+   "page": "Victreebel (Facing a New Trial 3)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "4": {
+   "en": "Ledyba",
+   "page": "Ledyba (Facing a New Trial 4)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "5": {
+   "en": "Ledian",
+   "page": "Ledian (Facing a New Trial 5)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "6": {
+   "en": "Tapu Bulu",
+   "page": "Tapu Bulu (Facing a New Trial 6)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "7": {
+   "en": "Tapu Bulu",
+   "page": "Tapu Bulu-GX (Facing a New Trial 7)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "8": {
+   "en": "Salandit",
+   "page": "Salandit (Facing a New Trial 8)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "9": {
+   "en": "Salazzle",
+   "page": "Salazzle (Facing a New Trial 9)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "10": {
+   "en": "Salazzle",
+   "page": "Salazzle-GX (Facing a New Trial 10)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "11": {
+   "en": "Alolan Sandshrew",
+   "page": "Alolan Sandshrew (Facing a New Trial 11)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "12": {
+   "en": "Alolan Sandslash",
+   "page": "Alolan Sandslash (Facing a New Trial 12)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "13": {
+   "en": "Alolan Vulpix",
+   "page": "Alolan Vulpix (Facing a New Trial 13)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "14": {
+   "en": "Alolan Ninetales",
+   "page": "Alolan Ninetales (Facing a New Trial 14)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "15": {
+   "en": "Wailmer",
+   "page": "Wailmer (Facing a New Trial 15)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "16": {
+   "en": "Wailord",
+   "page": "Wailord (Facing a New Trial 16)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "17": {
+   "en": "Wishiwashi",
+   "page": "Wishiwashi (Facing a New Trial 17)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "18": {
+   "en": "Tapu Fini",
+   "page": "Tapu Fini-GX (Facing a New Trial 18)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "19": {
+   "en": "Electabuzz",
+   "page": "Electabuzz (Facing a New Trial 19)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "20": {
+   "en": "Electivire",
+   "page": "Electivire (Facing a New Trial 20)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "21": {
+   "en": "Tapu Koko",
+   "page": "Tapu Koko (Facing a New Trial 21)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "22": {
+   "en": "Slowpoke",
+   "page": "Slowpoke (Facing a New Trial 22)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "23": {
+   "en": "Slowking",
+   "page": "Slowking (Facing a New Trial 23)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "24": {
+   "en": "Trubbish",
+   "page": "Trubbish (Facing a New Trial 24)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "25": {
+   "en": "Garbodor",
+   "page": "Garbodor (Facing a New Trial 25)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "26": {
+   "en": "Tapu Lele",
+   "page": "Tapu Lele (Facing a New Trial 26)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "27": {
+   "en": "Machop",
+   "page": "Machop (Facing a New Trial 27)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "28": {
+   "en": "Machoke",
+   "page": "Machoke (Facing a New Trial 28)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "29": {
+   "en": "Machamp",
+   "page": "Machamp-GX (Facing a New Trial 29)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "30": {
+   "en": "Lunatone",
+   "page": "Lunatone (Facing a New Trial 30)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "31": {
+   "en": "Solrock",
+   "page": "Solrock (Facing a New Trial 31)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "32": {
+   "en": "Rockruff",
+   "page": "Rockruff (Facing a New Trial 32)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "33": {
+   "en": "Lycanroc",
+   "page": "Lycanroc (Facing a New Trial 33)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "34": {
+   "en": "Lycanroc",
+   "page": "Lycanroc-GX (Facing a New Trial 34)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "35": {
+   "en": "Murkrow",
+   "page": "Murkrow (Facing a New Trial 35)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "36": {
+   "en": "Honchkrow",
+   "page": "Honchkrow (Facing a New Trial 36)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "37": {
+   "en": "Sneasel",
+   "page": "Sneasel (Facing a New Trial 37)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "38": {
+   "en": "Weavile",
+   "page": "Weavile (Facing a New Trial 38)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "39": {
+   "en": "Sableye",
+   "page": "Sableye (Facing a New Trial 39)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "40": {
+   "en": "Darkrai",
+   "page": "Darkrai-GX (Facing a New Trial 40)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "41": {
+   "en": "Cottonee",
+   "page": "Cottonee (Facing a New Trial 41)",
+   "type": "Fairy",
+   "rarity": "—",
+   "mark": ""
+  },
+  "42": {
+   "en": "Whimsicott",
+   "page": "Whimsicott (Facing a New Trial 42)",
+   "type": "Fairy",
+   "rarity": "—",
+   "mark": ""
+  },
+  "43": {
+   "en": "Komala",
+   "page": "Komala (Facing a New Trial 43)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "44": {
+   "en": "Escape Rope",
+   "page": "Escape Rope (Facing a New Trial 44)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "45": {
+   "en": "Weakness Policy",
+   "page": "Weakness Policy (Facing a New Trial 45)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "46": {
+   "en": "Wishful Baton",
+   "page": "Wishful Baton (Facing a New Trial 46)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "47": {
+   "en": "Acerola",
+   "page": "Acerola (Facing a New Trial 47)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "48": {
+   "en": "Sophocles",
+   "page": "Sophocles (Facing a New Trial 48)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "49": {
+   "en": "Olivia",
+   "page": "Olivia (Facing a New Trial 49)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "50": {
+   "en": "Tapu Bulu",
+   "page": "Tapu Bulu-GX (Facing a New Trial 50)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "51": {
+   "en": "Salazzle",
+   "page": "Salazzle-GX (Facing a New Trial 51)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "52": {
+   "en": "Tapu Fini",
+   "page": "Tapu Fini-GX (Facing a New Trial 52)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "53": {
+   "en": "Machamp",
+   "page": "Machamp-GX (Facing a New Trial 53)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "54": {
+   "en": "Lycanroc",
+   "page": "Lycanroc-GX (Facing a New Trial 54)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "55": {
+   "en": "Darkrai",
+   "page": "Darkrai-GX (Facing a New Trial 55)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "56": {
+   "en": "Acerola",
+   "page": "Acerola (Facing a New Trial 56)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "57": {
+   "en": "Sophocles",
+   "page": "Sophocles (Facing a New Trial 57)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "58": {
+   "en": "Tapu Bulu",
+   "page": "Tapu Bulu-GX (Facing a New Trial 58)",
+   "type": "Grass",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "59": {
+   "en": "Salazzle",
+   "page": "Salazzle-GX (Facing a New Trial 59)",
+   "type": "Fire",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "60": {
+   "en": "Tapu Fini",
+   "page": "Tapu Fini-GX (Facing a New Trial 60)",
+   "type": "Water",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "61": {
+   "en": "Machamp",
+   "page": "Machamp-GX (Facing a New Trial 61)",
+   "type": "Fighting",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "62": {
+   "en": "Lycanroc",
+   "page": "Lycanroc-GX (Facing a New Trial 62)",
+   "type": "Fighting",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "63": {
+   "en": "Darkrai",
+   "page": "Darkrai-GX (Facing a New Trial 63)",
+   "type": "Darkness",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "64": {
+   "en": "Choice Band",
+   "page": "Choice Band (Facing a New Trial 64)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "65": {
+   "en": "Multi Switch",
+   "page": "Multi Switch (Facing a New Trial 65)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "66": {
+   "en": "Darkness Energy",
+   "page": "Darkness Energy (Facing a New Trial 66)",
+   "type": "Darkness",
+   "rarity": "UR",
+   "mark": "—"
+  }
+ }
+}

@@ -7,966 +7,790 @@
    "page": "Turtwig (Plasma Gale 1)",
    "type": "Grass",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ナエトル",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/9/93/TurtwigPlasmaStorm1.jpg"
   },
   "2": {
    "en": "Grotle",
    "page": "Grotle (Plasma Gale 2)",
    "type": "Grass",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ハヤシガメ",
+   "artist": "Sumiyoshi Kizuki",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a0/GrotlePlasmaStorm2.jpg"
   },
   "3": {
    "en": "Torterra",
    "page": "Torterra (Plasma Gale 3)",
    "type": "Grass",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ドダイトス",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c7/TorterraPlasmaStorm3.jpg"
   },
   "4": {
    "en": "Cherubi",
    "page": "Cherubi (Plasma Gale 4)",
    "type": "Grass",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "チェリンボ",
+   "artist": "sui",
+   "image": "https://archives.bulbagarden.net/media/upload/a/ad/CherubiPlasmaStorm6.jpg"
   },
   "5": {
    "en": "Cherrim",
    "page": "Cherrim (Plasma Gale 5)",
    "type": "Grass",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "チェリム",
+   "artist": "Kagemaru Himeno",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a2/CherrimPlasmaStorm7.jpg"
   },
   "6": {
    "en": "Maractus",
    "page": "Maractus (Plasma Gale 6)",
    "type": "Grass",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "マラカッチ",
+   "artist": "Shigenori Negishi",
+   "image": "https://archives.bulbagarden.net/media/upload/d/dd/MaractusPlasmaStorm11.jpg"
   },
   "7": {
    "en": "Foongus",
    "page": "Foongus (Plasma Gale 7)",
    "type": "Grass",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "タマゲタケ",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/8/82/FoongusPlasmaStorm12.jpg"
   },
   "8": {
    "en": "Amoonguss",
    "page": "Amoonguss (Plasma Gale 8)",
    "type": "Grass",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "モロバレル",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f2/AmoongussPlasmaStorm13.jpg"
   },
   "9": {
    "en": "Chimchar",
    "page": "Chimchar (Plasma Gale 9)",
    "type": "Fire",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ヒコザル",
+   "artist": "sui",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c1/ChimcharPlasmaStorm15.jpg"
   },
   "10": {
    "en": "Monferno",
    "page": "Monferno (Plasma Gale 10)",
    "type": "Fire",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "モウカザル",
+   "artist": "Masakazu Fukuda",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2b/MonfernoPlasmaStorm16.jpg"
   },
   "11": {
    "en": "Infernape",
    "page": "Infernape (Plasma Gale 11)",
    "type": "Fire",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "ゴウカザル",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c5/InfernapePlasmaStorm17.jpg"
   },
   "12": {
    "en": "Victini",
    "page": "Victini-EX (Plasma Gale 12)",
    "type": "Fire",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "ビクティニEX",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c7/VictiniEXPlasmaStorm131.jpg"
   },
   "13": {
    "en": "Pansear",
    "page": "Pansear (Plasma Gale 13)",
    "type": "Fire",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "バオップ",
+   "artist": "Atsuko Nishida",
+   "image": "https://archives.bulbagarden.net/media/upload/5/5a/PansearPlasmaStorm19.jpg"
   },
   "14": {
    "en": "Simisear",
    "page": "Simisear (Plasma Gale 14)",
    "type": "Fire",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "バオッキー",
+   "artist": "Naoki Saito",
+   "image": "https://archives.bulbagarden.net/media/upload/8/8e/SimisearPlasmaStorm20.jpg"
   },
   "15": {
    "en": "Heatmor",
    "page": "Heatmor (Plasma Gale 15)",
    "type": "Fire",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "クイタラン",
+   "artist": "Suwama Chiaki",
+   "image": "https://archives.bulbagarden.net/media/upload/f/fc/HeatmorPlasmaStorm23.jpg"
   },
   "16": {
    "en": "Articuno",
    "page": "Articuno-EX (Plasma Gale 16)",
    "type": "Water",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "フリーザーEX",
+   "artist": "Toyste Beach",
+   "image": "https://archives.bulbagarden.net/media/upload/0/0f/ArticunoEXPlasmaStorm25.jpg"
   },
   "17": {
    "en": "Lotad",
    "page": "Lotad (Plasma Gale 17)",
    "type": "Water",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ハスボー",
+   "artist": "Midori Harada",
+   "image": "https://archives.bulbagarden.net/media/upload/3/3f/LotadPlasmaStorm29.jpg"
   },
   "18": {
    "en": "Lombre",
    "page": "Lombre (Plasma Gale 18)",
    "type": "Water",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ハスブレロ",
+   "artist": "Suwama Chiaki",
+   "image": "https://archives.bulbagarden.net/media/upload/8/8a/LombrePlasmaStorm30.jpg"
   },
   "19": {
    "en": "Ludicolo",
    "page": "Ludicolo (Plasma Gale 19)",
    "type": "Water",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ルンパッパ",
+   "artist": "match",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a2/LudicoloPlasmaStorm31.jpg"
   },
   "20": {
    "en": "Manaphy",
    "page": "Manaphy (Plasma Gale 20)",
    "type": "Water",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "マナフィ",
+   "artist": "Naoki Saito",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e1/ManaphyPlasmaStorm34.jpg"
   },
   "21": {
    "en": "Cubchoo",
    "page": "Cubchoo (Plasma Gale 21)",
    "type": "Water",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "クマシュン",
+   "artist": "MAHOU",
+   "image": "https://archives.bulbagarden.net/media/upload/1/17/CubchooPlasmaStorm40.jpg"
   },
   "22": {
    "en": "Beartic",
    "page": "Beartic (Plasma Gale 22)",
    "type": "Water",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ツンベアー",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/a/ab/BearticPlasmaStorm41.jpg"
   },
   "23": {
    "en": "Magnemite",
    "page": "Magnemite (Plasma Gale 23)",
    "type": "Lightning",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "コイル",
+   "artist": "Shigenori Negishi",
+   "image": "https://archives.bulbagarden.net/media/upload/0/03/MagnemitePlasmaStorm42.jpg"
   },
   "24": {
    "en": "Magneton",
    "page": "Magneton (Plasma Gale 24)",
    "type": "Lightning",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "レアコイル",
+   "artist": "MAHOU",
+   "image": "https://archives.bulbagarden.net/media/upload/3/32/MagnetonPlasmaStorm44.jpg"
   },
   "25": {
    "en": "Magnezone",
    "page": "Magnezone (Plasma Gale 25)",
    "type": "Lightning",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "ジバコイル",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/e/ec/MagnezonePlasmaStorm46.jpg"
   },
   "26": {
    "en": "Rotom",
    "page": "Rotom (Plasma Gale 26)",
    "type": "Lightning",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ロトム",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/b/bf/RotomPlasmaStorm49.jpg"
   },
   "27": {
    "en": "Zubat",
    "page": "Zubat (Plasma Gale 27)",
    "type": "Psychic",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ズバット",
+   "artist": "Mizue",
+   "image": "https://archives.bulbagarden.net/media/upload/7/7f/ZubatPlasmaStorm53.jpg"
   },
   "28": {
    "en": "Golbat",
    "page": "Golbat (Plasma Gale 28)",
    "type": "Psychic",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ゴルバット",
+   "artist": "Kyoko Umemoto",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b6/GolbatPlasmaStorm54.jpg"
   },
   "29": {
    "en": "Crobat",
    "page": "Crobat (Plasma Gale 29)",
    "type": "Psychic",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "クロバット",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e4/CrobatPlasmaStorm55.jpg"
   },
   "30": {
    "en": "Koffing",
    "page": "Koffing (Plasma Gale 30)",
    "type": "Psychic",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ドガース",
+   "artist": "match",
+   "image": "https://archives.bulbagarden.net/media/upload/5/5d/KoffingPlasmaStorm57.jpg"
   },
   "31": {
    "en": "Weezing",
    "page": "Weezing (Plasma Gale 31)",
    "type": "Psychic",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "マタドガス",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2f/WeezingPlasmaStorm58.jpg"
   },
   "32": {
    "en": "Ralts",
    "page": "Ralts (Plasma Gale 32)",
    "type": "Psychic",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ラルトス",
+   "artist": "Kanako Eo",
+   "image": "https://archives.bulbagarden.net/media/upload/3/3d/RaltsPlasmaStorm59.jpg"
   },
   "33": {
    "en": "Kirlia",
    "page": "Kirlia (Plasma Gale 33)",
    "type": "Psychic",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "キルリア",
+   "artist": "Mizue",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e4/KirliaPlasmaStorm60.jpg"
   },
   "34": {
    "en": "Gallade",
    "page": "Gallade (Plasma Gale 34)",
    "type": "Psychic",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "エルレイド",
+   "artist": "kawayoo",
+   "image": "https://archives.bulbagarden.net/media/upload/3/32/GalladePlasmaStorm61.jpg"
   },
   "35": {
    "en": "Giratina",
    "page": "Giratina (Plasma Gale 35)",
    "type": "Psychic",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "ギラティナ",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/1/16/GiratinaBWPromo74.jpg"
   },
   "36": {
    "en": "Trubbish",
    "page": "Trubbish (Plasma Gale 36)",
    "type": "Psychic",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ヤブクロン",
+   "artist": "Midori Harada",
+   "image": "https://archives.bulbagarden.net/media/upload/5/56/TrubbishPlasmaStorm65.jpg"
   },
   "37": {
    "en": "Garbodor",
    "page": "Garbodor (Plasma Gale 37)",
    "type": "Psychic",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ダストダス",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/0/07/GarbodorPlasmaStorm67.jpg"
   },
   "38": {
    "en": "Elgyem",
    "page": "Elgyem (Plasma Gale 38)",
    "type": "Psychic",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "リグレー",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d6/ElgyemPlasmaStorm69.jpg"
   },
   "39": {
    "en": "Beheeyem",
    "page": "Beheeyem (Plasma Gale 39)",
    "type": "Psychic",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "オーベム",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a0/BeheeyemPlasmaStorm70.jpg"
   },
   "40": {
    "en": "Phanpy",
    "page": "Phanpy (Plasma Gale 40)",
    "type": "Fighting",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ゴマゾウ",
+   "artist": "Sumiyoshi Kizuki",
+   "image": "https://archives.bulbagarden.net/media/upload/0/0a/PhanpyPlasmaStorm71.jpg"
   },
   "41": {
    "en": "Donphan",
    "page": "Donphan (Plasma Gale 41)",
    "type": "Fighting",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ドンファン",
+   "artist": "Shin Nagasawa",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f5/DonphanPlasmaStorm72.jpg"
   },
   "42": {
    "en": "Riolu",
    "page": "Riolu (Plasma Gale 42)",
    "type": "Fighting",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "リオル",
+   "artist": "Akira Komayama",
+   "image": "https://archives.bulbagarden.net/media/upload/8/8f/RioluPlasmaStorm76.jpg"
   },
   "43": {
    "en": "Lucario",
    "page": "Lucario (Plasma Gale 43)",
    "type": "Fighting",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "ルカリオ",
+   "artist": "Satoshi Shirai",
+   "image": "https://archives.bulbagarden.net/media/upload/9/90/LucarioPlasmaStorm78.jpg"
   },
   "44": {
    "en": "Purrloin",
    "page": "Purrloin (Plasma Gale 44)",
    "type": "Darkness",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "チョロネコ",
+   "artist": "Masakazu Fukuda",
+   "image": "https://archives.bulbagarden.net/media/upload/5/5a/PurrloinPlasmaStorm83.jpg"
   },
   "45": {
    "en": "Liepard",
    "page": "Liepard (Plasma Gale 45)",
    "type": "Darkness",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "レパルダス",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f2/LiepardPlasmaStorm84.jpg"
   },
   "46": {
    "en": "Scraggy",
    "page": "Scraggy (Plasma Gale 46)",
    "type": "Darkness",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ズルッグ",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/7/77/ScraggyPlasmaStorm85.jpg"
   },
   "47": {
    "en": "Scrafty",
    "page": "Scrafty (Plasma Gale 47)",
    "type": "Darkness",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ズルズキン",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/6/6c/ScraftyPlasmaStorm86.jpg"
   },
   "48": {
    "en": "Durant",
    "page": "Durant (Plasma Gale 48)",
    "type": "Metal",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "アイアント",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/2/24/DurantPlasmaStorm92.jpg"
   },
   "49": {
    "en": "Cobalion",
    "page": "Cobalion-EX (Plasma Gale 49)",
    "type": "Metal",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "コバルオンEX",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/0/0d/CobalionEXPlasmaStorm133.jpg"
   },
   "50": {
    "en": "Druddigon",
    "page": "Druddigon (Plasma Gale 50)",
    "type": "Dragon",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "クリムガン",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/a/ad/DruddigonPlasmaStorm94.jpg"
   },
   "51": {
    "en": "Clefairy",
    "page": "Clefairy (Plasma Gale 51)",
    "type": "Colorless",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ピッピ",
+   "artist": "Atsuko Nishida",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b9/ClefairyPlasmaStorm97.jpg"
   },
   "52": {
    "en": "Clefable",
    "page": "Clefable (Plasma Gale 52)",
    "type": "Colorless",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ピクシー",
+   "artist": "Kagemaru Himeno",
+   "image": "https://archives.bulbagarden.net/media/upload/a/af/ClefablePlasmaStorm98.jpg"
   },
   "53": {
    "en": "Doduo",
    "page": "Doduo (Plasma Gale 53)",
    "type": "Colorless",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ドードー",
+   "artist": "Kyoko Umemoto",
+   "image": "https://archives.bulbagarden.net/media/upload/5/56/DoduoPlasmaStorm99.jpg"
   },
   "54": {
    "en": "Dodrio",
    "page": "Dodrio (Plasma Gale 54)",
    "type": "Colorless",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ドードリオ",
+   "artist": "kawayoo",
+   "image": "https://archives.bulbagarden.net/media/upload/1/1a/DodrioPlasmaStorm100.jpg"
   },
   "55": {
    "en": "Snorlax",
    "page": "Snorlax (Plasma Gale 55)",
    "type": "Colorless",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "カビゴン",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/0/05/SnorlaxPlasmaStorm101.jpg"
   },
   "56": {
    "en": "Togepi",
    "page": "Togepi (Plasma Gale 56)",
    "type": "Colorless",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "トゲピー",
+   "artist": "Kanako Eo",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a4/TogepiPlasmaStorm102.jpg"
   },
   "57": {
    "en": "Togetic",
    "page": "Togetic (Plasma Gale 57)",
    "type": "Colorless",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "トゲチック",
+   "artist": "Akira Komayama",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c1/TogeticPlasmaStorm103.jpg"
   },
   "58": {
    "en": "Togekiss",
    "page": "Togekiss (Plasma Gale 58)",
    "type": "Colorless",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "トゲキッス",
+   "artist": "Shin Nagasawa",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e5/TogekissPlasmaStorm104.jpg"
   },
   "59": {
    "en": "Lugia",
    "page": "Lugia-EX (Plasma Gale 59)",
    "type": "Colorless",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "ルギアEX",
+   "artist": "Toyste Beach",
+   "image": "https://archives.bulbagarden.net/media/upload/5/57/LugiaEXPlasmaStorm108.jpg"
   },
   "60": {
    "en": "Patrat",
    "page": "Patrat (Plasma Gale 60)",
    "type": "Colorless",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ミネズミ",
+   "artist": "Naoki Saito",
+   "image": "https://archives.bulbagarden.net/media/upload/4/4d/PatratPlasmaStorm111.jpg"
   },
   "61": {
    "en": "Watchog",
    "page": "Watchog (Plasma Gale 61)",
    "type": "Colorless",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ミルホッグ",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b4/WatchogPlasmaStorm113.jpg"
   },
   "62": {
    "en": "Colress Machine",
    "page": "Colress Machine (Plasma Gale 62)",
    "type": "I",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "アクロママシーン",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/8/8e/ColressMachinePlasmaStorm119.jpg"
   },
   "63": {
    "en": "Hypnotoxic Laser",
    "page": "Hypnotoxic Laser (Plasma Gale 63)",
    "type": "I",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "どくさいみん光線",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d5/HypnotoxicLaserPlasmaStorm123.jpg"
   },
   "64": {
    "en": "Colress",
    "page": "Colress (Plasma Gale 64)",
    "type": "Su",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "アクロマ",
+   "artist": "Yusuke Ohmura",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a5/ColressPlasmaStorm118.jpg"
   },
   "65": {
    "en": "Team Plasma Grunt",
    "page": "Team Plasma Grunt (Plasma Gale 65)",
    "type": "Su",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "プラズマ団のしたっぱ",
+   "artist": "Yusuke Ohmura",
+   "image": "https://archives.bulbagarden.net/media/upload/9/98/TeamPlasmaGruntPlasmaStorm125.jpg"
   },
   "66": {
    "en": "Plasma Frigate",
    "page": "Plasma Frigate (Plasma Gale 66)",
    "type": "St",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "プラズマフリゲート",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/3/3b/PlasmaFrigatePlasmaStorm124.jpg"
   },
   "67": {
    "en": "Plasma Energy",
    "page": "Plasma Energy (Plasma Gale 67)",
    "type": "Colorless",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "プラズマエネルギー",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/1/12/PlasmaEnergyPlasmaStorm127.jpg"
   },
   "68": {
    "en": "Scramble Switch",
    "page": "Scramble Switch (Plasma Gale 68)",
    "type": "I",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "スクランブルスイッチ",
+   "artist": "Ayaka Yoshida",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c1/ScrambleSwitchSurgingSparks186.jpg"
   },
   "69": {
    "en": "Dowsing Machine",
    "page": "Dowsing Machine (Plasma Gale 69)",
    "type": "I",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "ダウジングマシン",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/f/ff/DowsingMachinePlasmaStorm128.jpg"
   },
   "70": {
    "en": "Victory Piece",
    "page": "Victory Piece (Plasma Gale 70)",
    "type": "I",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "ビクトリーピース",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/1/16/VictoryPiecePlasmaStorm130.jpg"
   },
   "71": {
    "en": "Victini",
    "page": "Victini-EX (Plasma Gale 71)",
    "type": "Fire",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "ビクティニEX",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c7/VictiniEXPlasmaStorm131.jpg"
   },
   "72": {
    "en": "Articuno",
    "page": "Articuno-EX (Plasma Gale 72)",
    "type": "Water",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "フリーザーEX",
+   "artist": "Toyste Beach",
+   "image": "https://archives.bulbagarden.net/media/upload/0/0f/ArticunoEXPlasmaStorm25.jpg"
   },
   "73": {
    "en": "Cobalion",
    "page": "Cobalion-EX (Plasma Gale 73)",
    "type": "Metal",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "コバルオンEX",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/0/0d/CobalionEXPlasmaStorm133.jpg"
   },
   "74": {
    "en": "Lugia",
    "page": "Lugia-EX (Plasma Gale 74)",
    "type": "Colorless",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "ルギアEX",
+   "artist": "Toyste Beach",
+   "image": "https://archives.bulbagarden.net/media/upload/5/57/LugiaEXPlasmaStorm108.jpg"
   },
   "75": {
    "en": "Colress",
    "page": "Colress (Plasma Gale 75)",
    "type": "Su",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "アクロマ",
+   "artist": "Yusuke Ohmura",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a5/ColressPlasmaStorm118.jpg"
   },
   "76": {
    "en": "Skyla",
    "page": "Skyla (Plasma Gale 76)",
    "type": "Su",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "フウロ",
+   "artist": "Yusuke Ohmura",
+   "image": "https://archives.bulbagarden.net/media/upload/e/ee/SkylaBoundariesCrossed134.jpg"
   },
   "77": {
    "en": "Charizard",
    "page": "Charizard (Plasma Gale 77)",
    "type": "Fire",
    "rarity": "UR",
-   "mark": ""
+   "mark": "",
+   "ja": "リザードン",
+   "artist": "hatachu",
+   "image": "https://archives.bulbagarden.net/media/upload/3/34/CharizardBoundariesCrossed20.jpg"
   },
   "78": {
    "en": "Blastoise",
    "page": "Blastoise (Plasma Gale 78)",
    "type": "Water",
    "rarity": "UR",
-   "mark": ""
+   "mark": "",
+   "ja": "カメックス",
+   "artist": "Ayaka Yoshida",
+   "image": "https://archives.bulbagarden.net/media/upload/0/05/BlastoisePlasmaStorm137.jpg"
   },
   "79": {
    "en": "Random Receiver",
    "page": "Random Receiver (Plasma Gale 79)",
    "type": "I",
    "rarity": "UR",
-   "mark": ""
-  },
-  "80": {
-   "en": "Gurdurr",
-   "page": "Gurdurr (Plasma Storm 80)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "81": {
-   "en": "Conkeldurr",
-   "page": "Conkeldurr (Plasma Storm 81)",
-   "type": "Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "82": {
-   "en": "Purrloin",
-   "page": "Purrloin (Plasma Storm 82)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "83": {
-   "en": "Purrloin",
-   "page": "Purrloin (Plasma Storm 83)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "84": {
-   "en": "Liepard",
-   "page": "Liepard (Plasma Storm 84)",
-   "type": "Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "85": {
-   "en": "Scraggy",
-   "page": "Scraggy (Plasma Storm 85)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "86": {
-   "en": "Scrafty",
-   "page": "Scrafty (Plasma Storm 86)",
-   "type": "Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "87": {
-   "en": "Skarmory",
-   "page": "Skarmory (Plasma Storm 87)",
-   "type": "Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "88": {
-   "en": "Klink",
-   "page": "Klink (Plasma Storm 88)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "89": {
-   "en": "Klang",
-   "page": "Klang (Plasma Storm 89)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "90": {
-   "en": "Klinklang",
-   "page": "Klinklang (Plasma Storm 90)",
-   "type": "Rare Holo",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "91": {
-   "en": "Durant",
-   "page": "Durant (Plasma Storm 91)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "92": {
-   "en": "Durant",
-   "page": "Durant (Plasma Storm 92)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "93": {
-   "en": "Cobalion",
-   "page": "Cobalion-EX (Plasma Storm 93)",
-   "type": "Rare Holo ex",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "94": {
-   "en": "Druddigon",
-   "page": "Druddigon (Plasma Storm 94)",
-   "type": "Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "95": {
-   "en": "Black Kyurem",
-   "page": "Black Kyurem-EX (Plasma Storm 95)",
-   "type": "Rare Holo ex",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "96": {
-   "en": "White Kyurem",
-   "page": "White Kyurem-EX (Plasma Storm 96)",
-   "type": "Rare Holo ex",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "97": {
-   "en": "Clefairy",
-   "page": "Clefairy (Plasma Storm 97)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "98": {
-   "en": "Clefable",
-   "page": "Clefable (Plasma Storm 98)",
-   "type": "Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "99": {
-   "en": "Doduo",
-   "page": "Doduo (Plasma Storm 99)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "100": {
-   "en": "Dodrio",
-   "page": "Dodrio (Plasma Storm 100)",
-   "type": "Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "101": {
-   "en": "Snorlax",
-   "page": "Snorlax (Plasma Storm 101)",
-   "type": "Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "102": {
-   "en": "Togepi",
-   "page": "Togepi (Plasma Storm 102)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "103": {
-   "en": "Togetic",
-   "page": "Togetic (Plasma Storm 103)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "104": {
-   "en": "Togekiss",
-   "page": "Togekiss (Plasma Storm 104)",
-   "type": "Rare Holo",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "105": {
-   "en": "Whismur",
-   "page": "Whismur (Plasma Storm 105)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "106": {
-   "en": "Loudred",
-   "page": "Loudred (Plasma Storm 106)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "107": {
-   "en": "Exploud",
-   "page": "Exploud (Plasma Storm 107)",
-   "type": "Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "108": {
-   "en": "Lugia",
-   "page": "Lugia-EX (Plasma Storm 108)",
-   "type": "Rare Holo ex",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "109": {
-   "en": "Skitty",
-   "page": "Skitty (Plasma Storm 109)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "110": {
-   "en": "Patrat",
-   "page": "Patrat (Plasma Storm 110)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "111": {
-   "en": "Patrat",
-   "page": "Patrat (Plasma Storm 111)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "112": {
-   "en": "Watchog",
-   "page": "Watchog (Plasma Storm 112)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "113": {
-   "en": "Watchog",
-   "page": "Watchog (Plasma Storm 113)",
-   "type": "Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "114": {
-   "en": "Bouffalant",
-   "page": "Bouffalant (Plasma Storm 114)",
-   "type": "Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "115": {
-   "en": "Rufflet",
-   "page": "Rufflet (Plasma Storm 115)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "116": {
-   "en": "Braviary",
-   "page": "Braviary (Plasma Storm 116)",
-   "type": "Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "117": {
-   "en": "Bicycle",
-   "page": "Bicycle (Plasma Storm 117)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "118": {
-   "en": "Colress",
-   "page": "Colress (Plasma Storm 118)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "119": {
-   "en": "Colress Machine",
-   "page": "Colress Machine (Plasma Storm 119)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "120": {
-   "en": "Escape Rope",
-   "page": "Escape Rope (Plasma Storm 120)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "121": {
-   "en": "Ether",
-   "page": "Ether (Plasma Storm 121)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "122": {
-   "en": "Eviolite",
-   "page": "Eviolite (Plasma Storm 122)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "123": {
-   "en": "Hypnotoxic Laser",
-   "page": "Hypnotoxic Laser (Plasma Storm 123)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "124": {
-   "en": "Plasma Frigate",
-   "page": "Plasma Frigate (Plasma Storm 124)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "125": {
-   "en": "Team Plasma Grunt",
-   "page": "Team Plasma Grunt (Plasma Storm 125)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "126": {
-   "en": "Virbank City Gym",
-   "page": "Virbank City Gym (Plasma Storm 126)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "127": {
-   "en": "Plasma Energy",
-   "page": "Plasma Energy (Plasma Storm 127)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "128": {
-   "en": "Dowsing Machine",
-   "page": "Dowsing Machine (Plasma Storm 128)",
-   "type": "Rare Ace",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "129": {
-   "en": "Scramble Switch",
-   "page": "Scramble Switch (Plasma Storm 129)",
-   "type": "Rare Ace",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "130": {
-   "en": "Victory Piece",
-   "page": "Victory Piece (Plasma Storm 130)",
-   "type": "Rare Ace",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "131": {
-   "en": "Victini",
-   "page": "Victini-EX (Plasma Storm 131)",
-   "type": "Rare Ultra",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "132": {
-   "en": "Articuno",
-   "page": "Articuno-EX (Plasma Storm 132)",
-   "type": "Rare Ultra",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "133": {
-   "en": "Cobalion",
-   "page": "Cobalion-EX (Plasma Storm 133)",
-   "type": "Rare Ultra",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "134": {
-   "en": "Lugia",
-   "page": "Lugia-EX (Plasma Storm 134)",
-   "type": "Rare Ultra",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "135": {
-   "en": "Colress",
-   "page": "Colress (Plasma Storm 135)",
-   "type": "Rare Ultra",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "136": {
-   "en": "Charizard",
-   "page": "Charizard (Plasma Storm 136)",
-   "type": "Rare Secret",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "137": {
-   "en": "Blastoise",
-   "page": "Blastoise (Plasma Storm 137)",
-   "type": "Rare Secret",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "138": {
-   "en": "Random Receiver",
-   "page": "Random Receiver (Plasma Storm 138)",
-   "type": "Rare Secret",
-   "rarity": "Promotion",
-   "mark": ""
+   "mark": "",
+   "ja": "ランダムレシーバー",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/4/49/RandomReceiverDarkExplorers99.jpg"
   }
  }
 }

@@ -1,0 +1,496 @@
+{
+ "page": "Night Unison (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Venonat",
+   "page": "Venonat (Night Unison 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Venomoth",
+   "page": "Venomoth-GX (Night Unison 2)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "3": {
+   "en": "Bellsprout",
+   "page": "Bellsprout (Night Unison 3)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "4": {
+   "en": "Weepinbell",
+   "page": "Weepinbell (Night Unison 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Victreebel",
+   "page": "Victreebel (Night Unison 5)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "6": {
+   "en": "Grubbin",
+   "page": "Grubbin (Night Unison 6)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Tentacool",
+   "page": "Tentacool (Night Unison 7)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Tentacruel",
+   "page": "Tentacruel (Night Unison 8)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "9": {
+   "en": "Goldeen",
+   "page": "Goldeen (Night Unison 9)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Seaking",
+   "page": "Seaking (Night Unison 10)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "11": {
+   "en": "Kyurem",
+   "page": "Kyurem (Night Unison 11)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "12": {
+   "en": "Froakie",
+   "page": "Froakie (Night Unison 12)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "13": {
+   "en": "Frogadier",
+   "page": "Frogadier (Night Unison 13)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Pikachu",
+   "page": "Pikachu (Night Unison 14)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "15": {
+   "en": "Raichu",
+   "page": "Raichu (Night Unison 15)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "16": {
+   "en": "Dedenne",
+   "page": "Dedenne-GX (Night Unison 16)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "17": {
+   "en": "Charjabug",
+   "page": "Charjabug (Night Unison 17)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "18": {
+   "en": "Vikavolt",
+   "page": "Vikavolt (Night Unison 18)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "19": {
+   "en": "Zeraora",
+   "page": "Zeraora (Night Unison 19)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "20": {
+   "en": "Marshadow",
+   "page": "Marshadow (Night Unison 20)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "21": {
+   "en": "Wooper",
+   "page": "Wooper (Night Unison 21)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "22": {
+   "en": "Quagsire",
+   "page": "Quagsire (Night Unison 22)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "23": {
+   "en": "Gligar",
+   "page": "Gligar (Night Unison 23)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "24": {
+   "en": "Gliscor",
+   "page": "Gliscor (Night Unison 24)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "25": {
+   "en": "Greninja & Zoroark",
+   "page": "Greninja & Zoroark-GX (Night Unison 25)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "26": {
+   "en": "Carvanha",
+   "page": "Carvanha (Night Unison 26)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "27": {
+   "en": "Sharpedo",
+   "page": "Sharpedo (Night Unison 27)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "28": {
+   "en": "Greninja",
+   "page": "Greninja (Night Unison 28)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "29": {
+   "en": "Inkay",
+   "page": "Inkay (Night Unison 29)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "30": {
+   "en": "Malamar",
+   "page": "Malamar (Night Unison 30)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "31": {
+   "en": "Gardevoir & Sylveon",
+   "page": "Gardevoir & Sylveon-GX (Night Unison 31)",
+   "type": "Fairy",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "32": {
+   "en": "Clefairy",
+   "page": "Clefairy (Night Unison 32)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "33": {
+   "en": "Clefable",
+   "page": "Clefable (Night Unison 33)",
+   "type": "Fairy",
+   "rarity": "U",
+   "mark": ""
+  },
+  "34": {
+   "en": "Togepi",
+   "page": "Togepi (Night Unison 34)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "35": {
+   "en": "Togetic",
+   "page": "Togetic (Night Unison 35)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "36": {
+   "en": "Togekiss",
+   "page": "Togekiss (Night Unison 36)",
+   "type": "Fairy",
+   "rarity": "R",
+   "mark": ""
+  },
+  "37": {
+   "en": "Spritzee",
+   "page": "Spritzee (Night Unison 37)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "38": {
+   "en": "Aromatisse",
+   "page": "Aromatisse (Night Unison 38)",
+   "type": "Fairy",
+   "rarity": "U",
+   "mark": ""
+  },
+  "39": {
+   "en": "Rattata",
+   "page": "Rattata (Night Unison 39)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "40": {
+   "en": "Raticate",
+   "page": "Raticate (Night Unison 40)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "41": {
+   "en": "Lickitung",
+   "page": "Lickitung (Night Unison 41)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "42": {
+   "en": "Lickilicky",
+   "page": "Lickilicky (Night Unison 42)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "43": {
+   "en": "Electromagnetic Radar",
+   "page": "Electromagnetic Radar (Night Unison 43)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "44": {
+   "en": "Surprise Box",
+   "page": "Surprise Box (Night Unison 44)",
+   "type": "I",
+   "rarity": "C",
+   "mark": ""
+  },
+  "45": {
+   "en": "Pokégear 3.0",
+   "page": "Pokégear 3.0 (Night Unison 45)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "46": {
+   "en": "Stealthy Hood",
+   "page": "Stealthy Hood (Night Unison 46)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "47": {
+   "en": "Fairy Charm",
+   "page": "Fairy Charm L (Night Unison 47)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "48": {
+   "en": "Fairy Charm Ability",
+   "page": "Fairy Charm Ability (Night Unison 48)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "49": {
+   "en": "Janine",
+   "page": "Janine (Night Unison 49)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "50": {
+   "en": "Koga's Trap",
+   "page": "Koga's Trap (Night Unison 50)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "51": {
+   "en": "Lt. Surge's Strategy",
+   "page": "Lt. Surge's Strategy (Night Unison 51)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "52": {
+   "en": "Electropower",
+   "page": "Electropower (Night Unison 52)",
+   "type": "I",
+   "rarity": "TR",
+   "mark": ""
+  },
+  "53": {
+   "en": "Enhanced Hammer",
+   "page": "Enhanced Hammer (Night Unison 53)",
+   "type": "I",
+   "rarity": "TR",
+   "mark": ""
+  },
+  "54": {
+   "en": "Max Potion",
+   "page": "Max Potion (Night Unison 54)",
+   "type": "I",
+   "rarity": "TR",
+   "mark": ""
+  },
+  "55": {
+   "en": "Guzma",
+   "page": "Guzma (Night Unison 55)",
+   "type": "Su",
+   "rarity": "TR",
+   "mark": ""
+  },
+  "56": {
+   "en": "Venomoth",
+   "page": "Venomoth-GX (Night Unison 56)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "57": {
+   "en": "Dedenne",
+   "page": "Dedenne-GX (Night Unison 57)",
+   "type": "Lightning",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "58": {
+   "en": "Greninja & Zoroark",
+   "page": "Greninja & Zoroark-GX (Night Unison 58)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "59": {
+   "en": "Greninja & Zoroark",
+   "page": "Greninja & Zoroark-GX (Night Unison 59)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "60": {
+   "en": "Gardevoir & Sylveon",
+   "page": "Gardevoir & Sylveon-GX (Night Unison 60)",
+   "type": "Fairy",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "61": {
+   "en": "Gardevoir & Sylveon",
+   "page": "Gardevoir & Sylveon-GX (Night Unison 61)",
+   "type": "Fairy",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "62": {
+   "en": "Janine",
+   "page": "Janine (Night Unison 62)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "63": {
+   "en": "Koga's Trap",
+   "page": "Koga's Trap (Night Unison 63)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "64": {
+   "en": "Venomoth",
+   "page": "Venomoth-GX (Night Unison 64)",
+   "type": "Grass",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "65": {
+   "en": "Dedenne",
+   "page": "Dedenne-GX (Night Unison 65)",
+   "type": "Lightning",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "66": {
+   "en": "Greninja & Zoroark",
+   "page": "Greninja & Zoroark-GX (Night Unison 66)",
+   "type": "Darkness",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "67": {
+   "en": "Gardevoir & Sylveon",
+   "page": "Gardevoir & Sylveon-GX (Night Unison 67)",
+   "type": "Fairy",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "68": {
+   "en": "Electromagnetic Radar",
+   "page": "Electromagnetic Radar (Night Unison 68)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "69": {
+   "en": "Pokégear 3.0",
+   "page": "Pokégear 3.0 (Night Unison 69)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "70": {
+   "en": "Aether Paradise Conservation Area",
+   "page": "Aether Paradise Conservation Area (Night Unison 70)",
+   "type": "St",
+   "rarity": "UR",
+   "mark": ""
+  }
+ }
+}

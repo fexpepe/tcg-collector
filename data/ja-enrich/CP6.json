@@ -7,791 +7,1030 @@
    "page": "Venusaur-EX (Expansion Pack 20th 1)",
    "type": "Grass",
    "rarity": "RR",
-   "mark": ""
+   "mark": "",
+   "ja": "フシギバナEX",
+   "artist": "Naoki Saito",
+   "image": "https://archives.bulbagarden.net/media/upload/2/27/VenusaurEXXYPromo123.jpg"
   },
   "2": {
    "en": "Venusaur",
    "page": "M Venusaur-EX (Expansion Pack 20th 2)",
    "type": "Grass",
    "rarity": "RR",
-   "mark": ""
+   "mark": "",
+   "ja": "MフシギバナEX",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/2/20/MVenusaurEXXY2.jpg"
   },
   "3": {
    "en": "Caterpie",
    "page": "Caterpie (Expansion Pack 20th 3)",
    "type": "Grass",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "キャタピー",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c2/CaterpieEvolutions3.jpg"
   },
   "4": {
    "en": "Metapod",
    "page": "Metapod (Expansion Pack 20th 4)",
    "type": "Grass",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "トランセル",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/b/bb/MetapodEvolutions4.jpg"
   },
   "5": {
    "en": "Weedle",
    "page": "Weedle (Expansion Pack 20th 5)",
    "type": "Grass",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ビードル",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b0/WeedleEvolutions5.jpg"
   },
   "6": {
    "en": "Kakuna",
    "page": "Kakuna (Expansion Pack 20th 6)",
    "type": "Grass",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "コクーン",
+   "artist": "Keiji Kinebuchi",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b0/KakunaEvolutions6.jpg"
   },
   "7": {
    "en": "Beedrill",
    "page": "Beedrill (Expansion Pack 20th 7)",
    "type": "Grass",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "スピアー",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f9/BeedrillEvolutions7.jpg"
   },
   "8": {
    "en": "Tangela",
    "page": "Tangela (Expansion Pack 20th 8)",
    "type": "Grass",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "モンジャラ",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f9/TangelaEvolutions8.jpg"
   },
   "9": {
    "en": "Charmander",
    "page": "Charmander (Expansion Pack 20th 9)",
    "type": "Fire",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ヒトカゲ",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/9/97/CharmanderEvolutions9.jpg"
   },
   "10": {
    "en": "Charmeleon",
    "page": "Charmeleon (Expansion Pack 20th 10)",
    "type": "Fire",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "リザード",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f7/CharmeleonEvolutions10.jpg"
   },
   "11": {
    "en": "Charizard",
    "page": "Charizard (Expansion Pack 20th 11)",
    "type": "Fire",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "リザードン",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/1/17/CharizardEvolutions11.jpg"
   },
   "12": {
    "en": "Charizard",
    "page": "Charizard-EX (Expansion Pack 20th 12)",
    "type": "Fire",
    "rarity": "RR",
-   "mark": ""
+   "mark": "",
+   "ja": "リザードンEX",
+   "artist": "PLANETA",
+   "image": "https://archives.bulbagarden.net/media/upload/8/8c/CharizardEXEvolutions12.jpg"
   },
   "13": {
    "en": "Charizard",
    "page": "M Charizard-EX (Expansion Pack 20th 13)",
    "type": "Fire",
    "rarity": "RR",
-   "mark": ""
+   "mark": "",
+   "ja": "MリザードンEX",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/6/64/MCharizardEXFlashfire107.jpg"
   },
   "14": {
    "en": "Vulpix",
    "page": "Vulpix (Expansion Pack 20th 14)",
    "type": "Fire",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ロコン",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c5/VulpixEvolutions14.jpg"
   },
   "15": {
    "en": "Ninetales",
    "page": "Ninetales (Expansion Pack 20th 15)",
    "type": "Fire",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "キュウコン",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/b/bf/NinetalesEvolutions15.jpg"
   },
   "16": {
    "en": "Ninetales",
    "page": "Ninetales BREAK (Expansion Pack 20th 16)",
    "type": "Fire",
    "rarity": "RR",
-   "mark": ""
+   "mark": "",
+   "ja": "キュウコンBREAK",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d5/NinetalesBREAKEvolutions16.jpg"
   },
   "17": {
    "en": "Growlithe",
    "page": "Growlithe (Expansion Pack 20th 17)",
    "type": "Fire",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ガーディ",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/7/74/GrowlitheEvolutions17.jpg"
   },
   "18": {
    "en": "Arcanine",
    "page": "Arcanine (Expansion Pack 20th 18)",
    "type": "Fire",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ウインディ",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/3/39/ArcanineEvolutions18.jpg"
   },
   "19": {
    "en": "Ponyta",
    "page": "Ponyta (Expansion Pack 20th 19)",
    "type": "Fire",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ポニータ",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c1/PonytaEvolutions19.jpg"
   },
   "20": {
    "en": "Magmar",
    "page": "Magmar (Expansion Pack 20th 20)",
    "type": "Fire",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ブーバー",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/e/eb/MagmarEvolutions20.jpg"
   },
   "21": {
    "en": "Blastoise",
    "page": "Blastoise-EX (Expansion Pack 20th 21)",
    "type": "Water",
    "rarity": "RR",
-   "mark": ""
+   "mark": "",
+   "ja": "カメックスEX",
+   "artist": "Eske Yoshinob",
+   "image": "https://archives.bulbagarden.net/media/upload/e/ec/BlastoiseEXXYPromo30.jpg"
   },
   "22": {
    "en": "Blastoise",
    "page": "M Blastoise-EX (Expansion Pack 20th 22)",
    "type": "Water",
    "rarity": "RR",
-   "mark": ""
+   "mark": "",
+   "ja": "MカメックスEX",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/5/5d/MBlastoiseEXXY30.jpg"
   },
   "23": {
    "en": "Poliwag",
    "page": "Poliwag (Expansion Pack 20th 23)",
    "type": "Water",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ニョロモ",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/c/ce/PoliwagEvolutions23.jpg"
   },
   "24": {
    "en": "Poliwhirl",
    "page": "Poliwhirl (Expansion Pack 20th 24)",
    "type": "Water",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ニョロゾ",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/3/30/PoliwhirlEvolutions24.jpg"
   },
   "25": {
    "en": "Poliwrath",
    "page": "Poliwrath (Expansion Pack 20th 25)",
    "type": "Water",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "ニョロボン",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a3/PoliwrathEvolutions25.jpg"
   },
   "26": {
    "en": "Seel",
    "page": "Seel (Expansion Pack 20th 26)",
    "type": "Water",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "パウワウ",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/5/58/SeelEvolutions28.jpg"
   },
   "27": {
    "en": "Dewgong",
    "page": "Dewgong (Expansion Pack 20th 27)",
    "type": "Water",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ジュゴン",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e0/DewgongEvolutions29.jpg"
   },
   "28": {
    "en": "Staryu",
    "page": "Staryu (Expansion Pack 20th 28)",
    "type": "Water",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ヒトデマン",
+   "artist": "Keiji Kinebuchi",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b5/StaryuEvolutions30.jpg"
   },
   "29": {
    "en": "Starmie",
    "page": "Starmie (Expansion Pack 20th 29)",
    "type": "Water",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "スターミー",
+   "artist": "Keiji Kinebuchi",
+   "image": "https://archives.bulbagarden.net/media/upload/c/ca/StarmieEvolutions31.jpg"
   },
   "30": {
    "en": "Starmie",
    "page": "Starmie BREAK (Expansion Pack 20th 30)",
    "type": "Water",
    "rarity": "RR",
-   "mark": ""
+   "mark": "",
+   "ja": "スターミーBREAK",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/3/3c/StarmieBREAKEvolutions32.jpg"
   },
   "31": {
    "en": "Magikarp",
    "page": "Magikarp (Expansion Pack 20th 31)",
    "type": "Water",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "コイキング",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/7/7b/MagikarpEvolutions33.jpg"
   },
   "32": {
    "en": "Gyarados",
    "page": "Gyarados (Expansion Pack 20th 32)",
    "type": "Water",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "ギャラドス",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/7/72/GyaradosEvolutions34.jpg"
   },
   "33": {
    "en": "Pikachu",
    "page": "Pikachu (Expansion Pack 20th 33)",
    "type": "Lightning",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ピカチュウ",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e2/PikachuEvolutions35.jpg"
   },
   "34": {
    "en": "Raichu",
    "page": "Raichu (Expansion Pack 20th 34)",
    "type": "Lightning",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "ライチュウ",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/8/83/RaichuEvolutions36.jpg"
   },
   "35": {
    "en": "Magnemite",
    "page": "Magnemite (Expansion Pack 20th 35)",
    "type": "Lightning",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "コイル",
+   "artist": "Keiji Kinebuchi",
+   "image": "https://archives.bulbagarden.net/media/upload/c/ca/MagnemiteEvolutions37.jpg"
   },
   "36": {
    "en": "Magneton",
    "page": "Magneton (Expansion Pack 20th 36)",
    "type": "Lightning",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "レアコイル",
+   "artist": "Keiji Kinebuchi",
+   "image": "https://archives.bulbagarden.net/media/upload/0/03/MagnetonEvolutions38.jpg"
   },
   "37": {
    "en": "Voltorb",
    "page": "Voltorb (Expansion Pack 20th 37)",
    "type": "Lightning",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ビリリダマ",
+   "artist": "Keiji Kinebuchi",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c3/VoltorbEvolutions39.jpg"
   },
   "38": {
    "en": "Electrode",
    "page": "Electrode (Expansion Pack 20th 38)",
    "type": "Lightning",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "マルマイン",
+   "artist": "Keiji Kinebuchi",
+   "image": "https://archives.bulbagarden.net/media/upload/1/11/ElectrodeEvolutions40.jpg"
   },
   "39": {
    "en": "Electabuzz",
    "page": "Electabuzz (Expansion Pack 20th 39)",
    "type": "Lightning",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "エレブー",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2b/ElectabuzzEvolutions41.jpg"
   },
   "40": {
    "en": "Zapdos",
    "page": "Zapdos (Expansion Pack 20th 40)",
    "type": "Lightning",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "サンダー",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/5/53/ZapdosEvolutions42.jpg"
   },
   "41": {
    "en": "Nidoran♂",
    "page": "Nidoran♂ (Expansion Pack 20th 41)",
    "type": "Psychic",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ニドラン♂",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/2/22/NidoranEvolutions43.jpg"
   },
   "42": {
    "en": "Nidorino",
    "page": "Nidorino (Expansion Pack 20th 42)",
    "type": "Psychic",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ニドリーノ",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d4/NidorinoEvolutions44.jpg"
   },
   "43": {
    "en": "Nidoking",
    "page": "Nidoking (Expansion Pack 20th 43)",
    "type": "Psychic",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "ニドキング",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b5/NidokingEvolutions45.jpg"
   },
   "44": {
    "en": "Nidoking",
    "page": "Nidoking BREAK (Expansion Pack 20th 44)",
    "type": "Psychic",
    "rarity": "RR",
-   "mark": ""
+   "mark": "",
+   "ja": "ニドキングBREAK",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/a/ad/NidokingBREAKEvolutions46.jpg"
   },
   "45": {
    "en": "Gastly",
    "page": "Gastly (Expansion Pack 20th 45)",
    "type": "Psychic",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ゴース",
+   "artist": "Keiji Kinebuchi",
+   "image": "https://archives.bulbagarden.net/media/upload/3/36/GastlyEvolutions47.jpg"
   },
   "46": {
    "en": "Haunter",
    "page": "Haunter (Expansion Pack 20th 46)",
    "type": "Psychic",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ゴースト",
+   "artist": "Keiji Kinebuchi",
+   "image": "https://archives.bulbagarden.net/media/upload/9/90/HaunterEvolutions48.jpg"
   },
   "47": {
    "en": "Drowzee",
    "page": "Drowzee (Expansion Pack 20th 47)",
    "type": "Psychic",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "スリープ",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/5/58/DrowzeeEvolutions49.jpg"
   },
   "48": {
    "en": "Koffing",
    "page": "Koffing (Expansion Pack 20th 48)",
    "type": "Psychic",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ドガース",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b3/KoffingEvolutions50.jpg"
   },
   "49": {
    "en": "Mewtwo",
    "page": "Mewtwo (Expansion Pack 20th 49)",
    "type": "Psychic",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "ミュウツー",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/d/db/MewtwoEvolutions51.jpg"
   },
   "50": {
    "en": "Mewtwo",
    "page": "Mewtwo-EX (Expansion Pack 20th 50)",
    "type": "Psychic",
    "rarity": "RR",
-   "mark": ""
+   "mark": "",
+   "ja": "ミュウツーEX",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d6/MewtwoEXEvolutions103.jpg"
   },
   "51": {
    "en": "Mew",
    "page": "Mew (Expansion Pack 20th 51)",
    "type": "Psychic",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "ミュウ",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/d/df/MewEvolutions53.jpg"
   },
   "52": {
    "en": "Sandshrew",
    "page": "Sandshrew (Expansion Pack 20th 52)",
    "type": "Fighting",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "サンド",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/6/6a/SandshrewEvolutions54.jpg"
   },
   "53": {
    "en": "Diglett",
    "page": "Diglett (Expansion Pack 20th 53)",
    "type": "Fighting",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ディグダ",
+   "artist": "Keiji Kinebuchi",
+   "image": "https://archives.bulbagarden.net/media/upload/d/db/DiglettEvolutions55.jpg"
   },
   "54": {
    "en": "Dugtrio",
    "page": "Dugtrio (Expansion Pack 20th 54)",
    "type": "Fighting",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ダグトリオ",
+   "artist": "Keiji Kinebuchi",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e1/DugtrioEvolutions56.jpg"
   },
   "55": {
    "en": "Machop",
    "page": "Machop (Expansion Pack 20th 55)",
    "type": "Fighting",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ワンリキー",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/8/89/MachopEvolutions57.jpg"
   },
   "56": {
    "en": "Machoke",
    "page": "Machoke (Expansion Pack 20th 56)",
    "type": "Fighting",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ゴーリキー",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/b/be/MachokeEvolutions58.jpg"
   },
   "57": {
    "en": "Machamp",
    "page": "Machamp (Expansion Pack 20th 57)",
    "type": "Fighting",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "カイリキー",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/5/59/MachampEvolutions59.jpg"
   },
   "58": {
    "en": "Machamp",
    "page": "Machamp BREAK (Expansion Pack 20th 58)",
    "type": "Fighting",
    "rarity": "RR",
-   "mark": ""
+   "mark": "",
+   "ja": "カイリキーBREAK",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/0/01/MachampBREAKEvolutions60.jpg"
   },
   "59": {
    "en": "Onix",
    "page": "Onix (Expansion Pack 20th 59)",
    "type": "Fighting",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "イワーク",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f2/OnixEvolutions61.jpg"
   },
   "60": {
    "en": "Hitmonchan",
    "page": "Hitmonchan (Expansion Pack 20th 60)",
    "type": "Fighting",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "エビワラー",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e3/HitmonchanEvolutions62.jpg"
   },
   "61": {
    "en": "Clefairy",
    "page": "Clefairy (Expansion Pack 20th 61)",
    "type": "Fairy",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "ピッピ",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/4/4a/ClefairyEvolutions63.jpg"
   },
   "62": {
    "en": "Pidgeot",
    "page": "Pidgeot-EX (Expansion Pack 20th 62)",
    "type": "Colorless",
    "rarity": "RR",
-   "mark": ""
+   "mark": "",
+   "ja": "ピジョットEX",
+   "artist": "Eske Yoshinob",
+   "image": "https://archives.bulbagarden.net/media/upload/f/fd/PidgeotEXEvolutions64.jpg"
   },
   "63": {
    "en": "Pidgeot",
    "page": "M Pidgeot-EX (Expansion Pack 20th 63)",
    "type": "Colorless",
    "rarity": "RR",
-   "mark": ""
+   "mark": "",
+   "ja": "MピジョットEX",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/a/af/MPidgeotEXEvolutions65.jpg"
   },
   "64": {
    "en": "Rattata",
    "page": "Rattata (Expansion Pack 20th 64)",
    "type": "Colorless",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "コラッタ",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/RattataEvolutions66.jpg"
   },
   "65": {
    "en": "Raticate",
    "page": "Raticate (Expansion Pack 20th 65)",
    "type": "Colorless",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ラッタ",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/1/18/RaticateEvolutions67.jpg"
   },
   "66": {
    "en": "Farfetch'd",
    "page": "Farfetch'd (Expansion Pack 20th 66)",
    "type": "Colorless",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "カモネギ",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/5/53/Farfetch%27dEvolutions68.jpg"
   },
   "67": {
    "en": "Doduo",
    "page": "Doduo (Expansion Pack 20th 67)",
    "type": "Colorless",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ドードー",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/6/6a/DoduoEvolutions69.jpg"
   },
   "68": {
    "en": "Chansey",
    "page": "Chansey (Expansion Pack 20th 68)",
    "type": "Colorless",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "ラッキー",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/8/8c/ChanseyEvolutions70.jpg"
   },
   "69": {
    "en": "Porygon",
    "page": "Porygon (Expansion Pack 20th 69)",
    "type": "Colorless",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ポリゴン",
+   "artist": "Tomoaki Imakuni",
+   "image": "https://archives.bulbagarden.net/media/upload/4/45/PorygonEvolutions71.jpg"
   },
   "70": {
    "en": "Dragonite",
    "page": "Dragonite-EX (Expansion Pack 20th 70)",
    "type": "Colorless",
    "rarity": "RR",
-   "mark": ""
+   "mark": "",
+   "ja": "カイリューEX",
+   "artist": "Ayaka Yoshida",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/DragoniteEXEvolutions72.jpg"
   },
   "71": {
    "en": "Super Potion",
    "page": "Super Potion (Expansion Pack 20th 71)",
    "type": "I",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "いいきずぐすり",
+   "artist": "Keiji Kinebuchi",
+   "image": "https://archives.bulbagarden.net/media/upload/8/8f/SuperPotionEvolutions87.jpg"
   },
   "72": {
    "en": "Energy Retrieval",
    "page": "Energy Retrieval (Expansion Pack 20th 72)",
    "type": "I",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "エネルギー回収",
+   "artist": "Toyste Beach",
+   "image": "https://archives.bulbagarden.net/media/upload/a/aa/EnergyRetrievalSunMoon116.jpg"
   },
   "73": {
    "en": "Potion",
    "page": "Potion (Expansion Pack 20th 73)",
    "type": "I",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "きずぐすり",
+   "artist": "Toyste Beach",
+   "image": "https://archives.bulbagarden.net/media/upload/0/06/PotionSunMoon127.jpg"
   },
   "74": {
    "en": "Revive",
    "page": "Revive (Expansion Pack 20th 74)",
    "type": "I",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "げんきのかけら",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/c/cf/ReviveBlackWhite102.jpg"
   },
   "75": {
    "en": "Devolution Spray",
    "page": "Devolution Spray (Expansion Pack 20th 75)",
    "type": "I",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "退化スプレー",
+   "artist": "Keiji Kinebuchi",
+   "image": "https://archives.bulbagarden.net/media/upload/0/0b/DevolutionSprayEvolutions76.jpg"
   },
   "76": {
    "en": "Full Heal",
    "page": "Full Heal (Expansion Pack 20th 76)",
    "type": "I",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "なんでもなおし",
+   "artist": "Keiji Kinebuchi",
+   "image": "https://archives.bulbagarden.net/media/upload/0/02/FullHealEvolutions78.jpg"
   },
   "77": {
    "en": "Switch",
    "page": "Switch (Expansion Pack 20th 77)",
    "type": "I",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ポケモンいれかえ",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/0/02/SwitchSunMoon160.jpg"
   },
   "78": {
    "en": "Pokédex",
    "page": "Pokédex (Expansion Pack 20th 78)",
    "type": "I",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ポケモン図鑑",
+   "artist": "Keiji Kinebuchi",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e5/Pok%C3%A9dexBaseSet87.jpg"
   },
   "79": {
    "en": "Maintenance",
    "page": "Maintenance (Expansion Pack 20th 79)",
    "type": "I",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "メンテナンス",
+   "artist": "Toyste Beach",
+   "image": "https://archives.bulbagarden.net/media/upload/3/3a/MaintenanceFuriousFists96.jpg"
   },
   "80": {
    "en": "Blastoise Spirit Link",
    "page": "Blastoise Spirit Link (Expansion Pack 20th 80)",
    "type": "I",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "カメックスンウルリンク",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/0/0b/BlastoiseSpiritLinkEvolutions73.jpg"
   },
   "81": {
    "en": "Pidgeot Spirit Link",
    "page": "Pidgeot Spirit Link (Expansion Pack 20th 81)",
    "type": "I",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ピジョットソウルリンク",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/1/12/PidgeotSpiritLinkEvolutions81.jpg"
   },
   "82": {
    "en": "Venusaur Spirit Link",
    "page": "Venusaur Spirit Link (Expansion Pack 20th 82)",
    "type": "I",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "フシギバナンウルリンク",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/a/af/VenusaurSpiritLinkEvolutions89.jpg"
   },
   "83": {
    "en": "Charizard Spirit Link",
    "page": "Charizard Spirit Link (Expansion Pack 20th 83)",
    "type": "I",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "リザードンソウルリンク",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/9/99/CharizardSpiritLinkEvolutions75.jpg"
   },
   "84": {
    "en": "Professor Oak's Hint",
    "page": "Professor Oak's Hint (Expansion Pack 20th 84)",
    "type": "Su",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "オーキド博士のヒント",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/9/91/ProfessorOakHintEvolutions84.jpg"
   },
   "85": {
    "en": "Misty's Determination",
    "page": "Misty's Determination (Expansion Pack 20th 85)",
    "type": "Su",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "カスミのやる気",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/a/af/MistyDeterminationBREAKpoint104.jpg"
   },
   "86": {
    "en": "Brock's Grit",
    "page": "Brock's Grit (Expansion Pack 20th 86)",
    "type": "Su",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "タケシのガッツ",
+   "artist": "Hitoshi Ariga",
+   "image": "https://archives.bulbagarden.net/media/upload/6/6a/BrockGritEvolutions107.jpg"
   },
   "87": {
    "en": "Double Colorless Energy",
    "page": "Double Colorless Energy (Expansion Pack 20th 87)",
    "type": "Colorless",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ダブル無色エネルギー",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/9/9a/DoubleColorlessEnergyXY130.jpg"
   },
   "88": {
    "en": "Venusaur",
    "page": "Venusaur-EX (Expansion Pack 20th 88)",
    "type": "Grass",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "フシギバナEX",
+   "artist": "Naoki Saito",
+   "image": "https://archives.bulbagarden.net/media/upload/2/27/VenusaurEXXYPromo123.jpg"
   },
   "89": {
    "en": "Venusaur",
    "page": "M Venusaur-EX (Expansion Pack 20th 89)",
    "type": "Grass",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "MフシギバナEX",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/2/20/MVenusaurEXXY2.jpg"
   },
   "90": {
    "en": "Charizard",
    "page": "Charizard-EX (Expansion Pack 20th 90)",
    "type": "Fire",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "リザードンEX",
+   "artist": "PLANETA",
+   "image": "https://archives.bulbagarden.net/media/upload/8/8c/CharizardEXEvolutions12.jpg"
   },
   "91": {
    "en": "Charizard",
    "page": "M Charizard-EX (Expansion Pack 20th 91)",
    "type": "Fire",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "MリザードンEX",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/6/64/MCharizardEXFlashfire107.jpg"
   },
   "92": {
    "en": "Blastoise",
    "page": "Blastoise-EX (Expansion Pack 20th 92)",
    "type": "Water",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "カメックスEX",
+   "artist": "Eske Yoshinob",
+   "image": "https://archives.bulbagarden.net/media/upload/e/ec/BlastoiseEXXYPromo30.jpg"
   },
   "93": {
    "en": "Blastoise",
    "page": "M Blastoise-EX (Expansion Pack 20th 93)",
    "type": "Water",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "MカメックスEX",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/5/5d/MBlastoiseEXXY30.jpg"
   },
   "94": {
    "en": "Pikachu",
    "page": "Pikachu-EX (Expansion Pack 20th 94)",
    "type": "Lightning",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "ピカチュウEX",
+   "artist": "Megumi Mizutani",
+   "image": "https://archives.bulbagarden.net/media/upload/1/1a/PikachuEXExpansionPack20th94.jpg"
   },
   "95": {
    "en": "Mewtwo",
    "page": "Mewtwo-EX (Expansion Pack 20th 95)",
    "type": "Psychic",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "ミュウツーEX",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d6/MewtwoEXEvolutions103.jpg"
   },
   "96": {
    "en": "Pidgeot",
    "page": "Pidgeot-EX (Expansion Pack 20th 96)",
    "type": "Colorless",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "ピジョットEX",
+   "artist": "Eske Yoshinob",
+   "image": "https://archives.bulbagarden.net/media/upload/f/fd/PidgeotEXEvolutions64.jpg"
   },
   "97": {
    "en": "Pidgeot",
    "page": "M Pidgeot-EX (Expansion Pack 20th 97)",
    "type": "Colorless",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "MピジョットEX",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/a/af/MPidgeotEXEvolutions65.jpg"
   },
   "98": {
    "en": "Dragonite",
    "page": "Dragonite-EX (Expansion Pack 20th 98)",
    "type": "Colorless",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "カイリューEX",
+   "artist": "Ayaka Yoshida",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/DragoniteEXEvolutions72.jpg"
   },
   "99": {
    "en": "Misty's Determination",
    "page": "Misty's Determination (Expansion Pack 20th 99)",
    "type": "Su",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "カスミのやる気",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/a/af/MistyDeterminationBREAKpoint104.jpg"
   },
   "100": {
    "en": "Brock's Grit",
    "page": "Brock's Grit (Expansion Pack 20th 100)",
    "type": "Su",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "タケシのガッツ",
+   "artist": "Hitoshi Ariga",
+   "image": "https://archives.bulbagarden.net/media/upload/6/6a/BrockGritEvolutions107.jpg"
   },
   "101": {
    "en": "Exeggutor",
    "page": "Exeggutor (Expansion Pack 20th 101)",
    "type": "Grass",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ナッシー",
+   "artist": "Dr. Ooyama",
+   "image": "https://archives.bulbagarden.net/media/upload/4/48/ExeggutorEvolutions109.jpg"
   },
   "102": {
    "en": "Imakuni?'s Doduo",
    "page": "Imakuni?'s Doduo (Expansion Pack 20th 102)",
    "type": "Colorless",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "イマクニ？のドードー",
+   "artist": "Imakuni?",
+   "image": "https://archives.bulbagarden.net/media/upload/2/26/ImakuniDoduoEvolutions112.jpg"
   },
   "103": {
    "en": "Here Comes Team Rocket!",
    "page": "Here Comes Team Rocket! (Expansion Pack 20th 103)",
    "type": "Su",
    "rarity": "U",
-   "mark": ""
-  },
-  "104": {
-   "en": "Charizard",
-   "page": "M Charizard-EX (BASE PACK 104)",
-   "type": "SR",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "105": {
-   "en": "Blastoise",
-   "page": "Blastoise-EX (BASE PACK 105)",
-   "type": "SR",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "106": {
-   "en": "Blastoise",
-   "page": "M Blastoise-EX (BASE PACK 106)",
-   "type": "SR",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "107": {
-   "en": "Pikachu",
-   "page": "Pikachu-EX (BASE PACK 107)",
-   "type": "SR",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "108": {
-   "en": "Mewtwo",
-   "page": "Mewtwo-EX (BASE PACK 108)",
-   "type": "SR",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "109": {
-   "en": "Pidgeot",
-   "page": "Pidgeot-EX (BASE PACK 109)",
-   "type": "SR",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "110": {
-   "en": "Pidgeot",
-   "page": "M Pidgeot-EX (BASE PACK 110)",
-   "type": "SR",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "111": {
-   "en": "Dragonite",
-   "page": "Dragonite-EX (BASE PACK 111)",
-   "type": "SR",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "112": {
-   "en": "Brock's Grit",
-   "page": "Brock's Grit (BASE PACK 112)",
-   "type": "SR",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "113": {
-   "en": "Misty's Determination",
-   "page": "Misty's Determination (BASE PACK 113)",
-   "type": "SR",
-   "rarity": "Promotion",
-   "mark": ""
+   "mark": "",
+   "ja": "ロケット団参上!",
+   "artist": "Naoki Saito",
+   "image": "https://archives.bulbagarden.net/media/upload/0/03/HereComesTeamRocketXYPromo278.jpg"
   }
  }
 }

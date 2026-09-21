@@ -3,1214 +3,1214 @@
  "at": "2026-09-21",
  "cards": {
   "1": {
-   "en": "Snivy",
-   "page": "Snivy (Black Bolt 1)",
+   "en": "Sewaddle",
+   "page": "Sewaddle (White Flare 1)",
    "type": "Grass",
-   "rarity": "—",
+   "rarity": "Common",
    "mark": ""
   },
   "2": {
    "en": "Swadloon",
    "page": "Swadloon (White Flare 2)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "Common",
    "mark": ""
   },
   "3": {
    "en": "Leavanny",
    "page": "Leavanny (White Flare 3)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "4": {
    "en": "Cottonee",
    "page": "Cottonee (White Flare 4)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "Common",
    "mark": ""
   },
   "5": {
    "en": "Whimsicott",
    "page": "Whimsicott ex (White Flare 5)",
-   "type": "Double Rare",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "Double Rare",
    "mark": ""
   },
   "6": {
    "en": "Deerling",
    "page": "Deerling (White Flare 6)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "Common",
    "mark": ""
   },
   "7": {
    "en": "Sawsbuck",
    "page": "Sawsbuck (White Flare 7)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "8": {
    "en": "Shelmet",
    "page": "Shelmet (White Flare 8)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "Common",
    "mark": ""
   },
   "9": {
    "en": "Accelgor",
    "page": "Accelgor (White Flare 9)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "10": {
    "en": "Virizion",
    "page": "Virizion (White Flare 10)",
-   "type": "Rare",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "Rare",
    "mark": ""
   },
   "11": {
    "en": "Tepig",
    "page": "Tepig (White Flare 11)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Fire",
+   "rarity": "Common",
    "mark": ""
   },
   "12": {
-   "en": "Victini",
-   "page": "Victini (Black Bolt 12)",
+   "en": "Pignite",
+   "page": "Pignite (White Flare 12)",
    "type": "Fire",
-   "rarity": "—",
+   "rarity": "Common",
    "mark": ""
   },
   "13": {
    "en": "Emboar",
    "page": "Emboar (White Flare 13)",
-   "type": "Rare",
-   "rarity": "Promotion",
+   "type": "Fire",
+   "rarity": "Rare",
    "mark": ""
   },
   "14": {
    "en": "Pansear",
    "page": "Pansear (White Flare 14)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Fire",
+   "rarity": "Common",
    "mark": ""
   },
   "15": {
    "en": "Simisear",
    "page": "Simisear (White Flare 15)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Fire",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "16": {
    "en": "Litwick",
    "page": "Litwick (White Flare 16)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Fire",
+   "rarity": "Common",
    "mark": ""
   },
   "17": {
    "en": "Lampent",
    "page": "Lampent (White Flare 17)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Fire",
+   "rarity": "Common",
    "mark": ""
   },
   "18": {
    "en": "Chandelure",
    "page": "Chandelure (White Flare 18)",
-   "type": "Rare",
-   "rarity": "Promotion",
+   "type": "Fire",
+   "rarity": "Rare",
    "mark": ""
   },
   "19": {
    "en": "Heatmor",
    "page": "Heatmor (White Flare 19)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Fire",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "20": {
    "en": "Reshiram",
    "page": "Reshiram ex (White Flare 20)",
-   "type": "Double Rare",
-   "rarity": "Promotion",
+   "type": "Fire",
+   "rarity": "Double Rare",
    "mark": ""
   },
   "21": {
    "en": "Oshawott",
    "page": "Oshawott (White Flare 21)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "Common",
    "mark": ""
   },
   "22": {
    "en": "Dewott",
    "page": "Dewott (White Flare 22)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "Common",
    "mark": ""
   },
   "23": {
    "en": "Samurott",
    "page": "Samurott (White Flare 23)",
-   "type": "Rare",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "Rare",
    "mark": ""
   },
   "24": {
    "en": "Basculin",
    "page": "Basculin (White Flare 24)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "Common",
    "mark": ""
   },
   "25": {
    "en": "Ducklett",
    "page": "Ducklett (White Flare 25)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "Common",
    "mark": ""
   },
   "26": {
    "en": "Swanna",
    "page": "Swanna (White Flare 26)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "27": {
    "en": "Vanillite",
    "page": "Vanillite (White Flare 27)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "Common",
    "mark": ""
   },
   "28": {
-   "en": "Kyurem",
-   "page": "Kyurem ex (Black Bolt 28)",
+   "en": "Vanillish",
+   "page": "Vanillish (White Flare 28)",
    "type": "Water",
-   "rarity": "—",
+   "rarity": "Common",
    "mark": ""
   },
   "29": {
    "en": "Vanilluxe",
    "page": "Vanilluxe (White Flare 29)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "30": {
    "en": "Keldeo",
    "page": "Keldeo ex (White Flare 30)",
-   "type": "Double Rare",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "Double Rare",
    "mark": ""
   },
   "31": {
    "en": "Blitzle",
    "page": "Blitzle (White Flare 31)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Lightning",
+   "rarity": "Common",
    "mark": ""
   },
   "32": {
    "en": "Zebstrika",
    "page": "Zebstrika (White Flare 32)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Lightning",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "33": {
    "en": "Joltik",
    "page": "Joltik (White Flare 33)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Lightning",
+   "rarity": "Common",
    "mark": ""
   },
   "34": {
-   "en": "Zekrom",
-   "page": "Zekrom ex (Black Bolt 34)",
+   "en": "Galvantula",
+   "page": "Galvantula (White Flare 34)",
    "type": "Lightning",
-   "rarity": "—",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "35": {
    "en": "Stunfisk",
    "page": "Stunfisk (White Flare 35)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Lightning",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "36": {
    "en": "Woobat",
    "page": "Woobat (White Flare 36)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Psychic",
+   "rarity": "Common",
    "mark": ""
   },
   "37": {
    "en": "Swoobat",
    "page": "Swoobat (White Flare 37)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Psychic",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "38": {
    "en": "Sigilyph",
    "page": "Sigilyph (White Flare 38)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Psychic",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "39": {
    "en": "Yamask",
    "page": "Yamask (White Flare 39)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Psychic",
+   "rarity": "Common",
    "mark": ""
   },
   "40": {
    "en": "Cofagrigus",
    "page": "Cofagrigus (White Flare 40)",
-   "type": "Rare",
-   "rarity": "Promotion",
+   "type": "Psychic",
+   "rarity": "Rare",
    "mark": ""
   },
   "41": {
    "en": "Gothita",
    "page": "Gothita (White Flare 41)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Psychic",
+   "rarity": "Common",
    "mark": ""
   },
   "42": {
    "en": "Gothorita",
    "page": "Gothorita (White Flare 42)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Psychic",
+   "rarity": "Common",
    "mark": ""
   },
   "43": {
    "en": "Gothitelle",
    "page": "Gothitelle (White Flare 43)",
-   "type": "Rare",
-   "rarity": "Promotion",
+   "type": "Psychic",
+   "rarity": "Rare",
    "mark": ""
   },
   "44": {
    "en": "Frillish",
    "page": "Frillish (White Flare 44)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Psychic",
+   "rarity": "Common",
    "mark": ""
   },
   "45": {
    "en": "Jellicent",
    "page": "Jellicent ex (White Flare 45)",
-   "type": "Double Rare",
-   "rarity": "Promotion",
+   "type": "Psychic",
+   "rarity": "Double Rare",
    "mark": ""
   },
   "46": {
    "en": "Roggenrola",
    "page": "Roggenrola (White Flare 46)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "Common",
    "mark": ""
   },
   "47": {
    "en": "Boldore",
    "page": "Boldore (White Flare 47)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "Common",
    "mark": ""
   },
   "48": {
    "en": "Gigalith",
    "page": "Gigalith (White Flare 48)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "49": {
    "en": "Sawk",
    "page": "Sawk (White Flare 49)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "50": {
    "en": "Archen",
    "page": "Archen (White Flare 50)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "51": {
    "en": "Archeops",
    "page": "Archeops (White Flare 51)",
-   "type": "Rare",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "Rare",
    "mark": ""
   },
   "52": {
    "en": "Mienfoo",
    "page": "Mienfoo (White Flare 52)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "Common",
    "mark": ""
   },
   "53": {
    "en": "Mienshao",
    "page": "Mienshao (White Flare 53)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "54": {
    "en": "Terrakion",
    "page": "Terrakion (White Flare 54)",
-   "type": "Rare",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "Rare",
    "mark": ""
   },
   "55": {
    "en": "Purrloin",
    "page": "Purrloin (White Flare 55)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Darkness",
+   "rarity": "Common",
    "mark": ""
   },
   "56": {
    "en": "Liepard",
    "page": "Liepard (White Flare 56)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Darkness",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "57": {
    "en": "Scraggy",
    "page": "Scraggy (White Flare 57)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Darkness",
+   "rarity": "Common",
    "mark": ""
   },
   "58": {
    "en": "Scrafty",
    "page": "Scrafty (White Flare 58)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Darkness",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "59": {
    "en": "Trubbish",
    "page": "Trubbish (White Flare 59)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Darkness",
+   "rarity": "Common",
    "mark": ""
   },
   "60": {
    "en": "Garbodor",
    "page": "Garbodor (White Flare 60)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Darkness",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "61": {
    "en": "Zorua",
    "page": "Zorua (White Flare 61)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Darkness",
+   "rarity": "Common",
    "mark": ""
   },
   "62": {
    "en": "Zoroark",
    "page": "Zoroark (White Flare 62)",
-   "type": "Rare",
-   "rarity": "Promotion",
+   "type": "Darkness",
+   "rarity": "Rare",
    "mark": ""
   },
   "63": {
    "en": "Vullaby",
    "page": "Vullaby (White Flare 63)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Darkness",
+   "rarity": "Common",
    "mark": ""
   },
   "64": {
    "en": "Mandibuzz",
    "page": "Mandibuzz (White Flare 64)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Darkness",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "65": {
    "en": "Deino",
    "page": "Deino (White Flare 65)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Darkness",
+   "rarity": "Common",
    "mark": ""
   },
   "66": {
    "en": "Zweilous",
    "page": "Zweilous (White Flare 66)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Darkness",
+   "rarity": "Common",
    "mark": ""
   },
   "67": {
    "en": "Hydreigon",
    "page": "Hydreigon ex (White Flare 67)",
-   "type": "Double Rare",
-   "rarity": "Promotion",
+   "type": "Darkness",
+   "rarity": "Double Rare",
    "mark": ""
   },
   "68": {
    "en": "Ferroseed",
    "page": "Ferroseed (White Flare 68)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Metal",
+   "rarity": "Common",
    "mark": ""
   },
   "69": {
    "en": "Ferrothorn",
    "page": "Ferrothorn (White Flare 69)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Metal",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "70": {
    "en": "Durant",
    "page": "Durant (White Flare 70)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Metal",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "71": {
    "en": "Druddigon",
    "page": "Druddigon (White Flare 71)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Dragon",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "72": {
    "en": "Patrat",
    "page": "Patrat (White Flare 72)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "Common",
    "mark": ""
   },
   "73": {
    "en": "Watchog",
    "page": "Watchog (White Flare 73)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "74": {
    "en": "Lillipup",
    "page": "Lillipup (White Flare 74)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "Common",
    "mark": ""
   },
   "75": {
    "en": "Herdier",
    "page": "Herdier (White Flare 75)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "Common",
    "mark": ""
   },
   "76": {
    "en": "Stoutland",
    "page": "Stoutland (White Flare 76)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "77": {
    "en": "Bouffalant",
    "page": "Bouffalant ex (White Flare 77)",
-   "type": "Double Rare",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "Double Rare",
    "mark": ""
   },
   "78": {
    "en": "Tornadus",
    "page": "Tornadus (White Flare 78)",
-   "type": "Rare",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "Rare",
    "mark": ""
   },
   "79": {
-   "en": "Air Balloon",
-   "page": "Air Balloon (Black Bolt 79)",
-   "type": "PT",
-   "rarity": "—",
+   "en": "Antique Plume Fossil",
+   "page": "Antique Plume Fossil (White Flare 79)",
+   "type": "I",
+   "rarity": "Common",
    "mark": ""
   },
   "80": {
    "en": "Brave Bangle",
    "page": "Brave Bangle (White Flare 80)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "PT",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "81": {
    "en": "Cheren",
    "page": "Cheren (White Flare 81)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Su",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "82": {
    "en": "Energy Retrieval",
    "page": "Energy Retrieval (White Flare 82)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "I",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "83": {
    "en": "Harlequin",
    "page": "Harlequin (White Flare 83)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Su",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "84": {
    "en": "Hilda",
    "page": "Hilda (White Flare 84)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Su",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "85": {
-   "en": "Professor's Research",
-   "page": "Professor's Research (Black Bolt 85)",
-   "type": "Su",
-   "rarity": "—",
+   "en": "Tool Scrapper",
+   "page": "Tool Scrapper (White Flare 85)",
+   "type": "I",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "86": {
    "en": "Ignition Energy",
    "page": "Ignition Energy (White Flare 86)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "87": {
    "en": "Sewaddle",
    "page": "Sewaddle (White Flare 87)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "88": {
    "en": "Swadloon",
    "page": "Swadloon (White Flare 88)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "89": {
    "en": "Leavanny",
    "page": "Leavanny (White Flare 89)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "90": {
    "en": "Cottonee",
    "page": "Cottonee (White Flare 90)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "91": {
    "en": "Deerling",
    "page": "Deerling (White Flare 91)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "92": {
    "en": "Sawsbuck",
    "page": "Sawsbuck (White Flare 92)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "93": {
    "en": "Shelmet",
    "page": "Shelmet (White Flare 93)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "94": {
    "en": "Accelgor",
    "page": "Accelgor (White Flare 94)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "95": {
    "en": "Virizion",
    "page": "Virizion (White Flare 95)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "96": {
    "en": "Tepig",
    "page": "Tepig (White Flare 96)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Fire",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "97": {
    "en": "Pignite",
    "page": "Pignite (White Flare 97)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Fire",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "98": {
    "en": "Emboar",
    "page": "Emboar (White Flare 98)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Fire",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "99": {
    "en": "Pansear",
    "page": "Pansear (White Flare 99)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Fire",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "100": {
    "en": "Simisear",
    "page": "Simisear (White Flare 100)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Fire",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "101": {
    "en": "Litwick",
    "page": "Litwick (White Flare 101)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Fire",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "102": {
    "en": "Lampent",
    "page": "Lampent (White Flare 102)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Fire",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "103": {
    "en": "Chandelure",
    "page": "Chandelure (White Flare 103)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Fire",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "104": {
    "en": "Heatmor",
    "page": "Heatmor (White Flare 104)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Fire",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "105": {
    "en": "Oshawott",
    "page": "Oshawott (White Flare 105)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "106": {
    "en": "Dewott",
    "page": "Dewott (White Flare 106)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "107": {
    "en": "Samurott",
    "page": "Samurott (White Flare 107)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "108": {
    "en": "Basculin",
    "page": "Basculin (White Flare 108)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "109": {
    "en": "Ducklett",
    "page": "Ducklett (White Flare 109)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "110": {
    "en": "Swanna",
    "page": "Swanna (White Flare 110)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "111": {
    "en": "Vanillite",
    "page": "Vanillite (White Flare 111)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "112": {
    "en": "Vanillish",
    "page": "Vanillish (White Flare 112)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "113": {
    "en": "Vanilluxe",
    "page": "Vanilluxe (White Flare 113)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "114": {
    "en": "Blitzle",
    "page": "Blitzle (White Flare 114)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Lightning",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "115": {
    "en": "Zebstrika",
    "page": "Zebstrika (White Flare 115)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Lightning",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "116": {
    "en": "Joltik",
    "page": "Joltik (White Flare 116)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Lightning",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "117": {
    "en": "Galvantula",
    "page": "Galvantula (White Flare 117)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Lightning",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "118": {
    "en": "Stunfisk",
    "page": "Stunfisk (White Flare 118)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Lightning",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "119": {
    "en": "Woobat",
    "page": "Woobat (White Flare 119)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Psychic",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "120": {
    "en": "Swoobat",
    "page": "Swoobat (White Flare 120)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Psychic",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "121": {
    "en": "Sigilyph",
    "page": "Sigilyph (White Flare 121)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Psychic",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "122": {
    "en": "Yamask",
    "page": "Yamask (White Flare 122)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Psychic",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "123": {
    "en": "Cofagrigus",
    "page": "Cofagrigus (White Flare 123)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Psychic",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "124": {
    "en": "Gothita",
    "page": "Gothita (White Flare 124)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Psychic",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "125": {
    "en": "Gothorita",
    "page": "Gothorita (White Flare 125)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Psychic",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "126": {
    "en": "Frillish",
    "page": "Frillish (White Flare 126)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Psychic",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "127": {
    "en": "Roggenrola",
    "page": "Roggenrola (White Flare 127)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "128": {
    "en": "Boldore",
    "page": "Boldore (White Flare 128)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "129": {
    "en": "Gigalith",
    "page": "Gigalith (White Flare 129)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "130": {
    "en": "Sawk",
    "page": "Sawk (White Flare 130)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "131": {
    "en": "Archen",
    "page": "Archen (White Flare 131)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "132": {
    "en": "Archeops",
    "page": "Archeops (White Flare 132)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "133": {
    "en": "Mienfoo",
    "page": "Mienfoo (White Flare 133)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "134": {
    "en": "Mienshao",
    "page": "Mienshao (White Flare 134)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "135": {
    "en": "Terrakion",
    "page": "Terrakion (White Flare 135)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "136": {
    "en": "Purrloin",
    "page": "Purrloin (White Flare 136)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Darkness",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "137": {
    "en": "Liepard",
    "page": "Liepard (White Flare 137)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Darkness",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "138": {
    "en": "Scraggy",
    "page": "Scraggy (White Flare 138)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Darkness",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "139": {
    "en": "Scrafty",
    "page": "Scrafty (White Flare 139)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Darkness",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "140": {
    "en": "Trubbish",
    "page": "Trubbish (White Flare 140)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Darkness",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "141": {
    "en": "Garbodor",
    "page": "Garbodor (White Flare 141)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Darkness",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "142": {
    "en": "Zorua",
    "page": "Zorua (White Flare 142)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Darkness",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "143": {
    "en": "Zoroark",
    "page": "Zoroark (White Flare 143)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Darkness",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "144": {
    "en": "Vullaby",
    "page": "Vullaby (White Flare 144)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Darkness",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "145": {
    "en": "Mandibuzz",
    "page": "Mandibuzz (White Flare 145)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Darkness",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "146": {
    "en": "Deino",
    "page": "Deino (White Flare 146)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Darkness",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "147": {
    "en": "Zweilous",
    "page": "Zweilous (White Flare 147)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Darkness",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "148": {
    "en": "Ferroseed",
    "page": "Ferroseed (White Flare 148)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Metal",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "149": {
    "en": "Ferrothorn",
    "page": "Ferrothorn (White Flare 149)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Metal",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "150": {
    "en": "Durant",
    "page": "Durant (White Flare 150)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Metal",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "151": {
    "en": "Druddigon",
    "page": "Druddigon (White Flare 151)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Dragon",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "152": {
    "en": "Patrat",
    "page": "Patrat (White Flare 152)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "153": {
    "en": "Watchog",
    "page": "Watchog (White Flare 153)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "154": {
    "en": "Lillipup",
    "page": "Lillipup (White Flare 154)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "155": {
    "en": "Herdier",
    "page": "Herdier (White Flare 155)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "156": {
    "en": "Stoutland",
    "page": "Stoutland (White Flare 156)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "Illustration Rare",
    "mark": ""
   },
   "157": {
    "en": "Whimsicott",
    "page": "Whimsicott ex (White Flare 157)",
-   "type": "Ultra Rare",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "Ultra Rare",
    "mark": ""
   },
   "158": {
    "en": "Reshiram",
    "page": "Reshiram ex (White Flare 158)",
-   "type": "Ultra Rare",
-   "rarity": "Promotion",
+   "type": "Fire",
+   "rarity": "Ultra Rare",
    "mark": ""
   },
   "159": {
    "en": "Keldeo",
    "page": "Keldeo ex (White Flare 159)",
-   "type": "Ultra Rare",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "Ultra Rare",
    "mark": ""
   },
   "160": {
    "en": "Jellicent",
    "page": "Jellicent ex (White Flare 160)",
-   "type": "Ultra Rare",
-   "rarity": "Promotion",
+   "type": "Psychic",
+   "rarity": "Ultra Rare",
    "mark": ""
   },
   "161": {
    "en": "Hydreigon",
    "page": "Hydreigon ex (White Flare 161)",
-   "type": "Ultra Rare",
-   "rarity": "Promotion",
+   "type": "Darkness",
+   "rarity": "Ultra Rare",
    "mark": ""
   },
   "162": {
    "en": "Bouffalant",
    "page": "Bouffalant ex (White Flare 162)",
-   "type": "Ultra Rare",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "Ultra Rare",
    "mark": ""
   },
   "163": {
    "en": "Harlequin",
    "page": "Harlequin (White Flare 163)",
-   "type": "Ultra Rare",
-   "rarity": "Promotion",
+   "type": "Su",
+   "rarity": "Ultra Rare",
    "mark": ""
   },
   "164": {
    "en": "Hilda",
    "page": "Hilda (White Flare 164)",
-   "type": "Ultra Rare",
-   "rarity": "Promotion",
+   "type": "Su",
+   "rarity": "Ultra Rare",
    "mark": ""
   },
   "165": {
    "en": "Whimsicott",
    "page": "Whimsicott ex (White Flare 165)",
-   "type": "Special Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "Special Illustration Rare",
    "mark": ""
   },
   "166": {
    "en": "Reshiram",
    "page": "Reshiram ex (White Flare 166)",
-   "type": "Special Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Fire",
+   "rarity": "Special Illustration Rare",
    "mark": ""
   },
   "167": {
    "en": "Keldeo",
    "page": "Keldeo ex (White Flare 167)",
-   "type": "Special Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "Special Illustration Rare",
    "mark": ""
   },
   "168": {
    "en": "Jellicent",
    "page": "Jellicent ex (White Flare 168)",
-   "type": "Special Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Psychic",
+   "rarity": "Special Illustration Rare",
    "mark": ""
   },
   "169": {
    "en": "Hydreigon",
    "page": "Hydreigon ex (White Flare 169)",
-   "type": "Special Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Darkness",
+   "rarity": "Special Illustration Rare",
    "mark": ""
   },
   "170": {
    "en": "Bouffalant",
    "page": "Bouffalant ex (White Flare 170)",
-   "type": "Special Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "Special Illustration Rare",
    "mark": ""
   },
   "171": {
    "en": "Hilda",
    "page": "Hilda (White Flare 171)",
-   "type": "Special Illustration Rare",
-   "rarity": "Promotion",
+   "type": "Su",
+   "rarity": "Special Illustration Rare",
    "mark": ""
   },
   "172": {
    "en": "Victini",
    "page": "Victini (White Flare 172)",
-   "type": "Black White Rare",
-   "rarity": "Promotion",
+   "type": "Fire",
+   "rarity": "Black White Rare",
    "mark": ""
   },
   "173": {
    "en": "Reshiram",
    "page": "Reshiram ex (White Flare 173)",
-   "type": "Black White Rare",
-   "rarity": "Promotion",
+   "type": "Fire",
+   "rarity": "Black White Rare",
    "mark": ""
   }
  }

@@ -1,0 +1,489 @@
+{
+ "page": "GG End (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Karrablast",
+   "page": "Karrablast (GG End 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Magmar",
+   "page": "Magmar (GG End 2)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Magmortar",
+   "page": "Magmortar (GG End 3)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "4": {
+   "en": "Heatran",
+   "page": "Heatran-GX (GG End 4)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "5": {
+   "en": "Litwick",
+   "page": "Litwick (GG End 5)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Lampent",
+   "page": "Lampent (GG End 6)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Chandelure",
+   "page": "Chandelure (GG End 7)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "8": {
+   "en": "Raichu & Alolan Raichu",
+   "page": "Raichu & Alolan Raichu-GX (GG End 8)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "9": {
+   "en": "Pikachu",
+   "page": "Pikachu (GG End 9)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Alolan Raichu",
+   "page": "Alolan Raichu (GG End 10)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "11": {
+   "en": "Stunfisk",
+   "page": "Stunfisk (GG End 11)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "12": {
+   "en": "Thundurus",
+   "page": "Thundurus (GG End 12)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "13": {
+   "en": "Alolan Marowak",
+   "page": "Alolan Marowak (GG End 13)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "14": {
+   "en": "Drifloon",
+   "page": "Drifloon (GG End 14)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "15": {
+   "en": "Drifblim",
+   "page": "Drifblim (GG End 15)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "16": {
+   "en": "Giratina",
+   "page": "Giratina (GG End 16)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "17": {
+   "en": "Munna",
+   "page": "Munna (GG End 17)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "18": {
+   "en": "Musharna",
+   "page": "Musharna (GG End 18)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "19": {
+   "en": "Cubone",
+   "page": "Cubone (GG End 19)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "20": {
+   "en": "Meditite",
+   "page": "Meditite (GG End 20)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "21": {
+   "en": "Medicham",
+   "page": "Medicham (GG End 21)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "22": {
+   "en": "Gible",
+   "page": "Gible (GG End 22)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "23": {
+   "en": "Gabite",
+   "page": "Gabite (GG End 23)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "24": {
+   "en": "Garchomp",
+   "page": "Garchomp (GG End 24)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "25": {
+   "en": "Riolu",
+   "page": "Riolu (GG End 25)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "26": {
+   "en": "Lucario",
+   "page": "Lucario (GG End 26)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "27": {
+   "en": "Meloetta",
+   "page": "Meloetta (GG End 27)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "28": {
+   "en": "Zygarde",
+   "page": "Zygarde (GG End 28)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "29": {
+   "en": "Hoopa",
+   "page": "Hoopa (GG End 29)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "30": {
+   "en": "Mawile",
+   "page": "Mawile-GX (GG End 30)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "31": {
+   "en": "Escavalier",
+   "page": "Escavalier (GG End 31)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "32": {
+   "en": "Garchomp & Giratina",
+   "page": "Garchomp & Giratina-GX (GG End 32)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "33": {
+   "en": "Latias",
+   "page": "Latias (GG End 33)",
+   "type": "Dragon",
+   "rarity": "U",
+   "mark": ""
+  },
+  "34": {
+   "en": "Axew",
+   "page": "Axew (GG End 34)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "35": {
+   "en": "Fraxure",
+   "page": "Fraxure (GG End 35)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "36": {
+   "en": "Haxorus",
+   "page": "Haxorus (GG End 36)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "37": {
+   "en": "Kangaskhan",
+   "page": "Kangaskhan (GG End 37)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "38": {
+   "en": "Bidoof",
+   "page": "Bidoof (GG End 38)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "39": {
+   "en": "Bibarel",
+   "page": "Bibarel (GG End 39)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "40": {
+   "en": "Munchlax",
+   "page": "Munchlax (GG End 40)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "41": {
+   "en": "Pidove",
+   "page": "Pidove (GG End 41)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "42": {
+   "en": "Tranquill",
+   "page": "Tranquill (GG End 42)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "43": {
+   "en": "Unfezant",
+   "page": "Unfezant (GG End 43)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "44": {
+   "en": "Tornadus",
+   "page": "Tornadus (GG End 44)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "45": {
+   "en": "Tag Switch",
+   "page": "Tag Switch (GG End 45)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "46": {
+   "en": "Reset Stamp",
+   "page": "Reset Stamp (GG End 46)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "47": {
+   "en": "Karate Belt",
+   "page": "Karate Belt (GG End 47)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "48": {
+   "en": "Grimsley",
+   "page": "Grimsley (GG End 48)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "49": {
+   "en": "Coach Trainer",
+   "page": "Coach Trainer (GG End 49)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "50": {
+   "en": "Giant Hearth",
+   "page": "Giant Hearth (GG End 50)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "51": {
+   "en": "Escape Rope",
+   "page": "Escape Rope (GG End 51)",
+   "type": "I",
+   "rarity": "TR",
+   "mark": ""
+  },
+  "52": {
+   "en": "Nest Ball",
+   "page": "Nest Ball (GG End 52)",
+   "type": "I",
+   "rarity": "TR",
+   "mark": ""
+  },
+  "53": {
+   "en": "Rotom Dex",
+   "page": "Rotom Dex (GG End 53)",
+   "type": "I",
+   "rarity": "TR",
+   "mark": ""
+  },
+  "54": {
+   "en": "Tate & Liza",
+   "page": "Tate & Liza (GG End 54)",
+   "type": "Su",
+   "rarity": "TR",
+   "mark": ""
+  },
+  "55": {
+   "en": "Heatran",
+   "page": "Heatran-GX (GG End 55)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "56": {
+   "en": "Raichu & Alolan Raichu",
+   "page": "Raichu & Alolan Raichu-GX (GG End 56)",
+   "type": "Lightning",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "57": {
+   "en": "Raichu & Alolan Raichu",
+   "page": "Raichu & Alolan Raichu-GX (GG End 57)",
+   "type": "Lightning",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "58": {
+   "en": "Mawile",
+   "page": "Mawile-GX (GG End 58)",
+   "type": "Metal",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "59": {
+   "en": "Garchomp & Giratina",
+   "page": "Garchomp & Giratina-GX (GG End 59)",
+   "type": "Dragon",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "60": {
+   "en": "Garchomp & Giratina",
+   "page": "Garchomp & Giratina-GX (GG End 60)",
+   "type": "Dragon",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "61": {
+   "en": "Grimsley",
+   "page": "Grimsley (GG End 61)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "62": {
+   "en": "Coach Trainer",
+   "page": "Coach Trainer (GG End 62)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "63": {
+   "en": "Heatran",
+   "page": "Heatran-GX (GG End 63)",
+   "type": "Fire",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "64": {
+   "en": "Raichu & Alolan Raichu",
+   "page": "Raichu & Alolan Raichu-GX (GG End 64)",
+   "type": "Lightning",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "65": {
+   "en": "Mawile",
+   "page": "Mawile-GX (GG End 65)",
+   "type": "Metal",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "66": {
+   "en": "Garchomp & Giratina",
+   "page": "Garchomp & Giratina-GX (GG End 66)",
+   "type": "Dragon",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "67": {
+   "en": "Tag Switch",
+   "page": "Tag Switch (GG End 67)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "68": {
+   "en": "Reset Stamp",
+   "page": "Reset Stamp (GG End 68)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "69": {
+   "en": "Karate Belt",
+   "page": "Karate Belt (GG End 69)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  }
+ }
+}

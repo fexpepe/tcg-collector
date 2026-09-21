@@ -1,0 +1,447 @@
+{
+ "page": "Ultra Force (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Turtwig",
+   "page": "Turtwig (Ultra Force 1)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "2": {
+   "en": "Grotle",
+   "page": "Grotle (Ultra Force 2)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "3": {
+   "en": "Snover",
+   "page": "Snover (Ultra Force 3)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "4": {
+   "en": "Abomasnow",
+   "page": "Abomasnow (Ultra Force 4)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "5": {
+   "en": "Chimchar",
+   "page": "Chimchar (Ultra Force 5)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "6": {
+   "en": "Monferno",
+   "page": "Monferno (Ultra Force 6)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "7": {
+   "en": "Heatran",
+   "page": "Heatran (Ultra Force 7)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "8": {
+   "en": "Piplup",
+   "page": "Piplup (Ultra Force 8)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "9": {
+   "en": "Prinplup",
+   "page": "Prinplup (Ultra Force 9)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "10": {
+   "en": "Palkia",
+   "page": "Palkia-GX (Ultra Force 10)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "11": {
+   "en": "Dewpider",
+   "page": "Dewpider (Ultra Force 11)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "12": {
+   "en": "Araquanid",
+   "page": "Araquanid (Ultra Force 12)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "13": {
+   "en": "Magnemite",
+   "page": "Magnemite (Ultra Force 13)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "14": {
+   "en": "Magneton",
+   "page": "Magneton (Ultra Force 14)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "15": {
+   "en": "Magnezone",
+   "page": "Magnezone (Ultra Force 15)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "16": {
+   "en": "Xurkitree",
+   "page": "Xurkitree (Ultra Force 16)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "17": {
+   "en": "Rotom",
+   "page": "Rotom (Ultra Force 17)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "18": {
+   "en": "Uxie",
+   "page": "Uxie (Ultra Force 18)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "19": {
+   "en": "Mesprit",
+   "page": "Mesprit (Ultra Force 19)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "20": {
+   "en": "Azelf",
+   "page": "Azelf (Ultra Force 20)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "21": {
+   "en": "Dawn Wings Necrozma",
+   "page": "Dawn Wings Necrozma (Ultra Force 21)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "22": {
+   "en": "Poipole",
+   "page": "Poipole (Ultra Force 22)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "23": {
+   "en": "Naganadel",
+   "page": "Naganadel-GX (Ultra Force 23)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "24": {
+   "en": "Torterra",
+   "page": "Torterra (Ultra Force 24)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "25": {
+   "en": "Infernape",
+   "page": "Infernape (Ultra Force 25)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "26": {
+   "en": "Gible",
+   "page": "Gible (Ultra Force 26)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "27": {
+   "en": "Gabite",
+   "page": "Gabite (Ultra Force 27)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "28": {
+   "en": "Garchomp",
+   "page": "Garchomp (Ultra Force 28)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "29": {
+   "en": "Riolu",
+   "page": "Riolu (Ultra Force 29)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "30": {
+   "en": "Lucario",
+   "page": "Lucario-GX (Ultra Force 30)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "31": {
+   "en": "Croagunk",
+   "page": "Croagunk (Ultra Force 31)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "32": {
+   "en": "Toxicroak",
+   "page": "Toxicroak (Ultra Force 32)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "33": {
+   "en": "Buzzwole",
+   "page": "Buzzwole (Ultra Force 33)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "34": {
+   "en": "Empoleon",
+   "page": "Empoleon (Ultra Force 34)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "35": {
+   "en": "Dialga",
+   "page": "Dialga-GX (Ultra Force 35)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "36": {
+   "en": "Dusk Mane Necrozma",
+   "page": "Dusk Mane Necrozma (Ultra Force 36)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "37": {
+   "en": "Arceus",
+   "page": "Arceus ♢ (Ultra Force 37)",
+   "type": "Colorless",
+   "rarity": "PR",
+   "mark": ""
+  },
+  "38": {
+   "en": "Aqua Patch",
+   "page": "Aqua Patch (Ultra Force 38)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "39": {
+   "en": "Enhanced Hammer",
+   "page": "Enhanced Hammer (Ultra Force 39)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "40": {
+   "en": "Super Scoop Up",
+   "page": "Super Scoop Up (Ultra Force 40)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "41": {
+   "en": "Beast Ring",
+   "page": "Beast Ring (Ultra Force 41)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "42": {
+   "en": "Metal Frying Pan",
+   "page": "Metal Frying Pan (Ultra Force 42)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "43": {
+   "en": "Choice Band",
+   "page": "Choice Band (Ultra Force 43)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "44": {
+   "en": "Ultra Recon Squad",
+   "page": "Ultra Recon Squad (Ultra Force 44)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "45": {
+   "en": "Looker",
+   "page": "Looker (Ultra Force 45)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "46": {
+   "en": "Crasher Wake",
+   "page": "Crasher Wake (Ultra Force 46)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "47": {
+   "en": "Ultra Space",
+   "page": "Ultra Space (Ultra Force 47)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "48": {
+   "en": "Beast Energy",
+   "page": "Beast Energy ♢ (Ultra Force 48)",
+   "type": "Colorless",
+   "rarity": "PR",
+   "mark": ""
+  },
+  "49": {
+   "en": "Unit Energy",
+   "page": "Unit Energy GRW (Ultra Force 49)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "50": {
+   "en": "Unit Energy",
+   "page": "Unit Energy LPM (Ultra Force 50)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "51": {
+   "en": "Palkia",
+   "page": "Palkia-GX (Ultra Force 51)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "52": {
+   "en": "Naganadel",
+   "page": "Naganadel-GX (Ultra Force 52)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "53": {
+   "en": "Lucario",
+   "page": "Lucario-GX (Ultra Force 53)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "54": {
+   "en": "Dialga",
+   "page": "Dialga-GX (Ultra Force 54)",
+   "type": "Metal",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "55": {
+   "en": "Ultra Recon Squad",
+   "page": "Ultra Recon Squad (Ultra Force 55)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "56": {
+   "en": "Crasher Wake",
+   "page": "Crasher Wake (Ultra Force 56)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "57": {
+   "en": "Palkia",
+   "page": "Palkia-GX (Ultra Force 57)",
+   "type": "Water",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "58": {
+   "en": "Naganadel",
+   "page": "Naganadel-GX (Ultra Force 58)",
+   "type": "Psychic",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "59": {
+   "en": "Lucario",
+   "page": "Lucario-GX (Ultra Force 59)",
+   "type": "Fighting",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "60": {
+   "en": "Dialga",
+   "page": "Dialga-GX (Ultra Force 60)",
+   "type": "Metal",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "61": {
+   "en": "Energy Recycler",
+   "page": "Energy Recycler (Ultra Force 61)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "62": {
+   "en": "Beast Ring",
+   "page": "Beast Ring (Ultra Force 62)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "63": {
+   "en": "Metal Frying Pan",
+   "page": "Metal Frying Pan (Ultra Force 63)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  }
+ }
+}

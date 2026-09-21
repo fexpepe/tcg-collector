@@ -14,7 +14,10 @@
    "page": "M Beedrill-EX (Premium Champion Pack 2)",
    "type": "Grass",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "MスピアーEX",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b2/MBeedrillEXPremiumChampionPack2.jpg"
   },
   "3": {
    "en": "Pinsir",
@@ -28,14 +31,20 @@
    "page": "Spinarak (Premium Champion Pack 4)",
    "type": "Grass",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "イトマル",
+   "artist": "Naoyo Kimura",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f4/SpinarakAncientOrigins5.jpg"
   },
   "5": {
    "en": "Ariados",
    "page": "Ariados (Premium Champion Pack 5)",
    "type": "Grass",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "アリアドス",
+   "artist": "Hajime Kusajima",
+   "image": "https://archives.bulbagarden.net/media/upload/6/62/AriadosAncientOrigins6.jpg"
   },
   "6": {
    "en": "Sceptile",
@@ -49,126 +58,180 @@
    "page": "M Sceptile-EX (Premium Champion Pack 7)",
    "type": "Grass",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "MジュカインEX",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/7/7a/MSceptileEXAncientOrigins8.jpg"
   },
   "8": {
    "en": "Nincada",
    "page": "Nincada (Premium Champion Pack 8)",
    "type": "Grass",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ツチニン",
+   "artist": "Kyoko Umemoto",
+   "image": "https://archives.bulbagarden.net/media/upload/9/9e/NincadaRoaringSkies9.jpg"
   },
   "9": {
    "en": "Shedinja",
    "page": "Shedinja (Premium Champion Pack 9)",
    "type": "Grass",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ヌケニン",
+   "artist": "Aya Kusube",
+   "image": "https://archives.bulbagarden.net/media/upload/e/ed/ShedinjaRoaringSkies11.jpg"
   },
   "10": {
    "en": "Combee",
    "page": "Combee (Premium Champion Pack 10)",
    "type": "Grass",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ミツハニー",
+   "artist": "Sumiyoshi Kizuki",
+   "image": "https://archives.bulbagarden.net/media/upload/4/4e/CombeeAncientOrigins9.jpg"
   },
   "11": {
    "en": "Vespiquen",
    "page": "Vespiquen (Premium Champion Pack 11)",
    "type": "Grass",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ビークイン",
+   "artist": "kawayoo",
+   "image": "https://archives.bulbagarden.net/media/upload/0/02/VespiquenAncientOrigins10.jpg"
   },
   "12": {
    "en": "Chespin",
    "page": "Chespin (Premium Champion Pack 12)",
    "type": "Grass",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ハリマロン",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/9/9a/ChespinXY12.jpg"
   },
   "13": {
    "en": "Quilladin",
    "page": "Quilladin (Premium Champion Pack 13)",
    "type": "Grass",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ハリボーグ",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/3/31/QuilladinXY13.jpg"
   },
   "14": {
    "en": "Chesnaught",
    "page": "Chesnaught (Premium Champion Pack 14)",
    "type": "Grass",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ブリガロン",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/2/21/ChesnaughtXY14.jpg"
   },
   "15": {
    "en": "Chesnaught",
    "page": "Chesnaught BREAK (Premium Champion Pack 15)",
    "type": "Grass",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ブリガロンBREAK",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e8/ChesnaughtBREAKBREAKthrough12.jpg"
   },
   "16": {
    "en": "Entei",
    "page": "Entei (Premium Champion Pack 16)",
    "type": "Fire",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "エンテイ",
+   "artist": "Naoki Saito",
+   "image": "https://archives.bulbagarden.net/media/upload/7/71/EnteiAncientOrigins14.jpg"
   },
   "17": {
    "en": "Fennekin",
    "page": "Fennekin (Premium Champion Pack 17)",
    "type": "Fire",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "フォッコ",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c2/FennekinXY24.jpg"
   },
   "18": {
    "en": "Braixen",
    "page": "Braixen (Premium Champion Pack 18)",
    "type": "Fire",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "テールナー",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/a/ae/BraixenXY25.jpg"
   },
   "19": {
    "en": "Delphox",
    "page": "Delphox (Premium Champion Pack 19)",
    "type": "Fire",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "マフォクシー",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f4/DelphoxXY26.jpg"
   },
   "20": {
    "en": "Litleo",
    "page": "Litleo (Premium Champion Pack 20)",
    "type": "Fire",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "シシコ",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/1/1b/LitleoFlashfire18.jpg"
   },
   "21": {
    "en": "Pyroar",
    "page": "Pyroar (Premium Champion Pack 21)",
    "type": "Fire",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "カエンジシ",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b4/PyroarFlashfire20.jpg"
   },
   "22": {
    "en": "Pyroar",
    "page": "Pyroar (Premium Champion Pack 22)",
    "type": "Fire",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "カエンジシ",
+   "artist": "Naoki Saito",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a8/PyroarPhantomForces12.jpg"
   },
   "23": {
    "en": "Articuno",
    "page": "Articuno (Premium Champion Pack 23)",
    "type": "Water",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "フリーザー",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/5/5f/ArticunoRoaringSkies17.jpg"
   },
   "24": {
    "en": "Remoraid",
    "page": "Remoraid (Premium Champion Pack 24)",
    "type": "Water",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "テッポウオ",
+   "artist": "Suwama Chiaki",
+   "image": "https://archives.bulbagarden.net/media/upload/0/0e/RemoraidBREAKthrough31.jpg"
   },
   "25": {
    "en": "Octillery",
@@ -189,84 +252,120 @@
    "page": "Marshtomp (Premium Champion Pack 27)",
    "type": "Water",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ヌマクロー",
+   "artist": "sui",
+   "image": "https://archives.bulbagarden.net/media/upload/0/03/MarshtompPrimalClash34.jpg"
   },
   "28": {
    "en": "Swampert",
    "page": "Swampert (Premium Champion Pack 28)",
    "type": "Water",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ラグラージ",
+   "artist": "Shin Nagasawa",
+   "image": "https://archives.bulbagarden.net/media/upload/d/dc/SwampertPrimalClash36.jpg"
   },
   "29": {
    "en": "Regice",
    "page": "Regice (Premium Champion Pack 29)",
    "type": "Water",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "レジアイス",
+   "artist": "Miki Tanaka",
+   "image": "https://archives.bulbagarden.net/media/upload/d/df/RegiceAncientOrigins24.jpg"
   },
   "30": {
    "en": "Seismitoad",
    "page": "Seismitoad-EX (Premium Champion Pack 30)",
    "type": "Water",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ガマゲロゲEX",
+   "artist": "Eske Yoshinob",
+   "image": "https://archives.bulbagarden.net/media/upload/6/68/SeismitoadEXFuriousFists20.jpg"
   },
   "31": {
    "en": "Cubchoo",
    "page": "Cubchoo (Premium Champion Pack 31)",
    "type": "Water",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "クマシュン",
+   "artist": "kirisAki",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a2/CubchooFuriousFists21.jpg"
   },
   "32": {
    "en": "Beartic",
    "page": "Beartic (Premium Champion Pack 32)",
    "type": "Water",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ツンベアー",
+   "artist": "PLANETA",
+   "image": "https://archives.bulbagarden.net/media/upload/3/31/BearticFuriousFists22.jpg"
   },
   "33": {
    "en": "Froakie",
    "page": "Froakie (Premium Champion Pack 33)",
    "type": "Water",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ケロマツ",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/5/55/FroakieXY39.jpg"
   },
   "34": {
    "en": "Frogadier",
    "page": "Frogadier (Premium Champion Pack 34)",
    "type": "Water",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ゲコガシラ",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/9/9a/FrogadierXY40.jpg"
   },
   "35": {
    "en": "Greninja",
    "page": "Greninja (Premium Champion Pack 35)",
    "type": "Water",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ゲッコウガ",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/f/fd/GreninjaXY41.jpg"
   },
   "36": {
    "en": "Pikachu",
    "page": "Pikachu (Premium Champion Pack 36)",
    "type": "Lightning",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ピカチュウ",
+   "artist": "MAHOU",
+   "image": "https://archives.bulbagarden.net/media/upload/1/19/PikachuXY42.jpg"
   },
   "37": {
    "en": "Raichu",
    "page": "Raichu (Premium Champion Pack 37)",
    "type": "Lightning",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ライチュウ",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/3/3b/RaichuXY43.jpg"
   },
   "38": {
    "en": "Magnemite",
    "page": "Magnemite (Premium Champion Pack 38)",
    "type": "Lightning",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "コイル",
+   "artist": "Akira Komayama",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f2/MagnemiteBREAKthrough51.jpg"
   },
   "39": {
    "en": "Magneton",
@@ -280,63 +379,90 @@
    "page": "Magnezone (Premium Champion Pack 40)",
    "type": "Lightning",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ジバコイル",
+   "artist": "Hajime Kusajima",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c8/MagnezoneBREAKthrough54.jpg"
   },
   "41": {
    "en": "Zapdos",
    "page": "Zapdos (Premium Champion Pack 41)",
    "type": "Lightning",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "サンダー",
+   "artist": "Hitoshi Ariga",
+   "image": "https://archives.bulbagarden.net/media/upload/7/74/ZapdosRoaringSkies23.jpg"
   },
   "42": {
    "en": "Manectric",
    "page": "Manectric-EX (Premium Champion Pack 42)",
    "type": "Lightning",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ライボルトEX",
+   "artist": "Eske Yoshinob",
+   "image": "https://archives.bulbagarden.net/media/upload/1/18/ManectricEXPhantomForces23.jpg"
   },
   "43": {
    "en": "Manectric",
    "page": "M Manectric-EX (Premium Champion Pack 43)",
    "type": "Lightning",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "MライボルトEX",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/4/4f/MManectricEXPhantomForces24a.jpg"
   },
   "44": {
    "en": "Joltik",
    "page": "Joltik (Premium Champion Pack 44)",
    "type": "Lightning",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "バチュル",
+   "artist": "TOKIYA",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d8/JoltikPhantomForces26.jpg"
   },
   "45": {
    "en": "Zubat",
    "page": "Zubat (Premium Champion Pack 45)",
    "type": "Psychic",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ズバット",
+   "artist": "match",
+   "image": "https://archives.bulbagarden.net/media/upload/b/ba/ZubatXYPromo83.jpg"
   },
   "46": {
    "en": "Golbat",
    "page": "Golbat (Premium Champion Pack 46)",
    "type": "Psychic",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ゴルバット",
+   "artist": "Kanako Eo",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a2/GolbatPhantomForces32.jpg"
   },
   "47": {
    "en": "Crobat",
    "page": "Crobat (Premium Champion Pack 47)",
    "type": "Psychic",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "クロバット",
+   "artist": "Satoshi Shirai",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c1/CrobatPhantomForces33.jpg"
   },
   "48": {
    "en": "Gengar",
    "page": "Gengar-EX (Premium Champion Pack 48)",
    "type": "Psychic",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ゲンガーEX",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c1/GengarEXPhantomForces114.jpg"
   },
   "49": {
    "en": "Gengar",
@@ -350,7 +476,10 @@
    "page": "Mewtwo-EX (Premium Champion Pack 50)",
    "type": "Psychic",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ミュウツーEX",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/3/33/MewtwoEXXYPromo183.jpg"
   },
   "51": {
    "en": "Mewtwo",
@@ -364,560 +493,800 @@
    "page": "M Mewtwo-EX (Premium Champion Pack 52)",
    "type": "Psychic",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "MミュウツーEX",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d1/MMewtwoEXBREAKthrough64.jpg"
   },
   "53": {
    "en": "Unown",
    "page": "Unown (Premium Champion Pack 53)",
    "type": "Psychic",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "アンノーン",
+   "artist": "Akira Komayama",
+   "image": "https://archives.bulbagarden.net/media/upload/a/aa/UnownAncientOrigins30.jpg"
   },
   "54": {
    "en": "Wobbuffet",
    "page": "Wobbuffet (Premium Champion Pack 54)",
    "type": "Psychic",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ソーナンス",
+   "artist": "sui",
+   "image": "https://archives.bulbagarden.net/media/upload/4/49/WobbuffetPhantomForces36.jpg"
   },
   "55": {
    "en": "Wobbuffet",
    "page": "Wobbuffet BREAK (Premium Champion Pack 55)",
    "type": "Psychic",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ソーナンスBREAK",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/1/1d/WobbuffetBREAKXYPromo155.jpg"
   },
   "56": {
    "en": "Deoxys",
    "page": "Deoxys (Premium Champion Pack 56)",
    "type": "Psychic",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "デオキシス",
+   "artist": "kawayoo",
+   "image": "https://archives.bulbagarden.net/media/upload/f/fc/DeoxysRoaringSkies33.jpg"
   },
   "57": {
    "en": "Litwick",
    "page": "Litwick (Premium Champion Pack 57)",
    "type": "Psychic",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ヒトモシ",
+   "artist": "Midori Harada",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f7/LitwickPhantomForces41.jpg"
   },
   "58": {
    "en": "Lampent",
    "page": "Lampent (Premium Champion Pack 58)",
    "type": "Psychic",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ランプラー",
+   "artist": "kawayoo",
+   "image": "https://archives.bulbagarden.net/media/upload/1/1f/LampentPhantomForces42.jpg"
   },
   "59": {
    "en": "Chandelure",
    "page": "Chandelure (Premium Champion Pack 59)",
    "type": "Psychic",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "シャンデラ",
+   "artist": "PLANETA",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f7/ChandelurePhantomForces43.jpg"
   },
   "60": {
    "en": "Phantump",
    "page": "Phantump (Premium Champion Pack 60)",
    "type": "Psychic",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ボクレー",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a7/PhantumpXY54.jpg"
   },
   "61": {
    "en": "Trevenant",
    "page": "Trevenant (Premium Champion Pack 61)",
    "type": "Psychic",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "オーロット",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2e/TrevenantXY55.jpg"
   },
   "62": {
    "en": "Pumpkaboo",
    "page": "Pumpkaboo (Premium Champion Pack 62)",
    "type": "Psychic",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "バケッチャ",
+   "artist": "HiRON",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e7/PumpkabooPhantomForces44.jpg"
   },
   "63": {
    "en": "Gourgeist",
    "page": "Gourgeist (Premium Champion Pack 63)",
    "type": "Psychic",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "パンプジン",
+   "artist": "Kanako Eo",
+   "image": "https://archives.bulbagarden.net/media/upload/0/0c/GourgeistPhantomForces45.jpg"
   },
   "64": {
    "en": "Hoopa",
    "page": "Hoopa-EX (Premium Champion Pack 64)",
    "type": "Psychic",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "フーパEX",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/0/08/HoopaEXAncientOrigins89.jpg"
   },
   "65": {
    "en": "Machop",
    "page": "Machop (Premium Champion Pack 65)",
    "type": "Fighting",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ワンリキー",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/0/0f/MachopFuriousFists44.jpg"
   },
   "66": {
    "en": "Machoke",
    "page": "Machoke (Premium Champion Pack 66)",
    "type": "Fighting",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ゴーリキー",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/5/58/MachokeFuriousFists45.jpg"
   },
   "67": {
    "en": "Machamp",
    "page": "Machamp (Premium Champion Pack 67)",
    "type": "Fighting",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "カイリキー",
+   "artist": "PLANETA",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c3/MachampXYPromo13.jpg"
   },
   "68": {
    "en": "Cubone",
    "page": "Cubone (Premium Champion Pack 68)",
    "type": "Fighting",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "カラカラ",
+   "artist": "Sumiyoshi Kizuki",
+   "image": "https://archives.bulbagarden.net/media/upload/8/8d/CuboneBREAKthrough77.jpg"
   },
   "69": {
    "en": "Marowak",
    "page": "Marowak (Premium Champion Pack 69)",
    "type": "Fighting",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ガラガラ",
+   "artist": "match",
+   "image": "https://archives.bulbagarden.net/media/upload/a/ae/MarowakBREAKthrough78.jpg"
   },
   "70": {
    "en": "Meditite",
    "page": "Meditite (Premium Champion Pack 70)",
    "type": "Fighting",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "アサナン",
+   "artist": "sui",
+   "image": "https://archives.bulbagarden.net/media/upload/3/30/MedititePrimalClash79.jpg"
   },
   "71": {
    "en": "Medicham",
    "page": "Medicham (Premium Champion Pack 71)",
    "type": "Fighting",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "チャーレム",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/4/41/MedichamPrimalClash81.jpg"
   },
   "72": {
    "en": "Groudon",
    "page": "Groudon-EX (Premium Champion Pack 72)",
    "type": "Fighting",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "グラードンEX",
+   "artist": "Eske Yoshinob",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b3/GroudonEXXYPromo42.jpg"
   },
   "73": {
    "en": "Primal Groudon",
    "page": "Primal Groudon-EX (Premium Champion Pack 73)",
    "type": "Fighting",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ゲンシグラードンEX",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/1/13/PrimalGroudonEXPrimalClash86.jpg"
   },
   "74": {
    "en": "Lucario",
    "page": "Lucario-EX (Premium Champion Pack 74)",
    "type": "Fighting",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ルカリオEX",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/f/ff/LucarioEXFuriousFists107.jpg"
   },
   "75": {
    "en": "Lucario",
    "page": "M Lucario-EX (Premium Champion Pack 75)",
    "type": "Fighting",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "MルカリオEX",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/4/4d/MLucarioEXFuriousFists55.jpg"
   },
   "76": {
    "en": "Hawlucha",
    "page": "Hawlucha (Premium Champion Pack 76)",
    "type": "Fighting",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ルチャブル",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/4/45/HawluchaFuriousFists63.jpg"
   },
   "77": {
    "en": "Absol",
    "page": "Absol (Premium Champion Pack 77)",
    "type": "Darkness",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "アブソル",
+   "artist": "Kagemaru Himeno",
+   "image": "https://archives.bulbagarden.net/media/upload/3/32/AbsolRoaringSkies40.jpg"
   },
   "78": {
    "en": "Yveltal",
    "page": "Yveltal (Premium Champion Pack 78)",
    "type": "Darkness",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "イベルタル",
+   "artist": "TOKIYA",
+   "image": "https://archives.bulbagarden.net/media/upload/b/bc/YveltalBREAKthrough94.jpg"
   },
   "79": {
    "en": "Yveltal",
    "page": "Yveltal-EX (Premium Champion Pack 79)",
    "type": "Darkness",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "イベルタルEX",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/5/55/YveltalEXXY79.jpg"
   },
   "80": {
    "en": "Bronzor",
    "page": "Bronzor (Premium Champion Pack 80)",
    "type": "Metal",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ドーミラー",
+   "artist": "Akira Komayama",
+   "image": "https://archives.bulbagarden.net/media/upload/8/82/BronzorPhantomForces60.jpg"
   },
   "81": {
    "en": "Bronzong",
    "page": "Bronzong (Premium Champion Pack 81)",
    "type": "Metal",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ドータクン",
+   "artist": "match",
+   "image": "https://archives.bulbagarden.net/media/upload/0/0e/BronzongPhantomForces61.jpg"
   },
   "82": {
    "en": "Heatran",
    "page": "Heatran (Premium Champion Pack 82)",
    "type": "Metal",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ヒードラン",
+   "artist": "Midori Harada",
+   "image": "https://archives.bulbagarden.net/media/upload/3/3c/HeatranPhantomForces63.jpg"
   },
   "83": {
    "en": "Togepi",
    "page": "Togepi (Premium Champion Pack 83)",
    "type": "Fairy",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "トゲピー",
+   "artist": "HiRON",
+   "image": "https://archives.bulbagarden.net/media/upload/6/62/TogepiRoaringSkies43.jpg"
   },
   "84": {
    "en": "Togetic",
    "page": "Togetic (Premium Champion Pack 84)",
    "type": "Fairy",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "トゲチック",
+   "artist": "Kanako Eo",
+   "image": "https://archives.bulbagarden.net/media/upload/5/54/TogeticRoaringSkies44.jpg"
   },
   "85": {
    "en": "Togekiss",
    "page": "Togekiss (Premium Champion Pack 85)",
    "type": "Fairy",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "トゲキッス",
+   "artist": "PLANETA",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2f/TogekissRoaringSkies46.jpg"
   },
   "86": {
    "en": "Florges",
    "page": "Florges-EX (Premium Champion Pack 86)",
    "type": "Fairy",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "フラージェスEX",
+   "artist": "Eske Yoshinob",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f2/FlorgesEXPhantomForces67.jpg"
   },
   "87": {
    "en": "Spritzee",
    "page": "Spritzee (Premium Champion Pack 87)",
    "type": "Fairy",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "シュシュプ",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/4/42/SpritzeeXY92.jpg"
   },
   "88": {
    "en": "Aromatisse",
    "page": "Aromatisse (Premium Champion Pack 88)",
    "type": "Fairy",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "フレフワン",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f4/AromatisseXY93.jpg"
   },
   "89": {
    "en": "Xerneas",
    "page": "Xerneas (Premium Champion Pack 89)",
    "type": "Fairy",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ゼルネアス",
+   "artist": "Megumi Mizutani",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b8/XerneasFeverBurstFighter41.jpg"
   },
   "90": {
    "en": "Xerneas",
    "page": "Xerneas-EX (Premium Champion Pack 90)",
    "type": "Fairy",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ゼルネアスEX",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/5/5b/XerneasEXXYPromo7.jpg"
   },
   "91": {
    "en": "Giratina",
    "page": "Giratina-EX (Premium Champion Pack 91)",
    "type": "Dragon",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ギラティナEX",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/d/da/GiratinaEXAncientOrigins93.jpg"
   },
   "92": {
    "en": "Noivern",
    "page": "Noivern (Premium Champion Pack 92)",
    "type": "Dragon",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "オンバーン",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/2/29/NoivernFuriousFists77.jpg"
   },
   "93": {
    "en": "Kangaskhan",
    "page": "Kangaskhan-EX (Premium Champion Pack 93)",
    "type": "Colorless",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ガルーラEX",
+   "artist": "Eske Yoshinob",
+   "image": "https://archives.bulbagarden.net/media/upload/b/ba/KangaskhanEXFlashfire78.jpg"
   },
   "94": {
    "en": "Kangaskhan",
    "page": "M Kangaskhan-EX (Premium Champion Pack 94)",
    "type": "Colorless",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "MガルーラEX",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/5/5a/MKangaskhanEXFlashfire109.jpg"
   },
   "95": {
    "en": "Miltank",
    "page": "Miltank (Premium Champion Pack 95)",
    "type": "Colorless",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ミルタンク",
+   "artist": "Kanako Eo",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d0/MiltankFlashfire83.jpg"
   },
   "96": {
    "en": "Rayquaza",
    "page": "Rayquaza-EX (Premium Champion Pack 96)",
    "type": "Colorless",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "レックウザEX",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/0/09/RayquazaEXRoaringSkies104.jpg"
   },
   "97": {
    "en": "Rayquaza",
    "page": "M Rayquaza-EX (Premium Champion Pack 97)",
    "type": "Colorless",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "MレックウザEX",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/b/bf/MRayquazaEXRoaringSkies105.jpg"
   },
   "98": {
    "en": "Shaymin",
    "page": "Shaymin-EX (Premium Champion Pack 98)",
    "type": "Colorless",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "シェイミEX",
+   "artist": "Ayaka Yoshida",
+   "image": "https://archives.bulbagarden.net/media/upload/0/0e/ShayminEXRoaringSkies77.jpg"
   },
   "99": {
    "en": "Noibat",
    "page": "Noibat (Premium Champion Pack 99)",
    "type": "Colorless",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "オンバット",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/f/fd/NoibatFuriousFists87.jpg"
   },
   "100": {
    "en": "Escape Rope",
    "page": "Escape Rope (Premium Champion Pack 100)",
    "type": "I",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "あなぬけのヒモ",
+   "artist": "Toyste Beach",
+   "image": "https://archives.bulbagarden.net/media/upload/8/83/EscapeRopeBurningShadows114.jpg"
   },
   "101": {
    "en": "Enhanced Hammer",
    "page": "Enhanced Hammer (Premium Champion Pack 101)",
    "type": "I",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "改造ハンマー",
+   "artist": "Eske Yoshinob",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d0/EnhancedHammerTwilightMasquerade148.jpg"
   },
   "102": {
    "en": "Trainers' Mail",
    "page": "Trainers' Mail (Premium Champion Pack 102)",
    "type": "I",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "トレーナーズポスト",
+   "artist": "Toyste Beach",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a3/TrainerMailAncientOrigins100.jpg"
   },
   "103": {
    "en": "Ultra Ball",
    "page": "Ultra Ball (Premium Champion Pack 103)",
    "type": "I",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ハイパーボール",
+   "artist": "Ayaka Yoshida",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a9/UltraBallScarletViolet196.jpg"
   },
   "104": {
    "en": "Battle Compressor",
    "page": "Battle Compressor (Premium Champion Pack 104)",
    "type": "I",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "バトルコンプレッサー [フレア団ギア]",
+   "artist": "Toyste Beach",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a4/BattleCompressorPhantomForces92.jpg"
   },
   "105": {
    "en": "VS Seeker",
    "page": "VS Seeker (Premium Champion Pack 105)",
    "type": "I",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "バトルサーチャー",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/0/07/VSSeekerPhantomForces109.jpg"
   },
   "106": {
    "en": "Startling Megaphone",
    "page": "Startling Megaphone (Premium Champion Pack 106)",
    "type": "I",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "びっくりメガホン",
+   "artist": "Toyste Beach",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b5/StartlingMegaphoneFlashfire97.jpg"
   },
   "107": {
    "en": "Rare Candy",
    "page": "Rare Candy (Premium Champion Pack 107)",
    "type": "I",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ふしぎなアメ",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/4/4a/RareCandyCelestialStorm142.jpg"
   },
   "108": {
    "en": "Red Card",
    "page": "Red Card (Premium Champion Pack 108)",
    "type": "I",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "レッドカード",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f4/RedCardXY124.jpg"
   },
   "109": {
    "en": "Float Stone",
    "page": "Float Stone (Premium Champion Pack 109)",
    "type": "I",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "かるいし",
+   "artist": "Toyste Beach",
+   "image": "https://archives.bulbagarden.net/media/upload/4/44/FloatStoneBREAKthrough137.jpg"
   },
   "110": {
    "en": "Groudon Spirit Link",
    "page": "Groudon Spirit Link (Premium Champion Pack 110)",
    "type": "I",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "グラードンソウルリンク",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/7/7c/GroudonSpiritLinkPrimalClash131.jpg"
   },
   "111": {
    "en": "Gengar Spirit Link",
    "page": "Gengar Spirit Link (Premium Champion Pack 111)",
    "type": "I",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ゲンガーソウルリンク",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/3/3b/GengarSpiritLinkPhantomForces95.jpg"
   },
   "112": {
    "en": "Sceptile Spirit Link",
    "page": "Sceptile Spirit Link (Premium Champion Pack 112)",
    "type": "I",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ジュカインソウルリンク",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e1/SceptileSpiritLinkAncientOrigins80.jpg"
   },
   "113": {
    "en": "Beedrill Spirit Link",
    "page": "Beedrill Spirit Link (Premium Champion Pack 113)",
    "type": "I",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "スピアーソウルリンク",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/7/7a/BeedrillSpiritLinkPremiumChampionPack113.jpg"
   },
   "114": {
    "en": "Mewtwo Spirit Link",
    "page": "Mewtwo Spirit Link (Premium Champion Pack 114)",
    "type": "I",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ミュウツーソウルリンク",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2c/MewtwoSpiritLinkBREAKthrough144.jpg"
   },
   "115": {
    "en": "Manectric Spirit Link",
    "page": "Manectric Spirit Link (Premium Champion Pack 115)",
    "type": "I",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ライボルトソウルリンク",
+   "artist": "Toyste Beach",
+   "image": "https://archives.bulbagarden.net/media/upload/8/8b/ManectricSpiritLinkPhantomForces100.jpg"
   },
   "116": {
    "en": "Rayquaza Spirit Link",
    "page": "Rayquaza Spirit Link (Premium Champion Pack 116)",
    "type": "I",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "レックウザソウルリンク",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/0/08/RayquazaSpiritLinkRoaringSkies87.jpg"
   },
   "117": {
    "en": "Head Ringer",
    "page": "Head Ringer (Premium Champion Pack 117)",
    "type": "I",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ヘッドノイザー [フレア団ハイパーギア]",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/8/84/HeadRingerPhantomForces97.jpg"
   },
   "118": {
    "en": "Brigette",
    "page": "Brigette (Premium Champion Pack 118)",
    "type": "Su",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "アズサ",
+   "artist": "Megumi Mizutani",
+   "image": "https://archives.bulbagarden.net/media/upload/2/23/BrigetteBREAKthrough134.jpg"
   },
   "119": {
    "en": "Xerosic",
    "page": "Xerosic (Premium Champion Pack 119)",
    "type": "Su",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "クセロシキ",
+   "artist": "Masakazu Fukuda",
+   "image": "https://archives.bulbagarden.net/media/upload/4/4d/XerosicPhantomForces119.jpg"
   },
   "120": {
    "en": "Korrina",
    "page": "Korrina (Premium Champion Pack 120)",
    "type": "Su",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "コルニ",
+   "artist": "Yusuke Ohmura",
+   "image": "https://archives.bulbagarden.net/media/upload/4/43/KorrinaFuriousFists111.jpg"
   },
   "121": {
    "en": "Giovanni's Scheme",
    "page": "Giovanni's Scheme (Premium Champion Pack 121)",
    "type": "Su",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "サカキの計画",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e5/GiovanniSchemeBREAKthrough162.jpg"
   },
   "122": {
    "en": "Shauna",
    "page": "Shauna (Premium Champion Pack 122)",
    "type": "Su",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "サナ",
+   "artist": "Yuu Nishida",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e9/ShaunaFusionStrike263.jpg"
   },
   "123": {
    "en": "Teammates",
    "page": "Teammates (Premium Champion Pack 123)",
    "type": "Su",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "センパイとコウハイ",
+   "artist": "Megumi Mizutani",
+   "image": "https://archives.bulbagarden.net/media/upload/1/14/TeammatesPrimalClash141.jpg"
   },
   "124": {
    "en": "Professor Sycamore",
    "page": "Professor Sycamore (Premium Champion Pack 124)",
    "type": "Su",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "プラターヌ博士",
+   "artist": "Yusuke Ohmura",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f6/ProfessorSycamoreSteamSiege114.jpg"
   },
   "125": {
    "en": "Lysandre",
    "page": "Lysandre (Premium Champion Pack 125)",
    "type": "Su",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "フラダリ",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/5/57/LysandreFlashfire104.jpg"
   },
   "126": {
    "en": "Team Flare Grunt",
    "page": "Team Flare Grunt (Premium Champion Pack 126)",
    "type": "Su",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "フレア団のしたっぱ",
+   "artist": "Naoki Saito",
+   "image": "https://archives.bulbagarden.net/media/upload/6/6d/TeamFlareGruntGenerations73a.jpg"
   },
   "127": {
    "en": "Forest of Giant Plants",
    "page": "Forest of Giant Plants (Premium Champion Pack 127)",
    "type": "St",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "巨大植物の森",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/0/01/ForestofGiantPlantsAncientOrigins74.jpg"
   },
   "128": {
    "en": "Dimension Valley",
    "page": "Dimension Valley (Premium Champion Pack 128)",
    "type": "St",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "次元の谷",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/4/44/DimensionValleyPhantomForces93.jpg"
   },
   "129": {
    "en": "Sky Field",
    "page": "Sky Field (Premium Champion Pack 129)",
    "type": "St",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "スカイフィールド",
+   "artist": "Ayaka Yoshida",
+   "image": "https://archives.bulbagarden.net/media/upload/2/29/SkyFieldRoaringSkies89.jpg"
   },
   "130": {
    "en": "Fighting Stadium",
    "page": "Fighting Stadium (Premium Champion Pack 130)",
    "type": "St",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ファイティングスタジアム",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/3/3e/FightingStadiumFuriousFists90.jpg"
   },
   "131": {
    "en": "Double Colorless Energy",
    "page": "Double Colorless Energy (Premium Champion Pack 131)",
    "type": "Colorless",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ダブル無色エネルギー",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/9/9a/DoubleColorlessEnergyXY130.jpg"
   }
  }
 }

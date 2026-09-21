@@ -1,0 +1,671 @@
+{
+ "page": "Jet-Black Spirit (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Ledyba",
+   "page": "Ledyba (Jet-Black Spirit 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Ledian",
+   "page": "Ledian (Jet-Black Spirit 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Celebi",
+   "page": "Celebi V (Jet-Black Spirit 3)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "4": {
+   "en": "Celebi",
+   "page": "Celebi VMAX (Jet-Black Spirit 4)",
+   "type": "Grass",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "5": {
+   "en": "Seedot",
+   "page": "Seedot (Jet-Black Spirit 5)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Grookey",
+   "page": "Grookey (Jet-Black Spirit 6)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Thwackey",
+   "page": "Thwackey (Jet-Black Spirit 7)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "8": {
+   "en": "Rillaboom",
+   "page": "Rillaboom (Jet-Black Spirit 8)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "9": {
+   "en": "Psyduck",
+   "page": "Psyduck (Jet-Black Spirit 9)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Golduck",
+   "page": "Golduck (Jet-Black Spirit 10)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "11": {
+   "en": "Sneasel",
+   "page": "Sneasel (Jet-Black Spirit 11)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "12": {
+   "en": "Weavile",
+   "page": "Weavile (Jet-Black Spirit 12)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "13": {
+   "en": "Castform Rainy Form",
+   "page": "Castform Rainy Form (Jet-Black Spirit 13)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Luvdisc",
+   "page": "Luvdisc (Jet-Black Spirit 14)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "15": {
+   "en": "Tympole",
+   "page": "Tympole (Jet-Black Spirit 15)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "16": {
+   "en": "Tapu Fini",
+   "page": "Tapu Fini (Jet-Black Spirit 16)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "17": {
+   "en": "Arctovish",
+   "page": "Arctovish V (Jet-Black Spirit 17)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "18": {
+   "en": "Mareep",
+   "page": "Mareep (Jet-Black Spirit 18)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "19": {
+   "en": "Flaaffy",
+   "page": "Flaaffy (Jet-Black Spirit 19)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "20": {
+   "en": "Ampharos",
+   "page": "Ampharos (Jet-Black Spirit 20)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "21": {
+   "en": "Blitzle",
+   "page": "Blitzle (Jet-Black Spirit 21)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "22": {
+   "en": "Zebstrika",
+   "page": "Zebstrika (Jet-Black Spirit 22)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "23": {
+   "en": "Emolga",
+   "page": "Emolga (Jet-Black Spirit 23)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "24": {
+   "en": "Zeraora",
+   "page": "Zeraora V (Jet-Black Spirit 24)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "25": {
+   "en": "Gastly",
+   "page": "Gastly (Jet-Black Spirit 25)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "26": {
+   "en": "Haunter",
+   "page": "Haunter (Jet-Black Spirit 26)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "27": {
+   "en": "Gengar",
+   "page": "Gengar (Jet-Black Spirit 27)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "28": {
+   "en": "Sableye",
+   "page": "Sableye (Jet-Black Spirit 28)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "29": {
+   "en": "Cresselia",
+   "page": "Cresselia (Jet-Black Spirit 29)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "30": {
+   "en": "Golett",
+   "page": "Golett (Jet-Black Spirit 30)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "31": {
+   "en": "Golurk",
+   "page": "Golurk (Jet-Black Spirit 31)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "32": {
+   "en": "Inkay",
+   "page": "Inkay (Jet-Black Spirit 32)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "33": {
+   "en": "Malamar",
+   "page": "Malamar (Jet-Black Spirit 33)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "34": {
+   "en": "Cutiefly",
+   "page": "Cutiefly (Jet-Black Spirit 34)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "35": {
+   "en": "Ribombee",
+   "page": "Ribombee (Jet-Black Spirit 35)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "36": {
+   "en": "Shadow Rider Calyrex",
+   "page": "Shadow Rider Calyrex V (Jet-Black Spirit 36)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "37": {
+   "en": "Shadow Rider Calyrex",
+   "page": "Shadow Rider Calyrex VMAX (Jet-Black Spirit 37)",
+   "type": "Psychic",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "38": {
+   "en": "Palpitoad",
+   "page": "Palpitoad (Jet-Black Spirit 38)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "39": {
+   "en": "Seismitoad",
+   "page": "Seismitoad (Jet-Black Spirit 39)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "40": {
+   "en": "Crabrawler",
+   "page": "Crabrawler (Jet-Black Spirit 40)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "41": {
+   "en": "Crabominable",
+   "page": "Crabominable (Jet-Black Spirit 41)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "42": {
+   "en": "Clobbopus",
+   "page": "Clobbopus (Jet-Black Spirit 42)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "43": {
+   "en": "Grapploct",
+   "page": "Grapploct (Jet-Black Spirit 43)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "44": {
+   "en": "Koffing",
+   "page": "Koffing (Jet-Black Spirit 44)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "45": {
+   "en": "Weezing",
+   "page": "Weezing (Jet-Black Spirit 45)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "46": {
+   "en": "Galarian Weezing",
+   "page": "Galarian Weezing (Jet-Black Spirit 46)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "47": {
+   "en": "Nuzleaf",
+   "page": "Nuzleaf (Jet-Black Spirit 47)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "48": {
+   "en": "Shiftry",
+   "page": "Shiftry (Jet-Black Spirit 48)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "49": {
+   "en": "Metagross",
+   "page": "Metagross V (Jet-Black Spirit 49)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "50": {
+   "en": "Metagross",
+   "page": "Metagross VMAX (Jet-Black Spirit 50)",
+   "type": "Metal",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "51": {
+   "en": "Cobalion",
+   "page": "Cobalion (Jet-Black Spirit 51)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "52": {
+   "en": "Blissey",
+   "page": "Blissey V (Jet-Black Spirit 52)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "53": {
+   "en": "Castform",
+   "page": "Castform (Jet-Black Spirit 53)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "54": {
+   "en": "Kecleon",
+   "page": "Kecleon (Jet-Black Spirit 54)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "55": {
+   "en": "Fletchling",
+   "page": "Fletchling (Jet-Black Spirit 55)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "56": {
+   "en": "Fletchinder",
+   "page": "Fletchinder (Jet-Black Spirit 56)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "57": {
+   "en": "Talonflame",
+   "page": "Talonflame (Jet-Black Spirit 57)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "58": {
+   "en": "Skwovet",
+   "page": "Skwovet (Jet-Black Spirit 58)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "59": {
+   "en": "Greedent",
+   "page": "Greedent (Jet-Black Spirit 59)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "60": {
+   "en": "Fog Crystal",
+   "page": "Fog Crystal (Jet-Black Spirit 60)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "61": {
+   "en": "Weeding Gloves",
+   "page": "Weeding Gloves (Jet-Black Spirit 61)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "62": {
+   "en": "Justified Gloves",
+   "page": "Justified Gloves (Jet-Black Spirit 62)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "63": {
+   "en": "Rapid Strike Scroll of the Skies",
+   "page": "Rapid Strike Scroll of the Skies (Jet-Black Spirit 63)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "64": {
+   "en": "Caitlin",
+   "page": "Caitlin (Jet-Black Spirit 64)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "65": {
+   "en": "Agatha",
+   "page": "Agatha (Jet-Black Spirit 65)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "66": {
+   "en": "Peonia",
+   "page": "Peonia (Jet-Black Spirit 66)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "67": {
+   "en": "Siebold",
+   "page": "Siebold (Jet-Black Spirit 67)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "68": {
+   "en": "Old Cemetery",
+   "page": "Old Cemetery (Jet-Black Spirit 68)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "69": {
+   "en": "Spiral Energy",
+   "page": "Spiral Energy (Jet-Black Spirit 69)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "70": {
+   "en": "Lucky Energy",
+   "page": "Lucky Energy (Jet-Black Spirit 70)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "71": {
+   "en": "Celebi",
+   "page": "Celebi V (Jet-Black Spirit 71)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "72": {
+   "en": "Arctovish",
+   "page": "Arctovish V (Jet-Black Spirit 72)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "73": {
+   "en": "Zeraora",
+   "page": "Zeraora V (Jet-Black Spirit 73)",
+   "type": "Lightning",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "74": {
+   "en": "Zeraora",
+   "page": "Zeraora V (Jet-Black Spirit 74)",
+   "type": "Lightning",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "75": {
+   "en": "Shadow Rider Calyrex",
+   "page": "Shadow Rider Calyrex V (Jet-Black Spirit 75)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "76": {
+   "en": "Shadow Rider Calyrex",
+   "page": "Shadow Rider Calyrex V (Jet-Black Spirit 76)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "77": {
+   "en": "Metagross",
+   "page": "Metagross V (Jet-Black Spirit 77)",
+   "type": "Metal",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "78": {
+   "en": "Blissey",
+   "page": "Blissey V (Jet-Black Spirit 78)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "79": {
+   "en": "Blissey",
+   "page": "Blissey V (Jet-Black Spirit 79)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "80": {
+   "en": "Caitlin",
+   "page": "Caitlin (Jet-Black Spirit 80)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "81": {
+   "en": "Agatha",
+   "page": "Agatha (Jet-Black Spirit 81)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "82": {
+   "en": "Peonia",
+   "page": "Peonia (Jet-Black Spirit 82)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "83": {
+   "en": "Siebold",
+   "page": "Siebold (Jet-Black Spirit 83)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "84": {
+   "en": "Celebi",
+   "page": "Celebi VMAX (Jet-Black Spirit 84)",
+   "type": "Grass",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "85": {
+   "en": "Shadow Rider Calyrex",
+   "page": "Shadow Rider Calyrex VMAX (Jet-Black Spirit 85)",
+   "type": "Psychic",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "86": {
+   "en": "Shadow Rider Calyrex",
+   "page": "Shadow Rider Calyrex VMAX (Jet-Black Spirit 86)",
+   "type": "Psychic",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "87": {
+   "en": "Metagross",
+   "page": "Metagross VMAX (Jet-Black Spirit 87)",
+   "type": "Metal",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "88": {
+   "en": "Caitlin",
+   "page": "Caitlin (Jet-Black Spirit 88)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "89": {
+   "en": "Agatha",
+   "page": "Agatha (Jet-Black Spirit 89)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "90": {
+   "en": "Peonia",
+   "page": "Peonia (Jet-Black Spirit 90)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "91": {
+   "en": "Siebold",
+   "page": "Siebold (Jet-Black Spirit 91)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "92": {
+   "en": "Electrode",
+   "page": "Electrode (Jet-Black Spirit 92)",
+   "type": "Lightning",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "93": {
+   "en": "Fog Crystal",
+   "page": "Fog Crystal (Jet-Black Spirit 93)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "94": {
+   "en": "Echoing Horn",
+   "page": "Echoing Horn (Jet-Black Spirit 94)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "95": {
+   "en": "Psychic Energy",
+   "page": "Psychic Energy (Jet-Black Spirit 95)",
+   "type": "Psychic",
+   "rarity": "UR",
+   "mark": "—"
+  }
+ }
+}

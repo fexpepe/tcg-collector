@@ -3,1025 +3,444 @@
  "at": "2026-09-21",
  "cards": {
   "1": {
-   "en": "Venusaur",
-   "page": "Venusaur-EX (Collection X 1)",
-   "type": "Grass",
-   "rarity": "RR",
-   "mark": ""
-  },
-  "2": {
-   "en": "Venusaur",
-   "page": "M Venusaur-EX (Collection X 2)",
-   "type": "Grass",
-   "rarity": "RR",
-   "mark": ""
-  },
-  "3": {
-   "en": "Volbeat",
-   "page": "Volbeat (Collection X 3)",
+   "en": "Weedle",
+   "page": "Weedle (Collection Y 1)",
    "type": "Grass",
    "rarity": "C",
    "mark": ""
   },
+  "2": {
+   "en": "Kakuna",
+   "page": "Kakuna (Collection Y 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Beedrill",
+   "page": "Beedrill (Collection Y 3)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
   "4": {
-   "en": "Pansage",
-   "page": "Pansage (Collection X 4)",
+   "en": "Ledyba",
+   "page": "Ledyba (Collection Y 4)",
    "type": "Grass",
    "rarity": "C",
    "mark": ""
   },
   "5": {
-   "en": "Simisage",
-   "page": "Simisage (Collection X 5)",
+   "en": "Ledian",
+   "page": "Ledian (Collection Y 5)",
    "type": "Grass",
-   "rarity": "C",
+   "rarity": "U",
    "mark": ""
   },
   "6": {
-   "en": "Scatterbug",
-   "page": "Scatterbug (Collection X 6)",
+   "en": "Illumise",
+   "page": "Illumise (Collection Y 6)",
    "type": "Grass",
    "rarity": "C",
    "mark": ""
   },
   "7": {
-   "en": "Spewpa",
-   "page": "Spewpa (Collection X 7)",
+   "en": "Chespin",
+   "page": "Chespin (Collection Y 7)",
    "type": "Grass",
    "rarity": "C",
    "mark": ""
   },
   "8": {
-   "en": "Vivillon",
-   "page": "Vivillon (Collection X 8)",
+   "en": "Quilladin",
+   "page": "Quilladin (Collection Y 8)",
    "type": "Grass",
-   "rarity": "R",
+   "rarity": "U",
    "mark": ""
   },
   "9": {
-   "en": "Skiddo",
-   "page": "Skiddo (Collection X 9)",
-   "type": "Grass",
-   "rarity": "C",
-   "mark": ""
-  },
-  "10": {
-   "en": "Gogoat",
-   "page": "Gogoat (Collection X 10)",
+   "en": "Chesnaught",
+   "page": "Chesnaught (Collection Y 9)",
    "type": "Grass",
    "rarity": "R",
    "mark": ""
   },
+  "10": {
+   "en": "Pansear",
+   "page": "Pansear (Collection Y 10)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
   "11": {
-   "en": "Slugma",
-   "page": "Slugma (Collection X 11)",
+   "en": "Simisear",
+   "page": "Simisear (Collection Y 11)",
    "type": "Fire",
    "rarity": "C",
    "mark": ""
   },
   "12": {
-   "en": "Magcargo",
-   "page": "Magcargo (Collection X 12)",
+   "en": "Fletchinder",
+   "page": "Fletchinder (Collection Y 12)",
    "type": "Fire",
    "rarity": "C",
    "mark": ""
   },
   "13": {
-   "en": "Fennekin",
-   "page": "Fennekin (Collection X 13)",
-   "type": "Fire",
-   "rarity": "C",
-   "mark": ""
-  },
-  "14": {
-   "en": "Braixen",
-   "page": "Braixen (Collection X 14)",
-   "type": "Fire",
-   "rarity": "U",
-   "mark": ""
-  },
-  "15": {
-   "en": "Delphox",
-   "page": "Delphox (Collection X 15)",
+   "en": "Talonflame",
+   "page": "Talonflame (Collection Y 13)",
    "type": "Fire",
    "rarity": "R",
    "mark": ""
   },
+  "14": {
+   "en": "Blastoise",
+   "page": "Blastoise-EX (Collection Y 14)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "15": {
+   "en": "Blastoise",
+   "page": "M Blastoise-EX (Collection Y 15)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
   "16": {
-   "en": "Staryu",
-   "page": "Staryu (Collection X 16)",
+   "en": "Shellder",
+   "page": "Shellder (Collection Y 16)",
    "type": "Water",
    "rarity": "C",
    "mark": ""
   },
   "17": {
-   "en": "Starmie",
-   "page": "Starmie (Collection X 17)",
+   "en": "Cloyster",
+   "page": "Cloyster (Collection Y 17)",
    "type": "Water",
    "rarity": "U",
    "mark": ""
   },
   "18": {
-   "en": "Corsola",
-   "page": "Corsola (Collection X 18)",
+   "en": "Lapras",
+   "page": "Lapras (Collection Y 18)",
    "type": "Water",
-   "rarity": "C",
+   "rarity": "R",
    "mark": ""
   },
   "19": {
-   "en": "Froakie",
-   "page": "Froakie (Collection X 19)",
+   "en": "Panpour",
+   "page": "Panpour (Collection Y 19)",
    "type": "Water",
    "rarity": "C",
    "mark": ""
   },
   "20": {
-   "en": "Frogadier",
-   "page": "Frogadier (Collection X 20)",
+   "en": "Simipour",
+   "page": "Simipour (Collection Y 20)",
    "type": "Water",
-   "rarity": "U",
+   "rarity": "C",
    "mark": ""
   },
   "21": {
-   "en": "Greninja",
-   "page": "Greninja (Collection X 21)",
-   "type": "Water",
-   "rarity": "R",
+   "en": "Voltorb",
+   "page": "Voltorb (Collection Y 21)",
+   "type": "Lightning",
+   "rarity": "C",
    "mark": ""
   },
   "22": {
-   "en": "Pikachu",
-   "page": "Pikachu (Collection X 22)",
+   "en": "Electrode",
+   "page": "Electrode (Collection Y 22)",
    "type": "Lightning",
    "rarity": "C",
    "mark": ""
   },
   "23": {
-   "en": "Raichu",
-   "page": "Raichu (Collection X 23)",
+   "en": "Emolga",
+   "page": "Emolga-EX (Collection Y 23)",
    "type": "Lightning",
-   "rarity": "R",
+   "rarity": "RR",
    "mark": ""
   },
   "24": {
-   "en": "Ekans",
-   "page": "Ekans (Collection X 24)",
+   "en": "Venipede",
+   "page": "Venipede (Collection Y 24)",
    "type": "Psychic",
    "rarity": "C",
    "mark": ""
   },
   "25": {
-   "en": "Arbok",
-   "page": "Arbok (Collection X 25)",
-   "type": "Psychic",
-   "rarity": "U",
-   "mark": ""
-  },
-  "26": {
-   "en": "Spoink",
-   "page": "Spoink (Collection X 26)",
+   "en": "Whirlipede",
+   "page": "Whirlipede (Collection Y 25)",
    "type": "Psychic",
    "rarity": "C",
    "mark": ""
   },
+  "26": {
+   "en": "Scolipede",
+   "page": "Scolipede (Collection Y 26)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
   "27": {
-   "en": "Grumpig",
-   "page": "Grumpig (Collection X 27)",
+   "en": "Pumpkaboo",
+   "page": "Pumpkaboo (Collection Y 27)",
    "type": "Psychic",
    "rarity": "C",
    "mark": ""
   },
   "28": {
-   "en": "Phantump",
-   "page": "Phantump (Collection X 28)",
-   "type": "Psychic",
-   "rarity": "C",
-   "mark": ""
-  },
-  "29": {
-   "en": "Trevenant",
-   "page": "Trevenant (Collection X 29)",
+   "en": "Gourgeist",
+   "page": "Gourgeist (Collection Y 28)",
    "type": "Psychic",
    "rarity": "R",
    "mark": ""
   },
-  "30": {
-   "en": "Lunatone",
-   "page": "Lunatone (Collection X 30)",
+  "29": {
+   "en": "Diglett",
+   "page": "Diglett (Collection Y 29)",
    "type": "Fighting",
    "rarity": "C",
    "mark": ""
   },
+  "30": {
+   "en": "Dugtrio",
+   "page": "Dugtrio (Collection Y 30)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
   "31": {
-   "en": "Timburr",
-   "page": "Timburr (Collection X 31)",
+   "en": "Rhyhorn",
+   "page": "Rhyhorn (Collection Y 31)",
    "type": "Fighting",
    "rarity": "C",
    "mark": ""
   },
   "32": {
-   "en": "Gurdurr",
-   "page": "Gurdurr (Collection X 32)",
-   "type": "Fighting",
-   "rarity": "C",
-   "mark": ""
-  },
-  "33": {
-   "en": "Conkeldurr",
-   "page": "Conkeldurr (Collection X 33)",
+   "en": "Rhydon",
+   "page": "Rhydon (Collection Y 32)",
    "type": "Fighting",
    "rarity": "U",
    "mark": ""
   },
+  "33": {
+   "en": "Rhyperior",
+   "page": "Rhyperior (Collection Y 33)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
   "34": {
-   "en": "Sandile",
-   "page": "Sandile (Collection X 34)",
-   "type": "Darkness",
+   "en": "Solrock",
+   "page": "Solrock (Collection Y 34)",
+   "type": "Fighting",
    "rarity": "C",
    "mark": ""
   },
   "35": {
-   "en": "Krokorok",
-   "page": "Krokorok (Collection X 35)",
+   "en": "Inkay",
+   "page": "Inkay (Collection Y 35)",
    "type": "Darkness",
    "rarity": "C",
    "mark": ""
   },
   "36": {
-   "en": "Krookodile",
-   "page": "Krookodile (Collection X 36)",
+   "en": "Malamar",
+   "page": "Malamar (Collection Y 36)",
    "type": "Darkness",
    "rarity": "U",
    "mark": ""
   },
   "37": {
-   "en": "Zorua",
-   "page": "Zorua (Collection X 37)",
+   "en": "Yveltal",
+   "page": "Yveltal-EX (Collection Y 37)",
    "type": "Darkness",
-   "rarity": "C",
-   "mark": ""
-  },
-  "38": {
-   "en": "Zoroark",
-   "page": "Zoroark (Collection X 38)",
-   "type": "Darkness",
-   "rarity": "R",
-   "mark": ""
-  },
-  "39": {
-   "en": "Skarmory",
-   "page": "Skarmory-EX (Collection X 39)",
-   "type": "Metal",
    "rarity": "RR",
    "mark": ""
   },
-  "40": {
-   "en": "Pawniard",
-   "page": "Pawniard (Collection X 40)",
+  "38": {
+   "en": "Honedge",
+   "page": "Honedge (Collection Y 38)",
    "type": "Metal",
    "rarity": "C",
    "mark": ""
   },
-  "41": {
-   "en": "Bisharp",
-   "page": "Bisharp (Collection X 41)",
+  "39": {
+   "en": "Doublade",
+   "page": "Doublade (Collection Y 39)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "40": {
+   "en": "Aegislash",
+   "page": "Aegislash (Collection Y 40)",
    "type": "Metal",
    "rarity": "U",
    "mark": ""
   },
+  "41": {
+   "en": "Aegislash",
+   "page": "Aegislash (Collection Y 41)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
   "42": {
-   "en": "Swirlix",
-   "page": "Swirlix (Collection X 42)",
+   "en": "Jigglypuff",
+   "page": "Jigglypuff (Collection Y 42)",
    "type": "Fairy",
    "rarity": "C",
    "mark": ""
   },
   "43": {
-   "en": "Slurpuff",
-   "page": "Slurpuff (Collection X 43)",
+   "en": "Wigglytuff",
+   "page": "Wigglytuff (Collection Y 43)",
+   "type": "Fairy",
+   "rarity": "U",
+   "mark": ""
+  },
+  "44": {
+   "en": "Spritzee",
+   "page": "Spritzee (Collection Y 44)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "45": {
+   "en": "Aromatisse",
+   "page": "Aromatisse (Collection Y 45)",
    "type": "Fairy",
    "rarity": "R",
    "mark": ""
   },
-  "44": {
-   "en": "Xerneas",
-   "page": "Xerneas-EX (Collection X 44)",
-   "type": "Fairy",
-   "rarity": "RR",
-   "mark": ""
-  },
-  "45": {
-   "en": "Tauros",
-   "page": "Tauros (Collection X 45)",
-   "type": "Colorless",
-   "rarity": "U",
-   "mark": ""
-  },
   "46": {
-   "en": "Dunsparce",
-   "page": "Dunsparce (Collection X 46)",
+   "en": "Doduo",
+   "page": "Doduo (Collection Y 46)",
    "type": "Colorless",
    "rarity": "C",
    "mark": ""
   },
   "47": {
-   "en": "Taillow",
-   "page": "Taillow (Collection X 47)",
+   "en": "Dodrio",
+   "page": "Dodrio (Collection Y 47)",
    "type": "Colorless",
    "rarity": "C",
    "mark": ""
   },
   "48": {
-   "en": "Swellow",
-   "page": "Swellow (Collection X 48)",
-   "type": "Colorless",
-   "rarity": "U",
-   "mark": ""
-  },
-  "49": {
-   "en": "Lillipup",
-   "page": "Lillipup (Collection X 49)",
+   "en": "Skitty",
+   "page": "Skitty (Collection Y 48)",
    "type": "Colorless",
    "rarity": "C",
    "mark": ""
   },
+  "49": {
+   "en": "Delcatty",
+   "page": "Delcatty (Collection Y 49)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
   "50": {
-   "en": "Herdier",
-   "page": "Herdier (Collection X 50)",
+   "en": "Bidoof",
+   "page": "Bidoof (Collection Y 50)",
    "type": "Colorless",
    "rarity": "C",
    "mark": ""
   },
   "51": {
-   "en": "Stoutland",
-   "page": "Stoutland (Collection X 51)",
+   "en": "Bibarel",
+   "page": "Bibarel (Collection Y 51)",
    "type": "Colorless",
-   "rarity": "U",
+   "rarity": "C",
    "mark": ""
   },
   "52": {
-   "en": "Bunnelby",
-   "page": "Bunnelby (Collection X 52)",
+   "en": "Fletchling",
+   "page": "Fletchling (Collection Y 52)",
    "type": "Colorless",
    "rarity": "C",
    "mark": ""
   },
   "53": {
-   "en": "Diggersby",
-   "page": "Diggersby (Collection X 53)",
+   "en": "Furfrou",
+   "page": "Furfrou (Collection Y 53)",
    "type": "Colorless",
-   "rarity": "U",
+   "rarity": "R",
    "mark": ""
   },
   "54": {
-   "en": "Max Revive",
-   "page": "Max Revive (Collection X 54)",
+   "en": "Super Potion",
+   "page": "Super Potion (Collection Y 54)",
    "type": "I",
    "rarity": "U",
    "mark": ""
   },
   "55": {
-   "en": "Evosoda",
-   "page": "Evosoda (Collection X 55)",
+   "en": "Professor's Letter",
+   "page": "Professor's Letter (Collection Y 55)",
    "type": "I",
    "rarity": "U",
    "mark": ""
   },
   "56": {
-   "en": "Roller Skates",
-   "page": "Roller Skates (Collection X 56)",
+   "en": "Red Card",
+   "page": "Red Card (Collection Y 56)",
    "type": "I",
    "rarity": "U",
    "mark": ""
   },
   "57": {
-   "en": "Muscle Band",
-   "page": "Muscle Band (Collection X 57)",
+   "en": "Hard Charm",
+   "page": "Hard Charm (Collection Y 57)",
    "type": "I",
    "rarity": "U",
    "mark": ""
   },
   "58": {
-   "en": "Professor Sycamore",
-   "page": "Professor Sycamore (Collection X 58)",
+   "en": "Cassius",
+   "page": "Cassius (Collection Y 58)",
    "type": "Su",
    "rarity": "U",
    "mark": ""
   },
   "59": {
-   "en": "Team Flare Grunt",
-   "page": "Team Flare Grunt (Collection X 59)",
+   "en": "Tierno",
+   "page": "Tierno (Collection Y 59)",
    "type": "Su",
    "rarity": "U",
    "mark": ""
   },
   "60": {
-   "en": "Rainbow Energy",
-   "page": "Rainbow Energy (Collection X 60)",
+   "en": "Double Colorless Energy",
+   "page": "Double Colorless Energy (Collection Y 60)",
    "type": "Colorless",
    "rarity": "U",
    "mark": ""
   },
   "61": {
-   "en": "Venusaur",
-   "page": "Venusaur-EX (Collection X 61)",
-   "type": "Grass",
+   "en": "Blastoise",
+   "page": "Blastoise-EX (Collection Y 61)",
+   "type": "Water",
    "rarity": "SR",
    "mark": ""
   },
   "62": {
-   "en": "Skarmory",
-   "page": "Skarmory-EX (Collection X 62)",
-   "type": "Metal",
+   "en": "Emolga",
+   "page": "Emolga-EX (Collection Y 62)",
+   "type": "Lightning",
    "rarity": "SR",
    "mark": ""
   },
   "63": {
-   "en": "Xerneas",
-   "page": "Xerneas-EX (Collection X 63)",
-   "type": "Fairy",
+   "en": "Yveltal",
+   "page": "Yveltal-EX (Collection Y 63)",
+   "type": "Darkness",
    "rarity": "SR",
-   "mark": ""
-  },
-  "64": {
-   "en": "Solrock",
-   "page": "Solrock (XY 64)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "65": {
-   "en": "Timburr",
-   "page": "Timburr (XY 65)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "66": {
-   "en": "Gurdurr",
-   "page": "Gurdurr (XY 66)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "67": {
-   "en": "Conkeldurr",
-   "page": "Conkeldurr (XY 67)",
-   "type": "Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "68": {
-   "en": "Sableye",
-   "page": "Sableye (XY 68)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "69": {
-   "en": "Sandile",
-   "page": "Sandile (XY 69)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "70": {
-   "en": "Krokorok",
-   "page": "Krokorok (XY 70)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "71": {
-   "en": "Krookodile",
-   "page": "Krookodile (XY 71)",
-   "type": "Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "72": {
-   "en": "Zorua",
-   "page": "Zorua (XY 72)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "73": {
-   "en": "Zoroark",
-   "page": "Zoroark (XY 73)",
-   "type": "Rare Holo",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "74": {
-   "en": "Inkay",
-   "page": "Inkay (XY 74)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "75": {
-   "en": "Inkay",
-   "page": "Inkay (XY 75)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "76": {
-   "en": "Malamar",
-   "page": "Malamar (XY 76)",
-   "type": "Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "77": {
-   "en": "Malamar",
-   "page": "Malamar (XY 77)",
-   "type": "Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "78": {
-   "en": "Yveltal",
-   "page": "Yveltal (XY 78)",
-   "type": "Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "79": {
-   "en": "Yveltal",
-   "page": "Yveltal-EX (XY 79)",
-   "type": "Rare Holo ex",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "80": {
-   "en": "Skarmory",
-   "page": "Skarmory-EX (XY 80)",
-   "type": "Rare Holo ex",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "81": {
-   "en": "Pawniard",
-   "page": "Pawniard (XY 81)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "82": {
-   "en": "Bisharp",
-   "page": "Bisharp (XY 82)",
-   "type": "Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "83": {
-   "en": "Honedge",
-   "page": "Honedge (XY 83)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "84": {
-   "en": "Doublade",
-   "page": "Doublade (XY 84)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "85": {
-   "en": "Aegislash",
-   "page": "Aegislash (XY 85)",
-   "type": "Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "86": {
-   "en": "Aegislash",
-   "page": "Aegislash (XY 86)",
-   "type": "Rare Holo",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "87": {
-   "en": "Jigglypuff",
-   "page": "Jigglypuff (XY 87)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "88": {
-   "en": "Jigglypuff",
-   "page": "Jigglypuff (XY 88)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "89": {
-   "en": "Wigglytuff",
-   "page": "Wigglytuff (XY 89)",
-   "type": "Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "90": {
-   "en": "Wigglytuff",
-   "page": "Wigglytuff (XY 90)",
-   "type": "Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "91": {
-   "en": "Mr. Mime",
-   "page": "Mr. Mime (XY 91)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "92": {
-   "en": "Spritzee",
-   "page": "Spritzee (XY 92)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "93": {
-   "en": "Aromatisse",
-   "page": "Aromatisse (XY 93)",
-   "type": "Rare Holo",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "94": {
-   "en": "Swirlix",
-   "page": "Swirlix (XY 94)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "95": {
-   "en": "Slurpuff",
-   "page": "Slurpuff (XY 95)",
-   "type": "Rare Holo",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "96": {
-   "en": "Xerneas",
-   "page": "Xerneas (XY 96)",
-   "type": "Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "97": {
-   "en": "Xerneas",
-   "page": "Xerneas-EX (XY 97)",
-   "type": "Rare Holo ex",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "98": {
-   "en": "Doduo",
-   "page": "Doduo (XY 98)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "99": {
-   "en": "Dodrio",
-   "page": "Dodrio (XY 99)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "100": {
-   "en": "Tauros",
-   "page": "Tauros (XY 100)",
-   "type": "Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "101": {
-   "en": "Dunsparce",
-   "page": "Dunsparce (XY 101)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "102": {
-   "en": "Taillow",
-   "page": "Taillow (XY 102)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "103": {
-   "en": "Swellow",
-   "page": "Swellow (XY 103)",
-   "type": "Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "104": {
-   "en": "Skitty",
-   "page": "Skitty (XY 104)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "105": {
-   "en": "Delcatty",
-   "page": "Delcatty (XY 105)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "106": {
-   "en": "Bidoof",
-   "page": "Bidoof (XY 106)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "107": {
-   "en": "Bibarel",
-   "page": "Bibarel (XY 107)",
-   "type": "Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "108": {
-   "en": "Lillipup",
-   "page": "Lillipup (XY 108)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "109": {
-   "en": "Herdier",
-   "page": "Herdier (XY 109)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "110": {
-   "en": "Stoutland",
-   "page": "Stoutland (XY 110)",
-   "type": "Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "111": {
-   "en": "Bunnelby",
-   "page": "Bunnelby (XY 111)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "112": {
-   "en": "Diggersby",
-   "page": "Diggersby (XY 112)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "113": {
-   "en": "Fletchling",
-   "page": "Fletchling (XY 113)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "114": {
-   "en": "Furfrou",
-   "page": "Furfrou (XY 114)",
-   "type": "Rare Holo",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "115": {
-   "en": "Cassius",
-   "page": "Cassius (XY 115)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "116": {
-   "en": "Evosoda",
-   "page": "Evosoda (XY 116)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "117": {
-   "en": "Fairy Garden",
-   "page": "Fairy Garden (XY 117)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "118": {
-   "en": "Great Ball",
-   "page": "Great Ball (XY 118)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "119": {
-   "en": "Hard Charm",
-   "page": "Hard Charm (XY 119)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "120": {
-   "en": "Max Revive",
-   "page": "Max Revive (XY 120)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "121": {
-   "en": "Muscle Band",
-   "page": "Muscle Band (XY 121)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "122": {
-   "en": "Professor Sycamore",
-   "page": "Professor Sycamore (XY 122)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "123": {
-   "en": "Professor's Letter",
-   "page": "Professor's Letter (XY 123)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "124": {
-   "en": "Red Card",
-   "page": "Red Card (XY 124)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "125": {
-   "en": "Roller Skates",
-   "page": "Roller Skates (XY 125)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "126": {
-   "en": "Shadow Circle",
-   "page": "Shadow Circle (XY 126)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "127": {
-   "en": "Shauna",
-   "page": "Shauna (XY 127)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "128": {
-   "en": "Super Potion",
-   "page": "Super Potion (XY 128)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "129": {
-   "en": "Team Flare Grunt",
-   "page": "Team Flare Grunt (XY 129)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "130": {
-   "en": "Double Colorless Energy",
-   "page": "Double Colorless Energy (XY 130)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "131": {
-   "en": "Rainbow Energy",
-   "page": "Rainbow Energy (XY 131)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "132": {
-   "en": "Grass Energy",
-   "page": "Grass Energy (XY 132)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "133": {
-   "en": "Fire Energy",
-   "page": "Fire Energy (XY 133)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "134": {
-   "en": "Water Energy",
-   "page": "Water Energy (XY 134)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "135": {
-   "en": "Lightning Energy",
-   "page": "Lightning Energy (XY 135)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "136": {
-   "en": "Psychic Energy",
-   "page": "Psychic Energy (XY 136)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "137": {
-   "en": "Fighting Energy",
-   "page": "Fighting Energy (XY 137)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "138": {
-   "en": "Darkness Energy",
-   "page": "Darkness Energy (XY 138)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "139": {
-   "en": "Metal Energy",
-   "page": "Metal Energy (XY 139)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "140": {
-   "en": "Fairy Energy",
-   "page": "Fairy Energy (XY 140)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "141": {
-   "en": "Venusaur",
-   "page": "Venusaur-EX (XY 141)",
-   "type": "Rare Ultra",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "142": {
-   "en": "Blastoise",
-   "page": "Blastoise-EX (XY 142)",
-   "type": "Rare Ultra",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "143": {
-   "en": "Emolga",
-   "page": "Emolga-EX (XY 143)",
-   "type": "Rare Ultra",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "144": {
-   "en": "Yveltal",
-   "page": "Yveltal-EX (XY 144)",
-   "type": "Rare Ultra",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "145": {
-   "en": "Skarmory",
-   "page": "Skarmory-EX (XY 145)",
-   "type": "Rare Ultra",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "146": {
-   "en": "Xerneas",
-   "page": "Xerneas-EX (XY 146)",
-   "type": "Rare Ultra",
-   "rarity": "Promotion",
    "mark": ""
   }
  }

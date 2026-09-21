@@ -1,0 +1,461 @@
+{
+ "page": "Dark Order (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Litten",
+   "page": "Litten (Dark Order 1)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Torracat",
+   "page": "Torracat (Dark Order 2)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Zapdos",
+   "page": "Zapdos (Dark Order 3)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "4": {
+   "en": "Mareep",
+   "page": "Mareep (Dark Order 4)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Flaaffy",
+   "page": "Flaaffy (Dark Order 5)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Ampharos",
+   "page": "Ampharos-GX (Dark Order 6)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "7": {
+   "en": "Blitzle",
+   "page": "Blitzle (Dark Order 7)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Zebstrika",
+   "page": "Zebstrika (Dark Order 8)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "9": {
+   "en": "Emolga",
+   "page": "Emolga (Dark Order 9)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Joltik",
+   "page": "Joltik (Dark Order 10)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "11": {
+   "en": "Galvantula",
+   "page": "Galvantula (Dark Order 11)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "12": {
+   "en": "Helioptile",
+   "page": "Helioptile (Dark Order 12)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "13": {
+   "en": "Heliolisk",
+   "page": "Heliolisk (Dark Order 13)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Tapu Koko",
+   "page": "Tapu Koko ♢ (Dark Order 14)",
+   "type": "Lightning",
+   "rarity": "PR",
+   "mark": ""
+  },
+  "15": {
+   "en": "Larvitar",
+   "page": "Larvitar (Dark Order 15)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "16": {
+   "en": "Pupitar",
+   "page": "Pupitar (Dark Order 16)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Pancham",
+   "page": "Pancham (Dark Order 17)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "18": {
+   "en": "Alolan Grimer",
+   "page": "Alolan Grimer (Dark Order 18)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "19": {
+   "en": "Alolan Muk",
+   "page": "Alolan Muk (Dark Order 19)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "20": {
+   "en": "Tyranitar",
+   "page": "Tyranitar (Dark Order 20)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "21": {
+   "en": "Poochyena",
+   "page": "Poochyena (Dark Order 21)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "22": {
+   "en": "Mightyena",
+   "page": "Mightyena (Dark Order 22)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "23": {
+   "en": "Absol",
+   "page": "Absol (Dark Order 23)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "24": {
+   "en": "Spiritomb",
+   "page": "Spiritomb (Dark Order 24)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "25": {
+   "en": "Zorua",
+   "page": "Zorua (Dark Order 25)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "26": {
+   "en": "Zoroark",
+   "page": "Zoroark (Dark Order 26)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "27": {
+   "en": "Vullaby",
+   "page": "Vullaby (Dark Order 27)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "28": {
+   "en": "Mandibuzz",
+   "page": "Mandibuzz (Dark Order 28)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "29": {
+   "en": "Pangoro",
+   "page": "Pangoro (Dark Order 29)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "30": {
+   "en": "Yveltal",
+   "page": "Yveltal (Dark Order 30)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "31": {
+   "en": "Hoopa",
+   "page": "Hoopa-GX (Dark Order 31)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "32": {
+   "en": "Incineroar",
+   "page": "Incineroar-GX (Dark Order 32)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "33": {
+   "en": "Skarmory",
+   "page": "Skarmory (Dark Order 33)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "34": {
+   "en": "Jirachi",
+   "page": "Jirachi (Dark Order 34)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "35": {
+   "en": "Bronzor",
+   "page": "Bronzor (Dark Order 35)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "36": {
+   "en": "Bronzong",
+   "page": "Bronzong (Dark Order 36)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "37": {
+   "en": "Ferroseed",
+   "page": "Ferroseed (Dark Order 37)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "38": {
+   "en": "Ferrothorn",
+   "page": "Ferrothorn (Dark Order 38)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "39": {
+   "en": "Pawniard",
+   "page": "Pawniard (Dark Order 39)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "40": {
+   "en": "Bisharp",
+   "page": "Bisharp (Dark Order 40)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "41": {
+   "en": "Cobalion",
+   "page": "Cobalion-GX (Dark Order 41)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "42": {
+   "en": "Honedge",
+   "page": "Honedge (Dark Order 42)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "43": {
+   "en": "Doublade",
+   "page": "Doublade (Dark Order 43)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "44": {
+   "en": "Aegislash",
+   "page": "Aegislash (Dark Order 44)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "45": {
+   "en": "Klefki",
+   "page": "Klefki (Dark Order 45)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "46": {
+   "en": "Electrocharger",
+   "page": "Electrocharger (Dark Order 46)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "47": {
+   "en": "Electropower",
+   "page": "Electropower (Dark Order 47)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "48": {
+   "en": "Dangerous Drill",
+   "page": "Dangerous Drill (Dark Order 48)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "49": {
+   "en": "Metal Goggles",
+   "page": "Metal Goggles (Dark Order 49)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "50": {
+   "en": "Nanu",
+   "page": "Nanu (Dark Order 50)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "51": {
+   "en": "Jasmine",
+   "page": "Jasmine (Dark Order 51)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "52": {
+   "en": "Black Market",
+   "page": "Black Market ♢ (Dark Order 52)",
+   "type": "St",
+   "rarity": "PR",
+   "mark": ""
+  },
+  "53": {
+   "en": "Ampharos",
+   "page": "Ampharos-GX (Dark Order 53)",
+   "type": "Lightning",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "54": {
+   "en": "Hoopa",
+   "page": "Hoopa-GX (Dark Order 54)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "55": {
+   "en": "Incineroar",
+   "page": "Incineroar-GX (Dark Order 55)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "56": {
+   "en": "Cobalion",
+   "page": "Cobalion-GX (Dark Order 56)",
+   "type": "Metal",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "57": {
+   "en": "Nanu",
+   "page": "Nanu (Dark Order 57)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "58": {
+   "en": "Jasmine",
+   "page": "Jasmine (Dark Order 58)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "59": {
+   "en": "Ampharos",
+   "page": "Ampharos-GX (Dark Order 59)",
+   "type": "Lightning",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "60": {
+   "en": "Hoopa",
+   "page": "Hoopa-GX (Dark Order 60)",
+   "type": "Darkness",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "61": {
+   "en": "Incineroar",
+   "page": "Incineroar-GX (Dark Order 61)",
+   "type": "Darkness",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "62": {
+   "en": "Cobalion",
+   "page": "Cobalion-GX (Dark Order 62)",
+   "type": "Metal",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "63": {
+   "en": "Electrocharger",
+   "page": "Electrocharger (Dark Order 63)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "64": {
+   "en": "Dangerous Drill",
+   "page": "Dangerous Drill (Dark Order 64)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "65": {
+   "en": "Metal Goggles",
+   "page": "Metal Goggles (Dark Order 65)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  }
+ }
+}

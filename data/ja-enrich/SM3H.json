@@ -1,0 +1,454 @@
+{
+ "page": "To Have Seen the Battle Rainbow (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Oddish",
+   "page": "Oddish (To Have Seen the Battle Rainbow 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Gloom",
+   "page": "Gloom (To Have Seen the Battle Rainbow 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Vileplume",
+   "page": "Vileplume (To Have Seen the Battle Rainbow 3)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "4": {
+   "en": "Heracross",
+   "page": "Heracross (To Have Seen the Battle Rainbow 4)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "5": {
+   "en": "Pansage",
+   "page": "Pansage (To Have Seen the Battle Rainbow 5)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Simisage",
+   "page": "Simisage (To Have Seen the Battle Rainbow 6)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Dewpider",
+   "page": "Dewpider (To Have Seen the Battle Rainbow 7)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Araquanid",
+   "page": "Araquanid (To Have Seen the Battle Rainbow 8)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "9": {
+   "en": "Charmander",
+   "page": "Charmander (To Have Seen the Battle Rainbow 9)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Charmeleon",
+   "page": "Charmeleon (To Have Seen the Battle Rainbow 10)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "11": {
+   "en": "Charizard",
+   "page": "Charizard-GX (To Have Seen the Battle Rainbow 11)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "12": {
+   "en": "Ho-Oh",
+   "page": "Ho-Oh-GX (To Have Seen the Battle Rainbow 12)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "13": {
+   "en": "Pansear",
+   "page": "Pansear (To Have Seen the Battle Rainbow 13)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Simisear",
+   "page": "Simisear (To Have Seen the Battle Rainbow 14)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "15": {
+   "en": "Heatmor",
+   "page": "Heatmor (To Have Seen the Battle Rainbow 15)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "16": {
+   "en": "Horsea",
+   "page": "Horsea (To Have Seen the Battle Rainbow 16)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Seadra",
+   "page": "Seadra (To Have Seen the Battle Rainbow 17)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "18": {
+   "en": "Kingdra",
+   "page": "Kingdra (To Have Seen the Battle Rainbow 18)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "19": {
+   "en": "Marill",
+   "page": "Marill (To Have Seen the Battle Rainbow 19)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "20": {
+   "en": "Azumarill",
+   "page": "Azumarill (To Have Seen the Battle Rainbow 20)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "21": {
+   "en": "Wobbuffet",
+   "page": "Wobbuffet (To Have Seen the Battle Rainbow 21)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "22": {
+   "en": "Venipede",
+   "page": "Venipede (To Have Seen the Battle Rainbow 22)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "23": {
+   "en": "Whirlipede",
+   "page": "Whirlipede (To Have Seen the Battle Rainbow 23)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "24": {
+   "en": "Scolipede",
+   "page": "Scolipede (To Have Seen the Battle Rainbow 24)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "25": {
+   "en": "Sandygast",
+   "page": "Sandygast (To Have Seen the Battle Rainbow 25)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "26": {
+   "en": "Palossand",
+   "page": "Palossand (To Have Seen the Battle Rainbow 26)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "27": {
+   "en": "Riolu",
+   "page": "Riolu (To Have Seen the Battle Rainbow 27)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "28": {
+   "en": "Lucario",
+   "page": "Lucario (To Have Seen the Battle Rainbow 28)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "29": {
+   "en": "Crabrawler",
+   "page": "Crabrawler (To Have Seen the Battle Rainbow 29)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "30": {
+   "en": "Crabominable",
+   "page": "Crabominable (To Have Seen the Battle Rainbow 30)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "31": {
+   "en": "Passimian",
+   "page": "Passimian (To Have Seen the Battle Rainbow 31)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "32": {
+   "en": "Alolan Grimer",
+   "page": "Alolan Grimer (To Have Seen the Battle Rainbow 32)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "33": {
+   "en": "Alolan Muk",
+   "page": "Alolan Muk-GX (To Have Seen the Battle Rainbow 33)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "34": {
+   "en": "Darkrai",
+   "page": "Darkrai (To Have Seen the Battle Rainbow 34)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "35": {
+   "en": "Inkay",
+   "page": "Inkay (To Have Seen the Battle Rainbow 35)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "36": {
+   "en": "Malamar",
+   "page": "Malamar (To Have Seen the Battle Rainbow 36)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "37": {
+   "en": "Diancie",
+   "page": "Diancie (To Have Seen the Battle Rainbow 37)",
+   "type": "Fairy",
+   "rarity": "R",
+   "mark": ""
+  },
+  "38": {
+   "en": "Cutiefly",
+   "page": "Cutiefly (To Have Seen the Battle Rainbow 38)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "39": {
+   "en": "Ribombee",
+   "page": "Ribombee (To Have Seen the Battle Rainbow 39)",
+   "type": "Fairy",
+   "rarity": "U",
+   "mark": ""
+  },
+  "40": {
+   "en": "Noivern",
+   "page": "Noivern-GX (To Have Seen the Battle Rainbow 40)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "41": {
+   "en": "Meowth",
+   "page": "Meowth (To Have Seen the Battle Rainbow 41)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "42": {
+   "en": "Persian",
+   "page": "Persian (To Have Seen the Battle Rainbow 42)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "43": {
+   "en": "Hoothoot",
+   "page": "Hoothoot (To Have Seen the Battle Rainbow 43)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "44": {
+   "en": "Noctowl",
+   "page": "Noctowl (To Have Seen the Battle Rainbow 44)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "45": {
+   "en": "Bouffalant",
+   "page": "Bouffalant (To Have Seen the Battle Rainbow 45)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "46": {
+   "en": "Noibat",
+   "page": "Noibat (To Have Seen the Battle Rainbow 46)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "47": {
+   "en": "Rotom Dex Poké Finder Mode",
+   "page": "Rotom Dex Poké Finder Mode (To Have Seen the Battle Rainbow 47)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "48": {
+   "en": "Bodybuilding Dumbbells",
+   "page": "Bodybuilding Dumbbells (To Have Seen the Battle Rainbow 48)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "49": {
+   "en": "Kiawe",
+   "page": "Kiawe (To Have Seen the Battle Rainbow 49)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "50": {
+   "en": "Plumeria",
+   "page": "Plumeria (To Have Seen the Battle Rainbow 50)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "51": {
+   "en": "Mount Lanakila",
+   "page": "Mount Lanakila (To Have Seen the Battle Rainbow 51)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "52": {
+   "en": "Charizard",
+   "page": "Charizard-GX (To Have Seen the Battle Rainbow 52)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "53": {
+   "en": "Ho-Oh",
+   "page": "Ho-Oh-GX (To Have Seen the Battle Rainbow 53)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "54": {
+   "en": "Alolan Muk",
+   "page": "Alolan Muk-GX (To Have Seen the Battle Rainbow 54)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "55": {
+   "en": "Noivern",
+   "page": "Noivern-GX (To Have Seen the Battle Rainbow 55)",
+   "type": "Dragon",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "56": {
+   "en": "Kiawe",
+   "page": "Kiawe (To Have Seen the Battle Rainbow 56)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "57": {
+   "en": "Plumeria",
+   "page": "Plumeria (To Have Seen the Battle Rainbow 57)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "58": {
+   "en": "Charizard",
+   "page": "Charizard-GX (To Have Seen the Battle Rainbow 58)",
+   "type": "Fire",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "59": {
+   "en": "Ho-Oh",
+   "page": "Ho-Oh-GX (To Have Seen the Battle Rainbow 59)",
+   "type": "Fire",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "60": {
+   "en": "Alolan Muk",
+   "page": "Alolan Muk-GX (To Have Seen the Battle Rainbow 60)",
+   "type": "Darkness",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "61": {
+   "en": "Noivern",
+   "page": "Noivern-GX (To Have Seen the Battle Rainbow 61)",
+   "type": "Dragon",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "62": {
+   "en": "Escape Rope",
+   "page": "Escape Rope (To Have Seen the Battle Rainbow 62)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "63": {
+   "en": "Bodybuilding Dumbbells",
+   "page": "Bodybuilding Dumbbells (To Have Seen the Battle Rainbow 63)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "64": {
+   "en": "Fire Energy",
+   "page": "Fire Energy (To Have Seen the Battle Rainbow 64)",
+   "type": "Fire",
+   "rarity": "UR",
+   "mark": "—"
+  }
+ }
+}

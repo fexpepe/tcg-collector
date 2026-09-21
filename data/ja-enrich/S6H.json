@@ -1,0 +1,671 @@
+{
+ "page": "Silver Lance (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Snover",
+   "page": "Snover (Silver Lance 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Abomasnow",
+   "page": "Abomasnow (Silver Lance 2)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "3": {
+   "en": "Dwebble",
+   "page": "Dwebble (Silver Lance 3)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "4": {
+   "en": "Crustle",
+   "page": "Crustle (Silver Lance 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Deerling",
+   "page": "Deerling (Silver Lance 5)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Sawsbuck",
+   "page": "Sawsbuck (Silver Lance 6)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "7": {
+   "en": "Bounsweet",
+   "page": "Bounsweet (Silver Lance 7)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Steenee",
+   "page": "Steenee (Silver Lance 8)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "9": {
+   "en": "Tsareena",
+   "page": "Tsareena (Silver Lance 9)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "10": {
+   "en": "Zarude",
+   "page": "Zarude (Silver Lance 10)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "11": {
+   "en": "Castform Sunny Form",
+   "page": "Castform Sunny Form (Silver Lance 11)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "12": {
+   "en": "Litleo",
+   "page": "Litleo (Silver Lance 12)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "13": {
+   "en": "Pyroar",
+   "page": "Pyroar (Silver Lance 13)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Volcanion",
+   "page": "Volcanion V (Silver Lance 14)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "15": {
+   "en": "Scorbunny",
+   "page": "Scorbunny (Silver Lance 15)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "16": {
+   "en": "Raboot",
+   "page": "Raboot (Silver Lance 16)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "17": {
+   "en": "Cinderace",
+   "page": "Cinderace (Silver Lance 17)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "18": {
+   "en": "Lapras",
+   "page": "Lapras (Silver Lance 18)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "19": {
+   "en": "Castform Snowy Form",
+   "page": "Castform Snowy Form (Silver Lance 19)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "20": {
+   "en": "Snorunt",
+   "page": "Snorunt (Silver Lance 20)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "21": {
+   "en": "Froslass",
+   "page": "Froslass (Silver Lance 21)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "22": {
+   "en": "Spheal",
+   "page": "Spheal (Silver Lance 22)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "23": {
+   "en": "Sealeo",
+   "page": "Sealeo (Silver Lance 23)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "24": {
+   "en": "Walrein",
+   "page": "Walrein (Silver Lance 24)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "25": {
+   "en": "Bergmite",
+   "page": "Bergmite (Silver Lance 25)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "26": {
+   "en": "Avalugg",
+   "page": "Avalugg (Silver Lance 26)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "27": {
+   "en": "Ice Rider Calyrex",
+   "page": "Ice Rider Calyrex V (Silver Lance 27)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "28": {
+   "en": "Ice Rider Calyrex",
+   "page": "Ice Rider Calyrex VMAX (Silver Lance 28)",
+   "type": "Water",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "29": {
+   "en": "Galarian Rapidash",
+   "page": "Galarian Rapidash V (Silver Lance 29)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "30": {
+   "en": "Galarian Slowpoke",
+   "page": "Galarian Slowpoke (Silver Lance 30)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "31": {
+   "en": "Drowzee",
+   "page": "Drowzee (Silver Lance 31)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "32": {
+   "en": "Hypno",
+   "page": "Hypno (Silver Lance 32)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "33": {
+   "en": "Ralts",
+   "page": "Ralts (Silver Lance 33)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "34": {
+   "en": "Kirlia",
+   "page": "Kirlia (Silver Lance 34)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "35": {
+   "en": "Gardevoir",
+   "page": "Gardevoir (Silver Lance 35)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "36": {
+   "en": "Shuppet",
+   "page": "Shuppet (Silver Lance 36)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "37": {
+   "en": "Banette",
+   "page": "Banette (Silver Lance 37)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "38": {
+   "en": "Hippopotas",
+   "page": "Hippopotas (Silver Lance 38)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "39": {
+   "en": "Hippowdon",
+   "page": "Hippowdon (Silver Lance 39)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "40": {
+   "en": "Gallade",
+   "page": "Gallade (Silver Lance 40)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "41": {
+   "en": "Rockruff",
+   "page": "Rockruff (Silver Lance 41)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "42": {
+   "en": "Lycanroc",
+   "page": "Lycanroc (Silver Lance 42)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "43": {
+   "en": "Sandaconda",
+   "page": "Sandaconda V (Silver Lance 43)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "44": {
+   "en": "Sandaconda",
+   "page": "Sandaconda VMAX (Silver Lance 44)",
+   "type": "Fighting",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "45": {
+   "en": "Galarian Slowking",
+   "page": "Galarian Slowking (Silver Lance 45)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "46": {
+   "en": "Qwilfish",
+   "page": "Qwilfish (Silver Lance 46)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "47": {
+   "en": "Liepard",
+   "page": "Liepard V (Silver Lance 47)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "48": {
+   "en": "Aron",
+   "page": "Aron (Silver Lance 48)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "49": {
+   "en": "Lairon",
+   "page": "Lairon (Silver Lance 49)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "50": {
+   "en": "Aggron",
+   "page": "Aggron (Silver Lance 50)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "51": {
+   "en": "Tauros",
+   "page": "Tauros (Silver Lance 51)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "52": {
+   "en": "Porygon",
+   "page": "Porygon (Silver Lance 52)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "53": {
+   "en": "Porygon2",
+   "page": "Porygon2 (Silver Lance 53)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "54": {
+   "en": "Porygon-Z",
+   "page": "Porygon-Z (Silver Lance 54)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "55": {
+   "en": "Teddiursa",
+   "page": "Teddiursa (Silver Lance 55)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "56": {
+   "en": "Ursaring",
+   "page": "Ursaring (Silver Lance 56)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "57": {
+   "en": "Tornadus",
+   "page": "Tornadus V (Silver Lance 57)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "58": {
+   "en": "Tornadus",
+   "page": "Tornadus VMAX (Silver Lance 58)",
+   "type": "Colorless",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "59": {
+   "en": "Furfrou",
+   "page": "Furfrou (Silver Lance 59)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "60": {
+   "en": "Expedition Uniform",
+   "page": "Expedition Uniform (Silver Lance 60)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "61": {
+   "en": "Rugged Helmet",
+   "page": "Rugged Helmet (Silver Lance 61)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "62": {
+   "en": "Single Strike Scroll of Piercing",
+   "page": "Single Strike Scroll of Piercing (Silver Lance 62)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "63": {
+   "en": "Fire-Resistant Gloves",
+   "page": "Fire-Resistant Gloves (Silver Lance 63)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "64": {
+   "en": "Crushing Gloves",
+   "page": "Crushing Gloves (Silver Lance 64)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "65": {
+   "en": "Flannery",
+   "page": "Flannery (Silver Lance 65)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "66": {
+   "en": "Doctor",
+   "page": "Doctor (Silver Lance 66)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "67": {
+   "en": "Peony",
+   "page": "Peony (Silver Lance 67)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "68": {
+   "en": "Melony",
+   "page": "Melony (Silver Lance 68)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "69": {
+   "en": "Path to the Peak",
+   "page": "Path to the Peak (Silver Lance 69)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "70": {
+   "en": "Impact Energy",
+   "page": "Impact Energy (Silver Lance 70)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "71": {
+   "en": "Volcanion",
+   "page": "Volcanion V (Silver Lance 71)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "72": {
+   "en": "Ice Rider Calyrex",
+   "page": "Ice Rider Calyrex V (Silver Lance 72)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "73": {
+   "en": "Ice Rider Calyrex",
+   "page": "Ice Rider Calyrex V (Silver Lance 73)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "74": {
+   "en": "Galarian Rapidash",
+   "page": "Galarian Rapidash V (Silver Lance 74)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "75": {
+   "en": "Galarian Rapidash",
+   "page": "Galarian Rapidash V (Silver Lance 75)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "76": {
+   "en": "Sandaconda",
+   "page": "Sandaconda V (Silver Lance 76)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "77": {
+   "en": "Liepard",
+   "page": "Liepard V (Silver Lance 77)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "78": {
+   "en": "Tornadus",
+   "page": "Tornadus V (Silver Lance 78)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "79": {
+   "en": "Tornadus",
+   "page": "Tornadus V (Silver Lance 79)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "80": {
+   "en": "Flannery",
+   "page": "Flannery (Silver Lance 80)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "81": {
+   "en": "Doctor",
+   "page": "Doctor (Silver Lance 81)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "82": {
+   "en": "Peony",
+   "page": "Peony (Silver Lance 82)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "83": {
+   "en": "Melony",
+   "page": "Melony (Silver Lance 83)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "84": {
+   "en": "Ice Rider Calyrex",
+   "page": "Ice Rider Calyrex VMAX (Silver Lance 84)",
+   "type": "Water",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "85": {
+   "en": "Ice Rider Calyrex",
+   "page": "Ice Rider Calyrex VMAX (Silver Lance 85)",
+   "type": "Water",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "86": {
+   "en": "Sandaconda",
+   "page": "Sandaconda VMAX (Silver Lance 86)",
+   "type": "Fighting",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "87": {
+   "en": "Tornadus",
+   "page": "Tornadus VMAX (Silver Lance 87)",
+   "type": "Colorless",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "88": {
+   "en": "Flannery",
+   "page": "Flannery (Silver Lance 88)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "89": {
+   "en": "Doctor",
+   "page": "Doctor (Silver Lance 89)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "90": {
+   "en": "Peony",
+   "page": "Peony (Silver Lance 90)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "91": {
+   "en": "Melony",
+   "page": "Melony (Silver Lance 91)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "92": {
+   "en": "Bronzong",
+   "page": "Bronzong (Silver Lance 92)",
+   "type": "Metal",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "93": {
+   "en": "Welcoming Lantern",
+   "page": "Welcoming Lantern (Silver Lance 93)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "94": {
+   "en": "Rugged Helmet",
+   "page": "Rugged Helmet (Silver Lance 94)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "95": {
+   "en": "Water Energy",
+   "page": "Water Energy (Silver Lance 95)",
+   "type": "Water",
+   "rarity": "UR",
+   "mark": "—"
+  }
+ }
+}
