@@ -7,7 +7,10 @@
    "page": "Beedrill-EX (Premium Champion Pack 1)",
    "type": "Grass",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "スピアーEX",
+   "artist": "hatachu",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b5/BeedrillEXPremiumChampionPack1.jpg"
   },
   "2": {
    "en": "Beedrill",
@@ -24,7 +27,10 @@
    "page": "Pinsir (Premium Champion Pack 3)",
    "type": "Grass",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "カイロス",
+   "artist": "Satoshi Shirai",
+   "image": "https://archives.bulbagarden.net/media/upload/9/94/PinsirBREAKthrough3.jpg"
   },
   "4": {
    "en": "Spinarak",
@@ -51,7 +57,10 @@
    "page": "Sceptile-EX (Premium Champion Pack 6)",
    "type": "Grass",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ジュカインEX",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/c/cb/SceptileEXAncientOrigins84.jpg"
   },
   "7": {
    "en": "Sceptile",
@@ -238,14 +247,20 @@
    "page": "Octillery (Premium Champion Pack 25)",
    "type": "Water",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "オクタン",
+   "artist": "Kyoko Umemoto",
+   "image": "https://archives.bulbagarden.net/media/upload/3/34/OctilleryBREAKthrough33.jpg"
   },
   "26": {
    "en": "Mudkip",
    "page": "Mudkip (Premium Champion Pack 26)",
    "type": "Water",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ミズゴロウ",
+   "artist": "Aya Kusube",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f6/MudkipXYPromo38.jpg"
   },
   "27": {
    "en": "Marshtomp",
@@ -372,7 +387,10 @@
    "page": "Magneton (Premium Champion Pack 39)",
    "type": "Lightning",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "レアコイル",
+   "artist": "Tomokazu Komiya",
+   "image": "https://archives.bulbagarden.net/media/upload/1/15/MagnetonBREAKthrough53.jpg"
   },
   "40": {
    "en": "Magnezone",
@@ -469,7 +487,10 @@
    "page": "M Gengar-EX (Premium Champion Pack 49)",
    "type": "Psychic",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ゲンガーEX",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a2/MGengarEXPhantomForces121.jpg"
   },
   "50": {
    "en": "Mewtwo",
@@ -486,7 +507,10 @@
    "page": "M Mewtwo-EX (Premium Champion Pack 51)",
    "type": "Psychic",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "MミュウツーEX",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/4/41/MMewtwoEXBREAKthrough63.jpg"
   },
   "52": {
    "en": "Mewtwo",

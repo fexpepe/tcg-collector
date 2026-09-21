@@ -7,742 +7,1060 @@
    "page": "Oddish (Golden Sky, Silvery Ocean 1)",
    "type": "Grass",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "ナゾノクサ",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/a/aa/OddishEXUnseenForces64.jpg"
   },
   "2": {
    "en": "Gloom",
    "page": "Gloom (Golden Sky, Silvery Ocean 2)",
    "type": "Grass",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "クサイハナ",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/9/9e/GloomEXUnseenForces58.jpg"
   },
   "3": {
    "en": "Scyther",
    "page": "Scyther (Golden Sky, Silvery Ocean 3)",
    "type": "Grass",
    "rarity": "Rare",
-   "mark": ""
+   "mark": "",
+   "ja": "ストライク",
+   "artist": "Hajime Kusajima",
+   "image": "https://archives.bulbagarden.net/media/upload/9/90/ScytherEXUnseenForces46.jpg"
   },
   "4": {
    "en": "Meganium",
    "page": "Meganium (Golden Sky, Silvery Ocean 4)",
    "type": "Grass",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "メガニウム",
+   "artist": "Atsuko Nishida",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a1/MeganiumEXUnseenForces9.jpg"
   },
   "5": {
    "en": "Spinarak",
    "page": "Spinarak (Golden Sky, Silvery Ocean 5)",
    "type": "Grass",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "イトマル",
+   "artist": "Sachiko Adachi",
+   "image": "https://archives.bulbagarden.net/media/upload/4/40/SpinarakEXUnseenForces75.jpg"
   },
   "6": {
    "en": "Ariados",
    "page": "Ariados (Golden Sky, Silvery Ocean 6)",
    "type": "Grass",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "アリアドス",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d1/AriadosEXUnseenForces2.jpg"
   },
   "7": {
    "en": "Bellossom",
    "page": "Bellossom (Golden Sky, Silvery Ocean 7)",
    "type": "Grass",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "キレイハナ",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/3/3c/BellossomEXUnseenForces3.jpg"
   },
   "8": {
    "en": "Sunkern",
    "page": "Sunkern (Golden Sky, Silvery Ocean 8)",
    "type": "Grass",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "ヒマナッツ",
+   "artist": "Sumiyoshi Kizuki",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a4/SunkernEXUnseenForces76.jpg"
   },
   "9": {
    "en": "Sunflora",
    "page": "Sunflora (Golden Sky, Silvery Ocean 9)",
    "type": "Grass",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "キマワリ",
+   "artist": "Sumiyoshi Kizuki",
+   "image": "https://archives.bulbagarden.net/media/upload/0/09/SunfloraEXUnseenForces16.jpg"
   },
   "10": {
    "en": "Yanma",
    "page": "Yanma (Golden Sky, Silvery Ocean 10)",
    "type": "Grass",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "ヤンヤンマ",
+   "artist": "Kagemaru Himeno",
+   "image": "https://archives.bulbagarden.net/media/upload/b/bb/YanmaEXUnseenForces50.jpg"
   },
   "11": {
    "en": "Pineco",
    "page": "Pineco (Golden Sky, Silvery Ocean 11)",
    "type": "Grass",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "クヌギダマ",
+   "artist": "Aya Kusube",
+   "image": "https://archives.bulbagarden.net/media/upload/0/08/PinecoEXUnseenForces66.jpg"
   },
   "12": {
    "en": "Shuckle",
    "page": "Shuckle (Golden Sky, Silvery Ocean 12)",
    "type": "Grass",
    "rarity": "Rare",
-   "mark": ""
+   "mark": "",
+   "ja": "ツボツボ",
+   "artist": "Miki Tanaka",
+   "image": "https://archives.bulbagarden.net/media/upload/2/25/ShuckleEXUnseenForces47.jpg"
   },
   "13": {
    "en": "Flareon",
    "page": "Flareon (Golden Sky, Silvery Ocean 13)",
    "type": "Fire",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ブースター",
+   "artist": "Naoyo Kimura",
+   "image": "https://archives.bulbagarden.net/media/upload/8/8c/FlareonEXUnseenForces5.jpg"
   },
   "14": {
    "en": "Typhlosion",
    "page": "Typhlosion (Golden Sky, Silvery Ocean 14)",
    "type": "Fire",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "バクフーン",
+   "artist": "Hajime Kusajima",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b4/TyphlosionNintendoPromo34.jpg"
   },
   "15": {
    "en": "Slugma",
    "page": "Slugma (Golden Sky, Silvery Ocean 15)",
    "type": "Fire",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "マグマッグ",
+   "artist": "Tomokazu Komiya",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c4/SlugmaEXUnseenForces73.jpg"
   },
   "16": {
    "en": "Magcargo",
    "page": "Magcargo (Golden Sky, Silvery Ocean 16)",
    "type": "Fire",
    "rarity": "Rare",
-   "mark": ""
+   "mark": "",
+   "ja": "マグカルゴ",
+   "artist": "Tomokazu Komiya",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2d/MagcargoEXUnseenForces41.jpg"
   },
   "17": {
    "en": "Houndour",
    "page": "Houndour (Golden Sky, Silvery Ocean 17)",
    "type": "Fire",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "デルビル",
+   "artist": "Kagemaru Himeno",
+   "image": "https://archives.bulbagarden.net/media/upload/2/20/HoundourEXUnseenForces60.jpg"
   },
   "18": {
    "en": "Houndoom",
    "page": "Houndoom (Golden Sky, Silvery Ocean 18)",
    "type": "Fire",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ヘルガー",
+   "artist": "Midori Harada",
+   "image": "https://archives.bulbagarden.net/media/upload/7/71/HoundoomEXUnseenForces7.jpg"
   },
   "19": {
    "en": "Entei",
    "page": "Entei ☆ (Golden Sky, Silvery Ocean 19)",
    "type": "Fire",
    "rarity": "ShinyRare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "エンテイ☆",
+   "artist": "Masakazu Fukuda",
+   "image": "https://archives.bulbagarden.net/media/upload/f/fd/EnteiEXUnseenForces113.jpg"
   },
   "20": {
    "en": "Ho-Oh ex",
    "page": "Ho-Oh ex (Golden Sky, Silvery Ocean 20)",
    "type": "Fire",
    "rarity": "Rare Holo ex",
-   "mark": ""
+   "mark": "",
+   "ja": "ホウオウ ex",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/5/59/Ho-Ohex17POPSeries3.jpg"
   },
   "21": {
    "en": "Poliwag",
    "page": "Poliwag (Golden Sky, Silvery Ocean 21)",
    "type": "Water",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "ニョロモ",
+   "artist": "Kagemaru Himeno",
+   "image": "https://archives.bulbagarden.net/media/upload/2/29/PoliwagEXUnseenForces67.jpg"
   },
   "22": {
    "en": "Poliwhirl",
    "page": "Poliwhirl (Golden Sky, Silvery Ocean 22)",
    "type": "Water",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "ニョロゾ",
+   "artist": "Miki Tanaka",
+   "image": "https://archives.bulbagarden.net/media/upload/4/46/PoliwhirlEXUnseenForces68.jpg"
   },
   "23": {
    "en": "Slowbro",
    "page": "Slowbro (Golden Sky, Silvery Ocean 23)",
    "type": "Water",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ヤドラン",
+   "artist": "Midori Harada",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e5/SlowbroEXUnseenForces13.jpg"
   },
   "24": {
    "en": "Jynx",
    "page": "Jynx (Golden Sky, Silvery Ocean 24)",
    "type": "Water",
    "rarity": "Rare",
-   "mark": ""
+   "mark": "",
+   "ja": "カポエラー",
+   "artist": "Yukiko Baba",
+   "image": "https://archives.bulbagarden.net/media/upload/5/5f/JynxEXUnseenForces28.jpg"
   },
   "25": {
    "en": "Vaporeon",
    "page": "Vaporeon (Golden Sky, Silvery Ocean 25)",
    "type": "Water",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "シャワーズ",
+   "artist": "Atsuko Nishida",
+   "image": "https://archives.bulbagarden.net/media/upload/0/0d/VaporeonEXUnseenForces19.jpg"
   },
   "26": {
    "en": "Feraligatr",
    "page": "Feraligatr (Golden Sky, Silvery Ocean 26)",
    "type": "Water",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "オーダイル",
+   "artist": "Masakazu Fukuda",
+   "image": "https://archives.bulbagarden.net/media/upload/8/8c/FeraligatrEXUnseenForces4.jpg"
   },
   "27": {
    "en": "Politoed ex",
    "page": "Politoed ex (Golden Sky, Silvery Ocean 27)",
    "type": "Water",
    "rarity": "Rare Holo ex",
-   "mark": ""
+   "mark": "",
+   "ja": "ニョロトノex",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/5/59/PolitoedexEXUnseenForces107.jpg"
   },
   "28": {
    "en": "Corsola",
    "page": "Corsola (Golden Sky, Silvery Ocean 28)",
    "type": "Water",
    "rarity": "Rare",
-   "mark": ""
+   "mark": "",
+   "ja": "サニーゴ",
+   "artist": "Kagemaru Himeno",
+   "image": "https://archives.bulbagarden.net/media/upload/2/26/CorsolaEXUnseenForces37.jpg"
   },
   "29": {
    "en": "Remoraid",
    "page": "Remoraid (Golden Sky, Silvery Ocean 29)",
    "type": "Water",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "テッポウオ",
+   "artist": "Sachiko Adachi",
+   "image": "https://archives.bulbagarden.net/media/upload/0/05/RemoraidEXUnseenForces71.jpg"
   },
   "30": {
    "en": "Octillery",
    "page": "Octillery (Golden Sky, Silvery Ocean 30)",
    "type": "Water",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "オクタン",
+   "artist": "Naoyo Kimura",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c9/OctilleryEXUnseenForces10.jpg"
   },
   "31": {
    "en": "Smoochum",
    "page": "Smoochum (Golden Sky, Silvery Ocean 31)",
    "type": "Water",
    "rarity": "Rare",
-   "mark": ""
+   "mark": "",
+   "ja": "ムチュール",
+   "artist": "Yuka Morii",
+   "image": "https://archives.bulbagarden.net/media/upload/6/6b/SmoochumEXUnseenForces31.jpg"
   },
   "32": {
    "en": "Suicune",
    "page": "Suicune ☆ (Golden Sky, Silvery Ocean 32)",
    "type": "Water",
    "rarity": "ShinyRare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "スイクン☆",
+   "artist": "Masakazu Fukuda",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b0/SuicuneEXUnseenForces115.jpg"
   },
   "33": {
    "en": "Electabuzz",
    "page": "Electabuzz (Golden Sky, Silvery Ocean 33)",
    "type": "Lightning",
    "rarity": "Rare",
-   "mark": ""
+   "mark": "",
+   "ja": "エレブー",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d8/ElectabuzzEXUnseenForces22.jpg"
   },
   "34": {
    "en": "Jolteon",
    "page": "Jolteon (Golden Sky, Silvery Ocean 34)",
    "type": "Lightning",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "サンダース",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/7/70/JolteonEXUnseenForces8.jpg"
   },
   "35": {
    "en": "Mareep",
    "page": "Mareep (Golden Sky, Silvery Ocean 35)",
    "type": "Lightning",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "メリープ",
+   "artist": "Kyoko Umemoto",
+   "image": "https://archives.bulbagarden.net/media/upload/3/36/MareepEXUnseenForces62.jpg"
   },
   "36": {
    "en": "Flaaffy",
    "page": "Flaaffy (Golden Sky, Silvery Ocean 36)",
    "type": "Lightning",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "モココ",
+   "artist": "Kyoko Umemoto",
+   "image": "https://archives.bulbagarden.net/media/upload/0/0a/FlaaffyEXUnseenForces56.jpg"
   },
   "37": {
    "en": "Ampharos",
    "page": "Ampharos (Golden Sky, Silvery Ocean 37)",
    "type": "Lightning",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "デンリュウ",
+   "artist": "Kyoko Umemoto",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a9/AmpharosEXUnseenForces1.jpg"
   },
   "38": {
    "en": "Elekid",
    "page": "Elekid (Golden Sky, Silvery Ocean 38)",
    "type": "Lightning",
    "rarity": "Rare",
-   "mark": ""
+   "mark": "",
+   "ja": "エレキッド",
+   "artist": "Yuka Morii",
+   "image": "https://archives.bulbagarden.net/media/upload/8/82/ElekidEXUnseenForces23.jpg"
   },
   "39": {
    "en": "Raikou",
    "page": "Raikou ☆ (Golden Sky, Silvery Ocean 39)",
    "type": "Lightning",
    "rarity": "ShinyRare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ライコウ☆",
+   "artist": "Masakazu Fukuda",
+   "image": "https://archives.bulbagarden.net/media/upload/a/ae/RaikouEXUnseenForces114.jpg"
   },
   "40": {
    "en": "Slowpoke",
    "page": "Slowpoke (Golden Sky, Silvery Ocean 40)",
    "type": "Psychic",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "ヤドン",
+   "artist": "Midori Harada",
+   "image": "https://archives.bulbagarden.net/media/upload/6/6c/SlowpokeEXUnseenForces72.jpg"
   },
   "41": {
    "en": "Espeon ex",
    "page": "Espeon ex (Golden Sky, Silvery Ocean 41)",
    "type": "Psychic",
    "rarity": "Rare Holo ex",
-   "mark": ""
+   "mark": "",
+   "ja": "エーフィex",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/4/4f/EspeonexEXUnseenForces102.jpg"
   },
   "42": {
    "en": "Slowking",
    "page": "Slowking (Golden Sky, Silvery Ocean 42)",
    "type": "Psychic",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ヤドキング",
+   "artist": "Midori Harada",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b2/SlowkingEXUnseenForces14.jpg"
   },
   "43": {
    "en": "Unown",
    "page": "Unown (Golden Sky, Silvery Ocean 43)",
    "type": "Psychic",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "アンノーン",
+   "artist": "Shin-ichi Yoshikawa",
+   "image": "https://archives.bulbagarden.net/media/upload/4/46/UnownEXUnseenForcesA.jpg"
   },
   "44": {
    "en": "Unown",
    "page": "Unown (Golden Sky, Silvery Ocean 44)",
    "type": "Psychic",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "アンノーン",
+   "artist": "Shin-ichi Yoshikawa",
+   "image": "https://archives.bulbagarden.net/media/upload/8/8b/UnownEXUnseenForcesB.jpg"
   },
   "45": {
    "en": "Unown",
    "page": "Unown (Golden Sky, Silvery Ocean 45)",
    "type": "Psychic",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "アンノーン",
+   "artist": "Shin-ichi Yoshikawa",
+   "image": "https://archives.bulbagarden.net/media/upload/7/73/UnownEXUnseenForcesC.jpg"
   },
   "46": {
    "en": "Unown",
    "page": "Unown (Golden Sky, Silvery Ocean 46)",
    "type": "Psychic",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "アンノーン",
+   "artist": "Shin-ichi Yoshikawa",
+   "image": "https://archives.bulbagarden.net/media/upload/9/90/UnownEXUnseenForcesD.jpg"
   },
   "47": {
    "en": "Unown",
    "page": "Unown (Golden Sky, Silvery Ocean 47)",
    "type": "Psychic",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "アンノーン",
+   "artist": "Shin-ichi Yoshikawa",
+   "image": "https://archives.bulbagarden.net/media/upload/3/33/UnownEXUnseenForcesE.jpg"
   },
   "48": {
    "en": "Unown",
    "page": "Unown (Golden Sky, Silvery Ocean 48)",
    "type": "Psychic",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "アンノーン",
+   "artist": "Shin-ichi Yoshikawa",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a9/UnownEXUnseenForcesF.jpg"
   },
   "49": {
    "en": "Unown",
    "page": "Unown (Golden Sky, Silvery Ocean 49)",
    "type": "Psychic",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "アンノーン",
+   "artist": "Shin-ichi Yoshikawa",
+   "image": "https://archives.bulbagarden.net/media/upload/2/27/UnownEXUnseenForcesG.jpg"
   },
   "50": {
    "en": "Unown",
    "page": "Unown (Golden Sky, Silvery Ocean 50)",
    "type": "Psychic",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "アンノーン",
+   "artist": "Shin-ichi Yoshikawa",
+   "image": "https://archives.bulbagarden.net/media/upload/7/79/UnownEXUnseenForcesH.jpg"
   },
   "51": {
    "en": "Unown",
    "page": "Unown (Golden Sky, Silvery Ocean 51)",
    "type": "Psychic",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "アンノーン",
+   "artist": "Nakaoka",
+   "image": "https://archives.bulbagarden.net/media/upload/3/38/UnownEXUnseenForcesI.jpg"
   },
   "52": {
    "en": "Unown",
    "page": "Unown (Golden Sky, Silvery Ocean 52)",
    "type": "Psychic",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "アンノーン",
+   "artist": "Nakaoka",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f5/UnownEXUnseenForcesJ.jpg"
   },
   "53": {
    "en": "Unown",
    "page": "Unown (Golden Sky, Silvery Ocean 53)",
    "type": "Psychic",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "アンノーン",
+   "artist": "Nakaoka",
+   "image": "https://archives.bulbagarden.net/media/upload/3/3a/UnownEXUnseenForcesK.jpg"
   },
   "54": {
    "en": "Unown",
    "page": "Unown (Golden Sky, Silvery Ocean 54)",
    "type": "Psychic",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "アンノーン",
+   "artist": "Nakaoka",
+   "image": "https://archives.bulbagarden.net/media/upload/3/38/UnownEXUnseenForcesL.jpg"
   },
   "55": {
    "en": "Unown",
    "page": "Unown (Golden Sky, Silvery Ocean 55)",
    "type": "Psychic",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "アンノーン",
+   "artist": "Nakaoka",
+   "image": "https://archives.bulbagarden.net/media/upload/5/52/UnownEXUnseenForcesM.jpg"
   },
   "56": {
    "en": "Unown",
    "page": "Unown (Golden Sky, Silvery Ocean 56)",
    "type": "Psychic",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "アンノーン",
+   "artist": "Nakaoka",
+   "image": "https://archives.bulbagarden.net/media/upload/1/1e/UnownEXUnseenForcesN.jpg"
   },
   "57": {
    "en": "Unown",
    "page": "Unown (Golden Sky, Silvery Ocean 57)",
    "type": "Psychic",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "アンノーン",
+   "artist": "Nakaoka",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f4/UnownEXUnseenForcesO.jpg"
   },
   "58": {
    "en": "Unown",
    "page": "Unown (Golden Sky, Silvery Ocean 58)",
    "type": "Psychic",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "アンノーン",
+   "artist": "Kyoko Koizumi",
+   "image": "https://archives.bulbagarden.net/media/upload/4/42/UnownEXUnseenForcesP.jpg"
   },
   "59": {
    "en": "Unown",
    "page": "Unown (Golden Sky, Silvery Ocean 59)",
    "type": "Psychic",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "アンノーン",
+   "artist": "Nakaoka",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d6/UnownEXUnseenForcesQ.jpg"
   },
   "60": {
    "en": "Unown",
    "page": "Unown (Golden Sky, Silvery Ocean 60)",
    "type": "Psychic",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "アンノーン",
+   "artist": "Nakaoka",
+   "image": "https://archives.bulbagarden.net/media/upload/0/0c/UnownEXUnseenForcesS.jpg"
   },
   "61": {
    "en": "Unown",
    "page": "Unown (Golden Sky, Silvery Ocean 61)",
    "type": "Psychic",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "アンノーン",
+   "artist": "Kyoko Koizumi",
+   "image": "https://archives.bulbagarden.net/media/upload/8/89/UnownEXUnseenForcesU.jpg"
   },
   "62": {
    "en": "Unown",
    "page": "Unown (Golden Sky, Silvery Ocean 62)",
    "type": "Psychic",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "アンノーン",
+   "artist": "Kyoko Koizumi",
+   "image": "https://archives.bulbagarden.net/media/upload/b/bb/UnownEXUnseenForcesV.jpg"
   },
   "63": {
    "en": "Unown",
    "page": "Unown (Golden Sky, Silvery Ocean 63)",
    "type": "Psychic",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "アンノーン",
+   "artist": "Kyoko Koizumi",
+   "image": "https://archives.bulbagarden.net/media/upload/4/49/UnownEXUnseenForcesW.jpg"
   },
   "64": {
    "en": "Unown",
    "page": "Unown (Golden Sky, Silvery Ocean 64)",
    "type": "Psychic",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "アンノーン",
+   "artist": "Kyoko Koizumi",
+   "image": "https://archives.bulbagarden.net/media/upload/3/33/UnownEXUnseenForcesY.jpg"
   },
   "65": {
    "en": "Unown",
    "page": "Unown (Golden Sky, Silvery Ocean 65)",
    "type": "Psychic",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "アンノーン",
+   "artist": "Kyoko Koizumi",
+   "image": "https://archives.bulbagarden.net/media/upload/4/49/UnownEXUnseenForcesZ.jpg"
   },
   "66": {
    "en": "Unown",
    "page": "Unown (Golden Sky, Silvery Ocean 66)",
    "type": "Psychic",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "アンノーン",
+   "artist": "Kyoko Koizumi",
+   "image": "https://archives.bulbagarden.net/media/upload/b/be/UnownEXUnseenForces%21.jpg"
   },
   "67": {
    "en": "Unown",
    "page": "Unown (Golden Sky, Silvery Ocean 67)",
    "type": "Psychic",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "アンノーン",
+   "artist": "Kyoko Koizumi",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a5/UnownEXUnseenForces%3F.jpg"
   },
   "68": {
    "en": "Poliwrath",
    "page": "Poliwrath (Golden Sky, Silvery Ocean 68)",
    "type": "Fighting",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ニョロボン",
+   "artist": "Hajime Kusajima",
+   "image": "https://archives.bulbagarden.net/media/upload/5/5e/PoliwrathEXUnseenForces11.jpg"
   },
   "69": {
    "en": "Onix",
    "page": "Onix (Golden Sky, Silvery Ocean 69)",
    "type": "Fighting",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "イワーク",
+   "artist": "Yukiko Baba",
+   "image": "https://archives.bulbagarden.net/media/upload/f/fb/OnixEXUnseenForces65.jpg"
   },
   "70": {
    "en": "Hitmonlee",
    "page": "Hitmonlee (Golden Sky, Silvery Ocean 70)",
    "type": "Fighting",
    "rarity": "Rare",
-   "mark": ""
+   "mark": "",
+   "ja": "サワムラー",
+   "artist": "Hisao Nakamura",
+   "image": "https://archives.bulbagarden.net/media/upload/3/33/HitmonleeEXUnseenForces25.jpg"
   },
   "71": {
    "en": "Hitmonchan",
    "page": "Hitmonchan (Golden Sky, Silvery Ocean 71)",
    "type": "Fighting",
    "rarity": "Rare",
-   "mark": ""
+   "mark": "",
+   "ja": "エビワラー",
+   "artist": "Hisao Nakamura",
+   "image": "https://archives.bulbagarden.net/media/upload/0/0d/HitmonchanEXUnseenForces24.jpg"
   },
   "72": {
    "en": "Sudowoodo",
    "page": "Sudowoodo (Golden Sky, Silvery Ocean 72)",
    "type": "Fighting",
    "rarity": "Rare",
-   "mark": ""
+   "mark": "",
+   "ja": "ウソッキー",
+   "artist": "Tomokazu Komiya",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e3/SudowoodoEXUnseenForces15.jpg"
   },
   "73": {
    "en": "Gligar",
    "page": "Gligar (Golden Sky, Silvery Ocean 73)",
    "type": "Fighting",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "グライガー",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d4/GligarEXUnseenForces57.jpg"
   },
   "74": {
    "en": "Tyrogue",
    "page": "Tyrogue (Golden Sky, Silvery Ocean 74)",
    "type": "Fighting",
    "rarity": "Rare",
-   "mark": ""
+   "mark": "",
+   "ja": "バルキー",
+   "artist": "Yuka Morii",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b6/TyrogueEXUnseenForces33.jpg"
   },
   "75": {
    "en": "Hitmontop",
    "page": "Hitmontop (Golden Sky, Silvery Ocean 75)",
    "type": "Fighting",
    "rarity": "Rare",
-   "mark": ""
+   "mark": "",
+   "ja": "カポエラー",
+   "artist": "Hisao Nakamura",
+   "image": "https://archives.bulbagarden.net/media/upload/6/64/HitmontopEXUnseenForces26.jpg"
   },
   "76": {
    "en": "Larvitar",
    "page": "Larvitar (Golden Sky, Silvery Ocean 76)",
    "type": "Fighting",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "ヨーギラス",
+   "artist": "Aya Kusube",
+   "image": "https://archives.bulbagarden.net/media/upload/5/5c/LarvitarEXUnseenForces61.jpg"
   },
   "77": {
    "en": "Pupitar",
    "page": "Pupitar (Golden Sky, Silvery Ocean 77)",
    "type": "Fighting",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "サナギラス",
+   "artist": "Aya Kusube",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d5/PupitarEXUnseenForces70.jpg"
   },
   "78": {
    "en": "Chansey",
    "page": "Chansey (Golden Sky, Silvery Ocean 78)",
    "type": "Colorless",
    "rarity": "Rare",
-   "mark": ""
+   "mark": "",
+   "ja": "ラッキー",
+   "artist": "Yukiko Baba",
+   "image": "https://archives.bulbagarden.net/media/upload/6/61/ChanseyEXUnseenForces20.jpg"
   },
   "79": {
    "en": "Eevee",
    "page": "Eevee (Golden Sky, Silvery Ocean 79)",
    "type": "Colorless",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "イーブイ",
+   "artist": "Miki Tanaka",
+   "image": "https://archives.bulbagarden.net/media/upload/7/74/EeveeEXUnseenForces55.jpg"
   },
   "80": {
    "en": "Porygon",
    "page": "Porygon (Golden Sky, Silvery Ocean 80)",
    "type": "Colorless",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "ポリゴン",
+   "artist": "Kagemaru Himeno",
+   "image": "https://archives.bulbagarden.net/media/upload/3/3a/PorygonEXUnseenForces69.jpg"
   },
   "81": {
    "en": "Cleffa",
    "page": "Cleffa (Golden Sky, Silvery Ocean 81)",
    "type": "Colorless",
    "rarity": "Rare",
-   "mark": ""
+   "mark": "",
+   "ja": "ピィ",
+   "artist": "Yuka Morii",
+   "image": "https://archives.bulbagarden.net/media/upload/0/0a/CleffaEXUnseenForces21.jpg"
   },
   "82": {
    "en": "Aipom",
    "page": "Aipom (Golden Sky, Silvery Ocean 82)",
    "type": "Colorless",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "エイパム",
+   "artist": "Sachiko Adachi",
+   "image": "https://archives.bulbagarden.net/media/upload/8/83/AipomEXUnseenForces34.jpg"
   },
   "83": {
    "en": "Teddiursa",
    "page": "Teddiursa (Golden Sky, Silvery Ocean 83)",
    "type": "Colorless",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "ヒメグマ",
+   "artist": "Naoyo Kimura",
+   "image": "https://archives.bulbagarden.net/media/upload/8/81/TeddiursaEXUnseenForces77.jpg"
   },
   "84": {
    "en": "Ursaring",
    "page": "Ursaring (Golden Sky, Silvery Ocean 84)",
    "type": "Colorless",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "リングマ",
+   "artist": "Atsuko Nishida",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c8/UrsaringEXUnseenForces18.jpg"
   },
   "85": {
    "en": "Porygon2",
    "page": "Porygon2 (Golden Sky, Silvery Ocean 85)",
    "type": "Colorless",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ポリゴン２",
+   "artist": "Kagemaru Himeno",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2d/Porygon2EXUnseenForces12.jpg"
   },
   "86": {
    "en": "Stantler",
    "page": "Stantler (Golden Sky, Silvery Ocean 86)",
    "type": "Colorless",
    "rarity": "Rare",
-   "mark": ""
+   "mark": "",
+   "ja": "オドシシ",
+   "artist": "Atsuko Nishida",
+   "image": "https://archives.bulbagarden.net/media/upload/7/7b/StantlerEXUnseenForces32.jpg"
   },
   "87": {
    "en": "Smeargle",
    "page": "Smeargle (Golden Sky, Silvery Ocean 87)",
    "type": "Colorless",
    "rarity": "Rare",
-   "mark": ""
+   "mark": "",
+   "ja": "ドーブル",
+   "artist": "Sumiyoshi Kizuki",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2e/SmeargleEXUnseenForces48.jpg"
   },
   "88": {
    "en": "Miltank",
    "page": "Miltank (Golden Sky, Silvery Ocean 88)",
    "type": "Colorless",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "ミルタンク",
+   "artist": "Tomokazu Komiya",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e2/MiltankEXUnseenForces42.jpg"
   },
   "89": {
    "en": "Blissey ex",
    "page": "Blissey ex (Golden Sky, Silvery Ocean 89)",
    "type": "Colorless",
    "rarity": "Rare Holo ex",
-   "mark": ""
+   "mark": "",
+   "ja": "ハピナスex",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/9/99/BlisseyexEXUnseenForces101.jpg"
   },
   "90": {
    "en": "Lugia ex",
    "page": "Lugia ex (Golden Sky, Silvery Ocean 90)",
    "type": "Colorless",
    "rarity": "Rare Holo ex",
-   "mark": ""
+   "mark": "",
+   "ja": "ルギアex",
+   "artist": "Hikaru Koike",
+   "image": "https://archives.bulbagarden.net/media/upload/f/fc/LugiaexEXUnseenForces105.jpg"
   },
   "91": {
    "en": "Umbreon ex",
    "page": "Umbreon ex (Golden Sky, Silvery Ocean 91)",
    "type": "Darkness",
    "rarity": "Rare Holo ex",
-   "mark": ""
+   "mark": "",
+   "ja": "ブラッキーex",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/e/ef/UmbreonexEXUnseenForces112.jpg"
   },
   "92": {
    "en": "Murkrow",
    "page": "Murkrow (Golden Sky, Silvery Ocean 92)",
    "type": "Darkness",
    "rarity": "Rare",
-   "mark": ""
+   "mark": "",
+   "ja": "ヤミカラス",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d4/MurkrowEXUnseenForces30.jpg"
   },
   "93": {
    "en": "Tyranitar ex",
    "page": "Tyranitar ex (Golden Sky, Silvery Ocean 93)",
    "type": "Darkness",
    "rarity": "Rare Holo ex",
-   "mark": ""
+   "mark": "",
+   "ja": "バンギラスex",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/6/66/TyranitarexEXUnseenForces111.jpg"
   },
   "94": {
    "en": "Forretress",
    "page": "Forretress (Golden Sky, Silvery Ocean 94)",
    "type": "Metal",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "フォレトス",
+   "artist": "Aya Kusube",
+   "image": "https://archives.bulbagarden.net/media/upload/0/0f/ForretressEXUnseenForces6.jpg"
   },
   "95": {
    "en": "Steelix ex",
    "page": "Steelix ex (Golden Sky, Silvery Ocean 95)",
    "type": "Metal",
    "rarity": "Rare Holo ex",
-   "mark": ""
+   "mark": "",
+   "ja": "ハガネールex",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/7/7b/SteelixexEXUnseenForces109.jpg"
   },
   "96": {
    "en": "Scizor ex",
    "page": "Scizor ex (Golden Sky, Silvery Ocean 96)",
    "type": "Metal",
    "rarity": "Rare Holo ex",
-   "mark": ""
+   "mark": "",
+   "ja": "ハッサムex",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/7/7f/ScizorexEXUnseenForces108.jpg"
   },
   "97": {
    "en": "Professor Elm's Training Method",
    "page": "Professor Elm's Training Method (Golden Sky, Silvery Ocean 97)",
    "type": "T [Su]",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "ウツギはかせの育てかた",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a7/ProfessorElmTrainingMethodHeartGoldSoulSilver100.jpg"
   },
   "98": {
    "en": "Mary's Request",
    "page": "Mary's Request (Golden Sky, Silvery Ocean 98)",
    "type": "T [Su]",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "クルミのリクエスト",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/9/94/MaryRequestEXUnseenForces86.jpg"
   },
   "99": {
    "en": "Solid Rage",
    "page": "Solid Rage (Golden Sky, Silvery Ocean 99)",
    "type": "T [PT]",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "いかりの結晶",
+   "artist": "Ryo Ueda",
+   "semScan": 1
   },
   "100": {
    "en": "Sitrus Berry",
    "page": "Sitrus Berry (Golden Sky, Silvery Ocean 100)",
    "type": "T [PT]",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "オボンのみ",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/6/68/SitrusBerryEXUnseenForces91.jpg"
   },
   "101": {
    "en": "Energy Root",
    "page": "Energy Root (Golden Sky, Silvery Ocean 101)",
    "type": "T [PT]",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "ちからのねっこ",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/9/90/EnergyRootEXUnseenForces83.jpg"
   },
   "102": {
    "en": "Curse Powder",
    "page": "Curse Powder (Golden Sky, Silvery Ocean 102)",
    "type": "T [PT]",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "のろいのこな",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/4/46/CursePowderEXUnseenForces80.jpg"
   },
   "103": {
    "en": "Fluffy Berry",
    "page": "Fluffy Berry (Golden Sky, Silvery Ocean 103)",
    "type": "T [PT]",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "ふわふわのみ",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b2/FluffyBerryEXUnseenForces85.jpg"
   },
   "104": {
    "en": "Protective Orb",
    "page": "Protective Orb (Golden Sky, Silvery Ocean 104)",
    "type": "T [PT]",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "まもりのたま",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e8/ProtectiveOrbEXUnseenForces90.jpg"
   },
   "105": {
    "en": "Cyclone Energy",
    "page": "Cyclone Energy (Golden Sky, Silvery Ocean 105)",
    "type": "Colorless",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "サイクロンエネルギー",
+   "artist": "Shin-ichi Yoshikawa",
+   "image": "https://archives.bulbagarden.net/media/upload/5/50/CycloneEnergyEXPowerKeepers90.jpg"
   },
   "106": {
    "en": "Warp Energy",
    "page": "Warp Energy (Golden Sky, Silvery Ocean 106)",
    "type": "Colorless",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "ワープエネルギー",
+   "artist": "Takumi Akabane",
+   "image": "https://archives.bulbagarden.net/media/upload/0/02/WarpEnergyStormfront95.jpg"
   }
  }
 }

@@ -7,826 +7,1178 @@
    "page": "Tropius (Abyss Eye 1)",
    "type": "Grass",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "トロピウス",
+   "artist": "Akino Fukuji",
+   "image": "https://archives.bulbagarden.net/media/upload/4/4b/TropiusPitchBlack1.jpg"
   },
   "2": {
    "en": "Grubbin",
    "page": "Grubbin (Abyss Eye 2)",
    "type": "Grass",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "アゴジムシ",
+   "artist": "Mina Nakai",
+   "image": "https://archives.bulbagarden.net/media/upload/b/bf/GrubbinPitchBlack2.jpg"
   },
   "3": {
    "en": "Fomantis",
    "page": "Fomantis (Abyss Eye 3)",
    "type": "Grass",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "カリキリ",
+   "artist": "Jiro Sasumo",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e6/FomantisPitchBlack85.jpg"
   },
   "4": {
    "en": "Lurantis",
    "page": "Lurantis ex (Abyss Eye 4)",
    "type": "Grass",
    "rarity": "RR",
-   "mark": ""
+   "mark": "",
+   "ja": "ラランテスex",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f1/LurantisexPitchBlack96.jpg"
   },
   "5": {
    "en": "Poltchageist",
    "page": "Poltchageist (Abyss Eye 5)",
    "type": "Grass",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "チャデス",
+   "artist": "Mousho",
+   "image": "https://archives.bulbagarden.net/media/upload/8/82/PoltchageistPitchBlack5.jpg"
   },
   "6": {
    "en": "Sinistcha",
    "page": "Sinistcha (Abyss Eye 6)",
    "type": "Grass",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ヤバソチャ",
+   "artist": "mingo",
+   "image": "https://archives.bulbagarden.net/media/upload/6/6e/SinistchaPitchBlack6.jpg"
   },
   "7": {
    "en": "Heatran",
    "page": "Heatran (Abyss Eye 7)",
    "type": "Fire",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ヒードラン",
+   "artist": "Takeshi Nakamura",
+   "image": "https://archives.bulbagarden.net/media/upload/8/84/HeatranPitchBlack7.jpg"
   },
   "8": {
    "en": "Sizzlipede",
    "page": "Sizzlipede (Abyss Eye 8)",
    "type": "Fire",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ヤクデ",
+   "artist": "Yuya Oka",
+   "image": "https://archives.bulbagarden.net/media/upload/b/bc/SizzlipedePitchBlack9.jpg"
   },
   "9": {
    "en": "Centiskorch",
    "page": "Centiskorch (Abyss Eye 9)",
    "type": "Fire",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "マルヤクデ",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/0/04/CentiskorchPitchBlack10.jpg"
   },
   "10": {
    "en": "Charcadet",
    "page": "Charcadet (Abyss Eye 10)",
    "type": "Fire",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "カルボウ",
+   "artist": "Ryuta Fuse",
+   "image": "https://archives.bulbagarden.net/media/upload/e/ec/CharcadetPitchBlack11.jpg"
   },
   "11": {
    "en": "Armarouge",
    "page": "Armarouge (Abyss Eye 11)",
    "type": "Fire",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "グレンアルマ",
+   "artist": "Iwamoto05",
+   "image": "https://archives.bulbagarden.net/media/upload/4/45/ArmarougePitchBlack86.jpg"
   },
   "12": {
    "en": "Goldeen",
    "page": "Goldeen (Abyss Eye 12)",
    "type": "Water",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "トサキント",
+   "artist": "Shibuzoh.",
+   "image": "https://archives.bulbagarden.net/media/upload/5/59/GoldeenPitchBlack13.jpg"
   },
   "13": {
    "en": "Seaking",
    "page": "Seaking (Abyss Eye 13)",
    "type": "Water",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "アズマオウ",
+   "artist": "OKUBO",
+   "image": "https://archives.bulbagarden.net/media/upload/0/01/SeakingPitchBlack14.jpg"
   },
   "14": {
    "en": "Wailmer",
    "page": "Wailmer (Abyss Eye 14)",
    "type": "Water",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ホエルコ",
+   "artist": "Asako Ito",
+   "image": "https://archives.bulbagarden.net/media/upload/6/66/WailmerPitchBlack15.jpg"
   },
   "15": {
    "en": "Wailord",
    "page": "Wailord ex (Abyss Eye 15)",
    "type": "Water",
    "rarity": "RR",
-   "mark": ""
+   "mark": "",
+   "ja": "ホエルオーex",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/1/18/WailordexPitchBlack97.jpg"
   },
   "16": {
    "en": "Relicanth",
    "page": "Relicanth (Abyss Eye 16)",
    "type": "Water",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ジーランス",
+   "artist": "Naoyo Kimura",
+   "image": "https://archives.bulbagarden.net/media/upload/9/91/RelicanthPitchBlack17.jpg"
   },
   "17": {
    "en": "Popplio",
    "page": "Popplio (Abyss Eye 17)",
    "type": "Water",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "アシマリ",
+   "artist": "Oswaldo KATO",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b9/PopplioPitchBlack18.jpg"
   },
   "18": {
    "en": "Brionne",
    "page": "Brionne (Abyss Eye 18)",
    "type": "Water",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "オシャマリ",
+   "artist": "MINAMINAMI Take",
+   "image": "https://archives.bulbagarden.net/media/upload/1/1f/BrionnePitchBlack19.jpg"
   },
   "19": {
    "en": "Primarina",
    "page": "Primarina (Abyss Eye 19)",
    "type": "Water",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "アシレーヌ",
+   "artist": "Taira Akitsu",
+   "image": "https://archives.bulbagarden.net/media/upload/2/29/PrimarinaPitchBlack20.jpg"
   },
   "20": {
    "en": "Finizen",
    "page": "Finizen (Abyss Eye 20)",
    "type": "Water",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ナミイルカ",
+   "artist": "Yukiko Baba",
+   "image": "https://archives.bulbagarden.net/media/upload/1/12/FinizenPitchBlack21.jpg"
   },
   "21": {
    "en": "Palafin",
    "page": "Palafin (Abyss Eye 21)",
    "type": "Water",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "イルカマン",
+   "artist": "satoma",
+   "image": "https://archives.bulbagarden.net/media/upload/7/7e/PalafinPitchBlack22.jpg"
   },
   "22": {
    "en": "Electrike",
    "page": "Electrike (Abyss Eye 22)",
    "type": "Lightning",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ラクライ",
+   "artist": "Dsuke",
+   "image": "https://archives.bulbagarden.net/media/upload/5/5a/ElectrikePitchBlack23.jpg"
   },
   "23": {
    "en": "Manectric",
    "page": "Manectric (Abyss Eye 23)",
    "type": "Lightning",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ライボルト",
+   "artist": "HICO KIM",
+   "image": "https://archives.bulbagarden.net/media/upload/f/fb/ManectricPitchBlack89.jpg"
   },
   "24": {
    "en": "Charjabug",
    "page": "Charjabug (Abyss Eye 24)",
    "type": "Lightning",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "デンヂムシ",
+   "artist": "Kazuhisa Uragami",
+   "image": "https://archives.bulbagarden.net/media/upload/6/68/CharjabugPitchBlack25.jpg"
   },
   "25": {
    "en": "Vikavolt",
    "page": "Vikavolt (Abyss Eye 25)",
    "type": "Lightning",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "クワガノン",
+   "artist": "KEIICHIRO ITO",
+   "image": "https://archives.bulbagarden.net/media/upload/6/64/VikavoltPitchBlack26.jpg"
   },
   "26": {
    "en": "Mega Zeraora",
    "page": "Mega Zeraora ex (Abyss Eye 26)",
    "type": "Lightning",
    "rarity": "RR",
-   "mark": ""
+   "mark": "",
+   "ja": "メガゼラオラex",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/0/05/MegaZeraoraexPitchBlack27.jpg"
   },
   "27": {
    "en": "Miraidon",
    "page": "Miraidon (Abyss Eye 27)",
    "type": "Lightning",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ミライドン",
+   "artist": "mashu",
+   "image": "https://archives.bulbagarden.net/media/upload/b/be/MiraidonPitchBlack28.jpg"
   },
   "28": {
    "en": "Slowpoke",
    "page": "Slowpoke (Abyss Eye 28)",
    "type": "Psychic",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ヤドン",
+   "artist": "Nelnal",
+   "image": "https://archives.bulbagarden.net/media/upload/6/65/SlowpokePitchBlack29.jpg"
   },
   "29": {
    "en": "Slowbro",
    "page": "Slowbro (Abyss Eye 29)",
    "type": "Psychic",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ヤドラン",
+   "artist": "CHORISO",
+   "image": "https://archives.bulbagarden.net/media/upload/2/20/SlowbroPitchBlack30.jpg"
   },
   "30": {
    "en": "Jynx",
    "page": "Jynx (Abyss Eye 30)",
    "type": "Psychic",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ルージュラ",
+   "artist": "Yoshimoto Yoshimon",
+   "image": "https://archives.bulbagarden.net/media/upload/0/00/JynxPitchBlack32.jpg"
   },
   "31": {
    "en": "Shuppet",
    "page": "Shuppet (Abyss Eye 31)",
    "type": "Psychic",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "カゲボウズ",
+   "artist": "Bun Toujo",
+   "image": "https://archives.bulbagarden.net/media/upload/4/4a/ShuppetPitchBlack33.jpg"
   },
   "32": {
    "en": "Banette",
    "page": "Banette (Abyss Eye 32)",
    "type": "Psychic",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ジュペッタ",
+   "artist": "Mugi Hamada",
+   "image": "https://archives.bulbagarden.net/media/upload/4/49/BanettePitchBlack34.jpg"
   },
   "33": {
    "en": "Spiritomb",
    "page": "Spiritomb (Abyss Eye 33)",
    "type": "Psychic",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "ミカルゲ",
+   "artist": "danciao",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d6/SpiritombPitchBlack35.jpg"
   },
   "34": {
    "en": "Litwick",
    "page": "Litwick (Abyss Eye 34)",
    "type": "Psychic",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ヒトモシ",
+   "artist": "HYOGONOSUKE",
+   "image": "https://archives.bulbagarden.net/media/upload/7/73/LitwickPitchBlack36.jpg"
   },
   "35": {
    "en": "Lampent",
    "page": "Lampent (Abyss Eye 35)",
    "type": "Psychic",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ランプラー",
+   "artist": "sowsow",
+   "image": "https://archives.bulbagarden.net/media/upload/c/cc/LampentPitchBlack37.jpg"
   },
   "36": {
    "en": "Mega Chandelure",
    "page": "Mega Chandelure ex (Abyss Eye 36)",
    "type": "Psychic",
    "rarity": "RR",
-   "mark": ""
+   "mark": "",
+   "ja": "メガシャンデラex",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/5/5f/MegaChandelureexPitchBlack38.jpg"
   },
   "37": {
    "en": "Dhelmise",
    "page": "Dhelmise (Abyss Eye 37)",
    "type": "Psychic",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ダダリン",
+   "artist": "Dsuke",
+   "image": "https://archives.bulbagarden.net/media/upload/c/cc/DhelmiseMEPPromo84.jpg"
   },
   "38": {
    "en": "Marshadow",
    "page": "Marshadow (Abyss Eye 38)",
    "type": "Psychic",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "マーシャドー",
+   "artist": "Nakamura Ippan",
+   "image": "https://archives.bulbagarden.net/media/upload/b/bf/MarshadowPitchBlack40.jpg"
   },
   "39": {
    "en": "Annihilape",
    "page": "Annihilape (Abyss Eye 39)",
    "type": "Psychic",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "コノヨザル",
+   "artist": "Haru Akasaka",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c3/AnnihilapePitchBlack41.jpg"
   },
   "40": {
    "en": "Mankey",
    "page": "Mankey (Abyss Eye 40)",
    "type": "Fighting",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "マンキー",
+   "artist": "Yuka Morii",
+   "image": "https://archives.bulbagarden.net/media/upload/0/0d/MankeyPitchBlack42.jpg"
   },
   "41": {
    "en": "Primeape",
    "page": "Primeape (Abyss Eye 41)",
    "type": "Fighting",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "オコリザル",
+   "artist": "GOSSAN",
+   "image": "https://archives.bulbagarden.net/media/upload/2/28/PrimeapePitchBlack43.jpg"
   },
   "42": {
    "en": "Cranidos",
    "page": "Cranidos (Abyss Eye 42)",
    "type": "Fighting",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ズガイドス",
+   "artist": "Hideki Ishikawa",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c8/CranidosPitchBlack44.jpg"
   },
   "43": {
    "en": "Rampardos",
    "page": "Rampardos ex (Abyss Eye 43)",
    "type": "Fighting",
    "rarity": "RR",
-   "mark": ""
+   "mark": "",
+   "ja": "ラムパルドex",
+   "artist": "hncl",
+   "image": "https://archives.bulbagarden.net/media/upload/4/42/RampardosexPitchBlack45.jpg"
   },
   "44": {
    "en": "Drilbur",
    "page": "Drilbur (Abyss Eye 44)",
    "type": "Fighting",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "モグリュー",
+   "artist": "Atsushi Furusawa",
+   "image": "https://archives.bulbagarden.net/media/upload/6/6a/DrilburPitchBlack46.jpg"
   },
   "45": {
    "en": "Koraidon",
    "page": "Koraidon (Abyss Eye 45)",
    "type": "Fighting",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "コライドン",
+   "artist": "kodama",
+   "image": "https://archives.bulbagarden.net/media/upload/3/32/KoraidonPitchBlack47.jpg"
   },
   "46": {
    "en": "Mega Darkrai",
    "page": "Mega Darkrai ex (Abyss Eye 46)",
    "type": "Darkness",
    "rarity": "RR",
-   "mark": ""
+   "mark": "",
+   "ja": "メガダークライex",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/1/12/MegaDarkraiexPitchBlack48.jpg"
   },
   "47": {
    "en": "Vullaby",
    "page": "Vullaby (Abyss Eye 47)",
    "type": "Darkness",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "バルチャイ",
+   "artist": "Shiburingaru",
+   "image": "https://archives.bulbagarden.net/media/upload/d/df/VullabyPitchBlack49.jpg"
   },
   "48": {
    "en": "Mandibuzz",
    "page": "Mandibuzz (Abyss Eye 48)",
    "type": "Darkness",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "バルジーナ",
+   "artist": "Nisota Niso",
+   "image": "https://archives.bulbagarden.net/media/upload/8/86/MandibuzzPitchBlack50.jpg"
   },
   "49": {
    "en": "Inkay",
    "page": "Inkay (Abyss Eye 49)",
    "type": "Darkness",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "マーイーカ",
+   "artist": "Yuriko Akase",
+   "image": "https://archives.bulbagarden.net/media/upload/8/89/InkayPitchBlack51.jpg"
   },
   "50": {
    "en": "Malamar",
    "page": "Malamar (Abyss Eye 50)",
    "type": "Darkness",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "カラマネロ",
+   "artist": "Naoki Saito",
+   "image": "https://archives.bulbagarden.net/media/upload/3/35/MalamarPitchBlack52.jpg"
   },
   "51": {
    "en": "Nickit",
    "page": "Nickit (Abyss Eye 51)",
    "type": "Darkness",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "クスネ",
+   "artist": "Krgc",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e1/NickitPitchBlack53.jpg"
   },
   "52": {
    "en": "Thievul",
    "page": "Thievul (Abyss Eye 52)",
    "type": "Darkness",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "フォクスライ",
+   "artist": "Jerky",
+   "image": "https://archives.bulbagarden.net/media/upload/1/11/ThievulPitchBlack92.jpg"
   },
   "53": {
    "en": "Morpeko",
    "page": "Morpeko ex (Abyss Eye 53)",
    "type": "Darkness",
    "rarity": "RR",
-   "mark": ""
+   "mark": "",
+   "ja": "モルペコex",
+   "artist": "NC Empire",
+   "image": "https://archives.bulbagarden.net/media/upload/a/ad/MorpekoexPitchBlack117.jpg"
   },
   "54": {
    "en": "Zarude",
    "page": "Zarude (Abyss Eye 54)",
    "type": "Darkness",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ザルード",
+   "artist": "matazo",
+   "image": "https://archives.bulbagarden.net/media/upload/4/40/ZarudePitchBlack56.jpg"
   },
   "55": {
    "en": "Maschiff",
    "page": "Maschiff (Abyss Eye 55)",
    "type": "Darkness",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "オラチフ",
+   "artist": "ryoma uratsuka",
+   "image": "https://archives.bulbagarden.net/media/upload/c/ce/MaschiffPitchBlack57.jpg"
   },
   "56": {
    "en": "Mabosstiff",
    "page": "Mabosstiff (Abyss Eye 56)",
    "type": "Darkness",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "マフィティフ",
+   "artist": "kawayoo",
+   "image": "https://archives.bulbagarden.net/media/upload/a/ad/MabosstiffPitchBlack58.jpg"
   },
   "57": {
    "en": "Chi-Yu",
    "page": "Chi-Yu (Abyss Eye 57)",
    "type": "Darkness",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "イーユイ",
+   "artist": "IKEDA Saki",
+   "image": "https://archives.bulbagarden.net/media/upload/8/84/Chi-YuPitchBlack59.jpg"
   },
   "58": {
    "en": "Skarmory",
    "page": "Skarmory (Abyss Eye 58)",
    "type": "Metal",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "エアームド",
+   "artist": "Anesaki Dynamic",
+   "image": "https://archives.bulbagarden.net/media/upload/5/51/SkarmoryPitchBlack60.jpg"
   },
   "59": {
    "en": "Shieldon",
    "page": "Shieldon (Abyss Eye 59)",
    "type": "Metal",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "タテトプス",
+   "artist": "Kurata So",
+   "image": "https://archives.bulbagarden.net/media/upload/4/40/ShieldonPitchBlack61.jpg"
   },
   "60": {
    "en": "Bastiodon",
    "page": "Bastiodon (Abyss Eye 60)",
    "type": "Metal",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "トリデプス",
+   "artist": "Yoriyuki Ikegami",
+   "image": "https://archives.bulbagarden.net/media/upload/d/de/BastiodonPitchBlack93.jpg"
   },
   "61": {
    "en": "Bronzor",
    "page": "Bronzor (Abyss Eye 61)",
    "type": "Metal",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ドーミラー",
+   "artist": "Saboteri",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d8/BronzorPitchBlack63.jpg"
   },
   "62": {
    "en": "Bronzong",
    "page": "Bronzong (Abyss Eye 62)",
    "type": "Metal",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ドータクン",
+   "artist": "Uta",
+   "image": "https://archives.bulbagarden.net/media/upload/8/84/BronzongPitchBlack64.jpg"
   },
   "63": {
    "en": "Mega Excadrill",
    "page": "Mega Excadrill ex (Abyss Eye 63)",
    "type": "Metal",
    "rarity": "RR",
-   "mark": ""
+   "mark": "",
+   "ja": "メガドリュウズex",
+   "artist": "Keisuke Azuma",
+   "image": "https://archives.bulbagarden.net/media/upload/5/53/MegaExcadrillexPitchBlack103.jpg"
   },
   "64": {
    "en": "Pikipek",
    "page": "Pikipek (Abyss Eye 64)",
    "type": "Colorless",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ツツケラ",
+   "artist": "Koji Nakata",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e6/PikipekPitchBlack66.jpg"
   },
   "65": {
    "en": "Trumbeak",
    "page": "Trumbeak (Abyss Eye 65)",
    "type": "Colorless",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ケララッパ",
+   "artist": "miki kudo",
+   "image": "https://archives.bulbagarden.net/media/upload/1/19/TrumbeakPitchBlack67.jpg"
   },
   "66": {
    "en": "Toucannon",
    "page": "Toucannon (Abyss Eye 66)",
    "type": "Colorless",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ドデカバシ",
+   "artist": "miki kudo",
+   "image": "https://archives.bulbagarden.net/media/upload/3/3e/ToucannonPitchBlack94.jpg"
   },
   "67": {
    "en": "Type: Null",
    "page": "Type: Null (Abyss Eye 67)",
    "type": "Colorless",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "タイプ：ヌル",
+   "artist": "Ligton",
+   "image": "https://archives.bulbagarden.net/media/upload/7/75/TypeNullPitchBlack69.jpg"
   },
   "68": {
    "en": "Silvally",
    "page": "Silvally (Abyss Eye 68)",
    "type": "Colorless",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "シルヴァディ",
+   "artist": "Takumi Wada",
+   "image": "https://archives.bulbagarden.net/media/upload/b/ba/SilvallyPitchBlack70.jpg"
   },
   "69": {
    "en": "Bombirdier",
    "page": "Bombirdier (Abyss Eye 69)",
    "type": "Colorless",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "オトシドリ",
+   "artist": "Wintr Wandr",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f1/BombirdierPitchBlack71.jpg"
   },
   "70": {
    "en": "Dark Bell",
    "page": "Dark Bell (Abyss Eye 70)",
    "type": "I",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ダークベル",
+   "artist": "Toyste Beach",
+   "image": "https://archives.bulbagarden.net/media/upload/7/7c/DarkBellPitchBlack106.jpg"
   },
   "71": {
    "en": "Antique Skull Fossil",
    "page": "Antique Skull Fossil (Abyss Eye 71)",
    "type": "I",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "古びたずがいの化石",
+   "artist": "AYUMI ODASHIMA",
+   "image": "https://archives.bulbagarden.net/media/upload/0/09/AntiqueSkullFossilPitchBlack73.jpg"
   },
   "72": {
    "en": "Antique Armor Fossil",
    "page": "Antique Armor Fossil (Abyss Eye 72)",
    "type": "I",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "古びたたての化石",
+   "artist": "AYUMI ODASHIMA",
+   "image": "https://archives.bulbagarden.net/media/upload/e/ee/AntiqueArmorFossilPitchBlack72.jpg"
   },
   "73": {
    "en": "Tremendous Bomb",
    "page": "Tremendous Bomb (Abyss Eye 73)",
    "type": "PT",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ごうかいボム",
+   "artist": "inose yukie",
+   "image": "https://archives.bulbagarden.net/media/upload/5/57/TremendousBombPitchBlack82.jpg"
   },
   "74": {
    "en": "Backtrack Badge",
    "page": "Backtrack Badge (Abyss Eye 74)",
    "type": "PT",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "リトライバッジ",
+   "artist": "Toyste Beach",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f4/BacktrackBadgePitchBlack74.jpg"
   },
   "75": {
    "en": "Misty's Vitality",
    "page": "Misty's Vitality (Abyss Eye 75)",
    "type": "Su",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "カスミの元気",
+   "artist": "En Morikura",
+   "image": "https://archives.bulbagarden.net/media/upload/3/36/MistyVitalityPitchBlack111.jpg"
   },
   "76": {
    "en": "Gladion's Final Battle",
    "page": "Gladion's Final Battle (Abyss Eye 76)",
    "type": "Su",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "グラジオの決戦",
+   "artist": "DOM",
+   "image": "https://archives.bulbagarden.net/media/upload/d/dc/GladionFinalBattlePitchBlack118.jpg"
   },
   "77": {
    "en": "Rust Syndicate Grunt",
    "page": "Rust Syndicate Grunt (Abyss Eye 77)",
    "type": "Su",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "サビ組のしたっぱ",
+   "artist": "Teeziro",
+   "image": "https://archives.bulbagarden.net/media/upload/1/1f/RustSyndicateGruntPitchBlack81.jpg"
   },
   "78": {
    "en": "Gwynn",
    "page": "Gwynn (Abyss Eye 78)",
    "type": "Su",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ムク",
+   "artist": "Naoki Saito",
+   "image": "https://archives.bulbagarden.net/media/upload/4/47/GwynnPitchBlack119.jpg"
   },
   "79": {
    "en": "Fossil Quarry",
    "page": "Fossil Quarry (Abyss Eye 79)",
    "type": "St",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "化石採掘場",
+   "artist": "Oswaldo KATO",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f4/FossilQuarryPitchBlack76.jpg"
   },
   "80": {
    "en": "Voltaic",
    "page": "Voltaic L Energy (Abyss Eye 80)",
    "type": "Lightning",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "ボルト雷エネルギー",
+   "image": "https://archives.bulbagarden.net/media/upload/0/0b/VoltaicLEnergyPitchBlack84.jpg"
   },
   "81": {
    "en": "Shadowy",
    "page": "Shadowy D Energy (Abyss Eye 81)",
    "type": "Darkness",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "シャドー悪エネルギー",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a8/ShadowyDEnergyPitchBlack83.jpg"
   },
   "82": {
    "en": "Fomantis",
    "page": "Fomantis (Abyss Eye 82)",
    "type": "Grass",
    "rarity": "AR",
-   "mark": ""
+   "mark": "",
+   "ja": "カリキリ",
+   "artist": "Jiro Sasumo",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e6/FomantisPitchBlack85.jpg"
   },
   "83": {
    "en": "Armarouge",
    "page": "Armarouge (Abyss Eye 83)",
    "type": "Fire",
    "rarity": "AR",
-   "mark": ""
+   "mark": "",
+   "ja": "グレンアルマ",
+   "artist": "Iwamoto05",
+   "image": "https://archives.bulbagarden.net/media/upload/4/45/ArmarougePitchBlack86.jpg"
   },
   "84": {
    "en": "Goldeen",
    "page": "Goldeen (Abyss Eye 84)",
    "type": "Water",
    "rarity": "AR",
-   "mark": ""
+   "mark": "",
+   "ja": "トサキント",
+   "artist": "Shibuzoh.",
+   "image": "https://archives.bulbagarden.net/media/upload/5/59/GoldeenPitchBlack13.jpg"
   },
   "85": {
    "en": "Primarina",
    "page": "Primarina (Abyss Eye 85)",
    "type": "Water",
    "rarity": "AR",
-   "mark": ""
+   "mark": "",
+   "ja": "アシレーヌ",
+   "artist": "Taira Akitsu",
+   "image": "https://archives.bulbagarden.net/media/upload/2/29/PrimarinaPitchBlack20.jpg"
   },
   "86": {
    "en": "Manectric",
    "page": "Manectric (Abyss Eye 86)",
    "type": "Lightning",
    "rarity": "AR",
-   "mark": ""
+   "mark": "",
+   "ja": "ライボルト",
+   "artist": "HICO KIM",
+   "image": "https://archives.bulbagarden.net/media/upload/f/fb/ManectricPitchBlack89.jpg"
   },
   "87": {
    "en": "Slowbro",
    "page": "Slowbro (Abyss Eye 87)",
    "type": "Psychic",
    "rarity": "AR",
-   "mark": ""
+   "mark": "",
+   "ja": "ヤドラン",
+   "artist": "CHORISO",
+   "image": "https://archives.bulbagarden.net/media/upload/2/20/SlowbroPitchBlack30.jpg"
   },
   "88": {
    "en": "Dhelmise",
    "page": "Dhelmise (Abyss Eye 88)",
    "type": "Psychic",
    "rarity": "AR",
-   "mark": ""
+   "mark": "",
+   "ja": "ダダリン",
+   "artist": "Dsuke",
+   "image": "https://archives.bulbagarden.net/media/upload/c/cc/DhelmiseMEPPromo84.jpg"
   },
   "89": {
    "en": "Thievul",
    "page": "Thievul (Abyss Eye 89)",
    "type": "Darkness",
    "rarity": "AR",
-   "mark": ""
+   "mark": "",
+   "ja": "フォクスライ",
+   "artist": "Jerky",
+   "image": "https://archives.bulbagarden.net/media/upload/1/11/ThievulPitchBlack92.jpg"
   },
   "90": {
    "en": "Zarude",
    "page": "Zarude (Abyss Eye 90)",
    "type": "Darkness",
    "rarity": "AR",
-   "mark": ""
+   "mark": "",
+   "ja": "ザルード",
+   "artist": "matazo",
+   "image": "https://archives.bulbagarden.net/media/upload/4/40/ZarudePitchBlack56.jpg"
   },
   "91": {
    "en": "Bastiodon",
    "page": "Bastiodon (Abyss Eye 91)",
    "type": "Metal",
    "rarity": "AR",
-   "mark": ""
+   "mark": "",
+   "ja": "トリデプス",
+   "artist": "Yoriyuki Ikegami",
+   "image": "https://archives.bulbagarden.net/media/upload/d/de/BastiodonPitchBlack93.jpg"
   },
   "92": {
    "en": "Toucannon",
    "page": "Toucannon (Abyss Eye 92)",
    "type": "Colorless",
    "rarity": "AR",
-   "mark": ""
+   "mark": "",
+   "ja": "ドデカバシ",
+   "artist": "miki kudo",
+   "image": "https://archives.bulbagarden.net/media/upload/3/3e/ToucannonPitchBlack94.jpg"
   },
   "93": {
    "en": "Silvally",
    "page": "Silvally (Abyss Eye 93)",
    "type": "Colorless",
    "rarity": "AR",
-   "mark": ""
+   "mark": "",
+   "ja": "シルヴァディ",
+   "artist": "Takumi Wada",
+   "image": "https://archives.bulbagarden.net/media/upload/b/ba/SilvallyPitchBlack70.jpg"
   },
   "94": {
    "en": "Lurantis",
    "page": "Lurantis ex (Abyss Eye 94)",
    "type": "Grass",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "ラランテスex",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f1/LurantisexPitchBlack96.jpg"
   },
   "95": {
    "en": "Wailord",
    "page": "Wailord ex (Abyss Eye 95)",
    "type": "Water",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "ホエルオーex",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/1/18/WailordexPitchBlack97.jpg"
   },
   "96": {
    "en": "Mega Zeraora",
    "page": "Mega Zeraora ex (Abyss Eye 96)",
    "type": "Lightning",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "メガゼラオラex",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/0/05/MegaZeraoraexPitchBlack27.jpg"
   },
   "97": {
    "en": "Mega Chandelure",
    "page": "Mega Chandelure ex (Abyss Eye 97)",
    "type": "Psychic",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "メガシャンデラex",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/5/5f/MegaChandelureexPitchBlack38.jpg"
   },
   "98": {
    "en": "Rampardos",
    "page": "Rampardos ex (Abyss Eye 98)",
    "type": "Fighting",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "ラムパルドex",
+   "artist": "hncl",
+   "image": "https://archives.bulbagarden.net/media/upload/4/42/RampardosexPitchBlack45.jpg"
   },
   "99": {
    "en": "Mega Darkrai",
    "page": "Mega Darkrai ex (Abyss Eye 99)",
    "type": "Darkness",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "メガダークライex",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/1/12/MegaDarkraiexPitchBlack48.jpg"
   },
   "100": {
    "en": "Morpeko",
    "page": "Morpeko ex (Abyss Eye 100)",
    "type": "Darkness",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "モルペコex",
+   "artist": "NC Empire",
+   "image": "https://archives.bulbagarden.net/media/upload/a/ad/MorpekoexPitchBlack117.jpg"
   },
   "101": {
    "en": "Mega Excadrill",
    "page": "Mega Excadrill ex (Abyss Eye 101)",
    "type": "Metal",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "メガドリュウズex",
+   "artist": "Keisuke Azuma",
+   "image": "https://archives.bulbagarden.net/media/upload/5/53/MegaExcadrillexPitchBlack103.jpg"
   },
   "102": {
    "en": "Iron Defender",
    "page": "Iron Defender (Abyss Eye 102)",
    "type": "I",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "アイアンディフェンダー",
+   "artist": "Studio Bora Inc.",
+   "image": "https://archives.bulbagarden.net/media/upload/a/af/IronDefenderMegaEvolution118.jpg"
   },
   "103": {
    "en": "Energy Switch",
    "page": "Energy Switch (Abyss Eye 103)",
    "type": "I",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "エネルギーつけかえ",
+   "artist": "Toyste Beach",
+   "image": "https://archives.bulbagarden.net/media/upload/1/15/EnergySwitchSilverTempest212.jpg"
   },
   "104": {
    "en": "Crushing Hammer",
    "page": "Crushing Hammer (Abyss Eye 104)",
    "type": "I",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "クラッシュハンマー",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/d/db/CrushingHammerKalosStarterSet34.jpg"
   },
   "105": {
    "en": "Dark Bell",
    "page": "Dark Bell (Abyss Eye 105)",
    "type": "I",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "ダークベル",
+   "artist": "Toyste Beach",
+   "image": "https://archives.bulbagarden.net/media/upload/7/7c/DarkBellPitchBlack106.jpg"
   },
   "106": {
    "en": "Tremendous Bomb",
    "page": "Tremendous Bomb (Abyss Eye 106)",
    "type": "PT",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "ごうかいボム",
+   "artist": "inose yukie",
+   "image": "https://archives.bulbagarden.net/media/upload/5/57/TremendousBombPitchBlack82.jpg"
   },
   "107": {
    "en": "Brave Bangle",
    "page": "Brave Bangle (Abyss Eye 107)",
    "type": "PT",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "ブレイブバングル",
+   "artist": "Toyste Beach",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e6/BraveBanglePitchBlack104.jpg"
   },
   "108": {
    "en": "Misty's Vitality",
    "page": "Misty's Vitality (Abyss Eye 108)",
    "type": "Su",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "カスミの元気",
+   "artist": "En Morikura",
+   "image": "https://archives.bulbagarden.net/media/upload/3/36/MistyVitalityPitchBlack111.jpg"
   },
   "109": {
    "en": "Gladion's Final Battle",
    "page": "Gladion's Final Battle (Abyss Eye 109)",
    "type": "Su",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "グラジオの決戦",
+   "artist": "DOM",
+   "image": "https://archives.bulbagarden.net/media/upload/d/dc/GladionFinalBattlePitchBlack118.jpg"
   },
   "110": {
    "en": "Rust Syndicate Grunt",
    "page": "Rust Syndicate Grunt (Abyss Eye 110)",
    "type": "Su",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "サビ組のしたっぱ",
+   "artist": "Teeziro",
+   "image": "https://archives.bulbagarden.net/media/upload/1/1f/RustSyndicateGruntPitchBlack81.jpg"
   },
   "111": {
    "en": "Gwynn",
    "page": "Gwynn (Abyss Eye 111)",
    "type": "Su",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "ムク",
+   "artist": "Naoki Saito",
+   "image": "https://archives.bulbagarden.net/media/upload/4/47/GwynnPitchBlack119.jpg"
   },
   "112": {
    "en": "Mega Zeraora",
    "page": "Mega Zeraora ex (Abyss Eye 112)",
    "type": "Lightning",
    "rarity": "SAR",
-   "mark": ""
+   "mark": "",
+   "ja": "メガゼラオラex",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/0/05/MegaZeraoraexPitchBlack27.jpg"
   },
   "113": {
    "en": "Mega Chandelure",
    "page": "Mega Chandelure ex (Abyss Eye 113)",
    "type": "Psychic",
    "rarity": "SAR",
-   "mark": ""
+   "mark": "",
+   "ja": "メガシャンデラex",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/5/5f/MegaChandelureexPitchBlack38.jpg"
   },
   "114": {
    "en": "Mega Darkrai",
    "page": "Mega Darkrai ex (Abyss Eye 114)",
    "type": "Darkness",
    "rarity": "SAR",
-   "mark": ""
+   "mark": "",
+   "ja": "メガダークライex",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/1/12/MegaDarkraiexPitchBlack48.jpg"
   },
   "115": {
    "en": "Morpeko",
    "page": "Morpeko ex (Abyss Eye 115)",
    "type": "Darkness",
    "rarity": "SAR",
-   "mark": ""
+   "mark": "",
+   "ja": "モルペコex",
+   "artist": "NC Empire",
+   "image": "https://archives.bulbagarden.net/media/upload/a/ad/MorpekoexPitchBlack117.jpg"
   },
   "116": {
    "en": "Gladion's Final Battle",
    "page": "Gladion's Final Battle (Abyss Eye 116)",
    "type": "Su",
    "rarity": "SAR",
-   "mark": ""
+   "mark": "",
+   "ja": "グラジオの決戦",
+   "artist": "DOM",
+   "image": "https://archives.bulbagarden.net/media/upload/d/dc/GladionFinalBattlePitchBlack118.jpg"
   },
   "117": {
    "en": "Gwynn",
    "page": "Gwynn (Abyss Eye 117)",
    "type": "Su",
    "rarity": "SAR",
-   "mark": ""
+   "mark": "",
+   "ja": "ムク",
+   "artist": "Naoki Saito",
+   "image": "https://archives.bulbagarden.net/media/upload/4/47/GwynnPitchBlack119.jpg"
   },
   "118": {
    "en": "Mega Darkrai",
    "page": "Mega Darkrai ex (Abyss Eye 118)",
    "type": "Darkness",
    "rarity": "MUR",
-   "mark": ""
+   "mark": "",
+   "ja": "メガダークライex",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/1/12/MegaDarkraiexPitchBlack48.jpg"
   }
  }
 }

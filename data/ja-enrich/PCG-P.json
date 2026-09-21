@@ -7,1078 +7,1540 @@
    "page": "Blastoise (PCG-P Promo 1)",
    "type": "Water",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "カメックス",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/4/4a/Blastoise1POPSeries3.jpg"
   },
   "2": {
    "en": "Charizard",
    "page": "Charizard (PCG-P Promo 2)",
    "type": "Fire",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "リザードン",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c3/CharizardEXDragon100.jpg"
   },
   "3": {
    "en": "Venusaur",
    "page": "Venusaur (PCG-P Promo 3)",
    "type": "Grass",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "フシギバナ",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c8/Venusaur6POPSeries2.jpg"
   },
   "4": {
    "en": "Ivysaur",
    "page": "Ivysaur (PCG-P Promo 4)",
    "type": "Grass",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "フシギソウ",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/d/de/Ivysaur7POPSeries2.jpg"
   },
   "5": {
    "en": "Beautifly",
    "page": "Beautifly (PCG-P Promo 5)",
    "type": "Grass",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "アゲハント",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a0/Beautifly6POPSeries1.jpg"
   },
   "6": {
    "en": "Masquerain",
    "page": "Masquerain (PCG-P Promo 6)",
    "type": "Grass",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "アメモース",
+   "artist": "Kagemaru Himeno",
+   "image": "https://archives.bulbagarden.net/media/upload/2/26/Masquerain7POPSeries1.jpg"
   },
   "7": {
    "en": "Blaziken",
    "page": "Blaziken (PCG-P Promo 7)",
    "type": "Fire",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "バシャーモ",
+   "artist": "Katsura Tabata",
+   "image": "https://archives.bulbagarden.net/media/upload/7/7e/Blaziken1POPSeries1.jpg"
   },
   "8": {
    "en": "Surskit",
    "page": "Surskit (PCG-P Promo 8)",
    "type": "Water",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "アメタマ",
+   "artist": "Kagemaru Himeno",
+   "image": "https://archives.bulbagarden.net/media/upload/f/fb/Surskit14POPSeries1.jpg"
   },
   "9": {
    "en": "Plusle",
    "page": "Plusle (PCG-P Promo 9)",
    "type": "Lightning",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "プラスル",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f0/Plusle13POPSeries1.jpg"
   },
   "10": {
    "en": "Minun",
    "page": "Minun (PCG-P Promo 10)",
    "type": "Lightning",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "マイナン",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b1/Minun12POPSeries1.jpg"
   },
   "11": {
    "en": "Deoxys",
    "page": "Deoxys (PCG-P Promo 11)",
    "type": "Psychic",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "デオキシス",
+   "artist": "Hironobu Yoshida",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e2/DeoxysEXDeoxys16.jpg"
   },
   "12": {
    "en": "Torkoal",
    "page": "Torkoal (PCG-P Promo 12)",
    "type": "Fighting",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "コータス",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d3/Torkoal10POPSeries1.jpg"
   },
   "13": {
    "en": "Swellow",
    "page": "Swellow (PCG-P Promo 13)",
    "type": "Colorless",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "オオスバメ",
+   "artist": "Kagemaru Himeno",
+   "image": "https://archives.bulbagarden.net/media/upload/7/76/Swellow15POPSeries1.jpg"
   },
   "14": {
    "en": "Rayquaza",
    "page": "Rayquaza (PCG-P Promo 14)",
    "type": "Colorless",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "レックウザ",
+   "artist": "Katsura Tabata",
+   "image": "https://archives.bulbagarden.net/media/upload/8/88/Rayquaza3POPSeries1.jpg"
   },
   "15": {
    "en": "Murkrow",
    "page": "Murkrow (PCG-P Promo 15)",
    "type": "Darkness",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ヤミカラス",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/8/8e/Murkrow8POPSeries1.jpg"
   },
   "16": {
    "en": "Metagross",
    "page": "Metagross (PCG-P Promo 16)",
    "type": "Metal",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "メタグロス",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/6/61/Metagross2POPSeries1.jpg"
   },
   "17": {
    "en": "Deoxys",
    "page": "Deoxys (PCG-P Promo 17)",
    "type": "Psychic",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "デオキシス",
+   "artist": "Hironobu Yoshida",
+   "image": "https://archives.bulbagarden.net/media/upload/8/80/DeoxysEXDeoxys18.jpg"
   },
   "18": {
    "en": "Sky-Splitting Deoxys",
    "page": "Sky-Splitting Deoxys (PCG-P Promo 18)",
    "type": "Psychic",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "裂空のデオキシス",
+   "artist": "K. Hoshiba",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
   },
   "19": {
    "en": "Deoxys",
    "page": "Deoxys (PCG-P Promo 19)",
    "type": "Psychic",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "デオキシス",
+   "artist": "Hironobu Yoshida",
+   "image": "https://archives.bulbagarden.net/media/upload/2/27/DeoxysEXDeoxys17.jpg"
   },
   "20": {
    "en": "LaRousse's Munchlax",
    "page": "LaRousse's Munchlax (PCG-P Promo 20)",
    "type": "Colorless",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ラルースのゴンベ",
+   "artist": "Atsuko Nishida",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
   },
   "21": {
    "en": "Scramble Energy",
    "page": "Scramble Energy (PCG-P Promo 21)",
    "type": "Colorless",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "スクランブルエネルギー",
+   "artist": "Takumi Akabane",
+   "image": "https://archives.bulbagarden.net/media/upload/7/72/ScrambleEnergyEXDeoxys95.jpg"
   },
   "22": {
    "en": "Heal Energy",
    "page": "Heal Energy (PCG-P Promo 22)",
    "type": "Colorless",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ヒーリングエネルギー",
+   "artist": "Takumi Akabane",
+   "image": "https://archives.bulbagarden.net/media/upload/8/8b/HealEnergyEXDeoxys94.jpg"
   },
   "23": {
    "en": "Luvdisc",
    "page": "Luvdisc (PCG-P Promo 23)",
    "type": "Water",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ラブカス",
+   "artist": "Atsuko Nishida",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e4/Luvdisc14POPSeries2.jpg"
   },
   "24": {
    "en": "Pokémon Card Laboratory",
    "page": "Pokémon Card Laboratory (PCG-P Promo 24)",
    "type": "T [St]",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ポケモンカード研究所",
+   "artist": "Katsura Tabata",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
   },
   "25": {
    "en": "LaRousse's Munchlax",
    "page": "LaRousse's Munchlax (PCG-P Promo 25)",
    "type": "Colorless",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ラルースのゴンベ",
+   "artist": "Atsuko Nishida",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
   },
   "26": {
    "en": "Rocket's Raikou ex",
    "page": "Rocket's Raikou ex (PCG-P Promo 26)",
    "type": "Darkness",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "R団のライコウ ex",
+   "artist": "Ryo Ueda",
+   "semScan": 1
   },
   "27": {
    "en": "Deoxys ex",
    "page": "Deoxys ex (PCG-P Promo 27)",
    "type": "Psychic",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "デオキシス ex",
+   "artist": "Hiromichi Sugiyama",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d7/Deoxysex17POPSeries4.jpg"
   },
   "28": {
    "en": "Chikorita",
    "page": "Chikorita (PCG-P Promo 28)",
    "type": "Grass",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "チコリータ",
+   "artist": "Shin-ichi Yoshikawa",
+   "image": "https://archives.bulbagarden.net/media/upload/6/67/ChikoritaEXHiddenLegends55.jpg"
   },
   "29": {
    "en": "Cyndaquil",
    "page": "Cyndaquil (PCG-P Promo 29)",
    "type": "Fire",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ヒノアラシ",
+   "artist": "Ken Ikuji",
+   "image": "https://archives.bulbagarden.net/media/upload/0/0e/CyndaquilEXHiddenLegends59.jpg"
   },
   "30": {
    "en": "Totodile",
    "page": "Totodile (PCG-P Promo 30)",
    "type": "Water",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ワニノコ",
+   "artist": "Shin-ichi Yoshikawa",
+   "image": "https://archives.bulbagarden.net/media/upload/3/3d/TotodileEXHiddenLegends79.jpg"
   },
   "31": {
    "en": "Pichu",
    "page": "Pichu (PCG-P Promo 31)",
    "type": "Lightning",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ピチュー",
+   "artist": "Nakaoka",
+   "image": "https://archives.bulbagarden.net/media/upload/d/dc/PichuEXEmerald59.jpg"
   },
   "32": {
    "en": "Deoxys",
    "page": "Deoxys (PCG-P Promo 32)",
    "type": "Psychic",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "デオキシス",
+   "artist": "Hironobu Yoshida",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d7/DeoxysEXEmerald2.jpg"
   },
   "33": {
    "en": "Larvitar",
    "page": "Larvitar (PCG-P Promo 33)",
    "type": "Fighting",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ヨーギラス",
+   "artist": "Nakaoka",
+   "image": "https://archives.bulbagarden.net/media/upload/c/cd/LarvitarEXEmerald52.jpg"
   },
   "34": {
    "en": "Togepi",
    "page": "Togepi (PCG-P Promo 34)",
    "type": "Colorless",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "トゲピー",
+   "artist": "Nakaoka",
+   "image": "https://archives.bulbagarden.net/media/upload/7/7c/TogepiEXHiddenLegends78.jpg"
   },
   "35": {
    "en": "Rocket's Raikou ex",
    "page": "Rocket's Raikou ex (PCG-P Promo 35)",
    "type": "Darkness",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "R団のライコウ ex",
+   "artist": "Ryo Ueda",
+   "semScan": 1
   },
   "36": {
    "en": "Rocket's Persian ex",
    "page": "Rocket's Persian ex (PCG-P Promo 36)",
    "type": "Darkness",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "R団のペルシアン ex",
+   "artist": "Mitsuhiro Arita",
+   "semScan": 1
   },
   "37": {
    "en": "Treecko",
    "page": "Treecko (PCG-P Promo 37)",
    "type": "Grass",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "キモリ",
+   "artist": "Yuka Morii",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
   },
   "38": {
    "en": "Lugia",
    "page": "Lugia (PCG-P Promo 38)",
    "type": "Psychic",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ルギア",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/6/64/LugiaEXUnseenForces29.jpg"
   },
   "39": {
    "en": "Suicune",
    "page": "Suicune (PCG-P Promo 39)",
    "type": "Water",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "スイクン",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/9/9c/SuicunePCGPromo39.jpg"
   },
   "40": {
    "en": "PokéPark's Munchlax",
    "page": "PokéPark's Munchlax (PCG-P Promo 40)",
    "type": "Colorless",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ポケパークのゴンベ",
+   "artist": "Kanako Eo",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
   },
   "41": {
    "en": "Rayquaza",
    "page": "Rayquaza (PCG-P Promo 41)",
    "type": "Colorless",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "レックウザ",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/0/08/RayquazaEXEmerald9.jpg"
   },
   "42": {
    "en": "Groudon",
    "page": "Groudon (PCG-P Promo 42)",
    "type": "Fighting",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "グラードン",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/d/db/GroudonPCGPromo42.jpg"
   },
   "43": {
    "en": "PokéPark's Pikachu",
    "page": "PokéPark's Pikachu (PCG-P Promo 43)",
    "type": "Lightning",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ポケパークのピカチュウ",
+   "artist": "Kanako Eo",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
   },
   "44": {
    "en": "PokéPark's Celebi",
    "page": "PokéPark's Celebi (PCG-P Promo 44)",
    "type": "Grass",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ポケパークのセレビィ",
+   "artist": "Kanako Eo",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
   },
   "45": {
    "en": "PokéPark's Latios",
    "page": "PokéPark's Latios (PCG-P Promo 45)",
    "type": "Psychic",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ポケパークのラティオス",
+   "artist": "Kanako Eo",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
   },
   "46": {
    "en": "PokéPark's Whismur",
    "page": "PokéPark's Whismur (PCG-P Promo 46)",
    "type": "Colorless",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ポケパークのゴニョニョ",
+   "artist": "Kanako Eo",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
   },
   "47": {
    "en": "PokéPark's Torchic",
    "page": "PokéPark's Torchic (PCG-P Promo 47)",
    "type": "Fire",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ポケパークのアチャモ",
+   "artist": "Kanako Eo",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
   },
   "48": {
    "en": "PokéPark's Mudkip",
    "page": "PokéPark's Mudkip (PCG-P Promo 48)",
    "type": "Water",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ポケパークのミズゴロウ",
+   "artist": "Kanako Eo",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
   },
   "49": {
    "en": "Tauros",
    "page": "Tauros (PCG-P Promo 49)",
    "type": "Colorless",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ケンタロス",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/b/bc/Tauros5POPSeries2.jpg"
   },
   "50": {
    "en": "PokéPark's Jirachi",
    "page": "PokéPark's Jirachi (PCG-P Promo 50)",
    "type": "Metal",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ポケパークのジラーチ",
+   "artist": "Kanako Eo",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
   },
   "51": {
    "en": "Typhlosion",
    "page": "Typhlosion (PCG-P Promo 51)",
    "type": "Fire",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "バクフーン",
+   "artist": "Hajime Kusajima",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b4/TyphlosionNintendoPromo34.jpg"
   },
   "52": {
    "en": "Celebi ex",
    "page": "Celebi ex (PCG-P Promo 52)",
    "type": "Psychic",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "セレビィ ex",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/2/28/Celebiex17POPSeries2.jpg"
   },
   "53": {
    "en": "Rocket's Persian ex",
    "page": "Rocket's Persian ex (PCG-P Promo 53)",
    "type": "Darkness",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "R団のペルシアン ex",
+   "artist": "Mitsuhiro Arita",
+   "semScan": 1
   },
   "54": {
    "en": "Dark Metal Energy",
    "page": "Dark Metal Energy (PCG-P Promo 54)",
    "type": "Metal",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ダークメタルエネルギー",
+   "artist": "Takumi Akabane",
+   "image": "https://archives.bulbagarden.net/media/upload/7/77/DarkMetalEnergyEXTeamRocketReturns94.jpg"
   },
   "55": {
    "en": "Grass Energy",
    "page": "Grass Energy (PCG-P Promo 55)",
    "type": "Grass",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "基本草エネルギー",
+   "artist": "Keiji Kinebuchi",
+   "image": "https://archives.bulbagarden.net/media/upload/2/28/BasicGrassEnergyMEEEnergy1.jpg"
   },
   "56": {
    "en": "Fire Energy",
    "page": "Fire Energy (PCG-P Promo 56)",
    "type": "Fire",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "基本炎エネルギー",
+   "artist": "Keiji Kinebuchi",
+   "image": "https://archives.bulbagarden.net/media/upload/1/17/BasicFireEnergyMEEEnergy2.jpg"
   },
   "57": {
    "en": "Water Energy",
    "page": "Water Energy (PCG-P Promo 57)",
    "type": "Water",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "基本水エネルギー",
+   "artist": "YOSHIROTTEN",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d5/BasicWaterEnergyMEEEnergy3.jpg"
   },
   "58": {
    "en": "Lightning Energy",
    "page": "Lightning Energy (PCG-P Promo 58)",
    "type": "Lightning",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "基本雷エネルギー",
+   "artist": "Pokémon 25th Anniversary",
+   "image": "https://archives.bulbagarden.net/media/upload/9/9b/BasicLightningEnergyMEEEnergy4.jpg"
   },
   "59": {
    "en": "Psychic Energy",
    "page": "Psychic Energy (PCG-P Promo 59)",
    "type": "Psychic",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "基本超エネルギー",
+   "artist": "Keiji Kinebuchi",
+   "image": "https://archives.bulbagarden.net/media/upload/a/ad/BasicPsychicEnergyMEEEnergy5.jpg"
   },
   "60": {
    "en": "Fighting Energy",
    "page": "Fighting Energy (PCG-P Promo 60)",
    "type": "Fighting",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "基本闘エネルギー",
+   "artist": "Pokémon 25th Anniversary",
+   "image": "https://archives.bulbagarden.net/media/upload/6/6c/BasicFightingEnergyMEEEnergy6.jpg"
   },
   "61": {
    "en": "Latias",
    "page": "Latias (PCG-P Promo 61)",
    "type": "Colorless",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ラティアス",
+   "artist": "Nakaoka",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e1/LatiasLatiasHalfDeck4.jpg"
   },
   "62": {
    "en": "Latios",
    "page": "Latios (PCG-P Promo 62)",
    "type": "Colorless",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ラティオス",
+   "artist": "Kyoko Koizumi",
+   "image": "https://archives.bulbagarden.net/media/upload/7/79/LatiosHalfDeck.jpg"
   },
   "63": {
    "en": "Sceptile",
    "page": "Sceptile (PCG-P Promo 63)",
    "type": "Grass",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ジュカイン",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/9/9d/SceptileEXEmerald10.jpg"
   },
   "64": {
    "en": "Cacnea",
    "page": "Cacnea (PCG-P Promo 64)",
    "type": "Grass",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "サボネア",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/5/53/Cacnea13POPSeries2.jpg"
   },
   "65": {
    "en": "Combusken",
    "page": "Combusken (PCG-P Promo 65)",
    "type": "Fire",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ワカシャモ",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/8/82/Combusken7POPSeries3.jpg"
   },
   "66": {
    "en": "Swampert",
    "page": "Swampert (PCG-P Promo 66)",
    "type": "Water",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ラグラージ",
+   "artist": "Atsuko Nishida",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e5/SwampertEXEmerald11.jpg"
   },
   "67": {
    "en": "Regice",
    "page": "Regice (PCG-P Promo 67)",
    "type": "Water",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "レジアイス",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/2/27/RegiceEXHolonPhantoms27.jpg"
   },
   "68": {
    "en": "Pikachu",
    "page": "Pikachu (PCG-P Promo 68)",
    "type": "Lightning",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ピカチュウ",
+   "artist": "Unnumbered Promotional card",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f7/PikachuSnapBestPhotoContest.jpg"
   },
   "69": {
    "en": "Mew",
    "page": "Mew (PCG-P Promo 69)",
    "type": "Psychic",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ミュウ",
+   "artist": "Hajime Kusajima",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f7/MewExpedition19.jpg"
   },
   "70": {
    "en": "Gardevoir",
    "page": "Gardevoir (PCG-P Promo 70)",
    "type": "Psychic",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "サーナイト",
+   "artist": "Kagemaru Himeno",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c9/GardevoirEXEmerald4.jpg"
   },
   "71": {
    "en": "Phanpy",
    "page": "Phanpy (PCG-P Promo 71)",
    "type": "Fighting",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ゴマゾウ",
+   "artist": "Tomokazu Komiya",
+   "image": "https://archives.bulbagarden.net/media/upload/6/64/Phanpy15POPSeries2.jpg"
   },
   "72": {
    "en": "Regirock",
    "page": "Regirock (PCG-P Promo 72)",
    "type": "Fighting",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "レジロック",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/6/6e/RegirockEXHolonPhantoms28.jpg"
   },
   "73": {
    "en": "Pidgeot",
    "page": "Pidgeot (PCG-P Promo 73)",
    "type": "Colorless",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ピジョット",
+   "artist": "Tomokazu Komiya",
+   "image": "https://archives.bulbagarden.net/media/upload/8/8d/PidgeotExpedition23.jpg"
   },
   "74": {
    "en": "Registeel",
    "page": "Registeel (PCG-P Promo 74)",
    "type": "Metal",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "レジスチル",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c4/RegisteelEXHolonPhantoms29.jpg"
   },
   "75": {
    "en": "Aura's Lucario",
    "page": "Aura's Lucario (PCG-P Promo 75)",
    "type": "Metal",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "波導のルカリオ",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
   },
   "76": {
    "en": "Ho-Oh ex",
    "page": "Ho-Oh ex (PCG-P Promo 76)",
    "type": "Fire",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ホウオウ ex",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/5/59/Ho-Ohex17POPSeries3.jpg"
   },
   "77": {
    "en": "Azumarill",
    "page": "Azumarill (PCG-P Promo 77)",
    "type": "Water",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "マリルリ",
+   "artist": "Kagemaru Himeno",
+   "image": "https://archives.bulbagarden.net/media/upload/f/fb/AzumarillEXDeltaSpecies114.jpg"
   },
   "78": {
    "en": "Pichu Bros.",
    "page": "Pichu Bros. (PCG-P Promo 78)",
    "type": "Lightning",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ピチュー兄弟",
+   "artist": "Kagemaru Himeno",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d7/PichuBros16POPSeries3.jpg"
   },
   "79": {
    "en": "Aura's Lucario",
    "page": "Aura's Lucario (PCG-P Promo 79)",
    "type": "Metal",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "波導のルカリオ",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
   },
   "80": {
    "en": "Mew",
    "page": "Mew (PCG-P Promo 80)",
    "type": "Psychic",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ミュウ",
+   "artist": "Masakazu Fukuda",
+   "image": "https://archives.bulbagarden.net/media/upload/3/35/600_P085_151MEW.jpg"
   },
   "81": {
    "en": "Grovyle",
    "page": "Grovyle (PCG-P Promo 81)",
    "type": "Grass",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ジュプトル",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/1/1e/Grovyle7POPSeries4.jpg"
   },
   "82": {
    "en": "Combusken",
    "page": "Combusken (PCG-P Promo 82)",
    "type": "Fire",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ワカシャモ",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/4/4c/Combusken6POPSeries4.jpg"
   },
   "83": {
    "en": "Mudkip",
    "page": "Mudkip (PCG-P Promo 83)",
    "type": "Water",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ミズゴロウ",
+   "artist": "Masakazu Fukuda",
+   "image": "https://archives.bulbagarden.net/media/upload/c/cc/Mudkip11POPSeries4.jpg"
   },
   "84": {
    "en": "Pikachu",
    "page": "Pikachu (PCG-P Promo 84)",
    "type": "Lightning",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ピカチュウ",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/7/77/Pikachu13POPSeries4.jpg"
   },
   "85": {
    "en": "Mew",
    "page": "Mew (PCG-P Promo 85)",
    "type": "Psychic",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ミュウ",
+   "artist": "Masakazu Fukuda",
+   "image": "https://archives.bulbagarden.net/media/upload/3/35/600_P085_151MEW.jpg"
   },
   "86": {
    "en": "Rota's Mime Jr.",
    "page": "Rota's Mime Jr. (PCG-P Promo 86)",
    "type": "Psychic",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ロータのマネネ",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
   },
   "87": {
    "en": "Rota's Bonsly",
    "page": "Rota's Bonsly (PCG-P Promo 87)",
    "type": "Fighting",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ロータのウソハチ",
+   "artist": "Kagemaru Himeno",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
   },
   "88": {
    "en": "Rota's Munchlax",
    "page": "Rota's Munchlax (PCG-P Promo 88)",
    "type": "Colorless",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ロータのゴンベ",
+   "artist": "Kagemaru Himeno",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
   },
   "89": {
    "en": "Rota's Weavile",
    "page": "Rota's Weavile (PCG-P Promo 89)",
    "type": "Darkness",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ロータのマニューラ",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
   },
   "90": {
    "en": "Aura's Lucario",
    "page": "Aura's Lucario (PCG-P Promo 90)",
    "type": "Metal",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "波導のルカリオ",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
   },
   "91": {
    "en": "Mew",
    "page": "Mew (PCG-P Promo 91)",
    "type": "Psychic",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ミュウ",
+   "artist": "Nakaoka",
+   "image": "https://archives.bulbagarden.net/media/upload/d/db/Mew4POPSeries4.jpg"
   },
   "92": {
    "en": "Aura's Lucario",
    "page": "Aura's Lucario (PCG-P Promo 92)",
    "type": "Metal",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "波導のルカリオ",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
   },
   "93": {
    "en": "Aura's Lucario",
    "page": "Aura's Lucario (PCG-P Promo 93)",
    "type": "Metal",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "波導のルカリオ",
+   "artist": "edit",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
   },
   "94": {
    "en": "Rayquaza",
    "page": "Rayquaza (PCG-P Promo 94)",
    "type": "Colorless",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "レックウザ",
+   "artist": "Hiromichi Sugiyama",
+   "image": "https://archives.bulbagarden.net/media/upload/8/85/RayquazaEXDeoxys22.jpg"
   },
   "95": {
    "en": "React Energy",
    "page": "React Energy (PCG-P Promo 95)",
    "type": "Colorless",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "リアクトエネルギー",
+   "artist": "Takumi Akabane",
+   "semScan": 1
   },
   "96": {
    "en": "Pokémon Fan Club",
    "page": "Pokémon Fan Club (PCG-P Promo 96)",
    "type": "T [Su]",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ポケモンだいすきクラブ",
+   "artist": "Emi Ando",
+   "image": "https://archives.bulbagarden.net/media/upload/4/42/Pok%C3%A9monFanClubFlashfire106.jpg"
   },
   "97": {
    "en": "Rota's Mime Jr.",
    "page": "Rota's Mime Jr. (PCG-P Promo 97)",
    "type": "Psychic",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ロータのマネネ",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
   },
   "98": {
    "en": "Regice",
    "page": "Regice (PCG-P Promo 98)",
    "type": "Water",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "レジアイス",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/2/27/RegiceEXHolonPhantoms27.jpg"
   },
   "99": {
    "en": "Regirock",
    "page": "Regirock (PCG-P Promo 99)",
    "type": "Fighting",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "レジロック",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/6/6e/RegirockEXHolonPhantoms28.jpg"
   },
   "100": {
    "en": "Registeel",
    "page": "Registeel (PCG-P Promo 100)",
    "type": "Metal",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "レジスチル",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c4/RegisteelEXHolonPhantoms29.jpg"
   },
   "101": {
    "en": "Forretress",
    "page": "Forretress (PCG-P Promo 101)",
    "type": "Grass",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "フォレトス",
+   "artist": "Midori Harada",
+   "image": "https://archives.bulbagarden.net/media/upload/c/cb/Forretress9POPSeries3.jpg"
   },
   "102": {
    "en": "Flareon",
    "page": "Flareon (PCG-P Promo 102)",
    "type": "Fire",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ブースター",
+   "artist": "Masakazu Fukuda",
+   "image": "https://archives.bulbagarden.net/media/upload/6/6b/Flareon2POPSeries3.jpg"
   },
   "103": {
    "en": "Rayquaza δ",
    "page": "Rayquaza δ (PCG-P Promo 103)",
    "type": "Fire",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "レックウザ δ",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b7/RayquazaEXHolonPhantoms26.jpg"
   },
   "104": {
    "en": "Vaporeon",
    "page": "Vaporeon (PCG-P Promo 104)",
    "type": "Water",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "シャワーズ",
+   "artist": "Masakazu Fukuda",
+   "image": "https://archives.bulbagarden.net/media/upload/3/31/Vaporeon6POPSeries3.jpg"
   },
   "105": {
    "en": "Corphish",
    "page": "Corphish (PCG-P Promo 105)",
    "type": "Water",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ヘイガニ",
+   "artist": "Midori Harada",
+   "image": "https://archives.bulbagarden.net/media/upload/4/4e/CorphishEXHolonPhantoms63.jpg"
   },
   "106": {
    "en": "Jolteon",
    "page": "Jolteon (PCG-P Promo 106)",
    "type": "Lightning",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "サンダース",
+   "artist": "Masakazu Fukuda",
+   "image": "https://archives.bulbagarden.net/media/upload/5/53/Jolteon3POPSeries3.jpg"
   },
   "107": {
    "en": "Mewtwo δ",
    "page": "Mewtwo δ (PCG-P Promo 107)",
    "type": "Lightning",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ミュウツー δ",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/0/01/MewtwoEXHolonPhantoms24.jpg"
   },
   "108": {
    "en": "Ditto",
    "page": "Ditto (PCG-P Promo 108)",
    "type": "Psychic",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "メタモン",
+   "artist": "Yuka Morii",
+   "image": "https://archives.bulbagarden.net/media/upload/e/ec/Ditto12POPSeries3.jpg"
   },
   "109": {
    "en": "Donphan",
    "page": "Donphan (PCG-P Promo 109)",
    "type": "Fighting",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ドンファン",
+   "artist": "Tomoaki Imakuni",
+   "image": "https://archives.bulbagarden.net/media/upload/4/4c/Donphan8POPSeries3.jpg"
   },
   "110": {
    "en": "Marshtomp",
    "page": "Marshtomp (PCG-P Promo 110)",
    "type": "Fighting",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ヌマクロー",
+   "artist": "Midori Harada",
+   "image": "https://archives.bulbagarden.net/media/upload/0/0d/Marshtomp15POPSeries3.jpg"
   },
   "111": {
    "en": "Eevee",
    "page": "Eevee (PCG-P Promo 111)",
    "type": "Colorless",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "イーブイ",
+   "artist": "Masakazu Fukuda",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b0/Eevee13POPSeries3.jpg"
   },
   "112": {
    "en": "Pikachu δ",
    "page": "Pikachu δ (PCG-P Promo 112)",
    "type": "Metal",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ピカチュウδ",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d7/PikachuEXLegendMaker93.jpg"
   },
   "113": {
    "en": "Pikachu δ",
    "page": "Pikachu δ (PCG-P Promo 113)",
    "type": "Metal",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ピカチュウδ",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d7/PikachuEXLegendMaker93.jpg"
   },
   "114": {
    "en": "Holon Energy GL",
    "page": "Holon Energy GL (PCG-P Promo 114)",
    "type": "Colorless",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ホロンエネルギーＳＹＮ：ＧＬ",
+   "artist": "Takumi Akabane",
+   "image": "https://archives.bulbagarden.net/media/upload/2/26/HolonEnergyGLEXDeltaSpecies105.jpg"
   },
   "115": {
    "en": "Holon Energy FF",
    "page": "Holon Energy FF (PCG-P Promo 115)",
    "type": "Colorless",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ホロンエネルギーＳＹＮ：ＦＦ",
+   "artist": "Takumi Akabane",
+   "image": "https://archives.bulbagarden.net/media/upload/6/66/HolonEnergyFFEXDeltaSpecies104.jpg"
   },
   "116": {
    "en": "Holon Energy WP",
    "page": "Holon Energy WP (PCG-P Promo 116)",
    "type": "Colorless",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ホロンエネルギーＳＹＮ：ＷＰ",
+   "artist": "Takumi Akabane",
+   "image": "https://archives.bulbagarden.net/media/upload/2/24/HolonEnergyWPEXDeltaSpecies106.jpg"
   },
   "117": {
    "en": "Championship Arena",
    "page": "Championship Arena (PCG-P Promo 117)",
    "type": "T [St]",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "バトルロードスタジアム",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/6/62/ChampionshipArenaBattleRoadStadiumDPPromo.jpg"
   },
   "118": {
    "en": "Pikachu δ",
    "page": "Pikachu δ (PCG-P Promo 118)",
    "type": "Metal",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ピカチュウδ",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/8/8f/Pikachu13POPSeries5.jpg"
   },
   "119": {
    "en": "Sceptile",
    "page": "Sceptile (PCG-P Promo 119)",
    "type": "Grass",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ジュカイン",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b0/SceptileEXRubySapphire20.jpg"
   },
   "120": {
    "en": "Latias δ",
    "page": "Latias δ (PCG-P Promo 120)",
    "type": "Fire",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ラティアスδ",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/a/ad/LatiasEXHolonPhantoms21.jpg"
   },
   "121": {
    "en": "Squirtle",
    "page": "Squirtle (PCG-P Promo 121)",
    "type": "Water",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ゼニガメ",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/0/08/SquirtleEXTeamMagmavsTeamAqua46.jpg"
   },
   "122": {
    "en": "Latios δ",
    "page": "Latios δ (PCG-P Promo 122)",
    "type": "Water",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ラティオスδ",
+   "artist": "Masakazu Fukuda",
+   "image": "https://archives.bulbagarden.net/media/upload/3/3c/LatiosEXHolonPhantoms22.jpg"
   },
   "123": {
    "en": "Pikachu",
    "page": "Pikachu (PCG-P Promo 123)",
    "type": "Lightning",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ピカチュウ",
+   "artist": "Kagemaru Himeno",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e8/PikachuEXPowerKeepers57.jpg"
   },
   "124": {
    "en": "Wobbuffet",
    "page": "Wobbuffet (PCG-P Promo 124)",
    "type": "Psychic",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ソーナンス",
+   "artist": "Kagemaru Himeno",
+   "image": "https://archives.bulbagarden.net/media/upload/7/78/Wobbuffet16POPSeries4.jpg"
   },
   "125": {
    "en": "Flygon",
    "page": "Flygon (PCG-P Promo 125)",
    "type": "Fighting",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "フライゴン",
+   "artist": "Hisao Nakamura",
+   "image": "https://archives.bulbagarden.net/media/upload/6/62/Flygon3POPSeries4.jpg"
   },
   "126": {
    "en": "Pidgey",
    "page": "Pidgey (PCG-P Promo 126)",
    "type": "Colorless",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ポッポ",
+   "artist": "Hisao Nakamura",
+   "image": "https://archives.bulbagarden.net/media/upload/8/81/Pidgey12POPSeries4.jpg"
   },
   "127": {
    "en": "Meowth δ",
    "page": "Meowth δ (PCG-P Promo 127)",
    "type": "Darkness",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ニャースδ",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/4/45/Meowth11POPSeries5.jpg"
   },
   "128": {
    "en": "Chimecho δ",
    "page": "Chimecho δ (PCG-P Promo 128)",
    "type": "Metal",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "チリーンδ",
+   "artist": "Masakazu Fukuda",
+   "image": "https://archives.bulbagarden.net/media/upload/a/ac/Chimecho1POPSeries4.jpg"
   },
   "129": {
    "en": "Deoxys δ",
    "page": "Deoxys δ (PCG-P Promo 129)",
    "type": "Colorless",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "デオキシス δ",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/8/83/Deoxys2POPSeries4.jpg"
   },
   "130": {
    "en": "Touch Exchange!",
    "page": "Touch Exchange! (PCG-P Promo 130)",
    "type": "T",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "タッチ交換!",
+   "artist": "Sumiyoshi Kizuki",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
   },
   "131": {
    "en": "Treecko δ",
    "page": "Treecko δ (PCG-P Promo 131)",
    "type": "Psychic",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "キモリδ",
+   "artist": "Masakazu Fukuda",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d7/TreeckoEXCrystalGuardians68.jpg"
   },
   "132": {
    "en": "Charmander δ",
    "page": "Charmander δ (PCG-P Promo 132)",
    "type": "Lightning",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ヒトカゲδ",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/0/02/Charmander10POPSeries5.jpg"
   },
   "133": {
    "en": "Charmeleon δ",
    "page": "Charmeleon δ (PCG-P Promo 133)",
    "type": "Lightning",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "リザードδ",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/0/0d/Charmeleon5POPSeries5.jpg"
   },
   "134": {
    "en": "Seviper",
    "page": "Seviper (PCG-P Promo 134)",
    "type": "Grass",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ハブネーク",
+   "artist": "Midori Harada",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d9/SeviperEXPowerKeepers23.jpg"
   },
   "135": {
    "en": "Ho-Oh",
    "page": "Ho-Oh (PCG-P Promo 135)",
    "type": "Fire",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ホウオウ",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/c/cb/Ho-Oh1POPSeries5.jpg"
   },
   "136": {
    "en": "Combusken",
    "page": "Combusken (PCG-P Promo 136)",
    "type": "Fire",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ワカシャモ",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/3/32/CombuskenEXRubySapphire28.jpg"
   },
   "137": {
    "en": "Samiya's Mantyke",
    "page": "Samiya's Mantyke (PCG-P Promo 137)",
    "type": "Water",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "アクーシャのタマンタ",
+   "artist": "Atsuko Nishida",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
   },
   "138": {
    "en": "Samiya's Buizel",
    "page": "Samiya's Buizel (PCG-P Promo 138)",
    "type": "Water",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "アクーシャのブイゼル",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
   },
   "139": {
    "en": "Sea's Manaphy",
    "page": "Sea's Manaphy (PCG-P Promo 139)",
    "type": "Water",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "蒼海のマナフィ",
+   "artist": "Atsuko Nishida",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
   },
   "140": {
    "en": "Pelipper δ",
    "page": "Pelipper δ (PCG-P Promo 140)",
    "type": "Lightning",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ピカチュウδ",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/5/5d/Pelipper14POPSeries5.jpg"
   },
   "141": {
    "en": "Lugia",
    "page": "Lugia (PCG-P Promo 141)",
    "type": "Psychic",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ルギア",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/3/32/Lugia2POPSeries5.jpg"
   },
   "142": {
    "en": "Meditite",
    "page": "Meditite (PCG-P Promo 142)",
    "type": "Fighting",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "アサナン",
+   "artist": "Midori Harada",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f7/MedititeEXPowerKeepers55.jpg"
   },
   "143": {
    "en": "Samiya's Chatot",
    "page": "Samiya's Chatot (PCG-P Promo 143)",
    "type": "Colorless",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "アクーシャのペラップ",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
   },
   "144": {
    "en": "Sharpedo",
    "page": "Sharpedo (PCG-P Promo 144)",
    "type": "Darkness",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "サメハダー",
+   "artist": "Midori Harada",
+   "image": "https://archives.bulbagarden.net/media/upload/3/34/SharpedoEXPowerKeepers38.jpg"
   },
   "145": {
    "en": "Zangoose δ",
    "page": "Zangoose δ (PCG-P Promo 145)",
    "type": "Metal",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ザングースδ",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/3/33/Zangoose15POPSeries5.jpg"
   },
   "146": {
    "en": "Sea's Manaphy",
    "page": "Sea's Manaphy (PCG-P Promo 146)",
    "type": "Water",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "蒼海のマナフィ",
+   "artist": "Atsuko Nishida",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
   },
   "147": {
    "en": "Sea's Manaphy",
    "page": "Sea's Manaphy (PCG-P Promo 147)",
    "type": "Water",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "蒼海のマナフィ",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
   },
   "148": {
    "en": "Mew δ",
    "page": "Mew δ (PCG-P Promo 148)",
    "type": "Fire",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ミュウδ",
+   "artist": "Masakazu Fukuda",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d6/Mew3POPSeries5.jpg"
   },
   "149": {
    "en": "δ Rainbow Energy",
    "page": "Δ Rainbow Energy (PCG-P Promo 149)",
    "type": "Rainbow",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "δレインボーエネルギー",
+   "artist": "Takumi Akabane",
+   "image": "https://archives.bulbagarden.net/media/upload/2/22/DeltaRainbowEnergyEXHolonPhantoms98.jpg"
   },
   "150": {
    "en": "Sea's Manaphy",
    "page": "Sea's Manaphy (PCG-P Promo 150)",
    "type": "Water",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "蒼海のマナフィ",
+   "artist": "Kagemaru Himeno",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
   },
   "151": {
    "en": "Samiya's Buizel",
    "page": "Samiya's Buizel (PCG-P Promo 151)",
    "type": "Water",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "アクーシャのブイゼル",
+   "artist": "Midori Harada",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
   },
   "152": {
    "en": "Samiya's Chatot",
    "page": "Samiya's Chatot (PCG-P Promo 152)",
    "type": "Colorless",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "アクーシャのペラップ",
+   "artist": "Atsuko Nishida",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
   },
   "153": {
    "en": "Pikachu",
    "page": "Pikachu (PCG-P Promo 153)",
    "type": "Lightning",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ピカチュウ",
+   "artist": "Naoyo Kimura",
+   "image": "https://archives.bulbagarden.net/media/upload/2/26/Pikachu12POPSeries5.jpg"
   },
   "154": {
    "en": "Sea's Manaphy",
    "page": "Sea's Manaphy (PCG-P Promo 154)",
    "type": "Water",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "蒼海のマナフィ",
+   "artist": "Naoyo Kimura",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
   }
  }
 }

@@ -7,56 +7,80 @@
    "page": "Weedle (Holon Research Tower 1)",
    "type": "Grass",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "ビードル",
+   "artist": "Atsuko Nishida",
+   "image": "https://archives.bulbagarden.net/media/upload/9/90/WeedleEXDeltaSpecies87.jpg"
   },
   "2": {
    "en": "Kakuna",
    "page": "Kakuna (Holon Research Tower 2)",
    "type": "Grass",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "コクーン",
+   "artist": "Sachiko Adachi",
+   "image": "https://archives.bulbagarden.net/media/upload/6/6d/KakunaEXDeltaSpecies46.jpg"
   },
   "3": {
    "en": "Zubat",
    "page": "Zubat (Holon Research Tower 3)",
    "type": "Grass",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "ズバット",
+   "artist": "Tomokazu Komiya",
+   "image": "https://archives.bulbagarden.net/media/upload/0/0f/ZubatEXDeltaSpecies88.jpg"
   },
   "4": {
    "en": "Golbat",
    "page": "Golbat (Holon Research Tower 4)",
    "type": "Grass",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "ゴルバット",
+   "artist": "Yukiko Baba",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d5/GolbatEXDeltaSpecies43.jpg"
   },
   "5": {
    "en": "Koffing",
    "page": "Koffing (Holon Research Tower 5)",
    "type": "Grass",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "ドガース",
+   "artist": "Sachiko Adachi",
+   "image": "https://archives.bulbagarden.net/media/upload/0/0f/KoffingEXDeltaSpecies72.jpg"
   },
   "6": {
    "en": "Weezing",
    "page": "Weezing (Holon Research Tower 6)",
    "type": "Grass",
    "rarity": "Rare",
-   "mark": ""
+   "mark": "",
+   "ja": "マタドガス",
+   "artist": "Yukiko Baba",
+   "image": "https://archives.bulbagarden.net/media/upload/0/0d/WeezingEXDeltaSpecies33.jpg"
   },
   "7": {
    "en": "Ditto",
    "page": "Ditto (Holon Research Tower 7)",
    "type": "Grass",
    "rarity": "Rare",
-   "mark": ""
+   "mark": "",
+   "ja": "メタモン",
+   "artist": "Yuka Morii",
+   "image": "https://archives.bulbagarden.net/media/upload/7/76/DittoEXDeltaSpecies36.jpg"
   },
   "8": {
    "en": "Volbeat",
    "page": "Volbeat (Holon Research Tower 8)",
    "type": "Grass",
    "rarity": "Rare",
-   "mark": ""
+   "mark": "",
+   "ja": "バルビート",
+   "artist": "Midori Harada",
+   "image": "https://archives.bulbagarden.net/media/upload/9/9c/VolbeatEXDeltaSpecies56.jpg"
   },
   "9": {
    "en": "Illumise",
