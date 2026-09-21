@@ -10708,6 +10708,18 @@
     const cur = currency || "BRL";
     const colItems = [];
     const setsMeta = {};
+    // Total de cada set pelo ÍNDICE mesclado (name → cardIds), por jogo — o
+    // MESMO denominador que a aba Sets da Minha Coleção usa (totalsForTab).
+    // Antes saía de card.setTotal, que as linhas da borda (/api/collection)
+    // não trazem: o total ficava 0, o viewer caía em "total = possuídas" e a
+    // aba Sets do perfil mostrava 100% em todo set (2026-09-21).
+    const idx = window.TCG_INDEXES_MERGED || null;
+    const setIdx = {};
+    if (idx) (idx.sets || []).forEach((sx) => {
+      const g = sx.game || "pokemon";
+      setIdx[g] = setIdx[g] || {};
+      setIdx[g][sx.name] = (setIdx[g][sx.name] || 0) + (sx.cardIds ? sx.cardIds.length : 0);
+    });
     cardVariantPairs((cards || []).filter((c) => owned.has(c.id))).forEach(({ card, variant }) => {
       const qty = owned.variantTotal(card.id, variant);
       if (qty <= 0) return;
@@ -10727,7 +10739,10 @@
       colItems.push({ id: card.id, n: card.name, s: card.set, num: card.number, lang: card.language, g: card.game, a: card.artist || "", r: card.rarity || "", pk: card.pokemonName || "", dx: card.dexId || 0, v: variant, q: qty, vbrl, img: src.url, fb: src.fallback || "" });
       // Meta do set (uma vez por set): total oficial + símbolo, p/ a aba Sets do
       // perfil público mostrar a barra de progresso igual à Coleção.
-      if (card.set && !setsMeta[card.set]) setsMeta[card.set] = { t: card.setTotal || 0, sy: card.setSymbol || "", g: card.game };
+      if (card.set && !setsMeta[card.set]) {
+        const g = card.game || "pokemon";
+        setsMeta[card.set] = { t: (setIdx[g] && setIdx[g][card.set]) || card.setTotal || 0, sy: card.setSymbol || "", g };
+      }
     });
     colItems.sort((a, b) => (b.vbrl * b.q) - (a.vbrl * a.q));
     const byId = new Map((cards || []).map((c) => [c.id, c]));
@@ -10765,7 +10780,6 @@
 
     // Totais de espécie (Pokémon) e artista, tirados do índice mesclado — só pras
     // espécies/artistas que o dono TEM (payload compacto). Denominador do progresso.
-    const idx = window.TCG_INDEXES_MERGED || null;
     const speciesTotals = {}, artistTotals = {};
     if (idx) {
       const artIdx = {};

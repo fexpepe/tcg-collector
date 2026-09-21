@@ -301,9 +301,6 @@
     tabs: document.getElementById("collectionTabs"),
     groupsView: document.getElementById("groupsView"),
     groupsHeading: document.getElementById("groupsHeading"),
-    groupSummaryText: document.getElementById("groupSummaryText"),
-    groupSummaryPct: document.getElementById("groupSummaryPct"),
-    groupSummaryBar: document.getElementById("groupSummaryBar"),
     sortChips: document.getElementById("sortChips"),
     groupList: document.getElementById("groupList"),
     groupsEmpty: document.getElementById("groupsEmpty"),
@@ -1861,15 +1858,9 @@
     const groups = buildGroups(tab);
 
     renderSortChips(tab);
-
-    const ownedSum = groups.reduce((sum, group) => sum + group.ownedCount, 0);
-    const totalSum = groups.reduce((sum, group) => sum + group.totalCount, 0);
-    const overallPct = totalSum ? formatPct((ownedSum / totalSum) * 100) : 0;
-
-    elements.groupSummaryText.textContent = tn(`collection.summary.${activeTab}`, groups.length, { o: ownedSum, t: totalSum });
-    elements.groupSummaryPct.textContent = `${overallPct}%`;
-    elements.groupSummaryBar.style.width = `${Math.min(100, totalSum ? (ownedSum / totalSum) * 100 : 0)}%`;
-
+    // (O bloco-resumo "X / Y cartas marcadas em N sets" que ficava aqui saiu
+    // em 2026-09-21: a soma de todos os grupos não diz nada — o que interessa
+    // é o progresso de CADA set/artista/personagem, que já está em cada linha.)
     sortGroups(groups);
 
     elements.groupList.innerHTML = groups.map((group) => groupRow(group, tab)).join("");
@@ -2269,7 +2260,10 @@
 
   // Prepara o container de leitura (esconde a UI normal da coleção).
   function prepareSharedView() {
-    ["page-search", "collection-subtitle", "collection-toolbar", "collection-dashboard"].forEach((c) => { const el = document.querySelector("." + c); if (el) el.hidden = true; });
+    // .coll-head é a faixa "Coleção / ← Hub" do desktop (no celular o CSS já
+    // a esconde): num perfil público ou share ela não faz sentido — o título é
+    // o do dono, e o "← Hub" mandava o visitante pro hub pessoal de quem olha.
+    ["page-search", "collection-subtitle", "collection-toolbar", "collection-dashboard", "coll-head"].forEach((c) => { const el = document.querySelector("." + c); if (el) el.hidden = true; });
     [elements.tabs, elements.groupsView, elements.cardsView, elements.dashboard, document.getElementById("collectionShareBtn"), document.getElementById("collectionExportBtn"), document.getElementById("collectionOnboarding")].forEach((el) => { if (el) el.hidden = true; });
     const sv = document.getElementById("sharedCollection");
     if (sv) { sv.hidden = false; sv.innerHTML = `<p class="empty-state">${escapeHtml(t("collection.shared.loading"))}</p>`; }
@@ -2498,6 +2492,12 @@
     let filtersOpen = false;
     try { filtersOpen = localStorage.getItem("tcg-collector-filters-open") === "1"; } catch (e) { /* ignora */ }
     let groupSort = "name"; // abas de progresso (Sets/Pokémon/Artistas): "name" | "progress"
+    // Set ABERTO na aba Sets: chips Todas / Tenho / Faltando (os mesmos da
+    // página do set), em memória e zerados ao trocar de set.
+    let setOwnedFilter = "all";
+    // Valores de mercado das cartas que FALTAM só se o dono mostra valores —
+    // é a mesma chave que zera o vbrl das que ele tem.
+    const showValues = !!prof.data.showValues;
     // Valor por item (na moeda atual): coleção em BRL (vbrl), graded/venda já na
     // moeda do dono (gv/sp). Dentro de cada modo os itens são homogêneos.
     const itemVal = (it) => it.vbrl != null ? fromBRL(it.vbrl) : (it.gv != null ? it.gv : (it.sp || 0));
@@ -2711,7 +2711,10 @@
     // Totals / artistTotals). Denominador = total do catálogo; se faltar, = possuídas.
     function groupsProgressHtml(mode) {
       const fmtPct = (p) => (p >= 10 ? Math.round(p) : Math.round(p * 10) / 10);
-      const totalOf = (name) => mode === "sets" ? ((setsMeta[name] && setsMeta[name].t) || 0)
+      // Sets: o total vem do payload (setsMeta, do índice); quando o catálogo
+      // do perfil já baixou (chunks inteiros), a contagem real dele vale mais —
+      // cobre payload antigo, publicado quando o total saía zerado da borda.
+      const totalOf = (name, gp) => mode === "sets" ? ((gp && setCatalogCards(gp).length) || (setsMeta[name] && setsMeta[name].t) || 0)
         : mode === "pokemon" ? (speciesTotals[name] || 0) : (artistTotals[name] || 0);
       const artOf = (gp) => {
         const initial = `<span class="progress-row-initial">${escapeHtml((gp.name || "?").charAt(0).toUpperCase())}</span>`;
@@ -2721,14 +2724,11 @@
       };
       const groups = groupsFor(mode).map((gp) => {
         const ownedN = new Set(gp.items.map((it) => it.id)).size;
-        const total = Math.max(ownedN, totalOf(gp.name));
+        const total = Math.max(ownedN, totalOf(gp.name, gp));
         return { gp, ownedN, total, pct: total ? (ownedN / total) * 100 : 0 };
       });
       if (groupSort === "progress") groups.sort((a, b) => b.pct - a.pct || a.gp.name.localeCompare(b.gp.name));
       else groups.sort((a, b) => a.gp.name.localeCompare(b.gp.name));
-      const ownedSum = groups.reduce((s, g) => s + g.ownedN, 0);
-      const totalSum = groups.reduce((s, g) => s + g.total, 0);
-      const overallPct = totalSum ? fmtPct((ownedSum / totalSum) * 100) : 0;
       const chip = (v, k) => `<button type="button" class="chip" data-group-sort="${v}" aria-pressed="${groupSort === v}">${escapeHtml(t(k))}</button>`;
       const rows = groups.map((g) => `<button type="button" class="progress-row" data-vitrine-open="${escapeAttribute(g.gp.id)}">
           <div class="progress-row-art">${artOf(g.gp)}</div>
@@ -2739,17 +2739,12 @@
           </div>
         </button>`).join("");
       // MESMA linha de título da Minha Coleção: o nome da aba à esquerda e o
-      // "Ordenar:" com os chips na ponta direita (era uma .sort-row solta
-      // ABAIXO do resumo, alinhada à esquerda — a única fileira do perfil que
-      // ainda não batia com a tela do dono).
+      // "Ordenar:" com os chips na ponta direita. Sem o bloco-resumo geral
+      // (saiu das duas telas em 2026-09-21): o progresso é por linha.
       return `<section class="results-header">
           <h2>${escapeHtml(tabLabel(mode))}</h2>
           <div class="results-actions results-sort"><span>${escapeHtml(t("sort.label"))}</span><div class="chip-filter">${chip("name", "sort.name")}${chip("progress", "sort.progress")}</div></div>
         </section>
-        <div class="group-summary">
-          <div class="group-summary-row"><strong>${escapeHtml(tn("collection.summary." + mode, groups.length, { o: ownedSum, t: totalSum }))}</strong><span class="summary-pct">${overallPct}%</span></div>
-          <div class="progress-bar"><span style="width:${Math.min(100, totalSum ? (ownedSum / totalSum) * 100 : 0).toFixed(1)}%"></span></div>
-        </div>
         <div class="progress-row-list">${rows}</div>`;
     }
     // Card de grupo (somente leitura): capa + nome + meta (+ estrelas/cor quando houver).
@@ -2773,6 +2768,97 @@
         </span>
       </button>`;
     }
+    // Set aberto na aba Sets: o SET INTEIRO, como o dono vê na página do set
+    // com ?scope=collection — todas as cartas do catálogo em ordem de número,
+    // as que o dono tem coloridas (.owned) e as que faltam em preto e branco
+    // (regra .card-grid.scope-collection do styles.css). Antes o perfil
+    // mostrava só as cartas tidas, e não dava pra ver o que faltava.
+    // O catálogo já está aqui: a carga do fim do renderPublicProfile baixa o
+    // CHUNK INTEIRO de cada set em que o dono tem carta (loadCatalogForCardIds),
+    // então cardsById guarda o set completo, não só as cartas do payload.
+    // Enquanto o catálogo não chega (ou se falhar), cai na grade só do que ele
+    // tem — e o fim da carga chama renderContent() pra completar.
+    function setCatalogCards(gp) {
+      const games = new Set(gp.items.map((it) => it.g || "pokemon"));
+      // O nome do set não é chave única (edição EN e PT com o mesmo nome — ver
+      // pickSetEdition): fica com as edições nos IDIOMAS em que o dono tem
+      // carta, senão a grade dobraria o set.
+      const langs = new Set(gp.items.map((it) => it.lang || ""));
+      const cards = [];
+      cardsById.forEach((card) => {
+        if (card.set !== gp.name) return;
+        if (!games.has(card.game || gameOf(card.id) || "pokemon")) return;
+        if (!langs.has(card.language || "")) return;
+        cards.push(card);
+      });
+      return cards.sort((a, b) => shared.compareCardNumbers(a.number, b.number));
+    }
+    // Tile de UMA carta do set (não de um item do payload): a carta tida lista
+    // as variantes que o dono tem; a que falta só nome, número e (se o dono
+    // mostra valores) quanto custa no mercado, como o "Faltam N · completar"
+    // da página do set.
+    function setSlotTile(card, ownedItems) {
+      const owned = ownedItems.length > 0;
+      const src = shared.cardImageSources(card);
+      const img = shared.localizedImg(src.url, { alt: card.name, fallback: src.fallback || "", loading: "lazy", thumb: true });
+      const flag = shared.cardFlag(card.language);
+      const variant = owned ? ownedItems[0].v : shared.defaultVariant(card);
+      let priceHtml = "";
+      if (owned) {
+        const val = Math.max(...ownedItems.map((it) => fromBRL(it.vbrl || 0)));
+        if (val > 0) priceHtml = `<p class="tile-price">${escapeHtml(shared.formatMoney(shared.getCurrency(), val))}</p>`;
+      } else if (showValues) {
+        const v = shared.cardValue(card, variant, null).value || 0;
+        if (v > 0) priceHtml = `<p class="tile-price">${escapeHtml(shared.formatMoney(shared.getCurrency(), v))}</p>`;
+      }
+      const variantTxt = owned
+        ? ownedItems.map((it) => it.v + (it.q > 1 ? ` ×${it.q}` : "")).join(" · ")
+        : t("filter.missing");
+      return `<article class="card-tile shared-tile${owned ? " owned" : ""}">
+        <div class="card-image"><button type="button" class="image-open" data-preview-card-id="${escapeAttribute(card.id)}" data-preview-variant="${escapeAttribute(variant)}" aria-label="${escapeAttribute(t("card.zoom", { name: card.name }))}">${img}</button></div>
+        <div class="tile-info">
+          <h3>${escapeHtml(card.name)}</h3>
+          <p class="tile-set"><span>${escapeHtml(card.set)} · ${escapeHtml(card.number || "")}</span></p>
+          <p class="tile-variant">${flag}<span>${escapeHtml(variantTxt)}</span></p>
+          ${priceHtml}
+        </div>
+      </article>`;
+    }
+    function openSetHtml(gp) {
+      const fmtPct = (p) => (p >= 10 ? Math.round(p) : Math.round(p * 10) / 10);
+      const byId = new Map();
+      gp.items.forEach((it) => { if (!byId.has(it.id)) byId.set(it.id, []); byId.get(it.id).push(it); });
+      const setCards = setCatalogCards(gp);
+      const ownedN = byId.size;
+      const total = Math.max(ownedN, setCards.length || ((setsMeta[gp.name] && setsMeta[gp.name].t) || 0));
+      const pct = total ? (ownedN / total) * 100 : 0;
+      const missing = setCards.filter((card) => !byId.has(card.id));
+      // "Faltam N · completar R$ X": só com valores visíveis e algo pra somar.
+      let missingHtml = "";
+      if (showValues && missing.length && ownedN > 0) {
+        const sum = shared.sumCardsValue(missing, null);
+        if (sum.value > 0) missingHtml = `<p class="progress-row-meta">${escapeHtml(t("set.missingCost", { n: missing.length, v: shared.formatMoney(shared.getCurrency(), sum.value) }))}</p>`;
+      }
+      const chip = (v, k) => `<button type="button" class="chip" data-set-owned="${v}" aria-pressed="${setOwnedFilter === v}">${escapeHtml(t(k))}</button>`;
+      const chips = setCards.length
+        ? `<section class="results-header results-header-cards"><div class="results-actions"><div class="chip-filter">${chip("all", "filter.all.f")}${chip("owned", "filter.owned")}${chip("missing", "filter.missing")}</div></div></section>`
+        : "";
+      let tiles;
+      if (setCards.length) {
+        tiles = setCards
+          .filter((card) => setOwnedFilter === "all" || (setOwnedFilter === "owned") === byId.has(card.id))
+          .map((card) => setSlotTile(card, byId.get(card.id) || [])).join("");
+      } else {
+        tiles = sortItems(gp.items).map(sharedTile).join(""); // sem catálogo: só o que ele tem
+      }
+      return `<div class="group-summary">
+          <div class="group-summary-row"><strong>${ownedN} / ${escapeHtml(tn("count.cards", total))}</strong><span class="summary-pct">${fmtPct(pct)}%</span></div>
+          <div class="progress-bar"><span style="width:${Math.min(100, pct).toFixed(1)}%"></span></div>
+          ${missingHtml}
+        </div>
+        ${chips}
+        <div class="card-grid scope-collection">${tiles || `<p class="empty-state">${escapeHtml(t("collection.noResults"))}</p>`}</div>`;
+    }
     function contentHtml() {
       const listClass = cardView === "list" ? " is-list" : "";
       if (mode === "graded") {
@@ -2785,7 +2871,11 @@
       }
       if (GROUPED.indexOf(mode) >= 0) {
         const groups = groupsFor(mode);
-        if (openId) { const gp = groups.find((x) => x.id === openId); return `<div class="card-grid">${sortItems(gp ? gp.items : []).map(sharedTile).join("")}</div>`; }
+        if (openId) {
+          const gp = groups.find((x) => x.id === openId);
+          if (mode === "sets" && gp) return openSetHtml(gp);
+          return `<div class="card-grid">${sortItems(gp ? gp.items : []).map(sharedTile).join("")}</div>`;
+        }
         if (PROGRESS_MODES.indexOf(mode) >= 0) return groupsProgressHtml(mode);
         return `<div class="coll-vitrine">${sortGroupsByValue(groups).map((gp) => groupCard(gp, mode)).join("")}</div>`;
       }
@@ -2841,8 +2931,10 @@
       const tab = event.target.closest("[data-profile-tab]");
       if (tab) { mode = tab.dataset.profileTab; openId = null; renderSwap(); return; }
       const open = event.target.closest("[data-vitrine-open]");
-      if (open) { openId = open.dataset.vitrineOpen; renderSwap(); return; }
-      if (event.target.closest("[data-vitrine-back]")) { openId = null; renderSwap(); return; }
+      if (open) { openId = open.dataset.vitrineOpen; setOwnedFilter = "all"; renderSwap(); return; }
+      if (event.target.closest("[data-vitrine-back]")) { openId = null; setOwnedFilter = "all"; renderSwap(); return; }
+      const so = event.target.closest("[data-set-owned]");
+      if (so) { setOwnedFilter = so.dataset.setOwned; renderContent(); return; }
       const chip = event.target.closest("[data-game-filter]");
       if (chip) { gFilter = chip.dataset.gameFilter; fPokemon = fSet = fLang = fRarity = fValue = ""; render(); return; }
       // "Filtros": abre/fecha a barra sem redesenhar nada (o estado visual é
@@ -2888,6 +2980,9 @@
       const catalog = await shared.loadOwnedAcrossGames(idsByGame);
       (catalog.cards || []).forEach((card) => { cardsById.set(card.id, card); cardGameMap.set(card.id, card.game); });
       renderInsights(); // agora dá pra montar a distribuição por tipo de carta
+      // Aba Sets já na tela enquanto o catálogo baixava: agora os totais saem
+      // do catálogo, e um set aberto passa a mostrar o set inteiro.
+      if (mode === "sets") renderContent();
     } catch (e) { /* sem catálogo: só o preview não abre */ }
   }
 
