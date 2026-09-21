@@ -7,168 +7,240 @@
    "page": "Chespin (Legendary Shine Collection 1)",
    "type": "Grass",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ハリマロン",
+   "artist": "Atsuko Nishida",
+   "image": "https://archives.bulbagarden.net/media/upload/8/88/ChespinXYPromo88.jpg"
   },
   "2": {
    "en": "Reshiram",
    "page": "Reshiram (Legendary Shine Collection 2)",
    "type": "Fire",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "レシラム",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2b/ReshiramXYPromo74.jpg"
   },
   "3": {
    "en": "Fennekin",
    "page": "Fennekin (Legendary Shine Collection 3)",
    "type": "Fire",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "フォッコ",
+   "artist": "Kanako Eo",
+   "image": "https://archives.bulbagarden.net/media/upload/5/53/FennekinBREAKthrough25.jpg"
   },
   "4": {
    "en": "Braixen",
    "page": "Braixen (Legendary Shine Collection 4)",
    "type": "Fire",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "テールナー",
+   "artist": "kawayoo",
+   "image": "https://archives.bulbagarden.net/media/upload/9/9d/BraixenBREAKthrough26.jpg"
   },
   "5": {
    "en": "Palkia",
    "page": "Palkia (Legendary Shine Collection 5)",
    "type": "Water",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "パルキア",
+   "artist": "Naoki Saito",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c5/PalkiaXYPromo75.jpg"
   },
   "6": {
    "en": "Froakie",
    "page": "Froakie (Legendary Shine Collection 6)",
    "type": "Water",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ケロマツ",
+   "artist": "Masakazu Fukuda",
+   "image": "https://archives.bulbagarden.net/media/upload/d/dd/FroakieBREAKthrough46.jpg"
   },
   "7": {
    "en": "Frogadier",
    "page": "Frogadier (Legendary Shine Collection 7)",
    "type": "Water",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ゲコガシラ",
+   "artist": "Masakazu Fukuda",
+   "image": "https://archives.bulbagarden.net/media/upload/f/fe/FrogadierBREAKthrough47.jpg"
   },
   "8": {
    "en": "Pikachu",
    "page": "Pikachu-EX (Legendary Shine Collection 8)",
    "type": "Lightning",
    "rarity": "RR",
-   "mark": ""
+   "mark": "",
+   "ja": "ピカチュウEX",
+   "artist": "Megumi Mizutani",
+   "image": "https://archives.bulbagarden.net/media/upload/1/1a/PikachuEXExpansionPack20th94.jpg"
   },
   "9": {
    "en": "Zekrom",
    "page": "Zekrom (Legendary Shine Collection 9)",
    "type": "Lightning",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "ゼクロム",
+   "artist": "Naoki Saito",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a6/ZekromXYPromo76.jpg"
   },
   "10": {
    "en": "Dedenne",
    "page": "Dedenne (Legendary Shine Collection 10)",
    "type": "Lightning",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "デデンネ",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/c/cf/DedenneBREAKthrough57.jpg"
   },
   "11": {
    "en": "Wobbuffet",
    "page": "Wobbuffet (Legendary Shine Collection 11)",
    "type": "Psychic",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ソーナンス",
+   "artist": "Akira Komayama",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a4/WobbuffetBREAKthrough67.jpg"
   },
   "12": {
    "en": "Hoopa",
    "page": "Hoopa-EX (Legendary Shine Collection 12)",
    "type": "Psychic",
    "rarity": "RR",
-   "mark": ""
+   "mark": "",
+   "ja": "フーパEX",
+   "artist": "Hitoshi Ariga",
+   "image": "https://archives.bulbagarden.net/media/upload/0/08/HoopaEXXYPromo85.jpg"
   },
   "13": {
    "en": "Hippopotas",
    "page": "Hippopotas (Legendary Shine Collection 13)",
    "type": "Fighting",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ヒポポタス",
+   "artist": "Akira Komayama",
+   "image": "https://archives.bulbagarden.net/media/upload/4/48/HippopotasBREAKthrough83.jpg"
   },
   "14": {
    "en": "Pancham",
    "page": "Pancham (Legendary Shine Collection 14)",
    "type": "Fighting",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ヤンチャム",
+   "artist": "Mizue",
+   "image": "https://archives.bulbagarden.net/media/upload/2/24/PanchamBREAKthrough86.jpg"
   },
   "15": {
    "en": "Hawlucha",
    "page": "Hawlucha (Legendary Shine Collection 15)",
    "type": "Fighting",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ルチャブル",
+   "artist": "match",
+   "image": "https://archives.bulbagarden.net/media/upload/0/00/HawluchaBREAKthrough87.jpg"
   },
   "16": {
    "en": "Inkay",
    "page": "Inkay (Legendary Shine Collection 16)",
    "type": "Darkness",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "マーイーカ",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/9/9a/InkayBREAKthrough93.jpg"
   },
   "17": {
    "en": "Dialga",
    "page": "Dialga (Legendary Shine Collection 17)",
    "type": "Metal",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "ディアルガ",
+   "artist": "TOKIYA",
+   "image": "https://archives.bulbagarden.net/media/upload/b/be/DialgaXYPromo77.jpg"
   },
   "18": {
    "en": "Latias",
    "page": "Latias (Legendary Shine Collection 18)",
    "type": "Dragon",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "ラティアス",
+   "artist": "Sanosuke Sakuma",
+   "image": "https://archives.bulbagarden.net/media/upload/c/cd/LatiasXYPromo78.jpg"
   },
   "19": {
    "en": "Latios",
    "page": "Latios (Legendary Shine Collection 19)",
    "type": "Dragon",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "ラティオス",
+   "artist": "Naoki Saito",
+   "image": "https://archives.bulbagarden.net/media/upload/6/62/LatiosXYPromo79.jpg"
   },
   "20": {
    "en": "Black Kyurem",
    "page": "Black Kyurem (Legendary Shine Collection 20)",
    "type": "Dragon",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "ブラックキュレム",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/BlackKyuremXYPromo80.jpg"
   },
   "21": {
    "en": "White Kyurem",
    "page": "White Kyurem (Legendary Shine Collection 21)",
    "type": "Dragon",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "ホワイトキュレム",
+   "artist": "Shin Nagasawa",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d3/WhiteKyuremXYPromo81.jpg"
   },
   "22": {
    "en": "Meowth",
    "page": "Meowth (Legendary Shine Collection 22)",
    "type": "Colorless",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ニャース",
+   "artist": "kirisAki",
+   "image": "https://archives.bulbagarden.net/media/upload/6/6b/MeowthBREAKthrough114.jpg"
   },
   "23": {
    "en": "Regigigas",
    "page": "Regigigas (Legendary Shine Collection 23)",
    "type": "Colorless",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "レジギガス",
+   "artist": "Shin Nagasawa",
+   "image": "https://archives.bulbagarden.net/media/upload/3/30/RegigigasXYPromo82.jpg"
   },
   "24": {
    "en": "Arceus",
    "page": "Arceus (Legendary Shine Collection 24)",
    "type": "Colorless",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "アルセウス",
+   "artist": "Shin Nagasawa",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e5/ArceusXYPromo83.jpg"
   },
   "25": {
    "en": "Rufflet",
@@ -182,14 +254,20 @@
    "page": "Braviary (Legendary Shine Collection 26)",
    "type": "Colorless",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ウォーグル",
+   "artist": "match",
+   "image": "https://archives.bulbagarden.net/media/upload/5/51/BraviaryBREAKthrough130.jpg"
   },
   "27": {
    "en": "Noibat",
    "page": "Noibat (Legendary Shine Collection 27)",
    "type": "Colorless",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "オンバット",
+   "artist": "sui",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f5/NoibatBREAKthrough131.jpg"
   }
  }
 }

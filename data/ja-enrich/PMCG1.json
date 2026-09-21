@@ -5,715 +5,715 @@
   "1": {
    "en": "Alakazam",
    "page": "Alakazam (Base Set 1)",
-   "type": "Rare Holo",
-   "rarity": "Promotion",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
    "mark": ""
   },
   "2": {
    "en": "Blastoise",
    "page": "Blastoise (Base Set 2)",
    "type": "Water",
-   "rarity": "—",
+   "rarity": "Rare Holo",
    "mark": ""
   },
   "3": {
    "en": "Chansey",
    "page": "Chansey (Base Set 3)",
-   "type": "Rare Holo",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
    "mark": ""
   },
   "4": {
    "en": "Charizard",
    "page": "Charizard (Base Set 4)",
    "type": "Fire",
-   "rarity": "—",
+   "rarity": "Rare Holo",
    "mark": ""
   },
   "5": {
    "en": "Clefairy",
    "page": "Clefairy (Base Set 5)",
-   "type": "Rare Holo",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
    "mark": ""
   },
   "6": {
    "en": "Gyarados",
    "page": "Gyarados (Base Set 6)",
-   "type": "Rare Holo",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "Rare Holo",
    "mark": ""
   },
   "7": {
    "en": "Hitmonchan",
    "page": "Hitmonchan (Base Set 7)",
-   "type": "Rare Holo",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
    "mark": ""
   },
   "8": {
    "en": "Machamp",
    "page": "Machamp (Base Set 8)",
    "type": "Fighting",
-   "rarity": "—",
+   "rarity": "Rare Holo",
    "mark": ""
   },
   "9": {
    "en": "Magneton",
    "page": "Magneton (Base Set 9)",
-   "type": "Rare Holo",
-   "rarity": "Promotion",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
    "mark": ""
   },
   "10": {
    "en": "Mewtwo",
    "page": "Mewtwo (Base Set 10)",
-   "type": "Rare Holo",
-   "rarity": "Promotion",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
    "mark": ""
   },
   "11": {
    "en": "Nidoking",
    "page": "Nidoking (Base Set 11)",
-   "type": "Rare Holo",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "Rare Holo",
    "mark": ""
   },
   "12": {
    "en": "Ninetales",
    "page": "Ninetales (Base Set 12)",
-   "type": "Rare Holo",
-   "rarity": "Promotion",
+   "type": "Fire",
+   "rarity": "Rare Holo",
    "mark": ""
   },
   "13": {
    "en": "Poliwrath",
    "page": "Poliwrath (Base Set 13)",
-   "type": "Rare Holo",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "Rare Holo",
    "mark": ""
   },
   "14": {
    "en": "Raichu",
    "page": "Raichu (Base Set 14)",
-   "type": "Rare Holo",
-   "rarity": "Promotion",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
    "mark": ""
   },
   "15": {
    "en": "Venusaur",
    "page": "Venusaur (Base Set 15)",
    "type": "Grass",
-   "rarity": "—",
+   "rarity": "Rare Holo",
    "mark": ""
   },
   "16": {
    "en": "Zapdos",
    "page": "Zapdos (Base Set 16)",
-   "type": "Rare Holo",
-   "rarity": "Promotion",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
    "mark": ""
   },
   "17": {
    "en": "Beedrill",
    "page": "Beedrill (Base Set 17)",
-   "type": "Rare",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "Rare",
    "mark": ""
   },
   "18": {
    "en": "Dragonair",
    "page": "Dragonair (Base Set 18)",
-   "type": "Rare",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "Rare",
    "mark": ""
   },
   "19": {
    "en": "Dugtrio",
    "page": "Dugtrio (Base Set 19)",
-   "type": "Rare",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "Rare",
    "mark": ""
   },
   "20": {
    "en": "Electabuzz",
    "page": "Electabuzz (Base Set 20)",
-   "type": "Rare",
-   "rarity": "Promotion",
+   "type": "Lightning",
+   "rarity": "Rare",
    "mark": ""
   },
   "21": {
    "en": "Electrode",
    "page": "Electrode (Base Set 21)",
-   "type": "Rare",
-   "rarity": "Promotion",
+   "type": "Lightning",
+   "rarity": "Rare",
    "mark": ""
   },
   "22": {
    "en": "Pidgeotto",
    "page": "Pidgeotto (Base Set 22)",
-   "type": "Rare",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "Rare",
    "mark": ""
   },
   "23": {
    "en": "Arcanine",
    "page": "Arcanine (Base Set 23)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Fire",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "24": {
    "en": "Charmeleon",
    "page": "Charmeleon (Base Set 24)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Fire",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "25": {
    "en": "Dewgong",
    "page": "Dewgong (Base Set 25)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "26": {
    "en": "Dratini",
    "page": "Dratini (Base Set 26)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "27": {
    "en": "Farfetch'd",
    "page": "Farfetch'd (Base Set 27)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "28": {
    "en": "Growlithe",
    "page": "Growlithe (Base Set 28)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Fire",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "29": {
    "en": "Haunter",
    "page": "Haunter (Base Set 29)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Psychic",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "30": {
    "en": "Ivysaur",
    "page": "Ivysaur (Base Set 30)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "31": {
    "en": "Jynx",
    "page": "Jynx (Base Set 31)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Psychic",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "32": {
    "en": "Kadabra",
    "page": "Kadabra (Base Set 32)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Psychic",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "33": {
    "en": "Kakuna",
    "page": "Kakuna (Base Set 33)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "34": {
    "en": "Machoke",
    "page": "Machoke (Base Set 34)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "35": {
    "en": "Magikarp",
    "page": "Magikarp (Base Set 35)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "36": {
    "en": "Magmar",
    "page": "Magmar (Base Set 36)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Fire",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "37": {
    "en": "Nidorino",
    "page": "Nidorino (Base Set 37)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "38": {
    "en": "Poliwhirl",
    "page": "Poliwhirl (Base Set 38)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "39": {
    "en": "Porygon",
    "page": "Porygon (Base Set 39)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "40": {
    "en": "Raticate",
    "page": "Raticate (Base Set 40)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "41": {
    "en": "Seel",
    "page": "Seel (Base Set 41)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "42": {
    "en": "Wartortle",
    "page": "Wartortle (Base Set 42)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "43": {
    "en": "Abra",
    "page": "Abra (Base Set 43)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Psychic",
+   "rarity": "Common",
    "mark": ""
   },
   "44": {
    "en": "Bulbasaur",
    "page": "Bulbasaur (Base Set 44)",
    "type": "Grass",
-   "rarity": "—",
+   "rarity": "Common",
    "mark": ""
   },
   "45": {
    "en": "Caterpie",
    "page": "Caterpie (Base Set 45)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "Common",
    "mark": ""
   },
   "46": {
    "en": "Charmander",
    "page": "Charmander (Base Set 46)",
    "type": "Fire",
-   "rarity": "—",
+   "rarity": "Common",
    "mark": ""
   },
   "47": {
    "en": "Diglett",
    "page": "Diglett (Base Set 47)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "Common",
    "mark": ""
   },
   "48": {
    "en": "Doduo",
    "page": "Doduo (Base Set 48)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "Common",
    "mark": ""
   },
   "49": {
    "en": "Drowzee",
    "page": "Drowzee (Base Set 49)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Psychic",
+   "rarity": "Common",
    "mark": ""
   },
   "50": {
    "en": "Gastly",
    "page": "Gastly (Base Set 50)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Psychic",
+   "rarity": "Common",
    "mark": ""
   },
   "51": {
    "en": "Koffing",
    "page": "Koffing (Base Set 51)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "Common",
    "mark": ""
   },
   "52": {
    "en": "Machop",
    "page": "Machop (Base Set 52)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "Common",
    "mark": ""
   },
   "53": {
    "en": "Magnemite",
    "page": "Magnemite (Base Set 53)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Lightning",
+   "rarity": "Common",
    "mark": ""
   },
   "54": {
    "en": "Metapod",
    "page": "Metapod (Base Set 54)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "Common",
    "mark": ""
   },
   "55": {
    "en": "Nidoran♂",
    "page": "Nidoran♂ (Base Set 55)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "Common",
    "mark": ""
   },
   "56": {
    "en": "Onix",
    "page": "Onix (Base Set 56)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "Common",
    "mark": ""
   },
   "57": {
    "en": "Pidgey",
    "page": "Pidgey (Base Set 57)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "Common",
    "mark": ""
   },
   "58": {
    "en": "Pikachu",
    "page": "Pikachu (Base Set 58)",
    "type": "Lightning",
-   "rarity": "—",
+   "rarity": "Common",
    "mark": ""
   },
   "59": {
    "en": "Poliwag",
    "page": "Poliwag (Base Set 59)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "Common",
    "mark": ""
   },
   "60": {
    "en": "Ponyta",
    "page": "Ponyta (Base Set 60)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Fire",
+   "rarity": "Common",
    "mark": ""
   },
   "61": {
    "en": "Rattata",
    "page": "Rattata (Base Set 61)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "Common",
    "mark": ""
   },
   "62": {
    "en": "Sandshrew",
    "page": "Sandshrew (Base Set 62)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "Common",
    "mark": ""
   },
   "63": {
    "en": "Squirtle",
    "page": "Squirtle (Base Set 63)",
    "type": "Water",
-   "rarity": "—",
+   "rarity": "Common",
    "mark": ""
   },
   "64": {
    "en": "Starmie",
    "page": "Starmie (Base Set 64)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "Common",
    "mark": ""
   },
   "65": {
    "en": "Staryu",
    "page": "Staryu (Base Set 65)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "Common",
    "mark": ""
   },
   "66": {
    "en": "Tangela",
    "page": "Tangela (Base Set 66)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "Common",
    "mark": ""
   },
   "67": {
    "en": "Voltorb",
    "page": "Voltorb (Base Set 67)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Lightning",
+   "rarity": "Common",
    "mark": ""
   },
   "68": {
    "en": "Vulpix",
    "page": "Vulpix (Base Set 68)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Fire",
+   "rarity": "Common",
    "mark": ""
   },
   "69": {
    "en": "Weedle",
    "page": "Weedle (Base Set 69)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "Common",
    "mark": ""
   },
   "70": {
    "en": "Clefairy Doll",
    "page": "Clefairy Doll (Base Set 70)",
-   "type": "Rare",
-   "rarity": "Promotion",
+   "type": "T",
+   "rarity": "Rare",
    "mark": ""
   },
   "71": {
    "en": "Computer Search",
    "page": "Computer Search (Base Set 71)",
-   "type": "Rare",
-   "rarity": "Promotion",
+   "type": "T",
+   "rarity": "Rare",
    "mark": ""
   },
   "72": {
    "en": "Devolution Spray",
    "page": "Devolution Spray (Base Set 72)",
-   "type": "Rare",
-   "rarity": "Promotion",
+   "type": "T",
+   "rarity": "Rare",
    "mark": ""
   },
   "73": {
    "en": "Imposter Professor Oak",
    "page": "Imposter Professor Oak (Base Set 73)",
    "type": "T",
-   "rarity": "—",
+   "rarity": "Rare",
    "mark": ""
   },
   "74": {
    "en": "Item Finder",
    "page": "Item Finder (Base Set 74)",
-   "type": "Rare",
-   "rarity": "Promotion",
+   "type": "T",
+   "rarity": "Rare",
    "mark": ""
   },
   "75": {
    "en": "Lass",
    "page": "Lass (Base Set 75)",
-   "type": "Rare",
-   "rarity": "Promotion",
+   "type": "T",
+   "rarity": "Rare",
    "mark": ""
   },
   "76": {
    "en": "Pokémon Breeder",
    "page": "Pokémon Breeder (Base Set 76)",
-   "type": "Rare",
-   "rarity": "Promotion",
+   "type": "T",
+   "rarity": "Rare",
    "mark": ""
   },
   "77": {
    "en": "Pokémon Trader",
    "page": "Pokémon Trader (Base Set 77)",
-   "type": "Rare",
-   "rarity": "Promotion",
+   "type": "T",
+   "rarity": "Rare",
    "mark": ""
   },
   "78": {
    "en": "Scoop Up",
    "page": "Scoop Up (Base Set 78)",
-   "type": "Rare",
-   "rarity": "Promotion",
+   "type": "T",
+   "rarity": "Rare",
    "mark": ""
   },
   "79": {
    "en": "Super Energy Removal",
    "page": "Super Energy Removal (Base Set 79)",
-   "type": "Rare",
-   "rarity": "Promotion",
+   "type": "T",
+   "rarity": "Rare",
    "mark": ""
   },
   "80": {
    "en": "Defender",
    "page": "Defender (Base Set 80)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "T",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "81": {
    "en": "Energy Retrieval",
    "page": "Energy Retrieval (Base Set 81)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "T",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "82": {
    "en": "Full Heal",
    "page": "Full Heal (Base Set 82)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "T",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "83": {
    "en": "Maintenance",
    "page": "Maintenance (Base Set 83)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "T",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "84": {
    "en": "PlusPower",
    "page": "PlusPower (Base Set 84)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "T",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "85": {
    "en": "Pokémon Center",
    "page": "Pokémon Center (Base Set 85)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "T",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "86": {
    "en": "Pokémon Flute",
    "page": "Pokémon Flute (Base Set 86)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "T",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "87": {
    "en": "Pokédex",
    "page": "Pokédex (Base Set 87)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "T",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "88": {
    "en": "Professor Oak",
    "page": "Professor Oak (Base Set 88)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "T",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "89": {
    "en": "Revive",
    "page": "Revive (Base Set 89)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "T",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "90": {
    "en": "Super Potion",
    "page": "Super Potion (Base Set 90)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "T",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "91": {
    "en": "Bill",
    "page": "Bill (Base Set 91)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "T",
+   "rarity": "Common",
    "mark": ""
   },
   "92": {
    "en": "Energy Removal",
    "page": "Energy Removal (Base Set 92)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "T",
+   "rarity": "Common",
    "mark": ""
   },
   "93": {
    "en": "Gust of Wind",
    "page": "Gust of Wind (Base Set 93)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "T",
+   "rarity": "Common",
    "mark": ""
   },
   "94": {
    "en": "Potion",
    "page": "Potion (Base Set 94)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "T",
+   "rarity": "Common",
    "mark": ""
   },
   "95": {
    "en": "Switch",
    "page": "Switch (Base Set 95)",
-   "type": "Common",
-   "rarity": "Promotion",
+   "type": "T",
+   "rarity": "Common",
    "mark": ""
   },
   "96": {
    "en": "Double Colorless Energy",
    "page": "Double Colorless Energy (Base Set 96)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "Uncommon",
    "mark": ""
   },
   "97": {
    "en": "Fighting Energy",
    "page": "Fighting Energy (Base Set 97)",
-   "type": "—",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "—",
    "mark": ""
   },
   "98": {
    "en": "Fire Energy",
    "page": "Fire Energy (Base Set 98)",
-   "type": "—",
-   "rarity": "Promotion",
+   "type": "Fire",
+   "rarity": "—",
    "mark": ""
   },
   "99": {
    "en": "Grass Energy",
    "page": "Grass Energy (Base Set 99)",
-   "type": "—",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "—",
    "mark": ""
   },
   "100": {
    "en": "Lightning Energy",
    "page": "Lightning Energy (Base Set 100)",
-   "type": "—",
-   "rarity": "Promotion",
+   "type": "Lightning",
+   "rarity": "—",
    "mark": ""
   },
   "101": {
    "en": "Psychic Energy",
    "page": "Psychic Energy (Base Set 101)",
-   "type": "—",
-   "rarity": "Promotion",
+   "type": "Psychic",
+   "rarity": "—",
    "mark": ""
   },
   "102": {
    "en": "Water Energy",
    "page": "Water Energy (Base Set 102)",
-   "type": "—",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "—",
    "mark": ""
   }
  }

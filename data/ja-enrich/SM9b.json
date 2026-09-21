@@ -1,0 +1,489 @@
+{
+ "page": "Full Metal Wall (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Pheromosa & Buzzwole",
+   "page": "Pheromosa & Buzzwole-GX (Full Metal Wall 1)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "2": {
+   "en": "Caterpie",
+   "page": "Caterpie (Full Metal Wall 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Metapod",
+   "page": "Metapod (Full Metal Wall 3)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "4": {
+   "en": "Butterfree",
+   "page": "Butterfree (Full Metal Wall 4)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "5": {
+   "en": "Tangela",
+   "page": "Tangela (Full Metal Wall 5)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Tangrowth",
+   "page": "Tangrowth (Full Metal Wall 6)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "7": {
+   "en": "Kartana",
+   "page": "Kartana (Full Metal Wall 7)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "8": {
+   "en": "Squirtle",
+   "page": "Squirtle (Full Metal Wall 8)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "9": {
+   "en": "Wartortle",
+   "page": "Wartortle (Full Metal Wall 9)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Blastoise",
+   "page": "Blastoise-GX (Full Metal Wall 10)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "11": {
+   "en": "Slowpoke",
+   "page": "Slowpoke (Full Metal Wall 11)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "12": {
+   "en": "Slowbro",
+   "page": "Slowbro (Full Metal Wall 12)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "13": {
+   "en": "Pyukumuku",
+   "page": "Pyukumuku (Full Metal Wall 13)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Ekans",
+   "page": "Ekans (Full Metal Wall 14)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "15": {
+   "en": "Arbok",
+   "page": "Arbok (Full Metal Wall 15)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "16": {
+   "en": "Zubat",
+   "page": "Zubat (Full Metal Wall 16)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Golbat",
+   "page": "Golbat (Full Metal Wall 17)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "18": {
+   "en": "Crobat",
+   "page": "Crobat (Full Metal Wall 18)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "19": {
+   "en": "Drowzee",
+   "page": "Drowzee (Full Metal Wall 19)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "20": {
+   "en": "Hypno",
+   "page": "Hypno (Full Metal Wall 20)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "21": {
+   "en": "Sandshrew",
+   "page": "Sandshrew (Full Metal Wall 21)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "22": {
+   "en": "Sandslash",
+   "page": "Sandslash (Full Metal Wall 22)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "23": {
+   "en": "Geodude",
+   "page": "Geodude (Full Metal Wall 23)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "24": {
+   "en": "Graveler",
+   "page": "Graveler (Full Metal Wall 24)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "25": {
+   "en": "Golem",
+   "page": "Golem (Full Metal Wall 25)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "26": {
+   "en": "Hitmontop",
+   "page": "Hitmontop (Full Metal Wall 26)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "27": {
+   "en": "Riolu",
+   "page": "Riolu (Full Metal Wall 27)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "28": {
+   "en": "Stakataka",
+   "page": "Stakataka (Full Metal Wall 28)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "29": {
+   "en": "Lucario & Melmetal",
+   "page": "Lucario & Melmetal-GX (Full Metal Wall 29)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "30": {
+   "en": "Alolan Diglett",
+   "page": "Alolan Diglett (Full Metal Wall 30)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "31": {
+   "en": "Alolan Dugtrio",
+   "page": "Alolan Dugtrio (Full Metal Wall 31)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "32": {
+   "en": "Aron",
+   "page": "Aron (Full Metal Wall 32)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "33": {
+   "en": "Lairon",
+   "page": "Lairon (Full Metal Wall 33)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "34": {
+   "en": "Aggron",
+   "page": "Aggron (Full Metal Wall 34)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "35": {
+   "en": "Lucario",
+   "page": "Lucario (Full Metal Wall 35)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "36": {
+   "en": "Genesect",
+   "page": "Genesect (Full Metal Wall 36)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "37": {
+   "en": "Meltan",
+   "page": "Meltan (Full Metal Wall 37)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "38": {
+   "en": "Melmetal",
+   "page": "Melmetal (Full Metal Wall 38)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "39": {
+   "en": "Spearow",
+   "page": "Spearow (Full Metal Wall 39)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "40": {
+   "en": "Fearow",
+   "page": "Fearow (Full Metal Wall 40)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "41": {
+   "en": "Glameow",
+   "page": "Glameow (Full Metal Wall 41)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "42": {
+   "en": "Purugly",
+   "page": "Purugly (Full Metal Wall 42)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "43": {
+   "en": "Celesteela",
+   "page": "Celesteela-GX (Full Metal Wall 43)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "44": {
+   "en": "Devolution Spray Z",
+   "page": "Devolution Spray Z (Full Metal Wall 44)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "45": {
+   "en": "Beast Bringer",
+   "page": "Beast Bringer (Full Metal Wall 45)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "46": {
+   "en": "Metal Core Barrier",
+   "page": "Metal Core Barrier (Full Metal Wall 46)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "47": {
+   "en": "Ultra Forest Kartenvoy",
+   "page": "Ultra Forest Kartenvoy (Full Metal Wall 47)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "48": {
+   "en": "Green's Exploration",
+   "page": "Green's Exploration (Full Metal Wall 48)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "49": {
+   "en": "Molayne",
+   "page": "Molayne (Full Metal Wall 49)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "50": {
+   "en": "Power Plant",
+   "page": "Power Plant (Full Metal Wall 50)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "51": {
+   "en": "Ultra Ball",
+   "page": "Ultra Ball (Full Metal Wall 51)",
+   "type": "I",
+   "rarity": "TR",
+   "mark": ""
+  },
+  "52": {
+   "en": "Beast Ring",
+   "page": "Beast Ring (Full Metal Wall 52)",
+   "type": "I",
+   "rarity": "TR",
+   "mark": ""
+  },
+  "53": {
+   "en": "Metal Frying Pan",
+   "page": "Metal Frying Pan (Full Metal Wall 53)",
+   "type": "I",
+   "rarity": "TR",
+   "mark": ""
+  },
+  "54": {
+   "en": "Acerola",
+   "page": "Acerola (Full Metal Wall 54)",
+   "type": "Su",
+   "rarity": "TR",
+   "mark": ""
+  },
+  "55": {
+   "en": "Pheromosa & Buzzwole",
+   "page": "Pheromosa & Buzzwole-GX (Full Metal Wall 55)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "56": {
+   "en": "Pheromosa & Buzzwole",
+   "page": "Pheromosa & Buzzwole-GX (Full Metal Wall 56)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "57": {
+   "en": "Blastoise",
+   "page": "Blastoise-GX (Full Metal Wall 57)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "58": {
+   "en": "Lucario & Melmetal",
+   "page": "Lucario & Melmetal-GX (Full Metal Wall 58)",
+   "type": "Metal",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "59": {
+   "en": "Lucario & Melmetal",
+   "page": "Lucario & Melmetal-GX (Full Metal Wall 59)",
+   "type": "Metal",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "60": {
+   "en": "Celesteela",
+   "page": "Celesteela-GX (Full Metal Wall 60)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "61": {
+   "en": "Green's Exploration",
+   "page": "Green's Exploration (Full Metal Wall 61)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "62": {
+   "en": "Molayne",
+   "page": "Molayne (Full Metal Wall 62)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "63": {
+   "en": "Pheromosa & Buzzwole",
+   "page": "Pheromosa & Buzzwole-GX (Full Metal Wall 63)",
+   "type": "Grass",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "64": {
+   "en": "Blastoise",
+   "page": "Blastoise-GX (Full Metal Wall 64)",
+   "type": "Water",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "65": {
+   "en": "Lucario & Melmetal",
+   "page": "Lucario & Melmetal-GX (Full Metal Wall 65)",
+   "type": "Metal",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "66": {
+   "en": "Celesteela",
+   "page": "Celesteela-GX (Full Metal Wall 66)",
+   "type": "Colorless",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "67": {
+   "en": "Beast Bringer",
+   "page": "Beast Bringer (Full Metal Wall 67)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "68": {
+   "en": "Metal Core Barrier",
+   "page": "Metal Core Barrier (Full Metal Wall 68)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "69": {
+   "en": "Mt. Coronet",
+   "page": "Mt. Coronet (Full Metal Wall 69)",
+   "type": "St",
+   "rarity": "UR",
+   "mark": ""
+  }
+ }
+}

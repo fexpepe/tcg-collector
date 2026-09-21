@@ -1,0 +1,706 @@
+{
+ "page": "Cyber Judge (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Scyther",
+   "page": "Scyther (Cyber Judge 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Pineco",
+   "page": "Pineco (Cyber Judge 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Seedot",
+   "page": "Seedot (Cyber Judge 3)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "4": {
+   "en": "Nuzleaf",
+   "page": "Nuzleaf (Cyber Judge 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Shiftry",
+   "page": "Shiftry (Cyber Judge 5)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "6": {
+   "en": "Shroomish",
+   "page": "Shroomish (Cyber Judge 6)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Breloom",
+   "page": "Breloom (Cyber Judge 7)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Deerling",
+   "page": "Deerling (Cyber Judge 8)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "9": {
+   "en": "Sawsbuck",
+   "page": "Sawsbuck (Cyber Judge 9)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "10": {
+   "en": "Grubbin",
+   "page": "Grubbin (Cyber Judge 10)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "11": {
+   "en": "Dhelmise",
+   "page": "Dhelmise (Cyber Judge 11)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "12": {
+   "en": "Bramblin",
+   "page": "Bramblin (Cyber Judge 12)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "13": {
+   "en": "Brambleghast",
+   "page": "Brambleghast (Cyber Judge 13)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "14": {
+   "en": "Rellor",
+   "page": "Rellor (Cyber Judge 14)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "15": {
+   "en": "Rabsca",
+   "page": "Rabsca (Cyber Judge 15)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "16": {
+   "en": "Iron Leaves",
+   "page": "Iron Leaves ex (Cyber Judge 16)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "17": {
+   "en": "Slugma",
+   "page": "Slugma (Cyber Judge 17)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "18": {
+   "en": "Magcargo",
+   "page": "Magcargo (Cyber Judge 18)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "19": {
+   "en": "Victini",
+   "page": "Victini (Cyber Judge 19)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "20": {
+   "en": "Litten",
+   "page": "Litten (Cyber Judge 20)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "21": {
+   "en": "Torracat",
+   "page": "Torracat (Cyber Judge 21)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "22": {
+   "en": "Incineroar",
+   "page": "Incineroar ex (Cyber Judge 22)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "23": {
+   "en": "Pikachu",
+   "page": "Pikachu (Cyber Judge 23)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "24": {
+   "en": "Raichu",
+   "page": "Raichu (Cyber Judge 24)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "25": {
+   "en": "Electabuzz",
+   "page": "Electabuzz (Cyber Judge 25)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "26": {
+   "en": "Electivire",
+   "page": "Electivire (Cyber Judge 26)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "27": {
+   "en": "Charjabug",
+   "page": "Charjabug (Cyber Judge 27)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "28": {
+   "en": "Vikavolt",
+   "page": "Vikavolt (Cyber Judge 28)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "29": {
+   "en": "Zeraora",
+   "page": "Zeraora (Cyber Judge 29)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "30": {
+   "en": "Iron Thorns",
+   "page": "Iron Thorns (Cyber Judge 30)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "31": {
+   "en": "Mr. Mime",
+   "page": "Mr. Mime (Cyber Judge 31)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "32": {
+   "en": "Girafarig",
+   "page": "Girafarig (Cyber Judge 32)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "33": {
+   "en": "Cutiefly",
+   "page": "Cutiefly (Cyber Judge 33)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "34": {
+   "en": "Ribombee",
+   "page": "Ribombee (Cyber Judge 34)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "35": {
+   "en": "Iron Valiant",
+   "page": "Iron Valiant (Cyber Judge 35)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "36": {
+   "en": "Iron Crown",
+   "page": "Iron Crown ex (Cyber Judge 36)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "37": {
+   "en": "Meditite",
+   "page": "Meditite (Cyber Judge 37)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "38": {
+   "en": "Medicham",
+   "page": "Medicham (Cyber Judge 38)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "39": {
+   "en": "Drilbur",
+   "page": "Drilbur (Cyber Judge 39)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "40": {
+   "en": "Excadrill",
+   "page": "Excadrill (Cyber Judge 40)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "41": {
+   "en": "Iron Boulder",
+   "page": "Iron Boulder ex (Cyber Judge 41)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "42": {
+   "en": "Farigiraf",
+   "page": "Farigiraf ex (Cyber Judge 42)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "43": {
+   "en": "Forretress",
+   "page": "Forretress (Cyber Judge 43)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "44": {
+   "en": "Scizor",
+   "page": "Scizor ex (Cyber Judge 44)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "45": {
+   "en": "Mawile",
+   "page": "Mawile (Cyber Judge 45)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "46": {
+   "en": "Beldum",
+   "page": "Beldum (Cyber Judge 46)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "47": {
+   "en": "Metang",
+   "page": "Metang (Cyber Judge 47)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "48": {
+   "en": "Metagross",
+   "page": "Metagross (Cyber Judge 48)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "49": {
+   "en": "Meltan",
+   "page": "Meltan (Cyber Judge 49)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "50": {
+   "en": "Melmetal",
+   "page": "Melmetal (Cyber Judge 50)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "51": {
+   "en": "Iron Treads",
+   "page": "Iron Treads (Cyber Judge 51)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "52": {
+   "en": "Miraidon",
+   "page": "Miraidon (Cyber Judge 52)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "53": {
+   "en": "Lickitung",
+   "page": "Lickitung (Cyber Judge 53)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "54": {
+   "en": "Lickilicky",
+   "page": "Lickilicky (Cyber Judge 54)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "55": {
+   "en": "Skitty",
+   "page": "Skitty (Cyber Judge 55)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "56": {
+   "en": "Delcatty",
+   "page": "Delcatty (Cyber Judge 56)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "57": {
+   "en": "Pidove",
+   "page": "Pidove (Cyber Judge 57)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "58": {
+   "en": "Tranquill",
+   "page": "Tranquill (Cyber Judge 58)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "59": {
+   "en": "Unfezant",
+   "page": "Unfezant (Cyber Judge 59)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "60": {
+   "en": "Drampa",
+   "page": "Drampa (Cyber Judge 60)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "61": {
+   "en": "Hand Trimmer",
+   "page": "Hand Trimmer (Cyber Judge 61)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "62": {
+   "en": "Prime Catcher",
+   "page": "Prime Catcher (Cyber Judge 62)",
+   "type": "I",
+   "rarity": "ACE",
+   "mark": ""
+  },
+  "63": {
+   "en": "Reboot Pod",
+   "page": "Reboot Pod (Cyber Judge 63)",
+   "type": "I",
+   "rarity": "ACE",
+   "mark": ""
+  },
+  "64": {
+   "en": "Hero's Cape",
+   "page": "Hero's Cape (Cyber Judge 64)",
+   "type": "PT",
+   "rarity": "ACE",
+   "mark": ""
+  },
+  "65": {
+   "en": "Future Booster Energy Capsule",
+   "page": "Future Booster Energy Capsule (Cyber Judge 65)",
+   "type": "PT",
+   "rarity": "U",
+   "mark": ""
+  },
+  "66": {
+   "en": "Heavy Baton",
+   "page": "Heavy Baton (Cyber Judge 66)",
+   "type": "PT",
+   "rarity": "U",
+   "mark": ""
+  },
+  "67": {
+   "en": "Ciphermaniac's Codebreaking",
+   "page": "Ciphermaniac's Codebreaking (Cyber Judge 67)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "68": {
+   "en": "Salvatore",
+   "page": "Salvatore (Cyber Judge 68)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "69": {
+   "en": "Bianca's Devotion",
+   "page": "Bianca's Devotion (Cyber Judge 69)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "70": {
+   "en": "Full Metal Lab",
+   "page": "Full Metal Lab (Cyber Judge 70)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "71": {
+   "en": "Mist Energy",
+   "page": "Mist Energy (Cyber Judge 71)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "72": {
+   "en": "Shiftry",
+   "page": "Shiftry (Cyber Judge 72)",
+   "type": "Grass",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "73": {
+   "en": "Deerling",
+   "page": "Deerling (Cyber Judge 73)",
+   "type": "Grass",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "74": {
+   "en": "Sawsbuck",
+   "page": "Sawsbuck (Cyber Judge 74)",
+   "type": "Grass",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "75": {
+   "en": "Litten",
+   "page": "Litten (Cyber Judge 75)",
+   "type": "Fire",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "76": {
+   "en": "Charjabug",
+   "page": "Charjabug (Cyber Judge 76)",
+   "type": "Lightning",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "77": {
+   "en": "Iron Thorns",
+   "page": "Iron Thorns (Cyber Judge 77)",
+   "type": "Lightning",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "78": {
+   "en": "Cutiefly",
+   "page": "Cutiefly (Cyber Judge 78)",
+   "type": "Psychic",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "79": {
+   "en": "Excadrill",
+   "page": "Excadrill (Cyber Judge 79)",
+   "type": "Fighting",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "80": {
+   "en": "Metagross",
+   "page": "Metagross (Cyber Judge 80)",
+   "type": "Metal",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "81": {
+   "en": "Meltan",
+   "page": "Meltan (Cyber Judge 81)",
+   "type": "Metal",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "82": {
+   "en": "Lickitung",
+   "page": "Lickitung (Cyber Judge 82)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "83": {
+   "en": "Drampa",
+   "page": "Drampa (Cyber Judge 83)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "84": {
+   "en": "Iron Leaves",
+   "page": "Iron Leaves ex (Cyber Judge 84)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "85": {
+   "en": "Incineroar",
+   "page": "Incineroar ex (Cyber Judge 85)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "86": {
+   "en": "Iron Crown",
+   "page": "Iron Crown ex (Cyber Judge 86)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "87": {
+   "en": "Iron Boulder",
+   "page": "Iron Boulder ex (Cyber Judge 87)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "88": {
+   "en": "Farigiraf",
+   "page": "Farigiraf ex (Cyber Judge 88)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "89": {
+   "en": "Scizor",
+   "page": "Scizor ex (Cyber Judge 89)",
+   "type": "Metal",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "90": {
+   "en": "Ciphermaniac's Codebreaking",
+   "page": "Ciphermaniac's Codebreaking (Cyber Judge 90)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "91": {
+   "en": "Salvatore",
+   "page": "Salvatore (Cyber Judge 91)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "92": {
+   "en": "Bianca's Devotion",
+   "page": "Bianca's Devotion (Cyber Judge 92)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "93": {
+   "en": "Iron Leaves",
+   "page": "Iron Leaves ex (Cyber Judge 93)",
+   "type": "Grass",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "94": {
+   "en": "Iron Crown",
+   "page": "Iron Crown ex (Cyber Judge 94)",
+   "type": "Psychic",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "95": {
+   "en": "Iron Boulder",
+   "page": "Iron Boulder ex (Cyber Judge 95)",
+   "type": "Fighting",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "96": {
+   "en": "Salvatore",
+   "page": "Salvatore (Cyber Judge 96)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "97": {
+   "en": "Bianca's Devotion",
+   "page": "Bianca's Devotion (Cyber Judge 97)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "98": {
+   "en": "Iron Leaves",
+   "page": "Iron Leaves ex (Cyber Judge 98)",
+   "type": "Grass",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "99": {
+   "en": "Iron Crown",
+   "page": "Iron Crown ex (Cyber Judge 99)",
+   "type": "Psychic",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "100": {
+   "en": "Iron Boulder",
+   "page": "Iron Boulder ex (Cyber Judge 100)",
+   "type": "Fighting",
+   "rarity": "UR",
+   "mark": ""
+  }
+ }
+}

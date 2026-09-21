@@ -1,0 +1,489 @@
+{
+ "page": "Sky Legend (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Rowlet & Alolan Exeggutor",
+   "page": "Rowlet & Alolan Exeggutor-GX (Sky Legend 1)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "2": {
+   "en": "Dwebble",
+   "page": "Dwebble (Sky Legend 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Crustle",
+   "page": "Crustle (Sky Legend 3)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "4": {
+   "en": "Fomantis",
+   "page": "Fomantis (Sky Legend 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Lurantis",
+   "page": "Lurantis (Sky Legend 5)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Bounsweet",
+   "page": "Bounsweet (Sky Legend 6)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Steenee",
+   "page": "Steenee (Sky Legend 7)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Tsareena",
+   "page": "Tsareena (Sky Legend 8)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "9": {
+   "en": "Numel",
+   "page": "Numel (Sky Legend 9)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Camerupt",
+   "page": "Camerupt (Sky Legend 10)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "11": {
+   "en": "Victini",
+   "page": "Victini (Sky Legend 11)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "12": {
+   "en": "Fletchinder",
+   "page": "Fletchinder (Sky Legend 12)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "13": {
+   "en": "Talonflame",
+   "page": "Talonflame (Sky Legend 13)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "14": {
+   "en": "Snorunt",
+   "page": "Snorunt (Sky Legend 14)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "15": {
+   "en": "Froslass",
+   "page": "Froslass (Sky Legend 15)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "16": {
+   "en": "Snover",
+   "page": "Snover (Sky Legend 16)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Abomasnow",
+   "page": "Abomasnow (Sky Legend 17)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "18": {
+   "en": "Cryogonal",
+   "page": "Cryogonal (Sky Legend 18)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "19": {
+   "en": "Keldeo",
+   "page": "Keldeo-GX (Sky Legend 19)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "20": {
+   "en": "Tapu Fini",
+   "page": "Tapu Fini (Sky Legend 20)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "21": {
+   "en": "Magnemite",
+   "page": "Magnemite (Sky Legend 21)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "22": {
+   "en": "Magneton",
+   "page": "Magneton (Sky Legend 22)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "23": {
+   "en": "Magnezone",
+   "page": "Magnezone (Sky Legend 23)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "24": {
+   "en": "Xurkitree",
+   "page": "Xurkitree (Sky Legend 24)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "25": {
+   "en": "Ekans",
+   "page": "Ekans (Sky Legend 25)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "26": {
+   "en": "Arbok",
+   "page": "Arbok (Sky Legend 26)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "27": {
+   "en": "Koffing",
+   "page": "Koffing (Sky Legend 27)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "28": {
+   "en": "Weezing",
+   "page": "Weezing (Sky Legend 28)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "29": {
+   "en": "Uxie",
+   "page": "Uxie (Sky Legend 29)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "30": {
+   "en": "Mesprit",
+   "page": "Mesprit (Sky Legend 30)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "31": {
+   "en": "Azelf",
+   "page": "Azelf (Sky Legend 31)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "32": {
+   "en": "Poipole",
+   "page": "Poipole (Sky Legend 32)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "33": {
+   "en": "Druddigon",
+   "page": "Druddigon (Sky Legend 33)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "34": {
+   "en": "Naganadel",
+   "page": "Naganadel-GX (Sky Legend 34)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "35": {
+   "en": "Moltres & Zapdos & Articuno",
+   "page": "Moltres & Zapdos & Articuno-GX (Sky Legend 35)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "36": {
+   "en": "Lickitung",
+   "page": "Lickitung (Sky Legend 36)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "37": {
+   "en": "Lickilicky",
+   "page": "Lickilicky (Sky Legend 37)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "38": {
+   "en": "Hoothoot",
+   "page": "Hoothoot (Sky Legend 38)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "39": {
+   "en": "Noctowl",
+   "page": "Noctowl (Sky Legend 39)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "40": {
+   "en": "Audino",
+   "page": "Audino (Sky Legend 40)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "41": {
+   "en": "Fletchling",
+   "page": "Fletchling (Sky Legend 41)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "42": {
+   "en": "Type: Null",
+   "page": "Type: Null (Sky Legend 42)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "43": {
+   "en": "Silvally",
+   "page": "Silvally (Sky Legend 43)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "44": {
+   "en": "Normalium Z: Tackle",
+   "page": "Normalium Z: Tackle (Sky Legend 44)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "45": {
+   "en": "Flyinium Z: Air Slash",
+   "page": "Flyinium Z: Air Slash (Sky Legend 45)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "46": {
+   "en": "U-Turn Board",
+   "page": "U-Turn Board (Sky Legend 46)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "47": {
+   "en": "Poké Maniac",
+   "page": "Poké Maniac (Sky Legend 47)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "48": {
+   "en": "Jessie & James",
+   "page": "Jessie & James (Sky Legend 48)",
+   "type": "Su",
+   "rarity": "R",
+   "mark": ""
+  },
+  "49": {
+   "en": "Blizzard Town",
+   "page": "Blizzard Town (Sky Legend 49)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "50": {
+   "en": "Recycle Energy",
+   "page": "Recycle Energy (Sky Legend 50)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "51": {
+   "en": "Net Ball",
+   "page": "Net Ball (Sky Legend 51)",
+   "type": "I",
+   "rarity": "TR",
+   "mark": ""
+  },
+  "52": {
+   "en": "Gladion",
+   "page": "Gladion (Sky Legend 52)",
+   "type": "Su",
+   "rarity": "TR",
+   "mark": ""
+  },
+  "53": {
+   "en": "Lillie",
+   "page": "Lillie (Sky Legend 53)",
+   "type": "Su",
+   "rarity": "TR",
+   "mark": ""
+  },
+  "54": {
+   "en": "Lusamine",
+   "page": "Lusamine (Sky Legend 54)",
+   "type": "Su",
+   "rarity": "TR",
+   "mark": ""
+  },
+  "55": {
+   "en": "Rowlet & Alolan Exeggutor",
+   "page": "Rowlet & Alolan Exeggutor-GX (Sky Legend 55)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "56": {
+   "en": "Rowlet & Alolan Exeggutor",
+   "page": "Rowlet & Alolan Exeggutor-GX (Sky Legend 56)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "57": {
+   "en": "Keldeo",
+   "page": "Keldeo-GX (Sky Legend 57)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "58": {
+   "en": "Naganadel",
+   "page": "Naganadel-GX (Sky Legend 58)",
+   "type": "Dragon",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "59": {
+   "en": "Moltres & Zapdos & Articuno",
+   "page": "Moltres & Zapdos & Articuno-GX (Sky Legend 59)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "60": {
+   "en": "Moltres & Zapdos & Articuno",
+   "page": "Moltres & Zapdos & Articuno-GX (Sky Legend 60)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "61": {
+   "en": "Poké Maniac",
+   "page": "Poké Maniac (Sky Legend 61)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "62": {
+   "en": "Jessie & James",
+   "page": "Jessie & James (Sky Legend 62)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "63": {
+   "en": "Rowlet & Alolan Exeggutor",
+   "page": "Rowlet & Alolan Exeggutor-GX (Sky Legend 63)",
+   "type": "Grass",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "64": {
+   "en": "Keldeo",
+   "page": "Keldeo-GX (Sky Legend 64)",
+   "type": "Water",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "65": {
+   "en": "Naganadel",
+   "page": "Naganadel-GX (Sky Legend 65)",
+   "type": "Dragon",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "66": {
+   "en": "Moltres & Zapdos & Articuno",
+   "page": "Moltres & Zapdos & Articuno-GX (Sky Legend 66)",
+   "type": "Colorless",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "67": {
+   "en": "U-Turn Board",
+   "page": "U-Turn Board (Sky Legend 67)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "68": {
+   "en": "Viridian Forest",
+   "page": "Viridian Forest (Sky Legend 68)",
+   "type": "St",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "69": {
+   "en": "Recycle Energy",
+   "page": "Recycle Energy (Sky Legend 69)",
+   "type": "Colorless",
+   "rarity": "UR",
+   "mark": ""
+  }
+ }
+}

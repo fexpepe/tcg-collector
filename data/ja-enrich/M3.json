@@ -7,483 +7,690 @@
    "page": "Spinarak (Nihil Zero 1)",
    "type": "Grass",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "イトマル",
+   "artist": "Katsunori Sato",
+   "image": "https://archives.bulbagarden.net/media/upload/6/6b/SpinarakPerfectOrder1.jpg"
   },
   "2": {
    "en": "Ariados",
    "page": "Ariados (Nihil Zero 2)",
    "type": "Grass",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "アリアドス",
+   "artist": "svlt",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f7/AriadosPerfectOrder2.jpg"
   },
   "3": {
    "en": "Shaymin",
    "page": "Shaymin (Nihil Zero 3)",
    "type": "Grass",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "シェイミ",
+   "artist": "saino misaki",
+   "image": "https://archives.bulbagarden.net/media/upload/8/89/ShayminPerfectOrder3.jpg"
   },
   "4": {
    "en": "Snivy",
    "page": "Snivy (Nihil Zero 4)",
    "type": "Grass",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ツタージャ",
+   "artist": "Narumi Sato",
+   "image": "https://archives.bulbagarden.net/media/upload/7/7b/SnivyPerfectOrder4.jpg"
   },
   "5": {
    "en": "Servine",
    "page": "Servine (Nihil Zero 5)",
    "type": "Grass",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ジャノビー",
+   "artist": "Kurata So",
+   "image": "https://archives.bulbagarden.net/media/upload/3/35/ServinePerfectOrder5.jpg"
   },
   "6": {
    "en": "Serperior",
    "page": "Serperior (Nihil Zero 6)",
    "type": "Grass",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "ジャローダ",
+   "artist": "kodama",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a7/SerperiorPerfectOrder6.jpg"
   },
   "7": {
    "en": "Scatterbug",
    "page": "Scatterbug (Nihil Zero 7)",
    "type": "Grass",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "コフキムシ",
+   "artist": "OKACHEKE",
+   "image": "https://archives.bulbagarden.net/media/upload/6/63/ScatterbugPerfectOrder7.jpg"
   },
   "8": {
    "en": "Spewpa",
    "page": "Spewpa (Nihil Zero 8)",
    "type": "Grass",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "コフーライ",
+   "artist": "Ounishi",
+   "image": "https://archives.bulbagarden.net/media/upload/7/70/SpewpaPerfectOrder8.jpg"
   },
   "9": {
    "en": "Vivillon",
    "page": "Vivillon (Nihil Zero 9)",
    "type": "Grass",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ビビヨン",
+   "artist": "mingo",
+   "image": "https://archives.bulbagarden.net/media/upload/f/fa/VivillonPerfectOrder9.jpg"
   },
   "10": {
    "en": "Rowlet",
    "page": "Rowlet (Nihil Zero 10)",
    "type": "Grass",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "モクロー",
+   "artist": "Atsuya Uki",
+   "image": "https://archives.bulbagarden.net/media/upload/4/47/RowletPerfectOrder10.jpg"
   },
   "11": {
    "en": "Dartrix",
    "page": "Dartrix (Nihil Zero 11)",
    "type": "Grass",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "フクスロー",
+   "artist": "aspara",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e3/DartrixPerfectOrder11.jpg"
   },
   "12": {
    "en": "Decidueye",
    "page": "Decidueye ex (Nihil Zero 12)",
    "type": "Grass",
    "rarity": "RR",
-   "mark": ""
+   "mark": "",
+   "ja": "ジュナイパーex",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/7/79/DecidueyeexPerfectOrder100.jpg"
   },
   "13": {
    "en": "Fletchinder",
    "page": "Fletchinder (Nihil Zero 13)",
    "type": "Fire",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ヒノヤコマ",
+   "artist": "Sumiyoshi Kizuki",
+   "image": "https://archives.bulbagarden.net/media/upload/4/4e/FletchinderPerfectOrder13.jpg"
   },
   "14": {
    "en": "Talonflame",
    "page": "Talonflame (Nihil Zero 14)",
    "type": "Fire",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ファイアロー",
+   "artist": "Shinji Kanda",
+   "image": "https://archives.bulbagarden.net/media/upload/4/4a/TalonflamePerfectOrder14.jpg"
   },
   "15": {
    "en": "Salandit",
    "page": "Salandit (Nihil Zero 15)",
    "type": "Fire",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ヤトウモリ",
+   "artist": "Kazuhisa Uragami",
+   "image": "https://archives.bulbagarden.net/media/upload/0/07/SalanditPerfectOrder15.jpg"
   },
   "16": {
    "en": "Salazzle",
    "page": "Salazzle ex (Nihil Zero 16)",
    "type": "Fire",
    "rarity": "RR",
-   "mark": ""
+   "mark": "",
+   "ja": "エンニュートex",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/a/af/SalazzleexPerfectOrder16.jpg"
   },
   "17": {
    "en": "Turtonator",
    "page": "Turtonator (Nihil Zero 17)",
    "type": "Fire",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "バクガメス",
+   "artist": "Hasuno",
+   "image": "https://archives.bulbagarden.net/media/upload/a/ad/TurtonatorPerfectOrder17.jpg"
   },
   "18": {
    "en": "Seel",
    "page": "Seel (Nihil Zero 18)",
    "type": "Water",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "パウワウ",
+   "artist": "cochi8i",
+   "image": "https://archives.bulbagarden.net/media/upload/5/54/SeelMEPPromo116.jpg"
   },
   "19": {
    "en": "Dewgong",
    "page": "Dewgong (Nihil Zero 19)",
    "type": "Water",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "ジュゴン",
+   "artist": "Yoshioka",
+   "image": "https://archives.bulbagarden.net/media/upload/7/79/DewgongPerfectOrder19.jpg"
   },
   "20": {
    "en": "Staryu",
    "page": "Staryu (Nihil Zero 20)",
    "type": "Water",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ヒトデマン",
+   "artist": "Takeshi Nakamura",
+   "image": "https://archives.bulbagarden.net/media/upload/f/fd/StaryuPerfectOrder20.jpg"
   },
   "21": {
    "en": "Mega Starmie",
    "page": "Mega Starmie ex (Nihil Zero 21)",
    "type": "Water",
    "rarity": "RR",
-   "mark": ""
+   "mark": "",
+   "ja": "メガスターミーex",
+   "artist": "takuyoa",
+   "image": "https://archives.bulbagarden.net/media/upload/7/7e/MegaStarmieexPerfectOrder118.jpg"
   },
   "22": {
    "en": "Amaura",
    "page": "Amaura (Nihil Zero 22)",
    "type": "Water",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "アマルス",
+   "artist": "Hitoshi Ariga",
+   "image": "https://archives.bulbagarden.net/media/upload/5/50/AmauraPerfectOrder23.jpg"
   },
   "23": {
    "en": "Aurorus",
    "page": "Aurorus (Nihil Zero 23)",
    "type": "Water",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "アマルルガ",
+   "artist": "Masa",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a1/AurorusPerfectOrder92.jpg"
   },
   "24": {
    "en": "Volcanion",
    "page": "Volcanion (Nihil Zero 24)",
    "type": "Water",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ボルケニオン",
+   "artist": "AKIRA EGAWA",
+   "image": "https://archives.bulbagarden.net/media/upload/5/57/VolcanionPerfectOrder25.jpg"
   },
   "25": {
    "en": "Shinx",
    "page": "Shinx (Nihil Zero 25)",
    "type": "Lightning",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "コリンク",
+   "artist": "Saboteri",
+   "image": "https://archives.bulbagarden.net/media/upload/b/bf/ShinxPerfectOrder26.jpg"
   },
   "26": {
    "en": "Luxio",
    "page": "Luxio (Nihil Zero 26)",
    "type": "Lightning",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ルクシオ",
+   "artist": "Atsuko Nishida",
+   "image": "https://archives.bulbagarden.net/media/upload/0/0a/LuxioPerfectOrder27.jpg"
   },
   "27": {
    "en": "Luxray",
    "page": "Luxray (Nihil Zero 27)",
    "type": "Lightning",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "レントラー",
+   "artist": "Taiga Kasai",
+   "image": "https://archives.bulbagarden.net/media/upload/7/76/LuxrayPerfectOrder28.jpg"
   },
   "28": {
    "en": "Dedenne",
    "page": "Dedenne (Nihil Zero 28)",
    "type": "Lightning",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "デデンネ",
+   "artist": "sowsow",
+   "image": "https://archives.bulbagarden.net/media/upload/4/4e/DedennePerfectOrder29.jpg"
   },
   "29": {
    "en": "Clefairy",
    "page": "Clefairy (Nihil Zero 29)",
    "type": "Psychic",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ピッピ",
+   "artist": "Natsumi Yoshida",
+   "image": "https://archives.bulbagarden.net/media/upload/d/de/ClefairyPerfectOrder30.jpg"
   },
   "30": {
    "en": "Mega Clefable",
    "page": "Mega Clefable ex (Nihil Zero 30)",
    "type": "Psychic",
    "rarity": "RR",
-   "mark": ""
+   "mark": "",
+   "ja": "メガピクシーex",
+   "artist": "aky CG Works",
+   "image": "https://archives.bulbagarden.net/media/upload/8/85/MegaClefableexPerfectOrder31.jpg"
   },
   "31": {
    "en": "Mawile",
    "page": "Mawile (Nihil Zero 31)",
    "type": "Psychic",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "クチート",
+   "artist": "OKACHEKE",
+   "image": "https://archives.bulbagarden.net/media/upload/d/dd/MawilePerfectOrder32.jpg"
   },
   "32": {
    "en": "Espurr",
    "page": "Espurr (Nihil Zero 32)",
    "type": "Psychic",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ニャスパー",
+   "artist": "MINAMINAMI Take",
+   "image": "https://archives.bulbagarden.net/media/upload/0/02/EspurrPerfectOrder95.jpg"
   },
   "33": {
    "en": "Meowstic",
    "page": "Meowstic (Nihil Zero 33)",
    "type": "Psychic",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ニャオニクス",
+   "artist": "Kannnu",
+   "image": "https://archives.bulbagarden.net/media/upload/4/4a/MeowsticPerfectOrder34.jpg"
   },
   "34": {
    "en": "Spritzee",
    "page": "Spritzee (Nihil Zero 34)",
    "type": "Psychic",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "シュシュプ",
+   "artist": "Terada Tera",
+   "image": "https://archives.bulbagarden.net/media/upload/7/79/SpritzeeMEPPromo115.jpg"
   },
   "35": {
    "en": "Aromatisse",
    "page": "Aromatisse (Nihil Zero 35)",
    "type": "Psychic",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "フレフワン",
+   "artist": "Mori Yuu",
+   "image": "https://archives.bulbagarden.net/media/upload/0/0d/AromatissePerfectOrder36.jpg"
   },
   "36": {
    "en": "Nosepass",
    "page": "Nosepass (Nihil Zero 36)",
    "type": "Fighting",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ノズパス",
+   "artist": "Jerky",
+   "image": "https://archives.bulbagarden.net/media/upload/1/1e/NosepassPerfectOrder37.jpg"
   },
   "37": {
    "en": "Probopass",
    "page": "Probopass (Nihil Zero 37)",
    "type": "Fighting",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ダイノーズ",
+   "artist": "Nurikabe",
+   "image": "https://archives.bulbagarden.net/media/upload/5/52/ProbopassPerfectOrder38.jpg"
   },
   "38": {
    "en": "Hippopotas",
    "page": "Hippopotas (Nihil Zero 38)",
    "type": "Fighting",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ヒポポタス",
+   "artist": "Kagemaru Himeno",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d2/HippopotasPerfectOrder39.jpg"
   },
   "39": {
    "en": "Hippowdon",
    "page": "Hippowdon (Nihil Zero 39)",
    "type": "Fighting",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "カバルドン",
+   "artist": "Souichirou Gunjima",
+   "image": "https://archives.bulbagarden.net/media/upload/9/90/HippowdonPerfectOrder40.jpg"
   },
   "40": {
    "en": "Landorus",
    "page": "Landorus (Nihil Zero 40)",
    "type": "Fighting",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "ランドロス",
+   "artist": "aoki",
+   "image": "https://archives.bulbagarden.net/media/upload/8/81/LandorusPerfectOrder41.jpg"
   },
   "41": {
    "en": "Binacle",
    "page": "Binacle (Nihil Zero 41)",
    "type": "Fighting",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "カメテテ",
+   "artist": "Shimaris Yukichi",
+   "image": "https://archives.bulbagarden.net/media/upload/3/32/BinacleMEPPromo87.jpg"
   },
   "42": {
    "en": "Barbaracle",
    "page": "Barbaracle (Nihil Zero 42)",
    "type": "Fighting",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ガメノデス",
+   "artist": "Hasuno",
+   "image": "https://archives.bulbagarden.net/media/upload/5/50/BarbaracleMEPPromo65.jpg"
   },
   "43": {
    "en": "Tyrunt",
    "page": "Tyrunt (Nihil Zero 43)",
    "type": "Fighting",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "チゴラス",
+   "artist": "Shimaris Yukichi",
+   "image": "https://archives.bulbagarden.net/media/upload/7/7e/TyruntMEPPromo70.jpg"
   },
   "44": {
    "en": "Tyrantrum",
    "page": "Tyrantrum (Nihil Zero 44)",
    "type": "Fighting",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ガチゴラス",
+   "artist": "Dsuke",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c9/TyrantrumPerfectOrder45.jpg"
   },
   "45": {
    "en": "Hawlucha",
    "page": "Hawlucha (Nihil Zero 45)",
    "type": "Fighting",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ルチャブル",
+   "artist": "osare",
+   "image": "https://archives.bulbagarden.net/media/upload/2/23/HawluchaPerfectOrder46.jpg"
   },
   "46": {
    "en": "Mega Zygarde",
    "page": "Mega Zygarde ex (Nihil Zero 46)",
    "type": "Fighting",
    "rarity": "RR",
-   "mark": ""
+   "mark": "",
+   "ja": "メガジガルデex",
+   "artist": "kantaro",
+   "image": "https://archives.bulbagarden.net/media/upload/6/6e/MegaZygardeexPerfectOrder120.jpg"
   },
   "47": {
    "en": "Gastly",
    "page": "Gastly (Nihil Zero 47)",
    "type": "Darkness",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ゴース",
+   "artist": "MARINA Chikazawa",
+   "image": "https://archives.bulbagarden.net/media/upload/d/de/GastlyPerfectOrder48.jpg"
   },
   "48": {
    "en": "Haunter",
    "page": "Haunter (Nihil Zero 48)",
    "type": "Darkness",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ゴースト",
+   "artist": "Kedamahadaitai Yawarakai",
+   "image": "https://archives.bulbagarden.net/media/upload/8/8e/HaunterPerfectOrder49.jpg"
   },
   "49": {
    "en": "Gengar",
    "page": "Gengar (Nihil Zero 49)",
    "type": "Darkness",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ゲンガー",
+   "artist": "Masako Tomii",
+   "image": "https://archives.bulbagarden.net/media/upload/9/99/GengarPerfectOrder50.jpg"
   },
   "50": {
    "en": "Skorupi",
    "page": "Skorupi (Nihil Zero 50)",
    "type": "Darkness",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "スコルピ",
+   "artist": "Aya Kusube",
+   "image": "https://archives.bulbagarden.net/media/upload/1/1b/SkorupiPerfectOrder51.jpg"
   },
   "51": {
    "en": "Drapion",
    "page": "Drapion (Nihil Zero 51)",
    "type": "Darkness",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ドラピオン",
+   "artist": "Nelnal",
+   "image": "https://archives.bulbagarden.net/media/upload/c/ca/DrapionPerfectOrder52.jpg"
   },
   "52": {
    "en": "Yveltal",
    "page": "Yveltal ex (Nihil Zero 52)",
    "type": "Darkness",
    "rarity": "RR",
-   "mark": ""
+   "mark": "",
+   "ja": "イベルタルex",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b7/YveltalexPerfectOrder53.jpg"
   },
   "53": {
    "en": "Chien-Pao",
    "page": "Chien-Pao (Nihil Zero 53)",
    "type": "Darkness",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "パオジアン",
+   "artist": "Satoshi Ito",
+   "image": "https://archives.bulbagarden.net/media/upload/5/55/Chien-PaoPerfectOrder54.jpg"
   },
   "54": {
    "en": "Mega Skarmory",
    "page": "Mega Skarmory ex (Nihil Zero 54)",
    "type": "Metal",
    "rarity": "RR",
-   "mark": ""
+   "mark": "",
+   "ja": "メガエアームドex",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/8/85/MegaSkarmoryexPerfectOrder106.jpg"
   },
   "55": {
    "en": "Honedge",
    "page": "Honedge (Nihil Zero 55)",
    "type": "Metal",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ヒトツキ",
+   "artist": "Apios",
+   "image": "https://archives.bulbagarden.net/media/upload/8/81/HonedgePerfectOrder56.jpg"
   },
   "56": {
    "en": "Doublade",
    "page": "Doublade (Nihil Zero 56)",
    "type": "Metal",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ニダンギル",
+   "artist": "Kamome Shirahama",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f9/DoubladePerfectOrder57.jpg"
   },
   "57": {
    "en": "Aegislash",
    "page": "Aegislash (Nihil Zero 57)",
    "type": "Metal",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ギルガルド",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/4/4b/AegislashPerfectOrder58.jpg"
   },
   "58": {
    "en": "Klefki",
    "page": "Klefki (Nihil Zero 58)",
    "type": "Metal",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "クレッフィ",
+   "artist": "MINAMINAMI Take",
+   "image": "https://archives.bulbagarden.net/media/upload/4/41/KlefkiPerfectOrder59.jpg"
   },
   "59": {
    "en": "Rattata",
    "page": "Rattata (Nihil Zero 59)",
    "type": "Colorless",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "コラッタ",
+   "artist": "Shinya Komatsu",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f8/RattataPerfectOrder60.jpg"
   },
   "60": {
    "en": "Raticate",
    "page": "Raticate (Nihil Zero 60)",
    "type": "Colorless",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ラッタ",
+   "artist": "Mina Nakai",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d5/RaticatePerfectOrder99.jpg"
   },
   "61": {
    "en": "Meowth",
    "page": "Meowth ex (Nihil Zero 61)",
    "type": "Colorless",
    "rarity": "RR",
-   "mark": ""
+   "mark": "",
+   "ja": "ニャースex",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c7/MeowthexPerfectOrder107.jpg"
   },
   "62": {
    "en": "Snorlax",
    "page": "Snorlax (Nihil Zero 62)",
    "type": "Colorless",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "カビゴン",
+   "artist": "Toshinao Aoki",
+   "image": "https://archives.bulbagarden.net/media/upload/4/47/SnorlaxPerfectOrder63.jpg"
   },
   "63": {
    "en": "Bunnelby",
    "page": "Bunnelby (Nihil Zero 63)",
    "type": "Colorless",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ホルビー",
+   "artist": "MINAMINAMI Take",
+   "image": "https://archives.bulbagarden.net/media/upload/1/18/BunnelbyPerfectOrder64.jpg"
   },
   "64": {
    "en": "Diggersby",
    "page": "Diggersby (Nihil Zero 64)",
    "type": "Colorless",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ホルード",
+   "artist": "Mousho",
+   "image": "https://archives.bulbagarden.net/media/upload/d/dc/DiggersbyPerfectOrder65.jpg"
   },
   "65": {
    "en": "Fletchling",
    "page": "Fletchling (Nihil Zero 65)",
    "type": "Colorless",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ヤヤコマ",
+   "artist": "sowsow",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d6/FletchlingPerfectOrder66.jpg"
   },
   "66": {
    "en": "Furfrou",
    "page": "Furfrou (Nihil Zero 66)",
    "type": "Colorless",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "トリミアン",
+   "artist": "Teeziro",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d8/FurfrouPerfectOrder67.jpg"
   },
   "67": {
    "en": "Energy Swatter",
    "page": "Energy Swatter (Nihil Zero 67)",
    "type": "I",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "エネはたき",
+   "artist": "Toyste Beach",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e5/EnergySwatterPerfectOrder73.jpg"
   },
   "68": {
    "en": "Antique Jaw Fossil",
    "page": "Antique Jaw Fossil (Nihil Zero 68)",
    "type": "I",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "古びたアゴの化石",
+   "artist": "AYUMI ODASHIMA",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d5/AntiqueJawFossilPerfectOrder68.jpg"
   },
   "69": {
    "en": "Antique Sail Fossil",
    "page": "Antique Sail Fossil (Nihil Zero 69)",
    "type": "I",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "古びたヒレの化石",
+   "artist": "AYUMI ODASHIMA",
+   "image": "https://archives.bulbagarden.net/media/upload/5/5c/AntiqueSailFossilPerfectOrder69.jpg"
   },
   "70": {
    "en": "Poké Pad",

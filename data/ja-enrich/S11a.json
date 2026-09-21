@@ -1,0 +1,664 @@
+{
+ "page": "Incandescent Arcana (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Scyther",
+   "page": "Scyther (Incandescent Arcana 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Yanma",
+   "page": "Yanma (Incandescent Arcana 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Yanmega",
+   "page": "Yanmega (Incandescent Arcana 3)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "4": {
+   "en": "Carnivine",
+   "page": "Carnivine (Incandescent Arcana 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Serperior",
+   "page": "Serperior V (Incandescent Arcana 5)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "6": {
+   "en": "Serperior",
+   "page": "Serperior VSTAR (Incandescent Arcana 6)",
+   "type": "Grass",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "7": {
+   "en": "Petilil",
+   "page": "Petilil (Incandescent Arcana 7)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Hisuian Lilligant",
+   "page": "Hisuian Lilligant (Incandescent Arcana 8)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "9": {
+   "en": "Radiant Tsareena",
+   "page": "Radiant Tsareena (Incandescent Arcana 9)",
+   "type": "Grass",
+   "rarity": "K",
+   "mark": ""
+  },
+  "10": {
+   "en": "Zarude",
+   "page": "Zarude (Incandescent Arcana 10)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "11": {
+   "en": "Calyrex",
+   "page": "Calyrex (Incandescent Arcana 11)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "12": {
+   "en": "Growlithe",
+   "page": "Growlithe (Incandescent Arcana 12)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "13": {
+   "en": "Arcanine",
+   "page": "Arcanine (Incandescent Arcana 13)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "14": {
+   "en": "Entei",
+   "page": "Entei (Incandescent Arcana 14)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "15": {
+   "en": "Reshiram",
+   "page": "Reshiram V (Incandescent Arcana 15)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "16": {
+   "en": "Fennekin",
+   "page": "Fennekin (Incandescent Arcana 16)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Braixen",
+   "page": "Braixen (Incandescent Arcana 17)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "18": {
+   "en": "Delphox",
+   "page": "Delphox (Incandescent Arcana 18)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "19": {
+   "en": "Volcanion",
+   "page": "Volcanion (Incandescent Arcana 19)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "20": {
+   "en": "Salandit",
+   "page": "Salandit (Incandescent Arcana 20)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "21": {
+   "en": "Salazzle",
+   "page": "Salazzle (Incandescent Arcana 21)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "22": {
+   "en": "Alolan Vulpix",
+   "page": "Alolan Vulpix V (Incandescent Arcana 22)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "23": {
+   "en": "Alolan Vulpix",
+   "page": "Alolan Vulpix VSTAR (Incandescent Arcana 23)",
+   "type": "Water",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "24": {
+   "en": "Articuno",
+   "page": "Articuno (Incandescent Arcana 24)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "25": {
+   "en": "Wailmer",
+   "page": "Wailmer (Incandescent Arcana 25)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "26": {
+   "en": "Wailord",
+   "page": "Wailord (Incandescent Arcana 26)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "27": {
+   "en": "Feebas",
+   "page": "Feebas (Incandescent Arcana 27)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "28": {
+   "en": "Milotic",
+   "page": "Milotic (Incandescent Arcana 28)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "29": {
+   "en": "Luvdisc",
+   "page": "Luvdisc (Incandescent Arcana 29)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "30": {
+   "en": "Kyogre",
+   "page": "Kyogre (Incandescent Arcana 30)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "31": {
+   "en": "Radiant Alakazam",
+   "page": "Radiant Alakazam (Incandescent Arcana 31)",
+   "type": "Psychic",
+   "rarity": "K",
+   "mark": ""
+  },
+  "32": {
+   "en": "Exeggcute",
+   "page": "Exeggcute (Incandescent Arcana 32)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "33": {
+   "en": "Exeggutor",
+   "page": "Exeggutor (Incandescent Arcana 33)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "34": {
+   "en": "Jynx",
+   "page": "Jynx (Incandescent Arcana 34)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "35": {
+   "en": "Mewtwo",
+   "page": "Mewtwo (Incandescent Arcana 35)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "36": {
+   "en": "Ralts",
+   "page": "Ralts (Incandescent Arcana 36)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "37": {
+   "en": "Kirlia",
+   "page": "Kirlia (Incandescent Arcana 37)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "38": {
+   "en": "Gardevoir",
+   "page": "Gardevoir (Incandescent Arcana 38)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "39": {
+   "en": "Mawile",
+   "page": "Mawile V (Incandescent Arcana 39)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "40": {
+   "en": "Mawile",
+   "page": "Mawile VSTAR (Incandescent Arcana 40)",
+   "type": "Psychic",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "41": {
+   "en": "Espurr",
+   "page": "Espurr (Incandescent Arcana 41)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "42": {
+   "en": "Meowstic",
+   "page": "Meowstic (Incandescent Arcana 42)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "43": {
+   "en": "Tapu Lele",
+   "page": "Tapu Lele (Incandescent Arcana 43)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "44": {
+   "en": "Scizor",
+   "page": "Scizor (Incandescent Arcana 44)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "45": {
+   "en": "Radiant Jirachi",
+   "page": "Radiant Jirachi (Incandescent Arcana 45)",
+   "type": "Metal",
+   "rarity": "K",
+   "mark": ""
+  },
+  "46": {
+   "en": "Klink",
+   "page": "Klink (Incandescent Arcana 46)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "47": {
+   "en": "Klang",
+   "page": "Klang (Incandescent Arcana 47)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "48": {
+   "en": "Klinklang",
+   "page": "Klinklang (Incandescent Arcana 48)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "49": {
+   "en": "Pawniard",
+   "page": "Pawniard (Incandescent Arcana 49)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "50": {
+   "en": "Bisharp",
+   "page": "Bisharp (Incandescent Arcana 50)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "51": {
+   "en": "Magearna",
+   "page": "Magearna V (Incandescent Arcana 51)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "52": {
+   "en": "Zacian",
+   "page": "Zacian (Incandescent Arcana 52)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "53": {
+   "en": "Zamazenta",
+   "page": "Zamazenta (Incandescent Arcana 53)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "54": {
+   "en": "Smeargle",
+   "page": "Smeargle (Incandescent Arcana 54)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "55": {
+   "en": "Ho-Oh",
+   "page": "Ho-Oh V (Incandescent Arcana 55)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "56": {
+   "en": "Swablu",
+   "page": "Swablu (Incandescent Arcana 56)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "57": {
+   "en": "Altaria",
+   "page": "Altaria (Incandescent Arcana 57)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "58": {
+   "en": "Chatot",
+   "page": "Chatot (Incandescent Arcana 58)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "59": {
+   "en": "Energy Switch",
+   "page": "Energy Switch (Incandescent Arcana 59)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "60": {
+   "en": "Capturing Aroma",
+   "page": "Capturing Aroma (Incandescent Arcana 60)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "61": {
+   "en": "Switch",
+   "page": "Switch (Incandescent Arcana 61)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "62": {
+   "en": "Emergency Jelly",
+   "page": "Emergency Jelly (Incandescent Arcana 62)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "63": {
+   "en": "Judge",
+   "page": "Judge (Incandescent Arcana 63)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "64": {
+   "en": "Serena",
+   "page": "Serena (Incandescent Arcana 64)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "65": {
+   "en": "Furisode Girl",
+   "page": "Furisode Girl (Incandescent Arcana 65)",
+   "type": "Su",
+   "rarity": "C",
+   "mark": ""
+  },
+  "66": {
+   "en": "Wallace",
+   "page": "Wallace (Incandescent Arcana 66)",
+   "type": "Su",
+   "rarity": "C",
+   "mark": ""
+  },
+  "67": {
+   "en": "Double Turbo Energy",
+   "page": "Double Turbo Energy (Incandescent Arcana 67)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "68": {
+   "en": "V Guard Energy",
+   "page": "V Guard Energy (Incandescent Arcana 68)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "69": {
+   "en": "Braixen",
+   "page": "Braixen (Incandescent Arcana 69)",
+   "type": "Fire",
+   "rarity": "CHR",
+   "mark": ""
+  },
+  "70": {
+   "en": "Milotic",
+   "page": "Milotic (Incandescent Arcana 70)",
+   "type": "Water",
+   "rarity": "CHR",
+   "mark": ""
+  },
+  "71": {
+   "en": "Jynx",
+   "page": "Jynx (Incandescent Arcana 71)",
+   "type": "Psychic",
+   "rarity": "CHR",
+   "mark": ""
+  },
+  "72": {
+   "en": "Gardevoir",
+   "page": "Gardevoir (Incandescent Arcana 72)",
+   "type": "Psychic",
+   "rarity": "CHR",
+   "mark": ""
+  },
+  "73": {
+   "en": "Smeargle",
+   "page": "Smeargle (Incandescent Arcana 73)",
+   "type": "Colorless",
+   "rarity": "CHR",
+   "mark": ""
+  },
+  "74": {
+   "en": "Altaria",
+   "page": "Altaria (Incandescent Arcana 74)",
+   "type": "Colorless",
+   "rarity": "CHR",
+   "mark": ""
+  },
+  "75": {
+   "en": "Serperior",
+   "page": "Serperior V (Incandescent Arcana 5)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "76": {
+   "en": "Reshiram",
+   "page": "Reshiram V (Incandescent Arcana 15)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "77": {
+   "en": "Alolan Vulpix",
+   "page": "Alolan Vulpix V (Incandescent Arcana 22)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "78": {
+   "en": "Mawile",
+   "page": "Mawile V (Incandescent Arcana 39)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "79": {
+   "en": "Magearna",
+   "page": "Magearna V (Incandescent Arcana 51)",
+   "type": "Metal",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "80": {
+   "en": "Ho-Oh",
+   "page": "Ho-Oh V (Incandescent Arcana 55)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "81": {
+   "en": "Serena",
+   "page": "Serena (Incandescent Arcana 81)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "82": {
+   "en": "Furisode Girl",
+   "page": "Furisode Girl (Incandescent Arcana 82)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "83": {
+   "en": "Wallace",
+   "page": "Wallace (Incandescent Arcana 83)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "84": {
+   "en": "Serperior",
+   "page": "Serperior V (Incandescent Arcana 5)",
+   "type": "Grass",
+   "rarity": "CSR",
+   "mark": ""
+  },
+  "85": {
+   "en": "Mawile",
+   "page": "Mawile V (Incandescent Arcana 39)",
+   "type": "Psychic",
+   "rarity": "CSR",
+   "mark": ""
+  },
+  "86": {
+   "en": "Serperior",
+   "page": "Serperior VSTAR (Incandescent Arcana 6)",
+   "type": "Grass",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "87": {
+   "en": "Alolan Vulpix",
+   "page": "Alolan Vulpix VSTAR (Incandescent Arcana 23)",
+   "type": "Water",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "88": {
+   "en": "Mawile",
+   "page": "Mawile VSTAR (Incandescent Arcana 40)",
+   "type": "Psychic",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "89": {
+   "en": "Serena",
+   "page": "Serena (Incandescent Arcana 89)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "90": {
+   "en": "Furisode Girl",
+   "page": "Furisode Girl (Incandescent Arcana 90)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "91": {
+   "en": "Wallace",
+   "page": "Wallace (Incandescent Arcana 91)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "92": {
+   "en": "Serperior",
+   "page": "Serperior VSTAR (Incandescent Arcana 6)",
+   "type": "Grass",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "93": {
+   "en": "Energy Switch",
+   "page": "Energy Switch (Incandescent Arcana 93)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "94": {
+   "en": "V Guard Energy",
+   "page": "V Guard Energy (Incandescent Arcana 94)",
+   "type": "Colorless",
+   "rarity": "UR",
+   "mark": ""
+  }
+ }
+}

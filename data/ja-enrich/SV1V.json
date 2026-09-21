@@ -3,1809 +3,759 @@
  "at": "2026-09-21",
  "cards": {
   "1": {
-   "en": "Cacnea",
-   "page": "Cacnea (Scarlet ex 1)",
+   "en": "Pineco",
+   "page": "Pineco (Violet ex 1)",
    "type": "Grass",
    "rarity": "C",
    "mark": ""
   },
   "2": {
-   "en": "Cacturne",
-   "page": "Cacturne (Scarlet ex 2)",
+   "en": "Heracross",
+   "page": "Heracross (Violet ex 2)",
    "type": "Grass",
    "rarity": "U",
    "mark": ""
   },
   "3": {
-   "en": "Skiddo",
-   "page": "Skiddo (Scarlet ex 3)",
+   "en": "Scatterbug",
+   "page": "Scatterbug (Violet ex 3)",
    "type": "Grass",
    "rarity": "C",
    "mark": ""
   },
   "4": {
-   "en": "Gogoat",
-   "page": "Gogoat (Scarlet ex 4)",
+   "en": "Spewpa",
+   "page": "Spewpa (Violet ex 4)",
    "type": "Grass",
    "rarity": "C",
    "mark": ""
   },
   "5": {
-   "en": "Smoliv",
-   "page": "Smoliv (Scarlet ex 5)",
+   "en": "Vivillon",
+   "page": "Vivillon (Violet ex 5)",
    "type": "Grass",
-   "rarity": "C",
+   "rarity": "U",
    "mark": ""
   },
   "6": {
-   "en": "Smoliv",
-   "page": "Smoliv (Scarlet ex 6)",
+   "en": "Tarountula",
+   "page": "Tarountula (Violet ex 6)",
    "type": "Grass",
    "rarity": "C",
    "mark": ""
   },
   "7": {
-   "en": "Dolliv",
-   "page": "Dolliv (Scarlet ex 7)",
+   "en": "Tarountula",
+   "page": "Tarountula (Violet ex 7)",
    "type": "Grass",
    "rarity": "C",
    "mark": ""
   },
   "8": {
-   "en": "Arboliva",
-   "page": "Arboliva (Scarlet ex 8)",
+   "en": "Spidops",
+   "page": "Spidops ex (Violet ex 8)",
    "type": "Grass",
-   "rarity": "R",
+   "rarity": "RR",
    "mark": ""
   },
   "9": {
-   "en": "Torkoal",
-   "page": "Torkoal (Scarlet ex 9)",
-   "type": "Fire",
-   "rarity": "U",
+   "en": "Toedscool",
+   "page": "Toedscool (Violet ex 9)",
+   "type": "Grass",
+   "rarity": "C",
    "mark": ""
   },
   "10": {
-   "en": "Charcadet",
-   "page": "Charcadet (Scarlet ex 10)",
-   "type": "Fire",
+   "en": "Toedscool",
+   "page": "Toedscool (Violet ex 10)",
+   "type": "Grass",
    "rarity": "C",
    "mark": ""
   },
   "11": {
-   "en": "Charcadet",
-   "page": "Charcadet (Scarlet ex 11)",
-   "type": "Fire",
-   "rarity": "C",
+   "en": "Toedscruel",
+   "page": "Toedscruel (Violet ex 11)",
+   "type": "Grass",
+   "rarity": "U",
    "mark": ""
   },
   "12": {
-   "en": "Armarouge",
-   "page": "Armarouge (Scarlet ex 12)",
-   "type": "Fire",
-   "rarity": "R",
+   "en": "Capsakid",
+   "page": "Capsakid (Violet ex 12)",
+   "type": "Grass",
+   "rarity": "C",
    "mark": ""
   },
   "13": {
-   "en": "Magikarp",
-   "page": "Magikarp (Scarlet ex 13)",
-   "type": "Water",
+   "en": "Capsakid",
+   "page": "Capsakid (Violet ex 13)",
+   "type": "Grass",
    "rarity": "C",
    "mark": ""
   },
   "14": {
-   "en": "Gyarados",
-   "page": "Gyarados ex (Scarlet ex 14)",
-   "type": "Water",
-   "rarity": "RR",
+   "en": "Scovillain",
+   "page": "Scovillain (Violet ex 14)",
+   "type": "Grass",
+   "rarity": "U",
    "mark": ""
   },
   "15": {
-   "en": "Buizel",
-   "page": "Buizel (Scarlet ex 15)",
-   "type": "Water",
+   "en": "Growlithe",
+   "page": "Growlithe (Violet ex 15)",
+   "type": "Fire",
    "rarity": "C",
    "mark": ""
   },
   "16": {
-   "en": "Floatzel",
-   "page": "Floatzel (Scarlet ex 16)",
-   "type": "Water",
-   "rarity": "U",
+   "en": "Arcanine",
+   "page": "Arcanine ex (Violet ex 16)",
+   "type": "Fire",
+   "rarity": "RR",
    "mark": ""
   },
   "17": {
-   "en": "Bruxish",
-   "page": "Bruxish (Scarlet ex 17)",
-   "type": "Water",
+   "en": "Houndour",
+   "page": "Houndour (Violet ex 17)",
+   "type": "Fire",
    "rarity": "C",
    "mark": ""
   },
   "18": {
-   "en": "Wiglett",
-   "page": "Wiglett (Scarlet ex 18)",
-   "type": "Water",
+   "en": "Houndoom",
+   "page": "Houndoom (Violet ex 18)",
+   "type": "Fire",
    "rarity": "C",
    "mark": ""
   },
   "19": {
-   "en": "Wiglett",
-   "page": "Wiglett (Scarlet ex 19)",
+   "en": "Slowpoke",
+   "page": "Slowpoke (Violet ex 19)",
    "type": "Water",
    "rarity": "C",
    "mark": ""
   },
   "20": {
-   "en": "Wugtrio",
-   "page": "Wugtrio (Scarlet ex 20)",
-   "type": "Water",
-   "rarity": "U",
-   "mark": ""
-  },
-  "21": {
-   "en": "Dondozo",
-   "page": "Dondozo (Scarlet ex 21)",
+   "en": "Slowbro",
+   "page": "Slowbro (Violet ex 20)",
    "type": "Water",
    "rarity": "R",
    "mark": ""
   },
-  "22": {
-   "en": "Tatsugiri",
-   "page": "Tatsugiri (Scarlet ex 22)",
+  "21": {
+   "en": "Clauncher",
+   "page": "Clauncher (Violet ex 21)",
    "type": "Water",
-   "rarity": "U",
+   "rarity": "C",
+   "mark": ""
+  },
+  "22": {
+   "en": "Clawitzer",
+   "page": "Clawitzer (Violet ex 22)",
+   "type": "Water",
+   "rarity": "C",
    "mark": ""
   },
   "23": {
-   "en": "Wattrel",
-   "page": "Wattrel (Scarlet ex 23)",
-   "type": "Lightning",
+   "en": "Cetoddle",
+   "page": "Cetoddle (Violet ex 23)",
+   "type": "Water",
    "rarity": "C",
    "mark": ""
   },
   "24": {
-   "en": "Wattrel",
-   "page": "Wattrel (Scarlet ex 24)",
-   "type": "Lightning",
+   "en": "Cetoddle",
+   "page": "Cetoddle (Violet ex 24)",
+   "type": "Water",
    "rarity": "C",
    "mark": ""
   },
   "25": {
-   "en": "Kilowattrel",
-   "page": "Kilowattrel (Scarlet ex 25)",
-   "type": "Lightning",
+   "en": "Cetitan",
+   "page": "Cetitan (Violet ex 25)",
+   "type": "Water",
    "rarity": "U",
    "mark": ""
   },
   "26": {
-   "en": "Ralts",
-   "page": "Ralts (Scarlet ex 26)",
-   "type": "Psychic",
+   "en": "Magnemite",
+   "page": "Magnemite (Violet ex 26)",
+   "type": "Lightning",
    "rarity": "C",
    "mark": ""
   },
   "27": {
-   "en": "Kirlia",
-   "page": "Kirlia (Scarlet ex 27)",
-   "type": "Psychic",
+   "en": "Magneton",
+   "page": "Magneton (Violet ex 27)",
+   "type": "Lightning",
    "rarity": "C",
    "mark": ""
   },
   "28": {
-   "en": "Gardevoir",
-   "page": "Gardevoir ex (Scarlet ex 28)",
-   "type": "Psychic",
+   "en": "Magnezone",
+   "page": "Magnezone ex (Violet ex 28)",
+   "type": "Lightning",
    "rarity": "RR",
    "mark": ""
   },
   "29": {
-   "en": "Drifloon",
-   "page": "Drifloon (Scarlet ex 29)",
-   "type": "Psychic",
-   "rarity": "C",
-   "mark": ""
-  },
-  "30": {
-   "en": "Drifblim",
-   "page": "Drifblim (Scarlet ex 30)",
-   "type": "Psychic",
+   "en": "Pachirisu",
+   "page": "Pachirisu (Violet ex 29)",
+   "type": "Lightning",
    "rarity": "U",
    "mark": ""
   },
+  "30": {
+   "en": "Rotom",
+   "page": "Rotom (Violet ex 30)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
   "31": {
-   "en": "Dedenne",
-   "page": "Dedenne (Scarlet ex 31)",
-   "type": "Psychic",
+   "en": "Toxel",
+   "page": "Toxel (Violet ex 31)",
+   "type": "Lightning",
    "rarity": "C",
    "mark": ""
   },
   "32": {
-   "en": "Fidough",
-   "page": "Fidough (Scarlet ex 32)",
-   "type": "Psychic",
-   "rarity": "C",
+   "en": "Toxtricity",
+   "page": "Toxtricity (Violet ex 32)",
+   "type": "Lightning",
+   "rarity": "U",
    "mark": ""
   },
   "33": {
-   "en": "Fidough",
-   "page": "Fidough (Scarlet ex 33)",
-   "type": "Psychic",
+   "en": "Pawmi",
+   "page": "Pawmi (Violet ex 33)",
+   "type": "Lightning",
    "rarity": "C",
    "mark": ""
   },
   "34": {
-   "en": "Dachsbun",
-   "page": "Dachsbun (Scarlet ex 34)",
-   "type": "Psychic",
-   "rarity": "U",
+   "en": "Pawmi",
+   "page": "Pawmi (Violet ex 34)",
+   "type": "Lightning",
+   "rarity": "C",
    "mark": ""
   },
   "35": {
-   "en": "Flittle",
-   "page": "Flittle (Scarlet ex 35)",
-   "type": "Psychic",
+   "en": "Pawmo",
+   "page": "Pawmo (Violet ex 35)",
+   "type": "Lightning",
    "rarity": "C",
    "mark": ""
   },
   "36": {
-   "en": "Flittle",
-   "page": "Flittle (Scarlet ex 36)",
-   "type": "Psychic",
-   "rarity": "C",
+   "en": "Pawmot",
+   "page": "Pawmot (Violet ex 36)",
+   "type": "Lightning",
+   "rarity": "R",
    "mark": ""
   },
   "37": {
-   "en": "Espathra",
-   "page": "Espathra (Scarlet ex 37)",
-   "type": "Psychic",
-   "rarity": "U",
+   "en": "Miraidon",
+   "page": "Miraidon ex (Violet ex 37)",
+   "type": "Lightning",
+   "rarity": "RR",
    "mark": ""
   },
   "38": {
-   "en": "Meditite",
-   "page": "Meditite (Scarlet ex 38)",
-   "type": "Fighting",
+   "en": "Drowzee",
+   "page": "Drowzee (Violet ex 38)",
+   "type": "Psychic",
    "rarity": "C",
    "mark": ""
   },
   "39": {
-   "en": "Medicham",
-   "page": "Medicham (Scarlet ex 39)",
-   "type": "Fighting",
+   "en": "Hypno",
+   "page": "Hypno (Violet ex 39)",
+   "type": "Psychic",
    "rarity": "U",
    "mark": ""
   },
   "40": {
-   "en": "Riolu",
-   "page": "Riolu (Scarlet ex 40)",
-   "type": "Fighting",
+   "en": "Shuppet",
+   "page": "Shuppet (Violet ex 40)",
+   "type": "Psychic",
    "rarity": "C",
    "mark": ""
   },
   "41": {
-   "en": "Lucario",
-   "page": "Lucario (Scarlet ex 41)",
-   "type": "Fighting",
-   "rarity": "U",
+   "en": "Banette",
+   "page": "Banette ex (Violet ex 41)",
+   "type": "Psychic",
+   "rarity": "RR",
    "mark": ""
   },
   "42": {
-   "en": "Sandile",
-   "page": "Sandile (Scarlet ex 42)",
-   "type": "Fighting",
+   "en": "Flabébé",
+   "page": "Flabébé (Violet ex 42)",
+   "type": "Psychic",
    "rarity": "C",
    "mark": ""
   },
   "43": {
-   "en": "Krokorok",
-   "page": "Krokorok (Scarlet ex 43)",
-   "type": "Fighting",
+   "en": "Floette",
+   "page": "Floette (Violet ex 43)",
+   "type": "Psychic",
    "rarity": "C",
    "mark": ""
   },
   "44": {
-   "en": "Krookodile",
-   "page": "Krookodile (Scarlet ex 44)",
-   "type": "Fighting",
+   "en": "Florges",
+   "page": "Florges (Violet ex 44)",
+   "type": "Psychic",
    "rarity": "U",
    "mark": ""
   },
   "45": {
-   "en": "Hawlucha",
-   "page": "Hawlucha (Scarlet ex 45)",
-   "type": "Fighting",
+   "en": "Klefki",
+   "page": "Klefki (Violet ex 45)",
+   "type": "Psychic",
    "rarity": "R",
    "mark": ""
   },
   "46": {
-   "en": "Silicobra",
-   "page": "Silicobra (Scarlet ex 46)",
-   "type": "Fighting",
+   "en": "Greavard",
+   "page": "Greavard (Violet ex 46)",
+   "type": "Psychic",
    "rarity": "C",
    "mark": ""
   },
   "47": {
-   "en": "Sandaconda",
-   "page": "Sandaconda (Scarlet ex 47)",
-   "type": "Fighting",
-   "rarity": "U",
+   "en": "Greavard",
+   "page": "Greavard (Violet ex 47)",
+   "type": "Psychic",
+   "rarity": "C",
    "mark": ""
   },
   "48": {
-   "en": "Klawf",
-   "page": "Klawf (Scarlet ex 48)",
-   "type": "Fighting",
+   "en": "Houndstone",
+   "page": "Houndstone (Violet ex 48)",
+   "type": "Psychic",
    "rarity": "R",
    "mark": ""
   },
   "49": {
-   "en": "Great Tusk",
-   "page": "Great Tusk ex (Scarlet ex 49)",
+   "en": "Mankey",
+   "page": "Mankey (Violet ex 49)",
    "type": "Fighting",
-   "rarity": "RR",
-   "mark": ""
-  },
-  "50": {
-   "en": "Koraidon",
-   "page": "Koraidon ex (Scarlet ex 50)",
-   "type": "Fighting",
-   "rarity": "RR",
-   "mark": ""
-  },
-  "51": {
-   "en": "Grimer",
-   "page": "Grimer (Scarlet ex 51)",
-   "type": "Darkness",
    "rarity": "C",
    "mark": ""
   },
+  "50": {
+   "en": "Primeape",
+   "page": "Primeape (Violet ex 50)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "51": {
+   "en": "Annihilape",
+   "page": "Annihilape (Violet ex 51)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
   "52": {
-   "en": "Muk",
-   "page": "Muk (Scarlet ex 52)",
+   "en": "Spiritomb",
+   "page": "Spiritomb (Violet ex 52)",
    "type": "Darkness",
    "rarity": "U",
    "mark": ""
   },
   "53": {
-   "en": "Seviper",
-   "page": "Seviper (Scarlet ex 53)",
+   "en": "Maschiff",
+   "page": "Maschiff (Violet ex 53)",
    "type": "Darkness",
    "rarity": "C",
    "mark": ""
   },
   "54": {
-   "en": "Croagunk",
-   "page": "Croagunk (Scarlet ex 54)",
+   "en": "Maschiff",
+   "page": "Maschiff (Violet ex 54)",
    "type": "Darkness",
    "rarity": "C",
    "mark": ""
   },
   "55": {
-   "en": "Toxicroak",
-   "page": "Toxicroak ex (Scarlet ex 55)",
+   "en": "Mabosstiff",
+   "page": "Mabosstiff (Violet ex 55)",
    "type": "Darkness",
-   "rarity": "RR",
+   "rarity": "U",
    "mark": ""
   },
   "56": {
-   "en": "Pawniard",
-   "page": "Pawniard (Scarlet ex 56)",
+   "en": "Bombirdier",
+   "page": "Bombirdier (Violet ex 56)",
    "type": "Darkness",
-   "rarity": "C",
+   "rarity": "U",
    "mark": ""
   },
   "57": {
-   "en": "Bisharp",
-   "page": "Bisharp (Scarlet ex 57)",
-   "type": "Darkness",
-   "rarity": "C",
+   "en": "Forretress",
+   "page": "Forretress (Violet ex 57)",
+   "type": "Metal",
+   "rarity": "U",
    "mark": ""
   },
   "58": {
-   "en": "Kingambit",
-   "page": "Kingambit (Scarlet ex 58)",
-   "type": "Darkness",
-   "rarity": "R",
+   "en": "Iron Treads",
+   "page": "Iron Treads ex (Violet ex 58)",
+   "type": "Metal",
+   "rarity": "RR",
    "mark": ""
   },
   "59": {
-   "en": "Varoom",
-   "page": "Varoom (Scarlet ex 59)",
-   "type": "Metal",
+   "en": "Chansey",
+   "page": "Chansey (Violet ex 59)",
+   "type": "Colorless",
    "rarity": "C",
    "mark": ""
   },
   "60": {
-   "en": "Varoom",
-   "page": "Varoom (Scarlet ex 60)",
-   "type": "Metal",
-   "rarity": "C",
+   "en": "Blissey",
+   "page": "Blissey (Violet ex 60)",
+   "type": "Colorless",
+   "rarity": "U",
    "mark": ""
   },
   "61": {
-   "en": "Revavroom",
-   "page": "Revavroom (Scarlet ex 61)",
-   "type": "Metal",
-   "rarity": "R",
+   "en": "Skwovet",
+   "page": "Skwovet (Violet ex 61)",
+   "type": "Colorless",
+   "rarity": "C",
    "mark": ""
   },
   "62": {
-   "en": "Zangoose",
-   "page": "Zangoose (Scarlet ex 62)",
+   "en": "Greedent",
+   "page": "Greedent (Violet ex 62)",
    "type": "Colorless",
    "rarity": "U",
    "mark": ""
   },
   "63": {
-   "en": "Starly",
-   "page": "Starly (Scarlet ex 63)",
+   "en": "Indeedee",
+   "page": "Indeedee (Violet ex 63)",
    "type": "Colorless",
-   "rarity": "C",
+   "rarity": "R",
    "mark": ""
   },
   "64": {
-   "en": "Staravia",
-   "page": "Staravia (Scarlet ex 64)",
+   "en": "Tandemaus",
+   "page": "Tandemaus (Violet ex 64)",
    "type": "Colorless",
    "rarity": "C",
    "mark": ""
   },
   "65": {
-   "en": "Staraptor",
-   "page": "Staraptor (Scarlet ex 65)",
-   "type": "Colorless",
-   "rarity": "U",
-   "mark": ""
-  },
-  "66": {
-   "en": "Lechonk",
-   "page": "Lechonk (Scarlet ex 66)",
+   "en": "Tandemaus",
+   "page": "Tandemaus (Violet ex 65)",
    "type": "Colorless",
    "rarity": "C",
    "mark": ""
   },
+  "66": {
+   "en": "Maushold",
+   "page": "Maushold (Violet ex 66)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
   "67": {
-   "en": "Lechonk",
-   "page": "Lechonk (Scarlet ex 67)",
+   "en": "Squawkabilly",
+   "page": "Squawkabilly (Violet ex 67)",
    "type": "Colorless",
    "rarity": "C",
    "mark": ""
   },
   "68": {
-   "en": "Oinkologne",
-   "page": "Oinkologne ex (Scarlet ex 68)",
+   "en": "Cyclizar",
+   "page": "Cyclizar (Violet ex 68)",
    "type": "Colorless",
-   "rarity": "RR",
+   "rarity": "R",
    "mark": ""
   },
   "69": {
-   "en": "Pal Pad",
-   "page": "Pal Pad (Scarlet ex 69)",
+   "en": "Electric Generator",
+   "page": "Electric Generator (Violet ex 69)",
    "type": "I",
    "rarity": "U",
    "mark": ""
   },
   "70": {
-   "en": "Nest Ball",
-   "page": "Nest Ball (Scarlet ex 70)",
+   "en": "Ultra Ball",
+   "page": "Ultra Ball (Violet ex 70)",
    "type": "I",
    "rarity": "U",
    "mark": ""
   },
   "71": {
-   "en": "Rock Chestplate",
-   "page": "Rock Chestplate (Scarlet ex 71)",
-   "type": "PT",
+   "en": "Picnic Basket",
+   "page": "Picnic Basket (Violet ex 71)",
+   "type": "I",
    "rarity": "U",
    "mark": ""
   },
   "72": {
-   "en": "Exp. Share",
-   "page": "Exp. Share (Scarlet ex 72)",
-   "type": "PT",
+   "en": "Rare Candy",
+   "page": "Rare Candy (Violet ex 72)",
+   "type": "I",
    "rarity": "U",
    "mark": ""
   },
   "73": {
-   "en": "Defiance Band",
-   "page": "Defiance Band (Scarlet ex 73)",
+   "en": "Rocky Helmet",
+   "page": "Rocky Helmet (Violet ex 73)",
    "type": "PT",
    "rarity": "U",
    "mark": ""
   },
   "74": {
-   "en": "Jacq",
-   "page": "Jacq (Scarlet ex 74)",
+   "en": "Katy",
+   "page": "Katy (Violet ex 74)",
    "type": "Su",
    "rarity": "U",
    "mark": ""
   },
   "75": {
-   "en": "Team Star Grunt",
-   "page": "Team Star Grunt (Scarlet ex 75)",
-   "type": "Su",
-   "rarity": "U",
-   "mark": ""
-  },
-  "76": {
    "en": "Professor's Research",
-   "page": "Professor's Research (Scarlet ex 76)",
+   "page": "Professor's Research (Violet ex 75)",
    "type": "Su",
    "rarity": "R",
    "mark": ""
   },
+  "76": {
+   "en": "Arven",
+   "page": "Arven (Violet ex 76)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
   "77": {
-   "en": "Penny",
-   "page": "Penny (Scarlet ex 77)",
+   "en": "Miriam",
+   "page": "Miriam (Violet ex 77)",
    "type": "Su",
    "rarity": "U",
    "mark": ""
   },
   "78": {
-   "en": "Beach Court",
-   "page": "Beach Court (Scarlet ex 78)",
+   "en": "Mesagoza",
+   "page": "Mesagoza (Violet ex 78)",
    "type": "St",
    "rarity": "U",
    "mark": ""
   },
   "79": {
-   "en": "Dolliv",
-   "page": "Dolliv (Scarlet ex 79)",
+   "en": "Tarountula",
+   "page": "Tarountula (Violet ex 79)",
    "type": "Grass",
    "rarity": "AR",
    "mark": ""
   },
   "80": {
-   "en": "Armarouge",
-   "page": "Armarouge (Scarlet ex 80)",
-   "type": "Fire",
+   "en": "Toedscool",
+   "page": "Toedscool (Violet ex 80)",
+   "type": "Grass",
    "rarity": "AR",
    "mark": ""
   },
   "81": {
-   "en": "Wiglett",
-   "page": "Wiglett (Scarlet ex 81)",
-   "type": "Water",
+   "en": "Scovillain",
+   "page": "Scovillain (Violet ex 81)",
+   "type": "Grass",
    "rarity": "AR",
    "mark": ""
   },
   "82": {
-   "en": "Dondozo",
-   "page": "Dondozo (Scarlet ex 82)",
+   "en": "Slowpoke",
+   "page": "Slowpoke (Violet ex 82)",
    "type": "Water",
    "rarity": "AR",
    "mark": ""
   },
   "83": {
-   "en": "Ralts",
-   "page": "Ralts (Scarlet ex 83)",
-   "type": "Psychic",
+   "en": "Clauncher",
+   "page": "Clauncher (Violet ex 83)",
+   "type": "Water",
    "rarity": "AR",
    "mark": ""
   },
   "84": {
-   "en": "Kirlia",
-   "page": "Kirlia (Scarlet ex 84)",
-   "type": "Psychic",
+   "en": "Pachirisu",
+   "page": "Pachirisu (Violet ex 84)",
+   "type": "Lightning",
    "rarity": "AR",
    "mark": ""
   },
   "85": {
-   "en": "Fidough",
-   "page": "Fidough (Scarlet ex 85)",
-   "type": "Psychic",
+   "en": "Pawmot",
+   "page": "Pawmot (Violet ex 85)",
+   "type": "Lightning",
    "rarity": "AR",
    "mark": ""
   },
   "86": {
-   "en": "Riolu",
-   "page": "Riolu (Scarlet ex 86)",
-   "type": "Fighting",
+   "en": "Drowzee",
+   "page": "Drowzee (Violet ex 86)",
+   "type": "Psychic",
    "rarity": "AR",
    "mark": ""
   },
   "87": {
-   "en": "Sandile",
-   "page": "Sandile (Scarlet ex 87)",
-   "type": "Fighting",
+   "en": "Greavard",
+   "page": "Greavard (Violet ex 87)",
+   "type": "Psychic",
    "rarity": "AR",
    "mark": ""
   },
   "88": {
-   "en": "Klawf",
-   "page": "Klawf (Scarlet ex 88)",
-   "type": "Fighting",
+   "en": "Mabosstiff",
+   "page": "Mabosstiff (Violet ex 88)",
+   "type": "Darkness",
    "rarity": "AR",
    "mark": ""
   },
   "89": {
-   "en": "Kingambit",
-   "page": "Kingambit (Scarlet ex 89)",
+   "en": "Bombirdier",
+   "page": "Bombirdier (Violet ex 89)",
    "type": "Darkness",
    "rarity": "AR",
    "mark": ""
   },
   "90": {
-   "en": "Starly",
-   "page": "Starly (Scarlet ex 90)",
+   "en": "Skwovet",
+   "page": "Skwovet (Violet ex 90)",
    "type": "Colorless",
    "rarity": "AR",
    "mark": ""
   },
   "91": {
-   "en": "Gyarados",
-   "page": "Gyarados ex (Scarlet ex 91)",
-   "type": "Water",
+   "en": "Spidops",
+   "page": "Spidops ex (Violet ex 91)",
+   "type": "Grass",
    "rarity": "SR",
    "mark": ""
   },
   "92": {
-   "en": "Gardevoir",
-   "page": "Gardevoir ex (Scarlet ex 92)",
-   "type": "Psychic",
+   "en": "Arcanine",
+   "page": "Arcanine ex (Violet ex 92)",
+   "type": "Fire",
    "rarity": "SR",
    "mark": ""
   },
   "93": {
-   "en": "Great Tusk",
-   "page": "Great Tusk ex (Scarlet ex 93)",
-   "type": "Fighting",
+   "en": "Magnezone",
+   "page": "Magnezone ex (Violet ex 93)",
+   "type": "Lightning",
    "rarity": "SR",
    "mark": ""
   },
   "94": {
-   "en": "Koraidon",
-   "page": "Koraidon ex (Scarlet ex 94)",
-   "type": "Fighting",
+   "en": "Miraidon",
+   "page": "Miraidon ex (Violet ex 94)",
+   "type": "Lightning",
    "rarity": "SR",
    "mark": ""
   },
   "95": {
-   "en": "Toxicroak",
-   "page": "Toxicroak ex (Scarlet ex 95)",
-   "type": "Darkness",
+   "en": "Banette",
+   "page": "Banette ex (Violet ex 95)",
+   "type": "Psychic",
    "rarity": "SR",
    "mark": ""
   },
   "96": {
-   "en": "Oinkologne",
-   "page": "Oinkologne ex (Scarlet ex 96)",
-   "type": "Colorless",
+   "en": "Iron Treads",
+   "page": "Iron Treads ex (Violet ex 96)",
+   "type": "Metal",
    "rarity": "SR",
    "mark": ""
   },
   "97": {
-   "en": "Jacq",
-   "page": "Jacq (Scarlet ex 97)",
+   "en": "Katy",
+   "page": "Katy (Violet ex 97)",
    "type": "Su",
    "rarity": "SR",
    "mark": ""
   },
   "98": {
-   "en": "Team Star Grunt",
-   "page": "Team Star Grunt (Scarlet ex 98)",
+   "en": "Professor's Research",
+   "page": "Professor's Research (Violet ex 98)",
    "type": "Su",
    "rarity": "SR",
    "mark": ""
   },
   "99": {
-   "en": "Professor's Research",
-   "page": "Professor's Research (Scarlet ex 99)",
+   "en": "Arven",
+   "page": "Arven (Violet ex 99)",
    "type": "Su",
    "rarity": "SR",
    "mark": ""
   },
   "100": {
-   "en": "Penny",
-   "page": "Penny (Scarlet ex 100)",
+   "en": "Miriam",
+   "page": "Miriam (Violet ex 100)",
    "type": "Su",
    "rarity": "SR",
    "mark": ""
   },
   "101": {
-   "en": "Gardevoir",
-   "page": "Gardevoir ex (Scarlet ex 101)",
-   "type": "Psychic",
+   "en": "Spidops",
+   "page": "Spidops ex (Violet ex 101)",
+   "type": "Grass",
    "rarity": "SAR",
    "mark": ""
   },
   "102": {
-   "en": "Great Tusk",
-   "page": "Great Tusk ex (Scarlet ex 102)",
-   "type": "Fighting",
+   "en": "Miraidon",
+   "page": "Miraidon ex (Violet ex 102)",
+   "type": "Lightning",
    "rarity": "SAR",
    "mark": ""
   },
   "103": {
-   "en": "Koraidon",
-   "page": "Koraidon ex (Scarlet ex 103)",
-   "type": "Fighting",
+   "en": "Iron Treads",
+   "page": "Iron Treads ex (Violet ex 103)",
+   "type": "Metal",
    "rarity": "SAR",
    "mark": ""
   },
   "104": {
-   "en": "Jacq",
-   "page": "Jacq (Scarlet ex 104)",
+   "en": "Arven",
+   "page": "Arven (Violet ex 104)",
    "type": "Su",
    "rarity": "SAR",
    "mark": ""
   },
   "105": {
-   "en": "Penny",
-   "page": "Penny (Scarlet ex 105)",
+   "en": "Miriam",
+   "page": "Miriam (Violet ex 105)",
    "type": "Su",
    "rarity": "SAR",
    "mark": ""
   },
   "106": {
-   "en": "Koraidon",
-   "page": "Koraidon ex (Scarlet ex 106)",
-   "type": "Fighting",
+   "en": "Miraidon",
+   "page": "Miraidon ex (Violet ex 106)",
+   "type": "Lightning",
    "rarity": "UR",
    "mark": ""
   },
   "107": {
-   "en": "Nest Ball",
-   "page": "Nest Ball (Scarlet ex 107)",
+   "en": "Rare Candy",
+   "page": "Rare Candy (Violet ex 107)",
    "type": "I",
    "rarity": "UR",
    "mark": ""
   },
   "108": {
-   "en": "Basic Fighting Energy",
-   "page": "Basic Fighting Energy (Scarlet ex 108)",
-   "type": "Fighting",
-   "rarity": "UR",
-   "mark": "—"
-  },
-  "109": {
-   "en": "Annihilape",
-   "page": "Annihilape (Scarlet & Violet 109)",
-   "type": "Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "110": {
-   "en": "Meditite",
-   "page": "Meditite (Scarlet & Violet 110)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "111": {
-   "en": "Medicham",
-   "page": "Medicham (Scarlet & Violet 111)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "112": {
-   "en": "Riolu",
-   "page": "Riolu (Scarlet & Violet 112)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "113": {
-   "en": "Riolu",
-   "page": "Riolu (Scarlet & Violet 113)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "114": {
-   "en": "Lucario",
-   "page": "Lucario (Scarlet & Violet 114)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "115": {
-   "en": "Sandile",
-   "page": "Sandile (Scarlet & Violet 115)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "116": {
-   "en": "Krokorok",
-   "page": "Krokorok (Scarlet & Violet 116)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "117": {
-   "en": "Krookodile",
-   "page": "Krookodile (Scarlet & Violet 117)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "118": {
-   "en": "Hawlucha",
-   "page": "Hawlucha (Scarlet & Violet 118)",
-   "type": "Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "119": {
-   "en": "Silicobra",
-   "page": "Silicobra (Scarlet & Violet 119)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "120": {
-   "en": "Sandaconda",
-   "page": "Sandaconda (Scarlet & Violet 120)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "121": {
-   "en": "Stonjourner",
-   "page": "Stonjourner (Scarlet & Violet 121)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "122": {
-   "en": "Klawf",
-   "page": "Klawf (Scarlet & Violet 122)",
-   "type": "Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "123": {
-   "en": "Great Tusk",
-   "page": "Great Tusk ex (Scarlet & Violet 123)",
-   "type": "Double Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "124": {
-   "en": "Koraidon",
-   "page": "Koraidon (Scarlet & Violet 124)",
-   "type": "Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "125": {
-   "en": "Koraidon",
-   "page": "Koraidon ex (Scarlet & Violet 125)",
-   "type": "Double Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "126": {
-   "en": "Grimer",
-   "page": "Grimer (Scarlet & Violet 126)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "127": {
-   "en": "Muk",
-   "page": "Muk (Scarlet & Violet 127)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "128": {
-   "en": "Seviper",
-   "page": "Seviper (Scarlet & Violet 128)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "129": {
-   "en": "Spiritomb",
-   "page": "Spiritomb (Scarlet & Violet 129)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "130": {
-   "en": "Croagunk",
-   "page": "Croagunk (Scarlet & Violet 130)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "131": {
-   "en": "Toxicroak",
-   "page": "Toxicroak ex (Scarlet & Violet 131)",
-   "type": "Double Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "132": {
-   "en": "Pawniard",
-   "page": "Pawniard (Scarlet & Violet 132)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "133": {
-   "en": "Bisharp",
-   "page": "Bisharp (Scarlet & Violet 133)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "134": {
-   "en": "Kingambit",
-   "page": "Kingambit (Scarlet & Violet 134)",
-   "type": "Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "135": {
-   "en": "Maschiff",
-   "page": "Maschiff (Scarlet & Violet 135)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "136": {
-   "en": "Maschiff",
-   "page": "Maschiff (Scarlet & Violet 136)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "137": {
-   "en": "Mabosstiff",
-   "page": "Mabosstiff (Scarlet & Violet 137)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "138": {
-   "en": "Bombirdier",
-   "page": "Bombirdier (Scarlet & Violet 138)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "139": {
-   "en": "Forretress",
-   "page": "Forretress (Scarlet & Violet 139)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "140": {
-   "en": "Varoom",
-   "page": "Varoom (Scarlet & Violet 140)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "141": {
-   "en": "Varoom",
-   "page": "Varoom (Scarlet & Violet 141)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "142": {
-   "en": "Revavroom",
-   "page": "Revavroom (Scarlet & Violet 142)",
-   "type": "Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "143": {
-   "en": "Iron Treads",
-   "page": "Iron Treads ex (Scarlet & Violet 143)",
-   "type": "Double Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "144": {
-   "en": "Chansey",
-   "page": "Chansey (Scarlet & Violet 144)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "145": {
-   "en": "Blissey",
-   "page": "Blissey (Scarlet & Violet 145)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "146": {
-   "en": "Zangoose",
-   "page": "Zangoose (Scarlet & Violet 146)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "147": {
-   "en": "Zangoose",
-   "page": "Zangoose (Scarlet & Violet 147)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "148": {
-   "en": "Starly",
-   "page": "Starly (Scarlet & Violet 148)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "149": {
-   "en": "Staravia",
-   "page": "Staravia (Scarlet & Violet 149)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "150": {
-   "en": "Staraptor",
-   "page": "Staraptor (Scarlet & Violet 150)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "151": {
-   "en": "Skwovet",
-   "page": "Skwovet (Scarlet & Violet 151)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "152": {
-   "en": "Greedent",
-   "page": "Greedent (Scarlet & Violet 152)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "153": {
-   "en": "Indeedee",
-   "page": "Indeedee (Scarlet & Violet 153)",
-   "type": "Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "154": {
-   "en": "Lechonk",
-   "page": "Lechonk (Scarlet & Violet 154)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "155": {
-   "en": "Lechonk",
-   "page": "Lechonk (Scarlet & Violet 155)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "156": {
-   "en": "Lechonk",
-   "page": "Lechonk (Scarlet & Violet 156)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "157": {
-   "en": "Oinkologne",
-   "page": "Oinkologne (Scarlet & Violet 157)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "158": {
-   "en": "Oinkologne",
-   "page": "Oinkologne ex (Scarlet & Violet 158)",
-   "type": "Double Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "159": {
-   "en": "Tandemaus",
-   "page": "Tandemaus (Scarlet & Violet 159)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "160": {
-   "en": "Tandemaus",
-   "page": "Tandemaus (Scarlet & Violet 160)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "161": {
-   "en": "Maushold",
-   "page": "Maushold (Scarlet & Violet 161)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "162": {
-   "en": "Squawkabilly",
-   "page": "Squawkabilly (Scarlet & Violet 162)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "163": {
-   "en": "Cyclizar",
-   "page": "Cyclizar (Scarlet & Violet 163)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "164": {
-   "en": "Cyclizar",
-   "page": "Cyclizar (Scarlet & Violet 164)",
-   "type": "Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "165": {
-   "en": "Flamigo",
-   "page": "Flamigo (Scarlet & Violet 165)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "166": {
-   "en": "Arven",
-   "page": "Arven (Scarlet & Violet 166)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "167": {
-   "en": "Beach Court",
-   "page": "Beach Court (Scarlet & Violet 167)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "168": {
-   "en": "Crushing Hammer",
-   "page": "Crushing Hammer (Scarlet & Violet 168)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "169": {
-   "en": "Defiance Band",
-   "page": "Defiance Band (Scarlet & Violet 169)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "170": {
-   "en": "Electric Generator",
-   "page": "Electric Generator (Scarlet & Violet 170)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "171": {
-   "en": "Energy Retrieval",
-   "page": "Energy Retrieval (Scarlet & Violet 171)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "172": {
-   "en": "Energy Search",
-   "page": "Energy Search (Scarlet & Violet 172)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "173": {
-   "en": "Energy Switch",
-   "page": "Energy Switch (Scarlet & Violet 173)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "174": {
-   "en": "Exp. Share",
-   "page": "Exp. Share (Scarlet & Violet 174)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "175": {
-   "en": "Jacq",
-   "page": "Jacq (Scarlet & Violet 175)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "176": {
-   "en": "Judge",
-   "page": "Judge (Scarlet & Violet 176)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "177": {
-   "en": "Katy",
-   "page": "Katy (Scarlet & Violet 177)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "178": {
-   "en": "Mesagoza",
-   "page": "Mesagoza (Scarlet & Violet 178)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "179": {
-   "en": "Miriam",
-   "page": "Miriam (Scarlet & Violet 179)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "180": {
-   "en": "Nemona",
-   "page": "Nemona (Scarlet & Violet 180)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "181": {
-   "en": "Nest Ball",
-   "page": "Nest Ball (Scarlet & Violet 181)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "182": {
-   "en": "Pal Pad",
-   "page": "Pal Pad (Scarlet & Violet 182)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "183": {
-   "en": "Penny",
-   "page": "Penny (Scarlet & Violet 183)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "184": {
-   "en": "Picnic Basket",
-   "page": "Picnic Basket (Scarlet & Violet 184)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "185": {
-   "en": "Poké Ball",
-   "page": "Poké Ball (Scarlet & Violet 185)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "186": {
-   "en": "Pokégear 3.0",
-   "page": "Pokégear 3.0 (Scarlet & Violet 186)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "187": {
-   "en": "Pokémon Catcher",
-   "page": "Pokémon Catcher (Scarlet & Violet 187)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "188": {
-   "en": "Potion",
-   "page": "Potion (Scarlet & Violet 188)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "189": {
-   "en": "Professor's Research",
-   "page": "Professor's Research (Scarlet & Violet 189)",
-   "type": "Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "190": {
-   "en": "Professor's Research",
-   "page": "Professor's Research (Scarlet & Violet 190)",
-   "type": "Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "191": {
-   "en": "Rare Candy",
-   "page": "Rare Candy (Scarlet & Violet 191)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "192": {
-   "en": "Rock Chestplate",
-   "page": "Rock Chestplate (Scarlet & Violet 192)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "193": {
-   "en": "Rocky Helmet",
-   "page": "Rocky Helmet (Scarlet & Violet 193)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "194": {
-   "en": "Switch",
-   "page": "Switch (Scarlet & Violet 194)",
-   "type": "Common",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "195": {
-   "en": "Team Star Grunt",
-   "page": "Team Star Grunt (Scarlet & Violet 195)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "196": {
-   "en": "Ultra Ball",
-   "page": "Ultra Ball (Scarlet & Violet 196)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "197": {
-   "en": "Vitality Band",
-   "page": "Vitality Band (Scarlet & Violet 197)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "198": {
-   "en": "Youngster",
-   "page": "Youngster (Scarlet & Violet 198)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "199": {
-   "en": "Tarountula",
-   "page": "Tarountula (Scarlet & Violet 199)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "200": {
-   "en": "Dolliv",
-   "page": "Dolliv (Scarlet & Violet 200)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "201": {
-   "en": "Toedscool",
-   "page": "Toedscool (Scarlet & Violet 201)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "202": {
-   "en": "Scovillain",
-   "page": "Scovillain (Scarlet & Violet 202)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "203": {
-   "en": "Armarouge",
-   "page": "Armarouge (Scarlet & Violet 203)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "204": {
-   "en": "Slowpoke",
-   "page": "Slowpoke (Scarlet & Violet 204)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "205": {
-   "en": "Clauncher",
-   "page": "Clauncher (Scarlet & Violet 205)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "206": {
-   "en": "Wiglett",
-   "page": "Wiglett (Scarlet & Violet 206)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "207": {
-   "en": "Dondozo",
-   "page": "Dondozo (Scarlet & Violet 207)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "208": {
-   "en": "Pachirisu",
-   "page": "Pachirisu (Scarlet & Violet 208)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "209": {
-   "en": "Pawmot",
-   "page": "Pawmot (Scarlet & Violet 209)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "210": {
-   "en": "Drowzee",
-   "page": "Drowzee (Scarlet & Violet 210)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "211": {
-   "en": "Ralts",
-   "page": "Ralts (Scarlet & Violet 211)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "212": {
-   "en": "Kirlia",
-   "page": "Kirlia (Scarlet & Violet 212)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "213": {
-   "en": "Fidough",
-   "page": "Fidough (Scarlet & Violet 213)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "214": {
-   "en": "Greavard",
-   "page": "Greavard (Scarlet & Violet 214)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "215": {
-   "en": "Riolu",
-   "page": "Riolu (Scarlet & Violet 215)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "216": {
-   "en": "Sandile",
-   "page": "Sandile (Scarlet & Violet 216)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "217": {
-   "en": "Klawf",
-   "page": "Klawf (Scarlet & Violet 217)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "218": {
-   "en": "Mabosstiff",
-   "page": "Mabosstiff (Scarlet & Violet 218)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "219": {
-   "en": "Bombirdier",
-   "page": "Bombirdier (Scarlet & Violet 219)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "220": {
-   "en": "Kingambit",
-   "page": "Kingambit (Scarlet & Violet 220)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "221": {
-   "en": "Starly",
-   "page": "Starly (Scarlet & Violet 221)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "222": {
-   "en": "Skwovet",
-   "page": "Skwovet (Scarlet & Violet 222)",
-   "type": "Illustration Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "223": {
-   "en": "Spidops",
-   "page": "Spidops ex (Scarlet & Violet 223)",
-   "type": "Ultra Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "224": {
-   "en": "Arcanine",
-   "page": "Arcanine ex (Scarlet & Violet 224)",
-   "type": "Ultra Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "225": {
-   "en": "Gyarados",
-   "page": "Gyarados ex (Scarlet & Violet 225)",
-   "type": "Ultra Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "226": {
-   "en": "Magnezone",
-   "page": "Magnezone ex (Scarlet & Violet 226)",
-   "type": "Ultra Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "227": {
-   "en": "Miraidon",
-   "page": "Miraidon ex (Scarlet & Violet 227)",
-   "type": "Ultra Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "228": {
-   "en": "Gardevoir",
-   "page": "Gardevoir ex (Scarlet & Violet 228)",
-   "type": "Ultra Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "229": {
-   "en": "Banette",
-   "page": "Banette ex (Scarlet & Violet 229)",
-   "type": "Ultra Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "230": {
-   "en": "Great Tusk",
-   "page": "Great Tusk ex (Scarlet & Violet 230)",
-   "type": "Ultra Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "231": {
-   "en": "Koraidon",
-   "page": "Koraidon ex (Scarlet & Violet 231)",
-   "type": "Ultra Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "232": {
-   "en": "Toxicroak",
-   "page": "Toxicroak ex (Scarlet & Violet 232)",
-   "type": "Ultra Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "233": {
-   "en": "Iron Treads",
-   "page": "Iron Treads ex (Scarlet & Violet 233)",
-   "type": "Ultra Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "234": {
-   "en": "Oinkologne",
-   "page": "Oinkologne ex (Scarlet & Violet 234)",
-   "type": "Ultra Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "235": {
-   "en": "Arven",
-   "page": "Arven (Scarlet & Violet 235)",
-   "type": "Ultra Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "236": {
-   "en": "Jacq",
-   "page": "Jacq (Scarlet & Violet 236)",
-   "type": "Ultra Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "237": {
-   "en": "Katy",
-   "page": "Katy (Scarlet & Violet 237)",
-   "type": "Ultra Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "238": {
-   "en": "Miriam",
-   "page": "Miriam (Scarlet & Violet 238)",
-   "type": "Ultra Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "239": {
-   "en": "Penny",
-   "page": "Penny (Scarlet & Violet 239)",
-   "type": "Ultra Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "240": {
-   "en": "Professor's Research",
-   "page": "Professor's Research (Scarlet & Violet 240)",
-   "type": "Ultra Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "241": {
-   "en": "Professor's Research",
-   "page": "Professor's Research (Scarlet & Violet 241)",
-   "type": "Ultra Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "242": {
-   "en": "Team Star Grunt",
-   "page": "Team Star Grunt (Scarlet & Violet 242)",
-   "type": "Ultra Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "243": {
-   "en": "Spidops",
-   "page": "Spidops ex (Scarlet & Violet 243)",
-   "type": "Special Illustration Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "244": {
-   "en": "Miraidon",
-   "page": "Miraidon ex (Scarlet & Violet 244)",
-   "type": "Special Illustration Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "245": {
-   "en": "Gardevoir",
-   "page": "Gardevoir ex (Scarlet & Violet 245)",
-   "type": "Special Illustration Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "246": {
-   "en": "Great Tusk",
-   "page": "Great Tusk ex (Scarlet & Violet 246)",
-   "type": "Special Illustration Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "247": {
-   "en": "Koraidon",
-   "page": "Koraidon ex (Scarlet & Violet 247)",
-   "type": "Special Illustration Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "248": {
-   "en": "Iron Treads",
-   "page": "Iron Treads ex (Scarlet & Violet 248)",
-   "type": "Special Illustration Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "249": {
-   "en": "Arven",
-   "page": "Arven (Scarlet & Violet 249)",
-   "type": "Special Illustration Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "250": {
-   "en": "Jacq",
-   "page": "Jacq (Scarlet & Violet 250)",
-   "type": "Special Illustration Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "251": {
-   "en": "Miriam",
-   "page": "Miriam (Scarlet & Violet 251)",
-   "type": "Special Illustration Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "252": {
-   "en": "Penny",
-   "page": "Penny (Scarlet & Violet 252)",
-   "type": "Special Illustration Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "253": {
-   "en": "Miraidon",
-   "page": "Miraidon ex (Scarlet & Violet 253)",
-   "type": "Hyper Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "254": {
-   "en": "Koraidon",
-   "page": "Koraidon ex (Scarlet & Violet 254)",
-   "type": "Hyper Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "255": {
-   "en": "Nest Ball",
-   "page": "Nest Ball (Scarlet & Violet 255)",
-   "type": "Hyper Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "256": {
-   "en": "Rare Candy",
-   "page": "Rare Candy (Scarlet & Violet 256)",
-   "type": "Hyper Rare",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "257": {
    "en": "Basic Lightning Energy",
-   "page": "Basic Lightning Energy (Scarlet & Violet 257)",
-   "type": "Hyper Rare",
-   "rarity": "Promotion",
-   "mark": "—"
-  },
-  "258": {
-   "en": "Basic Fighting Energy",
-   "page": "Basic Fighting Energy (Scarlet & Violet 258)",
-   "type": "Hyper Rare",
-   "rarity": "Promotion",
+   "page": "Basic Lightning Energy (Violet ex 108)",
+   "type": "Lightning",
+   "rarity": "UR",
    "mark": "—"
   }
  }

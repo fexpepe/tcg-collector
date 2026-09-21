@@ -7,357 +7,510 @@
    "page": "Carnivine G (DPt-P Promo 1)",
    "type": "Grass",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "マスキッパG[ギンガ]",
+   "artist": "Makoto Imai",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b9/CarnivineGDPPromo42.jpg"
   },
   "2": {
    "en": "Manaphy",
    "page": "Manaphy (DPt-P Promo 2)",
    "type": "Water",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "マナフィ",
+   "artist": "Masakazu Fukuda",
+   "image": "https://archives.bulbagarden.net/media/upload/3/32/Manaphy2POPSeries9.jpg"
   },
   "3": {
    "en": "Rotom",
    "page": "Rotom (DPt-P Promo 3)",
    "type": "Lightning",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ロトム",
+   "artist": "Masakazu Fukuda",
+   "semScan": 1
   },
   "4": {
    "en": "Probopass",
    "page": "Probopass G (DPt-P Promo 4)",
    "type": "Fighting",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ダイノーズG[ギンガ]",
+   "artist": "Ryota Saito",
+   "image": "https://archives.bulbagarden.net/media/upload/e/ea/ProbopassGDPPromo43.jpg"
   },
   "5": {
    "en": "Darkrai",
    "page": "Darkrai G (DPt-P Promo 5)",
    "type": "Darkness",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ダークライG[ギンガ]",
+   "artist": "Makoto Imai",
+   "image": "https://archives.bulbagarden.net/media/upload/8/82/DarkraiGRisingRivals3.jpg"
   },
   "6": {
    "en": "Bronzong",
    "page": "Bronzong G (DPt-P Promo 6)",
    "type": "Metal",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ドータクンG[ギンガ]",
+   "artist": "Makoto Imai",
+   "image": "https://archives.bulbagarden.net/media/upload/b/ba/BronzongGPlatinum41.jpg"
   },
   "7": {
    "en": "Cyrus's Conspiracy",
    "page": "Cyrus's Conspiracy (DPt-P Promo 7)",
    "type": "Su",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "アカギの策略",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/2/28/CyrusConspiracyPlatinum105.jpg"
   },
   "8": {
    "en": "Toxicroak",
    "page": "Toxicroak G (DPt-P Promo 8)",
    "type": "Fighting",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ドクロッグG[ギンガ]",
+   "artist": "Ryota Saito",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f9/ToxicroakGDPPromo41.jpg"
   },
   "9": {
    "en": "Squirtle",
    "page": "Squirtle (DPt-P Promo 9)",
    "type": "Water",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ゼニガメ",
+   "artist": "Yuka Morii",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
   },
   "10": {
    "en": "Electrode",
    "page": "Electrode G (DPt-P Promo 10)",
    "type": "Lightning",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "マルマインG[ギンガ]",
+   "artist": "Yusuke Ishikawa",
+   "image": "https://archives.bulbagarden.net/media/upload/0/01/ElectrodeGRisingRivals39.jpg"
   },
   "11": {
    "en": "Mismagius",
    "page": "Mismagius GL LV.X (DPt-P Promo 11)",
    "type": "Psychic",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ムウマージGL[ジムリーダー]",
+   "artist": "Kent Kanetsuna",
+   "image": "https://archives.bulbagarden.net/media/upload/3/34/MismagiusGLLVXRisingRivals110.jpg"
   },
   "12": {
    "en": "Alakazam",
    "page": "Alakazam 4 (DPt-P Promo 12)",
    "type": "Psychic",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "フーディン四[してんのう]",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/8/82/Alakazam4RisingRivals38.jpg"
   },
   "13": {
    "en": "Team Galactic's Invention G-109 SP Radar",
    "page": "Team Galactic's Invention G-109 SP Radar (DPt-P Promo 13)",
    "type": "T",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ギンガ団の発明G-109 SPレーダー",
+   "artist": "Kent Kanetsuna",
+   "image": "https://archives.bulbagarden.net/media/upload/b/bd/SPRadarRisingRivals96.jpg"
   },
   "14": {
    "en": "Luxray",
    "page": "Luxray GL (DPt-P Promo 14)",
    "type": "Lightning",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "レントラーGL[ジムリーダー]",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e4/LuxrayGLRisingRivals9.jpg"
   },
   "15": {
    "en": "Lucario",
    "page": "Lucario (DPt-P Promo 15)",
    "type": "Fighting",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ルカリオ",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
   },
   "16": {
    "en": "Pikachu",
    "page": "Pikachu (DPt-P Promo 16)",
    "type": "Lightning",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ピカチュウ",
+   "artist": "Kanako Eo",
+   "image": "https://archives.bulbagarden.net/media/upload/8/85/PikachuHGSSPromo3.jpg"
   },
   "17": {
    "en": "Drifblim",
    "page": "Drifblim FB (DPt-P Promo 17)",
    "type": "Psychic",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "フワライドFB[フロンティアブレーン]",
+   "artist": "Lee HyunJung",
+   "image": "https://archives.bulbagarden.net/media/upload/2/27/DrifblimFBSupremeVictors3.jpg"
   },
   "18": {
    "en": "Dragonite",
    "page": "Dragonite FB (DPt-P Promo 18)",
    "type": "Colorless",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "カイリューFB[フロンティアブレーン]",
+   "artist": "Shin Nagasawa",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c3/DragoniteFBSupremeVictors56.jpg"
   },
   "19": {
    "en": "Battle Tower",
    "page": "Battle Tower (DPt-P Promo 19)",
    "type": "St",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "バトルタワー",
+   "artist": "Wataru Kawahara",
+   "image": "https://archives.bulbagarden.net/media/upload/f/fd/BattleTowerSupremeVictors134.jpg"
   },
   "20": {
    "en": "SP Energy",
    "page": "SP Energy (DPt-P Promo 20)",
    "type": "Colorless",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "SPエネルギー",
+   "artist": "Kent Kanetsuna",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f9/SPEnergyRisingRivals101.jpg"
   },
   "21": {
    "en": "Rainbow Energy",
    "page": "Rainbow Energy (DPt-P Promo 21)",
    "type": "Rainbow",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "レインボーエネルギー",
+   "artist": "Kent Kanetsuna",
+   "image": "https://archives.bulbagarden.net/media/upload/3/3c/RainbowEnergyHeartGoldSoulSilver104.jpg"
   },
   "22": {
    "en": "Grass Energy",
    "page": "Grass Energy (DPt-P Promo 22)",
    "type": "Grass",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "基本草エネルギー",
+   "artist": "Keiji Kinebuchi",
+   "image": "https://archives.bulbagarden.net/media/upload/2/28/BasicGrassEnergyMEEEnergy1.jpg"
   },
   "23": {
    "en": "Fire Energy",
    "page": "Fire Energy (DPt-P Promo 23)",
    "type": "Fire",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "基本炎エネルギー",
+   "artist": "Keiji Kinebuchi",
+   "image": "https://archives.bulbagarden.net/media/upload/1/17/BasicFireEnergyMEEEnergy2.jpg"
   },
   "24": {
    "en": "Water Energy",
    "page": "Water Energy (DPt-P Promo 24)",
    "type": "Water",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "基本水エネルギー",
+   "artist": "YOSHIROTTEN",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d5/BasicWaterEnergyMEEEnergy3.jpg"
   },
   "25": {
    "en": "Lightning Energy",
    "page": "Lightning Energy (DPt-P Promo 25)",
    "type": "Lightning",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "基本雷エネルギー",
+   "artist": "Pokémon 25th Anniversary",
+   "image": "https://archives.bulbagarden.net/media/upload/9/9b/BasicLightningEnergyMEEEnergy4.jpg"
   },
   "26": {
    "en": "Psychic Energy",
    "page": "Psychic Energy (DPt-P Promo 26)",
    "type": "Psychic",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "基本超エネルギー",
+   "artist": "Keiji Kinebuchi",
+   "image": "https://archives.bulbagarden.net/media/upload/a/ad/BasicPsychicEnergyMEEEnergy5.jpg"
   },
   "27": {
    "en": "Fighting Energy",
    "page": "Fighting Energy (DPt-P Promo 27)",
    "type": "Fighting",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "基本闘エネルギー",
+   "artist": "Pokémon 25th Anniversary",
+   "image": "https://archives.bulbagarden.net/media/upload/6/6c/BasicFightingEnergyMEEEnergy6.jpg"
   },
   "28": {
    "en": "Darkness Energy",
    "page": "Darkness Energy (DPt-P Promo 28)",
    "type": "Darkness",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "基本悪エネルギー",
+   "artist": "YOSHIROTTEN",
+   "image": "https://archives.bulbagarden.net/media/upload/2/27/BasicDarknessEnergyMEEEnergy7.jpg"
   },
   "29": {
    "en": "Metal Energy",
    "page": "Metal Energy (DPt-P Promo 29)",
    "type": "Metal",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "基本鋼エネルギー",
+   "artist": "YOSHIROTTEN",
+   "image": "https://archives.bulbagarden.net/media/upload/5/5b/BasicMetalEnergyMEEEnergy8.jpg"
   },
   "30": {
    "en": "Bulbasaur",
    "page": "Bulbasaur (DPt-P Promo 30)",
    "type": "Grass",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "フシギダネ",
+   "artist": "Yuka Morii",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
   },
   "31": {
    "en": "Victory Medal",
    "page": "Victory Medal (DPt-P Promo 31)",
    "type": "T",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "勝利のメダル",
+   "artist": "Hideaki Hakozaki",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2d/025337_T_SHOURINOMEDARU.jpg"
   },
   "32": {
    "en": "Chatot",
    "page": "Chatot (DPt-P Promo 32)",
    "type": "Colorless",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ペラップ",
+   "artist": "Kagemaru Himeno",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
   },
   "33": {
    "en": "Wonder Platinum",
    "page": "Wonder Platinum (DPt-P Promo 33)",
    "type": "T",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ワンダー・プラチナ",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
   },
   "34": {
    "en": "Ponyta",
    "page": "Ponyta (DPt-P Promo 34)",
    "type": "Fire",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ポニータ",
+   "artist": "Kanako Eo",
+   "image": "https://archives.bulbagarden.net/media/upload/0/00/PonytaArceus46.jpg"
   },
   "35": {
    "en": "Porygon-Z",
    "page": "Porygon-Z G (DPt-P Promo 35)",
    "type": "Colorless",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ポリゴンZG[ギンガ]",
+   "artist": "Nobuyuki Fujimoto",
+   "image": "https://archives.bulbagarden.net/media/upload/4/4c/Porygon-ZGArceus26.jpg"
   },
   "36": {
    "en": "Victory Medal",
    "page": "Victory Medal (DPt-P Promo 36)",
    "type": "T",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "勝利のメダル",
+   "artist": "Hideaki Hakozaki",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2d/025337_T_SHOURINOMEDARU.jpg"
   },
   "37": {
    "en": "Beginning Door",
    "page": "Beginning Door (DPt-P Promo 37)",
    "type": "T",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "はじまりの扉",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/5/5d/BeginningDoorArceus82.jpg"
   },
   "38": {
    "en": "Pichu",
    "page": "Pichu (DPt-P Promo 38)",
    "type": "Lightning",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ピチュー",
+   "artist": "Kanako Eo",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c5/PichuArceus25.jpg"
   },
   "39": {
    "en": "Mothim",
    "page": "Mothim (DPt-P Promo 39)",
    "type": "Grass",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ガーメイル",
+   "artist": "Kagemaru Himeno",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b2/MothimArceus6.jpg"
   },
   "40": {
    "en": "Arceus",
    "page": "Arceus (DPt-P Promo 40)",
    "type": "Colorless",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "アルセウス",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/f/fc/024252_P_ARUSEUSU.jpg"
   },
   "41": {
    "en": "Arceus",
    "page": "Arceus (DPt-P Promo 41)",
    "type": "Colorless",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "アルセウス",
+   "artist": "Ryoga Kawai",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c5/024348_P_ARUSEUSU.jpg"
   },
   "42": {
    "en": "Spiky-eared Pichu",
    "page": "Spiky-eared Pichu M (DPt-P Promo 42)",
    "type": "Lightning",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ギザみみピチューＭ[ムービー]",
+   "artist": "Haruka Uekura",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
   },
   "43": {
    "en": "Pikachu",
    "page": "Pikachu M LV.X (DPt-P Promo 43)",
    "type": "Lightning",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ピカチュウM[ムービー]",
+   "artist": "Movie Commemoration Random Pack",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
   },
   "44": {
    "en": "Michina Temple",
    "page": "Michina Temple (DPt-P Promo 44)",
    "type": "St",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ミチーナしんでん",
+   "artist": "Ash's Pikachu",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
   },
   "45": {
    "en": "Cresselia",
    "page": "Cresselia (DPt-P Promo 45)",
    "type": "Psychic",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "クレセリア",
+   "artist": "Wataru Kawahara",
+   "image": "https://archives.bulbagarden.net/media/upload/2/20/CresseliaDPPromo51.jpg"
   },
   "46": {
    "en": "Darkrai",
    "page": "Darkrai (DPt-P Promo 46)",
    "type": "Darkness",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ダークライ",
+   "artist": "Wataru Kawahara",
+   "image": "https://archives.bulbagarden.net/media/upload/7/75/DarkraiDPPromo52.jpg"
   },
   "47": {
    "en": "Jigglypuff",
    "page": "Jigglypuff (DPt-P Promo 47)",
    "type": "Colorless",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "プリン",
+   "artist": "Kagemaru Himeno",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
   },
   "48": {
    "en": "Ultimate Zone",
    "page": "Ultimate Zone (DPt-P Promo 48)",
    "type": "St",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "アルティメットゾーン",
+   "artist": "Kent Kanetsuna",
+   "image": "https://archives.bulbagarden.net/media/upload/8/8a/024274_T_ARUTEIMETTOZON.jpg"
   },
   "49": {
    "en": "Mewtwo",
    "page": "Mewtwo (DPt-P Promo 49)",
    "type": "Psychic",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ミュウツー",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b9/MewtwoLegendsAwakened11.jpg"
   },
   "50": {
    "en": "Heatran",
    "page": "Heatran (DPt-P Promo 50)",
    "type": "Fire",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ヒードラン",
+   "artist": "Wataru Kawahara",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
   },
   "51": {
    "en": "Victory Medal",
    "page": "Victory Medal (DPt-P Promo 51)",
    "type": "T",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "勝利のメダル",
+   "artist": "Hideaki Hakozaki",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2d/025337_T_SHOURINOMEDARU.jpg"
   }
  }
 }

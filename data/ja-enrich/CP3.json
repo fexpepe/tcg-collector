@@ -7,35 +7,50 @@
    "page": "Chikorita (PokéKyun Collection 1)",
    "type": "Grass",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "チコリータ",
+   "artist": "Sanosuke Sakuma",
+   "image": "https://archives.bulbagarden.net/media/upload/0/07/ChikoritaGenerationsRC1.jpg"
   },
   "2": {
    "en": "Shroomish",
    "page": "Shroomish (PokéKyun Collection 2)",
    "type": "Grass",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "キノココ",
+   "artist": "Miki Tanaka",
+   "image": "https://archives.bulbagarden.net/media/upload/6/6f/ShroomishGenerationsRC2.jpg"
   },
   "3": {
    "en": "Charmander",
    "page": "Charmander (PokéKyun Collection 3)",
    "type": "Fire",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ヒトカゲ",
+   "artist": "Akira Komayama",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b6/CharmanderGenerationsRC3.jpg"
   },
   "4": {
    "en": "Charmeleon",
    "page": "Charmeleon (PokéKyun Collection 4)",
    "type": "Fire",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "リザード",
+   "artist": "Akira Komayama",
+   "image": "https://archives.bulbagarden.net/media/upload/a/ae/CharmeleonGenerationsRC4.jpg"
   },
   "5": {
    "en": "Charizard",
    "page": "Charizard (PokéKyun Collection 5)",
    "type": "Fire",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "リザードン",
+   "artist": "Akira Komayama",
+   "image": "https://archives.bulbagarden.net/media/upload/9/96/CharizardGenerationsRC5.jpg"
   },
   "6": {
    "en": "Flareon",
@@ -49,154 +64,220 @@
    "page": "Flareon-EX (PokéKyun Collection 7)",
    "type": "Fire",
    "rarity": "RR",
-   "mark": ""
+   "mark": "",
+   "ja": "ブースターEX",
+   "artist": "kirisAki",
+   "image": "https://archives.bulbagarden.net/media/upload/5/5e/FlareonEXGenerationsRC28.jpg"
   },
   "8": {
    "en": "Snorunt",
    "page": "Snorunt (PokéKyun Collection 8)",
    "type": "Water",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ユキワラシ",
+   "artist": "MAHOU",
+   "image": "https://archives.bulbagarden.net/media/upload/4/42/SnoruntGenerationsRC7.jpg"
   },
   "9": {
    "en": "Froslass",
    "page": "Froslass (PokéKyun Collection 9)",
    "type": "Water",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ユキメノコ",
+   "artist": "Shin Nagasawa",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a7/FroslassGenerationsRC8.jpg"
   },
   "10": {
    "en": "Pikachu",
    "page": "Pikachu (PokéKyun Collection 10)",
    "type": "Lightning",
    "rarity": "RR",
-   "mark": ""
+   "mark": "",
+   "ja": "ピカチュウ",
+   "artist": "MAHOU",
+   "image": "https://archives.bulbagarden.net/media/upload/1/19/PikachuXY42.jpg"
   },
   "11": {
    "en": "Raichu",
    "page": "Raichu (PokéKyun Collection 11)",
    "type": "Lightning",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ライチュウ",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/3/3b/RaichuXY43.jpg"
   },
   "12": {
    "en": "Dedenne",
    "page": "Dedenne (PokéKyun Collection 12)",
    "type": "Lightning",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "デデンネ",
+   "artist": "kanahei",
+   "image": "https://archives.bulbagarden.net/media/upload/8/88/DedenneGenerationsRC10.jpg"
   },
   "13": {
    "en": "Wobbuffet",
    "page": "Wobbuffet (PokéKyun Collection 13)",
    "type": "Psychic",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ソーナンス",
+   "artist": "sui",
+   "image": "https://archives.bulbagarden.net/media/upload/4/49/WobbuffetPhantomForces36.jpg"
   },
   "14": {
    "en": "Gulpin",
    "page": "Gulpin (PokéKyun Collection 14)",
    "type": "Psychic",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ゴクリン",
+   "artist": "Tomokazu Komiya",
+   "image": "https://archives.bulbagarden.net/media/upload/4/47/GulpinGenerationsRC12.jpg"
   },
   "15": {
    "en": "Jirachi",
    "page": "Jirachi (PokéKyun Collection 15)",
    "type": "Psychic",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ジラーチ",
+   "artist": "kirisAki",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e1/JirachiGenerationsRC13.jpg"
   },
   "16": {
    "en": "Espurr",
    "page": "Espurr (PokéKyun Collection 16)",
    "type": "Psychic",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ニャスパー",
+   "artist": "Kanako Eo",
+   "image": "https://archives.bulbagarden.net/media/upload/0/07/EspurrGenerationsRC14.jpg"
   },
   "17": {
    "en": "Meowstic",
    "page": "Meowstic (PokéKyun Collection 17)",
    "type": "Psychic",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ニャオニクス",
+   "artist": "sui",
+   "image": "https://archives.bulbagarden.net/media/upload/5/57/MeowsticGenerationsRC15.jpg"
   },
   "18": {
    "en": "Yveltal",
    "page": "Yveltal (PokéKyun Collection 18)",
    "type": "Darkness",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "イベルタル",
+   "artist": "Hajime Kusajima",
+   "image": "https://archives.bulbagarden.net/media/upload/9/9f/YveltalSteamSiege65.jpg"
   },
   "19": {
    "en": "Gardevoir",
    "page": "Gardevoir-EX (PokéKyun Collection 19)",
    "type": "Fairy",
    "rarity": "RR",
-   "mark": ""
+   "mark": "",
+   "ja": "サーナイトEX",
+   "artist": "Eske Yoshinob",
+   "image": "https://archives.bulbagarden.net/media/upload/c/ce/GardevoirEXPrimalClash105.jpg"
   },
   "20": {
    "en": "Gardevoir",
    "page": "M Gardevoir-EX (PokéKyun Collection 20)",
    "type": "Fairy",
    "rarity": "RR",
-   "mark": ""
+   "mark": "",
+   "ja": "MサーナイトEX",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e7/MGardevoirEXPrimalClash106.jpg"
   },
   "21": {
    "en": "Flabébé",
    "page": "Flabébé (PokéKyun Collection 21)",
    "type": "Fairy",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "フラベベ",
+   "artist": "Saya Tsuruta",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c8/Flab%C3%A9b%C3%A9GenerationsRC17.jpg"
   },
   "22": {
    "en": "Floette",
    "page": "Floette (PokéKyun Collection 22)",
    "type": "Fairy",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "フラエッテ",
+   "artist": "Eske Yoshinob",
+   "image": "https://archives.bulbagarden.net/media/upload/5/57/FloetteGenerationsRC18.jpg"
   },
   "23": {
    "en": "Swirlix",
    "page": "Swirlix (PokéKyun Collection 23)",
    "type": "Fairy",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ペロッパフ",
+   "artist": "Satoshi Shirai",
+   "image": "https://archives.bulbagarden.net/media/upload/5/53/SwirlixXYPromo85.jpg"
   },
   "24": {
    "en": "Slurpuff",
    "page": "Slurpuff (PokéKyun Collection 24)",
    "type": "Fairy",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ペロリーム",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b7/SlurpuffSuperLegendSet10.jpg"
   },
   "25": {
    "en": "Sylveon",
    "page": "Sylveon-EX (PokéKyun Collection 25)",
    "type": "Fairy",
    "rarity": "RR",
-   "mark": ""
+   "mark": "",
+   "ja": "ニンフィアEX",
+   "artist": "Kanako Eo",
+   "image": "https://archives.bulbagarden.net/media/upload/0/0d/SylveonEXGenerationsRC32.jpg"
   },
   "26": {
    "en": "Sylveon",
    "page": "Sylveon-EX (PokéKyun Collection 26)",
    "type": "Fairy",
    "rarity": "RR",
-   "mark": ""
+   "mark": "",
+   "ja": "ニンフィアEX",
+   "artist": "Kanako Eo",
+   "image": "https://archives.bulbagarden.net/media/upload/0/0d/SylveonEXGenerationsRC32.jpg"
   },
   "27": {
    "en": "Diancie",
    "page": "Diancie (PokéKyun Collection 27)",
    "type": "Fairy",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ディアンシー",
+   "artist": "Mizue",
+   "image": "https://archives.bulbagarden.net/media/upload/c/cf/DiancieGenerationsRC22.jpg"
   },
   "28": {
    "en": "Swablu",
    "page": "Swablu (PokéKyun Collection 28)",
    "type": "Colorless",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "チルット",
+   "artist": "Atsuko Nishida",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b6/SwabluGenerationsRC23.jpg"
   },
   "29": {
    "en": "Altaria",
@@ -217,14 +298,20 @@
    "page": "Floral Crown (PokéKyun Collection 31)",
    "type": "I",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "おはなのかんむり",
+   "artist": "Aya Kusube",
+   "image": "https://archives.bulbagarden.net/media/upload/2/27/FloralCrownGenerationsRC26.jpg"
   },
   "32": {
    "en": "Wally",
    "page": "Wally (PokéKyun Collection 32)",
    "type": "Su",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ミツル",
+   "artist": "Megumi Mizutani",
+   "image": "https://archives.bulbagarden.net/media/upload/f/fd/WallyRoaringSkies94.jpg"
   }
  }
 }

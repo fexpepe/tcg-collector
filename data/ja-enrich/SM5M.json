@@ -1,0 +1,552 @@
+{
+ "page": "Ultra Moon (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Alolan Sandshrew",
+   "page": "Alolan Sandshrew (Ultra Moon 1)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Alolan Sandslash",
+   "page": "Alolan Sandslash (Ultra Moon 2)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "3": {
+   "en": "Piplup",
+   "page": "Piplup (Ultra Moon 3)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "4": {
+   "en": "Piplup",
+   "page": "Piplup (Ultra Moon 4)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Prinplup",
+   "page": "Prinplup (Ultra Moon 5)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Empoleon",
+   "page": "Empoleon (Ultra Moon 6)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "7": {
+   "en": "Buizel",
+   "page": "Buizel (Ultra Moon 7)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Floatzel",
+   "page": "Floatzel (Ultra Moon 8)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "9": {
+   "en": "Snover",
+   "page": "Snover (Ultra Moon 9)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Abomasnow",
+   "page": "Abomasnow (Ultra Moon 10)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "11": {
+   "en": "Glaceon",
+   "page": "Glaceon-GX (Ultra Moon 11)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "12": {
+   "en": "Wash Rotom",
+   "page": "Wash Rotom (Ultra Moon 12)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "13": {
+   "en": "Frost Rotom",
+   "page": "Frost Rotom (Ultra Moon 13)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "14": {
+   "en": "Manaphy",
+   "page": "Manaphy (Ultra Moon 14)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "15": {
+   "en": "Electabuzz",
+   "page": "Electabuzz (Ultra Moon 15)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "16": {
+   "en": "Electivire",
+   "page": "Electivire (Ultra Moon 16)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "17": {
+   "en": "Shinx",
+   "page": "Shinx (Ultra Moon 17)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "18": {
+   "en": "Shinx",
+   "page": "Shinx (Ultra Moon 18)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "19": {
+   "en": "Luxio",
+   "page": "Luxio (Ultra Moon 19)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "20": {
+   "en": "Luxray",
+   "page": "Luxray (Ultra Moon 20)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "21": {
+   "en": "Pachirisu",
+   "page": "Pachirisu (Ultra Moon 21)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "22": {
+   "en": "Rotom",
+   "page": "Rotom (Ultra Moon 22)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "23": {
+   "en": "Drifloon",
+   "page": "Drifloon (Ultra Moon 23)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "24": {
+   "en": "Drifblim",
+   "page": "Drifblim (Ultra Moon 24)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "25": {
+   "en": "Spiritomb",
+   "page": "Spiritomb (Ultra Moon 25)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "26": {
+   "en": "Skorupi",
+   "page": "Skorupi (Ultra Moon 26)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "27": {
+   "en": "Drapion",
+   "page": "Drapion (Ultra Moon 27)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "28": {
+   "en": "Croagunk",
+   "page": "Croagunk (Ultra Moon 28)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "29": {
+   "en": "Toxicroak",
+   "page": "Toxicroak (Ultra Moon 29)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "30": {
+   "en": "Giratina",
+   "page": "Giratina ♢ (Ultra Moon 30)",
+   "type": "Psychic",
+   "rarity": "PR",
+   "mark": ""
+  },
+  "31": {
+   "en": "Cresselia",
+   "page": "Cresselia (Ultra Moon 31)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "32": {
+   "en": "Lunala",
+   "page": "Lunala ♢ (Ultra Moon 32)",
+   "type": "Psychic",
+   "rarity": "PR",
+   "mark": ""
+  },
+  "33": {
+   "en": "Dawn Wings Necrozma",
+   "page": "Dawn Wings Necrozma-GX (Ultra Moon 33)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "34": {
+   "en": "Cranidos",
+   "page": "Cranidos (Ultra Moon 34)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "35": {
+   "en": "Rampardos",
+   "page": "Rampardos (Ultra Moon 35)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "36": {
+   "en": "Riolu",
+   "page": "Riolu (Ultra Moon 36)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "37": {
+   "en": "Lucario",
+   "page": "Lucario (Ultra Moon 37)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "38": {
+   "en": "Hippopotas",
+   "page": "Hippopotas (Ultra Moon 38)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "39": {
+   "en": "Hippowdon",
+   "page": "Hippowdon (Ultra Moon 39)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "40": {
+   "en": "Passimian",
+   "page": "Passimian (Ultra Moon 40)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "41": {
+   "en": "Gible",
+   "page": "Gible (Ultra Moon 41)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "42": {
+   "en": "Gible",
+   "page": "Gible (Ultra Moon 42)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "43": {
+   "en": "Gabite",
+   "page": "Gabite (Ultra Moon 43)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "44": {
+   "en": "Garchomp",
+   "page": "Garchomp (Ultra Moon 44)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "45": {
+   "en": "Palkia",
+   "page": "Palkia-GX (Ultra Moon 45)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "46": {
+   "en": "Eevee",
+   "page": "Eevee (Ultra Moon 46)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "47": {
+   "en": "Buneary",
+   "page": "Buneary (Ultra Moon 47)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "48": {
+   "en": "Lopunny",
+   "page": "Lopunny (Ultra Moon 48)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "49": {
+   "en": "Shaymin",
+   "page": "Shaymin (Ultra Moon 49)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "50": {
+   "en": "Yungoos",
+   "page": "Yungoos (Ultra Moon 50)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "51": {
+   "en": "Gumshoos",
+   "page": "Gumshoos (Ultra Moon 51)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "52": {
+   "en": "Drampa",
+   "page": "Drampa (Ultra Moon 52)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "53": {
+   "en": "Order Pad",
+   "page": "Order Pad (Ultra Moon 53)",
+   "type": "I",
+   "rarity": "C",
+   "mark": ""
+  },
+  "54": {
+   "en": "Crushing Hammer",
+   "page": "Crushing Hammer (Ultra Moon 54)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "55": {
+   "en": "Unidentified Fossil",
+   "page": "Unidentified Fossil (Ultra Moon 55)",
+   "type": "I",
+   "rarity": "C",
+   "mark": ""
+  },
+  "56": {
+   "en": "Ultra Ball",
+   "page": "Ultra Ball (Ultra Moon 56)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "57": {
+   "en": "Looker Whistle",
+   "page": "Looker Whistle (Ultra Moon 57)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "58": {
+   "en": "Rare Candy",
+   "page": "Rare Candy (Ultra Moon 58)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "59": {
+   "en": "Rescue Stretcher",
+   "page": "Rescue Stretcher (Ultra Moon 59)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "60": {
+   "en": "Escape Board",
+   "page": "Escape Board (Ultra Moon 60)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "61": {
+   "en": "Cynthia",
+   "page": "Cynthia (Ultra Moon 61)",
+   "type": "Su",
+   "rarity": "R",
+   "mark": ""
+  },
+  "62": {
+   "en": "Volkner",
+   "page": "Volkner (Ultra Moon 62)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "63": {
+   "en": "Looker",
+   "page": "Looker (Ultra Moon 63)",
+   "type": "Su",
+   "rarity": "C",
+   "mark": ""
+  },
+  "64": {
+   "en": "Sophocles",
+   "page": "Sophocles (Ultra Moon 64)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "65": {
+   "en": "Super Boost Energy",
+   "page": "Super Boost Energy ♢ (Ultra Moon 65)",
+   "type": "Colorless",
+   "rarity": "PR",
+   "mark": ""
+  },
+  "66": {
+   "en": "Unit Energy",
+   "page": "Unit Energy LPM (Ultra Moon 66)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "67": {
+   "en": "Glaceon",
+   "page": "Glaceon-GX (Ultra Moon 67)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "68": {
+   "en": "Dawn Wings Necrozma",
+   "page": "Dawn Wings Necrozma-GX (Ultra Moon 68)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "69": {
+   "en": "Palkia",
+   "page": "Palkia-GX (Ultra Moon 69)",
+   "type": "Dragon",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "70": {
+   "en": "Cynthia",
+   "page": "Cynthia (Ultra Moon 70)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "71": {
+   "en": "Volkner",
+   "page": "Volkner (Ultra Moon 71)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "72": {
+   "en": "Looker",
+   "page": "Looker (Ultra Moon 72)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "73": {
+   "en": "Glaceon",
+   "page": "Glaceon-GX (Ultra Moon 73)",
+   "type": "Water",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "74": {
+   "en": "Dawn Wings Necrozma",
+   "page": "Dawn Wings Necrozma-GX (Ultra Moon 74)",
+   "type": "Psychic",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "75": {
+   "en": "Palkia",
+   "page": "Palkia-GX (Ultra Moon 75)",
+   "type": "Dragon",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "76": {
+   "en": "Crushing Hammer",
+   "page": "Crushing Hammer (Ultra Moon 76)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "77": {
+   "en": "Escape Board",
+   "page": "Escape Board (Ultra Moon 77)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "78": {
+   "en": "Unit Energy",
+   "page": "Unit Energy LPM (Ultra Moon 78)",
+   "type": "Colorless",
+   "rarity": "UR",
+   "mark": ""
+  }
+ }
+}

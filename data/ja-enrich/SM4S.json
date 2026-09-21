@@ -1,0 +1,440 @@
+{
+ "page": "Awakened Heroes (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Cacnea",
+   "page": "Cacnea (Awakened Heroes 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Cacturne",
+   "page": "Cacturne (Awakened Heroes 2)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "3": {
+   "en": "Karrablast",
+   "page": "Karrablast (Awakened Heroes 3)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "4": {
+   "en": "Skiddo",
+   "page": "Skiddo (Awakened Heroes 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Gogoat",
+   "page": "Gogoat (Awakened Heroes 5)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "6": {
+   "en": "Alolan Marowak",
+   "page": "Alolan Marowak (Awakened Heroes 6)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "7": {
+   "en": "Numel",
+   "page": "Numel (Awakened Heroes 7)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Camerupt",
+   "page": "Camerupt (Awakened Heroes 8)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "9": {
+   "en": "Staryu",
+   "page": "Staryu (Awakened Heroes 9)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Starmie",
+   "page": "Starmie (Awakened Heroes 10)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "11": {
+   "en": "Remoraid",
+   "page": "Remoraid (Awakened Heroes 11)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "12": {
+   "en": "Octillery",
+   "page": "Octillery (Awakened Heroes 12)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "13": {
+   "en": "Corphish",
+   "page": "Corphish (Awakened Heroes 13)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Crawdaunt",
+   "page": "Crawdaunt (Awakened Heroes 14)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "15": {
+   "en": "Shellos",
+   "page": "Shellos (Awakened Heroes 15)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "16": {
+   "en": "Alolan Geodude",
+   "page": "Alolan Geodude (Awakened Heroes 16)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Alolan Graveler",
+   "page": "Alolan Graveler (Awakened Heroes 17)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "18": {
+   "en": "Alolan Golem",
+   "page": "Alolan Golem-GX (Awakened Heroes 18)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "19": {
+   "en": "Emolga",
+   "page": "Emolga (Awakened Heroes 19)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "20": {
+   "en": "Gastly",
+   "page": "Gastly (Awakened Heroes 20)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "21": {
+   "en": "Haunter",
+   "page": "Haunter (Awakened Heroes 21)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "22": {
+   "en": "Gengar",
+   "page": "Gengar (Awakened Heroes 22)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "23": {
+   "en": "Chimecho",
+   "page": "Chimecho (Awakened Heroes 23)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "24": {
+   "en": "Pumpkaboo",
+   "page": "Pumpkaboo (Awakened Heroes 24)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "25": {
+   "en": "Gourgeist",
+   "page": "Gourgeist (Awakened Heroes 25)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "26": {
+   "en": "Salandit",
+   "page": "Salandit (Awakened Heroes 26)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "27": {
+   "en": "Salazzle",
+   "page": "Salazzle (Awakened Heroes 27)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "28": {
+   "en": "Cubone",
+   "page": "Cubone (Awakened Heroes 28)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "29": {
+   "en": "Gastrodon",
+   "page": "Gastrodon (Awakened Heroes 29)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "30": {
+   "en": "Buzzwole",
+   "page": "Buzzwole-GX (Awakened Heroes 30)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "31": {
+   "en": "Mawile",
+   "page": "Mawile (Awakened Heroes 31)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "32": {
+   "en": "Aron",
+   "page": "Aron (Awakened Heroes 32)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "33": {
+   "en": "Lairon",
+   "page": "Lairon (Awakened Heroes 33)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "34": {
+   "en": "Aggron",
+   "page": "Aggron (Awakened Heroes 34)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "35": {
+   "en": "Registeel",
+   "page": "Registeel (Awakened Heroes 35)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "36": {
+   "en": "Escavalier",
+   "page": "Escavalier (Awakened Heroes 36)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "37": {
+   "en": "Kartana",
+   "page": "Kartana-GX (Awakened Heroes 37)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "38": {
+   "en": "Starly",
+   "page": "Starly (Awakened Heroes 38)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "39": {
+   "en": "Staravia",
+   "page": "Staravia (Awakened Heroes 39)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "40": {
+   "en": "Staraptor",
+   "page": "Staraptor (Awakened Heroes 40)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "41": {
+   "en": "Regigigas",
+   "page": "Regigigas (Awakened Heroes 41)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "42": {
+   "en": "Minccino",
+   "page": "Minccino (Awakened Heroes 42)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "43": {
+   "en": "Cinccino",
+   "page": "Cinccino (Awakened Heroes 43)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "44": {
+   "en": "Type: Null",
+   "page": "Type: Null (Awakened Heroes 44)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "45": {
+   "en": "Silvally",
+   "page": "Silvally-GX (Awakened Heroes 45)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "46": {
+   "en": "Counter Catcher",
+   "page": "Counter Catcher (Awakened Heroes 46)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "47": {
+   "en": "Peeking Red Card",
+   "page": "Peeking Red Card (Awakened Heroes 47)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "48": {
+   "en": "Psychic Memory",
+   "page": "Psychic Memory (Awakened Heroes 48)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "49": {
+   "en": "Fighting Memory",
+   "page": "Fighting Memory (Awakened Heroes 49)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "50": {
+   "en": "Gladion",
+   "page": "Gladion (Awakened Heroes 50)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "51": {
+   "en": "Alolan Golem",
+   "page": "Alolan Golem-GX (Awakened Heroes 51)",
+   "type": "Lightning",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "52": {
+   "en": "Buzzwole",
+   "page": "Buzzwole-GX (Awakened Heroes 52)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "53": {
+   "en": "Kartana",
+   "page": "Kartana-GX (Awakened Heroes 53)",
+   "type": "Metal",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "54": {
+   "en": "Silvally",
+   "page": "Silvally-GX (Awakened Heroes 54)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "55": {
+   "en": "Gladion",
+   "page": "Gladion (Awakened Heroes 55)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "56": {
+   "en": "Alolan Golem",
+   "page": "Alolan Golem-GX (Awakened Heroes 56)",
+   "type": "Lightning",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "57": {
+   "en": "Buzzwole",
+   "page": "Buzzwole-GX (Awakened Heroes 57)",
+   "type": "Fighting",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "58": {
+   "en": "Kartana",
+   "page": "Kartana-GX (Awakened Heroes 58)",
+   "type": "Metal",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "59": {
+   "en": "Silvally",
+   "page": "Silvally-GX (Awakened Heroes 59)",
+   "type": "Colorless",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "60": {
+   "en": "Counter Catcher",
+   "page": "Counter Catcher (Awakened Heroes 60)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "61": {
+   "en": "Warp Energy",
+   "page": "Warp Energy (Awakened Heroes 61)",
+   "type": "Colorless",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "62": {
+   "en": "Metal Energy",
+   "page": "Metal Energy (Awakened Heroes 62)",
+   "type": "Metal",
+   "rarity": "UR",
+   "mark": "—"
+  }
+ }
+}

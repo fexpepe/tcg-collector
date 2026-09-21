@@ -1,0 +1,517 @@
+{
+ "page": "Thunderclap Spark (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Pinsir",
+   "page": "Pinsir (Thunderclap Spark 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Shuckle",
+   "page": "Shuckle (Thunderclap Spark 2)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "3": {
+   "en": "Wurmple",
+   "page": "Wurmple (Thunderclap Spark 3)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "4": {
+   "en": "Cascoon",
+   "page": "Cascoon (Thunderclap Spark 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Dustox",
+   "page": "Dustox (Thunderclap Spark 5)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "6": {
+   "en": "Virizion",
+   "page": "Virizion-GX (Thunderclap Spark 6)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "7": {
+   "en": "Skiddo",
+   "page": "Skiddo (Thunderclap Spark 7)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Gogoat",
+   "page": "Gogoat (Thunderclap Spark 8)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "9": {
+   "en": "Tapu Bulu",
+   "page": "Tapu Bulu (Thunderclap Spark 9)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "10": {
+   "en": "Moltres",
+   "page": "Moltres (Thunderclap Spark 10)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "11": {
+   "en": "Slugma",
+   "page": "Slugma (Thunderclap Spark 11)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "12": {
+   "en": "Magcargo",
+   "page": "Magcargo-GX (Thunderclap Spark 12)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "13": {
+   "en": "Heatran",
+   "page": "Heatran (Thunderclap Spark 13)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "14": {
+   "en": "Victini",
+   "page": "Victini (Thunderclap Spark 14)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "15": {
+   "en": "Litleo",
+   "page": "Litleo (Thunderclap Spark 15)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "16": {
+   "en": "Pyroar",
+   "page": "Pyroar (Thunderclap Spark 16)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Lapras",
+   "page": "Lapras (Thunderclap Spark 17)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "18": {
+   "en": "Suicune",
+   "page": "Suicune (Thunderclap Spark 18)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "19": {
+   "en": "Cubchoo",
+   "page": "Cubchoo (Thunderclap Spark 19)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "20": {
+   "en": "Beartic",
+   "page": "Beartic (Thunderclap Spark 20)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "21": {
+   "en": "White Kyurem",
+   "page": "White Kyurem (Thunderclap Spark 21)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "22": {
+   "en": "Popplio",
+   "page": "Popplio (Thunderclap Spark 22)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "23": {
+   "en": "Brionne",
+   "page": "Brionne (Thunderclap Spark 23)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "24": {
+   "en": "Primarina",
+   "page": "Primarina (Thunderclap Spark 24)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "25": {
+   "en": "Bruxish",
+   "page": "Bruxish (Thunderclap Spark 25)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "26": {
+   "en": "Electabuzz",
+   "page": "Electabuzz (Thunderclap Spark 26)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "27": {
+   "en": "Electivire",
+   "page": "Electivire (Thunderclap Spark 27)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "28": {
+   "en": "Pachirisu",
+   "page": "Pachirisu (Thunderclap Spark 28)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "29": {
+   "en": "Blitzle",
+   "page": "Blitzle (Thunderclap Spark 29)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "30": {
+   "en": "Zebstrika",
+   "page": "Zebstrika (Thunderclap Spark 30)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "31": {
+   "en": "Stunfisk",
+   "page": "Stunfisk (Thunderclap Spark 31)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "32": {
+   "en": "Tapu Koko",
+   "page": "Tapu Koko (Thunderclap Spark 32)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "33": {
+   "en": "Zeraora",
+   "page": "Zeraora-GX (Thunderclap Spark 33)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "34": {
+   "en": "Onix",
+   "page": "Onix (Thunderclap Spark 34)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "35": {
+   "en": "Alolan Diglett",
+   "page": "Alolan Diglett (Thunderclap Spark 35)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "36": {
+   "en": "Alolan Dugtrio",
+   "page": "Alolan Dugtrio (Thunderclap Spark 36)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "37": {
+   "en": "Steelix",
+   "page": "Steelix (Thunderclap Spark 37)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "38": {
+   "en": "Dialga",
+   "page": "Dialga (Thunderclap Spark 38)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "39": {
+   "en": "Durant",
+   "page": "Durant (Thunderclap Spark 39)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "40": {
+   "en": "Cobalion",
+   "page": "Cobalion (Thunderclap Spark 40)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "41": {
+   "en": "Genesect",
+   "page": "Genesect-GX (Thunderclap Spark 41)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "42": {
+   "en": "Magearna",
+   "page": "Magearna (Thunderclap Spark 42)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "43": {
+   "en": "Ditto",
+   "page": "Ditto ♢ (Thunderclap Spark 43)",
+   "type": "Colorless",
+   "rarity": "PR",
+   "mark": ""
+  },
+  "44": {
+   "en": "Kecleon",
+   "page": "Kecleon (Thunderclap Spark 44)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "45": {
+   "en": "Energy Switch",
+   "page": "Energy Switch (Thunderclap Spark 45)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "46": {
+   "en": "Electropower",
+   "page": "Electropower (Thunderclap Spark 46)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "47": {
+   "en": "Custom Catcher",
+   "page": "Custom Catcher (Thunderclap Spark 47)",
+   "type": "I",
+   "rarity": "C",
+   "mark": ""
+  },
+  "48": {
+   "en": "Super Scoop Up",
+   "page": "Super Scoop Up (Thunderclap Spark 48)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "49": {
+   "en": "Ultra Ball",
+   "page": "Ultra Ball (Thunderclap Spark 49)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "50": {
+   "en": "Switch",
+   "page": "Switch (Thunderclap Spark 50)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "51": {
+   "en": "Pokémon Catcher",
+   "page": "Pokémon Catcher (Thunderclap Spark 51)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "52": {
+   "en": "Mixed Herbs",
+   "page": "Mixed Herbs (Thunderclap Spark 52)",
+   "type": "I",
+   "rarity": "C",
+   "mark": ""
+  },
+  "53": {
+   "en": "Counter Gain",
+   "page": "Counter Gain (Thunderclap Spark 53)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "54": {
+   "en": "Choice Band",
+   "page": "Choice Band (Thunderclap Spark 54)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "55": {
+   "en": "Kahili",
+   "page": "Kahili (Thunderclap Spark 55)",
+   "type": "Su",
+   "rarity": "C",
+   "mark": ""
+  },
+  "56": {
+   "en": "Sightseer",
+   "page": "Sightseer (Thunderclap Spark 56)",
+   "type": "Su",
+   "rarity": "C",
+   "mark": ""
+  },
+  "57": {
+   "en": "Judge",
+   "page": "Judge (Thunderclap Spark 57)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "58": {
+   "en": "Thunder Mountain",
+   "page": "Thunder Mountain ♢ (Thunderclap Spark 58)",
+   "type": "St",
+   "rarity": "PR",
+   "mark": ""
+  },
+  "59": {
+   "en": "Double Colorless Energy",
+   "page": "Double Colorless Energy (Thunderclap Spark 59)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "60": {
+   "en": "Unit Energy",
+   "page": "Unit Energy GRW (Thunderclap Spark 60)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "61": {
+   "en": "Virizion",
+   "page": "Virizion-GX (Thunderclap Spark 61)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "62": {
+   "en": "Magcargo",
+   "page": "Magcargo-GX (Thunderclap Spark 62)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "63": {
+   "en": "Zeraora",
+   "page": "Zeraora-GX (Thunderclap Spark 63)",
+   "type": "Lightning",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "64": {
+   "en": "Genesect",
+   "page": "Genesect-GX (Thunderclap Spark 64)",
+   "type": "Metal",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "65": {
+   "en": "Kahili",
+   "page": "Kahili (Thunderclap Spark 65)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "66": {
+   "en": "Judge",
+   "page": "Judge (Thunderclap Spark 66)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "67": {
+   "en": "Virizion",
+   "page": "Virizion-GX (Thunderclap Spark 67)",
+   "type": "Grass",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "68": {
+   "en": "Magcargo",
+   "page": "Magcargo-GX (Thunderclap Spark 68)",
+   "type": "Fire",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "69": {
+   "en": "Zeraora",
+   "page": "Zeraora-GX (Thunderclap Spark 69)",
+   "type": "Lightning",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "70": {
+   "en": "Genesect",
+   "page": "Genesect-GX (Thunderclap Spark 70)",
+   "type": "Metal",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "71": {
+   "en": "Electropower",
+   "page": "Electropower (Thunderclap Spark 71)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "72": {
+   "en": "Custom Catcher",
+   "page": "Custom Catcher (Thunderclap Spark 72)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "73": {
+   "en": "Counter Gain",
+   "page": "Counter Gain (Thunderclap Spark 73)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  }
+ }
+}

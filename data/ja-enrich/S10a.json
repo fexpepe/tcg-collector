@@ -1,0 +1,699 @@
+{
+ "page": "Dark Phantasma (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Paras",
+   "page": "Paras (Dark Phantasma 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Parasect",
+   "page": "Parasect (Dark Phantasma 2)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "3": {
+   "en": "Hisuian Electrode",
+   "page": "Hisuian Electrode V (Dark Phantasma 3)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "4": {
+   "en": "Wurmple",
+   "page": "Wurmple (Dark Phantasma 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Silcoon",
+   "page": "Silcoon (Dark Phantasma 5)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Beautifly",
+   "page": "Beautifly (Dark Phantasma 6)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "7": {
+   "en": "Cascoon",
+   "page": "Cascoon (Dark Phantasma 7)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Dustox",
+   "page": "Dustox (Dark Phantasma 8)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "9": {
+   "en": "Snover",
+   "page": "Snover (Dark Phantasma 9)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Abomasnow",
+   "page": "Abomasnow (Dark Phantasma 10)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "11": {
+   "en": "Phione",
+   "page": "Phione (Dark Phantasma 11)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "12": {
+   "en": "Hisuian Basculin",
+   "page": "Hisuian Basculin (Dark Phantasma 12)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "13": {
+   "en": "Hisuian Basculegion",
+   "page": "Hisuian Basculegion (Dark Phantasma 13)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "14": {
+   "en": "Pikachu",
+   "page": "Pikachu (Dark Phantasma 14)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "15": {
+   "en": "Raichu",
+   "page": "Raichu (Dark Phantasma 15)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "16": {
+   "en": "Magnezone",
+   "page": "Magnezone V (Dark Phantasma 16)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "17": {
+   "en": "Magnezone",
+   "page": "Magnezone VSTAR (Dark Phantasma 17)",
+   "type": "Lightning",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "18": {
+   "en": "Rotom",
+   "page": "Rotom (Dark Phantasma 18)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "19": {
+   "en": "Clefairy",
+   "page": "Clefairy (Dark Phantasma 19)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "20": {
+   "en": "Clefable",
+   "page": "Clefable (Dark Phantasma 20)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "21": {
+   "en": "Gastly",
+   "page": "Gastly (Dark Phantasma 21)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "22": {
+   "en": "Haunter",
+   "page": "Haunter (Dark Phantasma 22)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "23": {
+   "en": "Gengar",
+   "page": "Gengar (Dark Phantasma 23)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "24": {
+   "en": "Mr. Mime",
+   "page": "Mr. Mime (Dark Phantasma 24)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "25": {
+   "en": "Misdreavus",
+   "page": "Misdreavus (Dark Phantasma 25)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "26": {
+   "en": "Mismagius",
+   "page": "Mismagius (Dark Phantasma 26)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "27": {
+   "en": "Radiant Gardevoir",
+   "page": "Radiant Gardevoir (Dark Phantasma 27)",
+   "type": "Psychic",
+   "rarity": "K",
+   "mark": ""
+  },
+  "28": {
+   "en": "Chimecho",
+   "page": "Chimecho (Dark Phantasma 28)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "29": {
+   "en": "Hisuian Zorua",
+   "page": "Hisuian Zorua (Dark Phantasma 29)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "30": {
+   "en": "Hisuian Zoroark",
+   "page": "Hisuian Zoroark (Dark Phantasma 30)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "31": {
+   "en": "Enamorus",
+   "page": "Enamorus V (Dark Phantasma 31)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "32": {
+   "en": "Hisuian Growlithe",
+   "page": "Hisuian Growlithe (Dark Phantasma 32)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "33": {
+   "en": "Hisuian Arcanine",
+   "page": "Hisuian Arcanine (Dark Phantasma 33)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "34": {
+   "en": "Machop",
+   "page": "Machop (Dark Phantasma 34)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "35": {
+   "en": "Machoke",
+   "page": "Machoke (Dark Phantasma 35)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "36": {
+   "en": "Machamp",
+   "page": "Machamp (Dark Phantasma 36)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "37": {
+   "en": "Sudowoodo",
+   "page": "Sudowoodo (Dark Phantasma 37)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "38": {
+   "en": "Gligar",
+   "page": "Gligar (Dark Phantasma 38)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "39": {
+   "en": "Gliscor",
+   "page": "Gliscor (Dark Phantasma 39)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "40": {
+   "en": "Gallade",
+   "page": "Gallade V (Dark Phantasma 40)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "41": {
+   "en": "Zubat",
+   "page": "Zubat (Dark Phantasma 41)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "42": {
+   "en": "Golbat",
+   "page": "Golbat (Dark Phantasma 42)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "43": {
+   "en": "Crobat",
+   "page": "Crobat (Dark Phantasma 43)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "44": {
+   "en": "Murkrow",
+   "page": "Murkrow (Dark Phantasma 44)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "45": {
+   "en": "Honchkrow",
+   "page": "Honchkrow (Dark Phantasma 45)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "46": {
+   "en": "Radiant Hisuian Sneasler",
+   "page": "Radiant Hisuian Sneasler (Dark Phantasma 46)",
+   "type": "Darkness",
+   "rarity": "K",
+   "mark": ""
+  },
+  "47": {
+   "en": "Spiritomb",
+   "page": "Spiritomb (Dark Phantasma 47)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "48": {
+   "en": "Croagunk",
+   "page": "Croagunk (Dark Phantasma 48)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "49": {
+   "en": "Toxicroak",
+   "page": "Toxicroak (Dark Phantasma 49)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "50": {
+   "en": "Radiant Steelix",
+   "page": "Radiant Steelix (Dark Phantasma 50)",
+   "type": "Metal",
+   "rarity": "K",
+   "mark": ""
+  },
+  "51": {
+   "en": "Bronzor",
+   "page": "Bronzor (Dark Phantasma 51)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "52": {
+   "en": "Bronzong",
+   "page": "Bronzong (Dark Phantasma 52)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "53": {
+   "en": "Goomy",
+   "page": "Goomy (Dark Phantasma 53)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "54": {
+   "en": "Hisuian Sliggoo",
+   "page": "Hisuian Sliggoo (Dark Phantasma 54)",
+   "type": "Dragon",
+   "rarity": "U",
+   "mark": ""
+  },
+  "55": {
+   "en": "Hisuian Goodra",
+   "page": "Hisuian Goodra (Dark Phantasma 55)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "56": {
+   "en": "Hisuian Goodra",
+   "page": "Hisuian Goodra V (Dark Phantasma 56)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "57": {
+   "en": "Hisuian Goodra",
+   "page": "Hisuian Goodra VSTAR (Dark Phantasma 57)",
+   "type": "Dragon",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "58": {
+   "en": "Snorlax",
+   "page": "Snorlax (Dark Phantasma 58)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "59": {
+   "en": "Aipom",
+   "page": "Aipom (Dark Phantasma 59)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "60": {
+   "en": "Ambipom",
+   "page": "Ambipom (Dark Phantasma 60)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "61": {
+   "en": "Hisuian Zoroark",
+   "page": "Hisuian Zoroark V (Dark Phantasma 61)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "62": {
+   "en": "Hisuian Zoroark",
+   "page": "Hisuian Zoroark VSTAR (Dark Phantasma 62)",
+   "type": "Colorless",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "63": {
+   "en": "Arc Phone",
+   "page": "Arc Phone (Dark Phantasma 63)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "64": {
+   "en": "Damage Pump",
+   "page": "Damage Pump (Dark Phantasma 64)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "65": {
+   "en": "Windup Arm",
+   "page": "Windup Arm (Dark Phantasma 65)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "66": {
+   "en": "Box of Disaster",
+   "page": "Box of Disaster (Dark Phantasma 66)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "67": {
+   "en": "Volo",
+   "page": "Volo (Dark Phantasma 67)",
+   "type": "Su",
+   "rarity": "R",
+   "mark": ""
+  },
+  "68": {
+   "en": "Iscan",
+   "page": "Iscan (Dark Phantasma 68)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "69": {
+   "en": "Arezu",
+   "page": "Arezu (Dark Phantasma 69)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "70": {
+   "en": "Miss Fortune Sisters",
+   "page": "Miss Fortune Sisters (Dark Phantasma 70)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "71": {
+   "en": "Lake Acuity",
+   "page": "Lake Acuity (Dark Phantasma 71)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "72": {
+   "en": "Parasect",
+   "page": "Parasect (Dark Phantasma 72)",
+   "type": "Grass",
+   "rarity": "CHR",
+   "mark": ""
+  },
+  "73": {
+   "en": "Pikachu",
+   "page": "Pikachu (Dark Phantasma 73)",
+   "type": "Lightning",
+   "rarity": "CHR",
+   "mark": ""
+  },
+  "74": {
+   "en": "Gengar",
+   "page": "Gengar (Dark Phantasma 74)",
+   "type": "Psychic",
+   "rarity": "CHR",
+   "mark": ""
+  },
+  "75": {
+   "en": "Hisuian Arcanine",
+   "page": "Hisuian Arcanine (Dark Phantasma 75)",
+   "type": "Fighting",
+   "rarity": "CHR",
+   "mark": ""
+  },
+  "76": {
+   "en": "Spiritomb",
+   "page": "Spiritomb (Dark Phantasma 76)",
+   "type": "Darkness",
+   "rarity": "CHR",
+   "mark": ""
+  },
+  "77": {
+   "en": "Snorlax",
+   "page": "Snorlax (Dark Phantasma 77)",
+   "type": "Colorless",
+   "rarity": "CHR",
+   "mark": ""
+  },
+  "78": {
+   "en": "Hisuian Electrode",
+   "page": "Hisuian Electrode V (Dark Phantasma 78)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "79": {
+   "en": "Magnezone",
+   "page": "Magnezone V (Dark Phantasma 79)",
+   "type": "Lightning",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "80": {
+   "en": "Enamorus",
+   "page": "Enamorus V (Dark Phantasma 80)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "81": {
+   "en": "Gallade",
+   "page": "Gallade V (Dark Phantasma 81)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "82": {
+   "en": "Hisuian Goodra",
+   "page": "Hisuian Goodra V (Dark Phantasma 82)",
+   "type": "Dragon",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "83": {
+   "en": "Hisuian Zoroark",
+   "page": "Hisuian Zoroark V (Dark Phantasma 83)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "84": {
+   "en": "Volo",
+   "page": "Volo (Dark Phantasma 84)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "85": {
+   "en": "Iscan",
+   "page": "Iscan (Dark Phantasma 85)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "86": {
+   "en": "Arezu",
+   "page": "Arezu (Dark Phantasma 86)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "87": {
+   "en": "Miss Fortune Sisters",
+   "page": "Miss Fortune Sisters (Dark Phantasma 87)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "88": {
+   "en": "Enamorus",
+   "page": "Enamorus V (Dark Phantasma 88)",
+   "type": "Psychic",
+   "rarity": "CSR",
+   "mark": ""
+  },
+  "89": {
+   "en": "Gallade",
+   "page": "Gallade V (Dark Phantasma 89)",
+   "type": "Fighting",
+   "rarity": "CSR",
+   "mark": ""
+  },
+  "90": {
+   "en": "Magnezone",
+   "page": "Magnezone VSTAR (Dark Phantasma 90)",
+   "type": "Lightning",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "91": {
+   "en": "Hisuian Goodra",
+   "page": "Hisuian Goodra VSTAR (Dark Phantasma 91)",
+   "type": "Dragon",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "92": {
+   "en": "Hisuian Zoroark",
+   "page": "Hisuian Zoroark VSTAR (Dark Phantasma 92)",
+   "type": "Colorless",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "93": {
+   "en": "Volo",
+   "page": "Volo (Dark Phantasma 93)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "94": {
+   "en": "Iscan",
+   "page": "Iscan (Dark Phantasma 94)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "95": {
+   "en": "Arezu",
+   "page": "Arezu (Dark Phantasma 95)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "96": {
+   "en": "Miss Fortune Sisters",
+   "page": "Miss Fortune Sisters (Dark Phantasma 96)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "97": {
+   "en": "Hisuian Zoroark",
+   "page": "Hisuian Zoroark VSTAR (Dark Phantasma 97)",
+   "type": "Colorless",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "98": {
+   "en": "Dark Patch",
+   "page": "Dark Patch (Dark Phantasma 98)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "99": {
+   "en": "Box of Disaster",
+   "page": "Box of Disaster (Dark Phantasma 99)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  }
+ }
+}

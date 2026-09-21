@@ -1,0 +1,440 @@
+{
+ "page": "Islands Await You (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Bellsprout",
+   "page": "Bellsprout (Islands Await You 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Weepinbell",
+   "page": "Weepinbell (Islands Await You 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Victreebel",
+   "page": "Victreebel (Islands Await You 3)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "4": {
+   "en": "Petilil",
+   "page": "Petilil (Islands Await You 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Lilligant",
+   "page": "Lilligant (Islands Await You 5)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Wimpod",
+   "page": "Wimpod (Islands Await You 6)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Golisopod",
+   "page": "Golisopod (Islands Await You 7)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "8": {
+   "en": "Victini",
+   "page": "Victini (Islands Await You 8)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "9": {
+   "en": "Turtonator",
+   "page": "Turtonator-GX (Islands Await You 9)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "10": {
+   "en": "Alolan Sandshrew",
+   "page": "Alolan Sandshrew (Islands Await You 10)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "11": {
+   "en": "Alolan Sandslash",
+   "page": "Alolan Sandslash (Islands Await You 11)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "12": {
+   "en": "Alolan Vulpix",
+   "page": "Alolan Vulpix (Islands Await You 12)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "13": {
+   "en": "Alolan Ninetales",
+   "page": "Alolan Ninetales-GX (Islands Await You 13)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "14": {
+   "en": "Delibird",
+   "page": "Delibird (Islands Await You 14)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "15": {
+   "en": "Snorunt",
+   "page": "Snorunt (Islands Await You 15)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "16": {
+   "en": "Glalie",
+   "page": "Glalie (Islands Await You 16)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "17": {
+   "en": "Vanillite",
+   "page": "Vanillite (Islands Await You 17)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "18": {
+   "en": "Vanillish",
+   "page": "Vanillish (Islands Await You 18)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "19": {
+   "en": "Vanilluxe",
+   "page": "Vanilluxe (Islands Await You 19)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "20": {
+   "en": "Helioptile",
+   "page": "Helioptile (Islands Await You 20)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "21": {
+   "en": "Heliolisk",
+   "page": "Heliolisk (Islands Await You 21)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "22": {
+   "en": "Tapu Koko",
+   "page": "Tapu Koko-GX (Islands Await You 22)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "23": {
+   "en": "Slowpoke",
+   "page": "Slowpoke (Islands Await You 23)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "24": {
+   "en": "Slowbro",
+   "page": "Slowbro (Islands Await You 24)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "25": {
+   "en": "Gothita",
+   "page": "Gothita (Islands Await You 25)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "26": {
+   "en": "Gothorita",
+   "page": "Gothorita (Islands Await You 26)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "27": {
+   "en": "Gothitelle",
+   "page": "Gothitelle (Islands Await You 27)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "28": {
+   "en": "Machop",
+   "page": "Machop (Islands Await You 28)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "29": {
+   "en": "Machoke",
+   "page": "Machoke (Islands Await You 29)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "30": {
+   "en": "Machamp",
+   "page": "Machamp (Islands Await You 30)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "31": {
+   "en": "Nosepass",
+   "page": "Nosepass (Islands Await You 31)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "32": {
+   "en": "Barboach",
+   "page": "Barboach (Islands Await You 32)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "33": {
+   "en": "Whiscash",
+   "page": "Whiscash (Islands Await You 33)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "34": {
+   "en": "Probopass",
+   "page": "Probopass (Islands Await You 34)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "35": {
+   "en": "Clefairy",
+   "page": "Clefairy (Islands Await You 35)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "36": {
+   "en": "Clefable",
+   "page": "Clefable (Islands Await You 36)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "37": {
+   "en": "Comfey",
+   "page": "Comfey (Islands Await You 37)",
+   "type": "Fairy",
+   "rarity": "R",
+   "mark": ""
+  },
+  "38": {
+   "en": "Drampa",
+   "page": "Drampa (Islands Await You 38)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "39": {
+   "en": "Jangmo-o",
+   "page": "Jangmo-o (Islands Await You 39)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "40": {
+   "en": "Hakamo-o",
+   "page": "Hakamo-o (Islands Await You 40)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "41": {
+   "en": "Kommo-o",
+   "page": "Kommo-o-GX (Islands Await You 41)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "42": {
+   "en": "Chansey",
+   "page": "Chansey (Islands Await You 42)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "43": {
+   "en": "Blissey",
+   "page": "Blissey (Islands Await You 43)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "44": {
+   "en": "Taillow",
+   "page": "Taillow (Islands Await You 44)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "45": {
+   "en": "Swellow",
+   "page": "Swellow (Islands Await You 45)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "46": {
+   "en": "Komala",
+   "page": "Komala (Islands Await You 46)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "47": {
+   "en": "Energy Loto",
+   "page": "Energy Loto (Islands Await You 47)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "48": {
+   "en": "Field Blower",
+   "page": "Field Blower (Islands Await You 48)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "49": {
+   "en": "Hala",
+   "page": "Hala (Islands Await You 49)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "50": {
+   "en": "Aether Paradise Conservation Area",
+   "page": "Aether Paradise Conservation Area (Islands Await You 50)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "51": {
+   "en": "Turtonator",
+   "page": "Turtonator-GX (Islands Await You 51)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "52": {
+   "en": "Alolan Ninetales",
+   "page": "Alolan Ninetales-GX (Islands Await You 52)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "53": {
+   "en": "Tapu Koko",
+   "page": "Tapu Koko-GX (Islands Await You 53)",
+   "type": "Lightning",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "54": {
+   "en": "Kommo-o",
+   "page": "Kommo-o-GX (Islands Await You 54)",
+   "type": "Dragon",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "55": {
+   "en": "Hala",
+   "page": "Hala (Islands Await You 55)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "56": {
+   "en": "Turtonator",
+   "page": "Turtonator-GX (Islands Await You 56)",
+   "type": "Fire",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "57": {
+   "en": "Alolan Ninetales",
+   "page": "Alolan Ninetales-GX (Islands Await You 57)",
+   "type": "Water",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "58": {
+   "en": "Tapu Koko",
+   "page": "Tapu Koko-GX (Islands Await You 58)",
+   "type": "Lightning",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "59": {
+   "en": "Kommo-o",
+   "page": "Kommo-o-GX (Islands Await You 59)",
+   "type": "Dragon",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "60": {
+   "en": "Field Blower",
+   "page": "Field Blower (Islands Await You 60)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "61": {
+   "en": "Max Potion",
+   "page": "Max Potion (Islands Await You 61)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "62": {
+   "en": "Lightning Energy",
+   "page": "Lightning Energy (Islands Await You 62)",
+   "type": "Lightning",
+   "rarity": "UR",
+   "mark": "—"
+  }
+ }
+}

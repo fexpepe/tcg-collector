@@ -1,0 +1,517 @@
+{
+ "page": "Collection Moon (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Pinsir",
+   "page": "Pinsir (Collection Moon 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Surskit",
+   "page": "Surskit (Collection Moon 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Masquerain",
+   "page": "Masquerain (Collection Moon 3)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "4": {
+   "en": "Grubbin",
+   "page": "Grubbin (Collection Moon 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Fomantis",
+   "page": "Fomantis (Collection Moon 5)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Lurantis",
+   "page": "Lurantis-GX (Collection Moon 6)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "7": {
+   "en": "Morelull",
+   "page": "Morelull (Collection Moon 7)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Shiinotic",
+   "page": "Shiinotic (Collection Moon 8)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "9": {
+   "en": "Poliwag",
+   "page": "Poliwag (Collection Moon 9)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Poliwhirl",
+   "page": "Poliwhirl (Collection Moon 10)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "11": {
+   "en": "Poliwrath",
+   "page": "Poliwrath (Collection Moon 11)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "12": {
+   "en": "Corsola",
+   "page": "Corsola (Collection Moon 12)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "13": {
+   "en": "Wingull",
+   "page": "Wingull (Collection Moon 13)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Pelipper",
+   "page": "Pelipper (Collection Moon 14)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "15": {
+   "en": "Crabominable",
+   "page": "Crabominable (Collection Moon 15)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "16": {
+   "en": "Bruxish",
+   "page": "Bruxish (Collection Moon 16)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Chinchou",
+   "page": "Chinchou (Collection Moon 17)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "18": {
+   "en": "Lanturn",
+   "page": "Lanturn (Collection Moon 18)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "19": {
+   "en": "Charjabug",
+   "page": "Charjabug (Collection Moon 19)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "20": {
+   "en": "Vikavolt",
+   "page": "Vikavolt (Collection Moon 20)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "21": {
+   "en": "Togedemaru",
+   "page": "Togedemaru (Collection Moon 21)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "22": {
+   "en": "Alolan Grimer",
+   "page": "Alolan Grimer (Collection Moon 22)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "23": {
+   "en": "Alolan Muk",
+   "page": "Alolan Muk (Collection Moon 23)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "24": {
+   "en": "Drowzee",
+   "page": "Drowzee (Collection Moon 24)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "25": {
+   "en": "Hypno",
+   "page": "Hypno (Collection Moon 25)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "26": {
+   "en": "Cosmog",
+   "page": "Cosmog (Collection Moon 26)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "27": {
+   "en": "Cosmoem",
+   "page": "Cosmoem (Collection Moon 27)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "28": {
+   "en": "Lunala",
+   "page": "Lunala-GX (Collection Moon 28)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "29": {
+   "en": "Roggenrola",
+   "page": "Roggenrola (Collection Moon 29)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "30": {
+   "en": "Boldore",
+   "page": "Boldore (Collection Moon 30)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "31": {
+   "en": "Gigalith",
+   "page": "Gigalith (Collection Moon 31)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "32": {
+   "en": "Crabrawler",
+   "page": "Crabrawler (Collection Moon 32)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "33": {
+   "en": "Sandygast",
+   "page": "Sandygast (Collection Moon 33)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "34": {
+   "en": "Palossand",
+   "page": "Palossand (Collection Moon 34)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "35": {
+   "en": "Alolan Rattata",
+   "page": "Alolan Rattata (Collection Moon 35)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "36": {
+   "en": "Alolan Raticate",
+   "page": "Alolan Raticate (Collection Moon 36)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "37": {
+   "en": "Umbreon",
+   "page": "Umbreon-GX (Collection Moon 37)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "38": {
+   "en": "Carvanha",
+   "page": "Carvanha (Collection Moon 38)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "39": {
+   "en": "Sharpedo",
+   "page": "Sharpedo (Collection Moon 39)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "40": {
+   "en": "Snubbull",
+   "page": "Snubbull (Collection Moon 40)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "41": {
+   "en": "Granbull",
+   "page": "Granbull (Collection Moon 41)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "42": {
+   "en": "Dratini",
+   "page": "Dratini (Collection Moon 42)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "43": {
+   "en": "Dragonair",
+   "page": "Dragonair (Collection Moon 43)",
+   "type": "Dragon",
+   "rarity": "U",
+   "mark": ""
+  },
+  "44": {
+   "en": "Dragonite",
+   "page": "Dragonite (Collection Moon 44)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "45": {
+   "en": "Spearow",
+   "page": "Spearow (Collection Moon 45)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "46": {
+   "en": "Fearow",
+   "page": "Fearow (Collection Moon 46)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "47": {
+   "en": "Tauros",
+   "page": "Tauros-GX (Collection Moon 47)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "48": {
+   "en": "Eevee",
+   "page": "Eevee (Collection Moon 48)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "49": {
+   "en": "Pikipek",
+   "page": "Pikipek (Collection Moon 49)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "50": {
+   "en": "Trumbeak",
+   "page": "Trumbeak (Collection Moon 50)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "51": {
+   "en": "Toucannon",
+   "page": "Toucannon (Collection Moon 51)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "52": {
+   "en": "Oranguru",
+   "page": "Oranguru (Collection Moon 52)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "53": {
+   "en": "Energy Retrieval",
+   "page": "Energy Retrieval (Collection Moon 53)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "54": {
+   "en": "Big Malasada",
+   "page": "Big Malasada (Collection Moon 54)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "55": {
+   "en": "Nest Ball",
+   "page": "Nest Ball (Collection Moon 55)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "56": {
+   "en": "Switch",
+   "page": "Switch (Collection Moon 56)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "57": {
+   "en": "Poison Barb",
+   "page": "Poison Barb (Collection Moon 57)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "58": {
+   "en": "Team Skull Grunt",
+   "page": "Team Skull Grunt (Collection Moon 58)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "59": {
+   "en": "Lillie",
+   "page": "Lillie (Collection Moon 59)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "60": {
+   "en": "Rainbow Energy",
+   "page": "Rainbow Energy (Collection Moon 60)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "61": {
+   "en": "Lurantis",
+   "page": "Lurantis-GX (Collection Moon 61)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "62": {
+   "en": "Lunala",
+   "page": "Lunala-GX (Collection Moon 62)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "63": {
+   "en": "Umbreon",
+   "page": "Umbreon-GX (Collection Moon 63)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "64": {
+   "en": "Tauros",
+   "page": "Tauros-GX (Collection Moon 64)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "65": {
+   "en": "Team Skull Grunt",
+   "page": "Team Skull Grunt (Collection Moon 65)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "66": {
+   "en": "Lillie",
+   "page": "Lillie (Collection Moon 66)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "67": {
+   "en": "Lurantis",
+   "page": "Lurantis-GX (Collection Moon 67)",
+   "type": "Grass",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "68": {
+   "en": "Lunala",
+   "page": "Lunala-GX (Collection Moon 68)",
+   "type": "Psychic",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "69": {
+   "en": "Umbreon",
+   "page": "Umbreon-GX (Collection Moon 69)",
+   "type": "Darkness",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "70": {
+   "en": "Tauros",
+   "page": "Tauros-GX (Collection Moon 70)",
+   "type": "Colorless",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "71": {
+   "en": "Nest Ball",
+   "page": "Nest Ball (Collection Moon 71)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "72": {
+   "en": "Switch",
+   "page": "Switch (Collection Moon 72)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "73": {
+   "en": "Psychic Energy",
+   "page": "Psychic Energy (Collection Moon 73)",
+   "type": "Psychic",
+   "rarity": "UR",
+   "mark": "—"
+  }
+ }
+}

@@ -1,0 +1,447 @@
+{
+ "page": "Fairy Rise (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Tangela",
+   "page": "Tangela (Fairy Rise 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Tangrowth",
+   "page": "Tangrowth (Fairy Rise 2)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "3": {
+   "en": "Treecko",
+   "page": "Treecko (Fairy Rise 3)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "4": {
+   "en": "Grovyle",
+   "page": "Grovyle (Fairy Rise 4)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "5": {
+   "en": "Sceptile",
+   "page": "Sceptile-GX (Fairy Rise 5)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "6": {
+   "en": "Wurmple",
+   "page": "Wurmple (Fairy Rise 6)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Silcoon",
+   "page": "Silcoon (Fairy Rise 7)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Beautifly",
+   "page": "Beautifly (Fairy Rise 8)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "9": {
+   "en": "Nincada",
+   "page": "Nincada (Fairy Rise 9)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Ninjask",
+   "page": "Ninjask (Fairy Rise 10)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "11": {
+   "en": "Combee",
+   "page": "Combee (Fairy Rise 11)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "12": {
+   "en": "Vespiquen",
+   "page": "Vespiquen (Fairy Rise 12)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "13": {
+   "en": "Shaymin",
+   "page": "Shaymin (Fairy Rise 13)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "14": {
+   "en": "Alolan Vulpix",
+   "page": "Alolan Vulpix (Fairy Rise 14)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "15": {
+   "en": "Shedinja",
+   "page": "Shedinja (Fairy Rise 15)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "16": {
+   "en": "Sableye",
+   "page": "Sableye (Fairy Rise 16)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Giratina",
+   "page": "Giratina (Fairy Rise 17)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "18": {
+   "en": "Sigilyph",
+   "page": "Sigilyph-GX (Fairy Rise 18)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "19": {
+   "en": "Yamask",
+   "page": "Yamask (Fairy Rise 19)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "20": {
+   "en": "Cofagrigus",
+   "page": "Cofagrigus (Fairy Rise 20)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "21": {
+   "en": "Litwick",
+   "page": "Litwick (Fairy Rise 21)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "22": {
+   "en": "Lampent",
+   "page": "Lampent (Fairy Rise 22)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "23": {
+   "en": "Chandelure",
+   "page": "Chandelure (Fairy Rise 23)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "24": {
+   "en": "Meloetta",
+   "page": "Meloetta (Fairy Rise 24)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "25": {
+   "en": "Alolan Ninetales",
+   "page": "Alolan Ninetales-GX (Fairy Rise 25)",
+   "type": "Fairy",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "26": {
+   "en": "Jigglypuff",
+   "page": "Jigglypuff (Fairy Rise 26)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "27": {
+   "en": "Wigglytuff",
+   "page": "Wigglytuff (Fairy Rise 27)",
+   "type": "Fairy",
+   "rarity": "U",
+   "mark": ""
+  },
+  "28": {
+   "en": "Ralts",
+   "page": "Ralts (Fairy Rise 28)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "29": {
+   "en": "Kirlia",
+   "page": "Kirlia (Fairy Rise 29)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "30": {
+   "en": "Gardevoir",
+   "page": "Gardevoir (Fairy Rise 30)",
+   "type": "Fairy",
+   "rarity": "R",
+   "mark": ""
+  },
+  "31": {
+   "en": "Dedenne",
+   "page": "Dedenne (Fairy Rise 31)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "32": {
+   "en": "Carbink",
+   "page": "Carbink (Fairy Rise 32)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "33": {
+   "en": "Xerneas",
+   "page": "Xerneas ♢ (Fairy Rise 33)",
+   "type": "Fairy",
+   "rarity": "PR",
+   "mark": ""
+  },
+  "34": {
+   "en": "Cutiefly",
+   "page": "Cutiefly (Fairy Rise 34)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "35": {
+   "en": "Ribombee",
+   "page": "Ribombee (Fairy Rise 35)",
+   "type": "Fairy",
+   "rarity": "U",
+   "mark": ""
+  },
+  "36": {
+   "en": "Morelull",
+   "page": "Morelull (Fairy Rise 36)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "37": {
+   "en": "Shiinotic",
+   "page": "Shiinotic (Fairy Rise 37)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "38": {
+   "en": "Mimikyu",
+   "page": "Mimikyu-GX (Fairy Rise 38)",
+   "type": "Fairy",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "39": {
+   "en": "Tapu Lele",
+   "page": "Tapu Lele (Fairy Rise 39)",
+   "type": "Fairy",
+   "rarity": "R",
+   "mark": ""
+  },
+  "40": {
+   "en": "Tapu Fini",
+   "page": "Tapu Fini (Fairy Rise 40)",
+   "type": "Fairy",
+   "rarity": "R",
+   "mark": ""
+  },
+  "41": {
+   "en": "Kecleon",
+   "page": "Kecleon (Fairy Rise 41)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "42": {
+   "en": "Net Ball",
+   "page": "Net Ball (Fairy Rise 42)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "43": {
+   "en": "Adventure Bag",
+   "page": "Adventure Bag (Fairy Rise 43)",
+   "type": "I",
+   "rarity": "C",
+   "mark": ""
+  },
+  "44": {
+   "en": "Spell Tag",
+   "page": "Spell Tag (Fairy Rise 44)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "45": {
+   "en": "Fairy Charm",
+   "page": "Fairy Charm P (Fairy Rise 45)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "46": {
+   "en": "Fairy Charm",
+   "page": "Fairy Charm F (Fairy Rise 46)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "47": {
+   "en": "Fairy Charm",
+   "page": "Fairy Charm N (Fairy Rise 47)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "48": {
+   "en": "Morty",
+   "page": "Morty (Fairy Rise 48)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "49": {
+   "en": "Mina",
+   "page": "Mina (Fairy Rise 49)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "50": {
+   "en": "Life Forest",
+   "page": "Life Forest ♢ (Fairy Rise 50)",
+   "type": "St",
+   "rarity": "PR",
+   "mark": ""
+  },
+  "51": {
+   "en": "Sceptile",
+   "page": "Sceptile-GX (Fairy Rise 51)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "52": {
+   "en": "Sigilyph",
+   "page": "Sigilyph-GX (Fairy Rise 52)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "53": {
+   "en": "Alolan Ninetales",
+   "page": "Alolan Ninetales-GX (Fairy Rise 53)",
+   "type": "Fairy",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "54": {
+   "en": "Mimikyu",
+   "page": "Mimikyu-GX (Fairy Rise 54)",
+   "type": "Fairy",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "55": {
+   "en": "Morty",
+   "page": "Morty (Fairy Rise 55)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "56": {
+   "en": "Mina",
+   "page": "Mina (Fairy Rise 56)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "57": {
+   "en": "Sceptile",
+   "page": "Sceptile-GX (Fairy Rise 57)",
+   "type": "Grass",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "58": {
+   "en": "Sigilyph",
+   "page": "Sigilyph-GX (Fairy Rise 58)",
+   "type": "Psychic",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "59": {
+   "en": "Alolan Ninetales",
+   "page": "Alolan Ninetales-GX (Fairy Rise 59)",
+   "type": "Fairy",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "60": {
+   "en": "Mimikyu",
+   "page": "Mimikyu-GX (Fairy Rise 60)",
+   "type": "Fairy",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "61": {
+   "en": "Net Ball",
+   "page": "Net Ball (Fairy Rise 61)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "62": {
+   "en": "Adventure Bag",
+   "page": "Adventure Bag (Fairy Rise 62)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "63": {
+   "en": "Spell Tag",
+   "page": "Spell Tag (Fairy Rise 63)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  }
+ }
+}

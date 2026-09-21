@@ -7,14 +7,20 @@
    "page": "Timeless Celebi (J Promo 1)",
    "type": "Grass",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "時を超えたセレビィ",
+   "artist": "Atsuko Nishida",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
   },
   "2": {
    "en": "Latias and Latios",
    "page": "Latias and Latios (J Promo 2)",
    "type": "Colorless",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ラティアスとラティオス",
+   "artist": "Celebi",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
   }
  }
 }

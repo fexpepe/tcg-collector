@@ -7,735 +7,860 @@
    "page": "Surskit (Megalo Cannon 1)",
    "type": "Grass",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "アメタマ",
+   "artist": "Naoyo Kimura",
+   "image": "https://archives.bulbagarden.net/media/upload/a/aa/SurskitPlasmaBlast1.jpg"
   },
   "2": {
    "en": "Masquerain",
    "page": "Masquerain (Megalo Cannon 2)",
    "type": "Grass",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "アメモース",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e4/MasquerainPlasmaBlast2.jpg"
   },
   "3": {
    "en": "Lileep",
    "page": "Lileep (Megalo Cannon 3)",
    "type": "Grass",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "リリーラ",
+   "artist": "Suwama Chiaki",
+   "image": "https://archives.bulbagarden.net/media/upload/b/ba/LileepPlasmaBlast3.jpg"
   },
   "4": {
    "en": "Cradily",
    "page": "Cradily (Megalo Cannon 4)",
    "type": "Grass",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ユレイドル",
+   "artist": "kawayoo",
+   "image": "https://archives.bulbagarden.net/media/upload/d/df/CradilyPlasmaBlast4.jpg"
   },
   "5": {
    "en": "Tropius",
    "page": "Tropius (Megalo Cannon 5)",
    "type": "Grass",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "トロピウス",
+   "artist": "Shigenori Negishi",
+   "image": "https://archives.bulbagarden.net/media/upload/c/cf/TropiusPlasmaBlast5.jpg"
   },
   "6": {
    "en": "Karrablast",
    "page": "Karrablast (Megalo Cannon 6)",
    "type": "Grass",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "カブルモ",
+   "artist": "match",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f5/KarrablastPlasmaBlast6.jpg"
   },
   "7": {
    "en": "Shelmet",
    "page": "Shelmet (Megalo Cannon 7)",
    "type": "Grass",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "チョボマキ",
+   "artist": "Sumiyoshi Kizuki",
+   "image": "https://archives.bulbagarden.net/media/upload/c/ce/ShelmetPlasmaBlast7.jpg"
   },
   "8": {
    "en": "Accelgor",
    "page": "Accelgor (Megalo Cannon 8)",
    "type": "Grass",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "アギルダー",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e6/AccelgorPlasmaBlast8.jpg"
   },
   "9": {
    "en": "Virizion",
    "page": "Virizion-EX (Megalo Cannon 9)",
    "type": "Grass",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "ビリジオンEX",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f8/VirizionEXPlasmaBlast9.jpg"
   },
   "10": {
    "en": "Genesect",
    "page": "Genesect-EX (Megalo Cannon 10)",
    "type": "Grass",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "ゲノセクトEX",
+   "artist": "Eske Yoshinob",
+   "image": "https://archives.bulbagarden.net/media/upload/5/5b/GenesectEXPlasmaBlast11.jpg"
   },
   "11": {
    "en": "Larvesta",
    "page": "Larvesta (Megalo Cannon 11)",
    "type": "Fire",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "メラルバ",
+   "artist": "Masakazu Fukuda",
+   "image": "https://archives.bulbagarden.net/media/upload/1/17/LarvestaPlasmaBlast12.jpg"
   },
   "12": {
    "en": "Volcarona",
    "page": "Volcarona (Megalo Cannon 12)",
    "type": "Fire",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "ウルガモス",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/0/03/VolcaronaPlasmaBlast13.jpg"
   },
   "13": {
    "en": "Lapras",
    "page": "Lapras (Megalo Cannon 13)",
    "type": "Water",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ラプラス",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/3/3a/LaprasPlasmaBlast17.jpg"
   },
   "14": {
    "en": "Remoraid",
    "page": "Remoraid (Megalo Cannon 14)",
    "type": "Water",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "テッポウオ",
+   "artist": "Masakazu Fukuda",
+   "image": "https://archives.bulbagarden.net/media/upload/1/1f/RemoraidPlasmaBlast18.jpg"
   },
   "15": {
    "en": "Octillery",
    "page": "Octillery (Megalo Cannon 15)",
    "type": "Water",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "オクタン",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a5/OctilleryPlasmaBlast19.jpg"
   },
   "16": {
    "en": "Snorunt",
    "page": "Snorunt (Megalo Cannon 16)",
    "type": "Water",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ユキワラシ",
+   "artist": "Kyoko Umemoto",
+   "image": "https://archives.bulbagarden.net/media/upload/a/ab/SnoruntPlasmaBlast21.jpg"
   },
   "17": {
    "en": "Glalie",
    "page": "Glalie (Megalo Cannon 17)",
    "type": "Water",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "オニゴーリ",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/5/56/GlaliePlasmaBlast22.jpg"
   },
   "18": {
    "en": "Relicanth",
    "page": "Relicanth (Megalo Cannon 18)",
    "type": "Water",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ジーランス",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/8/8b/RelicanthPlasmaBlast24.jpg"
   },
   "19": {
    "en": "Snover",
    "page": "Snover (Megalo Cannon 19)",
    "type": "Water",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ユキカブリ",
+   "artist": "Shigenori Negishi",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a5/SnoverPlasmaBlast25.jpg"
   },
   "20": {
    "en": "Abomasnow",
    "page": "Abomasnow (Megalo Cannon 20)",
    "type": "Water",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ユキノオー",
+   "artist": "kawayoo",
+   "image": "https://archives.bulbagarden.net/media/upload/8/83/AbomasnowPlasmaBlast26.jpg"
   },
   "21": {
    "en": "Tirtouga",
    "page": "Tirtouga (Megalo Cannon 21)",
    "type": "Water",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "プロトーガ",
+   "artist": "Midori Harada",
+   "image": "https://archives.bulbagarden.net/media/upload/7/73/TirtougaPlasmaBlast27.jpg"
   },
   "22": {
    "en": "Carracosta",
    "page": "Carracosta (Megalo Cannon 22)",
    "type": "Water",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "アバゴーラ",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/1/13/CarracostaPlasmaBlast28.jpg"
   },
   "23": {
    "en": "Tynamo",
    "page": "Tynamo (Megalo Cannon 23)",
    "type": "Lightning",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "シビシラス",
+   "artist": "Shigenori Negishi",
+   "image": "https://archives.bulbagarden.net/media/upload/b/ba/TynamoPlasmaBlast31.jpg"
   },
   "24": {
    "en": "Eelektrik",
    "page": "Eelektrik (Megalo Cannon 24)",
    "type": "Lightning",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "シビビール",
+   "artist": "Suwama Chiaki",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e4/EelektrikPlasmaBlast32.jpg"
   },
   "25": {
    "en": "Eelektross",
    "page": "Eelektross (Megalo Cannon 25)",
    "type": "Lightning",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "シビルドン",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/0/01/EelektrossPlasmaBlast33.jpg"
   },
   "26": {
    "en": "Drifloon",
    "page": "Drifloon (Megalo Cannon 26)",
    "type": "Psychic",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "フワンテ",
+   "artist": "Kyoko Umemoto",
+   "image": "https://archives.bulbagarden.net/media/upload/3/32/DrifloonPlasmaBlast34.jpg"
   },
   "27": {
    "en": "Drifblim",
    "page": "Drifblim (Megalo Cannon 27)",
    "type": "Psychic",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "フワライド",
+   "artist": "Akira Komayama",
+   "image": "https://archives.bulbagarden.net/media/upload/0/05/DrifblimPlasmaBlast35.jpg"
   },
   "28": {
    "en": "Uxie",
    "page": "Uxie (Megalo Cannon 28)",
    "type": "Psychic",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ユクシー",
+   "artist": "Sumiyoshi Kizuki",
+   "image": "https://archives.bulbagarden.net/media/upload/1/1c/UxiePlasmaBlast36.jpg"
   },
   "29": {
    "en": "Mesprit",
    "page": "Mesprit (Megalo Cannon 29)",
    "type": "Psychic",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "エムリット",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/b/ba/MespritPlasmaBlast37.jpg"
   },
   "30": {
    "en": "Azelf",
    "page": "Azelf (Megalo Cannon 30)",
    "type": "Psychic",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "アグノム",
+   "artist": "Naoyo Kimura",
+   "image": "https://archives.bulbagarden.net/media/upload/9/99/AzelfPlasmaBlast38.jpg"
   },
   "31": {
    "en": "Munna",
    "page": "Munna (Megalo Cannon 31)",
    "type": "Psychic",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ムンナ",
+   "artist": "Mizue",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d8/MunnaPlasmaBlast39.jpg"
   },
   "32": {
    "en": "Musharna",
    "page": "Musharna (Megalo Cannon 32)",
    "type": "Psychic",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ムシャーナ",
+   "artist": "Kagemaru Himeno",
+   "image": "https://archives.bulbagarden.net/media/upload/d/da/MusharnaPlasmaBlast40.jpg"
   },
   "33": {
    "en": "Sigilyph",
    "page": "Sigilyph (Megalo Cannon 33)",
    "type": "Psychic",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "シンボラー",
+   "artist": "Kagemaru Himeno",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b0/SigilyphPlasmaBlast41.jpg"
   },
   "34": {
    "en": "Solosis",
    "page": "Solosis (Megalo Cannon 34)",
    "type": "Psychic",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ユニラン",
+   "artist": "Midori Harada",
+   "image": "https://archives.bulbagarden.net/media/upload/8/81/SolosisPlasmaBlast42.jpg"
   },
   "35": {
    "en": "Duosion",
    "page": "Duosion (Megalo Cannon 35)",
    "type": "Psychic",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ダブラン",
+   "artist": "match",
+   "image": "https://archives.bulbagarden.net/media/upload/d/da/DuosionPlasmaBlast43.jpg"
   },
   "36": {
    "en": "Reuniclus",
    "page": "Reuniclus (Megalo Cannon 36)",
    "type": "Psychic",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ランクルス",
+   "artist": "Kagemaru Himeno",
+   "image": "https://archives.bulbagarden.net/media/upload/b/be/ReuniclusPlasmaBlast44.jpg"
   },
   "37": {
    "en": "Golett",
    "page": "Golett (Megalo Cannon 37)",
    "type": "Psychic",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ゴビット",
+   "artist": "Midori Harada",
+   "image": "https://archives.bulbagarden.net/media/upload/7/73/GolettPlasmaBlast45.jpg"
   },
   "38": {
    "en": "Golurk",
    "page": "Golurk (Megalo Cannon 38)",
    "type": "Psychic",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "ゴルーグ",
+   "artist": "Akira Komayama",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b8/GolurkPlasmaBlast46.jpg"
   },
   "39": {
    "en": "Machop",
    "page": "Machop (Megalo Cannon 39)",
    "type": "Fighting",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ワンリキー",
+   "artist": "sui",
+   "image": "https://archives.bulbagarden.net/media/upload/7/70/MachopPlasmaBlast47.jpg"
   },
   "40": {
    "en": "Machoke",
    "page": "Machoke (Megalo Cannon 40)",
    "type": "Fighting",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ゴーリキー",
+   "artist": "match",
+   "image": "https://archives.bulbagarden.net/media/upload/f/fc/MachokePlasmaBlast48.jpg"
   },
   "41": {
    "en": "Machamp",
    "page": "Machamp (Megalo Cannon 41)",
    "type": "Fighting",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "カイリキー",
+   "artist": "Naoki Saito",
+   "image": "https://archives.bulbagarden.net/media/upload/b/ba/MachampPlasmaBlast49.jpg"
   },
   "42": {
    "en": "Throh",
    "page": "Throh (Megalo Cannon 42)",
    "type": "Fighting",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ナゲキ",
+   "artist": "Naoki Saito",
+   "image": "https://archives.bulbagarden.net/media/upload/8/8d/ThrohPlasmaBlast51.jpg"
   },
   "43": {
    "en": "Sawk",
    "page": "Sawk (Megalo Cannon 43)",
    "type": "Fighting",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ダゲキ",
+   "artist": "Naoki Saito",
+   "image": "https://archives.bulbagarden.net/media/upload/d/dc/SawkPlasmaBlast52.jpg"
   },
   "44": {
    "en": "Archen",
    "page": "Archen (Megalo Cannon 44)",
    "type": "Fighting",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "アーケン",
+   "artist": "Mizue",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e8/ArchenPlasmaBlast53.jpg"
   },
   "45": {
    "en": "Archeops",
    "page": "Archeops (Megalo Cannon 45)",
    "type": "Fighting",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "アーケオス",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/c/cf/ArcheopsPlasmaBlast54.jpg"
   },
   "46": {
    "en": "Houndour",
    "page": "Houndour (Megalo Cannon 46)",
    "type": "Darkness",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "デルビル",
+   "artist": "Sumiyoshi Kizuki",
+   "image": "https://archives.bulbagarden.net/media/upload/8/8f/HoundourPlasmaBlast55.jpg"
   },
   "47": {
    "en": "Houndoom",
    "page": "Houndoom (Megalo Cannon 47)",
    "type": "Darkness",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "ヘルガー",
+   "artist": "Shin Nagasawa",
+   "image": "https://archives.bulbagarden.net/media/upload/5/53/HoundoomPlasmaBlast56.jpg"
   },
   "48": {
    "en": "Aron",
    "page": "Aron (Megalo Cannon 48)",
    "type": "Metal",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ココドラ",
+   "artist": "Shigenori Negishi",
+   "image": "https://archives.bulbagarden.net/media/upload/1/17/AronPlasmaBlast57.jpg"
   },
   "49": {
    "en": "Lairon",
    "page": "Lairon (Megalo Cannon 49)",
    "type": "Metal",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "コドラ",
+   "artist": "Masakazu Fukuda",
+   "image": "https://archives.bulbagarden.net/media/upload/9/94/LaironPlasmaBlast58.jpg"
   },
   "50": {
    "en": "Aggron",
    "page": "Aggron (Megalo Cannon 50)",
    "type": "Metal",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ボスゴドラ",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/8/8f/AggronPlasmaBlast59.jpg"
   },
   "51": {
    "en": "Jirachi",
    "page": "Jirachi-EX (Megalo Cannon 51)",
    "type": "Metal",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "ジラーチEX",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/4/42/JirachiEXPlasmaBlast60.jpg"
   },
   "52": {
    "en": "Escavalier",
    "page": "Escavalier (Megalo Cannon 52)",
    "type": "Metal",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "シュバルゴ",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/5/57/EscavalierPlasmaBlast61.jpg"
   },
   "53": {
    "en": "Dialga",
    "page": "Dialga-EX (Megalo Cannon 53)",
    "type": "Dragon",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "ディアルガEX",
+   "artist": "Eske Yoshinob",
+   "image": "https://archives.bulbagarden.net/media/upload/b/be/DialgaEXPlasmaBlast65.jpg"
   },
   "54": {
    "en": "Palkia",
    "page": "Palkia-EX (Megalo Cannon 54)",
    "type": "Dragon",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "パルキアEX",
+   "artist": "Eske Yoshinob",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a8/PalkiaEXPlasmaBlast66.jpg"
   },
   "55": {
    "en": "Axew",
    "page": "Axew (Megalo Cannon 55)",
    "type": "Dragon",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "キバゴ",
+   "artist": "sui",
+   "image": "https://archives.bulbagarden.net/media/upload/3/30/AxewPlasmaBlast67.jpg"
   },
   "56": {
    "en": "Fraxure",
    "page": "Fraxure (Megalo Cannon 56)",
    "type": "Dragon",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "オノンド",
+   "artist": "Masakazu Fukuda",
+   "image": "https://archives.bulbagarden.net/media/upload/3/31/FraxurePlasmaBlast68.jpg"
   },
   "57": {
    "en": "Haxorus",
    "page": "Haxorus (Megalo Cannon 57)",
    "type": "Dragon",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "オノノクス",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/3/35/HaxorusPlasmaBlast69.jpg"
   },
   "58": {
    "en": "Druddigon",
    "page": "Druddigon (Megalo Cannon 58)",
    "type": "Dragon",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "クリムガン",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/2/28/DruddigonPlasmaBlast70.jpg"
   },
   "59": {
    "en": "Porygon",
    "page": "Porygon (Megalo Cannon 59)",
    "type": "Colorless",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ポリゴン",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/7/7d/PorygonPlasmaBlast72.jpg"
   },
   "60": {
    "en": "Porygon2",
    "page": "Porygon2 (Megalo Cannon 60)",
    "type": "Colorless",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ポリゴン２",
+   "artist": "HiRON",
+   "image": "https://archives.bulbagarden.net/media/upload/1/16/Porygon2PlasmaBlast73.jpg"
   },
   "61": {
    "en": "Porygon-Z",
    "page": "Porygon-Z (Megalo Cannon 61)",
    "type": "Colorless",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "ポリゴンZ",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/8/88/Porygon-ZBWPromo84.jpg"
   },
   "62": {
    "en": "Teddiursa",
    "page": "Teddiursa (Megalo Cannon 62)",
    "type": "Colorless",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ヒメグマ",
+   "artist": "Naoyo Kimura",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c6/TeddiursaPlasmaBlast75.jpg"
   },
   "63": {
    "en": "Ursaring",
    "page": "Ursaring (Megalo Cannon 63)",
    "type": "Colorless",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "リングマ",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/1/12/UrsaringPlasmaBlast76.jpg"
   },
   "64": {
    "en": "Chatot",
    "page": "Chatot (Megalo Cannon 64)",
    "type": "Colorless",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ペラップ",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/2/29/ChatotPlasmaBlast77.jpg"
   },
   "65": {
    "en": "Root Fossil Lileep",
    "page": "Root Fossil Lileep (Megalo Cannon 65)",
    "type": "I",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ねっこの化石 リリーラ",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/4/4f/RootFossilLileepPlasmaBlast87.jpg"
   },
   "66": {
    "en": "Plume Fossil",
    "page": "Plume Fossil (Megalo Cannon 66)",
    "type": "I",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "はねの化石",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/e/eb/PlumeFossilNobleVictories93.jpg"
   },
   "67": {
    "en": "Cover Fossil",
    "page": "Cover Fossil (Megalo Cannon 67)",
    "type": "I",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "ふたの化石",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/2/21/CoverFossilNobleVictories90.jpg"
   },
   "68": {
    "en": "Silver Bangle",
    "page": "Silver Bangle (Megalo Cannon 68)",
    "type": "I",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "シルバーバングル",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/5/5c/SilverBanglePlasmaBlast88.jpg"
   },
   "69": {
    "en": "Silver Mirror",
    "page": "Silver Mirror (Megalo Cannon 69)",
    "type": "I",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "白銀の鏡",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/4/46/SilverMirrorPlasmaBlast89.jpg"
   },
   "70": {
    "en": "Reversal Trigger",
    "page": "Reversal Trigger (Megalo Cannon 70)",
    "type": "I",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "リバーサルトリガー",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/8/80/ReversalTriggerPlasmaBlast86.jpg"
   },
   "71": {
    "en": "Iris",
    "page": "Iris (Megalo Cannon 71)",
    "type": "Su",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "アイリス",
+   "artist": "Yusuke Ohmura",
+   "image": "https://archives.bulbagarden.net/media/upload/7/78/IrisPlasmaBlast81.jpg"
   },
   "72": {
    "en": "Caitlin",
    "page": "Caitlin (Megalo Cannon 72)",
    "type": "Su",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "カトレア",
+   "artist": "Sanosuke Sakuma",
+   "image": "https://archives.bulbagarden.net/media/upload/6/6c/CaitlinChillingReign132.jpg"
   },
   "73": {
    "en": "Scoop Up Cyclone",
    "page": "Scoop Up Cyclone (Megalo Cannon 73)",
    "type": "I",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "ポケモン回収サイクロン",
+   "artist": "Toyste Beach",
+   "image": "https://archives.bulbagarden.net/media/upload/2/26/ScoopUpCycloneTwilightMasquerade162.jpg"
   },
   "74": {
    "en": "G Scope",
    "page": "G Scope (Megalo Cannon 74)",
    "type": "I",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "Gスコープ",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/2/21/GScopePlasmaBlast93.jpg"
   },
   "75": {
    "en": "G Booster",
    "page": "G Booster (Megalo Cannon 75)",
    "type": "I",
    "rarity": "R",
-   "mark": ""
+   "mark": "",
+   "ja": "Gブースター",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d2/GBoosterPlasmaBlast92.jpg"
   },
   "76": {
    "en": "Plasma Energy",
    "page": "Plasma Energy (Megalo Cannon 76)",
    "type": "Colorless",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "プラズマエネルギー",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/1/12/PlasmaEnergyPlasmaStorm127.jpg"
   },
   "77": {
    "en": "Virizion",
    "page": "Virizion-EX (Megalo Cannon 77)",
    "type": "Grass",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "ビリジオンEX",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f8/VirizionEXPlasmaBlast9.jpg"
   },
   "78": {
    "en": "Genesect",
    "page": "Genesect-EX (Megalo Cannon 78)",
    "type": "Grass",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "ゲノセクトEX",
+   "artist": "Eske Yoshinob",
+   "image": "https://archives.bulbagarden.net/media/upload/5/5b/GenesectEXPlasmaBlast11.jpg"
   },
   "79": {
    "en": "Jirachi",
    "page": "Jirachi-EX (Megalo Cannon 79)",
    "type": "Metal",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "ジラーチEX",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/4/42/JirachiEXPlasmaBlast60.jpg"
   },
   "80": {
    "en": "Dialga",
    "page": "Dialga-EX (Megalo Cannon 80)",
    "type": "Dragon",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "ディアルガEX",
+   "artist": "Eske Yoshinob",
+   "image": "https://archives.bulbagarden.net/media/upload/b/be/DialgaEXPlasmaBlast65.jpg"
   },
   "81": {
    "en": "Palkia",
    "page": "Palkia-EX (Megalo Cannon 81)",
    "type": "Dragon",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "パルキアEX",
+   "artist": "Eske Yoshinob",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a8/PalkiaEXPlasmaBlast66.jpg"
   },
   "82": {
    "en": "Iris",
    "page": "Iris (Megalo Cannon 82)",
    "type": "Su",
    "rarity": "SR",
-   "mark": ""
+   "mark": "",
+   "ja": "アイリス",
+   "artist": "Yusuke Ohmura",
+   "image": "https://archives.bulbagarden.net/media/upload/7/78/IrisPlasmaBlast81.jpg"
   },
   "83": {
    "en": "Exeggcute",
    "page": "Exeggcute (Megalo Cannon 83)",
    "type": "Grass",
    "rarity": "UR",
-   "mark": ""
+   "mark": "",
+   "ja": "タマタマ",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/4/43/ExeggcutePlasmaBlast102.jpg"
   },
   "84": {
    "en": "Virizion",
    "page": "Virizion (Megalo Cannon 84)",
    "type": "Grass",
    "rarity": "UR",
-   "mark": ""
+   "mark": "",
+   "ja": "ビリジオン",
+   "artist": "Ayaka Yoshida",
+   "image": "https://archives.bulbagarden.net/media/upload/7/76/VirizionPlasmaBlast103.jpg"
   },
   "85": {
    "en": "Dusknoir",
    "page": "Dusknoir (Megalo Cannon 85)",
    "type": "Psychic",
    "rarity": "UR",
-   "mark": ""
+   "mark": "",
+   "ja": "ヨノワール",
+   "artist": "kawayoo",
+   "image": "https://archives.bulbagarden.net/media/upload/1/1d/DusknoirBoundariesCrossed63.jpg"
   },
   "86": {
    "en": "Rare Candy",
    "page": "Rare Candy (Megalo Cannon 86)",
    "type": "I",
    "rarity": "UR",
-   "mark": ""
-  },
-  "87": {
-   "en": "Root Fossil Lileep",
-   "page": "Root Fossil Lileep (Plasma Blast 87)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "88": {
-   "en": "Silver Bangle",
-   "page": "Silver Bangle (Plasma Blast 88)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "89": {
-   "en": "Silver Mirror",
-   "page": "Silver Mirror (Plasma Blast 89)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "90": {
-   "en": "Ultra Ball",
-   "page": "Ultra Ball (Plasma Blast 90)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "91": {
-   "en": "Plasma Energy",
-   "page": "Plasma Energy (Plasma Blast 91)",
-   "type": "Uncommon",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "92": {
-   "en": "G Booster",
-   "page": "G Booster (Plasma Blast 92)",
-   "type": "Rare Ace",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "93": {
-   "en": "G Scope",
-   "page": "G Scope (Plasma Blast 93)",
-   "type": "Rare Ace",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "94": {
-   "en": "Master Ball",
-   "page": "Master Ball (Plasma Blast 94)",
-   "type": "Rare Ace",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "95": {
-   "en": "Scoop Up Cyclone",
-   "page": "Scoop Up Cyclone (Plasma Blast 95)",
-   "type": "Rare Ace",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "96": {
-   "en": "Virizion",
-   "page": "Virizion-EX (Plasma Blast 96)",
-   "type": "Rare Ultra",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "97": {
-   "en": "Genesect",
-   "page": "Genesect-EX (Plasma Blast 97)",
-   "type": "Rare Ultra",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "98": {
-   "en": "Jirachi",
-   "page": "Jirachi-EX (Plasma Blast 98)",
-   "type": "Rare Ultra",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "99": {
-   "en": "Dialga",
-   "page": "Dialga-EX (Plasma Blast 99)",
-   "type": "Rare Ultra",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "100": {
-   "en": "Palkia",
-   "page": "Palkia-EX (Plasma Blast 100)",
-   "type": "Rare Ultra",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "101": {
-   "en": "Iris",
-   "page": "Iris (Plasma Blast 101)",
-   "type": "Rare Ultra",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "102": {
-   "en": "Exeggcute",
-   "page": "Exeggcute (Plasma Blast 102)",
-   "type": "Rare Secret",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "103": {
-   "en": "Virizion",
-   "page": "Virizion (Plasma Blast 103)",
-   "type": "Rare Secret",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "104": {
-   "en": "Dusknoir",
-   "page": "Dusknoir (Plasma Blast 104)",
-   "type": "Rare Secret",
-   "rarity": "Promotion",
-   "mark": ""
-  },
-  "105": {
-   "en": "Rare Candy",
-   "page": "Rare Candy (Plasma Blast 105)",
-   "type": "Rare Secret",
-   "rarity": "Promotion",
-   "mark": ""
+   "mark": "",
+   "ja": "ふしぎなアメ",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/4/4a/RareCandyCelestialStorm142.jpg"
   }
  }
 }

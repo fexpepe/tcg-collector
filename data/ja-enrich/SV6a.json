@@ -1,68 +1,663 @@
 {
- "page": "Shrouded Fable (TCG)",
+ "page": "Night Wanderer (TCG)",
  "at": "2026-09-21",
  "cards": {
+  "1": {
+   "en": "Joltik",
+   "page": "Joltik (Night Wanderer 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Galvantula",
+   "page": "Galvantula (Night Wanderer 2)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "3": {
+   "en": "Rowlet",
+   "page": "Rowlet (Night Wanderer 3)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "4": {
+   "en": "Dartrix",
+   "page": "Dartrix (Night Wanderer 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Decidueye",
+   "page": "Decidueye (Night Wanderer 5)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "6": {
+   "en": "Tapu Bulu",
+   "page": "Tapu Bulu (Night Wanderer 6)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "7": {
+   "en": "Houndour",
+   "page": "Houndour (Night Wanderer 7)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Houndoom",
+   "page": "Houndoom (Night Wanderer 8)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "9": {
+   "en": "Iron Moth",
+   "page": "Iron Moth (Night Wanderer 9)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
   "10": {
    "en": "Horsea",
-   "page": "Horsea (Shrouded Fable 10)",
+   "page": "Horsea (Night Wanderer 10)",
    "type": "Water",
-   "rarity": "—",
+   "rarity": "C",
    "mark": ""
   },
   "11": {
    "en": "Seadra",
-   "page": "Seadra (Shrouded Fable 11)",
+   "page": "Seadra (Night Wanderer 11)",
    "type": "Water",
-   "rarity": "—",
+   "rarity": "C",
    "mark": ""
   },
   "12": {
    "en": "Kingdra",
-   "page": "Kingdra ex (Shrouded Fable 12)",
+   "page": "Kingdra ex (Night Wanderer 12)",
    "type": "Water",
-   "rarity": "—",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "13": {
+   "en": "Sneasel",
+   "page": "Sneasel (Night Wanderer 13)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Weavile",
+   "page": "Weavile (Night Wanderer 14)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "15": {
+   "en": "Revavroom",
+   "page": "Revavroom ex (Night Wanderer 15)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "16": {
+   "en": "Drowzee",
+   "page": "Drowzee (Night Wanderer 16)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Hypno",
+   "page": "Hypno (Night Wanderer 17)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "18": {
+   "en": "Duskull",
+   "page": "Duskull (Night Wanderer 18)",
+   "type": "Psychic",
+   "rarity": "C",
    "mark": ""
   },
   "19": {
    "en": "Dusclops",
-   "page": "Dusclops (Shrouded Fable 19)",
+   "page": "Dusclops (Night Wanderer 19)",
    "type": "Psychic",
-   "rarity": "—",
+   "rarity": "C",
    "mark": ""
   },
   "20": {
    "en": "Dusknoir",
-   "page": "Dusknoir (Shrouded Fable 20)",
+   "page": "Dusknoir (Night Wanderer 20)",
    "type": "Psychic",
-   "rarity": "—",
+   "rarity": "R",
+   "mark": ""
+  },
+  "21": {
+   "en": "Cresselia",
+   "page": "Cresselia (Night Wanderer 21)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "22": {
+   "en": "Sylveon",
+   "page": "Sylveon (Night Wanderer 22)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "23": {
+   "en": "Croagunk",
+   "page": "Croagunk (Night Wanderer 23)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "24": {
+   "en": "Toxicroak",
+   "page": "Toxicroak (Night Wanderer 24)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "25": {
+   "en": "Bloodmoon Ursaluna",
+   "page": "Bloodmoon Ursaluna (Night Wanderer 25)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "26": {
+   "en": "Slither Wing",
+   "page": "Slither Wing (Night Wanderer 26)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "27": {
+   "en": "Zubat",
+   "page": "Zubat (Night Wanderer 27)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "28": {
+   "en": "Golbat",
+   "page": "Golbat (Night Wanderer 28)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "29": {
+   "en": "Crobat",
+   "page": "Crobat (Night Wanderer 29)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "30": {
+   "en": "Absol",
+   "page": "Absol (Night Wanderer 30)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "31": {
+   "en": "Zorua",
+   "page": "Zorua (Night Wanderer 31)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "32": {
+   "en": "Zoroark",
+   "page": "Zoroark (Night Wanderer 32)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "33": {
+   "en": "Inkay",
+   "page": "Inkay (Night Wanderer 33)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "34": {
+   "en": "Malamar",
+   "page": "Malamar (Night Wanderer 34)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "35": {
+   "en": "Yveltal",
+   "page": "Yveltal (Night Wanderer 35)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "36": {
+   "en": "Okidogi",
+   "page": "Okidogi ex (Night Wanderer 36)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "37": {
+   "en": "Munkidori",
+   "page": "Munkidori ex (Night Wanderer 37)",
+   "type": "Darkness",
+   "rarity": "RR",
    "mark": ""
   },
   "38": {
    "en": "Fezandipiti",
-   "page": "Fezandipiti ex (Shrouded Fable 38)",
+   "page": "Fezandipiti ex (Night Wanderer 38)",
    "type": "Darkness",
-   "rarity": "—",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "39": {
+   "en": "Pecharunt",
+   "page": "Pecharunt ex (Night Wanderer 39)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "40": {
+   "en": "Genesect",
+   "page": "Genesect (Night Wanderer 40)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "41": {
+   "en": "Cufant",
+   "page": "Cufant (Night Wanderer 41)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "42": {
+   "en": "Copperajah",
+   "page": "Copperajah (Night Wanderer 42)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "43": {
+   "en": "Varoom",
+   "page": "Varoom (Night Wanderer 43)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "44": {
+   "en": "Axew",
+   "page": "Axew (Night Wanderer 44)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "45": {
+   "en": "Fraxure",
+   "page": "Fraxure (Night Wanderer 45)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "46": {
+   "en": "Haxorus",
+   "page": "Haxorus (Night Wanderer 46)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "47": {
+   "en": "Kyurem",
+   "page": "Kyurem (Night Wanderer 47)",
+   "type": "Dragon",
+   "rarity": "U",
+   "mark": ""
+  },
+  "48": {
+   "en": "Meowth",
+   "page": "Meowth (Night Wanderer 48)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "49": {
+   "en": "Persian",
+   "page": "Persian (Night Wanderer 49)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "50": {
+   "en": "Eevee",
+   "page": "Eevee (Night Wanderer 50)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "51": {
+   "en": "Furfrou",
+   "page": "Furfrou (Night Wanderer 51)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "52": {
+   "en": "Stufful",
+   "page": "Stufful (Night Wanderer 52)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "53": {
+   "en": "Bewear",
+   "page": "Bewear (Night Wanderer 53)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "54": {
+   "en": "Dangerous Laser",
+   "page": "Dangerous Laser (Night Wanderer 54)",
+   "type": "I",
+   "rarity": "ACE",
+   "mark": ""
+  },
+  "55": {
+   "en": "Poké Vital A",
+   "page": "Poké Vital A (Night Wanderer 55)",
+   "type": "I",
+   "rarity": "ACE",
+   "mark": ""
+  },
+  "56": {
+   "en": "Night Stretcher",
+   "page": "Night Stretcher (Night Wanderer 56)",
+   "type": "I",
+   "rarity": "U",
    "mark": ""
   },
   "57": {
+   "en": "Binding Mochi",
+   "page": "Binding Mochi (Night Wanderer 57)",
+   "type": "PT",
+   "rarity": "U",
+   "mark": ""
+  },
+  "58": {
+   "en": "Powerglass",
+   "page": "Powerglass (Night Wanderer 58)",
+   "type": "PT",
+   "rarity": "U",
+   "mark": ""
+  },
+  "59": {
    "en": "Colress's Tenacity",
-   "page": "Colress's Tenacity (Shrouded Fable 57)",
+   "page": "Colress's Tenacity (Night Wanderer 59)",
    "type": "Su",
-   "rarity": "—",
+   "rarity": "U",
+   "mark": ""
+  },
+  "60": {
+   "en": "Janine's Secret Art",
+   "page": "Janine's Secret Art (Night Wanderer 60)",
+   "type": "Su",
+   "rarity": "U",
    "mark": ""
   },
   "61": {
-   "en": "Night Stretcher",
-   "page": "Night Stretcher (Shrouded Fable 61)",
-   "type": "I",
-   "rarity": "—",
+   "en": "Cassiopeia",
+   "page": "Cassiopeia (Night Wanderer 61)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "62": {
+   "en": "Xerosic's Machinations",
+   "page": "Xerosic's Machinations (Night Wanderer 62)",
+   "type": "Su",
+   "rarity": "U",
    "mark": ""
   },
   "63": {
-   "en": "Powerglass",
-   "page": "Powerglass (Shrouded Fable 63)",
+   "en": "Neutralization Zone",
+   "page": "Neutralization Zone (Night Wanderer 63)",
+   "type": "St",
+   "rarity": "ACE",
+   "mark": ""
+  },
+  "64": {
+   "en": "Academy at Night",
+   "page": "Academy at Night (Night Wanderer 64)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "65": {
+   "en": "Tapu Bulu",
+   "page": "Tapu Bulu (Night Wanderer 65)",
+   "type": "Grass",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "66": {
+   "en": "Houndoom",
+   "page": "Houndoom (Night Wanderer 66)",
+   "type": "Fire",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "67": {
+   "en": "Horsea",
+   "page": "Horsea (Night Wanderer 67)",
+   "type": "Water",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "68": {
+   "en": "Duskull",
+   "page": "Duskull (Night Wanderer 68)",
+   "type": "Psychic",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "69": {
+   "en": "Dusclops",
+   "page": "Dusclops (Night Wanderer 69)",
+   "type": "Psychic",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "70": {
+   "en": "Dusknoir",
+   "page": "Dusknoir (Night Wanderer 70)",
+   "type": "Psychic",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "71": {
+   "en": "Cresselia",
+   "page": "Cresselia (Night Wanderer 71)",
+   "type": "Psychic",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "72": {
+   "en": "Zorua",
+   "page": "Zorua (Night Wanderer 72)",
+   "type": "Darkness",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "73": {
+   "en": "Cufant",
+   "page": "Cufant (Night Wanderer 73)",
+   "type": "Metal",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "74": {
+   "en": "Fraxure",
+   "page": "Fraxure (Night Wanderer 74)",
+   "type": "Dragon",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "75": {
+   "en": "Persian",
+   "page": "Persian (Night Wanderer 75)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "76": {
+   "en": "Bewear",
+   "page": "Bewear (Night Wanderer 76)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "77": {
+   "en": "Kingdra",
+   "page": "Kingdra ex (Night Wanderer 77)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "78": {
+   "en": "Revavroom",
+   "page": "Revavroom ex (Night Wanderer 78)",
+   "type": "Lightning",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "79": {
+   "en": "Okidogi",
+   "page": "Okidogi ex (Night Wanderer 79)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "80": {
+   "en": "Munkidori",
+   "page": "Munkidori ex (Night Wanderer 80)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "81": {
+   "en": "Fezandipiti",
+   "page": "Fezandipiti ex (Night Wanderer 81)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "82": {
+   "en": "Pecharunt",
+   "page": "Pecharunt ex (Night Wanderer 82)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "83": {
+   "en": "Colress's Tenacity",
+   "page": "Colress's Tenacity (Night Wanderer 83)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "84": {
+   "en": "Janine's Secret Art",
+   "page": "Janine's Secret Art (Night Wanderer 84)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "85": {
+   "en": "Cassiopeia",
+   "page": "Cassiopeia (Night Wanderer 85)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "86": {
+   "en": "Xerosic's Machinations",
+   "page": "Xerosic's Machinations (Night Wanderer 86)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "87": {
+   "en": "Okidogi",
+   "page": "Okidogi ex (Night Wanderer 87)",
+   "type": "Darkness",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "88": {
+   "en": "Munkidori",
+   "page": "Munkidori ex (Night Wanderer 88)",
+   "type": "Darkness",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "89": {
+   "en": "Fezandipiti",
+   "page": "Fezandipiti ex (Night Wanderer 89)",
+   "type": "Darkness",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "90": {
+   "en": "Pecharunt",
+   "page": "Pecharunt ex (Night Wanderer 90)",
+   "type": "Darkness",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "91": {
+   "en": "Cassiopeia",
+   "page": "Cassiopeia (Night Wanderer 91)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "92": {
+   "en": "Pecharunt",
+   "page": "Pecharunt ex (Night Wanderer 92)",
+   "type": "Darkness",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "93": {
+   "en": "Earthen Vessel",
+   "page": "Earthen Vessel (Night Wanderer 93)",
    "type": "I",
-   "rarity": "—",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "94": {
+   "en": "Powerglass",
+   "page": "Powerglass (Night Wanderer 94)",
+   "type": "PT",
+   "rarity": "UR",
    "mark": ""
   }
  }

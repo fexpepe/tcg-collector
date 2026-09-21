@@ -1,0 +1,454 @@
+{
+ "page": "Darkness that Consumes Light (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Caterpie",
+   "page": "Caterpie (Darkness that Consumes Light 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Metapod",
+   "page": "Metapod (Darkness that Consumes Light 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Butterfree",
+   "page": "Butterfree (Darkness that Consumes Light 3)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "4": {
+   "en": "Tangela",
+   "page": "Tangela (Darkness that Consumes Light 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Tangrowth",
+   "page": "Tangrowth (Darkness that Consumes Light 5)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "6": {
+   "en": "Wimpod",
+   "page": "Wimpod (Darkness that Consumes Light 6)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Golisopod",
+   "page": "Golisopod-GX (Darkness that Consumes Light 7)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "8": {
+   "en": "Magikarp",
+   "page": "Magikarp (Darkness that Consumes Light 8)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "9": {
+   "en": "Gyarados",
+   "page": "Gyarados (Darkness that Consumes Light 9)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "10": {
+   "en": "Panpour",
+   "page": "Panpour (Darkness that Consumes Light 10)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "11": {
+   "en": "Simipour",
+   "page": "Simipour (Darkness that Consumes Light 11)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "12": {
+   "en": "Bruxish",
+   "page": "Bruxish (Darkness that Consumes Light 12)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "13": {
+   "en": "Pikachu",
+   "page": "Pikachu (Darkness that Consumes Light 13)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Raichu",
+   "page": "Raichu (Darkness that Consumes Light 14)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "15": {
+   "en": "Tynamo",
+   "page": "Tynamo (Darkness that Consumes Light 15)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "16": {
+   "en": "Eelektrik",
+   "page": "Eelektrik (Darkness that Consumes Light 16)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Eelektross",
+   "page": "Eelektross (Darkness that Consumes Light 17)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "18": {
+   "en": "Seviper",
+   "page": "Seviper (Darkness that Consumes Light 18)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "19": {
+   "en": "Duskull",
+   "page": "Duskull (Darkness that Consumes Light 19)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "20": {
+   "en": "Dusclops",
+   "page": "Dusclops (Darkness that Consumes Light 20)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "21": {
+   "en": "Dusknoir",
+   "page": "Dusknoir (Darkness that Consumes Light 21)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "22": {
+   "en": "Croagunk",
+   "page": "Croagunk (Darkness that Consumes Light 22)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "23": {
+   "en": "Toxicroak",
+   "page": "Toxicroak (Darkness that Consumes Light 23)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "24": {
+   "en": "Espurr",
+   "page": "Espurr (Darkness that Consumes Light 24)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "25": {
+   "en": "Meowstic",
+   "page": "Meowstic (Darkness that Consumes Light 25)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "26": {
+   "en": "Necrozma",
+   "page": "Necrozma-GX (Darkness that Consumes Light 26)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "27": {
+   "en": "Rhyhorn",
+   "page": "Rhyhorn (Darkness that Consumes Light 27)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "28": {
+   "en": "Rhydon",
+   "page": "Rhydon (Darkness that Consumes Light 28)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "29": {
+   "en": "Rhyperior",
+   "page": "Rhyperior (Darkness that Consumes Light 29)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "30": {
+   "en": "Sawk",
+   "page": "Sawk (Darkness that Consumes Light 30)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "31": {
+   "en": "Mudbray",
+   "page": "Mudbray (Darkness that Consumes Light 31)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "32": {
+   "en": "Mudsdale",
+   "page": "Mudsdale (Darkness that Consumes Light 32)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "33": {
+   "en": "Marshadow",
+   "page": "Marshadow-GX (Darkness that Consumes Light 33)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "34": {
+   "en": "Alolan Rattata",
+   "page": "Alolan Rattata (Darkness that Consumes Light 34)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "35": {
+   "en": "Alolan Raticate",
+   "page": "Alolan Raticate (Darkness that Consumes Light 35)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "36": {
+   "en": "Ralts",
+   "page": "Ralts (Darkness that Consumes Light 36)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "37": {
+   "en": "Kirlia",
+   "page": "Kirlia (Darkness that Consumes Light 37)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "38": {
+   "en": "Gardevoir",
+   "page": "Gardevoir-GX (Darkness that Consumes Light 38)",
+   "type": "Fairy",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "39": {
+   "en": "Morelull",
+   "page": "Morelull (Darkness that Consumes Light 39)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "40": {
+   "en": "Shiinotic",
+   "page": "Shiinotic (Darkness that Consumes Light 40)",
+   "type": "Fairy",
+   "rarity": "U",
+   "mark": ""
+  },
+  "41": {
+   "en": "Zygarde",
+   "page": "Zygarde (Darkness that Consumes Light 41)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "42": {
+   "en": "Porygon",
+   "page": "Porygon (Darkness that Consumes Light 42)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "43": {
+   "en": "Porygon2",
+   "page": "Porygon2 (Darkness that Consumes Light 43)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "44": {
+   "en": "Porygon-Z",
+   "page": "Porygon-Z (Darkness that Consumes Light 44)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "45": {
+   "en": "Stufful",
+   "page": "Stufful (Darkness that Consumes Light 45)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "46": {
+   "en": "Bewear",
+   "page": "Bewear (Darkness that Consumes Light 46)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "47": {
+   "en": "Tormenting Spray",
+   "page": "Tormenting Spray (Darkness that Consumes Light 47)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "48": {
+   "en": "Super Scoop Up",
+   "page": "Super Scoop Up (Darkness that Consumes Light 48)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "49": {
+   "en": "Guzma",
+   "page": "Guzma (Darkness that Consumes Light 49)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "50": {
+   "en": "Wicke",
+   "page": "Wicke (Darkness that Consumes Light 50)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "51": {
+   "en": "Po Town",
+   "page": "Po Town (Darkness that Consumes Light 51)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "52": {
+   "en": "Golisopod",
+   "page": "Golisopod-GX (Darkness that Consumes Light 52)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "53": {
+   "en": "Necrozma",
+   "page": "Necrozma-GX (Darkness that Consumes Light 53)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "54": {
+   "en": "Marshadow",
+   "page": "Marshadow-GX (Darkness that Consumes Light 54)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "55": {
+   "en": "Gardevoir",
+   "page": "Gardevoir-GX (Darkness that Consumes Light 55)",
+   "type": "Fairy",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "56": {
+   "en": "Guzma",
+   "page": "Guzma (Darkness that Consumes Light 56)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "57": {
+   "en": "Wicke",
+   "page": "Wicke (Darkness that Consumes Light 57)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "58": {
+   "en": "Golisopod",
+   "page": "Golisopod-GX (Darkness that Consumes Light 58)",
+   "type": "Grass",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "59": {
+   "en": "Necrozma",
+   "page": "Necrozma-GX (Darkness that Consumes Light 59)",
+   "type": "Psychic",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "60": {
+   "en": "Marshadow",
+   "page": "Marshadow-GX (Darkness that Consumes Light 60)",
+   "type": "Fighting",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "61": {
+   "en": "Gardevoir",
+   "page": "Gardevoir-GX (Darkness that Consumes Light 61)",
+   "type": "Fairy",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "62": {
+   "en": "Super Scoop Up",
+   "page": "Super Scoop Up (Darkness that Consumes Light 62)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "63": {
+   "en": "Rescue Stretcher",
+   "page": "Rescue Stretcher (Darkness that Consumes Light 63)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "64": {
+   "en": "Fairy Energy",
+   "page": "Fairy Energy (Darkness that Consumes Light 64)",
+   "type": "Fairy",
+   "rarity": "UR",
+   "mark": "—"
+  }
+ }
+}

@@ -1,0 +1,608 @@
+{
+ "page": "Champion Road (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Bellsprout",
+   "page": "Bellsprout (Champion Road 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Weepinbell",
+   "page": "Weepinbell (Champion Road 2)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "3": {
+   "en": "Victreebel",
+   "page": "Victreebel (Champion Road 3)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "4": {
+   "en": "Scyther",
+   "page": "Scyther (Champion Road 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Spinarak",
+   "page": "Spinarak (Champion Road 5)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Ariados",
+   "page": "Ariados (Champion Road 6)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "7": {
+   "en": "Cacnea",
+   "page": "Cacnea (Champion Road 7)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Cacturne",
+   "page": "Cacturne (Champion Road 8)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "9": {
+   "en": "Slugma",
+   "page": "Slugma (Champion Road 9)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Magcargo",
+   "page": "Magcargo (Champion Road 10)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "11": {
+   "en": "Torchic",
+   "page": "Torchic (Champion Road 11)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "12": {
+   "en": "Combusken",
+   "page": "Combusken (Champion Road 12)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "13": {
+   "en": "Blaziken",
+   "page": "Blaziken (Champion Road 13)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "14": {
+   "en": "Articuno",
+   "page": "Articuno-GX (Champion Road 14)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "15": {
+   "en": "Totodile",
+   "page": "Totodile (Champion Road 15)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "16": {
+   "en": "Croconaw",
+   "page": "Croconaw (Champion Road 16)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "17": {
+   "en": "Feraligatr",
+   "page": "Feraligatr (Champion Road 17)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "18": {
+   "en": "Lotad",
+   "page": "Lotad (Champion Road 18)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "19": {
+   "en": "Lombre",
+   "page": "Lombre (Champion Road 19)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "20": {
+   "en": "Ludicolo",
+   "page": "Ludicolo (Champion Road 20)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "21": {
+   "en": "Voltorb",
+   "page": "Voltorb (Champion Road 21)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "22": {
+   "en": "Electrode",
+   "page": "Electrode-GX (Champion Road 22)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "23": {
+   "en": "Chinchou",
+   "page": "Chinchou (Champion Road 23)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "24": {
+   "en": "Lanturn",
+   "page": "Lanturn (Champion Road 24)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "25": {
+   "en": "Mr. Mime",
+   "page": "Mr. Mime-GX (Champion Road 25)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "26": {
+   "en": "Gulpin",
+   "page": "Gulpin (Champion Road 26)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "27": {
+   "en": "Swalot",
+   "page": "Swalot (Champion Road 27)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "28": {
+   "en": "Lunatone",
+   "page": "Lunatone (Champion Road 28)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "29": {
+   "en": "Solrock",
+   "page": "Solrock (Champion Road 29)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "30": {
+   "en": "Shuppet",
+   "page": "Shuppet (Champion Road 30)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "31": {
+   "en": "Banette",
+   "page": "Banette-GX (Champion Road 31)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "32": {
+   "en": "Onix",
+   "page": "Onix (Champion Road 32)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "33": {
+   "en": "Phanpy",
+   "page": "Phanpy (Champion Road 33)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "34": {
+   "en": "Donphan",
+   "page": "Donphan (Champion Road 34)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "35": {
+   "en": "Larvitar",
+   "page": "Larvitar (Champion Road 35)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "36": {
+   "en": "Pupitar",
+   "page": "Pupitar (Champion Road 36)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "37": {
+   "en": "Sneasel",
+   "page": "Sneasel (Champion Road 37)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "38": {
+   "en": "Tyranitar",
+   "page": "Tyranitar (Champion Road 38)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "39": {
+   "en": "Sableye",
+   "page": "Sableye (Champion Road 39)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "40": {
+   "en": "Steelix",
+   "page": "Steelix (Champion Road 40)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "41": {
+   "en": "Scizor",
+   "page": "Scizor-GX (Champion Road 41)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "42": {
+   "en": "Mawile",
+   "page": "Mawile (Champion Road 42)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "43": {
+   "en": "Bagon",
+   "page": "Bagon (Champion Road 43)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "44": {
+   "en": "Shelgon",
+   "page": "Shelgon (Champion Road 44)",
+   "type": "Dragon",
+   "rarity": "U",
+   "mark": ""
+  },
+  "45": {
+   "en": "Salamence",
+   "page": "Salamence-GX (Champion Road 45)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "46": {
+   "en": "Kangaskhan",
+   "page": "Kangaskhan (Champion Road 46)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "47": {
+   "en": "Dunsparce",
+   "page": "Dunsparce (Champion Road 47)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "48": {
+   "en": "Ho-Oh",
+   "page": "Ho-Oh (Champion Road 48)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "49": {
+   "en": "Slakoth",
+   "page": "Slakoth (Champion Road 49)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "50": {
+   "en": "Vigoroth",
+   "page": "Vigoroth (Champion Road 50)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "51": {
+   "en": "Slaking",
+   "page": "Slaking (Champion Road 51)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "52": {
+   "en": "Energy Recycle System",
+   "page": "Energy Recycle System (Champion Road 52)",
+   "type": "I",
+   "rarity": "C",
+   "mark": ""
+  },
+  "53": {
+   "en": "Energy Switch",
+   "page": "Energy Switch (Champion Road 53)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "54": {
+   "en": "Super Scoop Up",
+   "page": "Super Scoop Up (Champion Road 54)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "55": {
+   "en": "Rare Candy",
+   "page": "Rare Candy (Champion Road 55)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "56": {
+   "en": "Life Herb",
+   "page": "Life Herb (Champion Road 56)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "57": {
+   "en": "Friend Ball",
+   "page": "Friend Ball (Champion Road 57)",
+   "type": "I",
+   "rarity": "C",
+   "mark": ""
+  },
+  "58": {
+   "en": "PokéNav",
+   "page": "PokéNav (Champion Road 58)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "59": {
+   "en": "Switch",
+   "page": "Switch (Champion Road 59)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "60": {
+   "en": "Lure Ball",
+   "page": "Lure Ball (Champion Road 60)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "61": {
+   "en": "Underground Expedition",
+   "page": "Underground Expedition (Champion Road 61)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "62": {
+   "en": "TV Reporter",
+   "page": "TV Reporter (Champion Road 62)",
+   "type": "Su",
+   "rarity": "C",
+   "mark": ""
+  },
+  "63": {
+   "en": "Apricorn Maker",
+   "page": "Apricorn Maker (Champion Road 63)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "64": {
+   "en": "Bill's Maintenance",
+   "page": "Bill's Maintenance (Champion Road 64)",
+   "type": "Su",
+   "rarity": "C",
+   "mark": ""
+  },
+  "65": {
+   "en": "Copycat",
+   "page": "Copycat (Champion Road 65)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "66": {
+   "en": "Rainbow Energy",
+   "page": "Rainbow Energy (Champion Road 66)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "67": {
+   "en": "Articuno",
+   "page": "Articuno-GX (Champion Road 67)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "68": {
+   "en": "Electrode",
+   "page": "Electrode-GX (Champion Road 68)",
+   "type": "Lightning",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "69": {
+   "en": "Mr. Mime",
+   "page": "Mr. Mime-GX (Champion Road 69)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "70": {
+   "en": "Banette",
+   "page": "Banette-GX (Champion Road 70)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "71": {
+   "en": "Scizor",
+   "page": "Scizor-GX (Champion Road 71)",
+   "type": "Metal",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "72": {
+   "en": "Salamence",
+   "page": "Salamence-GX (Champion Road 72)",
+   "type": "Dragon",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "73": {
+   "en": "Underground Expedition",
+   "page": "Underground Expedition (Champion Road 73)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "74": {
+   "en": "TV Reporter",
+   "page": "TV Reporter (Champion Road 74)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "75": {
+   "en": "Apricorn Maker",
+   "page": "Apricorn Maker (Champion Road 75)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "76": {
+   "en": "Bill's Maintenance",
+   "page": "Bill's Maintenance (Champion Road 76)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "77": {
+   "en": "Copycat",
+   "page": "Copycat (Champion Road 77)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "78": {
+   "en": "Articuno",
+   "page": "Articuno-GX (Champion Road 78)",
+   "type": "Water",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "79": {
+   "en": "Electrode",
+   "page": "Electrode-GX (Champion Road 79)",
+   "type": "Lightning",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "80": {
+   "en": "Mr. Mime",
+   "page": "Mr. Mime-GX (Champion Road 80)",
+   "type": "Psychic",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "81": {
+   "en": "Banette",
+   "page": "Banette-GX (Champion Road 81)",
+   "type": "Psychic",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "82": {
+   "en": "Scizor",
+   "page": "Scizor-GX (Champion Road 82)",
+   "type": "Metal",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "83": {
+   "en": "Salamence",
+   "page": "Salamence-GX (Champion Road 83)",
+   "type": "Dragon",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "84": {
+   "en": "Life Herb",
+   "page": "Life Herb (Champion Road 84)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "85": {
+   "en": "PokéNav",
+   "page": "PokéNav (Champion Road 85)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "86": {
+   "en": "Rainbow Energy",
+   "page": "Rainbow Energy (Champion Road 86)",
+   "type": "Colorless",
+   "rarity": "UR",
+   "mark": ""
+  }
+ }
+}

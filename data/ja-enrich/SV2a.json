@@ -4,1472 +4,1472 @@
  "cards": {
   "1": {
    "en": "Bulbasaur",
-   "page": "Bulbasaur (151 1)",
+   "page": "Bulbasaur (Pokémon Card 151 1)",
    "type": "Grass",
-   "rarity": "—",
+   "rarity": "C",
    "mark": ""
   },
   "2": {
    "en": "Ivysaur",
    "page": "Ivysaur (Pokémon Card 151 2)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "U",
    "mark": ""
   },
   "3": {
    "en": "Venusaur",
    "page": "Venusaur ex (Pokémon Card 151 3)",
-   "type": "RR",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "RR",
    "mark": ""
   },
   "4": {
    "en": "Charmander",
-   "page": "Charmander (151 4)",
+   "page": "Charmander (Pokémon Card 151 4)",
    "type": "Fire",
-   "rarity": "—",
+   "rarity": "C",
    "mark": ""
   },
   "5": {
    "en": "Charmeleon",
-   "page": "Charmeleon (151 5)",
+   "page": "Charmeleon (Pokémon Card 151 5)",
    "type": "Fire",
-   "rarity": "—",
+   "rarity": "U",
    "mark": ""
   },
   "6": {
    "en": "Charizard",
    "page": "Charizard ex (Pokémon Card 151 6)",
-   "type": "RR",
-   "rarity": "Promotion",
+   "type": "Fire",
+   "rarity": "RR",
    "mark": ""
   },
   "7": {
    "en": "Squirtle",
-   "page": "Squirtle (151 7)",
+   "page": "Squirtle (Pokémon Card 151 7)",
    "type": "Water",
-   "rarity": "—",
+   "rarity": "C",
    "mark": ""
   },
   "8": {
    "en": "Wartortle",
    "page": "Wartortle (Pokémon Card 151 8)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "U",
    "mark": ""
   },
   "9": {
    "en": "Blastoise",
    "page": "Blastoise ex (Pokémon Card 151 9)",
-   "type": "RR",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "RR",
    "mark": ""
   },
   "10": {
    "en": "Caterpie",
    "page": "Caterpie (Pokémon Card 151 10)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "C",
    "mark": ""
   },
   "11": {
    "en": "Metapod",
    "page": "Metapod (Pokémon Card 151 11)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "C",
    "mark": ""
   },
   "12": {
    "en": "Butterfree",
    "page": "Butterfree (Pokémon Card 151 12)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "U",
    "mark": ""
   },
   "13": {
    "en": "Weedle",
    "page": "Weedle (Pokémon Card 151 13)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "C",
    "mark": ""
   },
   "14": {
    "en": "Kakuna",
    "page": "Kakuna (Pokémon Card 151 14)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "C",
    "mark": ""
   },
   "15": {
    "en": "Beedrill",
    "page": "Beedrill (Pokémon Card 151 15)",
-   "type": "R",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "R",
    "mark": ""
   },
   "16": {
    "en": "Pidgey",
-   "page": "Pidgey (151 16)",
+   "page": "Pidgey (Pokémon Card 151 16)",
    "type": "Colorless",
-   "rarity": "—",
+   "rarity": "C",
    "mark": ""
   },
   "17": {
    "en": "Pidgeotto",
    "page": "Pidgeotto (Pokémon Card 151 17)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "C",
    "mark": ""
   },
   "18": {
    "en": "Pidgeot",
    "page": "Pidgeot (Pokémon Card 151 18)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "U",
    "mark": ""
   },
   "19": {
    "en": "Rattata",
    "page": "Rattata (Pokémon Card 151 19)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "C",
    "mark": ""
   },
   "20": {
    "en": "Raticate",
    "page": "Raticate (Pokémon Card 151 20)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "U",
    "mark": ""
   },
   "21": {
    "en": "Spearow",
    "page": "Spearow (Pokémon Card 151 21)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "C",
    "mark": ""
   },
   "22": {
    "en": "Fearow",
    "page": "Fearow (Pokémon Card 151 22)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "U",
    "mark": ""
   },
   "23": {
    "en": "Ekans",
    "page": "Ekans (Pokémon Card 151 23)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Darkness",
+   "rarity": "C",
    "mark": ""
   },
   "24": {
    "en": "Arbok",
    "page": "Arbok ex (Pokémon Card 151 24)",
-   "type": "RR",
-   "rarity": "Promotion",
+   "type": "Darkness",
+   "rarity": "RR",
    "mark": ""
   },
   "25": {
    "en": "Pikachu",
-   "page": "Pikachu (151 25)",
+   "page": "Pikachu (Pokémon Card 151 25)",
    "type": "Lightning",
-   "rarity": "Rare Holo",
+   "rarity": "C",
    "mark": ""
   },
   "26": {
    "en": "Raichu",
-   "page": "Raichu (151 26)",
+   "page": "Raichu (Pokémon Card 151 26)",
    "type": "Lightning",
-   "rarity": "—",
+   "rarity": "R",
    "mark": ""
   },
   "27": {
    "en": "Sandshrew",
    "page": "Sandshrew (Pokémon Card 151 27)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "C",
    "mark": ""
   },
   "28": {
    "en": "Sandslash",
    "page": "Sandslash (Pokémon Card 151 28)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "U",
    "mark": ""
   },
   "29": {
    "en": "Nidoran♀",
    "page": "Nidoran♀ (Pokémon Card 151 29)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Darkness",
+   "rarity": "C",
    "mark": ""
   },
   "30": {
    "en": "Nidorina",
    "page": "Nidorina (Pokémon Card 151 30)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Darkness",
+   "rarity": "U",
    "mark": ""
   },
   "31": {
    "en": "Nidoqueen",
    "page": "Nidoqueen (Pokémon Card 151 31)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Darkness",
+   "rarity": "U",
    "mark": ""
   },
   "32": {
    "en": "Nidoran♂",
    "page": "Nidoran♂ (Pokémon Card 151 32)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Darkness",
+   "rarity": "C",
    "mark": ""
   },
   "33": {
    "en": "Nidorino",
    "page": "Nidorino (Pokémon Card 151 33)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Darkness",
+   "rarity": "U",
    "mark": ""
   },
   "34": {
    "en": "Nidoking",
    "page": "Nidoking (Pokémon Card 151 34)",
-   "type": "R",
-   "rarity": "Promotion",
+   "type": "Darkness",
+   "rarity": "R",
    "mark": ""
   },
   "35": {
    "en": "Clefairy",
    "page": "Clefairy (Pokémon Card 151 35)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Psychic",
+   "rarity": "C",
    "mark": ""
   },
   "36": {
    "en": "Clefable",
    "page": "Clefable (Pokémon Card 151 36)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Psychic",
+   "rarity": "U",
    "mark": ""
   },
   "37": {
    "en": "Vulpix",
    "page": "Vulpix (Pokémon Card 151 37)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Fire",
+   "rarity": "C",
    "mark": ""
   },
   "38": {
    "en": "Ninetales",
    "page": "Ninetales ex (Pokémon Card 151 38)",
-   "type": "RR",
-   "rarity": "Promotion",
+   "type": "Fire",
+   "rarity": "RR",
    "mark": ""
   },
   "39": {
    "en": "Jigglypuff",
    "page": "Jigglypuff (Pokémon Card 151 39)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "C",
    "mark": ""
   },
   "40": {
    "en": "Wigglytuff",
    "page": "Wigglytuff ex (Pokémon Card 151 40)",
-   "type": "RR",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "RR",
    "mark": ""
   },
   "41": {
    "en": "Zubat",
    "page": "Zubat (Pokémon Card 151 41)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Darkness",
+   "rarity": "C",
    "mark": ""
   },
   "42": {
    "en": "Golbat",
    "page": "Golbat (Pokémon Card 151 42)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Darkness",
+   "rarity": "U",
    "mark": ""
   },
   "43": {
    "en": "Oddish",
    "page": "Oddish (Pokémon Card 151 43)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "C",
    "mark": ""
   },
   "44": {
    "en": "Gloom",
    "page": "Gloom (Pokémon Card 151 44)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "U",
    "mark": ""
   },
   "45": {
    "en": "Vileplume",
-   "page": "Vileplume (151 45)",
+   "page": "Vileplume (Pokémon Card 151 45)",
    "type": "Grass",
-   "rarity": "—",
+   "rarity": "R",
    "mark": ""
   },
   "46": {
    "en": "Paras",
    "page": "Paras (Pokémon Card 151 46)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "C",
    "mark": ""
   },
   "47": {
    "en": "Parasect",
    "page": "Parasect (Pokémon Card 151 47)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "U",
    "mark": ""
   },
   "48": {
    "en": "Venonat",
    "page": "Venonat (Pokémon Card 151 48)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "C",
    "mark": ""
   },
   "49": {
    "en": "Venomoth",
    "page": "Venomoth (Pokémon Card 151 49)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "U",
    "mark": ""
   },
   "50": {
    "en": "Diglett",
    "page": "Diglett (Pokémon Card 151 50)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "C",
    "mark": ""
   },
   "51": {
    "en": "Dugtrio",
    "page": "Dugtrio (Pokémon Card 151 51)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "U",
    "mark": ""
   },
   "52": {
    "en": "Meowth",
    "page": "Meowth (Pokémon Card 151 52)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "C",
    "mark": ""
   },
   "53": {
    "en": "Persian",
    "page": "Persian (Pokémon Card 151 53)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "U",
    "mark": ""
   },
   "54": {
    "en": "Psyduck",
    "page": "Psyduck (Pokémon Card 151 54)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "C",
    "mark": ""
   },
   "55": {
    "en": "Golduck",
    "page": "Golduck (Pokémon Card 151 55)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "U",
    "mark": ""
   },
   "56": {
    "en": "Mankey",
    "page": "Mankey (Pokémon Card 151 56)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "C",
    "mark": ""
   },
   "57": {
    "en": "Primeape",
    "page": "Primeape (Pokémon Card 151 57)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "U",
    "mark": ""
   },
   "58": {
    "en": "Growlithe",
    "page": "Growlithe (Pokémon Card 151 58)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Fire",
+   "rarity": "C",
    "mark": ""
   },
   "59": {
    "en": "Arcanine",
    "page": "Arcanine (Pokémon Card 151 59)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Fire",
+   "rarity": "U",
    "mark": ""
   },
   "60": {
    "en": "Poliwag",
    "page": "Poliwag (Pokémon Card 151 60)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "C",
    "mark": ""
   },
   "61": {
    "en": "Poliwhirl",
    "page": "Poliwhirl (Pokémon Card 151 61)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "C",
    "mark": ""
   },
   "62": {
    "en": "Poliwrath",
    "page": "Poliwrath (Pokémon Card 151 62)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "U",
    "mark": ""
   },
   "63": {
    "en": "Abra",
-   "page": "Abra (151 63)",
+   "page": "Abra (Pokémon Card 151 63)",
    "type": "Psychic",
-   "rarity": "—",
+   "rarity": "C",
    "mark": ""
   },
   "64": {
    "en": "Kadabra",
-   "page": "Kadabra (151 64)",
+   "page": "Kadabra (Pokémon Card 151 64)",
    "type": "Psychic",
-   "rarity": "—",
+   "rarity": "U",
    "mark": ""
   },
   "65": {
    "en": "Alakazam",
    "page": "Alakazam ex (Pokémon Card 151 65)",
-   "type": "RR",
-   "rarity": "Promotion",
+   "type": "Psychic",
+   "rarity": "RR",
    "mark": ""
   },
   "66": {
    "en": "Machop",
    "page": "Machop (Pokémon Card 151 66)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "C",
    "mark": ""
   },
   "67": {
    "en": "Machoke",
    "page": "Machoke (Pokémon Card 151 67)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "U",
    "mark": ""
   },
   "68": {
    "en": "Machamp",
-   "page": "Machamp (151 68)",
+   "page": "Machamp (Pokémon Card 151 68)",
    "type": "Fighting",
-   "rarity": "—",
+   "rarity": "R",
    "mark": ""
   },
   "69": {
    "en": "Bellsprout",
    "page": "Bellsprout (Pokémon Card 151 69)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "C",
    "mark": ""
   },
   "70": {
    "en": "Weepinbell",
    "page": "Weepinbell (Pokémon Card 151 70)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "C",
    "mark": ""
   },
   "71": {
    "en": "Victreebel",
    "page": "Victreebel (Pokémon Card 151 71)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "U",
    "mark": ""
   },
   "72": {
    "en": "Tentacool",
    "page": "Tentacool (Pokémon Card 151 72)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "C",
    "mark": ""
   },
   "73": {
    "en": "Tentacruel",
    "page": "Tentacruel (Pokémon Card 151 73)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "U",
    "mark": ""
   },
   "74": {
    "en": "Geodude",
    "page": "Geodude (Pokémon Card 151 74)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "C",
    "mark": ""
   },
   "75": {
    "en": "Graveler",
    "page": "Graveler (Pokémon Card 151 75)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "U",
    "mark": ""
   },
   "76": {
    "en": "Golem",
    "page": "Golem ex (Pokémon Card 151 76)",
-   "type": "RR",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "RR",
    "mark": ""
   },
   "77": {
    "en": "Ponyta",
    "page": "Ponyta (Pokémon Card 151 77)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Fire",
+   "rarity": "C",
    "mark": ""
   },
   "78": {
    "en": "Rapidash",
    "page": "Rapidash (Pokémon Card 151 78)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Fire",
+   "rarity": "U",
    "mark": ""
   },
   "79": {
    "en": "Slowpoke",
    "page": "Slowpoke (Pokémon Card 151 79)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Psychic",
+   "rarity": "C",
    "mark": ""
   },
   "80": {
    "en": "Slowbro",
    "page": "Slowbro (Pokémon Card 151 80)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Psychic",
+   "rarity": "U",
    "mark": ""
   },
   "81": {
    "en": "Magnemite",
    "page": "Magnemite (Pokémon Card 151 81)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Lightning",
+   "rarity": "C",
    "mark": ""
   },
   "82": {
    "en": "Magneton",
    "page": "Magneton (Pokémon Card 151 82)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Lightning",
+   "rarity": "U",
    "mark": ""
   },
   "83": {
    "en": "Farfetch'd",
    "page": "Farfetch'd (Pokémon Card 151 83)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "C",
    "mark": ""
   },
   "84": {
    "en": "Doduo",
    "page": "Doduo (Pokémon Card 151 84)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "C",
    "mark": ""
   },
   "85": {
    "en": "Dodrio",
-   "page": "Dodrio (151 85)",
+   "page": "Dodrio (Pokémon Card 151 85)",
    "type": "Colorless",
-   "rarity": "—",
+   "rarity": "R",
    "mark": ""
   },
   "86": {
    "en": "Seel",
    "page": "Seel (Pokémon Card 151 86)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "C",
    "mark": ""
   },
   "87": {
    "en": "Dewgong",
    "page": "Dewgong (Pokémon Card 151 87)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "U",
    "mark": ""
   },
   "88": {
    "en": "Grimer",
    "page": "Grimer (Pokémon Card 151 88)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Darkness",
+   "rarity": "C",
    "mark": ""
   },
   "89": {
    "en": "Muk",
    "page": "Muk (Pokémon Card 151 89)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Darkness",
+   "rarity": "U",
    "mark": ""
   },
   "90": {
    "en": "Shellder",
    "page": "Shellder (Pokémon Card 151 90)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "C",
    "mark": ""
   },
   "91": {
    "en": "Cloyster",
    "page": "Cloyster (Pokémon Card 151 91)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "U",
    "mark": ""
   },
   "92": {
    "en": "Gastly",
    "page": "Gastly (Pokémon Card 151 92)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Psychic",
+   "rarity": "C",
    "mark": ""
   },
   "93": {
    "en": "Haunter",
    "page": "Haunter (Pokémon Card 151 93)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Psychic",
+   "rarity": "U",
    "mark": ""
   },
   "94": {
    "en": "Gengar",
-   "page": "Gengar (151 94)",
+   "page": "Gengar (Pokémon Card 151 94)",
    "type": "Psychic",
-   "rarity": "—",
+   "rarity": "R",
    "mark": ""
   },
   "95": {
    "en": "Onix",
    "page": "Onix (Pokémon Card 151 95)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "U",
    "mark": ""
   },
   "96": {
    "en": "Drowzee",
    "page": "Drowzee (Pokémon Card 151 96)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Psychic",
+   "rarity": "C",
    "mark": ""
   },
   "97": {
    "en": "Hypno",
    "page": "Hypno (Pokémon Card 151 97)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Psychic",
+   "rarity": "U",
    "mark": ""
   },
   "98": {
    "en": "Krabby",
    "page": "Krabby (Pokémon Card 151 98)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "C",
    "mark": ""
   },
   "99": {
    "en": "Kingler",
    "page": "Kingler (Pokémon Card 151 99)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "U",
    "mark": ""
   },
   "100": {
    "en": "Voltorb",
-   "page": "Voltorb (151 100)",
+   "page": "Voltorb (Pokémon Card 151 100)",
    "type": "Lightning",
-   "rarity": "—",
+   "rarity": "C",
    "mark": ""
   },
   "101": {
    "en": "Electrode",
    "page": "Electrode (Pokémon Card 151 101)",
-   "type": "R",
-   "rarity": "Promotion",
+   "type": "Lightning",
+   "rarity": "R",
    "mark": ""
   },
   "102": {
    "en": "Exeggcute",
    "page": "Exeggcute (Pokémon Card 151 102)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "C",
    "mark": ""
   },
   "103": {
    "en": "Exeggutor",
    "page": "Exeggutor (Pokémon Card 151 103)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "U",
    "mark": ""
   },
   "104": {
    "en": "Cubone",
    "page": "Cubone (Pokémon Card 151 104)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "C",
    "mark": ""
   },
   "105": {
    "en": "Marowak",
    "page": "Marowak (Pokémon Card 151 105)",
-   "type": "R",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "R",
    "mark": ""
   },
   "106": {
    "en": "Hitmonlee",
    "page": "Hitmonlee (Pokémon Card 151 106)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "U",
    "mark": ""
   },
   "107": {
    "en": "Hitmonchan",
    "page": "Hitmonchan (Pokémon Card 151 107)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "U",
    "mark": ""
   },
   "108": {
    "en": "Lickitung",
    "page": "Lickitung (Pokémon Card 151 108)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "C",
    "mark": ""
   },
   "109": {
    "en": "Koffing",
    "page": "Koffing (Pokémon Card 151 109)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Darkness",
+   "rarity": "C",
    "mark": ""
   },
   "110": {
    "en": "Weezing",
    "page": "Weezing (Pokémon Card 151 110)",
-   "type": "R",
-   "rarity": "Promotion",
+   "type": "Darkness",
+   "rarity": "R",
    "mark": ""
   },
   "111": {
    "en": "Rhyhorn",
    "page": "Rhyhorn (Pokémon Card 151 111)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "C",
    "mark": ""
   },
   "112": {
    "en": "Rhydon",
    "page": "Rhydon (Pokémon Card 151 112)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "U",
    "mark": ""
   },
   "113": {
    "en": "Chansey",
    "page": "Chansey (Pokémon Card 151 113)",
-   "type": "R",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "R",
    "mark": ""
   },
   "114": {
    "en": "Tangela",
    "page": "Tangela (Pokémon Card 151 114)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "C",
    "mark": ""
   },
   "115": {
    "en": "Kangaskhan",
    "page": "Kangaskhan ex (Pokémon Card 151 115)",
-   "type": "RR",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "RR",
    "mark": ""
   },
   "116": {
    "en": "Horsea",
    "page": "Horsea (Pokémon Card 151 116)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "C",
    "mark": ""
   },
   "117": {
    "en": "Seadra",
    "page": "Seadra (Pokémon Card 151 117)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "U",
    "mark": ""
   },
   "118": {
    "en": "Goldeen",
    "page": "Goldeen (Pokémon Card 151 118)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "C",
    "mark": ""
   },
   "119": {
    "en": "Seaking",
    "page": "Seaking (Pokémon Card 151 119)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "U",
    "mark": ""
   },
   "120": {
    "en": "Staryu",
    "page": "Staryu (Pokémon Card 151 120)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "C",
    "mark": ""
   },
   "121": {
    "en": "Starmie",
    "page": "Starmie (Pokémon Card 151 121)",
-   "type": "R",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "R",
    "mark": ""
   },
   "122": {
    "en": "Mr. Mime",
    "page": "Mr. Mime (Pokémon Card 151 122)",
-   "type": "R",
-   "rarity": "Promotion",
+   "type": "Psychic",
+   "rarity": "R",
    "mark": ""
   },
   "123": {
    "en": "Scyther",
    "page": "Scyther (Pokémon Card 151 123)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "U",
    "mark": ""
   },
   "124": {
    "en": "Jynx",
    "page": "Jynx ex (Pokémon Card 151 124)",
-   "type": "RR",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "RR",
    "mark": ""
   },
   "125": {
    "en": "Electabuzz",
-   "page": "Electabuzz (151 125)",
+   "page": "Electabuzz (Pokémon Card 151 125)",
    "type": "Lightning",
-   "rarity": "—",
+   "rarity": "C",
    "mark": ""
   },
   "126": {
    "en": "Magmar",
    "page": "Magmar (Pokémon Card 151 126)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Fire",
+   "rarity": "C",
    "mark": ""
   },
   "127": {
    "en": "Pinsir",
    "page": "Pinsir (Pokémon Card 151 127)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "U",
    "mark": ""
   },
   "128": {
    "en": "Tauros",
    "page": "Tauros (Pokémon Card 151 128)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "U",
    "mark": ""
   },
   "129": {
    "en": "Magikarp",
    "page": "Magikarp (Pokémon Card 151 129)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "C",
    "mark": ""
   },
   "130": {
    "en": "Gyarados",
    "page": "Gyarados (Pokémon Card 151 130)",
-   "type": "R",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "R",
    "mark": ""
   },
   "131": {
    "en": "Lapras",
    "page": "Lapras (Pokémon Card 151 131)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "U",
    "mark": ""
   },
   "132": {
    "en": "Ditto",
-   "page": "Ditto (151 132)",
+   "page": "Ditto (Pokémon Card 151 132)",
    "type": "Colorless",
-   "rarity": "Rare Holo",
+   "rarity": "R",
    "mark": ""
   },
   "133": {
    "en": "Eevee",
-   "page": "Eevee (151 133)",
+   "page": "Eevee (Pokémon Card 151 133)",
    "type": "Colorless",
-   "rarity": "Rare Holo",
+   "rarity": "C",
    "mark": ""
   },
   "134": {
    "en": "Vaporeon",
    "page": "Vaporeon (Pokémon Card 151 134)",
-   "type": "R",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "R",
    "mark": ""
   },
   "135": {
    "en": "Jolteon",
    "page": "Jolteon (Pokémon Card 151 135)",
-   "type": "R",
-   "rarity": "Promotion",
+   "type": "Lightning",
+   "rarity": "R",
    "mark": ""
   },
   "136": {
    "en": "Flareon",
    "page": "Flareon (Pokémon Card 151 136)",
-   "type": "R",
-   "rarity": "Promotion",
+   "type": "Fire",
+   "rarity": "R",
    "mark": ""
   },
   "137": {
    "en": "Porygon",
    "page": "Porygon (Pokémon Card 151 137)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "C",
    "mark": ""
   },
   "138": {
    "en": "Omanyte",
    "page": "Omanyte (Pokémon Card 151 138)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "U",
    "mark": ""
   },
   "139": {
    "en": "Omastar",
    "page": "Omastar (Pokémon Card 151 139)",
-   "type": "R",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "R",
    "mark": ""
   },
   "140": {
    "en": "Kabuto",
    "page": "Kabuto (Pokémon Card 151 140)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "U",
    "mark": ""
   },
   "141": {
    "en": "Kabutops",
    "page": "Kabutops (Pokémon Card 151 141)",
-   "type": "R",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "R",
    "mark": ""
   },
   "142": {
    "en": "Aerodactyl",
    "page": "Aerodactyl (Pokémon Card 151 142)",
-   "type": "R",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "R",
    "mark": ""
   },
   "143": {
    "en": "Snorlax",
    "page": "Snorlax (Pokémon Card 151 143)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "U",
    "mark": ""
   },
   "144": {
    "en": "Articuno",
    "page": "Articuno (Pokémon Card 151 144)",
-   "type": "R",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "R",
    "mark": ""
   },
   "145": {
    "en": "Zapdos",
    "page": "Zapdos ex (Pokémon Card 151 145)",
-   "type": "RR",
-   "rarity": "Promotion",
+   "type": "Lightning",
+   "rarity": "RR",
    "mark": ""
   },
   "146": {
    "en": "Moltres",
-   "page": "Moltres (151 146)",
+   "page": "Moltres (Pokémon Card 151 146)",
    "type": "Fire",
-   "rarity": "—",
+   "rarity": "R",
    "mark": ""
   },
   "147": {
    "en": "Dratini",
    "page": "Dratini (Pokémon Card 151 147)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "Dragon",
+   "rarity": "C",
    "mark": ""
   },
   "148": {
    "en": "Dragonair",
    "page": "Dragonair (Pokémon Card 151 148)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Dragon",
+   "rarity": "U",
    "mark": ""
   },
   "149": {
    "en": "Dragonite",
-   "page": "Dragonite (151 149)",
+   "page": "Dragonite (Pokémon Card 151 149)",
    "type": "Dragon",
-   "rarity": "—",
+   "rarity": "R",
    "mark": ""
   },
   "150": {
    "en": "Mewtwo",
    "page": "Mewtwo (Pokémon Card 151 150)",
-   "type": "R",
-   "rarity": "Promotion",
+   "type": "Psychic",
+   "rarity": "R",
    "mark": ""
   },
   "151": {
    "en": "Mew",
-   "page": "Mew ex (151 151)",
+   "page": "Mew ex (Pokémon Card 151 151)",
    "type": "Psychic",
-   "rarity": "—",
+   "rarity": "RR",
    "mark": ""
   },
   "152": {
    "en": "Energy Sticker",
    "page": "Energy Sticker (Pokémon Card 151 152)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "I",
+   "rarity": "U",
    "mark": ""
   },
   "153": {
    "en": "Grabber",
    "page": "Grabber (Pokémon Card 151 153)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "I",
+   "rarity": "U",
    "mark": ""
   },
   "154": {
    "en": "Antique Helix Fossil",
    "page": "Antique Helix Fossil (Pokémon Card 151 154)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "I",
+   "rarity": "C",
    "mark": ""
   },
   "155": {
    "en": "Antique Dome Fossil",
    "page": "Antique Dome Fossil (Pokémon Card 151 155)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "I",
+   "rarity": "C",
    "mark": ""
   },
   "156": {
    "en": "Antique Old Amber",
    "page": "Antique Old Amber (Pokémon Card 151 156)",
-   "type": "C",
-   "rarity": "Promotion",
+   "type": "I",
+   "rarity": "C",
    "mark": ""
   },
   "157": {
    "en": "Protective Goggles",
    "page": "Protective Goggles (Pokémon Card 151 157)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "PT",
+   "rarity": "U",
    "mark": ""
   },
   "158": {
    "en": "Big Air Balloon",
    "page": "Big Air Balloon (Pokémon Card 151 158)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "PT",
+   "rarity": "U",
    "mark": ""
   },
   "159": {
    "en": "Rigid Band",
    "page": "Rigid Band (Pokémon Card 151 159)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "PT",
+   "rarity": "U",
    "mark": ""
   },
   "160": {
    "en": "Leftovers",
    "page": "Leftovers (Pokémon Card 151 160)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "PT",
+   "rarity": "U",
    "mark": ""
   },
   "161": {
    "en": "Erika's Invitation",
    "page": "Erika's Invitation (Pokémon Card 151 161)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Su",
+   "rarity": "U",
    "mark": ""
   },
   "162": {
    "en": "Giovanni's Charisma",
    "page": "Giovanni's Charisma (Pokémon Card 151 162)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Su",
+   "rarity": "U",
    "mark": ""
   },
   "163": {
    "en": "Daisy's Help",
    "page": "Daisy's Help (Pokémon Card 151 163)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Su",
+   "rarity": "U",
    "mark": ""
   },
   "164": {
    "en": "Bill's Transfer",
    "page": "Bill's Transfer (Pokémon Card 151 164)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "Su",
+   "rarity": "U",
    "mark": ""
   },
   "165": {
    "en": "Cycling Road",
    "page": "Cycling Road (Pokémon Card 151 165)",
-   "type": "U",
-   "rarity": "Promotion",
+   "type": "St",
+   "rarity": "U",
    "mark": ""
   },
   "166": {
    "en": "Bulbasaur",
    "page": "Bulbasaur (Pokémon Card 151 166)",
-   "type": "AR",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "AR",
    "mark": ""
   },
   "167": {
    "en": "Ivysaur",
    "page": "Ivysaur (Pokémon Card 151 167)",
-   "type": "AR",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "AR",
    "mark": ""
   },
   "168": {
    "en": "Charmander",
    "page": "Charmander (Pokémon Card 151 168)",
-   "type": "AR",
-   "rarity": "Promotion",
+   "type": "Fire",
+   "rarity": "AR",
    "mark": ""
   },
   "169": {
    "en": "Charmeleon",
    "page": "Charmeleon (Pokémon Card 151 169)",
-   "type": "AR",
-   "rarity": "Promotion",
+   "type": "Fire",
+   "rarity": "AR",
    "mark": ""
   },
   "170": {
    "en": "Squirtle",
    "page": "Squirtle (Pokémon Card 151 170)",
-   "type": "AR",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "AR",
    "mark": ""
   },
   "171": {
    "en": "Wartortle",
    "page": "Wartortle (Pokémon Card 151 171)",
-   "type": "AR",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "AR",
    "mark": ""
   },
   "172": {
    "en": "Caterpie",
    "page": "Caterpie (Pokémon Card 151 172)",
-   "type": "AR",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "AR",
    "mark": ""
   },
   "173": {
    "en": "Pikachu",
    "page": "Pikachu (Pokémon Card 151 173)",
-   "type": "AR",
-   "rarity": "Promotion",
+   "type": "Lightning",
+   "rarity": "AR",
    "mark": ""
   },
   "174": {
    "en": "Nidoking",
    "page": "Nidoking (Pokémon Card 151 174)",
-   "type": "AR",
-   "rarity": "Promotion",
+   "type": "Darkness",
+   "rarity": "AR",
    "mark": ""
   },
   "175": {
    "en": "Psyduck",
    "page": "Psyduck (Pokémon Card 151 175)",
-   "type": "AR",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "AR",
    "mark": ""
   },
   "176": {
    "en": "Poliwhirl",
    "page": "Poliwhirl (Pokémon Card 151 176)",
-   "type": "AR",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "AR",
    "mark": ""
   },
   "177": {
    "en": "Machoke",
    "page": "Machoke (Pokémon Card 151 177)",
-   "type": "AR",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "AR",
    "mark": ""
   },
   "178": {
    "en": "Tangela",
    "page": "Tangela (Pokémon Card 151 178)",
-   "type": "AR",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "AR",
    "mark": ""
   },
   "179": {
    "en": "Mr. Mime",
    "page": "Mr. Mime (Pokémon Card 151 179)",
-   "type": "AR",
-   "rarity": "Promotion",
+   "type": "Psychic",
+   "rarity": "AR",
    "mark": ""
   },
   "180": {
    "en": "Omanyte",
    "page": "Omanyte (Pokémon Card 151 180)",
-   "type": "AR",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "AR",
    "mark": ""
   },
   "181": {
    "en": "Snorlax",
    "page": "Snorlax (Pokémon Card 151 181)",
-   "type": "AR",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "AR",
    "mark": ""
   },
   "182": {
    "en": "Dragonair",
    "page": "Dragonair (Pokémon Card 151 182)",
-   "type": "AR",
-   "rarity": "Promotion",
+   "type": "Dragon",
+   "rarity": "AR",
    "mark": ""
   },
   "183": {
    "en": "Mewtwo",
    "page": "Mewtwo (Pokémon Card 151 183)",
-   "type": "AR",
-   "rarity": "Promotion",
+   "type": "Psychic",
+   "rarity": "AR",
    "mark": ""
   },
   "184": {
    "en": "Venusaur",
    "page": "Venusaur ex (Pokémon Card 151 184)",
-   "type": "SR",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "SR",
    "mark": ""
   },
   "185": {
    "en": "Charizard",
    "page": "Charizard ex (Pokémon Card 151 185)",
-   "type": "SR",
-   "rarity": "Promotion",
+   "type": "Fire",
+   "rarity": "SR",
    "mark": ""
   },
   "186": {
    "en": "Blastoise",
    "page": "Blastoise ex (Pokémon Card 151 186)",
-   "type": "SR",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "SR",
    "mark": ""
   },
   "187": {
    "en": "Arbok",
    "page": "Arbok ex (Pokémon Card 151 187)",
-   "type": "SR",
-   "rarity": "Promotion",
+   "type": "Darkness",
+   "rarity": "SR",
    "mark": ""
   },
   "188": {
    "en": "Ninetales",
    "page": "Ninetales ex (Pokémon Card 151 188)",
-   "type": "SR",
-   "rarity": "Promotion",
+   "type": "Fire",
+   "rarity": "SR",
    "mark": ""
   },
   "189": {
    "en": "Wigglytuff",
    "page": "Wigglytuff ex (Pokémon Card 151 189)",
-   "type": "SR",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "SR",
    "mark": ""
   },
   "190": {
    "en": "Alakazam",
    "page": "Alakazam ex (Pokémon Card 151 190)",
-   "type": "SR",
-   "rarity": "Promotion",
+   "type": "Psychic",
+   "rarity": "SR",
    "mark": ""
   },
   "191": {
    "en": "Golem",
    "page": "Golem ex (Pokémon Card 151 191)",
-   "type": "SR",
-   "rarity": "Promotion",
+   "type": "Fighting",
+   "rarity": "SR",
    "mark": ""
   },
   "192": {
    "en": "Kangaskhan",
    "page": "Kangaskhan ex (Pokémon Card 151 192)",
-   "type": "SR",
-   "rarity": "Promotion",
+   "type": "Colorless",
+   "rarity": "SR",
    "mark": ""
   },
   "193": {
    "en": "Jynx",
    "page": "Jynx ex (Pokémon Card 151 193)",
-   "type": "SR",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "SR",
    "mark": ""
   },
   "194": {
    "en": "Zapdos",
    "page": "Zapdos ex (Pokémon Card 151 194)",
-   "type": "SR",
-   "rarity": "Promotion",
+   "type": "Lightning",
+   "rarity": "SR",
    "mark": ""
   },
   "195": {
    "en": "Mew",
    "page": "Mew ex (Pokémon Card 151 195)",
-   "type": "SR",
-   "rarity": "Promotion",
+   "type": "Psychic",
+   "rarity": "SR",
    "mark": ""
   },
   "196": {
    "en": "Erika's Invitation",
    "page": "Erika's Invitation (Pokémon Card 151 196)",
-   "type": "SR",
-   "rarity": "Promotion",
+   "type": "Su",
+   "rarity": "SR",
    "mark": ""
   },
   "197": {
    "en": "Giovanni's Charisma",
    "page": "Giovanni's Charisma (Pokémon Card 151 197)",
-   "type": "SR",
-   "rarity": "Promotion",
+   "type": "Su",
+   "rarity": "SR",
    "mark": ""
   },
   "198": {
    "en": "Daisy's Help",
    "page": "Daisy's Help (Pokémon Card 151 198)",
-   "type": "SR",
-   "rarity": "Promotion",
+   "type": "Su",
+   "rarity": "SR",
    "mark": ""
   },
   "199": {
    "en": "Bill's Transfer",
    "page": "Bill's Transfer (Pokémon Card 151 199)",
-   "type": "SR",
-   "rarity": "Promotion",
+   "type": "Su",
+   "rarity": "SR",
    "mark": ""
   },
   "200": {
    "en": "Venusaur",
    "page": "Venusaur ex (Pokémon Card 151 200)",
-   "type": "SAR",
-   "rarity": "Promotion",
+   "type": "Grass",
+   "rarity": "SAR",
    "mark": ""
   },
   "201": {
    "en": "Charizard",
    "page": "Charizard ex (Pokémon Card 151 201)",
-   "type": "SAR",
-   "rarity": "Promotion",
+   "type": "Fire",
+   "rarity": "SAR",
    "mark": ""
   },
   "202": {
    "en": "Blastoise",
    "page": "Blastoise ex (Pokémon Card 151 202)",
-   "type": "SAR",
-   "rarity": "Promotion",
+   "type": "Water",
+   "rarity": "SAR",
    "mark": ""
   },
   "203": {
    "en": "Alakazam",
    "page": "Alakazam ex (Pokémon Card 151 203)",
-   "type": "SAR",
-   "rarity": "Promotion",
+   "type": "Psychic",
+   "rarity": "SAR",
    "mark": ""
   },
   "204": {
    "en": "Zapdos",
    "page": "Zapdos ex (Pokémon Card 151 204)",
-   "type": "SAR",
-   "rarity": "Promotion",
+   "type": "Lightning",
+   "rarity": "SAR",
    "mark": ""
   },
   "205": {
    "en": "Mew",
-   "page": "Mew ex (151 151)",
+   "page": "Mew ex (Pokémon Card 151 205)",
    "type": "Psychic",
-   "rarity": "—",
+   "rarity": "SAR",
    "mark": ""
   },
   "206": {
    "en": "Erika's Invitation",
    "page": "Erika's Invitation (Pokémon Card 151 206)",
-   "type": "SAR",
-   "rarity": "Promotion",
+   "type": "Su",
+   "rarity": "SAR",
    "mark": ""
   },
   "207": {
    "en": "Giovanni's Charisma",
    "page": "Giovanni's Charisma (Pokémon Card 151 207)",
-   "type": "SAR",
-   "rarity": "Promotion",
+   "type": "Su",
+   "rarity": "SAR",
    "mark": ""
   },
   "208": {
    "en": "Mew",
    "page": "Mew ex (Pokémon Card 151 208)",
-   "type": "UR",
-   "rarity": "Promotion",
+   "type": "Psychic",
+   "rarity": "UR",
    "mark": ""
   },
   "209": {
    "en": "Switch",
    "page": "Switch (Pokémon Card 151 209)",
-   "type": "UR",
-   "rarity": "Promotion",
+   "type": "I",
+   "rarity": "UR",
    "mark": ""
   },
   "210": {
    "en": "Basic Psychic Energy",
    "page": "Basic Psychic Energy (Pokémon Card 151 210)",
-   "type": "UR",
-   "rarity": "Promotion",
+   "type": "Psychic",
+   "rarity": "UR",
    "mark": "—"
   }
  }

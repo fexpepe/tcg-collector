@@ -1,0 +1,440 @@
+{
+ "page": "Alolan Moonlight (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Phantump",
+   "page": "Phantump (Alolan Moonlight 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Trevenant",
+   "page": "Trevenant (Alolan Moonlight 2)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "3": {
+   "en": "Litwick",
+   "page": "Litwick (Alolan Moonlight 3)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "4": {
+   "en": "Lampent",
+   "page": "Lampent (Alolan Moonlight 4)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Chandelure",
+   "page": "Chandelure (Alolan Moonlight 5)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "6": {
+   "en": "Salandit",
+   "page": "Salandit (Alolan Moonlight 6)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Salazzle",
+   "page": "Salazzle (Alolan Moonlight 7)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "8": {
+   "en": "Tentacool",
+   "page": "Tentacool (Alolan Moonlight 8)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "9": {
+   "en": "Tentacruel",
+   "page": "Tentacruel (Alolan Moonlight 9)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "10": {
+   "en": "Wailmer",
+   "page": "Wailmer (Alolan Moonlight 10)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "11": {
+   "en": "Wailord",
+   "page": "Wailord (Alolan Moonlight 11)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "12": {
+   "en": "Alomomola",
+   "page": "Alomomola (Alolan Moonlight 12)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "13": {
+   "en": "Wishiwashi",
+   "page": "Wishiwashi (Alolan Moonlight 13)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Wishiwashi",
+   "page": "Wishiwashi-GX (Alolan Moonlight 14)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "15": {
+   "en": "Alolan Geodude",
+   "page": "Alolan Geodude (Alolan Moonlight 15)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "16": {
+   "en": "Alolan Graveler",
+   "page": "Alolan Graveler (Alolan Moonlight 16)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Alolan Golem",
+   "page": "Alolan Golem (Alolan Moonlight 17)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "18": {
+   "en": "Trubbish",
+   "page": "Trubbish (Alolan Moonlight 18)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "19": {
+   "en": "Garbodor",
+   "page": "Garbodor (Alolan Moonlight 19)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "20": {
+   "en": "Mimikyu",
+   "page": "Mimikyu (Alolan Moonlight 20)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "21": {
+   "en": "Dhelmise",
+   "page": "Dhelmise (Alolan Moonlight 21)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "22": {
+   "en": "Tapu Lele",
+   "page": "Tapu Lele-GX (Alolan Moonlight 22)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "23": {
+   "en": "Gligar",
+   "page": "Gligar (Alolan Moonlight 23)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "24": {
+   "en": "Gliscor",
+   "page": "Gliscor (Alolan Moonlight 24)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "25": {
+   "en": "Pancham",
+   "page": "Pancham (Alolan Moonlight 25)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "26": {
+   "en": "Rockruff",
+   "page": "Rockruff (Alolan Moonlight 26)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "27": {
+   "en": "Lycanroc",
+   "page": "Lycanroc-GX (Alolan Moonlight 27)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "28": {
+   "en": "Minior",
+   "page": "Minior (Alolan Moonlight 28)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "29": {
+   "en": "Murkrow",
+   "page": "Murkrow (Alolan Moonlight 29)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "30": {
+   "en": "Honchkrow",
+   "page": "Honchkrow (Alolan Moonlight 30)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "31": {
+   "en": "Sableye",
+   "page": "Sableye (Alolan Moonlight 31)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "32": {
+   "en": "Pangoro",
+   "page": "Pangoro (Alolan Moonlight 32)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "33": {
+   "en": "Beldum",
+   "page": "Beldum (Alolan Moonlight 33)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "34": {
+   "en": "Metang",
+   "page": "Metang (Alolan Moonlight 34)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "35": {
+   "en": "Metagross",
+   "page": "Metagross-GX (Alolan Moonlight 35)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "36": {
+   "en": "Cottonee",
+   "page": "Cottonee (Alolan Moonlight 36)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "37": {
+   "en": "Whimsicott",
+   "page": "Whimsicott (Alolan Moonlight 37)",
+   "type": "Fairy",
+   "rarity": "U",
+   "mark": ""
+  },
+  "38": {
+   "en": "Goomy",
+   "page": "Goomy (Alolan Moonlight 38)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "39": {
+   "en": "Sliggoo",
+   "page": "Sliggoo (Alolan Moonlight 39)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "40": {
+   "en": "Goodra",
+   "page": "Goodra (Alolan Moonlight 40)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "41": {
+   "en": "Castform",
+   "page": "Castform (Alolan Moonlight 41)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "42": {
+   "en": "Patrat",
+   "page": "Patrat (Alolan Moonlight 42)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "43": {
+   "en": "Watchog",
+   "page": "Watchog (Alolan Moonlight 43)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "44": {
+   "en": "Fletchling",
+   "page": "Fletchling (Alolan Moonlight 44)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "45": {
+   "en": "Fletchinder",
+   "page": "Fletchinder (Alolan Moonlight 45)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "46": {
+   "en": "Talonflame",
+   "page": "Talonflame (Alolan Moonlight 46)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "47": {
+   "en": "Aqua Patch",
+   "page": "Aqua Patch (Alolan Moonlight 47)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "48": {
+   "en": "Rescue Stretcher",
+   "page": "Rescue Stretcher (Alolan Moonlight 48)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "49": {
+   "en": "Mallow",
+   "page": "Mallow (Alolan Moonlight 49)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "50": {
+   "en": "Brooklet Hill",
+   "page": "Brooklet Hill (Alolan Moonlight 50)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "51": {
+   "en": "Wishiwashi",
+   "page": "Wishiwashi-GX (Alolan Moonlight 51)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "52": {
+   "en": "Tapu Lele",
+   "page": "Tapu Lele-GX (Alolan Moonlight 52)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "53": {
+   "en": "Lycanroc",
+   "page": "Lycanroc-GX (Alolan Moonlight 53)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "54": {
+   "en": "Metagross",
+   "page": "Metagross-GX (Alolan Moonlight 54)",
+   "type": "Metal",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "55": {
+   "en": "Mallow",
+   "page": "Mallow (Alolan Moonlight 55)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "56": {
+   "en": "Wishiwashi",
+   "page": "Wishiwashi-GX (Alolan Moonlight 56)",
+   "type": "Water",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "57": {
+   "en": "Tapu Lele",
+   "page": "Tapu Lele-GX (Alolan Moonlight 57)",
+   "type": "Psychic",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "58": {
+   "en": "Lycanroc",
+   "page": "Lycanroc-GX (Alolan Moonlight 58)",
+   "type": "Fighting",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "59": {
+   "en": "Metagross",
+   "page": "Metagross-GX (Alolan Moonlight 59)",
+   "type": "Metal",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "60": {
+   "en": "Aqua Patch",
+   "page": "Aqua Patch (Alolan Moonlight 60)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "61": {
+   "en": "Enhanced Hammer",
+   "page": "Enhanced Hammer (Alolan Moonlight 61)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "62": {
+   "en": "Fighting Energy",
+   "page": "Fighting Energy (Alolan Moonlight 62)",
+   "type": "Fighting",
+   "rarity": "UR",
+   "mark": "—"
+  }
+ }
+}
