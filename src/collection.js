@@ -275,26 +275,34 @@
     return added;
   }
 
+  // "release" (2026-09-21) = lançamento: o set pela data dele; artista e
+  // personagem pela carta MAIS RECENTE que você tem deles (quem saiu carta
+  // nova sobe). Mais novo primeiro.
   const GROUP_TABS = {
     pokemon: {
       getKey: (card) => card.pokemonName || speciesName(card.name),
       detailType: "pokemon",
       defaultSort: "dex",
-      sorts: ["dex", "name", "progress"]
+      sorts: ["dex", "name", "progress", "release"]
     },
     artists: {
       getKey: (card) => card.artist || "Artista desconhecido",
       detailType: "artist",
       defaultSort: "name",
-      sorts: ["name", "progress"]
+      sorts: ["name", "progress", "release"]
     },
     sets: {
       getKey: (card) => card.set,
       detailType: "set",
       defaultSort: "name",
-      sorts: ["name", "progress"]
+      sorts: ["name", "progress", "release"]
     }
   };
+  // Visualização das abas de progresso: lista (padrão, a linha de sempre),
+  // grade ou compacta. Chave própria: a das cartas tem fichário, que aqui não existe.
+  const GROUP_VIEWS = ["grid", "list", "compact"];
+  let groupsView = "list";
+  try { const v = localStorage.getItem("tcg-collection-groups-view"); if (GROUP_VIEWS.includes(v)) groupsView = v; } catch (e) { /* ignora */ }
 
   const elements = {
     gameFilter: document.getElementById("gameFilter"),
@@ -303,6 +311,7 @@
     groupsHeading: document.getElementById("groupsHeading"),
     sortChips: document.getElementById("sortChips"),
     groupList: document.getElementById("groupList"),
+    groupsViewToggle: document.getElementById("groupsViewToggle"),
     groupsEmpty: document.getElementById("groupsEmpty"),
     cardsView: document.getElementById("cardsView"),
     grid: document.getElementById("cardGrid"),
@@ -717,6 +726,15 @@
       sortMode = chip.dataset.sort;
       render();
     });
+    if (elements.groupsViewToggle) {
+      elements.groupsViewToggle.addEventListener("click", (event) => {
+        const btn = event.target.closest("[data-groups-view]");
+        if (!btn || !GROUP_VIEWS.includes(btn.dataset.groupsView)) return;
+        groupsView = btn.dataset.groupsView;
+        try { localStorage.setItem("tcg-collection-groups-view", groupsView); } catch (e) { /* ignora */ }
+        render(); // a arte muda com o modo (logo do set na grade), então refaz as linhas
+      });
+    }
 
     const applyFilters = () => render({ resetCount: true });
     elements.search.addEventListener("input", debounce(applyFilters, 200));
@@ -1863,8 +1881,18 @@
     // é o progresso de CADA set/artista/personagem, que já está em cada linha.)
     sortGroups(groups);
 
+    applyGroupsView();
     elements.groupList.innerHTML = groups.map((group) => groupRow(group, tab)).join("");
     elements.groupsEmpty.hidden = groups.length > 0;
+  }
+
+  // Classe do modo na lista (lista = sem classe) + estado dos botões do toggle.
+  function applyGroupsView() {
+    elements.groupList.classList.toggle("is-grid", groupsView === "grid");
+    elements.groupList.classList.toggle("is-compact", groupsView === "compact");
+    if (elements.groupsViewToggle) {
+      elements.groupsViewToggle.querySelectorAll("[data-groups-view]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.groupsView === groupsView)));
+    }
   }
 
   // Totais por grupo (denominador do progresso), no catálogo inteiro. Saem dos
@@ -1900,10 +1928,13 @@
       const key = tab.getKey(card) || "—";
       let group = map.get(key);
       if (!group) {
-        group = { name: key, totalCount: totals.get(key) || 0, ownedCount: 0, sample: card };
+        group = { name: key, totalCount: totals.get(key) || 0, ownedCount: 0, sample: card, release: "" };
         map.set(key, group);
       }
       group.ownedCount++;
+      // Lançamento do grupo = a data de set mais recente entre as suas cartas.
+      const rd = String(card.setReleaseDate || "");
+      if (rd > group.release) group.release = rd;
     });
     // Defensivo: nunca deixa o total abaixo do que você tem.
     map.forEach((group) => { if (group.totalCount < group.ownedCount) group.totalCount = group.ownedCount; });
@@ -1915,6 +1946,8 @@
       groups.sort((a, b) => (b.ownedCount / b.totalCount) - (a.ownedCount / a.totalCount) || a.name.localeCompare(b.name));
     } else if (sortMode === "dex") {
       groups.sort((a, b) => (a.sample.dexId || 9999) - (b.sample.dexId || 9999) || a.name.localeCompare(b.name));
+    } else if (sortMode === "release") {
+      groups.sort((a, b) => b.release.localeCompare(a.release) || a.name.localeCompare(b.name));
     } else {
       groups.sort((a, b) => a.name.localeCompare(b.name));
     }
@@ -1927,7 +1960,7 @@
       chip.type = "button";
       chip.className = "chip";
       chip.dataset.sort = sort;
-      chip.textContent = t(`sort.${sort}`);
+      chip.textContent = t(sort === "release" ? "sort.releaseDate" : `sort.${sort}`);
       chip.setAttribute("aria-pressed", sort === sortMode ? "true" : "false");
       elements.sortChips.appendChild(chip);
     });
@@ -1977,7 +2010,9 @@
       if (art) return `<img loading="lazy" width="48" height="48" src="${escapeAttribute(art)}" alt="">`;
     }
     if (activeTab === "sets" && (sample.setSymbol || sample.setLogo)) {
-      return shared.localizedImg(sample.setSymbol || sample.setLogo, { loading: "lazy" });
+      // Grade: o LOGO (largo, é a arte grande do cartão); lista: o símbolo.
+      const arte = groupsView === "grid" ? (sample.setLogo || sample.setSymbol) : (sample.setSymbol || sample.setLogo);
+      return shared.localizedImg(arte, { loading: "lazy" });
     }
     return `<span class="progress-row-initial">${escapeHtml(group.name.charAt(0).toUpperCase())}</span>`;
   }
@@ -2546,7 +2581,69 @@
     // gosta de ver os filtros abertos vê nas duas telas).
     let filtersOpen = false;
     try { filtersOpen = localStorage.getItem("tcg-collector-filters-open") === "1"; } catch (e) { /* ignora */ }
-    let groupSort = "name"; // abas de progresso (Sets/Pokémon/Artistas): "name" | "progress"
+    let groupSort = "name"; // abas de progresso (Sets/Pokémon/Artistas): "name" | "progress" | "release" | "dex"
+    // Visualização das abas de progresso (lista/grade/compacta), a MESMA chave
+    // de preferência da Minha Coleção (o toggle é o mesmo, sem fichário).
+    let groupsView = "list";
+    try { const v = localStorage.getItem("tcg-collection-groups-view"); if (["grid", "list", "compact"].indexOf(v) >= 0) groupsView = v; } catch (e) { /* ignora */ }
+    // ── URL do perfil (2026-09-21): /users/<handle>[/<aba>[/<jogo>]/<grupo>] ──
+    // Cada aba e cada grupo aberto têm link próprio (showcase, vendas, um set,
+    // um artista…), com pushState/popstate — o "voltar" do navegador funciona
+    // e o link copiado da barra abre no mesmo lugar. O _redirects já serve
+    // qualquer profundidade de /users/* com a collection.html. Só vale com a
+    // URL bonita: no fallback collection?u= a URL não é mexida.
+    // Sets levam o jogo no caminho (/sets/pokemon/Base%20Set): o nome de set
+    // não é único entre jogos, e o jogo também vira o filtro ao abrir o link.
+    const TAB_SLUG = { collection: "", vitrine: "showcase", graded: "graded", tags: "listas", pokemon: "personagens", artists: "artistas", sets: "sets", sale: "vendas" };
+    const SLUG_TAB = { sales: "sale" }; // alias do ?t=sales antigo
+    Object.keys(TAB_SLUG).forEach((m) => { if (TAB_SLUG[m]) SLUG_TAB[TAB_SLUG[m]] = m; });
+    const pathMode = /^\/users\//.test(location.pathname);
+    function profilePath() {
+      let p = "/users/" + encodeURIComponent(prof.handle);
+      if (mode !== "collection") p += "/" + TAB_SLUG[mode];
+      if (openId && GROUPED.indexOf(mode) >= 0) {
+        if (mode === "sets") {
+          const gp = groupsFor("sets").find((x) => x.id === openId);
+          p += "/" + ((gp && gp.items[0] && gp.items[0].g) || "pokemon");
+        }
+        p += "/" + encodeURIComponent(openId);
+      }
+      return p;
+    }
+    function parseProfilePath() {
+      const m = location.pathname.match(/^\/users\/[^/]+(?:\/(.*))?$/);
+      const segs = (m && m[1] ? m[1].split("/") : []).filter(Boolean).map((sg) => { try { return decodeURIComponent(sg); } catch (e) { return sg; } });
+      const out = { mode: null, openId: null, game: null };
+      if (!segs.length || !SLUG_TAB[segs[0]]) return out;
+      out.mode = SLUG_TAB[segs[0]];
+      if (out.mode === "sets" && segs.length >= 3) { out.game = segs[1]; out.openId = segs.slice(2).join("/"); }
+      else if (segs.length >= 2) out.openId = segs.slice(1).join("/");
+      return out;
+    }
+    function syncUrl(push) {
+      if (!pathMode) return;
+      const p = profilePath();
+      try {
+        if (push && p !== location.pathname) history.pushState({ mode, openId, gFilter }, "", p);
+        else history.replaceState({ mode, openId, gFilter }, "", p);
+      } catch (e) { /* ignora */ }
+    }
+    // Aplica o que a URL pede (aba, jogo e grupo aberto), validando contra o
+    // que o perfil TEM — aba sem conteúdo ou grupo que não existe cai na aba.
+    function applyProfilePath() {
+      const fp = parseProfilePath();
+      if (!fp.mode) { mode = "collection"; openId = null; return; }
+      const temAba = { collection: true, vitrine: hasFolders, graded: hasGraded, tags: hasTags, pokemon: hasPokemon, artists: hasArtists, sets: hasSets, sale: hasSales };
+      mode = temAba[fp.mode] ? fp.mode : "collection";
+      openId = null;
+      if (fp.game && gamesPresent.indexOf(fp.game) >= 0) gFilter = fp.game;
+      if (fp.openId && GROUPED.indexOf(mode) >= 0 && groupsFor(mode).some((x) => x.id === fp.openId)) openId = fp.openId;
+    }
+    // Título da aba do navegador acompanha (nome do dono · grupo aberto).
+    function syncTitle() {
+      const aberto = openId && GROUPED.indexOf(mode) >= 0 ? (groupsFor(mode).find((x) => x.id === openId) || {}).name : "";
+      document.title = (aberto ? aberto + " · " : "") + name + " · Sleevu";
+    }
     // Set ABERTO na aba Sets: chips Todas / Tenho / Faltando (os mesmos da
     // página do set), em memória e zerados ao trocar de set.
     let setOwnedFilter = "all";
@@ -2836,18 +2933,37 @@
         : mode === "pokemon" ? (speciesTotals[name] || 0) : (artistTotals[name] || 0);
       const artOf = (gp) => {
         const initial = `<span class="progress-row-initial">${escapeHtml((gp.name || "?").charAt(0).toUpperCase())}</span>`;
-        if (mode === "sets") { const sy = setsMeta[gp.name] && setsMeta[gp.name].sy; return sy ? shared.localizedImg(sy, { loading: "lazy" }) : initial; }
+        if (mode === "sets") {
+          // Grade: o LOGO (largo, é a arte grande do cartão); lista: o símbolo.
+          // Payload antigo (sem lg): o logo sai do catálogo, quando ele baixou.
+          const sm = setsMeta[gp.name] || {};
+          const logo = sm.lg || setFieldFromCatalog(gp.name, "setLogo");
+          const arte = groupsView === "grid" ? (logo || sm.sy) : (sm.sy || logo);
+          return arte ? shared.localizedImg(arte, { loading: "lazy" }) : initial;
+        }
         if (mode === "pokemon") { const it = gp.items.find((x) => x.dx); return it ? `<img loading="lazy" src="${escapeAttribute(shared.spriteUrl(it.dx))}" alt="">` : initial; }
         return initial; // artistas
       };
+      // Lançamento: o set pela data dele; artista/personagem pela carta MAIS
+      // RECENTE que o dono tem (a mesma régua da Minha Coleção). Mais novo primeiro.
+      const setDate = (s) => ((setsMeta[s] && setsMeta[s].rd) || setFieldFromCatalog(s, "setReleaseDate") || "");
+      const releaseOf = (gp) => mode === "sets" ? setDate(gp.name) : gp.items.reduce((m, it) => { const d = setDate(it.s); return d > m ? d : m; }, "");
+      const dexOf = (gp) => gp.items.reduce((m, it) => (it.dx && it.dx < m ? it.dx : m), 9999);
       const groups = groupsFor(mode).map((gp) => {
         const ownedN = new Set(gp.items.map((it) => it.id)).size;
         const total = Math.max(ownedN, totalOf(gp.name, gp));
         return { gp, ownedN, total, pct: total ? (ownedN / total) * 100 : 0 };
       });
-      if (groupSort === "progress") groups.sort((a, b) => b.pct - a.pct || a.gp.name.localeCompare(b.gp.name));
+      const sortNow = (groupSort === "dex" && mode !== "pokemon") ? "name" : groupSort;
+      if (sortNow === "progress") groups.sort((a, b) => b.pct - a.pct || a.gp.name.localeCompare(b.gp.name));
+      else if (sortNow === "release") groups.sort((a, b) => releaseOf(b.gp).localeCompare(releaseOf(a.gp)) || a.gp.name.localeCompare(b.gp.name));
+      else if (sortNow === "dex") groups.sort((a, b) => dexOf(a.gp) - dexOf(b.gp) || a.gp.name.localeCompare(b.gp.name));
       else groups.sort((a, b) => a.gp.name.localeCompare(b.gp.name));
-      const chip = (v, k) => `<button type="button" class="chip" data-group-sort="${v}" aria-pressed="${groupSort === v}">${escapeHtml(t(k))}</button>`;
+      const chip = (v, k) => `<button type="button" class="chip" data-group-sort="${v}" aria-pressed="${sortNow === v}">${escapeHtml(t(k))}</button>`;
+      // Visualização: o MESMO toggle das grades de cartas, sem o fichário.
+      const vbtn = (v, label, inner) => `<button type="button" class="view-toggle-btn" data-pg-view="${v}" aria-pressed="${groupsView === v}" aria-label="${escapeAttribute(label)}" title="${escapeAttribute(label)}">${inner}</button>`;
+      const viewToggle = `<div class="view-toggle" role="group" aria-label="${escapeAttribute(t("toolbar.view"))}">${vbtn("grid", t("aria.viewGrid"), "▦")}${vbtn("list", t("aria.viewList"), "≣")}${vbtn("compact", t("view.compact"), "☰")}</div>`;
+      const listCls = groupsView === "grid" ? " is-grid" : groupsView === "compact" ? " is-compact" : "";
       const rows = groups.map((g) => `<button type="button" class="progress-row" data-vitrine-open="${escapeAttribute(g.gp.id)}">
           <div class="progress-row-art">${artOf(g.gp)}</div>
           <div class="progress-row-body">
@@ -2861,9 +2977,9 @@
       // (saiu das duas telas em 2026-09-21): o progresso é por linha.
       return `<section class="results-header">
           <h2>${escapeHtml(tabLabel(mode))}</h2>
-          <div class="results-actions results-sort"><span>${escapeHtml(t("sort.label"))}</span><div class="chip-filter">${chip("name", "sort.name")}${chip("progress", "sort.progress")}</div></div>
+          <div class="results-actions results-sort"><span>${escapeHtml(t("sort.label"))}</span><div class="chip-filter">${mode === "pokemon" ? chip("dex", "sort.dex") : ""}${chip("name", "sort.name")}${chip("progress", "sort.progress")}${chip("release", "sort.releaseDate")}</div>${viewToggle}</div>
         </section>
-        <div class="progress-row-list">${rows}</div>`;
+        <div class="progress-row-list${listCls}">${rows}</div>`;
     }
     // Estrelas SÓ de leitura (as da tela do dono são botões que gravam).
     const starsRo = (n) => { let h = ""; for (let i = 1; i <= 3; i++) h += `<span class="coll-star${i <= n ? " on" : ""}">★</span>`; return `<span class="coll-stars">${h}</span>`; };
@@ -2953,6 +3069,19 @@
     // então cardsById guarda o set completo, não só as cartas do payload.
     // Enquanto o catálogo não chega (ou se falhar), cai na grade só do que ele
     // tem — e o fim da carga chama renderContent() pra completar.
+    // Um campo do set (logo, data) lido do catálogo do perfil quando o payload
+    // não o traz (perfis publicados antes de 2026-09-21). Mapa refeito quando
+    // o catálogo cresce (ele chega no fim do renderPublicProfile).
+    let setFieldCache = { size: -1, map: new Map() };
+    function setFieldFromCatalog(setName, field) {
+      if (setFieldCache.size !== cardsById.size) {
+        const map = new Map();
+        cardsById.forEach((card) => { if (card.set && !map.has(card.set)) map.set(card.set, card); });
+        setFieldCache = { size: cardsById.size, map };
+      }
+      const card = setFieldCache.map.get(setName);
+      return card ? (card[field] || "") : "";
+    }
     function setCatalogCards(gp) {
       const games = new Set(gp.items.map((it) => it.g || "pokemon"));
       // O nome do set não é chave única (edição EN e PT com o mesmo nome — ver
@@ -3094,13 +3223,14 @@
       if (shared.initGameFilterSelects) shared.initGameFilterSelects(sv);
       mountBinders(sv);
       paintViewToggle();
+      syncTitle();
       ajustaValoresHero(); // o valor tem caixa fixa no cabeçalho (mesma regra do dono)
     }
     // Troca de aba / abrir grupo / voltar: reconstrói só o bloco abaixo do dashboard
     // (abas+conteúdo), mantendo o dashboard e o filtro de jogo fixos no lugar.
     function renderSwap() {
       const el = sv.querySelector(".prof-swap");
-      if (el) { el.innerHTML = swapHtml(); mountBinders(el); paintViewToggle(); syncTabsSelect(); } else render();
+      if (el) { el.innerHTML = swapHtml(); mountBinders(el); paintViewToggle(); syncTabsSelect(); syncTitle(); } else render();
     }
     // Re-render PARCIAL: filtro/ordenação/visualização só trocam as cartas — não
     // reconstrói dashboard/abas/barra (mais rápido e preserva o foco nos selects).
@@ -3112,14 +3242,20 @@
     // Delegação no container (sobrevive aos re-renders): abas, vitrine, filtro, preview.
     sv.addEventListener("click", (event) => {
       const tab = event.target.closest("[data-profile-tab]");
-      if (tab) { mode = tab.dataset.profileTab; openId = null; renderSwap(); return; }
+      if (tab) { mode = tab.dataset.profileTab; openId = null; renderSwap(); syncUrl(true); return; }
       const open = event.target.closest("[data-vitrine-open]");
-      if (open) { openId = open.dataset.vitrineOpen; setOwnedFilter = "all"; renderSwap(); return; }
-      if (event.target.closest("[data-vitrine-back]")) { openId = null; setOwnedFilter = "all"; renderSwap(); return; }
+      if (open) { openId = open.dataset.vitrineOpen; setOwnedFilter = "all"; renderSwap(); syncUrl(true); return; }
+      if (event.target.closest("[data-vitrine-back]")) { openId = null; setOwnedFilter = "all"; renderSwap(); syncUrl(true); return; }
       const so = event.target.closest("[data-set-owned]");
       if (so) { setOwnedFilter = so.dataset.setOwned; renderContent(); return; }
       const chip = event.target.closest("[data-game-filter]");
-      if (chip) { gFilter = chip.dataset.gameFilter; fPokemon = fSet = fLang = fRarity = fValue = ""; render(); return; }
+      if (chip) { gFilter = chip.dataset.gameFilter; fPokemon = fSet = fLang = fRarity = fValue = ""; render(); syncUrl(false); return; }
+      const pgv = event.target.closest("[data-pg-view]");
+      if (pgv) {
+        groupsView = pgv.dataset.pgView;
+        try { localStorage.setItem("tcg-collection-groups-view", groupsView); } catch (err) { /* ignora */ }
+        renderContent(); return;
+      }
       // "Filtros": abre/fecha a barra sem redesenhar nada (o estado visual é
       // uma classe). Mesma chave de preferência da Minha Coleção.
       const ft = event.target.closest("[data-pf-filters]");
@@ -3148,7 +3284,7 @@
     });
     sv.addEventListener("change", (event) => {
       const tabSel = event.target.closest("[data-profile-tabs-select]");
-      if (tabSel) { mode = tabSel.value; openId = null; renderSwap(); return; }
+      if (tabSel) { mode = tabSel.value; openId = null; renderSwap(); syncUrl(true); return; }
       const sortSel = event.target.closest("[data-profile-sort]");
       if (sortSel) { cardSort = sortSel.value; renderContent(); return; }
       const ff = event.target.closest("[data-pf-filter]");
@@ -3165,7 +3301,15 @@
       searchEl.value = "";
       searchEl.addEventListener("input", debounce(() => { query = searchEl.value.trim(); renderContent(); }, 200));
     }
+    // Estado inicial: o caminho da URL manda; sem caminho, vale o ?t= antigo
+    // (já aplicado em `mode`). Depois o "voltar"/"avançar" do navegador refaz
+    // a tela a partir do caminho — o estado é a própria URL.
+    if (pathMode) {
+      if (parseProfilePath().mode) applyProfilePath();
+      window.addEventListener("popstate", () => { applyProfilePath(); render(); });
+    }
     render();
+    syncUrl(false);
 
     // Catálogo das cartas do perfil, p/ o preview abrir com o detalhe completo.
     const idsByGame = {};
