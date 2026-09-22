@@ -2969,11 +2969,6 @@
       }
       return [];
     }
-    // Cartas do dono fora de qualquer showcase (o "Sem showcase" da vitrine),
-    // no filtro de jogo e nos filtros da barra.
-    function noneItems() {
-      return applyColFilters(col.items).filter((it) => !it.f && (gFilter === "all" || (it.g || "pokemon") === gFilter));
-    }
     // Abas Sets/Pokémon/Artistas: MESMO visual da Coleção (linhas de progresso com
     // arte + possuídas/total + barra + %). Totais vêm do payload (setsMeta / species
     // Totals / artistTotals). Denominador = total do catálogo; se faltar, = possuídas.
@@ -3078,22 +3073,23 @@
         </span>
       </button>`;
     }
-    // Seção de showcase ABERTO (ou o "Sem showcase"): o MESMO .folder-section
-    // com cabeçalho (voltar, nome, tag do jogo, contagem · valor, estrelas) e a
-    // grade, como na tela do dono — sem renomear/capa/excluir.
+    // Seção de showcase (ou pasta de venda) ABERTA: o MESMO .folder-section com
+    // cabeçalho (voltar, nome, tag do jogo, contagem · valor, estrelas) e a
+    // grade, como na tela do dono — sem renomear/capa/excluir. (Até 2026-09-22
+    // também desenhava o "Sem showcase" com as cartas soltas; a vitrine pública
+    // agora mostra só os showcases, então `gp` é sempre uma pasta.)
     function folderSectionRo(gp, items, opts) {
-      const isNone = !gp;
       const val = groupVal(gp, items);
       const meta = `${items.length}${val > 0 ? `<span class="cm-val"> · ${escapeHtml(groupMoney(gp, val))}</span>` : ""}`;
       const gset = new Set(items.map((it) => it.g).filter(Boolean));
       const back = (opts && opts.back) ? `<button type="button" class="secondary coll-back-btn" data-vitrine-back>← ${escapeHtml(t("folders.back"))}</button>` : "";
-      return `<section class="folder-section${isNone ? " folder-none" : ""}">
+      return `<section class="folder-section">
         <header class="folder-head">
           ${back}
-          <span class="folder-name">${escapeHtml(isNone ? t("folders.none") : gp.name)}</span>
-          ${isNone ? "" : folderTagHtml(gset)}
+          <span class="folder-name">${escapeHtml(gp.name)}</span>
+          ${folderTagHtml(gset)}
           <span class="folder-meta">${meta}</span>
-          ${isNone || gp.sale ? "" : `<span class="folder-actions">${starsRo(gp.stars || 0)}</span>`}
+          ${gp.sale ? "" : `<span class="folder-actions">${starsRo(gp.stars || 0)}</span>`}
         </header>
         ${gridHtml(sortItems(items))}
       </section>`;
@@ -3245,12 +3241,12 @@
         }
         if (PROGRESS_MODES.indexOf(mode) >= 0) return groupsProgressHtml(mode);
         if (mode === "vitrine") {
-          // Vitrine: os cards em pilha + o "Sem showcase" com as cartas soltas,
-          // na MESMA ordem da Minha Coleção (as pastas, depois o bucket).
-          const soltas = noneItems();
+          // Vitrine pública: SÓ os showcases, em pilha, na ordem da Minha
+          // Coleção. O "Sem showcase" (cartas soltas do dono) não aparece aqui
+          // (pedido de 2026-09-22): a vitrine é o que o dono escolheu mostrar;
+          // o resto da coleção continua na aba Coleção. Desktop e celular iguais.
           const cards = groups.map(pileCard).join("");
-          if (!cards && !soltas.length) return vazio;
-          return `<div class="coll-vitrine">${cards}${soltas.length ? folderSectionRo(null, soltas) : ""}</div>`;
+          return cards ? `<div class="coll-vitrine">${cards}</div>` : vazio;
         }
         // Vendas em pastas: os cards em pilha, na ordem que o dono deu a elas.
         if (mode === "sale") return groups.length ? `<div class="coll-vitrine">${groups.map(pileCard).join("")}</div>` : vazio;
