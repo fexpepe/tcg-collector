@@ -1,5 +1,6 @@
 # Perfil público: /users/<handle> SERVE a coleção em modo leitura (URL bonita
-# continua na barra). 200 = rewrite (sem redirect, sem perder o caminho). O cliente
+# continua na barra). O splat cobre as abas e grupos com link próprio
+# (/users/<handle>/showcase, /vendas, /sets/<jogo>/<set>… — collection.js). 200 = rewrite (sem redirect, sem perder o caminho). O cliente
 # (collection.js) lê o handle de location.pathname. Destino LIMPO /collection (sem
 # .html, que dispararia o clean-URL redirect). collection.html tem <base href="/">
 # pra os assets resolverem na raiz. NÃO usamos placeholder na query: o CF Pages não

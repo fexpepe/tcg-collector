@@ -3630,11 +3630,13 @@
     return String(raw || "").toLowerCase().replace(/[^a-z0-9_]/g, "").slice(0, 24);
   }
   // Link VIVO do perfil público (sempre atualizado) se o usuário é público + tem
-  // @; senão null (cai no snapshot). tab="sales"|"graded" abre direto na aba.
+  // @; senão null (cai no snapshot). tab="sales"|"graded" abre direto na aba —
+  // pelo CAMINHO (/users/<h>/vendas, /users/<h>/graded), que é como o perfil
+  // endereça as abas desde 2026-09-21 (o ?t= antigo segue sendo lido lá).
   function publicProfileUrl(tab) {
     const p = getProfile();
     if (!(p.isPublic && p.handle && p.handle.length >= 3)) return null;
-    const t = tab === "sales" || tab === "graded" ? `?t=${tab}` : "";
+    const t = tab === "sales" ? "/vendas" : tab === "graded" ? "/graded" : "";
     return "https://sleevu.app/users/" + p.handle + t;
   }
 
@@ -5704,7 +5706,7 @@
     const itens = top.map((r) => {
       const preco = fmtMoney(r.cur || "BRL", Number(r.price) || 0);
       const cond = r.cond ? ` · ${escapeHtml(String(r.cond))}` : "";
-      return `<a class="market-seller" href="/users/${escapeAttribute(r.handle)}?t=sales">
+      return `<a class="market-seller" href="/users/${escapeAttribute(r.handle)}/vendas">
         <span class="market-seller-who">@${escapeHtml(r.handle)}${cond}</span>
         <span class="market-seller-price">${escapeHtml(preco)}</span>
       </a>`;
@@ -10741,7 +10743,9 @@
       // perfil público mostrar a barra de progresso igual à Coleção.
       if (card.set && !setsMeta[card.set]) {
         const g = card.game || "pokemon";
-        setsMeta[card.set] = { t: (setIdx[g] && setIdx[g][card.set]) || card.setTotal || 0, sy: card.setSymbol || "", g };
+        // lg = logo (a arte do modo grade da aba Sets); rd = data de lançamento
+        // (o "Ordenar por lançamento" das abas de progresso) — 2026-09-21.
+        setsMeta[card.set] = { t: (setIdx[g] && setIdx[g][card.set]) || card.setTotal || 0, sy: card.setSymbol || "", lg: card.setLogo || "", rd: card.setReleaseDate || "", g };
       }
     });
     colItems.sort((a, b) => (b.vbrl * b.q) - (a.vbrl * a.q));

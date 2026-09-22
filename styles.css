@@ -973,6 +973,10 @@ input::placeholder {
 .results-sort .chip { min-height: 32px; padding: 0 12px; font-size: 13px; }
 .results-sort label { margin: 0; white-space: nowrap; }
 .results-sort select { width: auto; max-width: 240px; height: 36px; padding: 0 30px 0 10px; font-size: 13px; font-weight: 600; }
+/* Toggle de visualização das abas de progresso, na mesma linha dos chips de
+   Ordenar: NÃO encolhe (no celular os chips quebram linha e o flex espremia o
+   toggle — o 3º botão saía cortado na borda). */
+.results-sort .view-toggle { flex: none; margin-left: auto; }
 /* Sets do Pokémon: a origem (EN/PT/JA/ZH) é um FILTRO, então mora na linha do
    contador, colada à esquerda do ▦/≣ — o grupo inteiro na ponta direita — em
    vez de uma faixa própria de 38px acima (pedido de 2026-09-10). Chips na
@@ -5243,6 +5247,33 @@ a.progress-row:hover {
   margin: 7px 0 0;
   color: var(--subtle);
   font-size: 12px;
+}
+
+/* Abas de progresso (Sets/Artistas/Personagens) em 3 modos (2026-09-21): a
+   LISTA de sempre (padrão, sem classe), a GRADE (cartão vertical com a arte
+   grande — nos sets, o logo) e a COMPACTA (uma linha fina por grupo, sem arte,
+   com a barra na ponta direita). O toggle é o mesmo das grades de cartas
+   (#groupsViewToggle na Minha Coleção, data-pg-view no perfil público), só
+   sem o fichário. A linha é a MESMA nos três modos: o CSS a rearruma. */
+.progress-row-list.is-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; }
+.progress-row-list.is-grid .progress-row { flex-direction: column; align-items: stretch; gap: 10px; padding: 14px; }
+.progress-row-list.is-grid .progress-row-art { width: 100%; height: 112px; border-radius: 8px; }
+.progress-row-list.is-grid .progress-row-art img { max-width: 82%; max-height: 92px; }
+.progress-row-list.is-grid .progress-row-initial { font-size: 36px; }
+.progress-row-list.is-grid .progress-row-title { flex-wrap: wrap; }
+.progress-row-list.is-compact { display: flex; flex-direction: column; gap: 0; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--panel); box-shadow: var(--shadow); }
+.progress-row-list.is-compact .progress-row { border: 0; border-bottom: 1px solid var(--line); border-radius: 0; box-shadow: none; padding: 7px 12px; gap: 10px; min-height: 44px; }
+.progress-row-list.is-compact .progress-row:last-child { border-bottom: 0; }
+.progress-row-list.is-compact a.progress-row:hover { transform: none; background: var(--panel-strong); }
+.progress-row-list.is-compact .progress-row-art,
+.progress-row-list.is-compact .progress-row-meta { display: none; }
+.progress-row-list.is-compact .progress-row-body { display: flex; align-items: center; gap: 12px; }
+.progress-row-list.is-compact .progress-row-title { flex: 1 1 auto; min-width: 0; margin: 0; }
+.progress-row-list.is-compact .progress-bar { width: 120px; flex: none; margin: 0; height: 6px; }
+@media (max-width: 600px) {
+  .progress-row-list.is-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .progress-row-list.is-grid .progress-row-art { height: 88px; }
+  .progress-row-list.is-compact .progress-bar { width: 64px; }
 }
 
 /* Tile minimalista de carta (imagem em destaque, estilo binderbuilder) */
