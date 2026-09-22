@@ -3388,15 +3388,17 @@ a.preview-print:hover { background: var(--panel); }
 
 .preview-actions-row {
   display: grid;
-  /* Duas pílulas de texto dividindo a largura + o círculo do compartilhar. */
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 46px;
+  /* Duas pílulas de texto dividindo a largura — a MESMA da linha de cima, pra
+     as bordas das duas fileiras casarem. O compartilhar ficava aqui num
+     círculo de 46px na ponta, e as pílulas terminavam antes do [+] de cima;
+     em 2026-09-22 ele subiu pro topo, ao lado do X. */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 10px;
 }
-/* Sem wishlist na página (ex.: Pastas): só Pastas + compartilhar. */
-.preview-actions-row.no-want { grid-template-columns: minmax(0, 1fr) 46px; }
+/* Sem wishlist na página (ex.: Pastas): só Pastas, na largura inteira. */
+.preview-actions-row.no-want { grid-template-columns: minmax(0, 1fr); }
 
 .preview-folders,
-.preview-share,
 .preview-want {
   gap: 8px;
   min-height: 46px;
@@ -3412,18 +3414,36 @@ a.preview-print:hover { background: var(--panel); }
 .preview-folders svg,
 .preview-want svg { flex: none; }
 
-/* Compartilhar: só o ícone, num círculo do tamanho da linha. O "Link copiado!"
-   (quando não há menu nativo de compartilhar) é um balão em cima do botão. */
+/* Compartilhar: só o ícone, no MESMO círculo do X e colado à esquerda dele
+   (2026-09-22) — mesma caixa, borda, fundo e sombra; a diferença é só o
+   desenho dentro. O "Link copiado!" (quando não há menu nativo de
+   compartilhar) é um balão EMBAIXO do botão: em cima não há mais espaço. */
 .preview-share {
-  position: relative;
-  width: 46px;
+  position: absolute;
+  top: 12px;
+  right: 54px;         /* 12 do X + 34 do X + 8 de respiro */
+  z-index: 2;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  min-height: 34px;
+  flex: none;
+  aspect-ratio: 1;
   padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--text);
+  box-shadow: var(--shadow-pop);
+  cursor: pointer;
 }
-.preview-share svg { width: 18px; height: 18px; }
+.preview-share:hover { color: var(--accent); border-color: var(--accent); }
+.preview-share svg { width: 16px; height: 16px; }
 .preview-share.is-copied::after {
   content: attr(data-copied);
   position: absolute;
-  bottom: calc(100% + 8px);
+  top: calc(100% + 8px);
   right: 0;
   padding: 6px 10px;
   border: 1px solid var(--line);
@@ -3828,11 +3848,29 @@ a.preview-print:hover { background: var(--panel); }
     background-clip: padding-box;
     box-shadow: inset 0 0 0 1px var(--line);
   }
+  /* Compartilhar acompanha o X: fixo, mesma caixa de 44 / círculo de 36, à
+     esquerda dele (22 + 44 do X + 4 — os 8px de respiro entre os círculos
+     visíveis já vêm das bordas transparentes). */
+  .preview-share {
+    position: fixed;
+    top: calc(22px + env(safe-area-inset-top, 0px));
+    right: 70px;
+    z-index: 60;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    border: 4px solid transparent;
+    background-clip: padding-box;
+    box-shadow: inset 0 0 0 1px var(--line);
+  }
   /* O hover/foco pintava a border-color: com a borda transparente de 4px isso
      virava um anel de 44px em volta do círculo de 36. O realce vai no anel
      interno. */
   .preview-close:hover,
-  .preview-close:focus-visible {
+  .preview-close:focus-visible,
+  .preview-share:hover,
+  .preview-share:focus-visible {
     border-color: transparent;
     box-shadow: inset 0 0 0 1px var(--accent);
     /* O outline global de foco contorna a caixa de 44; puxado pra dentro ele
@@ -9792,7 +9830,8 @@ select,
      ver .explore-subnav[data-scroll] lá em cima. */
   /* Ícones de ação que são quadrados (fechar, editar pasta): vira 44 no dedo. */
   .folder-act,
-  .preview-close {
+  .preview-close,
+  .preview-share {
     min-width: 44px;
     min-height: 44px;
   }
