@@ -5784,6 +5784,25 @@ a.progress-row:hover {
   /* Coleção: o título "Coleção" e o "← Hub" saem do topo (2026-09-20) — a
      tabbar já tem Hub e Coleção, então a faixa era só repetição. */
   main .page-head.coll-head { display: none; } /* (0,3,0): vence o display: grid do .page-head-bar */
+  /* Explorar (Cartas/Sets/Pokédex/Lendários/Treinadores/Artistas): o título
+     "Pokémon Cartas" sai do celular (pedido de 2026-09-22) — a fileira de abas
+     logo abaixo já diz em que tela você está, e a marca com a cor do jogo, em
+     que jogo; o título só empurrava a lista pra baixo. Fica pro leitor de tela
+     (.sr-only) porque continua sendo o h1 da página. O wrapper vira
+     display: contents pra não sobrar uma linha vazia + row-gap no grid da
+     faixa; em Lendários o parágrafo de introdução segue no lugar. A vista de
+     SÉRIE / linha vintage (?serie=, ?line=) mantém o título: lá ele é o nome
+     da série com o "← Sets", e não a repetição da aba. */
+  .page-head-explore > .page-head-bar-text:not(:has(> .serie-back)) { display: contents; }
+  .page-head-explore > .page-head-bar-text:not(:has(> .serie-back)) > h1 {
+    position: absolute; width: 1px; height: 1px; margin: 0; overflow: hidden;
+    clip-path: inset(50%); white-space: nowrap;
+  }
+  /* Lendários: sem o título, a introdução ficava ACIMA das abas, parecendo
+     texto solto. Vai pra baixo delas (order no grid), como o resto da página.
+     grid-column: 1 porque o molde de cima ainda tem 2 colunas aqui (só as
+     áreas nomeadas saem) — solto, o parágrafo caía na 2ª e engolia as abas. */
+  .page-head-explore > .page-head-bar-text:not(:has(> .serie-back)) > .page-head-sub { order: 1; grid-column: 1; margin-top: 4px; }
   /* Mesma distância dos dois lados da barra (pedido de 2026-09-20): o gap
      câmera › barra é 8px, então barra › perfil também — sem a margem de 10px
      da barra somada ao gap de 12px do header, que dava 22px à direita. */
