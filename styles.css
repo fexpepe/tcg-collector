@@ -6774,20 +6774,30 @@ button.dash-link { width: 100%; min-height: 0; justify-content: flex-start; text
   margin-top: 14px;
 }
 
-/* Mercado BR / EUA: grade rótulo | chips para os chips alinharem entre as
-   linhas (a coluna do rótulo tem a largura do maior rótulo). */
+/* Mercado BR / EUA (2026-09-22): EMPILHADO — o rótulo numa linha própria e os
+   chips embaixo, em todo tamanho de tela. Era uma grade rótulo | chips, que
+   só ficava bonita quando os chips cabiam numa linha: com 4 lojas nos EUA e
+   o painel estreito (celular e a coluna direita do popup no PC), os chips
+   quebravam em 3 linhas e o rótulo ficava centralizado no meio de uma torre
+   torta. Empilhado, cada grupo é um bloco: título em cima, lojas alinhadas à
+   esquerda embaixo, e os dois grupos começam na mesma margem. */
 /* Seção de marketplaces maior (fontes, padding e gaps ~20% acima do resto do
    rodapé): é o call-to-action da carta — "onde eu compro/vendo isto?". */
 .market-links {
   display: grid;
-  grid-template-columns: max-content 1fr;
-  align-items: center;
-  gap: 11px 14px;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
   margin-top: 16px;
 }
+/* Respiro entre um grupo e o título do seguinte, maior que o do título pros
+   seus chips — é o que faz ler como dois blocos e não como uma lista só. */
+.br-links-chips + .br-links-label { margin-top: 10px; }
 
 .br-links-label {
-  font-size: 14px;
+  font-size: 12.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
   color: var(--subtle);
 }
 

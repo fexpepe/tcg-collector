@@ -6875,8 +6875,8 @@
     return terms.every((term) => haystack.includes(term));
   }
 
-  // Uma linha do grid: rótulo na 1ª coluna, chips na 2ª (os chips alinham entre
-  // as linhas porque a coluna do rótulo tem a largura do maior rótulo).
+  // Um grupo do bloco de lojas: o rótulo numa linha e os chips embaixo dele
+  // (empilhado desde 2026-09-22 — ver .market-links no styles.css).
   function marketplaceRow(labelKey, list, card) {
     if (!list.length) return "";
     const links = list
