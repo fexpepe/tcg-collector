@@ -6030,6 +6030,9 @@
         <div class="card-preview-backdrop" data-preview-close></div>
         <section class="card-preview-panel" role="dialog" aria-modal="true" aria-label="${escapeAttribute(activeCard.name)}">
           <button class="preview-close" data-preview-close aria-label="${escapeAttribute(t("modal.close"))}">×</button>
+          <!-- Compartilhar: mesmo círculo do X, à esquerda dele (2026-09-22).
+               Só o ícone; o "Link copiado!" é um balão embaixo do botão. -->
+          <button type="button" class="preview-share" data-preview-share aria-label="${escapeAttribute(t("modal.share"))}" title="${escapeAttribute(t("modal.share"))}">${TILE_ICONS.share}<span class="sr-only">${escapeHtml(t("modal.share"))}</span></button>
           <div class="preview-image-wrap">
             ${(function () {
               const img = cardImageSources(activeCard, true);
@@ -6119,13 +6122,14 @@
               </div>
               <!-- Linha SECUNDÁRIA, embaixo da principal (moraram em cima até
                    2026-09-21): Pastas (abre o popup de "adicionar a uma pasta",
-                   o mesmo do + Pasta do tile, em modo folha centralizada),
-                   Lista de Desejo e o compartilhar só com o ícone — o texto
-                   "Compartilhar" não paga a largura que come ao lado dos outros. -->
+                   o mesmo do + Pasta do tile, em modo folha centralizada) e
+                   Lista de Desejo, dividindo a largura da linha de cima. O
+                   compartilhar morava aqui num círculo à direita, que tirava
+                   as duas pílulas do alinhamento com o [−] [tenho] [+]; foi
+                   pro topo, ao lado do X (pedido de 2026-09-22). -->
               <div class="preview-actions-row${wishlist ? "" : " no-want"}">
                 <button type="button" class="secondary preview-folders" data-list-card-id="${escapeAttribute(activeCard.id)}"${activeVariant ? ` data-list-variant="${escapeAttribute(activeVariant)}"` : ""} aria-haspopup="dialog">${TILE_ICONS.folder}<span>${escapeHtml(t("modal.folders"))}</span></button>
                 ${wishlist ? `<button type="button" class="secondary preview-want${isWanted ? " active" : ""}" data-preview-want aria-pressed="${isWanted}">${isWanted ? TILE_ICONS.heartFilled : TILE_ICONS.heart}<span>${escapeHtml(isWanted ? t("modal.wanted") : t("modal.want"))}</span></button>` : ""}
-                <button type="button" class="secondary preview-share" data-preview-share aria-label="${escapeAttribute(t("modal.share"))}" title="${escapeAttribute(t("modal.share"))}">${TILE_ICONS.share}<span class="sr-only">${escapeHtml(t("modal.share"))}</span></button>
               </div>
               ${((folders && folders.list().length) || (graded && isOwned)) ? `<div class="preview-org-row">
                 ${(folders && folders.list().length) ? `<label class="preview-folder-row"><span>${escapeHtml(t("folders.assign"))}</span>
