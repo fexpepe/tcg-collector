@@ -298,10 +298,12 @@
       sorts: ["name", "progress", "release"]
     }
   };
-  // Visualização das abas de progresso: lista (padrão, a linha de sempre),
-  // grade ou compacta. Chave própria: a das cartas tem fichário, que aqui não existe.
+  // Visualização das abas de progresso: grade (padrão — 2026-09-22, o site
+  // inteiro nasce em grade, desktop e celular; a pessoa troca se quiser),
+  // lista (a linha de sempre) ou compacta. Chave própria: a das cartas tem
+  // fichário, que aqui não existe.
   const GROUP_VIEWS = ["grid", "list", "compact"];
-  let groupsView = "list";
+  let groupsView = "grid";
   try { const v = localStorage.getItem("tcg-collection-groups-view"); if (GROUP_VIEWS.includes(v)) groupsView = v; } catch (e) { /* ignora */ }
 
   const elements = {
@@ -2582,9 +2584,10 @@
     let filtersOpen = false;
     try { filtersOpen = localStorage.getItem("tcg-collector-filters-open") === "1"; } catch (e) { /* ignora */ }
     let groupSort = "name"; // abas de progresso (Sets/Pokémon/Artistas): "name" | "progress" | "release" | "dex"
-    // Visualização das abas de progresso (lista/grade/compacta), a MESMA chave
-    // de preferência da Minha Coleção (o toggle é o mesmo, sem fichário).
-    let groupsView = "list";
+    // Visualização das abas de progresso (grade por padrão, lista ou compacta),
+    // a MESMA chave de preferência da Minha Coleção (o toggle é o mesmo, sem
+    // fichário) — e o mesmo padrão: grade, como o resto do site.
+    let groupsView = "grid";
     try { const v = localStorage.getItem("tcg-collection-groups-view"); if (["grid", "list", "compact"].indexOf(v) >= 0) groupsView = v; } catch (e) { /* ignora */ }
     // ── URL do perfil (2026-09-21): /users/<handle>[/<aba>[/<jogo>]/<grupo>] ──
     // Cada aba e cada grupo aberto têm link próprio (showcase, vendas, um set,
