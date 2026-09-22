@@ -783,9 +783,14 @@ jobs:
       # saíram os game_*.webp de assets/games). Nenhuma página referencia esses
       # 6 arquivos — só o sleevu-wordmark.svg é usado (styles.css e SHELL_ASSETS
       # do sw.js), e ele FICA. Continuam versionados no repo; só não sobem.
+      #
+      # CLAUDE.md e .gitignore (2026-09-22): são regras de trabalho e de git,
+      # não conteúdo do site. O CLAUDE.md ficava de fora desta lista e subia
+      # junto — acessível em sleevu.app/CLAUDE.md, expondo nome e processo de
+      # desenvolvimento pra quem adivinhasse a URL.
       - name: Remove arquivos que não vão para o site
         run: |
-          rm -rf .git .github .claude data/.cache data/cards.generated.js data/magic/cards.js data/ygo/cards.js scripts out README.md ROADMAP.md docs supabase tests .gitattributes
+          rm -rf .git .github .claude data/.cache data/cards.generated.js data/magic/cards.js data/ygo/cards.js scripts out README.md ROADMAP.md CLAUDE.md docs supabase tests .gitattributes .gitignore
           rm -f assets/brand/Flesh_and_Blood_TCG_Logo.png assets/brand/Magic-The-Gathering-logo.png assets/brand/digimon.webp assets/brand/logo_title_dbfwcardgame.webp assets/brand/riftbound.webp assets/brand/yugioh.jpg
           rm -f assets/games/README.md assets/shops/README.md
 
