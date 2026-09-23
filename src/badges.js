@@ -294,6 +294,7 @@
     // Sets 100%: cartas possuídas por set vs total oficial do set (qualquer jogo)
     const bySet = new Map();
     mine.forEach((c) => {
+      if (shared.isBonusCard(c)) return; // bônus não é preciso pra fechar o set
       const k = `${c.game}:${c.set}`;
       const e = bySet.get(k) || { have: 0, total: Number(c.setTotal) || 0 };
       e.have += 1;

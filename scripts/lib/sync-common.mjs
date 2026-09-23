@@ -1,6 +1,7 @@
 // Helpers compartilhados dos scripts de sync/build de catálogo. Sem dependências.
 // Cada jogo novo deve custar ~1 arquivo pequeno usando estas peças.
 import { writeFile, readFile, mkdir, rm } from "node:fs/promises";
+import { isBonusCardId } from "./bonus-cards.mjs";
 import { usdForVariant, pickPricingRef } from "./pricing.mjs";
 
 export const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -240,15 +241,20 @@ export function setValueBuckets(cards, pricing) {
 
 // Metadados de set + somas, a partir das cartas do próprio chunk. `sample` é
 // qualquer carta dele (os campos set* se repetem em todas).
+// Cartas bônus (lib/bonus-cards.mjs) ficam fora da soma de valor e são
+// contadas em `bonus`: o tile de set desconta do `count` pra o X/Y do
+// progresso bater com a página do set.
 export function setManifestMeta(chunkCards, pricing) {
   const sample = chunkCards[0] || {};
   const meta = { total: sample.setTotal || chunkCards.length };
+  const bonus = chunkCards.filter((card) => isBonusCardId(card && card.id)).length;
+  if (bonus) meta.bonus = bonus;
   if (sample.setLogo) meta.logo = sample.setLogo;
   if (sample.setSymbol) meta.symbol = sample.setSymbol;
   if (sample.setReleaseDate) meta.release = sample.setReleaseDate;
   if (sample.setSerieId) meta.serieId = sample.setSerieId;
   if (sample.setSerieName) meta.serieName = sample.setSerieName;
-  return Object.assign(meta, setValueBuckets(chunkCards, pricing));
+  return Object.assign(meta, setValueBuckets(bonus ? chunkCards.filter((card) => !isBonusCardId(card && card.id)) : chunkCards, pricing));
 }
 
 // ── setId estável sob RENAME da fonte ───────────────────────────────────────

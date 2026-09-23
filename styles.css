@@ -2545,6 +2545,17 @@ input::placeholder {
 /* Custo pra completar o set (cards da lista e hero do detail). */
 .set-missing { margin: 6px 0 0; font-size: 11px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .detail-summary .set-missing { font-size: 13px; }
+/* Selo de cartas bônus no hero do set (Mew RGB da 30th Celebration): fazem
+   parte do set mas não contam pro 100%. Cinza sem nenhuma, cor de destaque
+   com alguma, dourado com o set fechado + todas as bônus. */
+.set-bonus { display: inline-flex; align-items: center; gap: 5px; margin: 6px 0 0; padding: 2px 9px; border: 1px solid var(--line); border-radius: 999px; font-size: 12px; font-weight: 700; color: var(--muted); }
+.set-bonus[hidden] { display: none; }
+.set-bonus svg { flex: none; }
+.set-bonus.has { color: var(--text); border-color: var(--gold); }
+.set-bonus.has svg { color: var(--gold); }
+.set-bonus.complete { color: #1b1405; background: var(--gold); border-color: var(--gold); }
+.set-bonus.complete svg { color: currentColor; }
+.set-bonus.complete svg path { fill: currentColor; }
 .set-release { top: 6px; right: 6px; padding: 2px 7px; font-size: 10px; }
 
 .set-footer strong {

@@ -160,6 +160,33 @@
     Object.keys(ID_MERGES.c).map((id) => (id.indexOf("-") > 0 ? id.slice(0, id.indexOf("-")) : id))
   ))).map((s) => s + "-");
 
+  // ── Cartas BÔNUS de set ──────────────────────────────────────────────────
+  // Fazem parte do set e aparecem na lista, mas NÃO entram no 100%: quem fecha
+  // o set não precisa delas, e quem tem ganha o selo de bônus no perfil do set.
+  // Nasceu com o Mew RGB da 30th Celebration (23/09/2026, pedido do Fernando):
+  // três cartas "R/RGB", "G/RGB", "B/RGB" fora da numeração, de tiragem
+  // desconhecida e ~US$ 20 mil cada — contar no denominador deixaria o set
+  // praticamente impossível de fechar.
+  //
+  // A regra é pelo ID (setId + número impresso), porque é o único dado que
+  // TODO contador tem: os índices de set só guardam cardIds, a borda
+  // (/api/collection) não traz raridade confiável e o payload do perfil
+  // público guarda id. O id vale pra qualquer idioma ("30th-R", "30th-R-pt",
+  // "M6a-R-ja").
+  const BONUS_CARDS = { "30th": ["R", "G", "B"], "M6a": ["R", "G", "B"] };
+  const BONUS_LANG_RE = /-(pt|ja|zh-cn|zh-tw|zh)$/;
+  // Número da carta bônus dentro do set ("R"); "" quando não é bônus.
+  function bonusNumberOf(cardId) {
+    const base = String(cardId || "").replace(BONUS_LANG_RE, "");
+    const dash = base.lastIndexOf("-");
+    if (dash <= 0) return "";
+    const lista = BONUS_CARDS[base.slice(0, dash)];
+    const num = base.slice(dash + 1);
+    return lista && lista.indexOf(num) >= 0 ? num : "";
+  }
+  function isBonusCard(cardOrId) {
+    return !!bonusNumberOf(cardOrId && typeof cardOrId === "object" ? cardOrId.id : cardOrId);
+  }
   // Id novo de um SET aposentado; "" quando não mudou. O link de set que alguém
   // compartilhou nos dias em que o set tinha o id velho
   // (detail?type=set&setId=cel30) cairia numa página vazia sem isto.
@@ -9426,6 +9453,7 @@
     fetchSetChunks,
     setIdForCard,
     mergedSetId,
+    isBonusCard,
     createPager,
     debounce,
     addOptions,
@@ -10724,7 +10752,8 @@
     if (idx) (idx.sets || []).forEach((sx) => {
       const g = sx.game || "pokemon";
       setIdx[g] = setIdx[g] || {};
-      setIdx[g][sx.name] = (setIdx[g][sx.name] || 0) + (sx.cardIds ? sx.cardIds.length : 0);
+      // Denominador do progresso: sem as cartas bônus (isBonusCard).
+      setIdx[g][sx.name] = (setIdx[g][sx.name] || 0) + (sx.cardIds ? sx.cardIds.filter((id) => !isBonusCard(id)).length : 0);
     });
     cardVariantPairs((cards || []).filter((c) => owned.has(c.id))).forEach(({ card, variant }) => {
       const qty = owned.variantTotal(card.id, variant);

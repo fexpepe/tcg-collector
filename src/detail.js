@@ -660,8 +660,10 @@
         : "";
       // Custo pra completar: mercado das cartas que faltam (piso "≥" se alguma
       // faltante não tem preço). Só aparece com coleção iniciada no set.
-      const missing = pageCards.filter((card) => !owned.has(card.id));
-      const ownedHere = pageCards.length - missing.length;
+      // Carta bônus (shared.isBonusCard) não falta pra ninguém: fica fora.
+      const paraCompletar = pageCards.filter((card) => !shared.isBonusCard(card));
+      const missing = paraCompletar.filter((card) => !owned.has(card.id));
+      const ownedHere = paraCompletar.length - missing.length;
       let missingHtml = "";
       if (ownedHere > 0 && missing.length > 0) {
         const sum = shared.sumCardsValue(missing, prices);
@@ -685,6 +687,7 @@
           ${nomeOriginal ? `<p class="set-original-name" lang="ja">${escapeHtml(nomeOriginal)}</p>` : ""}
           ${contagemHtml}
           ${missingHtml}
+          <div class="set-bonus" data-set-bonus hidden></div>
         </div>
       `;
       elements.hero.hidden = false;
@@ -1231,10 +1234,15 @@
 
   function updateHeaderStats() {
     const useModes = detailType === "set" && (masterMode || anyLangMode);
+    // Cartas bônus (Mew RGB da 30th Celebration…) aparecem na grade mas não
+    // entram no 100% do set — nem no denominador, nem no numerador. Quem tem
+    // ganha o selo de bônus no hero (updateBonusStat). Só na página de SET: na
+    // do Pokémon/artista a carta conta como qualquer outra.
+    const contaveis = detailType === "set" ? pageCards.filter((card) => !shared.isBonusCard(card)) : pageCards;
     let ownedN, totalN;
     if (!useModes) {
-      ownedN = pageCards.filter((card) => owned.has(card.id)).length;
-      totalN = pageCards.length;
+      ownedN = contaveis.filter((card) => owned.has(card.id)).length;
+      totalN = contaveis.length;
     } else {
       // "Qualquer idioma": donos por id BASE (EN/PT do mesmo slot contam juntas).
       const baseIdx = anyLangMode ? ownedBaseIndex() : null;
@@ -1244,13 +1252,13 @@
       };
       const cardOwned = (card) => (anyLangMode ? idsOf(card).length > 0 : owned.has(card.id));
       if (!masterMode) {
-        ownedN = pageCards.filter(cardOwned).length;
-        totalN = pageCards.length;
+        ownedN = contaveis.filter(cardOwned).length;
+        totalN = contaveis.length;
       } else {
         // Master set: cada variante é um slot; possuída se qualquer id (da
         // língua certa ou de qualquer uma, conforme o modo) tem a variante.
         ownedN = 0; totalN = 0;
-        pageCards.forEach((card) => {
+        contaveis.forEach((card) => {
           const variants = (card.variants && card.variants.length) ? card.variants : [shared.defaultVariant(card)];
           totalN += variants.length;
           const ids = anyLangMode ? idsOf(card) : [card.id];
@@ -1288,7 +1296,28 @@
       if (estavaCompleto === false && completo) celebraSetCompleto();
       estavaCompleto = completo;
     }
+    updateBonusStat(ownedN, totalN);
     updateValueStats();
+  }
+
+  // Selo de bônus no hero do set: "Cartas bônus 1 de 3". Com o set fechado E
+  // todas as bônus, vira dourado ("Set completo + bônus") — é o prêmio a mais
+  // de quem tem as cartas que o 100% não exige. Posse por id exato, ou por id
+  // base no modo "qualquer idioma" (a mesma régua do progresso).
+  function updateBonusStat(ownedN, totalN) {
+    const el = elements.hero && elements.hero.querySelector("[data-set-bonus]");
+    if (!el) return;
+    const bonus = detailType === "set" ? pageCards.filter((card) => shared.isBonusCard(card)) : [];
+    if (!bonus.length) { el.hidden = true; return; }
+    const baseIdx = anyLangMode ? ownedBaseIndex() : null;
+    const tem = (card) => (anyLangMode ? (baseIdx.get(shared.basePricingId(card.id)) || []).length > 0 : owned.has(card.id));
+    const n = bonus.filter(tem).length;
+    const tudo = n >= bonus.length && totalN > 0 && ownedN >= totalN;
+    el.hidden = false;
+    el.classList.toggle("has", n > 0);
+    el.classList.toggle("complete", tudo);
+    el.title = t("set.bonusHint");
+    el.innerHTML = `<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg><span>${escapeHtml(tudo ? t("set.bonusComplete") : t("set.bonusCount", { n, t: bonus.length }))}</span>`;
   }
 
   // Três números com naturezas DIFERENTES — e é isso que explica por que eles
@@ -1312,12 +1341,16 @@
     let ownedValue = 0;
     pageCards.forEach((card) => {
       const ref = shared.cardValue(card, shared.defaultVariant(card), prices).value || 0;
-      total += ref;
+      // Bônus fica fora do "set completo" e do "falta" (não é preciso pra
+      // fechar o set — um Mew RGB de US$ 20 mil inflaria os dois), mas o que
+      // você TEM dela entra no "já gasto" normalmente.
+      const bonus = detailType === "set" && shared.isBonusCard(card);
+      if (!bonus) total += ref;
       // Posse pelo id exato, como antes. O modo "qualquer idioma" não entra
       // aqui de propósito: a quantidade vive por id, então a cópia em outra
       // língua está sob outro id — misturar daria um "já gasto" que não bate
       // com o que a Coleção mostra.
-      if (!owned.has(card.id)) { toBuy += ref; return; }
+      if (!owned.has(card.id)) { if (!bonus) toBuy += ref; return; }
       shared.cardVariants(card).forEach((variant) => {
         owned.conditionBreakdown(card.id, variant).forEach(({ condition, quantity }) => {
           const v = shared.cardValue(card, variant, prices, condition).value;
