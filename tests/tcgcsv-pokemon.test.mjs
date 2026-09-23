@@ -10,8 +10,9 @@ import assert from "node:assert/strict";
 import {
   normalizeSetName, setNameKeys, indexGroupsByName, candidateGroups, productKey,
   cleanProductName, pickMainProduct, matchGroup, groupFits, jpSetCode, jpSetTitle,
-  synthesizeCard, speciesOf
+  synthesizeCard, speciesOf, extraNumbersOf, mirrorLangsOf, mirrorCard
 } from "../scripts/lib/tcgcsv-pokemon.mjs";
+import { missAllowed } from "../scripts/lib/pricing.mjs";
 
 test("normalizeSetName: tira código de era, sufixo Base Set e iguala &/and", () => {
   assert.equal(normalizeSetName("SWSH07: Evolving Skies").short, "evolving skies");
@@ -174,6 +175,7 @@ test("speciesOf: tira sufixos de mecânica", () => {
   assert.equal(speciesOf("Charizard ex"), "Charizard");
   assert.equal(speciesOf("Pikachu VMAX"), "Pikachu");
   assert.equal(speciesOf("Umbreon"), "Umbreon");
+  assert.equal(speciesOf("Mew - R/RGB"), "Mew");                 // número no nome (TCGplayer) não é espécie
 });
 
 // ── Import de set EN inteiro (16/09/2026: "30th Celebration" antes da TCGdex) ──
@@ -450,4 +452,51 @@ test("isModernEnGroup: o filtro de nome que abre a janela", () => {
   assert.equal(isModernEnGroup("Celebrations: Classic Collection"), false);
   assert.equal(isModernEnGroup("Pokemon Sealed Product"), false);
   assert.equal(isModernEnGroup(""), false);
+});
+
+// Mew RGB da 30th Celebration (23/09/2026): "R/RGB", "G/RGB", "B/RGB" no lugar
+// do número. O set EN já tinha chunk (TCGdex), a guarda de numeração recusava
+// letra sem dígito e as três cartas nunca entravam; o PT nem fonte tem.
+test("extraNumbers: Mew RGB passa pela guarda só com o pin, e nasce em EN e PT", () => {
+  const pins = { extraNumbers: { "30th": { numbers: "^[RGB]$", mirror: ["pt"] } } };
+  const extra = extraNumbersOf(pins, "30th");
+  const prefixes = new Set([""]);
+  assert.equal(missAllowed("R/RGB", prefixes), false);          // sem pin: recusa (como antes)
+  assert.equal(missAllowed("R/RGB", prefixes, extra), true);
+  assert.equal(missAllowed("R", prefixes, extra), true);         // o merge só tem o numerador
+  assert.equal(missAllowed("X/RGB", prefixes, extra), false);    // o pin não abre a porta pra qualquer letra
+  assert.equal(missAllowed("227/S-P", prefixes, extra), true);   // numérico segue a régua de sempre
+  assert.equal(extraNumbersOf(pins, "sv01"), null);
+  assert.deepEqual(mirrorLangsOf(pins, "30th"), ["pt"]);
+  assert.deepEqual(mirrorLangsOf(pins, "sv01"), []);
+
+  const chunk = [{ id: "30th-001", number: "001", rarity: "Common", image: "x" }, { id: "30th-065", number: "065", rarity: "Rare", image: "x" }];
+  const prods = [
+    { productId: 1, name: "Exeggcute - 001/128", extendedData: [{ name: "Number", value: "001/128" }] },
+    { productId: 717607, name: "Mew - R/RGB", extendedData: [{ name: "Number", value: "R/RGB" }, { name: "Rarity", value: "RGB Rare" }] }
+  ];
+  const prices = [{ productId: 717607, subTypeName: "Holofoil", marketPrice: 20000 }];
+  assert.equal(matchGroup(chunk, prods, prices, { setId: "30th", lang: "en" }).misses.length, 0);
+  const m = matchGroup(chunk, prods, prices, { setId: "30th", lang: "en", extraNumbers: extra });
+  assert.equal(m.misses.length, 1);
+
+  const sib = { set: "30th Celebration", setId: "30th", setTotal: 128, setSerieId: "me", setSerieName: "Mega Evolution", setReleaseDate: "2026-09-16" };
+  const miss = m.misses[0];
+  const en = synthesizeCard({ product: miss.product, price: miss.price, img: miss.img, setId: "30th", lang: "en", sib, revNames: { mew: 151 }, variants: miss.variants });
+  assert.equal(en.id, "30th-R");
+  assert.equal(en.number, "R");
+  assert.equal(en.name, "Mew - R/RGB");
+  assert.equal(en.dexId, 151);                                   // entra na página do Mew
+  assert.deepEqual(en.variants, ["Holo"]);
+  assert.ok(en.price && en.price.u > 0);
+
+  const ptSib = { set: "Celebração de 30 Anos", setTotal: 128, setSerieId: "me", setSerieName: "Megaevolução", setReleaseDate: "2026-09-16" };
+  const pt = mirrorCard(en, "pt", ptSib);
+  assert.equal(pt.id, "30th-R-pt");
+  assert.equal(pt.language, "pt");
+  assert.equal(pt.set, "Celebração de 30 Anos");
+  assert.equal(pt.setSerieName, "Megaevolução");
+  assert.equal(pt.image, en.image);
+  assert.equal(pt.price, undefined);                             // preço do TCGplayer é da impressão EN
+  assert.ok(en.price);                                           // e a carta EN segue com o dela
 });

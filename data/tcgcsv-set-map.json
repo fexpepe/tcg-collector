@@ -1,5 +1,5 @@
 {
-  "_": "Pins do casamento set nosso ↔ grupo do TCGplayer (scripts/sync-tcgcsv-pokemon.mjs). en: setId TCGdex -> groupId (ou lista, quando a TCGdex junta a galeria TG/GG no chunk), ou o NOME do grupo quando o nome do SET diverge entre as bases (a Classic Collection do 30 anos chama-se 30th Classic Collection aqui e ME: 30th Celebration Classic Collection lá, então o casamento por nome de set não acha o grupo sozinho). Só entra aqui o que foi conferido à mão; o resto o sync casa pelo nome e CONFIRMA pelos números. ja.alias: NOME exato do grupo do TCGplayer Japan (ou o código) -> nosso setId, quando divergem — é também o que desambigua decks que só levam o código da era no nome (SV: …, sA: …): código repetido em vários grupos sem chunk é pulado até ter apelido aqui (o log do deploy lista os grupos); ja.skip: códigos a ignorar. enImport: sets EN INTEIROS que a TCGdex ainda não publicou, importados do grupo do TCGplayer — { group: nome (normalizado) ou groupId, setId (decisão editorial: o id que a TCGdex deve usar, pra casar depois), name, serie, numbers? (regex sobre o número impresso, pra dividir um grupo em dois sets), date?, total? }. Pin de set que já tem chunk é ignorado (segue o casamento normal).",
+  "_": "Pins do casamento set nosso ↔ grupo do TCGplayer (scripts/sync-tcgcsv-pokemon.mjs). en: setId TCGdex -> groupId (ou lista, quando a TCGdex junta a galeria TG/GG no chunk), ou o NOME do grupo quando o nome do SET diverge entre as bases (a Classic Collection do 30 anos chama-se 30th Classic Collection aqui e ME: 30th Celebration Classic Collection lá, então o casamento por nome de set não acha o grupo sozinho). Só entra aqui o que foi conferido à mão; o resto o sync casa pelo nome e CONFIRMA pelos números. ja.alias: NOME exato do grupo do TCGplayer Japan (ou o código) -> nosso setId, quando divergem — é também o que desambigua decks que só levam o código da era no nome (SV: …, sA: …): código repetido em vários grupos sem chunk é pulado até ter apelido aqui (o log do deploy lista os grupos); ja.skip: códigos a ignorar. enImport: sets EN INTEIROS que a TCGdex ainda não publicou, importados do grupo do TCGplayer — { group: nome (normalizado) ou groupId, setId (decisão editorial: o id que a TCGdex deve usar, pra casar depois), name, serie, numbers? (regex sobre o número impresso, pra dividir um grupo em dois sets), date?, total? }. Pin de set que já tem chunk é ignorado (segue o casamento normal). extraNumbers: numeradores que o set IMPRIME fora do padrão da TCGdex e que a guarda de numeração (missAllowed) recusaria — { setId: { numbers: regex do numerador, mirror?: idiomas pra onde a carta EN é espelhada enquanto a fonte do idioma não publica } }; o 30th tem o Mew RGB ('R/RGB', 'G/RGB', 'B/RGB'), que sai no Brasil no mesmo set.",
   "en": {
     "base1": 604, "base2": 635, "base3": 630, "base4": 605, "base5": 1373,
     "gym1": 1441, "gym2": 1440,
@@ -21,6 +21,9 @@
       "SV: Stellar Miracle Deck Build Box": "SVK"
     },
     "skip": []
+  },
+  "extraNumbers": {
+    "30th": { "numbers": "^[RGB]$", "mirror": ["pt"] }
   },
   "enImport": [
     { "group": "ME: 30th Celebration", "setId": "cel30", "name": "30th Celebration", "serie": "me", "date": "2026-09-16", "total": 128 },

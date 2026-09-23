@@ -8,6 +8,7 @@ import { readdir, readFile, writeFile } from "node:fs/promises";
 import { writeSplitIndexes, setManifestMeta } from "./lib/sync-common.mjs";
 import { chunkNumberPrefixes, missAllowed, applyVariantPrices } from "./lib/pricing.mjs";
 import { isRetiredChunk } from "./lib/set-supersede.mjs";
+import { extraNumbersOf } from "./lib/tcgcsv-pokemon.mjs";
 
 const langs = process.argv.slice(2).filter((arg) => !arg.startsWith("-"));
 if (!langs.length) {
@@ -105,6 +106,9 @@ try { pptNewCards = JSON.parse(await readFile(new URL("ppt-newcards.generated.js
 // sets JP inteiros que ela não tem (S-P, SM-P, XY-P…). Mesmo formato, mesma
 // injeção; a TCGCSV vem PRIMEIRO na lista porque é a fonte diária e sem crédito,
 // e o dedupe por id deixa a PPT só com o que sobrar.
+// Pins do casamento com o TCGplayer: daqui só sai o `extraNumbers` (guarda).
+let setMapPins = {};
+try { setMapPins = JSON.parse(await readFile(new URL("tcgcsv-set-map.json", dataDir), "utf8")); } catch { /* sem pins */ }
 let csvNewCards = [];
 try { csvNewCards = JSON.parse(await readFile(new URL("tcgcsv-newcards.generated.json", dataDir), "utf8")); } catch { /* sem TCGCSV */ }
 const newBySet = {};
@@ -152,9 +156,12 @@ for (const lang of langs) {
       // vir do cache de build de uma rodada anterior à guarda, e uma promo JP
       // "227" em set EN "SWSH###" não pode voltar por essa porta.
       const prefixes = chunkNumberPrefixes(chunk.cards);
+      // Exceção conferida à mão (Mew RGB: "R", "G", "B" no lugar do número),
+      // a mesma que o sync aplicou — vale pro set em qualquer idioma.
+      const extra = extraNumbersOf(setMapPins, chunk.setId);
       for (const nc of news) {
         if (have.has(nc.id)) continue;
-        if (!missAllowed(nc.number, prefixes)) { rejectedNew++; continue; }
+        if (!missAllowed(nc.number, prefixes, extra)) { rejectedNew++; continue; }
         const { _new, ...card } = nc; // remove a flag interna
         chunk.cards.push(card); have.add(nc.id); injectedNew++; changed = true;
       }

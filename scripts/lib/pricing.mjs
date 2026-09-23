@@ -194,7 +194,16 @@ export function chunkNumberPrefixes(cards) {
 // swshp-227, EN, sem raridade, no topo do ranking de Pikachu com bandeira dos
 // EUA. Também barra a mesma carta duplicada por grafia ("SVP 200" além de
 // "200"). Sem chunk (set importado inteiro) tudo passa: não há padrão a seguir.
-export function missAllowed(number, prefixes) {
+//
+// `extra` (RegExp, opcional): numeradores que o set IMPRIME fora do padrão e
+// que alguém conferiu à mão (data/tcgcsv-set-map.json#extraNumbers). Existe
+// pelo Mew RGB da 30th Celebration (23/09/2026): três cartas com "R/RGB",
+// "G/RGB" e "B/RGB" no lugar do número. Letra sem dígito não tem prefixo, a
+// guarda recusava as três e o set EN ficou sem elas — o JP, importado inteiro
+// (sem chunk, sem padrão), já tinha. Testa só o numerador ("R" em "R/RGB"),
+// que é o que o sync e o merge têm em mãos.
+export function missAllowed(number, prefixes, extra) {
+  if (extra && extra.test(String(number || "").split("/")[0].trim())) return true;
   if (!prefixes || !prefixes.size) return true;
   const p = numberPrefix(number);
   return p != null && prefixes.has(p);
