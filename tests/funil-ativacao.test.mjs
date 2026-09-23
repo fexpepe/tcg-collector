@@ -169,8 +169,13 @@ test("a RPC do painel existe, é só de admin e não derruba a admin_dashboard",
 
 test("o painel avisa quando a migração está pendente, em vez de mostrar zero", () => {
   const admin = ler("src/admin.js");
-  assert.match(admin, /admin_funnel<\/code> ainda não existe/,
+  // Desde o v2 (20260923a) o aviso é um só, gerado por aba a partir das RPCs
+  // que ela usa (NEEDS) — então o que se trava é o gerador: nomeia a RPC que
+  // falta e a aba do funil depende da admin_funnel.
+  assert.match(admin, /A RPC <code>\$\{esc\(r\)\}<\/code> ainda não existe no banco/,
     "sem o aviso, o funil pendente parece 'ninguém usa o scanner'");
+  assert.match(admin, /k === "funnel" \? "admin_funnel"/, "o aviso tem de nomear a admin_funnel");
+  assert.match(admin, /funil: \["funnel"/, "a aba Funil tem de depender da admin_funnel");
   assert.match(admin, /20260919a_funil_ativacao\.sql/, "o aviso tem de dizer QUAL migração aplicar");
   assert.match(shared, /rpc\/admin_funnel[\s\S]{0,300}?status === 404\) return undefined/,
     "404 tem de virar undefined, que é como o painel distingue 'pendente' de 'sem acesso'");

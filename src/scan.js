@@ -623,7 +623,7 @@
     // um evento por leitura de propósito: o banco aceita 60 eventos/min por IP
     // e descarta o resto calado, então medir por carta apagaria exatamente a
     // pessoa que abre um booster inteiro — que é quem importa enxergar.
-    const funil = { n: 0, lido: 0, achou: 0, t0: Date.now() };
+    const funil = { n: 0, lido: 0, achou: 0, t0: Date.now(), t1: 0 };
     shared.logEvento("scan_open");
     // Toda carta que entrar daqui conta como cadastro por scanner (o store não
     // sabe de onde veio o clique). Volta pra "ui" no fechar.
@@ -760,7 +760,7 @@
       // num evento só, com o tempo pra dar o ritmo de cadastro.
       shared.logEvento("scan_done", {
         n: funil.n, lido: funil.lido, achou: funil.achou, add: lote,
-        ms: Math.max(0, Date.now() - funil.t0)
+        ms: Math.max(0, Date.now() - funil.t0), t1: funil.t1 || 0
       });
       shared.setOrigemCadastro("ui");
       if (stream) stream.getTracks().forEach((tr) => tr.stop());
@@ -937,6 +937,9 @@
       }
       const st = stores.col[h.game] || (stores.col[h.game] = shared.createCollectionStore(h.game));
       st.add(h.card.id, v, shared.DEFAULT_CONDITION, 1);
+      // Tempo até a 1ª carta: da câmera aberta até a coleção ganhar algo. É o
+      // "quanto demora pra o scanner servir pra alguma coisa".
+      if (!funil.t1) funil.t1 = Math.max(1, Date.now() - funil.t0);
       lote += 1;
       $("[data-scan-lote-n]").textContent = String(lote);
       btnLote.classList.remove("is-vazio");

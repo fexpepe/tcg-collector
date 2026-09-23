@@ -273,6 +273,9 @@
   });
   window.addEventListener("appinstalled", () => {
     deferredInstallPrompt = null;
+    // Instalar o app é o sinal mais forte de "vou voltar" que o navegador dá —
+    // o /admin compara a retenção de quem instalou com a de quem não.
+    logEvento("pwa_install");
     document.dispatchEvent(new CustomEvent("sleevu:installable"));
   });
   function isIOSDevice() { return /iphone|ipad|ipod/i.test(navigator.userAgent || ""); }
@@ -1794,6 +1797,31 @@
         btn.classList.add("done");
       }
     }
+    // BUSCA SEM RESULTADO (search_empty): nenhuma carta, set, Pokémon ou
+    // ilustrador casou — só sobraram os atalhos "explorar em cada jogo". É o
+    // buraco do catálogo visto de fora e, ao mesmo tempo, demanda: alguém
+    // procurou aquilo. Só depois de 1,5s sem digitar (senão cada letra de
+    // "chariz" viraria um termo), uma vez por termo por aba, e nada que pareça
+    // e-mail ou telefone colado por engano. Busca por CÓDIGO fica de fora: ela
+    // resolve assíncrona e "ainda não chegou" não é "não existe".
+    let buscaVaziaTimer = null;
+    function talvezBuscaVazia(q) {
+      clearTimeout(buscaVaziaTimer);
+      const nq = normalize(q).trim();
+      if (nq.length < 3 || CMDK_CODE_RE.test(String(q).trim())) return;
+      if (items.some((it) => !it.explore)) return;
+      if (/@|\d{5,}/.test(nq)) return;
+      buscaVaziaTimer = setTimeout(() => {
+        const input = overlay && overlay.querySelector(".cmdk-input");
+        if (!input || normalize(input.value).trim() !== nq) return;
+        const k = `sleevu-busca-vazia:${nq}`;
+        try {
+          if (sessionStorage.getItem(k)) return;
+          sessionStorage.setItem(k, "1");
+        } catch (e) { return; }
+        logEvento("search_empty", { q: nq.slice(0, 40), g: cmdkGame || "" });
+      }, 1500);
+    }
     function renderList(q) {
       maybeFetchCards(q);
       items = results(q);
@@ -1809,6 +1837,7 @@
         list.innerHTML = `<p class="cmdk-empty">${escapeHtml(t("cmdk.loading"))}</p>`;
         return;
       }
+      talvezBuscaVazia(q);
       let lastGroup = null;
       list.innerHTML = items.map((it, i) => {
         const head = it.group && it.group !== lastGroup ? `<div class="cmdk-group">${escapeHtml(it.group)}</div>` : "";
@@ -3708,6 +3737,10 @@
   // --- Analytics first-party: ANÔNIMO e agregado (sem cookie de rastreio, sem
   // terceiro). Loga 1 pageview por carregamento na tabela `events`; o id anônimo é
   // um uuid first-party no localStorage só p/ contar visitante único (DAU/MAU). ---
+  // true quando o uuid anônimo nasceu NESTE carregamento: é visitante novo de
+  // verdade. O share_open usa pra medir quanta gente NOVA um link
+  // compartilhado traz (viralidade), sem guardar nada além do flag.
+  let anonNovo = false;
   function anonId() {
     // Sem consentimento de medição, NÃO cria nem guarda id. Sem esta guarda o
     // opt-out vazava: o logClientError também chama aqui, então o primeiro erro
@@ -3719,6 +3752,7 @@
         id = (window.crypto && crypto.randomUUID) ? crypto.randomUUID()
           : (Date.now().toString(36) + Math.random().toString(36).slice(2));
         localStorage.setItem("sleevu-anon-v1", id);
+        anonNovo = true;
       }
       return id;
     } catch (e) { return null; }
@@ -3769,6 +3803,15 @@
       const ref = document.referrer ? new URL(document.referrer).hostname.replace(/^www\./, "") : "";
       if (ref && !/(^|\.)sleevu\.app$/i.test(ref)) p.r = ref.slice(0, 60);
       if (navigator.webdriver) p.wd = 1;
+      // Aberto como app instalado: o /admin separa a retenção de app × navegador.
+      if (isStandalonePWA()) p.s = 1;
+      // Campanha (utm_source/utm_campaign) quando a URL traz. Só o rótulo, em
+      // minúsculas e cortado — é o que o /admin usa como CANAL da 1ª visita,
+      // pra medir quem cada campanha traz que FICA, não só quem chega.
+      const qs = new URLSearchParams(location.search);
+      const utm = (k) => String(qs.get(k) || "").toLowerCase().replace(/[^a-z0-9_.-]/g, "").slice(0, 30);
+      if (utm("utm_source")) p.u = utm("utm_source");
+      if (utm("utm_campaign")) p.c = utm("utm_campaign");
     } catch (e) { /* sem contexto, o pageview vale do mesmo jeito */ }
     return p;
   }
@@ -3794,7 +3837,9 @@
   // descartado CALADO pelo banco, então inventar um aqui mede zero sem erro
   // nenhum aparecer.
   const EVENTOS = ["export_done", "import_done", "deck_created", "backup_done", "share_created",
-    "scan_open", "scan_done", "card_added", "collection_first", "login_gate"];
+    "scan_open", "scan_done", "card_added", "collection_first", "login_gate",
+    // Analytics v2 (migração 20260923a).
+    "store_click", "signup", "search_empty", "share_open", "pwa_install"];
   function logEvento(nome, props) {
     if (EVENTOS.indexOf(nome) < 0) return;
     mandaEvento(nome, props);
@@ -3857,6 +3902,47 @@
       localStorage.setItem(ATIVADO_KEY, "1");
     } catch (e) { return; }  // sem localStorage não dá pra garantir "uma vez só"
     logEvento("collection_first");
+  }
+
+  // CLIQUE DE SAÍDA PRA LOJA (store_click). É o número que se leva pra uma
+  // loja: "mandamos N pessoas pra vocês no mês, procurando estas cartas".
+  // Delegado no document porque o preview da carta é re-renderizado a cada
+  // troca de variante/condição — ouvinte no link se perderia. `auxclick` pega
+  // o clique do meio (abrir em nova aba), que no desktop é o jeito comum de
+  // comparar lojas; o botão direito (button 2) não conta.
+  function initStoreClicks() {
+    const registra = (e) => {
+      if (e.type === "auxclick" && e.button !== 1) return;
+      const a = e.target && e.target.closest ? e.target.closest("a[data-mkt]") : null;
+      if (!a) return;
+      const box = a.closest(".market-links");
+      const props = { s: a.dataset.mkt };
+      if (box) {
+        if (box.dataset.mktGame) props.g = box.dataset.mktGame;
+        if (box.dataset.mktCard) props.c = box.dataset.mktCard.slice(0, 80);
+        if (box.dataset.mktGr) props.gr = 1;
+      }
+      try { props.d = (window.matchMedia && matchMedia("(pointer: coarse)").matches) ? "m" : "d"; } catch (err) { /* sem aparelho */ }
+      logEvento("store_click", props);
+    };
+    document.addEventListener("click", registra, true);
+    document.addEventListener("auxclick", registra, true);
+  }
+
+  // CONTA NOVA (signup). O Supabase não avisa "criou agora" — o link mágico e
+  // o Google voltam iguais pra conta velha e nova. O que distingue é o
+  // created_at do usuário: recente (24h, o link mágico pode ser clicado horas
+  // depois de pedido) e ainda não marcado neste navegador = conta nova.
+  function marcarSignup(user) {
+    try {
+      if (!user || !user.id || !user.created_at) return;
+      if (Date.now() - new Date(user.created_at).getTime() > 24 * 3600 * 1000) return;
+      const k = `sleevu-signup-${user.id}`;
+      if (localStorage.getItem(k)) return;
+      localStorage.setItem(k, "1");
+      const prov = (user.app_metadata && user.app_metadata.provider) || "email";
+      logEvento("signup", { m: String(prov).slice(0, 16) });
+    } catch (e) { /* analytics nunca quebra o login */ }
   }
 
   // --- Error tracking first-party: erros de JS em produção viram eventos
@@ -4147,6 +4233,24 @@
     if (!s) return null;
     try {
       const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/admin_funnel`, {
+        method: "POST", headers: authHeaders(s.access_token), body: JSON.stringify({ days: days || 30 })
+      });
+      if (r.status === 404) return undefined;
+      if (!r.ok) return null;
+      return await r.json();
+    } catch (e) { return null; }
+  }
+  // RPCs do Analytics v2 (migração 20260923a): admin_stores, admin_retention,
+  // admin_demand, admin_growth. Mesma convenção da adminFunnel — undefined =
+  // RPC ainda não existe no banco (404), null = sem acesso ou falha.
+  async function adminRpc(nome, days) {
+    if (!/^admin_[a-z]+$/.test(nome)) return null;
+    let s = getSession();
+    if (!s) return null;
+    if (Date.now() - (s.ts || 0) > 50 * 60 * 1000) s = (await refreshSession()) || s;
+    if (!s) return null;
+    try {
+      const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${nome}`, {
         method: "POST", headers: authHeaders(s.access_token), body: JSON.stringify({ days: days || 30 })
       });
       if (r.status === 404) return undefined;
@@ -6875,12 +6979,22 @@
     return terms.every((term) => haystack.includes(term));
   }
 
+  // Lojas BR levam utm_source=sleevu: é a Liga/MYP que precisa ENXERGAR o
+  // tráfego que mandamos, no analytics dela, pra uma conversa de parceria ter
+  // número dos dois lados. As duas buscas leem só os próprios parâmetros
+  // (`view`/`card`, `ProdutoSearch[query]`); os internacionais ficam sem —
+  // eBay e TCGplayer têm programa de afiliado próprio, com outro parâmetro.
+  const UTM_LOJAS_BR = ["liga", "ligabra", "myp"];
+  function comUtm(key, url) {
+    if (UTM_LOJAS_BR.indexOf(key) < 0) return url;
+    return url + (url.indexOf("?") >= 0 ? "&" : "?") + "utm_source=sleevu&utm_medium=referral";
+  }
   // Um grupo do bloco de lojas: o rótulo numa linha e os chips embaixo dele
   // (empilhado desde 2026-09-22 — ver .market-links no styles.css).
   function marketplaceRow(labelKey, list, card) {
     if (!list.length) return "";
     const links = list
-      .map(({ key, label, url }) => `<a class="br-link br-link-${key}" href="${escapeAttribute(url(card))}" target="_blank" rel="noopener">${escapeHtml(label)}</a>`)
+      .map(({ key, label, url }) => `<a class="br-link br-link-${key}" data-mkt="${key}" href="${escapeAttribute(comUtm(key, url(card)))}" target="_blank" rel="noopener">${escapeHtml(label)}</a>`)
       .join("");
     return `<span class="br-links-label">${escapeHtml(t(labelKey))}</span><div class="br-links-chips">${links}</div>`;
   }
@@ -6891,7 +7005,9 @@
     // sessão só pra cartas sem tag (catálogos antigos). gradedTag (ex.: "PSA 9")
     // só vem quando a carta é graduada e entra na busca de eBay/PriceCharting.
     const game = card.game || currentGame();
-    return `<div class="market-links">`
+    // Jogo, carta e "graduada" viajam no container pro store_click (ver
+    // initStoreClicks): o link em si só sabe a loja.
+    return `<div class="market-links" data-mkt-game="${escapeAttribute(game)}" data-mkt-card="${escapeAttribute(card.id || "")}"${gradedTag ? ' data-mkt-gr="1"' : ""}>`
       + marketplaceRow("price.checkBr", brMarketplaces(game), card)
       + marketplaceRow("price.checkUs", usMarketplaces(game, gradedTag), card)
       + `</div>`;
@@ -9304,6 +9420,7 @@
     analyticsSummary,
     adminDashboard,
     adminFunnel,
+    adminRpc,
     pushProfile,
     handleAvailable,
     fetchPublicProfile,
@@ -9738,6 +9855,7 @@
     // mesmo hash), e o único em que o user vem inteiro — o setSession enxuga o
     // objeto pra caber no cookie e perde nome e provedor.
     rememberAccount(user);
+    marcarSignup(user);
     return s;
   }
 
@@ -10436,7 +10554,15 @@
       const r = await fetch(`${SUPABASE_URL}/rest/v1/shares?id=eq.${encodeURIComponent(id)}&select=kind,title,data,created_at`, { headers: authHeaders() });
       if (!r.ok) return null;
       const rows = await r.json();
-      return rows && rows[0] ? rows[0] : null;
+      const row = rows && rows[0] ? rows[0] : null;
+      // Viralidade: um link aberto, e se quem abriu é visitante que chegou
+      // AGORA (uuid nascido nesta página). Conta também o dono revendo o
+      // próprio link — por isso o /admin lê os NOVOS, não o total.
+      if (row) {
+        anonId();
+        logEvento("share_open", anonNovo ? { k: row.kind, nv: 1 } : { k: row.kind });
+      }
+      return row;
     } catch (e) { return null; }
   }
   // Lista pública de shares de um tipo (galeria de decks da comunidade). O RLS
@@ -11596,6 +11722,7 @@
   initGameAccent();
   applySensitive();
   logPageview(); // analytics anônimo first-party (1 pageview por carregamento)
+  initStoreClicks();
   injectCfBeacon(); // Cloudflare Web Analytics (só em produção)
   initMobileMenu();
   initSiteFooter();
