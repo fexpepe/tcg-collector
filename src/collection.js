@@ -1904,7 +1904,8 @@
     const hasIndex = indexes && ((indexes.sets && indexes.sets.length) || Object.keys(indexes.pokemonTotals || {}).length || (indexes.artists && indexes.artists.length));
     if (hasIndex) {
       if (activeTab === "sets") {
-        (indexes.sets || []).forEach((g) => { if (matchGame(g.game)) map.set(g.name, (map.get(g.name) || 0) + g.cardIds.length); });
+        // Carta bônus (shared.isBonusCard) fica fora do denominador do set.
+        (indexes.sets || []).forEach((g) => { if (matchGame(g.game)) map.set(g.name, (map.get(g.name) || 0) + g.cardIds.filter((id) => !shared.isBonusCard(id)).length); });
       } else if (activeTab === "artists") {
         (indexes.artists || []).forEach((g) => { if (matchGame(g.game)) map.set(g.name, (map.get(g.name) || 0) + g.cardIds.length); });
       } else if (activeTab === "pokemon") {
@@ -1913,6 +1914,7 @@
       return map;
     }
     cards.filter(inGameFilter).forEach((card) => {
+      if (activeTab === "sets" && shared.isBonusCard(card)) return;
       const key = GROUP_TABS[activeTab].getKey(card) || "—";
       map.set(key, (map.get(key) || 0) + 1);
     });
@@ -1931,7 +1933,8 @@
         group = { name: key, totalCount: totals.get(key) || 0, ownedCount: 0, sample: card, release: "" };
         map.set(key, group);
       }
-      group.ownedCount++;
+      // Na aba Sets a bônus não soma no progresso (o grupo aparece mesmo assim).
+      if (!(tab === GROUP_TABS.sets && shared.isBonusCard(card))) group.ownedCount++;
       // Lançamento do grupo = a data de set mais recente entre as suas cartas.
       const rd = String(card.setReleaseDate || "");
       if (rd > group.release) group.release = rd;
@@ -2929,7 +2932,8 @@
       // Sets: o total vem do payload (setsMeta, do índice); quando o catálogo
       // do perfil já baixou (chunks inteiros), a contagem real dele vale mais —
       // cobre payload antigo, publicado quando o total saía zerado da borda.
-      const totalOf = (name, gp) => mode === "sets" ? ((gp && setCatalogCards(gp).length) || (setsMeta[name] && setsMeta[name].t) || 0)
+      // Carta bônus (shared.isBonusCard) fica fora do X/Y do set, dos dois lados.
+      const totalOf = (name, gp) => mode === "sets" ? ((gp && setCatalogCards(gp).filter((card) => !shared.isBonusCard(card)).length) || (setsMeta[name] && setsMeta[name].t) || 0)
         : mode === "pokemon" ? (speciesTotals[name] || 0) : (artistTotals[name] || 0);
       const artOf = (gp) => {
         const initial = `<span class="progress-row-initial">${escapeHtml((gp.name || "?").charAt(0).toUpperCase())}</span>`;
@@ -2950,7 +2954,7 @@
       const releaseOf = (gp) => mode === "sets" ? setDate(gp.name) : gp.items.reduce((m, it) => { const d = setDate(it.s); return d > m ? d : m; }, "");
       const dexOf = (gp) => gp.items.reduce((m, it) => (it.dx && it.dx < m ? it.dx : m), 9999);
       const groups = groupsFor(mode).map((gp) => {
-        const ownedN = new Set(gp.items.map((it) => it.id)).size;
+        const ownedN = new Set(gp.items.map((it) => it.id).filter((id) => mode !== "sets" || !shared.isBonusCard(id))).size;
         const total = Math.max(ownedN, totalOf(gp.name, gp));
         return { gp, ownedN, total, pct: total ? (ownedN / total) * 100 : 0 };
       });
@@ -3133,10 +3137,12 @@
       const byId = new Map();
       gp.items.forEach((it) => { if (!byId.has(it.id)) byId.set(it.id, []); byId.get(it.id).push(it); });
       const setCards = setCatalogCards(gp);
-      const ownedN = byId.size;
-      const total = Math.max(ownedN, setCards.length || ((setsMeta[gp.name] && setsMeta[gp.name].t) || 0));
+      // Progresso e "faltam" sem as cartas bônus; a grade continua mostrando todas.
+      const contaveis = setCards.filter((card) => !shared.isBonusCard(card));
+      const ownedN = Array.from(byId.keys()).filter((id) => !shared.isBonusCard(id)).length;
+      const total = Math.max(ownedN, contaveis.length || ((setsMeta[gp.name] && setsMeta[gp.name].t) || 0));
       const pct = total ? (ownedN / total) * 100 : 0;
-      const missing = setCards.filter((card) => !byId.has(card.id));
+      const missing = contaveis.filter((card) => !byId.has(card.id));
       // "Faltam N · completar R$ X": só com valores visíveis e algo pra somar.
       let missingHtml = "";
       if (showValues && missing.length && ownedN > 0) {

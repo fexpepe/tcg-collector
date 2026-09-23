@@ -714,7 +714,8 @@
     if (!ownedCountMemo.has(key)) {
       const ids = cardIdsByEntry.get(key) || [];
       let n = 0;
-      ids.forEach((id) => { if (owned.has(id)) n++; });
+      // Carta bônus (shared.isBonusCard) não conta pro progresso do set.
+      ids.forEach((id) => { if (owned.has(id) && !shared.isBonusCard(id)) n++; });
       ownedCountMemo.set(key, n);
     }
     return ownedCountMemo.get(key);
@@ -748,7 +749,9 @@
       setId: entry.id,
       entryKey: key,
       cards: [],
-      totalCount: entry.count,
+      // Sem as cartas bônus: o `bonus` vem do build (setManifestMeta); manifest
+      // de antes dele cai na contagem pelos ids do índice.
+      totalCount: entry.count - (entry.bonus != null ? entry.bonus : (cardIdsByEntry.get(key) || []).filter((id) => shared.isBonusCard(id)).length),
       ownedCount: entryOwnedCount(entry),
       officialTotal: entry.total || entry.count,
       value: refined ? refined.value : entryRefValue(entry),
@@ -820,7 +823,7 @@
     for (const entry of pendentes) {
       try {
         const chunk = await shared.fetchSetChunks([entry]);
-        refinedSets.set(entryKey(entry), { value: shared.sumCardsValue(chunk, prices).value });
+        refinedSets.set(entryKey(entry), { value: shared.sumCardsValue(chunk.filter((card) => !shared.isBonusCard(card)), prices).value });
         mudou = true;
       } catch (error) {
         refining.delete(entryKey(entry)); // rede caiu: tenta de novo no próximo render
@@ -1216,15 +1219,17 @@
     // Chave do memo = EDIÇÃO (setId + região), não o nome: com sets homônimos o
     // nome fazia o segundo devolver o valor já calculado do primeiro.
     const memoKey = `${sample.setId || group.name}|${selectedLangRegion}`;
+    // Progresso e valor do "set completo" sem as cartas bônus.
+    const contaveis = sortedCards.filter((card) => !shared.isBonusCard(card));
     return {
       type: "set",
       name: group.name,
       setId: sample.setId || "",
       cards: sortedCards,
-      totalCount: sortedCards.length,
-      ownedCount: sortedCards.filter((card) => owned.has(card.id)).length,
-      officialTotal: sample.setTotal || sortedCards.length,
-      value: memoSetValue(memoKey, sortedCards),
+      totalCount: contaveis.length,
+      ownedCount: contaveis.filter((card) => owned.has(card.id)).length,
+      officialTotal: sample.setTotal || contaveis.length,
+      value: memoSetValue(memoKey, contaveis),
       logo: sample.setLogo || "",
       // Nome de EXIBIÇÃO: tradução em inglês nos vintages japoneses, original no
       // resto. `name` (acima) continua sendo o original — é a chave de link,
