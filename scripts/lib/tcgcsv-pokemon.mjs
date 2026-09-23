@@ -120,7 +120,9 @@ export function pickMainProduct(products, priceOf) {
 //   misses:  produtos com número fora do chunk E dentro do padrão de numeração
 //            (candidatos a carta nova; a guarda missAllowed é a de sempre)
 //   matched/total: pra confirmar que o grupo é mesmo o set (ver groupFits)
-export function matchGroup(chunk, products, prices, { setId, lang }) {
+//   extraNumbers: RegExp de numeradores fora do padrão conferidos à mão
+//            (extraNumbersOf) — passa direto pela guarda missAllowed
+export function matchGroup(chunk, products, prices, { setId, lang, extraNumbers }) {
   const suffix = lang === "en" ? "" : `-${lang}`;
   const byKey = new Map();
   for (const c of chunk || []) {
@@ -166,7 +168,7 @@ export function matchGroup(chunk, products, prices, { setId, lang }) {
         const e = { img };
         if (compact) Object.assign(e, compact);
         entries[ourId] = e;
-      } else if (missAllowed(productNumber(main), prefixes)) {
+      } else if (missAllowed(productNumber(main), prefixes, extraNumbers)) {
         // Impressões que o TCGplayer vende deste produto, na ordem canônica: é a
         // lista de variantes da carta sintetizada (uma promo só-Holo tem que
         // nascer ["Holo"], não ["Normal"], senão a Coleção oferece a versão errada).
@@ -400,9 +402,51 @@ export function importNumberFilter(entry) {
   return (product) => re.test(productNumber(product));
 }
 
+// Numeradores fora do padrão do set, conferidos à mão: `extraNumbers` em
+// data/tcgcsv-set-map.json, { setId: { numbers: regex do NUMERADOR, mirror?:
+// [idiomas] } }. Sem pin, null (a guarda missAllowed segue como sempre).
+export function extraNumbersOf(pins, setId) {
+  const e = pins && pins.extraNumbers && pins.extraNumbers[setId];
+  return e && e.numbers ? new RegExp(e.numbers) : null;
+}
+// Idiomas pra onde a carta EN desse número é ESPELHADA (ver mirrorCard).
+export function mirrorLangsOf(pins, setId) {
+  const e = pins && pins.extraNumbers && pins.extraNumbers[setId];
+  return e && Array.isArray(e.mirror) ? e.mirror.filter((l) => l && l !== "en") : [];
+}
+// Cópia localizada de uma carta EN sintetizada, pro set que o idioma TAMBÉM
+// imprime mas a fonte do idioma ainda não publicou por inteiro. Existe pelo
+// Mew RGB (23/09/2026): a "Celebração de 30 Anos" saiu no Brasil no mesmo dia,
+// com os três Mew, mas a TCGdex pt tinha 2 cartas do set e o TCGplayer não
+// vende PT — sem espelho o set PT nunca teria os Mew. Campos de set vêm da
+// carta-irmã do chunk do idioma (nome "Celebração de 30 Anos", série
+// "Megaevolução"); nome da carta, número, raridade e arte vêm do EN (a arte do
+// Mew RGB não tem texto que mude por idioma). Sem preço: o do TCGplayer é da
+// impressão EN, e a carta PT não pode herdar valor de mercado de outra.
+// Quando a TCGdex pt publicar a carta com o mesmo id, o dedupe por id do merge
+// deixa a dela e ignora esta.
+export function mirrorCard(card, lang, sib) {
+  const { price, ...base } = card;
+  return {
+    ...base,
+    id: `${card.id}-${lang}`,
+    language: lang,
+    set: (sib && sib.set) || card.set,
+    setLogo: (sib && sib.setLogo) || card.setLogo || "",
+    setSymbol: (sib && sib.setSymbol) || card.setSymbol || "",
+    setTotal: (sib && sib.setTotal) || card.setTotal || "",
+    setReleaseDate: (sib && sib.setReleaseDate) || card.setReleaseDate || "",
+    setSerieId: (sib && sib.setSerieId) || card.setSerieId || "",
+    setSerieName: (sib && sib.setSerieName) || card.setSerieName || ""
+  };
+}
+
 // Espécie a partir do nome da carta (mesma régua do sync-tcgdex/PPT).
+// Sufixo de variante que o TCGplayer põe no nome ("Mew - R/RGB") sai antes: é
+// o número impresso, não parte do nome do Pokémon — sem isto o Mew RGB nascia
+// sem dexId e ficava fora da página do Mew e da Pokédex.
 export function speciesOf(name) {
-  return String(name || "").replace(/\b(VMAX|VSTAR|ex|EX|GX|V-UNION|V|BREAK|LV\.X|Prime|LEGEND)\b/g, "").replace(/\s+/g, " ").trim();
+  return String(name || "").replace(/\s+-\s+[A-Za-z]+\/[A-Za-z]+$/, "").replace(/\b(VMAX|VSTAR|ex|EX|GX|V-UNION|V|BREAK|LV\.X|Prime|LEGEND)\b/g, "").replace(/\s+/g, " ").trim();
 }
 export function genOf(dexId) {
   const id = Number(dexId); if (!id) return "";

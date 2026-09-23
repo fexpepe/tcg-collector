@@ -54,7 +54,8 @@ import { fetchRetry, mapLimit, sleep, normNum } from "./lib/sync-common.mjs";
 import {
   indexGroupsByName, candidateGroups, matchGroup, groupFits, jpSetCode, jpSerieOfCode, jpAliasOf, jpAmbiguousCodes, synthesizeCard,
   enImportEntries, findImportGroup, importSetFields, importNumberFilter,
-  matchGroupByName, nameFits, autoImportGroups, autoImportEntry, isModernEnGroup
+  matchGroupByName, nameFits, autoImportGroups, autoImportEntry, isModernEnGroup,
+  extraNumbersOf, mirrorLangsOf, mirrorCard
 } from "./lib/tcgcsv-pokemon.mjs";
 
 const argv = process.argv.slice(2);
@@ -185,7 +186,7 @@ if (catEN && !ONLY_JA) {
         prices = await api(`/${catEN.categoryId}/${g.groupId}/prices`);
       } catch (e) { console.warn(`  ${set.id}: grupo ${g.groupId} "${g.name}" erro ${e.message}`); continue; }
       await sleep(80);
-      let m = matchGroup(set.cards, products, prices, { setId: set.id, lang: "en" });
+      let m = matchGroup(set.cards, products, prices, { setId: set.id, lang: "en", extraNumbers: extraNumbersOf(pins, set.id) });
       // Número que não bate pode ser OUTRO set — ou a Classic Collection, que a
       // TCGdex numera em sequência e o TCGplayer pelo número original da carta
       // reimpressa. Antes de desistir do grupo, tenta casar pelo NOME
@@ -219,12 +220,22 @@ if (catEN && !ONLY_JA) {
     // estável por número e id pinado no chunk publicado.
     const pinsById = pinnedIds(set.cards, sibSetId);
     const sib = set.cards[0];
+    // Número fora do padrão pinado em extraNumbers (Mew RGB) também nasce nos
+    // idiomas do `mirror`, com os campos de set do chunk daquele idioma.
+    const extra = extraNumbersOf(pins, set.id);
+    const mirrors = [];
+    for (const lang of mirrorLangsOf(pins, set.id)) {
+      const chunk = await chunkOf(lang, set.id);
+      if (Array.isArray(chunk) && chunk.length) mirrors.push({ lang, sib: chunk[0] });
+      else console.log(`  ${set.id}: espelho ${lang} sem chunk do set nesse idioma — pulado`);
+    }
     let added = 0;
     for (const [key, miss] of [...misses.entries()].sort((a, b) => a[0].localeCompare(b[0]))) {
       if (added >= MAX_NEW_PER_SET) break;
       const card = synthesizeCard({ product: miss.product, price: miss.price, img: miss.img, setId: set.id, lang: "en", sib, group: miss.group, pinned: pinsById.get(key), revNames: rev, variants: miss.variants });
       if (!card.name) continue;
       newCards.push(card); added++;
+      if (extra && extra.test(card.number)) for (const mr of mirrors) newCards.push(mirrorCard(card, mr.lang, mr.sib));
     }
     stats.enNew += added;
     console.log(`  ${set.id} "${set.name}": ${Object.keys(entries).length} preços (grupos ${usedGroups.join("+")})${added ? `, ${added} cartas novas` : ""}`);
