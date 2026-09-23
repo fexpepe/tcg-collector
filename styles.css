@@ -4977,6 +4977,53 @@ a.setting-open {
   .adm-hbars li { grid-template-columns: minmax(70px, 110px) 1fr auto; }
 }
 
+/* Admin v2 (2026-09-23): navegação em dois níveis — grupos em cima, sub-abas
+   do grupo embaixo, menores e sem fundo de destaque (o grupo já tem). Com 12
+   telas numa fileira só, os chips quebravam em três linhas no celular. */
+.adm-nav { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.adm-groups { display: flex; flex-wrap: wrap; gap: 6px; }
+/* O seletor longo é de propósito: o tema claro pinta o fundo de todo chip SEM
+   aria-pressed ([data-theme="light"] .chip:not(...):not(...), especificidade
+   0-4-0) — aba selecionada usa aria-selected, e com seletor curto ficava texto
+   branco em fundo branco. */
+.adm-toolbar .adm-groups .chip[aria-selected="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.adm-tabs .chip { min-height: 32px; padding: 0 12px; font-size: 13px; }
+.adm-toolbar .adm-tabs .chip[aria-selected="true"] { background: var(--panel-strong); border-color: var(--accent); color: var(--text); }
+/* Tabela paginada: navegação centralizada embaixo, contador no meio. */
+.adm-pager { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 10px; }
+.adm-pager .chip { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; padding: 0 10px; }
+.adm-pager .chip:disabled { opacity: 0.4; cursor: default; }
+.adm-pager-info { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.admin-table td small { color: var(--subtle); font-size: 11px; }
+/* Botões com ícone (CSV, imprimir). */
+.adm-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.adm-actions .chip, .adm-kit-head .chip { display: inline-flex; align-items: center; gap: 8px; }
+/* Coortes: a intensidade da cor é a fração que voltou (--p vem do JS, já
+   dobrada: 50% de retorno já é cor cheia — retenção semanal passa pouco disso). */
+.adm-cohort td, .adm-cohort th { white-space: nowrap; }
+.adm-heat { background: color-mix(in srgb, var(--accent) var(--p, 0%), transparent); }
+/* Tabelas de recorte têm 6 colunas: em três colunas de grid a última era
+   cortada. Duas por linha no desktop, uma no celular. */
+.adm-grid-wide { grid-template-columns: repeat(auto-fit, minmax(440px, 1fr)); }
+@media (max-width: 700px) { .adm-grid-wide { grid-template-columns: 1fr; } }
+/* "Para parceiros": cabeçalho com o botão de imprimir. */
+.adm-kit-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+.adm-kit-head h2 { margin: 0 0 4px; font-size: 20px; }
+@media (pointer: coarse), (max-width: 700px) {
+  /* Alvo de toque de 44px nos controles do painel. */
+  .adm-toolbar .chip, .adm-pager .chip, .adm-actions .chip, .adm-kit-head .chip { min-height: 44px; }
+}
+/* Impressão (aba "Para parceiros" → PDF): só o conteúdo, sem cabeçalho do
+   site, abas nem botões; seções sem quebrar no meio. */
+@media print {
+  body:has(#adminRoot) .app-header,
+  body:has(#adminRoot) .mobile-tabbar,
+  body:has(#adminRoot) .page-head,
+  body:has(#adminRoot) .collection-subtitle,
+  .adm-toolbar, .adm-noprint, #admNote, .adm-pager { display: none !important; }
+  .admin-section { break-inside: avoid; }
+}
+
 /* Modo sensível: borra os totais de valor (portfólio/coleção/vendas) pra dar
    print sem revelar quanto vale. Mira os totais por id + a classe .sensitive-value.
 
