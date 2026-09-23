@@ -99,6 +99,11 @@ const FILES = {
   M3: "M3 Logo JP.png",
   M4: "M4 Logo JP.png",
   M5: "M5 Logo JP.png"
+  // M6a e MF (30th Celebration e o Premium Deck Set Espeon & Umbreon) também
+  // FORA do mapa, mas COM logo: o wiki ainda não publicou o logo JP da 30th
+  // e o arquivo foi copiado à mão do data/set-logos/en/30th.webp (23/09/2026,
+  // pedido do Fernando) — é a mesma marca "30th CELEBRATION" nos dois idiomas.
+  // O carimbo abaixo só olha o arquivo, então ele vale igual.
   // SV2D/SV2P, SV4K/SV4M e SV5K de propósito FORA: o wiki só publica o logo do
   // PAR (SV2/SV4/SV5), com os dois nomes na mesma imagem. Carimbar o par nas
   // duas metades daria dois tiles com a arte idêntica — exatamente o que o
