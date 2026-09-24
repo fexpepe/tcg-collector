@@ -7376,6 +7376,108 @@ button.dash-link { width: 100%; min-height: 0; justify-content: flex-start; text
   color: var(--muted);
 }
 
+/* Bandeira INTERNACIONAL (carta EN, 24/09/2026): globo em traço, na cor do
+   texto, no lugar da bandeira dos EUA — a impressão inglesa é a do lançamento
+   internacional. Mesmo tamanho das outras, sem o fundo colorido. */
+.card-flag-intl {
+  color: var(--muted);
+  background: var(--panel-strong);
+}
+
+/* Idioma no popup: a bandeira + "151 · EN" vira botão (só carta Pokémon EN/PT)
+   e abre o painel Internacional × Português logo abaixo. Botão sem cara de
+   botão até o hover — é a mesma linha de antes, com o chevron dizendo que abre.
+   Alvo de 44px no toque. */
+.preview-lang-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 36px;
+  padding: 2px 4px 2px 6px;
+  margin: 0 -4px 0 -6px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.preview-lang-btn:hover { border-color: var(--line); }
+.preview-lang-btn .preview-caret { width: 24px; height: 24px; }
+.preview-lang-btn .preview-caret svg { width: 15px; height: 15px; }
+.preview-lang-btn[aria-expanded="true"] .preview-caret { transform: rotate(180deg); }
+
+.preview-lang {
+  margin-top: 10px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  background: var(--panel-strong);
+  display: grid;
+  gap: 10px;
+}
+.preview-lang-title {
+  margin: 0;
+  font-size: 12.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--muted);
+}
+.preview-lang-opts {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 8px;
+}
+.preview-lang-opt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--panel);
+  color: var(--text);
+  font: inherit;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  text-align: left;
+}
+.preview-lang-opt:hover:not(:disabled) { border-color: var(--accent); }
+.preview-lang-opt.is-active { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+.preview-lang-opt:disabled { opacity: .45; cursor: default; }
+.preview-lang-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* Quantas cópias você tem naquele idioma (todas as versões somadas). */
+.preview-lang-count {
+  min-width: 26px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: var(--panel-strong);
+  color: var(--muted);
+  font-size: 12.5px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.preview-lang-move {
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+}
+.preview-lang-hint {
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+/* Celular: as duas opções lado a lado cortavam o nome ("Inter…", "Port…") a
+   390px — empilham, cada uma com a linha inteira. */
+@media (max-width: 480px) {
+  .preview-lang-opts { grid-template-columns: minmax(0, 1fr); }
+}
+
 /* Filtro mestre (origem dos sets) */
 .master-filter {
   margin-bottom: 18px;

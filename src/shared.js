@@ -4587,7 +4587,7 @@
     const select = document.getElementById("languageSwitcher");
     if (!select) return;
     const SITE_SIGLA = { pt: "PT-BR", en: "EN", es: "ES" };
-    const items = UI_LANGUAGES.map(({ code }) => ({ value: code, flag: cardFlag(code), sigla: SITE_SIGLA[code] || code.toUpperCase() }));
+    const items = UI_LANGUAGES.map(({ code }) => ({ value: code, flag: siteFlag(code), sigla: SITE_SIGLA[code] || code.toUpperCase() }));
     const dd = createFlagDropdown({
       id: "siteLangDd",
       current: currentLanguage,
@@ -4630,9 +4630,17 @@
     es: '<svg viewBox="0 0 20 14"><rect width="20" height="14" fill="#aa151b"/><rect y="3.5" width="20" height="7" fill="#f1bf00"/></svg>'
   };
 
+  // Carta EN = impressão INTERNACIONAL (24/09/2026, pedido do Fernando): a
+  // mesma carta sai em inglês, português e nos outros idiomas do lançamento
+  // internacional, e quem adiciona sem dizer o idioma cai no id inglês. A
+  // bandeira dos EUA dizia "é americana" — o globo diz "internacional, idioma
+  // não especificado", e o popup deixa trocar pra PT (ver langSwitchHtml).
+  // Só na bandeira de CARTA: o seletor de idioma do SITE segue com a dos EUA.
+  const INTL_FLAG_SVG = '<svg viewBox="0 0 20 14" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"><circle cx="10" cy="7" r="5.2"/><ellipse cx="10" cy="7" rx="2.2" ry="5.2"/><path d="M4.8 7h10.4"/></svg>';
+
   // Emoji da bandeira (pra usar em <option>, que não aceita SVG/HTML). Casa com
-  // os flags SVG: en=EUA, ja=Japão, zh=China, pt=Brasil.
-  const CARD_FLAG_EMOJI = { en: "🇺🇸", ja: "🇯🇵", zh: "🇨🇳", pt: "🇧🇷" };
+  // os flags SVG: en=globo (internacional), ja=Japão, zh=China, pt=Brasil.
+  const CARD_FLAG_EMOJI = { en: "🌐", ja: "🇯🇵", zh: "🇨🇳", pt: "🇧🇷" };
   function cardFlagEmoji(language) {
     return CARD_FLAG_EMOJI[normalizeCardLanguage(language)] || "";
   }
@@ -4715,11 +4723,16 @@
   function cardFlag(language) {
     const code = normalizeCardLanguage(language);
     const label = cardLanguageLabel(language);
-    const svg = CARD_FLAG_SVGS[code];
+    const svg = code === "en" ? INTL_FLAG_SVG : CARD_FLAG_SVGS[code];
     if (!svg) {
       return `<span class="card-flag card-flag-text" title="${escapeAttribute(label)}">${escapeHtml(cardLangSigla(language))}</span>`;
     }
-    return `<span class="card-flag" title="${escapeAttribute(label)}" role="img" aria-label="${escapeAttribute(label)}">${svg}</span>`;
+    return `<span class="card-flag${code === "en" ? " card-flag-intl" : ""}" title="${escapeAttribute(label)}" role="img" aria-label="${escapeAttribute(label)}">${svg}</span>`;
+  }
+  // Bandeira do idioma do SITE (inglês = EUA, não o globo das cartas).
+  function siteFlag(code) {
+    const svg = CARD_FLAG_SVGS[code];
+    return svg ? `<span class="card-flag" role="img" aria-hidden="true">${svg}</span>` : cardFlag(code);
   }
 
   // Variante de qualidade/formato de um asset da TCGdex. Cartas aceitam
@@ -5972,7 +5985,7 @@
   // não passam e o botão nem aparece. De propósito não criamos um store aqui:
   // ele guarda o blob inteiro em memória e grava tudo de uma vez, então uma
   // segunda instância sobrescreveria o que a instância da página tem.
-  function createCardPreview({ getCard, store, onOwnedChange, prices, wishlist, folders, sale, graded }) {
+  function createCardPreview({ getCard, store, onOwnedChange, prices, wishlist, folders, sale, graded, onSiblingCards }) {
     let activeCard = null;
     let activeVariant = null;
     let activeGraded = null; // { company, grade, pristine } quando aberto de uma carta GRADUADA
@@ -6076,6 +6089,117 @@
       if (ctl) ctl.innerHTML = previewGradedCtlHtml(expanded);
     }
 
+    // ── Idioma da carta: Internacional × Português ────────────────────────
+    // (24/09/2026, pedido do Fernando, no desenho do Jornada Games) A mesma
+    // carta do lançamento internacional existe em inglês (id base, bandeira de
+    // globo) e em português (id + "-pt"): são dois ids, e cada cópia mora em um
+    // deles. A bandeira do popup vira botão e abre este painel: ver a carta no
+    // outro idioma (imagem PT quando o catálogo tem, senão a inglesa) e MOVER
+    // cópias, uma por clique, pra quem tem 3 EN + 2 PT da mesma carta não
+    // precisar de um "tudo pra PT". Só Pokémon: é o único jogo com edições por
+    // idioma no catálogo, e o id PT = id EN + "-pt" vale pra ele inteiro
+    // (conferido nas 14.339 cartas PT; o build completa as que a TCGdex ainda
+    // não publicou — scripts/lib/provisional-ids.mjs). JA/ZH têm sets e ids
+    // próprios: ficam fora.
+    const INTL_LANGS = ["en", "pt"];
+    const siblingCards = new Map();   // id -> carta buscada fora da página
+    const siblingState = new Map();   // id -> "loading" | "ok" | "missing"
+    let langPanelOpen = false;
+    let keepLangPanel = false;        // a próxima open() veio do próprio painel
+    function lookupCard(id) {
+      return getCard(id) || siblingCards.get(id) || null;
+    }
+    function intlIdsOf(card) {
+      if (!card || (card.game || currentGameSlug()) !== "pokemon") return null;
+      if (!INTL_LANGS.includes(normalizeCardLanguage(card.language))) return null;
+      const base = basePricingId(card.id);
+      return { en: base, pt: `${base}-pt` };
+    }
+    // A carta irmã existe? A da página responde na hora; senão busca o set
+    // (loadGameCatalog: por id, sem estragar os globais da página) — é o que
+    // impede mover cópia pra um id que não existe (promo EN que nunca saiu aqui).
+    function ensureSibling(id) {
+      if (lookupCard(id)) { siblingState.set(id, "ok"); return Promise.resolve(true); }
+      const st = siblingState.get(id);
+      if (st === "ok" || st === "missing") return Promise.resolve(st === "ok");
+      if (st === "loading") return siblingState.get(`${id}#p`);
+      siblingState.set(id, "loading");
+      const dataDir = (DATA_GAMES.find((g) => g.game === "pokemon") || {}).dataDir || "data/";
+      const p = loadGameCatalog("pokemon", dataDir, [id])
+        .then((r) => {
+          const base = basePricingId(id);
+          const irmas = (r.cards || []).filter((c) => basePricingId(c.id) === base);
+          irmas.forEach((c) => { c.game = c.game || "pokemon"; if (!getCard(c.id)) siblingCards.set(c.id, c); });
+          if (irmas.length && onSiblingCards) { try { onSiblingCards(irmas); } catch (e) { /* página sem gancho */ } }
+          const ok = irmas.some((c) => c.id === id);
+          siblingState.set(id, ok ? "ok" : "missing");
+          return ok;
+        })
+        .catch(() => { siblingState.delete(id); return false; });
+      siblingState.set(`${id}#p`, p);
+      return p;
+    }
+    // Variante que a cópia movida leva: a aberta, senão a primeira que tem cópia.
+    function moveVariantOf(card) {
+      if (activeVariant) return activeVariant;
+      const vs = card.variants && card.variants.length ? card.variants : [defaultVariant(card)];
+      const def = defaultVariant(card);
+      const ordem = [def].concat(vs.filter((v) => v !== def));
+      return ordem.find((v) => store.variantTotal(card.id, v) > 0) || def;
+    }
+    function langButtonHtml() {
+      const flag = cardFlag(activeCard.language);
+      const sigla = `${escapeHtml(activeCard.number)} · ${escapeHtml(cardLangSigla(activeCard.language))}`;
+      if (!intlIdsOf(activeCard)) return `${flag}<span>${sigla}</span>`;
+      return `<button type="button" class="preview-lang-btn" data-preview-lang-toggle aria-expanded="${langPanelOpen ? "true" : "false"}" title="${escapeAttribute(t("langSwitch.open"))}">${flag}<span>${sigla}</span>${PREVIEW_CARET}</button>`;
+    }
+    function langPanelHtml() {
+      const ids = intlIdsOf(activeCard);
+      if (!ids || !langPanelOpen) return "";
+      const atual = normalizeCardLanguage(activeCard.language);
+      const outro = atual === "en" ? "pt" : "en";
+      const alvoId = ids[outro];
+      const estado = lookupCard(alvoId) ? "ok" : (siblingState.get(alvoId) || "loading");
+      const nome = (l) => t(l === "en" ? "langSwitch.intl" : "langSwitch.pt");
+      const opts = INTL_LANGS.map((l) => {
+        const n = store.totalForCard(ids[l]);
+        const ativo = l === atual;
+        const indisponivel = !ativo && estado === "missing";
+        return `<button type="button" class="preview-lang-opt${ativo ? " is-active" : ""}" data-preview-lang-view="${l}" aria-pressed="${ativo}"${indisponivel ? " disabled" : ""}>`
+          + `${cardFlag(l)}<span class="preview-lang-name">${escapeHtml(nome(l))}</span><span class="preview-lang-count">${n}</span></button>`;
+      }).join("");
+      const variante = moveVariantOf(activeCard);
+      const tem = store.variantTotal(activeCard.id, variante);
+      const podeMover = tem > 0 && estado === "ok";
+      const dica = estado === "missing" ? t("langSwitch.missing")
+        : estado === "loading" ? t("langSwitch.loading")
+        : tem > 0 ? "" : t("langSwitch.noCopies");
+      const seta = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>';
+      return `<div class="preview-lang" data-preview-lang>
+        <p class="preview-lang-title">${escapeHtml(t("langSwitch.title"))}</p>
+        <div class="preview-lang-opts" role="group" aria-label="${escapeAttribute(t("langSwitch.title"))}">${opts}</div>
+        <button type="button" class="secondary preview-lang-move" data-preview-lang-move="${outro}"${podeMover ? "" : " disabled"}>${seta}<span>${escapeHtml(t("langSwitch.moveOne", { lang: nome(outro), variant: variantDisplayLabel(activeCard, variante) }))}</span></button>
+        ${dica ? `<p class="preview-lang-hint">${escapeHtml(dica)}</p>` : ""}
+      </div>`;
+    }
+    function refreshLang() {
+      const modal = document.getElementById("cardPreviewModal");
+      if (!modal || !activeCard) return;
+      const btn = modal.querySelector("[data-preview-lang-toggle]");
+      if (btn) btn.setAttribute("aria-expanded", langPanelOpen ? "true" : "false");
+      const slot = modal.querySelector("[data-preview-lang-slot]");
+      if (slot) slot.innerHTML = langPanelHtml();
+    }
+    // Abre o painel e já confere se a irmã existe (redesenha quando souber).
+    function openLangPanel() {
+      const ids = intlIdsOf(activeCard);
+      if (!ids) return;
+      const atual = normalizeCardLanguage(activeCard.language);
+      const alvoId = ids[atual === "en" ? "pt" : "en"];
+      const cartaAntes = activeCard;
+      ensureSibling(alvoId).then(() => { if (activeCard === cartaAntes) refreshLang(); });
+    }
+
     // ── Deep-link do popup ─────────────────────────────────────────────────
     // A URL ganha ?card=<id> com o popup aberto (replaceState: nada de entrada
     // extra no histórico) e perde ao fechar. É o que torna a carta LINKÁVEL:
@@ -6113,8 +6237,12 @@
     }
 
     function open(cardId, variant, opts) {
-      activeCard = getCard(cardId);
+      activeCard = lookupCard(cardId);
       if (!activeCard) return;
+      // O painel de idioma só continua aberto quando a troca veio dele mesmo
+      // (ver a carta no outro idioma); abrir outra carta pelo tile o fecha.
+      if (!keepLangPanel) langPanelOpen = false;
+      keepLangPanel = false;
       // Empilha UMA vez por sessão de popup: trocar de carta com o popup aberto
       // (ou de variante) só reescreve o ?card=, senão um voltar por carta vista.
       // openFromUrl não empilha — a URL JÁ chegou com ?card= (link
@@ -6231,10 +6359,11 @@
               <p class="preview-subtitle">${(function () {
                 const year = String(activeCard.setReleaseDate || "").slice(0, 4);
                 return /^\d{4}$/.test(year) ? `<span class="preview-year">${year}</span>` : "";
-              })()}${cardFlag(activeCard.language)}<span>${escapeHtml(activeCard.number)} · ${escapeHtml(cardLangSigla(activeCard.language))}</span>${activeGraded ? `${gradedBadgeHtml(activeGraded)}${(function () {
+              })()}${langButtonHtml()}${activeGraded ? `${gradedBadgeHtml(activeGraded)}${(function () {
                 const gv = gradedValue(activeCard, activeGraded.company, activeGraded.grade);
                 return gv.value > 0 ? `<span class="preview-graded-price">${escapeHtml(fmtMoney(getCurrency(), gv.value))}</span>` : "";
               })()}` : ""}</p>
+              <div data-preview-lang-slot>${langPanelHtml()}</div>
             </div>
             <div class="preview-actions">
               <!-- AÇÃO PRINCIPAL (2026-09-21): [−] [Não tenho / Tenho N] [+], no
@@ -6444,6 +6573,40 @@
         return;
       }
 
+      // Painel de idioma (Internacional × Português): abrir/fechar, ver a
+      // carta no outro idioma e mover UMA cópia pra ele.
+      if (activeCard && event.target.closest("#cardPreviewModal [data-preview-lang-toggle]")) {
+        langPanelOpen = !langPanelOpen;
+        refreshLang();
+        if (langPanelOpen) openLangPanel();
+        return;
+      }
+      const langView = activeCard && event.target.closest("#cardPreviewModal [data-preview-lang-view]");
+      if (langView) {
+        const ids = intlIdsOf(activeCard);
+        const alvo = ids && ids[langView.dataset.previewLangView];
+        if (!alvo || alvo === activeCard.id) return;
+        const variante = activeVariant;
+        ensureSibling(alvo).then((ok) => {
+          if (!ok) { refreshLang(); return; }
+          keepLangPanel = true;
+          langPanelOpen = true;
+          open(alvo, variante, { semHistorico: true });
+        });
+        return;
+      }
+      const langMove = activeCard && event.target.closest("#cardPreviewModal [data-preview-lang-move]");
+      if (langMove) {
+        const ids = intlIdsOf(activeCard);
+        const alvo = ids && ids[langMove.dataset.previewLangMove];
+        if (!alvo || siblingState.get(alvo) !== "ok" && !lookupCard(alvo)) return;
+        if (moveOneCopy(store, activeCard.id, alvo, moveVariantOf(activeCard))) {
+          onOwnedChange({ reflow: true });
+          refreshQuantities();
+        }
+        return;
+      }
+
       // Caixa "+ Graded" do preview: expandir e registrar o slab.
       if (graded && activeCard && event.target.closest("#cardPreviewModal [data-preview-graded]")) {
         const open = event.target.closest("[data-preview-graded-open]");
@@ -6548,6 +6711,8 @@
         const dec = modal.querySelector('[data-preview-qty="dec"]');
         if (dec) dec.disabled = n <= 0;
       }
+      // As contagens por idioma do painel acompanham qualquer +/− da carta.
+      refreshLang();
     }
 
     function refreshWishlistButton() {
@@ -7786,6 +7951,21 @@
     if (!breakdown.length) return false;
     const alvo = breakdown.find((x) => x.condition === DEFAULT_CONDITION) || breakdown[breakdown.length - 1];
     store.add(cardId, variant, alvo.condition, -1);
+    return true;
+  }
+
+  // Move UMA cópia de uma variante entre dois ids da MESMA carta em idiomas
+  // diferentes (30th-151 <-> 30th-151-pt). A cópia leva a condição junto — a
+  // mesma escolha do removeOneCopy (NM primeiro, senão a pior) — e a variante.
+  // Um passo por clique de propósito: quem tem 3 EN + 3 PT da mesma carta
+  // chega lá movendo uma a uma, sem um seletor "tudo pra PT" que apagaria a
+  // mistura (pedido de 24/09/2026).
+  function moveOneCopy(store, fromId, toId, variant) {
+    const breakdown = store.conditionBreakdown(fromId, variant);
+    if (!breakdown.length || fromId === toId) return false;
+    const alvo = breakdown.find((x) => x.condition === DEFAULT_CONDITION) || breakdown[breakdown.length - 1];
+    store.add(fromId, variant, alvo.condition, -1);
+    store.add(toId, variant, alvo.condition, 1);
     return true;
   }
 
