@@ -118,6 +118,8 @@
     if (flat.includes("digimon")) return "digimon";
     if (flat.includes("flesh") || flat === "fab") return "fab";
     if (flat.includes("gundam")) return "gundam";
+    // Carddass vintage ANTES do Fusion World: "Dragon Ball Carddass" também contém "dragonball".
+    if (flat === "dbc" || (flat.includes("dragonball") && flat.includes("carddass"))) return "dbc";
     if (flat.includes("dragonball") || flat.includes("fusionworld") || flat === "dbfw") return "dbfw";
     if (flat.includes("riftbound") || flat.includes("leagueoflegends")) return "riftbound";
     if (flat.includes("unionarena")) return "unionarena";

@@ -30,6 +30,7 @@
     unionarena: { slug: "unionarena", name: "Union Arena", dataDir: "data/unionarena/" }, // TCGCSV cat. 81 (Bandai, EN; um set por anime)
     naruto: { slug: "naruto", name: "Naruto Card Game", dataDir: "data/naruto/" },   // vintage Bandai 2003–2006 (+ moderno TCGCSV no futuro)
     hxh: { slug: "hxh", name: "Hunter × Hunter", dataDir: "data/hxh/" },             // vintage Bandai: Miracle Battle (2011–12); Hyper Battle 1999–2001 em curadoria
+    dbc: { slug: "dbc", name: "Dragon Ball Carddass", dataDir: "data/dbc/" },       // vintage Bandai 1988–1997 (Hondan; cartas sem scan ainda)
     // Em preparação (catálogo ainda vazio; tile "Em breve" no hub):
     jump: { slug: "jump", name: "JUMP", dataDir: "data/jump/" }            // promos curadas (Jump Festa, V-Jump…)
   };
