@@ -3205,7 +3205,8 @@
     gundam: SUBNAV_MIN,
     dbfw: SUBNAV_MIN,
     naruto: SUBNAV_MIN,
-    hxh: SUBNAV_MIN
+    hxh: SUBNAV_MIN,
+    dbc: SUBNAV_MIN
   };
   // As páginas do Explorar trazem um <nav class="explore-subnav" data-placeholder>
   // VAZIO no HTML, dentro do .page-head-bar, com a altura de uma linha de chips
@@ -6981,7 +6982,8 @@
     // nada de liga/myp aqui, só o mercado internacional.
     unionarena: { tcgLine: "union-arena", usText: "union arena" },
     naruto:    { usText: "naruto card game", noTcgplayer: true },
-    hxh:       { usText: "hunter x hunter carddass", noTcgplayer: true }
+    hxh:       { usText: "hunter x hunter carddass", noTcgplayer: true },
+    dbc:       { usText: "dragon ball carddass", noTcgplayer: true }
   };
   function marketOf(game) { return MARKETS[game] || MARKETS.pokemon; }
 
@@ -8533,7 +8535,8 @@
     { game: "riftbound", dataDir: "data/riftbound/" },
     { game: "unionarena", dataDir: "data/unionarena/" },
     { game: "naruto", dataDir: "data/naruto/" },
-    { game: "hxh", dataDir: "data/hxh/" }
+    { game: "hxh", dataDir: "data/hxh/" },
+    { game: "dbc", dataDir: "data/dbc/" }
   ];
   // Slugs e cor de cada jogo, num lugar só (adicionar um jogo = 1 entrada aqui
   // + 1 no game.js + labels no i18n; as páginas iteram em vez de hardcodear).
@@ -8541,7 +8544,7 @@
   // Cor de cada marca. Escolhidas pelo Fernando; os tons exatos foram calibrados
   // em dois eixos antes de entrar:
   //   1. CONTRASTE — o textOnColor abaixo escolhe preto ou branco pelo maior
-  //      contraste real; as 13 passam em AA (≥4.5:1) com a cor escolhida.
+  //      contraste real; as 14 passam em AA (≥4.5:1) com a cor escolhida.
   //   2. DISTINÇÃO — as etiquetas aparecem lado a lado na galeria e nos filtros,
   //      então cores muito próximas se confundem. O ouro do Riftbound começou em
   //      #b8860b e virou #a67c00: a 46 de distância RGB ele empatava com o
@@ -8561,7 +8564,8 @@
     riftbound: "#a67c00",  // ouro
     unionarena: "#0891b2", // ciano
     naruto: "#ea580c",     // laranja
-    hxh: "#15803d"         // verde
+    hxh: "#15803d",        // verde
+    dbc: "#db2777"         // rosa (a 70 do FaB, o vizinho mais próximo; 4.6:1 com preto)
   };
   // Preto ou branco sobre a cor do jogo — o que der MAIOR contraste de verdade
   // (fórmula WCAG), não um limiar de luminância chutado: com limiar fixo o
@@ -8580,7 +8584,7 @@
     const vsWhite = 1.05 / (L + 0.05);   // contraste com #fff
     const vsBlack = (L + 0.05) / 0.05;   // contraste com preto
     // Preto PURO (não o quase-preto do tema): com #0a0c10 o vermelho do Pokémon
-    // parava em 4.47; com #000 os 13 jogos passam de 4.5 (AA).
+    // parava em 4.47; com #000 os 14 jogos passam de 4.5 (AA).
     return vsBlack >= vsWhite ? "#000000" : "#ffffff";
   }
   // Etiqueta do jogo: retângulo PREENCHIDO na cor do jogo (mesmo idioma visual
@@ -8599,7 +8603,8 @@
     onepiece: "filter.gameOnePiece", magic: "filter.gameMagic",
     fab: "filter.gameFab", gundam: "filter.gameGundam", dbfw: "filter.gameDbfw",
     ygo: "filter.gameYgo", digimon: "filter.gameDigimon", riftbound: "filter.gameRiftbound",
-    unionarena: "filter.gameUnionArena", naruto: "filter.gameNaruto", hxh: "filter.gameHxh"
+    unionarena: "filter.gameUnionArena", naruto: "filter.gameNaruto", hxh: "filter.gameHxh",
+    dbc: "filter.gameDbc"
   };
   function gameLabel(g) { return t(GAME_LABEL_KEY[g] || GAME_LABEL_KEY.pokemon); }
   const VINTAGE_SET_EN = {
@@ -8716,7 +8721,45 @@
     "hxh-mb-hh02": "Booster Pack — Nen Users",
     "hxh-mb-hh03": "Booster Pack — Phantom Troupe",
     "hxh-mb-hhex01": "Phantom Booster",
-    "hxh-mb-hh": "Promotional Cards"
+    "hxh-mb-hh": "Promotional Cards",
+    // ---- Dragon Ball Carddass (sync-dbc-carddass.mjs): as 31 partes do Hondan,
+    // inclusive as que o 80storage ainda não publicou (o sync pega sozinho quando
+    // sair). Super Battle, Visual Adventure e Super Barcode Wars ficam de fora de
+    // propósito: nenhuma fonte acessível lista essas séries carta a carta, então
+    // elas não geram set nenhum, e 32 nomes mortos aqui estouravam o teto do
+    // check-size (2026-09-30). Os nomes delas continuam no SETS do sync
+    // (setNameEn); entram aqui junto com a fonte, se um dia houver.
+    "dbc-h01": "Hondan Part 1 — Great Martial Arts Showdown",
+    "dbc-h02": "Hondan Part 2 — World Martial Arts Tournament",
+    "dbc-h03": "Hondan Part 3 — Fierce Battle! The Saiyans",
+    "dbc-h04": "Hondan Part 4 — Great Battle!! Planet Namek",
+    "dbc-h05": "Hondan Part 5 — Sortie! The Ginyu Force",
+    "dbc-h06": "Hondan Part 6 — Heated!! Goku vs. Ginyu",
+    "dbc-h07": "Hondan Part 7 — Terror!! Frieza's Super Transformation!!",
+    "dbc-h08": "Hondan Part 8 — Upheaval!! Super Saiyan",
+    "dbc-h09": "Hondan Part 9 — Magnificent!! Strongest vs. Strongest",
+    "dbc-h10": "Hondan Part 10 — Terror!! The Androids Awaken",
+    "dbc-h11": "Hondan Part 11 — Rampage! Warriors of Steel",
+    "dbc-h12": "Hondan Part 12 — Counterattack!! The Three Super Saiyans",
+    "dbc-h13": "Hondan Part 13 — Terror!! The Cell Games Begin",
+    "dbc-h14": "Hondan Part 14 — Showdown! The Ultimate Super Saiyan Awakens",
+    "dbc-h15": "Hondan Part 15 — Victory! Birth of the Golden Warrior!!",
+    "dbc-h16": "Hondan Part 16 — Rise Up!! The New Z Fighters",
+    "dbc-h17": "Hondan Part 17 — Launch! The New Gohan Chapter",
+    "dbc-h18": "Hondan Part 18 — Revival! The Legendary Majin",
+    "dbc-h19": "Hondan Part 19 — Melee! The King of Destruction Appears",
+    "dbc-h20": "Hondan Part 20 — Tremor! Ultimate Power Unleashed",
+    "dbc-h21": "Hondan Part 21 — Complete! Super Fusion",
+    "dbc-h22": "Hondan Part 22 — Deadly!! The Strongest Fusion Ever",
+    "dbc-h23": "Hondan Part 23 — Ultimate Merge! Super Vegito Arrives",
+    "dbc-h24": "Hondan Part 24 — And On to a Distant Battle (Part 1)",
+    "dbc-h25": "Hondan Part 25 — And On to a Distant Battle (Part 2)",
+    "dbc-h26": "Hondan Part 26",
+    "dbc-h27": "Hondan Part 27",
+    "dbc-h28": "Hondan Part 28",
+    "dbc-h29": "Hondan Part 29",
+    "dbc-h30": "Hondan Part 30",
+    "dbc-h31": "Hondan Part 31"
   };
 
   // Sets JAPONESES do Pokémon: mesma regra dos vintages acima, mas aqui o mapa
@@ -8959,6 +9002,7 @@
   const VINTAGE_ID_PREFIX = {
     onepiece: ["opcd-", "op2002-", "op-mb-"], // Carddass 1999–2002, OPCG 2002–05, Miracle Battle
     hxh: ["hxh-"],                            // Hyper Battle 1999–2001 e Miracle Battle: tudo vintage
+    dbc: ["dbc-"],                            // Carddass 1988–1997: o jogo inteiro é vintage
     naruto: ["nrt-"]                          // Bandai 2003–2013 inteiro…
   };
   const VINTAGE_ID_EXCEPT = { naruto: ["nrt-ncg-"] }; // …menos o jogo NOVO (2027)

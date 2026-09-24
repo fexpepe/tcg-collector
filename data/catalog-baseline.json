@@ -68,5 +68,10 @@
   "cards": 6485,
   "sets": 72,
   "imgPct": 100
+ },
+ "dbc": {
+  "cards": 758,
+  "sets": 18,
+  "imgPct": 0
  }
 }

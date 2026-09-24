@@ -288,7 +288,7 @@
   // Diferente do CSV do menu da conta (inventário do jogo da sessão, preço manual):
   // aqui vai TODO o patrimônio precificado — cartas raw com valor de mercado por
   // condição + slabs graded — em todos os jogos, na moeda do topo.
-  const CSV_GAME_NAMES = { pokemon: "Pokémon", lorcana: "Lorcana", onepiece: "One Piece", naruto: "Naruto", hxh: "Hunter x Hunter" };
+  const CSV_GAME_NAMES = { pokemon: "Pokémon", lorcana: "Lorcana", onepiece: "One Piece", naruto: "Naruto", hxh: "Hunter x Hunter", dbc: "Dragon Ball Carddass" };
   function csvCell(value) {
     const s = value == null ? "" : String(value);
     return /[";\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
