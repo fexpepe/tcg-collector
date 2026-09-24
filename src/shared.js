@@ -211,7 +211,25 @@
   // colidir com outro texto, então a varredura cega é segura — e é o que faz
   // isto cobrir os 20 stores sem ter que enumerar nenhum.
   // Devolve { v, mudou } pra quem chama só gravar o que mudou.
-  function remapIdsDeep(valor) {
+  //
+  // `somar` (só a COLEÇÃO — cardId -> variante -> condição -> quantidade): id
+  // velho e novo no mesmo blob SOMAM as cópias em vez de ficar só o do id novo.
+  // Pedido de 24/09/2026: com o de-para automático de id provisório (carta que
+  // a TCGdex publicou com outro id, ver scripts/lib/provisional-ids.mjs), quem
+  // marcou as duas versões perderia as cópias do id velho. Nos outros stores
+  // (custo, preço-alvo, timestamps do LWW, listas) somar daria número errado —
+  // lá continua valendo o que já estava no id novo.
+  function somaProfunda(a, b) {
+    if (typeof a === "number" && typeof b === "number") return a + b;
+    if (a && b && typeof a === "object" && typeof b === "object" && !Array.isArray(a) && !Array.isArray(b)) {
+      const out = Object.assign({}, a);
+      Object.keys(b).forEach((k) => { out[k] = Object.prototype.hasOwnProperty.call(out, k) ? somaProfunda(out[k], b[k]) : b[k]; });
+      return out;
+    }
+    return a;
+  }
+  function remapIdsDeep(valor, opts) {
+    const somar = !!(opts && opts.somar);
     let mudou = false;
     const anda = (v) => {
       if (typeof v === "string") {
@@ -227,9 +245,12 @@
         if (novoK) mudou = true;
         const alvo = novoK || k;
         const filho = anda(v[k]);
-        // Id velho e novo no mesmo store (marcou nos dois): fica o que já
-        // estava no id novo — é o que a carta de verdade tem hoje.
-        out[alvo] = Object.prototype.hasOwnProperty.call(out, alvo) ? out[alvo] : filho;
+        // Id velho e novo no mesmo store (marcou nos dois): na coleção as
+        // cópias somam (`somar`); nos outros fica o que já estava no id novo —
+        // é o que a carta de verdade tem hoje. Só no NÍVEL das cartas: dentro
+        // delas não há id pra colidir.
+        const colide = Object.prototype.hasOwnProperty.call(out, alvo);
+        out[alvo] = !colide ? filho : (somar ? somaProfunda(out[alvo], filho) : out[alvo]);
       }
       return out;
     };
@@ -254,7 +275,8 @@
         if (!cru || !ID_MERGES_PISTAS.some((pista) => cru.indexOf(pista) >= 0)) return;
         let lido;
         try { lido = JSON.parse(cru); } catch (e) { return; }
-        const r = remapIdsDeep(lido);
+        // A coleção de cada jogo soma as cópias na colisão (ver remapIdsDeep).
+        const r = remapIdsDeep(lido, { somar: /-collection-v3$/.test(k) });
         if (r.mudou) localStorage.setItem(k, JSON.stringify(r.v));
       });
       localStorage.setItem(ID_MERGES_KEY, assinatura);
@@ -10242,7 +10264,12 @@
     // não rodou a migração de id (ou de antes dela existir): sem reescrever
     // AQUI, o id aposentado voltava do remoto a cada pull e a carta migrada
     // virava duas. Uma passada a mais no blob que o pull já parseou.
-    if (TEM_ID_MERGES && remoteD) remoteD = remapIdsDeep(remoteD).v;
+    // A coleção do blob passa com `somar` (cópias do id velho e do novo se
+    // juntam); o resto, com a regra de sempre.
+    if (TEM_ID_MERGES && remoteD) {
+      const colecao = remoteD.collection ? remapIdsDeep(remoteD.collection, { somar: true }).v : remoteD.collection;
+      remoteD = Object.assign(remapIdsDeep(remoteD).v, remoteD.collection ? { collection: colecao } : {});
+    }
     const a = localD || {}, b = remoteD || {};
     const col = mergeCollection(a.collection, a.collectionMeta, b.collection, b.collectionMeta);
     const wl = mergeWishlist(a.wishlist, a.wishlistMeta, b.wishlist, b.wishlistMeta);
