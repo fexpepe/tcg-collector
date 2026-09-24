@@ -365,7 +365,18 @@
     store: owned,
     prices,
     wishlist,
-    onOwnedChange: () => refreshOwnershipCards(),
+    // Mover cópia pra outro idioma (painel de idioma do popup) cria um tile que
+    // a grade não tinha: aí redesenha inteira, em vez do refresh in-place.
+    onOwnedChange: (o) => (o && o.reflow ? render() : refreshOwnershipCards()),
+    // Carta do outro idioma que o popup buscou (ver ensureSibling no shared):
+    // entra no catálogo da página pra o tile dela existir depois do "mover".
+    onSiblingCards: (lista) => lista.forEach((card) => {
+      if (cardsById.has(card.id)) return;
+      card.game = "pokemon";
+      cards.push(card);
+      cardsById.set(card.id, card);
+      cardGameMap.set(card.id, "pokemon");
+    }),
     // "+ Graded" dentro do card. Passa o MESMO store da página (gradedStore) —
     // criar outro no preview sobrescreveria o blob, porque cada instância grava
     // a cópia que tem em memória. Sem store (graded-ui não carregado), nada é
