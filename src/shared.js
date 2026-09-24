@@ -6647,7 +6647,7 @@
     // `pokemonName`. Na Liga o produto japonês ainda leva "JP" grudado no
     // número, antes da barra: "Snorlax (181JP/165)" — é assim que ela separa a
     // versão JP da inglesa de mesmo número.
-    const q = (card) => (m.padded ? paddedCardQuery(card, true, ligaNumberSuffix(card)) : brSearchName(card));
+    const q = (card) => (m.padded ? (ligaClassicQuery(card) || paddedCardQuery(card, true, ligaNumberSuffix(card))) : brSearchName(card));
     if (m.liga) out.push({ key: "liga", label: m.liga[0], url: (card) => `${m.liga[1]}/?view=cards/search&card=${enc(q(card))}` });
     if (m.ligabra) out.push({ key: "ligabra", label: "LigaBRA", url: (card) => `https://ligabra.com/filter-products/${enc(cardSearchQuery(card))}` });
     if (m.myp) out.push({ key: "myp", label: "MYP", url: (card) => `https://mypcards.com/${m.myp}?ProdutoSearch%5Bquery%5D=${enc(m.padded ? paddedCardQuery(card, false) : brSearchName(card))}` });
@@ -6737,6 +6737,28 @@
 
   // Sufixo do número na Liga: "JP" na carta japonesa ("181JP/165"), vazio no resto.
   function ligaNumberSuffix(card) { return isJapaneseCard(card) ? "JP" : ""; }
+
+  // Classic Collection na Liga: número ORIGINAL da carta reimpressa + total do
+  // set. O catálogo (TCGdex) numera o set em sequência — o Lugia é "029/030" —,
+  // mas a Liga cadastra pelo número que vem impresso na carta, o da coleção de
+  // origem, com o total da Classic Collection: "Lugia (149/30)". A busca com
+  // "029/030" voltava VAZIA (24/09/2026, avisado pelo Fernando). A lista é o
+  // número original na ordem da sequência (001..030), o mesmo par que o
+  // data/card-id-merges.json guarda pro cel30cc (número do TCGplayer), então
+  // vale pra edição inglesa e pra portuguesa (mesmo número, mesmo produto).
+  const LIGA_CLASSIC_NUMBERS = {
+    "30th-c": ["4", "5", "11", "11", "18", "19", "25", "33", "41", "43", "47", "050", "57", "58", "69",
+      "85", "89", "94", "99", "100", "101", "106", "106", "106", "108", "114", "123", "138", "149", "203"]
+  };
+  // "Lugia (149/30)" pra carta de Classic Collection; "" pro resto.
+  function ligaClassicQuery(card) {
+    const lista = LIGA_CLASSIC_NUMBERS[card.setId];
+    if (!lista) return "";
+    const seq = /^\d+$/.test(String(card.number || "").trim()) ? parseInt(card.number, 10) : 0;
+    const original = lista[seq - 1];
+    if (!original) return "";
+    return `${brSearchName(card)} (${original}/${parseInt(card.setTotal, 10) || lista.length})`;
+  }
 
   // "Nome (001/048)" pra Liga (padTotal=true) e "Nome (001/48)" pro MYP
   // (padTotal=false): esses sites zeram à esquerda o número (e a Liga o total).
