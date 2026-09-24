@@ -30,7 +30,7 @@ const JOGOS = [
   ["magic", "data/magic/"], ["fab", "data/fab/"], ["gundam", "data/gundam/"],
   ["dbfw", "data/dbfw/"], ["ygo", "data/ygo/"], ["digimon", "data/digimon/"],
   ["riftbound", "data/riftbound/"], ["unionarena", "data/unionarena/"],
-  ["naruto", "data/naruto/"], ["hxh", "data/hxh/"]
+  ["naruto", "data/naruto/"], ["hxh", "data/hxh/"], ["dbc", "data/dbc/"]
 ];
 
 // 6 de cada lado: o trilho é uma fileira que rola, não uma tabela. Mais que isso

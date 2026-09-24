@@ -69,6 +69,7 @@ jobs:
             data/unionarena/sets
             data/naruto/sets
             data/hxh/sets
+            data/dbc/sets
             data/jump/sets
             data/magic/cards.js
             data/magic/indexes.js

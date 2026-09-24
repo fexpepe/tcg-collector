@@ -30,7 +30,7 @@ const JOGOS = [
   ["magic", "data/magic/"], ["fab", "data/fab/"], ["gundam", "data/gundam/"],
   ["dbfw", "data/dbfw/"], ["ygo", "data/ygo/"], ["digimon", "data/digimon/"],
   ["riftbound", "data/riftbound/"], ["unionarena", "data/unionarena/"],
-  ["naruto", "data/naruto/"], ["hxh", "data/hxh/"], ["jump", "data/jump/"]
+  ["naruto", "data/naruto/"], ["hxh", "data/hxh/"], ["dbc", "data/dbc/"], ["jump", "data/jump/"]
 ];
 
 // Janela: 45 dias pra trás (o "acabou de sair" ainda é notícia) e 400 pra
@@ -138,7 +138,7 @@ const ROTULOS = {
   pokemon: "Pokémon", lorcana: "Lorcana", onepiece: "One Piece", magic: "Magic",
   fab: "Flesh and Blood", gundam: "Gundam", dbfw: "Dragon Ball Fusion World",
   ygo: "Yu-Gi-Oh!", digimon: "Digimon", riftbound: "Riftbound",
-  unionarena: "Union Arena", naruto: "Naruto", hxh: "Hunter x Hunter", jump: "Jump"
+  unionarena: "Union Arena", naruto: "Naruto", hxh: "Hunter x Hunter", dbc: "Dragon Ball Carddass", jump: "Jump"
 };
 
 const linhas = [
