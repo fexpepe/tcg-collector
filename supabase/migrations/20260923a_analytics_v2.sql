@@ -96,7 +96,7 @@ begin
   ua := coalesce(h->>'user-agent', '');
   new.bot := (
     ua = ''
-    or ua ~* 'bot(/|;|\)|\s|$)'
+    or ua ~* 'bot(/|;|\)|\s|\Z)'
     or ua ~* '(crawl|spider|slurp|headless|phantomjs|lighthouse|pagespeed|scrapy|python-requests|python/|aiohttp|httpx|curl/|wget/|go-http-client|java/|okhttp|libwww|facebookexternalhit|bytespider|perplexity|anthropic|openai|semrush|ahrefs|mj12|petalbot|uptimerobot|betteruptime|statuscake|pingdom|site24x7)'
     or coalesce(new.props->>'wd', '') = '1'
   );
@@ -129,7 +129,7 @@ returns void language plpgsql security definer set search_path = public as $$
 begin
   if p_game is null or p_card_id is null then return; end if;
   if not (p_game = any (array['pokemon','lorcana','onepiece','magic','fab','gundam','dbfw','ygo','digimon','riftbound','unionarena','naruto','hxh','jump'])) then return; end if;
-  if p_card_id !~ '^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$' then return; end if;
+  if p_card_id !~ '^[A-Za-z0-9][A-Za-z0-9._-]{0,79}\Z' then return; end if;
   if not _rate_ok('cardview', 120) then return; end if;
   insert into card_views (game, card_id, views) values (p_game, p_card_id, 1)
   on conflict (game, card_id) do update set views = card_views.views + 1;
@@ -149,7 +149,11 @@ returns text language sql immutable as $$
     when coalesce(p_ref, '') = '' then 'direto'
     when p_ref ~* '(chatgpt|openai|perplexity|claude\.ai|gemini|copilot)' then 'ia'
     when p_ref ~* '(^|\.)(google|bing|duckduckgo|yahoo|yandex|ecosia|brave|baidu|startpage|qwant)\.' then 'busca'
-    when p_ref ~* '(instagram|facebook|(^|\.)fb\.|^t\.co$|(^|\.)x\.com$|twitter|tiktok|reddit|youtube|youtu\.be|discord|whatsapp|wa\.me|threads|telegram|(^|\.)t\.me$|pinterest|linkedin|bsky|kwai|twitch)' then 'social'
+    -- Sem cifrão nas regex: um cifrão solto dentro do corpo da função confunde
+    -- o editor do Supabase ("unterminated dollar-quoted string", 24/09/2026).
+    -- Os hosts curtos (t.co, t.me, x.com) vão por igualdade.
+    when lower(p_ref) in ('t.co', 't.me', 'x.com', 'mobile.x.com') then 'social'
+    when p_ref ~* '(instagram|facebook|(^|\.)fb\.|twitter|tiktok|reddit|youtube|youtu\.be|discord|whatsapp|wa\.me|threads|telegram|pinterest|linkedin|bsky|kwai|twitch)' then 'social'
     else 'site'
   end
 $$;
@@ -201,8 +205,8 @@ begin
   -- props vem do cliente: número que não for inteiro vira 0, não erro.
   n as (
     select name, anon, props,
-      case when props->>'n'   ~ '^[0-9]{1,7}$' then (props->>'n')::int   else 0 end as n,
-      case when props->>'add' ~ '^[0-9]{1,7}$' then (props->>'add')::int else 0 end as adicionou
+      case when props->>'n'   ~ '^[0-9]{1,7}\Z' then (props->>'n')::int   else 0 end as n,
+      case when props->>'add' ~ '^[0-9]{1,7}\Z' then (props->>'add')::int else 0 end as adicionou
     from ev
   )
   select jsonb_build_object(
@@ -237,7 +241,7 @@ begin
              when jsonb_typeof(e2.value) = 'object' then
                (select coalesce(sum(t.v::numeric), 0)
                 from jsonb_each_text(e2.value) t(k, v)
-                where t.v ~ '^[0-9]+(\.[0-9]+)?$')
+                where t.v ~ '^[0-9]+(\.[0-9]+)?\Z')
              when jsonb_typeof(e2.value) = 'number' then (e2.value)::text::numeric
              else 0
            end), 0)
@@ -286,8 +290,10 @@ do $$
 begin
   if exists (select 1 from pg_extension where extname = 'pg_cron') then
     perform cron.unschedule(jobid) from cron.job where jobname = 'sleevu-metrics-daily';
+    -- Comando entre aspas simples, e não num dollar-quote aninhado: é outra
+    -- coisa que o editor do Supabase pode partir no meio.
     perform cron.schedule('sleevu-metrics-daily', '5 3 * * *',
-      $job$select public.metrics_snapshot(((now() at time zone 'America/Sao_Paulo')::date - 1)); select public.metrics_snapshot();$job$);
+      'select public.metrics_snapshot(((now() at time zone ''America/Sao_Paulo'')::date - 1)); select public.metrics_snapshot();');
   end if;
 end $$;
 
@@ -399,7 +405,7 @@ begin
     select anon,
       count(*) filter (where name = 'pageview')                           as views,
       bool_or(name = 'collection_first')                                  as ativou,
-      coalesce(sum(case when name = 'card_added' and props->>'n' ~ '^[0-9]{1,7}$'
+      coalesce(sum(case when name = 'card_added' and props->>'n' ~ '^[0-9]{1,7}\Z'
                         then (props->>'n')::int end), 0)                  as cartas,
       bool_or(name in ('share_created', 'deck_created'))                  as criou,
       bool_or(name = 'signup' or (name = 'pageview' and uid is not null)) as conta,
@@ -662,12 +668,12 @@ begin
     ),
     num as (
       select name, anon, game, props,
-        case when props->>'n'     ~ '^[0-9]{1,7}$' then (props->>'n')::int     else 0 end as n,
-        case when props->>'lido'  ~ '^[0-9]{1,7}$' then (props->>'lido')::int  else 0 end as lido,
-        case when props->>'achou' ~ '^[0-9]{1,7}$' then (props->>'achou')::int else 0 end as achou,
-        case when props->>'add'   ~ '^[0-9]{1,7}$' then (props->>'add')::int   else 0 end as adicionou,
-        case when props->>'ms'    ~ '^[0-9]{1,10}$' then (props->>'ms')::bigint else 0 end as ms,
-        case when props->>'t1'    ~ '^[0-9]{1,10}$' then (props->>'t1')::bigint else 0 end as t1
+        case when props->>'n'     ~ '^[0-9]{1,7}\Z' then (props->>'n')::int     else 0 end as n,
+        case when props->>'lido'  ~ '^[0-9]{1,7}\Z' then (props->>'lido')::int  else 0 end as lido,
+        case when props->>'achou' ~ '^[0-9]{1,7}\Z' then (props->>'achou')::int else 0 end as achou,
+        case when props->>'add'   ~ '^[0-9]{1,7}\Z' then (props->>'add')::int   else 0 end as adicionou,
+        case when props->>'ms'    ~ '^[0-9]{1,10}\Z' then (props->>'ms')::bigint else 0 end as ms,
+        case when props->>'t1'    ~ '^[0-9]{1,10}\Z' then (props->>'t1')::bigint else 0 end as t1
       from ev
     ),
     gate as (select anon, min(ts) as ts from ev where name = 'login_gate' and anon is not null group by anon)
