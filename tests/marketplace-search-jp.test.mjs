@@ -45,3 +45,14 @@ test("carta JP sem pokemonName cai no name (não quebra)", () => {
   const semEn = { ...snorlaxJp, pokemonName: "" };
   assert.equal(api.paddedCardQuery(semEn, true, "JP"), "カビゴン (181JP/165)");
 });
+
+// Classic Collection dos 30 anos: a Liga cadastra pelo número ORIGINAL impresso
+// na carta + o total do set ("Lugia (149/30)"), não pela sequência do catálogo
+// ("029/030", que voltava vazio). MYP e LigaBRA seguem como eram.
+test("Classic Collection na Liga: número original da carta sobre 30", () => {
+  const lugia = { id: "30th-c-029", name: "Lugia", pokemonName: "Lugia", number: "029", setTotal: 30, setId: "30th-c", language: "en", game: "pokemon" };
+  assert.ok(links(lugia).liga.endsWith("card=Lugia (149/30)"), links(lugia).liga);
+  const charizardPt = { ...lugia, id: "30th-c-001-pt", name: "Charizard", pokemonName: "Charizard", number: "001", language: "pt" };
+  assert.ok(links(charizardPt).liga.endsWith("card=Charizard (4/30)"), links(charizardPt).liga);
+  assert.ok(links(lugia).myp.endsWith("=Lugia (029/30)"), links(lugia).myp);
+});
