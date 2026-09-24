@@ -4587,7 +4587,7 @@
     const select = document.getElementById("languageSwitcher");
     if (!select) return;
     const SITE_SIGLA = { pt: "PT-BR", en: "EN", es: "ES" };
-    const items = UI_LANGUAGES.map(({ code }) => ({ value: code, flag: siteFlag(code), sigla: SITE_SIGLA[code] || code.toUpperCase() }));
+    const items = UI_LANGUAGES.map(({ code }) => ({ value: code, flag: cardFlag(code), sigla: SITE_SIGLA[code] || code.toUpperCase() }));
     const dd = createFlagDropdown({
       id: "siteLangDd",
       current: currentLanguage,
@@ -4630,17 +4630,9 @@
     es: '<svg viewBox="0 0 20 14"><rect width="20" height="14" fill="#aa151b"/><rect y="3.5" width="20" height="7" fill="#f1bf00"/></svg>'
   };
 
-  // Carta EN = impressão INTERNACIONAL (24/09/2026, pedido do Fernando): a
-  // mesma carta sai em inglês, português e nos outros idiomas do lançamento
-  // internacional, e quem adiciona sem dizer o idioma cai no id inglês. A
-  // bandeira dos EUA dizia "é americana" — o globo diz "internacional, idioma
-  // não especificado", e o popup deixa trocar pra PT (ver langSwitchHtml).
-  // Só na bandeira de CARTA: o seletor de idioma do SITE segue com a dos EUA.
-  const INTL_FLAG_SVG = '<svg viewBox="0 0 20 14" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"><circle cx="10" cy="7" r="5.2"/><ellipse cx="10" cy="7" rx="2.2" ry="5.2"/><path d="M4.8 7h10.4"/></svg>';
-
   // Emoji da bandeira (pra usar em <option>, que não aceita SVG/HTML). Casa com
-  // os flags SVG: en=globo (internacional), ja=Japão, zh=China, pt=Brasil.
-  const CARD_FLAG_EMOJI = { en: "🌐", ja: "🇯🇵", zh: "🇨🇳", pt: "🇧🇷" };
+  // os flags SVG: en=EUA, ja=Japão, zh=China, pt=Brasil.
+  const CARD_FLAG_EMOJI = { en: "🇺🇸", ja: "🇯🇵", zh: "🇨🇳", pt: "🇧🇷" };
   function cardFlagEmoji(language) {
     return CARD_FLAG_EMOJI[normalizeCardLanguage(language)] || "";
   }
@@ -4723,16 +4715,11 @@
   function cardFlag(language) {
     const code = normalizeCardLanguage(language);
     const label = cardLanguageLabel(language);
-    const svg = code === "en" ? INTL_FLAG_SVG : CARD_FLAG_SVGS[code];
+    const svg = CARD_FLAG_SVGS[code];
     if (!svg) {
       return `<span class="card-flag card-flag-text" title="${escapeAttribute(label)}">${escapeHtml(cardLangSigla(language))}</span>`;
     }
-    return `<span class="card-flag${code === "en" ? " card-flag-intl" : ""}" title="${escapeAttribute(label)}" role="img" aria-label="${escapeAttribute(label)}">${svg}</span>`;
-  }
-  // Bandeira do idioma do SITE (inglês = EUA, não o globo das cartas).
-  function siteFlag(code) {
-    const svg = CARD_FLAG_SVGS[code];
-    return svg ? `<span class="card-flag" role="img" aria-hidden="true">${svg}</span>` : cardFlag(code);
+    return `<span class="card-flag" title="${escapeAttribute(label)}" role="img" aria-label="${escapeAttribute(label)}">${svg}</span>`;
   }
 
   // Variante de qualidade/formato de um asset da TCGdex. Cartas aceitam
@@ -6089,10 +6076,11 @@
       if (ctl) ctl.innerHTML = previewGradedCtlHtml(expanded);
     }
 
-    // ── Idioma da carta: Internacional × Português ────────────────────────
+    // ── Idioma da carta: Inglês × Português ───────────────────────────────
     // (24/09/2026, pedido do Fernando, no desenho do Jornada Games) A mesma
-    // carta do lançamento internacional existe em inglês (id base, bandeira de
-    // globo) e em português (id + "-pt"): são dois ids, e cada cópia mora em um
+    // carta do lançamento internacional existe em inglês (id base — é onde cai
+    // quem adiciona sem escolher) e em português (id + "-pt"): são dois ids, e
+    // cada cópia mora em um
     // deles. A bandeira do popup vira botão e abre este painel: ver a carta no
     // outro idioma (imagem PT quando o catálogo tem, senão a inglesa) e MOVER
     // cópias, uma por clique, pra quem tem 3 EN + 2 PT da mesma carta não
@@ -6160,7 +6148,7 @@
       const outro = atual === "en" ? "pt" : "en";
       const alvoId = ids[outro];
       const estado = lookupCard(alvoId) ? "ok" : (siblingState.get(alvoId) || "loading");
-      const nome = (l) => t(l === "en" ? "langSwitch.intl" : "langSwitch.pt");
+      const nome = (l) => t(l === "en" ? "langSwitch.en" : "langSwitch.pt");
       const opts = INTL_LANGS.map((l) => {
         const n = store.totalForCard(ids[l]);
         const ativo = l === atual;
@@ -6573,7 +6561,7 @@
         return;
       }
 
-      // Painel de idioma (Internacional × Português): abrir/fechar, ver a
+      // Painel de idioma (Inglês × Português): abrir/fechar, ver a
       // carta no outro idioma e mover UMA cópia pra ele.
       if (activeCard && event.target.closest("#cardPreviewModal [data-preview-lang-toggle]")) {
         langPanelOpen = !langPanelOpen;
