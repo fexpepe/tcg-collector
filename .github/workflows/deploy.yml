@@ -33,6 +33,7 @@ on:
 
 permissions:
   contents: write # o build commita o snapshot do catálogo Pokémon de volta (ver passo "Versiona")
+  issues: write # o aviso de id provisório abre/comenta issue (ver passo "Avisa ids provisórios")
 
 # Opta as actions JS para o Node 24 (o runner vai forçar isso a partir de
 # 16/09/2026); evita o aviso de deprecação do Node 20.
@@ -258,6 +259,16 @@ jobs:
       - name: Mescla catálogos num manifest unificado
         if: env.RODA_SYNC == 'true'
         run: node scripts/merge-catalogs.mjs en ja zh-cn zh-tw pt
+
+      # Id que NÓS inventamos (carta da TCGCSV/PPT antes da TCGdex, carta PT
+      # copiada da edição inglesa) e cuja oficial chegou com OUTRO id: o merge
+      # já grava o de-para quando o par é único; aqui vira issue no GitHub pra
+      # alguém conferir (e resolver à mão o par ambíguo). Nunca derruba o build.
+      - name: Avisa ids provisórios que ganharam gêmea oficial
+        if: env.RODA_SYNC == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/report-provisional-ids.mjs || echo "aviso de ids provisórios falhou (só informativo)"
 
       # Cobertura de preço no log (por idioma: % com cotação, fonte, cartas
       # sintetizadas, sets sem preço nenhum, cotações acima do teto). Só

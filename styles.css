@@ -3312,6 +3312,17 @@ input::placeholder {
   overflow-wrap: anywhere;
 }
 
+/* Aviso da carta PT completada pela edição inglesa (prov "en"): uma linha
+   discreta no pé da ficha, no mesmo recuo das linhas acima. */
+.preview-prov-note {
+  margin: 0;
+  padding: 10px 16px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+
 /* Impressões (popup da carta): lista de sets onde a carta de mesmo nome saiu.
    Rola dentro da própria caixa — "Lightning Bolt" tem dezenas de impressões e
    empurraria a ficha pra fora da tela. */
