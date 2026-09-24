@@ -106,6 +106,7 @@ await checkCatalog("cards Lorcana", "/data/lorcana/cards.js", "TCG_CARDS", 1500)
 await checkCatalog("cards One Piece", "/data/onepiece/cards.js", "TCG_CARDS", 4000);
 await checkCatalog("cards Naruto", "/data/naruto/cards.js", "TCG_CARDS", 400);
 await checkCatalog("cards Hunter x Hunter", "/data/hxh/cards.js", "TCG_CARDS", 30);
+await checkCatalog("cards Dragon Ball Carddass", "/data/dbc/cards.js", "TCG_CARDS", 700);
 await checkCatalog("cards FAB", "/data/fab/cards.js", "TCG_CARDS", 5000);
 await checkCatalog("cards Gundam", "/data/gundam/cards.js", "TCG_CARDS", 800);
 await checkCatalog("cards Dragon Ball Fusion", "/data/dbfw/cards.js", "TCG_CARDS", 1800);

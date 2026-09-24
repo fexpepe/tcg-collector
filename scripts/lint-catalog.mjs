@@ -28,7 +28,7 @@ import { resolveMergedId } from "./lib/set-supersede.mjs";
 
 const ROOT = new URL("../", import.meta.url);
 const BASELINE = new URL("data/catalog-baseline.json", ROOT);
-const GAMES = { pokemon: "data/", lorcana: "data/lorcana/", onepiece: "data/onepiece/", magic: "data/magic/", fab: "data/fab/", gundam: "data/gundam/", dbfw: "data/dbfw/", ygo: "data/ygo/", digimon: "data/digimon/", riftbound: "data/riftbound/", unionarena: "data/unionarena/", naruto: "data/naruto/", hxh: "data/hxh/", jump: "data/jump/" };
+const GAMES = { pokemon: "data/", lorcana: "data/lorcana/", onepiece: "data/onepiece/", magic: "data/magic/", fab: "data/fab/", gundam: "data/gundam/", dbfw: "data/dbfw/", ygo: "data/ygo/", digimon: "data/digimon/", riftbound: "data/riftbound/", unionarena: "data/unionarena/", naruto: "data/naruto/", hxh: "data/hxh/", dbc: "data/dbc/", jump: "data/jump/" };
 const UPDATE = process.argv.includes("--update-baseline");
 const ACEITA_ID = process.argv.includes("--aceitar-mudanca-de-id");
 

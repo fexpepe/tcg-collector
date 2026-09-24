@@ -105,6 +105,7 @@ jobs:
             data/unionarena/sets
             data/naruto/sets
             data/hxh/sets
+            data/dbc/sets
             data/jump/sets
             data/magic/cards.js
             data/magic/indexes.js
@@ -129,9 +130,12 @@ jobs:
             exit 0
           fi
           faltando=""
+          # data/dbc/: jogo novo (2026-09-24). Enquanto o cache for de antes dele,
+          # o build rápido publicaria o tile do hub sem catálogo nenhum atrás.
           for f in data/manifest.generated.js data/pricing.generated.js \
                    data/onepiece/pricing.generated.js data/lorcana/pricing.generated.js \
-                   data/magic/pricing.generated.js data/ygo/pricing.generated.js; do
+                   data/magic/pricing.generated.js data/ygo/pricing.generated.js \
+                   data/dbc/manifest.generated.js; do
             [ -s "$f" ] || faltando="$faltando $f"
           done
           if [ -n "$faltando" ]; then
@@ -484,6 +488,14 @@ jobs:
         if: env.RODA_SYNC == 'true'
         run: node scripts/sync-hxh-hyper-battle.mjs || echo "sync-hxh-hyper-battle falhou; segue com o snapshot versionado"
 
+      # Dragon Ball Carddass (Bandai 1988-1997): o jogo vintage dbc. Lista carta
+      # a carta do Hondan pelo 80storage.com (snapshot versionado em
+      # data/vintage/dbc-carddass.json, nao regride, ids fixos). Cria data/dbc/
+      # sozinho, sem depender de outro sync. Sem imagem e sem preco por ora.
+      - name: Catalogo vintage Dragon Ball Carddass
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/sync-dbc-carddass.mjs || echo "sync-dbc-carddass falhou; segue com o snapshot versionado"
+
       # Data Carddass NARUTO (arcade, 2005-2008): checklist do noihjp (fa site),
       # sem imagens. Anexa ao catalogo do Naruto (roda DEPOIS dos outros).
       - name: Anexa Data Carddass NARUTO (arcade)
@@ -611,6 +623,7 @@ jobs:
             data/unionarena/sets
             data/naruto/sets
             data/hxh/sets
+            data/dbc/sets
             data/jump/sets
             data/magic/cards.js
             data/magic/indexes.js
