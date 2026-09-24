@@ -7376,16 +7376,8 @@ button.dash-link { width: 100%; min-height: 0; justify-content: flex-start; text
   color: var(--muted);
 }
 
-/* Bandeira INTERNACIONAL (carta EN, 24/09/2026): globo em traço, na cor do
-   texto, no lugar da bandeira dos EUA — a impressão inglesa é a do lançamento
-   internacional. Mesmo tamanho das outras, sem o fundo colorido. */
-.card-flag-intl {
-  color: var(--muted);
-  background: var(--panel-strong);
-}
-
 /* Idioma no popup: a bandeira + "151 · EN" vira botão (só carta Pokémon EN/PT)
-   e abre o painel Internacional × Português logo abaixo. Botão sem cara de
+   e abre o painel Inglês × Português logo abaixo. Botão sem cara de
    botão até o hover — é a mesma linha de antes, com o chevron dizendo que abre.
    Alvo de 44px no toque. */
 .preview-lang-btn {

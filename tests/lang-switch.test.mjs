@@ -2,12 +2,12 @@
 // internacional mora em dois ids (30th-151 e 30th-151-pt) e cada cópia em um
 // deles. O "mover" leva UMA cópia por vez, com variante e condição — quem tem
 // 3 EN + 2 PT chega lá clique a clique, sem um seletor que jogue tudo pra um
-// lado. A bandeira da carta EN vira o globo "Internacional".
+// lado.
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { loadShared, makeLocalStorage } from "./lib/shared-sandbox.mjs";
 
-const EXPOSE = "window.__test = { moveOneCopy, createCollectionStore, cardFlag, siteFlag };";
+const EXPOSE = "window.__test = { moveOneCopy, createCollectionStore };";
 
 function monta(colecao) {
   const sb = loadShared(EXPOSE, { localStorage: makeLocalStorage({
@@ -36,12 +36,4 @@ test("sem cópia da variante (ou mesmo id) não move nada", () => {
   assert.equal(api.moveOneCopy(owned, "30th-151", "30th-151-pt", "Normal"), false);
   assert.equal(api.moveOneCopy(owned, "30th-151", "30th-151", "Holo"), false);
   assert.deepEqual(obj(owned.toObject()), { "30th-151": { Holo: { NM: 1 } } });
-});
-
-test("carta EN mostra o globo Internacional; o idioma do SITE segue com a bandeira dos EUA", () => {
-  const { api } = monta({});
-  assert.match(api.cardFlag("en"), /card-flag-intl/);
-  assert.doesNotMatch(api.cardFlag("en"), /#b22234/);
-  assert.match(api.cardFlag("pt"), /#009b3a/);
-  assert.match(api.siteFlag("en"), /#b22234/);
 });
