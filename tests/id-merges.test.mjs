@@ -67,6 +67,44 @@ test("marcou nos dois ids: o que já estava no id novo vence", () => {
   assert.deepEqual(JSON.parse(JSON.stringify(r.v)), { "30th-001": { Holo: { NM: 9 } } });
 });
 
+// Coleção SOMA as cópias na colisão (24/09/2026): com o de-para automático de
+// id provisório, quem marcou a versão provisória E a oficial perderia as
+// cópias do id velho. Os outros stores seguem com "fica o do id novo".
+test("coleção com id velho e novo: as cópias somam, por variante e condição", () => {
+  const { __test: t } = loadShared(EXPOR);
+  const r = t.remapIdsDeep({
+    "30th-001": { Holo: { NM: 2 }, Normal: { SP: 1 } },
+    "cel30-001": { Holo: { NM: 1, HP: 1 }, Reverse: { NM: 4 } }
+  }, { somar: true });
+  assert.deepEqual(JSON.parse(JSON.stringify(r.v)), {
+    "30th-001": { Holo: { NM: 3, HP: 1 }, Normal: { SP: 1 }, Reverse: { NM: 4 } }
+  });
+  // A ordem das chaves no blob não muda a conta.
+  const r2 = t.remapIdsDeep({ "cel30-001": { Holo: { NM: 1 } }, "30th-001": { Holo: { NM: 2 } } }, { somar: true });
+  assert.equal(r2.v["30th-001"].Holo.NM, 3);
+});
+
+test("aparelho com as duas versões marcadas: a coleção soma, o custo não", () => {
+  const localStorage = makeLocalStorage({
+    "tcg-collector-pokemon-collection-v3": JSON.stringify({ "30th-001": { Holo: { NM: 2 } }, "cel30-001": { Holo: { NM: 1 } } }),
+    "tcg-collector-collection-costs-v1": JSON.stringify({ "30th-001": { Holo: 10 }, "cel30-001": { Holo: 7 } })
+  });
+  loadShared(EXPOR, { localStorage });
+  const d = localStorage._dump();
+  assert.deepEqual(JSON.parse(d["tcg-collector-pokemon-collection-v3"]), { "30th-001": { Holo: { NM: 3 } } });
+  assert.deepEqual(JSON.parse(d["tcg-collector-collection-costs-v1"]), { "30th-001": { Holo: 10 } });
+});
+
+test("nuvem com as duas versões marcadas: a coleção do blob soma antes do merge", () => {
+  const { __test: t } = loadShared(EXPOR);
+  const remoto = {
+    collection: { "30th-001": { Holo: { NM: 2 } }, "cel30-001": { Holo: { NM: 1 } } },
+    collectionMeta: { mod: { "30th-001": 900, "cel30-001": 900 }, del: {} }
+  };
+  const m = JSON.parse(JSON.stringify(t.mergeData({}, remoto)));
+  assert.deepEqual(m.collection, { "30th-001": { Holo: { NM: 3 } } });
+});
+
 test("migração one-shot varre as chaves tcg- do localStorage e se marca", () => {
   const localStorage = makeLocalStorage({
     "tcg-collector-pokemon-collection-v3": JSON.stringify({ "cel30-001": { Holo: { NM: 1 } }, "cel30cc-94": { Holo: { NM: 1 } } }),
