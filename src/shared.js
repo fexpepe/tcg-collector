@@ -6213,6 +6213,12 @@
                   : ""}
                 <div><dt>${escapeHtml(t("modal.cardId"))}</dt><dd>${escapeHtml(activeCard.id)}</dd></div>
               </dl>
+              ${activeCard.prov === "en" && activeCard.language !== "en"
+                // Carta PT completada pela edição inglesa no build (id provisório,
+                // ver scripts/lib/provisional-ids.mjs): o nome e a arte em
+                // inglês com a bandeira PT pareceriam erro sem esta linha.
+                ? `<p class="preview-prov-note">${escapeHtml(t("modal.provEn"))}</p>`
+                : ""}
             </details>
             <!-- IMPRESSÕES (estilo Scryfall): todos os sets do jogo em que uma
                  carta com este nome saiu, cada linha linkando pra página do set

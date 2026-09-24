@@ -196,3 +196,25 @@ export function resolveMergedId(id, merges) {
   if (corte > 0 && prefixes[s.slice(0, corte)]) return prefixes[s.slice(0, corte)] + s.slice(corte);
   return "";
 }
+
+// Carimbo do de-para no src/shared.js (marcador SLEEVU_ID_MERGES). Recebe o
+// TEXTO do núcleo e devolve o texto novo — sem fs, pra dois passos do build
+// usarem a mesma régua: o retire-imported-sets (set inteiro aposentado) e o
+// merge-catalogs (id provisório que ganhou gêmea oficial). O payload é enxuto
+// de propósito (a troca de prefixo cobre um set inteiro numa linha) porque vai
+// no núcleo, que tem teto de peso.
+//   s: de-para de setId (link de set compartilhado com o id velho);
+//   p: troca de prefixo de cardId; c: cardId par a par.
+export const ID_MERGES_MARCA = /const ID_MERGES = \{[^;]*\}; \/\* SLEEVU_ID_MERGES \*\//;
+export function idMergesPayload(merges) {
+  const m = merges || {};
+  return {
+    s: Object.fromEntries((m.sets || []).filter((x) => x && x.from && x.to).map((x) => [x.from, x.to])),
+    p: m.prefixes || {},
+    c: m.cards || {}
+  };
+}
+export function stampIdMerges(src, merges) {
+  if (!ID_MERGES_MARCA.test(src)) throw new Error("marcador SLEEVU_ID_MERGES não encontrado em src/shared.js");
+  return src.replace(ID_MERGES_MARCA, `const ID_MERGES = ${JSON.stringify(idMergesPayload(merges))}; /* SLEEVU_ID_MERGES */`);
+}

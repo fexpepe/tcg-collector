@@ -40,7 +40,7 @@
 // É só do Pokémon: `enImport` existe só lá, e é o único jogo com chunk por
 // idioma (data/sets/<idioma>/<set>.json).
 import { readdir, readFile, writeFile, unlink, rename, access } from "node:fs/promises";
-import { findSupersededImports, isPrefixSwap, isRetiredChunk } from "./lib/set-supersede.mjs";
+import { findSupersededImports, isPrefixSwap, isRetiredChunk, ID_MERGES_MARCA, idMergesPayload, stampIdMerges } from "./lib/set-supersede.mjs";
 
 const RAIZ = new URL("../", import.meta.url);
 const SETS = new URL("data/sets/", RAIZ);
@@ -122,23 +122,16 @@ if (aposentados) {
 const congelados = chunks.filter((c) => isRetiredChunk(c.cards));
 if (congelados.length) console.log(`  retire-imported-sets: ${congelados.length} chunk(s) congelado(s) de aposentadoria anterior: ${congelados.map((c) => `${c.lang}/${c.setId} (${c.cards.length})`).join(", ")}`);
 
-// Carimbo no src/shared.js. O payload é enxuto de propósito (a troca de prefixo
-// cobre um set inteiro numa linha) porque vai no núcleo, que tem teto de peso.
+// Carimbo no src/shared.js (lib/set-supersede.mjs#stampIdMerges — o
+// merge-catalogs usa a mesma régua pro de-para de id provisório).
 const arquivo = new URL("src/shared.js", RAIZ);
 const src = await readFile(arquivo, "utf8");
-const marca = /const ID_MERGES = \{[^;]*\}; \/\* SLEEVU_ID_MERGES \*\//;
-if (!marca.test(src)) {
+if (!ID_MERGES_MARCA.test(src)) {
   console.error("retire-imported-sets: marcador SLEEVU_ID_MERGES não encontrado em src/shared.js.");
   process.exit(1);
 }
-// s: de-para de setId (link de set compartilhado com o id velho); p: troca de
-// prefixo de cardId; c: cardId par a par.
-const payload = {
-  s: Object.fromEntries((merges.sets || []).filter((x) => x && x.from && x.to).map((x) => [x.from, x.to])),
-  p: merges.prefixes || {},
-  c: merges.cards || {}
-};
-if (!DRY) await writeFile(arquivo, src.replace(marca, `const ID_MERGES = ${JSON.stringify(payload)}; /* SLEEVU_ID_MERGES */`), "utf8");
+const payload = idMergesPayload(merges);
+if (!DRY) await writeFile(arquivo, stampIdMerges(src, merges), "utf8");
 console.log(`retire-imported-sets: ${achados.length} set(s) importado(s) já publicado(s) pela TCGdex nesta rodada`
   + ` · de-para no núcleo: ${Object.keys(payload.s).length} set(s), ${Object.keys(payload.p).length} por prefixo,`
   + ` ${Object.keys(payload.c).length} carta(s) par a par${DRY ? " [dry-run]" : ""}`);

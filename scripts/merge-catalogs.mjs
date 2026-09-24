@@ -7,8 +7,9 @@
 import { readdir, readFile, writeFile } from "node:fs/promises";
 import { writeSplitIndexes, setManifestMeta } from "./lib/sync-common.mjs";
 import { chunkNumberPrefixes, missAllowed, applyVariantPrices } from "./lib/pricing.mjs";
-import { isRetiredChunk } from "./lib/set-supersede.mjs";
+import { isRetiredChunk, resolveMergedId, stampIdMerges } from "./lib/set-supersede.mjs";
 import { extraNumbersOf } from "./lib/tcgcsv-pokemon.mjs";
+import { fillFromEn, learnLabels, findTwins } from "./lib/provisional-ids.mjs";
 
 const langs = process.argv.slice(2).filter((arg) => !arg.startsWith("-"));
 if (!langs.length) {
@@ -112,9 +113,15 @@ try { setMapPins = JSON.parse(await readFile(new URL("tcgcsv-set-map.json", data
 let csvNewCards = [];
 try { csvNewCards = JSON.parse(await readFile(new URL("tcgcsv-newcards.generated.json", dataDir), "utf8")); } catch { /* sem TCGCSV */ }
 const newBySet = {};
-for (const c of [...(Array.isArray(csvNewCards) ? csvNewCards : []), ...(Array.isArray(pptNewCards) ? pptNewCards : [])]) {
+// `prov` carimba de onde veio o id (ver lib/provisional-ids.mjs): toda carta
+// injetada aqui tem id escolhido por NÓS, não pela TCGdex.
+const origemNova = [
+  ...(Array.isArray(csvNewCards) ? csvNewCards : []).map((c) => [c, "tcgcsv"]),
+  ...(Array.isArray(pptNewCards) ? pptNewCards : []).map((c) => [c, "ppt"])
+];
+for (const [c, prov] of origemNova) {
   if (!c || !c.id || !c.language || !c.setId) continue;
-  (newBySet[`${c.language}/${c.setId}`] = newBySet[`${c.language}/${c.setId}`] || []).push(c);
+  (newBySet[`${c.language}/${c.setId}`] = newBySet[`${c.language}/${c.setId}`] || []).push({ ...c, prov });
 }
 // Arte que só o chunk APOSENTADO tinha (data/card-id-merges.json, escrito pelo
 // retire-imported-sets.mjs): { <cardId novo>: url }. A TCGdex publica o set
@@ -123,8 +130,12 @@ for (const c of [...(Array.isArray(csvNewCards) ? csvNewCards : []), ...(Array.i
 // Sem isto a aposentadoria do duplicado deixaria o set em branco. Carimba em
 // TODO build (o sync-tcgdex reescreve o chunk a cada rodada) e se apaga sozinho
 // quando a TCGdex publicar a arte, porque só preenche imagem VAZIA.
-let mergeImgs = {};
-try { mergeImgs = (JSON.parse(await readFile(new URL("card-id-merges.json", dataDir), "utf8")) || {}).images || {}; } catch { /* nenhum set aposentado */ }
+let idMerges = null;
+try { idMerges = JSON.parse(await readFile(new URL("card-id-merges.json", dataDir), "utf8")) || null; } catch { /* nenhum set aposentado */ }
+const mergeImgs = (idMerges && idMerges.images) || {};
+// Id provisório que JÁ tem de-para gravado (a oficial chegou com outro id): não
+// renasce — senão a duplicata que o de-para desfez voltaria no build seguinte.
+const jaMigrado = (id) => !!(idMerges && resolveMergedId(id, idMerges));
 // Preços por impressão da TCGCSV (TCGplayer, diário): { cardId: { u, v?, img? } }.
 let csvData = {};
 try { csvData = JSON.parse(await readFile(new URL("tcgcsv-prices.generated.json", dataDir), "utf8")); } catch { /* sem TCGCSV */ }
@@ -134,6 +145,55 @@ let rejectedNew = 0;
 // newBySet sem chunk = set só-PPT (M5/MBG…) ou só-TCGCSV (promos JP S-P,
 // SM-P…), tratado depois do loop.
 const consumedSets = new Set();
+
+// ── Edição PT completada pela inglesa ─────────────────────────────────────
+// A TCGdex publica a edição portuguesa aos pedaços: o "Celebração de 30 Anos"
+// tinha 2 cartas PT contra 158 EN (24/09/2026) e a pessoa não conseguia marcar
+// as outras 156 na bandeira certa. O id PT é SEMPRE o da EN + "-pt" (conferido
+// nas 14.339 cartas PT do catálogo), então dá pra criar a carta que falta com o
+// id que a oficial vai ter: nome e arte ficam em inglês até a TCGdex publicar,
+// e aí a oficial ocupa o mesmo id sem mexer na coleção de ninguém. Só PT (os
+// ids JA/ZH não seguem a EN), só set que JÁ tem edição PT e nunca promo — ver
+// fillFromEn. Roda ANTES do laço pra a carta passar por canonização, índices e
+// manifest como qualquer outra.
+const FILL_LANGS = ["pt"].filter((l) => langs.includes(l) && langs.includes("en"));
+let filledFromEn = 0;
+if (FILL_LANGS.length) {
+  const enBySet = new Map((chunksByLang.en || []).map((c) => [c.setId, c]));
+  const pares = [];
+  for (const lang of FILL_LANGS) {
+    for (const chunk of chunksByLang[lang] || []) {
+      const en = enBySet.get(chunk.setId);
+      if (!en) continue;
+      const enById = new Map(en.cards.map((c) => [c.id, c]));
+      for (const c of chunk.cards) {
+        const par = !c.prov && enById.get(String(c.id).slice(0, -(lang.length + 1)));
+        if (par) pares.push([par, c]);
+      }
+    }
+  }
+  const labels = learnLabels(pares);
+  for (const lang of FILL_LANGS) {
+    for (const chunk of chunksByLang[lang] || []) {
+      const en = enBySet.get(chunk.setId);
+      if (!en) continue;
+      // Molde só de carta da TCGdex: a injetada nesta rodada (TCGCSV/PPT) ainda
+      // é aposta de id, e aposta em cima de aposta não entra.
+      const skipEn = new Set((newBySet[`en/${chunk.setId}`] || []).map((c) => c.id));
+      const skipIds = new Set(en.cards.map((c) => `${c.id}-${lang}`).filter(jaMigrado));
+      const r = fillFromEn({ enCards: en.cards, locCards: chunk.cards, lang, skipIds, skipEn, labels });
+      if (r.added || r.dropped) { chunk.cards = r.cards; chunk.dirty = true; }
+      filledFromEn += r.added;
+    }
+  }
+  if (filledFromEn) console.log(`Cartas ${FILL_LANGS.join("/").toUpperCase()} completadas pela edição inglesa (id provisório, prov:"en"): ${filledFromEn}`);
+}
+
+// Pares provisória -> oficial achados nesta rodada (ver findTwins): os únicos
+// viram de-para automático; os ambíguos, só aviso. Vão pro relatório que o
+// deploy transforma em issue (scripts/report-provisional-ids.mjs).
+const twinsApplied = [];
+const twinsPending = [];
 
 // Logo de Black Star Promo: todo set "* Black Star Promos" (SVP, MEP, SWSHP,
 // XYP… qualquer era) usa o MESMO selo universal — a estrela preta com "PROMO".
@@ -145,7 +205,7 @@ const BLACK_STAR_PROMO_LOGO = "https://assets.tcgdex.net/univ/swsh/swshp/symbol.
 
 for (const lang of langs) {
   for (const chunk of chunksByLang[lang] || []) {
-    let changed = false;
+    let changed = !!chunk.dirty;
     consumedSets.add(`${lang}/${chunk.setId}`);
     // Injeta as cartas novas da PPT deste set+idioma (dedupe por id) antes do
     // processamento, pra entrarem no preço/índices/chunk como qualquer outra.
@@ -160,7 +220,7 @@ for (const lang of langs) {
       // a mesma que o sync aplicou — vale pro set em qualquer idioma.
       const extra = extraNumbersOf(setMapPins, chunk.setId);
       for (const nc of news) {
-        if (have.has(nc.id)) continue;
+        if (have.has(nc.id) || jaMigrado(nc.id)) continue;
         if (!missAllowed(nc.number, prefixes, extra)) { rejectedNew++; continue; }
         const { _new, ...card } = nc; // remove a flag interna
         chunk.cards.push(card); have.add(nc.id); injectedNew++; changed = true;
@@ -194,6 +254,18 @@ for (const lang of langs) {
       // Coleta as imagens EN (já com o fill da PPT) por id, pra usar como fallback
       // nas cartas localizadas (PT/JA/ZH) que não têm imagem própria.
       if (lang === "en" && card.image) enImageById.set(card.id, card.image);
+    }
+    // Provisória com gêmea OFICIAL de outro id no mesmo set (a fonte publicou
+    // a carta que apostamos, só que com outro id): a gêmea única vira de-para e
+    // a provisória sai — a conta de quem marcou migra pelo ID_MERGES.
+    for (const g of findTwins(chunk.cards)) {
+      if (g.twin) {
+        twinsApplied.push({ lang, setId: chunk.setId, from: g.prov, to: g.twin, name: g.name, number: g.number });
+        chunk.cards = chunk.cards.filter((c) => c.id !== g.prov);
+        changed = true;
+      } else {
+        twinsPending.push({ lang, setId: chunk.setId, id: g.prov, name: g.name, number: g.number, ...(g.candidates ? { candidates: g.candidates } : { suspeita: g.suspeita }) });
+      }
     }
     if (changed) {
       await writeFile(new URL(`sets/${lang}/${chunk.file}`, dataDir), JSON.stringify(chunk.cards), "utf8");
@@ -229,7 +301,7 @@ for (const [key, news] of Object.entries(newBySet)) {
     const cards = [];
     const have = new Set();
     for (const nc of news) {
-      if (!nc || !nc.id || have.has(nc.id)) continue;
+      if (!nc || !nc.id || have.has(nc.id) || jaMigrado(nc.id)) continue;
       const { _new, ...card } = nc;
       if (card.price) { pricing[card.id] = card.price; delete card.price; }
       const canonical = speciesByDex.get(speciesDexId(card));
@@ -348,6 +420,32 @@ await writeFile(new URL("indexes.generated.js", dataDir), `window.TCG_INDEXES = 
 await writeSplitIndexes(dataDir, mergedIndexes, { only: "generated" });
 await writeFile(new URL("manifest.generated.js", dataDir), `window.TCG_MANIFEST = ${JSON.stringify(manifest)};\n`, "utf8");
 await writeFile(new URL("pricing.generated.js", dataDir), `window.TCG_PRICING = ${JSON.stringify(pricing)};\n`, "utf8");
+
+// De-para das provisórias que ganharam gêmea oficial: grava no arquivo
+// VERSIONADO (o snapshot do deploy commita data/) e recarimba o núcleo, pra a
+// migração da conta valer já neste deploy — mesmo caminho do
+// retire-imported-sets, que carimba antes do merge e não veria estes pares.
+if (twinsApplied.length) {
+  const merges = idMerges || { sets: [], prefixes: {}, cards: {}, images: {} };
+  merges.cards = merges.cards || {};
+  for (const t of twinsApplied) merges.cards[t.from] = t.to;
+  await writeFile(new URL("card-id-merges.json", dataDir), JSON.stringify(merges, null, 1) + "\n", "utf8");
+  const sharedUrl = new URL("../src/shared.js", dataDir);
+  try {
+    await writeFile(sharedUrl, stampIdMerges(await readFile(sharedUrl, "utf8"), merges), "utf8");
+  } catch (e) { console.warn(`  [merge] de-para gravado no JSON, mas o carimbo no núcleo falhou: ${e.message}`); }
+  console.log(`IDs provisórios com gêmea oficial — de-para automático: ${twinsApplied.map((t) => `${t.from} -> ${t.to}`).join(", ")}`);
+}
+if (twinsPending.length) console.warn(`  [merge] ${twinsPending.length} id(s) provisório(s) com possível gêmea oficial AMBÍGUA (ver provisional-ids.generated.json): ${twinsPending.slice(0, 10).map((t) => t.id).join(", ")}`);
+// Relatório pro passo que avisa (report-provisional-ids.mjs): quantas apostas de
+// id estão no ar por origem, o que foi migrado sozinho e o que precisa de gente.
+{
+  const porOrigem = {};
+  for (const c of allCards) if (c.prov) porOrigem[c.prov] = (porOrigem[c.prov] || 0) + 1;
+  await writeFile(new URL("provisional-ids.generated.json", dataDir), JSON.stringify({
+    generatedAt: new Date().toISOString(), provisional: porOrigem, applied: twinsApplied, pending: twinsPending
+  }, null, 1), "utf8");
+}
 
 if (pptNewCards.length || csvNewCards.length) console.log(`Cartas novas (TCGCSV ${csvNewCards.length} + PPT ${pptNewCards.length}) injetadas: ${injectedNew}${rejectedNew ? ` · ${rejectedNew} recusadas pela guarda de numeração` : ""}`);
 if (dexBackfilled) console.log(`dexId preenchido pelo nome local (secret rares JP/CN sem metadado): ${dexBackfilled}`);
