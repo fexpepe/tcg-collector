@@ -4122,6 +4122,10 @@ a.hub-tile:hover {
    o object-fit: contain o limita pela altura e ele fica visualmente menor. +20%
    pra emparelhar com os outros. Vale no tile do hub e no leque da home. */
 .hub-logo[src*="game_magic"], .lp-games-caps img[src*="game_magic"] { transform: scale(1.2); }
+/* Dragon Ball Carddass é o extremo oposto: razão ~4.2, o mais largo de todos,
+   então o contain o limita pela LARGURA e as letras ficam finas. +15% usa a
+   margem interna da caixa sem encostar nas bordas (nem a 390px). */
+.hub-logo[src*="game_dbc"] { transform: scale(1.15); }
 .hub-logo-text { font-size: 19px; font-weight: 800; color: #4b4b4b; text-align: center; }
 /* Nome do jogo (em inglês) entre o logo e o ano dos tiles VINTAGE: o logo
    sozinho pode não dizer nada pra quem não conhece a linha. No máximo duas
