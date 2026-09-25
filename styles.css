@@ -7388,7 +7388,7 @@ button.dash-link { width: 100%; min-height: 0; justify-content: flex-start; text
 }
 
 /* Idioma no popup: a bandeira + "151 · EN" vira botão (só carta Pokémon EN/PT)
-   e abre o painel Inglês × Português logo abaixo. Botão sem cara de
+   e abre o menu suspenso Inglês × Português logo abaixo. Botão sem cara de
    botão até o hover — é a mesma linha de antes, com o chevron dizendo que abre.
    Alvo de 44px no toque. */
 .preview-lang-btn {
@@ -7410,13 +7410,35 @@ button.dash-link { width: 100%; min-height: 0; justify-content: flex-start; text
 .preview-lang-btn .preview-caret svg { width: 15px; height: 15px; }
 .preview-lang-btn[aria-expanded="true"] .preview-caret { transform: rotate(180deg); }
 
+/* MENU SUSPENSO (25/09/2026): o painel abria DENTRO do fluxo e empurrava tudo
+   abaixo (ação principal, preço, versões) — o popup inteiro "pulava" de altura a
+   cada abrir/fechar. Agora o slot é uma âncora de altura zero logo abaixo da
+   linha do idioma e o painel flutua por cima do conteúdo, como um dropdown. */
+[data-preview-lang-slot] {
+  position: relative;
+  height: 0;
+  z-index: 6;
+}
 .preview-lang {
-  margin-top: 10px;
+  position: absolute;
+  top: 6px;
+  left: 0;
+  width: min(380px, 100%);
   padding: 12px;
   border: 1px solid var(--line);
+  border-radius: 12px;
   background: var(--panel-strong);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
   display: grid;
   gap: 10px;
+  animation: preview-lang-in 0.12s ease-out both;
+}
+@keyframes preview-lang-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .preview-lang { animation: none; }
 }
 .preview-lang-title {
   margin: 0;
