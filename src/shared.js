@@ -6071,6 +6071,15 @@
     });
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape") {
+        // Menu de idioma aberto: o Esc fecha só ele (e devolve o foco ao botão),
+        // não o popup inteiro.
+        if (activeCard && langPanelOpen) {
+          langPanelOpen = false;
+          refreshLang();
+          const btn = document.querySelector("#cardPreviewModal [data-preview-lang-toggle]");
+          if (btn) btn.focus();
+          return;
+        }
         close();
       }
     });
@@ -6579,6 +6588,13 @@
     }
 
     function handleClick(event) {
+      // Menu suspenso de idioma (25/09/2026): clique fora dele o fecha — e o
+      // clique segue pro que foi clicado, sem ser engolido.
+      if (activeCard && langPanelOpen
+        && !event.target.closest("#cardPreviewModal [data-preview-lang], #cardPreviewModal [data-preview-lang-toggle]")) {
+        langPanelOpen = false;
+        refreshLang();
+      }
       if (event.target.closest("[data-preview-close]")) {
         close();
         return;
@@ -6590,7 +6606,8 @@
       }
 
       // Painel de idioma (Inglês × Português): abrir/fechar, ver a
-      // carta no outro idioma e mover UMA cópia pra ele.
+      // carta no outro idioma e mover UMA cópia pra ele (menu suspenso: o
+      // clique fora fecha, lá no topo do handleClick).
       if (activeCard && event.target.closest("#cardPreviewModal [data-preview-lang-toggle]")) {
         langPanelOpen = !langPanelOpen;
         refreshLang();
