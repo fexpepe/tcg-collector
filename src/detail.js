@@ -1178,6 +1178,11 @@
     // outros dois, e em SEGUNDO (logo depois do hero, que o placeSetHero põe
     // na frente): pedido do Fernando, 2026-09-16 — é o cartão que responde
     // "como estou nesse set", e vinha por último.
+    // Cartas bônus (Mew RGB da 30th / M6a): existem no set mas ficam fora do
+    // "Conjunto completo" — sem esta linha o cartão dizia "N de 158" e não
+    // contava que o set tem mais 3 (25/09/2026). O "n de 3" vem do
+    // updateBonusStat, junto com o selo do hero.
+    const temBonus = pageCards.some((card) => shared.isBonusCard(card));
     const lanc = pageCards[0].setReleaseDate ? formatInsightDate(pageCards[0].setReleaseDate) : t("insights.na");
     const resumoHtml = `
       <article class="insight-card insight-summary">
@@ -1186,6 +1191,7 @@
           <div><dt>${escapeHtml(t("insights.complete"))}</dt><dd data-insight-complete>—</dd></div>
           <div><dt>${escapeHtml(t("insights.release"))}</dt><dd>${escapeHtml(lanc)}</dd></div>
           <div><dt>${escapeHtml(t("insights.marketValue"))}</dt><dd data-insight-value>${escapeHtml(t("insights.na"))}</dd></div>
+          ${temBonus ? `<div title="${escapeAttribute(t("set.bonusHint"))}"><dt>${escapeHtml(t("insights.bonus"))}</dt><dd data-insight-bonus>—</dd></div>` : ""}
         </dl>
         <svg class="insight-ring" viewBox="0 0 120 120" role="img" data-insight-ring aria-label="0%">
           <circle class="insight-ring-track" cx="60" cy="60" r="50"/>
@@ -1313,6 +1319,8 @@
     const tem = (card) => (anyLangMode ? (baseIdx.get(shared.basePricingId(card.id)) || []).length > 0 : owned.has(card.id));
     const n = bonus.filter(tem).length;
     const tudo = n >= bonus.length && totalN > 0 && ownedN >= totalN;
+    const noResumo = elements.insights && elements.insights.querySelector("[data-insight-bonus]");
+    if (noResumo) noResumo.textContent = t("insights.completeValue", { n, t: bonus.length });
     el.hidden = false;
     el.classList.toggle("has", n > 0);
     el.classList.toggle("complete", tudo);
