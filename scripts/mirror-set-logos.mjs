@@ -126,7 +126,9 @@ for (const { url, lang } of chunks) {
     // LOGO CURADO (16/09/2026): set que a TCGdex NÃO tem não traz URL nenhuma —
     // nasce com setLogo:"" e o tile cai no fallback de texto. É o caso dos sets
     // EN que entram pela TCGCSV no dia do lançamento (as duas coleções de 30
-    // anos, cel30 e cel30cc). Aqui o arquivo é a fonte: existindo
+    // anos, cel30 e cel30cc) e dos dois 30 anos em PT (30th e 30th-c, logo
+    // "Celebração de 30 Anos" posto à mão em 25/09/2026, que a TCGdex não
+    // tem em português). Aqui o arquivo é a fonte: existindo
     // data/set-logos/<idioma>/<setId>.webp, ele vira o setLogo do chunk. Sem
     // arquivo, nada muda — quem não tem logo curado segue como antes.
     // Precisa rodar em TODO build: o sync reescreve os chunks a cada rodada e
