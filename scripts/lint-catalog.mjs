@@ -10,8 +10,9 @@
 //   quando a régua diz que havia cartas, e — a trava que importa pras CONTAS —
 //   id publicado que SUMIU ou passou a apontar pra outra carta.
 // AVISO (exit 0): contagem caiu vs a régua (data/catalog-baseline.json), % de
-//   imagem baixou muito — pode ser legítimo (fonte removeu), então não bloqueia,
-//   mas fica gritante no log do deploy.
+//   imagem baixou muito, id renumerado, id de produto do TCGplayer que a fonte
+//   mudou de set (mesma carta) — pode ser legítimo, então não bloqueia, mas
+//   fica gritante no log do deploy.
 //
 // POR QUE A ESTABILIDADE DE ID É ERRO DURO: coleção, wishlist, decks, binders,
 // vendas e custos são todos indexados por cardId — no localStorage de cada
@@ -25,6 +26,7 @@ import { readFile, writeFile, readdir } from "node:fs/promises";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { resolveMergedId } from "./lib/set-supersede.mjs";
+import { classificaMudanca, assinatura, idiomaDe, numDe } from "./lib/id-stability.mjs";
 
 const ROOT = new URL("../", import.meta.url);
 const BASELINE = new URL("data/catalog-baseline.json", ROOT);
@@ -148,12 +150,10 @@ async function checarEstabilidadeDeId() {
     new Function("window", texto)(g.window);
     return g.window.TCG_CARDS || [];
   };
-  // IDENTIDADE = idioma + set. Trocar isso num id que já está publicado é trocar
-  // a carta da pessoa por outra — erro duro. O NÚMERO fica separado porque muda
-  // por formatação da fonte ("4/102" -> "4") sem a carta deixar de ser ela:
-  // vale um aviso, não vale barrar o deploy.
-  const assina = (c) => `${c.language || "en"}|${c.setId || ""}`;
-  const numDe = (c) => String(c.number || "");
+  // IDENTIDADE = idioma + set (número é só aviso) — com a exceção do id que é
+  // productId do TCGplayer, que a fonte muda de set sem virar outra carta. A
+  // régua inteira mora em scripts/lib/id-stability.mjs (testada).
+  const resumo = (c) => ({ language: idiomaDe(c), setId: c.setId || "", number: numDe(c), name: c.name || "" });
   // De-para de id (data/card-id-merges.json, escrito pelo retire-imported-sets):
   // set que entrou por import e que a TCGdex publicou com outro setId tem os ids
   // APOSENTADOS de propósito, e o app migra a conta de quem marcou (ID_MERGES no
@@ -170,7 +170,7 @@ async function checarEstabilidadeDeId() {
     let cartas;
     try { cartas = parse(f, texto); } catch { continue; }
     antes[jogo] = antes[jogo] || new Map();
-    for (const c of cartas) if (c && c.id) antes[jogo].set(c.id, { sig: assina(c), num: numDe(c) });
+    for (const c of cartas) if (c && c.id) antes[jogo].set(c.id, resumo(c));
   }
 
   let achou = false;
@@ -178,24 +178,31 @@ async function checarEstabilidadeDeId() {
     const cards = lidos[jogo] || await readCards(GAMES[jogo] || `data/${jogo}/`);
     if (!cards || !cards.length) { warnings.push(`${jogo}: estabilidade de id não checada (catálogo novo não lido)`); continue; }
     const agora = new Map();
-    for (const c of cards) if (c && c.id) agora.set(c.id, { sig: assina(c), num: numDe(c) });
-    const sumidos = [], repontados = [], renumerados = [], migrados = [];
+    for (const c of cards) if (c && c.id) agora.set(c.id, resumo(c));
+    const sumidos = [], repontados = [], renumerados = [], movidos = [], migrados = [];
     for (const [id, antigo] of antes[jogo]) {
       const nova = agora.get(id);
       if (!nova) {
         const alvo = resolveMergedId(id, merges);
         if (alvo && agora.has(alvo)) migrados.push(id);
         else sumidos.push(id);
+        continue;
       }
-      else if (nova.sig !== antigo.sig) repontados.push(`${id} (${antigo.sig} -> ${nova.sig})`);
-      else if (nova.num !== antigo.num) renumerados.push(`${id} (nº ${antigo.num} -> ${nova.num})`);
+      const tipo = classificaMudanca(jogo, id, antigo, nova);
+      if (tipo === "repontado") repontados.push(`${id} (${assinatura(antigo)} -> ${assinatura(nova)})`);
+      else if (tipo === "movido") movidos.push(`${id} (${antigo.setId} -> ${nova.setId})`);
+      else if (tipo === "renumerado") renumerados.push(`${id} (nº ${antigo.number} -> ${nova.number})`);
     }
     const lista = (arr) => arr.slice(0, 10).join(", ") + (arr.length > 10 ? `, +${arr.length - 10}` : "");
     if (migrados.length) console.log(`  estabilidade de id: ${jogo} — ${migrados.length} id(s) aposentado(s) COM de-para (a conta de quem marcou migra): ${lista(migrados)}`);
     if (sumidos.length) { achou = true; (ACEITA_ID ? warnings : errors).push(`${jogo}: ${sumidos.length} id(s) PUBLICADO(S) sumiram do catálogo — some da coleção de quem tem: ${lista(sumidos)}`); }
     if (repontados.length) { achou = true; (ACEITA_ID ? warnings : errors).push(`${jogo}: ${repontados.length} id(s) passaram a apontar pra OUTRA carta (idioma/set): ${lista(repontados)}`); }
+    if (movidos.length) warnings.push(`${jogo}: ${movidos.length} id(s) o TCGplayer mudou de set (mesmo produto, mesmo nome — a carta de quem tem não muda): ${lista(movidos)}`);
     if (renumerados.length) warnings.push(`${jogo}: ${renumerados.length} id(s) mudaram de número (mesma carta?): ${lista(renumerados)}`);
-    if (!sumidos.length && !repontados.length) console.log(`  estabilidade de id: ${jogo} ok (${antes[jogo].size} ids conferidos${renumerados.length ? `, ${renumerados.length} renumerado(s)` : ""})`);
+    if (!sumidos.length && !repontados.length) {
+      const extras = [movidos.length && `${movidos.length} mudado(s) de set na fonte`, renumerados.length && `${renumerados.length} renumerado(s)`].filter(Boolean);
+      console.log(`  estabilidade de id: ${jogo} ok (${antes[jogo].size} ids conferidos${extras.length ? `, ${extras.join(", ")}` : ""})`);
+    }
   }
   if (achou && !ACEITA_ID) console.log("\n  (mudança intencional? rode com --aceitar-mudanca-de-id — mas confira antes quem perde carta.)");
 }
