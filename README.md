@@ -216,7 +216,10 @@ solta sozinho em algumas semanas.
 Também são fatiados no build, pela mesma lógica de "não baixe o que não usa":
 os índices (`indexes-sets.json`, `indexes-pokedex.json`, …), os preços por set
 (`split-pricing.mjs`, flag `pc` no manifest), as traduções por idioma
-(`split-i18n.mjs`) e o CSS por área (`split-css.mjs`).
+(`split-i18n.mjs`) e o CSS por área (`split-css.mjs`). A tabela de áreas
+(prefixo de classe → páginas que recebem a folha) mora em
+`scripts/lib/css-areas.mjs`, e o `check.mjs` barra a página que desenha uma
+classe de área sem estar na lista dela — em produção ela chegaria sem estilo.
 
 **Durabilidade**: o catálogo validado é versionado de volta no repo pelo próprio
 build (commit `[skip ci]`), e o sync faz união preservadora — carta que some da

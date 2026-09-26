@@ -2818,7 +2818,11 @@ input::placeholder {
 .coll-hero .dash-avatar-in { width: 44px; height: 44px; font-size: 18px; }
 .coll-hero .dash-stat-money { margin: 0; padding: 0; border: 0; }
 .coll-hero .dash-stat-money .dash-stat-txt { flex: 1 1 auto; min-width: 0; }
-.coll-hero .dash-stat-val { font-size: 22px; font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* (0,3,0) de propósito (2026-09-26): com (0,2,0) o `.dash-stat-money
+   .dash-stat-val { 30px }`, que vem DEPOIS no arquivo, vencia no repositório
+   e perdia em produção (lá esta regra desce na folha da Coleção, carregada
+   depois do núcleo) — o valor tinha 30px no dev e 22px no site. */
+.coll-hero .dash-stat-money .dash-stat-val { font-size: 22px; font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .coll-hero .dash-stat-label { font-size: 12px; }
 /* As ações no rodapé do cartão (margin-top auto empurra pra baixo), lado a
    lado e quebrando linha se faltar largura. Id na frente: vence o
