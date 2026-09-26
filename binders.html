@@ -68,7 +68,23 @@
           </div>
           <a href="dashboard" class="serie-back" data-i18n="nav.backDashboard">← Hub</a>
         </div>
-        <section class="binder-toolbar" data-i18n-aria="aria.newBinder" aria-label="Novo binder">
+        <!-- Fileira de ações da galeria (2026-09-26, no molde da de Pastas):
+             "+ Novo binder" à esquerda abre o formulário logo abaixo (fechado
+             quando já há binders — ele ocupava meia tela no celular à toa);
+             Visualização e Ordenar na ponta direita. -->
+        <div class="binder-gallery-controls">
+          <button type="button" id="binderNewToggle" class="cta binder-new-toggle" aria-expanded="false" aria-controls="binderCreatePanel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span data-i18n="binders.new">Novo binder</span></button>
+          <div class="binder-gallery-tools">
+            <div class="view-toggle binder-view-toggle" role="group" data-i18n-aria="toolbar.view" aria-label="Visualização">
+              <button type="button" data-view="grid" class="view-toggle-btn binder-view-btn" data-i18n-aria="aria.viewGrid" aria-label="Grade" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="6.5" height="6.5"/><rect x="13.5" y="4" width="6.5" height="6.5"/><rect x="4" y="13.5" width="6.5" height="6.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5"/></svg></button>
+              <button type="button" data-view="list" class="view-toggle-btn binder-view-btn" data-i18n-aria="aria.viewList" aria-label="Lista" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6h1M4 12h1M4 18h1"/></svg></button>
+            </div>
+            <label class="binder-sort-label"><span data-i18n="binders.sort">Ordenar</span>
+              <select id="binderSort"></select>
+            </label>
+          </div>
+        </div>
+        <section class="binder-toolbar" id="binderCreatePanel" data-i18n-aria="aria.newBinder" aria-label="Novo binder" hidden>
           <input id="binderName" type="text" data-i18n-placeholder="binders.namePlaceholder" placeholder="Nome do binder">
           <label class="binder-grid-label"><span data-i18n="binders.template">Template</span>
             <select id="binderTemplate"></select>
@@ -79,18 +95,8 @@
           <label class="binder-grid-label"><span data-i18n="binders.grid">Formato</span>
             <select id="binderGrid"></select>
           </label>
-          <button id="binderCreate" class="primary" data-i18n="binders.new">Novo binder</button>
+          <button id="binderCreate" class="primary" data-i18n="binders.create">Criar binder</button>
         </section>
-
-        <div class="binder-gallery-controls">
-          <div class="binder-view-toggle" role="group" data-i18n-aria="toolbar.view" aria-label="Visualização">
-            <button type="button" data-view="grid" class="binder-view-btn" data-i18n-aria="aria.viewGrid" aria-label="Grade" aria-pressed="true">▦</button>
-            <button type="button" data-view="list" class="binder-view-btn" data-i18n-aria="aria.viewList" aria-label="Lista" aria-pressed="false">≣</button>
-          </div>
-          <label class="binder-sort-label"><span data-i18n="binders.sort">Ordenar</span>
-            <select id="binderSort"></select>
-          </label>
-        </div>
 
         <p id="binderEmpty" class="empty-state" data-i18n="binders.empty" hidden>Você ainda não criou nenhum binder. Crie o primeiro acima.</p>
         <section id="binderList" class="binder-gallery" aria-live="polite"></section>
@@ -114,6 +120,10 @@
     <!-- Textos dos binders: fora do i18n.js pra as outras paginas nao carregarem 17 KB a toa. -->
     <script defer src="src/i18n-binders.js"></script>
     <script defer src="src/shared.js"></script>
+    <!-- Fichário (src/binder-view.js): o MESMO módulo do modo fichário da
+         Coleção, do set e das Pastas. No celular o binder aberto é ele — uma
+         página por tela, de lado —, no formato do próprio binder. -->
+    <script defer src="src/binder-view.js"></script>
     <script defer src="src/binders.js"></script>
   </body>
 </html>
