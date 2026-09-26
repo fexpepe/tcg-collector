@@ -222,6 +222,62 @@ for (const bundle of I18N_EXTRAS) {
   }
 }
 
+// 8) Folhas de CSS por área (scripts/split-css.mjs): no DEPLOY o styles.css é
+//    repartido, e as regras de cada área (binder-, coll-, pf-…) só descem nas
+//    páginas listadas em scripts/lib/css-areas.mjs. Página fora da lista que
+//    desenha uma dessas classes recebe o componente SEM ESTILO — e só em
+//    produção: aqui o styles.css é um só e tudo parece certo. Foi assim que o
+//    fichário das Pastas (src/binder-view.js) virou "uma carta por tela" em
+//    2026-09-26, e o cartão-herói da pasta (.coll-hero) saía torto.
+//
+//    A regra: toda classe de área que aparece num .js do src (ou num HTML) exige
+//    que TODA página que carrega aquele arquivo esteja nas páginas da área. Um
+//    .js injetado em runtime pelo shared.js (injectScript) vale pra toda página
+//    que carrega o shared. As classes vêm do próprio styles.css (só as que o
+//    split move de verdade — FICA_NO_NUCLEO fica de fora, como no split).
+//    SO_CONSULTA: classe que o arquivo só PERGUNTA se existe, sem desenhar.
+{
+  const { AREAS, FICA_NO_NUCLEO } = await import("./lib/css-areas.mjs");
+  const SO_CONSULTA = {
+    // shared.js: `document.body.classList.contains("login-body")` — só decide
+    // se a paleta de busca global liga; quem pinta o login é o login.html.
+    "src/shared.js": ["login-body"]
+  };
+  const escRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const semComentario = (s) => s
+    .replace(/\/\*[\s\S]*?\*\//g, " ")
+    .replace(/<!--[\s\S]*?-->/g, " ")
+    .replace(/(^|[^:"'`\\])\/\/.*$/gm, "$1");
+  const cssRepo = read("styles.css").replace(/\/\*[\s\S]*?\*\//g, " ");
+  const noNucleo = (c) => [...FICA_NO_NUCLEO].some((f) => c === f || c.startsWith(f + "-"));
+  const sharedTxt = semComentario(read("src/shared.js"));
+  const paginasDoShared = htmlFiles.filter((h) => read(h).includes('src="src/shared.js"'));
+  const paginasDe = (f) => {
+    if (f.endsWith(".html")) return [f];
+    const diretas = htmlFiles.filter((h) => read(h).includes(`src="${f}"`));
+    const injetado = new RegExp(`["'\`]/?${escRe(f)}["'\`]`).test(sharedTxt);
+    return [...new Set([...diretas, ...(injetado ? paginasDoShared : [])])];
+  };
+  const fontes = [...srcFiles.filter((f) => !I18N_FILES.includes(f)), ...htmlFiles].map((f) => [f, semComentario(read(f))]);
+  for (const area of AREAS) {
+    const classes = new Set();
+    for (const p of area.prefixos) {
+      for (const m of cssRepo.matchAll(new RegExp(`\\.(${escRe(p)}[\\w-]*)`, "g"))) {
+        if (!noNucleo(m[1])) classes.add(m[1]);
+      }
+    }
+    for (const [f, txt] of fontes) {
+      const ignora = SO_CONSULTA[f] || [];
+      const usadas = [...classes].filter((c) => !ignora.includes(c) && new RegExp(`(?<![\\w$.-])${escRe(c)}(?![\\w-])`).test(txt));
+      if (!usadas.length) continue;
+      const orfas = paginasDe(f).filter((p) => !area.paginas.includes(p));
+      if (orfas.length) {
+        fail(`${f} desenha ${usadas.slice(0, 3).map((c) => `.${c}`).join(", ")} (área "${area.nome}" do split-css), mas ${orfas.join(", ")} não está nas páginas dela em scripts/lib/css-areas.mjs — em produção chega sem estilo`);
+      }
+    }
+  }
+}
+
 // Relatório. Avisos só listam com --verbose (senão poluem o uso diário).
 const verbose = process.argv.includes("--verbose") || process.argv.includes("-v");
 console.log(`\n  i18n: ${ptKeys.size} chaves (pt) · ${enKeys.size} (en)`);
