@@ -7635,18 +7635,26 @@ html:not([data-cardlang="all"]) #setRegionChips {
 }
 .binder-card:hover { border-color: var(--accent-dark); transform: translateY(-2px); }
 .binder-card.has-color { border-left: 4px solid var(--binder-color, var(--accent)); }
+/* Capa = a 1ª página do binder em miniatura (binders.js, miniPageHtml), sobre
+   a cor dele — a mesma "capa" do fichário aberto (.binder-spread). */
 .binder-card-cover {
   position: relative;
-  aspect-ratio: 16 / 10;
-  background: var(--panel-strong);
+  aspect-ratio: 4 / 3;
+  display: flex; align-items: center; justify-content: center;
+  padding: 12px;
+  background: linear-gradient(160deg, color-mix(in srgb, var(--binder-color, #2b2f38) 88%, #fff), color-mix(in srgb, var(--binder-color, #2b2f38) 82%, #000));
   overflow: hidden;
 }
-.binder-card-cover-img { width: 100%; height: 100%; object-fit: cover; object-position: center 28%; }
-.binder-card-cover-empty {
-  display: flex; align-items: center; justify-content: center;
-  width: 100%; height: 100%;
-  font-size: 2rem; font-weight: 800; color: var(--subtle);
+.binder-mini-page {
+  height: 100%; aspect-ratio: 63 / 88;
+  display: grid; grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr)); grid-template-rows: repeat(var(--rows, 3), minmax(0, 1fr));
+  gap: 3px; padding: 5px;
+  border-radius: 4px; background: var(--panel);
 }
+.binder-mini-cell { min-width: 0; min-height: 0; overflow: hidden; border-radius: 2px; background: var(--panel-strong); }
+.binder-mini-cell img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.binder-mini-cell.is-tpl img { object-fit: contain; opacity: 0.55; }
+.binder-mini-cell.is-free { background: var(--line); }
 .binder-card-acts {
   position: absolute; top: 8px; right: 8px;
   display: flex; gap: 6px;
@@ -7656,14 +7664,17 @@ html:not([data-cardlang="all"]) #setRegionChips {
 .binder-card:focus-within .binder-card-acts { opacity: 1; }
 @media (hover: none) { .binder-card-acts { opacity: 1; } }
 .binder-card-act {
-  width: 30px; height: 30px;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; min-height: 32px; padding: 0;
   border-radius: 7px;
   border: 1px solid var(--line);
   background: var(--panel-strong);
   color: var(--text);
   cursor: pointer;
-  font-size: 0.85rem;
 }
+.binder-card-act svg { width: 16px; height: 16px; }
+/* Toque: 44px de alvo, como o resto do site no celular. */
+@media (pointer: coarse) { .binder-card-act { width: 44px; height: 44px; min-height: 44px; } }
 .binder-card-act.danger { color: #e7796f; }
 .binder-card-body { padding: 10px 12px 12px; }
 .binder-card-titlerow { display: flex; align-items: center; gap: 8px; justify-content: space-between; }
@@ -7686,17 +7697,9 @@ html:not([data-cardlang="all"]) #setRegionChips {
   grid-template-columns: 96px 1fr;
   align-items: center;
 }
-.binder-gallery.is-list .binder-card-cover { aspect-ratio: auto; height: 100%; min-height: 64px; }
+.binder-gallery.is-list .binder-card-cover { aspect-ratio: auto; height: 100%; min-height: 64px; padding: 6px; }
 .binder-gallery.is-list .binder-card-body { padding: 10px 56px 10px 14px; }
 
-.binder-detail-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 16px;
-}
-.binder-detail-actions { display: flex; align-items: center; gap: 10px; }
 /* Dashboard de resumo no topo da coleção: stats + mais valiosas + distribuição. */
 .collection-dashboard {
   display: grid;
@@ -8260,176 +8263,63 @@ html[data-detail="set"] #detailTitle { display: none; }
 .binder-shared-info strong { font-size: 16px; }
 .binder-shared-info span { color: var(--muted); font-size: 13px; }
 .binder-shared-banner .primary { text-decoration: none; }
-.binder-back {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  text-decoration: none;
-}
-.binder {
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 18px;
-  box-shadow: var(--shadow);
-}
-.binder-head {
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-  margin-bottom: 16px;
-}
-
-/* Abas do binder (Cartas | Resumo | Editar | Imprimir). */
-.binder-tabbar {
-  display: flex;
-  gap: 2px;
-  flex-wrap: wrap;
-  align-items: flex-end;
-}
-.binder-tab {
-  padding: 8px 14px;
-  border: none;
-  background: transparent;
-  color: var(--muted);
-  font-weight: 700;
-  font-size: 0.9rem;
-  border-bottom: 2px solid transparent;
-  cursor: pointer;
-}
-.binder-tab:hover { color: var(--text); }
-.binder-tab.active {
-  color: var(--accent);
-  border-bottom-color: var(--accent);
-}
-.binder-tabpanel { margin-bottom: 16px; }
-/* Controles do Resumo: navegação de páginas à esquerda, exportar à direita. */
-.binder-resumo-controls {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-top: 14px;
-}
-.binder-titles {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  flex: 1 1 240px;
-  min-width: 0;
-}
-.binder-name-input {
-  font-size: 1.25rem;
-  font-weight: 800;
-  color: var(--text);
-  background: transparent;
-  border: 1px solid transparent;
-  border-radius: 6px;
-  padding: 4px 6px;
-}
-.binder-name-input:hover,
-.binder-name-input:focus {
-  border-color: var(--line);
-  background: var(--surface);
-  outline: none;
-}
+/* ── Binder aberto (binders.html?id=), refeito em 2026-09-26 ────────────────
+   Molde da PASTA aberta, que é a direção atual do site: cabeçalho com o nome
+   como título (campo editável, faixa na cor do binder via --lc do .lst-head,
+   "← Binders" embaixo e Compartilhar/Salvar na ponta direita), o trilho de
+   cápsulas da Coleção (.set-insights-rail) e, embaixo, o fichário aberto.
+   As regras do cartão-herói repetem as do .coll-hero em vez de reusá-lo: o
+   coll- vai pra folha da Coleção no split-css e o binders.html não a carrega. */
+.binder-headbar { margin-bottom: 18px; }
+.binder-headbar .lst-title { max-width: 640px; }
+.binder-head-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+/* Contato do binder de venda: linha discreta entre o nome e o "← Binders". */
 .binder-subtitle-input {
-  font-size: 0.9rem;
-  color: var(--muted);
-  background: transparent;
-  border: 1px solid transparent;
-  border-radius: 6px;
-  padding: 3px 6px;
+  display: block; width: 100%; max-width: 460px; height: auto; min-height: 0;
+  margin: 2px 0 4px; padding: 3px 6px;
+  font-size: 0.9rem; color: var(--muted);
+  background: transparent; border: 1px solid transparent;
 }
 .binder-subtitle-input:hover,
-.binder-subtitle-input:focus {
-  border-color: var(--line);
-  background: var(--surface);
-  outline: none;
-}
-.binder-meta {
-  font-size: 0.82rem;
-  color: var(--subtle);
-  padding: 0 6px;
-}
-.binder-delete {
-  color: #e7796f !important;
-  background: rgba(231, 121, 111, 0.12) !important;
-  border-color: rgba(231, 121, 111, 0.25) !important;
-}
+.binder-subtitle-input:focus { border-color: var(--line); background: var(--panel); outline: none; }
 
-/* Navegação de páginas do binder (‹ Página X de Y › + Nova página), na mesma
-   linha das demais ações do binder (Layout / Exportar / Excluir). */
-.binder-pagenav {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+.binder-insights { margin-top: 4px; }
+.set-insights-rail .binder-hero { gap: 12px; }
+.binder-hero .dash-profile { border: 0; padding: 0; margin: 0; }
+.binder-avatar { background: var(--lc, var(--accent)); }
+.binder-avatar .dash-avatar-in { width: 44px; height: 44px; color: var(--lc, var(--accent)); }
+.binder-avatar .dash-avatar-in svg { width: 24px; height: 24px; }
+.binder-hero-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 8px; min-height: 22px; font-size: 13px; color: var(--muted); }
+.binder-hero-desc {
+  font-size: 13px; color: var(--muted);
+  overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
 }
-.binder-page-indicator {
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--muted);
-  text-align: center;
-  white-space: nowrap;
+.binder-hero .dash-stat-money { margin: 0; padding: 0; border: 0; }
+.binder-hero .dash-stat-money .dash-stat-txt { flex: 1 1 auto; min-width: 0; }
+.binder-hero .dash-stat-val { font-size: 22px; font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* Ações no rodapé do cartão (o margin-top auto empurra pra baixo), como na
+   pasta: "Exportar imagem" com rótulo; Imprimir/Configurar/Excluir só-ícone. */
+.binder-hero .collection-toolbar-actions { display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 8px; margin: auto 0 0; width: auto; }
+.binder-hero .binder-export-img { padding: 0 14px; }
+.binder-del-btn:hover { border-color: var(--accent); color: var(--accent); }
+/* Celular: o "Exportar imagem" (com rótulo) ganha a linha dele e os três
+   só-ícone descem juntos pra de baixo — o arranjo da pasta no celular. */
+@media (max-width: 720px) {
+  /* (0,3,0): vence o `.collection-dashboard-hero … .secondary { flex: 0 0 auto }` do celular. */
+  .binder-hero .collection-toolbar-actions .binder-export-img { flex: 1 1 100%; justify-content: center; }
 }
-.binder-page-btn {
-  min-width: 38px;
-  font-size: 1.1rem;
-  line-height: 1;
-}
-.binder-page-remove {
-  color: #e7796f !important;
-  background: rgba(231, 121, 111, 0.12) !important;
-  border-color: rgba(231, 121, 111, 0.25) !important;
-}
+/* "Valores" e a Visão geral do binder de venda não têm o anel: coluna única. */
+.binder-values,
+.binder-overview.is-sale { grid-template-columns: minmax(0, 1fr); }
 
-/* Cor do binder: faixa de destaque na borda esquerda. */
-.binder.has-color {
-  border-left: 4px solid var(--binder-color, var(--accent));
-}
-
-/* Faixa de resumo no topo do binder (Páginas / Cartas / Tenho / Faltando). */
-.binder-summary {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 14px;
-}
-.binder-stat {
-  flex: 1 1 90px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  padding: 8px 10px;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-}
-.binder-stat strong { font-size: 1.25rem; font-weight: 800; color: var(--text); }
-.binder-stat span { font-size: 0.72rem; color: var(--subtle); }
-.binder-stat.is-owned strong { color: var(--accent); }
-.binder-stat.is-missing strong { color: #e7796f; }
-.binder-progress {
-  flex: 2 1 200px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 6px;
-  padding: 8px 12px;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-}
-.binder-progress-head {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.78rem;
-  color: var(--muted);
-}
-.binder-progress-head strong { color: var(--text); }
+/* Painel Configurar / Imprimir: abre entre o trilho e o fichário, na mesma
+   moldura do painel "Adicionar cartas" da pasta. */
+.binder-panel { margin: 0 0 18px; padding: 14px 16px 16px; border: 1px solid var(--line); background: var(--panel); }
+.binder-panel-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.binder-panel-head h2 { margin: 0; font-size: 16px; }
+.binder-panel-head .icon-btn { display: inline-flex; align-items: center; justify-content: center; width: 42px; min-width: 42px; padding: 0; }
+.binder-panel-head .icon-btn svg { width: 18px; height: 18px; }
+.binder-panel .binder-settings { margin: 0; padding: 0; border: 0; background: none; }
 
 /* Painel de configurações (recolhível). */
 .binder-settings {
@@ -8535,55 +8425,113 @@ html[data-detail="set"] #detailTitle { display: none; }
 .binder-grid {
   display: grid;
   grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr));
-  gap: 12px;
-}
-/* Visão "fichário aberto": as páginas ficam lado a lado. Cada página é uma
-   grade que ocupa metade do espaço quando há duas (cartas menores) e a largura
-   toda quando é só uma (cartas maiores) — ajuste automático ao espaço. */
-.binder-spread {
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 18px;
-}
-/* Celular: as páginas EMPILHAM. Lado a lado, um binder 3×3 aberto virava 6
-   colunas de ~48px numa tela de 360px (4×3 → 8 colunas de ~35px) — cartas
-   ilegíveis e alvos intocáveis. Uma página por vez, largura toda. */
-@media (max-width: 700px) {
-  .binder-spread { flex-direction: column; align-items: stretch; }
-}
-.binder-spread .binder-page {
-  flex: 1 1 0;
-  min-width: 0;
-}
-/* Página sozinha ocupa a largura toda (cartas maiores); no par, cada uma fica
-   com metade do espaço e as cartas encolhem para caber. */
-.binder-spread.is-single .binder-page {
-  max-width: calc(var(--cols, 3) * 230px);
-}
-.binder-spread .binder-grid {
   gap: 10px;
 }
-/* Legenda de cada página no fichário aberto. */
-.binder-page-cap {
-  margin-bottom: 8px;
-  color: var(--subtle);
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  text-align: center;
+/* ── Fichário aberto (2026-09-26) ──────────────────────────────────────────
+   Capa (na cor do binder) com as duas folhas do par e a lombada de argolas no
+   meio; setas grandes nas laterais e as bolinhas dos pares embaixo — as
+   MESMAS .binder-btn/.binder-dots do fichário das grades (binder-view.js),
+   pra "virar página" ter uma cara só no site.
+   Tamanho: o bolso sai da ALTURA da tela (o par inteiro cabe na janela
+   quando se rola até ele, como no fichário das grades) e trava entre 92 e
+   250px de largura; a folha é N bolsos + vãos + respiro. Numa janela estreita
+   o flex encolhe as duas folhas por igual (min-width: 0) e o bolso acompanha,
+   pela proporção da carta. Antes disto o par ocupava ~45% da largura e cada
+   carta tinha ~60px. */
+.binder-book { margin-top: 6px; }
+.binder-book-bar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin: 0 0 14px; }
+.binder-book-bar .binder-page-pick { margin: 0; }
+.binder-book-bar .binder-page-pick svg { width: 16px; height: 16px; }
+.binder-book-tools { display: flex; flex-wrap: wrap; gap: 8px; }
+.binder-book-tools button { display: inline-flex; align-items: center; gap: 7px; }
+.binder-book-tools svg { width: 16px; height: 16px; flex: none; }
+/* Remover: botão normal com o texto no vermelho de "perigo" do site (o mesmo
+   do .setting-danger-btn) — o fundo rosado de antes parecia desabilitado. */
+.binder-page-remove { color: #ff6b5e; }
+[data-theme="light"] .binder-page-remove { color: #bb3a33; }
+.binder-stage {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas: "prev book next" ". dots .";
+  align-items: center;
+  gap: 16px 18px;
 }
-/* Marcação vertical da quebra entre as duas páginas do par. */
-.binder-spread-divider {
-  align-self: stretch;
-  width: 0;
-  border-left: 1px dashed var(--line);
-  margin: 26px 0 0;
+.binder-stage > .binder-spread { grid-area: book; justify-self: center; }
+.binder-stage > .is-prev { grid-area: prev; }
+.binder-stage > .is-next { grid-area: next; }
+.binder-stage > .binder-dots { grid-area: dots; margin: 0; }
+.binder-flip { width: 52px; min-width: 52px; height: 52px; min-height: 52px; }
+.binder-flip svg { width: 24px; height: 24px; }
+.binder-spread {
+  --capa: var(--binder-color, #2b2f38);
+  --bolso: clamp(92px, calc((100vh - 250px - (var(--rows, 3) - 1) * 10px) / var(--rows, 3) * 63 / 88), 250px);
+  --folha: calc(var(--cols, 3) * var(--bolso) + (var(--cols, 3) - 1) * 10px + 30px);
+  display: flex;
+  max-width: 100%;
+  padding: 14px;
+  border-radius: 16px;
+  background: linear-gradient(160deg, color-mix(in srgb, var(--capa) 88%, #fff), color-mix(in srgb, var(--capa) 82%, #000));
+}
+.binder-leaf {
+  flex: 0 1 var(--folha);
+  width: var(--folha);
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 14px 8px;
+  border: 1px solid color-mix(in srgb, var(--capa) 40%, var(--line));
+  border-radius: 6px;
+  background: var(--panel);
+}
+/* Dobra junto da lombada: um degradê curto na borda interna de cada folha
+   (sem sombra — o passe flat do site vale aqui também). */
+.binder-leaf:first-child { background-image: linear-gradient(to left, rgba(0, 0, 0, 0.1), transparent 26px); }
+.binder-leaf:last-child { background-image: linear-gradient(to right, rgba(0, 0, 0, 0.1), transparent 26px); }
+.binder-leaf-num { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--subtle); }
+.binder-leaf:last-child .binder-leaf-num { text-align: right; }
+/* Verso em branco (nº ímpar de páginas): mesma folha, vazia, com o "+ Nova
+   página" no meio — é onde a próxima página nasce. */
+.binder-leaf.is-blank { align-items: center; justify-content: center; background-color: var(--panel-strong); }
+.binder-leaf-add {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 0 16px; border: 1px dashed var(--line); background: transparent;
+  color: var(--muted); font-weight: 700;
+}
+.binder-leaf-add:hover { border-color: var(--accent); color: var(--accent); }
+.binder-leaf-add svg { width: 18px; height: 18px; }
+/* Lombada: faixa escura da capa com três argolas atravessadas. */
+.binder-spine {
+  flex: 0 0 40px;
+  display: flex; flex-direction: column; align-items: center; justify-content: space-evenly;
+  background: color-mix(in srgb, var(--capa) 70%, #000);
+}
+.binder-spine span {
+  width: 52px; height: 12px; border-radius: 6px;
+  background: linear-gradient(#f1f3f6, #9aa2ad 55%, #d7dbe1);
+  border: 1px solid rgba(0, 0, 0, 0.35);
+}
+/* Compartilhado (somente leitura): todos os pares, um embaixo do outro. */
+.binder-book.is-shared { display: grid; justify-items: center; gap: 22px; }
+.binder-shared-head .binder-shared-cta { display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; text-decoration: none; }
+/* Tablet e celular: as folhas EMPILHAM (lado a lado, um 3×3 aberto virava 6
+   colunas de ~50px numa tela de 390px) e a lombada deita. As setas descem pra
+   linha das bolinhas — nas laterais elas roubavam 140px da folha. */
+@media (max-width: 900px) {
+  .binder-stage { grid-template-areas: "book book book" "prev dots next"; gap: 12px; }
+  .binder-spread { flex-direction: column; width: 100%; padding: 10px; }
+  .binder-leaf { flex: none; width: auto; }
+  .binder-leaf:first-child, .binder-leaf:last-child { background-image: none; }
+  .binder-leaf.is-blank { display: none; }
+  .binder-spread.is-single .binder-spine { display: none; }
+  .binder-spine { flex: 0 0 28px; flex-direction: row; }
+  .binder-spine span { width: 12px; height: 38px; }
+  .binder-flip { width: 44px; min-width: 44px; height: 44px; min-height: 44px; }
 }
 .binder-slot {
   position: relative;
-  aspect-ratio: 5 / 7;
+  /* Proporção da carta (63×88mm), a mesma do bolso do fichário das grades. */
+  aspect-ratio: 63 / 88;
   border-radius: 10px;
   border: 1px solid var(--line);
   background: var(--surface);
@@ -8692,6 +8640,17 @@ html[data-detail="set"] #detailTitle { display: none; }
   color: var(--accent);
   border-color: var(--accent-dark);
 }
+.binder-slot-own { display: inline-flex; align-items: center; gap: 5px; }
+.binder-slot-own svg { width: 14px; height: 14px; flex: none; }
+.binder-slot-move [data-slot-move] svg { width: 20px; height: 20px; }
+/* Bolso estreito (celular: 3 colunas de ~95px): os selos "Tenho" e "Info"
+   lado a lado passavam da largura do bolso. O "Tenho" vira só o ícone (o
+   aria-label já diz o que ele faz) e os dois encolhem. */
+@media (max-width: 560px) {
+  .binder-slot-actions { bottom: 6px; gap: 4px; }
+  .binder-slot-own, .binder-slot-info { padding: 7px 9px; font-size: 12px; }
+  .binder-slot-own .binder-own-txt { display: none; }
+}
 /* Bandeira do idioma da carta — canto superior esquerdo do slot. Igual às
    ações (Tenho/Info): só aparece ao passar o mouse (ou foco por teclado). */
 .binder-slot-flag {
@@ -8716,10 +8675,10 @@ html[data-detail="set"] #detailTitle { display: none; }
   outline-offset: -2px;
 }
 .binder-slot-plus {
-  font-size: 1.8rem;
-  line-height: 1;
+  display: inline-flex;
   color: var(--accent);
 }
+.binder-slot-plus svg { width: 26px; height: 26px; }
 .binder-slot-media {
   position: absolute;
   inset: 0;
