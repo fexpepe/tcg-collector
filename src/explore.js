@@ -310,7 +310,7 @@
   // estiver desligada. Depois que ele chegou (catalogPromise existe), a busca
   // local de sempre segue valendo: instantânea, sem rede e sem teto de 60.
   let apiSeq = 0;
-  const VINTAGE_GAMES = ["pokemon", "onepiece", "naruto", "hxh"]; // os que têm carta vintage (ver isVintageCard)
+  const VINTAGE_GAMES = ["pokemon", "onepiece", "naruto", "hxh", "dbc"]; // os que têm carta vintage (ver isVintageCard)
   // Qualquer erro no caminho da borda cai no catálogo local em vez de deixar
   // a página muda: uma exceção aqui era uma rejeição sem ninguém ouvindo, a
   // grade ficava como estava (as "mais vistas", ou os esqueletos) e a busca

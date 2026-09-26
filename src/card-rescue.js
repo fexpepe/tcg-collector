@@ -20,7 +20,7 @@
   const ID_PREFIX_GAME = {
     mtg: "magic", fab: "fab", gcg: "gundam", dbfw: "dbfw", ygo: "ygo",
     dgm: "digimon", rb: "riftbound", ua: "unionarena", nrt: "naruto",
-    hxh: "hxh", op: "onepiece", opcd: "onepiece", op2002: "onepiece", cp: "lorcana"
+    hxh: "hxh", dbc: "dbc", op: "onepiece", opcd: "onepiece", op2002: "onepiece", cp: "lorcana"
   };
   function cardIdProbeWaves(cardId) {
     const certo = ID_PREFIX_GAME[String(cardId).split("-")[0]];

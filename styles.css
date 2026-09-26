@@ -227,6 +227,18 @@
   --accent: #15803d; --accent-dark: #166534; --accent-rgb: 21, 128, 61;
   --accent-soft: rgba(21, 128, 61, 0.1); --on-accent: #ffffff;
 }
+/* Dragon Ball Carddass: ROSA (o único matiz livre: vermelho, laranja, amarelo
+   e vinho já são de Pokémon, Naruto, One Piece e FaB). Rosa claro com texto
+   escuro no escuro (7.4:1); o rosa do GAME_COLOR com texto branco no claro
+   (4.6:1, AA). */
+[data-game-accent="dbc"] {
+  --accent: #f472b6; --accent-dark: #ec4899; --accent-rgb: 244, 114, 182;
+  --accent-soft: rgba(244, 114, 182, 0.16); --on-accent: #0a0c10;
+}
+[data-theme="light"][data-game-accent="dbc"] {
+  --accent: #db2777; --accent-dark: #be185d; --accent-rgb: 219, 39, 119;
+  --accent-soft: rgba(219, 39, 119, 0.1); --on-accent: #ffffff;
+}
 /* Gundam: AZUL (herdou o tom que era do Magic antes do marrom). Azul claro com
    texto escuro no escuro; azul fechado com texto branco no claro. */
 [data-game-accent="gundam"] {
@@ -4126,6 +4138,10 @@ a.hub-tile:hover {
    o object-fit: contain o limita pela altura e ele fica visualmente menor. +20%
    pra emparelhar com os outros. Vale no tile do hub e no leque da home. */
 .hub-logo[src*="game_magic"], .lp-games-caps img[src*="game_magic"] { transform: scale(1.2); }
+/* Dragon Ball Carddass é o extremo oposto: razão ~4.2, o mais largo de todos,
+   então o contain o limita pela LARGURA e as letras ficam finas. +15% usa a
+   margem interna da caixa sem encostar nas bordas (nem a 390px). */
+.hub-logo[src*="game_dbc"] { transform: scale(1.15); }
 .hub-logo-text { font-size: 19px; font-weight: 800; color: #4b4b4b; text-align: center; }
 /* Nome do jogo (em inglês) entre o logo e o ano dos tiles VINTAGE: o logo
    sozinho pode não dizer nada pra quem não conhece a linha. No máximo duas
@@ -4804,6 +4820,7 @@ a.hub-tile:hover {
 .sw-onepiece { background: #d9a400; color: #000000; }
 .sw-naruto { background: #ea580c; color: #000000; }
 .sw-hxh { background: #15803d; color: #ffffff; }
+.sw-dbc { background: #db2777; color: #000000; }
 .sw-neutral { background: #1b1f27; color: #ffffff; }
 .settings.colors-off .setting-swatch { background: var(--line); color: var(--subtle); }
 /* Switch (toggle) iOS-like */

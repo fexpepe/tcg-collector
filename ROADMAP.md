@@ -18,10 +18,10 @@ produto seria o extra pago, aqui é grátis.
 
 Detalhe técnico de cada item está no README; aqui é só o mapa.
 
-**Catálogo — 13 jogos + JUMP em preparação.** Pokémon (5 idiomas, via TCGdex),
+**Catálogo — 14 jogos + JUMP em preparação.** Pokémon (5 idiomas, via TCGdex),
 Lorcana, One Piece, Magic, Flesh and Blood, Gundam, Dragon Ball Fusion World,
-Yu-Gi-Oh!, Digimon, Riftbound, Union Arena, Naruto e Hunter × Hunter — do lançamento de
-ontem ao Carddass de 1999. Os vintage japoneses (Carddass Hyper Battle, Miracle
+Yu-Gi-Oh!, Digimon, Riftbound, Union Arena, Naruto, Hunter × Hunter e Dragon Ball
+Carddass — do lançamento de ontem ao Carddass de 1988. Os vintage japoneses (Carddass Hyper Battle, Miracle
 Battle, Data Carddass, Formation/Cross) foram levantados carta a carta de fontes
 que não têm API, e ficam versionados como snapshot pra nunca regredir.
 
@@ -207,6 +207,11 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
 - **Vintage ainda não importado**: Naruto CCG (Bandai USA, 2006–2013, 28 sets) e
   o `nrts` do tcg-db (NARUTO 疾風伝 カードゲーム). HxH Hyper Battle/Masters
   seguem sem fonte com nome + imagem.
+- **Dragon Ball Carddass (`dbc`)**: entrou só o Hondan 第1弾–第18弾, sem imagem.
+  Faltam (1) o Hondan 第19弾–第31弾, que o sync pega sozinho quando o 80storage
+  publicar; (2) Super Battle, Visual Adventure e Super Barcode Wars, sem fonte
+  carta a carta acessível; (3) scans — o dragonballcards.com tem, mas é só HTTP;
+  (4) raridade (prisma × regular), que nenhuma fonte marca por carta.
 - **Worker de preços BR** (LigaBRA/LigaPokémon) como complemento do MYP. MYP e
   MYP só: as ligas não têm API pública e o CORS impede fazer do navegador.
 - **Raridade em zh**: a TCGdex traz a maioria das cartas chinesas sem raridade.

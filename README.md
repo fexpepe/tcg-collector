@@ -32,7 +32,7 @@ catálogo completo só existe no build de produção.
 
 ## Os jogos
 
-O registro central é o `GAMES` em [src/game.js](src/game.js): **14 slugs**, 13 com
+O registro central é o `GAMES` em [src/game.js](src/game.js): **15 slugs**, 14 com
 catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do Pokémon
 é a raiz `data/` por motivo histórico (não movemos nada).
 
@@ -51,6 +51,7 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 | `unionarena` | Union Arena | TCGCSV cat. 81 (Bandai; um anime por set) | USD |
 | `naruto` | Naruto Card Game | vintage Bandai 2002–2006 (tcg-db + TV Tokyo + cardcheckbox), Data Carddass, Formation/Cross, Miracle Battle | sem preço |
 | `hxh` | Hunter × Hunter | Carddass Hyper Battle 1999–2001 (Hunterpedia) + Miracle Battle | sem preço |
+| `dbc` | Dragon Ball Carddass | Carddass Bandai 1988–1997: Hondan carta a carta (80storage), sem imagem por enquanto | sem preço |
 | `jump` | JUMP | curadoria versionada em `data/jump/curated/` | — |
 
 **Linhas** (`GAME_LINES` em [src/shared.js](src/shared.js)): um jogo pode ter
@@ -58,6 +59,30 @@ sublinhas selecionadas por `?line=` — por exemplo `nrt-ncg` (o NARUTO CARD GAM
 novo, com lançamento mundial em 2027, hoje só com a promo da Gen Con 2026),
 `op2002`, `nrt-dc`, `hxh-mb`. O escopo é por prefixo de `setId`: sem `?line=` a
 página mostra o jogo principal e **exclui** as linhas.
+
+### Dragon Ball Carddass (`dbc`)
+
+[scripts/sync-dbc-carddass.mjs](scripts/sync-dbc-carddass.mjs), snapshot em
+`data/vintage/dbc-carddass.json` (nunca regride; o id fica gravado no snapshot e o
+refresh reaproveita o da carta já conhecida). Levantamento de 2026-09-24:
+
+| Série | Partes | Anos | Por parte | No catálogo |
+|---|---|---|---|---|
+| 本弾 Hondan | 第1弾–第31弾 | nov/1988–1997 | 42 (o 第31弾, 83) | 第1弾–第18弾 (758 cartas, 80storage) |
+| Super Battle | 1–20 | 1991–1997 | 44 (o 20, 46) | — |
+| Visual Adventure | 1–5, SP, '95, EX | 1991–1995 | 42 | — |
+| Super Barcode Wars | 1–4 | 1992–1993 | 42 | — |
+
+- **Cartas**: o 80storage publica a lista de cada parte do Hondan (número, nome
+  JP, BP/DP e símbolos do verso), ~1 parte por mês. O sync tenta as 31 e as novas
+  entram sozinhas. Nome em inglês pelo dicionário `scripts/data/dbc-names-en.json`;
+  sem tradução segura, fica o japonês.
+- **Totais e anos** de todas as séries: RetroballZ (uma foto por parte, sem scan
+  carta a carta). Série sem lista carta a carta **não gera carta**: a numeração tem
+  pegadinhas (dois No.215 no 第6弾, o No.216 escondido no 第7弾, E-1..9 no 第16弾,
+  numeração que recomeça no 第17弾) e inventar números criaria ids a trocar depois.
+- **Imagens**: nenhuma fonte acessível tem scan por carta (o dragonballcards.com
+  tem, mas só serve HTTP). Scan curado entra por `assets/cards/dbc/<id>.webp`.
 
 ---
 
@@ -77,7 +102,7 @@ Ordem de decisão do jogo:
 
 Páginas **neutras** são as que não pertencem a um jogo só: Início, HUB, Explorar,
 Decks, e todas as pessoais (Coleção, Portfólio, Vendas, Binders, Wishlist,
-Graded, Hub pessoal, Badges, Backup). Elas leem os 13 jogos de uma vez e filtram
+Graded, Hub pessoal, Badges, Backup). Elas leem os 14 jogos de uma vez e filtram
 por jogo *dentro* da página — por isso **não** carimbam `?game=` na URL (link
 copiado de `/collection` não deve parecer preso ao Pokémon). Nas demais, o jogo
 resolvido é carimbado com `replaceState`, senão compartilhar "os sets do Gundam"
@@ -544,7 +569,7 @@ dia de lançamento de set do Pokémon, pra pegar o set novo sem esperar a manhã
 seguinte. As fontes têm custos diferentes:
 
 - **grátis** (TCGdex, TCGCSV — inclusive o preço por impressão do Pokémon EN/JP —,
-  Scryfall, Lorcast e os vintage): **todo dia**. Cobrem os 13 jogos e não custam nada.
+  Scryfall, Lorcast e os vintage): **todo dia**. Cobrem os 14 jogos e não custam nada.
 - **por crédito** (PPT e MYP): 3x/semana — segunda e quarta pelo cron diário,
   sexta pelo da noite. Cabem na cota diária (o plano da PPT dá 20.000 créditos
   por dia e um run gasta no máximo 8.000); a PPT hoje responde pelo graded.

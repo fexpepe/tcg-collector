@@ -13,7 +13,8 @@
     pokemon: "game_pokemon.webp", lorcana: "game_lorcana.webp", onepiece: "game_onepiece.webp",
     magic: "game_magic.webp", fab: "game_fab.webp", gundam: "game_gundam.webp", dbfw: "game_dbfw.webp",
     ygo: "game_ygo.webp", digimon: "game_digimon.webp", riftbound: "game_riftbound.webp",
-    unionarena: "game_unionarena.webp", naruto: "game_naruto.webp", hxh: "game_hxh.webp"
+    unionarena: "game_unionarena.webp", naruto: "game_naruto.webp", hxh: "game_hxh.webp",
+    dbc: "game_dbc.webp"
   };
   function gameLogoUrl(game) {
     const f = GAME_LOGO[game];
@@ -568,6 +569,7 @@
       if ((window.SLEEVU && window.SLEEVU.game) === "onepiece") return groupOnePieceSets(setItems);
       if ((window.SLEEVU && window.SLEEVU.game) === "naruto") return groupNarutoSets(setItems);
       if ((window.SLEEVU && window.SLEEVU.game) === "hxh") return groupHxhSets(setItems);
+      if ((window.SLEEVU && window.SLEEVU.game) === "dbc") return groupDbcSets(setItems);
       // Página de Sets: agrupada por série (coleção).
       return groupSetsBySeries(setItems);
     }
@@ -1371,6 +1373,29 @@
     };
     section(parts, "sets.category.main");
     section(promos, "sets.category.promos");
+    return items;
+  }
+
+  // Dragon Ball Carddass: uma seção por SÉRIE (Hondan, Super Battle, Visual
+  // Adventure, Super Barcode Wars), cada uma em ordem crescente de parte — são
+  // séries lineares, lidas como checklist. A série vem do setId (dbc-h06,
+  // dbc-sb01…), que o sync-dbc-carddass.mjs fixa.
+  function groupDbcSets(setItems) {
+    const idOf = (set) => String(set.setId || "").trim().toLowerCase();
+    const SERIES = [["h", "sets.category.dbcHondan"], ["sb", "sets.category.dbcSuperBattle"], ["va", "sets.category.dbcVisualAdventure"], ["bw", "sets.category.dbcBarcodeWars"]];
+    const serieOf = (set) => (idOf(set).match(/^dbc-([a-z]+)\d+$/) || [])[1] || "";
+    const items = [];
+    for (const [code, key] of SERIES) {
+      const list = setItems.filter((s) => serieOf(s) === code).sort((a, b) => idOf(a).localeCompare(idOf(b), "en", { numeric: true }));
+      if (!list.length) continue;
+      items.push({ type: "category-head", name: t(key), count: list.length });
+      list.forEach((set) => items.push(set));
+    }
+    const rest = setItems.filter((s) => !SERIES.some(([code]) => serieOf(s) === code)).sort(sortByReleaseAsc);
+    if (rest.length) {
+      items.push({ type: "category-head", name: t("sets.category.promos"), count: rest.length });
+      rest.forEach((set) => items.push(set));
+    }
     return items;
   }
 

@@ -8,6 +8,20 @@ poucos.)
 
 ## Pendentes de aplicar
 
+- `20260924a` — libera o slug `dbc` (Dragon Ball Carddass, 15º slug) nas DUAS
+  whitelists de jogo, como a `20260807c` fez com o Union Arena:
+  `card_views`/`increment_card_view` (corpo da `20260923a`, com o
+  `card_views_daily`) e `contribute_price`. Sem ela, view de carta e preço da
+  comunidade do `dbc` são descartados em silêncio. Já sem cifrão dentro dos
+  corpos (âncoras com `\Z`).
+
+  Testada em 2026-09-24 num PostgreSQL 16 local com esqueleto (card_views com o
+  CHECK antigo, card_views_daily, community_prices, `_rate_ok`, `auth.uid`):
+  `dbc` grava em card_views e card_views_daily; jogo inventado, id com `$` e id
+  com quebra de linha no fim são descartados; `contribute_price` grava `NM` e
+  `LP`/`psa`/`9.5` e recusa `cond` com `$`. Conferir em produção com os `curl`
+  do rodapé do arquivo.
+
 - `20260914a` — painel `/admin` 2.0. Três coisas num arquivo só, todas
   aditivas: (1) `events.uid`/`events.bot` preenchidos pelo `events_guard`
   (mesma whitelist de nomes da `20260830a`); (2) trigger `profiles_admin_guard`,

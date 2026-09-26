@@ -38,6 +38,12 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
   Carddass Hyper Battle, via sync-hxh-hyper-battle.mjs)
 - `game_hxh_miracle.webp` — Miracle Battle Carddass (tile vintage do HxH e
   `setLogo` dos sets hxh-mb-*, via sync-miracle-battle.mjs)
+- `game_dbc.webp` — Dragon Ball Carddass (Bandai, 1988→; tile vintage do jogo
+  `dbc`). Fonte enviada pelo Fernando em 2026-09-24: 414×260 com fundo branco e
+  muita margem. Recortado pelo bbox do conteúdo + 6px iguais nos 4 lados
+  (centralizado) = 380×90. Como o Union Arena, **não** foi esticado pra 512 e o
+  fundo branco fica (a cápsula do hub é branca nos dois temas). Por ser o logo
+  mais largo (~4.2:1), o CSS aplica scale(1.15) no tile, como o do Magic.
 - `game_naruto.svg` — FONTE vetorial do logo do Naruto (Inkscape). Se editar,
   re-exporte o webp: @resvg/resvg-js (ou qualquer rasterizador) em 512px e
   depois `ffmpeg -i logo.png -c:v libwebp -quality 90 game_naruto.webp`.
