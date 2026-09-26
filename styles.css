@@ -8262,7 +8262,6 @@ html[data-detail="set"] #detailTitle { display: none; }
    sem depender de vir depois dele no arquivo — e, por citar um seletor fora do
    prefixo pf-, o split-css deixa a regra no núcleo, que é onde ela funciona. */
 .game-filter.pf-game-filter { margin: 6px 0 18px; }
-.binder-editor-gamefilter { margin: 0 0 10px; }
 .collection-share-btn { margin: 0; }
 /* margin-left:auto além do space-between do pai: quando os chips estouram e as
    ações caem pra 2ª linha, elas continuam ANCORADAS à direita (sem isso a 2ª
@@ -8900,6 +8899,14 @@ html[data-detail="set"] #detailTitle { display: none; }
   color: var(--subtle);
 }
 .binder-editor-sort select { min-width: 190px; }
+.binder-editor-game select { min-width: 170px; }
+/* Celular: a busca na linha toda e Jogo + Ordenar dividindo a de baixo (dois
+   selects de 170–190px não cabiam lado a lado nos ~340px do modal). */
+@media (max-width: 560px) {
+  .binder-editor-searchbar .binder-editor-search { flex-basis: 100%; }
+  .binder-editor-sort { flex: 1 1 0; min-width: 0; }
+  .binder-editor-sort select { min-width: 0; width: 100%; }
+}
 .binder-editor-sale label {
   display: flex;
   flex-direction: column;

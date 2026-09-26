@@ -1268,6 +1268,12 @@
     const sortOptions = SORTS.map(([v, k]) =>
       `<option value="${v}"${v === (editing.sort || "release") ? " selected" : ""}>${escapeHtml(t(k))}</option>`
     ).join("");
+    // Jogo num menu suspenso, ao lado do Ordenar (2026-09-26): eram 14 chips
+    // (Todos + 13 jogos) em três linhas empurrando a busca e os resultados pra
+    // baixo do modal — no celular, quase a tela inteira.
+    const gameOptions = ["all", ...shared.GAME_SLUGS].map((g) =>
+      `<option value="${g}"${g === editorGameFilter ? " selected" : ""}>${escapeHtml(g === "all" ? t("filter.gameAll") : shared.gameLabel(g))}</option>`
+    ).join("");
 
     modal.innerHTML = `
       <div class="card-preview-backdrop" data-edit-close></div>
@@ -1282,12 +1288,11 @@
           </div>
 
           <div class="binder-editor-tabpanel"${searchTab ? "" : " hidden"}>
-            <div class="chip-filter game-filter binder-editor-gamefilter" role="group" aria-label="Jogo">
-              <button type="button" class="chip${editorGameFilter === "all" ? " active" : ""}" data-edit-game="all" aria-pressed="${editorGameFilter === "all"}">${escapeHtml(t("filter.gameAll"))}</button>
-              ${shared.GAME_SLUGS.map((g) => `<button type="button" class="chip${editorGameFilter === g ? " active" : ""}" data-edit-game="${g}" aria-pressed="${editorGameFilter === g}">${escapeHtml(shared.gameLabel(g))}</button>`).join("")}
-            </div>
             <div class="binder-editor-searchbar">
               <input type="search" class="binder-editor-search" data-edit-search placeholder="${escapeAttribute(t("binders.editor.search"))}" value="${escapeAttribute(editing.query || "")}">
+              <label class="binder-editor-sort binder-editor-game"><span>${escapeHtml(t("binders.editor.game"))}</span>
+                <select data-edit-game>${gameOptions}</select>
+              </label>
               <label class="binder-editor-sort"><span>${escapeHtml(t("sort.label"))}</span>
                 <select data-edit-sort>${sortOptions}</select>
               </label>
@@ -2278,17 +2283,6 @@
     }
     const tabBtn = event.target.closest("[data-edit-tab]");
     if (tabBtn) { editing.tab = tabBtn.dataset.editTab; renderEditor(); if (editing.tab !== "free") renderSearchResults(editing.query || ""); return; }
-    const gameBtn = event.target.closest("[data-edit-game]");
-    if (gameBtn) {
-      editorGameFilter = gameBtn.dataset.editGame;
-      gameBtn.parentElement.querySelectorAll("[data-edit-game]").forEach((b) => {
-        const on = b === gameBtn;
-        b.classList.toggle("active", on);
-        b.setAttribute("aria-pressed", String(on));
-      });
-      renderSearchResults(editing.query || "");
-      return;
-    }
     const result = event.target.closest("[data-result-id]");
     if (result) { selectCard(result.dataset.resultId); return; }
   });
@@ -2304,6 +2298,8 @@
     if (!editing) return;
     const sortSel = event.target.closest("[data-edit-sort]");
     if (sortSel) { editing.sort = sortSel.value; renderSearchResults(editing.query || ""); return; }
+    const gameSel = event.target.closest("[data-edit-game]");
+    if (gameSel) { editorGameFilter = gameSel.value; renderSearchResults(editing.query || ""); return; }
     const photoInput = event.target.closest("[data-edit-photo]");
     if (photoInput && photoInput.files && photoInput.files[0]) {
       handlePhotoUpload(photoInput.files[0]);
