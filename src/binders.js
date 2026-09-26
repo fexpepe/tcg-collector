@@ -1186,6 +1186,11 @@
   // Editor de slot (modal)
   // ---------------------------------------------------------------------------
   let editing = null; // { binderId, index, draft, originalPhotoId, tab }
+  // Ordenar do editor de bolso: padrão = valor, da mais cara pra mais barata
+  // (2026-09-26, pedido do Fernando) — quem monta binder procura a versão que
+  // vale mais de um Pokémon, e por lançamento a carta cara ficava no meio de
+  // dezenas de reimpressões.
+  const EDITOR_SORT_PADRAO = "value-desc";
 
   function openEditor(binderId, index) {
     const binder = getBinder(binderId);
@@ -1208,7 +1213,7 @@
       originalPhotoId: existing ? existing.photoId || null : null,
       tab: (isTemplate || isFilled) ? "catalog" : "collection",
       query: isTemplate ? (existing.query || existing.name || "") : (isFilled ? (existing.name || "") : ""),
-      sort: "release"
+      sort: EDITOR_SORT_PADRAO
     };
     refreshUserSources();
     renderEditor();
@@ -1262,11 +1267,11 @@
       </div>` : "";
 
     const SORTS = [
-      ["release", "sort.releaseDate"], ["value-desc", "sort.valueDesc"],
-      ["value-asc", "sort.valueAsc"], ["num-desc", "sort.numDesc"], ["num-asc", "sort.numAsc"]
+      ["value-desc", "sort.valueDesc"], ["value-asc", "sort.valueAsc"],
+      ["release", "sort.releaseDate"], ["num-desc", "sort.numDesc"], ["num-asc", "sort.numAsc"]
     ];
     const sortOptions = SORTS.map(([v, k]) =>
-      `<option value="${v}"${v === (editing.sort || "release") ? " selected" : ""}>${escapeHtml(t(k))}</option>`
+      `<option value="${v}"${v === (editing.sort || EDITOR_SORT_PADRAO) ? " selected" : ""}>${escapeHtml(t(k))}</option>`
     ).join("");
     // Jogo num menu suspenso, ao lado do Ordenar (2026-09-26): eram 14 chips
     // (Todos + 13 jogos) em três linhas empurrando a busca e os resultados pra
@@ -1323,10 +1328,10 @@
     if (search && searchTab) search.focus();
   }
 
-  // Ordena os resultados da busca como na página de set: lançamento, valor ou
-  // número da carta. Cartas sem preço vão para o fim no "valor crescente".
+  // Ordena os resultados da busca como na página de set: valor, lançamento ou
+  // número da carta. Cartas sem preço vão para o fim nos dois sentidos de valor.
   function sortEditorMatches(matches) {
-    const s = (editing && editing.sort) || "release";
+    const s = (editing && editing.sort) || EDITOR_SORT_PADRAO;
     const priceOf = (card) => shared.cardValue(card, defaultVariant(card), pricesStore).value || 0;
     const byNum = (a, b) => shared.compareCardNumbers(a.number, b.number);
     if (s === "num-asc") matches.sort(byNum);
