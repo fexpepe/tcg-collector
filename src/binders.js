@@ -31,6 +31,31 @@
   const { cardGameMap, owned: ownedStore, wishlist: wishlistStore, prices: pricesStore } = shared.createCrossGameStores();
   let editorGameFilter = "all"; // filtro do seletor de cartas (ALL/Pokémon/Lorcana)
 
+  // Ícones em SVG de traço (currentColor), como no resto do site. Os da
+  // galeria substituem os glifos ✎ ⧉ 🗑 que os botões usavam até 2026-09-26.
+  const svg = (inner, extra) => `<svg${extra || ""} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${inner}</svg>`;
+  const IC = {
+    binder: svg('<rect x="6" y="3" width="14" height="18" rx="2"/><path d="M4 7.5h4M4 12h4M4 16.5h4"/>'),
+    export: svg('<path d="M12 3v11"/><path d="m8 10.5 4 4 4-4"/><path d="M4.5 16.5v2a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-2"/>'),
+    // Impressora: o mesmo desenho do admin.js.
+    print: svg('<path d="M6 9V3h12v6"/><rect x="6" y="14" width="12" height="7" rx="1"/><path d="M6 18H4a1 1 0 0 1-1-1v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6a1 1 0 0 1-1 1h-2"/>'),
+    // "Configurar": controles deslizantes (formato, páginas, cor, descrição).
+    settings: svg('<path d="M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1"/><circle cx="15" cy="6" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="18" r="2"/>'),
+    trash: svg('<path d="M4 7h16"/><path d="M9.5 7V4.5h5V7"/><path d="M6.5 7l.8 12a1.5 1.5 0 0 0 1.5 1.4h6.4a1.5 1.5 0 0 0 1.5-1.4l.8-12"/><path d="M10 11v6M14 11v6"/>'),
+    open: svg('<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13.5 6.5 4 4"/>'),
+    copy: svg('<rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/>'),
+    plus: svg('<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>'),
+    minus: svg('<line x1="5" y1="12" x2="19" y2="12"/>'),
+    close: svg('<path d="M6 6l12 12M18 6 6 18"/>'),
+    prev: svg('<polyline points="15 18 9 12 15 6"/>', ' class="binder-flip-ic"'),
+    next: svg('<polyline points="9 18 15 12 9 6"/>', ' class="binder-flip-ic"'),
+    book: svg('<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 3v18"/>'),
+    check: svg('<path d="m5 12.5 4.5 4.5L19 7.5"/>'),
+    chevL: svg('<polyline points="15 18 9 12 15 6"/>'),
+    chevR: svg('<polyline points="9 18 15 12 9 6"/>'),
+    money: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.2v9.6M14.4 9.6c0-1-1.1-1.6-2.4-1.6s-2.4.6-2.4 1.6 1 1.5 2.4 1.9 2.5 1 2.5 2-1.1 1.7-2.5 1.7-2.5-.7-2.5-1.7"/></svg>'
+  };
+
   const GRIDS = {
     "2x2": { cols: 2, rows: 2 },
     "3x3": { cols: 3, rows: 3 },
@@ -557,6 +582,11 @@
   let galleryView = localStorage.getItem("tcg-collector-binder-view") === "list" ? "list" : "grid";
   let gallerySort = localStorage.getItem("tcg-collector-binder-sort") || "newest";
 
+  // "3×3" etc. do binder (formato desconhecido cai no padrão, como no normalizeSlots).
+  function gridLabel(binder) {
+    return t(`binders.grid.${GRIDS[binder.grid] ? binder.grid : DEFAULT_GRID}`);
+  }
+
   function gridOptionsHtml(selected) {
     return GRID_ORDER.map((key) =>
       `<option value="${key}"${key === selected ? " selected" : ""}>${escapeHtml(t(`binders.grid.${key}`))}</option>`
@@ -579,28 +609,40 @@
     return arr;
   }
 
+  // Capa do cartão da galeria = a 1ª PÁGINA do binder em miniatura (no formato
+  // dele: 2×2 … 5×5), sobre a cor do binder. Até 2026-09-26 era a primeira
+  // carta recortada em 16:10 — todo binder começado por um Charizard tinha a
+  // mesma capa, e nada dizia que aquilo era um fichário.
+  function miniPageHtml(binder) {
+    const g = GRIDS[binder.grid] || GRIDS[DEFAULT_GRID];
+    const cells = (binder.slots || []).slice(0, g.cols * g.rows).map((slot) => {
+      if (!slot) return `<span class="binder-mini-cell"></span>`;
+      if (slot.template) return `<span class="binder-mini-cell is-tpl"><img src="${escapeAttribute(slot.image || "")}" alt="" loading="lazy"></span>`;
+      if (slot.photoId) return `<span class="binder-mini-cell is-filled"><img data-photo-id="${escapeAttribute(slot.photoId)}" alt=""></span>`;
+      if (slot.image) return `<span class="binder-mini-cell is-filled">${localizedImg(slot.image, { alt: "", fallback: slot.fallback || "", loading: "lazy", thumb: true })}</span>`;
+      return `<span class="binder-mini-cell is-free"></span>`;
+    }).join("");
+    return `<span class="binder-mini-page" style="--cols:${g.cols};--rows:${g.rows}" aria-hidden="true">${cells}</span>`;
+  }
+
   function galleryCardHtml(binder) {
     const stats = binderStats(binder);
     const colorStyle = binder.color ? ` style="--binder-color:${escapeAttribute(binder.color)}"` : "";
-    const cover = (binder.slots || []).find((s) => s && (s.image || s.photoId));
-    let coverHtml = `<span class="binder-card-cover-empty">${escapeHtml((binder.name || "?").charAt(0).toUpperCase())}</span>`;
-    if (cover) {
-      if (cover.photoId) coverHtml = `<img class="binder-card-cover-img" data-photo-id="${escapeAttribute(cover.photoId)}" alt="">`;
-      else if (cover.image) coverHtml = localizedImg(cover.image, { className: "binder-card-cover-img", alt: "", fallback: cover.fallback || "", loading: "lazy", thumb: true });
-    }
     const typeTag = `<span class="binder-card-type">${escapeHtml(t(isSaleBinder(binder) ? "binders.type.sale" : "binders.type.collection"))}</span>`;
+    const act = (attr, icon, key, extra) =>
+      `<button type="button" class="binder-card-act${extra || ""}" ${attr}="${escapeAttribute(binder.id)}" aria-label="${escapeAttribute(t(key))}" title="${escapeAttribute(t(key))}">${icon}</button>`;
     return `
       <article class="binder-card${binder.color ? " has-color" : ""}" data-open-id="${escapeAttribute(binder.id)}"${colorStyle}>
-        <div class="binder-card-cover">${coverHtml}</div>
+        <div class="binder-card-cover">${miniPageHtml(binder)}</div>
         <div class="binder-card-body">
           <div class="binder-card-titlerow"><strong class="binder-card-name">${escapeHtml(binder.name)}</strong>${typeTag}</div>
-          <div class="binder-card-meta"><span>${escapeHtml(t("binders.ownedOf", { o: stats.owned, t: stats.cards }))}</span><span>${stats.pct}%</span></div>
+          <div class="binder-card-meta"><span>${escapeHtml(t("binders.ownedOf", { o: stats.owned, t: stats.cards }))}</span><span>${escapeHtml(gridLabel(binder))} · ${escapeHtml(t("binders.pagesCount", { n: stats.pages }))}</span></div>
           <div class="progress-bar"><span style="width:${stats.pct}%"></span></div>
         </div>
         <div class="binder-card-acts">
-          <button type="button" class="binder-card-act" data-open-id="${escapeAttribute(binder.id)}" aria-label="${escapeAttribute(t("binders.open"))}" title="${escapeAttribute(t("binders.open"))}">✎</button>
-          <button type="button" class="binder-card-act" data-duplicate-id="${escapeAttribute(binder.id)}" aria-label="${escapeAttribute(t("binders.duplicate"))}" title="${escapeAttribute(t("binders.duplicate"))}">⧉</button>
-          <button type="button" class="binder-card-act danger" data-delete-id="${escapeAttribute(binder.id)}" aria-label="${escapeAttribute(t("binders.delete"))}" title="${escapeAttribute(t("binders.delete"))}">🗑</button>
+          ${act("data-open-id", IC.open, "binders.open")}
+          ${act("data-duplicate-id", IC.copy, "binders.duplicate")}
+          ${act("data-delete-id", IC.trash, "binders.delete", " danger")}
         </div>
       </article>`;
   }
@@ -621,114 +663,205 @@
   }
 
   // --- Detalhe de um binder aberto ---
+  // Refeito em 2026-09-26 no molde da pasta aberta (a direção atual do site):
+  // cabeçalho com o NOME como título (editável ali mesmo, faixa na cor do
+  // binder, "← Binders" embaixo, Compartilhar/Salvar na ponta direita), o
+  // trilho de cápsulas da Coleção (herói com valor e ações · Visão geral com o
+  // anel · Valores) e o FICHÁRIO ABERTO grande embaixo. As abas Resumo/Editar/
+  // Imprimir saíram: o resumo é o trilho, e Configurar/Imprimir são painéis que
+  // os botões do herói abrem e fecham (como o "Adicionar cartas" da pasta).
+  const headActions = document.getElementById("binderHeadActions");
   function renderDetail(binder) {
     isSale = isSaleBinder(binder);
     elements.gallery.hidden = true;
     elements.detail.hidden = false;
     elements.list.innerHTML = binderHtml(binder);
+    // Compartilhar/Salvar: os MESMOS nós do HTML (listeners ligados no load),
+    // movidos pro lugar reservado no cabeçalho recém-desenhado.
+    const vaga = elements.list.querySelector("[data-binder-head-actions]");
+    if (vaga && headActions) vaga.replaceWith(headActions);
     elements.list.querySelectorAll("img[data-photo-id]").forEach((img) => {
       photoURL(img.dataset.photoId).then((url) => { if (url) img.src = url; });
     });
   }
 
-  function binderHtml(binder) {
+  // Uma folha do fichário (página): a grade de bolsos + o número no pé, como
+  // num livro. `.binder-leaf` e não `.binder-page`: esse nome é do fichário
+  // das grades (src/binder-view.js) e as regras dele — página de 3 colunas
+  // com scroll-snap — pegavam aqui também, espremendo cada página na coluna do
+  // meio (as cartas saíam com ~60px; era o "pequeno" do pedido de 2026-09-26).
+  function leafHtml(binder, p, cellHtml) {
     const g = GRIDS[binder.grid] || GRIDS[DEFAULT_GRID];
     const per = slotCount(binder.grid);
+    const s = p * per;
+    const cells = (binder.slots || []).slice(s, s + per).map((slot, i) => cellHtml(slot, s + i)).join("");
+    return `<div class="binder-leaf" aria-label="${escapeAttribute(t("binders.page.indicator", { n: p + 1, total: pageCount(binder) }))}">
+      <div class="binder-grid" style="--cols:${g.cols}">${cells}</div>
+      <div class="binder-leaf-num">${escapeHtml(t("binder.page", { n: p + 1 }))}</div>
+    </div>`;
+  }
+  // O par aberto: folha da esquerda (índice par) · lombada com argolas ·
+  // folha da direita. Sem a da direita (nº ímpar de páginas, no fim), o verso
+  // fica em branco com o "+ Nova página" — é onde a próxima página nasceria.
+  function spreadHtml(binder, start, cellHtml, { editable } = {}) {
+    const g = GRIDS[binder.grid] || GRIDS[DEFAULT_GRID];
+    const pages = pageCount(binder);
+    const right = start + 1 < pages
+      ? leafHtml(binder, start + 1, cellHtml)
+      : `<div class="binder-leaf is-blank">${editable
+        ? `<button type="button" class="binder-leaf-add" data-page-add>${IC.plus}<span>${escapeHtml(t("binders.page.add"))}</span></button>`
+        : ""}</div>`;
+    const colorStyle = binder.color ? `--binder-color:${escapeAttribute(binder.color)};` : "";
+    return `<div class="binder-spread${start + 1 < pages ? "" : " is-single"}" style="${colorStyle}--cols:${g.cols};--rows:${g.rows}">
+      ${leafHtml(binder, start, cellHtml)}
+      <div class="binder-spine" aria-hidden="true"><span></span><span></span><span></span></div>
+      ${right}
+    </div>`;
+  }
+
+  function binderHtml(binder) {
     const pages = pageCount(binder);
     const page = currentPage(binder);
-    // Mostra um "par de páginas" (como um fichário aberto): a página da esquerda
-    // (sempre o índice par) e a seguinte, separadas por uma marcação no meio.
     const spreadStart = page - (page % 2);
-    const hasSecond = spreadStart + 1 < pages;
+    const spreads = Math.ceil(pages / 2);
+    const spreadIdx = spreadStart / 2;
     // "filled" = cartas reais; placeholders de template não contam.
     const filled = (binder.slots || []).filter((s) => s && !s.template);
-    const pageSlots = (p) => {
-      const s = p * per;
-      return (binder.slots || []).slice(s, s + per).map((slot, i) => slotHtml(slot, s + i)).join("");
-    };
-    // Cada página é uma grade própria (cols×rows). No "fichário aberto" elas
-    // ficam lado a lado; sozinha, ocupa a largura toda (cartas maiores).
-    const pageBlock = (p) => `<div class="binder-page">
-      <div class="binder-page-cap">${escapeHtml(t("binders.page.indicator", { n: p + 1, total: pages }))}</div>
-      <div class="binder-grid" style="--cols:${g.cols}">${pageSlots(p)}</div>
-    </div>`;
-    const spread = hasSecond
-      ? `<div class="binder-spread">${pageBlock(spreadStart)}<div class="binder-spread-divider" aria-hidden="true"></div>${pageBlock(spreadStart + 1)}</div>`
-      : `<div class="binder-spread is-single">${pageBlock(spreadStart)}</div>`;
-    const saleTotal = isSale
-      ? filled.reduce((sum, slot) => sum + (Number(slot.price) || 0), 0)
-      : 0;
-    const meta = isSale && saleTotal > 0
-      ? `<span class="binder-meta">${escapeHtml(t("binders.saleTotal"))}: R$ ${escapeHtml(fmtPrice(saleTotal))}</span>`
-      : `<span class="binder-meta">${escapeHtml(t("binders.cardsCount", { n: filled.length }))}</span>`;
-
-    const indicatorText = hasSecond
-      ? t("binders.page.indicatorRange", { a: spreadStart + 1, b: spreadStart + 2, total: pages })
-      : t("binders.page.indicator", { n: spreadStart + 1, total: pages });
-    const pageControls = `
-      <span class="binder-pagenav">
-        <button type="button" class="secondary binder-page-btn" data-page-prev aria-label="${escapeAttribute(t("binders.page.prev"))}"${spreadStart <= 0 ? " disabled" : ""}>‹</button>
-        <span class="binder-page-indicator">${escapeHtml(indicatorText)}</span>
-        <button type="button" class="secondary binder-page-btn" data-page-next aria-label="${escapeAttribute(t("binders.page.next"))}"${spreadStart + 2 >= pages ? " disabled" : ""}>›</button>
-      </span>
-      <button type="button" class="secondary binder-page-add" data-page-add>+ ${escapeHtml(t("binders.page.add"))}</button>
-      ${pages > 1 ? `<button type="button" class="secondary binder-page-remove" data-page-remove aria-label="${escapeAttribute(t("binders.page.remove"))}">${escapeHtml(t("binders.page.remove"))}</button>` : ""}`;
-
+    const saleTotal = isSale ? filled.reduce((sum, slot) => sum + (Number(slot.price) || 0), 0) : 0;
     const stats = binderStats(binder);
-    const colorStyle = binder.color ? ` style="--binder-color:${escapeAttribute(binder.color)}"` : "";
     const tab = currentTab(binder);
-    // Sem aba "Cartas": a grade fica sempre visível embaixo; as abas só trocam
-    // o conteúdo do cabeçalho. Resumo é o cabeçalho principal (padrão).
-    const TABS = [["summary", "binders.tab.summary"], ["edit", "binders.tab.edit"], ["print", "binders.tab.print"]];
-    const tabbar = `<div class="binder-tabbar" role="tablist">${TABS.map(([k, key]) =>
-      `<button type="button" class="binder-tab${tab === k ? " active" : ""}" data-binder-tab-btn="${k}" role="tab" aria-selected="${tab === k}">${escapeHtml(t(key))}</button>`
-    ).join("")}</div>`;
-    const panel = (k, inner) => `<div class="binder-tabpanel" data-binder-tab="${k}"${tab === k ? "" : " hidden"}>${inner}</div>`;
-
+    const cor = binder.color || "";
+    const lc = cor ? ` style="--lc:${escapeAttribute(cor)}"` : "";
     const money = (v) => (v > 0 ? shared.formatMoney(shared.getCurrency(), v) : "—");
-    const summaryPanel = panel("summary", `
-      <div class="binder-summary">
-        ${statCell(stats.pages, t("binders.stat.pages"))}
-        ${statCell(stats.cards, t("binders.stat.cards"))}
-        ${statCell(stats.owned, t("binders.stat.owned"), "is-owned")}
-        ${statCell(stats.missing, t("binders.stat.missing"), "is-missing")}
-        ${statCell(money(stats.valueTotal), t("value.total"))}
-        ${statCell(money(stats.valueOwned), t("value.owned"), "is-owned")}
-        ${statCell(money(stats.valueToBuy), t("value.toBuy"), "is-missing")}
-        <div class="binder-progress">
-          <div class="binder-progress-head"><span>${escapeHtml(t("binders.stat.progress"))}</span><strong>${stats.pct}%</strong></div>
-          <div class="progress-bar"><span style="width:${stats.pct}%"></span></div>
+    const esc = escapeHtml, escA = escapeAttribute;
+
+    // Cabeçalho: nome (campo que salva no blur), "← Binders" e, no binder de
+    // venda, o contato. A vaga da direita recebe Compartilhar/Salvar.
+    const head = `
+      <div class="page-head dash-head lst-head binder-headbar"${lc}>
+        <div class="lst-head-text">
+          <h1><input class="lst-title binder-name-input" type="text" maxlength="60" value="${escA(binder.name)}"
+            data-binder-rename aria-label="${escA(t("binders.rename"))}"></h1>
+          ${isSale ? `<input class="binder-subtitle-input" type="text" value="${escA(binder.subtitle || "")}"
+            data-binder-subtitle placeholder="${escA(t("binders.contactPlaceholder"))}" aria-label="${escA(t("binders.contactPlaceholder"))}">` : ""}
+          <a href="binders" class="serie-back">${esc(t("binders.backToList"))}</a>
         </div>
-      </div>
-      <div class="binder-resumo-controls">
-        <div class="binder-pagenav">${pageControls}</div>
-        <button type="button" class="secondary binder-export-img" data-binder-export>${escapeHtml(t("binders.exportImage"))}</button>
-      </div>`);
+        <div data-binder-head-actions></div>
+      </div>`;
+
+    // Cartão principal: identidade (cor + tipo + formato + páginas + descrição),
+    // valor e ações. Configurar/Imprimir abrem o painel logo abaixo do trilho.
+    const toggle = (k, icon, key) =>
+      `<button type="button" class="secondary icon-btn" data-binder-tab-btn="${k}" aria-expanded="${tab === k}" aria-controls="binderPanel" title="${escA(t(key))}">${icon}<span>${esc(t(key))}</span></button>`;
+    const hero = `
+      <article class="insight-card insight-hero binder-hero">
+        <div class="dash-profile binder-identity">
+          <div class="dash-profile-who">
+            <span class="dash-avatar binder-avatar" aria-hidden="true"><span class="dash-avatar-in">${IC.binder}</span></span>
+            <div class="dash-profile-id">
+              <span class="binder-hero-meta">
+                <span class="binder-card-type">${esc(t(isSale ? "binders.type.sale" : "binders.type.collection"))}</span>
+                <span>${esc(gridLabel(binder))}</span>
+                <span aria-hidden="true">·</span>
+                <span>${esc(t("binders.pagesCount", { n: pages }))}</span>
+              </span>
+              ${binder.description ? `<span class="binder-hero-desc">${esc(binder.description)}</span>` : ""}
+            </div>
+          </div>
+        </div>
+        <div class="dash-stat-money"><span class="dash-stat-ic" aria-hidden="true">${IC.money}</span><span class="dash-stat-txt"><span class="dash-stat-val">${esc(isSale ? (saleTotal > 0 ? `R$ ${fmtPrice(saleTotal)}` : "—") : money(stats.valueTotal))}</span><span class="dash-stat-label">${esc(isSale ? t("binders.saleTotal") : t("dash.value"))}</span></span></div>
+        <div class="collection-toolbar-actions binder-actions" role="group" aria-label="${escA(binder.name)}">
+          <button type="button" class="secondary binder-export-img" data-binder-export>${IC.export}<span>${esc(t("binders.exportImage"))}</span></button>
+          ${toggle("print", IC.print, "binders.tab.print")}
+          ${toggle("edit", IC.settings, "binders.configure")}
+          <button type="button" class="secondary icon-btn binder-del-btn" data-binder-delete title="${escA(t("binders.delete"))}">${IC.trash}<span>${esc(t("binders.delete"))}</span></button>
+        </div>
+      </article>`;
+
+    // Visão geral: as contagens + o anel de progresso (o mesmo do set). No
+    // binder de venda "tenho/faltando" não quer dizer nada: fica páginas e
+    // cartas, sem anel.
+    const ring = `<svg class="insight-ring${stats.cards > 0 && stats.owned >= stats.cards ? " complete" : ""}" viewBox="0 0 120 120" role="img" aria-label="${stats.pct}%">
+        <circle class="insight-ring-track" cx="60" cy="60" r="50"/>
+        <circle class="insight-ring-fill" cx="60" cy="60" r="50" pathLength="100" stroke-dasharray="${stats.pct} 100"/>
+        <text x="60" y="60" text-anchor="middle" dominant-baseline="central">${stats.pct}%</text>
+      </svg>`;
+    const linha = (dt, dd) => `<div><dt>${esc(dt)}</dt><dd>${esc(String(dd))}</dd></div>`;
+    const overview = isSale
+      ? `<article class="insight-card insight-summary binder-overview is-sale">
+          <h3>${esc(t("insights.overview"))}</h3>
+          <dl>${linha(t("binders.stat.cards"), stats.cards)}${linha(t("binders.stat.pages"), pages)}${linha(t("binders.grid"), gridLabel(binder))}</dl>
+        </article>`
+      : `<article class="insight-card insight-summary binder-overview">
+          <h3>${esc(t("insights.overview"))}</h3>
+          <dl>${linha(t("binders.stat.cards"), stats.cards)}${linha(t("binders.stat.owned"), stats.owned)}${linha(t("binders.stat.missing"), stats.missing)}</dl>
+          ${ring}
+        </article>`;
+    // Valores (só no de coleção): total, o que já é seu e o que falta comprar.
+    const values = isSale ? "" : `
+      <article class="insight-card insight-summary binder-values">
+        <h3>${esc(t("binders.values"))}</h3>
+        <dl>${linha(t("value.total"), money(stats.valueTotal))}${linha(t("value.owned"), money(stats.valueOwned))}${linha(t("value.toBuy"), money(stats.valueToBuy))}</dl>
+      </article>`;
+    const rail = `
+      <section class="collection-dashboard collection-dashboard-hero set-insights binder-insights"${lc} aria-label="${escA(t("binders.tab.summary"))}">
+        <div class="set-insights-rail">${hero}${overview}${values}</div>
+      </section>`;
+
+    // Painel aberto (Configurar ou Imprimir), entre o trilho e o fichário.
+    const panelInner = tab === "edit" ? binderEditPanelHtml(binder) : tab === "print" ? binderPrintPanelHtml(binder) : "";
+    const panel = panelInner ? `
+      <section class="binder-panel" id="binderPanel" data-binder-tab="${tab}">
+        <header class="binder-panel-head">
+          <h2>${esc(t(tab === "edit" ? "binders.configure" : "binders.print.title"))}</h2>
+          <button type="button" class="secondary icon-btn" data-binder-tab-btn="${tab}" aria-expanded="true" title="${escA(t("binders.panelClose"))}">${IC.close}<span>${esc(t("binders.panelClose"))}</span></button>
+        </header>
+        ${panelInner}
+      </section>` : "";
+
+    // Barra do fichário: onde estou (e pular pra outro par) à esquerda; página
+    // nova / remover à direita. As setas grandes ficam nas laterais do par.
+    // Rótulo de um par ("Páginas 3–4"; o último, se sozinho, "Página 5").
+    const rotuloPar = (i) => {
+      const a = i * 2 + 1, b = Math.min(pages, i * 2 + 2);
+      return a === b ? t("binder.page", { n: a }) : t("binders.page.pair", { a, b });
+    };
+    const opcoes = Array.from({ length: spreads }, (_, i) =>
+      `<option value="${i * 2}"${i === spreadIdx ? " selected" : ""}>${esc(rotuloPar(i))}</option>`).join("");
+    const bar = `
+      <div class="binder-book-bar">
+        <label class="binder-page-pick">${IC.book}<span class="sr-only">${esc(t("binder.pickPage"))}</span><select data-page-select>${opcoes}</select><span class="binder-page-total">/ ${pages}</span></label>
+        <div class="binder-book-tools">
+          <button type="button" class="secondary binder-page-add" data-page-add>${IC.plus}<span>${esc(t("binders.page.add"))}</span></button>
+          ${pages > 1 ? `<button type="button" class="secondary binder-page-remove" data-page-remove title="${escA(t("binders.page.removeHint", { n: page + 1 }))}">${IC.minus}<span>${esc(t("binders.page.remove"))}</span></button>` : ""}
+        </div>
+      </div>`;
+    const dots = spreads > 1 && spreads <= 24
+      ? `<div class="binder-dots">${Array.from({ length: spreads }, (_, i) =>
+        `<button type="button" class="binder-dot" data-page-go="${i * 2}" aria-label="${escA(rotuloPar(i))}" aria-current="${i === spreadIdx ? "page" : "false"}"></button>`).join("")}</div>`
+      : `<div class="binder-dots"></div>`;
+    const stage = `
+      <section class="binder-book" aria-label="${escA(t("binders.book"))}">
+        ${bar}
+        <div class="binder-stage">
+          <button type="button" class="binder-btn binder-flip is-prev" data-page-prev aria-label="${escA(t("binders.page.prev"))}" title="${escA(t("binders.page.prev"))}"${spreadStart <= 0 ? " disabled" : ""}>${IC.prev}</button>
+          ${spreadHtml(binder, spreadStart, slotHtml, { editable: true })}
+          <button type="button" class="binder-btn binder-flip is-next" data-page-next aria-label="${escA(t("binders.page.next"))}" title="${escA(t("binders.page.next"))}"${spreadStart + 2 >= pages ? " disabled" : ""}>${IC.next}</button>
+          ${dots}
+        </div>
+      </section>`;
 
     return `
-      <article class="binder${binder.color ? " has-color" : ""}" data-binder-id="${escapeAttribute(binder.id)}"${colorStyle}>
-        <header class="binder-head">
-          <div class="binder-titles">
-            <input class="binder-name-input" type="text" value="${escapeAttribute(binder.name)}"
-              data-binder-rename aria-label="${escapeAttribute(t("binders.rename"))}">
-            ${isSale ? `<input class="binder-subtitle-input" type="text" value="${escapeAttribute(binder.subtitle || "")}"
-              data-binder-subtitle placeholder="${escapeAttribute(t("binders.editor.notePlaceholder"))}" aria-label="contato">` : ""}
-            ${meta}
-          </div>
-          ${tabbar}
-        </header>
-        ${summaryPanel}
-        ${panel("edit", binderEditPanelHtml(binder))}
-        ${panel("print", binderPrintPanelHtml(binder))}
-        ${spread}
+      <article class="binder${cor ? " has-color" : ""}" data-binder-id="${escA(binder.id)}"${cor ? ` style="--binder-color:${escA(cor)}"` : ""}>
+        ${head}
+        ${rail}
+        ${panel}
+        ${stage}
       </article>`;
   }
 
-  function statCell(value, label, cls) {
-    return `<div class="binder-stat${cls ? " " + cls : ""}"><strong>${escapeHtml(String(value))}</strong><span>${escapeHtml(label)}</span></div>`;
-  }
-
-  // Aba "Editar": formato, detalhes, marcar tudo e excluir o binder.
+  // Painel "Configurar": formato, detalhes e marcar tudo. (Excluir mora no
+  // cartão principal, com os outros botões do binder.)
   function binderEditPanelHtml(binder) {
     return `
       <div class="binder-settings">
@@ -757,14 +890,11 @@
             <button type="button" class="secondary" data-mark-all="missing">${escapeHtml(t("binders.settings.markMissing"))}</button>
           </div>
         </div>
-        <div class="binder-settings-section">
-          <h4>${escapeHtml(t("binders.settings.danger"))}</h4>
-          <button type="button" class="secondary binder-delete" data-binder-delete>${escapeHtml(t("binders.delete"))}</button>
-        </div>
       </div>`;
   }
 
-  // Aba "Imprimir": layout + opções + botão imprimir.
+  // Painel "Imprimir": layout + opções + botão imprimir (o título é o do
+  // cabeçalho do painel).
   function binderPrintPanelHtml(binder) {
     const printOpts = [
       ["realSize", "binders.print.optRealSize"], ["images", "binders.print.optImages"],
@@ -776,7 +906,6 @@
     return `
       <div class="binder-settings binder-print-settings">
         <div class="binder-settings-section binder-print">
-          <h4>${escapeHtml(t("binders.print.title"))}</h4>
           <div class="binder-print-row">
             <span class="binder-print-label">${escapeHtml(t("binders.print.formatLabel"))}</span>
             <div class="binder-print-layouts">
@@ -797,7 +926,7 @@
   function slotHtml(slot, index) {
     if (!slot) {
       return `<button type="button" class="binder-slot binder-slot-empty" data-slot-index="${index}">
-        <span class="binder-slot-plus" aria-hidden="true">+</span>
+        <span class="binder-slot-plus" aria-hidden="true">${IC.plus}</span>
         <span>${escapeHtml(t("binders.slotEmpty"))}</span>
       </button>`;
     }
@@ -829,7 +958,7 @@
     const ownable = !isSale && !!slot.cardId;
     const owned = ownable ? ownedStore.has(slot.cardId) : true;
     const ownBtn = ownable
-      ? `<span class="binder-slot-own${owned ? " owned" : ""}" role="button" tabindex="0" data-slot-own="${index}" aria-pressed="${owned}" aria-label="${escapeAttribute(owned ? t("binders.slot.markMissing") : t("binders.slot.markOwned"))}">${owned ? "✓ " + escapeHtml(t("binders.slot.ownedShort")) : "+ " + escapeHtml(t("binders.slot.markOwned"))}</span>`
+      ? `<span class="binder-slot-own${owned ? " owned" : ""}" role="button" tabindex="0" data-slot-own="${index}" aria-pressed="${owned}" aria-label="${escapeAttribute(owned ? t("binders.slot.markMissing") : t("binders.slot.markOwned"))}">${owned ? IC.check : IC.plus}<span class="binder-own-txt">${escapeHtml(t(owned ? "binders.slot.ownedShort" : "binders.slot.markOwned"))}</span></span>`
       : "";
 
     // Coração na carta que você não tem: adiciona/remove da lista de desejo
@@ -854,8 +983,8 @@
     // @media (hover: none), via CSS. Reusa as chaves de i18n das setas da
     // Coleção (folders.moveBack/moveFwd), que já existem nos 3 idiomas.
     const moveBtns = `<span class="binder-slot-move">
-        <span role="button" tabindex="0" data-slot-move="-1" aria-label="${escapeAttribute(t("folders.moveBack"))}">‹</span>
-        <span role="button" tabindex="0" data-slot-move="1" aria-label="${escapeAttribute(t("folders.moveFwd"))}">›</span>
+        <span role="button" tabindex="0" data-slot-move="-1" aria-label="${escapeAttribute(t("folders.moveBack"))}">${IC.chevL}</span>
+        <span role="button" tabindex="0" data-slot-move="1" aria-label="${escapeAttribute(t("folders.moveFwd"))}">${IC.chevR}</span>
       </span>`;
     return `<button type="button" class="binder-slot binder-slot-filled${ownable && !owned ? " not-owned" : ""}" data-slot-index="${index}" draggable="true" title="${escapeAttribute(title)}">
       <span class="binder-slot-media">${media}</span>
@@ -1298,7 +1427,9 @@
     if (!binder) return;
     isSale = isSaleBinder(binder);
     const g = GRIDS[binder.grid] || GRIDS[DEFAULT_GRID];
-    const label = button ? button.textContent : "";
+    // innerHTML e não textContent: o botão tem ícone + rótulo, e voltar só o
+    // texto apagava o ícone depois do primeiro export.
+    const label = button ? button.innerHTML : "";
     if (button) { button.disabled = true; button.textContent = "…"; }
 
     // A4 retrato, fundo branco (economiza tinta), cartas em tamanho real
@@ -1417,7 +1548,7 @@
     ctx.textBaseline = "alphabetic";
     ctx.fillText("Sleevu", MARGIN * PPM, height - MARGIN * PPM);
 
-    const finish = () => { if (button) { button.disabled = false; button.textContent = label; } };
+    const finish = () => { if (button) { button.disabled = false; button.innerHTML = label; } };
     try {
       canvas.toBlob((blob) => {
         if (!blob) { alert(t("binders.exportTainted")); finish(); return; }
@@ -1754,11 +1885,20 @@
       if (binder && confirm(t("binders.page.removeConfirm"))) { removePage(binder, currentPage(binder)); render(); }
       return;
     }
-    // Troca de aba (Cartas | Resumo | Editar | Imprimir).
+    // Pular direto pra um par (bolinhas embaixo do fichário).
+    const pageGo = event.target.closest("[data-page-go]");
+    if (pageGo) {
+      const binder = eventBinder(pageGo);
+      if (binder) { setCurrentPage(binder, Number(pageGo.dataset.pageGo)); render(); }
+      return;
+    }
+    // Configurar / Imprimir: o botão abre o painel dele e, aberto, fecha
+    // (o "X" do cabeçalho do painel é o mesmo botão). "summary" = nenhum.
     const tabBtn = event.target.closest("[data-binder-tab-btn]");
     if (tabBtn) {
       const binder = eventBinder(tabBtn);
-      if (binder) { setTab(binder, tabBtn.dataset.binderTabBtn); render(); }
+      const k = tabBtn.dataset.binderTabBtn;
+      if (binder) { setTab(binder, currentTab(binder) === k ? "summary" : k); render(); }
       return;
     }
     // Salva detalhes (descrição, nº de páginas, cor).
@@ -1842,6 +1982,12 @@
   });
 
   elements.list.addEventListener("change", (event) => {
+    const pageSelect = event.target.closest("[data-page-select]");
+    if (pageSelect) {
+      const binder = eventBinder(pageSelect);
+      if (binder) { setCurrentPage(binder, Number(pageSelect.value)); render(); }
+      return;
+    }
     const gridSelect = event.target.closest("[data-binder-grid]");
     if (gridSelect) {
       const binder = eventBinder(gridSelect);
@@ -2032,27 +2178,15 @@
       : `<span class="binder-slot-free">${escapeHtml(title || "—")}</span>`;
     return `<div class="binder-slot binder-slot-filled" title="${escapeAttribute(title)}">${media}</div>`;
   }
-  // Mesmo layout do "fichário aberto" editável: páginas em pares lado a lado
-  // (ou uma centralizada), pra qualquer formato. Aqui mostra todos os pares.
+  // Mesmo fichário aberto do binder editável (folhas + lombada), um par
+  // embaixo do outro — quem recebe o link rola o binder inteiro.
   function sharedSpreadsHtml(binder) {
-    const g = GRIDS[binder.grid] || GRIDS[DEFAULT_GRID];
     const per = slotCount(binder.grid);
     const pages = Math.max(1, binder.pages || Math.ceil((binder.slots || []).length / per));
-    const pageBlock = (p) => {
-      const s = p * per;
-      const cells = (binder.slots || []).slice(s, s + per).map(sharedSlotHtml).join("");
-      return `<div class="binder-page">
-        <div class="binder-page-cap">${escapeHtml(t("binders.page.indicator", { n: p + 1, total: pages }))}</div>
-        <div class="binder-grid" style="--cols:${g.cols}">${cells}</div>
-      </div>`;
-    };
+    const b = Object.assign({}, binder, { pages });
     let out = "";
-    for (let p = 0; p < pages; p += 2) {
-      out += (p + 1 < pages)
-        ? `<div class="binder-spread">${pageBlock(p)}<div class="binder-spread-divider" aria-hidden="true"></div>${pageBlock(p + 1)}</div>`
-        : `<div class="binder-spread is-single">${pageBlock(p)}</div>`;
-    }
-    return out;
+    for (let p = 0; p < pages; p += 2) out += spreadHtml(b, p, (slot) => sharedSlotHtml(slot));
+    return `<div class="binder-book is-shared">${out}</div>`;
   }
   async function renderSharedView(id) {
     elements.gallery.hidden = true;
@@ -2068,13 +2202,16 @@
     }
     const binder = share.data;
     const filled = binder.slots.filter((s) => s && !s.template).length;
+    // Cabeçalho no molde do binder aberto (nome como título, faixa na cor) e o
+    // convite pra criar o seu na ponta direita.
+    const lc = binder.color ? ` style="--lc:${escapeAttribute(binder.color)}"` : "";
     elements.list.innerHTML = `
-      <div class="binder-shared-banner">
-        <div class="binder-shared-info">
-          <strong>${escapeHtml(binder.name || share.title || "Binder")}</strong>
-          <span>${escapeHtml(t("binders.shared.banner", { n: filled }))}</span>
+      <div class="page-head dash-head lst-head binder-headbar binder-shared-head"${lc}>
+        <div class="lst-head-text">
+          <h1>${escapeHtml(binder.name || share.title || "Binder")}</h1>
+          <p class="page-head-sub">${escapeHtml(t("binders.shared.banner", { n: filled }))}</p>
         </div>
-        <a class="primary" href="binders">${escapeHtml(t("binders.shared.cta"))}</a>
+        <a class="primary binder-shared-cta" href="binders">${escapeHtml(t("binders.shared.cta"))}</a>
       </div>
       ${sharedSpreadsHtml(binder)}`;
   }
