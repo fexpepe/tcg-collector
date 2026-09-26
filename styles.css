@@ -8915,15 +8915,24 @@ html[data-detail="set"] #detailTitle { display: none; }
   color: var(--muted);
   font-weight: 600;
 }
+/* A caixa que ROLA é a .binder-editor-results; a grade é um filho dela
+   (.binder-editor-grid) pra que o marcador e o "Mostrar mais" do paginador
+   (shared.createPager) fiquem dentro da rolagem — carregam mais quando a
+   pessoa chega ao fim da caixa, não assim que o modal abre. */
+.binder-editor-count { margin: 10px 0 0; min-height: 1em; font-size: 0.78rem; color: var(--muted); }
+.binder-editor-count:empty { display: none; }
 .binder-editor-results {
-  margin-top: 12px;
+  margin-top: 8px;
   max-height: 440px;
   overflow: auto;
   overscroll-behavior: contain;
+}
+.binder-editor-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
   gap: 10px;
 }
+.binder-editor-results .load-more { margin: 12px auto 4px; }
 .binder-result {
   flex-direction: column;
   padding: 6px;
