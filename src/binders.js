@@ -1302,6 +1302,7 @@
                 <select data-edit-sort>${sortOptions}</select>
               </label>
             </div>
+            <p class="binder-editor-count" data-edit-count aria-live="polite"></p>
             <div class="binder-editor-results" data-edit-results>
               <p class="binder-editor-hint">${escapeHtml(t("binders.editor.loadingCatalog"))}</p>
             </div>
@@ -1348,12 +1349,56 @@
     return matches;
   }
 
+  // Resultados PAGINADOS (2026-09-26): eram cortados em 48 depois de ordenar —
+  // dava pra trocar a ordem, mas nunca ver a 49ª carta de uma busca como
+  // "Pikachu" (centenas de impressões). Agora a ordenação vale pra TODOS os
+  // resultados e a grade usa o paginador das grades do site (shared.
+  // createPager): 48 por vez, carrega mais ao rolar até o fim da caixa e o
+  // "Mostrar mais (N restantes)" como caminho explícito. A grade é um filho
+  // da caixa que rola, e o marcador/botão entram DENTRO dela — fora, o
+  // marcador ficaria sempre à vista e o paginador despejaria tudo de uma vez.
+  let resultsGrid = null;
+  let resultsPager = null;
+  function resultsGridIn(container) {
+    if (!resultsGrid || !container.contains(resultsGrid)) {
+      container.innerHTML = `<div class="binder-editor-grid" data-edit-grid></div>`;
+      resultsGrid = container.firstElementChild;
+      resultsPager = shared.createPager({ grid: resultsGrid, pageSize: 48 });
+    }
+    return resultsGrid;
+  }
+  function resultNode(card) {
+    const sources = cardImageSources(card);
+    const thumb = localizedImg(sources.url, { className: "binder-result-thumb", alt: "", fallback: sources.fallback, loading: "lazy", thumb: true });
+    const pickIdx = editing.picks ? editing.picks.indexOf(card.id) : -1;
+    const sel = pickIdx >= 0;
+    // Bandeira (nacionalidade) + valor de referência da carta, na moeda atual.
+    const flagHtml = shared.cardFlag(card.language);
+    const val = shared.cardValue(card, defaultVariant(card), pricesStore);
+    const priceHtml = val && val.value
+      ? `<span class="binder-result-price">${escapeHtml((val.estimated ? "≈ " : "") + shared.formatMoney(val.currency, val.value))}</span>`
+      : `<span class="binder-result-price binder-result-price-none">—</span>`;
+    const w = document.createElement("div");
+    w.innerHTML = `<button type="button" class="binder-result${sel ? " selected" : ""}" data-result-id="${escapeAttribute(card.id)}" aria-pressed="${sel}">
+        <span class="binder-result-media">${thumb}${sel ? `<span class="binder-result-badge">${pickIdx + 1}</span>` : ""}<span class="binder-result-flag">${flagHtml}</span></span>
+        <span class="binder-result-label">${escapeHtml(cardLabel(card))}</span>
+        <span class="binder-result-meta">${priceHtml}</span>
+      </button>`;
+    return w.firstElementChild;
+  }
+
   function renderSearchResults(query) {
     if (!editing) return;
     const modal = document.getElementById("binderEditor");
     if (!modal) return;
     const container = modal.querySelector("[data-edit-results]");
     if (!container) return;
+    const countEl = modal.querySelector("[data-edit-count]");
+    const hint = (text) => {
+      container.innerHTML = `<p class="binder-editor-hint">${escapeHtml(text)}</p>`;
+      resultsGrid = null; // a próxima busca recria grade + paginador
+      if (countEl) countEl.textContent = "";
+    };
     const term = String(query || "").trim();
     const pool = baseListForTab();
     let matches;
@@ -1361,39 +1406,25 @@
       matches = pool.filter((card) => matchesCardQuery(card, term));
     } else if (editing.tab === "catalog") {
       // Catálogo tem ~48k cartas: só busca sob demanda (não lista tudo).
-      container.innerHTML = `<p class="binder-editor-hint">${escapeHtml(t("binders.editor.search"))}</p>`;
+      hint(t("binders.editor.search"));
       return;
     } else {
       // Coleção/Desejo: já mostra as cartas do usuário sem precisar digitar.
       matches = pool.slice();
     }
-    // Ordena conforme o seletor (igual à página de set) e limita a 48 resultados.
-    sortEditorMatches(matches);
-    matches = matches.slice(0, 48);
     if (!matches.length) {
       const emptyKey = !term && editing.tab === "collection" ? "binders.editor.emptyCollection"
         : !term && editing.tab === "wishlist" ? "binders.editor.emptyWishlist"
         : "binders.editor.noResults";
-      container.innerHTML = `<p class="binder-editor-hint">${escapeHtml(t(emptyKey))}</p>`;
+      hint(t(emptyKey));
       return;
     }
-    container.innerHTML = matches.map((card) => {
-      const sources = cardImageSources(card);
-      const thumb = localizedImg(sources.url, { className: "binder-result-thumb", alt: "", fallback: sources.fallback, loading: "lazy", thumb: true });
-      const pickIdx = editing.picks ? editing.picks.indexOf(card.id) : -1;
-      const sel = pickIdx >= 0;
-      // Bandeira (nacionalidade) + valor de referência da carta, na moeda atual.
-      const flagHtml = shared.cardFlag(card.language);
-      const val = shared.cardValue(card, defaultVariant(card), pricesStore);
-      const priceHtml = val && val.value
-        ? `<span class="binder-result-price">${escapeHtml((val.estimated ? "≈ " : "") + shared.formatMoney(val.currency, val.value))}</span>`
-        : `<span class="binder-result-price binder-result-price-none">—</span>`;
-      return `<button type="button" class="binder-result${sel ? " selected" : ""}" data-result-id="${escapeAttribute(card.id)}" aria-pressed="${sel}">
-        <span class="binder-result-media">${thumb}${sel ? `<span class="binder-result-badge">${pickIdx + 1}</span>` : ""}<span class="binder-result-flag">${flagHtml}</span></span>
-        <span class="binder-result-label">${escapeHtml(cardLabel(card))}</span>
-        <span class="binder-result-meta">${priceHtml}</span>
-      </button>`;
-    }).join("");
+    // Ordena TUDO conforme o seletor (igual à página de set) e pagina depois.
+    sortEditorMatches(matches);
+    resultsGridIn(container);
+    container.scrollTop = 0; // busca/ordem nova recomeça do topo
+    if (countEl) countEl.textContent = shared.tn("binders.editor.count", matches.length);
+    resultsPager.render(matches, resultNode, { resetCount: true });
   }
 
   // Seleção múltipla: clicar liga/desliga a carta na lista de escolhidas (na
