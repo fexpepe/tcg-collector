@@ -28,7 +28,7 @@
   // qualquer jogo. As stores de coleção/desejo/preços (resumo Tenho/Faltando,
   // "marcar tudo", busca) viram facades que despacham por jogo (cardGameMap,
   // populado quando o catálogo dos dois jogos carrega).
-  const { cardGameMap, owned: ownedStore, wishlist: wishlistStore, prices: pricesStore } = shared.createCrossGameStores();
+  const { cardGameMap, ownedByGame, wishlistByGame, owned: ownedStore, wishlist: wishlistStore, prices: pricesStore } = shared.createCrossGameStores();
   let editorGameFilter = "all"; // filtro do seletor de cartas (ALL/Pokémon/Lorcana)
 
   // Ícones em SVG de traço (currentColor), como no resto do site. Os da
@@ -526,7 +526,11 @@
   function ensureCatalog() {
     if (!catalogPromise) {
       // Binder cross-game: catálogo INTEIRO dos dois jogos (cada carta com .game).
-      catalogPromise = shared.loadAllGamesCatalog().then((catalog) => {
+      // Espera a carga de preços do binder aberto (carregaPrecosDoBinder) se
+      // ela estiver no ar: as duas escrevem no window.TCG_PRICING, e a da borda
+      // TROCA a tabela — rodando em paralelo, a que terminasse por último
+      // apagava a outra.
+      catalogPromise = (precoPromise || Promise.resolve()).then(() => shared.loadAllGamesCatalog()).then((catalog) => {
         allCards = catalog.cards || [];
         cardsById = new Map(allCards.map((card) => [card.id, card]));
         allCards.forEach((card) => cardGameMap.set(card.id, card.game));
@@ -534,6 +538,60 @@
       });
     }
     return catalogPromise;
+  }
+
+  // ── Preço de mercado das cartas do binder aberto (2026-09-26) ─────────────
+  // Desde o split-pricing (2026-09-19) a tabela de preços do site NASCE VAZIA
+  // em produção e só enche com os sets que a tela carrega. Esta página não
+  // carregava nenhum ao abrir — o catálogo vinha só no editor, sob demanda —,
+  // então Valor total / Já gasto / Falta somavam apenas os preços digitados à
+  // mão (o 151 do Fernando: 105 cartas e "R$ 4.900"). Agora, ao abrir, pede
+  // as cartas do binder pelos ids: loadOwnedFast vai à borda (só esses ids,
+  // com os preços) e cai nos chunks dos sets se ela falhar. De quebra o jogo
+  // de cada carta entra no cardGameMap, e o "Tenho" e o preço manual de carta
+  // que não é Pokémon passam a olhar a coleção certa.
+  //
+  // O bolso não guarda o jogo da carta. Os ids do TCGCSV/Scryfall têm prefixo
+  // próprio; carta que você tem ou deseja, a store daquele jogo sabe; o resto
+  // (sem prefixo) só pode ser Pokémon ("base1-4") ou Lorcana ("1-1") — vai
+  // pros dois, e cada um ignora o id que não é dele.
+  const PREFIXO_JOGO = [
+    ["mtg-", "magic"], ["ygo-", "ygo"], ["op-", "onepiece"], ["opcd-", "onepiece"], ["op2002-", "onepiece"],
+    ["fab-", "fab"], ["gcg-", "gundam"], ["dbfw-", "dbfw"], ["dgm-", "digimon"], ["rb-", "riftbound"],
+    ["ua-", "unionarena"], ["nrt-", "naruto"], ["hxh-", "hxh"]
+  ];
+  function jogosDoId(id) {
+    const conhecido = cardGameMap.get(id);
+    if (conhecido) return [conhecido];
+    const porPrefixo = PREFIXO_JOGO.find(([pre]) => id.indexOf(pre) === 0);
+    if (porPrefixo) return [porPrefixo[1]];
+    const dono = shared.GAME_SLUGS.find((g) => (ownedByGame[g] && ownedByGame[g].has(id)) || (wishlistByGame[g] && wishlistByGame[g].hasCard(id)));
+    if (dono) return [dono];
+    return ["pokemon", "lorcana"];
+  }
+  const precoPedido = new Set(); // ids já pedidos nesta visita (render repinta sem repedir)
+  let precoPromise = null;
+  function carregaPrecosDoBinder(binder) {
+    // Com o catálogo inteiro já pedido (editor aberto), os preços vêm com ele.
+    if (catalogPromise) return;
+    const ids = [...new Set((binder.slots || []).map((slot) => slot && slot.cardId).filter((id) => id && !precoPedido.has(id)))];
+    if (!ids.length) return;
+    ids.forEach((id) => precoPedido.add(id));
+    const porJogo = {};
+    ids.forEach((id) => jogosDoId(id).forEach((g) => { (porJogo[g] = porJogo[g] || []).push(id); }));
+    const anterior = precoPromise || Promise.resolve();
+    precoPromise = anterior.then(() => {
+      const antes = window.TCG_PRICING || {};
+      return shared.loadOwnedFast(porJogo).then((r) => {
+        // A borda TROCA a tabela pela da resposta; mescla de volta o que já havia.
+        window.TCG_PRICING = Object.assign({}, antes, window.TCG_PRICING || {});
+        (r.cards || []).forEach((card) => { if (card.game) cardGameMap.set(card.id, card.game); });
+      });
+    }).catch(() => {
+      ids.forEach((id) => precoPedido.delete(id)); // falhou: a próxima visita tenta de novo
+    }).then(() => {
+      if (!elements.detail.hidden && !shareId) render();
+    });
   }
 
   // Fontes do usuário ("Coleção" e "Desejo"): conjuntos de cardId lidos do
@@ -727,6 +785,7 @@
     const vaga = elements.list.querySelector("[data-binder-head-actions]");
     if (vaga && headActions) vaga.replaceWith(headActions);
     if (usaFichario()) mountFichario(binder, slotHtml, currentPage(binder));
+    carregaPrecosDoBinder(binder);
     elements.list.querySelectorAll("img[data-photo-id]").forEach((img) => {
       photoURL(img.dataset.photoId).then((url) => { if (url) img.src = url; });
     });
