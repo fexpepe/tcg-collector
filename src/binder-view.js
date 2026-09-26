@@ -16,11 +16,16 @@
 // o DOM inteiro de uma vez, e a altura da trilha não pula porque os bolsos já
 // ocupam o lugar.
 //
-// Contrato: createBinderView({ root, grid, storageKey }) — `root` é o elemento
-// que recebe os eventos (setas, select, bolinhas, teclado) e contém TODA grade
-// que possa virar fichário; `grid` é a grade padrão; `storageKey` guarda o nº
-// de bolsos escolhido (preferência por página, como o modo de visualização).
-//   .render(tiles, tileOf, { grid? })  monta o fichário (limpa a grade antes)
+// Contrato: createBinderView({ root, grid, storageKey, onPage? }) — `root` é o
+// elemento que recebe os eventos (setas, select, bolinhas, teclado) e contém
+// TODA grade que possa virar fichário; `grid` é a grade padrão; `storageKey`
+// guarda o nº de bolsos escolhido (preferência por página, como o modo de
+// visualização); `onPage(idx)` avisa quando a página aberta muda.
+//   .render(tiles, tileOf, { grid?, layout?, start? })  monta o fichário
+//      (limpa a grade antes). `layout: { cols, rows }` fixa o formato em vez
+//      da preferência de bolsos — é o binder de verdade (binders.js), que tem
+//      o formato dele (2×2 … 5×5) e não troca pelo botão; `start` abre numa
+//      página específica.
 //   .cycle()                            próximo tamanho (9 → 12 → 16 → 4 → 9…)
 //   .paintToggle(button)                número de bolsos no botão do seletor
 //   .pockets                            nº de bolsos atual
@@ -39,17 +44,17 @@
     book: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 3v18"/></svg>'
   };
 
-  function createBinderView({ root, grid, storageKey }) {
-    let pockets = Number(localStorage.getItem(storageKey));
+  function createBinderView({ root, grid, storageKey, onPage }) {
+    let pockets = storageKey ? Number(localStorage.getItem(storageKey)) : 9;
     if (!POCKETS.includes(pockets)) pockets = 9;
     let binder = null;   // { grid, rail, pages, tiles, tileOf, per, current, rendered:Set, pageCount, nav, dots }
     let lembrada = 0;    // página aberta: sobrevive à troca de filtro/ordenação enquanto existir
 
-    function render(tiles, tileOf, { grid: alvo } = {}) {
+    function render(tiles, tileOf, { grid: alvo, layout, start } = {}) {
       const el = alvo || grid;
       el.innerHTML = "";
-      const per = pockets;
-      const cols = per === 4 ? 2 : per === 16 ? 4 : 3;
+      const per = layout ? layout.cols * layout.rows : pockets;
+      const cols = layout ? layout.cols : per === 4 ? 2 : per === 16 ? 4 : 3;
       // Linhas entram no CSS pra limitar a largura da trilha de modo que a
       // PÁGINA INTEIRA caiba na altura da tela no desktop (ver .binder-rail).
       el.style.setProperty("--binder-rows", String(per / cols));
@@ -91,6 +96,7 @@
       el.append(nav, rail, dots);
       binder = { grid: el, rail, pages, tiles, tileOf, per, current: 0, rendered: new Set(), pageCount, nav, dots };
       // Mudou o nº de páginas e a lembrada não existe mais: volta pro início.
+      if (Number.isInteger(start)) lembrada = Math.max(0, Math.min(pageCount - 1, start));
       binder.current = lembrada < pageCount ? lembrada : 0;
       ensurePages(binder.current);
       paintNav();
@@ -110,6 +116,7 @@
             binder.current = idx;
             lembrada = idx;
             paintNav();
+            if (onPage) onPage(idx);
           }
           // Pré-monta a vizinha pra qual o dedo está indo.
           ensurePages(idx);
@@ -156,6 +163,7 @@
       binder.current = alvo;
       lembrada = alvo;
       paintNav();
+      if (onPage) onPage(alvo);
     }
 
     // O fichário ativo é o que está no DOM: depois de um re-render da página

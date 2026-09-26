@@ -7536,6 +7536,8 @@ html:not([data-cardlang="all"]) #setRegionChips {
   background: var(--accent-dark);
 }
 
+/* Formulário de binder novo (abre pelo "+ Novo binder"). Controles retos,
+   como o passe flat do site; o painel na moldura do .lst-panel das Pastas. */
 .binder-toolbar {
   display: flex;
   gap: 12px;
@@ -7545,14 +7547,11 @@ html:not([data-cardlang="all"]) #setRegionChips {
   margin-bottom: 22px;
   background: var(--panel);
   border: 1px solid var(--line);
-  border-radius: 10px;
-  box-shadow: var(--shadow);
 }
 .binder-toolbar input[type="text"] {
   flex: 1 1 220px;
-  min-height: 42px;
+  min-height: 44px;
   padding: 0 12px;
-  border-radius: 7px;
   border: 1px solid var(--line);
   background: var(--surface);
   color: var(--text);
@@ -7566,38 +7565,31 @@ html:not([data-cardlang="all"]) #setRegionChips {
   font-weight: 600;
 }
 .binder-grid-label select {
-  min-height: 42px;
-  border-radius: 7px;
+  min-height: 44px;
   border: 1px solid var(--line);
   background: var(--surface);
   color: var(--text);
   padding: 0 10px;
 }
 
-/* --- Galeria de binders (criar + lista/grid, clicar abre o binder) --- */
+/* --- Galeria de binders (criar + lista/grid, clicar abre o binder) ---
+   2026-09-26, no molde da galeria de Pastas: "+ Novo binder" à esquerda abre o
+   formulário logo abaixo; Visualização (o .view-toggle do site) e Ordenar na
+   ponta direita. */
 .binder-gallery-controls {
   display: flex;
   align-items: center;
-  gap: 10px;
-  justify-content: flex-end;
-  margin: 14px 0;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  margin: 0 0 16px;
 }
-.binder-view-toggle {
-  display: inline-flex;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  overflow: hidden;
-}
-.binder-view-btn {
-  min-width: 40px;
-  min-height: 38px;
-  border: none;
-  background: var(--panel);
-  color: var(--muted);
-  font-size: 1.1rem;
-  cursor: pointer;
-}
-.binder-view-btn[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); }
+.binder-new-toggle { gap: 8px; min-height: 44px; padding: 0 18px; border: 0; }
+.binder-new-toggle svg { width: 16px; height: 16px; flex: none; }
+.binder-new-toggle[aria-expanded="true"] { background: var(--accent-dark); }
+.binder-gallery-tools { display: flex; align-items: center; gap: 10px; }
+.binder-view-toggle .view-toggle-btn { display: inline-flex; align-items: center; justify-content: center; }
+.binder-view-toggle svg { width: 18px; height: 18px; }
 .binder-sort-label {
   display: inline-flex;
   align-items: center;
@@ -7606,9 +7598,8 @@ html:not([data-cardlang="all"]) #setRegionChips {
   color: var(--muted);
 }
 .binder-sort-label select {
-  min-height: 38px;
+  min-height: 44px;
   padding: 0 10px;
-  border-radius: 7px;
   border: 1px solid var(--line);
   background: var(--panel);
   color: var(--text);
@@ -7678,7 +7669,8 @@ html:not([data-cardlang="all"]) #setRegionChips {
 .binder-card-act.danger { color: #e7796f; }
 .binder-card-body { padding: 10px 12px 12px; }
 .binder-card-titlerow { display: flex; align-items: center; gap: 8px; justify-content: space-between; }
-.binder-card-name { font-size: 1rem; font-weight: 800; color: var(--text); }
+.binder-card-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 1rem; font-weight: 800; color: var(--text); text-decoration: none; }
+.binder-card-name:hover { text-decoration: underline; }
 .binder-card-type {
   flex: none;
   font-size: 0.66rem; font-weight: 700;
@@ -7699,6 +7691,38 @@ html:not([data-cardlang="all"]) #setRegionChips {
 }
 .binder-gallery.is-list .binder-card-cover { aspect-ratio: auto; height: 100%; min-height: 64px; padding: 6px; }
 .binder-gallery.is-list .binder-card-body { padding: 10px 56px 10px 14px; }
+/* Toque (sem hover): as ações do cartão saem de cima da capa e viram uma
+   fileira no pé do cartão — por cima, dois botões de 44px tampavam a
+   miniatura da página num cartão de ~170px. */
+@media (hover: none) {
+  .binder-card-acts { position: static; opacity: 1; justify-content: flex-end; padding: 0 8px 8px; }
+  .binder-gallery.is-list .binder-card-acts { grid-column: 1 / -1; }
+  .binder-gallery.is-list .binder-card-body { padding-right: 14px; }
+}
+/* Celular: DUAS colunas de cartões (um por linha dava ~400px de altura cada
+   e a galeria virava um rolo), formulário em grade — nome e template na linha
+   toda, tipo e formato lado a lado e o "Criar binder" embaixo. */
+@media (max-width: 560px) {
+  .binder-gallery.is-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .binder-card-cover { padding: 8px; }
+  .binder-card-body { padding: 8px 10px 10px; }
+  .binder-card-titlerow { flex-wrap: wrap; gap: 4px 6px; }
+  .binder-card-meta { flex-direction: column; gap: 2px; margin: 6px 0; font-size: 0.74rem; }
+  .binder-gallery-controls { gap: 10px; }
+  .binder-new-toggle { flex: 1 1 100%; justify-content: center; }
+  .binder-gallery-tools { flex: 1 1 100%; justify-content: space-between; }
+  .binder-toolbar { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .binder-toolbar input[type="text"],
+  .binder-toolbar .binder-grid-label:first-of-type { grid-column: 1 / -1; }
+  .binder-grid-label select { width: 100%; }
+  .binder-toolbar .primary { grid-column: 1 / -1; }
+}
+/* Campo de texto com 16px no toque: abaixo disso o iOS dá zoom na página. */
+@media (pointer: coarse) {
+  .binder-toolbar input[type="text"],
+  .binder-grid-label select,
+  .binder-sort-label select { font-size: 16px; }
+}
 
 /* Dashboard de resumo no topo da coleção: stats + mais valiosas + distribuição. */
 .collection-dashboard {
@@ -8270,9 +8294,25 @@ html[data-detail="set"] #detailTitle { display: none; }
    cápsulas da Coleção (.set-insights-rail) e, embaixo, o fichário aberto.
    As regras do cartão-herói repetem as do .coll-hero em vez de reusá-lo: o
    coll- vai pra folha da Coleção no split-css e o binders.html não a carrega. */
-.binder-headbar { margin-bottom: 18px; }
+/* (0,2,0) e com a versão de celular explícita: com uma classe só, o
+   `.page-head { margin-bottom: 10px }` do celular empatava e quem vencia era
+   a ordem — 10px no repositório, 18px em produção (a folha dos binders
+   carrega depois do núcleo). */
+.page-head.binder-headbar { margin-bottom: 18px; }
+@media (max-width: 600px) { .page-head.binder-headbar { margin-bottom: 10px; } }
 .binder-headbar .lst-title { max-width: 640px; }
+/* O "mínimo de 16px nos campos de toque" (lá no começo do arquivo) é
+   !important e acabava FIXANDO o nome em 16px no celular, embaixo de um h1 de
+   26px. Aqui herdar é seguro: o título é maior que 16px, então o iOS não dá
+   zoom ao focar. */
+@media (pointer: coarse), (max-width: 700px) {
+  .binder-headbar h1 input.lst-title { font-size: inherit !important; } /* (0,2,2): vence o input:not():not() (0,2,1) */
+}
 .binder-head-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+@media (max-width: 560px) {
+  .binder-head-actions { width: 100%; }
+  .binder-head-actions > button { flex: 1 1 0; }
+}
 /* Contato do binder de venda: linha discreta entre o nome e o "← Binders". */
 .binder-subtitle-input {
   display: block; width: 100%; max-width: 460px; height: auto; min-height: 0;
@@ -8514,20 +8554,66 @@ html[data-detail="set"] #detailTitle { display: none; }
 /* Compartilhado (somente leitura): todos os pares, um embaixo do outro. */
 .binder-book.is-shared { display: grid; justify-items: center; gap: 22px; }
 .binder-shared-head .binder-shared-cta { display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; text-decoration: none; }
-/* Tablet e celular: as folhas EMPILHAM (lado a lado, um 3×3 aberto virava 6
-   colunas de ~50px numa tela de 390px) e a lombada deita. As setas descem pra
-   linha das bolinhas — nas laterais elas roubavam 140px da folha. */
-@media (max-width: 900px) {
-  .binder-stage { grid-template-areas: "book book book" "prev dots next"; gap: 12px; }
-  .binder-spread { flex-direction: column; width: 100%; padding: 10px; }
-  .binder-leaf { flex: none; width: auto; }
-  .binder-leaf:first-child, .binder-leaf:last-child { background-image: none; }
-  .binder-leaf.is-blank { display: none; }
-  .binder-spread.is-single .binder-spine { display: none; }
-  .binder-spine { flex: 0 0 28px; flex-direction: row; }
-  .binder-spine span { width: 12px; height: 38px; }
-  .binder-flip { width: 44px; min-width: 44px; height: 44px; min-height: 44px; }
+/* ── Binder aberto no celular/tablet = modo fichário (2026-09-26) ──────────
+   Até 900px o binders.js monta o binder com o src/binder-view.js — o MESMO
+   fichário da Coleção, do set e das Pastas (barra « ‹ Página › », trilha que
+   rola de lado, bolinhas) —, no formato do próprio binder. As folhas
+   empilhadas de antes davam duas telas de rolagem por par. Aqui só o que é
+   do binder: o bolso é o .binder-slot (o vazio tem o "+ Adicionar", o de
+   template o sprite), sem os selos Tenho/Info/♥/‹ › por cima — o toque abre
+   a folha de ações (.binder-sheet). A carta que você não tem segue em preto
+   e branco: é o "tenho/não tenho" do binder. */
+.binder-book.is-fichario { margin-top: 6px; }
+.binder-fichario .binder-pocket { border: 0; }
+.binder-fichario .binder-pocket > .binder-slot { width: 100%; height: 100%; aspect-ratio: auto; border-radius: 8px; }
+.binder-fichario .binder-slot-actions,
+.binder-fichario .binder-slot-want,
+.binder-fichario .binder-slot-flag,
+.binder-fichario .binder-slot-move { display: none; }
+/* O "Adicionar" do bolso vazio sai da vista (bolso de ~60px no 5×5) mas fica
+   pro leitor de tela — é o nome do botão. */
+.binder-fichario .binder-slot-empty > span:not(.binder-slot-plus) {
+  position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap;
 }
+.binder-fichario .binder-slot-price { padding: 4px 6px; font-size: 11px; }
+.binder-fichario .binder-slot-tplname { font-size: 11px; }
+.binder-book.is-fichario .binder-book-tools { justify-content: center; margin-top: 16px; }
+
+/* Folha de ações do bolso (toque numa carta no modo fichário): presa ao
+   rodapé, a carta à esquerda com nome/código/onde está, e as ações em duas
+   colunas com rótulo e 48px de altura. Flutua por cima: é uma das poucas
+   coisas que ganham a sombra --shadow-pop no passe flat. */
+.binder-sheet-wrap { position: fixed; inset: 0; z-index: 70; display: flex; align-items: flex-end; justify-content: center; }
+.binder-sheet-backdrop { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.5); }
+.binder-sheet {
+  position: relative; width: min(560px, 100%);
+  max-height: 88vh; max-height: 88dvh; overflow-y: auto; overscroll-behavior: contain;
+  padding: 16px 16px calc(16px + env(safe-area-inset-bottom));
+  background: var(--panel); border: 1px solid var(--line); border-bottom: 0;
+  border-radius: 16px 16px 0 0; box-shadow: var(--shadow-pop);
+}
+.binder-sheet-head { display: grid; grid-template-columns: 92px minmax(0, 1fr) auto; gap: 14px; align-items: start; margin-bottom: 14px; }
+.binder-sheet-thumb { display: flex; align-items: center; justify-content: center; aspect-ratio: 63 / 88; overflow: hidden; border-radius: 6px; background: var(--panel-strong); }
+.binder-sheet-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.binder-sheet-thumb.not-owned img { filter: grayscale(1); opacity: 0.62; }
+.binder-sheet-id { display: flex; flex-direction: column; gap: 5px; min-width: 0; padding-top: 2px; }
+.binder-sheet-id strong { font-size: 17px; line-height: 1.2; overflow-wrap: anywhere; }
+.binder-sheet-line { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); }
+.binder-sheet-price { color: var(--text); font-weight: 800; }
+.binder-sheet-x {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 44px; min-width: 44px; height: 44px; min-height: 44px; padding: 0;
+  border: 1px solid var(--line); background: var(--panel); color: var(--text);
+}
+.binder-sheet-x svg { width: 18px; height: 18px; }
+.binder-sheet-acts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.binder-sheet:focus { outline: none; }
+.binder-sheet-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 4px 10px; font-size: 14px; font-weight: 700; line-height: 1.15; }
+.binder-sheet-btn svg { width: 18px; height: 18px; flex: none; }
+.binder-sheet-btn span { min-width: 0; text-align: left; overflow-wrap: anywhere; }
+.binder-sheet-btn:disabled { opacity: 0.4; }
+.binder-sheet-own.is-on { border-color: var(--accent); color: var(--accent-ink); background: var(--accent-soft); }
+.binder-sheet-want.is-on { border-color: #e2445c; color: #e2445c; }
 .binder-slot {
   position: relative;
   /* Proporção da carta (63×88mm), a mesma do bolso do fichário das grades. */

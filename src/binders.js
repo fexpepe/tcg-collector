@@ -42,7 +42,6 @@
     // "Configurar": controles deslizantes (formato, páginas, cor, descrição).
     settings: svg('<path d="M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1"/><circle cx="15" cy="6" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="18" r="2"/>'),
     trash: svg('<path d="M4 7h16"/><path d="M9.5 7V4.5h5V7"/><path d="M6.5 7l.8 12a1.5 1.5 0 0 0 1.5 1.4h6.4a1.5 1.5 0 0 0 1.5-1.4l.8-12"/><path d="M10 11v6M14 11v6"/>'),
-    open: svg('<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13.5 6.5 4 4"/>'),
     copy: svg('<rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/>'),
     plus: svg('<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>'),
     minus: svg('<line x1="5" y1="12" x2="19" y2="12"/>'),
@@ -51,6 +50,8 @@
     next: svg('<polyline points="9 18 15 12 9 6"/>', ' class="binder-flip-ic"'),
     book: svg('<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 3v18"/>'),
     check: svg('<path d="m5 12.5 4.5 4.5L19 7.5"/>'),
+    eye: svg('<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/>'),
+    swap: svg('<path d="M4 8h13l-3.5-3.5M20 16H7l3.5 3.5"/>'),
     chevL: svg('<polyline points="15 18 9 12 15 6"/>'),
     chevR: svg('<polyline points="9 18 15 12 9 6"/>'),
     money: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.2v9.6M14.4 9.6c0-1-1.1-1.6-2.4-1.6s-2.4.6-2.4 1.6 1 1.5 2.4 1.9 2.5 1 2.5 2-1.1 1.7-2.5 1.7-2.5-.7-2.5-1.7"/></svg>'
@@ -575,6 +576,8 @@
     gridSelect: document.getElementById("binderGrid"),
     sortSelect: document.getElementById("binderSort"),
     createButton: document.getElementById("binderCreate"),
+    createPanel: document.getElementById("binderCreatePanel"),
+    newToggle: document.getElementById("binderNewToggle"),
     viewToggle: document.querySelector(".binder-view-toggle")
   };
 
@@ -635,12 +638,11 @@
       <article class="binder-card${binder.color ? " has-color" : ""}" data-open-id="${escapeAttribute(binder.id)}"${colorStyle}>
         <div class="binder-card-cover">${miniPageHtml(binder)}</div>
         <div class="binder-card-body">
-          <div class="binder-card-titlerow"><strong class="binder-card-name">${escapeHtml(binder.name)}</strong>${typeTag}</div>
+          <div class="binder-card-titlerow"><a class="binder-card-name" href="binders?id=${encodeURIComponent(binder.id)}">${escapeHtml(binder.name)}</a>${typeTag}</div>
           <div class="binder-card-meta"><span>${escapeHtml(t("binders.ownedOf", { o: stats.owned, t: stats.cards }))}</span><span>${escapeHtml(gridLabel(binder))} · ${escapeHtml(t("binders.pagesCount", { n: stats.pages }))}</span></div>
           <div class="progress-bar"><span style="width:${stats.pct}%"></span></div>
         </div>
         <div class="binder-card-acts">
-          ${act("data-open-id", IC.open, "binders.open")}
           ${act("data-duplicate-id", IC.copy, "binders.duplicate")}
           ${act("data-delete-id", IC.trash, "binders.delete", " danger")}
         </div>
@@ -652,6 +654,9 @@
     elements.gallery.hidden = false;
     const binders = sortedBinders();
     elements.empty.hidden = binders.length > 0;
+    // Sem binder nenhum o formulário já nasce aberto (é a única coisa a fazer
+    // na tela); com binders ele fica atrás do "+ Novo binder".
+    if (!binders.length) setCreateOpen(true);
     elements.galleryGrid.className = `binder-gallery ${galleryView === "list" ? "is-list" : "is-grid"}`;
     elements.galleryGrid.innerHTML = binders.map(galleryCardHtml).join("");
     elements.galleryGrid.querySelectorAll("img[data-photo-id]").forEach((img) => {
@@ -671,6 +676,47 @@
   // Imprimir saíram: o resumo é o trilho, e Configurar/Imprimir são painéis que
   // os botões do herói abrem e fecham (como o "Adicionar cartas" da pasta).
   const headActions = document.getElementById("binderHeadActions");
+
+  // Celular e tablet (2026-09-26): o binder aberto é o MODO FICHÁRIO do resto
+  // do site (src/binder-view.js — o mesmo da Coleção, do set e das Pastas):
+  // uma página por tela numa trilha que rola de lado, a barra « ‹ Página › »
+  // e as bolinhas, no formato do próprio binder. As duas folhas empilhadas de
+  // antes davam duas páginas de rolagem por par, e os selos Tenho/Info/♥/‹ ›
+  // cobriam cada carta de ~95px. Aqui o bolso mostra só a carta; tocar nela
+  // abre a folha de ações (openSlotSheet). No desktop segue o par aberto.
+  const FICHARIO_MQ = window.matchMedia("(max-width: 900px)");
+  const fichario = window.TCGBinderView
+    ? window.TCGBinderView.createBinderView({
+      root: elements.list,
+      grid: null,
+      // A página que a pessoa passou com o dedo vira a "atual" do binder: é a
+      // que o "Remover página" remove e a que o desktop abre se a janela crescer.
+      onPage: (idx) => { const b = openId ? getBinder(openId) : null; if (b) setCurrentPage(b, idx); }
+    })
+    : null;
+  const usaFichario = () => !!fichario && FICHARIO_MQ.matches;
+
+  // Monta o fichário no [data-binder-fichario] recém-desenhado. Todo bolso vira
+  // item (os vazios também: são o "+ Adicionar" do binder), e o binder-view
+  // só preenche as páginas vizinhas da atual — um binder de 200 páginas não
+  // paga o DOM inteiro.
+  function mountFichario(binder, cellHtml, start) {
+    const el = elements.list.querySelector("[data-binder-fichario]");
+    if (!el || !fichario) return;
+    const g = GRIDS[binder.grid] || GRIDS[DEFAULT_GRID];
+    const total = pageCount(binder) * g.cols * g.rows;
+    const items = Array.from({ length: total }, (_, i) => ({ slot: (binder.slots || [])[i] || null, i }));
+    fichario.render(items, ({ slot, i }) => {
+      const w = document.createElement("div");
+      w.innerHTML = cellHtml(slot, i);
+      const node = w.firstElementChild;
+      node.querySelectorAll("img[data-photo-id]").forEach((img) => {
+        photoURL(img.dataset.photoId).then((url) => { if (url) img.src = url; });
+      });
+      return node;
+    }, { grid: el, layout: { cols: g.cols, rows: g.rows }, start });
+  }
+
   function renderDetail(binder) {
     isSale = isSaleBinder(binder);
     elements.gallery.hidden = true;
@@ -680,6 +726,7 @@
     // movidos pro lugar reservado no cabeçalho recém-desenhado.
     const vaga = elements.list.querySelector("[data-binder-head-actions]");
     if (vaga && headActions) vaga.replaceWith(headActions);
+    if (usaFichario()) mountFichario(binder, slotHtml, currentPage(binder));
     elements.list.querySelectorAll("img[data-photo-id]").forEach((img) => {
       photoURL(img.dataset.photoId).then((url) => { if (url) img.src = url; });
     });
@@ -819,6 +866,12 @@
         ${panelInner}
       </section>` : "";
 
+    // Página nova / remover (na barra do par aberto, ou embaixo do fichário).
+    const tools = `
+          <div class="binder-book-tools">
+            <button type="button" class="secondary binder-page-add" data-page-add>${IC.plus}<span>${esc(t("binders.page.add"))}</span></button>
+            ${pages > 1 ? `<button type="button" class="secondary binder-page-remove" data-page-remove title="${escA(t("binders.page.removeHint", { n: page + 1 }))}">${IC.minus}<span>${esc(t("binders.page.remove"))}</span></button>` : ""}
+          </div>`;
     // Barra do fichário: onde estou (e pular pra outro par) à esquerda; página
     // nova / remover à direita. As setas grandes ficam nas laterais do par.
     // Rótulo de um par ("Páginas 3–4"; o último, se sozinho, "Página 5").
@@ -831,15 +884,27 @@
     const bar = `
       <div class="binder-book-bar">
         <label class="binder-page-pick">${IC.book}<span class="sr-only">${esc(t("binder.pickPage"))}</span><select data-page-select>${opcoes}</select><span class="binder-page-total">/ ${pages}</span></label>
-        <div class="binder-book-tools">
-          <button type="button" class="secondary binder-page-add" data-page-add>${IC.plus}<span>${esc(t("binders.page.add"))}</span></button>
-          ${pages > 1 ? `<button type="button" class="secondary binder-page-remove" data-page-remove title="${escA(t("binders.page.removeHint", { n: page + 1 }))}">${IC.minus}<span>${esc(t("binders.page.remove"))}</span></button>` : ""}
-        </div>
+        ${tools}
       </div>`;
     const dots = spreads > 1 && spreads <= 24
       ? `<div class="binder-dots">${Array.from({ length: spreads }, (_, i) =>
         `<button type="button" class="binder-dot" data-page-go="${i * 2}" aria-label="${escA(rotuloPar(i))}" aria-current="${i === spreadIdx ? "page" : "false"}"></button>`).join("")}</div>`
       : `<div class="binder-dots"></div>`;
+    // Celular/tablet: o modo fichário (o binder-view monta a navegação, a
+    // trilha e as bolinhas dentro do [data-binder-fichario]); página nova e
+    // remover ficam embaixo, fora do caminho do polegar que passa página.
+    if (usaFichario()) {
+      return `
+      <article class="binder${cor ? " has-color" : ""}" data-binder-id="${escA(binder.id)}"${cor ? ` style="--binder-color:${escA(cor)}"` : ""}>
+        ${head}
+        ${rail}
+        ${panel}
+        <section class="binder-book is-fichario" aria-label="${escA(t("binders.book"))}">
+          <div class="card-grid is-binder binder-fichario" data-binder-fichario></div>
+          ${tools}
+        </section>
+      </article>`;
+    }
     const stage = `
       <section class="binder-book" aria-label="${escA(t("binders.book"))}">
         ${bar}
@@ -1003,6 +1068,119 @@
   function cardLabelFromSlot(slot) {
     return slot.code ? `${slot.name} (${slot.code})` : slot.name || "";
   }
+
+  // ---------------------------------------------------------------------------
+  // Folha de ações do bolso (modo fichário, celular/tablet)
+  // ---------------------------------------------------------------------------
+  // No par aberto do desktop as ações moram no próprio bolso (aparecem no
+  // hover). No fichário do celular o bolso mostra só a carta, como no resto do
+  // site, e o toque abre esta folha presa ao rodapé: a carta grande, onde ela
+  // está e as ações com rótulo e alvo de 44px — Tenho, Desejo, Ver carta,
+  // Trocar e Mover. Bolso vazio e de template continuam indo direto pro editor.
+  let sheetState = null; // { binderId, index }
+  let sheetEl = null;
+  function closeSlotSheet() {
+    sheetState = null;
+    if (sheetEl) { sheetEl.remove(); sheetEl = null; }
+    document.body.classList.remove("preview-open");
+  }
+  function openSlotSheet(binderId, index) {
+    sheetState = { binderId, index };
+    paintSlotSheet();
+  }
+  function paintSlotSheet() {
+    const binder = sheetState && getBinder(sheetState.binderId);
+    const index = sheetState ? sheetState.index : -1;
+    const slot = binder && binder.slots[index];
+    if (!slot || slot.template) { closeSlotSheet(); return; }
+    isSale = isSaleBinder(binder);
+    const per = slotCount(binder.grid);
+    const title = slot.cardId ? (slot.name || "") : (slot.label || "");
+    const ownable = !isSale && !!slot.cardId;
+    const owned = ownable && ownedStore.has(slot.cardId);
+    const variant = slot.variant || "Normal";
+    const wanted = ownable && wishlistStore.has(slot.cardId, variant);
+    let media = "";
+    if (slot.photoId) media = `<img data-photo-id="${escapeAttribute(slot.photoId)}" alt="">`;
+    else if (slot.image) media = localizedImg(slot.image, { alt: "", fallback: slot.fallback || "", thumb: true });
+    const linhas = [
+      slot.cardId ? `${shared.cardFlag(shared.cardLanguageFromId(slot.cardId))}<span>${escapeHtml([slot.code, slot.variant].filter(Boolean).join(" · "))}</span>` : "",
+      isSale && Number(slot.price) ? `<span class="binder-sheet-price">R$ ${escapeHtml(fmtPrice(slot.price))}${slot.condition ? ` · ${escapeHtml(slot.condition)}` : ""}</span>` : "",
+      isSale && slot.note ? `<span>${escapeHtml(slot.note)}</span>` : "",
+      `<span>${escapeHtml(t("binders.sheet.where", { p: Math.floor(index / per) + 1, n: (index % per) + 1 }))}</span>`
+    ].filter(Boolean).map((l) => `<span class="binder-sheet-line">${l}</span>`).join("");
+    const btn = (act, icon, label, off) =>
+      `<button type="button" class="secondary binder-sheet-btn" data-sheet-act="${act}"${off ? " disabled" : ""}>${icon}<span>${escapeHtml(label)}</span></button>`;
+    const acoes = [
+      ownable ? `<button type="button" class="secondary binder-sheet-btn binder-sheet-own${owned ? " is-on" : ""}" data-sheet-act="own" aria-pressed="${owned}">${owned ? IC.check : IC.plus}<span>${escapeHtml(owned ? t("binders.slot.ownedShort") : t("binders.sheet.markOwned"))}</span></button>` : "",
+      ownable && !owned ? `<button type="button" class="secondary binder-sheet-btn binder-sheet-want${wanted ? " is-on" : ""}" data-sheet-act="want" aria-pressed="${wanted}">${heartSvg(wanted)}<span>${escapeHtml(wanted ? t("binders.sheet.wanted") : t("binders.sheet.want"))}</span></button>` : "",
+      slot.cardId ? btn("info", IC.eye, t("binders.sheet.view")) : "",
+      btn("edit", IC.swap, slot.cardId ? t("binders.sheet.change") : t("binders.editor.title")),
+      btn("back", IC.chevL, t("folders.moveBack"), index <= 0),
+      btn("fwd", IC.chevR, t("folders.moveFwd"), index >= binder.slots.length - 1)
+    ].join("");
+    if (!sheetEl) {
+      sheetEl = document.createElement("div");
+      sheetEl.className = "binder-sheet-wrap";
+      document.body.appendChild(sheetEl);
+      document.body.classList.add("preview-open"); // trava a rolagem do fundo
+    }
+    sheetEl.innerHTML = `
+      <div class="binder-sheet-backdrop" data-sheet-close></div>
+      <section class="binder-sheet" role="dialog" aria-modal="true" tabindex="-1" aria-label="${escapeAttribute(title || t("binders.editor.title"))}">
+        <div class="binder-sheet-head">
+          <span class="binder-sheet-thumb${ownable && !owned ? " not-owned" : ""}">${media || `<span class="binder-slot-free">${escapeHtml(title || "—")}</span>`}</span>
+          <div class="binder-sheet-id"><strong>${escapeHtml(title || "—")}</strong>${linhas}</div>
+          <button type="button" class="binder-sheet-x" data-sheet-close aria-label="${escapeAttribute(t("binders.panelClose"))}">${IC.close}</button>
+        </div>
+        <div class="binder-sheet-acts">${acoes}</div>
+      </section>`;
+    sheetEl.querySelectorAll("img[data-photo-id]").forEach((img) => {
+      photoURL(img.dataset.photoId).then((url) => { if (url) img.src = url; });
+    });
+    // Foco no diálogo (não no X: o anel de foco nele parecia um botão ativo).
+    const dlg = sheetEl.querySelector(".binder-sheet");
+    if (dlg && !sheetEl.contains(document.activeElement)) dlg.focus({ preventScroll: true });
+  }
+  document.addEventListener("click", (event) => {
+    if (!sheetEl || !sheetEl.contains(event.target)) return;
+    if (event.target.closest("[data-sheet-close]")) { closeSlotSheet(); return; }
+    const acao = event.target.closest("[data-sheet-act]");
+    if (!acao || !sheetState) return;
+    const binder = getBinder(sheetState.binderId);
+    const index = sheetState.index;
+    const slot = binder && binder.slots[index];
+    if (!slot) { closeSlotSheet(); return; }
+    const variant = slot.variant || "Normal";
+    const act = acao.dataset.sheetAct;
+    if (act === "own" && slot.cardId) {
+      // Mesma regra do "Tenho" do bolso: deixou de ter = vai pra lista de
+      // desejo; passou a ter = sai dela.
+      const had = ownedStore.variantTotal(slot.cardId, variant) > 0;
+      ownedStore.toggleVariant(slot.cardId, variant);
+      if (had) { if (!wishlistStore.has(slot.cardId, variant)) wishlistStore.toggle(slot.cardId, variant); }
+      else wishlistStore.remove(slot.cardId, variant);
+      render(); paintSlotSheet();
+    } else if (act === "want" && slot.cardId) {
+      wishlistStore.toggle(slot.cardId, variant);
+      render(); paintSlotSheet();
+    } else if (act === "info" && slot.cardId) {
+      closeSlotSheet();
+      ensureCatalog().then(() => cardPreview.open(slot.cardId, variant));
+    } else if (act === "edit") {
+      closeSlotSheet();
+      openEditor(binder.id, index);
+    } else if (act === "back" || act === "fwd") {
+      // A folha acompanha a carta: dá pra tocar em "Mover" várias vezes
+      // seguidas, e o fichário vira a página se ela cruzar a borda.
+      const to = index + (act === "back" ? -1 : 1);
+      if (to < 0 || to >= binder.slots.length) return;
+      moveSlot(binder, index, to);
+      sheetState.index = to;
+      setCurrentPage(binder, Math.floor(to / slotCount(binder.grid)));
+      render(); paintSlotSheet();
+    }
+  });
 
   // ---------------------------------------------------------------------------
   // Editor de slot (modal)
@@ -1765,6 +1943,19 @@
       if (event.key === "Enter") elements.createButton.click();
     });
   }
+  // "+ Novo binder": abre/fecha o formulário (e já põe o cursor no nome).
+  function setCreateOpen(open) {
+    if (!elements.createPanel) return;
+    elements.createPanel.hidden = !open;
+    if (elements.newToggle) elements.newToggle.setAttribute("aria-expanded", String(open));
+  }
+  if (elements.newToggle) {
+    elements.newToggle.addEventListener("click", () => {
+      const abrir = elements.createPanel.hidden;
+      setCreateOpen(abrir);
+      if (abrir && elements.nameInput) elements.nameInput.focus();
+    });
+  }
 
   // Galeria: abrir / duplicar / excluir + alternar visualização e ordenação.
   if (elements.galleryGrid) {
@@ -1773,6 +1964,7 @@
       if (dup) { event.stopPropagation(); duplicateBinder(dup.dataset.duplicateId).then(render); return; }
       const del = event.target.closest("[data-delete-id]");
       if (del) { event.stopPropagation(); if (confirm(t("binders.deleteConfirm"))) { removeBinder(del.dataset.deleteId); render(); } return; }
+      if (event.target.closest("a[href]")) return; // o nome é link: ele mesmo navega
       const open = event.target.closest("[data-open-id]");
       if (open) { window.location.href = `binders?id=${encodeURIComponent(open.dataset.openId)}`; }
     });
@@ -1856,7 +2048,15 @@
     const slotBtn = event.target.closest("[data-slot-index]");
     if (slotBtn) {
       const article = slotBtn.closest("[data-binder-id]");
-      openEditor(article.dataset.binderId, Number(slotBtn.dataset.slotIndex));
+      const index = Number(slotBtn.dataset.slotIndex);
+      // Modo fichário: bolso com carta abre a folha de ações; vazio e
+      // template vão direto pro editor, como no desktop.
+      if (slotBtn.closest(".binder-pocket")) {
+        const binder = getBinder(article.dataset.binderId);
+        const slot = binder && binder.slots[index];
+        if (slot && !slot.template) { openSlotSheet(binder.id, index); return; }
+      }
+      openEditor(article.dataset.binderId, index);
       return;
     }
     // Navegação de páginas
@@ -2113,6 +2313,7 @@
 
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && editing) closeEditor();
+    else if (event.key === "Escape" && sheetEl) closeSlotSheet();
   });
 
   // Botão "Salvar binder": os dados já são salvos automaticamente, mas isto dá
@@ -2154,6 +2355,14 @@
     });
   }
 
+  // Cruzou o corte do fichário (girou o tablet, redimensionou a janela):
+  // redesenha no outro modo, na mesma página.
+  FICHARIO_MQ.addEventListener("change", () => {
+    if (elements.detail.hidden) return;
+    if (shareId) { if (sharedCache) paintSharedView(sharedCache); }
+    else render();
+  });
+
   if (shareId) {
     renderSharedView(shareId);
   } else {
@@ -2188,6 +2397,7 @@
     for (let p = 0; p < pages; p += 2) out += spreadHtml(b, p, (slot) => sharedSlotHtml(slot));
     return `<div class="binder-book is-shared">${out}</div>`;
   }
+  let sharedCache = null; // o share já baixado: girar o celular repinta sem rede
   async function renderSharedView(id) {
     elements.gallery.hidden = true;
     elements.detail.hidden = false;
@@ -2200,6 +2410,10 @@
       elements.list.innerHTML = `<p class="empty-state">${escapeHtml(t("binders.shared.notFound"))}</p>`;
       return;
     }
+    sharedCache = share;
+    paintSharedView(share);
+  }
+  function paintSharedView(share) {
     const binder = share.data;
     const filled = binder.slots.filter((s) => s && !s.template).length;
     // Cabeçalho no molde do binder aberto (nome como título, faixa na cor) e o
@@ -2213,6 +2427,10 @@
         </div>
         <a class="primary binder-shared-cta" href="binders">${escapeHtml(t("binders.shared.cta"))}</a>
       </div>
-      ${sharedSpreadsHtml(binder)}`;
+      ${usaFichario() ? `<div class="card-grid is-binder binder-fichario" data-binder-fichario></div>` : sharedSpreadsHtml(binder)}`;
+    if (usaFichario()) {
+      const per = slotCount(binder.grid);
+      mountFichario(Object.assign({}, binder, { pages: Math.max(1, binder.pages || Math.ceil(binder.slots.length / per)) }), (slot) => sharedSlotHtml(slot), 0);
+    }
   }
 })();
