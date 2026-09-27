@@ -1,0 +1,21 @@
+{
+ "page": "Lucario & Greninja & Zamazenta & Mabosstiff Happy Set (ATCG)",
+ "at": "2026-09-27",
+ "set": {"id":"CSVH2pC","code":"CSVH2p","name":"Happy Set Reward Pack (Lucario & Greninja & Zamazenta & Mabosstiff)","release":"2025-05-16","total":6,"serieId":"SV","serieName":"朱&紫","logoFile":""},
+ "cards": [
+  {"number":"001","name":"Fidough","page":"Fidough (Happy Set Reward Pack 1)","type":"Psychic","subtype":"","rarity":"","mark":"G","species":"Fidough","stage":"Basic","dexId":926,"prints":[["Scarlet & Violet","Common","097/198","Scarlet ex","C","032/078"],["Paldean Fates","Common","038/091","Shiny Treasure ex","","089/190"],["SVP Black Star Promos","","069","Shiny Treasure ex","S","266/190"]],"lida":1},
+  {"number":"002","name":"Dachsbun","page":"Dachsbun (Happy Set Reward Pack 2)","type":"Psychic","subtype":"","rarity":"","mark":"G","species":"Dachsbun","stage":"Stage 1","dexId":927,"prints":[["Scarlet & Violet","Uncommon","099/198","Scarlet ex","U","034/078"],["Paldean Fates","Uncommon","039/091","Shiny Treasure ex","","090/190"],["Paldean Fates","Shiny Rare","161/091","Shiny Treasure ex","S","267/190"]],"lida":1},
+  {"number":"003","name":"Greavard","page":"Greavard (Happy Set Reward Pack 3)","type":"Psychic","subtype":"","rarity":"","mark":"G","species":"Greavard","stage":"Basic","dexId":971,"prints":[["Scarlet & Violet","Common","104/198","Violet ex","C","046/078"],["Scarlet & Violet","Illustration Rare","214/198","Violet ex","AR","087/078"],["","","","ex Special Set","","006/007"],["Paldean Fates","Common","042/091","Shiny Treasure ex","","097/190"],["SVP Black Star Promos","","070","Shiny Treasure ex","S","274/190"]],"lida":1},
+  {"number":"004","name":"Houndstone","page":"Houndstone (Happy Set Reward Pack 4)","type":"Psychic","subtype":"","rarity":"","mark":"G","species":"Houndstone","stage":"Stage 1","dexId":972,"prints":[["Scarlet & Violet","Rare","106/198","Violet ex","R","048/078"],["Paldean Fates","Rare","043/091","Shiny Treasure ex","","098/190"],["Paldean Fates","Shiny Rare","168/091","Shiny Treasure ex","S","275/190"]],"lida":1},
+  {"number":"005","name":"Maschiff","page":"Maschiff (Happy Set Reward Pack 5)","type":"Darkness","subtype":"","rarity":"","mark":"G","species":"Maschiff","stage":"Basic","dexId":942,"prints":[["Paldea Evolved","Common","141/193","Snow Hazard","C","047/071"],["Paldean Fates","Common","062/091","Shiny Treasure ex","","125/190"],["SVP Black Star Promos","","071","Shiny Treasure ex","S","295/190"]],"lida":1},
+  {"number":"006","name":"Mabosstiff","page":"Mabosstiff (Happy Set Reward Pack 6)","type":"Darkness","subtype":"","rarity":"","mark":"G","species":"Mabosstiff","stage":"Stage 1","dexId":943,"prints":[["Scarlet & Violet","Uncommon","137/198","Violet ex","U","055/078"],["Scarlet & Violet","Illustration Rare","218/198","Violet ex","AR","088/078"],["Paldean Fates","Rare","063/091","Shiny Treasure ex","","126/190"],["Paldean Fates","Shiny Rare","188/091","Shiny Treasure ex","S","296/190"]],"lida":1},
+  {"number":"DAR","name":"Basic Darkness Energy","page":"","type":"Energy","subtype":"Darkness","rarity":"","mark":"","semPagina":1},
+  {"number":"FIG","name":"Basic Fighting Energy","page":"","type":"Energy","subtype":"Fighting","rarity":"","mark":"","semPagina":1},
+  {"number":"FIR","name":"Basic Fire Energy","page":"","type":"Energy","subtype":"Fire","rarity":"","mark":"","semPagina":1},
+  {"number":"GRA","name":"Basic Grass Energy","page":"","type":"Energy","subtype":"Grass","rarity":"","mark":"","semPagina":1},
+  {"number":"LIG","name":"Basic Lightning Energy","page":"","type":"Energy","subtype":"Lightning","rarity":"","mark":"","semPagina":1},
+  {"number":"MET","name":"Basic Metal Energy","page":"","type":"Energy","subtype":"Metal","rarity":"","mark":"","semPagina":1},
+  {"number":"PSY","name":"Basic Psychic Energy","page":"","type":"Energy","subtype":"Psychic","rarity":"","mark":"","semPagina":1},
+  {"number":"WAT","name":"Basic Water Energy","page":"","type":"Energy","subtype":"Water","rarity":"","mark":"","semPagina":1}
+ ]
+}

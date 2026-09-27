@@ -112,12 +112,18 @@ let setMapPins = {};
 try { setMapPins = JSON.parse(await readFile(new URL("tcgcsv-set-map.json", dataDir), "utf8")); } catch { /* sem pins */ }
 let csvNewCards = [];
 try { csvNewCards = JSON.parse(await readFile(new URL("tcgcsv-newcards.generated.json", dataDir), "utf8")); } catch { /* sem TCGCSV */ }
+// Idem do chinês simplificado (import-zh.mjs, a partir do cache da
+// Bulbapedia): os sets exclusivos da China continental, que a TCGdex lista
+// sem nenhuma carta. Mesmo formato e mesma injeção; só zh-cn.
+let zhNewCards = [];
+try { zhNewCards = JSON.parse(await readFile(new URL("zh-newcards.generated.json", dataDir), "utf8")); } catch { /* sem import zh */ }
 const newBySet = {};
 // `prov` carimba de onde veio o id (ver lib/provisional-ids.mjs): toda carta
 // injetada aqui tem id escolhido por NÓS, não pela TCGdex.
 const origemNova = [
   ...(Array.isArray(csvNewCards) ? csvNewCards : []).map((c) => [c, "tcgcsv"]),
-  ...(Array.isArray(pptNewCards) ? pptNewCards : []).map((c) => [c, "ppt"])
+  ...(Array.isArray(pptNewCards) ? pptNewCards : []).map((c) => [c, "ppt"]),
+  ...(Array.isArray(zhNewCards) ? zhNewCards : []).map((c) => [c, "bulbapedia"])
 ];
 for (const [c, prov] of origemNova) {
   if (!c || !c.id || !c.language || !c.setId) continue;

@@ -1,0 +1,13 @@
+{
+ "page": "Dragonite & Mewtwo & Camerupt & Sinistcha Happy Set (ATCG)",
+ "at": "2026-09-27",
+ "set": {"id":"CSVH5pC","code":"CSVH5p","name":"Happy Set Reward Pack (Dragonite & Mewtwo & Camerupt & Sinistcha)","release":"2026-07-16","total":6,"serieId":"SV","serieName":"朱&紫","logoFile":""},
+ "cards": [
+  {"number":"001","name":"Arcanine ex","page":"Arcanine ex (Happy Set Reward Pack 1)","type":"Fire","subtype":"","rarity":"","mark":"G","semPagina":1,"lida":1},
+  {"number":"002","name":"Slowking ex","page":"Slowking ex (Happy Set Reward Pack 2)","type":"Psychic","subtype":"","rarity":"","mark":"G","semPagina":1,"lida":1},
+  {"number":"003","name":"Dedenne ex","page":"Dedenne ex (Happy Set Reward Pack 3)","type":"Psychic","subtype":"","rarity":"","mark":"G","semPagina":1,"lida":1},
+  {"number":"004","name":"Mimikyu ex","page":"Mimikyu ex (Happy Set Reward Pack 4)","type":"Psychic","subtype":"","rarity":"","mark":"H","semPagina":1,"lida":1},
+  {"number":"005","name":"Lucario ex","page":"Lucario ex (Happy Set Reward Pack 5)","type":"Fighting","subtype":"","rarity":"","mark":"H","semPagina":1,"lida":1},
+  {"number":"006","name":"Koraidon ex","page":"Koraidon ex (Happy Set Reward Pack 6)","type":"Fighting","subtype":"","rarity":"","mark":"H","semPagina":1,"lida":1}
+ ]
+}

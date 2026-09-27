@@ -1,0 +1,8 @@
+{
+ "page": "M-P Promotional cards (SCTCG)",
+ "at": "2026-09-27",
+ "set": {"id":"M-PC","code":"M-P","name":"M-P Promotional Cards","release":"2026-08-07","total":"","serieId":"M","serieName":"MEGA","logoFile":""},
+ "cards": [
+  {"number":"001","name":"Pikachu","page":"Pikachu (M-P Promo 1)","type":"Lightning","subtype":"","rarity":"","mark":"J","species":"Pikachu","dexId":25,"prints":[["SVP Black Star Promos","","101","SV-P Promotional cards","","120/SV-P"],["SVP Black Star Promos","","190","SV-P Promotional cards","","197/SV-P"],["SVP Black Star Promos","","225","SV-P Promotional cards","","291/SV-P"],["MEP Black Star Promos","","093","M-P Promotional cards","","133/M-P"]],"lida":1}
+ ]
+}

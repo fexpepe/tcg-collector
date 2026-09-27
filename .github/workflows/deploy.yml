@@ -237,6 +237,17 @@ jobs:
         if: env.RODA_SYNC == 'true'
         run: node scripts/enrich-ja.mjs || echo "enrich-ja falhou; o merge segue com os chunks como vieram"
 
+      # Chinês simplificado (a linha exclusiva da China continental: Gem Pack,
+      # Collection 151, Storming Emergence…): a TCGdex lista esses sets SEM
+      # cartas, então elas saem do cache versionado da Bulbapedia
+      # (data/zh-import, baixado LOCAL pelo sync-bulbapedia-zh.mjs), com a arte
+      # da impressão EN/JA de que cada carta é reimpressão. Sem rede. DEPOIS
+      # do enrich-ja (usa os chunks EN/JA prontos) e ANTES do merge (que injeta
+      # o artefato). Não derruba o build.
+      - name: Monta o catálogo chinês simplificado (Bulbapedia)
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/import-zh.mjs || echo "import-zh falhou; o merge segue sem os sets chineses novos"
+
       # Preços de mercado BR (MYP). NO-OP enquanto o secret MYP_API_TOKEN nao
       # existir — o script sai com sucesso e o merge segue só com a referencia
       # internacional. Quando o token chegar, o BR passa a ter prioridade no valor.
