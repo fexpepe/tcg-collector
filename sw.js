@@ -109,7 +109,11 @@ const SHELL_ASSETS = [
   "src/backup-import.js", "src/card-rescue.js", "src/facets.js",
   // Fichário (2026-09-16): motor das páginas de bolsos, carregado pelo set e pela Coleção.
   // Resumo (2026-09-16): gráficos de raridade/tipo, carregados pelo set e pela Coleção.
-  "src/binder-view.js", "src/insights.js"
+  "src/binder-view.js", "src/insights.js",
+  // Vitrine (2026-09-27): o espaço das páginas de catálogo. Offline ele mostra
+  // a vitrine da casa (a config vem do cache de dado); sem ele no shell a
+  // página funcionaria igual, só sem o espaço.
+  "src/ads.js"
 ];
 
 // Tetos por cache (FIFO): imagens ~17KB cada; chunks de set são o catálogo.

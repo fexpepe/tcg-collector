@@ -66,7 +66,13 @@ export const AREAS = [
   { nome: "set",       prefixos: ["facet-", "mkt-"],               paginas: ["detail.html", "sets.html", "decks.html", "my-decks.html"] },
   { nome: "troca",     prefixos: ["trade-"],                       paginas: ["troca.html", "badges.html"] },
   { nome: "goldfish",  prefixos: ["gf-"],                          paginas: ["decks.html", "my-decks.html"] },
-  { nome: "faq",       prefixos: ["faq-"],                         paginas: ["faq.html"] }
+  { nome: "faq",       prefixos: ["faq-"],                         paginas: ["faq.html"] },
+  // vitrine (o espaço de anúncio, 2026-09-27): EXATAMENTE as páginas que
+  // carregam o src/ads.js. O check.mjs cruza as duas listas (a guarda 9 barra
+  // o script numa página pessoal; a 8, a classe numa página fora daqui).
+  // Prefixo vtr- e não "vitrine": "vitrine" já é a aba de coleções em cards da
+  // Coleção (collection.js) e palavra de texto em outros arquivos.
+  { nome: "vitrine",   prefixos: ["vtr-"],                      paginas: ["detail.html", "sets.html", "cards.html", "explore.html", "pokedex.html", "artists.html", "trainers.html", "lancamentos.html", "decks.html"] }
 ];
 
 // Classes que PARECEM de área mas não podem sair: alguma regra posterior do

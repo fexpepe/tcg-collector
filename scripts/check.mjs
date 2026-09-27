@@ -278,6 +278,36 @@ for (const bundle of I18N_EXTRAS) {
   }
 }
 
+// 9) Vitrine (espaço de anúncio, src/ads.js) NUNCA em tela de trabalho nem de
+//    conta — decisão do Fernando em 2026-09-27 (docs/PLANO-ADS.md, seção 14):
+//    anúncio só onde se descobre (catálogo), nunca onde se trabalha. Quem pode
+//    ter vitrine é a página que carrega o script, então a guarda é sobre o
+//    script: página desta lista que passar a carregá-lo quebra o CI, e toda
+//    página que o carrega tem que estar na área "vitrine" do css-areas.mjs
+//    (senão o espaço chega sem estilo em produção).
+{
+  const { AREAS } = await import("./lib/css-areas.mjs");
+  const SEM_VITRINE = [
+    // pessoais (grupo C do plano) e perfil
+    "collection.html", "portfolio.html", "wishlist.html", "binders.html", "pastas.html", "listas.html",
+    "sales.html", "troca.html", "my-decks.html", "dashboard.html", "badges.html", "profile.html",
+    // conta, ferramentas e conversão
+    "index.html", "hub.html", "login.html", "account.html", "settings.html", "backup.html", "admin.html", "search.html",
+    // institucionais (o revisor do AdSense e quem lê a política não podem ver anúncio aqui)
+    "about.html", "help.html", "faq.html", "privacy.html", "terms.html", "novidades.html", "404.html"
+  ];
+  const area = AREAS.find((a) => a.nome === "vitrine");
+  if (!area) fail("scripts/lib/css-areas.mjs: sumiu a área \"vitrine\" (o CSS do espaço de anúncio)");
+  for (const f of htmlFiles) {
+    if (!/<script[^>]*src="\/?src\/ads\.js"/.test(read(f))) continue;
+    if (SEM_VITRINE.includes(f)) fail(`${f} carrega o src/ads.js — vitrine (anúncio) é proibida nesta página (docs/PLANO-ADS.md, seção 14)`);
+    if (area && !area.paginas.includes(f)) fail(`${f} carrega o src/ads.js mas não está na área "vitrine" de scripts/lib/css-areas.mjs`);
+  }
+  for (const p of (area ? area.paginas : [])) {
+    if (SEM_VITRINE.includes(p)) fail(`scripts/lib/css-areas.mjs: ${p} está na área "vitrine", mas é página sem anúncio por decisão`);
+  }
+}
+
 // Relatório. Avisos só listam com --verbose (senão poluem o uso diário).
 const verbose = process.argv.includes("--verbose") || process.argv.includes("-v");
 console.log(`\n  i18n: ${ptKeys.size} chaves (pt) · ${enKeys.size} (en)`);

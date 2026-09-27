@@ -150,9 +150,10 @@
           </div>
         </section>
 
-        <!-- Privacidade: o site não usa cookie de rastreio nem anúncio, mas a
-             medição de audiência guarda um id anônimo no navegador. Esta é a
-             saída (opt-out) — ver hasConsent/setConsent no shared.js. -->
+        <!-- Privacidade: a medição de audiência guarda um id anônimo no
+             navegador (opt-out aqui) e o anúncio personalizado, quando houver
+             rede de anúncio, é opt-in — ver hasConsent/setConsent no shared.js
+             e docs/PLANO-ADS.md. -->
         <section class="settings-group" aria-labelledby="settingsPrivacy">
           <h2 id="settingsPrivacy" data-i18n="settings.privacy">Privacidade</h2>
           <div class="setting-row">
@@ -161,6 +162,17 @@
               <span data-i18n="settings.analyticsDesc">Estatística anônima e agregada (quais páginas abrem, de qual jogo) pra saber o que melhorar. Sem cookie, sem terceiro e sem nada ligado à sua coleção. Desligando, o identificador aleatório guardado no seu navegador é apagado na hora.</span>
             </div>
             <button type="button" class="setting-switch" id="analyticsToggle" role="switch" aria-checked="true" data-i18n-aria="settings.analytics" aria-label="Contar minhas visitas"><span class="setting-switch-knob"></span></button>
+          </div>
+          <!-- Anúncios personalizados (docs/PLANO-ADS.md, seção 9): padrão
+               DESLIGADO — publicidade comportamental é opt-in na LGPD. É a
+               mesma escolha do aviso que aparece no catálogo quando houver
+               rede de anúncio; aqui fica editável pra sempre. -->
+          <div class="setting-row">
+            <div class="setting-info">
+              <strong data-i18n="settings.ads">Anúncios personalizados</strong>
+              <span data-i18n="settings.adsDesc">Quando o catálogo mostrar anúncios de redes como o Google, eles só usam cookies de personalização se isto estiver ligado. Desligado, o script dessas redes nem carrega: você vê só o conteúdo do Sleevu e de parceiros, sem rastreio. Suas telas (coleção, portfólio, binders, decks) nunca têm anúncio.</span>
+            </div>
+            <button type="button" class="setting-switch" id="adsToggle" role="switch" aria-checked="false" data-i18n-aria="settings.ads" aria-label="Anúncios personalizados"><span class="setting-switch-knob"></span></button>
           </div>
           <!-- Preço da Comunidade: o preço que você anota e as vendas que
                registra alimentam o agregado do card. Sobe só (carta, valor,

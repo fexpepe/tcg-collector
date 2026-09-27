@@ -701,6 +701,45 @@ no IndexedDB do Tesseract.
 
 ---
 
+## Vitrine (espaço de anúncio)
+
+Plano, números e decisões em [docs/PLANO-ADS.md](docs/PLANO-ADS.md). Fase 0
+no ar desde 2026-09-27: o espaço existe e é medido, mas só mostra conteúdo do
+próprio Sleevu ("casa": apoie, crie sua conta, anuncie) e de lojas parceiras
+servidas daqui — nenhum script de terceiro, a CSP não mudou.
+
+- **Quem tem vitrine é o HTML.** Só as páginas de catálogo carregam
+  `<script defer src="src/ads.js" data-grade="#grade">` (o último script da
+  página). Coleção, portfólio, binders, decks, configurações, login, a landing
+  e as institucionais **não podem**: a guarda 9 do `check.mjs` quebra o CI.
+  Popup e modal nunca recebem espaço.
+- **Faixa no feed.** Um `MutationObserver` na grade recoloca as mesmas faixas a
+  cada render, no mesmo quadro (nada salta — medido: o CLS com e sem vitrine é
+  igual). A posição é medida em ALTURAS DE TELA, só em começo de linha e nunca
+  logo depois de um cabeçalho; 1ª depois de ~1,6 tela (2 no celular), teto de
+  3 por página.
+- **Trilho** só em tela ≥ 1888 px, fixo na margem que o conteúdo de 1440 px
+  deixa vazia.
+- **Config** em `data/ads.json`: `"ativo": false` desliga tudo; regras de
+  densidade por aparelho, teto por dia de cada criativo da casa, criativos de
+  parceiro (imagem em `/assets/partners/`, segmentação por jogo, idioma e
+  data). Formato errado é descartado, nunca quebra a página.
+- **Medição**: um `ad_view` por página (servidos e vistos — metade na tela por
+  1 s) e `ad_click`, na aba Mercado › Vitrine do `/admin` (migração
+  `20260927a`).
+- **CSS** na folha por área `vitrine` (prefixo `vtr-`, não "vitrine": essa
+  palavra já é a aba de coleções em cards da Coleção).
+- **Consentimento**: o aviso só aparece quando a cadeia do JSON tiver um
+  fornecedor com cookie de terceiro (fase 1). A escolha também vive em
+  Configurações → Privacidade (`ads`, opt-in, e `adsDecidido`).
+
+Afiliados moram no `shared.js` (`AFILIADOS` + `linkDeLoja`): vazios, os links
+de loja saem idênticos; preenchidos, TCGplayer vira deep link do Impact
+(`?u=`), eBay ganha o `campid`, os dois com `rel="sponsored"`, e a nota de
+comissão aparece embaixo dos chips. Loja BR segue só com o `utm_source`.
+
+---
+
 ## Testes
 
 ```bash
