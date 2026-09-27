@@ -254,6 +254,10 @@
     try { data = JSON.parse(localStorage.getItem(KEY) || "null") || {}; } catch (e) { data = {}; }
     if (!data.sales || typeof data.sales !== "object") data.sales = {};
     if (!Array.isArray(data.order)) data.order = [];
+    // Pastas de venda (2026-09-27): entra na 1ª pasta, a mesma regra que a
+    // página de Vendas aplica a item sem pasta. Sem pasta nenhuma fica sem `g`
+    // e a página cria "Minhas vendas" quando abrir.
+    const pasta = Array.isArray(data.groups) && data.groups[0] ? data.groups[0].id : undefined;
     let added = 0;
     pairs.forEach(({ cardId, variant }) => {
       const card = cardsById.get(cardId);
@@ -265,7 +269,7 @@
       for (let i = 0; i < conds.length; i++) {
         const k = `${cardId}|${variant}|${i}`;
         if (data.sales[k]) continue;
-        data.sales[k] = { cardId, variant, idx: i, price: mkt > 0 ? Math.round(mkt * 100) / 100 : 0, cond: conds[i], auto: true };
+        data.sales[k] = { cardId, variant, idx: i, price: mkt > 0 ? Math.round(mkt * 100) / 100 : 0, cond: conds[i], auto: true, g: pasta };
         data.order.push(k);
         added++;
       }
@@ -2537,6 +2541,12 @@
     const col = (prof.data.collection && Array.isArray(prof.data.collection.items)) ? prof.data.collection : { items: [] };
     const sale = (prof.data.sales && Array.isArray(prof.data.sales.items)) ? prof.data.sales : { items: [], cur: "BRL" };
     const hasSales = sale.items.length > 0;
+    // Pastas de venda (2026-09-27): cada item traz o slug da pasta (sg) e a
+    // lista vem em sale.groups ({ id: slug, name }) — o slug é o que vai na URL
+    // (/users/<h>/vendas/<slug>). Perfil publicado antes disso não tem pastas:
+    // a aba Vendas segue a grade plana de sempre.
+    const saleGroups = (Array.isArray(sale.groups) ? sale.groups : [])
+      .filter((g) => g && g.id && sale.items.some((it) => it.sg === g.id));
     const collFolders = (Array.isArray(prof.data.folders) ? prof.data.folders : [])
       .filter((f) => col.items.some((it) => it.f === f.id))
       .sort((a, b) => (b.stars || 0) - (a.stars || 0));
@@ -2557,6 +2567,7 @@
     const hasSets = col.items.length > 0;
     const gamesPresent = [...new Set(col.items.map((it) => it.g || "pokemon"))];
     const GROUPED = ["vitrine", "tags", "pokemon", "artists", "sets"]; // abas de grupos
+    if (saleGroups.length) GROUPED.push("sale"); // Vendas em pastas: cards em pilha, como o Showcase
     const PROGRESS_MODES = ["pokemon", "artists", "sets"]; // grupos em linha de progresso
     // Abas "de cartas" (as mesmas isCardsLike da Minha Coleção: Coleção,
     // Showcase, Graded, Listas — e Vendas, que é grade plana): são as que
@@ -2928,6 +2939,10 @@
       if (m === "pokemon") return [...new Set(base.map(speciesOf).filter(Boolean))].map((sp) => ({ id: sp, name: sp, items: base.filter((it) => speciesOf(it) === sp && inG(it)) })).filter((gp) => gp.items.length);
       if (m === "artists") return [...new Set(base.map((it) => it.a).filter(Boolean))].sort().map((a) => ({ id: a, name: a, items: base.filter((it) => it.a === a && inG(it)) })).filter((gp) => gp.items.length);
       if (m === "sets") return [...new Set(base.map((it) => it.s).filter(Boolean))].sort().map((s) => ({ id: s, name: s, items: base.filter((it) => it.s === s && inG(it)) })).filter((gp) => gp.items.length);
+      if (m === "sale") {
+        const itens = applyColFilters(sale.items);
+        return saleGroups.map((g) => ({ id: g.id, name: g.name || g.id, sale: true, items: itens.filter((it) => it.sg === g.id && inG(it)) })).filter((gp) => gp.items.length);
+      }
       return [];
     }
     // Cartas do dono fora de qualquer showcase (o "Sem showcase" da vitrine),
@@ -3004,10 +3019,16 @@
     // ações do dono (compartilhar / ⋯). Antes o perfil tinha um card próprio
     // (barra de título + capa única), e as duas telas não batiam (2026-09-21).
     // O card inteiro é um botão (abre o showcase), por isso só spans dentro.
+    // Pasta de VENDA (gp.sale, 2026-09-27) usa o MESMO card: o valor é a soma
+    // dos preços de venda (sp, na moeda do dono), a capa é a carta mais cara e
+    // não há estrelas.
+    const saleVal = (it) => it.sp || 0;
+    const groupVal = (gp, items) => (items || gp.items).reduce((s, it) => s + (gp && gp.sale ? saleVal(it) : fromBRL(it.vbrl || 0) * (it.q || 1)), 0);
+    const groupMoney = (gp, v) => shared.formatMoney(gp && gp.sale ? (sale.cur || "BRL") : shared.getCurrency(), v);
     function pileCard(gp) {
-      const val = gp.items.reduce((s, it) => s + fromBRL(it.vbrl || 0) * (it.q || 1), 0);
+      const val = groupVal(gp);
       let cover = gp.cover ? gp.items.find((it) => it.id === gp.cover) : null;
-      if (!cover) cover = gp.items.slice().sort((a, b) => (b.vbrl * b.q) - (a.vbrl * a.q))[0];
+      if (!cover) cover = gp.items.slice().sort((a, b) => gp.sale ? saleVal(b) - saleVal(a) : (b.vbrl * b.q) - (a.vbrl * a.q))[0];
       const seen = new Set();
       const fan = [];
       [cover, ...gp.items].forEach((it) => {
@@ -3020,7 +3041,7 @@
         ? `${fan[1] ? `<span class="coll-pile-card coll-pile-l">${fanImg(fan[1])}</span>` : ""}${fan[2] ? `<span class="coll-pile-card coll-pile-r">${fanImg(fan[2])}</span>` : ""}<span class="coll-pile-card coll-pile-front">${fanImg(fan[0])}</span>`
         : `<span class="coll-card-empty">${escapeHtml(t("folders.empty"))}</span>`;
       const gset = new Set(gp.items.map((it) => it.g).filter(Boolean));
-      const valueHtml = val > 0 ? `<span class="cm-val">${escapeHtml(shared.formatMoney(shared.getCurrency(), val))}</span>` : "";
+      const valueHtml = val > 0 ? `<span class="cm-val">${escapeHtml(groupMoney(gp, val))}</span>` : "";
       return `<button type="button" class="coll-card coll-card-ro coll-card-pile" data-vitrine-open="${escapeAttribute(gp.id)}">
         <span class="coll-card-cover coll-pile">
           ${pileHtml}
@@ -3028,7 +3049,7 @@
           <span class="coll-pile-count">${CARDS_ICON}${gp.items.length}</span>
         </span>
         <span class="coll-card-body">
-          <span class="coll-card-title-row"><strong class="coll-card-name" title="${escapeAttribute(gp.name)}">${escapeHtml(gp.name)}</strong>${starsRo(gp.stars || 0)}</span>
+          <span class="coll-card-title-row"><strong class="coll-card-name" title="${escapeAttribute(gp.name)}">${escapeHtml(gp.name)}</strong>${gp.sale ? "" : starsRo(gp.stars || 0)}</span>
           <span class="coll-card-foot"><span class="coll-card-meta">${valueHtml}</span></span>
         </span>
       </button>`;
@@ -3038,8 +3059,8 @@
     // grade, como na tela do dono — sem renomear/capa/excluir.
     function folderSectionRo(gp, items, opts) {
       const isNone = !gp;
-      const val = items.reduce((s, it) => s + fromBRL(it.vbrl || 0) * (it.q || 1), 0);
-      const meta = `${items.length}${val > 0 ? `<span class="cm-val"> · ${escapeHtml(shared.formatMoney(shared.getCurrency(), val))}</span>` : ""}`;
+      const val = groupVal(gp, items);
+      const meta = `${items.length}${val > 0 ? `<span class="cm-val"> · ${escapeHtml(groupMoney(gp, val))}</span>` : ""}`;
       const gset = new Set(items.map((it) => it.g).filter(Boolean));
       const back = (opts && opts.back) ? `<button type="button" class="secondary coll-back-btn" data-vitrine-back>← ${escapeHtml(t("folders.back"))}</button>` : "";
       return `<section class="folder-section${isNone ? " folder-none" : ""}">
@@ -3048,7 +3069,7 @@
           <span class="folder-name">${escapeHtml(isNone ? t("folders.none") : gp.name)}</span>
           ${isNone ? "" : folderTagHtml(gset)}
           <span class="folder-meta">${meta}</span>
-          ${isNone ? "" : `<span class="folder-actions">${starsRo(gp.stars || 0)}</span>`}
+          ${isNone || gp.sale ? "" : `<span class="folder-actions">${starsRo(gp.stars || 0)}</span>`}
         </header>
         ${gridHtml(sortItems(items))}
       </section>`;
@@ -3183,7 +3204,7 @@
     function contentHtml() {
       binderQueue = [];
       const vazio = `<p class="empty-state">${escapeHtml(t("collection.noResults"))}</p>`;
-      if (mode === "graded" || mode === "sale") {
+      if (mode === "graded" || (mode === "sale" && !saleGroups.length)) {
         const src = mode === "graded" ? gradedList : sale.items;
         const items = applyColFilters(src.filter((it) => gFilter === "all" || (it.g || "pokemon") === gFilter));
         return items.length ? gridHtml(sortItems(items)) : vazio;
@@ -3193,9 +3214,9 @@
         if (openId) {
           const gp = groups.find((x) => x.id === openId);
           if (mode === "sets" && gp) return openSetHtml(gp);
-          // Showcase aberto: a seção com cabeçalho da tela do dono (o "voltar"
-          // mora nela — o backHtml não entra na vitrine).
-          if (mode === "vitrine") return gp ? folderSectionRo(gp, gp.items, { back: true }) : vazio;
+          // Showcase (ou pasta de venda) aberto: a seção com cabeçalho da tela
+          // do dono (o "voltar" mora nela — o backHtml não entra aqui).
+          if (mode === "vitrine" || mode === "sale") return gp ? folderSectionRo(gp, gp.items, { back: true }) : vazio;
           return gridHtml(sortItems(gp ? gp.items : []));
         }
         if (PROGRESS_MODES.indexOf(mode) >= 0) return groupsProgressHtml(mode);
@@ -3207,6 +3228,8 @@
           if (!cards && !soltas.length) return vazio;
           return `<div class="coll-vitrine">${cards}${soltas.length ? folderSectionRo(null, soltas) : ""}</div>`;
         }
+        // Vendas em pastas: os cards em pilha, na ordem que o dono deu a elas.
+        if (mode === "sale") return groups.length ? `<div class="coll-vitrine">${groups.map(pileCard).join("")}</div>` : vazio;
         return `<div class="coll-vitrine">${sortGroupsByValue(groups).map((gp) => groupCard(gp, mode)).join("")}</div>`;
       }
       const base = gFilter === "all" ? col.items : col.items.filter((it) => (it.g || "pokemon") === gFilter);
@@ -3216,7 +3239,7 @@
 
     // "Voltar" (dentro de um grupo aberto: coleção/tag/artista/set).
     function backHtml() {
-      const grouped = GROUPED.indexOf(mode) >= 0 && openId && mode !== "vitrine";
+      const grouped = GROUPED.indexOf(mode) >= 0 && openId && mode !== "vitrine" && mode !== "sale";
       if (!grouped) return "";
       const openName = (groupsFor(mode).find((x) => x.id === openId) || {}).name || "";
       return `<div class="coll-open-head"><button type="button" class="secondary coll-back-btn" data-vitrine-back>${escapeHtml(t("profile.viewCollections"))}</button><strong class="coll-open-name">${escapeHtml(openName)}</strong></div>`;

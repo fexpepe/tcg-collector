@@ -56,100 +56,41 @@
     </header>
 
     <main>
-
-      <div class="page-head dash-head page-head-bar">
+      <!-- Vendas em PASTAS (2026-09-27): a galeria das pastas (sem ?id=) e a
+           pasta aberta (?id=) moram no #salesView, que o sales.js monta — no
+           molde da Minha Coleção: faixa do título com a busca, o trilho de
+           cartões (herói + "Visão geral" + preço em lote) e as cartas. A
+           faixa do título é a MESMA nas duas vistas: na pasta, o h1 vira o
+           nome editável e o "← Hub" vira "← Vendas e Trocas" (o JS troca), e
+           a busca peneira a pasta. Uma busca só, então o initHeaderSearch do
+           shared.js continua levando ela pro header no celular. -->
+      <div class="page-head dash-head page-head-bar vnd-head">
         <div class="page-head-bar-text">
-          <h1 data-i18n="nav.sales">Vendas e Trocas</h1>
-          <a href="dashboard" class="serie-back" data-i18n="nav.backDashboard">← Hub</a>
+          <h1 id="salesTitle" data-i18n="nav.sales">Vendas e Trocas</h1>
+          <a id="salesBack" href="dashboard" class="serie-back" data-i18n="nav.backDashboard">← Hub</a>
         </div>
         <label class="page-search-label" for="searchInput" data-i18n="search.title">Procurar:</label>
         <section class="page-search">
         <svg class="page-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="20" y1="20" x2="16.5" y2="16.5"/></svg>
-        <input id="searchInput" type="search" enterkeyhint="search" data-i18n-placeholder="search.placeholder.detail" placeholder="Procurar por cartas…">
+        <input id="searchInput" type="search" enterkeyhint="search" data-i18n-placeholder="sales.folders.searchGallery" placeholder="Procurar nas pastas de venda…">
         </section>
       </div>
 
-      <div class="collection-toolbar">
-        <div id="gameFilter" class="chip-filter game-filter game-filter-panel" role="group" data-i18n-aria="pfmi.game" aria-label="Jogo">
-          <button type="button" class="chip" data-game-filter="all" aria-pressed="true" data-i18n="filter.gameAll">Todos</button>
-          <button type="button" class="chip" data-game-filter="pokemon" aria-pressed="false" data-i18n="filter.gamePokemon">Pokémon</button>
-          <button type="button" class="chip" data-game-filter="lorcana" aria-pressed="false" data-i18n="filter.gameLorcana">Lorcana</button>
-          <button type="button" class="chip" data-game-filter="onepiece" aria-pressed="false" data-i18n="filter.gameOnePiece">One Piece</button>
-          <button type="button" class="chip" data-game-filter="naruto" aria-pressed="false" data-i18n="filter.gameNaruto">Naruto</button>
-          <button type="button" class="chip" data-game-filter="hxh" aria-pressed="false" data-i18n="filter.gameHxh">Hunter × Hunter</button>
-        </div>
-      </div>
+      <div id="salesView"></div>
 
-      <section id="salesDashboard" class="stats-grid" data-i18n-aria="aria.sumSales" aria-label="Resumo das vendas" hidden>
-        <article>
-          <span id="salesDashCount">0</span>
-          <p data-i18n="sales.dash.count">cartas à venda</p>
-        </article>
-        <article>
-          <span id="salesDashValue">—</span>
-          <p data-i18n="sales.dash.value">valor da lista</p>
-          <span class="dash-markup-badge" id="salesDashMarkup" hidden></span>
-        </article>
-        <article>
-          <span id="salesDashSold">—</span>
-          <p data-i18n="sales.dash.sold">total vendido</p>
-        </article>
+      <!-- Histórico de vendas realizadas: de TODAS as pastas, só na galeria. -->
+      <section id="soldSection" data-i18n-aria="sales.sold.heading" aria-label="Vendas realizadas" hidden>
+        <header class="results-header sold-header">
+          <h2 data-i18n="sales.sold.heading">Vendas realizadas</h2>
+          <span id="soldSummary" class="sold-summary"></span>
+        </header>
+        <div id="soldList" class="sold-list"></div>
       </section>
-
-      <div id="salesView">
-        <section class="sales-batch" data-i18n-aria="aria.bulkPricing" aria-label="Precificar em lote">
-          <span class="sales-batch-label" data-i18n="sales.batch.label">Precificar todas pela referência:</span>
-          <div class="sales-batch-chips">
-            <button type="button" class="sales-batch-chip" data-batch-pct="-15">−15%</button>
-            <button type="button" class="sales-batch-chip" data-batch-pct="-10">−10%</button>
-            <button type="button" class="sales-batch-chip" data-batch-pct="-5">−5%</button>
-            <button type="button" class="sales-batch-chip" data-batch-pct="0" data-i18n="sales.batch.market">Mercado</button>
-            <button type="button" class="sales-batch-chip" data-batch-pct="5">+5%</button>
-            <button type="button" class="sales-batch-chip" data-batch-pct="10">+10%</button>
-          </div>
-          <span class="sales-batch-custom">
-            <input type="number" id="salesBatchPct" step="1" inputmode="numeric" placeholder="0" data-i18n-aria="aria.percent" aria-label="Percentual"><span class="sales-batch-pct">%</span>
-            <button type="button" id="salesBatchApply" class="primary" data-i18n="sales.batch.apply">Aplicar</button>
-          </span>
-          <span class="sales-batch-hint" data-i18n="sales.batch.hint">Define o preço de TODAS pela cotação de mercado (referência) ± o percentual. Ex.: −10 = 10% abaixo do mercado.</span>
-        </section>
-        <section class="sales-toolbar">
-          <a class="secondary" href="troca" data-i18n="trade.open">Analisar troca</a>
-          <button type="button" id="salesAddBtn" class="secondary" data-i18n="sales.add">Adicionar cartas</button>
-          <button type="button" id="salesDupBtn" class="secondary" data-i18n="sales.dup.btn" title="Põe à venda as cópias repetidas (mantendo 1 de cada na coleção)">Adicionar duplicatas</button>
-          <button type="button" id="salesShareBtn" class="secondary" data-i18n="sales.share">Compartilhar vendas</button>
-          <button type="button" id="salesTextBtn" class="secondary" data-i18n="sales.text">Texto pro WhatsApp</button>
-          <button type="button" id="salesExportBtn" class="secondary" data-i18n="sales.export">Exportar imagem</button>
-          <div class="sort-select sales-sort-row">
-            <label for="salesSortSelect" data-i18n="sort.label">Ordenar:</label>
-            <select id="salesSortSelect">
-              <option value="value-desc" data-i18n="sort.valueDesc">Valor (maior → menor)</option>
-              <option value="value-asc" data-i18n="sort.valueAsc">Valor (menor → maior)</option>
-              <option value="num-asc" data-i18n="sort.numAsc">Nº da carta (menor → maior)</option>
-              <option value="num-desc" data-i18n="sort.numDesc">Nº da carta (maior → menor)</option>
-              <option value="rarity-desc" data-i18n="sort.rarityDesc">Raridade (maior → menor)</option>
-              <option value="rarity-asc" data-i18n="sort.rarityAsc">Raridade (menor → maior)</option>
-              <option value="release" data-i18n="sort.releaseDate">Lançamento</option>
-              <option value="added-desc" data-i18n="sort.addedDesc">Adição (última → primeira)</option>
-              <option value="added-asc" data-i18n="sort.addedAsc">Adição (primeira → última)</option>
-            </select>
-          </div>
-        </section>
-        <p id="salesHint" class="collection-subtitle" data-i18n="sales.hint">Toque numa carta pra ver a cotação de mercado e ajudar a precificar. Deixe o preço vazio pra tirar da venda.</p>
-        <section id="salesGrid" class="card-grid"></section>
-        <p id="salesEmpty" class="empty-state" data-i18n-html="sales.empty" hidden>Nenhuma carta à venda. Use <strong>Adicionar cartas</strong> ou abra uma carta e toque em “Pôr à venda”.</p>
-
-        <section id="soldSection" data-i18n-aria="sales.sold.heading" aria-label="Vendas realizadas" hidden>
-          <header class="results-header sold-header">
-            <h2 data-i18n="sales.sold.heading">Vendas realizadas</h2>
-            <span id="soldSummary" class="sold-summary"></span>
-          </header>
-          <div id="soldList" class="sold-list"></div>
-        </section>
-      </div>
     </main>
 
     <script defer src="src/i18n.js"></script>
+    <!-- Textos das pastas de venda: fora do i18n.js pra as outras páginas não carregarem à toa. -->
+    <script defer src="src/i18n-vendas.js"></script>
     <script defer src="src/shared.js"></script>
     <script defer src="src/sales.js"></script>
   </body>

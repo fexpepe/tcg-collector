@@ -3711,11 +3711,29 @@
   // @; senão null (cai no snapshot). tab="sales"|"graded" abre direto na aba —
   // pelo CAMINHO (/users/<h>/vendas, /users/<h>/graded), que é como o perfil
   // endereça as abas desde 2026-09-21 (o ?t= antigo segue sendo lido lá).
-  function publicProfileUrl(tab) {
+  // `sub` = slug de uma pasta de venda (/users/<h>/vendas/<slug>, 2026-09-27).
+  function publicProfileUrl(tab, sub) {
     const p = getProfile();
     if (!(p.isPublic && p.handle && p.handle.length >= 3)) return null;
-    const t = tab === "sales" ? "/vendas" : tab === "graded" ? "/graded" : "";
+    const t = tab === "sales" ? "/vendas" + (sub ? "/" + sub : "") : tab === "graded" ? "/graded" : "";
     return "https://sleevu.app/users/" + p.handle + t;
+  }
+  // Pastas de venda: cada uma tem link público próprio, e o slug sai do NOME
+  // ("Cartas Raras" → "cartas-raras"). Nome repetido ganha -2, -3 na ordem das
+  // pastas. Um lugar só: o payload do perfil e o "Compartilhar" da página de
+  // Vendas leem daqui, senão o link copiado apontaria pra uma pasta que o
+  // perfil publicou com outro slug. Devolve Map(id da pasta → slug).
+  function saleFolderSlugs(groups) {
+    const out = new Map(), usados = new Set();
+    (groups || []).forEach((g) => {
+      const base = String(g.name || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "")
+        .replace(/[^a-z0-9]+/g, "-").slice(0, 60).replace(/^-+|-+$/g, "") || "pasta";
+      let s = base, n = 2;
+      while (usados.has(s)) s = `${base}-${n++}`;
+      usados.add(s);
+      out.set(g.id, s);
+    });
+    return out;
   }
 
   // ── CONSENTIMENTO ──────────────────────────────────────────────────────────
@@ -9791,6 +9809,7 @@
     collectionCounts,
     portfolioValueTotal,
     publicProfileUrl,
+    saleFolderSlugs,
     analyticsSummary,
     adminDashboard,
     adminFunnel,
@@ -11180,17 +11199,21 @@
   }
 
   // Lê a lista de vendas direto do localStorage (global), pra montar o payload
-  // público sem depender da store da página de Vendas.
-  function readSalesList() {
+  // público sem depender da store da página de Vendas. `groups` são as pastas
+  // de venda (2026-09-27) e `g` a pasta de cada item.
+  function readSalesData() {
     try {
       const data = JSON.parse(localStorage.getItem(SYNC_KEYS.sales) || "{}");
       const map = data.sales || {};
       const order = Array.isArray(data.order) ? data.order : Object.keys(map);
-      return order.filter((k) => map[k]).map((k) => {
-        const e = map[k];
-        return { cardId: e.cardId, variant: e.variant, price: Number(e.price) || 0, cond: e.cond || "NM" };
-      });
-    } catch (e) { return []; }
+      return {
+        groups: Array.isArray(data.groups) ? data.groups.filter((g) => g && g.id) : [],
+        items: order.filter((k) => map[k]).map((k) => {
+          const e = map[k];
+          return { cardId: e.cardId, variant: e.variant, price: Number(e.price) || 0, cond: e.cond || "NM", g: e.g };
+        })
+      };
+    } catch (e) { return { groups: [], items: [] }; }
   }
   // Lê as Coleções (pastas) do localStorage global, p/ a vitrine do perfil público.
   function readFoldersData() {
@@ -11292,13 +11315,22 @@
     });
     colItems.sort((a, b) => (b.vbrl * b.q) - (a.vbrl * a.q));
     const byId = new Map((cards || []).map((c) => [c.id, c]));
+    // Pastas de venda: cada item leva o SLUG da pasta (sg), e a lista de
+    // pastas vai junto (id = slug, que é o que a URL do perfil carrega).
+    // Item sem pasta (ou de pasta apagada) cai na 1ª — a mesma regra da página
+    // de Vendas. Sem pasta nenhuma, sai sem sg e o perfil mostra a grade plana.
+    const sd = readSalesData();
+    const slugs = saleFolderSlugs(sd.groups);
+    const g0 = sd.groups.length ? sd.groups[0].id : null;
     const saleItems = [];
-    readSalesList().forEach((it) => {
+    sd.items.forEach((it) => {
       const card = byId.get(it.cardId);
       if (!card) return;
       const src = cardImageSources(card);
-      saleItems.push({ id: card.id, n: card.name, s: card.set, num: card.number, lang: card.language, g: card.game, v: it.variant, q: 1, sp: it.price, cond: it.cond || "NM", cur, img: src.url, fb: src.fallback || "" });
+      saleItems.push({ id: card.id, n: card.name, s: card.set, num: card.number, lang: card.language, g: card.game, v: it.variant, q: 1, sp: it.price, cond: it.cond || "NM", cur, img: src.url, fb: src.fallback || "", sg: slugs.get(slugs.has(it.g) ? it.g : g0) });
     });
+    const saleGroups = sd.groups.map((g) => ({ id: slugs.get(g.id), name: g.name || "" }))
+      .filter((g) => saleItems.some((it) => it.sg === g.id));
     // Coleções (vitrine): marca cada carta com a sua coleção (f) e lista as
     // coleções que têm cartas (nome/estrelas/capa), na ordem do dono.
     const fdata = readFoldersData();
@@ -11338,15 +11370,18 @@
     // Pokédex: só os totais (capturados/total), do cache que a página da
     // Pokédex mantém — a lista de dexIds não sai daqui.
     const dexProg = readDexProgress();
-    return { collection: { items: colItems }, sales: { items: saleItems, cur, scope: "sale" }, folders: pubFolders, tags: pubTags, graded: { items: gradedItems }, setsMeta, speciesTotals, artistTotals, showValues: !!showValues, dex: dexProg ? { c: dexProg.c, t: dexProg.t } : undefined };
+    return { collection: { items: colItems }, sales: { items: saleItems, cur, scope: "sale", groups: saleGroups }, folders: pubFolders, tags: pubTags, graded: { items: gradedItems }, setsMeta, speciesTotals, artistTotals, showValues: !!showValues, dex: dexProg ? { c: dexProg.c, t: dexProg.t } : undefined };
   }
   // Publica/atualiza (ou apaga) o perfil público conforme is_public. Debounced e
   // só re-envia se o payload mudou. Chamado pelas páginas (coleção/vendas).
   let lastPublished = null;
   let publishT = null;
-  function publishProfile(cards, owned, prices) {
+  // `agora` pula o debounce e devolve a promessa: o "Compartilhar" de uma pasta
+  // de venda recém-criada espera o perfil sair, senão o link copiado abriria
+  // a pasta antes de ela existir no perfil publicado.
+  function publishProfile(cards, owned, prices, agora) {
     clearTimeout(publishT);
-    publishT = setTimeout(async () => {
+    const run = async () => {
       // Catálogo incompleto nesta sessão (chunk de set pulado por falha de
       // rede): NÃO republica. buildPublicPayload filtra o catálogo carregado
       // por posse — publicar agora reescreveria o perfil público sem as cartas
@@ -11363,7 +11398,9 @@
       if (json === lastPublished) return;
       lastPublished = json;
       await pushPublicProfile(payload);
-    }, 1500);
+    };
+    if (agora) return run();
+    publishT = setTimeout(run, 1500);
   }
 
   // Apaga a conta na nuvem (RPC `delete_account` com security definer: remove
