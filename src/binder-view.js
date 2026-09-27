@@ -1,4 +1,4 @@
-// Fichário: a grade de cartas vira páginas de N bolsos (2×2, 3×3, 3×4, 4×4)
+// Fichário: a grade de cartas vira páginas de N bolsos (2×2, 3×3, 3×4, 4×4, 6×3)
 // numa trilha que ROLA DE LADO com scroll-snap — no celular é o dedo, no
 // desktop as setas, o <select> de página ou a rolagem horizontal. Só a imagem
 // da carta aparece (nome, número e botões somem por CSS em .is-binder; clicar
@@ -26,7 +26,7 @@
 //      da preferência de bolsos — é o binder de verdade (binders.js), que tem
 //      o formato dele (2×2 … 5×5) e não troca pelo botão; `start` abre numa
 //      página específica.
-//   .cycle()                            próximo tamanho (9 → 12 → 16 → 4 → 9…)
+//   .cycle()                            próximo tamanho (9 → 12 → 16 → 4 → 18 → 9…)
 //   .paintToggle(button)                número de bolsos no botão do seletor
 //   .pockets                            nº de bolsos atual
 (function () {
@@ -35,7 +35,11 @@
 
   // A sequência é a de clicar de novo no botão com o modo já ativo; nasce em 9
   // (3×3), que é o fichário mais comum.
-  const POCKETS = [9, 12, 16, 4];
+  const POCKETS = [9, 12, 16, 4, 18];
+  // Colunas de cada tamanho (as linhas saem da divisão). 18 = 6×3, entrou em
+  // 2026-09-27 como a ÚLTIMA parada do ciclo: é a página dupla aberta de um
+  // fichário de 9 bolsos — duas folhas 3×3 lado a lado numa página só.
+  const COLS = { 4: 2, 9: 3, 12: 3, 16: 4, 18: 6 };
   const ICONS = {
     first: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="11 17 6 12 11 7"/><polyline points="18 17 13 12 18 7"/></svg>',
     prev: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>',
@@ -54,7 +58,7 @@
       const el = alvo || grid;
       el.innerHTML = "";
       const per = layout ? layout.cols * layout.rows : pockets;
-      const cols = layout ? layout.cols : per === 4 ? 2 : per === 16 ? 4 : 3;
+      const cols = layout ? layout.cols : COLS[per] || 3;
       // Linhas entram no CSS pra limitar a largura da trilha de modo que a
       // PÁGINA INTEIRA caiba na altura da tela no desktop (ver .binder-rail).
       el.style.setProperty("--binder-rows", String(per / cols));
