@@ -5881,13 +5881,14 @@
     const box = document.querySelector("#cardPreviewModal [data-preview-prints]");
     if (!box || !card || !card.name) return;
     const game = currentGame();
-    // A busca da borda é interseção por PREFIXO com teto de 2000 linhas lidas
-    // por palavra (custo do D1). Palavra hiper-comum estoura o teto e a
-    // interseção perde a carta: "The One Ring" voltava VAZIO porque the%
-    // casa com milhares de nomes do Magic e as linhas da própria carta ficavam
-    // fora das 2000 lidas. Artigos/preposições saem da CONSULTA — a precisão
-    // quem garante é o filtro de nome EXATO logo abaixo. Sobrando nada
-    // (nome só de artigos), vai o nome inteiro mesmo.
+    // A busca da borda é interseção por PREFIXO de palavra. Palavra
+    // hiper-comum ("the%" casa com 42 mil linhas do Magic) não diz nada sobre
+    // a carta — e, até o teto por palavra subir pra 50 mil (27/09/2026),
+    // chegava a esconder a própria carta ("The One Ring" voltava VAZIO).
+    // Artigos/preposições saem da CONSULTA — a precisão quem garante é o
+    // filtro de nome EXATO logo abaixo, e a borda devolve primeiro as cartas
+    // em que o termo é a palavra inteira. Sobrando nada (nome só de artigos),
+    // vai o nome inteiro mesmo.
     const STOP = new Set(["the", "of", "a", "an", "and", "to", "de", "da", "do", "la", "el"]);
     const termos = String(card.name).toLowerCase().split(/[^\p{L}\p{N}]+/u).filter((w) => w && !STOP.has(w));
     const consulta = termos.length ? termos.slice(0, 5).join(" ") : card.name;
@@ -9509,6 +9510,132 @@
     } catch (e) { return null; }               // rede oscilou: a próxima tecla tenta de novo
   }
 
+  // Busca COMPLETA pela borda (/api/search &full=1, 27/09/2026): TODAS as
+  // cartas que casam (até 10 mil), da mais relevante pra menos, já no formato
+  // do chunk e com os preços — o que o Explorar precisa pra mostrar e ordenar
+  // o resultado inteiro sem baixar os chunks dos sets. Antes ele pedia 60
+  // cartas e dizia "60 resultados" pra uma busca que tem 370.
+  // Devolve { cards, pricing, total, truncated } ou null (borda fora ou
+  // resposta sem o modo completo) — quem chama cai no caminho estático.
+  // Cada carta sai com `game` e `_x` (quantos termos casaram como palavra
+  // inteira, o sinal de relevância da borda — ver searchRelevance).
+  async function searchApiFull(game, consulta) {
+    if (Date.now() < searchApiPausaAte) return null;
+    try {
+      const r = await fetch("/api/search?game=" + encodeURIComponent(game)
+        + "&q=" + encodeURIComponent(consulta) + "&full=1");
+      if (!r.ok) {
+        let off = 0;
+        try { off = (await r.json()).off; } catch (e) { /* corpo não-JSON (ex.: 404 do dev) */ }
+        searchApiPausaAte = Date.now() + (off || r.status === 404 ? 300e3 : 30e3);
+        return null;
+      }
+      const j = await r.json();
+      // Sem `p` é a resposta curta (Function de antes do modo completo): não
+      // traz carta pronta pra grade, então quem chama usa o caminho estático.
+      if (!j || !Array.isArray(j.c) || !j.p || typeof j.p !== "object") return null;
+      const pricing = {};
+      Object.keys(j.p).forEach((g) => Object.assign(pricing, j.p[g]));
+      const cards = j.c.filter((c) => c && c.id).map((c) => {
+        const card = Object.assign({}, c, { game: c.g || game });
+        delete card.g; delete card.x;
+        card._x = Number(c.x) || 0;
+        return card;
+      });
+      const total = Math.max(Number(j.t) || 0, cards.length);
+      return { cards, pricing, total, truncated: total > cards.length };
+    } catch (e) { return null; }
+  }
+
+  // setTotal das cartas que vieram da BORDA (o D1 não guarda o total do set):
+  // sem ele o código sai "063" em vez de "063/197" no tile, e a busca por
+  // código impresso ("9/94") não confere a fração. O manifest de cada jogo tem
+  // o `total` de cada set (o mesmo número que o chunk grava em setTotal) e é
+  // leve — o mesmo que a paleta já baixa pro quick-add por código. Devolve
+  // true se alguma carta ganhou total (quem chama redesenha os rótulos).
+  async function enrichSetTotals(cards) {
+    const faltam = (cards || []).filter((c) => c && !c.setTotal && c.setId && c.game);
+    if (!faltam.length) return false;
+    const jogos = unique(faltam.map((c) => c.game));
+    const metas = await Promise.all(jogos.map((g) => cmdkLoadGameMeta(g).catch(() => null)));
+    let mudou = false;
+    jogos.forEach((g, i) => {
+      const manifest = metas[i] && metas[i].manifest;
+      if (!manifest || !Array.isArray(manifest.sets)) return;
+      // O mesmo id de set existe em mais de um idioma (EN/PT do Pokémon): a
+      // chave é id + idioma, com o id sozinho de reserva.
+      const totais = new Map();
+      manifest.sets.forEach((s) => {
+        if (!s || !s.id || !s.total) return;
+        totais.set(`${s.id}|${s.language || ""}`, s.total);
+        if (!totais.has(s.id)) totais.set(s.id, s.total);
+      });
+      faltam.forEach((c) => {
+        if (c.game !== g) return;
+        const total = totais.get(`${c.setId}|${c.language || ""}`) || totais.get(c.setId);
+        if (!total) return;
+        c.setTotal = total;
+        delete c._haystack; // o haystack memoizado não tinha as frações
+        mudou = true;
+      });
+    });
+    return mudou;
+  }
+
+  // RELEVÂNCIA de uma carta pra uma busca (a ordenação "Mais relevantes"):
+  // por termo, 3 se é uma palavra INTEIRA do nome, 2 se começa uma palavra do
+  // nome, 1 se aparece no meio do nome, 0 se só casou fora do nome (set,
+  // artista…). Termo numérico vale 3 quando é o NÚMERO da carta (em qualquer
+  // escrita) — "94" põe a carta 94 antes das cartas do set de 94. O nome inclui
+  // nameEn/nameJp/pokemonName quando a carta os tem. Empate = mesma relevância;
+  // quem ordena desempata pelo valor.
+  // Carta de nome SEM letra latina (japonesa/chinesa vinda da borda, que não
+  // traz o nameEn): o nome não diz nada sobre "mew", mas a borda achou a carta
+  // por uma palavra — `_x` diz quantos termos casaram como palavra inteira, e
+  // o resto casou como prefixo. É o que impede a ミュウ de cair atrás de todos
+  // os Mewtwo numa busca por "mew".
+  // Mesmas palavras e mesma lista de palavras-função da borda (termosDaBusca
+  // em functions/api/_search-sql.js).
+  const RELEVANCIA_STOP = new Set(["the", "of", "a", "an", "and", "to", "de", "da", "do", "la", "el"]);
+  const palavrasDe = (texto) => normalize(texto).split(/[^\p{L}\p{N}\p{M}]+/u).filter(Boolean);
+  let relevanciaCache = { q: null, termos: [] };
+  function relevanceTerms(rawQuery) {
+    const q = String(rawQuery || "");
+    if (q === relevanciaCache.q) return relevanciaCache.termos;
+    const todas = palavrasDe(q);
+    const uteis = todas.filter((w) => !RELEVANCIA_STOP.has(w));
+    const termos = unique(uteis.length ? uteis : todas).slice(0, 5);
+    relevanciaCache = { q, termos };
+    return termos;
+  }
+  function searchRelevance(card, rawQuery) {
+    const termos = relevanceTerms(rawQuery);
+    if (!card || !termos.length) return 0;
+    const nome = normalize([card.name, card.nameEn, card.nameJp, card.pokemonName].filter(Boolean).join(" "));
+    const doNome = palavrasDe(nome);
+    let codigos = null;
+    let pontos = 0, textuais = 0, noNome = 0;
+    for (const t of termos) {
+      if (/^\d+$/.test(t)) {
+        if (!codigos) codigos = cardCodeForms(card).map((f) => normalize(f));
+        if (codigos.includes(t) || codigos.includes(String(parseInt(t, 10)))) pontos += 3;
+        continue;
+      }
+      textuais++;
+      if (doNome.includes(t)) { pontos += 3; noNome++; }
+      else if (doNome.some((w) => w.startsWith(t))) { pontos += 2; noNome++; }
+      else if (nome.includes(t)) { pontos += 1; noNome++; }
+    }
+    if (!noNome && textuais && typeof card._x === "number" && !/[a-z]/.test(nome)) {
+      // _x da borda conta também os termos numéricos e de uma letra (casam
+      // sempre por igualdade): tira esses pra sobrar só os textuais inteiros.
+      const fixos = termos.filter((t) => /^\d+$/.test(t) || Array.from(t).length === 1).length;
+      const inteiros = Math.max(0, Math.min(textuais, card._x - fixos));
+      pontos += 3 * inteiros + 2 * (textuais - inteiros);
+    }
+    return pontos;
+  }
+
   // Índice de busca ESTÁTICO do jogo (data/<jogo>/search-index.json): só
   // id/nome/set/número + facetas, gerado no build. É o caminho de baixo quando a
   // borda não responde — e a fonte das facetas, que a API não fornece.
@@ -9786,6 +9913,10 @@
     cardLabel,
     matchesCardQuery,
     searchApi,
+    searchApiFull,
+    enrichSetTotals,
+    searchRelevance,
+    relevanceTerms,
     cmdkCardsByCode,
     openScanner,
     awaitCatalog,

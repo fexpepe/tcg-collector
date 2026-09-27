@@ -95,23 +95,60 @@ CREATE TABLE IF NOT EXISTS prices (
 );
 `;
 
-// Query de busca: interseção dos conjuntos de ids de cada palavra-prefixo,
-// depois as cartas. SEM cláusula ESCAPE, de propósito (ver o aviso lá em
-// cima): ela desligava o índice, e é dispensável porque palavras() só deixa
-// passar letra/dígito/marca — nenhum termo contém %, _ ou \ pra escapar.
-// LIMIT no chamador via parâmetro.
+// Query de busca: cada palavra da consulta é um OPERANDO (as cartas que têm
+// uma palavra começando por ela), e a carta entra se aparece em TODOS. SEM
+// cláusula ESCAPE, de propósito (ver o aviso lá em cima): ela desligava o
+// índice, e é dispensável porque palavras() só deixa passar letra/dígito/marca
+// — nenhum termo contém %, _ ou \ pra escapar.
 //
 // game "all" = busca GLOBAL (o Explorar): a interseção passa a ser por
 // (game, id) — id sozinho poderia colidir entre jogos — usando o índice
 // idx_words_global (word na frente). Uma consulta só pros 13 jogos, em vez de
 // 13 requisições por tecla digitada.
-// Palavras-função caem ANTES da consulta: "the%" tem mais de 2000 linhas, o
-// LIMIT do operando devolve um subconjunto ARBITRÁRIO delas e a interseção
-// perde cartas que existem — "The One Ring" voltava VAZIO da borda. O cliente
-// já fazia isso só no fillPrints (shared.js); aqui TODO chamador herda (decks,
-// listas, cards, explore). Mesmo conjunto do cliente. Se a consulta é SÓ de
-// stopwords ("the"), segue com elas — é o que a pessoa digitou.
-const STOP = new Set(["the", "of", "a", "an", "and", "to", "de", "da", "do", "la", "el"]);
+// Palavras-função caem ANTES da consulta: "the%" são 42 mil linhas só de
+// cartas com "The" no nome ou no set, e não dizem nada sobre a carta que se
+// procura. O cliente já fazia isso só no fillPrints (shared.js); aqui TODO
+// chamador herda (decks, listas, cards, explore). Mesmo conjunto do cliente.
+// Se a consulta é SÓ de stopwords ("the"), segue com elas — é o que a pessoa
+// digitou.
+export const STOP = new Set(["the", "of", "a", "an", "and", "to", "de", "da", "do", "la", "el"]);
+
+// Teto de linhas LIDAS por operando (no D1 linha lida é linha cobrada). Até
+// 27/09/2026 era 2.000 (6.000 no numérico) e o teto CORTAVA a resposta: o
+// LIMIT do operando devolve as primeiras linhas do índice (word, game, id) —
+// na global, os jogos em ordem alfabética —, e a interseção perdia tudo o que
+// ficou depois do corte. Medido no catálogo inteiro: "charizard ex" achava 55
+// de 110 cartas ("ex%" são 11,5 mil linhas), "dark magician" 115 de 296, e
+// "blue eyes" voltava VAZIO — "blue%" tem 3,4 mil linhas e o Yu-Gi-Oh!, o
+// último jogo em ordem alfabética, nunca entrava no recorte. 50 mil cobre a
+// maior palavra de verdade do catálogo ("commander", 17 mil) com folga; só
+// prefixo de duas letras ("en", 80 mil) ainda bate no teto — e quem busca
+// "en" não está atrás de uma carta. Desde 10/09/2026 a conta está no Workers
+// Paid (25 bilhões de leituras/mês): o pior caso razoável, uns 60 mil linhas
+// por consulta, é troco — e a resposta vai pro cache de borda.
+export const TETO_OPERANDO = 50000;
+// Resposta: até 100 cartas na busca de digitação (decks, listas, scanner) e
+// até 10 mil no modo COMPLETO (o Explorar, &full=1) — que é o que faz a busca
+// global mostrar TODAS as cartas: "dragon", a maior busca de nome de verdade
+// do catálogo, são 8,3 mil. Comprimida, a resposta completa dá ~200 KB.
+export const LIMITE_PADRAO = 40;
+export const LIMITE_CURTO = 100;
+export const LIMITE_COMPLETO = 10000;
+
+// O D1 recusa padrão de LIKE acima de 50 BYTES ("LIKE or GLOB pattern too
+// complex") — e 17 caracteres de kana já são 51 bytes em UTF-8. Uma busca por
+// nome japonês longo derrubava a consulta inteira com erro, e o cliente, lendo
+// o 500 como "borda fora", baixava o catálogo completo. O prefixo é cortado
+// (na fronteira de caractere) pra caber: acha um SUPERconjunto do que
+// procurava, nunca menos — e a igualdade da palavra exata (o `x` da
+// relevância) segue com o termo inteiro, que não tem esse teto.
+const BYTES_LIKE = 49; // + o "%"
+const utf8 = new TextEncoder();
+export function prefixoLike(termo) {
+  const chars = Array.from(String(termo || ""));
+  while (chars.length > 1 && utf8.encode(chars.join("")).length > BYTES_LIKE) chars.pop();
+  return chars.join("") + "%";
+}
 
 // Escritas de um termo SÓ de dígitos: sem zeros à esquerda e zero-preenchido
 // a 3 (a largura impressa). "009" e "9" são o mesmo número de carta — o
@@ -124,48 +161,95 @@ export function formasNumericas(termo) {
   return [...new Set([t, puro, puro.padStart(3, "0")])];
 }
 
-export function buildSearch(game, consulta, limite) {
+// Termos da consulta como a borda os usa: palavras normalizadas, sem
+// palavra-função, sem repetição, no máximo 5. Exportado pro teste e pra
+// quem quiser saber quantos termos a relevância (`x`) conta.
+export function termosDaBusca(consulta) {
   const todas = palavras(consulta);
   const uteis = todas.filter((w) => !STOP.has(w));
   // Set: termo REPETIDO ("mega mega", ou o nome que aparece no nome e no set)
-  // virava dois operandos idênticos no INTERSECT — mesmo resultado, o DOBRO de
-  // linhas lidas (e linha lida é linha cobrada no D1).
-  const termos = [...new Set(uteis.length ? uteis : todas)].slice(0, 5); // 5 palavras bastam; mais = abuso
+  // virava dois operandos idênticos — mesmo resultado, o DOBRO de linhas lidas
+  // (e linha lida é linha cobrada no D1).
+  return [...new Set(uteis.length ? uteis : todas)].slice(0, 5); // 5 palavras bastam; mais = abuso
+}
+
+// `opts.completo` (o &full=1 do Explorar): aceita limite até LIMITE_COMPLETO.
+// Sem ele o teto segue 100 — decks, listas e scanner buscam por tecla digitada
+// e mostram poucas linhas.
+export function buildSearch(game, consulta, limite, opts) {
+  const termos = termosDaBusca(consulta);
   if (!termos.length) return null;
   // Gate de 2 caracteres, espelhando o cliente (que já não busca com menos).
   // Sem ele, ?q=a caía no ramo de 1 char e o LIKE 'a%' varria o índice; iterar
   // a..z com game=all esgotava a cota de leitura do D1. Aqui a borda também barra.
   if (termos.join("").length < 2) return null;
   const global = game === "all";
-  // Cada operando do INTERSECT é embrulhado num LIMIT: teto de linhas LIDAS por
-  // termo (no D1 linha lida é linha COBRADA — não a devolvida). Não muda o
-  // resultado prático: o INTERSECT já afunila e o SELECT externo corta em ~40.
+  const teto = opts && opts.completo ? LIMITE_COMPLETO : LIMITE_CURTO;
+  const lim = Math.max(1, Math.min(teto, limite | 0 || LIMITE_PADRAO));
+  // Parâmetros NUMERADOS (?1, ?2…) em todo lugar: o jogo (?1) aparece em cada
+  // operando e no join, e misturar ?1 com ? anônimo dependia da ordem em que
+  // os dois aparecem no texto.
+  const params = [];
+  const p = (v) => `?${params.push(v)}`;
+  const pJogo = global ? "" : p(game);
+  // Cada operando devolve (game, id, e): as cartas que têm alguma palavra
+  // casando com o termo, e `e` = 1 se uma delas é a palavra EXATA. A soma dos
+  // `e` é o `x` da resposta — quantos termos casaram como palavra inteira — e
+  // é o que põe "Mew" antes de "Mewtwo" numa busca por "mew", inclusive na
+  // carta japonesa (nome ミュウ, palavra "mew" vinda do nameEn), que o cliente
+  // não teria como ranquear pelo nome.
   //
   // Termo NUMÉRICO ("009", "94", o "9" de "9/94") casa por IGUALDADE nas suas
   // escritas (word IN ('9','009')), não por prefixo: quem digita um número
-  // quer aquele número — "9" por prefixo trazia 9, 90-99 e 900-999, milhares
-  // de linhas que estouravam o teto do operando e a interseção PERDIA a carta
-  // certa ("nymble 9" voltava vazio). Igualdade lê só as linhas iguais, e por
-  // isso o teto é maior: o "1" existe em todo set de todo jogo.
+  // quer aquele número — "9" por prefixo trazia 9, 90-99 e 900-999. Termo de
+  // UMA letra também: "charizard x" quer a palavra X (Mega Charizard X), e
+  // "x%" seriam milhares de linhas (xatu, xerneas…) sem relação com a busca.
+  const selJogo = global ? "game, id" : "id";
+  const ondeJogo = global ? "" : `game = ${pJogo} AND `;
   const operando = (t) => {
-    const numerico = /^\d+$/.test(t);
-    const cond = numerico ? `word IN (${formasNumericas(t).map(() => "?").join(",")})` : "word LIKE ?";
-    const teto = numerico ? 6000 : 2000;
-    return global
-      ? `SELECT game, id FROM (SELECT game, id FROM card_words WHERE ${cond} LIMIT ${teto})`
-      : `SELECT id FROM (SELECT id FROM card_words WHERE game = ?1 AND ${cond} LIMIT ${teto})`;
+    if (/^\d+$/.test(t) || Array.from(t).length === 1) {
+      const formas = /^\d+$/.test(t) ? formasNumericas(t) : [t];
+      return `SELECT ${selJogo}, 1 AS e FROM (SELECT ${selJogo} FROM card_words WHERE ${ondeJogo}word IN (${formas.map(p).join(",")}) LIMIT ${TETO_OPERANDO}) GROUP BY ${selJogo}`;
+    }
+    const exato = p(t);
+    return `SELECT ${selJogo}, MAX(word = ${exato}) AS e FROM (SELECT ${selJogo}, word FROM card_words WHERE ${ondeJogo}word LIKE ${p(prefixoLike(t))} LIMIT ${TETO_OPERANDO}) GROUP BY ${selJogo}`;
   };
-  const sub = termos.map(operando).join("\nINTERSECT\n");
-  const alvo = global ? `(game, id) IN` : `game = ?1 AND id IN`;
-  // image/released no SELECT: a lista de IMPRESSÕES do popup da carta precisa
-  // dos dois (miniatura no hover e ordenação por lançamento). Ler as colunas a
-  // mais não custa linha no D1 (a cobrança é por linha lida, e a linha já era
-  // lida pela PK) — quem decide se elas VÃO na resposta é o &img=1 do search.js,
-  // pra busca do editor de decks seguir nos poucos KB de sempre.
-  const sql = `SELECT game, id, name, set_name, number, card_type, cost, rarity, color, image, released
-FROM cards WHERE ${alvo} (\n${sub}\n) LIMIT ${Math.max(1, Math.min(100, limite | 0 || 40))}`;
-  const valores = termos.flatMap((t) => (/^\d+$/.test(t) ? formasNumericas(t) : [t + "%"]));
-  const params = global ? valores : [game, ...valores];
+  // UNION ALL + GROUP BY … HAVING COUNT(*) = n é a interseção (a carta está em
+  // todos os n operandos, cada um já deduplicado por carta) que ainda carrega a
+  // soma dos `e`. Lê as mesmas linhas que o INTERSECT que existia aqui antes.
+  const m = `SELECT ${selJogo}, SUM(e) AS x FROM (\n${termos.map(operando).join("\nUNION ALL\n")}\n) GROUP BY ${selJogo} HAVING COUNT(*) = ${termos.length}`;
+  // Código impresso "009/094": os dois números já são termos (o 9 casa no
+  // número, o 94 no total do set, que o cardRows indexa como palavra extra).
+  // Mas palavra não sabe de onde veio — a EB03-009 de um set de 94 cartas
+  // também tem "009" e "94". Aqui o NÚMERO da carta confere: tem de ser o da
+  // fração (em qualquer escrita, ou guardado como "4/102"). Antes essa peneira
+  // só existia no cliente, com a carta inteira na mão.
+  // Duas frações no máximo: cada uma custa até 6 parâmetros, e o D1 recusa
+  // statement com mais de 100.
+  const fracoes = [...String(consulta || "").matchAll(/(\d+)\s*\/\s*\d+/g)].slice(0, 2).map((f) => f[1]);
+  const condFracao = fracoes.map((n) => {
+    const formas = formasNumericas(n);
+    return `(c.number IN (${formas.map(p).join(",")})${formas.map((f) => ` OR c.number LIKE ${p(`${f}/%`)}`).join("")})`;
+  });
+  const join = global ? "c.game = m.game AND c.id = m.id" : `c.game = ${pJogo} AND c.id = m.id`;
+  // ORDEM: relevância primeiro (termos casados como palavra inteira), depois o
+  // lançamento mais novo, e (jogo, id) só pra ordem ser sempre a mesma. Antes
+  // não havia ORDER BY nenhum: o LIMIT devolvia as primeiras cartas na ordem
+  // do banco (os ids em ordem alfabética), e "mew" no Explorar mostrava 60
+  // cartas do "30th Celebration" como se fossem as melhores.
+  // `t` = total de cartas que casaram (antes do LIMIT): é o que deixa o
+  // Explorar dizer "8.283 resultados" em vez de "60 resultados".
+  // Colunas da COLEÇÃO (set_id, artist, language, variants…) no SELECT: o
+  // modo completo devolve a carta pronta pra grade, sem o cliente baixar os
+  // chunks dos sets. Ler as colunas a mais não custa linha no D1 (a cobrança é
+  // por linha lida, e a linha já é lida pela PK) — quem decide o que VAI na
+  // resposta é o search.js.
+  const sql = `WITH m AS (${m})
+SELECT c.game AS game, c.id AS id, c.name, c.set_name, c.number, c.card_type, c.cost, c.rarity, c.color,
+  c.set_id, c.artist, c.language, c.image, c.variants, c.released, m.x AS x, COUNT(*) OVER () AS t
+FROM m JOIN cards c ON ${join}${condFracao.length ? `\nWHERE ${condFracao.join(" AND ")}` : ""}
+ORDER BY m.x DESC, c.released DESC, c.game, c.id
+LIMIT ${lim}`;
   return { sql, params };
 }
 
@@ -200,6 +284,18 @@ export function buildCards(game, ids) {
 // do fatiamento (senão um lote de 90 viraria 180 parâmetros e estouraria).
 export function idsComBase(ids) {
   return [...new Set((ids || []).flatMap((id) => [id, basePricingId(id)]))];
+}
+
+// Preços de MUITOS ids num statement só (o modo completo da busca: até 10 mil
+// cartas, 20 mil ids com os base). A lista vai como UM parâmetro JSON e o
+// json_each a abre — fatiar em lotes de 90 (o teto de 100 parâmetros do D1)
+// seriam 200+ consultas. Continua sendo busca pela PK, uma linha por id.
+export function buildPricesJson(game, ids) {
+  if (!ids || !ids.length) return null;
+  return {
+    sql: "SELECT id, j FROM prices WHERE game = ?1 AND id IN (SELECT value FROM json_each(?2))",
+    params: [game, JSON.stringify(ids)]
+  };
 }
 
 // Preços de uma lista de ids JÁ expandida por idsComBase.

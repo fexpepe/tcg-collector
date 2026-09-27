@@ -943,6 +943,13 @@ input::placeholder {
   color: var(--muted);
   margin-bottom: 0;
 }
+/* Aviso logo abaixo da linha do título (o Explorar diz quando a busca veio
+   cortada nas 10 mil cartas mais relevantes): texto de apoio, não alerta. */
+.results-note {
+  margin: -6px 0 14px;
+  color: var(--muted);
+  font-size: 13px;
+}
 
 /* --- Pastas na coleção (seções colapsáveis) --- */
 /* Altura TRAVADA em 36px, a mesma dos botões de Filtros/Visualização da

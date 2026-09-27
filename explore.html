@@ -99,6 +99,7 @@
           <div class="sort-select">
             <label for="exploreSortSelect" data-i18n="sort.label">Ordenar:</label>
             <select id="exploreSortSelect">
+              <option value="relevance" data-i18n="sort.relevance">Mais relevantes</option>
               <option value="value-desc" data-i18n="sort.valueDesc">Valor (maior → menor)</option>
               <option value="value-asc" data-i18n="sort.valueAsc">Valor (menor → maior)</option>
               <option value="rarity-desc" data-i18n="sort.rarityDesc">Raridade (maior → menor)</option>
@@ -135,6 +136,9 @@
           </div>
         </div>
       </section>
+      <!-- Aviso de busca CORTADA: a borda devolve até 10 mil cartas (as mais
+           relevantes); acima disso diz quantas existem e como chegar no resto. -->
+      <p id="exploreNote" class="results-note" aria-live="polite" hidden></p>
 
       <!-- Filtros atrás do botão da linha do título (mesmo molde da Coleção e
            do /cartas): nasce recolhida, em qualquer largura. data-own-toggle

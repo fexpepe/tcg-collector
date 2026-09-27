@@ -13,6 +13,7 @@
     resultsHeader: document.getElementById("exploreResultsHeader"),
     resultsTitle: document.querySelector("#exploreResultsHeader h2"),
     resultCount: document.getElementById("exploreResultCount"),
+    note: document.getElementById("exploreNote"),
     gameFilter: document.getElementById("exploreGameSelect"),
     sortSelect: document.getElementById("exploreSortSelect"),
     viewToggle: document.getElementById("exploreViewToggle"),
@@ -25,8 +26,12 @@
     priceMax: document.getElementById("explorePriceMax")
   };
 
-  const SORTS = ["value-desc", "value-asc", "rarity-desc", "rarity-asc", "release", "num-asc"];
-  let sort = SORTS.includes(localStorage.getItem("tcg-explore-sort")) ? localStorage.getItem("tcg-explore-sort") : "value-desc";
+  // "relevance" (27/09/2026) é o padrão: a carta que TEM o nome buscado vem
+  // antes da que só começa com ele ("mew": Mew antes de Mewtwo), e dentro do
+  // mesmo nível a mais valiosa primeiro. Quem já escolheu outra ordem guarda
+  // a escolha (a chave só é gravada quando o seletor muda).
+  const SORTS = ["relevance", "value-desc", "value-asc", "rarity-desc", "rarity-asc", "release", "num-asc"];
+  let sort = SORTS.includes(localStorage.getItem("tcg-explore-sort")) ? localStorage.getItem("tcg-explore-sort") : "relevance";
   let gameFilter = "all";
   // Visualização da grade (grade/lista/compacta/fichário) — o MESMO alternador
   // da Coleção, do /cartas e da página do set, com preferência por página.
@@ -151,6 +156,11 @@
   function sortComparator() {
     const priceOf = shared.memoValue((p) => shared.cardValue(p.card, p.variant, prices, shared.DEFAULT_CONDITION).value || 0);
     const byNum = (a, b) => shared.compareCardNumbers(a.card.number, b.card.number);
+    if (sort === "relevance") {
+      const q = term();
+      const relOf = shared.memoValue((card) => shared.searchRelevance(card, q));
+      return (a, b) => (relOf(b.card) - relOf(a.card)) || (priceOf(b) - priceOf(a));
+    }
     if (sort === "num-asc") return byNum;
     if (sort === "value-asc") return (a, b) => {
       const pa = priceOf(a), pb = priceOf(b);
@@ -236,14 +246,34 @@
     }
   }
 
-  // Última lista base pintada e o termo dela (ver o comentário no render).
-  let ultimaBase = { q: "", list: null };
+  // Número no formato do idioma ("8.283", "8,283"): o contador é o que diz se
+  // a busca veio inteira, e "8283 resultados" é difícil de ler.
+  const numero = (n) => {
+    try { return Number(n).toLocaleString(shared.getLocale ? shared.getLocale() : undefined); } catch (e) { return String(n); }
+  };
+
+  // Aviso de resultado CORTADO: a borda devolve no máximo 10 mil cartas (as
+  // mais relevantes). Acima disso a busca não é de UMA carta ("dragon" em 13
+  // jogos) e o aviso diz quantas existem e como chegar no resto.
+  function pintaAviso(base) {
+    if (!elements.note) return;
+    const cortado = !!(base && base.truncated && base.total > base.list.length);
+    elements.note.hidden = !cortado;
+    elements.note.textContent = cortado
+      ? t("explore.truncated", { shown: numero(base.list.length), total: numero(base.total) })
+      : "";
+  }
+
+  // Última lista base pintada e o termo dela (ver o comentário no render),
+  // com o total da borda e se ela veio cortada.
+  let ultimaBase = { q: "", game: "", list: null, total: 0, truncated: false };
   function render(options) {
     const searching = isSearching();
     if (!searching) {
       const showTop = topViewedReady && topViewedPairs.length >= 4;
       elements.intro.hidden = showTop;
       elements.resultCount.textContent = "";
+      pintaAviso(null);
       elements.resultsHeader.hidden = !showTop;
       if (elements.filters) elements.filters.hidden = !showTop;
       if (!showTop) {
@@ -264,18 +294,27 @@
     if (elements.filters) elements.filters.hidden = false;
     if (elements.resultsTitle) elements.resultsTitle.textContent = t("results.heading.cards");
     // Filtra ANTES de gerar pares carta×variante (barato mesmo com ~60k cartas).
-    // options.list = resultados já resolvidos pela API da borda (apiApply):
-    // vêm filtrados por jogo e casados por palavra, só entram no funil daqui.
+    // options.list = resultado COMPLETO da borda (apiApply): já filtrado por
+    // jogo e casado por palavra, só entra no funil daqui.
     const q = term();
     // A base é a lista da borda (options.list) quando ela veio, o catálogo
     // completo quando ele chegou — e, no meio do caminho, a ÚLTIMA lista
-    // pintada pra este mesmo termo. Sem essa memória, qualquer re-render sem
-    // options (trocar a vista, mexer num filtro, ligar o "Agrupar") caía no
-    // `cards` ainda vazio e esvaziava a grade com um "nada encontrado".
-    const matched = (options && options.list)
-      || ((!catalogPronto && ultimaBase.list && ultimaBase.q === q) ? ultimaBase.list
-        : cards.filter((card) => shared.cardMatchesGameFilter(card, gameFilter) && matchesCardQuery(card, q)));
-    ultimaBase = { q, list: matched };
+    // pintada pra este mesmo termo e jogo. Sem essa memória, qualquer
+    // re-render sem options (trocar a vista, mexer num filtro, ligar o
+    // "Agrupar") caía no `cards` ainda vazio e esvaziava a grade com um "nada
+    // encontrado".
+    let base;
+    if (options && options.list) {
+      base = { q, game: gameFilter, list: options.list, total: options.total || options.list.length, truncated: !!options.truncated };
+    } else if (!catalogPronto && ultimaBase.list && ultimaBase.q === q && ultimaBase.game === gameFilter) {
+      base = ultimaBase;
+    } else {
+      const list = cards.filter((card) => shared.cardMatchesGameFilter(card, gameFilter) && matchesCardQuery(card, q));
+      base = { q, game: gameFilter, list, total: list.length, truncated: false };
+    }
+    ultimaBase = base;
+    const matched = base.list;
+    pintaAviso(base);
     atualizaOpcoes(matched);
     const pairs = shared.cardVariantPairs(matched.filter(passaNosFiltros), { group: agrupaVersoes });
     const cmp = sortComparator();
@@ -286,7 +325,19 @@
     // "Nenhuma carta em nenhum jogo" é resposta da BUSCA; com filtro ligado o
     // que sobrou de fora foi a barra, e a mensagem tem que dizer isso.
     if (!pairs.length) elements.empty.textContent = t(temFiltro() && matched.length ? "empty.pokedex" : "explore.empty");
-    elements.resultCount.textContent = tn("results.count", pairs.length);
+    elements.resultCount.textContent = tn("results.count", pairs.length, { n: numero(pairs.length) });
+  }
+
+  // Rótulos dos tiles JÁ na tela depois que as cartas da borda ganham o
+  // setTotal (enrichSetTotals): o título passa de "Mewtwo (063)" pra
+  // "Mewtwo (063/197)" sem redesenhar a grade — recriar o tile faria a imagem
+  // piscar e devolveria quem rolou pro começo.
+  function atualizaRotulos() {
+    elements.grid.querySelectorAll(".card-tile").forEach((tile) => {
+      const card = cardsById.get(tile.dataset.tileCardId);
+      const h3 = card && tile.querySelector(".tile-info h3");
+      if (h3) h3.textContent = shared.cardLabel(card);
+    });
   }
 
   function refreshOwnership() {
@@ -303,13 +354,25 @@
     try { history.replaceState(null, "", `${window.location.pathname}${sp.toString() ? `?${sp}` : ""}`); } catch (e) { /* ignora */ }
   }
 
-  // Busca pela BORDA enquanto o catálogo completo não desceu: a /api/search
-  // responde nome/set/número/artista de TODOS os jogos em poucos KB e só as
-  // ≤60 cartas exibidas são hidratadas (os chunks dos sets delas). O catálogo
-  // inteiro — o maior download do site, dezenas de MB — só desce se a API
-  // estiver desligada. Depois que ele chegou (catalogPromise existe), a busca
-  // local de sempre segue valendo: instantânea, sem rede e sem teto de 60.
+  // Busca pela BORDA: a /api/search em modo COMPLETO (&full=1) devolve TODAS
+  // as cartas que casam em todos os jogos (até 10 mil, as mais relevantes
+  // primeiro), já prontas pra grade e com o preço de cada uma — então a
+  // contagem, a ordenação (por valor, raridade…), os filtros e a rolagem
+  // valem sobre o resultado INTEIRO.
+  //
+  // Até 27/09/2026 esta ponte pedia 60 cartas, sem ordem nenhuma (a SQL não
+  // tinha ORDER BY), e o catálogo completo só descia com a borda fora do ar:
+  // "mew" mostrava "60 resultados" — 60 cartas quaisquer das 370, com o
+  // "maior valor" ordenando só esses 60 — e não havia rolagem que trouxesse o
+  // resto. De quebra, hidratar as 60 pelos chunks baixava o manifest e o
+  // índice inteiro de cada jogo (2,9 MB só o do Pokémon); a resposta completa
+  // de "mew" são 9 KB comprimidos.
+  //
+  // O catálogo inteiro — o maior download do site, dezenas de MB — só desce
+  // se a borda estiver fora ou responder vazio (ver abaixo). Depois que ele
+  // chegou, a busca local segue valendo: instantânea e sem rede.
   let apiSeq = 0;
+  let urlCardTentado = false;
   const VINTAGE_GAMES = ["pokemon", "onepiece", "naruto", "hxh"]; // os que têm carta vintage (ver isVintageCard)
   // Qualquer erro no caminho da borda cai no catálogo local em vez de deixar
   // a página muda: uma exceção aqui era uma rejeição sem ninguém ouvindo, a
@@ -324,46 +387,58 @@
   async function apiApplyInner() {
     const seq = ++apiSeq;
     const q = term();
+    const filtro = gameFilter;
     if (!elements.grid.querySelector(".card-tile")) shared.showSkeletons(elements.grid, "card", 8);
     // "Vintage" não existe na borda (é corte por carta, não coluna do D1):
-    // busca nos jogos que TÊM linha vintage e peneira as cartas hidratadas
-    // com isVintageCard, mais abaixo.
-    const vintage = gameFilter === shared.VINTAGE_FILTER;
-    const hits = vintage
-      ? (await Promise.all(VINTAGE_GAMES.map((g) => shared.searchApi(g, q, 60)))).flat().filter(Boolean)
-      : await shared.searchApi(gameFilter === "all" ? "all" : gameFilter, q, 60);
+    // busca nos jogos que TÊM linha vintage e peneira as cartas com
+    // isVintageCard, mais abaixo.
+    const vintage = filtro === shared.VINTAGE_FILTER;
+    const jogos = vintage ? VINTAGE_GAMES : [filtro === "all" ? "all" : filtro];
+    const respostas = await Promise.all(jogos.map((g) => shared.searchApiFull(g, q)));
     if (seq !== apiSeq || catalogPronto) return; // o catálogo chegou no meio: o render dele já cobre
+    // null = borda desligada/soluço (ou Function sem o modo completo): o
+    // catálogo local responde. Um jogo do vintage falhar também — resultado
+    // pela metade com contagem de inteiro é o que esta página não pode dar.
+    if (respostas.some((r) => !r)) { renderFromCatalog(); return; }
+    let found = [].concat(...respostas.map((r) => r.cards));
     // VAZIO não é resposta final — só o catálogo local pode afirmar "essa
-    // carta não existe". A borda responde vazio quando o banco está em recarga
-    // (deploy) ou quando um vazio antigo ficou preso em cache; antes isto
-    // virava um "nenhum resultado" definitivo na cara do usuário, sem nunca
-    // consultar o catálogo. null (desligada/soluço) cai no mesmo caminho.
-    if (!hits || !hits.length) { renderFromCatalog(); return; }
-    const idsByGame = Object.create(null); // g vem do D1, mas null-proto evita surpresa com "constructor" etc.
-    hits.forEach((h) => { const g = h.g || "pokemon"; (idsByGame[g] = idsByGame[g] || []).push(h.i); });
-    let catalog = { cards: [] };
-    try { catalog = await shared.loadOwnedAcrossGames(idsByGame); }
-    catch (e) { renderFromCatalog(); return; }
-    if (seq !== apiSeq || catalogPronto) return;
-    const byId = new Map((catalog.cards || []).map((c) => [c.id, c]));
-    const found = [];
-    hits.forEach((h) => {
-      const card = byId.get(h.i);
-      if (!card || (vintage && !shared.isVintageCard(card))) return;
-      // registra pro preview/posse/preço funcionarem igual ao caminho completo
+    // carta não existe": ele casa por pedaço de palavra ("kachu" acha
+    // Pikachu), a borda só por começo de palavra; e a borda responde vazio
+    // quando o banco está em recarga (deploy).
+    // Enquanto o catálogo confirma, a grade não pode seguir mostrando o
+    // resultado da busca ANTERIOR (trocar pra um jogo sem a carta deixava as
+    // cartas do outro jogo na tela, com a contagem velha): esqueletos no lugar.
+    if (!found.length) {
+      pintaGrade([], { resetCount: true });
+      shared.showSkeletons(elements.grid, "card", 8);
+      elements.resultCount.textContent = "";
+      pintaAviso(null);
+      renderFromCatalog();
+      return;
+    }
+    // Os preços vêm na mesma resposta: entram na tabela da sessão, que é onde
+    // o cardValue procura (união, como o loadAcrossGames faz — outra busca
+    // desta página já pode ter posto preço de outras cartas ali).
+    window.TCG_PRICING = Object.assign({}, window.TCG_PRICING, ...respostas.map((r) => r.pricing));
+    if (vintage) found = found.filter((card) => shared.isVintageCard(card));
+    // registra pro preview/posse/preço funcionarem igual ao caminho completo
+    found.forEach((card) => {
       cardGameMap.set(card.id, card.game);
       cardsById.set(card.id, card);
-      found.push(card);
     });
-    // Hits sem carta na hidratação (índice da borda à frente dos chunks, ou
-    // vice-versa): mesma regra do vazio — o catálogo decide.
-    if (!found.length) { renderFromCatalog(); return; }
-    // A borda casa por PALAVRA (número e total soltos): "009/094" traz também
-    // a EB03-009 de um set de 94 cartas. Com a carta inteira na mão, a régua
-    // do cliente (token inteiro) peneira; se ela rejeitar tudo, é gap da
-    // régua e não da borda — fica com os hits como vieram.
-    const precisos = found.filter((card) => matchesCardQuery(card, q));
-    render({ resetCount: true, list: precisos.length ? precisos : found });
+    const total = vintage ? found.length : respostas[0].total;
+    const truncated = respostas.some((r) => r.truncated);
+    render({ resetCount: true, list: found, total, truncated });
+    // ?card=<id> (link de carta aberto a partir de uma busca): reabre o popup
+    // UMA vez, na primeira resposta — o caminho do catálogo faz o mesmo no
+    // ensureCatalog, mas com a borda respondendo ele nunca roda, e o link
+    // compartilhado abria só a grade.
+    if (!urlCardTentado) { urlCardTentado = true; preview.openFromUrl(); }
+    // O código impresso completo ("063/197") depende do total do set, que a
+    // borda não guarda: vem do manifest do jogo, em 2º plano.
+    shared.enrichSetTotals(found).then((mudou) => {
+      if (mudou && seq === apiSeq) atualizaRotulos();
+    }).catch(() => { /* sem manifest: fica o número sozinho */ });
   }
 
   const apply = () => {
@@ -401,7 +476,9 @@
   elements.sortSelect.addEventListener("change", () => {
     sort = SORTS.includes(elements.sortSelect.value) ? elements.sortSelect.value : "value-desc";
     try { localStorage.setItem("tcg-explore-sort", sort); } catch (e) { /* ignora */ }
-    if (isSearching()) apply();
+    // Reordena o que JÁ está na mão (o resultado inteiro veio da borda) —
+    // não é uma busca nova, então não volta à rede.
+    if (isSearching()) render({ resetCount: true });
   });
 
   // Visualização: grade ↔ lista é só a classe da grade; compacta e fichário
