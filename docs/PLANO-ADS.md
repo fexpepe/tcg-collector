@@ -1,7 +1,8 @@
 # Anúncios — plano de receita sem estragar o app
 
-Proposta de 27/09/2026. **Nada disto está no ar**: é o plano pra decidir
-antes de escrever código. O objetivo é pagar o site (domínio, R2, D1, créditos
+Proposta de 27/09/2026, com as decisões do Fernando fechadas no mesmo dia
+(seção 14). **Nada disto está no ar**: o desenho está aprovado e a
+implementação começa pela fase 0. O objetivo é pagar o site (domínio, R2, D1, créditos
 da PPT, horas de trabalho) sem trair a tese do ROADMAP ("grátis, sem plano
 pro, sem limite") e sem piorar a experiência de quem usa o app todo dia.
 
@@ -182,7 +183,7 @@ trocar uma linha de configuração, não mexer em 20 HTML.
 |---|---|---|
 | **A — chegada pela busca** | `/card/<slug>`, `/set/<slug>`, `/deck/<slug>`, páginas de artista (pré-renderizadas) | sim — é onde chega o visitante do Google, que não é o usuário diário |
 | **B — catálogo no app** | `detail` (set/artista/Pokémon), `sets`, `cards`, `explore`, `decks`, `pokedex`, `artists`, `trainers`, `lancamentos`, `novidades`, `lore` | sim, faixa no feed |
-| **C — pessoais** | `collection`, `portfolio`, `wishlist`, `binders`, `pastas`, `sales`, `my-decks`, `dashboard`, `badges` | **não** (decisão pendente, seção 14) |
+| **C — pessoais** | `collection`, `portfolio`, `wishlist`, `binders`, `pastas`, `sales`, `my-decks`, `dashboard`, `badges` | **não** (decidido, seção 14) |
 | **D — perfis e links compartilhados** | `/users/<handle>`, links `?s=` | **não** — é a vitrine de alguém |
 | **zero** | `index` (landing), `hub`, `login`, `account`, `settings`, `backup`, `admin`, `about`/`help`/`faq`/`privacy`/`terms`, `404`, scanner, todo popup/modal, `primeiros-passos`, imagens exportadas de binder | **nunca** |
 
@@ -207,10 +208,11 @@ porque é o primeiro contato de quem ainda não confia no site.
 
 ### Tela larga (≥1800 px)
 
-- **Trilho lateral**: um 160×600 fixo (sticky) na margem direita. O conteúdo
-  tem teto de 1440 px (`--content-w`), então a 1920 px sobram 240 px de cada
-  lado **sem nada**. O anúncio mora nesse vazio: a grade não perde coluna. Em
-  telas menores o trilho simplesmente não existe.
+- **Trilho lateral** (aprovado): um 160×600 fixo (sticky) na margem direita.
+  O conteúdo tem teto de 1440 px (`--content-w`), então a 1920 px sobram
+  240 px de cada lado **sem nada**. O anúncio mora nesse vazio: a grade não
+  perde coluna. Em telas menores o trilho simplesmente não existe. Se no uso
+  real parecer poluído, é o primeiro formato a sair.
 
 ### Celular (390 px, grade de 2 colunas)
 
@@ -263,10 +265,12 @@ no popup de toda carta, e o `store_click` já conta os cliques. Falta pouco:
    cuidado pra não virar vitrine.
 
 O ajuste de código é na função `comUtm` (que vira `linkDeLoja`): a tabela de
-parâmetros de afiliado por loja mora num lugar só, testada. **Transparência:**
-uma linha no popup ("links de loja podem render comissão ao Sleevu — o preço
-pra você não muda") e uma seção na política de privacidade. A Moxfield vai
-além e deixa o usuário escolher a loja; fica anotado como ideia.
+parâmetros de afiliado por loja mora num lugar só, testada. **Transparência
+(decidido):** uma linha discreta embaixo dos chips ("Links de loja podem
+render comissão ao Sleevu — o preço pra você não muda") e uma seção na
+política de privacidade. O afiliado **não muda a ordem nem quais lojas
+aparecem**: a lista continua sendo a que serve a quem procura a carta. A
+Moxfield vai além e deixa o usuário escolher a loja; fica anotado como ideia.
 
 ---
 
@@ -328,9 +332,9 @@ AdSense resolve e só aparece pra esses países.
   "Aceitar anúncios personalizados" / "Só contextuais" — e "Saiba mais".
 - **Aceitou** → `setConsent("ads", true)` e AdSense personalizado.
 - **Recusou** → só **vitrine da casa e parceiros diretos** (sem cookie de
-  terceiro). É o caminho conservador. Servir anúncio **não personalizado** do
-  Google pra quem recusou (mais receita) ainda grava cookie de frequência e
-  fraude — é decisão jurídica, anotada na seção 14.
+  terceiro), e **nenhum script do Google carrega** (decidido, seção 14).
+  Anúncio "não personalizado" do Google também grava cookie de frequência e
+  fraude, então só volta à mesa com uma leitura jurídica da LGPD.
 - **Configurações → Privacidade** ganha o interruptor "Anúncios
   personalizados", ao lado do de estatísticas (o `settings.js` já tem o
   padrão).
@@ -412,6 +416,30 @@ vitrine da casa, entrada do FAQ, textos legais.
 consentimento não carrega script do Google", e o site boota igual com
 `src/ads.js` bloqueado. `check.mjs` já pega chave faltando.
 
+**Apoiador sem anúncio** (decidido). Quem apoia pelo Pix ou pelo Ko-fi navega
+sem **nenhum** anúncio: nem AdSense, nem trilho, nem a oferta patrocinada do
+popup, nem a vitrine da casa pedindo apoio (não faz sentido pedir a quem já
+apoiou). Os links de loja continuam, porque não são anúncio: são o caminho
+pra comprar a carta. Nenhuma função do app fica trancada — não é plano pro.
+
+- **Onde mora:** `profiles.apoiador_ate` (data). Vale até o fim do dia
+  gravado; vazio ou vencido = anúncios normais. Data, e não um sim/não, porque
+  o Pix é avulso: cada apoio compra um período, e o Ko-fi mensal só renova a
+  data.
+- **Quem grava:** só o dono do site. O mesmo trigger que protege o
+  `is_admin` (`profiles_admin_guard`, ver docs/BACKEND.md) passa a devolver
+  `apoiador_ate` ao valor anterior em escrita vinda da API — sem isso, a
+  policy "dono edita a própria linha" deixava qualquer conta se marcar como
+  apoiadora com um PATCH. No começo a marcação é à mão (SQL Editor ou um
+  campo no /admin); webhook do Ko-fi numa Function é passo posterior.
+- **Como o app lê:** junto do perfil que o login já carrega; o `ads.js`
+  confere antes de montar qualquer espaço. Deslogado não tem como ser
+  apoiador, então vê anúncio — e o aviso "Por que anúncios?" diz como
+  apoiar e entrar.
+- **O que aparece pra quem apoia:** um selo discreto no menu de conta
+  ("Apoiador · sem anúncios até 27/10") e, no lugar dos espaços, nada — a
+  grade fica exatamente como é hoje.
+
 **App instalado.** PWA rodando no navegador é site pra política do AdSense.
 Se um dia o Sleevu for pra Play Store embrulhado (TWA/WebView), aí vale a API
 de WebView pra anúncios — reavaliar nesse momento.
@@ -469,6 +497,7 @@ qualquer página com espaço é bug, não custo.
 - [ ] Aviso de consentimento + interruptor em Configurações
 - [ ] `ad_view`/`ad_click` (migração + `EVENTOS`) e painel no /admin
 - [ ] Afiliados TCGplayer e eBay nos chips + linha de transparência
+      (cadastro nos programas é do Fernando: Impact e eBay Partner Network)
 - [ ] Testes e guardas de CI da seção 10
 
 Entrega sozinha já tem valor: afiliados rendendo, vitrine da casa pedindo
@@ -479,13 +508,12 @@ apoio no lugar certo e o espaço medido antes de ter anúncio.
       **Auto ads, vinheta e âncora desligados**
 - [ ] CSP por rota + `_middleware.js` com nonce; conferir no preview
 - [ ] CMP do Google pra UE/UK/CH
+- [ ] Apoiador sem anúncio (seção 10): `profiles.apoiador_ate` + guarda no
+      trigger + leitura no `ads.js` + selo no menu de conta. Entra **antes**
+      do lançamento a 100%: a saída pra quem não quer anúncio tem que existir
+      no dia em que o anúncio chega (o Archidekt faz o mesmo com o Patreon)
 - [ ] Pedido de aprovação; lançamento a 50% com grupo de controle; ajustar
       densidade pelos números; então 100%
-
-### Fase 1.5 — Apoiador sem anúncio (se aprovado)
-- [ ] Quem apoia (Ko-fi/Pix recorrente) navega sem anúncio — o Archidekt faz
-      isso com o Patreon. Não é "plano pro": nenhuma função fica trancada.
-      Flag na conta (Supabase), marcada à mão no começo.
 
 ### Fase 2 — Rede premium (≥ ~100 mil pageviews/mês)
 - [ ] Candidatura à Nitro e/ou Playwire (ou Journey, se o tráfego anglófono
@@ -498,20 +526,33 @@ apoio no lugar certo e o espaço medido antes de ter anúncio.
 
 ---
 
-## 14. Decisões pendentes do Fernando
+## 14. Decisões do Fernando (27/09/2026 — não reabrir sem motivo novo)
 
-1. **Páginas pessoais com anúncio?** Recomendação: **não**. É onde o usuário
-   fiel passa o tempo e onde a política do Google é mais restritiva. Reavaliar
-   com o /admin mostrando que fatia dos pageviews elas são.
-2. **Quem recusa o consentimento vê anúncio não personalizado do Google?**
-   Recomendação: **não por ora** (só vitrine da casa/parceiros). Mais receita
-   exige uma leitura jurídica da LGPD sobre os cookies de frequência/fraude.
-3. **Apoiador sem anúncio (fase 1.5)?** Recomendação: **sim** — converte quem
-   odeia anúncio em apoiador sem criar plano pago.
-4. **Afiliado nos links de loja?** Recomendação: **sim**, com a linha de
-   transparência. Não muda preço nem ordem das lojas.
-5. **Trilho lateral em tela larga?** Recomendação: **sim** — usa espaço que
-   hoje é vazio. Se parecer poluído no uso real, é o primeiro a sair.
+1. **Páginas pessoais com anúncio? Não.** Coleção, Portfólio, Wishlist,
+   Binders, Pastas, Vendas, Meus decks, Hub pessoal e Badges ficam sem
+   anúncio. É onde o usuário fiel passa o tempo e onde a política do Google é
+   mais restritiva. Motivo novo pra reabrir seria o /admin mostrar que o
+   catálogo sozinho não sustenta a receita — e mesmo aí a conversa começa
+   pelo Hub pessoal, nunca pelas telas de cadastro.
+2. **Quem recusa o consentimento vê anúncio não personalizado do Google?
+   Não.** Recusou = vitrine da casa e parceiros diretos, e o script do Google
+   nem carrega. Só volta à mesa com uma leitura jurídica da LGPD sobre os
+   cookies de frequência/fraude do anúncio não personalizado.
+3. **Apoiador navega sem anúncio? Sim.** Pix ou Ko-fi compram um período sem
+   anúncio (`profiles.apoiador_ate`, seção 10), sem trancar função nenhuma.
+   Entra na fase 1, antes do lançamento a 100%.
+4. **Afiliado nos links de loja? Sim**, com a linha de transparência embaixo
+   dos chips e na política. Não muda preço, ordem nem quais lojas aparecem.
+   Entra na fase 0.
+5. **Trilho lateral em tela larga? Sim** (≥1800 px, na margem vazia). Se
+   parecer poluído no uso real, é o primeiro a sair.
+
+**Ainda em aberto (não bloqueia a fase 0):**
+
+- **Quanto vale o período de apoiador.** Sugestão pra começar: qualquer apoio
+  a partir de R$ 10 (ou o mensal do Ko-fi) = 30 dias sem anúncio, somando
+  quando a pessoa apoia de novo antes de vencer. Precisa estar definido antes
+  da fase 1, porque vai no texto do "Por que anúncios?".
 
 ---
 
