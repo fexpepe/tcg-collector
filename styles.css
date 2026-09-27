@@ -1419,49 +1419,6 @@ input::placeholder {
 .preview-tags-add:hover { border-color: var(--accent); color: var(--accent); }
 
 /* --- Vendas (cartas à venda com preço) --- */
-/* align-items: center — sem ele o flex esticava cada botão até a altura da
-   coluna do "Ordenar:" (rótulo + select), e a fileira saía com botões gigantes
-   desalinhados do select. */
-.sales-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 12px; }
-.sales-toolbar button[disabled] { opacity: 0.5; cursor: not-allowed; }
-/* Link vestido de botão na fileira (ex.: "Analisar troca"): âncora só herda as
-   CORES do .secondary — a forma vem da regra base de button, que não alcança
-   <a>. Espelha min-height/padding de lá (mesma solução do a.setting-open). */
-.sales-toolbar a.secondary {
-  min-height: 42px;
-  padding: 0 16px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  text-decoration: none;
-}
-/* Ordenar na ponta DIREITA da fileira, rótulo e select na MESMA linha: o label
-   global é display:block (vira uma linha própria) e o select herda width:100% —
-   os dois juntos faziam o "Ordenar:" virar uma coluna mais alta que os botões. */
-.sales-sort-row { display: flex; align-items: center; gap: 8px; margin-left: auto; }
-.sales-sort-row label { margin: 0; }
-.sales-sort-row select { width: auto; }
-
-/* Precificar em lote (markup sobre a referência): chips rápidos + campo custom. */
-.sales-batch { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 12px 14px; margin-bottom: 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); }
-.sales-batch-label { font-size: 13px; font-weight: 800; color: var(--text); }
-.sales-batch-chips { display: flex; flex-wrap: wrap; gap: 6px; }
-.sales-batch-chip { border: 1px solid var(--line); background: var(--surface); color: var(--text); padding: 6px 11px; border-radius: 999px; font-size: 12px; font-weight: 800; cursor: pointer; }
-.sales-batch-chip:hover { border-color: var(--accent); }
-.sales-batch-custom { display: inline-flex; align-items: center; gap: 6px; }
-.sales-batch-custom input { width: 64px; height: 34px; box-sizing: border-box; text-align: center; font: inherit; font-weight: 800; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); color: var(--text); }
-.sales-batch-custom input:focus { outline: none; border-color: var(--accent); }
-.sales-batch-pct { font-weight: 800; color: var(--muted); }
-.sales-batch-custom .primary { height: 34px; padding: 0 14px; }
-.sales-batch-hint { flex: 1 1 100%; font-size: 12px; color: var(--subtle); }
-/* Badge do markup no dashboard (ex.: "−10% da referência"). */
-.dash-markup-badge { display: inline-block; margin-top: 4px; align-self: flex-start; font-size: 12px; font-weight: 800; padding: 2px 9px; border-radius: 999px; background: var(--panel-strong); color: var(--muted); }
-.dash-markup-badge.is-down { background: color-mix(in srgb, #e8553c 18%, transparent); color: #e8553c; }
-.dash-markup-badge.is-up { background: color-mix(in srgb, #2ecc71 18%, transparent); color: #21a558; }
-/* Na faixa de stats (Vendas) o badge não pode herdar o span 28px genérico. */
-.stats-grid .dash-markup-badge { display: inline-block; font-size: 12px; font-weight: 800; margin-top: 6px; line-height: 1.4; }
-
 .sale-tile, .graded-tile { position: relative; }
 .sale-tile .sale-remove, .graded-tile .sale-remove {
   position: absolute; top: 6px; right: 6px; z-index: 4;
@@ -9338,10 +9295,6 @@ select,
 .folder-name-input,
 .folder-tag,
 .folder-act,
-.sales-batch,
-.sales-batch-chip,
-.sales-batch-custom input,
-.dash-markup-badge,
 .graded-badge,
 .graded-company,
 .graded-grade,
@@ -10624,6 +10577,134 @@ select,
   .pasta-add .lst-rows { max-height: 60vh; max-height: 60dvh; }
 }
 
+/* ── Vendas em PASTAS (sales.html, 2026-09-27) ───────────────────────────────
+   A galeria é o Showcase da Coleção (.coll-card-pile) e a pasta aberta é o
+   molde da pasta da Coleção (trilho .set-insights-rail com .coll-hero +
+   .coll-overview). Aqui só o que é da venda: a grade das ações do herói, o
+   cartão "Preço pela referência", o link público, o card "Nova pasta" e o
+   "em outra pasta" do picker. Tudo vnd- = área "vendas" do split-css (só o
+   sales.html baixa). Este bloco vem DEPOIS das regras de .collection-
+   dashboard-hero de propósito: mesma especificidade, então vence aqui no
+   repositório e em produção (lá a folha da área carrega depois do núcleo). */
+/* O trilho com a calha de 16px da Minha Coleção em QUALQUER largura. (0,3,0)
+   de propósito: o `.collection-dashboard.collection-dashboard-hero` do celular
+   (margem −16px, full-bleed) e o `.coll-insights` da Coleção empatam em 0,2,0
+   e decidem pela ORDEM — no repositório vencia um, em produção (folhas por
+   área carregando depois do núcleo) o outro. Aqui não depende de ordem. */
+.collection-dashboard.collection-dashboard-hero.vnd-insights { display: block; margin: 0 0 18px; }
+/* margin negativa = o padding+borda do campo: o TEXTO do nome alinha com o
+   "← Vendas e Trocas" embaixo (a moldura só aparece no hover/foco). */
+.vnd-head h1 .vnd-title { max-width: 560px; height: auto; min-height: 0; margin-left: -7px; line-height: 1.15; }
+/* O piso de 16px dos campos de toque (lá no começo do arquivo) é !important e
+   fixaria o nome em 16px embaixo de um h1 de 26px. O título é maior que 16px,
+   então herdar não dá zoom no iOS — mesma saída do título do binder. */
+@media (pointer: coarse), (max-width: 700px) {
+  .vnd-head h1 input.vnd-title { font-size: inherit !important; }
+}
+/* Ações do herói em GRADE de 4 colunas: as duas principais (Adicionar /
+   Compartilhar; Nova pasta / Analisar troca na galeria) ocupam meia linha cada
+   e as quatro do dia a dia dividem a de baixo por igual — tudo na mesma régua,
+   em qualquer largura do cartão. Era uma fileira de seis botões de largura
+   livre que quebrava onde dava. */
+.vnd-hero .vnd-actions { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin: auto 0 0; width: auto; }
+/* As quatro de baixo: ícone EM CIMA do rótulo. Lado a lado, "Duplicatas" e
+   "WhatsApp" viravam "Duplica…" num cartão de 450px; empilhados cabem até nos
+   ~76px de cada coluna no celular, sem esconder texto. (0,3,0): vence o
+   `.collection-dashboard-hero .collection-toolbar-actions button` (0,2,1). */
+.vnd-hero .vnd-actions .vnd-act { flex-direction: column; min-width: 0; min-height: 54px; padding: 6px 4px; gap: 4px; justify-content: center; font-size: 12px; }
+.vnd-hero .vnd-actions .vnd-act-wide { grid-column: span 2; flex-direction: row; min-height: 42px; padding: 0 10px; gap: 7px; font-size: 14px; }
+/* Link vestido de botão ("Analisar troca"): <a> só herda as CORES do
+   .secondary; a forma vem da regra base de button, que não o alcança. */
+.vnd-actions a.vnd-act { display: inline-flex; align-items: center; min-height: 42px; font-weight: 700; text-decoration: none; }
+.vnd-act > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.vnd-actions .vnd-act-main { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.vnd-actions .vnd-act-main:hover { background: var(--accent-dark); }
+.vnd-act:disabled { opacity: 0.45; cursor: not-allowed; }
+.vnd-act-danger:hover { border-color: #d8443c; color: #d8443c; }
+/* Compartilhar: o ✓ no lugar do ícone quando o link foi copiado (o mesmo
+   feedback do .icon-btn da Coleção, aqui com o rótulo visível). */
+.vnd-act .icon-btn-ok { display: none; }
+.vnd-act.is-ok .icon-btn-main { display: none; }
+.vnd-act.is-ok .icon-btn-ok { display: inline; color: var(--money); }
+/* Identidade da pasta: o link público (o que o Compartilhar copia). */
+.vnd-link-label { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: var(--muted); }
+.vnd-link-label svg { width: 14px; height: 14px; flex: none; }
+/* O link QUEBRA em vez de cortar: o slug no fim é justamente a parte que diz
+   qual pasta é, e com reticências ele era o que sumia no celular. */
+.vnd-link { display: block; font-size: 14px; font-weight: 700; line-height: 1.3; color: var(--accent-ink, var(--accent)); text-decoration: none; overflow-wrap: anywhere; }
+.vnd-link:hover { text-decoration: underline; }
+.vnd-link.is-off { color: var(--muted); font-weight: 600; white-space: normal; }
+/* Markup da pasta sob o valor ("−10% da referência"). */
+.vnd-markup { align-self: flex-start; margin-top: 3px; padding: 1px 8px; font-size: 11.5px; font-weight: 800; background: var(--panel-strong); color: var(--muted); }
+.vnd-markup.is-down { background: color-mix(in srgb, #e8553c 16%, transparent); color: #e8553c; }
+.vnd-markup.is-up { background: color-mix(in srgb, #2ecc71 16%, transparent); color: #21a558; }
+/* Preço pela referência: chips em 3 colunas iguais, e o campo livre + Aplicar
+   na mesma largura embaixo. O ativo (o markup atual da pasta) fica aceso. */
+.vnd-batch { display: flex; flex-direction: column; gap: 10px; }
+.vnd-batch h3 { margin-bottom: 2px; }
+.vnd-batch-chips { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.vnd-batch-chip { min-height: 38px; padding: 0 6px; border: 1px solid var(--line); background: var(--surface); color: var(--text); font-size: 13px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.vnd-batch-chip:hover { border-color: var(--accent); }
+.vnd-batch-chip[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+.vnd-batch-custom { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 6px; }
+.vnd-batch-custom input { height: 38px; min-height: 0; text-align: center; font-weight: 800; }
+.vnd-batch-custom .primary { min-height: 38px; padding: 0 10px; }
+.vnd-batch-pct { font-weight: 800; color: var(--muted); }
+.vnd-batch-hint { margin: 0; font-size: 12px; line-height: 1.4; color: var(--subtle); }
+/* Linha acima da grade: a dica à esquerda, o Ordenar na ponta direita. */
+.vnd-results { gap: 8px 16px; }
+.vnd-hint { margin: 0; flex: 1 1 280px; font-size: 13px; color: var(--muted); }
+.vnd-sort { display: flex; align-items: center; gap: 8px; }
+.vnd-sort label { margin: 0; white-space: nowrap; }
+.vnd-sort select { width: auto; }
+/* Galeria: título da seção e o card "Nova pasta" (tracejado, da altura dos
+   cards em pilha, no fim da fileira). */
+.vnd-gallery-head { margin-top: 4px; }
+.vnd-empty { margin: 0 0 16px; }
+.vnd-folder-name { color: inherit; text-decoration: none; }
+.vnd-folder-name:hover { text-decoration: underline; }
+.vnd-new-card {
+  align-self: stretch; min-height: 290px; min-width: 0; gap: 8px; padding: 16px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  border: 1.5px dashed var(--line); background: transparent; color: var(--muted); font: inherit; cursor: pointer;
+}
+.vnd-new-card:hover { border-color: var(--accent); color: var(--accent); }
+.vnd-new-card strong { font-size: 16px; color: var(--text); }
+.vnd-new-card span:last-child { font-size: 12.5px; text-align: center; }
+.vnd-new-ic { display: inline-flex; align-items: center; justify-content: center; width: 48px; height: 48px; border: 1px solid currentColor; }
+.vnd-new-ic svg { width: 22px; height: 22px; }
+/* Picker: busca + Jogo + Raridade + Ordenar numa GRADE com os pés alinhados
+   (em flex-wrap cada um tinha a largura do conteúdo e, no celular, virava uma
+   escada de caixas de tamanhos diferentes). */
+.vnd-picker-controls { display: grid; grid-auto-flow: column; grid-template-columns: minmax(160px, 1fr); grid-auto-columns: max-content; align-items: end; }
+.vnd-picker-controls .sales-picker-search,
+.vnd-picker-controls .sales-picker-field { height: auto; margin: 0; }
+.vnd-picker-controls .sales-picker-search { height: 42px; }
+.vnd-picker-controls .sales-picker-select { width: 100%; height: 42px; }
+/* Picker: carta com as cópias em OUTRA pasta (tocar traz pra cá). */
+.sales-pick.vnd-elsewhere { opacity: 0.72; }
+.vnd-pick-where { display: block; margin-top: 3px; font-size: 10px; font-weight: 700; color: var(--accent); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+@media (max-width: 680px) {
+  .vnd-new-card { min-height: 240px; }
+}
+@media (max-width: 460px) {
+  .vnd-new-card { min-height: 196px; }
+  /* As ações largas ("Adicionar cartas"/"Compartilhar", "Nova pasta"/
+     "Analisar troca") não cabem lado a lado em ~130px cada — viram linhas
+     inteiras, e as quatro de baixo da pasta seguem na régua de 4 colunas. */
+  .vnd-hero .vnd-actions .vnd-act-wide { grid-column: 1 / -1; }
+  .vnd-hero .vnd-actions { gap: 6px; }
+  .vnd-hero .vnd-actions .vnd-act:not(.vnd-act-wide) { font-size: 11px; }
+  /* Card da pasta com 2 por linha: o compartilhar sai do rodapé (fica no
+     "⋯", como "Copiar link") pra o valor caber inteiro. */
+  .vnd-folder .coll-card-acts [data-vnd-share] { display: none; }
+  /* Picker: a busca na linha toda e os selects dois a dois; o último sozinho
+     ocupa a linha (Ordenar, quando há o de Jogo). */
+  .vnd-picker-controls { grid-auto-flow: row; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-columns: auto; }
+  .vnd-picker-controls .sales-picker-search,
+  .vnd-picker-controls > :last-child:nth-child(even) { grid-column: 1 / -1; }
+}
+
 /* Seletor de versão inline: ocupa a largura toda da linha (grid-column: 1/-1),
    então abre logo abaixo da carta clicada em vez de virar um modal. */
 .lst-picker { grid-column: 1 / -1; display: flex; align-items: flex-end; gap: 10px; flex-wrap: wrap; padding: 10px 4px 12px; }
@@ -11326,13 +11407,9 @@ select,
      (carta sem cópia) não reserva lugar: os outros ocupam a linha. */
   .tile-actions .tile-folder { display: none; }
   .tile-actions .tile-btn { aspect-ratio: 1 / 1; min-height: 0; height: auto; align-self: center; }
-
-  /* 6) VENDAS. Seis botões de ação quebravam em fileiras desiguais; em 2
-     colunas alinham, e o Ordenar ganha a linha inteira. Os chips de
-     percentual (−15%…+10%) idem, em 3 colunas. */
-  .sales-toolbar { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .sales-toolbar .sales-sort-row { grid-column: 1 / -1; }
-  .sales-batch-chips { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+  /* 6) VENDAS: a fileira de seis botões e os chips de percentual moram agora
+     no cartão-herói e no "Preço pela referência" da pasta, em grade desde o
+     desktop (ver o bloco vnd- depois das Pastas). */
 }
 
 @media (pointer: coarse), (max-width: 700px) {

@@ -38,7 +38,9 @@ export const AREAS = [
   // outro fica, a ordem inverte e a pastilha muda de cor — por isso viajam juntos.
   { nome: "conta",     prefixos: ["setting-", "profile-", "admin-", "adm-", "ach-", "sw-"], paginas: ["settings.html", "profile.html", "admin.html"] },
   { nome: "wishlist",  prefixos: ["wish-"],                        paginas: ["wishlist.html"] },
-  { nome: "vendas",    prefixos: ["sold-"],                        paginas: ["sales.html"] },
+  // vnd- entrou em 2026-09-27 com as pastas de venda (galeria, cartão-herói e
+  // preço em lote da pasta aberta) — só o sales.js desenha.
+  { nome: "vendas",    prefixos: ["sold-", "vnd-"],                paginas: ["sales.html"] },
   { nome: "ajuda",     prefixos: ["help-"],                        paginas: ["help.html"] },
   // 2026-09-14: segunda leva, medida com o CSS INTEIRO a 99% do teto do CI. Cada
   // prefixo foi conferido contra os 35 HTML + os src/*.js que cada página
@@ -49,7 +51,10 @@ export const AREAS = [
   // pastas.html entrou em 2026-09-26: a pasta aberta tem a cara da Toda
   // Coleção e reusa o cartão-herói e a "Visão geral" dela (.coll-hero,
   // .coll-overview) — sem a folha, em produção os dois saíam com o layout cru.
-  { nome: "colecao",   prefixos: ["coll-", "prof-", "tag-", "cond-"], paginas: ["collection.html", "pastas.html"] },
+  // sales.html entrou em 2026-09-27 pelo MESMO motivo: as pastas de venda são
+  // o card em pilha do Showcase (.coll-card-pile) e a pasta aberta usa o
+  // cartão-herói e a "Visão geral" da Coleção.
+  { nome: "colecao",   prefixos: ["coll-", "prof-", "tag-", "cond-"], paginas: ["collection.html", "pastas.html", "sales.html"] },
   // ctr- é o medidor de centralização. Morou na aba Graded da Coleção (a
   // página /graded saiu em 2026-09-14) e em 2026-09-16 virou atalho do HUB
   // pessoal — o modal abre por cima do dashboard, que precisa da fatia. A

@@ -160,7 +160,10 @@ uma opção presente em 100% das cartas é descartada (filtro que não filtra na
 
 Pessoais: `collection`, `portfolio` (visão financeira: patrimônio no tempo, uma
 linha por jogo, valor de pastas/binders, vendas realizadas — ver
-[docs/PORTFOLIO.md](docs/PORTFOLIO.md)), `wishlist`, `binders`, `sales` (vendas e trocas),
+[docs/PORTFOLIO.md](docs/PORTFOLIO.md)), `wishlist`, `binders`, `sales` (vendas e trocas
+organizadas em **pastas de venda** desde 2026-09-27: cada pasta com nome, preço em
+lote pela referência e link público próprio, `/users/<handle>/vendas/<slug do nome>`
+— o slug sai de `shared.saleFolderSlugs`, o mesmo que o perfil publica),
 `pastas` (as antigas Listas, renomeadas em 2026-09-16: pedaços da coleção com
 nome, cada um com link compartilhável e export próprios, checklist de set ou
 avulsa — ver [docs/LISTAS.md](docs/LISTAS.md); `/listas` redireciona pra cá),
@@ -212,10 +215,14 @@ Ferramentas que rodam à mão (não estão em workflow nenhum):
 
 O que o WhatsApp, o X e o Facebook mostram ao colar um link do site é o
 `/og-image.png` (1200x630), apontado pelo `og:image`/`twitter:image` das 22
-páginas e pelo `scripts/seo-meta.mjs`. Duas exceções sobrescrevem essa imagem
+páginas e pelo `scripts/seo-meta.mjs`. Três exceções sobrescrevem essa imagem
 genérica: as páginas de set pré-renderizadas usam o logo do set
-(`prerender-catalog.mjs`) e a `detail` na borda usa a arte da carta
-(`functions/detail.js`).
+(`prerender-catalog.mjs`), a `detail` na borda usa a arte da carta
+(`functions/detail.js`) e o perfil público usa a carta mais valiosa — no
+perfil (`functions/users/[handle].js`) e no link de cada pasta de venda
+(`functions/users/[handle]/vendas/[pasta].js`, que também troca título e
+descrição pelos da pasta). As duas rotas de `/users/` dividem a consulta do
+perfil em `functions/users/_perfil.js`.
 
 O PNG é **gerado**, não desenhado à mão: o conteúdo mora no
 `scripts/og/og-image.html` (HTML+CSS comum, com a Outfit e a paleta do site) e
