@@ -144,8 +144,12 @@ Acima de 10 mil o Explorar avisa quantas existem e pede pra refinar. As regras
   borda (sem `nameEn` na mão) usa o `x`.
 - **setTotal**: o D1 não guarda; o Explorar completa pelo manifest de cada jogo
   (`enrichSetTotals`) e o tile volta a "Mewtwo (063/165)".
-- Vazio da borda (ou borda fora) ainda cai no catálogo local, que casa por
-  pedaço de palavra ("kachu" acha Pikachu).
+- **Vazio da borda é a resposta**: "nenhuma carta" na hora, citando o filtro
+  de jogo quando há um. Antes o vazio mandava baixar o catálogo inteiro dos 13
+  jogos (dezenas de MB) só pra confirmar — um erro de digitação custava o maior
+  download do site. Perde-se, de propósito, o pedaço do **meio** de palavra
+  ("kachu" achava Pikachu) e os campos que a borda não indexa (raridade,
+  variante, idioma). Só a borda **fora do ar** ainda cai no catálogo local.
 
 As facetas da página de set (Raridade, Cor, Tipo, Seleção…) são declaradas **uma
 vez por jogo** em `GAME_FACETS` ([src/shared.js](src/shared.js)) e derivadas dos
