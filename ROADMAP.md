@@ -201,6 +201,12 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
 
 ## 💡 Backlog / ideias
 
+- **Anúncios e afiliados (proposta de 2026-09-27, aguardando decisão).**
+  Afiliado nos links de loja do popup, AdSense só com blocos manuais nas
+  páginas de descoberta (nunca nas pessoais nem em popup) e o mesmo espaço
+  pronto pra venda direta a lojas. Plano, números e decisões pendentes em
+  [docs/PLANO-ADS.md](docs/PLANO-ADS.md).
+
 - **Naruto moderno (2027)**: `sync-naruto.mjs` está dormente esperando a
   categoria no TCGCSV. Quando ela existir, decidir o dedupe com a promo curada
   (`nrt-ncg-cp-001`) — ids são pegajosos por design.
