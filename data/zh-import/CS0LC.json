@@ -1,0 +1,11 @@
+{
+ "page": "Pikachu and Eevee Together: Quicksand Card Display Pendant Gift Box (ATCG)",
+ "at": "2026-09-27",
+ "set": {"id":"CS0LC","code":"CS0L","name":"Pikachu and Eevee Together: Quicksand Card Display Pendant Gift Box","release":"2024-12-06","total":4,"serieId":"S","serieName":"剑&盾","logoFile":""},
+ "cards": [
+  {"number":"001","name":"Pikachu V","page":"Pikachu V (Quicksand Card Display Pendant Gift Box 1)","type":"Lightning","subtype":"","rarity":"","mark":"F","species":"Pikachu","stage":"Basic","dexId":25,"artist":"You Iribi","prints":[["SWSH Black Star Promos","","SWSH285","","","001/024"]],"lida":1},
+  {"number":"002","name":"Pikachu VMAX","page":"Pikachu VMAX (Quicksand Card Display Pendant Gift Box 2)","type":"Lightning","subtype":"","rarity":"","mark":"D","species":"Pikachu","stage":"VMAXG","dexId":25,"prints":[["Vivid Voltage","Rare VMAX","044/185","Amazing Volt Tackle","RRR","031/100"],["Vivid Voltage","Rare Rainbow","188/185","Amazing Volt Tackle","HR","114/100"],["SWSH Black Star Promos","","SWSH062","S-P Promotional cards","","123/S-P"],["","","","VMAX Climax","RRR","046/184"],["","","","25th Anniversary Golden Box","","006/015"],["Lost Origin","TGV","TG17/TG30","VMAX Climax","CSR","223/184"],["Lost Origin","TGS","TG29/TG30","VMAX Climax","UR","279/184"]],"lida":1},
+  {"number":"003","name":"Eevee V","page":"Eevee V (Quicksand Card Display Pendant Gift Box 3)","type":"Colorless","subtype":"","rarity":"","mark":"F","species":"Eevee","stage":"Basic","dexId":133,"artist":"You Iribi","prints":[["Crown Zenith","Ultra-Rare Rare","108/159","","","007/024"]],"lida":1},
+  {"number":"004","name":"Eevee VMAX","page":"Eevee VMAX (Quicksand Card Display Pendant Gift Box 4)","type":"Colorless","subtype":"","rarity":"","mark":"D","species":"Eevee","stage":"VMAXG","dexId":133,"artist":"PLANETA Mochizuki","prints":[["SWSH Black Star Promos","","SWSH087","S-P Promotional cards","","101/S-P"]],"lida":1}
+ ]
+}

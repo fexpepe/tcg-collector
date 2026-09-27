@@ -38,7 +38,7 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 
 | Slug | Jogo | Fonte do catálogo | Preço |
 |---|---|---|---|
-| `pokemon` | Pokémon | TCGdex (en, ja, zh-cn, zh-tw, pt) + PokéAPI (tipos/nomes) + TCGCSV (promos EN, sets JP que a TCGdex não tem e sets EN recém-lançados, por pin) + PokemonPriceTracker (graded) | TCGplayer USD **por impressão** (TCGCSV, diário) · Cardmarket EUR (TCGdex) · PPT (graded) · MYP (BR, pendente) |
+| `pokemon` | Pokémon | TCGdex (en, ja, zh-cn, zh-tw, pt) + PokéAPI (tipos/nomes) + TCGCSV (promos EN, sets JP que a TCGdex não tem e sets EN recém-lançados, por pin) + Bulbapedia (enriquece o JA; sets exclusivos do chinês simplificado) + PokemonPriceTracker (graded) | TCGplayer USD **por impressão** (TCGCSV, diário) · Cardmarket EUR (TCGdex) · PPT (graded) · MYP (BR, pendente) |
 | `lorcana` | Lorcana | Lorcast | USD/EUR |
 | `onepiece` | One Piece | TCGCSV cat. 68 + vintage (Carddass Hyper Battle, OP Card Game 2002, Miracle Battle) | USD (moderno); vintage sem preço |
 | `magic` | Magic: The Gathering | Scryfall (catálogo EN; pt-BR é fase 2) | USD/EUR |
@@ -523,6 +523,55 @@ nenhuma imagem (1996–2006 e os SM*p), logos (41 de 246 curados em
 `--names` do sync emite `_set-names.json` pra copiar de lá). Os decks
 iniciais com código ambíguo ("SV: …", "sA: …") seguem fora até ganhar apelido
 em `ja.alias` — o log do sync da TCGCSV lista quais.
+
+### v3 — chinês simplificado
+
+A linha exclusiva da **China continental** (27/09/2026): Gem Pack, Collection
+151, Storming Emergence, Terastal Gathering, os subsets, decks, caixas e as
+promos SM-P/S-P/SV-P/30th-P/M-P — é o chinês mais comercializado, e nenhuma
+fonte com API tinha as cartas. A TCGdex lista 57 desses sets em zh-cn, todos
+com **zero** cartas (o sync-tcgdex pula set vazio); a TCGCSV não tem categoria
+chinesa (o TCGplayer só vende EN e JP). A fonte é a **Bulbapedia**, na mesma
+régua do japonês: ingestão LOCAL, cache versionado, build sem rede.
+
+1. **`scripts/sync-bulbapedia-zh.mjs`** (LOCAL, ~11 min, API do MediaWiki com
+   50 páginas por requisição): lê o `Template:Simplified Chinese Releases`, o
+   wikitext de cada página de set e o de cada página de carta, e grava
+   `data/zh-import/<setId>.json` (uma carta por linha). O **código do set**
+   sai do símbolo de cada lista (`SetSymbolCSM1a.png` → `CSM1aC`, o id que a
+   TCGdex usa; `CS15` → `CS1.5C`), com `CODIGOS_FIXOS` pras listas sem
+   símbolo. Resultado da 1ª rodada: 115 sets, 12,2 mil cartas.
+2. **`scripts/import-zh.mjs`** (build, sem rede, depois do `enrich-ja` e antes
+   do merge): monta as cartas e grava `data/zh-newcards.generated.json`, que o
+   merge injeta como as da TCGCSV (`prov: "bulbapedia"`, id
+   `<código>-<número>-zh-cn`). Set que a TCGdex já publica com cartas fica
+   de fora inteiro (hoje só o `CSMPiC`).
+3. **Imagem**: a página de uma carta chinesa na Bulbapedia é quase sempre um
+   redirect pra impressão ocidental/japonesa, e o scan de lá é o inglês. Em vez
+   de guardar esse scan do Archives — que o CSP não libera, o wsrv.nl leva 403
+   e o espelho R2 só serve host completo (10 mil URLs novas derrubariam os
+   scans japoneses até o espelho alcançar) —, o cache guarda as **impressões**
+   da página (set, raridade, número, EN e JP) e o build escolhe a da carta
+   chinesa pela raridade (`escolherImpressao`: raridade japonesa igual;
+   senão, pra raridade regular ou vazia, a primeira impressão regular; senão
+   nada). A imagem é a que essa impressão **já tem no nosso catálogo** (EN
+   primeiro, JA depois) — mesma regra do fallback da edição PT: arte igual,
+   texto em outra língua. Medido na 1ª rodada: imagem em 81% das cartas
+   (9,7 mil pela EN, 120 pela JA); a amostra conferida bateu SAR→SIR,
+   SR→Ultra Rare, HR→Rainbow, UR→Hyper/Secret, S→Shiny, K→Radiant.
+
+Nome da carta e do set em **inglês** (os da Bulbapedia, como o TCG Collector
+mostra); série com o id/nome da TCGdex (`SM`/`太阳&月亮`, `S`/`剑&盾`,
+`SV`/`朱&紫`). O Collection 151 é **um** set (`151C`): o código impresso é o
+mesmo nas quatro versões (Journey/Hope/Surprise/Gathering), que só mudam a
+chance dos padrões.
+
+Fica de fora: **scan chinês** (os Gem Packs e parte dos sets novos não têm
+página de carta no wiki e ficam sem imagem; o Archives tem scans chineses
+esparsos, listáveis só da rede local), nome em chinês (a 52poke tem, mesma
+licença), variantes espelhada/Poké Ball/Master Ball (C/U saem Normal, o resto
+Holo) e **preço** — nenhuma fonte grátis cota esses sets (o PriceCharting tem
+os Gem Packs, mas só com licença comercial).
 
 ---
 

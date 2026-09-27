@@ -1,10 +1,14 @@
 // IDs PROVISÓRIOS: carta que entrou no catálogo com um id ESCOLHIDO POR NÓS, na
 // aposta de que a fonte canônica (TCGdex) vai usar o mesmo quando publicar.
-// Três portas de entrada, cada uma carimba `prov` na carta:
+// Quatro portas de entrada, cada uma carimba `prov` na carta:
 //   prov: "tcgcsv" — add-on-miss / set importado da TCGCSV (TCGplayer);
 //   prov: "ppt"    — add-on-miss da PokemonPriceTracker;
 //   prov: "en"     — carta PT copiada da edição INGLESA do mesmo set enquanto a
-//                    TCGdex não publica a portuguesa (fillFromEn, abaixo).
+//                    TCGdex não publica a portuguesa (fillFromEn, abaixo);
+//   prov: "bulbapedia" — set exclusivo do chinês simplificado que a TCGdex
+//                    lista sem cartas (import-zh.mjs). O id aposta no código
+//                    oficial + número impresso ("CSV9.5C-001-zh-cn"), o
+//                    formato que ela usa no zh-tw.
 //
 // Por que o carimbo (24/09/2026): o lint-catalog já barra o deploy quando um id
 // publicado SOME. O furo que sobrava é o contrário — a TCGdex publica a mesma

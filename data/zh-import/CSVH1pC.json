@@ -1,0 +1,21 @@
+{
+ "page": "Pikachu & Clefairy & Turtwig & Gimmighoul Happy Set (ATCG)",
+ "at": "2026-09-27",
+ "set": {"id":"CSVH1pC","code":"CSVH1p","name":"Happy Set Reward Pack (Pikachu & Clefairy & Turtwig & Gimmighoul)","release":"2025-01-17","total":6,"serieId":"SV","serieName":"朱&紫","logoFile":""},
+ "cards": [
+  {"number":"001","name":"Tinkatink","page":"Tinkatink (Happy Set Reward Pack 1)","type":"Psychic","subtype":"","rarity":"","mark":"G","species":"Tinkatink","stage":"Basic","dexId":957,"prints":[["Paldea Evolved","Common","101/193","Clay Burst","C","032/071"],["Paldea Evolved","Illustration Rare","216/193","Clay Burst","AR","076/071"],["","","","Shiny Treasure ex","","094/190"],["Paldean Fates","Shiny Rare","165/091","Shiny Treasure ex","S","271/190"]],"lida":1},
+  {"number":"002","name":"Tinkatuff","page":"Tinkatuff (Happy Set Reward Pack 2)","type":"Psychic","subtype":"","rarity":"","mark":"G","species":"Tinkatuff","stage":"Stage 1","dexId":958,"prints":[["Paldea Evolved","Uncommon","104/193","Clay Burst","C","034/071"],["Paldea Evolved","Illustration Rare","217/193","Clay Burst","AR","077/071"],["","","","Shiny Treasure ex","","095/190"],["Paldean Fates","Shiny Rare","166/091","Shiny Treasure ex","S","272/190"]],"lida":1},
+  {"number":"003","name":"Tinkaton","page":"Tinkaton (Happy Set Reward Pack 3)","type":"Psychic","subtype":"","rarity":"","mark":"G","species":"Tinkaton","stage":"Stage 2","dexId":959,"prints":[["Paldea Evolved","Rare","105/193","Triplet Beat","R","043/073"],["SVP Black Star Promos","","020","Shiny Treasure ex","","096/190"],["Paldean Fates","Shiny Rare","167/091","Shiny Treasure ex","S","273/190"]],"lida":1},
+  {"number":"004","name":"Pawniard","page":"Pawniard (Happy Set Reward Pack 4)","type":"Darkness","subtype":"","rarity":"","mark":"G","species":"Pawniard","stage":"Basic","dexId":624,"prints":[["Scarlet & Violet","Common","132/198","Scarlet ex","C","056/078"],["","","","Shiny Treasure ex","","122/190"],["Paldean Fates","Shiny Rare","185/091","Shiny Treasure ex","S","292/190"]],"lida":1},
+  {"number":"005","name":"Bisharp","page":"Bisharp (Happy Set Reward Pack 5)","type":"Darkness","subtype":"","rarity":"","mark":"G","species":"Bisharp","stage":"Stage 1","dexId":625,"prints":[["Scarlet & Violet","Common","133/198","Scarlet ex","C","057/078"],["","","","Shiny Treasure ex","","123/190"],["Paldean Fates","Shiny Rare","186/091","Shiny Treasure ex","S",""]],"lida":1},
+  {"number":"006","name":"Kingambit","page":"Kingambit (Happy Set Reward Pack 6)","type":"Darkness","subtype":"","rarity":"","mark":"G","species":"Kingambit","stage":"Stage 2","dexId":983,"prints":[["Scarlet & Violet","Rare","134/198","Scarlet ex","R","058/078"],["Scarlet & Violet","Illustration Rare","220/198","Scarlet ex","AR","089/078"],["","","","Shiny Treasure ex","","124/190"],["Paldean Fates","Shiny Rare","187/091","Shiny Treasure ex","S","294/190"]],"lida":1},
+  {"number":"DAR","name":"Basic Darkness Energy","page":"","type":"Energy","subtype":"Darkness","rarity":"","mark":"","semPagina":1},
+  {"number":"FIG","name":"Basic Fighting Energy","page":"","type":"Energy","subtype":"Fighting","rarity":"","mark":"","semPagina":1},
+  {"number":"FIR","name":"Basic Fire Energy","page":"","type":"Energy","subtype":"Fire","rarity":"","mark":"","semPagina":1},
+  {"number":"GRA","name":"Basic Grass Energy","page":"","type":"Energy","subtype":"Grass","rarity":"","mark":"","semPagina":1},
+  {"number":"LIG","name":"Basic Lightning Energy","page":"","type":"Energy","subtype":"Lightning","rarity":"","mark":"","semPagina":1},
+  {"number":"MET","name":"Basic Metal Energy","page":"","type":"Energy","subtype":"Metal","rarity":"","mark":"","semPagina":1},
+  {"number":"PSY","name":"Basic Psychic Energy","page":"","type":"Energy","subtype":"Psychic","rarity":"","mark":"","semPagina":1},
+  {"number":"WAT","name":"Basic Water Energy","page":"","type":"Energy","subtype":"Water","rarity":"","mark":"","semPagina":1}
+ ]
+}

@@ -1,0 +1,13 @@
+{
+ "page": "Decidueye & Melmetal & Koraidon & Miraidon Happy Set (ATCG)",
+ "at": "2026-09-27",
+ "set": {"id":"CSVH4pC","code":"CSVH4p","name":"Happy Set Reward Pack (Decidueye & Melmetal & Koraidon & Miraidon)","release":"2026-04-10","total":6,"serieId":"SV","serieName":"朱&紫","logoFile":""},
+ "cards": [
+  {"number":"001","name":"Decidueye ex","page":"Decidueye ex (Happy Set Reward Pack 1)","type":"Grass","subtype":"","rarity":"","mark":"G","semPagina":1,"lida":1},
+  {"number":"002","name":"Pikachu ex","page":"Pikachu ex (Happy Set Reward Pack 2)","type":"Lightning","subtype":"","rarity":"","mark":"H","semPagina":1,"lida":1},
+  {"number":"003","name":"Miraidon ex","page":"Miraidon ex (Happy Set Reward Pack 3)","type":"Lightning","subtype":"","rarity":"","mark":"G","semPagina":1,"lida":1},
+  {"number":"004","name":"Tinkaton ex","page":"Tinkaton ex (Happy Set Reward Pack 4)","type":"Psychic","subtype":"","rarity":"","mark":"G","semPagina":1,"lida":1},
+  {"number":"005","name":"Koraidon ex","page":"Koraidon ex (Happy Set Reward Pack 5)","type":"Fighting","subtype":"","rarity":"","mark":"G","semPagina":1,"lida":1},
+  {"number":"006","name":"Snorlax ex","page":"Snorlax ex (Happy Set Reward Pack 6)","type":"Colorless","subtype":"","rarity":"","mark":"H","semPagina":1,"lida":1}
+ ]
+}

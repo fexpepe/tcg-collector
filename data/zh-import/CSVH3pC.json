@@ -1,0 +1,21 @@
+{
+ "page": "Altaria & Latios & Infernape & Maushold Happy Set (ATCG)",
+ "at": "2026-09-27",
+ "set": {"id":"CSVH3pC","code":"CSVH3p","name":"Happy Set Reward Pack (Altaria & Latios & Infernape & Maushold)","release":"2025-09-12","total":6,"serieId":"SV","serieName":"朱&紫","logoFile":""},
+ "cards": [
+  {"number":"001","name":"Frigibax","page":"Frigibax (Happy Set Reward Pack 1)","type":"Water","subtype":"","rarity":"","mark":"G","species":"Frigibax","stage":"Basic","dexId":996,"artist":"Taira Akitsu","prints":[["Paldean Fates","Common","017/091","Shiny Treasure ex","","051/190"],["Paldean Fates","Shiny Rare","128/091","Shiny Treasure ex","S","233/190"]],"lida":1},
+  {"number":"002","name":"Arctibax","page":"Arctibax (Happy Set Reward Pack 2)","type":"Water","subtype":"","rarity":"","mark":"G","species":"Arctibax","stage":"Stage 1","dexId":997,"prints":[["Paldea Evolved","Uncommon","059/193","Snow Hazard","C","026/071"],["Paldea Evolved","Illustration Rare","209/193","Snow Hazard","AR","076/071"],["SVP Black Star Promos","","064","SV-P Promotional cards","","051/SV-P"],["","","","Shiny Treasure ex","","052/190"],["Paldean Fates","Shiny Rare","129/091","Shiny Treasure ex","S","234/190"]],"lida":1},
+  {"number":"003","name":"Baxcalibur","page":"Baxcalibur (Happy Set Reward Pack 3)","type":"Water","subtype":"","rarity":"","mark":"G","species":"Baxcalibur","stage":"Stage 2","dexId":998,"prints":[["Paldea Evolved","Rare","060/193","Snow Hazard","R","027/071"],["Paldea Evolved","Illustration Rare","210/193","Snow Hazard","AR","077/071"],["SVP Black Star Promos","","019","Shiny Treasure ex","","053/190"],["Paldean Fates","Shiny Rare","130/091","Shiny Treasure ex","S","235/190"]],"lida":1},
+  {"number":"004","name":"Pawmi","page":"Pawmi (Happy Set Reward Pack 4)","type":"Lightning","subtype":"","rarity":"","mark":"G","species":"Pawmi","stage":"Basic","dexId":921,"prints":[["Scarlet & Violet","Common","074/198","Violet ex","C","034/078"],["McDonald's Collection 2023","","007/015","","",""],["","","","Shiny Treasure ex","","066/190"],["Paldean Fates","Shiny Rare","142/091","Shiny Treasure ex","S","247/190"],["Paldean Fates","Illustration Rare","226/091","Shiny Treasure ex","AR","340/190"],["","","","SV-P Promotional cards","","217/SV-P"]],"lida":1},
+  {"number":"005","name":"Pawmo","page":"Pawmo (Happy Set Reward Pack 5)","type":"Lightning","subtype":"","rarity":"","mark":"G","species":"Pawmo","stage":"Stage 1","dexId":922,"prints":[["Scarlet & Violet","Common","075/198","Violet ex","C","035/078"],["","","","ex Special Set","","004/007"],["","","","Shiny Treasure ex","","067/190"],["Paldean Fates","Shiny Rare","143/091","Shiny Treasure ex","S","248/190"]],"lida":1},
+  {"number":"006","name":"Pawmot","page":"Pawmot (Happy Set Reward Pack 6)","type":"Lightning","subtype":"","rarity":"","mark":"G","species":"Pawmot","stage":"Stage 2","dexId":923,"prints":[["Scarlet & Violet","Rare","076/198","Violet ex","R","036/078"],["Scarlet & Violet","Illustration Rare","209/198","Violet ex","AR","085/078"],["SVP Black Star Promos","","006","Shiny Treasure ex","","068/190"],["Paldean Fates","Shiny Rare","144/091","Shiny Treasure ex","S","249/190"]],"lida":1},
+  {"number":"DAR","name":"Basic Darkness Energy","page":"","type":"Energy","subtype":"Darkness","rarity":"","mark":"","semPagina":1},
+  {"number":"FIG","name":"Basic Fighting Energy","page":"","type":"Energy","subtype":"Fighting","rarity":"","mark":"","semPagina":1},
+  {"number":"FIR","name":"Basic Fire Energy","page":"","type":"Energy","subtype":"Fire","rarity":"","mark":"","semPagina":1},
+  {"number":"GRA","name":"Basic Grass Energy","page":"","type":"Energy","subtype":"Grass","rarity":"","mark":"","semPagina":1},
+  {"number":"LIG","name":"Basic Lightning Energy","page":"","type":"Energy","subtype":"Lightning","rarity":"","mark":"","semPagina":1},
+  {"number":"MET","name":"Basic Metal Energy","page":"","type":"Energy","subtype":"Metal","rarity":"","mark":"","semPagina":1},
+  {"number":"PSY","name":"Basic Psychic Energy","page":"","type":"Energy","subtype":"Psychic","rarity":"","mark":"","semPagina":1},
+  {"number":"WAT","name":"Basic Water Energy","page":"","type":"Energy","subtype":"Water","rarity":"","mark":"","semPagina":1}
+ ]
+}

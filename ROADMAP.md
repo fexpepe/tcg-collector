@@ -115,7 +115,11 @@ Turnstile no login, SMTP próprio (Resend), CI com testes e guardas de mobile.
 v2 do modelo de carregamento (README, "v2 — japonês"): série em toda era,
 categoria/tipo/estágio pelo irmão inglês e nome em inglês pesquisável já no
 ar; nome japonês, raridade, ilustrador e scans vintage dependem da primeira
-rodada local do `sync-bulbapedia-ja.mjs`.
+rodada local do `sync-bulbapedia-ja.mjs`. O chinês simplificado ganhou a
+linha exclusiva da China continental (Gem Pack, Collection 151, Storming
+Emergence, Terastal Gathering… — 115 sets) pela Bulbapedia (README, "v3 —
+chinês simplificado"), com a arte da impressão EN/JA de que cada carta é
+reimpressão; sem preço (nenhuma fonte grátis cota esses sets).
 
 ---
 
@@ -210,6 +214,12 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
 - **Worker de preços BR** (LigaBRA/LigaPokémon) como complemento do MYP. MYP e
   MYP só: as ligas não têm API pública e o CORS impede fazer do navegador.
 - **Raridade em zh**: a TCGdex traz a maioria das cartas chinesas sem raridade.
+- **Chinês simplificado — o que falta depois da v3**: scan CHINÊS (hoje a arte
+  é a da impressão EN/JA, e os Gem Packs e parte dos sets novos ficam sem
+  imagem — o Archives tem scans esparsos, listáveis só da rede local), nome
+  em chinês das cartas e dos sets (a 52poke tem, mesma licença), variantes
+  espelhada/Poké Ball/Master Ball e PREÇO (PriceCharting só com licença
+  comercial; PikaQian a avaliar).
 - **Índice de busca** com MiniSearch/FlexSearch, se a busca da borda não bastar.
 - **IndexedDB pra coleção**, se o `localStorage` apertar.
 
