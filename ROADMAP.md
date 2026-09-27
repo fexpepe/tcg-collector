@@ -205,11 +205,11 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
 
 ## 💡 Backlog / ideias
 
-- **Anúncios e afiliados (proposta de 2026-09-27, aguardando decisão).**
-  Afiliado nos links de loja do popup, AdSense só com blocos manuais nas
-  páginas de descoberta (nunca nas pessoais nem em popup) e o mesmo espaço
-  pronto pra venda direta a lojas. Plano, números e decisões pendentes em
-  [docs/PLANO-ADS.md](docs/PLANO-ADS.md).
+- **Anúncios e afiliados (desenho aprovado em 2026-09-27, implementação
+  pela fase 0).** Afiliado nos links de loja do popup, AdSense só com blocos
+  manuais nas páginas de descoberta (nunca nas pessoais nem em popup), apoiador
+  sem anúncio e o mesmo espaço pronto pra venda direta a lojas. Plano, números
+  e fases em [docs/PLANO-ADS.md](docs/PLANO-ADS.md).
 
 - **Naruto moderno (2027)**: `sync-naruto.mjs` está dormente esperando a
   categoria no TCGCSV. Quando ela existir, decidir o dedupe com a promo curada
@@ -258,6 +258,12 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   em vez de esvaziá-lo; nenhum item de portfólio pode sumir.
 - **Chinês é um só.** zh-cn (simplificado) é o padrão, com zh-tw fundido dentro
   do mesmo eixo "ZH".
+- **Anúncio só onde se descobre, nunca onde se trabalha** (2026-09-27). Nada
+  nas páginas pessoais nem em popup/modal; quem recusa o consentimento não
+  carrega script do Google (só vitrine da casa e parceiros); quem apoia (Pix/
+  Ko-fi) navega sem anúncio, sem trancar função; afiliado nos links de loja
+  com aviso, sem mudar ordem nem quais lojas aparecem. Detalhe em
+  [docs/PLANO-ADS.md](docs/PLANO-ADS.md), seção 14.
 - **O dado é do usuário, sempre.** O `localStorage` é a fonte da verdade e o
   export está a um clique — a nuvem sincroniza, não aprisiona. (Esta linha já
   disse "conta é opcional, pra sempre"; deixou de valer em 2026-07-14, quando as
