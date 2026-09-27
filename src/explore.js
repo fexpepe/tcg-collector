@@ -264,6 +264,16 @@
       : "";
   }
 
+  // "Nenhuma carta" diz ONDE não achou: com o jogo filtrado, "em nenhum jogo"
+  // era mentira — e, desde que o vazio da borda virou a resposta final (sem
+  // baixar o catálogo pra confirmar), é esta frase que a pessoa lê. Ela
+  // aponta a saída óbvia: buscar em todos os jogos.
+  function textoSemResultado() {
+    if (gameFilter === "all") return t("explore.empty");
+    const escopo = gameFilter === shared.VINTAGE_FILTER ? t("filter.gameVintage") : shared.gameLabel(gameFilter);
+    return t("explore.emptyIn", { scope: escopo });
+  }
+
   // Última lista base pintada e o termo dela (ver o comentário no render),
   // com o total da borda e se ela veio cortada.
   let ultimaBase = { q: "", game: "", list: null, total: 0, truncated: false };
@@ -324,7 +334,7 @@
     elements.empty.hidden = pairs.length > 0;
     // "Nenhuma carta em nenhum jogo" é resposta da BUSCA; com filtro ligado o
     // que sobrou de fora foi a barra, e a mensagem tem que dizer isso.
-    if (!pairs.length) elements.empty.textContent = t(temFiltro() && matched.length ? "empty.pokedex" : "explore.empty");
+    if (!pairs.length) elements.empty.textContent = temFiltro() && matched.length ? t("empty.pokedex") : textoSemResultado();
     elements.resultCount.textContent = tn("results.count", pairs.length, { n: numero(pairs.length) });
   }
 
@@ -369,8 +379,8 @@
   // de "mew" são 9 KB comprimidos.
   //
   // O catálogo inteiro — o maior download do site, dezenas de MB — só desce
-  // se a borda estiver fora ou responder vazio (ver abaixo). Depois que ele
-  // chegou, a busca local segue valendo: instantânea e sem rede.
+  // se a borda estiver FORA (ver abaixo; resposta vazia não baixa nada).
+  // Depois que ele chegou, a busca local segue valendo: instantânea e sem rede.
   let apiSeq = 0;
   let urlCardTentado = false;
   const VINTAGE_GAMES = ["pokemon", "onepiece", "naruto", "hxh"]; // os que têm carta vintage (ver isVintageCard)
@@ -401,21 +411,17 @@
     // pela metade com contagem de inteiro é o que esta página não pode dar.
     if (respostas.some((r) => !r)) { renderFromCatalog(); return; }
     let found = [].concat(...respostas.map((r) => r.cards));
-    // VAZIO não é resposta final — só o catálogo local pode afirmar "essa
-    // carta não existe": ele casa por pedaço de palavra ("kachu" acha
-    // Pikachu), a borda só por começo de palavra; e a borda responde vazio
-    // quando o banco está em recarga (deploy).
-    // Enquanto o catálogo confirma, a grade não pode seguir mostrando o
-    // resultado da busca ANTERIOR (trocar pra um jogo sem a carta deixava as
-    // cartas do outro jogo na tela, com a contagem velha): esqueletos no lugar.
-    if (!found.length) {
-      pintaGrade([], { resetCount: true });
-      shared.showSkeletons(elements.grid, "card", 8);
-      elements.resultCount.textContent = "";
-      pintaAviso(null);
-      renderFromCatalog();
-      return;
-    }
+    // VAZIO É a resposta (27/09/2026, decisão do Fernando): "nenhuma carta"
+    // na hora. Até aqui um vazio da borda mandava baixar o catálogo INTEIRO
+    // dos 13 jogos (dezenas de MB, minutos no celular) só pra confirmar — um
+    // erro de digitação custava o maior download do site. Isso vinha de
+    // quando a borda mentia vazio (o teto por palavra fazia "blue eyes"
+    // voltar sem nada); com a busca completa, vazio quer dizer que nenhuma
+    // carta tem uma palavra começando por cada termo. O que se perde, de
+    // propósito: pedaço do MEIO de palavra ("kachu" achava Pikachu pelo
+    // catálogo local) e campos que a borda não indexa (raridade, variante,
+    // idioma). Borda FORA (null, acima) continua caindo no catálogo local —
+    // aí não há outra resposta possível.
     // Os preços vêm na mesma resposta: entram na tabela da sessão, que é onde
     // o cardValue procura (união, como o loadAcrossGames faz — outra busca
     // desta página já pode ter posto preço de outras cartas ali).
@@ -433,7 +439,7 @@
     // UMA vez, na primeira resposta — o caminho do catálogo faz o mesmo no
     // ensureCatalog, mas com a borda respondendo ele nunca roda, e o link
     // compartilhado abria só a grade.
-    if (!urlCardTentado) { urlCardTentado = true; preview.openFromUrl(); }
+    if (!urlCardTentado && found.length) { urlCardTentado = true; preview.openFromUrl(); }
     // O código impresso completo ("063/197") depende do total do set, que a
     // borda não guarda: vem do manifest do jogo, em 2º plano.
     shared.enrichSetTotals(found).then((mudou) => {
