@@ -8,6 +8,26 @@ poucos.)
 
 ## Pendentes de aplicar
 
+- `20260927a` — vitrine (o espaço de anúncio das páginas de catálogo,
+  `src/ads.js`, docs/PLANO-ADS.md). Aditiva: (1) a whitelist do
+  `events_guard` ganha `ad_view` e `ad_click` (cópia fiel da `20260923a`, só a
+  lista cresce); (2) RPC `admin_vitrine(days)`, que alimenta a aba
+  Mercado › Vitrine do `/admin`. **Aplicar ANTES de subir o JS**: até lá os
+  dois eventos são descartados calados, e a aba mostra o aviso amarelo.
+
+  Testada em 2026-09-27 no PGlite (Postgres em WASM) com o esqueleto de
+  `events`, `auth.uid()`, `_rate_ok` e `_is_admin`: evento de nome inventado
+  descartado; sem `user-agent` tudo vira `bot` (como no banco de verdade); a
+  RPC soma servidos, vistos e cliques por criativo, posição, página, jogo e
+  dia; e um POST forjado (prop que não é array, item-objeto, `<script>`,
+  rótulo de 500 caracteres) é ignorado sem derrubar a RPC.
+
+  Conferir depois de aplicar:
+  ```sql
+  select p.prosrc like '%ad_view%' from pg_proc p where p.proname = 'events_guard'; -- true
+  select public.admin_vitrine(30);                    -- null fora da conta de admin
+  ```
+
 - `20260914a` — painel `/admin` 2.0. Três coisas num arquivo só, todas
   aditivas: (1) `events.uid`/`events.bot` preenchidos pelo `events_guard`
   (mesma whitelist de nomes da `20260830a`); (2) trigger `profiles_admin_guard`,

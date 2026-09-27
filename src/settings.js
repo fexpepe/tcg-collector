@@ -195,6 +195,20 @@
     });
   }
 
+  // Anúncios personalizados — opt-IN (padrão desligado; ver CONSENT_DEFAULT no
+  // shared.js). Mexer aqui também conta como "respondeu": o aviso do catálogo
+  // (src/ads.js) não pergunta de novo a quem já escolheu nas Configurações.
+  const ads = document.getElementById("adsToggle");
+  if (ads) {
+    const sync = () => ads.setAttribute("aria-checked", String(shared.hasConsent("ads")));
+    sync();
+    ads.addEventListener("click", () => {
+      shared.setConsent("ads", !shared.hasConsent("ads"));
+      shared.setConsent("adsDecidido", true);
+      sync();
+    });
+  }
+
   // Preço da Comunidade — opt-out do envio anônimo (padrão ligado). Sem reload:
   // a próxima anotação de preço já respeita a escolha.
   const community = document.getElementById("communityToggle");

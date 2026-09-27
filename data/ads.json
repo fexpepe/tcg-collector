@@ -1,0 +1,19 @@
+{
+  "_leia": "Vitrine (espaço de anúncio). Formato e regras em src/ads.js (configValida) e docs/PLANO-ADS.md. \"ativo\": false desliga tudo no próximo carregamento. regras: em ALTURAS DE TELA (primeira = distância do topo da grade até a 1ª faixa; intervalo = entre faixas; max = teto por página). porDia = quantas vezes cada criativo da casa pode ser VISTO por dia. Parceiro: {id, tipo: \"parceiro\", href: \"https://…\", alt, imagens: {faixa: 728x90, quadrado: 300x250, trilho: 160x600 (opcional)} em /assets/partners/ (arte nova = arquivo novo), jogos: [\"pokemon\"], idiomas: [\"pt\"], desde/ate: \"AAAA-MM-DD\", peso}.",
+  "ativo": true,
+  "fornecedores": ["parceiro", "casa"],
+  "regras": {
+    "desktop": { "primeira": 1.6, "intervalo": 4.4, "max": 3 },
+    "celular": { "primeira": 2, "intervalo": 4, "max": 3 }
+  },
+  "trilho": true,
+  "porDia": 4,
+  "pix": "cbac5cce-4c48-4553-ae90-40bea883cd2f",
+  "kofi": "https://ko-fi.com/fernandopepe",
+  "contato": "sleevuapp@gmail.com",
+  "criativos": [
+    { "id": "conta", "tipo": "casa", "peso": 4 },
+    { "id": "apoie", "tipo": "casa", "peso": 3 },
+    { "id": "anuncie", "tipo": "casa", "peso": 1 }
+  ]
+}

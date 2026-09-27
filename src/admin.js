@@ -311,7 +311,7 @@
     ["visao", "Visão geral", [["geral", "Resumo"], ["crescimento", "Crescimento"], ["parceiros", "Para parceiros"]]],
     ["aquisicao", "Aquisição", [["audiencia", "Audiência"], ["canais", "Canais"]]],
     ["engajamento", "Engajamento", [["retencao", "Retenção"], ["funil", "Funil"], ["produto", "Produto"]]],
-    ["mercado", "Mercado", [["lojas", "Lojas"], ["demanda", "Demanda"], ["conteudo", "Conteúdo"]]],
+    ["mercado", "Mercado", [["lojas", "Lojas"], ["demanda", "Demanda"], ["anuncios", "Vitrine"], ["conteudo", "Conteúdo"]]],
     ["tecnico", "Técnico", [["qualidade", "Qualidade"]]]
   ];
   const TAB_GROUP = {};
@@ -323,9 +323,9 @@
     geral: ["dash"], audiencia: ["dash"], conteudo: ["dash"], produto: ["dash"], qualidade: ["dash"],
     crescimento: ["growth"], parceiros: ["dash", "retention", "stores", "demand", "growth"],
     canais: ["retention", "growth"], retencao: ["retention"], funil: ["funnel", "retention"],
-    lojas: ["stores"], demanda: ["demand"]
+    lojas: ["stores"], demanda: ["demand"], anuncios: ["anuncios"]
   };
-  const RPC = { retention: "admin_retention", stores: "admin_stores", growth: "admin_growth", demand: "admin_demand" };
+  const RPC = { retention: "admin_retention", stores: "admin_stores", growth: "admin_growth", demand: "admin_demand", anuncios: "admin_vitrine" };
   const PERIODS = [7, 30, 90];
   const state = { tab: "geral", days: 30, cache: {}, inflight: {}, errors: undefined, pages: {}, names: {} };
   // Hash antigo (#produto, #qualidade…) continua valendo: link salvo não quebra.
@@ -790,6 +790,37 @@
         `Uma linha por carta: jogo, carta, cliques e pessoas no período. Cartas com menos de ${MIN_PESSOAS_CSV} pessoas entram somadas numa linha "outras" por jogo — relatório que sai daqui não pode permitir adivinhar o que uma pessoa específica procurou. Os links pras lojas BR levam utm_source=sleevu, então a loja também vê esse tráfego no analytics dela.`)}`;
   }
 
+  // ── Vitrine: o espaço de anúncio (src/ads.js, migração 20260927a) ─────────
+  // O id da aba é "anuncios", não "vitrine": a guarda 8 do check.mjs lê a
+  // string "vitrine" como a classe .vitrine e exigiria a folha de CSS aqui.
+  // Servida = o espaço entrou na página com um criativo; vista = metade dele
+  // na tela por 1 s. Vistas ÷ servidas é a visibilidade que um anunciante
+  // compra; páginas × vistas por página é o estoque que a fase 1 (AdSense) e
+  // a venda direta vão vender. Ver docs/PLANO-ADS.md.
+  const ESPACO = { f1: "1ª faixa do feed", f2: "2ª faixa do feed", f3: "3ª faixa do feed", t: "Trilho (tela ≥ 1888 px)" };
+  function tabVitrine(vt) {
+    const heads = (primeira) => [{ t: primeira }, { t: "Servidas", num: true }, { t: "Vistas", num: true }, { t: "Visibilidade", num: true }, { t: "Cliques", num: true }, { t: "CTR", num: true }];
+    const linha = (x, rotulo) => `<tr><td>${rotulo}</td><td class="num">${esc(fmt(x.servidas))}</td><td class="num">${esc(fmt(x.vistas))}</td><td class="num">${esc(pct(x.vistas, x.servidas))}</td><td class="num">${esc(fmt(x.cliques))}</td><td class="num">${esc(pct(x.cliques, x.vistas))}</td></tr>`;
+    return `
+      <div class="admin-stats">
+        ${stat("Espaços vistos", fmt(vt.vistas), `${fmt(vt.servidas)} servidos`)}
+        ${stat("Visibilidade", pct(vt.vistas, vt.servidas), "vistos ÷ servidos · meta acima de 70%")}
+        ${stat("Cliques", fmt(vt.cliques), `CTR ${pct(vt.cliques, vt.vistas)}`)}
+        ${stat("Páginas com vitrine", fmt(vt.paginas), `${fmt(vt.pessoas)} pessoas`)}
+        ${stat("Vistos por página", vt.paginas ? (vt.vistas / vt.paginas).toLocaleString("pt-BR", { maximumFractionDigits: 2 }) : "—", "estoque por pageview")}
+      </div>
+      ${section(`Vistos e cliques por dia (${vt.days} dias)`, dailyBars(vt.daily || [], Object.assign(CW(), { keyA: "vistas", keyB: "cliques", labelA: "Vistos", labelB: "Cliques", aria: "Vitrine por dia" })))}
+      <div class="adm-grid-2">
+        ${section("Por criativo", table(heads("Criativo"), (vt.criativos || []).map((x) => linha(x, esc(x.c)))))}
+        ${section("Por posição", table(heads("Posição"), (vt.espacos || []).map((x) => linha(x, esc(ESPACO[x.s] || x.s)))))}
+      </div>
+      <div class="adm-grid-2">
+        ${section("Por página", table(heads("Página"), (vt.paginas_top || []).map((x) => linha(x, esc(pageName(x.path))))))}
+        ${section("Por jogo", table(heads("Jogo"), (vt.jogos || []).map((x) => linha(x, gameChip(x.g)))),
+          "CTR muito acima de 1–2% num espaço é sinal de clique acidental (espaço perto demais de botão), não de sucesso — é o que o Google pune na fase 1.")}
+      </div>`;
+  }
+
   // ── Demanda: o que está sendo procurado ───────────────────────────────────
   function tabDemanda(dm) {
     const jogos = dm.jogos || [];
@@ -891,7 +922,8 @@
     crescimento: (x) => tabCrescimento(x.growth),
     parceiros: (x) => tabParceiros(x.dash, x.retention, x.stores, x.demand, x.growth),
     canais: (x) => tabCanais(x.retention, x.growth), retencao: (x) => tabRetencao(x.retention),
-    funil: (x) => tabFunil(x.funnel, x.retention), lojas: (x) => tabLojas(x.stores), demanda: (x) => tabDemanda(x.demand)
+    funil: (x) => tabFunil(x.funnel, x.retention), lojas: (x) => tabLojas(x.stores), demanda: (x) => tabDemanda(x.demand),
+    anuncios: (x) => tabVitrine(x.anuncios)
   };
 
   // ── Painel legado (enquanto a migração 20260914a não for aplicada) ───────
@@ -934,12 +966,16 @@
     dash: "20260914a_admin_dashboard.sql",
     funnel: "20260919a_funil_ativacao.sql e depois 20260923a_analytics_v2.sql",
     retention: "20260923a_analytics_v2.sql", stores: "20260923a_analytics_v2.sql",
-    demand: "20260923a_analytics_v2.sql", growth: "20260923a_analytics_v2.sql"
+    demand: "20260923a_analytics_v2.sql", growth: "20260923a_analytics_v2.sql",
+    anuncios: "20260927a_vitrine.sql"
   };
   function pendente(keys) {
     const arqs = Array.from(new Set(keys.map((k) => MIGRACAO[k])));
     const rpcs = keys.map((k) => (k === "dash" ? "admin_dashboard" : k === "funnel" ? "admin_funnel" : RPC[k]));
-    return `<p class="adm-banner">${rpcs.map((r) => `A RPC <code>${esc(r)}</code> ainda não existe no banco`).join("; ")}: aplique <code>supabase/migrations/${arqs.map(esc).join("</code>, <code>supabase/migrations/")}</code> no SQL Editor. <strong>Enquanto a 20260923a não for aplicada, os eventos novos (clique em loja, conta nova, busca vazia, link aberto, app instalado) são descartados pelo banco sem erro</strong> — aplique o SQL ANTES de subir o JS.</p>`;
+    const descartados = keys.indexOf("anuncios") >= 0
+      ? "Enquanto a 20260927a não for aplicada, os eventos da vitrine (espaço visto, espaço clicado) são descartados pelo banco sem erro"
+      : "Enquanto a 20260923a não for aplicada, os eventos novos (clique em loja, conta nova, busca vazia, link aberto, app instalado) são descartados pelo banco sem erro";
+    return `<p class="adm-banner">${rpcs.map((r) => `A RPC <code>${esc(r)}</code> ainda não existe no banco`).join("; ")}: aplique <code>supabase/migrations/${arqs.map(esc).join("</code>, <code>supabase/migrations/")}</code> no SQL Editor. <strong>${descartados}</strong> — aplique o SQL ANTES de subir o JS.</p>`;
   }
 
   function nav() {
