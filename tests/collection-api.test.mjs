@@ -5,8 +5,9 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { DatabaseSync } from "node:sqlite";
 import {
-  SCHEMA, SCHEMA_PRICES, buildCards, buildPrices, buildSearch, idsComBase,
-  basePricingId, LOTE_IDS, cardRows, formasNumericas
+  SCHEMA, SCHEMA_PRICES, buildCards, buildPrices, buildPricesJson, buildSearch, idsComBase,
+  basePricingId, LOTE_IDS, cardRows, formasNumericas, prefixoLike, termosDaBusca, palavras,
+  TETO_OPERANDO, LIMITE_COMPLETO
 } from "../functions/api/_search-sql.js";
 import { loadShared } from "./lib/shared-sandbox.mjs";
 
@@ -171,7 +172,7 @@ test("número casa por IGUALDADE nas suas escritas: 009/094, 9/94, nome + númer
   assert.deepEqual(roda(db, buildSearch("all", "009/094", 10)).map((h) => [h.game, h.id]), [["pokemon", "x-9"]]);
 });
 
-test("termo numérico usa o índice (igualdade, sem varredura) e o teto maior", () => {
+test("termo numérico usa o índice (igualdade, sem varredura) e o teto por operando", () => {
   const db = comNumeros(banco());
   for (const q of [buildSearch("pokemon", "009/094", 10), buildSearch("all", "nymble 9", 10)]) {
     const plano = db.prepare("EXPLAIN QUERY PLAN " + q.sql).all(...q.params).map((r) => r.detail).join(" | ");
@@ -179,10 +180,137 @@ test("termo numérico usa o índice (igualdade, sem varredura) e o teto maior", 
     assert.match(plano, /word=\?/, `sem igualdade no índice: ${plano}`);
   }
   const q = buildSearch("pokemon", "nymble 9", 10);
-  assert.match(q.sql, /word IN \(\?,\?\) LIMIT 6000/);
-  assert.match(q.sql, /word LIKE \? LIMIT 2000/);
-  assert.deepEqual(q.params, ["pokemon", "nymble%", "9", "009"]);
+  assert.match(q.sql, new RegExp(`word IN \\(\\?4,\\?5\\) LIMIT ${TETO_OPERANDO}`));
+  assert.match(q.sql, new RegExp(`word LIKE \\?3 LIMIT ${TETO_OPERANDO}`));
+  // ?1 = jogo, ?2 = a palavra EXATA (relevância), ?3 = o prefixo, ?4/?5 = as escritas do número
+  assert.deepEqual(q.params, ["pokemon", "nymble", "nymble%", "9", "009"]);
   assert.deepEqual(buildSearch("pokemon", "0001", 10).params, ["pokemon", "0001", "1", "001"]);
+});
+
+// ── Busca COMPLETA e ORDENADA (27/09/2026) ──────────────────────────────────
+// Até aqui cada operando lia no máximo 2.000 linhas e a interseção perdia o
+// que ficava depois do corte — no catálogo real "blue eyes" voltava VAZIO e
+// "charizard ex" achava metade. E não havia ORDER BY: o limite devolvia as
+// primeiras cartas na ordem do banco.
+
+// Banco com MUITAS palavras comuns na frente da carta procurada: 3.000 cartas
+// de outros jogos com "blue…" (o Yu-Gi-Oh! vem por último na ordem do índice),
+// mais as "Blue-Eyes" de verdade.
+function comMuitasPalavras() {
+  const db = banco();
+  const carta = db.prepare(`INSERT INTO cards
+    (game,id,name,set_name,number,card_type,cost,rarity,color,set_id,artist,language,image,variants,released)
+    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`);
+  const w = db.prepare("INSERT INTO card_words (game,word,id) VALUES (?,?,?)");
+  const poe = (game, c) => {
+    carta.run(game, c.id, c.name, c.set || "S", c.number || "1", "", "", "", "", "s", "", "en", "", "[]", c.released || "2020-01-01");
+    for (const p of cardRows(game, c).words) w.run(p.game, p.word, p.id);
+  };
+  for (let i = 0; i < 3000; i++) poe("magic", { id: `m-${i}`, name: `Blue Thing ${i}`, number: String(i) });
+  poe("ygo", { id: "y-1", name: "Blue-Eyes White Dragon", number: "LOB-001", released: "2002-03-08" });
+  poe("ygo", { id: "y-2", name: "Blue-Eyes Alternative White Dragon", number: "MVP1-001", released: "2016-01-01" });
+  poe("ygo", { id: "y-3", name: "Blue-Eyed Wolf", number: "X-001", released: "2020-01-01" });
+  poe("pokemon", { id: "p-1", name: "Mew", number: "151", released: "2023-09-22" });
+  poe("pokemon", { id: "p-2", name: "Mewtwo", number: "150", released: "2024-01-01" });
+  poe("pokemon", { id: "p-3", name: "ミュウ", nameEn: "Mew", number: "151", released: "2023-06-16" });
+  return db;
+}
+
+test("interseção não perde carta atrás de palavra comum (\"blue eyes\" achava 0)", () => {
+  const db = comMuitasPalavras();
+  const hits = roda(db, buildSearch("all", "blue eyes", 100));
+  assert.deepEqual(hits.map((h) => h.id).sort(), ["y-1", "y-2"]);
+  // e o total vem na própria linha, antes do limite
+  assert.equal(hits[0].t, 2);
+});
+
+test("t = total de cartas antes do LIMIT; modo completo passa de 100", () => {
+  const db = comMuitasPalavras();
+  const curta = roda(db, buildSearch("all", "blue", 50));
+  assert.equal(curta.length, 50);
+  assert.equal(curta[0].t, 3003);
+  // sem o modo completo o teto é 100, com ele vai até LIMITE_COMPLETO
+  assert.equal(roda(db, buildSearch("all", "blue", 5000)).length, 100);
+  assert.equal(roda(db, buildSearch("all", "blue", 5000, { completo: true })).length, 3003);
+  assert.match(buildSearch("all", "blue", 999999, { completo: true }).sql, new RegExp(`LIMIT ${LIMITE_COMPLETO}$`));
+});
+
+test("relevância: palavra INTEIRA antes de prefixo (Mew antes de Mewtwo), inclusive pelo nameEn", () => {
+  const db = comMuitasPalavras();
+  const hits = roda(db, buildSearch("all", "mew", 10));
+  assert.deepEqual(hits.map((h) => [h.id, h.x]), [["p-1", 1], ["p-3", 1], ["p-2", 0]]);
+  // empate de relevância: o lançamento mais novo primeiro
+  const eyes = roda(db, buildSearch("ygo", "blue eyes", 10));
+  assert.deepEqual(eyes.map((h) => h.id), ["y-2", "y-1"]);
+});
+
+test("termo de UMA letra casa como palavra inteira (\"charizard x\" quer a X)", () => {
+  const db = banco();
+  const carta = db.prepare(`INSERT INTO cards (game,id,name,set_name,number,released) VALUES (?,?,?,?,?,?)`);
+  const w = db.prepare("INSERT INTO card_words (game,word,id) VALUES (?,?,?)");
+  for (const c of [{ id: "a", name: "Mega Charizard X ex" }, { id: "b", name: "Charizard Xtreme" }]) {
+    carta.run("pokemon", c.id, c.name, "S", "1", "2024-01-01");
+    for (const p of cardRows("pokemon", c).words) w.run(p.game, p.word, p.id);
+  }
+  assert.deepEqual(roda(db, buildSearch("pokemon", "charizard x", 10)).map((h) => h.id), ["a"]);
+  assert.match(buildSearch("pokemon", "charizard x", 10).sql, /word IN \(\?4\)/);
+});
+
+test("fração confere o NÚMERO da carta: 009/094 não traz a EB03-009 de um set de 94", () => {
+  const db = comNumeros(banco());
+  const carta = db.prepare(`INSERT INTO cards (game,id,name,set_name,number,released) VALUES (?,?,?,?,?,?)`);
+  const w = db.prepare("INSERT INTO card_words (game,word,id) VALUES (?,?,?)");
+  const makino = { id: "eb03-009", name: "Makino", set: "EB03", number: "EB03-009", setTotal: 94 };
+  carta.run("onepiece", makino.id, makino.name, makino.set, makino.number, "2025-01-01");
+  for (const p of cardRows("onepiece", makino).words) w.run(p.game, p.word, p.id);
+  // Pela palavra ela casa (tem "009" e "94"); pelo número, não.
+  assert.deepEqual(roda(db, buildSearch("all", "009/094", 10)).map((h) => h.id), ["x-9"]);
+  // número guardado com a barra ("4/102") também confere
+  const base = banco();
+  const wb = base.prepare("INSERT INTO card_words (game,word,id) VALUES (?,?,?)");
+  for (const p of cardRows("pokemon", { id: "base1-4", name: "Charizard", set: "Base Set", number: "4/102" }).words) wb.run(p.game, p.word, p.id);
+  base.prepare("UPDATE cards SET number = '4/102' WHERE id = 'base1-4'").run();
+  assert.deepEqual(roda(base, buildSearch("pokemon", "charizard 4/102", 10)).map((h) => h.id), ["base1-4"]);
+  // duas frações no máximo: o D1 recusa statement com mais de 100 parâmetros
+  assert.ok(buildSearch("all", "1/2 3/4 5/6 7/8 9/10", 10).params.length <= 100);
+});
+
+test("prefixo de LIKE cabe nos 50 bytes do D1 (nome japonês longo derrubava a consulta)", () => {
+  const longo = "リザードン".repeat(4); // 20 caracteres = 60 bytes
+  const pat = prefixoLike(longo);
+  assert.ok(new TextEncoder().encode(pat).length <= 50, pat);
+  assert.ok(longo.startsWith(pat.slice(0, -1)));
+  const q = buildSearch("pokemon", longo, 10);
+  for (const v of q.params) if (String(v).endsWith("%")) assert.ok(new TextEncoder().encode(v).length <= 50);
+  // a palavra EXATA (relevância) segue inteira: igualdade não tem esse teto
+  // (na forma NFD, como a borda normaliza tudo)
+  assert.ok(q.params.includes(palavras(longo)[0]));
+});
+
+test("preços em lote por json_each usam a PK (sem varredura)", () => {
+  const db = banco();
+  const q = buildPricesJson("pokemon", idsComBase(["base1-4-pt", "tfc-1"]));
+  const plano = db.prepare("EXPLAIN QUERY PLAN " + q.sql).all(...q.params).map((r) => r.detail).join(" | ");
+  assert.doesNotMatch(plano, /SCAN prices/, plano);
+  const linhas = roda(db, q);
+  assert.deepEqual(linhas.map((l) => l.id), ["base1-4"]);
+  assert.equal(q.params.length, 2);
+});
+
+test("busca completa usa os índices (sem varredura de card_words nem de cards)", () => {
+  const db = comMuitasPalavras();
+  for (const q of [buildSearch("all", "blue eyes", 10, { completo: true }), buildSearch("ygo", "blue eyes 001", 10, { completo: true })]) {
+    const plano = db.prepare("EXPLAIN QUERY PLAN " + q.sql).all(...q.params).map((r) => r.detail).join(" | ");
+    assert.doesNotMatch(plano, /SCAN card_words/, plano);
+    assert.doesNotMatch(plano, /SCAN c\b/, plano);
+  }
+});
+
+test("termosDaBusca: palavra-função cai, repetição cai, máx. 5", () => {
+  assert.deepEqual(termosDaBusca("The One Ring"), ["one", "ring"]);
+  assert.deepEqual(termosDaBusca("the"), ["the"]);
+  assert.deepEqual(termosDaBusca("mega mega charizard"), ["mega", "charizard"]);
+  assert.equal(termosDaBusca("a b c d e f g h").length, 5);
 });
 
 test("formasNumericas da borda = numberSearchForms do cliente (mesma régua dos dois lados)", () => {
@@ -196,11 +324,12 @@ test("formasNumericas da borda = numberSearchForms do cliente (mesma régua dos 
 test("termo repetido não vira operando duplicado (linha lida é linha cobrada)", () => {
   const db = comPalavras(banco());
   // "chari chari" descreve a MESMA restrição de "chari": mesmo resultado, mas
-  // sem o dedupe eram dois operandos idênticos no INTERSECT — o dobro de
-  // linhas lidas no D1 por uma repetição que o usuário nem percebe que digitou.
+  // sem o dedupe eram dois operandos idênticos (hoje unidos por UNION ALL) —
+  // o dobro de linhas lidas no D1 por uma repetição que o usuário nem percebe
+  // que digitou.
   const uma = buildSearch("pokemon", "chari", 10);
   const duas = buildSearch("pokemon", "chari chari", 10);
   assert.equal(duas.params.length, uma.params.length);
-  assert.equal((duas.sql.match(/INTERSECT/g) || []).length, 0);
+  assert.equal((duas.sql.match(/UNION ALL/g) || []).length, 0);
   assert.deepEqual(roda(db, duas).map((h) => h.id).sort(), roda(db, uma).map((h) => h.id).sort());
 });

@@ -15,19 +15,12 @@ db.exec(readFileSync(new URL("../out/d1-cards.sql", import.meta.url), "utf8"));
 const conta = (t) => db.prepare(`SELECT COUNT(*) AS n FROM ${t}`).get().n;
 console.log(`carregado: ${conta("cards")} cartas · ${conta("card_words")} palavras`);
 
-function busca(game, q, limite) {
-  const query = buildSearch(game, q, limite);
+function busca(game, q, limite, opts) {
+  const query = buildSearch(game, q, limite, opts);
   if (!query) return [];
-  // node:sqlite não repete parâmetro posicional ?1 como o D1: troca por ? e
-  // repete o valor — só no TESTE; a Function usa a query como está.
-  // A query GLOBAL (game=all) não tem ?1 nenhum: a fila então são TODOS os
-  // parâmetros, na ordem.
-  const temGame = query.sql.includes("?1");
-  const sql = query.sql.replace(/\?1/g, "?");
-  const fila = temGame ? query.params.slice(1) : query.params.slice();
-  const ordem = query.sql.match(/\?1|\?(?!\d)/g) || [];
-  const finais = ordem.map((token) => (token === "?1" ? query.params[0] : fila.shift()));
-  return db.prepare(sql).all(...finais);
+  // Parâmetros NUMERADOS (?1, ?2…) desde 27/09/2026: o node:sqlite os liga
+  // pela posição do array, igual ao D1 — a query roda como está.
+  return db.prepare(query.sql).all(...query.params);
 }
 
 let falhas = 0;
@@ -82,9 +75,20 @@ espera("global 'pikachu' acha e carimba o jogo", global.length > 0 && global.eve
 const globalDupla = busca("all", "ex charizard");
 espera("global com duas palavras intersecta por (game,id)", globalDupla.some((c) => /charizard/i.test(c.name)), `${globalDupla.length} resultados`);
 
-// Contrato de campos (o que o editor de decks e o Explorar re-mapeiam)
+// Busca COMPLETA (27/09/2026): palavra comum não esconde a carta. "blue%"
+// passa de 2 mil linhas e, com o teto antigo por operando, o Yu-Gi-Oh! (o
+// último jogo na ordem do índice) nunca entrava — "blue eyes" voltava vazio.
+const blue = busca("all", "blue eyes", 10000, { completo: true });
+espera("global 'blue eyes' acha as Blue-Eyes", blue.some((c) => /blue-eyes/i.test(c.name)), `${blue.length} resultados`);
+const zardEx = busca("all", "charizard ex", 10000, { completo: true });
+espera("'charizard ex' traz o total na linha (t) igual ao que devolve", zardEx.length > 0 && zardEx[0].t === zardEx.length, `${zardEx.length} resultados, t=${zardEx[0] && zardEx[0].t}`);
+const mew = busca("all", "mew", 10);
+espera("'mew' põe palavra inteira (x=1) antes de prefixo", mew.length > 0 && mew[0].x === 1, `1º: ${mew[0] && mew[0].name} x=${mew[0] && mew[0].x}`);
+
+// Contrato de campos (o que o editor de decks, o Explorar e o modo completo re-mapeiam)
 const campos = pika[0] && Object.keys(pika[0]).sort().join(",");
-espera("colunas do contrato", campos === "card_type,color,cost,game,id,name,number,rarity,set_name", campos);
+const esperado = "artist,card_type,color,cost,game,id,image,language,name,number,rarity,released,set_id,set_name,t,variants,x";
+espera("colunas do contrato", campos === esperado, campos);
 
 if (falhas) { console.error(`\n${falhas} falha(s)`); process.exit(1); }
 console.log("\nbusca D1 conferida no SQLite local.");

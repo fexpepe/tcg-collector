@@ -112,11 +112,40 @@ lê na borda da carta. Um lugar por camada, todos com a mesma régua (travada em
   escritas (`word IN ('9','009')`), não por prefixo, e o total do set é
   indexado como palavra **extra** (`cardRows`) — o deploy só a insere nas cartas
   que ainda estão na régua antiga (`acrescentar` no d1-delta), sem reescrever
-  todas as palavras do catálogo;
+  todas as palavras do catálogo; com fração na busca, o **número** da carta
+  ainda é conferido na SQL (a EB03-009 de um set de 94 não entra em "009/094");
 - **índice estático** (decks/listas): `numberSearchForms` no número;
 - **SEO** (`prerender-catalog`): título, description, h1 e JSON-LD da página de
   carta usam o código impresso e listam as outras escritas
   (`scripts/lib/card-code.mjs`).
+
+### Busca completa (Explorar)
+
+O Explorar mostra **todas** as cartas que casam com a busca, em todos os jogos,
+com contagem exata e rolagem até a última — sem baixar o catálogo. Quem
+responde é o `/api/search?game=all&full=1` (D1): até 10 mil cartas, as mais
+relevantes primeiro, já no formato do chunk e com os preços (própria + base),
+num pedido só (`mew` = 9 KB comprimidos; `dragon`, 8,3 mil cartas, ~250 KB).
+Acima de 10 mil o Explorar avisa quantas existem e pede pra refinar. As regras
+(em [functions/api/_search-sql.js](functions/api/_search-sql.js), travadas em
+[tests/collection-api.test.mjs](tests/collection-api.test.mjs) e
+[tests/search-api.test.mjs](tests/search-api.test.mjs)):
+
+- **Casamento**: cada palavra da busca é um prefixo de palavra da carta (nome,
+  set, número, artista, total do set, `nameEn`); número e termo de **uma letra**
+  casam por igualdade ("charizard x" quer a X). A interseção não tem corte por
+  palavra abaixo de 50 mil linhas — o corte antigo de 2 mil fazia "blue eyes"
+  voltar vazio e "charizard ex" achar metade.
+- **Relevância** na borda: `x` = quantas palavras da busca casaram como palavra
+  **inteira**; ordem `x`, lançamento mais novo. No cliente, o "Mais relevantes"
+  (padrão do Explorar, `searchRelevance`) pontua pelo **nome** — inteira 3,
+  começo de palavra 2, meio 1, fora do nome 0 — e desempata pelo valor: "mew"
+  traz todas as Mew antes de qualquer Mewtwo. Carta de nome japonês vinda da
+  borda (sem `nameEn` na mão) usa o `x`.
+- **setTotal**: o D1 não guarda; o Explorar completa pelo manifest de cada jogo
+  (`enrichSetTotals`) e o tile volta a "Mewtwo (063/165)".
+- Vazio da borda (ou borda fora) ainda cai no catálogo local, que casa por
+  pedaço de palavra ("kachu" acha Pikachu).
 
 As facetas da página de set (Raridade, Cor, Tipo, Seleção…) são declaradas **uma
 vez por jogo** em `GAME_FACETS` ([src/shared.js](src/shared.js)) e derivadas dos

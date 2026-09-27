@@ -1,4 +1,4 @@
-// GET /api/search?game=<slug>&q=<termo>[&limit=40][&img=1]
+// GET /api/search?game=<slug>&q=<termo>[&limit=40][&img=1][&full=1]
 //
 // Busca de cartas no jogo INTEIRO respondida pela borda (D1), em poucos KB.
 // Substitui, quando disponível, o search-index.json que o editor de decks
@@ -7,9 +7,19 @@
 // pra cair no caminho estático de sempre, então esta função pode existir em
 // produção ANTES de o banco existir sem quebrar nada.
 //
-// Resposta: { c: [ { i, n, s, u, t, c, r, k } ] } — os MESMOS campos do
-// search-index.json, pra troca no cliente ser só a origem dos dados.
-import { buildSearch } from "./_search-sql.js";
+// Resposta: { t, c: [ { i, n, s, u, t, c, r, k, g, x } ] } — os MESMOS campos
+// do search-index.json, pra troca no cliente ser só a origem dos dados, mais
+// `g` (jogo), `x` (quantos termos casaram como palavra inteira: relevância) e
+// o `t` da raiz: o TOTAL de cartas que casaram, antes do limite. As cartas
+// vêm da mais relevante pra menos (ver buildSearch).
+//
+// &full=1 (o Explorar, 27/09/2026): a busca COMPLETA — até 10 mil cartas, já
+// no formato do chunk (o mesmo contrato do /api/collection) e com os preços
+// verbatim: { t, c: [carta…], p: { <jogo>: { <id>: preço } } }. É o que deixa
+// o Explorar mostrar TODAS as cartas de "mew" (e ordenar todas por valor) sem
+// baixar os chunks dos sets de cada uma — antes eram 60 cartas, hidratadas
+// com o manifest + o índice inteiro de cada jogo (2,9 MB só o do Pokémon).
+import { buildSearch, buildPricesJson, idsComBase, LIMITE_COMPLETO } from "./_search-sql.js";
 
 // Jogos válidos (espelho do registro do game.js). Barra consulta arbitrária.
 // "all" = busca global (o Explorar): todos os jogos numa consulta só.
@@ -21,7 +31,8 @@ export async function onRequestGet(context) {
   const url = new URL(request.url);
   const game = String(url.searchParams.get("game") || "");
   const q = String(url.searchParams.get("q") || "");
-  const limit = Number(url.searchParams.get("limit")) || 40;
+  const full = url.searchParams.get("full") === "1";
+  const limit = Number(url.searchParams.get("limit")) || (full ? LIMITE_COMPLETO : 40);
   // &img=1 (lista de impressões do popup): acrescenta imagem (m) e data de
   // lançamento (d) a cada carta. Opt-in porque a busca por tecla digitada do
   // editor de decks não usa nenhum dos dois — seriam ~4KB de URL de imagem por
@@ -52,13 +63,14 @@ export async function onRequestGet(context) {
   if (!env.DB) return json({ off: 1 }, 503, 0);
   if (!GAMES.has(game)) return json({ erro: "game" }, 400, 0);
 
-  const query = buildSearch(game, q, limit);
-  if (!query) return json({ c: [] }, 200, 0);
+  const query = buildSearch(game, q, limit, { completo: full });
+  if (!query) return json(full ? { t: 0, c: [], p: {} } : { t: 0, c: [] }, 200, 0);
 
-  // Cache DE BORDA de verdade. Cada consulta lê até 5 termos × 2.000 linhas no
-  // D1 (~10 mil leituras cobradas), e sem isto a MESMA busca vinda de outra
-  // pessoa pagava tudo de novo — o `s-maxage` do header não guarda resposta de
-  // Function. Guardado por URL, então já separa game/q/limit/img.
+  // Cache DE BORDA de verdade. Cada consulta lê as palavras de cada termo (até
+  // TETO_OPERANDO por termo) e a linha de cada carta que casou — de centenas a
+  // dezenas de milhares de leituras cobradas —, e sem isto a MESMA busca vinda
+  // de outra pessoa pagava tudo de novo — o `s-maxage` do header não guarda
+  // resposta de Function. Guardado por URL, então já separa game/q/limit/img/full.
   const cache = caches.default;
   const chaveCache = new Request(url.toString(), { method: "GET" });
   try {
@@ -68,23 +80,41 @@ export async function onRequestGet(context) {
 
   try {
     const r = await env.DB.prepare(query.sql).bind(...query.params).all();
-    // g (jogo) na resposta: na busca global é o que diz de qual catálogo
-    // hidratar cada resultado; nas por jogo é redundância inofensiva.
-    const cartas = (r.results || []).map((linha) => {
-      const c = {
-        i: linha.id, n: linha.name, s: linha.set_name, u: linha.number,
-        t: linha.card_type, c: linha.cost, r: linha.rarity, k: linha.color, g: linha.game
-      };
-      if (img) { c.m = linha.image || ""; c.d = linha.released || ""; }
-      return c;
-    });
+    const linhas = r.results || [];
+    const total = linhas.length ? Number(linhas[0].t) || linhas.length : 0;
+    let corpo;
+    if (full) {
+      // De volta ao formato do CHUNK (o mesmo do /api/collection), com g e x.
+      const cartas = linhas.map((linha) => ({
+        id: linha.id, name: linha.name, set: linha.set_name, setId: linha.set_id,
+        number: linha.number, rarity: linha.rarity, artist: linha.artist,
+        language: linha.language, image: linha.image,
+        variants: parseVariants(linha.variants),
+        setReleaseDate: linha.released,
+        cardType: linha.card_type || undefined, cost: linha.cost || undefined,
+        g: linha.game, x: linha.x
+      }));
+      corpo = { t: total, c: cartas, p: await precosDe(env.DB, linhas) };
+    } else {
+      // g (jogo) na resposta: na busca global é o que diz de qual catálogo
+      // hidratar cada resultado; nas por jogo é redundância inofensiva.
+      const cartas = linhas.map((linha) => {
+        const c = {
+          i: linha.id, n: linha.name, s: linha.set_name, u: linha.number,
+          t: linha.card_type, c: linha.cost, r: linha.rarity, k: linha.color, g: linha.game, x: linha.x
+        };
+        if (img) { c.m = linha.image || ""; c.d = linha.released || ""; }
+        return c;
+      });
+      corpo = { t: total, c: cartas };
+    }
     // Vazio NUNCA cacheia: durante a recarga do catálogo no D1 a busca responde
     // vazio, e um {c:[]} com max-age=300 grudava "nenhum resultado" no
     // navegador por 5 minutos DEPOIS de o banco já ter voltado ao normal. Vale
     // pro cache de borda pelo mesmo motivo — lá seria pior, valendo pra todo
     // mundo de uma vez.
-    const resposta = json({ c: cartas }, 200, cartas.length ? 300 : 0);
-    if (cartas.length && waitUntil) {
+    const resposta = json(corpo, 200, linhas.length ? 300 : 0);
+    if (linhas.length && waitUntil) {
       try { waitUntil(cache.put(chaveCache, resposta.clone())); } catch (e) { /* sem cache: só não guarda */ }
     }
     return resposta;
@@ -98,4 +128,41 @@ export async function onRequestGet(context) {
     const semTabela = /no such table|no such column/i.test(String((e && e.message) || e));
     return semTabela ? json({ off: 1 }, 503, 0) : json({ erro: "db" }, 500, 0);
   }
+}
+
+// Preços das cartas do modo completo: os ids delas MAIS os ids base (a carta
+// -pt/-ja sem preço próprio cai na base, como no /api/collection), por jogo,
+// num batch só — um round-trip pro D1 qualquer que seja o número de jogos.
+// Fatias de 5 mil ids por statement só pra o parâmetro JSON não crescer sem
+// teto (o D1 aceita string de até 2 MB).
+async function precosDe(db, linhas) {
+  const porJogo = {};
+  for (const l of linhas) (porJogo[l.game] = porJogo[l.game] || []).push(l.id);
+  const stmts = [], jogos = [];
+  for (const game of Object.keys(porJogo)) {
+    const ids = idsComBase(porJogo[game]);
+    for (let i = 0; i < ids.length; i += 5000) {
+      const q = buildPricesJson(game, ids.slice(i, i + 5000));
+      if (!q) continue;
+      stmts.push(db.prepare(q.sql).bind(...q.params));
+      jogos.push(game);
+    }
+  }
+  const tabela = {};
+  if (!stmts.length) return tabela;
+  const resultados = await db.batch(stmts);
+  resultados.forEach((res, k) => {
+    const alvo = tabela[jogos[k]] = tabela[jogos[k]] || {};
+    for (const linha of (res && res.results) || []) {
+      try { alvo[linha.id] = JSON.parse(linha.j); } catch (e) { /* entrada corrompida: sem preço */ }
+    }
+  });
+  return tabela;
+}
+
+function parseVariants(texto) {
+  try {
+    const v = JSON.parse(texto || "[]");
+    return Array.isArray(v) ? v : [];
+  } catch (e) { return []; }
 }
