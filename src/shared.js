@@ -6845,7 +6845,7 @@
     // `pokemonName`. Na Liga o produto japonês ainda leva "JP" grudado no
     // número, antes da barra: "Snorlax (181JP/165)" — é assim que ela separa a
     // versão JP da inglesa de mesmo número.
-    const q = (card) => (m.padded ? paddedCardQuery(card, true, ligaNumberSuffix(card)) : brSearchName(card));
+    const q = (card) => (m.padded ? ligaPokemonQuery(card) : brSearchName(card));
     if (m.liga) out.push({ key: "liga", label: m.liga[0], url: (card) => `${m.liga[1]}/?view=cards/search&card=${enc(q(card))}` });
     if (m.ligabra) out.push({ key: "ligabra", label: "LigaBRA", url: (card) => `https://ligabra.com/filter-products/${enc(cardSearchQuery(card))}` });
     if (m.myp) out.push({ key: "myp", label: "MYP", url: (card) => `https://mypcards.com/${m.myp}?ProdutoSearch%5Bquery%5D=${enc(m.padded ? paddedCardQuery(card, false) : brSearchName(card))}` });
@@ -6935,6 +6935,40 @@
 
   // Sufixo do número na Liga: "JP" na carta japonesa ("181JP/165"), vazio no resto.
   function ligaNumberSuffix(card) { return isJapaneseCard(card) ? "JP" : ""; }
+
+  // Número ORIGINAL de cada carta da Classic Collection dos 30 anos (30th-c),
+  // na ordem do número da TCGdex (001–030). A carta reimprime o código da
+  // antiga ("Charizard 4/102") e a Liga a cataloga com esse número e o total
+  // do set: "Lugia (149/30)" — sem zero à esquerda no total. A busca ia com a
+  // numeração sequencial da TCGdex ("Lugia (029/030)") e não achava nenhuma
+  // (27/09/2026, pedido do Fernando). O número vem como o TCGplayer escreve
+  // (é o que está impresso); tests/marketplace-search-30th.test.mjs confere a
+  // tabela contra o de-para cel30cc -> 30th-c do data/card-id-merges.json.
+  const LIGA_CLASSIC_NUMBERS = {
+    "30th-c": ["4", "5", "11", "11", "18", "19", "25", "33", "41", "43", "47", "050", "57", "58", "69",
+      "85", "89", "94", "99", "100", "101", "106", "106", "106", "108", "114", "123", "138", "149", "203"]
+  };
+  // "149/30" pra carta da Classic Collection; "" nas demais.
+  function ligaClassicCode(card) {
+    const lista = card && LIGA_CLASSIC_NUMBERS[card.setId];
+    if (!lista) return "";
+    const original = lista[parseInt(String(card.number || ""), 10) - 1] || "";
+    const total = String(card.setTotal || "").trim();
+    return original && total ? `${original}/${total}` : original;
+  }
+
+  // Busca da LigaPokémon. Além do "Nome (001/048)" de sempre, dois casos que a
+  // Liga cataloga do jeito dela (27/09/2026):
+  //  • carta BÔNUS (Mew RGB da 30th Celebration): o código já está no nome
+  //    ("Mew - B/RGB"), e é só isso que a Liga tem — "Mew - B/RGB (B/128)" não
+  //    acha nada. A JP (M6a) fica na regra de sempre: o nome em inglês + JP;
+  //  • Classic Collection: número da carta antiga + total do set (ver acima).
+  function ligaPokemonQuery(card) {
+    if (isBonusCard(card) && !isJapaneseCard(card)) return brSearchName(card);
+    const classic = ligaClassicCode(card);
+    if (classic) return `${brSearchName(card)} (${classic})`;
+    return paddedCardQuery(card, true, ligaNumberSuffix(card));
+  }
 
   // "Nome (001/048)" pra Liga (padTotal=true) e "Nome (001/48)" pro MYP
   // (padTotal=false): esses sites zeram à esquerda o número (e a Liga o total).
