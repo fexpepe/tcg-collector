@@ -205,11 +205,13 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
 
 ## 💡 Backlog / ideias
 
-- **Anúncios e afiliados (desenho aprovado em 2026-09-27, implementação
-  pela fase 0).** Afiliado nos links de loja do popup, AdSense só com blocos
-  manuais nas páginas de descoberta (nunca nas pessoais nem em popup), apoiador
-  sem anúncio e o mesmo espaço pronto pra venda direta a lojas. Plano, números
-  e fases em [docs/PLANO-ADS.md](docs/PLANO-ADS.md).
+- **Anúncios e afiliados — fase 0 pronta em 2026-09-27.** O espaço
+  ("vitrine") existe nas páginas de catálogo, medido, só com conteúdo da casa
+  e de parceiros; afiliado TCGplayer/eBay pronto com os IDs vazios (falta o
+  cadastro nos programas); política, termos e FAQ reescritos. Próximo: fase 1
+  (AdSense com CSP por rota, páginas pré-renderizadas, apoiador sem anúncio).
+  Pendente de aplicar: migração `20260927a`. Plano, números e fases em
+  [docs/PLANO-ADS.md](docs/PLANO-ADS.md); arquitetura no README ("Vitrine").
 
 - **Naruto moderno (2027)**: `sync-naruto.mjs` está dormente esperando a
   categoria no TCGCSV. Quando ela existir, decidir o dedupe com a promo curada

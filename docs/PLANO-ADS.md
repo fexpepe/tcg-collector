@@ -23,7 +23,7 @@ pro, sem limite") e sem piorar a experiência de quem usa o app todo dia.
    ou modal** ficam limpos. Anúncio só onde a pessoa está navegando.
 3. **Formato de "respiro" no feed, nunca por cima do conteúdo.** Uma faixa
    rotulada "Publicidade" entre linhas da grade, com a moldura do próprio site;
-   um trilho lateral só em telas ≥1800 px, na margem que hoje fica vazia. Sem
+   um trilho lateral só em telas ≥1888 px, na margem que hoje fica vazia. Sem
    pop-up, sem vinheta, sem âncora grudada (no celular a tabbar flutuante já
    mora no rodapé), sem vídeo.
 4. **Por que AdSense e não uma rede "gamer":** as redes de nicho que os sites
@@ -206,7 +206,7 @@ porque é o primeiro contato de quem ainda não confia no site.
   300×250 depois do bloco de preço/informações e outro antes da lista de
   outras versões/cartas.
 
-### Tela larga (≥1800 px)
+### Tela larga (≥1888 px)
 
 - **Trilho lateral** (aprovado): um 160×600 fixo (sticky) na margem direita.
   O conteúdo tem teto de 1440 px (`--content-w`), então a 1920 px sobram
@@ -358,9 +358,9 @@ ads.txt              google.com, pub-XXXXXXXX, DIRECT, f08c47fec0942fa0
 functions/_middleware.js   nonce da CSP, só nas rotas com anúncio
 ```
 
-**O espaço.** Um elemento neutro com o tipo e o lugar
-(`<aside class="vitrine" data-vitrine="set-feed">`), com altura reservada no
-CSS perto das regras da grade. O `ads.js` escolhe o fornecedor pela cadeia do
+**O espaço.** Um `<aside class="vtr-espaco vtr-faixa">` com a posição e o
+criativo em `data-vitrine-*` (o que existe desde a fase 0 está descrito no
+README, seção "Vitrine"). O `ads.js` escolhe o fornecedor pela cadeia do
 `ads.json` — `direto → adsense → casa` — e só pede o anúncio quando o espaço
 chega a ~1 tela de distância (`IntersectionObserver`). O script do AdSense
 desce uma vez, depois do `load` e em ocioso, e só se: a página tem espaço,
@@ -489,23 +489,52 @@ qualquer página com espaço é bug, não custo.
 
 ## 13. Fases
 
-### Fase 0 — Fundação (nenhum anúncio de terceiro ainda)
-- [ ] Política de privacidade, Termos e FAQ "Por que anúncios?" (pt/en/es)
-- [ ] Componente `.vitrine` (CSS com tokens, claro/escuro, 44 px) + `src/ads.js`
-      com posição na grade e vitrine da casa
-- [ ] `data/ads.json` com kill switch; espaços nos grupos A e B
-- [ ] Aviso de consentimento + interruptor em Configurações
-- [ ] `ad_view`/`ad_click` (migração + `EVENTOS`) e painel no /admin
-- [ ] Afiliados TCGplayer e eBay nos chips + linha de transparência
-      (cadastro nos programas é do Fernando: Impact e eBay Partner Network)
-- [ ] Testes e guardas de CI da seção 10
+### Fase 0 — Fundação (nenhum anúncio de terceiro ainda) ✔ 2026-09-27
+- [x] Política de privacidade (seção nova "Publicidade e links de loja", com
+      `id="anuncios"`), Termos e FAQ "Por que o Sleevu tem um espaço de
+      anúncio?" (pt/en/es), mais uma entrada em Novidades explicando o porquê
+- [x] Espaço (CSS `vtr-*` numa folha por área, tokens, claro/escuro, 44 px) +
+      `src/ads.js` com posição na grade, trilho e vitrine da casa
+- [x] `data/ads.json` com kill switch; espaços no grupo B (grupo A foi pra
+      fase 1, ver abaixo)
+- [x] Aviso de consentimento (dormente até a cadeia ter `adsense`) +
+      interruptor em Configurações → Privacidade
+- [x] `ad_view`/`ad_click` (migração `20260927a` + `EVENTOS`) e aba
+      Mercado › Vitrine no /admin
+- [x] Afiliados TCGplayer e eBay nos chips + nota de comissão — **IDs vazios**
+      até o cadastro nos programas (Impact e eBay Partner Network, é do
+      Fernando); com os IDs, é preencher o `AFILIADOS` no `shared.js`
+- [x] Testes (`tests/vitrine.test.mjs`) e guardas de CI (check.mjs guarda 9:
+      `ads.js` proibido em página pessoal/conta/institucional)
 
-Entrega sozinha já tem valor: afiliados rendendo, vitrine da casa pedindo
-apoio no lugar certo e o espaço medido antes de ter anúncio.
+O que mudou no caminho, e por quê:
+
+- **Grupo A (páginas pré-renderizadas) foi pra fase 1.** Elas só carregam o
+  `theme.js` (sem `shared.js`, sem tradução, com CSS próprio no molde) e vão
+  precisar do `_middleware.js` com nonce de qualquer jeito — entram junto.
+- **Sem o criativo "instale o app".** O convite de instalação já existe
+  (`initInstallInvite`) e aparece uma vez só, pra quem tem 10+ cartas, de
+  propósito. Repetir o pedido na vitrine desfaria essa decisão.
+- **Trilho a partir de 1888 px**, não 1800: a moldura tem 184 px (o 160×600 +
+  borda), e com a folga até a grade e até a borda a conta fecha em 1888.
+- **Galeria de decks só com trilho.** Ela recria o próprio contêiner a cada
+  render, então não há grade estável pra faixa.
+- **Prefixo `vtr-` no CSS e aba `anuncios` no /admin**, não "vitrine": essa
+  palavra já é a aba de coleções em cards da Coleção, e a guarda de CSS por
+  área do `check.mjs` a leria como a classe.
+- **Medido na tela real** (1440, 1920 e 390 px, claro e escuro): o CLS da
+  página de set é o mesmo com e sem vitrine; no desktop a 1ª faixa cai na 4ª–5ª
+  linha (as cartas fora da tela têm altura estimada pelo `content-visibility`,
+  então a medida é aproximada — ajusta-se no `primeira` do JSON).
 
 ### Fase 1 — AdSense
 - [ ] Conta AdSense + `ads.txt`; blocos manuais por espaço × aparelho;
       **Auto ads, vinheta e âncora desligados**
+- [ ] Espaços no grupo A (páginas pré-renderizadas de carta, set, deck e
+      artista), no molde do `prerender-catalog.mjs`
+- [ ] Fornecedor `adsense` no `ads.js` (a cadeia já existe). Cuidado herdado da
+      fase 0: faixa recolocada depois de um re-render recarrega o iframe — bloco
+      novo só em mudança pedida pela pessoa (filtro), nunca sozinho
 - [ ] CSP por rota + `_middleware.js` com nonce; conferir no preview
 - [ ] CMP do Google pra UE/UK/CH
 - [ ] Apoiador sem anúncio (seção 10): `profiles.apoiador_ate` + guarda no
@@ -544,7 +573,7 @@ apoio no lugar certo e o espaço medido antes de ter anúncio.
 4. **Afiliado nos links de loja? Sim**, com a linha de transparência embaixo
    dos chips e na política. Não muda preço, ordem nem quais lojas aparecem.
    Entra na fase 0.
-5. **Trilho lateral em tela larga? Sim** (≥1800 px, na margem vazia). Se
+5. **Trilho lateral em tela larga? Sim** (≥1888 px, na margem vazia). Se
    parecer poluído no uso real, é o primeiro a sair.
 
 **Ainda em aberto (não bloqueia a fase 0):**

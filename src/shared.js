@@ -3366,41 +3366,10 @@
     });
   }
 
-  // Rodapé global (em todas as páginas): direitos/aviso de marcas + créditos.
-  // Banner de parceria (loja): imagem + link servidos do PRÓPRIO site — sem
-  // scripts ou rastreio de terceiros, então NÃO muda o CSP nem a privacidade.
-  // Configure o parceiro aqui; com enabled:false (ou sem imagem/link) nada é
-  // exibido. A imagem deve ser hospedada no repo (ex.: "partners/loja.png") pra
-  // continuar valendo o img-src 'self' do CSP.
-  const PARTNER_AD = {
-    enabled: false,
-    position: "bottom",   // "bottom" (acima do rodapé) ou "top" (abaixo do header)
-    image: "",            // ex.: "partners/minha-loja.png"
-    href: "",             // ex.: "https://loja-parceira.com"
-    alt: ""               // ex.: "Loja Parceira — cartas Pokémon"
-  };
-  function initPartnerBanner(config) {
-    const ad = config || PARTNER_AD;
-    if (!ad.enabled || !ad.image || !ad.href) return;
-    if (document.querySelector(".partner-ad")) return;
-    const a = document.createElement("a");
-    a.className = "partner-ad partner-ad-" + (ad.position === "top" ? "top" : "bottom");
-    a.href = ad.href;
-    a.target = "_blank";
-    a.rel = "sponsored noopener"; // sponsored: sinaliza link patrocinado (SEO/honestidade)
-    a.setAttribute("aria-label", ad.alt || t("ad.label"));
-    a.innerHTML = `<span class="partner-ad-label">${escapeHtml(t("ad.label"))}</span>`
-      + `<img src="${escapeAttribute(ad.image)}" alt="${escapeAttribute(ad.alt || "")}" loading="lazy">`;
-    if (ad.position === "top") {
-      const header = document.querySelector(".app-header");
-      if (header) header.parentNode.insertBefore(a, header.nextSibling);
-      else document.body.insertBefore(a, document.body.firstChild);
-    } else {
-      const footer = document.querySelector(".site-footer");
-      if (footer) footer.parentNode.insertBefore(a, footer);
-      else document.body.appendChild(a);
-    }
-  }
+  // O banner de loja parceira que morava aqui (PARTNER_AD, sempre desligado,
+  // em TODA página e no núcleo do CSS) virou o formato "parceiro" da vitrine
+  // (2026-09-27): src/ads.js + data/ads.json, só nas páginas de catálogo, com
+  // segmentação por jogo e idioma. Ver docs/PLANO-ADS.md.
 
   // Bolinha "novo" nos links de Novidades quando o changelog tem entrada mais
   // nova que a última vista (tcg-news-seen-v1, gravada ao visitar a página).
@@ -3879,7 +3848,9 @@
   const EVENTOS = ["export_done", "import_done", "deck_created", "backup_done", "share_created",
     "scan_open", "scan_done", "card_added", "collection_first", "login_gate",
     // Analytics v2 (migração 20260923a).
-    "store_click", "signup", "search_empty", "share_open", "pwa_install"];
+    "store_click", "signup", "search_empty", "share_open", "pwa_install",
+    // Vitrine (migração 20260927a): o espaço de anúncio, ver src/ads.js.
+    "ad_view", "ad_click"];
   function logEvento(nome, props) {
     if (EVENTOS.indexOf(nome) < 0) return;
     mandaEvento(nome, props);
@@ -7236,16 +7207,37 @@
   // (`view`/`card`, `ProdutoSearch[query]`); os internacionais ficam sem —
   // eBay e TCGplayer têm programa de afiliado próprio, com outro parâmetro.
   const UTM_LOJAS_BR = ["liga", "ligabra", "myp"];
-  function comUtm(key, url) {
-    if (UTM_LOJAS_BR.indexOf(key) < 0) return url;
-    return url + (url.indexOf("?") >= 0 ? "&" : "?") + "utm_source=sleevu&utm_medium=referral";
+  // AFILIADOS (docs/PLANO-ADS.md, seção 7 — decidido em 2026-09-27). Vazio =
+  // o link sai IGUAL ao de sempre: é o estado até o cadastro nos programas ser
+  // aprovado. O afiliado nunca muda a ordem nem quais lojas aparecem; muda só
+  // o href, ganha rel="sponsored" e acende a nota de comissão embaixo dos
+  // chips (a nota só existe quando algum link da carta é mesmo de afiliado).
+  //   tcgplayer  link de rastreio do Impact, SEM o destino:
+  //              "https://partner.tcgplayer.com/c/<conta>/<anúncio>/<campanha>"
+  //              — o deep link do Impact leva a busca no ?u= (URL-encoded).
+  //   ebay       campid do eBay Partner Network (10 dígitos). Vale pra busca e
+  //              pra "vendidos"; mkrid 711-53200-19255-0 é o programa dos EUA.
+  const AFILIADOS = { tcgplayer: "", ebay: "" };
+  function linkDeLoja(key, url, afiliados) {
+    const af = afiliados || AFILIADOS;
+    if (UTM_LOJAS_BR.indexOf(key) >= 0) return url + (url.indexOf("?") >= 0 ? "&" : "?") + "utm_source=sleevu&utm_medium=referral";
+    if (key === "tcgplayer" && /^https:\/\/[^?#]+\/c\/\d+\/\d+\/\d+$/.test(af.tcgplayer)) return `${af.tcgplayer}?u=${enc(url)}`;
+    if ((key === "ebay" || key === "ebaysold") && /^\d{10}$/.test(af.ebay)) return `${url}&mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=${af.ebay}&toolid=10001&mkevt=1`;
+    return url;
   }
   // Um grupo do bloco de lojas: o rótulo numa linha e os chips embaixo dele
   // (empilhado desde 2026-09-22 — ver .market-links no styles.css).
   function marketplaceRow(labelKey, list, card) {
     if (!list.length) return "";
     const links = list
-      .map(({ key, label, url }) => `<a class="br-link br-link-${key}" data-mkt="${key}" href="${escapeAttribute(comUtm(key, url(card)))}" target="_blank" rel="noopener">${escapeHtml(label)}</a>`)
+      .map(({ key, label, url }) => {
+        const bruto = url(card);
+        const href = linkDeLoja(key, bruto);
+        // Link que mudou fora do utm = afiliado: rel="sponsored" é o que o
+        // Google pede pra link com comissão (e o que sinaliza pra nota abaixo).
+        const afiliado = href !== bruto && UTM_LOJAS_BR.indexOf(key) < 0;
+        return `<a class="br-link br-link-${key}" data-mkt="${key}" href="${escapeAttribute(href)}" target="_blank" rel="${afiliado ? "sponsored noopener" : "noopener"}">${escapeHtml(label)}</a>`;
+      })
       .join("");
     return `<span class="br-links-label">${escapeHtml(t(labelKey))}</span><div class="br-links-chips">${links}</div>`;
   }
@@ -7256,12 +7248,16 @@
     // sessão só pra cartas sem tag (catálogos antigos). gradedTag (ex.: "PSA 9")
     // só vem quando a carta é graduada e entra na busca de eBay/PriceCharting.
     const game = card.game || currentGame();
+    const linhas = marketplaceRow("price.checkBr", brMarketplaces(game), card)
+      + marketplaceRow("price.checkUs", usMarketplaces(game, gradedTag), card);
+    // Transparência do afiliado: a nota aparece SÓ se algum link desta carta
+    // for de afiliado — com os IDs vazios (ou numa carta sem TCGplayer/eBay)
+    // ela diria algo que não é verdade.
+    const nota = linhas.indexOf('rel="sponsored') >= 0 ? `<p class="market-source">${escapeHtml(t("price.affiliateNote"))}</p>` : "";
     // Jogo, carta e "graduada" viajam no container pro store_click (ver
     // initStoreClicks): o link em si só sabe a loja.
     return `<div class="market-links" data-mkt-game="${escapeAttribute(game)}" data-mkt-card="${escapeAttribute(card.id || "")}"${gradedTag ? ' data-mkt-gr="1"' : ""}>`
-      + marketplaceRow("price.checkBr", brMarketplaces(game), card)
-      + marketplaceRow("price.checkUs", usMarketplaces(game, gradedTag), card)
-      + `</div>`;
+      + linhas + nota + `</div>`;
   }
 
   // Grade de preços BR por condição de uma variante (inputs editáveis).
@@ -12176,7 +12172,6 @@
       toastSimples(t("backup.restored"));
     }
   } catch (e) { /* sem sessionStorage: sem toast */ } // bolinha "novo" nos links de Novidades (footer + menu)
-  initPartnerBanner();
   initThemeToggle();
   initCollectorToggle(); // depois do tema: insere o olhinho ANTES do botão de tema
   initTroubleshootTriggers();

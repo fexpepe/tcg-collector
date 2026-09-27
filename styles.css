@@ -4212,36 +4212,173 @@ a.hub-tile:hover {
   margin: 18px 0 0;
 }
 
-.site-footer {
-  border-top: 1px solid var(--line);
-  margin-top: 40px;
+/* Vitrine — o espaço de anúncio das páginas de catálogo (src/ads.js,
+   docs/PLANO-ADS.md). Folha por área (css-areas.mjs): só as páginas que
+   carregam o ads.js baixam isto. A moldura usa os tokens do tema e o mesmo
+   raio dos cards, pra ler como um "respiro" entre as linhas de cartas, e não
+   como um banner colado por cima. O rótulo ("Do Sleevu", "Patrocinado") vem
+   sempre em cima, e o "Sobre este espaço" explica o que é. */
+.vtr-espaco {
+  box-sizing: border-box;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+  color: var(--text);
+  padding: 10px 16px 14px;
 }
-
-/* Banner de loja parceira (imagem + link do próprio site). */
-.partner-ad {
-  display: block;
-  width: var(--content-w);
-  max-width: 100%;
-  margin: 32px auto 0;
-  padding: 0 16px;
-  text-align: center;
-  text-decoration: none;
+/* A linha inteira da grade (grid) e da lista (flex), sempre num começo de
+   linha — o ads.js só insere antes do primeiro item de uma linha. */
+.vtr-faixa {
+  grid-column: 1 / -1;
+  flex-basis: 100%;
+  width: 100%;
 }
-.partner-ad-label {
-  display: block;
+.vtr-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.vtr-rotulo {
   font-size: 10.5px;
+  font-weight: 700;
   letter-spacing: 0.6px;
   text-transform: uppercase;
   color: var(--subtle);
-  margin-bottom: 6px;
 }
-.partner-ad img {
+.vtr-sobre {
+  font-size: 12px;
+  color: var(--subtle);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.vtr-sobre:hover { color: var(--text); }
+.vtr-casa {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+/* Ícone na cor de destaque do JOGO da página (--accent muda por jogo). */
+.vtr-ico {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+}
+.vtr-txt {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.vtr-txt strong { font-size: 15.5px; line-height: 1.3; }
+.vtr-txt span { font-size: 13.5px; line-height: 1.45; color: var(--muted); }
+.vtr-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  flex: none;
+}
+.vtr-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: var(--accent);
+  color: var(--on-accent);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.vtr-cta:hover { background: var(--accent-dark); }
+.vtr-cta-sec {
+  background: transparent;
+  border-color: var(--line);
+  color: var(--text);
+}
+.vtr-cta-sec:hover { background: var(--panel); }
+.vtr-parceiro { display: block; text-align: center; line-height: 0; }
+.vtr-parceiro img {
   max-width: 100%;
   height: auto;
-  border-radius: 10px;
+  border-radius: 8px;
+}
+/* Trilho: só existe em tela ≥ 1888 px (a conta está no ads.js), fixo na
+   margem que o conteúdo de 1440 px deixa vazia. 184 = o 160×600 padrão + a
+   moldura. Abaixo do z-index do cabeçalho e de qualquer modal. */
+.vtr-trilho { display: none; }
+@media (min-width: 1888px) {
+  .vtr-trilho {
+    display: block;
+    position: fixed;
+    z-index: 1;
+    top: 96px;
+    left: calc(50% + 744px);
+    width: 184px;
+    padding: 10px 12px 14px;
+  }
+  .vtr-trilho .vtr-topo { flex-direction: column; align-items: flex-start; gap: 2px; }
+  .vtr-trilho .vtr-casa { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .vtr-trilho .vtr-txt strong { font-size: 14.5px; }
+  .vtr-trilho .vtr-acoes { flex-direction: column; width: 100%; }
+  .vtr-trilho .vtr-cta { white-space: normal; text-align: center; padding: 8px 12px; }
+}
+/* Aviso de consentimento (só com fornecedor que usa cookie de terceiro — na
+   fase 0 não aparece). Cartão no canto, não parede: a página segue usável.
+   Os dois botões têm o MESMO peso (a ANPD pede recusar tão fácil quanto
+   aceitar). */
+.vtr-aviso {
+  position: fixed;
+  z-index: 55;
+  left: 16px;
+  bottom: 16px;
+  width: min(380px, calc(100vw - 32px));
+  box-sizing: border-box;
+  padding: 14px 16px;
   border: 1px solid var(--line);
-  display: block;
-  margin: 0 auto;
+  border-radius: 14px;
+  background: var(--surface);
+  box-shadow: var(--shadow-pop);
+}
+.vtr-aviso strong { font-size: 15px; }
+.vtr-aviso p { margin: 6px 0 12px; font-size: 13.5px; line-height: 1.5; color: var(--muted); }
+.vtr-aviso p a { color: var(--text); }
+.vtr-aviso-acoes { display: flex; gap: 10px; }
+.vtr-aviso-acoes .vtr-cta { flex: 1 1 0; }
+@media (max-width: 700px) {
+  /* Celular: ícone e texto lado a lado, botões numa linha própria ocupando a
+     largura (alvo grande pro dedo). Com o ícone numa linha só dele, o espaço
+     ficava quase do tamanho de duas cartas. */
+  .vtr-casa { flex-wrap: wrap; align-items: flex-start; gap: 12px 14px; }
+  .vtr-casa .vtr-txt { flex: 1 1 0; }
+  .vtr-acoes { flex-basis: 100%; }
+  .vtr-acoes .vtr-cta { flex: 1 1 auto; }
+  /* O link do rótulo ganha 44 px de toque sem engordar a linha. */
+  .vtr-sobre { display: inline-flex; align-items: center; min-height: 44px; margin: -12px 0; }
+  /* O aviso sobe acima da tabbar, como o convite de instalação. */
+  .vtr-aviso {
+    left: 10px;
+    right: 10px;
+    width: auto;
+    bottom: calc(var(--tabbar-lift, 10px) + var(--tabbar-h, 60px) + 8px);
+  }
+}
+
+.site-footer {
+  border-top: 1px solid var(--line);
+  margin-top: 40px;
 }
 
 .site-footer-inner {
@@ -4593,7 +4730,11 @@ a.hub-tile:hover {
 
 /* FAQ: cada pergunta é um <details> que expande a resposta. */
 .faq-list { max-width: 80ch; }
-.faq-item { border: 1px solid var(--line); border-radius: 12px; background: var(--panel); margin: 0 0 10px; overflow: hidden; }
+/* overflow: clip (e não hidden) — recorta igual nos cantos, mas hidden faz do
+   cartão um contêiner de rolagem, e o link com âncora (faq#anuncios) aplicava o
+   scroll-margin DENTRO dele: a pergunta ficava atrás do cabeçalho. O hidden
+   antes é a reserva pro Safari < 16, que não conhece clip. */
+.faq-item { border: 1px solid var(--line); border-radius: 12px; background: var(--panel); margin: 0 0 10px; overflow: hidden; overflow: clip; }
 .faq-item > summary {
   list-style: none; cursor: pointer; padding: 14px 16px; font-weight: 700; color: var(--text);
   display: flex; align-items: center; justify-content: space-between; gap: 12px;
@@ -4603,6 +4744,10 @@ a.hub-tile:hover {
 .faq-item[open] > summary::after { content: "−"; }
 .faq-item > summary:hover { color: var(--accent); }
 .faq-item > div { padding: 0 16px 14px; }
+/* Resposta com âncora (faq#anuncios, o "Sobre este espaço" da vitrine): o
+   navegador abre o <details> e rola até a RESPOSTA — a margem deixa a pergunta
+   visível embaixo do cabeçalho fixo (no celular, o da busca). */
+.faq-item > div[id] { scroll-margin-top: 150px; }
 .faq-item > div p { margin: 0; }
 
 /* Ajuda: índice lateral (sticky) + conteúdo em seções. */
@@ -9351,7 +9496,6 @@ select,
 .hub-logo-box,
 .source-chip,
 .support-card,
-.partner-ad img,
 .lang-select,
 .login-card,
 .faq-item,
