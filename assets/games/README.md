@@ -7,17 +7,17 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
 ## Arquivos
 
 - `game_pokemon.webp` — Pokémon TCG
-- `game_lorcana.webp` — Disney Lorcana
+- `game_lorcana-v2.webp` — Disney Lorcana
 - `game_onepiece.webp` — One Piece Card Game
-- `game_magic.webp` — Magic: The Gathering (fonte: `../brand/Magic-The-Gathering-logo.png`)
-- `game_gundam.webp` — Gundam Card Game (fonte: gundam-gcg.com/en/images/common/logo.png;
+- `game_magic-v2.webp` — Magic: The Gathering (fonte: `../brand/Magic-The-Gathering-logo.png`)
+- `game_gundam-v2.webp` — Gundam Card Game (fonte: gundam-gcg.com/en/images/common/logo.png;
   162px nativo, upscalado p/ 512 — line-art aguenta)
-- `game_dbfw.webp` — Dragon Ball Super Fusion World (fonte: `../brand/logo_title_dbfwcardgame.webp`)
+- `game_dbfw-v2.webp` — Dragon Ball Super Fusion World (fonte: `../brand/logo_title_dbfwcardgame.webp`)
 - `game_fab.webp` — Flesh and Blood (fonte: `../brand/Flesh_and_Blood_TCG_Logo.png`)
-- `game_ygo.webp` — Yu-Gi-Oh! (fonte: `../brand/yugioh.jpg` — JPG de fundo branco,
+- `game_ygo-v2.webp` — Yu-Gi-Oh! (fonte: `../brand/yugioh.jpg` — JPG de fundo branco,
   funde no chip branco; sem alpha)
-- `game_digimon.webp` — Digimon Card Game (fonte: `../brand/digimon.webp`)
-- `game_riftbound.webp` — Riftbound / League of Legends (fonte: `../brand/riftbound.webp`,
+- `game_digimon-v2.webp` — Digimon Card Game (fonte: `../brand/digimon.webp`)
+- `game_riftbound-v2.webp` — Riftbound / League of Legends (fonte: `../brand/riftbound.webp`,
   1908×1908 com padding — cortado pro bbox do conteúdo antes de escalar)
 - `game_onepiece_carddass.webp` — Carddass Hyper Battle (tile vintage do OP)
 - `game_unionarena.webp` — Union Arena (fonte enviada pelo Fernando em
@@ -42,18 +42,47 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
   re-exporte o webp: @resvg/resvg-js (ou qualquer rasterizador) em 512px e
   depois `ffmpeg -i logo.png -c:v libwebp -quality 90 game_naruto.webp`.
 
+### Os `-v2` (2026-09-28)
+
+Sete logos voltaram com nome novo, pelos dois defeitos que a tela de Jogos
+mostrava lado a lado:
+
+1. **Véu de alfa.** Lorcana, DBFW, Digimon, Riftbound e Gundam tinham de 10% a
+   65% dos pixels do FUNDO com alfa 1–11 (sobra da conversão). Invisível sobre
+   transparente, mas sobre a cápsula branca escurece até 11 níveis (#fff →
+   #f4f4f4): era o retângulo cinza atrás do logo. Nos -v2 todo pixel com alfa
+   abaixo de 12 virou transparente de verdade.
+2. **Padding interno.** Magic (o logo ocupava só 47% do quadro — por isso
+   existia um `transform: scale(1.2)` só pra ele), Lorcana, Digimon e Yu-Gi-Oh! vinham com
+   margem dentro do arquivo, e o `object-fit: contain` encolhe o conteúdo junto.
+   Os -v2 são recortados no conteúdo (+2px). O hub equilibra o tamanho de cada
+   logo pela proporção do arquivo (ver `.hub-logo` no styles.css), então o
+   recorte precisa ser justo — padding no arquivo vira logo menor na prateleira.
+
+Feitos no Chromium (canvas → `toBlob("image/webp", 0.9)`, alfa sem perda),
+que dá o mesmo peso dos originais: 181 KB contra 214 KB dos sete antigos.
+
 ## Conversão (novo logo)
 
 ```sh
 ffmpeg -i logo.png -vf "scale=512:-1" -c:v libwebp -quality 88 game_<slug>.webp
 ```
 
+Antes de subir, confira as duas regras dos -v2: **recorte no conteúdo** (sem
+margem dentro do arquivo) e **nenhum pixel de fundo com alfa baixo** — ponha o
+logo sobre branco com contraste no máximo; se aparecer um retângulo, o fundo tem
+véu.
+
 ## Notas
 
 - **Contraste:** o CSS põe um chip branco atrás do logo, então logos escuros
   ficam legíveis nos dois temas.
 - **Proporção:** paisagem; o CSS usa `object-fit: contain` — não precisa de
-  tamanho exato.
+  tamanho exato. No hub, o tamanho sai da proporção (logo largo fica mais baixo,
+  logo alto fica mais estreito), pra nenhum pesar mais que o vizinho.
+- **Troca de arte:** `/assets/*` é `immutable` (ver `_headers`) — suba com OUTRO
+  nome (`-v2`, `-v3`…) e atualize as referências: `hub.html`, `index.html`,
+  `src/app.js` (`GAME_LOGO`) e `scripts/og/og-image.html`.
 - O CSP (`img-src 'self'`) já cobre arquivos locais.
 
 > São marcas registradas dos respectivos titulares; o uso aqui é nominativo (pra

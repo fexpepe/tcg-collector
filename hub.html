@@ -71,7 +71,7 @@
           <li>
             <a class="hub-tile" href="sets?game=magic">
               <span class="hub-logo-box">
-                <img class="hub-logo" src="assets/games/game_magic.webp" alt="Magic: The Gathering" decoding="async">
+                <img class="hub-logo" src="assets/games/game_magic-v2.webp" alt="Magic: The Gathering" decoding="async">
                 <span class="hub-logo-text">Magic: The Gathering</span>
               </span>
             </a>
@@ -79,7 +79,7 @@
           <li>
             <a class="hub-tile" href="sets?game=lorcana">
               <span class="hub-logo-box">
-                <img class="hub-logo" src="assets/games/game_lorcana.webp" alt="Disney Lorcana" decoding="async">
+                <img class="hub-logo" src="assets/games/game_lorcana-v2.webp" alt="Disney Lorcana" decoding="async">
                 <span class="hub-logo-text">Disney Lorcana</span>
               </span>
             </a>
@@ -95,7 +95,7 @@
           <li>
             <a class="hub-tile" href="sets?game=riftbound">
               <span class="hub-logo-box">
-                <img class="hub-logo" src="assets/games/game_riftbound.webp" alt="Riftbound" decoding="async">
+                <img class="hub-logo" src="assets/games/game_riftbound-v2.webp" alt="Riftbound" decoding="async">
                 <span class="hub-logo-text">Riftbound</span>
               </span>
             </a>
@@ -103,7 +103,7 @@
           <li>
             <a class="hub-tile" href="sets?game=gundam">
               <span class="hub-logo-box">
-                <img class="hub-logo" src="assets/games/game_gundam.webp" alt="Gundam Card Game" decoding="async">
+                <img class="hub-logo" src="assets/games/game_gundam-v2.webp" alt="Gundam Card Game" decoding="async">
                 <span class="hub-logo-text">Gundam Card Game</span>
               </span>
             </a>
@@ -119,7 +119,7 @@
           <li>
             <a class="hub-tile" href="sets?game=ygo">
               <span class="hub-logo-box">
-                <img class="hub-logo" src="assets/games/game_ygo.webp" alt="Yu-Gi-Oh!" loading="lazy" decoding="async">
+                <img class="hub-logo" src="assets/games/game_ygo-v2.webp" alt="Yu-Gi-Oh!" loading="lazy" decoding="async">
                 <span class="hub-logo-text">Yu-Gi-Oh!</span>
               </span>
             </a>
@@ -127,7 +127,7 @@
           <li>
             <a class="hub-tile" href="sets?game=dbfw">
               <span class="hub-logo-box">
-                <img class="hub-logo" src="assets/games/game_dbfw.webp" alt="Dragon Ball Fusion World" loading="lazy" decoding="async">
+                <img class="hub-logo" src="assets/games/game_dbfw-v2.webp" alt="Dragon Ball Fusion World" loading="lazy" decoding="async">
                 <span class="hub-logo-text">Dragon Ball Fusion World</span>
               </span>
             </a>
@@ -135,7 +135,7 @@
           <li>
             <a class="hub-tile" href="sets?game=digimon">
               <span class="hub-logo-box">
-                <img class="hub-logo" src="assets/games/game_digimon.webp" alt="Digimon Card Game" loading="lazy" decoding="async">
+                <img class="hub-logo" src="assets/games/game_digimon-v2.webp" alt="Digimon Card Game" loading="lazy" decoding="async">
                 <span class="hub-logo-text">Digimon Card Game</span>
               </span>
             </a>
@@ -162,15 +162,10 @@
               </span>
             </a>
           </li>
-          <li>
-            <!-- O texto do tile já diz "em breve"; o chip embaixo era repetição. -->
-            <div class="hub-tile is-soon" aria-disabled="true">
-              <span class="hub-logo-box">
-                <span class="hub-logo-text" data-i18n="hub.moreSoon">Mais jogos em breve</span>
-              </span>
-            </div>
-          </li>
         </ul>
+        <!-- Era o 13º tile, tracejado e sozinho numa fileira da grade de 4;
+             virou nota — os 12 jogos fecham retângulo em 4, 3 e 2 colunas. -->
+        <p class="hub-more" data-i18n="hub.moreSoon">Mais jogos em breve</p>
       </section>
 
       <!-- Linhas VINTAGE: jogos antigos que vivem DENTRO de um jogo moderno (as
@@ -186,7 +181,11 @@
           <!-- Ordem CRONOLÓGICA por início de publicação (mais antigo → mais
                novo). Empate no ano de início desempata pelo fim: HxH 1999–2001
                antes de One Piece 1999–2002; OP clássico 2002–2005 antes de
-               Naruto 2002~2006. -->
+               Naruto 2002~2006.
+               O selo leva só os ANOS (a seção já se chama Vintage) — ano não se
+               traduz, por isso sem data-i18n. Tile sem arquivo de logo mostra a
+               FRANQUIA na caixa (.hub-logo-mark, aria-hidden: o nome completo
+               vem logo abaixo e é ele que o leitor de tela lê). -->
           <li>
             <a class="hub-tile" href="sets?game=hxh">
               <span class="hub-logo-box">
@@ -196,8 +195,7 @@
               </span>
               <span class="hub-tile-name">HUNTER×HUNTER Carddass Hyper Battle</span>
               <span class="hub-tile-foot">
-                <span class="game-badge vintage" data-i18n="hub.vintageTag10">Vintage · 1999–2001</span>
-                <span class="hub-tile-go" data-i18n="hub.seeSets">Ver sets →</span>
+                <span class="game-badge vintage">1999–2001</span>
               </span>
             </a>
           </li>
@@ -210,8 +208,7 @@
               </span>
               <span class="hub-tile-name">One Piece Carddass Hyper Battle</span>
               <span class="hub-tile-foot">
-                <span class="game-badge vintage" data-i18n="hub.vintageTag">Vintage · 1999–2002</span>
-                <span class="hub-tile-go" data-i18n="hub.seeSets">Ver sets →</span>
+                <span class="game-badge vintage">1999–2002</span>
               </span>
             </a>
           </li>
@@ -219,12 +216,11 @@
             <a class="hub-tile" href="sets?game=onepiece&line=op2002">
               <span class="hub-logo-box">
                 <span class="hub-lang-tag">JP</span>
-                <span class="hub-logo-text">One Piece<br>Card Game (clássico)</span>
+                <span class="hub-logo-text hub-logo-mark" aria-hidden="true">One Piece</span>
               </span>
               <span class="hub-tile-name">One Piece Card Game (classic)</span>
               <span class="hub-tile-foot">
-                <span class="game-badge vintage" data-i18n="hub.vintageTag2">Vintage · 2002–2005</span>
-                <span class="hub-tile-go" data-i18n="hub.seeSets">Ver sets →</span>
+                <span class="game-badge vintage">2002–2005</span>
               </span>
             </a>
           </li>
@@ -237,8 +233,7 @@
               </span>
               <span class="hub-tile-name">Naruto Card Game</span>
               <span class="hub-tile-foot">
-                <span class="game-badge vintage" data-i18n="hub.vintageTag3">Vintage · 2002~2006</span>
-                <span class="hub-tile-go" data-i18n="hub.seeSets">Ver sets →</span>
+                <span class="game-badge vintage">2002~2006</span>
               </span>
             </a>
           </li>
@@ -246,12 +241,11 @@
             <a class="hub-tile" href="sets?game=naruto&line=nrt-ccg">
               <span class="hub-logo-box">
                 <span class="hub-lang-tag">EN</span>
-                <span class="hub-logo-text">Naruto<br>Collectible Card Game</span>
+                <span class="hub-logo-text hub-logo-mark" aria-hidden="true">Naruto</span>
               </span>
               <span class="hub-tile-name">Naruto Collectible Card Game</span>
               <span class="hub-tile-foot">
-                <span class="game-badge vintage" data-i18n="hub.vintageTag11">Vintage · 2006–2013</span>
-                <span class="hub-tile-go" data-i18n="hub.seeSets">Ver sets →</span>
+                <span class="game-badge vintage">2006–2013</span>
               </span>
             </a>
           </li>
@@ -259,12 +253,11 @@
             <a class="hub-tile" href="sets?game=naruto&line=nrt-dc">
               <span class="hub-logo-box">
                 <span class="hub-lang-tag">JP</span>
-                <span class="hub-logo-text">Naruto<br>Data Carddass (arcade)</span>
+                <span class="hub-logo-text hub-logo-mark" aria-hidden="true">Naruto</span>
               </span>
               <span class="hub-tile-name">Naruto Data Carddass (arcade)</span>
               <span class="hub-tile-foot">
-                <span class="game-badge vintage" data-i18n="hub.vintageTag6">Vintage · 2005–2008</span>
-                <span class="hub-tile-go" data-i18n="hub.seeSets">Ver sets →</span>
+                <span class="game-badge vintage">2005–2008</span>
               </span>
             </a>
           </li>
@@ -272,12 +265,11 @@
             <a class="hub-tile" href="sets?game=naruto&line=nrt-nf">
               <span class="hub-logo-box">
                 <span class="hub-lang-tag">JP</span>
-                <span class="hub-logo-text">Naruto<br>Narutimate Formation</span>
+                <span class="hub-logo-text hub-logo-mark" aria-hidden="true">Naruto</span>
               </span>
               <span class="hub-tile-name">Naruto Narutimate Formation</span>
               <span class="hub-tile-foot">
-                <span class="game-badge vintage" data-i18n="hub.vintageTag7">Vintage · 2007–2008</span>
-                <span class="hub-tile-go" data-i18n="hub.seeSets">Ver sets →</span>
+                <span class="game-badge vintage">2007–2008</span>
               </span>
             </a>
           </li>
@@ -285,12 +277,11 @@
             <a class="hub-tile" href="sets?game=naruto&line=nrt-nx">
               <span class="hub-logo-box">
                 <span class="hub-lang-tag">JP</span>
-                <span class="hub-logo-text">Naruto<br>Narutimate Cross</span>
+                <span class="hub-logo-text hub-logo-mark" aria-hidden="true">Naruto</span>
               </span>
               <span class="hub-tile-name">Naruto Narutimate Cross</span>
               <span class="hub-tile-foot">
-                <span class="game-badge vintage" data-i18n="hub.vintageTag8">Vintage · 2009–2010</span>
-                <span class="hub-tile-go" data-i18n="hub.seeSets">Ver sets →</span>
+                <span class="game-badge vintage">2009–2010</span>
               </span>
             </a>
           </li>
@@ -303,8 +294,7 @@
               </span>
               <span class="hub-tile-name">Miracle Battle Carddass One Piece</span>
               <span class="hub-tile-foot">
-                <span class="game-badge vintage" data-i18n="hub.vintageTag4">Vintage · 2010–2014</span>
-                <span class="hub-tile-go" data-i18n="hub.seeSets">Ver sets →</span>
+                <span class="game-badge vintage">2010–2014</span>
               </span>
             </a>
           </li>
@@ -317,8 +307,7 @@
               </span>
               <span class="hub-tile-name">Miracle Battle Carddass HUNTER×HUNTER</span>
               <span class="hub-tile-foot">
-                <span class="game-badge vintage" data-i18n="hub.vintageTag9">Vintage · 2011–2012</span>
-                <span class="hub-tile-go" data-i18n="hub.seeSets">Ver sets →</span>
+                <span class="game-badge vintage">2011–2012</span>
               </span>
             </a>
           </li>
@@ -331,8 +320,7 @@
               </span>
               <span class="hub-tile-name">Miracle Battle Carddass Naruto Shippuden</span>
               <span class="hub-tile-foot">
-                <span class="game-badge vintage" data-i18n="hub.vintageTag5">Vintage · 2012–2014</span>
-                <span class="hub-tile-go" data-i18n="hub.seeSets">Ver sets →</span>
+                <span class="game-badge vintage">2012–2014</span>
               </span>
             </a>
           </li>

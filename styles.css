@@ -164,12 +164,31 @@
    - "all" (Início, Portfólio, Coleção/Vendas no filtro Todos): neutro (quase-preto
      no claro / claro no escuro).
    As regras com [data-theme="light"] têm especificidade maior e vencem no claro;
-   a sem tema cobre o escuro (padrão). */
+   a sem tema cobre o escuro (padrão).
+
+   ESCOPO DE ELEMENTO (2026-09-28): o mesmo atributo num elemento qualquer pinta
+   só aquele pedaço com a cor do jogo — é o que o HUB usa pra cada tile acender
+   na cor do próprio jogo, numa página que segue neutra. No escuro a regra sem
+   tema já alcança o elemento; no claro o `[data-theme][data-game-accent]`
+   exige os dois atributos no MESMO elemento (o <html>), então cada jogo ganhou
+   a variante de descendente `[data-theme="light"] [data-game-accent]`, com a
+   mesma especificidade. O Pokémon não tinha regra (é o accent base do :root) e
+   ganhou uma com os mesmos valores — no <html> ela não muda nada. */
+[data-game-accent="pokemon"] {
+  --accent: #dc2626; --accent-dark: #b91c1c; --accent-rgb: 220, 38, 38; --accent-ink: #ef4444;
+  --accent-soft: rgba(220, 38, 38, 0.13); --on-accent: #ffffff;
+}
+[data-theme="light"][data-game-accent="pokemon"],
+[data-theme="light"] [data-game-accent="pokemon"] {
+  --accent: #df2c2c; --accent-dark: #b81e1e; --accent-rgb: 223, 44, 44; --accent-ink: #c62222;
+  --accent-soft: rgba(223, 44, 44, 0.1); --on-accent: #ffffff;
+}
 [data-game-accent="lorcana"] {
   --accent: #a78bfa; --accent-dark: #8b5cf6; --accent-rgb: 167, 139, 250;
   --accent-soft: rgba(167, 139, 250, 0.16); --on-accent: #0a0c10;
 }
-[data-theme="light"][data-game-accent="lorcana"] {
+[data-theme="light"][data-game-accent="lorcana"],
+[data-theme="light"] [data-game-accent="lorcana"] {
   --accent: #6d28d9; --accent-dark: #5b21b6; --accent-rgb: 109, 40, 217;
   --accent-soft: rgba(109, 40, 217, 0.1); --on-accent: #ffffff;
 }
@@ -179,7 +198,8 @@
   --accent: #facc15; --accent-dark: #eab308; --accent-rgb: 250, 204, 21;
   --accent-soft: rgba(250, 204, 21, 0.16); --on-accent: #0a0c10;
 }
-[data-theme="light"][data-game-accent="onepiece"] {
+[data-theme="light"][data-game-accent="onepiece"],
+[data-theme="light"] [data-game-accent="onepiece"] {
   --accent: #d9a400; --accent-dark: #b78a00; --accent-rgb: 217, 164, 0;
   --accent-soft: rgba(217, 164, 0, 0.12); --on-accent: #0a0c10;
 }
@@ -190,7 +210,8 @@
   --accent: #c99a6b; --accent-dark: #b3814f; --accent-rgb: 201, 154, 107;
   --accent-soft: rgba(201, 154, 107, 0.16); --on-accent: #0a0c10;
 }
-[data-theme="light"][data-game-accent="magic"] {
+[data-theme="light"][data-game-accent="magic"],
+[data-theme="light"] [data-game-accent="magic"] {
   --accent: #7a4a2b; --accent-dark: #613a21; --accent-rgb: 122, 74, 43;
   --accent-soft: rgba(122, 74, 43, 0.1); --on-accent: #ffffff;
 }
@@ -201,7 +222,8 @@
   --accent: #e08a9c; --accent-dark: #cf7286; --accent-rgb: 224, 138, 156;
   --accent-soft: rgba(224, 138, 156, 0.16); --on-accent: #0a0c10;
 }
-[data-theme="light"][data-game-accent="fab"] {
+[data-theme="light"][data-game-accent="fab"],
+[data-theme="light"] [data-game-accent="fab"] {
   --accent: #a34a5e; --accent-dark: #86394b; --accent-rgb: 163, 74, 94;
   --accent-soft: rgba(163, 74, 94, 0.1); --on-accent: #ffffff;
 }
@@ -211,7 +233,8 @@
   --accent: #fb923c; --accent-dark: #f97316; --accent-rgb: 251, 146, 60;
   --accent-soft: rgba(251, 146, 60, 0.16); --on-accent: #0a0c10;
 }
-[data-theme="light"][data-game-accent="naruto"] {
+[data-theme="light"][data-game-accent="naruto"],
+[data-theme="light"] [data-game-accent="naruto"] {
   /* #c2410c e não #ea580c: com texto branco o laranja claro dava 3.56:1 —
      reprovado (o mínimo é 4.5). Um degrau abaixo dá 5.18 e segue laranja. */
   --accent: #c2410c; --accent-dark: #9a3412; --accent-rgb: 194, 65, 12;
@@ -223,7 +246,8 @@
   --accent: #4ade80; --accent-dark: #22c55e; --accent-rgb: 74, 222, 128;
   --accent-soft: rgba(74, 222, 128, 0.16); --on-accent: #0a0c10;
 }
-[data-theme="light"][data-game-accent="hxh"] {
+[data-theme="light"][data-game-accent="hxh"],
+[data-theme="light"] [data-game-accent="hxh"] {
   --accent: #15803d; --accent-dark: #166534; --accent-rgb: 21, 128, 61;
   --accent-soft: rgba(21, 128, 61, 0.1); --on-accent: #ffffff;
 }
@@ -233,7 +257,8 @@
   --accent: #60a5fa; --accent-dark: #3b82f6; --accent-rgb: 96, 165, 250;
   --accent-soft: rgba(96, 165, 250, 0.16); --on-accent: #0a0c10;
 }
-[data-theme="light"][data-game-accent="gundam"] {
+[data-theme="light"][data-game-accent="gundam"],
+[data-theme="light"] [data-game-accent="gundam"] {
   --accent: #2563eb; --accent-dark: #1d4ed8; --accent-rgb: 37, 99, 235;
   --accent-soft: rgba(37, 99, 235, 0.1); --on-accent: #ffffff;
 }
@@ -244,7 +269,8 @@
   --accent: #b7c0cb; --accent-dark: #9aa3ae; --accent-rgb: 183, 192, 203;
   --accent-soft: rgba(183, 192, 203, 0.16); --on-accent: #0a0c10;
 }
-[data-theme="light"][data-game-accent="dbfw"] {
+[data-theme="light"][data-game-accent="dbfw"],
+[data-theme="light"] [data-game-accent="dbfw"] {
   --accent: #55606e; --accent-dark: #434c58; --accent-rgb: 85, 96, 110;
   --accent-soft: rgba(85, 96, 110, 0.1); --on-accent: #ffffff;
 }
@@ -254,7 +280,8 @@
   --accent: #c084fc; --accent-dark: #a855f7; --accent-rgb: 192, 132, 252;
   --accent-soft: rgba(192, 132, 252, 0.16); --on-accent: #0a0c10;
 }
-[data-theme="light"][data-game-accent="ygo"] {
+[data-theme="light"][data-game-accent="ygo"],
+[data-theme="light"] [data-game-accent="ygo"] {
   --accent: #7c3aed; --accent-dark: #6d28d9; --accent-rgb: 124, 58, 237;
   --accent-soft: rgba(124, 58, 237, 0.1); --on-accent: #ffffff;
 }
@@ -264,7 +291,8 @@
   --accent: #6ea8dc; --accent-dark: #4a8cc9; --accent-rgb: 110, 168, 220;
   --accent-soft: rgba(110, 168, 220, 0.16); --on-accent: #0a0c10;
 }
-[data-theme="light"][data-game-accent="digimon"] {
+[data-theme="light"][data-game-accent="digimon"],
+[data-theme="light"] [data-game-accent="digimon"] {
   --accent: #123f6d; --accent-dark: #0d2f52; --accent-rgb: 18, 63, 109;
   --accent-soft: rgba(18, 63, 109, 0.1); --on-accent: #ffffff;
 }
@@ -274,7 +302,8 @@
   --accent: #e3b341; --accent-dark: #d19d1f; --accent-rgb: 227, 179, 65;
   --accent-soft: rgba(227, 179, 65, 0.16); --on-accent: #0a0c10;
 }
-[data-theme="light"][data-game-accent="riftbound"] {
+[data-theme="light"][data-game-accent="riftbound"],
+[data-theme="light"] [data-game-accent="riftbound"] {
   --accent: #a67c00; --accent-dark: #8a6700; --accent-rgb: 166, 124, 0;
   --accent-soft: rgba(166, 124, 0, 0.12); --on-accent: #0a0c10;
 }
@@ -287,7 +316,8 @@
   --accent: #22d3ee; --accent-dark: #06b6d4; --accent-rgb: 34, 211, 238;
   --accent-soft: rgba(34, 211, 238, 0.16); --on-accent: #0a0c10;
 }
-[data-theme="light"][data-game-accent="unionarena"] {
+[data-theme="light"][data-game-accent="unionarena"],
+[data-theme="light"] [data-game-accent="unionarena"] {
   --accent: #0e7490; --accent-dark: #155e75; --accent-rgb: 14, 116, 144;
   --accent-soft: rgba(14, 116, 144, 0.1); --on-accent: #ffffff;
 }
@@ -3947,24 +3977,17 @@ a.preview-print:hover { background: var(--panel); }
   letter-spacing: 0.5px;
   text-transform: uppercase;
 }
-/* Verde fixo pra "disponível" (convenção universal) — independente do accent do
-   tema, que é amarelo no escuro e vermelho no claro, e ficaria igual ao dourado
-   de "em breve" / com semântica ruim. */
-/* Os dois tons são o mínimo que passa em AA (4.5:1) SOBRE O PRÓPRIO FUNDO da
-   cápsula — que é o verde a 16% por cima do painel, não o painel puro. O
-   #15a06f dava 4.17 no escuro e o #0f7a52 dava 4.47 no claro: reprovavam por
-   pouco, e são 12 cápsulas na tela do HUB. Medido com o axe-core. */
-.game-badge.soon {
-  background: rgba(176, 125, 16, 0.16);
-  color: var(--gold);
-}
-/* Etiqueta VINTAGE fixa (sépia/âmbar) — distingue as linhas clássicas. */
-/* Mesma história do .available: o tom precisa passar em AA sobre o PRÓPRIO
-   fundo da cápsula (o marrom a 18%), não sobre o painel. #a67c46 dava 3.69 no
-   escuro e #8a6a3a dava 4.07 no claro. */
+/* Etiqueta VINTAGE fixa (sépia/âmbar) — distingue as linhas clássicas. No
+   HUB ela leva só os ANOS da linha: a seção já se chama Vintage.
+   O tom precisa passar em AA (4.5:1) sobre o PRÓPRIO fundo da cápsula (o
+   marrom a 18% por cima do painel), não sobre o painel puro. #a67c46 dava
+   3.69 no escuro e #8a6a3a dava 4.07 no claro. Medido com o axe-core.
+   #c7995c (era #ba8b4e) desde 2026-09-28: o --panel escuro clareou depois da
+   última medição e levou junto o fundo da cápsula — o #ba8b4e caiu pra ~4.2
+   e o axe voltou a reprovar os 11 selos do HUB. Este dá ~5.0. */
 .game-badge.vintage {
   background: rgba(159, 122, 66, 0.18);
-  color: #ba8b4e;
+  color: #c7995c;
   border: 1px solid rgba(159, 122, 66, 0.3);
 }
 [data-theme="light"] .game-badge.vintage { color: #806336; }
@@ -3972,10 +3995,10 @@ a.preview-print:hover { background: var(--panel); }
 /* Seção VINTAGE do hub: cabeçalho + subtítulo acima da grade das linhas clássicas. */
 /* Respiro maior entre os jogos principais e a seção VINTAGE (separação clara
    de categoria), reforçado por uma linha divisória sutil. */
-/* .hub.hub-vintage (2 classes): o shorthand `margin: 0 auto` do .hub vem
-   DEPOIS no arquivo e zerava o margin-top — a divisória colava nos tiles. */
+/* 56px (eram 72) desde 2026-09-28: a nota "Mais jogos em breve" passou a
+   morar entre a grade e a divisória e já soma ~30px ao respiro. */
 .hub.hub-vintage {
-  margin-top: 72px;
+  margin-top: 56px;
   padding-top: 40px;
   border-top: 1px solid var(--line);
 }
@@ -3997,16 +4020,32 @@ a.preview-print:hover { background: var(--panel); }
   padding: 3px 10px; vertical-align: middle;
 }
 
-/* Página HUB: grade de jogos (estilo Collectr) — escolha um jogo pra ver os sets. */
-.hub { max-width: 1140px; margin: 0 auto; }
+/* Página HUB: grade de jogos (estilo Collectr) — escolha um jogo pra ver os sets.
+   LARGURA CHEIA desde 2026-09-28, como Explorar, Decks e Sets: a grade morava
+   numa coluna de 1140px centrada enquanto o título seguia na borda do `main`,
+   e os dois ficavam ~120px desalinhados em qualquer desktop largo. */
 .page-head-sub { max-width: 680px; margin: 6px 0 0; color: var(--muted); }
+/* COLUNAS FIXAS por faixa, não auto-fill: os 12 jogos fecham retângulo em 4, 3
+   e 2 colunas (4×3, 3×4, 2×6), sem fileira manca. O Vintage (linhas
+   secundárias) tem tiles menores, 6 por fileira no desktop largo — a
+   hierarquia da página aparece no tamanho: jogo principal grande, linha
+   clássica compacta. */
 .hub-grid {
+  --hub-cols: 4;
   list-style: none;
-  margin: 26px 0 0;
+  margin: 22px 0 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 18px;
+  grid-template-columns: repeat(var(--hub-cols), minmax(0, 1fr));
+  gap: 16px;
+}
+.hub-vintage .hub-grid { --hub-cols: 6; }
+@media (max-width: 1279px) {
+  .hub-vintage .hub-grid { --hub-cols: 4; }
+}
+@media (max-width: 900px) {
+  .hub-grid,
+  .hub-vintage .hub-grid { --hub-cols: 3; }
 }
 /* 2026-09-20: o tile virou a PRÓPRIA caixa branca. Antes era painel com
    borda + 16px de padding + caixa branca com borda própria dentro — dois
@@ -4034,8 +4073,13 @@ a.preview-print:hover { background: var(--panel); }
 }
 a.hub-tile:hover {
   transform: translateY(-3px);
-  /* Anel na cor de destaque no lugar da borda que mudava de cor. */
-  box-shadow: 0 0 0 2px var(--accent-dark);
+  /* Anel na COR DO JOGO (2026-09-28): o hub.js carimba data-game-accent em
+     cada tile e o --accent vira o daquele jogo (escopo de elemento, ver a
+     tabela de accents no topo) — a mesma cor que as páginas do jogo têm
+     depois do clique. O foco por teclado vem junto: o :focus-visible global
+     contorna em var(--accent). Com "cores por jogo" desligado nas
+     Configurações o tile fica sem o carimbo e o anel volta ao neutro. */
+  box-shadow: 0 0 0 2px var(--accent);
 }
 /* Nos tiles VINTAGE (logo + nome + rodapé) só a caixa do logo encosta nas
    bordas; o texto abaixo mantém o respiro dos 16px de antes. */
@@ -4053,6 +4097,8 @@ a.hub-tile:hover {
   background: #fff;
   border: 0;
   flex: none;
+  /* Contêiner de tamanho: o .hub-logo se mede pela caixa em cqw/cqh. */
+  container-type: size;
 }
 /* O logo fica ABSOLUTO (centrado por inset 0 + margin auto) e invisível por
    opacity até o hub.js confirmar o load — não por `hidden`: display:none tira
@@ -4069,6 +4115,37 @@ a.hub-tile:hover {
   opacity: 0;
 }
 .hub-logo.is-loaded { opacity: 1; }
+/* EQUILÍBRIO ÓPTICO (2026-09-28). Com todo logo limitado pela mesma caixa, o
+   `contain` deixava o tamanho por conta da proporção do arquivo: logo alto
+   (Pokémon 1,95:1, DBFW 1,84:1) enchia a altura e logo largo (One Piece 3,9:1,
+   Digimon 4:1) virava uma faixa fina — 2,5× de área entre vizinhos. Aqui o
+   tamanho sai da proporção (--r, que o hub.js grava no load): largura
+   K·r^0,4 e altura K·r^−0,6. Expoente 0,5 igualaria as áreas; 0,4 dá um pouco
+   menos ao logo largo, que pesa mais no olho por ser comprido. K acompanha a
+   largura do tile (50cqw, teto de 140px), então a prateleira escala junto nas
+   faixas menores; os limites da caixa seguem valendo (1º e 2º termos do min).
+   cqw/cqh medem a caixa de CONTEÚDO do .hub-logo-box, já sem o padding — o
+   mesmo espaço que o calc(100% - 40px) de cima mede pela caixa de padding.
+   Por isso o arquivo precisa vir recortado no conteúdo (ver o README de
+   assets/games): padding dentro do arquivo vira logo menor na prateleira.
+   Sem --r (antes do load) ou sem pow()/cqw no navegador, width/height caem
+   pra auto e o max-width/max-height acima fazem o `contain` de antes.
+   Fora do celular: lá o tile tem 106px e o logo precisa encher a caixa mais
+   do que precisa combinar com o vizinho. */
+@media (min-width: 601px) {
+  .hub-logo {
+    --k: min(140px, 50cqw);
+    width: min(100cqw, 100cqh * var(--r), var(--k) * pow(var(--r), 0.4));
+    height: min(100cqw / var(--r), 100cqh, var(--k) * pow(var(--r), -0.6));
+  }
+  /* Vintage: caixa mais baixa e logo proporcionalmente menor. */
+  .hub-vintage .hub-logo-box { height: 124px; padding: 16px; }
+  .hub-vintage .hub-logo {
+    --k: min(100px, 46cqw);
+    max-width: calc(100% - 32px);
+    max-height: calc(100% - 32px);
+  }
+}
 /* Idioma da linha vintage (JP nas japonesas; EN no Naruto CCG americano):
    selo no canto superior direito da imagem do tile — diz de onde vem o
    catálogo antes do clique. Cores fixas (não tokens): a caixa do logo é
@@ -4086,11 +4163,15 @@ a.hub-tile:hover {
   border: 1px solid #d9dee8;
   color: #4b4b4b;
 }
-/* O logo do Magic é mais "quadrado" (razão ~1.5) que os demais (~1.9 a 3.9), então
-   o object-fit: contain o limita pela altura e ele fica visualmente menor. +20%
-   pra emparelhar com os outros. Vale no tile do hub e no leque da home. */
-.hub-logo[src*="game_magic"], .lp-games-caps img[src*="game_magic"] { transform: scale(1.2); }
 .hub-logo-text { font-size: 19px; font-weight: 800; color: #4b4b4b; text-align: center; }
+/* MARCA TIPOGRÁFICA dos vintage ainda sem logo (2026-09-28). A caixa mostrava
+   o nome da linha e o nome vinha de novo logo abaixo — o mesmo texto duas
+   vezes por tile, e o de cima só em português ("Card Game (clássico)") em
+   qualquer idioma. Agora a caixa leva só a FRANQUIA, em caixa-alta espaçada no
+   sépia do selo vintage, e o nome completo fica embaixo, uma vez. Quando o
+   arquivo do logo entrar, o hub.js esconde a marca no load, como sempre fez
+   com o texto. Cor fixa: a caixa é branca nos dois temas. */
+.hub-logo-text.hub-logo-mark { font-size: 20px; letter-spacing: 0.16em; text-transform: uppercase; color: #806336; }
 /* Nome do jogo (em inglês) entre o logo e o ano dos tiles VINTAGE: o logo
    sozinho pode não dizer nada pra quem não conhece a linha. No máximo duas
    linhas (clamp) e altura RESERVADA de duas mesmo quando o nome cabe numa —
@@ -4107,31 +4188,26 @@ a.hub-tile:hover {
   color: var(--text);
 }
 
+/* Rodapé dos vintage: só o selo com os anos. O "Ver sets →" saiu pelo mesmo
+   motivo que já tinha tirado o rodapé dos jogos principais (2026-08-01): o
+   tile inteiro é o link, e a seta repetida 11 vezes só somava ruído. */
 .hub-tile-foot {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 8px;
 }
-.hub-tile-go { font-size: 13px; color: var(--muted); }
-.hub-tile.is-soon { opacity: 0.65; }
-/* O tile "Mais jogos em breve" não tem logo: sem a borda do tile ele sumia
-   no fundo, então volta a ter contorno (tracejado, de "vaga aberta"). */
-.hub-grid .hub-tile.is-soon { border: 1px dashed var(--line); }
-.hub-tile.is-soon .hub-logo-box { background: var(--bg); }
-.hub-tile.is-soon .hub-logo-text { color: var(--muted); }
-/* "Em breve" COM logo (ex.: NARUTO CARD GAME 2027): chip branco e sem
-   esmaecer, igual aos jogos disponíveis — o badge já diz que não lançou.
-   (Sem :has, cai no visual escuro de antes — degrada bem.) */
-.hub-grid .hub-tile.is-soon:has(.hub-logo) { opacity: 1; border: 0; }
-.hub-tile.is-soon:has(.hub-logo) .hub-logo-box { background: #fff; }
+/* "Mais jogos em breve": era um tile tracejado sozinho na última fileira (o
+   13º item de uma grade de 4), um retângulo vazio de 162px pra dizer uma
+   frase. Virou nota discreta embaixo da grade — o recado fica, o buraco sai. */
+.hub-more { margin: 14px 0 0; color: var(--subtle); font-size: 13.5px; }
 /* CELULAR: a grade de auto-fill (220px) cabia UMA coluna em 350px úteis, e a
    escolha de jogo virava uma lista de 13 tiles gigantes + 11 vintage (~5.600px
    de rolagem). Duas colunas, como as cápsulas da home, mantêm a estrutura do
-   desktop (grade) na largura do celular. O tile inteiro já é o link, então o
-   "Ver sets →" pode sair da linha do ano, que não cabia ao lado do selo. */
+   desktop (grade) na largura do celular. */
 @media (max-width: 600px) {
-  .hub-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 18px; }
+  .hub-grid,
+  .hub-vintage .hub-grid { --hub-cols: 2; }
+  .hub-grid { gap: 10px; margin-top: 18px; }
   /* Mesma altura externa do tile de antes (84 + 2×10 + 2 = 106px). */
   .hub-grid .hub-tile { gap: 8px; border-radius: 12px; }
   .hub-tile > :not(.hub-logo-box) { margin-inline: 10px; }
@@ -4139,15 +4215,11 @@ a.hub-tile:hover {
   .hub-logo-box { height: 106px; padding: 12px; }
   .hub-logo { max-width: calc(100% - 20px); max-height: calc(100% - 20px); }
   .hub-logo-text { font-size: 13px; }
+  .hub-logo-text.hub-logo-mark { font-size: 14px; letter-spacing: 0.12em; }
   .hub-tile-name { font-size: 12.5px; }
   .hub-tile-foot { flex-wrap: wrap; gap: 4px 8px; }
-  .hub-tile-go { display: none; }
+  .hub-more { font-size: 13px; }
 }
-/* "Em breve" POR CIMA do slot do logo. Os tiles dos jogos disponíveis ficaram
-   só com o logo (sem rodapé), então o aviso não tem mais onde morar embaixo —
-   ele sobe pro slot. O véu escurece o logo o bastante pro chip ter contraste
-   sem esconder de que jogo se trata. Cores fixas (não as do tema): o fundo do
-   véu é o mesmo nos dois temas, então o chip também precisa ser. */
 
 .home-sources {
   margin-top: 44px;
