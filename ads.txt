@@ -1,0 +1,7 @@
+# ads.txt do Sleevu: quem pode vender anúncio neste site (padrão IAB).
+# Só o Google AdSense, na conta do próprio Sleevu. O mesmo pub vai na
+# <meta name="google-adsense-account"> do index.html (verificação do site) e
+# no "cliente" do data/ads.json — o tests/vitrine.test.mjs cobra que os três
+# batam. Sem esta linha o AdSense marca "ganhos em risco" e parte dos
+# anunciantes não compra o espaço.
+google.com, pub-0808280324005030, DIRECT, f08c47fec0942fa0
