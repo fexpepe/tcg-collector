@@ -9,10 +9,12 @@
   // set quebra. "" pros jogos sem arquivo de logo (jump/unionarena) — aí cai no
   // texto. Entrou o arquivo em assets/games/? Basta preencher aqui e pôr o <img>
   // no tile do hub.html (o hub revela o logo sozinho quando ele carrega).
+  // Os -v2 são os mesmos logos sem o véu de alfa e sem padding interno (ver
+  // assets/games/README.md) — nome novo porque /assets/* é immutable.
   const GAME_LOGO = {
-    pokemon: "game_pokemon.webp", lorcana: "game_lorcana.webp", onepiece: "game_onepiece.webp",
-    magic: "game_magic.webp", fab: "game_fab.webp", gundam: "game_gundam.webp", dbfw: "game_dbfw.webp",
-    ygo: "game_ygo.webp", digimon: "game_digimon.webp", riftbound: "game_riftbound.webp",
+    pokemon: "game_pokemon.webp", lorcana: "game_lorcana-v2.webp", onepiece: "game_onepiece.webp",
+    magic: "game_magic-v2.webp", fab: "game_fab.webp", gundam: "game_gundam-v2.webp", dbfw: "game_dbfw-v2.webp",
+    ygo: "game_ygo-v2.webp", digimon: "game_digimon-v2.webp", riftbound: "game_riftbound-v2.webp",
     unionarena: "game_unionarena.webp", naruto: "game_naruto.webp", hxh: "game_hxh.webp"
   };
   function gameLogoUrl(game) {
