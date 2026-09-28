@@ -478,12 +478,16 @@
     // Sem nota do 1º, com menos de duas notas ou com a foto longe de tudo: a
     // foto não sabe nada, a ordem da busca fica inteira.
     if (sims.length < 2 || notas.length < 2 || typeof sims[0] !== "number" || melhor < PISO_FOTO) {
-      return { ordem: idx, mudou: false };
+      return { ordem: idx, mudou: false, claro: false };
     }
     const mudou = melhor - nota(0) >= MARGEM_FOTO;
     const primeiro = mudou ? notas.find((i) => nota(i) >= melhor - EMPATE_FOTO) : 0;
     const resto = idx.filter((i) => i !== primeiro).sort((a, b) => nota(b) - nota(a) || a - b);
-    return { ordem: [primeiro].concat(resto), mudou };
+    // `claro`: o 1º ganhou de TODOS os outros com folga — a foto decidiu. Sem
+    // folga (mesma arte, foil ou carimbo diferente), a lista da sessão marca
+    // a carta pra conferir.
+    const claro = nota(primeiro) - (resto.length ? nota(resto[0]) : -Infinity) >= MARGEM_FOTO;
+    return { ordem: [primeiro].concat(resto), mudou, claro };
   }
 
   // Pixels de `fonte` (quadro congelado, vídeo, imagem) no retângulo dado,
@@ -542,8 +546,8 @@
       tenta();
     });
   }
-  // Reordena `achados` (no lugar) pela semelhança com a foto e devolve se o 1º
-  // mudou. O prazo é curto porque a pessoa está esperando o resultado: imagem
+  // Reordena `achados` (no lugar) pela semelhança com a foto e devolve
+  // { mudou, claro }: se o 1º mudou e se a foto decidiu com folga. O prazo é curto porque a pessoa está esperando o resultado: imagem
   // que não chega a tempo só fica sem nota, e a ordem da busca vale pra ela.
   // Nada da foto sai do aparelho — o que desce são as miniaturas do catálogo.
   const PRAZO_FOTO = 2500;
@@ -551,8 +555,8 @@
     const lista = achados.slice(0, 8);
     let fotos = [];
     try { fotos = assinaturasDoQuadro(pixelsDe(fonte, rec.sx, rec.sy, rec.sw, rec.sh, 128), rec.galeria ? RECORTES_GALERIA : RECORTES_CAMERA); }
-    catch (e) { return false; } // sem canvas: fica a ordem da busca
-    if (!fotos.length) return false;
+    catch (e) { return { mudou: false, claro: false }; } // sem canvas: fica a ordem da busca
+    if (!fotos.length) return { mudou: false, claro: false };
     const ate = Date.now() + PRAZO_FOTO;
     const porUrl = new Map(); // duas impressões com a MESMA imagem: um download só
     const sims = await Promise.all(lista.map((h) => {
@@ -570,9 +574,77 @@
       }
       return porUrl.get(urls[0]);
     }));
-    const { ordem, mudou } = ordemPelaFoto(sims);
+    const { ordem, mudou, claro } = ordemPelaFoto(sims);
     achados.splice(0, lista.length, ...ordem.map((i) => lista[i]));
-    return mudou;
+    return { mudou, claro };
+  }
+
+  // ── Leitura AUTOMÁTICA (funções PURAS; testadas em tests/scan-continuo.test.mjs) ──
+  // O ManaBox lê sem disparador: a carta entra no quadro, é lida, vem a
+  // próxima — há suporte impresso em 3D vendido só pra esse fluxo. Aqui, um
+  // laço leve (~8 quadros/s) mede o recorte da moldura reduzido a 48×66 e
+  // decide quando ler: a imagem PARADA por alguns quadros seguidos, com luz e
+  // com conteúdo (contraste: não é a mesa lisa). Depois de ler, só volta a ler
+  // quando a cena MUDA (a carta saiu ou trocou) — senão a mesma carta seria
+  // lida de novo a cada segundo. Pra repetir a mesma carta (segunda cópia),
+  // o disparador continua lendo na hora.
+  //
+  // Medidas de uma amostra em tons de cinza (`g`, w×h), contra a anterior:
+  // brilho (média 0-255), reflexo (fração de pixel estourado), contraste
+  // (desvio padrão) e movimento (diferença média pra amostra anterior). Sem
+  // anterior, o movimento é NaN: nem parada NEM mudança de cena. Com 255 ali,
+  // a primeira amostra do laço contava como "a carta trocou" — e a carta lida
+  // no toque, antes de o laço começar, era lida de novo por ele.
+  function medirQuadro(g, w, h, ant) {
+    const n = w * h;
+    let soma = 0, soma2 = 0, estourado = 0, dif = 0;
+    for (let i = 0; i < n; i++) {
+      const v = g[i];
+      soma += v; soma2 += v * v;
+      if (v >= 250) estourado++;
+      if (ant) dif += Math.abs(v - ant[i]);
+    }
+    const brilho = soma / n;
+    return {
+      brilho,
+      reflexo: estourado / n,
+      contraste: Math.sqrt(Math.max(0, soma2 / n - brilho * brilho)),
+      movimento: ant && ant.length === n ? dif / n : NaN
+    };
+  }
+  // Limiares do disparo, em unidades de cinza da amostra. PARADA: diferença
+  // média abaixo de 5 (o tremor de quem segura a carta na mão fica abaixo
+  // disso numa amostra tão pequena); MUDOU: acima de 14 (tirar ou trocar a
+  // carta mexe metade do quadro). Conteúdo: contraste acima de 18 (mesa lisa,
+  // tela preta e dedo na frente ficam abaixo). Luz: brilho acima de 40.
+  const AUTO = { quadros: 3, parada: 5, mudou: 14, contraste: 18, brilho: 40, intervalo: 120 };
+  // Um passo da máquina de estados: `st` é { armado, parados }. Armado, conta
+  // amostras paradas e boas; na terceira seguida, dispara e desarma. Desarmado
+  // (acabou de ler), espera a cena mudar pra armar de novo.
+  function passoAuto(st, m, cfg) {
+    const c = cfg || AUTO;
+    if (!st.armado) return { st: { armado: m.movimento > c.mudou, parados: 0 }, disparar: false };
+    const boa = m.movimento < c.parada && m.contraste > c.contraste && m.brilho > c.brilho;
+    const parados = boa ? st.parados + 1 : 0;
+    if (parados >= c.quadros) return { st: { armado: false, parados: 0 }, disparar: true };
+    return { st: { armado: true, parados }, disparar: false };
+  }
+  // Dica ao vivo pelo quadro, antes de ler: pouca luz ou reflexo (é o que
+  // mais derruba o OCR, e a pessoa corrige na hora). "" quando está tudo bem.
+  function dicaDoQuadro(m) {
+    if (m.brilho < AUTO.brilho) return "scan.hint.dark";
+    if (m.reflexo > 0.04) return "scan.hint.glare";
+    return "";
+  }
+  // Variante que entra na lista pela preferência da sessão (o "preferir foil"
+  // do ManaBox, e o reverse de quem separa os reverses do Pokémon). A carta
+  // que não tem a preferida entra na variante padrão dela.
+  function varianteDe(variantes, pref) {
+    const vs = variantes && variantes.length ? variantes : ["Normal"];
+    const acha = (re, nao) => vs.find((v) => re.test(v) && !(nao && nao.test(v)));
+    if (pref === "reverse") return acha(/reverse/i) || vs[0];
+    if (pref === "foil") return acha(/foil|holo|etched/i, /reverse/i) || vs[0];
+    return vs[0];
   }
 
   // ── Motor de OCR (carregado sob demanda, um worker por sessão) ─────────────
@@ -811,6 +883,50 @@
 .scan-shutter[hidden] { display: none; }
 .scan-lote { height: 44px; min-height: 0; flex: none; padding: 0 14px 0 12px; border: 1px solid rgba(255,255,255,.14); border-radius: 999px; background: rgba(13,14,18,.62); color: #f3f5f7; font: inherit; font-size: 13px; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
 .scan-lote.is-vazio { visibility: hidden; }
+/* Leitura automática e lista da sessão (2026-09-28) — o "modo ManaBox": a
+   carta entra no quadro, é lida sozinha e vai pra lista; a pessoa revisa e
+   adiciona tudo de uma vez. O botão da leitura automática mora ao lado da
+   galeria; a lista abre pelo botão da direita, com contagem e total. */
+.scan-bottom-esq { display: flex; align-items: center; gap: 6px; }
+.scan-round[aria-pressed="true"] { background: rgba(255,255,255,.2); border-color: rgba(255,255,255,.45); }
+.scan-lote-t { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.scan-lista-prefs { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; }
+.scan-field select { flex: 1; min-width: 0; height: 40px; padding: 0; border: 0; background: none; color: #f3f5f7; font: inherit; font-size: 16px; font-weight: 800; cursor: pointer; }
+.scan-field select option { background: #1d212b; color: #f3f5f7; }
+.scan-itens { display: flex; flex-direction: column; gap: 8px; }
+.scan-itens:empty { display: none; }
+.scan-item { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 8px; border: 1px solid #2d333f; border-radius: 12px; background: #1d212b; }
+.scan-item.is-conferir { border-color: rgba(245,179,1,.6); }
+.scan-item-thumb { width: 40px; height: 56px; border-radius: 5px; overflow: hidden; background: #262b36; }
+.scan-item-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.scan-item-txt { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.scan-item-nome { font-size: 14px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.scan-item-sub { font-size: 12px; color: #9ba4b3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.scan-item-linha { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; min-width: 0; font-size: 12.5px; }
+.scan-item-preco { font-weight: 800; color: #7ee2b8; }
+.scan-item-ok { display: inline-flex; align-items: center; gap: 4px; color: #7ee2b8; font-weight: 700; }
+.scan-item-ok svg { width: 13px; height: 13px; }
+.scan-item-conf { min-height: 44px; padding: 0 12px; border: 1px solid rgba(245,179,1,.6); border-radius: 999px; background: transparent; color: #f5c542; font: inherit; font-size: 12.5px; font-weight: 800; cursor: pointer; }
+.scan-item-qtd { display: flex; align-items: center; }
+.scan-item-qtd button { width: 44px; height: 44px; min-height: 0; padding: 0; border: 0; border-radius: 999px; background: transparent; color: #f3f5f7; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
+.scan-item-qtd button svg { width: 18px; height: 18px; }
+.scan-item-qtd span { min-width: 20px; text-align: center; font-weight: 800; font-variant-numeric: tabular-nums; }
+.scan-lista-acoes { display: flex; gap: 8px; }
+.scan-lista-acoes .cta { display: block; flex: 1; min-width: 0; min-height: 46px; line-height: 46px; text-align: center; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; border: 0; cursor: pointer; }
+.scan-lista-acoes .cta[disabled] { opacity: .5; cursor: default; }
+.scan-lista-limpar { flex: none; min-height: 46px; padding: 0 14px; border: 1px solid #2d333f; border-radius: 9px; background: #1d212b; color: #f3f5f7; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; }
+.scan-lista-limpar.is-confirma { border-color: #f87171; color: #fca5a5; }
+.scan-lista-col { align-self: center; min-height: 44px; display: inline-flex; align-items: center; color: var(--accent-ink, #ef4444); font-weight: 800; }
+.scan-lista-col[hidden] { display: none; }
+/* Por último, pra vencer as regras de cima. Até 359 px (iPhone SE de 320): os dois botões da esquerda em 44 px, a
+   lista só com a contagem (o total está no topo da folha) e as duas
+   preferências da lista uma embaixo da outra. */
+@media (max-width: 359px) {
+  .scan-bottom { padding: 0 12px; }
+  .scan-bottom-esq .scan-round { width: 44px; height: 44px; }
+  .scan-lote-t { display: none; }
+  .scan-lista-prefs { grid-template-columns: minmax(0, 1fr); }
+}
 .scan-lote svg { width: 16px; height: 16px; }
 .scan-lote-n { min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px; background: var(--accent, #dc2626); color: var(--on-accent, #fff); font-size: 12px; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; }
 .scan-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,.35); }
@@ -869,6 +985,10 @@
     cadeado: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.5" y="11" width="15" height="10" rx="2.5"/><path d="M8 11V7.5a4 4 0 0 1 8 0V11"/></svg>',
     cadeadoAberto: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.5" y="11" width="15" height="10" rx="2.5"/><path d="M8 11V7.5a4 4 0 0 1 7.6-1.7"/></svg>',
     som: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>',
+    auto: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg>',
+    mais: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="M5 12h14"/></svg>',
+    menos: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg>',
+    ok: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>',
     mudo: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="m22 9-6 6"/><path d="m16 9 6 6"/></svg>'
   };
   // Valor de mercado da carta na moeda do site (mesma conta das grades):
@@ -987,7 +1107,8 @@
     // em que a pessoa trocou o 1º resultado por outra opção (uma vez por
     // leitura) e `dig` as buscas digitadas na folha de correção. Troca e busca
     // à mão são a pessoa dizendo que o scanner errou: é a taxa de erro real.
-    const funil = { n: 0, lido: 0, achou: 0, t0: Date.now(), t1: 0, amb: 0, vis: 0, troca: 0, dig: 0 };
+    // `auto` (2026-09-28): leituras disparadas sozinhas, sem o toque no disparador.
+    const funil = { n: 0, lido: 0, achou: 0, t0: Date.now(), t1: 0, amb: 0, vis: 0, troca: 0, dig: 0, auto: 0 };
     let trocaConta = false; // a próxima troca de candidato ainda conta como erro desta leitura
     shared.logEvento("scan_open");
     // Toda carta que entrar daqui conta como cadastro por scanner (o store não
@@ -1022,9 +1143,12 @@
       <div class="scan-toast" data-scan-toast hidden><span><span class="scan-spin" aria-hidden="true"></span><span data-scan-toast-text></span></span></div>
       <div class="scan-res" data-scan-res hidden></div>
       <div class="scan-bottom">
-        <label class="scan-round" aria-label="${escapeAttribute(t("scan.gallery"))}" title="${escapeAttribute(t("scan.gallery"))}">${ICO.image}<input type="file" accept="image/*" capture="environment" data-scan-file hidden></label>
+        <span class="scan-bottom-esq">
+          <label class="scan-round" aria-label="${escapeAttribute(t("scan.gallery"))}" title="${escapeAttribute(t("scan.gallery"))}">${ICO.image}<input type="file" accept="image/*" capture="environment" data-scan-file hidden></label>
+          <button type="button" class="scan-round" data-scan-auto aria-pressed="false" aria-label="${escapeAttribute(t("scan.auto"))}" title="${escapeAttribute(t("scan.auto"))}">${ICO.auto}</button>
+        </span>
         <button type="button" class="scan-shutter" data-scan-captura aria-label="${escapeAttribute(t("scan.capture"))}" title="${escapeAttribute(t("scan.capture"))}" disabled><span></span></button>
-        <button type="button" class="scan-lote is-vazio" data-scan-lote><span class="scan-lote-n" data-scan-lote-n>0</span><span>${escapeHtml(t("scan.batch"))}</span>${ICO.arrow}</button>
+        <button type="button" class="scan-lote is-vazio" data-scan-lote><span class="scan-lote-n" data-scan-lote-n>0</span><span class="scan-lote-t" data-scan-lote-t>${escapeHtml(t("scan.list"))}</span>${ICO.arrow}</button>
       </div>
       <div class="scan-backdrop" data-scan-backdrop hidden></div>
       <div class="scan-sheet" data-scan-sheet hidden>
@@ -1058,6 +1182,21 @@
           <button type="button" data-scan-som-teste="wl">${escapeHtml(t("scan.tierWl"))}</button>
         </div>
         <p class="scan-priv" data-scan-som-nota></p>
+      </div>
+      <div class="scan-sheet" data-scan-lista hidden>
+        <div class="scan-sheet-handle"></div>
+        <div class="scan-sheet-head"><strong>${escapeHtml(t("scan.listTitle"))}</strong><span data-scan-lista-resumo></span></div>
+        <div class="scan-lista-prefs">
+          <label class="scan-field"><span>${escapeHtml(t("scan.listCond"))}</span><select data-scan-lista-cond>${(shared.CARD_CONDITIONS || ["NM"]).map((c) => `<option value="${escapeAttribute(c)}">${escapeHtml(c)}</option>`).join("")}</select></label>
+          <label class="scan-field"><span>${escapeHtml(t("scan.listVariant"))}</span><select data-scan-lista-var><option value="padrao">${escapeHtml(t("scan.varDefault"))}</option><option value="foil">${escapeHtml(t("scan.varFoil"))}</option><option value="reverse">${escapeHtml(t("scan.varReverse"))}</option></select></label>
+        </div>
+        <div class="scan-itens" data-scan-itens></div>
+        <p class="scan-vazio" data-scan-lista-vazio>${escapeHtml(t("scan.listEmpty"))}</p>
+        <div class="scan-lista-acoes">
+          <button type="button" class="cta" data-scan-lista-add></button>
+          <button type="button" class="scan-lista-limpar" data-scan-lista-limpar>${escapeHtml(t("scan.listClear"))}</button>
+        </div>
+        <a class="scan-lista-col" href="collection" data-scan-lista-col hidden>${escapeHtml(t("scan.listSeeCollection"))}</a>
       </div>`;
     document.body.appendChild(wrap);
     document.body.classList.add("preview-open");
@@ -1097,8 +1236,14 @@
     // e encavalava com o cartão de resultado, que ocupa o mesmo lugar.
     let jaLeu = false;
     let sugestao = ""; // sugestão de trava de set: toma o lugar da dica depois das leituras
+    // Leitura automática (ligada por padrão; a escolha é do aparelho) e as duas
+    // dicas que ela traz: a do QUADRO ao vivo (pouca luz, reflexo) e a da
+    // leitura automática que não achou código (afaste, evite reflexo).
+    const CHAVE_AUTO = "tcg-scan-auto-v1";
+    let autoLigado = (() => { try { return localStorage.getItem(CHAVE_AUTO) !== "0"; } catch (e) { return true; } })();
+    let dicaQuadro = "", dicaFalha = "";
     const dizer = (msg) => { status.textContent = msg; dica.hidden = !msg; };
-    const pronto = () => dizer(jaLeu ? sugestao : t("scan.status.ready"));
+    const pronto = () => dizer(dicaQuadro || (jaLeu ? (dicaFalha || sugestao) : t(autoLigado ? "scan.status.readyAuto" : "scan.status.ready")));
     // Status de uma leitura em curso vai pro cartão "lendo" (miniatura da foto
     // + texto), que ocupa o lugar do resultado; o toast fica pra busca manual.
     let lendoTexto = null;
@@ -1203,9 +1348,10 @@
       inAlto.setAttribute("aria-label", `${t("scan.soundHigh")} (${simbolo})`);
       $("[data-scan-som-nota]").textContent = t("scan.soundNote", { moeda: simbolo });
       $("[data-scan-som-titulo]").textContent = simbolo ? `${t("scan.sound")} · ${simbolo}` : t("scan.sound");
-      fecharFolha();
-      fundo.hidden = false;
+      folha.hidden = true;
+      folhaLista.hidden = true;
       folhaSom.hidden = false;
+      atualizarFundo();
       contextoAudio(); // o toque que abriu o painel libera o áudio no Safari
     }
     // Fechar o painel devolve aos campos o que está valendo (um par inválido
@@ -1216,7 +1362,7 @@
       inAlto.value = numeroBr(a);
       marcarFaixas(true);
       folhaSom.hidden = true;
-      if (folha.hidden) fundo.hidden = true;
+      atualizarFundo();
     }
     function marcarFaixas(ok) {
       [inBaixo, inAlto].forEach((el) => {
@@ -1257,6 +1403,256 @@
       if (som.on) tocar(SONS[sinal]);
       shared.vibrar(VIBRA[sinal]);
     }
+    // ── Lista da sessão ──────────────────────────────────────────────────────
+    // Toda carta lida entra aqui (o "scanned cards" do ManaBox): a mesma carta
+    // lida de novo soma uma cópia; a ambígua (mesmo código, e a foto sem folga
+    // pra decidir) fica marcada pra conferir. A pessoa revisa, escolhe a
+    // condição e a variante da sessão e adiciona tudo de uma vez. No aparelho
+    // fica só o id de cada carta (nada da foto), por 24 h: fechar o scanner
+    // sem querer não pode custar o booster inteiro.
+    const CHAVE_LISTA = "tcg-scan-lista-v1";
+    const folhaLista = $("[data-scan-lista]");
+    const itensEl = $("[data-scan-itens]");
+    const selCond = $("[data-scan-lista-cond]"), selVar = $("[data-scan-lista-var]");
+    const btnListaAdd = $("[data-scan-lista-add]"), btnLimpar = $("[data-scan-lista-limpar]");
+    let lista = [];
+    let prefCond = shared.DEFAULT_CONDITION, prefVar = "padrao";
+    let itemAtual = null;       // item da leitura mais recente: é ele que o "+N opções" corrige
+    let editando = null;        // item aberto pelo "Conferir" da lista
+    let voltarPraLista = false; // a folha de correção veio da lista: fechar volta pra ela
+    const chaveItem = (game, card, variante) => `${game}|${card.id}|${variante}`;
+    const pendentes = (it) => Math.max(0, it.qtd - it.adicionadas);
+    const varianteDaSessao = (card) => varianteDe(shared.cardVariants(card), prefVar);
+    function fmtPreco(v, casas) {
+      const n = v.value.toLocaleString(undefined, { minimumFractionDigits: casas, maximumFractionDigits: casas });
+      return (v.currency === "BRL" ? "R$ " : v.currency === "USD" ? "US$ " : "€ ") + n;
+    }
+    function totalLista() {
+      let total = 0, moeda = "";
+      lista.forEach((it) => { const v = precoDe(it.card); if (v) { total += v.value * it.qtd; moeda = v.currency; } });
+      return total > 0 ? { value: total, currency: moeda } : null;
+    }
+    function salvarLista() {
+      try {
+        localStorage.setItem(CHAVE_LISTA, JSON.stringify({
+          t: Date.now(), cond: prefCond, v: prefVar,
+          itens: lista.map((it) => ({ g: it.game, id: it.card.id, v: it.variante, q: it.qtd, a: it.adicionadas, c: it.conferir ? 1 : 0 }))
+        }));
+      } catch (e) { /* sem storage: a lista vale só nesta sessão */ }
+    }
+    function pintarBotaoLista() {
+      const n = lista.reduce((soma, it) => soma + it.qtd, 0);
+      const total = totalLista();
+      btnLote.classList.toggle("is-vazio", !n);
+      $("[data-scan-lote-n]").textContent = String(n);
+      $("[data-scan-lote-t]").textContent = total ? fmtPreco(total, 0) : t("scan.list");
+      if (!folhaLista.hidden) pintarLista();
+    }
+    // Soma `qtd` cópias de `h` na lista, na variante da sessão (junta com o
+    // item igual que já existir).
+    function somarItem(h, qtd, conferir, alternativas) {
+      const variante = varianteDaSessao(h.card);
+      const chave = chaveItem(h.game, h.card, variante);
+      let it = lista.find((x) => x.chave === chave);
+      if (it) {
+        it.qtd += qtd;
+        if (conferir) it.conferir = true;
+        if (alternativas && alternativas.length > it.alternativas.length) it.alternativas = alternativas.slice(0, 12);
+      } else {
+        it = { chave, game: h.game, card: h.card, variante, qtd, adicionadas: 0, conferir: !!conferir, alternativas: (alternativas || [h]).slice(0, 12) };
+        lista.unshift(it);
+      }
+      return it;
+    }
+    function registrar(achados, foto) {
+      itemAtual = somarItem(achados[0], 1, achados.length > 1 && !(foto && foto.claro), achados);
+      salvarLista();
+      pintarBotaoLista();
+    }
+    // A pessoa disse qual era a carta (folha "+N opções" ou "Conferir"): move
+    // `unidades` do item pra ela — UMA quando corrige a leitura mais recente
+    // (as cópias lidas antes estavam certas), todas quando confere o item. O
+    // que já foi pra coleção fica lá; a lista não desfaz o que foi gravado.
+    function corrigirItem(it, h, unidades) {
+      if (!it || !h) return it;
+      if (it.card.id === h.card.id && it.game === h.game) { it.conferir = false; salvarLista(); pintarBotaoLista(); return it; }
+      const mover = Math.min(pendentes(it), unidades);
+      if (mover <= 0) return it;
+      it.qtd -= mover;
+      if (it.qtd <= 0) lista.splice(lista.indexOf(it), 1);
+      const novo = somarItem(h, mover, false, it.alternativas);
+      novo.conferir = false;
+      salvarLista();
+      pintarBotaoLista();
+      return novo;
+    }
+    function pintarLista() {
+      const n = lista.reduce((soma, it) => soma + it.qtd, 0);
+      const total = totalLista();
+      $("[data-scan-lista-resumo]").textContent = !n ? "" : total ? t("scan.listSummary", { n, valor: fmtPreco(total, 2) }) : t("scan.listSummaryNoValue", { n });
+      $("[data-scan-lista-vazio]").hidden = n > 0;
+      selCond.value = prefCond;
+      selVar.value = prefVar;
+      itensEl.innerHTML = lista.map((it, i) => {
+        const v = precoDe(it.card);
+        const preco = v ? fmtPreco({ value: v.value * it.qtd, currency: v.currency }, 2) : "";
+        const ok = it.adicionadas ? `<span class="scan-item-ok">${ICO.ok}${escapeHtml(t("scan.inCollection", { n: it.adicionadas }))}</span>` : "";
+        const conf = it.conferir && it.alternativas.length > 1 ? `<button type="button" class="scan-item-conf" data-scan-conferir="${i}">${escapeHtml(t("scan.check"))}</button>` : "";
+        const variante = shared.variantDisplayLabel ? shared.variantDisplayLabel(it.card, it.variante) : it.variante;
+        return `<div class="scan-item${it.conferir ? " is-conferir" : ""}">
+            <span class="scan-item-thumb">${miniatura(it.card)}</span>
+            <span class="scan-item-txt">
+              <span class="scan-item-nome">${escapeHtml(it.card.name)}</span>
+              <span class="scan-item-sub">${escapeHtml(`${it.card.set || ""} · ${it.card.number || ""} · ${variante}`)}</span>
+              <span class="scan-item-linha">${preco ? `<span class="scan-item-preco">${escapeHtml(preco)}</span>` : ""}${ok}${conf}</span>
+            </span>
+            <span class="scan-item-qtd">
+              <button type="button" data-scan-menos="${i}" aria-label="${escapeAttribute(t("scan.qtyMinus", { nome: it.card.name }))}">${ICO.menos}</button>
+              <span>${it.qtd}</span>
+              <button type="button" data-scan-mais="${i}" aria-label="${escapeAttribute(t("scan.qtyPlus", { nome: it.card.name }))}">${ICO.mais}</button>
+            </span>
+          </div>`;
+      }).join("");
+      const falta = lista.reduce((soma, it) => soma + pendentes(it), 0);
+      btnListaAdd.disabled = !falta;
+      btnListaAdd.textContent = falta || !n ? t("scan.listAdd", { n: falta }) : t("scan.listAllAdded");
+      desarmarLimpar();
+    }
+    const atualizarFundo = () => { fundo.hidden = folha.hidden && folhaSom.hidden && folhaLista.hidden; };
+    function abrirLista() {
+      folha.hidden = true;
+      folhaSom.hidden = true;
+      pintarLista();
+      $("[data-scan-lista-col]").hidden = !(lote > 0);
+      folhaLista.hidden = false;
+      atualizarFundo();
+    }
+    function fecharLista() { folhaLista.hidden = true; atualizarFundo(); }
+    // Tudo que ainda não foi pra coleção, com a condição da sessão.
+    function adicionarLista() {
+      let total = 0;
+      lista.forEach((it) => {
+        const q = pendentes(it);
+        if (!q) return;
+        const st = stores.col[it.game] || (stores.col[it.game] = shared.createCollectionStore(it.game));
+        st.add(it.card.id, it.variante, prefCond, q);
+        it.adicionadas += q;
+        total += q;
+      });
+      if (!total) return;
+      if (!funil.t1) funil.t1 = Math.max(1, Date.now() - funil.t0);
+      lote += total;
+      shared.vibrar(20);
+      salvarLista();
+      pintarBotaoLista();
+      pintarLista();
+      pintarResultado();
+      $("[data-scan-lista-col]").hidden = false;
+    }
+    // Limpar pede um segundo toque (3 s): a lista pode ser um booster inteiro.
+    let limparArmado = false, tmLimpar = 0;
+    function desarmarLimpar() {
+      limparArmado = false;
+      clearTimeout(tmLimpar);
+      btnLimpar.classList.remove("is-confirma");
+      btnLimpar.textContent = t("scan.listClear");
+    }
+    function limparLista() {
+      if (!limparArmado) {
+        limparArmado = true;
+        btnLimpar.classList.add("is-confirma");
+        btnLimpar.textContent = t("scan.listClearConfirm");
+        tmLimpar = setTimeout(desarmarLimpar, 3000);
+        return;
+      }
+      lista = [];
+      itemAtual = null;
+      salvarLista();
+      pintarBotaoLista();
+      pintarLista();
+    }
+    // A variante preferida vale pro que ainda não foi pra coleção: cada item
+    // pendente muda de variante (e se junta a um igual); o que já foi fica.
+    function mudarVariantePreferida(pref) {
+      prefVar = pref;
+      const antigos = lista.slice().reverse(); // do mais antigo pro mais novo: somarItem põe na frente
+      lista = [];
+      antigos.forEach((it) => {
+        if (it.adicionadas) lista.unshift(Object.assign({}, it, { qtd: it.adicionadas }));
+        const q = pendentes(it);
+        if (q) somarItem({ card: it.card, game: it.game }, q, it.conferir, it.alternativas);
+      });
+      itemAtual = null;
+      salvarLista();
+      pintarBotaoLista();
+      pintarLista();
+    }
+    // A lista de antes (até 24 h, com algo ainda por adicionar) volta ao abrir.
+    async function restaurarLista() {
+      let salvo = null;
+      try { salvo = JSON.parse(localStorage.getItem(CHAVE_LISTA) || "null"); } catch (e) { salvo = null; }
+      if (!salvo || !Array.isArray(salvo.itens) || !(Date.now() - salvo.t < 86400000)) return;
+      if (!salvo.itens.some((x) => x.q > (x.a || 0))) return; // tudo já foi pra coleção: começa vazia
+      if (shared.CARD_CONDITIONS && shared.CARD_CONDITIONS.indexOf(salvo.cond) >= 0) prefCond = salvo.cond;
+      if (["padrao", "foil", "reverse"].indexOf(salvo.v) >= 0) prefVar = salvo.v;
+      const porJogo = {};
+      salvo.itens.forEach((x) => { (porJogo[x.g] = porJogo[x.g] || []).push(x.id); });
+      let cat = null;
+      try { cat = await shared.loadOwnedAcrossGames(porJogo); } catch (e) { return; }
+      const porId = new Map(((cat && cat.cards) || []).map((c) => [c.id, c]));
+      const restaurados = salvo.itens.map((x) => {
+        const card = porId.get(x.id);
+        if (!card) return null;
+        const q = Math.max(1, Number(x.q) || 1);
+        return { chave: chaveItem(x.g, card, x.v), game: x.g, card, variante: x.v, qtd: q, adicionadas: Math.min(q, Math.max(0, Number(x.a) || 0)), conferir: !!x.c, alternativas: [{ card, game: x.g }] };
+      }).filter(Boolean);
+      // O que foi lido enquanto a lista carregava fica na frente (é mais novo).
+      lista = lista.concat(restaurados.filter((r) => !lista.some((x) => x.chave === r.chave)));
+      pintarBotaoLista();
+    }
+
+    // ── Laço da leitura automática ───────────────────────────────────────────
+    const btnAuto = $("[data-scan-auto]");
+    const amostra = document.createElement("canvas");
+    amostra.width = 48;
+    amostra.height = 66;
+    const ctxAmostra = amostra.getContext("2d", { willReadFrequently: true });
+    let estAuto = { armado: true, parados: 0 };
+    let amostraAnt = null;
+    let tmAuto = 0;
+    let motorPronto = false;
+    function pintarAuto() {
+      const rot = `${t("scan.auto")}: ${t(autoLigado ? "scan.soundIsOn" : "scan.soundIsOff")}`;
+      btnAuto.setAttribute("aria-pressed", autoLigado ? "true" : "false");
+      btnAuto.setAttribute("aria-label", rot);
+      btnAuto.title = rot;
+    }
+    function tickAuto() {
+      tmAuto = 0;
+      if (!wrap.isConnected) return;
+      const pausado = !autoLigado || !motorPronto || !stream || !video.videoWidth || ocupado
+        || !folha.hidden || !folhaSom.hidden || !folhaLista.hidden || document.hidden;
+      if (!pausado) {
+        try {
+          const rec = recorteDaGuia(video, wrap, guia);
+          ctxAmostra.drawImage(video, rec.sx, rec.sy, rec.sw, rec.sh, 0, 0, 48, 66);
+          const d = ctxAmostra.getImageData(0, 0, 48, 66).data;
+          const g = new Uint8Array(48 * 66);
+          for (let i = 0, j = 0; j < g.length; i += 4, j++) g[j] = (d[i] * 299 + d[i + 1] * 587 + d[i + 2] * 114) / 1000;
+          const m = medirQuadro(g, 48, 66, amostraAnt);
+          amostraAnt = g;
+          const chaveDica = dicaDoQuadro(m);
+          const dq = chaveDica ? t(chaveDica) : "";
+          const r = passoAuto(estAuto, m);
+          // A cena mudou (carta trocada): a dica da leitura que falhou sai.
+          if (!estAuto.armado && r.st.armado && dicaFalha) { dicaFalha = ""; if (!dq) pronto(); }
+          estAuto = r.st;
+          if (dq !== dicaQuadro) { dicaQuadro = dq; pronto(); }
+          if (r.disparar) lerAgora(true);
+        } catch (e) { /* o vídeo ainda não tem quadro */ }
+      }
+      tmAuto = setTimeout(tickAuto, AUTO.intervalo);
+    }
     // Jogos permitidos na busca: o escolhido no seletor, ou o que a carta diz.
     function jogosDaBusca(codigos) {
       if (trava) return [trava.game];
@@ -1294,8 +1690,10 @@
       shared.logEvento("scan_done", {
         n: funil.n, lido: funil.lido, achou: funil.achou, add: lote,
         ms: Math.max(0, Date.now() - funil.t0), t1: funil.t1 || 0,
-        amb: funil.amb, vis: funil.vis, troca: funil.troca, dig: funil.dig
+        amb: funil.amb, vis: funil.vis, troca: funil.troca, dig: funil.dig, auto: funil.auto
       });
+      clearTimeout(tmAuto);
+      clearTimeout(tmLimpar);
       if (stream) stream.getTracks().forEach((tr) => tr.stop());
       stream = null;
       wrap.remove();
@@ -1306,7 +1704,7 @@
     }
     const tecla = (ev) => {
       if (ev.key !== "Escape") return;
-      if (!folhaSom.hidden) fecharSom(); else if (!folha.hidden) fecharFolha(); else fechar();
+      if (!folhaLista.hidden) fecharLista(); else if (!folhaSom.hidden) fecharSom(); else if (!folha.hidden) fecharFolha(); else fechar();
     };
     document.addEventListener("keydown", tecla);
 
@@ -1359,7 +1757,7 @@
     // ── Resultado e folha ────────────────────────────────────────────────────
     function textoAdd(h) {
       const st = stores.col[h.game];
-      const v = shared.defaultVariant(h.card);
+      const v = varianteDaSessao(h.card);
       const n = st ? st.variantTotal(h.card.id, v) : 0;
       return n > 0 ? `✓ ×${n}` : t("cmdk.addCol");
     }
@@ -1456,17 +1854,25 @@
     }
     function abrirFolha() {
       pintarFolha();
-      fundo.hidden = false;
+      folhaSom.hidden = true;
+      folhaLista.hidden = true;
       folha.hidden = false;
+      atualizarFundo();
       if (!resultados.length) { try { input.focus(); } catch (e) { /* teclado não abriu */ } }
     }
-    function fecharFolha() { folha.hidden = true; fundo.hidden = true; }
-    function entregar(codigo, achados, pelaFoto) {
+    // Fechar a folha que veio do "Conferir" da lista volta pra lista.
+    function fecharFolha() {
+      folha.hidden = true;
+      editando = null;
+      if (voltarPraLista) { voltarPraLista = false; abrirLista(); } else atualizarFundo();
+    }
+    function entregar(codigo, achados, foto, auto) {
       funil.n += 1;
       if (codigo) funil.lido += 1;              // o OCR extraiu um código
       if (achados.length) funil.achou += 1;     // e ele casou com o catálogo
       if (achados.length > 1) funil.amb += 1;   // com mais de uma carta
-      if (pelaFoto) funil.vis += 1;             // e a foto mudou qual vem primeiro
+      if (foto && foto.mudou) funil.vis += 1;   // e a foto mudou qual vem primeiro
+      if (auto) funil.auto += 1;                // leitura disparada sozinha
       trocaConta = achados.length > 1;
       codigoAtual = codigo || "";
       resultados = achados;
@@ -1480,14 +1886,20 @@
         sugestao = mesmo ? t("scan.lockSuggest", { set: nomeSet(achados[0].card) }) : "";
         btnTrava.classList.toggle("is-sugere", !!sugestao);
       }
+      if (achados.length) registrar(achados, foto); else itemAtual = null;
       pintarResultado();
-      if (!achados.length) abrirFolha(); // sem carta: a folha já abre com o código pra corrigir
-      else avisar(achados[0]); // leu a carta: som e vibração da faixa de preço (ou da wishlist)
+      if (achados.length) { avisar(achados[0]); return; } // som e vibração da faixa de preço (ou da wishlist)
+      // Sem carta. Com código lido, a folha abre pra corrigir (é leitura
+      // errada, não carta ausente). Leitura AUTOMÁTICA sem código nenhum não
+      // abre nada — o laço pode ter pego a carta ainda chegando — e vira dica
+      // até a cena mudar.
+      if (auto && !codigo) { dicaFalha = t("scan.hint.retry"); return; }
+      abrirFolha();
     }
     function adicionar(tipo, i, btn) {
       const h = resultados[i];
       if (!h) return;
-      const v = shared.defaultVariant(h.card);
+      const v = tipo === "wl" ? shared.defaultVariant(h.card) : varianteDaSessao(h.card);
       if (tipo === "wl") {
         const st = stores.wl[h.game] || (stores.wl[h.game] = shared.createWishlistStore(h.game));
         const on = st.toggle(h.card.id, v);
@@ -1496,17 +1908,20 @@
         return;
       }
       const st = stores.col[h.game] || (stores.col[h.game] = shared.createCollectionStore(h.game));
-      st.add(h.card.id, v, shared.DEFAULT_CONDITION, 1);
+      st.add(h.card.id, v, prefCond, 1);
       // Tempo até a 1ª carta: da câmera aberta até a coleção ganhar algo. É o
       // "quanto demora pra o scanner servir pra alguma coisa".
       if (!funil.t1) funil.t1 = Math.max(1, Date.now() - funil.t0);
       lote += 1;
-      $("[data-scan-lote-n]").textContent = String(lote);
-      btnLote.classList.remove("is-vazio");
+      // Na lista, a cópia desta leitura passa a "na coleção".
+      const it = lista.find((x) => x.chave === chaveItem(h.game, h.card, v));
+      if (it) { it.adicionadas = Math.min(it.qtd, it.adicionadas + 1); salvarLista(); pintarBotaoLista(); }
       shared.vibrar(20);
       pintarResultado();
       if (!folha.hidden) fecharFolha();
     }
+    selCond.addEventListener("change", () => { prefCond = selCond.value; salvarLista(); pintarResultado(); });
+    selVar.addEventListener("change", () => { mudarVariantePreferida(selVar.value); pintarResultado(); });
 
     // Com o set travado: as cartas do set já estão na memória — o código
     // inteiro primeiro, senão o número (noSet). Se o set não baixou, a busca
@@ -1557,9 +1972,13 @@
     //      sob a arte; "4/102" é de três jogos e o "© Pokémon" pode estar fora
     //      da faixa).
     // Depois: candidatos -> busca. `fonte` é o vídeo ou uma imagem da galeria.
-    async function ler(fonte, rec) {
+    async function ler(fonte, rec, auto) {
       if (ocupado) return;
       ocupado = true;
+      // Qualquer leitura (automática ou no toque) desarma o laço: ele só volta
+      // a ler quando a cena mudar — senão lia a mesma carta de novo.
+      estAuto = { armado: false, parados: 0 };
+      dicaFalha = "";
       let falhou = false;
       btnLer.disabled = true;
       fecharFolha();
@@ -1598,18 +2017,18 @@
         // cada leitura detecta o jogo de novo pelas pistas da própria carta
         // (o cartão de resultado já diz qual foi); escolher um jogo no seletor
         // é a forma de FORÇAR um só, quando a detecção errar.
-        if (!codigos.length) { entregar("", []); return; }
+        if (!codigos.length) { entregar("", [], null, auto); return; }
         const { codigo, achados } = await procurar(codigos);
         // Mesmo código, cartas diferentes (Alternate Art, Parallel, Manga…):
         // a foto desempata ANTES de o resultado aparecer — trocar a carta
         // depois de mostrada confundiria, e um "+ Coleção" rápido gravaria a
         // errada. O quadro congelado ainda está vivo aqui.
-        let pelaFoto = false;
+        let foto = null;
         if (achados.length > 1) {
           aviso(t("scan.status.comparing"));
-          try { pelaFoto = await conferirPelaFoto(fonte, rec, achados); } catch (e) { /* fica a ordem da busca */ }
+          try { foto = await conferirPelaFoto(fonte, rec, achados); } catch (e) { /* fica a ordem da busca */ }
         }
-        entregar(codigo, achados, pelaFoto);
+        entregar(codigo, achados, foto, auto);
       } catch (e) {
         falhou = true;
         lendoTexto = null;
@@ -1635,6 +2054,13 @@
         resultados = achados;
         primario = 0;
         trocaConta = false; // o 1º aqui é da busca digitada, não da leitura
+        // A folha é "Corrigir leitura": o que foi achado digitando é a carta
+        // da leitura mais recente (ou do item em conferência), não uma a mais.
+        if (achados.length && !editando) {
+          itemAtual = itemAtual ? corrigirItem(itemAtual, achados[0], 1) : somarItem(achados[0], 1, false, achados);
+          salvarLista();
+          pintarBotaoLista();
+        }
         pintarResultado();
         if (!folha.hidden || !achados.length) pintarFolha();
         if (!achados.length) abrirFolha(); else fecharFolha();
@@ -1660,13 +2086,28 @@
         return c;
       } catch (e) { return null; }
     }
-    btnLer.addEventListener("click", async () => {
+    async function lerAgora(auto) {
       if (!stream || !video.videoWidth || ocupado) return;
-      if (som.on) contextoAudio(); // dentro do toque: é o que o Safari exige pra tocar depois
       const rec = recorteDaGuia(video, wrap, guia);
       const quadro = congelar();
-      try { await ler(quadro || video, rec); }
+      try { await ler(quadro || video, rec, auto); }
       finally { if (quadro) quadro.width = quadro.height = 0; } // zerar libera o buffer (~44 MB em 4K)
+    }
+    btnLer.addEventListener("click", async () => {
+      if (som.on) contextoAudio(); // dentro do toque: é o que o Safari exige pra tocar depois
+      await lerAgora(false);
+    });
+    // Com a leitura automática ninguém toca no disparador: qualquer toque no
+    // scanner (a lista, o "+ Coleção", a própria tela) serve pra liberar o
+    // áudio do Safari antes da próxima carta.
+    wrap.addEventListener("pointerdown", () => { if (som.on) contextoAudio(); }, { passive: true });
+    btnAuto.addEventListener("click", () => {
+      autoLigado = !autoLigado;
+      try { localStorage.setItem(CHAVE_AUTO, autoLigado ? "1" : "0"); } catch (e) { /* vale só nesta sessão */ }
+      estAuto = { armado: true, parados: 0 }; // ligou com a carta já no quadro: lê
+      dicaFalha = "";
+      pintarAuto();
+      if (!ocupado) pronto();
     });
     $("[data-scan-file]").addEventListener("change", async (ev) => {
       const file = ev.target.files && ev.target.files[0];
@@ -1690,7 +2131,41 @@
     });
     wrap.addEventListener("click", (ev) => {
       if (ev.target.closest("[data-scan-close]")) { fechar(); return; }
-      if (ev.target.closest("[data-scan-backdrop]") || ev.target.closest(".scan-sheet-handle")) { if (!folhaSom.hidden) fecharSom(); else fecharFolha(); return; }
+      if (ev.target.closest("[data-scan-backdrop]") || ev.target.closest(".scan-sheet-handle")) {
+        if (!folhaLista.hidden) fecharLista(); else if (!folhaSom.hidden) fecharSom(); else fecharFolha();
+        return;
+      }
+      const qtd = ev.target.closest("[data-scan-mais], [data-scan-menos]");
+      if (qtd) {
+        const mais = qtd.hasAttribute("data-scan-mais");
+        const it = lista[Number(mais ? qtd.dataset.scanMais : qtd.dataset.scanMenos)];
+        if (!it) return;
+        if (mais) it.qtd += 1;
+        else {
+          it.qtd -= 1;
+          it.adicionadas = Math.min(it.adicionadas, it.qtd); // a lista é histórico: a coleção não muda
+          if (it.qtd <= 0) { lista.splice(lista.indexOf(it), 1); if (itemAtual === it) itemAtual = null; }
+        }
+        salvarLista();
+        pintarBotaoLista();
+        return;
+      }
+      const conf = ev.target.closest("[data-scan-conferir]");
+      if (conf) {
+        const it = lista[Number(conf.dataset.scanConferir)];
+        if (!it) return;
+        resultados = it.alternativas.slice();
+        primario = Math.max(0, resultados.findIndex((h) => h.card.id === it.card.id && h.game === it.game));
+        codigoAtual = it.card.number || "";
+        trocaConta = false;
+        folhaLista.hidden = true;
+        abrirFolha();
+        editando = it;
+        voltarPraLista = true;
+        return;
+      }
+      if (ev.target.closest("[data-scan-lista-add]")) { adicionarLista(); return; }
+      if (ev.target.closest("[data-scan-lista-limpar]")) { limparLista(); return; }
       if (ev.target.closest("[data-scan-som]")) { abrirSom(); return; }
       const teste = ev.target.closest("[data-scan-som-teste]");
       if (teste) { const k = teste.dataset.scanSomTeste; tocar(SONS[k]); shared.vibrar(VIBRA[k]); return; }
@@ -1706,7 +2181,7 @@
         if (h && trava && trava.chave === chaveSet(h)) destravar(); else if (h) travar(h);
         return;
       }
-      if (ev.target.closest("[data-scan-lote]")) { fechar(); window.location.href = "collection"; return; }
+      if (ev.target.closest("[data-scan-lote]")) { abrirLista(); return; }
       const add = ev.target.closest("[data-scan-add]");
       if (add) {
         const [tipo, i] = String(add.dataset.scanAdd).split(":");
@@ -1718,6 +2193,10 @@
         const i = Number(cand.dataset.scanCand);
         if (i !== primario && trocaConta) { funil.troca += 1; trocaConta = false; }
         primario = i;
+        // Escolher a certa corrige a lista: o item em conferência inteiro, ou
+        // só a cópia da leitura mais recente.
+        if (editando && resultados[i]) corrigirItem(editando, resultados[i], Infinity);
+        else if (itemAtual && resultados[i]) itemAtual = corrigirItem(itemAtual, resultados[i], 1);
         pintarResultado();
         fecharFolha();
         return;
@@ -1731,16 +2210,25 @@
     });
 
     pintarSom();
+    pintarAuto();
+    restaurarLista();
     abrirCamera();
     // Aquece o motor enquanto a pessoa enquadra: na primeira vez é o download
     // dos ~3,5 MB, que assim acontece ANTES do toque no disparador.
-    obterWorker(progresso).then(() => { if (stream && !ocupado) pronto(); }).catch(() => dizer(t("scan.error")));
+    // A leitura automática começa quando o motor está pronto (antes disso o
+    // laço só atrapalharia a dica de "Preparando o leitor").
+    obterWorker(progresso).then(() => {
+      motorPronto = true;
+      if (stream && !ocupado) pronto();
+      if (!tmAuto) tickAuto();
+    }).catch(() => dizer(t("scan.error")));
   }
 
   window.TCGScan = {
     abrir, extrair, extrairCodigos, juntar, soDigitos, detectarJogo,
     integral, assinatura, semelhanca, assinaturasDoQuadro, ordemPelaFoto,
     numeroDe, noSet,
-    faixaDePreco, configSom, SONS, VIBRA
+    faixaDePreco, configSom, SONS, VIBRA,
+    medirQuadro, passoAuto, dicaDoQuadro, varianteDe, AUTO
   };
 })();

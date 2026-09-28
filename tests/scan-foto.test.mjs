@@ -116,10 +116,11 @@ test("recortes: acham a carta fora de esquadro e escolhem a arte certa", () => {
 test("ordem: a foto só troca o 1º com diferença clara", () => {
   // A Manga (índice 2) é bem mais parecida: vai pra frente, o resto por semelhança.
   let o = S.ordemPelaFoto([0.55, 0.3, 0.82]);
-  assert.deepEqual(arr(o), { ordem: [2, 0, 1], mudou: true });
+  assert.deepEqual(arr(o), { ordem: [2, 0, 1], mudou: true, claro: true });
   // Diferença pequena (abaixo da margem): o 1º da busca fica.
   o = S.ordemPelaFoto([0.8, 0.84, 0.4]);
   assert.equal(o.mudou, false);
+  assert.equal(o.claro, false, "0,8 contra 0,84 não é decisão da foto");
   assert.equal(o.ordem[0], 0);
   // Mesmo sem mudar o 1º, a folha "+N opções" sai por semelhança.
   assert.deepEqual(arr(o.ordem), [0, 1, 2]);
@@ -132,18 +133,22 @@ test("ordem: empate entre os mais parecidos fica com quem vinha antes na busca",
   const o = S.ordemPelaFoto([0.4, 0.86, 0.3, 0.87]);
   assert.equal(o.mudou, true);
   assert.equal(o.ordem[0], 1);
+  // A foto tirou a comum, mas não separa as duas de mesma arte: não é "claro".
+  assert.equal(o.claro, false);
+  // O 1º da busca confirmado com folga sobre todos: claro, sem mudar.
+  assert.deepEqual(arr(S.ordemPelaFoto([0.9, 0.5, 0.4])), { ordem: [0, 1, 2], mudou: false, claro: true });
 });
 
 test("ordem: sem como julgar, a ordem da busca fica inteira", () => {
   const id = (sims) => arr(S.ordemPelaFoto(sims));
   // A imagem do 1º não chegou: a foto não pode tirá-lo do lugar.
-  assert.deepEqual(id([null, 0.9, 0.2]), { ordem: [0, 1, 2], mudou: false });
+  assert.deepEqual(id([null, 0.9, 0.2]), { ordem: [0, 1, 2], mudou: false, claro: false });
   // Só uma nota: nada a comparar.
-  assert.deepEqual(id([0.9, null, null]), { ordem: [0, 1, 2], mudou: false });
+  assert.deepEqual(id([0.9, null, null]), { ordem: [0, 1, 2], mudou: false, claro: false });
   // A foto não se parece com nenhuma (parede, dedo na frente): abaixo do piso.
-  assert.deepEqual(id([0.1, 0.25, 0.05]), { ordem: [0, 1, 2], mudou: false });
+  assert.deepEqual(id([0.1, 0.25, 0.05]), { ordem: [0, 1, 2], mudou: false, claro: false });
   // Um candidato só.
-  assert.deepEqual(id([0.9]), { ordem: [0], mudou: false });
+  assert.deepEqual(id([0.9]), { ordem: [0], mudou: false, claro: false });
   // Quem ficou sem nota vai pro fim, na ordem da busca.
   assert.deepEqual(id([0.3, null, 0.9, null, 0.5]).ordem, [2, 4, 0, 1, 3]);
 });
@@ -151,7 +156,7 @@ test("ordem: sem como julgar, a ordem da busca fica inteira", () => {
 test("o scanner confere pela foto ANTES de mostrar e conta o que a pessoa corrige", () => {
   // A conferência roda entre a busca e o entregar (a carta não troca depois
   // de aparecer) e só com mais de um candidato.
-  assert.match(scanSrc, /achados\.length > 1\) \{[\s\S]{0,200}?conferirPelaFoto\(fonte, rec, achados\)[\s\S]{0,200}?entregar\(codigo, achados, pelaFoto\)/);
+  assert.match(scanSrc, /achados\.length > 1\) \{[\s\S]{0,200}?conferirPelaFoto\(fonte, rec, achados\)[\s\S]{0,300}?entregar\(codigo, achados, foto/);
   // A galeria procura a carta num leque maior de posições.
   assert.match(scanSrc, /ler\(img, \{[^}]*galeria: true/);
   // O resumo da sessão leva a precisão, e os contadores são somados onde a

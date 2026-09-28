@@ -187,8 +187,8 @@ item:
 1. **Conferência pela imagem** ✔ (esta entrega) + **medir a precisão** ✔.
 2. **Travar o set** ✔ (além do jogo).
 3. **Som e vibração por faixa de preço** ✔ (em R$, configurável) e aviso de wishlist.
-4. Leitura automática (sem disparador) com dicas ao vivo, e a lista da sessão
-   no lugar do contador de lote, com o "modo rápido".
+4. **Leitura automática** ✔ (sem disparador) com dicas ao vivo, e a **lista da
+   sessão** ✔ no lugar do contador de lote.
 5. Reconhecimento pela arte (a fase 2 abaixo, redesenhada): depois de medir.
 
 **Conferência pela imagem** (`conferirPelaFoto`, `src/scan.js`). Quando o
@@ -277,6 +277,46 @@ silêncio cala o scanner. A preferência é do aparelho (localStorage, com o
 padrão quando não há). Conferido no fluxo real com um espião no
 AudioContext: a Manga (US$ 3.250) toca o arpejo da boa; na wishlist, o da
 wishlist; com as faixas em 5000/9000, a nota grave; mudo, nada.
+
+**Leitura automática** (`medirQuadro`, `passoAuto`). O ManaBox lê sem
+disparador: a carta entra no quadro, é lida, vem a próxima. Aqui um laço leve
+(~8 quadros/s) reduz o recorte da moldura a 48×66 em cinza e mede luz,
+reflexo, contraste e movimento contra a amostra anterior. A carta PARADA
+(diferença média abaixo de 5) por três amostras seguidas, com luz (brilho
+acima de 40) e com conteúdo (contraste acima de 18: a mesa lisa não conta),
+dispara a leitura. Depois de qualquer leitura — automática ou no toque — o
+laço só volta a ler quando a cena MUDA (diferença acima de 14: a carta saiu
+ou trocou), senão lia a mesma carta a cada segundo; a segunda cópia da mesma
+carta é o disparador, que continua lendo na hora. Sem amostra anterior, o
+movimento é NaN — nem parada nem mudança: com 255 ali, a carta lida no toque
+antes de o laço começar era lida de novo por ele (o teste pegou). O laço
+pausa com qualquer folha aberta e com a aba escondida, e começa quando o
+motor de OCR está pronto. As medidas viram dica ao vivo ("pouca luz",
+"reflexo"), e a leitura automática que não acha código nenhum não abre a
+folha de correção (o laço pode ter pego a carta ainda chegando): vira a dica
+"afaste um pouco, evite reflexo" até a cena mudar. Com código lido e carta
+não achada, a folha abre como antes. O botão ao lado da galeria liga e
+desliga (ligado por padrão; preferência do aparelho). O `scan_done` conta as
+leituras automáticas (`auto`).
+
+**Lista da sessão** (o "scanned cards" do ManaBox). Toda carta lida entra
+nela; a mesma carta de novo soma uma cópia; a ambígua — mesmo código e a foto
+sem folga pra decidir (`ordemPelaFoto` devolve `claro`) — fica marcada
+"Conferir", que abre as versões e troca o item. Escolher outra versão no
+"+N opções" corrige a lista (só a cópia da última leitura), e a busca
+digitada na folha também (a folha é "Corrigir leitura"). Condição e variante
+(padrão, foil/holo, reverse — o "preferir foil" do ManaBox, e o reverse de
+quem separa os reverses do Pokémon) valem pra sessão; "Adicionar N à
+coleção" grava tudo o que falta, e o "+ Coleção" do cartão marca a cópia
+dela. O botão da direita mostra a contagem e o total (só a contagem abaixo de
+360 px). A lista fica no aparelho por 24 h — só ids, variante, quantidade;
+nada da foto — e volta ao reabrir o scanner se ainda houver algo por
+adicionar. Conferido no fluxo real com um vídeo falso alternando duas cartas
+e a mesa vazia: cinco leituras sozinhas em 26 s (uma por aparição, nenhuma
+repetida), a Oden Alternate Art e a Chopper Manga escolhidas pela foto, a
+Chopper marcada pra conferir (empata com a reimpressão do Premium Booster,
+de outro preço), o "Conferir" trocando pela reimpressão, a coleção recebendo
+Foil em SP, e a lista de volta depois de fechar — em 390 e 320 px.
 
 ## Fase 2 — hash perceptual da arte
 
