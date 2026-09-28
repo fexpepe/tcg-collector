@@ -775,6 +775,12 @@ média, boa — faixas na moeda do site, R$ 5 e R$ 50 por padrão, mudáveis no
 alto-falante da barra), com um som próprio pra carta da wishlist: dá pra
 triar sem olhar a tela.
 
+A leitura é automática (desliga ao lado da galeria): a carta parada entre as
+molduras é lida sozinha, e só se lê de novo quando a cena muda. Toda carta
+lida entra na lista da sessão (o botão da direita, com contagem e total), com
+quantidade, condição e variante, a ambígua marcada pra conferir, e "Adicionar
+N à coleção" grava tudo de uma vez; a lista fica no aparelho por 24 h.
+
 O que isso mudou na infra: `script-src` ganhou `'wasm-unsafe-eval'` e a
 `Permissions-Policy` liberou `camera=(self)` (ver [_headers](_headers)); o
 worker do OCR nasce por URL (`workerBlobURL: false`) pra `worker-src 'self'`

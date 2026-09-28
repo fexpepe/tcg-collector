@@ -83,7 +83,7 @@ test("os avisos sobem com o valor, e a wishlist é o maior", () => {
 });
 
 test("o aviso sai da leitura, e o áudio é liberado no toque", () => {
-  assert.match(scanSrc, /else avisar\(achados\[0\]\);/);
+  assert.match(scanSrc, /if \(achados\.length\) \{ avisar\(achados\[0\]\); return; \}/);
   // Safari: o AudioContext tem de nascer/voltar dentro de um gesto.
   assert.match(scanSrc, /btnLer\.addEventListener\("click", async \(\) => \{[\s\S]{0,160}?contextoAudio\(\)/);
   // Preferência do aparelho, com o storage protegido.
