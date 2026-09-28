@@ -327,3 +327,50 @@ test("migração 20260927a: RPC só de admin e os dois eventos na whitelist", ()
   assert.match(sql, /jsonb_typeof\(props->'sv'\) = 'array'/);
   assert.match(sql, /jsonb_typeof\(props->'v'\)\s+= 'array'/);
 });
+
+// ── Apoiador sem anúncio (20260928c) ─────────────────────────────────────────
+test("apoio vale até o fim do dia gravado; formato errado não vale", () => {
+  assert.equal(V.apoioVigente("2026-10-27", "2026-10-27"), true, "último dia ainda vale");
+  assert.equal(V.apoioVigente("2026-10-27", "2026-10-28"), false, "venceu");
+  assert.equal(V.apoioVigente("2027-01-02", "2026-12-31"), true, "virada de ano");
+  for (const ruim of [null, undefined, "", "2026-10-7", "27/10/2026", 20261027, "9999-99-99x"]) {
+    assert.equal(V.apoioVigente(ruim, "2026-10-01"), false, String(ruim));
+  }
+});
+
+test("apoio no cache: quem apoia some com tudo na hora; o resto reconfere com o banco", () => {
+  const H = 60 * 60 * 1000, agora = 1_800_000_000_000, dia = "2026-10-01";
+  const d = (cache, uid = "u1") => arr(V.apoioDoCache(cache, uid, dia, agora));
+  assert.deepEqual(d(null, ""), { apoia: false, confere: false }, "deslogado: nem pergunta");
+  assert.deepEqual(d(null), { apoia: false, confere: true }, "logado sem cache: pergunta e ESPERA");
+  assert.deepEqual(d({ u: "u1", ate: "2026-10-20", ts: agora - H }), { apoia: true, confere: false }, "apoia: decide sem rede");
+  assert.deepEqual(d({ u: "u1", ate: "2026-10-20", ts: agora - 7 * H }), { apoia: true, confere: true }, "apoia, cache velho: reconfere em 2º plano");
+  assert.deepEqual(d({ u: "u1", ate: "", ts: agora - H / 2 }), { apoia: false, confere: false }, "não apoia, visto há 30 min");
+  assert.deepEqual(d({ u: "u1", ate: "", ts: agora - 2 * H }), { apoia: false, confere: true }, "não apoia, visto há 2 h: reconfere");
+  assert.deepEqual(d({ u: "u1", ate: "2026-09-30", ts: agora - H / 2 }), { apoia: false, confere: false }, "venceu ontem: anúncio de volta");
+  assert.deepEqual(d({ u: "outra", ate: "2026-10-20", ts: agora }), { apoia: false, confere: true }, "cache de OUTRA conta no mesmo aparelho não vale");
+  assert.deepEqual(d({ u: "u1", ate: "", ts: agora + H }), { apoia: false, confere: true }, "relógio que voltou: reconfere");
+});
+
+test("apoiador: o ads.js pergunta ao banco antes de montar e o shared.js deixa passar só apoio_*", () => {
+  const ads = ler("src/ads.js");
+  assert.match(ads, /adminRpc\("apoio_status", 0, \{\}\)/);
+  assert.match(ads, /if \(cfg && !apoia\) inicia\(cfg\)/, "quem apoia não passa pelo inicia (nem aviso, nem ad_view)");
+  const shared = ler("src/shared.js");
+  assert.match(shared, /if \(!\/\^\(admin\|apoio\)_\[a-z_\]\+\$\/\.test\(nome\)\) return null;/);
+});
+
+test("migração 20260928c: tabela trancada, leitura só da própria data, escrita só de admin", () => {
+  const sql = ler("supabase/migrations/20260928c_apoiador.sql");
+  assert.match(sql, /references auth\.users \(id\) on delete cascade/, "apagar a conta leva a linha junto");
+  assert.match(sql, /alter table public\.apoiadores enable row level security;/);
+  assert.match(sql, /revoke all on public\.apoiadores from public, anon, authenticated;/);
+  assert.doesNotMatch(sql, /grant [a-z, ]+ on (table )?public\.apoiadores/i, "nenhum acesso direto à tabela pela API");
+  assert.doesNotMatch(sql, /create policy/i, "sem policy: a tabela só é lida pelas RPCs");
+  assert.match(sql, /select ate from apoiadores where user_id = auth\.uid\(\)/, "apoio_status devolve só a própria linha");
+  for (const f of ["admin_apoiador", "admin_apoiadores"]) {
+    assert.match(sql, new RegExp(`function public\\.${f}\\([\\s\\S]*?if not _is_admin\\(\\) then return null; end if;`), f);
+    assert.doesNotMatch(sql, new RegExp(`grant execute on function public\\.${f}\\([^)]*\\) to anon`), f);
+  }
+  assert.doesNotMatch(sql, /grant execute on function public\.apoio_status\(\) to anon/);
+});

@@ -209,6 +209,29 @@
     });
   }
 
+  // Apoiador sem anúncio (migração 20260928c): pra quem apoia, o selo com a
+  // data. A resposta também renova a memória que o src/ads.js usa pra decidir
+  // sem rede (mesma chave e formato) — abrir Configurações depois de ser
+  // marcado no /admin já tira os anúncios na próxima página de catálogo.
+  // Deslogado, ou RPC ainda não aplicada (undefined), fica só o texto de como
+  // ganhar os 30 dias.
+  const selo = document.getElementById("apoioSelo");
+  const sessao = shared.getSession && shared.getSession();
+  if (selo && sessao && sessao.user && shared.adminRpc) {
+    shared.adminRpc("apoio_status", 0, {}).then((ate) => {
+      if (ate === undefined) return;
+      try { localStorage.setItem("sleevu-apoio-v1", JSON.stringify({ u: sessao.user.id, ate: typeof ate === "string" ? ate : "", ts: Date.now() })); } catch (e) { /* ignora */ }
+      const d = new Date();
+      const hoje = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+      if (typeof ate !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(ate) || ate < hoje) return;
+      const [a, m, dd] = ate.split("-").map(Number);
+      const data = new Date(a, m - 1, dd).toLocaleDateString(document.documentElement.lang || "pt-BR", { day: "numeric", month: "long", year: "numeric" });
+      selo.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z"/></svg>';
+      selo.appendChild(document.createTextNode(shared.t("settings.apoioAtivo", { data })));
+      selo.hidden = false;
+    });
+  }
+
   // Preço da Comunidade — opt-out do envio anônimo (padrão ligado). Sem reload:
   // a próxima anotação de preço já respeita a escolha.
   const community = document.getElementById("communityToggle");

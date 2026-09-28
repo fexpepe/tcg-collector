@@ -4299,6 +4299,9 @@ a.hub-tile:active { box-shadow: 0 0 0 2px var(--accent); }
 
 .home-support {
   margin-top: 44px;
+  /* #apoiar (link de Configurações → "Sem anúncios, apoiando"): o topo da
+     caixa não some atrás do cabeçalho fixo. */
+  scroll-margin-top: 88px;
 }
 
 .support-card {
@@ -5043,6 +5046,16 @@ a.hub-tile:active { box-shadow: 0 0 0 2px var(--accent); }
 .setting-info { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
 .setting-info strong { font-size: 15px; }
 .setting-info > span { font-size: 13px; color: var(--muted); line-height: 1.5; }
+.setting-info > span a { color: var(--accent-ink); text-decoration: underline; text-underline-offset: 2px; }
+/* Apoiador sem anúncio (migração 20260928c): o selo "sem anúncios até …" de
+   quem apoia, na linha de Configurações → Privacidade. Discreto, na cor de
+   destaque, com o coração em traço do criativo "apoie" da vitrine. */
+.setting-apoio-selo {
+  display: flex; align-items: center; gap: 10px; margin: 0;
+  padding: 10px 12px; border-radius: 10px;
+  background: var(--accent-soft); color: var(--text); font-size: 14px; font-weight: 600; line-height: 1.4;
+}
+.setting-apoio-selo svg { flex: none; color: var(--accent-ink); }
 .setting-preview { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
 /* A tinta de cada cápsula segue a MESMA regra do resto do site (o textOnColor
    do shared.js: preto ou branco, o que der maior contraste real). Aqui estava

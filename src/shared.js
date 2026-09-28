@@ -4328,8 +4328,10 @@
   // RPC ainda não existe no banco (404), null = sem acesso ou falha.
   // `body` opcional (2.1): RPCs de escrita do painel (custo de campanha, link
   // de parceiro) mandam os próprios parâmetros; sem ele vai { days }.
+  // `apoio_*` (20260928c) passa pelo mesmo caminho: é a conta logada
+  // perguntando da PRÓPRIA data de apoiador (ads.js, Configurações).
   async function adminRpc(nome, days, body) {
-    if (!/^admin_[a-z_]+$/.test(nome)) return null;
+    if (!/^(admin|apoio)_[a-z_]+$/.test(nome)) return null;
     let s = getSession();
     if (!s) return null;
     if (Date.now() - (s.ts || 0) > 50 * 60 * 1000) s = (await refreshSession()) || s;

@@ -81,7 +81,9 @@ porque revela o que a pessoa negociou, e ficaria atrás de um opt-in próprio.
 | `analytics_summary(days)` | painel antigo do `/admin` (criado no dashboard, não versionado); fallback enquanto a `admin_dashboard` não existir |
 | `admin_dashboard(days)` | painel 2.0 do `/admin` (migração `20260914a`): overview, série diária, páginas, jogos, cartas, decks, audiência, produto e retenção num jsonb só; null pra quem não é admin |
 | `error_summary(...)` | erros de JS agregados, no mesmo painel |
-| `delete_account()` | apaga shares + collections + o usuário, filtrando por `auth.uid()` |
+| `delete_account()` | apaga shares + collections + o usuário, filtrando por `auth.uid()` (a linha de `apoiadores` vai junto, por cascade) |
+| `apoio_status()` | até que dia a conta LOGADA está sem anúncio (`date` ou null) — migração `20260928c`; o `ads.js` e as Configurações chamam pelo `adminRpc` |
+| `admin_apoiador(quem, dias)` / `admin_apoiadores()` | marcar (soma dias; 0 encerra) e listar apoiadores, pelo e-mail ou @; null pra quem não é admin. A tabela `apoiadores` não tem privilégio nenhum pra anon/authenticated |
 
 Contadores **nunca** aceitam insert direto: escrever é privilégio da RPC
 (`security definer`), com throttle por IP no servidor e 1 view/sessão no cliente.

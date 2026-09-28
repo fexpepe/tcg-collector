@@ -211,7 +211,30 @@
   // abaixo disso (celular, tablet em pé, janela estreita) vai o 300×250.
   function formatoDaFaixa(largura) { return largura >= 760 ? "faixa" : "quadrado"; }
 
-  window.TCGVitrine = { posicoesNaGrade, configValida, escolheCriativos, adsenseLiberado, formatoDaFaixa };
+  // Apoiador sem anúncio (decisão 3 do plano, valor fechado em 2026-09-28:
+  // cada apoio de R$ 10+ = 30 dias, somando). A data vem do banco
+  // (`apoio_status`, migração 20260928c) e vale até o FIM do dia gravado.
+  // "AAAA-MM-DD" compara certo como texto.
+  function apoioVigente(ate, dia) {
+    return typeof ate === "string" && /^\d{4}-\d{2}-\d{2}$/.test(ate) && ate >= dia;
+  }
+  // O que dá pra decidir só com o que está guardado neste aparelho, sem rede.
+  //   apoia    — some com tudo JÁ, sem esperar ninguém
+  //   confere  — perguntar ao banco. Com apoia=false, a página ESPERA a
+  //              resposta (senão quem acabou de apoiar veria anúncio na
+  //              primeira página); com apoia=true, confere em segundo plano
+  //              (pro caso de o apoio ter sido encerrado no /admin).
+  // "Não apoia" é reconferido a cada hora; "apoia", a cada 6 h.
+  const HORA = 60 * 60 * 1000;
+  function apoioDoCache(cache, uid, dia, agora) {
+    if (!uid) return { apoia: false, confere: false };
+    const c = cache && cache.u === uid ? cache : null;
+    const idade = c ? agora - (Number(c.ts) || 0) : Infinity;
+    if (c && apoioVigente(c.ate, dia)) return { apoia: true, confere: idade > 6 * HORA };
+    return { apoia: false, confere: !(idade >= 0 && idade < HORA) };
+  }
+
+  window.TCGVitrine = { posicoesNaGrade, configValida, escolheCriativos, adsenseLiberado, formatoDaFaixa, apoioVigente, apoioDoCache };
 
   // ── Página ────────────────────────────────────────────────────────────────
   const S = window.TCGShared;
@@ -606,10 +629,36 @@
     if (grade && escolhidos.length) montaGrade(grade, escolhidos.slice(0, nFaixas), cfg);
   }
 
+  // Quem apoia não vê espaço nenhum — nem AdSense, nem trilho, nem a casa
+  // pedindo apoio a quem já apoiou (não tem aviso de consentimento, não mede
+  // ad_view). A resposta do banco fica guardada por conta neste aparelho
+  // (apoioDoCache decide quando reconferir), então a partir da 2ª página a
+  // decisão é instantânea. Deslogado não tem como ser apoiador.
+  const APOIO_KEY = "sleevu-apoio-v1";
+  function apoioAgora() {
+    const sessao = S.getSession && S.getSession();
+    const uid = sessao && sessao.user && sessao.user.id;
+    let cache = null;
+    try { cache = JSON.parse(localStorage.getItem(APOIO_KEY) || "null"); } catch (e) { /* sem storage: pergunta sempre */ }
+    const d = apoioDoCache(cache, uid, hoje(), Date.now());
+    if (!d.confere || !S.adminRpc) return Promise.resolve(d.apoia);
+    // undefined = a RPC ainda não existe (migração 20260928c pendente) e null
+    // = não apoia (ou a chamada falhou): os dois viram "não apoia" por 1 h.
+    const busca = S.adminRpc("apoio_status", 0, {}).then((ate) => {
+      try { localStorage.setItem(APOIO_KEY, JSON.stringify({ u: uid, ate: typeof ate === "string" ? ate : "", ts: Date.now() })); } catch (e) { /* ignora */ }
+      return apoioVigente(ate, hoje());
+    }, () => false);
+    if (d.apoia) return Promise.resolve(true);
+    // Banco lento não segura a página: passou disso, segue como "não apoia".
+    return Promise.race([busca, new Promise((ok) => setTimeout(() => ok(false), 2500))]);
+  }
+
   // Config por fetch (e não embutida): o JSON muda sem mexer em código e o
   // `"ativo": false` desliga tudo. Passa pelo service worker como dado
-  // (stale-while-revalidate), então chega rápido a partir da 2ª página.
-  fetch("/data/ads.json").then((r) => (r.ok ? r.json() : null)).then(configValida).then((cfg) => {
-    if (cfg) inicia(cfg);
+  // (stale-while-revalidate), então chega rápido a partir da 2ª página. A
+  // pergunta "apoia?" vai junto, em paralelo.
+  const config$ = fetch("/data/ads.json").then((r) => (r.ok ? r.json() : null)).then(configValida);
+  Promise.all([config$, Promise.resolve().then(apoioAgora).catch(() => false)]).then(([cfg, apoia]) => {
+    if (cfg && !apoia) inicia(cfg);
   }).catch(() => { /* sem config, sem vitrine: a página segue igual */ });
 })();
