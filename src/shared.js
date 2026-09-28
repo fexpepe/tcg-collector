@@ -5805,7 +5805,16 @@
   async function fillMarketQuote(card) {
     const section = document.querySelector("#cardPreviewModal [data-market-quote]");
     if (!section) return;
-    const [pricing, fx] = await Promise.all([fetchCardPricing(card), fetchFxRatesBRL()]);
+    const pricingP = fetchCardPricing(card);
+    // O pricing da TCGdex traz o id do produto no Cardmarket: o chip da linha
+    // EU troca a busca pela página da carta assim que ele chega — sem esperar
+    // o câmbio, que pode levar 2,5 s. isConnected: o popup não trocou de carta.
+    pricingP.then((p) => {
+      const id = p && p.cardmarket && p.cardmarket.idProduct;
+      const a = id && section.isConnected && document.querySelector('#cardPreviewModal [data-mkt="cardmarket"]');
+      if (a) a.href = cardmarketUrl(card, id);
+    });
+    const [pricing, fx] = await Promise.all([pricingP, fetchFxRatesBRL()]);
     if (!section.isConnected) return;
     const html = marketQuoteHtml(pricing, fx, card);
     if (html) {
@@ -6801,18 +6810,25 @@
   //   tcgLine  — productLineName do TCGplayer (confirmado pelo "in <Linha>" da
   //              página de resultado, não derivado do nome).
   //   usText   — prefixo da busca no eBay/PriceCharting.
+  //   cm       — caminho do jogo no Cardmarket (cardmarket.com/en/<cm>/…),
+  //              conferido em 28/09/2026; sem ele, a carta não tem a linha EU.
+  //              O Fusion World mora dentro do DragonBallSuper de lá. Gundam
+  //              fica de fora até a seção abrir (o Cardmarket anunciou pra fim
+  //              de set/2026, sem endereço ainda) e Union Arena não é vendido.
+  //   cmq      — o Cardmarket põe o CÓDIGO da carta no nome do produto: a
+  //              busca vai por ele (ver cardmarketUrl).
   // naruto/hxh: Carddass japonês, nenhuma loja BR lista e o TCGplayer não tem.
   const MARKETS = {
-    pokemon:   { liga: ["LigaPokémon", "https://www.ligapokemon.com.br"], myp: "pokemon", ligabra: true, padded: true, tcgLine: "pokemon", usText: "pokemon" },
-    lorcana:   { liga: ["LigaLorcana", "https://www.ligalorcana.com.br"], myp: "lorcana", tcgLine: "lorcana", usText: "lorcana" },
-    onepiece:  { liga: ["LigaOnePiece", "https://www.ligaonepiece.com.br"], myp: "onepiece", tcgLine: "one-piece-card-game", usText: "one piece" },
-    magic:     { liga: ["LigaMagic", "https://www.ligamagic.com.br"], myp: "magic", tcgLine: "magic", usText: "mtg" },
-    ygo:       { liga: ["LigaYugioh", "https://www.ligayugioh.com.br"], myp: "yugioh", tcgLine: "yugioh", usText: "yugioh" },
-    digimon:   { liga: ["LigaDigimon", "https://www.ligadigimon.com.br"], myp: "digimon", tcgLine: "digimon-card-game", usText: "digimon" },
-    fab:       { liga: ["LigaFAB", "https://www.ligafab.com.br"], myp: "fab", tcgLine: "flesh-and-blood-tcg", usText: "flesh and blood" },
+    pokemon:   { liga: ["LigaPokémon", "https://www.ligapokemon.com.br"], myp: "pokemon", ligabra: true, padded: true, tcgLine: "pokemon", usText: "pokemon", cm: "Pokemon" },
+    lorcana:   { liga: ["LigaLorcana", "https://www.ligalorcana.com.br"], myp: "lorcana", tcgLine: "lorcana", usText: "lorcana", cm: "Lorcana" },
+    onepiece:  { liga: ["LigaOnePiece", "https://www.ligaonepiece.com.br"], myp: "onepiece", tcgLine: "one-piece-card-game", usText: "one piece", cm: "OnePiece", cmq: 1 },
+    magic:     { liga: ["LigaMagic", "https://www.ligamagic.com.br"], myp: "magic", tcgLine: "magic", usText: "mtg", cm: "Magic" },
+    ygo:       { liga: ["LigaYugioh", "https://www.ligayugioh.com.br"], myp: "yugioh", tcgLine: "yugioh", usText: "yugioh", cm: "YuGiOh" },
+    digimon:   { liga: ["LigaDigimon", "https://www.ligadigimon.com.br"], myp: "digimon", tcgLine: "digimon-card-game", usText: "digimon", cm: "Digimon", cmq: 1 },
+    fab:       { liga: ["LigaFAB", "https://www.ligafab.com.br"], myp: "fab", tcgLine: "flesh-and-blood-tcg", usText: "flesh and blood", cm: "FleshAndBlood" },
     gundam:    { liga: ["LigaGundam", "https://www.ligagundam.com.br"], myp: "gundam", tcgLine: "gundam-card-game", usText: "gundam card game" },
-    dbfw:      { liga: ["LigaDragonBall", "https://fusion.ligadragonball.com.br"], tcgLine: "dragon-ball-super-fusion-world", usText: "dragon ball fusion world" },
-    riftbound: { liga: ["LigaRiftbound", "https://www.ligariftbound.com.br"], myp: "riftbound", tcgLine: "riftbound-league-of-legends-trading-card-game", usText: "riftbound" },
+    dbfw:      { liga: ["LigaDragonBall", "https://fusion.ligadragonball.com.br"], tcgLine: "dragon-ball-super-fusion-world", usText: "dragon ball fusion world", cm: "DragonBallSuper", cmq: 1 },
+    riftbound: { liga: ["LigaRiftbound", "https://www.ligariftbound.com.br"], myp: "riftbound", tcgLine: "riftbound-league-of-legends-trading-card-game", usText: "riftbound", cm: "Riftbound" },
     // Union Arena (conferido em 07/08/2026): SEM loja BR. ligaunionarena.com.br
     // não existe (o DNS nem resolve) e mypcards.com/unionarena dá 404 — então
     // nada de liga/myp aqui, só o mercado internacional.
@@ -6861,6 +6877,32 @@
       { key: "tcgplayer", label: "TCGplayer", url: (card) => `https://www.tcgplayer.com/search/${line}/product?productLineName=${line}&q=${enc(usSearchText(card, game))}` },
       { key: "pricecharting", label: "PriceCharting", url: (card) => `https://www.pricecharting.com/search-products?type=prices&q=${enc(usSearchText(card, game) + g)}` }
     ].filter((entry) => !(noTcgplayer && entry.key === "tcgplayer"));
+  }
+
+  // Mercado europeu (linha "Marketplace EU", 28/09/2026): o Cardmarket, direto
+  // na página da CARTA quando se sabe o id do produto — o Cardmarket redireciona
+  // /<jogo>/Products?idProduct=N pra ela (é o link que o próprio Scryfall usa).
+  // Quem sabe o id é a cotação ao vivo da TCGdex (Pokémon): o link nasce na
+  // busca e troca quando ela chega (ver fillMarketQuote).
+  //
+  // Sem id, a BUSCA do Cardmarket, no formato em que ele NOMEIA o produto, que
+  // é o que ela casa. One Piece, Digimon e Fusion World levam o código no nome
+  // ("Monkey.D.Luffy (OP01-024) (V.2)"): vai só o código (`cmq`), que acha a
+  // carta mesmo quando o nome do TCGplayer diverge ("BT1-001 R" perde a
+  // raridade). O Pokémon é "Nome (SET 018)": nome + número (o `padded`, que só
+  // ele tem) — a ajuda do Cardmarket documenta a busca "Charizard 4". Nos
+  // demais, só o nome, como o Scryfall faz no Magic. Sempre em INGLÊS (é como o
+  // Cardmarket cataloga) e sem o sufixo de tratamento do TCGplayer ("(Alternate
+  // Art)"), que lá não existe e zeraria a busca.
+  function cardmarketUrl(card, idProduct) {
+    const m = marketOf(card.game || currentGame());
+    const base = `https://www.cardmarket.com/en/${m.cm}/Products`;
+    if (idProduct) return `${base}?idProduct=${idProduct}`;
+    const code = m.cmq && /^[A-Z]+\d*-\d+/.exec(card.number);
+    const num = m.padded && /^\d+/.exec(card.number);
+    const nome = String(card.nameEn || (/^(ja|zh)/.test(card.language) && card.pokemonName) || card.name)
+      .replace(/\s*[([][^)\]]*[)\]]$/, "");
+    return `${base}/Search?searchString=${enc(code ? code[0] : num ? `${nome} ${num[0]}` : nome)}`;
   }
 
   // Selo "PSA 9" (cor da graduadora) e o sufixo de busca pras lojas — usados só
@@ -7249,7 +7291,13 @@
     // só vem quando a carta é graduada e entra na busca de eBay/PriceCharting.
     const game = card.game || currentGame();
     const linhas = marketplaceRow("price.checkBr", brMarketplaces(game), card)
-      + marketplaceRow("price.checkUs", usMarketplaces(game, gradedTag), card);
+      + marketplaceRow("price.checkUs", usMarketplaces(game, gradedTag), card)
+      // Linha vintage (Carddass/OP 2002/Miracle Battle) não existe no Cardmarket:
+      // a busca voltaria vazia, então a linha EU nem aparece. É isVintageCard, e
+      // não a flag, porque a carta vinda da borda (Coleção/Explorar) chega sem
+      // ela — mas só fora do Pokémon, onde "vintage" é só a data de lançamento
+      // e o Base Set existe no Cardmarket.
+      + marketplaceRow("price.checkEu", marketOf(game).cm && (game === "pokemon" || !isVintageCard(card)) ? [{ key: "cardmarket", label: "Cardmarket", url: cardmarketUrl }] : [], card);
     // Transparência do afiliado: a nota aparece SÓ se algum link desta carta
     // for de afiliado — com os IDs vazios (ou numa carta sem TCGplayer/eBay)
     // ela diria algo que não é verdade.
