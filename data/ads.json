@@ -1,9 +1,9 @@
 {
-  "_leia": "Vitrine (espaço de anúncio). Formato e regras em src/ads.js (configValida) e docs/PLANO-ADS.md. \"ativo\": false desliga tudo no próximo carregamento. regras: em ALTURAS DE TELA (primeira = distância do topo da grade até a 1ª faixa; intervalo = entre faixas; max = teto por página). porDia = quantas vezes cada criativo da casa pode ser VISTO por dia. Parceiro: {id, tipo: \"parceiro\", href: \"https://…\", alt, imagens: {faixa: 728x90, quadrado: 300x250, trilho: 160x600 (opcional)} em /assets/partners/ (arte nova = arquivo novo), jogos: [\"pokemon\"], idiomas: [\"pt\"], desde/ate: \"AAAA-MM-DD\", peso}. adsense: cliente = o ca-pub-XXXXXXXXXXXXXXXX da conta; blocos = o data-ad-slot de três blocos de display de TAMANHO FIXO criados no painel (faixa 728x90, quadrado 300x250, trilho 160x600). Vazio = AdSense dormente. Ao preencher o cliente, o ads.txt e a meta google-adsense-account do index.html têm de trazer o mesmo pub (o tests/vitrine.test.mjs cobra).",
+  "_leia": "Vitrine (espaço de anúncio). Formato e regras em src/ads.js (configValida) e docs/PLANO-ADS.md. \"ativo\": false desliga tudo no próximo carregamento. regras: em ALTURAS DE TELA (primeira = distância do topo da grade até a 1ª faixa; intervalo = entre faixas; max = teto por página). porDia = quantas vezes cada criativo da casa pode ser VISTO por dia. Parceiro: {id, tipo: \"parceiro\", href: \"https://…\", alt, imagens: {faixa: 728x90, quadrado: 300x250, trilho: 160x600 (opcional)} em /assets/partners/ (arte nova = arquivo novo), jogos: [\"pokemon\"], idiomas: [\"pt\"], desde/ate: \"AAAA-MM-DD\", peso}. adsense: cliente = o ca-pub-XXXXXXXXXXXXXXXX da conta; blocos = o data-ad-slot de três blocos de display de TAMANHO FIXO criados no painel (faixa 728x90, quadrado 300x250, trilho 160x600). Sem pelo menos um bloco (ou sem o cliente) = AdSense dormente: nem aviso de consentimento, nem script. O cliente, o ads.txt e a meta google-adsense-account do index.html trazem o mesmo pub (o tests/vitrine.test.mjs cobra).",
   "ativo": true,
   "fornecedores": ["parceiro", "adsense", "casa"],
   "adsense": {
-    "cliente": "",
+    "cliente": "ca-pub-0808280324005030",
     "blocos": { "faixa": "", "quadrado": "", "trilho": "" }
   },
   "regras": {

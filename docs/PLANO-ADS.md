@@ -535,12 +535,15 @@ O que mudou no caminho, e por quê:
   então a medida é aproximada — ajusta-se no `primeira` do JSON).
 
 ### Fase 1 — AdSense
-- [ ] Conta AdSense (é do Fernando) + linha no `ads.txt` + `<meta
-      name="google-adsense-account">` no `index.html`; **3 blocos de display
-      de tamanho fixo** (728×90, 300×250, 160×600); **Auto ads, vinheta e
-      âncora desligados**. Com o `ca-pub` e os 3 IDs, é preencher o `adsense`
-      do `data/ads.json` — o teste de vitrine exige os três lugares com o
-      mesmo `pub`
+- [x] Conta AdSense (`pub-0808280324005030`, 2026-09-28) + linha no
+      `ads.txt` + `<meta name="google-adsense-account">` no `index.html`
+      (verificação por meta: o trecho de código rodaria o script do Google na
+      landing antes do consentimento). Auto ads desligado no painel
+- [ ] Verificar o site e pedir a revisão no painel (Sites → sleevu.app)
+- [ ] **3 blocos de display de tamanho fixo** (728×90, 300×250, 160×600) e
+      os `data-ad-slot` no `blocos` do `data/ads.json`; **vinheta, âncora e
+      formatos por intenção desligados**. O teste de vitrine exige o mesmo
+      `pub` na config, no `ads.txt` e na meta
 - [ ] Espaços no grupo A (páginas pré-renderizadas de carta, set, deck e
       artista), no molde do `prerender-catalog.mjs` — PR própria
 - [x] Fornecedor `adsense` no `ads.js`, dormente até o `ca-pub` (2026-09-28)
