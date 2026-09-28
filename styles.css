@@ -4122,8 +4122,11 @@ a.hub-tile:hover {
    tamanho sai da proporção (--r, que o hub.js grava no load): largura
    K·r^0,4 e altura K·r^−0,6. Expoente 0,5 igualaria as áreas; 0,4 dá um pouco
    menos ao logo largo, que pesa mais no olho por ser comprido. K acompanha a
-   largura do tile (50cqw, teto de 140px), então a prateleira escala junto nas
+   largura do tile (58cqw, teto de 165px), então a prateleira escala junto nas
    faixas menores; os limites da caixa seguem valendo (1º e 2º termos do min).
+   165px (era 140) desde o mesmo dia, a pedido do Fernando: +18%, o maior que
+   ainda deixa ~24px de respiro em cima e embaixo do logo mais alto (DBFW) —
+   com 170 ele já quase encosta. O Vintage subiu na mesma proporção.
    cqw/cqh medem a caixa de CONTEÚDO do .hub-logo-box, já sem o padding — o
    mesmo espaço que o calc(100% - 40px) de cima mede pela caixa de padding.
    Por isso o arquivo precisa vir recortado no conteúdo (ver o README de
@@ -4134,14 +4137,14 @@ a.hub-tile:hover {
    do que precisa combinar com o vizinho. */
 @media (min-width: 601px) {
   .hub-logo {
-    --k: min(140px, 50cqw);
+    --k: min(165px, 58cqw);
     width: min(100cqw, 100cqh * var(--r), var(--k) * pow(var(--r), 0.4));
     height: min(100cqw / var(--r), 100cqh, var(--k) * pow(var(--r), -0.6));
   }
   /* Vintage: caixa mais baixa e logo proporcionalmente menor. */
   .hub-vintage .hub-logo-box { height: 124px; padding: 16px; }
   .hub-vintage .hub-logo {
-    --k: min(100px, 46cqw);
+    --k: min(115px, 58cqw);
     max-width: calc(100% - 32px);
     max-height: calc(100% - 32px);
   }
