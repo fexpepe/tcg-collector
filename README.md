@@ -756,8 +756,8 @@ Plano, números e decisões em [docs/PLANO-ADS.md](docs/PLANO-ADS.md). Fase 0
 no ar desde 2026-09-27: o espaço existe e é medido, mas só mostra conteúdo do
 próprio Sleevu ("casa": apoie, crie sua conta, anuncie) e de lojas parceiras
 servidas daqui. A fase 1 (2026-09-28) deixou o AdSense pronto e desligado:
-enquanto o `ca-pub` estiver vazio no `data/ads.json`, nenhum script de
-terceiro carrega.
+a conta (`ca-pub-0808280324005030`) já está no `data/ads.json`, mas enquanto
+os `blocos` estiverem vazios nenhum script de terceiro carrega.
 
 - **Quem tem vitrine é o HTML.** Só as páginas de catálogo carregam
   `<script defer src="src/ads.js" data-grade="#grade">` (o último script da
@@ -790,9 +790,10 @@ terceiro carrega.
   economia de dados e fora da UE/UK/CH (`<html data-pais>`, posto pela borda).
   Bloco sem anúncio, bloqueado ou lento vira a vitrine da casa na mesma caixa;
   faixa com anúncio pedido que um filtro reposiciona também — nunca há pedido
-  novo sem ação da pessoa. Ao preencher o `ca-pub`, a mesma linha vai no
-  `ads.txt` e na `<meta name="google-adsense-account">` do `index.html` (o
-  teste exige os três iguais).
+  novo sem ação da pessoa. O `ca-pub` da config, a linha do `ads.txt` e a
+  `<meta name="google-adsense-account">` do `index.html` (verificação do site,
+  não carrega script) são o mesmo pub — o teste cobra; trocar de conta é
+  trocar os três.
 - **CSP com nonce** só nas páginas com vitrine: cada uma tem uma Function de
   3 linhas em `functions/` que chama o `functions/_vitrine-csp.js` (o
   `/detail` embrulha a resposta que já montava). Lá o `script-src` vira
