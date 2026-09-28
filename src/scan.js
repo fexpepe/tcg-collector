@@ -317,7 +317,7 @@
     return out.slice(0, 12);
   }
 
-  // ── Conferência pela IMAGEM (funções PURAS; testadas em tests/scan-codes.test.mjs) ──
+  // ── Conferência pela IMAGEM (funções PURAS; testadas em tests/scan-foto.test.mjs) ──
   // O código impresso não identifica UMA carta em boa parte do catálogo: o
   // mesmo set + número vale pra 54 % das cartas do Digimon, 53 % do Gundam,
   // 40 % do DBFW, 35 % do Union Arena e 30 % do One Piece e do Yu-Gi-Oh
