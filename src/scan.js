@@ -317,6 +317,220 @@
     return out.slice(0, 12);
   }
 
+  // ── Conferência pela IMAGEM (funções PURAS; testadas em tests/scan-codes.test.mjs) ──
+  // O código impresso não identifica UMA carta em boa parte do catálogo: o
+  // mesmo set + número vale pra 54 % das cartas do Digimon, 53 % do Gundam,
+  // 40 % do DBFW, 35 % do Union Arena e 30 % do One Piece e do Yu-Gi-Oh
+  // (contado no catálogo em 2026-09-28). E o que separa essas cartas é o que
+  // vale dinheiro: Alternate Art, Parallel, Manga, SP, R+. A busca devolvia a
+  // que vem primeiro no catálogo (quase sempre a comum) e a pessoa tinha de
+  // achar a certa no "+N opções". O ManaBox faz o caminho inverso: reconhece
+  // pela ARTE e erra a impressão (o FAQ dele admite). Aqui o código diz set e
+  // número, e a foto desempata a arte.
+  //
+  // A ASSINATURA é a carta reduzida a uma grade 16×22 com a média de três
+  // canais por célula — luz e duas cores opostas (vermelho−verde e
+  // amarelo−azul) —, cada canal sem a própria média (tira o tom da lâmpada e o
+  // balanço de branco da câmera) e o vetor inteiro com norma 1: a semelhança
+  // de duas cartas é o cosseno entre as assinaturas (1 = iguais). Grade grossa
+  // de propósito: tolera foto um pouco borrada e fora de esquadro, e a marca
+  // "SAMPLE" que as imagens do TCGplayer trazem no meio pesa igual em todos os
+  // candidatos. O caso difícil é a Manga contra a comum do One Piece — a pose
+  // do personagem é a mesma, muda o fundo —, e quem separa é a cor.
+  const GRADE_W = 16, GRADE_H = 22;
+  const MIOLO = 0.03; // borda descartada de cada lado: canto arredondado, fundo, moldura da carta
+  // Imagem integral (tabela de somas) dos três canais: a média de qualquer
+  // retângulo sai em quatro leituras, então as dezenas de recortes da mesma
+  // foto (escalas e deslocamentos) custam quase nada.
+  function integral(px, w, h) {
+    const W1 = w + 1;
+    const L = new Float64Array(W1 * (h + 1)), A = new Float64Array(L.length), B = new Float64Array(L.length);
+    for (let y = 0; y < h; y++) {
+      let sl = 0, sa = 0, sb = 0;
+      for (let x = 0; x < w; x++) {
+        const i = (y * w + x) * 4, r = px[i], g = px[i + 1], b = px[i + 2];
+        sl += (r + g + b) / 3;
+        sa += r - g;
+        sb += (r + g) / 2 - b;
+        const k = (y + 1) * W1 + x + 1, cima = y * W1 + x + 1;
+        L[k] = L[cima] + sl; A[k] = A[cima] + sa; B[k] = B[cima] + sb;
+      }
+    }
+    return { w, h, L, A, B };
+  }
+  // Assinatura do retângulo (x, y, rw, rh), em pixels da imagem integral, sem
+  // a borda (MIOLO). null quando o retângulo sai da imagem ou é liso demais
+  // (tela preta, parede): não há o que comparar.
+  function assinatura(ii, x, y, rw, rh) {
+    const mx = rw * MIOLO, my = rh * MIOLO;
+    x += mx; y += my; rw -= 2 * mx; rh -= 2 * my;
+    if (x < -0.5 || y < -0.5 || x + rw > ii.w + 0.5 || y + rh > ii.h + 0.5 || rw < GRADE_W || rh < GRADE_H) return null;
+    const W1 = ii.w + 1, n = GRADE_W * GRADE_H, v = new Float32Array(n * 3);
+    const soma = (T, x0, y0, x1, y1) => T[y1 * W1 + x1] - T[y0 * W1 + x1] - T[y1 * W1 + x0] + T[y0 * W1 + x0];
+    const corte = (ini, tam, i, partes, max) => Math.min(max, Math.max(0, Math.round(ini + (tam * i) / partes)));
+    let k = 0;
+    for (let gy = 0; gy < GRADE_H; gy++) {
+      const y0 = corte(y, rh, gy, GRADE_H, ii.h - 1), y1 = Math.max(y0 + 1, corte(y, rh, gy + 1, GRADE_H, ii.h));
+      for (let gx = 0; gx < GRADE_W; gx++, k++) {
+        const x0 = corte(x, rw, gx, GRADE_W, ii.w - 1), x1 = Math.max(x0 + 1, corte(x, rw, gx + 1, GRADE_W, ii.w));
+        const area = (x1 - x0) * (y1 - y0);
+        v[k] = soma(ii.L, x0, y0, x1, y1) / area;
+        v[n + k] = soma(ii.A, x0, y0, x1, y1) / area;
+        v[2 * n + k] = soma(ii.B, x0, y0, x1, y1) / area;
+      }
+    }
+    let norma = 0;
+    for (let c = 0; c < 3; c++) {
+      let m = 0;
+      for (let i = c * n; i < (c + 1) * n; i++) m += v[i];
+      m /= n;
+      for (let i = c * n; i < (c + 1) * n; i++) { v[i] -= m; norma += v[i] * v[i]; }
+    }
+    norma = Math.sqrt(norma);
+    if (!(norma > 1e-3)) return null;
+    for (let i = 0; i < v.length; i++) v[i] /= norma;
+    return v;
+  }
+  function semelhanca(a, b) {
+    let s = 0;
+    for (let i = 0; i < a.length; i++) s += a[i] * b[i];
+    return s;
+  }
+  // Onde a carta pode estar no quadro: escalas (fração da LARGURA; a altura
+  // vem da proporção 63×88) × deslocamentos (fração do quadro), e vale o
+  // recorte mais parecido. Câmera: a carta fica ENTRE as duas molduras — a
+  // interna tem 85 % da externa e o quadro leva 4 % de folga por lado (ver
+  // recorteDaGuia) —, ou seja, de ~79 % a ~93 % da largura. Galeria: a foto é
+  // livre, a busca é mais larga.
+  const RECORTES_CAMERA = { escalas: [0.78, 0.84, 0.9, 0.96], passos: [-0.03, 0, 0.03] };
+  const RECORTES_GALERIA = { escalas: [0.55, 0.65, 0.75, 0.85, 0.95], passos: [-0.12, -0.06, 0, 0.06, 0.12] };
+  function assinaturasDoQuadro(ii, grade) {
+    const out = [];
+    grade.escalas.forEach((s) => {
+      const cw = ii.w * s, ch = (cw * 88) / 63;
+      grade.passos.forEach((dy) => grade.passos.forEach((dx) => {
+        const a = assinatura(ii, (ii.w - cw) / 2 + dx * ii.w, (ii.h - ch) / 2 + dy * ii.h, cw, ch);
+        if (a) out.push(a);
+      }));
+    });
+    return out;
+  }
+  // Nova ordem dos candidatos. `sims[i]`: semelhança do candidato i com a foto
+  // (null = a imagem dele não chegou). O 1º da busca só perde o lugar com
+  // diferença CLARA — outro candidato mais parecido por MARGEM_FOTO ou mais, e
+  // parecido o bastante (PISO_FOTO) pra foto não ser de outra coisa. Empate é
+  // mesma arte com carimbo ou foil diferente (Yu-Gi-Oh Quarter Century, One
+  // Piece Pirate Foil): a foto não tem como decidir, a ordem da busca fica e a
+  // pessoa escolhe como já escolhia. Entre os que empatam com o mais parecido
+  // (EMPATE_FOTO), vence o que vinha antes na busca. O resto segue por
+  // semelhança — é a ordem da folha "+N opções" —, e quem ficou sem nota vai
+  // pro fim, na ordem da busca.
+  const MARGEM_FOTO = 0.06, PISO_FOTO = 0.3, EMPATE_FOTO = 0.02;
+  function ordemPelaFoto(sims) {
+    const idx = sims.map((_, i) => i);
+    const nota = (i) => (typeof sims[i] === "number" ? sims[i] : -Infinity);
+    const notas = idx.filter((i) => typeof sims[i] === "number");
+    const melhor = notas.length ? Math.max.apply(null, notas.map(nota)) : -Infinity;
+    // Sem nota do 1º, com menos de duas notas ou com a foto longe de tudo: a
+    // foto não sabe nada, a ordem da busca fica inteira.
+    if (sims.length < 2 || notas.length < 2 || typeof sims[0] !== "number" || melhor < PISO_FOTO) {
+      return { ordem: idx, mudou: false };
+    }
+    const mudou = melhor - nota(0) >= MARGEM_FOTO;
+    const primeiro = mudou ? notas.find((i) => nota(i) >= melhor - EMPATE_FOTO) : 0;
+    const resto = idx.filter((i) => i !== primeiro).sort((a, b) => nota(b) - nota(a) || a - b);
+    return { ordem: [primeiro].concat(resto), mudou };
+  }
+
+  // Pixels de `fonte` (quadro congelado, vídeo, imagem) no retângulo dado,
+  // reduzidos pra `largura` px e já em imagem integral. A redução vai pela
+  // metade de cada vez: de 1500 px pra 128 de uma vez só o drawImage pula
+  // pixels (serrilha) em vez de fazer a média, e a assinatura é uma média.
+  function pixelsDe(fonte, sx, sy, sw, sh, largura) {
+    let src = fonte, x = sx, y = sy, w = sw, h = sh;
+    while (w > largura * 2) {
+      const c = document.createElement("canvas");
+      c.width = Math.max(1, Math.round(w / 2));
+      c.height = Math.max(1, Math.round(h / 2));
+      c.getContext("2d").drawImage(src, x, y, w, h, 0, 0, c.width, c.height);
+      src = c; x = 0; y = 0; w = c.width; h = c.height;
+    }
+    const c = document.createElement("canvas");
+    c.width = largura;
+    c.height = Math.max(1, Math.round((largura * h) / w));
+    const ctx = c.getContext("2d", { willReadFrequently: true });
+    ctx.drawImage(src, x, y, w, h, 0, 0, c.width, c.height);
+    return integral(ctx.getImageData(0, 0, c.width, c.height).data, c.width, c.height);
+  }
+  // URLs da imagem de um candidato que dão um canvas LEGÍVEL, na largura da
+  // grade: a cadeia de sempre do site (cardImgChain: o espelho img.sleevu.app,
+  // que manda CORS pra sleevu.app, e depois a origem — TCGdex, TCGplayer,
+  // Scryfall e pokemontcg.io mandam CORS aberto) e, por último, o proxy
+  // wsrv.nl, pra fonte sem CORS (o Lorcast). Todas com "sx=1": a folha e a
+  // grade já carregaram a MESMA URL sem crossOrigin, e o cache devolveria essa
+  // cópia, que suja o canvas (o mesmo motivo do canvasCardHelpers do shared.js).
+  const comSx = (u) => u + (u.indexOf("?") >= 0 ? "&" : "?") + "sx=1";
+  function urlsDaCarta(card) {
+    const src = shared.cardImageSources(card);
+    if (!src.url || !shared.cardImgChain) return [];
+    const c = shared.cardImgChain(src.url, { thumb: true, fallback: src.fallback });
+    const urls = [c.src].concat(c.chain || []).filter((u) => u && !/^data:/.test(u));
+    const origem = urls.find((u) => /^https:\/\//.test(u) && !/\/\/(img\.sleevu\.app|wsrv\.nl)\//.test(u));
+    if (origem) urls.push(`https://wsrv.nl/?url=${encodeURIComponent(origem)}&w=300&output=webp`);
+    return urls.map(comSx);
+  }
+  // Primeira URL da lista que carregar com CORS, até o prazo `ate` (absoluto).
+  function carregarImagem(urls, ate) {
+    return new Promise((resolve) => {
+      let i = 0, feito = false, tm = 0;
+      const fim = (im) => { if (!feito) { feito = true; clearTimeout(tm); resolve(im); } };
+      const tenta = () => {
+        if (feito) return;
+        if (i >= urls.length) { fim(null); return; }
+        const im = new Image();
+        im.crossOrigin = "anonymous";
+        im.decoding = "async";
+        im.onload = () => fim(im);
+        im.onerror = tenta;
+        im.src = urls[i++];
+      };
+      tm = setTimeout(() => fim(null), Math.max(0, ate - Date.now()));
+      tenta();
+    });
+  }
+  // Reordena `achados` (no lugar) pela semelhança com a foto e devolve se o 1º
+  // mudou. O prazo é curto porque a pessoa está esperando o resultado: imagem
+  // que não chega a tempo só fica sem nota, e a ordem da busca vale pra ela.
+  // Nada da foto sai do aparelho — o que desce são as miniaturas do catálogo.
+  const PRAZO_FOTO = 2500;
+  async function conferirPelaFoto(fonte, rec, achados) {
+    const lista = achados.slice(0, 8);
+    let fotos = [];
+    try { fotos = assinaturasDoQuadro(pixelsDe(fonte, rec.sx, rec.sy, rec.sw, rec.sh, 128), rec.galeria ? RECORTES_GALERIA : RECORTES_CAMERA); }
+    catch (e) { return false; } // sem canvas: fica a ordem da busca
+    if (!fotos.length) return false;
+    const ate = Date.now() + PRAZO_FOTO;
+    const porUrl = new Map(); // duas impressões com a MESMA imagem: um download só
+    const sims = await Promise.all(lista.map((h) => {
+      const urls = urlsDaCarta(h.card);
+      if (!urls.length) return null;
+      if (!porUrl.has(urls[0])) {
+        porUrl.set(urls[0], carregarImagem(urls, ate).then((im) => {
+          if (!im) return null;
+          try {
+            const ii = pixelsDe(im, 0, 0, im.naturalWidth || im.width, im.naturalHeight || im.height, 112);
+            const ref = assinatura(ii, 0, 0, ii.w, ii.h);
+            return ref ? Math.max.apply(null, fotos.map((f) => semelhanca(f, ref))) : null;
+          } catch (e) { return null; } // canvas sujo (sem CORS) ou imagem quebrada
+        }));
+      }
+      return porUrl.get(urls[0]);
+    }));
+    const { ordem, mudou } = ordemPelaFoto(sims);
+    achados.splice(0, lista.length, ...ordem.map((i) => lista[i]));
+    return mudou;
+  }
+
   // ── Motor de OCR (carregado sob demanda, um worker por sessão) ─────────────
   let workerPromise = null;
   function carregarScript(src) {
@@ -572,7 +786,8 @@
 .scan-form .lst-mini { min-height: 44px; border-radius: 9px; background: #1d212b; border-color: #2d333f; color: #f3f5f7; }
 .scan-sheet-acoes { display: flex; gap: 8px; }
 .scan-sheet-acoes[hidden] { display: none; }
-.scan-sheet-acoes .cta { flex: 1; min-width: 0; justify-content: center; min-height: 46px; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* Bloco, e não o flex do .cta: centrado em flex, um nome longo ("Adicionar Tony Tony.Chopper (Alternate Art) (Manga)") era cortado dos DOIS lados e as reticências nunca apareciam. */
+.scan-sheet-acoes .cta { display: block; flex: 1; min-width: 0; min-height: 46px; line-height: 46px; text-align: center; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .scan-heart { width: 46px; height: 46px; min-height: 0; flex: none; padding: 0; border: 1px solid #2d333f; border-radius: 9px; background: #1d212b; color: #f3f5f7; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
 .scan-heart svg { width: 20px; height: 20px; }
 .scan-heart.done { color: var(--accent-ink, #ef4444); border-color: var(--accent-ink, #ef4444); }
@@ -623,7 +838,14 @@
     // um evento por leitura de propósito: o banco aceita 60 eventos/min por IP
     // e descarta o resto calado, então medir por carta apagaria exatamente a
     // pessoa que abre um booster inteiro — que é quem importa enxergar.
-    const funil = { n: 0, lido: 0, achou: 0, t0: Date.now(), t1: 0 };
+    // PRECISÃO (2026-09-28): "achou" diz que o código casou com ALGUMA carta,
+    // não que era a certa. `amb` conta leituras com mais de uma carta pro
+    // mesmo código, `vis` as em que a foto mudou qual vem primeiro, `troca` as
+    // em que a pessoa trocou o 1º resultado por outra opção (uma vez por
+    // leitura) e `dig` as buscas digitadas na folha de correção. Troca e busca
+    // à mão são a pessoa dizendo que o scanner errou: é a taxa de erro real.
+    const funil = { n: 0, lido: 0, achou: 0, t0: Date.now(), t1: 0, amb: 0, vis: 0, troca: 0, dig: 0 };
+    let trocaConta = false; // a próxima troca de candidato ainda conta como erro desta leitura
     shared.logEvento("scan_open");
     // Toda carta que entrar daqui conta como cadastro por scanner (o store não
     // sabe de onde veio o clique). Volta pra "ui" no fechar.
@@ -756,13 +978,14 @@
     window.addEventListener("resize", posicionaGuia);
 
     function fechar() {
+      shared.setOrigemCadastro("ui");
       // Resumo da sessão: o funil inteiro (abriu -> leu -> achou -> adicionou)
-      // num evento só, com o tempo pra dar o ritmo de cadastro.
+      // e a precisão num evento só, com o tempo pra dar o ritmo de cadastro.
       shared.logEvento("scan_done", {
         n: funil.n, lido: funil.lido, achou: funil.achou, add: lote,
-        ms: Math.max(0, Date.now() - funil.t0), t1: funil.t1 || 0
+        ms: Math.max(0, Date.now() - funil.t0), t1: funil.t1 || 0,
+        amb: funil.amb, vis: funil.vis, troca: funil.troca, dig: funil.dig
       });
-      shared.setOrigemCadastro("ui");
       if (stream) stream.getTracks().forEach((tr) => tr.stop());
       stream = null;
       wrap.remove();
@@ -913,10 +1136,13 @@
       if (!resultados.length) { try { input.focus(); } catch (e) { /* teclado não abriu */ } }
     }
     function fecharFolha() { folha.hidden = true; fundo.hidden = true; }
-    function entregar(codigo, achados) {
+    function entregar(codigo, achados, pelaFoto) {
       funil.n += 1;
       if (codigo) funil.lido += 1;              // o OCR extraiu um código
       if (achados.length) funil.achou += 1;     // e ele casou com o catálogo
+      if (achados.length > 1) funil.amb += 1;   // com mais de uma carta
+      if (pelaFoto) funil.vis += 1;             // e a foto mudou qual vem primeiro
+      trocaConta = achados.length > 1;
       codigoAtual = codigo || "";
       resultados = achados;
       primario = 0;
@@ -1020,7 +1246,16 @@
         // é a forma de FORÇAR um só, quando a detecção errar.
         if (!codigos.length) { entregar("", []); return; }
         const { codigo, achados } = await procurar(codigos);
-        entregar(codigo, achados);
+        // Mesmo código, cartas diferentes (Alternate Art, Parallel, Manga…):
+        // a foto desempata ANTES de o resultado aparecer — trocar a carta
+        // depois de mostrada confundiria, e um "+ Coleção" rápido gravaria a
+        // errada. O quadro congelado ainda está vivo aqui.
+        let pelaFoto = false;
+        if (achados.length > 1) {
+          aviso(t("scan.status.comparing"));
+          try { pelaFoto = await conferirPelaFoto(fonte, rec, achados); } catch (e) { /* fica a ordem da busca */ }
+        }
+        entregar(codigo, achados, pelaFoto);
       } catch (e) {
         falhou = true;
         lendoTexto = null;
@@ -1045,6 +1280,7 @@
         codigoAtual = q;
         resultados = achados;
         primario = 0;
+        trocaConta = false; // o 1º aqui é da busca digitada, não da leitura
         pintarResultado();
         if (!folha.hidden || !achados.length) pintarFolha();
         if (!achados.length) abrirFolha(); else fecharFolha();
@@ -1084,11 +1320,14 @@
       let img;
       try { img = await bitmapDoArquivo(file); } catch (e) { dizer(t("scan.error")); return; }
       const w = img.width || img.naturalWidth, h = img.height || img.naturalHeight;
-      await ler(img, { sx: 0, sy: 0, sw: w, sh: h });
+      // `galeria`: a foto é livre (sem moldura), a conferência pela imagem
+      // procura a carta num leque maior de tamanhos e posições.
+      await ler(img, { sx: 0, sy: 0, sw: w, sh: h, galeria: true });
       if (img.close) img.close();
     });
     $("[data-scan-form]").addEventListener("submit", (ev) => {
       ev.preventDefault();
+      funil.dig += 1;
       buscarManual(input.value.trim().toUpperCase());
     });
     wrap.addEventListener("click", (ev) => {
@@ -1104,7 +1343,9 @@
       }
       const cand = ev.target.closest("[data-scan-cand]");
       if (cand) {
-        primario = Number(cand.dataset.scanCand);
+        const i = Number(cand.dataset.scanCand);
+        if (i !== primario && trocaConta) { funil.troca += 1; trocaConta = false; }
+        primario = i;
         pintarResultado();
         fecharFolha();
         return;
@@ -1123,5 +1364,8 @@
     obterWorker(progresso).then(() => { if (stream && !ocupado) pronto(); }).catch(() => dizer(t("scan.error")));
   }
 
-  window.TCGScan = { abrir, extrair, extrairCodigos, juntar, soDigitos, detectarJogo };
+  window.TCGScan = {
+    abrir, extrair, extrairCodigos, juntar, soDigitos, detectarJogo,
+    integral, assinatura, semelhanca, assinaturasDoQuadro, ordemPelaFoto
+  };
 })();

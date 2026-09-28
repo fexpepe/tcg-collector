@@ -164,6 +164,79 @@ busca que a aba *Busca* da bottom-bar abre. Um botão só, dois lugares.
   `tests/comparar-veracidade.test.mjs` trava a classe do bug: enquanto
   `src/scan.js` existir, a página não pode negar o scanner.
 
+## Fase 1.6 — o ManaBox como régua (2026-09-28)
+
+O ManaBox (Magic) é a referência de scanner que o Fernando escolheu. Ele
+reconhece pela **arte** (acha as bordas da carta num fundo liso e compara a
+imagem), lê sem disparador — a carta entra no quadro, toca um som, vem a
+próxima —, junta tudo numa lista da sessão com total, avisa por som a faixa
+de preço (< US$ 1, 1–10, > 10) e deixa travar o set. O ponto fraco, que o FAQ
+dele admite: pela arte, reimpressão com a mesma arte sai na versão errada.
+
+O Sleevu faz o inverso — lê o **código** —, e o código tem o buraco
+simétrico. Contado no catálogo: o mesmo set + número vale pra **54 %** das
+cartas do Digimon, **53 %** do Gundam, **40 %** do DBFW, **35 %** do Union
+Arena e **30 %** do One Piece e do Yu-Gi-Oh (8 % no FAB; ~0 % no Magic e no
+Lorcana; no Pokémon set + número é único, mas a fração sozinha repete entre
+sets). E o que separa essas cartas é o que vale dinheiro: Alternate Art,
+Parallel, Manga, SP, R+. A busca devolvia a primeira do catálogo — quase
+sempre a comum. Juntar os dois (o código diz set e número, a foto diz a arte)
+é o que dá pra fazer melhor que o ManaBox. A ordem de entrega, uma PR por
+item:
+
+1. **Conferência pela imagem** ✔ (esta entrega) + **medir a precisão** ✔.
+2. Travar o set (além do jogo).
+3. Som e vibração por faixa de preço (em R$, configurável) e aviso de wishlist.
+4. Leitura automática (sem disparador) com dicas ao vivo, e a lista da sessão
+   no lugar do contador de lote, com o "modo rápido".
+5. Reconhecimento pela arte (a fase 2 abaixo, redesenhada): depois de medir.
+
+**Conferência pela imagem** (`conferirPelaFoto`, `src/scan.js`). Quando o
+código casa com mais de uma carta, antes de o resultado aparecer, a foto
+(o quadro já congelado no disparo) é comparada com a miniatura de cada
+candidato, e a ordem muda se a diferença for clara. A **assinatura** é a
+carta reduzida a uma grade 16×22 com três canais por célula — luz e duas
+cores opostas —, cada canal sem a média (tira o tom da lâmpada) e o vetor
+com norma 1; a semelhança é o cosseno. Na foto, a carta é procurada em 36
+recortes (4 escalas × 9 posições, porque ela fica ENTRE as duas molduras;
+125 na galeria, onde a foto é livre), com imagem integral pra cada recorte
+custar quatro leituras. As miniaturas vêm pela cadeia de sempre
+(`cardImgChain`: espelho com CORS, origem, e o wsrv.nl por último, pro
+Lorcast), com `sx=1` pra não pegar do cache a cópia sem CORS, prazo de 2,5 s
+e um download por imagem. Regra (`ordemPelaFoto`): o 1º da busca só perde o
+lugar se outro for mais parecido por **0,06** ou mais e parecido o bastante
+(**0,3**); empate (mesma arte, foil ou carimbo diferente) deixa a ordem da
+busca; entre os que empatam com o melhor, vence quem vinha antes; o resto da
+folha segue por semelhança.
+
+Calibrado com 89 cartas reais (38 grupos de mesmo código de One Piece,
+Digimon, DBFW, Union Arena e Gundam, imagens do TCGplayer) e fotos
+simuladas no Chromium — carta menor que o quadro, deslocada e girada,
+desfocada, com tom de lâmpada, ruído, reflexo e SEM a marca "SAMPLE" que a
+referência tem (a foto de verdade não tem):
+
+| Cenário | Arte diferente: 1º certo antes → depois | Estragou um 1º certo |
+|---|---|---|
+| normal (borrão 0,5–2,5 px, reflexo em metade) | 43 % → 99 % | 0 |
+| duro (borrão 2–4,5 px, reflexo sempre, ±7°) | 43 % → 99 % | 0 |
+| extremo (carta fora da moldura, ±12°, borrão até 6 px) | 43 % → 87 % | 0 (com margem 0,03–0,04: 1) |
+
+No fluxo real (câmera falsa no Chromium com a Chopper EB01-006 — comum,
+Alternate Art e Manga, mais a reimpressão da Manga no Premium Booster), a
+foto da comum mantém a comum; a da Alternate Art e a da Manga sobem cada uma
+pro 1º lugar, e a reimpressão de mesma arte fica logo atrás. A comparação
+leva ~1 s. Limites: foto real (brilho de foil, textura, capa) é mais dura
+que a simulada — por isso a margem é conservadora e a métrica abaixo existe.
+
+**Precisão medida.** "Achou" dizia que o código casou com ALGUMA carta. O
+`scan_done` ganhou `amb` (leituras com mais de uma carta), `vis` (a foto
+mudou o 1º), `troca` (a pessoa trocou o 1º resultado, uma vez por leitura) e
+`dig` (buscas digitadas); a migração `20260928a` soma os quatro e o `/admin`
+› Funil mostra "Precisão do scanner" (1º resultado aceito, com mais de uma
+opção, a foto escolheu, digitou) e o "1º aceito" por jogo. Troca e busca à
+mão são a pessoa dizendo que o scanner errou: é a régua de acerto, ao lado
+do cartas/min, que é a de ritmo.
+
 ## Fase 2 — hash perceptual da arte
 
 Pra vintage e pra quando o código não sai: hash de 64–256 bits por carta,

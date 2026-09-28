@@ -756,6 +756,15 @@ foto não sai do navegador; só o código lido vai pra busca. Plano, limites e a
 fases seguintes (hash perceptual pra vintage) em
 [docs/PLANO-SCANNER.md](docs/PLANO-SCANNER.md).
 
+Quando o código casa com mais de uma carta — o One Piece imprime o mesmo
+`EB01-006` na comum, na Alternate Art e na Manga; é assim em 30–54 % do
+catálogo de One Piece, Digimon, Gundam, DBFW, Union Arena e Yu-Gi-Oh —, a
+foto desempata antes de o resultado aparecer: uma assinatura de cor e luz da
+carta (grade 16×22) é comparada com a das miniaturas dos candidatos, e a
+ordem só muda com diferença clara (`conferirPelaFoto`). O resumo `scan_done`
+leva a precisão (leituras ambíguas, as que a foto reordenou, trocas do 1º
+resultado e buscas digitadas), somada no `/admin` pela migração `20260928a`.
+
 O que isso mudou na infra: `script-src` ganhou `'wasm-unsafe-eval'` e a
 `Permissions-Policy` liberou `camera=(self)` (ver [_headers](_headers)); o
 worker do OCR nasce por URL (`workerBlobURL: false`) pra `worker-src 'self'`
