@@ -13,7 +13,7 @@ import assert from "node:assert/strict";
 import {
   splitParams, templates, plain, releasePages, dataDe, codigoDoSimbolo, nomeDoSet, numeroDe,
   nomeDaEntrada, parseSetPage, juntarSets, completarDatas, parseCardPage, desambiguacao,
-  escolherImpressao, compactarImpressoes, expandirImpressoes, raridadeRegular, categoriaDe, variantesDe, dexDe, normSet, numKey, indiceArte, arteDe, montarCarta
+  escolherImpressao, compactarImpressoes, expandirImpressoes, raridadeRegular, categoriaDe, variantesDe, dexDe, normSet, numKey, indiceArte, arteDe, montarCarta, tipoDoSet
 } from "../scripts/lib/bulbapedia-zh.mjs";
 
 test("splitParams respeita template e link aninhados", () => {
@@ -351,4 +351,15 @@ test("templates acha o infobox mesmo com template dentro do valor", () => {
   const [t] = templates("{{TCGExpansionInfobox|setname=X<br><small>Y</small>|cards={{tt|627|211 in A}}|release=May 1, 2024}}", /^TCGExpansionInfobox$/);
   assert.equal(t.named.release, "May 1, 2024");
   assert.equal(plain(t.named.cards), "627");
+});
+
+test("tipoDoSet: deck, kit e caixa viram \"deck\"; expansão, subset, Gem Pack e promo não", () => {
+  for (const p of ["Storming Emergence GX Starter Deck (ATCG)", "Battle Party Set (ATCG)", "Dragonite & Mewtwo & Camerupt & Sinistcha Happy Set (ATCG)",
+    "Master Strategy Deck Building Sets (ATCG)", "Start Deck 100 (TCG)", "Eevee-GX Gift Box Sets (ATCG)", "Peripheral Collection Gift Box: Variety Treasure Box (ATCG)",
+    "Battle Party: Shared Dream (ATCG)"]) assert.equal(tipoDoSet(p), "deck", p);
+  for (const p of ["Storming Emergence (ATCG)", "Terastal Gathering (ATCG)", "Gem Pack Vol. 6 (ATCG)", "Collection 151 (ATCG)", "Golden Energy (ATCG)",
+    "Journey Theme Pack (ATCG)", "SV-P Promotional cards (SCTCG)", "30th Celebration (TCG)", "Dragon Resurgence (ATCG)"]) assert.equal(tipoDoSet(p), "", p);
+  const c = montarCarta({ number: "001", name: "Rowlet", type: "Grass" }, { id: "CSVH4C", kind: "deck" });
+  assert.equal(c.setKind, "deck");
+  assert.equal(montarCarta({ number: "001", name: "Rowlet", type: "Grass" }, { id: "CSV7C" }).setKind, undefined);
 });

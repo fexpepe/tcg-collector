@@ -18,7 +18,7 @@
 //   node scripts/import-zh.mjs             # grava o artefato
 //   node scripts/import-zh.mjs --dry-run   # só conta
 import { readdir, readFile, writeFile } from "node:fs/promises";
-import { montarCarta, indiceArte, arteDe, escolherImpressao, expandirImpressoes, LANG } from "./lib/bulbapedia-zh.mjs";
+import { montarCarta, indiceArte, arteDe, escolherImpressao, expandirImpressoes, tipoDoSet, LANG } from "./lib/bulbapedia-zh.mjs";
 
 const RAIZ = new URL("../", import.meta.url);
 const DATA = new URL("data/", RAIZ);
@@ -64,13 +64,13 @@ const idx = indiceArte({ en, ja });
 const saida = [];
 const pulados = [];
 let comImagem = 0, deEn = 0, deJa = 0;
-for (const { set, cards } of setsZh) {
+for (const { page, set, cards } of setsZh) {
   // A TCGdex já tem o set com cartas: ela manda.
   const chunk = await leJson(new URL(`sets/${LANG}/${set.id}.json`, DATA), []);
   if (chunk.some((c) => c && c.id && !c.prov)) { pulados.push(set.id); continue; }
   const logo = `data/set-logos/${LANG}/${set.id}.webp`;
   const temLogo = await readFile(new URL(logo, RAIZ)).then(() => true, () => false);
-  const cab = { ...set, logo: temLogo ? logo : "" };
+  const cab = { ...set, logo: temLogo ? logo : "", kind: tipoDoSet(page) };
   const vistos = new Map();
   for (const raw of cards) {
     const imp = escolherImpressao(expandirImpressoes(raw.prints), raw.rarity, { promo: /-PC$/.test(set.id) });
