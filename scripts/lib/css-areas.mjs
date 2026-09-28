@@ -36,7 +36,9 @@ export const AREAS = [
   // sw- (as pastilhas de cor por jogo) só existe no settings.html e vive LOGO
   // DEPOIS do .setting-swatch, sobrescrevendo a cor do texto dele. Se um sai e o
   // outro fica, a ordem inverte e a pastilha muda de cor — por isso viajam juntos.
-  { nome: "conta",     prefixos: ["setting-", "profile-", "admin-", "adm-", "ach-", "sw-"], paginas: ["settings.html", "profile.html", "admin.html"] },
+  // parceiro.html entrou em 2026-09-28 (portal da loja, Analytics 2.1): o
+  // relatório usa os cartões, tabelas e gráficos do /admin (.admin-*, .adm-*).
+  { nome: "conta",     prefixos: ["setting-", "profile-", "admin-", "adm-", "ach-", "sw-"], paginas: ["settings.html", "profile.html", "admin.html", "parceiro.html"] },
   { nome: "wishlist",  prefixos: ["wish-"],                        paginas: ["wishlist.html"] },
   // vnd- entrou em 2026-09-27 com as pastas de venda (galeria, cartão-herói e
   // preço em lote da pasta aberta) — só o sales.js desenha.

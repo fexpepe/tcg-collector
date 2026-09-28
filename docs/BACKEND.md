@@ -34,6 +34,12 @@ públicas por design — quem protege é a RLS.
 | `deck_views` | PK `share_id` → `shares`; visitas por deck | pública |
 | `community_prices` | 1 ponto por usuário×carta×variante×condição×tipo×[graduadora+nota]×mês, em BRL | **nenhuma** (RLS sem policy; só RPC agrega) |
 | `events` | analytics first-party: `name`, `path`, `anon`, `game`, `props` + `uid`/`bot` (preenchidos pelo trigger, nunca pelo cliente) | **nenhuma** (só insert) |
+| `card_views_daily` | PK (game, card_id, day); a mesma view de carta, por dia (20260923a) | **nenhuma** (só RPC de admin) |
+| `metrics_daily` | PK `day`; retrato diário dos números do painel — visitantes, contas, valor catalogado… (20260923a/20260928a) | **nenhuma** (só RPC de admin) |
+| `events_daily` | resumo diário do `events` (quantos, pessoas, por jogo/página); o bruto fica 13 meses, o resumo fica pra sempre (20260928a) | **nenhuma** |
+| `consent_daily` | PK `day`; só quantos DESLIGARAM/religaram a medição no dia, sem identificador (20260928a) | **nenhuma** |
+| `campaign_costs` | custo anotado por campanha (utm_source/utm_campaign) no /admin (20260928a) | **nenhuma** (só RPC de admin) |
+| `partner_links` | links privados do portal da loja (`parceiro.html?t=…`), revogáveis (20260928a) | **nenhuma**; a loja lê pela RPC `partner_report` com o token |
 | `rate_limits` | janela por IP usada pelas RPCs | interna |
 | `push_subs` | PK (user_id, endpoint); assinaturas de web push | só o dono |
 | `push_sender_key` | só o **SHA-256** da chave do robô | nenhuma (sem policy, de propósito) |
