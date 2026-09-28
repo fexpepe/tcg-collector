@@ -231,7 +231,7 @@ que a simulada — por isso a margem é conservadora e a métrica abaixo existe.
 **Precisão medida.** "Achou" dizia que o código casou com ALGUMA carta. O
 `scan_done` ganhou `amb` (leituras com mais de uma carta), `vis` (a foto
 mudou o 1º), `troca` (a pessoa trocou o 1º resultado, uma vez por leitura) e
-`dig` (buscas digitadas); a migração `20260928a` soma os quatro e o `/admin`
+`dig` (buscas digitadas); a migração `20260928b` soma os quatro e o `/admin`
 › Funil mostra "Precisão do scanner" (1º resultado aceito, com mais de uma
 opção, a foto escolheu, digitou) e o "1º aceito" por jogo. Troca e busca à
 mão são a pessoa dizendo que o scanner errou: é a régua de acerto, ao lado

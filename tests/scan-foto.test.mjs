@@ -168,9 +168,9 @@ test("o scanner confere pela foto ANTES de mostrar e conta o que a pessoa corrig
   assert.match(scanSrc, /preventDefault\(\);\s*funil\.dig \+= 1;/);
 });
 
-test("a migração 20260928a recria a admin_funnel sem perder nada e fechada pra fora", () => {
+test("a migração 20260928b recria a admin_funnel sem perder nada e fechada pra fora", () => {
   const raiz = join(here, "..");
-  const nova = readFileSync(join(raiz, "supabase/migrations/20260928a_scanner_precisao.sql"), "utf8");
+  const nova = readFileSync(join(raiz, "supabase/migrations/20260928b_scanner_precisao.sql"), "utf8");
   const velha = readFileSync(join(raiz, "supabase/migrations/20260923a_analytics_v2.sql"), "utf8");
   const fn = (sql) => /create or replace function public\.admin_funnel[\s\S]*?end \$\$;/.exec(sql)[0];
   // Toda chave do jsonb de antes continua (o admin.js lê todas).

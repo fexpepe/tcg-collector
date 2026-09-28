@@ -526,7 +526,7 @@
     return `<div class="adm-funil">${linhas}</div><p class="admin-note">${esc(nota)}</p>`;
   }
 
-  // ── Precisão do scanner (migração 20260928a) ──────────────────────────────
+  // ── Precisão do scanner (migração 20260928b) ──────────────────────────────
   // O funil diz se a leitura ACHOU uma carta, não se era a CERTA. Quem troca o
   // 1º resultado por outra opção, ou desiste e digita o código, está dizendo
   // que o scanner errou — é a taxa de erro de verdade. "A foto escolheu" mede
@@ -535,7 +535,7 @@
   // (sem as chaves novas) fica o aviso, não um "0%" que pareceria medido.
   function precisaoScanner(f) {
     const sc = (f && f.scan) || {};
-    if (sc.trocou == null) return `<p class="admin-note">${esc("Aplique a migração 20260928a (supabase/migrations) pra ver a precisão do scanner.")}</p>`;
+    if (sc.trocou == null) return `<p class="admin-note">${esc("Aplique a migração 20260928b (supabase/migrations) pra ver a precisão do scanner.")}</p>`;
     const pctInt = (a, b) => (b ? `${Math.round((100 * a) / b)}%` : "—");
     const achou = sc.achou || 0;
     return `<div class="admin-stats">

@@ -8,13 +8,16 @@ poucos.)
 
 ## Pendentes de aplicar
 
-- `20260928a` — precisão do scanner: recria a `admin_funnel` da `20260923a`
+- `20260928b` — precisão do scanner (`20260928b_scanner_precisao.sql`; o `b` porque
+  a `20260928a` do mesmo dia é a do Analytics 2.1): recria a `admin_funnel` da `20260923a`
   com todas as chaves de antes e mais `ambiguas`, `pela_foto`, `trocou` e
   `digitou` (em `scan`) e `ambiguas`/`trocou` (em cada linha de
   `scan_jogos`), somando os contadores novos do `scan_done` (`amb`, `vis`,
   `troca`, `dig` — ver docs/BACKEND.md). Aditiva e sem ordem com o JS: o
   `scan_done` já está na whitelist e props novas passam; até ela entrar, o
-  `/admin` mostra o aviso "aplique a 20260928a" na seção Precisão do scanner.
+  `/admin` mostra o aviso "aplique a 20260928b" na seção Precisão do scanner.
+  Quem aplicou pelo link da branch, quando o arquivo ainda se chamava
+  `20260928a_scanner_precisao.sql`, já está com ela: o SQL é o mesmo.
 
   Testada em 2026-09-28 no PGlite (Postgres em WASM) com um esqueleto
   (auth.uid, profiles, events): sem admin devolve null; com admin, as chaves
