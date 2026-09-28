@@ -16,7 +16,7 @@
 --
 -- ADITIVA e SEGURA de aplicar a qualquer momento, antes ou depois do JS: o
 -- `scan_done` já está na whitelist do events_guard (props novas passam, o teto
--- é o tamanho de 4 KB), e o /admin mostra "aplique a 20260928a" enquanto a
+-- é o tamanho de 4 KB), e o /admin mostra "aplique a 20260928b" enquanto a
 -- RPC antiga não devolve as chaves novas. O que faz: recria a admin_funnel da
 -- 20260923a com TODAS as chaves de antes, mais 'ambiguas', 'pela_foto',
 -- 'trocou' e 'digitou' em `scan`, e 'ambiguas'/'trocou' em cada linha de
@@ -62,7 +62,7 @@ begin
         case when props->>'add'   ~ '^[0-9]{1,7}\Z' then (props->>'add')::int   else 0 end as adicionou,
         case when props->>'ms'    ~ '^[0-9]{1,10}\Z' then (props->>'ms')::bigint else 0 end as ms,
         case when props->>'t1'    ~ '^[0-9]{1,10}\Z' then (props->>'t1')::bigint else 0 end as t1,
-        -- precisão (20260928a): leituras com mais de uma carta, as que a foto
+        -- precisão (20260928b): leituras com mais de uma carta, as que a foto
         -- reordenou, as que a pessoa trocou o 1º e as buscas digitadas
         case when props->>'amb'   ~ '^[0-9]{1,7}\Z' then (props->>'amb')::int   else 0 end as amb,
         case when props->>'vis'   ~ '^[0-9]{1,7}\Z' then (props->>'vis')::int   else 0 end as vis,
@@ -82,7 +82,7 @@ begin
         'achou',     (select coalesce(sum(achou), 0)::int from num where name = 'scan_done'),
         'adicionou', (select coalesce(sum(adicionou), 0)::int from num where name = 'scan_done'),
         'secas',     (select count(*)::int from num where name = 'scan_done' and adicionou = 0),
-        -- novos (20260928a): a precisão
+        -- novos (20260928b): a precisão
         'ambiguas',  (select coalesce(sum(amb), 0)::int   from num where name = 'scan_done'),
         'pela_foto', (select coalesce(sum(vis), 0)::int   from num where name = 'scan_done'),
         'trocou',    (select coalesce(sum(troca), 0)::int from num where name = 'scan_done'),

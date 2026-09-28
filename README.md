@@ -763,7 +763,7 @@ foto desempata antes de o resultado aparecer: uma assinatura de cor e luz da
 carta (grade 16×22) é comparada com a das miniaturas dos candidatos, e a
 ordem só muda com diferença clara (`conferirPelaFoto`). O resumo `scan_done`
 leva a precisão (leituras ambíguas, as que a foto reordenou, trocas do 1º
-resultado e buscas digitadas), somada no `/admin` pela migração `20260928a`.
+resultado e buscas digitadas), somada no `/admin` pela migração `20260928b`.
 
 O cadeado da barra trava no set da carta lida (ou a folha "+N opções", no set
 da escolhida; três seguidas do mesmo set sugerem): a busca passa a rodar nas
