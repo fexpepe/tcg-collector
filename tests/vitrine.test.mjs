@@ -103,12 +103,68 @@ test("config: parceiro só com https, imagem do próprio site e id válido", () 
   assert.equal(dup.length, 1, "id repetido entra uma vez");
 });
 
-test("config do repositório: válida, ligada e sem rede de anúncio na fase 0", () => {
-  const cfg = V.configValida(JSON.parse(ler("data/ads.json")));
+test("config do repositório: válida, ligada, e o AdSense só entra na cadeia com ca-pub e bloco", () => {
+  const bruto = JSON.parse(ler("data/ads.json"));
+  const cfg = V.configValida(bruto);
   assert.ok(cfg, "data/ads.json não passa na validação — a vitrine sumiria em produção");
   assert.ok(cfg.criativos.length >= 2);
   assert.ok(cfg.pix && cfg.kofi && cfg.contato, "apoie/anuncie sem os dados de contato");
-  assert.ok(!arr(cfg.fornecedores).includes("adsense"), "fase 0 não tem rede de anúncio (e o aviso de consentimento não aparece)");
+  // Sem o ca-pub, o AdSense sai da cadeia — e é isso que mantém o aviso de
+  // consentimento dormente. Com ele, tem de estar lá.
+  assert.equal(arr(cfg.fornecedores).includes("adsense"), !!cfg.adsense);
+  if (!bruto.adsense || !bruto.adsense.cliente) assert.equal(cfg.adsense, null);
+});
+
+test("config: AdSense só com ca-pub de 16 dígitos e data-ad-slot numérico", () => {
+  const cfg = (adsense) => V.configValida({ ativo: true, fornecedores: ["parceiro", "adsense", "casa"], adsense });
+  const ok = cfg({ cliente: "ca-pub-1234567890123456", blocos: { faixa: "1234567890", quadrado: "abc", trilho: "" } });
+  assert.deepEqual(arr(ok.adsense), { cliente: "ca-pub-1234567890123456", blocos: { faixa: "1234567890" } }, "bloco inválido fica de fora");
+  assert.deepEqual(arr(ok.fornecedores), ["parceiro", "adsense", "casa"]);
+  for (const ruim of [{ cliente: "pub-1234567890123456", blocos: { faixa: "1234567890" } }, { cliente: "ca-pub-123", blocos: { faixa: "1234567890" } },
+    { cliente: "ca-pub-1234567890123456", blocos: {} }, { cliente: "ca-pub-1234567890123456\"><script>", blocos: { faixa: "1" } }, null]) {
+    const c = cfg(ruim);
+    assert.equal(c.adsense, null, JSON.stringify(ruim));
+    assert.ok(!arr(c.fornecedores).includes("adsense"), "sem IDs válidos o AdSense sai da cadeia");
+  }
+});
+
+test("escolha: rede liberada ocupa o que o parceiro deixou; sem ela, a casa", () => {
+  const ordem = ["parceiro", "adsense", "casa"];
+  assert.deepEqual(ids(V.escolheCriativos(CRIATIVOS, { ...CTX, adsense: true }, 3, ordem, primeiro)), ["loja-poke", "adsense", "adsense"]);
+  assert.deepEqual(ids(V.escolheCriativos(CRIATIVOS, { ...CTX, adsense: false }, 3, ordem, primeiro)), ["loja-poke", "conta", "apoie"]);
+});
+
+test("rede só com aceite, fora da UE/UK/CH, com a página vinda da borda e sem economia de dados", () => {
+  const cfg = V.configValida({ ativo: true, fornecedores: ["adsense", "casa"], adsense: { cliente: "ca-pub-1234567890123456", blocos: { faixa: "1234567890" } } });
+  const base = { cfg, consentiu: true, pais: "BR", economia: false };
+  assert.equal(V.adsenseLiberado(base), true);
+  assert.equal(V.adsenseLiberado({ ...base, pais: "US" }), true);
+  assert.equal(V.adsenseLiberado({ ...base, consentiu: false }), false, "recusou (ou não respondeu) = nem o script do Google");
+  for (const pais of ["DE", "FR", "PT", "ES", "GB", "CH", "NO", "IS", "LI"]) assert.equal(V.adsenseLiberado({ ...base, pais }), false, pais);
+  assert.equal(V.adsenseLiberado({ ...base, pais: "" }), false, "sem data-pais a página não veio com a CSP de nonce");
+  assert.equal(V.adsenseLiberado({ ...base, economia: true }), false);
+  assert.equal(V.adsenseLiberado({ ...base, cfg: V.configValida({ ativo: true }) }), false, "sem ca-pub, dormente");
+});
+
+test("formato da faixa: 728×90 só onde cabe; abaixo disso, 300×250", () => {
+  assert.equal(V.formatoDaFaixa(1385), "faixa");
+  assert.equal(V.formatoDaFaixa(760), "faixa");
+  assert.equal(V.formatoDaFaixa(759), "quadrado");
+  assert.equal(V.formatoDaFaixa(318), "quadrado", "celular de 390 px");
+});
+
+test("ads.txt, meta de verificação e config falam do MESMO pub", () => {
+  const cliente = (JSON.parse(ler("data/ads.json")).adsense || {}).cliente || "";
+  const linhas = ler("ads.txt").split("\n").map((l) => l.trim()).filter((l) => l && !l.startsWith("#"));
+  const meta = /<meta name="google-adsense-account" content="([^"]+)">/.exec(ler("index.html"));
+  if (!cliente) {
+    assert.deepEqual(linhas, [], "ads.txt autorizando vendedor sem o AdSense ligado");
+    assert.equal(meta, null, "meta de verificação sem ca-pub na config");
+    return;
+  }
+  const pub = cliente.replace(/^ca-/, "");
+  assert.ok(linhas.includes(`google.com, ${pub}, DIRECT, f08c47fec0942fa0`), `ads.txt sem a linha do ${pub} — o AdSense marca "ganhos em risco"`);
+  assert.ok(meta && meta[1] === cliente, "index.html sem <meta name=\"google-adsense-account\"> do mesmo ca-pub");
 });
 
 const CTX = { jogo: "pokemon", idioma: "pt", hoje: "2026-10-10", logado: false, temKofi: true, vistosHoje: {}, porDia: 4 };
@@ -207,10 +263,57 @@ test("o site não depende do ads.js (adblock que o bloqueie não quebra nada)", 
   }
 });
 
-test("fase 0: nenhum host de rede de anúncio na CSP", () => {
-  // Quando a fase 1 entrar, a CSP com nonce é por ROTA (docs/PLANO-ADS.md,
-  // seção 10) — nunca um afrouxamento global do script-src.
-  assert.doesNotMatch(ler("_headers"), /googlesyndication|doubleclick|adservice|fundingchoices/);
+test("a CSP global (_headers) segue sem rede de anúncio: a de nonce é só das páginas com vitrine", () => {
+  // A CSP com nonce é por ROTA (functions/_vitrine-csp.js) — nunca um
+  // afrouxamento global do script-src, que valeria no login e na coleção.
+  assert.doesNotMatch(ler("_headers"), /googlesyndication|doubleclick|adservice|fundingchoices|strict-dynamic/);
+});
+
+// ── CSP de nonce na borda (functions/_vitrine-csp.js) ─────────────────────────
+const csp = await import(new URL("../functions/_vitrine-csp.js", import.meta.url));
+const CSP_BASE = /Content-Security-Policy: (.+)/.exec(ler("_headers"))[1];
+const diretiva = (pol, nome) => (pol.split(";").map((d) => d.trim()).find((d) => d.startsWith(nome + " ")) || "").split(/\s+/).slice(1);
+
+test("CSP de nonce: o que o AdSense pede, a partir da CSP de verdade do _headers", () => {
+  const pol = csp.cspComNonce(CSP_BASE, "QUJDREVGR0hJSktMTU5PUA==");
+  assert.deepEqual(diretiva(pol, "script-src").slice(0, 2), ["'nonce-QUJDREVGR0hJSktMTU5PUA=='", "'strict-dynamic'"]);
+  assert.ok(diretiva(pol, "script-src").includes("'wasm-unsafe-eval'"), "o scanner de carta (WASM) quebraria nas páginas de catálogo");
+  for (const d of ["img-src", "frame-src", "connect-src"]) assert.ok(diretiva(pol, d).includes("https:"), d);
+  // O que protege continua igual ao do resto do site.
+  for (const d of ["default-src", "object-src", "frame-ancestors", "base-uri", "form-action", "worker-src"]) {
+    assert.deepEqual(diretiva(pol, d), diretiva(CSP_BASE, d), `${d} mudou`);
+  }
+  assert.equal(pol.split(";").length, CSP_BASE.split(";").length, "diretiva sumiu ou duplicou");
+});
+
+test("nonce: 16 bytes aleatórios, novo a cada página", () => {
+  const a = csp.nonceNovo(), b = csp.nonceNovo();
+  assert.match(a, /^[A-Za-z0-9+/]{22}==$/);
+  assert.notEqual(a, b);
+});
+
+test("toda página com vitrine passa pela CSP de nonce na borda, e só elas", () => {
+  const comVitrine = readdirSync(raiz).filter((f) => f.endsWith(".html") && [...ler(f).matchAll(/<script[^>]*src="([^"]+)"/g)].some((m) => m[1] === "src/ads.js"));
+  assert.ok(comVitrine.length >= 9);
+  for (const f of comVitrine) {
+    const pagina = f.replace(/\.html$/, "");
+    const fn = ler(`functions/${pagina}.js`);
+    if (pagina === "detail") assert.match(fn, /return comVitrine\(await montaDetail\(env, request\), request\)/, "detail.js sem o nonce");
+    else assert.match(fn, new RegExp(`paginaComVitrine\\(context, "/${pagina}\\.html"\\)`), `functions/${pagina}.js não serve o ${f} com nonce`);
+  }
+  // Nenhuma Function aplica a CSP de anúncio numa página SEM vitrine.
+  for (const f of readdirSync(join(raiz, "functions")).filter((f) => f.endsWith(".js") && !f.startsWith("_"))) {
+    const m = /paginaComVitrine\(context, "\/([\w-]+)\.html"\)/.exec(ler(join("functions", f)));
+    if (m) assert.ok(comVitrine.includes(`${m[1]}.html`), `functions/${f} dá CSP de anúncio pra ${m[1]}.html, que não tem vitrine`);
+  }
+});
+
+test("theme.js repassa o nonce ao <script> do idioma que escreve", () => {
+  // Com 'strict-dynamic', script escrito por document.write só roda com nonce:
+  // sem isto o site inteiro ficava sem tradução nas páginas de catálogo.
+  const theme = ler("src/theme.js");
+  assert.match(theme, /document\.currentScript/);
+  assert.match(theme, /nonce="' \+ nonce \+ '"/);
 });
 
 test("migração 20260927a: RPC só de admin e os dois eventos na whitelist", () => {

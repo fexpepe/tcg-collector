@@ -110,11 +110,19 @@
     // data-i18n-packs: "data-i18n" puro é o marcador de elemento traduzível do
     // shared.js — usado no <html>, o aplicador apagaria a página inteira.
     var pacotes = document.documentElement.getAttribute("data-i18n-packs");
+    // Páginas com vitrine rodam com CSP de nonce + 'strict-dynamic'
+    // (functions/_vitrine-csp.js). Nesse modo, script escrito por
+    // document.write conta como "do parser" e só roda com o nonce — sem isto o
+    // idioma não carregava e a página inteira mostrava as chaves cruas. O
+    // nonce vem do próprio script que está rodando (a borda carimba todos).
+    var eu = document.currentScript;
+    var nonce = (eu && (eu.nonce || eu.getAttribute("nonce"))) || "";
+    if (!/^[A-Za-z0-9+\/=]+$/.test(nonce)) nonce = "";
     if (I18N && pacotes) {
       var uiLang = window.SLEEVU_LANG || "pt";
       pacotes.split(",").forEach(function (base) {
         var arq = I18N[base] && (I18N[base][uiLang] || I18N[base].pt);
-        if (arq) document.write('<script defer src="' + arq + '"><\/script>');
+        if (arq) document.write('<script defer src="' + arq + '"' + (nonce ? ' nonce="' + nonce + '"' : "") + '><\/script>');
       });
     }
   } catch (e) { /* i18n quebrado é melhor que página quebrada: t() devolve a chave */ }

@@ -755,7 +755,9 @@ no IndexedDB do Tesseract.
 Plano, números e decisões em [docs/PLANO-ADS.md](docs/PLANO-ADS.md). Fase 0
 no ar desde 2026-09-27: o espaço existe e é medido, mas só mostra conteúdo do
 próprio Sleevu ("casa": apoie, crie sua conta, anuncie) e de lojas parceiras
-servidas daqui — nenhum script de terceiro, a CSP não mudou.
+servidas daqui. A fase 1 (2026-09-28) deixou o AdSense pronto e desligado:
+enquanto o `ca-pub` estiver vazio no `data/ads.json`, nenhum script de
+terceiro carrega.
 
 - **Quem tem vitrine é o HTML.** Só as páginas de catálogo carregam
   `<script defer src="src/ads.js" data-grade="#grade">` (o último script da
@@ -781,6 +783,25 @@ servidas daqui — nenhum script de terceiro, a CSP não mudou.
 - **Consentimento**: o aviso só aparece quando a cadeia do JSON tiver um
   fornecedor com cookie de terceiro (fase 1). A escolha também vive em
   Configurações → Privacidade (`ads`, opt-in, e `adsDecidido`).
+- **AdSense (fase 1, dormente)**: o fornecedor `adsense` já está na cadeia,
+  mas só existe com `adsense.cliente` (`ca-pub-` + 16 dígitos) e pelo menos um
+  bloco em `adsense.blocos` (`faixa` 728×90, `quadrado` 300×250, `trilho`
+  160×600). O script do Google só desce com consentimento dado, sem
+  economia de dados e fora da UE/UK/CH (`<html data-pais>`, posto pela borda).
+  Bloco sem anúncio, bloqueado ou lento vira a vitrine da casa na mesma caixa;
+  faixa com anúncio pedido que um filtro reposiciona também — nunca há pedido
+  novo sem ação da pessoa. Ao preencher o `ca-pub`, a mesma linha vai no
+  `ads.txt` e na `<meta name="google-adsense-account">` do `index.html` (o
+  teste exige os três iguais).
+- **CSP com nonce** só nas páginas com vitrine: cada uma tem uma Function de
+  3 linhas em `functions/` que chama o `functions/_vitrine-csp.js` (o
+  `/detail` embrulha a resposta que já montava). Lá o `script-src` vira
+  `'nonce-…' 'strict-dynamic'` (o que o AdSense suporta), a borda carimba o
+  nonce em todo `<script>` e no preload do i18n, e a resposta sai sem
+  ETag/`Last-Modified` e `no-cache` (304 juntaria nonce velho com cabeçalho
+  novo). O `_headers` global não mudou: login, conta, coleção e o resto seguem
+  com `script-src 'self'`. Página nova com `ads.js` precisa da Function — o
+  teste de vitrine cobra.
 
 Afiliados moram no `shared.js` (`AFILIADOS` + `linkDeLoja`): vazios, os links
 de loja saem idênticos; preenchidos, TCGplayer vira deep link do Impact
