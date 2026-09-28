@@ -5273,6 +5273,31 @@ a.setting-open {
    cortada. Duas por linha no desktop, uma no celular. */
 .adm-grid-wide { grid-template-columns: repeat(auto-fit, minmax(440px, 1fr)); }
 @media (max-width: 700px) { .adm-grid-wide { grid-template-columns: 1fr; } }
+/* Admin 2.1: selos de status, botões de linha e os formulários do painel
+   (custo de campanha, link de loja). */
+.adm-ok, .adm-bad { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 12px; font-weight: 700; }
+.adm-ok { background: color-mix(in srgb, #16a34a 18%, transparent); color: #15803d; }
+.adm-bad { background: color-mix(in srgb, #dc2626 18%, transparent); color: #b91c1c; }
+:root[data-theme="dark"] .adm-ok { color: #4ade80; }
+:root[data-theme="dark"] .adm-bad { color: #f87171; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .adm-ok { color: #4ade80; }
+  :root:not([data-theme="light"]) .adm-bad { color: #f87171; }
+}
+.adm-mini { min-height: 32px; padding: 0 12px; font-size: 13px; }
+.adm-row-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+.adm-form { display: flex; flex-wrap: wrap; gap: 10px 12px; align-items: flex-end; }
+.adm-form label { display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--muted); font-weight: 700; flex: 1 1 160px; min-width: 0; }
+.adm-form input, .adm-form select { min-height: 40px; padding: 0 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg, var(--panel)); color: var(--text); font: inherit; font-size: 14px; font-weight: 400; }
+.adm-toolbar ~ #admBody .adm-form .adm-primary, .adm-form .adm-primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.adm-portal-novo { margin: 10px 0 0; font-size: 13px; word-break: break-all; }
+.adm-code { background: var(--panel-strong); border-radius: 10px; padding: 10px 12px; font-size: 12.5px; overflow-x: auto; }
+.adm-list { margin: 0; padding-left: 18px; font-size: 14px; line-height: 1.7; }
+@media (pointer: coarse), (max-width: 700px) {
+  .adm-mini, .adm-form .chip { min-height: 44px; }
+  .adm-form input, .adm-form select { min-height: 44px; font-size: 16px; }
+}
+
 /* "Para parceiros": cabeçalho com o botão de imprimir. */
 .adm-kit-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
 .adm-kit-head h2 { margin: 0 0 4px; font-size: 20px; }

@@ -29,6 +29,7 @@ Disallow: /account
 Disallow: /login
 Disallow: /backup
 Disallow: /admin
+Disallow: /parceiro
 
 # Parâmetros que geram infinitas variações da MESMA página — armadilha clássica
 # de rastreio: o robô fica preso paginando combinações de filtro em vez de achar

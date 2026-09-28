@@ -99,7 +99,9 @@ async function run() {
     const worst = Math.min(...drops);
     const m = (MSG[lang] || MSG.pt)(drops.length, worst);
     try {
-      await webpush.sendNotification(sub, JSON.stringify({ title: m.title, body: m.body, url: "wishlist.html" }), { TTL: 3 * 24 * 3600 });
+      // utm no destino: a visita que o aviso gera chega no /admin como
+      // "push/wishlist" (aba Funil › alertas: enviados → abertos → loja).
+      await webpush.sendNotification(sub, JSON.stringify({ title: m.title, body: m.body, url: "wishlist.html?utm_source=push&utm_campaign=wishlist" }), { TTL: 3 * 24 * 3600 });
       sent++;
     } catch (err) {
       // 404/410 = assinatura morta (navegador revogou): limpa no banco.
@@ -112,4 +114,14 @@ async function run() {
     }
   }
   console.log(`[push] enviados ${sent} · sem quedas ${skipped} · assinaturas mortas limpas ${pruned}`);
+  // Quantos saíram, pro funil de alertas do /admin (evento push_sent, 2.1).
+  // O events_guard pode marcar como robô (depende do user-agent do Node) — o
+  // painel lê este nome sem o filtro de robô. Falha aqui não é falha do push.
+  if (sent) {
+    await fetch(`${SUPABASE_URL}/rest/v1/events`, {
+      method: "POST",
+      headers: { apikey: ANON_KEY, Authorization: `Bearer ${ANON_KEY}`, "Content-Type": "application/json", Prefer: "return=minimal" },
+      body: JSON.stringify({ name: "push_sent", path: "push", props: { n: sent, k: "wishlist" } })
+    }).catch(() => {});
+  }
 }

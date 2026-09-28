@@ -53,10 +53,26 @@
     ];
   }
 
+  // Onde as pessoas param no checklist (onboard_state, Analytics 2.1): o
+  // estado inteiro numa linha, UMA vez por sessão — quantos passos feitos,
+  // quais, e se dispensou. Não é um evento por clique: o que interessa é a
+  // foto de onde cada um está, e o /admin fica com a mais recente de cada um.
+  function registra(itens, feitos, off) {
+    try {
+      if (sessionStorage.getItem("sleevu-pp-registrado")) return;
+      sessionStorage.setItem("sleevu-pp-registrado", "1");
+    } catch (e) { return; }
+    if (!shared.logEvento) return;
+    const props = { f: feitos, t: itens.length, s: itens.filter((p) => p.ok).map((p) => p.id).join(",") };
+    if (off) props.off = 1;
+    shared.logEvento("onboard_state", props);
+  }
+
   function pinta() {
     const st = estado();
     const itens = passos();
     const feitos = itens.filter((p) => p.ok).length;
+    registra(itens, feitos, !!st.off);
     // Some sozinho quando termina (ou quando foi dispensado): checklist
     // completo que continua na tela vira ruído permanente.
     if (st.off || feitos === itens.length) { alvo.hidden = true; alvo.innerHTML = ""; return; }

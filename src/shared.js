@@ -1827,21 +1827,25 @@
     // e-mail ou telefone colado por engano. Busca por CÓDIGO fica de fora: ela
     // resolve assíncrona e "ainda não chegou" não é "não existe".
     let buscaVaziaTimer = null;
+    // Desde a 2.1 a busca QUE ACHOU também é registrada (search_hit, com o
+    // número de resultados): "o que mais se procura" é demanda tanto quanto
+    // "o que não se achou". Mesmas travas: 1,5s parado, 1x por termo por aba.
     function talvezBuscaVazia(q) {
       clearTimeout(buscaVaziaTimer);
       const nq = normalize(q).trim();
       if (nq.length < 3 || CMDK_CODE_RE.test(String(q).trim())) return;
-      if (items.some((it) => !it.explore)) return;
+      const achados = items.filter((it) => !it.explore).length;
       if (/@|\d{5,}/.test(nq)) return;
       buscaVaziaTimer = setTimeout(() => {
         const input = overlay && overlay.querySelector(".cmdk-input");
         if (!input || normalize(input.value).trim() !== nq) return;
-        const k = `sleevu-busca-vazia:${nq}`;
+        const k = `sleevu-busca-${achados ? "hit" : "vazia"}:${nq}`;
         try {
           if (sessionStorage.getItem(k)) return;
           sessionStorage.setItem(k, "1");
         } catch (e) { return; }
-        logEvento("search_empty", { q: nq.slice(0, 40), g: cmdkGame || "" });
+        if (achados) logEvento("search_hit", { q: nq.slice(0, 40), g: cmdkGame || "", n: achados });
+        else logEvento("search_empty", { q: nq.slice(0, 40), g: cmdkGame || "" });
       }, 1500);
     }
     function renderList(q) {
@@ -3734,7 +3738,19 @@
   function setConsent(cat, valor) {
     if (cat === "essential") return;
     const c = readConsent();
+    const antes = !!c[cat];
     c[cat] = !!valor;
+    // Quantos DESLIGARAM a medição (Analytics 2.1): sem esse número não se
+    // sabe quanto do público o painel enxerga. Vai só a decisão, no momento
+    // dela, pra um contador por dia — sem id, sem página, sem nada que ligue a
+    // você (o mesmo grão do contador de views de carta). Só em produção.
+    if (cat === "analytics" && antes !== !!valor && AUTH_ENABLED && /(^|\.)sleevu\.app$/i.test(location.hostname)) {
+      try {
+        fetch(`${SUPABASE_URL}/rest/v1/rpc/consent_tally`, {
+          method: "POST", headers: authHeaders(), body: JSON.stringify({ p_on: !!valor }), keepalive: true
+        });
+      } catch (e) { /* contador é opcional */ }
+    }
     try { localStorage.setItem(CONSENT_KEY, JSON.stringify(c)); } catch (e) { /* storage bloqueado */ }
     // Recusou a medição: apaga o identificador que existia só pra isso. Deixar
     // pra trás seria guardar um id sem propósito — e sem base legal.
@@ -3850,7 +3866,9 @@
     // Analytics v2 (migração 20260923a).
     "store_click", "signup", "search_empty", "share_open", "pwa_install",
     // Vitrine (migração 20260927a): o espaço de anúncio, ver src/ads.js.
-    "ad_view", "ad_click"];
+    "ad_view", "ad_click",
+    // Analytics 2.1 (migração 20260928a).
+    "page_time", "search_hit", "onboard_state", "exp_view"];
   function logEvento(nome, props) {
     if (EVENTOS.indexOf(nome) < 0) return;
     mandaEvento(nome, props);
@@ -3932,12 +3950,66 @@
         if (box.dataset.mktGame) props.g = box.dataset.mktGame;
         if (box.dataset.mktCard) props.c = box.dataset.mktCard.slice(0, 80);
         if (box.dataset.mktGr) props.gr = 1;
+        if (/^\d{1,7}$/.test(box.dataset.mktV || "")) props.v = Number(box.dataset.mktV);
       }
       try { props.d = (window.matchMedia && matchMedia("(pointer: coarse)").matches) ? "m" : "d"; } catch (err) { /* sem aparelho */ }
       logEvento("store_click", props);
     };
     document.addEventListener("click", registra, true);
     document.addEventListener("auxclick", registra, true);
+  }
+
+  // TEMPO DE USO (page_time, Analytics 2.1): quanto tempo a página ficou
+  // VISÍVEL — aba em segundo plano não conta, e aba esquecida aberta é cortada
+  // em 30 min no banco. Um evento por página, mandado ao sair dela (pagehide:
+  // é o que o iOS dispara; o keepalive do fetch entrega). Menos de 2s não vai:
+  // é redirecionamento ou clique errado, não uso.
+  function initPageTime() {
+    let visivelDesde = document.visibilityState === "visible" ? Date.now() : 0;
+    let acumulado = 0, enviado = false;
+    const pausa = () => { if (visivelDesde) { acumulado += Date.now() - visivelDesde; visivelDesde = 0; } };
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible") { if (!visivelDesde) visivelDesde = Date.now(); }
+      else pausa();
+    });
+    window.addEventListener("pagehide", () => {
+      pausa();
+      if (enviado || acumulado < 2000) return;
+      enviado = true;
+      let d = "d";
+      try { d = (window.matchMedia && matchMedia("(pointer: coarse)").matches) ? "m" : "d"; } catch (e) { /* sem aparelho */ }
+      logEvento("page_time", { ms: Math.min(Math.round(acumulado), 1800000), d });
+    });
+  }
+
+  // EXPERIMENTOS A/B (Analytics 2.1). Uso:
+  //   const v = experimento("home_cta", ["a", "b"]);   // "a" ou "b"
+  //   if (v === "b") { …variante nova… }
+  // A variante é sorteada UMA vez por navegador e fica guardada (a pessoa não
+  // pula de uma versão pra outra entre visitas). exp_view sai uma vez por
+  // sessão por experimento; o /admin (aba Experimentos) cruza quem viu cada
+  // variante com ativação, conta, clique em loja e retorno. Sem consentimento
+  // de medição a variante é sorteada igual, só não é registrada.
+  const EXP_KEY = "sleevu-exp-v1";
+  function experimento(nome, variantes) {
+    const lista = Array.isArray(variantes) && variantes.length ? variantes.map(String) : ["a", "b"];
+    if (!/^[a-z0-9_]{1,30}$/.test(String(nome || ""))) return lista[0];
+    let mapa = {};
+    try { mapa = JSON.parse(localStorage.getItem(EXP_KEY) || "{}") || {}; } catch (e) { mapa = {}; }
+    let v = mapa[nome];
+    if (lista.indexOf(v) < 0) {
+      v = lista[Math.floor(Math.random() * lista.length)];
+      mapa[nome] = v;
+      try { localStorage.setItem(EXP_KEY, JSON.stringify(mapa)); } catch (e) { /* sem storage: sorteia de novo na próxima */ }
+    }
+    try {
+      const k = `sleevu-exp-visto:${nome}`;
+      if (!sessionStorage.getItem(k)) {
+        sessionStorage.setItem(k, "1");
+        logEvento("exp_view", { e: nome, v: String(v).slice(0, 20) });
+      }
+    } catch (e) { /* sem sessionStorage: não registra */ }
+    return v;
   }
 
   // CONTA NOVA (signup). O Supabase não avisa "criou agora" — o link mágico e
@@ -4254,15 +4326,30 @@
   // RPCs do Analytics v2 (migração 20260923a): admin_stores, admin_retention,
   // admin_demand, admin_growth. Mesma convenção da adminFunnel — undefined =
   // RPC ainda não existe no banco (404), null = sem acesso ou falha.
-  async function adminRpc(nome, days) {
-    if (!/^admin_[a-z]+$/.test(nome)) return null;
+  // `body` opcional (2.1): RPCs de escrita do painel (custo de campanha, link
+  // de parceiro) mandam os próprios parâmetros; sem ele vai { days }.
+  async function adminRpc(nome, days, body) {
+    if (!/^admin_[a-z_]+$/.test(nome)) return null;
     let s = getSession();
     if (!s) return null;
     if (Date.now() - (s.ts || 0) > 50 * 60 * 1000) s = (await refreshSession()) || s;
     if (!s) return null;
     try {
       const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${nome}`, {
-        method: "POST", headers: authHeaders(s.access_token), body: JSON.stringify({ days: days || 30 })
+        method: "POST", headers: authHeaders(s.access_token), body: JSON.stringify(body || { days: days || 30 })
+      });
+      if (r.status === 404) return undefined;
+      if (!r.ok) return null;
+      return await r.json();
+    } catch (e) { return null; }
+  }
+  // Portal da loja (parceiro.html): leitura ANÔNIMA, a credencial é o token do
+  // link. undefined = RPC ainda não existe; null = link inválido/revogado.
+  async function partnerReport(token, days) {
+    if (!AUTH_ENABLED || !/^[0-9a-f]{64}$/.test(String(token || ""))) return null;
+    try {
+      const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/partner_report`, {
+        method: "POST", headers: authHeaders(), body: JSON.stringify({ p_token: token, p_days: days || 30 })
       });
       if (r.status === 404) return undefined;
       if (!r.ok) return null;
@@ -6472,7 +6559,7 @@
                  nada. (Sem backtick neste comentário: ele vive DENTRO de um
                  template literal e fecharia a string.) -->
             <section class="graded-price" data-graded-price hidden></section>
-            ${prices ? brMarketplaceLinks(activeCard, gradedSearchTag(activeGraded)) : ""}
+            ${prices ? brMarketplaceLinks(activeCard, gradedSearchTag(activeGraded), valorEmReais(activeCard, activeVariant || defaultVariant(activeCard), prices)) : ""}
           </div>
         </section>
         <!-- Prévia da impressão sob o mouse (fillPrints posiciona). pointer-events
@@ -7284,7 +7371,19 @@
     return `<span class="br-links-label">${escapeHtml(t(labelKey))}</span><div class="br-links-chips">${links}</div>`;
   }
 
-  function brMarketplaceLinks(card, gradedTag) {
+  // Valor da carta em R$ (inteiro) pro store_click — o "valor encaminhado"
+  // do relatório de loja. Mesma conta que o preço do preview (cardValue:
+  // manual > mercado), convertida pra real; sem preço, 0 (e o clique conta
+  // do mesmo jeito, só sem valor).
+  function valorEmReais(card, variant, prices) {
+    try {
+      const cv = cardValue(card, variant, prices);
+      if (!cv || !(cv.value > 0)) return 0;
+      const brl = cv.currency === "BRL" ? cv.value : convertMoney(cv.value, cv.currency, "BRL");
+      return brl > 0 ? Math.round(brl) : 0;
+    } catch (e) { return 0; }
+  }
+  function brMarketplaceLinks(card, gradedTag, valorBRL) {
     // O jogo vem da PRÓPRIA carta (card.game), não da sessão: uma carta Pokémon
     // mostra LigaPokémon mesmo numa sessão Lorcana, e vice-versa. Fallback pra
     // sessão só pra cartas sem tag (catálogos antigos). gradedTag (ex.: "PSA 9")
@@ -7304,7 +7403,7 @@
     const nota = linhas.indexOf('rel="sponsored') >= 0 ? `<p class="market-source">${escapeHtml(t("price.affiliateNote"))}</p>` : "";
     // Jogo, carta e "graduada" viajam no container pro store_click (ver
     // initStoreClicks): o link em si só sabe a loja.
-    return `<div class="market-links" data-mkt-game="${escapeAttribute(game)}" data-mkt-card="${escapeAttribute(card.id || "")}"${gradedTag ? ' data-mkt-gr="1"' : ""}>`
+    return `<div class="market-links" data-mkt-game="${escapeAttribute(game)}" data-mkt-card="${escapeAttribute(card.id || "")}"${gradedTag ? ' data-mkt-gr="1"' : ""}${valorBRL > 0 ? ` data-mkt-v="${Math.round(valorBRL)}"` : ""}>`
       + linhas + nota + `</div>`;
   }
 
@@ -9858,6 +9957,8 @@
     adminDashboard,
     adminFunnel,
     adminRpc,
+    partnerReport,
+    experimento,
     pushProfile,
     handleAvailable,
     fetchPublicProfile,
@@ -12187,6 +12288,7 @@
   applySensitive();
   logPageview(); // analytics anônimo first-party (1 pageview por carregamento)
   initStoreClicks();
+  initPageTime();
   injectCfBeacon(); // Cloudflare Web Analytics (só em produção)
   initMobileMenu();
   initSiteFooter();

@@ -165,6 +165,25 @@ log("\n[backend]");
 await checkJson("Supabase REST (anon)", `${SUPABASE_URL}/rest/v1/card_views?select=views&limit=1`,
   (j) => Array.isArray(j) ? null : "resposta não é array");
 
+// Medição parada (Analytics 2.1): evento que chegava 3+/dia e zerou há 48h é
+// quase sempre medição quebrada — nome fora da whitelist, migração faltando,
+// busca de loja que mudou (store_click:<loja>). A RPC só devolve os NOMES em
+// alarme, nada de contagem. 404 = migração 20260928a ainda não aplicada: não é
+// falha de produção, só avisa.
+log("\n[analytics]");
+await check("medição sem evento parado", async () => {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/analytics_sentinela`, {
+    method: "POST",
+    headers: { apikey: ANON_KEY, Authorization: `Bearer ${ANON_KEY}`, "Content-Type": "application/json" },
+    body: "{}",
+    signal: AbortSignal.timeout(30000)
+  });
+  if (res.status === 404) return "RPC ausente (migração 20260928a pendente)";
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const parados = await res.json();
+  if (Array.isArray(parados) && parados.length) throw new Error(`parou de chegar: ${parados.join(", ")}`);
+});
+
 // 2ª tentativa: só o que falhou, uma vez, depois da pausa. Passou agora = soluço.
 const persistentes = [];
 const soNaSegunda = [];

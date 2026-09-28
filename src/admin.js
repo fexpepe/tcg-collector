@@ -231,8 +231,8 @@
   // (ativações, cliques, contas novas) somam. Crescimento é mês contra mês
   // anterior, no estoque — é a conta que investidor faz.
   function monthly(serie) {
-    const ESTOQUE = ["mau", "mau_users", "contas", "colecionadores", "copias"];
-    const FLUXO = ["novos", "contas_novas", "ativacoes", "cliques_loja", "cartas_add", "scans", "shares_criados"];
+    const ESTOQUE = ["mau", "mau_users", "contas", "colecionadores", "copias", "valor_catalogado"];
+    const FLUXO = ["novos", "contas_novas", "ativacoes", "cliques_loja", "cartas_add", "scans", "shares_criados", "valor_encaminhado"];
     const meses = new Map();
     (serie || []).forEach((d) => {
       const m = String(d.day || "").slice(0, 7);
@@ -307,12 +307,15 @@
   // 12 telas, e uma fileira de 12 chips quebrava em três linhas no celular sem
   // ordem nenhuma. Os GRUPOS são as perguntas (quanta gente? de onde vem?
   // fica? o que procura? está tudo bem?); as ABAS são os recortes de cada uma.
+  // 2.1 (2026-09-28): grupo Usuários (quem são, maiores coleções, segmentos)
+  // e as abas Campanhas, Tempo de uso, Experimentos, Portal, Sets e Medição.
   const GROUPS = [
     ["visao", "Visão geral", [["geral", "Resumo"], ["crescimento", "Crescimento"], ["parceiros", "Para parceiros"]]],
-    ["aquisicao", "Aquisição", [["audiencia", "Audiência"], ["canais", "Canais"]]],
-    ["engajamento", "Engajamento", [["retencao", "Retenção"], ["funil", "Funil"], ["produto", "Produto"]]],
-    ["mercado", "Mercado", [["lojas", "Lojas"], ["demanda", "Demanda"], ["anuncios", "Vitrine"], ["conteudo", "Conteúdo"]]],
-    ["tecnico", "Técnico", [["qualidade", "Qualidade"]]]
+    ["usuarios", "Usuários", [["usuarios", "Perfil"], ["colecoes", "Maiores coleções"], ["segmentos", "Segmentos"]]],
+    ["aquisicao", "Aquisição", [["audiencia", "Audiência"], ["canais", "Canais"], ["campanhas", "Campanhas"]]],
+    ["engajamento", "Engajamento", [["retencao", "Retenção"], ["funil", "Funil"], ["tempo", "Tempo de uso"], ["produto", "Produto"], ["experimentos", "Experimentos"]]],
+    ["mercado", "Mercado", [["lojas", "Lojas"], ["portal", "Portal da loja"], ["demanda", "Demanda"], ["sets", "Sets"], ["anuncios", "Vitrine"], ["conteudo", "Conteúdo"]]],
+    ["tecnico", "Técnico", [["qualidade", "Qualidade"], ["medicao", "Medição"]]]
   ];
   const TAB_GROUP = {};
   GROUPS.forEach(([g, , tabs]) => tabs.forEach(([t]) => { TAB_GROUP[t] = g; }));
@@ -321,13 +324,23 @@
   // 20260923a. Cada uma é buscada só quando uma aba que a usa abre.
   const NEEDS = {
     geral: ["dash"], audiencia: ["dash"], conteudo: ["dash"], produto: ["dash"], qualidade: ["dash"],
-    crescimento: ["growth"], parceiros: ["dash", "retention", "stores", "demand", "growth"],
-    canais: ["retention", "growth"], retencao: ["retention"], funil: ["funnel", "retention"],
-    lojas: ["stores"], demanda: ["demand"], anuncios: ["anuncios"]
+    crescimento: ["growth"], parceiros: ["dash", "retention", "stores", "demand", "growth", "engagement"],
+    canais: ["retention", "growth"], retencao: ["retention"], funil: ["funnel", "retention", "engagement"],
+    lojas: ["stores"], demanda: ["demand"], anuncios: ["anuncios"],
+    usuarios: ["users"], colecoes: ["users"], segmentos: ["users"], campanhas: ["campaigns"],
+    tempo: ["engagement"], experimentos: ["experiments"], portal: ["partners", "stores"], sets: ["demand"],
+    medicao: ["health", "engagement"]
   };
-  const RPC = { retention: "admin_retention", stores: "admin_stores", growth: "admin_growth", demand: "admin_demand", anuncios: "admin_vitrine" };
+  const RPC = {
+    retention: "admin_retention", stores: "admin_stores", growth: "admin_growth", demand: "admin_demand", anuncios: "admin_vitrine",
+    users: "admin_users", campaigns: "admin_campaigns", engagement: "admin_engagement", experiments: "admin_experiments",
+    partners: "admin_partner_links", health: "admin_health"
+  };
+  // RPCs sem parâmetro: mandar { days } a elas faz o PostgREST procurar uma
+  // assinatura que não existe (404) e o painel acharia que a migração falta.
+  const SEM_DIAS = ["campaigns", "partners", "health"];
   const PERIODS = [7, 30, 90];
-  const state = { tab: "geral", days: 30, cache: {}, inflight: {}, errors: undefined, pages: {}, names: {} };
+  const state = { tab: "geral", days: 30, cache: {}, inflight: {}, errors: undefined, pages: {}, names: {}, meta: {}, metaPendente: false };
   // Hash antigo (#produto, #qualidade…) continua valendo: link salvo não quebra.
   const hashTab = (location.hash || "").replace(/^#/, "");
   if (TAB_GROUP[hashTab]) state.tab = hashTab;
@@ -513,7 +526,9 @@
     return `<div class="adm-funil">${linhas}</div><p class="admin-note">${esc(nota)}</p>`;
   }
 
-  function tabFunil(f, ret) {
+  function tabFunil(f, ret, eg) {
+    const ob = (eg && eg.onboarding) || {}, ps = (eg && eg.push) || {};
+    const PASSO = { carta: "1ª carta na coleção", csv: "Importou uma planilha", lista: "Criou uma lista", app: "Instalou o app" };
     const cad = f.cadastro || [];
     const VIA = { ui: "Busca e tiles", scan: "Scanner", csv: "Importação CSV", lista: "Listas" };
     const totalCartas = cad.reduce((n, x) => n + (x.cartas || 0), 0);
@@ -555,6 +570,16 @@
           `${fmt(f.gate_pessoas || 0)} pessoas bateram no portão; ${fmt(f.gate_conv || 0)} (${pctInt(f.gate_conv || 0, f.gate_pessoas || 0)}) entraram depois — criaram conta ou voltaram logadas.`)}
         ${section("App instalado", `<div class="admin-stats">${stat("Instalações", fmt(f.instalacoes || 0), `nos ${f.days} dias`)}</div>`,
           "Evento appinstalled do navegador (Android/desktop). No iPhone a instalação é pelo menu Compartilhar e o navegador não avisa — lá o sinal é a visita já aberta como app (aba Retenção).")}
+      </div>
+      <div class="adm-grid-2">
+        ${section("Primeiros passos (checklist do Dashboard)", `${hbars(Object.keys(PASSO).map((k) => ({ label: PASSO[k], value: ((ob.passos || []).find((x) => x.passo === k) || {}).n || 0, sub: pct(((ob.passos || []).find((x) => x.passo === k) || {}).n || 0, ob.pessoas) })))}
+          <p class="admin-note">${esc(`${fmt(ob.pessoas)} pessoas viram o checklist; ${fmt(ob.dispensou)} dispensaram. Passos concluídos: ${(ob.por_feitos || []).map((x) => `${x.f} → ${fmt(x.n)}`).join(" · ") || "—"}.`)}</p>`,
+          "A foto mais recente de cada navegador no período: qual passo trava é onde o onboarding precisa de ajuda.")}
+        ${section("Alertas de wishlist (push)", funnel([
+          { label: "avisos enviados", value: ps.enviados, color: "var(--accent)" },
+          { label: "aberturas", value: ps.aberturas, color: "#2563eb", hint: `${fmt(ps.pessoas)} pessoas` },
+          { label: "clicaram numa loja em até 1h", value: ps.loja_1h, color: "#16a34a" }
+        ]), "Enviados vem do robô semanal do push; abertura é a visita com utm_source=push. É o caminho mais curto até uma compra — e o argumento pra alerta patrocinado.")}
       </div>`;
   }
 
@@ -627,7 +652,9 @@
         ${stat("Contas", fmt(ult.contas), `${fmt(atual.contas_novas || 0)} novas neste mês`)}
         ${stat("Colecionadores", fmt(lastDef(serie, "colecionadores")), "contas com carta na nuvem")}
         ${stat("Cópias catalogadas", fmt(lastDef(serie, "copias")), "somando todas as contas")}
+        ${stat("Valor catalogado", brl(lastDef(serie, "valor_catalogado")), "R$ em cartas nas coleções")}
         ${stat("Ativações no mês", fmt(atual.ativacoes || 0), "1ª carta da vida")}
+        ${stat("Valor enviado às lojas", brl(atual.valor_encaminhado || 0), "neste mês")}
       </div>
       ${section("Visitantes únicos, janela móvel", lines(ult120, [
         { key: "mau", label: "Últimos 30 dias", color: "var(--accent)" },
@@ -642,8 +669,9 @@
       ], Object.assign(CW(), { aria: "Ativações, contas novas e cliques em loja por dia" })))}
       ${section("Mês a mês", paged("mes", [
         { t: "Mês" }, { t: "Visitantes 30d", num: true }, { t: "Crescimento", num: true }, { t: "Contas", num: true },
-        { t: "Contas novas", num: true }, { t: "Ativações", num: true }, { t: "Cartas cadastradas", num: true }, { t: "Cliques em loja", num: true }
-      ], mes.slice().reverse().map((m) => `<tr><td>${esc(m.mes)}${m.dias < 28 ? ` <small>(${m.dias} dias)</small>` : ""}</td><td class="num">${esc(fmt(m.mau))}</td><td class="num">${esc(sinal(m.cresc_mau))}</td><td class="num">${esc(fmt(m.contas))}</td><td class="num">${esc(fmt(m.contas_novas))}</td><td class="num">${esc(fmt(m.ativacoes))}</td><td class="num">${esc(fmt(m.cartas_add))}</td><td class="num">${esc(fmt(m.cliques_loja))}</td></tr>`), 12),
+        { t: "Contas novas", num: true }, { t: "Ativações", num: true }, { t: "Cartas cadastradas", num: true }, { t: "Cliques em loja", num: true },
+        { t: "Valor enviado", num: true }, { t: "Valor catalogado", num: true }
+      ], mes.slice().reverse().map((m) => `<tr><td>${esc(m.mes)}${m.dias < 28 ? ` <small>(${m.dias} dias)</small>` : ""}</td><td class="num">${esc(fmt(m.mau))}</td><td class="num">${esc(sinal(m.cresc_mau))}</td><td class="num">${esc(fmt(m.contas))}</td><td class="num">${esc(fmt(m.contas_novas))}</td><td class="num">${esc(fmt(m.ativacoes))}</td><td class="num">${esc(fmt(m.cartas_add))}</td><td class="num">${esc(fmt(m.cliques_loja))}</td><td class="num">${esc(brl(m.valor_encaminhado))}</td><td class="num">${esc(m.valor_catalogado == null ? "—" : brl(m.valor_catalogado))}</td></tr>`), 12),
         `Estoques (visitantes 30d, contas) são o último dia do mês; fluxos somam o mês. A série vem da tabela metrics_daily: o que vem de eventos foi reconstruído 120 dias pra trás; colecionadores e cópias só existem desde ${inicioColecao ? new Date(inicioColecao.day + "T12:00:00").toLocaleDateString("pt-BR") : "o primeiro retrato"} (são fotografados no dia, não dá pra reconstruir).`)}`;
   }
 
@@ -651,7 +679,8 @@
   // Só agregados, só números que se sustentam sozinhos. Nada que identifique
   // pessoa, e as tabelas de carta usam o índice de demanda (não contagem de
   // coleção de alguém).
-  function tabParceiros(dash, ret, st, dm, gr) {
+  function tabParceiros(dash, ret, st, dm, gr, eg) {
+    const tempo = (eg && eg.tempo) || {};
     const o = dash.overview || {}, tx = ret.taxas || {}, stk = ret.stickiness || {}, j = ret.jornada || {};
     const serie = gr.serie || [];
     const ult = serie[serie.length - 1] || {};
@@ -676,12 +705,14 @@
         ${stat("Contas", fmt(o.total_users))}
         ${stat("Colecionadores ativos", fmt(o.collections_users), "com coleção na nuvem")}
         ${stat("Cópias catalogadas", fmt(lastDef(serie, "copias")))}
+        ${stat("Valor catalogado", brl(lastDef(serie, "valor_catalogado")), "em cartas nas coleções")}
         ${stat("DAU/MAU", stk.mau ? pct(stk.dau_medio, stk.mau) : "—", "quanto do público do mês aparece num dia comum")}
       </div>`)}
       ${section("Engajamento", `<div class="admin-stats">
         ${stat("Voltam na 2ª semana", pct(tx.d7, tx.el7), "retenção D7")}
         ${stat("Voltam no 2º mês", pct(tx.d30, tx.el30), "retenção D30")}
         ${stat("Ativam", pct(j.ativados, j.visitantes), "põem a 1ª carta na coleção")}
+        ${stat("Tempo por visita", dur(tempo.mediana_ms), "mediana")}
         ${stat("Decks publicados", fmt(o.decks))}
         ${stat("Preços da comunidade", fmt(o.price_points), "contribuições")}
       </div>`)}
@@ -689,8 +720,8 @@
         ${stat("Cliques de saída", fmt(st.total), `${fmt(st.pessoas)} pessoas`)}
         ${stat("Para lojas brasileiras", fmt(st.br), "Liga, LigaBRA, MYP")}
         ${stat("Taxa de saída", pct(st.total, st.views_carta), "cliques ÷ cartas abertas")}
-        ${stat("Cartas diferentes", fmt(st.cartas))}
-      </div>${hbars(lojas.map((x) => ({ label: STORE[x.s] || x.s, value: x.cliques, sub: `${fmt(x.pessoas)} pessoas`, color: STORES_BR.indexOf(x.s) >= 0 ? "var(--accent)" : "#9aa3ae" })))}`,
+        ${stat("Valor das cartas", brl(st.valor), "somado nos cliques")}
+      </div>${hbars(lojas.map((x) => ({ label: STORE[x.s] || x.s, value: x.cliques, sub: `${fmt(x.pessoas)} pessoas · ${brl(x.valor)}`, color: STORES_BR.indexOf(x.s) >= 0 ? "var(--accent)" : "#9aa3ae" })))}`,
         "Cada clique é uma pessoa saindo da página da carta direto pra busca daquela carta na loja. Só conta quem aceitou a medição, então é um piso.")}
       <div class="adm-grid-2">
         ${section("Jogos", hbars(jogos.map((x) => ({ label: gameName(x.game), value: x.visitors, color: gameColor(x.game), sub: pct(x.visitors, totJogos) }))), "Visitantes únicos por jogo no período.")}
@@ -761,7 +792,17 @@
         ${section("App instalado × navegador", recorteTable("r-app", comLabel(gp.app), "Recorte"))}
         ${section("Aparelho da 1ª visita", recorteTable("r-dev", comLabel(gp.device), "Aparelho"))}
         ${section("Jogo da 1ª visita", recorteTable("r-game", comLabel(gp.game, gameName), "Jogo"))}
-      </div>`;
+      </div>
+      ${(() => {
+        const ct = ((ret.contas || {}).taxas) || {};
+        return section("Retenção por CONTA (junta celular e computador)", `<div class="admin-stats">
+            ${stat("Contas na coorte", fmt(ct.coorte), "1ª visita logada nos últimos 120 dias")}
+            ${stat("Voltam no dia seguinte", pct(ct.d1, ct.el1), "D1")}
+            ${stat("Voltam na 2ª semana", pct(ct.d7, ct.el7), "D7")}
+            ${stat("Voltam no 2º mês", pct(ct.d30, ct.el30), "D30")}
+          </div>${cohortTable((ret.contas || {}).cohorts, "Semana da 1ª visita logada")}`,
+          "A mesma conta em dois aparelhos é UMA pessoa aqui — nas taxas de cima (por navegador) ela conta duas vezes e cada aparelho parece 'não voltar'. Só vale pra quem entra logado, que é justamente o público que fica.");
+      })()}`;
   }
 
   // ── Lojas: cliques de saída ───────────────────────────────────────────────
@@ -777,15 +818,18 @@
         ${stat("Cartas diferentes", fmt(st.cartas))}
         ${stat("De graduadas", fmt(st.graduadas), "PSA, BGS, CGC…")}
         ${stat("No celular", pct(st.celular, st.total))}
+        ${stat("Valor encaminhado", brl(st.valor), `${brl(st.valor_br)} pras lojas BR`)}
+        ${stat("Valor médio por clique", st.com_valor ? brl(st.valor / st.com_valor) : "—", `${fmt(st.com_valor)} cliques com preço`)}
       </div>
       ${section(`Cliques por dia (${st.days} dias)`, dailyBars(st.daily || [], Object.assign(CW(), { keyA: "br", keyB: "fora", labelA: "Lojas BR", labelB: "Internacionais", aria: "Cliques em lojas por dia" })))}
       <div class="adm-grid-2">
-        ${section("Por loja", hbars(lojas.map((x) => ({ label: STORE[x.s] || x.s, value: x.cliques, sub: `${fmt(x.pessoas)} pessoas · ${fmt(x.cartas)} cartas`, color: STORES_BR.indexOf(x.s) >= 0 ? "var(--accent)" : "#9aa3ae" }))))}
+        ${section("Por loja", hbars(lojas.map((x) => ({ label: STORE[x.s] || x.s, value: x.cliques, sub: `${fmt(x.pessoas)} pessoas · ${fmt(x.cartas)} cartas · ${brl(x.valor)}`, color: STORES_BR.indexOf(x.s) >= 0 ? "var(--accent)" : "#9aa3ae" }))))}
         ${section("Loja × jogo", paged("lj", [{ t: "Loja" }, { t: "Jogo" }, { t: "Cliques", num: true }, { t: "Pessoas", num: true }],
           lj.map((x) => `<tr><td>${esc(STORE[x.s] || x.s)}</td><td>${gameChip(x.g)}</td><td class="num">${esc(fmt(x.cliques))}</td><td class="num">${esc(fmt(x.pessoas))}</td></tr>`), 8))}
       </div>
-      ${section("Cartas que mais levam pra loja", paged("lt", [{ t: "Jogo" }, { t: "Carta" }, { t: "Cliques", num: true }, { t: "Pessoas", num: true }, { t: "Lojas BR", num: true }, { t: "Internacionais", num: true }],
-        (st.top || []).map((x) => `<tr><td>${gameChip(x.game)}</td><td>${cardCell(x.game, x.card_id)}</td><td class="num">${esc(fmt(x.cliques))}</td><td class="num">${esc(fmt(x.pessoas))}</td><td class="num">${esc(fmt(x.br))}</td><td class="num">${esc(fmt(x.fora))}</td></tr>`), 10))}
+      ${section("Cartas que mais levam pra loja", paged("lt", [{ t: "Jogo" }, { t: "Carta" }, { t: "Cliques", num: true }, { t: "Pessoas", num: true }, { t: "Lojas BR", num: true }, { t: "Internacionais", num: true }, { t: "Valor da carta", num: true }],
+        (st.top || []).map((x) => `<tr><td>${gameChip(x.game)}</td><td>${cardCell(x.game, x.card_id)}</td><td class="num">${esc(fmt(x.cliques))}</td><td class="num">${esc(fmt(x.pessoas))}</td><td class="num">${esc(fmt(x.br))}</td><td class="num">${esc(fmt(x.fora))}</td><td class="num">${esc(x.valor_carta ? brl(x.valor_carta) : "—")}</td></tr>`), 10),
+        "Valor = preço da carta em R$ no momento do clique (o mesmo do preview: preço anotado ou o de mercado convertido). Clique antes da 2.1 não tem valor.")}
       ${section("Relatório para a loja", `<div class="adm-actions">${(brLojas.length ? brLojas : STORES_BR.map((s) => ({ s }))).map((x) => `<button type="button" class="chip" data-csv="${esc(x.s)}">${ICON.down}<span>CSV · ${esc(STORE[x.s] || x.s)}</span></button>`).join("")}<button type="button" class="chip" data-csv="*">${ICON.down}<span>CSV · todas</span></button></div>`,
         `Uma linha por carta: jogo, carta, cliques e pessoas no período. Cartas com menos de ${MIN_PESSOAS_CSV} pessoas entram somadas numa linha "outras" por jogo — relatório que sai daqui não pode permitir adivinhar o que uma pessoa específica procurou. Os links pras lojas BR levam utm_source=sleevu, então a loja também vê esse tráfego no analytics dela.`)}`;
   }
@@ -844,6 +888,9 @@
           (dm.buscas || []).map((x) => `<tr><td>${esc(x.q)}</td><td>${x.game ? gameChip(x.game) : "<small>todos</small>"}</td><td class="num">${esc(fmt(x.n))}</td><td class="num">${esc(fmt(x.pessoas))}</td></tr>`), 8),
           "O que alguém procurou e a busca não achou: carta que falta no catálogo, apelido que a busca não entende, ou jogo que ainda não temos.")}
       </div>
+      ${section("Buscas mais feitas", paged("bt", [{ t: "Termo" }, { t: "Jogo" }, { t: "Vezes", num: true }, { t: "Pessoas", num: true }],
+        (dm.buscas_top || []).map((x) => `<tr><td>${esc(x.q)}</td><td>${x.game ? gameChip(x.game) : "<small>todos</small>"}</td><td class="num">${esc(fmt(x.n))}</td><td class="num">${esc(fmt(x.pessoas))}</td></tr>`), 10),
+        "O que o público procura ANTES de chegar na carta — nome de Pokémon, apelido, set. Começou a contar com a 2.1.")}
       ${section("Top por jogo", ordem.length ? `<div class="adm-grid-3">${ordem.map((g) => `<div class="adm-sub"><h3>${gameChip(g)}</h3>${hbars(byGame[g].map((x) => ({ label: nameOf(g, x.card_id) || x.card_id, value: x.indice, href: cardLink(g, x.card_id), color: gameColor(g), sub: `${fmt(x.views)} views · ${fmt(x.cliques)} cliques` })))}</div>`).join("")}</div>` : `<p class="admin-empty">Sem dados no período.</p>`)}`;
   }
 
@@ -861,6 +908,7 @@
       const k = `${x.s}|${x.game}`;
       const o = outras[k] || (outras[k] = { s: x.s, game: x.game, card_id: "", outras: true, cliques: 0, pessoas: 0 });
       o.cliques += x.cliques;
+      o.valor = (o.valor || 0) + (x.valor || 0);
     });
     const rows = out.concat(Object.values(outras));
     const csv = toCsv(rows, [
@@ -869,7 +917,8 @@
       { t: "Carta", k: (r) => (r.outras ? `(outras cartas, menos de ${MIN_PESSOAS_CSV} pessoas cada)` : (nameOf(r.game, r.card_id) || r.card_id)) },
       { t: "Id Sleevu", k: "card_id" },
       { t: "Cliques", k: "cliques" },
-      { t: "Pessoas", k: (r) => (r.outras ? "" : r.pessoas) }
+      { t: "Pessoas", k: (r) => (r.outras ? "" : r.pessoas) },
+      { t: "Valor encaminhado (R$)", k: (r) => r.valor || 0 }
     ]);
     const nome = `sleevu-cliques-${loja === "*" ? "todas" : loja}-${state.days}d-${new Date().toISOString().slice(0, 10)}.csv`;
     const a = document.createElement("a");
@@ -883,12 +932,16 @@
   // Nomes das cartas: o painel só recebe ids (o banco não tem catálogo). O
   // catálogo estático resolve — o mesmo loadOwnedAcrossGames do Explorar.
   // Teto de 400 ids por chamada pra não baixar meio catálogo de uma vez.
-  async function resolveNames(pares) {
+  // `teto` (2.1): a aba Sets resolve até 2.000 cartas pra agrupar por set;
+  // as outras seguem com 400. Junto com o nome vem o set e a data de
+  // lançamento (state.meta), que é o que a aba Sets usa.
+  async function resolveNames(pares, teto) {
     if (!shared.loadOwnedAcrossGames) return false;
     const falta = {};
     let n = 0;
+    const max = teto || 400;
     (pares || []).forEach((x) => {
-      if (!x || !x.game || !x.card_id || n >= 400) return;
+      if (!x || !x.game || !x.card_id || n >= max) return;
       const k = `${x.game}:${x.card_id}`;
       if (k in state.names) return;
       state.names[k] = "";   // marca como "tentado": id que não resolve não é buscado de novo
@@ -902,6 +955,7 @@
         const g = c.game || Object.keys(falta).find((gg) => falta[gg].indexOf(c.id) >= 0);
         if (!g) return;
         state.names[`${g}:${c.id}`] = [c.name, c.set && c.number ? `${c.set} ${c.number}` : c.set || c.number].filter(Boolean).join(" · ");
+        state.meta[`${g}:${c.id}`] = { set: c.set || "", release: c.setReleaseDate || c.releaseDate || "" };
       });
       return true;
     } catch (e) { return false; }
@@ -913,17 +967,336 @@
     if (tab === "demanda") return (dm.top || []).concat(dm.em_alta || [], dm.by_game || []);
     if (tab === "parceiros") return (dm.top || []).slice(0, 10);
     if (tab === "conteudo") { const c = (data.dash || {}).cards || {}; return (c.top || []).concat(c.wanted || [], c.viewed || []); }
+    if (tab === "sets") {
+      return (dm.cartas || []).map((x) => ({ game: x[0], card_id: x[1] }))
+        .concat((dm.series || []).map((x) => ({ game: x[0], card_id: x[1] })));
+    }
     return [];
+  }
+
+  // ══ Analytics 2.1 ═════════════════════════════════════════════════════════
+  const brl = (v) => (v == null ? "—" : `R$ ${Number(v).toLocaleString("pt-BR", { maximumFractionDigits: 0 })}`);
+  const dur = (ms) => {
+    if (ms == null) return "—";
+    const s = Math.round(ms / 1000);
+    if (s >= 3600) { const m = Math.round(s / 60); return `${Math.floor(m / 60)}h${m % 60 ? ` ${m % 60}min` : ""}`; }
+    return s < 60 ? `${s}s` : `${Math.floor(s / 60)}min${s % 60 ? ` ${s % 60}s` : ""}`;
+  };
+  const dataBR = (d) => (d ? new Date(String(d).length === 10 ? d + "T12:00:00" : d).toLocaleDateString("pt-BR") : "—");
+  const LOJAS_PORTAL = ["liga", "ligabra", "myp"];
+
+  // Matriz de coorte (usada por visitante e por conta).
+  function cohortTable(cohorts, rotulo) {
+    if (!cohorts || !cohorts.length) return `<p class="admin-empty">Sem dados nas últimas 10 semanas.</p>`;
+    const maxK = cohorts.reduce((m, c) => Math.max(m, (c.ret || []).length), 0);
+    const heads = `<tr><th>${esc(rotulo || "Semana de entrada")}</th><th class="num">Pessoas</th>${Array.from({ length: Math.max(0, maxK - 1) }, (_, i) => `<th class="num">S${i + 1}</th>`).join("")}</tr>`;
+    const rows = cohorts.slice().reverse().map((c) => {
+      const base = (c.ret || [])[0] || 0;
+      const cells = Array.from({ length: Math.max(0, maxK - 1) }, (_, i) => {
+        const v = (c.ret || [])[i + 1];
+        if (v == null) return `<td class="adm-heat"></td>`;
+        const p = base ? v / base : 0;
+        return `<td class="num adm-heat" style="--p:${Math.round(Math.min(0.55, p * 2) * 100)}%" title="${esc(`${fmt(v)} de ${fmt(base)}`)}">${esc(pct(v, base))}</td>`;
+      }).join("");
+      return `<tr><td>${esc(new Date(c.semana + "T12:00:00").toLocaleDateString("pt-BR", { day: "2-digit", month: "short" }))}</td><td class="num">${esc(fmt(base))}</td>${cells}</tr>`;
+    }).join("");
+    return `<div class="adm-scroll"><table class="admin-table adm-cohort"><thead>${heads}</thead><tbody>${rows}</tbody></table></div>`;
+  }
+
+  // ── P4 · Usuários ─────────────────────────────────────────────────────────
+  const FAIXA_VALOR = ["Sem histórico de valor", "Até R$ 100", "R$ 100–500", "R$ 500–2 mil", "R$ 2–10 mil", "R$ 10–50 mil", "R$ 50 mil+"];
+  const FAIXA_COPIAS = ["", "1–10 cópias", "11–50", "51–200", "201–1.000", "1.001–5.000", "5.000+"];
+  const IDADE = ["", "Menos de 7 dias", "7–30 dias", "30–90 dias", "90+ dias"];
+  const TAMANHO = ["", "Iniciante (até 49 cópias)", "Colecionador (50–499)", "Dedicado (500–2.999)", "Hardcore (3.000+)"];
+  const PERFIL = {
+    jogador: ["Jogador", "montou deck"], vendedor: ["Vendedor", "tem carta à venda ou vendida"],
+    investidor: ["Investidor", "tem graduada ou anota custo"], cacador: ["Caçador", "20+ na wishlist ou preço-alvo"],
+    multijogo: ["Multi-jogo", "coleciona 2+ jogos"], publico: ["Perfil público", "mostra a coleção pra todo mundo"]
+  };
+  const RECURSO = {
+    desejos: "Wishlist", decks: "Decks", graded: "Graduadas", vendas: "Vendas", listas: "Listas",
+    custos: "Custo pago", alvos: "Preço-alvo", manuais: "Selados/itens manuais", publico: "Perfil público"
+  };
+
+  function tabUsuarios(u) {
+    const r = u.resumo || {};
+    const fv = u.faixas_valor || [], fc = u.faixas_copias || [];
+    const totV = fv.reduce((n, x) => n + (Number(x.valor) || 0), 0);
+    const totN = fv.reduce((n, x) => n + x.n, 0);
+    return `
+      <div class="admin-stats">
+        ${stat("Contas com coleção", fmt(r.contas), `${fmt(r.ativos)} ativas nos ${u.days} dias`)}
+        ${stat("Valor catalogado", brl(r.valor_total), `${fmt(r.com_valor)} contas com histórico de valor`)}
+        ${stat("Coleção mediana", brl(r.valor_mediano), `média ${brl(r.valor_medio)}`)}
+        ${stat("Cópias por conta", fmt(r.copias_mediana), `mediana · média ${fmt(r.copias_media)}`)}
+        ${stat("Jogos por conta", (r.jogos_medio == null ? "—" : Number(r.jogos_medio).toLocaleString("pt-BR")), "média")}
+        ${stat("1% maiores coleções", pct(r.top1_valor, r.valor_total), "do valor total")}
+        ${stat("10% maiores", pct(r.top10_valor, r.valor_total), "do valor total")}
+      </div>
+      ${section("Faixas de valor da coleção", table(
+        [{ t: "Faixa" }, { t: "Contas", num: true }, { t: "% das contas", num: true }, { t: "Valor somado", num: true }, { t: "% do valor", num: true }, { t: "Ativas", num: true }, { t: "Cópias (média)", num: true }],
+        fv.map((x) => `<tr><td>${esc(FAIXA_VALOR[x.fv] || x.fv)}</td><td class="num">${esc(fmt(x.n))}</td><td class="num">${esc(pct(x.n, totN))}</td><td class="num">${esc(brl(x.valor))}</td><td class="num">${esc(pct(x.valor, totV))}</td><td class="num">${esc(pct(x.ativos, x.n))}</td><td class="num">${esc(fmt(x.copias_media))}</td></tr>`)),
+        "Valor = último ponto do histórico do Portfólio de cada jogo (R$, cartas + graduadas), gravado no dia em que a pessoa abriu o app pela última vez — não é o valor de hoje. \"Sem histórico\" = conta que nunca abriu Portfólio/Dashboard depois de ter coleção.")}
+      <div class="adm-grid-2">
+        ${section("Tamanho da coleção", table(
+          [{ t: "Cópias" }, { t: "Contas", num: true }, { t: "Valor", num: true }, { t: "Ativas", num: true }],
+          fc.map((x) => `<tr><td>${esc(FAIXA_COPIAS[x.fc] || x.fc)}</td><td class="num">${esc(fmt(x.n))}</td><td class="num">${esc(brl(x.valor))}</td><td class="num">${esc(pct(x.ativos, x.n))}</td></tr>`)))}
+        ${section("Idade da conta", table(
+          [{ t: "Conta criada há" }, { t: "Contas", num: true }, { t: "Cópias (mediana)", num: true }, { t: "Valor (mediana)", num: true }, { t: "Ativas", num: true }],
+          (u.idade || []).map((x) => `<tr><td>${esc(IDADE[x.k] || x.k)}</td><td class="num">${esc(fmt(x.n))}</td><td class="num">${esc(fmt(x.copias_mediana))}</td><td class="num">${esc(brl(x.valor_mediano))}</td><td class="num">${esc(pct(x.ativos, x.n))}</td></tr>`)),
+          "Mostra se a coleção cresce com o tempo de casa — ou se quem chega já chega com tudo (importação).")}
+      </div>
+      <div class="adm-grid-3">
+        ${section("Jogos por conta", donut((u.jogos_n || []).map((x, i) => ({ label: x.k >= 4 ? "4+ jogos" : `${x.k} jogo${x.k > 1 ? "s" : ""}`, value: x.n, color: colorAt(i) })), { aria: "Contas por número de jogos" }),
+          (u.jogos_n || []).map((x) => `${x.k >= 4 ? "4+" : x.k}: ${brl(x.valor_medio)} em média`).join(" · "))}
+        ${section("Jogos mais colecionados", hbars((u.por_jogo || []).map((x) => ({ label: gameName(x.game), value: x.usuarios, color: gameColor(x.game) }))))}
+        ${section("Combinações mais comuns", hbars((u.combos || []).map((x) => ({ label: x.combo.split("+").map(gameName).join(" + "), value: x.n }))))}
+      </div>`;
+  }
+
+  function tabColecoes(u) {
+    const dm = u.dormentes || {};
+    const rows = (u.top || []).map((x, i) => `<tr>
+      <td class="num">${i + 1}</td>
+      <td><span class="adm-mono">${esc(x.id)}</span>${x.handle ? `<br><a href="/users/${esc(encodeURIComponent(x.handle))}">@${esc(x.handle)}</a>` : ""}</td>
+      <td>${(x.jogos || []).map(gameChip).join(" ")}</td>
+      <td class="num"><strong>${esc(brl(x.valor))}</strong>${x.valor_graded ? `<br><small>${esc(brl(x.valor_graded))} graduadas</small>` : ""}</td>
+      <td class="num">${esc(fmt(x.copias))}<br><small>${esc(fmt(x.distintas))} distintas</small></td>
+      <td class="num">${esc(fmt(x.desejos))}</td>
+      <td class="num">${esc(fmt(x.decks))}</td>
+      <td class="num">${esc(fmt((x.vendas || 0) + (x.vendidas || 0)))}</td>
+      <td>${x.ativo ? `<span class="adm-ok">ativa</span>` : `<small>${esc(dataBR(x.ultimo_login))}</small>`}</td>
+      <td><small>${esc(dataBR(x.desde))}</small></td>
+    </tr>`);
+    return `
+      <div class="admin-stats">
+        ${stat("Maiores coleções", fmt((u.top || []).length), "ordenadas por valor")}
+        ${stat("Dormentes de valor", fmt(dm.n), `${brl(dm.valor)} parados — R$ 2 mil+ sem visita há 30+ dias`)}
+      </div>
+      ${section("Maiores coleções", paged("colecoes", [
+        { t: "#", num: true }, { t: "Conta" }, { t: "Jogos" }, { t: "Valor", num: true }, { t: "Cópias", num: true },
+        { t: "Wishlist", num: true }, { t: "Decks", num: true }, { t: "Vendas", num: true }, { t: "Atividade" }, { t: "Desde" }
+      ], rows, 20),
+        "Identificação mínima de propósito: 8 caracteres do id da conta (pra reconhecer a mesma entre uma visita e outra ao painel) e o @ só quando o perfil é público. E-mail não aparece — pra entender comportamento não precisa, e painel que mostra e-mail é painel que vaza e-mail. \"Atividade\" = visitou logado no período; senão, o último login.")}`;
+  }
+
+  function tabSegmentos(u) {
+    const r = u.resumo || {}, tm = u.tamanho || [];
+    const totN = tm.reduce((n, x) => n + x.n, 0), totV = tm.reduce((n, x) => n + (Number(x.valor) || 0), 0);
+    const pc = r.pct || {};
+    return `
+      ${section("Por tamanho (cada conta em uma faixa)", table(
+        [{ t: "Segmento" }, { t: "Contas", num: true }, { t: "% das contas", num: true }, { t: "Valor", num: true }, { t: "% do valor", num: true }, { t: "Ativas", num: true }, { t: "Jogos (média)", num: true }],
+        tm.map((x) => `<tr><td>${esc(TAMANHO[x.k] || x.k)}</td><td class="num">${esc(fmt(x.n))}</td><td class="num">${esc(pct(x.n, totN))}</td><td class="num">${esc(brl(x.valor))}</td><td class="num">${esc(pct(x.valor, totV))}</td><td class="num">${esc(pct(x.ativos, x.n))}</td><td class="num">${esc(x.jogos_medio == null ? "—" : String(x.jogos_medio).replace(".", ","))}</td></tr>`)),
+        "Poucos hardcore concentrando o valor é o normal de colecionismo — o que importa é a faixa do meio crescer e continuar ativa.")}
+      ${section("Perfis de uso (uma conta pode ter vários)", table(
+        [{ t: "Perfil" }, { t: "Critério" }, { t: "Contas", num: true }, { t: "% das contas", num: true }, { t: "Valor", num: true }, { t: "Ativas", num: true }],
+        (u.perfis || []).map((x) => `<tr><td><strong>${esc((PERFIL[x.k] || [x.k])[0])}</strong></td><td><small>${esc((PERFIL[x.k] || ["", ""])[1])}</small></td><td class="num">${esc(fmt(x.n))}</td><td class="num">${esc(pct(x.n, r.contas))}</td><td class="num">${esc(brl(x.valor))}</td><td class="num">${esc(pct(x.ativos, x.n))}</td></tr>`)),
+        "Vendedor e investidor são o público de loja; caçador é quem compra (wishlist); jogador é quem monta deck e volta toda semana.")}
+      ${section("Quem usa cada recurso", hbars(Object.keys(RECURSO).map((k) => ({ label: RECURSO[k], value: r.contas ? Math.round((100 * (pc[k] || 0)) / r.contas) : 0, sub: `${fmt(pc[k] || 0)} contas` })).sort((a, b) => b.value - a.value), { max: 100, suffix: "%" }))}`;
+  }
+
+  // ── P1 · Tempo de uso ────────────────────────────────────────────────────
+  function tabTempo(e) {
+    const t = e.tempo || {}, bs = e.buscas || {};
+    const FAIXA = ["", "até 10s", "10s–1min", "1–5min", "5–15min", "15min+"];
+    const faixas = [1, 2, 3, 4, 5].map((k) => ({ label: FAIXA[k], value: ((t.faixas || []).find((x) => x.ord === k) || {}).n || 0 }));
+    return `
+      <div class="admin-stats">
+        ${stat("Visita mediana", dur(t.mediana_ms), "metade das visitas dura mais que isso")}
+        ${stat("Visita média", dur(t.media_ms), `10% passam de ${dur(t.p90_ms)}`)}
+        ${stat("Páginas por visita", t.paginas_visita == null ? "—" : String(t.paginas_visita).replace(".", ","))}
+        ${stat("Visitas por pessoa", t.visitas_por_pessoa == null ? "—" : String(t.visitas_por_pessoa).replace(".", ","), `nos ${e.days} dias`)}
+        ${stat("Visitas medidas", fmt(t.visitas))}
+        ${stat("Buscas que acharam", pct(bs.achou, (bs.achou || 0) + (bs.vazia || 0)), `${fmt(bs.vazia)} sem resultado`)}
+      </div>
+      <div class="adm-grid-2">
+        ${section("Duração das visitas", columns(faixas, Object.assign(CWS(), { aria: "Visitas por faixa de duração" })))}
+        ${section("Por aparelho", table([{ t: "Aparelho" }, { t: "Visitas", num: true }, { t: "Mediana", num: true }],
+          (t.por_aparelho || []).map((x) => `<tr><td>${esc(DEVICE[x.dv] || x.dv)}</td><td class="num">${esc(fmt(x.visitas))}</td><td class="num">${esc(dur(x.mediana_ms))}</td></tr>`)))}
+      </div>
+      ${section("Onde o tempo é gasto", paged("tempo-pg", [{ t: "Página" }, { t: "Vistas", num: true }, { t: "Mediana por vista", num: true }, { t: "Tempo total", num: true }],
+        (t.por_pagina || []).map((x) => `<tr><td>${esc(pageName(x.path))}</td><td class="num">${esc(fmt(x.vistas))}</td><td class="num">${esc(dur(x.mediana_ms))}</td><td class="num">${esc(dur(x.total_ms))}</td></tr>`), 10),
+        "Tempo VISÍVEL: aba em segundo plano não conta, e uma página esquecida aberta é cortada em 30 minutos. Uma visita = páginas do mesmo navegador sem pausa de 30 minutos. Página vista por menos de 2 segundos não é registrada.")}`;
+  }
+
+  // ── P2 · Campanhas (custo × resultado) ───────────────────────────────────
+  function tabCampanhas(c) {
+    const camp = c.campanhas || [];
+    const por = (custo, n) => (custo > 0 && n > 0 ? brl(custo / n) : "—");
+    const rows = camp.map((x) => `<tr><td><strong>${esc(x.fonte)}</strong>${x.campanha ? `<br><small>${esc(x.campanha)}</small>` : ""}</td><td><small>${esc(dataBR(x.desde))}</small></td>
+      <td class="num">${esc(fmt(x.visitantes))}</td><td class="num">${esc(fmt(x.ativados))} <small>${esc(pct(x.ativados, x.visitantes))}</small></td>
+      <td class="num">${esc(fmt(x.contas))} <small>${esc(pct(x.contas, x.visitantes))}</small></td><td class="num">${esc(x.el7 ? pct(x.d7, x.el7) : "—")}</td>
+      <td class="num">${esc(x.custo == null ? "—" : brl(x.custo))}</td><td class="num">${esc(por(x.custo, x.visitantes))}</td><td class="num"><strong>${esc(por(x.custo, x.ativados))}</strong></td><td class="num">${esc(por(x.custo, x.contas))}</td></tr>`);
+    const custos = (c.custos || []).map((x) => `<tr><td>${esc(x.fonte)}${x.campanha ? ` / ${esc(x.campanha)}` : ""}</td><td class="num">${esc(brl(x.valor))}</td><td><small>${esc(x.nota || "")}</small></td><td><small>${esc(dataBR(x.created_at))}</small></td><td><button type="button" class="chip adm-mini" data-camp-del="${esc(x.id)}" aria-label="Apagar este custo">Apagar</button></td></tr>`);
+    return `
+      ${section("Anotar custo de campanha", `<form class="adm-form" data-camp-form>
+          <label>Fonte (utm_source)<input name="fonte" required maxlength="30" placeholder="instagram" autocomplete="off"></label>
+          <label>Campanha (utm_campaign)<input name="campanha" maxlength="30" placeholder="lancamento-151" autocomplete="off"></label>
+          <label>Valor gasto (R$)<input name="valor" required inputmode="decimal" placeholder="150,00" autocomplete="off"></label>
+          <label>Nota<input name="nota" maxlength="200" placeholder="opcional" autocomplete="off"></label>
+          <button type="submit" class="chip adm-primary">Salvar custo</button>
+        </form>`,
+        "Pra uma campanha aparecer aqui, o link dela precisa levar ?utm_source=…&utm_campaign=… (ex.: sleevu.app/?utm_source=instagram&utm_campaign=lancamento-151). Custo anotado várias vezes pra mesma campanha soma.")}
+      ${section("Resultado por campanha (desde sempre)", paged("camp", [
+        { t: "Fonte / campanha" }, { t: "Desde" }, { t: "Visitantes", num: true }, { t: "Ativaram", num: true }, { t: "Conta", num: true },
+        { t: "D7", num: true }, { t: "Custo", num: true }, { t: "Por visitante", num: true }, { t: "Por ativação", num: true }, { t: "Por conta", num: true }
+      ], rows, 10), "Custo por ATIVAÇÃO (1ª carta na coleção) é o número que decide se vale continuar pagando: visitante que não ativa não volta.")}
+      ${section("Custos anotados", table([{ t: "Campanha" }, { t: "Valor", num: true }, { t: "Nota" }, { t: "Anotado em" }, { t: "" }], custos))}`;
+  }
+
+  // ── P3 · Experimentos ────────────────────────────────────────────────────
+  function tabExperimentos(x) {
+    const lista = Array.isArray(x) ? x : [];
+    if (!lista.length) {
+      return section("Nenhum experimento rodando", `<p class="admin-note">Um experimento é uma variante sorteada por navegador e medida contra ativação, conta, clique em loja e retorno. Pra criar um, no código da página:</p>
+        <pre class="adm-code">const v = TCGShared.experimento("home_cta", ["a", "b"]);
+if (v === "b") { /* versão nova */ }</pre>
+        <p class="admin-note">A variante fica guardada no navegador (a pessoa não pula entre versões) e aparece aqui assim que alguém a vê.</p>`);
+    }
+    const porExp = {};
+    lista.forEach((r) => { (porExp[r.e] = porExp[r.e] || []).push(r); });
+    return Object.keys(porExp).map((e) => {
+      const vs = porExp[e];
+      const base = vs[0];
+      const taxa = (a, b) => (b ? a / b : null);
+      const dif = (r, k, den) => {
+        if (r === base) return "";
+        const a = taxa(r[k], r[den]), b = taxa(base[k], base[den]);
+        if (a == null || b == null || !b) return "";
+        return ` <small class="${a >= b ? "adm-ok" : "adm-bad"}">${sinal((a - b) / b)}</small>`;
+      };
+      const pouco = vs.some((r) => r.pessoas < 100);
+      return section(`Experimento "${e}"`, table(
+        [{ t: "Variante" }, { t: "Pessoas", num: true }, { t: "Ativaram", num: true }, { t: "Conta", num: true }, { t: "Clicou em loja", num: true }, { t: "D7", num: true }, { t: "Desde" }],
+        vs.map((r) => `<tr><td><strong>${esc(r.v)}</strong>${r === base ? " <small>(base)</small>" : ""}</td><td class="num">${esc(fmt(r.pessoas))}</td>
+          <td class="num">${esc(pct(r.ativou, r.pessoas))}${dif(r, "ativou", "pessoas")}</td><td class="num">${esc(pct(r.conta, r.pessoas))}${dif(r, "conta", "pessoas")}</td>
+          <td class="num">${esc(pct(r.loja, r.pessoas))}${dif(r, "loja", "pessoas")}</td><td class="num">${esc(r.el7 ? pct(r.d7, r.el7) : "—")}${dif(r, "d7", "el7")}</td>
+          <td><small>${esc(dataBR(r.inicio))}</small></td></tr>`)),
+        pouco ? "Menos de 100 pessoas em alguma variante: diferença aqui ainda é sorte, não resultado. Espere juntar mais antes de decidir." : "Diferença relativa contra a variante base. Conta só o que a pessoa fez DEPOIS de ver a variante.");
+    }).join("");
+  }
+
+  // ── P3 · Portal da loja (links privados) ─────────────────────────────────
+  function tabPortal(links, st) {
+    const lista = Array.isArray(links) ? links : [];
+    const base = `${location.origin}/parceiro?t=`;
+    const porLoja = {};
+    (st.lojas || []).forEach((x) => { porLoja[x.s] = x; });
+    const rows = lista.map((l) => {
+      const ativo = !l.revoked_at;
+      return `<tr><td><strong>${esc(STORE[l.loja] || l.loja)}</strong>${l.rotulo ? `<br><small>${esc(l.rotulo)}</small>` : ""}</td>
+        <td><small>${esc(dataBR(l.created_at))}</small></td><td class="num">${esc(fmt(l.views))}</td><td><small>${esc(l.last_seen_at ? new Date(l.last_seen_at).toLocaleString("pt-BR") : "nunca aberto")}</small></td>
+        <td>${ativo ? `<span class="adm-ok">ativo</span>` : `<span class="adm-bad">revogado</span>`}</td>
+        <td>${ativo ? `<div class="adm-row-actions"><button type="button" class="chip adm-mini" data-portal-copy="${esc(base + l.token)}">Copiar link</button><button type="button" class="chip adm-mini" data-portal-revoke="${esc(l.id)}">Revogar</button></div>` : ""}</td></tr>`;
+    });
+    return `
+      ${section("Criar link para uma loja", `<form class="adm-form" data-portal-form>
+          <label>Loja<select name="loja">${LOJAS_PORTAL.map((s) => `<option value="${s}">${esc(STORE[s])}</option>`).join("")}</select></label>
+          <label>Rótulo<input name="rotulo" maxlength="60" placeholder="ex.: Liga — contato comercial" autocomplete="off"></label>
+          <button type="submit" class="chip adm-primary">Criar link</button>
+        </form><p class="adm-portal-novo" data-portal-novo hidden></p>`,
+        "A loja abre sleevu.app/parceiro?t=… e vê só o tráfego que o Sleevu mandou pra ELA: cliques, pessoas, valor das cartas, jogos e as cartas mais procuradas (carta com menos de 3 pessoas entra somada em \"outras\"). Quem tem o link vê — mande só pra quem deve ver, e revogue quando a conversa acabar.")}
+      ${section("Links criados", table([{ t: "Loja" }, { t: "Criado" }, { t: "Acessos", num: true }, { t: "Último acesso" }, { t: "Status" }, { t: "" }], rows))}
+      ${section(`O que cada loja veria agora (${st.days} dias)`, table([{ t: "Loja" }, { t: "Cliques", num: true }, { t: "Pessoas", num: true }, { t: "Valor encaminhado", num: true }],
+        LOJAS_PORTAL.map((s) => { const x = porLoja[s] || {}; return `<tr><td>${esc(STORE[s])}</td><td class="num">${esc(fmt(x.cliques || 0))}</td><td class="num">${esc(fmt(x.pessoas || 0))}</td><td class="num">${esc(brl(x.valor || 0))}</td></tr>`; })))}`;
+  }
+
+  // ── P2 · Demanda por set e lançamentos ───────────────────────────────────
+  function tabSets(dm) {
+    const cartas = dm.cartas || [];
+    const porSet = new Map();
+    let semSet = 0;
+    cartas.forEach(([g, id, views, cliques, desejos]) => {
+      const m = state.meta[`${g}:${id}`];
+      if (!m || !m.set) { semSet += 1; return; }
+      const k = `${g}|${m.set}`;
+      const o = porSet.get(k) || { game: g, set: m.set, release: m.release, cartas: 0, views: 0, cliques: 0, desejos: 0 };
+      o.cartas += 1; o.views += views; o.cliques += cliques; o.desejos += desejos;
+      porSet.set(k, o);
+    });
+    const sets = Array.from(porSet.values()).map((o) => Object.assign(o, { indice: o.views + 5 * o.cliques + 10 * o.desejos })).sort((a, b) => b.indice - a.indice);
+    const resolvendo = cartas.length && state.metaPendente;
+    // Lançamentos: sets com data nos últimos 60 dias, views por dia somadas.
+    const ini = dm.series_ini ? new Date(dm.series_ini + "T12:00:00") : null;
+    const limite = Date.now() - 60 * 86400000;
+    const serieSet = new Map();
+    (dm.series || []).forEach(([g, id, serie]) => {
+      const m = state.meta[`${g}:${id}`];
+      if (!m || !m.set || !m.release || new Date(m.release).getTime() < limite) return;
+      const k = `${g}|${m.set}`;
+      const s = serieSet.get(k) || { label: `${m.set} (${gameName(g)})`, vals: new Array((serie || []).length).fill(0) };
+      (serie || []).forEach((v, i) => { s.vals[i] += Number(v) || 0; });
+      serieSet.set(k, s);
+    });
+    const lanc = Array.from(serieSet.values()).sort((a, b) => b.vals.reduce((x, y) => x + y, 0) - a.vals.reduce((x, y) => x + y, 0)).slice(0, 4);
+    const daily = ini && lanc.length ? lanc[0].vals.map((_, i) => {
+      const d = new Date(ini.getTime() + i * 86400000);
+      const o = { day: d.toISOString().slice(0, 10) };
+      lanc.forEach((s, j) => { o[`s${j}`] = s.vals[i]; });
+      return o;
+    }) : [];
+    return `
+      ${resolvendo ? `<p class="admin-note">Resolvendo o set de ${fmt(cartas.length)} cartas no catálogo…</p>` : ""}
+      ${section("Demanda por set", paged("sets", [{ t: "Jogo" }, { t: "Set" }, { t: "Lançado" }, { t: "Cartas com procura", num: true }, { t: "Views", num: true }, { t: "Cliques em loja", num: true }, { t: "Na wishlist", num: true }, { t: "Índice", num: true }],
+        sets.map((o) => `<tr><td>${gameChip(o.game)}</td><td>${esc(o.set)}</td><td><small>${esc(o.release ? dataBR(o.release) : "—")}</small></td><td class="num">${esc(fmt(o.cartas))}</td><td class="num">${esc(fmt(o.views))}</td><td class="num">${esc(fmt(o.cliques))}</td><td class="num">${esc(fmt(o.desejos))}</td><td class="num"><strong>${esc(fmt(o.indice))}</strong></td></tr>`), 15),
+        `Soma das ${fmt(cartas.length)} cartas com mais procura no período, agrupadas pelo set no catálogo${semSet ? ` (${fmt(semSet)} não acharam set — id antigo ou fora do catálogo)` : ""}. Índice = views + 5 × cliques em loja + 10 × wishlist.`)}
+      ${section("Lançamentos: procura nos primeiros dias", daily.length
+        ? lines(daily, lanc.map((s, j) => ({ key: `s${j}`, label: s.label, color: colorAt(j) })), Object.assign(CW(), { aria: "Views por dia dos sets lançados nos últimos 60 dias" }))
+        : `<p class="admin-empty">Nenhum set lançado nos últimos 60 dias entre as cartas mais vistas.</p>`,
+        "Views por dia (45 dias) das cartas dos sets lançados nos últimos 60 dias — a curva de interesse de um lançamento: pico, meia-vida e quando estabiliza.")}`;
+  }
+
+  // ── P1 · Medição: alarmes, consentimento, retenção de dados ─────────────
+  const ALVO = {
+    pageview: "Visitas", store_click: "Cliques em loja (todas)", scan_open: "Scanner aberto", scan_done: "Scanner fechado",
+    card_added: "Cartas cadastradas", collection_first: "Ativações", signup: "Contas novas", login_gate: "Portão de login",
+    search_empty: "Busca sem resultado", search_hit: "Busca com resultado", share_open: "Link aberto", share_created: "Link criado",
+    page_time: "Tempo de página", onboard_state: "Primeiros passos", exp_view: "Experimentos", ad_view: "Vitrine vista", ad_click: "Vitrine clicada",
+    pwa_install: "App instalado", export_done: "Exportações", import_done: "Importações", deck_created: "Decks criados", backup_done: "Backups"
+  };
+  function tabMedicao(h, e) {
+    const alvos = (h.alvos || []).slice().sort((a, b) => (b.alerta - a.alerta) || (b.media_dia - a.media_dia));
+    const cs = (e && e.consentimento) || {};
+    const medidos = cs.visitantes_total || 0, recusas = (cs.recusou_total || 0) - (cs.reativou_total || 0);
+    const cobertura = medidos ? medidos / (medidos + Math.max(0, recusas)) : null;
+    const nome = (a) => { const [n, s] = String(a).split(":"); return s ? `Cliques em loja · ${STORE[s] || s}` : (ALVO[n] || n); };
+    return `
+      <div class="admin-stats">
+        ${stat("Alarmes", fmt(alvos.filter((a) => a.alerta).length), "evento que zerou há 48h")}
+        ${stat("Cobertura estimada", cobertura == null ? "—" : pct(cobertura, 1), "dos navegadores com medição ligada")}
+        ${stat("Desligaram a medição", fmt(cs.recusou_total), cs.desde ? `desde ${dataBR(cs.desde)} · ${fmt(cs.reativou_total)} religaram` : "sem registro ainda")}
+        ${stat("Eventos guardados", fmt(h.eventos_total), h.eventos_mais_antigo ? `desde ${dataBR(h.eventos_mais_antigo)}` : "")}
+        ${stat("Agendamento (pg_cron)", h.cron === "ligado" ? "ligado" : "desligado", h.cron === "ligado" ? "retrato, resumo e limpeza automáticos" : "o painel completa a série ao abrir")}
+      </div>
+      ${section("Eventos: chegando ou parados?", paged("sentinela", [{ t: "Evento" }, { t: "Últimas 48h", num: true }, { t: "Média/dia (14 dias antes)", num: true }, { t: "Último" }, { t: "Status" }],
+        alvos.map((a) => `<tr><td>${esc(nome(a.alvo))}</td><td class="num">${esc(fmt(a.ultimas48h))}</td><td class="num">${esc(String(a.media_dia).replace(".", ","))}</td><td><small>${esc(a.ultimo ? new Date(a.ultimo).toLocaleString("pt-BR") : "—")}</small></td><td>${a.alerta ? `<span class="adm-bad">parou</span>` : `<span class="adm-ok">ok</span>`}</td></tr>`), 12),
+        "Alarme = chegava 3+ por dia e zerou nas últimas 48h. Quase sempre é medição quebrada (nome fora da whitelist, migração faltando, busca de uma loja que mudou), não falta de uso. O healthcheck diário do GitHub checa a mesma coisa e manda e-mail quando dispara.")}
+      ${section("Consentimento", `<div class="admin-stats">
+          ${stat("Desligaram no período", fmt(cs.recusou), `${fmt(cs.reativou)} religaram`)}
+          ${stat("Visitantes medidos no período", fmt(cs.visitantes))}
+        </div>`,
+        "A medição é ligada por padrão e dá pra desligar em Configurações. Quem desliga some do painel — então todo número aqui é um PISO. Cobertura estimada = visitantes medidos ÷ (medidos + quem desligou). Não pega quem bloqueia por extensão, então a real é um pouco menor.")}
+      ${section("Retenção dos dados", `<ul class="adm-list">
+          <li>Último retrato diário (série de crescimento): <strong>${esc(dataBR(h.metrics_ultimo))}</strong></li>
+          <li>Último resumo diário dos eventos: <strong>${esc(dataBR(h.rollup_ultimo))}</strong></li>
+          <li>Evento bruto mais antigo guardado: <strong>${esc(dataBR(h.eventos_mais_antigo))}</strong></li>
+        </ul>`,
+        "O evento bruto (com o id anônimo do navegador) fica 13 meses; depois sobra só o resumo por dia e a série de crescimento. A limpeza roda no dia 1 de cada mês pelo pg_cron. Efeito colateral: quem volta depois de 13+ meses sem visitar conta como visitante novo.")}`;
   }
 
   const RENDER = {
     geral: (x) => tabGeral(x.dash), audiencia: (x) => tabAudiencia(x.dash), conteudo: (x) => tabConteudo(x.dash),
     produto: (x) => tabProduto(x.dash), qualidade: (x) => tabQualidade(x.dash),
     crescimento: (x) => tabCrescimento(x.growth),
-    parceiros: (x) => tabParceiros(x.dash, x.retention, x.stores, x.demand, x.growth),
+    parceiros: (x) => tabParceiros(x.dash, x.retention, x.stores, x.demand, x.growth, x.engagement),
     canais: (x) => tabCanais(x.retention, x.growth), retencao: (x) => tabRetencao(x.retention),
-    funil: (x) => tabFunil(x.funnel, x.retention), lojas: (x) => tabLojas(x.stores), demanda: (x) => tabDemanda(x.demand),
-    anuncios: (x) => tabVitrine(x.anuncios)
+    funil: (x) => tabFunil(x.funnel, x.retention, x.engagement), lojas: (x) => tabLojas(x.stores), demanda: (x) => tabDemanda(x.demand),
+    anuncios: (x) => tabVitrine(x.anuncios),
+    usuarios: (x) => tabUsuarios(x.users), colecoes: (x) => tabColecoes(x.users), segmentos: (x) => tabSegmentos(x.users),
+    campanhas: (x) => tabCampanhas(x.campaigns), tempo: (x) => tabTempo(x.engagement),
+    experimentos: (x) => tabExperimentos(x.experiments), portal: (x) => tabPortal(x.partners, x.stores),
+    sets: (x) => tabSets(x.demand), medicao: (x) => tabMedicao(x.health, x.engagement)
   };
 
   // ── Painel legado (enquanto a migração 20260914a não for aplicada) ───────
@@ -953,7 +1326,7 @@
     const days = state.days;
     const p = (key === "dash" ? shared.adminDashboard(days)
       : key === "funnel" ? shared.adminFunnel(days)
-      : shared.adminRpc(RPC[key], days)
+      : shared.adminRpc(RPC[key], days, SEM_DIAS.indexOf(key) >= 0 ? {} : undefined)
     ).then((v) => {
       delete state.inflight[ck];
       if (v !== null) state.cache[ck] = v;
@@ -967,14 +1340,19 @@
     funnel: "20260919a_funil_ativacao.sql e depois 20260923a_analytics_v2.sql",
     retention: "20260923a_analytics_v2.sql", stores: "20260923a_analytics_v2.sql",
     demand: "20260923a_analytics_v2.sql", growth: "20260923a_analytics_v2.sql",
-    anuncios: "20260927a_vitrine.sql"
+    anuncios: "20260927a_vitrine.sql",
+    users: "20260928a_analytics_2_1.sql", campaigns: "20260928a_analytics_2_1.sql", engagement: "20260928a_analytics_2_1.sql",
+    experiments: "20260928a_analytics_2_1.sql", partners: "20260928a_analytics_2_1.sql", health: "20260928a_analytics_2_1.sql"
   };
   function pendente(keys) {
     const arqs = Array.from(new Set(keys.map((k) => MIGRACAO[k])));
     const rpcs = keys.map((k) => (k === "dash" ? "admin_dashboard" : k === "funnel" ? "admin_funnel" : RPC[k]));
+    const v21 = keys.some((k) => MIGRACAO[k] === "20260928a_analytics_2_1.sql");
     const descartados = keys.indexOf("anuncios") >= 0
       ? "Enquanto a 20260927a não for aplicada, os eventos da vitrine (espaço visto, espaço clicado) são descartados pelo banco sem erro"
-      : "Enquanto a 20260923a não for aplicada, os eventos novos (clique em loja, conta nova, busca vazia, link aberto, app instalado) são descartados pelo banco sem erro";
+      : v21
+        ? "Enquanto a 20260928a não for aplicada, os eventos da 2.1 (tempo de página, busca com resultado, primeiros passos, experimentos) são descartados pelo banco sem erro"
+        : "Enquanto a 20260923a não for aplicada, os eventos novos (clique em loja, conta nova, busca vazia, link aberto, app instalado) são descartados pelo banco sem erro";
     return `<p class="adm-banner">${rpcs.map((r) => `A RPC <code>${esc(r)}</code> ainda não existe no banco`).join("; ")}: aplique <code>supabase/migrations/${arqs.map(esc).join("</code>, <code>supabase/migrations/")}</code> no SQL Editor. <strong>${descartados}</strong> — aplique o SQL ANTES de subir o JS.</p>`;
   }
 
@@ -1010,6 +1388,47 @@
       exportaLoja(t.dataset.csv).finally(() => { t.disabled = false; });
     } else if (t.hasAttribute("data-print")) {
       window.print();
+    } else if (t.dataset.campDel) {
+      if (!window.confirm("Apagar este custo anotado?")) return;
+      escreve("admin_campaign_delete", { p_id: Number(t.dataset.campDel) }, ["campaigns"]);
+    } else if (t.dataset.portalRevoke) {
+      if (!window.confirm("Revogar este link? A loja deixa de ver o painel na hora.")) return;
+      escreve("admin_partner_link_revoke", { p_id: Number(t.dataset.portalRevoke) }, ["partners"]);
+    } else if (t.dataset.portalCopy) {
+      const url = t.dataset.portalCopy;
+      const ok = () => { t.textContent = "Copiado"; setTimeout(() => { t.textContent = "Copiar link"; }, 1500); };
+      // Sem clipboard (http, permissão negada): caixa "copie daqui".
+      const manual = () => shared.caixaDeTexto && shared.caixaDeTexto({ titulo: "Copie o link", valor: url, leitura: true });
+      try { navigator.clipboard.writeText(url).then(ok, manual); } catch (err) { manual(); }
+    }
+  }
+  // Escrita no painel (custo de campanha, link de loja): chama a RPC, joga
+  // fora o cache das RPCs afetadas e repinta.
+  async function escreve(nome, body, invalida) {
+    const r = await shared.adminRpc(nome, 0, body);
+    Object.keys(state.cache).forEach((k) => { if (invalida.some((i) => k.indexOf(`${i}:`) === 0)) delete state.cache[k]; });
+    await render();
+    return r;
+  }
+  function onSubmit(e) {
+    const f = e.target;
+    if (f.matches("[data-camp-form]")) {
+      e.preventDefault();
+      const valor = Number(String(f.valor.value || "").replace(/\./g, "").replace(",", "."));
+      if (!f.fonte.value.trim() || !(valor >= 0)) return;
+      escreve("admin_campaign_save", { p_fonte: f.fonte.value, p_campanha: f.campanha.value, p_valor: valor, p_nota: f.nota.value || null }, ["campaigns"]);
+    } else if (f.matches("[data-portal-form]")) {
+      e.preventDefault();
+      shared.adminRpc("admin_partner_link_create", 0, { p_loja: f.loja.value, p_rotulo: f.rotulo.value || null }).then((token) => {
+        Object.keys(state.cache).forEach((k) => { if (k.indexOf("partners:") === 0) delete state.cache[k]; });
+        render().then(() => {
+          const box = root.querySelector("[data-portal-novo]");
+          if (box && typeof token === "string") {
+            box.hidden = false;
+            box.innerHTML = `Link criado — mande só pra quem deve ver: <code>${esc(`${location.origin}/parceiro?t=${token}`)}</code>`;
+          }
+        });
+      });
     }
   }
   function go(tab) {
@@ -1037,6 +1456,7 @@
       }
       root.innerHTML = `<div class="adm-toolbar" id="admToolbar"></div><div id="admBody"></div><p class="admin-note" id="admNote"></p>`;
       root.addEventListener("click", onClick);
+      root.addEventListener("submit", onSubmit);
     }
     document.getElementById("admToolbar").innerHTML = nav();
     const body = document.getElementById("admBody");
@@ -1047,7 +1467,9 @@
       shared.errorSummary(7).then((errs) => { state.errors = errs; if (state.tab === "qualidade") render(); });
     }
     const keys = NEEDS[state.tab] || ["dash"];
-    const vals = await Promise.all(keys.map(need));
+    // A saúde da medição vem junto em toda aba: alarme (evento que parou de
+    // chegar) aparece em cima de qualquer tela, não só em Técnico › Medição.
+    const [vals, saude] = await Promise.all([Promise.all(keys.map(need)), need("health")]);
     if (my !== seq) return;           // trocou de aba/período no meio
     body.removeAttribute("aria-busy");
     const data = {};
@@ -1057,12 +1479,19 @@
     if (faltam.length) body.innerHTML = pendente(faltam);
     else if (falhou.length) body.innerHTML = `<p class="empty-state">Não consegui carregar esta aba (${esc(falhou.join(", "))}). Tente de novo em instantes.</p>`;
     else {
-      body.innerHTML = RENDER[state.tab](data);
+      const alarmes = saude && Array.isArray(saude.alvos) ? saude.alvos.filter((a) => a.alerta) : [];
+      const aviso = alarmes.length && state.tab !== "medicao"
+        ? `<p class="adm-banner"><strong>${alarmes.length === 1 ? "Um evento parou" : `${alarmes.length} eventos pararam`} de chegar</strong> nas últimas 48h — normalmente é medição quebrada, não falta de uso. <button type="button" class="chip adm-mini" data-tab="medicao">Ver em Medição</button></p>`
+        : "";
+      const pinta = (tab) => aviso + RENDER[tab](data);
+      const tab = state.tab;
+      if (tab === "sets") state.metaPendente = true;
+      body.innerHTML = pinta(tab);
       // Nomes das cartas chegam depois (catálogo estático): pinta com id e
       // repinta com nome, sem segurar a aba esperando o catálogo.
-      const tab = state.tab;
-      resolveNames(cartasDaAba(tab, data)).then((novo) => {
-        if (novo && my === seq && state.tab === tab) body.innerHTML = RENDER[tab](data);
+      resolveNames(cartasDaAba(tab, data), tab === "sets" ? 2000 : 400).then((novo) => {
+        if (tab === "sets") state.metaPendente = false;
+        if ((novo || tab === "sets") && my === seq && state.tab === tab) body.innerHTML = pinta(tab);
       });
     }
     const d = state.cache[`dash:${state.days}`];
