@@ -317,6 +317,50 @@
     return out.slice(0, 12);
   }
 
+  // ── Trava de SET (funções PURAS; testadas em tests/scan-trava.test.mjs) ─────
+  // Quem abre booster sabe o set: travado nele, a busca roda nas cartas do set
+  // que já estão na memória (sem ida à borda) e o NÚMERO basta. É o que
+  // resolve o "4/102" do Pokémon, que existe em vários sets com o mesmo total,
+  // e o total lido errado ("4/182"), que antes não achava nada.
+  //
+  // Número de um código ou de uma carta: numa fração, o de antes da barra
+  // ("4/102" → 4, "TG05/TG30" → 5); fora disso, a ÚLTIMA sequência de dígitos
+  // ("OP05-119" → 119, "MH3 123" → 123, "LOB-EN001" → 1, "BT1-003 R" → 3,
+  // "UE21BT/RLY-1-082" → 82 — a barra do Union Arena não é fração). NaN se
+  // não houver dígito.
+  function numeroDe(s) {
+    const t = String(s == null ? "" : s).trim();
+    const fr = /^(?:.*?[^\d])?(\d+)\s*\/\s*[A-Z]{0,3}\d+$/i.exec(t);
+    if (fr) return parseInt(fr[1], 10);
+    const m = /(\d+)\D*$/.exec(t);
+    return m ? parseInt(m[1], 10) : NaN;
+  }
+  // Cartas do set travado que casam com os códigos lidos, na ordem de
+  // confiança: o código INTEIRO primeiro — em qualquer escrita da carta
+  // (`formas`, o cardCodeForms do shared), ou o número guardado começando
+  // pelo código ("BT1-003 R" começa por "BT1-003") —, e só depois o NÚMERO
+  // sozinho. Na reimpressão (One Piece PRB-01 traz OP01-006 e EB01-006 no
+  // mesmo set) é o código inteiro que separa; no prefixo lido errado, o número.
+  // null quando nenhum código casa.
+  function noSet(cartas, codigos, formas) {
+    const norm = (s) => String(s || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+    for (const c of codigos || []) {
+      const alvo = norm(c);
+      if (!alvo) continue;
+      const comPrefixo = /[a-z]/.test(alvo) && alvo.length >= 5;
+      const exatas = cartas.filter((x) => (formas ? formas(x) : [x.number]).some((f) => norm(f) === alvo)
+        || (comPrefixo && norm(x.number).indexOf(alvo) === 0));
+      if (exatas.length) return { codigo: c, cartas: exatas };
+    }
+    for (const c of codigos || []) {
+      const n = numeroDe(c);
+      if (!(n >= 0)) continue;
+      const mesmas = cartas.filter((x) => numeroDe(x.number) === n);
+      if (mesmas.length) return { codigo: c, cartas: mesmas };
+    }
+    return null;
+  }
+
   // ── Conferência pela IMAGEM (funções PURAS; testadas em tests/scan-foto.test.mjs) ──
   // O código impresso não identifica UMA carta em boa parte do catálogo: o
   // mesmo set + número vale pra 54 % das cartas do Digimon, 53 % do Gundam,
@@ -726,6 +770,13 @@
 .scan-ico[hidden] { display: none; }
 .scan-jogo { appearance: none; -webkit-appearance: none; height: 36px; min-width: 0; max-width: 62%; padding: 0 30px 0 14px; border: 1px solid rgba(255,255,255,.14); border-radius: 999px; background: rgba(255,255,255,.06) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23f3f5f7' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 10px center / 16px; color: #f3f5f7; font: inherit; font-size: 14px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; }
 .scan-jogo.is-auto { color: #cfd6e2; }
+/* Trava de set (2026-09-28): com o set travado, o seletor de jogo dá lugar ao
+   nome do set (o jogo vem junto) e o cadeado fica marcado. Depois de três
+   cartas seguidas do mesmo set, o cadeado ganha um anel de sugestão. */
+.scan-set { display: block; height: 36px; min-width: 0; max-width: 62%; padding: 0 14px; border: 1px solid rgba(255,255,255,.14); border-radius: 999px; background: rgba(255,255,255,.06); color: #f3f5f7; font-size: 14px; font-weight: 700; line-height: 34px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.scan-set[hidden] { display: none; }
+.scan-top-dir { display: flex; align-items: center; flex: none; }
+.scan-ico.is-sugere { box-shadow: inset 0 0 0 2px var(--accent, #dc2626); }
 .scan-dica { position: absolute; left: 12px; right: 12px; display: flex; justify-content: center; pointer-events: none; }
 .scan-dica span { padding: 6px 12px; border-radius: 999px; background: rgba(13,14,18,.62); color: #cfd6e2; font-size: 12.5px; font-weight: 600; text-align: center; }
 .scan-toast { position: absolute; left: 0; right: 0; bottom: calc(var(--scan-bot) + 124px); display: flex; justify-content: center; pointer-events: none; }
@@ -801,7 +852,9 @@
     bolt: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4.5 13.5H11L10 22l8.5-11.5H13L13 2z"/></svg>',
     image: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><circle cx="9" cy="10" r="1.8"/><path d="m21 16-5.5-5.5L7 19"/></svg>',
     arrow: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>',
-    heart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>'
+    heart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>',
+    cadeado: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.5" y="11" width="15" height="10" rx="2.5"/><path d="M8 11V7.5a4 4 0 0 1 8 0V11"/></svg>',
+    cadeadoAberto: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.5" y="11" width="15" height="10" rx="2.5"/><path d="M8 11V7.5a4 4 0 0 1 7.6-1.7"/></svg>'
   };
   // Valor de mercado da carta na moeda do site (mesma conta das grades), ou ""
   // quando não há preço carregado pra ela.
@@ -868,7 +921,11 @@
           <option value="">${escapeHtml(t("scan.gameAuto"))}</option>
           ${shared.GAME_SLUGS.map((g) => `<option value="${escapeAttribute(g)}">${escapeHtml(shared.gameLabel(g))}</option>`).join("")}
         </select>
-        <button type="button" class="scan-ico" data-scan-torch aria-pressed="false" aria-label="${escapeAttribute(t("scan.torch"))}" title="${escapeAttribute(t("scan.torch"))}" hidden>${ICO.bolt}</button>
+        <span class="scan-set" data-scan-set hidden></span>
+        <span class="scan-top-dir">
+          <button type="button" class="scan-ico" data-scan-trava aria-pressed="false" aria-label="${escapeAttribute(t("scan.lock"))}" title="${escapeAttribute(t("scan.lock"))}">${ICO.cadeadoAberto}</button>
+          <button type="button" class="scan-ico" data-scan-torch aria-pressed="false" aria-label="${escapeAttribute(t("scan.torch"))}" title="${escapeAttribute(t("scan.torch"))}" hidden>${ICO.bolt}</button>
+        </span>
       </div>
       <div class="scan-dica" data-scan-dica><span data-scan-status aria-live="polite">${escapeHtml(t("scan.status.camera"))}</span></div>
       <div class="scan-toast" data-scan-toast hidden><span><span class="scan-spin" aria-hidden="true"></span><span data-scan-toast-text></span></span></div>
@@ -891,6 +948,7 @@
         <div class="scan-sheet-acoes" data-scan-sheet-acoes hidden>
           <button type="button" class="cta" data-scan-add="col:0"></button>
           <button type="button" class="scan-heart" data-scan-add="wl:0" aria-label="${escapeAttribute(t("cmdk.addWl"))}" title="${escapeAttribute(t("cmdk.addWl"))}">${ICO.heart}</button>
+          <button type="button" class="scan-heart" data-scan-trava-folha aria-pressed="false">${ICO.cadeado}</button>
         </div>
         <p class="scan-priv">${escapeHtml(t("scan.privacy"))}</p>
       </div>`;
@@ -931,8 +989,9 @@
     // vez: depois da primeira leitura ela não volta — voltava a cada leitura
     // e encavalava com o cartão de resultado, que ocupa o mesmo lugar.
     let jaLeu = false;
+    let sugestao = ""; // sugestão de trava de set: toma o lugar da dica depois das leituras
     const dizer = (msg) => { status.textContent = msg; dica.hidden = !msg; };
-    const pronto = () => dizer(jaLeu ? "" : t("scan.status.ready"));
+    const pronto = () => dizer(jaLeu ? sugestao : t("scan.status.ready"));
     // Status de uma leitura em curso vai pro cartão "lendo" (miniatura da foto
     // + texto), que ocupa o lugar do resultado; o toast fica pra busca manual.
     let lendoTexto = null;
@@ -948,8 +1007,69 @@
         dizer(t("scan.status.loading") + pct);
       }
     };
+    // ── Trava de set ─────────────────────────────────────────────────────────
+    // O cadeado da barra trava no set da carta do resultado (o ManaBox esconde
+    // isso nas configurações e pede pra escolher o set numa lista; aqui é um
+    // toque sobre a carta que acabou de ler). Vale só nesta sessão do scanner:
+    // uma trava esquecida faria a carta de outro set "não existir" na próxima
+    // vez. `trava.cartas` é a Promise das cartas do set (null se não deu pra
+    // baixar: aí a trava vira filtro da busca normal). `recentes`: o set do 1º
+    // resultado das últimas leituras, pra sugerir a trava depois de três.
+    let trava = null;
+    let recentes = [];
+    const btnTrava = $("[data-scan-trava]");
+    const rotuloSet = $("[data-scan-set]");
+    const chaveSet = (h) => `${h.game}|${h.card.setId || h.card.set || ""}|${h.card.language || ""}`;
+    const nomeSet = (card) => card.set || card.setId || "";
+    // Cartas do set, direto do chunk dele (o mesmo que a paleta baixa pra
+    // busca por código): o manifest do jogo diz o arquivo. Em dev (sem
+    // manifest), o catálogo inteiro do jogo da sessão já está na memória.
+    async function cartasDoSet(tr) {
+      const doSet = (x) => (tr.setId ? x.setId === tr.setId : x.set === tr.set) && (x.language || "") === tr.lang;
+      if (sessao === tr.game && Array.isArray(window.TCG_CARDS) && window.TCG_CARDS.length) return window.TCG_CARDS.filter(doSet);
+      let manifest = sessao === tr.game ? window.TCG_MANIFEST : null;
+      if (!manifest) {
+        const r = await fetch(shared.gameDataDir(tr.game) + "manifest.generated.js");
+        if (!r.ok) return null;
+        const tx = await r.text();
+        manifest = JSON.parse(tx.slice(tx.indexOf("{"), tx.lastIndexOf("}") + 1));
+      }
+      const sets = ((manifest && manifest.sets) || []).filter((s) => String(s.id) === (tr.setId || tr.set) && (!s.language || s.language === (tr.lang || s.language)));
+      if (!sets.length) return null;
+      const chunks = await Promise.all(sets.map((s) => fetch(s.file).then((r) => (r.ok ? r.json() : []))));
+      const lista = [].concat.apply([], chunks).filter(doSet);
+      return lista.length ? lista : null;
+    }
+    function pintarTrava() {
+      const on = !!trava;
+      const rot = on ? t("scan.unlock", { set: trava.nome }) : t("scan.lock");
+      btnTrava.setAttribute("aria-pressed", on ? "true" : "false");
+      btnTrava.setAttribute("aria-label", rot);
+      btnTrava.title = rot;
+      btnTrava.innerHTML = on ? ICO.cadeado : ICO.cadeadoAberto;
+      btnTrava.classList.toggle("is-sugere", !on && !!sugestao);
+      selJogo.hidden = on;
+      rotuloSet.hidden = !on;
+      rotuloSet.textContent = on ? trava.nome : "";
+      if (!folha.hidden) pintarFolha(); // o cadeado da folha espelha a trava
+    }
+    function travar(h) {
+      const c = h.card;
+      const tr = { game: h.game, setId: c.setId || "", set: c.set || "", lang: c.language || "", nome: nomeSet(c), chave: chaveSet(h) };
+      tr.cartas = cartasDoSet(tr).catch(() => null);
+      trava = tr;
+      sugestao = "";
+      pintarTrava();
+      if (jaLeu && !ocupado) pronto();
+    }
+    function destravar() {
+      trava = null;
+      recentes = [];
+      pintarTrava();
+    }
     // Jogos permitidos na busca: o escolhido no seletor, ou o que a carta diz.
     function jogosDaBusca(codigos) {
+      if (trava) return [trava.game];
       if (selJogo.value) return [selJogo.value];
       const d = detectarJogo(ultimoTexto, codigos, sessao);
       return d.restritos.length ? d.jogos.filter((g) => d.pontos[g] >= 2) : [];
@@ -1110,7 +1230,10 @@
       }).join("");
       const q = codigoAtual || input.value.trim();
       if (!n) {
-        vazio.innerHTML = `${escapeHtml(t(q ? "scan.empty" : "scan.noCode"))}${q
+        // Com o set travado, "não achei" é "não achei NESTE set" — e o
+        // número sozinho basta pra buscar de novo.
+        const msg = !q ? t("scan.noCode") : trava ? t("scan.emptyLocked", { set: trava.nome }) : t("scan.empty");
+        vazio.innerHTML = `${escapeHtml(msg)}${q
           ? ` <a href="explore?q=${encodeURIComponent(q)}">${escapeHtml(t("cmdk.explore", { q }))}</a>` : ""}`;
         vazio.hidden = false;
       } else vazio.hidden = true;
@@ -1127,6 +1250,15 @@
         wl.dataset.scanAdd = `wl:${primario}`;
         const stw = stores.wl[h.game] || (stores.wl[h.game] = shared.createWishlistStore(h.game));
         wl.classList.toggle("done", !!(stw.has && stw.has(h.card.id, shared.defaultVariant(h.card))));
+        // Cadeado da folha: trava no set da carta escolhida (é aqui que se vê
+        // que "4/102" existe em mais de um set) ou destrava, se já é ele.
+        const cad = acoesFolha.querySelector("[data-scan-trava-folha]");
+        const nesta = !!(trava && trava.chave === chaveSet(h));
+        const rot = nesta ? t("scan.unlock", { set: trava.nome }) : t("scan.lockIn", { set: nomeSet(h.card) });
+        cad.setAttribute("aria-pressed", nesta ? "true" : "false");
+        cad.setAttribute("aria-label", rot);
+        cad.title = rot;
+        cad.classList.toggle("done", nesta);
       }
     }
     function abrirFolha() {
@@ -1146,6 +1278,15 @@
       codigoAtual = codigo || "";
       resultados = achados;
       primario = 0;
+      // Três leituras seguidas com o 1º resultado no mesmo set: quem abre
+      // booster ganha a sugestão de travar (a dica sob a moldura e um anel no
+      // cadeado). Leitura sem carta não quebra a sequência.
+      if (!trava && achados.length) {
+        recentes = recentes.concat(chaveSet(achados[0])).slice(-3);
+        const mesmo = recentes.length === 3 && recentes.every((k) => k === recentes[0]);
+        sugestao = mesmo ? t("scan.lockSuggest", { set: nomeSet(achados[0].card) }) : "";
+        btnTrava.classList.toggle("is-sugere", !!sugestao);
+      }
       pintarResultado();
       if (!achados.length) abrirFolha(); // sem carta: a folha já abre com o código pra corrigir
       else shared.vibrar(30); // leu a carta: toque mais longo que o do add
@@ -1174,8 +1315,27 @@
       if (!folha.hidden) fecharFolha();
     }
 
+    // Com o set travado: as cartas do set já estão na memória — o código
+    // inteiro primeiro, senão o número (noSet). Se o set não baixou, a busca
+    // normal no jogo, filtrada pelo set.
+    async function procurarNoSet(codigos) {
+      const tr = trava;
+      const cartas = await tr.cartas;
+      if (cartas) {
+        const r = noSet(cartas, codigos, shared.cardCodeForms);
+        return r ? { codigo: r.codigo, achados: r.cartas.slice(0, 12).map((card) => ({ card, game: tr.game })) }
+          : { codigo: codigos[0] || "", achados: [] };
+      }
+      for (const c of codigos) {
+        aviso(t("scan.status.searching", { q: c }));
+        const achados = (await buscar(c, [tr.game])).filter((h) => chaveSet(h) === tr.chave);
+        if (achados.length) return { codigo: c, achados };
+      }
+      return { codigo: codigos[0] || "", achados: [] };
+    }
     // Lê UM candidato de cada vez até algum achar carta; devolve o vencedor.
     async function procurar(codigos) {
+      if (trava) return procurarNoSet(codigos);
       const jogos = jogosDaBusca(codigos);
       for (const c of codigos) {
         aviso(t("scan.status.searching", { q: c }));
@@ -1231,7 +1391,8 @@
         if (!cands.length) cands = await passo(recorte(fonte, rec, 0, 1 - FAIXA, 1, FAIXA, LARGURA_OCR));
         let codigos = cands.map((c) => c.codigo);
         const deteccao = detectarJogo(texto, codigos, sessao);
-        if (!codigos.length || (!selJogo.value && !deteccao.confiante)) {
+        // Com o set travado o jogo já é sabido: a carta inteira só se não houver código.
+        if (!codigos.length || (!selJogo.value && !trava && !deteccao.confiante)) {
           cands = await passo(recorte(fonte, rec, 0, 0, 1, 1, LARGURA_OCR));
           codigos = cands.map((c) => c.codigo);
         }
@@ -1334,6 +1495,17 @@
       if (ev.target.closest("[data-scan-close]")) { fechar(); return; }
       if (ev.target.closest("[data-scan-backdrop]") || ev.target.closest(".scan-sheet-handle")) { fecharFolha(); return; }
       if (ev.target.closest("[data-scan-more]")) { abrirFolha(); return; }
+      if (ev.target.closest("[data-scan-trava]")) {
+        if (trava) destravar();
+        else if (resultados[primario]) travar(resultados[primario]);
+        else dizer(t("scan.lockHint"));
+        return;
+      }
+      if (ev.target.closest("[data-scan-trava-folha]")) {
+        const h = resultados[primario];
+        if (h && trava && trava.chave === chaveSet(h)) destravar(); else if (h) travar(h);
+        return;
+      }
       if (ev.target.closest("[data-scan-lote]")) { fechar(); window.location.href = "collection"; return; }
       const add = ev.target.closest("[data-scan-add]");
       if (add) {
@@ -1366,6 +1538,7 @@
 
   window.TCGScan = {
     abrir, extrair, extrairCodigos, juntar, soDigitos, detectarJogo,
-    integral, assinatura, semelhanca, assinaturasDoQuadro, ordemPelaFoto
+    integral, assinatura, semelhanca, assinaturasDoQuadro, ordemPelaFoto,
+    numeroDe, noSet
   };
 })();

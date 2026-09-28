@@ -185,7 +185,7 @@ sempre a comum. Juntar os dois (o código diz set e número, a foto diz a arte)
 item:
 
 1. **Conferência pela imagem** ✔ (esta entrega) + **medir a precisão** ✔.
-2. Travar o set (além do jogo).
+2. **Travar o set** ✔ (além do jogo).
 3. Som e vibração por faixa de preço (em R$, configurável) e aviso de wishlist.
 4. Leitura automática (sem disparador) com dicas ao vivo, e a lista da sessão
    no lugar do contador de lote, com o "modo rápido".
@@ -236,6 +236,27 @@ mudou o 1º), `troca` (a pessoa trocou o 1º resultado, uma vez por leitura) e
 opção, a foto escolheu, digitou) e o "1º aceito" por jogo. Troca e busca à
 mão são a pessoa dizendo que o scanner errou: é a régua de acerto, ao lado
 do cartas/min, que é a de ritmo.
+
+**Trava de set** (`travar`, `noSet`). O cadeado da barra de cima trava no
+set da carta do resultado — no ManaBox a trava fica nas configurações e pede
+o set numa lista; aqui é um toque sobre a carta que acabou de ser lida. Com
+o set travado, o seletor de jogo dá lugar ao nome do set, as cartas do set
+descem uma vez (o chunk do manifest, o mesmo que a paleta baixa pra busca
+por código) e a busca roda nelas, sem ida à borda: o código inteiro
+primeiro, em qualquer escrita da carta, e senão só o NÚMERO (`numeroDe`:
+"4/102" → 4, "BT1-003 R" → 3, "UE21BT/RLY-1-082" → 82). É o que resolve o
+"4/102" do Pokémon (mesmo número e total em vários sets), o total lido
+errado ("4/182") e o prefixo lido errado ("EB07-006" acha o -006 do set); na
+folha de correção, digitar só o número basta. A leitura travada pula a
+passada da carta inteira (o jogo já é sabido). Três leituras seguidas com o
+1º resultado no mesmo set sugerem a trava (dica sob a moldura e um anel no
+cadeado), e a folha "+N opções" tem o próprio cadeado — é ali que se vê que o
+número existe em mais de um set. A trava é da SESSÃO do scanner: esquecida,
+faria a carta de outro set "não existir" na próxima vez. Se o set não baixar
+(rede), ela vira filtro da busca normal. Conferido no fluxo real (câmera
+falsa, 390 e 320 px): travado no EB-01, a leitura da EB01-006 traz só as
+três versões do set — as reimpressões do Premium Booster, que têm o mesmo
+código, ficam de fora.
 
 ## Fase 2 — hash perceptual da arte
 
