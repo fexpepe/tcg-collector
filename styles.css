@@ -7136,6 +7136,14 @@ button.dash-link { width: 100%; min-height: 0; justify-content: flex-start; text
   border-color: var(--accent-dark);
 }
 
+/* Alvo de toque (2026-09-28, junto da linha "Marketplace EU"): no celular os
+   chips de loja tinham 32px de altura, abaixo dos 44px mínimos — e o chip do
+   Cardmarket herdaria o mesmo. Vale pra todos, pra as três linhas seguirem
+   iguais; flex centraliza o texto na altura nova. Desktop fica como era. */
+@media (pointer: coarse) {
+  .br-link { display: flex; align-items: center; min-height: 44px; }
+}
+
 /* Portfólio: tabela de cartas mais valiosas */
 .portfolio-table-wrap {
   overflow-x: auto;

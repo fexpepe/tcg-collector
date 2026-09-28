@@ -92,8 +92,18 @@ import { join } from "node:path";
 // notfound-, support-, adm-/ach-) e o shared.js perdeu ~7,7 KB gz pra módulos
 // por página ou sob demanda (backup-import, card-rescue, facets); o teto dele
 // NÃO muda — fica a folga.
+//
+// 2026-09-28: teto do shared.js sobe de 81.920 pra 82.944. A main estava a 172
+// bytes gz do teto, e a linha "Marketplace EU" do popup da carta (o Cardmarket:
+// o caminho de cada jogo na MARKETS, a busca no formato em que ele nomeia o
+// produto e a troca pelo link direto quando a cotação da TCGdex chega com o
+// idProduct) custa ~390 bytes gz. É bloco do PREVIEW, que monta o HTML das
+// lojas de forma síncrona no open() — não tem pedaço pra injetar sob demanda
+// sem tirar o bloco de lojas inteiro do núcleo (MARKETS, buscas da Liga/MYP,
+// tabela da Classic Collection), que é o candidato da próxima vez que estourar.
+// 1 KB de folga, como das outras vezes.
 const TETOS = [
-  { arquivo: "shared.js", teto: 81920, nota: "núcleo JS de toda página" },
+  { arquivo: "shared.js", teto: 82944, nota: "núcleo JS de toda página" },
   { arquivo: "styles.min.css", teto: 33792, nota: "núcleo do CSS, depois do split por área" },
 ];
 

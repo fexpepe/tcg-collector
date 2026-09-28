@@ -33,7 +33,7 @@ test("links de loja: data-mkt no link e jogo/carta no container", () => {
   const card = { id: "sv1-25", name: "Pikachu", number: "25", setTotal: 198, game: "pokemon" };
   const html = api.brMarketplaceLinks(card, "PSA 9");
   assert.match(html, /<div class="market-links" data-mkt-game="pokemon" data-mkt-card="sv1-25" data-mkt-gr="1">/);
-  for (const k of ["liga", "ligabra", "myp", "ebay", "tcgplayer", "pricecharting"]) {
+  for (const k of ["liga", "ligabra", "myp", "ebay", "tcgplayer", "pricecharting", "cardmarket"]) {
     assert.match(html, new RegExp(`data-mkt="${k}"`), `o link ${k} perdeu o data-mkt — clique nele não seria medido`);
   }
   // sem graduada, sem o flag
@@ -49,7 +49,7 @@ test("utm_source=sleevu só nas lojas brasileiras", () => {
     // a busca continua intacta antes do utm
     assert.equal((hrefs[k].match(/\?/g) || []).length, 1, `${k} ficou com dois "?": ${hrefs[k]}`);
   }
-  for (const k of ["ebay", "tcgplayer", "pricecharting"]) {
+  for (const k of ["ebay", "tcgplayer", "pricecharting", "cardmarket"]) {
     assert.doesNotMatch(hrefs[k], /utm_/, `${k} não deveria levar utm`);
   }
 });

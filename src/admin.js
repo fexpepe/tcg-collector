@@ -294,7 +294,7 @@
 
   const STORE = {
     liga: "Liga", ligabra: "LigaBRA", myp: "MYP", ebay: "eBay", ebaysold: "eBay (vendidos)",
-    tcgplayer: "TCGplayer", pricecharting: "PriceCharting", "?": "—"
+    tcgplayer: "TCGplayer", pricecharting: "PriceCharting", cardmarket: "Cardmarket", "?": "—"
   };
   const STORES_BR = ["liga", "ligabra", "myp"];
   const CANAL = {
