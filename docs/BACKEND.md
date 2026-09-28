@@ -249,7 +249,7 @@ coorte não volta pra ser medida depois. Daí mais cinco:
 | Evento | `props` | Responde |
 |---|---|---|
 | `scan_open` | — | denominador: quantos abriram o scanner |
-| `scan_done` | `n`, `lido`, `achou`, `add`, `ms` | o funil inteiro da sessão: tentou → leu o código → achou no catálogo → virou carta |
+| `scan_done` | `n`, `lido`, `achou`, `add`, `ms`, `t1`, `amb`, `vis`, `troca`, `dig` | o funil inteiro da sessão: tentou → leu o código → achou no catálogo → virou carta; e a precisão (2026-09-28, somada pela `20260928a`): leituras com mais de uma carta pro código (`amb`), as que a foto reordenou (`vis`), as em que a pessoa trocou o 1º resultado (`troca`) e as buscas digitadas (`dig`) |
 | `card_added` | `via`, `n`, `ms` | ritmo de cadastro por caminho (`n/ms` = cartas por minuto) |
 | `collection_first` | — | ativação: a primeira carta da vida daquele navegador |
 | `login_gate` | `p` | atrito: quem bateu no portão de login, e em qual página |

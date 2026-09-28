@@ -526,6 +526,26 @@
     return `<div class="adm-funil">${linhas}</div><p class="admin-note">${esc(nota)}</p>`;
   }
 
+  // ── Precisão do scanner (migração 20260928a) ──────────────────────────────
+  // O funil diz se a leitura ACHOU uma carta, não se era a CERTA. Quem troca o
+  // 1º resultado por outra opção, ou desiste e digita o código, está dizendo
+  // que o scanner errou — é a taxa de erro de verdade. "A foto escolheu" mede
+  // a conferência pela imagem (src/scan.js), que desempata as cartas com o
+  // mesmo código impresso (Alternate Art, Parallel, Manga). Com a RPC antiga
+  // (sem as chaves novas) fica o aviso, não um "0%" que pareceria medido.
+  function precisaoScanner(f) {
+    const sc = (f && f.scan) || {};
+    if (sc.trocou == null) return `<p class="admin-note">${esc("Aplique a migração 20260928a (supabase/migrations) pra ver a precisão do scanner.")}</p>`;
+    const pctInt = (a, b) => (b ? `${Math.round((100 * a) / b)}%` : "—");
+    const achou = sc.achou || 0;
+    return `<div class="admin-stats">
+        ${stat("1º resultado aceito", pctInt(Math.max(0, achou - (sc.trocou || 0)), achou), "leituras que acharam carta e não foram trocadas por outra opção")}
+        ${stat("Com mais de uma opção", pctInt(sc.ambiguas || 0, achou), "o mesmo código casou com várias cartas")}
+        ${stat("A foto escolheu", pctInt(sc.pela_foto || 0, sc.ambiguas || 0), "das leituras com várias opções, em quantas a imagem mudou a 1ª")}
+        ${stat("Digitou o código", fmt(sc.digitou || 0), `buscas à mão na folha de correção (${pctInt(sc.digitou || 0, sc.tentativas || 0)} das leituras)`)}
+      </div>`;
+  }
+
   function tabFunil(f, ret, eg) {
     const ob = (eg && eg.onboarding) || {}, ps = (eg && eg.push) || {};
     const PASSO = { carta: "1ª carta na coleção", csv: "Importou uma planilha", lista: "Criou uma lista", app: "Instalou o app" };
@@ -557,10 +577,12 @@
       ]), "A porcentagem é sempre contra os visitantes novos do topo, e os passos não são uma escada: dá pra criar conta sem ter ativado. A unidade é o navegador (uuid anônimo), então quem usa celular e computador conta duas vezes.")}
       ${section(`Funil do scanner (${f.days} dias)`, funilPassos(f),
         "Cada passo é subconjunto do anterior. A maior queda entre dois passos é onde o produto está perdendo a pessoa.")}
+      ${section("Precisão do scanner", precisaoScanner(f),
+        "\"Aceito\" = leituras que acharam carta menos as em que a pessoa trocou o 1º resultado. Cartas/min (acima) é a régua de ritmo; esta é a de acerto.")}
       ${section("Scanner por jogo", table(
-        [{ t: "Jogo" }, { t: "Sessões", num: true }, { t: "Leu o código", num: true }, { t: "Achou a carta", num: true }, { t: "Sessões secas", num: true }],
-        jogos.map((x) => `<tr><td>${gameChip(x.game)}</td><td class="num">${esc(fmt(x.sessoes))}</td><td class="num">${esc(pctInt(x.leu, x.tentativas))}</td><td class="num">${esc(pctInt(x.achou, x.leu))}</td><td class="num">${esc(pctInt(x.secas, x.sessoes))}</td></tr>`)),
-        "\"Leu\" = leituras que extraíram código ÷ tentativas; \"achou\" = códigos que casaram com o catálogo ÷ lidos. Jogo com leitura boa e achou ruim é buraco no catálogo, não no OCR.")}
+        [{ t: "Jogo" }, { t: "Sessões", num: true }, { t: "Leu o código", num: true }, { t: "Achou a carta", num: true }, { t: "1º aceito", num: true }, { t: "Sessões secas", num: true }],
+        jogos.map((x) => `<tr><td>${gameChip(x.game)}</td><td class="num">${esc(fmt(x.sessoes))}</td><td class="num">${esc(pctInt(x.leu, x.tentativas))}</td><td class="num">${esc(pctInt(x.achou, x.leu))}</td><td class="num">${esc(x.trocou == null ? "—" : pctInt(Math.max(0, x.achou - x.trocou), x.achou))}</td><td class="num">${esc(pctInt(x.secas, x.sessoes))}</td></tr>`)),
+        "\"Leu\" = leituras que extraíram código ÷ tentativas; \"achou\" = códigos que casaram com o catálogo ÷ lidos; \"1º aceito\" = achadas em que a pessoa não trocou o 1º resultado. Jogo com leitura boa e achou ruim é buraco no catálogo, não no OCR.")}
       ${section("Ritmo de cadastro por caminho", table(
         [{ t: "Caminho" }, { t: "Cartas", num: true }, { t: "Rajadas", num: true }, { t: "Pessoas", num: true }, { t: "Cartas/min", num: true }],
         cad.map((x) => `<tr><td>${esc(VIA[x.via] || x.via)}</td><td class="num">${esc(fmt(x.cartas))}</td><td class="num">${esc(fmt(x.rajadas))}</td><td class="num">${esc(fmt(x.pessoas))}</td><td class="num">${esc(x.cartas_min == null ? "—" : String(x.cartas_min))}</td></tr>`)),

@@ -8,6 +8,27 @@ poucos.)
 
 ## Pendentes de aplicar
 
+- `20260928a` — precisão do scanner: recria a `admin_funnel` da `20260923a`
+  com todas as chaves de antes e mais `ambiguas`, `pela_foto`, `trocou` e
+  `digitou` (em `scan`) e `ambiguas`/`trocou` (em cada linha de
+  `scan_jogos`), somando os contadores novos do `scan_done` (`amb`, `vis`,
+  `troca`, `dig` — ver docs/BACKEND.md). Aditiva e sem ordem com o JS: o
+  `scan_done` já está na whitelist e props novas passam; até ela entrar, o
+  `/admin` mostra o aviso "aplique a 20260928a" na seção Precisão do scanner.
+
+  Testada em 2026-09-28 no PGlite (Postgres em WASM) com um esqueleto
+  (auth.uid, profiles, events): sem admin devolve null; com admin, as chaves
+  antigas continuam e as novas somam; `scan_done` do JS antigo (sem os campos)
+  conta zero; valor forjado (`"x"`, `"<script>"`, `-1`) é ignorado sem
+  derrubar a RPC.
+
+  Conferir depois de aplicar:
+  ```sql
+  select p.prosrc like '%pela_foto%' from pg_proc p where p.proname = 'admin_funnel'; -- true
+  ```
+  E, logado como admin, abrir `/admin` › Funil: a seção "Precisão do scanner"
+  troca o aviso pelos números.
+
 - `20260914a` — painel `/admin` 2.0. Três coisas num arquivo só, todas
   aditivas: (1) `events.uid`/`events.bot` preenchidos pelo `events_guard`
   (mesma whitelist de nomes da `20260830a`); (2) trigger `profiles_admin_guard`,
