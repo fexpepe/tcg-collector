@@ -8,26 +8,6 @@ poucos.)
 
 ## Pendentes de aplicar
 
-- `20260927a` — vitrine (o espaço de anúncio das páginas de catálogo,
-  `src/ads.js`, docs/PLANO-ADS.md). Aditiva: (1) a whitelist do
-  `events_guard` ganha `ad_view` e `ad_click` (cópia fiel da `20260923a`, só a
-  lista cresce); (2) RPC `admin_vitrine(days)`, que alimenta a aba
-  Mercado › Vitrine do `/admin`. **Aplicar ANTES de subir o JS**: até lá os
-  dois eventos são descartados calados, e a aba mostra o aviso amarelo.
-
-  Testada em 2026-09-27 no PGlite (Postgres em WASM) com o esqueleto de
-  `events`, `auth.uid()`, `_rate_ok` e `_is_admin`: evento de nome inventado
-  descartado; sem `user-agent` tudo vira `bot` (como no banco de verdade); a
-  RPC soma servidos, vistos e cliques por criativo, posição, página, jogo e
-  dia; e um POST forjado (prop que não é array, item-objeto, `<script>`,
-  rótulo de 500 caracteres) é ignorado sem derrubar a RPC.
-
-  Conferir depois de aplicar:
-  ```sql
-  select p.prosrc like '%ad_view%' from pg_proc p where p.proname = 'events_guard'; -- true
-  select public.admin_vitrine(30);                    -- null fora da conta de admin
-  ```
-
 - `20260914a` — painel `/admin` 2.0. Três coisas num arquivo só, todas
   aditivas: (1) `events.uid`/`events.bot` preenchidos pelo `events_guard`
   (mesma whitelist de nomes da `20260830a`); (2) trigger `profiles_admin_guard`,
@@ -52,6 +32,29 @@ poucos.)
   E, logado como admin, abrir `/admin`: as abas aparecem e o aviso amarelo some.
 
 ### Já aplicadas (verificado em produção)
+
+- `20260927a` — vitrine (o espaço de anúncio das páginas de catálogo,
+  `src/ads.js`, docs/PLANO-ADS.md): a whitelist do `events_guard` ganha
+  `ad_view` e `ad_click` (cópia fiel da `20260923a`) e entra a RPC
+  `admin_vitrine(days)` da aba Mercado › Vitrine do `/admin`. Aplicada em
+  2026-09-28. **Verificado com as probes do `verifica-setup.mjs`** (com
+  `user-agent` de robô, pra linha de teste nascer `bot=true` e ficar fora dos
+  painéis): `ad_view` e `ad_click` gravam (42501 no RETURNING, igual ao
+  `pageview` de controle), o nome inventado é descartado (`201 []`), e a RPC
+  responde **401 permission denied** pro anon — contra **404 PGRST202** de uma
+  função inexistente, o que prova que ela existe e está fechada.
+
+  Antes, testada no PGlite (Postgres em WASM): a RPC soma servidos, vistos e
+  cliques por criativo, posição, página, jogo e dia, e um POST forjado (prop
+  que não é array, item-objeto, `<script>`, rótulo de 500 caracteres) é
+  ignorado sem derrubar a RPC.
+
+  Ficou registrado o tropeço da primeira tentativa: o texto colado no SQL
+  Editor chegou cortado na linha 100 (de 164) e o Postgres respondeu
+  `unterminated dollar-quoted string at or near "$$"` — o `end $$;` que fecha a
+  função estava no pedaço que não veio. Nada foi aplicado pela metade (o
+  Postgres analisa o lote inteiro antes de executar). Copiar pelo botão "Copy
+  raw file" do GitHub trouxe o arquivo inteiro.
 
 - `20260830a` — amplia a whitelist do trigger `events_guard` com cinco eventos
   de produto (E6). Aplicada em 2026-08-30. **Verificado por três probes** do

@@ -206,8 +206,9 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   e de parceiros; afiliado TCGplayer/eBay pronto com os IDs vazios (falta o
   cadastro nos programas); política, termos e FAQ reescritos. Próximo: fase 1
   (AdSense com CSP por rota, páginas pré-renderizadas, apoiador sem anúncio).
-  Pendente de aplicar: migração `20260927a`. Plano, números e fases em
-  [docs/PLANO-ADS.md](docs/PLANO-ADS.md); arquitetura no README ("Vitrine").
+  Migração `20260927a` aplicada e verificada em 2026-09-28. Plano, números e
+  fases em [docs/PLANO-ADS.md](docs/PLANO-ADS.md); arquitetura no README
+  ("Vitrine").
 
 - **Naruto moderno (2027)**: `sync-naruto.mjs` está dormente esperando a
   categoria no TCGCSV. Quando ela existir, decidir o dedupe com a promo curada
