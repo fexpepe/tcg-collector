@@ -770,6 +770,11 @@ da escolhida; três seguidas do mesmo set sugerem): a busca passa a rodar nas
 cartas do set, sem ida à borda, e o número basta — "4/102" deixa de voltar
 vários sets e o prefixo ou o total lidos errado ainda acham a carta.
 
+Cada leitura avisa por som e vibração a faixa de preço da carta (barata,
+média, boa — faixas na moeda do site, R$ 5 e R$ 50 por padrão, mudáveis no
+alto-falante da barra), com um som próprio pra carta da wishlist: dá pra
+triar sem olhar a tela.
+
 O que isso mudou na infra: `script-src` ganhou `'wasm-unsafe-eval'` e a
 `Permissions-Policy` liberou `camera=(self)` (ver [_headers](_headers)); o
 worker do OCR nasce por URL (`workerBlobURL: false`) pra `worker-src 'self'`
