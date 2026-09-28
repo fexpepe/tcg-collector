@@ -14,6 +14,7 @@
     resultsTitle: document.querySelector("#exploreResultsHeader h2"),
     resultCount: document.getElementById("exploreResultCount"),
     note: document.getElementById("exploreNote"),
+    facets: document.getElementById("exploreFacets"),
     gameFilter: document.getElementById("exploreGameSelect"),
     sortSelect: document.getElementById("exploreSortSelect"),
     viewToggle: document.getElementById("exploreViewToggle"),
@@ -45,6 +46,19 @@
   // Stores por jogo + fachadas mescladas (mesmo padrão da Coleção): posse,
   // desejo e preços funcionam pra qualquer carta de qualquer jogo.
   const { cardGameMap, owned, wishlist, prices } = shared.createCrossGameStores();
+
+  // Câmbio (28/09/2026): os preços de referência vêm em USD/EUR, e o cardValue
+  // só converte com a cotação na mão. Esta era a única grade de catálogo que
+  // nunca pedia a cotação — quem chegava DIRETO no Explorar (link, busca do
+  // Google, primeira visita) via todas as cartas sem preço, e junto iam a
+  // ordem por valor, o desempate por valor do "Mais relevantes" e o filtro de
+  // preço (tudo lia 0). Só funcionava pra quem tinha passado antes por uma
+  // página que grava a cotação no cache. Um pedido só, no boot: quem pinta
+  // valor espera por ele — com cache resolve na hora; sem, o loadFxRates tem
+  // prazo de 2,5s e a grade sai sem preço se estourar (o evento abaixo
+  // completa depois).
+  const cambioPronto = shared.loadFxRates().catch(() => null);
+  const temCambio = () => shared.convertMoney(1, "USD", "BRL") != null;
   // Preferência "agrupar versões" (ver cardVariantPairs no shared.js):
   // uma carta = um tile nas grades de catálogo; o + abre o card pra escolher.
   let agrupaVersoes = shared.groupVariantsEnabled();
@@ -85,7 +99,7 @@
   // Carrega o catálogo e redesenha; o catch existe só pra não vazar a rejeição
   // (o ensureCatalog já pintou o erro na tela).
   function renderFromCatalog() {
-    ensureCatalog().then(() => render({ resetCount: true })).catch(() => { /* erro já exibido */ });
+    ensureCatalog().then(() => cambioPronto).then(() => render({ resetCount: true })).catch(() => { /* erro já exibido */ });
   }
 
   const pager = shared.createPager({ grid: elements.grid, pageSize: 60 });
@@ -135,7 +149,7 @@
       if (tops.length < 4) return;
       const idsByGame = {};
       games.forEach((g) => { idsByGame[g] = tops.filter((x) => x.game === g).map((x) => x.id); });
-      const catalog = await shared.loadOwnedAcrossGames(idsByGame);
+      const [catalog] = await Promise.all([shared.loadOwnedAcrossGames(idsByGame), cambioPronto]);
       const byId = new Map((catalog.cards || []).map((c) => [c.id, c]));
       const pairs = [];
       for (const { id } of tops) {
@@ -222,10 +236,43 @@
     preencheFiltro(elements.rarityFilter, uniq(lista.map((c) => c.rarity)).sort((a, b) => a.localeCompare(b)));
   }
 
+  // Decididos pelo render ANTES de pintar (o pager chama o tileDe item a item,
+  // inclusive na rolagem, sem contexto): a posição de cada carta no ranking
+  // das mais vistas (só no estado inicial) e se a grade mistura jogos.
+  let rankDe = null;
+  let misturaJogos = false;
+
   // Um tile no modo de visualização atual: o compacto muda o HTML (sem <img>),
   // não só a classe da grade.
-  const tileDe = ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices,
-    { addMode: true, grouped: agrupaVersoes, compact: cardsView === "compact" });
+  //
+  // Etiqueta do jogo (28/09/2026): numa grade que mistura jogos, "Base Set ·
+  // 4/102" não diz de que jogo a carta é — "dragon" traz Magic, Yu-Gi-Oh!,
+  // Dragon Ball e mais sete, e o nome do set só ajuda quem já conhece o set.
+  // É o .game-tag da Coleção e dos Decks (cor chapada do jogo), na ponta da
+  // linha da versão: não cria linha nova no tile. Com um jogo só na grade ela
+  // não aparece — repetiria a mesma palavra em todas.
+  //
+  // Posição nas mais vistas: o estado inicial é um RANKING (card_views), mas
+  // saía como uma grade qualquer, sem dizer por que aquelas cartas estavam
+  // ali. O número vai no canto da imagem; a posição é a ORIGINAL (filtrar não
+  // renumera: a 3ª mais vista continua sendo a 3ª).
+  const tileDe = ({ card, variant }) => {
+    const tile = shared.variantTile(card, variant, owned, wishlist, prices,
+      { addMode: true, grouped: agrupaVersoes, compact: cardsView === "compact" });
+    if (misturaJogos && card.game) {
+      const alvo = tile.querySelector(".tile-variant") || tile.querySelector(".tile-c-set");
+      if (alvo) alvo.insertAdjacentHTML(alvo.classList.contains("tile-c-set") ? "afterbegin" : "beforeend", shared.gameTagHtml(card.game, "xpl-game"));
+    }
+    const pos = rankDe && rankDe.get(card.id);
+    const moldura = pos && tile.querySelector(".card-image");
+    if (moldura) {
+      // O número à vista é só o dígito; o leitor de tela ouve "3ª mais vista"
+      // (aria-label em <span> sem papel é ignorado — daí o texto escondido).
+      moldura.insertAdjacentHTML("afterbegin",
+        `<span class="xpl-rank${pos <= 3 ? " is-top" : ""}"><span class="sr-only">${escapeHtml(t("explore.rankSr", { n: pos }))}</span><span aria-hidden="true">${pos}</span></span>`);
+    }
+    return tile;
+  };
 
   // Pinta a grade. No fichário quem monta é o binderView (páginas de bolsos),
   // então o pager entra vazio antes — é ele que limpa a grade e tira o
@@ -274,16 +321,81 @@
     return t("explore.emptyIn", { scope: escopo });
   }
 
+  // Por jogo (28/09/2026): na busca em TODOS os jogos, um chip por jogo com
+  // quantas cartas dele a grade tem, do maior pro menor — "dragon" cai em dez
+  // jogos, e o seletor lá em cima não dizia onde estava o grosso nem que o
+  // jogo que a pessoa queria tinha só 12. Clicar é escolher o jogo no próprio
+  // seletor (mesmo caminho: nova busca na borda, só daquele jogo). Com um jogo
+  // já escolhido sobra UM chip, com ×, que volta pra todos — a saída fica
+  // onde o olho está, não só no seletor do topo.
+  // Visual do .dash-game-chip do painel: cor chapada do jogo + contagem num
+  // véu, o mesmo "de relance" das etiquetas de jogo. `pares` null = esconde.
+  const ICONE_FECHAR = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+  function chipDeJogo(destino, cor, rotulo, miolo, titulo) {
+    const fg = shared.textOnColor(cor);
+    const veu = fg === "#000000" ? "rgba(255,255,255,.5)" : "rgba(0,0,0,.26)";
+    return `<button type="button" class="xpl-facet" data-facet-game="${shared.escapeAttribute(destino)}"`
+      + ` style="--gc:${cor};--gc-fg:${fg};--gc-veil:${veu}" title="${shared.escapeAttribute(titulo)}" aria-label="${shared.escapeAttribute(titulo)}">`
+      + `<span class="xpl-facet-name">${escapeHtml(rotulo)}</span><span class="xpl-facet-count">${miolo}</span></button>`;
+  }
+  function pintaFacetas(pares) {
+    const el = elements.facets;
+    if (!el) return;
+    let html = "";
+    if (pares && gameFilter === "all") {
+      const porJogo = new Map();
+      pares.forEach(({ card }) => { if (card.game) porJogo.set(card.game, (porJogo.get(card.game) || 0) + 1); });
+      if (porJogo.size > 1) {
+        html = Array.from(porJogo.entries())
+          .sort((a, b) => (b[1] - a[1]) || shared.gameLabel(a[0]).localeCompare(shared.gameLabel(b[0])))
+          .map(([g, n]) => {
+            const nome = shared.gameLabel(g);
+            return chipDeJogo(g, shared.GAME_COLOR[g] || shared.GAME_COLOR.pokemon, nome, numero(n),
+              t("explore.facetOnly", { game: nome, n: numero(n) }));
+          }).join("");
+      }
+    } else if (pares) {
+      const vintage = gameFilter === shared.VINTAGE_FILTER;
+      const nome = vintage ? t("filter.gameVintage") : shared.gameLabel(gameFilter);
+      const cor = vintage ? shared.VINTAGE_COLOR : (shared.GAME_COLOR[gameFilter] || shared.GAME_COLOR.pokemon);
+      html = chipDeJogo("all", cor, nome, ICONE_FECHAR, t("explore.facetClear", { game: nome }));
+    }
+    el.innerHTML = html;
+    el.hidden = !html;
+    el.scrollLeft = 0;
+    requestAnimationFrame(marcaRolagemFacetas);
+  }
+  // Com mais jogos do que cabe no vão, a fileira rola de lado: marca a ponta
+  // em que a rolagem está e o CSS desbota o lado que ainda tem chip (o mesmo
+  // aviso da subnav do Explorar, ver initSubnavScrollHint no shared.js). A
+  // leitura de geometria vai num rAF, depois do layout que o innerHTML pediu.
+  function marcaRolagemFacetas() {
+    const el = elements.facets;
+    if (!el || el.hidden) return;
+    const sobra = el.scrollWidth - el.clientWidth;
+    if (sobra < 4) { el.removeAttribute("data-scroll"); return; }
+    const x = el.scrollLeft;
+    el.dataset.scroll = x < 4 ? "start" : (x >= sobra - 4 ? "end" : "middle");
+  }
+  if (elements.facets) {
+    elements.facets.addEventListener("scroll", marcaRolagemFacetas, { passive: true });
+    window.addEventListener("resize", marcaRolagemFacetas);
+  }
+
   // Última lista base pintada e o termo dela (ver o comentário no render),
   // com o total da borda e se ela veio cortada.
   let ultimaBase = { q: "", game: "", list: null, total: 0, truncated: false };
+  // A grade saiu sem cotação? (ver o sleevu:fx-updated lá embaixo)
+  let pintouSemCambio = false;
   function render(options) {
     const searching = isSearching();
+    pintouSemCambio = !temCambio();
     if (!searching) {
       const showTop = topViewedReady && topViewedPairs.length >= 4;
       elements.intro.hidden = showTop;
       elements.resultCount.textContent = "";
       pintaAviso(null);
+      pintaFacetas(null);
       elements.resultsHeader.hidden = !showTop;
       if (elements.filters) elements.filters.hidden = !showTop;
       if (!showTop) {
@@ -293,6 +405,8 @@
       }
       if (elements.resultsTitle) elements.resultsTitle.textContent = t("home.topViewed");
       atualizaOpcoes(topViewedPairs.map((par) => par.card));
+      rankDe = new Map(topViewedPairs.map((par, i) => [par.card.id, i + 1]));
+      misturaJogos = new Set(topViewedPairs.map((par) => par.card.game)).size > 1;
       const visiveis = topViewedPairs.filter((par) => passaNosFiltros(par.card));
       elements.empty.hidden = visiveis.length > 0;
       if (!visiveis.length) elements.empty.textContent = t("empty.pokedex");
@@ -330,6 +444,11 @@
     const cmp = sortComparator();
     pairs.sort((a, b) =>
       (Number(shared.cardHasImage(b.card)) - Number(shared.cardHasImage(a.card))) || cmp(a, b));
+    rankDe = null;
+    // Pela lista INTEIRA (não só a 1ª página): a etiqueta não pode aparecer
+    // no meio da rolagem porque a 61ª carta é de outro jogo.
+    misturaJogos = pairs.some((par) => par.card.game !== pairs[0].card.game);
+    pintaFacetas(pairs);
     pintaGrade(pairs, options || {});
     elements.empty.hidden = pairs.length > 0;
     // "Nenhuma carta em nenhum jogo" é resposta da BUSCA; com filtro ligado o
@@ -404,7 +523,9 @@
     // isVintageCard, mais abaixo.
     const vintage = filtro === shared.VINTAGE_FILTER;
     const jogos = vintage ? VINTAGE_GAMES : [filtro === "all" ? "all" : filtro];
-    const respostas = await Promise.all(jogos.map((g) => shared.searchApiFull(g, q)));
+    // A cotação vai JUNTO com a busca (não em fila): a borda responde em
+    // centenas de ms e, com o câmbio em cache, a espera extra é zero.
+    const [respostas] = await Promise.all([Promise.all(jogos.map((g) => shared.searchApiFull(g, q))), cambioPronto]);
     if (seq !== apiSeq || catalogPronto) return; // o catálogo chegou no meio: o render dele já cobre
     // null = borda desligada/soluço (ou Function sem o modo completo): o
     // catálogo local responde. Um jogo do vintage falhar também — resultado
@@ -478,6 +599,22 @@
     });
   }
 
+  // Chip de jogo = escolher no seletor (ver pintaFacetas). No TECLADO o foco
+  // vai pro seletor: o chip acionado some na repintura, e quem navega por
+  // teclado cai no controle que agora mostra o jogo (e desfaz a escolha, se
+  // quiser). Só no teclado (detail 0 = Enter/Espaço): no iPhone um focus()
+  // num <select> durante o toque abre a roleta de opções, e no mouse deixaria
+  // o anel de foco aceso no seletor sem ninguém ter ido até ele.
+  if (elements.facets && elements.gameFilter) {
+    elements.facets.addEventListener("click", (event) => {
+      const chip = event.target.closest("[data-facet-game]");
+      if (!chip) return;
+      elements.gameFilter.value = chip.dataset.facetGame;
+      elements.gameFilter.dispatchEvent(new Event("change"));
+      if (event.detail === 0) elements.gameFilter.focus();
+    });
+  }
+
   elements.sortSelect.value = sort;
   elements.sortSelect.addEventListener("change", () => {
     sort = SORTS.includes(elements.sortSelect.value) ? elements.sortSelect.value : "value-desc";
@@ -539,6 +676,20 @@
   });
   [elements.priceMin, elements.priceMax].forEach((el) => {
     if (el) el.addEventListener("input", debounce(() => render({ resetCount: true }), 250));
+  });
+
+  // Cotação que chegou DEPOIS da grade (o fetch estourou os 2,5s e a nova
+  // tentativa, sem prazo, respondeu): repinta pros preços aparecerem. Só se
+  // a grade saiu SEM cotação — a atualização de fundo de um cache de ontem
+  // também dispara o evento, e aí os valores já estão na tela: refazer os
+  // tiles só faria as imagens piscarem por centavos de diferença.
+  document.addEventListener("sleevu:fx-updated", () => {
+    if (!pintouSemCambio || !elements.grid.querySelector(".card-tile")) return;
+    // Busca nova a caminho (o termo mudou e a borda ainda não respondeu): um
+    // render sem lista cairia no catálogo ainda vazio e piscaria "nenhuma
+    // carta". A resposta dela já vem com a cotação.
+    if (isSearching() && !catalogPronto && (ultimaBase.q !== term() || ultimaBase.game !== gameFilter)) return;
+    render({ resetCount: false });
   });
 
   // Deep-link: /explore?q=pikachu já abre buscando (skeletons + pill do shared).

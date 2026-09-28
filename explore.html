@@ -124,6 +124,10 @@
       <section class="results-header" id="exploreResultsHeader" hidden>
         <h2 data-i18n="results.heading.cards">Cartas</h2>
         <p id="exploreResultCount">0 resultados</p>
+        <!-- Por jogo: um chip por jogo com a contagem, na busca em todos os
+             jogos (ou um chip com × pra voltar, com um jogo escolhido). Mora
+             no vão entre o contador e os botões; o explore.js monta. -->
+        <div id="exploreFacets" class="xpl-facets" role="group" data-i18n-aria="explore.facetsAria" aria-label="Resultados por jogo" hidden></div>
         <div class="results-actions">
           <button type="button" id="exploreFiltersBtn" class="secondary" aria-expanded="false" aria-controls="exploreFilters"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M7.5 12h9M10.5 18h3"/></svg><span data-i18n="filters.show">Filtros</span></button>
           <div id="exploreViewToggle" class="view-toggle" role="group" data-i18n-aria="toolbar.view" aria-label="Visualização">
