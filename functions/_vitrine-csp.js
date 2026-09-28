@@ -23,8 +23,17 @@
 //   img/frame/connect-src  + https: — criativo, iframe e medição da rede vêm
 //               de domínios que mudam.
 // object-src 'none', base-uri, frame-ancestors e form-action ficam como
-// estão. O inline de detecção de robô que o Cloudflare injeta continua
-// bloqueado, como já é hoje (não tem nonce).
+// estão.
+//
+// DETECÇÃO DE ROBÔ DO CLOUDFLARE: em produção (domínio sleevu.app, não no
+// *.pages.dev nem no wrangler local) a borda injeta um <script> inline que
+// carrega /cdn-cgi/challenge-platform/scripts/jsd/main.js num iframe
+// escondido. A injeção acontece DEPOIS desta Function e o Cloudflare copia o
+// nonce do cabeçalho pra ela — então, nestas páginas, ela roda. No resto do
+// site (script-src 'self', sem nonce) segue bloqueada, como sempre foi. Visto
+// em produção no dia em que a fase 1 subiu (2026-09-28): é script do próprio
+// Cloudflare, same-origin, e não quebra nada; só não é "bloqueado igual antes",
+// como este comentário dizia.
 //
 // CACHE: página com nonce por requisição NÃO pode ser revalidada com 304 — o
 // navegador juntaria o HTML guardado (nonce velho) com o cabeçalho novo (nonce
