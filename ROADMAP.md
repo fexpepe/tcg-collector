@@ -208,9 +208,12 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
 - **Anúncios e afiliados — fase 0 pronta em 2026-09-27.** O espaço
   ("vitrine") existe nas páginas de catálogo, medido, só com conteúdo da casa
   e de parceiros; afiliado TCGplayer/eBay pronto com os IDs vazios (falta o
-  cadastro nos programas); política, termos e FAQ reescritos. Próximo: fase 1
-  (AdSense com CSP por rota, páginas pré-renderizadas, apoiador sem anúncio).
-  Migração `20260927a` aplicada e verificada em 2026-09-28. Plano, números e
+  cadastro nos programas); política, termos e FAQ reescritos. Migração
+  `20260927a` aplicada e verificada em 2026-09-28. **Fase 1 em andamento
+  (2026-09-28):** AdSense pronto e desligado até o `ca-pub` e os 3 blocos,
+  CSP com nonce só nas páginas com vitrine, UE/UK/CH sem rede de anúncio.
+  Falta: conta AdSense (do Fernando), páginas pré-renderizadas e apoiador sem
+  anúncio (PRs próprias), depois lançamento a 50%. Plano, números e
   fases em [docs/PLANO-ADS.md](docs/PLANO-ADS.md); arquitetura no README
   ("Vitrine").
 

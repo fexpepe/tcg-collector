@@ -25,6 +25,18 @@
 //   - a casa tem teto por dia: o "apoie" na 30ª página do dia vira ruído, então
 //     cada criativo da casa some depois de `porDia` vezes VISTO.
 //
+// FASE 1 (2026-09-28): o AdSense entra como fornecedor da mesma cadeia
+// ("parceiro" → "adsense" → "casa"), DORMENTE até o data/ads.json ter o
+// ca-pub e os IDs dos blocos. Mesmo com os IDs, ele só chama a rede quando
+// TUDO isto vale (adsenseLiberado): a pessoa ACEITOU anúncio personalizado
+// (recusou = nem o script do Google carrega — decisão de 27/09), a página veio
+// com a CSP de nonce da borda (functions/_vitrine-csp.js, que também carimba
+// <html data-pais>), o país não é da UE/Reino Unido/Suíça (lá o Google exige
+// CMP certificado, que não temos) e a economia de dados está desligada. Bloco
+// é MANUAL e de tamanho fixo (728×90, 300×250, 160×600): nada de Auto ads,
+// vinheta ou âncora, e a altura reservada é a do anúncio (nada salta).
+// Anúncio já pedido NUNCA é recarregado sozinho — ver viraCasa.
+//
 // Medição (migração 20260927a): UM `ad_view` por página, com o que foi servido
 // e o que foi visto (metade na tela por 1 s), mandado quando a aba some — um
 // evento por espaço estouraria os 60/min do events_guard em quem navega rápido.
@@ -71,6 +83,17 @@
   // propósito. Repetir o pedido na vitrine desfaria essa decisão.
   const CASA = ["apoie", "conta", "anuncie"];
   const FORNECEDORES = ["parceiro", "casa", "adsense"];
+  // AdSense: ca-pub de 16 dígitos e data-ad-slot numérico (10 dígitos hoje).
+  const CLIENTE_OK = /^ca-pub-\d{16}$/;
+  const BLOCO_OK = /^\d{8,12}$/;
+  const FORMATOS = ["faixa", "quadrado", "trilho"];
+  function adsenseValido(a) {
+    if (!a || typeof a !== "object" || !CLIENTE_OK.test(String(a.cliente || ""))) return null;
+    const b = a.blocos && typeof a.blocos === "object" ? a.blocos : {};
+    const blocos = {};
+    FORMATOS.forEach((f) => { if (BLOCO_OK.test(String(b[f] || ""))) blocos[f] = String(b[f]); });
+    return Object.keys(blocos).length ? { cliente: a.cliente, blocos } : null;
+  }
   // Imagem de parceiro mora no próprio site: é o que mantém o img-src 'self'
   // da CSP e o "sem rastreio" (pixel de terceiro não entra por aqui).
   const IMG_OK = /^\/assets\/partners\/[\w.-]+\.(webp|png|jpe?g|avif)$/;
@@ -111,10 +134,15 @@
       if (c.tipo === "parceiro") return parceiroValido(c);
       return null;
     }).filter(Boolean);
-    const fornecedores = lista(cfg.fornecedores, /^[a-z]+$/).filter((f, i, a) => FORNECEDORES.indexOf(f) >= 0 && a.indexOf(f) === i);
+    const adsense = adsenseValido(cfg.adsense);
+    // Sem ca-pub e bloco válidos o AdSense sai da cadeia: é o estado "dormente"
+    // (e é o que impede o aviso de consentimento de aparecer à toa).
+    const fornecedores = lista(cfg.fornecedores, /^[a-z]+$/)
+      .filter((f, i, a) => FORNECEDORES.indexOf(f) >= 0 && a.indexOf(f) === i && (f !== "adsense" || adsense));
     const regras = cfg.regras && typeof cfg.regras === "object" ? cfg.regras : {};
     return {
       fornecedores: fornecedores.length ? fornecedores : ["parceiro", "casa"],
+      adsense,
       regras: {
         desktop: regraValida(regras.desktop, { primeira: 1.6, intervalo: 4.4, max: 3 }),
         celular: regraValida(regras.celular, { primeira: 2, intervalo: 4, max: 3 })
@@ -149,6 +177,12 @@
     };
     const out = [];
     (ordem || ["parceiro", "casa"]).forEach((tipo) => {
+      // A rede não tem estoque finito: liberada, ela ocupa todo espaço que o
+      // parceiro deixou — a casa vira reserva (bloco não preenchido, recusa).
+      if (tipo === "adsense") {
+        while (ctx.adsense && out.length < n) out.push({ id: "adsense", tipo: "adsense" });
+        return;
+      }
       const resto = criativos.filter((c) => c.tipo === tipo && elegivel(c));
       while (resto.length && out.length < n) {
         const total = resto.reduce((s, c) => s + c.peso, 0);
@@ -161,7 +195,23 @@
     return out;
   }
 
-  window.TCGVitrine = { posicoesNaGrade, configValida, escolheCriativos };
+  // UE (27) + EEE (Islândia, Liechtenstein, Noruega) + Reino Unido + Suíça:
+  // anúncio personalizado lá exige CMP certificado pelo Google (IAB TCF), que o
+  // Sleevu não tem. Não chamar a rede é o jeito mais simples de estar certo.
+  const PAISES_SEM_REDE = new Set(["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IE", "IT",
+    "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE", "IS", "LI", "NO", "GB", "CH"]);
+  // A rede só é chamada com TUDO isto (ver o cabeçalho do arquivo). `pais`
+  // vazio = a página não veio pela borda com nonce (dev, ou a Function falhou)
+  // — e aí a CSP do _headers bloquearia o script do Google de qualquer jeito.
+  function adsenseLiberado({ cfg, consentiu, pais, economia }) {
+    return !!(cfg && cfg.adsense && cfg.fornecedores.indexOf("adsense") >= 0
+      && consentiu && !economia && /^[A-Z]{2}$/.test(pais || "") && !PAISES_SEM_REDE.has(pais));
+  }
+  // Qual bloco cabe na faixa: o 728×90 precisa de ~760 px de largura útil;
+  // abaixo disso (celular, tablet em pé, janela estreita) vai o 300×250.
+  function formatoDaFaixa(largura) { return largura >= 760 ? "faixa" : "quadrado"; }
+
+  window.TCGVitrine = { posicoesNaGrade, configValida, escolheCriativos, adsenseLiberado, formatoDaFaixa };
 
   // ── Página ────────────────────────────────────────────────────────────────
   const S = window.TCGShared;
@@ -234,6 +284,96 @@
       + `<img src="${esc(c.imagens[formato])}" alt="${esc(c.alt)}" width="${w}" height="${h}" loading="lazy" decoding="async"></a>`;
   }
 
+  // Rede (AdSense): o espaço nasce com a ALTURA DO ANÚNCIO reservada e vazio.
+  // O <ins> só entra quando o espaço chega perto da tela (observadorRede) — é
+  // o que faz o push() preencher ESTE bloco: o adsbygoogle preenche o primeiro
+  // <ins> ainda não processado da página, na ordem do DOM, e um <ins> lá
+  // embaixo pegaria o anúncio que era do de cima.
+  function corpoRede(formato) {
+    return `<div class="vtr-rede vtr-rede-${formato}" data-vitrine-formato="${formato}"></div>`;
+  }
+  let redeCarregada = false, redeFalhou = false;
+  function carregaRede(cliente) {
+    if (redeCarregada) return;
+    redeCarregada = true;
+    // Criado por um script com nonce: a CSP da borda ('strict-dynamic') deixa
+    // rodar sem nonce próprio.
+    const s = document.createElement("script");
+    s.async = true;
+    s.crossOrigin = "anonymous";
+    s.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${encodeURIComponent(cliente)}`;
+    // Script barrado (adblock — comum no público do site — ou rede fora):
+    // todo espaço da rede vira casa, em vez de uma caixa vazia de 90/250 px.
+    s.onerror = () => {
+      redeFalhou = true;
+      document.querySelectorAll('.vtr-espaco[data-vitrine-tipo="adsense"]').forEach(viraCasa);
+    };
+    (document.head || document.documentElement).appendChild(s);
+  }
+  // Bloco que não recebeu resposta nenhuma do Google (nem "filled" nem
+  // "unfilled") nesse tempo também vira casa: é o sintoma do script
+  // bloqueado sem erro de rede, ou de um bloco mal configurado no painel.
+  const ESPERA_REDE_MS = 10000;
+  function preencheRede(el) {
+    const caixa = el.querySelector(".vtr-rede");
+    if (!caixa || el.dataset.vitrinePedido || !config || !config.adsense) return;
+    const formato = caixa.dataset.vitrineFormato;
+    const [w, h] = TAMANHO[formato];
+    el.dataset.vitrinePedido = "1";
+    const ins = document.createElement("ins");
+    ins.className = "adsbygoogle";
+    ins.style.cssText = `display:inline-block;width:${w}px;height:${h}px`;
+    ins.setAttribute("data-ad-client", config.adsense.cliente);
+    ins.setAttribute("data-ad-slot", config.adsense.blocos[formato]);
+    caixa.appendChild(ins);
+    // Sem anúncio pra este espaço (o Google marca data-ad-status="unfilled"):
+    // entra a casa, na mesma altura reservada.
+    new MutationObserver(() => {
+      if (ins.getAttribute("data-ad-status") === "unfilled" && ins.isConnected) viraCasa(el);
+    }).observe(ins, { attributes: true, attributeFilter: ["data-ad-status"] });
+    if (redeFalhou) { viraCasa(el); return; }
+    carregaRede(config.adsense.cliente);
+    try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch (e) { viraCasa(el); return; }
+    setTimeout(() => {
+      if (ins.isConnected && !ins.getAttribute("data-ad-status") && el.dataset.vitrinePedido) viraCasa(el);
+    }, ESPERA_REDE_MS);
+  }
+  const observadorRede = "IntersectionObserver" in window ? new IntersectionObserver((entradas) => {
+    entradas.forEach((e) => { if (e.isIntersecting) { observadorRede.unobserve(e.target); preencheRede(e.target); } });
+  }, { rootMargin: "400px 0px" }) : null;
+
+  // A casa como reserva: pra bloco não preenchido e pra anúncio que teria de
+  // ser RECARREGADO. Prefere um criativo que ainda não está na página; ignora
+  // o teto por dia (é um caminho raro, e espaço vazio seria pior).
+  let config = null, contexto = null;
+  const emUso = new Set();
+  function casaReserva() {
+    if (!config || !contexto) return null;
+    const todas = escolheCriativos(config.criativos, Object.assign({}, contexto, { porDia: Infinity }), 9, ["casa"], () => 0);
+    return todas.find((c) => !emUso.has(c.id)) || todas[0] || null;
+  }
+  // Troca um espaço da rede pela casa, NO LUGAR (mesma caixa, mesma altura).
+  // Tirar o <ins> é o que garante que o anúncio já pedido não seja recarregado:
+  // um iframe que sai do DOM e volta (re-render da grade, reposicionamento no
+  // resize) refaz o pedido sozinho, e anúncio atualizado sem ação da pessoa é
+  // contra a política do AdSense.
+  function viraCasa(el) {
+    if (observadorRede) observadorRede.unobserve(el);
+    const c = casaReserva();
+    const caixa = el.querySelector(".vtr-rede");
+    if (!c || !caixa) { el.dataset.vitrineMorta = "1"; el.remove(); return; }
+    emUso.add(c.id);
+    delete el.dataset.vitrinePedido;
+    el.dataset.vitrineTipo = "casa";
+    el.dataset.vitrineCriativo = c.id;
+    const rotulo = t("vitrine.rotulo.casa");
+    el.setAttribute("aria-label", rotulo);
+    const r = el.querySelector(".vtr-rotulo");
+    if (r) r.textContent = rotulo;
+    caixa.innerHTML = corpoCasa(c, config);
+    marcaServida(el);
+  }
+
   // ── Medição ───────────────────────────────────────────────────────────────
   const servidas = [], vistas = [];
   const jaServida = new Set(), jaVista = new Set();
@@ -269,18 +409,29 @@
 
   // ── O espaço ──────────────────────────────────────────────────────────────
   function criaEspaco(pos, c, formato, cfg) {
+    // Rede sem bloco pra este formato: a faixa larga tenta o 300×250 (cabe em
+    // qualquer largura); sem nenhum, o espaço é da casa.
+    if (c.tipo === "adsense") {
+      const blocos = cfg.adsense.blocos;
+      if (!blocos[formato] && formato === "faixa" && blocos.quadrado) formato = "quadrado";
+      if (!blocos[formato]) c = casaReserva();
+      if (!c) return null;
+    }
+    if (c.tipo === "casa") emUso.add(c.id);
     const el = document.createElement("aside");
     el.className = `vtr-espaco vtr-${formato === "trilho" ? "trilho" : "faixa"}`;
     el.dataset.vitrinePos = pos;
     el.dataset.vitrineCriativo = c.id;
     el.dataset.vitrineTipo = c.tipo;
-    const rotulo = t(c.tipo === "parceiro" ? "vitrine.rotulo.parceiro" : "vitrine.rotulo.casa");
+    // "Publicidade" é o rótulo que o AdSense aceita (ou "Links patrocinados").
+    const rotulo = t(c.tipo === "adsense" ? "vitrine.rotulo.anuncio" : c.tipo === "parceiro" ? "vitrine.rotulo.parceiro" : "vitrine.rotulo.casa");
     el.setAttribute("aria-label", rotulo);
     // As grades são aria-live: sem isto, cada re-render leria o espaço em voz
     // alta junto com as cartas.
     el.setAttribute("aria-live", "off");
     el.innerHTML = `<div class="vtr-topo"><span class="vtr-rotulo">${esc(rotulo)}</span><a class="vtr-sobre" href="/faq#anuncios">${esc(t("vitrine.sobre"))}</a></div>`
-      + (c.tipo === "parceiro" ? corpoParceiro(c, formato) : corpoCasa(c, cfg));
+      + (c.tipo === "adsense" ? corpoRede(formato) : c.tipo === "parceiro" ? corpoParceiro(c, formato) : corpoCasa(c, cfg));
+    if (c.tipo === "adsense" && observadorRede) observadorRede.observe(el);
     el.addEventListener("click", (e) => aoClicar(e, el, cfg));
     el.addEventListener("auxclick", (e) => { if (e.button === 1) aoClicar(e, el, cfg); });
     return el;
@@ -345,13 +496,26 @@
         });
         // Grade escondida (modo fichário do set), vazia ou em esqueleto: sem faixa.
         const idx = carregando || !itens.length ? [] : posicoesNaGrade(tops, window.innerHeight, regra, permitido).slice(0, criativos.length);
+        // Largura útil da faixa (a grade menos a moldura de 16 px de cada lado).
+        const formato = formatoDaFaixa(grade.clientWidth - 32);
         idx.forEach((i, k) => {
-          if (!faixas[k]) faixas[k] = criaEspaco(`f${k + 1}`, criativos[k], CELULAR.matches ? "quadrado" : "faixa", cfg);
+          if (faixas[k] === undefined) faixas[k] = criaEspaco(`f${k + 1}`, criativos[k], formato, cfg);
           const el = faixas[k];
-          if (el.parentNode !== grade || el.nextElementSibling !== itens[i]) grade.insertBefore(el, itens[i]);
+          if (!el || el.dataset.vitrineMorta) return;
+          if (el.parentNode !== grade || el.nextElementSibling !== itens[i]) {
+            // Anúncio já pedido não se move: vira casa ANTES (ver viraCasa).
+            if (el.dataset.vitrinePedido) viraCasa(el);
+            if (el.dataset.vitrineMorta) return;
+            grade.insertBefore(el, itens[i]);
+          }
           marcaServida(el);
         });
-        for (let k = idx.length; k < faixas.length; k++) if (faixas[k] && faixas[k].parentNode) faixas[k].remove();
+        for (let k = idx.length; k < faixas.length; k++) {
+          const el = faixas[k];
+          if (!el || !el.parentNode) continue;
+          if (el.dataset.vitrinePedido) viraCasa(el); // sai da página: não pode voltar recarregando
+          el.remove();
+        }
       } finally {
         mo.takeRecords(); // as mudanças que a própria faixa fez não disparam de novo
       }
@@ -369,6 +533,7 @@
     const aplica = () => {
       if (!LARGA.matches || el) return;
       el = criaEspaco("t", c, "trilho", cfg);
+      if (!el) return;
       document.body.appendChild(el);
       marcaServida(el);
     };
@@ -406,8 +571,12 @@
     // Economia de dados ligada: nada de rede de anúncio (fase 1) — a casa e o
     // parceiro são leves e locais, esses ficam.
     const economia = !!(navigator.connection && navigator.connection.saveData);
-    const ordem = cfg.fornecedores.filter((f) => f !== "adsense");
-    if (cfg.fornecedores.indexOf("adsense") >= 0 && !economia) mostraAviso();
+    const pais = document.documentElement.getAttribute("data-pais") || "";
+    // O aviso só faz sentido onde a rede PODERIA rodar (mesmas condições, sem
+    // o consentimento — que é justamente a pergunta).
+    if (adsenseLiberado({ cfg, consentiu: true, pais, economia })) mostraAviso();
+    const liberado = adsenseLiberado({ cfg, consentiu: S.hasConsent("ads"), pais, economia });
+    const ordem = cfg.fornecedores;
 
     const grade = tag.getAttribute("data-grade") ? document.querySelector(tag.getAttribute("data-grade")) : null;
     const nFaixas = grade ? (CELULAR.matches ? cfg.regras.celular : cfg.regras.desktop).max : 0;
@@ -419,15 +588,18 @@
       logado: !!S.getSession(),
       temKofi: !!cfg.kofi,
       vistosHoje: lerDia(),
-      porDia: cfg.porDia
+      porDia: cfg.porDia,
+      adsense: liberado
     };
+    config = cfg;
+    contexto = ctx;
     const escolhidos = escolheCriativos(cfg.criativos, ctx, nFaixas + (trilho ? 1 : 0), ordem);
     // Tela larga: o trilho fica com o 1º criativo — na margem ele não
     // interrompe nada, então é o lugar preferido; as faixas ficam com o resto.
     // Parceiro sem arte vertical não serve pro trilho.
     let noTrilho = null;
     if (trilho) {
-      const i = escolhidos.findIndex((c) => c.tipo === "casa" || c.imagens.trilho);
+      const i = escolhidos.findIndex((c) => c.tipo === "casa" || (c.tipo === "parceiro" && c.imagens.trilho) || (c.tipo === "adsense" && cfg.adsense.blocos.trilho));
       if (i >= 0) noTrilho = escolhidos.splice(i, 1)[0];
     }
     if (noTrilho) montaTrilho(noTrilho, cfg);

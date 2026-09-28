@@ -322,7 +322,11 @@ UE/EUA, não pra LGPD.
 
 **UE/Reino Unido/Suíça.** Anúncio personalizado exige CMP certificado pelo
 Google (IAB TCF) desde jan/2024. O "Privacidade e mensagens" do próprio
-AdSense resolve e só aparece pra esses países.
+AdSense resolveria, mas é script do Google rodando ANTES do consentimento — o
+contrário da decisão 2. **Decidido na fase 1:** nesses países o Sleevu não
+chama rede de anúncio nenhuma (o país vem da borda do Cloudflare,
+`<html data-pais>`); fica a vitrine da casa e dos parceiros, sem cookie. O
+tráfego de lá é pequeno; se um dia pesar, aí entra um CMP.
 
 **Como fica no Sleevu:**
 
@@ -355,7 +359,8 @@ data/ads.json        config: liga/desliga, espaços, cadeia de fornecedores,
                      campanhas diretas — é também o KILL SWITCH (chega em ≤1 h
                      pelo cache de data/*, sem deploy de código)
 ads.txt              google.com, pub-XXXXXXXX, DIRECT, f08c47fec0942fa0
-functions/_middleware.js   nonce da CSP, só nas rotas com anúncio
+functions/_vitrine-csp.js  nonce da CSP, só nas rotas com anúncio (uma
+                     Function por página de catálogo chama este módulo)
 ```
 
 **O espaço.** Um `<aside class="vtr-espaco vtr-faixa">` com a posição e o
@@ -372,23 +377,25 @@ colunas visíveis, testada com `node:test`. Filtrar reposiciona as faixas
 existentes; **não** pede anúncio novo (o AdSense proíbe atualizar anúncio sem
 pedido do usuário, e não precisamos disso).
 
-**CSP — a peça mais delicada.** Hoje a política é única pro site todo. O
-plano separa por rota, com o `! Content-Security-Policy` do `_headers` do
-Cloudflare Pages (tira o header da regra `/*` numa rota mais específica):
+**CSP — a peça mais delicada.** Até a fase 0 a política era única pro site
+todo. A fase 1 separa por rota (como ficou de fato: ver "O que mudou no
+caminho" da fase 1, seção 13):
 
 - **rotas sem anúncio** (login, conta, coleção, configurações, tudo do grupo
   C/zero): **continuam exatamente com a CSP de hoje**. Nenhum script de
   terceiro onde vive a sessão;
 - **rotas com anúncio**: a CSP estrita que o Google suporta
   (`script-src 'nonce-…' 'strict-dynamic' …; object-src 'none'; base-uri
-  'none'`), com o nonce posto por um `_middleware.js` que carimba o mesmo
+  'none'`), com o nonce posto por uma Function por página
+  (`functions/_vitrine-csp.js`) que carimba o mesmo
   valor no header e em cada `<script>` via `HTMLRewriter` — o padrão que o
   `functions/detail.js` e o `functions/users/[handle].js` já usam. Os HTML do
   repo não mudam.
 
-Pontos pra conferir no preview antes de confiar: (1) resposta de Function não
-recebe as regras do `_headers`, então o middleware tem que devolver os outros
-cabeçalhos de segurança também; (2) o service worker guarda header e corpo
+Pontos pra conferir no preview antes de confiar: (1) resposta de Function
+montada a partir do `env.ASSETS.fetch` **mantém** as regras do `_headers`
+(conferido no `/detail`), então os outros cabeçalhos de segurança seguem
+valendo e só a CSP é trocada; (2) o service worker guarda header e corpo
 juntos, então o par nonce/HTML continua coerente na página servida do cache;
 (3) Functions no plano grátis têm cota diária de requisições — com muito
 tráfego nas páginas pré-renderizadas, o plano pago do Workers (~US$ 5/mês)
@@ -511,7 +518,7 @@ O que mudou no caminho, e por quê:
 
 - **Grupo A (páginas pré-renderizadas) foi pra fase 1.** Elas só carregam o
   `theme.js` (sem `shared.js`, sem tradução, com CSS próprio no molde) e vão
-  precisar do `_middleware.js` com nonce de qualquer jeito — entram junto.
+  precisar da CSP com nonce de qualquer jeito — entram junto.
 - **Sem o criativo "instale o app".** O convite de instalação já existe
   (`initInstallInvite`) e aparece uma vez só, pra quem tem 10+ cartas, de
   propósito. Repetir o pedido na vitrine desfaria essa decisão.
@@ -528,21 +535,65 @@ O que mudou no caminho, e por quê:
   então a medida é aproximada — ajusta-se no `primeira` do JSON).
 
 ### Fase 1 — AdSense
-- [ ] Conta AdSense + `ads.txt`; blocos manuais por espaço × aparelho;
-      **Auto ads, vinheta e âncora desligados**
+- [ ] Conta AdSense (é do Fernando) + linha no `ads.txt` + `<meta
+      name="google-adsense-account">` no `index.html`; **3 blocos de display
+      de tamanho fixo** (728×90, 300×250, 160×600); **Auto ads, vinheta e
+      âncora desligados**. Com o `ca-pub` e os 3 IDs, é preencher o `adsense`
+      do `data/ads.json` — o teste de vitrine exige os três lugares com o
+      mesmo `pub`
 - [ ] Espaços no grupo A (páginas pré-renderizadas de carta, set, deck e
-      artista), no molde do `prerender-catalog.mjs`
-- [ ] Fornecedor `adsense` no `ads.js` (a cadeia já existe). Cuidado herdado da
-      fase 0: faixa recolocada depois de um re-render recarrega o iframe — bloco
-      novo só em mudança pedida pela pessoa (filtro), nunca sozinho
-- [ ] CSP por rota + `_middleware.js` com nonce; conferir no preview
-- [ ] CMP do Google pra UE/UK/CH
+      artista), no molde do `prerender-catalog.mjs` — PR própria
+- [x] Fornecedor `adsense` no `ads.js`, dormente até o `ca-pub` (2026-09-28)
+- [x] CSP por rota com nonce; conferido no runtime local do Cloudflare
+      (`wrangler pages dev` sobre o build de produção): 0 violação nas 9
+      páginas, pt e en
+- [x] UE/UK/CH sem rede de anúncio (no lugar do CMP, seção 9)
 - [ ] Apoiador sem anúncio (seção 10): `profiles.apoiador_ate` + guarda no
       trigger + leitura no `ads.js` + selo no menu de conta. Entra **antes**
       do lançamento a 100%: a saída pra quem não quer anúncio tem que existir
-      no dia em que o anúncio chega (o Archidekt faz o mesmo com o Patreon)
+      no dia em que o anúncio chega (o Archidekt faz o mesmo com o Patreon).
+      PR própria; depende do valor do período (seção 14, em aberto)
 - [ ] Pedido de aprovação; lançamento a 50% com grupo de controle; ajustar
       densidade pelos números; então 100%
+
+O que mudou no caminho, e por quê:
+
+- **Uma Function por página, não `_middleware.js`.** Middleware roda em toda
+  requisição do site (asset, `data/*`, API) e gasta a cota diária de Functions
+  à toa. Cada página de catálogo ganhou um arquivo de 3 linhas em
+  `functions/` que chama o `_vitrine-csp.js`; o `/detail` já tinha Function e
+  só passou a embrulhar a resposta. Um teste garante que toda página com
+  `ads.js` tem a rota, e que nenhuma rota põe a CSP larga numa página sem
+  vitrine.
+- **O `_headers` global não mudou.** A Function parte da CSP que o asset já
+  traz e troca só `script-src` (nonce + `strict-dynamic`) e soma `https:` em
+  imagem, iframe e conexão. `object-src`, `base-uri`, `frame-ancestors`,
+  `form-action` e `worker-src` ficam iguais — conferido por teste contra o
+  `_headers` real.
+- **Dois scripts precisaram do nonce na mão.** Com `strict-dynamic`, script
+  escrito por `document.write` conta como "do parser": o `theme.js` repassa o
+  próprio nonce pro `<script>` do i18n (sem isso a página mostrava as chaves
+  cruas). E o `<link rel="preload" as="script">` do i18n em português também
+  recebe o nonce na borda.
+- **Sem 304 nas páginas com nonce.** O HTML guardado teria o nonce velho e o
+  cabeçalho novo, o nonce novo: todos os scripts bloqueados. A Function busca
+  o asset sem `If-None-Match`, tira `ETag`/`Last-Modified` e responde
+  `private, no-cache`.
+- **Um bloco por FORMATO, não por espaço × aparelho.** A faixa de 728×90 só
+  cabe no desktop e o 300×250 é o do celular (e da grade estreita), então o
+  formato já separa o aparelho; o trilho é o terceiro. Se o RPM por página
+  importar, dá pra ramificar o `blocos` do JSON depois sem mudar o desenho.
+- **Faixa recolocada vira casa.** O AdSense proíbe atualizar anúncio sem ação
+  da pessoa, e mover o iframe no DOM recarrega. Então, quando um filtro
+  reposiciona as faixas, a que já tinha anúncio pedido troca pelo conteúdo da
+  casa (mesma altura, nada salta) — nunca pede outro sozinha.
+- **Sem anúncio, a caixa vira casa.** `unfilled`, bloqueador, script que não
+  carrega ou 10 s sem resposta: o mesmo espaço mostra a vitrine da casa.
+  Espaço vazio com rótulo "Publicidade" parece site quebrado.
+- **Conferido com um `adsbygoogle.js` falso** no runtime local: aceitou
+  (desktop e 390 px), sem anúncio, bloqueador, recusou (script nem desce),
+  não respondeu (aviso, script não desce), Alemanha (nem aviso, nem script) e
+  filtro depois do anúncio pedido (vira casa, um pedido só).
 
 ### Fase 2 — Rede premium (≥ ~100 mil pageviews/mês)
 - [ ] Candidatura à Nitro e/ou Playwire (ou Journey, se o tráfego anglófono

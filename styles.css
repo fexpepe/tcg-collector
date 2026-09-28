@@ -4309,6 +4309,16 @@ a.hub-tile:hover {
   color: var(--text);
 }
 .vtr-cta-sec:hover { background: var(--panel); }
+/* Rede (AdSense): a caixa nasce com a ALTURA DO BLOCO reservada (728×90,
+   300×250, 160×600), vazia até o espaço chegar perto da tela — o anúncio
+   entra sem empurrar nada. Se o Google não tiver anúncio, a casa entra na
+   mesma caixa (ads.js, viraCasa), centralizada na altura reservada. */
+.vtr-rede { display: flex; align-items: center; justify-content: center; }
+.vtr-rede-faixa { min-height: 90px; }
+.vtr-rede-quadrado { min-height: 250px; }
+.vtr-rede-trilho { min-height: 600px; }
+.vtr-rede > .vtr-casa { flex: 1 1 auto; }
+.vtr-rede ins.adsbygoogle[data-ad-status="unfilled"] { display: none; }
 .vtr-parceiro { display: block; text-align: center; line-height: 0; }
 .vtr-parceiro img {
   max-width: 100%;

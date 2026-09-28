@@ -18,6 +18,8 @@
 //
 // O mapa set -> página estática vem do build (prerender-catalog.mjs escreve
 // data/set-pages/<jogo>.json): [slug, nome, imagem, nº de cartas, lançamento].
+import { buscaPagina, comVitrine } from "./_vitrine-csp.js";
+
 const ORIGIN = "https://sleevu.app";
 
 const setMeta = (content) => ({ element(el) { el.setAttribute("content", content); } });
@@ -65,6 +67,13 @@ export function metaDoSet(mapa, setId, nome) {
 
 export async function onRequestGet(context) {
   const { env, request } = context;
+  // A página de set tem vitrine (src/ads.js): TODO caminho de volta passa pela
+  // CSP com nonce (functions/_vitrine-csp.js). O redirect do &amp; não é HTML
+  // e o comVitrine o devolve intacto.
+  return comVitrine(await montaDetail(env, request), request);
+}
+
+async function montaDetail(env, request) {
   const url = new URL(request.url);
 
   // Link ESCAPADO como HTML (&amp; no lugar de &) — alguns apps de mensagem e
@@ -78,7 +87,7 @@ export async function onRequestGet(context) {
     return Response.redirect(`${url.origin}${url.pathname}${q}${url.hash}`, 301);
   }
 
-  const shell = await env.ASSETS.fetch(new URL("/detail.html", request.url));
+  const shell = await buscaPagina(env, request, "/detail.html");
   try {
     const p = url.searchParams;
     if (p.get("type") !== "set") return shell;
