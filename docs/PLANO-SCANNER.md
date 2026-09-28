@@ -186,7 +186,7 @@ item:
 
 1. **Conferência pela imagem** ✔ (esta entrega) + **medir a precisão** ✔.
 2. **Travar o set** ✔ (além do jogo).
-3. Som e vibração por faixa de preço (em R$, configurável) e aviso de wishlist.
+3. **Som e vibração por faixa de preço** ✔ (em R$, configurável) e aviso de wishlist.
 4. Leitura automática (sem disparador) com dicas ao vivo, e a lista da sessão
    no lugar do contador de lote, com o "modo rápido".
 5. Reconhecimento pela arte (a fase 2 abaixo, redesenhada): depois de medir.
@@ -257,6 +257,26 @@ faria a carta de outro set "não existir" na próxima vez. Se o set não baixar
 falsa, 390 e 320 px): travado no EB-01, a leitura da EB01-006 traz só as
 três versões do set — as reimpressões do Premium Booster, que têm o mesmo
 código, ficam de fora.
+
+**Som por faixa de preço** (`faixaDePreco`, `configSom`, `SONS`). Cada leitura
+avisa por som e vibração em que faixa a carta está — é o que deixa triar
+bulk sem olhar a tela, o melhor do ManaBox pra quem abre caixa. Lá são três
+faixas fixas em US$/€ (< 1, 1–10, > 10); aqui valem na moeda do site, com
+padrão de R$ 5 e R$ 50 (US$/€ 1 e 10), e a pessoa muda no painel do alto-
+falante da barra — o par só é salvo quando faz sentido (a de baixo menor que
+a de cima), sem desfazer o que foi digitado, e fica POR MOEDA (trocar a moeda
+do site não faz "5" virar cinco dólares). Os sons são gerados na hora (Web
+Audio, sem arquivo): uma nota grave pra barata, duas subindo pra média, um
+arpejo pra boa, e um arpejo próprio, mais alto, pra carta que está na
+WISHLIST — é a que a pessoa foi procurar no booster, e o cartão ganha o selo
+"Na wishlist". Carta boa ou da wishlist também ganha um anel dourado no
+cartão (o aviso que funciona com o som mudo). A vibração acompanha em pulsos
+(Android; o iPhone não vibra pela web). O áudio nasce dentro do toque do
+disparador ou do painel, que é o que o Safari exige; no iPhone, a chave de
+silêncio cala o scanner. A preferência é do aparelho (localStorage, com o
+padrão quando não há). Conferido no fluxo real com um espião no
+AudioContext: a Manga (US$ 3.250) toca o arpejo da boa; na wishlist, o da
+wishlist; com as faixas em 5000/9000, a nota grave; mudo, nada.
 
 ## Fase 2 — hash perceptual da arte
 

@@ -842,6 +842,19 @@
 .scan-heart { width: 46px; height: 46px; min-height: 0; flex: none; padding: 0; border: 1px solid #2d333f; border-radius: 9px; background: #1d212b; color: #f3f5f7; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
 .scan-heart svg { width: 20px; height: 20px; }
 .scan-heart.done { color: var(--accent-ink, #ef4444); border-color: var(--accent-ink, #ef4444); }
+/* Faixa de preço e wishlist (2026-09-28): o som avisa sem olhar; o cartão
+   confirma quando se olha — e avisa sozinho quando o som está mudo. */
+.scan-res.is-boa { border-color: rgba(245,179,1,.8); box-shadow: 0 0 0 1px rgba(245,179,1,.55), 0 18px 45px rgba(0,0,0,.32); }
+.scan-res-wl { display: inline-flex; align-items: center; gap: 4px; margin-left: 8px; font-size: 11.5px; font-weight: 800; color: #ff8fa3; vertical-align: 1px; }
+.scan-res-wl svg { width: 12px; height: 12px; }
+/* Painel do som: liga/desliga, as duas faixas na moeda do site e um botão pra ouvir cada aviso. */
+.scan-som-liga { display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 4px; color: #f3f5f7; font-size: 15px; font-weight: 700; cursor: pointer; }
+.scan-som-liga input { width: 22px; height: 22px; margin: 0; flex: none; accent-color: var(--accent, #dc2626); }
+.scan-som-faixas { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; }
+.scan-som-faixas .scan-field input { text-transform: none; }
+.scan-som-faixas .scan-field.is-erro { border-color: #f87171; }
+.scan-som-testes { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+.scan-som-testes button { min-height: 44px; min-width: 0; padding: 0 6px; border: 1px solid #2d333f; border-radius: 9px; background: #1d212b; color: #f3f5f7; font: inherit; font-size: 12.5px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; }
 .scan-vazio { margin: 0; padding: 0 4px; font-size: 13px; color: #9ba4b3; line-height: 1.5; }
 .scan-vazio[hidden] { display: none; }
 .scan-vazio a { color: var(--accent-ink, #ef4444); font-weight: 700; }
@@ -854,17 +867,94 @@
     arrow: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>',
     heart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>',
     cadeado: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.5" y="11" width="15" height="10" rx="2.5"/><path d="M8 11V7.5a4 4 0 0 1 8 0V11"/></svg>',
-    cadeadoAberto: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.5" y="11" width="15" height="10" rx="2.5"/><path d="M8 11V7.5a4 4 0 0 1 7.6-1.7"/></svg>'
+    cadeadoAberto: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.5" y="11" width="15" height="10" rx="2.5"/><path d="M8 11V7.5a4 4 0 0 1 7.6-1.7"/></svg>',
+    som: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>',
+    mudo: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="m22 9-6 6"/><path d="m16 9 6 6"/></svg>'
   };
-  // Valor de mercado da carta na moeda do site (mesma conta das grades), ou ""
-  // quando não há preço carregado pra ela.
-  function valorDe(card) {
+  // Valor de mercado da carta na moeda do site (mesma conta das grades):
+  // { value, currency }, ou null quando não há preço carregado pra ela.
+  function precoDe(card) {
     try {
       const v = shared.cardValue(card, shared.defaultVariant(card), null);
-      if (!v || !(v.value > 0)) return "";
-      const n = v.value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      return (v.currency === "BRL" ? "R$ " : v.currency === "USD" ? "US$ " : "€ ") + n;
-    } catch (e) { return ""; }
+      return v && v.value > 0 ? v : null;
+    } catch (e) { return null; }
+  }
+  // O mesmo valor já formatado, ou "".
+  function valorDe(card) {
+    const v = precoDe(card);
+    if (!v) return "";
+    const n = v.value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    return (v.currency === "BRL" ? "R$ " : v.currency === "USD" ? "US$ " : "€ ") + n;
+  }
+
+  // ── Som e vibração por FAIXA DE PREÇO (funções PURAS; tests/scan-som.test.mjs) ──
+  // O que o ManaBox tem de melhor pra quem tria bulk: três sons por faixa de
+  // preço, então dá pra passar carta sem olhar a tela e só parar quando a
+  // boa aparece. Lá as faixas são fixas em US$/€ (< 1, 1–10, > 10); aqui
+  // valem na moeda do site e a pessoa muda (o padrão em R$ é 5 e 50, o mesmo
+  // degrau em reais). Carta que está na WISHLIST tem som próprio, acima de
+  // qualquer faixa: é a que a pessoa foi procurar no booster.
+  // Faixa: -1 = sem preço, 0 = barata (abaixo de `baixo`), 1 = média, 2 = boa
+  // (a partir de `alto`).
+  function faixaDePreco(valor, baixo, alto) {
+    if (!(valor > 0)) return -1;
+    return valor >= alto ? 2 : valor >= baixo ? 1 : 0;
+  }
+  const FAIXAS_PADRAO = { BRL: [5, 50], USD: [1, 10], EUR: [1, 10] };
+  // Configuração guardada (texto do localStorage, pode ser lixo) -> { on,
+  // faixas } válida, com as faixas da moeda pedida. Faixas por MOEDA: trocar a
+  // moeda do site não pode fazer "5" virar cinco dólares.
+  function configSom(texto, moeda) {
+    let c = null;
+    try { c = JSON.parse(texto || "null"); } catch (e) { c = null; }
+    const padrao = FAIXAS_PADRAO[moeda] || FAIXAS_PADRAO.USD;
+    const par = c && c.faixas && Array.isArray(c.faixas[moeda]) ? c.faixas[moeda].map(Number) : null;
+    const ok = par && par.length === 2 && par.every((n) => Number.isFinite(n) && n >= 0) && par[0] < par[1];
+    return { on: !(c && c.on === false), faixas: Object.assign({}, c && c.faixas, { [moeda]: ok ? par : padrao.slice() }) };
+  }
+  // Notas de cada aviso: [frequência Hz, início s, duração s]. Curtas e
+  // subindo com o valor — da nota grave da barata ao arpejo da boa.
+  const SONS = {
+    "-1": [[660, 0, 0.06]],
+    0: [[440, 0, 0.09]],
+    1: [[523, 0, 0.08], [659, 0.1, 0.1]],
+    2: [[659, 0, 0.08], [784, 0.09, 0.08], [1047, 0.18, 0.16]],
+    wl: [[784, 0, 0.08], [988, 0.09, 0.08], [1175, 0.18, 0.08], [1568, 0.27, 0.22]]
+  };
+  // Vibração (Android; o iPhone não vibra pela web e o shared.vibrar cai no
+  // toque do switch): mais pulsos quanto melhor a carta.
+  const VIBRA = { "-1": 30, 0: 25, 1: [25, 60, 25], 2: [30, 60, 30, 60, 60], wl: [60, 40, 60, 40, 120] };
+
+  // Motor de som (Web Audio, sem arquivo): criado/retomado num TOQUE da
+  // pessoa — o Safari só libera áudio assim —, depois toca sozinho.
+  let audio = null;
+  function contextoAudio() {
+    try {
+      if (!audio) {
+        const AC = window.AudioContext || window.webkitAudioContext;
+        if (!AC) return null;
+        audio = new AC();
+      }
+      if (audio.state === "suspended") audio.resume().catch(() => {});
+      return audio;
+    } catch (e) { return null; }
+  }
+  function tocar(notas) {
+    const ac = contextoAudio();
+    if (!ac || !notas) return;
+    const t0 = ac.currentTime + 0.01;
+    notas.forEach(([f, ini, dur]) => {
+      const o = ac.createOscillator(), g = ac.createGain();
+      o.type = "triangle";
+      o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001, t0 + ini);
+      g.gain.linearRampToValueAtTime(0.18, t0 + ini + 0.012);
+      g.gain.exponentialRampToValueAtTime(0.0001, t0 + ini + dur);
+      o.connect(g);
+      g.connect(ac.destination);
+      o.start(t0 + ini);
+      o.stop(t0 + ini + dur + 0.03);
+    });
   }
   function miniatura(card) {
     const src = shared.cardImageSources(card);
@@ -923,6 +1013,7 @@
         </select>
         <span class="scan-set" data-scan-set hidden></span>
         <span class="scan-top-dir">
+          <button type="button" class="scan-ico" data-scan-som>${ICO.som}</button>
           <button type="button" class="scan-ico" data-scan-trava aria-pressed="false" aria-label="${escapeAttribute(t("scan.lock"))}" title="${escapeAttribute(t("scan.lock"))}">${ICO.cadeadoAberto}</button>
           <button type="button" class="scan-ico" data-scan-torch aria-pressed="false" aria-label="${escapeAttribute(t("scan.torch"))}" title="${escapeAttribute(t("scan.torch"))}" hidden>${ICO.bolt}</button>
         </span>
@@ -951,6 +1042,22 @@
           <button type="button" class="scan-heart" data-scan-trava-folha aria-pressed="false">${ICO.cadeado}</button>
         </div>
         <p class="scan-priv">${escapeHtml(t("scan.privacy"))}</p>
+      </div>
+      <div class="scan-sheet" data-scan-som-folha hidden>
+        <div class="scan-sheet-handle"></div>
+        <div class="scan-sheet-head"><strong data-scan-som-titulo>${escapeHtml(t("scan.sound"))}</strong></div>
+        <label class="scan-som-liga"><input type="checkbox" data-scan-som-on><span>${escapeHtml(t("scan.soundToggle"))}</span></label>
+        <div class="scan-som-faixas">
+          <label class="scan-field"><span>${escapeHtml(t("scan.soundLow"))}</span><input type="text" inputmode="decimal" data-scan-som-baixo autocomplete="off"></label>
+          <label class="scan-field"><span>${escapeHtml(t("scan.soundHigh"))}</span><input type="text" inputmode="decimal" data-scan-som-alto autocomplete="off"></label>
+        </div>
+        <div class="scan-som-testes">
+          <button type="button" data-scan-som-teste="0">${escapeHtml(t("scan.tier0"))}</button>
+          <button type="button" data-scan-som-teste="1">${escapeHtml(t("scan.tier1"))}</button>
+          <button type="button" data-scan-som-teste="2">${escapeHtml(t("scan.tier2"))}</button>
+          <button type="button" data-scan-som-teste="wl">${escapeHtml(t("scan.tierWl"))}</button>
+        </div>
+        <p class="scan-priv" data-scan-som-nota></p>
       </div>`;
     document.body.appendChild(wrap);
     document.body.classList.add("preview-open");
@@ -1067,6 +1174,89 @@
       recentes = [];
       pintarTrava();
     }
+    // ── Som por faixa de preço ───────────────────────────────────────────────
+    // Configuração do APARELHO (localStorage, conveniência de quem usa; sem ela
+    // vale o padrão): liga/desliga e as duas faixas, por moeda.
+    const CHAVE_SOM = "tcg-scan-som-v1";
+    const moedaAgora = () => (shared.getCurrency ? shared.getCurrency() : "") || "BRL";
+    let som = (() => { let tx = null; try { tx = localStorage.getItem(CHAVE_SOM); } catch (e) { /* sem storage */ } return configSom(tx, moedaAgora()); })();
+    const faixasAgora = () => som.faixas[moedaAgora()] || configSom(null, moedaAgora()).faixas[moedaAgora()];
+    const btnSom = $("[data-scan-som]");
+    const folhaSom = $("[data-scan-som-folha]");
+    const inSomOn = $("[data-scan-som-on]"), inBaixo = $("[data-scan-som-baixo]"), inAlto = $("[data-scan-som-alto]");
+    function salvarSom() { try { localStorage.setItem(CHAVE_SOM, JSON.stringify(som)); } catch (e) { /* sem storage: vale só nesta sessão */ } }
+    function pintarSom() {
+      const rot = `${t("scan.sound")}: ${t(som.on ? "scan.soundIsOn" : "scan.soundIsOff")}`;
+      btnSom.innerHTML = som.on ? ICO.som : ICO.mudo;
+      btnSom.setAttribute("aria-label", rot);
+      btnSom.title = rot;
+    }
+    // Número no jeito da moeda: vírgula decimal em reais ("5,5"), ponto no resto.
+    const numeroBr = (n) => (moedaAgora() === "BRL" ? String(n).replace(".", ",") : String(n));
+    function abrirSom() {
+      const [baixo, alto] = faixasAgora();
+      const simbolo = shared.currencySymbol ? shared.currencySymbol() : "";
+      inSomOn.checked = som.on;
+      inBaixo.value = numeroBr(baixo);
+      inAlto.value = numeroBr(alto);
+      inBaixo.setAttribute("aria-label", `${t("scan.soundLow")} (${simbolo})`);
+      inAlto.setAttribute("aria-label", `${t("scan.soundHigh")} (${simbolo})`);
+      $("[data-scan-som-nota]").textContent = t("scan.soundNote", { moeda: simbolo });
+      $("[data-scan-som-titulo]").textContent = simbolo ? `${t("scan.sound")} · ${simbolo}` : t("scan.sound");
+      fecharFolha();
+      fundo.hidden = false;
+      folhaSom.hidden = false;
+      contextoAudio(); // o toque que abriu o painel libera o áudio no Safari
+    }
+    // Fechar o painel devolve aos campos o que está valendo (um par inválido
+    // digitado e abandonado não fica na tela fingindo que foi salvo).
+    function fecharSom() {
+      const [b, a] = faixasAgora();
+      inBaixo.value = numeroBr(b);
+      inAlto.value = numeroBr(a);
+      marcarFaixas(true);
+      folhaSom.hidden = true;
+      if (folha.hidden) fundo.hidden = true;
+    }
+    function marcarFaixas(ok) {
+      [inBaixo, inAlto].forEach((el) => {
+        el.closest(".scan-field").classList.toggle("is-erro", !ok);
+        if (ok) el.removeAttribute("aria-invalid"); else el.setAttribute("aria-invalid", "true");
+      });
+    }
+    // As duas faixas digitadas: número (vírgula ou ponto), a de baixo menor que
+    // a de cima. Só salva o PAR que faz sentido, e não desfaz o que foi
+    // digitado: quem sobe as duas (5/50 -> 100/1000) digita primeiro a de
+    // baixo, que por um instante passa a de cima — desfazer ali apagava o
+    // número que a pessoa acabou de escrever.
+    function lerFaixas() {
+      // Com vírgula, ela é a decimal e o ponto é milhar ("1.000,50"); sem, o ponto é a decimal.
+      const num = (el) => { const tx = String(el.value).trim(); return tx ? Number(tx.indexOf(",") >= 0 ? tx.replace(/\./g, "").replace(",", ".") : tx) : NaN; };
+      const baixo = num(inBaixo), alto = num(inAlto);
+      const ok = Number.isFinite(baixo) && Number.isFinite(alto) && baixo >= 0 && baixo < alto;
+      marcarFaixas(ok);
+      if (ok) { som.faixas[moedaAgora()] = [baixo, alto]; salvarSom(); }
+    }
+    // Carta na wishlist: qualquer variante dela.
+    function naWishlist(h) {
+      try {
+        const st = stores.wl[h.game] || (stores.wl[h.game] = shared.createWishlistStore(h.game));
+        return st.hasCard ? !!st.hasCard(h.card.id) : !!st.has(h.card.id, shared.defaultVariant(h.card));
+      } catch (e) { return false; }
+    }
+    // O sinal de uma carta: "wl" se está na wishlist, senão a faixa do preço.
+    function sinalDe(h) {
+      if (naWishlist(h)) return "wl";
+      const v = precoDe(h.card);
+      const [baixo, alto] = faixasAgora();
+      return faixaDePreco(v ? v.value : 0, baixo, alto);
+    }
+    // Aviso de uma leitura: o som (se ligado) e a vibração da faixa.
+    function avisar(h) {
+      const sinal = sinalDe(h);
+      if (som.on) tocar(SONS[sinal]);
+      shared.vibrar(VIBRA[sinal]);
+    }
     // Jogos permitidos na busca: o escolhido no seletor, ou o que a carta diz.
     function jogosDaBusca(codigos) {
       if (trava) return [trava.game];
@@ -1116,7 +1306,7 @@
     }
     const tecla = (ev) => {
       if (ev.key !== "Escape") return;
-      if (!folha.hidden) fecharFolha(); else fechar();
+      if (!folhaSom.hidden) fecharSom(); else if (!folha.hidden) fecharFolha(); else fechar();
     };
     document.addEventListener("keydown", tecla);
 
@@ -1200,13 +1390,16 @@
       const preco = valorDe(h.card);
       const n = resultados.length;
       const jaTem = textoAdd(h);
+      const sinal = sinalDe(h);
+      resCard.classList.toggle("is-boa", sinal === 2 || sinal === "wl");
+      const wl = sinal === "wl" ? `<span class="scan-res-wl">${ICO.heart}${escapeHtml(t("scan.inWishlist"))}</span>` : "";
       resCard.innerHTML = `
         <button type="button" class="scan-res-open" data-scan-open>
           <span class="scan-res-thumb">${miniatura(h.card)}</span>
           <span class="scan-res-text">
             <span class="scan-res-name">${escapeHtml(h.card.name)}<span class="scan-res-game">${escapeHtml(shared.gameLabel(h.game))}</span></span>
             <span class="scan-res-sub">${escapeHtml(`${h.card.set || ""} · ${h.card.number || ""}`)}</span>
-            ${preco ? `<span class="scan-res-price">${escapeHtml(preco)}</span>` : ""}
+            ${preco || wl ? `<span class="scan-res-price">${escapeHtml(preco)}${wl}</span>` : ""}
           </span>
         </button>
         <span class="scan-res-acoes">
@@ -1289,7 +1482,7 @@
       }
       pintarResultado();
       if (!achados.length) abrirFolha(); // sem carta: a folha já abre com o código pra corrigir
-      else shared.vibrar(30); // leu a carta: toque mais longo que o do add
+      else avisar(achados[0]); // leu a carta: som e vibração da faixa de preço (ou da wishlist)
     }
     function adicionar(tipo, i, btn) {
       const h = resultados[i];
@@ -1469,6 +1662,7 @@
     }
     btnLer.addEventListener("click", async () => {
       if (!stream || !video.videoWidth || ocupado) return;
+      if (som.on) contextoAudio(); // dentro do toque: é o que o Safari exige pra tocar depois
       const rec = recorteDaGuia(video, wrap, guia);
       const quadro = congelar();
       try { await ler(quadro || video, rec); }
@@ -1486,6 +1680,9 @@
       await ler(img, { sx: 0, sy: 0, sw: w, sh: h, galeria: true });
       if (img.close) img.close();
     });
+    inSomOn.addEventListener("change", () => { som.on = inSomOn.checked; salvarSom(); pintarSom(); if (som.on) contextoAudio(); });
+    inBaixo.addEventListener("input", lerFaixas);
+    inAlto.addEventListener("input", lerFaixas);
     $("[data-scan-form]").addEventListener("submit", (ev) => {
       ev.preventDefault();
       funil.dig += 1;
@@ -1493,7 +1690,10 @@
     });
     wrap.addEventListener("click", (ev) => {
       if (ev.target.closest("[data-scan-close]")) { fechar(); return; }
-      if (ev.target.closest("[data-scan-backdrop]") || ev.target.closest(".scan-sheet-handle")) { fecharFolha(); return; }
+      if (ev.target.closest("[data-scan-backdrop]") || ev.target.closest(".scan-sheet-handle")) { if (!folhaSom.hidden) fecharSom(); else fecharFolha(); return; }
+      if (ev.target.closest("[data-scan-som]")) { abrirSom(); return; }
+      const teste = ev.target.closest("[data-scan-som-teste]");
+      if (teste) { const k = teste.dataset.scanSomTeste; tocar(SONS[k]); shared.vibrar(VIBRA[k]); return; }
       if (ev.target.closest("[data-scan-more]")) { abrirFolha(); return; }
       if (ev.target.closest("[data-scan-trava]")) {
         if (trava) destravar();
@@ -1530,6 +1730,7 @@
       }
     });
 
+    pintarSom();
     abrirCamera();
     // Aquece o motor enquanto a pessoa enquadra: na primeira vez é o download
     // dos ~3,5 MB, que assim acontece ANTES do toque no disparador.
@@ -1539,6 +1740,7 @@
   window.TCGScan = {
     abrir, extrair, extrairCodigos, juntar, soDigitos, detectarJogo,
     integral, assinatura, semelhanca, assinaturasDoQuadro, ordemPelaFoto,
-    numeroDe, noSet
+    numeroDe, noSet,
+    faixaDePreco, configSom, SONS, VIBRA
   };
 })();
