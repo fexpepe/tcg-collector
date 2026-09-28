@@ -209,12 +209,14 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   ("vitrine") existe nas páginas de catálogo, medido, só com conteúdo da casa
   e de parceiros; afiliado TCGplayer/eBay pronto com os IDs vazios (falta o
   cadastro nos programas); política, termos e FAQ reescritos. Migração
-  `20260927a` aplicada e verificada em 2026-09-28. **Fase 1 em andamento
-  (2026-09-28):** conta AdSense `pub-0808280324005030` e os 3 blocos na
-  config, `ads.txt` e meta de verificação no ar, CSP com nonce só nas páginas
-  com vitrine, UE/UK/CH sem rede de anúncio. Falta: aprovação do site no
-  painel, páginas pré-renderizadas e apoiador sem anúncio (PRs próprias), e
-  decidir se o lançamento vai a 50% antes de 100%. Plano, números e fases em
+  `20260927a` aplicada e verificada em 2026-09-28. **Fase 1 no ar
+  (2026-09-28):** AdSense ligado pra todo mundo (sem o grupo de controle a
+  50%; o efeito é lido antes × depois no /admin), conta
+  `pub-0808280324005030` e os 3 blocos, CSP com nonce só nas páginas com
+  vitrine, UE/UK/CH sem rede de anúncio. Apoiador sem anúncio (R$ 10 = 30
+  dias, somando) pronto — falta aplicar a migração `20260928c`. Falta ainda:
+  aprovação do site no painel do AdSense e as páginas pré-renderizadas
+  (`/card`, `/set`, `/deck`). Plano, números e fases em
   [docs/PLANO-ADS.md](docs/PLANO-ADS.md); arquitetura no README ("Vitrine").
 
 - **Naruto moderno (2027)**: `sync-naruto.mjs` está dormente esperando a

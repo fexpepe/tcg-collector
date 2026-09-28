@@ -326,19 +326,22 @@
     geral: ["dash"], audiencia: ["dash"], conteudo: ["dash"], produto: ["dash"], qualidade: ["dash"],
     crescimento: ["growth"], parceiros: ["dash", "retention", "stores", "demand", "growth", "engagement"],
     canais: ["retention", "growth"], retencao: ["retention"], funil: ["funnel", "retention", "engagement"],
-    lojas: ["stores"], demanda: ["demand"], anuncios: ["anuncios"],
+    lojas: ["stores"], demanda: ["demand"], anuncios: ["anuncios", "apoiadores"],
     usuarios: ["users"], colecoes: ["users"], segmentos: ["users"], campanhas: ["campaigns"],
     tempo: ["engagement"], experimentos: ["experiments"], portal: ["partners", "stores"], sets: ["demand"],
     medicao: ["health", "engagement"]
   };
   const RPC = {
-    retention: "admin_retention", stores: "admin_stores", growth: "admin_growth", demand: "admin_demand", anuncios: "admin_vitrine",
+    retention: "admin_retention", stores: "admin_stores", growth: "admin_growth", demand: "admin_demand", anuncios: "admin_vitrine", apoiadores: "admin_apoiadores",
     users: "admin_users", campaigns: "admin_campaigns", engagement: "admin_engagement", experiments: "admin_experiments",
     partners: "admin_partner_links", health: "admin_health"
   };
   // RPCs sem parâmetro: mandar { days } a elas faz o PostgREST procurar uma
   // assinatura que não existe (404) e o painel acharia que a migração falta.
-  const SEM_DIAS = ["campaigns", "partners", "health"];
+  const SEM_DIAS = ["campaigns", "partners", "health", "apoiadores"];
+  // Pedaço de aba que não segura a aba inteira quando a migração dele falta:
+  // a seção mostra o próprio aviso e o resto da aba pinta normal.
+  const OPCIONAIS = ["apoiadores"];
   const PERIODS = [7, 30, 90];
   const state = { tab: "geral", days: 30, cache: {}, inflight: {}, errors: undefined, pages: {}, names: {}, meta: {}, metaPendente: false };
   // Hash antigo (#produto, #qualidade…) continua valendo: link salvo não quebra.
@@ -864,7 +867,7 @@
   // compra; páginas × vistas por página é o estoque que a fase 1 (AdSense) e
   // a venda direta vão vender. Ver docs/PLANO-ADS.md.
   const ESPACO = { f1: "1ª faixa do feed", f2: "2ª faixa do feed", f3: "3ª faixa do feed", t: "Trilho (tela ≥ 1888 px)" };
-  function tabVitrine(vt) {
+  function tabVitrine(vt, ap) {
     const heads = (primeira) => [{ t: primeira }, { t: "Servidas", num: true }, { t: "Vistas", num: true }, { t: "Visibilidade", num: true }, { t: "Cliques", num: true }, { t: "CTR", num: true }];
     const linha = (x, rotulo) => `<tr><td>${rotulo}</td><td class="num">${esc(fmt(x.servidas))}</td><td class="num">${esc(fmt(x.vistas))}</td><td class="num">${esc(pct(x.vistas, x.servidas))}</td><td class="num">${esc(fmt(x.cliques))}</td><td class="num">${esc(pct(x.cliques, x.vistas))}</td></tr>`;
     return `
@@ -884,7 +887,29 @@
         ${section("Por página", table(heads("Página"), (vt.paginas_top || []).map((x) => linha(x, esc(pageName(x.path))))))}
         ${section("Por jogo", table(heads("Jogo"), (vt.jogos || []).map((x) => linha(x, gameChip(x.g)))),
           "CTR muito acima de 1–2% num espaço é sinal de clique acidental (espaço perto demais de botão), não de sucesso — é o que o Google pune na fase 1.")}
-      </div>`;
+      </div>
+      ${secaoApoiadores(ap)}`;
+  }
+  // Apoiador sem anúncio (20260928c; decisão 3 do plano): cada apoio de
+  // R$ 10+ no Pix ou no Ko-fi = 30 dias sem anúncio, somando. A marcação é à
+  // mão: quem apoiou manda o @ ou o e-mail da conta, e ele entra aqui.
+  // undefined = a migração ainda não foi aplicada; null = falhou.
+  function secaoApoiadores(ap) {
+    if (ap === undefined) {
+      return section("Apoiadores sem anúncio", `<p class="adm-banner">A RPC <code>admin_apoiadores</code> ainda não existe no banco: aplique <code>supabase/migrations/20260928c_apoiador.sql</code> no SQL Editor. Até lá ninguém fica sem anúncio (o site trata todo mundo como "não apoia").</p>`);
+    }
+    const lista = Array.isArray(ap) ? ap : [];
+    const rows = lista.map((x) => `<tr><td>${esc(x.quem)}</td><td>${esc(dataBR(x.ate))}</td><td>${x.ativo ? "Sem anúncio" : "<small>Venceu</small>"}</td></tr>`);
+    return `<div class="adm-grid-2">
+      ${section("Marcar apoio", `<form class="adm-form" data-apoio-form>
+          <label>E-mail ou @ da conta<input name="quem" required maxlength="120" placeholder="fulana@gmail.com ou @fulana" autocomplete="off"></label>
+          <label>Dias sem anúncio<input name="dias" required inputmode="numeric" value="30" autocomplete="off"></label>
+          <button type="submit" class="chip adm-primary">Somar dias</button>
+        </form>
+        <p class="admin-note" data-apoio-msg role="status" hidden></p>`,
+        "R$ 10 ou mais (ou o mensal do Ko-fi) = 30 dias. Se a pessoa ainda está sem anúncio, os dias somam no fim; se já venceu, contam de hoje. 0 dias encerra hoje (pra desfazer engano). Vale na próxima página que a pessoa abrir, ou em até 1 h.")}
+      ${section("Apoiadores (ativos e vencidos há até 60 dias)", ap === null ? `<p class="admin-empty">Não consegui carregar a lista.</p>` : table([{ t: "Conta" }, { t: "Sem anúncio até" }, { t: "" }], rows))}
+    </div>`;
   }
 
   // ── Demanda: o que está sendo procurado ───────────────────────────────────
@@ -1314,7 +1339,7 @@ if (v === "b") { /* versão nova */ }</pre>
     parceiros: (x) => tabParceiros(x.dash, x.retention, x.stores, x.demand, x.growth, x.engagement),
     canais: (x) => tabCanais(x.retention, x.growth), retencao: (x) => tabRetencao(x.retention),
     funil: (x) => tabFunil(x.funnel, x.retention, x.engagement), lojas: (x) => tabLojas(x.stores), demanda: (x) => tabDemanda(x.demand),
-    anuncios: (x) => tabVitrine(x.anuncios),
+    anuncios: (x) => tabVitrine(x.anuncios, x.apoiadores),
     usuarios: (x) => tabUsuarios(x.users), colecoes: (x) => tabColecoes(x.users), segmentos: (x) => tabSegmentos(x.users),
     campanhas: (x) => tabCampanhas(x.campaigns), tempo: (x) => tabTempo(x.engagement),
     experimentos: (x) => tabExperimentos(x.experiments), portal: (x) => tabPortal(x.partners, x.stores),
@@ -1362,7 +1387,7 @@ if (v === "b") { /* versão nova */ }</pre>
     funnel: "20260919a_funil_ativacao.sql e depois 20260923a_analytics_v2.sql",
     retention: "20260923a_analytics_v2.sql", stores: "20260923a_analytics_v2.sql",
     demand: "20260923a_analytics_v2.sql", growth: "20260923a_analytics_v2.sql",
-    anuncios: "20260927a_vitrine.sql",
+    anuncios: "20260927a_vitrine.sql", apoiadores: "20260928c_apoiador.sql",
     users: "20260928a_analytics_2_1.sql", campaigns: "20260928a_analytics_2_1.sql", engagement: "20260928a_analytics_2_1.sql",
     experiments: "20260928a_analytics_2_1.sql", partners: "20260928a_analytics_2_1.sql", health: "20260928a_analytics_2_1.sql"
   };
@@ -1439,6 +1464,20 @@ if (v === "b") { /* versão nova */ }</pre>
       const valor = Number(String(f.valor.value || "").replace(/\./g, "").replace(",", "."));
       if (!f.fonte.value.trim() || !(valor >= 0)) return;
       escreve("admin_campaign_save", { p_fonte: f.fonte.value, p_campanha: f.campanha.value, p_valor: valor, p_nota: f.nota.value || null }, ["campaigns"]);
+    } else if (f.matches("[data-apoio-form]")) {
+      e.preventDefault();
+      const quem = String(f.quem.value || "").trim();
+      const dias = Number(String(f.dias.value || "").trim());
+      if (!quem || !Number.isInteger(dias) || dias < 0 || dias > 366) return;
+      escreve("admin_apoiador", { p_quem: quem, p_dias: dias }, ["apoiadores"]).then((r) => {
+        const box = root.querySelector("[data-apoio-msg]");
+        if (!box) return;
+        box.hidden = false;
+        box.textContent = r && r.erro === "nao-achei" ? `Não achei nenhuma conta com "${quem}" — confira o e-mail ou o @.`
+          : r && dias === 0 ? `${quem}: apoio encerrado.`
+            : r && r.ate ? `${quem}: sem anúncio até ${dataBR(r.ate)}.`
+              : "Não deu certo — tente de novo em instantes.";
+      });
     } else if (f.matches("[data-portal-form]")) {
       e.preventDefault();
       shared.adminRpc("admin_partner_link_create", 0, { p_loja: f.loja.value, p_rotulo: f.rotulo.value || null }).then((token) => {
@@ -1496,8 +1535,8 @@ if (v === "b") { /* versão nova */ }</pre>
     body.removeAttribute("aria-busy");
     const data = {};
     keys.forEach((k, i) => { data[k] = vals[i]; });
-    const faltam = keys.filter((k) => data[k] === undefined);
-    const falhou = keys.filter((k) => data[k] === null);
+    const faltam = keys.filter((k) => data[k] === undefined && OPCIONAIS.indexOf(k) < 0);
+    const falhou = keys.filter((k) => data[k] === null && OPCIONAIS.indexOf(k) < 0);
     if (faltam.length) body.innerHTML = pendente(faltam);
     else if (falhou.length) body.innerHTML = `<p class="empty-state">Não consegui carregar esta aba (${esc(falhou.join(", "))}). Tente de novo em instantes.</p>`;
     else {

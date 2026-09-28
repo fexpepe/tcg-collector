@@ -429,23 +429,31 @@ popup, nem a vitrine da casa pedindo apoio (não faz sentido pedir a quem já
 apoiou). Os links de loja continuam, porque não são anúncio: são o caminho
 pra comprar a carta. Nenhuma função do app fica trancada — não é plano pro.
 
-- **Onde mora:** `profiles.apoiador_ate` (data). Vale até o fim do dia
-  gravado; vazio ou vencido = anúncios normais. Data, e não um sim/não, porque
-  o Pix é avulso: cada apoio compra um período, e o Ko-fi mensal só renova a
-  data.
-- **Quem grava:** só o dono do site. O mesmo trigger que protege o
-  `is_admin` (`profiles_admin_guard`, ver docs/BACKEND.md) passa a devolver
-  `apoiador_ate` ao valor anterior em escrita vinda da API — sem isso, a
-  policy "dono edita a própria linha" deixava qualquer conta se marcar como
-  apoiadora com um PATCH. No começo a marcação é à mão (SQL Editor ou um
-  campo no /admin); webhook do Ko-fi numa Function é passo posterior.
-- **Como o app lê:** junto do perfil que o login já carrega; o `ads.js`
-  confere antes de montar qualquer espaço. Deslogado não tem como ser
-  apoiador, então vê anúncio — e o aviso "Por que anúncios?" diz como
-  apoiar e entrar.
-- **O que aparece pra quem apoia:** um selo discreto no menu de conta
-  ("Apoiador · sem anúncios até 27/10") e, no lugar dos espaços, nada — a
-  grade fica exatamente como é hoje.
+Como ficou (2026-09-28, migração `20260928c`; o desenho original previa uma
+coluna em `profiles` e um selo no menu de conta — ver "O que mudou no
+caminho" da fase 1):
+
+- **Quanto vale:** cada apoio a partir de R$ 10 (ou o mensal do Ko-fi) = 30
+  dias, somando quando a pessoa apoia de novo antes de vencer.
+- **Onde mora:** tabela `apoiadores` (`user_id`, `ate`), trancada: RLS sem
+  policy e nenhum privilégio pra anon/authenticated. Vale até o fim do dia
+  `ate` (fuso de São Paulo). Data, e não um sim/não, porque o Pix é avulso:
+  cada apoio compra um período. Apagar a conta leva a linha junto.
+- **Quem grava:** só o dono do site, pela aba Mercado › Vitrine do /admin
+  (`admin_apoiador(e-mail ou @, dias)`; 0 dias encerra). A marcação é à mão:
+  quem apoiou manda o @ ou o e-mail da conta pra sleevuapp@gmail.com (no
+  Ko-fi, na mensagem). Webhook do Ko-fi numa Function é passo posterior.
+- **Como o app lê:** `apoio_status()` devolve a data da PRÓPRIA conta. O
+  `ads.js` pergunta em paralelo ao `ads.json` e guarda a resposta por conta
+  no aparelho (`sleevu-apoio-v1`): quem apoia decide sem rede a partir da 2ª
+  página (reconfere a cada 6 h); "não apoia" é reconferido a cada hora.
+  Deslogado não tem como ser apoiador.
+- **O que aparece pra quem apoia:** no lugar dos espaços, nada — a grade fica
+  exatamente como era, sem aviso de consentimento e sem `ad_view`. Em
+  Configurações → Privacidade, o selo "Você apoia o Sleevu: sem anúncios até
+  27 de outubro de 2026. Obrigado!"; pra quem não apoia, o texto de como
+  ganhar os 30 dias. A faixa "apoie", a caixa de apoio da página inicial
+  (`/#apoiar`), o FAQ e a política contam o mesmo.
 
 **App instalado.** PWA rodando no navegador é site pra política do AdSense.
 Se um dia o Sleevu for pra Play Store embrulhado (TWA/WebView), aí vale a API
@@ -556,16 +564,27 @@ O que mudou no caminho, e por quê:
       (`wrangler pages dev` sobre o build de produção): 0 violação nas 9
       páginas, pt e en
 - [x] UE/UK/CH sem rede de anúncio (no lugar do CMP, seção 9)
-- [ ] Apoiador sem anúncio (seção 10): `profiles.apoiador_ate` + guarda no
-      trigger + leitura no `ads.js` + selo no menu de conta. Entra **antes**
-      do lançamento a 100%: a saída pra quem não quer anúncio tem que existir
-      no dia em que o anúncio chega (o Archidekt faz o mesmo com o Patreon).
-      PR própria; depende do valor do período (seção 14, em aberto)
-- [ ] Pedido de aprovação; lançamento a 50% com grupo de controle; ajustar
-      densidade pelos números; então 100%
+- [x] Apoiador sem anúncio (seção 10, 2026-09-28): tabela `apoiadores` +
+      `apoio_status` + marcação no /admin (migração `20260928c`, a aplicar no
+      SQL Editor) + leitura no `ads.js` + selo em Configurações
+- [ ] Aprovação do site no AdSense
+- [x] ~~Lançamento a 50% com grupo de controle~~ — o AdSense foi ligado pra
+      todo mundo em 2026-09-28 (decisão do Fernando), sem grupo de controle.
+      O efeito dos anúncios passa a ser lido antes × depois no /admin
+      (retorno em 7 dias, cartas cadastradas, cadastros), com o mesmo
+      critério de recuo da seção 12
 
 O que mudou no caminho, e por quê:
 
+- **Apoiador numa tabela própria, não em `profiles`.** `profiles` só tem
+  linha pra conta que escolheu um @ (quem apoia sem @ não teria onde gravar),
+  e a policy de UPDATE dela é "dono edita a própria linha" — cada coluna
+  sensível ali pede um trigger de guarda. A tabela `apoiadores` nasce
+  trancada e só é lida pela `apoio_status()`, então não há o que proteger.
+- **Selo em Configurações, não no menu de conta.** O menu mora no
+  `shared.js`, que está colado no teto de tamanho (80,8 de 81 KB gz); o selo
+  e a consulta ficaram no `settings.js` e no `ads.js`, e o `shared.js` só
+  ganhou o prefixo `apoio_` no `adminRpc`.
 - **Uma Function por página, não `_middleware.js`.** Middleware roda em toda
   requisição do site (asset, `data/*`, API) e gasta a cota diária de Functions
   à toa. Cada página de catálogo ganhou um arquivo de 3 linhas em
@@ -635,12 +654,13 @@ O que mudou no caminho, e por quê:
 5. **Trilho lateral em tela larga? Sim** (≥1888 px, na margem vazia). Se
    parecer poluído no uso real, é o primeiro a sair.
 
-**Ainda em aberto (não bloqueia a fase 0):**
+**Fechado depois:**
 
-- **Quanto vale o período de apoiador.** Sugestão pra começar: qualquer apoio
-  a partir de R$ 10 (ou o mensal do Ko-fi) = 30 dias sem anúncio, somando
-  quando a pessoa apoia de novo antes de vencer. Precisa estar definido antes
-  da fase 1, porque vai no texto do "Por que anúncios?".
+- **Quanto vale o período de apoiador (2026-09-28):** cada apoio a partir de
+  R$ 10 (ou o mensal do Ko-fi) = 30 dias sem anúncio, somando quando a pessoa
+  apoia de novo antes de vencer.
+- **Lançamento (2026-09-28):** AdSense ligado pra todo mundo de uma vez, sem
+  a fase a 50% com grupo de controle.
 
 ---
 

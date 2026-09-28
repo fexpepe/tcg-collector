@@ -845,6 +845,15 @@ continua vendo só a casa e os parceiros.
   novo). O `_headers` global não mudou: login, conta, coleção e o resto seguem
   com `script-src 'self'`. Página nova com `ads.js` precisa da Function — o
   teste de vitrine cobra.
+- **Apoiador sem anúncio** (migração `20260928c`): cada apoio de R$ 10+ = 30
+  dias sem NENHUM espaço, somando. A data mora na tabela `apoiadores`,
+  trancada pra API; a conta logada lê a própria pela RPC `apoio_status` (o
+  `adminRpc` do `shared.js` aceita `admin_*` e `apoio_*`), e o dono marca pela
+  aba Mercado › Vitrine do `/admin` (e-mail ou @ + dias). O `ads.js` pergunta
+  junto do `ads.json` e guarda a resposta por conta em `sleevu-apoio-v1`
+  (quem apoia decide sem rede a partir da 2ª página); Configurações mostra o
+  selo com a data. Sem a migração aplicada, a RPC dá 404 e todo mundo segue
+  vendo a vitrine.
 
 Afiliados moram no `shared.js` (`AFILIADOS` + `linkDeLoja`): vazios, os links
 de loja saem idênticos; preenchidos, TCGplayer vira deep link do Impact
