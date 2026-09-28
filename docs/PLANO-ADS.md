@@ -540,10 +540,15 @@ O que mudou no caminho, e por quê:
       (verificação por meta: o trecho de código rodaria o script do Google na
       landing antes do consentimento). Auto ads desligado no painel
 - [ ] Verificar o site e pedir a revisão no painel (Sites → sleevu.app)
-- [ ] **3 blocos de display de tamanho fixo** (728×90, 300×250, 160×600) e
-      os `data-ad-slot` no `blocos` do `data/ads.json`; **vinheta, âncora e
-      formatos por intenção desligados**. O teste de vitrine exige o mesmo
-      `pub` na config, no `ads.txt` e na meta
+- [x] **3 blocos de display de tamanho fixo** no `blocos` do
+      `data/ads.json` (2026-09-28): `sleevu-faixa` 728×90 `7543980841`,
+      `sleevu-quadrado` 300×250 `9182607985`, `sleevu-trilho` 160×600
+      `9757323051`. **Vinheta, âncora e formatos por intenção desligados**; na
+      mensagem de consentimento da UE/UK/CH, a do Google com 3 opções, só de
+      rede de segurança (o `ads.js` nem chama o Google nesses países). O teste
+      de vitrine exige o mesmo `pub` na config, no `ads.txt` e na meta. O merge
+      desta config é o lançamento: o aviso passa a aparecer pra todo mundo
+      fora da UE/UK/CH
 - [ ] Espaços no grupo A (páginas pré-renderizadas de carta, set, deck e
       artista), no molde do `prerender-catalog.mjs` — PR própria
 - [x] Fornecedor `adsense` no `ads.js`, dormente até o `ca-pub` (2026-09-28)

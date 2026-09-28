@@ -4,7 +4,7 @@
   "fornecedores": ["parceiro", "adsense", "casa"],
   "adsense": {
     "cliente": "ca-pub-0808280324005030",
-    "blocos": { "faixa": "", "quadrado": "", "trilho": "" }
+    "blocos": { "faixa": "7543980841", "quadrado": "9182607985", "trilho": "9757323051" }
   },
   "regras": {
     "desktop": { "primeira": 1.6, "intervalo": 4.4, "max": 3 },
