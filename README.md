@@ -765,6 +765,11 @@ ordem só muda com diferença clara (`conferirPelaFoto`). O resumo `scan_done`
 leva a precisão (leituras ambíguas, as que a foto reordenou, trocas do 1º
 resultado e buscas digitadas), somada no `/admin` pela migração `20260928a`.
 
+O cadeado da barra trava no set da carta lida (ou a folha "+N opções", no set
+da escolhida; três seguidas do mesmo set sugerem): a busca passa a rodar nas
+cartas do set, sem ida à borda, e o número basta — "4/102" deixa de voltar
+vários sets e o prefixo ou o total lidos errado ainda acham a carta.
+
 O que isso mudou na infra: `script-src` ganhou `'wasm-unsafe-eval'` e a
 `Permissions-Policy` liberou `camera=(self)` (ver [_headers](_headers)); o
 worker do OCR nasce por URL (`workerBlobURL: false`) pra `worker-src 'self'`
