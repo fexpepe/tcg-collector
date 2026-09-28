@@ -4071,16 +4071,24 @@ a.preview-print:hover { background: var(--panel); }
   text-decoration: none;
   transition: transform 120ms ease, box-shadow 120ms ease;
 }
-a.hub-tile:hover {
-  transform: translateY(-3px);
-  /* Anel na COR DO JOGO (2026-09-28): o hub.js carimba data-game-accent em
-     cada tile e o --accent vira o daquele jogo (escopo de elemento, ver a
-     tabela de accents no topo) — a mesma cor que as páginas do jogo têm
-     depois do clique. O foco por teclado vem junto: o :focus-visible global
-     contorna em var(--accent). Com "cores por jogo" desligado nas
-     Configurações o tile fica sem o carimbo e o anel volta ao neutro. */
-  box-shadow: 0 0 0 2px var(--accent);
+/* Anel na COR DO JOGO (2026-09-28): o hub.js carimba data-game-accent em cada
+   tile e o --accent vira o daquele jogo (escopo de elemento, ver a tabela de
+   accents no topo) — a mesma cor que as páginas do jogo têm depois do clique.
+   O foco por teclado vem junto: o :focus-visible global contorna em
+   var(--accent). Com "cores por jogo" desligado nas Configurações o tile fica
+   sem o carimbo e o anel volta ao neutro.
+   O :hover só vale com hover de verdade: no toque ele "gruda" depois do tap, e
+   o tile voltava levantado e contornado quando a pessoa usava o voltar. No
+   dedo o anel sai no :active — enquanto o tile está pressionado, junto do
+   scale de 0.96 do bloco TOQUE COM RESPOSTA —, então o celular também vê a
+   cor do jogo antes de a página trocar. */
+@media (hover: hover) {
+  a.hub-tile:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 0 2px var(--accent);
+  }
 }
+a.hub-tile:active { box-shadow: 0 0 0 2px var(--accent); }
 /* Nos tiles VINTAGE (logo + nome + rodapé) só a caixa do logo encosta nas
    bordas; o texto abaixo mantém o respiro dos 16px de antes. */
 .hub-tile > :not(.hub-logo-box) { margin-inline: 16px; }
@@ -4222,6 +4230,56 @@ a.hub-tile:hover {
   .hub-tile-name { font-size: 12.5px; }
   .hub-tile-foot { flex-wrap: wrap; gap: 4px 8px; }
   .hub-more { font-size: 13px; }
+
+  /* VINTAGE vira LISTA no celular (2026-09-28). Em 2 colunas eram 11 cards de
+     ~185px (caixa de 106 + nome + selo) — ~1.160px de rolagem pra seção
+     secundária, com o mesmo logo do Miracle Battle três vezes e quatro
+     "NARUTO" ocupando o card inteiro. Em linha, o logo vira miniatura (104×60)
+     e o NOME passa a ser quem identifica a linha, com os anos embaixo: a
+     ordem cronológica se lê de cima pra baixo, e a seção encolhe ~25%.
+     Só CSS, o HTML é o mesmo do desktop. */
+  .hub.hub-vintage { margin-top: 36px; padding-top: 28px; }
+  .hub-vintage .hub-grid { --hub-cols: 1; gap: 8px; margin-top: 14px; }
+  .hub-vintage .hub-grid .hub-tile {
+    position: relative;
+    display: grid;
+    grid-template-columns: 104px minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    column-gap: 12px;
+    row-gap: 4px;
+    padding: 8px 12px 8px 8px;
+  }
+  /* A caixa deixa de ser contêiner e de ser posicionada: o logo entra no fluxo
+     (centrado pelo flex dela) e o selo de idioma, que é absoluto, passa a se
+     posicionar pela LINHA — senão ele ficaria em cima da miniatura. */
+  .hub-vintage .hub-logo-box {
+    grid-row: 1 / span 2;
+    align-self: center;
+    height: 60px;
+    padding: 8px;
+    border-radius: 8px;
+    position: static;
+    container-type: normal;
+  }
+  .hub-vintage .hub-logo { position: static; max-width: 100%; max-height: 100%; }
+  .hub-vintage .hub-tile > :not(.hub-logo-box) { margin: 0; }
+  /* 14px e as duas linhas RESERVADAS do nome (min-height da regra base): toda
+     linha tem a mesma altura e o selo de anos cai sempre no mesmo lugar — é
+     o que deixa o selo de idioma alinhado com ele na ponta direita. */
+  .hub-vintage .hub-tile-name { font-size: 14px; }
+  .hub-vintage .hub-tile-foot { align-self: end; }
+  /* Fora da caixa branca o selo de idioma usa as cores do TEMA: o cinza-claro
+     fixo dele foi feito pro fundo branco do logo e, no escuro, brilhava mais
+     que os anos. */
+  .hub-vintage .hub-lang-tag {
+    top: auto;
+    bottom: 9px;
+    right: 12px;
+    background: var(--panel-strong);
+    border-color: var(--line);
+    color: var(--muted);
+  }
+  .hub-vintage .hub-logo-text.hub-logo-mark { font-size: 11px; letter-spacing: 0.1em; }
 }
 
 .home-sources {
