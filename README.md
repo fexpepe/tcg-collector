@@ -770,9 +770,10 @@ no IndexedDB do Tesseract.
 Plano, números e decisões em [docs/PLANO-ADS.md](docs/PLANO-ADS.md). Fase 0
 no ar desde 2026-09-27: o espaço existe e é medido, mas só mostra conteúdo do
 próprio Sleevu ("casa": apoie, crie sua conta, anuncie) e de lojas parceiras
-servidas daqui. A fase 1 (2026-09-28) deixou o AdSense pronto e desligado:
-a conta (`ca-pub-0808280324005030`) já está no `data/ads.json`, mas enquanto
-os `blocos` estiverem vazios nenhum script de terceiro carrega.
+servidas daqui. A fase 1 (2026-09-28) ligou o AdSense no mesmo espaço: a
+conta (`ca-pub-0808280324005030`) e os três blocos estão no `data/ads.json`.
+Só quem aceita o aviso recebe o script do Google; quem recusa ou não responde
+continua vendo só a casa e os parceiros.
 
 - **Quem tem vitrine é o HTML.** Só as páginas de catálogo carregam
   `<script defer src="src/ads.js" data-grade="#grade">` (o último script da
@@ -796,12 +797,13 @@ os `blocos` estiverem vazios nenhum script de terceiro carrega.
 - **CSS** na folha por área `vitrine` (prefixo `vtr-`, não "vitrine": essa
   palavra já é a aba de coleções em cards da Coleção).
 - **Consentimento**: o aviso só aparece quando a cadeia do JSON tiver um
-  fornecedor com cookie de terceiro (fase 1). A escolha também vive em
-  Configurações → Privacidade (`ads`, opt-in, e `adsDecidido`).
-- **AdSense (fase 1, dormente)**: o fornecedor `adsense` já está na cadeia,
-  mas só existe com `adsense.cliente` (`ca-pub-` + 16 dígitos) e pelo menos um
-  bloco em `adsense.blocos` (`faixa` 728×90, `quadrado` 300×250, `trilho`
-  160×600). O script do Google só desce com consentimento dado, sem
+  fornecedor com cookie de terceiro (hoje, o `adsense`). A escolha também vive
+  em Configurações → Privacidade (`ads`, opt-in, e `adsDecidido`).
+- **AdSense (fase 1)**: o fornecedor `adsense` só existe com
+  `adsense.cliente` (`ca-pub-` + 16 dígitos) e pelo menos um bloco em
+  `adsense.blocos` (`faixa` 728×90, `quadrado` 300×250, `trilho` 160×600) —
+  esvaziar os blocos volta ao estado dormente, sem aviso e sem script, sem
+  mexer em código. O script do Google só desce com consentimento dado, sem
   economia de dados e fora da UE/UK/CH (`<html data-pais>`, posto pela borda).
   Bloco sem anúncio, bloqueado ou lento vira a vitrine da casa na mesma caixa;
   faixa com anúncio pedido que um filtro reposiciona também — nunca há pedido
