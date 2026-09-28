@@ -562,8 +562,10 @@
         : indexedGroupsToItems(indexes.sets, visibleIds, toSetItem, null, splitGroupsBySetId).filter((set) => lineScope.includes(set.setId));
       // Linha vintage (?line=): sempre do mais antigo pro mais novo.
       if (linePrefix) return setItems.sort(sortByReleaseAsc);
-      // Página de uma série (?serie=id): só os sets dela, sem cabeçalhos.
-      if (serieParam) return setItems.filter((set) => set.serieId === serieParam).sort(sortByReleaseDesc);
+      // Página de uma série (?serie=id): só os sets dela, sem cabeçalhos — e
+      // sem os decks/caixas, que a lista mostra na seção deles (o "X sets →"
+      // do cabeçalho da série não os conta).
+      if (serieParam) return setItems.filter((set) => set.serieId === serieParam && set.kind !== "deck").sort(sortByReleaseDesc);
       // Lorcana não tem séries: separa em 2 categorias (Principais + Promos).
       if ((window.SLEEVU && window.SLEEVU.game) === "lorcana") return groupLorcanaSets(setItems);
       // One Piece: Boosters (OP01…) + Starter Decks (ST-…) + o resto (promos etc.).
@@ -766,6 +768,9 @@
       dv7: entry.dv7, dv30: entry.dv30, dvn: entry.dvn,
       serieId,
       serieName: shared.setSerieDisplayName(entry.serieName, entry.language) || serieDisplayName(serieId),
+      // "deck" = deck/kit/caixa (hoje só os do chinês simplificado): vai pra
+      // seção própria no fim da lista, fora das séries (ver groupSetsBySeries).
+      kind: entry.kind || "",
       languageLabel: shared.cardLangSigla(entry.language),
       // Região de idioma DESTA edição (não a do chip): é ela que vai no link
       // quando o link precisa dizer qual edição abrir — ver setDetailUrl.
@@ -1241,6 +1246,7 @@
       releaseDate: sample.setReleaseDate || "",
       serieId,
       serieName: shared.setSerieDisplayName(sample.setSerieName, sample.language) || serieDisplayName(serieId),
+      kind: sample.setKind || "",
       languageLabel: unique(sortedCards.map((card) => shared.cardLangSigla(card.language))).join("/"),
       langRegion: shared.cardLanguageRegion(sample.language)
     };
@@ -1272,9 +1278,13 @@
 
   // Agrupa os sets por série, em itens achatados [cabeçalho, ...sets, ...] para
   // o pager. Séries em ordem do set mais recente; sets por lançamento desc.
+  // Decks, kits e caixas (`kind: "deck"`) saem das séries e vão pra uma seção
+  // única no FIM: no chinês simplificado são 55 deles contra 27 expansões, e
+  // as expansões sumiam no meio (pedido do Fernando, 28/09/2026).
   function groupSetsBySeries(setItems) {
+    const decks = setItems.filter((set) => set.kind === "deck").sort(sortByReleaseDesc);
     const bySerie = new Map();
-    setItems.forEach((set) => {
+    setItems.filter((set) => set.kind !== "deck").forEach((set) => {
       const key = set.serieId || "misc";
       if (!bySerie.has(key)) bySerie.set(key, { serieId: key, serieName: set.serieName, sets: [] });
       bySerie.get(key).sets.push(set);
@@ -1290,6 +1300,10 @@
       items.push({ type: "series-head", name: group.serieName || serieDisplayName(group.serieId), serieId: group.serieId, count: group.sets.length });
       group.sets.forEach((set) => items.push(set));
     });
+    if (decks.length) {
+      items.push({ type: "category-head", name: t("sets.category.decksBoxes"), count: decks.length });
+      decks.forEach((set) => items.push(set));
+    }
     return items;
   }
 

@@ -254,6 +254,9 @@ export function setManifestMeta(chunkCards, pricing) {
   if (sample.setReleaseDate) meta.release = sample.setReleaseDate;
   if (sample.setSerieId) meta.serieId = sample.setSerieId;
   if (sample.setSerieName) meta.serieName = sample.setSerieName;
+  // Tipo do set ("deck" = deck/kit/caixa; ver tipoDoSet em bulbapedia-zh):
+  // a tela de Sets separa esses numa seção própria sem baixar carta.
+  if (sample.setKind) meta.kind = sample.setKind;
   return Object.assign(meta, setValueBuckets(bonus ? chunkCards.filter((card) => !isBonusCardId(card && card.id)) : chunkCards, pricing));
 }
 

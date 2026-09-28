@@ -531,6 +531,18 @@ export function arteDe(raw, idx) {
   return null;
 }
 
+// Tipo do set pela PÁGINA de origem: "deck" pra deck, kit e caixa (starter
+// deck, Battle Party, Happy Set, Master Strategy, Start Deck 100, as "Gift
+// Box"), "" pro resto (expansões, subsets, Gem Pack, 151, pacotes especiais,
+// promos). Vai pra carta como `setKind` e pro manifest como `kind`: a tela de
+// Sets tira esses da lista por série e mostra numa seção "Decks e caixas" no
+// fim — pedido do Fernando (28/09/2026), porque as 18 expansões + 9 subsets
+// sumiam no meio de 50 decks e caixas.
+export function tipoDoSet(page) {
+  const base = String(page || "").replace(/\s*\((?:ATCG|SCTCG|TCG)\)$/, "");
+  return /\b(decks?|gift box(?:es)?|box|happy set|battle party)\b/i.test(base) ? "deck" : "";
+}
+
 // ── carta do catálogo ───────────────────────────────────────────────────────
 // Categoria pela coluna "Type" da lista (e o subtipo: "Item" + "Pokémon Tool"
 // é ferramenta; "Energy" + tipo é energia). Pokémon = tipo de energia.
@@ -612,5 +624,6 @@ export function montarCarta(raw, set, { arte, revNames, sufixo } = {}) {
   if (cat.trainerType) card.trainerType = cat.trainerType;
   if (cat.energyType) card.energyType = cat.energyType;
   if (raw.stage && card.category === "Pokemon") card.stage = raw.stage;
+  if (set.kind) card.setKind = set.kind;
   return card;
 }

@@ -225,7 +225,21 @@ for (const lang of langs) {
       // Exceção conferida à mão (Mew RGB: "R", "G", "B" no lugar do número),
       // a mesma que o sync aplicou — vale pro set em qualquer idioma.
       const extra = extraNumbersOf(setMapPins, chunk.setId);
+      // Carta da Bulbapedia (chinês simplificado) que JÁ está no chunk: o
+      // cache versionado é a fonte dela, então a versão de hoje substitui a
+      // de ontem — sem isso o 1º build congelava a carta, e nenhuma melhoria
+      // do cache (arte, tipo do set, nome) chegava a ela. Só troca carta
+      // `prov: "bulbapedia"` por outra igual: carta oficial nunca é tocada.
+      const posBulba = new Map();
+      chunk.cards.forEach((c, i) => { if (c && c.prov === "bulbapedia") posBulba.set(c.id, i); });
       for (const nc of news) {
+        if (nc.prov === "bulbapedia" && posBulba.has(nc.id)) {
+          const { _new, ...card } = nc;
+          const i = posBulba.get(nc.id);
+          const sem = (c) => JSON.stringify({ ...c, pokemonName: "" }); // o nome canônico entra logo abaixo
+          if (sem(card) !== sem(chunk.cards[i])) { chunk.cards[i] = card; changed = true; }
+          continue;
+        }
         if (have.has(nc.id) || jaMigrado(nc.id)) continue;
         if (!missAllowed(nc.number, prefixes, extra)) { rejectedNew++; continue; }
         const { _new, ...card } = nc; // remove a flag interna

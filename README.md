@@ -560,6 +560,21 @@ régua do japonês: ingestão LOCAL, cache versionado, build sem rede.
    (9,7 mil pela EN, 120 pela JA); a amostra conferida bateu SAR→SIR,
    SR→Ultra Rare, HR→Rainbow, UR→Hyper/Secret, S→Shiny, K→Radiant.
 
+**Tela de Sets**: das 114 edições, 27 são as expansões de booster (18
+principais — contando Radiant/Verdant/Abundant e afins como sets separados,
+porque cada versão tem código e lista próprios — e 9 subsets ".5"). Os 55
+decks, kits e caixas (`tipoDoSet` pelo título da página: starter deck, Battle
+Party, Happy Set, Master Strategy, Start Deck 100, "Gift Box") levam
+`setKind: "deck"`, que o manifest carrega como `kind`; a lista por série não
+os mostra e eles vão pra seção **Decks e caixas** no fim
+(`sets.category.decksBoxes`). Expansões, subsets, Gem Pack, 151, pacotes
+especiais e promos ficam nas séries.
+
+**Carta já gravada é atualizada**: o merge troca a carta `prov: "bulbapedia"`
+que já está no chunk pela versão do artefato de hoje (nunca uma carta
+oficial). Sem isso, o 1º build congelava a carta e nenhuma melhoria do cache
+chegava nela.
+
 Nome da carta e do set em **inglês** (os da Bulbapedia, como o TCG Collector
 mostra); série com o id/nome da TCGdex (`SM`/`太阳&月亮`, `S`/`剑&盾`,
 `SV`/`朱&紫`). O Collection 151 é **um** set (`151C`): o código impresso é o

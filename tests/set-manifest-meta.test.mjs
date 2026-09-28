@@ -51,3 +51,9 @@ test("metadados saem da primeira carta; total oficial cai pra contagem se faltar
   assert.equal(semTotal.total, 3);
   assert.equal(semTotal.logo, undefined); // campo ausente não ocupa espaço
 });
+
+test("tipo do set (setKind) vai pro manifest como kind; sem ele, nada", () => {
+  const deck = setManifestMeta([carta("CSVH5C-001-zh-cn", { setKind: "deck", setTotal: 58 })], {});
+  assert.equal(deck.kind, "deck");
+  assert.equal(setManifestMeta([carta("sx-1")], {}).kind, undefined);
+});
