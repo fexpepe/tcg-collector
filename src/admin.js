@@ -861,7 +861,14 @@
     const rodape = (n) => `<footer class="adm-kit-rodape"><span>${esc(KIT_CONTATO.site)}</span><span>Dados de ${esc(periodo)}</span><span>${n} / ${KIT_PAGINAS}</span></footer>`;
 
     // ── Página 1: capa, o que é o Sleevu e os destaques ─────────────────────
-    const janela = serie.slice(-120).filter((d) => d.mau != null);
+    // A curva começa no dia em que a janela de 30 dias ficou CHEIA de medição:
+    // antes da 1ª visita medida o MAU é zero (não havia medição, e a nota dizia
+    // "de 0 para…"), e nos 29 dias seguintes ele sobe só porque a janela está
+    // enchendo — as duas coisas desenhariam um crescimento que não houve.
+    const comDado = serie.filter((d) => d.mau != null);
+    const dia0 = (comDado.find((d) => d.mau > 0) || {}).day;
+    const cheia = dia0 ? new Date(new Date(`${dia0}T12:00:00`).getTime() + 29 * 864e5).toISOString().slice(0, 10) : "9999";
+    const janela = comDado.filter((d) => d.day >= cheia).slice(-120);
     const g0 = janela[0], g1 = janela[janela.length - 1];
     const cresc = g0 && g1 && g0.mau ? (g1.mau - g0.mau) / g0.mau : null;
     const grafico = janela.length >= 14
