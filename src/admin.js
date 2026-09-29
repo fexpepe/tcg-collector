@@ -251,7 +251,64 @@
     return out;
   }
 
-  window.TCGAdminCharts = { squarify, treemap, donut, dailyBars, lines, columns, hbars, funnel, esc, fmt, pct, pageSlice, toCsv, monthly };
+  // ── Kit para parceiros (2026-09-29) ───────────────────────────────────────
+  // Teto "redondo" pro eixo Y: 5.214 → 6.000, não 10.000 (com passos 1-2-5 o
+  // gráfico ficava com metade da altura vazia) nem 5.214 (a grade do meio
+  // cairia em 2.607, número que ninguém lê).
+  function niceMax(v) {
+    if (!(v > 0)) return 1;
+    const mag = Math.pow(10, Math.floor(Math.log10(v)));
+    const passo = [1, 1.2, 1.5, 2, 2.5, 3, 4, 5, 6, 8, 10].find((f) => f * mag >= v - 1e-9);
+    return passo * mag;
+  }
+
+  // Número curto pra cartão de destaque: "4,36 mi", "612 mil" (três dígitos
+  // significativos). Abaixo de 100 mil fica exato (5.214 visitantes convence
+  // mais que "5,21 mil"). `moeda` prefixa R$ — e aí o corte é em 10 mil:
+  // "R$ 98,2 mil" lê melhor que "R$ 98.200" num cartão estreito.
+  function compacto(n, moeda) {
+    if (n == null || !isFinite(n)) return "—";
+    const v = Number(n);
+    const corte = moeda ? 1e4 : 1e5;
+    const txt = Math.abs(v) < corte ? fmt(Math.round(v))
+      : new Intl.NumberFormat("pt-BR", { notation: "compact", maximumSignificantDigits: 3 }).format(v);
+    return (moeda ? "R$ " : "") + txt.replace(/\s/g, " ");
+  }
+
+  // Área (kit): série diária [{day, v}] → SVG com a área clara, a linha por
+  // cima e o último ponto marcado com o valor. X rotulado no dia 1 de cada
+  // mês; Y com três linhas de grade no teto redondo. Pontos sem valor saem.
+  function area(pontos, opts) {
+    const o = Object.assign({ w: 680, h: 190, cor: "#dc2626", aria: "Série no tempo" }, opts || {});
+    const pts = (pontos || []).filter((p) => p && p.v != null && isFinite(p.v));
+    if (pts.length < 2) return "";
+    const P = { l: 40, r: 16, t: 16, b: 24 };
+    const iw = o.w - P.l - P.r, ih = o.h - P.t - P.b, n = pts.length;
+    const max = niceMax(Math.max(...pts.map((p) => Number(p.v))));
+    const x = (i) => P.l + (i / (n - 1)) * iw;
+    const y = (v) => P.t + ih - (Math.max(0, Number(v)) / max) * ih;
+    const chao = (P.t + ih).toFixed(1);
+    const linha = pts.map((p, i) => `${i ? "L" : "M"}${x(i).toFixed(1)} ${y(p.v).toFixed(1)}`).join("");
+    const grade = [0, 0.5, 1].map((f) => {
+      const yy = y(max * f).toFixed(1);
+      return `<line x1="${P.l}" x2="${o.w - P.r}" y1="${yy}" y2="${yy}" class="adm-grid"/><text x="${P.l - 8}" y="${(Number(yy) + 3.5).toFixed(1)}" text-anchor="end" class="adm-axis">${esc(compacto(max * f))}</text>`;
+    }).join("");
+    const meses = pts.map((p, i) => [p, i]).filter(([p]) => String(p.day).slice(8, 10) === "01").map(([p, i]) => {
+      const nome = new Date(`${String(p.day).slice(0, 10)}T12:00:00`).toLocaleDateString("pt-BR", { month: "short" }).replace(".", "");
+      return `<line x1="${x(i).toFixed(1)}" x2="${x(i).toFixed(1)}" y1="${chao}" y2="${(P.t + ih + 4).toFixed(1)}" class="adm-grid"/><text x="${x(i).toFixed(1)}" y="${o.h - 6}" text-anchor="middle" class="adm-axis">${esc(nome)}</text>`;
+    }).join("");
+    const ult = pts[n - 1], ux = x(n - 1), uy = y(ult.v);
+    // Último valor em cima do ponto; se o ponto está no teto do eixo, embaixo
+    // (em cima ele sairia da caixa e o PDF cortaria o número).
+    const ly = uy - 10 < 14 ? uy + 20 : uy - 10;
+    return `<svg class="adm-kit-area" viewBox="0 0 ${o.w} ${o.h}" role="img" aria-label="${esc(o.aria)}">${grade}${meses}`
+      + `<path d="${linha}L${ux.toFixed(1)} ${chao}L${x(0).toFixed(1)} ${chao}Z" fill="${esc(o.cor)}" fill-opacity="0.1"/>`
+      + `<path d="${linha}" fill="none" stroke="${esc(o.cor)}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>`
+      + `<circle cx="${ux.toFixed(1)}" cy="${uy.toFixed(1)}" r="4.5" fill="${esc(o.cor)}" stroke="#fff" stroke-width="2"/>`
+      + `<text x="${(ux - 8).toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="end" class="adm-kit-area-ult">${esc(fmt(ult.v))}</text></svg>`;
+  }
+
+  window.TCGAdminCharts = { squarify, treemap, donut, dailyBars, lines, columns, hbars, funnel, esc, fmt, pct, pageSlice, toCsv, monthly, niceMax, compacto, area };
 
   // ── Página ────────────────────────────────────────────────────────────────
   const shared = window.TCGShared;
@@ -324,7 +381,7 @@
   // 20260923a. Cada uma é buscada só quando uma aba que a usa abre.
   const NEEDS = {
     geral: ["dash"], audiencia: ["dash"], conteudo: ["dash"], produto: ["dash"], qualidade: ["dash"],
-    crescimento: ["growth"], parceiros: ["dash", "retention", "stores", "demand", "growth", "engagement"],
+    crescimento: ["growth"], parceiros: ["dash", "retention", "stores", "demand", "growth", "engagement", "users", "anuncios"],
     canais: ["retention", "growth"], retencao: ["retention"], funil: ["funnel", "retention", "engagement"],
     lojas: ["stores"], demanda: ["demand"], anuncios: ["anuncios", "apoiadores"],
     usuarios: ["users"], colecoes: ["users"], segmentos: ["users"], campanhas: ["campaigns"],
@@ -340,10 +397,12 @@
   // assinatura que não existe (404) e o painel acharia que a migração falta.
   const SEM_DIAS = ["campaigns", "partners", "health", "apoiadores"];
   // Pedaço de aba que não segura a aba inteira quando a migração dele falta:
-  // a seção mostra o próprio aviso e o resto da aba pinta normal.
-  const OPCIONAIS = ["apoiadores"];
+  // a seção mostra o próprio aviso e o resto da aba pinta normal. É POR ABA:
+  // no kit de parceiros, perfil de usuário e vitrine são enfeite (sem eles o
+  // kit cai no plano B); nas abas Usuários e Vitrine, são a aba.
+  const OPCIONAIS = { anuncios: ["apoiadores"], parceiros: ["users", "anuncios"] };
   const PERIODS = [7, 30, 90];
-  const state = { tab: "geral", days: 30, cache: {}, inflight: {}, errors: undefined, pages: {}, names: {}, meta: {}, metaPendente: false };
+  const state = { tab: "geral", days: 30, cache: {}, inflight: {}, errors: undefined, pages: {}, names: {}, meta: {}, metaPendente: false, marca: null };
   // Hash antigo (#produto, #qualidade…) continua valendo: link salvo não quebra.
   const hashTab = (location.hash || "").replace(/^#/, "");
   if (TAB_GROUP[hashTab]) state.tab = hashTab;
@@ -700,62 +759,324 @@
         `Estoques (visitantes 30d, contas) são o último dia do mês; fluxos somam o mês. A série vem da tabela metrics_daily: o que vem de eventos foi reconstruído 120 dias pra trás; colecionadores e cópias só existem desde ${inicioColecao ? new Date(inicioColecao.day + "T12:00:00").toLocaleDateString("pt-BR") : "o primeiro retrato"} (são fotografados no dia, não dá pra reconstruir).`)}`;
   }
 
-  // ── Para parceiros: a página que se imprime pra loja/investidor ──────────
-  // Só agregados, só números que se sustentam sozinhos. Nada que identifique
-  // pessoa, e as tabelas de carta usam o índice de demanda (não contagem de
-  // coleção de alguém).
-  function tabParceiros(dash, ret, st, dm, gr, eg) {
+  // ── Para parceiros: o kit que sai em PDF pra loja, anunciante e investidor ─
+  // (2026-09-29) Era a própria tela impressa: sem marca, com o título "Admin -
+  // Sleevu" e a URL do painel que o navegador carimba no papel, cartões
+  // quebrando 5 + 1 por linha, as barras SUMINDO (são fundo, e fundo não
+  // imprime por padrão) e meia página em branco antes de cada seção grande.
+  // Agora é um documento A4 de quatro páginas desenhado pra papel — capa com
+  // o wordmark e o que é o Sleevu, público, intenção de compra e como
+  // trabalhar junto, com metodologia e contato — e a aba mostra a prévia fiel
+  // do que sai. Paleta própria e fixa (.adm-kit no styles.css): o PDF é o
+  // mesmo seja qual for o tema de quem imprime.
+  // Continua valendo: só agregados, só números que se sustentam sozinhos.
+  // Nada que identifique pessoa; as cartas vêm do índice de demanda, não da
+  // coleção de alguém.
+  //
+  // Números do CATÁLOGO: os mesmos da .lp-stats da home (index.html) e do
+  // og-image (scripts/og/og-image.html). Ao recontar, mude nos três lugares.
+  const KIT_CATALOGO = { cartas: "240 mil+", sets: "2.200+" };
+  // Logos dos jogos: o mesmo mapa do src/app.js (que o admin não carrega).
+  const KIT_LOGO = {
+    pokemon: "game_pokemon.webp", lorcana: "game_lorcana-v2.webp", onepiece: "game_onepiece.webp",
+    magic: "game_magic-v2.webp", fab: "game_fab.webp", gundam: "game_gundam-v2.webp", dbfw: "game_dbfw-v2.webp",
+    ygo: "game_ygo-v2.webp", digimon: "game_digimon-v2.webp", riftbound: "game_riftbound-v2.webp",
+    unionarena: "game_unionarena.webp", naruto: "game_naruto.webp", hxh: "game_hxh.webp"
+  };
+  // Contato público: o mesmo da página Sobre e do data/ads.json (`contato`).
+  const KIT_CONTATO = { email: "sleevuapp@gmail.com", instagram: "@sleevu.app", site: "sleevu.app" };
+  const KIT_PAGINAS = 4;
+  // Largura do A4 em px CSS (210 mm a 96 dpi): a prévia é desenhada nela e
+  // encolhe com zoom quando a tela é mais estreita (ajustaKit).
+  const KIT_LARGURA = 794;
+  const KIT_CORES = { vermelho: "#dc2626", escuro: "#101218", cinza: "#9aa3ae", claro: "#c9ced6" };
+
+  // O wordmark vem do MESMO arquivo que o site usa, inline: dentro de <img> o
+  // fill="currentColor" sai preto, e a máscara CSS do .brand é fundo, que o
+  // papel só imprime com print-color-adjust. `n` renomeia os ids (clipPath e
+  // glifos): dois wordmarks na mesma página com o mesmo id se atropelam.
+  function carregaMarca() {
+    if (state.marca != null) return Promise.resolve(state.marca);
+    return fetch("assets/brand/sleevu-wordmark.svg")
+      .then((r) => (r.ok ? r.text() : ""))
+      .catch(() => "")
+      .then((t) => { state.marca = /<svg[\s>]/.test(t) ? t.replace(/<\?xml[^>]*\?>\s*/i, "").trim() : ""; return state.marca; });
+  }
+  function marca(n) {
+    if (!state.marca) return `<span class="adm-kit-marca-txt">Sleevu</span>`;
+    return state.marca
+      .replace(/\bid="([^"]+)"/g, `id="$1-k${n}"`)
+      .replace(/#(font_\w+|clip_\d+)\b/g, `#$1-k${n}`)
+      .replace("<svg ", `<svg aria-hidden="true" focusable="false" `);
+  }
+
+  // Porcentagem do kit: inteira a partir de 10% ("63%"), uma casa abaixo
+  // ("4,8%") — no papel, "63,2%" é ruído.
+  const pctK = (a, b) => {
+    if (!b || a == null) return "—";
+    const v = (100 * a) / b;
+    return `${v.toLocaleString("pt-BR", { maximumFractionDigits: v >= 10 ? 0 : 1 })}%`;
+  };
+  // Barras do kit: rótulo e valor em cima, a barra embaixo em largura cheia —
+  // cabe nos cartões estreitos do A4 (a .adm-hbars do painel reserva 170 px só
+  // pro rótulo). `v` dá o tamanho da barra; `valor` é o texto da direita.
+  function kitBarras(items) {
+    const lista = (items || []).filter((it) => it && it.v > 0);
+    if (!lista.length) return `<p class="adm-kit-vazio">Sem dados no período.</p>`;
+    const teto = Math.max(...lista.map((it) => it.v));
+    return `<ul class="adm-kit-barras">${lista.map((it) => `<li><span class="adm-kit-barra-rot">${esc(it.label)}${it.sub ? ` <small>${esc(it.sub)}</small>` : ""}</span><b>${esc(it.valor)}</b><span class="adm-kit-trilho"><span style="width:${Math.max(1.5, (100 * it.v) / teto).toFixed(1)}%;background:${esc(it.cor || KIT_CORES.escuro)}"></span></span></li>`).join("")}</ul>`;
+  }
+  // Divisão em 100% (aparelho, idioma): uma barra fatiada e a legenda.
+  function kitFatias(items) {
+    const lista = (items || []).filter((it) => it && it.v > 0);
+    const tot = lista.reduce((n, it) => n + it.v, 0);
+    if (!tot) return `<p class="adm-kit-vazio">Sem dados no período.</p>`;
+    return `<div class="adm-kit-fatias">${lista.map((it) => `<span style="width:${((100 * it.v) / tot).toFixed(2)}%;background:${esc(it.cor)}"></span>`).join("")}</div>
+      <ul class="adm-kit-leg">${lista.map((it) => `<li><span class="adm-kit-sw" style="background:${esc(it.cor)}"></span>${esc(it.label)}<b>${esc(pctK(it.v, tot))}</b></li>`).join("")}</ul>`;
+  }
+  // Cartão de número. `delta` (fração) vira o selo verde/vermelho do lado.
+  function kitNum(valor, rotulo, nota, delta) {
+    const selo = delta == null ? "" : `<em class="${delta >= 0 ? "adm-kit-sobe" : "adm-kit-desce"}">${esc(sinal(delta))}</em> `;
+    return `<div class="adm-kit-num"><strong>${esc(valor == null || valor === "" ? "—" : valor)}</strong><span>${esc(rotulo)}</span>${nota || selo ? `<small>${selo}${esc(nota || "")}</small>` : ""}</div>`;
+  }
+  const kitCard = (titulo, corpo) => `<div class="adm-kit-card"><h3>${esc(titulo)}</h3>${corpo}</div>`;
+
+  function tabParceiros(dash, ret, st, dm, gr, eg, us, vt) {
+    const o = dash.overview || {}, tx = ret.taxas || {}, stk = ret.stickiness || {};
+    const ct = ((ret.contas || {}).taxas) || {};
     const tempo = (eg && eg.tempo) || {};
-    const o = dash.overview || {}, tx = ret.taxas || {}, stk = ret.stickiness || {}, j = ret.jornada || {};
     const serie = gr.serie || [];
     const ult = serie[serie.length - 1] || {};
     const d30 = serie.length > 30 ? serie[serie.length - 31] : null;
     const cresc30 = d30 && d30.mau ? (ult.mau - d30.mau) / d30.mau : null;
-    const jogos = ((dash.games && dash.games.views) || []).filter((x) => x.game && x.game !== "hub").slice(0, 6);
-    const totJogos = jogos.reduce((n, x) => n + (x.visitors || 0), 0);
+    const dias = st.days || dash.days || state.days;
+    const fim = new Date(dash.generated_at || Date.now());
+    const ini = dash.since ? new Date(dash.since) : new Date(fim.getTime() - (dias - 1) * 864e5);
+    const periodo = `${ini.toLocaleDateString("pt-BR")} a ${fim.toLocaleDateString("pt-BR")}`;
+    const mesAno = fim.toLocaleDateString("pt-BR", { month: "long", year: "numeric" });
+    const nJogos = (shared.GAME_SLUGS || []).length || Object.keys(KIT_LOGO).length;
+    const colecionadores = lastDef(serie, "colecionadores");
+    const topo = (n) => `<div class="adm-kit-topo"><span class="adm-kit-marca">${marca(n)}</span><span>Kit para parceiros · ${esc(mesAno)}</span></div>`;
+    const cab = (num, titulo, lede) => `<header class="adm-kit-cab"><span class="adm-kit-cab-num">${esc(num)}</span><div><h2>${esc(titulo)}</h2>${lede ? `<p>${esc(lede)}</p>` : ""}</div></header>`;
+    const rodape = (n) => `<footer class="adm-kit-rodape"><span>${esc(KIT_CONTATO.site)}</span><span>Dados de ${esc(periodo)}</span><span>${n} / ${KIT_PAGINAS}</span></footer>`;
+
+    // ── Página 1: capa, o que é o Sleevu e os destaques ─────────────────────
+    const janela = serie.slice(-120).filter((d) => d.mau != null);
+    const g0 = janela[0], g1 = janela[janela.length - 1];
+    const cresc = g0 && g1 && g0.mau ? (g1.mau - g0.mau) / g0.mau : null;
+    const grafico = janela.length >= 14
+      ? kitCard("Crescimento da audiência", area(janela.map((d) => ({ day: d.day, v: d.mau })), { h: 150, aria: "Visitantes únicos em janela móvel de 30 dias" })
+        + `<p class="adm-kit-nota">Visitantes únicos nos 30 dias até cada dia: de ${esc(fmt(g0.mau))} para ${esc(fmt(g1.mau))} em ${esc(String(janela.length))} dias${cresc == null ? "" : ` (${esc(sinal(cresc))})`}.</p>`)
+      : "";
+    const logos = Object.keys(KIT_LOGO).map((g) => `<li><img src="assets/games/${esc(KIT_LOGO[g])}" alt="${esc(gameName(g))}" loading="eager" decoding="async"></li>`).join("");
+    const p1 = `<section class="adm-kit-page">
+      <header class="adm-kit-hero">
+        <div class="adm-kit-hero-topo"><span class="adm-kit-marca">${marca(1)}</span><span class="adm-kit-selo">Kit para parceiros</span></div>
+        <p class="adm-kit-sobre">Últimos ${esc(String(dias))} dias · ${esc(periodo)}</p>
+        <h1>Sleevu em números</h1>
+        <p class="adm-kit-lede">O app grátis pra colecionar cartas de ${esc(String(nJogos))} jogos: catálogo, coleção, preços e comunidade num lugar só.</p>
+        <div class="adm-kit-fatos">
+          <div><strong>${esc(String(nJogos))} jogos</strong><span>modernos e vintage</span></div>
+          <div><strong>${esc(KIT_CATALOGO.cartas)}</strong><span>cartas no catálogo</span></div>
+          <div><strong>${esc(KIT_CATALOGO.sets)}</strong><span>sets, de 1996 a hoje</span></div>
+          <div><strong>R$ · US$ · €</strong><span>preços em real, dólar e euro</span></div>
+        </div>
+      </header>
+      <div class="adm-kit-corpo">
+        <p class="adm-kit-pitch">Catálogo por variante e condição, scanner pela câmera, valor da coleção no tempo, decks, fichários, wishlist com alerta de preço e vendas com link público — sem plano pago e sem limite de cartas.</p>
+        <ul class="adm-kit-logos">${logos}</ul>
+        <h2 class="adm-kit-h2">Destaques do período</h2>
+        <div class="adm-kit-nums">
+          ${kitNum(fmt(o.mau), "Visitantes únicos", "nos últimos 30 dias", cresc30)}
+          ${kitNum(fmt(o.pageviews), "Páginas vistas", `em ${dias} dias, sem robôs`)}
+          ${kitNum(fmt(o.total_users), "Contas", o.new_users ? `+${fmt(o.new_users)} no período` : "")}
+          ${kitNum(fmt(colecionadores != null ? colecionadores : o.collections_users), "Colecionadores", "com a coleção na nuvem")}
+          ${kitNum(compacto(lastDef(serie, "copias")), "Cartas catalogadas", "cópias somadas nas coleções")}
+          ${kitNum(compacto(lastDef(serie, "valor_catalogado"), true), "Valor em coleções", "a preço de mercado")}
+          ${kitNum(fmt(st.total), "Cliques para lojas", st.valor ? `${compacto(st.valor, true)} em cartas` : "")}
+          ${kitNum(dur(tempo.mediana_ms), "Tempo por visita", "mediana")}
+        </div>
+        ${grafico}
+      </div>
+      ${rodape(1)}
+    </section>`;
+
+    // ── Página 2: público ───────────────────────────────────────────────────
+    const au = dash.audience || {};
+    const dev = {};
+    (au.devices || []).forEach((x) => { dev[x.k] = (dev[x.k] || 0) + (x.views || 0); });
+    const devTot = (dev.m || 0) + (dev.d || 0);
+    const LANG_KIT = { pt: "Português", en: "Inglês", es: "Espanhol" };
+    const langs = au.langs || [];
+    const langTop = langs.filter((x) => LANG_KIT[x.k]);
+    const langOutros = langs.filter((x) => !LANG_KIT[x.k]).reduce((n, x) => n + (x.visitors || 0), 0);
+    const corLang = { pt: KIT_CORES.vermelho, en: KIT_CORES.escuro, es: KIT_CORES.cinza };
+    const langTot = langs.reduce((n, x) => n + (x.visitors || 0), 0);
+    const pt = (langs.find((x) => x.k === "pt") || {}).visitors || 0;
     const canais = ((ret.grupos || {}).canal || []);
     const totCanais = canais.reduce((n, x) => n + x.n, 0);
-    const lojas = st.lojas || [];
-    const hoje = new Date().toLocaleDateString("pt-BR");
-    return `
-      <div class="adm-kit-head">
-        <div>
-          <h2>Sleevu em números</h2>
-          <p class="admin-note">Últimos ${esc(String(st.days))} dias, até ${esc(hoje)}. Medição própria, anônima e agregada — nenhum número aqui identifica uma pessoa.</p>
+    const jogos = ((dash.games && dash.games.views) || []).filter((x) => x.game && x.game !== "hub" && x.game !== "?");
+    const totJogos = jogos.reduce((n, x) => n + (x.visitors || 0), 0);
+    const r = (us && us.resumo) || null;
+    const PERFIL_KIT = {
+      cacador: ["Caçadores", "20+ cartas na wishlist ou preço-alvo"], jogador: ["Jogadores", "montam decks"],
+      multijogo: ["Multi-jogo", "colecionam 2+ jogos"], investidor: ["Investidores", "graduadas ou custo anotado"],
+      vendedor: ["Vendedores", "cartas à venda ou vendidas"], publico: ["Vitrine pública", "mostram a coleção no perfil"]
+    };
+    const perfis = r && r.contas ? (us.perfis || []).filter((x) => PERFIL_KIT[x.k] && x.n > 0).sort((a, b) => b.n - a.n) : [];
+    const cardPerfil = perfis.length
+      ? kitCard("Perfil de quem tem conta", kitBarras(perfis.map((x) => ({ label: PERFIL_KIT[x.k][0], sub: PERFIL_KIT[x.k][1], v: x.n, valor: pctK(x.n, r.contas), cor: KIT_CORES.vermelho })))
+        + `<p class="adm-kit-nota">% das ${esc(fmt(r.contas))} contas com coleção; uma conta pode ter vários perfis.${r.valor_mediano ? ` Coleção mediana: ${esc(brl(r.valor_mediano))} e ${esc(fmt(r.copias_mediana))} cartas.` : ""}</p>`)
+      : kitCard("Onde estão as coleções", kitBarras(((dash.games && dash.games.collection) || []).slice(0, 8).map((x) => ({ label: gameName(x.game), v: x.users, valor: `${fmt(x.users)} contas`, cor: gameColor(x.game) }))));
+    const ledeP2 = devTot && langTot
+      ? `${pctK(dev.m || 0, devTot)} das visitas vêm do celular e ${pctK(pt, langTot)} do público navega em português.`
+      : "Quem visita, de onde chega e o que coleciona.";
+    const p2 = `<section class="adm-kit-page">
+      ${topo(2)}
+      ${cab("02", "Quem usa o Sleevu", ledeP2)}
+      <div class="adm-kit-corpo">
+        <div class="adm-kit-grade3">
+          ${kitCard("Aparelho", devTot ? `<p class="adm-kit-destaque"><strong>${esc(pctK(dev.m || 0, devTot))}</strong> no celular</p>${kitFatias([{ label: "Celular e tablet", v: dev.m || 0, cor: KIT_CORES.vermelho }, { label: "Computador", v: dev.d || 0, cor: KIT_CORES.escuro }])}` : `<p class="adm-kit-vazio">Sem dados no período.</p>`)}
+          ${kitCard("Idioma do navegador", langTot ? `<p class="adm-kit-destaque"><strong>${esc(pctK(pt, langTot))}</strong> em português</p>${kitFatias(langTop.map((x) => ({ label: LANG_KIT[x.k], v: x.visitors || 0, cor: corLang[x.k] })).concat(langOutros ? [{ label: "Outros", v: langOutros, cor: KIT_CORES.claro }] : []))}` : `<p class="adm-kit-vazio">Sem dados no período.</p>`)}
+          ${kitCard("Como chegam", kitBarras(canais.slice(0, 5).map((x) => ({ label: CANAL[x.k] || x.k, v: x.n, valor: pctK(x.n, totCanais), cor: KIT_CORES.escuro }))))}
         </div>
-        <button type="button" class="chip adm-noprint" data-print>${ICON.print}<span>Imprimir / PDF</span></button>
+        <div class="adm-kit-grade2">
+          ${kitCard("Jogos mais acessados", kitBarras(jogos.slice(0, 8).map((x) => ({ label: gameName(x.game), v: x.visitors, valor: pctK(x.visitors, totJogos), cor: gameColor(x.game) })))
+            + `<p class="adm-kit-nota">Fatia de cada jogo nos visitantes de páginas de jogo (quem visita dois jogos conta nos dois).</p>`)}
+          ${cardPerfil}
+        </div>
+        <h2 class="adm-kit-h2">Engajamento</h2>
+        <div class="adm-kit-nums">
+          ${kitNum(pctK(tx.d7, tx.el7), "Voltam na 2ª semana", "visitantes, retenção D7")}
+          ${kitNum(pctK(ct.d30, ct.el30), "Contas ativas no 2º mês", "retenção D30 por conta")}
+          ${kitNum(tempo.paginas_visita == null ? "—" : String(tempo.paginas_visita).replace(".", ","), "Páginas por visita", "média")}
+          ${kitNum(stk.mau ? pctK(stk.dau_medio, stk.mau) : "—", "Hábito (DAU/MAU)", "do público do mês num dia comum")}
+        </div>
+        <h2 class="adm-kit-h2">Comunidade</h2>
+        <div class="adm-kit-nums">
+          ${kitNum(fmt(o.decks), "Decks publicados", "na galeria pública")}
+          ${kitNum(fmt(o.public_profiles), "Perfis públicos", "coleções abertas pra visita")}
+          ${kitNum(fmt(o.shares), "Links compartilhados", "coleções, fichários e decks")}
+          ${kitNum(fmt(o.price_points), "Preços da comunidade", "cotações enviadas")}
+        </div>
       </div>
-      ${section("Audiência", `<div class="admin-stats">
-        ${stat("Visitantes únicos (30d)", fmt(o.mau), cresc30 == null ? "" : `${sinal(cresc30)} em 30 dias`)}
-        ${stat("Contas", fmt(o.total_users))}
-        ${stat("Colecionadores ativos", fmt(o.collections_users), "com coleção na nuvem")}
-        ${stat("Cópias catalogadas", fmt(lastDef(serie, "copias")))}
-        ${stat("Valor catalogado", brl(lastDef(serie, "valor_catalogado")), "em cartas nas coleções")}
-        ${stat("DAU/MAU", stk.mau ? pct(stk.dau_medio, stk.mau) : "—", "quanto do público do mês aparece num dia comum")}
-      </div>`)}
-      ${section("Engajamento", `<div class="admin-stats">
-        ${stat("Voltam na 2ª semana", pct(tx.d7, tx.el7), "retenção D7")}
-        ${stat("Voltam no 2º mês", pct(tx.d30, tx.el30), "retenção D30")}
-        ${stat("Ativam", pct(j.ativados, j.visitantes), "põem a 1ª carta na coleção")}
-        ${stat("Tempo por visita", dur(tempo.mediana_ms), "mediana")}
-        ${stat("Decks publicados", fmt(o.decks))}
-        ${stat("Preços da comunidade", fmt(o.price_points), "contribuições")}
-      </div>`)}
-      ${section("Tráfego enviado para lojas", `<div class="admin-stats">
-        ${stat("Cliques de saída", fmt(st.total), `${fmt(st.pessoas)} pessoas`)}
-        ${stat("Para lojas brasileiras", fmt(st.br), "Liga, LigaBRA, MYP")}
-        ${stat("Taxa de saída", pct(st.total, st.views_carta), "cliques ÷ cartas abertas")}
-        ${stat("Valor das cartas", brl(st.valor), "somado nos cliques")}
-      </div>${hbars(lojas.map((x) => ({ label: STORE[x.s] || x.s, value: x.cliques, sub: `${fmt(x.pessoas)} pessoas · ${brl(x.valor)}`, color: STORES_BR.indexOf(x.s) >= 0 ? "var(--accent)" : "#9aa3ae" })))}`,
-        "Cada clique é uma pessoa saindo da página da carta direto pra busca daquela carta na loja. Só conta quem aceitou a medição, então é um piso.")}
-      <div class="adm-grid-2">
-        ${section("Jogos", hbars(jogos.map((x) => ({ label: gameName(x.game), value: x.visitors, color: gameColor(x.game), sub: pct(x.visitors, totJogos) }))), "Visitantes únicos por jogo no período.")}
-        ${section("De onde vêm", hbars(canais.map((x) => ({ label: CANAL[x.k] || x.k, value: x.n, sub: pct(x.n, totCanais) }))), "Canal da primeira visita.")}
+      ${rodape(2)}
+    </section>`;
+
+    // ── Página 3: intenção de compra ────────────────────────────────────────
+    const lojas = st.lojas || [];
+    const cartas = (dm.top || []).slice(0, 10);
+    const linhaCarta = (x, i) => {
+      const nome = nameOf(x.game, x.card_id);
+      const [titulo, ...resto] = nome ? nome.split(" · ") : [];
+      return `<tr><td class="num adm-kit-pos">${i + 1}</td><td>${gameChip(x.game)}</td><td>${nome ? `<strong>${esc(titulo)}</strong>${resto.length ? ` <small>${esc(resto.join(" · "))}</small>` : ""}` : `<span class="adm-mono">${esc(x.card_id)}</span>`}</td><td class="num">${esc(fmt(x.views))}</td><td class="num">${esc(fmt(x.cliques))}</td><td class="num">${esc(fmt(x.desejos))}</td></tr>`;
+    };
+    const buscas = (dm.buscas_top || []).slice(0, 14);
+    const p3 = `<section class="adm-kit-page">
+      ${topo(3)}
+      ${cab("03", "Intenção de compra", "Cada carta do Sleevu traz os links das lojas: o clique abre a busca daquela carta na loja. É tráfego de quem já sabe o que quer.")}
+      <div class="adm-kit-corpo">
+        <div class="adm-kit-nums">
+          ${kitNum(fmt(st.total), "Cliques para lojas", `${fmt(st.pessoas)} pessoas em ${dias} dias`)}
+          ${kitNum(fmt(st.br), "Para lojas brasileiras", st.total ? `${pctK(st.br, st.total)} dos cliques` : "")}
+          ${kitNum(pctK(st.total, st.views_carta), "Taxa de saída", "cliques ÷ cartas abertas")}
+          ${kitNum(compacto(st.valor, true), "Valor das cartas", st.com_valor ? `nos cliques · média de ${brl(st.valor / st.com_valor)}` : "somado nos cliques")}
+        </div>
+        <div class="adm-kit-grade2">
+          ${kitCard("Cliques por loja", kitBarras(lojas.slice(0, 7).map((x) => ({ label: STORE[x.s] || x.s, sub: `${fmt(x.pessoas)} pessoas`, v: x.cliques, valor: fmt(x.cliques), cor: STORES_BR.indexOf(x.s) >= 0 ? KIT_CORES.vermelho : KIT_CORES.cinza })))
+            + (lojas.length ? `<ul class="adm-kit-leg adm-kit-leg-linha"><li><span class="adm-kit-sw" style="background:${KIT_CORES.vermelho}"></span>Lojas brasileiras</li><li><span class="adm-kit-sw" style="background:${KIT_CORES.cinza}"></span>Internacionais</li></ul>` : ""))}
+          ${kitCard("O que mais se busca", buscas.length ? `<ul class="adm-kit-buscas">${buscas.map((x) => `<li>${esc(x.q)}<b>${esc(fmt(x.n))}</b></li>`).join("")}</ul><p class="adm-kit-nota">Buscas que acharam carta, com o número de vezes no período.</p>` : `<p class="adm-kit-vazio">Sem dados no período.</p>`)}
+        </div>
+        ${kitCard("Cartas mais procuradas", cartas.length ? `<table class="adm-kit-tab"><thead><tr><th class="num">#</th><th>Jogo</th><th>Carta</th><th class="num">Visitas</th><th class="num">Cliques em loja</th><th class="num">Na wishlist</th></tr></thead><tbody>${cartas.map(linhaCarta).join("")}</tbody></table>
+          <p class="adm-kit-nota">Ordem pelo índice de demanda: visitas + 5 × cliques em loja + 10 × contas com a carta na wishlist.</p>` : `<p class="adm-kit-vazio">Sem dados no período.</p>`)}
       </div>
-      ${section("Cartas mais procuradas", table(
-        [{ t: "Jogo" }, { t: "Carta" }, { t: "Views", num: true }, { t: "Cliques em loja", num: true }, { t: "Na wishlist", num: true }],
-        (dm.top || []).slice(0, 10).map((x) => `<tr><td>${gameChip(x.game)}</td><td>${cardCell(x.game, x.card_id)}</td><td class="num">${esc(fmt(x.views))}</td><td class="num">${esc(fmt(x.cliques))}</td><td class="num">${esc(fmt(x.desejos))}</td></tr>`)),
-        "Ordenadas pelo índice de demanda (views + 5 × cliques em loja + 10 × contas com a carta na wishlist).")}`;
+      ${rodape(3)}
+    </section>`;
+
+    // ── Página 4: como trabalhar junto, metodologia e contato ───────────────
+    const temVitrine = vt && typeof vt === "object" && vt.servidas > 0;
+    const oferta = (titulo, texto, dado) => `<div class="adm-kit-oferta"><h3>${esc(titulo)}</h3><p>${esc(texto)}</p>${dado ? `<strong>${esc(dado)}</strong>` : ""}</div>`;
+    // Audiência por jogo: é o que o anunciante escolhe ao segmentar a vitrine
+    // (visitas e páginas) e o que a loja quer saber (clique e wishlist).
+    const demJogo = {};
+    (dm.jogos || []).forEach((x) => { demJogo[x.game] = x; });
+    const porJogo = jogos.slice(0, 6).map((x) => {
+      const d = demJogo[x.game] || {};
+      return `<tr><td>${gameChip(x.game)}</td><td class="num">${esc(fmt(x.visitors))}</td><td class="num">${esc(fmt(x.views))}</td><td class="num">${esc(fmt(d.cliques || 0))}</td><td class="num">${esc(fmt(d.desejos || 0))}</td></tr>`;
+    }).join("");
+    const p4 = `<section class="adm-kit-page adm-kit-fim">
+      ${topo(4)}
+      ${cab("04", "Como trabalhar com o Sleevu", "Formatos que já funcionam hoje, medidos pelo mesmo sistema deste relatório.")}
+      <div class="adm-kit-corpo">
+        <div class="adm-kit-ofertas">
+          ${oferta("Vitrine nas páginas de catálogo", "Faixa no feed de cartas, sets e busca e trilho lateral nas telas largas, segmentados por jogo, idioma e período — a semana de lançamento de um set, por exemplo. Nunca nas telas de coleção.",
+            temVitrine ? `${fmt(vt.vistas)} espaços vistos em ${vt.days || dias} dias · ${pctK(vt.vistas, vt.servidas)} de visibilidade` : "")}
+          ${oferta("Tráfego direto da carta pra loja", "Cada carta traz os links das lojas, e o clique abre a busca daquela carta. Nas lojas brasileiras o link leva utm_source=sleevu: a loja vê a origem no próprio analytics.",
+            st.br ? `${fmt(st.br)} cliques para lojas brasileiras em ${dias} dias` : "")}
+          ${oferta("Portal privado da loja", "Um link só-leitura com o que o Sleevu mandou pra sua loja: cliques, pessoas, valor das cartas, jogos e as cartas mais procuradas. Atualiza sozinho e pode ser revogado.", "")}
+          ${oferta("Relatórios de demanda", "Quais cartas, sets e buscas estão em alta em cada jogo, cruzando visitas, cliques em loja e wishlists — em planilha, sob medida.", "")}
+        </div>
+        ${porJogo ? kitCard("Audiência por jogo, pra segmentar", `<table class="adm-kit-tab"><thead><tr><th>Jogo</th><th class="num">Visitantes</th><th class="num">Páginas vistas</th><th class="num">Cliques em loja</th><th class="num">Na wishlist</th></tr></thead><tbody>${porJogo}</tbody></table>`) : ""}
+        <h2 class="adm-kit-h2">Como medimos</h2>
+        <ul class="adm-kit-metodo">
+          <li><strong>Medição própria, anônima e agregada.</strong> Os números vêm do próprio Sleevu, não de ferramenta de terceiros, e nenhum deles identifica uma pessoa.</li>
+          <li><strong>Visitante é um navegador</strong> (identificador anônimo). Robôs e monitores ficam de fora; a mesma pessoa em dois aparelhos conta duas vezes.</li>
+          <li><strong>Visitas e cliques são um piso.</strong> A medição vem ligada e dá pra desligar em Configurações: quem desliga não entra nessa conta.</li>
+          <li><strong>Clique para loja</strong> é a saída da página da carta direto pra busca daquela carta na loja.</li>
+          <li><strong>Retenção:</strong> D7 = voltou entre o 7º e o 13º dia depois da 1ª visita; D30 = entre o 30º e o 59º.</li>
+          <li><strong>Valor em R$:</strong> o preço de mercado da carta (TCGplayer e Cardmarket) convertido pelo câmbio do dia, ou o preço que a pessoa anotou.</li>
+        </ul>
+      </div>
+      <div class="adm-kit-contato">
+        <div><h3>Vamos conversar?</h3><p>Parcerias, anúncios e dados sob medida.</p></div>
+        <dl><div><dt>E-mail</dt><dd>${esc(KIT_CONTATO.email)}</dd></div><div><dt>Instagram</dt><dd>${esc(KIT_CONTATO.instagram)}</dd></div><div><dt>Site</dt><dd>${esc(KIT_CONTATO.site)}</dd></div></dl>
+      </div>
+      <footer class="adm-kit-rodape"><span>Projeto independente, sem afiliação com as empresas dos jogos; marcas e logos pertencem aos seus donos.</span><span>${KIT_PAGINAS} / ${KIT_PAGINAS}</span></footer>
+    </section>`;
+
+    return `<div class="adm-kit-barra">
+        <div><strong>Kit para parceiros</strong><span>Prévia do PDF: A4, ${KIT_PAGINAS} páginas, com os números do período escolhido acima.</span></div>
+        <button type="button" class="chip adm-primary" data-print>${ICON.print}<span>Imprimir / salvar PDF</span></button>
+      </div>
+      <div class="adm-kit-prev"><article class="adm-kit" aria-label="Kit para parceiros">${p1}${p2}${p3}${p4}</article></div>`;
+  }
+
+  // Prévia do kit: o documento é desenhado na largura do A4 e encolhe com zoom
+  // pra caber na tela (celular). Na impressão o zoom volta a 1 (styles.css).
+  function ajustaKit() {
+    const kit = root.querySelector(".adm-kit");
+    if (!kit) return;
+    const larg = kit.parentElement ? kit.parentElement.clientWidth : KIT_LARGURA;
+    const z = Math.min(1, larg / KIT_LARGURA);
+    kit.style.zoom = z < 1 ? String(Math.floor(z * 1000) / 1000) : "";
+  }
+  // @page do kit: A4 sem margem (o kit tem as próprias) — e, sem margem, o
+  // navegador também não carimba título, URL e data no papel. Vai num <style>
+  // injetado só enquanto a aba está aberta: no styles.css valeria pra
+  // impressão de qualquer página do site.
+  function paginaDoKit(ligado) {
+    let s = document.getElementById("admKitPage");
+    if (ligado && !s) {
+      s = document.createElement("style");
+      s.id = "admKitPage";
+      s.textContent = "@page { size: A4; margin: 0; }";
+      document.head.appendChild(s);
+    } else if (!ligado && s) s.remove();
+  }
+  // O "Salvar como PDF" sugere o <title> como nome do arquivo: sem a troca, o
+  // kit ia pra loja como "Admin - Sleevu.pdf". Logo de jogo que ainda não
+  // chegou sai em branco no papel, então espera as imagens (com teto).
+  async function imprimeKit() {
+    const kit = root.querySelector(".adm-kit");
+    const imgs = kit ? Array.from(kit.querySelectorAll("img")) : [];
+    await Promise.race([
+      Promise.all(imgs.map((i) => (i.complete ? null : (i.decode ? i.decode().catch(() => null) : null)))),
+      new Promise((res) => setTimeout(res, 2500))
+    ]);
+    const antes = document.title;
+    document.title = `Sleevu - Kit para parceiros - ${new Date().toISOString().slice(0, 10)}`;
+    window.addEventListener("afterprint", () => { document.title = antes; }, { once: true });
+    window.print();
   }
 
   // Tabela de recorte (canal, aparelho, jogo…) com as taxas que importam.
@@ -1336,7 +1657,7 @@ if (v === "b") { /* versão nova */ }</pre>
     geral: (x) => tabGeral(x.dash), audiencia: (x) => tabAudiencia(x.dash), conteudo: (x) => tabConteudo(x.dash),
     produto: (x) => tabProduto(x.dash), qualidade: (x) => tabQualidade(x.dash),
     crescimento: (x) => tabCrescimento(x.growth),
-    parceiros: (x) => tabParceiros(x.dash, x.retention, x.stores, x.demand, x.growth, x.engagement),
+    parceiros: (x) => tabParceiros(x.dash, x.retention, x.stores, x.demand, x.growth, x.engagement, x.users, x.anuncios),
     canais: (x) => tabCanais(x.retention, x.growth), retencao: (x) => tabRetencao(x.retention),
     funil: (x) => tabFunil(x.funnel, x.retention, x.engagement), lojas: (x) => tabLojas(x.stores), demanda: (x) => tabDemanda(x.demand),
     anuncios: (x) => tabVitrine(x.anuncios, x.apoiadores),
@@ -1434,7 +1755,7 @@ if (v === "b") { /* versão nova */ }</pre>
       t.disabled = true;
       exportaLoja(t.dataset.csv).finally(() => { t.disabled = false; });
     } else if (t.hasAttribute("data-print")) {
-      window.print();
+      imprimeKit();
     } else if (t.dataset.campDel) {
       if (!window.confirm("Apagar este custo anotado?")) return;
       escreve("admin_campaign_delete", { p_id: Number(t.dataset.campDel) }, ["campaigns"]);
@@ -1518,11 +1839,14 @@ if (v === "b") { /* versão nova */ }</pre>
       root.innerHTML = `<div class="adm-toolbar" id="admToolbar"></div><div id="admBody" class="adm-body"></div><p class="admin-note" id="admNote"></p>`;
       root.addEventListener("click", onClick);
       root.addEventListener("submit", onSubmit);
+      let quadro = 0;
+      window.addEventListener("resize", () => { cancelAnimationFrame(quadro); quadro = requestAnimationFrame(ajustaKit); });
     }
     document.getElementById("admToolbar").innerHTML = nav();
     const body = document.getElementById("admBody");
     body.innerHTML = `<p class="empty-state">Carregando…</p>`;
     body.setAttribute("aria-busy", "true");
+    paginaDoKit(state.tab === "parceiros");
 
     if (state.tab === "qualidade" && state.errors === undefined) {
       shared.errorSummary(7).then((errs) => { state.errors = errs; if (state.tab === "qualidade") render(); });
@@ -1530,13 +1854,15 @@ if (v === "b") { /* versão nova */ }</pre>
     const keys = NEEDS[state.tab] || ["dash"];
     // A saúde da medição vem junto em toda aba: alarme (evento que parou de
     // chegar) aparece em cima de qualquer tela, não só em Técnico › Medição.
-    const [vals, saude] = await Promise.all([Promise.all(keys.map(need)), need("health")]);
+    // O kit de parceiros espera também o wordmark (um SVG pequeno, em cache).
+    const [vals, saude] = await Promise.all([Promise.all(keys.map(need)), need("health"), state.tab === "parceiros" ? carregaMarca() : null]);
     if (my !== seq) return;           // trocou de aba/período no meio
     body.removeAttribute("aria-busy");
     const data = {};
     keys.forEach((k, i) => { data[k] = vals[i]; });
-    const faltam = keys.filter((k) => data[k] === undefined && OPCIONAIS.indexOf(k) < 0);
-    const falhou = keys.filter((k) => data[k] === null && OPCIONAIS.indexOf(k) < 0);
+    const opcionais = OPCIONAIS[state.tab] || [];
+    const faltam = keys.filter((k) => data[k] === undefined && opcionais.indexOf(k) < 0);
+    const falhou = keys.filter((k) => data[k] === null && opcionais.indexOf(k) < 0);
     if (faltam.length) body.innerHTML = pendente(faltam);
     else if (falhou.length) body.innerHTML = `<p class="empty-state">Não consegui carregar esta aba (${esc(falhou.join(", "))}). Tente de novo em instantes.</p>`;
     else {
@@ -1548,11 +1874,12 @@ if (v === "b") { /* versão nova */ }</pre>
       const tab = state.tab;
       if (tab === "sets") state.metaPendente = true;
       body.innerHTML = pinta(tab);
+      ajustaKit();
       // Nomes das cartas chegam depois (catálogo estático): pinta com id e
       // repinta com nome, sem segurar a aba esperando o catálogo.
       resolveNames(cartasDaAba(tab, data), tab === "sets" ? 2000 : 400).then((novo) => {
         if (tab === "sets") state.metaPendente = false;
-        if ((novo || tab === "sets") && my === seq && state.tab === tab) body.innerHTML = pinta(tab);
+        if ((novo || tab === "sets") && my === seq && state.tab === tab) { body.innerHTML = pinta(tab); ajustaKit(); }
       });
     }
     const d = state.cache[`dash:${state.days}`];
