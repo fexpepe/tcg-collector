@@ -8,6 +8,54 @@ poucos.)
 
 ## Pendentes de aplicar
 
+- `20260929a` — robôs retroativos (`20260929a_robos_retroativos.sql`): tira da
+  série de crescimento a rajada de julho/agosto. O "visitantes únicos em 30
+  dias" do `/admin` (e do kit de parceiros) tinha um platô de exatos 30 dias
+  (~28/07 a ~27/08, perto de 4.300 contra algumas centenas de verdade): milhares
+  de navegadores que apareceram de uma vez e nunca voltaram — a assinatura de
+  robô que executa JavaScript, em que cada página num navegador limpo nasce
+  com um uuid novo. Entraram como gente porque antes da `20260914a` não havia
+  `bot` e o pageview não levava contexto nenhum (nem aparelho, nem idioma, nem
+  webdriver; user-agent nunca é guardado), então a regra é de comportamento:
+  navegador **de passagem** (toda a história em 30 minutos, nunca voltou), que
+  **não fez nada** além de ver página, com a 1ª visita numa **avalanche** (hora
+  acima de max(25, 5 × p95) ou dia acima de max(150, 5 × p95)), e só **antes de
+  2026-09-15**. Os eventos deles viram `bot=true` — nada é apagado —, a lista
+  fica em `robos_retro` (trancada, pra desfazer) e a `metrics_daily` é refeita
+  do 1º dia atingido até 30 dias depois do último, junto com a `events_daily`.
+  O `card_views` (contador sem navegador) não tem como ser corrigido.
+
+  Testada em 2026-09-29 no PGlite com as funções reais da `20260928a`
+  (`metrics_snapshot`, `events_rollup`) e 120 dias sintéticos — base humana
+  com gente que volta e que usa, uma rajada de 3.600 robôs em horas de 28/07,
+  outra de 520 diluída no dia 20/08 (abaixo do piso por hora), um pico viral
+  humano moderado e robôs já marcados depois do corte: marcou os 4.120 robôs e
+  28 humanos de passagem das horas de avalanche (nenhum que voltou, usou o site
+  ou veio do pico viral); o MAU corrigido ficou a 1–3% do MAU real e os dias
+  fora da rajada não mudaram; o robô depois do corte ficou intacto; reaplicar
+  mudou zero dias; a receita de desfazer devolveu a série de antes, dia a dia.
+
+  Antes de aplicar, dá pra ver o que sairia (só leitura, depois dos blocos 1 e
+  2 do arquivo):
+  ```sql
+  select (primeira at time zone 'America/Sao_Paulo')::date as dia, motivo,
+         count(*) as navegadores, sum(pageviews) as pageviews
+    from public._robos_retro_candidatos() group by 1, 2 order by 1;
+  ```
+  Se aparecer um dia que foi gente de verdade (campanha, post que viralizou),
+  a regra aceita limites mais apertados — `_robos_retro_candidatos(date
+  '2026-09-15', 60, 300, 5)` — e é essa chamada que vai no bloco 3.
+
+  Aplicar colando o arquivo INTEIRO no SQL Editor ("Copy raw file"). O
+  resultado mostrado é o antes × depois de cada dia da série que mudou.
+  Conferir depois:
+  ```sql
+  select motivo, count(*) from public.robos_retro group by 1;
+  ```
+  E, no `/admin` › Visão geral › Crescimento (e no kit de parceiros), o platô
+  sai da curva; em Técnico › Qualidade, esses dias aparecem como robô. A
+  receita pra desfazer está no cabeçalho do arquivo.
+
 - `20260928b` — precisão do scanner (`20260928b_scanner_precisao.sql`; o `b` porque
   a `20260928a` do mesmo dia é a do Analytics 2.1): recria a `admin_funnel` da `20260923a`
   com todas as chaves de antes e mais `ambiguas`, `pela_foto`, `trocou` e
