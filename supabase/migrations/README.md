@@ -8,67 +8,6 @@ poucos.)
 
 ## Pendentes de aplicar
 
-- `20260929a` — robôs retroativos (`20260929a_robos_retroativos.sql`): tira da
-  série de crescimento a rajada de julho/agosto. O "visitantes únicos em 30
-  dias" do `/admin` (e do kit de parceiros) tinha um platô de exatos 30 dias
-  (~28/07 a ~27/08, perto de 4.300 contra algumas centenas de verdade): milhares
-  de navegadores que apareceram de uma vez e nunca voltaram — a assinatura de
-  robô que executa JavaScript, em que cada página num navegador limpo nasce
-  com um uuid novo. Entraram como gente porque antes da `20260914a` não havia
-  `bot` e o pageview não levava contexto nenhum (nem aparelho, nem idioma, nem
-  webdriver; user-agent nunca é guardado), então a regra é de comportamento:
-  navegador **de passagem** (toda a história em 30 minutos, nunca voltou), que
-  **não fez nada** além de ver página, com a 1ª visita numa **avalanche** (hora
-  acima de max(25, 5 × a mediana das horas vizinhas), ou dia que, fora essas
-  horas, ainda passa de max(150, 5 × a mediana dos dias vizinhos) — vizinhos =
-  14 dias pra cada lado), e só **antes de 2026-09-15**. Até **27/07** a régua é
-  mais apertada (10 por hora, 60 por dia): até o commit `09aa548` o localhost
-  contava como visita, inclusive os navegadores automáticos de teste e de
-  captura de tela, que abrem cada página num contexto limpo. Os eventos deles
-  viram `bot=true` — nada é apagado —, a lista fica em `robos_retro` (trancada,
-  pra desfazer) e a `metrics_daily` é refeita do 1º dia atingido até 30 dias
-  depois do último, junto com a `events_daily`. O `card_views` (contador sem
-  navegador) não tem como ser corrigido.
-
-  Testada em 2026-09-29 no PGlite com as funções reais da `20260928a`
-  (`metrics_snapshot`, `events_rollup`) e 120 dias sintéticos — base humana
-  com gente que volta e que usa, uma rajada de 3.600 robôs em horas de 28/07,
-  outra de 520 diluída no dia 20/08 (abaixo do piso por hora), três sessões de
-  dev em julho (42 navegadores em 3 horas, 90 diluídos num dia, 48 em 6 horas
-  abaixo das duas réguas), dois picos de gente de verdade (um dia cheio em
-  julho, um viral em agosto) e robôs já marcados depois do corte: marcou os
-  4.252 robôs das rajadas e das duas primeiras sessões (da terceira, 11 de 48
-  — é o limite: abaixo de 10 por hora e 60 por dia não se separa de gente) e 42
-  humanos de passagem das horas e dias de avalanche (nenhum que voltou, usou o
-  site ou veio dos picos de gente); o MAU corrigido ficou a no máximo 4% do
-  real e os dias fora das rajadas não mudaram; o robô depois do corte ficou intacto;
-  reaplicar mudou zero dias; colar por cima da 1ª versão do arquivo (a de 4
-  parâmetros, sem a régua de dev) funcionou; a receita de desfazer devolveu a
-  série de antes, dia a dia.
-
-  Antes de aplicar, dá pra ver o que sairia (só leitura, depois dos blocos 1 e
-  2 do arquivo):
-  ```sql
-  select (primeira at time zone 'America/Sao_Paulo')::date as dia, motivo,
-         count(*) as navegadores, sum(pageviews) as pageviews
-    from public._robos_retro_candidatos() group by 1, 2 order by 1;
-  ```
-  Se aparecer um dia que foi gente de verdade (campanha, post que viralizou),
-  a regra aceita limites mais apertados — `_robos_retro_candidatos(date
-  '2026-09-15', 60, 300, 5)` — e é essa chamada que vai no bloco 3. Se julho
-  não tiver tido sessão de dev nenhuma, `_robos_retro_candidatos(p_trava =>
-  date '2026-06-01')` desliga a régua de dev.
-
-  Aplicar colando o arquivo INTEIRO no SQL Editor ("Copy raw file"). O
-  resultado mostrado é o antes × depois de cada dia da série que mudou.
-  Conferir depois:
-  ```sql
-  select motivo, count(*) from public.robos_retro group by 1;
-  ```
-  E, no `/admin` › Visão geral › Crescimento (e no kit de parceiros), o platô
-  sai da curva; em Técnico › Qualidade, esses dias aparecem como robô. A
-  receita pra desfazer está no cabeçalho do arquivo.
-
 - `20260928b` — precisão do scanner (`20260928b_scanner_precisao.sql`; o `b` porque
   a `20260928a` do mesmo dia é a do Analytics 2.1): recria a `admin_funnel` da `20260923a`
   com todas as chaves de antes e mais `ambiguas`, `pela_foto`, `trocou` e
@@ -117,6 +56,66 @@ poucos.)
   E, logado como admin, abrir `/admin`: as abas aparecem e o aviso amarelo some.
 
 ### Já aplicadas (verificado em produção)
+
+- `20260929a` — robôs retroativos (`20260929a_robos_retroativos.sql`): tira da
+  série de crescimento a rajada de julho/agosto. O "visitantes únicos em 30
+  dias" do `/admin` (e do kit de parceiros) tinha um platô de exatos 30 dias
+  (~28/07 a ~27/08, perto de 4.300 contra algumas centenas de verdade): milhares
+  de navegadores que apareceram de uma vez e nunca voltaram — a assinatura de
+  robô que executa JavaScript, em que cada página num navegador limpo nasce
+  com um uuid novo. Entraram como gente porque antes da `20260914a` não havia
+  `bot` e o pageview não levava contexto nenhum (nem aparelho, nem idioma, nem
+  webdriver; user-agent nunca é guardado), então a regra é de comportamento:
+  navegador **de passagem** (toda a história em 30 minutos, nunca voltou), que
+  **não fez nada** além de ver página, com a 1ª visita numa **avalanche** (hora
+  acima de max(25, 5 × a mediana das horas vizinhas), ou dia que, fora essas
+  horas, ainda passa de max(150, 5 × a mediana dos dias vizinhos) — vizinhos =
+  14 dias pra cada lado), e só **antes de 2026-09-15**. Até **27/07** a régua é
+  mais apertada (10 por hora, 60 por dia): até o commit `09aa548` o localhost
+  contava como visita, inclusive os navegadores automáticos de teste e de
+  captura de tela, que abrem cada página num contexto limpo. Os eventos deles
+  viram `bot=true` — nada é apagado —, a lista fica em `robos_retro` (trancada,
+  pra desfazer) e a `metrics_daily` é refeita do 1º dia atingido até 30 dias
+  depois do último, junto com a `events_daily`. O `card_views` (contador sem
+  navegador) não tem como ser corrigido. Aplicada em 2026-09-29.
+  **Verificado em produção, sem login:** a tabela `robos_retro` e a função
+  `_robos_retro_candidatos` respondem **401 permission denied** (42501) pro
+  anon — igual à `apoiadores` de controle e contra o **404** de antes (PGRST205
+  na tabela, PGRST202 na função) —, então existem e estão fechadas. O SQL
+  Editor avisa "destructive operations" e "table without RLS" pro
+  `_serie_antes`: é a tabela TEMPORÁRIA do relatório (só existe naquela
+  execução e a API não enxerga) e o update só liga o `bot` — o botão é **Run
+  without RLS**; o "enable RLS" acrescenta um comando que o arquivo não
+  precisa.
+
+  Testada em 2026-09-29 no PGlite com as funções reais da `20260928a`
+  (`metrics_snapshot`, `events_rollup`) e 120 dias sintéticos — base humana
+  com gente que volta e que usa, uma rajada de 3.600 robôs em horas de 28/07,
+  outra de 520 diluída no dia 20/08 (abaixo do piso por hora), três sessões de
+  dev em julho (42 navegadores em 3 horas, 90 diluídos num dia, 48 em 6 horas
+  abaixo das duas réguas), dois picos de gente de verdade (um dia cheio em
+  julho, um viral em agosto) e robôs já marcados depois do corte: marcou os
+  4.252 robôs das rajadas e das duas primeiras sessões (da terceira, 11 de 48
+  — é o limite: abaixo de 10 por hora e 60 por dia não se separa de gente) e 42
+  humanos de passagem das horas e dias de avalanche (nenhum que voltou, usou o
+  site ou veio dos picos de gente); o MAU corrigido ficou a no máximo 4% do
+  real e os dias fora das rajadas não mudaram; o robô depois do corte ficou
+  intacto; reaplicar mudou zero dias; colar por cima da 1ª versão do arquivo
+  (a de 4 parâmetros, sem a régua de dev) funcionou; a receita de desfazer
+  devolveu a série de antes, dia a dia.
+
+  A lista do que foi marcado, por dia (só leitura):
+  ```sql
+  select (primeira at time zone 'America/Sao_Paulo')::date as dia, motivo,
+         count(*) as navegadores, sum(pageviews) as pageviews
+    from public.robos_retro group by 1, 2 order by 1;
+  ```
+  No `/admin` › Visão geral › Crescimento (e no kit de parceiros), o platô sai
+  da curva; em Técnico › Qualidade, esses dias aparecem como robô. Se um dia
+  marcado tiver sido gente de verdade (campanha, post que viralizou), a receita
+  de desfazer do cabeçalho devolve tudo, e o bloco 3 aceita limites mais
+  apertados — `_robos_retro_candidatos(date '2026-09-15', 60, 300, 5)` — ou
+  sem a régua de dev — `_robos_retro_candidatos(p_trava => date '2026-06-01')`.
 
 - `20260928c` — apoiador sem anúncio (`20260928c_apoiador.sql`): tabela
   `apoiadores` (user_id, ate) TRANCADA pra API (RLS sem policy, sem grant),
