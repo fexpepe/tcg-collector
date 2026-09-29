@@ -7141,16 +7141,26 @@
     return original && total ? `${original}/${total}` : original;
   }
 
-  // Busca da LigaPokémon. Além do "Nome (001/048)" de sempre, dois casos que a
-  // Liga cataloga do jeito dela (27/09/2026):
+  // Os dois casos que a LigaPokémon cataloga do jeito dela, fora do "Nome
+  // (001/048)" de sempre (27/09/2026):
   //  • carta BÔNUS (Mew RGB da 30th Celebration): o código já está no nome
   //    ("Mew - B/RGB"), e é só isso que a Liga tem — "Mew - B/RGB (B/128)" não
   //    acha nada. A JP (M6a) fica na regra de sempre: o nome em inglês + JP;
   //  • Classic Collection: número da carta antiga + total do set (ver acima).
+  // Devolve o que vai entre parênteses ("094/30"), "" pra ir só o nome, ou null
+  // quando vale a regra de sempre. Serve à busca (abaixo) e ao export "Compra
+  // por Lista" (src/export-liga.js), que a lê pelo TCGShared: o export montava
+  // o número por conta própria e mandava "Gengar (018/030)" e "Mew - B/RGB
+  // (B/128)" (29/09/2026). Uma regra só, e a tabela não existe em dobro.
+  function ligaSpecialCode(card) {
+    if (isBonusCard(card) && !isJapaneseCard(card)) return "";
+    return ligaClassicCode(card) || null;
+  }
+
+  // Busca da LigaPokémon: "Nome (001/048)", tirando os dois casos acima.
   function ligaPokemonQuery(card) {
-    if (isBonusCard(card) && !isJapaneseCard(card)) return brSearchName(card);
-    const classic = ligaClassicCode(card);
-    if (classic) return `${brSearchName(card)} (${classic})`;
+    const code = ligaSpecialCode(card);
+    if (code != null) return code ? `${brSearchName(card)} (${code})` : brSearchName(card);
     return paddedCardQuery(card, true, ligaNumberSuffix(card));
   }
 
@@ -10202,6 +10212,9 @@
     setIdForCard,
     mergedSetId,
     isBonusCard,
+    // Exceções da Liga no Pokémon (Mew RGB, Classic Collection): o export
+    // "Compra por Lista" (src/export-liga.js) usa a mesma regra da busca.
+    ligaSpecialCode,
     createPager,
     debounce,
     addOptions,
