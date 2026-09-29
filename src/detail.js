@@ -167,9 +167,36 @@
   function outraLingua(cardId, variants) {
     return contaOutraLingua() ? shared.otherLanguageOwned(sameCardIndex(), owned, cardId, variants || null) : "";
   }
-  // Opções de tile da página: a função vai sempre (desligada ela devolve ""),
-  // assim desligar o modo apaga os selos no próximo refresh.
-  const altTileOpt = (cardId, variants) => outraLingua(cardId, variants);
+  // Estado "tenho em outra língua" do tile: classe .other-lang (véu âmbar na
+  // imagem, ver styles.css) + selo com a bandeira da língua que você TEM. Mora
+  // aqui e não no variantTile do shared.js porque só esta página usa, e o
+  // shared.js viaja em todo o site (teto de peso no CI). Roda depois do
+  // variantTile (tileOf) e do refreshTileOwnership (refreshOwnership), e
+  // desligar o modo apaga os selos (outraLingua devolve "").
+  // O selo fica fora da .card-image (senão herdaria o filtro dela): solto no
+  // canto do tile; no compacto, colado no nome.
+  function marcaOutraLingua(tile) {
+    const cardId = tile.dataset.tileCardId;
+    const versoes = tile.dataset.tileGrouped ? tile.dataset.tileGrouped.split("|") : [tile.dataset.tileVariant];
+    const tem = versoes.some((v) => owned.variantTotal(cardId, v) > 0);
+    const lang = tem ? "" : outraLingua(cardId, versoes);
+    if ((tile.dataset.altLang || "") === lang) return;
+    tile.classList.toggle("other-lang", !!lang);
+    const velho = tile.querySelector(".tile-alt-lang");
+    if (velho) velho.remove();
+    if (!lang) { delete tile.dataset.altLang; return; }
+    tile.dataset.altLang = lang;
+    const texto = t("tile.otherLang", { lang: shared.cardLanguageLabel(lang) });
+    const selo = document.createElement("span");
+    selo.className = "tile-alt-lang";
+    selo.title = texto;
+    selo.setAttribute("role", "img");
+    selo.setAttribute("aria-label", texto);
+    selo.innerHTML = `<span class="tile-alt-lang-in" aria-hidden="true">${shared.cardFlag(lang)}${escapeHtml(shared.cardLangSigla(lang))}</span>`;
+    const nome = tile.classList.contains("tile-compact") ? tile.querySelector(".tile-name") : null;
+    if (nome) nome.appendChild(selo);
+    else tile.prepend(selo);
+  }
   function initProgressModes() {
     if (detailType !== "set" || !elements.progressModes) return;
     elements.progressModes.hidden = false;
@@ -1141,7 +1168,11 @@
     const tiles = sortTiles(shared.cardVariantPairs(visibleCards, { group: agrupaVersoes }));
     // Cartas sem imagem vão para o fim (sort estável preserva a ordem da ordenação escolhida).
     tiles.sort((a, b) => Number(shared.cardHasImage(b.card)) - Number(shared.cardHasImage(a.card)));
-    const tileOf = ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true, grouped: agrupaVersoes, compact: gridView === "compact", lists: true, altLang: altTileOpt });
+    const tileOf = ({ card, variant }) => {
+      const tile = shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true, grouped: agrupaVersoes, compact: gridView === "compact", lists: true });
+      marcaOutraLingua(tile);
+      return tile;
+    };
     if (gridView === "binder") { pager.render([], tileOf); binderView.render(tiles, tileOf); }
     else pager.render(tiles, tileOf, { resetCount });
 
@@ -1246,7 +1277,10 @@
   // (reconstruir faria todas as imagens piscarem).
   function refreshOwnership() {
     sameCardIdx = null; // a coleção mudou (ou o modo): o índice de línguas refaz
-    elements.grid.querySelectorAll(".card-tile").forEach((tile) => shared.refreshTileOwnership(tile, owned, wishlist, { addMode: true, altLang: altTileOpt }));
+    elements.grid.querySelectorAll(".card-tile").forEach((tile) => {
+      shared.refreshTileOwnership(tile, owned, wishlist, { addMode: true });
+      marcaOutraLingua(tile);
+    });
     updateHeaderStats();
   }
 

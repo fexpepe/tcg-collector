@@ -7640,10 +7640,6 @@
     const isWanted = wishlist
       ? (grouped ? variants.some((v) => wishlist.has(card.id, v)) : wishlist.has(card.id, variant))
       : false;
-    // Tenho em OUTRA língua (opts.altLang, só a página de set com "contar
-    // qualquer idioma"): a função devolve o código da língua ou "". Só vale
-    // pra carta que falta nesta língua — tendo aqui, o tile é "tenho" e pronto.
-    const altLang = !isOwned && opts && opts.altLang ? opts.altLang(card.id, grouped ? variants : [variant]) : "";
     const article = document.createElement("article");
     article.className = `card-tile${isOwned ? " owned" : ""}${isWanted ? " wanted" : ""}`;
     article.dataset.tileCardId = card.id;
@@ -7769,7 +7765,6 @@
         <span class="tile-c-var variant-${escapeAttribute(variantSlug(variant))}">${variantLabel}</span>
         <span class="tile-c-price">${tilePriceHtml(card, variant, prices)}</span>
         ${actionsHtml}`;
-      applyTileAltLang(article, altLang);
       return article;
     }
 
@@ -7786,33 +7781,7 @@
       </div>
     `;
 
-    applyTileAltLang(article, altLang);
     return article;
-  }
-
-  // Liga/desliga o estado "tenho em outra língua" num tile: classe
-  // .other-lang (véu âmbar na imagem, ver styles.css) e o selo com a bandeira
-  // da língua que você TEM. O selo mora fora da .card-image (senão herdaria o
-  // filtro dela) — no tile normal, solto no canto; no compacto, colado no nome.
-  // data-alt-lang guarda o estado pro refresh saber o que já está desenhado.
-  function applyTileAltLang(tile, lang) {
-    const atual = tile.dataset.altLang || "";
-    if (atual === lang) return;
-    tile.classList.toggle("other-lang", !!lang);
-    const velho = tile.querySelector(".tile-alt-lang");
-    if (velho) velho.remove();
-    if (!lang) { delete tile.dataset.altLang; return; }
-    tile.dataset.altLang = lang;
-    const texto = t("tile.otherLang", { lang: cardLanguageLabel(lang) });
-    const selo = document.createElement("span");
-    selo.className = "tile-alt-lang";
-    selo.title = texto;
-    selo.setAttribute("role", "img");
-    selo.setAttribute("aria-label", texto);
-    selo.innerHTML = `<span class="tile-alt-lang-in" aria-hidden="true">${cardFlag(lang)}${escapeHtml(cardLangSigla(lang))}</span>`;
-    const nomeCompacto = tile.classList.contains("tile-compact") ? tile.querySelector(".tile-name") : null;
-    if (nomeCompacto) nomeCompacto.appendChild(selo);
-    else tile.prepend(selo);
   }
 
   // Atualiza o estado de posse de um tile no DOM existente, sem recriar a
@@ -7829,24 +7798,16 @@
     // botões dele não trocam de papel (continuam abrindo o card), então o
     // refresh completo lá de baixo, que reescreve aria/ícones por versão, não
     // se aplica e faria os botões voltarem ao modo por-versão.
-    // "Tenho em outra língua": só recalcula quando a página passa a função
-    // (opts.altLang). Quem chama sem ela não conhece o modo — mantém o que o
-    // tile já mostra, em vez de apagar o selo por engano.
-    const altFn = opts && opts.altLang;
-    const altDe = (vs, possui) => (altFn ? (possui ? "" : altFn(cardId, vs)) : (tile.dataset.altLang || ""));
-
     const versoes = tile.dataset.tileGrouped ? tile.dataset.tileGrouped.split("|") : null;
     if (versoes) {
       const total = versoes.reduce((sum, v) => sum + store.variantTotal(cardId, v), 0);
       const querida = wishlist ? versoes.some((v) => wishlist.has(cardId, v)) : false;
-      const altG = altDe(versoes, total > 0);
       // O bitmap de posse POR VERSÃO entra na assinatura: trocar 1 Normal por
       // 1 Foil mantém o total e mesmo assim precisa re-acender o rótulo.
       const possuidas = versoes.map((v) => (store.variantTotal(cardId, v) > 0 ? "1" : "0")).join("");
-      const assinaturaG = `g|${total}|${querida ? 1 : 0}|${possuidas}|${altG}`;
+      const assinaturaG = `g|${total}|${querida ? 1 : 0}|${possuidas}`;
       if (tile.dataset.tileState === assinaturaG) return;
       tile.dataset.tileState = assinaturaG;
-      applyTileAltLang(tile, altG);
       tile.classList.toggle("owned", total > 0);
       tile.classList.toggle("wanted", querida);
       tile.querySelectorAll(".tile-vn").forEach((el) => {
@@ -7876,12 +7837,10 @@
     const querido = wishlist ? wishlist.has(cardId, variant) : false;
     const flash = addMode && tile.querySelector(".tile-own.added") ? "1" : "0";
     const resumo = conditionSummary(store, cardId, variant);
-    const alt = altDe([variant], isOwned);
-    const assinatura = `${quantity}|${querido ? 1 : 0}|${addMode ? 1 : 0}|${flash}|${resumo}|${alt}`;
+    const assinatura = `${quantity}|${querido ? 1 : 0}|${addMode ? 1 : 0}|${flash}|${resumo}`;
     if (tile.dataset.tileState === assinatura) return;
     tile.dataset.tileState = assinatura;
 
-    applyTileAltLang(tile, alt);
     tile.classList.toggle("owned", isOwned);
     // Rótulo da variante acende na cor do jogo quando ela é possuída (o tile
     // não-agrupado só tem um <span> — a própria variante do tile).
