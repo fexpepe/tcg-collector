@@ -565,8 +565,8 @@ O que mudou no caminho, e por quê:
       páginas, pt e en
 - [x] UE/UK/CH sem rede de anúncio (no lugar do CMP, seção 9)
 - [x] Apoiador sem anúncio (seção 10, 2026-09-28): tabela `apoiadores` +
-      `apoio_status` + marcação no /admin (migração `20260928c`, a aplicar no
-      SQL Editor) + leitura no `ads.js` + selo em Configurações
+      `apoio_status` + marcação no /admin (migração `20260928c`, aplicada e
+      verificada em 2026-09-29) + leitura no `ads.js` + selo em Configurações
 - [ ] Aprovação do site no AdSense
 - [x] ~~Lançamento a 50% com grupo de controle~~ — o AdSense foi ligado pra
       todo mundo em 2026-09-28 (decisão do Fernando), sem grupo de controle.

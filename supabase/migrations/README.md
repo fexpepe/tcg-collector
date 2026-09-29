@@ -8,30 +8,6 @@ poucos.)
 
 ## Pendentes de aplicar
 
-- `20260928c` — apoiador sem anúncio (`20260928c_apoiador.sql`): tabela
-  `apoiadores` (user_id, ate) TRANCADA pra API (RLS sem policy, sem grant),
-  `apoio_status()` (a data da própria conta, pro `ads.js` e as
-  Configurações), `admin_apoiador(quem, dias)` e `admin_apoiadores()` (aba
-  Mercado › Vitrine do `/admin`). Aditiva e sem ordem com o JS: antes dela a
-  `apoio_status` dá 404 e todo mundo segue vendo a vitrine; o `/admin` mostra
-  "aplique a 20260928c" na seção de apoiadores.
-
-  Testada em 2026-09-28 no PGlite com um esqueleto (auth.users, auth.uid,
-  profiles, _is_admin): não-admin recebe null; soma no fim quando ainda vale e
-  recomeça de hoje quando venceu; acha pelo e-mail (conta sem @, sem linha em
-  `profiles`) ou pelo @ sem diferenciar maiúscula; 0 dias encerra; e-mail
-  desconhecido e dias fora de 0..366 voltam erro; anon/authenticated não têm
-  privilégio na tabela; apagar o auth.users leva a linha; reaplicar o arquivo
-  é inofensivo.
-
-  Conferir depois de aplicar:
-  ```sql
-  select to_regclass('public.apoiadores');   -- apoiadores
-  select public.admin_apoiadores();          -- null fora do admin
-  ```
-  E, logado como admin, abrir `/admin` › Mercado › Vitrine: a seção
-  "Marcar apoio" troca o aviso pelo formulário.
-
 - `20260928b` — precisão do scanner (`20260928b_scanner_precisao.sql`; o `b` porque
   a `20260928a` do mesmo dia é a do Analytics 2.1): recria a `admin_funnel` da `20260923a`
   com todas as chaves de antes e mais `ambiguas`, `pela_foto`, `trocou` e
@@ -80,6 +56,25 @@ poucos.)
   E, logado como admin, abrir `/admin`: as abas aparecem e o aviso amarelo some.
 
 ### Já aplicadas (verificado em produção)
+
+- `20260928c` — apoiador sem anúncio (`20260928c_apoiador.sql`): tabela
+  `apoiadores` (user_id, ate) TRANCADA pra API (RLS sem policy, sem grant),
+  `apoio_status()` (a data da própria conta, pro `ads.js` e as
+  Configurações), `admin_apoiador(quem, dias)` e `admin_apoiadores()` (aba
+  Mercado › Vitrine do `/admin`). Aplicada em 2026-09-29. **Verificado em
+  produção, sem login:** as três RPCs respondem **401 permission denied**
+  (42501) pro anon — contra **404** de uma função inexistente, o que prova
+  que existem e estão fechadas — e ler a tabela `apoiadores` pelo REST também
+  volta 42501 (nenhum privilégio pro anon). Antes de aplicar, a mesma
+  `apoio_status` dava 404 e o site tratava todo mundo como "não apoia".
+
+  Antes, testada no PGlite com um esqueleto (auth.users, auth.uid, profiles,
+  _is_admin): não-admin recebe null; soma no fim quando ainda vale e recomeça
+  de hoje quando venceu; acha pelo e-mail (conta sem @, sem linha em
+  `profiles`) ou pelo @ sem diferenciar maiúscula; 0 dias encerra; e-mail
+  desconhecido e dias fora de 0..366 voltam erro; anon/authenticated não têm
+  privilégio na tabela; apagar o auth.users leva a linha; reaplicar o arquivo
+  é inofensivo.
 
 - `20260927a` — vitrine (o espaço de anúncio das páginas de catálogo,
   `src/ads.js`, docs/PLANO-ADS.md): a whitelist do `events_guard` ganha
