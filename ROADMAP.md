@@ -214,9 +214,9 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   50%; o efeito é lido antes × depois no /admin), conta
   `pub-0808280324005030` e os 3 blocos, CSP com nonce só nas páginas com
   vitrine, UE/UK/CH sem rede de anúncio. Apoiador sem anúncio (R$ 10 = 30
-  dias, somando) pronto — falta aplicar a migração `20260928c`. Falta ainda:
-  aprovação do site no painel do AdSense e as páginas pré-renderizadas
-  (`/card`, `/set`, `/deck`). Plano, números e fases em
+  dias, somando) no ar, com a migração `20260928c` aplicada e verificada em
+  2026-09-29. Falta ainda: aprovação do site no painel do AdSense e as
+  páginas pré-renderizadas (`/card`, `/set`, `/deck`). Plano, números e fases em
   [docs/PLANO-ADS.md](docs/PLANO-ADS.md); arquitetura no README ("Vitrine").
 
 - **Naruto moderno (2027)**: `sync-naruto.mjs` está dormente esperando a
