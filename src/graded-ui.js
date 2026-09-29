@@ -57,7 +57,12 @@
     return { value: gv.value || 0, auto: true, n: gv.n || 0, trend: gv.trend || 0 };
   }
 
-  // Tile EDITÁVEL do slab (graduadora/nota/pristine/valor/cert inline).
+  // Tile EDITÁVEL do slab (graduadora/nota/valor/cert/pristine inline).
+  // Estrutura IGUAL em todo card da grade (2026-09-29): nome numa linha,
+  // "set · nº" sempre em duas (.graded-set, no CSS) e os campos na mesma
+  // ordem — graduadora+nota, valor, certificado e, por último, o Pristine.
+  // Ele só existe pra BGS/CGC/TAG; no meio dos campos, empurrava valor e
+  // certificado desses cards pra baixo dos vizinhos de PSA/SGC.
   function editableTileHtml(ctx, card, it, sym) {
     const { shared } = ctx;
     const { t, escapeHtml, escapeAttribute } = shared;
@@ -80,16 +85,16 @@
       </div>
       <div class="tile-info">
         <h3>${escapeHtml(card.name)}</h3>
-        <p class="tile-variant">${shared.cardFlag(card.language)}<span>${escapeHtml(card.set)} · ${escapeHtml(card.number)}</span></p>
+        <p class="tile-variant graded-set">${shared.cardFlag(card.language)}<span>${escapeHtml(card.set)} · ${escapeHtml(card.number)}</span></p>
         <div class="graded-fields">
           <div class="graded-row">
             <select class="graded-company" data-graded-company aria-label="${escapeAttribute(t("graded.company"))}" title="${escapeAttribute(t("graded.company"))}">${companyOpts}</select>
             <input type="text" inputmode="decimal" class="graded-grade" data-graded-grade value="${escapeAttribute(it.grade)}" maxlength="4" placeholder="10" aria-label="${escapeAttribute(t("graded.grade"))}" title="${escapeAttribute(t("graded.grade"))}">
           </div>
-          ${pristineRow}
           <label class="sale-price-field${autoCls}" title="${escapeAttribute(valTitle)}"><span class="sale-cur">${escapeHtml(sym)}</span><input type="text" inputmode="decimal" class="sale-price${autoCls}" data-graded-value value="${escapeAttribute(valStr)}" placeholder="0,00" aria-label="${escapeAttribute(t("graded.value"))}"></label>
+          <input type="text" class="graded-cert" data-graded-cert value="${escapeAttribute(it.cert)}" placeholder="${escapeAttribute(t("graded.certPlaceholder"))}" aria-label="${escapeAttribute(t("graded.cert"))}">
+          ${pristineRow}
         </div>
-        <input type="text" class="graded-cert" data-graded-cert value="${escapeAttribute(it.cert)}" placeholder="${escapeAttribute(t("graded.certPlaceholder"))}" aria-label="${escapeAttribute(t("graded.cert"))}">
       </div>
     </article>`;
   }
