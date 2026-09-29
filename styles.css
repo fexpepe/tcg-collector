@@ -1549,8 +1549,23 @@ input::placeholder {
    bandeira e número) quando a carta é graduada. */
 .preview-subtitle .graded-badge { margin-left: 2px; font-size: 12px; padding: 2px 9px; }
 .preview-graded-price { font-weight: 800; color: var(--gold); font-size: 14px; }
-/* Campos do slab: graduadora + nota numa linha; valor numa linha própria (largura
-   cheia, pra caber valores grandes sem espremer). */
+/* "Set · nº" do slab editável na GRADE (2026-09-29): SEMPRE duas linhas —
+   reservadas quando o texto é curto ("151 · 198"), cortadas com reticências
+   quando é longo. Com altura livre, "MEGA Starter Set Mega Gengar ex · 003"
+   quebrava em duas linhas (até quatro no celular) e descia graduadora, nota,
+   valor e certificado daquele card: cada um da fileira tinha os campos numa
+   altura. flex-start deixa a bandeira na 1ª linha, e o 1px centra os 14px
+   dela nos 16px da linha. Na lista não vale — a linha é larga, o set cabe
+   numa só e a reserva viraria um buraco. */
+.card-grid:not(.is-list) .graded-set { align-items: flex-start; min-height: 32px; line-height: 16px; }
+.card-grid:not(.is-list) .graded-set > .card-flag { margin-top: 1px; }
+.card-grid:not(.is-list) .graded-set > span:not(.card-flag) {
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2;
+  overflow: hidden; overflow-wrap: anywhere; min-width: 0;
+}
+/* Campos do slab, na mesma ordem em todo card: graduadora + nota numa linha;
+   valor numa linha própria (largura cheia, pra caber valores grandes sem
+   espremer); certificado; e o Pristine por último, quando existe. */
 .graded-fields { display: flex; flex-direction: column; gap: 6px; margin-top: 6px; }
 .graded-row { display: flex; gap: 6px; align-items: center; }
 .graded-company, .graded-grade {
@@ -1560,16 +1575,37 @@ input::placeholder {
 .graded-company { flex: 1; width: auto; min-width: 0; padding: 0 6px; cursor: pointer; }
 .graded-company:focus, .graded-grade:focus { outline: none; border-color: var(--accent); }
 .graded-grade { flex: none; width: 54px; text-align: center; padding: 0 4px; }
-/* Pristine: só aparece pra BGS/CGC/TAG; checkbox + rótulo compacto. */
-.graded-pristine { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: var(--muted); cursor: pointer; user-select: none; }
+/* Pristine: só aparece pra BGS/CGC/TAG; checkbox + rótulo compacto. Fica no
+   FIM dos campos (2026-09-29): logo abaixo da nota, onde morava, só os cards
+   dessas graduadoras ganhavam a linha a mais no meio, e valor e certificado
+   desciam em relação aos vizinhos. No fim ela só alonga o card, e a fileira
+   da grade estica os outros junto. margin 0: é um <label>, e o global dá 7px
+   embaixo. */
+.graded-pristine { display: flex; align-items: center; gap: 6px; margin: 0; font-size: 12px; font-weight: 700; color: var(--muted); cursor: pointer; user-select: none; }
 .graded-pristine input { width: 15px; height: 15px; flex: none; margin: 0; accent-color: var(--accent); cursor: pointer; }
-.graded-fields .sale-price-field { width: 100%; }
+/* O .sale-price-field nasceu pra LINHA do tile de Vendas, onde o flex: 1 dele
+   é largura. Na coluna do slab o flex: 1 virava ALTURA (a base 0% cai no
+   conteúdo, o input de 42px do reset) e o valor saía com 44px contra os 36px
+   da graduadora e da nota; o margin-bottom de 7px do `label` global ainda
+   abria embaixo dele um vão maior que entre os outros campos. flex: none
+   devolve os 36px desenhados, e margin 0 deixa só o gap de 6px. */
+.graded-fields .sale-price-field { flex: none; width: 100%; margin: 0; }
+/* Sem margin-top: o certificado mora dentro do .graded-fields, e o gap de
+   6px dele já faz o espaço. */
 .graded-cert {
-  margin-top: 6px; width: 100%; height: 30px; box-sizing: border-box;
+  width: 100%; height: 30px; box-sizing: border-box;
   font: inherit; font-size: 12px; padding: 0 8px;
   border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--subtle);
 }
 .graded-cert:focus { outline: none; border-color: var(--accent); color: var(--text); }
+/* No toque, todo campo do slab com 44px (o alvo mínimo do site). Antes eram
+   três alturas no mesmo card: 36 na graduadora e na nota, 44 no valor (por
+   acidente, ver acima) e 30 no certificado. A linha do Pristine também vira
+   alvo inteiro: o rótulo sozinho tem ~16px. */
+@media (pointer: coarse) {
+  .graded-company, .graded-grade, .graded-fields .sale-price-field, .graded-cert { height: 44px; }
+  .graded-pristine { min-height: 44px; }
+}
 /* Etiqueta de graduadora na view compartilhada (?s= / perfil): banda escura sobre o topo. */
 .sales-picker-hint { margin: 0 0 8px; font-size: 12px; color: var(--subtle); }
 
