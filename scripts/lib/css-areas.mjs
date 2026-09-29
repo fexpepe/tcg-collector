@@ -34,10 +34,11 @@ export const AREAS = [
   // shared.js é texto de comentário, não classe — conferido.)
   { nome: "hub",       prefixos: ["hub-"],                         paginas: ["hub.html"] },
   // xpl- (2026-09-28) é o que só a busca global desenha: os chips de resultado
-  // por jogo, a etiqueta de jogo nos tiles e o selo de posição das mais
-  // vistas. Só o src/explore.js monta essas classes (o prefixo "explore-" não
-  // serve: a .explore-subnav é das páginas de jogo). Nasceu em área própria
-  // porque o núcleo já estava a 98% do teto do check-size.
+  // por jogo e o selo de posição das mais vistas. Só o src/explore.js monta
+  // essas classes (o prefixo "explore-" não serve: a .explore-subnav é das
+  // páginas de jogo). Nasceu em área própria porque o núcleo já estava a 98%
+  // do teto do check-size. A etiqueta de jogo dos tiles (.tile-game) NÃO é
+  // daqui: Coleção e Wishlist também a desenham, e ela mora no núcleo.
   { nome: "explorar",  prefixos: ["xpl-"],                         paginas: ["explore.html"] },
   // sw- (as pastilhas de cor por jogo) só existe no settings.html e vive LOGO
   // DEPOIS do .setting-swatch, sobrescrevendo a cor do texto dele. Se um sai e o

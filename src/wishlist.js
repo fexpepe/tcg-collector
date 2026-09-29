@@ -405,7 +405,12 @@
   function render({ resetCount = false } = {}) {
     updatePokemonFilterLabel();
     const tiles = wantedPairs();
-    pager.render(tiles, ({ card, variant }) => decorateTile(shared.variantTile(card, variant, owned, wishlist, prices, { lists: true, compact: cardsView === "compact" }), card), { resetCount });
+    // Etiqueta do jogo no tile (2026-09-29) quando a lista MISTURA jogos
+    // ("Todos"/"Vintage"): desejo de Pokémon, One Piece e Lorcana na mesma
+    // grade, e "Base Set · 4/102" não diz de qual jogo é. Pela lista inteira,
+    // não pela página: a etiqueta não pode surgir no meio da rolagem.
+    const gameTag = tiles.some((p) => p.card.game !== tiles[0].card.game);
+    pager.render(tiles, ({ card, variant }) => decorateTile(shared.variantTile(card, variant, owned, wishlist, prices, { lists: true, compact: cardsView === "compact", gameTag }), card), { resetCount });
     updateStats(tiles.length);
   }
 

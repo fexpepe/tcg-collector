@@ -248,9 +248,8 @@
   // Etiqueta do jogo (28/09/2026): numa grade que mistura jogos, "Base Set ·
   // 4/102" não diz de que jogo a carta é — "dragon" traz Magic, Yu-Gi-Oh!,
   // Dragon Ball e mais sete, e o nome do set só ajuda quem já conhece o set.
-  // É o .game-tag da Coleção e dos Decks (cor chapada do jogo), na ponta da
-  // linha da versão: não cria linha nova no tile. Com um jogo só na grade ela
-  // não aparece — repetiria a mesma palavra em todas.
+  // É o gameTag do variantTile (o .game-tag da Coleção e dos Decks), ligado só
+  // quando a grade mistura jogos — com um jogo só repetiria a mesma palavra.
   //
   // Posição nas mais vistas: o estado inicial é um RANKING (card_views), mas
   // saía como uma grade qualquer, sem dizer por que aquelas cartas estavam
@@ -258,11 +257,7 @@
   // renumera: a 3ª mais vista continua sendo a 3ª).
   const tileDe = ({ card, variant }) => {
     const tile = shared.variantTile(card, variant, owned, wishlist, prices,
-      { addMode: true, grouped: agrupaVersoes, compact: cardsView === "compact" });
-    if (misturaJogos && card.game) {
-      const alvo = tile.querySelector(".tile-variant") || tile.querySelector(".tile-c-set");
-      if (alvo) alvo.insertAdjacentHTML(alvo.classList.contains("tile-c-set") ? "afterbegin" : "beforeend", shared.gameTagHtml(card.game, "xpl-game"));
-    }
+      { addMode: true, grouped: agrupaVersoes, compact: cardsView === "compact", gameTag: misturaJogos });
     const pos = rankDe && rankDe.get(card.id);
     const moldura = pos && tile.querySelector(".card-image");
     if (moldura) {
