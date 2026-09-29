@@ -104,7 +104,10 @@
             <p data-i18n="stats.progress">progresso</p>
           </article>
         </section>
-        <div id="completionBar" class="completion-bar" role="progressbar" data-i18n-aria="aria.setProgress" aria-label="Progresso do set" aria-valuemin="0" aria-valuemax="100"><span id="completionFill" class="completion-fill"></span></div>
+        <div id="completionBar" class="completion-bar" role="progressbar" data-i18n-aria="aria.setProgress" aria-label="Progresso do set" aria-valuemin="0" aria-valuemax="100"><span id="completionFill" class="completion-fill"></span><span id="completionFillAlt" class="completion-fill-alt" hidden></span></div>
+        <!-- Parte do progresso que vem da mesma carta em OUTRA língua ("Inclui
+             12 em inglês") — só com "Contar qualquer idioma" e quando há. -->
+        <p id="altLangNote" class="alt-lang-note" hidden></p>
 
         <section id="detailValues" class="stats-grid detail-values" data-i18n-aria="aria.values" aria-label="Valores" hidden>
           <article>

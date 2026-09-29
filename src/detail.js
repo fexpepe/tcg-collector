@@ -113,6 +113,8 @@
     completionRate: document.getElementById("completionRate"),
     completionFill: document.getElementById("completionFill"),
     completionBar: document.getElementById("completionBar"),
+    completionFillAlt: document.getElementById("completionFillAlt"),
+    altLangNote: document.getElementById("altLangNote"),
     detailValues: document.getElementById("detailValues"),
     valueTotal: document.getElementById("valueTotal"),
     valueOwned: document.getElementById("valueOwned"),
@@ -142,26 +144,32 @@
 
   // --- Modos de contagem do progresso (páginas de set) ---
   // Master set: cada VARIANTE (Normal/Reverse/Holo…) é um slot próprio, como no
-  // tcgcollector.com. Qualquer idioma: a carta conta se QUALQUER versão de
-  // língua do mesmo slot for sua (EN/PT compartilham o id base "sv03.5-198" —
-  // quem mistura línguas fecha o set numa progressão só; o tile continua
-  // mostrando exatamente qual língua você tem). Preferências GLOBAIS.
+  // tcgcollector.com. Qualquer idioma: a carta conta se a MESMA carta em outra
+  // língua for sua (EN↔PT; JA↔chinês — ver shared.sameCardKey). Quem mistura
+  // línguas fecha o set numa progressão só, e o tile mostra qual língua você
+  // tem (selo âmbar com a bandeira). Vem LIGADO desde 2026-09-29.
+  // Preferências GLOBAIS (a de idioma vale também pra lista de sets).
   const MASTER_KEY = "tcg-progress-master-v1";
-  const ANYLANG_KEY = "tcg-progress-anylang-v1";
   let masterMode = localStorage.getItem(MASTER_KEY) === "1";
-  let anyLangMode = localStorage.getItem(ANYLANG_KEY) === "1";
-  // Índice base->ids POSSUÍDOS (qualquer língua), reconstruído a cada contagem
-  // (barato: percorre só o que você tem).
-  function ownedBaseIndex() {
-    const map = new Map();
-    owned.knownCardIds().forEach((id) => {
-      if (!owned.has(id)) return;
-      const b = shared.basePricingId(id);
-      if (!map.has(b)) map.set(b, []);
-      map.get(b).push(id);
-    });
-    return map;
+  let anyLangMode = shared.getAnyLangProgress();
+  // Só página de SET: na de Pokémon/artista a grade já mistura as línguas e
+  // cada impressão é uma carta própria.
+  const contaOutraLingua = () => detailType === "set" && anyLangMode;
+  // Índice chave→ids possuídos (todas as línguas). Guardado até a coleção
+  // mudar: o tile consulta ele carta a carta, e a grade tem centenas.
+  let sameCardIdx = null;
+  function sameCardIndex() {
+    if (!sameCardIdx) sameCardIdx = shared.ownedSameCardIndex(owned);
+    return sameCardIdx;
   }
+  // Língua em que você tem a carta fora desta edição ("" = não tem, ou modo
+  // desligado). `variants` null = qualquer versão.
+  function outraLingua(cardId, variants) {
+    return contaOutraLingua() ? shared.otherLanguageOwned(sameCardIndex(), owned, cardId, variants || null) : "";
+  }
+  // Opções de tile da página: a função vai sempre (desligada ela devolve ""),
+  // assim desligar o modo apaga os selos no próximo refresh.
+  const altTileOpt = (cardId, variants) => outraLingua(cardId, variants);
   function initProgressModes() {
     if (detailType !== "set" || !elements.progressModes) return;
     elements.progressModes.hidden = false;
@@ -174,8 +182,11 @@
     });
     elements.modeAnyLang.addEventListener("change", () => {
       anyLangMode = elements.modeAnyLang.checked;
-      try { localStorage.setItem(ANYLANG_KEY, anyLangMode ? "1" : "0"); } catch (e) { /* ignora */ }
-      updateHeaderStats();
+      shared.setAnyLangProgress(anyLangMode);
+      // Filtro Tenho/Faltando ativo muda de resultado (a carta âmbar troca de
+      // lado): aí reconstrói a grade. Sem filtro, só re-pinta os tiles.
+      if (selectedOwned === "owned" || selectedOwned === "missing") render({ resetCount: true });
+      else refreshOwnership();
     });
   }
 
@@ -436,6 +447,7 @@
     elements.hero.classList.add("insight-card", "insight-hero");
     if (elements.detailValues) elements.hero.appendChild(elements.detailValues);
     if (elements.completionBar) elements.hero.appendChild(elements.completionBar);
+    if (elements.altLangNote) elements.hero.appendChild(elements.altLangNote);
     rail.prepend(elements.hero);
     const summary = document.querySelector(".detail-summary");
     if (summary) summary.hidden = true;
@@ -658,21 +670,9 @@
       const symbol = sample.setSymbol
         ? localizedImg(sample.setSymbol, { className: "set-symbol" })
         : "";
-      // Custo pra completar: mercado das cartas que faltam (piso "≥" se alguma
-      // faltante não tem preço). Só aparece com coleção iniciada no set.
-      // Carta bônus (shared.isBonusCard) não falta pra ninguém: fica fora.
-      const paraCompletar = pageCards.filter((card) => !shared.isBonusCard(card));
-      const missing = paraCompletar.filter((card) => !owned.has(card.id));
-      const ownedHere = paraCompletar.length - missing.length;
-      let missingHtml = "";
-      if (ownedHere > 0 && missing.length > 0) {
-        const sum = shared.sumCardsValue(missing, prices);
-        if (sum.value > 0) {
-          const cost = `${sum.unpriced > 0 ? "≥ " : "≈ "}${shared.formatMoney(shared.getCurrency(), sum.value)}`;
-          const hint = t("set.missingHint", { n: missing.length }) + (sum.unpriced > 0 ? " " + t("set.missingUnpriced", { u: sum.unpriced }) : "");
-          missingHtml = `<p class="set-missing" title="${escapeAttribute(hint)}">${escapeHtml(t("set.missingCost", { n: missing.length, v: cost }))}</p>`;
-        }
-      }
+      // Custo pra completar: preenchido pelo updateMissingCost (muda com a
+      // coleção e com o "contar qualquer idioma").
+      const missingHtml = `<p class="set-missing" data-set-missing hidden></p>`;
       // "N cartas oficiais · N no catálogo local" só aparece quando os dois
       // números DIVERGEM — aí ele informa que o catálogo está incompleto (ex.:
       // vintage com 66 de 80). Iguais, era a mesma contagem que o stat "cartas
@@ -1136,11 +1136,12 @@
   }
 
   function render({ resetCount = false } = {}) {
+    sameCardIdx = null;
     const visibleCards = filterCards();
     const tiles = sortTiles(shared.cardVariantPairs(visibleCards, { group: agrupaVersoes }));
     // Cartas sem imagem vão para o fim (sort estável preserva a ordem da ordenação escolhida).
     tiles.sort((a, b) => Number(shared.cardHasImage(b.card)) - Number(shared.cardHasImage(a.card)));
-    const tileOf = ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true, grouped: agrupaVersoes, compact: gridView === "compact", lists: true });
+    const tileOf = ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true, grouped: agrupaVersoes, compact: gridView === "compact", lists: true, altLang: altTileOpt });
     if (gridView === "binder") { pager.render([], tileOf); binderView.render(tiles, tileOf); }
     else pager.render(tiles, tileOf, { resetCount });
 
@@ -1196,6 +1197,7 @@
         <svg class="insight-ring" viewBox="0 0 120 120" role="img" data-insight-ring aria-label="0%">
           <circle class="insight-ring-track" cx="60" cy="60" r="50"/>
           <circle class="insight-ring-fill" cx="60" cy="60" r="50" pathLength="100" stroke-dasharray="0 100"/>
+          <circle class="insight-ring-alt" cx="60" cy="60" r="50" pathLength="100" stroke-dasharray="0 100"/>
           <text x="60" y="60" text-anchor="middle" dominant-baseline="central" data-insight-pct>0%</text>
         </svg>
       </article>`;
@@ -1209,13 +1211,22 @@
   }
   // Parte VIVA do 3º cartão: conjunto (N de T) e o anel. A contagem é a mesma
   // dos stats (respeita master set / qualquer idioma), então vem de lá.
-  function updateInsightsProgress(ownedN, totalN, pct) {
+  // `altPct` = fatia do `pct` que vem de outra língua: o anel desenha ela como
+  // um segundo arco âmbar logo depois do arco principal.
+  function updateInsightsProgress(ownedN, totalN, pct, altPct) {
     const box = elements.insights;
     if (!box || box.hidden) return;
     const comp = box.querySelector("[data-insight-complete]");
     if (comp) comp.textContent = t("insights.completeValue", { n: ownedN, t: totalN });
+    const alt = Math.max(0, Math.min(100, altPct || 0));
+    const aqui = Math.max(0, Math.min(100, pct) - alt);
     const fill = box.querySelector(".insight-ring-fill");
-    if (fill) fill.setAttribute("stroke-dasharray", `${Math.max(0, Math.min(100, pct))} 100`);
+    if (fill) fill.setAttribute("stroke-dasharray", `${aqui} 100`);
+    const fillAlt = box.querySelector(".insight-ring-alt");
+    if (fillAlt) {
+      fillAlt.setAttribute("stroke-dasharray", `${alt} 100`);
+      fillAlt.setAttribute("stroke-dashoffset", String(-aqui));
+    }
     const ring = box.querySelector("[data-insight-ring]");
     if (ring) {
       ring.setAttribute("aria-label", `${pct}%`);
@@ -1234,48 +1245,44 @@
   // Atualiza tiles e contadores no DOM existente, sem reconstruir a grade
   // (reconstruir faria todas as imagens piscarem).
   function refreshOwnership() {
-    elements.grid.querySelectorAll(".card-tile").forEach((tile) => shared.refreshTileOwnership(tile, owned, wishlist, { addMode: true }));
+    sameCardIdx = null; // a coleção mudou (ou o modo): o índice de línguas refaz
+    elements.grid.querySelectorAll(".card-tile").forEach((tile) => shared.refreshTileOwnership(tile, owned, wishlist, { addMode: true, altLang: altTileOpt }));
     updateHeaderStats();
   }
 
   function updateHeaderStats() {
-    const useModes = detailType === "set" && (masterMode || anyLangMode);
     // Cartas bônus (Mew RGB da 30th Celebration…) aparecem na grade mas não
     // entram no 100% do set — nem no denominador, nem no numerador. Quem tem
     // ganha o selo de bônus no hero (updateBonusStat). Só na página de SET: na
     // do Pokémon/artista a carta conta como qualquer outra.
     const contaveis = detailType === "set" ? pageCards.filter((card) => !shared.isBonusCard(card)) : pageCards;
-    let ownedN, totalN;
-    if (!useModes) {
-      ownedN = contaveis.filter((card) => owned.has(card.id)).length;
-      totalN = contaveis.length;
-    } else {
-      // "Qualquer idioma": donos por id BASE (EN/PT do mesmo slot contam juntas).
-      const baseIdx = anyLangMode ? ownedBaseIndex() : null;
-      const idsOf = (card) => {
-        if (!anyLangMode) return [card.id];
-        return baseIdx.get(shared.basePricingId(card.id)) || [];
-      };
-      const cardOwned = (card) => (anyLangMode ? idsOf(card).length > 0 : owned.has(card.id));
-      if (!masterMode) {
-        ownedN = contaveis.filter(cardOwned).length;
-        totalN = contaveis.length;
-      } else {
-        // Master set: cada variante é um slot; possuída se qualquer id (da
-        // língua certa ou de qualquer uma, conforme o modo) tem a variante.
-        ownedN = 0; totalN = 0;
-        contaveis.forEach((card) => {
-          const variants = (card.variants && card.variants.length) ? card.variants : [shared.defaultVariant(card)];
-          totalN += variants.length;
-          const ids = anyLangMode ? idsOf(card) : [card.id];
-          variants.forEach((v) => {
-            if (ids.some((id) => owned.variantTotal(id, v) > 0)) ownedN++;
-          });
-        });
-      }
-    }
+    // Duas parcelas: `aquiN` = tenho NESTA edição; `altN` = falta aqui mas
+    // tenho a mesma carta em outra língua (só com "qualquer idioma"). O
+    // progresso é a soma; a barra e o anel desenham as duas separadas.
+    const master = masterMode && detailType === "set";
+    let aquiN = 0, altN = 0, totalN = 0;
+    const linguasAlt = new Set();
+    contaveis.forEach((card) => {
+      // Master set: cada variante é um slot (a Reverse em EN não cobre a
+      // Normal em PT). Sem ele, a carta é um slot só, qualquer versão.
+      const slots = master
+        ? ((card.variants && card.variants.length) ? card.variants : [shared.defaultVariant(card)]).map((v) => [v])
+        : [null];
+      slots.forEach((vs) => {
+        totalN++;
+        const aqui = vs ? owned.variantTotal(card.id, vs[0]) > 0 : owned.has(card.id);
+        if (aqui) { aquiN++; return; }
+        const lingua = outraLingua(card.id, vs);
+        if (lingua) { altN++; linguasAlt.add(lingua); }
+      });
+    });
+    const ownedN = aquiN + altN;
     const pct = totalN ? Math.round((ownedN / totalN) * 100) : 0;
-    updateInsightsProgress(ownedN, totalN, pct);
+    // Parcela âmbar em % da barra: a diferença dos arredondados, pra que as
+    // duas somem exatamente o `pct` mostrado.
+    const pctAqui = totalN ? Math.round((aquiN / totalN) * 100) : 0;
+    updateAltLangNote(altN, linguasAlt);
+    updateInsightsProgress(ownedN, totalN, pct, pct - pctAqui);
     elements.ownedCount.textContent = ownedN;
     elements.totalCount.textContent = totalN;
     elements.completionRate.textContent = `${pct}%`;
@@ -1284,8 +1291,15 @@
     const totalLabel = elements.totalCount.nextElementSibling;
     if (ownedLabel) ownedLabel.textContent = t(masterMode && detailType === "set" ? "master.slotsOwned" : "stats.owned");
     if (totalLabel) totalLabel.textContent = t(masterMode && detailType === "set" ? "master.slotsTotal" : "stats.pageTotal");
-    if (elements.completionFill) elements.completionFill.style.width = `${pct}%`;
+    // Barra em duas cores: accent = nesta língua; hachurado âmbar = o que
+    // completa com a outra. A parcela âmbar vem por último, colada na primeira.
+    if (elements.completionFill) elements.completionFill.style.width = `${pctAqui}%`;
+    if (elements.completionFillAlt) {
+      elements.completionFillAlt.style.width = `${pct - pctAqui}%`;
+      elements.completionFillAlt.hidden = altN <= 0;
+    }
     if (elements.completionBar) {
+      elements.completionBar.classList.toggle("has-alt", altN > 0);
       elements.completionBar.setAttribute("aria-valuenow", String(pct));
       // A 0% a barra é uma cápsula vazia sem rótulo nenhum entre duas seções —
       // parecia enfeite quebrado (o Fernando perguntou o que era). Sem nada
@@ -1303,20 +1317,52 @@
       estavaCompleto = completo;
     }
     updateBonusStat(ownedN, totalN);
+    updateMissingCost();
     updateValueStats();
+  }
+
+  // Custo pra completar: mercado das cartas que faltam (piso "≥" se alguma
+  // faltante não tem preço). Só aparece com coleção iniciada no set.
+  // Carta bônus (shared.isBonusCard) não falta pra ninguém: fica fora. Com
+  // "qualquer idioma", a carta que você tem em outra língua também não falta
+  // (a mesma régua da barra). Nascia fixo no renderHero; agora acompanha.
+  function updateMissingCost() {
+    const el = elements.hero && elements.hero.querySelector("[data-set-missing]");
+    if (!el) return;
+    const paraCompletar = pageCards.filter((card) => !shared.isBonusCard(card));
+    const missing = paraCompletar.filter((card) => !owned.has(card.id) && !outraLingua(card.id, null));
+    const ownedHere = paraCompletar.length - missing.length;
+    el.hidden = true;
+    if (!(ownedHere > 0 && missing.length > 0)) return;
+    const sum = shared.sumCardsValue(missing, prices);
+    if (!(sum.value > 0)) return;
+    const cost = `${sum.unpriced > 0 ? "≥ " : "≈ "}${shared.formatMoney(shared.getCurrency(), sum.value)}`;
+    el.title = t("set.missingHint", { n: missing.length }) + (sum.unpriced > 0 ? " " + t("set.missingUnpriced", { u: sum.unpriced }) : "");
+    el.textContent = t("set.missingCost", { n: missing.length, v: cost });
+    el.hidden = false;
+  }
+
+  // "Inclui 12 em inglês": diz de onde veio a parte âmbar da barra. Some
+  // quando nada vem de outra língua (ou o modo está desligado).
+  function updateAltLangNote(altN, linguas) {
+    const el = elements.altLangNote;
+    if (!el) return;
+    if (!altN) { el.hidden = true; el.textContent = ""; return; }
+    const siglas = [...linguas].map((code) => shared.cardLangSigla(code)).join(" / ");
+    el.textContent = t("progress.altNote", { n: altN, lang: siglas });
+    el.hidden = false;
   }
 
   // Selo de bônus no hero do set: "Cartas bônus 1 de 3". Com o set fechado E
   // todas as bônus, vira dourado ("Set completo + bônus") — é o prêmio a mais
-  // de quem tem as cartas que o 100% não exige. Posse por id exato, ou por id
-  // base no modo "qualquer idioma" (a mesma régua do progresso).
+  // de quem tem as cartas que o 100% não exige. Posse por id exato, ou pela
+  // mesma carta em outra língua no modo "qualquer idioma" (a régua do progresso).
   function updateBonusStat(ownedN, totalN) {
     const el = elements.hero && elements.hero.querySelector("[data-set-bonus]");
     if (!el) return;
     const bonus = detailType === "set" ? pageCards.filter((card) => shared.isBonusCard(card)) : [];
     if (!bonus.length) { el.hidden = true; return; }
-    const baseIdx = anyLangMode ? ownedBaseIndex() : null;
-    const tem = (card) => (anyLangMode ? (baseIdx.get(shared.basePricingId(card.id)) || []).length > 0 : owned.has(card.id));
+    const tem = (card) => owned.has(card.id) || !!outraLingua(card.id, null);
     const n = bonus.filter(tem).length;
     const tudo = n >= bonus.length && totalN > 0 && ownedN >= totalN;
     const noResumo = elements.insights && elements.insights.querySelector("[data-insight-bonus]");
@@ -1354,11 +1400,11 @@
       // você TEM dela entra no "já gasto" normalmente.
       const bonus = detailType === "set" && shared.isBonusCard(card);
       if (!bonus) total += ref;
-      // Posse pelo id exato, como antes. O modo "qualquer idioma" não entra
-      // aqui de propósito: a quantidade vive por id, então a cópia em outra
-      // língua está sob outro id — misturar daria um "já gasto" que não bate
-      // com o que a Coleção mostra.
-      if (!owned.has(card.id)) { if (!bonus) toBuy += ref; return; }
+      // "Já gasto" é posse pelo id exato: a quantidade vive por id, e somar
+      // a cópia em outra língua daria um valor que não bate com a Coleção.
+      // Já o "Falta" segue a régua do progresso: com "qualquer idioma", a
+      // carta que você tem em EN não é compra pendente do set em PT.
+      if (!owned.has(card.id)) { if (!bonus && !outraLingua(card.id, null)) toBuy += ref; return; }
       shared.cardVariants(card).forEach((variant) => {
         owned.conditionBreakdown(card.id, variant).forEach(({ condition, quantity }) => {
           const v = shared.cardValue(card, variant, prices, condition).value;
@@ -1382,7 +1428,9 @@
     return pageCards.filter((card) => {
       const matchesQuery = shared.matchesCardQuery(card, elements.search.value);
       const matchesLanguage = !languageValue || shared.normalizeCardLanguage(card.language) === languageValue;
-      const isOwned = owned.has(card.id);
+      // Com "qualquer idioma", a carta que você tem em outra língua é "Tenho"
+      // (não aparece no "Faltando") — a mesma régua da contagem.
+      const isOwned = owned.has(card.id) || !!outraLingua(card.id, null);
       const matchesOwned = ownedValue === "all"
         || (ownedValue === "owned" && isOwned)
         || (ownedValue === "missing" && !isOwned)

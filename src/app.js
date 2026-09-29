@@ -94,7 +94,7 @@
     wishlist,
     onOwnedChange: () => {
       setValueMemo.clear();
-      ownedCountMemo.clear();
+      limpaContagens();
       refinedSets.clear();
       refining.clear();
       // Se a grade tem tiles de carta, atualiza posse in-place (re-renderizar
@@ -193,7 +193,7 @@
         indexes = indexes || {};
         indexes.sets = slice;
         indexCardIdsByEntry();
-        ownedCountMemo.clear();
+        limpaContagens();
         render();
       });
     }
@@ -209,7 +209,7 @@
     render();
     // Outra aba mexeu na coleção (ou uma gravação falhou e o store voltou ao
     // disco): recalcula contagens e progresso dos sets.
-    document.addEventListener("sleevu:data-rehydrated", () => { ownedCountMemo.clear(); render(); });
+    document.addEventListener("sleevu:data-rehydrated", () => { limpaContagens(); render(); });
     // Pokédex automática marcou um Pokémon (carta adicionada pelo preview).
     if (view === "pokedex") document.addEventListener("sleevu:dex-marked", () => render());
   }
@@ -725,6 +725,37 @@
     return ownedCountMemo.get(key);
   }
 
+  // Quantas cartas do set FALTAM nesta língua mas você tem em outra (EN↔PT,
+  // JA↔chinês — shared.sameCardKey), com as línguas. Só com o "contar
+  // qualquer idioma" (preferência global, a mesma do checkbox da página do
+  // set; vem ligada). Soma no progresso do card e vira a parte âmbar da barra.
+  const altCountMemo = new Map();
+  let sameCardIdx = null;
+  function entryAltOwned(entry) {
+    if (!shared.getAnyLangProgress()) return { n: 0, langs: [] };
+    const key = entryKey(entry);
+    if (!altCountMemo.has(key)) altCountMemo.set(key, altOwnedOfIds(cardIdsByEntry.get(key) || []));
+    return altCountMemo.get(key);
+  }
+  function altOwnedOfIds(ids) {
+    if (!shared.getAnyLangProgress()) return { n: 0, langs: [] };
+    if (!sameCardIdx) sameCardIdx = shared.ownedSameCardIndex(owned);
+    const langs = new Set();
+    let n = 0;
+    ids.forEach((id) => {
+      if (owned.has(id) || shared.isBonusCard(id)) return;
+      const lingua = shared.otherLanguageOwned(sameCardIdx, owned, id, null);
+      if (lingua) { n++; langs.add(lingua); }
+    });
+    return { n, langs: [...langs] };
+  }
+  // A coleção mudou: as duas contagens e o índice de línguas refazem.
+  function limpaContagens() {
+    ownedCountMemo.clear();
+    altCountMemo.clear();
+    sameCardIdx = null;
+  }
+
   // Soma de preço do manifest (por moeda de ORIGEM) convertida pra moeda atual.
   // Sem câmbio, convertMoney devolve null e a parcela fica de fora — mesmo
   // comportamento do cardValue carta a carta.
@@ -757,6 +788,7 @@
       // de antes dele cai na contagem pelos ids do índice.
       totalCount: entry.count - (entry.bonus != null ? entry.bonus : (cardIdsByEntry.get(key) || []).filter((id) => shared.isBonusCard(id)).length),
       ownedCount: entryOwnedCount(entry),
+      alt: entryAltOwned(entry),
       officialTotal: entry.total || entry.count,
       value: refined ? refined.value : entryRefValue(entry),
       logo: entry.logo || "",
@@ -1089,11 +1121,21 @@
   function createSetCard(item) {
     const article = document.createElement("article");
     // 100%: contorno + barra dourados (o realce que a Pokédex já tinha).
-    article.className = `set-card${item.totalCount > 0 && item.ownedCount >= item.totalCount ? " complete" : ""}`;
+    // Cartas que faltam nesta língua mas você tem em outra (item.alt, ver
+    // entryAltOwned) SOMAM no progresso — é o set de quem mistura EN e PT — e
+    // aparecem como a parte hachurada âmbar da barra, com o "+N EN" do lado.
+    const altN = item.alt ? item.alt.n : 0;
+    const tenho = item.ownedCount + altN;
+    article.className = `set-card${item.totalCount > 0 && tenho >= item.totalCount ? " complete" : ""}`;
     article.dataset.href = setDetailUrl(item);
     if (item.entryKey) article.dataset.entryKey = item.entryKey;
     if (item.chunkFile) article.dataset.chunk = item.chunkFile;
-    const progress = item.totalCount ? Math.round((item.ownedCount / item.totalCount) * 100) : 0;
+    const progress = item.totalCount ? Math.round((tenho / item.totalCount) * 100) : 0;
+    const progressAqui = item.totalCount ? Math.round((item.ownedCount / item.totalCount) * 100) : 0;
+    const siglasAlt = altN ? item.alt.langs.map((code) => shared.cardLangSigla(code)).join("/") : "";
+    const altHtml = altN
+      ? `<span class="set-alt-lang" title="${escapeAttribute(t("set.altLangHint", { n: altN, lang: item.alt.langs.map((code) => shared.cardLanguageLabel(code)).join(" / ") }))}">+${altN} ${escapeHtml(siglasAlt)}</span>`
+      : "";
     // Set sem logo próprio: usa o logo do JOGO no lugar do texto (e, quando o
     // set tem logo, o do jogo vira o último fallback se ele quebrar). Jogo sem
     // arquivo de logo (fab/jump) cai no placeholder de texto, como antes.
@@ -1152,11 +1194,12 @@
           <h3>${escapeHtml(item.displayName)}</h3>
           ${item.languageLabel ? `<span class="tag">${escapeHtml(item.languageLabel)}</span>` : ""}
         </div>
-        <div class="progress-bar" role="progressbar" aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="100" aria-label="${escapeAttribute(t("progress.aria", { name: item.name }))}">
-          <span style="width: ${progress}%"></span>
+        <div class="progress-bar${altN ? " has-alt" : ""}" role="progressbar" aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="100" aria-label="${escapeAttribute(t("progress.aria", { name: item.name }))}">
+          <span style="width: ${progressAqui}%"></span>${altN ? `<span class="progress-alt" style="width: ${progress - progressAqui}%"></span>` : ""}
         </div>
         <div class="set-footer">
-          <span class="set-count">${item.ownedCount}/${item.totalCount}<span class="set-pct"> · ${progress}%</span></span>
+          <span class="set-count">${tenho}/${item.totalCount}<span class="set-pct"> · ${progress}%</span></span>
+          ${altHtml}
           ${trendChip}
           ${valueHtml}
           ${item.releaseDate ? `<span class="set-date-list" title="${escapeAttribute(formatReleaseDate(item.releaseDate, "long"))}">${escapeHtml(formatReleaseDate(item.releaseDate))}</span>` : ""}
@@ -1235,6 +1278,7 @@
       cards: sortedCards,
       totalCount: contaveis.length,
       ownedCount: contaveis.filter((card) => owned.has(card.id)).length,
+      alt: altOwnedOfIds(contaveis.map((card) => card.id)),
       officialTotal: sample.setTotal || contaveis.length,
       value: memoSetValue(memoKey, contaveis),
       logo: sample.setLogo || "",

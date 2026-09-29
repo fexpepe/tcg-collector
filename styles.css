@@ -93,6 +93,10 @@
   --accent-soft: rgba(var(--accent-rgb), 0.13);
   --on-accent: #ffffff; /* texto branco sobre o vermelho */
   --gold: #f0b84b;
+  /* "Tenho em outra língua" (progresso de set EN↔PT, 2026-09-29): âmbar
+     opaco, puxado pro laranja pra não se confundir com o dourado do 100%. */
+  --alt-lang: #d99a3e;
+  --on-alt-lang: #2a1a04;
   /* Passe FLAT total (pedido do Fernando, 2026-09-16): as cápsulas, cards,
      barras e painéis EM FLUXO não têm mais sombra — só borda e fundo. A sombra
      antiga sobrevive em --shadow-pop, SÓ pra quem flutua por cima do conteúdo
@@ -144,6 +148,8 @@
   --accent-soft: rgba(var(--accent-rgb), 0.1);
   --on-accent: #ffffff; /* texto branco sobre o vermelho */
   --gold: #b07d10;
+  --alt-lang: #9a5b06;
+  --on-alt-lang: #ffffff;
   --shadow: none;
   --shadow-pop: 0 16px 40px rgba(20, 28, 40, 0.12);
   --header-bg: rgba(255, 255, 255, 0.9);
@@ -2579,6 +2585,8 @@ input::placeholder {
 }
 .set-footer .set-count { font-weight: 700; color: var(--text); white-space: nowrap; }
 .set-footer .set-value { color: var(--money); font-weight: 700; white-space: nowrap; }
+/* "+12 EN": quantas do set você tem em outra língua (entram no progresso). */
+.set-footer .set-alt-lang { color: var(--alt-lang); font-size: 12px; font-weight: 700; white-space: nowrap; }
 /* Histórico de preço no preview da carta (sparkline da série diária). */
 /* A moldura (borda/fundo) vive no PLOT, não no svg: assim a caixa de
    posicionamento do overlay (crosshair/bolinha) é exatamente a área do svg, e
@@ -2781,6 +2789,9 @@ input::placeholder {
 .insight-ring-track { stroke: var(--line); }
 .insight-ring-fill { stroke: var(--accent); stroke-linecap: round; transform: rotate(-90deg); transform-origin: 50% 50%; transition: stroke-dasharray 400ms ease; }
 .insight-ring.complete .insight-ring-fill { stroke: var(--gold); }
+/* Arco da parte em outra língua, logo depois do principal (detail.js). */
+.insight-ring-alt { stroke: var(--alt-lang); transform: rotate(-90deg); transform-origin: 50% 50%; transition: stroke-dasharray 400ms ease, stroke-dashoffset 400ms ease; }
+.insight-ring.complete .insight-ring-alt { stroke: var(--gold); }
 .insight-ring text { fill: var(--accent); font-size: 17px; font-weight: 700; }
 .insight-ring.complete text { fill: var(--gold); }
 
@@ -3102,6 +3113,14 @@ input::placeholder {
   display: block;
   height: 100%;
   background: var(--accent);
+}
+/* Barra em duas partes (lista de sets): o que você tem nesta língua + o que
+   completa com a outra, hachurado em âmbar — o hachurado separa a parte
+   "emprestada" do dourado liso de set completo. */
+.progress-bar.has-alt { display: flex; }
+.progress-bar .progress-alt,
+.completion-bar .completion-fill-alt {
+  background: repeating-linear-gradient(135deg, var(--alt-lang) 0 4px, color-mix(in srgb, var(--alt-lang) 55%, transparent) 4px 7px);
 }
 
 .grid-sentinel {
@@ -5959,6 +5978,34 @@ a.progress-row:hover {
   opacity: 0.68;
 }
 
+/* Carta que falta NESTA língua mas você tem em outra (página de set com
+   "Contar qualquer idioma" — shared.applyTileAltLang). Nem colorida (tenho)
+   nem preto e branco (falta): véu âmbar opaco, borda âmbar e o selo com a
+   bandeira da língua que você tem. O seletor da visão coleção repete o
+   :not(.owned) pra vencer o grayscale de cima. */
+.card-tile.other-lang {
+  border-color: color-mix(in srgb, var(--alt-lang) 60%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--alt-lang) 28%, transparent);
+}
+.card-tile.other-lang .card-image,
+.card-grid.scope-collection .card-tile.other-lang:not(.owned) .card-image {
+  filter: sepia(0.6) saturate(0.85);
+  opacity: 0.8;
+}
+.tile-alt-lang {
+  position: absolute; top: 14px; right: 14px; z-index: 2;
+  display: inline-flex; align-items: center;
+  padding: 3px 6px; border-radius: 6px;
+  background: var(--alt-lang); color: var(--on-alt-lang);
+  font-size: 11px; font-weight: 800; line-height: 1;
+  pointer-events: none;
+}
+.tile-alt-lang-in { display: inline-flex; align-items: center; gap: 4px; }
+.tile-alt-lang .card-flag { margin: 0; }
+/* Compacto (sem imagem): o selo vai colado no nome, em linha. */
+.tile-compact.other-lang { border-color: color-mix(in srgb, var(--alt-lang) 60%, transparent); }
+.tile-compact .tile-alt-lang { position: static; flex: none; padding: 2px 5px; }
+
 .card-tile .card-image {
   padding: 8px 8px 0;
   background: transparent;
@@ -6187,6 +6234,13 @@ a.progress-row:hover {
 .completion-fill { display: block; height: 100%; width: 0; background: var(--accent); border-radius: 999px; transition: width .3s ease; }
 /* Set fechado: a barra do hero fica dourada, como os cards de set 100%. */
 .completion-bar.complete .completion-fill { background: var(--gold); }
+/* Duas partes (ver .progress-bar.has-alt): lado a lado, a primeira perde o
+   arredondado da direita pra colar na hachurada. Fechado, tudo vira ouro. */
+.completion-bar.has-alt { display: flex; }
+.completion-bar.has-alt .completion-fill { border-radius: 999px 0 0 999px; }
+.completion-fill-alt { display: block; height: 100%; transition: width .3s ease; }
+.completion-bar.complete .completion-fill-alt { background: var(--gold); }
+.alt-lang-note { margin: 4px 0 0; font-size: 12px; font-weight: 700; color: var(--alt-lang); }
 /* Pulso único no instante em que o set fecha (a classe é re-aplicada pelo
    detail.js com reflow no meio, pra animação reiniciar). */
 .completion-bar.celebrate { animation: completion-pop 900ms ease-out 1; }

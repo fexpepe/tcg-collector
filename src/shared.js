@@ -1456,6 +1456,59 @@
     return String(cardId || "").replace(/-(pt|ja|zh-cn|zh-tw|zh)$/, "");
   }
 
+  // ── A MESMA carta em outra língua (progresso de set, 2026-09-29) ─────────
+  // Quem coleciona o 151 metade em PT e metade em EN quer ver o set fechar.
+  // A ligação carta a carta já existe no id: `sv03.5-001` e `sv03.5-001-pt`
+  // são a mesma carta (mesmo set, mesmo número). Só que o id base sozinho
+  // junta demais: neo1..neo4 existem em EN e em JA com o MESMO setId e são
+  // coleções diferentes (numeração japonesa própria). A chave separa as duas
+  // famílias que de fato são traduções uma da outra: ocidental (EN/PT) e
+  // asiática (JA e as edições chinesas, que seguem os sets japoneses — SV1S,
+  // S12a… existem em JA, ZH-TW e ZH-CN com a mesma numeração).
+  function sameCardKey(cardId) {
+    const lang = cardLanguageFromId(cardId);
+    return basePricingId(cardId) + (lang === "ja" || lang === "zh" ? "|asia" : "");
+  }
+
+  // Índice chave→ids POSSUÍDOS, todas as línguas. Percorre só a coleção (não
+  // o catálogo), então é barato; quem chama guarda até a coleção mudar.
+  function ownedSameCardIndex(store) {
+    const map = new Map();
+    store.knownCardIds().forEach((id) => {
+      if (!store.has(id)) return;
+      const key = sameCardKey(id);
+      if (!map.has(key)) map.set(key, []);
+      map.get(key).push(id);
+    });
+    return map;
+  }
+
+  // Língua (código normalizado: "en", "pt"…) em que você tem ESTA carta sob
+  // OUTRO id, ou "" se não tem. Com `variants`, só conta cópia de uma dessas
+  // versões (master set: a Reverse em EN não cobre a Normal em PT); sem, vale
+  // qualquer versão.
+  function otherLanguageOwned(index, store, cardId, variants) {
+    const ids = index && index.get(sameCardKey(cardId));
+    if (!ids) return "";
+    for (const id of ids) {
+      if (id === cardId) continue;
+      if (variants ? variants.some((v) => store.variantTotal(id, v) > 0) : store.has(id)) return cardLanguageFromId(id);
+    }
+    return "";
+  }
+
+  // "Contar qualquer idioma" no progresso dos sets. Nasceu como checkbox
+  // desligado na página do set; desde 2026-09-29 vem LIGADO (quem nunca mexeu
+  // tem a chave vazia) e vale também pra lista de sets. Quem desligou
+  // guardou "0" e continua desligado.
+  const ANYLANG_PROGRESS_KEY = "tcg-progress-anylang-v1";
+  function getAnyLangProgress() {
+    try { return localStorage.getItem(ANYLANG_PROGRESS_KEY) !== "0"; } catch (e) { return true; }
+  }
+  function setAnyLangProgress(on) {
+    try { localStorage.setItem(ANYLANG_PROGRESS_KEY, on ? "1" : "0"); } catch (e) { /* ignora */ }
+  }
+
   // ESPELHO de scripts/lib/pricing.mjs (usdForVariant / pickPricingRef): o
   // shared.js não importa módulo, e o manifest (setValueBuckets, no build) tem
   // que somar com a MESMA régua que o tile mostra. tests/pricing-variants.test.mjs
@@ -7587,6 +7640,10 @@
     const isWanted = wishlist
       ? (grouped ? variants.some((v) => wishlist.has(card.id, v)) : wishlist.has(card.id, variant))
       : false;
+    // Tenho em OUTRA língua (opts.altLang, só a página de set com "contar
+    // qualquer idioma"): a função devolve o código da língua ou "". Só vale
+    // pra carta que falta nesta língua — tendo aqui, o tile é "tenho" e pronto.
+    const altLang = !isOwned && opts && opts.altLang ? opts.altLang(card.id, grouped ? variants : [variant]) : "";
     const article = document.createElement("article");
     article.className = `card-tile${isOwned ? " owned" : ""}${isWanted ? " wanted" : ""}`;
     article.dataset.tileCardId = card.id;
@@ -7712,6 +7769,7 @@
         <span class="tile-c-var variant-${escapeAttribute(variantSlug(variant))}">${variantLabel}</span>
         <span class="tile-c-price">${tilePriceHtml(card, variant, prices)}</span>
         ${actionsHtml}`;
+      applyTileAltLang(article, altLang);
       return article;
     }
 
@@ -7728,7 +7786,33 @@
       </div>
     `;
 
+    applyTileAltLang(article, altLang);
     return article;
+  }
+
+  // Liga/desliga o estado "tenho em outra língua" num tile: classe
+  // .other-lang (véu âmbar na imagem, ver styles.css) e o selo com a bandeira
+  // da língua que você TEM. O selo mora fora da .card-image (senão herdaria o
+  // filtro dela) — no tile normal, solto no canto; no compacto, colado no nome.
+  // data-alt-lang guarda o estado pro refresh saber o que já está desenhado.
+  function applyTileAltLang(tile, lang) {
+    const atual = tile.dataset.altLang || "";
+    if (atual === lang) return;
+    tile.classList.toggle("other-lang", !!lang);
+    const velho = tile.querySelector(".tile-alt-lang");
+    if (velho) velho.remove();
+    if (!lang) { delete tile.dataset.altLang; return; }
+    tile.dataset.altLang = lang;
+    const texto = t("tile.otherLang", { lang: cardLanguageLabel(lang) });
+    const selo = document.createElement("span");
+    selo.className = "tile-alt-lang";
+    selo.title = texto;
+    selo.setAttribute("role", "img");
+    selo.setAttribute("aria-label", texto);
+    selo.innerHTML = `<span class="tile-alt-lang-in" aria-hidden="true">${cardFlag(lang)}${escapeHtml(cardLangSigla(lang))}</span>`;
+    const nomeCompacto = tile.classList.contains("tile-compact") ? tile.querySelector(".tile-name") : null;
+    if (nomeCompacto) nomeCompacto.appendChild(selo);
+    else tile.prepend(selo);
   }
 
   // Atualiza o estado de posse de um tile no DOM existente, sem recriar a
@@ -7745,16 +7829,24 @@
     // botões dele não trocam de papel (continuam abrindo o card), então o
     // refresh completo lá de baixo, que reescreve aria/ícones por versão, não
     // se aplica e faria os botões voltarem ao modo por-versão.
+    // "Tenho em outra língua": só recalcula quando a página passa a função
+    // (opts.altLang). Quem chama sem ela não conhece o modo — mantém o que o
+    // tile já mostra, em vez de apagar o selo por engano.
+    const altFn = opts && opts.altLang;
+    const altDe = (vs, possui) => (altFn ? (possui ? "" : altFn(cardId, vs)) : (tile.dataset.altLang || ""));
+
     const versoes = tile.dataset.tileGrouped ? tile.dataset.tileGrouped.split("|") : null;
     if (versoes) {
       const total = versoes.reduce((sum, v) => sum + store.variantTotal(cardId, v), 0);
       const querida = wishlist ? versoes.some((v) => wishlist.has(cardId, v)) : false;
+      const altG = altDe(versoes, total > 0);
       // O bitmap de posse POR VERSÃO entra na assinatura: trocar 1 Normal por
       // 1 Foil mantém o total e mesmo assim precisa re-acender o rótulo.
       const possuidas = versoes.map((v) => (store.variantTotal(cardId, v) > 0 ? "1" : "0")).join("");
-      const assinaturaG = `g|${total}|${querida ? 1 : 0}|${possuidas}`;
+      const assinaturaG = `g|${total}|${querida ? 1 : 0}|${possuidas}|${altG}`;
       if (tile.dataset.tileState === assinaturaG) return;
       tile.dataset.tileState = assinaturaG;
+      applyTileAltLang(tile, altG);
       tile.classList.toggle("owned", total > 0);
       tile.classList.toggle("wanted", querida);
       tile.querySelectorAll(".tile-vn").forEach((el) => {
@@ -7784,10 +7876,12 @@
     const querido = wishlist ? wishlist.has(cardId, variant) : false;
     const flash = addMode && tile.querySelector(".tile-own.added") ? "1" : "0";
     const resumo = conditionSummary(store, cardId, variant);
-    const assinatura = `${quantity}|${querido ? 1 : 0}|${addMode ? 1 : 0}|${flash}|${resumo}`;
+    const alt = altDe([variant], isOwned);
+    const assinatura = `${quantity}|${querido ? 1 : 0}|${addMode ? 1 : 0}|${flash}|${resumo}|${alt}`;
     if (tile.dataset.tileState === assinatura) return;
     tile.dataset.tileState = assinatura;
 
+    applyTileAltLang(tile, alt);
     tile.classList.toggle("owned", isOwned);
     // Rótulo da variante acende na cor do jogo quando ela é possuída (o tile
     // não-agrupado só tem um <span> — a própria variante do tile).
@@ -10048,6 +10142,11 @@
     loadPriceDeltas,
     loadPriceDeltas7d,
     basePricingId,
+    sameCardKey,
+    ownedSameCardIndex,
+    otherLanguageOwned,
+    getAnyLangProgress,
+    setAnyLangProgress,
     contributePrice,
     toBrl,
     communityPricesEnabled,
