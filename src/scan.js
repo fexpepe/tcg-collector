@@ -33,6 +33,11 @@
   const LARGURA_RODAPE = 1800;   // o rodapé justo vai mais ampliado: o código do One Piece tem ~1,8 mm
   const LARGURA_RODAPE_2 = 1250; // segunda escala do rodapé, só quando a primeira sai insegura
   const CONF_SEGURA = 85;        // confiança (0-100) do Tesseract a partir da qual não se relê
+  // Canto DIREITO (fração da largura), lido à parte e ampliado quando o rodapé
+  // inteiro não deu código: é onde o One Piece (embaixo) e o Gundam (em cima)
+  // imprimem o código. Ver ler().
+  const CANTO = 0.55;
+  const LARGURA_CANTO = 1400;
 
   // ── Extração de código (função PURA; testada em tests/scan-codes.test.mjs) ──
   // Confusões clássicas do OCR em texto que TEM de ser numérico. Só se aplica
@@ -61,6 +66,18 @@
     }
     return letras + soDigitos(resto);
   }
+  // Prefixo de One Piece/Gundam como a carta imprime (2026-09-29). O código
+  // do One Piece é miúdo e escuro sobre a borda dourada, e o "O" inicial some
+  // no OCR com frequência ("P01-016", "P3-040"); o set sempre tem dois
+  // dígitos, mas o zero do meio também cai ("OP3-040"). "P" + dígitos não é
+  // prefixo de jogo nenhum (a promo do Digimon/One Piece é "P-001", sem
+  // dígito), então vira "OP"; e OP/EB/PRB/GD com um dígito ganham o zero.
+  function prefixoJogo(p) {
+    const s = String(p);
+    if (/^P\d{1,2}$/.test(s)) return "OP" + s.slice(1).padStart(2, "0");
+    const m = /^(OP|EB|PRB|GD)(\d)$/.exec(s);
+    return m ? m[1] + "0" + m[2] : s;
+  }
   const IDIOMAS = "EN|PT|ES|FR|DE|IT|JA|JP|KO|RU|ZH|CN|TW";
   // PESO de cada candidato — é o que decide a ORDEM da busca, não a posição
   // no texto. O OCR devolve lixo junto com o código: o rodapé do One Piece
@@ -85,8 +102,14 @@
     // Normalização SEM mudar o comprimento (os deslocamentos das palavras
     // continuam valendo): hífens tipográficos e cada espaço em branco viram
     // um caractere só; "0P05-" (O inicial lido como zero) volta a ser "OP05-".
+    // Gundam (2026-09-29): a fonte do código ("GD01-110", branco no preto, no
+    // alto da carta) sai do Tesseract como "6001-110", "G001-001" ou
+    // "S002-030" — o G vira 6/S/C e o D, com o miolo fechado como o zero
+    // cortado da fonte, vira 0/O. Começando por dígito, o código nem chegava
+    // a ser candidato. Três letras por três: o comprimento não muda.
     const up = String(texto || "").toUpperCase().replace(/[‐‑–—]/g, "-").replace(/\s/g, " ")
-      .replace(/\b0(?=[A-Z][A-Z0-9]{0,4}-[0-9OILSBZ])/g, "O");
+      .replace(/\b0(?=[A-Z][A-Z0-9]{0,4}-[0-9OILSBZ])/g, "O")
+      .replace(/\b[6GCS][D0O][0O](?=[1-9]-[0-9OILSBZ])/g, "GD0");
     const alinhado = palavras && palavras.length && up.length === String(texto).length;
     const conf = (ini, fim) => {
       if (!alinhado) return 0;
@@ -111,7 +134,7 @@
     // sufixo com 2-4 dígitos (às vezes precedido do idioma, como no Yu-Gi-Oh)
     // e, colada, a raridade que o OCR às vezes não separa ("OP05-119SR",
     // "OP01-001L", "EB01-001C").
-    const reHifen = /\b([A-Z][A-Z0-9]{0,5})-([A-Z]{0,2})([0-9OILSBZ]{2,4})([A-Z]{0,3})\b/g;
+    const reHifen = /\b([A-Z][A-Z0-9]{0,5})-([A-Z]{0,2})([0-9OILSBZ]{2,6})([A-Z]{0,3})\b/g;
     while ((m = reHifen.exec(up))) {
       // Idioma no sufixo (Yu-Gi-Oh: LOB-EN001) é EXATAMENTE 2 letras + 3-4
       // dígitos, e letras que não se confundem com dígito. Qualquer outra
@@ -123,11 +146,28 @@
       // último sendo LETRA (o "L" de "OP01-001L", o "S" de "OP05-119SR") é a
       // raridade grudada, não um quarto dígito.
       if (num.length === 4 && /[A-Z]$/.test(num) && /^\d{3}$/.test(soDigitos(num.slice(0, 3)))) { cauda = num.slice(3) + cauda; num = num.slice(0, 3); }
+      // Mais de 3 dígitos num jogo de número com 3 (2026-09-29): no One Piece
+      // a raridade ("C", "R" num quadrinho) e o contador de DON ao lado do
+      // código saem do OCR como dígitos colados — "OP07-05163",
+      // "ST10-00308", "EB01-0129". Antes a regex parava em 4 e a carta sumia.
+      // Só quando o prefixo é de um jogo conhecido (peso 3): num prefixo
+      // qualquer, 5 dígitos é lixo.
+      if (!idioma && num.length > 3) {
+        const d3 = soDigitos(num.slice(0, 3));
+        const c3 = `${prefixoJogo(prefixo(m[1], true))}-${d3}`;
+        if (/^\d{3}$/.test(d3) && pesoHifen(c3) === 3) { add(c3, 3, m); continue; }
+        if (num.length > 4) continue;
+      }
       // Com 3+ dígitos a cauda de letras é raridade (SR, L, C, UC, SEC…);
       // com 2, pode ser o terceiro dígito lido como letra.
       const digitos = soDigitos(num.length >= 3 ? num : num + cauda.slice(0, 1));
       if (!/^\d{2,4}$/.test(digitos)) continue; // sobrou letra que não é dígito: não é código
-      const c = `${prefixo(m[1], !idioma)}-${idioma}${digitos}`;
+      const p = idioma ? prefixo(m[1], false) : prefixoJogo(prefixo(m[1], true));
+      // Dois dígitos num jogo que numera com três: o OCR engoliu um zero
+      // ("OP11-80"). O One Piece guarda o código inteiro no número, então
+      // "80" não casava com "OP11-080" em lugar nenhum da busca.
+      const tres = !idioma && digitos.length === 2 && /^(?:(?:OP|EB|PRB|GD)\d{2}|EX[BR]P?)$/.test(p);
+      const c = `${p}-${idioma}${tres ? "0" + digitos : digitos}`;
       add(c, pesoHifen(c), m);
     }
     // Magic (e quem imprime "CÓDIGO • IDIOMA"), em duas partes: acha o set
@@ -197,7 +237,7 @@
     leituras.forEach((lista, i) => (lista || []).forEach((x) => {
       const j = por.get(x.codigo);
       if (j) { j.votos += 1; if (x.conf > j.conf) j.conf = x.conf; if (x.peso > j.peso) j.peso = x.peso; }
-      else por.set(x.codigo, { codigo: x.codigo, peso: x.peso, conf: x.conf, votos: 1, leitura: i, ordem: por.size });
+      else por.set(x.codigo, { codigo: x.codigo, peso: x.peso, conf: x.conf, votos: 1, leitura: i, ordem: por.size, origem: x.origem || "" });
     }));
     return Array.from(por.values())
       .sort((x, y) => y.peso - x.peso || y.votos - x.votos || y.conf - x.conf || x.leitura - y.leitura || x.ordem - y.ordem)
@@ -248,16 +288,25 @@
     [/^[A-Z][A-Z0-9]{2,3} \d+$/, ["magic"]],
     [/^\d{1,2} \d+$/, ["lorcana"]]
   ];
-  function detectarJogo(texto, codigos, sessao) {
+  //   4. ONDE o código foi lido (`origens`: código -> "topo" | "base"). O
+  //      Gundam é o único que imprime o código no ALTO da carta; os outros,
+  //      no rodapé. "ST01-005" é Gundam lido no topo e One Piece/Digimon lido
+  //      embaixo — antes o ST10-003 do One Piece voltava como carta do Gundam.
+  function detectarJogo(texto, codigos, sessao, origens) {
     const up = String(texto || "").toUpperCase();
     const pontos = {};
     const soma = (g, n) => { pontos[g] = (pontos[g] || 0) + n; };
     let impresso = false; // pista decisiva bateu (formato ambíguo + sessão nunca dão certeza)
     Object.keys(PISTAS).forEach((g) => PISTAS[g].forEach((re) => { if (re.test(up)) { soma(g, 3); impresso = true; } }));
-    (codigos || []).slice(0, 2).forEach((c) => FORMATOS.forEach(([re, gs]) => {
-      if (!re.test(c)) return;
-      if (gs.length === 1) { soma(gs[0], 3); impresso = true; } else gs.forEach((g) => soma(g, 2));
-    }));
+    (codigos || []).slice(0, 2).forEach((c) => {
+      const onde = origens && origens[c];
+      if (onde === "topo" && /^[A-Z]+\d*-\d{3}$/.test(c)) { soma("gundam", 3); impresso = true; return; }
+      FORMATOS.forEach(([re, gs]) => {
+        if (!re.test(c)) return;
+        const cabe = onde === "base" && gs.length > 1 ? gs.filter((g) => g !== "gundam") : gs;
+        if (cabe.length === 1) { soma(cabe[0], 3); impresso = true; } else cabe.forEach((g) => soma(g, 2));
+      });
+    });
     if (sessao && sessao !== "hub") soma(sessao, 1);
     const jogos = Object.keys(pontos).sort((a, b) => pontos[b] - pontos[a] || a.localeCompare(b));
     // "Confiante" = alguma pista decisiva bateu (>= 3) e ninguém empata.
@@ -312,7 +361,12 @@
     // como "9" + total 94.
     const alvo = normKey(codigo);
     const formas = (c) => (shared.cardCodeForms ? shared.cardCodeForms(c) : [c.number]);
-    const exato = (h) => (formas(h.card).some((f) => normKey(f) === alvo) ? 0 : 1);
+    // "SET NÚMERO" (Lorcana "1 11", Magic "MH3 123"): exato é o set E o
+    // número. Colado num texto só, "1 11" dava "111" — a forma da carta 111.
+    const sn = /^(\S+) (\d+)$/.exec(String(codigo).trim());
+    const exato = sn
+      ? (h) => (normKey(h.card.setId) === normKey(sn[1]) && formas(h.card).some((f) => normKey(f) === sn[2] || (/^\d+$/.test(f) && parseInt(f, 10) === parseInt(sn[2], 10))) ? 0 : 1)
+      : (h) => (formas(h.card).some((f) => normKey(f) === alvo) ? 0 : 1);
     out.sort((a, b) => exato(a) - exato(b) || posicao(a.game) - posicao(b.game));
     return out.slice(0, 12);
   }
@@ -1096,6 +1150,7 @@
     let codigoAtual = "";
     let lote = 0;
     let ultimoTexto = ""; // texto do último OCR: a busca manual reaproveita as pistas
+    let ultimasOrigens = {}; // código -> onde foi lido ("topo"/"base"), pista do jogo
     // ── Funil (item 7) ───────────────────────────────────────────────────────
     // Contadores da SESSÃO de scanner, mandados num resumo só ao fechar. Não é
     // um evento por leitura de propósito: o banco aceita 60 eventos/min por IP
@@ -1657,7 +1712,7 @@
     function jogosDaBusca(codigos) {
       if (trava) return [trava.game];
       if (selJogo.value) return [selJogo.value];
-      const d = detectarJogo(ultimoTexto, codigos, sessao);
+      const d = detectarJogo(ultimoTexto, codigos, sessao, ultimasOrigens);
       return d.restritos.length ? d.jogos.filter((g) => d.pontos[g] >= 2) : [];
     }
     selJogo.addEventListener("change", () => {
@@ -1990,25 +2045,49 @@
         aviso(t("scan.status.reading"));
         const leituras = [];
         let texto = "";
-        const passo = async (canvas) => {
+        // `origem`: onde o recorte fica na carta ("base", "topo"; vazio = a
+        // carta inteira) — vira pista do jogo em detectarJogo.
+        const passo = async (canvas, origem) => {
           const r = await ocr(worker, canvas);
           texto += (texto ? "\n" : "") + r.texto;
-          leituras.push(extrair(r.texto, r.palavras));
+          leituras.push(extrair(r.texto, r.palavras).map((x) => Object.assign(x, { origem: origem || "" })));
           return juntar(leituras);
         };
-        let cands = await passo(recorte(fonte, rec, 0, 1 - RODAPE, 1, RODAPE, LARGURA_RODAPE));
+        let cands = await passo(recorte(fonte, rec, 0, 1 - RODAPE, 1, RODAPE, LARGURA_RODAPE), "base");
+        // "Forte" = candidato com formato de jogo. O Magic entra mesmo com
+        // peso 1: o artista fica entre o número e o set no texto, e "MH3 123"
+        // casado de longe é o caso comum, não lixo.
+        const forte = () => cands.length && (cands[0].peso >= 2 || (cands[0].peso === 1 && /^[A-Z][A-Z0-9]{2,3} \d+$/.test(cands[0].codigo)));
         if (cands.length && cands[0].peso >= 2 && cands[0].conf < CONF_SEGURA) {
-          cands = await passo(recorte(fonte, rec, 0, 1 - RODAPE, 1, RODAPE, LARGURA_RODAPE_2));
+          cands = await passo(recorte(fonte, rec, 0, 1 - RODAPE, 1, RODAPE, LARGURA_RODAPE_2), "base");
         }
-        if (!cands.length) cands = await passo(recorte(fonte, rec, 0, 1 - FAIXA, 1, FAIXA, LARGURA_OCR));
+        // CANTOS DIREITOS ampliados (2026-09-29), só quando o rodapé inteiro
+        // não deu código com formato de jogo. Magic, Pokémon e Lorcana
+        // imprimem o código à esquerda, legível no rodapé inteiro; o One Piece
+        // imprime miúdo no canto de baixo à DIREITA, e o Gundam no canto de
+        // CIMA à direita — que nenhum passe lia de perto (só a carta inteira,
+        // em escala baixa, onde o "GD01-048" saía "00- 48"). Metade da largura
+        // na mesma escala = glifos com o dobro de pixels. Quem já sabe o jogo
+        // (trava, seletor, página) começa pelo canto certo.
+        if (!forte()) {
+          const jogo = trava ? trava.game : (selJogo.value || sessao);
+          const ordem = jogo === "gundam" ? ["topo", "base"] : ["base", "topo"];
+          for (const onde of ordem) {
+            cands = await passo(recorte(fonte, rec, 1 - CANTO, onde === "topo" ? 0 : 1 - RODAPE, CANTO, RODAPE, LARGURA_CANTO), onde);
+            if (forte()) break;
+          }
+        }
+        if (!forte()) cands = await passo(recorte(fonte, rec, 0, 1 - FAIXA, 1, FAIXA, LARGURA_OCR), "base");
         let codigos = cands.map((c) => c.codigo);
-        const deteccao = detectarJogo(texto, codigos, sessao);
+        const origens = () => cands.reduce((o, c) => { o[c.codigo] = c.origem; return o; }, {});
+        const deteccao = detectarJogo(texto, codigos, sessao, origens());
         // Com o set travado o jogo já é sabido: a carta inteira só se não houver código.
         if (!codigos.length || (!selJogo.value && !trava && !deteccao.confiante)) {
           cands = await passo(recorte(fonte, rec, 0, 0, 1, 1, LARGURA_OCR));
           codigos = cands.map((c) => c.codigo);
         }
         ultimoTexto = texto;
+        ultimasOrigens = origens();
         // O seletor de jogo é SÓ da pessoa (2026-09-10). Antes, uma detecção
         // confiante gravava o jogo no seletor — e o seletor preenchido vale
         // como filtro FIXO em jogosDaBusca, sem a segunda chance sem filtro.

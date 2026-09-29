@@ -1751,8 +1751,13 @@
       for (const c of pool) {
         // Pokémon numera como "4/102": o número da carta é a parte antes da barra.
         const nk = cmdkNormKey(String(c.number || "").split("/")[0]);
-        const inSet = meta.cards ? (cmdkNormKey(c.setId) === pref || nk === full) : true;
-        if (inSet && (cmdkNumEq(nk, num) || nk === full)) {
+        // `nk === full` é pra quem guarda o código inteiro no número
+        // ("OP05-119" -> "op05119"), e esse sempre tem letra. Sem essa trava,
+        // "1 11" (Lorcana: set 1, carta 11) virava "111" e casava a carta 111
+        // do set 1 — que o scanner ainda punha na frente, como "exata".
+        const cheio = /[a-z]/.test(nk) && nk === full;
+        const inSet = meta.cards ? (cmdkNormKey(c.setId) === pref || cheio) : true;
+        if (inSet && (cmdkNumEq(nk, num) || cheio)) {
           out.push({ card: c, game: g });
           if (out.length >= 6) return out;
         }

@@ -203,3 +203,44 @@ test("Magic: número separado do set pelo artista, com zero à esquerda ou confu
   // Poder/resistência ("3/3") e ano não viram número de carta.
   assert.ok(!codigos("3/3 HOB EN 2026").some((c) => /^HOB /.test(c)));
 });
+
+// ── One Piece, Gundam e Lorcana medidos com as imagens oficiais (2026-09-29) ──
+// Os textos abaixo são o que o Tesseract devolveu DE VERDADE pros rodapés e
+// cantos dessas cartas. Com eles o scanner acertava 3 de 8 no One Piece e 1 de
+// 7 no Gundam, contra 4 de 4 no Magic.
+test("Gundam: o G lido como 6/S/C e o D como zero voltam a ser 'GD'", () => {
+  assert.equal(codigos("6001-110")[0], "GD01-110");
+  assert.equal(codigos("SS | 6001-075")[0], "GD01-075");
+  assert.equal(codigos("G001-001 | B")[0], "GD01-001");
+  assert.equal(codigos("FE 4 | SL | S002-030 858")[0], "GD02-030");
+  // Número de modelo no nome da unidade não vira código do Gundam.
+  assert.ok(!codigos("MS-05L").some((c) => /^GD/.test(c)));
+});
+
+test("One Piece: 'O' inicial e zero do set perdidos, raridade grudada, zero engolido", () => {
+  assert.equal(codigos("NMI | W H C | P01-016")[0], "OP01-016");
+  assert.equal(codigos("NM | LIFE | JU | E B | P3-040")[0], "OP03-040");
+  assert.equal(codigos("OP3-040")[0], "OP03-040");
+  assert.equal(codigos("S/K P | OP07-05163")[0], "OP07-051");
+  assert.equal(codigos("ECK | LIFE | K P | ST10-00308")[0], "ST10-003");
+  assert.equal(codigos("OP9-00463")[0], "OP09-004");
+  assert.equal(codigos("EB01-0129")[0], "EB01-012");
+  assert.equal(codigos("A TWO | W H C | OP11-80")[0], "OP11-080");
+  // Sem prefixo de jogo, número comprido continua não sendo código; e a
+  // promo "P-001" (sem dígito no prefixo) fica como é.
+  assert.deepEqual(codigos("AB-12345"), []);
+  assert.equal(codigos("P-001")[0], "P-001");
+  // Digimon numera o starter antigo com 2 dígitos: não ganha zero.
+  assert.equal(codigos("ST1-01")[0], "ST1-01");
+});
+
+test("onde o código foi lido é pista do jogo: topo é Gundam, rodapé não", () => {
+  const topo = S.detectarJogo("", ["ST01-005"], "hub", { "ST01-005": "topo" });
+  assert.equal(topo.jogos[0], "gundam");
+  assert.equal(topo.confiante, true);
+  const base = S.detectarJogo("", ["ST10-003"], "hub", { "ST10-003": "base" });
+  assert.ok(!base.restritos.includes("gundam"));
+  assert.deepEqual(Array.from(base.restritos).sort(), ["digimon", "onepiece"]);
+  // Sem origem, como antes: os três.
+  assert.equal(S.detectarJogo("", ["ST01-001"], "hub").restritos.length, 3);
+});

@@ -57,8 +57,13 @@ guarda isso em `number` (e `setId`), então achar a carta é OCR + busca local.
    recorte mais justo pro mais largo: o **rodapé** (15 % de baixo, ampliado
    pra 1800 px de largura), que se sair inseguro (confiança do motor < 85 na
    palavra do código) é relido noutra escala e as duas leituras **votam**;
-   a **faixa** larga (24 %) só se o rodapé não deu código (carta menor que a
-   moldura, torta); e a carta inteira só sem código ou sem saber o jogo.
+   os **cantos direitos ampliados** (metade da largura, glifos com o dobro de
+   pixels) só se o rodapé inteiro não deu código com formato de jogo — o de
+   baixo (One Piece, código miúdo) e o de cima (Gundam, o único que imprime o
+   código no alto; com o jogo já sabido começa por ele); a **faixa** larga
+   (24 %) só se ainda não houver código (carta menor que a moldura, torta); e
+   a carta inteira só sem código ou sem saber o jogo. Ver "Medição de
+   2026-09-29" abaixo.
 3. **Extração de candidatos** (`extrairCodigos`, função pura com teste):
    códigos com hífen, Union Arena, FAB, fração `N/T`, Magic `SET NUM` e Lorcana
    `SET NUM`, com correção das confusões clássicas do OCR (O→0, I→1, S→5, B→8)
@@ -135,6 +140,39 @@ busca que a aba *Busca* da bottom-bar abre. Um botão só, dois lugares.
   carta inteira, mais lenta.
 - Em dev (sem `/api/search` nem manifest) a busca só vê o catálogo do jogo da
   sessão; o teste real é no preview/produção.
+
+**Medição de 2026-09-29: One Piece, Gundam e Lorcana.** Em campo o scanner
+acertava Magic e Pokémon e quase nenhum dos outros. Reproduzido com as imagens
+oficiais das cartas (8 One Piece, 7 Gundam, 9 Lorcana, 4 Magic, 4 Pokémon)
+passadas por uma "foto" simulada — desfoque, 1,5° de inclinação, contraste
+baixo, ruído e JPEG — e o `ler()` sem a interface:
+
+| | One Piece | Gundam | Lorcana | Magic | Pokémon |
+|---|---|---|---|---|---|
+| antes | 2/8 | 1/7 | 7/9 | 3/4 | 1/4 |
+| depois | 5/8 | 7/7 | 7/9 | 3/4 | 2/4 |
+
+(Com as imagens limpas, sem a "foto": One Piece 3→7/8, Gundam 1→5/7,
+Lorcana 7→9/9.) As causas, todas do lado da extração e do recorte:
+
+- **Gundam**: o código fica no ALTO da carta e nenhum passe lia o topo de
+  perto — só a carta inteira, em escala baixa. E a fonte dele sai do OCR como
+  `6001-110` / `G001-001` / `S002-030` (G→6/S/C, D→0): começando por dígito,
+  nem virava candidato. Agora vira `GD01-…` e o canto de cima é lido.
+- **One Piece**: o "O" inicial e o zero do set somem (`P01-016`, `OP3-040`), a
+  raridade e o contador de DON grudam no número (`OP07-05163`, `ST10-00308`)
+  e às vezes some um zero do número (`OP11-80`, que não casa com `OP11-080`
+  guardado inteiro). A regex parava em 4 dígitos e descartava.
+- **Lorcana**: bug de busca, não de OCR — "1 11" (set 1, carta 11) colado dava
+  "111" e casava a carta 111 do set 1, posta na frente como "exata".
+- **Onde** o código foi lido virou pista do jogo: no topo é Gundam; no rodapé
+  não é. O `ST10-003` do One Piece voltava como carta do Gundam.
+
+O que sobra: dígito trocado sob desfoque (`OP05-119` → `OP00-119`, Lorcana
+`76` → `16`), o `ST10-003` do One Piece lido `ST10-03` (formato do Digimon) e
+o Pokémon SWSH `100/195`, que nenhuma versão lê. O banco de imagens não está
+no repositório (imagens das editoras); fica em `data/.cache/scan-test/` de
+quem mediu.
 
 ## Fase 1.5 — afinar com dados reais
 
