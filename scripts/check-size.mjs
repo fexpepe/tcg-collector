@@ -102,8 +102,17 @@ import { join } from "node:path";
 // sem tirar o bloco de lojas inteiro do núcleo (MARKETS, buscas da Liga/MYP,
 // tabela da Classic Collection), que é o candidato da próxima vez que estourar.
 // 1 KB de folga, como das outras vezes.
+//
+// 2026-09-29: teto do shared.js sobe de 82.944 pra 83.968. A main estava a 114
+// bytes gz do teto, e o progresso de set contando a mesma carta em outra
+// língua (EN↔PT) custa ~210 bytes gz: a chave sameCardKey, o índice da
+// coleção, otherLanguageOwned e a preferência — usados pela lista de sets
+// (app.js) e pela página do set (detail.js), por isso no núcleo. A parte que
+// só a página do set usa (selo âmbar e véu do tile) saiu do variantTile pro
+// detail.js antes de subir o teto: ela sozinha levava mais ~250 bytes gz.
+// O bloco de lojas do preview segue como candidato a sair do núcleo.
 const TETOS = [
-  { arquivo: "shared.js", teto: 82944, nota: "núcleo JS de toda página" },
+  { arquivo: "shared.js", teto: 83968, nota: "núcleo JS de toda página" },
   { arquivo: "styles.min.css", teto: 33792, nota: "núcleo do CSS, depois do split por área" },
 ];
 
