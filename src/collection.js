@@ -1372,7 +1372,7 @@
     const priceHtml = val > 0 ? `<p class="tile-price sale-price-tag">${escapeHtml(shared.formatMoney(shared.getCurrency(), val))}</p>` : "";
     const badge = `<span class="graded-badge" style="--slab-bg:${bg};--slab-fg:${fg}">${escapeHtml((it.company || "").toUpperCase())} ${escapeHtml(shared.gradedGradeText(it.grade, it.pristine))}</span>`;
     const removeBtn = editable
-      ? `<button type="button" class="tile-btn sale-remove" data-graded-remove title="${escapeAttribute(t("graded.remove"))}" aria-label="${escapeAttribute(t("graded.remove"))}">✕</button>`
+      ? `<button type="button" class="tile-btn sale-remove" data-graded-remove title="${escapeAttribute(t("graded.remove"))}" aria-label="${escapeAttribute(t("graded.remove"))}">${shared.CLOSE_ICON}</button>`
       : "";
     const wrap = document.createElement("div");
     wrap.innerHTML = `<article class="card-tile graded-tile graded-grid-tile tile-compact" data-graded-gid="${escapeAttribute(it.gid)}">

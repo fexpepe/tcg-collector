@@ -1342,7 +1342,7 @@
     modal.innerHTML = `
       <div class="card-preview-backdrop" data-edit-close></div>
       <div class="card-preview-panel binder-editor-panel" role="dialog" aria-modal="true" aria-label="${escapeAttribute(t("binders.editor.title"))}">
-        <button type="button" class="preview-close" data-edit-close aria-label="${escapeAttribute(t("binders.cancel"))}">×</button>
+        <button type="button" class="preview-close" data-edit-close aria-label="${escapeAttribute(t("binders.cancel"))}">${shared.CLOSE_ICON}</button>
         <div class="binder-editor-body">
           <h2>${escapeHtml(t("binders.editor.title"))}</h2>
           <div class="binder-editor-tabs" role="tablist">

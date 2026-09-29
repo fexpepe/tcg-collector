@@ -220,7 +220,6 @@
     tag: svg('<path d="M20.6 13.4l-7.2 7.2a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.5"/>'),
     swap: svg('<path d="M4 7h15l-4-4M20 17H5l4 4"/>'),
     link: svg('<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>'),
-    x: svg('<path d="M6 6l12 12M18 6 6 18"/>', ' width="14" height="14"'),
     up: svg('<path d="M12 19V5M5 12l7-7 7 7"/>', ' width="15" height="15"'),
     down: svg('<path d="M12 5v14M5 12l7 7 7-7"/>', ' width="15" height="15"'),
     more: '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>',
@@ -702,7 +701,7 @@
     return `<article class="card-tile sale-tile" data-sale-card="${escA(card.id)}" data-sale-variant="${escA(it.variant)}" data-sale-idx="${it.idx}">
       <div class="card-image">
         <button type="button" class="image-open" data-preview-card-id="${escA(card.id)}" data-preview-variant="${escA(it.variant)}" aria-label="${escA(t("card.zoom", { name: card.name }))}">${img}</button>
-        <button type="button" class="sale-remove" data-sale-remove title="${escA(t("sales.remove"))}" aria-label="${escA(t("sales.remove"))}">${IC.x}</button>
+        <button type="button" class="sale-remove" data-sale-remove title="${escA(t("sales.remove"))}" aria-label="${escA(t("sales.remove"))}">${shared.CLOSE_ICON}</button>
       </div>
       <div class="tile-info">
         <h3>${esc(card.name)}</h3>
@@ -773,7 +772,7 @@
     modal.innerHTML = `<div class="sales-picker-backdrop" data-sold-close></div>
       <section class="sales-picker-panel sold-confirm-panel" role="dialog" aria-modal="true" aria-label="${escA(t("sales.sold.title"))}">
         <header class="sales-picker-head"><strong>${esc(t("sales.sold.title"))}</strong>
-          <button type="button" class="preview-close" data-sold-close aria-label="${escA(t("modal.close"))}">×</button></header>
+          <button type="button" class="preview-close" data-sold-close aria-label="${escA(t("modal.close"))}">${shared.CLOSE_ICON}</button></header>
         <div class="sold-confirm-body">
           <div class="sold-confirm-card">
             <span class="sold-confirm-thumb">${img}</span>
@@ -901,7 +900,7 @@
         <span class="sold-price">${esc(shared.formatMoney(cur, price))}${v.fee > 0
           ? `<small class="sold-fee" title="${escA(t("sales.sold.feeHint", { v: shared.formatMoney(cur, v.fee) }))}">−${esc(shared.formatMoney(cur, v.fee))}</small>` : ""}</span>
         ${pnlHtml}
-        <button type="button" class="sale-remove sold-del" data-sold-del title="${escA(t("sales.sold.delete"))}" aria-label="${escA(t("sales.sold.delete"))}">${IC.x}</button>
+        <button type="button" class="sale-remove sold-del" data-sold-del title="${escA(t("sales.sold.delete"))}" aria-label="${escA(t("sales.sold.delete"))}">${shared.CLOSE_ICON}</button>
       </div>`;
     }).join("");
     listEl.innerHTML = `<div class="sold-row sold-row-head">
@@ -991,7 +990,7 @@
     modal.innerHTML = `<div class="sales-picker-backdrop" data-sales-picker-close></div>
       <section class="sales-picker-panel" role="dialog" aria-modal="true" aria-label="${escA(titulo)}">
         <header class="sales-picker-head"><strong>${esc(titulo)}</strong>
-          <button type="button" class="preview-close" data-sales-picker-close aria-label="${escA(t("modal.close"))}">×</button></header>
+          <button type="button" class="preview-close" data-sales-picker-close aria-label="${escA(t("modal.close"))}">${shared.CLOSE_ICON}</button></header>
         <div class="sales-picker-controls vnd-picker-controls">
           <input type="search" class="sales-picker-search" placeholder="${escA(t("search.placeholder.cards"))}" aria-label="${escA(t("search.placeholder.cards"))}">
           ${gameField}

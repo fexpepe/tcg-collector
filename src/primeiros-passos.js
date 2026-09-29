@@ -95,7 +95,7 @@
       <div class="pp-head">
         <h2>${escapeHtml(t("pp.title"))}</h2>
         <span class="pp-count">${escapeHtml(t("pp.count", { n: feitos, total: itens.length }))}</span>
-        <button type="button" class="pp-x" data-pp-off aria-label="${escapeAttribute(t("pp.dismiss"))}" title="${escapeAttribute(t("pp.dismiss"))}">×</button>
+        <button type="button" class="pp-x" data-pp-off aria-label="${escapeAttribute(t("pp.dismiss"))}" title="${escapeAttribute(t("pp.dismiss"))}">${shared.CLOSE_ICON}</button>
       </div>
       <ol class="pp-list">${itens.map(linha).join("")}</ol>`;
   }

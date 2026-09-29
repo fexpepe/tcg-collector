@@ -81,7 +81,7 @@
     return `<article class="card-tile graded-tile" data-graded-gid="${escapeAttribute(it.gid)}">
       <div class="card-image">
         <button type="button" class="image-open" data-preview-card-id="${escapeAttribute(card.id)}" data-preview-variant="${escapeAttribute(it.variant)}" data-graded-company="${escapeAttribute(it.company)}" data-graded-grade="${escapeAttribute(it.grade)}" data-graded-pristine="${it.pristine ? "1" : ""}" aria-label="${escapeAttribute(t("card.zoom", { name: card.name }))}">${img}</button>
-        <button type="button" class="sale-remove" data-graded-remove title="${escapeAttribute(t("graded.remove"))}" aria-label="${escapeAttribute(t("graded.remove"))}">✕</button>
+        <button type="button" class="sale-remove" data-graded-remove title="${escapeAttribute(t("graded.remove"))}" aria-label="${escapeAttribute(t("graded.remove"))}">${shared.CLOSE_ICON}</button>
       </div>
       <div class="tile-info">
         <h3>${escapeHtml(card.name)}</h3>
@@ -200,7 +200,7 @@
     modal.innerHTML = `<div class="sales-picker-backdrop" data-graded-picker-close></div>
       <section class="sales-picker-panel" role="dialog" aria-modal="true" aria-label="${escapeAttribute(t("graded.add"))}">
         <header class="sales-picker-head"><strong>${escapeHtml(t("graded.add"))}</strong>
-          <button type="button" class="preview-close" data-graded-picker-close aria-label="${escapeAttribute(t("modal.close"))}">×</button></header>
+          <button type="button" class="preview-close" data-graded-picker-close aria-label="${escapeAttribute(t("modal.close"))}">${shared.CLOSE_ICON}</button></header>
         <div class="sales-picker-controls">
           <div class="chip-filter game-filter" id="gradedPickerGame" role="group" aria-label="Jogo">
             <button type="button" class="chip" data-pick-game="all" aria-pressed="${pickGame === "all"}">${escapeHtml(t("filter.gameAll"))}</button>

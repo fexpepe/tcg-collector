@@ -1515,13 +1515,17 @@ input::placeholder {
   width: 26px; height: 26px; min-height: 26px; padding: 0; border-radius: 50%;
   border: 1px solid var(--line); background: var(--panel); color: var(--subtle);
   display: flex; align-items: center; justify-content: center; cursor: pointer;
-  font-size: 13px; line-height: 1; box-shadow: var(--shadow); opacity: 0;
+  box-shadow: var(--shadow); opacity: 0;
   transition: opacity 120ms ease;
 }
 .sale-tile:hover .sale-remove, .sale-tile:focus-within .sale-remove,
 .graded-tile:hover .sale-remove, .graded-tile:focus-within .sale-remove { opacity: 1; }
 @media (hover: none) { .sale-tile .sale-remove, .graded-tile .sale-remove { opacity: 1; } }
 .sale-tile .sale-remove:hover, .graded-tile .sale-remove:hover { color: #d8443c; border-color: #d8443c; }
+/* O X (shared.CLOSE_ICON) no tamanho dos ícones dos tiles: 16px, como o +/−.
+   Vale pra todo .sale-remove: tiles de venda e graded, linha compacta do slab
+   e o histórico de vendidos (.sold-del). */
+.sale-remove svg { width: 16px; height: 16px; }
 
 /* Slab sintetizado (aba Graded da Coleção): etiqueta colorida da graduadora
    sobre o topo da arte (sem foto) + moldura. As cores vêm de --slab-bg/--slab-fg
@@ -3245,7 +3249,6 @@ input::placeholder {
   background: var(--panel);
   color: var(--text);
   box-shadow: var(--shadow-pop);
-  font-size: 0;        /* esconde o glifo "×" do HTML; o X é desenhado abaixo */
   padding: 0;
   cursor: pointer;
 }
@@ -3255,22 +3258,17 @@ input::placeholder {
   border-color: var(--accent);
 }
 
-/* X desenhado em CSS (2 traços iguais): centralizado e simétrico, sem depender
-   da métrica do glifo "×" (que renderiza alto/estreito e deixava o botão com
-   cara de oval). Vale pro fechar de todos os modais (.preview-close e .ts-close). */
-.preview-close::before, .preview-close::after,
-.ts-close::before, .ts-close::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 14px;
-  height: 2px;
-  border-radius: 1px;
-  background: currentColor;
-}
-.preview-close::before, .ts-close::before { transform: translate(-50%, -50%) rotate(45deg); }
-.preview-close::after, .ts-close::after { transform: translate(-50%, -50%) rotate(-45deg); }
+/* O X de todo botão de fechar/remover é o SVG único do shared.js (CLOSE_ICON,
+   2026-09-29). Os fechar de modal escondiam o glifo "×" (font-size: 0) e
+   desenhavam o X com ::before/::after, porque o glifo renderizava alto/estreito
+   e deixava o botão com cara de oval — o SVG já nasce centralizado e simétrico.
+   flex: none + max-width: none porque o reset de mídia (svg { max-width: 100% })
+   espremia o ícone nos botões que ainda carregam o padding de texto da base de
+   <button>: .pp-x, .ts-close, .ios-sheet-x e .sold-del têm 0–8px de caixa de
+   conteúdo, e o X transborda dela centralizado, como o glifo fazia. */
+.close-icon { flex: none; max-width: none; }
+/* 20px com o traço 2.4 do ícone = o X de antes (dois traços de 14×2px). */
+.preview-close svg, .ts-close svg { width: 20px; height: 20px; }
 
 /* Coluna da esquerda do preview: carta + "Detalhes da carta" embaixo dela.
    Os detalhes moraram na coluna da direita até 2026-08-07; passaram pra cá
@@ -5030,7 +5028,7 @@ a.hub-tile:active { box-shadow: 0 0 0 2px var(--accent); }
 .ts-close {
   position: absolute; top: 14px; right: 16px; width: 36px; height: 36px; min-width: 36px; min-height: 36px;
   flex: none; aspect-ratio: 1; border-radius: 50%; border: 1px solid var(--line);
-  background: var(--panel); color: var(--text); font-size: 0; cursor: pointer;
+  background: var(--panel); color: var(--text); cursor: pointer;
 }
 .ts-close:hover { color: var(--accent); border-color: var(--accent); }
 .ts-panel h2 { margin: 0 8px 10px 0; font-size: 22px; }
@@ -7676,6 +7674,7 @@ button.dash-link { width: 100%; min-height: 0; justify-content: flex-start; text
 .pf-mi-actions { flex: none; display: flex; gap: 4px; }
 .pf-mi-btn { min-height: 30px; min-width: 30px; padding: 0; border: 1px solid var(--line); border-radius: 8px; background: none; color: var(--muted); font-size: 14px; }
 .pf-mi-btn:hover { border-color: var(--accent); color: var(--accent); }
+.pf-mi-btn svg { width: 14px; height: 14px; } /* o X de remover (o font-size acima é do ✎) */
 .pf-mi-total { margin: 10px 0 0; font-size: 14px; }
 .pf-mi-total strong { font-variant-numeric: tabular-nums; }
 .pf-mi-note { margin: 6px 0 0; font-size: 12px; color: var(--subtle); }
@@ -11522,11 +11521,15 @@ select,
 .card-tile.tile-compact .tile-minus[hidden] { display: inline-flex; visibility: hidden; }
 /* Slab (graded) no modo compacto: mesma linha das cartas comuns. Tira a
    moldura/sombra do tile graded (linha não tem borda), o badge "PSA 9" ocupa
-   a coluna da variante sem virar faixa, e o ✕ de remover deixa de ser o botão
-   flutuante do canto da imagem (não há imagem) e vira um botão da fileira. */
+   a coluna da variante sem virar faixa, e o X de remover deixa de ser o botão
+   flutuante do canto da imagem (não há imagem) e vira um botão da fileira.
+   Sem width/height aqui (2026-09-29): o `width: auto` que desfazia os 26px do
+   botão flutuante também desfazia os 34px do .tile-btn, e no desktop o botão
+   ficava da largura do glifo — um oval de 12×34. Assim ele pega o tamanho dos
+   outros botões da linha (34×34; 42×44 no toque). */
 .card-tile.graded-tile.tile-compact { border-color: var(--line); box-shadow: none; }
 .card-tile.graded-tile.tile-compact .tile-c-var .graded-badge { flex: none; margin-left: 0; padding: 1px 8px; font-size: 11px; }
-.card-tile.graded-tile.tile-compact .sale-remove { position: static; opacity: 1; width: auto; height: auto; }
+.card-tile.graded-tile.tile-compact .sale-remove { position: static; opacity: 1; }
 
 /* O "+ Lista" fica no canto OPOSTO ao +, como pediram: primeiro da fileira,
    empurrando os outros pra direita. No tile normal ele é o 1º do rodapé. */
@@ -11576,8 +11579,7 @@ select,
   border-bottom: 1px solid var(--line); background: var(--surface);
 }
 .list-menu-head h3 { margin: 0; font-size: 15px; }
-/* relative, não static: o X é desenhado por ::before/::after absolutos e
-   precisa do botão como referência. top/right zerados porque no celular a
+/* No fluxo do cabeçalho, não no canto. top/right zerados porque no celular a
    regra do .preview-close (fixed no canto) ainda aplica os deslocamentos. */
 .list-menu-sheet .preview-close { position: relative; top: auto; right: auto; box-shadow: none; }
 .list-menu-sheet .list-menu-item { min-height: 40px; font-size: 14px; }
@@ -11683,6 +11685,7 @@ select,
 .trade-val { flex: none; width: 96px; height: 36px; padding: 0 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); color: var(--text); font-size: 16px; text-align: right; font-variant-numeric: tabular-nums; }
 .trade-rm { flex: none; min-height: 30px; min-width: 30px; padding: 0; border: 1px solid var(--line); border-radius: 8px; background: none; color: var(--muted); }
 .trade-rm:hover { border-color: #d8443c; color: #ff6b5e; }
+.trade-rm svg { width: 14px; height: 14px; } /* mesmo X do .pf-mi-btn (botão gêmeo) */
 .trade-total { display: flex; justify-content: space-between; margin: 12px 0 0; font-size: 14px; color: var(--muted); }
 .trade-total strong { font-size: 18px; color: var(--text); font-variant-numeric: tabular-nums; }
 /* O veredito é a resposta da página — cor + texto (a seta do histórico cobre
@@ -11801,7 +11804,8 @@ select,
   box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.45);
 }
 .ios-sheet-panel h2 { margin: 0 0 14px; font-size: 17px; }
-.ios-sheet-x { position: absolute; top: 8px; right: 8px; width: 40px; height: 40px; background: none; border: 0; color: var(--muted); font-size: 22px; line-height: 1; }
+.ios-sheet-x { position: absolute; top: 8px; right: 8px; width: 40px; height: 40px; background: none; border: 0; color: var(--muted); }
+.ios-sheet-x svg { width: 18px; height: 18px; }
 .ios-sheet-steps { margin: 0; padding: 0; list-style: none; display: grid; gap: 12px; }
 .ios-sheet-steps li { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--text); }
 .ios-sheet-n {
@@ -11996,9 +12000,10 @@ select,
 .pp-count { font-size: 12px; color: var(--subtle); font-variant-numeric: tabular-nums; }
 .pp-x {
   margin-left: auto; border: 0; background: none; color: var(--subtle); cursor: pointer;
-  font-size: 20px; line-height: 1; width: 32px; height: 32px; border-radius: 8px; flex: none;
+  width: 32px; height: 32px; border-radius: 8px; flex: none;
 }
 .pp-x:hover { color: var(--text); background: var(--panel-strong); }
+.pp-x svg { width: 16px; height: 16px; }
 .pp-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
 .pp-go {
   display: flex; align-items: center; gap: 12px; width: 100%; text-align: left;

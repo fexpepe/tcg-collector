@@ -1032,7 +1032,7 @@
         <strong class="pf-mi-val sensitive-value">${escapeHtml(money(total))}</strong>
         <span class="pf-mi-actions">
           <button type="button" class="pf-mi-btn" data-mi-edit title="${escapeAttribute(t("pfmi.edit"))}" aria-label="${escapeAttribute(t("pfmi.edit"))}">✎</button>
-          <button type="button" class="pf-mi-btn" data-mi-remove title="${escapeAttribute(t("pfmi.remove"))}" aria-label="${escapeAttribute(t("pfmi.remove"))}">×</button>
+          <button type="button" class="pf-mi-btn" data-mi-remove title="${escapeAttribute(t("pfmi.remove"))}" aria-label="${escapeAttribute(t("pfmi.remove"))}">${shared.CLOSE_ICON}</button>
         </span>
       </div>`;
     };
