@@ -173,7 +173,7 @@
       <select class="trade-cond" data-tr-cond aria-label="${escapeAttribute(t("trade.cond"))}">${conds}</select>
       <input class="trade-qty" data-tr-qty type="number" min="1" step="1" value="${Number(item.q) || 1}" aria-label="${escapeAttribute(t("trade.qty"))}">
       <input class="trade-val sensitive-value" data-tr-val type="text" inputmode="decimal" value="${escapeAttribute(fmtNum(item.v))}" aria-label="${escapeAttribute(t("trade.value"))}">
-      <button type="button" class="trade-rm" data-tr-rm title="${escapeAttribute(t("trade.remove"))}" aria-label="${escapeAttribute(t("trade.remove"))}">×</button>
+      <button type="button" class="trade-rm" data-tr-rm title="${escapeAttribute(t("trade.remove"))}" aria-label="${escapeAttribute(t("trade.remove"))}">${shared.CLOSE_ICON}</button>
     </div>`;
   }
   function render() {
@@ -258,7 +258,7 @@
         <span class="trade-hsum">${escapeHtml(tn("trade.nCards", (h.give || []).length))} → ${escapeHtml(tn("trade.nCards", (h.get || []).length))}</span>
         <span class="trade-hvals sensitive-value">${escapeHtml(`${money(h.tg)} × ${money(h.tr)}`)}</span>
         <span class="trade-hverdict">${seta}</span>
-        <button type="button" class="trade-rm" data-h-rm="${i}" title="${escapeAttribute(t("trade.remove"))}" aria-label="${escapeAttribute(t("trade.remove"))}">×</button>
+        <button type="button" class="trade-rm" data-h-rm="${i}" title="${escapeAttribute(t("trade.remove"))}" aria-label="${escapeAttribute(t("trade.remove"))}">${shared.CLOSE_ICON}</button>
       </div>`;
     }).join("");
   }

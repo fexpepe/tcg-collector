@@ -1967,7 +1967,7 @@
       overlay.innerHTML = `<div class="cmdk-panel" role="dialog" aria-modal="true" aria-labelledby="cmdkTitle">
           <div class="cmdk-head">
             <h2 class="cmdk-title" id="cmdkTitle">${escapeHtml(t("cmdk.title"))}</h2>
-            <button type="button" class="cmdk-close" data-cmdk-close aria-label="${escapeAttribute(t("modal.close"))}" title="${escapeAttribute(t("modal.close"))}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+            <button type="button" class="cmdk-close" data-cmdk-close aria-label="${escapeAttribute(t("modal.close"))}" title="${escapeAttribute(t("modal.close"))}">${CLOSE_ICON}</button>
           </div>
           <label class="cmdk-field">
             <svg class="cmdk-field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
@@ -2451,7 +2451,7 @@
     el.className = "ios-sheet";
     el.innerHTML = `<div class="ios-sheet-backdrop" data-ios-close></div>
       <section class="ios-sheet-panel" role="dialog" aria-modal="true" aria-label="${escapeAttribute(t("pwa.ios.title"))}">
-        <button type="button" class="ios-sheet-x" data-ios-close aria-label="${escapeAttribute(t("modal.close"))}">×</button>
+        <button type="button" class="ios-sheet-x" data-ios-close aria-label="${escapeAttribute(t("modal.close"))}">${CLOSE_ICON}</button>
         <h2>${escapeHtml(t("pwa.ios.title"))}</h2>
         <ol class="ios-sheet-steps">
           <li><span class="ios-sheet-n">1</span> ${escapeHtml(t("pwa.ios.step1"))} <span class="ios-sheet-icon" aria-hidden="true">&#x2934;</span></li>
@@ -6448,7 +6448,7 @@
       modal.innerHTML = `
         <div class="card-preview-backdrop" data-preview-close></div>
         <section class="card-preview-panel" role="dialog" aria-modal="true" aria-label="${escapeAttribute(activeCard.name)}">
-          <button class="preview-close" data-preview-close aria-label="${escapeAttribute(t("modal.close"))}">×</button>
+          <button class="preview-close" data-preview-close aria-label="${escapeAttribute(t("modal.close"))}">${CLOSE_ICON}</button>
           <!-- Compartilhar: mesmo círculo do X, à esquerda dele (2026-09-22).
                Só o ícone; o "Link copiado!" é um balão embaixo do botão. -->
           <button type="button" class="preview-share" data-preview-share aria-label="${escapeAttribute(t("modal.share"))}" title="${escapeAttribute(t("modal.share"))}">${TILE_ICONS.share}<span class="sr-only">${escapeHtml(t("modal.share"))}</span></button>
@@ -7586,6 +7586,19 @@
     list: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h11"/><path d="M4 12h11"/><path d="M4 18h7"/><path d="M17.5 15v6"/><path d="M14.5 18h6"/></svg>'
   };
 
+  // O X de fechar/remover — UM só pro site inteiro (2026-09-29). Os botões
+  // desenhavam o glifo "×"/"✕" em texto, contra a regra de ícone em SVG: o ✕
+  // nem existe na Outfit (sai da fonte de símbolos de cada sistema, com outro
+  // tamanho e outro traço), e os fechar de modal escondiam o "×" com
+  // font-size: 0 pra desenhar o X em ::before/::after. Traço 2.4, o mesmo do
+  // +/− dos tiles: a 20px (fechar de modal) dá exatamente o X de 2px que o CSS
+  // desenhava; a 16px (remover do tile) fica com o peso do +/− do lado.
+  // O tamanho mora no CSS de cada botão (`.botão svg { width; height }`). A
+  // classe tira o max-width: 100% do reset de mídia: em botão que ainda
+  // carrega o padding de texto da base de <button> (.pp-x, .ts-close…), a
+  // caixa de conteúdo tem 0–8px e o ícone sumia espremido.
+  const CLOSE_ICON = '<svg class="close-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>';
+
   function variantSlug(variant) {
     return normalize(variant).replace(/\s+/g, "-");
   }
@@ -7919,7 +7932,7 @@
     box.setAttribute("role", "dialog");
     box.setAttribute("aria-label", t("tile.addToList"));
     box.innerHTML = `
-      ${sheet ? `<div class="list-menu-head"><h3>${escapeHtml(t("tile.addToList"))}</h3><button type="button" class="preview-close list-menu-close" data-lm-close aria-label="${escapeAttribute(t("modal.close"))}">×</button></div>` : ""}
+      ${sheet ? `<div class="list-menu-head"><h3>${escapeHtml(t("tile.addToList"))}</h3><button type="button" class="preview-close list-menu-close" data-lm-close aria-label="${escapeAttribute(t("modal.close"))}">${CLOSE_ICON}</button></div>` : ""}
       ${lists.length ? lists.map((l) => `
         <button type="button" class="list-menu-item${marcadas.has(l.id) ? " is-on" : ""}" data-lm-toggle="${escapeAttribute(l.id)}">
           <span class="list-menu-dot" style="background:${escapeAttribute(safeColor(l.color) || "#3b6fe0")}"></span>
@@ -10198,7 +10211,8 @@
     escapeHtml,
     escapeAttribute,
     safeColor,
-    speciesName
+    speciesName,
+    CLOSE_ICON // o X de todo botão de fechar/remover (ver a definição)
   };
 
   // ===========================================================================
@@ -11757,7 +11771,7 @@
     modal.innerHTML = `
       <div class="ts-backdrop" data-ts-close></div>
       <section class="ts-panel" role="dialog" aria-modal="true" aria-labelledby="tsTitle">
-        <button type="button" class="ts-close" data-ts-close aria-label="${escapeAttribute(t("modal.close"))}">×</button>
+        <button type="button" class="ts-close" data-ts-close aria-label="${escapeAttribute(t("modal.close"))}">${CLOSE_ICON}</button>
         <h2 id="tsTitle">${escapeHtml(t("ts.title"))}</h2>
         <p class="ts-intro">${escapeHtml(t("ts.intro", { version: APP_VERSION }))}</p>
         <p class="ts-hint">${escapeHtml(t("ts.cacheHint"))}</p>

@@ -157,7 +157,7 @@
     <div class="uie-head" data-uie-drag>
       <strong>UI Editor</strong>
       <span class="uie-badge">beta</span>
-      <button type="button" class="uie-x" data-uie-close title="Fechar (desliga o modo)">×</button>
+      <button type="button" class="uie-x" data-uie-close title="Fechar (desliga o modo)">${window.TCGShared.CLOSE_ICON}</button>
     </div>
     <div class="uie-struct">
       <label class="uie-chk"><input type="checkbox" data-uie-pref="grid"> Grade</label>
@@ -200,7 +200,9 @@
   #${PANEL_ID}{position:fixed;top:76px;right:16px;z-index:9999;width:300px;background:var(--panel,#181b22);border:1px solid var(--line,#2d333f);border-radius:12px;box-shadow:0 16px 40px rgba(0,0,0,.4);color:var(--text,#f3f5f7);font-size:12px}
   #${PANEL_ID} .uie-head{display:flex;align-items:center;gap:8px;padding:10px 12px;cursor:grab;border-bottom:1px solid var(--line,#2d333f)}
   #${PANEL_ID} .uie-badge{font-size:10px;background:var(--accent,#e23030);color:#fff;border-radius:999px;padding:1px 7px}
-  #${PANEL_ID} .uie-x{margin-left:auto;background:none;border:none;color:inherit;font-size:16px;cursor:pointer}
+  /* X em SVG (shared.CLOSE_ICON): 13px + 6px de cada lado = os mesmos 25px de largura do glifo "×" de antes */
+  #${PANEL_ID} .uie-x{margin-left:auto;background:none;border:none;color:inherit;padding:6px;cursor:pointer}
+  #${PANEL_ID} .uie-x svg{width:13px;height:13px}
   #${PANEL_ID} .uie-struct{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:8px 12px;border-bottom:1px solid var(--line,#2d333f)}
   #${PANEL_ID} .uie-chk{display:inline-flex;align-items:center;gap:4px;color:var(--muted,#9ba4b3);cursor:pointer;user-select:none}
   #${PANEL_ID} .uie-step{width:44px}

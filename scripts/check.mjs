@@ -102,6 +102,24 @@ for (const arquivo of srcFiles) {
   });
 }
 
+// 2d) Botão de fechar/remover com o GLIFO "×"/"✕" está banido (regra do
+//     CLAUDE.md: ícone em SVG, nunca glifo de texto em botão). O "✕" nem existe
+//     na Outfit — sai da fonte de símbolos de cada sistema, com outro tamanho e
+//     outro traço —, e o "×" dos modais vivia escondido com font-size: 0 pra um
+//     X em ::before/::after desenhar por cima. Os 15 que restavam viraram o
+//     shared.CLOSE_ICON em 2026-09-29; sem esta guarda o próximo "×" volta
+//     copiado de um template antigo. Varre o texto inteiro (não linha a linha):
+//     `[^>]*` e `\s*` atravessam quebra de linha, então botão em várias linhas
+//     também é pego.
+const GLIFO_X = /<button\b[^>]*>\s*(?:×|✕|✖|&times;|&#215;|&#x2715;)\s*<\/button>/g;
+for (const arquivo of [...srcFiles, ...htmlFiles]) {
+  const texto = read(arquivo);
+  for (const m of texto.matchAll(GLIFO_X)) {
+    const linha = texto.slice(0, m.index).split("\n").length;
+    fail(`${arquivo}:${linha}: botão com o glifo "×"/"✕" — use shared.CLOSE_ICON (SVG)`);
+  }
+}
+
 // 3) Paridade pt/en — toda chave deve existir nos dois idiomas.
 for (const k of ptKeys) if (!enKeys.has(k)) fail(`i18n: "${k}" existe em pt mas falta em en`);
 for (const k of enKeys) if (!ptKeys.has(k)) fail(`i18n: "${k}" existe em en mas falta em pt`);
