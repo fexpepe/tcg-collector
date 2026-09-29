@@ -1106,7 +1106,7 @@
     const rows = (u.top || []).map((x, i) => `<tr>
       <td class="num">${i + 1}</td>
       <td><span class="adm-mono">${esc(x.id)}</span>${x.handle ? `<br><a href="/users/${esc(encodeURIComponent(x.handle))}">@${esc(x.handle)}</a>` : ""}</td>
-      <td>${(x.jogos || []).map(gameChip).join(" ")}</td>
+      <td><span class="adm-games">${(x.jogos || []).map(gameChip).join("")}</span></td>
       <td class="num"><strong>${esc(brl(x.valor))}</strong>${x.valor_graded ? `<br><small>${esc(brl(x.valor_graded))} graduadas</small>` : ""}</td>
       <td class="num">${esc(fmt(x.copias))}<br><small>${esc(fmt(x.distintas))} distintas</small></td>
       <td class="num">${esc(fmt(x.desejos))}</td>
@@ -1515,7 +1515,7 @@ if (v === "b") { /* versão nova */ }</pre>
         root.innerHTML = `<p class="empty-state">Acesso restrito — entre com a conta de admin.</p>`;
         return;
       }
-      root.innerHTML = `<div class="adm-toolbar" id="admToolbar"></div><div id="admBody"></div><p class="admin-note" id="admNote"></p>`;
+      root.innerHTML = `<div class="adm-toolbar" id="admToolbar"></div><div id="admBody" class="adm-body"></div><p class="admin-note" id="admNote"></p>`;
       root.addEventListener("click", onClick);
       root.addEventListener("submit", onSubmit);
     }

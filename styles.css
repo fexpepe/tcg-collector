@@ -5222,13 +5222,26 @@ a.setting-open {
 .profile-hint { font-size: 13px; color: var(--muted); line-height: 1.5; margin: 0; }
 
 /* --- Painel admin (admin.html) --- */
-.admin-page { display: flex; flex-direction: column; gap: 20px; }
+/* Ritmo único (2026-09-29): tudo o que empilha no painel — linha de cartões,
+   seção, grade de seções — respira o MESMO --adm-gap. O corpo da aba
+   (#admBody.adm-body) não era flex: a gap da .admin-page só valia entre a
+   barra, o corpo e o rodapé, e dentro da aba as seções e as linhas de
+   cartões encostavam umas nas outras. */
+.admin-page { --adm-gap: 16px; display: flex; flex-direction: column; gap: 20px; }
+.adm-body { display: flex; flex-direction: column; gap: var(--adm-gap); min-width: 0; }
 .admin-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(132px, 1fr)); gap: 12px; }
-.admin-stat { border: 1px solid var(--line); border-radius: 12px; background: var(--panel); padding: 14px 16px; display: flex; flex-direction: column; gap: 2px; }
-.admin-stat-val { font-size: 26px; font-weight: 800; letter-spacing: -0.4px; }
-.admin-stat-label { font-size: 12px; color: var(--muted); }
-.admin-section { border: 1px solid var(--line); border-radius: 14px; background: var(--panel); padding: 16px 18px; }
-.admin-section h2 { font-size: 15px; margin: 0 0 12px; }
+/* O número acompanha a largura do cartão (container query): com 8 cartões
+   por linha, "R$ 612.400" quebrava em "R$" / "612.400". Todos os cartões de
+   uma linha têm a mesma largura, então o tamanho segue uniforme na linha.
+   16cqi é o maior que ainda cabe "R$ 4.360.000" (6,2em na Outfit 800). */
+.admin-stat { border: 1px solid var(--line); border-radius: 12px; background: var(--panel); padding: 16px 18px; display: flex; flex-direction: column; gap: 4px; min-width: 0; container-type: inline-size; }
+.admin-stat-val { font-size: 24px; font-size: clamp(16px, 16cqi, 28px); font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; white-space: nowrap; }
+.admin-stat-label { font-size: 12.5px; color: var(--muted); line-height: 1.3; margin-top: 2px; }
+.admin-section { border: 1px solid var(--line); border-radius: 14px; background: var(--panel); padding: 18px 20px; min-width: 0; }
+.admin-section h2 { font-size: 15px; margin: 0 0 14px; }
+/* O p global zera só o margin-top: sem isto a nota colava no gráfico acima
+   (e a de baixo herdava 1em sobrando). */
+.admin-section .admin-note { margin: 12px 0 0; }
 .admin-chart svg { width: 100%; height: 160px; display: block; }
 .admin-table { width: 100%; border-collapse: collapse; font-size: 14px; }
 .admin-table th, .admin-table td { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--line); }
@@ -5242,14 +5255,24 @@ a.setting-open {
    "robô") e da cor de marca de cada jogo; as classes .adm-bar-*/.adm-swatch-*
    existem pra barra e legenda pintarem sempre com a MESMA fonte de cor. */
 .admin-page .page-head { margin-bottom: 8px; }
-.adm-toolbar { display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; align-items: center; }
-.adm-tabs, .adm-period { display: flex; flex-wrap: wrap; gap: 6px; }
+/* Barra do painel (2026-09-29): grupos e período na MESMA linha, colados no
+   topo — o período ficava centrado na altura dos dois níveis e boiava entre
+   eles —, as sub-abas logo abaixo e uma linha fina separando a navegação do
+   conteúdo. */
+.adm-toolbar { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: 12px 24px; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
+.adm-tabs { display: flex; flex-wrap: wrap; gap: 6px; }
 .adm-tabs .chip[aria-selected="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
-.admin-stat-hint { font-size: 11px; color: var(--subtle); line-height: 1.3; }
-.adm-grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
-.adm-grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
-.adm-col { display: flex; flex-direction: column; gap: 16px; }
-.adm-sub h3 { font-size: 13px; margin: 0 0 8px; }
+/* Período: UM controle (as três opções coladas, bordas compartilhadas), pra
+   não parecer mais uma fileira de abas ao lado das outras duas. */
+.adm-period { display: flex; }
+.adm-period .chip { min-height: 40px; padding: 0 14px; }
+.adm-period .chip + .chip { margin-left: -1px; }
+.adm-period .chip[aria-pressed="true"] { position: relative; z-index: 1; }
+.admin-stat-hint { font-size: 11px; color: var(--subtle); line-height: 1.35; }
+.adm-grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--adm-gap, 16px); }
+.adm-grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--adm-gap, 16px); }
+.adm-col { display: flex; flex-direction: column; gap: var(--adm-gap, 16px); }
+.adm-sub h3 { font-size: 13px; margin: 0 0 10px; }
 /* Escala com a largura (a viewBox já é escolhida pela tela no admin.js);
    sobrescreve a altura fixa de .admin-chart svg do painel antigo. */
 .adm-chart-tall svg, .adm-chart-short svg { height: auto; }
@@ -5276,7 +5299,7 @@ a.setting-open {
 .adm-legend-label { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .adm-legend-val { font-variant-numeric: tabular-nums; font-weight: 700; }
 .adm-legend-pct { color: var(--muted); min-width: 44px; text-align: right; font-variant-numeric: tabular-nums; }
-.adm-legend-row { flex-direction: row; flex-wrap: wrap; gap: 14px; color: var(--muted); font-size: 12px; }
+.adm-legend-row { flex-direction: row; flex-wrap: wrap; gap: 6px 16px; margin-top: 10px; color: var(--muted); font-size: 12px; }
 .adm-donut { display: flex; gap: 16px; align-items: center; }
 .adm-donut svg { width: 140px; height: 140px; flex: none; }
 .adm-donut .adm-legend { flex: 1; min-width: 0; margin: 0; }
@@ -5284,10 +5307,12 @@ a.setting-open {
 .adm-treemap svg { width: 100%; height: auto; display: block; }
 .adm-tm-label { font-size: 13px; font-weight: 700; }
 .adm-tm-val { font-size: 11px; opacity: 0.85; }
-.adm-hbars { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
-.adm-hbars li { display: grid; grid-template-columns: minmax(90px, 170px) 1fr auto; gap: 10px; align-items: center; font-size: 13px; }
+.adm-hbars { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+/* 200 px de rótulo: a sublinha da loja ("590 pessoas · 910 cartas · R$
+   241.000") era cortada seca em 170. */
+.adm-hbars li { display: grid; grid-template-columns: minmax(90px, 200px) 1fr auto; gap: 12px; align-items: center; font-size: 13px; }
 .adm-hbar-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.adm-hbar-label small { display: block; color: var(--subtle); font-size: 11px; }
+.adm-hbar-label small { display: block; overflow: hidden; text-overflow: ellipsis; color: var(--subtle); font-size: 11px; }
 .adm-hbar-track { height: 10px; border-radius: 999px; background: var(--panel-strong); overflow: hidden; }
 .adm-hbar-fill { display: block; height: 100%; border-radius: 999px; }
 .adm-hbar-val { font-variant-numeric: tabular-nums; font-weight: 700; }
@@ -5297,7 +5322,10 @@ a.setting-open {
 .adm-funnel-txt { position: relative; padding: 4px 10px; font-size: 14px; }
 .adm-funnel-txt em { color: var(--muted); font-style: normal; margin-left: 6px; }
 .adm-funnel-txt small { display: block; color: var(--subtle); font-size: 11px; }
-.adm-game { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 12px; font-weight: 700; white-space: nowrap; background: color-mix(in srgb, var(--g) 22%, transparent); border: 1px solid color-mix(in srgb, var(--g) 55%, transparent); }
+.adm-game { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 12px; font-weight: 700; line-height: 1.4; white-space: nowrap; background: color-mix(in srgb, var(--g) 22%, transparent); border: 1px solid color-mix(in srgb, var(--g) 55%, transparent); }
+/* Várias pílulas de jogo na mesma célula (Maiores coleções): com espaço de
+   texto entre elas, a segunda linha colava na primeira quando quebrava. */
+.adm-games { display: inline-flex; flex-wrap: wrap; gap: 4px; }
 .adm-mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12.5px; }
 .adm-scroll { overflow-x: auto; }
 .adm-banner { border: 1px solid var(--gold); background: color-mix(in srgb, var(--gold) 14%, transparent); border-radius: 12px; padding: 12px 14px; font-size: 13px; line-height: 1.5; }
@@ -5311,17 +5339,32 @@ a.setting-open {
 /* Admin v2 (2026-09-23): navegação em dois níveis — grupos em cima, sub-abas
    do grupo embaixo, menores e sem fundo de destaque (o grupo já tem). Com 12
    telas numa fileira só, os chips quebravam em três linhas no celular. */
-.adm-nav { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
-.adm-groups { display: flex; flex-wrap: wrap; gap: 6px; }
+.adm-nav { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.adm-groups { display: flex; flex-wrap: wrap; gap: 8px; }
+.adm-groups .chip { min-height: 40px; padding: 0 16px; }
 /* O seletor longo é de propósito: o tema claro pinta o fundo de todo chip SEM
    aria-pressed ([data-theme="light"] .chip:not(...):not(...), especificidade
    0-4-0) — aba selecionada usa aria-selected, e com seletor curto ficava texto
    branco em fundo branco. */
 .adm-toolbar .adm-groups .chip[aria-selected="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
-.adm-tabs .chip { min-height: 32px; padding: 0 12px; font-size: 13px; }
+.adm-tabs .chip { min-height: 34px; padding: 0 14px; font-size: 13px; }
 .adm-toolbar .adm-tabs .chip[aria-selected="true"] { background: var(--panel-strong); border-color: var(--accent); color: var(--text); }
+/* Celular (2026-09-29): grupos, sub-abas e período em GRADE de 3 colunas
+   iguais. As fileiras quebravam tortas (3 + 3 de larguras diferentes, com o
+   "Engajamento" esticando a segunda linha) e o período virava uma quarta
+   fileira solta. */
+@media (max-width: 700px) {
+  .admin-page { --adm-gap: 12px; }
+  .adm-toolbar { grid-template-columns: minmax(0, 1fr); gap: 10px; padding-bottom: 14px; }
+  .adm-nav { gap: 8px; }
+  .adm-groups, .adm-tabs, .adm-period { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+  .adm-groups .chip, .adm-tabs .chip, .adm-period .chip { padding: 0 6px; line-height: 1.15; }
+  .adm-period { gap: 0; }
+  .admin-section { padding: 16px 14px; }
+  .admin-stat { padding: 14px; }
+}
 /* Tabela paginada: navegação centralizada embaixo, contador no meio. */
-.adm-pager { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 10px; }
+.adm-pager { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 12px; }
 .adm-pager .chip { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; padding: 0 10px; }
 .adm-pager .chip:disabled { opacity: 0.4; cursor: default; }
 .adm-pager-info { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
