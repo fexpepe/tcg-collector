@@ -14,6 +14,9 @@
 // data-catalog, que a tag fundida carrega igual. A ordem theme→game é a mesma
 // das 33 páginas.
 //
+// O src/theme.js CONTINUA no build (só o game.js sai): as páginas
+// pré-renderizadas de SEO o carregam sozinho — ver o fim deste arquivo.
+//
 // ORDEM NO DEPLOY (importa):
 //   split-i18n  →  ESTE SCRIPT  →  minify  →  hash-assets
 // Depois do split-i18n porque ele injeta o mapa de idiomas DENTRO do theme.js;
@@ -101,9 +104,26 @@ const swNovo = sw.replace(/"src\/theme\.js",\s*"src\/game\.js",/, '"src/boot.js"
 if (swNovo === sw) morra('não achei "src/theme.js", "src/game.js" no SHELL_ASSETS do sw.js.');
 writeFileSync(swPath, swNovo, "utf8");
 
-// Os originais saem: ninguém mais os referencia, e deixá-los faria o
-// hash-assets versionar dois arquivos que nenhuma página pede.
-unlinkSync(join(ROOT, "src/theme.js"));
+// O game.js sai: nenhuma página o pede mais, e deixá-lo faria o hash-assets
+// versionar um arquivo que ninguém baixa.
+//
+// O theme.js FICA (29/09/2026). As páginas pré-renderizadas de SEO (set/,
+// card/ e artist/, escritas pelo prerender-catalog.mjs) carregam /src/theme.js
+// SOZINHO, e este script só reescreve os HTML da raiz. Desde 30/08/2026
+// (af1922b) ele era apagado aqui junto com o game.js: toda visita a essas
+// páginas — que é onde o tráfego do Google cai — pagava um 404 e abria sem o
+// tema salvo, sem o modo colecionador, sem o <html lang> do idioma escolhido e
+// sem o conserto do link com "&amp;". Nenhum passo do build reclamava; a guarda
+// de referência órfã do hash-assets existe por causa disso.
+//
+// Elas NÃO passam pro boot.js de propósito: a metade game.js dele carimba
+// ?game=<jogo da SESSÃO> na barra (stampGame), e cada uma dessas páginas é de
+// UM jogo fixo. A página de um set do Lorcana abriria como ...?game=pokemon pra
+// quem nunca escolheu jogo — e é esse o link que a pessoa copia e manda. O
+// theme.js é exatamente o que elas precisam: tema, preferências e idioma, sem
+// jogo e sem catálogo. O hash-assets o versiona e reescreve a referência nelas
+// como faz com o resto do shell.
 unlinkSync(join(ROOT, "src/game.js"));
 
-console.log(`bundle-boot: src/boot.js criado; ${trocadas} páginas apontando pra ele.`);
+console.log(`bundle-boot: src/boot.js criado; ${trocadas} páginas apontando pra ele `
+  + "(src/theme.js mantido pras páginas pré-renderizadas).");

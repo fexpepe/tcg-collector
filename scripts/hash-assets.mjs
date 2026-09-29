@@ -21,7 +21,7 @@
 // Uso: node scripts/hash-assets.mjs
 import { createHash } from "node:crypto";
 import { readFileSync, writeFileSync, unlinkSync, renameSync, readdirSync, statSync, existsSync } from "node:fs";
-import { join, extname, basename } from "node:path";
+import { join, extname, basename, relative, sep } from "node:path";
 
 const ROOT = process.cwd();
 const MAX_ROUNDS = 10;
@@ -123,20 +123,123 @@ for (const caminho of alvos) {
   if (depois !== antes) { writeFileSync(caminho, depois, "utf8"); reescritos++; }
 }
 
-// ── 6. Confere que não sobrou referência ao nome SEM hash ───────────────────
+// ── 6. Confere as referências: nome SEM hash e arquivo que NÃO existe ───────
 // Uma que escape vira 404 em produção — e, com `immutable`, um 404 que o
 // navegador guarda. Falhar aqui é muito melhor que descobrir depois do deploy.
+//
+// São duas conferências, e a segunda existe porque a primeira é cega pra um
+// caso: ela procura o nome sem hash de cada arquivo que ESTE script versionou,
+// ou seja, só enxerga o que ainda estava no disco. Referência a um arquivo que
+// um passo ANTERIOR apagou passava calada. Foi o que aconteceu com o
+// bundle-boot, que apagava o src/theme.js reescrevendo só os HTML da raiz: as
+// páginas pré-renderizadas (set/, card/, artist/) seguiram pedindo
+// /src/theme.js, e desde 30/08/2026 toda visita vinda do Google levava um 404
+// (conferido em produção em 29/09) sem nenhum passo do build reclamar.
+//
+// A segunda confere pelo DESTINO, no estado final do workspace (o que sobe):
+// toda referência ao app shell — src/<arquivo>.js|css ou styles*.css — precisa
+// apontar pra um arquivo que existe. Vale pra:
+//   - todo HTML publicado (raiz, set/, card/, artist/, deck/): cada <script src>
+//     e <link href>, resolvido como o navegador resolveria — relativo à pasta
+//     da página e respeitando <base href>. "src/x.js" dentro de set/ é
+//     /set/src/x.js, e isso também é 404;
+//   - o sw.js, cujo precache usa allSettled: arquivo faltando lá falha CALADO e
+//     só aparece quando a pessoa abre o site offline;
+//   - os próprios src/*.js (módulos injetados em runtime, o mapa de i18n do
+//     theme.js), relativos à raiz.
+const ORIGEM = "https://sleevu.app";
+// "src/x.js", "/src/x.css", "./styles.<hash>.css", "../src/x.js" ou a URL
+// absoluta do próprio site. Query e hash não contam.
+const APONTA_PRO_SHELL = /^(?:https?:\/\/[^/]+)?(?:\.{0,2}\/)*(?:src\/[\w.-]+\.(?:m?js|css)|styles[\w.-]*\.css)$/;
+// A mesma coisa como literal de string, dentro de JS.
+const LITERAL_DO_SHELL = /["'`]((?:\.?\/)?(?:src\/[\w.-]+\.(?:m?js|css)|styles[\w.-]*\.css))["'`]/g;
+const relRaiz = (caminho) => relative(ROOT, caminho).split(sep).join("/");
+
+// Devolve o caminho que falta, ou null (existe, não é do shell, ou é de outro host).
+function destinoFaltando(ref, base) {
+  const limpa = ref.trim().replace(/[?#].*$/, "");
+  if (!APONTA_PRO_SHELL.test(limpa)) return null;
+  const url = new URL(limpa, base);
+  if (url.origin !== ORIGEM) return null;
+  return existsSync(join(ROOT, url.pathname.replace(/^\/+/, ""))) ? null : url.pathname;
+}
+
+// As referências que o NAVEGADOR segue num HTML: <script src> e <link href>.
+// Comentário sai antes (tag comentada não é pedida), e o miolo de <script>
+// inline também (o JSON-LD é texto, não tag).
+const ATRIBUTO_DA_TAG = {
+  script: /\ssrc\s*=\s*(?:"([^"]*)"|'([^']*)')/i,
+  link: /\shref\s*=\s*(?:"([^"]*)"|'([^']*)')/i
+};
+function referenciasDoHtml(html) {
+  const limpo = html
+    .replace(/<!--[\s\S]*?-->/g, "")
+    .replace(/(<script\b[^>]*>)[\s\S]*?(<\/script>)/gi, "$1$2");
+  const base = /<base\b[^>]*\shref\s*=\s*["']([^"']*)["']/i.exec(limpo);
+  const refs = [];
+  for (const [tag, nome] of limpo.matchAll(/<(script|link)\b[^>]*>/gi)) {
+    const m = ATRIBUTO_DA_TAG[nome.toLowerCase()].exec(tag);
+    if (m) refs.push(m[1] ?? m[2]);
+  }
+  return { base: base ? base[1] : null, refs };
+}
+
 const pendentes = [];
+const orfas = new Map(); // caminho que falta -> quem pede
+const anotaOrfa = (destino, quem) => {
+  if (!orfas.has(destino)) orfas.set(destino, []);
+  orfas.get(destino).push(quem);
+};
+function confereLiterais(texto, quem) {
+  for (const [, ref] of texto.matchAll(LITERAL_DO_SHELL)) {
+    const falta = destinoFaltando(ref, `${ORIGEM}/`);
+    if (falta) anotaOrfa(falta, quem);
+  }
+}
 for (const caminho of alvos) {
   const texto = readFileSync(caminho, "utf8");
+  const quem = relRaiz(caminho);
   for (const { asset, re } of padroes) {
     re.lastIndex = 0;
-    if (re.test(texto)) pendentes.push(`${caminho.replace(`${ROOT}/`, "")} -> ${asset.path}`);
+    if (re.test(texto)) pendentes.push(`${quem} -> ${asset.path}`);
   }
+  if (extname(caminho) === ".html") {
+    const pagina = new URL(quem, `${ORIGEM}/`);
+    const { base, refs } = referenciasDoHtml(texto);
+    const baseUrl = base ? new URL(base, pagina) : pagina;
+    for (const ref of refs) {
+      const falta = destinoFaltando(ref, baseUrl);
+      if (falta) anotaOrfa(falta, quem);
+    }
+  } else {
+    confereLiterais(texto, quem);
+  }
+}
+for (const asset of assets) {
+  if (asset.ext === ".js") confereLiterais(readFileSync(join(ROOT, nomeFinal(asset)), "utf8"), nomeFinal(asset));
 }
 if (pendentes.length) {
   console.error("hash-assets: sobrou referência ao nome SEM hash (viraria 404 em produção):");
   pendentes.slice(0, 20).forEach((linha) => console.error(`  ${linha}`));
+  process.exit(1);
+}
+if (orfas.size) {
+  console.error("hash-assets: referência a arquivo que NÃO EXISTE no build (404 em produção):");
+  for (const [destino, quem] of orfas) {
+    // Por pasta: nas pré-renderizadas o mesmo erro se repete milhares de vezes,
+    // e "set/ 2540 · card/ 522" diz na hora de onde ele vem.
+    const porPasta = new Map();
+    for (const q of quem) {
+      const pasta = q.includes("/") ? `${q.split("/")[0]}/` : "raiz";
+      if (!porPasta.has(pasta)) porPasta.set(pasta, []);
+      porPasta.get(pasta).push(q);
+    }
+    const resumo = [...porPasta].map(([pasta, lista]) => `${pasta} ${lista.length}`).join(" · ");
+    const exemplos = [...porPasta.values()].map((lista) => lista[0]).slice(0, 5).join(", ");
+    console.error(`  ${destino} — pedido por ${quem.length} arquivo(s) (${resumo}); ex.: ${exemplos}`);
+  }
+  console.error("Algum passo anterior do deploy (split-i18n, bundle-boot…) apagou ou renomeou o arquivo "
+    + "sem reescrever quem aponta pra ele — ou a referência foi escrita errada na origem.");
   process.exit(1);
 }
 
