@@ -7666,6 +7666,12 @@
       ? `<button type="button" class="tile-btn tile-list" data-list-card-id="${escapeAttribute(card.id)}" data-list-variant="${escapeAttribute(grouped ? "" : variant)}" aria-label="${escapeAttribute(t("tile.addToList"))}" title="${escapeAttribute(t("tile.addToList"))}">${TILE_ICONS.list}</button>`
       : "";
 
+    // Etiqueta do JOGO (opts.gameTag, 2026-09-29): o .game-tag na linha da
+    // versão (no compacto, antes do set). Quem liga é a página, e só quando a
+    // grade MISTURA jogos — Explorar, Coleção e Wishlist em "Todos"/"Vintage".
+    // Com um jogo só, a mesma palavra em todo tile seria ruído.
+    const gameTag = opts && opts.gameTag && card.game ? gameTagHtml(card.game, "tile-game") : "";
+
     // Ordem: lista, pasta, coração, −, +. O − precisa colar no + (é o par de
     // ajuste de quantidade), e o coração cedeu esse lugar. As TAGS saíram daqui:
     // com quatro botões não cabia o chip "+ Tag" sem sobrepor, e etiquetar é
@@ -7697,7 +7703,7 @@
           ${cardFlag(card.language)}<span>${escapeHtml(card.name)}</span>
         </button>
         <span class="tile-c-num">${escapeHtml(card.number || "")}</span>
-        <span class="tile-c-set">${escapeHtml(card.set || "")}</span>
+        <span class="tile-c-set">${gameTag}${escapeHtml(card.set || "")}</span>
         <span class="tile-c-var variant-${escapeAttribute(variantSlug(variant))}">${variantLabel}</span>
         <span class="tile-c-price">${tilePriceHtml(card, variant, prices)}</span>
         ${actionsHtml}`;
@@ -7708,7 +7714,7 @@
       <div class="card-image">${image}</div>
       <div class="tile-info">
         <h3>${escapeHtml(cardLabel(card))}</h3>
-        <p class="tile-variant variant-${escapeAttribute(variantSlug(variant))}">${cardFlag(card.language)}<span>${variantLabel}</span></p>
+        <p class="tile-variant variant-${escapeAttribute(variantSlug(variant))}">${cardFlag(card.language)}<span>${variantLabel}</span>${gameTag}</p>
         <p class="tile-set"><span>${escapeHtml(card.set)} · ${escapeHtml(card.number)}</span></p>
         ${tilePriceHtml(card, variant, prices)}
         <div class="tile-foot">

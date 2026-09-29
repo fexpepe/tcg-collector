@@ -1218,12 +1218,21 @@
   // onde as outras grades têm 4, e a linha "igual" deixava de ser igual — no
   // PC a coluna de ações saía mais larga, e no celular o CSS já o escondia.
   // A pasta continua na grade/lista e dentro do card (preview).
-  function makeTile({ card, variant }) {
+  // gameTag (2026-09-29): etiqueta do jogo no tile, quando a GRADE mistura
+  // jogos ("Todos", "Vintage", um showcase com cartas de dois jogos) — quem
+  // decide é quem pinta a grade inteira (misturaJogos), não o tile.
+  function makeTile({ card, variant }, gameTag) {
     const compact = cardsView === "compact";
     return shared.variantTile(card, variant, owned, wishlist, prices, {
       addMode: true, lists: true, compact,
-      folders: !compact, inFolder: !compact && !!folders.folderOf(card.id)
+      folders: !compact, inFolder: !compact && !!folders.folderOf(card.id),
+      gameTag
     });
+  }
+  // A lista inteira (não a página do pager): a etiqueta não pode aparecer no
+  // meio da rolagem porque a 61ª carta é de outro jogo.
+  function misturaJogos(pairs) {
+    return pairs.some((p) => p.card && pairs[0].card && p.card.game !== pairs[0].card.game);
   }
 
   // Menu "Coleções" do tile (botão da pasta na grade): lista as coleções pra
@@ -1309,11 +1318,18 @@
       .filter((p) => p.card && inGameFilter(p.card) && (!q || shared.matchesCardQuery(p.card, q)));
   }
 
+  // A mesma etiqueta de jogo do variantTile (opts.gameTag) no slab, que monta o
+  // próprio HTML: na "Toda Coleção" misturada, slab e carta comum lado a lado
+  // precisam dizer o jogo do mesmo jeito.
+  function etiquetaJogo(card, gameTag) {
+    return gameTag && card.game ? shared.gameTagHtml(card.game, "tile-game") : "";
+  }
+
   // Nó do slab (somente leitura) pra grade: MESMO formato da carta normal pra ficar
   // coeso — imagem limpa em cima, e embaixo Nome → bandeira+badge da graduadora/nota
   // (no lugar da variante) → Coleção · nº → Preço. O badge (ex.: "PSA 9") com a cor
   // da graduadora é o que diferencia das cartas comuns.
-  function makeGradedNode(p, editable) {
+  function makeGradedNode(p, editable, gameTag) {
     const { it, card } = p;
     // MODO COMPACTO: o slab vira uma LINHA como as cartas comuns (mesmas
     // colunas do .tile-compact: nome · nº · set · badge da graduadora no lugar
@@ -1321,7 +1337,7 @@
     // e entrava na lista como uma carta inteira (o único item "gordo" no meio
     // das linhas). Na aba Graded a edição inline fica só na grade/lista; a
     // linha compacta traz o ✕ de remover.
-    if (cardsView === "compact") return makeGradedCompactRow(p, editable);
+    if (cardsView === "compact") return makeGradedCompactRow(p, editable, gameTag);
     // Aba Graded: tile EDITÁVEL do módulo compartilhado (mesma UI da página
     // dedicada). Na "Toda Coleção" o slab segue somente leitura.
     if (editable && window.TCGGradedUI) {
@@ -1340,7 +1356,7 @@
       <div class="card-image"><button type="button" class="image-open" data-preview-card-id="${escapeAttribute(card.id)}" data-preview-variant="${escapeAttribute(it.variant)}" data-graded-company="${escapeAttribute(it.company)}" data-graded-grade="${escapeAttribute(it.grade)}" data-graded-pristine="${it.pristine ? "1" : ""}" aria-label="${escapeAttribute(t("card.zoom", { name: card.name }))}">${img}</button></div>
       <div class="tile-info">
         <h3>${escapeHtml(card.name)}</h3>
-        <p class="tile-variant">${shared.cardFlag(card.language)}${badge}</p>
+        <p class="tile-variant">${shared.cardFlag(card.language)}${badge}${etiquetaJogo(card, gameTag)}</p>
         <p class="tile-set"><span>${escapeHtml(card.set)} · ${escapeHtml(card.number)}</span></p>
         ${priceHtml}
       </div>
@@ -1348,7 +1364,7 @@
     return wrap.firstElementChild;
   }
 
-  function makeGradedCompactRow(p, editable) {
+  function makeGradedCompactRow(p, editable, gameTag) {
     const { it, card } = p;
     const [bg, fg] = GRADED_COLORS[it.company] || GRADED_COLORS.psa;
     const src = shared.cardImageSources(card);
@@ -1364,7 +1380,7 @@
         ${shared.cardFlag(card.language)}<span>${escapeHtml(card.name)}</span>
       </button>
       <span class="tile-c-num">${escapeHtml(card.number || "")}</span>
-      <span class="tile-c-set">${escapeHtml(card.set || "")}</span>
+      <span class="tile-c-set">${etiquetaJogo(card, gameTag)}${escapeHtml(card.set || "")}</span>
       <span class="tile-c-var">${badge}</span>
       <span class="tile-c-price">${priceHtml}</span>
       <div class="tile-actions">${removeBtn}</div>
@@ -1373,8 +1389,8 @@
   }
 
   // Dispatcher do pager: slab (graded) ou carta normal (variantTile).
-  function makeAnyTile(pair) {
-    const el = pair.graded ? makeGradedNode(pair, activeTab === "graded") : makeTile(pair);
+  function makeAnyTile(pair, gameTag) {
+    const el = pair.graded ? makeGradedNode(pair, activeTab === "graded", gameTag) : makeTile(pair, gameTag);
     // Seleção em massa sobrevive ao re-render/paginação (o pager cria tiles aos poucos).
     if (bulkMode && !pair.graded && bulkSel.has(`${pair.card.id}|${pair.variant}`)) el.classList.add("bulk-selected");
     return el;
@@ -1405,8 +1421,10 @@
     if (elements.newFolderBtn) elements.newFolderBtn.hidden = !useFolders || !!openFolderId;
     if (!useFolders) {
       elements.folderSections.innerHTML = "";
-      if (cardsView === "binder") { pager.render([], makeAnyTile); binderView.render(tiles, makeAnyTile); }
-      else pager.render(tiles, makeAnyTile, { resetCount });
+      const gameTag = misturaJogos(tiles);
+      const tileOf = (pair) => makeAnyTile(pair, gameTag);
+      if (cardsView === "binder") { pager.render([], tileOf); binderView.render(tiles, tileOf); }
+      else pager.render(tiles, tileOf, { resetCount });
       prewarmColecao();
       return;
     }
@@ -1463,8 +1481,11 @@
       const sel = folder ? `[data-folder-id="${folder.id}"]` : ".folder-none";
       const grid = elements.folderSections.querySelector(`${sel} .card-grid`);
       if (!grid) return;
+      // Cada showcase decide por si: um de Pokémon só não ganha etiqueta
+      // porque o vizinho mistura jogos.
+      const gameTag = misturaJogos(pairs);
       const tileOf = (pair) => {
-        const node = makeTile(pair);
+        const node = makeTile(pair, gameTag);
         node.draggable = true; // arrastável mesmo no "Sem coleção" (pra soltar numa coleção)
         // Setas ‹ › só nas coleções (o "Sem coleção" segue o Ordenar, não tem ordem manual).
         if (folder) (node.querySelector(".card-image") || node).appendChild(reorderControl());

@@ -5857,21 +5857,26 @@ a.progress-row:hover {
    sobre o painel branco do tema claro — reprovado em TODO tile de carta. Tom
    próprio no claro (4.71), mantendo a mesma família de azul. */
 [data-theme="light"] .tile-variant { color: #5672b4; }
-/* Etiqueta do JOGO na linha da versão (Explorar, grade que mistura jogos —
-   2026-09-28): o .game-tag de sempre, menor. Nem ela nem a versão cortam:
-   sem espaço (tile de celular, "Dragon Ball Fusion" + "1st Edition"), a
-   etiqueta desce pra uma linha só dela. A versão só ganha reticências se
-   sozinha não couber (o "Normal · Foil · Reverse…" do modo agrupado). */
-.tile-variant:has(> .xpl-game) { flex-wrap: wrap; row-gap: 4px; }
-.tile-variant:has(> .xpl-game) > span:not(.card-flag):not(.xpl-game) { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.tile-variant .xpl-game { padding: 2px 6px; font-size: 10.5px; line-height: 1.25; }
+/* Etiqueta do JOGO na linha da versão (opts.gameTag do variantTile — grades
+   que misturam jogos: Explorar, Coleção e Wishlist; 2026-09-28/29): o
+   .game-tag de sempre, menor. Mora no núcleo porque três páginas sem folha
+   em comum a desenham. Nem ela nem a versão cortam: sem espaço (tile de
+   celular, "Dragon Ball Fusion" + "1st Edition"), a etiqueta desce pra uma
+   linha só dela. A versão só ganha reticências se sozinha não couber (o
+   "Normal · Foil · Reverse…" do modo agrupado). */
+.tile-variant:has(> .tile-game) { flex-wrap: wrap; row-gap: 4px; }
+.tile-variant:has(> .tile-game) > span:not(.card-flag):not(.tile-game) { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* .card-tile na frente: o .game-tag base vem DEPOIS no arquivo e, com a
+   mesma especificidade, desfaria o tamanho menor. */
+.card-tile .tile-game { padding: 2px 6px; font-size: 10.5px; line-height: 1.25; }
 /* Na grade do desktop, cabendo, ela vai pra ponta direita (a coluna da
    versão fica limpa). Na lista, não: a linha é da largura da página e, na
-   ponta, a etiqueta ficaria a um palmo da versão a que pertence. */
+   ponta, a etiqueta ficaria a um palmo da versão a que pertence. No
+   compacto ela abre a coluna do set. */
 @media (min-width: 601px) {
-  .card-grid:not(.is-list) .tile-variant .xpl-game { margin-left: auto; }
+  .card-grid:not(.is-list) .tile-variant .tile-game { margin-left: auto; }
 }
-.tile-c-set .xpl-game { margin-right: 6px; padding: 1px 5px; font-size: 10.5px; }
+.tile-c-set .tile-game { margin-right: 6px; }
 
 /* Versão POSSUÍDA acesa na cor do jogo: no rótulo agrupado ("Normal · Foil")
    é o que diz de longe QUAL versão você tem, sem abrir o card — vale na grade,
