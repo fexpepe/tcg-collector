@@ -34,7 +34,15 @@
 //      dele e recarrega sozinha se for outra (antes só mostrava um aviso, e
 //      a página velha seguia rodando sem os arquivos dela).
 // O bump apaga de uma vez as entradas duplicadas (/portfolio e portfolio.html).
-const SHELL_CACHE = "tcg-shell-v265";
+// v266 (2026-09-29): set que "não abria" no PWA do iPhone — a tela ficava em
+// "Carregando", sem menu nem barra, porque o boot.js não rodou. Duas portas pra
+// uma página de OUTRA leva chegar sem os arquivos dela, as duas fechadas aqui:
+//   1. a navegação de histórico devolve a cópia velha do cache HTTP e o SW a
+//      entregava mesmo sabendo que o build não era o dele (ver paginaDaRede);
+//   2. o install aceitava shell com buraco (ver a conta dos buracos no install).
+// E a mesma tela pedida de novo (recarregar, o "Tentar de novo" da saída de
+// emergência) vai à rede primeiro (ver pediuDeNovo).
+const SHELL_CACHE = "tcg-shell-v266";
 // Id do build: o hash-assets.mjs (deploy) acrescenta "-<8 hex>" ao nome acima,
 // calculado do conteúdo do shell (JS, CSS E as páginas HTML). É o mesmo id que
 // ele carimba em <meta name="sleevu-build"> de todo HTML — assim a página sabe
@@ -137,7 +145,8 @@ const MAX_DATA = 3000;
 self.addEventListener("install", (event) => {
   event.waitUntil((async () => {
     const cache = await caches.open(SHELL_CACHE);
-    // allSettled: um arquivo ausente não derruba a instalação inteira.
+    // allSettled + a conta dos buracos lá embaixo: HTML/fonte/ícone ausente não
+    // derruba a instalação; arquivo com hash ausente derruba.
     //
     // cache:reload fura o cache HTTP do navegador. Isso era OBRIGATÓRIO enquanto
     // os arquivos não tinham versão na URL: sem furar, a instalação podia gravar
@@ -153,10 +162,22 @@ self.addEventListener("install", (event) => {
     // NÃO usar cache.add: em produção o Pages redireciona hub.html -> /hub e o
     // add guardaria a resposta com a marca de redirect — que envenena o cache
     // (ver semRedirect). Busca, limpa a marca e grava sob o nome pedido.
-    await Promise.allSettled(SHELL_ASSETS.map(async (asset) => {
+    const baixa = async (asset) => {
       const res = await fetch(req(asset));
-      if (res && res.ok) await cache.put(asset, semRedirect(res));
-    }));
+      if (!res || !res.ok) throw new Error(`${asset}: ${res ? res.status : "sem resposta"}`);
+      await cache.put(asset, semRedirect(res));
+    };
+    const resultados = await Promise.allSettled(SHELL_ASSETS.map((asset) => baixa(asset).catch(() => baixa(asset))));
+    // Arquivo COM HASH que ficou de fora (rede oscilou, cota) é um shell com
+    // buraco, e isso não pode assumir o comando: no próximo deploy o Pages
+    // deixa de servir esta leva, e a página que sair deste cache pede um
+    // arquivo que não está aqui nem lá — sem o boot.js ela não roda nada e
+    // fica parada em "Carregando" (2026-09-29). A instalação falha, o SW atual
+    // (completo) segue no comando e o navegador tenta de novo na próxima
+    // checagem. HTML, fonte e ícone continuam opcionais: sem a cópia da
+    // página, a navegação só vai à rede, que é o comportamento de sempre.
+    const buracos = SHELL_ASSETS.filter((asset, i) => HASHED_URL_RE.test(asset) && resultados[i].status === "rejected");
+    if (buracos.length) throw new Error(`precache incompleto: ${buracos.join(", ")}`);
     self.skipWaiting();
   })());
 });
@@ -432,11 +453,61 @@ function pedeAtualizacao() {
   try { self.registration.update().catch(() => {}); } catch (e) { /* ignora */ }
 }
 
+// A página que a REDE entrega pra esta navegação, e o build dela.
+//
+// A "rede" daqui nem sempre é a rede. O navigation preload e o fetch(request)
+// passam pelo cache HTTP do navegador, e numa navegação de HISTÓRICO (voltar,
+// avançar, o PWA restaurado depois de o sistema matá-lo em segundo plano) o
+// pedido sai com cache "force-cache": o navegador entrega a cópia que guardou
+// daquela URL SEM revalidar, com no-cache ou não — o WebKit guarda toda página
+// principal justamente pra isso. Essa cópia é da leva em que a pessoa abriu a
+// tela (ontem, três deploys atrás), e os arquivos com hash que ela pede já não
+// existem: o SW novo apagou o cache da leva dela e o Pages só serve a atual
+// (um ou outro ainda escapa pelo cache da CDN, por sorte). Sem o boot.js a
+// página não roda NADA — nem o i18n, nem o menu, nem a barra de baixo, nem o
+// aviso de versão nova — e fica parada em "Carregando" pra sempre. É o set que
+// "não abria" no PWA do iPhone em 2026-09-29; o mesmo HTML vale pra qualquer
+// página, e o detail é o mais exposto porque cada set tem a SUA cópia guardada.
+//
+// Por isso HTML de outro build não é entregue sem conferir: pede de novo direto
+// ao servidor (cache "reload" fura o cache HTTP e ainda troca a cópia velha
+// guardada). Se a conferida for desta leva, era só a cópia velha; se ainda for
+// outra, é deploy novo de verdade — e os arquivos dela existem no servidor.
+// redirect "manual" porque a resposta vai direto pra navegação, que recusa
+// resposta redirecionada (ver semRedirect); o redirect opaco o navegador segue.
+// Sem rede pra conferir, a navegação cai na cópia deste cache (a da leva certa).
+async function paginaDaRede(event) {
+  const request = event.request;
+  // preloadResponse: a resposta que o navegador já começou a buscar enquanto o
+  // SW acordava (ver navigationPreload no activate). Quando não houver (browser
+  // sem suporte, ou preload desligado), busca normalmente.
+  let response = (await event.preloadResponse) || await fetch(request);
+  let build = response && response.ok ? await buildDoHtml(response) : null;
+  if (HASHED_ASSETS && build !== null && build !== BUILD_ID) {
+    response = await fetch(request.url, { cache: "reload", redirect: "manual" });
+    build = response && response.ok ? await buildDoHtml(response) : null;
+  }
+  return { response, build };
+}
+
+// A pessoa pediu ESTA tela de novo: recarregou, ou tocou num link pra ela
+// mesma — o "Tentar de novo" da saída de emergência é um href="" (ver
+// .falha-boot no styles.css). Aí a cópia da sessão não serve de resposta
+// imediata: se foi a tela entregue que veio quebrada, entregá-la de novo
+// prende a pessoa no mesmo lugar. Vai à rede primeiro, como na volta depois
+// de parado. (Medido no Chromium: recarregar chega com cache "no-cache"; link
+// pra própria URL, com o referrer igual à URL.)
+function pediuDeNovo(request) {
+  if (request.cache === "reload" || request.cache === "no-cache" || request.cache === "no-store") return true;
+  try { return !!request.referrer && new URL(request.referrer).href === new URL(request.url).href; } catch (e) { return false; }
+}
+
 // Navegações. Dois modos, decididos por confirmadoHaPouco():
 //   - sessão ativa: cache -> resposta imediata; rede -> atualiza o cache por
 //     trás (e renova a confirmação);
-//   - primeira navegação depois de parado (ou dev, sem hash nos assets):
-//     rede primeiro, com teto; estourou ou falhou, vai a cópia local.
+//   - primeira navegação depois de parado (ou dev, sem hash nos assets, ou a
+//     mesma tela pedida de novo — ver pediuDeNovo): rede primeiro, com teto;
+//     estourou ou falhou, vai a cópia local.
 // A chave ignora a query (detail.html?type=X é a MESMA página) e unifica os
 // formatos (ver chaveDeNavegacao). Em dev (HASHED_ASSETS=false) é sempre rede
 // primeiro: sem hash no nome, revalidar é o certo — senão editar uma página
@@ -446,13 +517,9 @@ async function navigationFast(event) {
   const cache = await caches.open(SHELL_CACHE);
   const chave = chaveDeNavegacao(request.url);
   const cached = await cache.match(chave);
-  // preloadResponse: a resposta que o navegador já começou a buscar enquanto o
-  // SW acordava (ver navigationPreload no activate). Quando não houver (browser
-  // sem suporte, ou preload desligado), busca normalmente.
-  const rede = (async () => (await event.preloadResponse) || fetch(request))()
-    .then(async (response) => {
+  const rede = paginaDaRede(event)
+    .then(({ response, build }) => {
       if (response && response.ok) {
-        const build = await buildDoHtml(response);
         if (build === null || build === BUILD_ID) {
           cache.put(chave, semRedirect(response.clone()));
           marcaConfirmacao();
@@ -462,7 +529,7 @@ async function navigationFast(event) {
       }
       return response;
     }).catch(() => null);
-  const fresco = HASHED_ASSETS && cached && await confirmadoHaPouco();
+  const fresco = HASHED_ASSETS && cached && !pediuDeNovo(request) && await confirmadoHaPouco();
   if (fresco) {
     event.waitUntil(rede);
     // semRedirect também na SAÍDA: sara na hora um cache antigo já envenenado,

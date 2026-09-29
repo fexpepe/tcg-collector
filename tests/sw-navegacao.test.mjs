@@ -43,24 +43,32 @@ function fakeCaches(location) {
 }
 
 // hashed=true simula o deploy (o sed que vira HASHED_ASSETS e o hash-assets
-// que põe o build id no SHELL_CACHE); false é o dev local.
-function carrega({ hashed, build } = {}) {
+// que põe o build id no SHELL_CACHE); false é o dev local. `ajusta` mexe no
+// fonte antes de carregar (ex.: nomes com hash no SHELL_ASSETS, como no deploy).
+function carrega({ hashed, build, ajusta } = {}) {
   let src = readFileSync(join(raiz, "sw.js"), "utf8");
   if (hashed) src = src.replace("const HASHED_ASSETS = false", "const HASHED_ASSETS = true");
   if (build) src = src.replace(/(const SHELL_CACHE\s*=\s*")([^"]+)(")/, `$1$2-${build}$3`);
+  if (ajusta) src = ajusta(src);
   const location = new URL("/sw.js", ORIGEM);
   const listeners = {};
   const updates = [];
+  const skips = [];
   const self = {
     location,
     addEventListener: (tipo, fn) => { listeners[tipo] = fn; },
     registration: { scope: ORIGEM + "/", update: async () => { updates.push(Date.now()); } },
     clients: { claim: async () => {} },
-    skipWaiting: () => {}
+    skipWaiting: () => { skips.push(Date.now()); }
   };
   const estado = { fetch: async () => { throw new Error("sem rede"); } };
+  // No SW, new Request("src/x.js") resolve contra a URL do próprio SW; o
+  // Request do Node exige URL absoluta.
+  class RequestDoSw extends Request {
+    constructor(entrada, init) { super(typeof entrada === "string" ? new URL(entrada, location).href : entrada, init); }
+  }
   const sandbox = {
-    self, caches: fakeCaches(location), Response, Request, URL, Headers, console, Date, Math, Number, String, Promise, Set, RegExp,
+    self, caches: fakeCaches(location), Response, Request: RequestDoSw, URL, Headers, console, Date, Math, Number, String, Promise, Set, RegExp, Error,
     fetch: (...args) => estado.fetch(...args),
     // O teto de espera do SW é de segundos; aqui encurta pra o teste não dormir.
     setTimeout: (fn, ms) => setTimeout(fn, Math.min(ms, 40)),
@@ -71,15 +79,17 @@ function carrega({ hashed, build } = {}) {
   vm.createContext(sandbox);
   vm.runInContext(src, sandbox);
   const pega = (nome) => vm.runInContext(nome, sandbox);
-  return { sandbox, listeners, estado, updates, chave: pega("chaveDeNavegacao"), nav: pega("navigationFast"), SHELL: pega("SHELL_CACHE"), META: pega("META_CACHE"), BUILD: pega("BUILD_ID") };
+  return { sandbox, listeners, estado, updates, skips, chave: pega("chaveDeNavegacao"), nav: pega("navigationFast"), SHELL: pega("SHELL_CACHE"), META: pega("META_CACHE"), BUILD: pega("BUILD_ID") };
 }
 
 // HTML como o deploy entrega: com o carimbo do build (o mesmo do SW, salvo
 // quando o teste quer simular um deploy novo).
 const html = (texto, build = "abc12345") => new Response(`<meta charset="utf-8">\n<meta name="sleevu-build" content="${build}">\n${texto}`, { status: 200, headers: { "content-type": "text/html; charset=utf-8" } });
-function evento(path) {
+// `pedido` completa o request da navegação (cache, referrer); `preload` é a
+// resposta do navigation preload — a que, no histórico, sai do cache HTTP.
+function evento(path, { pedido = {}, preload } = {}) {
   const pendentes = [];
-  return { request: { url: ORIGEM + path, mode: "navigate", method: "GET" }, preloadResponse: undefined, waitUntil: (p) => pendentes.push(p), pendentes };
+  return { request: { url: ORIGEM + path, mode: "navigate", method: "GET", ...pedido }, preloadResponse: preload, waitUntil: (p) => pendentes.push(p), pendentes };
 }
 const texto = async (res) => (await res.text()).split("\n").pop();
 
@@ -176,10 +186,16 @@ test("HTML de OUTRO build vindo da rede: responde, não entra no cache e pede a 
   const sw = carrega({ hashed: true, build: "abc12345" });
   const shell = await sw.sandbox.caches.open(sw.SHELL);
   await shell.put("portfolio.html", html("velha"));
-  sw.estado.fetch = async () => html("deploy-novo", "ffff0000");
-  // parado há tempo: rede primeiro — a página nova é entregue mesmo assim
+  const pedidos = [];
+  sw.estado.fetch = async (...args) => { pedidos.push(args); return html("deploy-novo", "ffff0000"); };
+  // parado há tempo: rede primeiro — a página nova é entregue mesmo assim,
+  // depois de CONFERIDA direto no servidor (não é a cópia velha do cache HTTP)
   const ev = evento("/portfolio");
   assert.equal(await texto(await sw.nav(ev)), "deploy-novo");
+  assert.equal(pedidos.length, 2, "o HTML de outra leva foi conferido com um 2º pedido");
+  assert.equal(pedidos[1][0], ORIGEM + "/portfolio");
+  assert.equal(pedidos[1][1].cache, "reload", "a conferência fura o cache HTTP");
+  assert.equal(pedidos[1][1].redirect, "manual", "e não segue redirect (a navegação recusa resposta redirecionada)");
   await Promise.all(ev.pendentes);
   assert.equal(await texto(await shell.match("portfolio.html")), "velha", "página de outra leva não entra neste cache");
   assert.equal(sw.updates.length, 1, "pediu registration.update()");
@@ -190,6 +206,99 @@ test("HTML de OUTRO build vindo da rede: responde, não entra no cache e pede a 
   assert.equal(await texto(await sw.nav(ev2)), "velha");
   await Promise.all(ev2.pendentes);
   assert.equal(sw.updates.length, 1, "o pedido de atualização não se repete no mesmo SW");
+});
+
+// O set que "não abria" no PWA do iPhone (2026-09-29): voltar pra uma tela (ou
+// o app restaurado pelo sistema) pede com cache "force-cache", e o navigation
+// preload devolve a cópia que o navegador guardou daquela URL — de uma leva que
+// já não existe no servidor. Entregue, ela pede um boot.js que dá 404 e a
+// página fica em "Carregando" pra sempre, sem menu.
+test("cópia VELHA do cache HTTP (histórico): o SW confere no servidor e entrega a da leva certa", async () => {
+  const sw = carrega({ hashed: true, build: "abc12345" });
+  const shell = await sw.sandbox.caches.open(sw.SHELL);
+  await shell.put("detail.html", html("local"));
+  const pedidos = [];
+  sw.estado.fetch = async (...args) => { pedidos.push(args); return html("conferida"); };
+  const ev = evento("/detail?type=set&setId=sv08", { pedido: { cache: "force-cache" }, preload: html("copia-de-ontem", "0ld0ld00") });
+  assert.equal(await texto(await sw.nav(ev)), "conferida");
+  assert.equal(pedidos.length, 1);
+  assert.equal(pedidos[0][0], ORIGEM + "/detail?type=set&setId=sv08", "confere a MESMA URL, com a query");
+  assert.equal(pedidos[0][1].cache, "reload");
+  await Promise.all(ev.pendentes);
+  assert.equal(await texto(await shell.match("detail.html")), "conferida", "a conferida é desta leva: entra no cache");
+  assert.equal(sw.updates.length, 0, "cópia velha não é deploy novo: nada de pedir atualização do SW");
+});
+
+test("cópia velha e SEM rede pra conferir: vai a cópia deste cache, nunca a velha", async () => {
+  const sw = carrega({ hashed: true, build: "abc12345" });
+  const shell = await sw.sandbox.caches.open(sw.SHELL);
+  await shell.put("detail.html", html("local"));
+  sw.estado.fetch = async () => { throw new Error("offline"); };
+  const ev = evento("/detail?type=set&setId=sv08", { preload: html("copia-de-ontem", "0ld0ld00") });
+  assert.equal(await texto(await sw.nav(ev)), "local");
+});
+
+test("cópia DESTA leva no preload: entrega sem pedido extra", async () => {
+  const sw = carrega({ hashed: true, build: "abc12345" });
+  const pedidos = [];
+  sw.estado.fetch = async (...args) => { pedidos.push(args); return html("nao-devia"); };
+  const ev = evento("/detail?type=set&setId=sv08", { preload: html("do-preload") });
+  assert.equal(await texto(await sw.nav(ev)), "do-preload");
+  assert.equal(pedidos.length, 0);
+});
+
+test("a MESMA tela pedida de novo (recarregar, link pra ela mesma) pula a cópia da sessão", async () => {
+  const sw = carrega({ hashed: true, build: "abc12345" });
+  const shell = await sw.sandbox.caches.open(sw.SHELL);
+  const meta = await sw.sandbox.caches.open(sw.META);
+  sw.estado.fetch = async () => html("da-rede");
+  const url = "/detail?type=set&setId=sv08";
+  // Cada passo parte do mesmo estado (cópia da sessão + confirmação recente) e
+  // espera a rede de trás terminar antes do próximo.
+  const navega = async (opcoes) => {
+    await shell.put("detail.html", html("da-sessao"));
+    await meta.put("shell-confirmado", new Response(String(Date.now())));
+    const ev = evento(url, opcoes);
+    const lido = await texto(await sw.nav(ev));
+    await Promise.all(ev.pendentes);
+    return lido;
+  };
+  assert.equal(await navega(), "da-sessao", "navegação comum na sessão ativa: cache na hora");
+  assert.equal(await navega({ pedido: { referrer: ORIGEM + url } }), "da-rede", "o \"Tentar de novo\" (href=\"\") vai à rede");
+  assert.equal(await navega({ pedido: { cache: "no-cache" } }), "da-rede", "recarregar vai à rede");
+  assert.equal(await navega({ pedido: { referrer: ORIGEM + "/sets?game=pokemon" } }), "da-sessao", "vindo de outra tela, segue o cache da sessão");
+});
+
+// SHELL_ASSETS como o deploy deixa: nomes com hash (hash-assets.mjs).
+const comHash = (src) => src.replace('"src/shared.js"', '"src/shared.46f75d8b.js"').replace('"styles.css"', '"styles.63a0ece8.css"');
+async function instala(sw) {
+  let promessa;
+  sw.listeners.install({ waitUntil: (p) => { promessa = p; } });
+  return promessa;
+}
+
+test("install: arquivo COM HASH que não baixa derruba a instalação (shell com buraco não assume)", async () => {
+  const sw = carrega({ hashed: true, build: "abc12345", ajusta: comHash });
+  sw.estado.fetch = async (req) => (req.url.endsWith("/src/shared.46f75d8b.js") ? new Response("", { status: 404 }) : new Response("ok"));
+  await assert.rejects(instala(sw), /src\/shared\.46f75d8b\.js/);
+  assert.equal(sw.skips.length, 0, "sem skipWaiting: o SW atual segue no comando");
+});
+
+test("install: HTML que não baixa NÃO derruba (a página só vai à rede), e arquivo com hash ganha 2ª chance", async () => {
+  const sw = carrega({ hashed: true, build: "abc12345", ajusta: comHash });
+  const tentativas = new Map();
+  sw.estado.fetch = async (req) => {
+    const n = (tentativas.get(req.url) || 0) + 1;
+    tentativas.set(req.url, n);
+    if (req.url.endsWith("/about.html")) return new Response("", { status: 404 });
+    if (req.url.endsWith("/styles.63a0ece8.css") && n === 1) throw new Error("rede oscilou");
+    return new Response("ok");
+  };
+  await instala(sw);
+  assert.equal(sw.skips.length, 1);
+  const shell = await sw.sandbox.caches.open(sw.SHELL);
+  assert.ok(await shell.match("styles.63a0ece8.css"), "a 2ª tentativa gravou o CSS");
+  assert.equal(await shell.match("about.html"), undefined);
 });
 
 test("dev: HTML sem carimbo e SW sem build são a mesma leva — entra no cache normalmente", async () => {

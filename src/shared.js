@@ -12378,14 +12378,21 @@
     } catch (e) { /* URL/history bloqueados: segue com o id velho */ }
   })();
 
-  if (rescueSharedCard()) return; // resolvendo a carta compartilhada; não monta a página
-  if (enforceLoginGate()) return; // já está indo pro login; não monta a página
+  // Saída de emergência (.falha-boot no HTML e no styles.css): o aviso "esta
+  // tela não terminou de carregar" aparece sozinho se o <html> não ganhar o
+  // data-app em 15 s. Marca logo depois de montar a navegação — dali em diante
+  // a pessoa sempre tem pra onde ir, mesmo que o script da própria página
+  // quebre — e nas duas saídas abaixo, que já estão levando pra outra tela.
+  const appNoAr = () => document.documentElement.setAttribute("data-app", "");
+  if (rescueSharedCard()) { appNoAr(); return; } // resolvendo a carta compartilhada; não monta a página
+  if (enforceLoginGate()) { appNoAr(); return; } // já está indo pro login; não monta a página
 
   applyTranslations();
   initLanguageSwitcher();
   initCurrencySwitcher();
   initSearchLabel();
   initPageNav();
+  appNoAr();
   initPageGameTitle();
   initGameAccent();
   applySensitive();
