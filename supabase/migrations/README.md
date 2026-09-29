@@ -19,21 +19,32 @@ poucos.)
   webdriver; user-agent nunca é guardado), então a regra é de comportamento:
   navegador **de passagem** (toda a história em 30 minutos, nunca voltou), que
   **não fez nada** além de ver página, com a 1ª visita numa **avalanche** (hora
-  acima de max(25, 5 × p95) ou dia acima de max(150, 5 × p95)), e só **antes de
-  2026-09-15**. Os eventos deles viram `bot=true` — nada é apagado —, a lista
-  fica em `robos_retro` (trancada, pra desfazer) e a `metrics_daily` é refeita
-  do 1º dia atingido até 30 dias depois do último, junto com a `events_daily`.
-  O `card_views` (contador sem navegador) não tem como ser corrigido.
+  acima de max(25, 5 × a mediana das horas vizinhas), ou dia que, fora essas
+  horas, ainda passa de max(150, 5 × a mediana dos dias vizinhos) — vizinhos =
+  14 dias pra cada lado), e só **antes de 2026-09-15**. Até **27/07** a régua é
+  mais apertada (10 por hora, 60 por dia): até o commit `09aa548` o localhost
+  contava como visita, inclusive os navegadores automáticos de teste e de
+  captura de tela, que abrem cada página num contexto limpo. Os eventos deles
+  viram `bot=true` — nada é apagado —, a lista fica em `robos_retro` (trancada,
+  pra desfazer) e a `metrics_daily` é refeita do 1º dia atingido até 30 dias
+  depois do último, junto com a `events_daily`. O `card_views` (contador sem
+  navegador) não tem como ser corrigido.
 
   Testada em 2026-09-29 no PGlite com as funções reais da `20260928a`
   (`metrics_snapshot`, `events_rollup`) e 120 dias sintéticos — base humana
   com gente que volta e que usa, uma rajada de 3.600 robôs em horas de 28/07,
-  outra de 520 diluída no dia 20/08 (abaixo do piso por hora), um pico viral
-  humano moderado e robôs já marcados depois do corte: marcou os 4.120 robôs e
-  28 humanos de passagem das horas de avalanche (nenhum que voltou, usou o site
-  ou veio do pico viral); o MAU corrigido ficou a 1–3% do MAU real e os dias
-  fora da rajada não mudaram; o robô depois do corte ficou intacto; reaplicar
-  mudou zero dias; a receita de desfazer devolveu a série de antes, dia a dia.
+  outra de 520 diluída no dia 20/08 (abaixo do piso por hora), três sessões de
+  dev em julho (42 navegadores em 3 horas, 90 diluídos num dia, 48 em 6 horas
+  abaixo das duas réguas), dois picos de gente de verdade (um dia cheio em
+  julho, um viral em agosto) e robôs já marcados depois do corte: marcou os
+  4.252 robôs das rajadas e das duas primeiras sessões (da terceira, 11 de 48
+  — é o limite: abaixo de 10 por hora e 60 por dia não se separa de gente) e 42
+  humanos de passagem das horas e dias de avalanche (nenhum que voltou, usou o
+  site ou veio dos picos de gente); o MAU corrigido ficou a no máximo 4% do
+  real e os dias fora das rajadas não mudaram; o robô depois do corte ficou intacto;
+  reaplicar mudou zero dias; colar por cima da 1ª versão do arquivo (a de 4
+  parâmetros, sem a régua de dev) funcionou; a receita de desfazer devolveu a
+  série de antes, dia a dia.
 
   Antes de aplicar, dá pra ver o que sairia (só leitura, depois dos blocos 1 e
   2 do arquivo):
@@ -44,7 +55,9 @@ poucos.)
   ```
   Se aparecer um dia que foi gente de verdade (campanha, post que viralizou),
   a regra aceita limites mais apertados — `_robos_retro_candidatos(date
-  '2026-09-15', 60, 300, 5)` — e é essa chamada que vai no bloco 3.
+  '2026-09-15', 60, 300, 5)` — e é essa chamada que vai no bloco 3. Se julho
+  não tiver tido sessão de dev nenhuma, `_robos_retro_candidatos(p_trava =>
+  date '2026-06-01')` desliga a régua de dev.
 
   Aplicar colando o arquivo INTEIRO no SQL Editor ("Copy raw file"). O
   resultado mostrado é o antes × depois de cada dia da série que mudou.

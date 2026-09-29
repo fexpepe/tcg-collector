@@ -21,13 +21,24 @@
 --   2. não fez NADA além de ver página (qualquer evento de produto — carta
 --      cadastrada, scanner, conta, link, clique em loja… — tira da lista);
 --   3. a primeira visita caiu numa AVALANCHE de navegadores de passagem: uma
---      hora com mais de max(25, 5 × p95 das horas) ou um dia com mais de
---      max(150, 5 × p95 dos dias). Hora normal do site tem 0 a 3;
+--      hora com mais de max(25, 5 × a mediana das horas vizinhas), ou um dia
+--      que, fora essas horas, ainda teve mais de max(150, 5 × a mediana dos
+--      dias vizinhos) — vizinhos = 14 dias pra cada lado. Hora normal do site
+--      tem 0 a 3;
 --   4. só antes de 2026-09-15: dali em diante o events_guard já marca robô
 --      pelo user-agent e pelo webdriver, e a regra não mexe.
 -- Quem visitou de verdade numa hora de avalanche e caiu nos três primeiros
 -- critérios sai junto — é o custo, e ele é pequeno: é gente que, pela própria
 -- definição, abriu uma página e foi embora.
+--
+-- Julho tem uma fonte a mais, e por isso régua mais apertada ATÉ 27/07: até
+-- o commit 09aa548 (27/07, 18h58), toda página aberta em localhost durante o
+-- desenvolvimento entrava como visita real — inclusive a dos navegadores
+-- automáticos de teste e de captura de tela, que abrem cada página num
+-- contexto limpo (um visitante novo por página). O evento não guarda de que
+-- endereço veio, então de novo só o comportamento separa; mas, com o
+-- tráfego de dev sabidamente dentro, até essa data a avalanche começa em 10
+-- por hora ou 60 por dia (o site real mal passava de 1 por hora).
 --
 -- O que muda: os eventos desses navegadores (antes do corte) viram bot=true —
 -- nada é APAGADO —, a lista vai pra `robos_retro` (trancada, é o que permite
@@ -38,8 +49,10 @@
 -- carta, sem navegador) — as "mais visitadas" de sempre seguem com as views
 -- do robô.
 --
--- Reaplicar é inofensivo: o que já foi marcado sai da regra (ela só olha
--- bot=false) e a lista não duplica.
+-- Reaplicar é inofensivo: a regra enxerga o que ela mesma já marcou como se
+-- não tivesse marcado (a régua não muda e a lista sai igual), a lista não
+-- duplica e o update só pega o que ainda não era robô — reaplicar muda zero
+-- dias.
 --
 -- ANTES de aplicar, dá pra ver o que sairia (só leitura, depois dos blocos 1
 -- e 2 existirem):
@@ -80,21 +93,32 @@ revoke all on public.robos_retro from public, anon, authenticated;
 -- ── 2) A regra ──────────────────────────────────────────────────────────────
 -- Devolve os navegadores de passagem que caíram numa avalanche, com o motivo.
 -- Os limites viram parâmetro pra quem quiser conferir mais apertado ou mais
--- frouxo antes de aplicar (o bloco 3 usa os padrões).
+-- frouxo antes de aplicar (o bloco 3 usa os padrões). `p_trava` é o 1º dia
+-- em que o site passou a contar só produção (o localhost entrava até a
+-- véspera): antes dele valem os pisos de dev. O drop é da 1ª versão (4
+-- parâmetros, sem a régua de dev): se ela chegou a ser colada, as duas
+-- conviveriam e a chamada sem argumento do bloco 3 ficaria ambígua.
+drop function if exists public._robos_retro_candidatos(date, int, int, numeric);
 create or replace function public._robos_retro_candidatos(
   p_ate date default date '2026-09-15',
   p_piso_hora int default 25,
   p_piso_dia int default 150,
-  p_fator numeric default 5
+  p_fator numeric default 5,
+  p_trava date default date '2026-07-28',
+  p_piso_hora_dev int default 10,
+  p_piso_dia_dev int default 60
 )
 returns table (anon text, primeira timestamptz, pageviews int, motivo text)
 language sql stable set search_path = public as $$
   with
   -- Toda pageview de gente, de qualquer data: quem voltou DEPOIS do corte
-  -- também voltou, e não é de passagem.
+  -- também voltou, e não é de passagem. O que ESTA regra já marcou conta como
+  -- antes da marca: a prévia, a aplicação e a reaplicação veem o mesmo mundo
+  -- (sem isso, a régua caía depois da correção e reaplicar marcava mais).
   pv as (
     select e.anon, e.ts from events e
-    where e.name = 'pageview' and not e.bot and e.anon is not null
+    where e.name = 'pageview' and e.anon is not null
+      and (not e.bot or e.anon in (select r.anon from robos_retro r))
   ),
   por_anon as (
     select pv.anon, min(pv.ts) as primeira, max(pv.ts) as ultima, count(*)::int as pageviews
@@ -126,24 +150,49 @@ language sql stable set search_path = public as $$
     from horas h left join passagem p on p.hora = h.hora
     group by h.hora
   ),
-  por_dia as (
-    select d::date as dia, count(p.anon)::int as n
+  dias as (
+    select d::date as dia
     from generate_series((select min(p.dia) from passagem p)::timestamp, (p_ate - 1)::timestamp, interval '1 day') d
-    left join passagem p on p.dia = d::date
-    group by 1
   ),
-  lim as (
-    select greatest(p_piso_hora::numeric, p_fator * (select percentile_cont(0.95) within group (order by n) from por_hora)) as hora,
-           greatest(p_piso_dia::numeric, p_fator * (select percentile_cont(0.95) within group (order by n) from por_dia)) as dia
+  -- A régua é LOCAL: a mediana das horas e dos dias num raio de 14 dias. Um
+  -- p95 do período inteiro ficava alto demais em julho (medido contra
+  -- setembro, com mais gente) e deixava rajada de dev passar; a mediana
+  -- também não se mexe com as próprias rajadas. O piso absoluto depende da
+  -- data: até a véspera da trava de produção, o de dev.
+  med_hora as (
+    select d.dia,
+      (select percentile_cont(0.5) within group (order by h.n) from por_hora h
+        where h.hora >= (d.dia - 14)::timestamp and h.hora < (d.dia + 15)::timestamp) as med
+    from dias d
   ),
-  hora_ruim as (select h.hora from por_hora h, lim where h.n > lim.hora),
-  dia_ruim as (select d.dia from por_dia d, lim where d.n > lim.dia)
+  hora_ruim as (
+    select h.hora from por_hora h join med_hora m on m.dia = h.hora::date
+    where h.n > greatest(case when h.hora < p_trava::timestamp then p_piso_hora_dev else p_piso_hora end::numeric, p_fator * m.med)
+  ),
+  -- O dia conta pelo que SOBRA fora das horas de avalanche: rajada de poucas
+  -- horas já sai por elas e não leva junto quem visitou de manhã; o que sobra
+  -- alto é rajada diluída no dia (abaixo do piso de cada hora).
+  resto as (
+    select p.dia, p.anon from passagem p
+    where p.hora not in (select hora from hora_ruim)
+  ),
+  por_dia as (
+    select d.dia, count(r.anon)::int as n
+    from dias d left join resto r on r.dia = d.dia
+    group by d.dia
+  ),
+  dia_ruim as (
+    select d.dia from por_dia d
+    where d.n > greatest(case when d.dia < p_trava then p_piso_dia_dev else p_piso_dia end::numeric,
+      p_fator * (select percentile_cont(0.5) within group (order by x.n) from por_dia x
+                 where x.dia between d.dia - 14 and d.dia + 14))
+  )
   select p.anon, p.primeira, p.pageviews,
          case when p.hora in (select hora from hora_ruim) then 'hora' else 'dia' end
   from passagem p
   where p.hora in (select hora from hora_ruim) or p.dia in (select dia from dia_ruim)
 $$;
-revoke all on function public._robos_retro_candidatos(date, int, int, numeric) from public, anon, authenticated;
+revoke all on function public._robos_retro_candidatos(date, int, int, numeric, date, int, int) from public, anon, authenticated;
 
 -- ── 3) A correção ───────────────────────────────────────────────────────────
 -- A série de antes, pro relatório do fim.
