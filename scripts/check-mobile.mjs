@@ -73,10 +73,12 @@ for (const arquivo of paginas) {
 }
 
 // --- 1c) SHELL_ASSETS aponta pra arquivo que existe? -----------------------
-// O install do service worker usa Promise.allSettled: um arquivo que não
-// existe falha em SILÊNCIO e simplesmente não entra no cache offline. Ou seja,
-// renomear um HTML e esquecer o sw.js tira a página do modo avião sem quebrar
-// nada visível — o tipo de regressão que só aparece no metrô.
+// O install do service worker usa Promise.allSettled: um HTML (ou fonte, ou
+// ícone) que não existe falha em SILÊNCIO e simplesmente não entra no cache
+// offline. Ou seja, renomear um HTML e esquecer o sw.js tira a página do modo
+// avião sem quebrar nada visível — o tipo de regressão que só aparece no
+// metrô. (Arquivo COM HASH que falha, em produção, derruba a instalação
+// inteira desde 2026-09-29 — ver a conta dos buracos no install do sw.js.)
 const swSrc = await readFile(new URL("sw.js", ROOT), "utf8");
 const lista = swSrc.match(/const SHELL_ASSETS = \[([\s\S]*?)\];/);
 if (!lista) {

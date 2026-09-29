@@ -48,6 +48,12 @@
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
+    <!-- Saída de emergência: só aparece se o app não subir (ver .falha-boot no styles.css). -->
+    <div class="falha-boot" hidden>
+      <p data-i18n="boot.stuck">Esta tela não terminou de carregar.</p>
+      <a class="primary" href="" data-i18n="boot.retry">Tentar de novo</a>
+      <a class="secondary" href="/" data-i18n="boot.home">Ir para o início</a>
+    </div>
     <header class="app-header">
       <div class="app-header-inner">
         <a class="brand" href="/">Sleevu</a>

@@ -712,18 +712,35 @@ HTML** do shell, põe esse id no nome do cache do SW e o carimba em
   um tempo parado, a rede vem **primeiro** (com teto de 2,5 s, senão a cópia
   local) — é quase sempre a primeira abertura do dia, quando pode haver
   versão nova;
-- se o HTML que chega da rede é de outro build, o SW não o guarda no cache
-  dele e pede a própria atualização na hora; quando o SW novo assume, a
-  página aberta compara o build dela com o dele e **recarrega sozinha** se
-  for outro (espera se alguém está digitando ou há modal aberto, com o aviso
-  na tela até poder);
+- se o HTML que chega da rede é de outro build, o SW **confere** antes de
+  entregar: pede de novo direto ao servidor (`cache: "reload"`), porque numa
+  navegação de histórico (voltar, avançar, o PWA restaurado pelo sistema) o
+  navegador devolve a cópia que guardou daquela URL sem revalidar — de uma
+  leva cujos arquivos já não existem. Se a conferida ainda for de outro
+  build, é deploy novo de verdade: o SW a entrega, não a guarda no cache dele
+  e pede a própria atualização na hora; quando o SW novo assume, a página
+  aberta compara o build dela com o dele e **recarrega sozinha** se for outro
+  (espera se alguém está digitando ou há modal aberto, com o aviso na tela
+  até poder);
+- recarregar, ou tocar num link pra própria tela, vai à rede primeiro mesmo
+  dentro da sessão ativa;
 - cada página tem **uma** entrada no cache (`/portfolio`, `/portfolio?x` e
   `/portfolio.html` são a mesma), e ao ativar o SW novo apaga todo cache que
-  não é da leva dele.
+  não é da leva dele;
+- o install só assume o comando com **todos** os arquivos com hash no cache
+  (um que falhe, mesmo depois de uma 2ª tentativa, derruba a instalação e o
+  SW atual segue); HTML, fonte e ícone continuam opcionais.
 
 Era isso que faltava quando o Portfólio abria numa versão antiga e quebrada
-antes da nova: a página velha em cache pedia arquivos com hash que já não
-existiam.
+antes da nova, e quando um set "não abria" no PWA do iPhone (2026-09-29): a
+página velha pedia arquivos com hash que já não existiam — sem o `boot.js`
+nada roda, e a tela ficava em "Carregando", sem menu nem barra de baixo.
+
+**Saída de emergência.** Toda página do app traz um cartão escondido
+(`.falha-boot`) com "Tentar de novo" e "Ir para o início". Quem o mostra é o
+CSS, porque o que falhou é o JS: na hora quando o `boot.js` não rodou (o
+`<html>` fica sem `data-game`) e depois de 15 s quando o `shared.js` não montou
+a navegação (sem `data-app`). Numa carga normal ele nunca aparece.
 
 Imagens EN do Pokémon têm cadeia de fallback: `low.webp` → `high.png` (TCGdex) →
 `images.pokemontcg.io`. Cartas sem imagem em nenhuma fonte vão pro fim da lista

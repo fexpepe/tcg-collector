@@ -7231,6 +7231,40 @@ button.dash-link { width: 100%; min-height: 0; justify-content: flex-start; text
 }
 .undo-toast-btn { min-height: 0; padding: 5px 12px; border: 0; border-radius: 8px; background: var(--accent); color: var(--on-accent); font-weight: 800; font-size: 12.5px; cursor: pointer; }
 
+/* Saída de emergência (2026-09-29): o cartão "esta tela não terminou de
+   carregar" que mora escondido (hidden) em toda página do app. Quem o mostra
+   é o CSS, porque o que falhou foi justamente o JS — no PWA do iPhone um set
+   abriu com um boot.js de outra leva (404), e a página ficou em "Carregando",
+   sem menu, sem barra de baixo e sem o aviso de versão nova, que moram todos
+   no JS. A única saída era fechar o app.
+   - Na HORA quando o boot.js não rodou: é ele que carimba o data-game no
+     <html>, síncrono no <head>, antes de o body existir — numa carga normal
+     este cartão nunca chega a pintar sem ele.
+   - Depois de 15 s quando o shared.js não montou a navegação (ele carimba o
+     data-app logo depois dela). O atraso é pra rede lenta de verdade não
+     acender o aviso no meio de uma carga que ia dar certo.
+   "Tentar de novo" é um href="" (a própria URL); o sw.js trata a mesma tela
+   pedida de novo indo à rede primeiro (pediuDeNovo). Cantos retos, como o
+   resto do site (FLAT GLOBAL); as cores dos dois links são as do .primary e
+   do .secondary globais. O !important vence o `[hidden] { display: none
+   !important }` do topo do arquivo; o hidden fica no HTML pra o cartão não
+   aparecer se o próprio CSS não chegar. */
+html:not([data-app]) .falha-boot[hidden] { display: flex !important; animation: falha-boot-aparece 0s 15s both; }
+html:not([data-game]) .falha-boot[hidden] { display: flex !important; animation: none; }
+@keyframes falha-boot-aparece { from { visibility: hidden; } to { visibility: visible; } }
+.falha-boot {
+  position: fixed; z-index: 90; left: 16px; right: 16px; margin: 0 auto; max-width: 440px;
+  bottom: max(env(safe-area-inset-bottom, 0px), 16px);
+  flex-wrap: wrap; gap: 10px; padding: 16px;
+  background: var(--panel); color: var(--text); border: 1px solid var(--line);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.45);
+}
+.falha-boot p { flex: 1 1 100%; margin: 0 0 2px; font-weight: 700; font-size: 15px; }
+.falha-boot a {
+  flex: 1 1 0; min-height: 44px; display: inline-flex; align-items: center; justify-content: center;
+  padding: 0 14px; font-weight: 700; text-decoration: none; text-align: center;
+}
+
 /* Acima da bottom-bar: tudo que é ANCORADO no rodapé no mobile.
    Mora AQUI, e não junto da .mobile-tabbar, por causa da cascata: media query
    não soma especificidade, então a regra do bloco da tabbar (que vem antes no
