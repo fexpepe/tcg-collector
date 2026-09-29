@@ -1,6 +1,8 @@
 // Export de listas (src/export-liga.js): linhas douradas por jogo pro formato
 // "Compra por Lista" da Liga, o texto do site e o CSV. É lógica pura — carrega
-// num vm mínimo, sem stub de DOM (mesmo padrão do deck-rules.test.mjs).
+// num vm mínimo, sem stub de DOM (mesmo padrão do deck-rules.test.mjs). Só as
+// cartas dos 30 anos rodam com o shared.js no mesmo sandbox: a regra delas
+// mora lá (ligaSpecialCode), como no navegador.
 // Ver docs/LISTAS.md §6. Roda com: node --test tests/
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -8,6 +10,7 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import vm from "node:vm";
+import { loadShared } from "./lib/shared-sandbox.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 
@@ -130,4 +133,64 @@ test("numeroPokemon: número que já traz o total não ganha o total de novo", (
   assert.equal(X.numeroPokemon({ number: "78", setTotal: "84" }), "(078/084)");
   assert.equal(X.numeroPokemon({ number: "78" }), "(078)");
   assert.equal(X.numeroPokemon({}), "");
+});
+
+// ── Cartas dos 30 anos (29/09/2026) ──────────────────────────────────────────
+// A Liga cataloga duas famílias do jeito dela, e a regra é a da busca da Liga,
+// que mora no shared.js (ligaSpecialCode). Aqui o export roda no MESMO sandbox
+// do shared, como no navegador, com as cartas reais de data/sets/.
+function loadExportComShared() {
+  const sandbox = loadShared("window.__test = { ligaPokemonQuery };");
+  vm.runInContext(readFileSync(join(here, "..", "src", "export-liga.js"), "utf8"), sandbox);
+  return { XS: sandbox.window.TCGExportLiga, busca: sandbox.window.__test.ligaPokemonQuery };
+}
+const { XS, busca } = loadExportComShared();
+const CARTAS_30 = {};
+for (const lang of ["en", "pt"]) {
+  for (const setId of ["30th", "30th-c"]) {
+    const cartas = JSON.parse(readFileSync(join(here, "..", "data", "sets", lang, `${setId}.json`), "utf8"));
+    cartas.forEach((card) => { CARTAS_30[card.id] = card; });
+  }
+}
+const linha30 = (id) => XS.paraLiga([{ id, v: "Normal", q: 1, c: "NM" }], CARTAS_30, "pokemon");
+
+test("Classic Collection dos 30 anos: número da carta antiga com três dígitos, total sem zero", () => {
+  // Ia "1 Gengar (018/030)" — a numeração sequencial da TCGdex — e a Liga não achava.
+  assert.equal(linha30("30th-c-018"), "1 Gengar (094/30) [QUALIDADE=NM]");
+  assert.equal(linha30("30th-c-001"), "1 Charizard (004/30) [QUALIDADE=NM]");
+  assert.equal(linha30("30th-c-029"), "1 Lugia (149/30) [QUALIDADE=NM]");
+  // PT ("Coleção Clássica de 30 Anos"): mesma numeração, com IDIOMA=PT.
+  assert.equal(linha30("30th-c-018-pt"), "1 Gengar (094/30) [QUALIDADE=NM] [IDIOMA=PT]");
+});
+
+test("Mew RGB dos 30 anos: só o nome, que já traz o código", () => {
+  // Ia "1 Mew - B/RGB (B/128)"; a Liga só tem "Mew - B/RGB".
+  assert.equal(linha30("30th-B"), "1 Mew - B/RGB [QUALIDADE=NM]");
+  assert.equal(linha30("30th-G"), "1 Mew - G/RGB [QUALIDADE=NM]");
+  assert.equal(linha30("30th-R"), "1 Mew - R/RGB [QUALIDADE=NM]");
+  assert.equal(linha30("30th-B-pt"), "1 Mew - B/RGB [QUALIDADE=NM] [IDIOMA=PT]");
+});
+
+test("com o shared carregado, o resto segue a regra de sempre", () => {
+  assert.equal(XS.paraLiga([{ id: "sv08-078", v: "Normal", q: 1, c: "NM" }], POKEMON, "pokemon"), "1 Gwynn (078/084) [QUALIDADE=NM]");
+  assert.equal(linha30("30th-001"), "1 Exeggcute (001/128) [QUALIDADE=NM]");
+  // Mew RGB japonês (M6a): a exceção é só do EN/PT, a JP continua com o número.
+  const mewJp = { id: "M6a-B-ja", name: "Mew - B/RGB", pokemonName: "Mew", number: "B", setId: "M6a", setTotal: "", language: "ja" };
+  assert.equal(XS.paraLiga([{ id: mewJp.id, v: "Normal", q: 1, c: "NM" }], { [mewJp.id]: mewJp }, "pokemon"),
+    "1 Mew - B/RGB (B) [QUALIDADE=NM] [IDIOMA=JP]");
+  // Texto e CSV não passam pela regra da Liga.
+  assert.equal(XS.paraTexto([{ id: "30th-B", q: 1 }], CARTAS_30), "1 Mew - B/RGB");
+  assert.equal(XS.paraCsv([{ id: "30th-c-018", v: "Normal", q: 1, c: "NM" }], CARTAS_30, "pokemon").split("\n")[1],
+    "1;Gengar;30th Classic Collection;018;Normal;NM");
+});
+
+// Export e busca da Liga (preview da carta) mandam o MESMO nome e número nos
+// dois sets dos 30 anos, EN e PT: foi a divergência entre os dois que deixou o
+// export pra trás quando a busca foi corrigida (d2047d4).
+test("sets dos 30 anos: o export sai com o mesmo nome e número da busca da Liga", () => {
+  for (const card of Object.values(CARTAS_30)) {
+    const idioma = card.language === "pt" ? " [IDIOMA=PT]" : "";
+    assert.equal(linha30(card.id), `1 ${busca(card)} [QUALIDADE=NM]${idioma}`, card.id);
+    if (card.setId === "30th-c") assert.match(linha30(card.id), /\(\d{3}\/30\) \[/, card.id);
+  }
 });

@@ -13,7 +13,8 @@
 // O formato da Liga aceita tags por carta:
 //   <qtd> <nome> [QUALIDADE=SP] [EDICAO=M10] [IDIOMA=PT] [EXTRAS=FOIL]
 // e no Pokémon a edição é dispensada em favor do número impresso "(NNN/TTT)",
-// que é como a Liga identifica a carta lá.
+// que é como a Liga identifica a carta lá. As exceções (cartas dos 30 anos que
+// a Liga cataloga de outro jeito) vêm do shared.js — ver codigoEspecialLiga.
 (function () {
   "use strict";
 
@@ -48,8 +49,22 @@
     const s = String(v == null ? "" : v).trim();
     return /^\d+$/.test(s) ? s.padStart(3, "0") : s;
   }
+
+  // Cartas dos 30 anos que a Liga cataloga do jeito dela: o Mew RGB vai só pelo
+  // nome, que já traz o código ("Mew - B/RGB"), e a Classic Collection pelo
+  // número da carta ANTIGA com o total sem zero ("Gengar (094/30)"). O export
+  // mandava "(B/128)" e "(018/030)", que não casam lá (29/09/2026). A regra é a
+  // da busca da Liga e mora no shared.js (ligaSpecialCode), junto da tabela dos
+  // 30 números — aqui só se consulta. Sem o shared (teste em vm mínimo), vale a
+  // regra de sempre. "" = sem número; null = não é exceção.
+  function codigoEspecialLiga(card) {
+    const shared = window.TCGShared;
+    return shared && shared.ligaSpecialCode ? shared.ligaSpecialCode(card) : null;
+  }
   function numeroPokemon(card) {
     if (!card || !card.number) return "";
+    const especial = codigoEspecialLiga(card);
+    if (especial != null) return especial ? `(${especial})` : "";
     // Numero que JA vem "4/102" (fonte que grava o total junto) nao pode ganhar
     // o total de novo: "(4/102/102)" nao casa com nada na Liga. O catalogo de
     // producao grava so "4", mas basta uma fonte fazer diferente pra a linha

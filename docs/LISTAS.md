@@ -319,7 +319,7 @@ Linha-modelo: `<qtd> <nome> [qualidade=<c>][edicao=<sigla>][idioma=<x>][extras=<
 | edicao | Magic: `setId` do id `mtg-<set>-<num>`; demais: sigla do set quando houver | maiúscula; omitir se não confiável |
 | idioma | sufixo do id (`-pt`→PT, `-ja`→JP) | omitir pra EN (default da Liga) |
 | extras | variante | `Foil`→`foil`; `Etched`→`etched`; Magic pode anexar `treat` mapeado (borderless, extended art…) filtrado por `TREAT_NOISE` (`src/shared.js:5228`) — best-effort |
-| (NNN/TTT) | Pokémon: `card.number`/`card.setTotal` | pad de ambos pra 3 dígitos (`078/084`), como impresso na carta |
+| (NNN/TTT) | Pokémon: `card.number`/`card.setTotal` | pad de ambos pra 3 dígitos (`078/084`), como impresso na carta. Exceções dos 30 anos, com a regra da busca da Liga (`ligaSpecialCode`, `src/shared.js`): Mew RGB EN/PT vai **sem número** (o código já está no nome) e a Classic Collection (`30th-c`) vai com o número da carta **antiga** e o total sem zero (`094/30`) |
 
 Exemplos (dados reais do catálogo):
 
@@ -331,6 +331,8 @@ Exemplos (dados reais do catálogo):
 ```
 1 Gwynn (078/084) [qualidade=NM]
 2 Mega Darkrai ex (116/084) [qualidade=NM]
+1 Gengar (094/30) [qualidade=NM]
+1 Mew - B/RGB [qualidade=NM] [idioma=PT]
 ```
 
 Implementação: `src/export-liga.js` (funções puras, sem DOM) com config por
@@ -354,7 +356,9 @@ Uma lista exportada assim **importa num deck do site** sem conversão.
 ### 6.4 Testes
 
 `tests/liga-export.test.mjs`: linhas douradas por jogo (Magic com foil+treat,
-Pokémon com pad, One Piece com sufixo removido, entrada `v:null`, `q` nulo).
+Pokémon com pad, One Piece com sufixo removido, entrada `v:null`, `q` nulo) e
+as cartas dos 30 anos, que rodam com o `shared.js` no mesmo sandbox e conferem
+o export contra a busca da Liga carta a carta.
 (O CI roda `node --test tests/*.test.mjs` — a pasta inteira —, então teste novo
 entra pelo glob, sem mexer no workflow.)
 
