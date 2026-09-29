@@ -4,6 +4,8 @@
 //    Ia "Mew - B/RGB (B/128)" e a Liga não achava;
 //  • Classic Collection (30th-c): número da carta ANTIGA + total do set —
 //    "Lugia (149/30)". Ia a numeração sequencial da TCGdex, "Lugia (029/030)".
+// E o número vai SEMPRE com três dígitos (29/09/2026): a Liga tem "Gengar
+// (094/30)" e a busca "Gengar (94/30)" voltava vazia.
 // Roda com: node --test tests/
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -33,10 +35,20 @@ test("Mew RGB vai pra Liga só com o nome (o código já está nele)", () => {
 test("Classic Collection: número da carta antiga + /30, sem zero no total", () => {
   assert.equal(api.ligaPokemonQuery(lugia), "Lugia (149/30)");
   assert.ok(links(lugia).liga.endsWith("card=Lugia (149/30)"), links(lugia).liga);
-  const charizard = { ...lugia, id: "30th-c-001", name: "Charizard", pokemonName: "Charizard", number: "001" };
-  assert.equal(api.ligaPokemonQuery(charizard), "Charizard (4/30)");
   // PT ("Coleção Clássica de 30 Anos") tem o mesmo setId e a mesma numeração.
   assert.equal(api.ligaPokemonQuery({ ...lugia, id: "30th-c-029-pt", language: "pt" }), "Lugia (149/30)");
+});
+
+test("Classic Collection: número curto ganha zero à esquerda até três dígitos", () => {
+  const gengar = { ...lugia, id: "30th-c-018", name: "Gengar", pokemonName: "Gengar", number: "018" };
+  assert.equal(api.ligaPokemonQuery(gengar), "Gengar (094/30)");
+  assert.ok(links(gengar).liga.endsWith("card=Gengar (094/30)"), links(gengar).liga);
+  const charizard = { ...lugia, id: "30th-c-001", name: "Charizard", pokemonName: "Charizard", number: "001" };
+  assert.equal(api.ligaPokemonQuery(charizard), "Charizard (004/30)");
+  assert.equal(api.ligaPokemonQuery({ ...charizard, id: "30th-c-001-pt", language: "pt" }), "Charizard (004/30)");
+  // Raikou já vem "050" do TCGplayer: não vira "0050".
+  const raikou = { ...lugia, id: "30th-c-012", name: "Raikou", pokemonName: "Raikou", number: "012" };
+  assert.equal(api.ligaPokemonQuery(raikou), "Raikou (050/30)");
 });
 
 test("o resto segue como era: set principal dos 30 anos e set comum", () => {
@@ -67,10 +79,27 @@ test("tabela da Classic Collection bate com o de-para do data/card-id-merges.jso
     const i = parseInt(novo.slice("30th-c-".length), 10) - 1;
     assert.equal(tabela[i], original, `${novo} devia ser ${original}`);
   }
-  // E toda carta do set (EN e PT) cai numa linha da tabela.
+  // E toda carta do set (EN e PT) cai numa linha da tabela, com três dígitos.
   for (const lang of ["en", "pt"]) {
     for (const card of lerJson(`data/sets/${lang}/30th-c.json`)) {
-      assert.match(api.ligaPokemonQuery(card), /\(\d+\/30\)$/, card.id);
+      assert.match(api.ligaPokemonQuery(card), /\(\d{3}\/30\)$/, card.id);
+    }
+  }
+});
+
+// A regra dos três dígitos vale pros dois sets dos 30 anos, EN e PT. Só as
+// bônus (Mew RGB) ficam sem código — vão pelo nome, que já o traz.
+test("sets dos 30 anos: toda busca da Liga leva três dígitos antes da barra", () => {
+  for (const setId of ["30th", "30th-c"]) {
+    for (const lang of ["en", "pt"]) {
+      for (const card of lerJson(`data/sets/${lang}/${setId}.json`)) {
+        const q = api.ligaPokemonQuery(card);
+        if (/^30th-[BGR](-pt)?$/.test(card.id)) {
+          assert.equal(q, card.name, card.id);
+          continue;
+        }
+        assert.match(q, /\(\d{3}\/\d+\)$/, `${card.id}: ${q}`);
+      }
     }
   }
 });

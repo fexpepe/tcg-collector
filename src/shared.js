@@ -7063,17 +7063,22 @@
   // do set: "Lugia (149/30)" — sem zero à esquerda no total. A busca ia com a
   // numeração sequencial da TCGdex ("Lugia (029/030)") e não achava nenhuma
   // (27/09/2026, pedido do Fernando). O número vem como o TCGplayer escreve
-  // (é o que está impresso); tests/marketplace-search-30th.test.mjs confere a
-  // tabela contra o de-para cel30cc -> 30th-c do data/card-id-merges.json.
+  // (é o que está impresso; a busca o zera, ver ligaClassicCode);
+  // tests/marketplace-search-30th.test.mjs confere a tabela contra o de-para
+  // cel30cc -> 30th-c do data/card-id-merges.json.
   const LIGA_CLASSIC_NUMBERS = {
     "30th-c": ["4", "5", "11", "11", "18", "19", "25", "33", "41", "43", "47", "050", "57", "58", "69",
       "85", "89", "94", "99", "100", "101", "106", "106", "106", "108", "114", "123", "138", "149", "203"]
   };
-  // "149/30" pra carta da Classic Collection; "" nas demais.
+  // "149/30" pra carta da Classic Collection; "" nas demais. O número vai
+  // SEMPRE com três dígitos, como nos outros sets: a Liga cataloga "Gengar
+  // (094/30)" e a busca "Gengar (94/30)" não achava nada — nem as outras 17
+  // de número curto (29/09/2026, pedido do Fernando). O total segue sem zero.
   function ligaClassicCode(card) {
     const lista = card && LIGA_CLASSIC_NUMBERS[card.setId];
     if (!lista) return "";
-    const original = lista[parseInt(String(card.number || ""), 10) - 1] || "";
+    const bruto = lista[parseInt(String(card.number || ""), 10) - 1] || "";
+    const original = /^\d+$/.test(bruto) ? bruto.padStart(3, "0") : bruto;
     const total = String(card.setTotal || "").trim();
     return original && total ? `${original}/${total}` : original;
   }
