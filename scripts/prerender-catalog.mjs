@@ -297,7 +297,12 @@ const PR_STYLE = `    <style>
          mais a linha do nome), então a rolagem não estica nem encolhe. */
       .pr-card { content-visibility: auto; contain-intrinsic-size: auto 240px; }
       .pr-card a { text-decoration: none; color: inherit; display: block; }
-      .pr-card-img { width: 100%; height: auto; border-radius: 8px; display: block; background: var(--surface-2, #1a1c22); }
+      /* Fundo de quem ainda está carregando: --panel, como o .prc-img da página
+         de carta. Era --surface-2, que não existe no styles.css — valia sempre o
+         fallback escuro, e no tema claro a grade virava uma parede de quadrados
+         pretos até as imagens chegarem. Ninguém via porque o theme.js dava 404
+         em produção e estas páginas nunca saíam do escuro (29/09/2026). */
+      .pr-card-img { width: 100%; height: auto; border-radius: 8px; display: block; background: var(--panel, #1a1c22); }
       .pr-card-noimg { display: block; padding: 20px 8px; text-align: center; }
       .pr-card-meta { display: block; margin-top: 6px; font-size: 0.85rem; }
       .pr-card-num { color: var(--muted, #9aa0aa); }
