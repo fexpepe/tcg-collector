@@ -91,3 +91,69 @@ test("hbars e funnel: largura proporcional e escape de rótulos", () => {
   assert.ok(f.includes("width:100.0%") && f.includes("width:25.0%"));
   assert.ok(f.includes("25%"), "funil sem a porcentagem do passo");
 });
+
+// ── Kit para parceiros (2026-09-29) ──────────────────────────────────────────
+// O kit é o PDF que sai do painel pra loja, anunciante e investidor. Os
+// números dele passam por estes três helpers, e um erro aqui vai pro papel.
+test("niceMax: teto redondo e justo pro eixo (sem metade do gráfico vazia)", () => {
+  const casos = [[0, 1], [1, 1], [95, 100], [1200, 1200], [1201, 1500], [5214, 6000], [60000, 60000], [99999, 100000]];
+  for (const [v, esperado] of casos) assert.equal(C.niceMax(v), esperado, `niceMax(${v})`);
+  for (let v = 1; v < 1e6; v = Math.ceil(v * 1.37)) {
+    const t = C.niceMax(v);
+    assert.ok(t >= v && t <= v * 1.5 + 1e-9, `niceMax(${v}) = ${t}: fora de [v, 1,5v]`);
+  }
+});
+
+test("compacto: exato abaixo do corte, três dígitos acima, R$ quando é moeda", () => {
+  assert.equal(C.compacto(5214), "5.214", "abaixo de 100 mil fica exato");
+  assert.equal(C.compacto(99999), "99.999");
+  assert.equal(C.compacto(422000), "422 mil");
+  assert.equal(C.compacto(4360000), "4,36 mi");
+  assert.equal(C.compacto(12500000), "12,5 mi");
+  assert.equal(C.compacto(9800, true), "R$ 9.800", "moeda: exato abaixo de 10 mil");
+  assert.equal(C.compacto(612400, true), "R$ 612 mil");
+  assert.equal(C.compacto(4360000, true), "R$ 4,36 mi");
+  assert.equal(C.compacto(null), "—");
+  assert.equal(C.compacto(undefined, true), "—");
+  assert.ok(!/ /.test(C.compacto(422000)), "espaço duro do Intl vira espaço comum");
+});
+
+test("area: desenha dentro da caixa, rotula o dia 1 de cada mês e marca o último valor", () => {
+  const pts = Array.from({ length: 70 }, (_, i) => ({ day: new Date(Date.UTC(2026, 6, 20 + i)).toISOString().slice(0, 10), v: 1000 + i * 10 }));
+  const svg = C.area(pts, { w: 600, h: 150 });
+  assert.ok(svg.startsWith("<svg") && svg.includes('viewBox="0 0 600 150"'));
+  const d = /<path d="([^"]+)" fill="none"/.exec(svg)[1];
+  for (const [, x, y] of d.matchAll(/[ML]([\d.]+) ([\d.]+)/g)) {
+    assert.ok(Number(x) >= 0 && Number(x) <= 600 && Number(y) >= 0 && Number(y) <= 150, `ponto fora da caixa: ${x},${y}`);
+  }
+  // 20/07 → 27/09: viram agosto e setembro.
+  assert.deepEqual([...svg.matchAll(/class="adm-axis">([a-zç]+)</g)].map((m) => m[1]), ["ago", "set"]);
+  assert.ok(svg.includes(">1.690</text>"), "o último valor tem de vir escrito");
+  // Último ponto no teto (1.200 com teto 1.200): o número vai pra baixo do
+  // ponto, não pra fora da caixa.
+  const teto = C.area([{ day: "2026-09-01", v: 600 }, { day: "2026-09-02", v: 1200 }], { w: 600, h: 150 });
+  const yUlt = Number(/y="([\d.]+)" text-anchor="end" class="adm-kit-area-ult"/.exec(teto)[1]);
+  assert.ok(yUlt >= 14, `rótulo do último valor fora da caixa (y=${yUlt})`);
+  assert.equal(C.area([{ day: "2026-01-01", v: 3 }]), "", "um ponto só não é série");
+  assert.equal(C.area([{ day: "2026-01-01", v: null }, { day: "2026-01-02", v: 4 }]), "", "ponto sem valor não conta");
+});
+
+test("kit: o tamanho do catálogo é o mesmo da home e do og-image", () => {
+  // "240.000+" (home), "240 mil+" (og-image e kit), "2.200+": a mesma conta
+  // escrita de três jeitos. Recontou o catálogo? Muda nos três lugares.
+  const numero = (t) => {
+    const m = /([\d.]+)\s*(mil)?/.exec(t);
+    return Number(m[1].replace(/\./g, "")) * (m[2] ? 1000 : 1);
+  };
+  const admin = readFileSync(join(raiz, "src", "admin.js"), "utf8");
+  const kit = /const KIT_CATALOGO = \{ cartas: "([^"]+)", sets: "([^"]+)" \}/.exec(admin);
+  assert.ok(kit, "sumiu o KIT_CATALOGO do src/admin.js");
+  const home = readFileSync(join(raiz, "index.html"), "utf8");
+  const og = readFileSync(join(raiz, "scripts", "og", "og-image.html"), "utf8");
+  const daHome = (chave) => new RegExp(`<strong>([^<]+)</strong><span data-i18n="home\\.lp\\.${chave}"`).exec(home)[1];
+  const doOg = (rotulo) => new RegExp(`<strong>([^<]+)</strong><span>${rotulo}`).exec(og)[1];
+  assert.equal(numero(kit[1]), numero(daHome("statCards")), "cartas: kit ≠ home");
+  assert.equal(numero(kit[1]), numero(doOg("cartas catalogadas")), "cartas: kit ≠ og-image");
+  assert.equal(numero(kit[2]), numero(daHome("statSets")), "sets: kit ≠ home");
+  assert.equal(numero(kit[2]), numero(doOg("sets")), "sets: kit ≠ og-image");
+});

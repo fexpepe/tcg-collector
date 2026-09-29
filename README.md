@@ -241,6 +241,26 @@ pela da imagem — renomear o PNG não adianta. Force o re-scrape no
 no [Card Validator](https://cards-dev.twitter.com/validator) do X; o WhatsApp
 solta sozinho em algumas semanas.
 
+### Kit para parceiros (PDF)
+
+O material que vai pra loja, anunciante e investidor sai do `/admin` › Visão
+geral › Para parceiros: um documento A4 de 4 páginas (capa com o wordmark e o
+que é o Sleevu, público, intenção de compra, como trabalhar junto, metodologia
+e contato), com os números do período escolhido. A aba mostra a prévia fiel e
+o botão abre a impressão ("Salvar como PDF"). Tudo em `src/admin.js`
+(`tabParceiros`) e na seção `.adm-kit` do `styles.css`:
+
+- **Paleta fixa**: o `.adm-kit` redefine as variáveis do tema, então o PDF sai
+  igual em qualquer tema; `print-color-adjust: exact` é o que faz fundo e
+  barra saírem no papel.
+- **Página**: o `@page { size: A4; margin: 0 }` é injetado pelo `admin.js` só
+  enquanto a aba está aberta (no `styles.css` valeria pra impressão de
+  qualquer página). Sem margem, o navegador também não carimba título e URL
+  do painel no papel; o nome sugerido do arquivo vem do `<title>`, trocado na
+  hora de imprimir.
+- **Números do catálogo** (`KIT_CATALOGO`): os mesmos da `.lp-stats` da home e
+  do og-image — o `tests/admin-charts.test.mjs` cobra os três.
+
 ---
 
 ## Dados: modo local × modo manifest

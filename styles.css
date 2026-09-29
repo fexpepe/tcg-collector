@@ -5405,15 +5405,152 @@ a.setting-open {
   .adm-form input, .adm-form select { min-height: 44px; font-size: 16px; }
 }
 
-/* "Para parceiros": cabeçalho com o botão de imprimir. */
-.adm-kit-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
-.adm-kit-head h2 { margin: 0 0 4px; font-size: 20px; }
 @media (pointer: coarse), (max-width: 700px) {
   /* Alvo de toque de 44px nos controles do painel. */
-  .adm-toolbar .chip, .adm-pager .chip, .adm-actions .chip, .adm-kit-head .chip { min-height: 44px; }
+  .adm-toolbar .chip, .adm-pager .chip, .adm-actions .chip, .adm-kit-barra .chip { min-height: 44px; }
 }
-/* Impressão (aba "Para parceiros" → PDF): só o conteúdo, sem cabeçalho do
-   site, abas nem botões; seções sem quebrar no meio. */
+
+/* ── Kit para parceiros (Visão geral › Para parceiros) ───────────────────
+   (2026-09-29) O PDF que vai pra loja, anunciante e investidor: um documento
+   A4 desenhado pra papel, e a aba mostra a prévia fiel dele (mesma largura e
+   mesmas quebras; o admin.js aplica zoom pra caber em tela estreita). Paleta
+   PRÓPRIA e fixa: as variáveis do tema são redefinidas aqui dentro, então o
+   PDF não muda com o tema de quem imprime, e o que vem do painel (pílula de
+   jogo, grade e eixo do gráfico) pinta com ela. O print-color-adjust é o que
+   faz fundo e barra saírem no papel — sem ele o navegador descarta todo
+   fundo, e era por isso que as barras do kit antigo sumiam no PDF. */
+.adm-kit-barra { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px; }
+.adm-kit-barra strong { display: block; font-size: 16px; }
+.adm-kit-barra span { font-size: 13px; color: var(--muted); }
+.adm-kit-barra .chip { display: inline-flex; align-items: center; gap: 8px; }
+/* Quatro seletores de propósito: o tema claro pinta o fundo de todo chip sem
+   aria-pressed com especificidade 0-4-0 (ver .adm-groups), e com menos que
+   isso o botão virava texto branco em fundo branco. */
+.adm-kit-barra .chip.adm-primary[data-print] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.adm-kit-barra .chip span { color: inherit; font-size: 14px; }
+.adm-kit-prev { overflow-x: auto; padding: 2px 0 12px; }
+.adm-kit {
+  --text: #101218; --muted: #4a5261; --subtle: #6b7383; --line: #e3e6eb;
+  --panel: #fff; --panel-strong: #eceef2; --accent: #dc2626;
+  --kit-vermelho: #dc2626; --kit-escuro: #101218; --kit-fundo: #f5f6f8;
+  width: 210mm; margin: 0 auto; color: var(--text); line-height: 1.35;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+}
+/* 296,8 mm e não 297: com a altura exata, o arredondamento do navegador
+   empurra 1 px pra fora e cada página ganha uma folha em branco depois. */
+.adm-kit-page { position: relative; display: flex; flex-direction: column; width: 210mm; height: 296.8mm; overflow: hidden; background: #fff; box-shadow: 0 1px 2px rgba(16, 18, 24, 0.12), 0 10px 30px rgba(16, 18, 24, 0.14); }
+.adm-kit-page + .adm-kit-page { margin-top: 28px; }
+/* :where() deixa a zerada com a especificidade de UMA classe: as margens
+   de cada peça do kit, abaixo, vencem sem !important. */
+.adm-kit :where(h1, h2, h3, p, dl, dd) { margin: 0; }
+.adm-kit-marca { display: inline-flex; color: inherit; }
+.adm-kit-marca svg { display: block; width: 150px; height: auto; }
+.adm-kit-marca-txt { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; }
+/* Capa: a faixa escura com a barra vermelha e o brilho do og-image. */
+.adm-kit-hero { position: relative; overflow: hidden; background: var(--kit-escuro); color: #f3f5f7; padding: 44px 52px 30px; }
+.adm-kit-hero::before { content: ""; position: absolute; inset: 0 0 auto; height: 6px; background: linear-gradient(90deg, #b91c1c, #ef4444 45%, #dc2626); }
+.adm-kit-hero::after { content: ""; position: absolute; right: -150px; top: -210px; width: 640px; height: 540px; background: radial-gradient(closest-side, rgba(220, 38, 38, 0.3), transparent 72%); pointer-events: none; }
+.adm-kit-hero > * { position: relative; z-index: 1; }
+.adm-kit-hero-topo { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.adm-kit-selo { border: 1px solid rgba(243, 245, 247, 0.35); padding: 6px 12px 5px; font-size: 10.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+.adm-kit-sobre { margin-top: 32px; color: #f87171; font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+.adm-kit-hero h1 { margin-top: 10px; font-size: 52px; font-weight: 700; line-height: 1; letter-spacing: -0.035em; }
+.adm-kit-lede { margin-top: 14px; max-width: 540px; font-size: 17px; line-height: 1.45; color: #aeb5c1; }
+/* Os números do catálogo moram na capa, com as hairlines da .lp-stats da
+   home (e do og-image), em claro sobre o escuro. */
+.adm-kit-hero .adm-kit-fatos { margin-top: 26px; border-color: rgba(243, 245, 247, 0.16); }
+.adm-kit-hero .adm-kit-fatos div { border-color: rgba(243, 245, 247, 0.16); }
+.adm-kit-hero .adm-kit-fatos span { color: #8891a1; }
+/* Páginas 2-4: cabeçalho corrido e o título numerado da seção. */
+.adm-kit-topo { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 26px 52px 0; font-size: 10.5px; color: var(--subtle); }
+.adm-kit-topo .adm-kit-marca { color: var(--kit-escuro); }
+.adm-kit-topo .adm-kit-marca svg { width: 84px; }
+.adm-kit-cab { display: flex; gap: 16px; align-items: flex-start; padding: 24px 52px 0; }
+.adm-kit-cab-num { flex: none; padding-top: 8px; border-top: 3px solid var(--kit-vermelho); color: var(--kit-vermelho); font-size: 13px; font-weight: 800; letter-spacing: 0.06em; }
+.adm-kit-cab h2 { font-size: 30px; font-weight: 700; line-height: 1.1; letter-spacing: -0.03em; }
+.adm-kit-cab p { margin-top: 6px; max-width: 560px; font-size: 13px; line-height: 1.5; color: var(--muted); }
+.adm-kit-corpo { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 18px; padding: 24px 52px 0; }
+.adm-kit-rodape { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: auto; padding: 14px 52px 22px; font-size: 10px; color: var(--subtle); }
+.adm-kit-h2 { display: flex; align-items: center; gap: 12px; margin-bottom: -6px; font-size: 12px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; }
+.adm-kit-h2::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.adm-kit-pitch { font-size: 13.5px; line-height: 1.6; color: var(--muted); }
+.adm-kit-logos { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; }
+.adm-kit-logos li { height: 42px; padding: 6px 8px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--line); background: #fff; }
+.adm-kit-logos img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.adm-kit-fatos { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.adm-kit-fatos div { padding: 12px 0 12px 16px; border-left: 1px solid var(--line); }
+.adm-kit-fatos div:first-child { padding-left: 0; border-left: 0; }
+.adm-kit-fatos strong { display: block; font-size: 20px; font-weight: 700; letter-spacing: -0.02em; }
+.adm-kit-fatos span { font-size: 11px; color: var(--subtle); }
+/* Números: cartão claro com o traço vermelho curto em cima (um por cartão,
+   não uma borda inteira — oito faixas vermelhas gritavam mais que o dado). */
+.adm-kit-nums { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.adm-kit-num { position: relative; display: flex; flex-direction: column; gap: 2px; min-width: 0; padding: 16px 14px 13px; background: var(--kit-fundo); }
+.adm-kit-num::before { content: ""; position: absolute; left: 14px; top: 0; width: 22px; height: 3px; background: var(--kit-vermelho); }
+.adm-kit-num strong { font-size: 26px; font-weight: 750; line-height: 1.1; letter-spacing: -0.03em; white-space: nowrap; }
+.adm-kit-num span { margin-top: 2px; font-size: 12px; font-weight: 700; }
+.adm-kit-num small { font-size: 10.5px; line-height: 1.35; color: var(--subtle); }
+.adm-kit-sobe, .adm-kit-desce { font-style: normal; font-weight: 800; }
+.adm-kit-sobe { color: #15803d; }
+.adm-kit-desce { color: #b91c1c; }
+.adm-kit-grade2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.adm-kit-grade3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.adm-kit-card { min-width: 0; padding: 14px 16px; border: 1px solid var(--line); }
+.adm-kit-card h3 { margin-bottom: 12px; font-size: 10.5px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--subtle); }
+.adm-kit-nota { margin-top: 10px; font-size: 10.5px; line-height: 1.45; color: var(--subtle); }
+.adm-kit-vazio { font-size: 12px; color: var(--subtle); }
+.adm-kit-area { display: block; width: 100%; height: auto; }
+.adm-kit-area .adm-axis { font-size: 10px; }
+.adm-kit-area-ult { font-size: 12px; font-weight: 800; fill: var(--text); }
+.adm-kit-barras { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; }
+.adm-kit-barras li { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; gap: 4px 10px; font-size: 12px; }
+.adm-kit-barra-rot { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
+.adm-kit-barra-rot small { font-size: 10.5px; font-weight: 400; color: var(--subtle); }
+.adm-kit-barras b { font-weight: 800; font-variant-numeric: tabular-nums; }
+.adm-kit-trilho { grid-column: 1 / -1; display: block; height: 6px; background: var(--panel-strong); }
+.adm-kit-trilho span { display: block; height: 100%; }
+.adm-kit-destaque { margin-bottom: 10px; font-size: 12px; color: var(--muted); }
+.adm-kit-destaque strong { margin-right: 4px; font-size: 28px; font-weight: 750; letter-spacing: -0.03em; color: var(--text); }
+.adm-kit-fatias { display: flex; height: 10px; background: var(--panel-strong); }
+.adm-kit-fatias span { display: block; height: 100%; }
+.adm-kit-leg { list-style: none; margin: 10px 0 0; padding: 0; display: flex; flex-direction: column; gap: 5px; font-size: 11.5px; }
+.adm-kit-leg li { display: flex; align-items: center; gap: 7px; }
+.adm-kit-leg b { margin-left: auto; font-weight: 800; }
+.adm-kit-leg-linha { flex-direction: row; gap: 16px; margin-top: 12px; font-size: 10.5px; color: var(--subtle); }
+.adm-kit-sw { flex: none; display: inline-block; width: 9px; height: 9px; }
+.adm-kit-buscas { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.adm-kit-buscas li { padding: 5px 9px; border: 1px solid var(--line); background: var(--kit-fundo); font-size: 11.5px; font-weight: 600; }
+.adm-kit-buscas b { margin-left: 6px; font-size: 10.5px; font-weight: 600; color: var(--subtle); }
+.adm-kit-tab { width: 100%; border-collapse: collapse; font-size: 11.5px; }
+.adm-kit-tab th { padding: 0 6px 7px; border-bottom: 1.5px solid var(--text); text-align: left; font-size: 9.5px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--subtle); }
+.adm-kit-tab td { padding: 6px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+.adm-kit-tab tr:last-child td { border-bottom: 0; }
+.adm-kit-tab .num { text-align: right; font-variant-numeric: tabular-nums; }
+.adm-kit-tab .adm-kit-pos { width: 20px; color: var(--subtle); }
+.adm-kit-tab strong { font-weight: 700; }
+.adm-kit-tab small { margin-left: 4px; font-size: 10px; color: var(--subtle); }
+.adm-kit-tab .adm-game { padding: 1px 8px; font-size: 10.5px; }
+/* Página 4: ofertas, metodologia e a faixa de contato fechando o documento. */
+.adm-kit-ofertas { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.adm-kit-oferta { padding: 14px 16px; border-left: 3px solid var(--kit-vermelho); background: var(--kit-fundo); }
+.adm-kit-oferta h3 { margin-bottom: 6px; font-size: 14.5px; font-weight: 750; }
+.adm-kit-oferta p { font-size: 11.5px; line-height: 1.55; color: var(--muted); }
+.adm-kit-oferta strong { display: block; margin-top: 10px; font-size: 11.5px; font-weight: 700; }
+.adm-kit-metodo { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 24px; font-size: 11px; line-height: 1.5; color: var(--muted); }
+.adm-kit-metodo strong { color: var(--text); }
+.adm-kit-fim .adm-kit-corpo { flex: 0 1 auto; }
+.adm-kit-contato { position: relative; overflow: hidden; margin-top: auto; padding: 30px 52px; display: flex; align-items: center; justify-content: space-between; gap: 24px; background: var(--kit-escuro); color: #f3f5f7; }
+.adm-kit-contato::before { content: ""; position: absolute; inset: 0 0 auto; height: 4px; background: linear-gradient(90deg, #b91c1c, #ef4444 45%, #dc2626); }
+.adm-kit-contato h3 { font-size: 24px; font-weight: 700; letter-spacing: -0.02em; }
+.adm-kit-contato p { margin-top: 4px; font-size: 13px; color: #aeb5c1; }
+.adm-kit-contato dl { display: grid; grid-template-columns: auto auto; gap: 5px 16px; font-size: 13px; }
+.adm-kit-contato dl div { display: contents; }
+.adm-kit-contato dt { align-self: center; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #8891a1; }
+.adm-kit-contato dd { font-weight: 700; }
+.adm-kit-fim .adm-kit-rodape { margin-top: 0; }
+/* Impressão. Na aba do kit, SÓ o documento vai pro papel (o @page A4 sem
+   margem é injetado pelo admin.js enquanto a aba está aberta); nas outras
+   abas, o conteúdo sem cabeçalho do site, abas nem botões. */
 @media print {
   body:has(#adminRoot) .app-header,
   body:has(#adminRoot) .mobile-tabbar,
@@ -5421,6 +5558,19 @@ a.setting-open {
   body:has(#adminRoot) .collection-subtitle,
   .adm-toolbar, .adm-noprint, #admNote, .adm-pager { display: none !important; }
   .admin-section { break-inside: avoid; }
+  body:has(.adm-kit) { margin: 0 !important; padding: 0 !important; background: #fff !important; }
+  body:has(.adm-kit) > :not(main),
+  body:has(.adm-kit) main > :not(#adminRoot),
+  body:has(.adm-kit) #adminRoot > :not(#admBody),
+  body:has(.adm-kit) #admBody > :not(.adm-kit-prev) { display: none !important; }
+  body:has(.adm-kit) main,
+  body:has(.adm-kit) #adminRoot,
+  body:has(.adm-kit) #admBody,
+  .adm-kit-prev { display: block !important; width: auto !important; max-width: none !important; margin: 0 !important; padding: 0 !important; overflow: visible !important; }
+  .adm-kit { zoom: 1 !important; margin: 0 !important; }
+  .adm-kit-page { box-shadow: none; break-after: page; break-inside: avoid; }
+  .adm-kit-page + .adm-kit-page { margin-top: 0; }
+  .adm-kit-page:last-child { break-after: auto; }
 }
 
 /* Modo sensível: borra os totais de valor (portfólio/coleção/vendas) pra dar
