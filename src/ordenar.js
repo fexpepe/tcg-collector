@@ -264,7 +264,9 @@
     menu.style.left = `${Math.max(8, Math.min(left, vw - w - 8))}px`;
     const abaixo = vh - r.bottom - 12;
     const acima = r.top - 12;
-    const sobe = h > abaixo && acima > abaixo;
+    // Abre pra baixo, rolando por dentro, enquanto couberem ~7 linhas; só sobe
+    // quando embaixo aperta de verdade (select colado no rodapé da tela).
+    const sobe = abaixo < Math.min(h, 280) && acima > abaixo;
     menu.style.maxHeight = `${Math.max(160, sobe ? acima : abaixo)}px`;
     if (sobe) menu.style.bottom = `${vh - r.top + 4}px`;
     else menu.style.top = `${r.bottom + 4}px`;
@@ -330,7 +332,14 @@
     if (aberto) {
       const itens = Array.from(aberto.menu.querySelectorAll(".srt-opt"));
       const i = itens.indexOf(document.activeElement);
-      if (e.key === "Escape" || e.key === "Tab") { e.preventDefault(); fecha(true); return; }
+      if (e.key === "Escape" || e.key === "Tab") {
+        // O Esc fecha SÓ o menu: o seletor de Vendas (um modal) também ouve
+        // Esc no document, e este listener, registrado antes, vem primeiro.
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        fecha(true);
+        return;
+      }
       let j = -1;
       if (e.key === "ArrowDown") j = i < 0 ? 0 : (i + 1) % itens.length;
       else if (e.key === "ArrowUp") j = i < 0 ? itens.length - 1 : (i - 1 + itens.length) % itens.length;
