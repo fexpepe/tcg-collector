@@ -189,7 +189,7 @@
   // --- Barra de filtros (Set · Idioma · Raridade · Preço) -------------------
   // Refinam o que está NA GRADE — o resultado da busca, ou as "mais vistas"
   // antes dela. As opções saem dessa mesma lista: o Explorar não tem "catálogo
-  // da página" pra listar set e raridade de antemão (o catálogo dos 14 jogos
+  // da página" pra listar set e raridade de antemão (o catálogo dos 15 jogos
   // só desce quando precisa), e um <select> com todos os sets seria ilegível.
   function parsePrice(el) {
     if (!el) return null;
