@@ -3234,7 +3234,7 @@
     nav.setAttribute("aria-label", t("nav.explore"));
     // Dentro de uma linha vintage (?line=), as abas continuam na linha.
     const line = lineParamOf();
-    const lineSuffix = line && GAME_LINES[game] && GAME_LINES[game][line] ? `&line=${line}` : "";
+    const lineSuffix = lineDefOf(game, line) ? `&line=${line}` : "";
     nav.innerHTML = pages.map(([href, key, page]) =>
       // aria-current (não aria-pressed): estes chips são LINKS. aria-pressed só
       // vale em role=button — o Lighthouse acusava "aria-* não corresponde ao
@@ -8993,9 +8993,16 @@
     },
     naruto: {
       "nrt-mb": { prefix: "nrt-mb-", label: "Miracle Battle", titleKey: "sets.category.mbnr" },
-      "nrt-dc": { prefix: "nrt-dc-", label: "Data Carddass (arcade)", titleKey: "sets.category.dcnr" },
-      "nrt-nf": { prefix: "nrt-nf-", label: "Narutimate Formation", titleKey: "sets.category.nrtnf" },
-      "nrt-nx": { prefix: "nrt-nx-", label: "Narutimate Cross", titleKey: "sets.category.nrtnx" },
+      // Data Carddass é o ARCADE da Bandai (a máquina lê o código de barras da
+      // carta), e o do Naruto teve quatro títulos em sequência, de 2005 a 2010:
+      // Narutimate Card Battle (DN), Mission (NM), Formation (NF) e Cross (NX).
+      // Cada título é um jogo próprio (máquina, regras e numeração novas), mas o
+      // arcade é um só — então é UMA linha, com uma seção por título na página
+      // de Sets (groupNarutoDataCarddass no app.js), como as eras de um jogo.
+      // Até 2026-09-30 Formation e Cross eram linhas à parte (nrt-nf/nrt-nx), e
+      // o tile "Data Carddass" do hub parecia ser só dos dois primeiros. As
+      // cartas não trocaram de id, por isso a linha tem três prefixos.
+      "nrt-dc": { prefixes: ["nrt-dc-", "nrt-nf-", "nrt-nx-"], label: "Data Carddass (arcade)", titleKey: "sets.category.dcnr" },
       // O CCG americano (Bandai USA, 2006–2013) — o jogo EN, linha vintage.
       "nrt-ccg": { prefix: "nrt-ccg-", label: "Naruto CCG (2006–2013)", titleKey: "sets.category.nrtccg" },
       // O jogo NOVO (lançamento mundial 2027) como linha da marca: hoje só as
@@ -9042,18 +9049,43 @@
     return !!card && card.game === filter;
   }
 
+  // Linhas que viraram SEÇÃO de outra: o ?line= antigo (favorito, link
+  // compartilhado) continua abrindo, já na linha nova.
+  const LINE_ALIASES = { "nrt-nf": "nrt-dc", "nrt-nx": "nrt-dc" };
+  function temChavePropria(obj, k) {
+    return !!obj && Object.prototype.hasOwnProperty.call(obj, k);
+  }
+  function canonicalLine(line) {
+    return temChavePropria(LINE_ALIASES, line) ? LINE_ALIASES[line] : line;
+  }
   function lineParamOf() {
-    try { return new URLSearchParams(window.location.search).get("line") || ""; } catch (e) { return ""; }
+    try { return canonicalLine(new URLSearchParams(window.location.search).get("line") || ""); } catch (e) { return ""; }
+  }
+  // Definição da linha no registro, só por chave PRÓPRIA: `lines[line]` sozinho
+  // deixava ?line=constructor virar "linha" (a função do protótipo) — o mesmo
+  // furo que o game.js fecha no ?game=.
+  function lineDefOf(game, line) {
+    const lines = GAME_LINES[game];
+    const key = canonicalLine(line);
+    return key && temChavePropria(lines, key) ? lines[key] : null;
+  }
+  // Prefixos de setId de uma linha: `prefix` (um) ou `prefixes` (vários).
+  function linePrefixes(def) {
+    return def.prefixes || [def.prefix];
   }
   // Escopo de setId do "jogo" atual: ?line= conhecida -> só a linha; sem line
   // -> o jogo principal (exclui as linhas da marca). Jogo sem linhas -> tudo.
   function lineScope(game, lineParam) {
     const lines = GAME_LINES[game];
     if (!lines) return { line: null, def: null, includes: () => true };
-    const def = lineParam ? lines[lineParam] : null;
-    if (def) return { line: lineParam, def, includes: (setId) => String(setId || "").indexOf(def.prefix) === 0 };
-    const prefixes = Object.keys(lines).map((k) => lines[k].prefix);
-    return { line: null, def: null, includes: (setId) => !prefixes.some((p) => String(setId || "").indexOf(p) === 0) };
+    const comecaComAlgum = (prefixes) => (setId) => {
+      const id = String(setId || "");
+      return prefixes.some((p) => id.indexOf(p) === 0);
+    };
+    const def = lineDefOf(game, lineParam);
+    if (def) return { line: canonicalLine(lineParam), def, includes: comecaComAlgum(linePrefixes(def)) };
+    const deAlgumaLinha = comecaComAlgum(Object.keys(lines).flatMap((k) => linePrefixes(lines[k])));
+    return { line: null, def: null, includes: (setId) => !deAlgumaLinha(setId) };
   }
   function normalizeGame(g) {
     return GAME_SLUGS.includes(g) ? g : "pokemon";
@@ -12273,7 +12305,7 @@
     const name = window.SLEEVU && window.SLEEVU.name;
     if (game === "hub" || !name) return;
     const h1 = document.querySelector(".page-head h1") || document.querySelector("main h1");
-    const lineDef = GAME_LINES[game] && GAME_LINES[game][lineParamOf()];
+    const lineDef = lineDefOf(game, lineParamOf());
     if (h1) h1.dataset.game = lineDef ? lineDef.label : name;
   }
 

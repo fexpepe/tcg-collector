@@ -50,7 +50,7 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 | `digimon` | Digimon Card Game | TCGCSV cat. 63 | USD |
 | `riftbound` | Riftbound | TCGCSV cat. 89 (Riot) | USD |
 | `unionarena` | Union Arena | TCGCSV cat. 81 (Bandai; um anime por set) | USD |
-| `naruto` | Naruto Card Game | vintage Bandai 2002–2006 (tcg-db + TV Tokyo + cardcheckbox), Data Carddass, Formation/Cross, Miracle Battle | sem preço |
+| `naruto` | Naruto Card Game | vintage Bandai 2002–2006 (tcg-db + TV Tokyo + cardcheckbox), Data Carddass (Card Battle, Mission, Formation e Cross), Miracle Battle | sem preço |
 | `hxh` | Hunter × Hunter | Carddass Hyper Battle 1999–2001 (Hunterpedia) + Miracle Battle | sem preço |
 | `dbc` | Dragon Ball Carddass | Carddass Bandai 1988–1997: Hondan carta a carta (80storage), sem imagem por enquanto | sem preço |
 | `jump` | JUMP | curadoria versionada em `data/jump/curated/` | — |
@@ -59,7 +59,10 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 sublinhas selecionadas por `?line=` — por exemplo `nrt-ncg` (o NARUTO CARD GAME
 novo, com lançamento mundial em 2027, hoje só com a promo da Gen Con 2026),
 `op2002`, `nrt-dc`, `hxh-mb`. O escopo é por prefixo de `setId`: sem `?line=` a
-página mostra o jogo principal e **exclui** as linhas.
+página mostra o jogo principal e **exclui** as linhas. Uma linha pode ter vários
+prefixos (`prefixes`): a `nrt-dc` junta os quatro títulos do arcade Data Carddass
+(`nrt-dc-`, `nrt-nf-`, `nrt-nx-`), um por seção na página de Sets. Linha que vira
+seção de outra ganha um apelido em `LINE_ALIASES`, pro `?line=` antigo seguir abrindo.
 
 ### Dragon Ball Carddass (`dbc`)
 

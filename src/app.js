@@ -61,13 +61,13 @@
   // Página de Sets filtrada por uma série específica (?serie=id).
   const serieParam = new URLSearchParams(window.location.search).get("serie") || "";
   // ?line=opcd|op2002 (atalho vintage do hub): mostra SÓ os sets daquela linha do
-  // jogo-pai (One Piece), com o prefixo de setId correspondente.
-  const lineParam = new URLSearchParams(window.location.search).get("line") || "";
+  // jogo-pai (One Piece), pelos prefixos de setId dela. Lido pelo shared, que
+  // resolve os apelidos (o ?line=nrt-nf antigo abre a linha nrt-dc).
+  const lineParam = shared.lineParamOf();
   // Escopo por linha de jogo (registro no shared): ?line= conhecida = página da
   // linha; sem line = jogo principal (as linhas vintage têm páginas próprias).
   const lineScope = shared.lineScope((window.SLEEVU && window.SLEEVU.game) || "pokemon", lineParam);
   const lineDef = lineScope.def;
-  const linePrefix = lineDef ? lineDef.prefix : "";
   const pager = shared.createPager({
     grid: elements.grid,
     pageSize: 60,
@@ -199,7 +199,7 @@
       });
     }
     if (view === "sets" && serieParam) applySerieTitle();
-    if (view === "sets" && linePrefix) applyLineTitle();
+    if (view === "sets" && lineDef) applyLineTitle();
     hydrateFilters();
     // ?dex=have|missing (Hub, medalhas): abre a Pokédex já filtrada.
     if (view === "pokedex" && elements.dexFilter) {
@@ -561,8 +561,10 @@
       const setItems = manifestMode()
         ? manifestSetItems()
         : indexedGroupsToItems(indexes.sets, visibleIds, toSetItem, null, splitGroupsBySetId).filter((set) => lineScope.includes(set.setId));
-      // Linha vintage (?line=): sempre do mais antigo pro mais novo.
-      if (linePrefix) return setItems.sort(sortByReleaseAsc);
+      // Linha vintage (?line=): sempre do mais antigo pro mais novo. O Data
+      // Carddass do Naruto junta os quatro títulos do arcade, um por seção.
+      if (lineScope.line === "nrt-dc") return groupNarutoDataCarddass(setItems);
+      if (lineDef) return setItems.sort(sortByReleaseAsc);
       // Página de uma série (?serie=id): só os sets dela, sem cabeçalhos — e
       // sem os decks/caixas, que a lista mostra na seção deles (o "X sets →"
       // do cabeçalho da série não os conta).
@@ -1437,6 +1439,37 @@
       items.push({ type: "category-head", name: t("sets.category.promos"), count: extras.length });
       extras.forEach((set) => items.push(set));
     }
+    return items;
+  }
+
+  // Naruto Data Carddass (?line=nrt-dc): o arcade teve quatro títulos em
+  // sequência, cada um com máquina, regras e numeração próprias — uma seção por
+  // título, do mais antigo pro mais novo, como as séries do Dragon Ball
+  // Carddass. O título sai do setId: Formation é nrt-nf-*, Cross é nrt-nx-*, e
+  // Card Battle e Mission dividem o nrt-dc- (mesma fonte). A checklist desses
+  // dois é fechada e a Mission começa no set 11 (PAGES do
+  // sync-naruto-datacarddass.mjs). Sem as seções, a ordem por data jogava
+  // Formation e Cross (com data) na frente de Card Battle e Mission (sem data).
+  function groupNarutoDataCarddass(setItems) {
+    const idOf = (set) => String(set.setId || "").trim().toLowerCase();
+    const TITLES = [
+      ["sets.category.dcnrCardBattle", (id) => /^nrt-dc-s(0[1-9]|10)$/.test(id)],
+      ["sets.category.dcnrMission", (id) => id.startsWith("nrt-dc-")],
+      ["sets.category.dcnrFormation", (id) => id.startsWith("nrt-nf-")],
+      ["sets.category.dcnrCross", (id) => id.startsWith("nrt-nx-")]
+    ];
+    // A PRIMEIRA que casa leva o set (Card Battle antes da Mission).
+    const titleOf = (set) => TITLES.findIndex(([, match]) => match(idOf(set)));
+    const items = [];
+    const section = (list, key) => {
+      if (!list.length) return;
+      items.push({ type: "category-head", name: t(key), count: list.length });
+      list.sort(sortByReleaseAsc).forEach((set) => items.push(set));
+    };
+    TITLES.forEach(([key], i) => section(setItems.filter((s) => titleOf(s) === i), key));
+    // Rede de segurança: prefixo novo na linha (GAME_LINES) sem título aqui
+    // ainda aparece, em vez de sumir da página.
+    section(setItems.filter((s) => titleOf(s) < 0), "sets.category.promos");
     return items;
   }
 
