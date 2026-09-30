@@ -11,8 +11,10 @@ import { buildCards, buildPrices, idsComBase, basePricingId, LOTE_IDS } from "..
 
 export const B = globalThis.SleevuBlog;
 
-export const SUPABASE_URL = "https://dlnalopazitfdgnmdguu.supabase.co";
-export const SUPABASE_KEY = "sb_publishable_0Qlei5ZvRcEsr18QRdWfGg_N3aR1zyL";
+// Endereço e chave publicável vêm do renderizador (uma cópia só pro blog, travada
+// contra a do shared.js por teste).
+export const SUPABASE_URL = B.SUPABASE_URL;
+export const SUPABASE_KEY = B.SUPABASE_KEY;
 export const ORIGEM = "https://sleevu.app";
 
 // Colunas pedidas SEMPRE por nome (nunca select=*): se um dia a tabela ganhar

@@ -15,10 +15,10 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, unlinkSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, statSync, unlinkSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
-import { dirname, join } from "node:path";
+import { dirname, join, posix } from "node:path";
 
 const raiz = join(dirname(fileURLToPath(import.meta.url)), "..");
 const script = (nome) => join(raiz, "scripts", nome);
@@ -196,4 +196,41 @@ test("import de Function apontando pra arquivo que não existe reprova", () => {
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
+});
+
+test("nenhuma Function importa de pasta que o deploy apaga antes do wrangler", () => {
+  // O passo "Remove arquivos que não vão para o site" do deploy.yml apaga
+  // scripts/, docs/, tests/, supabase/… ANTES do `wrangler pages deploy`, que é
+  // quando as Functions são empacotadas. Import pra lá passa em todo teste local
+  // (a pasta existe) e só quebra no deploy — foi o que barrou a PR do blog em
+  // 2026-09-30 ("Could not resolve ../../scripts/lib/json-ld.mjs"). A lista do
+  // que é apagado sai do PRÓPRIO deploy.yml, pra não ficar desatualizada.
+  const deploy = readFileSync(join(raiz, ".github/workflows/deploy.yml"), "utf8").replace(/\r\n/g, "\n");
+  const passo = /- name: Remove arquivos que não vão para o site[\s\S]*?\n\s*rm -rf ([^\n]+)/.exec(deploy);
+  assert.ok(passo, "passo de remoção não encontrado no deploy.yml");
+  const apagados = passo[1].trim().split(/\s+/).map((p) => p.replace(/\/+$/, ""));
+  assert.ok(apagados.includes("scripts"), `lista inesperada: ${apagados.join(" ")}`);
+
+  const arquivos = [];
+  const varre = (dir) => {
+    for (const nome of readdirSync(join(raiz, dir))) {
+      const rel = `${dir}/${nome}`;
+      if (statSync(join(raiz, rel)).isDirectory()) varre(rel);
+      else if (/\.m?js$/.test(nome)) arquivos.push(rel);
+    }
+  };
+  varre("functions");
+  assert.ok(arquivos.length > 5, "nenhuma Function achada");
+
+  const problemas = [];
+  for (const rel of arquivos) {
+    const texto = readFileSync(join(raiz, rel), "utf8");
+    for (const [, spec] of texto.matchAll(/\bimport\s+(?:[^'"]*?\sfrom\s+)?["']([^"']+)["']/g)) {
+      if (!spec.startsWith(".")) continue;
+      const destino = posix.normalize(posix.join(posix.dirname(rel), spec));
+      const apagado = apagados.find((p) => destino === p || destino.startsWith(p + "/"));
+      if (apagado) problemas.push(`${rel} importa ${spec} (${apagado}/ é apagado no deploy)`);
+    }
+  }
+  assert.deepEqual(problemas, []);
 });

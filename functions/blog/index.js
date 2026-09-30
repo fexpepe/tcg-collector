@@ -9,7 +9,7 @@
 // filtrados daqui. A canonical é sempre /blog: filtro é navegação, não página
 // nova pro Google.
 import { B, supabase, COLUNAS_LISTA, setHtml, respostaFinal, daBorda, guardaNaBorda } from "./_comum.js";
-import { jsonLdSeguro } from "../../scripts/lib/json-ld.mjs";
+import { jsonLdSeguro } from "../_lib/json-ld.js";
 
 export const POR_PAGINA = 36;
 const SEGUNDOS_NA_BORDA = 120;

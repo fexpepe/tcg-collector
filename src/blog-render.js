@@ -36,7 +36,14 @@
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ESC[c]); }
 
   const SITE = "https://sleevu.app";
+  // Supabase do site: endereço e chave PUBLICÁVEL (pública por natureza — quem
+  // protege é a RLS). Os mesmos do shared.js, que não os exporta; moram aqui
+  // porque as páginas do blog e as Functions já carregam este arquivo, e
+  // exportar do shared.js engordaria o núcleo de TODA página (o check-size
+  // estourou por 16 bytes quando eram funções lá). O teste trava as cópias.
   const SUPABASE_HOST = "dlnalopazitfdgnmdguu.supabase.co";
+  const SUPABASE_URL = "https://" + SUPABASE_HOST;
+  const SUPABASE_KEY = "sb_publishable_0Qlei5ZvRcEsr18QRdWfGg_N3aR1zyL";
 
   // Hosts de imagem aceitos no corpo, na capa e nas cartas: os do img-src da
   // CSP (_headers) mais o próprio site. Imagem de outro host a CSP bloquearia
@@ -835,6 +842,6 @@
     safeHref, safeImg, mediaInfo, imagemPequena, imagemDeCarta, hrefDaCarta, precoTexto,
     cabecalhoHtml, indiceHtml, cartaoHtml, paginaDoPostHtml, relacionadosHtml, listaHtml,
     etiquetaJogo, nomeCategoria, dataLonga, rotulos,
-    esc, GAMES, CATEGORIAS, ROTULOS, IMG_HOSTS, SITE, SUPABASE_HOST, REF_RE, URL_DO_POST
+    esc, GAMES, CATEGORIAS, ROTULOS, IMG_HOSTS, SITE, SUPABASE_HOST, SUPABASE_URL, SUPABASE_KEY, REF_RE, URL_DO_POST
   };
 })(typeof globalThis !== "undefined" ? globalThis : window);

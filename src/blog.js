@@ -25,8 +25,8 @@
   // [] = a tabela ainda não existe (migração pendente) — a página diz
   // "nenhum post" em vez de erro.
   async function leituraPublica(caminho) {
-    const r = await shared.publicFetch(caminho);
-    if (!r || r.status === 404) return [];
+    const r = await fetch(B.SUPABASE_URL + caminho, { headers: { apikey: B.SUPABASE_KEY } });
+    if (r.status === 404) return [];
     if (!r.ok) throw new Error("http " + r.status);
     return r.json();
   }
