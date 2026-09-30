@@ -61,9 +61,17 @@ function casa(html) {
 // catálogo ficaram sem sair. A régua continua valendo onde importa: página com
 // UMA das duas tags (ordem trocada, indentação mexida, script de terceiro no
 // meio) segue sendo erro duro.
+//
+// PÁGINA ESTÁTICA DO PRERENDER (2026-09-30): a /games (games.html) é a
+// primeira página gerada pelo prerender que mora na RAIZ. Como as de set e de
+// carta, ela carrega o theme.js SOZINHO de propósito (o tema antes do paint,
+// sem app nem jogo), e o <html> leva data-idioma-fixo, a marca das
+// pré-renderizadas. Não é página do app: fica fora da régua e da fusão, e
+// segue pedindo o theme.js avulso, que este script mantém pra elas.
+const ESTATICA = /<html[^>]*\sdata-idioma-fixo[\s>]/;
 const paginas = readdirSync(ROOT).filter((f) => f.endsWith(".html"));
 const html = new Map(paginas.map((f) => [f, readFileSync(join(ROOT, f), "utf8")]));
-const comBoot = paginas.filter((f) => ALGUM_BOOT.test(html.get(f)));
+const comBoot = paginas.filter((f) => ALGUM_BOOT.test(html.get(f)) && !ESTATICA.test(html.get(f)));
 const semBoot = paginas.filter((f) => !comBoot.includes(f));
 const semPar = comBoot.filter((f) => !casa(html.get(f)));
 if (semPar.length) {
