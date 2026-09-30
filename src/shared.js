@@ -3249,11 +3249,15 @@
     // Dentro de uma linha vintage (?line=), as abas continuam na linha.
     const line = lineParamOf();
     const lineSuffix = lineDefOf(game, line) ? `&line=${line}` : "";
+    // A aba Sets leva pra tela do jogo no endereço dele (/games/<jogo>, desde
+    // 2026-09-30); as outras seguem no ?game=.
+    const urlDoJogo = (window.SLEEVU || {}).urlDoJogo;
+    const setsUrl = urlDoJogo && urlDoJogo(game, lineSuffix ? line : "");
     nav.innerHTML = pages.map(([href, key, page]) =>
       // aria-current (não aria-pressed): estes chips são LINKS. aria-pressed só
       // vale em role=button — o Lighthouse acusava "aria-* não corresponde ao
       // role" e o leitor de tela anunciava um botão que não existe.
-      `<a class="chip" href="${href}?game=${game}${lineSuffix}"${page === active ? ' aria-current="page"' : ""}>${escapeHtml(t(key))}</a>`
+      `<a class="chip" href="${page === "sets" && setsUrl ? setsUrl : `${href}?game=${game}${lineSuffix}`}"${page === active ? ' aria-current="page"' : ""}>${escapeHtml(t(key))}</a>`
     ).join("");
     // O placeholder já nasce na posição certa no HTML em todas as telas que
     // usam a subnav; este ramo é só a rede de segurança pra uma página nova que
@@ -6936,8 +6940,16 @@
       const label = cardLabel(activeCard);
       const text = `${label} · ${activeCard.set} ${activeCard.number}`;
       // NÃO é location.href: numa página pessoal aquilo compartilha a SUA
-      // Coleção, não a carta (ver cardShareUrl).
-      const url = cardShareUrl(activeCard);
+      // Coleção, não a carta. Vai a página PÚBLICA da carta (/games/…, desde
+      // 2026-09-30): é ela que o Google indexa e que mostra imagem e preço na
+      // prévia do WhatsApp. O app não sabe o nome da carta no endereço (ele sai
+      // do set inteiro), então manda o id e a borda redireciona
+      // (functions/games/, rota _id). Sem o endereço do set, o link do app.
+      const urlDoSet = (window.SLEEVU || {}).urlDoSet;
+      const base = activeCard.set && urlDoSet && urlDoSet(activeCard.game || currentGame(), activeCard.setId);
+      const url = base
+        ? `${location.origin}${base}/_id/${encodeURIComponent(activeCard.id)}?set=${encodeURIComponent(activeCard.set)}`
+        : cardShareUrl(activeCard);
       if (navigator.share) {
         navigator.share({ title: label, text, url }).catch(() => {});
         return;
@@ -9074,8 +9086,10 @@
   // compartilhado) continua abrindo, já na linha nova.
   const LINE_ALIASES = { "nrt-nf": "nrt-dc", "nrt-nx": "nrt-dc" };
   function lineParamOf() {
-    let line = "";
-    try { line = new URLSearchParams(window.location.search).get("line") || ""; } catch (e) { /* sem linha */ }
+    // A linha pode vir do endereço (/games/naruto-data-carddass): o game.js a
+    // resolve no <head> e deixa em SLEEVU.line. Senão, o ?line= de sempre.
+    let line = (window.SLEEVU || {}).line || "";
+    try { line = line || new URLSearchParams(window.location.search).get("line") || ""; } catch (e) { /* sem linha */ }
     return LINE_ALIASES.hasOwnProperty(line) ? LINE_ALIASES[line] : line;
   }
   // Definição da linha no registro, só por chave PRÓPRIA: `lines[line]` sozinho

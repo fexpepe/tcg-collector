@@ -68,6 +68,20 @@
   // linha; sem line = jogo principal (as linhas vintage têm páginas próprias).
   const lineScope = shared.lineScope((window.SLEEVU && window.SLEEVU.game) || "pokemon", lineParam);
   const lineDef = lineScope.def;
+  // Endereço da tela de Sets deste jogo (/games/<jogo>, desde 2026-09-30) e o
+  // do jogo sem a linha: os links de série e de "voltar" saem daqui.
+  const urlDoJogo = (window.SLEEVU && window.SLEEVU.urlDoJogo) || (() => "");
+  const jogoAtual = (window.SLEEVU && window.SLEEVU.game) || "pokemon";
+  const telaDoJogo = urlDoJogo(jogoAtual, lineDef ? lineParam : "") || "sets";
+  const telaSemLinha = urlDoJogo(jogoAtual, "") || `sets?game=${jogoAtual}`;
+  // Índice de sets que a borda põe na tela de um jogo (functions/games/): o
+  // service worker guarda a tela de Sets numa chave só, então esta cópia pode
+  // ter vindo com o índice de OUTRO jogo. O que não for deste sai.
+  if (view === "sets") {
+    document.querySelectorAll("[data-indice-jogo]").forEach((el) => {
+      if (`/games/${el.getAttribute("data-indice-jogo")}` !== telaDoJogo) el.remove();
+    });
+  }
   const pager = shared.createPager({
     grid: elements.grid,
     pageSize: 60,
@@ -229,7 +243,7 @@
     if (!head.querySelector(".serie-back")) {
       const back = document.createElement("a");
       back.className = "serie-back";
-      back.href = "sets";
+      back.href = telaDoJogo;
       back.textContent = `← ${t("nav.sets")}`;
       // No PAI DO H1, não no .page-head: desde que o título dividiu a faixa com
       // a busca, o h1 vive dentro de .page-head-bar-text e não é mais filho
@@ -253,7 +267,7 @@
     if (!head.querySelector(".serie-back")) {
       const back = document.createElement("a");
       back.className = "serie-back";
-      back.href = `sets?game=${(window.SLEEVU && window.SLEEVU.game) || "pokemon"}`;
+      back.href = telaSemLinha;
       back.textContent = `← ${(window.SLEEVU && window.SLEEVU.name) || ""}`;
       // No PAI DO H1, não no .page-head: desde que o título dividiu a faixa com
       // a busca, o h1 vive dentro de .page-head-bar-text e não é mais filho
@@ -1029,7 +1043,7 @@
     const head = document.createElement("div");
     head.className = "set-series-head";
     head.dataset.cat = item.name;
-    head.innerHTML = `<button type="button" class="cat-toggle" aria-expanded="${!isCategoryCollapsed(item.name)}"><span class="cat-caret" aria-hidden="true">▾</span><span class="set-series-name">${escapeHtml(item.name)}</span></button><a class="set-series-count" href="sets?serie=${escapeAttribute(item.serieId)}">${item.count} sets →</a>`;
+    head.innerHTML = `<button type="button" class="cat-toggle" aria-expanded="${!isCategoryCollapsed(item.name)}"><span class="cat-caret" aria-hidden="true">▾</span><span class="set-series-name">${escapeHtml(item.name)}</span></button><a class="set-series-count" href="${escapeAttribute(telaDoJogo)}?serie=${escapeAttribute(item.serieId)}">${item.count} sets →</a>`;
     return head;
   }
 

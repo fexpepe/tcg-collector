@@ -44,6 +44,56 @@
   var GAME_SLUGS = Object.keys(GAMES);
   function isRealGame(g) { return GAME_SLUGS.indexOf(g) >= 0 && !GAMES[g].isHub; }
 
+  // Endereço público de cada jogo: /games/<url> é a tela de Sets dele
+  // (2026-09-30). Cópia do registro de functions/_lib/jogos.js (este arquivo é
+  // script clássico e não importa módulo); tests/games-url.test.mjs trava as
+  // duas iguais. [url, jogo, linha, prefixos dos setIds da linha].
+  var URL_DOS_JOGOS = [
+    ["pokemon", "pokemon"], ["magic-the-gathering", "magic"], ["disney-lorcana", "lorcana"],
+    ["one-piece-card-game", "onepiece"], ["riftbound", "riftbound"], ["star-wars-unlimited", "swu"],
+    ["gundam-card-game", "gundam"], ["flesh-and-blood", "fab"], ["yu-gi-oh", "ygo"],
+    ["dragon-ball-fusion-world", "dbfw"], ["digimon-card-game", "digimon"], ["union-arena", "unionarena"],
+    ["cyberpunk-tcg", "cyberpunk"], ["naruto-card-game", "naruto", "nrt-ncg", "nrt-ncg-"],
+    ["dragon-ball-carddass", "dbc"], ["hunter-x-hunter-carddass", "hxh"],
+    ["one-piece-carddass", "onepiece", "opcd", "opcd-"], ["one-piece-card-game-2002", "onepiece", "op2002", "op2002-"],
+    ["naruto-card-game-2002", "naruto"], ["naruto-data-carddass", "naruto", "nrt-dc", "nrt-dc-,nrt-nf-,nrt-nx-"],
+    ["naruto-ccg", "naruto", "nrt-ccg", "nrt-ccg-"], ["one-piece-miracle-battle", "onepiece", "op-mb", "op-mb-"],
+    ["hunter-x-hunter-miracle-battle", "hxh", "hxh-mb", "hxh-mb-"], ["naruto-miracle-battle", "naruto", "nrt-mb", "nrt-mb-"]
+  ];
+  // Linha que virou seção de outra (o LINE_ALIASES do shared.js).
+  var LINHA_APELIDO = { "nrt-nf": "nrt-dc", "nrt-nx": "nrt-dc" };
+  function urlDoJogo(game, linha) {
+    var l = LINHA_APELIDO[linha] || linha || "";
+    for (var i = 0; i < URL_DOS_JOGOS.length; i++) {
+      var j = URL_DOS_JOGOS[i];
+      if (j[1] === game && (j[2] || "") === l) return "/games/" + j[0];
+    }
+    return l ? urlDoJogo(game, "") : "";
+  }
+  // Em que /games/<url> mora um set: o da linha cujo prefixo casa com o setId,
+  // senão o do jogo (a mesma régua do urlDoSet do servidor).
+  function urlDoSet(game, setId) {
+    var id = String(setId || "");
+    for (var i = 0; i < URL_DOS_JOGOS.length; i++) {
+      var j = URL_DOS_JOGOS[i];
+      if (j[1] !== game || !j[3]) continue;
+      var pre = j[3].split(",");
+      for (var k = 0; k < pre.length; k++) if (id.indexOf(pre[k]) === 0) return "/games/" + j[0];
+    }
+    return urlDoJogo(game, "");
+  }
+  // /games/<url> aberto: [jogo, linha]. null fora da árvore ou em url que não
+  // é do registro (apelido já saiu da borda como 301).
+  function jogoDoCaminho() {
+    var m = /^\/games\/([a-z0-9-]+)\/?$/.exec(location.pathname || "");
+    if (!m) return null;
+    for (var i = 0; i < URL_DOS_JOGOS.length; i++) {
+      if (URL_DOS_JOGOS[i][0] === m[1]) return [URL_DOS_JOGOS[i][1], URL_DOS_JOGOS[i][2] || ""];
+    }
+    return null;
+  }
+  var linhaDaUrl = ""; // linha vinda de /games/<url> (o shared.js lê via SLEEVU.line)
+
   var GAME_KEY = "tcg-collector-game-v1"; // sessão: jogo escolhido por último
   function readSession() {
     try { var g = localStorage.getItem(GAME_KEY); return isRealGame(g) ? g : null; } catch (e) { return null; }
@@ -71,6 +121,25 @@
   }
 
   function detectGame() {
+    // /games/<url>: o jogo está no próprio endereço. Grava a sessão como o
+    // ?game= fazia: quem abre a tela de um jogo segue nele pelas outras telas.
+    var doCaminho = jogoDoCaminho();
+    if (doCaminho) {
+      linhaDaUrl = doCaminho[1];
+      writeSession(doCaminho[0]);
+      // ?game= e ?line= não valem aqui (o jogo e a linha são os do endereço).
+      // Sobra de link velho sai da barra; senão um ?line= solto trocaria a
+      // lista de sets debaixo de um endereço que diz outra coisa.
+      try {
+        var u = new URL(location.href);
+        if (u.searchParams.has("game") || u.searchParams.has("line")) {
+          u.searchParams.delete("game");
+          u.searchParams.delete("line");
+          history.replaceState(history.state, "", u.pathname + u.search + u.hash);
+        }
+      } catch (e) { /* history bloqueado: segue com a barra como veio */ }
+      return doCaminho[0];
+    }
     var q = null;
     try { q = new URLSearchParams(location.search).get("game"); } catch (e) { /* ignora */ }
     if (isNeutralPage()) {
@@ -82,11 +151,35 @@
       return "hub";
     }
     if (q === "hub") return "hub";                              // deep-link legado (?game=hub): sessão neutra
-    if (isRealGame(q)) { writeSession(q); return q; }           // troca/deep-link
+    if (isRealGame(q)) { writeSession(q); vaiProEnderecoDoJogo(q); return q; } // troca/deep-link
     var s = readSession();
-    if (s) { stampGame(s); return s; }                          // sessão atual
-    stampGame("pokemon");
+    if (s) { if (!vaiProEnderecoDoJogo(s)) stampGame(s); return s; }           // sessão atual
+    if (!vaiProEnderecoDoJogo("pokemon")) stampGame("pokemon");
     return "pokemon";                                           // padrão
+  }
+
+  // /sets (e /sets?game=x&line=y) é o endereço ANTIGO da tela de Sets. Com
+  // rede, a borda já responde 301 pra /games/<jogo>; chega aqui quando o
+  // service worker serve a cópia guardada sem ir à rede, e quando /sets vem sem
+  // jogo (a tela abre no da sessão). A barra passa pro endereço novo sem
+  // recarregar: o que a pessoa copia e o que o "voltar" guarda já é o novo.
+  // Depende do <base href="/"> do sets.html: com a barra em /games/…, os
+  // caminhos relativos da tela continuam resolvendo na raiz.
+  function vaiProEnderecoDoJogo(game) {
+    try {
+      if (!/^\/sets(\.html)?\/?$/.test(location.pathname || "")) return false;
+      var url = new URL(location.href);
+      var linha = url.searchParams.get("line") || "";
+      var destino = urlDoJogo(game, linha);
+      if (!destino) return false;
+      // Linha que o registro não conhece cai no jogo principal (como o
+      // lineScope faz); a que ele conhece segue valendo pelo SLEEVU.line.
+      if (linha && destino !== urlDoJogo(game, "")) linhaDaUrl = LINHA_APELIDO[linha] || linha;
+      url.searchParams.delete("game");
+      url.searchParams.delete("line");
+      history.replaceState(history.state, "", destino + url.search + url.hash);
+      return true;
+    } catch (e) { return false; }
   }
 
   // Escreve o jogo resolvido na barra de endereço quando ele NÃO veio da URL.
@@ -314,6 +407,13 @@
     // O registro INTEIRO, não só o jogo da sessão: nas páginas neutras a sessão
     // é "hub" (name = "Sleevu"), mas elas mostram todos os jogos e precisam do
     // nome de cada um. O CSV do Portfólio lê daqui (csvGameName no portfolio.js).
-    games: GAMES
+    games: GAMES,
+    // Linha vinda do endereço (/games/naruto-data-carddass): o lineParamOf do
+    // shared.js lê daqui antes do ?line=.
+    line: linhaDaUrl,
+    // Endereço da tela de Sets de um jogo (e linha), e o de um set: os links
+    // da tela de Sets, do hub e do "compartilhar" saem daqui.
+    urlDoJogo: urlDoJogo,
+    urlDoSet: urlDoSet
   };
 })();

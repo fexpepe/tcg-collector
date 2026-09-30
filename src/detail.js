@@ -490,6 +490,10 @@
     if (collectionScope) { back.href = "collection"; return; }
     const map = { pokemon: "pokedex", set: "sets", artist: "artists", trainer: "trainers" };
     back.href = map[detailType] || "pokedex";
+    // Set: o Voltar leva pra tela do jogo no endereço dele (/games/<jogo>,
+    // desde 2026-09-30), não pro /sets da sessão.
+    const urlDoJogo = window.SLEEVU && window.SLEEVU.urlDoJogo;
+    if (detailType === "set" && urlDoJogo) back.href = urlDoJogo(paginaGame(), "") || back.href;
     // Set de uma LINHA da marca (Carddass Hyper Battle, One Piece 2002,
     // Miracle Battle, Data Carddass…): o Voltar e as abas Cartas/Sets voltam
     // pra página DA LINHA. A subnav do shared.js só conhece a linha pelo
@@ -503,9 +507,13 @@
     trilhaDoSet(line);
     if (!line) return;
     const sufixo = `?game=${paginaGame()}&line=${line}`;
-    back.href = `sets${sufixo}`;
+    const telaDaLinha = urlDoJogo && urlDoJogo(paginaGame(), line);
+    back.href = telaDaLinha || `sets${sufixo}`;
     document.querySelectorAll(".explore-subnav a").forEach((a) => {
-      a.setAttribute("href", `${a.getAttribute("href").split("?")[0]}${sufixo}`);
+      const href = a.getAttribute("href");
+      // A aba Sets já é o endereço do jogo (/games/…): vira o da linha, em vez
+      // de levar um ?line= pendurado que o endereço contradiria.
+      a.setAttribute("href", telaDaLinha && href.indexOf("/games/") === 0 ? telaDaLinha : `${href.split("?")[0]}${sufixo}`);
     });
   }
   // Trilha do set no desktop (2026-09-30): Jogos › <jogo> › [<linha> ›] <set>,

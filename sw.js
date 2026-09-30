@@ -42,7 +42,11 @@
 //   2. o install aceitava shell com buraco (ver a conta dos buracos no install).
 // E a mesma tela pedida de novo (recarregar, o "Tentar de novo" da saída de
 // emergência) vai à rede primeiro (ver pediuDeNovo).
-const SHELL_CACHE = "tcg-shell-v266";
+// v267 (2026-09-30): a tela de Sets de cada jogo mora em /games/<jogo>, e o
+// sets.html ganhou <base href="/">. /games/<jogo> cai na MESMA entrada do
+// sets.html (ver chaveDeNavegacao): a tela de qualquer jogo segue abrindo
+// offline, como o /sets?game= abria.
+const SHELL_CACHE = "tcg-shell-v267";
 // Id do build: o hash-assets.mjs (deploy) acrescenta "-<8 hex>" ao nome acima,
 // calculado do conteúdo do shell (JS, CSS E as páginas HTML). É o mesmo id que
 // ele carimba em <meta name="sleevu-build"> de todo HTML — assim a página sabe
@@ -388,12 +392,18 @@ async function assetCacheFirst(request) {
 // "/" é a raiz (o install guarda "./"); /users/<handle> é reescrito pelo
 // Pages pra collection.html, então cai na mesma entrada (uma por perfil
 // visitado não faria sentido — o conteúdo é o mesmo shell).
+// /games/<jogo> (só esse nível) é a tela de Sets servida no endereço do jogo
+// (functions/games/): cai na entrada do sets.html, que o install já guarda. É
+// o que mantém a tela de TODOS os jogos abrindo offline, como a do
+// /sets?game=x (a mesma entrada, com a query de fora) sempre abriu; o jogo sai
+// do endereço (game.js). Os níveis de baixo (set e carta) são páginas próprias.
 function chaveDeNavegacao(url) {
   const u = new URL(url);
   u.search = "";
   u.hash = "";
   if (u.pathname.endsWith("/")) return u.href; // raiz do site (ou do escopo, em dev sob subpasta)
   if (u.pathname.startsWith("/users/")) u.pathname = "/collection.html";
+  else if (/^\/games\/[a-z0-9-]+$/.test(u.pathname)) u.pathname = "/sets.html";
   else if (!/\.html$/.test(u.pathname)) u.pathname += ".html";
   return u.href;
 }
