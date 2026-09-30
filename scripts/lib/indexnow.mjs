@@ -47,6 +47,25 @@ export function urlsAlteradas(antes, depois) {
   };
 }
 
+// Teto por deploy (2026-09-30). A mudança pra /games criou de uma vez ~250 mil
+// URLs de carta (toda carta ganhou página) e moveu as ~5.400 de set. Mandar
+// tudo num deploy é o que o protocolo trata como spam (HTTP 429), e buscador
+// passa a ignorar quem faz. O que passa do teto fica pro sitemap, que o
+// buscador lê sozinho. Prioridade: o que NÃO é página de carta (jogos, sets e
+// os endereços antigos que viraram 301) vai primeiro, e as cartas completam
+// até o teto.
+export const TETO_POR_DEPLOY = 20000;
+export function ehPaginaDeCarta(url) {
+  try {
+    const p = new URL(url).pathname.split("/").filter(Boolean);
+    return (p[0] === "games" && p.length === 4) || p[0] === "card";
+  } catch (e) { return false; }
+}
+export function priorizaComTeto(urls, teto = TETO_POR_DEPLOY) {
+  const todas = [...urls.filter((u) => !ehPaginaDeCarta(u)), ...urls.filter(ehPaginaDeCarta)];
+  return { enviar: todas.slice(0, teto), fora: Math.max(0, todas.length - teto) };
+}
+
 export function emLotes(urls, max = LOTE_MAX) {
   const lotes = [];
   for (let i = 0; i < urls.length; i += max) lotes.push(urls.slice(i, i + max));
