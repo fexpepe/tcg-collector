@@ -22,7 +22,12 @@ import vm from "node:vm";
 import { loadShared, makeLocalStorage } from "./lib/shared-sandbox.mjs";
 
 const raiz = join(dirname(fileURLToPath(import.meta.url)), "..");
-const ler = (p) => readFileSync(join(raiz, p), "utf8");
+// Na checkout Windows (core.autocrlf=true) o texto chega com CRLF; no CI, com
+// LF. As regex que recortam corpo de função querem "\n" logo depois da "}" que
+// fecha e, com o "\r" no meio, davam null: 3 testes daqui falhavam só na
+// máquina local. Lido sempre em LF, o texto é o mesmo nos dois lados, e no CI
+// a troca não muda nada.
+const ler = (p) => readFileSync(join(raiz, p), "utf8").replace(/\r\n/g, "\n");
 const MIG = "supabase/migrations/20260928a_analytics_2_1.sql";
 const sql = ler(MIG);
 const shared = ler("src/shared.js");

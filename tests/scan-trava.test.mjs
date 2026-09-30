@@ -19,7 +19,12 @@ import { dirname, join } from "node:path";
 import vm from "node:vm";
 
 const here = dirname(fileURLToPath(import.meta.url));
-const scanSrc = readFileSync(join(here, "..", "src", "scan.js"), "utf8");
+// Na checkout Windows (core.autocrlf=true) o scan.js chega com CRLF; no CI,
+// com LF. A regex que recorta o abrir() lá embaixo quer "\n" logo depois da
+// "}" que fecha e, com o "\r" no meio, dava null: o teste da trava falhava só
+// na máquina local. Lido sempre em LF, o texto é o mesmo nos dois lados, e no
+// CI a troca não muda nada.
+const scanSrc = readFileSync(join(here, "..", "src", "scan.js"), "utf8").replace(/\r\n/g, "\n");
 function load() {
   const sandbox = {
     console,
