@@ -80,6 +80,20 @@ test("deploy.yml: separa antes de apagar scripts/ e do deploy; envia depois; só
   assert.match(bloco(separa), /node scripts\/indexnow\.mjs preparar "\$RUNNER_TEMP\/indexnow"/);
   assert.match(bloco(envia), /"\$RUNNER_TEMP"\/indexnow\/\*\.json/);
   assert.match(bloco(envia), /https:\/\/api\.indexnow\.org\/indexnow/);
+  // Chave nova volta 403 até o IndexNow conferir o arquivo (a estreia de
+  // 30/09/2026 perdeu o lote inteiro por desistir na hora): o passo espera e
+  // tenta de novo nesse caso, e só nele.
+  assert.match(bloco(envia), /grep -q "SiteVerificationNotCompleted"/);
+  assert.match(bloco(envia), /sleep 60/);
+});
+
+test("o passo de envio mostra a resposta do IndexNow, não só o código", () => {
+  const yml = readFileSync(join(raiz, ".github", "workflows", "deploy.yml"), "utf8");
+  const i = yml.indexOf("- name: IndexNow — avisa os buscadores das URLs novas");
+  const fim = yml.indexOf("\n      - name:", i + 1);
+  const bloco = yml.slice(i, fim < 0 ? undefined : fim);
+  assert.doesNotMatch(bloco, /curl [^\n]*-o \/dev\/null/, "a resposta do POST não pode ir pro lixo");
+  assert.match(bloco, /::warning::IndexNow respondeu HTTP \$code[^\n]*\$\(head -c 300 "\$resp"\)/);
 });
 
 // Teto por deploy (2026-09-30): a mudança pra /games criou ~290 mil URLs de
