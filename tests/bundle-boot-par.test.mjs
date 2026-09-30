@@ -71,3 +71,27 @@ test("todas as páginas com o par passam", () => {
   assert.equal(r.ok, true, `--check devia passar, mas falhou:\n${r.saida}`);
   assert.match(r.saida, /2 páginas com o par/);
 });
+
+// A /games (games.html, 2026-09-30) é página ESTÁTICA do prerender que mora na
+// raiz: carrega só o theme.js, de propósito, como as de set e de carta, e leva
+// data-idioma-fixo no <html>. Foi ela que derrubou o primeiro preview da
+// mudança pra /games, no passo de fundir.
+const PAGINA_ESTATICA = `<!doctype html>
+<html lang="pt-BR" data-idioma-fixo>
+  <head>
+    <script src="/src/theme.js"><\/script>
+    <link rel="stylesheet" href="/styles.css">
+  </head><body></body></html>`;
+
+test("página estática do prerender (data-idioma-fixo) fica fora da régua", () => {
+  const r = confere({ "index.html": PAGINA_COM_BOOT, "games.html": PAGINA_ESTATICA });
+  assert.equal(r.ok, true, `--check devia passar, mas falhou:\n${r.saida}`);
+  assert.match(r.saida, /games\.html/); // sai no log, como página fora da régua
+});
+
+test("meia página do app continua erro mesmo com uma estática ao lado", () => {
+  const r = confere({ "index.html": PAGINA_COM_BOOT, "games.html": PAGINA_ESTATICA, "meia.html": PAGINA_MEIO_PAR });
+  assert.equal(r.ok, false);
+  assert.match(r.saida, /meia\.html/);
+  assert.doesNotMatch(r.saida, /formato esperado: .*games\.html/);
+});
