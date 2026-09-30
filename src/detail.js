@@ -651,9 +651,11 @@
   // A aba com o nome do set. A borda já manda o título certo; isto é pra cópia
   // que o service worker guardou de OUTRO set (a entrada do detail.html é uma
   // só pra todo /detail?type=set&… e é a reserva dos endereços /games/…) e pra
-  // casca crua: sem isto a aba mostrava o set anterior, ou "Detalhe".
+  // casca crua: sem isto a aba mostrava o set anterior, ou "Detalhe". Página
+  // montada pela borda PRA ESTE endereço (rotaDaBorda) nunca é tocada: o título
+  // da carta de nome longo nem leva o nome do set, e é o que o Google lê.
   function acertaTituloDaAba() {
-    if (detailType !== "set" || !detailName || document.title.indexOf(detailName) >= 0) return;
+    if (detailType !== "set" || !detailName || rotaDaBorda || document.title.indexOf(detailName) >= 0) return;
     const el = document.querySelector("title");
     if (el) el.removeAttribute("data-i18n");
     document.title = `${detailName} | Sleevu`;
