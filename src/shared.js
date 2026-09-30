@@ -10316,6 +10316,8 @@
     unique,
     compareCardNumbers,
     rarityRank,
+    // A página de um set (detail.js) descobre a linha PELO set, não pela URL.
+    GAME_LINES,
     lineScope,
     lineParamOf,
     normalize,

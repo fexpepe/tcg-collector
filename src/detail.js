@@ -510,6 +510,28 @@
     if (collectionScope) { back.href = "collection"; return; }
     const map = { pokemon: "pokedex", set: "sets", artist: "artists", trainer: "trainers" };
     back.href = map[detailType] || "pokedex";
+    // Set de uma LINHA da marca (Carddass Hyper Battle, One Piece 2002,
+    // Miracle Battle, Data Carddass…): o Voltar e as abas Cartas/Sets voltam
+    // pra página DA LINHA. A subnav do shared.js só conhece a linha pelo
+    // ?line= da URL, e nenhum link de set carrega isso (nem o tile da própria
+    // lista da linha, nem o popup da carta, a Coleção ou a página do Google):
+    // o botão Sets de um set vintage abria o One Piece moderno (2026-09-30).
+    // A linha sai do PRÓPRIO set, pelo prefixo do setId — vale pra qualquer
+    // porta de entrada, inclusive o link só com ?name=, cujo id só se sabe
+    // agora, com o catálogo carregado.
+    const line = linhaDoSet();
+    if (!line) return;
+    const sufixo = `?game=${paginaGame()}&line=${line}`;
+    back.href = `sets${sufixo}`;
+    document.querySelectorAll(".explore-subnav a").forEach((a) => {
+      a.setAttribute("href", `${a.getAttribute("href").split("?")[0]}${sufixo}`);
+    });
+  }
+  function linhaDoSet() {
+    if (detailType !== "set") return "";
+    const setId = (pageCards[0] && pageCards[0].setId) || detailSetId;
+    const jogo = paginaGame();
+    return Object.keys(shared.GAME_LINES[jogo] || {}).find((line) => shared.lineScope(jogo, line).includes(setId)) || "";
   }
 
   // Alterna a grade entre grade (cards) e lista (linhas), guardando a preferência.
