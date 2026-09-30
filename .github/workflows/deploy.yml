@@ -131,12 +131,13 @@ jobs:
             exit 0
           fi
           faltando=""
-          # data/dbc/: jogo novo (2026-09-24). Enquanto o cache for de antes dele,
-          # o build rápido publicaria o tile do hub sem catálogo nenhum atrás.
+          # data/dbc/ e data/swu/: jogos novos (2026-09-24 e 2026-09-30). Enquanto
+          # o cache for de antes deles, o build rápido publicaria o tile do hub
+          # sem catálogo nenhum atrás.
           for f in data/manifest.generated.js data/pricing.generated.js \
                    data/onepiece/pricing.generated.js data/lorcana/pricing.generated.js \
                    data/magic/pricing.generated.js data/ygo/pricing.generated.js \
-                   data/dbc/manifest.generated.js; do
+                   data/dbc/manifest.generated.js data/swu/manifest.generated.js; do
             [ -s "$f" ] || faltando="$faltando $f"
           done
           if [ -n "$faltando" ]; then
