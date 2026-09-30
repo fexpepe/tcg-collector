@@ -89,7 +89,12 @@ export const AREAS = [
   // o script numa página pessoal; a 8, a classe numa página fora daqui).
   // Prefixo vtr- e não "vitrine": "vitrine" já é a aba de coleções em cards da
   // Coleção (collection.js) e palavra de texto em outros arquivos.
-  { nome: "vitrine",   prefixos: ["vtr-"],                      paginas: ["detail.html", "sets.html", "cards.html", "explore.html", "pokedex.html", "artists.html", "trainers.html", "lancamentos.html", "decks.html"] }
+  { nome: "vitrine",   prefixos: ["vtr-"],                      paginas: ["detail.html", "sets.html", "cards.html", "explore.html", "pokedex.html", "artists.html", "trainers.html", "lancamentos.html", "decks.html"] },
+  // trilha (2026-09-30): "Jogos › Pokémon › <set>" no topo das abas do jogo e
+  // da página de set — as páginas que têm o <nav class="crumbs"> no HTML. Fora
+  // do núcleo porque ele estava a ~200 bytes gz do teto e a trilha sozinha
+  // levava ~180; nenhuma outra página desenha a classe.
+  { nome: "trilha",    prefixos: ["crumbs"],                       paginas: ["cards.html", "sets.html", "pokedex.html", "lore.html", "trainers.html", "artists.html", "detail.html"] }
 ];
 
 // Classes que PARECEM de área mas não podem sair: alguma regra posterior do

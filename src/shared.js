@@ -10325,6 +10325,7 @@
     // A página de um set (detail.js) descobre a linha PELO set, não pela URL.
     GAME_LINES,
     lineScope,
+    setCrumbs,
     lineParamOf,
     normalize,
     escapeHtml,
@@ -12320,6 +12321,25 @@
     const h1 = document.querySelector(".page-head h1") || document.querySelector("main h1");
     const lineDef = lineDefOf(game, lineParamOf());
     if (h1) h1.dataset.game = lineDef ? lineDef.label : name;
+    // Trilha: "Jogos › Pokémon". Só se ninguém montou antes (a vista de série
+    // ou de linha, no app.js, estende a trilha com o próprio nível).
+    const trilha = document.querySelector(".crumbs");
+    if (trilha && trilha.children.length === 1) setCrumbs([{ label: name }]);
+  }
+
+  // Trilha do cabeçalho (2026-09-30, pedido do Fernando, no molde do
+  // Collectr: "Sets › Pokemon › 30th Celebration"). O HTML traz só o 1º nível
+  // (Jogos → hub, com data-i18n); aqui entram os seguintes. Todo nível é link
+  // menos o último, que é a página atual. Desktop só: no celular a tabbar já
+  // tem Jogos e o cabeçalho segue com o "← Voltar" de antes (ver .crumbs).
+  function setCrumbs(itens) {
+    const nav = document.querySelector(".crumbs");
+    if (!nav) return;
+    const ultimo = itens.length - 1;
+    nav.innerHTML = nav.firstElementChild.outerHTML + itens.map((it, i) => i < ultimo
+      ? `<a href="${escapeHtml(it.href)}">${escapeHtml(it.label)}</a>`
+      : `<span aria-current="page">${escapeHtml(it.label)}</span>`).join("");
+    nav.hidden = false;
   }
 
   // Accent por contexto de jogo: vermelho (Pokémon), roxo (Lorcana), neutro (all).
