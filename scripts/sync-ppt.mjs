@@ -60,6 +60,7 @@ let lastCall = 0;
 // esgotada ou nenhum mapa de sets. Daqui em diante o ppt() nem chama a rede, e
 // o run() trata como orçamento acabado (usa o cache por set, não regride).
 let soCache = SO_CACHE ? "--so-cache (run sem crédito)" : null;
+let avisoMapa = null; // /sets falhou por outro motivo e o run seguiu com o mapa vencido
 // O rate limit da PPT é PONDERADO por cartas (~ceil(cartas/10) "minute calls",
 // teto 60/min). Uma página de 100 cartas custa ~10, então ~6 chamadas/min é o
 // teto -> ~10s entre chamadas. Sem isso, ~7 paginas ja estouram (429).
@@ -75,12 +76,13 @@ async function ppt(path, retries = 3) {
   if (res.status === 429) {
     // O limite POR MINUTO passa com espera: backoff e tenta de novo. O DIÁRIO
     // não passa hoje — insistir só gastava 3×8s por chamada até o teto de tempo.
-    // 429 que sobrevive ao backoff é tratado igual: o run fica só no cache.
-    if (!/daily/i.test(msg) && retries > 0) {
+    // Só o diário desliga o run: um por minuto que sobrevive ao backoff (outro
+    // uso da mesma key ao mesmo tempo) falha só aquele set, como antes.
+    if (/daily/i.test(msg)) soCache = `cota da PPT esgotada (429: ${msg})`;
+    else if (retries > 0) {
       await new Promise((r) => setTimeout(r, 8000));
       return ppt(path, retries - 1);
     }
-    soCache = `cota da PPT esgotada (429: ${msg})`;
   }
   if (!res.ok || (json && json.error)) throw new Error(`PPT ${res.status}: ${msg}`);
   const c = json.metadata && json.metadata.apiCallsConsumed && json.metadata.apiCallsConsumed.total;
@@ -372,6 +374,9 @@ async function setMap() {
       // no próximo run bom); sem mapa nenhum, o run fica só no cache por set.
       if (salvo) {
         map = new Map(salvo.m);
+        // Erro que não é a cota (ex.: 401 de token revogado) passava verde e
+        // calado, com tudo congelado no cache: vira ::warning:: no fim do run.
+        if (!soCache) avisoMapa = e.message;
         console.warn(`Mapa de sets da PPT indisponível (${e.message}): usando o de ${new Date(salvo.t).toISOString().slice(0, 10)}.`);
       } else {
         map = new Map();
@@ -841,6 +846,7 @@ async function run() {
   // Anotação no resumo do run do Actions: a cota acabar não derruba mais o
   // build, então sem isto ninguém veria. (O --so-cache é planejado: sem aviso.)
   if (soCache && !SO_CACHE) console.log(`::warning::PPT: ${soCache} — preços/imagens JP e graded saíram do cache por set.`);
+  else if (avisoMapa && !soCache) console.log(`::warning::PPT: /sets falhou (${avisoMapa}) — o run seguiu com o mapa de sets vencido.`);
   if (DRY) {
     console.log("[dry-run] nada gravado. Amostra enriquecidas:", JSON.stringify(Object.fromEntries(Object.entries(out).slice(0, 3)), null, 1));
     console.log("[dry-run] Amostra novas:", JSON.stringify(newCards.slice(0, 3).map((c) => ({ id: c.id, name: c.name, num: c.number, set: c.set, img: !!c.image, price: c.price })), null, 1));
