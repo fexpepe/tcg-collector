@@ -11,9 +11,10 @@
 //                                   e índice de sets DO JOGO
 //   /games/<jogo>/<set>          -> página estática do set (next())
 //   /games/<jogo>/<set>/<carta>  -> página da carta, montada aqui
-//   /games/<jogo>/_id/<id>?set=  -> 301 pra página da carta (é o link que o
-//                                   "compartilhar" do app gera: o app sabe o
-//                                   id e o set, não o nome no endereço)
+//   /games/<jogo>/_id/<id>?setName=  -> 301 pra página da carta (é o link
+//                                   que o "compartilhar" do app gera: o app
+//                                   sabe o id e o set, não o nome no endereço;
+//                                   ?set= não, que o robots.txt barra)
 //   /games/<apelido>/…           -> 301 pro endereço oficial (/games/swu)
 //   o resto                      -> 404 de verdade
 //
@@ -199,10 +200,12 @@ async function cartaNaBorda(context, rota) {
   return resposta;
 }
 
-// Link de compartilhar do app: /games/<jogo>/_id/<id>?set=<nome do set>.
+// Link de compartilhar do app: /games/<jogo>/_id/<id>?setName=<nome do set>.
+// O parâmetro não é ?set=: o robots.txt barra /*?set= (filtro do Explorar), e
+// o robô do X respeita o robots — o link sairia sem prévia.
 async function cartaPeloId(context, rota) {
   const { env, request } = context;
-  const nomeDoSet = new URL(request.url).searchParams.get("set") || "";
+  const nomeDoSet = new URL(request.url).searchParams.get("setName") || "";
   const mapa = await jsonDoSite(env, request, `/data/game-pages/${rota.jogo.url}.json`);
   const achado = mapa && mapa.s ? Object.keys(mapa.s).find((slug) => mapa.s[slug].n === nomeDoSet) : null;
   if (!achado) return redireciona(request, `/games/${rota.jogo.url}`, 302);

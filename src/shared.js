@@ -6947,10 +6947,11 @@
       // prévia do WhatsApp. O app não sabe o nome da carta no endereço (ele sai
       // do set inteiro), então manda o id e a borda redireciona
       // (functions/games/, rota _id). Sem o endereço do set, o link do app.
+      // ?setName= e não ?set=, que o robots.txt barra (sem prévia no X).
       const urlDoSet = (window.SLEEVU || {}).urlDoSet;
       const base = activeCard.set && urlDoSet && urlDoSet(activeCard.game || currentGame(), activeCard.setId);
       const url = base
-        ? `${location.origin}${base}/_id/${encodeURIComponent(activeCard.id)}?set=${encodeURIComponent(activeCard.set)}`
+        ? `${location.origin}${base}/_id/${encodeURIComponent(activeCard.id)}?setName=${encodeURIComponent(activeCard.set)}`
         : cardShareUrl(activeCard);
       if (navigator.share) {
         navigator.share({ title: label, text, url }).catch(() => {});
