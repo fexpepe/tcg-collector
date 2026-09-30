@@ -237,6 +237,15 @@ async function cartaPeloId(context, rota) {
     : redireciona(request, `/games/${rota.jogo.url}/${achado}`, 302);
 }
 
+// HEAD: a mesma resposta do GET, sem o corpo. Sem isto a Function não
+// respondia HEAD e o Pages caía no 404 (não há arquivo nesses endereços):
+// verificador de link, monitor de uptime e robô que pergunta antes de baixar
+// viam a tela do jogo e a do set como quebradas.
+export async function onRequestHead(context) {
+  const resposta = await onRequestGet(context);
+  return new Response(null, { status: resposta.status, headers: resposta.headers });
+}
+
 export async function onRequestGet(context) {
   const { request, env, params } = context;
   const url = new URL(request.url);
