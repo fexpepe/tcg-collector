@@ -406,8 +406,12 @@ function setPageHtml(page, canonical, otherSets, lang) {
     `<a href="/collection">${escapeHtml(L.navCollection)}</a>`
   ].filter(Boolean).join("\n          ");
 
+  // data-idioma-fixo (também nas páginas de carta e de artista): nada traduz
+  // este texto no cliente, então o theme.js deixa o <html lang> como está em
+  // vez de trocá-lo pelo idioma do navegador. Sem isso, a página em português
+  // anunciava "en" pro Googlebot (ver o theme.js).
   return `<!doctype html>
-<html lang="${L.htmlLang}">
+<html lang="${L.htmlLang}" data-idioma-fixo>
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -541,7 +545,7 @@ function artistPageHtml(ap) {
     .map((x) => `<li><a href="/artists?game=${escapeAttr(x.game)}">${escapeHtml(x.label)} · ${x.n} carta${x.n === 1 ? "" : "s"}</a></li>`).join("");
 
   return `<!doctype html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-idioma-fixo>
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -1002,7 +1006,7 @@ function cardPageHtml(cp, ctx = {}) {
     itemListElement: trilha.map((t, i) => ({ "@type": "ListItem", position: i + 1, name: t.nome, item: t.url }))
   };
   return `<!doctype html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-idioma-fixo>
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
