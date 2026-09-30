@@ -3,7 +3,8 @@
 // O link que a pessoa copia da barra (/detail?type=set&...) é a casca do app:
 // sem conteúdo no HTML, ele aparecia como URL pelada no WhatsApp e é `noindex`.
 // A Function da borda troca título/descrição/imagem pelos do set e aponta a
-// canonical pra /set/<slug>, a página estática indexável.
+// canonical pra /games/<jogo>/<set>, a página estática indexável (até
+// 2026-09-30 era /set/<slug>).
 //
 // O encanamento da borda (HTMLRewriter, env.ASSETS) não roda em node; o que dá
 // pra testar — e o que tem regra de verdade — é a resolução do set no mapa que
@@ -20,17 +21,18 @@ import { metaDoSet } from "../functions/detail.js";
 
 const RAIZ = join(dirname(fileURLToPath(import.meta.url)), "..");
 
-// [slug, nome, imagem, nº de cartas, lançamento] — o formato que o
-// prerender-catalog.mjs escreve em data/set-pages/<jogo>.json.
+// [caminho, nome, imagem, nº de cartas, lançamento] — o formato que o
+// prerender-catalog.mjs escreve em data/set-pages/<jogo>.json, com o caminho
+// dentro de /games/.
 const MAPA = {
-  cel30: ["30th-celebration", "30th Celebration", "https://sleevu.app/data/set-logos/en/cel30.webp", 154, "2026-09-16"],
-  cel30cc: ["30th-celebration-classic-collection", "30th Celebration Classic Collection", "", 30, ""],
-  base1: ["base-set", "Base Set", "https://exemplo/logo.png", 102, "1999-01-09"]
+  cel30: ["pokemon/30th-celebration", "30th Celebration", "https://sleevu.app/data/set-logos/en/cel30.webp", 154, "2026-09-16"],
+  cel30cc: ["pokemon/30th-celebration-classic-collection", "30th Celebration Classic Collection", "", 30, ""],
+  base1: ["pokemon/base-set", "Base Set", "https://exemplo/logo.png", 102, "1999-01-09"]
 };
 
 test("acha o set pelo setId e monta canonical, título e descrição", () => {
   const m = metaDoSet(MAPA, "cel30", "30th Celebration");
-  assert.equal(m.canonical, "https://sleevu.app/set/30th-celebration");
+  assert.equal(m.canonical, "https://sleevu.app/games/pokemon/30th-celebration");
   assert.equal(m.titulo, "30th Celebration — lista de cartas | Sleevu");
   assert.match(m.desc, /154 cartas/);
   assert.match(m.desc, /16 de setembro de 2026/);
@@ -39,7 +41,7 @@ test("acha o set pelo setId e monta canonical, título e descrição", () => {
 
 test("sem setId, acha pelo nome exato", () => {
   const m = metaDoSet(MAPA, "", "Base Set");
-  assert.equal(m.canonical, "https://sleevu.app/set/base-set");
+  assert.equal(m.canonical, "https://sleevu.app/games/pokemon/base-set");
   assert.match(m.desc, /9 de janeiro de 1999/);
 });
 
@@ -87,5 +89,5 @@ test("mapa gerado (se existir) casa com o formato esperado", () => {
     assert.equal(typeof linha[3], "number");
   }
   const m = metaDoSet(mapa, ids[0], "");
-  assert.ok(m && m.canonical.startsWith("https://sleevu.app/set/"));
+  assert.ok(m && m.canonical.startsWith("https://sleevu.app/games/"), m && m.canonical);
 });

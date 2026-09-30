@@ -8,7 +8,7 @@
 // não tem conteúdo nenhum no HTML, então:
 //   - colada no WhatsApp/Discord/X aparecia como uma URL pelada, sem prévia —
 //     o link parecia quebrado antes mesmo de alguém clicar;
-//   - é `noindex` (o conteúdo indexável mora em /set/<slug>, pré-renderizado),
+//   - é `noindex` (o conteúdo indexável mora em /games/<jogo>/<set>, pré-renderizado),
 //     então todo link que alguém compartilhava nascia sem valor de busca.
 // Agora o link colado mostra o logo do set, o nome e "154 cartas", e aponta
 // (canonical) pra página estática equivalente, que é a que o Google indexa.
@@ -17,7 +17,9 @@
 // Qualquer erro cai no asset original — a página do app não pode depender disto.
 //
 // O mapa set -> página estática vem do build (prerender-catalog.mjs escreve
-// data/set-pages/<jogo>.json): [slug, nome, imagem, nº de cartas, lançamento].
+// data/set-pages/<jogo>.json): [caminho, nome, imagem, nº de cartas, lançamento],
+// com o caminho em /games/ ("star-wars-unlimited/spark-of-rebellion") desde
+// 2026-09-30; antes era o slug do diretório plano /set/.
 import { buscaPagina, comVitrine } from "./_vitrine-csp.js";
 
 const ORIGIN = "https://sleevu.app";
@@ -59,7 +61,7 @@ export function metaDoSet(mapa, setId, nome) {
     slug,
     setNome,
     imagem: imagem || "",
-    canonical: `${ORIGIN}/set/${slug}`,
+    canonical: `${ORIGIN}/games/${slug}`,
     titulo: `${setNome} — lista de cartas | Sleevu`,
     desc: `Lista completa das ${total} cartas do set ${setNome}${quando ? `, lançado em ${quando}` : ""}. Veja imagens, números e raridades e marque a sua coleção no Sleevu.`
   };
