@@ -114,9 +114,17 @@ A barra do editor escreve a sintaxe; o botão **?** mostra o resumo:
    renderizador carrega rótulo e cor de cada jogo. Jogo novo no `GAME_COLOR`
    sem entrar no `GAMES` do renderizador reprova o teste (aconteceu com o Star
    Wars no mesmo dia).
-4. **Exports do `shared.js` como função.** `publicFetch` e
-   `storagePublicUrl` (e não as constantes): o `window.TCGShared` é montado
-   antes do `SUPABASE_URL` existir, e ler a const ali seria TDZ.
+4. **Nada do blog no núcleo além do mínimo.** O `shared.js` viaja em toda
+   página e vive colado no teto do `check-size`: helpers do blog lá dentro
+   estouraram o orçamento por 16 bytes. O endereço e a chave publicável do
+   Supabase que o blog usa moram no `src/blog-render.js` (teste trava contra
+   os do `shared.js`); do núcleo, o blog só usa o `authedFetch` (o fetch com
+   sessão, que renova o token) e os links do menu.
+5. **Function não importa de `scripts/`, `docs/`, `tests/` nem `supabase/`.**
+   O deploy apaga essas pastas ANTES do `wrangler pages deploy`, que é quando
+   as Functions são empacotadas — passa em todo teste local e quebra só lá. O
+   `jsonLdSeguro` mora em `functions/_lib/json-ld.js` por isso. O teste
+   `deploy-referencias` lê a lista do próprio `deploy.yml` e reprova.
 
 ## Verificar localmente
 

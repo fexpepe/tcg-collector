@@ -298,7 +298,7 @@
       e.status = r.status === 400 && /size|large/i.test(msg) ? 413 : r.status;
       throw e;
     }
-    return shared.storagePublicUrl(BUCKET, caminho);
+    return `${B.SUPABASE_URL}/storage/v1/object/public/${BUCKET}/${caminho}`;
   }
   async function enviaImagem(arquivo) {
     if (!arquivo || !/^image\//.test(arquivo.type)) throw new Error("Escolha um arquivo de imagem (JPG, PNG, WebP ou GIF).");

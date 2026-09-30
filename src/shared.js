@@ -4142,17 +4142,6 @@
     if (Date.now() - (s.ts || 0) > 50 * 60 * 1000) s = (await refreshSession()) || s;
     return fetch(`${SUPABASE_URL}${path}`, Object.assign({}, init, { headers: Object.assign(authHeaders(s.access_token), (init && init.headers) || {}) }));
   }
-  // Blog (2026-09-30): leitura ANÔNIMA no PostgREST — sem o token de quem está
-  // logado, porque a RLS de editor entregaria rascunho junto — e a URL pública
-  // de um arquivo do Storage (as imagens que o editor sobe). Funções, e não as
-  // constantes no export: o window.TCGShared é montado ANTES da declaração do
-  // SUPABASE_URL, e ler a const ali seria TDZ.
-  function publicFetch(path) {
-    return AUTH_ENABLED ? fetch(`${SUPABASE_URL}${path}`, { headers: authHeaders() }) : Promise.resolve(null);
-  }
-  function storagePublicUrl(bucket, path) {
-    return `${SUPABASE_URL}/storage/v1/object/public/${bucket}/${path}`;
-  }
   const pushWishlist = {
     supported: () => "serviceWorker" in navigator && "PushManager" in window && "Notification" in window,
     async isOn() {
@@ -10150,8 +10139,6 @@
     // push; o blog (editor e o "sou editor?") usa o mesmo, em vez de repetir
     // a renovação — que é single-flight e não pode ter duas cópias.
     authedFetch: pushAuthedFetch,
-    publicFetch,
-    storagePublicUrl,
     partnerReport,
     experimento,
     pushProfile,

@@ -15,7 +15,7 @@
 //                            post do navegador, e o Google volta depois.
 import { B, supabase, cartasDoD1, COLUNAS_POST, COLUNAS_LISTA, ORIGEM,
   setMeta, setHref, setText, remove, setHtml, naoAchou, respostaFinal, daBorda, guardaNaBorda } from "./_comum.js";
-import { jsonLdSeguro } from "../../scripts/lib/json-ld.mjs";
+import { jsonLdSeguro } from "../_lib/json-ld.js";
 
 const SEGUNDOS_NA_BORDA = 120;
 const TITULO_MAX = 65;

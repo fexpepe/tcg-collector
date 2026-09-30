@@ -335,6 +335,18 @@ test("IMG_HOSTS = hosts do img-src da CSP (+ o próprio site)", () => {
   assert.deepEqual([...B.IMG_HOSTS].filter((h) => h !== "sleevu.app").sort(), imgSrc.sort());
 });
 
+test("Supabase do blog = o do shared.js (endereço e chave publicável)", () => {
+  // O blog não pede essas constantes ao shared.js (exportar engordaria o
+  // núcleo de toda página — o check-size estourou). Esta cópia não pode ficar
+  // pra trás se o projeto do Supabase mudar (ex.: domínio próprio de auth).
+  const shared = ler("src/shared.js");
+  const url = /const SUPABASE_URL = "([^"]+)";/.exec(shared)[1];
+  const key = /const SUPABASE_KEY = "([^"]+)";/.exec(shared)[1];
+  assert.equal(B.SUPABASE_URL, url);
+  assert.equal(B.SUPABASE_KEY, key);
+  assert.equal(B.SUPABASE_URL, "https://" + B.SUPABASE_HOST);
+});
+
 test("GAMES = GAME_COLOR do shared.js com os rótulos do i18n", () => {
   const shared = ler("src/shared.js");
   const cores = vm.runInNewContext("(" + /const GAME_COLOR = (\{[\s\S]*?\});/.exec(shared)[1] + ")");
