@@ -344,7 +344,7 @@ async function run() {
         language: "ja",
         image: curated || (c.code ? IMG_DB(c.code) : (c.img ? IMG_TVT(c.img) : "")),
         variants: ["Normal"],
-        setLogo: "/assets/games/game_naruto.webp",
+        setLogo: "/assets/games/game_naruto_vintage.webp",
         vintage: true,
         vintageLine: "nrtcg"
       });
