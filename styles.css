@@ -4261,23 +4261,30 @@ a.hub-tile:active { box-shadow: 0 0 0 2px var(--accent); }
     max-height: calc(100% - 32px);
   }
 }
-/* Idioma da linha vintage (JP nas japonesas; EN no Naruto CCG americano):
-   selo no canto superior direito da imagem do tile — diz de onde vem o
-   catálogo antes do clique. Cores fixas (não tokens): a caixa do logo é
-   sempre branca, nos dois temas — mesma razão do #4b4b4b do texto abaixo. */
-.hub-lang-tag {
-  position: absolute;
-  top: 6px;
-  right: 6px;
-  z-index: 1;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  padding: 2px 6px;
-  background: #eef1f6;
-  border: 1px solid #d9dee8;
-  color: #4b4b4b;
+/* Origem da linha vintage: bandeirinha do país (Japão nas japonesas, EUA no
+   Naruto CCG americano) no rodapé, ANTES dos anos. Era um selo "JP"/"EN" no
+   canto da caixa do logo; o Fernando pediu a bandeira (2026-09-30) — lê mais
+   rápido que a sigla e não disputa espaço com o logo. A ALTURA é a do selo de
+   anos, pelo align-self: stretch na linha do rodapé — número fixo não serve:
+   o selo tem line-height normal e dá 22px no desktop e 20,4 no celular. A
+   largura é fixa (aspect-ratio não pega a altura esticada no Chromium; a
+   bandeira saía com 0px) e o SVG usa `slice`, então a diferença de altura
+   corta um fio da borda em vez de achatar a bandeira. SVG com as cores
+   oficiais; o
+   contorno é do tema pra bandeira branca do Japão não sumir no painel claro. */
+.hub-flag {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-self: stretch;
+  width: 32px;
+  border-radius: 3px;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px var(--line);
 }
+/* Absoluto: o SVG não pode dar tamanho próprio à caixa (sem isso ele entrava
+   com 300×150 e empurrava os anos pra duas linhas). */
+.hub-flag svg { position: absolute; inset: 0; width: 100%; height: 100%; }
 .hub-logo-text { font-size: 19px; font-weight: 800; color: #4b4b4b; text-align: center; }
 /* MARCA TIPOGRÁFICA dos vintage ainda sem logo (2026-09-28). A caixa mostrava
    o nome da linha e o nome vinha de novo logo abaixo — o mesmo texto duas
@@ -4354,8 +4361,7 @@ a.hub-tile:active { box-shadow: 0 0 0 2px var(--accent); }
     padding: 8px 12px 8px 8px;
   }
   /* A caixa deixa de ser contêiner e de ser posicionada: o logo entra no fluxo
-     (centrado pelo flex dela) e o selo de idioma, que é absoluto, passa a se
-     posicionar pela LINHA — senão ele ficaria em cima da miniatura. */
+     (centrado pelo flex dela). */
   .hub-vintage .hub-logo-box {
     grid-row: 1 / span 2;
     align-self: center;
@@ -4368,21 +4374,10 @@ a.hub-tile:active { box-shadow: 0 0 0 2px var(--accent); }
   .hub-vintage .hub-logo { position: static; max-width: 100%; max-height: 100%; }
   .hub-vintage .hub-tile > :not(.hub-logo-box) { margin: 0; }
   /* 14px e as duas linhas RESERVADAS do nome (min-height da regra base): toda
-     linha tem a mesma altura e o selo de anos cai sempre no mesmo lugar — é
-     o que deixa o selo de idioma alinhado com ele na ponta direita. */
+     linha tem a mesma altura e a bandeira + selo de anos caem sempre no
+     mesmo lugar. */
   .hub-vintage .hub-tile-name { font-size: 14px; }
   .hub-vintage .hub-tile-foot { align-self: end; }
-  /* Fora da caixa branca o selo de idioma usa as cores do TEMA: o cinza-claro
-     fixo dele foi feito pro fundo branco do logo e, no escuro, brilhava mais
-     que os anos. */
-  .hub-vintage .hub-lang-tag {
-    top: auto;
-    bottom: 9px;
-    right: 12px;
-    background: var(--panel-strong);
-    border-color: var(--line);
-    color: var(--muted);
-  }
   .hub-vintage .hub-logo-text.hub-logo-mark { font-size: 11px; letter-spacing: 0.1em; }
 }
 
