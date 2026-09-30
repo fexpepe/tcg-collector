@@ -10,8 +10,8 @@ que ordem e como saber que terminou**.
 > A seção 5 mede de onde vem o ruído, e a seção 6 é o plano pra reduzir o custo
 > de um jogo novo: hoje são 38 pontos de registro, e só 4 deles têm alguma trava
 > automática. O plano tem as fases F1–F8, uma PR cada, e nenhuma foi feita
-> ainda. Os números foram medidos na `main` em `f1df1aae`, já com o Star Wars.
-> A contagem de arquivos é do deploy agendado das 12:46 UTC, de antes dele.
+> ainda. Os números foram medidos na `main` em `f1df1aae`, já com o Star Wars,
+> e no deploy dela.
 
 ## 0. Resumo
 
@@ -194,7 +194,7 @@ Ficha do jogo — <Nome completo> (`<slug>`)
 - Lojas: BR <…|nenhuma, conferido em <data>> · EUA <tcgLine/usText> · EU <cm|—>
 - Cor: <hex> — <x>:1 com texto <preto|branco>; vizinho mais próximo <jogo>, a <d> RGB
 - Logo: <arquivo | sem logo, tile em texto> · posição no hub: <…>
-- Orçamento: <n> sets ≈ <3n> arquivos (último deploy: <total> de 18.000);
+- Orçamento: <n> sets ≈ <3n + 40> arquivos (último deploy: <total> de 18.000);
   shared.js +<b> B gz, CSS +<b> B gz (folga depois: <…>)
 - Migração: supabase/migrations/<arquivo>.sql (aplicar em ordem de nome)
 ```
@@ -348,8 +348,8 @@ Depois do merge (vai na PR como pendência):
 
 ## 5. Diagnóstico: de onde vem o ruído
 
-Medido em 2026-09-30 na `main` em `f1df1aae`, já com o Star Wars. A contagem
-de arquivos é do deploy agendado das 12:46 UTC, de antes dele.
+Medido em 2026-09-30 na `main` em `f1df1aae`, já com o Star Wars, e no deploy
+dela (15:06 UTC).
 
 ### 5.1 Registro espalhado
 
@@ -371,12 +371,14 @@ lugares; o prefixo de id, em 3 mapas (`binders.js`, `card-rescue.js`,
 
 ### 5.3 Orçamento de arquivos do Pages
 
-- Deploy das 12:46 UTC: **16.318 arquivos**. O passo "Conta arquivos" avisa
-  acima de 16.000 e **falha acima de 18.000** (o teto do Pages é 20.000).
-  Folga: 1.682.
+- Deploy com o Star Wars: **16.479 arquivos**, 161 a mais que o anterior (das
+  12:46 UTC, sem ele). O passo "Conta arquivos" avisa acima de 16.000 e **falha
+  acima de 18.000** (o teto do Pages é 20.000). Folga: 1.521.
 - Um set custa 3 arquivos: chunk de cartas, chunk de preço e página de SEO
-  (naquele deploy, 2.664 páginas de set pra 2.664 sets). As páginas de carta e
-  de artista têm teto global e não crescem com o jogo.
+  (2.694 páginas de set pra 2.694 sets). Um jogo soma ainda uns 40 fixos:
+  catálogo, índices, histórico de preço e os logos de set (o Star Wars trouxe
+  12). As páginas de carta e de artista têm teto global e não crescem com o
+  jogo.
 - **138 deles são chunks de preço vazios**: Naruto 105, HxH 15 e DBC 18. Jogo
   sem preço ganha um arquivo `{}` por set. Sem a flag `pc` no manifest, o
   cliente já usa o monólito (um arquivo só), então esses chunks não fazem nada
