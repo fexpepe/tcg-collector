@@ -103,13 +103,13 @@ const HASHED_ASSETS = false; /* SLEEVU_HASHED */
 const SHELL_ASSETS = [
   "./", "index.html", "hub.html", "pokedex.html", "lore.html", "sets.html", "artists.html",
   "trainers.html", "collection.html", "wishlist.html", "portfolio.html", "explore.html", "dashboard.html", "badges.html",
-  "backup.html", "detail.html", "binders.html", "cards.html", "sales.html", "about.html", "novidades.html", "lancamentos.html", "comparar.html", "faq.html", "help.html", "privacy.html", "terms.html", "login.html", "settings.html", "profile.html", "admin.html",
+  "backup.html", "detail.html", "binders.html", "cards.html", "sales.html", "about.html", "novidades.html", "blog.html", "lancamentos.html", "comparar.html", "faq.html", "help.html", "privacy.html", "terms.html", "login.html", "settings.html", "profile.html", "admin.html",
   "decks.html", "my-decks.html", "pastas.html", "troca.html", "search.html", "account.html",
   "styles.css", "favicon.svg", "icon.svg", "assets/brand/sleevu-wordmark.svg", "manifest.json",
   // Fonte da marca (auto-hospedada): precisa estar no shell pra o app abrir
   // offline com a tipografia certa, sem "trocar de fonte" ao reconectar.
   "assets/fonts/outfit-latin.woff2", "assets/fonts/outfit-latin-ext.woff2",
-  "src/theme.js", "src/game.js", "src/login-boot.js", "src/i18n.js", "src/i18n-docs.js", "src/i18n-decks.js", "src/i18n-binders.js", "src/i18n-pastas.js", "src/i18n-vendas.js", "src/i18n-lore.js", "src/shared.js", "src/app.js", "src/collection.js", "src/detail.js", "src/explore.js", "src/dashboard.js", "src/primeiros-passos.js", "src/badges.js", "src/lancamentos.js", "src/goldfish.js",
+  "src/theme.js", "src/game.js", "src/login-boot.js", "src/i18n.js", "src/i18n-docs.js", "src/i18n-decks.js", "src/i18n-binders.js", "src/i18n-pastas.js", "src/i18n-vendas.js", "src/i18n-lore.js", "src/i18n-blog.js", "src/shared.js", "src/app.js", "src/collection.js", "src/detail.js", "src/explore.js", "src/dashboard.js", "src/primeiros-passos.js", "src/badges.js", "src/lancamentos.js", "src/goldfish.js",
   "src/home.js", "src/news.js", "src/wishlist.js", "src/portfolio.js", "src/binders.js",
   "src/backup.js", "src/graded-ui.js", "src/cards.js", "src/sales.js", "src/centering.js", "src/login.js", "src/hub.js", "src/settings.js", "src/profile.js", "src/admin.js",
   "src/deck-rules.js", "src/decks.js", "src/pastas.js", "src/lore.js", "src/export-liga.js", "src/export-ui.js", "src/troca.js",
@@ -121,7 +121,12 @@ const SHELL_ASSETS = [
   // Vitrine (2026-09-27): o espaço das páginas de catálogo. Offline ele mostra
   // a vitrine da casa (a config vem do cache de dado); sem ele no shell a
   // página funcionaria igual, só sem o espaço.
-  "src/ads.js"
+  "src/ads.js",
+  // Blog (2026-09-30): a lista e o que ela carrega. A casca do post
+  // (blog-post.html) fica de fora: cada post é uma navegação própria, guardada
+  // pela chave dela, e a casca crua não mostraria nada offline. O editor
+  // (blog-editor) também: só quem escreve usa, não é pra todo visitante baixar.
+  "src/blog-render.js", "src/blog.js"
 ];
 
 // Tetos por cache (FIFO): imagens ~17KB cada; chunks de set são o catálogo.

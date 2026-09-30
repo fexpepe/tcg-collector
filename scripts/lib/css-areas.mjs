@@ -76,6 +76,11 @@ export const AREAS = [
   { nome: "troca",     prefixos: ["trade-"],                       paginas: ["troca.html", "badges.html"] },
   { nome: "goldfish",  prefixos: ["gf-"],                          paginas: ["decks.html", "my-decks.html"] },
   { nome: "faq",       prefixos: ["faq-"],                         paginas: ["faq.html"] },
+  // blog- (2026-09-30): a lista, o post e o EDITOR — a prévia do editor desenha
+  // o post com as mesmas classes (o src/blog-render.js é um só). bed- é só do
+  // editor (a tela de escrever), que ninguém mais carrega.
+  { nome: "blog",      prefixos: ["blog-"],                        paginas: ["blog.html", "blog-post.html", "blog-editor.html"] },
+  { nome: "blogeditor", prefixos: ["bed-"],                        paginas: ["blog-editor.html"] },
   // vitrine (o espaço de anúncio, 2026-09-27): EXATAMENTE as páginas que
   // carregam o src/ads.js. O check.mjs cruza as duas listas (a guarda 9 barra
   // o script numa página pessoal; a 8, a classe numa página fora daqui).
