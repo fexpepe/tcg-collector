@@ -105,8 +105,12 @@ async function run() {
   const linePrefix = { nx: "nrt-nx", nf: "nrt-nf" };
   const lineTag = { nx: "nrt-nx", nf: "nrt-nf" };
   const cardsNew = [];
-  // Ordem: Formation (2007) antes de Cross (2009); dentro, por data e nome.
-  const ordered = [...setsOut.entries()].sort((a, b) => ((a[1].date || "9999") + a[1].name).localeCompare((b[1].date || "9999") + b[1].name, "ja"));
+  // Ordem do catálogo: pelo número do setId, estável como ele (as telas
+  // ordenam por data sozinhas). Não é detalhe: o slug da página /set/ de nome
+  // japonês é "data-carddass-<dígitos>" e desempata pela ordem do catálogo —
+  // ordenar por data trocava de set 10 dessas URLs a cada data corrigida.
+  const numeroDoSet = ([chave]) => Number(ids.get(chave).replace(/^.*-s/, ""));
+  const ordered = [...setsOut.entries()].sort((a, b) => numeroDoSet(a) - numeroDoSet(b));
   ordered.forEach(([chave, s]) => {
     const setId = ids.get(chave);
     const cmp = (a, b) => String(a.num).localeCompare(String(b.num), "ja", { numeric: true });
