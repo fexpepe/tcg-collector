@@ -55,6 +55,19 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
   verso da carta enviado pelo Fernando em 2026-09-30 — logo recortado do fundo
   azul por chroma key (PIL), 512px. A textura de papel impressa fica, por isso
   pesa mais que os outros (~64 KB)
+- `game_naruto_datacarddass.webp` — NARUTO ナルティメットカードバトル (Narutimate
+  Card Battle, o 1º título do Data Carddass, 2005). Tile "Naruto Data Carddass
+  (arcade)" do hub e `setLogo` só dos sets do Card Battle (nrt-dc-s01..s10, via
+  sync-naruto-datacarddass.mjs) — Mission, Formation e Cross têm marca própria.
+  Fonte: capa do guia e verso da carta (DNP-008) enviados pelo Fernando em
+  2026-09-30. Recortado da CAPA (774px nativos, reduzido pra 512×344), que tem
+  mais resolução; o verso serviu de referência pra forma do redemoinho e pra
+  saber o que é arte e o que é fundo. Na capa o fundo laranja se mistura com as
+  letras, então o corte foi por cor (flood fill com sementes à mão, sem rembg,
+  que devolvia um bloco só). O contorno escuro do topo (engolido pela faixa
+  preta da capa) e a ponta esquerda do painel verde (cortada pela borda) foram
+  redesenhados. Os bolsões escuros entre o NARUTO e o painel e entre o painel e
+  o カードバトル são da ARTE — aparecem nas duas fontes, com fundos diferentes.
 - `game_naruto_2027.webp` — NARUTO CARD GAME novo (Bandai, mundial 2027; tile
   "Em breve" do hub; fonte: naruto-cardgame.com/images/common/logo.webp)
 - `game_naruto_miracle.webp` — Miracle Battle Carddass (tile vintage do Naruto

@@ -39,6 +39,13 @@ const BASE = "http://naruto.noihjp.com/Goods/DataCarddas/";
 const UA = { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Sleevu/1.0 (+sleevu.app)" };
 const NO_FETCH = process.argv.includes("--no-fetch");
 
+// Logo do Card Battle (NARUTO ナルティメットカードバトル), recortado da capa do
+// guia oficial (2026-09-30, ver assets/games/README.md). É a marca SÓ do
+// primeiro título: a Mission (究極任務) tem logo próprio, que ainda não temos —
+// os sets dela seguem sem setLogo e mostram o nome, pela regra de logo de set.
+const CARD_BATTLE_LOGO = "/assets/games/game_naruto_datacarddass.webp";
+const isCardBattle = (s) => s.name.startsWith("ナルティメットカードバトル");
+
 // As 15 páginas da fonte, em ordem CRONOLÓGICA (folhas combo entre os 弾 em que
 // saíram). História encerrada — a lista é fixa; só as cartas de cada página
 // podem crescer (o acervo confirma cartas aos poucos).
@@ -150,7 +157,7 @@ async function run() {
         language: "ja",
         image: curatedImg(cardId), // curada do dono se existir; senão placeholder (sem scans abertos)
         variants: ["Normal"],
-        setLogo: "",
+        setLogo: isCardBattle(s) ? CARD_BATTLE_LOGO : "",
         vintage: true,
         vintageLine: "dc"
       });
