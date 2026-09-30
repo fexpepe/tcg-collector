@@ -7003,6 +7003,13 @@
     // página respondeu com verificação anti-robô e não deu pra conferir o
     // caminho — entra quando for conferido, como o do Gundam.
     swu:       { liga: ["LigaStarWars", "https://www.ligastarwars.com.br"], myp: "swunlimited", tcgLine: "star-wars-unlimited", usText: "star wars unlimited" },
+    // Cyberpunk TCG (conferido em 30/09/2026): sem Liga (ligacyberpunk.com.br
+    // nem resolve); o MYP tem a seção /cyberpunk e a busca casa ("Adam
+    // Smasher" -> as versões Beta e Epic). Cardmarket: o caminho /Cyberpunk
+    // vem do anúncio do próprio Cardmarket (news.cardmarket.com, "Cyberpunk
+    // TCG Has Arrived!", vendido desde 09/09) — a página em si respondeu com
+    // verificação anti-robô.
+    cyberpunk: { myp: "cyberpunk", tcgLine: "cyberpunk-tcg", usText: "cyberpunk tcg", cm: "Cyberpunk" },
     dbfw:      { liga: ["LigaDragonBall", "https://fusion.ligadragonball.com.br"], tcgLine: "dragon-ball-super-fusion-world", usText: "dragon ball fusion world", cm: "DragonBallSuper", cmq: 1 },
     riftbound: { liga: ["LigaRiftbound", "https://www.ligariftbound.com.br"], myp: "riftbound", tcgLine: "riftbound-league-of-legends-trading-card-game", usText: "riftbound", cm: "Riftbound" },
     // Union Arena (conferido em 07/08/2026): SEM loja BR. ligaunionarena.com.br
@@ -8558,6 +8565,7 @@
     { game: "fab", dataDir: "data/fab/" },
     { game: "gundam", dataDir: "data/gundam/" },
     { game: "swu", dataDir: "data/swu/" },
+    { game: "cyberpunk", dataDir: "data/cyberpunk/" },
     { game: "dbfw", dataDir: "data/dbfw/" },
     { game: "ygo", dataDir: "data/ygo/" },
     { game: "digimon", dataDir: "data/digimon/" },
@@ -8573,7 +8581,7 @@
   // Cor de cada marca. Escolhidas pelo Fernando; os tons exatos foram calibrados
   // em dois eixos antes de entrar:
   //   1. CONTRASTE — o textOnColor abaixo escolhe preto ou branco pelo maior
-  //      contraste real; as 15 passam em AA (≥4.5:1) com a cor escolhida.
+  //      contraste real; todas passam em AA (≥4.5:1) com a cor escolhida.
   //   2. DISTINÇÃO — as etiquetas aparecem lado a lado na galeria e nos filtros,
   //      então cores muito próximas se confundem. O ouro do Riftbound começou em
   //      #b8860b e virou #a67c00: a 46 de distância RGB ele empatava com o
@@ -8588,6 +8596,7 @@
     fab: "#a34a5e",        // vinho claro
     gundam: "#2563eb",     // azul (o tom que era do Magic)
     swu: "#000000",        // preto, texto branco (pedido do Fernando, 30/09/2026)
+    cyberpunk: "#fcee0a",  // amarelo da marca (o do logo oficial); 17:1 com preto, a 82 do One Piece
     dbfw: "#9aa3ae",       // prata
     ygo: "#7c3aed",        // roxo-violeta
     digimon: "#123f6d",    // azul escuro
@@ -8614,7 +8623,7 @@
     const vsWhite = 1.05 / (L + 0.05);   // contraste com #fff
     const vsBlack = (L + 0.05) / 0.05;   // contraste com preto
     // Preto PURO (não o quase-preto do tema): com #0a0c10 o vermelho do Pokémon
-    // parava em 4.47; com #000 os 15 jogos passam de 4.5 (AA).
+    // parava em 4.47; com #000 todos os jogos passam de 4.5 (AA).
     return vsBlack >= vsWhite ? "#000000" : "#ffffff";
   }
   // Etiqueta do jogo: retângulo PREENCHIDO na cor do jogo (mesmo idioma visual
@@ -8631,7 +8640,7 @@
   const GAME_LABEL_KEY = {
     pokemon: "filter.gamePokemon", lorcana: "filter.gameLorcana",
     onepiece: "filter.gameOnePiece", magic: "filter.gameMagic",
-    fab: "filter.gameFab", gundam: "filter.gameGundam", swu: "filter.gameSwu", dbfw: "filter.gameDbfw",
+    fab: "filter.gameFab", gundam: "filter.gameGundam", swu: "filter.gameSwu", cyberpunk: "filter.gameCyberpunk", dbfw: "filter.gameDbfw",
     ygo: "filter.gameYgo", digimon: "filter.gameDigimon", riftbound: "filter.gameRiftbound",
     unionarena: "filter.gameUnionArena", naruto: "filter.gameNaruto", hxh: "filter.gameHxh",
     dbc: "filter.gameDbc"

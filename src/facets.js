@@ -123,6 +123,11 @@
       },
       facetType(["Leader", "Base", "Unit", "Event", "Upgrade", "Token"])
     ],
+    // Cyberpunk TCG: 4 cores (Red/Blue/Green/Yellow) e 4 tipos (30/09/2026).
+    cyberpunk: [
+      facetColor("color"),
+      facetType(["Legend", "Unit", "Program", "Gear"])
+    ],
     dbfw: [
       facetColor("color"),
       facetType(["Leader", "Battle", "Extra"])

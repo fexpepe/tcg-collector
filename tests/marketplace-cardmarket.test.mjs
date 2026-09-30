@@ -75,12 +75,15 @@ test("demais jogos: só o nome, sem o sufixo de tratamento do TCGplayer", () => 
   assert.equal(busca({ name: "Ariel - On Human Legs", number: "1", game: "lorcana" }), "Ariel - On Human Legs");
   assert.equal(busca({ name: "Soup Up (Blue)", number: "EVO113", game: "fab" }), "Soup Up");
   assert.equal(busca({ name: "Shadow Clone // Tentacle (Full Art)", number: "T05 // T06", game: "riftbound" }), "Shadow Clone // Tentacle");
+  // Cyberpunk: a raridade da alt-art vem entre parênteses no nome do TCGplayer
+  assert.equal(busca({ name: "Adam Smasher - Ender of Legends (Epic)", number: "B001", game: "cyberpunk" }), "Adam Smasher - Ender of Legends");
 });
 
 test("caminho de cada jogo no Cardmarket", () => {
   const caminhos = {
     pokemon: "Pokemon", magic: "Magic", ygo: "YuGiOh", onepiece: "OnePiece", lorcana: "Lorcana",
-    digimon: "Digimon", fab: "FleshAndBlood", dbfw: "DragonBallSuper", riftbound: "Riftbound"
+    digimon: "Digimon", fab: "FleshAndBlood", dbfw: "DragonBallSuper", riftbound: "Riftbound",
+    cyberpunk: "Cyberpunk"
   };
   for (const [game, caminho] of Object.entries(caminhos)) {
     const url = chip({ id: `${game}-1`, name: "X", number: "1", game });

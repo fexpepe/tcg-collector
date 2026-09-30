@@ -13,7 +13,7 @@
   // assets/games/README.md) — nome novo porque /assets/* é immutable.
   const GAME_LOGO = {
     pokemon: "game_pokemon.webp", lorcana: "game_lorcana-v2.webp", onepiece: "game_onepiece.webp",
-    magic: "game_magic-v2.webp", fab: "game_fab.webp", gundam: "game_gundam-v2.webp", swu: "game_swu.webp", dbfw: "game_dbfw-v2.webp",
+    magic: "game_magic-v2.webp", fab: "game_fab.webp", gundam: "game_gundam-v2.webp", swu: "game_swu.webp", cyberpunk: "game_cyberpunk.webp", dbfw: "game_dbfw-v2.webp",
     ygo: "game_ygo-v2.webp", digimon: "game_digimon-v2.webp", riftbound: "game_riftbound-v2.webp",
     unionarena: "game_unionarena.webp", naruto: "game_naruto.webp", hxh: "game_hxh.webp",
     dbc: "game_dbc.webp"
@@ -577,6 +577,7 @@
       if ((window.SLEEVU && window.SLEEVU.game) === "hxh") return groupHxhSets(setItems);
       if ((window.SLEEVU && window.SLEEVU.game) === "dbc") return groupDbcSets(setItems);
       if ((window.SLEEVU && window.SLEEVU.game) === "swu") return groupSwuSets(setItems);
+      if ((window.SLEEVU && window.SLEEVU.game) === "cyberpunk") return groupCyberpunkSets(setItems);
       // Página de Sets: agrupada por série (coleção).
       return groupSetsBySeries(setItems);
     }
@@ -1393,6 +1394,29 @@
     if (promos.length) {
       items.push({ type: "category-head", name: t("sets.category.promos"), count: promos.length });
       promos.forEach((set) => items.push(set));
+    }
+    return items;
+  }
+
+  // Cyberpunk TCG: coleção (Welcome to Night City, nas edições Beta e Retail),
+  // Starter Decks e o resto — box toppers, promos, pré-release e os prêmios
+  // de torneio por temporada. Pelo NOME, como no Star Wars: a TCGCSV não marca
+  // o tipo do grupo (conferido nos 13 grupos em 30/09/2026), e assim a
+  // coleção seguinte já cai em "Principais" sem mexer aqui.
+  function groupCyberpunkSets(setItems) {
+    const nome = (set) => String(set.name || "");
+    const isDeck = (set) => /starter deck/i.test(nome(set));
+    const isPromo = (set) => !isDeck(set) && /promo|topper|pre-release|season|kit/i.test(nome(set));
+    const grupos = [
+      ["sets.category.main", setItems.filter((set) => !isDeck(set) && !isPromo(set))],
+      ["sets.category.decks", setItems.filter(isDeck)],
+      ["sets.category.promos", setItems.filter(isPromo)]
+    ];
+    const items = [];
+    for (const [key, sets] of grupos) {
+      if (!sets.length) continue;
+      items.push({ type: "category-head", name: t(key), count: sets.length });
+      sets.sort(sortByReleaseDesc).forEach((set) => items.push(set));
     }
     return items;
   }

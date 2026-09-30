@@ -64,6 +64,7 @@ jobs:
             data/fab/sets
             data/gundam/sets
             data/swu/sets
+            data/cyberpunk/sets
             data/dbfw/sets
             data/digimon/sets
             data/riftbound/sets

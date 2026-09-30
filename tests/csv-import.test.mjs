@@ -87,6 +87,8 @@ test("mapCsvGame: os 13 jogos, nas grafias do Collectr/TCGplayer", () => {
   assert.equal(api.mapCsvGame("Star Wars: Unlimited"), "swu");
   // O Destiny (dados, 2016–2019) não está no site: não pode cair no Unlimited.
   assert.equal(api.mapCsvGame("Star Wars: Destiny"), "");
+  // Grafia do TCGplayer (categoria "Cyberpunk TCG").
+  assert.equal(api.mapCsvGame("Cyberpunk TCG"), "cyberpunk");
   assert.equal(api.mapCsvGame("Naruto Kayou"), "naruto");
   assert.equal(api.mapCsvGame("Hunter x Hunter"), "hxh");
 });

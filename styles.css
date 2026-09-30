@@ -354,6 +354,19 @@
   --accent: #000000; --accent-dark: #27272a; --accent-rgb: 0, 0, 0;
   --accent-soft: rgba(0, 0, 0, 0.08); --on-accent: #ffffff;
 }
+/* Cyberpunk TCG: o AMARELO da marca (#fcee0a, o do logo oficial) com texto
+   preto no escuro. No claro, amarelo como texto sobre branco fica em 1,2:1,
+   então o accent vira a outra metade da marca: quase-preto com texto
+   amarelo (17:1), e o fundo suave segue amarelo. */
+[data-game-accent="cyberpunk"] {
+  --accent: #fcee0a; --accent-dark: #d8cc00; --accent-rgb: 252, 238, 10;
+  --accent-soft: rgba(252, 238, 10, 0.16); --on-accent: #0a0c10;
+}
+[data-theme="light"][data-game-accent="cyberpunk"],
+[data-theme="light"] [data-game-accent="cyberpunk"] {
+  --accent: #141414; --accent-dark: #000000; --accent-rgb: 20, 20, 20;
+  --accent-soft: rgba(252, 238, 10, 0.3); --on-accent: #fcee0a;
+}
 [data-game-accent="all"] {
   --accent: #e3e7ee; --accent-dark: #c3c9d4; --accent-rgb: 227, 231, 238;
   --accent-soft: rgba(227, 231, 238, 0.12); --on-accent: #0a0c10;
