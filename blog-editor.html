@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Editor do blog - Sleevu</title>
+    <meta name="robots" content="noindex">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <!-- Duas tags com media: o primeiro paint ja acerta a barra do navegador
+         pelo tema do SISTEMA. Quando a pessoa ESCOLHE um tema, o applyTheme
+         (shared.js) troca por uma tag unica sem media, que vence as duas. -->
+    <meta name="theme-color" content="#e8ecf1" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#101218" media="(prefers-color-scheme: dark)">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Sleevu">
+    <script src="src/theme.js"></script>
+    <script src="src/game.js"></script>
+    <!-- A fonte só seria descoberta depois de baixar e parsear o styles.css
+         (o @font-face mora lá). O preload a coloca na fila junto com o CSS.
+         crossorigin é OBRIGATORIO mesmo sendo mesma origem: fonte é sempre
+         buscada em modo CORS, e sem o atributo o preload nao casa com a
+         requisicao do CSS e o arquivo desce DUAS vezes.
+         Só o latin: pt-BR e en cabem inteiros em U+0000-00FF; o latin-ext
+         (14 KB) fica sob demanda, como o unicode-range ja define. -->
+    <link rel="preload" href="assets/fonts/outfit-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <!-- Saída de emergência: só aparece se o app não subir (ver .falha-boot no styles.css). -->
+    <div class="falha-boot" hidden>
+      <p data-i18n="boot.stuck">Esta tela não terminou de carregar.</p>
+      <a class="primary" href="" data-i18n="boot.retry">Tentar de novo</a>
+      <a class="secondary" href="/" data-i18n="boot.home">Ir para o início</a>
+    </div>
+    <header class="app-header">
+      <div class="app-header-inner">
+        <a class="brand" href="/">Sleevu</a>
+        <nav class="page-nav" data-i18n-aria="aria.pages" aria-label="Páginas" data-active-page="blog"></nav>
+        <div class="header-actions">
+          <select id="languageSwitcher" class="lang-select"></select>
+        </div>
+      </div>
+    </header>
+
+    <!-- Editor do blog: só quem está em blog_editores (migração 20260930b), um
+         papel SEPARADO do admin. O src/blog-editor.js monta a lista de posts e
+         a tela de escrever aqui dentro. Texto em pt fixo (página interna). -->
+    <main class="bed-page">
+      <div id="bedRoot" class="bed-root">
+        <p class="empty-state">Carregando…</p>
+      </div>
+    </main>
+
+    <script defer src="src/i18n.js"></script>
+    <script defer src="src/shared.js"></script>
+    <script defer src="src/blog-render.js"></script>
+    <script defer src="src/blog-editor.js"></script>
+  </body>
+</html>

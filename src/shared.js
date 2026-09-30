@@ -3118,10 +3118,13 @@
     // Decks fica FORA da Coleção e aparece deslogado de propósito: a galeria da
     // comunidade é conteúdo público (e indexável) — é a porta de entrada de quem
     // ainda não tem conta. Criar/salvar deck é que exige login, dentro da página.
+    // Blog (2026-09-30) ao lado de Decks, pelo mesmo motivo: conteúdo
+    // público e indexável, porta de entrada de quem ainda não tem conta.
     nav.innerHTML = `
       ${link(apexUrl, "nav.home", "home")}
       ${exploreMega}
       ${link("decks", "nav.decks", "decks", true)}
+      ${link("blog", "nav.blog", "blog")}
       ${loggedIn ? `${collectionMega}
       ${link("portfolio", "nav.portfolio", "portfolio", true)}` : ""}
     `;
@@ -3473,7 +3476,7 @@
     // fontes de dados saíram daqui em 2026-08-05 — as duas já viviam, mais
     // completas e nos três idiomas, em Termos § Marcas e Sobre § De onde vêm os
     // dados. Repetidas no rodapé viravam um paredão de texto no pé da Início.
-    const FOOTER_PAGES = ["", "index", "about", "novidades", "lancamentos", "comparar", "faq", "help", "settings", "backup", "privacy", "terms", "login", "404"];
+    const FOOTER_PAGES = ["", "index", "about", "novidades", "blog", "lancamentos", "comparar", "faq", "help", "settings", "backup", "privacy", "terms", "login", "404"];
     const page = (window.location.pathname.split("/").pop() || "").replace(/\.html$/, "");
     if (!FOOTER_PAGES.includes(page)) return;
     if (document.querySelector(".site-footer")) return;
@@ -3499,6 +3502,7 @@
         </div>` : ""}
         <nav class="site-footer-links" aria-label="${escapeAttribute(t("footer.linksLabel"))}">
           <a href="about">${escapeHtml(t("footer.about"))}</a>
+          <a href="blog">${escapeHtml(t("nav.blog"))}</a>
           <a href="novidades" data-news-link>${escapeHtml(t("news.heading"))}</a>
           <a href="lancamentos">${escapeHtml(t("footer.releases"))}</a>
           <a href="faq">${escapeHtml(t("footer.faq"))}</a>
@@ -4137,6 +4141,17 @@
     if (!s) return null;
     if (Date.now() - (s.ts || 0) > 50 * 60 * 1000) s = (await refreshSession()) || s;
     return fetch(`${SUPABASE_URL}${path}`, Object.assign({}, init, { headers: Object.assign(authHeaders(s.access_token), (init && init.headers) || {}) }));
+  }
+  // Blog (2026-09-30): leitura ANÔNIMA no PostgREST — sem o token de quem está
+  // logado, porque a RLS de editor entregaria rascunho junto — e a URL pública
+  // de um arquivo do Storage (as imagens que o editor sobe). Funções, e não as
+  // constantes no export: o window.TCGShared é montado ANTES da declaração do
+  // SUPABASE_URL, e ler a const ali seria TDZ.
+  function publicFetch(path) {
+    return AUTH_ENABLED ? fetch(`${SUPABASE_URL}${path}`, { headers: authHeaders() }) : Promise.resolve(null);
+  }
+  function storagePublicUrl(bucket, path) {
+    return `${SUPABASE_URL}/storage/v1/object/public/${bucket}/${path}`;
   }
   const pushWishlist = {
     supported: () => "serviceWorker" in navigator && "PushManager" in window && "Notification" in window,
@@ -10131,6 +10146,12 @@
     adminDashboard,
     adminFunnel,
     adminRpc,
+    // fetch no Supabase com a sessão (renova o token velho antes). Nasceu pro
+    // push; o blog (editor e o "sou editor?") usa o mesmo, em vez de repetir
+    // a renovação — que é single-flight e não pode ter duas cópias.
+    authedFetch: pushAuthedFetch,
+    publicFetch,
+    storagePublicUrl,
     partnerReport,
     experimento,
     pushProfile,
@@ -12004,7 +12025,10 @@
     const dataItems = `<li class="auth-sep" aria-hidden="true"></li>
       <a class="lang-dd-option auth-link" role="menuitem" href="backup">${escapeHtml(t("auth.transfer"))}</a>`;
     // Sobre (ajuda + troubleshooting + privacidade/termos).
+    // Blog aqui também: no celular este menu É a tela Perfil (account.html), e
+    // a barra de baixo não tem vaga pra ele.
     const aboutItems = `<li class="auth-sep" aria-hidden="true"></li>
+      <a class="lang-dd-option auth-link" role="menuitem" href="blog">${escapeHtml(t("nav.blog"))}</a>
       <a class="lang-dd-option auth-link" role="menuitem" href="novidades" data-news-link>${escapeHtml(t("news.heading"))}</a>
       <a class="lang-dd-option auth-link" role="menuitem" href="settings">${escapeHtml(t("footer.settings"))}</a>
       <a class="lang-dd-option auth-link" role="menuitem" href="help">${escapeHtml(t("footer.help"))}</a>
