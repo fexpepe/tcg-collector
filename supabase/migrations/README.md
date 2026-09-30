@@ -59,22 +59,6 @@ poucos.)
   E, logado como admin, abrir `/admin` › Funil: a seção "Precisão do scanner"
   troca o aviso pelos números.
 
-- `20260924a` — libera o slug `dbc` (Dragon Ball Carddass, 15º slug) nas DUAS
-  whitelists de jogo, como a `20260807c` fez com o Union Arena:
-  `card_views`/`increment_card_view` (corpo da `20260923a`, com o
-  `card_views_daily`) e `contribute_price`. Sem ela, view de carta e preço da
-  comunidade do `dbc` são descartados em silêncio. Já sem cifrão dentro dos
-  corpos (âncoras com `\Z`). Nenhuma migração posterior (até a `20260929a`)
-  mexe nessas funções nem na lista de jogos: a lista é a da `20260923a` mais o
-  `dbc` (conferido em 2026-09-30, quando o jogo entrou na main).
-
-  Testada em 2026-09-24 num PostgreSQL 16 local com esqueleto (card_views com o
-  CHECK antigo, card_views_daily, community_prices, `_rate_ok`, `auth.uid`):
-  `dbc` grava em card_views e card_views_daily; jogo inventado, id com `$` e id
-  com quebra de linha no fim são descartados; `contribute_price` grava `NM` e
-  `LP`/`psa`/`9.5` e recusa `cond` com `$`. Conferir em produção com os `curl`
-  do rodapé do arquivo.
-
 - `20260914a` — painel `/admin` 2.0. Três coisas num arquivo só, todas
   aditivas: (1) `events.uid`/`events.bot` preenchidos pelo `events_guard`
   (mesma whitelist de nomes da `20260830a`); (2) trigger `profiles_admin_guard`,
@@ -228,6 +212,34 @@ poucos.)
   jogo inventado também dá 204 mas não cria nada; a contribuição anônima segue
   **401**. Sem prova direta, como nas anteriores: o `contribute_price` logado
   com `swu` (fecha contribuindo um preço numa carta do Star Wars pelo site).
+
+- `20260924a` — **NÃO aplicar: a `20260930a` já cobre o `dbc`.** Ela liberaria
+  o slug `dbc` (Dragon Ball Carddass) nas DUAS whitelists de jogo, mas a
+  `20260930a` (Star Wars), aplicada em 2026-09-30, reescreve as mesmas três
+  coisas (o CHECK de `card_views`, `increment_card_view` e `contribute_price`)
+  com a lista completa, que já tem o `dbc` e o `swu`. Conferido por diff no
+  mesmo dia: fora o `'swu'` nas três listas, o SQL executável das duas é
+  idêntico. A lista da `20260924a` é essa mesma sem o `swu`, então aplicá-la
+  agora tiraria o Star Wars das duas whitelists, e view de carta e Preço da
+  Comunidade do `swu` passariam a ser descartados em silêncio (as funções só
+  dão `return`). Colada inteira, hoje ela deve parar no CHECK (a linha
+  `swu-540407` do teste de 30/09 viola a lista sem `swu`) e o SQL Editor
+  desfazer o lote todo, mas é proteção por acaso: rodada em pedaços, as
+  funções trocam sem erro nenhum. Ficou em "Pendentes de aplicar" até
+  2026-09-30 porque as duas nasceram em sessões paralelas e cada migração de
+  jogo reescreve a lista inteira (`docs/CATALOGO.md`, seção 5.5). O arquivo
+  fica como registro, com o mesmo aviso no topo; a próxima migração de jogo
+  copia a `20260930a`. O teste local de 2026-09-24 (PostgreSQL 16 com
+  esqueleto: `dbc` grava; jogo inventado e id com `$` ou com quebra de linha
+  no fim são descartados) vale pro corpo que está no ar, que é o mesmo.
+
+  Em produção, em 2026-09-30, o `card_views` ainda não tinha linha do `dbc`
+  (e do `swu`, só a do teste): com poucas horas de whitelist, a ausência não
+  prova nada. A primeira linha do `dbc` fecha a prova, só lendo:
+  ```bash
+  curl -s "https://dlnalopazitfdgnmdguu.supabase.co/rest/v1/card_views?game=eq.dbc&select=card_id,views&limit=5" \
+    -H "apikey: sb_publishable_0Qlei5ZvRcEsr18QRdWfGg_N3aR1zyL"
+  ```
 
 - `20260807c` — libera o slug `unionarena` (Union Arena, 13º jogo) nas DUAS
   whitelists de jogo: `card_views`/`increment_card_view` e `contribute_price`.

@@ -420,10 +420,11 @@ quando ele é tirado (método em 7.1).
   grupos "P26") existe só no `sync-swu.mjs`; os outros 8 não a têm.
 - **Migração de jogo novo**: copia os corpos inteiros de `increment_card_view`
   e `contribute_price`, com a lista de jogos em três lugares, e cada uma
-  reescreve a lista inteira. Isso já está valendo: a `20260930a` (`swu`),
-  aplicada em 30/09, traz o `dbc` na lista, mas a `20260924a` (`dbc`) continua
-  em "Pendentes de aplicar" no [README das migrações](../supabase/migrations/README.md).
-  Aplicada agora, ela tiraria o `swu` das duas whitelists, sem erro nenhum.
+  reescreve a lista inteira. Isso já aconteceu: a `20260930a` (`swu`),
+  aplicada em 30/09, trouxe o `dbc` na lista, e a `20260924a` (`dbc`) ficou em
+  "Pendentes de aplicar" no [README das migrações](../supabase/migrations/README.md).
+  Aplicada depois, ela tiraria o `swu` das duas whitelists. Saiu da lista no
+  mesmo dia, e o README a registra como "não aplicar".
 - **Listas de cache**: as três listas de `path` do cache de catálogo
   (restore e save no `deploy.yml`, restore no `mirror-images.yml`) precisam
   ser idênticas e na mesma ordem, porque o `actions/cache` deriva a versão da
