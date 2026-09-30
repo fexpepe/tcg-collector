@@ -39,6 +39,14 @@ a PR.
 Se a feature ficou pela metade (bloqueio, dúvida que muda o resultado), não
 abre PR: commita na branch, sobe a branch e diz o que falta.
 
+## Carta, set, linha ou jogo novo no catálogo
+
+Segue o [docs/CATALOGO.md](docs/CATALOGO.md). Jogo ou linha nova só vira PR com
+a ficha da seção 4.1 preenchida na descrição, os itens do checklist 4.2 feitos
+(ou marcados "não se aplica", com o motivo) e os orçamentos de arquivos e de
+peso medidos (seção 7). A maior parte dos esquecimentos não quebra nada no CI e
+vai calada pro ar.
+
 ## Convenções que já valem no código
 
 - Comentários e mensagens de commit em **português**, no tom do resto do

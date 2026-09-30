@@ -315,6 +315,9 @@ API é mantida. API morta = catálogo congela, nenhum item de portfólio some.
 
 ## Sincronizar catálogos
 
+Pra adicionar carta, set, linha ou jogo, o passo a passo e os contratos estão
+em [docs/CATALOGO.md](docs/CATALOGO.md).
+
 Cada jogo tem seu script e roda sozinho:
 
 ```bash
