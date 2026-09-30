@@ -9360,6 +9360,53 @@ a.dash-profile-handle:hover, a.shared-kind:hover,
    padrão visual das outras telas. */
 .page-head-bar .page-head-bar-text .eyebrow { order: -1; }
 .page-head-bar .page-head-bar-text .detail-back-link { order: 2; margin: 3px 0 0; }
+/* TRILHA (2026-09-30, pedido do Fernando, no molde do Collectr): "Jogos ›
+   Pokémon › Scarlet & Violet 151" em cima do título, nas abas do jogo e na
+   página do set. Todo nível é link menos o último (a página atual), então dá
+   pra voltar pro jogo OU direto pra tela de jogos. O chevron é borda, não
+   glifo. No DESKTOP ela toma o lugar do "← Sets"/"← Voltar", que ficariam
+   repetidos; no CELULAR é o contrário — some a trilha e fica o voltar: a
+   tabbar já tem Jogos e o título das abas nem aparece lá.
+   Todo seletor daqui cita .crumbs de propósito: é a área "trilha" do
+   split-css (scripts/lib/css-areas.mjs), que em produção vai pra
+   styles-trilha.css e não pesa no núcleo das outras páginas. */
+.crumbs {
+  order: -2;
+  display: flex;
+  align-items: center;
+  max-width: 100%;
+  margin: 0 0 6px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+/* Sublinhado nos níveis que são link (como no Collectr): o atual, sem
+   sublinhado e na cor do texto, é o único que não leva a lugar nenhum. */
+.crumbs a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+.crumbs a:hover { color: var(--text); }
+/* Na página do set o título some e a trilha fica sozinha na faixa: mesma
+   caixa do "← Voltar" que ela substitui, senão as abas pulam 3px quando o
+   catálogo chega e o detail.js troca um pelo outro. */
+html[data-detail="set"] .crumbs { margin: 3px 0 0; }
+.crumbs > * + *::before {
+  content: "";
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  margin: 0 9px 1px 6px;
+  border: solid var(--subtle);
+  border-width: 1.5px 1.5px 0 0;
+  transform: rotate(45deg);
+}
+/* Nome de set comprido corta com reticências em vez de empurrar a faixa. */
+.crumbs > [aria-current] { min-width: 0; overflow: hidden; text-overflow: ellipsis; color: var(--text); }
+@media (min-width: 701px) {
+  .page-head-bar-text:has(> .crumbs:not([hidden])) > :is(.serie-back, .detail-back-link) { display: none; }
+}
+@media (max-width: 700px) {
+  .crumbs { display: none; }
+}
 /* Set: sem cabeçalho de texto — o hero logo abaixo já traz o nome, e o eyebrow
    + título gigante era o mesmo dado duas vezes. Quem decide é o detail.js
    (`hidden`); esta regra existe só pra ganhar a corrida do PRIMEIRO PAINT, com

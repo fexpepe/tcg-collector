@@ -223,6 +223,9 @@
     if (!h1) return;
     h1.removeAttribute("data-i18n");
     h1.textContent = serieDisplayName(serieParam);
+    // Desktop: "Jogos › Pokémon › Scarlet & Violet" no lugar do "← Sets", que
+    // fica só pro celular (o CSS esconde um ou outro).
+    trilhaDoJogo(h1.textContent);
     if (!head.querySelector(".serie-back")) {
       const back = document.createElement("a");
       back.className = "serie-back";
@@ -246,6 +249,7 @@
     if (!h1) return;
     h1.removeAttribute("data-i18n");
     h1.innerHTML = `${escapeHtml(t(lineDef.titleKey))} <span class="line-tag">${escapeHtml(t(lineDef.tagKey || "hub.vintageTagShort"))}</span>`;
+    trilhaDoJogo(t(lineDef.titleKey));
     if (!head.querySelector(".serie-back")) {
       const back = document.createElement("a");
       back.className = "serie-back";
@@ -258,6 +262,15 @@
       // vintage) ficava em branco com "não foi possível carregar o catálogo".
       h1.parentElement.insertBefore(back, h1);
     }
+  }
+
+  // Trilha de 3 níveis das vistas de série e de linha: Jogos › <jogo> › <aqui>.
+  // O <jogo> leva pra lista completa de sets, o mesmo destino do "← Sets" /
+  // "← <jogo>" que o celular continua vendo.
+  function trilhaDoJogo(aqui) {
+    const jogo = (window.SLEEVU && window.SLEEVU.game) || "pokemon";
+    const nome = (window.SLEEVU && window.SLEEVU.name) || "";
+    if (nome) shared.setCrumbs([{ label: nome, href: `sets?game=${jogo}` }, { label: aqui }]);
   }
 
   function hydrateFilters() {

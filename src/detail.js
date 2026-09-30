@@ -500,12 +500,29 @@
     // porta de entrada, inclusive o link só com ?name=, cujo id só se sabe
     // agora, com o catálogo carregado.
     const line = linhaDoSet();
+    trilhaDoSet(line);
     if (!line) return;
     const sufixo = `?game=${paginaGame()}&line=${line}`;
     back.href = `sets${sufixo}`;
     document.querySelectorAll(".explore-subnav a").forEach((a) => {
       a.setAttribute("href", `${a.getAttribute("href").split("?")[0]}${sufixo}`);
     });
+  }
+  // Trilha do set no desktop (2026-09-30): Jogos › <jogo> › [<linha> ›] <set>,
+  // cada nível um link — dá pra voltar pro jogo OU direto pra tela de jogos.
+  // O nome é o mesmo do hero (setDisplayName: vintage japonês em inglês). Só
+  // em set e fora do modo coleção: lá o "← Voltar" leva à Coleção, e a
+  // trilha do catálogo levaria pra outro lugar. No celular segue o Voltar.
+  function trilhaDoSet(line) {
+    const sample = pageCards[0];
+    const nome = window.SLEEVU && window.SLEEVU.name;
+    if (detailType !== "set" || !sample || !nome) return;
+    const jogo = paginaGame();
+    const itens = [{ label: nome, href: `sets?game=${jogo}` }];
+    const def = line && (shared.GAME_LINES[jogo] || {})[line];
+    if (def) itens.push({ label: t(def.titleKey), href: `sets?game=${jogo}&line=${line}` });
+    itens.push({ label: shared.setDisplayName(sample.setId, sample.set, sample.language) });
+    shared.setCrumbs(itens);
   }
   function linhaDoSet() {
     if (detailType !== "set") return "";
