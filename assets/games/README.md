@@ -33,8 +33,11 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
 - `game_naruto_ccg.webp` — Naruto Collectible Card Game americano 2006+ (tile
   vintage EN do hub e `setLogo` da linha `nrt-ccg`, via sync-naruto-ccg.mjs).
   Fonte: verso da carta enviado pelo Fernando em 2026-09-30 — o medalhão com
-  um pouco do fogo em volta, recortado num oval (borda suavizada, alfa fora
-  dele), 512px. O fundo escuro fica de propósito: é o que faz o fogo aparecer
+  um pouco do fogo em volta, recortado num QUADRADO de cantos arredondados
+  (512×512, alfa só nos cantos). Era um oval largo; com o fogo sobrando dos
+  lados o medalhão ficava pequeno na prateleira, e o quadrado justo o deixa
+  maior (pedido do Fernando, mesmo dia). O fundo escuro fica de propósito: é
+  o que faz o fogo aparecer
 - `game_naruto_vintage.webp` — Naruto Card Game japonês 2002~2006 (tile vintage
   do hub e `setLogo` da linha `nrtcg`, via sync-naruto-vintage.mjs). Fonte: o
   verso da carta enviado pelo Fernando em 2026-09-30 — logo recortado do fundo
