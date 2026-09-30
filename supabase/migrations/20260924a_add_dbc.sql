@@ -1,4 +1,15 @@
 -- ============================================================================
+-- NÃO APLICAR (2026-09-30). A 20260930a (Star Wars), já aplicada, reescreve
+-- as mesmas três coisas deste arquivo — o CHECK de card_views,
+-- increment_card_view e contribute_price — com a lista completa, que já traz
+-- o `dbc` (conferido por diff: fora o 'swu' nas três listas, o SQL é o mesmo).
+-- A lista daqui é essa sem o `swu`: aplicada agora, ela tiraria o Star Wars
+-- das duas whitelists, e view de carta e Preço da Comunidade do swu passariam
+-- a ser descartados em silêncio. Fica como registro; a próxima migração de
+-- jogo copia a 20260930a. Ver o README desta pasta.
+-- ============================================================================
+
+-- ============================================================================
 -- Migração aditiva: libera o slug `dbc` (Dragon Ball Carddass, vintage Bandai
 -- 1988–1997) nas whitelists de jogo do banco. Aplicar no SQL Editor do
 -- Supabase (projeto dlnalopazitfdgnmdguu).
