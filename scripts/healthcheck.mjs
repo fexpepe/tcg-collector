@@ -102,8 +102,16 @@ await checkPage("home", "/", { contains: "Sleevu" });
 // O sitemap.xml é um ÍNDICE desde 2026-09-30 (um arquivo por tipo de página,
 // ver prerender-catalog.mjs); as URLs de set moram no sitemap-sets.xml.
 await checkPage("sitemap (índice)", "/sitemap.xml", { contains: "<sitemapindex" });
-await checkPage("sitemap dos sets", "/sitemap-sets.xml", { contains: "/set/base-set</loc>" });
-await checkPage("página de set (SEO)", "/set/base-set", { contains: "Base Set" });
+await checkPage("sitemap dos sets", "/sitemap-sets.xml", { contains: "/games/pokemon/base-set</loc>" });
+// A árvore /games (2026-09-30): a lista de jogos, a tela de um jogo (Function
+// com a vitrine), a página estática do set e a da carta (montada na borda).
+await checkPage("página /games", "/games", { contains: "Pokémon TCG" });
+await checkPage("tela de um jogo", "/games/star-wars-unlimited", { contains: "Star Wars: Unlimited" });
+await checkPage("página de set (SEO)", "/games/pokemon/base-set", { contains: "Base Set" });
+await checkPage("página de carta (borda)", "/games/pokemon/base-set/charizard-4-102", { contains: "Charizard" });
+// Os endereços antigos seguem valendo, agora como 301 pro endereço novo.
+await checkPage("set no endereço antigo (301)", "/set/base-set", { status: 301 });
+await checkPage("tela de Sets no endereço antigo (301)", "/sets?game=swu", { status: 301 });
 // 404 de verdade (anti soft-404): sem isto o Google indexa URL quebrada como 200.
 await checkPage("404 real", "/healthcheck-caminho-inexistente", { status: 404 });
 // /users/<handle> tem 404 PRÓPRIO (a Pages Function serve a shell da coleção, não

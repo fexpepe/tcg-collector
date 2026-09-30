@@ -81,3 +81,23 @@ test("deploy.yml: separa antes de apagar scripts/ e do deploy; envia depois; só
   assert.match(bloco(envia), /"\$RUNNER_TEMP"\/indexnow\/\*\.json/);
   assert.match(bloco(envia), /https:\/\/api\.indexnow\.org\/indexnow/);
 });
+
+// Teto por deploy (2026-09-30): a mudança pra /games criou ~250 mil URLs de
+// carta de uma vez. Jogos, sets e endereços antigos vão primeiro; cartas
+// completam até o teto; o resto fica pro sitemap.
+test("teto por deploy: o que não é carta vai primeiro, carta completa até o teto", async () => {
+  const { priorizaComTeto, ehPaginaDeCarta, TETO_POR_DEPLOY } = await import("../scripts/lib/indexnow.mjs");
+  assert.equal(TETO_POR_DEPLOY, 20000);
+  assert.equal(ehPaginaDeCarta(`${O}/games/pokemon/base-set/charizard-4-102`), true);
+  assert.equal(ehPaginaDeCarta(`${O}/card/charizard-4`), true);
+  assert.equal(ehPaginaDeCarta(`${O}/games/pokemon/base-set`), false);
+  assert.equal(ehPaginaDeCarta(`${O}/games/pokemon`), false);
+  assert.equal(ehPaginaDeCarta(`${O}/set/base-set`), false);
+  const cartas = Array.from({ length: 5 }, (_, i) => `${O}/games/pokemon/base-set/c-${i}`);
+  const outras = [`${O}/games/pokemon`, `${O}/set/base-set`, `${O}/games/pokemon/base-set`];
+  const { enviar, fora } = priorizaComTeto([...cartas, ...outras], 5);
+  assert.deepEqual(enviar.slice(0, 3), outras);
+  assert.equal(enviar.length, 5);
+  assert.equal(fora, 3);
+  assert.deepEqual(priorizaComTeto(outras), { enviar: outras, fora: 0 });
+});
