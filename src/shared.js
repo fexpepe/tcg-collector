@@ -3861,9 +3861,11 @@
     } catch (e) { return null; }
   }
   // Página normalizada (1º segmento, sem .html/query/handle) — sem PII.
+  // A tela de Sets mora em /games/<jogo> desde 2026-09-30 e segue contando
+  // como "sets" no /admin (a única página com este script debaixo de /games).
   function analyticsPath() {
     const seg = location.pathname.replace(/^\/+|\/+$/g, "").split("/")[0].replace(/\.html$/, "");
-    return seg || "home";
+    return seg === "games" ? "sets" : seg || "home";
   }
   // Envio de evento — o mesmo cano do pageview e dos eventos de produto (E6).
   //
