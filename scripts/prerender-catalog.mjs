@@ -26,6 +26,7 @@ import { cardCode, alternateCodes } from "./lib/card-code.mjs";
 // nome de deck com "</script>" fechava o bloco e injetava HTML no <head> (ver
 // o porquê em scripts/lib/json-ld.mjs; tests/json-ld.test.mjs confere).
 import { jsonLdSeguro } from "./lib/json-ld.mjs";
+import { montaSitemaps } from "./lib/sitemap.mjs";
 
 const ORIGIN = "https://sleevu.app";
 const SETS_DIR = "data/sets";
@@ -597,21 +598,30 @@ ${PR_STYLE}
 `;
 }
 
-function buildSitemap(setPages, cardPages, deckPages, artistPages, blogPosts) {
-  const urls = [
-    ...STATIC_URLS.map((p) => (p === "/" ? ORIGIN + "/" : ORIGIN + p)),
-    ...setPages.map((s) => `${ORIGIN}/set/${s.slug}`),
-    ...setPages.map((s) => `${ORIGIN}/set/${s.slug}-en`),
-    ...(cardPages || []).map((c) => `${ORIGIN}/card/${c.slug}`),
-    ...(deckPages || []).map((d) => `${ORIGIN}/deck/${d.slug}`),
-    ...(artistPages || []).map((a) => `${ORIGIN}/artist/${a.slug}`)
-  ];
-  const body = urls.map((u) => `  <url><loc>${u}</loc></url>`)
+// Sitemap em ÍNDICE, um arquivo por tipo de página (2026-09-30). O Search
+// Console mostra a cobertura POR SITEMAP: com tudo num arquivo só, o relatório
+// dizia "7.809 enviadas, N indexadas" sem dizer QUAIS. Separado, dá pra ver se
+// o que não entra é carta, set em inglês ou artista, e mexer no tipo certo. O
+// endereço do robots.txt (sitemap.xml) não muda: agora ele é o índice, e quem
+// já o enviou no Search Console não precisa reenviar. Tipo sem página (galeria
+// de decks fora do ar, blog sem post) sai do índice em vez de virar um arquivo
+// vazio.
+// Devolve { nomeDoArquivo: conteúdo }, com o sitemap.xml (índice) incluído.
+function buildSitemaps(setPages, cardPages, deckPages, artistPages, blogPosts) {
+  return montaSitemaps(ORIGIN, [
+    ["sitemap-paginas.xml", STATIC_URLS.map((p) => ORIGIN + p)],
+    ["sitemap-sets.xml", setPages.map((s) => `${ORIGIN}/set/${s.slug}`)],
+    ["sitemap-sets-en.xml", setPages.map((s) => `${ORIGIN}/set/${s.slug}-en`)],
+    ["sitemap-cartas.xml", (cardPages || []).map((c) => `${ORIGIN}/card/${c.slug}`)],
+    ["sitemap-artistas.xml", (artistPages || []).map((a) => `${ORIGIN}/artist/${a.slug}`)],
+    ["sitemap-decks.xml", (deckPages || []).map((d) => `${ORIGIN}/deck/${d.slug}`)],
     // Posts do blog levam a data da última edição: é o que diz ao Google que
     // um guia atualizado merece ser relido (as outras páginas mudam a cada build).
-    .concat((blogPosts || []).map((p) => `  <url><loc>${ORIGIN}/blog/${p.slug}</loc>${p.updated_at ? `<lastmod>${String(p.updated_at).slice(0, 10)}</lastmod>` : ""}</url>`))
-    .join("\n");
-  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`;
+    ["sitemap-blog.xml", (blogPosts || []).map((p) => ({
+      loc: `${ORIGIN}/blog/${p.slug}`,
+      lastmod: p.updated_at ? String(p.updated_at).slice(0, 10) : ""
+    }))]
+  ]);
 }
 
 // ── Posts do BLOG (/blog/<slug>) ─────────────────────────────────────────────
@@ -1315,10 +1325,14 @@ async function main() {
   try { deckPages = await buildDeckPages(); } catch (e) { console.warn(`decks: pulado (${e.message})`); }
 
   const blogPosts = await fetchBlogPosts();
-  writeFileSync("sitemap.xml", buildSitemap(pages, cardPages, deckPages, artistPages, blogPosts), "utf8");
+  // Os sitemap-*.xml de uma rodada anterior saem antes: tipo que ficou sem
+  // página não pode deixar arquivo órfão fora do índice.
+  for (const f of readdirSync(".")) if (/^sitemap-[a-z-]+\.xml$/.test(f)) rmSync(f);
+  const sitemaps = buildSitemaps(pages, cardPages, deckPages, artistPages, blogPosts);
+  for (const [nome, conteudo] of Object.entries(sitemaps)) writeFileSync(nome, conteudo, "utf8");
   console.log(`prerender-catalog: ${blogPosts.length} posts do blog no sitemap.`);
   const perGame = GAMES.map((g) => `${g.slug} ${pages.filter((p) => p.game === g.slug).length}`).join(" · ");
-  console.log(`prerender-catalog: ${pages.length} páginas de set em /${OUT_DIR}/ (${perGame}) + ${cardPages.length} páginas de carta em /${CARD_OUT_DIR}/ + ${artistPages.length} páginas de artista em /${ARTIST_OUT_DIR}/ (de ${porArtista.size} artistas no catálogo, teto ${ARTIST_PAGES}) + ${deckPages.length} páginas de deck em /${DECK_OUT_DIR}/ + sitemap.xml (${STATIC_URLS.length + pages.length * 2 + cardPages.length + deckPages.length + artistPages.length} URLs).`);
+  console.log(`prerender-catalog: ${pages.length} páginas de set em /${OUT_DIR}/ (${perGame}) + ${cardPages.length} páginas de carta em /${CARD_OUT_DIR}/ + ${artistPages.length} páginas de artista em /${ARTIST_OUT_DIR}/ (de ${porArtista.size} artistas no catálogo, teto ${ARTIST_PAGES}) + ${deckPages.length} páginas de deck em /${DECK_OUT_DIR}/ + sitemap.xml (índice de ${Object.keys(sitemaps).length - 1} arquivos, ${STATIC_URLS.length + pages.length * 2 + cardPages.length + deckPages.length + artistPages.length + blogPosts.length} URLs).`);
 }
 
 await main();
