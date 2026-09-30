@@ -1,5 +1,5 @@
 -- ============================================================================
--- Migração aditiva: libera o slug `cyberpunk` (Cyberpunk TCG, WEYR/Weirdco
+-- Migração aditiva: libera o slug `cyberpunk` (Cyberpunk TCG, Weird Co.
 -- 2026, via TCGCSV cat. 92) nas whitelists de jogo do banco. Aplicar no SQL
 -- Editor do Supabase (projeto dlnalopazitfdgnmdguu).
 --

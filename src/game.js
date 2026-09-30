@@ -24,7 +24,7 @@
     fab: { slug: "fab", name: "Flesh and Blood", dataDir: "data/fab/" }, // TCGCSV cat. 62 (EN-só por design da LSS)
     gundam: { slug: "gundam", name: "Gundam Card Game", dataDir: "data/gundam/" }, // TCGCSV cat. 86 (Bandai, EN)
     swu: { slug: "swu", name: "Star Wars: Unlimited", dataDir: "data/swu/" }, // TCGCSV cat. 79 (FFG, EN; Hyperspace/Showcase = cartas próprias)
-    cyberpunk: { slug: "cyberpunk", name: "Cyberpunk TCG", dataDir: "data/cyberpunk/" }, // TCGCSV cat. 92 (WEYR/Weirdco 2026, EN; edições Beta e Retail = sets próprios)
+    cyberpunk: { slug: "cyberpunk", name: "Cyberpunk TCG", dataDir: "data/cyberpunk/" }, // TCGCSV cat. 92 (Weird Co. 2026, EN; edições Beta e Retail = sets próprios)
     dbfw: { slug: "dbfw", name: "Dragon Ball Fusion World", dataDir: "data/dbfw/" }, // TCGCSV cat. 80 (Bandai, EN; Fusion World, ≠ Masters)
     ygo: { slug: "ygo", name: "Yu-Gi-Oh!", dataDir: "data/ygo/" }, // TCGCSV cat. 2 (Konami, EN; ~46k cartas, padrão Magic: chunks versionados)
     digimon: { slug: "digimon", name: "Digimon Card Game", dataDir: "data/digimon/" }, // TCGCSV cat. 63 (Bandai 2020+, EN)
