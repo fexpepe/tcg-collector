@@ -1,5 +1,5 @@
 {
- "_": "De-para de cardId de set importado que a TCGdex publicou com OUTRO setId (scripts/retire-imported-sets.mjs). sets: histórico das aposentadorias. prefixes: troca só do prefixo do set, quando a numeração bateu inteira (cel30-001 -> 30th-001). cards: par a par, quando a numeração mudou (o Classic Collection é numerado em sequência pela TCGdex e pelo número original no TCGplayer). images: arte que só o chunk importado tinha, carimbada pelo merge-catalogs enquanto a TCGdex não publicar a dela. NADA sai daqui: o id é a única ponte entre a coleção de alguém e uma carta, e conta antiga volta meses depois.",
+ "_": "De-para de cardId de set importado que a TCGdex publicou com OUTRO setId (scripts/retire-imported-sets.mjs). sets: histórico das aposentadorias. prefixes: troca só do prefixo do set, quando a numeração bateu inteira (cel30-001 -> 30th-001). cards: par a par, quando a numeração mudou (o Classic Collection é numerado em sequência pela TCGdex e pelo número original no TCGplayer). images: arte que só o chunk importado tinha, carimbada pelo merge-catalogs enquanto a TCGdex não publicar a dela. NADA sai daqui: o id é a única ponte entre a coleção de alguém e uma carta, e conta antiga volta meses depois. Os nrt-nf-*/nrt-nx-* (30/09/2026) são capítulo do Data Carddass NARUTO que estava partido em dois sets e voltou a ser um (scripts/lib/naruto-dc-capitulos.mjs): as cartas mantêm o id, e o de-para de set só leva o link velho ao capítulo.",
  "sets": [
   {
    "from": "cel30",
@@ -14,6 +14,27 @@
    "lang": "en",
    "at": "2026-09-18",
    "cards": 30
+  },
+  {
+   "from": "nrt-nf-s09",
+   "to": "nrt-nf-s06",
+   "lang": "ja",
+   "at": "2026-09-30",
+   "cards": 4
+  },
+  {
+   "from": "nrt-nf-s11",
+   "to": "nrt-nf-s07",
+   "lang": "ja",
+   "at": "2026-09-30",
+   "cards": 2
+  },
+  {
+   "from": "nrt-nx-s20",
+   "to": "nrt-nx-s21",
+   "lang": "ja",
+   "at": "2026-09-30",
+   "cards": 1
   }
  ],
  "prefixes": {
