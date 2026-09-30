@@ -6,8 +6,10 @@
 //   - o CSS: marca de volta, uma linha só que rola de lado, 44px de toque;
 //   - a faixa do conserto cobre a faixa em que o app empilha o menu e esconde
 //     a marca (se o styles.css trocar o 860 ou o 700, sobraria um buraco);
-//   - todo molde (set, artista, /games e carta) usa o módulo: um cabeçalho
-//     escrito à mão num molde volta ao defeito sem ninguém ver no desktop.
+//   - todo molde estático (set em inglês, artista e /games) usa o módulo: um
+//     cabeçalho escrito à mão num molde volta ao defeito sem ninguém ver no
+//     desktop. A carta e o set em português são a tela do app desde
+//     2026-10-01 (cabeçalho do app), e as peças deles não trazem cabeçalho.
 // Roda com: node --test tests/
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -15,7 +17,7 @@ import { readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { ESTILO_DO_CABECALHO, cabecalhoEstatico } from "../functions/_lib/cabecalho-estatico.js";
-import { paginaDaCarta } from "../functions/_lib/pagina-carta.js";
+import { pecasDaCarta } from "../functions/_lib/pagina-carta.js";
 import { slugsDasCartas } from "../functions/_lib/slug-carta.js";
 import { jogoDaUrl } from "../functions/_lib/jogos.js";
 
@@ -84,16 +86,16 @@ test("a faixa do conserto cobre a faixa em que o app empilha o menu e esconde a 
   assert.ok(nossa >= escondeMarca, `o app esconde a marca até ${escondeMarca}px e o conserto só vai até ${nossa}px`);
 });
 
-test("os moldes de set, artista, /games e carta usam o cabeçalho do módulo", () => {
+test("os moldes de set, artista e /games usam o cabeçalho do módulo; a carta é a tela do app", () => {
   const prerender = ler("scripts/prerender-catalog.mjs");
   assert.doesNotMatch(prerender, /<header class="app-header"/, "cabeçalho escrito à mão no prerender");
   assert.equal((prerender.match(/cabecalhoEstatico\(/g) || []).length, 3, "esperava set, artista e /games");
   assert.match(prerender, /const PR_STYLE = `\s*<style>\n\$\{ESTILO_DO_CABECALHO\}/);
 
-  // A carta é montada na borda: confere a saída de verdade.
+  // A carta vai pra dentro da tela do app (que já tem o cabeçalho dele): as
+  // peças dela não podem trazer outro.
   const cartas = [{ id: "base1-4", name: "Charizard", number: "4", setTotal: 102, set: "Base Set", setId: "base1", language: "en" }];
-  const html = paginaDaCarta({ card: cartas[0], jogo: jogoDaUrl("pokemon"), set: { slug: "base-set", nome: "Base Set" }, cartas, slugs: slugsDasCartas(cartas), preco: 0, assets: {} });
-  assert.match(html, /<header class="app-header app-header--estatica">/);
-  assert.ok(html.includes(ESTILO_DO_CABECALHO), "o <style> da carta sem o CSS do cabeçalho");
-  assert.match(html, /<a href="\/games\/pokemon">Sets<\/a>/);
+  const pecas = pecasDaCarta({ card: cartas[0], jogo: jogoDaUrl("pokemon"), set: { slug: "base-set", nome: "Base Set" }, cartas, slugs: slugsDasCartas(cartas), preco: 0 });
+  assert.doesNotMatch(pecas.corpoHtml, /<header/);
+  assert.ok(!pecas.corpoHtml.includes(ESTILO_DO_CABECALHO), "o CSS do cabeçalho estático não vai pra tela do app");
 });

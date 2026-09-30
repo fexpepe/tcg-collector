@@ -14,7 +14,6 @@
 // tests/pagina-carta.test.mjs testa daqui sem precisar da borda.
 import { cardCode, alternateCodes } from "./card-code.js";
 import { jsonLdSeguro } from "./json-ld.js";
-import { ESTILO_DO_CABECALHO, cabecalhoEstatico } from "./cabecalho-estatico.js";
 
 export const ORIGEM = "https://sleevu.app";
 // Mesmo orçamento de título das páginas de set (ver o prerender): o Google
@@ -112,15 +111,15 @@ function fichaTecnica(card, jogo, set, sCode) {
     ["Cartas no set", card.setTotal ? String(card.setTotal) : ""]
   ].filter(([, v]) => v != null && String(v).trim() !== "");
   if (!linhas.length) return "";
-  return `<h2>Ficha técnica</h2>
-      <dl class="prc-ficha">${linhas.map(([k, v]) =>
+  return `<h3>Ficha técnica</h3>
+      <dl>${linhas.map(([k, v]) =>
     `<div><dt>${escapeHtml(k)}</dt><dd>${escapeHtml(String(v))}</dd></div>`).join("")}</dl>`;
 }
 
 function listaDeCartas(titulo, itens) {
   if (!itens || !itens.length) return "";
-  return `<h2>${escapeHtml(titulo)}</h2>
-      <ul class="prc-lista">${itens.map((it) =>
+  return `<h3>${escapeHtml(titulo)}</h3>
+      <ul>${itens.map((it) =>
     `<li><a href="${escapeAttr(it.href)}">${escapeHtml(it.rotulo)}</a></li>`).join("")}</ul>`;
 }
 
@@ -163,41 +162,31 @@ function vizinhas(card, cartas, slugs, base) {
   };
 }
 
-// O cabeçalho do celular é o das páginas estáticas do prerender (ver
-// cabecalho-estatico.js).
-const ESTILO = `    <style>
-${ESTILO_DO_CABECALHO}
-      .prc-wrap { max-width: 900px; margin: 0 auto; padding: 0 20px 48px; }
-      .prc-hero { display: flex; gap: 26px; flex-wrap: wrap; margin-top: 26px; }
-      .prc-img { width: min(320px, 80vw); height: auto; border-radius: 12px; background: var(--panel, #1a1c22); }
-      .prc-info h1 { margin: 0 0 6px; font-size: 1.5rem; }
-      .prc-sub { color: var(--muted, #9aa0aa); margin: 0 0 12px; }
-      .prc-price { font-size: 1.25rem; font-weight: 800; margin: 8px 0 2px; }
-      .prc-price-note { color: var(--muted, #9aa0aa); font-size: 12.5px; margin: 0 0 14px; }
-      /* 44px de alvo de toque no celular (era 40: 10px de padding + a linha). */
-      .prc-cta { display: inline-flex; align-items: center; min-height: 44px; box-sizing: border-box; margin-top: 8px; padding: 10px 18px; border-radius: 10px; background: var(--accent, #e63946); color: var(--on-accent, #fff); font-weight: 600; text-decoration: none; }
-      .prc-setlink { margin-top: 22px; }
-      .prc-setlink a { color: var(--accent, #e63946); }
-      .prc-trilha { margin-top: 18px; font-size: 13px; color: var(--muted, #9aa0aa); }
-      .prc-trilha a { color: var(--muted, #9aa0aa); text-decoration: none; }
-      .prc-trilha a:hover { text-decoration: underline; }
-      .prc-corpo { margin-top: 34px; max-width: 720px; line-height: 1.7; }
-      .prc-corpo h2 { font-size: 1.05rem; margin: 30px 0 10px; }
-      .prc-ficha { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 8px 20px; margin: 0; }
-      .prc-ficha div { display: flex; gap: 8px; border-bottom: 1px solid var(--line, #2d333f); padding-bottom: 6px; }
-      .prc-ficha dt { color: var(--muted, #9aa0aa); flex: none; }
-      .prc-ficha dd { margin: 0; font-weight: 600; }
-      .prc-lista { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 6px 20px; }
-      .prc-lista a { color: var(--accent, #e63946); text-decoration: none; }
-      .prc-lista a:hover { text-decoration: underline; }
-    </style>`;
+// Estilo do bloco da carta no pé da tela do app. Inline porque só existe
+// nesta página (o styles.css do núcleo está no teto do orçamento de peso).
+const ESTILO = `<style>
+        .seo-carta { margin: 40px 0 8px; max-width: 760px; line-height: 1.65; }
+        .seo-carta summary { cursor: pointer; color: var(--muted, #9aa0aa); min-height: 44px; display: flex; align-items: center; }
+        .seo-carta h3 { font-size: 1rem; margin: 22px 0 8px; }
+        .seo-carta-img { float: right; width: min(180px, 38vw); height: auto; margin: 0 0 12px 16px; border-radius: 10px; }
+        .seo-carta-sub, .seo-carta-nota { color: var(--muted, #9aa0aa); }
+        .seo-carta-preco { font-weight: 800; }
+        .seo-carta dl { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 8px 20px; margin: 0; }
+        .seo-carta dl div { display: flex; gap: 8px; border-bottom: 1px solid var(--line, #2d333f); padding-bottom: 6px; }
+        .seo-carta dt { color: var(--muted, #9aa0aa); flex: none; }
+        .seo-carta dd { margin: 0; font-weight: 600; }
+        .seo-carta ul { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 6px 20px; }
+        .seo-carta a { color: var(--accent, #e63946); text-decoration: none; }
+      </style>`;
 
+// As peças da página da carta, pra borda pôr na tela do set do app (o endereço
+// da carta é a tela do set com o popup dela aberto, como era o &card=).
 // jogo: a entrada do registro (functions/_lib/jogos.js). set: { slug, nome }.
 // cartas: todas as cartas da página do set; slugs: Map id -> nome no endereço.
-// assets: o que a casca carimbada pelo deploy aponta (build, css, js).
-export function paginaDaCarta({ card, jogo, set, cartas, slugs, preco, assets }) {
+export function pecasDaCarta({ card, jogo, set, cartas, slugs, preco }) {
   const baseDoSet = `/games/${jogo.url}/${set.slug}`;
-  const canonical = `${ORIGEM}${baseDoSet}/${slugs.get(String(card.id))}`;
+  const caminho = `${baseDoSet}/${slugs.get(String(card.id))}`;
+  const canonical = `${ORIGEM}${caminho}`;
   const code = cardCode(card);
   const codeBit = code ? ` ${code}` : "";
   const altCodes = alternateCodes(card);
@@ -207,13 +196,12 @@ export function paginaDaCarta({ card, jogo, set, cartas, slugs, preco, assets })
   const nomeEn = card.nameEn || card.pokemonName;
   const enBit = nomeEn && !/^[\x00-\x7F]/.test(card.name) ? ` (${nomeEn})` : "";
   const sCode = codigoDoSet(card);
-  const title = tituloDaCarta(`${card.name}${enBit}`, code, sCode, set.nome);
+  const titulo = tituloDaCarta(`${card.name}${enBit}`, code, sCode, set.nome);
   const usd = Number(preco) || 0;
   const priceBit = usd > 0 ? ` Preço de referência: US$ ${usd.toFixed(2)}.` : "";
   const codeBitDesc = sCode ? ` (${sCode})` : "";
   const desc = `${card.name}${codeBit}${altBit}${codeBitDesc} do set ${set.nome} de ${jogo.nome}.${priceBit} Veja a imagem, acompanhe o preço e marque na sua coleção grátis no Sleevu.`;
   const img = absUrl(card.image) || "";
-  const appUrl = linkDoApp(card, jogo.game, set.nome);
   const { impressoes, irmas } = vizinhas(card, cartas, slugs, baseDoSet);
 
   // Parágrafo de abertura: frases curtas, só com o que a carta tem. Cada fato
@@ -235,7 +223,7 @@ export function paginaDaCarta({ card, jogo, set, cartas, slugs, preco, assets })
   if (impressoes.length) {
     frases.push(`Esta carta também aparece ${impressoes.length === 1 ? "em outra impressão" : `em outras ${impressoes.length} impressões`} neste set, e cada uma tem o seu valor de mercado.`);
   }
-  if (usd > 0) frases.push("O preço de referência acima é apurado no mercado internacional; no Sleevu ele aparece convertido em reais, junto do histórico de variação.");
+  if (usd > 0) frases.push("O preço de referência é apurado no mercado internacional; no Sleevu ele aparece convertido em reais, junto do histórico de variação.");
   frases.push(`Marque a carta na sua coleção para acompanhar o preço e ver quanto falta para completar ${set.nome}.`);
 
   const produto = {
@@ -252,8 +240,8 @@ export function paginaDaCarta({ card, jogo, set, cartas, slugs, preco, assets })
   if (usd > 0) {
     produto.offers = { "@type": "AggregateOffer", priceCurrency: "USD", lowPrice: usd.toFixed(2), offerCount: 1, availability: "https://schema.org/InStock" };
   }
-  // Trilha Sleevu > Jogos > jogo > set > carta. O BreadcrumbList faz o Google
-  // mostrar o caminho no lugar da URL crua, que é mais clicável.
+  // Trilha Jogos > jogo > set > carta. O BreadcrumbList faz o Google mostrar o
+  // caminho no lugar da URL crua, que é mais clicável.
   const trilha = [
     { nome: "Jogos", url: `${ORIGEM}/games` },
     { nome: jogo.nome, url: `${ORIGEM}/games/${jogo.url}` },
@@ -265,60 +253,34 @@ export function paginaDaCarta({ card, jogo, set, cartas, slugs, preco, assets })
     "@type": "BreadcrumbList",
     itemListElement: trilha.map((t, i) => ({ "@type": "ListItem", position: i + 1, name: t.nome, item: t.url }))
   };
-  const a = assets || {};
-  const buildMeta = a.build ? `\n    <meta name="sleevu-build" content="${escapeAttr(a.build)}">` : "";
 
-  return `<!doctype html>
-<html lang="pt-BR" data-idioma-fixo>
-  <head>
-    <meta charset="utf-8">${buildMeta}
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <title>${escapeHtml(title)}</title>
-    <meta name="description" content="${escapeAttr(desc)}">
-    <link rel="canonical" href="${escapeAttr(canonical)}">
-    <meta property="og:site_name" content="Sleevu">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="${escapeAttr(canonical)}">
-    <meta property="og:title" content="${escapeAttr(`${card.name}${codeBit}${codeBitDesc} — ${set.nome}`)}">
-    <meta property="og:description" content="${escapeAttr(desc)}">
-    ${img ? `<meta property="og:image" content="${escapeAttr(img)}">` : ""}
-    <meta name="twitter:card" content="summary_large_image">
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
-    <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#e8ecf1" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#101218" media="(prefers-color-scheme: dark)">
-    <script type="application/ld+json">${jsonLdSeguro(produto)}</script>
-    <script type="application/ld+json">${jsonLdSeguro(trilhaLd)}</script>
-    <script src="${escapeAttr(a.js || "/src/theme.js")}"></script>
-    <link rel="stylesheet" href="${escapeAttr(a.css || "/styles.css")}">
-${ESTILO}
-  </head>
-  <body>
-    ${cabecalhoEstatico([[`/games/${jogo.url}`, "Sets"], ["/collection", "Coleção"]])}
-    <main class="prc-wrap">
-      <nav class="prc-trilha" aria-label="Trilha de navegação">${trilha.map((t, i) =>
-        i === trilha.length - 1
-          ? `<span aria-current="page">${escapeHtml(t.nome)}</span>`
-          : `<a href="${escapeAttr(t.url.replace(ORIGEM, ""))}">${escapeHtml(t.nome)}</a> <span aria-hidden="true">›</span> `).join("")}</nav>
-      <div class="prc-hero">
-        ${img ? `<img class="prc-img" src="${escapeAttr(img)}" alt="${escapeAttr(`${card.name}${codeBit}${codeBitDesc} — ${set.nome}`)}" loading="eager" fetchpriority="high" width="320" height="447">` : ""}
-        <div class="prc-info">
-          <h1>${escapeHtml(card.name)}${codeBit ? ` <small>${escapeHtml(code)}${sCode ? ` · ${escapeHtml(sCode)}` : ""}</small>` : ""}</h1>
-          <p class="prc-sub">${escapeHtml(`${jogo.nome} · ${set.nome}${card.rarity && card.rarity !== "None" ? ` · ${card.rarity}` : ""}`)}</p>
-          ${usd > 0 ? `<p class="prc-price">US$ ${usd.toFixed(2)}</p><p class="prc-price-note">Preço de referência de mercado. No Sleevu você vê em reais e acompanha o histórico.</p>` : ""}
-          <a class="prc-cta" href="${escapeAttr(appUrl)}">Marcar na minha coleção</a>
-          <p class="prc-setlink">Ver o set completo: <a href="${escapeAttr(baseDoSet)}">${escapeHtml(set.nome)}</a></p>
-        </div>
-      </div>
-      <section class="prc-corpo">
+  // O texto da carta, recolhido no pé da tela: quem abre o endereço vê a
+  // carta no popup (desenhado pelo JS); o robô que não roda JS lê daqui.
+  // data-seo-carta deixa o detail.js tirar o bloco de uma cópia guardada que
+  // chegue pra OUTRA carta.
+  const nomeCompleto = `${card.name}${codeBit}${codeBitDesc}`;
+  const corpoHtml = `<details class="seo-carta" data-seo-carta="${escapeAttr(caminho)}">
+        ${ESTILO}
+        <summary>Sobre esta carta: ${escapeHtml(nomeCompleto)}</summary>
+        ${img ? `<img class="seo-carta-img" src="${escapeAttr(img)}" alt="${escapeAttr(`${nomeCompleto} — ${set.nome}`)}" loading="lazy" decoding="async" width="180" height="251">` : ""}
+        <p class="seo-carta-sub">${escapeHtml(`${jogo.nome} · ${set.nome}${card.rarity && card.rarity !== "None" ? ` · ${card.rarity}` : ""}`)}</p>
+        ${usd > 0 ? `<p class="seo-carta-preco">US$ ${usd.toFixed(2)}</p><p class="seo-carta-nota">Preço de referência de mercado. No Sleevu você vê em reais e acompanha o histórico.</p>` : ""}
         <p>${escapeHtml(frases.join(" "))}</p>
         ${fichaTecnica(card, jogo, set, sCode)}
         ${listaDeCartas("Outras impressões desta carta", impressoes)}
         ${listaDeCartas(`Mais cartas de ${set.nome}`, irmas)}
-      </section>
-    </main>
-  </body>
-</html>
-`;
+        <p>Ver o set completo: <a href="${escapeAttr(baseDoSet)}">${escapeHtml(set.nome)}</a></p>
+      </details>`;
+
+  return {
+    titulo,
+    desc,
+    canonical,
+    h1: set.nome,
+    ogTitulo: `${nomeCompleto} — ${set.nome}`,
+    ogImagem: img,
+    alternates: [],
+    jsonLds: [produto, trilhaLd],
+    corpoHtml
+  };
 }

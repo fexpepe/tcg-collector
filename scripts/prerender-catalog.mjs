@@ -33,9 +33,12 @@ import { montaSitemaps } from "./lib/sitemap.mjs";
 // moram em functions/_lib porque a borda usa a mesma régua (ver lá).
 import { JOGOS_URL, jogoDaUrl, urlDoSet } from "../functions/_lib/jogos.js";
 import { slugify, slugsDasCartas } from "../functions/_lib/slug-carta.js";
-// Cabeçalho das páginas estáticas (marcação + CSS do celular), o mesmo da
-// página de carta da borda.
+// Cabeçalho das páginas estáticas (marcação + CSS do celular).
 import { ESTILO_DO_CABECALHO, cabecalhoEstatico } from "../functions/_lib/cabecalho-estatico.js";
+// Textos e réguas da página de set (título, data, uma carta por número): a
+// página pt é a tela do app decorada NA BORDA (functions/games/) e a -en sai
+// daqui, então os dois lados leem o mesmo módulo.
+import { SET_L10N, cardsForLang, cmpNumber } from "../functions/_lib/pagina-set.js";
 
 const ORIGIN = "https://sleevu.app";
 const SETS_DIR = "data/sets";
@@ -100,36 +103,11 @@ const STATIC_URLS = [
   "/about", "/novidades", "/lancamentos", "/comparar", "/faq", "/help", "/privacy", "/terms"
 ];
 
-const MONTHS_PT = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
-
 function escapeHtml(s) {
   return String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 }
 function escapeAttr(s) {
   return escapeHtml(s).replace(/'/g, "&#39;");
-}
-// Região de idioma de uma carta — espelho do cardLanguageRegion() do shared.js
-// (o inglês e as demais ocidentais dividem os mesmos sets).
-function regiaoDeIdioma(language) {
-  const code = String(language || "en").toLowerCase();
-  if (code.startsWith("ja")) return "japanese";
-  if (code.startsWith("zh")) return "chinese";
-  if (code.startsWith("pt")) return "portuguese";
-  return "english";
-}
-// URL do set NO APP. Nome fora do ASCII (japonês, acento) com setId conhecido
-// vai só com o id: o detail.js resolve o nome pelo id, e a URL que a pessoa
-// copia fica legível. Mesma regra do detailUrl() do shared.js.
-// Sem o nome, quem identifica a edição é o ID — e ele é DIVIDIDO entre línguas
-// (o "30th-c" é a Classic Collection inglesa E a "Coleção Clássica de 30
-// Anos"). Por isso a região vai junto: sem ela o botão "abrir no app" da
-// página PT do Google entregava o set em inglês (20/09/2026).
-function appSetUrl(name, setId, game, language) {
-  const semNome = Boolean(setId) && /[^ -~]/.test(name);
-  const ident = semNome
-    ? `setId=${encodeURIComponent(setId)}&region=${regiaoDeIdioma(language)}`
-    : `name=${encodeURIComponent(name)}`;
-  return `/detail?type=set&${ident}&game=${game}`;
 }
 // Imagens/logos podem ser URL absoluta (CDNs) ou caminho relativo à raiz do site
 // (ex.: data/onepiece/set-logos/x.png). A página vive em /games/<jogo>/, então
@@ -142,11 +120,6 @@ function absUrl(u) {
   // de compartilhamento (WhatsApp/Facebook/Slack) sumia em ~685 páginas e o
   // Product perdia o rich result. Em <img src> a URL absoluta funciona igual.
   return /^https?:\/\//.test(s) ? s : `${ORIGIN}/` + s.replace(/^\/+/, "");
-}
-function fmtDatePt(iso) {
-  const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso || "");
-  if (!m) return "";
-  return `${Number(m[3])} de ${MONTHS_PT[Number(m[2]) - 1]} de ${m[1]}`;
 }
 // Miniatura da GRADE. O catálogo guarda a URL do scan grande — no Pokémon é o
 // `high.png`, que tem 288 KB por carta. Numa página de set com 200 cartas isso
@@ -176,48 +149,6 @@ function thumbSrcset(u) {
   const high = s.replace(QUALIDADE_RE, "/high.webp");
   return `${escapeAttr(low)} 245w, ${escapeAttr(high)} 600w`;
 }
-// Uma carta por NÚMERO, na língua da variante da página. Os chunks do Pokémon
-// são por idioma (data/sets/<lang>/<id>.json) e o agrupamento é pelo NOME do
-// set, então "151" chega aqui com as 207 cartas em inglês MAIS as 207 em
-// português: a página listava a mesma carta duas vezes, dobrava as imagens e
-// ainda anunciava "todas as 415 cartas" de um set que tem 207.
-// Preferência: a língua da página → inglês → o que houver.
-function cardsForLang(cards, lang) {
-  const porNumero = new Map();
-  const peso = (c) => (c.language === lang ? 0 : c.language === "en" ? 1 : 2);
-  for (const c of cards) {
-    // Sem número não dá pra parear impressões: entra sempre (chave própria).
-    const chave = c.number ? `${c.setId || ""}|${c.number}` : `id|${c.id}`;
-    const atual = porNumero.get(chave);
-    if (!atual || peso(c) < peso(atual)) porNumero.set(chave, c);
-  }
-  return [...porNumero.values()];
-}
-// ORÇAMENTO DE TÍTULO. O Google mostra ~60-65 caracteres e corta o resto com
-// "…": título de 116 (o maior que havia aqui) desperdiçava metade e diluía o
-// peso dos termos que importam. A regra em todo o arquivo: o NOME (do set ou da
-// carta) nunca é truncado — é o que a pessoa digitou; quem sai são as partes
-// descritivas, da menos importante pra mais.
-const TITULO_MAX = 65;
-// Recebe as variantes da parte descritiva em ordem decrescente de informação e
-// devolve a primeira que couber; se nenhuma couber, fica só o nome + a marca.
-function tituloSet(nome, variantes) {
-  const sufixo = " | Sleevu";
-  for (const v of variantes) {
-    const t = `${nome} — ${v}${sufixo}`;
-    if (t.length <= TITULO_MAX) return t;
-  }
-  return nome + sufixo;
-}
-
-// Ordena "4/102" < "10/102" pelo primeiro inteiro (localeCompare erraria).
-function cmpNumber(a, b) {
-  const na = parseInt(String(a || "").match(/\d+/), 10);
-  const nb = parseInt(String(b || "").match(/\d+/), 10);
-  if (!Number.isNaN(na) && !Number.isNaN(nb) && na !== nb) return na - nb;
-  return String(a).localeCompare(String(b));
-}
-
 // De qual chunk (data/…/<set>.json) veio cada carta. A página da carta é
 // montada na borda a partir dos MESMOS chunks que o app baixa, e o mapa de
 // cada jogo (data/game-pages/<jogo>.json) diz quais chunks formam cada página
@@ -284,49 +215,12 @@ async function loadGameSets(slug) {
   return byName;
 }
 
-// Textos das páginas de set nos DOIS idiomas (pt = padrão/x-default, en = a
-// variante hreflang). A estrutura/HTML é idêntica — só muda o copy.
-const MONTHS_EN = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-function fmtDateEn(iso) {
-  const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso || "");
-  if (!m) return "";
-  return `${MONTHS_EN[Number(m[2]) - 1]} ${Number(m[3])}, ${m[1]}`;
-}
-const SET_L10N = {
-  pt: {
-    htmlLang: "pt-BR",
-    fmtDate: fmtDatePt,
-    title: (name, gameLabel) => tituloSet(name, [`cartas do set ${gameLabel}`, gameLabel]),
-    desc: (n, name, gameLabel, dateHuman) => `Lista completa das ${n} cartas do set ${name} de ${gameLabel}${dateHuman ? `, lançado em ${dateHuman}` : ""}. Veja imagens, números e raridades e monte sua coleção no Sleevu.`,
-    sub: (gameLabel, total, dateHuman, n) => `${gameLabel} · ${total} cartas oficiais${dateHuman ? ` · lançado em ${dateHuman}` : ""} · ${n} no catálogo do Sleevu`,
-    cta: "Abrir o set no Sleevu",
-    othersAria: "Outros sets",
-    others: (gameLabel) => `Outros sets de ${gameLabel}`,
-    navAria: "Páginas",
-    // Mesmo rótulo do menu do app (nav.collection). O "Minha Coleção" de antes
-    // não cabia ao lado de Sets e Pokédex numa linha de celular de 360px.
-    navCollection: "Coleção"
-  },
-  en: {
-    htmlLang: "en",
-    fmtDate: fmtDateEn,
-    title: (name, gameLabel) => tituloSet(name, [`${gameLabel} card list`, gameLabel]),
-    desc: (n, name, gameLabel, dateHuman) => `Complete list of all ${n} cards in the ${name} set of ${gameLabel}${dateHuman ? `, released on ${dateHuman}` : ""}. See images, numbers and rarities and build your collection on Sleevu.`,
-    sub: (gameLabel, total, dateHuman, n) => `${gameLabel} · ${total} official cards${dateHuman ? ` · released ${dateHuman}` : ""} · ${n} in Sleevu's catalog`,
-    cta: "Open this set on Sleevu",
-    othersAria: "Other sets",
-    others: (gameLabel) => `Other ${gameLabel} sets`,
-    navAria: "Pages",
-    navCollection: "Collection"
-  }
-};
-
 // CSS das páginas pré-renderizadas. Inline de propósito: são páginas de
 // ENTRADA (a pessoa chega do Google), e um request bloqueante a mais antes do
 // primeiro paint custa mais que os 2 KB daqui. Compartilhado entre a página de
 // set e a de artista — separadas, elas divergiriam no primeiro ajuste. O
-// cabeçalho do celular vem de functions/_lib/cabecalho-estatico.js, o mesmo da
-// página de carta, pela mesma razão.
+// cabeçalho do celular vem de functions/_lib/cabecalho-estatico.js, pela mesma
+// razão.
 const PR_STYLE = `    <style>
 ${ESTILO_DO_CABECALHO}
       .pr-wrap { max-width: 1100px; margin: 0 auto; padding: 0 20px 48px; }
@@ -398,9 +292,9 @@ function setPageHtml(page, canonical, otherSets, lang) {
     <link rel="alternate" hreflang="pt-BR" href="${escapeAttr(altPt)}">
     <link rel="alternate" hreflang="en" href="${escapeAttr(altEn)}">
     <link rel="alternate" hreflang="x-default" href="${escapeAttr(altPt)}">`;
-  // ?game= grava a sessão do jogo no app — sem ele, quem estivesse com outro
-  // jogo ativo cairia no detail do jogo errado e não acharia o set.
-  const appUrl = appSetUrl(name, page.rep && page.rep.setId, game, page.rep && page.rep.language);
+  // O botão leva pra tela do set no app, que mora no endereço pt do set desde
+  // 2026-10-01 (o jogo e o set saem do próprio endereço).
+  const appUrl = baseDoSet;
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -1034,28 +928,6 @@ async function mapaDasCartasAntigas(pages) {
   return mapa;
 }
 
-// ── Casca da página de carta (games/card-template.html) ─────────────────────
-// A página da carta é montada na borda (functions/games/), mas precisa sair
-// com o mesmo carimbo de build e os mesmos arquivos com hash das páginas
-// estáticas: é por eles que o service worker decide guardar a página pra
-// offline. Esta casca é HTML comum, então o deploy a carimba e reescreve como
-// qualquer outra (hash-assets.mjs), e a borda lê dela o que precisa. Não é uma
-// página: /games/card-template responde 404 (a Function só a lê por dentro).
-function cascaDaCarta() {
-  return `<!doctype html>
-<html lang="pt-BR" data-idioma-fixo>
-  <head>
-    <meta charset="utf-8">
-    <meta name="robots" content="noindex">
-    <title>Sleevu</title>
-    <script src="/src/theme.js"></script>
-    <link rel="stylesheet" href="/styles.css">
-  </head>
-  <body></body>
-</html>
-`;
-}
-
 // ── Página /games (todos os jogos) ──────────────────────────────────────────
 // O topo da árvore: é pra onde a trilha das páginas de set e de carta aponta
 // ("Jogos"), e é por ela que o robô chega em cada /games/<jogo>. Na ordem do
@@ -1218,13 +1090,13 @@ async function main() {
     // "Outros sets" só do MESMO /games/<jogo> (linkar 700 sets de outro jogo
     // em cada página viraria ruído pro leitor e pro crawler).
     const others = pages.filter((p) => p.url === page.url && p.slug !== page.slug).map((p) => ({ name: p.name, slug: p.slug }));
-    // Variante pt (padrão/x-default) + variante en (hreflang) — mesma página,
-    // copy trocado; elas se referenciam via <link rel=alternate>.
+    // Só a variante en (hreflang) é arquivo: a pt (padrão/x-default) é a tela
+    // do set do app, decorada na borda com os mesmos textos (functions/games/
+    // e functions/_lib/pagina-set.js). As duas se referenciam via
+    // <link rel=alternate>.
     const base = `${ORIGIN}/games/${page.url}/${page.slug}`;
-    writeFileSync(join(dir, `${page.slug}.html`), setPageHtml(page, base, others, "pt"), "utf8");
     writeFileSync(join(dir, `${page.slug}-en.html`), setPageHtml(page, `${base}-en`, others, "en"), "utf8");
   }
-  writeFileSync(join(GAMES_DIR, "card-template.html"), cascaDaCarta(), "utf8");
   writeFileSync("games.html", paginaDosJogos(pages), "utf8");
 
   escreveMapaDeSets(pages);
