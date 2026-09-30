@@ -54,11 +54,19 @@ Medido ao vivo no dia em que este registro nasceu:
 protocolo exige; não é segredo. Na primeira vez (chave ainda fora do ar) vai o
 sitemap inteiro. Depois, só a diferença. O log do passo "IndexNow — separa as
 URLs novas" diz quantas URLs foram e por quê. O passo "IndexNow — avisa os
-buscadores" mostra o HTTP de cada lote: 200 ou 202 é aceito. Teto de 20 mil
-URLs por deploy (`TETO_POR_DEPLOY` em `scripts/lib/indexnow.mjs`): jogos, sets
-e endereços antigos vão primeiro, cartas completam até o teto e o resto fica
-pro sitemap. Sem o teto, a mudança pra `/games` (~290 mil cartas de uma vez)
-viraria dezenas de lotes num deploy só.
+buscadores" mostra o HTTP e a resposta de cada lote: 200 ou 202 é aceito.
+Teto de 20 mil URLs por deploy (`TETO_POR_DEPLOY` em
+`scripts/lib/indexnow.mjs`): jogos, sets e endereços antigos vão primeiro,
+cartas completam até o teto e o resto fica pro sitemap. Sem o teto, a mudança
+pra `/games` (~290 mil cartas de uma vez) viraria dezenas de lotes num deploy
+só.
+
+Chave nova só é conferida quando chega o primeiro envio. Até o IndexNow
+terminar, a resposta é 403 com `SiteVerificationNotCompleted`, e o passo de
+envio espera e tenta de novo por até 10 minutos. Na estreia (30/09/2026) o
+passo ainda desistia na hora. As 7.834 URLs foram reenviadas à mão às 19:23
+UTC, uns 5 minutos depois do deploy, e aceitas (HTTP 200). Ao trocar a chave,
+confira esse passo no log do primeiro deploy.
 
 ## Endereços (2026-09-30, telas do app desde 2026-10-01)
 

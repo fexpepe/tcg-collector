@@ -17,7 +17,10 @@
 // o site sobe várias vezes por dia, quase sempre com o mesmo catálogo.
 // Reenviar as ~7.800 URLs iguais a cada push é o uso que o protocolo pede pra
 // não fazer, e buscador passa a ignorar quem faz. A exceção é a PRIMEIRA vez
-// (chave ainda fora do ar): aí vai o sitemap inteiro, uma vez só.
+// (chave ainda fora do ar): aí vai o sitemap inteiro, uma vez só. Chave nova
+// volta 403 "SiteVerificationNotCompleted" até o IndexNow conferir o arquivo
+// (uns 5 minutos na estreia, em 30/09/2026); o passo de envio do deploy.yml
+// espera e tenta de novo.
 
 export const HOST = "sleevu.app";
 export const CHAVE = "93265e61594b47eb91a5e8ac8eea1175";
