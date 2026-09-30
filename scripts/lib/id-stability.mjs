@@ -32,6 +32,7 @@ export const ID_DE_PRODUTO = {
   fab: /^fab-\d+$/,
   gundam: /^gcg-\d+$/,
   swu: /^swu-\d+$/,
+  cyberpunk: /^cpk-\d+$/,
   dbfw: /^dbfw-\d+$/,
   ygo: /^ygo-\d+$/,
   digimon: /^dgm-\d+$/,
