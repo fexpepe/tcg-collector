@@ -4261,6 +4261,8 @@ a.preview-print:hover { background: var(--panel); }
   color: var(--text);
   text-decoration: none;
   transition: transform 120ms ease, box-shadow 120ms ease;
+  /* Referência do ::after do anel interno (abaixo). */
+  position: relative;
 }
 /* Anel na COR DO JOGO (2026-09-28): o hub.js carimba data-game-accent em cada
    tile e o --accent vira o daquele jogo (escopo de elemento, ver a tabela de
@@ -4272,14 +4274,34 @@ a.preview-print:hover { background: var(--panel); }
    o tile voltava levantado e contornado quando a pessoa usava o voltar. No
    dedo o anel sai no :active — enquanto o tile está pressionado, junto do
    scale de 0.96 do bloco TOQUE COM RESPOSTA —, então o celular também vê a
-   cor do jogo antes de a página trocar. */
+   cor do jogo antes de a página trocar.
+   2026-09-30: o anel ficou mais grosso, METADE FORA e METADE DENTRO do tile —
+   2px de box-shadow por fora + 2px de inset por dentro, 4px no total (pedido
+   do Fernando: o de 2px era fino demais). Dividir engorda o anel sem que ele
+   avance mais sobre o vão da grade. O inset não pode ser box-shadow do
+   próprio tile: sombra interna pinta ABAIXO dos filhos, e a caixa branca do
+   logo cobre o tile inteiro. Por isso ele mora num ::after absoluto por cima
+   de tudo (último na ordem do DOM, fora do flex/grid), com o raio herdado e
+   sem pegar clique. */
+.hub-grid .hub-tile::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 2px var(--accent);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+}
 @media (hover: hover) {
   a.hub-tile:hover {
     transform: translateY(-3px);
     box-shadow: 0 0 0 2px var(--accent);
   }
+  a.hub-tile:hover::after { opacity: 1; }
 }
 a.hub-tile:active { box-shadow: 0 0 0 2px var(--accent); }
+a.hub-tile:active::after { opacity: 1; }
 /* Nos tiles VINTAGE (logo + nome + rodapé) só a caixa do logo encosta nas
    bordas; o texto abaixo mantém o respiro dos 16px de antes. */
 .hub-tile > :not(.hub-logo-box) { margin-inline: 16px; }
