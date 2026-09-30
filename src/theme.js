@@ -87,12 +87,32 @@
   // NÃO grava nada: só a escolha explícita do usuário é persistida, senão
   // "detectado" viraria indistinguível de "escolhido" e a detecção nunca mais
   // acompanharia uma troca de idioma do navegador.
+  //
+  // Duas exceções (2026-09-30), pelo mesmo motivo: o buscador indexa o DOM
+  // DEPOIS do JS, e o Google estava guardando o site em inglês.
+  //  - Página de idioma FIXO (data-idioma-fixo: as pré-renderizadas de set,
+  //    carta e artista). O texto já nasce no HTML, em pt-BR ou em inglês, e
+  //    nada o traduz depois. Trocar o lang aqui só fazia o documento mentir: a
+  //    página em português anunciava "en" pro Googlebot e pro leitor de tela
+  //    de quem usa o navegador em inglês.
+  //  - Robô. Ele não tem idioma: o navigator.languages do Googlebot é o
+  //    padrão do servidor (en-US). Por isso a home, o hub e o FAQ entravam no
+  //    índice traduzidos, com o título "Sleevu - For Collectors!", e sumiam da
+  //    busca em português, que é o público do site. O robô vê o idioma que o
+  //    HTML declara, o mesmo do canonical. Gente segue com a detecção.
   try {
     var LANGS = { pt: "pt-BR", en: "en", es: "es" };
-    var savedLang = localStorage.getItem("tcg-collector-ui-lang-v1");
-    var lang = LANGS[savedLang] ? savedLang : detectLang();
-    window.SLEEVU_LANG = lang;
-    document.documentElement.setAttribute("lang", LANGS[lang]);
+    var raiz = document.documentElement;
+    var doHtml = String(raiz.getAttribute("lang") || "").slice(0, 2).toLowerCase();
+    if (!LANGS[doHtml]) doHtml = "pt";
+    if (raiz.hasAttribute("data-idioma-fixo")) {
+      window.SLEEVU_LANG = doHtml;
+    } else {
+      var savedLang = localStorage.getItem("tcg-collector-ui-lang-v1");
+      var lang = LANGS[savedLang] ? savedLang : (pareceRobo() ? doHtml : detectLang());
+      window.SLEEVU_LANG = lang;
+      raiz.setAttribute("lang", LANGS[lang]);
+    }
   } catch (e) { /* ignora: fica o lang do HTML */ }
 
   // --- i18n por idioma (só em produção) -----------------------------------
@@ -141,5 +161,15 @@
       if (code.indexOf("es") === 0) return "es";
     }
     return "en";
+  }
+
+  // Mesma régua do events_guard (migração 20260914a): "bot" como PALAVRA
+  // (Googlebot/, bingbot/, Applebot/, YandexBot/) e não como pedaço de marca de
+  // celular (CUBOT_X18). Mais os robôs do Google que não se chamam "bot": o da
+  // inspeção de URL do Search Console (é ele que mostra ao Fernando o que o
+  // Google viu), o do AdSense e o do Lighthouse/PageSpeed.
+  function pareceRobo() {
+    return /bot(\/|;|\)|\s|$)|crawl|spider|slurp|headless|lighthouse|google-inspectiontool|googleother|mediapartners-google|adsbot-google/i
+      .test(String(navigator.userAgent || ""));
   }
 })();
