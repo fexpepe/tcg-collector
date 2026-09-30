@@ -4282,13 +4282,19 @@ a.preview-print:hover { background: var(--panel); }
    próprio tile: sombra interna pinta ABAIXO dos filhos, e a caixa branca do
    logo cobre o tile inteiro. Por isso ele mora num ::after absoluto por cima
    de tudo (último na ordem do DOM, fora do flex/grid), com o raio herdado e
-   sem pegar clique. */
+   sem pegar clique.
+   Mais tarde no mesmo dia, só nos JOGOS PRINCIPAIS: 3px por fora + 3px por
+   dentro (6px). O Vintage fica nos 2+2 — tile menor, linha secundária, e a
+   hierarquia da página continua aparecendo também no anel. A espessura mora
+   em --hub-ring na grade, como o --hub-cols. */
+.hub-grid { --hub-ring: 3px; }
+.hub-vintage .hub-grid { --hub-ring: 2px; }
 .hub-grid .hub-tile::after {
   content: "";
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  box-shadow: inset 0 0 0 2px var(--accent);
+  box-shadow: inset 0 0 0 var(--hub-ring, 2px) var(--accent);
   opacity: 0;
   pointer-events: none;
   transition: opacity 120ms ease;
@@ -4296,11 +4302,11 @@ a.preview-print:hover { background: var(--panel); }
 @media (hover: hover) {
   a.hub-tile:hover {
     transform: translateY(-3px);
-    box-shadow: 0 0 0 2px var(--accent);
+    box-shadow: 0 0 0 var(--hub-ring, 2px) var(--accent);
   }
   a.hub-tile:hover::after { opacity: 1; }
 }
-a.hub-tile:active { box-shadow: 0 0 0 2px var(--accent); }
+a.hub-tile:active { box-shadow: 0 0 0 var(--hub-ring, 2px) var(--accent); }
 a.hub-tile:active::after { opacity: 1; }
 /* Nos tiles VINTAGE (logo + nome + rodapé) só a caixa do logo encosta nas
    bordas; o texto abaixo mantém o respiro dos 16px de antes. */
