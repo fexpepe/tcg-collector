@@ -11,6 +11,9 @@
 // ANEXA ao catálogo do Naruto (ids nrt-nx-*/nrt-nf-*); roda DEPOIS dos outros
 // syncs do Naruto no CI. Imagens: placeholder (fotos de loja não são fonte
 // limpa); imagens curadas do dono entram por assets/cards/naruto/<id>.*.
+// No site, Formation e Cross são SEÇÕES da linha nrt-dc (o arcade Data
+// Carddass inteiro), não linhas próprias — ver GAME_LINES no shared.js. O
+// `vintageLine` das cartas continua dizendo o título (nrt-nf/nrt-nx).
 //
 //   node scripts/sync-naruto-dc-cross-formation.mjs
 import { readFile } from "node:fs/promises";
