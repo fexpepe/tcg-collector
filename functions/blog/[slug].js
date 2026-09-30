@@ -74,10 +74,14 @@ async function casca(env, request) {
 
 export async function onRequestGet(context) {
   const { params, env, request, waitUntil } = context;
-  const slug = String(params.slug || "").toLowerCase();
+  const bruto = String(params.slug || "");
+  const slug = bruto.toLowerCase();
   if (slug.length > 100 || !/^[a-z0-9]+(-[a-z0-9]+)*$/.test(slug)) return naoAchou(env, request);
 
   const url = new URL(request.url);
+  // Endereço com maiúscula (link digitado à mão, colado de outro lugar): 301
+  // pro canônico, em vez de responder a mesma página em duas URLs.
+  if (bruto !== slug) return new Response(null, { status: 301, headers: { Location: url.origin + B.URL_DO_POST(slug), "Cache-Control": "public, max-age=3600" } });
   const chave = new Request(url.origin + "/blog/" + slug, { method: "GET" });
   const fresco = url.searchParams.has("fresco");
   const guardada = await daBorda(chave, fresco);
@@ -104,7 +108,7 @@ export async function onRequestGet(context) {
       if (red && red[0] && /^[0-9a-f-]{36}$/.test(red[0].post_id)) {
         const atual = await supabase(env, `/rest/v1/posts?id=eq.${red[0].post_id}&select=slug&limit=1`);
         if (atual && atual[0] && atual[0].slug && atual[0].slug !== slug) {
-          return new Response(null, { status: 301, headers: { Location: ORIGEM + B.URL_DO_POST(atual[0].slug), "Cache-Control": "public, max-age=300" } });
+          return new Response(null, { status: 301, headers: { Location: url.origin + B.URL_DO_POST(atual[0].slug), "Cache-Control": "public, max-age=300" } });
         }
       }
     } catch (e) { /* sem redirect: segue pro 404 */ }
