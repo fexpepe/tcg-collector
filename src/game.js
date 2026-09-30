@@ -62,6 +62,9 @@
   ];
   // Linha que virou seção de outra (o LINE_ALIASES do shared.js).
   var LINHA_APELIDO = { "nrt-nf": "nrt-dc", "nrt-nx": "nrt-dc" };
+  // /games/<url>, /games/<url>/<set> e /games/<url>/<set>/<carta>. O "_id" do
+  // link de compartilhar não casa (tem "_"): ele é sempre um 301 da borda.
+  var CAMINHO_DO_JOGO = /^\/games\/([a-z0-9-]+)(\/[a-z0-9-]+){0,2}\/?$/;
   function urlDoJogo(game, linha) {
     var l = LINHA_APELIDO[linha] || linha || "";
     for (var i = 0; i < URL_DOS_JOGOS.length; i++) {
@@ -83,9 +86,11 @@
     return urlDoJogo(game, "");
   }
   // /games/<url> aberto: [jogo, linha]. null fora da árvore ou em url que não
-  // é do registro (apelido já saiu da borda como 301).
+  // é do registro (apelido já saiu da borda como 301). Vale também pros níveis
+  // de baixo, a tela do set e a da carta (/games/<url>/<set>[/<carta>], desde
+  // 2026-10-01): o jogo e a linha são os do 1º segmento.
   function jogoDoCaminho() {
-    var m = /^\/games\/([a-z0-9-]+)\/?$/.exec(location.pathname || "");
+    var m = CAMINHO_DO_JOGO.exec(location.pathname || "");
     if (!m) return null;
     for (var i = 0; i < URL_DOS_JOGOS.length; i++) {
       if (URL_DOS_JOGOS[i][0] === m[1]) return [URL_DOS_JOGOS[i][1], URL_DOS_JOGOS[i][2] || ""];
@@ -247,7 +252,9 @@
   // pagavam DNS+TCP+TLS inteiros dentro do caminho crítico. Só nessas páginas —
   // preconnect é aposta: em página que não usa, é conexão aberta à toa.
   var PAGINAS_COM_DADO = /\/(collection|portfolio|dashboard|sales|graded|wishlist|binders|cards|detail|explore|my-decks|listas)(\.html)?$/i;
-  if (PAGINAS_COM_DADO.test(location.pathname) || /^\/users\//i.test(location.pathname)) {
+  // A tela do set também mora em /games/<jogo>/<set>[/<carta>] (2026-10-01).
+  var TELA_DO_SET = /^\/games\/[a-z0-9-]+\/[a-z0-9-]+(\/[a-z0-9-]+)?\/?$/;
+  if (PAGINAS_COM_DADO.test(location.pathname) || TELA_DO_SET.test(location.pathname) || /^\/users\//i.test(location.pathname)) {
     ["https://economia.awesomeapi.com.br", "https://dlnalopazitfdgnmdguu.supabase.co"].forEach(function (host) {
       var l = document.createElement("link");
       l.rel = "preconnect";
@@ -285,6 +292,9 @@
       var dType = new URLSearchParams(location.search).get("type") || "";
       if (/^[a-z]+$/.test(dType)) document.documentElement.setAttribute("data-detail", dType);
     } catch (e) { /* URL estranha: segue sem carimbo, o detail.js recolhe depois */ }
+  } else if (TELA_DO_SET.test(location.pathname || "")) {
+    // Endereço do set (ou da carta): é sempre a página de SET.
+    document.documentElement.setAttribute("data-detail", "set");
   }
 
   // Modo manifest (produção): o deploy flipa esta flag pra true (sed em game.js).

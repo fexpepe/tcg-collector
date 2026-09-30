@@ -52,11 +52,13 @@
   </head>
   <body>
     <!-- Saída de emergência: só aparece se o app não subir (ver .falha-boot no
-         styles.css). Sem o "Tentar de novo": com o <base href="/"> desta página
-         o href="" levaria pro início, não pra esta tela. -->
+         styles.css). O "Tentar de novo" leva data-recarrega: o theme.js troca o
+         href="" pela URL da própria tela (com o <base href="/"> desta página, o
+         href="" sozinho resolveria na raiz e levaria pro início). -->
     <div class="falha-boot" hidden>
       <p data-i18n="boot.stuck">Esta tela não terminou de carregar.</p>
-      <a class="primary" href="/" data-i18n="boot.home">Ir para o início</a>
+      <a class="primary" href="" data-recarrega data-i18n="boot.retry">Tentar de novo</a>
+      <a class="secondary" href="/" data-i18n="boot.home">Ir para o início</a>
     </div>
     <header class="app-header">
       <div class="app-header-inner">

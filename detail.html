@@ -2,6 +2,13 @@
 <html lang="pt-BR">
   <head>
     <meta charset="utf-8">
+    <!-- Base na raiz: esta tela também é servida no endereço de cada set e de
+         cada carta (/games/<jogo>/<set>[/<carta>], functions/games/), e o
+         detail.js troca a barra de /detail?type=set&… pro endereço do set. Sem
+         isto, os caminhos relativos (src/*, styles, data/*, os links cards?… e
+         sets?… da tela) resolveriam dentro de /games/ e quebrariam. Em /detail
+         é inócuo (já é raiz). Mesmo motivo do sets.html. -->
+    <base href="/">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title data-i18n="title.detail">Detalhe - Sleevu</title>
     <meta name="description" content="Detalhes e cartas de um Pokémon, set ou artista no Sleevu.">
@@ -52,10 +59,13 @@
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
-    <!-- Saída de emergência: só aparece se o app não subir (ver .falha-boot no styles.css). -->
+    <!-- Saída de emergência: só aparece se o app não subir (ver .falha-boot no
+         styles.css). O "Tentar de novo" leva data-recarrega: o theme.js troca o
+         href="" pela URL da própria tela (com o <base href="/"> desta página, o
+         href="" sozinho resolveria na raiz e levaria pro início). -->
     <div class="falha-boot" hidden>
       <p data-i18n="boot.stuck">Esta tela não terminou de carregar.</p>
-      <a class="primary" href="" data-i18n="boot.retry">Tentar de novo</a>
+      <a class="primary" href="" data-recarrega data-i18n="boot.retry">Tentar de novo</a>
       <a class="secondary" href="/" data-i18n="boot.home">Ir para o início</a>
     </div>
     <header class="app-header">

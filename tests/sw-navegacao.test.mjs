@@ -118,9 +118,35 @@ test("chave de navegação: /games/<jogo> tem entrada própria, com o sets.html 
   assert.equal(chave(ORIGEM + "/games/pokemon/base-set"), ORIGEM + "/games/pokemon/base-set.html");
   assert.equal(chave(ORIGEM + "/games/pokemon/base-set/charizard-4-102"), ORIGEM + "/games/pokemon/base-set/charizard-4-102.html");
   assert.equal(reserva(ORIGEM + "/games/star-wars-unlimited?serie=x"), ORIGEM + "/sets.html");
-  for (const semReserva of ["/games", "/games/pokemon/base-set", "/games/pokemon/base-set/charizard-4-102", "/portfolio"]) {
+  // Tela do set e da carta (2026-10-01): a reserva é a do detail.html.
+  assert.equal(reserva(ORIGEM + "/games/pokemon/base-set"), ORIGEM + "/detail.html");
+  assert.equal(reserva(ORIGEM + "/games/pokemon/base-set/charizard-4-102?x=1"), ORIGEM + "/detail.html");
+  for (const semReserva of ["/games", "/games/pokemon/_id/base1-4", "/games/a/b/c/d", "/portfolio", "/detail"]) {
     assert.equal(reserva(ORIGEM + semReserva), null, semReserva);
   }
+});
+
+test("offline: a carta de um set nunca visitado abre da cópia do detail.html", async () => {
+  const sw = carrega({ hashed: true, build: "abc12345" });
+  const shell = await sw.sandbox.caches.open(sw.SHELL);
+  await shell.put("detail.html", html("tela do set"));
+  sw.estado.fetch = async () => { throw new Error("offline"); };
+  assert.equal(await texto(await sw.nav(evento("/games/pokemon/base-set/charizard-4-102"))), "tela do set");
+  assert.equal(await texto(await sw.nav(evento("/games/pokemon/base-set"))), "tela do set");
+});
+
+test("tela do set visitada: a entrada própria dela vence a reserva", async () => {
+  const sw = carrega({ hashed: true, build: "abc12345" });
+  const shell = await sw.sandbox.caches.open(sw.SHELL);
+  await shell.put("detail.html", html("reserva"));
+  await (await sw.sandbox.caches.open(sw.META)).put("shell-confirmado", new Response(String(Date.now())));
+  sw.estado.fetch = async () => html("base set da borda");
+  const ev = evento("/games/pokemon/base-set");
+  assert.equal(await texto(await sw.nav(ev)), "reserva", "sessão ativa, 1ª visita: a reserva na hora");
+  await Promise.all(ev.pendentes);
+  assert.equal(await texto(await shell.match(ORIGEM + "/games/pokemon/base-set.html")), "base set da borda");
+  assert.equal(await texto(await shell.match("detail.html")), "reserva", "a reserva não é sobrescrita");
+  assert.equal(await texto(await sw.nav(evento("/games/pokemon/base-set"))), "base set da borda");
 });
 
 test("offline: a tela de um jogo nunca visitado abre da cópia do sets.html", async () => {

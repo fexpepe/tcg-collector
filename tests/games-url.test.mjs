@@ -22,14 +22,15 @@ const raiz = join(dirname(fileURLToPath(import.meta.url)), "..");
 const ler = (p) => readFileSync(join(raiz, p), "utf8");
 
 // O game.js num navegador de mentira, só pra ler o registro que ele expõe.
-function gameJs(pathname = "/hub") {
+// `attrs` recebe o que ele carimba no <html> (data-detail, data-cardlang…).
+function gameJs(pathname = "/hub", attrs = {}) {
   const store = new Map();
   const storage = { getItem: (k) => (store.has(k) ? store.get(k) : null), setItem: (k, v) => store.set(k, String(v)), removeItem: (k) => store.delete(k) };
   const sandbox = {
     location: { pathname, search: "", hash: "", href: `https://sleevu.app${pathname}` },
     history: { state: null, replaceState() {} },
     localStorage: storage,
-    document: { documentElement: { setAttribute() {} }, head: { appendChild() {} }, currentScript: null, createElement: () => ({}) },
+    document: { documentElement: { setAttribute(k, v) { attrs[k] = v; } }, head: { appendChild() {} }, currentScript: null, createElement: () => ({}) },
     fetch: () => Promise.reject(new Error("sem rede"))
   };
   sandbox.window = sandbox;
@@ -68,6 +69,23 @@ test("o game.js tira o jogo e a linha do endereço", () => {
   assert.equal(dc.game, "naruto");
   assert.equal(dc.line, "nrt-dc");
   assert.equal(gameJs("/games/naruto-card-game-2002").line, "");
+  // Tela do set e da carta (2026-10-01): o jogo e a linha do 1º segmento.
+  assert.equal(gameJs("/games/pokemon/base-set").game, "pokemon");
+  assert.equal(gameJs("/games/pokemon/base-set/charizard-4-102").game, "pokemon");
+  const opcd = gameJs("/games/one-piece-carddass/carddass-first-stage");
+  assert.equal(opcd.game, "onepiece");
+  assert.equal(opcd.line, "opcd");
+});
+
+test("tela do set no endereço: o <html> nasce com data-detail=set (o CSS recolhe o cabeçalho antes do 1º paint)", () => {
+  for (const caminho of ["/games/pokemon/base-set", "/games/pokemon/base-set/charizard-4-102"]) {
+    const attrs = {};
+    gameJs(caminho, attrs);
+    assert.equal(attrs["data-detail"], "set", caminho);
+  }
+  const daTelaDoJogo = {};
+  gameJs("/games/pokemon", daTelaDoJogo);
+  assert.equal(daTelaDoJogo["data-detail"], undefined, "a tela de Sets não é página de detalhe");
 });
 
 test("linhas e prefixos batem com o GAME_LINES do shared.js", () => {

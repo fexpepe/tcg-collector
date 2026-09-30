@@ -3861,11 +3861,13 @@
     } catch (e) { return null; }
   }
   // Página normalizada (1º segmento, sem .html/query/handle) — sem PII.
-  // A tela de Sets mora em /games/<jogo> desde 2026-09-30 e segue contando
-  // como "sets" no /admin (a única página com este script debaixo de /games).
+  // Debaixo de /games só rodam telas do app com outro nome no /admin: a de
+  // Sets em /games/<jogo> (desde 2026-09-30) segue contando como "sets", e a
+  // do set em /games/<jogo>/<set>[/<carta>] (2026-10-01), como "detail".
   function analyticsPath() {
-    const seg = location.pathname.replace(/^\/+|\/+$/g, "").split("/")[0].replace(/\.html$/, "");
-    return seg === "games" ? "sets" : seg || "home";
+    const partes = location.pathname.replace(/^\/+|\/+$/g, "").split("/");
+    const seg = partes[0].replace(/\.html$/, "");
+    return seg === "games" ? (partes[2] ? "detail" : "sets") : seg || "home";
   }
   // Envio de evento — o mesmo cano do pageview e dos eventos de produto (E6).
   //
@@ -6169,7 +6171,7 @@
   // não passam e o botão nem aparece. De propósito não criamos um store aqui:
   // ele guarda o blob inteiro em memória e grava tudo de uma vez, então uma
   // segunda instância sobrescreveria o que a instância da página tem.
-  function createCardPreview({ getCard, store, onOwnedChange, prices, wishlist, folders, sale, graded, onSiblingCards }) {
+  function createCardPreview({ getCard, store, onOwnedChange, prices, wishlist, folders, sale, graded, onSiblingCards, cardPath }) {
     let activeCard = null;
     let activeVariant = null;
     let activeGraded = null; // { company, grade, pristine } quando aberto de uma carta GRADUADA
@@ -6414,10 +6416,15 @@
     };
     let entradaNoHistorico = false; // empilhamos uma entrada por sessão de popup?
 
+    // cardPath (a tela do set, desde 2026-10-01): a carta tem endereço próprio,
+    // /games/<jogo>/<set>/<carta>, e fechar volta pro do set. A página diz o
+    // caminho; sem ele (outra tela, ou carta sem endereço) vale o ?card=.
     function stampCardUrl(cardId, empilha) {
       try {
         const url = new URL(location.href);
-        if (cardId) url.searchParams.set("card", cardId); else url.searchParams.delete("card");
+        const caminho = cardPath && cardPath(cardId);
+        if (caminho) url.pathname = caminho;
+        if (cardId && !caminho) url.searchParams.set("card", cardId); else url.searchParams.delete("card");
         if (empilha) history.pushState({ sleevuPreview: 1 }, "", url);
         else history.replaceState(history.state, "", url);
       } catch (e) { /* history bloqueado: o popup funciona igual, só não linka */ }
