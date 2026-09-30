@@ -8,31 +8,41 @@
 // cartas curadas (Ancient Mew), porque elas não tinham cache.
 //
 // Roda o script DE VERDADE numa raiz de mentira (cópia de scripts/sync-ppt.mjs
-// e scripts/lib), com o fetch trocado via --import: a PPT responde 429 diário
-// e a "produção" devolve um manifest com dois sets JP. Conta as chamadas à PPT
-// pra travar que o 429 diário não é repetido.
+// e scripts/lib), com o fetch trocado via --import: a PPT responde o erro
+// escolhido e a "produção" devolve um manifest com dois sets JP. Conta as
+// chamadas à PPT pra travar que o 429 diário não é repetido.
 // Roda com: node --test tests/
-import { test } from "node:test";
+import { test, after } from "node:test";
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, cpSync, existsSync } from "node:fs";
+import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, cpSync, existsSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { dirname, join } from "node:path";
 
 const raiz = join(dirname(fileURLToPath(import.meta.url)), "..");
 
-// fetch falso: PPT = 429 "Daily rate limit exceeded" sempre; produção = um
-// manifest com SV4a e SV9 (JP); o resto 404. Imprime no stderr, ao sair,
-// quantas vezes a PPT foi chamada.
+// fetch falso: a PPT responde conforme PPT_FALSA — "diario" (padrão: 429
+// "Daily rate limit exceeded"), "minuto" (429 do limite por minuto) ou "401"
+// (token revogado); produção = um manifest com SV4a e SV9 (JP); o resto 404.
+// Imprime no stderr, ao sair, quantas vezes a PPT foi chamada. O setTimeout
+// vira 0: o MIN_GAP de 10,5s e o backoff de 8s não entram no tempo do teste.
 const FETCH_FALSO = `
 let chamadasPpt = 0;
-process.on("exit", () => process.stderr.write("CHAMADAS_PPT=" + chamadasPpt + "\\n"));
+process.on("exit", () => process.stderr.write("CHAMADAS_PPT=" + chamadasPpt + String.fromCharCode(10)));
+const setTimeoutReal = globalThis.setTimeout;
+globalThis.setTimeout = (fn, _ms, ...a) => setTimeoutReal(fn, 0, ...a);
+const RESPOSTAS = {
+  diario: [429, "Too Many Requests", "Daily rate limit exceeded"],
+  minuto: [429, "Too Many Requests", "Rate limit exceeded"],
+  401: [401, "Unauthorized", "Invalid API key"]
+};
 globalThis.fetch = async (url) => {
   url = String(url);
   if (url.startsWith("https://www.pokemonpricetracker.com/")) {
     chamadasPpt++;
-    return new Response(JSON.stringify({ error: "Daily rate limit exceeded" }), { status: 429, statusText: "Too Many Requests", headers: { "content-type": "application/json" } });
+    const [status, statusText, error] = RESPOSTAS[process.env.PPT_FALSA || "diario"];
+    return new Response(JSON.stringify({ error }), { status, statusText, headers: { "content-type": "application/json" } });
   }
   if (url.endsWith("/data/manifest.generated.js")) {
     return new Response('window.TCG_MANIFEST = {"sets":[{"id":"SV4a","language":"ja"},{"id":"SV9","language":"ja"}]};');
@@ -41,16 +51,26 @@ globalThis.fetch = async (url) => {
 };
 `;
 
+// Cada raiz de mentira leva uma cópia de scripts/lib: apaga tudo no fim.
+const raizes = [];
+after(() => { for (const d of raizes) rmSync(d, { recursive: true, force: true }); });
+
 // Monta a raiz de mentira. `cache`: { arquivo: conteúdo } dentro de
-// data/.cache/ppt/; `artefato`: conteúdo pros dois .generated.json (ou nada).
-function montaRaiz({ cache = {}, artefato = null } = {}) {
+// data/.cache/ppt/; `artefato`: conteúdo pros dois .generated.json (ou nada);
+// `chunks`: { "ja/SV9.json": [cartas] } dentro de data/sets/.
+function montaRaiz({ cache = {}, artefato = null, chunks = {} } = {}) {
   const dir = mkdtempSync(join(tmpdir(), "sync-ppt-"));
+  raizes.push(dir);
   mkdirSync(join(dir, "scripts"), { recursive: true });
   cpSync(join(raiz, "scripts", "sync-ppt.mjs"), join(dir, "scripts", "sync-ppt.mjs"));
   cpSync(join(raiz, "scripts", "lib"), join(dir, "scripts", "lib"), { recursive: true });
   mkdirSync(join(dir, "data", ".cache", "ppt", "sets"), { recursive: true });
   for (const [nome, corpo] of Object.entries(cache)) {
     writeFileSync(join(dir, "data", ".cache", "ppt", nome), JSON.stringify(corpo), "utf8");
+  }
+  for (const [nome, cartas] of Object.entries(chunks)) {
+    mkdirSync(dirname(join(dir, "data", "sets", nome)), { recursive: true });
+    writeFileSync(join(dir, "data", "sets", nome), JSON.stringify(cartas), "utf8");
   }
   if (artefato) {
     writeFileSync(join(dir, "data", "ppt-prices.generated.json"), artefato.precos, "utf8");
@@ -61,9 +81,9 @@ function montaRaiz({ cache = {}, artefato = null } = {}) {
 }
 
 // Roda o sync; devolve { ok, saida, chamadas, precos, novas }.
-function roda(dir, args = []) {
+function roda(dir, args = [], pptFalsa = "diario") {
   const argv = ["--import", pathToFileURL(join(dir, "fetch-falso.mjs")).href, join(dir, "scripts", "sync-ppt.mjs"), "--budget", "8000", "--graded", ...args];
-  const p = spawnSync(process.execPath, argv, { cwd: dir, encoding: "utf8", env: { ...process.env, PPT_API_TOKEN: "falso" } });
+  const p = spawnSync(process.execPath, argv, { cwd: dir, encoding: "utf8", env: { ...process.env, PPT_API_TOKEN: "falso", PPT_FALSA: pptFalsa } });
   const saida = `${p.stdout || ""}${p.stderr || ""}`;
   const m = saida.match(/CHAMADAS_PPT=([0-9]+)/);
   const ler = (f) => { const c = join(dir, "data", f); return existsSync(c) ? readFileSync(c, "utf8") : null; };
@@ -86,7 +106,7 @@ const CACHE_COMPLETO = {
 test("cota do dia esgotada: sai com sucesso, sem repetir o 429, e monta o artefato do cache", () => {
   const dir = montaRaiz({ cache: CACHE_COMPLETO });
   const r = roda(dir);
-  assert.equal(r.ok, true, `o sync devia sair com 0:\n${r.saida}`);
+  assert.equal(r.ok, true, `o sync devia sair com 0: ${r.saida}`);
   const precos = JSON.parse(r.precos);
   assert.deepEqual(precos["SV4a-1-ja"], { u: 1.5 }, "set JP do cache");
   assert.deepEqual(precos["swsh9-TG08"], { u: 3.95 }, "fill EN do cache");
@@ -94,7 +114,7 @@ test("cota do dia esgotada: sai com sucesso, sem repetir o 429, e monta o artefa
   assert.deepEqual(precos["amew-1"], { u: 527.22 }, "curada do cache (antes sumia)");
   const ids = JSON.parse(r.novas).map((c) => c.id).sort();
   assert.deepEqual(ids, ["M5-1-ja", "SV4a-999-ja", "amew-1"]);
-  assert.match(r.saida, /::warning::PPT: cota da PPT esgotada/);
+  assert.ok(r.saida.includes("::warning::PPT: cota da PPT esgotada"), r.saida);
   // Uma chamada só no run inteiro: o /sets que levou o 429. Repetir o diário
   // custava 3×8s por chamada, até o teto de tempo do run.
   assert.equal(r.chamadas, 1, r.saida);
@@ -118,7 +138,7 @@ test("--so-cache com o artefato já no disco: não chama a PPT e não mexe nele"
   assert.equal(r.chamadas, 0, r.saida);
   assert.equal(r.precos, artefato.precos);
   assert.equal(r.novas, artefato.novas);
-  assert.doesNotMatch(r.saida, /::warning::/);
+  assert.ok(!r.saida.includes("::warning::"), r.saida);
 });
 
 test("--so-cache sem artefato: remonta do cache sem chamar a PPT e sem aviso", () => {
@@ -128,7 +148,7 @@ test("--so-cache sem artefato: remonta do cache sem chamar a PPT e sem aviso", (
   assert.equal(r.chamadas, 0, r.saida);
   assert.deepEqual(JSON.parse(r.precos)["SV4a-1-ja"], { u: 1.5 });
   assert.ok(JSON.parse(r.novas).some((c) => c.id === "amew-1"));
-  assert.doesNotMatch(r.saida, /::warning::/);
+  assert.ok(!r.saida.includes("::warning::"), r.saida);
 });
 
 test("cota esgotada e cache vazio: o artefato que veio do build não vira um vazio", () => {
@@ -138,4 +158,39 @@ test("cota esgotada e cache vazio: o artefato que veio do build não vira um vaz
   assert.equal(r.ok, true, r.saida);
   assert.equal(r.precos, artefato.precos);
   assert.equal(r.novas, artefato.novas);
+});
+
+test("/sets com 401 (não é a cota): segue com o mapa vencido e deixa aviso no resumo", () => {
+  const dir = montaRaiz({ cache: CACHE_COMPLETO });
+  const r = roda(dir, [], "401");
+  assert.equal(r.ok, true, r.saida);
+  assert.ok(r.saida.includes("usando o de 1970-01-01"), `devia cair no mapa vencido: ${r.saida}`);
+  assert.ok(r.saida.includes("::warning::PPT: /sets falhou (PPT 401: Invalid API key)"), r.saida);
+  assert.ok(!r.saida.includes("cota da PPT esgotada"), r.saida);
+  assert.deepEqual(JSON.parse(r.precos)["SV4a-1-ja"], { u: 1.5 });
+});
+
+test("429 por minuto que sobrevive ao backoff falha só aquela chamada, não o run", () => {
+  const dir = montaRaiz({ cache: CACHE_COMPLETO });
+  const r = roda(dir, [], "minuto");
+  assert.equal(r.ok, true, r.saida);
+  assert.ok(!r.saida.includes("cota da PPT esgotada"), r.saida);
+  // 4 tentativas (1 + 3 retries) por chamada: o /sets e, depois dele, as
+  // curadas e o import com id fixo ainda tentam. Só-cache pararia em 4.
+  assert.ok(r.chamadas > 4, `devia seguir tentando depois do /sets (chamadas: ${r.chamadas})`);
+  assert.deepEqual(JSON.parse(r.precos)["amew-1"], { u: 527.22 }, "curada do cache quando a chamada falha");
+});
+
+test("cota que acaba no meio da descoberta de set não grava o negativo", () => {
+  // Mapa FRESCO sem o SV9: a primeira chamada à PPT é a busca da descoberta
+  // (o SV9 tem chunk local), e é ela que leva o 429 diário.
+  const cache = { ...CACHE_COMPLETO, "sets.json": { v: 4, t: Date.now(), m: [["SV4A", 111]] } };
+  const dir = montaRaiz({ cache, chunks: { "ja/SV9.json": [{ id: "SV9-1-ja", name: "Pikachu", pokemonName: "Pikachu", dexId: 25 }] } });
+  const r = roda(dir);
+  assert.equal(r.ok, true, r.saida);
+  assert.equal(r.chamadas, 1, r.saida);
+  const arq = join(dir, "data", ".cache", "ppt", "discovered.json");
+  const negativos = existsSync(arq) ? JSON.parse(readFileSync(arq, "utf8")).n || {} : {};
+  // Com o negativo gravado, o SV9 ficaria 14 dias sem ser procurado de novo.
+  assert.equal("SV9" in negativos, false, "negativo gravado sem o set ter sido de fato procurado");
 });
