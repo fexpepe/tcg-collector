@@ -8,6 +8,7 @@
 // Roda com: node --test tests/
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { decideRota, listaDeSets, metaDoJogo, assetsDaCasca } from "../functions/games/[[path]].js";
 import { destinoDoSets } from "../functions/sets.js";
 import { destinoDoSetAntigo } from "../functions/set/[slug].js";
@@ -70,6 +71,29 @@ test("/set/<slug> antigo acha o endereço novo, inclusive a variante em inglês"
   assert.equal(destinoDoSetAntigo(mapa, "nao-existe"), null);
   assert.equal(destinoDoSetAntigo(mapa, "constructor"), null);
   assert.equal(destinoDoSetAntigo(null, "base-set"), null);
+});
+
+// O link que o "compartilhar" do app gera passa por /games/<jogo>/_id/<id> com
+// o nome do set na query. Se o parâmetro cair num Disallow do robots.txt (o
+// ?set= do filtro do Explorar cairia), o robô do X não lê a página e o link
+// sai sem prévia; o Google também não segue o 301 até a carta.
+test("o link de compartilhar do app não cai num Disallow do robots.txt", () => {
+  const ler = (f) => readFileSync(new URL(`../${f}`, import.meta.url), "utf8").replace(/\r\n/g, "\n");
+  const m = /\/_id\/\$\{[^}]+\}\?([A-Za-z_]+)=/.exec(ler("src/shared.js"));
+  assert.ok(m, "o link de compartilhar some do shared.js? ajuste este teste");
+  const exemplo = `/games/pokemon/_id/base1-4?${m[1]}=Base%20Set`;
+  const barrados = ler("robots.txt").split("\n").map((l) => /^Disallow:\s*(\S+)/i.exec(l)).filter(Boolean).map((d) => d[1]);
+  assert.ok(barrados.includes("/*?set="), "a regra que motivou o teste segue no robots.txt");
+  // Sintaxe do robots: * é qualquer coisa, $ no fim ancora; o resto é literal.
+  const paraRegex = (regra) => {
+    const ancora = regra.endsWith("$");
+    const corpo = (ancora ? regra.slice(0, -1) : regra).split("*")
+      .map((p) => p.replace(/[.?+^$()[\]{}|\\]/g, (c) => `\\${c}`)).join(".*");
+    return new RegExp(`^${corpo}${ancora ? "$" : ""}`);
+  };
+  for (const regra of barrados) assert.doesNotMatch(exemplo, paraRegex(regra), `barrado por "Disallow: ${regra}"`);
+  // Contraprova: o ?set= antigo cairia.
+  assert.match("/games/pokemon/_id/base1-4?set=Base", paraRegex("/*?set="));
 });
 
 test("/card/<slug> antigo acha a página nova da carta", () => {
