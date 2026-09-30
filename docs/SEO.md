@@ -29,7 +29,9 @@ Medido ao vivo no dia em que este registro nasceu:
 
 | Onde | O quê |
 |---|---|
-| `scripts/prerender-catalog.mjs` | páginas estáticas de set (pt e en, com hreflang), carta, artista e deck, com o texto já no HTML |
+| `scripts/prerender-catalog.mjs` | páginas estáticas da lista de jogos, de set (pt e en, com hreflang), artista e deck, com o texto já no HTML; os mapas que a borda lê (`data/game-pages/`) |
+| `functions/games/[[path]].js` | a tela de cada jogo (título, descrição e índice de sets por cima do `sets.html`) e a página de toda carta, montada na borda |
+| `functions/_lib/jogos.js` | o registro dos jogos: endereço oficial, apelidos e linhas (a cópia do `src/game.js` tem que bater) |
 | `scripts/lib/sitemap.mjs` | o `sitemap.xml` é um índice, com um arquivo por tipo de página (tabela abaixo) |
 | `src/theme.js` | robô vê o idioma que o HTML declara; página com `data-idioma-fixo` (as pré-renderizadas) nunca tem o `lang` trocado |
 | `index.html` | JSON-LD `WebSite` + `Organization`: nome do site, logo, perfis oficiais (`sameAs`) |
@@ -38,11 +40,12 @@ Medido ao vivo no dia em que este registro nasceu:
 
 | Sitemap | Conteúdo |
 |---|---|
-| `sitemap-paginas.xml` | páginas fixas (home, hub, sets, blog, FAQ…) |
+| `sitemap-pages.xml` | páginas fixas (home, hub, /games, blog, FAQ…) |
+| `sitemap-games.xml` | a tela de cada jogo (`/games/<jogo>`) |
 | `sitemap-sets.xml` | páginas de set em português |
 | `sitemap-sets-en.xml` | as mesmas em inglês |
-| `sitemap-cartas.xml` | cartas (as mais vistas e as mais caras) |
-| `sitemap-artistas.xml` | artistas |
+| `sitemap-cards-<jogo>.xml` | todas as cartas do jogo; acima de 45 mil, `-2`, `-3`… (o limite do protocolo é 50 mil por arquivo) |
+| `sitemap-artists.xml` | artistas |
 | `sitemap-decks.xml` | decks da comunidade |
 | `sitemap-blog.xml` | posts do blog, com `lastmod` |
 
@@ -50,7 +53,44 @@ Medido ao vivo no dia em que este registro nasceu:
 protocolo exige; não é segredo. Na primeira vez (chave ainda fora do ar) vai o
 sitemap inteiro. Depois, só a diferença. O log do passo "IndexNow — separa as
 URLs novas" diz quantas URLs foram e por quê. O passo "IndexNow — avisa os
-buscadores" mostra o HTTP de cada lote: 200 ou 202 é aceito.
+buscadores" mostra o HTTP de cada lote: 200 ou 202 é aceito. Teto de 20 mil
+URLs por deploy (`TETO_POR_DEPLOY` em `scripts/lib/indexnow.mjs`): jogos, sets
+e endereços antigos vão primeiro, cartas completam até o teto e o resto fica
+pro sitemap. Sem o teto, a mudança pra `/games` (~290 mil cartas de uma vez)
+viraria dezenas de lotes num deploy só.
+
+## Endereços (2026-09-30)
+
+Sempre em inglês (o site é pra todo mundo, não só pro Brasil), no molde do
+TCGplayer: jogo, set e carta aninhados, cada nível uma página.
+
+| Endereço | O que é | Quem monta |
+|---|---|---|
+| `/games` | todos os jogos, modernos e vintage | estática (`prerender-catalog`) |
+| `/games/<jogo>` | a tela de Sets do app, com título, descrição e índice de sets próprios | borda, por cima do `sets.html` |
+| `/games/<jogo>/<set>` (e `-en`) | página do set | estática (`prerender-catalog`) |
+| `/games/<jogo>/<set>/<carta>` | página da carta | borda (`functions/_lib/pagina-carta.js`), dos mesmos chunks do app |
+| `/games/<jogo>/_id/<id>` | link de compartilhar do app | 301 pra página da carta |
+
+- `<jogo>` é o nome inteiro do jogo (`star-wars-unlimited`, não `swu`). Linha
+  vintage tem endereço próprio (`/games/one-piece-carddass`). Apelido, a chave
+  interna do jogo, maiúscula, barra no fim e `.html` levam 301 pro oficial.
+- `<carta>` é nome + número impresso (+ total, quando o número é só dígitos) +
+  idioma quando não é inglês (`charizard-4-102`, `charizard-4-102-jp`). Empate
+  ganha `-2`, `-3` na ordem do id. A regra é uma só
+  (`functions/_lib/slug-carta.js`) pro build e pra borda.
+- **Endereços antigos seguem valendo**, como 301: `/set/<slug>` e
+  `/card/<slug>` pelos mapas `data/game-pages/legado-*.json`, e
+  `/sets?game=<jogo>[&line=…]` pelo `functions/sets.js`. O `/sets` sem jogo
+  continua respondendo 200 (é o que o service worker guarda no install e o
+  que o PWA instalado abre), com `noindex`.
+- **Offline e PWA**: o service worker guarda toda `/games/<jogo>` na mesma
+  entrada do `sets.html`, então a tela de um jogo nunca visitado abre offline.
+  O `sets.html` tem `<base href="/">`: a mesma página responde em `/sets` e em
+  `/games/<jogo>`, e os links relativos dela têm que valer nos dois.
+- Página de carta não é arquivo do deploy (seriam ~290 mil; o Pages aceita
+  20 mil): a borda lê o mapa do jogo, o chunk do set e o preço, e guarda o
+  HTML no cache da borda por 24 h, com o build na chave.
 
 ## Fora do repositório
 
@@ -64,8 +104,9 @@ Em ordem de impacto:
      motivo. "Detectada, mas não indexada" é falta de autoridade ou de
      rastreio. "Rastreada, mas não indexada" é o Google achando a página fraca
      ou duplicada.
-   - *Inspeção de URL* → "Solicitar indexação" pra home, /sets, /hub,
-     /explore, /blog e os sets mais procurados. A cota é de uns 10 por dia.
+   - *Inspeção de URL* → "Solicitar indexação" pra home, /games, /hub,
+     /explore, /blog, a tela dos jogos principais (`/games/pokemon`…) e os sets
+     mais procurados. A cota é de uns 10 por dia.
    - Depois do deploy, inspecionar a home e usar "Testar URL publicada" →
      HTML renderizado. O título tem que sair em português.
 2. **Bing Webmaster Tools** (bing.com/webmasters): "Importar do Google Search

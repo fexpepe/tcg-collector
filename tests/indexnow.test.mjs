@@ -82,7 +82,7 @@ test("deploy.yml: separa antes de apagar scripts/ e do deploy; envia depois; só
   assert.match(bloco(envia), /https:\/\/api\.indexnow\.org\/indexnow/);
 });
 
-// Teto por deploy (2026-09-30): a mudança pra /games criou ~250 mil URLs de
+// Teto por deploy (2026-09-30): a mudança pra /games criou ~290 mil URLs de
 // carta de uma vez. Jogos, sets e endereços antigos vão primeiro; cartas
 // completam até o teto; o resto fica pro sitemap.
 test("teto por deploy: o que não é carta vai primeiro, carta completa até o teto", async () => {
