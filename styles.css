@@ -9375,20 +9375,35 @@ a.dash-profile-handle:hover, a.shared-kind:hover,
   display: flex;
   align-items: center;
   max-width: 100%;
+  /* Caixa FIXA, a mesma em toda página: altura e entrelinha em px (e não o
+     `normal` da fonte, que muda quando a Outfit troca a fonte reserva) e a
+     margem igual com ou sem título embaixo. Ver o Voltar do set, abaixo. */
+  height: 16px;
   margin: 0 0 6px;
   color: var(--muted);
   font-size: 13px;
   font-weight: 700;
+  line-height: 16px;
   white-space: nowrap;
 }
 /* Sublinhado nos níveis que são link (como no Collectr): o atual, sem
    sublinhado e na cor do texto, é o único que não leva a lugar nenhum. */
 .crumbs a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
 .crumbs a:hover { color: var(--text); }
-/* Na página do set o título some e a trilha fica sozinha na faixa: mesma
-   caixa do "← Voltar" que ela substitui, senão as abas pulam 3px quando o
-   catálogo chega e o detail.js troca um pelo outro. */
-html[data-detail="set"] .crumbs { margin: 3px 0 0; }
+/* Na página do set o título some e a trilha fica sozinha na faixa. Ela tinha
+   margem própria ali (3px em cima, a do "← Voltar" que ela substitui) e
+   descia 3px em relação às abas do jogo: ao entrar num set, a trilha pulava
+   (2026-09-30, pedido do Fernando). Agora é o contrário: a trilha não muda, e
+   o Voltar — que ocupa a faixa até o catálogo chegar e o detail.js trocar um
+   pelo outro — ganha a caixa dela, pra a troca não mover as abas. Só no
+   desktop: no celular a trilha não aparece e o Voltar segue como era. */
+@media (min-width: 701px) {
+  html[data-detail="set"] .page-head-bar-text:has(> .crumbs) > .detail-back-link {
+    height: 16px;
+    margin: 0 0 6px;
+    line-height: 16px;
+  }
+}
 .crumbs > * + *::before {
   content: "";
   display: inline-block;
@@ -9482,7 +9497,11 @@ html[data-detail="set"] #detailTitle { display: none; }
 .page-head-stack > .page-head-bar-text { grid-area: title; }
 /* Página de SET: eyebrow e título somem (o hero do set, logo abaixo, já traz o
    nome — ver detail.js), sobra só o "← Voltar" na 1ª linha. Os 40px de respiro
-   eram pro título grande; atrás de um link de 13px viravam buraco. */
+   eram pro título grande; atrás de um link de 13px viravam buraco. O carimbo
+   do game.js no <html> ganha a corrida do primeiro paint: o `hidden` do h1 só
+   chega quando o detail.js roda, e até lá as abas nasciam 26px mais baixas e
+   subiam (2026-09-30). */
+html[data-detail="set"] .page-head-bar.page-head-stack,
 .page-head-stack:has(> .page-head-bar-text > h1[hidden]) { row-gap: 14px; }
 .page-head-stack > .explore-subnav { grid-area: nav; }
 .page-head-stack:has(> .explore-subnav) .page-search { grid-area: search; }
