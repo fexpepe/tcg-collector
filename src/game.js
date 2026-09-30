@@ -310,6 +310,10 @@
     dataDir: cfg.dataDir,
     manifest: MANIFEST,
     imgMirrorHosts: IMG_MIRROR_HOSTS,
-    catalogReady: catalogReady
+    catalogReady: catalogReady,
+    // O registro INTEIRO, não só o jogo da sessão: nas páginas neutras a sessão
+    // é "hub" (name = "Sleevu"), mas elas mostram todos os jogos e precisam do
+    // nome de cada um. O CSV do Portfólio lê daqui (csvGameName no portfolio.js).
+    games: GAMES
   };
 })();

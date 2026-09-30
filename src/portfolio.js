@@ -288,7 +288,17 @@
   // Diferente do CSV do menu da conta (inventário do jogo da sessão, preço manual):
   // aqui vai TODO o patrimônio precificado — cartas raw com valor de mercado por
   // condição + slabs graded — em todos os jogos, na moeda do topo.
-  const CSV_GAME_NAMES = { pokemon: "Pokémon", lorcana: "Lorcana", onepiece: "One Piece", naruto: "Naruto", hxh: "Hunter x Hunter", dbc: "Dragon Ball Carddass" };
+  // Coluna "Jogo": o nome completo do registro do game.js (window.SLEEVU.games),
+  // que já nasce com todo jogo novo. Até 2026-09-30 era um mapa fixo aqui que só
+  // os jogos vintage lembraram de atualizar: os 9 do TCGCSV/Scryfall (Magic,
+  // Yu-Gi-Oh!, Star Wars…) saíam como slug cru ("ygo", "swu").
+  // Naruto e HxH ficam com a grafia que o CSV sempre escreveu: o "Card Game" e o
+  // "×" do registro mudariam a coluna de quem já filtra ou soma por ela.
+  const CSV_GAME_LEGACY = { naruto: "Naruto", hxh: "Hunter x Hunter" };
+  function csvGameName(g) {
+    const reg = (window.SLEEVU && window.SLEEVU.games) || {};
+    return CSV_GAME_LEGACY[g] || (reg[g] && reg[g].name) || g;
+  }
   function csvCell(value) {
     const s = value == null ? "" : String(value);
     return /[";\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
@@ -299,14 +309,14 @@
     const { lines } = collectionLines(gameFilter);
     const rows = [t("portfolio.csv.header").split(";")];
     lines.forEach((l) => rows.push([
-      t("portfolio.csv.card"), CSV_GAME_NAMES[l.card.game] || l.card.game, l.card.name, l.card.set,
+      t("portfolio.csv.card"), csvGameName(l.card.game), l.card.name, l.card.set,
       l.card.number, l.card.language || "", l.variant, l.condition, l.quantity, csvNum(l.unit), csvNum(l.total), cur
     ]));
     gradedSlabs(gameFilter).forEach((s) => {
       const card = cardsById.get(s.cardId);
       if (!card) return;
       rows.push([
-        t("portfolio.csv.slab"), CSV_GAME_NAMES[card.game] || card.game, card.name, card.set,
+        t("portfolio.csv.slab"), csvGameName(card.game), card.name, card.set,
         card.number, card.language || "", s.variant || "", `${String(s.company || "").toUpperCase()} ${shared.gradedGradeText(s.grade, s.pristine)}`,
         1, csvNum(s.value), csvNum(s.value), cur
       ]);
