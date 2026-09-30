@@ -159,17 +159,14 @@
     if (!modal) { modal = document.createElement("div"); modal.id = "gradedPickerModal"; modal.className = "sales-picker-modal"; document.body.appendChild(modal); }
     let pickGame = ctx.gameFilter ? ctx.gameFilter() : "all";
     let pickRarity = "";
-    let pickSort = "value-desc";
+    // Ordenar: o mesmo de toda grade (src/ordenar.js).
+    const ordenar = window.TCGOrdenar;
+    const PICK_SORTS = "value num name rarity release";
+    let pickSort = ordenar.PADRAO;
     const cards = ctx.cards();
     const updateCount = () => { const el = modal.querySelector(".sales-picker-count"); if (el) el.textContent = t("graded.pickerCount", { n: graded.list().length }); };
     const priceOf = (card, variant) => shared.cardValue(card, variant, prices, shared.DEFAULT_CONDITION).value || 0;
-    const sortPairs = (pairs) => {
-      if (pickSort === "num-asc") return pairs.sort((a, b) => shared.compareCardNumbers(a.card.number, b.card.number));
-      if (pickSort === "num-desc") return pairs.sort((a, b) => shared.compareCardNumbers(b.card.number, a.card.number));
-      if (pickSort === "release") return pairs.sort((a, b) => String(b.card.setReleaseDate || "").localeCompare(String(a.card.setReleaseDate || "")));
-      if (pickSort === "value-asc") return pairs.sort((a, b) => { const pa = priceOf(a.card, a.variant), pb = priceOf(b.card, b.variant); if (!pa && !pb) return 0; if (!pa) return 1; if (!pb) return -1; return pa - pb; });
-      return pairs.sort((a, b) => priceOf(b.card, b.variant) - priceOf(a.card, a.variant));
-    };
+    const sortPairs = (pairs) => pairs.sort(ordenar.compara(pickSort, { preco: (p) => priceOf(p.card, p.variant) }));
     const renderList = () => {
       const q = modal.querySelector(".sales-picker-search").value;
       const base = cards.filter((c) => owned.has(c.id) && (pickGame === "all" || c.game === pickGame));
@@ -195,8 +192,7 @@
     const ownedPool = cards.filter((c) => owned.has(c.id));
     const rarityOpts = `<option value="">${escapeHtml(t("filter.all.f"))}</option>`
       + unique(ownedPool.map((c) => c.rarity).filter(Boolean)).sort().map((r) => `<option value="${escapeAttribute(r)}">${escapeHtml(r)}</option>`).join("");
-    const sortOpts = [["value-desc", "sort.valueDesc"], ["value-asc", "sort.valueAsc"], ["num-asc", "sort.numAsc"], ["num-desc", "sort.numDesc"], ["release", "sort.releaseDate"]]
-      .map(([v, k]) => `<option value="${v}"${v === pickSort ? " selected" : ""}>${escapeHtml(t(k))}</option>`).join("");
+    const sortOpts = ordenar.opcoes(PICK_SORTS, pickSort);
     modal.innerHTML = `<div class="sales-picker-backdrop" data-graded-picker-close></div>
       <section class="sales-picker-panel" role="dialog" aria-modal="true" aria-label="${escapeAttribute(t("graded.add"))}">
         <header class="sales-picker-head"><strong>${escapeHtml(t("graded.add"))}</strong>
@@ -209,8 +205,8 @@
           <input type="search" class="sales-picker-search" placeholder="${escapeAttribute(t("search.placeholder.cards"))}">
           <label class="sales-picker-field"><span>${escapeHtml(t("toolbar.rarity"))}</span>
             <select class="sales-picker-select" id="gradedPickerRarity">${rarityOpts}</select></label>
-          <label class="sales-picker-field"><span>${escapeHtml(t("sort.label"))}</span>
-            <select class="sales-picker-select" id="gradedPickerSort">${sortOpts}</select></label>
+          <label class="sales-picker-field srt-host"><span>${escapeHtml(t("sort.label"))}</span>
+            <select class="sales-picker-select" id="gradedPickerSort" data-ordenar>${sortOpts}</select></label>
         </div>
         <p class="sales-picker-hint">${escapeHtml(t("graded.pickerHint"))}</p>
         <!-- Graduar a carta não decrementava a cópia solta, então o MESMO objeto

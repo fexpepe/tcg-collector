@@ -270,38 +270,15 @@
   // visualização); o motor cuida das páginas, da navegação e do teclado.
   const binderView = window.TCGBinderView.createBinderView({ root: elements.grid, grid: elements.grid, storageKey: "tcg-detail-binder-pockets" });
 
-  // Ordena os pares carta×variante conforme o select de ordenação. Diferente
-  // dos outros filtros: não esconde nada, só reordena a grade.
+  // Ordena os pares carta×variante conforme o Ordenar (src/ordenar.js, o
+  // mesmo de toda grade). Diferente dos outros filtros: não esconde nada, só
+  // reordena. O preço é o exibido no tile (manual ou, na falta, referência de
+  // mercado), pra a ordem bater com o que se vê.
   function sortTiles(pairs) {
-    // Mesmo valor exibido no tile (preço manual ou, na falta, referência de
-    // mercado), para a ordenação por preço bater com o que se vê. Memoizado.
-    const priceOf = shared.memoValue((p) => shared.cardValue(p.card, p.variant, prices, shared.DEFAULT_CONDITION).value || 0);
-    const byNum = (a, b) => shared.compareCardNumbers(a.card.number, b.card.number);
-    if (selectedSort === "num-asc") {
-      pairs.sort(byNum);
-    } else if (selectedSort === "num-desc") {
-      pairs.sort((a, b) => byNum(b, a));
-    } else if (selectedSort === "rarity-desc") {
-      pairs.sort((a, b) => shared.rarityRank(b.card.rarity) - shared.rarityRank(a.card.rarity) || byNum(a, b));
-    } else if (selectedSort === "rarity-asc") {
-      pairs.sort((a, b) => shared.rarityRank(a.card.rarity) - shared.rarityRank(b.card.rarity) || byNum(a, b));
-    } else if (selectedSort === "value-desc") {
-      pairs.sort((a, b) => priceOf(b) - priceOf(a));
-    } else if (selectedSort === "value-asc") {
-      // Cartas sem preço registrado vão para o fim (não na frente como "0").
-      pairs.sort((a, b) => {
-        const pa = priceOf(a);
-        const pb = priceOf(b);
-        if (!pa && !pb) return 0;
-        if (!pa) return 1;
-        if (!pb) return -1;
-        return pa - pb;
-      });
-    } else {
-      // release: mais recente primeiro (data ISO ordena como string).
-      pairs.sort((a, b) => String(b.card.setReleaseDate || "").localeCompare(String(a.card.setReleaseDate || "")));
-    }
-    return pairs;
+    return pairs.sort(window.TCGOrdenar.compara(selectedSort, {
+      preco: (p) => shared.cardValue(p.card, p.variant, prices, shared.DEFAULT_CONDITION).value || 0,
+      depois: () => render()
+    }));
   }
 
   // Dois buckets só: "Comuns e raras" (o miolo do set) e "Especiais" — que

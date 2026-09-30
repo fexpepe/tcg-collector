@@ -1060,6 +1060,41 @@ input::placeholder {
    Ordenar: NÃO encolhe (no celular os chips quebram linha e o flex espremia o
    toggle — o 3º botão saía cortado na borda). */
 .results-sort .view-toggle { flex: none; margin-left: auto; }
+/* ── Ordenar (src/ordenar.js, 2026-09-30) ─────────────────────────────────
+   O MESMO menu em toda grade de cartas, no molde do Collectr: "Critério:
+   sentido" com o critério forte e o sentido apagado, ✓ no escolhido. O
+   <select> fica no lugar, com o visual que cada barra já dá a ele; o ::after
+   do .srt-host (rótulo + select) cobre os dois e recebe o toque, então nenhum
+   navegador abre a lista nativa por baixo. Área própria no split-css (srt-):
+   só as páginas que ordenam cartas baixam. */
+.srt-host { position: relative; }
+.srt-host::after { content: ""; position: absolute; inset: 0; z-index: 1; cursor: pointer; }
+.srt-host:hover select { border-color: var(--muted); }
+.srt-veu { position: fixed; inset: 0; z-index: 200; }
+.srt-menu {
+  position: fixed; z-index: 201; display: flex; flex-direction: column; gap: 2px;
+  min-width: 260px; max-width: calc(100vw - 16px); padding: 6px;
+  overflow-y: auto; overscroll-behavior: contain;
+  background: var(--panel-strong); border: 1px solid var(--line); box-shadow: var(--shadow-pop);
+}
+.srt-opt {
+  display: flex; align-items: center; justify-content: flex-start; gap: 5px;
+  width: 100%; min-height: 36px; padding: 7px 12px; flex: none;
+  border: 0; border-radius: 0; background: transparent; color: var(--text);
+  font-size: 14px; font-weight: 500; text-align: left; white-space: nowrap;
+}
+.srt-opt:hover, .srt-opt:focus-visible { background: var(--panel); outline: none; }
+.srt-opt[aria-selected="true"] { background: var(--accent-soft); }
+.srt-k { font-weight: 700; }
+.srt-d { color: var(--muted); }
+.srt-opt svg { flex: none; width: 16px; height: 16px; margin-left: auto; padding-left: 4px; box-sizing: content-box; }
+/* Celular: folha presa no rodapé, com véu escuro e linhas de 44px (alvo de
+   toque) — o jeito do Collectr no app. */
+@media (max-width: 600px) {
+  .srt-veu { background: rgba(6, 8, 12, 0.55); }
+  .srt-menu.is-sheet { left: 8px; right: 8px; bottom: calc(8px + env(safe-area-inset-bottom)); max-height: 72vh; min-width: 0; }
+  .srt-opt { min-height: 44px; font-size: 15px; }
+}
 /* Sets do Pokémon: a origem (EN/PT/JA/ZH) é um FILTRO, então mora na linha do
    contador, colada à esquerda do ▦/≣ — o grupo inteiro na ponta direita — em
    vez de uma faixa própria de 38px acima (pedido de 2026-09-10). Chips na

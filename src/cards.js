@@ -9,9 +9,11 @@
   const prices = shared.createPriceStore();
 
   // Ordenação/visualização da grade (persistidas, chaves próprias da página de
-  // busca — independentes da Coleção). Mesmas opções dos dois lugares.
-  const CARDS_SORTS = ["value-desc", "value-asc", "num-asc", "num-desc", "rarity-desc", "rarity-asc", "release"];
-  let cardsSort = CARDS_SORTS.includes(localStorage.getItem("tcg-cards-sort")) ? localStorage.getItem("tcg-cards-sort") : "value-desc";
+  // busca — independentes da Coleção). Critérios, rótulos e comparação no
+  // src/ordenar.js; as famílias oferecidas são o data-ordenar do cards.html.
+  const ordenar = window.TCGOrdenar;
+  const CARDS_SORTS = (document.getElementById("cardsSortSelect") || document.body).getAttribute("data-ordenar");
+  let cardsSort = ordenar.valida(localStorage.getItem("tcg-cards-sort"), CARDS_SORTS);
   let cardsView = shared.gridViewValue(localStorage.getItem("tcg-cards-view"));
 
   const elements = {
@@ -59,9 +61,9 @@
       if (v != null && elements[key]) elements[key].value = v;
     });
     const sort = sp.get("sort");
-    if (sort && CARDS_SORTS.includes(sort)) {
-      cardsSort = sort;
-      if (elements.cardsSortSelect) elements.cardsSortSelect.value = sort;
+    if (sort) {
+      cardsSort = ordenar.valida(sort, CARDS_SORTS, cardsSort);
+      if (elements.cardsSortSelect) elements.cardsSortSelect.value = cardsSort;
     }
   }
   function writeFiltersToUrl() {
@@ -381,21 +383,13 @@
     return pairs;
   }
 
-  // Comparador do seletor de ordenação (mesma lógica da Coleção/detalhe).
+  // Comparador do Ordenar (src/ordenar.js, o mesmo de toda grade). O preço é
+  // o do tile; variação e popularidade chegam depois e repintam a grade.
   function sortComparator() {
-    // Memoizado: no Explorar são ~8k cartas — sem cache seriam O(n log n) lookups.
-    const priceOf = shared.memoValue((p) => shared.cardValue(p.card, p.variant, prices, shared.DEFAULT_CONDITION).value || 0);
-    const byNum = (a, b) => shared.compareCardNumbers(a.card.number, b.card.number);
-    if (cardsSort === "num-asc") return byNum;
-    if (cardsSort === "num-desc") return (a, b) => byNum(b, a);
-    if (cardsSort === "value-asc") return (a, b) => {
-      const pa = priceOf(a), pb = priceOf(b);
-      if (!pa && !pb) return 0; if (!pa) return 1; if (!pb) return -1; return pa - pb;
-    };
-    if (cardsSort === "rarity-desc") return (a, b) => shared.rarityRank(b.card.rarity) - shared.rarityRank(a.card.rarity) || byNum(a, b);
-    if (cardsSort === "rarity-asc") return (a, b) => shared.rarityRank(a.card.rarity) - shared.rarityRank(b.card.rarity) || byNum(a, b);
-    if (cardsSort === "release") return (a, b) => String(b.card.setReleaseDate || "").localeCompare(String(a.card.setReleaseDate || ""));
-    return (a, b) => priceOf(b) - priceOf(a); // value-desc (padrão)
+    return ordenar.compara(cardsSort, {
+      preco: (p) => shared.cardValue(p.card, p.variant, prices, shared.DEFAULT_CONDITION).value || 0,
+      depois: () => render()
+    });
   }
 
   // Alterna grade/lista (mesma classe .is-list do detalhe/coleção) e reflete nos botões.

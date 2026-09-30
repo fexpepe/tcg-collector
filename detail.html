@@ -149,17 +149,9 @@
            initCollapsibles). -->
       <section class="results-header">
         <div class="results-actions">
-          <div class="results-sort">
+          <div class="results-sort srt-host">
             <label for="sortSelect" data-i18n="sort.label">Ordenar:</label>
-            <select id="sortSelect">
-              <option value="release" data-i18n="sort.releaseDate">Lançamento</option>
-              <option value="value-desc" data-i18n="sort.valueDesc">Valor (maior → menor)</option>
-              <option value="value-asc" data-i18n="sort.valueAsc">Valor (menor → maior)</option>
-              <option value="num-desc" data-i18n="sort.numDesc">Nº da carta (maior → menor)</option>
-              <option value="rarity-desc" data-i18n="sort.rarityDesc">Raridade (maior → menor)</option>
-              <option value="rarity-asc" data-i18n="sort.rarityAsc">Raridade (menor → maior)</option>
-              <option value="num-asc" data-i18n="sort.numAsc">Nº da carta (menor → maior)</option>
-            </select>
+            <select id="sortSelect" data-ordenar="value change num name pct views rarity release"></select>
           </div>
           <button type="button" id="detailFiltersBtn" class="secondary" aria-expanded="false" aria-controls="detailFilters"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M7.5 12h9M10.5 18h3"/></svg><span data-i18n="filters.show">Filtros</span></button>
           <div id="viewToggle" class="view-toggle" role="group" data-i18n-aria="toolbar.view" aria-label="Visualização">
@@ -227,6 +219,7 @@
 
     <script defer src="src/i18n.js"></script>
     <script defer src="src/shared.js"></script>
+    <script defer src="src/ordenar.js"></script>
     <script defer src="src/insights.js"></script>
     <script defer src="src/facets.js"></script>
     <script defer src="src/binder-view.js"></script>

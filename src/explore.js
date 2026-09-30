@@ -30,9 +30,11 @@
   // "relevance" (27/09/2026) é o padrão: a carta que TEM o nome buscado vem
   // antes da que só começa com ele ("mew": Mew antes de Mewtwo), e dentro do
   // mesmo nível a mais valiosa primeiro. Quem já escolheu outra ordem guarda
-  // a escolha (a chave só é gravada quando o seletor muda).
-  const SORTS = ["relevance", "value-desc", "value-asc", "rarity-desc", "rarity-asc", "release", "num-asc"];
-  let sort = SORTS.includes(localStorage.getItem("tcg-explore-sort")) ? localStorage.getItem("tcg-explore-sort") : "relevance";
+  // a escolha (a chave só é gravada quando o seletor muda). Critérios no
+  // src/ordenar.js; as famílias oferecidas são o data-ordenar do explore.html.
+  const ordenar = window.TCGOrdenar;
+  const SORTS = elements.sortSelect.getAttribute("data-ordenar");
+  let sort = ordenar.valida(localStorage.getItem("tcg-explore-sort"), SORTS, "relevance");
   let gameFilter = "all";
   // Visualização da grade (grade/lista/compacta/fichário) — o MESMO alternador
   // da Coleção, do /cartas e da página do set, com preferência por página.
@@ -167,23 +169,15 @@
     } catch (e) { /* seção é opcional */ }
   })();
 
+  // Comparador do Ordenar (src/ordenar.js, o mesmo de toda grade). Aqui mora
+  // o único "Mais relevantes": a nota de busca do termo digitado.
   function sortComparator() {
-    const priceOf = shared.memoValue((p) => shared.cardValue(p.card, p.variant, prices, shared.DEFAULT_CONDITION).value || 0);
-    const byNum = (a, b) => shared.compareCardNumbers(a.card.number, b.card.number);
-    if (sort === "relevance") {
-      const q = term();
-      const relOf = shared.memoValue((card) => shared.searchRelevance(card, q));
-      return (a, b) => (relOf(b.card) - relOf(a.card)) || (priceOf(b) - priceOf(a));
-    }
-    if (sort === "num-asc") return byNum;
-    if (sort === "value-asc") return (a, b) => {
-      const pa = priceOf(a), pb = priceOf(b);
-      if (!pa && !pb) return 0; if (!pa) return 1; if (!pb) return -1; return pa - pb;
-    };
-    if (sort === "rarity-desc") return (a, b) => shared.rarityRank(b.card.rarity) - shared.rarityRank(a.card.rarity) || byNum(a, b);
-    if (sort === "rarity-asc") return (a, b) => shared.rarityRank(a.card.rarity) - shared.rarityRank(b.card.rarity) || byNum(a, b);
-    if (sort === "release") return (a, b) => String(b.card.setReleaseDate || "").localeCompare(String(a.card.setReleaseDate || ""));
-    return (a, b) => priceOf(b) - priceOf(a); // value-desc (padrão)
+    const q = term();
+    return ordenar.compara(sort, {
+      preco: (p) => shared.cardValue(p.card, p.variant, prices, shared.DEFAULT_CONDITION).value || 0,
+      relevancia: (p) => shared.searchRelevance(p.card, q),
+      depois: () => { if (isSearching()) render(); }
+    });
   }
 
   // --- Barra de filtros (Set · Idioma · Raridade · Preço) -------------------
@@ -612,7 +606,7 @@
 
   elements.sortSelect.value = sort;
   elements.sortSelect.addEventListener("change", () => {
-    sort = SORTS.includes(elements.sortSelect.value) ? elements.sortSelect.value : "value-desc";
+    sort = ordenar.valida(elements.sortSelect.value, SORTS);
     try { localStorage.setItem("tcg-explore-sort", sort); } catch (e) { /* ignora */ }
     // Reordena o que JÁ está na mão (o resultado inteiro veio da borda) —
     // não é uma busca nova, então não volta à rede.
