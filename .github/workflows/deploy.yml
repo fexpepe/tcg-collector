@@ -157,9 +157,23 @@ jobs:
       # compensa queimar cota diária pra reprocessar o mesmo número.
       # Pular é seguro: o merge-catalogs lê data/ppt-prices.generated.json num
       # try/catch ("no-op sem o arquivo") e esse artefato está no cache de build,
-      # então o run grátis reaproveita o resultado da última rodada paga.
+      # então o run grátis reaproveita o resultado da última rodada paga. Quando
+      # ele não veio (cache de catálogo perdido), o passo da PPT o remonta do
+      # cache por set com --so-cache, sem gastar crédito.
+      #
+      # Push em branch que não é a main (preview) também não paga (30/09/2026):
+      # o cache que o build de branch salva só vale pra ela, então o crédito que
+      # um preview gasta nunca chega na main. Nesse dia cinco builds completos
+      # (três da main, dois de preview) somaram os 20.000 créditos, e o build
+      # seguinte morreu com "PPT 429: Daily rate limit exceeded". Pra testar
+      # mudança no sync-ppt num preview: Run workflow na branch (manual paga).
       - name: Decide se usa as APIs pagas
         run: |
+          if [ "${{ github.event_name }}" = "push" ] && [ "${{ github.ref }}" != "refs/heads/main" ]; then
+            echo "Push em branch (preview): sem APIs por crédito — a PPT sai do cache."
+            echo "RODA_PAGO=false" >> $GITHUB_ENV
+            exit 0
+          fi
           if [ "${{ github.event_name }}" != "schedule" ]; then
             echo "Evento '${{ github.event_name }}': inclui as APIs por crédito."
             echo "RODA_PAGO=true" >> $GITHUB_ENV
@@ -269,11 +283,19 @@ jobs:
       # do Cardmarket e imagens faltando, ex.: era Mega). NO-OP sem o secret.
       # Incremental: cacheia por set em data/.cache/ppt (preservado entre runs) e
       # respeita um orçamento de créditos/run pra nunca estourar o limite do plano.
+      # Cota do dia esgotada não derruba o build: o run vira só-cache e deixa um
+      # ::warning:: no resumo. Sem APIs pagas (RODA_PAGO=false), --so-cache: não
+      # chama a API; só remonta o artefato se ele não veio do cache de catálogo.
       - name: Sincroniza preços/imagens JP (PPT)
-        if: env.RODA_SYNC == 'true' && env.RODA_PAGO == 'true'
+        if: env.RODA_SYNC == 'true'
         env:
           PPT_API_TOKEN: ${{ secrets.PPT_API_TOKEN }}
-        run: node scripts/sync-ppt.mjs --budget 8000 --graded
+        run: |
+          if [ "$RODA_PAGO" = "true" ]; then
+            node scripts/sync-ppt.mjs --budget 8000 --graded
+          else
+            node scripts/sync-ppt.mjs --budget 8000 --graded --so-cache
+          fi
 
       - name: Mescla catálogos num manifest unificado
         if: env.RODA_SYNC == 'true'
