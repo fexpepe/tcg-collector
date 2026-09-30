@@ -8,14 +8,6 @@ poucos.)
 
 ## Pendentes de aplicar
 
-- `20260930a` — libera o slug `swu` (Star Wars: Unlimited, 15º jogo) nas DUAS
-  whitelists de jogo: `card_views`/`increment_card_view` e `contribute_price`.
-  Cópia da `20260924a` com `swu` na lista (o corpo das funções é idêntico —
-  conferido por diff). Sem ela, view de carta e preço da comunidade do Star
-  Wars são descartados em silêncio. O teste que vale é o par do cabeçalho do
-  arquivo: `increment_card_view` com `swu` CRIA a linha em `card_views` (o 204
-  sozinho não prova nada).
-
 - `20260928b` — precisão do scanner (`20260928b_scanner_precisao.sql`; o `b` porque
   a `20260928a` do mesmo dia é a do Analytics 2.1): recria a `admin_funnel` da `20260923a`
   com todas as chaves de antes e mais `ambiguas`, `pela_foto`, `trocou` e
@@ -200,6 +192,15 @@ poucos.)
   das políticas (uma só: `events_insert_anyone`, INSERT, PERMISSIVE, PUBLIC,
   `with check (true)`) derrubou a teoria, e o controle positivo com `pageview`
   fechou. A `20260830b` foi apagada.
+
+- `20260930a` — libera o slug `swu` (Star Wars: Unlimited, 15º jogo) nas DUAS
+  whitelists de jogo: `card_views`/`increment_card_view` e `contribute_price`
+  (cópia da `20260924a`, corpo idêntico conferido por diff). Aplicada em
+  2026-09-30 e verificada por curl: `increment_card_view` com `swu` responde
+  204 **e cria a linha** (`{"game":"swu","card_id":"swu-540407","views":1}`); o
+  jogo inventado também dá 204 mas não cria nada; a contribuição anônima segue
+  **401**. Sem prova direta, como nas anteriores: o `contribute_price` logado
+  com `swu` (fecha contribuindo um preço numa carta do Star Wars pelo site).
 
 - `20260807c` — libera o slug `unionarena` (Union Arena, 13º jogo) nas DUAS
   whitelists de jogo: `card_views`/`increment_card_view` e `contribute_price`.
