@@ -74,9 +74,9 @@
   const jogoAtual = (window.SLEEVU && window.SLEEVU.game) || "pokemon";
   const telaDoJogo = urlDoJogo(jogoAtual, lineDef ? lineParam : "") || "sets";
   const telaSemLinha = urlDoJogo(jogoAtual, "") || `sets?game=${jogoAtual}`;
-  // Índice de sets que a borda põe na tela de um jogo (functions/games/): o
-  // service worker guarda a tela de Sets numa chave só, então esta cópia pode
-  // ter vindo com o índice de OUTRO jogo. O que não for deste sai.
+  // Índice de sets que a borda põe na tela de um jogo (functions/games/). O
+  // service worker guarda cada /games/<jogo> na entrada dele, mas é barato
+  // garantir: se uma cópia chegar com o índice de OUTRO jogo, ele sai.
   if (view === "sets") {
     document.querySelectorAll("[data-indice-jogo]").forEach((el) => {
       if (`/games/${el.getAttribute("data-indice-jogo")}` !== telaDoJogo) el.remove();

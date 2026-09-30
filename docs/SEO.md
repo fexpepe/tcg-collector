@@ -84,8 +84,11 @@ TCGplayer: jogo, set e carta aninhados, cada nível uma página.
   `/sets?game=<jogo>[&line=…]` pelo `functions/sets.js`. O `/sets` sem jogo
   continua respondendo 200 (é o que o service worker guarda no install e o
   que o PWA instalado abre), com `noindex`.
-- **Offline e PWA**: o service worker guarda toda `/games/<jogo>` na mesma
-  entrada do `sets.html`, então a tela de um jogo nunca visitado abre offline.
+- **Offline e PWA**: o service worker guarda cada `/games/<jogo>` na entrada
+  dela (com o título e o índice daquele jogo) e usa a do `sets.html`, que o
+  install guarda, de reserva: a tela de um jogo nunca visitado abre offline.
+  Uma entrada só pra todos os jogos entregava, na troca de jogo, a cópia do
+  anterior (título errado na aba).
   O `sets.html` tem `<base href="/">`: a mesma página responde em `/sets` e em
   `/games/<jogo>`, e os links relativos dela têm que valer nos dois.
 - Página de carta não é arquivo do deploy (seriam ~290 mil; o Pages aceita

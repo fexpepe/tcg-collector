@@ -77,8 +77,8 @@ export function listaDeSets(mapa) {
 // robô que não roda JS encontra (a grade da tela é desenhada no navegador), e
 // é por ele que a página do jogo linka as páginas de set. Fica recolhido num
 // <details> pra não competir com a grade. data-indice-jogo deixa o app.js
-// tirar o índice quando a tela abre OUTRO jogo a partir desta cópia (o
-// service worker guarda a tela de Sets numa chave só).
+// tirar o índice se uma cópia guardada chegar pra OUTRO jogo (o service
+// worker guarda cada /games/<jogo> na entrada dele; é só uma garantia).
 export function metaDoJogo(jogo, sets) {
   const n = sets.length;
   const titulo = (() => {
