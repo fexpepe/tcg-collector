@@ -33,6 +33,9 @@ import { montaSitemaps } from "./lib/sitemap.mjs";
 // moram em functions/_lib porque a borda usa a mesma régua (ver lá).
 import { JOGOS_URL, jogoDaUrl, urlDoSet } from "../functions/_lib/jogos.js";
 import { slugify, slugsDasCartas } from "../functions/_lib/slug-carta.js";
+// Cabeçalho das páginas estáticas (marcação + CSS do celular), o mesmo da
+// página de carta da borda.
+import { ESTILO_DO_CABECALHO, cabecalhoEstatico } from "../functions/_lib/cabecalho-estatico.js";
 
 const ORIGIN = "https://sleevu.app";
 const SETS_DIR = "data/sets";
@@ -299,7 +302,10 @@ const SET_L10N = {
     cta: "Abrir o set no Sleevu",
     othersAria: "Outros sets",
     others: (gameLabel) => `Outros sets de ${gameLabel}`,
-    navCollection: "Minha Coleção"
+    navAria: "Páginas",
+    // Mesmo rótulo do menu do app (nav.collection). O "Minha Coleção" de antes
+    // não cabia ao lado de Sets e Pokédex numa linha de celular de 360px.
+    navCollection: "Coleção"
   },
   en: {
     htmlLang: "en",
@@ -310,15 +316,19 @@ const SET_L10N = {
     cta: "Open this set on Sleevu",
     othersAria: "Other sets",
     others: (gameLabel) => `Other ${gameLabel} sets`,
-    navCollection: "My Collection"
+    navAria: "Pages",
+    navCollection: "Collection"
   }
 };
 
 // CSS das páginas pré-renderizadas. Inline de propósito: são páginas de
 // ENTRADA (a pessoa chega do Google), e um request bloqueante a mais antes do
 // primeiro paint custa mais que os 2 KB daqui. Compartilhado entre a página de
-// set e a de artista — separadas, elas divergiriam no primeiro ajuste.
+// set e a de artista — separadas, elas divergiriam no primeiro ajuste. O
+// cabeçalho do celular vem de functions/_lib/cabecalho-estatico.js, o mesmo da
+// página de carta, pela mesma razão.
 const PR_STYLE = `    <style>
+${ESTILO_DO_CABECALHO}
       .pr-wrap { max-width: 1100px; margin: 0 auto; padding: 0 20px 48px; }
       .pr-hero { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin: 24px 0 8px; }
       .pr-hero-logo { max-height: 96px; max-width: 260px; width: auto; height: auto; }
@@ -458,11 +468,11 @@ function setPageHtml(page, canonical, otherSets, lang) {
     ? `<img class="pr-hero-logo" src="${escapeAttr(absUrl(rep.setLogo))}" alt="${escapeAttr(name)}" loading="eager">`
     : `<strong class="pr-hero-name">${escapeHtml(name)}</strong>`;
 
-  const navHtml = [
-    `<a href="${baseDoJogo}">Sets</a>`,
-    game === "pokemon" ? `<a href="/pokedex">Pokédex</a>` : "",
-    `<a href="/collection">${escapeHtml(L.navCollection)}</a>`
-  ].filter(Boolean).join("\n          ");
+  const cabecalho = cabecalhoEstatico([
+    [baseDoJogo, "Sets"],
+    game === "pokemon" ? ["/pokedex", "Pokédex"] : null,
+    ["/collection", L.navCollection]
+  ].filter(Boolean), L.navAria);
   const trilhaHtml = `<nav class="pr-trilha" aria-label="${escapeAttr(isEn ? "Breadcrumb" : "Trilha de navegação")}">${trilha.slice(0, -1)
     .map((t) => `<a href="${escapeAttr(t.url.replace(ORIGIN, ""))}">${escapeHtml(t.nome)}</a> <span aria-hidden="true">›</span> `).join("")}<span aria-current="page">${escapeHtml(name)}</span></nav>`;
 
@@ -502,14 +512,7 @@ function setPageHtml(page, canonical, otherSets, lang) {
 ${PR_STYLE}
   </head>
   <body>
-    <header class="app-header">
-      <div class="app-header-inner">
-        <a class="brand" href="/">Sleevu</a>
-        <nav class="page-nav" aria-label="Páginas">
-          ${navHtml}
-        </nav>
-      </div>
-    </header>
+    ${cabecalho}
     <main class="pr-wrap">
       ${trilhaHtml}
       <div class="pr-hero">
@@ -629,16 +632,7 @@ function artistPageHtml(ap) {
 ${PR_STYLE}
   </head>
   <body>
-    <header class="app-header">
-      <div class="app-header-inner">
-        <a class="brand" href="/">Sleevu</a>
-        <nav class="page-nav" aria-label="Páginas">
-          <a href="/artists">Artistas</a>
-          <a href="/games">Sets</a>
-          <a href="/collection">Minha coleção</a>
-        </nav>
-      </div>
-    </header>
+    ${cabecalhoEstatico([["/artists", "Artistas"], ["/games", "Sets"], ["/collection", "Coleção"]])}
     <main class="pr-wrap">
       <div class="pr-hero">
         <div>
@@ -1144,15 +1138,7 @@ ${PR_STYLE}
     </style>
   </head>
   <body>
-    <header class="app-header">
-      <div class="app-header-inner">
-        <a class="brand" href="/">Sleevu</a>
-        <nav class="page-nav" data-i18n-aria="aria.pages" aria-label="Páginas">
-          <a href="/explore">Explorar</a>
-          <a href="/collection">Minha Coleção</a>
-        </nav>
-      </div>
-    </header>
+    ${cabecalhoEstatico([["/explore", "Explorar"], ["/collection", "Coleção"]])}
     <main class="pr-wrap">
       <div class="pr-hero">
         <div>

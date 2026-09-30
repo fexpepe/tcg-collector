@@ -14,6 +14,7 @@
 // tests/pagina-carta.test.mjs testa daqui sem precisar da borda.
 import { cardCode, alternateCodes } from "./card-code.js";
 import { jsonLdSeguro } from "./json-ld.js";
+import { ESTILO_DO_CABECALHO, cabecalhoEstatico } from "./cabecalho-estatico.js";
 
 export const ORIGEM = "https://sleevu.app";
 // Mesmo orçamento de título das páginas de set (ver o prerender): o Google
@@ -162,7 +163,10 @@ function vizinhas(card, cartas, slugs, base) {
   };
 }
 
+// O cabeçalho do celular é o das páginas estáticas do prerender (ver
+// cabecalho-estatico.js).
 const ESTILO = `    <style>
+${ESTILO_DO_CABECALHO}
       .prc-wrap { max-width: 900px; margin: 0 auto; padding: 0 20px 48px; }
       .prc-hero { display: flex; gap: 26px; flex-wrap: wrap; margin-top: 26px; }
       .prc-img { width: min(320px, 80vw); height: auto; border-radius: 12px; background: var(--panel, #1a1c22); }
@@ -291,15 +295,7 @@ export function paginaDaCarta({ card, jogo, set, cartas, slugs, preco, assets })
 ${ESTILO}
   </head>
   <body>
-    <header class="app-header">
-      <div class="app-header-inner">
-        <a class="brand" href="/">Sleevu</a>
-        <nav class="page-nav" aria-label="Páginas">
-          <a href="/games/${escapeAttr(jogo.url)}">Sets</a>
-          <a href="/collection">Minha Coleção</a>
-        </nav>
-      </div>
-    </header>
+    ${cabecalhoEstatico([[`/games/${jogo.url}`, "Sets"], ["/collection", "Coleção"]])}
     <main class="prc-wrap">
       <nav class="prc-trilha" aria-label="Trilha de navegação">${trilha.map((t, i) =>
         i === trilha.length - 1
