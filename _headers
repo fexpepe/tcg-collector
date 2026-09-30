@@ -21,8 +21,15 @@
 # connect-src (não img-src). Sem eles no connect-src, o SW é bloqueado pela CSP
 # e as imagens somem no site inteiro. (Quando a CSP vivia no <meta> isso não
 # aparecia: meta-CSP não vale pro contexto do SW; via header, vale.)
+#
+# O Supabase entrou no img-src em 2026-09-30 pelas imagens do BLOG (capa e
+# corpo dos posts, no bucket público blog-media do Storage); no connect-src
+# ele já estava (API). A lista de hosts de imagem que o post aceita
+# (IMG_HOSTS no src/blog-render.js) é travada contra este img-src por teste.
+# As páginas do blog que a Function monta (functions/blog/) herdam esta CSP
+# porque partem de um env.ASSETS.fetch — resposta montada do zero não herdaria.
 /*
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'wasm-unsafe-eval' https://static.cloudflareinsights.com https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://img.sleevu.app https://assets.tcgdex.net https://images.pokemontcg.io https://raw.githubusercontent.com https://tcgplayer-cdn.tcgplayer.com https://cards.lorcast.io https://cards.scryfall.io https://svgs.scryfall.io https://wsrv.nl; connect-src 'self' https://img.sleevu.app https://api.tcgdex.net https://assets.tcgdex.net https://images.pokemontcg.io https://raw.githubusercontent.com https://tcgplayer-cdn.tcgplayer.com https://cards.lorcast.io https://cards.scryfall.io https://svgs.scryfall.io https://wsrv.nl https://pokeapi.co https://economia.awesomeapi.com.br https://dlnalopazitfdgnmdguu.supabase.co https://cloudflareinsights.com; frame-src https://challenges.cloudflare.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'wasm-unsafe-eval' https://static.cloudflareinsights.com https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://img.sleevu.app https://assets.tcgdex.net https://images.pokemontcg.io https://raw.githubusercontent.com https://tcgplayer-cdn.tcgplayer.com https://cards.lorcast.io https://cards.scryfall.io https://svgs.scryfall.io https://wsrv.nl https://dlnalopazitfdgnmdguu.supabase.co; connect-src 'self' https://img.sleevu.app https://api.tcgdex.net https://assets.tcgdex.net https://images.pokemontcg.io https://raw.githubusercontent.com https://tcgplayer-cdn.tcgplayer.com https://cards.lorcast.io https://cards.scryfall.io https://svgs.scryfall.io https://wsrv.nl https://pokeapi.co https://economia.awesomeapi.com.br https://dlnalopazitfdgnmdguu.supabase.co https://cloudflareinsights.com; frame-src https://challenges.cloudflare.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
   Strict-Transport-Security: max-age=31536000; includeSubDomains
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
