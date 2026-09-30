@@ -1,5 +1,7 @@
-// Cabeçalho das páginas ESTÁTICAS: set, artista e /games (prerender-catalog.mjs)
-// e carta (pagina-carta.js, montada na borda). A marcação é a do .app-header do
+// Cabeçalho das páginas ESTÁTICAS: a variante em inglês do set, artista e
+// /games (prerender-catalog.mjs). A do set em português e a da carta são a
+// tela do APP desde 2026-10-01, com o cabeçalho e o JS do app (ver
+// functions/_lib/decora-app.js). A marcação é a do .app-header do
 // app, mas a página não tem hambúrguer, busca, tabbar nem shared.js — só o
 // styles.css e o theme.js.
 //
@@ -14,7 +16,7 @@
 // O modificador app-header--estatica devolve marca | links numa linha só, com
 // 44px de alvo de toque, sem mexer no cabeçalho do app. O CSS entra no <style>
 // inline de cada página (fora do orçamento do núcleo, ver check-size.mjs) e
-// mora AQUI, com a marcação, pros quatro moldes não divergirem.
+// mora AQUI, com a marcação, pros três moldes não divergirem.
 
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) =>
   ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);

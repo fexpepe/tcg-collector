@@ -9,8 +9,13 @@
 //   /games/<jogo>                -> a tela de Sets do jogo: o sets.html com a
 //                                   vitrine, mais título, descrição, canonical
 //                                   e índice de sets DO JOGO
-//   /games/<jogo>/<set>          -> página estática do set (next())
-//   /games/<jogo>/<set>/<carta>  -> página da carta, montada aqui
+//   /games/<jogo>/<set>          -> a tela do set do APP (detail.html), com
+//                                   título, JSON-LD e índice de cartas DO SET
+//                                   (2026-10-01; antes era uma página estática
+//                                   à parte, e o app seguia em /detail?…)
+//   /games/<jogo>/<set>-en       -> a variante em inglês, estática (next())
+//   /games/<jogo>/<set>/<carta>  -> a mesma tela do set, com o popup da carta
+//                                   aberto e o SEO da carta
 //   /games/<jogo>/_id/<id>?setName=  -> 301 pra página da carta (é o link
 //                                   que o "compartilhar" do app gera: o app
 //                                   sabe o id e o set, não o nome no endereço;
@@ -23,15 +28,18 @@
 import { buscaPagina, comVitrine } from "../_vitrine-csp.js";
 import { jogoDaUrl, urlOficial } from "../_lib/jogos.js";
 import { slugsDasCartas, cartasDoSet } from "../_lib/slug-carta.js";
-import { paginaDaCarta, precoUSD, escapeHtml, escapeAttr, ORIGEM } from "../_lib/pagina-carta.js";
+import { pecasDaCarta, precoUSD, escapeHtml, escapeAttr, ORIGEM } from "../_lib/pagina-carta.js";
+import { pecasDoSet } from "../_lib/pagina-set.js";
+import { decoraApp } from "../_lib/decora-app.js";
 import { naoAchou, redireciona, jsonDoSite, daBorda, guardaNaBorda, hasOwn } from "../_lib/borda.js";
 import { basePricingId } from "../api/_search-sql.js";
 
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const ID = /^[A-Za-z0-9][A-Za-z0-9._-]{0,99}$/;
-// Página da carta guardada na borda por um dia: o catálogo e os preços mudam
-// no build diário, e a chave do cache leva o id do build (ver cartaNaBorda).
-const BORDA_CARTA_S = 86400;
+// Tela decorada (set ou carta) guardada na borda por um dia: o catálogo e os
+// preços mudam no build diário, e a chave do cache leva o id do build (ver
+// telaDoSet).
+const BORDA_S = 86400;
 
 // O que o endereço é. Pura: tests/games-rota.test.mjs cobre cada caso.
 // `caminho` é o context.params.path (array de segmentos; vazio em /games).
@@ -57,7 +65,9 @@ export function decideRota(caminho, pathname) {
     // .html); aqui a Function responde antes dele, então faz igual.
     const semHtml = resto[0].replace(/\.html$/, "");
     if (semHtml !== resto[0] && SLUG.test(semHtml)) return { tipo: "redirect", destino: `/games/${oficial}/${semHtml}` };
-    return SLUG.test(resto[0]) ? { tipo: "estatica" } : { tipo: "404" };
+    // Set do app ou a variante -en estática: quem sabe é o mapa do jogo (um
+    // set cujo nome termine em "-en" não pode virar a variante de outro).
+    return SLUG.test(resto[0]) ? { tipo: "set", jogo, set: resto[0] } : { tipo: "404" };
   }
   if (resto[0] === "_id") return ID.test(resto[1]) ? { tipo: "id", jogo, id: resto[1] } : { tipo: "404" };
   if (!SLUG.test(resto[0]) || !SLUG.test(resto[1])) return { tipo: "404" };
@@ -134,17 +144,12 @@ async function telaDoJogo(context, jogo) {
   }
 }
 
-// ── Página da carta ─────────────────────────────────────────────────────────
-// O que a casca (games/card-template.html, gerada pelo prerender e carimbada
-// pelo deploy) aponta: o build e os arquivos com hash do tema e do CSS. É por
-// ela que a página montada aqui sai com o mesmo carimbo de build das estáticas
-// (sem ele o service worker nunca a guardaria pra offline).
-export function assetsDaCasca(html) {
-  const s = String(html || "");
-  const build = (/<meta name="sleevu-build" content="([^"]*)"/.exec(s) || [])[1] || "";
-  const js = (/<script src="([^"]*theme[^"]*\.js)"/.exec(s) || [])[1] || "/src/theme.js";
-  const css = (/<link rel="stylesheet" href="([^"]*styles[^"]*\.css)"/.exec(s) || [])[1] || "/styles.css";
-  return { build, js, css };
+// ── Tela do set (e da carta) ────────────────────────────────────────────────
+// Build da casca: o carimbo que o deploy põe em toda página. Vai na chave do
+// cache da borda, e assim, depois de um deploy, a cópia decorada do build
+// anterior (que aponta arquivos com hash já apagados) deixa de ser achada.
+export function buildDaCasca(html) {
+  return (/<meta name="sleevu-build" content="([^"]*)"/.exec(String(html || "")) || [])[1] || "";
 }
 
 // As cartas da página do set: os chunks listados no mapa (os mesmos que o app
@@ -170,34 +175,50 @@ async function precoDaCarta(env, request, card, arquivo) {
   return precoUSD(hasOwn(tabela, id) ? tabela[id] : tabela[basePricingId(id)]);
 }
 
-async function cartaNaBorda(context, rota) {
+// A tela do set do app no endereço do set; com `rota.carta`, a mesma tela com
+// o popup da carta aberto (o detail.js lê a rota do <meta> que vai no HTML).
+async function telaDoSet(context, rota) {
   const { env, request } = context;
-  const casca = await env.ASSETS.fetch(new URL("/games/card-template", request.url));
-  const assets = assetsDaCasca(casca.ok ? await casca.text() : "");
-  const endereco = `/games/${rota.jogo.url}/${rota.set}/${rota.carta}`;
-  // O build na chave: depois de um deploy, a cópia velha (com o carimbo e os
-  // arquivos do build anterior) deixa de ser achada.
-  const chave = new Request(`${ORIGEM}${endereco}?b=${encodeURIComponent(assets.build || "dev")}`);
-  const guardada = await daBorda(chave);
-  if (guardada) return guardada;
   const mapa = await jsonDoSite(env, request, `/data/game-pages/${rota.jogo.url}.json`);
-  const entrada = mapa && mapa.s && hasOwn(mapa.s, rota.set) ? mapa.s[rota.set] : null;
-  if (!entrada) return naoAchou(env, request);
+  const sets = (mapa && mapa.s) || {};
+  if (!hasOwn(sets, rota.set)) {
+    // A variante em inglês (<set>-en) é página estática do prerender.
+    if (!rota.carta && /-en$/.test(rota.set) && hasOwn(sets, rota.set.slice(0, -3))) return context.next();
+    return naoAchou(env, request);
+  }
+  const entrada = sets[rota.set];
+  const caminho = `/games/${rota.jogo.url}/${rota.set}${rota.carta ? `/${rota.carta}` : ""}`;
+  const casca = await buscaPagina(env, request, "/detail.html");
+  if (!casca.ok) return casca;
+  const cascaHtml = await casca.text();
+  const chave = new Request(`${ORIGEM}${caminho}?b=${encodeURIComponent(buildDaCasca(cascaHtml) || "dev")}`);
+  const guardada = await daBorda(chave);
+  if (guardada) return comVitrine(guardada, request);
+
   const { cartas, arquivo } = await cartasDaPagina(env, request, entrada);
   const slugs = slugsDasCartas(cartas);
-  const card = cartas.find((c) => slugs.get(String(c.id)) === rota.carta);
-  if (!card) return naoAchou(env, request);
-  const preco = await precoDaCarta(env, request, card, arquivo.get(card));
-  const html = paginaDaCarta({ card, jogo: rota.jogo, set: { slug: rota.set, nome: entrada.n }, cartas, slugs, preco, assets });
-  // Os cabeçalhos da casca trazem a CSP e o resto do _headers (resposta montada
-  // do zero numa Function não os herdaria).
-  const headers = new Headers(casca.ok ? casca.headers : undefined);
+  let pecas;
+  let card = null;
+  if (rota.carta) {
+    card = cartas.find((c) => slugs.get(String(c.id)) === rota.carta) || null;
+    if (!card) return naoAchou(env, request);
+    const preco = await precoDaCarta(env, request, card, arquivo.get(card));
+    pecas = pecasDaCarta({ card, jogo: rota.jogo, set: { slug: rota.set, nome: entrada.n }, cartas, slugs, preco });
+  } else {
+    pecas = pecasDoSet({ jogo: rota.jogo, slug: rota.set, nome: entrada.n, cartas, slugs });
+  }
+  const decorada = decoraApp(new Response(cascaHtml, casca), pecas,
+    { caminho, game: rota.jogo.game, set: entrada.n, card: card ? String(card.id) : "" });
+  // Os cabeçalhos da casca trazem a CSP e o resto do _headers; o comVitrine
+  // troca a CSP pela com nonce a cada resposta, por isso o que vai pro cache
+  // da borda é a página ANTES dele.
+  const headers = new Headers(casca.headers);
   for (const h of ["content-length", "etag", "last-modified", "content-encoding"]) headers.delete(h);
   headers.set("content-type", "text/html; charset=utf-8");
-  headers.set("cache-control", `public, max-age=0, s-maxage=${BORDA_CARTA_S}, must-revalidate`);
-  const resposta = new Response(html, { status: 200, headers });
+  headers.set("cache-control", `public, max-age=0, s-maxage=${BORDA_S}, must-revalidate`);
+  const resposta = new Response(await decorada.text(), { status: 200, headers });
   guardaNaBorda(context.waitUntil, chave, resposta);
-  return resposta;
+  return comVitrine(resposta, request);
 }
 
 // Link de compartilhar do app: /games/<jogo>/_id/<id>?setName=<nome do set>.
@@ -224,7 +245,8 @@ export async function onRequestGet(context) {
     case "estatica": return context.next();
     case "redirect": return redireciona(request, rota.destino + url.search, 301);
     case "jogo": return telaDoJogo(context, rota.jogo);
-    case "carta": return cartaNaBorda(context, rota);
+    case "set":
+    case "carta": return telaDoSet(context, rota);
     case "id": return cartaPeloId(context, rota);
     default: return naoAchou(env, request);
   }

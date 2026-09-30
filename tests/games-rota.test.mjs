@@ -1,15 +1,18 @@
 // Rotas da árvore /games e os 301 dos endereços antigos (2026-09-30). O
 // encanamento da borda (HTMLRewriter, env.ASSETS, caches) não roda em node; o
 // que tem regra de verdade é exportado e testado aqui:
-//   - o que cada endereço é (tela do jogo, set estático, carta, 301, 404);
+//   - o que cada endereço é (tela do jogo, tela do set, carta, 301, 404);
 //   - o destino de /sets?game=, /set/<slug> e /card/<slug>;
-//   - o título, a descrição e o índice da tela do jogo;
-//   - o que a borda lê da casca carimbada pelo deploy.
+//   - o título, a descrição e o índice da tela do jogo e da tela do set;
+//   - o build que a borda lê da casca carimbada pelo deploy.
 // Roda com: node --test tests/
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { decideRota, listaDeSets, metaDoJogo, assetsDaCasca } from "../functions/games/[[path]].js";
+import { decideRota, listaDeSets, metaDoJogo, buildDaCasca } from "../functions/games/[[path]].js";
+import { pecasDoSet } from "../functions/_lib/pagina-set.js";
+import { cabecaDaRota } from "../functions/_lib/decora-app.js";
+import { slugsDasCartas } from "../functions/_lib/slug-carta.js";
 import { destinoDoSets } from "../functions/sets.js";
 import { destinoDoSetAntigo } from "../functions/set/[slug].js";
 import { destinoDaCartaAntiga } from "../functions/card/[slug].js";
@@ -17,14 +20,20 @@ import { jogoDaUrl } from "../functions/_lib/jogos.js";
 
 const rota = (caminho, pathname) => decideRota(caminho, pathname || `/games/${[].concat(caminho).join("/")}`);
 
-test("/games e /games/<jogo>/<set> são estáticas; /games/<jogo> é a tela do jogo", () => {
+test("/games é estática; /games/<jogo> é a tela do jogo; /games/<jogo>/<set> é a tela do set", () => {
   assert.deepEqual(rota([], "/games"), { tipo: "estatica" });
   assert.deepEqual(rota(undefined, "/games/"), { tipo: "estatica" });
   const jogo = rota(["star-wars-unlimited"]);
   assert.equal(jogo.tipo, "jogo");
   assert.equal(jogo.jogo.game, "swu");
-  assert.deepEqual(rota(["pokemon", "base-set"]), { tipo: "estatica" });
-  assert.deepEqual(rota(["pokemon", "base-set-en"]), { tipo: "estatica" });
+  const set = rota(["pokemon", "base-set"]);
+  assert.equal(set.tipo, "set");
+  assert.equal(set.set, "base-set");
+  assert.equal(set.jogo.game, "pokemon");
+  // A variante -en também chega como "set": quem decide entre a página
+  // estática em inglês e a tela do app é o mapa do jogo (um set cujo nome
+  // termine em "-en" não pode virar a variante de outro).
+  assert.equal(rota(["pokemon", "base-set-en"]).tipo, "set");
 });
 
 test("carta e link de compartilhar", () => {
@@ -134,12 +143,53 @@ test("nome de set com HTML sai escapado no índice", () => {
   assert.match(m.indiceHtml, /&lt;img src=x/);
 });
 
-test("da casca carimbada saem o build e os arquivos com hash", () => {
-  const casca = `<!doctype html><html lang="pt-BR" data-idioma-fixo><head><meta charset="utf-8">
-    <meta name="sleevu-build" content="84296a7d">
-    <script src="/src/theme.0650627e.js"></script>
-    <link rel="stylesheet" href="/styles.3217f239.css"></head><body></body></html>`;
-  assert.deepEqual(assetsDaCasca(casca), { build: "84296a7d", js: "/src/theme.0650627e.js", css: "/styles.3217f239.css" });
-  // Sem casca (falhou a leitura): a página sai com os nomes sem hash, sem build.
-  assert.deepEqual(assetsDaCasca(""), { build: "", js: "/src/theme.js", css: "/styles.css" });
+test("da casca carimbada sai o build (a chave do cache da borda)", () => {
+  const casca = `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">
+    <meta name="sleevu-build" content="84296a7d"></head><body></body></html>`;
+  assert.equal(buildDaCasca(casca), "84296a7d");
+  assert.equal(buildDaCasca(""), "", "sem casca: sem build (a chave cai em \"dev\")");
+});
+
+// A tela do set em /games/<jogo>/<set> (2026-10-01): a tela do app, com o que
+// a página estática pt tinha de SEO posto pela borda.
+test("tela do set: título, descrição, canonical, hreflang, JSON-LD e índice das cartas", () => {
+  const jogo = jogoDaUrl("pokemon");
+  const cartas = [
+    { id: "base1-10", name: "Mewtwo", number: "10", setTotal: 102, set: "Base Set", setId: "base1", language: "en", setReleaseDate: "1999-01-09", setLogo: "data/set-logos/en/base1.webp" },
+    { id: "base1-4", name: "Charizard", number: "4", setTotal: 102, set: "Base Set", setId: "base1", language: "en", setReleaseDate: "1999-01-09" },
+    { id: "base1-4-pt", name: "Charizard", number: "4", setTotal: 102, set: "Base Set", setId: "base1", language: "pt" }
+  ];
+  const p = pecasDoSet({ jogo, slug: "base-set", nome: "Base Set", cartas, slugs: slugsDasCartas(cartas) });
+  assert.equal(p.titulo, "Base Set — cartas do set Pokémon TCG | Sleevu");
+  assert.equal(p.desc, "Lista completa das 2 cartas do set Base Set de Pokémon TCG, lançado em 9 de janeiro de 1999. Veja imagens, números e raridades e monte sua coleção no Sleevu.");
+  assert.equal(p.canonical, "https://sleevu.app/games/pokemon/base-set");
+  assert.equal(p.h1, "Base Set");
+  assert.equal(p.ogImagem, "https://sleevu.app/data/set-logos/en/base1.webp", "og:image precisa de URL absoluta");
+  assert.deepEqual(p.alternates.map((a) => `${a.hreflang} ${a.href}`), [
+    "pt-BR https://sleevu.app/games/pokemon/base-set",
+    "en https://sleevu.app/games/pokemon/base-set-en",
+    "x-default https://sleevu.app/games/pokemon/base-set"
+  ]);
+  const [colecao, trilha] = [...cabecaDaRota(p, { caminho: "/games/pokemon/base-set" })
+    .matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map((m) => JSON.parse(m[1]));
+  assert.equal(colecao["@type"], "CollectionPage");
+  // Uma carta por número, na língua da página (a PT no lugar da EN), em ordem de número.
+  assert.deepEqual(colecao.mainEntity.itemListElement.map((i) => `${i.name} ${i.url}`), [
+    "Charizard 4/102 https://sleevu.app/games/pokemon/base-set/charizard-4-102-pt",
+    "Mewtwo 10/102 https://sleevu.app/games/pokemon/base-set/mewtwo-10-102"
+  ]);
+  assert.equal(trilha.itemListElement.length, 3);
+  assert.match(p.corpoHtml, /data-indice-set="\/games\/pokemon\/base-set"/);
+  assert.match(p.corpoHtml, /<a href="\/games\/pokemon\/base-set\/mewtwo-10-102">Mewtwo<\/a> <small>10\/102<\/small>/);
+  // Set sem cartas: sem índice (e sem quebrar).
+  assert.equal(pecasDoSet({ jogo, slug: "x", nome: "X", cartas: [], slugs: new Map() }).corpoHtml, "");
+});
+
+test("tela do set: nome de set com HTML sai escapado no índice e no <head>", () => {
+  const jogo = jogoDaUrl("pokemon");
+  const nome = "<img src=x onerror=alert(1)>";
+  const cartas = [{ id: "x-1", name: "A", number: "1", set: nome, language: "en" }];
+  const p = pecasDoSet({ jogo, slug: "img-src-x", nome, cartas, slugs: slugsDasCartas(cartas) });
+  assert.doesNotMatch(p.corpoHtml, /<img src=x/);
+  assert.doesNotMatch(cabecaDaRota(p, { caminho: "/games/pokemon/img-src-x", set: nome }), /<img src=x/);
 });
