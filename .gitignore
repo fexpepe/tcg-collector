@@ -49,10 +49,19 @@ data/search-index.json
 data/*/search-index.json
 
 # Páginas de set pré-renderizadas p/ SEO (geradas no build por scripts/prerender-catalog.mjs)
-set/
-card/
-deck/
-artist/
+# Desde 2026-09-30 elas moram em games/<jogo>/<set>.html, com a página /games
+# (games.html) e os mapas que a borda lê (data/game-pages/). set/ e card/ ficam
+# aqui pra quem ainda tiver a saída antiga no disco.
+# ANCORADOS na raiz (a barra do começo): sem ela a regra vale pra QUALQUER pasta
+# com o nome, e ignorava as Functions functions/set/, functions/card/ e
+# functions/games/ (e ignoraria logo novo em assets/games/).
+/set/
+/card/
+/deck/
+/artist/
+/games/
+/games.html
+/data/game-pages/
 
 # Key local da PokemonPriceTracker (só pra teste local; NUNCA versionar)
 .ppt.key
