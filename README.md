@@ -711,6 +711,9 @@ seguinte. As fontes têm custos diferentes:
 - **por crédito** (PPT e MYP): 3x/semana — segunda e quarta pelo cron diário,
   sexta pelo da noite. Cabem na cota diária (o plano da PPT dá 20.000 créditos
   por dia e um run gasta no máximo 8.000); a PPT hoje responde pelo graded.
+  Preview de branch nunca paga (o cache dele não chega na main); pra testar o
+  `sync-ppt` num preview, **Run workflow** na branch. Cota esgotada não derruba
+  o build: a PPT sai do cache por set e o run ganha um aviso no resumo.
 
 O cron do GitHub é **best-effort**: atrasos de algumas horas são normais, então
 06:20 é alvo, não garantia.

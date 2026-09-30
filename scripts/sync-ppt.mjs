@@ -18,8 +18,16 @@
 //   --set A,B      limita a esses setIds (nossos, ex.: SV4a)
 //   --graded       inclui PSA 9/10 (custa +1 crédito/carta)
 //   --budget N     teto de créditos neste run (padrão 8000)
+//   --so-cache     não chama a API: se o artefato já existe (veio do cache do
+//                  build), fica como está; senão é remontado do cache por set
 //
 // Sem PPT_API_TOKEN, é no-op (sai com sucesso) — o deploy não quebra.
+//
+// Cota do dia esgotada (429 "Daily rate limit exceeded") também não quebra: o
+// run para de chamar a API e monta o artefato com o cache por set (o mesmo
+// caminho de quando o --budget acaba). Em 30/09/2026 cinco builds completos
+// (três da main, dois de preview de branch) somaram os 20.000 créditos do dia;
+// o seguinte morreu no primeiro /sets com exit 1 — sem artefato, sem deploy.
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { normNum, numDoId } from "./lib/sync-common.mjs";
@@ -36,6 +44,7 @@ const PROBE = has("--probe");
 const DRY = has("--dry-run");
 const GRADED = has("--graded");
 const BUDGET = Number(val("--budget")) || 8000;
+const SO_CACHE = has("--so-cache");
 const ONLY_SETS = (val("--set") || "").split(",").map((s) => s.trim()).filter(Boolean);
 
 const dataDir = new URL("../data/", import.meta.url);
@@ -47,21 +56,33 @@ if (!TOKEN) { console.warn("PPT_API_TOKEN não definido — pulando sync da PPT 
 
 let creditsUsed = 0;
 let lastCall = 0;
+// Motivo (texto) quando o run passou a ser SÓ CACHE: --so-cache, cota do dia
+// esgotada ou nenhum mapa de sets. Daqui em diante o ppt() nem chama a rede, e
+// o run() trata como orçamento acabado (usa o cache por set, não regride).
+let soCache = SO_CACHE ? "--so-cache (run sem crédito)" : null;
 // O rate limit da PPT é PONDERADO por cartas (~ceil(cartas/10) "minute calls",
 // teto 60/min). Uma página de 100 cartas custa ~10, então ~6 chamadas/min é o
 // teto -> ~10s entre chamadas. Sem isso, ~7 paginas ja estouram (429).
 const MIN_GAP = 10500;
 async function ppt(path, retries = 3) {
+  if (soCache) throw new Error(`PPT não chamada: ${soCache}`);
   const gap = MIN_GAP - (Date.now() - lastCall);
   if (gap > 0) await new Promise((r) => setTimeout(r, gap));
   lastCall = Date.now();
   const res = await fetch(`${BASE}${path}`, { headers: { Authorization: `Bearer ${TOKEN}` } });
-  if (res.status === 429 && retries > 0) {
-    await new Promise((r) => setTimeout(r, 8000)); // backoff e tenta de novo
-    return ppt(path, retries - 1);
-  }
   const json = await res.json().catch(() => null);
-  if (!res.ok || (json && json.error)) throw new Error(`PPT ${res.status}: ${(json && (json.error || json.message)) || res.statusText}`);
+  const msg = (json && (json.error || json.message)) || res.statusText;
+  if (res.status === 429) {
+    // O limite POR MINUTO passa com espera: backoff e tenta de novo. O DIÁRIO
+    // não passa hoje — insistir só gastava 3×8s por chamada até o teto de tempo.
+    // 429 que sobrevive ao backoff é tratado igual: o run fica só no cache.
+    if (!/daily/i.test(msg) && retries > 0) {
+      await new Promise((r) => setTimeout(r, 8000));
+      return ppt(path, retries - 1);
+    }
+    soCache = `cota da PPT esgotada (429: ${msg})`;
+  }
+  if (!res.ok || (json && json.error)) throw new Error(`PPT ${res.status}: ${msg}`);
   const c = json.metadata && json.metadata.apiCallsConsumed && json.metadata.apiCallsConsumed.total;
   if (c) creditsUsed += c;
   return json;
@@ -324,23 +345,40 @@ async function setMap() {
   // entrou semanas depois do lançamento); refrescar o mapa cedo faz o set novo
   // ser pego em ~2 dias em vez de 7.
   let map = null;
+  let salvo = null; // cache do mapa na versão atual, fresco ou não
   try {
     const c = JSON.parse(await readFile(cacheFile, "utf8"));
-    if (c.v === SETMAP_VERSION && Date.now() - c.t < 2 * 864e5) map = new Map(c.m);
+    if (c.v === SETMAP_VERSION) salvo = c;
   } catch { /* sem cache */ }
+  if (salvo && Date.now() - salvo.t < 2 * 864e5) map = new Map(salvo.m);
   if (!map) {
-    map = new Map();
-    let offset = 0;
-    // /sets não consome créditos de carta; pagina até acabar. Chave em MAIÚSCULA
-    // porque a PPT mistura caixa ("m1L: Mega Brave" vs nosso setId "M1L").
-    for (let page = 0; page < 50; page++) {
-      const j = await ppt(`/sets?language=japanese&limit=100&offset=${offset}`);
-      const arr = j.data || [];
-      for (const s of arr) { const code = setCodeFromName(s.name); const id = s.tcgPlayerNumericId; if (code && id != null) { const k = code.toUpperCase(); if (!map.has(k)) map.set(k, id); } }
-      if (!(j.metadata && j.metadata.hasMore)) break;
-      offset += arr.length || 100;
+    try {
+      const novo = new Map();
+      let offset = 0;
+      // /sets não consome créditos de carta; pagina até acabar. Chave em MAIÚSCULA
+      // porque a PPT mistura caixa ("m1L: Mega Brave" vs nosso setId "M1L").
+      for (let page = 0; page < 50; page++) {
+        const j = await ppt(`/sets?language=japanese&limit=100&offset=${offset}`);
+        const arr = j.data || [];
+        for (const s of arr) { const code = setCodeFromName(s.name); const id = s.tcgPlayerNumericId; if (code && id != null) { const k = code.toUpperCase(); if (!novo.has(k)) novo.set(k, id); } }
+        if (!(j.metadata && j.metadata.hasMore)) break;
+        offset += arr.length || 100;
+      }
+      map = novo;
+      await writeFile(cacheFile, JSON.stringify({ v: SETMAP_VERSION, t: Date.now(), m: [...map] }), "utf8");
+    } catch (e) {
+      // /sets fora do ar ou cota esgotada: este era o único ppt() sem try em
+      // volta, e derrubava o run inteiro. O mapa vencido serve (set novo entra
+      // no próximo run bom); sem mapa nenhum, o run fica só no cache por set.
+      if (salvo) {
+        map = new Map(salvo.m);
+        console.warn(`Mapa de sets da PPT indisponível (${e.message}): usando o de ${new Date(salvo.t).toISOString().slice(0, 10)}.`);
+      } else {
+        map = new Map();
+        soCache = soCache || `sem mapa de sets da PPT (${e.message})`;
+        console.warn(`Mapa de sets da PPT indisponível (${e.message}) e sem cache dele.`);
+      }
     }
-    await writeFile(cacheFile, JSON.stringify({ v: SETMAP_VERSION, t: Date.now(), m: [...map] }), "utf8");
   }
   // Sets que existem nas cartas mas faltam no /sets (ex.: M3) entram aqui.
   const disc = await loadDiscovered();
@@ -579,39 +617,44 @@ async function importJpSet(code, pptSetId) {
   return newCards;
 }
 
-// Cartas avulsas curadas (CURATED_SINGLES): busca por nome exato na PPT, com
-// graded (includeEbay) + imagem, e popula `out` (preço/g) + `newCards` (a carta).
-async function syncCuratedSingles(out, newCards) {
-  for (const s of CURATED_SINGLES) {
-    try {
-      const lang = s.lang === "en" ? "english" : "japanese";
-      const j = await ppt(`/cards?search=${encodeURIComponent(s.pptName)}&language=${lang}&limit=10&includeEbay=true&days=90`);
-      const hit = (j.data || []).find((c) => cleanName(c.name).toLowerCase() === s.pptName.toLowerCase());
-      if (!hit) { console.log(`  [curado] ${s.id}: nome "${s.pptName}" não achado na PPT`); continue; }
-      const u = pickPrice(hit), img = hit.imageCdnUrl400 || hit.imageCdnUrl200 || hit.imageUrl || null;
-      const g = pickGraded(hit);
-      const e = {};
-      if (u > 0) e.u = Math.round(u * 100) / 100;
-      if (img) e.img = img;
-      if (g) e.g = g;
-      if (Object.keys(e).length) out[s.id] = e;
-      newCards.push({
-        id: s.id, name: s.name, pokemonName: "", category: "",
-        dexId: s.dexId || "", generation: s.dexId ? genOf(s.dexId) : "",
-        pokemonImage: s.dexId ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${s.dexId}.png` : "",
-        number: s.number, set: s.set, setId: s.setId,
-        setLogo: "", setSymbol: "", setTotal: "", setReleaseDate: s.year || "",
-        setSerieId: "", setSerieName: "", artist: "", rarity: s.rarity || "Promo",
-        language: s.lang, image: img, variants: s.variants || ["Normal"], _new: true
-      });
-      console.log(`  [curado] ${s.id}: "${s.name}" u=${e.u || "-"} graded=${g ? "sim" : "não"} img=${img ? "sim" : "não"}`);
-    } catch (err) { console.log(`  [curado] ${s.id}: erro ${err.message}`); }
-  }
+// Uma carta avulsa curada (CURATED_SINGLES): busca por nome exato na PPT, com
+// graded (includeEbay) + imagem. Devolve { entry, card } — entry (preço/g/img)
+// vai pro `out`, card pro `newCards` — ou null se o nome não foi achado. Erro
+// de rede/cota sobe pro run(), que cai no cache da carta.
+async function fetchCuratedSingle(s) {
+  const lang = s.lang === "en" ? "english" : "japanese";
+  const j = await ppt(`/cards?search=${encodeURIComponent(s.pptName)}&language=${lang}&limit=10&includeEbay=true&days=90`);
+  const hit = (j.data || []).find((c) => cleanName(c.name).toLowerCase() === s.pptName.toLowerCase());
+  if (!hit) { console.log(`  [curado] ${s.id}: nome "${s.pptName}" não achado na PPT`); return null; }
+  const u = pickPrice(hit), img = hit.imageCdnUrl400 || hit.imageCdnUrl200 || hit.imageUrl || null;
+  const g = pickGraded(hit);
+  const e = {};
+  if (u > 0) e.u = Math.round(u * 100) / 100;
+  if (img) e.img = img;
+  if (g) e.g = g;
+  const card = {
+    id: s.id, name: s.name, pokemonName: "", category: "",
+    dexId: s.dexId || "", generation: s.dexId ? genOf(s.dexId) : "",
+    pokemonImage: s.dexId ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${s.dexId}.png` : "",
+    number: s.number, set: s.set, setId: s.setId,
+    setLogo: "", setSymbol: "", setTotal: "", setReleaseDate: s.year || "",
+    setSerieId: "", setSerieName: "", artist: "", rarity: s.rarity || "Promo",
+    language: s.lang, image: img, variants: s.variants || ["Normal"], _new: true
+  };
+  console.log(`  [curado] ${s.id}: "${s.name}" u=${e.u || "-"} graded=${g ? "sim" : "não"} img=${img ? "sim" : "não"}`);
+  return { entry: Object.keys(e).length ? e : null, card };
 }
 
 const REFRESH_DAYS = 7; // re-busca um set se o cache dele tiver mais que isso
 
 async function run() {
+  // --so-cache com o artefato já no disco (veio do cache de catálogo do build):
+  // ele é a saída do último run que falou com a API, e o cache por set não tem
+  // nada mais novo que isso. Remontar só serve quando o artefato não veio.
+  if (SO_CACHE && existsSync(OUT) && existsSync(NEWOUT)) {
+    console.log("--so-cache: artefato da PPT já veio do cache do build — mantido como está.");
+    return;
+  }
   const map = await setMap();
   console.log(`Mapa de sets JP (PPT): ${map.size} sets com código.`);
 
@@ -642,6 +685,10 @@ async function run() {
   // deploys (rotação dos mais antigos primeiro + cache). 0 = sem teto.
   const TIME_CAP_MS = (Number(val("--max-minutes")) || 6) * 60 * 1000;
   const startedAt = Date.now();
+  // Sem crédito: orçamento do run gasto ou run só-cache (cota do dia, --so-cache).
+  // Sem orçamento: isso OU o teto de tempo. Nos dois casos o item usa o cache.
+  const semCredito = () => creditsUsed >= BUDGET || !!soCache;
+  const semOrcamento = () => semCredito() || (TIME_CAP_MS && Date.now() - startedAt > TIME_CAP_MS);
   const discovered = await loadDiscovered();
   let discDirty = false;
   const out = {};
@@ -660,7 +707,7 @@ async function run() {
     if (cached && Date.now() - (cached.t || 0) < REFRESH_DAYS * 864e5 && !DRY) {
       Object.assign(out, cached.entries || {}); newCardsAll.push(...(cached.newCards || [])); continue;
     }
-    if (creditsUsed >= BUDGET || (TIME_CAP_MS && Date.now() - startedAt > TIME_CAP_MS)) {
+    if (semOrcamento()) {
       if (cached) { Object.assign(out, cached.entries || {}); newCardsAll.push(...(cached.newCards || [])); }
       continue;
     }
@@ -686,7 +733,7 @@ async function run() {
       const ck = `en-${ourSetId}`;
       const cached = await readCache(ck);
       if (cached && Date.now() - (cached.t || 0) < REFRESH_DAYS * 864e5 && !DRY) { Object.assign(out, cached.entries); enH++; continue; }
-      if (creditsUsed >= BUDGET || (TIME_CAP_MS && Date.now() - startedAt > TIME_CAP_MS)) { if (cached) { Object.assign(out, cached.entries); enH++; } continue; }
+      if (semOrcamento()) { if (cached) { Object.assign(out, cached.entries); enH++; } continue; }
       try {
         const entries = await syncGradedEN(ourSetId, pptNumericId);
         if (entries) { Object.assign(out, entries); enF++; if (!DRY) await writeFile(cacheFileOf(ck), JSON.stringify({ t: Date.now(), entries }), "utf8"); }
@@ -698,29 +745,38 @@ async function run() {
 
   for (const setId of targets) {
     const code = setId.toUpperCase();
-    let pptId = map.get(code);
-    // Set não listado no /sets (ex.: M3): descobre pelas cartas. Cache negativo
-    // COM DATA (discovered.n) evita re-tentar toda semana os sets que de fato
-    // não existem na PPT (E*/PCG*/neo*...), mas expira em NEG_RETRY_DAYS — a
-    // PPT lista sets novos semanas depois do lançamento (caso do MC). Gasta
-    // crédito, então só com orçamento/tempo.
-    if (pptId == null && !(code in discovered.e) && !negativeFresh(discovered, code) && creditsUsed < BUDGET && !(TIME_CAP_MS && Date.now() - startedAt > TIME_CAP_MS)) {
-      const found = await discoverSetId(setId);
-      if (!DRY) {
-        if (found != null) { discovered.e[code] = found; delete discovered.n[code]; }
-        else discovered.n[code] = Date.now(); // negativo COM data: expira em NEG_RETRY_DAYS
-        discDirty = true;
-      }
-      if (found != null) { pptId = found; map.set(code, found); console.log(`  ${setId}: descoberto via cartas (ppt ${found})`); }
-    }
-    if (pptId == null) { console.log(`  ${setId}: sem equivalente na PPT (pulado)`); continue; }
+    // O cache vem ANTES do mapa de sets: num run só-cache sem mapa (cota do dia
+    // + /sets sem cache), todo set dava "sem equivalente" e o artefato saía sem
+    // nenhuma carta JP — e as injetadas pela PPT sumiam do catálogo.
     const cached = await readCache(setId);
     const fresh = cached && Date.now() - (cached.t || 0) < REFRESH_DAYS * 864e5;
     const restoreCache = (c) => { Object.assign(out, c.entries || {}); newCardsAll.push(...(c.newCards || [])); };
     // Fresco (e não é dry-run): usa o cache, não gasta crédito.
     if (fresh && !DRY) { restoreCache(cached); cacheHits++; continue; }
     // Sem orçamento OU sem tempo: mantém o que já tem em cache (não regride).
-    if (creditsUsed >= BUDGET || (TIME_CAP_MS && Date.now() - startedAt > TIME_CAP_MS)) {
+    if (semOrcamento()) {
+      if (cached) { restoreCache(cached); cacheHits++; }
+      continue;
+    }
+    let pptId = map.get(code);
+    // Set não listado no /sets (ex.: M3): descobre pelas cartas. Cache negativo
+    // COM DATA (discovered.n) evita re-tentar toda semana os sets que de fato
+    // não existem na PPT (E*/PCG*/neo*...), mas expira em NEG_RETRY_DAYS — a
+    // PPT lista sets novos semanas depois do lançamento (caso do MC). Gasta
+    // crédito, então só com orçamento/tempo (conferido logo acima).
+    if (pptId == null && !(code in discovered.e) && !negativeFresh(discovered, code)) {
+      const found = await discoverSetId(setId);
+      // Cota que acabou NO MEIO da descoberta não prova que o set não existe:
+      // sem gravar o negativo, o próximo run procura de novo.
+      if (!DRY && (found != null || !soCache)) {
+        if (found != null) { discovered.e[code] = found; delete discovered.n[code]; }
+        else discovered.n[code] = Date.now(); // negativo COM data: expira em NEG_RETRY_DAYS
+        discDirty = true;
+      }
+      if (found != null) { pptId = found; map.set(code, found); console.log(`  ${setId}: descoberto via cartas (ppt ${found})`); }
+    }
+    if (pptId == null) {
+      console.log(`  ${setId}: sem equivalente na PPT (pulado)`);
       if (cached) { restoreCache(cached); cacheHits++; }
       continue;
     }
@@ -748,7 +804,7 @@ async function run() {
       if (cached) newCardsAll.push(...(cached.newCards || []));
       continue;
     }
-    if (creditsUsed >= BUDGET || (TIME_CAP_MS && Date.now() - startedAt > TIME_CAP_MS)) {
+    if (semOrcamento()) {
       if (cached) newCardsAll.push(...(cached.newCards || []));
       continue;
     }
@@ -761,19 +817,39 @@ async function run() {
 
   if (discDirty) await saveDiscovered(discovered);
 
-  // Cartas avulsas curadas (Ancient Mew etc.) — barato (1 busca/carta), sempre roda.
-  if (CURATED_SINGLES.length && creditsUsed < BUDGET) {
-    try { await syncCuratedSingles(out, newCardsAll); } catch (e) { console.log(`  [curado] erro: ${e.message}`); }
+  // Cartas avulsas curadas (Ancient Mew etc.) — barato (1 busca/carta), roda
+  // mesmo depois do teto de tempo. Cache por carta (chave "curado-<id>"): antes,
+  // run sem crédito pulava as curadas e elas saíam do catálogo — id publicado
+  // que some, que o lint-catalog reprova.
+  for (const s of CURATED_SINGLES) {
+    const ck = `curado-${s.id}`;
+    const cached = await readCache(ck);
+    const usa = (c) => { if (c.entry) out[s.id] = c.entry; if (c.card) newCardsAll.push(c.card); };
+    if (semCredito()) { if (cached) usa(cached); continue; }
+    try {
+      const r = await fetchCuratedSingle(s);
+      if (r) { usa(r); if (!DRY) await writeFile(cacheFileOf(ck), JSON.stringify({ t: Date.now(), entry: r.entry, card: r.card }), "utf8"); }
+      else if (cached) usa(cached);
+    } catch (e) { console.log(`  [curado] ${s.id}: erro ${e.message}`); if (cached) usa(cached); }
   }
 
   // Dedupe das cartas novas por id (sets podem repetir entre runs/cache).
   const newById = new Map();
   for (const c of newCardsAll) if (c && c.id && !newById.has(c.id)) newById.set(c.id, c);
   const newCards = [...newById.values()];
-  console.log(`\nSets: ${fetched} buscados, ${cacheHits} do cache | enriquecidas: ${Object.keys(out).length} | novas: ${newCards.length} | créditos: ${creditsUsed}/${BUDGET}`);
+  console.log(`\nSets: ${fetched} buscados, ${cacheHits} do cache | enriquecidas: ${Object.keys(out).length} | novas: ${newCards.length} | créditos: ${creditsUsed}/${BUDGET}${soCache ? ` | só cache: ${soCache}` : ""}`);
+  // Anotação no resumo do run do Actions: a cota acabar não derruba mais o
+  // build, então sem isto ninguém veria. (O --so-cache é planejado: sem aviso.)
+  if (soCache && !SO_CACHE) console.log(`::warning::PPT: ${soCache} — preços/imagens JP e graded saíram do cache por set.`);
   if (DRY) {
     console.log("[dry-run] nada gravado. Amostra enriquecidas:", JSON.stringify(Object.fromEntries(Object.entries(out).slice(0, 3)), null, 1));
     console.log("[dry-run] Amostra novas:", JSON.stringify(newCards.slice(0, 3).map((c) => ({ id: c.id, name: c.name, num: c.number, set: c.set, img: !!c.image, price: c.price })), null, 1));
+    return;
+  }
+  // Só cache e o cache vazio (runner sem data/.cache): gravar agora trocaria o
+  // artefato que veio do cache do build por um vazio. Fica o que houver.
+  if (soCache && !Object.keys(out).length && !newCards.length) {
+    console.log("Nada no cache por set — artefato da PPT não foi regravado.");
     return;
   }
   // Artefatos montados a partir de TODOS os sets em cache (cobertura completa).
