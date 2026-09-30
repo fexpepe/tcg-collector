@@ -203,6 +203,11 @@ avulsa — ver [docs/LISTAS.md](docs/LISTAS.md); `/listas` redireciona pra cá),
 Conteúdo/institucional: `about`, `help`, `faq`, `privacy`, `terms`, `novidades`
 (renderiza `data/changelog.json`), `admin` (só o dono).
 
+Blog: `blog` (lista) e `/blog/<endereço>` (post), montados na borda por
+`functions/blog/` a partir da tabela `posts` do Supabase, e `blog-editor`
+(onde se escreve — só quem está em `blog_editores`, papel separado do admin).
+Publicar é instantâneo, sem deploy. Ver [docs/BLOG.md](docs/BLOG.md).
+
 Pré-renderizadas no build: `set/<slug>.html`, `card/<slug>.html` e
 `deck/<slug>.html` — HTML estático com título, meta, Open Graph, JSON-LD e a
 lista já dentro, pra o Google indexar conteúdo em vez da casca da SPA.
@@ -221,7 +226,7 @@ scripts/    sync de cada fonte + build (merge, split, prerender, hash, lint, D1)
 functions/  Cloudflare Pages Functions (API na borda).
 supabase/   migrações SQL versionadas + templates de e-mail.
 tests/      node:test (sem framework externo).
-docs/       BACKEND.md, DECKS.md, LISTAS.md, PORTFOLIO.md e COMMUNITY-PRICES.md.
+docs/       BACKEND.md, DECKS.md, LISTAS.md, PORTFOLIO.md, COMMUNITY-PRICES.md e BLOG.md.
 ```
 
 Não há `package.json`: as ferramentas do build (esbuild, wrangler) são chamadas
