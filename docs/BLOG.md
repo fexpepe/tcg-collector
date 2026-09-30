@@ -105,8 +105,9 @@ A barra do editor escreve a sintaxe; o botão **?** mostra o resumo:
 1. **`<base href="/">` no post.** Os passos de build só entendem caminho
    relativo (`src/…`), e o post mora em `/blog/<slug>`. Por isso a casca tem
    `<base href="/">` — e com ela um `#secao` levaria pra home. O renderizador
-   prefixa as âncoras com o caminho do post (`ancora` no `render()`), e o
-   `src/blog.js` conserta o skip-link.
+   prefixa as âncoras com o caminho do post (`ancora` no `render()`). O
+   skip-link não precisa de nada aqui: o `initPageNav` do `shared.js` trata o
+   clique dele (foco no `<main>`) em toda página com `<base>`.
 2. **Sem `$` dentro de `$$…$$`** na migração (o SQL Editor quebra): o fim do
    texto nos regex do trigger é `\Z`. E o regex do Postgres recusa repetição
    acima de 255 (`{1,6000}` quebrava todo insert).
