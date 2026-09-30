@@ -243,8 +243,9 @@ valem só nesse caso.
 | B12 | `src/binders.js` (`PREFIXO_JOGO`) e `src/card-rescue.js` (`ID_PREFIX_GAME`) | o prefixo de id | carta do jogo no binder sem jogo atribuído ("Tenho" e preço manual olham a coleção errada); link de carta resolve em duas ondas | — |
 | B13 | `src/backup-import.js` (`mapCsvGame`) e `tests/csv-import.test.mjs` | o nome do jogo como Collectr e TCGplayer escrevem | import de CSV tenta todos os jogos (mais lento; pode casar carta homônima de outro jogo) | — |
 | B14 | `src/portfolio.js` (`CSV_GAME_NAMES`) | nome no CSV do Portfólio, até a F6 | CSV sai com o slug (hoje já sai assim em 9 jogos, 5.2) | — |
-| B15 | `hub.html` | tile: grade moderna ou Vintage (anos e bandeira), com a posição da ficha | jogo sem porta de entrada | — |
+| B15 | `hub.html` | tile: grade moderna ou Vintage (anos e bandeira), com a posição da ficha; `href="/games/<endereço>"` e `data-game="<slug>"` (desde 2026-09-30) | jogo sem porta de entrada | `games-url.test.mjs` (todo endereço tem tile e todo tile aponta pro registro) |
 | B16 | opcionais: `src/facets.js`, `src/detail.js` (`RARITY_LISTED_GAMES`), `src/app.js` (`group<Jogo>Sets`), `src/scan.js`, `src/deck-rules.js` | filtros, agrupamento, scanner e regras de deck próprios | tudo genérico (funciona) | — |
+| B17 | `src/game.js` (`URL_DOS_JOGOS`) | a cópia do C17: `[endereço, slug, linha, prefixos]` | a tela do jogo em `/games/<endereço>` não sabe qual jogo abrir e cai no da sessão | `games-url.test.mjs` (a cópia bate com o C17) |
 
 **C. Borda, build e deploy** (commit 2)
 
@@ -266,6 +267,7 @@ valem só nesse caso.
 | C14 | `deploy.yml` (restore e save) e `mirror-images.yml` (restore) | `data/<slug>/sets` (padrão FAB) ou os monólitos (padrão Magic) nas **três** listas de cache, idênticas e na mesma ordem | listas diferentes: o job de imagens deixa de achar o cache e o espelhamento para em **todos** os jogos (5.5) | — |
 | C15 | `deploy.yml` ("Decide o modo do build") | `data/<slug>/manifest.generated.js` na guarda | build rápido publica o tile sem catálogo atrás | — |
 | C16 | `_headers`, `sw.js`, `scripts/lib/img-mirror.mjs` | só com host de imagem novo: `img-src` **e** `connect-src` (o SW baixa por `fetch`), `IMAGE_HOSTS` (e `MUTABLE_IMAGE_HOSTS` se a arte muda na mesma URL), `FONTES` do espelho | imagens bloqueadas pela CSP somem do site | — |
+| C17 | `functions/_lib/jogos.js` (`JOGOS_URL`) | endereço oficial em inglês e por extenso (`star-wars-unlimited`, o nome que o TCGplayer usa), nome, logo, e pra linha o `linha` e os `prefixos`; apelido novo em `APELIDOS` | sem `/games/<endereço>` (404), sem páginas de set e de carta, fora dos sitemaps e da página /games | `games-url.test.mjs` (todo jogo do app tem endereço; endereço único e fora das rotas reservadas) |
 
 **D. Banco** (commit 2, aplicada pelo Fernando)
 

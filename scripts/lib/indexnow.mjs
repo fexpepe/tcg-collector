@@ -47,7 +47,7 @@ export function urlsAlteradas(antes, depois) {
   };
 }
 
-// Teto por deploy (2026-09-30). A mudança pra /games criou de uma vez ~250 mil
+// Teto por deploy (2026-09-30). A mudança pra /games criou de uma vez ~290 mil
 // URLs de carta (toda carta ganhou página) e moveu as ~5.400 de set. Mandar
 // tudo num deploy é o que o protocolo trata como spam (HTTP 429), e buscador
 // passa a ignorar quem faz. O que passa do teto fica pro sitemap, que o

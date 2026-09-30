@@ -146,9 +146,10 @@ lê na borda da carta. Um lugar por camada, todos com a mesma régua (travada em
   todas as palavras do catálogo; com fração na busca, o **número** da carta
   ainda é conferido na SQL (a EB03-009 de um set de 94 não entra em "009/094");
 - **índice estático** (decks/listas): `numberSearchForms` no número;
-- **SEO** (`prerender-catalog`): título, description, h1 e JSON-LD da página de
-  carta usam o código impresso e listam as outras escritas
-  (`scripts/lib/card-code.mjs`).
+- **SEO** (página da carta, montada na borda por
+  `functions/_lib/pagina-carta.js`): título, description, h1 e JSON-LD usam o
+  código impresso e listam as outras escritas (`functions/_lib/card-code.js`,
+  que o `scripts/lib/card-code.mjs` reexporta pro build).
 
 ### Busca completa (Explorar)
 
@@ -210,7 +211,15 @@ Blog: `blog` (lista) e `/blog/<endereço>` (post), montados na borda por
 (onde se escreve — só quem está em `blog_editores`, papel separado do admin).
 Publicar é instantâneo, sem deploy. Ver [docs/BLOG.md](docs/BLOG.md).
 
-Pré-renderizadas no build: `set/<slug>.html`, `card/<slug>.html` e
+Catálogo público, sempre em inglês e aninhado (2026-09-30): `/games` (todos os
+jogos), `/games/<jogo>` (a tela de Sets, com título e índice próprios postos
+pela borda), `/games/<jogo>/<set>` (página do set) e
+`/games/<jogo>/<set>/<carta>` (página de toda carta, montada na borda por
+`functions/games/`). Os endereços antigos (`/set/…`, `/card/…`,
+`/sets?game=…`) respondem 301 pro novo. Registro dos jogos em
+`functions/_lib/jogos.js`; regras e armadilhas em [docs/SEO.md](docs/SEO.md).
+
+Pré-renderizadas no build: `games.html`, `games/<jogo>/<set>.html` e
 `deck/<slug>.html` — HTML estático com título, meta, Open Graph, JSON-LD e a
 lista já dentro, pra o Google indexar conteúdo em vez da casca da SPA.
 
