@@ -574,6 +574,7 @@
       if ((window.SLEEVU && window.SLEEVU.game) === "naruto") return groupNarutoSets(setItems);
       if ((window.SLEEVU && window.SLEEVU.game) === "hxh") return groupHxhSets(setItems);
       if ((window.SLEEVU && window.SLEEVU.game) === "dbc") return groupDbcSets(setItems);
+      if ((window.SLEEVU && window.SLEEVU.game) === "swu") return groupSwuSets(setItems);
       // Página de Sets: agrupada por série (coleção).
       return groupSetsBySeries(setItems);
     }
@@ -1358,6 +1359,28 @@
   // coleções de evento); os sets principais têm código numérico (1..12).
   function groupLorcanaSets(setItems) {
     const isPromo = (set) => !/^\d+$/.test(String(set.setId || "").trim());
+    const main = setItems.filter((set) => !isPromo(set)).sort(sortByReleaseDesc);
+    const promos = setItems.filter(isPromo).sort(sortByReleaseDesc);
+    const items = [];
+    if (main.length) {
+      items.push({ type: "category-head", name: t("sets.category.main"), count: main.length });
+      main.forEach((set) => items.push(set));
+    }
+    if (promos.length) {
+      items.push({ type: "category-head", name: t("sets.category.promos"), count: promos.length });
+      promos.forEach((set) => items.push(set));
+    }
+    return items;
+  }
+
+  // Star Wars: Unlimited: expansões (Spark of Rebellion, Homeworlds, Twin
+  // Suns…) e o resto — Weekly Play, Judge, convenção, campeonato, Gift Box,
+  // Gamegenic. A TCGCSV não marca o tipo do grupo e os códigos não seguem
+  // padrão (SOR, TS26, P26…), então quem decide é o NOME: todo grupo de promo
+  // tem uma destas palavras (conferido nos 33 grupos em 30/09/2026). Sem isto
+  // as 19 promos ficavam misturadas às 11 expansões num "Outros" só.
+  function groupSwuSets(setItems) {
+    const isPromo = (set) => /promo|exclusive|championship|gift box|weekly play/i.test(String(set.name || ""));
     const main = setItems.filter((set) => !isPromo(set)).sort(sortByReleaseDesc);
     const promos = setItems.filter(isPromo).sort(sortByReleaseDesc);
     const items = [];

@@ -646,7 +646,7 @@
       // terminar na mesma página vazia, e ainda lavando o cache de dados do
       // service worker no caminho. Vale para o índice vazio também: ele é
       // gerado a partir do próprio catálogo, então vazio ali = sem esse dado
-      // neste jogo (Digimon/YGO/Riftbound/Union Arena não têm artista).
+      // neste jogo (Digimon/YGO/Riftbound/Union Arena/Star Wars não têm artista).
       //
       // A varredura fica só para o caso em que o ÍNDICE é que não chegou
       // (rede caiu no fetch da fatia) — aí ela é mesmo a única fonte.

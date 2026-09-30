@@ -4955,7 +4955,14 @@
   // carregam (em vez de tudo de uma vez / piscar). "load" não borbulha → captura.
   document.addEventListener("load", (event) => {
     const img = event.target;
-    if (img && img.tagName === "IMG") img.classList.add("is-loaded");
+    if (!img || img.tagName !== "IMG") return;
+    img.classList.add("is-loaded");
+    // Carta DEITADA no popup (Líder/Base do Star Wars, Battlefield do
+    // Riftbound, Location do Lorcana): a moldura 63/88 com `cover` cortava a
+    // carta pela metade. Marca o stack e o CSS troca a moldura pela proporção
+    // da própria imagem (30/09/2026).
+    const pai = img.parentNode;
+    if (img.naturalWidth > img.naturalHeight && pai.classList.contains("preview-image-stack")) pai.classList.add("is-landscape");
   }, true);
 
   // setId da pokemontcg.io a partir do da TCGdex. Primeiro consulta o de-para
@@ -12379,7 +12386,7 @@
     // Páginas que já pedem AS SUAS cartas no load: se a carta é sua, elas a
     // abrem no lugar e tirar a pessoa da tela seria pior. Binders e Explorar
     // ficam de fora — o catálogo delas é sob demanda, e baixar o catálogo
-    // INTEIRO dos 14 jogos só pra reabrir um popup custa mais que mandar a
+    // INTEIRO dos 15 jogos só pra reabrir um popup custa mais que mandar a
     // carta pra página canônica dela.
     if (["collection", "wishlist", "sales"].includes(page)) {
       const gradadas = new Set(gradedCardIds());

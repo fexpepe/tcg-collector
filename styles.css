@@ -3357,6 +3357,16 @@ input::placeholder {
      drop-shadow de 34px caía em cima dela, escurecendo o topo do bloco. */
 }
 
+/* Carta DEITADA (a imagem é mais larga que alta — Líder/Base do Star Wars,
+   Battlefield do Riftbound, Location do Lorcana): a moldura retrato com
+   `cover` mostrava só o miolo. O shared.js marca o stack no load e a moldura
+   passa a ser a da própria imagem, na largura toda da coluna. */
+.preview-image-stack.is-landscape img {
+  width: 100%;
+  aspect-ratio: auto;
+  border-radius: 3.4% / 4.8%;
+}
+
 /* Nome do set no popup (eyebrow e linha "Set" da ficha): atalho pra página
    do set. Herda a cor do lugar onde está — só sublinha ao passar o mouse. */
 .preview-set-link {
