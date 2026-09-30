@@ -23,7 +23,7 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { lerSitemap } from "./lib/sitemap.mjs";
-import { CHAVE, payload, urlsAlteradas, emLotes } from "./lib/indexnow.mjs";
+import { CHAVE, payload, urlsAlteradas, emLotes, priorizaComTeto, TETO_POR_DEPLOY } from "./lib/indexnow.mjs";
 
 const LEITURA = "https://tcg-collector.pages.dev";
 const args = process.argv.slice(2);
@@ -86,8 +86,9 @@ async function preparar() {
     alteradas = urlsAlteradas([], depois);
     motivo = "primeira vez (a chave ainda não está no ar): vai o sitemap inteiro";
   }
-  const urls = [...alteradas.novas, ...alteradas.removidas];
-  console.log(`IndexNow: ${motivo} → ${urls.length} URL(s).`);
+  const { enviar: urls, fora } = priorizaComTeto([...alteradas.novas, ...alteradas.removidas]);
+  console.log(`IndexNow: ${motivo} → ${urls.length + fora} URL(s).`);
+  if (fora) console.log(`IndexNow: teto de ${TETO_POR_DEPLOY} por deploy; ${fora} página(s) de carta ficam pro sitemap.`);
   if (!urls.length) return;
 
   const lotes = emLotes(urls);
