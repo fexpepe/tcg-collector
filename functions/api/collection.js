@@ -18,7 +18,7 @@
 // sempre e nada mais muda.
 import { buildCards, buildPrices, idsComBase, LOTE_IDS } from "./_search-sql.js";
 
-const GAMES = new Set(["pokemon", "lorcana", "onepiece", "magic", "fab", "gundam",
+const GAMES = new Set(["pokemon", "lorcana", "onepiece", "magic", "fab", "gundam", "swu",
   "dbfw", "ygo", "digimon", "riftbound", "unionarena", "naruto", "hxh", "dbc", "jump"]);
 
 // Teto por requisição: uma coleção gigante vira várias chamadas do cliente, em

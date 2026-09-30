@@ -44,6 +44,7 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 | `magic` | Magic: The Gathering | Scryfall (catálogo EN; pt-BR é fase 2) | USD/EUR |
 | `fab` | Flesh and Blood | TCGCSV cat. 62 | USD |
 | `gundam` | Gundam Card Game | TCGCSV cat. 86 | USD |
+| `swu` | Star Wars: Unlimited | TCGCSV cat. 79 (FFG; Hyperspace/Showcase = cartas próprias) + logos de set do site oficial (`mirror-swu-set-logos.mjs`) | USD |
 | `dbfw` | Dragon Ball Fusion World | TCGCSV cat. 80 (≠ Masters) | USD |
 | `ygo` | Yu-Gi-Oh! | TCGCSV cat. 2 (~46k impressões — o maior) | USD |
 | `digimon` | Digimon Card Game | TCGCSV cat. 63 | USD |

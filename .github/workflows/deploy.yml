@@ -99,6 +99,7 @@ jobs:
             data/onepiece/sets
             data/fab/sets
             data/gundam/sets
+            data/swu/sets
             data/dbfw/sets
             data/digimon/sets
             data/riftbound/sets
@@ -460,6 +461,27 @@ jobs:
         if: env.RODA_SYNC == 'true'
         run: node scripts/sync-price-history.mjs data/riftbound
 
+      # Star Wars: Unlimited (TCGCSV cat. 79, FFG 2024). Padrao Union Arena.
+      # Logos de set ANTES do sync (pra ele já apontar setLogo pro webp local):
+      # vêm do site oficial e precisam do sharp (recorte + contorno dos logos
+      # claros — ver o cabeçalho do mirror-swu-set-logos.mjs), instalado fora do
+      # repo como no mirror-images.yml. Skip-if-exists: só set NOVO baixa, e o
+      # "Versiona" commita o arquivo junto com o resto de data/.
+      - name: Espelha logos de set (Star Wars Unlimited)
+        if: env.RODA_SYNC == 'true'
+        run: |
+          ( mkdir -p "$RUNNER_TEMP/sharp" && cd "$RUNNER_TEMP/sharp" && npm init -y >/dev/null && npm install --no-audit --no-fund sharp@0.33.5 >/dev/null ) \
+            && SHARP_DIR="$RUNNER_TEMP/sharp/node_modules/sharp" node scripts/mirror-swu-set-logos.mjs \
+            || echo "mirror-swu-set-logos falhou; sets novos seguem com o nome no lugar do logo"
+
+      - name: Sincroniza catálogo do Star Wars Unlimited (TCGCSV)
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/sync-swu.mjs || echo "sync-swu falhou; mantém o catalogo versionado"
+
+      - name: Snapshot de preços (histórico Star Wars Unlimited)
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/sync-price-history.mjs data/swu
+
       # Union Arena (TCGCSV cat. 81, Bandai 2024 — um anime por set). Padrao FAB.
       - name: Sincroniza catálogo do Union Arena (TCGCSV)
         if: env.RODA_SYNC == 'true'
@@ -628,6 +650,7 @@ jobs:
             data/onepiece/sets
             data/fab/sets
             data/gundam/sets
+            data/swu/sets
             data/dbfw/sets
             data/digimon/sets
             data/riftbound/sets

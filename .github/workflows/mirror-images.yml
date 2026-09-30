@@ -63,6 +63,7 @@ jobs:
             data/onepiece/sets
             data/fab/sets
             data/gundam/sets
+            data/swu/sets
             data/dbfw/sets
             data/digimon/sets
             data/riftbound/sets

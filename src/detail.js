@@ -321,7 +321,9 @@
   // A ordem é a escada de raridade do jogo (o select sai nessa ordem; valor
   // fora da lista vai pro fim, em ordem alfabética).
   const RARITY_LISTED_GAMES = {
-    gundam: ["Common", "C+", "C++", "Uncommon", "U+", "Rare", "R+", "Legend Rare", "LR+", "LR++", "Promo"]
+    gundam: ["Common", "C+", "C++", "Uncommon", "U+", "Rare", "R+", "Legend Rare", "LR+", "LR++", "Promo"],
+    // Star Wars: Unlimited: 5 raridades limpas no catálogo (30/09/2026).
+    swu: ["Common", "Uncommon", "Rare", "Legendary", "Special"]
   };
   const rarityListOrder = RARITY_LISTED_GAMES[(window.SLEEVU && window.SLEEVU.game) || ""] || null;
 

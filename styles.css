@@ -340,6 +340,20 @@
   --accent: #0e7490; --accent-dark: #155e75; --accent-rgb: 14, 116, 144;
   --accent-soft: rgba(14, 116, 144, 0.1); --on-accent: #ffffff;
 }
+/* Star Wars: Unlimited: PRETO com texto branco (pedido do Fernando,
+   30/09/2026) — é a cor da etiqueta do jogo (GAME_COLOR) e o accent do tema
+   claro (21:1). No escuro o preto sumiria no fundo, então o accent vira o
+   inverso: prata claro com texto escuro, um tom abaixo do branco-gelo do
+   "Todos" pra não se confundirem. */
+[data-game-accent="swu"] {
+  --accent: #d4d4d8; --accent-dark: #a1a1aa; --accent-rgb: 212, 212, 216;
+  --accent-soft: rgba(212, 212, 216, 0.14); --on-accent: #0a0c10;
+}
+[data-theme="light"][data-game-accent="swu"],
+[data-theme="light"] [data-game-accent="swu"] {
+  --accent: #000000; --accent-dark: #27272a; --accent-rgb: 0, 0, 0;
+  --accent-soft: rgba(0, 0, 0, 0.08); --on-accent: #ffffff;
+}
 [data-game-accent="all"] {
   --accent: #e3e7ee; --accent-dark: #c3c9d4; --accent-rgb: 227, 231, 238;
   --accent-soft: rgba(227, 231, 238, 0.12); --on-accent: #0a0c10;

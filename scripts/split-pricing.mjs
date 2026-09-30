@@ -29,7 +29,7 @@ import { basePricingId } from "./lib/sync-common.mjs";
 const RAIZ = new URL("../", import.meta.url);
 const DIRS = [
   "data/", "data/lorcana/", "data/onepiece/", "data/magic/", "data/fab/",
-  "data/gundam/", "data/dbfw/", "data/ygo/", "data/digimon/", "data/riftbound/",
+  "data/gundam/", "data/swu/", "data/dbfw/", "data/ygo/", "data/digimon/", "data/riftbound/",
   "data/unionarena/", "data/naruto/", "data/hxh/", "data/dbc/", "data/jump/"
 ];
 
