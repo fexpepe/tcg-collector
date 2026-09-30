@@ -46,10 +46,11 @@ test("?line= antigo do Formation e do Cross abre a linha Data Carddass", () => {
   assert.equal(sharedCom("?game=naruto&line=nrt-nx").lineParamOf(), "nrt-dc");
   assert.equal(sharedCom("?game=naruto&line=nrt-mb").lineParamOf(), "nrt-mb");
   assert.equal(sharedCom("?game=naruto").lineParamOf(), "");
-  // Quem passar o valor cru direto pro lineScope também cai na linha nova.
-  const velho = lineScope("naruto", "nrt-nf");
-  assert.equal(velho.line, "nrt-dc");
-  assert.ok(velho.includes("nrt-nx-s18"));
+  // As páginas passam o valor JÁ resolvido pro lineScope (app.js e cards.js
+  // leem a linha pelo lineParamOf) — e ele abre o arcade inteiro.
+  const aberto = lineScope("naruto", sharedCom("?game=naruto&line=nrt-nx").lineParamOf());
+  assert.equal(aberto.line, "nrt-dc");
+  assert.ok(aberto.includes("nrt-nx-s18") && aberto.includes("nrt-dc-s01"));
 });
 
 test("chave de protótipo no ?line= não vira linha", () => {
