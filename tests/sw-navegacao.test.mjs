@@ -104,6 +104,29 @@ test("chave de navegação: uma entrada por página, seja qual for a forma da UR
   assert.equal(chave(ORIGEM + "/set/pokemon/sv1"), ORIGEM + "/set/pokemon/sv1.html");
 });
 
+// A tela de Sets de cada jogo mora em /games/<jogo> desde 2026-09-30. Ela cai
+// na entrada do sets.html (que o install guarda), como o /sets?game=x sempre
+// caiu: sem isso, a tela de um jogo nunca visitado não abria offline. Set e
+// carta, os níveis de baixo, são páginas próprias.
+test("chave de navegação: /games/<jogo> é a tela de Sets; set e carta têm entrada própria", () => {
+  const { chave } = carrega();
+  assert.equal(chave(ORIGEM + "/games/star-wars-unlimited"), ORIGEM + "/sets.html");
+  assert.equal(chave(ORIGEM + "/games/naruto-data-carddass?serie=x"), ORIGEM + "/sets.html");
+  assert.equal(chave(ORIGEM + "/sets?game=swu"), ORIGEM + "/sets.html");
+  assert.equal(chave(ORIGEM + "/games"), ORIGEM + "/games.html");
+  assert.equal(chave(ORIGEM + "/games/pokemon/base-set"), ORIGEM + "/games/pokemon/base-set.html");
+  assert.equal(chave(ORIGEM + "/games/pokemon/base-set/charizard-4-102"), ORIGEM + "/games/pokemon/base-set/charizard-4-102.html");
+});
+
+test("offline: a tela de um jogo nunca visitado abre da cópia do sets.html", async () => {
+  const sw = carrega({ hashed: true, build: "abc12345" });
+  const shell = await sw.sandbox.caches.open(sw.SHELL);
+  await shell.put("sets.html", html("tela de sets"));
+  sw.estado.fetch = async () => { throw new Error("offline"); };
+  const res = await sw.nav(evento("/games/one-piece-carddass"));
+  assert.equal(await texto(res), "tela de sets");
+});
+
 test("precache (\"portfolio.html\") e navegação (/portfolio) caem na MESMA entrada", async () => {
   const sw = carrega({ hashed: true, build: "abc12345" });
   const shell = await sw.sandbox.caches.open(sw.SHELL);
