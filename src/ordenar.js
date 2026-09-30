@@ -197,7 +197,9 @@
 
     // Variação de preço / %, popularidade: dado por jogo, sob demanda.
     let faltou = false;
-    const jogoDe = (x) => shared.normalizeGame(carta(x).game || shared.currentGame());
+    // Carta sem .game (catálogo de um jogo só): o jogo da página, como o
+    // currentGame() do shared.js (que não é exportado).
+    const jogoDe = (x) => shared.normalizeGame(carta(x).game || (window.SLEEVU && window.SLEEVU.game) || "pokemon");
     const dado = (tipo, x) => { const m = extra(tipo, jogoDe(x)); if (!m) faltou = true; return m; };
     let valor;
     if (fam === "views") {
@@ -215,8 +217,8 @@
         return Number(p) || 0;
       });
       // Variação em dinheiro, na moeda da tela: o preço de hoje menos o de
-      // antes (hoje / (1 + pct)). É o que separa a carta de R$ 2 que dobrou
-      // (+R$ 2) da de R$ 900 que subiu 10% (+R$ 82).
+      // antes (hoje / (1 + pct)). É o que separa a carta que foi de R$ 2 pra
+      // R$ 4 (+100%, +R$ 2) da que foi de R$ 818 pra R$ 900 (+10%, +R$ 82).
       valor = fam === "pct" ? pct : shared.memoValue((x) => {
         const p = pct(x);
         return p && p > -100 ? preco(x) * p / (100 + p) : 0;

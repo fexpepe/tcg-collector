@@ -1083,7 +1083,9 @@ input::placeholder {
   border: 0; border-radius: 0; background: transparent; color: var(--text);
   font-size: 14px; font-weight: 500; text-align: left; white-space: nowrap;
 }
-.srt-opt:hover, .srt-opt:focus-visible { background: var(--panel); outline: none; }
+.srt-opt:focus-visible { background: var(--panel); outline: none; }
+/* Hover só com mouse: no toque ele gruda na linha que estava sob o dedo. */
+@media (hover: hover) { .srt-opt:hover { background: var(--panel); } }
 .srt-opt[aria-selected="true"] { background: var(--accent-soft); }
 .srt-k { font-weight: 700; }
 .srt-d { color: var(--muted); }
