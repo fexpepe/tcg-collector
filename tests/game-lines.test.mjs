@@ -71,12 +71,17 @@ test("linhas de prefixo único e jogos sem linha seguem iguais", () => {
   assert.ok(lineScope("pokemon", "").includes("base1"));
 });
 
-test("todo ?line= do hub aponta pra uma linha registrada (e não pra um apelido)", () => {
+// Desde 2026-09-30 o tile leva pro endereço do jogo (/games/<url>), e a linha
+// sai do registro de endereços (functions/_lib/jogos.js).
+test("todo tile de linha do hub aponta pra uma linha registrada (e não pra um apelido)", async () => {
+  const { jogoDaUrl } = await import("../functions/_lib/jogos.js");
   const hub = readFileSync(new URL("../hub.html", import.meta.url), "utf8");
-  const links = [...hub.matchAll(/href="sets\?game=([a-z]+)&(?:amp;)?line=([a-z0-9-]+)"/g)];
-  assert.ok(links.length >= 5, `achei só ${links.length} links de linha no hub — o regex quebrou?`);
-  for (const [, game, line] of links) {
-    assert.equal(lineScope(game, line).line, line, `hub: ?game=${game}&line=${line} não é uma linha registrada`);
+  const tiles = [...hub.matchAll(/<a class="hub-tile" href="\/games\/([a-z0-9-]+)" data-game="([a-z]+)">/g)];
+  const linhas = tiles.map(([, url, game]) => ({ url, game, jogo: jogoDaUrl(url) })).filter((t) => t.jogo && t.jogo.linha);
+  assert.ok(linhas.length >= 5, `achei só ${linhas.length} tiles de linha no hub — o regex quebrou?`);
+  for (const { url, game, jogo } of linhas) {
+    assert.equal(jogo.game, game, `hub: /games/${url} é de ${jogo.game}, o tile diz ${game}`);
+    assert.equal(lineScope(game, jogo.linha).line, jogo.linha, `hub: /games/${url} leva à linha ${jogo.linha}, que não é registrada`);
   }
-  assert.ok(!links.some(([, , line]) => line === "nrt-nf" || line === "nrt-nx"), "Formation/Cross voltaram a ter tile próprio");
+  assert.ok(!linhas.some(({ jogo }) => jogo.linha === "nrt-nf" || jogo.linha === "nrt-nx"), "Formation/Cross voltaram a ter tile próprio");
 });

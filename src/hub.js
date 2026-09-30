@@ -34,16 +34,20 @@
   // Cor do jogo por TILE: o carimbo data-game-accent faz o --accent daquele
   // tile virar o do jogo do link (o anel do hover e o contorno do foco saem
   // nessa cor — a mesma das páginas do jogo depois do clique). O jogo sai do
-  // próprio href, que é a fonte da verdade do tile; os vintage herdam a cor do
-  // jogo-pai (?game=onepiece&line=opcd -> onepiece). Respeita a preferência
+  // data-game do tile, ao lado do href; os vintage herdam a cor do jogo-pai
+  // (o Carddass do One Piece leva data-game="onepiece"). Respeita a preferência
   // "cores por jogo" das Configurações: desligada, nada é carimbado e o tile
   // segue no neutro da página.
   var shared = window.TCGShared;
   var colorsOn = !(shared && shared.gameColorsEnabled) || shared.gameColorsEnabled();
   if (!colorsOn) return;
   document.querySelectorAll("a.hub-tile").forEach(function (a) {
-    var game = "";
-    try { game = new URL(a.href).searchParams.get("game") || ""; } catch (e) { /* href estranho: fica neutro */ }
+    // O tile leva o jogo no data-game desde que o link virou /games/<jogo>
+    // (2026-09-30); o ?game= é o do hub antigo, que ainda pode estar no cache.
+    var game = a.getAttribute("data-game") || "";
+    if (!game) {
+      try { game = new URL(a.href).searchParams.get("game") || ""; } catch (e) { /* href estranho: fica neutro */ }
+    }
     if (/^[a-z]+$/.test(game)) a.setAttribute("data-game-accent", game);
   });
 })();
