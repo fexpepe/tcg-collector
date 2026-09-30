@@ -28,8 +28,13 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
   fundo branco fica: a cápsula do hub é branca nos dois temas, e o branco aqui é
   o PREENCHIMENTO das letras (que têm contorno preto) — transformá-lo em alfa
   esvaziaria o logo.
-- `game_naruto.webp` — Naruto Card Game 2002~2006 (tile do jogo, tile vintage e
-  `setLogo` de todos os sets do Naruto, via sync-naruto-vintage.mjs)
+- `game_naruto.webp` — logo NARUTO genérico (tile do jogo e `setLogo` do CCG
+  americano nrt-ccg e do Data Carddass Cross Formation nrt-nx/nrt-nf)
+- `game_naruto_vintage.webp` — Naruto Card Game japonês 2002~2006 (tile vintage
+  do hub e `setLogo` da linha `nrtcg`, via sync-naruto-vintage.mjs). Fonte: o
+  verso da carta enviado pelo Fernando em 2026-09-30 — logo recortado do fundo
+  azul por chroma key (PIL), 512px. A textura de papel impressa fica, por isso
+  pesa mais que os outros (~64 KB)
 - `game_naruto_2027.webp` — NARUTO CARD GAME novo (Bandai, mundial 2027; tile
   "Em breve" do hub; fonte: naruto-cardgame.com/images/common/logo.webp)
 - `game_naruto_miracle.webp` — Miracle Battle Carddass (tile vintage do Naruto
