@@ -29,8 +29,9 @@ Medido ao vivo no dia em que este registro nasceu:
 
 | Onde | O quê |
 |---|---|
-| `scripts/prerender-catalog.mjs` | páginas estáticas da lista de jogos, de set (pt e en, com hreflang), artista e deck, com o texto já no HTML; os mapas que a borda lê (`data/game-pages/`) |
-| `functions/games/[[path]].js` | a tela de cada jogo (título, descrição e índice de sets por cima do `sets.html`) e a página de toda carta, montada na borda |
+| `scripts/prerender-catalog.mjs` | páginas estáticas da lista de jogos, da variante em inglês de cada set (`<set>-en`), de artista e de deck, com o texto já no HTML; os mapas que a borda lê (`data/game-pages/`) |
+| `functions/games/[[path]].js` | as telas do app nos endereços /games: a de cada jogo (por cima do `sets.html`) e a de cada set e cada carta (por cima do `detail.html`), com título, descrição, JSON-LD e o texto que o robô sem JS lê |
+| `functions/_lib/pagina-set.js`, `pagina-carta.js`, `decora-app.js` | os textos e o JSON-LD do set e da carta, e o que a borda põe no HTML da tela (inclusive a rota que o `detail.js` lê) |
 | `functions/_lib/jogos.js` | o registro dos jogos: endereço oficial, apelidos e linhas (a cópia do `src/game.js` tem que bater) |
 | `scripts/lib/sitemap.mjs` | o `sitemap.xml` é um índice, com um arquivo por tipo de página (tabela abaixo) |
 | `src/theme.js` | robô vê o idioma que o HTML declara; página com `data-idioma-fixo` (as pré-renderizadas) nunca tem o `lang` trocado |
@@ -59,18 +60,33 @@ e endereços antigos vão primeiro, cartas completam até o teto e o resto fica
 pro sitemap. Sem o teto, a mudança pra `/games` (~290 mil cartas de uma vez)
 viraria dezenas de lotes num deploy só.
 
-## Endereços (2026-09-30)
+## Endereços (2026-09-30, telas do app desde 2026-10-01)
 
 Sempre em inglês (o site é pra todo mundo, não só pro Brasil), no molde do
-TCGplayer: jogo, set e carta aninhados, cada nível uma página.
+TCGplayer: jogo, set e carta aninhados, cada nível uma página. E cada
+endereço é a TELA DO APP, a mesma que a pessoa usa navegando: não existe uma
+"página do Google" separada do app (até 2026-10-01 o set e a carta tinham
+página estática própria e o app seguia em `/detail?…`).
 
 | Endereço | O que é | Quem monta |
 |---|---|---|
 | `/games` | todos os jogos, modernos e vintage | estática (`prerender-catalog`) |
 | `/games/<jogo>` | a tela de Sets do app, com título, descrição e índice de sets próprios | borda, por cima do `sets.html` |
-| `/games/<jogo>/<set>` (e `-en`) | página do set | estática (`prerender-catalog`) |
-| `/games/<jogo>/<set>/<carta>` | página da carta | borda (`functions/_lib/pagina-carta.js`), dos mesmos chunks do app |
-| `/games/<jogo>/_id/<id>` | link de compartilhar do app | 301 pra página da carta |
+| `/games/<jogo>/<set>` | a tela do set do app, com título, JSON-LD (CollectionPage) e o índice das cartas | borda, por cima do `detail.html`, dos mesmos chunks do app |
+| `/games/<jogo>/<set>/<carta>` | a mesma tela com o popup da carta aberto, com o título, o JSON-LD (Product) e o texto da carta | borda, idem |
+| `/games/<jogo>/<set>-en` | a variante em inglês do set (hreflang) | estática (`prerender-catalog`) |
+| `/games/<jogo>/_id/<id>` | link de compartilhar do app | 301 pra carta |
+
+- **A rota** vai no HTML num `<meta name="sleevu-rota">` (nome do set, jogo e
+  carta; o content é o caminho). O `detail.js` lê daí no lugar da query de
+  `/detail?type=set&…`. Numa cópia sem ele (a reserva do service worker,
+  offline), acha o set no mapa do jogo e a carta pelo nome no endereço.
+- **Dentro do app**, `/detail?type=set&…` continua funcionando (a grade de Sets,
+  a busca e os links antigos usam), e a barra passa sozinha pro endereço do
+  set assim que a tela carrega. O popup troca a barra pro endereço da carta ao
+  abrir e volta pro do set ao fechar. A tela "dentro da coleção"
+  (`&scope=collection`) e as de Pokémon, artista e treinador seguem em
+  `/detail?…`.
 
 - `<jogo>` é o nome inteiro do jogo (`star-wars-unlimited`, não `swu`). Linha
   vintage tem endereço próprio (`/games/one-piece-carddass`). Apelido, a chave
@@ -80,7 +96,8 @@ TCGplayer: jogo, set e carta aninhados, cada nível uma página.
   ganha `-2`, `-3` na ordem do id. A regra é uma só
   (`functions/_lib/slug-carta.js`) pro build e pra borda.
 - **Endereços antigos seguem valendo**, como 301: `/set/<slug>` e
-  `/card/<slug>` pelos mapas `data/game-pages/legado-*.json`, e
+  `/card/<slug>` pelos mapas `data/game-pages/legado-*.json` (vão direto pra
+  tela do set/da carta), e
   `/sets?game=<jogo>[&line=…]` pelo `functions/sets.js`. O `/sets` sem jogo
   continua respondendo 200 (é o que o service worker guarda no install e o
   que o PWA instalado abre), com `noindex`.
@@ -89,11 +106,18 @@ TCGplayer: jogo, set e carta aninhados, cada nível uma página.
   install guarda, de reserva: a tela de um jogo nunca visitado abre offline.
   Uma entrada só pra todos os jogos entregava, na troca de jogo, a cópia do
   anterior (título errado na aba).
-  O `sets.html` tem `<base href="/">`: a mesma página responde em `/sets` e em
-  `/games/<jogo>`, e os links relativos dela têm que valer nos dois.
-- Página de carta não é arquivo do deploy (seriam ~290 mil; o Pages aceita
-  20 mil): a borda lê o mapa do jogo, o chunk do set e o preço, e guarda o
-  HTML no cache da borda por 24 h, com o build na chave.
+  O mesmo vale pra cada set e cada carta, com a reserva do `detail.html`.
+  O `sets.html` e o `detail.html` têm `<base href="/">`: cada um responde no
+  endereço antigo e nos de `/games/…`, e os links relativos têm que valer nos
+  dois.
+- **Nome da carta no endereço calculado em dois lugares**: a borda
+  (`functions/_lib/slug-carta.js`) e o `detail.js` (cópia, script clássico).
+  O `tests/slug-carta-cliente.test.mjs` roda os dois nas mesmas cartas; se
+  divergirem, o endereço que o app mostra dá 404.
+- A tela do set e a da carta não são arquivos do deploy (seriam ~290 mil
+  cartas; o Pages aceita 20 mil): a borda lê o mapa do jogo, o chunk do set e
+  o preço, e guarda o HTML decorado no cache da borda por 24 h, com o build na
+  chave, antes da vitrine (o nonce da CSP é por resposta).
 
 ## Fora do repositório
 

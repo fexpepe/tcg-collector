@@ -146,8 +146,8 @@ lê na borda da carta. Um lugar por camada, todos com a mesma régua (travada em
   todas as palavras do catálogo; com fração na busca, o **número** da carta
   ainda é conferido na SQL (a EB03-009 de um set de 94 não entra em "009/094");
 - **índice estático** (decks/listas): `numberSearchForms` no número;
-- **SEO** (página da carta, montada na borda por
-  `functions/_lib/pagina-carta.js`): título, description, h1 e JSON-LD usam o
+- **SEO** (tela da carta, decorada na borda com as peças de
+  `functions/_lib/pagina-carta.js`): título, description e JSON-LD usam o
   código impresso e listam as outras escritas (`functions/_lib/card-code.js`,
   que o `scripts/lib/card-code.mjs` reexporta pro build).
 
@@ -212,16 +212,19 @@ Blog: `blog` (lista) e `/blog/<endereço>` (post), montados na borda por
 Publicar é instantâneo, sem deploy. Ver [docs/BLOG.md](docs/BLOG.md).
 
 Catálogo público, sempre em inglês e aninhado (2026-09-30): `/games` (todos os
-jogos), `/games/<jogo>` (a tela de Sets, com título e índice próprios postos
-pela borda), `/games/<jogo>/<set>` (página do set) e
-`/games/<jogo>/<set>/<carta>` (página de toda carta, montada na borda por
-`functions/games/`). Os endereços antigos (`/set/…`, `/card/…`,
-`/sets?game=…`) respondem 301 pro novo. Registro dos jogos em
-`functions/_lib/jogos.js`; regras e armadilhas em [docs/SEO.md](docs/SEO.md).
+jogos), `/games/<jogo>` (a tela de Sets), `/games/<jogo>/<set>` (a tela do set)
+e `/games/<jogo>/<set>/<carta>` (a tela do set com o popup da carta aberto).
+Desde 2026-10-01 cada endereço é a tela do APP, servida pela borda
+(`functions/games/`) com título, JSON-LD e o texto que o robô sem JS lê já no
+HTML; `/detail?type=set&…` segue funcionando e a barra passa pro endereço do
+set. Os endereços antigos (`/set/…`, `/card/…`, `/sets?game=…`) respondem 301
+pro novo. Registro dos jogos em `functions/_lib/jogos.js`; regras e armadilhas
+em [docs/SEO.md](docs/SEO.md).
 
-Pré-renderizadas no build: `games.html`, `games/<jogo>/<set>.html` e
-`deck/<slug>.html` — HTML estático com título, meta, Open Graph, JSON-LD e a
-lista já dentro, pra o Google indexar conteúdo em vez da casca da SPA.
+Pré-renderizadas no build: `games.html`, `games/<jogo>/<set>-en.html` (a
+variante em inglês de cada set) e `deck/<slug>.html` — HTML estático com
+título, meta, Open Graph, JSON-LD e a lista já dentro, pra o Google indexar
+conteúdo em vez da casca da SPA.
 
 ---
 
