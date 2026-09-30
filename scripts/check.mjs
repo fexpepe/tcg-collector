@@ -17,6 +17,9 @@ const warn = (m) => warnings.push(m);
 const srcFiles = readdirSync(`${ROOT}/src`).filter((f) => f.endsWith(".js")).map((f) => `src/${f}`);
 const htmlFiles = readdirSync(ROOT).filter((f) => f.endsWith(".html"));
 const read = (rel) => readFileSync(`${ROOT}/${rel}`, "utf8");
+// Na checkout Windows (core.autocrlf=true) o texto chega com CRLF; no CI, com
+// LF. Guarda que parte o texto em linhas usa split(/\r?\n/) — a 2c conta o
+// que dá errado com split("\n").
 
 // 1) Sintaxe de todos os JS (src + sw).
 for (const f of [...srcFiles, "sw.js"]) {
@@ -80,7 +83,7 @@ for (const arquivo of I18N_FILES) {
     const vistas = new Set();
     for (const m of corpo.matchAll(re)) {
       if (vistas.has(m[1])) {
-        const linha = texto.slice(0, abre.index + m.index).split("\n").length;
+        const linha = texto.slice(0, abre.index + m.index).split(/\r?\n/).length;
         fail(`i18n: "${m[1]}" está DUPLICADA no bloco ${abre[1]} de ${arquivo} (linha ${linha}) — a primeira definição morre em silêncio`);
       } else vistas.add(m[1]);
     }
@@ -93,9 +96,15 @@ for (const arquivo of I18N_FILES) {
 //     que o site não quebrou. Batia em criar coleção, marcar alvo de preço e no
 //     plano B de toda cópia de link. O substituto é shared.caixaDeTexto (mesma
 //     coisa, em HTML). Sem esta guarda, o próximo `prompt` volta em silêncio.
+//
+//     As linhas saem de split(/\r?\n/), não de split("\n"): na checkout Windows
+//     (core.autocrlf=true) cada linha terminava em "\r", e o /\/\/.*$/ não
+//     tirava comentário nenhum — o "." não casa "\r" e o "$" sem flag m só casa
+//     no fim da string. Comentário que só CITA o prompt virava erro (2 falsos
+//     em 2026-09-29, no shared.js e no wishlist.js), e no CI, em LF, dava verde.
 for (const arquivo of srcFiles) {
   const texto = read(arquivo);
-  texto.split("\n").forEach((linha, i) => {
+  texto.split(/\r?\n/).forEach((linha, i) => {
     if (/(^|[^.\w])(window\.)?prompt\s*\(/.test(linha.replace(/\/\/.*$/, ""))) {
       fail(`${arquivo}:${i + 1}: window.prompt é suprimido em webview de rede social — use shared.caixaDeTexto`);
     }
@@ -115,7 +124,7 @@ const GLIFO_X = /<button\b[^>]*>\s*(?:×|✕|✖|&times;|&#215;|&#x2715;)\s*<\/b
 for (const arquivo of [...srcFiles, ...htmlFiles]) {
   const texto = read(arquivo);
   for (const m of texto.matchAll(GLIFO_X)) {
-    const linha = texto.slice(0, m.index).split("\n").length;
+    const linha = texto.slice(0, m.index).split(/\r?\n/).length;
     fail(`${arquivo}:${linha}: botão com o glifo "×"/"✕" — use shared.CLOSE_ICON (SVG)`);
   }
 }
