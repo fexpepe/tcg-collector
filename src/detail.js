@@ -526,9 +526,13 @@
     const nome = window.SLEEVU && window.SLEEVU.name;
     if (detailType !== "set" || !sample || !nome) return;
     const jogo = paginaGame();
-    const itens = [{ label: nome, href: `sets?game=${jogo}` }];
+    // Cada nível no endereço da tela dele (/games/<jogo>, /games/<linha>); o
+    // /sets?game= só se o game.js não carregou o registro dos endereços.
+    const urlDoJogo = window.SLEEVU.urlDoJogo;
+    const tela = (l) => (urlDoJogo && urlDoJogo(jogo, l)) || `sets?game=${jogo}${l ? `&line=${l}` : ""}`;
+    const itens = [{ label: nome, href: tela("") }];
     const def = line && (shared.GAME_LINES[jogo] || {})[line];
-    if (def) itens.push({ label: t(def.titleKey), href: `sets?game=${jogo}&line=${line}` });
+    if (def) itens.push({ label: t(def.titleKey), href: tela(line) });
     itens.push({ label: shared.setDisplayName(sample.setId, sample.set, sample.language) });
     shared.setCrumbs(itens);
   }
