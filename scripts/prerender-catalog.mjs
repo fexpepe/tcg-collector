@@ -3,11 +3,13 @@
 // O app é uma SPA/MPA: /sets e detail.html montam tudo no cliente, então o
 // Googlebot vê uma casca vazia e não indexa "Base Set", "OP-01" etc. Este script
 // gera, no build (CI, depois dos syncs), UMA página HTML ESTÁTICA por set
-// em /set/<slug>.html — com <title>, meta description, Open Graph, JSON-LD e a
+// em /games/<jogo>/<set>.html — com <title>, meta description, Open Graph, JSON-LD e a
 // lista de cartas (nome, número, imagem) já no HTML. É a "porta do Google": a
 // pessoa cai numa página real e legível e clica pra abrir o app interativo
 // (detail.html?game=<slug>, que grava a sessão do jogo). Também (re)gera o
-// sitemap.xml com todas essas URLs.
+// sitemap.xml com todas essas URLs, a página /games (todos os jogos), a casca
+// da página de carta (montada na borda, ver functions/games/) e os mapas que a
+// borda lê (data/game-pages/).
 //
 // Fontes de dados:
 //   pokemon  -> chunks por set gerados pelo sync: data/sets/<lang>/<id>.json
@@ -17,20 +19,29 @@
 // Roda com: node scripts/prerender-catalog.mjs
 import { readFileSync, writeFileSync, readdirSync, mkdirSync, existsSync, rmSync } from "node:fs";
 import { join } from "node:path";
-import { readGlobalVar } from "./lib/sync-common.mjs";
+import { readGlobalVar, slug as slugDoChunk, winSafeName } from "./lib/sync-common.mjs";
 // Código IMPRESSO da carta ("009/094", "4/102"), a mesma régua do cardCode do
 // site. É o que vai pro <title>/description/JSON-LD: quem procura no Google
 // digita "nome + código impresso", e o número cru do catálogo ("9") não casa.
-import { cardCode, alternateCodes } from "./lib/card-code.mjs";
+import { cardCode } from "./lib/card-code.mjs";
 // Todo JSON-LD daqui passa por este helper, nunca pelo JSON.stringify cru: um
 // nome de deck com "</script>" fechava o bloco e injetava HTML no <head> (ver
 // o porquê em scripts/lib/json-ld.mjs; tests/json-ld.test.mjs confere).
 import { jsonLdSeguro } from "./lib/json-ld.mjs";
 import { montaSitemaps } from "./lib/sitemap.mjs";
+// Endereço de cada jogo (/games/<url>) e o nome de cada carta no endereço:
+// moram em functions/_lib porque a borda usa a mesma régua (ver lá).
+import { JOGOS_URL, jogoDaUrl, urlDoSet } from "../functions/_lib/jogos.js";
+import { slugify, slugsDasCartas } from "../functions/_lib/slug-carta.js";
 
 const ORIGIN = "https://sleevu.app";
 const SETS_DIR = "data/sets";
-const OUT_DIR = "set";
+// Páginas de set em /games/<jogo>/<set> desde 2026-09-30 (antes, /set/<slug>,
+// um diretório só pra todos os jogos). O endereço antigo responde 301
+// (functions/set/[slug].js, com o mapa legado-sets.json daqui).
+const GAMES_DIR = "games";
+// Mapas que a borda lê (functions/games/, functions/set/, functions/card/).
+const MAPAS_DIR = join("data", "game-pages");
 
 // Jogos prerenderizados, na ordem (a ordem fixa mantém os slugs estáveis entre
 // builds quando dois sets de jogos diferentes têm o mesmo nome).
@@ -77,8 +88,11 @@ const GAMES = [
 // robots.txt, e sitemap × robots precisam concordar: anunciar no sitemap uma URL
 // bloqueada no robots vira erro no Search Console.
 // /decks é a galeria PÚBLICA da comunidade e fica.
+// /games (todos os jogos) entrou no lugar de /sets em 2026-09-30: a tela de Sets
+// sem jogo abre no jogo da sessão e leva noindex (functions/sets.js); cada
+// jogo tem a sua, em /games/<jogo> (sitemap-games.xml).
 const STATIC_URLS = [
-  "/", "/hub", "/explore", "/search", "/cards", "/pokedex", "/lore", "/sets", "/artists", "/trainers",
+  "/", "/hub", "/explore", "/search", "/cards", "/pokedex", "/lore", "/games", "/artists", "/trainers",
   "/decks", "/blog",
   "/about", "/novidades", "/lancamentos", "/comparar", "/faq", "/help", "/privacy", "/terms"
 ];
@@ -114,16 +128,9 @@ function appSetUrl(name, setId, game, language) {
     : `name=${encodeURIComponent(name)}`;
   return `/detail?type=set&${ident}&game=${game}`;
 }
-function slugify(name) {
-  return String(name)
-    .normalize("NFKD").replace(/[̀-ͯ]/g, "") // tira acentos
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
 // Imagens/logos podem ser URL absoluta (CDNs) ou caminho relativo à raiz do site
-// (ex.: data/onepiece/set-logos/x.png). A página vive em /set/, então caminho
-// relativo precisa virar absoluto ("/data/...") pra não resolver em /set/data/.
+// (ex.: data/onepiece/set-logos/x.png). A página vive em /games/<jogo>/, então
+// caminho relativo precisa virar absoluto pra não resolver dentro dela.
 function absUrl(u) {
   const s = String(u || "");
   if (!s) return s;
@@ -208,6 +215,13 @@ function cmpNumber(a, b) {
   return String(a).localeCompare(String(b));
 }
 
+// De qual chunk (data/…/<set>.json) veio cada carta. A página da carta é
+// montada na borda a partir dos MESMOS chunks que o app baixa, e o mapa de
+// cada jogo (data/game-pages/<jogo>.json) diz quais chunks formam cada página
+// de set. WeakMap e não um campo na carta: a carta segue igual pro resto do
+// script (artistas, ranking).
+const ARQUIVO_DA_CARTA = new WeakMap();
+
 // Pokémon: lê todos os chunks data/sets/<lang>/<id>.json e agrupa as cartas por
 // NOME de set (exatamente como o app: cards.filter(c => c.set === nome)).
 function loadPokemonSets() {
@@ -225,6 +239,7 @@ function loadPokemonSets() {
         const name = card.set;
         if (!name) continue;
         if (card.retired) continue; // chunk congelado de set aposentado: não entra na página do set
+        ARQUIVO_DA_CARTA.set(card, `${SETS_DIR}/${lang}/${file}`);
         if (!byName.has(name)) byName.set(name, []);
         byName.get(name).push(card);
       }
@@ -233,14 +248,33 @@ function loadPokemonSets() {
   return byName;
 }
 
-// Lorcana/One Piece: catálogo inteiro num cards.js (window.TCG_CARDS).
+// Onde mora o chunk de cada set de um jogo: o `file` do manifest do jogo (o
+// nome do chunk leva sufixo quando dois setIds dão o mesmo nome de arquivo, então
+// não dá pra deduzir do setId). O manifest só existe no build; sem ele (rodando
+// local) o nome é deduzido sem o sufixo, o que basta pra testar.
+async function arquivosDosSets(game) {
+  const manifest = await readGlobalVar(new URL(`../data/${game}/manifest.generated.js`, import.meta.url), "TCG_MANIFEST");
+  const porSet = new Map();
+  for (const e of (manifest && Array.isArray(manifest.sets) ? manifest.sets : [])) {
+    if (e && e.id != null && e.file) porSet.set(String(e.id), e.file);
+  }
+  return (chave) => porSet.get(chave) || `data/${game}/sets/${winSafeName(slugDoChunk(chave) || "set")}.json`;
+}
+
+// Demais jogos: catálogo inteiro num cards.js (window.TCG_CARDS). Carta
+// aposentada fica de fora, como no Pokémon: é a mesma régua que a borda usa
+// pra reconstruir a página do set (functions/_lib/slug-carta.js).
 async function loadGameSets(slug) {
   const byName = new Map();
   const cards = await readGlobalVar(new URL(`../data/${slug}/cards.js`, import.meta.url), "TCG_CARDS");
   if (!Array.isArray(cards)) return byName;
+  const arquivoDo = await arquivosDosSets(slug);
   for (const card of cards) {
     const name = card.set;
     if (!name) continue;
+    if (card.retired) continue;
+    // Mesma chave do chunk do writeGameCatalog (sync-common): setId, senão o nome.
+    ARQUIVO_DA_CARTA.set(card, arquivoDo(String(card.setId || card.set || "sem-set")));
     if (!byName.has(name)) byName.set(name, []);
     byName.get(name).push(card);
   }
@@ -314,6 +348,10 @@ const PR_STYLE = `    <style>
       .pr-card-noimg { display: block; padding: 20px 8px; text-align: center; }
       .pr-card-meta { display: block; margin-top: 6px; font-size: 0.85rem; }
       .pr-card-num { color: var(--muted, #9aa0aa); }
+      /* Trilha Jogos > jogo > set (páginas de set, desde 2026-09-30). */
+      .pr-trilha { margin-top: 18px; font-size: 13px; color: var(--muted, #9aa0aa); }
+      .pr-trilha a { color: var(--muted, #9aa0aa); text-decoration: none; }
+      .pr-trilha a:hover { text-decoration: underline; }
       .pr-others { margin-top: 40px; }
       .pr-others ul { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 16px; }
       .pr-others a { color: var(--accent, #e63946); text-decoration: none; }
@@ -336,9 +374,15 @@ function setPageHtml(page, canonical, otherSets, lang) {
   const title = L.title(name, gameLabel);
   const desc = L.desc(cards.length, name, gameLabel, dateHuman);
   const ogImage = absUrl(rep.setLogo) || `${ORIGIN}/og-image.png`;
+  const baseDoJogo = `/games/${page.url}`;
+  const baseDoSet = `${baseDoJogo}/${page.slug}`;
   // hreflang: cada variante aponta pra si e pra irmã; pt é o x-default.
-  const altPt = `${ORIGIN}/set/${page.slug}`;
-  const altEn = `${ORIGIN}/set/${page.slug}-en`;
+  const altPt = `${ORIGIN}${baseDoSet}`;
+  const altEn = `${ORIGIN}${baseDoSet}-en`;
+  // Cada miniatura leva pra página da CARTA (montada na borda, uma pra cada
+  // carta do catálogo). Antes todas iam pro mesmo link do app, e o Google não
+  // tinha caminho do set pras cartas.
+  const urlDaCarta = (c) => `${baseDoSet}/${page.slugsCartas.get(String(c.id))}`;
   const hreflangs = `
     <link rel="alternate" hreflang="pt-BR" href="${escapeAttr(altPt)}">
     <link rel="alternate" hreflang="en" href="${escapeAttr(altEn)}">
@@ -361,9 +405,21 @@ function setPageHtml(page, canonical, otherSets, lang) {
         "@type": "ListItem",
         position: i + 1,
         name: `${c.name}${c.number ? ` ${cardCode({ number: c.number, setTotal: c.setTotal || total })}` : ""}`,
+        url: `${ORIGIN}${urlDaCarta(c)}`,
         image: absUrl(c.image) || undefined
       }))
     }
+  };
+  // Trilha Jogos > jogo > set: o Google troca a URL crua do resultado por ela.
+  const trilha = [
+    { nome: isEn ? "Games" : "Jogos", url: `${ORIGIN}/games` },
+    { nome: gameLabel, url: `${ORIGIN}${baseDoJogo}` },
+    { nome: name, url: canonical }
+  ];
+  const trilhaLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: trilha.map((t, i) => ({ "@type": "ListItem", position: i + 1, name: t.nome, item: t.url }))
   };
 
   // As primeiras cartas são as que aparecem sem rolar — e uma delas costuma ser
@@ -389,12 +445,12 @@ function setPageHtml(page, canonical, otherSets, lang) {
     const img = c.image
       ? `<img class="pr-card-img" src="${escapeAttr(absUrl(thumbUrl(c.image)))}"${srcsetAttr} alt="${escapeAttr(alt)}"${prioridade} decoding="async" width="245" height="342">`
       : `<span class="pr-card-noimg">${escapeHtml(c.name)}</span>`;
-    return `<li class="pr-card"><a href="${escapeAttr(appUrl)}">${img}<span class="pr-card-meta"><span class="pr-card-num">${num}</span> <span class="pr-card-name">${escapeHtml(c.name)}</span></span></a></li>`;
+    return `<li class="pr-card"><a href="${escapeAttr(urlDaCarta(c))}">${img}<span class="pr-card-meta"><span class="pr-card-num">${num}</span> <span class="pr-card-name">${escapeHtml(c.name)}</span></span></a></li>`;
   }).join("");
 
   const enSuffix = isEn ? "-en" : "";
   const othersHtml = otherSets.length
-    ? `<nav class="pr-others" aria-label="${escapeAttr(L.othersAria)}"><h2>${escapeHtml(L.others(gameLabel))}</h2><ul>${otherSets.map((s) => `<li><a href="/set/${escapeAttr(s.slug)}${enSuffix}">${escapeHtml(s.name)}</a></li>`).join("")}</ul></nav>`
+    ? `<nav class="pr-others" aria-label="${escapeAttr(L.othersAria)}"><h2>${escapeHtml(L.others(gameLabel))}</h2><ul>${otherSets.map((s) => `<li><a href="${baseDoJogo}/${escapeAttr(s.slug)}${enSuffix}">${escapeHtml(s.name)}</a></li>`).join("")}</ul></nav>`
     : "";
 
   const logoHtml = rep.setLogo
@@ -402,10 +458,12 @@ function setPageHtml(page, canonical, otherSets, lang) {
     : `<strong class="pr-hero-name">${escapeHtml(name)}</strong>`;
 
   const navHtml = [
-    `<a href="/sets?game=${game}">Sets</a>`,
+    `<a href="${baseDoJogo}">Sets</a>`,
     game === "pokemon" ? `<a href="/pokedex">Pokédex</a>` : "",
     `<a href="/collection">${escapeHtml(L.navCollection)}</a>`
   ].filter(Boolean).join("\n          ");
+  const trilhaHtml = `<nav class="pr-trilha" aria-label="${escapeAttr(isEn ? "Breadcrumb" : "Trilha de navegação")}">${trilha.slice(0, -1)
+    .map((t) => `<a href="${escapeAttr(t.url.replace(ORIGIN, ""))}">${escapeHtml(t.nome)}</a> <span aria-hidden="true">›</span> `).join("")}<span aria-current="page">${escapeHtml(name)}</span></nav>`;
 
   // data-idioma-fixo (também nas páginas de carta e de artista): nada traduz
   // este texto no cliente, então o theme.js deixa o <html lang> como está em
@@ -437,6 +495,7 @@ function setPageHtml(page, canonical, otherSets, lang) {
     <meta name="theme-color" content="#e8ecf1" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#101218" media="(prefers-color-scheme: dark)">
     <script type="application/ld+json">${jsonLdSeguro(jsonLd)}</script>
+    <script type="application/ld+json">${jsonLdSeguro(trilhaLd)}</script>
     <script src="/src/theme.js"></script>
     <link rel="stylesheet" href="/styles.css">
 ${PR_STYLE}
@@ -451,6 +510,7 @@ ${PR_STYLE}
       </div>
     </header>
     <main class="pr-wrap">
+      ${trilhaHtml}
       <div class="pr-hero">
         <div class="pr-hero-art">${logoHtml}</div>
         <div>
@@ -573,7 +633,7 @@ ${PR_STYLE}
         <a class="brand" href="/">Sleevu</a>
         <nav class="page-nav" aria-label="Páginas">
           <a href="/artists">Artistas</a>
-          <a href="/sets">Sets</a>
+          <a href="/games">Sets</a>
           <a href="/collection">Minha coleção</a>
         </nav>
       </div>
@@ -605,15 +665,35 @@ ${PR_STYLE}
 // endereço do robots.txt (sitemap.xml) não muda: agora ele é o índice, e quem
 // já o enviou no Search Console não precisa reenviar. Tipo sem página (galeria
 // de decks fora do ar, blog sem post) sai do índice em vez de virar um arquivo
-// vazio.
+// vazio. Nomes em inglês, como os endereços do site.
+//
+// Cartas: um arquivo por jogo, e jogo com mais de CARTAS_POR_SITEMAP cartas em
+// vários (-2, -3): o protocolo aceita até 50.000 URLs por arquivo, e o Magic
+// sozinho tem ~100 mil cartas.
 // Devolve { nomeDoArquivo: conteúdo }, com o sitemap.xml (índice) incluído.
-function buildSitemaps(setPages, cardPages, deckPages, artistPages, blogPosts) {
+const CARTAS_POR_SITEMAP = 45000;
+function buildSitemaps(setPages, deckPages, artistPages, blogPosts) {
+  const jogos = JOGOS_URL.map((j) => j.url).filter((url) => setPages.some((p) => p.url === url));
+  const cartasPorJogo = new Map();
+  for (const p of setPages) {
+    const lista = cartasPorJogo.get(p.url) || [];
+    for (const slug of p.slugsCartas.values()) lista.push(`${ORIGIN}/games/${p.url}/${p.slug}/${slug}`);
+    cartasPorJogo.set(p.url, lista);
+  }
+  const gruposDeCartas = [];
+  for (const url of jogos) {
+    const lista = cartasPorJogo.get(url) || [];
+    for (let i = 0, parte = 1; i < lista.length; i += CARTAS_POR_SITEMAP, parte++) {
+      gruposDeCartas.push([`sitemap-cards-${url}${parte > 1 ? `-${parte}` : ""}.xml`, lista.slice(i, i + CARTAS_POR_SITEMAP)]);
+    }
+  }
   return montaSitemaps(ORIGIN, [
-    ["sitemap-paginas.xml", STATIC_URLS.map((p) => ORIGIN + p)],
-    ["sitemap-sets.xml", setPages.map((s) => `${ORIGIN}/set/${s.slug}`)],
-    ["sitemap-sets-en.xml", setPages.map((s) => `${ORIGIN}/set/${s.slug}-en`)],
-    ["sitemap-cartas.xml", (cardPages || []).map((c) => `${ORIGIN}/card/${c.slug}`)],
-    ["sitemap-artistas.xml", (artistPages || []).map((a) => `${ORIGIN}/artist/${a.slug}`)],
+    ["sitemap-pages.xml", STATIC_URLS.map((p) => ORIGIN + p)],
+    ["sitemap-games.xml", jogos.map((url) => `${ORIGIN}/games/${url}`)],
+    ["sitemap-sets.xml", setPages.map((s) => `${ORIGIN}/games/${s.url}/${s.slug}`)],
+    ["sitemap-sets-en.xml", setPages.map((s) => `${ORIGIN}/games/${s.url}/${s.slug}-en`)],
+    ...gruposDeCartas,
+    ["sitemap-artists.xml", (artistPages || []).map((a) => `${ORIGIN}/artist/${a.slug}`)],
     ["sitemap-decks.xml", (deckPages || []).map((d) => `${ORIGIN}/deck/${d.slug}`)],
     // Posts do blog levam a data da última edição: é o que diz ao Google que
     // um guia atualizado merece ser relido (as outras páginas mudam a cada build).
@@ -814,11 +894,12 @@ async function buildDeckPages() {
   return out;
 }
 
-// ── Páginas de CARTA individual (top por preço + mais vistas) ────────────────
-// O Pokellector domina o Google em busca de carta ("Umbreon ex 161 price");
-// geramos /card/<slug>.html só pras ~1500 mais relevantes: as mais valiosas
-// (pricing do build) + as mais vistas (card_views do Supabase, leitura pública).
-const CARD_OUT_DIR = "card";
+// ── Cartas que tinham página estática (/card/<slug>) até 2026-09-30 ─────────
+// Eram as ~1.500 mais valiosas (pricing do build) + as mais vistas (card_views
+// do Supabase). Hoje toda carta tem página na borda, em /games/<jogo>/<set>/
+// <carta> (functions/games/). O ranking continua aqui SÓ pra gerar o mapa
+// slug antigo -> endereço novo (legado-cartas.json), que o functions/card/
+// [slug].js usa pro 301: a régua dos slugs antigos não pode mudar.
 const MAX_CARD_PAGES = 1500;
 const SUPABASE_URL = "https://dlnalopazitfdgnmdguu.supabase.co";
 const SUPABASE_ANON = "sb_publishable_0Qlei5ZvRcEsr18QRdWfGg_N3aR1zyL"; // pública
@@ -842,265 +923,6 @@ async function fetchTopViews() {
   } catch { return []; }
 }
 
-// CÓDIGO DO SET como o jogador digita na busca ("Ms. All Sunday OP16"). Nem todo
-// jogo tem um: o One Piece usa OP16/EB-01, mas o Lorcana numera os sets ("1"), o
-// Naruto usa slug interno ("nrt-s01") e o Pokémon usa o id da TCGdex ("base1",
-// "2011bw"). Jogar o setId no título sem filtrar encheria metade do catálogo de
-// ruído, então o discriminador é a MAIÚSCULA: código de verdade é escrito em
-// caixa alta pelo fabricante, id interno não.
-//
-// Também não repete o que já está no número da carta: em OP01-079 o "OP01" já
-// aparece, e "Luffy OP01-079 OP01" só desperdiça caracteres do título.
-function setCode(card) {
-  const raw = String(card.setId || "").trim();
-  if (!/[A-Z]/.test(raw)) return "";            // base1, sv1, 2011bw, nrt-s01, "10"
-  const code = raw.replace(/_.*$/, "");         // Gundam: GD01_b -> GD01
-  const semTraco = (s) => s.toUpperCase().replace(/[^A-Z0-9]/g, "");
-  if (semTraco(String(card.number || "")).includes(semTraco(code))) return "";
-  return code;
-}
-
-// Título da CARTA, mesmo orçamento (ver TITULO_MAX). Ordem = valor de busca
-// decrescente: nome > número > código do set > nome do set. O nome do set é o
-// primeiro a cair quando não cabe.
-function cardTitle(nome, numero, code, setName) {
-  const base = [nome, numero, code].filter(Boolean).join(" ");
-  const sufixo = " | Sleevu";
-  const comSet = setName ? `${base} · ${setName}` : base;
-  return ((comSet + sufixo).length <= TITULO_MAX ? comSet : base) + sufixo;
-}
-
-// Data de lançamento em pt-BR ("2024-11-08" -> "8 de novembro de 2024"). Só
-// aceita o formato ISO que os catálogos usam; qualquer outra coisa vira "".
-const MESES = ["janeiro", "fevereiro", "março", "abril", "maio", "junho",
-  "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
-function dataPtBr(iso) {
-  const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(iso || ""));
-  if (!m) return "";
-  const mes = MESES[Number(m[2]) - 1];
-  return mes ? `${Number(m[3])} de ${mes} de ${m[1]}` : "";
-}
-
-// FICHA TÉCNICA. Cada jogo traz um subconjunto diferente de campos (Magic tem
-// custo de mana, Pokémon tem HP, One Piece tem cor), então a lista é montada do
-// que EXISTE — linha sem valor não entra, em vez de virar "Ilustrador: —".
-// Isto é o que separa uma página de catálogo de uma página de conteúdo raso: os
-// dados são específicos daquela carta, não texto de molde repetido.
-function fichaTecnica(card, setPage, sCode) {
-  const linhas = [
-    ["Jogo", setPage.gameLabel],
-    ["Set", sCode ? `${setPage.name} (${sCode})` : setPage.name],
-    ["Número", cardCode(card)],
-    ["Raridade", card.rarity && card.rarity !== "None" ? card.rarity : ""],
-    ["Ilustrador", card.artist],
-    ["Tipo", card.cardType || card.category],
-    ["Estágio", card.stage],
-    ["Tipos", Array.isArray(card.types) ? card.types.join(", ") : card.types],
-    ["Custo", card.manaCost || (card.cost != null && card.cost !== "" ? String(card.cost) : "")],
-    ["Poder", card.power],
-    ["Cor", card.color || card.colorId || card.ink || card.opColor],
-    ["HP", card.hp],
-    ["Série", card.setSerieName],
-    ["Nº na Pokédex", card.dexId],
-    // Acabamento é o que separa duas cópias da MESMA carta em preço (foil,
-    // reverse, 1ª edição) — dado que o colecionador procura e que quase nenhum
-    // agregador mostra junto do preço.
-    ["Acabamentos", Array.isArray(card.variants) ? card.variants.join(", ") : ""],
-    ["Lançamento do set", dataPtBr(card.setReleaseDate || setPage.releaseDate)],
-    ["Cartas no set", card.setTotal ? String(card.setTotal) : (setPage.cards ? String(setPage.cards.length) : "")]
-  ].filter(([, v]) => v != null && String(v).trim() !== "");
-  if (!linhas.length) return "";
-  return `<h2>Ficha técnica</h2>
-      <dl class="prc-ficha">${linhas.map(([k, v]) =>
-    `<div><dt>${escapeHtml(k)}</dt><dd>${escapeHtml(String(v))}</dd></div>`).join("")}</dl>`;
-}
-
-// Lista de links pra outras páginas de carta. Vale por dois motivos: dá ao
-// leitor o próximo passo óbvio, e amarra as 1.298 páginas numa teia em vez de
-// deixá-las ilhadas (link interno é o que faz o rastreador achar e ranquear as
-// que não estão no sitemap por acaso).
-function listaDeCartas(titulo, itens) {
-  if (!itens || !itens.length) return "";
-  return `<h2>${escapeHtml(titulo)}</h2>
-      <ul class="prc-lista">${itens.map((it) =>
-    `<li><a href="/card/${escapeAttr(it.slug)}">${escapeHtml(it.rotulo)}</a></li>`).join("")}</ul>`;
-}
-
-function cardPageHtml(cp, ctx = {}) {
-  const { card, setPage, slug, priceUSD } = cp;
-  const gameLabel = setPage.gameLabel;
-  const canonical = `${ORIGIN}/card/${slug}`;
-  // Código IMPRESSO ("009/094", "4/102", "OP05-119"), não o número cru do
-  // catálogo ("9"): é o que a pessoa lê na carta e digita no Google junto do
-  // nome. As outras escritas ("9/94" pra quem exibe "009/094") vão na
-  // description e no alternateName do JSON-LD — a busca casa por qualquer uma.
-  const code = cardCode(card);
-  const codeBit = code ? ` ${code}` : "";
-  const altCodes = alternateCodes(card);
-  const altBit = altCodes.length ? ` (${altCodes.join(", ")})` : "";
-  // Nome CJK ganha a espécie EN entre parênteses (busca em pt/en acha igual).
-  const enBit = card.pokemonName && !/^[\x00-\x7F]/.test(card.name) ? ` (${card.pokemonName})` : "";
-  const sCode = setCode(card);
-  const title = cardTitle(`${card.name}${enBit}`, code, sCode, setPage.name);
-  const priceBit = priceUSD > 0 ? ` Preço de referência: US$ ${priceUSD.toFixed(2)}.` : "";
-  // A descrição não tem o aperto do título (o Google mostra ~155), então aqui o
-  // código do set entra sempre que existir — é a segunda chance de casar com a
-  // busca quando ele não coube lá em cima.
-  const codeBitDesc = sCode ? ` (${sCode})` : "";
-  const desc = `${card.name}${codeBit}${altBit}${codeBitDesc} do set ${setPage.name} de ${gameLabel}.${priceBit} Veja a imagem, acompanhe o preço e marque na sua coleção grátis no Sleevu.`;
-  const img = absUrl(card.image) || "";
-  // &card=<id>: o detail.js reabre o POPUP da carta ao aterrissar (openFromUrl)
-  // — quem acha a carta no Google cai direto nela, não na página do set pra
-  // procurar de novo.
-  const appUrl = `${appSetUrl(setPage.name, setPage.rep && setPage.rep.setId, setPage.game, card.language)}&card=${encodeURIComponent(card.id)}`;
-  // PARÁGRAFO DE ABERTURA. Frases curtas, montadas só com o que a carta tem —
-  // frase sem dado não é escrita, em vez de sair com buraco ("ilustrada por
-  // undefined"). O que faz este texto valer pra busca é que cada fato VARIA por
-  // carta (raridade, número, ilustrador, data do set, quantas impressões
-  // existem); texto de molde igual em 1.298 páginas seria conteúdo raso.
-  const frases = [];
-  // Nos vintage japoneses o campo `rarity` não guarda raridade: vem com os
-  // glifos de TIPO da carta (剣 民 武). Escrever "carta de raridade 剣 民 武" é
-  // frase sem sentido pra quem lê e ruído pra quem indexa, então a menção só
-  // sai quando o valor parece mesmo uma raridade (curto e sem CJK).
-  const rarOk = card.rarity && card.rarity !== "None" &&
-    !/[^\x00-\x7F]/.test(card.rarity) && String(card.rarity).length <= 24;
-  const rarBit = rarOk ? ` de raridade ${card.rarity}` : "";
-  const setBit = sCode ? `${setPage.name} (${sCode})` : setPage.name;
-  frases.push(`${card.name} é uma carta${rarBit} do set ${setBit}, de ${gameLabel}${code ? `, numerada ${code}${altCodes.length ? ` (também escrita ${altCodes.join(" ou ")})` : ""}` : ""}.`);
-  if (card.artist) frases.push(`A ilustração é de ${card.artist}.`);
-  const acab = Array.isArray(card.variants) ? card.variants.filter(Boolean) : [];
-  if (acab.length > 1) {
-    frases.push(`Sai em ${acab.length} acabamentos (${acab.join(", ")}), que são cotados separadamente no mercado.`);
-  }
-  const dtSet = dataPtBr(card.setReleaseDate || setPage.releaseDate);
-  const totalSet = Number(card.setTotal) || (setPage.cards ? setPage.cards.length : 0);
-  if (dtSet || totalSet) {
-    frases.push(`O set ${setPage.name}${dtSet ? ` foi lançado em ${dtSet}` : ""}${dtSet && totalSet ? " e" : ""}${totalSet ? ` reúne ${totalSet} cartas` : ""}.`);
-  }
-  const nVers = (ctx.versoes || []).length;
-  if (nVers) {
-    frases.push(`Esta carta também aparece ${nVers === 1 ? "em outra versão" : `em outras ${nVers} versões`} no catálogo — arte alternativa, promocional e reimpressão costumam ter valores de mercado bem diferentes entre si.`);
-  }
-  if (priceUSD > 0) {
-    frases.push("O preço de referência acima é apurado no mercado internacional e atualizado semanalmente; no Sleevu ele aparece convertido em reais, junto do histórico de variação.");
-  }
-  frases.push(`Marque a carta na sua coleção para acompanhar o preço e ver quanto falta para completar ${setPage.name}.`);
-  const intro = frases.join(" ");
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: `${card.name}${codeBit} — ${setPage.name}`,
-    alternateName: altCodes.length ? altCodes.map((c) => `${card.name} ${c} — ${setPage.name}`) : undefined,
-    sku: code || undefined,
-    image: img || undefined,
-    description: desc,
-    brand: { "@type": "Brand", name: gameLabel },
-    url: canonical
-  };
-  if (priceUSD > 0) {
-    jsonLd.offers = { "@type": "AggregateOffer", priceCurrency: "USD", lowPrice: priceUSD.toFixed(2), offerCount: 1, availability: "https://schema.org/InStock" };
-  }
-  // Trilha (jogo > set > carta). Vale nos dois lados: dá ao leitor a saída pra
-  // cima — que numa página de carta é o set, não a home — e o BreadcrumbList faz
-  // o Google trocar a URL crua do resultado por "Sleevu > Sets > The Time of
-  // Battle", que é mais clicável.
-  const trilha = [
-    { nome: "Sets", url: `${ORIGIN}/sets?game=${setPage.game}` },
-    { nome: setPage.name, url: `${ORIGIN}/set/${setPage.slug}` },
-    { nome: `${card.name}${codeBit}`, url: canonical }
-  ];
-  const breadcrumbLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: trilha.map((t, i) => ({ "@type": "ListItem", position: i + 1, name: t.nome, item: t.url }))
-  };
-  return `<!doctype html>
-<html lang="pt-BR" data-idioma-fixo>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <title>${escapeHtml(title)}</title>
-    <meta name="description" content="${escapeAttr(desc)}">
-    <link rel="canonical" href="${escapeAttr(canonical)}">
-    <meta property="og:site_name" content="Sleevu">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="${escapeAttr(canonical)}">
-    <meta property="og:title" content="${escapeAttr(`${card.name}${codeBit}${codeBitDesc} — ${setPage.name}`)}">
-    <meta property="og:description" content="${escapeAttr(desc)}">
-    ${img ? `<meta property="og:image" content="${escapeAttr(img)}">` : ""}
-    <meta name="twitter:card" content="summary_large_image">
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
-    <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#e8ecf1" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#101218" media="(prefers-color-scheme: dark)">
-    <script type="application/ld+json">${jsonLdSeguro(jsonLd)}</script>
-    <script type="application/ld+json">${jsonLdSeguro(breadcrumbLd)}</script>
-    <script src="/src/theme.js"></script>
-    <link rel="stylesheet" href="/styles.css">
-    <style>
-      .prc-wrap { max-width: 900px; margin: 0 auto; padding: 0 20px 48px; }
-      .prc-hero { display: flex; gap: 26px; flex-wrap: wrap; margin-top: 26px; }
-      .prc-img { width: min(320px, 80vw); height: auto; border-radius: 12px; background: var(--panel, #1a1c22); }
-      .prc-info h1 { margin: 0 0 6px; font-size: 1.5rem; }
-      .prc-sub { color: var(--muted, #9aa0aa); margin: 0 0 12px; }
-      .prc-price { font-size: 1.25rem; font-weight: 800; margin: 8px 0 2px; }
-      .prc-price-note { color: var(--muted, #9aa0aa); font-size: 12.5px; margin: 0 0 14px; }
-      .prc-cta { display: inline-block; margin-top: 8px; padding: 10px 18px; border-radius: 10px; background: var(--accent, #e63946); color: var(--on-accent, #fff); font-weight: 600; text-decoration: none; }
-      .prc-setlink { margin-top: 22px; }
-      .prc-setlink a { color: var(--accent, #e63946); }
-      .prc-trilha { margin-top: 18px; font-size: 13px; color: var(--muted, #9aa0aa); }
-      .prc-trilha a { color: var(--muted, #9aa0aa); text-decoration: none; }
-      .prc-trilha a:hover { text-decoration: underline; }
-      .prc-corpo { margin-top: 34px; max-width: 720px; line-height: 1.7; }
-      .prc-corpo h2 { font-size: 1.05rem; margin: 30px 0 10px; }
-      .prc-ficha { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 8px 20px; margin: 0; }
-      .prc-ficha div { display: flex; gap: 8px; border-bottom: 1px solid var(--line, #2d333f); padding-bottom: 6px; }
-      .prc-ficha dt { color: var(--muted, #9aa0aa); flex: none; }
-      .prc-ficha dd { margin: 0; font-weight: 600; }
-      .prc-lista { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 6px 20px; }
-      .prc-lista a { color: var(--accent, #e63946); text-decoration: none; }
-      .prc-lista a:hover { text-decoration: underline; }
-    </style>
-  </head>
-  <body>
-    <header class="app-header">
-      <div class="app-header-inner">
-        <a class="brand" href="/">Sleevu</a>
-        <nav class="page-nav" aria-label="Páginas">
-          <a href="/sets?game=${setPage.game}">Sets</a>
-          <a href="/collection">Minha Coleção</a>
-        </nav>
-      </div>
-    </header>
-    <main class="prc-wrap">
-      <nav class="prc-trilha" aria-label="Trilha de navegação">${trilha.map((t, i) =>
-        i === trilha.length - 1
-          ? `<span aria-current="page">${escapeHtml(t.nome)}</span>`
-          : `<a href="${escapeAttr(t.url)}">${escapeHtml(t.nome)}</a> <span aria-hidden="true">›</span> `).join("")}</nav>
-      <div class="prc-hero">
-        ${img ? `<img class="prc-img" src="${escapeAttr(img)}" alt="${escapeAttr(`${card.name}${codeBit}${codeBitDesc} — ${setPage.name}`)}" loading="eager" width="320" height="447">` : ""}
-        <div class="prc-info">
-          <h1>${escapeHtml(card.name)}${codeBit ? ` <small>${escapeHtml(code)}${sCode ? ` · ${escapeHtml(sCode)}` : ""}</small>` : ""}</h1>
-          <p class="prc-sub">${escapeHtml(`${gameLabel} · ${setPage.name}${card.rarity && card.rarity !== "None" ? ` · ${card.rarity}` : ""}`)}</p>
-          ${priceUSD > 0 ? `<p class="prc-price">US$ ${priceUSD.toFixed(2)}</p><p class="prc-price-note">Preço de referência de mercado (atualizado semanalmente). No Sleevu você vê em reais e acompanha o histórico.</p>` : ""}
-          <a class="prc-cta" href="${escapeAttr(appUrl)}">Marcar na minha coleção</a>
-          <p class="prc-setlink">Ver o set completo: <a href="/set/${escapeAttr(setPage.slug)}">${escapeHtml(setPage.name)}</a></p>
-        </div>
-      </div>
-      <section class="prc-corpo">
-        <p>${escapeHtml(intro)}</p>
-        ${fichaTecnica(card, setPage, sCode)}
-        ${listaDeCartas("Outras versões desta carta", ctx.versoes)}
-        ${listaDeCartas(`Mais cartas de ${setPage.name}`, ctx.irmas)}
-      </section>
-    </main>
-  </body>
-</html>
-`;
-}
-
 // ── Mapa set -> página estática (data/set-pages/<jogo>.json) ────────────────
 // Quem consome é a Function da borda (functions/detail.js): o link do APP
 // (/detail?type=set&...) é uma casca sem conteúdo — colado no WhatsApp não
@@ -1110,7 +932,8 @@ function cardPageHtml(cp, ctx = {}) {
 // que é a indexável. Um arquivo por jogo pra a borda ler só o que precisa.
 //
 // Formato enxuto (array, não objeto) porque isto é baixado na borda a cada
-// link compartilhado: [slug, nome, imagem, nº de cartas, lançamento].
+// link compartilhado: [caminho, nome, imagem, nº de cartas, lançamento], com o
+// caminho dentro de /games/ ("pokemon/base-set").
 function escreveMapaDeSets(pages) {
   const porJogo = new Map();
   for (const page of pages) {
@@ -1118,7 +941,7 @@ function escreveMapaDeSets(pages) {
     if (!mapa) porJogo.set(page.game, (mapa = {}));
     const img = absUrl(page.rep.setLogo || page.rep.image || "");
     const data = page.rep.setReleaseDate || "";
-    const linha = [page.slug, page.name, img, page.cards.length, data];
+    const linha = [`${page.url}/${page.slug}`, page.name, img, page.cards.length, data];
     // Uma entrada por setId do grupo: a página junta os chunks do mesmo set
     // (edições/línguas), e o link do app carrega UM desses ids.
     for (const id of new Set(page.cards.map((c) => c.setId).filter(Boolean))) mapa[id] = linha;
@@ -1134,12 +957,224 @@ function escreveMapaDeSets(pages) {
   console.log(`prerender-catalog: mapa de sets em data/set-pages/ (${porJogo.size} jogos, ${total} ids).`);
 }
 
+// ── Mapas da árvore /games (data/game-pages/) ───────────────────────────────
+// <jogo>.json é o que a borda (functions/games/) precisa de cada jogo: a lista
+// de sets da tela do jogo e, pra montar a página de uma carta, de quais chunks
+// sai cada página de set:
+//   { g: chave do jogo, l?: linha, n: nome, s: { <set>: { n: nome do set,
+//     f: [chunks], c: nº de cartas, d: lançamento } } }
+// Um arquivo por jogo, e não por set: o deploy está perto do teto de arquivos
+// do Pages, e 2.700 mapas a mais não caberiam.
+//
+// legado-sets.json e legado-cartas.json levam os endereços ANTIGOS (/set/ e
+// /card/) pros novos: são eles que o 301 de functions/set/ e functions/card/ lê.
+function escreveMapasDosJogos(pages, legadoCartas) {
+  if (existsSync(MAPAS_DIR)) rmSync(MAPAS_DIR, { recursive: true, force: true });
+  mkdirSync(MAPAS_DIR, { recursive: true });
+  const porUrl = new Map();
+  const legadoSets = {};
+  for (const page of pages) {
+    let m = porUrl.get(page.url);
+    if (!m) {
+      const jogo = jogoDaUrl(page.url);
+      m = { g: jogo.game, n: jogo.nome, s: {} };
+      if (jogo.linha) m.l = jogo.linha;
+      porUrl.set(page.url, m);
+    }
+    const arquivos = [...new Set(page.cards.map((c) => ARQUIVO_DA_CARTA.get(c)).filter(Boolean))].sort();
+    m.s[page.slug] = { n: page.name, f: arquivos, c: cardsForLang(page.cards, "pt").length, d: page.rep.setReleaseDate || "" };
+    legadoSets[page.slugAntigo] = `${page.url}/${page.slug}`;
+  }
+  for (const [url, m] of porUrl) writeFileSync(join(MAPAS_DIR, `${url}.json`), JSON.stringify(m), "utf8");
+  writeFileSync(join(MAPAS_DIR, "legado-sets.json"), JSON.stringify(legadoSets), "utf8");
+  writeFileSync(join(MAPAS_DIR, "legado-cartas.json"), JSON.stringify(legadoCartas), "utf8");
+  console.log(`prerender-catalog: mapas de ${porUrl.size} jogos em ${MAPAS_DIR}/ + ${Object.keys(legadoSets).length} sets e ${Object.keys(legadoCartas).length} cartas com endereço antigo.`);
+}
+
+// Slug antigo -> endereço novo das cartas que tinham página estática. Mesmo
+// ranking e mesma régua de slug de antes (ver o comentário da seção), pra que
+// cada /card/<slug> que existia ache o seu destino.
+async function mapaDasCartasAntigas(pages) {
+  const pricingByGame = {
+    pokemon: await loadPricingTable("data/"),
+    lorcana: await loadPricingTable("data/lorcana/"),
+    onepiece: await loadPricingTable("data/onepiece/")
+  };
+  const candidates = new Map();
+  for (const p of pages) {
+    const pricing = pricingByGame[p.game] || {};
+    for (const card of p.cards) {
+      const usd = refPriceUSD(pricing[card.id]);
+      if (usd <= 0) continue;
+      const k = `${p.game}|${card.id}`;
+      if (!candidates.has(k) || candidates.get(k).score < usd) candidates.set(k, { card, setPage: p, score: usd });
+    }
+  }
+  const ranked = [...candidates.values()].sort((a, b) => b.score - a.score).slice(0, MAX_CARD_PAGES - 300);
+  const views = await fetchTopViews();
+  const have = new Set(ranked.map((r) => `${r.setPage.game}|${r.card.id}`));
+  for (const v of views) {
+    if (ranked.length >= MAX_CARD_PAGES) break;
+    const k = `${v.game}|${v.card_id}`;
+    if (have.has(k)) continue;
+    for (const p of pages) {
+      if (p.game !== v.game) continue;
+      const card = p.cards.find((c) => c.id === v.card_id);
+      if (card) { ranked.push({ card, setPage: p, score: 0 }); have.add(k); break; }
+    }
+  }
+  const usados = new Set();
+  const mapa = {};
+  for (const cp of ranked) {
+    const hasCjk = /[^\x00-\x7F]/.test(cp.card.name);
+    let nameSlug = hasCjk ? slugify(`${cp.card.pokemonName || ""}-${cp.card.name}`) : slugify(cp.card.name);
+    if (hasCjk && nameSlug.length < 4) nameSlug = slugify(`${cp.card.setId || ""}-${nameSlug}`) || nameSlug;
+    const base = slugify(`${nameSlug}-${cp.card.number || cp.card.id}`) || slugify(cp.card.id) || "carta";
+    let s = base, i = 2;
+    while (usados.has(s)) s = `${base}-${i++}`;
+    usados.add(s);
+    const p = cp.setPage;
+    mapa[s] = `${p.url}/${p.slug}/${p.slugsCartas.get(String(cp.card.id))}`;
+  }
+  return mapa;
+}
+
+// ── Casca da página de carta (games/card-template.html) ─────────────────────
+// A página da carta é montada na borda (functions/games/), mas precisa sair
+// com o mesmo carimbo de build e os mesmos arquivos com hash das páginas
+// estáticas: é por eles que o service worker decide guardar a página pra
+// offline. Esta casca é HTML comum, então o deploy a carimba e reescreve como
+// qualquer outra (hash-assets.mjs), e a borda lê dela o que precisa. Não é uma
+// página: /games/card-template responde 404 (a Function só a lê por dentro).
+function cascaDaCarta() {
+  return `<!doctype html>
+<html lang="pt-BR" data-idioma-fixo>
+  <head>
+    <meta charset="utf-8">
+    <meta name="robots" content="noindex">
+    <title>Sleevu</title>
+    <script src="/src/theme.js"></script>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body></body>
+</html>
+`;
+}
+
+// ── Página /games (todos os jogos) ──────────────────────────────────────────
+// O topo da árvore: é pra onde a trilha das páginas de set e de carta aponta
+// ("Jogos"), e é por ela que o robô chega em cada /games/<jogo>. Na ordem do
+// hub, modernos primeiro e vintage por ano. Jogo sem nenhum set no catálogo
+// (ainda "em breve") fica de fora.
+function milhar(n) {
+  return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
+function paginaDosJogos(pages) {
+  const porUrl = new Map();
+  for (const p of pages) {
+    const e = porUrl.get(p.url) || { sets: 0, cartas: 0 };
+    e.sets++;
+    e.cartas += cardsForLang(p.cards, "pt").length;
+    porUrl.set(p.url, e);
+  }
+  const jogos = JOGOS_URL.filter((j) => porUrl.has(j.url));
+  const canonical = `${ORIGIN}/games`;
+  const title = "Jogos de cartas colecionáveis: sets e cartas | Sleevu";
+  const desc = `Pokémon, Magic, Lorcana, One Piece e mais: ${jogos.length} jogos de cartas colecionáveis, modernos e vintage, com todos os sets e cartas no Sleevu.`;
+  const item = (j) => {
+    const e = porUrl.get(j.url);
+    const logo = j.logo ? `<img class="pj-logo" src="/${escapeAttr(j.logo)}" alt="" loading="lazy" decoding="async">` : "";
+    return `<li><a class="pj-jogo" href="/games/${escapeAttr(j.url)}">${logo}<span class="pj-nome">${escapeHtml(j.nome)}</span><span class="pj-meta">${e.sets} sets · ${milhar(e.cartas)} cartas${j.vintage ? ` · ${escapeHtml(j.vintage)}` : ""}</span></a></li>`;
+  };
+  const modernos = jogos.filter((j) => !j.vintage);
+  const vintage = jogos.filter((j) => j.vintage);
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "Jogos de cartas colecionáveis no Sleevu",
+    url: canonical,
+    description: desc,
+    isPartOf: { "@type": "WebSite", "@id": ORIGIN + "/#website", name: "Sleevu", url: ORIGIN + "/" },
+    mainEntity: {
+      "@type": "ItemList",
+      numberOfItems: jogos.length,
+      itemListElement: jogos.map((j, i) => ({ "@type": "ListItem", position: i + 1, name: j.nome, url: `${ORIGIN}/games/${j.url}` }))
+    }
+  };
+  return `<!doctype html>
+<html lang="pt-BR" data-idioma-fixo>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>${escapeHtml(title)}</title>
+    <meta name="description" content="${escapeAttr(desc)}">
+    <link rel="canonical" href="${canonical}">
+    <meta property="og:site_name" content="Sleevu">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="${canonical}">
+    <meta property="og:title" content="${escapeAttr(title.replace(" | Sleevu", ""))}">
+    <meta property="og:description" content="${escapeAttr(desc)}">
+    <meta property="og:image" content="${ORIGIN}/og-image.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <meta name="theme-color" content="#e8ecf1" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#101218" media="(prefers-color-scheme: dark)">
+    <!-- A página mora na RAIZ (games.html), então passa pelas guardas do
+         check.mjs e do check-mobile.mjs como as do app. -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <script type="application/ld+json">${jsonLdSeguro(jsonLd)}</script>
+    <script src="/src/theme.js"></script>
+    <link rel="stylesheet" href="/styles.css">
+${PR_STYLE}
+    <style>
+      .pj-grade { list-style: none; padding: 0; margin: 16px 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+      .pj-jogo { display: flex; flex-direction: column; gap: 6px; min-height: 44px; padding: 14px; border: 1px solid var(--line, #2d333f); border-radius: 12px; color: inherit; text-decoration: none; background: var(--panel, #1a1c22); }
+      .pj-jogo:hover { border-color: var(--accent, #e63946); }
+      .pj-logo { max-width: 100%; height: 56px; object-fit: contain; object-position: left center; }
+      .pj-nome { font-weight: 700; }
+      .pj-meta { color: var(--muted, #9aa0aa); font-size: 0.85rem; }
+      .pj-secao { margin-top: 36px; font-size: 1.15rem; }
+    </style>
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="app-header-inner">
+        <a class="brand" href="/">Sleevu</a>
+        <nav class="page-nav" data-i18n-aria="aria.pages" aria-label="Páginas">
+          <a href="/explore">Explorar</a>
+          <a href="/collection">Minha Coleção</a>
+        </nav>
+      </div>
+    </header>
+    <main class="pr-wrap">
+      <div class="pr-hero">
+        <div>
+          <h1>Jogos</h1>
+          <p class="pr-sub">${escapeHtml(`${jogos.length} jogos de cartas colecionáveis, com todos os sets e cartas. Escolha um pra ver a coleção completa.`)}</p>
+        </div>
+      </div>
+      <ul class="pj-grade">${modernos.map(item).join("")}</ul>
+      ${vintage.length ? `<h2 class="pj-secao">Vintage</h2>
+      <ul class="pj-grade">${vintage.map(item).join("")}</ul>` : ""}
+    </main>
+  </body>
+</html>
+`;
+}
+
 async function main() {
-  // Slug único GLOBAL (o diretório /set/ é plano, compartilhado pelos jogos);
-  // colisão entre jogos ganha sufixo -2 — a ordem fixa de GAMES mantém estável.
-  const used = new Set();
+  // Dois slugs por set. O ANTIGO segue a régua do diretório plano /set/ (único
+  // entre TODOS os jogos, -2 pra quem colidia, na ordem fixa de GAMES): serve
+  // só pro mapa do 301. O NOVO é único dentro do seu /games/<jogo>/, então
+  // os -2 entre jogos somem (o "Unleashed" do Riftbound deixa de ser
+  // unleashed-2 por causa do Pokémon). A base é a mesma nas duas réguas.
+  const usedAntigo = new Set();
+  const usadosPorJogo = new Map();
   const pages = [];
-  for (const { slug: game, label } of GAMES) {
+  for (const { slug: game } of GAMES) {
     const byName = game === "pokemon" ? loadPokemonSets() : await loadGameSets(game);
     if (!byName.size) {
       console.log(`prerender-catalog: sem catálogo de ${game} — pulando.`);
@@ -1149,14 +1184,31 @@ async function main() {
     for (const [name, cards] of byName) {
       cards.sort((a, b) => cmpNumber(a.number, b.number));
       const rep = cards.find((c) => c.setLogo) || cards.find((c) => c.setReleaseDate) || cards[0];
-      let slug = slugify(name) || slugify(rep.setId) || "set";
+      let base = slugify(name) || slugify(rep.setId) || "set";
       // Nome quase todo CJK (sobra só um dígito, ex.: ※確認中1 -> "1"): slug
-      // curto demais colide entre jogos — prefixa o setId, como nas cartas.
-      if (slug.length < 4) slug = slugify(rep.setId) ? `${slugify(rep.setId)}-${slug}` : `set-${slug}`;
-      let s = slug, i = 2;
-      while (used.has(s)) s = `${slug}-${i++}`;
-      used.add(s);
-      gamePages.push({ name, slug: s, cards, rep, game, gameLabel: label });
+      // curto demais colide — prefixa o setId.
+      if (base.length < 4) base = slugify(rep.setId) ? `${slugify(rep.setId)}-${base}` : `set-${base}`;
+      let antigo = base, i = 2;
+      while (usedAntigo.has(antigo)) antigo = `${base}-${i++}`;
+      usedAntigo.add(antigo);
+      const url = urlDoSet(game, rep.setId);
+      if (!url) {
+        console.warn(`prerender-catalog: ${game} sem endereço em functions/_lib/jogos.js — set "${name}" pulado.`);
+        continue;
+      }
+      let usados = usadosPorJogo.get(url);
+      if (!usados) usadosPorJogo.set(url, (usados = new Set()));
+      // O -en é a variante em inglês DESTE set: um set cujo nome já termine em
+      // "-en" não pode tomar o arquivo da variante de outro.
+      let s = base, j = 2;
+      while (usados.has(s) || usados.has(`${s}-en`)) s = `${base}-${j++}`;
+      usados.add(s);
+      usados.add(`${s}-en`);
+      gamePages.push({
+        name, slug: s, slugAntigo: antigo, cards, rep, game, url,
+        gameLabel: jogoDaUrl(url).nome,
+        slugsCartas: slugsDasCartas(cards)
+      });
     }
     gamePages.sort((a, b) => a.name.localeCompare(b.name));
     pages.push(...gamePages);
@@ -1167,111 +1219,26 @@ async function main() {
     return;
   }
 
-  // Recria o diretório de saída do zero (evita páginas órfãs de sets removidos).
-  if (existsSync(OUT_DIR)) rmSync(OUT_DIR, { recursive: true, force: true });
-  mkdirSync(OUT_DIR, { recursive: true });
-
+  // Recria a árvore de saída do zero (evita páginas órfãs de sets removidos).
+  if (existsSync(GAMES_DIR)) rmSync(GAMES_DIR, { recursive: true, force: true });
+  mkdirSync(GAMES_DIR, { recursive: true });
   for (const page of pages) {
-    // "Outros sets" só do MESMO jogo (linkar 400 sets de 3 jogos em cada página
-    // viraria ruído pro leitor e pro crawler).
-    const others = pages.filter((p) => p.game === page.game && p.slug !== page.slug).map((p) => ({ name: p.name, slug: p.slug }));
+    const dir = join(GAMES_DIR, page.url);
+    mkdirSync(dir, { recursive: true });
+    // "Outros sets" só do MESMO /games/<jogo> (linkar 700 sets de outro jogo
+    // em cada página viraria ruído pro leitor e pro crawler).
+    const others = pages.filter((p) => p.url === page.url && p.slug !== page.slug).map((p) => ({ name: p.name, slug: p.slug }));
     // Variante pt (padrão/x-default) + variante en (hreflang) — mesma página,
     // copy trocado; elas se referenciam via <link rel=alternate>.
-    writeFileSync(join(OUT_DIR, `${page.slug}.html`), setPageHtml(page, `${ORIGIN}/set/${page.slug}`, others, "pt"), "utf8");
-    writeFileSync(join(OUT_DIR, `${page.slug}-en.html`), setPageHtml(page, `${ORIGIN}/set/${page.slug}-en`, others, "en"), "utf8");
+    const base = `${ORIGIN}/games/${page.url}/${page.slug}`;
+    writeFileSync(join(dir, `${page.slug}.html`), setPageHtml(page, base, others, "pt"), "utf8");
+    writeFileSync(join(dir, `${page.slug}-en.html`), setPageHtml(page, `${base}-en`, others, "en"), "utf8");
   }
+  writeFileSync(join(GAMES_DIR, "card-template.html"), cascaDaCarta(), "utf8");
+  writeFileSync("games.html", paginaDosJogos(pages), "utf8");
 
   escreveMapaDeSets(pages);
-
-  // Cartas top: ranqueia por preço (pricing do build) + mais vistas (Supabase).
-  const pricingByGame = {
-    pokemon: await loadPricingTable("data/"),
-    lorcana: await loadPricingTable("data/lorcana/"),
-    onepiece: await loadPricingTable("data/onepiece/")
-  };
-  const candidates = new Map(); // cardId|game -> { card, setPage, score }
-  for (const p of pages) {
-    const pricing = pricingByGame[p.game] || {};
-    for (const card of p.cards) {
-      const usd = refPriceUSD(pricing[card.id]);
-      if (usd <= 0) continue;
-      const k = `${p.game}|${card.id}`;
-      if (!candidates.has(k) || candidates.get(k).score < usd) {
-        candidates.set(k, { card, setPage: p, score: usd, priceUSD: usd });
-      }
-    }
-  }
-  let ranked = [...candidates.values()].sort((a, b) => b.score - a.score).slice(0, MAX_CARD_PAGES - 300);
-  // Mais vistas (até ~300 extras que não entraram por preço).
-  const views = await fetchTopViews();
-  const have = new Set(ranked.map((r) => `${r.setPage.game}|${r.card.id}`));
-  for (const v of views) {
-    if (ranked.length >= MAX_CARD_PAGES) break;
-    const k = `${v.game}|${v.card_id}`;
-    if (have.has(k)) continue;
-    for (const p of pages) {
-      if (p.game !== v.game) continue;
-      const card = p.cards.find((c) => c.id === v.card_id);
-      if (card) {
-        ranked.push({ card, setPage: p, score: 0, priceUSD: refPriceUSD((pricingByGame[p.game] || {})[card.id]) });
-        have.add(k);
-        break;
-      }
-    }
-  }
-  if (existsSync(CARD_OUT_DIR)) rmSync(CARD_OUT_DIR, { recursive: true, force: true });
-  mkdirSync(CARD_OUT_DIR, { recursive: true });
-  const cardSlugs = new Set();
-  const cardPages = [];
-  for (const cp of ranked) {
-    // Nome com CJK sluga mal ("ブラッキーex" -> "ex"): prefixa a espécie EN
-    // canônica (pokemonName pós-merge) pra URL legível (umbreon-ex-217).
-    const hasCjk = /[^\x00-\x7F]/.test(cp.card.name);
-    let nameSlug = hasCjk
-      ? slugify(`${cp.card.pokemonName || ""}-${cp.card.name}`)
-      : slugify(cp.card.name);
-    // Sobrou quase nada legível (pokemonName também CJK, ex.: Pokémon "de
-    // treinador" JP sem dexId): prefixa o setId pra URL ainda fazer sentido.
-    if (hasCjk && nameSlug.length < 4) nameSlug = slugify(`${cp.card.setId || ""}-${nameSlug}`) || nameSlug;
-    let base = slugify(`${nameSlug}-${cp.card.number || cp.card.id}`) || slugify(cp.card.id) || "carta";
-    let s = base, i = 2;
-    while (cardSlugs.has(s)) s = `${base}-${i++}`;
-    cardSlugs.add(s);
-    cp.slug = s;
-    cardPages.push({ slug: s });
-  }
-
-  // DUAS PASSAGENS de propósito. A escrita do HTML só pode acontecer depois que
-  // TODOS os slugs existem: uma página linka pras outras versões da mesma carta
-  // e pras vizinhas de set, e no meio da primeira passagem metade desses slugs
-  // ainda não tinha sido decidida — os links sairiam quebrados.
-  const porNome = new Map();  // jogo|nome -> [cp]
-  const porSet = new Map();   // slug do set -> [cp]
-  for (const cp of ranked) {
-    const kn = `${cp.setPage.game}|${String(cp.card.name || "").toLowerCase()}`;
-    if (!porNome.has(kn)) porNome.set(kn, []);
-    porNome.get(kn).push(cp);
-    if (!porSet.has(cp.setPage.slug)) porSet.set(cp.setPage.slug, []);
-    porSet.get(cp.setPage.slug).push(cp);
-  }
-  // Rótulo que DIFERENCIA: repetir o nome da carta em 8 links seguidos não
-  // ajuda ninguém (nem leitor, nem buscador). Aqui o que muda é o que aparece.
-  const rotuloVersao = (o) => [o.setPage.name, cardCode(o.card)].filter(Boolean).join(" · ");
-  const rotuloIrma = (o) => [o.card.name, cardCode(o.card)].filter(Boolean).join(" ");
-  for (const cp of ranked) {
-    const kn = `${cp.setPage.game}|${String(cp.card.name || "").toLowerCase()}`;
-    const versoes = (porNome.get(kn) || [])
-      .filter((o) => o !== cp)
-      .slice(0, 12)
-      .map((o) => ({ slug: o.slug, rotulo: rotuloVersao(o) }));
-    // As mais valiosas do set primeiro (ranked já vem ordenado por preço), sem
-    // a própria carta. 12 é o teto pra lista não virar um paredão de links.
-    const irmas = (porSet.get(cp.setPage.slug) || [])
-      .filter((o) => o !== cp)
-      .slice(0, 12)
-      .map((o) => ({ slug: o.slug, rotulo: rotuloIrma(o) }));
-    writeFileSync(join(CARD_OUT_DIR, `${cp.slug}.html`), cardPageHtml(cp, { versoes, irmas }), "utf8");
-  }
+  escreveMapasDosJogos(pages, await mapaDasCartasAntigas(pages));
 
   // ── Artistas ──────────────────────────────────────────────────────────────
   // Agrupa pelo NOME do ilustrador, cruzando os jogos: o mesmo artista pode
@@ -1327,12 +1294,14 @@ async function main() {
   const blogPosts = await fetchBlogPosts();
   // Os sitemap-*.xml de uma rodada anterior saem antes: tipo que ficou sem
   // página não pode deixar arquivo órfão fora do índice.
-  for (const f of readdirSync(".")) if (/^sitemap-[a-z-]+\.xml$/.test(f)) rmSync(f);
-  const sitemaps = buildSitemaps(pages, cardPages, deckPages, artistPages, blogPosts);
+  for (const f of readdirSync(".")) if (/^sitemap-[a-z0-9-]+\.xml$/.test(f)) rmSync(f);
+  const sitemaps = buildSitemaps(pages, deckPages, artistPages, blogPosts);
   for (const [nome, conteudo] of Object.entries(sitemaps)) writeFileSync(nome, conteudo, "utf8");
+  const nUrls = Object.entries(sitemaps).filter(([nome]) => nome !== "sitemap.xml")
+    .reduce((n, [, xml]) => n + (xml.match(/<loc>/g) || []).length, 0);
   console.log(`prerender-catalog: ${blogPosts.length} posts do blog no sitemap.`);
   const perGame = GAMES.map((g) => `${g.slug} ${pages.filter((p) => p.game === g.slug).length}`).join(" · ");
-  console.log(`prerender-catalog: ${pages.length} páginas de set em /${OUT_DIR}/ (${perGame}) + ${cardPages.length} páginas de carta em /${CARD_OUT_DIR}/ + ${artistPages.length} páginas de artista em /${ARTIST_OUT_DIR}/ (de ${porArtista.size} artistas no catálogo, teto ${ARTIST_PAGES}) + ${deckPages.length} páginas de deck em /${DECK_OUT_DIR}/ + sitemap.xml (índice de ${Object.keys(sitemaps).length - 1} arquivos, ${STATIC_URLS.length + pages.length * 2 + cardPages.length + deckPages.length + artistPages.length + blogPosts.length} URLs).`);
+  console.log(`prerender-catalog: ${pages.length} páginas de set em /${GAMES_DIR}/ (${perGame}) + ${artistPages.length} páginas de artista em /${ARTIST_OUT_DIR}/ (de ${porArtista.size} artistas no catálogo, teto ${ARTIST_PAGES}) + ${deckPages.length} páginas de deck em /${DECK_OUT_DIR}/ + sitemap.xml (índice de ${Object.keys(sitemaps).length - 1} arquivos, ${nUrls} URLs).`);
 }
 
 await main();
