@@ -20,6 +20,38 @@
     <meta name="twitter:title" content="Sleevu — suas coleções de TCG, num só lugar">
     <meta name="twitter:description" content="Acompanhe suas coleções de TCG — Pokémon, Lorcana, One Piece, Naruto e mais — por carta, variante e quantidade. Grátis: crie sua conta e registre tudo em qualquer aparelho.">
     <meta name="twitter:image" content="https://sleevu.app/og-image.png">
+    <!-- Dados estruturados da MARCA (2026-09-30). O Google tira o nome do site
+         (o "Sleevu" em cima de cada resultado) do WebSite da HOME, e só dela.
+         Sem isso ele adivinha pelo título, e "sleevu" ainda vira "sleeve" no
+         "você quis dizer". O Organization amarra o logo e os perfis oficiais à
+         marca, e as páginas pré-renderizadas apontam pra estes mesmos @id.
+         Perfil oficial novo (TikTok, YouTube…) entra no sameAs. Não é script:
+         a CSP não se aplica a bloco de dados. -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://sleevu.app/#website",
+          "url": "https://sleevu.app/",
+          "name": "Sleevu",
+          "alternateName": ["Sleevu App", "sleevu.app"],
+          "description": "Acompanhe suas coleções de TCG — Pokémon, Lorcana, One Piece, Naruto e mais — por carta, variante e quantidade.",
+          "inLanguage": "pt-BR",
+          "publisher": { "@id": "https://sleevu.app/#organization" }
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://sleevu.app/#organization",
+          "name": "Sleevu",
+          "url": "https://sleevu.app/",
+          "logo": { "@type": "ImageObject", "url": "https://sleevu.app/icon-512.png", "width": 512, "height": 512 },
+          "sameAs": ["https://www.instagram.com/sleevu.app"]
+        }
+      ]
+    }
+    </script>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
     <link rel="preconnect" href="https://assets.tcgdex.net">
