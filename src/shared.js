@@ -3051,6 +3051,17 @@
       const skip = document.createElement("a");
       skip.className = "skip-link";
       skip.href = "#" + main.id;
+      // O clique é tratado aqui em vez de deixar o navegador seguir o "#main"
+      // (2026-09-30): com <base href="/"> (collection.html, que também serve o
+      // perfil em /users/<handle>, blog-post.html e 404.html) o href relativo
+      // resolve em "/#main", e o Enter no "Pular para o conteúdo" levava pra
+      // HOME. Montar o href com o caminho da página não bastaria: o perfil troca
+      // o caminho por pushState a cada aba e grupo, e um href fixo no
+      // carregamento recarregaria a página na aba velha. O focus() rola até o
+      // <main> como o "#main" rolava; o href fica só pra ele continuar sendo
+      // link (focável e anunciado assim), e de brinde a URL não ganha "#main"
+      // nem entrada a mais no histórico.
+      skip.addEventListener("click", (e) => { e.preventDefault(); main.focus(); });
       skip.textContent = t("a11y.skip");
       document.body.insertBefore(skip, document.body.firstChild);
     }

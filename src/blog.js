@@ -361,15 +361,7 @@
     });
   }
 
-  // O skip-link ("pular pro conteúdo") aponta pra "#main"; com o <base href="/">
-  // do post isso levaria pra home. Aqui ele ganha o caminho da página.
-  function corrigeSkipLink() {
-    const skip = document.querySelector(".skip-link");
-    if (skip && document.querySelector("base")) skip.setAttribute("href", location.pathname + location.search + "#" + (document.querySelector("main") || {}).id);
-  }
-
   if (document.getElementById("blogPost")) {
-    corrigeSkipLink();
     iniciaPost();
   } else if (document.getElementById("blogList")) {
     iniciaLista();
