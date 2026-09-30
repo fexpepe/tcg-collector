@@ -352,7 +352,7 @@ function setPageHtml(page, canonical, otherSets, lang) {
     name: `${name} — ${gameLabel}`,
     url: canonical,
     description: desc,
-    isPartOf: { "@type": "WebSite", name: "Sleevu", url: ORIGIN + "/" },
+    isPartOf: { "@type": "WebSite", "@id": ORIGIN + "/#website", name: "Sleevu", url: ORIGIN + "/" },
     mainEntity: {
       "@type": "ItemList",
       numberOfItems: cards.length,
@@ -508,7 +508,7 @@ function artistPageHtml(ap) {
     name: `Cartas ilustradas por ${name}`,
     url: canonical,
     description: desc,
-    isPartOf: { "@type": "WebSite", name: "Sleevu", url: ORIGIN + "/" },
+    isPartOf: { "@type": "WebSite", "@id": ORIGIN + "/#website", name: "Sleevu", url: ORIGIN + "/" },
     about: { "@type": "Person", name },
     mainEntity: {
       "@type": "ItemList",
@@ -697,7 +697,7 @@ function deckPageHtml(dp) {
     headline: `${deck.name} — deck de ${gameLabel}`,
     datePublished: deck.createdAt || undefined,
     author: deck.author ? { "@type": "Person", name: deck.author } : undefined,
-    publisher: { "@type": "Organization", name: "Sleevu" },
+    publisher: { "@type": "Organization", "@id": ORIGIN + "/#organization", name: "Sleevu" },
     url: canonical
   };
   const rows = cardsList.map((c) => `<li>${c.qty}× ${escapeHtml(c.name)}${c.meta ? ` <small>${escapeHtml(c.meta)}</small>` : ""}${c.usd > 0 ? ` <b>US$ ${(c.usd * c.qty).toFixed(2)}</b>` : ""}</li>`).join("\n            ");
