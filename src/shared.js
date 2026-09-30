@@ -148,7 +148,7 @@
   //   s: setId velho -> novo (link de set compartilhado com o id velho);
   //   p: troca só do prefixo do cardId (cel30-001 -> 30th-001), um set por linha;
   //   c: par a par, quando a numeração também mudou (Classic Collection).
-  const ID_MERGES = {"s":{"cel30":"30th","cel30cc":"30th-c"},"p":{"cel30":"30th"},"c":{"cel30cc-99":"30th-c-019","cel30cc-100":"30th-c-020","cel30cc-101":"30th-c-021","cel30cc-106":"30th-c-024","cel30cc-106-106":"30th-c-022","cel30cc-106-160":"30th-c-023","cel30cc-108":"30th-c-025","cel30cc-11":"30th-c-004","cel30cc-11-113":"30th-c-003","cel30cc-114":"30th-c-026","cel30cc-123":"30th-c-027","cel30cc-138":"30th-c-028","cel30cc-149":"30th-c-029","cel30cc-18":"30th-c-005","cel30cc-19":"30th-c-006","cel30cc-203":"30th-c-030","cel30cc-25":"30th-c-007","cel30cc-33":"30th-c-008","cel30cc-4":"30th-c-001","cel30cc-41":"30th-c-009","cel30cc-43":"30th-c-010","cel30cc-47":"30th-c-011","cel30cc-5":"30th-c-002","cel30cc-050":"30th-c-012","cel30cc-57":"30th-c-013","cel30cc-58":"30th-c-014","cel30cc-69":"30th-c-015","cel30cc-85":"30th-c-016","cel30cc-89":"30th-c-017","cel30cc-94":"30th-c-018"}}; /* SLEEVU_ID_MERGES */
+  const ID_MERGES = {"s":{"cel30":"30th","cel30cc":"30th-c","nrt-nf-s09":"nrt-nf-s06","nrt-nf-s11":"nrt-nf-s07","nrt-nx-s20":"nrt-nx-s21"},"p":{"cel30":"30th"},"c":{"cel30cc-99":"30th-c-019","cel30cc-100":"30th-c-020","cel30cc-101":"30th-c-021","cel30cc-106":"30th-c-024","cel30cc-106-106":"30th-c-022","cel30cc-106-160":"30th-c-023","cel30cc-108":"30th-c-025","cel30cc-11":"30th-c-004","cel30cc-11-113":"30th-c-003","cel30cc-114":"30th-c-026","cel30cc-123":"30th-c-027","cel30cc-138":"30th-c-028","cel30cc-149":"30th-c-029","cel30cc-18":"30th-c-005","cel30cc-19":"30th-c-006","cel30cc-203":"30th-c-030","cel30cc-25":"30th-c-007","cel30cc-33":"30th-c-008","cel30cc-4":"30th-c-001","cel30cc-41":"30th-c-009","cel30cc-43":"30th-c-010","cel30cc-47":"30th-c-011","cel30cc-5":"30th-c-002","cel30cc-050":"30th-c-012","cel30cc-57":"30th-c-013","cel30cc-58":"30th-c-014","cel30cc-69":"30th-c-015","cel30cc-85":"30th-c-016","cel30cc-89":"30th-c-017","cel30cc-94":"30th-c-018"}}; /* SLEEVU_ID_MERGES */
   const ID_MERGES_KEY = "tcg-collector-id-merges-v1";
   const ID_MERGES_PREFIXOS = Object.keys(ID_MERGES.p);
   const TEM_ID_MERGES = ID_MERGES_PREFIXOS.length > 0 || Object.keys(ID_MERGES.c).length > 0;
@@ -8722,14 +8722,12 @@
     "nrt-nf-s03": "Narutimate Formation",
     "nrt-nf-s04": "Narutimate Formation — Promotional Cards",
     "nrt-nf-s05": "Narutimate Formation — Top Secret Mission",
-    "nrt-nf-s06": "Narutimate Formation — Ch. 2",
-    "nrt-nf-s07": "Narutimate Formation — Ch. 5",
-    "nrt-nf-s08": "Narutimate Formation — Ch. 7",
-    "nrt-nf-s09": "Ch. 2 — Reunion! Two Bound by Destiny",
-    "nrt-nf-s10": "Ch. 3 — Rescue! The Soul of a Friend Asleep in the Desert",
-    "nrt-nf-s11": "Ch. 5 — Clash! The Will of Fire Piercing the Dark",
+    "nrt-nf-s06": "Narutimate Formation — Ch. 2: Reunion! Two Bound by Destiny",
+    "nrt-nf-s07": "Narutimate Formation — Ch. 5: Clash! The Will of Fire Piercing the Dark",
+    "nrt-nf-s08": "Narutimate Formation — Ch. 7: The Will of Fire Passed On",
+    "nrt-nf-s10": "Narutimate Formation — Ch. 3: Rescue! The Soul of a Friend Asleep in the Desert",
     "nrt-nf-s12": "V Jump Card Festa 2008",
-    "nrt-nf-s13": "Narutimate Formation — Ch. 6",
+    "nrt-nf-s13": "Narutimate Formation — Ch. 6: Gathering! The Heroes' Lament",
     "nrt-nf-s26": "Pocket File Dass — Narutimate Formation",
     // ---- Naruto · Data Carddass Narutimate Cross
     "nrt-nx-s14": "Narutimate Cross — Ch. 2",
@@ -8738,8 +8736,7 @@
     "nrt-nx-s17": "Narutimate Cross — Promotional Cards",
     "nrt-nx-s18": "Narutimate Cross — Ch. 1",
     "nrt-nx-s19": "Pocket File Dass — Narutimate Cross",
-    "nrt-nx-s20": "Narutimate Cross — Ch. 4: 100 Million Cards Commemorative",
-    "nrt-nx-s21": "Narutimate Cross — Ch. 4",
+    "nrt-nx-s21": "Narutimate Cross — Ch. 4: 100 Million Cards Commemorative",
     "nrt-nx-s22": "V Jump Card Festa 2009",
     "nrt-nx-s23": "Narutimate Cross — Ch. 5: 10th Anniversary SP",
     "nrt-nx-s24": "Narutimate Cross — Ch. 6",

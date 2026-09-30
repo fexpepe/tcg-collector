@@ -20,6 +20,7 @@ import { readFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { readGlobalVar, writeGameCatalog } from "./lib/sync-common.mjs";
+import { capituloDaCarta, chaveDoSet, nomeDoSet, dataDoSet, atribuiSetIds } from "./lib/naruto-dc-capitulos.mjs";
 
 const ROOT = new URL("../", import.meta.url);
 const OUT = new URL("data/naruto/", ROOT);
@@ -76,35 +77,49 @@ async function run() {
     byNum.set(p.num, { ...p, serie: normalize(it.s), date: (it.d || "").replace(/\//g, "-") });
   }
 
-  // Sets: nome do capítulo/série; data = menor data vista no set.
+  // Sets: um por CAPÍTULO oficial e, fora deles, um por série do anúncio. O
+  // capítulo sai da faixa de numeração do site oficial, não da série do
+  // Suruga-ya — ela partia capítulo em dois ("第2章" e "第2章 再会！…") e punha
+  // carta no capítulo errado. Nome, data e fontes: lib/naruto-dc-capitulos.mjs.
   const setsOut = new Map();
+  let foraDaSerie = 0;
   for (const card of byNum.values()) {
     const line = lineOf(card.num, card.serie);
-    const setName = `Data Carddass — ${card.serie}`;
-    if (!setsOut.has(setName)) setsOut.set(setName, { line, date: card.date || "9999", cards: [] });
-    const s = setsOut.get(setName);
-    if (card.date && card.date < s.date) s.date = card.date;
+    const cap = capituloDaCarta(line, card.num, card.serie);
+    if (cap && cap !== capituloDaCarta(line, "", card.serie)) foraDaSerie++;
+    const chave = chaveDoSet(line, cap, card.serie);
+    if (!setsOut.has(chave)) setsOut.set(chave, { line, name: nomeDoSet(chave, card.serie), dates: [], cards: [] });
+    const s = setsOut.get(chave);
+    s.dates.push(card.date);
     s.cards.push(card);
   }
+  for (const [chave, s] of setsOut) s.date = dataDoSet(chave, s.dates);
+  if (foraDaSerie) console.log(`  ${foraDaSerie} carta(s) no capítulo da faixa oficial, não no da série do Suruga-ya.`);
+
+  // setId pegajoso: cada capítulo/série fica com o id que já tem publicado (era
+  // a posição na ordem por data, e corrigir uma data renumerava os sets).
+  const publicados = existing.filter((c) => /^nrt-(nx|nf)-/.test(String(c.id))).map((c) => ({ setId: c.setId, set: c.set }));
+  const { ids, juntados } = atribuiSetIds([...setsOut].map(([chave, s]) => ({ chave, linha: s.line })), publicados);
+  for (const j of juntados) console.log(`  set ${j.de} juntou no ${j.para} (${j.chave}) — registre o de-para em data/card-id-merges.json`);
 
   const linePrefix = { nx: "nrt-nx", nf: "nrt-nf" };
   const lineTag = { nx: "nrt-nx", nf: "nrt-nf" };
   const cardsNew = [];
   // Ordem: Formation (2007) antes de Cross (2009); dentro, por data e nome.
-  const ordered = [...setsOut.entries()].sort((a, b) => (a[1].date + a[0]).localeCompare(b[1].date + b[0], "ja"));
-  ordered.forEach(([setName, s], i) => {
-    const setId = `${linePrefix[s.line]}-s${String(i + 1).padStart(2, "0")}`;
+  const ordered = [...setsOut.entries()].sort((a, b) => ((a[1].date || "9999") + a[1].name).localeCompare((b[1].date || "9999") + b[1].name, "ja"));
+  ordered.forEach(([chave, s]) => {
+    const setId = ids.get(chave);
     const cmp = (a, b) => String(a.num).localeCompare(String(b.num), "ja", { numeric: true });
     for (const c of s.cards.sort(cmp)) {
       const cardId = idByNum.get(c.num) || `${linePrefix[s.line]}-${c.num.toLowerCase()}`;
       cardsNew.push({
         id: cardId,
         name: c.name,
-        set: setName,
+        set: s.name,
         setId,
         number: c.num,
         setTotal: s.cards.length, // acervo conhecido (parcial por natureza)
-        setReleaseDate: s.date === "9999" ? "" : s.date,
+        setReleaseDate: s.date,
         rarity: c.rarity,
         artist: "",
         language: "ja",
