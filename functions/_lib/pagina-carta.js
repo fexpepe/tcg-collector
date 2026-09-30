@@ -170,7 +170,8 @@ const ESTILO = `    <style>
       .prc-sub { color: var(--muted, #9aa0aa); margin: 0 0 12px; }
       .prc-price { font-size: 1.25rem; font-weight: 800; margin: 8px 0 2px; }
       .prc-price-note { color: var(--muted, #9aa0aa); font-size: 12.5px; margin: 0 0 14px; }
-      .prc-cta { display: inline-block; margin-top: 8px; padding: 10px 18px; border-radius: 10px; background: var(--accent, #e63946); color: var(--on-accent, #fff); font-weight: 600; text-decoration: none; }
+      /* 44px de alvo de toque no celular (era 40: 10px de padding + a linha). */
+      .prc-cta { display: inline-flex; align-items: center; min-height: 44px; box-sizing: border-box; margin-top: 8px; padding: 10px 18px; border-radius: 10px; background: var(--accent, #e63946); color: var(--on-accent, #fff); font-weight: 600; text-decoration: none; }
       .prc-setlink { margin-top: 22px; }
       .prc-setlink a { color: var(--accent, #e63946); }
       .prc-trilha { margin-top: 18px; font-size: 13px; color: var(--muted, #9aa0aa); }

@@ -325,7 +325,8 @@ const PR_STYLE = `    <style>
       .pr-hero-name { font-size: 1.6rem; }
       .pr-hero h1 { margin: 0 0 4px; font-size: 1.7rem; }
       .pr-sub { color: var(--muted, #9aa0aa); margin: 0; }
-      .pr-cta { display: inline-block; margin: 14px 0 4px; padding: 10px 18px; border-radius: 10px; background: var(--accent, #e63946); color: var(--on-accent, #fff); font-weight: 600; text-decoration: none; }
+      /* 44px de alvo de toque no celular (era 40: 10px de padding + a linha). */
+      .pr-cta { display: inline-flex; align-items: center; min-height: 44px; box-sizing: border-box; margin: 14px 0 4px; padding: 10px 18px; border-radius: 10px; background: var(--accent, #e63946); color: var(--on-accent, #fff); font-weight: 600; text-decoration: none; }
       /* minmax de 120px, não 150 nem 130. O 130 foi calculado pra 390px, mas a
          medição em 360px (iPhone SE, Galaxy A) mostrou a grade com 265px úteis:
          130+16+130 = 276 estourava por ONZE pixels e a página caía pra UMA
