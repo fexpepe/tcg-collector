@@ -79,7 +79,7 @@ function carrega({ hashed, build, ajusta } = {}) {
   vm.createContext(sandbox);
   vm.runInContext(src, sandbox);
   const pega = (nome) => vm.runInContext(nome, sandbox);
-  return { sandbox, listeners, estado, updates, skips, chave: pega("chaveDeNavegacao"), nav: pega("navigationFast"), SHELL: pega("SHELL_CACHE"), META: pega("META_CACHE"), BUILD: pega("BUILD_ID") };
+  return { sandbox, listeners, estado, updates, skips, chave: pega("chaveDeNavegacao"), reserva: pega("reservaDaNavegacao"), nav: pega("navigationFast"), SHELL: pega("SHELL_CACHE"), META: pega("META_CACHE"), BUILD: pega("BUILD_ID") };
 }
 
 // HTML como o deploy entrega: com o carimbo do build (o mesmo do SW, salvo
@@ -104,18 +104,23 @@ test("chave de navegação: uma entrada por página, seja qual for a forma da UR
   assert.equal(chave(ORIGEM + "/set/pokemon/sv1"), ORIGEM + "/set/pokemon/sv1.html");
 });
 
-// A tela de Sets de cada jogo mora em /games/<jogo> desde 2026-09-30. Ela cai
-// na entrada do sets.html (que o install guarda), como o /sets?game=x sempre
-// caiu: sem isso, a tela de um jogo nunca visitado não abria offline. Set e
-// carta, os níveis de baixo, são páginas próprias.
-test("chave de navegação: /games/<jogo> é a tela de Sets; set e carta têm entrada própria", () => {
-  const { chave } = carrega();
-  assert.equal(chave(ORIGEM + "/games/star-wars-unlimited"), ORIGEM + "/sets.html");
-  assert.equal(chave(ORIGEM + "/games/naruto-data-carddass?serie=x"), ORIGEM + "/sets.html");
+// A tela de Sets de cada jogo mora em /games/<jogo> desde 2026-09-30, com
+// título e índice DAQUELE jogo postos pela borda. Cada uma tem entrada própria
+// (uma só pra todas entregava, na troca de jogo, a cópia do anterior), e a do
+// sets.html, que o install guarda, é a reserva de quem ainda não tem a sua:
+// sem ela, a tela de um jogo nunca visitado não abria offline.
+test("chave de navegação: /games/<jogo> tem entrada própria, com o sets.html de reserva", () => {
+  const { chave, reserva } = carrega();
+  assert.equal(chave(ORIGEM + "/games/star-wars-unlimited"), ORIGEM + "/games/star-wars-unlimited.html");
+  assert.equal(chave(ORIGEM + "/games/naruto-data-carddass?serie=x"), ORIGEM + "/games/naruto-data-carddass.html");
   assert.equal(chave(ORIGEM + "/sets?game=swu"), ORIGEM + "/sets.html");
   assert.equal(chave(ORIGEM + "/games"), ORIGEM + "/games.html");
   assert.equal(chave(ORIGEM + "/games/pokemon/base-set"), ORIGEM + "/games/pokemon/base-set.html");
   assert.equal(chave(ORIGEM + "/games/pokemon/base-set/charizard-4-102"), ORIGEM + "/games/pokemon/base-set/charizard-4-102.html");
+  assert.equal(reserva(ORIGEM + "/games/star-wars-unlimited?serie=x"), ORIGEM + "/sets.html");
+  for (const semReserva of ["/games", "/games/pokemon/base-set", "/games/pokemon/base-set/charizard-4-102", "/portfolio"]) {
+    assert.equal(reserva(ORIGEM + semReserva), null, semReserva);
+  }
 });
 
 test("offline: a tela de um jogo nunca visitado abre da cópia do sets.html", async () => {
@@ -125,6 +130,28 @@ test("offline: a tela de um jogo nunca visitado abre da cópia do sets.html", as
   sw.estado.fetch = async () => { throw new Error("offline"); };
   const res = await sw.nav(evento("/games/one-piece-carddass"));
   assert.equal(await texto(res), "tela de sets");
+});
+
+test("troca de jogo na sessão ativa: nunca a cópia do jogo anterior", async () => {
+  const sw = carrega({ hashed: true, build: "abc12345" });
+  const shell = await sw.sandbox.caches.open(sw.SHELL);
+  await shell.put("sets.html", html("tela de sets"));
+  await (await sw.sandbox.caches.open(sw.META)).put("shell-confirmado", new Response(String(Date.now())));
+  // Visita ao One Piece: a rede grava a entrada DELE.
+  sw.estado.fetch = async () => html("tela do one piece");
+  const ev1 = evento("/games/one-piece-carddass");
+  await sw.nav(ev1);
+  await Promise.all(ev1.pendentes);
+  assert.equal(await texto(await shell.match(ORIGEM + "/games/one-piece-carddass.html")), "tela do one piece");
+  assert.equal(await texto(await shell.match("sets.html")), "tela de sets", "a reserva não é sobrescrita");
+  // Star Wars logo depois: sem entrada própria, vai a reserva (genérica), não o One Piece.
+  sw.estado.fetch = async () => html("tela do star wars");
+  const ev2 = evento("/games/star-wars-unlimited");
+  assert.equal(await texto(await sw.nav(ev2)), "tela de sets");
+  await Promise.all(ev2.pendentes);
+  assert.equal(await texto(await shell.match(ORIGEM + "/games/star-wars-unlimited.html")), "tela do star wars");
+  // E de volta ao One Piece, a dele.
+  assert.equal(await texto(await sw.nav(evento("/games/one-piece-carddass"))), "tela do one piece");
 });
 
 test("precache (\"portfolio.html\") e navegação (/portfolio) caem na MESMA entrada", async () => {
