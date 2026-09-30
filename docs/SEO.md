@@ -1,0 +1,112 @@
+# SEO e indexação
+
+Como o Sleevu entra nos buscadores (Google, Bing e os que ele alimenta, as
+buscas de IA) e como conferir se entrou. Uma parte mora no código; a outra é
+configuração fora do repositório (Search Console, Bing Webmaster Tools,
+Cloudflare), que só o Fernando consegue mexer.
+
+## Ponto de partida (2026-09-30)
+
+Medido ao vivo no dia em que este registro nasceu:
+
+- **Google**: umas 6 páginas das 7.809 do sitemap. Eram a home e o /terms no
+  `sleevu.app`, e /novidades, /sets, /artists e /graded no `www.sleevu.app`.
+  Os títulos estavam em inglês ("Sleevu - For Collectors!"), porque o Googlebot
+  renderiza com o navegador em en-US. "sleevu" no Google Brasil não trazia o
+  site na primeira página. No Google dos EUA vinha "você quis dizer: sleeve" e
+  três páginas do site.
+- **Bing** (e por tabela DuckDuckGo, Yahoo, Ecosia e a busca do ChatGPT e do
+  Copilot): nenhuma página. **Brave**: nenhuma.
+- `www.sleevu.app` respondia 200 com o site inteiro, e o Google indexou páginas
+  nele. `tcg-collector.pages.dev` também respondia 200, mas sem páginas
+  indexadas, porque o canonical segura.
+- `sleevu.com.br` fora do ar: a raiz sem registro DNS, o www com erro 1016.
+- A Cloudflare devolvia 403 pros robôs de **treino** de IA (GPTBot, ClaudeBot,
+  CCBot, Amazonbot, Bytespider, cohere-ai). Os de **busca** de IA passavam
+  (OAI-SearchBot, ChatGPT-User, Claude-SearchBot, PerplexityBot).
+
+## O que o código faz
+
+| Onde | O quê |
+|---|---|
+| `scripts/prerender-catalog.mjs` | páginas estáticas de set (pt e en, com hreflang), carta, artista e deck, com o texto já no HTML |
+| `scripts/lib/sitemap.mjs` | o `sitemap.xml` é um índice, com um arquivo por tipo de página (tabela abaixo) |
+| `src/theme.js` | robô vê o idioma que o HTML declara; página com `data-idioma-fixo` (as pré-renderizadas) nunca tem o `lang` trocado |
+| `index.html` | JSON-LD `WebSite` + `Organization`: nome do site, logo, perfis oficiais (`sameAs`) |
+| `scripts/indexnow.mjs` + `deploy.yml` | a cada deploy da main, avisa Bing, Yandex, Seznam, Naver e Yep do que entrou e saiu do sitemap |
+| `robots.txt` | o que fica fora: telas pessoais, conta e parâmetros de filtro |
+
+| Sitemap | Conteúdo |
+|---|---|
+| `sitemap-paginas.xml` | páginas fixas (home, hub, sets, blog, FAQ…) |
+| `sitemap-sets.xml` | páginas de set em português |
+| `sitemap-sets-en.xml` | as mesmas em inglês |
+| `sitemap-cartas.xml` | cartas (as mais vistas e as mais caras) |
+| `sitemap-artistas.xml` | artistas |
+| `sitemap-decks.xml` | decks da comunidade |
+| `sitemap-blog.xml` | posts do blog, com `lastmod` |
+
+**IndexNow.** A chave fica publicada em `sleevu.app/<chave>.txt`, o que o
+protocolo exige; não é segredo. Na primeira vez (chave ainda fora do ar) vai o
+sitemap inteiro. Depois, só a diferença. O log do passo "IndexNow — separa as
+URLs novas" diz quantas URLs foram e por quê. O passo "IndexNow — avisa os
+buscadores" mostra o HTTP de cada lote: 200 ou 202 é aceito.
+
+## Fora do repositório
+
+Em ordem de impacto:
+
+1. **Google Search Console.** A propriedade de domínio já está verificada (TXT
+   `google-site-verification` no DNS).
+   - *Sitemaps*: enviar `https://sleevu.app/sitemap.xml`. Se já estava enviado,
+     reenviar uma vez pra ele ler o índice novo.
+   - *Páginas*: filtrar por sitemap mostra, por tipo, o que não entra e o
+     motivo. "Detectada, mas não indexada" é falta de autoridade ou de
+     rastreio. "Rastreada, mas não indexada" é o Google achando a página fraca
+     ou duplicada.
+   - *Inspeção de URL* → "Solicitar indexação" pra home, /sets, /hub,
+     /explore, /blog e os sets mais procurados. A cota é de uns 10 por dia.
+   - Depois do deploy, inspecionar a home e usar "Testar URL publicada" →
+     HTML renderizado. O título tem que sair em português.
+2. **Bing Webmaster Tools** (bing.com/webmasters): "Importar do Google Search
+   Console" traz o site verificado e o sitemap. É o que põe o Sleevu no Bing,
+   DuckDuckGo, Yahoo, Ecosia e na busca do ChatGPT e do Copilot. O IndexNow já
+   avisa sozinho, mas o painel mostra o que foi aceito e os erros.
+3. **Cloudflare, zona sleevu.app**: Rules → Redirect Rules → modelo "Redirect
+   from WWW to Root" (301, mantendo caminho e query). Enquanto o www responder
+   200, a pouca autoridade do site fica dividida entre dois endereços.
+4. **Cloudflare, zona sleevu.com.br**: pra redirecionar, criar um registro
+   proxied na raiz e outro no www (`AAAA` apontando pra `100::`, o endereço de
+   mentira que a Cloudflare documenta pra domínio sem servidor) e uma Redirect
+   Rule pra `https://sleevu.app` com o caminho, 301. Se o domínio não vai ser
+   usado, dá pra apagar a zona.
+5. **Cloudflare, AI Crawl Control**: hoje bloqueia os robôs de treino de IA. Os
+   de busca passam, então ChatGPT, Perplexity e Claude conseguem achar e citar
+   o site quando buscam. Liberar os de treino faz as próximas versões dos
+   modelos conhecerem o Sleevu sem precisar buscar. É decisão de produto. O
+   comentário do `robots.txt` ("nada aqui bloqueia crawler de IA") vale pro
+   arquivo, não pro painel.
+6. **Opcional, `tcg-collector.pages.dev`**: Bulk Redirect (nível de conta) pro
+   sleevu.app. Não tem página indexada, então é só higiene. O `sync-ppt.mjs`,
+   o `sync-price-history.mjs` e o `indexnow.mjs` leem o site pelo pages.dev no
+   build. Com o redirect eles seguem funcionando (o fetch segue o 301), mas
+   passam a depender do sleevu.app responder ao runner do GitHub, o que o Bot
+   Fight Mode ligado impediria.
+
+## Como conferir
+
+- O `site:` do Google é amostra, não contagem. A conta certa é o relatório de
+  Páginas do Search Console, por sitemap.
+- Bing: Webmaster Tools → URLs enviadas por IndexNow, e o Site Explorer.
+- O robô vê o texto do HTML, em pt-BR. O que o Google renderizou aparece na
+  Inspeção de URL → HTML renderizado.
+
+## O que o código não resolve
+
+- **Links de fora.** É o que tira um domínio novo do "Detectada, mas não
+  indexada": o link no perfil do Instagram, parceiros (lojas, MYP, Liga)
+  linkando pro sleevu.app, posts em comunidades e o blog sendo citado.
+- **"sleevu" virando "sleeve".** Some quando o Google associa o nome à marca:
+  menções com o nome escrito sempre igual (Sleevu, sleevu.app), perfis
+  oficiais com o link, e gente buscando o nome e clicando no site. Perfil
+  oficial novo (TikTok, YouTube…) entra no `sameAs` do JSON-LD da home.
