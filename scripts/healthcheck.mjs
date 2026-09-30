@@ -99,7 +99,10 @@ log(`Healthcheck ${PROD} — ${new Date().toISOString()}`);
 
 log("\n[páginas]");
 await checkPage("home", "/", { contains: "Sleevu" });
-await checkPage("sitemap", "/sitemap.xml", { contains: "<urlset" });
+// O sitemap.xml é um ÍNDICE desde 2026-09-30 (um arquivo por tipo de página,
+// ver prerender-catalog.mjs); as URLs de set moram no sitemap-sets.xml.
+await checkPage("sitemap (índice)", "/sitemap.xml", { contains: "<sitemapindex" });
+await checkPage("sitemap dos sets", "/sitemap-sets.xml", { contains: "/set/base-set</loc>" });
 await checkPage("página de set (SEO)", "/set/base-set", { contains: "Base Set" });
 // 404 de verdade (anti soft-404): sem isto o Google indexa URL quebrada como 200.
 await checkPage("404 real", "/healthcheck-caminho-inexistente", { status: 404 });

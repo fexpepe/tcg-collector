@@ -93,8 +93,10 @@ A barra do editor escreve a sintaxe; o botão **?** mostra o resumo:
 
 - A borda entrega o post com título, descrição, canonical, Open Graph (capa),
   JSON-LD `BlogPosting` + `BreadcrumbList` e o texto no HTML.
-- Os posts entram no `sitemap.xml` no build (com `lastmod`); o RSS
-  (`/blog/feed.xml`) pega post novo na hora.
+- Os posts entram no `sitemap-blog.xml` no build (com `lastmod`), um dos
+  arquivos do índice `sitemap.xml`; no Search Console, esse sitemap mostra
+  quantos posts o Google indexou. O RSS (`/blog/feed.xml`) pega post novo na
+  hora.
 - Cache: a borda guarda a página por 2 min (`s-maxage`), o navegador revalida
   sempre. `?fresco=1` remonta na hora (é o "Ver no site" do editor).
 - A CSP das páginas montadas na borda vem do `_headers` porque a Function parte

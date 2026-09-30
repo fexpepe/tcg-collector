@@ -87,7 +87,10 @@ mockup-*.html
 # reescreve o arquivo com um catalogo parcial (ja caiu de 2.673 para 1.504 URLs
 # aqui) -- e o proximo `git add` amplo comitaria a versao truncada logo depois
 # de o Search Console te-lo lido. O CI regenera sempre; a copia local nao serve.
+# Desde 2026-09-30 o sitemap.xml e um indice e as URLs moram nos sitemap-*.xml
+# (um por tipo de pagina): mesma regra.
 sitemap.xml
+sitemap-*.xml
 out/
 
 # Calendário de lançamentos: os DOIS saem do scripts/build-releases.mjs em todo
