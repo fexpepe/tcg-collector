@@ -21,7 +21,7 @@
 // Uso: node scripts/hash-assets.mjs
 import { createHash } from "node:crypto";
 import { readFileSync, writeFileSync, unlinkSync, renameSync, readdirSync, statSync, existsSync } from "node:fs";
-import { join, extname, basename, relative, sep } from "node:path";
+import { join, extname, basename, relative, sep, dirname } from "node:path";
 
 const ROOT = process.cwd();
 const MAX_ROUNDS = 10;
@@ -112,9 +112,22 @@ function coletaHtml(dir, acc = []) {
   return acc;
 }
 const alvos = coletaHtml(ROOT);
-for (const extra of ["sw.js", "functions/users/[handle].js"]) {
-  if (existsSync(join(ROOT, extra))) alvos.push(join(ROOT, extra));
+if (existsSync(join(ROOT, "sw.js"))) alvos.push(join(ROOT, "sw.js"));
+// Pages Functions: TODAS, não uma lista à mão. Era só a do perfil
+// (functions/users/[handle].js); em 2026-09-30 o blog passou a IMPORTAR o
+// src/blog-render.js na borda (functions/blog/_comum.js), e esse import
+// precisa sair daqui com o nome com hash — senão o bundle do wrangler procura
+// um arquivo que este script acabou de apagar.
+function coletaFunctions(dir, acc = []) {
+  if (!existsSync(dir)) return acc;
+  for (const nome of readdirSync(dir)) {
+    const caminho = join(dir, nome);
+    if (statSync(caminho).isDirectory()) coletaFunctions(caminho, acc);
+    else if (/\.m?js$/.test(nome)) acc.push(caminho);
+  }
+  return acc;
 }
+alvos.push(...coletaFunctions(join(ROOT, "functions")));
 
 let reescritos = 0;
 for (const caminho of alvos) {
@@ -217,6 +230,19 @@ for (const caminho of alvos) {
 }
 for (const asset of assets) {
   if (asset.ext === ".js") confereLiterais(readFileSync(join(ROOT, nomeFinal(asset)), "utf8"), nomeFinal(asset));
+}
+// `import` de Function que aponta pro src/ (o blog importa o renderizador),
+// resolvido a partir da pasta da Function — é assim que o wrangler vai
+// procurar o arquivo no bundle. O LITERAL_DO_SHELL não pega esse caso: o
+// caminho começa com "../".
+const IMPORT_RE = /\bimport\s+(?:[^'"]*?\sfrom\s+)?["']([^"']+)["']/g;
+for (const caminho of alvos) {
+  if (!relRaiz(caminho).startsWith("functions/")) continue;
+  for (const [, spec] of readFileSync(caminho, "utf8").matchAll(IMPORT_RE)) {
+    if (!/(^|\/)src\//.test(spec)) continue;
+    const destino = join(dirname(caminho), spec);
+    if (!existsSync(destino)) anotaOrfa("/" + relRaiz(destino), relRaiz(caminho));
+  }
 }
 if (pendentes.length) {
   console.error("hash-assets: sobrou referência ao nome SEM hash (viraria 404 em produção):");

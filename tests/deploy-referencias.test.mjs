@@ -164,3 +164,36 @@ test("precache do sw.js apontando pra arquivo que não existe reprova", () => {
     rmSync(dir, { recursive: true, force: true });
   }
 });
+
+test("Function que importa arquivo do src/ sai com o nome com hash (o blog importa o renderizador)", () => {
+  // functions/blog/_comum.js faz `import "../../src/blog-render.js"`: o
+  // hash-assets apaga o nome limpo, então o import tem de ser reescrito — senão
+  // o bundle do wrangler procura um arquivo que não existe mais.
+  const dir = montaRaiz({
+    "src/blog-render.js": "(function (r) { r.SleevuBlog = {}; })(globalThis);\n",
+    "functions/blog/_comum.js": 'import "../../src/blog-render.js";\nexport const B = globalThis.SleevuBlog;\n'
+  });
+  try {
+    assert.equal(roda("bundle-boot.mjs", dir).ok, true);
+    const r = roda("hash-assets.mjs", dir);
+    assert.equal(r.ok, true, r.saida);
+    const fn = readFileSync(join(dir, "functions/blog/_comum.js"), "utf8");
+    const m = /import "\.\.\/\.\.\/(src\/blog-render\.[0-9a-f]{8}\.js)"/.exec(fn);
+    assert.ok(m, `import não foi reescrito: ${fn}`);
+    assert.equal(existsSync(join(dir, m[1])), true);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("import de Function apontando pra arquivo que não existe reprova", () => {
+  const dir = montaRaiz({ "functions/blog/_comum.js": 'import "../../src/nao-existe.js";\n' });
+  try {
+    assert.equal(roda("bundle-boot.mjs", dir).ok, true);
+    const r = roda("hash-assets.mjs", dir);
+    assert.equal(r.ok, false, "import órfão devia reprovar");
+    assert.match(r.saida, /\/src\/nao-existe\.js — pedido por 1 arquivo\(s\) \(functions\/ 1\)/);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
