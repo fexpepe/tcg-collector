@@ -485,7 +485,7 @@ jobs:
         if: env.RODA_SYNC == 'true'
         run: node scripts/sync-price-history.mjs data/swu
 
-      # Cyberpunk TCG (TCGCSV cat. 92, WEYR/Weirdco 2026). Padrao Star Wars, sem
+      # Cyberpunk TCG (TCGCSV cat. 92, Weird Co. 2026). Padrao Star Wars, sem
       # espelho de logo: o único logo de set publicado (Welcome to Night City)
       # está curado em data/cyberpunk/set-logos/ (ver o cabeçalho do sync).
       - name: Sincroniza catálogo do Cyberpunk TCG (TCGCSV)

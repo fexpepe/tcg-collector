@@ -33,6 +33,13 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
   (o recorte +2px não tirou nada) e sem véu; só o alfa abaixo de 12 foi zerado.
   Como o Union Arena, **não** foi esticado pra 512 (bitmap pequeno). Preto
   puro funciona nos dois temas porque a cápsula do hub é branca.
+- `game_cyberpunk.webp` — Cyberpunk TCG. Fonte: "Cyberpunk TCG Logo Yellow With
+  Black Stroke", PNG oficial 3310×850 com alfa da página
+  cyberpunktcg.com/marketing-materials (seção "Logo", 30/09/2026). Das quatro
+  versões publicadas, é a que lê na cápsula branca (o amarelo puro some no
+  branco). Recortado no conteúdo (+2px), alfa ≤12 zerado e reduzido pra 512
+  de largura com o sharp (webp com alfa sem perda — o libwebp do ffmpeg
+  deixava um véu cinza no fundo).
 - `game_naruto.webp` — logo NARUTO genérico (tile do jogo e `setLogo` do Data
   Carddass Cross Formation nrt-nx/nrt-nf)
 - `game_naruto_ccg.webp` — Naruto Collectible Card Game americano 2006+ (tile

@@ -1,4 +1,4 @@
-// Catálogo do Cyberpunk TCG (WEYR Games / Weirdco, licença CD PROJEKT RED,
+// Catálogo do Cyberpunk TCG (Weird Co., licença da CD PROJEKT RED,
 // 2026) a partir da TCGCSV (tcgcsv.com), espelho público diário do TCGplayer —
 // categoria 92, linha `cyberpunk-tcg` (conferidas em 30/09/2026). Mesmo padrão
 // do Star Wars/Union Arena: catálogo inteiro em data/cyberpunk/ (cards.js
