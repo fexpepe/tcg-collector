@@ -9052,40 +9052,29 @@
   // Linhas que viraram SEÇÃO de outra: o ?line= antigo (favorito, link
   // compartilhado) continua abrindo, já na linha nova.
   const LINE_ALIASES = { "nrt-nf": "nrt-dc", "nrt-nx": "nrt-dc" };
-  function temChavePropria(obj, k) {
-    return !!obj && Object.prototype.hasOwnProperty.call(obj, k);
-  }
-  function canonicalLine(line) {
-    return temChavePropria(LINE_ALIASES, line) ? LINE_ALIASES[line] : line;
-  }
   function lineParamOf() {
-    try { return canonicalLine(new URLSearchParams(window.location.search).get("line") || ""); } catch (e) { return ""; }
+    let line = "";
+    try { line = new URLSearchParams(window.location.search).get("line") || ""; } catch (e) { /* sem linha */ }
+    return LINE_ALIASES.hasOwnProperty(line) ? LINE_ALIASES[line] : line;
   }
   // Definição da linha no registro, só por chave PRÓPRIA: `lines[line]` sozinho
   // deixava ?line=constructor virar "linha" (a função do protótipo) — o mesmo
-  // furo que o game.js fecha no ?game=.
+  // furo que o game.js fecha no ?game=. A linha chega já resolvida pelo
+  // lineParamOf (apelido -> linha nova).
   function lineDefOf(game, line) {
     const lines = GAME_LINES[game];
-    const key = canonicalLine(line);
-    return key && temChavePropria(lines, key) ? lines[key] : null;
-  }
-  // Prefixos de setId de uma linha: `prefix` (um) ou `prefixes` (vários).
-  function linePrefixes(def) {
-    return def.prefixes || [def.prefix];
+    return lines && line && lines.hasOwnProperty(line) ? lines[line] : null;
   }
   // Escopo de setId do "jogo" atual: ?line= conhecida -> só a linha; sem line
   // -> o jogo principal (exclui as linhas da marca). Jogo sem linhas -> tudo.
+  // Cada linha tem `prefix` (um) ou `prefixes` (vários).
   function lineScope(game, lineParam) {
     const lines = GAME_LINES[game];
     if (!lines) return { line: null, def: null, includes: () => true };
-    const comecaComAlgum = (prefixes) => (setId) => {
-      const id = String(setId || "");
-      return prefixes.some((p) => id.indexOf(p) === 0);
-    };
     const def = lineDefOf(game, lineParam);
-    if (def) return { line: canonicalLine(lineParam), def, includes: comecaComAlgum(linePrefixes(def)) };
-    const deAlgumaLinha = comecaComAlgum(Object.keys(lines).flatMap((k) => linePrefixes(lines[k])));
-    return { line: null, def: null, includes: (setId) => !deAlgumaLinha(setId) };
+    const prefixos = (def ? [def] : Object.values(lines)).flatMap((d) => d.prefixes || [d.prefix]);
+    const daLinha = (setId) => prefixos.some((p) => String(setId || "").indexOf(p) === 0);
+    return def ? { line: lineParam, def, includes: daLinha } : { line: null, def: null, includes: (setId) => !daLinha(setId) };
   }
   function normalizeGame(g) {
     return GAME_SLUGS.includes(g) ? g : "pokemon";
