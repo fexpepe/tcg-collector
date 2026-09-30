@@ -113,6 +113,16 @@
       facetLevel,
       facetType(["Unit", "Pilot", "Command", "Base", "Resource", "EX Base", "EX Resource"])
     ],
+    // Star Wars: Unlimited: o "color" do catálogo é o ASPECTO (sync-swu.mjs).
+    swu: [
+      {
+        key: "aspect", labelKey: "facet.aspect",
+        of: (c) => facetSplit(c.color, ";"),
+        label: (v) => v,
+        order: ["Vigilance", "Command", "Aggression", "Cunning", "Heroism", "Villainy"]
+      },
+      facetType(["Leader", "Base", "Unit", "Event", "Upgrade", "Token"])
+    ],
     dbfw: [
       facetColor("color"),
       facetType(["Leader", "Battle", "Extra"])

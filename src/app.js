@@ -13,7 +13,7 @@
   // assets/games/README.md) — nome novo porque /assets/* é immutable.
   const GAME_LOGO = {
     pokemon: "game_pokemon.webp", lorcana: "game_lorcana-v2.webp", onepiece: "game_onepiece.webp",
-    magic: "game_magic-v2.webp", fab: "game_fab.webp", gundam: "game_gundam-v2.webp", dbfw: "game_dbfw-v2.webp",
+    magic: "game_magic-v2.webp", fab: "game_fab.webp", gundam: "game_gundam-v2.webp", swu: "game_swu.webp", dbfw: "game_dbfw-v2.webp",
     ygo: "game_ygo-v2.webp", digimon: "game_digimon-v2.webp", riftbound: "game_riftbound-v2.webp",
     unionarena: "game_unionarena.webp", naruto: "game_naruto.webp", hxh: "game_hxh.webp",
     dbc: "game_dbc.webp"

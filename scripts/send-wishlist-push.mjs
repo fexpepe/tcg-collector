@@ -52,7 +52,7 @@ async function loadDeltas(dir) {
 // sync-price-history no deploy) — não é esquecimento, é ausência de fonte.
 const DIRS_POR_JOGO = {
   pokemon: "data/", lorcana: "data/lorcana/", onepiece: "data/onepiece/",
-  magic: "data/magic/", fab: "data/fab/", gundam: "data/gundam/",
+  magic: "data/magic/", fab: "data/fab/", gundam: "data/gundam/", swu: "data/swu/",
   dbfw: "data/dbfw/", ygo: "data/ygo/", digimon: "data/digimon/",
   riftbound: "data/riftbound/", unionarena: "data/unionarena/"
 };

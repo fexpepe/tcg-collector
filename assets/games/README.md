@@ -28,6 +28,11 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
   fundo branco fica: a cápsula do hub é branca nos dois temas, e o branco aqui é
   o PREENCHIMENTO das letras (que têm contorno preto) — transformá-lo em alfa
   esvaziaria o logo.
+- `game_swu.webp` — Star Wars: Unlimited (fonte enviada pelo Fernando em
+  2026-09-30: 316×226, PNG com alfa, tinta preta). Já vinha justo no conteúdo
+  (o recorte +2px não tirou nada) e sem véu; só o alfa abaixo de 12 foi zerado.
+  Como o Union Arena, **não** foi esticado pra 512 (bitmap pequeno). Preto
+  puro funciona nos dois temas porque a cápsula do hub é branca.
 - `game_naruto.webp` — logo NARUTO genérico (tile do jogo e `setLogo` do Data
   Carddass Cross Formation nrt-nx/nrt-nf)
 - `game_naruto_ccg.webp` — Naruto Collectible Card Game americano 2006+ (tile

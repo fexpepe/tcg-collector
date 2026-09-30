@@ -8,6 +8,14 @@ poucos.)
 
 ## Pendentes de aplicar
 
+- `20260930a` — libera o slug `swu` (Star Wars: Unlimited, 15º jogo) nas DUAS
+  whitelists de jogo: `card_views`/`increment_card_view` e `contribute_price`.
+  Cópia da `20260924a` com `swu` na lista (o corpo das funções é idêntico —
+  conferido por diff). Sem ela, view de carta e preço da comunidade do Star
+  Wars são descartados em silêncio. O teste que vale é o par do cabeçalho do
+  arquivo: `increment_card_view` com `swu` CRIA a linha em `card_views` (o 204
+  sozinho não prova nada).
+
 - `20260928b` — precisão do scanner (`20260928b_scanner_precisao.sql`; o `b` porque
   a `20260928a` do mesmo dia é a do Analytics 2.1): recria a `admin_funnel` da `20260923a`
   com todas as chaves de antes e mais `ambiguas`, `pela_foto`, `trocou` e

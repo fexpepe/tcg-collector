@@ -30,7 +30,7 @@ const setText = (content) => ({
 
 // Só slug de jogo do registro (o nome do arquivo vem daqui: nada de "../").
 const JOGOS = [
-  "pokemon", "lorcana", "onepiece", "magic", "fab", "gundam", "dbfw", "ygo",
+  "pokemon", "lorcana", "onepiece", "magic", "fab", "gundam", "swu", "dbfw", "ygo",
   "digimon", "riftbound", "unionarena", "naruto", "hxh", "dbc", "jump"
 ];
 

@@ -31,6 +31,7 @@ export const ID_DE_PRODUTO = {
   onepiece: /^op-\d+$/,
   fab: /^fab-\d+$/,
   gundam: /^gcg-\d+$/,
+  swu: /^swu-\d+$/,
   dbfw: /^dbfw-\d+$/,
   ygo: /^ygo-\d+$/,
   digimon: /^dgm-\d+$/,
