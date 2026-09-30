@@ -279,12 +279,11 @@
   }
 
   // Trilha de 3 níveis das vistas de série e de linha: Jogos › <jogo> › <aqui>.
-  // O <jogo> leva pra lista completa de sets, o mesmo destino do "← Sets" /
-  // "← <jogo>" que o celular continua vendo.
+  // O <jogo> leva pra lista completa de sets (/games/<jogo>, sem a linha), o
+  // mesmo destino do "← <jogo>" que o celular continua vendo.
   function trilhaDoJogo(aqui) {
-    const jogo = (window.SLEEVU && window.SLEEVU.game) || "pokemon";
     const nome = (window.SLEEVU && window.SLEEVU.name) || "";
-    if (nome) shared.setCrumbs([{ label: nome, href: `sets?game=${jogo}` }, { label: aqui }]);
+    if (nome) shared.setCrumbs([{ label: nome, href: telaSemLinha }, { label: aqui }]);
   }
 
   function hydrateFilters() {
