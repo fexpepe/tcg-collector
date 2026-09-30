@@ -22,6 +22,10 @@ import { readGlobalVar } from "./lib/sync-common.mjs";
 // site. É o que vai pro <title>/description/JSON-LD: quem procura no Google
 // digita "nome + código impresso", e o número cru do catálogo ("9") não casa.
 import { cardCode, alternateCodes } from "./lib/card-code.mjs";
+// Todo JSON-LD daqui passa por este helper, nunca pelo JSON.stringify cru: um
+// nome de deck com "</script>" fechava o bloco e injetava HTML no <head> (ver
+// o porquê em scripts/lib/json-ld.mjs; tests/json-ld.test.mjs confere).
+import { jsonLdSeguro } from "./lib/json-ld.mjs";
 
 const ORIGIN = "https://sleevu.app";
 const SETS_DIR = "data/sets";
@@ -424,7 +428,7 @@ function setPageHtml(page, canonical, otherSets, lang) {
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <meta name="theme-color" content="#e8ecf1" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#101218" media="(prefers-color-scheme: dark)">
-    <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>
+    <script type="application/ld+json">${jsonLdSeguro(jsonLd)}</script>
     <script src="/src/theme.js"></script>
     <link rel="stylesheet" href="/styles.css">
 ${PR_STYLE}
@@ -550,7 +554,7 @@ function artistPageHtml(ap) {
     <meta name="twitter:card" content="summary_large_image">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
-    <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>
+    <script type="application/ld+json">${jsonLdSeguro(jsonLd)}</script>
     <script src="/src/theme.js"></script>
     <link rel="stylesheet" href="/styles.css">
 ${PR_STYLE}
@@ -685,7 +689,7 @@ function deckPageHtml(dp) {
     <meta property="og:description" content="${escapeAttr(desc)}">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
-    <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>
+    <script type="application/ld+json">${jsonLdSeguro(jsonLd)}</script>
     <style>
       body { font-family: system-ui, sans-serif; background: #101218; color: #e8eaf0; margin: 0; padding: 24px 16px; }
       main { max-width: 720px; margin: 0 auto; }
@@ -994,8 +998,8 @@ function cardPageHtml(cp, ctx = {}) {
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#e8ecf1" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#101218" media="(prefers-color-scheme: dark)">
-    <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>
-    <script type="application/ld+json">${JSON.stringify(breadcrumbLd)}</script>
+    <script type="application/ld+json">${jsonLdSeguro(jsonLd)}</script>
+    <script type="application/ld+json">${jsonLdSeguro(breadcrumbLd)}</script>
     <script src="/src/theme.js"></script>
     <link rel="stylesheet" href="/styles.css">
     <style>
