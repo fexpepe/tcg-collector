@@ -190,7 +190,7 @@ async function run() {
         language: "en",
         image: curatedImg(cardId) || scan,
         variants: ["Normal"],
-        setLogo: "/assets/games/game_naruto.webp",
+        setLogo: "/assets/games/game_naruto_ccg.webp",
         vintage: true,
         vintageLine: "nrt-ccg"
       });
