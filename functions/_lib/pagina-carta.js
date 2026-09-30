@@ -303,7 +303,7 @@ ${ESTILO}
       <nav class="prc-trilha" aria-label="Trilha de navegação">${trilha.map((t, i) =>
         i === trilha.length - 1
           ? `<span aria-current="page">${escapeHtml(t.nome)}</span>`
-          : `<a href="${escapeAttr(t.url)}">${escapeHtml(t.nome)}</a> <span aria-hidden="true">›</span> `).join("")}</nav>
+          : `<a href="${escapeAttr(t.url.replace(ORIGEM, ""))}">${escapeHtml(t.nome)}</a> <span aria-hidden="true">›</span> `).join("")}</nav>
       <div class="prc-hero">
         ${img ? `<img class="prc-img" src="${escapeAttr(img)}" alt="${escapeAttr(`${card.name}${codeBit}${codeBitDesc} — ${set.nome}`)}" loading="eager" fetchpriority="high" width="320" height="447">` : ""}
         <div class="prc-info">

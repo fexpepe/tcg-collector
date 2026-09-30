@@ -1083,7 +1083,9 @@ function paginaDosJogos(pages) {
   const desc = `Pokémon, Magic, Lorcana, One Piece e mais: ${jogos.length} jogos de cartas colecionáveis, modernos e vintage, com todos os sets e cartas no Sleevu.`;
   const item = (j) => {
     const e = porUrl.get(j.url);
-    const logo = j.logo ? `<img class="pj-logo" src="/${escapeAttr(j.logo)}" alt="" loading="lazy" decoding="async">` : "";
+    // Caixa branca atrás do logo, como no hub: vários logos são escuros (One
+    // Piece, Gundam) e sumiam no fundo do cartão no tema escuro.
+    const logo = j.logo ? `<span class="pj-logo-box"><img class="pj-logo" src="/${escapeAttr(j.logo)}" alt="" loading="lazy" decoding="async"></span>` : "";
     return `<li><a class="pj-jogo" href="/games/${escapeAttr(j.url)}">${logo}<span class="pj-nome">${escapeHtml(j.nome)}</span><span class="pj-meta">${e.sets} sets · ${milhar(e.cartas)} cartas${j.vintage ? ` · ${escapeHtml(j.vintage)}` : ""}</span></a></li>`;
   };
   const modernos = jogos.filter((j) => !j.vintage);
@@ -1133,7 +1135,8 @@ ${PR_STYLE}
       .pj-grade { list-style: none; padding: 0; margin: 16px 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
       .pj-jogo { display: flex; flex-direction: column; gap: 6px; min-height: 44px; padding: 14px; border: 1px solid var(--line, #2d333f); border-radius: 12px; color: inherit; text-decoration: none; background: var(--panel, #1a1c22); }
       .pj-jogo:hover { border-color: var(--accent, #e63946); }
-      .pj-logo { max-width: 100%; height: 56px; object-fit: contain; object-position: left center; }
+      .pj-logo-box { display: flex; align-items: center; justify-content: center; height: 76px; padding: 10px; border-radius: 8px; background: #fff; box-sizing: border-box; }
+      .pj-logo { max-width: 100%; max-height: 100%; object-fit: contain; }
       .pj-nome { font-weight: 700; }
       .pj-meta { color: var(--muted, #9aa0aa); font-size: 0.85rem; }
       .pj-secao { margin-top: 36px; font-size: 1.15rem; }
