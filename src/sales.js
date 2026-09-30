@@ -281,27 +281,21 @@
   const slugDe = (id) => shared.saleFolderSlugs(sales.groups()).get(id);
   const hrefDe = (id) => `sales?id=${encodeURIComponent(id)}`;
 
-  // Ordenação da grade da pasta (mesmas opções da Coleção). Persistida.
-  const SALES_SORTS = ["value-desc", "value-asc", "num-asc", "num-desc", "rarity-desc", "rarity-asc", "release", "added-desc", "added-asc"];
+  // Ordenação da grade da pasta (o Ordenar de toda grade, src/ordenar.js).
+  // Persistida. O padrão é a ordem em que as cartas entraram na pasta.
+  const ordenar = window.TCGOrdenar;
+  const SALES_SORTS = "value num name added rarity release";
   const lerPref = (k) => { try { return localStorage.getItem(k); } catch (e) { return null; } };
-  let salesSort = SALES_SORTS.includes(lerPref("tcg-sales-sort")) ? lerPref("tcg-sales-sort") : "added-asc";
+  let salesSort = ordenar.valida(lerPref("tcg-sales-sort"), SALES_SORTS, "added-asc");
 
-  // Ordena itens [{it, card}]. "Valor" = preço de VENDA; "Adição" = ordem em que
-  // entraram na lista de vendas (a ordem do store).
+  // Ordena itens [{it, card}]. "Preço" = preço de VENDA; "Data de adição" =
+  // ordem em que entraram na lista de vendas (a ordem do store).
   function sortSaleItems(arr) {
     const rankOf = new Map(sales.list().map((x, i) => [x.key, i]));
-    const rank = (x) => { const r = rankOf.get(x.it.key); return r == null ? Infinity : r; };
-    const a = arr.slice();
-    if (salesSort === "num-asc") a.sort((x, y) => shared.compareCardNumbers(x.card.number, y.card.number));
-    else if (salesSort === "num-desc") a.sort((x, y) => shared.compareCardNumbers(y.card.number, x.card.number));
-    else if (salesSort === "release") a.sort((x, y) => String(y.card.setReleaseDate || "").localeCompare(String(x.card.setReleaseDate || "")));
-    else if (salesSort === "rarity-desc") a.sort((x, y) => shared.rarityRank(y.card.rarity) - shared.rarityRank(x.card.rarity) || shared.compareCardNumbers(x.card.number, y.card.number));
-    else if (salesSort === "rarity-asc") a.sort((x, y) => shared.rarityRank(x.card.rarity) - shared.rarityRank(y.card.rarity) || shared.compareCardNumbers(x.card.number, y.card.number));
-    else if (salesSort === "value-desc") a.sort((x, y) => y.it.price - x.it.price);
-    else if (salesSort === "value-asc") a.sort((x, y) => { const px = x.it.price, py = y.it.price; if (!px && !py) return 0; if (!px) return 1; if (!py) return -1; return px - py; });
-    else if (salesSort === "added-desc") a.sort((x, y) => rank(y) - rank(x));
-    else a.sort((x, y) => rank(x) - rank(y)); // added-asc (padrão)
-    return a;
+    return arr.slice().sort(ordenar.compara(salesSort, {
+      preco: (x) => x.it.price,
+      adicao: (x) => rankOf.get(x.it.key)
+    }));
   }
 
   // Itens à venda já resolvidos pra carta — de uma pasta, ou de todas (g vazio).
@@ -567,8 +561,7 @@
   function renderFolder() {
     const g = sales.group(openId);
     const mk = sales.getMarkup(g.id);
-    const sortOpts = [["value-desc", "sort.valueDesc"], ["value-asc", "sort.valueAsc"], ["num-asc", "sort.numAsc"], ["num-desc", "sort.numDesc"], ["rarity-desc", "sort.rarityDesc"], ["rarity-asc", "sort.rarityAsc"], ["release", "sort.releaseDate"], ["added-desc", "sort.addedDesc"], ["added-asc", "sort.addedAsc"]]
-      .map(([v, k]) => `<option value="${v}"${v === salesSort ? " selected" : ""}>${esc(t(k))}</option>`).join("");
+    const sortOpts = ordenar.opcoes(SALES_SORTS, salesSort);
     const chip = (p) => `<button type="button" class="vnd-batch-chip" data-batch-pct="${p}" aria-pressed="${mk === p}">${p === 0 ? esc(t("sales.batch.market")) : (p > 0 ? "+" : "−") + Math.abs(p) + "%"}</button>`;
     // Ações: as duas com rótulo largo em cima (Adicionar / Compartilhar — as
     // mais usadas), e as quatro do dia a dia embaixo, em colunas iguais. Grade
@@ -617,9 +610,9 @@
       <section class="results-header vnd-results">
         <p class="vnd-hint">${esc(t("sales.hint"))}</p>
         <div class="results-actions">
-          <div class="sort-select vnd-sort">
+          <div class="sort-select vnd-sort srt-host">
             <label for="salesSortSelect">${esc(t("sort.label"))}</label>
-            <select id="salesSortSelect">${sortOpts}</select>
+            <select id="salesSortSelect" data-ordenar>${sortOpts}</select>
           </div>
         </div>
       </section>
@@ -936,15 +929,10 @@
     const jogos = shared.GAME_SLUGS.filter((g) => ownedPool.some((c) => c.game === g));
     let pickGame = "all";
     let pickRarity = "";          // filtro de raridade (vazio = todas)
-    let pickSort = "value-desc";  // ordenação (mesma lógica da aba Cartas)
+    let pickSort = ordenar.PADRAO; // o Ordenar de toda grade (src/ordenar.js)
+    const PICK_SORTS = "value num name rarity release";
     const updateCount = () => { const n = modal.querySelector(".sales-picker-count"); if (n) n.textContent = t("sales.folders.pickerCount", { n: sales.list(gid).length }); };
-    const sortPairs = (pairs) => {
-      if (pickSort === "num-asc") return pairs.sort((a, b) => shared.compareCardNumbers(a.card.number, b.card.number));
-      if (pickSort === "num-desc") return pairs.sort((a, b) => shared.compareCardNumbers(b.card.number, a.card.number));
-      if (pickSort === "release") return pairs.sort((a, b) => String(b.card.setReleaseDate || "").localeCompare(String(a.card.setReleaseDate || "")));
-      if (pickSort === "value-asc") return pairs.sort((a, b) => { const pa = priceOf(a.card, a.variant), pb = priceOf(b.card, b.variant); if (!pa && !pb) return 0; if (!pa) return 1; if (!pb) return -1; return pa - pb; });
-      return pairs.sort((a, b) => priceOf(b.card, b.variant) - priceOf(a.card, a.variant)); // value-desc (padrão)
-    };
+    const sortPairs = (pairs) => pairs.sort(ordenar.compara(pickSort, { preco: (p) => priceOf(p.card, p.variant) }));
     const pickHtml = (card, variant) => {
       const src = shared.cardImageSources(card);
       const img = shared.localizedImg(src.url, { alt: card.name, fallback: src.fallback, loading: "lazy", thumb: true });
@@ -980,8 +968,7 @@
     };
     const rarityOpts = `<option value="">${esc(t("filter.all.f"))}</option>`
       + unique(ownedPool.map((c) => c.rarity).filter(Boolean)).sort().map((r) => `<option value="${escA(r)}">${esc(r)}</option>`).join("");
-    const sortOpts = [["value-desc", "sort.valueDesc"], ["value-asc", "sort.valueAsc"], ["num-asc", "sort.numAsc"], ["num-desc", "sort.numDesc"], ["release", "sort.releaseDate"]]
-      .map(([v, k]) => `<option value="${v}"${v === pickSort ? " selected" : ""}>${esc(t(k))}</option>`).join("");
+    const sortOpts = ordenar.opcoes(PICK_SORTS, pickSort);
     const gameField = jogos.length > 1
       ? `<label class="sales-picker-field"><span>${esc(t("pfmi.game"))}</span>
           <select class="sales-picker-select" id="salesPickerGame"><option value="all">${esc(t("filter.gameAll"))}</option>${jogos.map((g) => `<option value="${g}">${esc(gameLabelOf(g))}</option>`).join("")}</select></label>`
@@ -996,8 +983,8 @@
           ${gameField}
           <label class="sales-picker-field"><span>${esc(t("toolbar.rarity"))}</span>
             <select class="sales-picker-select" id="salesPickerRarity">${rarityOpts}</select></label>
-          <label class="sales-picker-field"><span>${esc(t("sort.label"))}</span>
-            <select class="sales-picker-select" id="salesPickerSort">${sortOpts}</select></label>
+          <label class="sales-picker-field srt-host"><span>${esc(t("sort.label"))}</span>
+            <select class="sales-picker-select" id="salesPickerSort" data-ordenar>${sortOpts}</select></label>
         </div>
         <div class="sales-picker-results"></div>
         <footer class="sales-picker-foot">

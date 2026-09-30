@@ -296,23 +296,9 @@
               <option value="200-">200+</option>
             </select>
           </div>
-          <div class="sort-select">
+          <div class="sort-select srt-host">
             <label for="cardsSortSelect" data-i18n="sort.label">Ordenar:</label>
-            <select id="cardsSortSelect">
-              <option value="value-desc" data-i18n="sort.valueDesc">Valor (maior → menor)</option>
-              <option value="value-asc" data-i18n="sort.valueAsc">Valor (menor → maior)</option>
-              <option value="num-asc" data-i18n="sort.numAsc">Nº da carta (menor → maior)</option>
-              <option value="num-desc" data-i18n="sort.numDesc">Nº da carta (maior → menor)</option>
-              <option value="rarity-desc" data-i18n="sort.rarityDesc">Raridade (maior → menor)</option>
-              <option value="rarity-asc" data-i18n="sort.rarityAsc">Raridade (menor → maior)</option>
-              <option value="release" data-i18n="sort.releaseDate">Lançamento</option>
-              <option value="added-desc" data-i18n="sort.addedDesc">Adição (última → primeira)</option>
-              <option value="added-asc" data-i18n="sort.addedAsc">Adição (primeira → última)</option>
-              <!-- Nota do slab (2026-09-14): veio da página /graded, que saiu — a
-                   aba Graded daqui é o lugar dela. Fora da aba Graded a opção
-                   fica escondida (carta solta não tem nota). -->
-              <option value="grade-desc" data-i18n="graded.sort.gradeDesc" hidden>Nota (maior → menor)</option>
-            </select>
+            <select id="cardsSortSelect" data-ordenar="value change num name added pct views rarity release grade"></select>
           </div>
         </section>
 
@@ -325,6 +311,7 @@
 
     <script defer src="src/i18n.js"></script>
     <script defer src="src/shared.js"></script>
+    <script defer src="src/ordenar.js"></script>
     <!-- facets.js traz o cardTypeGroup (agrupamento por tipo de carta) que o
          insights.js usa no gráfico de distribuição por tipo — 2026-09-16. -->
     <script defer src="src/facets.js"></script>

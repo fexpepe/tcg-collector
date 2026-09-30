@@ -183,11 +183,14 @@
   let activeTab = "cards";
   let sortMode = "dex";
 
-  // Aba "Cartas": ordenação + grade/lista (preferências guardadas).
-  const CARDS_SORTS = ["value-desc", "value-asc", "num-asc", "num-desc", "rarity-desc", "rarity-asc", "release", "added-desc", "added-asc", "grade-desc"];
+  // Aba "Cartas": ordenação + grade/lista (preferências guardadas). Critérios
+  // no src/ordenar.js; as famílias oferecidas são o data-ordenar do
+  // collection.html (a Nota só aparece na aba Graded — ver render()).
+  const ordenar = window.TCGOrdenar;
+  const CARDS_SORTS = (document.getElementById("cardsSortSelect") || document.body).getAttribute("data-ordenar");
   // Nota do slab como número ("9.5", "10", "8,5"); carta solta = 0 (vai pro fim).
   const gradeNum = (g) => { const n = parseFloat(String(g || "").replace(",", ".")); return isFinite(n) ? n : 0; };
-  let cardsSort = CARDS_SORTS.includes(localStorage.getItem("tcg-collection-sort")) ? localStorage.getItem("tcg-collection-sort") : "value-desc";
+  let cardsSort = ordenar.valida(localStorage.getItem("tcg-collection-sort"), CARDS_SORTS);
   let cardsView = shared.gridViewValue(localStorage.getItem("tcg-collection-view"));
 
   // --- Seleção em massa (aba Cartas): toque marca/desmarca; barra fixa aplica
@@ -1028,13 +1031,17 @@
     }
     if (elements.newFolderBtn) elements.newFolderBtn.hidden = !isFolders;
     if (elements.gradedAddBtn) elements.gradedAddBtn.hidden = !isGraded || !window.TCGGradedUI;
-    // "Nota" só na aba Graded (veio da página /graded, removida em 2026-09-14).
-    // Se a pessoa sai da aba com "Nota" escolhida, o seletor volta pro padrão —
-    // senão mostraria uma opção escondida.
+    // "Nota" só na aba Graded (veio da página /graded, removida em 2026-09-14):
+    // carta solta não tem nota. E a variação de preço (R$ e %) é do mercado da
+    // carta crua — num slab ela mentiria, então some da aba Graded. Se a pessoa
+    // troca de aba com uma opção que ficou escondida, o seletor volta pro
+    // padrão — senão mostraria uma opção que não está no menu.
     if (elements.cardsSortSelect) {
-      const opt = elements.cardsSortSelect.querySelector('[value="grade-desc"]');
-      if (opt) opt.hidden = !isGraded;
-      if (!isGraded && cardsSort === "grade-desc") { cardsSort = "value-desc"; elements.cardsSortSelect.value = cardsSort; }
+      Array.from(elements.cardsSortSelect.options).forEach((opt) => {
+        opt.hidden = /^grade-/.test(opt.value) ? !isGraded : (isGraded && /^(change|pct)-/.test(opt.value));
+      });
+      const escolhida = elements.cardsSortSelect.querySelector(`option[value="${cardsSort}"]`);
+      if (escolhida && escolhida.hidden) { cardsSort = ordenar.PADRAO; elements.cardsSortSelect.value = cardsSort; }
     }
     // Seleção em massa só na aba Cartas; trocar de aba encerra o modo.
     if (elements.bulkBtn) {
@@ -1813,35 +1820,26 @@
     return sortTiles(pairs);
   }
 
-  // Ordena os pares carta×variante conforme o seletor (mesma lógica do detalhe).
+  // Ordena os pares carta×variante conforme o Ordenar (src/ordenar.js, o
+  // mesmo de toda grade).
   function sortTiles(pairs) {
-    // priceOf precisa casar com o VALOR EXIBIDO no tile: slab graded usa o valor
-    // manual ou o gradedValue (mesma expressão do makeGradedNode); carta normal usa
-    // o valor de mercado. Memoizado: 1 lookup por item, não por comparação.
-    const priceOf = shared.memoValue((p) => p.graded
-      ? (p.it.value > 0 ? p.it.value : (shared.gradedValue(p.card, p.it.company, p.it.grade).value || 0))
-      : (shared.cardValue(p.card, p.variant, prices, shared.DEFAULT_CONDITION).value || 0));
-    const byNum = (a, b) => shared.compareCardNumbers(a.card.number, b.card.number);
-    if (cardsSort === "rarity-desc") pairs.sort((a, b) => shared.rarityRank(b.card.rarity) - shared.rarityRank(a.card.rarity) || byNum(a, b));
-    else if (cardsSort === "rarity-asc") pairs.sort((a, b) => shared.rarityRank(a.card.rarity) - shared.rarityRank(b.card.rarity) || byNum(a, b));
-    else if (cardsSort === "num-asc") pairs.sort(byNum);
-    else if (cardsSort === "num-desc") pairs.sort((a, b) => byNum(b, a));
-    else if (cardsSort === "grade-desc") pairs.sort((a, b) => gradeNum(b.graded && b.it.grade) - gradeNum(a.graded && a.it.grade) || priceOf(b) - priceOf(a));
-    else if (cardsSort === "value-desc") pairs.sort((a, b) => priceOf(b) - priceOf(a));
-    else if (cardsSort === "value-asc") pairs.sort((a, b) => {
-      const pa = priceOf(a), pb = priceOf(b);
-      if (!pa && !pb) return 0; if (!pa) return 1; if (!pb) return -1; return pa - pb;
-    });
-    else if (cardsSort === "added-asc" || cardsSort === "added-desc") {
-      // Ordem de adição na coleção = ordem de inserção das chaves no objeto
-      // (preservada em JS/JSON). asc = primeira→última; desc = última→primeira.
-      const order = Object.keys(owned.toObject());
-      const rankOf = new Map(order.map((id, i) => [id, i]));
-      const rank = (p) => { const r = rankOf.get(p.card.id); return r == null ? Infinity : r; };
-      pairs.sort((a, b) => cardsSort === "added-asc" ? rank(a) - rank(b) : rank(b) - rank(a));
-    }
-    else pairs.sort((a, b) => String(b.card.setReleaseDate || "").localeCompare(String(a.card.setReleaseDate || "")));
-    return pairs;
+    // O preço precisa casar com o VALOR EXIBIDO no tile: slab graded usa o
+    // valor manual ou o gradedValue (mesma expressão do makeGradedNode); carta
+    // normal usa o valor de mercado. "Data de adição" = ordem de inserção das
+    // chaves no objeto da coleção (preservada em JS/JSON).
+    let posDe = null;
+    return pairs.sort(ordenar.compara(cardsSort, {
+      preco: (p) => p.graded
+        ? (p.it.value > 0 ? p.it.value : (shared.gradedValue(p.card, p.it.company, p.it.grade).value || 0))
+        : (shared.cardValue(p.card, p.variant, prices, shared.DEFAULT_CONDITION).value || 0),
+      adicao: (p) => {
+        if (!posDe) posDe = new Map(Object.keys(owned.toObject()).map((id, i) => [id, i]));
+        return posDe.get(p.card.id);
+      },
+      nota: (p) => gradeNum(p.graded && p.it.grade),
+      mercado: (p) => !p.graded,
+      depois: () => render()
+    }));
   }
 
   // Alterna grade/lista (mesma classe .is-list do detalhe) e reflete nos botões.
@@ -2707,27 +2705,20 @@
     const rarityOf = (it) => it.r || ((cardsById.get(it.id) || {}).rarity || "");
     const releaseOf = (it) => String((cardsById.get(it.id) || {}).setReleaseDate || "");
     const gradeNumOf = (g) => { const n = parseFloat(String(g || "").replace(",", ".")); return isFinite(n) ? n : 0; };
+    // Ordenar (src/ordenar.js, o mesmo da tela do dono). Famílias por aba: a
+    // variação de preço só na coleção (no slab e na venda o valor do item não
+    // é o de mercado da carta crua) e a Nota só no Graded. Escolha que não
+    // existe na aba atual vale como o padrão, e o seletor mostra isso.
+    const famsPerfil = () => "value num name views rarity release"
+      + (mode === "collection" ? " change pct" : "") + (mode === "graded" ? " grade" : "");
+    const sortPerfil = () => ordenar.valida(cardSort, famsPerfil());
     function sortItems(arr) {
-      const c = arr.slice();
-      const byNum = (a, b) => shared.compareCardNumbers(a.num, b.num);
-      if (cardSort === "num-asc") c.sort(byNum);
-      else if (cardSort === "num-desc") c.sort((a, b) => byNum(b, a));
-      else if (cardSort === "rarity-desc") c.sort((a, b) => shared.rarityRank(rarityOf(b)) - shared.rarityRank(rarityOf(a)) || byNum(a, b));
-      else if (cardSort === "rarity-asc") c.sort((a, b) => shared.rarityRank(rarityOf(a)) - shared.rarityRank(rarityOf(b)) || byNum(a, b));
-      else if (cardSort === "release") c.sort((a, b) => releaseOf(b).localeCompare(releaseOf(a)) || byNum(a, b));
-      else if (cardSort === "grade-desc") {
-        const val = shared.memoValue(itemVal);
-        c.sort((a, b) => gradeNumOf(b.gr) - gradeNumOf(a.gr) || val(b) - val(a));
-      }
-      else {
-        const val = shared.memoValue(itemVal); // 1 conversão de moeda por item, não por comparação
-        c.sort((a, b) => {
-          const pa = val(a), pb = val(b);
-          if (cardSort === "value-asc") { if (!pa && !pb) return 0; if (!pa) return 1; if (!pb) return -1; return pa - pb; }
-          return pb - pa;
-        });
-      }
-      return c;
+      return arr.slice().sort(ordenar.compara(sortPerfil(), {
+        carta: (it) => ({ id: it.id, name: it.n, number: it.num, set: it.s, rarity: rarityOf(it), setReleaseDate: releaseOf(it), game: it.g || "pokemon" }),
+        preco: itemVal, // 1 conversão de moeda por item (o compara memoiza)
+        nota: (it) => gradeNumOf(it.gr),
+        depois: () => renderContent()
+      }));
     }
     // Espécie/personagem do item (igual à Coleção): pokemonName ou derivado do nome.
     const speciesOf = (it) => it.pk || speciesName(it.n);
@@ -2800,7 +2791,6 @@
       const sets = uniq(pool.map((it) => it.s)).sort((a, b) => a.localeCompare(b));
       const langs = uniq(pool.map((it) => it.lang));
       const rarities = uniq(pool.map((it) => it.r)).sort((a, b) => a.localeCompare(b));
-      const sortOpt = (v, k) => `<option value="${v}"${cardSort === v ? " selected" : ""}>${escapeHtml(t(k))}</option>`;
       // Faixas de valor com o símbolo da moeda atual, como no hydrateFilters().
       const sym = shared.currencySymbol();
       const faixas = [["0-10", `≤ ${sym} 10`], ["10-50", `${sym} 10–50`], ["50-200", `${sym} 50–200`], ["200-", `${sym} 200+`]];
@@ -2810,11 +2800,7 @@
         <div><label>${escapeHtml(t("toolbar.language"))}</label><select data-pf-filter="lang">${opts(langs, fLang, langOptionLabel)}</select></div>
         <div><label>${escapeHtml(t("toolbar.rarity"))}</label><select data-pf-filter="rarity">${(`<option value="">${escapeHtml(t("filter.all.f"))}</option>` + rarities.map((v) => `<option value="${escapeAttribute(v)}"${v === fRarity ? " selected" : ""}>${escapeHtml(v)}</option>`).join(""))}</select></div>
         <div><label>${escapeHtml(t("toolbar.value"))}</label><select data-pf-filter="value">${`<option value="">${escapeHtml(t("filter.all.m"))}</option>` + faixas.map(([v, l]) => `<option value="${v}"${v === fValue ? " selected" : ""}>${escapeHtml(l)}</option>`).join("")}</select></div>
-        <div class="sort-select"><label>${escapeHtml(t("sort.label"))}</label><select data-profile-sort>
-          ${sortOpt("value-desc", "sort.valueDesc")}${sortOpt("value-asc", "sort.valueAsc")}${sortOpt("num-asc", "sort.numAsc")}${sortOpt("num-desc", "sort.numDesc")}
-          ${sortOpt("rarity-desc", "sort.rarityDesc")}${sortOpt("rarity-asc", "sort.rarityAsc")}${sortOpt("release", "sort.releaseDate")}
-          ${mode === "graded" ? sortOpt("grade-desc", "graded.sort.gradeDesc") : ""}
-        </select></div>
+        <div class="sort-select srt-host"><label>${escapeHtml(t("sort.label"))}</label><select data-profile-sort data-ordenar>${ordenar.opcoes(famsPerfil(), sortPerfil())}</select></div>
       </section>`;
     }
 

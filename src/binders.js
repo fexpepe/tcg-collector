@@ -1248,8 +1248,10 @@
   // Ordenar do editor de bolso: padrão = valor, da mais cara pra mais barata
   // (2026-09-26, pedido do Fernando) — quem monta binder procura a versão que
   // vale mais de um Pokémon, e por lançamento a carta cara ficava no meio de
-  // dezenas de reimpressões.
+  // dezenas de reimpressões. Critérios e rótulos: o Ordenar de toda grade
+  // (src/ordenar.js).
   const EDITOR_SORT_PADRAO = "value-desc";
+  const EDITOR_SORTS = "value num name rarity release";
 
   function openEditor(binderId, index) {
     const binder = getBinder(binderId);
@@ -1325,13 +1327,7 @@
         </label>
       </div>` : "";
 
-    const SORTS = [
-      ["value-desc", "sort.valueDesc"], ["value-asc", "sort.valueAsc"],
-      ["release", "sort.releaseDate"], ["num-desc", "sort.numDesc"], ["num-asc", "sort.numAsc"]
-    ];
-    const sortOptions = SORTS.map(([v, k]) =>
-      `<option value="${v}"${v === (editing.sort || EDITOR_SORT_PADRAO) ? " selected" : ""}>${escapeHtml(t(k))}</option>`
-    ).join("");
+    const sortOptions = window.TCGOrdenar.opcoes(EDITOR_SORTS, window.TCGOrdenar.valida(editing.sort, EDITOR_SORTS, EDITOR_SORT_PADRAO));
     // Jogo num menu suspenso, ao lado do Ordenar (2026-09-26): eram 14 chips
     // (Todos + 13 jogos) em três linhas empurrando a busca e os resultados pra
     // baixo do modal — no celular, quase a tela inteira.
@@ -1357,8 +1353,8 @@
               <label class="binder-editor-sort binder-editor-game"><span>${escapeHtml(t("binders.editor.game"))}</span>
                 <select data-edit-game>${gameOptions}</select>
               </label>
-              <label class="binder-editor-sort"><span>${escapeHtml(t("sort.label"))}</span>
-                <select data-edit-sort>${sortOptions}</select>
+              <label class="binder-editor-sort srt-host"><span>${escapeHtml(t("sort.label"))}</span>
+                <select data-edit-sort data-ordenar>${sortOptions}</select>
               </label>
             </div>
             <p class="binder-editor-count" data-edit-count aria-live="polite"></p>
@@ -1388,24 +1384,13 @@
     if (search && searchTab) search.focus();
   }
 
-  // Ordena os resultados da busca como na página de set: valor, lançamento ou
-  // número da carta. Cartas sem preço vão para o fim nos dois sentidos de valor.
+  // Ordena os resultados da busca com o Ordenar de toda grade (src/ordenar.js):
+  // cartas sem preço vão para o fim nos dois sentidos de preço.
   function sortEditorMatches(matches) {
-    const s = (editing && editing.sort) || EDITOR_SORT_PADRAO;
-    const priceOf = (card) => shared.cardValue(card, defaultVariant(card), pricesStore).value || 0;
-    const byNum = (a, b) => shared.compareCardNumbers(a.number, b.number);
-    if (s === "num-asc") matches.sort(byNum);
-    else if (s === "num-desc") matches.sort((a, b) => byNum(b, a));
-    else if (s === "value-desc") matches.sort((a, b) => priceOf(b) - priceOf(a));
-    else if (s === "value-asc") matches.sort((a, b) => {
-      const pa = priceOf(a), pb = priceOf(b);
-      if (!pa && !pb) return 0;
-      if (!pa) return 1;
-      if (!pb) return -1;
-      return pa - pb;
-    });
-    else matches.sort((a, b) => String(b.setReleaseDate || "").localeCompare(String(a.setReleaseDate || "")));
-    return matches;
+    const s = window.TCGOrdenar.valida(editing && editing.sort, EDITOR_SORTS, EDITOR_SORT_PADRAO);
+    return matches.sort(window.TCGOrdenar.compara(s, {
+      preco: (card) => shared.cardValue(card, defaultVariant(card), pricesStore).value || 0
+    }));
   }
 
   // Resultados PAGINADOS (2026-09-26): eram cortados em 48 depois de ordenar —

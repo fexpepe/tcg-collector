@@ -8,9 +8,11 @@
   let gameFilter = "all"; // all | pokemon | lorcana
 
   // Ordenação + grade/lista (paridade com a Coleção), persistidas em chaves
-  // próprias da wishlist.
-  const CARDS_SORTS = ["value-desc", "value-asc", "num-asc", "num-desc", "rarity-desc", "rarity-asc", "release"];
-  let cardsSort = CARDS_SORTS.includes(localStorage.getItem("tcg-wishlist-sort")) ? localStorage.getItem("tcg-wishlist-sort") : "value-desc";
+  // próprias da wishlist. Critérios no src/ordenar.js; as famílias oferecidas
+  // são o data-ordenar do wishlist.html.
+  const ordenar = window.TCGOrdenar;
+  const CARDS_SORTS = (document.getElementById("cardsSortSelect") || document.body).getAttribute("data-ordenar");
+  let cardsSort = ordenar.valida(localStorage.getItem("tcg-wishlist-sort"), CARDS_SORTS);
   let cardsView = shared.gridViewValue(localStorage.getItem("tcg-wishlist-view"));
 
   // Wishlist UNIFICADA: stores por jogo + facades que despacham por jogo (cardGameMap).
@@ -376,20 +378,19 @@
         (Number(shared.cardHasImage(b.card)) - Number(shared.cardHasImage(a.card))) || cmp(a, b));
   }
 
-  // Comparador do seletor de ordenação (mesma lógica da Coleção/Explorar).
+  // Comparador do Ordenar (src/ordenar.js, o mesmo de toda grade). "Data de
+  // adição" = ordem em que a carta entrou na lista (a ordem das chaves do
+  // store, como na Coleção).
   function sortComparator() {
-    const priceOf = shared.memoValue((p) => shared.cardValue(p.card, p.variant, prices, shared.DEFAULT_CONDITION).value || 0);
-    const byNum = (a, b) => shared.compareCardNumbers(a.card.number, b.card.number);
-    if (cardsSort === "num-asc") return byNum;
-    if (cardsSort === "num-desc") return (a, b) => byNum(b, a);
-    if (cardsSort === "value-asc") return (a, b) => {
-      const pa = priceOf(a), pb = priceOf(b);
-      if (!pa && !pb) return 0; if (!pa) return 1; if (!pb) return -1; return pa - pb;
-    };
-    if (cardsSort === "rarity-desc") return (a, b) => shared.rarityRank(b.card.rarity) - shared.rarityRank(a.card.rarity) || byNum(a, b);
-    if (cardsSort === "rarity-asc") return (a, b) => shared.rarityRank(a.card.rarity) - shared.rarityRank(b.card.rarity) || byNum(a, b);
-    if (cardsSort === "release") return (a, b) => String(b.card.setReleaseDate || "").localeCompare(String(a.card.setReleaseDate || ""));
-    return (a, b) => priceOf(b) - priceOf(a); // value-desc (padrão)
+    let posDe = null;
+    return ordenar.compara(cardsSort, {
+      preco: (p) => shared.cardValue(p.card, p.variant, prices, shared.DEFAULT_CONDITION).value || 0,
+      adicao: (p) => {
+        if (!posDe) posDe = new Map(Object.keys(wishlist.toObject()).map((id, i) => [id, i]));
+        return posDe.get(p.card.id);
+      },
+      depois: () => render()
+    });
   }
 
   // Alterna grade/lista (mesma classe .is-list) e reflete nos botões.

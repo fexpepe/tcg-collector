@@ -81,6 +81,9 @@ export const AREAS = [
   // editor (a tela de escrever), que ninguém mais carrega.
   { nome: "blog",      prefixos: ["blog-"],                        paginas: ["blog.html", "blog-post.html", "blog-editor.html"] },
   { nome: "blogeditor", prefixos: ["bed-"],                        paginas: ["blog-editor.html"] },
+  // srt- (2026-09-30): o menu do Ordenar (src/ordenar.js). EXATAMENTE as
+  // páginas que carregam o script — toda grade de cartas que ordena.
+  { nome: "ordenar",   prefixos: ["srt-"],                         paginas: ["cards.html", "collection.html", "detail.html", "explore.html", "wishlist.html", "sales.html", "binders.html", "pastas.html"] },
   // vitrine (o espaço de anúncio, 2026-09-27): EXATAMENTE as páginas que
   // carregam o src/ads.js. O check.mjs cruza as duas listas (a guarda 9 barra
   // o script numa página pessoal; a 8, a classe numa página fora daqui).

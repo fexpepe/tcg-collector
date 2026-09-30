@@ -115,6 +115,8 @@ const SHELL_ASSETS = [
   "src/deck-rules.js", "src/decks.js", "src/pastas.js", "src/lore.js", "src/export-liga.js", "src/export-ui.js", "src/troca.js",
   // Módulos que saíram do shared.js (2026-09-14): dois sob demanda e um por página.
   "src/backup-import.js", "src/card-rescue.js", "src/facets.js",
+  // Ordenar (2026-09-30): o menu e os critérios de toda grade de cartas.
+  "src/ordenar.js",
   // Fichário (2026-09-16): motor das páginas de bolsos, carregado pelo set e pela Coleção.
   // Resumo (2026-09-16): gráficos de raridade/tipo, carregados pelo set e pela Coleção.
   "src/binder-view.js", "src/insights.js",

@@ -310,10 +310,13 @@
   // Busca DENTRO da pasta (a barra da fileira do título). Não é "termo de
   // busca no catálogo": peneira o que já está na pasta, como os filtros.
   let termo = "";
-  // "added" = a ordem em que as cartas entraram na pasta. É o padrão porque a
-  // pasta costuma ser um checklist: reordenar por valor sozinha faria a carta
-  // recém-adicionada sumir do lugar onde a pessoa acabou de olhar.
-  let ordem = "added";
+  // "added-asc" (Data de adição: mais antigas primeiro) = a ordem em que as
+  // cartas entraram na pasta. É o padrão porque a pasta costuma ser um
+  // checklist: reordenar por valor sozinha faria a carta recém-adicionada
+  // sumir do lugar onde a pessoa acabou de olhar. Critérios e rótulos: o
+  // Ordenar de toda grade (src/ordenar.js).
+  const PASTA_SORTS = "value num name added rarity release";
+  let ordem = "added-asc";
   // Fichário: o mesmo módulo do set e da Coleção. `root` é o editor inteiro
   // (a grade é recriada a cada render, os eventos do fichário não podem ser).
   const binderView = window.TCGBinderView
@@ -601,31 +604,15 @@
         && (!fRaridade || (c && c.rarity) === fRaridade)
         && naFaixa(e);
     });
-    if (ordem === "added") return arr;
-    const copia = arr.slice();
-    if (ordem === "num-asc" || ordem === "num-desc") {
-      const n = (e) => (cardOf(e) || {}).number || "";
-      copia.sort((a, b) => ordem === "num-asc"
-        ? shared.compareCardNumbers(n(a), n(b))
-        : shared.compareCardNumbers(n(b), n(a)));
-      return copia;
-    }
-    if (ordem === "name-asc") {
-      const nome = (e) => (cardOf(e) || {}).name || e.id;
-      copia.sort((a, b) => nome(a).localeCompare(nome(b)));
-      return copia;
-    }
-    // Valor: sem preço vai pro fim nos dois sentidos (uma carta sem cotação não
-    // é "a mais barata" — é uma que a gente não sabe).
-    const val = (e) => entryUnit(current, e, cardOf(e));
-    copia.sort((a, b) => {
-      const pa = val(a), pb = val(b);
-      if (!pa && !pb) return 0;
-      if (!pa) return 1;
-      if (!pb) return -1;
-      return ordem === "valor-asc" ? pa - pb : pb - pa;
-    });
-    return copia;
+    if (ordem === "added-asc") return arr;
+    // Preço: sem cotação vai pro fim nos dois sentidos (uma carta sem preço
+    // não é "a mais barata" — é uma que a gente não sabe).
+    const pos = new Map(current.entries.map((e, i) => [e, i]));
+    return arr.slice().sort(window.TCGOrdenar.compara(ordem, {
+      carta: (e) => cardOf(e) || { id: e.id, name: e.id },
+      preco: (e) => entryUnit(current, e, cardOf(e)),
+      adicao: (e) => pos.get(e)
+    }));
   }
 
   // Barra de filtros: MESMOS campos, MESMA ordem e MESMA moldura da Coleção
@@ -644,16 +631,13 @@
     const raridades = uniq(cartas.map((c) => c.rarity)).sort((a, b) => a.localeCompare(b));
     const sym = shared.currencySymbol();
     const faixas = [["0-10", `≤ ${sym} 10`], ["10-50", `${sym} 10–50`], ["50-200", `${sym} 50–200`], ["200-", `${sym} 200+`]];
-    const ordenar = (v, k) => `<option value="${v}"${ordem === v ? " selected" : ""}>${esc(t(k))}</option>`;
     return `<section id="pastaFilters" class="toolbar collection-filters${filtrosAbertos ? "" : " is-collapsed"}" aria-label="${escA(t("filters.show"))}" data-own-toggle>
       ${jogos.length > 1 ? `<div><label>${esc(t("pfmi.game"))}</label><select data-pf-filter="jogo">${opts(jogos, fJogo, shared.gameLabel)}</select></div>` : ""}
       <div><label>${esc(t("toolbar.set"))}</label><select data-pf-filter="set">${opts(sets, fSet)}</select></div>
       <div><label>${esc(t("toolbar.language"))}</label><select data-pf-filter="idioma">${opts(idiomas, fIdioma, shared.cardLanguageLabel)}</select></div>
       <div><label>${esc(t("toolbar.rarity"))}</label><select data-pf-filter="raridade">${`<option value="">${esc(t("filter.all.f"))}</option>` + raridades.map((v) => `<option value="${escA(v)}"${v === fRaridade ? " selected" : ""}>${esc(v)}</option>`).join("")}</select></div>
       <div><label>${esc(t("toolbar.value"))}</label><select data-pf-filter="valor">${`<option value="">${esc(t("filter.all.m"))}</option>` + faixas.map(([v, l]) => `<option value="${v}"${v === fValor ? " selected" : ""}>${esc(l)}</option>`).join("")}</select></div>
-      <div class="sort-select"><label>${esc(t("sort.label"))}</label><select data-pasta-sort>
-        ${ordenar("added", "lists.sortAdded")}${ordenar("valor-desc", "sort.valueDesc")}${ordenar("valor-asc", "sort.valueAsc")}${ordenar("num-asc", "sort.numAsc")}${ordenar("num-desc", "sort.numDesc")}${ordenar("name-asc", "sort.name")}
-      </select></div>
+      <div class="sort-select srt-host"><label>${esc(t("sort.label"))}</label><select data-pasta-sort data-ordenar>${window.TCGOrdenar.opcoes(PASTA_SORTS, ordem)}</select></div>
     </section>`;
   }
 
@@ -920,7 +904,7 @@
     // caber (ou cabe em outro lugar), e no fichário quem monta a grade é o
     // binderView, em páginas. Nesses casos repinta — o caminho rápido continua
     // valendo no cadastro em série, que é onde o custo aparecia.
-    if (filtrosAtivos() || ordem !== "added" || cardsView === "binder") {
+    if (filtrosAtivos() || ordem !== "added-asc" || cardsView === "binder") {
       renderGrid();
       updateTotals();
       return;
