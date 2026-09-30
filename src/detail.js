@@ -67,7 +67,38 @@
     paldea: "Paldea"
   };
 
+  // Endereço do set (2026-10-01): /games/<jogo>/<set>[/<carta>] é esta mesma
+  // tela, servida pela borda (functions/games/). A rota vem num <meta> que a
+  // borda escreve (nome do set, jogo e carta) e faz aqui o papel da query de
+  // /detail?type=set&name=…. O content do <meta> é o próprio caminho: uma cópia
+  // guardada pelo service worker que chegue pra OUTRO endereço não abre o set
+  // errado. Aí, e na cópia de reserva (sem <meta>), o nome do set sai do mapa
+  // do jogo e a carta, do nome dela no endereço (ver rotaPeloMapa).
+  const caminhoLimpo = /^\/games\/([a-z0-9-]+)\/([a-z0-9-]+)(?:\/([a-z0-9-]+))?\/?$/.exec(location.pathname);
+  const metaDaRota = document.querySelector('meta[name="sleevu-rota"]');
+  const rotaDaBorda = caminhoLimpo && metaDaRota && metaDaRota.content === location.pathname.replace(/\/+$/, "")
+    ? metaDaRota.dataset : null;
   const params = new URLSearchParams(window.location.search);
+  if (caminhoLimpo) {
+    params.set("type", "set");
+    params.delete("scope"); // a tela "dentro da coleção" não tem endereço próprio
+    if (rotaDaBorda && rotaDaBorda.set) params.set("name", rotaDaBorda.set);
+    if (rotaDaBorda && rotaDaBorda.card) params.set("card", rotaDaBorda.card);
+  }
+  // O endereço desta tela (/games/<jogo>/<set>), o nome de cada carta nele e o
+  // mapa do jogo de onde os dois saem (ver preparaEnderecos). Aqui em cima, e
+  // não junto das funções: o rotaPeloMapa já roda no carregamento, e um `let`
+  // declarado abaixo de quem o lê na hora é erro de TDZ, calado dentro da
+  // promessa (a tela ficaria em "não foi possível carregar o catálogo").
+  let mapaDoJogo = null;
+  let enderecoDoSet = rotaDaBorda ? `/games/${caminhoLimpo[1]}/${caminhoLimpo[2]}` : "";
+  let slugsDoSet = null;
+  // Blocos que a borda põe no pé da tela (índice do set, texto da carta) são
+  // do endereço em que foram montados: numa cópia que chegue pra outro, saem.
+  document.querySelectorAll("[data-indice-set], [data-seo-carta]").forEach((el) => {
+    const alvo = el.getAttribute("data-indice-set") || el.getAttribute("data-seo-carta") || "";
+    if (!alvo || location.pathname.indexOf(alvo) !== 0) el.remove();
+  });
   const detailType = params.get("type") || "";
   // Link de set APOSENTADO: o set entrou pelo import com um setId escolhido à
   // mão e a TCGdex depois publicou o mesmo set com outro (cel30 -> 30th,
@@ -137,10 +168,15 @@
     ? `${t("detail.scopeCollection")} · ${typeLabel(detailType)}`
     : typeLabel(detailType);
   if (elements.title) elements.title.textContent = detailName || t("detail.label");
+  acertaTituloDaAba();
   if (detailType === "set") {
     if (elements.type) elements.type.hidden = true;
     if (elements.title) elements.title.hidden = true;
   }
+
+  // Endereço limpo sem a rota da borda: o nome do set sai do mapa do jogo antes
+  // de o catálogo ser consultado (o resolveCards espera por isto).
+  const rotaPendente = caminhoLimpo && !rotaDaBorda ? rotaPeloMapa() : null;
 
   // --- Modos de contagem do progresso (páginas de set) ---
   // Master set: cada VARIANTE (Normal/Reverse/Holo…) é um slot próprio, como no
@@ -345,7 +381,8 @@
     store: owned,
     prices,
     wishlist,
-    onOwnedChange: () => refreshOwnership()
+    onOwnedChange: () => refreshOwnership(),
+    cardPath: caminhoDaCarta
   });
 
   // Esqueleto enquanto o chunk do set desce: esta é a tela mais aberta do
@@ -370,6 +407,14 @@
       // ?card=<id>: reabre o popup da carta — é onde o link compartilhado do
       // modal e as páginas /card/<slug>.html do Google aterrissam.
       preview.openFromUrl();
+      // /games/<jogo>/<set>/<carta> com a rota da borda: a carta já veio no
+      // <meta>, e o nome dela no endereço já é conhecido.
+      const cartaDaRota = caminhoLimpo && caminhoLimpo[3] && rotaDaBorda && rotaDaBorda.card;
+      if (cartaDaRota && cardsById.has(cartaDaRota)) {
+        slugsDoSet = new Map([[cartaDaRota, caminhoLimpo[3]]]);
+        preview.open(cartaDaRota, undefined, { semHistorico: true });
+      }
+      preparaEnderecos();
     })
     .catch((error) => {
       shared.mostraErroDeCatalogo(elements.empty, error);
@@ -381,6 +426,7 @@
   // Sequencial e com parada no primeiro match: é caminho raro (só link errado),
   // não vale abrir 11 requisições em paralelo.
   async function rescueWrongGame() {
+    if (caminhoLimpo) return;
     const atual = (window.SLEEVU && window.SLEEVU.game) || "pokemon";
     const manifestMode = !!(window.SLEEVU && window.SLEEVU.manifest);
     for (const slug of shared.GAME_SLUGS) {
@@ -600,6 +646,17 @@
   // que segue pro id novo e por isso entra sem ?name=.
   function pintaTituloDoSet() {
     if (elements.title && detailName) elements.title.textContent = detailName;
+    acertaTituloDaAba();
+  }
+  // A aba com o nome do set. A borda já manda o título certo; isto é pra cópia
+  // que o service worker guardou de OUTRO set (a entrada do detail.html é uma
+  // só pra todo /detail?type=set&… e é a reserva dos endereços /games/…) e pra
+  // casca crua: sem isto a aba mostrava o set anterior, ou "Detalhe".
+  function acertaTituloDaAba() {
+    if (detailType !== "set" || !detailName || document.title.indexOf(detailName) >= 0) return;
+    const el = document.querySelector("title");
+    if (el) el.removeAttribute("data-i18n");
+    document.title = `${detailName} | Sleevu`;
   }
 
   // Barra de endereço LIMPA pros sets de nome não-ASCII: troca ?name=<japonês>
@@ -608,6 +665,7 @@
   // vez de 140 caracteres de %E3%82%B8. Só depois de o set resolver: uma URL
   // trocada antes de saber se o id existe seria pior do que a feia.
   function limpaUrlDoSet() {
+    if (caminhoLimpo) return; // o endereço do set já é legível
     if (detailType !== "set" || !pageCards.length || nomeLegivelNaUrl(detailName)) return;
     const id = detailSetId || pageCards[0].setId;
     if (!id || !params.has("name")) return;
@@ -635,8 +693,130 @@
     return regioes.size > 1;
   }
 
+  // ── Endereço do set e de cada carta (2026-10-01) ─────────────────────────
+  // O mapa de cada /games/<jogo> (data/game-pages/<jogo>.json, gerado pelo
+  // prerender): set no endereço -> nome, chunks, total. É o mesmo que a borda
+  // lê pra montar esta tela; uma leitura por página.
+  function carregaMapa(url) {
+    if (!mapaDoJogo) {
+      mapaDoJogo = fetch(`data/game-pages/${url}.json`)
+        .then((r) => (r.ok ? r.json() : null))
+        .catch(() => null);
+    }
+    return mapaDoJogo;
+  }
+  // Endereço limpo sem a rota da borda (cópia de reserva do service worker,
+  // offline): o nome do set sai do mapa. A variante -en estática que caia aqui
+  // (offline, sem cópia própria) abre a tela do set, que é o que dá pra abrir.
+  async function rotaPeloMapa() {
+    const mapa = await carregaMapa(caminhoLimpo[1]);
+    const sets = (mapa && mapa.s) || {};
+    const temSet = (k) => Object.prototype.hasOwnProperty.call(sets, k);
+    const slug = temSet(caminhoLimpo[2]) ? caminhoLimpo[2]
+      : (/-en$/.test(caminhoLimpo[2]) && temSet(caminhoLimpo[2].slice(0, -3)) ? caminhoLimpo[2].slice(0, -3) : "");
+    if (!slug) return;
+    detailName = sets[slug].n;
+    pintaTituloDoSet();
+  }
+
+  // Nome de cada carta no endereço: a MESMA conta da borda, sobre as MESMAS
+  // cartas (os chunks que o mapa lista pra este set). Cópia de
+  // functions/_lib/slug-carta.js (este arquivo é script clássico e não importa
+  // módulo); tests/slug-carta-cliente.test.mjs roda as duas nas mesmas cartas.
+  // <slug-carta>
+  const ACENTOS_SLUG = new RegExp("[" + String.fromCharCode(0x300) + "-" + String.fromCharCode(0x36f) + "]", "g");
+  const CJK_SLUG = new RegExp("[" + String.fromCharCode(0x3000) + "-" + String.fromCharCode(0x9fff) +
+    String.fromCharCode(0xac00) + "-" + String.fromCharCode(0xd7af) +
+    String.fromCharCode(0xff00) + "-" + String.fromCharCode(0xffef) + "]");
+  function slugify(texto) {
+    return String(texto == null ? "" : texto)
+      .normalize("NFKD").replace(ACENTOS_SLUG, "")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+  }
+  function baseDoSlug(card) {
+    const nome = String((card && card.name) || "");
+    const nomeNoEndereco = CJK_SLUG.test(nome) ? (slugify(card.nameEn || card.pokemonName || "") || slugify(nome)) : slugify(nome);
+    let numero = String((card && card.number) || "").trim();
+    const total = String((card && card.setTotal) || "").trim();
+    if (numero && /^\d+$/.test(numero) && /^\d+$/.test(total)) numero = `${numero}-${/^0\d+$/.test(numero) ? total.padStart(numero.length, "0") : total}`;
+    const l = String((card && card.language) || "en").toLowerCase().slice(0, 2);
+    const idioma = !l || l === "en" ? "" : (l === "ja" ? "jp" : l);
+    return slugify([nomeNoEndereco, numero, idioma].filter(Boolean).join("-")) || "card";
+  }
+  function slugsDasCartas(lista) {
+    const porId = [...(lista || [])].filter((c) => c && c.id != null)
+      .sort((a, b) => (String(a.id) < String(b.id) ? -1 : String(a.id) > String(b.id) ? 1 : 0));
+    const usados = new Set();
+    const mapa = new Map();
+    for (const c of porId) {
+      const id = String(c.id);
+      if (mapa.has(id)) continue;
+      const base = baseDoSlug(c);
+      let slug = base;
+      let i = 2;
+      while (usados.has(slug)) slug = `${base}-${i++}`;
+      usados.add(slug);
+      mapa.set(id, slug);
+    }
+    return mapa;
+  }
+  // </slug-carta>
+
+  // O popup pergunta aqui o caminho da carta aberta (e o da tela, ao fechar).
+  // Só com a barra já no endereço limpo: em /detail?… o popup segue no ?card=.
+  function caminhoDaCarta(id) {
+    if (!enderecoDoSet || location.pathname.indexOf("/games/") !== 0) return null;
+    const slug = id && slugsDoSet && slugsDoSet.get(String(id));
+    return slug ? `${enderecoDoSet}/${slug}` : enderecoDoSet;
+  }
+  // Acha o set no mapa pelo NOME (a chave da borda), conta os nomes das cartas
+  // e passa a barra pro endereço limpo: quem entrou por /detail?type=set&… (a
+  // grade de Sets, a busca, um link antigo) passa a ver, copiar e compartilhar
+  // o endereço do set. replaceState: o "voltar" continua indo pra onde ia.
+  async function preparaEnderecos() {
+    if (detailType !== "set" || collectionScope || !pageCards.length) return;
+    const urlDoSet = window.SLEEVU && window.SLEEVU.urlDoSet;
+    const baseDoJogo = caminhoLimpo ? `/games/${caminhoLimpo[1]}` : ((urlDoSet && urlDoSet(paginaGame(), pageCards[0].setId)) || "");
+    if (!baseDoJogo) return;
+    const mapa = await carregaMapa(baseDoJogo.slice("/games/".length));
+    const sets = (mapa && mapa.s) || {};
+    const slugDoSet = Object.keys(sets).find((k) => sets[k].n === detailName);
+    if (!slugDoSet) return;
+    const entrada = sets[slugDoSet];
+    const listas = await Promise.all((entrada.f || []).map((f) => fetch(f)
+      .then((r) => (r.ok ? r.json() : []))
+      .catch(() => [])));
+    const doSet = [].concat(...listas.map((l) => (Array.isArray(l) ? l : [])))
+      .filter((c) => c && c.set === entrada.n && !c.retired);
+    const semente = slugsDoSet;
+    slugsDoSet = slugsDasCartas(doSet);
+    // A carta aberta pela rota da borda segue achável mesmo se o chunk não veio.
+    if (semente) semente.forEach((slug, id) => { if (!slugsDoSet.has(id)) slugsDoSet.set(id, slug); });
+    enderecoDoSet = `${baseDoJogo}/${slugDoSet}`;
+    if (caminhoLimpo) {
+      // Cópia de reserva (sem a rota da borda): a carta do endereço abre agora.
+      if (caminhoLimpo[3] && !rotaDaBorda) {
+        let id = "";
+        slugsDoSet.forEach((slug, cardId) => { if (!id && slug === caminhoLimpo[3]) id = cardId; });
+        if (id && cardsById.has(id)) preview.open(id, undefined, { semHistorico: true });
+      }
+      return;
+    }
+    try {
+      const u = new URL(location.href);
+      const aberta = u.searchParams.get("card");
+      const slugDaCarta = aberta && slugsDoSet.get(aberta);
+      ["type", "name", "setId", "game", "card"].forEach((k) => u.searchParams.delete(k));
+      if (aberta && !slugDaCarta) u.searchParams.set("card", aberta);
+      history.replaceState(history.state, "", (slugDaCarta ? `${enderecoDoSet}/${slugDaCarta}` : enderecoDoSet) + u.search + u.hash);
+    } catch (e) { /* history bloqueado: fica o endereço antigo, que funciona igual */ }
+  }
+
   // No modo manifest, baixa apenas os chunks de set necessários para esta página.
   async function resolveCards() {
+    if (rotaPendente) await rotaPendente;
     await shared.awaitCatalog();
     resolveSetNameFromId();
     if (Array.isArray(window.TCG_CARDS) && window.TCG_CARDS.length) {

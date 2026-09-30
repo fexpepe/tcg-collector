@@ -48,7 +48,11 @@
 // install guarda, é a reserva de quem ainda não tem a dele (ver
 // reservaDaNavegacao): a tela de qualquer jogo segue abrindo offline, como o
 // /sets?game= abria.
-const SHELL_CACHE = "tcg-shell-v267";
+// v268 (2026-10-01): a tela do set também ganhou endereço (/games/<jogo>/<set>
+// e, com o popup de uma carta, /games/<jogo>/<set>/<carta>). Mesmo desenho:
+// entrada própria por endereço e a do detail.html de reserva (o detail.js acha
+// o set e a carta pelo caminho quando a cópia não traz a rota da borda).
+const SHELL_CACHE = "tcg-shell-v268";
 // Id do build: o hash-assets.mjs (deploy) acrescenta "-<8 hex>" ao nome acima,
 // calculado do conteúdo do shell (JS, CSS E as páginas HTML). É o mesmo id que
 // ele carimba em <meta name="sleevu-build"> de todo HTML — assim a página sabe
@@ -410,14 +414,17 @@ function chaveDeNavegacao(url) {
 }
 
 // Cópia de reserva de uma navegação sem entrada própria (ou null). A tela de
-// um jogo ainda não visitado (/games/<jogo>, só esse nível) usa a do sets.html,
-// que o install guarda: é a mesma página, com o título genérico, e o jogo sai
-// do endereço (game.js). É o que mantém a tela de TODOS os jogos abrindo
-// offline, como a do /sets?game=x sempre abriu. Set e carta, os níveis de
-// baixo, não têm reserva: são páginas próprias.
+// um jogo ainda não visitado (/games/<jogo>) usa a do sets.html, e a de um set
+// ou de uma carta (/games/<jogo>/<set>[/<carta>], desde 2026-10-01) usa a do
+// detail.html: as duas o install guarda, com o título genérico, e o jogo, o
+// set e a carta saem do endereço (game.js e detail.js). É o que mantém essas
+// telas abrindo offline, como o /sets?game=x e o /detail?type=set&… sempre
+// abriram, e na hora dentro da sessão (a rede atualiza a entrada por trás).
 function reservaDaNavegacao(url) {
-  const u = new URL(url);
-  return /^\/games\/[a-z0-9-]+$/.test(u.pathname) ? new URL("sets.html", self.location).href : null;
+  const p = new URL(url).pathname;
+  if (/^\/games\/[a-z0-9-]+$/.test(p)) return new URL("sets.html", self.location).href;
+  if (/^\/games\/[a-z0-9-]+\/[a-z0-9-]+(\/[a-z0-9-]+)?$/.test(p)) return new URL("detail.html", self.location).href;
+  return null;
 }
 
 // Quanto tempo uma confirmação da rede vale. Dentro desta janela a navegação

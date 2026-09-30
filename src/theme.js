@@ -58,6 +58,18 @@
     }
   } catch (e) { /* history bloqueado: segue com a URL como veio */ }
 
+  // --- "Tentar de novo" da saída de emergência (.falha-boot) --------------
+  // É um href="" (recarregar a própria tela). Nas telas com <base href="/">
+  // (a de Sets e a do set, que respondem em /games/…) ele resolveria na raiz e
+  // levaria pro início; data-recarrega pede a URL de verdade. Aqui, e não no
+  // app, porque a saída existe justamente pra quando o app não subiu.
+  try {
+    document.addEventListener("DOMContentLoaded", function () {
+      var retry = document.querySelector(".falha-boot [data-recarrega]");
+      if (retry) retry.href = location.href;
+    });
+  } catch (e) { /* sem DOM de verdade: sem saída de emergência pra acertar */ }
+
   // --- Tema: salvo > prefers-color-scheme ---------------------------------
   try {
     var saved = localStorage.getItem("tcg-collector-theme-v1");
