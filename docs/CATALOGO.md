@@ -144,6 +144,14 @@ hub). A ficha preenchida vai na descrição da PR.
   o Fusion World) ou quando não há slug da marca. Linha soma na conta da marca;
   slug tem chip, cor e contagem próprios. A escolha não se desfaz depois,
   porque os ids ficam.
+- **Uma linha ou uma por título?** Títulos em sequência da MESMA plataforma
+  são **uma linha com seções**, como as eras de um jogo: o arcade Data
+  Carddass do Naruto teve Card Battle, Mission, Formation e Cross, e é a linha
+  `nrt-dc` com uma seção por título (PR #134, 2026-09-30). Cada título pode ter
+  prefixo de id próprio: a linha lista todos em `prefixes` no `GAME_LINES`, e
+  um `group<…>` no `app.js` monta as seções (item B16). Se uma linha já
+  publicada virar seção de outra, o `?line=` antigo entra em `LINE_ALIASES`
+  (shared.js), pra favoritos e links seguirem abrindo.
 - **slug**: minúsculo, `[a-z0-9]+`, curto (`unionarena`, `dbc`). Vai pra URL
   (`?game=`), pro banco e pras chaves do localStorage
   (`tcg-collector-<slug>-…`).
