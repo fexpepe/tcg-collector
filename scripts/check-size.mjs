@@ -111,8 +111,17 @@ import { join } from "node:path";
 // só a página do set usa (selo âmbar e véu do tile) saiu do variantTile pro
 // detail.js antes de subir o teto: ela sozinha levava mais ~250 bytes gz.
 // O bloco de lojas do preview segue como candidato a sair do núcleo.
+//
+// 2026-09-30: teto do shared.js sobe de 83.968 pra 84.992, a pedido do
+// Fernando, pra caber o Cyberpunk TCG. A main estava a 25 bytes gz do teto
+// (b8a7b527, depois de tirar 6 chaves mortas do export pra caber o
+// skip-link), e o registro de um jogo no núcleo custa ~58 bytes gz: DATA_GAMES,
+// GAME_COLOR, GAME_LABEL_KEY e a linha de lojas na MARKETS. Não há o que
+// enxugar no registro em si; o espaço de verdade sai da F3 do docs/CATALOGO.md
+// (nomes de set JA/vintage fora do shared.js, ~5,6 KB gz) ou das lojas do
+// preview fora do núcleo. 1 KB de folga, como das outras vezes.
 const TETOS = [
-  { arquivo: "shared.js", teto: 83968, nota: "núcleo JS de toda página" },
+  { arquivo: "shared.js", teto: 84992, nota: "núcleo JS de toda página" },
   { arquivo: "styles.min.css", teto: 33792, nota: "núcleo do CSS, depois do split por área" },
 ];
 

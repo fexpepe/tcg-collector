@@ -100,6 +100,7 @@ jobs:
             data/fab/sets
             data/gundam/sets
             data/swu/sets
+            data/cyberpunk/sets
             data/dbfw/sets
             data/digimon/sets
             data/riftbound/sets
@@ -131,13 +132,14 @@ jobs:
             exit 0
           fi
           faltando=""
-          # data/dbc/ e data/swu/: jogos novos (2026-09-24 e 2026-09-30). Enquanto
-          # o cache for de antes deles, o build rápido publicaria o tile do hub
-          # sem catálogo nenhum atrás.
+          # data/dbc/, data/swu/ e data/cyberpunk/: jogos novos (2026-09-24 e
+          # 2026-09-30). Enquanto o cache for de antes deles, o build rápido
+          # publicaria o tile do hub sem catálogo nenhum atrás.
           for f in data/manifest.generated.js data/pricing.generated.js \
                    data/onepiece/pricing.generated.js data/lorcana/pricing.generated.js \
                    data/magic/pricing.generated.js data/ygo/pricing.generated.js \
-                   data/dbc/manifest.generated.js data/swu/manifest.generated.js; do
+                   data/dbc/manifest.generated.js data/swu/manifest.generated.js \
+                   data/cyberpunk/manifest.generated.js; do
             [ -s "$f" ] || faltando="$faltando $f"
           done
           if [ -n "$faltando" ]; then
@@ -483,6 +485,17 @@ jobs:
         if: env.RODA_SYNC == 'true'
         run: node scripts/sync-price-history.mjs data/swu
 
+      # Cyberpunk TCG (TCGCSV cat. 92, WEYR/Weirdco 2026). Padrao Star Wars, sem
+      # espelho de logo: o único logo de set publicado (Welcome to Night City)
+      # está curado em data/cyberpunk/set-logos/ (ver o cabeçalho do sync).
+      - name: Sincroniza catálogo do Cyberpunk TCG (TCGCSV)
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/sync-cyberpunk.mjs || echo "sync-cyberpunk falhou; mantém o catalogo versionado"
+
+      - name: Snapshot de preços (histórico Cyberpunk TCG)
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/sync-price-history.mjs data/cyberpunk
+
       # Union Arena (TCGCSV cat. 81, Bandai 2024 — um anime por set). Padrao FAB.
       - name: Sincroniza catálogo do Union Arena (TCGCSV)
         if: env.RODA_SYNC == 'true'
@@ -652,6 +665,7 @@ jobs:
             data/fab/sets
             data/gundam/sets
             data/swu/sets
+            data/cyberpunk/sets
             data/dbfw/sets
             data/digimon/sets
             data/riftbound/sets

@@ -52,6 +52,7 @@ const GAMES = [
   { slug: "dbfw", label: "Dragon Ball Fusion World" },
   { slug: "gundam", label: "Gundam Card Game" },
   { slug: "swu", label: "Star Wars: Unlimited" },
+  { slug: "cyberpunk", label: "Cyberpunk TCG" },
   { slug: "riftbound", label: "Riftbound" },
   { slug: "naruto", label: "Naruto Card Game (2002~2006)" },
   { slug: "hxh", label: "Hunter × Hunter Carddass" },
@@ -637,7 +638,7 @@ const DECK_OUT_DIR = "deck";
 const MAX_DECK_PAGES = 500;
 const DECK_GAME_LABELS = {
   pokemon: "Pokémon TCG", lorcana: "Disney Lorcana", onepiece: "One Piece Card Game",
-  magic: "Magic: The Gathering", fab: "Flesh and Blood", gundam: "Gundam Card Game", swu: "Star Wars: Unlimited",
+  magic: "Magic: The Gathering", fab: "Flesh and Blood", gundam: "Gundam Card Game", swu: "Star Wars: Unlimited", cyberpunk: "Cyberpunk TCG",
   dbfw: "Dragon Ball Fusion World", ygo: "Yu-Gi-Oh!", digimon: "Digimon Card Game",
   riftbound: "Riftbound", unionarena: "Union Arena", naruto: "Naruto Card Game",
   hxh: "Hunter × Hunter", dbc: "Dragon Ball Carddass"

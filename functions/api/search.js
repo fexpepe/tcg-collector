@@ -23,7 +23,7 @@ import { buildSearch, buildPricesJson, idsComBase, LIMITE_COMPLETO } from "./_se
 
 // Jogos válidos (espelho do registro do game.js). Barra consulta arbitrária.
 // "all" = busca global (o Explorar): todos os jogos numa consulta só.
-const GAMES = new Set(["all", "pokemon", "lorcana", "onepiece", "magic", "fab", "gundam", "swu",
+const GAMES = new Set(["all", "pokemon", "lorcana", "onepiece", "magic", "fab", "gundam", "swu", "cyberpunk",
   "dbfw", "ygo", "digimon", "riftbound", "unionarena", "naruto", "hxh", "dbc", "jump"]);
 
 export async function onRequestGet(context) {

@@ -8,6 +8,17 @@ poucos.)
 
 ## Pendentes de aplicar
 
+- `20260930c` — libera o slug `cyberpunk` (Cyberpunk TCG) nas DUAS whitelists
+  de jogo: `card_views`/`increment_card_view` e `contribute_price`. Cópia da
+  `20260930a` (Star Wars, já aplicada) com `cyberpunk` na lista: fora do
+  cabeçalho e dos exemplos de `curl`, a única diferença é a lista (conferido
+  por diff). A lista é a inteira e contém o `swu`, então aplicar esta não
+  desfaz a anterior; a `20260930b` (blog) não mexe nessas funções, e a ordem
+  entre as duas não importa. Sem ela, view de carta e preço da comunidade do
+  Cyberpunk são descartados em silêncio. O teste que vale é o par do
+  cabeçalho do arquivo: `increment_card_view` com `cyberpunk` CRIA a linha em
+  `card_views` (o 204 sozinho não prova nada).
+
 - `20260930b` — blog (`20260930b_blog.sql`; o `b` porque a `20260930a` do mesmo
   dia é a do Star Wars). Cria o papel de editor do blog (`blog_editores`,
   tabela trancada, SEPARADA do `is_admin`), a tabela `posts` com RLS
