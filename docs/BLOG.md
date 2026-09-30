@@ -1,0 +1,127 @@
+# Blog
+
+Área de artigos do Sleevu: **/blog** (lista), **/blog/&lt;endereço&gt;** (post) e
+**/blog-editor** (onde se escreve). Os posts moram no Supabase e são escritos
+pelo próprio site — publicar é instantâneo, sem commit nem deploy.
+
+## Peças
+
+| Onde | O quê |
+|---|---|
+| `supabase/migrations/20260930b_blog.sql` | tabelas, RLS, triggers, bucket de imagens, papel de editor |
+| `src/blog-render.js` | **o** renderizador: Markdown enxuto → HTML seguro, mais cabeçalho do artigo, índice, carta embutida, cartão da lista, compartilhar, "leia também" |
+| `functions/blog/[slug].js` | a página do post, montada na borda (SEO, cartas do D1, 301, 404) |
+| `functions/blog/index.js` | a lista, montada na borda (filtros da URL já aplicados) |
+| `functions/blog/feed.xml.js` | o RSS |
+| `functions/blog/_comum.js` | Supabase anônimo, cartas do D1, cache de borda |
+| `blog.html` / `blog-post.html` | as cascas (o `blog-post.html` só existe pra Function preencher) |
+| `src/blog.js` | o que depende de quem lê: preço na moeda dele, Tenho/Quero, preview, filtros, compartilhar |
+| `blog-editor.html` / `src/blog-editor.js` | o editor (texto em pt fixo, como o /admin) |
+| `src/i18n-blog.js` | textos de interface da lista e do post (pt/en/es) |
+
+**Um renderizador, dois lugares.** O `src/blog-render.js` é script clássico
+(pendura `SleevuBlog` no `globalThis`, sem DOM nem `shared.js`): o navegador o
+carrega por `<script>` e as Functions fazem `import "../../src/blog-render.js"`.
+É isso que garante que a prévia do editor é a página publicada. No deploy o
+`hash-assets.mjs` renomeia o arquivo e reescreve o import das Functions (e
+reprova o build se algum import apontar pra arquivo que não existe).
+
+## Quem escreve
+
+Papel **próprio**, `blog_editores`, desconectado do `is_admin` (decisão do
+Fernando, 2026-09-30): dá pra entregar o blog a outra pessoa sem que ela veja o
+/admin, e ser admin não dá acesso ao blog. A tabela é trancada — não se lê nem
+se escreve pela API; quem entra e quem sai é decidido no SQL Editor:
+
+```sql
+-- pôr alguém (o nome é o que aparece como autor por padrão)
+insert into public.blog_editores (user_id, nome)
+select id, 'Nome que assina' from auth.users where email = 'pessoa@exemplo.com';
+
+-- tirar
+delete from public.blog_editores
+ where user_id = (select id from auth.users where email = 'pessoa@exemplo.com');
+```
+
+A migração já põe a conta do dono (a única com `is_admin` no dia). Quem é
+editor vê "Escrever e editar" em /blog e "Editar este post" em cada post; o
+endereço direto é /blog-editor.
+
+## Escrever
+
+A barra do editor escreve a sintaxe; o botão **?** mostra o resumo:
+
+```
+## Título de seção        ### Subtítulo         (# vira ##: o H1 é o título do post)
+**negrito**  *itálico*  ~~riscado~~  `código`  [texto](https://… ou /sets)
+- lista    1. numerada    (2 espaços antes = sub-item)    > citação    ---
+![descrição](url "legenda")                    imagem, sozinha na linha
+::card[pokemon/base1-4]                        uma carta em destaque
+::cards[pokemon/base1-4, pokemon/base1-2]      grade de cartas
+:::dica Título  …  :::                          caixa (dica, info, alerta)
+| a | b |  +  |---|---|                        tabela
+```
+
+- **Cartas** vão por id (`jogo/id`), nunca com preço escrito: a imagem, o nome
+  e o preço vêm do catálogo na hora (a borda escreve US$ de referência; o
+  navegador troca pela moeda de quem lê). O seletor de cartas do editor usa a
+  mesma busca da borda (`/api/search`).
+- **Imagens** (capa e corpo) vão pro bucket `blog-media`. O editor reduz no
+  aparelho antes de subir: WebP de até 1600 px e uma versão de 640 px, com as
+  medidas no nome (`…-w1600h900.webp`) — é daí que a página tira
+  width/height (não pula ao carregar) e o `srcset` do celular. GIF sobe como
+  veio. Colar ou soltar uma imagem no texto também sobe.
+- **Segurança**: nada do texto vira HTML cru. Link só http(s)/mailto/caminho
+  do site; imagem só de host liberado na CSP (lista `IMG_HOSTS`, travada contra
+  o `_headers` por teste). O teste do renderizador roda ataques conhecidos e um
+  fuzz de 3 mil textos.
+
+## Publicar, agendar, histórico
+
+- **Salvar rascunho** / **Publicar**. Com data de publicação no futuro o botão
+  vira **Agendar**: o post fica publicado no banco mas invisível (a RLS só
+  mostra data passada) e aparece sozinho quando a data chega.
+- **Despublicar** volta a rascunho; a data original fica.
+- Cada salvamento guarda a versão ANTERIOR de título+texto (as 40 mais novas);
+  **Histórico** carrega uma delas no editor (só vale depois de salvar).
+- Trocar o endereço de um post que já foi ao ar deixa o antigo respondendo 301.
+- O texto fica guardado no aparelho até ser salvo no site; ao reabrir o post,
+  o editor oferece recuperar. Se outra aba (ou outra pessoa) salvou o post
+  depois que você abriu, o editor avisa em vez de sobrescrever.
+
+## SEO e cache
+
+- A borda entrega o post com título, descrição, canonical, Open Graph (capa),
+  JSON-LD `BlogPosting` + `BreadcrumbList` e o texto no HTML.
+- Os posts entram no `sitemap.xml` no build (com `lastmod`); o RSS
+  (`/blog/feed.xml`) pega post novo na hora.
+- Cache: a borda guarda a página por 2 min (`s-maxage`), o navegador revalida
+  sempre. `?fresco=1` remonta na hora (é o "Ver no site" do editor).
+- A CSP das páginas montadas na borda vem do `_headers` porque a Function parte
+  de um `env.ASSETS.fetch` da casca. Resposta montada do zero não herdaria.
+
+## Armadilhas
+
+1. **`<base href="/">` no post.** Os passos de build só entendem caminho
+   relativo (`src/…`), e o post mora em `/blog/<slug>`. Por isso a casca tem
+   `<base href="/">` — e com ela um `#secao` levaria pra home. O renderizador
+   prefixa as âncoras com o caminho do post (`ancora` no `render()`), e o
+   `src/blog.js` conserta o skip-link.
+2. **Sem `$` dentro de `$$…$$`** na migração (o SQL Editor quebra): o fim do
+   texto nos regex do trigger é `\Z`. E o regex do Postgres recusa repetição
+   acima de 255 (`{1,6000}` quebrava todo insert).
+3. **Tabela de jogos repetida.** A borda não tem o `shared.js`, então o
+   renderizador carrega rótulo e cor de cada jogo. Jogo novo no `GAME_COLOR`
+   sem entrar no `GAMES` do renderizador reprova o teste (aconteceu com o Star
+   Wars no mesmo dia).
+4. **Exports do `shared.js` como função.** `publicFetch` e
+   `storagePublicUrl` (e não as constantes): o `window.TCGShared` é montado
+   antes do `SUPABASE_URL` existir, e ler a const ali seria TDZ.
+
+## Verificar localmente
+
+Sem as Functions (http-server), `/blog` e `/blog-post?slug=<endereço>` caem no
+caminho do navegador, que busca no Supabase e desenha com o mesmo
+renderizador. Antes da migração a lista diz "nenhum post ainda". Pra testar
+com dados, dá pra subir um Supabase de mentira que siga a regra da RLS (foi
+assim que o blog foi conferido em 2026-09-30).

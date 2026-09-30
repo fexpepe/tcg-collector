@@ -13,6 +13,7 @@ import { SCHEMA, SCHEMA_PRICES } from "../functions/api/_search-sql.js";
 import { metaDoPost, escolheRelacionados } from "../functions/blog/[slug].js";
 import { filtrosDaUrl, aplicaFiltros } from "../functions/blog/index.js";
 import { cartasDoD1 } from "../functions/blog/_comum.js";
+import { rssDoBlog } from "../functions/blog/feed.xml.js";
 
 const POST = {
   id: "11111111-1111-1111-1111-111111111111", slug: "guia-do-charizard", title: "Guia do Charizard",
@@ -105,4 +106,27 @@ test("cartasDoD1: sem banco (ou banco fora) o post sai sem cartas em vez de queb
   assert.equal((await cartasDoD1({}, ["pokemon/base1-4"], "pt")).size, 0);
   const quebrado = { prepare() { return { bind: () => ({ all: async () => { throw new Error("D1 fora"); } }) }; } };
   assert.equal((await cartasDoD1({ DB: quebrado }, ["pokemon/base1-4"], "pt")).size, 0);
+});
+
+test("RSS: itens escapados, data RFC 822, categoria, autor e capa só https", () => {
+  const xml = rssDoBlog([
+    Object.assign({}, POST, { title: "Charizard & <cia>", excerpt: "resumo \"x\"", author_name: "Fê" }),
+    { slug: "sem-nada", title: "Só título", lang: "en", category: "mercado", game: "", published_at: "2026-09-01T00:00:00Z", cover_url: "javascript:alert(1)" }
+  ], "2026-09-30T00:00:00Z");
+  // Comparação por texto (includes), sem regex: o XML é cheio de "<", "/" e "?".
+  const tem = (trecho, msg) => assert.ok(xml.includes(trecho), msg || `faltou: ${trecho}`);
+  assert.ok(xml.startsWith('<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0"'));
+  tem("<title>Charizard &amp; &lt;cia&gt;</title>");
+  tem("<link>https://sleevu.app/blog/guia-do-charizard</link>");
+  tem("<pubDate>Wed, 30 Sep 2026 12:00:00 GMT</pubDate>");
+  tem("<description>resumo &quot;x&quot;</description>");
+  tem("<category>Guias</category>\n      <category>Pokémon</category>");
+  tem("<dc:creator>Fê</dc:creator>");
+  tem('<media:content url="https://dlnalopazitfdgnmdguu.supabase.co/storage/v1/object/public/blog-media/2026/09/c-w1200h630.webp" medium="image"/>');
+  tem("<category>Market &amp; Prices</category>", "categoria no idioma do post");
+  assert.ok(!xml.includes("javascript:"));
+  assert.equal(xml.split("<item>").length - 1, 2);
+  const vazio = rssDoBlog([], "2026-09-30T00:00:00Z");
+  assert.ok(vazio.includes("<lastBuildDate>Wed, 30 Sep 2026 00:00:00 GMT</lastBuildDate>"));
+  assert.ok(!vazio.includes("<item>"));
 });

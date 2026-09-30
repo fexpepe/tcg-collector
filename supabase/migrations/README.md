@@ -8,6 +8,33 @@ poucos.)
 
 ## Pendentes de aplicar
 
+- `20260930b` — blog (`20260930b_blog.sql`; o `b` porque a `20260930a` do mesmo
+  dia é a do Star Wars). Cria o papel de editor do blog (`blog_editores`,
+  tabela trancada, SEPARADA do `is_admin`), a tabela `posts` com RLS
+  (visitante lê só o publicado com data passada; editor lê e escreve tudo), o
+  histórico (`post_revisions`), o redirecionamento de endereço antigo
+  (`post_redirects`) e o bucket público `blog-media` no Storage, com escrita
+  só de editor. A semente põe a conta com `is_admin` (a do dono) como editor.
+  Aditiva e sem ordem com o JS: antes dela, `/blog` diz "nenhum post ainda" e
+  o `/blog-editor` pede pra aplicar. Ver `docs/BLOG.md`.
+
+  Testada em 2026-09-30 no PGlite com esqueleto do Supabase (papéis
+  anon/authenticated, `auth.uid()`, `profiles`, `storage.buckets/objects`),
+  aplicada duas vezes seguidas: 18 cenários — semente, `blog_me`, tabela de
+  editores ilegível, só editor cria/edita/apaga, rascunho e agendado
+  invisíveis pro anon, `card_refs` do corpo (forjado ignorado), histórico
+  podado em 40, 301 só pra endereço que já foi ao ar, Storage só no bucket
+  do blog, e admin tirado da lista vira leitor comum (papéis desconectados).
+
+  Conferir depois de aplicar:
+  ```sql
+  select count(*) from public.blog_editores;                                  -- 1 (o dono)
+  select to_regclass('public.posts'), to_regclass('public.post_revisions');   -- não nulos
+  select public, file_size_limit from storage.buckets where id = 'blog-media'; -- t | 5242880
+  ```
+  E, logado: `/blog-editor` abre a lista de posts (vazia) em vez do aviso.
+  Pra pôr outra pessoa como editora: `docs/BLOG.md`, seção "Quem escreve".
+
 - `20260928b` — precisão do scanner (`20260928b_scanner_precisao.sql`; o `b` porque
   a `20260928a` do mesmo dia é a do Analytics 2.1): recria a `admin_funnel` da `20260923a`
   com todas as chaves de antes e mais `ambiguas`, `pela_foto`, `trocou` e

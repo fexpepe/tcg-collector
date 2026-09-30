@@ -77,7 +77,7 @@ const GAMES = [
 // /decks é a galeria PÚBLICA da comunidade e fica.
 const STATIC_URLS = [
   "/", "/hub", "/explore", "/search", "/cards", "/pokedex", "/lore", "/sets", "/artists", "/trainers",
-  "/decks",
+  "/decks", "/blog",
   "/about", "/novidades", "/lancamentos", "/comparar", "/faq", "/help", "/privacy", "/terms"
 ];
 
@@ -592,7 +592,7 @@ ${PR_STYLE}
 `;
 }
 
-function buildSitemap(setPages, cardPages, deckPages, artistPages) {
+function buildSitemap(setPages, cardPages, deckPages, artistPages, blogPosts) {
   const urls = [
     ...STATIC_URLS.map((p) => (p === "/" ? ORIGIN + "/" : ORIGIN + p)),
     ...setPages.map((s) => `${ORIGIN}/set/${s.slug}`),
@@ -601,8 +601,28 @@ function buildSitemap(setPages, cardPages, deckPages, artistPages) {
     ...(deckPages || []).map((d) => `${ORIGIN}/deck/${d.slug}`),
     ...(artistPages || []).map((a) => `${ORIGIN}/artist/${a.slug}`)
   ];
-  const body = urls.map((u) => `  <url><loc>${u}</loc></url>`).join("\n");
+  const body = urls.map((u) => `  <url><loc>${u}</loc></url>`)
+    // Posts do blog levam a data da última edição: é o que diz ao Google que
+    // um guia atualizado merece ser relido (as outras páginas mudam a cada build).
+    .concat((blogPosts || []).map((p) => `  <url><loc>${ORIGIN}/blog/${p.slug}</loc>${p.updated_at ? `<lastmod>${String(p.updated_at).slice(0, 10)}</lastmod>` : ""}</url>`))
+    .join("\n");
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`;
+}
+
+// ── Posts do BLOG (/blog/<slug>) ─────────────────────────────────────────────
+// As páginas são montadas na borda (functions/blog/[slug].js), então aqui só
+// entram no sitemap. Leitura anônima: a RLS entrega só o publicado com data
+// passada (agendado entra no build seguinte ao dia dele). Tabela ainda não
+// criada (migração 20260930b pendente) ou Supabase fora = lista vazia; nunca
+// derruba o build.
+async function fetchBlogPosts() {
+  try {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/posts?select=slug,updated_at&order=published_at.desc&limit=1000`, {
+      headers: { apikey: SUPABASE_ANON }, signal: AbortSignal.timeout(15000)
+    });
+    const lista = r.ok ? await r.json() : [];
+    return Array.isArray(lista) ? lista.filter((p) => p && /^[a-z0-9]+(-[a-z0-9]+)*$/.test(String(p.slug || ""))) : [];
+  } catch { return []; }
 }
 
 // ── Páginas de DECK da comunidade (/deck/<slug>.html) ────────────────────────
@@ -1289,7 +1309,9 @@ async function main() {
   let deckPages = [];
   try { deckPages = await buildDeckPages(); } catch (e) { console.warn(`decks: pulado (${e.message})`); }
 
-  writeFileSync("sitemap.xml", buildSitemap(pages, cardPages, deckPages, artistPages), "utf8");
+  const blogPosts = await fetchBlogPosts();
+  writeFileSync("sitemap.xml", buildSitemap(pages, cardPages, deckPages, artistPages, blogPosts), "utf8");
+  console.log(`prerender-catalog: ${blogPosts.length} posts do blog no sitemap.`);
   const perGame = GAMES.map((g) => `${g.slug} ${pages.filter((p) => p.game === g.slug).length}`).join(" · ");
   console.log(`prerender-catalog: ${pages.length} páginas de set em /${OUT_DIR}/ (${perGame}) + ${cardPages.length} páginas de carta em /${CARD_OUT_DIR}/ + ${artistPages.length} páginas de artista em /${ARTIST_OUT_DIR}/ (de ${porArtista.size} artistas no catálogo, teto ${ARTIST_PAGES}) + ${deckPages.length} páginas de deck em /${DECK_OUT_DIR}/ + sitemap.xml (${STATIC_URLS.length + pages.length * 2 + cardPages.length + deckPages.length + artistPages.length} URLs).`);
 }

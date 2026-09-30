@@ -30,6 +30,10 @@ Disallow: /login
 Disallow: /backup
 Disallow: /admin
 Disallow: /parceiro
+# Editor do blog (só quem escreve) e a casca crua do post — o post de verdade
+# mora em /blog/<slug>, que segue aberto (o prefixo "/blog-" não o alcança).
+Disallow: /blog-editor
+Disallow: /blog-post
 
 # Parâmetros que geram infinitas variações da MESMA página — armadilha clássica
 # de rastreio: o robô fica preso paginando combinações de filtro em vez de achar
