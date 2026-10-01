@@ -40,6 +40,12 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
   branco). Recortado no conteúdo (+2px), alfa ≤12 zerado e reduzido pra 512
   de largura com o sharp (webp com alfa sem perda — o libwebp do ffmpeg
   deixava um véu cinza no fundo).
+- `game_wow.webp` — World of Warcraft TCG (tile vintage do hub). Fonte: o logo
+  "World of Warcraft Trading Card Game" enviado pelo Fernando em 2026-09-30
+  (1200×615, com alfa). Recortado no conteúdo (+2px), alfa ≤12 zerado e
+  reduzido pra 512 de largura com o Pillow em alfa pré-multiplicado (sem
+  franja escura na borda). WebP com perda q88 e alfa sem perda: 52 KB; o sem
+  perda dava 190 KB, por causa dos gradientes do logo.
 - `game_naruto.webp` — logo NARUTO genérico (tile do jogo e `setLogo` do Data
   Carddass Cross Formation nrt-nx/nrt-nf)
 - `game_naruto_ccg.webp` — Naruto Collectible Card Game americano 2006+ (tile
