@@ -104,6 +104,17 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
   brilho de baixo ficou fora do recorte (as letras acabam na linha ~199 da
   fonte). Recortado no conteúdo +2px = 200×172, alfa abaixo de 12 zerado, sem
   esticar (bitmap pequeno, como o Union Arena).
+- `game_harrypotter.webp` — Harry Potter Trading Card Game (Wizards of the
+  Coast, 2001–2002; tile vintage do jogo `harrypotter`). Fontes enviadas pelo
+  Fernando em 2026-09-30: um scan 1587×1256 sobre fundo PRETO e uma versão
+  750×400 já sobre fundo claro. Recortado do scan, que tem mais resolução,
+  com o recorte claro como referência do que é logo. O fundo preto saiu por
+  região: preenchimento a partir da borda e os miolos das letras (dentro do P,
+  do o e do a) acima da placa. O preto ABAIXO da placa é o texto "TRADING CARD
+  GAME" e fica. Na faixa de borda o alfa vem do brilho, com a mistura com o
+  preto desfeita, e os pontinhos soltos da retícula foram tirados. Recortado no
+  conteúdo +2px e reduzido pra 512×393 (webp com alfa). A textura de retícula
+  das letras é da impressão original.
 - `game_naruto.svg` — FONTE vetorial do logo do Naruto (Inkscape). Se editar,
   re-exporte o webp: @resvg/resvg-js (ou qualquer rasterizador) em 512px e
   depois `ffmpeg -i logo.png -c:v libwebp -quality 90 game_naruto.webp`.
