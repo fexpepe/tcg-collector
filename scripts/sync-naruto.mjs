@@ -49,7 +49,7 @@ export const CURATED = [
     number: "CP-001",
     setTotal: 1,
     setReleaseDate: "2026-07-30",
-    rarity: "",
+    rarity: "Promo",
     artist: "",
     language: "en",
     image: "/assets/cards/naruto/nrt-ncg-cp-001.webp",
@@ -63,8 +63,10 @@ export const CURATED = [
 // foi publicado antes de o TCGplayer listar a carta e não muda (contrato 1):
 // ele ABSORVE o produto. Nome, imagem e set seguem os da curadoria (o scan é
 // nosso; o do TCGplayer é foto). Do produto vêm o preço e os campos que a
-// curadoria deixou vazios (raridade). Sem este mapa, a mesma carta entraria
-// duas vezes. Só mapear produto que ainda NÃO foi publicado como
+// curadoria deixou vazios, mas só com a categoria ligada: o que tem de valer
+// sempre (a raridade "Promo", a do TCGplayer) fica escrito na curadoria, senão
+// vai e volta conforme a variável. Sem este mapa, a mesma carta entraria duas
+// vezes. Só mapear produto que ainda NÃO foi publicado como
 // nrt-ncg-<productId>: depois disso, trocar de id é de-para em
 // data/card-id-merges.json, conversa com o Fernando antes.
 // O número não serve pra casar sozinho: as três Chakra Card são CP-001.
@@ -257,7 +259,9 @@ async function run() {
     const cs = line.filter((c) => c.setId === s);
     console.log(`  ${s} ${cs[0].set}: ${cs.length} carta(s)`);
   }
-  if (congeladas) console.log(`  ${congeladas} carta(s) da linha que a fonte não lista mais ficaram congeladas.`);
+  if (congeladas) console.log(CATEGORY
+    ? `  ${congeladas} carta(s) que a fonte não lista mais ficaram congeladas.`
+    : `  ${congeladas} carta(s) mantidas como estão no catálogo publicado (fonte não consultada).`);
 
   // A linha nova vai NA FRENTE: é onde ela termina no CI (os syncs seguintes
   // re-anexam as linhas deles no fim), então rodar este sync sozinho não

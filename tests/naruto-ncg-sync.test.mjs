@@ -5,7 +5,7 @@
 // Roda com: node --test tests/
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { setIdOf, montaLinha, precosPorProduto, CURATED, PRODUTO_CURADO, SET_FIXO } from "../scripts/sync-naruto.mjs";
+import { setIdOf, montaLinha, precosPorProduto, absorve, CURATED, PRODUTO_CURADO, SET_FIXO } from "../scripts/sync-naruto.mjs";
 
 const chakra = (productId, name) => ({
   productId,
@@ -52,7 +52,7 @@ test("Gen Con: a curada absorve o produto 717832 — mesmo id, nome e scan, pre�
   const genCon = cards[0];
   assert.equal(genCon.name, "Chakra Card -Gen Con 2026 Ver.-");
   assert.equal(genCon.image, "/assets/cards/naruto/nrt-ncg-cp-001.webp");
-  assert.equal(genCon.rarity, "Promo");          // vazio na curadoria, veio da fonte
+  assert.equal(genCon.rarity, "Promo");
   assert.equal(genCon.cardType, "Chakra");
   assert.ok(!cards.some((c) => c.id === "nrt-ncg-717832"), "a mesma carta não pode entrar duas vezes");
   // Sem venda ainda (marketPrice null): vale o mid dos anúncios.
@@ -85,7 +85,18 @@ test("sem categoria (variável desligada): o que já foi publicado fica, congela
   assert.deepEqual(cards.map((c) => c.id), ["nrt-ncg-cp-001", "nrt-ncg-717838"]);
   assert.equal(congeladas, 1);                    // só a da linha; o vintage não é daqui
   assert.equal(cards[0].setTotal, 2);
+  // A curada não pode mudar conforme a variável: com ou sem a fonte, igual.
+  assert.deepEqual(cards[0], montaLinha([promos()]).cards[0]);
   assert.deepEqual(pricing, {});
+});
+
+test("absorção: a fonte só preenche o que a curadoria deixou vazio", () => {
+  const c = absorve({ id: "x", name: "Curada", rarity: "", artist: "Fulano", variants: ["Normal"] },
+    { name: "Do TCGplayer", rarity: "Promo", artist: "Outro", variants: ["Normal", "Foil"] });
+  assert.equal(c.name, "Curada");
+  assert.equal(c.rarity, "Promo");
+  assert.equal(c.artist, "Fulano");
+  assert.deepEqual(c.variants, ["Normal", "Foil"]);  // as que têm preço
 });
 
 test("preço: market quando há venda, mid quando não há, nada quando não há nenhum", () => {
@@ -104,4 +115,19 @@ test("produto selado (sem Number) não vira carta", () => {
   grupo.prods.push({ productId: 999, name: "NARUTO CARD GAME Booster Box", extendedData: [] });
   const { cards } = montaLinha([grupo]);
   assert.ok(!cards.some((c) => c.id === "nrt-ncg-999"));
+});
+
+// O sync vintage roda DEPOIS deste no CI e regrava o catálogo inteiro do
+// Naruto: linha que não estiver no OTHER_LINES dele some no deploy (já
+// aconteceu duas vezes, com a ncg e com a ccg).
+test("o sync vintage preserva as outras linhas do Naruto, a nova inclusive", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const src = (await readFile(new URL("../scripts/sync-naruto-vintage.mjs", import.meta.url), "utf8")).replace(/\r\n/g, "\n");
+  const m = /const OTHER_LINES = (\/.+\/);/.exec(src);
+  assert.ok(m, "OTHER_LINES sumiu do sync-naruto-vintage.mjs");
+  const re = new Function(`return ${m[1]}`)();
+  for (const id of ["nrt-ncg-cp-001", "nrt-ncg-717838", "nrt-ccg-J-001", "nrt-mb-nr01-001", "nrt-dc-dn-001", "nrt-nf-001", "nrt-nx-001"]) {
+    assert.ok(re.test(id), id);
+  }
+  assert.ok(!re.test("nrt-S-001"), "a linha do próprio vintage não é 'outra'");
 });
