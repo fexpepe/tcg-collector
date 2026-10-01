@@ -7325,6 +7325,13 @@ select.bed-input { padding: 0 10px; }
 .account-actions .auth-menu .lang-dd-option { min-height: 48px; font-size: 15px; white-space: normal; }
 .account-actions .auth-menu .auth-email, .account-actions .auth-menu .auth-sync { min-height: 0; }
 .account-actions .auth-signin { width: 100%; min-height: 48px; }
+/* Fileira de preferências com UMA altura (2026-10-01): moeda e idioma vinham
+   com os 38px da cápsula do header, e olho e tema com os 42px do
+   button { min-height } global, que vence o height deles. Os quatro ficavam
+   em degrau. Agora todos têm 44px, o alvo de toque do celular, como na
+   fileira do drawer. Olho e tema continuam quadrados. */
+.account-actions .lang-dd-toggle { height: 44px; min-height: 44px; }
+.account-actions .theme-toggle { width: 44px; height: 44px; min-height: 44px; }
 
 /* Skeletons: cards fantasma enquanto os chunks do catálogo baixam. Pulso de
    opacidade (funciona igual nos temas claro/escuro, sem gradiente). */
