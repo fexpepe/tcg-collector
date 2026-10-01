@@ -12788,6 +12788,9 @@ select,
 .fer-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
 .fer-actions:empty { display: none; }
 .fer-btn { gap: 8px; min-height: 44px; }
+/* Link com cara de botão (os "Abrir" da página Ferramentas): o formato vem da
+   regra global de <button>, que um <a class="primary"> não herda. */
+a.fer-btn { display: inline-flex; align-items: center; justify-content: center; padding: 0 16px; font-size: 16px; font-weight: 700; line-height: 1; text-decoration: none; }
 .fer-btn svg { width: 16px; height: 16px; flex: none; }
 .fer-fine { margin: 14px 0 0; color: var(--subtle); font-size: 12px; line-height: 1.5; }
 
