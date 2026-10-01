@@ -91,22 +91,81 @@ export const VERSAO = {
   "bs-10": { booster: "10b", deck: "10a" }
 };
 
-// Sets extras: decks iniciais e promos. `from` + `num` apontam a carta de
-// origem; `kind` diz o que muda nela (nome e variante). A raridade é a do
-// SÍMBOLO impresso: a da carta de origem, ou a do `rarity` da entrada.
+// Sets extras: decks iniciais, theme decks e promos. `from` + `num` apontam a
+// carta de origem; `kind` diz o que muda nela (nome e variante). A raridade é
+// a do SÍMBOLO impresso: a da carta de origem, a do `rarity` da entrada, ou
+// "Promo" nas promos. `numero` é o número impresso quando não é o da origem.
 //   foil    — versão foil de carta que no booster não tem foil
 //   starter — versão do deck inicial com arte própria (VERSAO.deck)
+//   promo   — carimbo dourado "promo" (o Meeting Fluffy, "Launch")
+//   league  — promo da Harry Potter League, com numeração própria (No. 1–8)
+// A imagem é a da carta de origem: o carimbo e o foil não aparecem nela.
+// Lista: price guide de promos da Pojo, revisão de 19/12/2002, lida no Wayback
+// (web.archive.org, captura de 05/07/2010); o deck do Diagon Alley também no
+// nslists. Os três "Ad Preview Insert" de lá são propaganda, não carta de
+// jogo, e ficam fora.
 export const EXTRAS = [
   {
-    // Diagon Alley 2-Player Starter Set (mar/2002): dois decks iguais por caixa,
+    // Diagon Alley 2-Player Starter Set (abr/2002): dois decks iguais por caixa,
     // "Norbert" e "River Troll", cada um com uma foil e um personagem do Base
     // na versão sem foil (nslists, hptcgda.htm, "STARTER BOX COMPOSITION").
-    code: "da2p", name: "Diagon Alley 2-Player Starter Set", date: "2002-03", kind: "deck",
+    code: "da2p", name: "Diagon Alley 2-Player Starter Set", date: "2002-04", kind: "deck",
     cards: [
       { from: "bs", num: "30", kind: "foil" },                     // Norbert — deck "Norbert"
       { from: "bs", num: "3", kind: "starter", rarity: "Rare" },   // Draco Malfoy — deck "Norbert"
       { from: "da", num: "68", kind: "foil" },                     // River Troll — deck "River Troll"
       { from: "bs", num: "10", kind: "starter", rarity: "Rare" }   // Hermione Granger — deck "River Troll"
+    ]
+  },
+  {
+    // Chamber of Secrets 2-Player Starter Set (out/2002): uma foil por deck.
+    code: "cos2p", name: "Chamber of Secrets 2-Player Starter Set", date: "2002-10", kind: "deck",
+    cards: [
+      { from: "aah", num: "57", kind: "foil" },    // Chimaera
+      { from: "cos", num: "75", kind: "foil" }     // Manticore
+    ]
+  },
+  {
+    // Os dois theme decks de 60 cartas do Chamber of Secrets (out/2002).
+    code: "costd", name: "Chamber of Secrets Theme Decks", date: "2002-10", kind: "deck",
+    cards: [
+      { from: "cos", num: "61", kind: "foil" },    // Caught by Snape — "Twin Trouble"
+      { from: "cos", num: "76", kind: "foil" }     // Potions Project — "Percy Weasley Potions"
+    ]
+  },
+  {
+    // Promos com carimbo, de lançamento, filme, jogo de PC e loja (2001–2002).
+    code: "promo", name: "Promo Cards", date: "2001-08",
+    cards: [
+      { from: "bs", num: "48", kind: "promo" },        // Diagon Alley — introdução do jogo, ago/2001
+      { from: "bs", num: "101", kind: "promo" },       // Remembrall — introdução do jogo, ago/2001
+      { from: "bs", num: "44", kind: "promo" },        // Bluebell Flames — estreia do filme 1, nov/2001
+      { from: "bs", num: "104", kind: "promo" },       // Snape's Question — estreia do filme 1, nov/2001
+      { from: "bs", num: "92", kind: "promo" },        // Illegibilus — jogo de PC, nov/2001
+      { from: "qc", num: "49", kind: "promo" },        // Strategy Session — estreia do filme 1 (sem o símbolo da Cup)
+      { from: "da", num: "72", kind: "promo" },        // Swelling Potion — introdução do Diagon Alley, abr/2002
+      { from: "aah", num: "48", kind: "promo" },       // Through the Trapdoor — DVD do filme 1 na Toys"R"Us, mai/2002
+      { from: "aah", num: "17", kind: "promoFoil" },   // Meeting Fluffy — Game Day do Adventures at Hogwarts, jun/2002
+      { from: "aah", num: "31", kind: "promo" },       // 5 Points From Gryffindor — livrarias, Cálice de Fogo de bolso
+      { from: "cos", num: "84", kind: "promo" },       // Swelling Solution — estreia do filme 2, nov/2002
+      { from: "cos", num: "80", kind: "promo" },       // Rainy-Day Match — estreia do filme 2, nov/2002
+      { from: "cos", num: "71", kind: "promo" }        // Keeping Dobby Quiet — estreia do filme 2, nov/2002
+    ]
+  },
+  {
+    // Harry Potter League (jan–set/2002): uma promo por mês, numeradas de 1 a 8
+    // ("promo #1" nos anúncios). A Pojo dá "115" pro Hover Charm (o número dele
+    // no Chamber of Secrets, que ainda não tinha saído): fica como ela diz.
+    code: "league", name: "Harry Potter League Promos", date: "2002-01", semTotal: true,
+    cards: [
+      { from: "qc", num: "35", kind: "leagueFoil", numero: "1" },    // Diffindo, jan/2002
+      { from: "bs", num: "85", kind: "leagueFoil", numero: "2" },    // Forest Troll, fev/2002
+      { from: "qc", num: "37", kind: "leagueFoil", numero: "3" },    // Hufflepuff Match, mar/2002
+      { from: "bs", num: "70", kind: "leagueFoil", numero: "4" },    // Unusual Pets, abr/2002
+      { from: "da", num: "63", kind: "leagueFoil", numero: "5" },    // Moonseed Poison, mai/2002
+      { from: "bs", num: "59", kind: "league", numero: "6" },        // Ollivanders, jun–jul/2002
+      { from: "cos", num: "115", kind: "league", numero: "115" },    // Hover Charm, ago/2002
+      { from: "aah", num: "39", kind: "league", numero: "8" }        // Forbidden Corridor, set/2002
     ]
   }
 ];
@@ -114,8 +173,10 @@ export const EXTRAS = [
 const KIND = {
   foil: { suffix: "Foil", variant: "Foil" },
   starter: { suffix: "Starter", variant: "Normal" },
-  promo: { suffix: "Promo", variant: "Normal" },
-  promoFoil: { suffix: "Promo Foil", variant: "Foil" }
+  promo: { suffix: "Promo", variant: "Normal", promo: true },
+  promoFoil: { suffix: "Promo Foil", variant: "Foil", promo: true },
+  league: { suffix: "League", variant: "Normal", promo: true },
+  leagueFoil: { suffix: "League Foil", variant: "Foil", promo: true }
 };
 
 const asList = (v) => (Array.isArray(v) ? v : v == null || v === "" ? [] : [v]);
@@ -304,14 +365,15 @@ export function buildCards(snapshot) {
       const k = KIND[e.kind];
       cards.push({
         id: `${ID_PREFIX}${ex.code}-${e.from}-${e.num}`, name: `${c.name} (${k.suffix})`,
-        set: ex.name, setId: `${ID_PREFIX}${ex.code}`, number: `${e.num}/${def.printed}`,
-        setReleaseDate: e.date || ex.date, ...(ex.kind === "deck" ? { setKind: "deck" } : {}),
-        rarity: e.rarity || (e.kind === "promo" || e.kind === "promoFoil" ? "Promo" : c.rarity),
+        set: ex.name, setId: `${ID_PREFIX}${ex.code}`, number: e.numero || `${e.num}/${def.printed}`,
+        setReleaseDate: ex.date, ...(ex.kind === "deck" ? { setKind: "deck" } : {}),
+        rarity: e.rarity || (k.promo ? "Promo" : c.rarity),
         artist: c.artist, language: "en", image: imageUrl(c.img, e.from),
         cardType: c.type, ...(c.lesson ? { lesson: c.lesson } : {}), setLogo: "", vintage: true, variants: [k.variant]
       });
     }
-    for (const c of cards) c.setTotal = cards.length;
+    // Sem total impresso (League): o número sai sozinho ("1", não "1/8").
+    for (const c of cards) c.setTotal = ex.semTotal ? "" : cards.length;
     out.push(...cards);
   }
   return out;
