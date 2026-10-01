@@ -40,6 +40,7 @@ export const ID_DE_PRODUTO = {
   riftbound: /^rb-\d+$/,
   unionarena: /^ua-\d+$/,
   wow: /^wow-\d+$/,
+  weiss: /^ws-\d+$/,
   naruto: /^nrt-ncg-\d+$/
 };
 
