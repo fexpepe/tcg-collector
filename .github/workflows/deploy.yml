@@ -539,8 +539,10 @@ jobs:
         if: env.RODA_SYNC == 'true'
         run: node scripts/sync-price-history.mjs data/unionarena
 
-      # Naruto (TCGCSV): só sincroniza quando a categoria existir (secret/var
-      # NARUTO_TCGCSV_CATEGORY). Sem categoria, o script sai sem mexer em nada.
+      # NARUTO CARD GAME novo (linha nrt-ncg-): curadoria + TCGCSV categoria 93
+      # (existe desde 16/09/2026) quando a variável do repositório
+      # NARUTO_TCGCSV_CATEGORY está ligada. Sem ela, regrava só a curadoria e
+      # mantém congelado o que já foi publicado, com o preço versionado.
       - name: Sincroniza catálogo do Naruto (TCGCSV, se configurado)
         if: env.RODA_SYNC == 'true'
         run: node scripts/sync-naruto.mjs || echo "sync-naruto falhou; mantém o catalogo versionado"
@@ -602,6 +604,13 @@ jobs:
       - name: Traduz nomes das cartas de Naruto
         if: env.RODA_SYNC == 'true'
         run: node scripts/translate-naruto-names.mjs || echo "translate-naruto-names falhou; catalogo segue com os nomes originais"
+
+      # Só a linha nova do Naruto tem preço (TCGCSV); as vintage não têm. Fica
+      # DEPOIS de todos os syncs do Naruto, que reescrevem o pricing.js (mesmo
+      # preservando o conteúdo), pra fotografar o catálogo já fechado.
+      - name: Snapshot de preços (histórico Naruto)
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/sync-price-history.mjs data/naruto
 
       # JUMP: compila os sets curados versionados (data/jump/curated/*.json).
       - name: Compila catálogo JUMP (curadoria)
