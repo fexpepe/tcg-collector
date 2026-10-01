@@ -45,6 +45,7 @@ export const JOGOS_URL = [
   { url: "naruto-card-game-2002", game: "naruto", nome: "Naruto Card Game (2002~2006)", logo: "assets/games/game_naruto_vintage.webp", vintage: "2002~2006" },
   { url: "naruto-data-carddass", game: "naruto", linha: "nrt-dc", prefixos: ["nrt-dc-", "nrt-nf-", "nrt-nx-"], nome: "Naruto Data Carddass", logo: "assets/games/game_naruto_datacarddass.webp", vintage: "2005–2010" },
   { url: "naruto-ccg", game: "naruto", linha: "nrt-ccg", prefixos: ["nrt-ccg-"], nome: "Naruto Collectible Card Game", logo: "assets/games/game_naruto_ccg.webp", vintage: "2006–2013" },
+  { url: "world-of-warcraft-tcg", game: "wow", nome: "World of Warcraft TCG", logo: "assets/games/game_wow.webp", vintage: "2006–2013" },
   { url: "one-piece-miracle-battle", game: "onepiece", linha: "op-mb", prefixos: ["op-mb-"], nome: "Miracle Battle Carddass One Piece", logo: "assets/games/game_onepiece_miracle.webp", vintage: "2010–2014" },
   { url: "hunter-x-hunter-miracle-battle", game: "hxh", linha: "hxh-mb", prefixos: ["hxh-mb-"], nome: "Miracle Battle Carddass Hunter × Hunter", logo: "assets/games/game_hxh_miracle.webp", vintage: "2011–2012" },
   { url: "naruto-miracle-battle", game: "naruto", linha: "nrt-mb", prefixos: ["nrt-mb-"], nome: "Miracle Battle Carddass Naruto Shippuden", logo: "assets/games/game_naruto_miracle.webp", vintage: "2012–2014" }

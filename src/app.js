@@ -16,7 +16,7 @@
     magic: "game_magic-v2.webp", fab: "game_fab.webp", gundam: "game_gundam-v2.webp", swu: "game_swu.webp", cyberpunk: "game_cyberpunk.webp", dbfw: "game_dbfw-v2.webp",
     ygo: "game_ygo-v2.webp", digimon: "game_digimon-v2.webp", riftbound: "game_riftbound-v2.webp",
     unionarena: "game_unionarena.webp", naruto: "game_naruto.webp", hxh: "game_hxh.webp",
-    dbc: "game_dbc.webp"
+    dbc: "game_dbc.webp", wow: "game_wow.webp"
   };
   function gameLogoUrl(game) {
     const f = GAME_LOGO[game];
@@ -604,6 +604,7 @@
       if ((window.SLEEVU && window.SLEEVU.game) === "dbc") return groupDbcSets(setItems);
       if ((window.SLEEVU && window.SLEEVU.game) === "swu") return groupSwuSets(setItems);
       if ((window.SLEEVU && window.SLEEVU.game) === "cyberpunk") return groupCyberpunkSets(setItems);
+      if ((window.SLEEVU && window.SLEEVU.game) === "wow") return groupWowSets(setItems);
       // Página de Sets: agrupada por série (coleção).
       return groupSetsBySeries(setItems);
     }
@@ -1443,6 +1444,34 @@
       if (!sets.length) continue;
       items.push({ type: "category-head", name: t(key), count: sets.length });
       sets.sort(sortByReleaseDesc).forEach((set) => items.push(set));
+    }
+    return items;
+  }
+
+  // World of Warcraft TCG: expansões (boosters), raids e dungeons (o deck do
+  // raid e o baú de tesouro, setId "-T"), decks e o resto (loot, crafting,
+  // promos de evento e de Collector's Edition). Pelo setId, que o sync-wow.mjs
+  // FIXA por grupo da TCGCSV; grupo novo sem pin ("G<groupId>") cai no fim.
+  // Do mais antigo pro mais novo, como as linhas vintage.
+  function groupWowSets(setItems) {
+    const idOf = (set) => String(set.setId || "").toUpperCase();
+    const MAIN = /^(HOA|TDP|FOO|MOL|SOB|HFI|DOW|BOG|FOH|SCW|WG|ICE|WB|WOE|TOD|TOT|TWK)$/;
+    const RAID = /^(ONY|MC|MAG|BT|NAX|ICC|DT)(-T)?$/;
+    const DECK = /^(CSD|DKS|DOWS)$/;
+    const isMain = (set) => MAIN.test(idOf(set));
+    const isRaid = (set) => RAID.test(idOf(set));
+    const isDeck = (set) => DECK.test(idOf(set));
+    const grupos = [
+      ["sets.category.main", setItems.filter(isMain)],
+      ["sets.category.wowRaids", setItems.filter(isRaid)],
+      ["sets.category.decks", setItems.filter(isDeck)],
+      ["sets.category.promos", setItems.filter((set) => !isMain(set) && !isRaid(set) && !isDeck(set))]
+    ];
+    const items = [];
+    for (const [key, sets] of grupos) {
+      if (!sets.length) continue;
+      items.push({ type: "category-head", name: t(key), count: sets.length });
+      sets.sort(sortByReleaseAsc).forEach((set) => items.push(set));
     }
     return items;
   }

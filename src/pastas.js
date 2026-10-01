@@ -563,7 +563,7 @@
         <div class="tile-info">
           <h3>${esc(name)}</h3>
           <p class="tile-variant">${card ? shared.cardFlag(card.language) : ""}<span>${esc(varLabel)}${entry.c ? ` · ${esc(entry.c)}` : ""}</span></p>
-          <p class="tile-set"><span>${card ? `${esc(card.set || "")} · ${esc(card.number || "")}` : ""}</span></p>
+          <p class="tile-set"><span>${card ? esc(shared.dotJoin(card.set, card.number)) : ""}</span></p>
           ${preco ? `<p class="tile-price">${preco}</p>` : ""}
           <div class="tile-foot">${stepper}
           </div>

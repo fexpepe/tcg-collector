@@ -339,7 +339,11 @@
     swu: ["Common", "Uncommon", "Rare", "Legendary", "Special"],
     // Cyberpunk TCG: 9 raridades limpas (30/09/2026). "Iconic *" são as
     // alt-arts e "Nova Rare" é a das promos/box toppers.
-    cyberpunk: ["Common", "Uncommon", "Rare", "Epic", "Secret", "Iconic Legend", "Iconic Other", "Iconic Secret", "Nova Rare"]
+    cyberpunk: ["Common", "Uncommon", "Rare", "Epic", "Secret", "Iconic Legend", "Iconic Other", "Iconic Secret", "Nova Rare"],
+    // World of Warcraft TCG (30/09/2026): as 4 do booster, Loot (os loots com
+    // código do jogo online) e o "F" que o TCGplayer dá às cartas do raid de
+    // Onyxia, que vai pro fim por estar fora da lista.
+    wow: ["Common", "Uncommon", "Rare", "Epic", "Loot"]
   };
   const rarityListOrder = RARITY_LISTED_GAMES[(window.SLEEVU && window.SLEEVU.game) || ""] || null;
 

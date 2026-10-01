@@ -1558,7 +1558,7 @@
             <span class="scan-item-thumb">${miniatura(it.card)}</span>
             <span class="scan-item-txt">
               <span class="scan-item-nome">${escapeHtml(it.card.name)}</span>
-              <span class="scan-item-sub">${escapeHtml(`${it.card.set || ""} · ${it.card.number || ""} · ${variante}`)}</span>
+              <span class="scan-item-sub">${escapeHtml(shared.dotJoin(it.card.set, it.card.number, variante))}</span>
               <span class="scan-item-linha">${preco ? `<span class="scan-item-preco">${escapeHtml(preco)}</span>` : ""}${ok}${conf}</span>
             </span>
             <span class="scan-item-qtd">
@@ -1851,7 +1851,7 @@
           <span class="scan-res-thumb">${miniatura(h.card)}</span>
           <span class="scan-res-text">
             <span class="scan-res-name">${escapeHtml(h.card.name)}<span class="scan-res-game">${escapeHtml(shared.gameLabel(h.game))}</span></span>
-            <span class="scan-res-sub">${escapeHtml(`${h.card.set || ""} · ${h.card.number || ""}`)}</span>
+            <span class="scan-res-sub">${escapeHtml(shared.dotJoin(h.card.set, h.card.number))}</span>
             ${preco || wl ? `<span class="scan-res-price">${escapeHtml(preco)}${wl}</span>` : ""}
           </span>
         </button>
@@ -1870,7 +1870,7 @@
         return `<button type="button" class="scan-cand${i === primario ? " is-on" : ""}" data-scan-cand="${i}">
             <span class="scan-cand-img">${miniatura(h.card)}</span>
             <span class="scan-cand-name">${escapeHtml(h.card.name)}</span>
-            <span class="scan-cand-sub">${escapeHtml(`${h.card.set || ""} · ${h.card.number || ""}`)}</span>
+            <span class="scan-cand-sub">${escapeHtml(shared.dotJoin(h.card.set, h.card.number))}</span>
             ${preco ? `<span class="scan-cand-price">${escapeHtml(preco)}</span>` : `<span class="scan-cand-sub">${escapeHtml(shared.gameLabel(h.game))}</span>`}
           </button>`;
       }).join("");

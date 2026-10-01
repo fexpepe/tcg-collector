@@ -30,7 +30,7 @@ const RAIZ = new URL("../", import.meta.url);
 const DIRS = [
   "data/", "data/lorcana/", "data/onepiece/", "data/magic/", "data/fab/",
   "data/gundam/", "data/swu/", "data/cyberpunk/", "data/dbfw/", "data/ygo/", "data/digimon/", "data/riftbound/",
-  "data/unionarena/", "data/naruto/", "data/hxh/", "data/dbc/"
+  "data/unionarena/", "data/naruto/", "data/hxh/", "data/dbc/", "data/wow/"
 ];
 
 const JANELAS = [7, 30];

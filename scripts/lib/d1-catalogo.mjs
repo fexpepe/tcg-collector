@@ -25,7 +25,7 @@ export const JOGOS = [
   ["swu", "data/swu/"], ["cyberpunk", "data/cyberpunk/"],
   ["dbfw", "data/dbfw/"], ["ygo", "data/ygo/"], ["digimon", "data/digimon/"],
   ["riftbound", "data/riftbound/"], ["unionarena", "data/unionarena/"],
-  ["naruto", "data/naruto/"], ["hxh", "data/hxh/"], ["dbc", "data/dbc/"],
+  ["naruto", "data/naruto/"], ["hxh", "data/hxh/"], ["dbc", "data/dbc/"], ["wow", "data/wow/"],
   ["jump", "data/jump/"]
 ];
 
