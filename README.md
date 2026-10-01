@@ -33,7 +33,7 @@ catálogo completo só existe no build de produção.
 
 ## Os jogos
 
-O registro central é o `GAMES` em [src/game.js](src/game.js): **17 slugs**, 16 com
+O registro central é o `GAMES` em [src/game.js](src/game.js): **18 slugs**, 17 com
 catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do Pokémon
 é a raiz `data/` por motivo histórico (não movemos nada).
 
@@ -55,6 +55,7 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 | `naruto` | Naruto Card Game | vintage Bandai 2002–2006 (tcg-db + TV Tokyo + cardcheckbox), Data Carddass (Card Battle, Mission, Formation e Cross), Miracle Battle | sem preço |
 | `hxh` | Hunter × Hunter | Carddass Hyper Battle 1999–2001 (Hunterpedia) + Miracle Battle | sem preço |
 | `dbc` | Dragon Ball Carddass | Carddass Bandai 1988–1997: Hondan carta a carta (80storage), sem imagem por enquanto | sem preço |
+| `wow` | World of Warcraft TCG | TCGCSV cat. 13 (Upper Deck 2006–2010, Cryptozoic 2010–2013; vintage, só os sets que o TCGplayer lista, sem número de coleção e com scan de ~200 px; setId, nome e data fixos por groupId) | USD |
 | `jump` | JUMP | curadoria versionada em `data/jump/curated/` | — |
 
 **Linhas** (`GAME_LINES` em [src/shared.js](src/shared.js)): um jogo pode ter
