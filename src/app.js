@@ -1061,7 +1061,7 @@
     head.className = "set-series-head set-category-head";
     head.dataset.cat = item.name;
     head.setAttribute("aria-expanded", String(!isCategoryCollapsed(item.name)));
-    head.innerHTML = `<span class="set-series-name"><span class="cat-caret" aria-hidden="true">▾</span>${escapeHtml(item.name)}</span><span class="set-series-count">${item.count} sets</span>`;
+    head.innerHTML = `<span class="set-series-name"><span class="cat-caret" aria-hidden="true">▾</span>${escapeHtml(item.name)}</span><span class="set-series-count">${item.count} ${item.count === 1 ? "set" : "sets"}</span>`;
     return head;
   }
 
@@ -1674,17 +1674,25 @@
   // têm data, então a ordem dentro da série vem do código impresso: boosters
   // (OP01, NR05…), decks (OPS, DBS, DAS…), os pacotes especiais (Gigant Pack,
   // Phantom Booster, os decks da revista) e as promos, que não têm número.
+  // O nome em inglês leva a franquia ("One Piece Booster Pack 1", pra Coleção e
+  // o popup não confundirem os três "Promotional Cards"); dentro da seção ela
+  // repete o título e cortava no tile justo a parte que diferencia os sets
+  // ("Dragon Ball Kai Booster P…"), então aqui ela sai.
   function groupMbcSets(setItems) {
     const idOf = (set) => String(set.setId || "").toLowerCase();
     const SERIES = [
-      ["sets.category.mbDb", /^mb-dbs?\d*$/],
-      ["sets.category.mbOp", /^op-mb-/],
-      ["sets.category.mbTr", /^mb-tr\d*$/],
-      ["sets.category.mbHh", /^hxh-mb-/],
-      ["sets.category.mbNr", /^nrt-mb-/],
-      ["sets.category.mbKb", /^mb-kb\d*$/],
-      ["sets.category.mbJh", /^mb-(das|as|js)\d*$/]
+      ["sets.category.mbDb", /^mb-dbs?\d*$/, "Dragon Ball Kai "],
+      ["sets.category.mbOp", /^op-mb-/, "One Piece "],
+      ["sets.category.mbTr", /^mb-tr\d*$/, "Toriko "],
+      ["sets.category.mbHh", /^hxh-mb-/, "Hunter × Hunter "],
+      ["sets.category.mbNr", /^nrt-mb-/, "Naruto Shippuden "],
+      ["sets.category.mbKb", /^mb-kb\d*$/, "Kuroko's Basketball "],
+      ["sets.category.mbJh", /^mb-(das|as|js)\d*$/, "J-Heroes "]
     ];
+    const semFranquia = (set, i) => {
+      const nome = String(set.displayName || ""), franquia = i >= 0 ? SERIES[i][2] : "";
+      return franquia && nome.indexOf(franquia) === 0 ? Object.assign({}, set, { displayName: nome.slice(franquia.length) }) : set;
+    };
     const codigo = (set) => idOf(set).replace(/^(op|nrt|hxh)-mb-|^mb-/, "");
     const tipo = (c) => (!/\d/.test(c) ? 3 : /^(dbs|ops|hhs|nrs|das)\d/.test(c) ? 1 : /^(opc|hhex|js)\d/.test(c) ? 2 : 0);
     const ordem = (a, b) => tipo(codigo(a)) - tipo(codigo(b)) || codigo(a).localeCompare(codigo(b), "en", { numeric: true });
@@ -1695,7 +1703,7 @@
       items.push({ type: "category-head", name: t(key), count: list.length });
       list.sort(ordem).forEach((set) => items.push(set));
     };
-    SERIES.forEach(([key], i) => section(setItems.filter((s) => serieDe(s) === i), key));
+    SERIES.forEach(([key], i) => section(setItems.filter((s) => serieDe(s) === i).map((s) => semFranquia(s, i)), key));
     // Rede de segurança: série nova no sync sem seção aqui ainda aparece.
     section(setItems.filter((s) => serieDe(s) < 0), "sets.category.promos");
     return items;
