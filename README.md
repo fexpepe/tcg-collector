@@ -33,7 +33,7 @@ catálogo completo só existe no build de produção.
 
 ## Os jogos
 
-O registro central é o `GAMES` em [src/game.js](src/game.js): **18 slugs**, 17 com
+O registro central é o `GAMES` em [src/game.js](src/game.js): **20 slugs**, 19 com
 catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do Pokémon
 é a raiz `data/` por motivo histórico (não movemos nada).
 
@@ -47,6 +47,7 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 | `gundam` | Gundam Card Game | TCGCSV cat. 86 | USD |
 | `swu` | Star Wars: Unlimited | TCGCSV cat. 79 (FFG; Hyperspace/Showcase = cartas próprias) + logos de set do site oficial (`mirror-swu-set-logos.mjs`) | USD |
 | `cyberpunk` | Cyberpunk TCG | TCGCSV cat. 92 (Weird Co.; edições Beta e Retail = sets próprios, setId fixo por groupId) + logo do Welcome to Night City curado do site oficial | USD |
+| `sorcery` | Sorcery: Contested Realm | TCGCSV cat. 77 (Erik's Curiosa 2023; foil é outro produto no TCGplayer e o sync junta o par, sem número de coleção, setId fixo por groupId) | USD |
 | `dbfw` | Dragon Ball Fusion World | TCGCSV cat. 80 (≠ Masters) | USD |
 | `ygo` | Yu-Gi-Oh! | TCGCSV cat. 2 (~46k impressões — o maior) | USD |
 | `digimon` | Digimon Card Game | TCGCSV cat. 63 | USD |
@@ -67,6 +68,27 @@ página mostra o jogo principal e **exclui** as linhas. Uma linha pode ter vári
 prefixos (`prefixes`): a `nrt-dc` junta os quatro títulos do arcade Data Carddass
 (`nrt-dc-`, `nrt-nf-`, `nrt-nx-`), um por seção na página de Sets. Linha que vira
 seção de outra ganha um apelido em `LINE_ALIASES`, pro `?line=` antigo seguir abrindo.
+
+### Sorcery: Contested Realm (`sorcery`)
+
+[scripts/sync-sorcery.mjs](scripts/sync-sorcery.mjs), TCGCSV categoria 77, no
+padrão do Cyberpunk. Três coisas que os outros jogos da família não têm:
+
+- **O foil é outro produto.** O TCGplayer cadastra "Sea Raider" e "Sea Raider
+  (Foil)" com productIds próprios. O sync junta o par numa carta com as
+  versões Normal e Foil (u/uf), pelo nome sem o "(Foil)" e sem o
+  "(Corrected)". Os outros sufixos (deck pronto do Alpha, box topper, promo
+  de loja, "(Misprint)") são impressões próprias e viram cartas separadas.
+- **Id pegajoso entre os dois produtos**: `sor-<productId do Normal>` (ou do
+  Foil, na carta que só existe em foil), mas, se o catálogo anterior já tem a
+  carta com o id do outro produto do par, esse fica.
+- **Sem número de coleção**: o jogo não imprime, e nem a TCGCSV nem a API
+  oficial têm o campo. Dentro do set a ordem é pelo nome (o `dotJoin` das
+  telas pula o número vazio).
+
+As cartas de Site são deitadas, e o TCGplayer as fotografa giradas em pé:
+cabem na moldura de sempre. A API oficial (`api.sorcerytcg.com`) não é usada:
+ela proíbe servir imagem da CDN deles, e a TCGCSV já dá tudo menos o artista.
 
 ### The Lord of the Rings TCG (`lotr`)
 
