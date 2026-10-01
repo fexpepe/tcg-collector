@@ -139,6 +139,16 @@
       },
       facetType(["Avatar", "Minion", "Magic", "Aura", "Artifact", "Site", "Token"])
     ],
+    // Harry Potter TCG: a LIÇÃO (as cinco cores do jogo) e o tipo da carta.
+    harrypotter: [
+      {
+        key: "lesson", labelKey: "facet.lesson",
+        of: (c) => facetSplit(c.lesson, "/"),
+        label: (v) => v,
+        order: ["Care of Magical Creatures", "Charms", "Potions", "Quidditch", "Transfiguration"]
+      },
+      facetType(["Character", "Lesson", "Creature", "Spell", "Item", "Adventure", "Match", "Location"])
+    ],
     // LOTR TCG da Decipher: a CULTURA (os povos do Senhor dos Anéis; o
     // Ringwraith vira "Wraith" do Shadows em diante, como está na carta) e o
     // tipo. Povos Livres primeiro, Sombra depois, como no livro de regras.

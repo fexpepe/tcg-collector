@@ -42,6 +42,7 @@ export const JOGOS_URL = [
   { url: "dragon-ball-carddass", game: "dbc", nome: "Dragon Ball Carddass", logo: "assets/games/game_dbc.webp", vintage: "1988–1997" },
   { url: "hunter-x-hunter-carddass", game: "hxh", nome: "Hunter × Hunter Carddass Hyper Battle", logo: "assets/games/game_hxh.webp", vintage: "1999–2001" },
   { url: "one-piece-carddass", game: "onepiece", linha: "opcd", prefixos: ["opcd-"], nome: "One Piece Carddass Hyper Battle", logo: "assets/games/game_onepiece_carddass.webp", vintage: "1999–2002" },
+  { url: "harry-potter-tcg", game: "harrypotter", nome: "Harry Potter Trading Card Game", logo: "assets/games/game_harrypotter.webp", vintage: "2001–2002" },
   { url: "lord-of-the-rings-tcg", game: "lotr", nome: "The Lord of the Rings TCG", logo: "assets/games/game_lotr.webp", vintage: "2001–2007" },
   { url: "one-piece-card-game-2002", game: "onepiece", linha: "op2002", prefixos: ["op2002-"], nome: "One Piece Card Game (2002)", logo: "", vintage: "2002–2005" },
   { url: "naruto-card-game-2002", game: "naruto", nome: "Naruto Card Game (2002~2006)", logo: "assets/games/game_naruto_vintage.webp", vintage: "2002~2006" },

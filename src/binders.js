@@ -558,7 +558,7 @@
   const PREFIXO_JOGO = [
     ["mtg-", "magic"], ["ygo-", "ygo"], ["op-", "onepiece"], ["opcd-", "onepiece"], ["op2002-", "onepiece"],
     ["fab-", "fab"], ["gcg-", "gundam"], ["swu-", "swu"], ["cpk-", "cyberpunk"], ["sor-", "sorcery"], ["dbfw-", "dbfw"], ["dgm-", "digimon"], ["rb-", "riftbound"],
-    ["ua-", "unionarena"], ["nrt-", "naruto"], ["hxh-", "hxh"], ["dbc-", "dbc"], ["wow-", "wow"], ["lotr-", "lotr"]
+    ["ua-", "unionarena"], ["nrt-", "naruto"], ["hxh-", "hxh"], ["dbc-", "dbc"], ["wow-", "wow"], ["lotr-", "lotr"], ["hp-", "harrypotter"]
   ];
   function jogosDoId(id) {
     const conhecido = cardGameMap.get(id);

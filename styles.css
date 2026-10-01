@@ -294,6 +294,18 @@
   --accent: #4d7c0f; --accent-dark: #3f6212; --accent-rgb: 77, 124, 15;
   --accent-soft: rgba(77, 124, 15, 0.1); --on-accent: #ffffff;
 }
+/* Harry Potter TCG: ESCARLATE da Grifinória (#740001, a cor da casa). Vermelho
+   claro com texto escuro no escuro (a ~110 do vermelho do Pokémon); o
+   escarlate com texto branco no claro (12:1). */
+[data-game-accent="harrypotter"] {
+  --accent: #f87171; --accent-dark: #ef4444; --accent-rgb: 248, 113, 113;
+  --accent-soft: rgba(248, 113, 113, 0.16); --on-accent: #0a0c10;
+}
+[data-theme="light"][data-game-accent="harrypotter"],
+[data-theme="light"] [data-game-accent="harrypotter"] {
+  --accent: #740001; --accent-dark: #5a0001; --accent-rgb: 116, 0, 1;
+  --accent-soft: rgba(116, 0, 1, 0.1); --on-accent: #ffffff;
+}
 /* Gundam: AZUL (herdou o tom que era do Magic antes do marrom). Azul claro com
    texto escuro no escuro; azul fechado com texto branco no claro. */
 [data-game-accent="gundam"] {
