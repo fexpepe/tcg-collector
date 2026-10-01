@@ -38,6 +38,7 @@ export const ID_DE_PRODUTO = {
   digimon: /^dgm-\d+$/,
   riftbound: /^rb-\d+$/,
   unionarena: /^ua-\d+$/,
+  wow: /^wow-\d+$/,
   naruto: /^nrt-ncg-\d+$/
 };
 
