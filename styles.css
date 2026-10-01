@@ -900,13 +900,18 @@ button {
   .collection-filters > .sort-select { grid-column: span 2; margin-left: 0; }
 }
 
-/* Barra de filtros da página de cartas: cada item com sua largura natural (a
-   Coleção não corta mais), Ordenar + Visualização ancorados à direita e a
-   Raridade ocupando a linha de baixo. */
+/* Barra de filtros da página de cartas (Coleção · Contagem · Versões · Idioma ·
+   Raridade · Filtros): UMA linha no desktop, cada campo com sua largura
+   natural, rótulo em cima e todo controle com 42px — trilho segmentado, caixa
+   da Contagem, chip, select e facetas fecham na mesma base. Só quebra quando
+   não cabe mesmo (jogo com muitas facetas em tela estreita). Ordenar e
+   Visualização moram na linha do título desde 2026-09-02. */
 .detail-toolbar > div { flex: 0 0 auto; min-width: 0; }
 .detail-toolbar > .view-toggle-field { flex: 0 0 auto; }
 .detail-toolbar select { min-width: 150px; }
 .detail-toolbar .segmented-option { white-space: nowrap; }
+/* O chip "Agrupar" tinha 38px e ficava 4px mais baixo que os vizinhos. */
+.detail-toolbar .chip { min-height: 42px; }
 
 .chip {
   min-height: 38px;
@@ -9148,8 +9153,17 @@ html:not([data-cardlang="all"]) #setRegionChips {
 /* Contagem em tabular pra coluna de números não dançar entre as linhas. */
 .facet-opt-n { flex: none; color: var(--subtle); font-size: 12px; font-variant-numeric: tabular-nums; }
 .facet-opt.on .facet-opt-label { color: var(--accent); }
-/* Modos de contagem dentro do campo "Coleção" da barra de filtros do set. */
-.detail-toolbar .progress-modes { margin: 8px 0 0; gap: 12px; }
+/* Modos de contagem: campo "Contagem" da barra de filtros do set, numa caixa
+   do mesmo trilho do segmentado da Coleção (42px, borda, fundo --bg) pra linha
+   fechar alinhada. Até 2026-09-30 moravam soltos DENTRO do campo "Coleção",
+   embaixo dos botões — era o que fazia a barra virar duas linhas. */
+.detail-toolbar .progress-modes {
+  min-height: 42px; margin: 0; padding: 0 14px; gap: 18px;
+  flex-wrap: nowrap; align-items: center;
+  border: 1px solid var(--line); background: var(--bg);
+}
+/* O `label` global dá margin-bottom de 7px: dentro da caixa descentralizava. */
+.detail-toolbar .progress-mode { margin: 0; white-space: nowrap; }
 .dash-stats-hero .dash-stats-counts {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -10610,7 +10624,10 @@ html[data-detail="set"] .page-head-bar.page-head-stack,
   .detail-toolbar select { width: 100%; min-width: 0; }
   .detail-toolbar .segmented { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; border-radius: 12px; }
   .detail-toolbar .segmented-option { min-height: 40px; padding: 0 8px; white-space: normal; line-height: 1.15; }
-  .detail-toolbar .progress-modes { flex-direction: column; align-items: flex-start; gap: 8px; }
+  /* Rótulos curtos cabem lado a lado em ~390px; cada um com 44px de toque. */
+  .detail-toolbar .progress-modes { flex-wrap: wrap; gap: 0 18px; padding: 0 12px; }
+  .detail-toolbar .progress-mode { min-height: 44px; }
+  .detail-toolbar .chip { min-height: 44px; }
   .detail-toolbar .detail-facets { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
   .detail-toolbar .facet-drop > summary { width: 100%; min-height: 44px; }
   /* A gaveta da faceta da coluna DIREITA abre pra esquerda (senão sai da tela). */

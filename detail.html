@@ -180,21 +180,28 @@
         </div>
       </section>
 
-      <!-- Ordem pedida pelo Fernando (2026-08-10): Coleção → Versões (Agrupar) →
-           Filtros (título sobre as facetas, como o "Coleção" tem). Só decisões
+      <!-- Ordem pedida pelo Fernando (2026-08-10): Coleção → (Contagem, só em
+           set) → Versões (Agrupar) → Filtros (título sobre as facetas, como o
+           "Coleção" tem). No desktop é UMA linha (2026-09-30). Só decisões
            de ESCOPO aqui: Ordenar e Visualização (apresentação) subiram pra
            linha do título "Cartas", ao lado do botão Filtros (2026-09-02). -->
       <section id="detailFilters" class="toolbar detail-toolbar is-collapsed" data-i18n-aria="filters.show" aria-label="Filtros" data-own-toggle>
         <div>
           <label data-i18n="toolbar.collection">Coleção</label>
           <div id="ownedChips" class="segmented" role="group" data-i18n-aria="nav.collection" aria-label="Coleção"></div>
-          <!-- Modos de contagem (só páginas de set): master set conta CADA
-               variante como slot; "qualquer idioma" casa a carta base (EN/PT do
-               mesmo set contam juntas). Moravam na caixa de Adição rápida, que
-               saiu; aqui ficam junto do filtro de Coleção, que é o mesmo assunto. -->
-          <div id="progressModes" class="progress-modes" hidden>
-            <label class="progress-mode"><input type="checkbox" id="modeMaster"> <span data-i18n="master.toggle">Master set (contar variantes)</span></label>
-            <label class="progress-mode"><input type="checkbox" id="modeAnyLang"> <span data-i18n="master.anyLang">Contar qualquer idioma</span></label>
+        </div>
+        <!-- Modos de contagem (só páginas de set): master set conta CADA
+             variante como slot; "qualquer idioma" casa a carta base (EN/PT do
+             mesmo set contam juntas). Moravam na caixa de Adição rápida, que
+             saiu; ficam colados no filtro de Coleção, que é o mesmo assunto.
+             Campo PRÓPRIO desde 2026-09-30: dentro do campo "Coleção" eles
+             empilhavam embaixo dos botões e a barra virava duas linhas no
+             desktop. Rótulo curto, a explicação foi pro title. -->
+        <div id="progressModes" class="progress-modes-field" hidden>
+          <label data-i18n="toolbar.counting">Contagem</label>
+          <div class="progress-modes">
+            <label class="progress-mode" data-i18n-title="master.toggleDesc" title="Conta cada variante (Normal, Reverse, Foil…) como um espaço do set, em vez de só a carta."><input type="checkbox" id="modeMaster"> <span data-i18n="master.toggle">Master set</span></label>
+            <label class="progress-mode" data-i18n-title="master.anyLangDesc" title="A carta conta como sua em qualquer idioma do mesmo set (EN e PT juntas)."><input type="checkbox" id="modeAnyLang"> <span data-i18n="master.anyLang">Qualquer idioma</span></label>
           </div>
         </div>
         <!-- Mesmo liga-desliga de Configurações → "Agrupar versões da carta"
