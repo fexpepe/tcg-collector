@@ -12787,7 +12787,7 @@ select,
 .fer-card { background: var(--surface); border: 1px solid var(--line); padding: 20px; }
 .fer-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
 .fer-actions:empty { display: none; }
-.fer-btn { gap: 8px; min-height: 42px; }
+.fer-btn { gap: 8px; min-height: 44px; }
 .fer-btn svg { width: 16px; height: 16px; flex: none; }
 .fer-fine { margin: 14px 0 0; color: var(--subtle); font-size: 12px; line-height: 1.5; }
 
@@ -12905,7 +12905,9 @@ select,
   .gc-res-sep { display: none; }
   .gc-res-eq { flex-direction: column; gap: 2px; }
   .gc-ruler { grid-template-columns: minmax(78px, auto) repeat(6, minmax(0, 1fr)); font-size: 12px; }
-  .fer-actions .fer-btn { flex: 1; min-height: 44px; }
+  /* Cada botão com a largura do próprio texto (meio a meio, o "Copiar
+     descrição" quebrava em duas linhas), e os dois enchendo a fileira. */
+  .fer-actions .fer-btn { flex: 1 1 auto; min-height: 44px; white-space: nowrap; }
 }
 
 /* Sleeves: formulário à esquerda, lista de compras presa à direita. */

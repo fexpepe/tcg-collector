@@ -95,3 +95,19 @@ e não no `:root`, pra viajar na folha da área em vez de pesar no núcleo.
 - Lista de jogos por tamanho de carta (hoje só o Yu-Gi-Oh! é citado como
   japonês).
 - Levar o medidor de centralização pra página própria também.
+
+## 6. Estado (2026-10-01)
+
+Fases 1–5 feitas e conferidas antes da subida:
+
+- `tests/ferramentas.test.mjs` (20 testes) + suíte inteira verde; `check.mjs`
+  e `check-mobile.mjs` sem erro.
+- Build simulado num checkout LF: `split-css` manda as regras `fer-`/`gc-`/`slv-`
+  pra `styles-ferramentas.css` (~15,7 KB brutos, só nas duas páginas) e nada
+  delas fica no núcleo. Peso: `shared.js` +38 B gz (sobram ~217 B do teto);
+  CSS núcleo com ~1,8 KB de folga.
+- Render nas duas páginas e no HUB, desktop (1280) e celular (390), temas
+  escuro e claro: voltar do navegador volta uma pergunta; "Usar minha coleção"
+  separou 4 cópias de R$ 50 pro toploader e 16 pro fichário e reagiu ao valor
+  mínimo; "Usar meus decks" somou 121 cartas em 2 decks; a faixa de resumo do
+  celular fica acima da tabbar e some quando a lista aparece.
