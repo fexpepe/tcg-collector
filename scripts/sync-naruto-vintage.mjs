@@ -354,13 +354,15 @@ async function run() {
   const withThumb = cardsNrt.filter((c) => c.image.includes("tv-tokyo")).length;
   console.log(`  build: ${cardsNrt.length} cartas em ${orderedNames.length} sets (${withScan} scans tcg-db, ${withThumb} thumbs TV Tokyo, ${cardsNrt.length - withScan - withThumb} sem imagem).`);
 
-  // Anexa: mantém o que NÃO é desta linha — outras linhas do Naruto (Miracle
-  // Battle nrt-mb-*, Data Carddass nrt-dc-*, o jogo NOVO nrt-ncg-) — e regrava
+  // Anexa: mantém o que NÃO é desta linha — outras linhas do Naruto (Data
+  // Carddass nrt-dc-*, o CCG americano nrt-ccg-, o jogo NOVO nrt-ncg-) — e regrava
   // só a linha vintage (nrtcg). Antes o filtro descartava TUDO que começasse
   // com nrt-, apagando MB/DC quando o script rodava sozinho (no CI não
   // aparecia porque eles rodam depois e se re-anexam). O nrt-ncg- roda ANTES
   // deste no CI e não se re-anexa — sem ele aqui, o deploy apagava a linha.
-  const OTHER_LINES = /^nrt-(mb|dc|nf|nx|ncg|ccg)-/;
+  // O Miracle Battle (nrt-mb-*) saiu daqui em 2026-10-01: virou o jogo mbc, e
+  // carta nrt-mb- que sobrar no catálogo do Naruto é resto a limpar.
+  const OTHER_LINES = /^nrt-(dc|nf|nx|ncg|ccg)-/;
   const kept = existing.filter((c) => c && (!String(c.id).startsWith("nrt-") || OTHER_LINES.test(String(c.id))));
   const have = new Set(kept.map((c) => c.id));
   const merged = kept.concat(cardsNrt.filter((c) => !have.has(c.id)));

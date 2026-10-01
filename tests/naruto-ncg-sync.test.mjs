@@ -126,8 +126,10 @@ test("o sync vintage preserva as outras linhas do Naruto, a nova inclusive", asy
   const m = /const OTHER_LINES = (\/.+\/);/.exec(src);
   assert.ok(m, "OTHER_LINES sumiu do sync-naruto-vintage.mjs");
   const re = new Function(`return ${m[1]}`)();
-  for (const id of ["nrt-ncg-cp-001", "nrt-ncg-717838", "nrt-ccg-J-001", "nrt-mb-nr01-001", "nrt-dc-dn-001", "nrt-nf-001", "nrt-nx-001"]) {
+  for (const id of ["nrt-ncg-cp-001", "nrt-ncg-717838", "nrt-ccg-J-001", "nrt-dc-dn-001", "nrt-nf-001", "nrt-nx-001"]) {
     assert.ok(re.test(id), id);
   }
   assert.ok(!re.test("nrt-S-001"), "a linha do próprio vintage não é 'outra'");
+  // O Miracle Battle virou o jogo mbc (2026-10-01): não mora mais no Naruto.
+  assert.ok(!re.test("nrt-mb-nr01-001"), "nrt-mb- é do jogo mbc");
 });

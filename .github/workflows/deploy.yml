@@ -588,17 +588,19 @@ jobs:
         if: env.RODA_SYNC == 'true'
         run: node scripts/sync-naruto-vintage.mjs || echo "sync-naruto-vintage falhou; segue com o snapshot versionado"
 
-      # Miracle Battle Carddass (2009-2015): linhas ONE PIECE, NARUTO e
-      # HUNTER x HUNTER do jogo crossover da Jump, anexadas como vintage nos
-      # catalogos de cada jogo (roda DEPOIS dos syncs deles). O catalogo do
-      # HUNTER x HUNTER nasce AQUI (data/hxh/). Fonte tcg-db, sem preco.
-      - name: Anexa Miracle Battle Carddass (One Piece + Naruto + Hunter x Hunter)
+      # Miracle Battle Carddass (2009-2015): o jogo vintage mbc, crossover da
+      # Jump com sete series (Dragon Ball Kai, One Piece, Toriko, HxH, Naruto,
+      # J-Heroes, Kuroko). Cria data/mbc/ sozinho e TIRA dos catalogos do One
+      # Piece, do Naruto e do HxH as series que moravam la ate 2026-10-01 (por
+      # isso roda DEPOIS dos syncs deles). Fonte tcg-db, snapshot versionado,
+      # sem preco.
+      - name: Catalogo vintage Miracle Battle Carddass
         if: env.RODA_SYNC == 'true'
         run: node scripts/sync-miracle-battle.mjs || echo "sync-miracle-battle falhou; segue com o snapshot versionado"
 
       # Carddass Hyper Battle HUNTER x HUNTER (1999-2001): linha PRINCIPAL do
       # jogo hxh. Fonte: Hunterpedia (API MediaWiki) - unica com scan carta a
-      # carta. Roda DEPOIS do miracle-battle (que cria data/hxh/). Sem preco.
+      # carta. Cria data/hxh/ sozinho se faltar. Sem preco.
       - name: Anexa Carddass Hyper Battle (Hunter x Hunter)
         if: env.RODA_SYNC == 'true'
         run: node scripts/sync-hxh-hyper-battle.mjs || echo "sync-hxh-hyper-battle falhou; segue com o snapshot versionado"
