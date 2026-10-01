@@ -403,6 +403,20 @@
   --accent: #141414; --accent-dark: #000000; --accent-rgb: 20, 20, 20;
   --accent-soft: rgba(252, 238, 10, 0.3); --on-accent: #fcee0a;
 }
+/* Weiß Schwarz: BRANCO com texto preto ("Weiß" é branco; o preto já é do Star
+   Wars, 01/10/2026) — a etiqueta do jogo (GAME_COLOR) e o accent do escuro,
+   um tom acima do branco-gelo do "Todos". No claro o branco sumiria no fundo,
+   então o accent vira o índigo do contorno do logo, aberto o bastante pra não
+   colar no quase-preto do "Todos" (10:1 com texto branco). */
+[data-game-accent="weiss"] {
+  --accent: #ffffff; --accent-dark: #e4e4e7; --accent-rgb: 255, 255, 255;
+  --accent-soft: rgba(255, 255, 255, 0.14); --on-accent: #0a0c10;
+}
+[data-theme="light"][data-game-accent="weiss"],
+[data-theme="light"] [data-game-accent="weiss"] {
+  --accent: #2e3a8c; --accent-dark: #242e70; --accent-rgb: 46, 58, 140;
+  --accent-soft: rgba(46, 58, 140, 0.1); --on-accent: #ffffff;
+}
 /* Sorcery: Contested Realm: o PERGAMINHO da moldura das cartas (#c9a66b, o do
    GAME_COLOR) com texto escuro no escuro (8.5:1). No claro ele fica em 2.3:1
    com branco, então o accent escurece pro marrom de tinta #7d5f2c (5.9:1 com

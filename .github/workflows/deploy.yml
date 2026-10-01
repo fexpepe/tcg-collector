@@ -111,6 +111,7 @@ jobs:
             data/dbc/sets
             data/wow/sets
             data/lotr/sets
+            data/weiss/sets
             data/harrypotter/sets
             data/jump/sets
             data/magic/cards.js
@@ -137,7 +138,8 @@ jobs:
           fi
           faltando=""
           # data/dbc/, data/swu/, data/cyberpunk/, data/wow/, data/lotr/,
-          # data/sorcery/ e data/harrypotter/: jogos novos (2026-09-24 a 2026-10-01). Enquanto o cache
+          # data/sorcery/, data/harrypotter/ e data/weiss/: jogos novos (2026-09-24 a
+          # 2026-10-01). Enquanto o cache
           # for de antes deles, o build rápido publicaria o tile do hub sem
           # catálogo nenhum atrás.
           for f in data/manifest.generated.js data/pricing.generated.js \
@@ -146,7 +148,8 @@ jobs:
                    data/dbc/manifest.generated.js data/swu/manifest.generated.js \
                    data/cyberpunk/manifest.generated.js data/wow/manifest.generated.js \
                    data/lotr/manifest.generated.js data/sorcery/manifest.generated.js \
-                   data/harrypotter/manifest.generated.js; do
+                   data/harrypotter/manifest.generated.js \
+                   data/weiss/manifest.generated.js; do
             [ -s "$f" ] || faltando="$faltando $f"
           done
           if [ -n "$faltando" ]; then
@@ -536,6 +539,18 @@ jobs:
         if: env.RODA_SYNC == 'true'
         run: node scripts/sync-price-history.mjs data/sorcery
 
+      # Weiß Schwarz (TCGCSV cat. 20, Bushiroad; so a edicao inglesa, 2013+).
+      # Padrao Cyberpunk: setId fixo por grupo no proprio sync; sem logo de set
+      # (o media kit oficial nao tem). ~31 mil cartas, o maior jogo TCGCSV
+      # depois do Yu-Gi-Oh!.
+      - name: Sincroniza catálogo do Weiß Schwarz (TCGCSV)
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/sync-weiss.mjs || echo "sync-weiss falhou; mantém o catalogo versionado"
+
+      - name: Snapshot de preços (histórico Weiß Schwarz)
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/sync-price-history.mjs data/weiss
+
       # World of Warcraft TCG (TCGCSV cat. 13; Upper Deck 2006-2010, Cryptozoic
       # 2010-2013). Jogo vintage, mas com preco do TCGplayer. setId, nome e data
       # fixos por grupo no proprio sync; sem logo de set.
@@ -764,6 +779,7 @@ jobs:
             data/dbc/sets
             data/wow/sets
             data/lotr/sets
+            data/weiss/sets
             data/harrypotter/sets
             data/jump/sets
             data/magic/cards.js

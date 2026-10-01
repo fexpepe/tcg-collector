@@ -7066,7 +7066,12 @@
     // Harry Potter TCG (conferido em 30/09/2026): o MYP tem a seção /hp com os
     // cinco sets; sem Liga, sem TCGplayer (a TCGCSV não tem a categoria) e sem
     // Cardmarket. O PriceCharting tem os sets ("2001 Wizards Harry Potter").
-    harrypotter: { myp: "hp", usText: "harry potter tcg", noTcgplayer: true }
+    harrypotter: { myp: "hp", usText: "harry potter tcg", noTcgplayer: true },
+    // Weiß Schwarz (conferido em 30/09/2026): MYP em /weissschwarz (cartas da
+    // edição inglesa), TCGplayer na linha "weiss-schwarz" e Cardmarket em
+    // /en/WeissSchwarz (pela busca: a página dá anti-robô). Sem Liga
+    // (ligaweiss.com.br nem resolve).
+    weiss:     { myp: "weissschwarz", tcgLine: "weiss-schwarz", usText: "weiss schwarz", cm: "WeissSchwarz" }
   };
   function marketOf(game) { return MARKETS[game] || MARKETS.pokemon; }
 
@@ -8628,7 +8633,8 @@
     { game: "dbc", dataDir: "data/dbc/" },
     { game: "wow", dataDir: "data/wow/" },
     { game: "lotr", dataDir: "data/lotr/" },
-    { game: "harrypotter", dataDir: "data/harrypotter/" }
+    { game: "harrypotter", dataDir: "data/harrypotter/" },
+    { game: "weiss", dataDir: "data/weiss/" }
   ];
   // Slugs e cor de cada jogo, num lugar só (adicionar um jogo = 1 entrada aqui
   // + 1 no game.js + labels no i18n; as páginas iteram em vez de hardcodear).
@@ -8663,6 +8669,7 @@
     dbc: "#db2777",        // rosa (a 70 do FaB, o vizinho mais próximo; 4.6:1 com preto)
     wow: "#00aeff",        // azul da Blizzard; 8.5:1 com preto, a 83 do Union Arena (os azuis estão cheios)
     lotr: "#4d7c0f"  ,      // verde-musgo (pedido do Fernando: "algum tom de verde"); 5.0:1 com branco, a 73 do verde do HxH
+    weiss: "#ffffff",      // branco ("Weiß"; o preto é do Star Wars); 21:1 com preto, a 159 do prata do DBFW
     harrypotter: "#740001" // escarlate da Grifinória; 12:1 com branco, a 85 do Magic (o vizinho mais próximo)
   };
   // Preto ou branco sobre a cor do jogo — o que der MAIOR contraste de verdade
@@ -8702,7 +8709,7 @@
     fab: "filter.gameFab", gundam: "filter.gameGundam", swu: "filter.gameSwu", cyberpunk: "filter.gameCyberpunk", sorcery: "filter.gameSorcery", dbfw: "filter.gameDbfw",
     ygo: "filter.gameYgo", digimon: "filter.gameDigimon", riftbound: "filter.gameRiftbound",
     unionarena: "filter.gameUnionArena", naruto: "filter.gameNaruto", hxh: "filter.gameHxh",
-    dbc: "filter.gameDbc", wow: "filter.gameWow", lotr: "filter.gameLotr", harrypotter: "filter.gameHarryPotter"
+    dbc: "filter.gameDbc", wow: "filter.gameWow", lotr: "filter.gameLotr", weiss: "filter.gameWeiss", harrypotter: "filter.gameHarryPotter"
   };
   function gameLabel(g) { return t(GAME_LABEL_KEY[g] || GAME_LABEL_KEY.pokemon); }
   const VINTAGE_SET_EN = {

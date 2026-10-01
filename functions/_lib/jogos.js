@@ -39,6 +39,7 @@ export const JOGOS_URL = [
   { url: "cyberpunk-tcg", game: "cyberpunk", nome: "Cyberpunk TCG", logo: "assets/games/game_cyberpunk.webp" },
   { url: "sorcery-contested-realm", game: "sorcery", nome: "Sorcery: Contested Realm", logo: "assets/games/game_sorcery.webp" },
   { url: "naruto-card-game", game: "naruto", linha: "nrt-ncg", prefixos: ["nrt-ncg-"], nome: "Naruto Card Game (2027)", logo: "assets/games/game_naruto_2027.webp" },
+  { url: "weiss-schwarz", game: "weiss", nome: "Weiß Schwarz", logo: "assets/games/game_weiss.webp" },
   { url: "dragon-ball-carddass", game: "dbc", nome: "Dragon Ball Carddass", logo: "assets/games/game_dbc.webp", vintage: "1988–1997" },
   { url: "hunter-x-hunter-carddass", game: "hxh", nome: "Hunter × Hunter Carddass Hyper Battle", logo: "assets/games/game_hxh.webp", vintage: "1999–2001" },
   { url: "one-piece-carddass", game: "onepiece", linha: "opcd", prefixos: ["opcd-"], nome: "One Piece Carddass Hyper Battle", logo: "assets/games/game_onepiece_carddass.webp", vintage: "1999–2002" },
@@ -61,7 +62,7 @@ export const LINHAS_APELIDO = { "nrt-nf": "nrt-dc", "nrt-nx": "nrt-dc" };
 // ?game= e o ?line= de hoje) entram aqui sozinhas; o resto são as abreviações
 // que a comunidade usa.
 export const APELIDOS = (() => {
-  const a = { mtg: "magic-the-gathering", yugioh: "yu-gi-oh" };
+  const a = { mtg: "magic-the-gathering", yugioh: "yu-gi-oh", ws: "weiss-schwarz" };
   for (const j of JOGOS_URL) {
     if (j.linha) a[j.linha] = j.url;
     else if (j.game !== j.url) a[j.game] = j.url;

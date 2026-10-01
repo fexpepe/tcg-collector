@@ -123,6 +123,12 @@
       },
       facetType(["Leader", "Base", "Unit", "Event", "Upgrade", "Token"])
     ],
+    // Weiß Schwarz: 4 cores, nível 0–3 e 3 tipos (01/10/2026).
+    weiss: [
+      facetColor("color"),
+      facetLevel,
+      facetType(["Character", "Event", "Climax"])
+    ],
     // Cyberpunk TCG: 4 cores (Red/Blue/Green/Yellow) e 4 tipos (30/09/2026).
     cyberpunk: [
       facetColor("color"),

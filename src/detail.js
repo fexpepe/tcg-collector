@@ -354,7 +354,13 @@
     // Avatar e os tokens não têm raridade.
     sorcery: ["Ordinary", "Exceptional", "Elite", "Unique", "Promo"],
     // Harry Potter TCG: os símbolos do jogo, mais as duas premium (30/09/2026).
-    harrypotter: ["Common", "Uncommon", "Rare", "Lesson", "Foil Premium", "Holo Portrait Premium", "Promo"]
+    harrypotter: ["Common", "Uncommon", "Rare", "Lesson", "Foil Premium", "Holo Portrait Premium", "Promo"],
+    // Weiß Schwarz (01/10/2026): a escada do booster, as paralelas (SP/SSP/
+    // OFR/SEC) e as fora do booster. São ~65 strings no jogo, mas um set tem
+    // uns 12; as raras temáticas de um set só ("Persona Rare", "Band Rare")
+    // vão pro fim, em ordem alfabética.
+    weiss: ["Common", "Uncommon", "Rare", "Double Rare", "Triple Rare", "Super Rare", "Special Rare",
+      "Super Special Rare", "Over-Frame Rare", "Secret Rare", "Climax Common", "Climax Rare", "Trial Deck", "Promo", "Reprint"]
   };
   const rarityListOrder = RARITY_LISTED_GAMES[(window.SLEEVU && window.SLEEVU.game) || ""] || null;
 
