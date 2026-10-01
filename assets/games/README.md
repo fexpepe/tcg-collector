@@ -88,12 +88,13 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
   o カードバトル são da ARTE — aparecem nas duas fontes, com fundos diferentes.
 - `game_naruto_2027.webp` — NARUTO CARD GAME novo (Bandai, mundial 2027; tile
   "Em breve" do hub; fonte: naruto-cardgame.com/images/common/logo.webp)
-- `game_naruto_miracle.webp` — Miracle Battle Carddass (tile vintage do Naruto
-  e `setLogo` dos sets nrt-mb-*, via sync-miracle-battle.mjs)
 - `game_hxh.webp` — HUNTER×HUNTER (tile do jogo no hub e `setLogo` dos sets do
   Carddass Hyper Battle, via sync-hxh-hyper-battle.mjs)
-- `game_hxh_miracle.webp` — Miracle Battle Carddass (tile vintage do HxH e
-  `setLogo` dos sets hxh-mb-*, via sync-miracle-battle.mjs)
+- `game_mbc.webp` — Miracle Battle Carddass (tile vintage do jogo `mbc` e
+  `setLogo` de todos os sets dele, via sync-miracle-battle.mjs). Até 2026-10-01
+  eram três arquivos, `game_onepiece_miracle`, `game_naruto_miracle` e
+  `game_hxh_miracle`, um por linha, com o MESMO conteúdo (md5 igual): o logo
+  oficial do jogo, que não muda de franquia pra franquia.
 - `game_dbc.webp` — Dragon Ball Carddass (Bandai, 1988→; tile vintage do jogo
   `dbc`). Fonte enviada pelo Fernando em 2026-09-24: 414×260 com fundo branco e
   muita margem. Recortado no conteúdo + 2px, a regra dos -v2 (abaixo) = 373×82

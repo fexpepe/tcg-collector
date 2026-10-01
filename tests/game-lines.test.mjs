@@ -25,7 +25,7 @@ test("Data Carddass: a linha nrt-dc cobre os quatro títulos do arcade", () => {
   for (const setId of ["nrt-dc-s01", "nrt-dc-s10", "nrt-dc-s11", "nrt-nf-s01", "nrt-nf-s26", "nrt-nx-s14", "nrt-nx-s25"]) {
     assert.ok(dc.includes(setId), `${setId} devia estar na linha nrt-dc`);
   }
-  for (const setId of ["nrt-s01", "nrt-promo", "nrt-mb-nr01", "nrt-ccg-s01", "nrt-ncg-promo"]) {
+  for (const setId of ["nrt-s01", "nrt-promo", "nrt-ccg-s01", "nrt-ncg-promo"]) {
     assert.ok(!dc.includes(setId), `${setId} não é Data Carddass`);
   }
 });
@@ -36,7 +36,7 @@ test("jogo principal do Naruto exclui TODOS os prefixos das linhas", () => {
   for (const setId of ["nrt-s01", "nrt-s17", "nrt-promo", "nrt-extra"]) {
     assert.ok(principal.includes(setId), `${setId} é do Card Game 2002~2006`);
   }
-  for (const setId of ["nrt-dc-s01", "nrt-nf-s01", "nrt-nx-s14", "nrt-mb-nr01", "nrt-ccg-s01", "nrt-ncg-promo"]) {
+  for (const setId of ["nrt-dc-s01", "nrt-nf-s01", "nrt-nx-s14", "nrt-ccg-s01", "nrt-ncg-promo"]) {
     assert.ok(!principal.includes(setId), `${setId} tem página própria (?line=)`);
   }
 });
@@ -44,7 +44,7 @@ test("jogo principal do Naruto exclui TODOS os prefixos das linhas", () => {
 test("?line= antigo do Formation e do Cross abre a linha Data Carddass", () => {
   assert.equal(sharedCom("?game=naruto&line=nrt-nf").lineParamOf(), "nrt-dc");
   assert.equal(sharedCom("?game=naruto&line=nrt-nx").lineParamOf(), "nrt-dc");
-  assert.equal(sharedCom("?game=naruto&line=nrt-mb").lineParamOf(), "nrt-mb");
+  assert.equal(sharedCom("?game=naruto&line=nrt-ccg").lineParamOf(), "nrt-ccg");
   assert.equal(sharedCom("?game=naruto").lineParamOf(), "");
   // As páginas passam o valor JÁ resolvido pro lineScope (app.js e cards.js
   // leem a linha pelo lineParamOf) — e ele abre o arcade inteiro.
@@ -65,7 +65,10 @@ test("linhas de prefixo único e jogos sem linha seguem iguais", () => {
   const opcd = lineScope("onepiece", "opcd");
   assert.ok(opcd.includes("opcd-01"));
   assert.ok(!opcd.includes("op2002-01"));
-  assert.ok(lineScope("hxh", "hxh-mb").includes("hxh-mb-hh01"));
+  // O Miracle Battle deixou de ser linha (virou o jogo mbc, 2026-10-01): o HxH
+  // não tem linha nenhuma, e ?line=hxh-mb solto não filtra nada.
+  assert.equal(lineScope("hxh", "hxh-mb").line, null);
+  assert.ok(lineScope("mbc", "").includes("hxh-mb-hh01"));
   // Pokémon não tem linhas: tudo passa, com ou sem ?line=.
   assert.ok(lineScope("pokemon", "nrt-dc").includes("sv08"));
   assert.ok(lineScope("pokemon", "").includes("base1"));

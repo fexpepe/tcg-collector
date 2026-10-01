@@ -50,24 +50,34 @@ export const JOGOS_URL = [
   { url: "naruto-data-carddass", game: "naruto", linha: "nrt-dc", prefixos: ["nrt-dc-", "nrt-nf-", "nrt-nx-"], nome: "Naruto Data Carddass", logo: "assets/games/game_naruto_datacarddass.webp", vintage: "2005–2010" },
   { url: "naruto-ccg", game: "naruto", linha: "nrt-ccg", prefixos: ["nrt-ccg-"], nome: "Naruto Collectible Card Game", logo: "assets/games/game_naruto_ccg.webp", vintage: "2006–2013" },
   { url: "world-of-warcraft-tcg", game: "wow", nome: "World of Warcraft TCG", logo: "assets/games/game_wow.webp", vintage: "2006–2013" },
-  { url: "one-piece-miracle-battle", game: "onepiece", linha: "op-mb", prefixos: ["op-mb-"], nome: "Miracle Battle Carddass One Piece", logo: "assets/games/game_onepiece_miracle.webp", vintage: "2010–2014" },
-  { url: "hunter-x-hunter-miracle-battle", game: "hxh", linha: "hxh-mb", prefixos: ["hxh-mb-"], nome: "Miracle Battle Carddass Hunter × Hunter", logo: "assets/games/game_hxh_miracle.webp", vintage: "2011–2012" },
-  { url: "naruto-miracle-battle", game: "naruto", linha: "nrt-mb", prefixos: ["nrt-mb-"], nome: "Miracle Battle Carddass Naruto Shippuden", logo: "assets/games/game_naruto_miracle.webp", vintage: "2012–2014" }
+  { url: "miracle-battle-carddass", game: "mbc", nome: "Miracle Battle Carddass", logo: "assets/games/game_mbc.webp", vintage: "2009–2015" }
 ];
 
 // Linha que virou SEÇÃO de outra: o mesmo LINE_ALIASES do shared.js.
 export const LINHAS_APELIDO = { "nrt-nf": "nrt-dc", "nrt-nx": "nrt-dc" };
 
+// Linha que virou JOGO próprio (o LINHA_VIROU_JOGO do src/game.js): o Miracle
+// Battle era uma linha em cada marca até 2026-10-01 e virou o jogo mbc. O
+// ?line= e o /games/<endereço> antigos levam pro jogo novo; o set e a carta
+// abaixo do endereço seguem com o mesmo slug (o nome do set não mudou).
+export const LINHAS_VIRARAM_JOGO = { "op-mb": "mbc", "nrt-mb": "mbc", "hxh-mb": "mbc" };
+const ENDERECOS_ANTIGOS = {
+  "one-piece-miracle-battle": "miracle-battle-carddass",
+  "naruto-miracle-battle": "miracle-battle-carddass",
+  "hunter-x-hunter-miracle-battle": "miracle-battle-carddass"
+};
+
 // /games/<apelido> responde 301 pro endereço oficial. As chaves internas (o
 // ?game= e o ?line= de hoje) entram aqui sozinhas; o resto são as abreviações
-// que a comunidade usa.
+// que a comunidade usa e os endereços que deixaram de existir.
 export const APELIDOS = (() => {
-  const a = { mtg: "magic-the-gathering", yugioh: "yu-gi-oh", ws: "weiss-schwarz" };
+  const a = { mtg: "magic-the-gathering", yugioh: "yu-gi-oh", ws: "weiss-schwarz", ...ENDERECOS_ANTIGOS };
   for (const j of JOGOS_URL) {
     if (j.linha) a[j.linha] = j.url;
     else if (j.game !== j.url) a[j.game] = j.url;
   }
   for (const [velha, nova] of Object.entries(LINHAS_APELIDO)) a[velha] = a[nova];
+  for (const [linha, jogo] of Object.entries(LINHAS_VIRARAM_JOGO)) a[linha] = a[jogo] || jogo;
   return a;
 })();
 
@@ -89,6 +99,7 @@ export function urlOficial(url) {
 // /games/<url> de um jogo (e linha): o que o ?game=&line= de hoje vira.
 export function urlDoJogo(game, linha) {
   let l = String(linha || "");
+  if (Object.prototype.hasOwnProperty.call(LINHAS_VIRARAM_JOGO, l)) return urlDoJogo(LINHAS_VIRARAM_JOGO[l], "");
   if (Object.prototype.hasOwnProperty.call(LINHAS_APELIDO, l)) l = LINHAS_APELIDO[l];
   const achou = JOGOS_URL.find((j) => j.game === game && (l ? j.linha === l : !j.linha));
   // Linha desconhecida cai no jogo principal, como o lineScope do shared.js

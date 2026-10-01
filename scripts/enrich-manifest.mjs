@@ -36,7 +36,7 @@ const RAIZ = new URL("../", import.meta.url);
 const DIRS = [
   "data/", "data/lorcana/", "data/onepiece/", "data/magic/", "data/fab/",
   "data/gundam/", "data/swu/", "data/cyberpunk/", "data/sorcery/", "data/dbfw/", "data/ygo/", "data/digimon/", "data/riftbound/",
-  "data/unionarena/", "data/naruto/", "data/hxh/", "data/dbc/", "data/wow/", "data/lotr/", "data/harrypotter/", "data/weiss/", "data/jump/"
+  "data/unionarena/", "data/naruto/", "data/hxh/", "data/dbc/", "data/wow/", "data/lotr/", "data/harrypotter/", "data/weiss/", "data/mbc/", "data/jump/"
 ];
 
 async function leGlobal(caminho, nomeDaVar) {

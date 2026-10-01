@@ -7062,6 +7062,7 @@
     naruto:    { usText: "naruto card game", noTcgplayer: true },
     hxh:       { usText: "hunter x hunter carddass", noTcgplayer: true },
     dbc:       { usText: "dragon ball carddass", noTcgplayer: true },
+    mbc:       { usText: "miracle battle carddass", noTcgplayer: true },
     // World of Warcraft TCG (conferido em 30/09/2026): TCGplayer na linha
     // "wow" (a busca devolve a carta "in WoW") e Cardmarket em /en/WoW. Sem
     // loja BR: o MYP não tem seção do jogo e não existe Liga.
@@ -8643,7 +8644,8 @@
     { game: "wow", dataDir: "data/wow/" },
     { game: "lotr", dataDir: "data/lotr/" },
     { game: "harrypotter", dataDir: "data/harrypotter/" },
-    { game: "weiss", dataDir: "data/weiss/" }
+    { game: "weiss", dataDir: "data/weiss/" },
+    { game: "mbc", dataDir: "data/mbc/" }
   ];
   // Slugs e cor de cada jogo, num lugar só (adicionar um jogo = 1 entrada aqui
   // + 1 no game.js + labels no i18n; as páginas iteram em vez de hardcodear).
@@ -8679,7 +8681,8 @@
     wow: "#00aeff",        // azul da Blizzard; 8.5:1 com preto, a 83 do Union Arena (os azuis estão cheios)
     lotr: "#4d7c0f"  ,      // verde-musgo (pedido do Fernando: "algum tom de verde"); 5.0:1 com branco, a 73 do verde do HxH
     weiss: "#ffffff",      // branco ("Weiß"; o preto é do Star Wars); 21:1 com preto, a 159 do prata do DBFW
-    harrypotter: "#740001" // escarlate da Grifinória; 12:1 com branco, a 85 do Magic (o vizinho mais próximo)
+    harrypotter: "#740001", // escarlate da Grifinória; 12:1 com branco, a 85 do Magic (o vizinho mais próximo)
+    mbc: "#fb923c"         // pêssego (o laranja-dourado do logo); 9.3:1 com preto, a 71 do One Piece e a 77 do Naruto
   };
   // Preto ou branco sobre a cor do jogo — o que der MAIOR contraste de verdade
   // (fórmula WCAG), não um limiar de luminância chutado: com limiar fixo o
@@ -8718,35 +8721,88 @@
     fab: "filter.gameFab", gundam: "filter.gameGundam", swu: "filter.gameSwu", cyberpunk: "filter.gameCyberpunk", sorcery: "filter.gameSorcery", dbfw: "filter.gameDbfw",
     ygo: "filter.gameYgo", digimon: "filter.gameDigimon", riftbound: "filter.gameRiftbound",
     unionarena: "filter.gameUnionArena", naruto: "filter.gameNaruto", hxh: "filter.gameHxh",
-    dbc: "filter.gameDbc", wow: "filter.gameWow", lotr: "filter.gameLotr", weiss: "filter.gameWeiss", harrypotter: "filter.gameHarryPotter"
+    dbc: "filter.gameDbc", wow: "filter.gameWow", lotr: "filter.gameLotr", weiss: "filter.gameWeiss", harrypotter: "filter.gameHarryPotter",
+    mbc: "filter.gameMbc"
   };
   function gameLabel(g) { return t(GAME_LABEL_KEY[g] || GAME_LABEL_KEY.pokemon); }
   const VINTAGE_SET_EN = {
-    // ---- One Piece · Miracle Battle Carddass
-    "op-mb-ops01": "Starter Deck — Battle Begins! Luffy Pirates!!",
-    "op-mb-ops02": "Starter Deck — Seaquake \"Grand Line\"!!",
-    "op-mb-ops03": "Super Miracle Heroes Deck — Fierce Battle at Marineford!!",
-    "op-mb-ops04": "Super Fierce Battle — Starter Deck: New World",
-    "op-mb-op01": "Booster Pack 1",
-    "op-mb-op02": "Booster Pack 2 — Threat of the Logia",
-    "op-mb-op03": "Booster Pack 3 — Dawn of a New Era",
-    "op-mb-op04": "Booster Pack 4 — Summit War",
-    "op-mb-op05": "Super Fierce Battle — Booster 1: Powerhouses of the New World",
-    "op-mb-op06": "Super Fierce Battle — Booster 2: Heirs of D's Will",
-    "op-mb-op07": "Super Fierce Battle — Booster 3: Awakening of Haki",
-    "op-mb-op08": "Super Fierce Battle — Booster 4: ROMANCE DAWN ~for the new world~",
-    "op-mb-op09": "Super Fierce Battle — Booster 5: Fish-Man Island Adventure",
-    "op-mb-op10": "Booster Pack — Ryugu Palace Occupied",
-    "op-mb-op11": "Booster Pack — Young Pirates Worth Over 100 Million",
-    "op-mb-op12": "Booster Pack — Blast!! Fire Fist Pistol",
-    "op-mb-op13": "Booster Pack — The Threat of Z",
-    "op-mb-op14": "Booster Pack — Raging New World",
-    "op-mb-op15": "Booster Pack — Haki vs Devil Fruit Users",
-    "op-mb-op16": "Booster Pack — Fighting Alliance",
-    "op-mb-op17": "Character Booster — To the New Era of Heroes",
-    "op-mb-op18": "Character Booster — Fierce Battle! Dressrosa",
-    "op-mb-opc01": "Gigant Pack",
-    "op-mb-op": "Promotional Cards",
+    // ---- Miracle Battle Carddass (jogo mbc, sync-miracle-battle.mjs). As
+    // séries dividem o jogo desde 2026-10-01, então o nome leva a franquia: só
+    // "Promotional Cards" eram três sets. Tradução nossa, no padrão do One
+    // Piece (o primeiro traduzido); os ids op-mb-/nrt-mb-/hxh-mb- são os de
+    // antes de virar jogo, e os mb- são as séries que entraram com ele.
+    "mb-dbs01": "Dragon Ball Kai Starter Deck 1",
+    "mb-dbs02": "Dragon Ball Kai Starter Deck 2 — The Dragon Generation",
+    "mb-dbs04": "Dragon Ball Kai Starter Deck — Instant Limit Break",
+    "mb-db01": "Dragon Ball Kai Booster Pack 1",
+    "mb-db02": "Dragon Ball Kai Booster Pack 2 — A New Battle",
+    "mb-db03": "Dragon Ball Kai Booster Pack 3 — Power Beyond the Limit",
+    "mb-db04": "Dragon Ball Kai Booster Pack 4 — Birth of the Super Warriors!!",
+    "mb-db05": "Dragon Ball Kai Super Fierce Battle — Booster 1: The Ultimate Fusion Warrior",
+    "mb-db06": "Dragon Ball Kai Super Fierce Battle — Booster 2: Shining Super Warriors",
+    "mb-db07": "Dragon Ball Kai Super Fierce Battle — Booster 3: Limit Break",
+    "mb-db08": "Dragon Ball Kai Super Fierce Battle — Booster 4: Warrior Race",
+    "mb-db09": "Dragon Ball Kai Super Fierce Battle — Booster 5: Explosive Fusion",
+    "mb-db10": "Dragon Ball Kai Booster Pack — Extreme Struggle",
+    "mb-db11": "Dragon Ball Kai Booster Pack — Pride of the Prince",
+    "mb-db12": "Dragon Ball Kai Booster Pack — Under the Red Ribbon Flag",
+    "mb-db13": "Dragon Ball Kai Booster Pack — MIRACLE OF GOD",
+    "mb-db14": "Dragon Ball Kai Booster Pack — Evolution Alliance",
+    "mb-db16": "Dragon Ball Kai Character Booster — Showdown!! The World Martial Arts Tournament!!",
+    "mb-db17": "Dragon Ball Kai Character Booster — The Ultimate Golden Warrior",
+    "mb-db": "Dragon Ball Kai Promotional Cards",
+    "op-mb-ops01": "One Piece Starter Deck — Battle Begins! Luffy Pirates!!",
+    "op-mb-ops02": "One Piece Starter Deck — Seaquake \"Grand Line\"!!",
+    "op-mb-ops03": "One Piece Super Miracle Heroes Deck — Fierce Battle at Marineford!!",
+    "op-mb-ops04": "One Piece Super Fierce Battle — Starter Deck: New World",
+    "op-mb-op01": "One Piece Booster Pack 1",
+    "op-mb-op02": "One Piece Booster Pack 2 — Threat of the Logia",
+    "op-mb-op03": "One Piece Booster Pack 3 — Dawn of a New Era",
+    "op-mb-op04": "One Piece Booster Pack 4 — Summit War",
+    "op-mb-op05": "One Piece Super Fierce Battle — Booster 1: Powerhouses of the New World",
+    "op-mb-op06": "One Piece Super Fierce Battle — Booster 2: Heirs of D's Will",
+    "op-mb-op07": "One Piece Super Fierce Battle — Booster 3: Awakening of Haki",
+    "op-mb-op08": "One Piece Super Fierce Battle — Booster 4: ROMANCE DAWN ~for the new world~",
+    "op-mb-op09": "One Piece Super Fierce Battle — Booster 5: Fish-Man Island Adventure",
+    "op-mb-op10": "One Piece Booster Pack — Ryugu Palace Occupied",
+    "op-mb-op11": "One Piece Booster Pack — Young Pirates Worth Over 100 Million",
+    "op-mb-op12": "One Piece Booster Pack — Blast!! Fire Fist Pistol",
+    "op-mb-op13": "One Piece Booster Pack — The Threat of Z",
+    "op-mb-op14": "One Piece Booster Pack — Raging New World",
+    "op-mb-op15": "One Piece Booster Pack — Haki vs Devil Fruit Users",
+    "op-mb-op16": "One Piece Booster Pack — Fighting Alliance",
+    "op-mb-op17": "One Piece Character Booster — To the New Era of Heroes",
+    "op-mb-op18": "One Piece Character Booster — Fierce Battle! Dressrosa",
+    "op-mb-opc01": "One Piece Gigant Pack",
+    "op-mb-op": "One Piece Promotional Cards",
+    "mb-tr01": "Toriko Super Fierce Battle — Booster 1: Gourmet Era of Fierce Battles",
+    "mb-tr02": "Toriko Super Fierce Battle — Booster 2: The Battle for the Jewel Meat",
+    "mb-tr03": "Toriko Super Fierce Battle — Booster 3: The Legendary Century Soup",
+    "mb-tr04": "Toriko Super Fierce Battle — Booster 4: The Sky's Ozone Herb",
+    "mb-tr05": "Toriko Super Fierce Battle — Booster 5: Melk Stardust",
+    "mb-tr06": "Toriko Super Fierce Battle — Booster 6: Heavenly King Zebra",
+    "mb-tr": "Toriko Promotional Cards",
+    "hxh-mb-hhs01": "Hunter × Hunter Preconstructed Deck — Four Challengers",
+    "hxh-mb-hh01": "Hunter × Hunter Booster Pack — Hunter Exam",
+    "hxh-mb-hh02": "Hunter × Hunter Booster Pack — Nen Users",
+    "hxh-mb-hh03": "Hunter × Hunter Booster Pack — Phantom Troupe",
+    "hxh-mb-hhex01": "Hunter × Hunter Phantom Booster",
+    "hxh-mb-hh": "Hunter × Hunter Promotional Cards",
+    "nrt-mb-nrs01": "Naruto Shippuden Starter Deck — Bonds of the Leaf",
+    "nrt-mb-nr01": "Naruto Shippuden Booster Pack 1 — Great Ninja War",
+    "nrt-mb-nr02": "Naruto Shippuden Booster Pack 2 — Will of the Hokage",
+    "nrt-mb-nr03": "Naruto Shippuden Booster Pack 3 — Those Who Control the Tailed Beasts",
+    "nrt-mb-nr04": "Naruto Shippuden Booster Pack 4 — The One Who Bears the Shadow",
+    "nrt-mb-nr05": "Naruto Shippuden Booster Pack 5 — Uchiha Awakening",
+    "nrt-mb-nr": "Naruto Shippuden Promotional Cards",
+    "mb-das02": "J-Heroes Deck — Heroes Assemble!",
+    "mb-as01": "J-Heroes Booster 1",
+    "mb-as02": "J-Heroes Booster 2",
+    "mb-as03": "J-Heroes Booster 3",
+    "mb-js01": "J-Heroes MiraBat Jump Hero Deck (Saikyo Jump, January 2013)",
+    "mb-js02": "J-Heroes Dragon Team Assemble Deck (Saikyo Jump, 2014 issue 8)",
+    "mb-as": "J-Heroes Promotional Cards",
+    "mb-kb01": "Kuroko's Basketball Booster Pack 1 — Tip-Off! Battle of Miracles",
     // ---- Naruto · Card Game (2002–2006), o jogo principal
     "nrt-s01": "Vol. 1",
     "nrt-s02": "Vol. 2 — Demon! Zabuza",
@@ -8768,14 +8824,6 @@
     "nrt-promo": "Promotional Cards",
     "nrt-extra": "Expansions & Specials",
     "nrt-atari": "\"Atari\" Winner Cards",
-    // ---- Naruto · Miracle Battle Carddass
-    "nrt-mb-nrs01": "Starter Deck — Bonds of the Leaf",
-    "nrt-mb-nr01": "Booster Pack 1 — Great Ninja War",
-    "nrt-mb-nr02": "Booster Pack 2 — Will of the Hokage",
-    "nrt-mb-nr03": "Booster Pack 3 — Those Who Control the Tailed Beasts",
-    "nrt-mb-nr04": "Booster Pack 4 — The One Who Bears the Shadow",
-    "nrt-mb-nr05": "Booster Pack 5 — Uchiha Awakening",
-    "nrt-mb-nr": "Promotional Cards",
     // ---- Naruto · Data Carddass (Narutimate Card Battle / Mission)
     "nrt-dc-s01": "Narutimate Card Battle — Vol. 1",
     "nrt-dc-s02": "Narutimate Card Battle — Vol. 2",
@@ -8826,13 +8874,6 @@
     "hxh-hb-gb": "Game Boy — Hunter's Genealogy bonus",
     "hxh-hb-jf00": "Jump Festa 2000 limited card",
     "hxh-hb-jf02": "Jump Festa 2002 Edition pack",
-    // ---- Hunter × Hunter · Miracle Battle Carddass
-    "hxh-mb-hhs01": "Preconstructed Deck — Four Challengers",
-    "hxh-mb-hh01": "Booster Pack — Hunter Exam",
-    "hxh-mb-hh02": "Booster Pack — Nen Users",
-    "hxh-mb-hh03": "Booster Pack — Phantom Troupe",
-    "hxh-mb-hhex01": "Phantom Booster",
-    "hxh-mb-hh": "Promotional Cards",
     // ---- Dragon Ball Carddass (sync-dbc-carddass.mjs): as 31 partes do Hondan,
     // inclusive as que o 80storage ainda não publicou (o sync pega sozinho quando
     // sair). Super Battle, Visual Adventure e Super Barcode Wars ficam de fora de
@@ -9079,16 +9120,11 @@
   const GAME_LINES = {
     onepiece: {
       "opcd": { prefix: "opcd-", label: "Carddass Hyper Battle", titleKey: "sets.category.vintage" },
-      "op2002": { prefix: "op2002-", label: "One Piece Card Game (2002)", titleKey: "sets.category.op2002" },
-      "op-mb": { prefix: "op-mb-", label: "Miracle Battle", titleKey: "sets.category.mbop" }
+      "op2002": { prefix: "op2002-", label: "One Piece Card Game (2002)", titleKey: "sets.category.op2002" }
     },
-    // hxh: o PRINCIPAL é o Carddass Hyper Battle (1999–2001); o Miracle Battle
-    // (2011–12) é linha, como no Naruto.
-    hxh: {
-      "hxh-mb": { prefix: "hxh-mb-", label: "Miracle Battle", titleKey: "sets.category.mbhh" }
-    },
+    // O Miracle Battle era linha aqui, no Naruto e no HxH até 2026-10-01; virou
+    // o jogo mbc (as sete séries do crossover num jogo só).
     naruto: {
-      "nrt-mb": { prefix: "nrt-mb-", label: "Miracle Battle", titleKey: "sets.category.mbnr" },
       // Data Carddass é o ARCADE da Bandai (a máquina lê o código de barras da
       // carta), e o do Naruto teve quatro títulos em sequência, de 2005 a 2010:
       // Narutimate Card Battle (DN), Mission (NM), Formation (NF) e Cross (NX).
@@ -9118,9 +9154,10 @@
   const VINTAGE_COLOR = "#8b6b43"; // sépia de papel velho: não é a cor de marca nenhuma
   const VINTAGE_POKEMON_UNTIL = "2008-12-31";
   const VINTAGE_ID_PREFIX = {
-    onepiece: ["opcd-", "op2002-", "op-mb-"], // Carddass 1999–2002, OPCG 2002–05, Miracle Battle
-    hxh: ["hxh-"],                            // Hyper Battle 1999–2001 e Miracle Battle: tudo vintage
+    onepiece: ["opcd-", "op2002-"],           // Carddass 1999–2002, OPCG 2002–05
+    hxh: ["hxh-"],                            // Hyper Battle 1999–2001: tudo vintage
     dbc: ["dbc-"],                            // Carddass 1988–1997: o jogo inteiro é vintage
+    mbc: ["mb-", "op-mb-", "nrt-mb-", "hxh-mb-"], // Miracle Battle 2009–2015: idem (os 3 últimos são os ids de antes de virar jogo)
     wow: ["wow-"],                            // WoW TCG 2006–2013: idem (e é o único vintage com preço)
     lotr: ["lotr-"],                          // Decipher 2001–2007: idem
     harrypotter: ["hp-"],                     // Wizards 2001–2002: idem
@@ -11149,6 +11186,19 @@
       return out;
     } catch (e) { recordSync("pull", false, e && e.message); return null; }
   }
+  // O Miracle Battle virou o jogo mbc em 2026-10-01: carta op-mb-/nrt-mb-/
+  // hxh-mb- que ainda está na coleção ou nos desejos do jogo da marca muda de
+  // gaveta. O como fica em src/migra-mbc.js, que só desce pra quem tem o que
+  // mover. Roda DEPOIS do merge com a nuvem, e os jogos que mudaram entram em
+  // `subir`, pro push que vem logo em seguida.
+  async function moveMiracleBattle(subir) {
+    try {
+      if (!["onepiece", "naruto", "hxh"].some((g) => /"(op|nrt|hxh)-mb-/.test(localStorage.getItem(gameKey("collection-v3", g)) + localStorage.getItem(gameKey("wishlist-v1", g))))) return false;
+    } catch (e) { return false; }
+    const jogos = (await injectScript("/src/migra-mbc.js")) && window.TCGMigraMbc ? window.TCGMigraMbc() : [];
+    jogos.forEach((g) => { subir[g] = localSnapshot(g); });
+    return jogos.length > 0;
+  }
   async function pushRemote(token, uid, data, keepalive, game) {
     try {
       const r = await fetch(`${SUPABASE_URL}/rest/v1/collections?on_conflict=user_id,game`, {
@@ -11966,6 +12016,7 @@
       writeSnapshot(merged, g);
       mesclado[g] = merged;
     }
+    await moveMiracleBattle(mesclado);
     if (!(await pushAllRemote(session.access_token, session.user.id, mesclado))) { fail(t("ts.syncError")); return; }
     window.location.reload();
   }
@@ -12241,6 +12292,7 @@
           writeSnapshot(merged, g);
           mesclado[g] = merged;
         }
+        await moveMiracleBattle(mesclado);
         await pushAllRemote(fresh.access_token, fresh.user.id, mesclado);
         await pullProfile();
         // Sem @ depois de puxar o perfil = primeiro login (ou conta antiga que
@@ -12317,6 +12369,8 @@
           lastPushedByGame[g] = localJson;
         }
       }
+      // Só com o pull que deu certo: o push abaixo regrava a linha inteira.
+      if (remoteAll && await moveMiracleBattle(aSubir)) changed = true;
       if (Object.keys(aSubir).length) await pushAllRemote(session.access_token, session.user.id, aSubir);
       pageLoading(false);
       if (changed) { window.location.reload(); return; }

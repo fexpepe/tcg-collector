@@ -556,6 +556,9 @@
   // (sem prefixo) só pode ser Pokémon ("base1-4") ou Lorcana ("1-1") — vai
   // pros dois, e cada um ignora o id que não é dele.
   const PREFIXO_JOGO = [
+    // Miracle Battle ANTES de op-/nrt-/hxh-: os ids de antes de virar o jogo
+    // mbc (2026-10-01) levam o prefixo da marca, e o primeiro que casa vence.
+    ["op-mb-", "mbc"], ["nrt-mb-", "mbc"], ["hxh-mb-", "mbc"], ["mb-", "mbc"],
     ["mtg-", "magic"], ["ygo-", "ygo"], ["op-", "onepiece"], ["opcd-", "onepiece"], ["op2002-", "onepiece"],
     ["fab-", "fab"], ["gcg-", "gundam"], ["swu-", "swu"], ["cpk-", "cyberpunk"], ["sor-", "sorcery"], ["dbfw-", "dbfw"], ["dgm-", "digimon"], ["rb-", "riftbound"],
     ["ua-", "unionarena"], ["nrt-", "naruto"], ["hxh-", "hxh"], ["dbc-", "dbc"], ["wow-", "wow"], ["lotr-", "lotr"], ["ws-", "weiss"], ["hp-", "harrypotter"]

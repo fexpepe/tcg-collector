@@ -113,6 +113,7 @@ jobs:
             data/lotr/sets
             data/weiss/sets
             data/harrypotter/sets
+            data/mbc/sets
             data/jump/sets
             data/magic/cards.js
             data/magic/indexes.js
@@ -138,8 +139,8 @@ jobs:
           fi
           faltando=""
           # data/dbc/, data/swu/, data/cyberpunk/, data/wow/, data/lotr/,
-          # data/sorcery/, data/harrypotter/ e data/weiss/: jogos novos (2026-09-24 a
-          # 2026-10-01). Enquanto o cache
+          # data/sorcery/, data/harrypotter/, data/weiss/ e data/mbc/: jogos novos
+          # (2026-09-24 a 2026-10-01). Enquanto o cache
           # for de antes deles, o build rápido publicaria o tile do hub sem
           # catálogo nenhum atrás.
           for f in data/manifest.generated.js data/pricing.generated.js \
@@ -149,7 +150,8 @@ jobs:
                    data/cyberpunk/manifest.generated.js data/wow/manifest.generated.js \
                    data/lotr/manifest.generated.js data/sorcery/manifest.generated.js \
                    data/harrypotter/manifest.generated.js \
-                   data/weiss/manifest.generated.js; do
+                   data/weiss/manifest.generated.js \
+                   data/mbc/manifest.generated.js; do
             [ -s "$f" ] || faltando="$faltando $f"
           done
           if [ -n "$faltando" ]; then
@@ -783,6 +785,7 @@ jobs:
             data/lotr/sets
             data/weiss/sets
             data/harrypotter/sets
+            data/mbc/sets
             data/jump/sets
             data/magic/cards.js
             data/magic/indexes.js

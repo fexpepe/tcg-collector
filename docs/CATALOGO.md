@@ -138,12 +138,16 @@ hub). A ficha preenchida vai na descrição da PR.
 
 - **Linha ou jogo?** Pelos precedentes, vira **linha** (`GAME_LINES`,
   `?line=`) quando já existe um slug que é a **marca**: as vintages do One
-  Piece e do Naruto são linhas de `onepiece` e `naruto`, e o Miracle Battle é
-  linha de `hxh`. Vira **slug próprio** quando o slug existente é um **jogo
-  específico** (o `dbc`, Carddass de Dragon Ball, não é linha do `dbfw`, que é
-  o Fusion World) ou quando não há slug da marca. Linha soma na conta da marca;
-  slug tem chip, cor e contagem próprios. A escolha não se desfaz depois,
-  porque os ids ficam.
+  Piece e do Naruto são linhas de `onepiece` e `naruto`. Vira **slug próprio**
+  quando o slug existente é um **jogo específico** (o `dbc`, Carddass de Dragon
+  Ball, não é linha do `dbfw`, que é o Fusion World), quando não há slug da
+  marca, ou quando o jogo é um **crossover** de várias marcas: o Miracle Battle
+  Carddass foi linha de `onepiece`, `naruto` e `hxh` até 2026-10-01 e virou o
+  `mbc`, com uma seção por série. Linha soma na conta da marca; slug tem chip,
+  cor e contagem próprios. Desfazer a escolha custa caro, porque os ids ficam:
+  o `mbc` manteve os ids antigos (`op-mb-`…), precisou de uma migração da
+  coleção no cliente (`src/migra-mbc.js`), de 301 dos endereços de linha e de
+  uma exceção no lint (`MUDOU_DE_JOGO`).
 - **Uma linha ou uma por título?** Títulos em sequência da MESMA plataforma
   são **uma linha com seções**, como as eras de um jogo: o arcade Data
   Carddass do Naruto teve Card Battle, Mission, Formation e Cross, e é a linha

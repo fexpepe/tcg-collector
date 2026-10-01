@@ -138,7 +138,14 @@ test("urlDoJogo e urlDoSet: linha pelo prefixo do setId, jogo principal no resto
   assert.equal(urlDoJogo("onepiece", "linha-que-nao-existe"), "one-piece-card-game");
   assert.equal(urlDoJogo("jogo-que-nao-existe", ""), null);
   assert.equal(urlDoSet("onepiece", "OP01"), "one-piece-card-game");
-  assert.equal(urlDoSet("onepiece", "op-mb-01"), "one-piece-miracle-battle");
+  // O Miracle Battle virou o jogo mbc (2026-10-01): o ?line= e o endereço de
+  // linha antigos levam pra ele, e o set vai junto (o slug não mudou).
+  assert.equal(urlDoJogo("onepiece", "op-mb"), "miracle-battle-carddass");
+  assert.equal(urlDoJogo("naruto", "nrt-mb"), "miracle-battle-carddass");
+  assert.equal(urlOficial("one-piece-miracle-battle"), "miracle-battle-carddass");
+  assert.equal(urlOficial("hunter-x-hunter-miracle-battle"), "miracle-battle-carddass");
+  assert.equal(urlOficial("hxh-mb"), "miracle-battle-carddass");
+  assert.equal(urlDoSet("mbc", "op-mb-op01"), "miracle-battle-carddass");
   assert.equal(urlDoSet("naruto", "nrt-nf-03"), "naruto-data-carddass");
   assert.equal(urlDoSet("naruto", "nrt-s01"), "naruto-card-game-2002");
   assert.equal(urlDoSet("pokemon", "sv03.5"), "pokemon");

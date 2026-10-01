@@ -79,7 +79,8 @@
     wow: ["WoW TCG", "#00aeff"],
     lotr: ["LOTR", "#4d7c0f"],
     harrypotter: ["Harry Potter", "#740001"],
-    weiss: ["Weiß Schwarz", "#ffffff"]
+    weiss: ["Weiß Schwarz", "#ffffff"],
+    mbc: ["Miracle Battle", "#fb923c"]
   };
 
   // Categorias do blog. O banco só confere o formato (a lista mora aqui), então

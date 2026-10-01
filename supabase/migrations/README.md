@@ -8,6 +8,18 @@ poucos.)
 
 ## Pendentes de aplicar
 
+- `20261001e` — libera o slug `mbc` (Miracle Battle Carddass, o crossover da
+  Jump que virou jogo próprio em 2026-10-01) nas DUAS whitelists de jogo:
+  `card_views`/`increment_card_view` e `contribute_price`. Cópia da
+  `20261001d` (já aplicada) com o `mbc` a mais; só a lista muda, conferido por
+  diff. Aditiva e sem ordem com o JS: antes dela, a view de carta do Miracle
+  Battle é descartada em silêncio (as funções só dão `return`) e o resto do
+  jogo funciona. As views antigas das cartas que eram linha do One Piece, do
+  Naruto e do HxH ficam nas linhas desses jogos (é só o contador de "mais
+  vistas"). Conferir com os `curl` do fim do arquivo: o de `mb-db01-01`
+  responde 204 **e cria a linha** em `card_views`. **A próxima migração de
+  jogo copia esta.**
+
 - `20260930b` — blog (`20260930b_blog.sql`; o `b` porque a `20260930a` do mesmo
   dia é a do Star Wars). Cria o papel de editor do blog (`blog_editores`,
   tabela trancada, SEPARADA do `is_admin`), a tabela `posts` com RLS
@@ -95,7 +107,8 @@ poucos.)
   `harrypotter` (`hp-bs-8`) também criam a delas, e `wow`/`lotr` seguem
   contando; o jogo inventado dá 204 sem criar nada; a contribuição anônima
   segue **401**. Sem prova direta, como nas anteriores: o `contribute_price`
-  logado. **A próxima migração de jogo copia esta.**
+  logado. (A próxima migração de jogo copia a `20261001e`, que tem esta
+  lista e mais o `mbc`.)
 
 - `20261001c` (Harry Potter) e `20261001b` (Sorcery) — **NÃO aplicar: a
   `20261001d` já cobre as duas.** As listas delas são a da `d` sem o `weiss`

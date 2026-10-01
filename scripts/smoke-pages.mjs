@@ -26,7 +26,7 @@ const BASE = `http://localhost:${PORTA}/`;
 // do título e do agrupamento, e nenhuma delas é a página que se abre por hábito.
 const PAGINAS = [
   "index.html", "hub.html", "sets.html?game=pokemon", "sets.html?game=pokemon&serie=sv",
-  "sets.html?game=onepiece&line=opcd", "sets.html?game=naruto&line=nrt-mb",
+  "sets.html?game=onepiece&line=opcd", "sets.html?game=mbc",
   "cards.html?game=pokemon", "detail.html?type=set&name=Base+Set&game=pokemon",
   "explore.html", "search.html", "account.html", "collection.html", "portfolio.html", "wishlist.html", "binders.html",
   "decks.html", "my-decks.html", "dashboard.html", "sales.html",

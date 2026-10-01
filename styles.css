@@ -417,6 +417,18 @@
   --accent: #2e3a8c; --accent-dark: #242e70; --accent-rgb: 46, 58, 140;
   --accent-soft: rgba(46, 58, 140, 0.1); --on-accent: #ffffff;
 }
+/* Miracle Battle Carddass: o laranja-dourado do logo, num tom PÊSSEGO pra não
+   repetir o Naruto, que tem carta dentro dele (01/10/2026). Pêssego claro com
+   texto escuro no escuro (11:1); tijolo com texto branco no claro (7.8:1). */
+[data-game-accent="mbc"] {
+  --accent: #fdba74; --accent-dark: #fb923c; --accent-rgb: 253, 186, 116;
+  --accent-soft: rgba(253, 186, 116, 0.16); --on-accent: #0a0c10;
+}
+[data-theme="light"][data-game-accent="mbc"],
+[data-theme="light"] [data-game-accent="mbc"] {
+  --accent: #9a3412; --accent-dark: #7c2d12; --accent-rgb: 154, 52, 18;
+  --accent-soft: rgba(154, 52, 18, 0.1); --on-accent: #ffffff;
+}
 /* Sorcery: Contested Realm: o PERGAMINHO da moldura das cartas (#c9a66b, o do
    GAME_COLOR) com texto escuro no escuro (8.5:1). No claro ele fica em 2.3:1
    com branco, então o accent escurece pro marrom de tinta #7d5f2c (5.9:1 com
