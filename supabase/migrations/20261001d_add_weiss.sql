@@ -1,4 +1,10 @@
 -- ============================================================================
+-- JÁ APLICADA (2026-10-01, verificada por curl; ver o README desta pasta).
+-- Cobriu também a 20261001b (Sorcery) e a 20261001c (Harry Potter), que não
+-- rodaram. A próxima migração de jogo copia esta com o slug novo a mais.
+-- ============================================================================
+
+-- ============================================================================
 -- Migração aditiva: libera o slug `weiss` (Weiß Schwarz, Bushiroad — só a
 -- edição inglesa, via TCGCSV cat. 20) nas whitelists de jogo do banco.
 -- Aplicar no SQL Editor do Supabase (projeto dlnalopazitfdgnmdguu).

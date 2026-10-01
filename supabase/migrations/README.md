@@ -8,40 +8,6 @@ poucos.)
 
 ## Pendentes de aplicar
 
-- `20261001d` — libera o slug `weiss` (Weiß Schwarz) nas DUAS whitelists de
-  jogo: `card_views`/`increment_card_view` e `contribute_price` (cópia da
-  `20261001c` com o `weiss` a mais; fora do cabeçalho e dos exemplos de
-  `curl`, só a lista muda, conferido por diff). A lista é a inteira e já tem o
-  `sorcery` e o `harrypotter`, então ela **cobre a `20261001c` e a
-  `20261001b`**: aplicar só esta basta. Se alguma das duas for aplicada, que
-  seja ANTES desta; rodada depois, tiraria o `weiss` das duas listas. Sem
-  ordem com a `20260930b` (blog). Conferir com o par de `curl` do fim do
-  arquivo: a view de `ws-674019` tem de **criar a linha** no `card_views` (o
-  204 sozinho não prova nada) e a contribuição anônima segue 401.
-
-- `20261001c` — **coberta pela `20261001d`; não aplicar depois dela.** Libera o slug `harrypotter` (Harry Potter Trading Card Game,
-  Wizards of the Coast 2001–2002, vintage) nas DUAS whitelists de jogo:
-  `card_views`/`increment_card_view` e `contribute_price`. Cópia da
-  `20261001b` (Sorcery) com o `harrypotter` a mais: fora do cabeçalho e dos
-  exemplos de `curl`, só a lista muda (conferido por diff). A lista é a
-  inteira e contém o `wow`, o `lotr` e o `sorcery`. Sem ordem com a
-  `20260930b` (blog). Depois dela, a `20261001b`, a `20261001a` e a
-  `20260930d` não podem rodar de novo (tirariam o `harrypotter`). Conferir com
-  o par de `curl` do fim do arquivo: a view com `hp-bs-8` tem de CRIAR a linha
-  em `card_views` (o 204 sozinho não prova nada) e a contribuição anônima
-  segue 401.
-
-- `20261001b` — libera o slug `sorcery` (Sorcery: Contested Realm) nas DUAS
-  whitelists de jogo: `card_views`/`increment_card_view` e `contribute_price`
-  (cópia da `20261001a` com o `sorcery` a mais; fora do cabeçalho e dos
-  exemplos de `curl`, só a lista muda, conferido por diff). A lista é a
-  inteira, com o `wow` e o `lotr` que a `20261001a` (já aplicada) liberou,
-  então pode ser aplicada a qualquer momento, sem ordem com a `20260930b`
-  (blog). Conferir com o par de `curl` do fim do arquivo: a view de
-  `sor-522747` tem de **criar a linha** no `card_views` (o 204 sozinho não
-  prova nada) e a contribuição anônima segue 401. Depois dela, a `20261001a`
-  e a `20260930d` não podem rodar de novo (tirariam o `sorcery`).
-
 - `20260930b` — blog (`20260930b_blog.sql`; o `b` porque a `20260930a` do mesmo
   dia é a do Star Wars). Cria o papel de editor do blog (`blog_editores`,
   tabela trancada, SEPARADA do `is_admin`), a tabela `posts` com RLS
@@ -117,6 +83,26 @@ poucos.)
   E, logado como admin, abrir `/admin`: as abas aparecem e o aviso amarelo some.
 
 ### Já aplicadas (verificado em produção)
+
+- `20261001d` — libera o slug `weiss` (Weiß Schwarz) nas DUAS whitelists de
+  jogo: `card_views`/`increment_card_view` e `contribute_price` (cópia da
+  `20261001c` com o `weiss` a mais; só a lista muda, conferido por diff). A
+  lista é a inteira, com o `sorcery` e o `harrypotter`: aplicada SOZINHA em
+  2026-10-01, ela liberou também os jogos da `20261001b` e da `20261001c`,
+  que não chegaram a rodar. Verificada por curl no mesmo dia:
+  `increment_card_view` com `weiss` responde 204 **e cria a linha**
+  (`{"card_id":"ws-674019","views":1}`); `sorcery` (`sor-522747`) e
+  `harrypotter` (`hp-bs-8`) também criam a delas, e `wow`/`lotr` seguem
+  contando; o jogo inventado dá 204 sem criar nada; a contribuição anônima
+  segue **401**. Sem prova direta, como nas anteriores: o `contribute_price`
+  logado. **A próxima migração de jogo copia esta.**
+
+- `20261001c` (Harry Potter) e `20261001b` (Sorcery) — **NÃO aplicar: a
+  `20261001d` já cobre as duas.** As listas delas são a da `d` sem o `weiss`
+  (e a da `b` também sem o `harrypotter`): rodadas agora, tirariam esses
+  jogos das whitelists em silêncio, e view de carta e Preço da Comunidade
+  deles passariam a ser descartados (as funções só dão `return`). Os
+  arquivos ficam como registro, com o aviso no topo.
 
 - `20260929a` — robôs retroativos (`20260929a_robos_retroativos.sql`): tira da
   série de crescimento a rajada de julho/agosto. O "visitantes únicos em 30
