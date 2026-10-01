@@ -120,9 +120,19 @@ import { join } from "node:path";
 // enxugar no registro em si; o espaço de verdade sai da F3 do docs/CATALOGO.md
 // (nomes de set JA/vintage fora do shared.js, ~5,6 KB gz) ou das lojas do
 // preview fora do núcleo. 1 KB de folga, como das outras vezes.
+//
+// 2026-10-01: teto do CSS núcleo sobe de 33.792 pra 34.816, pra caber o
+// Sorcery: Contested Realm. A main estava a 6 bytes gz do teto (33.786, depois
+// do WoW TCG e do LOTR TCG, que entraram no mesmo dia em sessões paralelas), e
+// o accent de um jogo custa ~58 bytes gz: os dois blocos [data-game-accent]
+// (escuro e claro), que já são o mínimo (os cinco tokens de todo jogo). O
+// espaço de verdade sai de uma regra genérica de accent alimentada por um
+// registro de cores (as 30+ regras por jogo pesam ~1 KB gz, ver a 5.4 do
+// docs/CATALOGO.md) ou de rotear .detail-toolbar/.progress-mode pra área do
+// set no split-css. 1 KB de folga, como das outras vezes.
 const TETOS = [
   { arquivo: "shared.js", teto: 84992, nota: "núcleo JS de toda página" },
-  { arquivo: "styles.min.css", teto: 33792, nota: "núcleo do CSS, depois do split por área" },
+  { arquivo: "styles.min.css", teto: 34816, nota: "núcleo do CSS, depois do split por área" },
 ];
 
 const dir = process.argv[2] || "/tmp/ci-min";
