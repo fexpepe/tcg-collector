@@ -1,10 +1,9 @@
 -- ============================================================================
--- NÃO APLICAR (2026-10-01). A 20261001a (LOTR TCG) é esta mesma migração com o
--- `lotr` a mais na lista (conferido por diff) e cobre o `wow`. Rodada DEPOIS
--- da 20261001a, esta tiraria o `lotr` das duas whitelists, e view de carta e
--- Preço da Comunidade do LOTR passariam a ser descartados em silêncio. Se já
--- foi aplicada antes da 20261001a, não faz mal. Fica como registro; a próxima
--- migração de jogo copia a 20261001a. Ver o README desta pasta.
+-- JÁ APLICADA (2026-10-01, verificada por curl; ver o README desta pasta).
+-- NÃO RODAR DE NOVO depois da 20261001a (LOTR TCG): ela é esta mesma
+-- migração com o `lotr` a mais (conferido por diff), e esta, rodada depois,
+-- tiraria o `lotr` das duas whitelists em silêncio. A próxima migração de
+-- jogo copia a 20261001a.
 -- ============================================================================
 
 -- ============================================================================
