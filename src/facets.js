@@ -128,6 +128,18 @@
       facetColor("color"),
       facetType(["Legend", "Unit", "Program", "Gear"])
     ],
+    // LOTR TCG da Decipher: a CULTURA (os povos do Senhor dos Anéis; o
+    // Ringwraith vira "Wraith" do Shadows em diante, como está na carta) e o
+    // tipo. Povos Livres primeiro, Sombra depois, como no livro de regras.
+    lotr: [
+      {
+        key: "culture", labelKey: "facet.culture",
+        of: (c) => (c.culture ? [String(c.culture)] : []),
+        label: (v) => v,
+        order: ["Dwarven", "Elven", "Gandalf", "Gondor", "Rohan", "Shire", "Gollum", "Dunland", "Isengard", "Men", "Moria", "Orc", "Raider", "Ringwraith", "Wraith", "Sauron", "Uruk-hai"]
+      },
+      facetType(["Companion", "Ally", "Follower", "Possession", "Artifact", "Condition", "Event", "Minion", "Site", "The One Ring"])
+    ],
     dbfw: [
       facetColor("color"),
       facetType(["Leader", "Battle", "Extra"])

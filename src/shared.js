@@ -3220,7 +3220,8 @@
     dbfw: SUBNAV_MIN,
     naruto: SUBNAV_MIN,
     hxh: SUBNAV_MIN,
-    dbc: SUBNAV_MIN
+    dbc: SUBNAV_MIN,
+    lotr: SUBNAV_MIN
   };
   // As páginas do Explorar trazem um <nav class="explore-subnav" data-placeholder>
   // VAZIO no HTML, dentro do .page-head-bar, com a altura de uma linha de chips
@@ -7047,7 +7048,13 @@
     // World of Warcraft TCG (conferido em 30/09/2026): TCGplayer na linha
     // "wow" (a busca devolve a carta "in WoW") e Cardmarket em /en/WoW. Sem
     // loja BR: o MYP não tem seção do jogo e não existe Liga.
-    wow:       { tcgLine: "wow", usText: "world of warcraft tcg", cm: "WoW", cmv: 1 }
+    wow:       { tcgLine: "wow", usText: "world of warcraft tcg", cm: "WoW", cmv: 1 },
+    // LOTR TCG da Decipher (conferido em 30/09/2026): sem Liga e sem TCGplayer
+    // (a TCGCSV não tem a categoria); o MYP tem /lotr com os 19 sets e a busca
+    // casa o "Título, Subtítulo" (Tengwar com "(T)"). No eBay vai SÓ o nome
+    // (nameOnly): os anúncios escrevem o código "1R284", então o número puro
+    // + ano dos outros vintages zerava a busca.
+    lotr:      { myp: "lotr", usText: "lord of the rings tcg", noTcgplayer: true, nameOnly: true }
   };
   function marketOf(game) { return MARKETS[game] || MARKETS.pokemon; }
 
@@ -7150,9 +7157,11 @@
   // "/total" do cardCode é convenção nossa, Carddass não imprime "C01/42" e
   // nenhum anúncio escreve assim — o ano, sim, está no título de todos.
   function usSearchText(card, game) {
+    const m = marketOf(game);
+    if (m.nameOnly) return `${m.usText} ${card.name}`;
     const year = vintageSearchYear(card);
     const code = year ? String(card.number || "").trim() : cardCode(card);
-    return `${marketOf(game).usText || "pokemon"} ${card.name} ${code} ${year}`.replace(/\s+/g, " ").trim();
+    return `${m.usText || "pokemon"} ${card.name} ${code} ${year}`.replace(/\s+/g, " ").trim();
   }
 
   // Separa número e total ("4/102" -> {4,102}; ou number "4" + setTotal "102").
@@ -8604,7 +8613,8 @@
     { game: "naruto", dataDir: "data/naruto/" },
     { game: "hxh", dataDir: "data/hxh/" },
     { game: "dbc", dataDir: "data/dbc/" },
-    { game: "wow", dataDir: "data/wow/" }
+    { game: "wow", dataDir: "data/wow/" },
+    { game: "lotr", dataDir: "data/lotr/" }
   ];
   // Slugs e cor de cada jogo, num lugar só (adicionar um jogo = 1 entrada aqui
   // + 1 no game.js + labels no i18n; as páginas iteram em vez de hardcodear).
@@ -8636,7 +8646,8 @@
     naruto: "#ea580c",     // laranja
     hxh: "#15803d",        // verde
     dbc: "#db2777",        // rosa (a 70 do FaB, o vizinho mais próximo; 4.6:1 com preto)
-    wow: "#00aeff"         // azul da Blizzard; 8.5:1 com preto, a 83 do Union Arena (os azuis estão cheios)
+    wow: "#00aeff",        // azul da Blizzard; 8.5:1 com preto, a 83 do Union Arena (os azuis estão cheios)
+    lotr: "#4d7c0f"        // verde-musgo (pedido do Fernando: "algum tom de verde"); 5.0:1 com branco, a 73 do verde do HxH
   };
   // Preto ou branco sobre a cor do jogo — o que der MAIOR contraste de verdade
   // (fórmula WCAG), não um limiar de luminância chutado: com limiar fixo o
@@ -8675,7 +8686,7 @@
     fab: "filter.gameFab", gundam: "filter.gameGundam", swu: "filter.gameSwu", cyberpunk: "filter.gameCyberpunk", dbfw: "filter.gameDbfw",
     ygo: "filter.gameYgo", digimon: "filter.gameDigimon", riftbound: "filter.gameRiftbound",
     unionarena: "filter.gameUnionArena", naruto: "filter.gameNaruto", hxh: "filter.gameHxh",
-    dbc: "filter.gameDbc", wow: "filter.gameWow"
+    dbc: "filter.gameDbc", wow: "filter.gameWow", lotr: "filter.gameLotr"
   };
   function gameLabel(g) { return t(GAME_LABEL_KEY[g] || GAME_LABEL_KEY.pokemon); }
   const VINTAGE_SET_EN = {
@@ -9079,6 +9090,7 @@
     hxh: ["hxh-"],                            // Hyper Battle 1999–2001 e Miracle Battle: tudo vintage
     dbc: ["dbc-"],                            // Carddass 1988–1997: o jogo inteiro é vintage
     wow: ["wow-"],                            // WoW TCG 2006–2013: idem (e é o único vintage com preço)
+    lotr: ["lotr-"],                          // Decipher 2001–2007: idem
     naruto: ["nrt-"]                          // Bandai 2003–2013 inteiro…
   };
   const VINTAGE_ID_EXCEPT = { naruto: ["nrt-ncg-"] }; // …menos o jogo NOVO (2027)

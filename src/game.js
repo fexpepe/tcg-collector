@@ -34,6 +34,7 @@
     hxh: { slug: "hxh", name: "Hunter × Hunter", dataDir: "data/hxh/" },             // vintage Bandai: Miracle Battle (2011–12); Hyper Battle 1999–2001 em curadoria
     dbc: { slug: "dbc", name: "Dragon Ball Carddass", dataDir: "data/dbc/" },       // vintage Bandai 1988–1997 (Hondan; cartas sem scan ainda)
     wow: { slug: "wow", name: "World of Warcraft TCG", dataDir: "data/wow/" },     // vintage Upper Deck/Cryptozoic 2006–2013, TCGCSV cat. 13 (EN, com preço)
+    lotr: { slug: "lotr", name: "The Lord of the Rings TCG", dataDir: "data/lotr/" }, // vintage Decipher 2001–2007 (banco do Player's Council)
     // Em preparação (catálogo ainda vazio; tile "Em breve" no hub):
     jump: { slug: "jump", name: "JUMP", dataDir: "data/jump/" }            // promos curadas (Jump Festa, V-Jump…)
   };
@@ -56,7 +57,8 @@
     ["dragon-ball-fusion-world", "dbfw"], ["digimon-card-game", "digimon"], ["union-arena", "unionarena"],
     ["cyberpunk-tcg", "cyberpunk"], ["naruto-card-game", "naruto", "nrt-ncg", "nrt-ncg-"],
     ["dragon-ball-carddass", "dbc"], ["hunter-x-hunter-carddass", "hxh"],
-    ["one-piece-carddass", "onepiece", "opcd", "opcd-"], ["one-piece-card-game-2002", "onepiece", "op2002", "op2002-"],
+    ["one-piece-carddass", "onepiece", "opcd", "opcd-"], ["lord-of-the-rings-tcg", "lotr"],
+    ["one-piece-card-game-2002", "onepiece", "op2002", "op2002-"],
     ["naruto-card-game-2002", "naruto"], ["naruto-data-carddass", "naruto", "nrt-dc", "nrt-dc-,nrt-nf-,nrt-nx-"],
     ["naruto-ccg", "naruto", "nrt-ccg", "nrt-ccg-"], ["world-of-warcraft-tcg", "wow"], ["one-piece-miracle-battle", "onepiece", "op-mb", "op-mb-"],
     ["hunter-x-hunter-miracle-battle", "hxh", "hxh-mb", "hxh-mb-"], ["naruto-miracle-battle", "naruto", "nrt-mb", "nrt-mb-"]
@@ -233,7 +235,8 @@
     magic: ["https://cards.scryfall.io", "https://svgs.scryfall.io"],
     lorcana: ["https://cards.lorcast.io"],
     naruto: ["https://wsrv.nl"],
-    hxh: ["https://wsrv.nl"]
+    hxh: ["https://wsrv.nl"],
+    lotr: ["https://wsrv.nl"]
   };
   // SEM crossorigin, igual às tags que já existem no HTML: na PRIMEIRA visita —
   // a única em que o handshake pesa — o service worker ainda não controla a

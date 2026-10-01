@@ -8,14 +8,16 @@ poucos.)
 
 ## Pendentes de aplicar
 
-- `20260930d` — libera o slug `wow` (World of Warcraft TCG) nas DUAS
-  whitelists de jogo: `card_views`/`increment_card_view` e `contribute_price`
-  (cópia da `20260930c`; fora do cabeçalho e dos exemplos de `curl`, só a
-  lista muda, conferido por diff). A lista é a inteira e contém o `swu` e o
-  `cyberpunk`, então pode ser aplicada a qualquer momento, sem ordem com a
-  `20260930b` (blog). Conferir com o par de `curl` do fim do arquivo: a view
-  com `wow` tem de CRIAR a linha `wow-16485` em `card_views` (o 204 sozinho
-  não prova nada) e a contribuição anônima segue 401.
+- `20261001a` — libera os slugs `wow` (World of Warcraft TCG) **e** `lotr`
+  (The Lord of the Rings TCG, Decipher 2001–2007) nas DUAS whitelists de jogo:
+  `card_views`/`increment_card_view` e `contribute_price` (cópia da
+  `20260930d` com o `lotr` a mais; fora do cabeçalho e dos exemplos de
+  `curl`, só a lista muda, conferido por diff). A lista é a inteira, com o
+  `swu`, o `cyberpunk` e o `wow`, então ela SUBSTITUI a `20260930d` (ver
+  abaixo, "NÃO aplicar"). Sem ordem com a `20260930b` (blog). Conferir com o
+  par de `curl` do fim do arquivo: a view de `lotr-1r1` tem de **criar a
+  linha** no `card_views` (o 204 sozinho não prova nada) e a contribuição
+  anônima segue 401; o mesmo vale pro `wow-16485` com `"p_game":"wow"`.
 
 - `20260930b` — blog (`20260930b_blog.sql`; o `b` porque a `20260930a` do mesmo
   dia é a do Star Wars). Cria o papel de editor do blog (`blog_editores`,
@@ -231,6 +233,15 @@ poucos.)
   jogo inventado também dá 204 mas não cria nada; a contribuição anônima segue
   **401**. Sem prova direta, como nas anteriores: o `contribute_price` logado
   com `swu` (fecha contribuindo um preço numa carta do Star Wars pelo site).
+
+- `20260930d` — **NÃO aplicar: a `20261001a` já cobre o `wow`.** O WoW TCG e o
+  LOTR TCG entraram em sessões paralelas entre 30/09 e 01/10/2026, e cada
+  migração de jogo reescreve a lista INTEIRA (`docs/CATALOGO.md`, 4.5 e 5.5).
+  A `20261001a` é a `20260930d` com o `lotr` a mais (conferido por diff);
+  rodada DEPOIS dela, a `20260930d` tiraria o `lotr` das duas whitelists em
+  silêncio. Se ela já tiver sido aplicada antes da `20261001a`, não faz mal:
+  a `20261001a` reescreve por cima com os dois. O arquivo fica como registro,
+  com o mesmo aviso no topo.
 
 - `20260924a` — **NÃO aplicar: a `20260930a` já cobre o `dbc`.** Ela liberaria
   o slug `dbc` (Dragon Ball Carddass) nas DUAS whitelists de jogo, mas a

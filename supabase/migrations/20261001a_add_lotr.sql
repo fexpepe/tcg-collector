@@ -1,28 +1,24 @@
 -- ============================================================================
--- NÃO APLICAR (2026-10-01). A 20261001a (LOTR TCG) é esta mesma migração com o
--- `lotr` a mais na lista (conferido por diff) e cobre o `wow`. Rodada DEPOIS
--- da 20261001a, esta tiraria o `lotr` das duas whitelists, e view de carta e
--- Preço da Comunidade do LOTR passariam a ser descartados em silêncio. Se já
--- foi aplicada antes da 20261001a, não faz mal. Fica como registro; a próxima
--- migração de jogo copia a 20261001a. Ver o README desta pasta.
--- ============================================================================
-
--- ============================================================================
--- Migração aditiva: libera o slug `wow` (World of Warcraft TCG, Upper Deck
--- 2006–2010 e Cryptozoic 2010–2013, via TCGCSV cat. 13) nas whitelists de
--- jogo do banco. Aplicar no SQL Editor do Supabase (projeto
+-- Migração aditiva: libera o slug `lotr` (The Lord of the Rings TCG, Decipher
+-- 2001–2007, jogo vintage; catálogo do banco do Player's Council) nas
+-- whitelists de jogo do banco. Aplicar no SQL Editor do Supabase (projeto
 -- dlnalopazitfdgnmdguu).
 --
--- Cópia da 20260930c (Cyberpunk TCG) com `wow` na lista — as mesmas DUAS
+-- Cópia da 20260930d (WoW TCG) com `lotr` na lista — as mesmas DUAS
 -- famílias de whitelist:
 --   1. card_views + increment_card_view  (corpo da 20260923a, com a linha do
 --      card_views_daily)
 --   2. contribute_price                  (corpo da 20260807c)
--- Sem isto, no WoW TCG a view de carta e a contribuição de preço são
--- rejeitadas EM SILÊNCIO (as funções só dão `return`). A lista é a INTEIRA
--- (reescreve a da 20260930c, que já foi aplicada e continua contida aqui);
--- a 20260930b (blog) não mexe nessas funções nem na lista, então a ordem
--- entre as duas não importa.
+-- Sem isto, no LOTR a view de carta e a contribuição de preço são rejeitadas
+-- EM SILÊNCIO (as funções só dão `return`). A lista é a INTEIRA e já traz o
+-- `wow`: ela COBRE a 20260930d (World of Warcraft TCG, sessão paralela do
+-- mesmo dia, ainda não aplicada), que passou a "NÃO aplicar" — rodada depois
+-- desta, a 20260930d tiraria o `lotr` das listas. Se a 20260930d já tiver sido
+-- aplicada antes, tudo bem: esta reescreve por cima com as duas.
+--
+-- Os ids do LOTR são lotr-<código impresso> (lotr-1r284, lotr-9rplus32): o
+-- "+" do Reflections virou "plus" no sync justamente pra caber na regex de id
+-- abaixo, que só aceita [A-Za-z0-9._-].
 --
 -- Sem cifrão dentro dos corpos de função (lição da 20260923a): o editor do
 -- Supabase se perde com `$` solto num corpo `$$…$$`. As âncoras de fim das
@@ -43,14 +39,14 @@ begin
   end loop;
 end $$;
 alter table public.card_views add constraint card_views_game_check
-  check (game = any (array['pokemon','lorcana','onepiece','magic','fab','gundam','swu','cyberpunk','dbfw','ygo','digimon','riftbound','unionarena','naruto','hxh','dbc','wow','jump']));
+  check (game = any (array['pokemon','lorcana','onepiece','magic','fab','gundam','swu','cyberpunk','dbfw','ygo','digimon','riftbound','unionarena','naruto','hxh','dbc','wow','lotr','jump']));
 
--- increment_card_view: corpo IDÊNTICO ao da 20260923a/20260924a/20260930a/20260930c — só a lista de jogos muda.
+-- increment_card_view: corpo IDÊNTICO ao da 20260923a/20260924a/20260930a/20260930c/20260930d — só a lista de jogos muda.
 create or replace function public.increment_card_view(p_game text, p_card_id text)
 returns void language plpgsql security definer set search_path = public as $$
 begin
   if p_game is null or p_card_id is null then return; end if;
-  if not (p_game = any (array['pokemon','lorcana','onepiece','magic','fab','gundam','swu','cyberpunk','dbfw','ygo','digimon','riftbound','unionarena','naruto','hxh','dbc','wow','jump'])) then return; end if;
+  if not (p_game = any (array['pokemon','lorcana','onepiece','magic','fab','gundam','swu','cyberpunk','dbfw','ygo','digimon','riftbound','unionarena','naruto','hxh','dbc','wow','lotr','jump'])) then return; end if;
   if p_card_id !~ '^[A-Za-z0-9][A-Za-z0-9._-]{0,79}\Z' then return; end if;
   if not _rate_ok('cardview', 120) then return; end if;
   insert into card_views (game, card_id, views) values (p_game, p_card_id, 1)
@@ -70,7 +66,7 @@ create or replace function public.contribute_price(
 declare v numeric;
 begin
   if auth.uid() is null then return; end if;
-  if not (p_game = any (array['pokemon','lorcana','onepiece','magic','fab','gundam','swu','cyberpunk','dbfw','ygo','digimon','riftbound','unionarena','naruto','hxh','dbc','wow','jump'])) then return; end if;
+  if not (p_game = any (array['pokemon','lorcana','onepiece','magic','fab','gundam','swu','cyberpunk','dbfw','ygo','digimon','riftbound','unionarena','naruto','hxh','dbc','wow','lotr','jump'])) then return; end if;
   if p_card_id is null or p_card_id !~ '^[A-Za-z0-9][A-Za-z0-9._-]{0,79}\Z' then return; end if;
   if p_variant is null or length(p_variant) < 1 or length(p_variant) > 40 then return; end if;
   if p_cond is null or p_cond !~ '^[A-Za-z0-9 +-]{1,12}\Z' then return; end if;
@@ -96,19 +92,19 @@ notify pgrst, 'reload schema';
 -- ============================================================================
 -- Verificação (depois de aplicar):
 --
---   # 1) view de carta do Cyberpunk: 204 E a linha aparece em card_views
+--   # 1) view de carta do LOTR (lotr-1r1, The One Ring): 204 E a linha aparece em card_views
 --   #    (204 sozinho não prova nada: jogo inválido também devolve 204).
 --   curl -s -o /dev/null -w "%{http_code}\n" -X POST \
 --     "https://dlnalopazitfdgnmdguu.supabase.co/rest/v1/rpc/increment_card_view" \
 --     -H "apikey: sb_publishable_0Qlei5ZvRcEsr18QRdWfGg_N3aR1zyL" -H "Content-Type: application/json" \
---     -d '{"p_game":"wow","p_card_id":"wow-16485"}'
+--     -d '{"p_game":"lotr","p_card_id":"lotr-1r1"}'
 --
---   curl -s "https://dlnalopazitfdgnmdguu.supabase.co/rest/v1/card_views?game=eq.wow&select=card_id,views" \
+--   curl -s "https://dlnalopazitfdgnmdguu.supabase.co/rest/v1/card_views?game=eq.lotr&select=card_id,views" \
 --     -H "apikey: sb_publishable_0Qlei5ZvRcEsr18QRdWfGg_N3aR1zyL"
 --
 --   # 2) contribuição anônima segue 401 (o fechamento da 20260807b continua de pé)
 --   curl -s -o /dev/null -w "%{http_code}\n" -X POST \
 --     "https://dlnalopazitfdgnmdguu.supabase.co/rest/v1/rpc/contribute_price" \
 --     -H "apikey: sb_publishable_0Qlei5ZvRcEsr18QRdWfGg_N3aR1zyL" -H "Content-Type: application/json" \
---     -d '{"p_game":"wow","p_card_id":"wow-16485","p_variant":"Normal","p_cond":"NM","p_kind":"listed","p_company":"","p_grade":"","p_value_brl":10}'
+--     -d '{"p_game":"lotr","p_card_id":"lotr-1r1","p_variant":"Normal","p_cond":"NM","p_kind":"listed","p_company":"","p_grade":"","p_value_brl":10}'
 -- ============================================================================

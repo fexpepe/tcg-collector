@@ -16,7 +16,7 @@
     magic: "game_magic-v2.webp", fab: "game_fab.webp", gundam: "game_gundam-v2.webp", swu: "game_swu.webp", cyberpunk: "game_cyberpunk.webp", dbfw: "game_dbfw-v2.webp",
     ygo: "game_ygo-v2.webp", digimon: "game_digimon-v2.webp", riftbound: "game_riftbound-v2.webp",
     unionarena: "game_unionarena.webp", naruto: "game_naruto.webp", hxh: "game_hxh.webp",
-    dbc: "game_dbc.webp", wow: "game_wow.webp"
+    dbc: "game_dbc.webp", wow: "game_wow.webp", lotr: "game_lotr.webp"
   };
   function gameLogoUrl(game) {
     const f = GAME_LOGO[game];
@@ -605,6 +605,7 @@
       if ((window.SLEEVU && window.SLEEVU.game) === "swu") return groupSwuSets(setItems);
       if ((window.SLEEVU && window.SLEEVU.game) === "cyberpunk") return groupCyberpunkSets(setItems);
       if ((window.SLEEVU && window.SLEEVU.game) === "wow") return groupWowSets(setItems);
+      if ((window.SLEEVU && window.SLEEVU.game) === "lotr") return groupLotrSets(setItems);
       // Página de Sets: agrupada por série (coleção).
       return groupSetsBySeries(setItems);
     }
@@ -1575,6 +1576,24 @@
   // Adventure, Super Barcode Wars), cada uma em ordem crescente de parte — são
   // séries lineares, lidas como checklist. A série vem do setId (dbc-h06,
   // dbc-sb01…), que o sync-dbc-carddass.mjs fixa.
+  // LOTR TCG da Decipher: os 19 sets em ordem de lançamento (vintage se lê do
+  // mais antigo pro mais novo) e os promos no fim — o set 0 e os quatro que o
+  // sync-lotr.mjs separou por numeração — os impressos primeiro (0P e as
+  // Megasized), os que nunca foram impressos depois.
+  function groupLotrSets(setItems) {
+    const idOf = (set) => String(set.setId || "").trim().toLowerCase();
+    const isPromo = (set) => /^lotr-00/.test(idOf(set));
+    const PROMOS = ["lotr-00", "lotr-00m", "lotr-00d", "lotr-00w", "lotr-00j"];
+    const porId = (a, b) => (PROMOS.indexOf(idOf(a)) - PROMOS.indexOf(idOf(b))) || idOf(a).localeCompare(idOf(b), "en", { numeric: true });
+    const items = [];
+    for (const [key, list] of [["sets.category.main", setItems.filter((s) => !isPromo(s))], ["sets.category.promos", setItems.filter(isPromo)]]) {
+      if (!list.length) continue;
+      items.push({ type: "category-head", name: t(key), count: list.length });
+      list.sort(porId).forEach((set) => items.push(set));
+    }
+    return items;
+  }
+
   function groupDbcSets(setItems) {
     const idOf = (set) => String(set.setId || "").trim().toLowerCase();
     const SERIES = [["h", "sets.category.dbcHondan"], ["sb", "sets.category.dbcSuperBattle"], ["va", "sets.category.dbcVisualAdventure"], ["bw", "sets.category.dbcBarcodeWars"]];
