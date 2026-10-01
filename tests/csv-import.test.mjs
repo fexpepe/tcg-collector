@@ -94,6 +94,10 @@ test("mapCsvGame: os 13 jogos, nas grafias do Collectr/TCGplayer", () => {
   assert.equal(api.mapCsvGame("World of Warcraft TCG"), "wow");
   assert.equal(api.mapCsvGame("Naruto Kayou"), "naruto");
   assert.equal(api.mapCsvGame("Hunter x Hunter"), "hxh");
+  // LOTR da Decipher; o set do Magic com o mesmo tema é "Magic: The Gathering".
+  assert.equal(api.mapCsvGame("Lord of the Rings TCG"), "lotr");
+  assert.equal(api.mapCsvGame("The Lord of the Rings Trading Card Game"), "lotr");
+  assert.equal(api.mapCsvGame("Magic: The Gathering"), "magic");
 });
 
 test("csvSetKeys: nome cru e sem o prefixo de código", () => {

@@ -75,7 +75,8 @@ const GAMES = [
   { slug: "naruto", label: "Naruto Card Game (2002~2006)" },
   { slug: "hxh", label: "Hunter × Hunter Carddass" },
   { slug: "dbc", label: "Dragon Ball Carddass" },
-  { slug: "wow", label: "World of Warcraft TCG" }
+  { slug: "wow", label: "World of Warcraft TCG" },
+  { slug: "lotr", label: "The Lord of the Rings TCG" }
 ];
 
 // SEM piso de cartas por set, de propósito. Um piso (mesmo baixo, tipo 3)
@@ -625,7 +626,7 @@ const DECK_GAME_LABELS = {
   magic: "Magic: The Gathering", fab: "Flesh and Blood", gundam: "Gundam Card Game", swu: "Star Wars: Unlimited", cyberpunk: "Cyberpunk TCG",
   dbfw: "Dragon Ball Fusion World", ygo: "Yu-Gi-Oh!", digimon: "Digimon Card Game",
   riftbound: "Riftbound", unionarena: "Union Arena", naruto: "Naruto Card Game",
-  hxh: "Hunter × Hunter", dbc: "Dragon Ball Carddass", wow: "World of Warcraft TCG"
+  hxh: "Hunter × Hunter", dbc: "Dragon Ball Carddass", wow: "World of Warcraft TCG", lotr: "The Lord of the Rings TCG"
 };
 
 async function fetchPublicDecks() {

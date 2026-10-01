@@ -109,6 +109,7 @@ jobs:
             data/hxh/sets
             data/dbc/sets
             data/wow/sets
+            data/lotr/sets
             data/jump/sets
             data/magic/cards.js
             data/magic/indexes.js
@@ -133,14 +134,14 @@ jobs:
             exit 0
           fi
           faltando=""
-          # data/dbc/, data/swu/, data/cyberpunk/ e data/wow/: jogos novos
-          # (2026-09-24 e 2026-09-30). Enquanto o cache for de antes deles, o
+          # data/dbc/, data/swu/, data/cyberpunk/, data/wow/ e data/lotr/: jogos
+          # novos (2026-09-24 a 2026-10-01). Enquanto o cache for de antes deles, o
           # build rápido publicaria o tile do hub sem catálogo nenhum atrás.
           for f in data/manifest.generated.js data/pricing.generated.js \
                    data/onepiece/pricing.generated.js data/lorcana/pricing.generated.js \
                    data/magic/pricing.generated.js data/ygo/pricing.generated.js \
                    data/dbc/manifest.generated.js data/swu/manifest.generated.js \
-                   data/cyberpunk/manifest.generated.js data/wow/manifest.generated.js; do
+                   data/cyberpunk/manifest.generated.js data/wow/manifest.generated.js \n                   data/lotr/manifest.generated.js; do
             [ -s "$f" ] || faltando="$faltando $f"
           done
           if [ -n "$faltando" ]; then
@@ -579,6 +580,14 @@ jobs:
         if: env.RODA_SYNC == 'true'
         run: node scripts/sync-dbc-carddass.mjs || echo "sync-dbc-carddass falhou; segue com o snapshot versionado"
 
+      # The Lord of the Rings TCG (Decipher 2001-2007): o jogo vintage lotr.
+      # Monta data/lotr/ do snapshot versionado (data/vintage/lotr-pc.json, do
+      # banco do Player's Council), SEM rede: o jogo acabou em 2007. Imagens
+      # pelo wsrv.nl. Sem preco.
+      - name: Catalogo vintage The Lord of the Rings TCG
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/sync-lotr.mjs || echo "sync-lotr falhou; segue com o catalogo versionado"
+
       # Data Carddass NARUTO (arcade, 2005-2008): checklist do noihjp (fa site),
       # sem imagens. Anexa ao catalogo do Naruto (roda DEPOIS dos outros).
       - name: Anexa Data Carddass NARUTO (arcade)
@@ -729,6 +738,7 @@ jobs:
             data/hxh/sets
             data/dbc/sets
             data/wow/sets
+            data/lotr/sets
             data/jump/sets
             data/magic/cards.js
             data/magic/indexes.js

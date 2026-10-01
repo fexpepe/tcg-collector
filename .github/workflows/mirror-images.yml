@@ -73,6 +73,7 @@ jobs:
             data/hxh/sets
             data/dbc/sets
             data/wow/sets
+            data/lotr/sets
             data/jump/sets
             data/magic/cards.js
             data/magic/indexes.js

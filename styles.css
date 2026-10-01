@@ -282,6 +282,18 @@
   --accent: #0072bc; --accent-dark: #005f9e; --accent-rgb: 0, 114, 188;
   --accent-soft: rgba(0, 114, 188, 0.1); --on-accent: #ffffff;
 }
+/* LOTR TCG da Decipher: VERDE-MUSGO (pedido do Fernando, 30/09/2026), longe do
+   verde-menta do HxH. Lima clara com texto escuro no escuro; o musgo do
+   GAME_COLOR com texto branco no claro (5.0:1). */
+[data-game-accent="lotr"] {
+  --accent: #a3e635; --accent-dark: #84cc16; --accent-rgb: 163, 230, 53;
+  --accent-soft: rgba(163, 230, 53, 0.16); --on-accent: #0a0c10;
+}
+[data-theme="light"][data-game-accent="lotr"],
+[data-theme="light"] [data-game-accent="lotr"] {
+  --accent: #4d7c0f; --accent-dark: #3f6212; --accent-rgb: 77, 124, 15;
+  --accent-soft: rgba(77, 124, 15, 0.1); --on-accent: #ffffff;
+}
 /* Gundam: AZUL (herdou o tom que era do Magic antes do marrom). Azul claro com
    texto escuro no escuro; azul fechado com texto branco no claro. */
 [data-game-accent="gundam"] {

@@ -343,7 +343,12 @@
     // World of Warcraft TCG (30/09/2026): as 4 do booster, Loot (os loots com
     // código do jogo online) e o "F" que o TCGplayer dá às cartas do raid de
     // Onyxia, que vai pro fim por estar fora da lista.
-    wow: ["Common", "Uncommon", "Rare", "Epic", "Loot"]
+    wow: ["Common", "Uncommon", "Rare", "Epic", "Loot"],
+    // LOTR TCG da Decipher: as raridades do banco do Player's Council
+    // (sync-lotr.mjs). Tengwar, Legends e Masterworks são as impressões
+    // especiais; os quatro últimos moram nos sets de promo.
+    lotr: ["Common", "Uncommon", "Rare", "Rare Plus", "Starter", "Premium", "Tengwar", "Legends", "Masterwork", "Promo",
+      "Megasized Promo", "Digital Promo", "W-Series", "April Fool's", "St. Patrick's Day"]
   };
   const rarityListOrder = RARITY_LISTED_GAMES[(window.SLEEVU && window.SLEEVU.game) || ""] || null;
 

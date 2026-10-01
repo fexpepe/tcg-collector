@@ -31,7 +31,7 @@ const JOGOS = [
   ["swu", "data/swu/"], ["cyberpunk", "data/cyberpunk/"],
   ["dbfw", "data/dbfw/"], ["ygo", "data/ygo/"], ["digimon", "data/digimon/"],
   ["riftbound", "data/riftbound/"], ["unionarena", "data/unionarena/"],
-  ["naruto", "data/naruto/"], ["hxh", "data/hxh/"], ["dbc", "data/dbc/"], ["wow", "data/wow/"], ["jump", "data/jump/"]
+  ["naruto", "data/naruto/"], ["hxh", "data/hxh/"], ["dbc", "data/dbc/"], ["wow", "data/wow/"], ["lotr", "data/lotr/"], ["jump", "data/jump/"]
 ];
 
 // Janela: 45 dias pra trás (o "acabou de sair" ainda é notícia) e 400 pra
@@ -139,7 +139,7 @@ const ROTULOS = {
   pokemon: "Pokémon", lorcana: "Lorcana", onepiece: "One Piece", magic: "Magic",
   fab: "Flesh and Blood", gundam: "Gundam", swu: "Star Wars: Unlimited", cyberpunk: "Cyberpunk TCG", dbfw: "Dragon Ball Fusion World",
   ygo: "Yu-Gi-Oh!", digimon: "Digimon", riftbound: "Riftbound",
-  unionarena: "Union Arena", naruto: "Naruto", hxh: "Hunter x Hunter", dbc: "Dragon Ball Carddass", wow: "World of Warcraft TCG", jump: "Jump"
+  unionarena: "Union Arena", naruto: "Naruto", hxh: "Hunter x Hunter", dbc: "Dragon Ball Carddass", wow: "World of Warcraft TCG", lotr: "The Lord of the Rings TCG", jump: "Jump"
 };
 
 const linhas = [
