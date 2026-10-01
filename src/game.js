@@ -38,6 +38,7 @@
     lotr: { slug: "lotr", name: "The Lord of the Rings TCG", dataDir: "data/lotr/" }, // vintage Decipher 2001–2007 (banco do Player's Council)
     harrypotter: { slug: "harrypotter", name: "Harry Potter TCG", dataDir: "data/harrypotter/" }, // vintage Wizards of the Coast 2001–2002 (hpjson; premium = cartas próprias)
     weiss: { slug: "weiss", name: "Weiß Schwarz", dataDir: "data/weiss/" }, // TCGCSV cat. 20 (Bushiroad, só a edição EN, 2013+; paralelas = cartas próprias)
+    mbc: { slug: "mbc", name: "Miracle Battle Carddass", dataDir: "data/mbc/" }, // vintage Bandai 2009–2015, crossover da Jump (7 séries; tcg-db)
     // Em preparação (catálogo ainda vazio; tile "Em breve" no hub):
     jump: { slug: "jump", name: "JUMP", dataDir: "data/jump/" }            // promos curadas (Jump Festa, V-Jump…)
   };
@@ -64,15 +65,18 @@
     ["one-piece-carddass", "onepiece", "opcd", "opcd-"], ["lord-of-the-rings-tcg", "lotr"], ["harry-potter-tcg", "harrypotter"],
     ["one-piece-card-game-2002", "onepiece", "op2002", "op2002-"],
     ["naruto-card-game-2002", "naruto"], ["naruto-data-carddass", "naruto", "nrt-dc", "nrt-dc-,nrt-nf-,nrt-nx-"],
-    ["naruto-ccg", "naruto", "nrt-ccg", "nrt-ccg-"], ["world-of-warcraft-tcg", "wow"], ["one-piece-miracle-battle", "onepiece", "op-mb", "op-mb-"],
-    ["hunter-x-hunter-miracle-battle", "hxh", "hxh-mb", "hxh-mb-"], ["naruto-miracle-battle", "naruto", "nrt-mb", "nrt-mb-"]
+    ["naruto-ccg", "naruto", "nrt-ccg", "nrt-ccg-"], ["world-of-warcraft-tcg", "wow"], ["miracle-battle-carddass", "mbc"]
   ];
   // Linha que virou seção de outra (o LINE_ALIASES do shared.js).
   var LINHA_APELIDO = { "nrt-nf": "nrt-dc", "nrt-nx": "nrt-dc" };
+  // Linha que virou JOGO (o LINHAS_VIRARAM_JOGO do functions/_lib/jogos.js): o
+  // Miracle Battle era linha do One Piece, do Naruto e do HxH até 2026-10-01.
+  var LINHA_VIROU_JOGO = { "op-mb": "mbc", "nrt-mb": "mbc", "hxh-mb": "mbc" };
   // /games/<url>, /games/<url>/<set> e /games/<url>/<set>/<carta>. O "_id" do
   // link de compartilhar não casa (tem "_"): ele é sempre um 301 da borda.
   var CAMINHO_DO_JOGO = /^\/games\/([a-z0-9-]+)(\/[a-z0-9-]+){0,2}\/?$/;
   function urlDoJogo(game, linha) {
+    if (LINHA_VIROU_JOGO.hasOwnProperty(linha)) return urlDoJogo(LINHA_VIROU_JOGO[linha], "");
     var l = LINHA_APELIDO[linha] || linha || "";
     for (var i = 0; i < URL_DOS_JOGOS.length; i++) {
       var j = URL_DOS_JOGOS[i];
@@ -153,7 +157,12 @@
       return doCaminho[0];
     }
     var q = null;
-    try { q = new URLSearchParams(location.search).get("game"); } catch (e) { /* ignora */ }
+    try {
+      var busca = new URLSearchParams(location.search);
+      q = busca.get("game");
+      // ?game=onepiece&line=op-mb (link de antes de 2026-10-01): o jogo agora é o mbc.
+      if (LINHA_VIROU_JOGO.hasOwnProperty(busca.get("line"))) q = LINHA_VIROU_JOGO[busca.get("line")];
+    } catch (e) { /* ignora */ }
     if (isNeutralPage()) {
       // Na porta de entrada, ?game= é intenção ("vim de um link daquele jogo"):
       // grava a sessão pra próxima navegação entrar no jogo certo. Nas DEMAIS

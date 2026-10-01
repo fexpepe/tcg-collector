@@ -41,7 +41,7 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 |---|---|---|---|
 | `pokemon` | Pokémon | TCGdex (en, ja, zh-cn, zh-tw, pt) + PokéAPI (tipos/nomes) + TCGCSV (promos EN, sets JP que a TCGdex não tem e sets EN recém-lançados, por pin) + Bulbapedia (enriquece o JA; sets exclusivos do chinês simplificado) + PokemonPriceTracker (graded) | TCGplayer USD **por impressão** (TCGCSV, diário) · Cardmarket EUR (TCGdex) · PPT (graded) · MYP (BR, pendente) |
 | `lorcana` | Lorcana | Lorcast | USD/EUR |
-| `onepiece` | One Piece | TCGCSV cat. 68 + vintage (Carddass Hyper Battle, OP Card Game 2002, Miracle Battle) | USD (moderno); vintage sem preço |
+| `onepiece` | One Piece | TCGCSV cat. 68 + vintage (Carddass Hyper Battle, OP Card Game 2002) | USD (moderno); vintage sem preço |
 | `magic` | Magic: The Gathering | Scryfall (catálogo EN; pt-BR é fase 2) | USD/EUR |
 | `fab` | Flesh and Blood | TCGCSV cat. 62 | USD |
 | `gundam` | Gundam Card Game | TCGCSV cat. 86 | USD |
@@ -54,22 +54,25 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 | `digimon` | Digimon Card Game | TCGCSV cat. 63 | USD |
 | `riftbound` | Riftbound | TCGCSV cat. 89 (Riot) | USD |
 | `unionarena` | Union Arena | TCGCSV cat. 81 (Bandai; um anime por set) | USD |
-| `naruto` | Naruto Card Game | vintage Bandai 2002–2006 (tcg-db + TV Tokyo + cardcheckbox), Data Carddass (Card Battle, Mission, Formation e Cross), Miracle Battle | sem preço |
-| `hxh` | Hunter × Hunter | Carddass Hyper Battle 1999–2001 (Hunterpedia) + Miracle Battle | sem preço |
+| `naruto` | Naruto Card Game | vintage Bandai 2002–2006 (tcg-db + TV Tokyo + cardcheckbox), Data Carddass (Card Battle, Mission, Formation e Cross) | sem preço |
+| `hxh` | Hunter × Hunter | Carddass Hyper Battle 1999–2001 (Hunterpedia) | sem preço |
 | `dbc` | Dragon Ball Carddass | Carddass Bandai 1988–1997: Hondan carta a carta (80storage), sem imagem por enquanto | sem preço |
 | `wow` | World of Warcraft TCG | TCGCSV cat. 13 (Upper Deck 2006–2010, Cryptozoic 2010–2013; vintage, só os sets que o TCGplayer lista, sem número de coleção e com scan de ~200 px; setId, nome e data fixos por groupId) | USD |
 | `lotr` | The Lord of the Rings TCG | Decipher 2001–2007: banco e scans originais do Player's Council (snapshot `data/vintage/lotr-pc.json`) | sem preço |
 | `harrypotter` | Harry Potter TCG | Wizards of the Coast 2001–2002: hpjson (GitHub) + imagens do accio.cards; premium, decks e promos = cartas próprias | sem preço |
+| `mbc` | Miracle Battle Carddass | Bandai 2009–2015, o crossover da Jump: sete séries (Dragon Ball Kai, One Piece, Toriko, Hunter × Hunter, Naruto Shippuden, Kuroko, J-Heroes), uma seção por série; tcg-db (snapshot `data/vintage/miracle-battle.json`). Até 2026-10-01 eram linhas do One Piece, do Naruto e do HxH (ids `op-mb-`/`nrt-mb-`/`hxh-mb-` mantidos; `src/migra-mbc.js` leva a coleção de quem marcou) | sem preço |
 | `jump` | JUMP | curadoria versionada em `data/jump/curated/` | — |
 
 **Linhas** (`GAME_LINES` em [src/shared.js](src/shared.js)): um jogo pode ter
 sublinhas selecionadas por `?line=` — por exemplo `nrt-ncg` (o NARUTO CARD GAME
 novo, com lançamento mundial em 2027, hoje só com a promo da Gen Con 2026),
-`op2002`, `nrt-dc`, `hxh-mb`. O escopo é por prefixo de `setId`: sem `?line=` a
+`op2002`, `nrt-dc`, `nrt-ccg`. O escopo é por prefixo de `setId`: sem `?line=` a
 página mostra o jogo principal e **exclui** as linhas. Uma linha pode ter vários
 prefixos (`prefixes`): a `nrt-dc` junta os quatro títulos do arcade Data Carddass
 (`nrt-dc-`, `nrt-nf-`, `nrt-nx-`), um por seção na página de Sets. Linha que vira
-seção de outra ganha um apelido em `LINE_ALIASES`, pro `?line=` antigo seguir abrindo.
+seção de outra ganha um apelido em `LINE_ALIASES`, pro `?line=` antigo seguir abrindo;
+linha que vira jogo próprio (o Miracle Battle, que virou o `mbc`) entra em
+`LINHAS_VIRARAM_JOGO` (functions/_lib/jogos.js) e `LINHA_VIROU_JOGO` (src/game.js).
 
 ### Sorcery: Contested Realm (`sorcery`)
 

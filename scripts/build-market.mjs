@@ -31,7 +31,7 @@ const JOGOS = [
   ["swu", "data/swu/"], ["cyberpunk", "data/cyberpunk/"], ["sorcery", "data/sorcery/"],
   ["dbfw", "data/dbfw/"], ["ygo", "data/ygo/"], ["digimon", "data/digimon/"],
   ["riftbound", "data/riftbound/"], ["unionarena", "data/unionarena/"],
-  ["naruto", "data/naruto/"], ["hxh", "data/hxh/"], ["dbc", "data/dbc/"], ["wow", "data/wow/"], ["lotr", "data/lotr/"], ["weiss", "data/weiss/"], ["harrypotter", "data/harrypotter/"]
+  ["naruto", "data/naruto/"], ["hxh", "data/hxh/"], ["dbc", "data/dbc/"], ["wow", "data/wow/"], ["lotr", "data/lotr/"], ["weiss", "data/weiss/"], ["harrypotter", "data/harrypotter/"], ["mbc", "data/mbc/"]
 ];
 
 // 6 de cada lado: o trilho é uma fileira que rola, não uma tabela. Mais que isso

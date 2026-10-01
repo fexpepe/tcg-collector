@@ -112,6 +112,8 @@
     const flat = String(g || "").toLowerCase().replace(/[^a-z0-9]/g, "");
     if (!flat) return "";
     if (flat.includes("lorcana")) return "lorcana";
+    // Antes do One Piece/Naruto/Hunter: "Miracle Battle Carddass One Piece".
+    if (flat.includes("miraclebattle") || flat === "mbc") return "mbc";
     if (flat.includes("onepiece")) return "onepiece";
     if (flat.includes("magic") || flat === "mtg") return "magic";
     if (flat.includes("yugioh") || flat === "ygo") return "ygo";

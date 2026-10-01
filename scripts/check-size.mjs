@@ -137,8 +137,18 @@ import { join } from "node:path";
 // +63 bytes gz de accent em cima do Sorcery. Com 35.840 ficam ~1,8 KB de folga
 // depois dos dois: uns 30 jogos no ritmo de ~60 bytes cada. A saída de verdade
 // continua sendo a regra genérica de accent.
+//
+// 2026-10-01 (noite): teto do shared.js sobe de 84.992 pra 86.016, com o aval
+// do Fernando. O Miracle Battle Carddass virou jogo próprio (mbc) com sete
+// séries, e os 35 sets das quatro que entraram agora precisam de nome em
+// inglês no VINTAGE_SET_EN (+595 bytes gz; o japonês segue como "nome
+// original"). O registro do jogo saiu de graça (−19 B: as três linhas que ele
+// substitui pesavam mais), a franquia nos 37 nomes que já existiam custou +74 B
+// e o detector da migração da coleção +~150 B (a migração em si é o
+// src/migra-mbc.js, sob demanda). A saída de verdade é a F3 do
+// docs/CATALOGO.md: os nomes de set vintage fora do núcleo.
 const TETOS = [
-  { arquivo: "shared.js", teto: 84992, nota: "núcleo JS de toda página" },
+  { arquivo: "shared.js", teto: 86016, nota: "núcleo JS de toda página" },
   { arquivo: "styles.min.css", teto: 35840, nota: "núcleo do CSS, depois do split por área" },
 ];
 

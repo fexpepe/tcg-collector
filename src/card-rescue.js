@@ -20,10 +20,12 @@
   const ID_PREFIX_GAME = {
     mtg: "magic", fab: "fab", gcg: "gundam", swu: "swu", cpk: "cyberpunk", sor: "sorcery", dbfw: "dbfw", ygo: "ygo",
     dgm: "digimon", rb: "riftbound", ua: "unionarena", nrt: "naruto",
-    hxh: "hxh", dbc: "dbc", wow: "wow", lotr: "lotr", hp: "harrypotter", ws: "weiss", op: "onepiece", opcd: "onepiece", op2002: "onepiece", cp: "lorcana"
+    hxh: "hxh", dbc: "dbc", wow: "wow", lotr: "lotr", hp: "harrypotter", ws: "weiss", mb: "mbc", op: "onepiece", opcd: "onepiece", op2002: "onepiece", cp: "lorcana"
   };
   function cardIdProbeWaves(cardId) {
-    const certo = ID_PREFIX_GAME[String(cardId).split("-")[0]];
+    const partes = String(cardId).split("-");
+    // op-mb-/nrt-mb-/hxh-mb-: o Miracle Battle de antes de virar o jogo mbc.
+    const certo = partes[1] === "mb" ? "mbc" : ID_PREFIX_GAME[partes[0]];
     const primeiros = certo ? [certo] : ["pokemon", "lorcana"];
     const onda1 = primeiros.filter((g) => GAME_SLUGS.includes(g));
     return [onda1, GAME_SLUGS.filter((g) => !onda1.includes(g))];

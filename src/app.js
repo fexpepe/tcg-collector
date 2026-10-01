@@ -16,7 +16,8 @@
     magic: "game_magic-v2.webp", fab: "game_fab.webp", gundam: "game_gundam-v2.webp", swu: "game_swu.webp", cyberpunk: "game_cyberpunk.webp", sorcery: "game_sorcery.webp", dbfw: "game_dbfw-v2.webp",
     ygo: "game_ygo-v2.webp", digimon: "game_digimon-v2.webp", riftbound: "game_riftbound-v2.webp",
     unionarena: "game_unionarena.webp", naruto: "game_naruto.webp", hxh: "game_hxh.webp",
-    dbc: "game_dbc.webp", wow: "game_wow.webp", lotr: "game_lotr.webp", weiss: "game_weiss.webp", harrypotter: "game_harrypotter.webp"
+    dbc: "game_dbc.webp", wow: "game_wow.webp", lotr: "game_lotr.webp", weiss: "game_weiss.webp", harrypotter: "game_harrypotter.webp",
+    mbc: "game_mbc.webp"
   };
   function gameLogoUrl(game) {
     const f = GAME_LOGO[game];
@@ -608,6 +609,7 @@
       if ((window.SLEEVU && window.SLEEVU.game) === "wow") return groupWowSets(setItems);
       if ((window.SLEEVU && window.SLEEVU.game) === "lotr") return groupLotrSets(setItems);
       if ((window.SLEEVU && window.SLEEVU.game) === "weiss") return groupWeissSets(setItems);
+      if ((window.SLEEVU && window.SLEEVU.game) === "mbc") return groupMbcSets(setItems);
       if ((window.SLEEVU && window.SLEEVU.game) === "harrypotter") return groupHarryPotterSets(setItems);
       // Página de Sets: agrupada por série (coleção).
       return groupSetsBySeries(setItems);
@@ -1602,7 +1604,8 @@
 
   // Hunter × Hunter (principal = Carddass Hyper Battle): as 6 partes numeradas
   // primeiro, em ordem CRESCENTE — é uma série linear, lê-se como checklist —,
-  // e depois as promos (Jump Festa, Game Boy). O Miracle Battle é ?line=hxh-mb.
+  // e depois as promos (Jump Festa, Game Boy). O Miracle Battle, que foi linha
+  // daqui até 2026-10-01, é o jogo mbc (groupMbcSets).
   function groupHxhSets(setItems) {
     const idOf = (set) => String(set.setId || "").trim().toLowerCase();
     const isPart = (set) => /-p\d+$/.test(idOf(set));
@@ -1663,6 +1666,41 @@
   // Harry Potter TCG: as cinco coleções da Wizards em ordem de lançamento
   // (checklist, como nas outras vintage), depois os decks iniciais (setKind
   // "deck", gravado pelo sync-harrypotter.mjs) e as promos.
+  // Miracle Battle Carddass (jogo mbc, desde 2026-10-01): o crossover da Jump
+  // tem uma seção por SÉRIE (franquia), como as eras do Pokémon, na ordem em que
+  // a fonte (tcg-db) lista as séries. A série sai do prefixo do setId: as três
+  // que eram linha de uma marca até essa data mantêm o prefixo dela (op-mb-,
+  // nrt-mb-, hxh-mb-), e as que entraram com o jogo são mb-<código>. Os sets não
+  // têm data, então a ordem dentro da série vem do código impresso: boosters
+  // (OP01, NR05…), decks (OPS, DBS, DAS…), os pacotes especiais (Gigant Pack,
+  // Phantom Booster, os decks da revista) e as promos, que não têm número.
+  function groupMbcSets(setItems) {
+    const idOf = (set) => String(set.setId || "").toLowerCase();
+    const SERIES = [
+      ["sets.category.mbDb", /^mb-dbs?\d*$/],
+      ["sets.category.mbOp", /^op-mb-/],
+      ["sets.category.mbTr", /^mb-tr\d*$/],
+      ["sets.category.mbHh", /^hxh-mb-/],
+      ["sets.category.mbNr", /^nrt-mb-/],
+      ["sets.category.mbKb", /^mb-kb\d*$/],
+      ["sets.category.mbJh", /^mb-(das|as|js)\d*$/]
+    ];
+    const codigo = (set) => idOf(set).replace(/^(op|nrt|hxh)-mb-|^mb-/, "");
+    const tipo = (c) => (!/\d/.test(c) ? 3 : /^(dbs|ops|hhs|nrs|das)\d/.test(c) ? 1 : /^(opc|hhex|js)\d/.test(c) ? 2 : 0);
+    const ordem = (a, b) => tipo(codigo(a)) - tipo(codigo(b)) || codigo(a).localeCompare(codigo(b), "en", { numeric: true });
+    const serieDe = (set) => SERIES.findIndex(([, re]) => re.test(idOf(set)));
+    const items = [];
+    const section = (list, key) => {
+      if (!list.length) return;
+      items.push({ type: "category-head", name: t(key), count: list.length });
+      list.sort(ordem).forEach((set) => items.push(set));
+    };
+    SERIES.forEach(([key], i) => section(setItems.filter((s) => serieDe(s) === i), key));
+    // Rede de segurança: série nova no sync sem seção aqui ainda aparece.
+    section(setItems.filter((s) => serieDe(s) < 0), "sets.category.promos");
+    return items;
+  }
+
   function groupHarryPotterSets(setItems) {
     const principal = (set) => /^hp-(bs|qc|da|aah|cos)$/.test(String(set.setId || ""));
     const grupos = [
