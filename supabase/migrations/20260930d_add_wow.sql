@@ -96,7 +96,7 @@ notify pgrst, 'reload schema';
 -- ============================================================================
 -- Verificação (depois de aplicar):
 --
---   # 1) view de carta do Cyberpunk: 204 E a linha aparece em card_views
+--   # 1) view de carta do WoW TCG: 204 E a linha aparece em card_views
 --   #    (204 sozinho não prova nada: jogo inválido também devolve 204).
 --   curl -s -o /dev/null -w "%{http_code}\n" -X POST \
 --     "https://dlnalopazitfdgnmdguu.supabase.co/rest/v1/rpc/increment_card_view" \
