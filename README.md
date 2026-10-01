@@ -33,7 +33,7 @@ catálogo completo só existe no build de produção.
 
 ## Os jogos
 
-O registro central é o `GAMES` em [src/game.js](src/game.js): **20 slugs**, 19 com
+O registro central é o `GAMES` em [src/game.js](src/game.js): **21 slugs**, 20 com
 catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do Pokémon
 é a raiz `data/` por motivo histórico (não movemos nada).
 
@@ -58,6 +58,7 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 | `dbc` | Dragon Ball Carddass | Carddass Bandai 1988–1997: Hondan carta a carta (80storage), sem imagem por enquanto | sem preço |
 | `wow` | World of Warcraft TCG | TCGCSV cat. 13 (Upper Deck 2006–2010, Cryptozoic 2010–2013; vintage, só os sets que o TCGplayer lista, sem número de coleção e com scan de ~200 px; setId, nome e data fixos por groupId) | USD |
 | `lotr` | The Lord of the Rings TCG | Decipher 2001–2007: banco e scans originais do Player's Council (snapshot `data/vintage/lotr-pc.json`) | sem preço |
+| `harrypotter` | Harry Potter TCG | Wizards of the Coast 2001–2002: hpjson (GitHub) + imagens do accio.cards; premium, decks e promos = cartas próprias | sem preço |
 | `jump` | JUMP | curadoria versionada em `data/jump/curated/` | — |
 
 **Linhas** (`GAME_LINES` em [src/shared.js](src/shared.js)): um jogo pode ter
@@ -138,6 +139,49 @@ refresh reaproveita o da carta já conhecida). Levantamento de 2026-09-24:
   numeração que recomeça no 第17弾) e inventar números criaria ids a trocar depois.
 - **Imagens**: nenhuma fonte acessível tem scan por carta (o dragonballcards.com
   tem, mas só serve HTTP). Scan curado entra por `assets/cards/dbc/<id>.webp`.
+
+### Harry Potter TCG (`harrypotter`)
+
+O Harry Potter Trading Card Game da Wizards of the Coast (ago/2001–out/2002;
+encerrado em 2003): jogo vintage com slug próprio, todo ele no filtro Vintage.
+Sync em [scripts/sync-harrypotter.mjs](scripts/sync-harrypotter.mjs), snapshot em
+`data/vintage/hptcg.json` (nunca regride; ids pelo número oficial,
+`hp-<set>-<número>`). Levantamento de 2026-09-30:
+
+| Set | Lançamento | Impressas | No catálogo |
+|---|---|---|---|
+| Base Set | ago/2001 | 116 (as 1–20 só existem premium) | 116 |
+| Quidditch Cup | nov/2001 | 80 + 30 premium | 110 |
+| Diagon Alley | mar/2002 | 80 + 30 premium | 110 |
+| Adventures at Hogwarts | jun/2002 | 80 + 30 premium | 110 |
+| Chamber of Secrets | out/2002 | 140 + 55 premium | 195 |
+| Decks: Diagon Alley 2-Player, Chamber of Secrets 2-Player e Theme Decks | 2002 | 8 versões exclusivas | 8 |
+| Promo Cards e Harry Potter League Promos | 2001–2002 | 21 | 21 |
+
+- **Cartas**: o `cards.json` do [hpjson](https://github.com/Tressley/hpjson)
+  (nome, número, tipo, lição, raridade, artista, arquivo da imagem). Ele também
+  traz os sets fan-made da comunidade Revival (2020→), que ficam fora. Os 6
+  números que ele repete com grafias diferentes ficam com o nome impresso,
+  conferido no checklist do nslists.
+- **Premium = carta separada** (decisão do Fernando): toda rara das expansões tem
+  a versão premium com o mesmo número, Holo no personagem e Foil no resto
+  (`hp-qc-7-premium`, "Gold Cauldron (Foil)").
+- **Decks e promos = sets próprios**: cada carta aponta pra de origem. A lista é
+  a do price guide de promos da Pojo (revisão de 19/12/2002, lida no Wayback). As
+  promos da League têm numeração própria (1–8).
+- **Imagens**: as do [accio.cards](https://accio.cards) via wsrv. Do Base ao
+  Adventures at Hogwarts são recriações da comunidade Revival (745×1040, com
+  "PROXY NOT FOR SALE" impresso), com arte, texto, número e raridade iguais aos
+  da carta (conferido contra scans reais do MYP). As do Chamber of Secrets são
+  scans reais, mas só 250×350. As Lições usam a mesma imagem em todos os sets, e
+  promo e foil de deck usam a da carta de origem.
+- **Símbolos e logos de set**: os símbolos vêm do accio
+  (`data/harrypotter/set-symbols/`). Os logos do Quidditch Cup, do Adventures
+  at Hogwarts e do Chamber of Secrets vêm do site oficial da época, lido no
+  Wayback (`data/harrypotter/set-logos/`). O Base Set e o Diagon Alley não têm
+  logo publicado e o tile mostra o nome.
+- **Lojas**: MYP (`/hp`, os cinco sets), eBay e PriceCharting. Não tem Liga,
+  TCGplayer (sem categoria na TCGCSV) nem Cardmarket.
 
 ---
 
