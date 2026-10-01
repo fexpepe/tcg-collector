@@ -56,6 +56,7 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 | `hxh` | Hunter × Hunter | Carddass Hyper Battle 1999–2001 (Hunterpedia) + Miracle Battle | sem preço |
 | `dbc` | Dragon Ball Carddass | Carddass Bandai 1988–1997: Hondan carta a carta (80storage), sem imagem por enquanto | sem preço |
 | `wow` | World of Warcraft TCG | TCGCSV cat. 13 (Upper Deck 2006–2010, Cryptozoic 2010–2013; vintage, só os sets que o TCGplayer lista, sem número de coleção e com scan de ~200 px; setId, nome e data fixos por groupId) | USD |
+| `lotr` | The Lord of the Rings TCG | Decipher 2001–2007: banco e scans originais do Player's Council (snapshot `data/vintage/lotr-pc.json`) | sem preço |
 | `jump` | JUMP | curadoria versionada em `data/jump/curated/` | — |
 
 **Linhas** (`GAME_LINES` em [src/shared.js](src/shared.js)): um jogo pode ter
@@ -66,6 +67,31 @@ página mostra o jogo principal e **exclui** as linhas. Uma linha pode ter vári
 prefixos (`prefixes`): a `nrt-dc` junta os quatro títulos do arcade Data Carddass
 (`nrt-dc-`, `nrt-nf-`, `nrt-nx-`), um por seção na página de Sets. Linha que vira
 seção de outra ganha um apelido em `LINE_ALIASES`, pro `?line=` antigo seguir abrindo.
+
+### The Lord of the Rings TCG (`lotr`)
+
+O Senhor dos Anéis da Decipher (nov/2001 – jun/2007), em
+[scripts/sync-lotr.mjs](scripts/sync-lotr.mjs). O jogo acabou, então o CI só
+monta `data/lotr/` do snapshot `data/vintage/lotr-pc.json`, sem rede; o
+`--importar` baixa de novo o export do banco do Player's Council
+(lotrtcgpc.net) e regrava o snapshot se não regredir.
+
+- **Id = código impresso**: `1R284` vira `lotr-1r284`; Tengwar `lotr-1r1t`,
+  Legends `lotr-11rf1`, Masterworks `lotr-12o195`, e o `+` do Reflections
+  vira `plus` (`lotr-9rplus32`), porque o banco só aceita `[A-Za-z0-9._-]`.
+- **Número** é só a parte numérica (`284`, `1T`, `F1`): a ordenação por
+  número olha a primeira sequência de dígitos, e o `1` do set ordenaria
+  tudo junto.
+- **Variantes**: foil nas cartas de booster dos sets 1–8 e 10; o Reflections é
+  todo foil; Legends e Masterworks são as foils do Shadows em diante e são
+  cartas próprias, como as Tengwar (nome com `(T)`, como o MYP escreve).
+- **Promos**: `lotr-00` (os 0P) e quatro sets à parte, cada um com numeração
+  própria: Megasized, promos digitais do LOTR Online, série W e cartas de
+  piada (os três últimos nunca foram impressos).
+- **Imagens**: os scans da Decipher em `i.lotrtcgpc.net/decipher/` (357×497),
+  via wsrv.nl. As pastas `double/` e `huge/` do mesmo host são cartas
+  REDESENHADAS pelo PC, não scans: não usar. Os Sites são cartas deitadas; o
+  popup já troca a moldura (`is-landscape`).
 
 ### Dragon Ball Carddass (`dbc`)
 

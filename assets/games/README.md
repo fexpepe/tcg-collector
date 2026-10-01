@@ -90,6 +90,15 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
   branco fica: é opaco, então não tem véu de alfa, e a cápsula do hub é branca
   nos dois temas. É o logo mais largo (~4.5:1), mas não precisa de scale no CSS:
   o equilíbrio óptico do `.hub-logo` já dá a largura pela proporção.
+- `game_lotr.webp` — The Lord of the Rings Trading Card Game (Decipher,
+  2001–2007; tile vintage do jogo `lotr`). Fonte enviada pelo Fernando em
+  2026-10-01: 481×243, letras douradas sobre PRETO com um brilho laranja
+  embaixo. O preto virou alfa por chave de luminância (PIL): alfa pelo canal
+  mais claro, rampa de 14 a 110, e a cor das bordas "desmisturada" do preto
+  (observada ÷ alfa), senão o contorno ficava encardido na cápsula branca. O
+  brilho de baixo ficou fora do recorte (as letras acabam na linha ~199 da
+  fonte). Recortado no conteúdo +2px = 200×172, alfa abaixo de 12 zerado, sem
+  esticar (bitmap pequeno, como o Union Arena).
 - `game_naruto.svg` — FONTE vetorial do logo do Naruto (Inkscape). Se editar,
   re-exporte o webp: @resvg/resvg-js (ou qualquer rasterizador) em 512px e
   depois `ffmpeg -i logo.png -c:v libwebp -quality 90 game_naruto.webp`.
