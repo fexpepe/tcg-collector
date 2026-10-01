@@ -54,6 +54,11 @@
   "sets": 12,
   "imgPct": 100
  },
+ "sorcery": {
+  "cards": 1689,
+  "sets": 8,
+  "imgPct": 100
+ },
  "dbfw": {
   "cards": 4099,
   "sets": 50,
