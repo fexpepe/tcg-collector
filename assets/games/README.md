@@ -46,6 +46,11 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
   reduzido pra 512 de largura com o Pillow em alfa pré-multiplicado (sem
   franja escura na borda). WebP com perda q88 e alfa sem perda: 52 KB; o sem
   perda dava 190 KB, por causa dos gradientes do logo.
+- `game_sorcery.webp` — Sorcery: Contested Realm. Fonte: o logo enviado pelo
+  Fernando em 2026-10-01 (907×365, PNG de paleta com alfa; o brilho branco em
+  volta é semitransparente e some na cápsula branca do hub). Recortado no
+  conteúdo (+2px), alfa ≤12 zerado e reduzido pra 512 de largura com o Pillow
+  em alfa pré-multiplicado. WebP com perda q88 e alfa sem perda: 43 KB.
 - `game_naruto.webp` — logo NARUTO genérico (tile do jogo e `setLogo` do Data
   Carddass Cross Formation nrt-nx/nrt-nf)
 - `game_naruto_ccg.webp` — Naruto Collectible Card Game americano 2006+ (tile
