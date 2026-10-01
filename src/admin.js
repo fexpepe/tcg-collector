@@ -775,7 +775,7 @@
   //
   // Números do CATÁLOGO: os mesmos da .lp-stats da home (index.html) e do
   // og-image (scripts/og/og-image.html). Ao recontar, mude nos três lugares.
-  const KIT_CATALOGO = { cartas: "240 mil+", sets: "2.200+" };
+  const KIT_CATALOGO = { cartas: "300 mil+", sets: "2.800+" };
   // Logos dos jogos: o mesmo mapa do src/app.js (que o admin não carrega).
   const KIT_LOGO = {
     pokemon: "game_pokemon.webp", lorcana: "game_lorcana-v2.webp", onepiece: "game_onepiece.webp",
