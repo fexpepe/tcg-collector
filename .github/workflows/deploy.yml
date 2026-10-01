@@ -111,6 +111,7 @@ jobs:
             data/dbc/sets
             data/wow/sets
             data/lotr/sets
+            data/harrypotter/sets
             data/jump/sets
             data/magic/cards.js
             data/magic/indexes.js
@@ -135,8 +136,8 @@ jobs:
             exit 0
           fi
           faltando=""
-          # data/dbc/, data/swu/, data/cyberpunk/, data/wow/, data/lotr/ e
-          # data/sorcery/: jogos novos (2026-09-24 a 2026-10-01). Enquanto o cache
+          # data/dbc/, data/swu/, data/cyberpunk/, data/wow/, data/lotr/,
+          # data/sorcery/ e data/harrypotter/: jogos novos (2026-09-24 a 2026-10-01). Enquanto o cache
           # for de antes deles, o build rápido publicaria o tile do hub sem
           # catálogo nenhum atrás.
           for f in data/manifest.generated.js data/pricing.generated.js \
@@ -144,7 +145,8 @@ jobs:
                    data/magic/pricing.generated.js data/ygo/pricing.generated.js \
                    data/dbc/manifest.generated.js data/swu/manifest.generated.js \
                    data/cyberpunk/manifest.generated.js data/wow/manifest.generated.js \
-                   data/lotr/manifest.generated.js data/sorcery/manifest.generated.js; do
+                   data/lotr/manifest.generated.js data/sorcery/manifest.generated.js \
+                   data/harrypotter/manifest.generated.js; do
             [ -s "$f" ] || faltando="$faltando $f"
           done
           if [ -n "$faltando" ]; then
@@ -602,6 +604,14 @@ jobs:
         if: env.RODA_SYNC == 'true'
         run: node scripts/sync-lotr.mjs || echo "sync-lotr falhou; segue com o catalogo versionado"
 
+      # Harry Potter TCG (Wizards of the Coast 2001-2002): o jogo vintage
+      # harrypotter. Cartas do hpjson (GitHub), imagens do accio.cards via wsrv;
+      # snapshot versionado em data/vintage/hptcg.json (nao regride, ids pelo
+      # numero oficial). Cria data/harrypotter/ sozinho. Sem preco.
+      - name: Catalogo vintage Harry Potter TCG
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/sync-harrypotter.mjs || echo "sync-harrypotter falhou; segue com o snapshot versionado"
+
       # Data Carddass NARUTO (arcade, 2005-2008): checklist do noihjp (fa site),
       # sem imagens. Anexa ao catalogo do Naruto (roda DEPOIS dos outros).
       - name: Anexa Data Carddass NARUTO (arcade)
@@ -754,6 +764,7 @@ jobs:
             data/dbc/sets
             data/wow/sets
             data/lotr/sets
+            data/harrypotter/sets
             data/jump/sets
             data/magic/cards.js
             data/magic/indexes.js

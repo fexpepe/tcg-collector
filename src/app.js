@@ -16,7 +16,7 @@
     magic: "game_magic-v2.webp", fab: "game_fab.webp", gundam: "game_gundam-v2.webp", swu: "game_swu.webp", cyberpunk: "game_cyberpunk.webp", sorcery: "game_sorcery.webp", dbfw: "game_dbfw-v2.webp",
     ygo: "game_ygo-v2.webp", digimon: "game_digimon-v2.webp", riftbound: "game_riftbound-v2.webp",
     unionarena: "game_unionarena.webp", naruto: "game_naruto.webp", hxh: "game_hxh.webp",
-    dbc: "game_dbc.webp", wow: "game_wow.webp", lotr: "game_lotr.webp"
+    dbc: "game_dbc.webp", wow: "game_wow.webp", lotr: "game_lotr.webp", harrypotter: "game_harrypotter.webp"
   };
   function gameLogoUrl(game) {
     const f = GAME_LOGO[game];
@@ -607,6 +607,7 @@
       if ((window.SLEEVU && window.SLEEVU.game) === "sorcery") return groupSorcerySets(setItems);
       if ((window.SLEEVU && window.SLEEVU.game) === "wow") return groupWowSets(setItems);
       if ((window.SLEEVU && window.SLEEVU.game) === "lotr") return groupLotrSets(setItems);
+      if ((window.SLEEVU && window.SLEEVU.game) === "harrypotter") return groupHarryPotterSets(setItems);
       // Página de Sets: agrupada por série (coleção).
       return groupSetsBySeries(setItems);
     }
@@ -1630,6 +1631,25 @@
     if (rest.length) {
       items.push({ type: "category-head", name: t("sets.category.promos"), count: rest.length });
       rest.forEach((set) => items.push(set));
+    }
+    return items;
+  }
+
+  // Harry Potter TCG: as cinco coleções da Wizards em ordem de lançamento
+  // (checklist, como nas outras vintage), depois os decks iniciais (setKind
+  // "deck", gravado pelo sync-harrypotter.mjs) e as promos.
+  function groupHarryPotterSets(setItems) {
+    const principal = (set) => /^hp-(bs|qc|da|aah|cos)$/.test(String(set.setId || ""));
+    const grupos = [
+      ["sets.category.main", setItems.filter(principal)],
+      ["sets.category.decks", setItems.filter((set) => !principal(set) && set.kind === "deck")],
+      ["sets.category.promos", setItems.filter((set) => !principal(set) && set.kind !== "deck")]
+    ];
+    const items = [];
+    for (const [key, sets] of grupos) {
+      if (!sets.length) continue;
+      items.push({ type: "category-head", name: t(key), count: sets.length });
+      sets.sort(sortByReleaseAsc).forEach((set) => items.push(set));
     }
     return items;
   }

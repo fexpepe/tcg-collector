@@ -491,7 +491,7 @@
   // Depois que ele chegou, a busca local segue valendo: instantânea e sem rede.
   let apiSeq = 0;
   let urlCardTentado = false;
-  const VINTAGE_GAMES = ["pokemon", "onepiece", "naruto", "hxh", "dbc", "wow", "lotr"]; // os que têm carta vintage (ver isVintageCard)
+  const VINTAGE_GAMES = ["pokemon", "onepiece", "naruto", "hxh", "dbc", "wow", "lotr", "harrypotter"]; // os que têm carta vintage (ver isVintageCard)
   // Qualquer erro no caminho da borda cai no catálogo local em vez de deixar
   // a página muda: uma exceção aqui era uma rejeição sem ninguém ouvindo, a
   // grade ficava como estava (as "mais vistas", ou os esqueletos) e a busca

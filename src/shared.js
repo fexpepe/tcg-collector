@@ -3221,7 +3221,8 @@
     naruto: SUBNAV_MIN,
     hxh: SUBNAV_MIN,
     dbc: SUBNAV_MIN,
-    lotr: SUBNAV_MIN
+    lotr: SUBNAV_MIN,
+    harrypotter: SUBNAV_ARTISTS
   };
   // As páginas do Explorar trazem um <nav class="explore-subnav" data-placeholder>
   // VAZIO no HTML, dentro do .page-head-bar, com a altura de uma linha de chips
@@ -7061,7 +7062,11 @@
     // casa o "Título, Subtítulo" (Tengwar com "(T)"). No eBay vai SÓ o nome
     // (nameOnly): os anúncios escrevem o código "1R284", então o número puro
     // + ano dos outros vintages zerava a busca.
-    lotr:      { myp: "lotr", usText: "lord of the rings tcg", noTcgplayer: true, nameOnly: true }
+    lotr:      { myp: "lotr", usText: "lord of the rings tcg", noTcgplayer: true, nameOnly: true },
+    // Harry Potter TCG (conferido em 30/09/2026): o MYP tem a seção /hp com os
+    // cinco sets; sem Liga, sem TCGplayer (a TCGCSV não tem a categoria) e sem
+    // Cardmarket. O PriceCharting tem os sets ("2001 Wizards Harry Potter").
+    harrypotter: { myp: "hp", usText: "harry potter tcg", noTcgplayer: true }
   };
   function marketOf(game) { return MARKETS[game] || MARKETS.pokemon; }
 
@@ -8622,7 +8627,8 @@
     { game: "hxh", dataDir: "data/hxh/" },
     { game: "dbc", dataDir: "data/dbc/" },
     { game: "wow", dataDir: "data/wow/" },
-    { game: "lotr", dataDir: "data/lotr/" }
+    { game: "lotr", dataDir: "data/lotr/" },
+    { game: "harrypotter", dataDir: "data/harrypotter/" }
   ];
   // Slugs e cor de cada jogo, num lugar só (adicionar um jogo = 1 entrada aqui
   // + 1 no game.js + labels no i18n; as páginas iteram em vez de hardcodear).
@@ -8656,7 +8662,8 @@
     hxh: "#15803d",        // verde
     dbc: "#db2777",        // rosa (a 70 do FaB, o vizinho mais próximo; 4.6:1 com preto)
     wow: "#00aeff",        // azul da Blizzard; 8.5:1 com preto, a 83 do Union Arena (os azuis estão cheios)
-    lotr: "#4d7c0f"        // verde-musgo (pedido do Fernando: "algum tom de verde"); 5.0:1 com branco, a 73 do verde do HxH
+    lotr: "#4d7c0f"  ,      // verde-musgo (pedido do Fernando: "algum tom de verde"); 5.0:1 com branco, a 73 do verde do HxH
+    harrypotter: "#740001" // escarlate da Grifinória; 12:1 com branco, a 85 do Magic (o vizinho mais próximo)
   };
   // Preto ou branco sobre a cor do jogo — o que der MAIOR contraste de verdade
   // (fórmula WCAG), não um limiar de luminância chutado: com limiar fixo o
@@ -8695,7 +8702,7 @@
     fab: "filter.gameFab", gundam: "filter.gameGundam", swu: "filter.gameSwu", cyberpunk: "filter.gameCyberpunk", sorcery: "filter.gameSorcery", dbfw: "filter.gameDbfw",
     ygo: "filter.gameYgo", digimon: "filter.gameDigimon", riftbound: "filter.gameRiftbound",
     unionarena: "filter.gameUnionArena", naruto: "filter.gameNaruto", hxh: "filter.gameHxh",
-    dbc: "filter.gameDbc", wow: "filter.gameWow", lotr: "filter.gameLotr"
+    dbc: "filter.gameDbc", wow: "filter.gameWow", lotr: "filter.gameLotr", harrypotter: "filter.gameHarryPotter"
   };
   function gameLabel(g) { return t(GAME_LABEL_KEY[g] || GAME_LABEL_KEY.pokemon); }
   const VINTAGE_SET_EN = {
@@ -9100,6 +9107,7 @@
     dbc: ["dbc-"],                            // Carddass 1988–1997: o jogo inteiro é vintage
     wow: ["wow-"],                            // WoW TCG 2006–2013: idem (e é o único vintage com preço)
     lotr: ["lotr-"],                          // Decipher 2001–2007: idem
+    harrypotter: ["hp-"],                     // Wizards 2001–2002: idem
     naruto: ["nrt-"]                          // Bandai 2003–2013 inteiro…
   };
   const VINTAGE_ID_EXCEPT = { naruto: ["nrt-ncg-"] }; // …menos o jogo NOVO (2027)

@@ -352,7 +352,9 @@
     // Sorcery: Contested Realm (01/10/2026): as 4 da carta (Ordinary até
     // Unique) e Promo, que o TCGplayer dá às impressões de loja e de evento. O
     // Avatar e os tokens não têm raridade.
-    sorcery: ["Ordinary", "Exceptional", "Elite", "Unique", "Promo"]
+    sorcery: ["Ordinary", "Exceptional", "Elite", "Unique", "Promo"],
+    // Harry Potter TCG: os símbolos do jogo, mais as duas premium (30/09/2026).
+    harrypotter: ["Common", "Uncommon", "Rare", "Lesson", "Foil Premium", "Holo Portrait Premium", "Promo"]
   };
   const rarityListOrder = RARITY_LISTED_GAMES[(window.SLEEVU && window.SLEEVU.game) || ""] || null;
 

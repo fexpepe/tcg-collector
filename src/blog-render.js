@@ -77,7 +77,8 @@
     hxh: ["Hunter × Hunter", "#15803d"],
     dbc: ["Dragon Ball Carddass", "#db2777"],
     wow: ["WoW TCG", "#00aeff"],
-    lotr: ["LOTR", "#4d7c0f"]
+    lotr: ["LOTR", "#4d7c0f"],
+    harrypotter: ["Harry Potter", "#740001"]
   };
 
   // Categorias do blog. O banco só confere o formato (a lista mora aqui), então

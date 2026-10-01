@@ -95,6 +95,7 @@ test("mapCsvGame: os 13 jogos, nas grafias do Collectr/TCGplayer", () => {
   // TCGplayer escreve "WoW"; o Collectr, o nome por extenso.
   assert.equal(api.mapCsvGame("WoW"), "wow");
   assert.equal(api.mapCsvGame("World of Warcraft TCG"), "wow");
+  assert.equal(api.mapCsvGame("Harry Potter TCG"), "harrypotter");
   assert.equal(api.mapCsvGame("Naruto Kayou"), "naruto");
   assert.equal(api.mapCsvGame("Hunter x Hunter"), "hxh");
   // LOTR da Decipher; o set do Magic com o mesmo tema é "Magic: The Gathering".

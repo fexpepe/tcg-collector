@@ -8,6 +8,18 @@ poucos.)
 
 ## Pendentes de aplicar
 
+- `20261001c` — libera o slug `harrypotter` (Harry Potter Trading Card Game,
+  Wizards of the Coast 2001–2002, vintage) nas DUAS whitelists de jogo:
+  `card_views`/`increment_card_view` e `contribute_price`. Cópia da
+  `20261001b` (Sorcery) com o `harrypotter` a mais: fora do cabeçalho e dos
+  exemplos de `curl`, só a lista muda (conferido por diff). A lista é a
+  inteira e contém o `wow`, o `lotr` e o `sorcery`. Sem ordem com a
+  `20260930b` (blog). Depois dela, a `20261001b`, a `20261001a` e a
+  `20260930d` não podem rodar de novo (tirariam o `harrypotter`). Conferir com
+  o par de `curl` do fim do arquivo: a view com `hp-bs-8` tem de CRIAR a linha
+  em `card_views` (o 204 sozinho não prova nada) e a contribuição anônima
+  segue 401.
+
 - `20261001b` — libera o slug `sorcery` (Sorcery: Contested Realm) nas DUAS
   whitelists de jogo: `card_views`/`increment_card_view` e `contribute_price`
   (cópia da `20261001a` com o `sorcery` a mais; fora do cabeçalho e dos
