@@ -103,5 +103,10 @@
   "cards": 670,
   "sets": 10,
   "imgPct": 100
+ },
+ "weiss": {
+  "cards": 31209,
+  "sets": 169,
+  "imgPct": 100
  }
 }
