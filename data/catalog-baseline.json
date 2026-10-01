@@ -88,5 +88,10 @@
   "cards": 4672,
   "sets": 41,
   "imgPct": 100
+ },
+ "lotr": {
+  "cards": 3527,
+  "sets": 24,
+  "imgPct": 100
  }
 }
