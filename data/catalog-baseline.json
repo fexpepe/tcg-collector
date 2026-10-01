@@ -83,5 +83,10 @@
   "cards": 758,
   "sets": 18,
   "imgPct": 0
+ },
+ "wow": {
+  "cards": 4672,
+  "sets": 41,
+  "imgPct": 100
  }
 }
