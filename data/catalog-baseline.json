@@ -10,8 +10,8 @@
   "imgPct": 100
  },
  "onepiece": {
-  "cards": 8957,
-  "sets": 143,
+  "cards": 8691,
+  "sets": 119,
   "imgPct": 85
  },
  "magic": {
@@ -25,13 +25,18 @@
   "imgPct": 100
  },
  "naruto": {
-  "cards": 1799,
-  "sets": 68,
+  "cards": 1699,
+  "sets": 61,
   "imgPct": 49
  },
  "hxh": {
-  "cards": 321,
-  "sets": 15,
+  "cards": 283,
+  "sets": 9,
+  "imgPct": 100
+ },
+ "mbc": {
+  "cards": 941,
+  "sets": 72,
   "imgPct": 100
  },
  "jump": {

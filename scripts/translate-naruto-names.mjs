@@ -5,10 +5,12 @@
 // (tcg-db, Suruga-ya, noihjp), então 1.797 cartas chegam com nome em kana/kanji
 // — ilegível pra quase todo mundo que usa o site, e impossível de buscar.
 //
-// POR QUE UM PASSO SEPARADO, e não dentro de cada sync: são QUATRO scripts que
-// alimentam o catálogo do Naruto (vintage, miracle-battle, datacarddass,
-// cross-formation). Traduzir em cada um significaria manter o mesmo mapa em
-// quatro lugares. Aqui roda uma vez, depois de todos, sobre o catálogo pronto.
+// POR QUE UM PASSO SEPARADO, e não dentro de cada sync: são TRÊS scripts que
+// alimentam o catálogo do Naruto (vintage, datacarddass, cross-formation).
+// Traduzir em cada um significaria manter o mesmo mapa em três lugares. Aqui
+// roda uma vez, depois de todos, sobre o catálogo pronto. O Miracle Battle
+// também usa o mapa, mas no próprio sync: desde 2026-10-01 ele é o jogo mbc,
+// fora do catálogo do Naruto.
 //
 // POR QUE EM BUILD, e não em runtime: um mapa de ~800 nomes no shared.js
 // custaria ~40 KB em TODA página do site, inclusive nas que não têm Naruto.

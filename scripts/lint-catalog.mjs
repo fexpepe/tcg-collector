@@ -30,7 +30,7 @@ import { classificaMudanca, assinatura, idiomaDe, numDe } from "./lib/id-stabili
 
 const ROOT = new URL("../", import.meta.url);
 const BASELINE = new URL("data/catalog-baseline.json", ROOT);
-const GAMES = { pokemon: "data/", lorcana: "data/lorcana/", onepiece: "data/onepiece/", magic: "data/magic/", fab: "data/fab/", gundam: "data/gundam/", swu: "data/swu/", cyberpunk: "data/cyberpunk/", sorcery: "data/sorcery/", dbfw: "data/dbfw/", ygo: "data/ygo/", digimon: "data/digimon/", riftbound: "data/riftbound/", unionarena: "data/unionarena/", naruto: "data/naruto/", hxh: "data/hxh/", dbc: "data/dbc/", wow: "data/wow/", lotr: "data/lotr/", harrypotter: "data/harrypotter/", weiss: "data/weiss/", jump: "data/jump/" };
+const GAMES = { pokemon: "data/", lorcana: "data/lorcana/", onepiece: "data/onepiece/", magic: "data/magic/", fab: "data/fab/", gundam: "data/gundam/", swu: "data/swu/", cyberpunk: "data/cyberpunk/", sorcery: "data/sorcery/", dbfw: "data/dbfw/", ygo: "data/ygo/", digimon: "data/digimon/", riftbound: "data/riftbound/", unionarena: "data/unionarena/", naruto: "data/naruto/", hxh: "data/hxh/", dbc: "data/dbc/", wow: "data/wow/", lotr: "data/lotr/", harrypotter: "data/harrypotter/", weiss: "data/weiss/", mbc: "data/mbc/", jump: "data/jump/" };
 const UPDATE = process.argv.includes("--update-baseline");
 const ACEITA_ID = process.argv.includes("--aceitar-mudanca-de-id");
 
@@ -161,6 +161,19 @@ async function checarEstabilidadeDeId() {
   // exceção a aposentadoria, que agora é automática, derrubava o deploy.
   let merges = {};
   try { merges = JSON.parse(await readFile(new URL("data/card-id-merges.json", ROOT), "utf8")); } catch { /* nenhum set aposentado */ }
+  // Linha que virou JOGO próprio: o id fica o mesmo e muda de catálogo. O
+  // Miracle Battle saiu do One Piece, do Naruto e do HxH pro mbc em
+  // 2026-10-01, e o app leva a conta de quem marcou (moveMiracleBattle no
+  // shared.js). Id com prefixo daqui que existe no catálogo de destino não é
+  // perda.
+  const MUDOU_DE_JOGO = { "op-mb-": "mbc", "nrt-mb-": "mbc", "hxh-mb-": "mbc" };
+  const destinoDe = async (id) => {
+    const pre = Object.keys(MUDOU_DE_JOGO).find((p) => id.startsWith(p));
+    if (!pre) return null;
+    const jogo = MUDOU_DE_JOGO[pre];
+    lidos[jogo] = lidos[jogo] || await readCards(GAMES[jogo]);
+    return (lidos[jogo] || []).some((c) => c && c.id === id) ? jogo : null;
+  };
 
   const antes = {};   // jogo -> Map(id -> assinatura), lido do HEAD
   for (const f of alvos) {
@@ -179,12 +192,13 @@ async function checarEstabilidadeDeId() {
     if (!cards || !cards.length) { warnings.push(`${jogo}: estabilidade de id não checada (catálogo novo não lido)`); continue; }
     const agora = new Map();
     for (const c of cards) if (c && c.id) agora.set(c.id, resumo(c));
-    const sumidos = [], repontados = [], renumerados = [], movidos = [], migrados = [];
+    const sumidos = [], repontados = [], renumerados = [], movidos = [], migrados = [], mudaramDeJogo = [];
     for (const [id, antigo] of antes[jogo]) {
       const nova = agora.get(id);
       if (!nova) {
         const alvo = resolveMergedId(id, merges);
         if (alvo && agora.has(alvo)) migrados.push(id);
+        else if (await destinoDe(id)) mudaramDeJogo.push(id);
         else sumidos.push(id);
         continue;
       }
@@ -195,6 +209,7 @@ async function checarEstabilidadeDeId() {
     }
     const lista = (arr) => arr.slice(0, 10).join(", ") + (arr.length > 10 ? `, +${arr.length - 10}` : "");
     if (migrados.length) console.log(`  estabilidade de id: ${jogo} — ${migrados.length} id(s) aposentado(s) COM de-para (a conta de quem marcou migra): ${lista(migrados)}`);
+    if (mudaramDeJogo.length) console.log(`  estabilidade de id: ${jogo} — ${mudaramDeJogo.length} id(s) mudaram de JOGO, com o mesmo id (a conta de quem marcou migra): ${lista(mudaramDeJogo)}`);
     if (sumidos.length) { achou = true; (ACEITA_ID ? warnings : errors).push(`${jogo}: ${sumidos.length} id(s) PUBLICADO(S) sumiram do catálogo — some da coleção de quem tem: ${lista(sumidos)}`); }
     if (repontados.length) { achou = true; (ACEITA_ID ? warnings : errors).push(`${jogo}: ${repontados.length} id(s) passaram a apontar pra OUTRA carta (idioma/set): ${lista(repontados)}`); }
     if (movidos.length) warnings.push(`${jogo}: ${movidos.length} id(s) o TCGplayer mudou de set (mesmo produto, mesmo nome — a carta de quem tem não muda): ${lista(movidos)}`);
