@@ -8,17 +8,6 @@ poucos.)
 
 ## Pendentes de aplicar
 
-- `20261001a` — libera os slugs `wow` (World of Warcraft TCG) **e** `lotr`
-  (The Lord of the Rings TCG, Decipher 2001–2007) nas DUAS whitelists de jogo:
-  `card_views`/`increment_card_view` e `contribute_price` (cópia da
-  `20260930d` com o `lotr` a mais; fora do cabeçalho e dos exemplos de
-  `curl`, só a lista muda, conferido por diff). A lista é a inteira, com o
-  `swu`, o `cyberpunk` e o `wow`, então ela SUBSTITUI a `20260930d` (ver
-  abaixo, "NÃO aplicar"). Sem ordem com a `20260930b` (blog). Conferir com o
-  par de `curl` do fim do arquivo: a view de `lotr-1r1` tem de **criar a
-  linha** no `card_views` (o 204 sozinho não prova nada) e a contribuição
-  anônima segue 401; o mesmo vale pro `wow-16485` com `"p_game":"wow"`.
-
 - `20260930b` — blog (`20260930b_blog.sql`; o `b` porque a `20260930a` do mesmo
   dia é a do Star Wars). Cria o papel de editor do blog (`blog_editores`,
   tabela trancada, SEPARADA do `is_admin`), a tabela `posts` com RLS
@@ -214,6 +203,17 @@ poucos.)
   das políticas (uma só: `events_insert_anyone`, INSERT, PERMISSIVE, PUBLIC,
   `with check (true)`) derrubou a teoria, e o controle positivo com `pageview`
   fechou. A `20260830b` foi apagada.
+
+- `20261001a` — libera os slugs `wow` (World of Warcraft TCG) **e** `lotr`
+  (The Lord of the Rings TCG, Decipher 2001–2007) nas DUAS whitelists de jogo:
+  `card_views`/`increment_card_view` e `contribute_price` (cópia da
+  `20260930d` com o `lotr` a mais; só a lista muda, conferido por diff). Ela
+  SUBSTITUI a `20260930d` (ver abaixo, "NÃO aplicar"). Aplicada em 2026-10-01
+  e verificada por curl: `increment_card_view` com `lotr` responde 204 **e
+  cria a linha** (`{"card_id":"lotr-1r1","views":1}`); o jogo inventado também
+  dá 204 mas não cria nada; o `wow` já tem a linha dele (`wow-16485`); a
+  contribuição anônima segue **401**. Sem prova direta, como nas anteriores:
+  o `contribute_price` logado com `lotr`.
 
 - `20260930c` — libera o slug `cyberpunk` (Cyberpunk TCG) nas DUAS whitelists
   de jogo: `card_views`/`increment_card_view` e `contribute_price` (cópia da
