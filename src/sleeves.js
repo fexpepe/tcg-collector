@@ -163,7 +163,7 @@
       const c = conta(s);
       const res = [[c.sleeves, "slv.s.sleeves"], [c.folhas, "slv.s.pages"], [c.fichs, "slv.s.binders"], [s.top, "slv.s.top"]].filter(([q]) => q);
       app.querySelector("[data-slv-resumo]").innerHTML = res.length
-        ? `<span class="slv-resumo-txt">${res.map(([q, k]) => `<b>${num(q)}</b> ${esc(t(k))}`).join(" · ")}</span><span class="slv-resumo-go">${esc(t("slv.seeList"))}</span>`
+        ? `<span class="slv-resumo-txt">${res.map(([q, k]) => `<b>${num(q)}</b> ${esc(tn(k, q))}`).join(" · ")}</span><span class="slv-resumo-go">${esc(t("slv.seeList"))}</span>`
         : "";
     }
 
