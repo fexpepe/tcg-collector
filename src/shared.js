@@ -1932,7 +1932,7 @@
           const img = localizedImg(src.url, { alt: "", fallback: src.fallback, loading: "lazy", thumb: true });
           return `${head}<div class="cmdk-item cmdk-carditem${i === active ? " is-active" : ""}" data-cmdk-i="${i}">
             <span class="cmdk-thumb">${img}</span>
-            <span class="cmdk-item-name">${escapeHtml(it.card.name)} <small class="cmdk-card-sub">${escapeHtml(`${it.card.set} · ${it.card.number}`)}</small></span>
+            <span class="cmdk-item-name">${escapeHtml(it.card.name)} <small class="cmdk-card-sub">${escapeHtml(dotJoin(it.card.set, it.card.number))}</small></span>
             <span class="cmdk-actions">
               <button type="button" class="cmdk-add" data-cmdk-add="col:${i}">${escapeHtml(t("cmdk.addCol"))}</button>
               <button type="button" class="cmdk-add" data-cmdk-add="wl:${i}">${escapeHtml(t("cmdk.addWl"))}</button>
@@ -6345,7 +6345,7 @@
     }
     function langButtonHtml() {
       const flag = cardFlag(activeCard.language);
-      const sigla = `${escapeHtml(activeCard.number)} · ${escapeHtml(cardLangSigla(activeCard.language))}`;
+      const sigla = escapeHtml(dotJoin(activeCard.number, cardLangSigla(activeCard.language)));
       if (!intlIdsOf(activeCard)) return `${flag}<span>${sigla}</span>`;
       return `<button type="button" class="preview-lang-btn" data-preview-lang-toggle aria-expanded="${langPanelOpen ? "true" : "false"}" title="${escapeAttribute(t("langSwitch.open"))}">${flag}<span>${sigla}</span>${PREVIEW_CARET}</button>`;
     }
@@ -7009,9 +7009,12 @@
   //              de set/2026, sem endereço ainda) e Union Arena não é vendido.
   //   cmq      — o Cardmarket põe o CÓDIGO da carta no nome do produto: a
   //              busca vai por ele (ver cardmarketUrl).
+  //   cmv      — o Cardmarket vende também a carta VINTAGE do jogo (o Pokémon
+  //              antigo, o WoW TCG inteiro); sem ele a linha EU some da carta
+  //              vintage (ver brMarketplaceLinks).
   // naruto/hxh: Carddass japonês, nenhuma loja BR lista e o TCGplayer não tem.
   const MARKETS = {
-    pokemon:   { liga: ["LigaPokémon", "https://www.ligapokemon.com.br"], myp: "pokemon", ligabra: true, padded: true, tcgLine: "pokemon", usText: "pokemon", cm: "Pokemon" },
+    pokemon:   { liga: ["LigaPokémon", "https://www.ligapokemon.com.br"], myp: "pokemon", ligabra: true, padded: true, tcgLine: "pokemon", usText: "pokemon", cm: "Pokemon", cmv: 1 },
     lorcana:   { liga: ["LigaLorcana", "https://www.ligalorcana.com.br"], myp: "lorcana", tcgLine: "lorcana", usText: "lorcana", cm: "Lorcana" },
     onepiece:  { liga: ["LigaOnePiece", "https://www.ligaonepiece.com.br"], myp: "onepiece", tcgLine: "one-piece-card-game", usText: "one piece", cm: "OnePiece", cmq: 1 },
     magic:     { liga: ["LigaMagic", "https://www.ligamagic.com.br"], myp: "magic", tcgLine: "magic", usText: "mtg", cm: "Magic" },
@@ -7040,7 +7043,11 @@
     unionarena: { tcgLine: "union-arena", usText: "union arena" },
     naruto:    { usText: "naruto card game", noTcgplayer: true },
     hxh:       { usText: "hunter x hunter carddass", noTcgplayer: true },
-    dbc:       { usText: "dragon ball carddass", noTcgplayer: true }
+    dbc:       { usText: "dragon ball carddass", noTcgplayer: true },
+    // World of Warcraft TCG (conferido em 30/09/2026): TCGplayer na linha
+    // "wow" (a busca devolve a carta "in WoW") e Cardmarket em /en/WoW. Sem
+    // loja BR: o MYP não tem seção do jogo e não existe Liga.
+    wow:       { tcgLine: "wow", usText: "world of warcraft tcg", cm: "WoW", cmv: 1 }
   };
   function marketOf(game) { return MARKETS[game] || MARKETS.pokemon; }
 
@@ -7528,9 +7535,10 @@
       // Linha vintage (Carddass/OP 2002/Miracle Battle) não existe no Cardmarket:
       // a busca voltaria vazia, então a linha EU nem aparece. É isVintageCard, e
       // não a flag, porque a carta vinda da borda (Coleção/Explorar) chega sem
-      // ela — mas só fora do Pokémon, onde "vintage" é só a data de lançamento
-      // e o Base Set existe no Cardmarket.
-      + marketplaceRow("price.checkEu", marketOf(game).cm && (game === "pokemon" || !isVintageCard(card)) ? [{ key: "cardmarket", label: "Cardmarket", url: cardmarketUrl }] : [], card);
+      // ela — mas só nos jogos sem `cmv`: no Pokémon "vintage" é só a data de
+      // lançamento e o Base Set existe no Cardmarket; o WoW TCG é todo vintage
+      // e está lá.
+      + marketplaceRow("price.checkEu", marketOf(game).cm && (marketOf(game).cmv || !isVintageCard(card)) ? [{ key: "cardmarket", label: "Cardmarket", url: cardmarketUrl }] : [], card);
     // Transparência do afiliado: a nota aparece SÓ se algum link desta carta
     // for de afiliado — com os IDs vazios (ou numa carta sem TCGplayer/eBay)
     // ela diria algo que não é verdade.
@@ -7860,7 +7868,7 @@
       <div class="tile-info">
         <h3>${escapeHtml(cardLabel(card))}</h3>
         <p class="tile-variant variant-${escapeAttribute(variantSlug(variant))}">${cardFlag(card.language)}<span>${variantLabel}</span>${gameTag}</p>
-        <p class="tile-set"><span>${escapeHtml(card.set)} · ${escapeHtml(card.number)}</span></p>
+        <p class="tile-set"><span>${escapeHtml(dotJoin(card.set, card.number))}</span></p>
         ${tilePriceHtml(card, variant, prices)}
         <div class="tile-foot">
           ${actionsHtml}
@@ -8595,7 +8603,8 @@
     { game: "unionarena", dataDir: "data/unionarena/" },
     { game: "naruto", dataDir: "data/naruto/" },
     { game: "hxh", dataDir: "data/hxh/" },
-    { game: "dbc", dataDir: "data/dbc/" }
+    { game: "dbc", dataDir: "data/dbc/" },
+    { game: "wow", dataDir: "data/wow/" }
   ];
   // Slugs e cor de cada jogo, num lugar só (adicionar um jogo = 1 entrada aqui
   // + 1 no game.js + labels no i18n; as páginas iteram em vez de hardcodear).
@@ -8626,7 +8635,8 @@
     unionarena: "#0891b2", // ciano
     naruto: "#ea580c",     // laranja
     hxh: "#15803d",        // verde
-    dbc: "#db2777"         // rosa (a 70 do FaB, o vizinho mais próximo; 4.6:1 com preto)
+    dbc: "#db2777",        // rosa (a 70 do FaB, o vizinho mais próximo; 4.6:1 com preto)
+    wow: "#00aeff"         // azul da Blizzard; 8.5:1 com preto, a 83 do Union Arena (os azuis estão cheios)
   };
   // Preto ou branco sobre a cor do jogo — o que der MAIOR contraste de verdade
   // (fórmula WCAG), não um limiar de luminância chutado: com limiar fixo o
@@ -8665,7 +8675,7 @@
     fab: "filter.gameFab", gundam: "filter.gameGundam", swu: "filter.gameSwu", cyberpunk: "filter.gameCyberpunk", dbfw: "filter.gameDbfw",
     ygo: "filter.gameYgo", digimon: "filter.gameDigimon", riftbound: "filter.gameRiftbound",
     unionarena: "filter.gameUnionArena", naruto: "filter.gameNaruto", hxh: "filter.gameHxh",
-    dbc: "filter.gameDbc"
+    dbc: "filter.gameDbc", wow: "filter.gameWow"
   };
   function gameLabel(g) { return t(GAME_LABEL_KEY[g] || GAME_LABEL_KEY.pokemon); }
   const VINTAGE_SET_EN = {
@@ -9068,6 +9078,7 @@
     onepiece: ["opcd-", "op2002-", "op-mb-"], // Carddass 1999–2002, OPCG 2002–05, Miracle Battle
     hxh: ["hxh-"],                            // Hyper Battle 1999–2001 e Miracle Battle: tudo vintage
     dbc: ["dbc-"],                            // Carddass 1988–1997: o jogo inteiro é vintage
+    wow: ["wow-"],                            // WoW TCG 2006–2013: idem (e é o único vintage com preço)
     naruto: ["nrt-"]                          // Bandai 2003–2013 inteiro…
   };
   const VINTAGE_ID_EXCEPT = { naruto: ["nrt-ncg-"] }; // …menos o jogo NOVO (2027)
@@ -9777,6 +9788,13 @@
     return 5; // string exótica (atributos das linhas vintage): acima do vazio, abaixo do comum
   }
 
+  // "Set · número" (e "número · idioma"): junta com " · " pulando o que vier
+  // vazio. O WoW TCG chega da TCGCSV sem número de coleção, e "Heroes of
+  // Azeroth · " ficaria com o ponto sobrando.
+  function dotJoin(...partes) {
+    return partes.filter((p) => p != null && String(p).trim() !== "").join(" · ");
+  }
+
   function compareCardNumbers(a, b) {
     const numA = parseInt(String(a).match(/\d+/), 10);
     const numB = parseInt(String(b).match(/\d+/), 10);
@@ -10345,6 +10363,7 @@
     cardShareUrl,
     unique,
     compareCardNumbers,
+    dotJoin,
     rarityRank,
     // A página de um set (detail.js) descobre a linha PELO set, não pela URL.
     GAME_LINES,

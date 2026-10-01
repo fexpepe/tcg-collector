@@ -762,7 +762,7 @@
         ? `<span class="pf-mover-cash sensitive-value">${impacto > 0 ? "+" : "−"}${escapeHtml(money(Math.abs(impacto)))}</span>` : "";
       return `<a class="pf-mover" href="${escapeAttribute(detailUrl("set", card.set, "", card.game, { card: card.id, setId: card.setId }))}">
         <span class="pf-mover-thumb">${thumb}</span>
-        <span class="pf-mover-info"><strong>${escapeHtml(card.name)}</strong><span>${escapeHtml(card.set)} · ${escapeHtml(card.number)}</span>${tag}</span>
+        <span class="pf-mover-info"><strong>${escapeHtml(card.name)}</strong><span>${escapeHtml(shared.dotJoin(card.set, card.number))}</span>${tag}</span>
         <span class="pf-mover-pct ${x.pct > 0 ? "is-up" : "is-down"}">${x.pct > 0 ? "▲" : "▼"} ${escapeHtml(pct)}${emReais}</span>
       </a>`;
     };

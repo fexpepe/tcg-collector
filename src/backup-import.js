@@ -128,6 +128,8 @@
     if (flat.includes("unionarena")) return "unionarena";
     if (flat.includes("naruto")) return "naruto";
     if (flat.includes("hunter") || flat === "hxh") return "hxh";
+    // "WoW" é como o TCGplayer chama a categoria do World of Warcraft TCG.
+    if (flat.includes("warcraft") || flat === "wow" || flat === "wowtcg") return "wow";
     if (flat.includes("pok")) return "pokemon";
     return ""; // desconhecido: tenta todos
   }

@@ -8,6 +8,15 @@ poucos.)
 
 ## Pendentes de aplicar
 
+- `20260930d` — libera o slug `wow` (World of Warcraft TCG) nas DUAS
+  whitelists de jogo: `card_views`/`increment_card_view` e `contribute_price`
+  (cópia da `20260930c`; fora do cabeçalho e dos exemplos de `curl`, só a
+  lista muda, conferido por diff). A lista é a inteira e contém o `swu` e o
+  `cyberpunk`, então pode ser aplicada a qualquer momento, sem ordem com a
+  `20260930b` (blog). Conferir com o par de `curl` do fim do arquivo: a view
+  com `wow` tem de CRIAR a linha `wow-16485` em `card_views` (o 204 sozinho
+  não prova nada) e a contribuição anônima segue 401.
+
 - `20260930b` — blog (`20260930b_blog.sql`; o `b` porque a `20260930a` do mesmo
   dia é a do Star Wars). Cria o papel de editor do blog (`blog_editores`,
   tabela trancada, SEPARADA do `is_admin`), a tabela `posts` com RLS

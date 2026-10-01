@@ -89,6 +89,9 @@ test("mapCsvGame: os 13 jogos, nas grafias do Collectr/TCGplayer", () => {
   assert.equal(api.mapCsvGame("Star Wars: Destiny"), "");
   // Grafia do TCGplayer (categoria "Cyberpunk TCG").
   assert.equal(api.mapCsvGame("Cyberpunk TCG"), "cyberpunk");
+  // TCGplayer escreve "WoW"; o Collectr, o nome por extenso.
+  assert.equal(api.mapCsvGame("WoW"), "wow");
+  assert.equal(api.mapCsvGame("World of Warcraft TCG"), "wow");
   assert.equal(api.mapCsvGame("Naruto Kayou"), "naruto");
   assert.equal(api.mapCsvGame("Hunter x Hunter"), "hxh");
 });

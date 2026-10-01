@@ -270,6 +270,18 @@
   --accent: #db2777; --accent-dark: #be185d; --accent-rgb: 219, 39, 119;
   --accent-soft: rgba(219, 39, 119, 0.1); --on-accent: #ffffff;
 }
+/* World of Warcraft TCG: o AZUL da Blizzard (#00aeff, o do GAME_COLOR) com
+   texto escuro no escuro (7.9:1). No claro ele fica em 2.5:1 com branco, então
+   o accent fecha pra #0072bc (5.1:1 com texto branco). */
+[data-game-accent="wow"] {
+  --accent: #00aeff; --accent-dark: #0095db; --accent-rgb: 0, 174, 255;
+  --accent-soft: rgba(0, 174, 255, 0.16); --on-accent: #0a0c10;
+}
+[data-theme="light"][data-game-accent="wow"],
+[data-theme="light"] [data-game-accent="wow"] {
+  --accent: #0072bc; --accent-dark: #005f9e; --accent-rgb: 0, 114, 188;
+  --accent-soft: rgba(0, 114, 188, 0.1); --on-accent: #ffffff;
+}
 /* Gundam: AZUL (herdou o tom que era do Magic antes do marrom). Azul claro com
    texto escuro no escuro; azul fechado com texto branco no claro. */
 [data-game-accent="gundam"] {

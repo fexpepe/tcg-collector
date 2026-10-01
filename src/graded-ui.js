@@ -85,7 +85,7 @@
       </div>
       <div class="tile-info">
         <h3>${escapeHtml(card.name)}</h3>
-        <p class="tile-variant graded-set">${shared.cardFlag(card.language)}<span>${escapeHtml(card.set)} · ${escapeHtml(card.number)}</span></p>
+        <p class="tile-variant graded-set">${shared.cardFlag(card.language)}<span>${escapeHtml(shared.dotJoin(card.set, card.number))}</span></p>
         <div class="graded-fields">
           <div class="graded-row">
             <select class="graded-company" data-graded-company aria-label="${escapeAttribute(t("graded.company"))}" title="${escapeAttribute(t("graded.company"))}">${companyOpts}</select>

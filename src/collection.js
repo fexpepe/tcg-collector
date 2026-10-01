@@ -1366,7 +1366,7 @@
       <div class="tile-info">
         <h3>${escapeHtml(card.name)}</h3>
         <p class="tile-variant">${shared.cardFlag(card.language)}${badge}${etiquetaJogo(card, gameTag)}</p>
-        <p class="tile-set"><span>${escapeHtml(card.set)} · ${escapeHtml(card.number)}</span></p>
+        <p class="tile-set"><span>${escapeHtml(shared.dotJoin(card.set, card.number))}</span></p>
         ${priceHtml}
       </div>
     </article>`;
@@ -2316,7 +2316,7 @@
         <div class="tile-info">
           <h3>${escapeHtml(it.n)}</h3>
           <p class="tile-variant">${flag}${shared.gradedBadgeHtml({ company: it.co, grade: it.gr, pristine: it.pr })}</p>
-          <p class="tile-set"><span>${escapeHtml(it.s)} · ${escapeHtml(it.num)}</span></p>
+          <p class="tile-set"><span>${escapeHtml(shared.dotJoin(it.s, it.num))}</span></p>
           ${priceHtml}
         </div>
       </article>`;
@@ -2325,7 +2325,7 @@
       <div class="card-image"><button type="button" class="image-open" data-preview-card-id="${escapeAttribute(it.id)}" data-preview-variant="${escapeAttribute(it.v)}" aria-label="${escapeAttribute(t("card.zoom", { name: it.n }))}">${img}</button></div>
       <div class="tile-info">
         <h3>${escapeHtml(it.n)}</h3>
-        <p class="tile-set"><span>${escapeHtml(it.s)} · ${escapeHtml(it.num)}</span></p>
+        <p class="tile-set"><span>${escapeHtml(shared.dotJoin(it.s, it.num))}</span></p>
         <p class="tile-variant">${flag}<span>${escapeHtml(it.v)}${it.q > 1 ? ` ×${it.q}` : ""}</span>${it.sp > 0 && it.cond ? `<span class="cond-badge">${escapeHtml(it.cond)}</span>` : ""}</p>
         ${priceHtml}
       </div>
@@ -3164,7 +3164,7 @@
         <div class="card-image"><button type="button" class="image-open" data-preview-card-id="${escapeAttribute(card.id)}" data-preview-variant="${escapeAttribute(variant)}" aria-label="${escapeAttribute(t("card.zoom", { name: card.name }))}">${img}</button></div>
         <div class="tile-info">
           <h3>${escapeHtml(card.name)}</h3>
-          <p class="tile-set"><span>${escapeHtml(card.set)} · ${escapeHtml(card.number || "")}</span></p>
+          <p class="tile-set"><span>${escapeHtml(shared.dotJoin(card.set, card.number))}</span></p>
           <p class="tile-variant">${flag}<span>${escapeHtml(variantTxt)}</span></p>
           ${priceHtml}
         </div>

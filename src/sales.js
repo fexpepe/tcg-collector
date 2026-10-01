@@ -770,7 +770,7 @@
           <div class="sold-confirm-card">
             <span class="sold-confirm-thumb">${img}</span>
             <span class="sold-confirm-info"><strong>${esc(card.name)}</strong>
-              <span>${esc(card.set)} · ${esc(card.number)} · ${esc(variant)} · ${esc(cond)}</span></span>
+              <span>${esc(shared.dotJoin(card.set, card.number, variant, cond))}</span></span>
           </div>
           <label class="sold-confirm-field"><span>${esc(t("sales.sold.price"))}</span>
             <span class="sale-price-field"><span class="sale-cur">${esc(sym)}</span>

@@ -83,7 +83,7 @@ test("caminho de cada jogo no Cardmarket", () => {
   const caminhos = {
     pokemon: "Pokemon", magic: "Magic", ygo: "YuGiOh", onepiece: "OnePiece", lorcana: "Lorcana",
     digimon: "Digimon", fab: "FleshAndBlood", dbfw: "DragonBallSuper", riftbound: "Riftbound",
-    cyberpunk: "Cyberpunk"
+    cyberpunk: "Cyberpunk", wow: "WoW"
   };
   for (const [game, caminho] of Object.entries(caminhos)) {
     const url = chip({ id: `${game}-1`, name: "X", number: "1", game });
@@ -106,6 +106,12 @@ test("linha EU só onde o Cardmarket vende, e nunca no vintage", () => {
   // no Pokémon "vintage" é só data (até 2008) — o Base Set existe no Cardmarket
   assert.equal(chip({ id: "base1-4", name: "Charizard", number: "4", setTotal: 102, setReleaseDate: "1999-01-09", game: "pokemon" }),
     `${BASE}Pokemon/Products/Search?searchString=Charizard%204`);
+  // World of Warcraft TCG: o jogo inteiro é vintage e o Cardmarket vende (cmv),
+  // inclusive vindo da borda sem a flag; o "(LOOT)" do TCGplayer sai da busca.
+  assert.equal(chip({ id: "wow-16485", name: "Leeroy Jenkins", number: "", setReleaseDate: "2006-10-25", game: "wow" }),
+    `${BASE}WoW/Products/Search?searchString=Leeroy%20Jenkins`);
+  assert.equal(chip({ id: "wow-16641", name: "Landro Longshot (LOOT)", number: "", game: "wow" }),
+    `${BASE}WoW/Products/Search?searchString=Landro%20Longshot`);
 });
 
 // O caminho ao vivo: o popup abre com a busca e o fillMarketQuote troca o href
