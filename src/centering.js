@@ -174,6 +174,10 @@
   // documento já está parseado e o botão está no DOM.
   const botao = document.getElementById("gradedCenteringBtn");
   if (botao) botao.addEventListener("click", abrir);
+  // Página Ferramentas (2026-10-01): o cartão do medidor tem o botão, e o
+  // "Medir centralização" do menu Mais chega com #medir e já abre a janela.
+  document.querySelectorAll("[data-ctr-abrir]").forEach((b) => b.addEventListener("click", abrir));
+  if (window.location.hash === "#medir" && document.querySelector("[data-ctr-abrir]")) abrir();
 
   window.TCGCentering = { abrir, pct };
 })();

@@ -69,15 +69,18 @@ export const AREAS = [
   // pessoal — o modal abre por cima do dashboard, que precisa da fatia. A
   // Coleção segue carregando: o centering.js continua nela (o preview de
   // slab pode chamá-lo).
-  { nome: "medidor",   prefixos: ["ctr-"],                          paginas: ["collection.html", "dashboard.html"] },
+  // ferramentas.html entrou em 2026-10-01: o cartão do medidor na página
+  // Ferramentas (e o "Medir centralização" do menu Mais) abre a janela ali.
+  { nome: "medidor",   prefixos: ["ctr-"],                          paginas: ["collection.html", "dashboard.html", "ferramentas.html"] },
   { nome: "detalhe",   prefixos: ["favorite-", "segmented-"],      paginas: ["detail.html"] },
   { nome: "404",       prefixos: ["notfound-"],                    paginas: ["404.html"] },
   { nome: "set",       prefixos: ["facet-", "mkt-"],               paginas: ["detail.html", "sets.html", "decks.html", "my-decks.html"] },
   { nome: "troca",     prefixos: ["trade-"],                       paginas: ["troca.html", "badges.html"] },
   // Ferramentas do HUB em página própria (2026-10-01, docs/FERRAMENTAS.md):
   // fer- é o comum das duas, gc- o Guia de condição e slv- o Sleeves e
-  // fichários. O guia NÃO usa cond-: esse prefixo é da área "colecao".
-  { nome: "ferramentas", prefixos: ["fer-", "gc-", "slv-"],        paginas: ["condicao.html", "sleeves.html"] },
+  // fichários. O guia NÃO usa cond-: esse prefixo é da área "colecao". A
+  // ferramentas.html (o índice, aonde leva o "Mais" do menu) usa o fer-.
+  { nome: "ferramentas", prefixos: ["fer-", "gc-", "slv-"],        paginas: ["condicao.html", "sleeves.html", "ferramentas.html"] },
   { nome: "goldfish",  prefixos: ["gf-"],                          paginas: ["decks.html", "my-decks.html"] },
   { nome: "faq",       prefixos: ["faq-"],                         paginas: ["faq.html"] },
   // blog- (2026-09-30): a lista, o post e o EDITOR — a prévia do editor desenha

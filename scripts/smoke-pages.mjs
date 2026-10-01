@@ -31,7 +31,7 @@ const PAGINAS = [
   "explore.html", "search.html", "account.html", "collection.html", "portfolio.html", "wishlist.html", "binders.html",
   "decks.html", "my-decks.html", "dashboard.html", "sales.html",
   "settings.html", "profile.html", "login.html", "faq.html", "help.html", "badges.html",
-  "lancamentos.html", "comparar.html", "condicao.html", "sleeves.html"
+  "lancamentos.html", "comparar.html", "ferramentas.html", "condicao.html", "sleeves.html"
 ];
 
 const SESSAO = {
