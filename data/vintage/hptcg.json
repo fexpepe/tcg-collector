@@ -1,0 +1,5011 @@
+{
+ "source": "https://raw.githubusercontent.com/Tressley/hpjson/master/cards.json",
+ "updatedAt": "2026-10-01",
+ "sets": [
+  {
+   "code": "bs",
+   "cards": [
+    {
+     "num": "1",
+     "name": "Dean Thomas",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Holo Portrait Premium",
+     "artist": "Jon Foster",
+     "file": "DeanThomas.png",
+     "img": "https://accio.cards/cardimages/DeanThomas.png"
+    },
+    {
+     "num": "2",
+     "name": "Draco Malfoy",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Holo Portrait Premium",
+     "artist": "Pete Venters",
+     "file": "DracoMalfoy.png",
+     "img": "https://accio.cards/cardimages/DracoMalfoy.png"
+    },
+    {
+     "num": "3a",
+     "name": "Draco Malfoy",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Foil Premium",
+     "artist": "Romas",
+     "file": "DracoMalfoyV1.png",
+     "img": "https://accio.cards/cardimages/DracoMalfoyV1.png"
+    },
+    {
+     "num": "3b",
+     "name": "Draco Malfoy",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Foil Premium",
+     "artist": "Pete Venters",
+     "file": "DracoMalfoyV2.png",
+     "img": "https://accio.cards/cardimages/DracoMalfoyV2.png"
+    },
+    {
+     "num": "4",
+     "name": "Dragon's Escape",
+     "type": "Adventure",
+     "lesson": "",
+     "rarity": "Foil Premium",
+     "artist": "Daren Bader",
+     "file": "DragonsEscape.png",
+     "img": "https://accio.cards/cardimages/DragonsEscape.png"
+    },
+    {
+     "num": "5",
+     "name": "Elixir of Life",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Foil Premium",
+     "artist": "James Bernardin",
+     "file": "ElixirOfLife.png",
+     "img": "https://accio.cards/cardimages/ElixirOfLife.png"
+    },
+    {
+     "num": "6",
+     "name": "Gringotts' Cart Ride",
+     "type": "Adventure",
+     "lesson": "",
+     "rarity": "Foil Premium",
+     "artist": "Warner Bros.",
+     "file": "GringottsCartRide.png",
+     "img": "https://accio.cards/cardimages/GringottsCartRide.png"
+    },
+    {
+     "num": "7",
+     "name": "Hannah Abbott",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Holo Portrait Premium",
+     "artist": "Jon Foster",
+     "file": "HannahAbbott.png",
+     "img": "https://accio.cards/cardimages/HannahAbbott.png"
+    },
+    {
+     "num": "8",
+     "name": "Harry Potter",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Holo Portrait Premium",
+     "artist": "Scott M. Fischer",
+     "file": "HarryPotter.png",
+     "img": "https://accio.cards/cardimages/HarryPotter.png"
+    },
+    {
+     "num": "9",
+     "name": "Hermione Granger",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Holo Portrait Premium",
+     "artist": "Kevin McCann",
+     "file": "HermioneGranger.png",
+     "img": "https://accio.cards/cardimages/HermioneGranger.png"
+    },
+    {
+     "num": "10a",
+     "name": "Hermione Granger",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Foil Premium",
+     "artist": "James Bernardin",
+     "file": "HermioneGrangerV1.png",
+     "img": "https://accio.cards/cardimages/HermioneGrangerV1.png"
+    },
+    {
+     "num": "10b",
+     "name": "Hermione Granger",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Foil Premium",
+     "artist": "Kevin McCann",
+     "file": "HermioneGrangerV2.png",
+     "img": "https://accio.cards/cardimages/HermioneGrangerV2.png"
+    },
+    {
+     "num": "11",
+     "name": "Human Chess Game",
+     "type": "Adventure",
+     "lesson": "",
+     "rarity": "Foil Premium",
+     "artist": "Ron Spears",
+     "file": "HumanChessGame.png",
+     "img": "https://accio.cards/cardimages/HumanChessGame.png"
+    },
+    {
+     "num": "12",
+     "name": "Invisibility Cloak",
+     "type": "Item",
+     "lesson": "Transfiguration",
+     "rarity": "Foil Premium",
+     "artist": "Scott Lewis",
+     "file": "InvisibilityCloak.png",
+     "img": "https://accio.cards/cardimages/InvisibilityCloak.png"
+    },
+    {
+     "num": "13",
+     "name": "Nearly Headless Nick",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Holo Portrait Premium",
+     "artist": "Cindy Salans Rosenheim",
+     "file": "NearlyHeadlessNick.png",
+     "img": "https://accio.cards/cardimages/NearlyHeadlessNick.png"
+    },
+    {
+     "num": "14",
+     "name": "Obliviate",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Foil Premium",
+     "artist": "Keith Garletts",
+     "file": "Obliviate.png",
+     "img": "https://accio.cards/cardimages/Obliviate.png"
+    },
+    {
+     "num": "15",
+     "name": "Professor Filius Flitwick",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Holo Portrait Premium",
+     "artist": "Jon Foster",
+     "file": "ProfessorFiliusFlitwick.png",
+     "img": "https://accio.cards/cardimages/ProfessorFiliusFlitwick.png"
+    },
+    {
+     "num": "16",
+     "name": "Professor Severus Snape",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Holo Portrait Premium",
+     "artist": "Scott M. Fischer",
+     "file": "ProfessorSeverusSnape.png",
+     "img": "https://accio.cards/cardimages/ProfessorSeverusSnape.png"
+    },
+    {
+     "num": "17",
+     "name": "Ron Weasley",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Holo Portrait Premium",
+     "artist": "D. Alexander Gregory",
+     "file": "RonWeasley.png",
+     "img": "https://accio.cards/cardimages/RonWeasley.png"
+    },
+    {
+     "num": "18",
+     "name": "Rubeus Hagrid",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Holo Portrait Premium",
+     "artist": "Pete Venters",
+     "file": "RubeusHagrid.png",
+     "img": "https://accio.cards/cardimages/RubeusHagrid.png"
+    },
+    {
+     "num": "19",
+     "name": "Troll in the Bathroom",
+     "type": "Adventure",
+     "lesson": "",
+     "rarity": "Foil Premium",
+     "artist": "Michael Koelsch",
+     "file": "TrollInTheBathroom.png",
+     "img": "https://accio.cards/cardimages/TrollInTheBathroom.png"
+    },
+    {
+     "num": "20",
+     "name": "Unicorn",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Foil Premium",
+     "artist": "Zina Saunders",
+     "file": "Unicorn.png",
+     "img": "https://accio.cards/cardimages/Unicorn.png"
+    },
+    {
+     "num": "21",
+     "name": "Delivery Owl",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Rare",
+     "artist": "D. Alexander Gregory",
+     "file": "DeliveryOwl.png",
+     "img": "https://accio.cards/cardimages/DeliveryOwl.png"
+    },
+    {
+     "num": "22",
+     "name": "Draught of Living Death",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Rare",
+     "artist": "Keith Garletts",
+     "file": "DraughtOfLivingDeath.png",
+     "img": "https://accio.cards/cardimages/DraughtOfLivingDeath.png"
+    },
+    {
+     "num": "23",
+     "name": "Harry Hunting",
+     "type": "Adventure",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Patrick Faricy",
+     "file": "HarryHunting.png",
+     "img": "https://accio.cards/cardimages/HarryHunting.png"
+    },
+    {
+     "num": "24",
+     "name": "History of Magic",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Rare",
+     "artist": "Scott Lewis",
+     "file": "HistoryOfMagic.png",
+     "img": "https://accio.cards/cardimages2/HistoryOfMagic.png"
+    },
+    {
+     "num": "25",
+     "name": "Incendio",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Rare",
+     "artist": "Ben Thompson",
+     "file": "Incendio.png",
+     "img": "https://accio.cards/cardimages/Incendio.png"
+    },
+    {
+     "num": "26",
+     "name": "Malevolent Mixture",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Rare",
+     "artist": "Keith Garletts",
+     "file": "MalevolentMixture.png",
+     "img": "https://accio.cards/cardimages/MalevolentMixture.png"
+    },
+    {
+     "num": "27",
+     "name": "Meet the Centaurs",
+     "type": "Adventure",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Thomas Gianni",
+     "file": "MeetTheCentaurs.png",
+     "img": "https://accio.cards/cardimages/MeetTheCentaurs.png"
+    },
+    {
+     "num": "28",
+     "name": "Mountain Troll",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Rare",
+     "artist": "Patrick Faricy",
+     "file": "MountainTroll.png",
+     "img": "https://accio.cards/cardimages/MountainTroll.png"
+    },
+    {
+     "num": "29",
+     "name": "Mrs Norris",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Rare",
+     "artist": "Scott Lewis",
+     "file": "MrsNorris.png",
+     "img": "https://accio.cards/cardimages/MrsNorris.png"
+    },
+    {
+     "num": "30",
+     "name": "Norbert",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Rare",
+     "artist": "Scott Lewis",
+     "file": "Norbert.png",
+     "img": "https://accio.cards/cardimages/Norbert.png"
+    },
+    {
+     "num": "31",
+     "name": "Phoenix Feather Wand",
+     "type": "Item",
+     "lesson": "Charms",
+     "rarity": "Rare",
+     "artist": "Scott Lewis",
+     "file": "PhoenixFeatherWand.png",
+     "img": "https://accio.cards/cardimages/PhoenixFeatherWand.png"
+    },
+    {
+     "num": "32",
+     "name": "Platform 9 3/4",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Rare",
+     "artist": "Warner Bros.",
+     "file": "Platform934.png",
+     "img": "https://accio.cards/cardimages/Platform934.png"
+    },
+    {
+     "num": "33",
+     "name": "Potion Ingredients",
+     "type": "Item",
+     "lesson": "Potions",
+     "rarity": "Rare",
+     "artist": "Scott Lewis",
+     "file": "PotionIngredients.png",
+     "img": "https://accio.cards/cardimages/PotionIngredients.png"
+    },
+    {
+     "num": "34",
+     "name": "Raven to Writing Desk",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Rare",
+     "artist": "Melissa Ferreira",
+     "file": "RavenToWritingDesk.png",
+     "img": "https://accio.cards/cardimages/RavenToWritingDesk.png"
+    },
+    {
+     "num": "35",
+     "name": "Shrinking Potion",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Rare",
+     "artist": "Mark Romanoski",
+     "file": "ShrinkingPotion.png",
+     "img": "https://accio.cards/cardimages/ShrinkingPotion.png"
+    },
+    {
+     "num": "36",
+     "name": "Titillando",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Rare",
+     "artist": "Kevin Dobler",
+     "file": "Titillando.png",
+     "img": "https://accio.cards/cardimages/Titillando.png"
+    },
+    {
+     "num": "37",
+     "name": "Transfiguration Exam",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Rare",
+     "artist": "Michael T. Collins",
+     "file": "TransfigurationExam.png",
+     "img": "https://accio.cards/cardimages/TransfigurationExam.png"
+    },
+    {
+     "num": "38",
+     "name": "Transfiguration Test",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Rare",
+     "artist": "Michael T. Collins",
+     "file": "TransfigurationTest.png",
+     "img": "https://accio.cards/cardimages/TransfigurationTest.png"
+    },
+    {
+     "num": "39",
+     "name": "4 Privet Drive",
+     "type": "Adventure",
+     "lesson": "",
+     "rarity": "Uncommon",
+     "artist": "Michael Koelsch",
+     "file": "4PrivetDrive.png",
+     "img": "https://accio.cards/cardimages/4PrivetDrive.png"
+    },
+    {
+     "num": "40",
+     "name": "Alchemy",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Uncommon",
+     "artist": "Ron Spencer",
+     "file": "Alchemy.png",
+     "img": "https://accio.cards/cardimages/Alchemy.png"
+    },
+    {
+     "num": "41",
+     "name": "Apothecary",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Uncommon",
+     "artist": "James Bernardin",
+     "file": "Apothecary.png",
+     "img": "https://accio.cards/cardimages/Apothecary.png"
+    },
+    {
+     "num": "42",
+     "name": "Apparate",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Uncommon",
+     "artist": "Marcelo Vignali",
+     "file": "Apparate.png",
+     "img": "https://accio.cards/cardimages/Apparate.png"
+    },
+    {
+     "num": "43",
+     "name": "Baby Dragon",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Uncommon",
+     "artist": "Michael Koelsch",
+     "file": "BabyDragon.png",
+     "img": "https://accio.cards/cardimages/BabyDragon.png"
+    },
+    {
+     "num": "44",
+     "name": "Bluebell Flames",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Uncommon",
+     "artist": "Marcelo Vignali",
+     "file": "BluebellFlames.png",
+     "img": "https://accio.cards/cardimages/BluebellFlames.png"
+    },
+    {
+     "num": "45",
+     "name": "Burning Bitterroot Balm",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Uncommon",
+     "artist": "Monte Michael Moore",
+     "file": "BurningBitterrootBalm.png",
+     "img": "https://accio.cards/cardimages/BurningBitterrootBalm.png"
+    },
+    {
+     "num": "46",
+     "name": "Cage",
+     "type": "Item",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Uncommon",
+     "artist": "Jeff Laubenstein",
+     "file": "Cage.png",
+     "img": "https://accio.cards/cardimages/Cage.png"
+    },
+    {
+     "num": "47",
+     "name": "Confundus",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Uncommon",
+     "artist": "Zina Saunders",
+     "file": "Confundus.png",
+     "img": "https://accio.cards/cardimages/Confundus.png"
+    },
+    {
+     "num": "48",
+     "name": "Diagon Alley",
+     "type": "Adventure",
+     "lesson": "",
+     "rarity": "Uncommon",
+     "artist": "Ron Spears",
+     "file": "DiagonAlley.png",
+     "img": "https://accio.cards/cardimages/DiagonAlley.png"
+    },
+    {
+     "num": "49",
+     "name": "Dogbreath Potion",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Uncommon",
+     "artist": "Scott Lewis",
+     "file": "DogbreathPotion.png",
+     "img": "https://accio.cards/cardimages/DogbreathPotion.png"
+    },
+    {
+     "num": "50",
+     "name": "Draco's Trick",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Uncommon",
+     "artist": "George Davis",
+     "file": "DracosTrick.png",
+     "img": "https://accio.cards/cardimages/DracosTrick.png"
+    },
+    {
+     "num": "51",
+     "name": "Dragon Heart Wand",
+     "type": "Item",
+     "lesson": "Charms",
+     "rarity": "Uncommon",
+     "artist": "James Bernardin",
+     "file": "DragonHeartWand.png",
+     "img": "https://accio.cards/cardimages/DragonHeartWand.png"
+    },
+    {
+     "num": "52",
+     "name": "Fumos",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Uncommon",
+     "artist": "David Day",
+     "file": "Fumos.png",
+     "img": "https://accio.cards/cardimages/Fumos.png"
+    },
+    {
+     "num": "53",
+     "name": "Guard Dog",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Uncommon",
+     "artist": "Ron Spencer",
+     "file": "GuardDog.png",
+     "img": "https://accio.cards/cardimages/GuardDog.png"
+    },
+    {
+     "num": "54",
+     "name": "Hiding From Snape",
+     "type": "Adventure",
+     "lesson": "",
+     "rarity": "Uncommon",
+     "artist": "James Bernardin",
+     "file": "HidingFromSnape.png",
+     "img": "https://accio.cards/cardimages/HidingFromSnape.png"
+    },
+    {
+     "num": "55",
+     "name": "Kelpie",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Uncommon",
+     "artist": "Greg Hildebrandt",
+     "file": "Kelpie.png",
+     "img": "https://accio.cards/cardimages/Kelpie.png"
+    },
+    {
+     "num": "56",
+     "name": "Logic Puzzle",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Uncommon",
+     "artist": "Jon Foster",
+     "file": "LogicPuzzle.png",
+     "img": "https://accio.cards/cardimages/LogicPuzzle.png"
+    },
+    {
+     "num": "57",
+     "name": "Mysterious Egg",
+     "type": "Spell",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Uncommon",
+     "artist": "Bob Petillo",
+     "file": "MysteriousEgg.png",
+     "img": "https://accio.cards/cardimages/MysteriousEgg.png"
+    },
+    {
+     "num": "58",
+     "name": "Nurture",
+     "type": "Spell",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Uncommon",
+     "artist": "Patrick Faricy",
+     "file": "Nurture.png",
+     "img": "https://accio.cards/cardimages/Nurture.png"
+    },
+    {
+     "num": "59",
+     "name": "Ollivanders",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Uncommon",
+     "artist": "Jon Foster",
+     "file": "Ollivanders.png",
+     "img": "https://accio.cards/cardimages/Ollivanders.png"
+    },
+    {
+     "num": "60",
+     "name": "Peeves Causes Trouble",
+     "type": "Adventure",
+     "lesson": "",
+     "rarity": "Uncommon",
+     "artist": "Michael Koelsch",
+     "file": "PeevesCausesTrouble.png",
+     "img": "https://accio.cards/cardimages/PeevesCausesTrouble.png"
+    },
+    {
+     "num": "61",
+     "name": "Pet Toad",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Uncommon",
+     "artist": "Zina Saunders",
+     "file": "PetToad.png",
+     "img": "https://accio.cards/cardimages/PetToad.png"
+    },
+    {
+     "num": "62",
+     "name": "Pomfrey's Pick-Me-Up",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Uncommon",
+     "artist": "Jason Bernardin",
+     "file": "PomfreysPickMeUp.png",
+     "img": "https://accio.cards/cardimages/PomfreysPickMeUp.png"
+    },
+    {
+     "num": "63",
+     "name": "Potions Exam",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Uncommon",
+     "artist": "Jason Bernardin",
+     "file": "PotionsExam.png",
+     "img": "https://accio.cards/cardimages/PotionsExam.png"
+    },
+    {
+     "num": "64",
+     "name": "Reptile House",
+     "type": "Adventure",
+     "lesson": "",
+     "rarity": "Uncommon",
+     "artist": "Michael Koelsch",
+     "file": "ReptileHouse.png",
+     "img": "https://accio.cards/cardimages/ReptileHouse.png"
+    },
+    {
+     "num": "65",
+     "name": "Silver Cauldron",
+     "type": "Item",
+     "lesson": "Potions",
+     "rarity": "Uncommon",
+     "artist": "Kevin Dobler",
+     "file": "SilverCauldron.png",
+     "img": "https://accio.cards/cardimages/SilverCauldron.png"
+    },
+    {
+     "num": "66",
+     "name": "Snuffling Potion",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Uncommon",
+     "artist": "Mark Romanoski",
+     "file": "SnufflingPotion.png",
+     "img": "https://accio.cards/cardimages/SnufflingPotion.png"
+    },
+    {
+     "num": "67",
+     "name": "Stupefy",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Uncommon",
+     "artist": "Tim Hildebrandt",
+     "file": "Stupefy.png",
+     "img": "https://accio.cards/cardimages/Stupefy.png"
+    },
+    {
+     "num": "68",
+     "name": "Take Root",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Uncommon",
+     "artist": "Monte Michael Moore",
+     "file": "TakeRoot.png",
+     "img": "https://accio.cards/cardimages/TakeRoot.png"
+    },
+    {
+     "num": "69",
+     "name": "Transmogrify",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Uncommon",
+     "artist": "Zina Saunders",
+     "file": "Transmogrify.png",
+     "img": "https://accio.cards/cardimages/Transmogrify.png"
+    },
+    {
+     "num": "70",
+     "name": "Unusual Pets",
+     "type": "Adventure",
+     "lesson": "",
+     "rarity": "Uncommon",
+     "artist": "Thomas Gianni",
+     "file": "UnusualPets.png",
+     "img": "https://accio.cards/cardimages/UnusualPets.png"
+    },
+    {
+     "num": "71",
+     "name": "Vanishing Glass",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Uncommon",
+     "artist": "Patrick Faricy",
+     "file": "VanishingGlass.png",
+     "img": "https://accio.cards/cardimages/VanishingGlass.png"
+    },
+    {
+     "num": "72",
+     "name": "Winged Keys",
+     "type": "Item",
+     "lesson": "Transfiguration",
+     "rarity": "Uncommon",
+     "artist": "Ron Spears",
+     "file": "WingedKeys.png",
+     "img": "https://accio.cards/cardimages/WingedKeys.png"
+    },
+    {
+     "num": "73",
+     "name": "Accio",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Common",
+     "artist": "Chris Seaman",
+     "file": "Accio.png",
+     "img": "https://accio.cards/cardimages/Accio.png"
+    },
+    {
+     "num": "74",
+     "name": "Avifors",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Common",
+     "artist": "Kevin Dobler",
+     "file": "Avifors.png",
+     "img": "https://accio.cards/cardimages2/Avifors.png"
+    },
+    {
+     "num": "75",
+     "name": "Baubillious",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Common",
+     "artist": "George Davis",
+     "file": "Baubillious.png",
+     "img": "https://accio.cards/cardimages2/Baubillious.png"
+    },
+    {
+     "num": "76",
+     "name": "Boa Constrictor",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Common",
+     "artist": "Patrick Faricy",
+     "file": "BoaConstrictor.png",
+     "img": "https://accio.cards/cardimages/BoaConstrictor.png"
+    },
+    {
+     "num": "77",
+     "name": "Boil Cure",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Common",
+     "artist": "Jason Bernardin",
+     "file": "BoilCure.png",
+     "img": "https://accio.cards/cardimages/BoilCure.png"
+    },
+    {
+     "num": "78",
+     "name": "Borrowed Wand",
+     "type": "Item",
+     "lesson": "Charms",
+     "rarity": "Common",
+     "artist": "Keith Garletts",
+     "file": "BorrowedWand.png",
+     "img": "https://accio.cards/cardimages/BorrowedWand.png"
+    },
+    {
+     "num": "79",
+     "name": "Cauldron to Sieve",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Common",
+     "artist": "Scott Lewis",
+     "file": "CauldronToSieve.png",
+     "img": "https://accio.cards/cardimages2/CauldronToSieve.png"
+    },
+    {
+     "num": "80",
+     "name": "Curious Raven",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Common",
+     "artist": "Melissa Ferreira",
+     "file": "CuriousRaven.png",
+     "img": "https://accio.cards/cardimages/CuriousRaven.png"
+    },
+    {
+     "num": "81",
+     "name": "Dungbomb",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Common",
+     "artist": "Jason Bernardin",
+     "file": "Dungbomb.png",
+     "img": "https://accio.cards/cardimages/Dungbomb.png"
+    },
+    {
+     "num": "82",
+     "name": "Epoximise",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Common",
+     "artist": "Marcelo Vignali",
+     "file": "Epoximise.png",
+     "img": "https://accio.cards/cardimages2/Epoximise.png"
+    },
+    {
+     "num": "83",
+     "name": "Erumpent Potion",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Common",
+     "artist": "Bob Petillo",
+     "file": "ErumpentPotion.png",
+     "img": "https://accio.cards/cardimages2/ErumpentPotion.png"
+    },
+    {
+     "num": "84",
+     "name": "Fluffy Falls Asleep",
+     "type": "Spell",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Common",
+     "artist": "Scott Lewis",
+     "file": "FluffyFallsAsleep.png",
+     "img": "https://accio.cards/cardimages/FluffyFallsAsleep.png"
+    },
+    {
+     "num": "85",
+     "name": "Forest Troll",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Common",
+     "artist": "Chris Seaman",
+     "file": "ForestTroll.png",
+     "img": "https://accio.cards/cardimages/ForestTroll.png"
+    },
+    {
+     "num": "86",
+     "name": "Forgetfulness Potion",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Common",
+     "artist": "Michael T. Collins",
+     "file": "ForgetfulnessPotion.png",
+     "img": "https://accio.cards/cardimages/ForgetfulnessPotion.png"
+    },
+    {
+     "num": "87",
+     "name": "Foul Brew",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Common",
+     "artist": "Ron Spencer",
+     "file": "FoulBrew.png",
+     "img": "https://accio.cards/cardimages/FoulBrew.png"
+    },
+    {
+     "num": "88",
+     "name": "Giant Tarantula",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Common",
+     "artist": "Jeff Laubenstein",
+     "file": "GiantTarantula.png",
+     "img": "https://accio.cards/cardimages/GiantTarantula.png"
+    },
+    {
+     "num": "89",
+     "name": "Hagrid and the Stranger",
+     "type": "Spell",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Common",
+     "artist": "Doug Chaffee",
+     "file": "HagridAndTheStranger.png",
+     "img": "https://accio.cards/cardimages/HagridAndTheStranger.png"
+    },
+    {
+     "num": "90",
+     "name": "Homework",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Common",
+     "artist": "Patrick Faricy",
+     "file": "Homework.png",
+     "img": "https://accio.cards/cardimages/Homework.png"
+    },
+    {
+     "num": "91",
+     "name": "Hospital Wing",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Common",
+     "artist": "Jason Bernardin",
+     "file": "HospitalWing.png",
+     "img": "https://accio.cards/cardimages/HospitalWing.png"
+    },
+    {
+     "num": "92",
+     "name": "Illegibilus",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Common",
+     "artist": "Jason Bernardin",
+     "file": "Illegibilus.png",
+     "img": "https://accio.cards/cardimages/Illegibilus.png"
+    },
+    {
+     "num": "93",
+     "name": "Incarcifors",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Common",
+     "artist": "Bob Petillo",
+     "file": "Incarcifors.png",
+     "img": "https://accio.cards/cardimages2/Incarcifors.png"
+    },
+    {
+     "num": "94",
+     "name": "Lost Notes",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Common",
+     "artist": "Monte Michael Monte",
+     "file": "LostNotes.png",
+     "img": "https://accio.cards/cardimages/LostNotes.png"
+    },
+    {
+     "num": "95",
+     "name": "Magical Mishap",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Common",
+     "artist": "Michael T. Collins",
+     "file": "MagicalMishap.png",
+     "img": "https://accio.cards/cardimages/MagicalMishap.png"
+    },
+    {
+     "num": "96",
+     "name": "Noxious Poison",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Common",
+     "artist": "Tommy Zimmerman",
+     "file": "NoxiousPoison.png",
+     "img": "https://accio.cards/cardimages/NoxiousPoison.png"
+    },
+    {
+     "num": "97",
+     "name": "Out of the Woods",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Common",
+     "artist": "Michael Koelsch",
+     "file": "OutOfTheWoods.png",
+     "img": "https://accio.cards/cardimages/OutOfTheWoods.png"
+    },
+    {
+     "num": "98",
+     "name": "Pet Rat",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Common",
+     "artist": "Tommy Zimmerman",
+     "file": "PetRat.png",
+     "img": "https://accio.cards/cardimages/PetRat.png"
+    },
+    {
+     "num": "99",
+     "name": "Pewter Cauldron",
+     "type": "Item",
+     "lesson": "Potions",
+     "rarity": "Common",
+     "artist": "Tommy Zimmerman",
+     "file": "PewterCauldron.png",
+     "img": "https://accio.cards/cardimages/PewterCauldron.png"
+    },
+    {
+     "num": "100",
+     "name": "Potions Mistake",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Common",
+     "artist": "Daren Bader",
+     "file": "PotionsMistake.png",
+     "img": "https://accio.cards/cardimages2/PotionsMistake.png"
+    },
+    {
+     "num": "101",
+     "name": "Remembrall",
+     "type": "Item",
+     "lesson": "Transfiguration",
+     "rarity": "Common",
+     "artist": "Marcelo Vignali",
+     "file": "Remembrall.png",
+     "img": "https://accio.cards/cardimages/Remembrall.png"
+    },
+    {
+     "num": "102",
+     "name": "Restricted Section",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Common",
+     "artist": "Marcelo Vignali",
+     "file": "RestrictedSection.png",
+     "img": "https://accio.cards/cardimages2/RestrictedSection.png"
+    },
+    {
+     "num": "103",
+     "name": "Scottish Stag",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Common",
+     "artist": "Doug Chaffee",
+     "file": "ScottishStag.png",
+     "img": "https://accio.cards/cardimages/ScottishStag.png"
+    },
+    {
+     "num": "104",
+     "name": "Snape's Question",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Common",
+     "artist": "Daren Bader",
+     "file": "SnapesQuestion.png",
+     "img": "https://accio.cards/cardimages/SnapesQuestion.png"
+    },
+    {
+     "num": "105",
+     "name": "Squiggle Quill",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Common",
+     "artist": "Marcelo Vignali",
+     "file": "SquiggleQuill.png",
+     "img": "https://accio.cards/cardimages2/SquiggleQuill.png"
+    },
+    {
+     "num": "106",
+     "name": "Steelclaw",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Common",
+     "artist": "Tim Hildebrandt",
+     "file": "Steelclaw.png",
+     "img": "https://accio.cards/cardimages/Steelclaw.png"
+    },
+    {
+     "num": "107",
+     "name": "Surly Hound",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Common",
+     "artist": "Scott Lewis",
+     "file": "SurlyHound.png",
+     "img": "https://accio.cards/cardimages/SurlyHound.png"
+    },
+    {
+     "num": "108",
+     "name": "Toe Biter",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Common",
+     "artist": "Michael T. Collins",
+     "file": "ToeBiter.png",
+     "img": "https://accio.cards/cardimages/ToeBiter.png"
+    },
+    {
+     "num": "109",
+     "name": "Vermillious",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Common",
+     "artist": "Chris Seaman",
+     "file": "Vermillious.png",
+     "img": "https://accio.cards/cardimages/Vermillious.png"
+    },
+    {
+     "num": "110",
+     "name": "Vicious Wolf",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Common",
+     "artist": "Patrick Faricy",
+     "file": "ViciousWolf.png",
+     "img": "https://accio.cards/cardimages/ViciousWolf.png"
+    },
+    {
+     "num": "111",
+     "name": "Wingardium Leviosa!",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Common",
+     "artist": "Ron Spencer",
+     "file": "WingardiumLeviosa.png",
+     "img": "https://accio.cards/cardimages/WingardiumLeviosa.png"
+    },
+    {
+     "num": "112",
+     "name": "Wizard Crackers",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Common",
+     "artist": "Patrick Faricy",
+     "file": "WizardCrackers.png",
+     "img": "https://accio.cards/cardimages/WizardCrackers.png"
+    },
+    {
+     "num": "113",
+     "name": "Care of Magical Creatures",
+     "type": "Lesson",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Lesson",
+     "artist": "Shanth Enjeti, Melissa Ferreira",
+     "file": "CareOfMagicalCreatures.png",
+     "img": "https://accio.cards/cardimages/CareOfMagicalCreatures.png"
+    },
+    {
+     "num": "114",
+     "name": "Charms",
+     "type": "Lesson",
+     "lesson": "Charms",
+     "rarity": "Lesson",
+     "artist": "Shanth Enjeti, Melissa Ferreira",
+     "file": "Charms.png",
+     "img": "https://accio.cards/cardimages/Charms.png"
+    },
+    {
+     "num": "115",
+     "name": "Potions",
+     "type": "Lesson",
+     "lesson": "Potions",
+     "rarity": "Lesson",
+     "artist": "Shanth Enjeti, Melissa Ferreira",
+     "file": "Potions.png",
+     "img": "https://accio.cards/cardimages/Potions.png"
+    },
+    {
+     "num": "116",
+     "name": "Transfiguration",
+     "type": "Lesson",
+     "lesson": "Transfiguration",
+     "rarity": "Lesson",
+     "artist": "Shanth Enjeti, Melissa Ferreira",
+     "file": "Transfiguration.png",
+     "img": "https://accio.cards/cardimages/Transfiguration.png"
+    }
+   ]
+  },
+  {
+   "code": "qc",
+   "cards": [
+    {
+     "num": "1",
+     "name": "Bludger",
+     "type": "Item",
+     "lesson": "Quidditch",
+     "rarity": "Rare",
+     "artist": "Tim Hildebrandt",
+     "file": "Bludger.png",
+     "img": "https://accio.cards/cardimages/Bludger.png"
+    },
+    {
+     "num": "2",
+     "name": "Catch the Snitch",
+     "type": "Spell",
+     "lesson": "Quidditch",
+     "rarity": "Rare",
+     "artist": "James Bernardin",
+     "file": "CatchTheSnitch.png",
+     "img": "https://accio.cards/cardimages/CatchTheSnitch.png"
+    },
+    {
+     "num": "3",
+     "name": "Charms Exam",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Rare",
+     "artist": "Keith Garletts",
+     "file": "CharmsExam.png",
+     "img": "https://accio.cards/cardimages/CharmsExam.png"
+    },
+    {
+     "num": "4",
+     "name": "Fluffy",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Rare",
+     "artist": "Kevin McCann, Michael Collins",
+     "file": "Fluffy.png",
+     "img": "https://accio.cards/cardimages/Fluffy.png"
+    },
+    {
+     "num": "5",
+     "name": "Fred & George Weasley",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Jon Foster",
+     "file": "FredGeorgeWeasley.png",
+     "img": "https://accio.cards/cardimages/FredGeorgeWeasley.png"
+    },
+    {
+     "num": "6",
+     "name": "Gaze Into the Mirror",
+     "type": "Adventure",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Jim Nelson",
+     "file": "GazeIntoTheMirror.png",
+     "img": "https://accio.cards/cardimages/GazeIntoTheMirror.png"
+    },
+    {
+     "num": "7",
+     "name": "Gold Cauldron",
+     "type": "Item",
+     "lesson": "Potions",
+     "rarity": "Rare",
+     "artist": "Bob Petillo",
+     "file": "GoldCauldron.png",
+     "img": "https://accio.cards/cardimages/GoldCauldron.png"
+    },
+    {
+     "num": "8",
+     "name": "Golden Snitch",
+     "type": "Item",
+     "lesson": "Quidditch",
+     "rarity": "Rare",
+     "artist": "Keith Garletts",
+     "file": "GoldenSnitch.png",
+     "img": "https://accio.cards/cardimages/GoldenSnitch.png"
+    },
+    {
+     "num": "9",
+     "name": "Hagrid Needs Help",
+     "type": "Adventure",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Patrick Faricy",
+     "file": "HagridNeedsHelp.png",
+     "img": "https://accio.cards/cardimages/HagridNeedsHelp.png"
+    },
+    {
+     "num": "10",
+     "name": "Halloween Feast",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Rare",
+     "artist": "James Bernardin",
+     "file": "HalloweenFeast.png",
+     "img": "https://accio.cards/cardimages/HalloweenFeast.png"
+    },
+    {
+     "num": "11",
+     "name": "Harry the Seeker",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Scott M. Fischer",
+     "file": "HarryTheSeeker.png",
+     "img": "https://accio.cards/cardimages/HarryTheSeeker.png"
+    },
+    {
+     "num": "12",
+     "name": "Hospital Bed",
+     "type": "Item",
+     "lesson": "Potions",
+     "rarity": "Rare",
+     "artist": "Patrick Faricy",
+     "file": "HospitalBed.png",
+     "img": "https://accio.cards/cardimages/HospitalBed.png"
+    },
+    {
+     "num": "13",
+     "name": "Madam Rolanda Hooch",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Tony Szczudlo",
+     "file": "MadamRolandaHooch.png",
+     "img": "https://accio.cards/cardimages/MadamRolandaHooch.png"
+    },
+    {
+     "num": "14",
+     "name": "Marcus Flint",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "David A. Roach",
+     "file": "MarcusFlint.png",
+     "img": "https://accio.cards/cardimages/MarcusFlint.png"
+    },
+    {
+     "num": "15",
+     "name": "Neville Longbottom",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Ken Steacy, Zina Saunders",
+     "file": "NevilleLongbottom.png",
+     "img": "https://accio.cards/cardimages/NevilleLongbottom.png"
+    },
+    {
+     "num": "16",
+     "name": "Nimbus Two Thousand",
+     "type": "Item",
+     "lesson": "Quidditch",
+     "rarity": "Rare",
+     "artist": "Mark Romanoski",
+     "file": "NimbusTwoThousand.png",
+     "img": "https://accio.cards/cardimages/NimbusTwoThousand.png"
+    },
+    {
+     "num": "17",
+     "name": "No Time to Play",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Rare",
+     "artist": "Michael Koelsch",
+     "file": "NoTimeToPlay.png",
+     "img": "https://accio.cards/cardimages/NoTimeToPlay.png"
+    },
+    {
+     "num": "18",
+     "name": "Oliver Wood",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Kevin McCann, Michael Collins",
+     "file": "OliverWood.png",
+     "img": "https://accio.cards/cardimages/OliverWood.png"
+    },
+    {
+     "num": "19",
+     "name": "Out of Control",
+     "type": "Spell",
+     "lesson": "Quidditch",
+     "rarity": "Rare",
+     "artist": "Jeff Laubenstein",
+     "file": "OutOfControl.png",
+     "img": "https://accio.cards/cardimages/OutOfControl.png"
+    },
+    {
+     "num": "20",
+     "name": "Potions Class Disaster",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Rare",
+     "artist": "Alex Horley",
+     "file": "PotionsClassDisaster.png",
+     "img": "https://accio.cards/cardimages/PotionsClassDisaster.png"
+    },
+    {
+     "num": "21",
+     "name": "Prof. Minerva McGonagall",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Scott M. Fischer",
+     "file": "ProfMinervaMcGonagall.png",
+     "img": "https://accio.cards/cardimages/ProfMinervaMcGonagall.png"
+    },
+    {
+     "num": "22",
+     "name": "Put-Outer",
+     "type": "Item",
+     "lesson": "Transfiguration",
+     "rarity": "Rare",
+     "artist": "Patrick Faricy",
+     "file": "PutOuter.png",
+     "img": "https://accio.cards/cardimages/PutOuter.png"
+    },
+    {
+     "num": "23",
+     "name": "Ravenclaw Match",
+     "type": "Match",
+     "lesson": "Quidditch",
+     "rarity": "Rare",
+     "artist": "Ben Thompson",
+     "file": "RavenclawMatch.png",
+     "img": "https://accio.cards/cardimages/RavenclawMatch.png"
+    },
+    {
+     "num": "24",
+     "name": "Scabbers",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Rare",
+     "artist": "Patrick Faricy",
+     "file": "Scabbers.png",
+     "img": "https://accio.cards/cardimages/Scabbers.png"
+    },
+    {
+     "num": "25",
+     "name": "Seamus Finnigan",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Ken Steacy, Zina Saunders",
+     "file": "SeamusFinnigan.png",
+     "img": "https://accio.cards/cardimages/SeamusFinnigan.png"
+    },
+    {
+     "num": "26",
+     "name": "Slytherin Match",
+     "type": "Match",
+     "lesson": "Quidditch",
+     "rarity": "Rare",
+     "artist": "Ben Thompson",
+     "file": "SlytherinMatch.png",
+     "img": "https://accio.cards/cardimages/SlytherinMatch.png"
+    },
+    {
+     "num": "27",
+     "name": "Start-of-Term Feast",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Rare",
+     "artist": "James Bernardin",
+     "file": "StartOfTermFeast.png",
+     "img": "https://accio.cards/cardimages/StartOfTermFeast.png"
+    },
+    {
+     "num": "28",
+     "name": "Support Banner",
+     "type": "Item",
+     "lesson": "Quidditch",
+     "rarity": "Rare",
+     "artist": "Michael Koelsch",
+     "file": "SupportBanner.png",
+     "img": "https://accio.cards/cardimages/SupportBanner.png"
+    },
+    {
+     "num": "29",
+     "name": "The Sorting Hat",
+     "type": "Item",
+     "lesson": "Transfiguration",
+     "rarity": "Rare",
+     "artist": "Kevin Dobler",
+     "file": "TheSortingHat.png",
+     "img": "https://accio.cards/cardimages/TheSortingHat.png"
+    },
+    {
+     "num": "30",
+     "name": "Trevor",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Rare",
+     "artist": "Zina Saunders",
+     "file": "Trevor.png",
+     "img": "https://accio.cards/cardimages/Trevor.png"
+    },
+    {
+     "num": "31",
+     "name": "Chocolate Frogs",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Uncommon",
+     "artist": "Monte Michael Moore",
+     "file": "ChocolateFrogs.png",
+     "img": "https://accio.cards/cardimages/ChocolateFrogs.png"
+    },
+    {
+     "num": "32",
+     "name": "Comet Two Sixty",
+     "type": "Item",
+     "lesson": "Quidditch",
+     "rarity": "Uncommon",
+     "artist": "James Bernardin",
+     "file": "CometTwoSixty.png",
+     "img": "https://accio.cards/cardimages/CometTwoSixty.png"
+    },
+    {
+     "num": "33",
+     "name": "Defence!",
+     "type": "Spell",
+     "lesson": "Quidditch",
+     "rarity": "Uncommon",
+     "artist": "Michael Koelsch",
+     "file": "Defence.png",
+     "img": "https://accio.cards/cardimages2/Defence.png"
+    },
+    {
+     "num": "34",
+     "name": "Devil's Snare",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Uncommon",
+     "artist": "",
+     "file": "DevilsSnare.png",
+     "img": "https://accio.cards/cardimages/DevilsSnare.png"
+    },
+    {
+     "num": "35",
+     "name": "Diffindo",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Uncommon",
+     "artist": "Tim Hildebrandt",
+     "file": "Diffindo.png",
+     "img": "https://accio.cards/cardimages/Diffindo.png"
+    },
+    {
+     "num": "36",
+     "name": "Doxy",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Uncommon",
+     "artist": "Jeff Laubenstein",
+     "file": "Doxy.png",
+     "img": "https://accio.cards/cardimages/Doxy.png"
+    },
+    {
+     "num": "37",
+     "name": "Hufflepuff Match",
+     "type": "Match",
+     "lesson": "Quidditch",
+     "rarity": "Uncommon",
+     "artist": "Ben Thompson",
+     "file": "HufflepuffMatch.png",
+     "img": "https://accio.cards/cardimages/HufflepuffMatch.png"
+    },
+    {
+     "num": "38",
+     "name": "In the Stands",
+     "type": "Adventure",
+     "lesson": "",
+     "rarity": "Uncommon",
+     "artist": "Patrick Faricy",
+     "file": "InTheStands.png",
+     "img": "https://accio.cards/cardimages/InTheStands.png"
+    },
+    {
+     "num": "39",
+     "name": "Into the Forbidden Forest",
+     "type": "Adventure",
+     "lesson": "",
+     "rarity": "Uncommon",
+     "artist": "Lars Grant-West",
+     "file": "IntoTheForbiddenForest.png",
+     "img": "https://accio.cards/cardimages/IntoTheForbiddenForest.png"
+    },
+    {
+     "num": "40",
+     "name": "Jawbind Potion",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Uncommon",
+     "artist": "Alex Horley",
+     "file": "JawbindPotion.png",
+     "img": "https://accio.cards/cardimages/JawbindPotion.png"
+    },
+    {
+     "num": "41",
+     "name": "Missing Parchment",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Uncommon",
+     "artist": "Kevin Dobler",
+     "file": "MissingParchment.png",
+     "img": "https://accio.cards/cardimages2/MissingParchment.png"
+    },
+    {
+     "num": "42",
+     "name": "Penalty Shot",
+     "type": "Spell",
+     "lesson": "Quidditch",
+     "rarity": "Uncommon",
+     "artist": "James Bernardin",
+     "file": "PenaltyShot.png",
+     "img": "https://accio.cards/cardimages/PenaltyShot.png"
+    },
+    {
+     "num": "43",
+     "name": "Pep Talk",
+     "type": "Adventure",
+     "lesson": "",
+     "rarity": "Uncommon",
+     "artist": "Patrick Faricy",
+     "file": "PepTalk.png",
+     "img": "https://accio.cards/cardimages/PepTalk.png"
+    },
+    {
+     "num": "44",
+     "name": "Petrificus Totalus",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Uncommon",
+     "artist": "Ken Steacy, Zina Saunders",
+     "file": "PetrificusTotalus.png",
+     "img": "https://accio.cards/cardimages/PetrificusTotalus.png"
+    },
+    {
+     "num": "45",
+     "name": "Power Play",
+     "type": "Spell",
+     "lesson": "Quidditch",
+     "rarity": "Uncommon",
+     "artist": "David A. Roach",
+     "file": "PowerPlay.png",
+     "img": "https://accio.cards/cardimages/PowerPlay.png"
+    },
+    {
+     "num": "46",
+     "name": "Race for the Snitch",
+     "type": "Adventure",
+     "lesson": "",
+     "rarity": "Uncommon",
+     "artist": "Jon Foster",
+     "file": "RaceForTheSnitch.png",
+     "img": "https://accio.cards/cardimages/RaceForTheSnitch.png"
+    },
+    {
+     "num": "47",
+     "name": "Snape's Bias",
+     "type": "Adventure",
+     "lesson": "",
+     "rarity": "Uncommon",
+     "artist": "Patrick Faricy",
+     "file": "SnapesBias.png",
+     "img": "https://accio.cards/cardimages/SnapesBias.png"
+    },
+    {
+     "num": "48",
+     "name": "Sticking Up for Neville",
+     "type": "Adventure",
+     "lesson": "",
+     "rarity": "Uncommon",
+     "artist": "Patrick Faricy",
+     "file": "StickingUpForNeville.png",
+     "img": "https://accio.cards/cardimages/StickingUpForNeville.png"
+    },
+    {
+     "num": "49",
+     "name": "Strategy Session",
+     "type": "Spell",
+     "lesson": "Quidditch",
+     "rarity": "Uncommon",
+     "artist": "Michael Koelsch",
+     "file": "StrategySession.png",
+     "img": "https://accio.cards/cardimages/StrategySession.png"
+    },
+    {
+     "num": "50",
+     "name": "Weakness Potion",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Uncommon",
+     "artist": "Keith Garletts",
+     "file": "WeaknessPotion.png",
+     "img": "https://accio.cards/cardimages/WeaknessPotion.png"
+    },
+    {
+     "num": "51",
+     "name": "Bloodroot Poison",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Common",
+     "artist": "Keith Garletts",
+     "file": "BloodrootPoison.png",
+     "img": "https://accio.cards/cardimages/BloodrootPoison.png"
+    },
+    {
+     "num": "52",
+     "name": "Bravado",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Common",
+     "artist": "Mark Romanoski",
+     "file": "Bravado.png",
+     "img": "https://accio.cards/cardimages/Bravado.png"
+    },
+    {
+     "num": "53",
+     "name": "Bruisewort Balm",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Common",
+     "artist": "Alex Horley",
+     "file": "BruisewortBalm.png",
+     "img": "https://accio.cards/cardimages/BruisewortBalm.png"
+    },
+    {
+     "num": "54",
+     "name": "Cleansweep Seven",
+     "type": "Item",
+     "lesson": "Quidditch",
+     "rarity": "Common",
+     "artist": "Patrick Faricy",
+     "file": "CleansweepSeven.png",
+     "img": "https://accio.cards/cardimages/CleansweepSeven.png"
+    },
+    {
+     "num": "55",
+     "name": "Cobbing",
+     "type": "Spell",
+     "lesson": "Quidditch",
+     "rarity": "Common",
+     "artist": "Patrick Faricy",
+     "file": "Cobbing.png",
+     "img": "https://accio.cards/cardimages/Cobbing.png"
+    },
+    {
+     "num": "56",
+     "name": "Cobra Lily",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Common",
+     "artist": "Doug Chaffee",
+     "file": "CobraLily.png",
+     "img": "https://accio.cards/cardimages/CobraLily.png"
+    },
+    {
+     "num": "57",
+     "name": "Cunning Fox",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Common",
+     "artist": "Doug Chaffee",
+     "file": "CunningFox.png",
+     "img": "https://accio.cards/cardimages/CunningFox.png"
+    },
+    {
+     "num": "58",
+     "name": "Desk Into Pig",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Common",
+     "artist": "Melissa Ferreira",
+     "file": "DeskIntoPig.png",
+     "img": "https://accio.cards/cardimages/DeskIntoPig.png"
+    },
+    {
+     "num": "59",
+     "name": "Drowsiness Draught",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Common",
+     "artist": "Greg Hildebrandt",
+     "file": "DrowsinessDraught.png",
+     "img": "https://accio.cards/cardimages2/DrowsinessDraught.png"
+    },
+    {
+     "num": "60",
+     "name": "Fouled!",
+     "type": "Spell",
+     "lesson": "Quidditch",
+     "rarity": "Common",
+     "artist": "James Bernardin",
+     "file": "Fouled.png",
+     "img": "https://accio.cards/cardimages/Fouled.png"
+    },
+    {
+     "num": "61",
+     "name": "Gone!",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Common",
+     "artist": "Kevin Dobler",
+     "file": "Gone.png",
+     "img": "https://accio.cards/cardimages2/Gone.png"
+    },
+    {
+     "num": "62",
+     "name": "Mice to Snuffboxes",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Common",
+     "artist": "Monte Michael Moore",
+     "file": "MiceToSnuffboxes.png",
+     "img": "https://accio.cards/cardimages/MiceToSnuffboxes.png"
+    },
+    {
+     "num": "63",
+     "name": "Mopsus Potion",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Common",
+     "artist": "Greg Hildebrandt",
+     "file": "MopsusPotion.png",
+     "img": "https://accio.cards/cardimages2/MopsusPotion.png"
+    },
+    {
+     "num": "64",
+     "name": "Ouch!",
+     "type": "Spell",
+     "lesson": "Quidditch",
+     "rarity": "Common",
+     "artist": "Patrick Faricy",
+     "file": "Ouch.png",
+     "img": "https://accio.cards/cardimages/Ouch.png"
+    },
+    {
+     "num": "65",
+     "name": "Practice Match",
+     "type": "Match",
+     "lesson": "Quidditch",
+     "rarity": "Common",
+     "artist": "Chris Seaman",
+     "file": "PracticeMatch.png",
+     "img": "https://accio.cards/cardimages/PracticeMatch.png"
+    },
+    {
+     "num": "66",
+     "name": "Pulling Up",
+     "type": "Spell",
+     "lesson": "Quidditch",
+     "rarity": "Common",
+     "artist": "James Bernardin",
+     "file": "PullingUp.png",
+     "img": "https://accio.cards/cardimages/PullingUp.png"
+    },
+    {
+     "num": "67",
+     "name": "Research",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Common",
+     "artist": "Mark Romanoski",
+     "file": "Research.png",
+     "img": "https://accio.cards/cardimages/Research.png"
+    },
+    {
+     "num": "68",
+     "name": "Rope Bind",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Common",
+     "artist": "Kevin McCann, Michael Collins",
+     "file": "RopeBind.png",
+     "img": "https://accio.cards/cardimages/RopeBind.png"
+    },
+    {
+     "num": "69",
+     "name": "Searching for the Snitch",
+     "type": "Spell",
+     "lesson": "Quidditch",
+     "rarity": "Common",
+     "artist": "James Bernardin",
+     "file": "SearchingForTheSnitch.png",
+     "img": "https://accio.cards/cardimages/SearchingForTheSnitch.png"
+    },
+    {
+     "num": "70",
+     "name": "Smash!",
+     "type": "Spell",
+     "lesson": "Quidditch",
+     "rarity": "Common",
+     "artist": "Patrick Faricy",
+     "file": "Smash.png",
+     "img": "https://accio.cards/cardimages/Smash.png"
+    },
+    {
+     "num": "71",
+     "name": "Stream of Flames",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Common",
+     "artist": "Ken Steacy, Zina Saunders",
+     "file": "StreamOfFlames.png",
+     "img": "https://accio.cards/cardimages/StreamOfFlames.png"
+    },
+    {
+     "num": "72",
+     "name": "Streeler",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Common",
+     "artist": "Jeff Laubenstein",
+     "file": "Streeler.png",
+     "img": "https://accio.cards/cardimages/Streeler.png"
+    },
+    {
+     "num": "73",
+     "name": "Swarm!",
+     "type": "Spell",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Common",
+     "artist": "Monte Michael Moore",
+     "file": "Swarm.png",
+     "img": "https://accio.cards/cardimages/Swarm.png"
+    },
+    {
+     "num": "74",
+     "name": "Time Out",
+     "type": "Spell",
+     "lesson": "Quidditch",
+     "rarity": "Common",
+     "artist": "Michael Koelsch",
+     "file": "TimeOut.png",
+     "img": "https://accio.cards/cardimages/TimeOut.png"
+    },
+    {
+     "num": "75",
+     "name": "Vanish",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Common",
+     "artist": "Monte Michael Moore",
+     "file": "Vanish.png",
+     "img": "https://accio.cards/cardimages/Vanish.png"
+    },
+    {
+     "num": "76",
+     "name": "Care of Magical Creatures",
+     "type": "Lesson",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Lesson",
+     "artist": "Shanth Enjeti, Melissa Ferreira",
+     "file": "CareOfMagicalCreatures.png",
+     "img": "https://accio.cards/cardimages/CareOfMagicalCreatures.png"
+    },
+    {
+     "num": "77",
+     "name": "Charms",
+     "type": "Lesson",
+     "lesson": "Charms",
+     "rarity": "Lesson",
+     "artist": "Shanth Enjeti, Melissa Ferreira",
+     "file": "Charms.png",
+     "img": "https://accio.cards/cardimages/Charms.png"
+    },
+    {
+     "num": "78",
+     "name": "Potions",
+     "type": "Lesson",
+     "lesson": "Potions",
+     "rarity": "Lesson",
+     "artist": "Shanth Enjeti, Melissa Ferreira",
+     "file": "Potions.png",
+     "img": "https://accio.cards/cardimages/Potions.png"
+    },
+    {
+     "num": "79",
+     "name": "Quidditch",
+     "type": "Lesson",
+     "lesson": "",
+     "rarity": "Lesson",
+     "artist": "Shanth Enjeti, Melissa Ferreira",
+     "file": "Quidditch.png",
+     "img": "https://accio.cards/cardimages/Quidditch.png"
+    },
+    {
+     "num": "80",
+     "name": "Transfiguration",
+     "type": "Lesson",
+     "lesson": "Transfiguration",
+     "rarity": "Lesson",
+     "artist": "Shanth Enjeti, Melissa Ferreira",
+     "file": "Transfiguration.png",
+     "img": "https://accio.cards/cardimages/Transfiguration.png"
+    }
+   ]
+  },
+  {
+   "code": "da",
+   "cards": [
+    {
+     "num": "1",
+     "name": "Beater Grabs the Snitch",
+     "type": "Spell",
+     "lesson": "Quidditch",
+     "rarity": "Rare",
+     "artist": "Dennis Calero",
+     "file": "BeaterGrabsTheSnitch.png",
+     "img": "https://accio.cards/cardimages2/BeaterGrabsTheSnitch.png"
+    },
+    {
+     "num": "2",
+     "name": "Bulgeye Potion",
+     "type": "Item",
+     "lesson": "Potions",
+     "rarity": "Rare",
+     "artist": "Ken Steacy",
+     "file": "BulgeyePotion.png",
+     "img": "https://accio.cards/cardimages/BulgeyePotion.png"
+    },
+    {
+     "num": "3",
+     "name": "Christmas Feast",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Rare",
+     "artist": "Patrick Faricy",
+     "file": "ChristmasFeast.png",
+     "img": "https://accio.cards/cardimages/ChristmasFeast.png"
+    },
+    {
+     "num": "4",
+     "name": "Colour-Changing Ink",
+     "type": "Item",
+     "lesson": "Transfiguration",
+     "rarity": "Rare",
+     "artist": "David Day",
+     "file": "ColourChangingInk.png",
+     "img": "https://accio.cards/cardimages/ColourChangingInk.png"
+    },
+    {
+     "num": "5",
+     "name": "Draco Malfoy, Slytherin",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Bob Petillo",
+     "file": "DracoMalfoySlytherin.png",
+     "img": "https://accio.cards/cardimages/DracoMalfoySlytherin.png"
+    },
+    {
+     "num": "6",
+     "name": "Dragon-Hide Gloves",
+     "type": "Item",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Rare",
+     "artist": "Patrick Faricy",
+     "file": "DragonHideGloves.png",
+     "img": "https://accio.cards/cardimages/DragonHideGloves.png"
+    },
+    {
+     "num": "7",
+     "name": "Eeylops Owl Emporium",
+     "type": "Location",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Rare",
+     "artist": "Scott M. Fischer",
+     "file": "EeylopsOwlEmporium.png",
+     "img": "https://accio.cards/cardimages/EeylopsOwlEmporium.png"
+    },
+    {
+     "num": "8",
+     "name": "Flourish and Blotts",
+     "type": "Location",
+     "lesson": "Transfiguration",
+     "rarity": "Rare",
+     "artist": "Ken Steacy",
+     "file": "FlourishAndBlotts.png",
+     "img": "https://accio.cards/cardimages/FlourishAndBlotts.png"
+    },
+    {
+     "num": "9",
+     "name": "Good Night's Sleep",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Rare",
+     "artist": "George Davis",
+     "file": "GoodNightsSleep.png",
+     "img": "https://accio.cards/cardimages/GoodNightsSleep.png"
+    },
+    {
+     "num": "10",
+     "name": "Gringotts",
+     "type": "Location",
+     "lesson": "Charms",
+     "rarity": "Rare",
+     "artist": "Tim Hildebrandt",
+     "file": "Gringotts.png",
+     "img": "https://accio.cards/cardimages/Gringotts.png"
+    },
+    {
+     "num": "11",
+     "name": "Gringotts Vault Key",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Rare",
+     "artist": "Thomas Gianni",
+     "file": "GringottsVaultKey.png",
+     "img": "https://accio.cards/cardimages/GringottsVaultKey.png"
+    },
+    {
+     "num": "12",
+     "name": "Griphook",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Doug Chaffee",
+     "file": "Griphook.png",
+     "img": "https://accio.cards/cardimages/Griphook.png"
+    },
+    {
+     "num": "13",
+     "name": "Gryffindor Match",
+     "type": "Match",
+     "lesson": "Quidditch",
+     "rarity": "Rare",
+     "artist": "Greg Hildebrandt",
+     "file": "GryffindorMatch.png",
+     "img": "https://accio.cards/cardimages/GryffindorMatch.png"
+    },
+    {
+     "num": "14",
+     "name": "Hagrid, Keeper of Keys",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Greg Hildebrandt",
+     "file": "HagridKeeperOfKeys.png",
+     "img": "https://accio.cards/cardimages/HagridKeeperOfKeys.png"
+    },
+    {
+     "num": "15",
+     "name": "Hagrid's Umbrella",
+     "type": "Item",
+     "lesson": "Charms",
+     "rarity": "Rare",
+     "artist": "Monte Michael Moore",
+     "file": "HagridsUmbrella.png",
+     "img": "https://accio.cards/cardimages/HagridsUmbrella.png"
+    },
+    {
+     "num": "16",
+     "name": "Hebridean Black Dragon",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Rare",
+     "artist": "Lars Grant-West",
+     "file": "HebrideanBlackDragon.png",
+     "img": "https://accio.cards/cardimages/HebrideanBlackDragon.png"
+    },
+    {
+     "num": "17",
+     "name": "Hedwig",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Rare",
+     "artist": "Lars Grant-West",
+     "file": "Hedwig.png",
+     "img": "https://accio.cards/cardimages/Hedwig.png"
+    },
+    {
+     "num": "18",
+     "name": "Hermione, Top Student",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Mark Romanoski",
+     "file": "HermioneTopStudent.png",
+     "img": "https://accio.cards/cardimages/HermioneTopStudent.png"
+    },
+    {
+     "num": "19",
+     "name": "Lee Jordan",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Kevin Dobler",
+     "file": "LeeJordan.png",
+     "img": "https://accio.cards/cardimages/LeeJordan.png"
+    },
+    {
+     "num": "20",
+     "name": "Letters From No One",
+     "type": "Adventure",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Greg Hildebrandt",
+     "file": "LettersFromNoOne.png",
+     "img": "https://accio.cards/cardimages/LettersFromNoOne.png"
+    },
+    {
+     "num": "21",
+     "name": "Madam Irma Pince",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Alex Horley",
+     "file": "MadamIrmaPince.png",
+     "img": "https://accio.cards/cardimages/MadamIrmaPince.png"
+    },
+    {
+     "num": "22",
+     "name": "Professor Quirinus Quirrell",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Kevin Dobler",
+     "file": "ProfessorQuirinusQuirrell.png",
+     "img": "https://accio.cards/cardimages/ProfessorQuirinusQuirrell.png"
+    },
+    {
+     "num": "23",
+     "name": "Self-Stirring Cauldron",
+     "type": "Item",
+     "lesson": "Potions",
+     "rarity": "Rare",
+     "artist": "Daren Bader",
+     "file": "SelfStirringCauldron.png",
+     "img": "https://accio.cards/cardimages/SelfStirringCauldron.png"
+    },
+    {
+     "num": "24",
+     "name": "Silver Unicorn Horn",
+     "type": "Item",
+     "lesson": "Potions",
+     "rarity": "Rare",
+     "artist": "George Davis",
+     "file": "SilverUnicornHorn.png",
+     "img": "https://accio.cards/cardimages/SilverUnicornHorn.png"
+    },
+    {
+     "num": "25",
+     "name": "Table Trouble",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Rare",
+     "artist": "Patrick Faricy",
+     "file": "TableTrouble.png",
+     "img": "https://accio.cards/cardimages/TableTrouble.png"
+    },
+    {
+     "num": "26",
+     "name": "The Famous Harry Potter",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Greg Hildebrandt",
+     "file": "TheFamousHarryPotter.png",
+     "img": "https://accio.cards/cardimages/TheFamousHarryPotter.png"
+    },
+    {
+     "num": "27",
+     "name": "The Leaky Cauldron",
+     "type": "Location",
+     "lesson": "Potions",
+     "rarity": "Rare",
+     "artist": "Tim Hildebrandt",
+     "file": "TheLeakyCauldron.png",
+     "img": "https://accio.cards/cardimages/TheLeakyCauldron.png"
+    },
+    {
+     "num": "28",
+     "name": "Three-Month-Long Match",
+     "type": "Match",
+     "lesson": "Quidditch",
+     "rarity": "Rare",
+     "artist": "Keith Garletts",
+     "file": "ThreeMonthLongMatch.png",
+     "img": "https://accio.cards/cardimages/ThreeMonthLongMatch.png"
+    },
+    {
+     "num": "29",
+     "name": "Through the Arch",
+     "type": "Adventure",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "George Davis",
+     "file": "ThroughTheArch.png",
+     "img": "https://accio.cards/cardimages/ThroughTheArch.png"
+    },
+    {
+     "num": "30",
+     "name": "Vanishing Referee",
+     "type": "Spell",
+     "lesson": "Quidditch",
+     "rarity": "Rare",
+     "artist": "George Davis",
+     "file": "VanishingReferee.png",
+     "img": "https://accio.cards/cardimages/VanishingReferee.png"
+    },
+    {
+     "num": "31",
+     "name": "Alihotsy Draught",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Uncommon",
+     "artist": "Kevin McCann, Michael Collins",
+     "file": "AlihotsyDraught.png",
+     "img": "https://accio.cards/cardimages/AlihotsyDraught.png"
+    },
+    {
+     "num": "32",
+     "name": "Barn Owl",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Uncommon",
+     "artist": "Lars Grant-West",
+     "file": "BarnOwl.png",
+     "img": "https://accio.cards/cardimages/BarnOwl.png"
+    },
+    {
+     "num": "33",
+     "name": "Beetle Eyes",
+     "type": "Item",
+     "lesson": "Potions",
+     "rarity": "Uncommon",
+     "artist": "Daren Bader",
+     "file": "BeetleEyes.png",
+     "img": "https://accio.cards/cardimages/BeetleEyes.png"
+    },
+    {
+     "num": "34",
+     "name": "Biased Commentary",
+     "type": "Spell",
+     "lesson": "Quidditch",
+     "rarity": "Uncommon",
+     "artist": "Chris Seaman",
+     "file": "BiasedCommentary.png",
+     "img": "https://accio.cards/cardimages/BiasedCommentary.png"
+    },
+    {
+     "num": "35",
+     "name": "Bluebottle Broom",
+     "type": "Item",
+     "lesson": "Quidditch",
+     "rarity": "Uncommon",
+     "artist": "Kevin McCann, Michael Collins",
+     "file": "BluebottleBroom.png",
+     "img": "https://accio.cards/cardimages/BluebottleBroom.png"
+    },
+    {
+     "num": "36",
+     "name": "Cauldron Shop",
+     "type": "Location",
+     "lesson": "Potions",
+     "rarity": "Uncommon",
+     "artist": "Bob Petillo",
+     "file": "CauldronShop.png",
+     "img": "https://accio.cards/cardimages/CauldronShop.png"
+    },
+    {
+     "num": "37",
+     "name": "Colloshoo",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Uncommon",
+     "artist": "Mark Romanoski",
+     "file": "Colloshoo.png",
+     "img": "https://accio.cards/cardimages2/Colloshoo.png"
+    },
+    {
+     "num": "38",
+     "name": "Eel Eyes",
+     "type": "Item",
+     "lesson": "Potions",
+     "rarity": "Uncommon",
+     "artist": "Monte Michael Moore",
+     "file": "EelEyes.png",
+     "img": "https://accio.cards/cardimages/EelEyes.png"
+    },
+    {
+     "num": "39",
+     "name": "Frog-Spawn",
+     "type": "Spell",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Uncommon",
+     "artist": "Dennis Calero",
+     "file": "FrogSpawn.png",
+     "img": "https://accio.cards/cardimages/FrogSpawn.png"
+    },
+    {
+     "num": "40",
+     "name": "Injured",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Uncommon",
+     "artist": "Alex Horley",
+     "file": "Injured.png",
+     "img": "https://accio.cards/cardimages/Injured.png"
+    },
+    {
+     "num": "41",
+     "name": "Lapifors",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Uncommon",
+     "artist": "Kevin McCann, Michael Collins",
+     "file": "Lapifors.png",
+     "img": "https://accio.cards/cardimages/Lapifors.png"
+    },
+    {
+     "num": "42",
+     "name": "Madam Malkin's Robes",
+     "type": "Location",
+     "lesson": "Transfiguration",
+     "rarity": "Uncommon",
+     "artist": "Greg Hildebrandt",
+     "file": "MadamMalkinsRobes.png",
+     "img": "https://accio.cards/cardimages/MadamMalkinsRobes.png"
+    },
+    {
+     "num": "43",
+     "name": "Porcupine Robe",
+     "type": "Item",
+     "lesson": "Transfiguration",
+     "rarity": "Uncommon",
+     "artist": "Thomas Gianni",
+     "file": "PorcupineRobe.png",
+     "img": "https://accio.cards/cardimages/PorcupineRobe.png"
+    },
+    {
+     "num": "44",
+     "name": "Practical Joke",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Uncommon",
+     "artist": "Keith Garletts",
+     "file": "PracticalJoke.png",
+     "img": "https://accio.cards/cardimages/PracticalJoke.png"
+    },
+    {
+     "num": "45",
+     "name": "Quality Quidditch Supplies",
+     "type": "Location",
+     "lesson": "Quidditch",
+     "rarity": "Uncommon",
+     "artist": "Bob Petillo",
+     "file": "QualityQuidditchSupplies.png",
+     "img": "https://accio.cards/cardimages/QualityQuidditchSupplies.png"
+    },
+    {
+     "num": "46",
+     "name": "Quintaped",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Uncommon",
+     "artist": "Jeff Laubenstein",
+     "file": "Quintaped.png",
+     "img": "https://accio.cards/cardimages/Quintaped.png"
+    },
+    {
+     "num": "47",
+     "name": "Spiral Dive",
+     "type": "Spell",
+     "lesson": "Quidditch",
+     "rarity": "Uncommon",
+     "artist": "Kevin McCann, Michael Collins",
+     "file": "SpiralDive.png",
+     "img": "https://accio.cards/cardimages/SpiralDive.png"
+    },
+    {
+     "num": "48",
+     "name": "Verdillious",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Uncommon",
+     "artist": "Chris Seaman",
+     "file": "Verdillious.png",
+     "img": "https://accio.cards/cardimages/Verdillious.png"
+    },
+    {
+     "num": "49",
+     "name": "Wand Shop",
+     "type": "Location",
+     "lesson": "Charms",
+     "rarity": "Uncommon",
+     "artist": "Kevin Dobler",
+     "file": "WandShop.png",
+     "img": "https://accio.cards/cardimages/WandShop.png"
+    },
+    {
+     "num": "50",
+     "name": "Wild Boar",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Uncommon",
+     "artist": "Ron Spencer",
+     "file": "WildBoar.png",
+     "img": "https://accio.cards/cardimages/WildBoar.png"
+    },
+    {
+     "num": "51",
+     "name": "A Beginner's Guide to Transfiguration",
+     "type": "Item",
+     "lesson": "Transfiguration",
+     "rarity": "Common",
+     "artist": "Tony Szczudlo",
+     "file": "ABeginnersGuideToTransfiguration.png",
+     "img": "https://accio.cards/cardimages/ABeginnersGuideToTransfiguration.png"
+    },
+    {
+     "num": "52",
+     "name": "Bludger in the Stands",
+     "type": "Spell",
+     "lesson": "Quidditch",
+     "rarity": "Common",
+     "artist": "Alex Horley",
+     "file": "BludgerInTheStands.png",
+     "img": "https://accio.cards/cardimages/BludgerInTheStands.png"
+    },
+    {
+     "num": "53",
+     "name": "Blue Wig",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Common",
+     "artist": "Patrick Faricy",
+     "file": "BlueWig.png",
+     "img": "https://accio.cards/cardimages/BlueWig.png"
+    },
+    {
+     "num": "54",
+     "name": "Butterfly Weed Balm",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Common",
+     "artist": "Kevin Dobler",
+     "file": "ButterflyWeedBalm.png",
+     "img": "https://accio.cards/cardimages/ButterflyWeedBalm.png"
+    },
+    {
+     "num": "55",
+     "name": "Cancelled Practice",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Common",
+     "artist": "Doug Chaffee",
+     "file": "CancelledPractice.png",
+     "img": "https://accio.cards/cardimages2/CancelledPractice.png"
+    },
+    {
+     "num": "56",
+     "name": "Dogbane Potion",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Common",
+     "artist": "Keith Garletts",
+     "file": "DogbanePotion.png",
+     "img": "https://accio.cards/cardimages2/DogbanePotion.png"
+    },
+    {
+     "num": "57",
+     "name": "Dog Biscuits",
+     "type": "Spell",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Common",
+     "artist": "Greg Hildebrandt",
+     "file": "DogBiscuits.png",
+     "img": "https://accio.cards/cardimages/DogBiscuits.png"
+    },
+    {
+     "num": "58",
+     "name": "Fantastic Beasts & Where to Find Them",
+     "type": "Item",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Common",
+     "artist": "Tony Szczudlo",
+     "file": "FantasticBeastsWhereToFindThem.png",
+     "img": "https://accio.cards/cardimages/FantasticBeastsWhereToFindThem.png"
+    },
+    {
+     "num": "59",
+     "name": "Flipendo",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Common",
+     "artist": "David Day",
+     "file": "Flipendo.png",
+     "img": "https://accio.cards/cardimages/Flipendo.png"
+    },
+    {
+     "num": "60",
+     "name": "Freeze!",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Common",
+     "artist": "Greg Hildebrandt",
+     "file": "Freeze.png",
+     "img": "https://accio.cards/cardimages/Freeze.png"
+    },
+    {
+     "num": "61",
+     "name": "Magical Drafts and Potions",
+     "type": "Item",
+     "lesson": "Potions",
+     "rarity": "Common",
+     "artist": "Tony Szczudlo",
+     "file": "MagicalDraftsAndPotions.png",
+     "img": "https://accio.cards/cardimages/MagicalDraftsAndPotions.png"
+    },
+    {
+     "num": "62",
+     "name": "Mid-air Collision",
+     "type": "Spell",
+     "lesson": "Quidditch",
+     "rarity": "Common",
+     "artist": "Kevin McCann, Michael Collins",
+     "file": "MidAirCollision.png",
+     "img": "https://accio.cards/cardimages/MidAirCollision.png"
+    },
+    {
+     "num": "63",
+     "name": "Moonseed Poison",
+     "type": "Item",
+     "lesson": "Potions",
+     "rarity": "Common",
+     "artist": "Alex Horley",
+     "file": "MoonseedPoison.png",
+     "img": "https://accio.cards/cardimages/MoonseedPoison.png"
+    },
+    {
+     "num": "64",
+     "name": "Picking on Neville",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Common",
+     "artist": "Mark Romanoski",
+     "file": "PickingOnNeville.png",
+     "img": "https://accio.cards/cardimages/PickingOnNeville.png"
+    },
+    {
+     "num": "65",
+     "name": "Pigley Dudley",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Common",
+     "artist": "Patrick Faricy",
+     "file": "PigleyDudley.png",
+     "img": "https://accio.cards/cardimages/PigleyDudley.png"
+    },
+    {
+     "num": "66",
+     "name": "Quick Thinking",
+     "type": "Spell",
+     "lesson": "Quidditch",
+     "rarity": "Common",
+     "artist": "Kevin McCann, Michael Collins",
+     "file": "QuickThinking.png",
+     "img": "https://accio.cards/cardimages/QuickThinking.png"
+    },
+    {
+     "num": "67",
+     "name": "Quidditch Through the Ages",
+     "type": "Item",
+     "lesson": "Quidditch",
+     "rarity": "Common",
+     "artist": "Tony Szczudlo",
+     "file": "QuidditchThroughTheAges.png",
+     "img": "https://accio.cards/cardimages/QuidditchThroughTheAges.png"
+    },
+    {
+     "num": "68",
+     "name": "River Troll",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Common",
+     "artist": "Jeff Laubenstein",
+     "file": "RiverTroll.png",
+     "img": "https://accio.cards/cardimages/RiverTroll.png"
+    },
+    {
+     "num": "69",
+     "name": "Screech Owl",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Common",
+     "artist": "Lars Grant-West",
+     "file": "ScreechOwl.png",
+     "img": "https://accio.cards/cardimages/ScreechOwl.png"
+    },
+    {
+     "num": "70",
+     "name": "Sloth Grip",
+     "type": "Spell",
+     "lesson": "Quidditch",
+     "rarity": "Common",
+     "artist": "Kevin McCann, Michael Collins",
+     "file": "SlothGrip.png",
+     "img": "https://accio.cards/cardimages2/SlothGrip.png"
+    },
+    {
+     "num": "71",
+     "name": "Spongify",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Common",
+     "artist": "Alex Horley",
+     "file": "Spongify.png",
+     "img": "https://accio.cards/cardimages/Spongify.png"
+    },
+    {
+     "num": "72",
+     "name": "Swelling Potion",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Common",
+     "artist": "Greg Hildebrandt",
+     "file": "SwellingPotion.png",
+     "img": "https://accio.cards/cardimages/SwellingPotion.png"
+    },
+    {
+     "num": "73",
+     "name": "Tawny Owl",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Common",
+     "artist": "Lars Grant-West",
+     "file": "TawnyOwl.png",
+     "img": "https://accio.cards/cardimages/TawnyOwl.png"
+    },
+    {
+     "num": "74",
+     "name": "Teacup to Rat",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Common",
+     "artist": "Darrell Riche",
+     "file": "TeacupToRat.png",
+     "img": "https://accio.cards/cardimages/TeacupToRat.png"
+    },
+    {
+     "num": "75",
+     "name": "The Standard Book of Spells (Grade 1)",
+     "type": "Item",
+     "lesson": "Charms",
+     "rarity": "Common",
+     "artist": "Tony Szczudlo",
+     "file": "TheStandardBookOfSpellsGrade1.png",
+     "img": "https://accio.cards/cardimages/TheStandardBookOfSpellsGrade1.png"
+    },
+    {
+     "num": "76",
+     "name": "Care of Magical Creatures",
+     "type": "Lesson",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Lesson",
+     "artist": "Shanth Enjeti, Melissa Ferreira",
+     "file": "CareOfMagicalCreatures.png",
+     "img": "https://accio.cards/cardimages/CareOfMagicalCreatures.png"
+    },
+    {
+     "num": "77",
+     "name": "Charms",
+     "type": "Lesson",
+     "lesson": "Charms",
+     "rarity": "Lesson",
+     "artist": "Shanth Enjeti, Melissa Ferreira",
+     "file": "Charms.png",
+     "img": "https://accio.cards/cardimages/Charms.png"
+    },
+    {
+     "num": "78",
+     "name": "Potions",
+     "type": "Lesson",
+     "lesson": "Potions",
+     "rarity": "Lesson",
+     "artist": "Shanth Enjeti, Melissa Ferreira",
+     "file": "Potions.png",
+     "img": "https://accio.cards/cardimages/Potions.png"
+    },
+    {
+     "num": "79",
+     "name": "Quidditch",
+     "type": "Lesson",
+     "lesson": "Quidditch",
+     "rarity": "Lesson",
+     "artist": "Shanth Enjeti, Melissa Ferreira",
+     "file": "Quidditch.png",
+     "img": "https://accio.cards/cardimages/Quidditch.png"
+    },
+    {
+     "num": "80",
+     "name": "Transfiguration",
+     "type": "Lesson",
+     "lesson": "Transfiguration",
+     "rarity": "Lesson",
+     "artist": "Shanth Enjeti, Melissa Ferreira",
+     "file": "Transfiguration.png",
+     "img": "https://accio.cards/cardimages/Transfiguration.png"
+    }
+   ]
+  },
+  {
+   "code": "aah",
+   "cards": [
+    {
+     "num": "1",
+     "name": "Albus Dumbledore",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Kim Graham",
+     "file": "AlbusDumbledore.png",
+     "img": "https://accio.cards/cardimages/AlbusDumbledore.png"
+    },
+    {
+     "num": "2",
+     "name": "Argus Filch",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Kim Graham",
+     "file": "ArgusFilch.png",
+     "img": "https://accio.cards/cardimages/ArgusFilch.png"
+    },
+    {
+     "num": "3",
+     "name": "Crabbe and Goyle",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Kim Graham",
+     "file": "CrabbeAndGoyle.png",
+     "img": "https://accio.cards/cardimages/CrabbeAndGoyle.png"
+    },
+    {
+     "num": "4",
+     "name": "Detention!",
+     "type": "Adventure",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Scott M. Fischer",
+     "file": "Detention.png",
+     "img": "https://accio.cards/cardimages/Detention.png"
+    },
+    {
+     "num": "5",
+     "name": "Dragon's Blood",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Rare",
+     "artist": "Tim Hildebrandt",
+     "file": "DragonsBlood.png",
+     "img": "https://accio.cards/cardimages/DragonsBlood.png"
+    },
+    {
+     "num": "6",
+     "name": "Dumbledore's Watch",
+     "type": "Item",
+     "lesson": "Transfiguration",
+     "rarity": "Rare",
+     "artist": "Jeff Laubenstein",
+     "file": "DumbledoresWatch.png",
+     "img": "https://accio.cards/cardimages/DumbledoresWatch.png"
+    },
+    {
+     "num": "7",
+     "name": "End-of-Year Feast",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Rare",
+     "artist": "James Bernardin",
+     "file": "EndOfYearFeast.png",
+     "img": "https://accio.cards/cardimages/EndOfYearFeast.png"
+    },
+    {
+     "num": "8",
+     "name": "Fang",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Rare",
+     "artist": "Monte Michael Moore",
+     "file": "Fang.png",
+     "img": "https://accio.cards/cardimages/Fang.png"
+    },
+    {
+     "num": "9",
+     "name": "Finding the Platform",
+     "type": "Adventure",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Jeff Laubenstein",
+     "file": "FindingThePlatform.png",
+     "img": "https://accio.cards/cardimages/FindingThePlatform.png"
+    },
+    {
+     "num": "10",
+     "name": "Galleon",
+     "type": "Item",
+     "lesson": "Charms",
+     "rarity": "Rare",
+     "artist": "Romas",
+     "file": "Galleon.png",
+     "img": "https://accio.cards/cardimages/Galleon.png"
+    },
+    {
+     "num": "11",
+     "name": "Great Hall",
+     "type": "Location",
+     "lesson": "Charms",
+     "rarity": "Rare",
+     "artist": "James Bernardin",
+     "file": "GreatHall.png",
+     "img": "https://accio.cards/cardimages/GreatHall.png"
+    },
+    {
+     "num": "12",
+     "name": "Hagrid's House",
+     "type": "Location",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Rare",
+     "artist": "Jim Nelson",
+     "file": "HagridsHouse.png",
+     "img": "https://accio.cards/cardimages/HagridsHouse.png"
+    },
+    {
+     "num": "13",
+     "name": "Harry Triumphant",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Kim Graham",
+     "file": "HarryTriumphant.png",
+     "img": "https://accio.cards/cardimages/HarryTriumphant.png"
+    },
+    {
+     "num": "14",
+     "name": "Hospital Dormitory",
+     "type": "Location",
+     "lesson": "Potions",
+     "rarity": "Rare",
+     "artist": "Kevin Dobler",
+     "file": "HospitalDormitory.png",
+     "img": "https://accio.cards/cardimages/HospitalDormitory.png"
+    },
+    {
+     "num": "15",
+     "name": "Hut on the Rock",
+     "type": "Adventure",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Ron Spencer",
+     "file": "HutOnTheRock.png",
+     "img": "https://accio.cards/cardimages/HutOnTheRock.png"
+    },
+    {
+     "num": "16",
+     "name": "Madam Pomfrey",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Kim Graham",
+     "file": "MadamPomfrey.png",
+     "img": "https://accio.cards/cardimages/MadamPomfrey.png"
+    },
+    {
+     "num": "17",
+     "name": "Meeting Fluffy",
+     "type": "Adventure",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Kevin Dobler",
+     "file": "MeetingFluffy.png",
+     "img": "https://accio.cards/cardimages/MeetingFluffy.png"
+    },
+    {
+     "num": "18",
+     "name": "Midnight Duel",
+     "type": "Adventure",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Ken Steacy",
+     "file": "MidnightDuel.png",
+     "img": "https://accio.cards/cardimages/MidnightDuel.png"
+    },
+    {
+     "num": "19",
+     "name": "Mirror of Erised",
+     "type": "Item",
+     "lesson": "Transfiguration",
+     "rarity": "Rare",
+     "artist": "Scott M. Fischer",
+     "file": "MirrorOfErised.png",
+     "img": "https://accio.cards/cardimages/MirrorOfErised.png"
+    },
+    {
+     "num": "20",
+     "name": "Peeves",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Kim Graham",
+     "file": "Peeves.png",
+     "img": "https://accio.cards/cardimages/Peeves.png"
+    },
+    {
+     "num": "21",
+     "name": "Philosopher's Stone",
+     "type": "Item",
+     "lesson": "Transfiguration",
+     "rarity": "Rare",
+     "artist": "Monte Michael Moore",
+     "file": "PhilosophersStone.png",
+     "img": "https://accio.cards/cardimages/PhilosophersStone.png"
+    },
+    {
+     "num": "22",
+     "name": "Potions Dungeon",
+     "type": "Location",
+     "lesson": "Potions",
+     "rarity": "Rare",
+     "artist": "Tim Hildebrandt",
+     "file": "PotionsDungeon.png",
+     "img": "https://accio.cards/cardimages/PotionsDungeon.png"
+    },
+    {
+     "num": "23",
+     "name": "Quidditch Cup",
+     "type": "Item",
+     "lesson": "Quidditch",
+     "rarity": "Rare",
+     "artist": "Darrell Riche",
+     "file": "QuidditchCup.png",
+     "img": "https://accio.cards/cardimages/QuidditchCup.png"
+    },
+    {
+     "num": "24",
+     "name": "Quidditch Pitch",
+     "type": "Location",
+     "lesson": "Quidditch",
+     "rarity": "Rare",
+     "artist": "Darrell Riche",
+     "file": "QuidditchPitch.png",
+     "img": "https://accio.cards/cardimages/QuidditchPitch.png"
+    },
+    {
+     "num": "25",
+     "name": "Riding the Centaur",
+     "type": "Adventure",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Ken Steacy",
+     "file": "RidingTheCentaur.png",
+     "img": "https://accio.cards/cardimages/RidingTheCentaur.png"
+    },
+    {
+     "num": "26",
+     "name": "Ron the Brave",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Kim Graham",
+     "file": "RonTheBrave.png",
+     "img": "https://accio.cards/cardimages/RonTheBrave.png"
+    },
+    {
+     "num": "27",
+     "name": "Stoat Sandwiches",
+     "type": "Adventure",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Ken Steacy",
+     "file": "StoatSandwiches.png",
+     "img": "https://accio.cards/cardimages/StoatSandwiches.png"
+    },
+    {
+     "num": "28",
+     "name": "The Fat Lady",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Kim Graham",
+     "file": "TheFatLady.png",
+     "img": "https://accio.cards/cardimages/TheFatLady.png"
+    },
+    {
+     "num": "29",
+     "name": "Voldemort Revealed",
+     "type": "Adventure",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Scott M. Fischer",
+     "file": "VoldemortRevealed.png",
+     "img": "https://accio.cards/cardimages/VoldemortRevealed.png"
+    },
+    {
+     "num": "30",
+     "name": "Welsh Green Dragon",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Rare",
+     "artist": "Lars Grant-West",
+     "file": "WelshGreenDragon.png",
+     "img": "https://accio.cards/cardimages/WelshGreenDragon.png"
+    },
+    {
+     "num": "31",
+     "name": "5 Points from Gryffindor",
+     "type": "Adventure",
+     "lesson": "",
+     "rarity": "Uncommon",
+     "artist": "Scott M. Fischer",
+     "file": "5PointsFromGryffindor.png",
+     "img": "https://accio.cards/cardimages/5PointsFromGryffindor.png"
+    },
+    {
+     "num": "32",
+     "name": "Alohomora",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Uncommon",
+     "artist": "Bob Petillo",
+     "file": "Alohomora.png",
+     "img": "https://accio.cards/cardimages/Alohomora.png"
+    },
+    {
+     "num": "33",
+     "name": "Baneberry Potion",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Uncommon",
+     "artist": "Thomas Gianni",
+     "file": "BaneberryPotion.png",
+     "img": "https://accio.cards/cardimages/BaneberryPotion.png"
+    },
+    {
+     "num": "34",
+     "name": "Bludger Bop",
+     "type": "Spell",
+     "lesson": "Quidditch",
+     "rarity": "Uncommon",
+     "artist": "Kevin McCann, Michael Collins",
+     "file": "BludgerBop.png",
+     "img": "https://accio.cards/cardimages/BludgerBop.png"
+    },
+    {
+     "num": "35",
+     "name": "Candy Cart",
+     "type": "Adventure",
+     "lesson": "",
+     "rarity": "Uncommon",
+     "artist": "Michael Koelsch",
+     "file": "CandyCart.png",
+     "img": "https://accio.cards/cardimages/CandyCart.png"
+    },
+    {
+     "num": "36",
+     "name": "Collapsible Cauldron",
+     "type": "Item",
+     "lesson": "Potions",
+     "rarity": "Uncommon",
+     "artist": "George Davis",
+     "file": "CollapsibleCauldron.png",
+     "img": "https://accio.cards/cardimages/CollapsibleCauldron.png"
+    },
+    {
+     "num": "37",
+     "name": "Flying Motorbike",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Uncommon",
+     "artist": "Scott M. Fischer",
+     "file": "FlyingMotorbike.png",
+     "img": "https://accio.cards/cardimages/FlyingMotorbike.png"
+    },
+    {
+     "num": "38",
+     "name": "Flying Practice",
+     "type": "Adventure",
+     "lesson": "",
+     "rarity": "Uncommon",
+     "artist": "Darrell Riche",
+     "file": "FlyingPractice.png",
+     "img": "https://accio.cards/cardimages/FlyingPractice.png"
+    },
+    {
+     "num": "39",
+     "name": "Forbidden Corridor",
+     "type": "Location",
+     "lesson": "Transfiguration",
+     "rarity": "Uncommon",
+     "artist": "Doug Chaffee",
+     "file": "ForbiddenCorridor.png",
+     "img": "https://accio.cards/cardimages/ForbiddenCorridor.png"
+    },
+    {
+     "num": "40",
+     "name": "Giant Squid",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Uncommon",
+     "artist": "Jeff Laubenstein",
+     "file": "GiantSquid.png",
+     "img": "https://accio.cards/cardimages/GiantSquid.png"
+    },
+    {
+     "num": "41",
+     "name": "Looking for Trevor",
+     "type": "Adventure",
+     "lesson": "",
+     "rarity": "Uncommon",
+     "artist": "David Day",
+     "file": "LookingForTrevor.png",
+     "img": "https://accio.cards/cardimages/LookingForTrevor.png"
+    },
+    {
+     "num": "42",
+     "name": "Marble Gargoyle",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Uncommon",
+     "artist": "Tony Szczudlo",
+     "file": "MarbleGargoyle.png",
+     "img": "https://accio.cards/cardimages/MarbleGargoyle.png"
+    },
+    {
+     "num": "43",
+     "name": "Muddy Practice",
+     "type": "Match",
+     "lesson": "Quidditch",
+     "rarity": "Uncommon",
+     "artist": "Ken Steacy",
+     "file": "MuddyPractice.png",
+     "img": "https://accio.cards/cardimages/MuddyPractice.png"
+    },
+    {
+     "num": "44",
+     "name": "Purple Firecrackers",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Uncommon",
+     "artist": "Greg Hildebrandt",
+     "file": "PurpleFirecrackers.png",
+     "img": "https://accio.cards/cardimages/PurpleFirecrackers.png"
+    },
+    {
+     "num": "45",
+     "name": "Running from Filch",
+     "type": "Adventure",
+     "lesson": "",
+     "rarity": "Uncommon",
+     "artist": "Monte Michael Moore",
+     "file": "RunningFromFilch.png",
+     "img": "https://accio.cards/cardimages/RunningFromFilch.png"
+    },
+    {
+     "num": "46",
+     "name": "Sickle",
+     "type": "Item",
+     "lesson": "Charms",
+     "rarity": "Uncommon",
+     "artist": "Thomas Gianni",
+     "file": "Sickle.png",
+     "img": "https://accio.cards/cardimages/Sickle.png"
+    },
+    {
+     "num": "47",
+     "name": "Star Grass Salve",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Uncommon",
+     "artist": "Bob Petillo",
+     "file": "StarGrassSalve.png",
+     "img": "https://accio.cards/cardimages/StarGrassSalve.png"
+    },
+    {
+     "num": "48",
+     "name": "Through the Trapdoor",
+     "type": "Adventure",
+     "lesson": "",
+     "rarity": "Uncommon",
+     "artist": "Ken Steacy",
+     "file": "ThroughTheTrapdoor.png",
+     "img": "https://accio.cards/cardimages/ThroughTheTrapdoor.png"
+    },
+    {
+     "num": "49",
+     "name": "Winter Holiday",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Uncommon",
+     "artist": "Doug Chaffee",
+     "file": "WinterHoliday.png",
+     "img": "https://accio.cards/cardimages/WinterHoliday.png"
+    },
+    {
+     "num": "50",
+     "name": "Wooden Flute",
+     "type": "Spell",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Uncommon",
+     "artist": "Tony Szczudlo",
+     "file": "WoodenFlute.png",
+     "img": "https://accio.cards/cardimages/WoodenFlute.png"
+    },
+    {
+     "num": "51",
+     "name": "Anti-Cheating Spell",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Common",
+     "artist": "Greg Hildebrandt",
+     "file": "AntiCheatingSpell.png",
+     "img": "https://accio.cards/cardimages/AntiCheatingSpell.png"
+    },
+    {
+     "num": "52",
+     "name": "Bewitched Snowballs",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Common",
+     "artist": "Alex Horley",
+     "file": "BewitchedSnowballs.png",
+     "img": "https://accio.cards/cardimages/BewitchedSnowballs.png"
+    },
+    {
+     "num": "53",
+     "name": "Black Bat",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Common",
+     "artist": "George Davis",
+     "file": "BlackBat.png",
+     "img": "https://accio.cards/cardimages/BlackBat.png"
+    },
+    {
+     "num": "54",
+     "name": "Bucking Broomstick",
+     "type": "Spell",
+     "lesson": "Quidditch",
+     "rarity": "Common",
+     "artist": "Darrell Riche",
+     "file": "BuckingBroomstick.png",
+     "img": "https://accio.cards/cardimages/BuckingBroomstick.png"
+    },
+    {
+     "num": "55",
+     "name": "Cauldron Cakes",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Common",
+     "artist": "Monte Michael Moore",
+     "file": "CauldronCakes.png",
+     "img": "https://accio.cards/cardimages/CauldronCakes.png"
+    },
+    {
+     "num": "56",
+     "name": "Charms Accident",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Common",
+     "artist": "Keith Garletts",
+     "file": "CharmsAccident.png",
+     "img": "https://accio.cards/cardimages/CharmsAccident.png"
+    },
+    {
+     "num": "57",
+     "name": "Chimaera",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Common",
+     "artist": "Jim Nelson",
+     "file": "Chimaera.png",
+     "img": "https://accio.cards/cardimages/Chimaera.png"
+    },
+    {
+     "num": "58",
+     "name": "Dog Bite",
+     "type": "Spell",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Common",
+     "artist": "Scott M. Fischer",
+     "file": "DogBite.png",
+     "img": "https://accio.cards/cardimages/DogBite.png"
+    },
+    {
+     "num": "59",
+     "name": "Every-Flavour Beans",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Common",
+     "artist": "Cindy Salans Rosenheim",
+     "file": "EveryFlavourBeans.png",
+     "img": "https://accio.cards/cardimages/EveryFlavourBeans.png"
+    },
+    {
+     "num": "60",
+     "name": "Fire Protection Potion",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Common",
+     "artist": "Scott M. Fischer",
+     "file": "FireProtectionPotion.png",
+     "img": "https://accio.cards/cardimages/FireProtectionPotion.png"
+    },
+    {
+     "num": "61",
+     "name": "Fungiface Potion",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Common",
+     "artist": "Alex Horley",
+     "file": "FungifacePotion.png",
+     "img": "https://accio.cards/cardimages/FungifacePotion.png"
+    },
+    {
+     "num": "62",
+     "name": "Knut",
+     "type": "Item",
+     "lesson": "Charms",
+     "rarity": "Common",
+     "artist": "Tony Szczudlo",
+     "file": "Knut.png",
+     "img": "https://accio.cards/cardimages/Knut.png"
+    },
+    {
+     "num": "63",
+     "name": "Liquorice Wand",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Common",
+     "artist": "Bob Petillo",
+     "file": "LiquoriceWand.png",
+     "img": "https://accio.cards/cardimages/LiquoriceWand.png"
+    },
+    {
+     "num": "64",
+     "name": "Loop-the-Loops",
+     "type": "Spell",
+     "lesson": "Quidditch",
+     "rarity": "Common",
+     "artist": "Ken Steacy",
+     "file": "LoopTheLoops.png",
+     "img": "https://accio.cards/cardimages/LoopTheLoops.png"
+    },
+    {
+     "num": "65",
+     "name": "Manegro Potion",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Common",
+     "artist": "Kevin Dobler",
+     "file": "ManegroPotion.png",
+     "img": "https://accio.cards/cardimages/ManegroPotion.png"
+    },
+    {
+     "num": "66",
+     "name": "Muffling Draught",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Common",
+     "artist": "James Bernardin",
+     "file": "MufflingDraught.png",
+     "img": "https://accio.cards/cardimages/MufflingDraught.png"
+    },
+    {
+     "num": "67",
+     "name": "Owl Post",
+     "type": "Spell",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Common",
+     "artist": "James Bernardin",
+     "file": "OwlPost.png",
+     "img": "https://accio.cards/cardimages/OwlPost.png"
+    },
+    {
+     "num": "68",
+     "name": "Photo Album",
+     "type": "Item",
+     "lesson": "Charms",
+     "rarity": "Common",
+     "artist": "Romas",
+     "file": "PhotoAlbum.png",
+     "img": "https://accio.cards/cardimages/PhotoAlbum.png"
+    },
+    {
+     "num": "69",
+     "name": "Sandstone Gargoyle",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Common",
+     "artist": "Tony Szczudlo",
+     "file": "SandstoneGargoyle.png",
+     "img": "https://accio.cards/cardimages/SandstoneGargoyle.png"
+    },
+    {
+     "num": "70",
+     "name": "School Broom",
+     "type": "Item",
+     "lesson": "Quidditch",
+     "rarity": "Common",
+     "artist": "Thomas Gianni",
+     "file": "SchoolBroom.png",
+     "img": "https://accio.cards/cardimages/SchoolBroom.png"
+    },
+    {
+     "num": "71",
+     "name": "Scribblifors",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Common",
+     "artist": "Mark Romanoski",
+     "file": "Scribblifors.png",
+     "img": "https://accio.cards/cardimages/Scribblifors.png"
+    },
+    {
+     "num": "72",
+     "name": "Sleeping Potion",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Common",
+     "artist": "Kevin Dobler",
+     "file": "SleepingPotion.png",
+     "img": "https://accio.cards/cardimages/SleepingPotion.png"
+    },
+    {
+     "num": "73",
+     "name": "Switching Spell",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Common",
+     "artist": "Ken Steacy",
+     "file": "SwitchingSpell.png",
+     "img": "https://accio.cards/cardimages/SwitchingSpell.png"
+    },
+    {
+     "num": "74",
+     "name": "Troll Bogies",
+     "type": "Spell",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Common",
+     "artist": "Greg Hildebrandt",
+     "file": "TrollBogies.png",
+     "img": "https://accio.cards/cardimages/TrollBogies.png"
+    },
+    {
+     "num": "75",
+     "name": "Vanishing Step",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Common",
+     "artist": "Alex Horley",
+     "file": "VanishingStep.png",
+     "img": "https://accio.cards/cardimages/VanishingStep.png"
+    },
+    {
+     "num": "76",
+     "name": "Care of Magical Creatures",
+     "type": "Lesson",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Lesson",
+     "artist": "Shanth Enjeti, Melissa Ferreira",
+     "file": "CareOfMagicalCreatures.png",
+     "img": "https://accio.cards/cardimages/CareOfMagicalCreatures.png"
+    },
+    {
+     "num": "77",
+     "name": "Charms",
+     "type": "Lesson",
+     "lesson": "Charms",
+     "rarity": "Lesson",
+     "artist": "Shanth Enjeti, Melissa Ferreira",
+     "file": "Charms.png",
+     "img": "https://accio.cards/cardimages/Charms.png"
+    },
+    {
+     "num": "78",
+     "name": "Potions",
+     "type": "Lesson",
+     "lesson": "Potions",
+     "rarity": "Lesson",
+     "artist": "Shanth Enjeti, Melissa Ferreira",
+     "file": "Potions.png",
+     "img": "https://accio.cards/cardimages/Potions.png"
+    },
+    {
+     "num": "79",
+     "name": "Quidditch",
+     "type": "Lesson",
+     "lesson": "Quidditch",
+     "rarity": "Lesson",
+     "artist": "Shanth Enjeti, Melissa Ferreira",
+     "file": "Quidditch.png",
+     "img": "https://accio.cards/cardimages/Quidditch.png"
+    },
+    {
+     "num": "80",
+     "name": "Transfiguration",
+     "type": "Lesson",
+     "lesson": "Transfiguration",
+     "rarity": "Lesson",
+     "artist": "Shanth Enjeti, Melissa Ferreira",
+     "file": "Transfiguration.png",
+     "img": "https://accio.cards/cardimages/Transfiguration.png"
+    }
+   ]
+  },
+  {
+   "code": "cos",
+   "cards": [
+    {
+     "num": "1",
+     "name": "Angelina Johnson",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Kim Graham",
+     "file": "AngelinaJohnson.png",
+     "img": "https://accio.cards/cardimages/AngelinaJohnson.png"
+    },
+    {
+     "num": "2",
+     "name": "Arthur Weasley",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Kim Graham",
+     "file": "ArthurWeasley.png",
+     "img": "https://accio.cards/cardimages/ArthurWeasley.png"
+    },
+    {
+     "num": "3",
+     "name": "Blagging",
+     "type": "Spell",
+     "lesson": "Quidditch",
+     "rarity": "Rare",
+     "artist": "Chris Seaman",
+     "file": "Blagging.png",
+     "img": "https://accio.cards/cardimages/Blagging.png"
+    },
+    {
+     "num": "4",
+     "name": "Body Blow",
+     "type": "Spell",
+     "lesson": "Quidditch",
+     "rarity": "Rare",
+     "artist": "Mark Brill",
+     "file": "BodyBlow.png",
+     "img": "https://accio.cards/cardimages/BodyBlow.png"
+    },
+    {
+     "num": "5",
+     "name": "Broken Wand",
+     "type": "Item",
+     "lesson": "Charms",
+     "rarity": "Rare",
+     "artist": "Kevin Dobler",
+     "file": "BrokenWand.png",
+     "img": "https://accio.cards/cardimages/BrokenWand.png"
+    },
+    {
+     "num": "6",
+     "name": "The Burrow",
+     "type": "Location",
+     "lesson": "Charms",
+     "rarity": "Rare",
+     "artist": "Dennis Calero",
+     "file": "TheBurrow.png",
+     "img": "https://accio.cards/cardimages/TheBurrow.png"
+    },
+    {
+     "num": "7",
+     "name": "Colin Creevey",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Kim Graham",
+     "file": "ColinCreevey.png",
+     "img": "https://accio.cards/cardimages/ColinCreevey.png"
+    },
+    {
+     "num": "8",
+     "name": "Crazed Capybara",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Rare",
+     "artist": "Tim Hildebrandt",
+     "file": "CrazedCapybara.png",
+     "img": "https://accio.cards/cardimages/CrazedCapybara.png"
+    },
+    {
+     "num": "9",
+     "name": "De-Gnoming the Garden",
+     "type": "Adventure",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Larry MacDougall",
+     "file": "DeGnomingTheGarden.png",
+     "img": "https://accio.cards/cardimages/DeGnomingTheGarden.png"
+    },
+    {
+     "num": "10",
+     "name": "Dobby's Disappearance",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Rare",
+     "artist": "Keith Garletts",
+     "file": "DobbysDisappearance.png",
+     "img": "https://accio.cards/cardimages/DobbysDisappearance.png"
+    },
+    {
+     "num": "11",
+     "name": "Dobby's Help",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Rare",
+     "artist": "Kevin Dobler",
+     "file": "DobbysHelp.png",
+     "img": "https://accio.cards/cardimages/DobbysHelp.png"
+    },
+    {
+     "num": "12",
+     "name": "Double-Beater Defence",
+     "type": "Spell",
+     "lesson": "Quidditch",
+     "rarity": "Rare",
+     "artist": "Ken Steacy",
+     "file": "DoubleBeaterDefence.png",
+     "img": "https://accio.cards/cardimages/DoubleBeaterDefence.png"
+    },
+    {
+     "num": "13",
+     "name": "Draco the Seeker",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Kim Graham",
+     "file": "DracoTheSeeker.png",
+     "img": "https://accio.cards/cardimages/DracoTheSeeker.png"
+    },
+    {
+     "num": "14",
+     "name": "Dragon Poison",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Rare",
+     "artist": "Thomas Gianni",
+     "file": "DragonPoison.png",
+     "img": "https://accio.cards/cardimages/DragonPoison.png"
+    },
+    {
+     "num": "15",
+     "name": "Dumbledore's Office",
+     "type": "Location",
+     "lesson": "Transfiguration",
+     "rarity": "Rare",
+     "artist": "Tim Hildebrandt",
+     "file": "DumbledoresOffice.png",
+     "img": "https://accio.cards/cardimages/DumbledoresOffice.png"
+    },
+    {
+     "num": "16",
+     "name": "Entrancing Enchantments",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Rare",
+     "artist": "Greg Hildebrandt",
+     "file": "EntrancingEnchantments.png",
+     "img": "https://accio.cards/cardimages/EntrancingEnchantments.png"
+    },
+    {
+     "num": "17",
+     "name": "Errol",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Rare",
+     "artist": "Ron Spencer",
+     "file": "Errol.png",
+     "img": "https://accio.cards/cardimages/Errol.png"
+    },
+    {
+     "num": "18",
+     "name": "Escaping the Dursleys",
+     "type": "Adventure",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Kevin McCann, Michael Collins",
+     "file": "EscapingTheDursleys.png",
+     "img": "https://accio.cards/cardimages/EscapingTheDursleys.png"
+    },
+    {
+     "num": "19",
+     "name": "Fat Friar",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Kim Graham",
+     "file": "FatFriar.png",
+     "img": "https://accio.cards/cardimages/FatFriar.png"
+    },
+    {
+     "num": "20",
+     "name": "Fawkes",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Rare",
+     "artist": "Alex Horley",
+     "file": "Fawkes.png",
+     "img": "https://accio.cards/cardimages/Fawkes.png"
+    },
+    {
+     "num": "21",
+     "name": "Fighting the Basilisk",
+     "type": "Adventure",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Ken Steacy",
+     "file": "FightingTheBasilisk.png",
+     "img": "https://accio.cards/cardimages/FightingTheBasilisk.png"
+    },
+    {
+     "num": "22",
+     "name": "Flying Car",
+     "type": "Item",
+     "lesson": "Charms",
+     "rarity": "Rare",
+     "artist": "Greg Hildebrandt",
+     "file": "FlyingCar.png",
+     "img": "https://accio.cards/cardimages/FlyingCar.png"
+    },
+    {
+     "num": "23",
+     "name": "Flying Laps",
+     "type": "Spell",
+     "lesson": "Quidditch",
+     "rarity": "Rare",
+     "artist": "George Davis",
+     "file": "FlyingLaps.png",
+     "img": "https://accio.cards/cardimages/FlyingLaps.png"
+    },
+    {
+     "num": "24",
+     "name": "Flying to Hogwarts",
+     "type": "Adventure",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Greg Hildebrandt",
+     "file": "FlyingToHogwarts.png",
+     "img": "https://accio.cards/cardimages/FlyingToHogwarts.png"
+    },
+    {
+     "num": "25",
+     "name": "Ginny Weasley",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Kim Graham",
+     "file": "GinnyWeasley.png",
+     "img": "https://accio.cards/cardimages/GinnyWeasley.png"
+    },
+    {
+     "num": "26",
+     "name": "Greenhouse Three",
+     "type": "Location",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Rare",
+     "artist": "Cindy Salans Rosenheim",
+     "file": "GreenhouseThree.png",
+     "img": "https://accio.cards/cardimages/GreenhouseThree.png"
+    },
+    {
+     "num": "27",
+     "name": "Gryffindor Common Room",
+     "type": "Location",
+     "lesson": "Transfiguration",
+     "rarity": "Rare",
+     "artist": "Thomas Gianni",
+     "file": "GryffindorCommonRoom.png",
+     "img": "https://accio.cards/cardimages/GryffindorCommonRoom.png"
+    },
+    {
+     "num": "28",
+     "name": "Harry, Second Year",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Kim Graham",
+     "file": "HarrySecondYear.png",
+     "img": "https://accio.cards/cardimages/HarrySecondYear.png"
+    },
+    {
+     "num": "29",
+     "name": "Hermione, Potion Maker",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Kim Graham",
+     "file": "HermionePotionMaker.png",
+     "img": "https://accio.cards/cardimages/HermionePotionMaker.png"
+    },
+    {
+     "num": "30",
+     "name": "Impersonating Goyle",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Rare",
+     "artist": "Daren Bader",
+     "file": "ImpersonatingGoyle.png",
+     "img": "https://accio.cards/cardimages/ImpersonatingGoyle.png"
+    },
+    {
+     "num": "31",
+     "name": "In the Spider's Lair",
+     "type": "Adventure",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Ken Steacy",
+     "file": "InTheSpidersLair.png",
+     "img": "https://accio.cards/cardimages/InTheSpidersLair.png"
+    },
+    {
+     "num": "32",
+     "name": "Justin Finch-Fletchley",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Kim Graham",
+     "file": "JustinFinchFletchley.png",
+     "img": "https://accio.cards/cardimages/JustinFinchFletchley.png"
+    },
+    {
+     "num": "33",
+     "name": "Lockhart's Lecture",
+     "type": "Adventure",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Kevin McCann, Michael Collins",
+     "file": "LockhartsLecture.png",
+     "img": "https://accio.cards/cardimages/LockhartsLecture.png"
+    },
+    {
+     "num": "34",
+     "name": "Mandrake",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Rare",
+     "artist": "Cindy Salans Rosenheim",
+     "file": "Mandrake.png",
+     "img": "https://accio.cards/cardimages/Mandrake.png"
+    },
+    {
+     "num": "35",
+     "name": "Memory Charm",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Rare",
+     "artist": "Ron Spencer",
+     "file": "MemoryCharm.png",
+     "img": "https://accio.cards/cardimages/MemoryCharm.png"
+    },
+    {
+     "num": "36",
+     "name": "Moaning Myrtle's Bathroom",
+     "type": "Location",
+     "lesson": "Potions",
+     "rarity": "Rare",
+     "artist": "Ron Spencer",
+     "file": "MoaningMyrtlesBathroom.png",
+     "img": "https://accio.cards/cardimages/MoaningMyrtlesBathroom.png"
+    },
+    {
+     "num": "37",
+     "name": "Molly Weasley",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Kim Graham",
+     "file": "MollyWeasley.png",
+     "img": "https://accio.cards/cardimages/MollyWeasley.png"
+    },
+    {
+     "num": "38",
+     "name": "Nimbus Two Thousand and One",
+     "type": "Item",
+     "lesson": "Quidditch",
+     "rarity": "Rare",
+     "artist": "Ron Spears",
+     "file": "NimbusTwoThousandAndOne.png",
+     "img": "https://accio.cards/cardimages/NimbusTwoThousandAndOne.png"
+    },
+    {
+     "num": "39",
+     "name": "No Hands",
+     "type": "Spell",
+     "lesson": "Quidditch",
+     "rarity": "Rare",
+     "artist": "Doug Chaffee",
+     "file": "NoHands.png",
+     "img": "https://accio.cards/cardimages/NoHands.png"
+    },
+    {
+     "num": "40",
+     "name": "Norwegian Ridgeback",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Rare",
+     "artist": "Doug Chaffee",
+     "file": "NorwegianRidgeback.png",
+     "img": "https://accio.cards/cardimages/NorwegianRidgeback.png"
+    },
+    {
+     "num": "41",
+     "name": "Percy Weasley",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Kim Graham",
+     "file": "PercyWeasley.png",
+     "img": "https://accio.cards/cardimages/PercyWeasley.png"
+    },
+    {
+     "num": "42",
+     "name": "Petrified",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Rare",
+     "artist": "Larry MacDougall",
+     "file": "Petrified.png",
+     "img": "https://accio.cards/cardimages/Petrified.png"
+    },
+    {
+     "num": "43",
+     "name": "Phoenix Tears",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Rare",
+     "artist": "Mark Romanoski",
+     "file": "PhoenixTears.png",
+     "img": "https://accio.cards/cardimages/PhoenixTears.png"
+    },
+    {
+     "num": "44",
+     "name": "Potions Test",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Rare",
+     "artist": "Greg Hildebrandt",
+     "file": "PotionsTest.png",
+     "img": "https://accio.cards/cardimages/PotionsTest.png"
+    },
+    {
+     "num": "45",
+     "name": "Professor Pomona Sprout",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Kim Graham",
+     "file": "ProfessorPomonaSprout.png",
+     "img": "https://accio.cards/cardimages/ProfessorPomonaSprout.png"
+    },
+    {
+     "num": "46",
+     "name": "Reparo",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Rare",
+     "artist": "Monte Michael Moore",
+     "file": "Reparo.png",
+     "img": "https://accio.cards/cardimages/Reparo.png"
+    },
+    {
+     "num": "47",
+     "name": "Rogue Bludger",
+     "type": "Item",
+     "lesson": "Quidditch",
+     "rarity": "Rare",
+     "artist": "Larry MacDougall",
+     "file": "RogueBludger.png",
+     "img": "https://accio.cards/cardimages/RogueBludger.png"
+    },
+    {
+     "num": "48",
+     "name": "Ron, Youngest Brother",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Kim Graham",
+     "file": "RonYoungestBrother.png",
+     "img": "https://accio.cards/cardimages/RonYoungestBrother.png"
+    },
+    {
+     "num": "49",
+     "name": "Serpensortia",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Rare",
+     "artist": "Kevin Dobler",
+     "file": "Serpensortia.png",
+     "img": "https://accio.cards/cardimages/Serpensortia.png"
+    },
+    {
+     "num": "50",
+     "name": "Slytherin Common Room",
+     "type": "Location",
+     "lesson": "Potions",
+     "rarity": "Rare",
+     "artist": "Ron Spears",
+     "file": "SlytherinCommonRoom.png",
+     "img": "https://accio.cards/cardimages/SlytherinCommonRoom.png"
+    },
+    {
+     "num": "51",
+     "name": "Spiders' Exodus",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Rare",
+     "artist": "Dave Dorman",
+     "file": "SpidersExodus.png",
+     "img": "https://accio.cards/cardimages/SpidersExodus.png"
+    },
+    {
+     "num": "52",
+     "name": "Venomous Tentacular Juice",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Rare",
+     "artist": "Alex Horley",
+     "file": "VenomousTentacularJuice.png",
+     "img": "https://accio.cards/cardimages/VenomousTentacularJuice.png"
+    },
+    {
+     "num": "53",
+     "name": "The Weasley Twins",
+     "type": "Character",
+     "lesson": "",
+     "rarity": "Rare",
+     "artist": "Kim Graham",
+     "file": "TheWeasleyTwins.png",
+     "img": "https://accio.cards/cardimages/TheWeasleyTwins.png"
+    },
+    {
+     "num": "54",
+     "name": "Whomping Willow",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Rare",
+     "artist": "Ron Spencer",
+     "file": "WhompingWillow.png",
+     "img": "https://accio.cards/cardimages/WhompingWillow.png"
+    },
+    {
+     "num": "55",
+     "name": "Wizard Chess",
+     "type": "Item",
+     "lesson": "Transfiguration",
+     "rarity": "Rare",
+     "artist": "George Davis",
+     "file": "WizardChess.png",
+     "img": "https://accio.cards/cardimages/WizardChess.png"
+    },
+    {
+     "num": "56",
+     "name": "Angel's Trumpet Draught",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Uncommon",
+     "artist": "Arnie Swekel",
+     "file": "AngelsTrumpetDraught.png",
+     "img": "https://accio.cards/cardimages/AngelsTrumpetDraught.png"
+    },
+    {
+     "num": "57",
+     "name": "Blocked!",
+     "type": "Spell",
+     "lesson": "Quidditch",
+     "rarity": "Uncommon",
+     "artist": "Mark Brill",
+     "file": "Blocked.png",
+     "img": "https://accio.cards/cardimages/Blocked.png"
+    },
+    {
+     "num": "58",
+     "name": "Blocked Barrier",
+     "type": "Adventure",
+     "lesson": "",
+     "rarity": "Uncommon",
+     "artist": "Jim Nelson",
+     "file": "BlockedBarrier.png",
+     "img": "https://accio.cards/cardimages/BlockedBarrier.png"
+    },
+    {
+     "num": "59",
+     "name": "Bundimun Ooze",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Uncommon",
+     "artist": "Tim Hildebrandt",
+     "file": "BundimunOoze.png",
+     "img": "https://accio.cards/cardimages/BundimunOoze.png"
+    },
+    {
+     "num": "60",
+     "name": "Caught!",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Uncommon",
+     "artist": "Daren Bader",
+     "file": "Caught.png",
+     "img": "https://accio.cards/cardimages/Caught.png"
+    },
+    {
+     "num": "61",
+     "name": "Caught by Snape",
+     "type": "Adventure",
+     "lesson": "",
+     "rarity": "Uncommon",
+     "artist": "Kevin Dobler",
+     "file": "CaughtBySnape.png",
+     "img": "https://accio.cards/cardimages/CaughtBySnape.png"
+    },
+    {
+     "num": "62",
+     "name": "Checked!",
+     "type": "Spell",
+     "lesson": "Quidditch",
+     "rarity": "Uncommon",
+     "artist": "Alex Horley",
+     "file": "Checked.png",
+     "img": "https://accio.cards/cardimages/Checked.png"
+    },
+    {
+     "num": "63",
+     "name": "Cleansweep Five",
+     "type": "Item",
+     "lesson": "Quidditch",
+     "rarity": "Uncommon",
+     "artist": "Monte Michael Moore",
+     "file": "CleansweepFive.png",
+     "img": "https://accio.cards/cardimages/CleansweepFive.png"
+    },
+    {
+     "num": "64",
+     "name": "Counter Curse",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Uncommon",
+     "artist": "Dave Dorman",
+     "file": "CounterCurse.png",
+     "img": "https://accio.cards/cardimages/CounterCurse.png"
+    },
+    {
+     "num": "65",
+     "name": "Dragon-Dung Compost",
+     "type": "Item",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Uncommon",
+     "artist": "David Day",
+     "file": "DragonDungCompost.png",
+     "img": "https://accio.cards/cardimages/DragonDungCompost.png"
+    },
+    {
+     "num": "66",
+     "name": "Earmuffs",
+     "type": "Item",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Uncommon",
+     "artist": "Cindy Salans Rosenheim",
+     "file": "Earmuffs.png",
+     "img": "https://accio.cards/cardimages/Earmuffs.png"
+    },
+    {
+     "num": "67",
+     "name": "Endless Sandwiches",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Uncommon",
+     "artist": "Kevin Dobler",
+     "file": "EndlessSandwiches.png",
+     "img": "https://accio.cards/cardimages/EndlessSandwiches.png"
+    },
+    {
+     "num": "68",
+     "name": "Floo Powder",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Uncommon",
+     "artist": "David Day",
+     "file": "FlooPowder.png",
+     "img": "https://accio.cards/cardimages/FlooPowder.png"
+    },
+    {
+     "num": "69",
+     "name": "Forgotten Password",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Uncommon",
+     "artist": "Hugo Martin",
+     "file": "ForgottenPassword.png",
+     "img": "https://accio.cards/cardimages/ForgottenPassword.png"
+    },
+    {
+     "num": "70",
+     "name": "Invisibility Section",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Uncommon",
+     "artist": "Ron Spears",
+     "file": "InvisibilitySection.png",
+     "img": "https://accio.cards/cardimages/InvisibilitySection.png"
+    },
+    {
+     "num": "71",
+     "name": "Keeping Dobby Quiet",
+     "type": "Adventure",
+     "lesson": "",
+     "rarity": "Uncommon",
+     "artist": "Kevin McCann, Michael Collins",
+     "file": "KeepingDobbyQuiet.png",
+     "img": "https://accio.cards/cardimages/KeepingDobbyQuiet.png"
+    },
+    {
+     "num": "72",
+     "name": "Locked In",
+     "type": "Adventure",
+     "lesson": "",
+     "rarity": "Uncommon",
+     "artist": "Kevin Dobler",
+     "file": "LockedIn.png",
+     "img": "https://accio.cards/cardimages/LockedIn.png"
+    },
+    {
+     "num": "73",
+     "name": "Lockhart's Hair-Care Potions",
+     "type": "Item",
+     "lesson": "Potions",
+     "rarity": "Uncommon",
+     "artist": "Darren Bader",
+     "file": "LockhartsHairCarePotions.png",
+     "img": "https://accio.cards/cardimages/LockhartsHairCarePotions.png"
+    },
+    {
+     "num": "74",
+     "name": "Magical Mess Remover",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Uncommon",
+     "artist": "Jeff Laubenstein",
+     "file": "MagicalMessRemover.png",
+     "img": "https://accio.cards/cardimages/MagicalMessRemover.png"
+    },
+    {
+     "num": "75",
+     "name": "Manticore",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Uncommon",
+     "artist": "Patrick Faricy",
+     "file": "Manticore.png",
+     "img": "https://accio.cards/cardimages/Manticore.png"
+    },
+    {
+     "num": "76",
+     "name": "Potions Project",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Uncommon",
+     "artist": "Kevin Dobler",
+     "file": "PotionsProject.png",
+     "img": "https://accio.cards/cardimages/PotionsProject.png"
+    },
+    {
+     "num": "77",
+     "name": "Prickly Porcupine",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Uncommon",
+     "artist": "Ken Steacy",
+     "file": "PricklyPorcupine.png",
+     "img": "https://accio.cards/cardimages/PricklyPorcupine.png"
+    },
+    {
+     "num": "78",
+     "name": "Pure-Blood",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Uncommon",
+     "artist": "Mark Brill",
+     "file": "PureBlood.png",
+     "img": "https://accio.cards/cardimages/PureBlood.png"
+    },
+    {
+     "num": "79",
+     "name": "Rabbit Slippers",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Uncommon",
+     "artist": "Greg Hildebrandt",
+     "file": "RabbitSlippers.png",
+     "img": "https://accio.cards/cardimages/RabbitSlippers.png"
+    },
+    {
+     "num": "80",
+     "name": "Rainy-Day Match",
+     "type": "Match",
+     "lesson": "Quidditch",
+     "rarity": "Uncommon",
+     "artist": "Ron Spears",
+     "file": "RainyDayMatch.png",
+     "img": "https://accio.cards/cardimages/RainyDayMatch.png"
+    },
+    {
+     "num": "81",
+     "name": "Second-Hand Robe Shop",
+     "type": "Location",
+     "lesson": "Transfiguration",
+     "rarity": "Uncommon",
+     "artist": "Thomas Gianni",
+     "file": "SecondHandRobeShop.png",
+     "img": "https://accio.cards/cardimages/SecondHandRobeShop.png"
+    },
+    {
+     "num": "82",
+     "name": "Self-Shuffling Cards",
+     "type": "Item",
+     "lesson": "Charms",
+     "rarity": "Uncommon",
+     "artist": "Kevin McCann, Michael Collins",
+     "file": "SelfShufflingCards.png",
+     "img": "https://accio.cards/cardimages/SelfShufflingCards.png"
+    },
+    {
+     "num": "83",
+     "name": "Sherbet Lemon",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Uncommon",
+     "artist": "Greg Hildebrandt",
+     "file": "SherbetLemon.png",
+     "img": "https://accio.cards/cardimages/SherbetLemon.png"
+    },
+    {
+     "num": "84",
+     "name": "Swelling Solution",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Uncommon",
+     "artist": "Alex Horley",
+     "file": "SwellingSolution.png",
+     "img": "https://accio.cards/cardimages/SwellingSolution.png"
+    },
+    {
+     "num": "85",
+     "name": "Through the Floo",
+     "type": "Adventure",
+     "lesson": "",
+     "rarity": "Uncommon",
+     "artist": "Tim Hildebrandt",
+     "file": "ThroughTheFloo.png",
+     "img": "https://accio.cards/cardimages/ThroughTheFloo.png"
+    },
+    {
+     "num": "86",
+     "name": "Twirl",
+     "type": "Spell",
+     "lesson": "Quidditch",
+     "rarity": "Uncommon",
+     "artist": "Ken Steacy",
+     "file": "Twirl.png",
+     "img": "https://accio.cards/cardimages/Twirl.png"
+    },
+    {
+     "num": "87",
+     "name": "Umbrella Flowers",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Uncommon",
+     "artist": "Cindy Salans Rosenheim",
+     "file": "UmbrellaFlowers.png",
+     "img": "https://accio.cards/cardimages/UmbrellaFlowers.png"
+    },
+    {
+     "num": "88",
+     "name": "Venomous Tentacula",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Uncommon",
+     "artist": "Tim Hildebrandt",
+     "file": "VenomousTentacula.png",
+     "img": "https://accio.cards/cardimages/VenomousTentacula.png"
+    },
+    {
+     "num": "89",
+     "name": "Wattlebird",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Uncommon",
+     "artist": "Kevin McCann, Michael Collins",
+     "file": "Wattlebird.png",
+     "img": "https://accio.cards/cardimages/Wattlebird.png"
+    },
+    {
+     "num": "90",
+     "name": "Windy-Day Match",
+     "type": "Match",
+     "lesson": "Quidditch",
+     "rarity": "Uncommon",
+     "artist": "Romas",
+     "file": "WindyDayMatch.png",
+     "img": "https://accio.cards/cardimages/WindyDayMatch.png"
+    },
+    {
+     "num": "91",
+     "name": "Aparecium",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Common",
+     "artist": "Larry MacDougall",
+     "file": "Aparecium.png",
+     "img": "https://accio.cards/cardimages/Aparecium.png"
+    },
+    {
+     "num": "92",
+     "name": "Backfire!",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Common",
+     "artist": "Mark Brill",
+     "file": "Backfire.png",
+     "img": "https://accio.cards/cardimages/Backfire.png"
+    },
+    {
+     "num": "93",
+     "name": "Badgered Boy",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Common",
+     "artist": "Alan Pollack",
+     "file": "BadgeredBoy.png",
+     "img": "https://accio.cards/cardimages/BadgeredBoy.png"
+    },
+    {
+     "num": "94",
+     "name": "Beater's Bat",
+     "type": "Item",
+     "lesson": "Quidditch",
+     "rarity": "Common",
+     "artist": "Kevin McCann, Michael Collins",
+     "file": "BeatersBat.png",
+     "img": "https://accio.cards/cardimages/BeatersBat.png"
+    },
+    {
+     "num": "95",
+     "name": "Beetle Buttons",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Common",
+     "artist": "George Davis",
+     "file": "BeetleButtons.png",
+     "img": "https://accio.cards/cardimages/BeetleButtons.png"
+    },
+    {
+     "num": "96",
+     "name": "Catching Apples",
+     "type": "Spell",
+     "lesson": "Quidditch",
+     "rarity": "Common",
+     "artist": "Mark Brill",
+     "file": "CatchingApples.png",
+     "img": "https://accio.cards/cardimages/CatchingApples.png"
+    },
+    {
+     "num": "97",
+     "name": "Chudley Cannons Robes",
+     "type": "Item",
+     "lesson": "Quidditch",
+     "rarity": "Common",
+     "artist": "Keith Garletts",
+     "file": "ChudleyCannonsRobes.png",
+     "img": "https://accio.cards/cardimages/ChudleyCannonsRobes.png"
+    },
+    {
+     "num": "98",
+     "name": "Copper Cauldron",
+     "type": "Item",
+     "lesson": "Potions",
+     "rarity": "Common",
+     "artist": "Jim Nelson",
+     "file": "CopperCauldron.png",
+     "img": "https://accio.cards/cardimages/CopperCauldron.png"
+    },
+    {
+     "num": "99",
+     "name": "Death-Cap Draught",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Common",
+     "artist": "Keith Garletts",
+     "file": "DeathCapDraught.png",
+     "img": "https://accio.cards/cardimages/DeathCapDraught.png"
+    },
+    {
+     "num": "100",
+     "name": "Deboning",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Common",
+     "artist": "Kevin Dobler",
+     "file": "Deboning.png",
+     "img": "https://accio.cards/cardimages/Deboning.png"
+    },
+    {
+     "num": "101",
+     "name": "Dizziness Draught",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Common",
+     "artist": "Dany Orizio",
+     "file": "DizzinessDraught.png",
+     "img": "https://accio.cards/cardimages/DizzinessDraught.png"
+    },
+    {
+     "num": "102",
+     "name": "Engorgement Charm",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Common",
+     "artist": "Hugo Martin",
+     "file": "EngorgementCharm.png",
+     "img": "https://accio.cards/cardimages/EngorgementCharm.png"
+    },
+    {
+     "num": "103",
+     "name": "Evanesce",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Common",
+     "artist": "Ken Steacy",
+     "file": "Evanesce.png",
+     "img": "https://accio.cards/cardimages/Evanesce.png"
+    },
+    {
+     "num": "104",
+     "name": "Family Ghoul",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Common",
+     "artist": "Jeff Laubenstein",
+     "file": "FamilyGhoul.png",
+     "img": "https://accio.cards/cardimages/FamilyGhoul.png"
+    },
+    {
+     "num": "105",
+     "name": "Fatiguing Fusion",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Common",
+     "artist": "Dave Dorman",
+     "file": "FatiguingFusion.png",
+     "img": "https://accio.cards/cardimages/FatiguingFusion.png"
+    },
+    {
+     "num": "106",
+     "name": "Flacking",
+     "type": "Spell",
+     "lesson": "Quidditch",
+     "rarity": "Common",
+     "artist": "Jeff Laubenstein",
+     "file": "Flacking.png",
+     "img": "https://accio.cards/cardimages/Flacking.png"
+    },
+    {
+     "num": "107",
+     "name": "Freezing Charm",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Common",
+     "artist": "Mark Brill",
+     "file": "FreezingCharm.png",
+     "img": "https://accio.cards/cardimages/FreezingCharm.png"
+    },
+    {
+     "num": "108",
+     "name": "Garden Gnome",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Common",
+     "artist": "Thomas Gianni",
+     "file": "GardenGnome.png",
+     "img": "https://accio.cards/cardimages/GardenGnome.png"
+    },
+    {
+     "num": "109",
+     "name": "Gryffindor Lion",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Common",
+     "artist": "Tony Szczudlo",
+     "file": "GryffindorLion.png",
+     "img": "https://accio.cards/cardimages/GryffindorLion.png"
+    },
+    {
+     "num": "110",
+     "name": "Guide to Household Pests",
+     "type": "Item",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Common",
+     "artist": "George Davis",
+     "file": "GuideToHouseholdPests.png",
+     "img": "https://accio.cards/cardimages/GuideToHouseholdPests.png"
+    },
+    {
+     "num": "111",
+     "name": "Hair-Raising Potion",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Common",
+     "artist": "David Day",
+     "file": "HairRaisingPotion.png",
+     "img": "https://accio.cards/cardimages/HairRaisingPotion.png"
+    },
+    {
+     "num": "112",
+     "name": "Hawkshead Formation",
+     "type": "Spell",
+     "lesson": "Quidditch",
+     "rarity": "Common",
+     "artist": "Ken Steacy",
+     "file": "HawksheadFormation.png",
+     "img": "https://accio.cards/cardimages/HawksheadFormation.png"
+    },
+    {
+     "num": "113",
+     "name": "Hermione's Note",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Common",
+     "artist": "Alex Horley",
+     "file": "HermionesNote.png",
+     "img": "https://accio.cards/cardimages/HermionesNote.png"
+    },
+    {
+     "num": "114",
+     "name": "History of Magic Homework",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Common",
+     "artist": "Ron Spears",
+     "file": "HistoryOfMagicHomework.png",
+     "img": "https://accio.cards/cardimages/HistoryOfMagicHomework.png"
+    },
+    {
+     "num": "115",
+     "name": "Hover Charm",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Common",
+     "artist": "Alex Horley",
+     "file": "HoverCharm.png",
+     "img": "https://accio.cards/cardimages/HoverCharm.png"
+    },
+    {
+     "num": "116",
+     "name": "Howler",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Common",
+     "artist": "Monte Michael Moore",
+     "file": "Howler.png",
+     "img": "https://accio.cards/cardimages/Howler.png"
+    },
+    {
+     "num": "117",
+     "name": "Hufflepuff Badger",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Common",
+     "artist": "Tony Szczudlo",
+     "file": "HufflepuffBadger.png",
+     "img": "https://accio.cards/cardimages/HufflepuffBadger.png"
+    },
+    {
+     "num": "118",
+     "name": "Invisible Ink",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Common",
+     "artist": "Alan Pollack",
+     "file": "InvisibleInk.png",
+     "img": "https://accio.cards/cardimages/InvisibleInk.png"
+    },
+    {
+     "num": "119",
+     "name": "Leaping Toadstools",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Common",
+     "artist": "George Davis",
+     "file": "LeapingToadstools.png",
+     "img": "https://accio.cards/cardimages/LeapingToadstools.png"
+    },
+    {
+     "num": "120",
+     "name": "Overdue Homework",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Common",
+     "artist": "Kevin Dobler",
+     "file": "OverdueHomework.png",
+     "img": "https://accio.cards/cardimages/OverdueHomework.png"
+    },
+    {
+     "num": "121",
+     "name": "Pepperup Potion",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Common",
+     "artist": "Ken Steacy",
+     "file": "PepperupPotion.png",
+     "img": "https://accio.cards/cardimages/PepperupPotion.png"
+    },
+    {
+     "num": "122",
+     "name": "Potions Homework",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Common",
+     "artist": "Darren Bader",
+     "file": "PotionsHomework.png",
+     "img": "https://accio.cards/cardimages/PotionsHomework.png"
+    },
+    {
+     "num": "123",
+     "name": "Ransacked!",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Common",
+     "artist": "Mark Brill",
+     "file": "Ransacked.png",
+     "img": "https://accio.cards/cardimages/Ransacked.png"
+    },
+    {
+     "num": "124",
+     "name": "Ravenclaw Eagle",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Common",
+     "artist": "Tony Szczudlo",
+     "file": "RavenclawEagle.png",
+     "img": "https://accio.cards/cardimages/RavenclawEagle.png"
+    },
+    {
+     "num": "125",
+     "name": "Restoration Potion",
+     "type": "Spell",
+     "lesson": "Potions",
+     "rarity": "Common",
+     "artist": "David Day",
+     "file": "RestorationPotion.png",
+     "img": "https://accio.cards/cardimages/RestorationPotion.png"
+    },
+    {
+     "num": "126",
+     "name": "Revealer",
+     "type": "Item",
+     "lesson": "Transfiguration",
+     "rarity": "Common",
+     "artist": "Thomas Gianni",
+     "file": "Revealer.png",
+     "img": "https://accio.cards/cardimages/Revealer.png"
+    },
+    {
+     "num": "127",
+     "name": "Rose Growth",
+     "type": "Spell",
+     "lesson": "Charms",
+     "rarity": "Common",
+     "artist": "Thomas Gianni",
+     "file": "RoseGrowth.png",
+     "img": "https://accio.cards/cardimages/RoseGrowth.png"
+    },
+    {
+     "num": "128",
+     "name": "Shooting Star",
+     "type": "Item",
+     "lesson": "Quidditch",
+     "rarity": "Common",
+     "artist": "Monte Michael Moore",
+     "file": "ShootingStar.png",
+     "img": "https://accio.cards/cardimages/ShootingStar.png"
+    },
+    {
+     "num": "129",
+     "name": "Slinking Ferret",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Common",
+     "artist": "Doug Chaffee",
+     "file": "SlinkingFerret.png",
+     "img": "https://accio.cards/cardimages/SlinkingFerret.png"
+    },
+    {
+     "num": "130",
+     "name": "Slow-Acting Venom",
+     "type": "Item",
+     "lesson": "Potions",
+     "rarity": "Common",
+     "artist": "Romas",
+     "file": "SlowActingVenom.png",
+     "img": "https://accio.cards/cardimages/SlowActingVenom.png"
+    },
+    {
+     "num": "131",
+     "name": "Slytherin Serpent",
+     "type": "Creature",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Common",
+     "artist": "Tony Szczudlo",
+     "file": "SlytherinSerpent.png",
+     "img": "https://accio.cards/cardimages/SlytherinSerpent.png"
+    },
+    {
+     "num": "132",
+     "name": "Slytherin Steals",
+     "type": "Spell",
+     "lesson": "Quidditch",
+     "rarity": "Common",
+     "artist": "Dany Orizio",
+     "file": "SlytherinSteals.png",
+     "img": "https://accio.cards/cardimages/SlytherinSteals.png"
+    },
+    {
+     "num": "133",
+     "name": "Training Programme",
+     "type": "Spell",
+     "lesson": "Quidditch",
+     "rarity": "Common",
+     "artist": "Alex Horley",
+     "file": "TrainingProgramme.png",
+     "img": "https://accio.cards/cardimages/TrainingProgramme.png"
+    },
+    {
+     "num": "134",
+     "name": "Vanishing Cabinet",
+     "type": "Spell",
+     "lesson": "Transfiguration",
+     "rarity": "Common",
+     "artist": "Thomas Gianni",
+     "file": "VanishingCabinet.png",
+     "img": "https://accio.cards/cardimages/VanishingCabinet.png"
+    },
+    {
+     "num": "135",
+     "name": "Zig-Zag",
+     "type": "Spell",
+     "lesson": "Quidditch",
+     "rarity": "Common",
+     "artist": "Keith Garletts",
+     "file": "ZigZag.png",
+     "img": "https://accio.cards/cardimages/ZigZag.png"
+    },
+    {
+     "num": "136",
+     "name": "Care of Magical Creatures",
+     "type": "Lesson",
+     "lesson": "Care of Magical Creatures",
+     "rarity": "Lesson",
+     "artist": "Shanth Enjeti, Melissa Ferreira",
+     "file": "CareOfMagicalCreatures.png",
+     "img": "https://accio.cards/cardimages/CareOfMagicalCreatures.png"
+    },
+    {
+     "num": "137",
+     "name": "Charms",
+     "type": "Lesson",
+     "lesson": "Charms",
+     "rarity": "Lesson",
+     "artist": "Shanth Enjeti, Melissa Ferreira",
+     "file": "Charms.png",
+     "img": "https://accio.cards/cardimages/Charms.png"
+    },
+    {
+     "num": "138",
+     "name": "Potions",
+     "type": "Lesson",
+     "lesson": "Potions",
+     "rarity": "Lesson",
+     "artist": "Shanth Enjeti, Melissa Ferreira",
+     "file": "Potions.png",
+     "img": "https://accio.cards/cardimages/Potions.png"
+    },
+    {
+     "num": "139",
+     "name": "Quidditch",
+     "type": "Lesson",
+     "lesson": "Quidditch",
+     "rarity": "Lesson",
+     "artist": "Shanth Enjeti, Melissa Ferreira",
+     "file": "Quidditch.png",
+     "img": "https://accio.cards/cardimages/Quidditch.png"
+    },
+    {
+     "num": "140",
+     "name": "Transfiguration",
+     "type": "Lesson",
+     "lesson": "Transfiguration",
+     "rarity": "Lesson",
+     "artist": "Shanth Enjeti, Melissa Ferreira",
+     "file": "Transfiguration.png",
+     "img": "https://accio.cards/cardimages/Transfiguration.png"
+    }
+   ]
+  }
+ ]
+}

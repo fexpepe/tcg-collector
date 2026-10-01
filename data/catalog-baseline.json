@@ -98,5 +98,10 @@
   "cards": 3527,
   "sets": 24,
   "imgPct": 100
+ },
+ "harrypotter": {
+  "cards": 645,
+  "sets": 6,
+  "imgPct": 100
  }
 }
