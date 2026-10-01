@@ -28,7 +28,7 @@ const RAIZ = new URL("../", import.meta.url);
 const JOGOS = [
   ["pokemon", "data/"], ["lorcana", "data/lorcana/"], ["onepiece", "data/onepiece/"],
   ["magic", "data/magic/"], ["fab", "data/fab/"], ["gundam", "data/gundam/"],
-  ["swu", "data/swu/"], ["cyberpunk", "data/cyberpunk/"],
+  ["swu", "data/swu/"], ["cyberpunk", "data/cyberpunk/"], ["sorcery", "data/sorcery/"],
   ["dbfw", "data/dbfw/"], ["ygo", "data/ygo/"], ["digimon", "data/digimon/"],
   ["riftbound", "data/riftbound/"], ["unionarena", "data/unionarena/"],
   ["naruto", "data/naruto/"], ["hxh", "data/hxh/"], ["dbc", "data/dbc/"], ["wow", "data/wow/"], ["lotr", "data/lotr/"]

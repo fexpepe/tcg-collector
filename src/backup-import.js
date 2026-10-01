@@ -121,6 +121,7 @@
     // Só o Unlimited: "Star Wars: Destiny" (dados, 2016–2019) não está no site.
     if (flat.includes("starwarsunlimited") || flat === "swu") return "swu";
     if (flat.includes("cyberpunk")) return "cyberpunk";
+    if (flat.includes("sorcery")) return "sorcery";
     // Carddass vintage ANTES do Fusion World: "Dragon Ball Carddass" também contém "dragonball".
     if (flat === "dbc" || (flat.includes("dragonball") && flat.includes("carddass"))) return "dbc";
     if (flat.includes("dragonball") || flat.includes("fusionworld") || flat === "dbfw") return "dbfw";

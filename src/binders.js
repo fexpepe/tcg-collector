@@ -557,7 +557,7 @@
   // pros dois, e cada um ignora o id que não é dele.
   const PREFIXO_JOGO = [
     ["mtg-", "magic"], ["ygo-", "ygo"], ["op-", "onepiece"], ["opcd-", "onepiece"], ["op2002-", "onepiece"],
-    ["fab-", "fab"], ["gcg-", "gundam"], ["swu-", "swu"], ["cpk-", "cyberpunk"], ["dbfw-", "dbfw"], ["dgm-", "digimon"], ["rb-", "riftbound"],
+    ["fab-", "fab"], ["gcg-", "gundam"], ["swu-", "swu"], ["cpk-", "cyberpunk"], ["sor-", "sorcery"], ["dbfw-", "dbfw"], ["dgm-", "digimon"], ["rb-", "riftbound"],
     ["ua-", "unionarena"], ["nrt-", "naruto"], ["hxh-", "hxh"], ["dbc-", "dbc"], ["wow-", "wow"], ["lotr-", "lotr"]
   ];
   function jogosDoId(id) {

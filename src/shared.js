@@ -7036,6 +7036,13 @@
     // TCG Has Arrived!", vendido desde 09/09) — a página em si respondeu com
     // verificação anti-robô.
     cyberpunk: { myp: "cyberpunk", tcgLine: "cyberpunk-tcg", usText: "cyberpunk tcg", cm: "Cyberpunk" },
+    // Sorcery: Contested Realm (conferido em 01/10/2026): a LigaSorcery existe
+    // e a busca casa ("Sea Serpent"); o MYP mora em /sorcery e acha as versões
+    // (Alpha, Beta, deck pronto); o TCGplayer devolve "in Sorcery: Contested
+    // Realm". Cardmarket fica de fora: abriu o jogo em 29/09/2026 (anúncio do
+    // próprio Cardmarket), mas a página respondeu com verificação anti-robô e
+    // o caminho não foi conferido.
+    sorcery:   { liga: ["LigaSorcery", "https://www.ligasorcery.com.br"], myp: "sorcery", tcgLine: "sorcery-contested-realm", usText: "sorcery contested realm" },
     dbfw:      { liga: ["LigaDragonBall", "https://fusion.ligadragonball.com.br"], tcgLine: "dragon-ball-super-fusion-world", usText: "dragon ball fusion world", cm: "DragonBallSuper", cmq: 1 },
     riftbound: { liga: ["LigaRiftbound", "https://www.ligariftbound.com.br"], myp: "riftbound", tcgLine: "riftbound-league-of-legends-trading-card-game", usText: "riftbound", cm: "Riftbound" },
     // Union Arena (conferido em 07/08/2026): SEM loja BR. ligaunionarena.com.br
@@ -8605,6 +8612,7 @@
     { game: "gundam", dataDir: "data/gundam/" },
     { game: "swu", dataDir: "data/swu/" },
     { game: "cyberpunk", dataDir: "data/cyberpunk/" },
+    { game: "sorcery", dataDir: "data/sorcery/" },
     { game: "dbfw", dataDir: "data/dbfw/" },
     { game: "ygo", dataDir: "data/ygo/" },
     { game: "digimon", dataDir: "data/digimon/" },
@@ -8638,6 +8646,7 @@
     gundam: "#2563eb",     // azul (o tom que era do Magic)
     swu: "#000000",        // preto, texto branco (pedido do Fernando, 30/09/2026)
     cyberpunk: "#fcee0a",  // amarelo da marca (o do logo oficial); 17:1 com preto, a 82 do One Piece
+    sorcery: "#c9a66b",    // pergaminho (a moldura das cartas); 9.2:1 com preto, a 82 do DBFW
     dbfw: "#9aa3ae",       // prata
     ygo: "#7c3aed",        // roxo-violeta
     digimon: "#123f6d",    // azul escuro
@@ -8683,7 +8692,7 @@
   const GAME_LABEL_KEY = {
     pokemon: "filter.gamePokemon", lorcana: "filter.gameLorcana",
     onepiece: "filter.gameOnePiece", magic: "filter.gameMagic",
-    fab: "filter.gameFab", gundam: "filter.gameGundam", swu: "filter.gameSwu", cyberpunk: "filter.gameCyberpunk", dbfw: "filter.gameDbfw",
+    fab: "filter.gameFab", gundam: "filter.gameGundam", swu: "filter.gameSwu", cyberpunk: "filter.gameCyberpunk", sorcery: "filter.gameSorcery", dbfw: "filter.gameDbfw",
     ygo: "filter.gameYgo", digimon: "filter.gameDigimon", riftbound: "filter.gameRiftbound",
     unionarena: "filter.gameUnionArena", naruto: "filter.gameNaruto", hxh: "filter.gameHxh",
     dbc: "filter.gameDbc", wow: "filter.gameWow", lotr: "filter.gameLotr"
