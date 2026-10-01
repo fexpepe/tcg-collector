@@ -317,7 +317,7 @@ for (const bundle of I18N_EXTRAS) {
   const SEM_VITRINE = [
     // pessoais (grupo C do plano) e perfil
     "collection.html", "portfolio.html", "wishlist.html", "binders.html", "pastas.html", "listas.html",
-    "sales.html", "troca.html", "my-decks.html", "dashboard.html", "badges.html", "profile.html",
+    "sales.html", "troca.html", "condicao.html", "sleeves.html", "my-decks.html", "dashboard.html", "badges.html", "profile.html",
     // conta, ferramentas e conversão
     "index.html", "hub.html", "login.html", "account.html", "settings.html", "backup.html", "admin.html", "parceiro.html", "search.html",
     // institucionais (o revisor do AdSense e quem lê a política não podem ver anúncio aqui)

@@ -7373,6 +7373,8 @@ select.bed-input { padding: 0 10px; }
   .dash-main .dash-steps { order: 2; }
   .dash-main .dash-section-head { order: 3; }
   .dash-main .dash-links { order: 4; }
+  /* Ferramentas logo depois do "Ir para" (mesma ordem; o DOM desempata). */
+  .dash-main #dhToolsHead, .dash-main #dhTools { order: 4; }
   .dash-main .dash-info { order: 5; margin-top: 22px; }
   .dash-main #dhFreshHead { order: 6; }
   .dash-main #dhFresh { order: 7; }
@@ -7517,15 +7519,16 @@ select.bed-input { padding: 0 10px; }
   .dash-games-card { width: min(100%, 398px); }
 }
 /* Atalhos: COLUNAS FIXAS, não auto-fill, pra nenhuma fileira ficar órfã com um
-   cartão solto. São exatamente 10 itens (lista fixa no dashboard.js) desde que
-   o "Medir centralização" entrou (2026-09-16, embaixo de Conquistas): 5
-   colunas fecham duas fileiras cheias no desktop largo; abaixo de ~1200px 5
-   cartões espremeriam o texto ("110 à venda · 10 vendidas" não cabe em
-   200px), então cai pra 2 (cinco fileiras cheias) e no celular pra 1. Se um
-   item entrar ou sair, a conta aqui tem de acompanhar (9 -> 3 col; 8 -> 4). */
+   cartão solto. Desde 2026-10-01 são DUAS grades com a mesma classe (listas
+   fixas no dashboard.js): "Ir para" com 8 itens (navegação) e "Ferramentas"
+   com 4 (troca, centralização, guia de condição, sleeves). 4 colunas fecham
+   as duas cheias no desktop largo; abaixo de ~1200px 4 cartões espremeriam o
+   texto ("110 à venda · 10 vendidas" não cabe em 200px), então cai pra 2
+   (fileiras cheias nas duas) e no celular pra 1. Se um item entrar ou sair,
+   a conta aqui tem de acompanhar (9 -> 3 col; 10 -> 5). */
 .dash-links {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 12px;
 }
 @media (max-width: 1200px) { .dash-links { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
@@ -12751,6 +12754,273 @@ select,
 .ctr-res strong { font-size: 20px; color: var(--text); font-variant-numeric: tabular-nums; margin-right: 4px; }
 .ctr-nota { margin: 12px 0 0; font-size: 12px; line-height: 1.5; color: var(--muted); }
 .ctr-file { cursor: pointer; }
+
+/* ── Ferramentas do HUB em página própria (2026-10-01) ──────────────────────
+   Guia de condição (condicao.html) e Sleeves e fichários (sleeves.html). Ver
+   docs/FERRAMENTAS.md. Tudo com prefixo fer- (comum), gc- (guia) ou slv-
+   (sleeves): o split-css manda pra folha "ferramentas", que só essas duas
+   páginas carregam (scripts/lib/css-areas.mjs). NUNCA cond-: esse prefixo é da
+   área da Coleção, e a página nova chegaria sem estilo em produção, calada.
+   As cores moram no .fer-page (o <main> das duas), e não no :root, pelo mesmo
+   motivo: no :root elas iriam pro núcleo, que viaja em toda página. */
+.fer-page {
+  /* Ciano de "olhe aqui / medida": a família das guias do medidor (#00e5ff). */
+  --fer-ink: #22d3ee;
+  /* Degraus da escala da Liga (CARD_CONDITIONS), claros sobre o escuro. */
+  --gc-M: #7ee2b8;
+  --gc-NM: #4ade80;
+  --gc-SP: #a3e635;
+  --gc-MP: #facc15;
+  --gc-HP: #fb923c;
+  --gc-D: #f87171;
+}
+[data-theme="light"] .fer-page {
+  /* No branco, os mesmos matizes um tom abaixo (texto AA 4.5+ sobre #fff). */
+  --fer-ink: #0e7490;
+  --gc-M: #047857;
+  --gc-NM: #15803d;
+  --gc-SP: #4d7c0f;
+  --gc-MP: #a16207;
+  --gc-HP: #c2410c;
+  --gc-D: #b91c1c;
+}
+.fer-card { background: var(--surface); border: 1px solid var(--line); padding: 20px; }
+.fer-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+.fer-actions:empty { display: none; }
+.fer-btn { gap: 8px; min-height: 42px; }
+.fer-btn svg { width: 16px; height: 16px; flex: none; }
+.fer-fine { margin: 14px 0 0; color: var(--subtle); font-size: 12px; line-height: 1.5; }
+
+/* Guia: o questionário à esquerda e a régua inteira à direita (embaixo, no
+   celular). */
+.gc-layout { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 20px; align-items: start; max-width: 1180px; margin-top: 18px; }
+.gc-app { scroll-margin-top: calc(var(--header-h, 56px) + 12px); }
+.gc-head { display: flex; justify-content: flex-end; margin: -4px 0 8px; color: var(--muted); font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+/* Trilha: um segmento por critério. Respondido = cor do degrau escolhido, então
+   a trilha já antecipa o resultado; tocar num respondido volta pra ele. */
+.gc-trail { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; margin: 0 0 20px; padding: 0; list-style: none; }
+.gc-trail button {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 6px; width: 100%; min-height: 0;
+  padding: 0; border: 0; background: none; color: var(--subtle);
+  font-size: 11.5px; font-weight: 700; text-align: left; cursor: pointer;
+}
+.gc-trail button:disabled { cursor: default; }
+.gc-trail button::before { content: ""; display: block; width: 100%; height: 4px; background: var(--line); }
+.gc-trail .is-done::before { background: var(--lvl); }
+.gc-trail .is-now { color: var(--text); }
+.gc-trail .is-now::before { background: var(--fer-ink); }
+.gc-trail b { color: var(--lvl); margin-left: 4px; }
+
+.gc-step { display: grid; grid-template-columns: 168px minmax(0, 1fr); gap: 24px; align-items: start; }
+.gc-fig { margin: 0; padding: 14px 10px 10px; background: var(--panel); border: 1px solid var(--line); text-align: center; }
+.gc-fig svg { width: 100%; max-width: 140px; height: auto; display: block; margin: 0 auto; }
+.gc-fig figcaption { margin-top: 8px; color: var(--muted); font-size: 11.5px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+/* Peças da carta desenhada (src/condicao.js, figura()). */
+.gc-card { fill: var(--panel-strong); stroke: var(--muted); stroke-width: 2; }
+.gc-ln { fill: none; stroke: var(--line); stroke-width: 2; }
+.gc-ln-soft { fill: none; stroke: var(--subtle); stroke-width: 2; opacity: .45; stroke-linecap: round; }
+.gc-hl { fill: none; stroke: var(--fer-ink); stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+.gc-hl-thin { fill: none; stroke: var(--fer-ink); stroke-width: 2; stroke-linecap: round; }
+.gc-hl-fill { fill: var(--fer-ink); opacity: .16; }
+.gc-speck { fill: #fff; }
+[data-theme="light"] .gc-speck { stroke: var(--muted); stroke-width: .6; }
+
+.gc-q h2 { margin: 0 0 6px; font-size: 19px; }
+.gc-q h2:focus, .gc-res-b h2:focus { outline: none; }
+.gc-look { display: flex; gap: 8px; margin: 0 0 14px; color: var(--muted); font-size: 13px; line-height: 1.45; }
+.gc-look svg { flex: none; width: 16px; height: 16px; margin-top: 1px; color: var(--fer-ink); }
+.gc-opts { display: grid; gap: 6px; }
+.gc-opt {
+  display: flex; align-items: center; gap: 12px; width: 100%; min-height: 56px;
+  padding: 9px 12px; text-align: left;
+  background: var(--panel); border: 1px solid var(--line); color: var(--text); cursor: pointer;
+  transition: border-color .12s ease, background-color .12s ease;
+}
+.gc-opt:hover { border-color: var(--lvl); }
+.gc-opt[aria-pressed="true"] { border-color: var(--lvl); background: color-mix(in srgb, var(--lvl) 10%, var(--panel)); }
+.gc-opt-b { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.gc-opt-b strong { font-size: 14px; }
+.gc-opt-b span { color: var(--muted); font-size: 12.5px; font-weight: 500; line-height: 1.35; }
+.gc-opt-go { margin-left: auto; flex: none; width: 16px; height: 16px; color: var(--subtle); }
+.gc-opt-go svg { width: 100%; height: 100%; display: block; }
+/* Etiqueta do degrau: contorno + texto na cor dele (passa AA nos dois temas,
+   coisa que texto branco sobre amarelo não passaria). */
+.gc-tag {
+  flex: none; display: inline-grid; place-items: center; min-width: 40px; height: 26px; padding: 0 6px;
+  border: 1.5px solid var(--lvl); color: var(--lvl);
+  font-size: 12px; font-weight: 800; letter-spacing: .03em; font-variant-numeric: tabular-nums;
+}
+
+/* Resultado: o selo do degrau, a régua critério × degrau e o texto pronto. */
+.gc-res { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 18px; align-items: center; padding: 18px; border: 1px solid var(--lvl); background: color-mix(in srgb, var(--lvl) 9%, var(--panel)); }
+.gc-res-tag { display: grid; place-items: center; width: 92px; height: 92px; border: 2px solid var(--lvl); color: var(--lvl); font-size: 34px; font-weight: 900; letter-spacing: .02em; }
+.gc-res-b h2 { margin: 0; font-size: 22px; }
+.gc-res-sub { color: var(--muted); font-weight: 600; font-size: 15px; }
+.gc-res-eq { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 8px 0 0; color: var(--muted); font-size: 12.5px; }
+.gc-res-eq strong { color: var(--text); font-weight: 700; }
+.gc-res-val { margin: 10px 0 0; font-size: 13px; color: var(--muted); }
+.gc-res-val strong { color: var(--money); font-variant-numeric: tabular-nums; }
+.gc-ruler { margin: 18px 0 0; display: grid; grid-template-columns: minmax(96px, auto) repeat(6, minmax(0, 1fr)); gap: 4px; align-items: center; font-size: 12.5px; }
+.gc-rl-hd { text-align: center; color: var(--subtle); font-weight: 800; font-size: 11px; letter-spacing: .04em; padding-bottom: 2px; }
+.gc-rl-hd.is-res { color: var(--text); }
+.gc-rl-lb { color: var(--muted); font-weight: 600; padding-right: 8px; white-space: nowrap; }
+.gc-rl-lb.is-worst { color: var(--text); font-weight: 800; }
+.gc-rl-cell { height: 22px; background: var(--panel); border: 1px solid var(--line); }
+.gc-rl-cell.is-col { border-color: color-mix(in srgb, var(--lvl) 45%, var(--line)); }
+.gc-rl-cell.is-on { background: var(--c); border-color: var(--c); }
+.gc-why { margin: 10px 0 0; color: var(--muted); font-size: 12.5px; }
+.gc-copy-lb { margin: 18px 0 6px; font-size: 11.5px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; color: var(--subtle); }
+.gc-copy { padding: 12px 14px; background: var(--bg); border: 1px dashed var(--line); font-size: 13px; line-height: 1.55; white-space: pre-wrap; }
+
+/* A régua de consulta, sempre à vista; o resultado acende a linha dele. */
+.gc-scale h2 { margin: 0 0 12px; font-size: 15px; }
+.gc-scale-list { display: grid; gap: 2px; margin: 0; padding: 0; list-style: none; }
+.gc-scale-row { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 12px; padding: 10px; border: 1px solid transparent; }
+.gc-scale-row.is-res { border-color: var(--lvl); background: color-mix(in srgb, var(--lvl) 9%, transparent); }
+.gc-scale-b p { margin: 0; color: var(--muted); font-size: 12.5px; line-height: 1.4; }
+.gc-scale-b .gc-scale-name { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 2px; color: var(--text); font-size: 13.5px; }
+.gc-scale-name span { color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.gc-scale-b .gc-scale-eq { margin-top: 4px; color: var(--subtle); font-size: 11.5px; }
+
+@media (max-width: 1000px) {
+  .gc-layout { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 640px) {
+  .fer-card { padding: 16px; }
+  .gc-step { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  /* A figura vira faixa: carta pequena com a legenda ao lado. */
+  .gc-fig { display: flex; align-items: center; gap: 14px; padding: 8px 12px; text-align: left; }
+  .gc-fig svg { width: 44px; margin: 0; }
+  .gc-fig figcaption { margin: 0; }
+  .gc-opt { min-height: 60px; }
+  .gc-trail span { display: none; }
+  .gc-trail button { min-height: 24px; justify-content: center; }
+  /* Selo ao lado do texto também no celular: empilhado, o resultado sozinho
+     ocupava meia tela e empurrava a régua pra baixo. */
+  .gc-res { gap: 14px; padding: 14px; align-items: start; }
+  .gc-res-tag { width: 64px; height: 64px; font-size: 24px; }
+  .gc-res-b h2 { font-size: 18px; }
+  .gc-res-sub { display: block; font-size: 13px; margin-top: 2px; }
+  .gc-res-sep { display: none; }
+  .gc-res-eq { flex-direction: column; gap: 2px; }
+  .gc-ruler { grid-template-columns: minmax(78px, auto) repeat(6, minmax(0, 1fr)); font-size: 12px; }
+  .fer-actions .fer-btn { flex: 1; min-height: 44px; }
+}
+
+/* Sleeves: formulário à esquerda, lista de compras presa à direita. */
+.slv-app { max-width: 1100px; margin-top: 18px; }
+.slv-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(320px, .9fr); gap: 20px; align-items: start; }
+.slv-sec { padding: 14px 0 16px; border-top: 1px solid var(--line); }
+.slv-sec:first-child { border-top: 0; padding-top: 0; }
+.slv-sec:last-child { padding-bottom: 0; }
+.slv-sec-h { display: flex; align-items: center; gap: 8px; margin: 0 0 12px; font-size: 11.5px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--subtle); }
+.slv-note { margin: -4px 0 8px; color: var(--muted); font-size: 12.5px; line-height: 1.45; }
+
+/* Tamanho: carta, inner e sleeve desenhados EM ESCALA (mm). Trocar pro
+   japonês encolhe o desenho de verdade. Seletor próprio, e não o .segmented:
+   aquele mora na fatia "detalhe" do split-css, que não desce aqui. */
+.slv-size { display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 16px; align-items: center; }
+.slv-size svg { width: 76px; height: auto; display: block; }
+.slv-sl-out { fill: color-mix(in srgb, var(--fer-ink) 10%, transparent); stroke: var(--fer-ink); stroke-width: .8; }
+.slv-sl-in { fill: none; stroke: var(--fer-ink); stroke-width: .6; stroke-dasharray: 1.6 1.2; }
+.slv-sl-card { fill: var(--panel-strong); stroke: var(--muted); stroke-width: .8; }
+.slv-sl-art { fill: none; stroke: var(--line); stroke-width: .8; }
+.slv-seg { display: flex; gap: 4px; padding: 4px; border: 1px solid var(--line); background: var(--bg); }
+.slv-seg button {
+  flex: 1; min-height: 40px; padding: 0 12px; border: 0; background: transparent; color: var(--muted);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; line-height: 1.15; cursor: pointer;
+}
+.slv-seg button:hover { color: var(--text); }
+.slv-seg button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
+.slv-seg small { font-size: 11px; font-weight: 600; opacity: .75; }
+.slv-dims { margin: 8px 0 0; color: var(--muted); font-size: 12px; line-height: 1.5; }
+.slv-dims b { color: var(--text); font-variant-numeric: tabular-nums; }
+
+/* Linha de quantidade: rótulo à esquerda, contador à direita. */
+.slv-row { display: flex; align-items: center; gap: 12px; padding: 7px 0; }
+.slv-row-lb { flex: 1; min-width: 0; font-size: 14px; font-weight: 600; }
+.slv-row-lb small { display: block; margin-top: 1px; color: var(--muted); font-size: 12px; font-weight: 500; }
+.slv-num { display: flex; flex: none; border: 1px solid var(--line); background: var(--panel); }
+.slv-num button { width: 34px; height: 36px; min-height: 0; padding: 0; display: grid; place-items: center; border: 0; background: none; color: var(--muted); cursor: pointer; }
+.slv-num button:hover { color: var(--text); background: var(--panel-strong); }
+.slv-num button svg { width: 14px; height: 14px; flex: none; }
+.slv-num input {
+  width: 64px; height: 36px; padding: 0; border: 0; border-inline: 1px solid var(--line); background: var(--surface);
+  color: var(--text); font: inherit; font-size: 15px; font-weight: 700; text-align: center; font-variant-numeric: tabular-nums;
+  -moz-appearance: textfield; appearance: textfield;
+}
+.slv-num input::-webkit-outer-spin-button, .slv-num input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.slv-num.is-sm input { width: 50px; }
+.slv-x { color: var(--subtle); font-weight: 700; }
+.slv-opts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin-top: 6px; }
+.slv-check { display: inline-flex; align-items: center; gap: 8px; margin: 0; color: var(--text); font-size: 13px; font-weight: 600; cursor: pointer; }
+.slv-check input { width: 16px; height: 16px; margin: 0; accent-color: var(--fer-ink); }
+.slv-pockets { display: inline-flex; border: 1px solid var(--line); }
+.slv-pockets button { min-height: 32px; padding: 0 10px; border: 0; background: var(--panel); color: var(--muted); font-size: 12.5px; font-weight: 700; cursor: pointer; }
+.slv-pockets button + button { border-left: 1px solid var(--line); }
+.slv-pockets button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
+.slv-from {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 30px; margin-left: auto; padding: 0 10px;
+  border: 1px solid var(--line); background: var(--panel); color: var(--text);
+  font-size: 12px; font-weight: 700; letter-spacing: 0; text-transform: none; cursor: pointer;
+}
+.slv-from:hover { border-color: var(--fer-ink); }
+.slv-from svg { width: 14px; height: 14px; color: var(--fer-ink); }
+.slv-from.is-on { border-color: var(--fer-ink); color: var(--fer-ink); }
+
+/* Lista de compras: o resultado. Presa embaixo do cabeçalho no desktop. */
+.slv-list { position: sticky; top: calc(var(--header-h, 56px) + 16px); padding: 0; scroll-margin-top: calc(var(--header-h, 56px) + 8px); }
+.slv-list-h { display: flex; align-items: center; gap: 8px; margin: 0; padding: 14px 16px 12px; border-bottom: 1px solid var(--line); font-size: 15px; }
+.slv-list-h svg { width: 18px; height: 18px; color: var(--fer-ink); }
+.slv-items { margin: 0; padding: 0; list-style: none; }
+.slv-item { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--line); }
+.slv-item.is-zero { opacity: .45; }
+.slv-ico { width: 44px; height: 44px; display: grid; place-items: center; background: var(--panel); border: 1px solid var(--line); color: var(--muted); }
+.slv-ico svg { width: 24px; height: 24px; }
+.slv-item-b { min-width: 0; }
+.slv-item-b strong { display: block; font-size: 13.5px; }
+.slv-item-b span { display: block; margin-top: 2px; color: var(--muted); font-size: 12px; line-height: 1.35; }
+.slv-qty { text-align: right; font-size: 22px; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1; }
+/* A última folha do fichário, desenhada: quantos bolsos ficam ocupados. */
+.slv-page { display: flex; align-items: center; gap: 14px; padding: 14px 16px; background: var(--panel); border-bottom: 1px solid var(--line); }
+.slv-page-grid { flex: none; display: grid; gap: 3px; padding: 5px; border: 1px solid var(--line); background: var(--surface); }
+.slv-page-grid i { display: block; width: 14px; height: 19px; border: 1px solid var(--line); }
+.slv-page-grid i.is-on { background: color-mix(in srgb, var(--fer-ink) 55%, transparent); border-color: var(--fer-ink); }
+.slv-page p { margin: 0; color: var(--muted); font-size: 12.5px; line-height: 1.45; }
+.slv-page p strong { color: var(--text); }
+.slv-list-foot { padding: 14px 16px; }
+.slv-list-foot .fer-btn { width: 100%; }
+/* Faixa de resumo: só no celular (no desktop a lista já está do lado). */
+.slv-resumo { display: none; }
+
+@media (max-width: 760px) {
+  .slv-grid { grid-template-columns: minmax(0, 1fr); }
+  .slv-list { position: static; }
+  /* Presa no rodapé, logo acima da tabbar, enquanto a pessoa mexe nos campos;
+     some quando a lista entra na tela (IntersectionObserver no sleeves.js). */
+  .slv-resumo:not(:empty) {
+    position: sticky; z-index: 3; bottom: calc(var(--tabbar-h, 0px) + var(--tabbar-lift, 0px) + 8px);
+    display: flex; align-items: center; gap: 10px; width: 100%; min-height: 48px; margin-top: 12px; padding: 6px 14px;
+    background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow-pop);
+    color: var(--muted); font-size: 12.5px; font-weight: 500; text-align: left; cursor: pointer;
+  }
+  .slv-resumo.is-hidden { visibility: hidden; }
+  .slv-resumo b { color: var(--text); font-weight: 800; font-variant-numeric: tabular-nums; }
+  .slv-resumo-txt { flex: 1; min-width: 0; line-height: 1.4; }
+  .slv-resumo-go { flex: none; color: var(--fer-ink); font-weight: 700; }
+}
+@media (max-width: 560px) {
+  /* Alvos de toque de 44px e campo com 16px (o iOS dá zoom abaixo disso). */
+  .slv-num button { width: 44px; height: 44px; }
+  .slv-num input { height: 44px; font-size: 16px; }
+  .slv-pockets button, .slv-seg button { min-height: 44px; }
+  .slv-pockets button { padding: 0 14px; }
+  .slv-from, .slv-check { min-height: 44px; }
+  .slv-row { flex-wrap: wrap; }
+  .slv-row-deck .slv-row-lb { flex-basis: 100%; }
+}
 
 /* Primeiros passos (E3). Fica logo depois do resumo, que é onde o olho já
    está depois de ler a parede de zeros. */

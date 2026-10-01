@@ -3082,7 +3082,7 @@
     const exploreActive = ["pokedex", "lore", "trainers", "sets", "artists", "cards", "hub"].includes(active);
     // "Meus Decks" é página PESSOAL (entra pelo Dashboard), então acende a
     // Coleção — diferente de "Decks", que é a galeria PÚBLICA e tem item próprio.
-    const collectionActive = ["dashboard", "collection", "wishlist", "binders", "sales", "mydecks", "pastas", "troca"].includes(active);
+    const collectionActive = ["dashboard", "collection", "wishlist", "binders", "sales", "mydecks", "pastas", "troca", "condicao", "sleeves"].includes(active);
 
     // `beta`: selo pequeno sobrescrito no rótulo — recurso ainda em construção
     // (pedido de 2026-08-25 pra Decks e Portfólio). "beta" é literal de
@@ -3123,7 +3123,7 @@
           <a class="nav-mega-hub${active === "dashboard" ? " active" : ""}" href="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.5"/></svg>${escapeHtml(t("nav.hubItem"))}<small>${escapeHtml(t("nav.hubHint"))}</small></a>
           ${megaCol("nav.colCards", link("collection", "nav.collectionMine", "collection") + link("pastas", "nav.lists", "pastas") + link("wishlist", "nav.wishlist", "wishlist") + link("collection?tab=graded", "nav.graded", "graded"))}
           ${megaCol("nav.colOrganize", link("binders", "nav.binders", "binders") + link("my-decks", "nav.myDecks", "mydecks"))}
-          ${megaCol("nav.colMore", link("sales", "nav.sales", "sales") + link("troca", "trade.title", "troca") + link("badges", "dash.badges", "badges"))}
+          ${megaCol("nav.colMore", link("sales", "nav.sales", "sales") + link("troca", "trade.title", "troca") + link("condicao", "nav.condicao", "condicao") + link("sleeves", "nav.sleeves", "sleeves") + link("badges", "dash.badges", "badges"))}
         </div>
       </div>`;
     // Decks fica FORA da Coleção e aparece deslogado de propósito: a galeria da
@@ -12480,7 +12480,7 @@
     // localStorage o que NUNCA sobe pra nuvem — e descobria isso ao abrir em
     // outro aparelho. A galeria pública e o viewer ?s= vivem em decks.html, que
     // segue aberta; my-decks é só o editor de quem tem conta.
-    const AUTH_PAGES = ["dashboard", "collection", "wishlist", "binders", "sales", "portfolio", "badges", "backup", "troca", "pastas", "mydecks"];
+    const AUTH_PAGES = ["dashboard", "collection", "wishlist", "binders", "sales", "portfolio", "badges", "backup", "troca", "condicao", "sleeves", "pastas", "mydecks"];
     const nav = document.querySelector(".page-nav[data-active-page]");
     const page = nav ? nav.dataset.activePage : "";
     if (!AUTH_PAGES.includes(page) || getSession()) return false;
