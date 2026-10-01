@@ -1,4 +1,11 @@
 -- ============================================================================
+-- NÃO APLICAR: a 20261001d (Weiß Schwarz), aplicada em 2026-10-01, já
+-- liberou este jogo com a lista inteira. Esta lista não tem o `weiss`
+-- (nem, na 20261001b, o `harrypotter`): rodada agora, tiraria esses jogos
+-- das duas whitelists em silêncio. Fica como registro.
+-- ============================================================================
+
+-- ============================================================================
 -- Migração aditiva: libera o slug `sorcery` (Sorcery: Contested Realm, Erik's
 -- Curiosa 2023, via TCGCSV cat. 77) nas whitelists de jogo do banco. Aplicar
 -- no SQL Editor do Supabase (projeto dlnalopazitfdgnmdguu).

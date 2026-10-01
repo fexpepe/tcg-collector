@@ -1,8 +1,8 @@
 -- ============================================================================
--- NÃO APLICAR DEPOIS DA 20261001d (Weiß Schwarz, 01/10/2026): ela é esta
--- mesma migração com o `weiss` a mais (conferido por diff), e esta, rodada
--- depois, tiraria o `weiss` das duas whitelists em silêncio. Antes da
--- 20261001d, tanto faz. A próxima migração de jogo copia a 20261001d.
+-- NÃO APLICAR: a 20261001d (Weiß Schwarz), aplicada em 2026-10-01, já
+-- liberou este jogo com a lista inteira. Esta lista não tem o `weiss`
+-- (nem, na 20261001b, o `harrypotter`): rodada agora, tiraria esses jogos
+-- das duas whitelists em silêncio. Fica como registro.
 -- ============================================================================
 
 -- ============================================================================
