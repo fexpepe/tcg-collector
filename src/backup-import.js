@@ -133,6 +133,8 @@
     if (flat.includes("warcraft") || flat === "wow" || flat === "wowtcg") return "wow";
     // O Senhor dos Anéis do Magic (LTR) vem como "Magic…" e já parou lá em cima.
     if (flat.includes("lordoftherings") || flat === "lotr") return "lotr";
+    // "Weiss Schwarz" no TCGplayer; "Weiß" vira "wei" no achatamento (o ß não é a-z).
+    if (flat.includes("schwarz") || flat === "ws" || flat === "weiss") return "weiss";
     if (flat.includes("harrypotter")) return "harrypotter";
     if (flat.includes("pok")) return "pokemon";
     return ""; // desconhecido: tenta todos

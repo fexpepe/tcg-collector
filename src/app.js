@@ -16,7 +16,7 @@
     magic: "game_magic-v2.webp", fab: "game_fab.webp", gundam: "game_gundam-v2.webp", swu: "game_swu.webp", cyberpunk: "game_cyberpunk.webp", sorcery: "game_sorcery.webp", dbfw: "game_dbfw-v2.webp",
     ygo: "game_ygo-v2.webp", digimon: "game_digimon-v2.webp", riftbound: "game_riftbound-v2.webp",
     unionarena: "game_unionarena.webp", naruto: "game_naruto.webp", hxh: "game_hxh.webp",
-    dbc: "game_dbc.webp", wow: "game_wow.webp", lotr: "game_lotr.webp", harrypotter: "game_harrypotter.webp"
+    dbc: "game_dbc.webp", wow: "game_wow.webp", lotr: "game_lotr.webp", weiss: "game_weiss.webp", harrypotter: "game_harrypotter.webp"
   };
   function gameLogoUrl(game) {
     const f = GAME_LOGO[game];
@@ -607,6 +607,7 @@
       if ((window.SLEEVU && window.SLEEVU.game) === "sorcery") return groupSorcerySets(setItems);
       if ((window.SLEEVU && window.SLEEVU.game) === "wow") return groupWowSets(setItems);
       if ((window.SLEEVU && window.SLEEVU.game) === "lotr") return groupLotrSets(setItems);
+      if ((window.SLEEVU && window.SLEEVU.game) === "weiss") return groupWeissSets(setItems);
       if ((window.SLEEVU && window.SLEEVU.game) === "harrypotter") return groupHarryPotterSets(setItems);
       // Página de Sets: agrupada por série (coleção).
       return groupSetsBySeries(setItems);
@@ -1495,6 +1496,30 @@
       if (!sets.length) continue;
       items.push({ type: "category-head", name: t(key), count: sets.length });
       sets.sort(sortByReleaseAsc).forEach((set) => items.push(set));
+    }
+    return items;
+  }
+
+  // Weiß Schwarz: um set por anime, então a divisão é pelo TIPO de produto,
+  // que o código impresso diz (o setId que o sync-weiss.mjs fixa): Extra
+  // Booster (WE/SE/WXE), Power Up Set (SP/WP), Chronicle Set (SC, ou o "-RE" do
+  // Fairy Tail, que reimprime com o código antigo) e os dois grupos que
+  // misturam séries (PR e EVENT). O resto são os boosters. Do mais novo pro
+  // mais antigo: o jogo está ativo, com set novo todo mês.
+  function groupWeissSets(setItems) {
+    const idOf = (set) => String(set.setId || "").toUpperCase();
+    const isPromo = (set) => /^(PR|EVENT)$/.test(idOf(set));
+    const isExtra = (set) => /-(WE|SE|WXE|SP|WP|SC)\d+$|-RE$/.test(idOf(set));
+    const grupos = [
+      ["sets.category.main", setItems.filter((set) => !isPromo(set) && !isExtra(set))],
+      ["sets.category.wsExtra", setItems.filter(isExtra)],
+      ["sets.category.promos", setItems.filter(isPromo)]
+    ];
+    const items = [];
+    for (const [key, sets] of grupos) {
+      if (!sets.length) continue;
+      items.push({ type: "category-head", name: t(key), count: sets.length });
+      sets.sort(sortByReleaseDesc).forEach((set) => items.push(set));
     }
     return items;
   }

@@ -37,6 +37,7 @@
     wow: { slug: "wow", name: "World of Warcraft TCG", dataDir: "data/wow/" },     // vintage Upper Deck/Cryptozoic 2006–2013, TCGCSV cat. 13 (EN, com preço)
     lotr: { slug: "lotr", name: "The Lord of the Rings TCG", dataDir: "data/lotr/" }, // vintage Decipher 2001–2007 (banco do Player's Council)
     harrypotter: { slug: "harrypotter", name: "Harry Potter TCG", dataDir: "data/harrypotter/" }, // vintage Wizards of the Coast 2001–2002 (hpjson; premium = cartas próprias)
+    weiss: { slug: "weiss", name: "Weiß Schwarz", dataDir: "data/weiss/" }, // TCGCSV cat. 20 (Bushiroad, só a edição EN, 2013+; paralelas = cartas próprias)
     // Em preparação (catálogo ainda vazio; tile "Em breve" no hub):
     jump: { slug: "jump", name: "JUMP", dataDir: "data/jump/" }            // promos curadas (Jump Festa, V-Jump…)
   };
@@ -58,6 +59,7 @@
     ["gundam-card-game", "gundam"], ["flesh-and-blood", "fab"], ["yu-gi-oh", "ygo"],
     ["dragon-ball-fusion-world", "dbfw"], ["digimon-card-game", "digimon"], ["union-arena", "unionarena"],
     ["cyberpunk-tcg", "cyberpunk"], ["sorcery-contested-realm", "sorcery"], ["naruto-card-game", "naruto", "nrt-ncg", "nrt-ncg-"],
+    ["weiss-schwarz", "weiss"],
     ["dragon-ball-carddass", "dbc"], ["hunter-x-hunter-carddass", "hxh"],
     ["one-piece-carddass", "onepiece", "opcd", "opcd-"], ["lord-of-the-rings-tcg", "lotr"], ["harry-potter-tcg", "harrypotter"],
     ["one-piece-card-game-2002", "onepiece", "op2002", "op2002-"],

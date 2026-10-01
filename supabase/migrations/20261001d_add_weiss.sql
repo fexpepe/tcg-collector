@@ -1,28 +1,22 @@
 -- ============================================================================
--- NÃO APLICAR DEPOIS DA 20261001d (Weiß Schwarz, 01/10/2026): ela é esta
--- mesma migração com o `weiss` a mais (conferido por diff), e esta, rodada
--- depois, tiraria o `weiss` das duas whitelists em silêncio. Antes da
--- 20261001d, tanto faz. A próxima migração de jogo copia a 20261001d.
--- ============================================================================
-
--- ============================================================================
--- Migração aditiva: libera o slug `harrypotter` (Harry Potter Trading Card
--- Game, Wizards of the Coast 2001–2002, jogo vintage) nas whitelists de jogo
--- do banco. Aplicar no SQL Editor do Supabase (projeto dlnalopazitfdgnmdguu).
+-- Migração aditiva: libera o slug `weiss` (Weiß Schwarz, Bushiroad — só a
+-- edição inglesa, via TCGCSV cat. 20) nas whitelists de jogo do banco.
+-- Aplicar no SQL Editor do Supabase (projeto dlnalopazitfdgnmdguu).
 --
--- Cópia da 20261001b (Sorcery: Contested Realm) com `harrypotter` na lista —
--- as mesmas DUAS famílias de whitelist:
+-- Cópia da 20261001c (Harry Potter TCG) com `weiss` na lista — as mesmas DUAS
+-- famílias de whitelist:
 --   1. card_views + increment_card_view  (corpo da 20260923a, com a linha do
 --      card_views_daily)
 --   2. contribute_price                  (corpo da 20260807c)
--- Sem isto, no Harry Potter a view de carta e a contribuição de preço são
+-- Sem isto, no Weiß Schwarz a view de carta e a contribuição de preço são
 -- rejeitadas EM SILÊNCIO (as funções só dão `return`). A lista é a INTEIRA e
--- traz o `wow`, o `lotr` e o `sorcery`. Depois desta, a 20261001b, a
--- 20261001a e a 20260930d não podem rodar de novo: tirariam o `harrypotter`
--- das listas.
+-- traz o `wow`, o `lotr`, o `sorcery` e o `harrypotter`: esta COBRE a
+-- 20261001c e a 20261001b, que estavam pendentes em 01/10/2026. Aplicar só
+-- esta basta; se alguma delas for aplicada, que seja ANTES desta — rodada
+-- depois, tiraria o `weiss` das duas listas (o caso da seção 5.5 do
+-- docs/CATALOGO.md). A 20261001a e a 20260930d também não podem rodar de novo.
 --
--- Os ids do Harry Potter são hp-<set>-<número> (hp-bs-8, hp-qc-7-premium,
--- hp-league-qc-35): cabem na regex de id abaixo.
+-- Os ids do Weiß Schwarz são ws-<productId do TCGplayer> (ws-674019).
 --
 -- Sem cifrão dentro dos corpos de função (lição da 20260923a): o editor do
 -- Supabase se perde com `$` solto num corpo `$$…$$`. As âncoras de fim das
@@ -43,14 +37,14 @@ begin
   end loop;
 end $$;
 alter table public.card_views add constraint card_views_game_check
-  check (game = any (array['pokemon','lorcana','onepiece','magic','fab','gundam','swu','cyberpunk','sorcery','dbfw','ygo','digimon','riftbound','unionarena','naruto','hxh','dbc','wow','lotr','harrypotter','jump']));
+  check (game = any (array['pokemon','lorcana','onepiece','magic','fab','gundam','swu','cyberpunk','sorcery','dbfw','ygo','digimon','riftbound','unionarena','naruto','hxh','dbc','wow','lotr','harrypotter','weiss','jump']));
 
--- increment_card_view: corpo IDÊNTICO ao da 20261001a e ao da 20260923a/20260924a/20260930a/20260930c/20260930d/20261001b — só a lista de jogos muda.
+-- increment_card_view: corpo IDÊNTICO ao da 20261001c, ao da 20261001a e ao da 20260923a/20260924a/20260930a/20260930c/20260930d/20261001b — só a lista de jogos muda.
 create or replace function public.increment_card_view(p_game text, p_card_id text)
 returns void language plpgsql security definer set search_path = public as $$
 begin
   if p_game is null or p_card_id is null then return; end if;
-  if not (p_game = any (array['pokemon','lorcana','onepiece','magic','fab','gundam','swu','cyberpunk','sorcery','dbfw','ygo','digimon','riftbound','unionarena','naruto','hxh','dbc','wow','lotr','harrypotter','jump'])) then return; end if;
+  if not (p_game = any (array['pokemon','lorcana','onepiece','magic','fab','gundam','swu','cyberpunk','sorcery','dbfw','ygo','digimon','riftbound','unionarena','naruto','hxh','dbc','wow','lotr','harrypotter','weiss','jump'])) then return; end if;
   if p_card_id !~ '^[A-Za-z0-9][A-Za-z0-9._-]{0,79}\Z' then return; end if;
   if not _rate_ok('cardview', 120) then return; end if;
   insert into card_views (game, card_id, views) values (p_game, p_card_id, 1)
@@ -70,7 +64,7 @@ create or replace function public.contribute_price(
 declare v numeric;
 begin
   if auth.uid() is null then return; end if;
-  if not (p_game = any (array['pokemon','lorcana','onepiece','magic','fab','gundam','swu','cyberpunk','sorcery','dbfw','ygo','digimon','riftbound','unionarena','naruto','hxh','dbc','wow','lotr','harrypotter','jump'])) then return; end if;
+  if not (p_game = any (array['pokemon','lorcana','onepiece','magic','fab','gundam','swu','cyberpunk','sorcery','dbfw','ygo','digimon','riftbound','unionarena','naruto','hxh','dbc','wow','lotr','harrypotter','weiss','jump'])) then return; end if;
   if p_card_id is null or p_card_id !~ '^[A-Za-z0-9][A-Za-z0-9._-]{0,79}\Z' then return; end if;
   if p_variant is null or length(p_variant) < 1 or length(p_variant) > 40 then return; end if;
   if p_cond is null or p_cond !~ '^[A-Za-z0-9 +-]{1,12}\Z' then return; end if;
@@ -96,19 +90,19 @@ notify pgrst, 'reload schema';
 -- ============================================================================
 -- Verificação (depois de aplicar):
 --
---   # 1) view de carta do Harry Potter: 204 E a linha aparece em card_views
+--   # 1) view de carta do Weiß Schwarz (ws-674019, Okarun do DANDADAN): 204 E a linha aparece em card_views
 --   #    (204 sozinho não prova nada: jogo inválido também devolve 204).
 --   curl -s -o /dev/null -w "%{http_code}\n" -X POST \
 --     "https://dlnalopazitfdgnmdguu.supabase.co/rest/v1/rpc/increment_card_view" \
 --     -H "apikey: sb_publishable_0Qlei5ZvRcEsr18QRdWfGg_N3aR1zyL" -H "Content-Type: application/json" \
---     -d '{"p_game":"harrypotter","p_card_id":"hp-bs-8"}'
+--     -d '{"p_game":"weiss","p_card_id":"ws-674019"}'
 --
---   curl -s "https://dlnalopazitfdgnmdguu.supabase.co/rest/v1/card_views?game=eq.harrypotter&select=card_id,views" \
+--   curl -s "https://dlnalopazitfdgnmdguu.supabase.co/rest/v1/card_views?game=eq.weiss&select=card_id,views" \
 --     -H "apikey: sb_publishable_0Qlei5ZvRcEsr18QRdWfGg_N3aR1zyL"
 --
 --   # 2) contribuição anônima segue 401 (o fechamento da 20260807b continua de pé)
 --   curl -s -o /dev/null -w "%{http_code}\n" -X POST \
 --     "https://dlnalopazitfdgnmdguu.supabase.co/rest/v1/rpc/contribute_price" \
 --     -H "apikey: sb_publishable_0Qlei5ZvRcEsr18QRdWfGg_N3aR1zyL" -H "Content-Type: application/json" \
---     -d '{"p_game":"harrypotter","p_card_id":"hp-bs-8","p_variant":"Normal","p_cond":"NM","p_kind":"listed","p_company":"","p_grade":"","p_value_brl":10}'
+--     -d '{"p_game":"weiss","p_card_id":"ws-674019","p_variant":"Normal","p_cond":"NM","p_kind":"listed","p_company":"","p_grade":"","p_value_brl":10}'
 -- ============================================================================

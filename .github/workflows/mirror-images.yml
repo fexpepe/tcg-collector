@@ -75,6 +75,7 @@ jobs:
             data/dbc/sets
             data/wow/sets
             data/lotr/sets
+            data/weiss/sets
             data/harrypotter/sets
             data/jump/sets
             data/magic/cards.js

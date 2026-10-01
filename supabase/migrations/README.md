@@ -8,7 +8,18 @@ poucos.)
 
 ## Pendentes de aplicar
 
-- `20261001c` — libera o slug `harrypotter` (Harry Potter Trading Card Game,
+- `20261001d` — libera o slug `weiss` (Weiß Schwarz) nas DUAS whitelists de
+  jogo: `card_views`/`increment_card_view` e `contribute_price` (cópia da
+  `20261001c` com o `weiss` a mais; fora do cabeçalho e dos exemplos de
+  `curl`, só a lista muda, conferido por diff). A lista é a inteira e já tem o
+  `sorcery` e o `harrypotter`, então ela **cobre a `20261001c` e a
+  `20261001b`**: aplicar só esta basta. Se alguma das duas for aplicada, que
+  seja ANTES desta; rodada depois, tiraria o `weiss` das duas listas. Sem
+  ordem com a `20260930b` (blog). Conferir com o par de `curl` do fim do
+  arquivo: a view de `ws-674019` tem de **criar a linha** no `card_views` (o
+  204 sozinho não prova nada) e a contribuição anônima segue 401.
+
+- `20261001c` — **coberta pela `20261001d`; não aplicar depois dela.** Libera o slug `harrypotter` (Harry Potter Trading Card Game,
   Wizards of the Coast 2001–2002, vintage) nas DUAS whitelists de jogo:
   `card_views`/`increment_card_view` e `contribute_price`. Cópia da
   `20261001b` (Sorcery) com o `harrypotter` a mais: fora do cabeçalho e dos

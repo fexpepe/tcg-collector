@@ -83,7 +83,7 @@ test("caminho de cada jogo no Cardmarket", () => {
   const caminhos = {
     pokemon: "Pokemon", magic: "Magic", ygo: "YuGiOh", onepiece: "OnePiece", lorcana: "Lorcana",
     digimon: "Digimon", fab: "FleshAndBlood", dbfw: "DragonBallSuper", riftbound: "Riftbound",
-    cyberpunk: "Cyberpunk", wow: "WoW"
+    cyberpunk: "Cyberpunk", wow: "WoW", weiss: "WeissSchwarz"
   };
   for (const [game, caminho] of Object.entries(caminhos)) {
     const url = chip({ id: `${game}-1`, name: "X", number: "1", game });
