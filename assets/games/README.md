@@ -51,6 +51,13 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
   volta é semitransparente e some na cápsula branca do hub). Recortado no
   conteúdo (+2px), alfa ≤12 zerado e reduzido pra 512 de largura com o Pillow
   em alfa pré-multiplicado. WebP com perda q88 e alfa sem perda: 43 KB.
+- `game_weiss.webp` — Weiß Schwarz (16º tile da grade moderna do hub). Fonte: o
+  logo oficial (Weiß Schwarz com ヴァイスシュヴァルツ) enviado pelo Fernando em
+  2026-10-01 (1312×644, com alfa). Mesmo tratamento do WoW: recortado no
+  conteúdo (+2px), alfa ≤12 zerado e reduzido pra 512×252 com o Pillow em alfa
+  pré-multiplicado. WebP com perda q88 e alfa sem perda: 38 KB (o sem perda
+  dava 95 KB, pelos gradientes prata). O contorno escuro do logo segura o
+  branco das letras na cápsula branca do hub.
 - `game_naruto.webp` — logo NARUTO genérico (tile do jogo e `setLogo` do Data
   Carddass Cross Formation nrt-nx/nrt-nf)
 - `game_naruto_ccg.webp` — Naruto Collectible Card Game americano 2006+ (tile
