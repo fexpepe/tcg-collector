@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title data-i18n="title.condicao">Guia de condição - Sleevu</title>
+    <meta name="description" content="Cinco perguntas sobre cantos, bordas, verso e superfície da carta, e a condição dela na escala que as lojas usam.">
+    <!-- Ferramenta do HUB (exige login, como a Troca): fora do índice.
+         Ver docs/FERRAMENTAS.md. -->
+    <meta name="robots" content="noindex">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <meta name="theme-color" content="#e8ecf1" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#101218" media="(prefers-color-scheme: dark)">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Sleevu">
+    <script src="src/theme.js"></script>
+    <!-- Página NEUTRA (cross-game): o guia é só perguntas, sem catálogo no boot. -->
+    <script src="src/game.js" data-catalog=""></script>
+    <link rel="preload" href="assets/fonts/outfit-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <!-- Saída de emergência: só aparece se o app não subir (ver .falha-boot no styles.css). -->
+    <div class="falha-boot" hidden>
+      <p data-i18n="boot.stuck">Esta tela não terminou de carregar.</p>
+      <a class="primary" href="" data-i18n="boot.retry">Tentar de novo</a>
+      <a class="secondary" href="/" data-i18n="boot.home">Ir para o início</a>
+    </div>
+    <header class="app-header">
+      <div class="app-header-inner">
+        <a class="brand" href="/">Sleevu</a>
+        <nav class="page-nav" data-i18n-aria="aria.pages" aria-label="Páginas" data-active-page="condicao"></nav>
+        <div class="header-actions">
+          <select id="languageSwitcher" class="lang-select"></select>
+        </div>
+      </div>
+    </header>
+
+    <main class="fer-page">
+      <div class="page-head">
+        <h1 data-i18n="nav.condicao">Guia de condição</h1>
+        <a href="dashboard" class="serie-back" data-i18n="nav.backDashboard">← Hub</a>
+      </div>
+      <p class="collection-subtitle" data-i18n="gc.subtitle">Cinco perguntas sobre a carta e a condição dela na escala que as lojas usam (M, NM, SP, MP, HP, D). Tire a carta do sleeve e use uma luz forte.</p>
+
+      <div class="gc-layout">
+        <!-- O questionário e o resultado: o src/condicao.js desenha aqui. -->
+        <section id="gcApp" class="fer-card gc-app"></section>
+        <!-- A régua inteira, sempre à vista: quem chega pra conferir UM degrau
+             não precisa responder nada. O resultado acende a linha dele. -->
+        <aside class="fer-card gc-scale" aria-labelledby="gcScaleTitle">
+          <h2 id="gcScaleTitle" data-i18n="gc.scaleTitle">Cada condição, em uma linha</h2>
+          <ol id="gcScale" class="gc-scale-list"></ol>
+        </aside>
+      </div>
+    </main>
+
+    <script defer src="src/i18n.js"></script>
+    <script defer src="src/i18n-ferramentas.js"></script>
+    <script defer src="src/shared.js"></script>
+    <script defer src="src/condicao.js"></script>
+  </body>
+</html>
