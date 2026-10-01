@@ -130,9 +130,16 @@ import { join } from "node:path";
 // registro de cores (as 30+ regras por jogo pesam ~1 KB gz, ver a 5.4 do
 // docs/CATALOGO.md) ou de rotear .detail-toolbar/.progress-mode pra área do
 // set no split-css. 1 KB de folga, como das outras vezes.
+//
+// 2026-10-01 (mais tarde): teto do CSS núcleo sobe de 34.816 pra 35.840, a
+// pedido do Fernando ("+2 KB pra ter teto pra novos jogos", contado a partir
+// do 33.792 de antes do Sorcery). O Harry Potter TCG, o 4º jogo do dia, soma
+// +63 bytes gz de accent em cima do Sorcery. Com 35.840 ficam ~1,8 KB de folga
+// depois dos dois: uns 30 jogos no ritmo de ~60 bytes cada. A saída de verdade
+// continua sendo a regra genérica de accent.
 const TETOS = [
   { arquivo: "shared.js", teto: 84992, nota: "núcleo JS de toda página" },
-  { arquivo: "styles.min.css", teto: 34816, nota: "núcleo do CSS, depois do split por área" },
+  { arquivo: "styles.min.css", teto: 35840, nota: "núcleo do CSS, depois do split por área" },
 ];
 
 const dir = process.argv[2] || "/tmp/ci-min";
