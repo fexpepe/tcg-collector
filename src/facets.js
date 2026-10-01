@@ -128,6 +128,17 @@
       facetColor("color"),
       facetType(["Legend", "Unit", "Program", "Gear"])
     ],
+    // Sorcery: Contested Realm: o "color" do catálogo é o ELEMENTO (sync-sorcery.mjs);
+    // a carta de dois elementos ("Air;Earth") conta nos dois. Tipos de 01/10/2026.
+    sorcery: [
+      {
+        key: "element", labelKey: "facet.element",
+        of: (c) => facetSplit(c.color, ";"),
+        label: (v) => v,
+        order: ["Air", "Earth", "Fire", "Water"]
+      },
+      facetType(["Avatar", "Minion", "Magic", "Aura", "Artifact", "Site", "Token"])
+    ],
     // LOTR TCG da Decipher: a CULTURA (os povos do Senhor dos Anéis; o
     // Ringwraith vira "Wraith" do Shadows em diante, como está na carta) e o
     // tipo. Povos Livres primeiro, Sombra depois, como no livro de regras.

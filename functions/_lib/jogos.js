@@ -37,6 +37,7 @@ export const JOGOS_URL = [
   { url: "digimon-card-game", game: "digimon", nome: "Digimon Card Game", logo: "assets/games/game_digimon-v2.webp" },
   { url: "union-arena", game: "unionarena", nome: "Union Arena", logo: "assets/games/game_unionarena.webp" },
   { url: "cyberpunk-tcg", game: "cyberpunk", nome: "Cyberpunk TCG", logo: "assets/games/game_cyberpunk.webp" },
+  { url: "sorcery-contested-realm", game: "sorcery", nome: "Sorcery: Contested Realm", logo: "assets/games/game_sorcery.webp" },
   { url: "naruto-card-game", game: "naruto", linha: "nrt-ncg", prefixos: ["nrt-ncg-"], nome: "Naruto Card Game (2027)", logo: "assets/games/game_naruto_2027.webp" },
   { url: "dragon-ball-carddass", game: "dbc", nome: "Dragon Ball Carddass", logo: "assets/games/game_dbc.webp", vintage: "1988–1997" },
   { url: "hunter-x-hunter-carddass", game: "hxh", nome: "Hunter × Hunter Carddass Hyper Battle", logo: "assets/games/game_hxh.webp", vintage: "1999–2001" },

@@ -67,6 +67,7 @@
     gundam: ["Gundam", "#2563eb"],
     swu: ["Star Wars", "#000000"],
     cyberpunk: ["Cyberpunk", "#fcee0a"],
+    sorcery: ["Sorcery", "#c9a66b"],
     dbfw: ["Dragon Ball Fusion", "#9aa3ae"],
     ygo: ["Yu-Gi-Oh!", "#7c3aed"],
     digimon: ["Digimon", "#123f6d"],

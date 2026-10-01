@@ -25,6 +25,7 @@
     gundam: { slug: "gundam", name: "Gundam Card Game", dataDir: "data/gundam/" }, // TCGCSV cat. 86 (Bandai, EN)
     swu: { slug: "swu", name: "Star Wars: Unlimited", dataDir: "data/swu/" }, // TCGCSV cat. 79 (FFG, EN; Hyperspace/Showcase = cartas próprias)
     cyberpunk: { slug: "cyberpunk", name: "Cyberpunk TCG", dataDir: "data/cyberpunk/" }, // TCGCSV cat. 92 (Weird Co. 2026, EN; edições Beta e Retail = sets próprios)
+    sorcery: { slug: "sorcery", name: "Sorcery: Contested Realm", dataDir: "data/sorcery/" }, // TCGCSV cat. 77 (Erik's Curiosa 2023, EN; foil é outro produto, o sync junta)
     dbfw: { slug: "dbfw", name: "Dragon Ball Fusion World", dataDir: "data/dbfw/" }, // TCGCSV cat. 80 (Bandai, EN; Fusion World, ≠ Masters)
     ygo: { slug: "ygo", name: "Yu-Gi-Oh!", dataDir: "data/ygo/" }, // TCGCSV cat. 2 (Konami, EN; ~46k cartas, padrão Magic: chunks versionados)
     digimon: { slug: "digimon", name: "Digimon Card Game", dataDir: "data/digimon/" }, // TCGCSV cat. 63 (Bandai 2020+, EN)
@@ -55,7 +56,7 @@
     ["one-piece-card-game", "onepiece"], ["riftbound", "riftbound"], ["star-wars-unlimited", "swu"],
     ["gundam-card-game", "gundam"], ["flesh-and-blood", "fab"], ["yu-gi-oh", "ygo"],
     ["dragon-ball-fusion-world", "dbfw"], ["digimon-card-game", "digimon"], ["union-arena", "unionarena"],
-    ["cyberpunk-tcg", "cyberpunk"], ["naruto-card-game", "naruto", "nrt-ncg", "nrt-ncg-"],
+    ["cyberpunk-tcg", "cyberpunk"], ["sorcery-contested-realm", "sorcery"], ["naruto-card-game", "naruto", "nrt-ncg", "nrt-ncg-"],
     ["dragon-ball-carddass", "dbc"], ["hunter-x-hunter-carddass", "hxh"],
     ["one-piece-carddass", "onepiece", "opcd", "opcd-"], ["lord-of-the-rings-tcg", "lotr"],
     ["one-piece-card-game-2002", "onepiece", "op2002", "op2002-"],

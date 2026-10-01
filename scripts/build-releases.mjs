@@ -28,7 +28,7 @@ const RAIZ = new URL("../", import.meta.url);
 const JOGOS = [
   ["pokemon", "data/"], ["lorcana", "data/lorcana/"], ["onepiece", "data/onepiece/"],
   ["magic", "data/magic/"], ["fab", "data/fab/"], ["gundam", "data/gundam/"],
-  ["swu", "data/swu/"], ["cyberpunk", "data/cyberpunk/"],
+  ["swu", "data/swu/"], ["cyberpunk", "data/cyberpunk/"], ["sorcery", "data/sorcery/"],
   ["dbfw", "data/dbfw/"], ["ygo", "data/ygo/"], ["digimon", "data/digimon/"],
   ["riftbound", "data/riftbound/"], ["unionarena", "data/unionarena/"],
   ["naruto", "data/naruto/"], ["hxh", "data/hxh/"], ["dbc", "data/dbc/"], ["wow", "data/wow/"], ["lotr", "data/lotr/"], ["jump", "data/jump/"]
@@ -137,7 +137,7 @@ function dobra(linha) {
 
 const ROTULOS = {
   pokemon: "Pokémon", lorcana: "Lorcana", onepiece: "One Piece", magic: "Magic",
-  fab: "Flesh and Blood", gundam: "Gundam", swu: "Star Wars: Unlimited", cyberpunk: "Cyberpunk TCG", dbfw: "Dragon Ball Fusion World",
+  fab: "Flesh and Blood", gundam: "Gundam", swu: "Star Wars: Unlimited", cyberpunk: "Cyberpunk TCG", sorcery: "Sorcery: Contested Realm", dbfw: "Dragon Ball Fusion World",
   ygo: "Yu-Gi-Oh!", digimon: "Digimon", riftbound: "Riftbound",
   unionarena: "Union Arena", naruto: "Naruto", hxh: "Hunter x Hunter", dbc: "Dragon Ball Carddass", wow: "World of Warcraft TCG", lotr: "The Lord of the Rings TCG", jump: "Jump"
 };

@@ -65,6 +65,7 @@ jobs:
             data/gundam/sets
             data/swu/sets
             data/cyberpunk/sets
+            data/sorcery/sets
             data/dbfw/sets
             data/digimon/sets
             data/riftbound/sets

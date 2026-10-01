@@ -8,6 +8,17 @@ poucos.)
 
 ## Pendentes de aplicar
 
+- `20261001b` — libera o slug `sorcery` (Sorcery: Contested Realm) nas DUAS
+  whitelists de jogo: `card_views`/`increment_card_view` e `contribute_price`
+  (cópia da `20261001a` com o `sorcery` a mais; fora do cabeçalho e dos
+  exemplos de `curl`, só a lista muda, conferido por diff). A lista é a
+  inteira, com o `wow` e o `lotr` que a `20261001a` (já aplicada) liberou,
+  então pode ser aplicada a qualquer momento, sem ordem com a `20260930b`
+  (blog). Conferir com o par de `curl` do fim do arquivo: a view de
+  `sor-522747` tem de **criar a linha** no `card_views` (o 204 sozinho não
+  prova nada) e a contribuição anônima segue 401. Depois dela, a `20261001a`
+  e a `20260930d` não podem rodar de novo (tirariam o `sorcery`).
+
 - `20260930b` — blog (`20260930b_blog.sql`; o `b` porque a `20260930a` do mesmo
   dia é a do Star Wars). Cria o papel de editor do blog (`blog_editores`,
   tabela trancada, SEPARADA do `is_admin`), a tabela `posts` com RLS
@@ -214,7 +225,9 @@ poucos.)
   cria a linha** (`{"card_id":"lotr-1r1","views":1}`); o jogo inventado também
   dá 204 mas não cria nada; o `wow` já tem a linha dele (`wow-16485`); a
   contribuição anônima segue **401**. Sem prova direta, como nas anteriores:
-  o `contribute_price` logado com `lotr`.
+  o `contribute_price` logado com `lotr`. **Não rodar de novo depois da
+  `20261001b`** (Sorcery): ela é esta com o `sorcery` a mais, e esta,
+  rodada depois, tiraria o `sorcery` das duas whitelists em silêncio.
 
 - `20260930d` — libera o slug `wow` (World of Warcraft TCG) nas DUAS
   whitelists de jogo: `card_views`/`increment_card_view` e `contribute_price`

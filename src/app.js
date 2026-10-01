@@ -13,7 +13,7 @@
   // assets/games/README.md) — nome novo porque /assets/* é immutable.
   const GAME_LOGO = {
     pokemon: "game_pokemon.webp", lorcana: "game_lorcana-v2.webp", onepiece: "game_onepiece.webp",
-    magic: "game_magic-v2.webp", fab: "game_fab.webp", gundam: "game_gundam-v2.webp", swu: "game_swu.webp", cyberpunk: "game_cyberpunk.webp", dbfw: "game_dbfw-v2.webp",
+    magic: "game_magic-v2.webp", fab: "game_fab.webp", gundam: "game_gundam-v2.webp", swu: "game_swu.webp", cyberpunk: "game_cyberpunk.webp", sorcery: "game_sorcery.webp", dbfw: "game_dbfw-v2.webp",
     ygo: "game_ygo-v2.webp", digimon: "game_digimon-v2.webp", riftbound: "game_riftbound-v2.webp",
     unionarena: "game_unionarena.webp", naruto: "game_naruto.webp", hxh: "game_hxh.webp",
     dbc: "game_dbc.webp", wow: "game_wow.webp", lotr: "game_lotr.webp"
@@ -604,6 +604,7 @@
       if ((window.SLEEVU && window.SLEEVU.game) === "dbc") return groupDbcSets(setItems);
       if ((window.SLEEVU && window.SLEEVU.game) === "swu") return groupSwuSets(setItems);
       if ((window.SLEEVU && window.SLEEVU.game) === "cyberpunk") return groupCyberpunkSets(setItems);
+      if ((window.SLEEVU && window.SLEEVU.game) === "sorcery") return groupSorcerySets(setItems);
       if ((window.SLEEVU && window.SLEEVU.game) === "wow") return groupWowSets(setItems);
       if ((window.SLEEVU && window.SLEEVU.game) === "lotr") return groupLotrSets(setItems);
       // Página de Sets: agrupada por série (coleção).
@@ -1422,6 +1423,26 @@
     if (promos.length) {
       items.push({ type: "category-head", name: t("sets.category.promos"), count: promos.length });
       promos.forEach((set) => items.push(set));
+    }
+    return items;
+  }
+
+  // Sorcery: Contested Realm: as edições (Alpha, Beta, Arthurian Legends,
+  // Gothic e o mini set Dragonlord) e os promos. Pelo NOME: os três grupos de
+  // promo da TCGCSV têm "Promo" no nome (Dust Reward, Arthurian Legends Promo,
+  // Welcome Kit; conferido nos 8 grupos em 01/10/2026), e assim a próxima
+  // edição já cai em "Principais".
+  function groupSorcerySets(setItems) {
+    const isPromo = (set) => /promo/i.test(String(set.name || ""));
+    const grupos = [
+      ["sets.category.main", setItems.filter((set) => !isPromo(set))],
+      ["sets.category.promos", setItems.filter(isPromo)]
+    ];
+    const items = [];
+    for (const [key, sets] of grupos) {
+      if (!sets.length) continue;
+      items.push({ type: "category-head", name: t(key), count: sets.length });
+      sets.sort(sortByReleaseDesc).forEach((set) => items.push(set));
     }
     return items;
   }

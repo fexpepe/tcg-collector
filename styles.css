@@ -391,6 +391,19 @@
   --accent: #141414; --accent-dark: #000000; --accent-rgb: 20, 20, 20;
   --accent-soft: rgba(252, 238, 10, 0.3); --on-accent: #fcee0a;
 }
+/* Sorcery: Contested Realm: o PERGAMINHO da moldura das cartas (#c9a66b, o do
+   GAME_COLOR) com texto escuro no escuro (8.5:1). No claro ele fica em 2.3:1
+   com branco, então o accent escurece pro marrom de tinta #7d5f2c (5.9:1 com
+   texto branco). */
+[data-game-accent="sorcery"] {
+  --accent: #c9a66b; --accent-dark: #b08f55; --accent-rgb: 201, 166, 107;
+  --accent-soft: rgba(201, 166, 107, 0.16); --on-accent: #0a0c10;
+}
+[data-theme="light"][data-game-accent="sorcery"],
+[data-theme="light"] [data-game-accent="sorcery"] {
+  --accent: #7d5f2c; --accent-dark: #6e5224; --accent-rgb: 125, 95, 44;
+  --accent-soft: rgba(125, 95, 44, 0.1); --on-accent: #ffffff;
+}
 [data-game-accent="all"] {
   --accent: #e3e7ee; --accent-dark: #c3c9d4; --accent-rgb: 227, 231, 238;
   --accent-soft: rgba(227, 231, 238, 0.12); --on-accent: #0a0c10;

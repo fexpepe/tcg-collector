@@ -348,7 +348,11 @@
     // (sync-lotr.mjs). Tengwar, Legends e Masterworks são as impressões
     // especiais; os quatro últimos moram nos sets de promo.
     lotr: ["Common", "Uncommon", "Rare", "Rare Plus", "Starter", "Premium", "Tengwar", "Legends", "Masterwork", "Promo",
-      "Megasized Promo", "Digital Promo", "W-Series", "April Fool's", "St. Patrick's Day"]
+      "Megasized Promo", "Digital Promo", "W-Series", "April Fool's", "St. Patrick's Day"],
+    // Sorcery: Contested Realm (01/10/2026): as 4 da carta (Ordinary até
+    // Unique) e Promo, que o TCGplayer dá às impressões de loja e de evento. O
+    // Avatar e os tokens não têm raridade.
+    sorcery: ["Ordinary", "Exceptional", "Elite", "Unique", "Promo"]
   };
   const rarityListOrder = RARITY_LISTED_GAMES[(window.SLEEVU && window.SLEEVU.game) || ""] || null;
 
@@ -869,7 +873,7 @@
       // terminar na mesma página vazia, e ainda lavando o cache de dados do
       // service worker no caminho. Vale para o índice vazio também: ele é
       // gerado a partir do próprio catálogo, então vazio ali = sem esse dado
-      // neste jogo (Digimon/YGO/Riftbound/Union Arena/Star Wars/Cyberpunk não têm artista).
+      // neste jogo (Digimon/YGO/Riftbound/Union Arena/Star Wars/Cyberpunk/Sorcery não têm artista).
       //
       // A varredura fica só para o caso em que o ÍNDICE é que não chegou
       // (rede caiu no fetch da fatia) — aí ela é mesmo a única fonte.
