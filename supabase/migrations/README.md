@@ -207,13 +207,27 @@ poucos.)
 - `20261001a` — libera os slugs `wow` (World of Warcraft TCG) **e** `lotr`
   (The Lord of the Rings TCG, Decipher 2001–2007) nas DUAS whitelists de jogo:
   `card_views`/`increment_card_view` e `contribute_price` (cópia da
-  `20260930d` com o `lotr` a mais; só a lista muda, conferido por diff). Ela
-  SUBSTITUI a `20260930d` (ver abaixo, "NÃO aplicar"). Aplicada em 2026-10-01
+  `20260930d` com o `lotr` a mais; só a lista muda, conferido por diff).
+  Aplicada em 2026-10-01, DEPOIS da `20260930d` (abaixo), que já tinha
+  liberado o `wow`; esta reescreveu a lista por cima com os dois. Aplicada
   e verificada por curl: `increment_card_view` com `lotr` responde 204 **e
   cria a linha** (`{"card_id":"lotr-1r1","views":1}`); o jogo inventado também
   dá 204 mas não cria nada; o `wow` já tem a linha dele (`wow-16485`); a
   contribuição anônima segue **401**. Sem prova direta, como nas anteriores:
   o `contribute_price` logado com `lotr`.
+
+- `20260930d` — libera o slug `wow` (World of Warcraft TCG) nas DUAS
+  whitelists de jogo: `card_views`/`increment_card_view` e `contribute_price`
+  (cópia da `20260930c`, só a lista muda, conferido por diff). Aplicada em
+  2026-10-01, ANTES da `20261001a`, e verificada por curl:
+  `increment_card_view` com `wow` responde 204 **e cria a linha**
+  (`{"card_id":"wow-16485","views":1}`); o jogo inventado também dá 204
+  mas não cria nada; o `cyberpunk` segue com as linhas dele; a contribuição
+  anônima segue **401**. **Não rodar de novo**: o WoW e o LOTR entraram em
+  sessões paralelas, cada migração de jogo reescreve a lista INTEIRA
+  (`docs/CATALOGO.md`, 4.5 e 5.5), e esta, rodada agora, tiraria o `lotr`
+  das duas whitelists em silêncio. A próxima migração de jogo copia a
+  `20261001a`.
 
 - `20260930c` — libera o slug `cyberpunk` (Cyberpunk TCG) nas DUAS whitelists
   de jogo: `card_views`/`increment_card_view` e `contribute_price` (cópia da
@@ -233,15 +247,6 @@ poucos.)
   jogo inventado também dá 204 mas não cria nada; a contribuição anônima segue
   **401**. Sem prova direta, como nas anteriores: o `contribute_price` logado
   com `swu` (fecha contribuindo um preço numa carta do Star Wars pelo site).
-
-- `20260930d` — **NÃO aplicar: a `20261001a` já cobre o `wow`.** O WoW TCG e o
-  LOTR TCG entraram em sessões paralelas entre 30/09 e 01/10/2026, e cada
-  migração de jogo reescreve a lista INTEIRA (`docs/CATALOGO.md`, 4.5 e 5.5).
-  A `20261001a` é a `20260930d` com o `lotr` a mais (conferido por diff);
-  rodada DEPOIS dela, a `20260930d` tiraria o `lotr` das duas whitelists em
-  silêncio. Se ela já tiver sido aplicada antes da `20261001a`, não faz mal:
-  a `20261001a` reescreve por cima com os dois. O arquivo fica como registro,
-  com o mesmo aviso no topo.
 
 - `20260924a` — **NÃO aplicar: a `20260930a` já cobre o `dbc`.** Ela liberaria
   o slug `dbc` (Dragon Ball Carddass) nas DUAS whitelists de jogo, mas a
