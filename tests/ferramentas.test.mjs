@@ -190,3 +190,31 @@ test("medidas: a sleeve é maior que a inner, que é maior que a carta", () => {
     assert.ok(tam.sleeve[0] > tam.inner[0] && tam.sleeve[1] > tam.inner[1]);
   });
 });
+
+// ── Menu "Mais", portão e sitemap (2026-10-01, 2ª rodada) ───────────────────
+
+test("o menu de topo FECHA com o Mais, depois da Coleção e do Portfólio", () => {
+  const src = ler("src/shared.js");
+  const m = src.match(/nav\.innerHTML = `([\s\S]*?)`;\n/);
+  assert.ok(m, "sumiu o nav.innerHTML do initPageNav");
+  const corpo = m[1];
+  const ordem = ["nav.home", "exploreMega", "nav.decks", "collectionMega", "nav.portfolio", "moreMega"].map((k) => corpo.indexOf(k));
+  ordem.forEach((i, n) => assert.ok(i >= 0, `item ${n} sumiu do menu`));
+  assert.deepEqual([...ordem].sort((a, b) => a - b), ordem, "ordem do menu mudou");
+  assert.ok(!/link\("blog"/.test(corpo), "o Blog saiu do meio do menu: mora no painel do Mais");
+});
+
+test("o Guia de condição é público; o Sleeves segue exigindo login", () => {
+  const m = ler("src/shared.js").match(/const AUTH_PAGES = (\[[^\]]*\]);/);
+  const auth = JSON.parse(m[1]);
+  assert.ok(!auth.includes("condicao") && !auth.includes("ferramentas"));
+  assert.ok(auth.includes("sleeves"));
+  assert.ok(!/noindex/.test(ler("condicao.html")) && !/noindex/.test(ler("ferramentas.html")));
+  assert.ok(/noindex/.test(ler("sleeves.html")));
+});
+
+test("o sitemap anuncia as páginas públicas e só elas", () => {
+  const src = ler("scripts/prerender-catalog.mjs");
+  assert.ok(src.includes('"/ferramentas", "/condicao"'));
+  assert.ok(!/"\/sleeves"/.test(src), "o Sleeves exige login: anunciar no sitemap seria página fina");
+});

@@ -1,6 +1,7 @@
 // Textos das ferramentas do HUB que viraram PÁGINA (2026-10-01): o Guia de
-// condição (condicao.html) e Sleeves e fichários (sleeves.html). Pacote
-// SEPARADO do i18n.js pelo mesmo motivo das Pastas e dos decks: só essas duas
+// condição (condicao.html), Sleeves e fichários (sleeves.html) e o índice
+// delas (ferramentas.html, o "Mais" do menu). Pacote
+// SEPARADO do i18n.js pelo mesmo motivo das Pastas e dos decks: só essas
 // páginas usam, e o monólito viaja em todo o site. O que o HUB e o menu mostram
 // (o nome de cada ferramenta e a dica do atalho) fica no i18n.js, que é o que
 // essas telas carregam. Ver docs/FERRAMENTAS.md.
@@ -13,8 +14,28 @@
   const M = (window.TCG_MESSAGES = window.TCG_MESSAGES || {});
 
   M.pt = Object.assign(M.pt || {}, {
-    "title.condicao": "Guia de condição - Sleevu",
+    "title.condicao": "Guia de condição de cartas: NM, SP ou MP? - Sleevu",
     "title.sleeves": "Sleeves e fichários - Sleevu",
+    "title.ferramentas": "Ferramentas pra quem coleciona cartas - Sleevu",
+
+    // ── Página Ferramentas (ferramentas.html) ───────────────────────────────
+    "fer.subtitle": "Pra quem coleciona e negocia carta: conferir a condição, medir a centralização, calcular a proteção e fechar uma troca justa.",
+    "fer.back": "← Ferramentas",
+    "fer.cond.d": "Cinco perguntas sobre cantos, bordas, verso e superfície, e a condição na escala que as lojas usam, com o texto pronto pra mandar na negociação.",
+    "fer.cond.cta": "Avaliar uma carta",
+    "fer.ctr.d": "Carregue a foto da carta, arraste as guias até a moldura e veja os percentuais que as graduadoras usam (55/45, 60/40).",
+    "fer.ctr.cta": "Medir agora",
+    "fer.slv.d": "Quantas sleeves, inners, folhas de fichário e toploaders comprar, a partir da sua coleção e dos seus decks.",
+    "fer.slv.cta": "Calcular",
+    "fer.trade.d": "Some os dois lados de uma troca, com condição e quantidade, e veja se ela está equilibrada pela cotação de mercado.",
+    "fer.trade.cta": "Analisar uma troca",
+    "fer.tag.open": "Sem conta",
+    "fer.tag.account": "Com conta",
+    "fer.tag.local": "A foto não sai do aparelho",
+    "fer.tag.collection": "Usa a sua coleção",
+    "fer.tag.market": "Cotação de mercado",
+    "fer.tag.scale": "Escala M · NM · SP · MP · HP · D",
+    "fer.note": "As ferramentas são grátis e fazem a conta no seu navegador.",
 
     // ── Guia de condição ──────────────────────────────────────────────────
     "gc.subtitle": "Cinco perguntas sobre a carta e a condição dela na escala que as lojas usam (M, NM, SP, MP, HP, D). Tire a carta do sleeve e use uma luz forte.",
@@ -196,8 +217,27 @@
   });
 
   M.en = Object.assign(M.en || {}, {
-    "title.condicao": "Condition guide - Sleevu",
+    "title.condicao": "Card condition guide: NM, SP or MP? - Sleevu",
     "title.sleeves": "Sleeves & binders - Sleevu",
+    "title.ferramentas": "Tools for card collectors - Sleevu",
+
+    "fer.subtitle": "For people who collect and trade cards: check condition, measure centering, work out protection and make fair trades.",
+    "fer.back": "← Tools",
+    "fer.cond.d": "Five questions about corners, edges, back and surface, and the condition on the scale stores use, with ready-to-send text for your trade.",
+    "fer.cond.cta": "Check a card",
+    "fer.ctr.d": "Load a photo of the card, drag the guides to the border and see the percentages graders use (55/45, 60/40).",
+    "fer.ctr.cta": "Measure now",
+    "fer.slv.d": "How many sleeves, inners, binder pages and toploaders to buy, based on your collection and decks.",
+    "fer.slv.cta": "Calculate",
+    "fer.trade.d": "Add up both sides of a trade, with condition and quantity, and see if it's balanced at market prices.",
+    "fer.trade.cta": "Analyze a trade",
+    "fer.tag.open": "No account",
+    "fer.tag.account": "Account needed",
+    "fer.tag.local": "Your photo never leaves the device",
+    "fer.tag.collection": "Uses your collection",
+    "fer.tag.market": "Market prices",
+    "fer.tag.scale": "M · NM · SP · MP · HP · D scale",
+    "fer.note": "The tools are free and do the math in your browser.",
 
     "gc.subtitle": "Five questions about the card and its condition on the scale stores use (M, NM, SP, MP, HP, D). Take the card out of its sleeve and use a strong light.",
     "gc.counter": "{n} of {total}",
@@ -377,8 +417,27 @@
   });
 
   M.es = Object.assign(M.es || {}, {
-    "title.condicao": "Guía de estado - Sleevu",
+    "title.condicao": "Guía de estado de cartas: ¿NM, SP o MP? - Sleevu",
     "title.sleeves": "Fundas y carpetas - Sleevu",
+    "title.ferramentas": "Herramientas para coleccionistas de cartas - Sleevu",
+
+    "fer.subtitle": "Para quien colecciona e intercambia cartas: revisar el estado, medir el centrado, calcular la protección y cerrar un intercambio justo.",
+    "fer.back": "← Herramientas",
+    "fer.cond.d": "Cinco preguntas sobre esquinas, bordes, reverso y superficie, y el estado en la escala que usan las tiendas, con el texto listo para enviar en la negociación.",
+    "fer.cond.cta": "Evaluar una carta",
+    "fer.ctr.d": "Carga la foto de la carta, arrastra las guías hasta el marco y mira los porcentajes que usan las certificadoras (55/45, 60/40).",
+    "fer.ctr.cta": "Medir ahora",
+    "fer.slv.d": "Cuántas fundas, inners, hojas de carpeta y toploaders comprar, a partir de tu colección y tus mazos.",
+    "fer.slv.cta": "Calcular",
+    "fer.trade.d": "Suma los dos lados de un intercambio, con estado y cantidad, y mira si está equilibrado según el precio de mercado.",
+    "fer.trade.cta": "Analizar un intercambio",
+    "fer.tag.open": "Sin cuenta",
+    "fer.tag.account": "Con cuenta",
+    "fer.tag.local": "La foto no sale del dispositivo",
+    "fer.tag.collection": "Usa tu colección",
+    "fer.tag.market": "Precios de mercado",
+    "fer.tag.scale": "Escala M · NM · SP · MP · HP · D",
+    "fer.note": "Las herramientas son gratis y hacen el cálculo en tu navegador.",
 
     "gc.subtitle": "Cinco preguntas sobre la carta y su estado en la escala que usan las tiendas (M, NM, SP, MP, HP, D). Saca la carta de la funda y usa una luz fuerte.",
     "gc.counter": "{n} de {total}",

@@ -12,8 +12,11 @@ import vm from "node:vm";
 
 const here = dirname(fileURLToPath(import.meta.url));
 function load() {
-  const sandbox = { console, document: { getElementById: () => null } };
+  // O boot procura o botão da Graded, os [data-ctr-abrir] da página Ferramentas e
+  // o #medir do menu: sem nenhum deles na página, nada abre.
+  const sandbox = { console, document: { getElementById: () => null, querySelectorAll: () => [], querySelector: () => null } };
   sandbox.window = sandbox;
+  sandbox.location = { hash: "" };
   sandbox.window.TCGShared = { t: (k) => k, escapeHtml: String, escapeAttribute: String };
   vm.createContext(sandbox);
   vm.runInContext(readFileSync(join(here, "..", "src", "centering.js"), "utf8"), sandbox);

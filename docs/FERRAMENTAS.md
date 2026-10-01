@@ -20,15 +20,27 @@ no `styles.css`, logo depois do medidor de centralização (`.ctr-*`).
 
 - **Página, não modal** (pedido do Fernando). O medidor de centralização segue
   em modal: ele não foi citado no pedido.
-- **Exigem login e ficam fora do índice**, igual à `/troca`: entram pelo HUB,
-  que já é pessoal, e o Sleeves lê a coleção e os decks. `noindex` no HTML;
-  `AUTH_PAGES` no `shared.js`. Abrir pro público (SEO do guia) é trocar duas
-  linhas, se um dia for o caso.
+- **O Guia de condição é público e indexável** (pedido do Fernando, mesmo
+  dia): não lê nada da conta, e "condição de carta NM SP" é busca de verdade.
+  Tem canonical e Open Graph e está no sitemap. O **Sleeves exige login** e fica
+  fora do índice, igual à `/troca`: ele lê a coleção e os decks (`noindex` +
+  `AUTH_PAGES`).
+- **Menu "Mais"** (pedido do Fernando, mesmo dia): o ÚLTIMO item do topo,
+  logado ou não, com o mesmo painel da Coleção (helper `mega()` no
+  `shared.js`). O clique leva à página **Ferramentas** (`/ferramentas`), que é
+  a 1ª fileira do painel; as colunas são Colecionar (condição, centralização,
+  sleeves), Negociar (troca) e Conteúdo (o Blog, que saiu do meio do menu). No
+  celular não há menu de topo: a página Ferramentas entra na tela Perfil (o
+  menu da conta), ao lado do Blog, e no rodapé das páginas públicas.
+- **Página Ferramentas** (`ferramentas.html`): índice público com um cartão por
+  ferramenta, conteúdo estático (é o que o buscador lê). O medidor de
+  centralização abre por cima dela (`[data-ctr-abrir]` e o `#medir` do menu, no
+  `centering.js`), então ele também ficou público. Os atalhos do HUB seguem
+  iguais.
 - **Entrada**: o HUB ganha a seção **Ferramentas** (Analisador de troca, Medir
   centralização, Guia de condição, Sleeves e fichários) e o "Ir para" fica só
-  com navegação — 8 + 4, duas grades de 4 colunas cheias. O mega-menu da
-  Coleção ganha os dois links na coluna "Mais", ao lado da Troca, e a Coleção
-  acende no menu quando a pessoa está nas páginas novas.
+  com navegação — 8 + 4, duas grades de 4 colunas cheias. No topo, as páginas
+  novas acendem o "Mais" (a Troca segue acendendo a Coleção).
 - **Escala da Liga** (`CARD_CONDITIONS`: M, NM, SP, MP, HP, D), não NM/LP/MP.
   Equivalência com TCGplayer e Cardmarket só como referência ("≈").
 - **Vale o pior critério.** É como loja e comprador conferem, e é a única regra
@@ -91,7 +103,11 @@ e não no `:root`, pra viajar na folha da área em vez de pesar no núcleo.
 
 ## 5. Fora deste pacote
 
-- Seção na Ajuda (`i18n-docs.js`) explicando as duas ferramentas.
+- Seção na Ajuda (`i18n-docs.js`) explicando as ferramentas.
+- O plano do Centering v2 (`docs/PLANO-CENTERING-V2.md`, branch
+  `claude/centering-tool-v2-5e1a`) previa um menu "Tools" entre Decks e Blog e
+  uma página `/tools`. O "Mais" e a `/ferramentas` ocupam esse lugar: a v2
+  entra como mais um item da coluna Colecionar e mais um cartão da página.
 - Lista de jogos por tamanho de carta (hoje só o Yu-Gi-Oh! é citado como
   japonês).
 - Levar o medidor de centralização pra página própria também.
@@ -111,3 +127,8 @@ Fases 1–5 feitas e conferidas antes da subida:
   separou 4 cópias de R$ 50 pro toploader e 16 pro fichário e reagiu ao valor
   mínimo; "Usar meus decks" somou 121 cartas em 2 decks; a faixa de resumo do
   celular fica acima da tabbar e some quando a lista aparece.
+
+**2026-10-01, 2ª rodada:** Guia público, menu "Mais" no fim do topo e a página
+`/ferramentas` (seções 2 e 3 acima). O `shared.js` pagou o menu tirando um
+helper morto (`group()`, o menu de clique com botão, sem uso desde o
+mega-menu) e montando Coleção e Mais com o mesmo `mega()`.

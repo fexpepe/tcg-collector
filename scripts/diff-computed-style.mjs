@@ -17,7 +17,7 @@ const paginas = ["index.html", "login.html", "decks.html", "my-decks.html", "por
   // de set/pokémon) e as que nasceram neste mês (busca, conta, listas, painel).
   "troca.html", "badges.html", "pastas.html", "search.html", "account.html", "404.html", "dashboard.html",
   // 2026-10-01: as ferramentas do HUB em página própria (área "ferramentas").
-  "condicao.html", "sleeves.html",
+  "ferramentas.html", "condicao.html", "sleeves.html",
   "detail.html?type=set&setId=base1&game=pokemon", "detail.html?type=set&game=lorcana&setId=1",
   "detail.html?type=pokemon&name=Charizard&game=pokemon"];
 const PROPS = ["display","position","color","background-color","border-radius","border-width","border-color",

@@ -3082,20 +3082,16 @@
     const exploreActive = ["pokedex", "lore", "trainers", "sets", "artists", "cards", "hub"].includes(active);
     // "Meus Decks" é página PESSOAL (entra pelo Dashboard), então acende a
     // Coleção — diferente de "Decks", que é a galeria PÚBLICA e tem item próprio.
-    const collectionActive = ["dashboard", "collection", "wishlist", "binders", "sales", "mydecks", "pastas", "troca", "condicao", "sleeves"].includes(active);
+    const collectionActive = ["dashboard", "collection", "wishlist", "binders", "sales", "mydecks", "pastas", "troca"].includes(active);
+    // "Mais" (2026-10-01): as ferramentas e o Blog. O Guia de condição e o
+    // Sleeves moram nele (não na Coleção) desde que viraram ferramentas do
+    // site; a Troca segue na Coleção, que é onde o histórico dela vive.
+    const moreActive = ["blog", "ferramentas", "condicao", "sleeves"].includes(active);
 
     // `beta`: selo pequeno sobrescrito no rótulo — recurso ainda em construção
     // (pedido de 2026-08-25 pra Decks e Portfólio). "beta" é literal de
     // propósito: é a mesma palavra nos três idiomas do site.
     const link = (href, key, page, beta) => `<a href="${escapeAttribute(href)}"${page === active ? ' class="active"' : ""}>${escapeHtml(t(key))}${beta ? '<sup class="nav-beta">beta</sup>' : ""}</a>`;
-    const group = (key, isActive, links) => `
-      <div class="nav-group">
-        <button type="button" class="nav-group-toggle${isActive ? " active" : ""}" aria-expanded="false" aria-haspopup="true">
-          ${escapeHtml(t(key))}<span class="nav-caret" aria-hidden="true">▾</span>
-        </button>
-        <div class="nav-dropdown" hidden>${links}</div>
-      </div>`;
-
     // Site único (sleevu.app): tudo é relativo. Menu ÚNICO e idêntico em todas as
     // páginas (sem ramo hub-vs-jogo). O jogo é a sessão do site; os links de
     // Explorar carregam ?game= pra ENTRAR no jogo escolhido.
@@ -3116,28 +3112,40 @@
     // (pedido de 2026-09-16): é a coleção fatiada, mora com as cartas, não
     // com "Organizar".
     const megaCol = (headKey, links) => `<div class="nav-mega-col"><span class="nav-mega-head">${escapeHtml(t(headKey))}</span>${links}</div>`;
-    const collectionMega = `
+    // Grupo de hover com painel em colunas (Coleção e Mais): o clique no item
+    // leva pra página-mãe, que também é a 1ª fileira do painel, com a dica.
+    const mega = (href, key, isActive, hubKey, hintKey, cols) => `
       <div class="nav-group nav-group-hover">
-        <a href="dashboard"${collectionActive ? ' class="active"' : ""} aria-haspopup="true" aria-expanded="false">${escapeHtml(t("nav.collection"))}<span class="nav-caret" aria-hidden="true">▾</span></a>
+        <a href="${href}"${isActive ? ' class="active"' : ""} aria-haspopup="true" aria-expanded="false">${escapeHtml(t(key))}<span class="nav-caret" aria-hidden="true">▾</span></a>
         <div class="nav-dropdown nav-mega" hidden>
-          <a class="nav-mega-hub${active === "dashboard" ? " active" : ""}" href="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.5"/></svg>${escapeHtml(t("nav.hubItem"))}<small>${escapeHtml(t("nav.hubHint"))}</small></a>
-          ${megaCol("nav.colCards", link("collection", "nav.collectionMine", "collection") + link("pastas", "nav.lists", "pastas") + link("wishlist", "nav.wishlist", "wishlist") + link("collection?tab=graded", "nav.graded", "graded"))}
-          ${megaCol("nav.colOrganize", link("binders", "nav.binders", "binders") + link("my-decks", "nav.myDecks", "mydecks"))}
-          ${megaCol("nav.colMore", link("sales", "nav.sales", "sales") + link("troca", "trade.title", "troca") + link("condicao", "nav.condicao", "condicao") + link("sleeves", "nav.sleeves", "sleeves") + link("badges", "dash.badges", "badges"))}
+          <a class="nav-mega-hub${active === href ? " active" : ""}" href="${href}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.5"/></svg>${escapeHtml(t(hubKey))}<small>${escapeHtml(t(hintKey))}</small></a>
+          ${cols}
         </div>
       </div>`;
+    const collectionMega = mega("dashboard", "nav.collection", collectionActive, "nav.hubItem", "nav.hubHint",
+      megaCol("nav.colCards", link("collection", "nav.collectionMine", "collection") + link("pastas", "nav.lists", "pastas") + link("wishlist", "nav.wishlist", "wishlist") + link("collection?tab=graded", "nav.graded", "graded")) +
+      megaCol("nav.colOrganize", link("binders", "nav.binders", "binders") + link("my-decks", "nav.myDecks", "mydecks")) +
+      megaCol("nav.colMore", link("sales", "nav.sales", "sales") + link("troca", "trade.title", "troca") + link("badges", "dash.badges", "badges")));
+    // Mais (2026-10-01, pedido do Fernando): o ÚLTIMO item do menu, logado ou
+    // não. O clique leva à página Ferramentas; o painel lista as ferramentas e
+    // o Blog, que saiu do meio do menu pra cá. "Medir centralização" abre o
+    // medidor por cima da página Ferramentas (ver o #medir no centering.js).
+    const moreMega = mega("ferramentas", "nav.more", moreActive, "dash.tools", "nav.toolsHint",
+      megaCol("nav.colCollect", link("condicao", "nav.condicao", "condicao") + link("ferramentas#medir", "ctr.title", "-") + link("sleeves", "nav.sleeves", "sleeves")) +
+      megaCol("nav.colTrade", link("troca", "trade.title", "troca")) +
+      megaCol("nav.colRead", link("blog", "nav.blog", "blog")));
     // Decks fica FORA da Coleção e aparece deslogado de propósito: a galeria da
     // comunidade é conteúdo público (e indexável) — é a porta de entrada de quem
     // ainda não tem conta. Criar/salvar deck é que exige login, dentro da página.
-    // Blog (2026-09-30) ao lado de Decks, pelo mesmo motivo: conteúdo
-    // público e indexável, porta de entrada de quem ainda não tem conta.
+    // O Blog (2026-09-30) morou ao lado de Decks pelo mesmo motivo; desde
+    // 2026-10-01 ele fica no "Mais", que fecha o menu.
     nav.innerHTML = `
       ${link(apexUrl, "nav.home", "home")}
       ${exploreMega}
       ${link("decks", "nav.decks", "decks", true)}
-      ${link("blog", "nav.blog", "blog")}
       ${loggedIn ? `${collectionMega}
       ${link("portfolio", "nav.portfolio", "portfolio", true)}` : ""}
+      ${moreMega}
     `;
 
     const groups = Array.from(nav.querySelectorAll(".nav-group")).map((groupEl) => ({
@@ -3493,7 +3501,7 @@
     // fontes de dados saíram daqui em 2026-08-05 — as duas já viviam, mais
     // completas e nos três idiomas, em Termos § Marcas e Sobre § De onde vêm os
     // dados. Repetidas no rodapé viravam um paredão de texto no pé da Início.
-    const FOOTER_PAGES = ["", "index", "about", "novidades", "blog", "lancamentos", "comparar", "faq", "help", "settings", "backup", "privacy", "terms", "login", "404"];
+    const FOOTER_PAGES = ["", "index", "about", "novidades", "blog", "ferramentas", "condicao", "lancamentos", "comparar", "faq", "help", "settings", "backup", "privacy", "terms", "login", "404"];
     const page = (window.location.pathname.split("/").pop() || "").replace(/\.html$/, "");
     if (!FOOTER_PAGES.includes(page)) return;
     if (document.querySelector(".site-footer")) return;
@@ -3520,6 +3528,7 @@
         <nav class="site-footer-links" aria-label="${escapeAttribute(t("footer.linksLabel"))}">
           <a href="about">${escapeHtml(t("footer.about"))}</a>
           <a href="blog">${escapeHtml(t("nav.blog"))}</a>
+          <a href="ferramentas">${escapeHtml(t("dash.tools"))}</a>
           <a href="novidades" data-news-link>${escapeHtml(t("news.heading"))}</a>
           <a href="lancamentos">${escapeHtml(t("footer.releases"))}</a>
           <a href="faq">${escapeHtml(t("footer.faq"))}</a>
@@ -12105,9 +12114,10 @@
     const dataItems = `<li class="auth-sep" aria-hidden="true"></li>
       <a class="lang-dd-option auth-link" role="menuitem" href="backup">${escapeHtml(t("auth.transfer"))}</a>`;
     // Sobre (ajuda + troubleshooting + privacidade/termos).
-    // Blog aqui também: no celular este menu É a tela Perfil (account.html), e
-    // a barra de baixo não tem vaga pra ele.
+    // Blog e Ferramentas aqui também: no celular este menu É a tela Perfil
+    // (account.html), e a barra de baixo não tem vaga pro "Mais" do topo.
     const aboutItems = `<li class="auth-sep" aria-hidden="true"></li>
+      <a class="lang-dd-option auth-link" role="menuitem" href="ferramentas">${escapeHtml(t("dash.tools"))}</a>
       <a class="lang-dd-option auth-link" role="menuitem" href="blog">${escapeHtml(t("nav.blog"))}</a>
       <a class="lang-dd-option auth-link" role="menuitem" href="novidades" data-news-link>${escapeHtml(t("news.heading"))}</a>
       <a class="lang-dd-option auth-link" role="menuitem" href="settings">${escapeHtml(t("footer.settings"))}</a>
@@ -12480,7 +12490,7 @@
     // localStorage o que NUNCA sobe pra nuvem — e descobria isso ao abrir em
     // outro aparelho. A galeria pública e o viewer ?s= vivem em decks.html, que
     // segue aberta; my-decks é só o editor de quem tem conta.
-    const AUTH_PAGES = ["dashboard", "collection", "wishlist", "binders", "sales", "portfolio", "badges", "backup", "troca", "condicao", "sleeves", "pastas", "mydecks"];
+    const AUTH_PAGES = ["dashboard", "collection", "wishlist", "binders", "sales", "portfolio", "badges", "backup", "troca", "sleeves", "pastas", "mydecks"];
     const nav = document.querySelector(".page-nav[data-active-page]");
     const page = nav ? nav.dataset.activePage : "";
     if (!AUTH_PAGES.includes(page) || getSession()) return false;

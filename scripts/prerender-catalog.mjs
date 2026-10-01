@@ -105,6 +105,9 @@ const GAMES = [
 const STATIC_URLS = [
   "/", "/hub", "/explore", "/search", "/cards", "/pokedex", "/lore", "/games", "/artists", "/trainers",
   "/decks", "/blog",
+  // Ferramentas (2026-10-01): o índice e o Guia de condição, que são públicos.
+  // Sleeves e Troca exigem login e ficam de fora, como as telas pessoais.
+  "/ferramentas", "/condicao",
   "/about", "/novidades", "/lancamentos", "/comparar", "/faq", "/help", "/privacy", "/terms"
 ];
 
