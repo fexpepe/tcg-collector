@@ -26,8 +26,14 @@
 //                MESMA imagem em todos os sets (a do Base, "113/116"): a arte é
 //                a mesma, só o número e o símbolo mudam.
 //   Símbolos dos sets: os do accio (Images/Icons/Set Symbols/logo<SET>.png),
-//                espelhados em data/harrypotter/set-symbols/<code>.webp. Logo de
-//                set não existe em fonte acessível: o tile mostra o nome.
+//                espelhados em data/harrypotter/set-symbols/<code>.webp.
+//   Logos dos sets: os do site oficial da época (harrypotter.warnerbros.com/
+//                wotc e wizards.com/harrypotter, lidos no Wayback), recortados
+//                à mão em data/harrypotter/set-logos/<code>.webp: Quidditch
+//                Cup, Adventures at Hogwarts e Chamber of Secrets. O Base Set e
+//                o Diagon Alley não têm logo publicado (o Base usa o do jogo) e
+//                o tile mostra o nome. Logo novo que entrar na pasta é pego
+//                sozinho.
 //
 // PREMIUM entra como CARTA SEPARADA (decisão do Fernando, 30/09/2026): toda
 // rara das expansões tem a versão premium com o MESMO número — Holo Portrait no
@@ -45,6 +51,7 @@
 //
 //   node scripts/sync-harrypotter.mjs             # fetch (se der) + build
 //   node scripts/sync-harrypotter.mjs --no-fetch  # só build do snapshot
+import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { readGlobalVar, readSnapshot, writeSnapshot, snapshotCardCount, writeGameCatalog, sleep } from "./lib/sync-common.mjs";
 
@@ -311,6 +318,7 @@ export function imageUrl(img, code) {
 
 const isCharacter = (c) => /(^|\/)Character($|\/)/.test(c.type || "");
 const symbolOf = (code) => `data/${GAME}/set-symbols/${code}.webp`;
+const logoOf = (code) => (existsSync(new URL(`data/${GAME}/set-logos/${code}.webp`, ROOT)) ? `data/${GAME}/set-logos/${code}.webp` : "");
 
 // Cartas do catálogo a partir do snapshot: os cinco sets (com as gêmeas
 // premium) e os sets extras.
@@ -340,7 +348,7 @@ export function buildCards(snapshot) {
       set: def.name, setId: `${ID_PREFIX}${def.code}`, number: `${c.num}/${def.printed}`,
       setTotal: total, setReleaseDate: def.date, setSymbol: symbolOf(def.code),
       artist: c.artist, language: "en", image: imageUrl(c.img, def.code),
-      cardType: c.type, ...(c.lesson ? { lesson: c.lesson } : {}), setLogo: "", vintage: true
+      cardType: c.type, ...(c.lesson ? { lesson: c.lesson } : {}), setLogo: logoOf(def.code), vintage: true
     });
     for (const c of base) {
       const holo = /holo portrait/i.test(c.rarity);
