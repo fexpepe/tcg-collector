@@ -112,4 +112,24 @@ test("snapshot versionado: ids estáveis e únicos, nenhum set fan-made", () => 
   const booster = cards.filter((c) => SETS.some((s) => c.setId === `hp-${s.code}`) && !/-premium$/.test(c.id));
   assert.equal(booster.length, 116 + 80 * 3 + 140);
   assert.equal(cards.filter((c) => /-premium$/.test(c.id)).length, 30 * 3 + 55);
+  // Todo extra vira carta (origem achada no snapshot).
+  const extras = EXTRAS.reduce((n, ex) => n + ex.cards.length, 0);
+  assert.equal(cards.filter((c) => EXTRAS.some((ex) => c.setId === `hp-${ex.code}`)).length, extras);
+});
+
+test("extras: promo com raridade Promo e o número da carta de origem; League com o número dela, sem total", () => {
+  const snap = JSON.parse(readFileSync(new URL("../data/vintage/hptcg.json", import.meta.url), "utf8"));
+  const by = new Map(buildCards(snap).map((c) => [c.id, c]));
+  const promo = by.get("hp-promo-bs-48");
+  assert.equal(promo.name, "Diagon Alley (Promo)");
+  assert.equal(promo.rarity, "Promo");
+  assert.equal(promo.number, "48/116");
+  const league = by.get("hp-league-qc-35");
+  assert.equal(league.name, "Diffindo (League Foil)");
+  assert.equal(league.number, "1");
+  assert.equal(league.setTotal, "");
+  assert.deepEqual(league.variants, ["Foil"]);
+  const chimaera = by.get("hp-cos2p-aah-57");
+  assert.equal(chimaera.rarity, "Common", "foil de deck mantém o símbolo da carta de origem");
+  assert.equal(chimaera.setKind, "deck");
 });
