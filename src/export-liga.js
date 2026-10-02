@@ -10,6 +10,11 @@
 //   csv   — Moxfield no Magic (interop com Moxfield/Archidekt); nos demais
 //           jogos, o CSV padrão do site.
 //
+// Os DECKS têm formatos próprios (exportarDeck, mais abaixo): Archidekt/
+// Moxfield com edição e número, o cadastro de deck da LigaMagic e a Compra
+// por Lista montada a partir do deck — e o leitor de linha (lerLinhaDeck) que
+// o "Importar lista" usa pra ler tudo isso de volta.
+//
 // O formato da Liga aceita tags por carta:
 //   <qtd> <nome> [QUALIDADE=SP] [EDICAO=M10] [IDIOMA=PT] [EXTRAS=FOIL]
 // e no Pokémon a edição é dispensada em favor do número impresso "(NNN/TTT)",
@@ -181,5 +186,174 @@
     return paraLiga(entries, byId, game);
   }
 
-  window.TCGExportLiga = { exportar, paraLiga, paraTexto, paraCsv, nomeLimpo, numeroPokemon, edicaoDaCarta, idiomaDaCarta };
+  // ===========================================================================
+  // DECKS (2026-10-02). O "Copiar lista" do construtor só levava os nomes, e
+  // quem monta o deck aqui pra VENDER precisa levar a edição de cada carta:
+  // pro Archidekt/Moxfield e pro cadastro de deck da LigaMagic, onde o
+  // comprador vê o preço carta a carta. Pedido de usuário (Victor), com o
+  // diálogo de export do Archidekt como modelo — as opções abaixo são as dele.
+  //
+  // As zonas chegam já resolvidas pela página (src/decks.js), na ordem do jogo:
+  //   [{ key, rotulo, scratch, entries: [{ id, qty, variant }] }]
+  // `scratch` = rascunho (o Talvez; o Side do Commander), que não faz parte do
+  // deck jogado — entra no Archidekt marcado como tal, mas não vai pra Liga.
+  // ===========================================================================
+
+  // Sigla oficial do set (a do Scryfall, que Archidekt, Moxfield e Liga usam).
+  // `setId` é o código cru; o id "mtg-<set>-<num>" cobre carta sem o campo.
+  function siglaMagic(card) {
+    if (!card) return "";
+    if (card.setId) return String(card.setId).toLowerCase();
+    const m = /^mtg-([a-z0-9]+)-/i.exec(String(card.id));
+    return m ? m[1].toLowerCase() : "";
+  }
+
+  // Categoria do Archidekt por zona. {top} é o que faz a carta virar
+  // comandante lá; Sideboard e Maybeboard são as duas categorias especiais que
+  // todo deck do Archidekt já tem (com as regras de contagem/preço delas), então
+  // vão com o nome exato e sem flag. A zona principal vai SEM categoria: lá a
+  // carta sem categoria cai no tipo dela (Creature, Land…), que é o normal.
+  const CATEGORIA_ARCHIDEKT = { commander: "Commander{top}", side: "Sideboard", maybe: "Maybeboard" };
+
+  // Marca de acabamento do Archidekt/Moxfield: *F* foil, *E* etched. A
+  // variante do Scryfall é "Etched" (sem "foil" no nome), testada antes.
+  function marcaAcabamento(variant) {
+    const v = String(variant || "").toLowerCase();
+    if (/etched/.test(v)) return "*E*";
+    return /foil/.test(v) ? "*F*" : "";
+  }
+
+  // Opções (todas booleanas, nomes do diálogo do Archidekt):
+  //   x    — "1x" em vez de "1"
+  //   set  — sigla da edição entre parênteses
+  //   num  — número de colecionador (só junto da sigla: "Sol Ring 263" sem a
+  //          sigla viraria parte do NOME em qualquer importador)
+  //   foil — *F* / *E*
+  //   cat  — categoria da zona; desligada, as zonas saem em blocos com
+  //          cabeçalho, como o texto de sempre
+  function linhaArchidekt(e, card, zona, op) {
+    const partes = [`${e.qty}${op.x ? "x" : ""} ${card ? card.name : e.id}`];
+    const sigla = op.set ? siglaMagic(card) : "";
+    if (sigla) {
+      partes.push(`(${sigla})`);
+      if (op.num && card.number) partes.push(String(card.number));
+    }
+    const marca = op.foil ? marcaAcabamento(e.variant) : "";
+    if (marca) partes.push(marca);
+    if (op.cat && CATEGORIA_ARCHIDEKT[zona.key]) partes.push(`[${CATEGORIA_ARCHIDEKT[zona.key]}]`);
+    return partes.join(" ");
+  }
+
+  // Zonas em blocos com cabeçalho — zona única dispensa o cabeçalho, assim o
+  // texto cola limpo em qualquer lugar. É o "Copiar lista" de antes, que o
+  // importador do site lê de volta pelo rótulo traduzido.
+  function emBlocos(zonas, linha) {
+    const out = [];
+    zonas.forEach((z) => {
+      if (!z.entries.length) return;
+      if (zonas.length > 1) { if (out.length) out.push(""); out.push(z.rotulo || z.key); }
+      z.entries.forEach((e) => out.push(linha(e, z)));
+    });
+    return out.join("\n");
+  }
+
+  function deckArchidekt(zonas, byId, op) {
+    const o = op || {};
+    const linha = (e, z) => linhaArchidekt(e, byId[e.id], z, o);
+    if (!o.cat) return emBlocos(zonas, linha);
+    const out = [];
+    zonas.forEach((z) => z.entries.forEach((e) => out.push(linha(e, z))));
+    return out.join("\n");
+  }
+
+  function deckTexto(zonas, byId) {
+    return emBlocos(zonas, (e) => `${e.qty} ${(byId[e.id] || {}).name || e.id}`);
+  }
+
+  // Cadastro de deck da LigaMagic: "1 Nome [SIGLA]", e o sideboard depois de
+  // uma linha em branco — é assim que a Liga separa as duas listas. Rascunho
+  // (Talvez, o Side do Commander) fica de fora: lá vira deck com preço, e
+  // carta que não é do deck inflaria o total. Comandante vai no topo da lista
+  // principal.
+  function deckLigaMagic(zonas, byId) {
+    const principal = [], side = [];
+    zonas.forEach((z) => { if (!z.scratch) (z.key === "side" ? side : principal).push(...z.entries); });
+    const linha = (e) => {
+      const card = byId[e.id];
+      const ed = edicaoDaCarta(card, "magic");
+      return `${e.qty} ${nomeLimpo(card ? card.name : e.id)}${ed ? ` [${ed}]` : ""}`;
+    };
+    const out = principal.map(linha);
+    if (side.length) out.push("", ...side.map(linha));
+    return out.join("\n");
+  }
+
+  // Compra por Lista a partir do deck: as zonas jogadas somadas (a mesma carta
+  // no deck e no side é UMA compra), sem o rascunho, em NM — deck não tem
+  // condição por cópia.
+  function deckCompraLiga(zonas, byId, game) {
+    const porChave = new Map();
+    zonas.forEach((z) => {
+      if (z.scratch) return;
+      z.entries.forEach((e) => {
+        const k = e.id + "|" + (e.variant || "");
+        const atual = porChave.get(k);
+        if (atual) atual.q += e.qty;
+        else porChave.set(k, { id: e.id, q: e.qty, v: e.variant || "", c: QUALIDADE_PADRAO });
+      });
+    });
+    return paraLiga([...porChave.values()], byId, game);
+  }
+
+  function exportarDeck(formato, zonas, byId, game, opcoes) {
+    if (formato === "archidekt") return deckArchidekt(zonas, byId, opcoes);
+    if (formato === "ligaDeck") return deckLigaMagic(zonas, byId);
+    if (formato === "liga") return deckCompraLiga(zonas, byId, game);
+    return deckTexto(zonas, byId);
+  }
+
+  // Lê UMA linha de lista de deck, nos dialetos que circulam — o inverso dos
+  // formatos acima, pra o que sai daqui voltar pelo "Importar lista":
+  //   "4 Nome" · "4x Nome"
+  //   "1x Nome (set) 123 *F* [Categoria{top}] ^Tag,#cor^"   Archidekt
+  //   "1 Nome (SET) 123 *F*"                                Moxfield
+  //   "1 Nome [SIGLA]"                                       LigaMagic
+  // Devolve null pra linha vazia/comentário; senão { qtd, nome, bruto, sigla,
+  // numero, acabamento, categorias }. `bruto` é o nome ANTES de tirar o
+  // "(…)" final: no One Piece o "(Alternate Art)" é parte do nome da carta.
+  function lerLinhaDeck(raw) {
+    let s = String(raw || "").trim();
+    if (!s || s.startsWith("#") || s.startsWith("//")) return null;
+    const m = /^(\d+)\s*[xX]?\s+(.+)$/.exec(s);
+    const qtd = m ? Math.min(Number(m[1]) || 1, 99) : 1;   // teto: linha corrompida não vira 9999 cópias
+    s = (m ? m[2] : s).trim().replace(/\s*\^[^^]*\^\s*$/, "");   // etiqueta de cor do Archidekt
+    let sigla = "", numero = "", acabamento = "", categorias = [];
+    const colchete = /\s*\[([^\]]*)\]\s*$/.exec(s);
+    if (colchete) {
+      s = s.slice(0, colchete.index);
+      const dentro = colchete[1].trim();
+      // Sigla em maiúsculas é a da Liga ([WAR]); o resto é categoria do
+      // Archidekt, que pode vir em lista ("Ramp,Commander{top}").
+      if (/^[A-Z0-9]{2,6}$/.test(dentro)) sigla = dentro.toLowerCase();
+      else categorias = dentro.split(",").map((c) => c.trim()).filter(Boolean);
+    }
+    s = s.replace(/\s*\*([A-Za-z]+)\*/g, (_, k) => {
+      const K = k.toUpperCase();
+      if (K === "F") acabamento = "foil";
+      else if (K === "E") acabamento = "etched";
+      return "";
+    }).replace(/\s+·.*$/, "").trim();
+    const bruto = s;
+    const ed = /\s+\(([A-Za-z0-9]{2,8})\)(?:\s+([^\s()]+))?$/.exec(s);
+    if (ed) { sigla = ed[1].toLowerCase(); numero = ed[2] || ""; s = s.slice(0, ed.index); }
+    // Resto de qualquer outro dialeto: "(Nome do Set) 4" no fim.
+    s = s.replace(/\s*[([][^)\]]*[)\]]\s*\d*$/, "").trim();
+    if (!s) return null;
+    return { qtd, nome: s, bruto, sigla, numero, acabamento, categorias };
+  }
+
+  window.TCGExportLiga = {
+    exportar, paraLiga, paraTexto, paraCsv, nomeLimpo, numeroPokemon, edicaoDaCarta, idiomaDaCarta,
+    exportarDeck, lerLinhaDeck
+  };
 })();

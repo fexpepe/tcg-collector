@@ -11755,7 +11755,9 @@ select,
 .dkc-view-meta .dkc-meta-item + .dkc-author::before,
 .dkc-view-meta .dkc-author + .dkc-meta-item::before { content: "·"; margin-right: 10px; color: var(--subtle); }
 .dkc-meta-date { color: var(--subtle); }
-.dkc-view-acts { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+/* wrap: com o "Exportar lista" (2026-10-02) são três controles, e no celular
+   o CTA desce pra linha de baixo em vez de vazar a tela. */
+.dkc-view-acts { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-left: auto; }
 .dkc-lays { display: flex; gap: 6px; }
 /* padding 0: estes botões herdam `padding: 0 16px` da regra genérica de botão.
    Com 40px de largura sobravam 6px de área interna, e o `max-width: 100%` do
@@ -12208,6 +12210,13 @@ select,
 
 /* Export e "aplicar à coleção" */
 .lst-export { width: 100%; margin: 0; padding: 10px; border: 1px solid var(--line); background: var(--panel); color: var(--text); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12.5px; line-height: 1.5; resize: vertical; white-space: pre; overflow-wrap: normal; overflow-x: auto; }
+/* Opções do formato (export de deck: 1x, sigla, número, foil, categorias — as
+   do Archidekt). Caixinha desabilitada = depende de outra que está desligada. */
+.lst-opts { display: flex; flex-wrap: wrap; gap: 2px 18px; margin: 0 0 10px; }
+.lst-opt { display: flex; align-items: center; gap: 7px; min-height: 32px; font-size: 13px; cursor: pointer; }
+.lst-opt input { width: 16px; height: 16px; margin: 0; accent-color: var(--accent); }
+.lst-opt input:disabled + span { color: var(--subtle); }
+@media (max-width: 640px) { .lst-opt { min-height: 44px; } }
 .lst-apply-list { max-height: 340px; overflow-y: auto; overscroll-behavior: contain; margin: 12px 0; border: 1px solid var(--line); }
 .lst-apply-row { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 10px; padding: 7px 10px; border-bottom: 1px solid var(--line); font-size: 13px; }
 .lst-apply-row:last-child { border-bottom: 0; }

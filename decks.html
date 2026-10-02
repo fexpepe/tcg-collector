@@ -77,6 +77,11 @@
     <!-- Testar mao (goldfish): arquivo proprio, so nas paginas do editor.
          O shared.js esta a 97% do orcamento de peso e viaja em todas. -->
     <script defer src="src/goldfish.js"></script>
+    <!-- Exportar lista (Archidekt/Moxfield, deck da LigaMagic, Compra por Lista):
+         gerador puro + o modal da Coleção. O lerLinhaDeck do gerador também
+         é o leitor do "Importar lista". -->
+    <script defer src="src/export-liga.js"></script>
+    <script defer src="src/export-ui.js"></script>
     <script defer src="src/decks.js"></script>
     <!-- Vitrine (espaço de anúncio, docs/PLANO-ADS.md): só página de catálogo.
          Sem data-grade: a galeria se recria inteira a cada render, então aqui só o trilho de tela larga. -->

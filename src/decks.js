@@ -951,6 +951,7 @@
             <button type="button" class="deck-lay${pubView === "grid" ? " on" : ""}" data-dkc-view="grid" aria-pressed="${pubView === "grid"}" title="${escA(t("decks.layout.grid"))}"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg></button>
             <button type="button" class="deck-lay${pubView === "list" ? " on" : ""}" data-dkc-view="list" aria-pressed="${pubView === "list"}" title="${escA(t("decks.layout.list"))}"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
           </div>
+          <button type="button" class="deck-mini" data-dkc-export>${esc(t("decks.exportList"))}</button>
           <button type="button" class="cta" data-dkc-copy>${esc(t(logged ? "decks.copyToMine" : "decks.loginToCopy"))}</button>
         </div>
       </div>
@@ -981,6 +982,9 @@
         paint();
       }));
       bindCopy();
+      // Exportar não exige conta: é o "me passa a lista" de quem viu o deck
+      // (comprar pela Liga, montar no Archidekt). Sai na ordem do deck publicado.
+      box.querySelector("[data-dkc-export]").addEventListener("click", () => abrirExportDeck(deck, byId));
     }
 
     paint();
@@ -1224,53 +1228,94 @@
   }
 
   // ---------------------------------------------------------------------------
-  // Export / import de lista em TEXTO — o formato que todo mundo usa
-  // (Moxfield, Limitless, Dreamborn, Discord): "4 Nome da Carta" por linha,
-  // com cabeçalho por zona. É o que permite trazer um deck pronto sem
-  // redigitar 60 cartas.
+  // Export / import de lista em TEXTO.
+  //
+  // EXPORT (2026-10-02): era um "Copiar lista" que só levava "4 Nome" — quem
+  // monta o deck aqui pra vender e leva a lista pra LigaMagic (onde o comprador
+  // vê o preço) perdia a EDIÇÃO de cada carta. Virou o modal de Exportar da
+  // Coleção (src/export-ui.js) com os formatos de deck do src/export-liga.js:
+  // Archidekt/Moxfield com as opções do Archidekt, o cadastro de deck da Liga e
+  // a Compra por Lista. Function (não const) e sem tocar em const declarada
+  // depois do early-return: o viewer público (decks.html) também exporta.
+  // `ordena` = ordem das cartas dentro da zona (a do editor; o viewer manda a
+  // do deck publicado).
   // ---------------------------------------------------------------------------
-  function deckToText(deck) {
-    const pack = packOf(deck);
-    const out = [];
-    (pack.zones || []).forEach((z) => {
-      const entries = deck.zones[z.key] || [];
-      if (!entries.length) return;
-      // Zona única (a maioria dos jogos) dispensa cabeçalho — assim o texto cola
-      // limpo em qualquer lugar.
-      if ((pack.zones || []).length > 1) { if (out.length) out.push(""); out.push(t("decks.zone." + z.key)); }
-      sortEntries(deck, entries).forEach((e) => {
-        const card = cat && cat.byId[e.id];
-        out.push(`${e.qty} ${card ? card.name : e.id}`);
-      });
+  function abrirExportDeck(deck, byId, ordena) {
+    const ex = window.TCGExportLiga, ui = window.TCGExportUI;
+    if (!ex || !ui) return;
+    const pack = rules.packFor(deck.game, deck.format);
+    const chaves = (pack.zones || []).map((z) => z.key);
+    // Zona fora do pacote (deck publicado antes de uma mudança de formato) não
+    // some: vai no fim, como parte do deck.
+    Object.keys(deck.zones || {}).forEach((k) => { if (!chaves.includes(k)) chaves.push(k); });
+    const zonas = chaves.map((k) => {
+      const z = (pack.zones || []).find((x) => x.key === k) || {};
+      const lista = deck.zones[k] || [];
+      const rotulo = t("decks.zone." + k);
+      return { key: k, rotulo: rotulo === "decks.zone." + k ? k : rotulo, scratch: !!z.scratch, entries: ordena ? ordena(lista) : lista };
+    }).filter((z) => z.entries.length);
+    // Contagem do rodapé: Liga (deck e Compra por Lista) deixa o rascunho de
+    // fora, e o rodapé diz isso quando há rascunho — senão o número não bate
+    // com o do editor e parece que faltou carta.
+    const soma = (zs) => zs.reduce((s, z) => s + z.entries.reduce((a, e) => a + (e.qty || 0), 0), 0);
+    const temRascunho = zonas.some((z) => z.scratch);
+    const escopo = (formato) => {
+      const semRascunho = formato === "liga" || formato === "ligaDeck";
+      if (semRascunho && temRascunho) return t("decks.exportScopePlayed", { n: soma(zonas.filter((z) => !z.scratch)) });
+      return t("decks.exportScope", { n: soma(zonas) });
+    };
+    const op = (key, padrao, depende) => ({ key, rotulo: t("decks.exportOpt." + key), padrao, depende });
+    ui.abrir({
+      titulo: t("decks.exportTitle"),
+      jogos: zonas.length ? [deck.game] : [],
+      // Archidekt/Moxfield e o deck da Liga são formatos do Magic (sigla e
+      // número de colecionador do Scryfall). Nos outros jogos, o texto de
+      // sempre; a Compra por Lista vale pra todos (a Liga tem um site por jogo).
+      formatos: deck.game === "magic" ? ["archidekt", "ligaDeck", "liga"] : ["texto", "liga"],
+      opcoes: { archidekt: [op("x", true), op("set", true), op("num", true, "set"), op("foil", true), op("cat", true)] },
+      texto: (formato, _jogo, marcadas) => ex.exportarDeck(formato, zonas, byId, deck.game, marcadas),
+      escopo: (_n, formato) => escopo(formato),
+      arquivo: String(deck.name || "").normalize("NFD").replace(/\p{M}+/gu, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") || "deck",
+      vazio: t("decks.exportEmpty")
     });
-    return out.join("\n");
   }
 
-  // Lê "4 Nome", "4x Nome", "Nome" (=1) e ignora linha vazia/comentário. O
-  // cabeçalho de zona é reconhecido pelo rótulo traduzido; o que não casa vira
-  // carta (uma lista sem cabeçalho continua funcionando).
+  // IMPORT: lê o "4 Nome" de sempre e os dialetos que o export acima produz
+  // (Archidekt, Moxfield, LigaMagic) — a linha em si é do lerLinhaDeck (puro,
+  // com teste). O cabeçalho de zona é reconhecido pelo rótulo traduzido e pelos
+  // nomes em inglês dos outros sites; a CATEGORIA do Archidekt
+  // ("[Commander{top}]", "[Sideboard]") também leva a carta pra zona certa.
+  // O que não casa vira carta (lista sem cabeçalho continua funcionando).
+  const ZONA_EN = { commander: "commander", sideboard: "side", "side deck": "side", side: "side", maybeboard: "maybe", maybe: "maybe", deck: "main", main: "main", mainboard: "main", "main deck": "main", leader: "leader", "extra deck": "extra", "egg deck": "egg" };
+  function zonaDaCategoria(categorias, tem) {
+    for (const c of categorias) {
+      const base = norm(c.replace(/\{[^}]*\}/g, "").trim());
+      const z = /\{top\}/i.test(c) ? "commander" : ZONA_EN[base];
+      if (z && tem(z)) return z;
+    }
+    return "";
+  }
   function parseDeckText(text, pack) {
+    const tem = (k) => (pack.zones || []).some((z) => z.key === k);
     const zoneByLabel = {};
+    Object.keys(ZONA_EN).forEach((k) => { if (tem(ZONA_EN[k])) zoneByLabel[k] = ZONA_EN[k]; });
     (pack.zones || []).forEach((z) => { zoneByLabel[norm(t("decks.zone." + z.key))] = z.key; });
     const first = (pack.zones && pack.zones[0] && pack.zones[0].key) || "main";
+    const ler = window.TCGExportLiga && window.TCGExportLiga.lerLinhaDeck;
     let zone = first;
     const rows = [];
     String(text || "").split(/\r?\n/).forEach((raw) => {
       const line = raw.trim();
-      if (!line || line.startsWith("#") || line.startsWith("//")) return;
       const asZone = zoneByLabel[norm(line.replace(/[:\-–—]+$/, "").trim())];
       if (asZone) { zone = asZone; return; }
-      const m = line.match(/^(\d+)\s*[xX]?\s+(.+)$/);
-      const qty = m ? Math.min(Number(m[1]) || 1, 99) : 1;   // teto: linha corrompida não vira 9999 cópias
-      let name = (m ? m[2] : line).trim();
-      // Sufixos comuns dos outros sites: "(SET) 123" / "[SET]" / "· 4/102".
-      name = name.replace(/\s*[\(\[][^\)\]]*[\)\]]\s*\d*$/, "").replace(/\s+·.*$/, "").trim();
-      if (name) rows.push({ zone, qty, name });
+      const r = ler ? ler(line) : null;
+      if (!r) return;
+      rows.push(Object.assign(r, { zone: zonaDaCategoria(r.categorias, tem) || zone }));
     });
     return rows;
   }
 
-  // Casa os nomes com o índice do jogo (nome exato, sem acento/caixa). Devolve
+  // Casa as linhas com o índice do jogo (nome exato, sem acento/caixa). Devolve
   // o que casou e o que não achou — a lista de "não encontradas" é mostrada, não
   // engolida: importar 58 de 60 em silêncio seria pior que falhar.
   async function importText(deck, text) {
@@ -1278,13 +1323,34 @@
     const rows = parseDeckText(text, pack);
     if (!rows.length) return { added: 0, missing: [] };
     const index = await searchIndexFor(deck.game);
-    const byName = new Map();
-    index.forEach((e) => { const k = norm(e.n); if (!byName.has(k)) byName.set(k, e); });
+    // Nome -> TODAS as impressões. Carta de duas faces entra também pela face
+    // da frente: MTGA e muita lista mandam só ela.
+    const porNome = new Map();
+    const poe = (k, e) => { if (!porNome.has(k)) porNome.set(k, []); porNome.get(k).push(e); };
+    index.forEach((e) => {
+      const k = norm(e.n);
+      poe(k, e);
+      const frente = k.split(" // ")[0];
+      if (frente !== k) poe(frente, e);
+    });
+    // Impressão EXATA no Magic: o id é mtg-<sigla>-<número>, então a sigla (e o
+    // número, quando vier) escolhem a edição entre as impressões do nome. Sem
+    // casar, vale a primeira impressão do nome, como sempre foi.
+    const achar = (r) => {
+      const lista = porNome.get(norm(r.bruto)) || porNome.get(norm(r.nome));
+      if (!lista) return null;
+      if (deck.game === "magic" && r.sigla) {
+        const daEdicao = lista.filter((e) => String(e.i).startsWith(`mtg-${r.sigla}-`));
+        const num = String(r.numero || "").toLowerCase();
+        return (num && daEdicao.find((e) => String(e.u || "").toLowerCase() === num)) || daEdicao[0] || lista[0];
+      }
+      return lista[0];
+    };
     const hits = [], missing = [];
     rows.forEach((r) => {
-      const e = byName.get(norm(r.name));
-      if (e) hits.push({ zone: r.zone, qty: r.qty, id: e.i });
-      else missing.push(r.name);
+      const e = achar(r);
+      if (e) hits.push({ zone: r.zone, qty: r.qtd, id: e.i, acabamento: r.acabamento });
+      else missing.push(r.nome);
     });
     if (hits.length) {
       cat = await ensureCards(deck.game, hits.map((h) => h.id));
@@ -1294,7 +1360,13 @@
         // A zona do texto só vale se a carta couber nela (líder não vai pro deck).
         const ok = rules.zonesForCard(pack, card);
         const zone = ok.includes(h.zone) ? h.zone : rules.zoneForCard(pack, card);
-        if (zone) addCard(deck, zone, card, h.qty);
+        if (!zone) return;
+        addCard(deck, zone, card, h.qty);
+        // *F* / *E* da lista: vira a variante da entrada (é ela que dá o preço
+        // foil e volta como *F* no export), se a impressão tiver esse acabamento.
+        const v = h.acabamento && (card.variants || []).find((x) => (h.acabamento === "etched" ? /etched/i : /foil/i).test(x));
+        const entrada = v && (deck.zones[zone] || []).find((x) => x.id === card.id);
+        if (entrada) { entrada.variant = v; touch(deck); }
       });
     }
     return { added: hits.length, missing };
@@ -1332,21 +1404,6 @@
       } catch (e) { msg.textContent = t("decks.loadError"); }
     });
     setTimeout(() => { const a = wrap.querySelector("#deckImportText"); if (a) a.focus(); }, 0);
-  }
-
-  async function copyDeckText() {
-    const text = deckToText(current);
-    try { await navigator.clipboard.writeText(text); return true; }
-    catch (e) {
-      // Sem Clipboard API (contexto inseguro): cai no textarea + execCommand.
-      const ta = document.createElement("textarea");
-      ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
-      document.body.appendChild(ta); ta.select();
-      let ok = false;
-      try { ok = document.execCommand("copy"); } catch (e2) { ok = false; }
-      ta.remove();
-      return ok;
-    }
   }
 
   // ---------- Modal: novo deck (jogo -> formato, quando o jogo tem mais de um) ----------
@@ -1654,7 +1711,7 @@
         <input id="deckName" class="deck-name-input" value="${escA(deck.name)}" aria-label="${escA(t("decks.nameLabel"))}">
         <span class="deck-ed-game">${gameTag(deck.game)}${pack.format ? "<span>" + esc(t("decks.format." + pack.format)) + "</span>" : ""}</span>
         <button type="button" class="deck-mini" data-deck-import>${esc(t("decks.import"))}</button>
-        <button type="button" class="deck-mini" data-deck-copy>${esc(t("decks.copyList"))}</button>
+        <button type="button" class="deck-mini" data-deck-export>${esc(t("decks.exportList"))}</button>
         <button type="button" class="deck-mini" data-deck-goldfish>${esc(t("decks.goldfish"))}</button>
         <button type="button" class="deck-mini" data-deck-publish>${esc(t(deck.publishedId ? "decks.savePublic" : "decks.publish"))}</button>
         ${deck.publishedId ? `<button type="button" class="deck-mini deck-unpub" data-deck-unpublish>${esc(t("decks.unpublish"))}</button>` : ""}
@@ -2098,7 +2155,7 @@
       return;
     }
 
-    // Importar / copiar lista em texto
+    // Importar / exportar lista em texto
     if (ev.target.closest("[data-deck-import]")) { openImportModal(); return; }
     // Testar mão (goldfish): módulo próprio, carregado só nesta página (o
     // shared.js está no teto do orçamento). Ausente = botão inerte, não erro.
@@ -2106,13 +2163,8 @@
       if (window.TCGGoldfish) window.TCGGoldfish.abrir(current, packOf(current), cat.byId);
       return;
     }
-    const cp = ev.target.closest("[data-deck-copy]");
-    if (cp) {
-      copyDeckText().then((ok) => {
-        const before = cp.textContent;
-        cp.textContent = t(ok ? "decks.copied" : "decks.copyFail");
-        setTimeout(() => { cp.textContent = before; }, 1800);
-      });
+    if (ev.target.closest("[data-deck-export]")) {
+      abrirExportDeck(current, cat.byId, (lista) => sortEntries(current, lista));
       return;
     }
 
