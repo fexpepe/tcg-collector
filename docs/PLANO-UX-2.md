@@ -993,7 +993,7 @@ além de dez linhas que não tinham outro lugar possível.
   zona que não seja `main` e sete testes fixam exatamente isso; o tamanho da
   mão inicial virou dado do `deck-rules.js` (7 no Pokémon/Magic/Lorcana, 5 no
   One Piece/Digimon/Yu-Gi-Oh, 6 no DBFW).
-- **E1** ✔ — medidor de centralização na página de Graded (`src/centering.js`).
+- **E1** ✔ — medidor de centralização na página de Graded (`src/centering.js`). Em 2026-10-01 virou o Centering Tool, página própria em `/centering` (`docs/PLANO-CENTERING-V2.md`).
   O argumento não é o medidor, é **onde a foto fica**: object URL local,
   revogado ao fechar, sem canvas, sem IndexedDB, sem rede. Shiny e
   PriceCharting cobram por isso. Guias guardadas em **fração** da imagem, não em

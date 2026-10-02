@@ -4,19 +4,21 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title data-i18n="title.ferramentas">Ferramentas pra quem coleciona cartas - Sleevu</title>
-    <meta name="description" content="Ferramentas grátis pra colecionador de cartas: guia de condição (NM, SP, MP), medidor de centralização, calculadora de sleeves e fichários e analisador de troca.">
-    <link rel="canonical" href="https://sleevu.app/ferramentas">
+    <meta name="description" content="Ferramentas grátis pra colecionador de cartas: guia de condição (NM, SP, MP), Centering Tool (centralização com a nota de PSA, BGS, CGC, SGC e TAG), calculadora de sleeves e fichários e analisador de troca.">
+    <!-- Endereço em inglês (/tools) desde 2026-10-01, a pedido do Fernando;
+         /ferramentas tem 301 no _redirects. -->
+    <link rel="canonical" href="https://sleevu.app/tools">
     <meta property="og:site_name" content="Sleevu">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://sleevu.app/ferramentas">
+    <meta property="og:url" content="https://sleevu.app/tools">
     <meta property="og:title" content="Ferramentas pra quem coleciona cartas">
-    <meta property="og:description" content="Guia de condição, medidor de centralização, calculadora de sleeves e fichários e analisador de troca. Grátis.">
+    <meta property="og:description" content="Guia de condição, Centering Tool (centralização e nota estimada), calculadora de sleeves e fichários e analisador de troca. Grátis.">
     <meta property="og:image" content="https://sleevu.app/og-image.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Ferramentas pra quem coleciona cartas">
-    <meta name="twitter:description" content="Guia de condição, medidor de centralização, calculadora de sleeves e fichários e analisador de troca. Grátis.">
+    <meta name="twitter:description" content="Guia de condição, Centering Tool (centralização e nota estimada), calculadora de sleeves e fichários e analisador de troca. Grátis.">
     <meta name="twitter:image" content="https://sleevu.app/og-image.png">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
@@ -44,7 +46,7 @@
     <header class="app-header">
       <div class="app-header-inner">
         <a class="brand" href="/">Sleevu</a>
-        <nav class="page-nav" data-i18n-aria="aria.pages" aria-label="Páginas" data-active-page="ferramentas"></nav>
+        <nav class="page-nav" data-i18n-aria="aria.pages" aria-label="Páginas" data-active-page="tools"></nav>
         <div class="header-actions">
           <select id="languageSwitcher" class="lang-select"></select>
         </div>
@@ -60,30 +62,39 @@
       <!-- Conteúdo ESTÁTICO de propósito: é a página que o buscador lê. Cada
            cartão é uma ferramenta; o nome é o mesmo do HUB e do menu (i18n.js). -->
       <section class="fer-grid">
-        <article class="fer-card fer-tool" id="condicao">
+        <article class="fer-card fer-tool" id="condition">
           <span class="fer-tool-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="2.5" width="12" height="17" rx="2"/><circle cx="15.5" cy="15.5" r="4"/><path d="m18.5 18.5 3 3"/></svg></span>
           <div class="fer-tool-b">
-            <h2><a href="condicao" data-i18n="nav.condicao">Guia de condição</a></h2>
+            <!-- Âncora antiga (o id do cartão em /ferramentas, até 2026-10-01):
+                 chega aqui pelo 301 com o fragmento. Dentro do .fer-tool-b,
+                 nunca filho do <article> ou do .fer-grid (os dois são grid). -->
+            <span id="condicao"></span>
+            <h2><a href="condition" data-i18n="nav.condicao">Guia de condição</a></h2>
             <p data-i18n="fer.cond.d">Cinco perguntas sobre cantos, bordas, verso e superfície, e a condição na escala que as lojas usam, com o texto pronto pra mandar na negociação.</p>
             <ul class="fer-tags">
               <li class="is-open" data-i18n="fer.tag.open">Sem conta</li>
               <li data-i18n="fer.tag.scale">Escala M · NM · SP · MP · HP · D</li>
             </ul>
-            <a class="primary fer-btn" href="condicao" data-i18n="fer.cond.cta">Avaliar uma carta</a>
+            <a class="primary fer-btn" href="condition" data-i18n="fer.cond.cta">Avaliar uma carta</a>
           </div>
         </article>
 
-        <article class="fer-card fer-tool" id="centralizacao">
+        <article class="fer-card fer-tool" id="centering">
           <span class="fer-tool-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M5 12h14"/><path d="M12 3v18"/></svg></span>
           <div class="fer-tool-b">
-            <h2 data-i18n="ctr.title">Medir centralização</h2>
-            <p data-i18n="fer.ctr.d">Carregue a foto da carta, arraste as guias até a moldura e veja os percentuais que as graduadoras usam (55/45, 60/40).</p>
+            <!-- Âncoras antigas: o "Medir centralização" do menu Mais da v1
+                 (/ferramentas#medir, que abria o modal) e o id antigo do
+                 cartão. Chegam aqui pelo 301 com o fragmento; o botão "Medir
+                 uma carta" está logo abaixo. Sem JS (CSP sem inline). -->
+            <span id="medir"></span><span id="centralizacao"></span>
+            <h2><a href="centering" data-i18n="ctr.title">Centering Tool</a></h2>
+            <p data-i18n="fer.ctr.d">Tire ou escolha a foto da carta, endireite pelos quatro cantos e ajuste as linhas da borda: a centralização sai em porcentagem, frente e verso, com a nota de PSA, BGS, CGC, SGC e TAG.</p>
             <ul class="fer-tags">
               <li class="is-open" data-i18n="fer.tag.open">Sem conta</li>
               <li data-i18n="fer.tag.local">A foto não sai do aparelho</li>
             </ul>
-            <!-- Abre o medidor (src/centering.js) por cima desta página. -->
-            <button type="button" class="primary fer-btn" data-ctr-abrir data-i18n="fer.ctr.cta">Medir agora</button>
+            <!-- Página própria desde a v2 (centering.html); o modal da v1 saiu. -->
+            <a class="primary fer-btn" href="centering" data-i18n="fer.ctr.cta">Medir uma carta</a>
           </div>
         </article>
 
@@ -120,7 +131,5 @@
     <script defer src="src/i18n.js"></script>
     <script defer src="src/i18n-ferramentas.js"></script>
     <script defer src="src/shared.js"></script>
-    <!-- Medidor de centralização: o cartão dele e o "#medir" do menu abrem aqui. -->
-    <script defer src="src/centering.js"></script>
   </body>
 </html>

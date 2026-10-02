@@ -317,7 +317,7 @@ for (const bundle of I18N_EXTRAS) {
   const SEM_VITRINE = [
     // pessoais (grupo C do plano) e perfil
     "collection.html", "portfolio.html", "wishlist.html", "binders.html", "pastas.html", "listas.html",
-    "sales.html", "troca.html", "ferramentas.html", "condicao.html", "sleeves.html", "my-decks.html", "dashboard.html", "badges.html", "profile.html",
+    "sales.html", "troca.html", "tools.html", "condition.html", "centering.html", "sleeves.html", "my-decks.html", "dashboard.html", "badges.html", "profile.html",
     // conta, ferramentas e conversão
     "index.html", "hub.html", "login.html", "account.html", "settings.html", "backup.html", "admin.html", "parceiro.html", "search.html",
     // institucionais (o revisor do AdSense e quem lê a política não podem ver anúncio aqui)
@@ -335,6 +335,19 @@ for (const bundle of I18N_EXTRAS) {
   }
 }
 
+// 10) Lembrete das tabelas do Centering Tool (docs/PLANO-CENTERING-V2.md §4.8):
+//     algum "conferido" do src/centering-graders.js com mais de 180 dias vira
+//     UMA linha própria no relatório, sempre (fora da lista de avisos, que só
+//     aparece com --verbose), e ::warning:: no GitHub Actions. Nunca é erro.
+//     A regra e o porquê estão em scripts/lib/lembrete-centering.mjs.
+let lembreteCentering = null;
+{
+  const { lembreteTabelas } = await import("./lib/lembrete-centering.mjs");
+  let texto = "";
+  try { texto = read("src/centering-graders.js"); } catch (e) { /* ainda não existe: sem lembrete */ }
+  lembreteCentering = lembreteTabelas(texto);
+}
+
 // Relatório. Avisos só listam com --verbose (senão poluem o uso diário).
 const verbose = process.argv.includes("--verbose") || process.argv.includes("-v");
 console.log(`\n  i18n: ${ptKeys.size} chaves (pt) · ${enKeys.size} (en)`);
@@ -343,6 +356,11 @@ if (warnings.length) {
   console.log(`  ⚠ ${warnings.length} aviso(s)${verbose ? ":" : " (rode com --verbose para listar)"}`);
   if (verbose) for (const w of warnings) console.log(`     - ${w}`);
   console.log("");
+}
+if (lembreteCentering) {
+  console.log(`  ${lembreteCentering}`);
+  console.log("");
+  if (process.env.GITHUB_ACTIONS) console.log(`::warning file=src/centering-graders.js::${lembreteCentering}`);
 }
 if (errors.length) {
   console.log(`  ✖ ${errors.length} ERRO(S):`);

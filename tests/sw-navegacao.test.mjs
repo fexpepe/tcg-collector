@@ -249,6 +249,25 @@ test("offline (rede falha): a cópia local responde; sem cópia, erro de rede", 
   assert.equal(res.type, "error");
 });
 
+// /condicao e /ferramentas viraram /condition e /tools (301, 2026-10-01). O
+// install novo não guarda mais as páginas antigas e o activate apaga o cache
+// velho: offline, um atalho salvo pro endereço antigo caía em "sem conexão"
+// com a página nova no cache. A reserva final mapeia; online o 301 segue.
+test("offline: os endereços antigos das ferramentas abrem a cópia da página nova", async () => {
+  const sw = carrega({ hashed: true, build: "abc12345" });
+  const shell = await sw.sandbox.caches.open(sw.SHELL);
+  await shell.put("condition.html", html("guia de condição"));
+  await shell.put("tools.html", html("índice"));
+  sw.estado.fetch = async () => { throw new Error("offline"); };
+  assert.equal(await texto(await sw.nav(evento("/condicao"))), "guia de condição");
+  assert.equal(await texto(await sw.nav(evento("/condicao.html"))), "guia de condição");
+  assert.equal(await texto(await sw.nav(evento("/ferramentas?x=1"))), "índice");
+  // e não grava cópia nenhuma no endereço antigo
+  assert.equal(await shell.match(ORIGEM + "/condicao.html"), undefined);
+  // o resto segue sem reserva
+  assert.equal((await sw.nav(evento("/sleeves"))).type, "error");
+});
+
 test("dev (sem hash): sempre rede primeiro, mesmo com confirmação recente", async () => {
   const sw = carrega({ hashed: false });
   const shell = await sw.sandbox.caches.open(sw.SHELL);

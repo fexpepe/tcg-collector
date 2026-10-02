@@ -377,30 +377,24 @@
   ];
   // Ferramentas (2026-10-01): o que a pessoa USA, não lugar aonde vai — por
   // isso fora do "Ir para". Guia de condição e Sleeves são página própria
-  // (docs/FERRAMENTAS.md). A centralização (2026-09-16) segue sendo o medidor
-  // por cima do HUB (src/centering.js), por isso é <button>, não <a>; sem o
-  // script (página antiga em cache) o item nem aparece. Ao mudar a contagem de
-  // itens de uma das duas grades, o .dash-links (styles.css) tem de acompanhar.
+  // (docs/FERRAMENTAS.md), e o Centering Tool também, desde a v2
+  // (centering.html; antes era o medidor em modal por cima do HUB, com
+  // <button> e handler). Ao mudar a contagem de itens de uma das duas grades,
+  // o .dash-links (styles.css) tem de acompanhar.
   const tools = [
     { href: "troca", icon: "trade", key: "trade.title", stat: t("dash.tradeHint") },
-    ...(window.TCGCentering ? [{ action: "centering", icon: "centering", key: "ctr.title", stat: t("dash.ctrHint") }] : []),
-    { href: "condicao", icon: "condition", key: "nav.condicao", stat: t("dash.condHint") },
+    { href: "centering", icon: "centering", key: "ctr.title", stat: t("dash.ctrHint") },
+    { href: "condition", icon: "condition", key: "nav.condicao", stat: t("dash.condHint") },
     { href: "sleeves", icon: "sleeves", key: "nav.sleeves", stat: t("dash.slvHint") }
   ];
   const linkInner = (l) => `<span class="dash-link-ic" aria-hidden="true">${IC[l.icon]}</span>
       <span class="dash-link-body"><strong>${escapeHtml(t(l.key))}</strong>${l.stat ? `<span>${escapeHtml(l.stat)}</span>` : ""}</span>
       <span class="dash-link-go" aria-hidden="true">→</span>`;
-  const linkHtml = (l) => l.action
-    ? `<button type="button" class="dash-link" data-dash-action="${escapeAttribute(l.action)}">${linkInner(l)}</button>`
-    : `<a class="dash-link" href="${escapeAttribute(l.href)}">${linkInner(l)}</a>`;
+  const linkHtml = (l) => `<a class="dash-link" href="${escapeAttribute(l.href)}">${linkInner(l)}</a>`;
   // HTML velho em cache (sem a seção #dhTools) com este JS: as ferramentas
   // voltam pro fim do "Ir para" em vez de sumir do HUB.
   el.links.innerHTML = (el.tools ? links : links.concat(tools)).map(linkHtml).join("");
   if (el.tools) el.tools.innerHTML = tools.map(linkHtml).join("");
-  (el.tools || el.links).addEventListener("click", (event) => {
-    const btn = event.target.closest("[data-dash-action]");
-    if (btn && btn.dataset.dashAction === "centering" && window.TCGCentering) window.TCGCentering.abrir();
-  });
 
   // ── Cápsulas detalhadas (hidratam depois; só as cartas que você tem) ───────
   // Mesmo visual da antiga dashboard da Coleção (que ficou só com os stats):

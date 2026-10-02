@@ -106,9 +106,11 @@ const GAMES = [
 const STATIC_URLS = [
   "/", "/hub", "/explore", "/search", "/cards", "/pokedex", "/lore", "/games", "/artists", "/trainers",
   "/decks", "/blog",
-  // Ferramentas (2026-10-01): o índice e o Guia de condição, que são públicos.
-  // Sleeves e Troca exigem login e ficam de fora, como as telas pessoais.
-  "/ferramentas", "/condicao",
+  // Ferramentas (2026-10-01): o índice, o Guia de condição e o Centering Tool,
+  // que são públicos, nos endereços em inglês (/ferramentas e /condicao são
+  // 301 e não entram: sitemap só anuncia o destino). Sleeves e Troca exigem
+  // login e ficam de fora, como as telas pessoais.
+  "/tools", "/condition", "/centering",
   "/about", "/novidades", "/lancamentos", "/comparar", "/faq", "/help", "/privacy", "/terms"
 ];
 

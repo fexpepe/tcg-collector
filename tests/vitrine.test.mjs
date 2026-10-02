@@ -34,7 +34,7 @@ function carregaVitrine() {
   return sandbox.window.TCGVitrine;
 }
 const V = carregaVitrine();
-// Arrays do outro realm do vm: copiar antes do deepEqual (ver centering.test).
+// Arrays do outro realm do vm: copiar antes do deepEqual (ver ferramentas.test).
 const arr = (x) => JSON.parse(JSON.stringify(x));
 
 // Grade de `cols` colunas, `linhas` linhas de `altura` px (topo de cada item).

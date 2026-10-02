@@ -12742,30 +12742,396 @@ select,
   .gf-card img, .gf-noimg { width: 68px; }
 }
 
-/* Medidor de centralização (E1). A guia é um <button> de 1px de linha com uma
-   área de toque bem maior invisível em volta: no dedo, 1px é impossível de
-   pegar, e engordar a linha desalinharia a medida. */
-.ctr-box { max-width: 640px; }
-.ctr-palco { position: relative; margin: 0 auto 14px; width: fit-content; max-width: 100%; line-height: 0; touch-action: none; }
-.ctr-foto { display: block; max-width: 100%; max-height: 52vh; max-height: 52dvh; width: auto; }
-.ctr-guia {
-  position: absolute; margin: 0; padding: 0; border: 0; background: none; cursor: grab;
-  appearance: none; -webkit-appearance: none;
+/* ── Centering Tool v2 (centering.html, 2026-10-01) ─────────────────────────
+   docs/PLANO-CENTERING-V2.md §5. Substitui o modal da v1 (quatro guias de 1 px
+   por cima da foto, só na moldura). Tudo com prefixo ctr-: o split-css manda
+   pra folha "medidor", que só a centering.html carrega
+   (scripts/lib/css-areas.mjs). A página também usa .fer-page/.fer-card/.fer-btn
+   (área "ferramentas") e o núcleo (.cta, .primary, .secondary, .lst-mini,
+   .chip, .sr-only) — NUNCA .segmented-*, .scan-*, .dkc-* ou .srt-*, que são de
+   outras áreas e chegariam sem estilo em produção.
+   As duas folhas de área não têm ordem garantida entre si: onde uma regra
+   ctr- mexe na mesma propriedade de um .fer-* ou de uma classe do núcleo, o
+   seletor é composto (mais específico), pra não depender da ordem dos <link>.
+   E nenhum seletor daqui cita classe fer-: o split-css manda um seletor com
+   prefixos de DUAS áreas pras duas folhas, e numa lista mista o pedaço que
+   sobra cai no núcleo (que viaja em todo o site).
+   O PALCO é sempre escuro (#0b0d12), em qualquer tema: as linhas de medida
+   têm cores fixas (corte branco tracejado, moldura ciano — o da v1 —,
+   selecionada rosa) e a distinção nunca depende só delas (tracejado × sólido,
+   anel × quadrado). */
+.ctr-page {
+  --ctr-palco: #0b0d12;
+  --ctr-corte: #f3f5f7;
+  --ctr-moldura: #00e5ff;
+  --ctr-sel: #ff3d7f;
+  --ctr-ambar: #f59e0b;      /* "no limite": âmbar, sempre com o texto junto */
+  --ctr-on-ink: #06121a;     /* texto sobre o ciano do --fer-ink */
 }
-.ctr-guia::before { content: ""; position: absolute; background: #00e5ff; box-shadow: 0 0 0 1px rgba(0,0,0,.65); }
-.ctr-guia::after { content: ""; position: absolute; }
-.ctr-guia:focus-visible { outline: none; }
-.ctr-guia:focus-visible::before { background: #ff3d7f; }
-.ctr-v { top: 0; bottom: 0; width: 0; }
-.ctr-v::before { top: 0; bottom: 0; left: -1px; width: 2px; }
-.ctr-v::after { top: 0; bottom: 0; left: -14px; width: 28px; }
-.ctr-h { left: 0; right: 0; height: 0; }
-.ctr-h::before { left: 0; right: 0; top: -1px; height: 2px; }
-.ctr-h::after { left: 0; right: 0; top: -14px; height: 28px; }
-.ctr-res { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; font-size: 14px; color: var(--muted); }
-.ctr-res strong { font-size: 20px; color: var(--text); font-variant-numeric: tabular-nums; margin-right: 4px; }
-.ctr-nota { margin: 12px 0 0; font-size: 12px; line-height: 1.5; color: var(--muted); }
-.ctr-file { cursor: pointer; }
+[data-theme="light"] .ctr-page { --ctr-ambar: #b45309; --ctr-on-ink: #ffffff; }
+.ctr-sub { max-width: 780px; }
+.ctr-priv { display: flex; align-items: flex-start; gap: 8px; margin: -4px 0 16px; color: var(--fer-ink); font-size: 13.5px; font-weight: 700; line-height: 1.4; }
+.ctr-priv svg { width: 16px; height: 16px; flex: none; margin-top: 1px; }
+.ctr-app { margin-bottom: 18px; }
+
+/* Entrada (S0): a caixa de soltar a foto e as dicas curtas ao lado. */
+.ctr-entrada { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; max-width: 1100px; }
+.ctr-entrada .ctr-drop {
+  position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+  min-height: 300px; padding: 28px 20px; border: 2px dashed var(--line); text-align: center;
+  transition: border-color .15s, background-color .15s;
+}
+.ctr-entrada .ctr-drop.is-sobre { border-color: var(--fer-ink); background: color-mix(in srgb, var(--fer-ink) 8%, var(--surface)); }
+.ctr-drop-ic { width: 44px; height: 44px; color: var(--fer-ink); }
+.ctr-drop-lado { margin: 0; color: var(--fer-ink); font-size: 12px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.ctr-drop-t { margin: 4px 0 0; font-size: 20px; }
+.ctr-drop-s { margin: 0; color: var(--muted); }
+.ctr-entrada.is-toque .ctr-drop-s { display: none; }
+.ctr-drop-btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 14px 0 4px; }
+.ctr-drop-btns > button { gap: 8px; min-height: 48px; padding: 0 18px; border: 0; font-size: 16px; }
+/* "> button svg" e não só "svg": Escolher e Colar também são .fer-btn, e o
+   ".fer-btn svg" (16 px) tem a mesma especificidade — em produção as duas
+   folhas de área carregam numa ordem e no styles.css inteiro em outra. */
+.ctr-drop-btns > button svg { width: 18px; height: 18px; flex: none; }
+.ctr-drop-f { margin: 4px 0 0; color: var(--subtle); font-size: 12.5px; }
+.ctr-status { margin: 8px 0 0; color: var(--fer-ink); font-weight: 700; }
+.ctr-drop .ctr-continuar { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; margin-top: 12px; }
+.ctr-drop .ctr-continuar svg { width: 15px; height: 15px; }
+/* Os inputs de arquivo: fora da vista, mas clicáveis por JS (o iOS antigo
+   ignorava o click() num input com display: none). */
+.ctr-in { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.ctr-entrada .ctr-dicas-curtas h2 { margin: 0 0 10px; font-size: 16px; }
+.ctr-dicas-curtas ol { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; color: var(--muted); font-size: 13.5px; line-height: 1.45; }
+.ctr-msg { max-width: 1100px; margin: 12px 0 0; padding: 10px 12px; border-left: 3px solid var(--ctr-ambar); background: color-mix(in srgb, var(--ctr-ambar) 10%, var(--surface)); font-size: 13.5px; line-height: 1.45; }
+/* Regiões vivas vazias (#ctrMsg, #ctrStatus): sem caixa, mas NUNCA
+   display:none — fora da árvore de acessibilidade, o próximo texto que
+   entrasse nelas não seria lido (o JS só esvazia, não esconde). */
+.ctr-msg:empty, .ctr-status:empty { margin: 0; padding: 0; border: 0; }
+.ctr-app .ctr-salvo-card { max-width: 760px; margin-top: 14px; }
+.ctr-salvo-cab { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+.ctr-salvo-cab h2 { margin: 0; font-size: 17px; }
+.ctr-salvo-cab .lst-mini { min-height: 40px; }
+
+/* Editor no PC: barra em cima; palco à esquerda e, à direita, a coluna com a
+   lupa fixa, os controles e o resultado ao vivo (D2/D3). */
+.ctr-editor { max-width: 1320px; border: 1px solid var(--line); background: var(--surface); }
+.ctr-barra { position: relative; display: flex; align-items: center; flex-wrap: wrap; gap: 8px; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+.ctr-titulo { min-width: 0; margin: 0 6px 0 0; overflow: hidden; font-size: 15px; font-weight: 800; white-space: nowrap; text-overflow: ellipsis; }
+.ctr-titulo:focus { outline: none; }
+.ctr-barra-esp { flex: 1 1 auto; }
+.ctr-ib { display: inline-grid; place-items: center; width: 40px; min-height: 40px; padding: 0; border: 1px solid var(--line); border-radius: 0; background: var(--panel); color: var(--text); }
+.ctr-ib svg { width: 18px; height: 18px; }
+.ctr-ib:hover:not(:disabled) { background: var(--panel-strong); }
+.ctr-ib:disabled { opacity: .4; cursor: default; }
+.ctr-b { display: inline-flex; align-items: center; gap: 6px; }
+.ctr-b svg { width: 15px; height: 15px; flex: none; }
+.ctr-barra .lst-mini { min-height: 40px; }
+.ctr-editor:not(.ctr-imersivo) .ctr-so-cel { display: none; }
+/* Segmentado próprio: o .segmented-* é da área "detalhe". */
+.ctr-seg { display: inline-flex; border: 1px solid var(--line); background: var(--panel); }
+.ctr-seg button { min-height: 36px; padding: 0 12px; border: 0; border-radius: 0; background: none; color: var(--muted); font-size: 13px; font-weight: 700; }
+.ctr-seg button + button { border-left: 1px solid var(--line); }
+.ctr-seg button[aria-pressed="true"] { background: var(--fer-ink); color: var(--ctr-on-ink); }
+.ctr-seg-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+/* Passos: o atual em texto + aria-current, o feito com o check em SVG. */
+.ctr-passos { display: flex; gap: 2px; margin: 0; padding: 0; list-style: none; }
+.ctr-passo { gap: 6px; min-height: 36px; padding: 0 10px; border: 0; border-radius: 0; background: none; color: var(--muted); font-size: 13px; font-weight: 700; }
+.ctr-passo-n { display: inline-grid; place-items: center; width: 20px; height: 20px; border: 1.5px solid currentColor; border-radius: 50%; font-size: 11px; }
+.ctr-passo-ok { display: none; color: var(--fer-ink); }
+.ctr-passo-ok svg { width: 16px; height: 16px; }
+.ctr-passo.is-feito .ctr-passo-n { display: none; }
+.ctr-passo.is-feito .ctr-passo-ok { display: inline-grid; }
+.ctr-passo[aria-current="step"] { color: var(--text); box-shadow: inset 0 -2px 0 var(--fer-ink); }
+.ctr-passo:disabled { opacity: .45; cursor: default; }
+.ctr-menu, .ctr-pop { position: absolute; top: calc(100% + 4px); right: 8px; z-index: 6; border: 1px solid var(--line); background: var(--surface); box-shadow: var(--shadow-pop); }
+.ctr-menu { display: flex; flex-direction: column; min-width: 230px; padding: 4px; }
+.ctr-menu-i { justify-content: flex-start; min-height: 44px; padding: 0 12px; border: 0; border-radius: 0; background: none; color: var(--text); font-weight: 600; text-align: left; }
+.ctr-menu-i:hover, .ctr-menu-i:focus-visible { background: var(--panel-strong); }
+.ctr-menu-i:disabled { opacity: .45; }
+.ctr-pop { width: min(380px, calc(100vw - 32px)); padding: 14px 16px; }
+.ctr-pop h3 { margin: 0 0 10px; font-size: 15px; }
+.ctr-pop dl { display: grid; gap: 6px; margin: 0; }
+.ctr-pop-l { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 10px; font-size: 13px; }
+.ctr-pop dt { color: var(--fer-ink); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; font-weight: 800; }
+.ctr-pop dd { margin: 0; color: var(--muted); }
+.ctr-pop p { margin: 10px 0 0; color: var(--muted); font-size: 12.5px; }
+
+/* PC: palco em cima e os controles embaixo dele; a coluna (lupa + resultado)
+   ocupa as duas linhas à direita e rola por dentro — o .ctr-col-in é
+   absoluto pra coluna não esticar a grade com o resultado comprido. */
+.ctr-corpo { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 340px; grid-template-rows: auto auto; }
+.ctr-palco {
+  grid-column: 1; grid-row: 1;
+  position: relative; height: min(70vh, 760px); min-height: 420px; overflow: hidden;
+  background: var(--ctr-palco); cursor: crosshair;
+  /* touch-action: none — o gesto no palco é da ferramenta (arrastar, pinça),
+     nunca rolagem nem zoom da página. */
+  touch-action: none; -webkit-user-select: none; user-select: none;
+}
+.ctr-palco.is-mao { cursor: grab; }
+.ctr-tela { position: absolute; left: 0; top: 0; display: block; }
+.ctr-tela-a { width: 100%; height: 100%; }
+.ctr-tela-b { transform-origin: 0 0; }
+.ctr-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.ctr-alcas { position: absolute; inset: 0; pointer-events: none; }
+/* Alça: o desenho é pequeno e o alvo de toque tem 44 px. */
+.ctr-palco .ctr-alca {
+  position: absolute; left: -22px; top: -22px; width: 44px; height: 44px; min-height: 0; margin: 0; padding: 0;
+  border: 0; border-radius: 50%; background: none; cursor: grab; pointer-events: auto; touch-action: none;
+}
+.ctr-palco .ctr-alca:active { scale: none; cursor: grabbing; }
+.ctr-palco .ctr-alca:focus-visible { outline: 2px solid var(--ctr-sel); outline-offset: -3px; }
+.ctr-canto::before { content: ""; position: absolute; inset: 11px; border: 2px solid var(--ctr-corte); border-radius: 50%; box-shadow: 0 0 0 1px rgba(0,0,0,.7), inset 0 0 0 1px rgba(0,0,0,.7); }
+.ctr-canto::after { content: ""; position: absolute; left: 21px; top: 21px; width: 2px; height: 2px; background: var(--ctr-corte); box-shadow: 0 0 0 1px rgba(0,0,0,.7); }
+.ctr-meio::before { content: ""; position: absolute; inset: 16px; border-radius: 50%; background: var(--ctr-corte); box-shadow: 0 0 0 1.5px rgba(0,0,0,.75); }
+/* Corte: anel vazado; moldura: quadrado cheio; selecionada: rosa. */
+.ctr-lin-ext::before { content: ""; position: absolute; inset: 13px; border: 2px solid var(--ctr-corte); border-radius: 50%; box-shadow: 0 0 0 1px rgba(0,0,0,.7), inset 0 0 0 1px rgba(0,0,0,.7); }
+.ctr-lin-int::before { content: ""; position: absolute; inset: 15px; border-radius: 3px; background: var(--ctr-moldura); box-shadow: 0 0 0 1.5px rgba(0,0,0,.75); }
+.ctr-lin-ext.is-sel::before { border-color: var(--ctr-sel); }
+.ctr-lin-int.is-sel::before { background: var(--ctr-sel); }
+/* "Ajustada à borda" (ímã): um ponto verde no canto da alça. */
+.ctr-lin.is-ima::after { content: ""; position: absolute; right: 8px; top: 8px; width: 7px; height: 7px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 0 1.5px rgba(0,0,0,.75); }
+.ctr-rotulo {
+  position: absolute; left: 0; top: 0; z-index: 1; padding: 4px 8px; border: 1px solid var(--ctr-sel);
+  background: rgba(11, 13, 18, .88); color: #f3f5f7; font-size: 12px; font-weight: 700; white-space: nowrap;
+  font-variant-numeric: tabular-nums; pointer-events: none;
+}
+.ctr-palco-msg { position: absolute; left: 50%; top: 50%; z-index: 2; margin: 0; padding: 8px 14px; transform: translate(-50%, -50%); background: rgba(11, 13, 18, .88); color: #f3f5f7; font-weight: 700; }
+/* Lupa: no celular, círculo de 132 px no canto de cima oposto ao dedo; no
+   PC, 300 px fixa na coluna. */
+.ctr-lupa { display: block; }
+.ctr-lupa-cel {
+  position: absolute; top: 24px; right: 24px; z-index: 2; width: 132px; height: 132px; border: 2px solid #f3f5f7; border-radius: 50%;
+  box-shadow: 0 0 0 1px rgba(0,0,0,.7), 0 8px 24px rgba(0,0,0,.5); pointer-events: none;
+}
+.ctr-lupa-cel.is-esq { right: auto; left: 24px; }
+.ctr-lupa-pc canvas { width: 300px; height: 300px; max-width: 100%; border: 1px solid var(--line); background: var(--ctr-palco); }
+.ctr-lupa-leg { margin: 6px 0 0; color: var(--muted); font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+
+.ctr-col { grid-column: 2; grid-row: 1 / 3; position: relative; min-height: 420px; border-left: 1px solid var(--line); }
+.ctr-col-in { position: absolute; inset: 0; display: flex; flex-direction: column; gap: 12px; padding: 14px; overflow: auto; overscroll-behavior: contain; }
+.ctr-ctl { grid-column: 1; grid-row: 2; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; padding: 10px 12px; border-top: 1px solid var(--line); }
+.ctr-dica { flex: 1 1 100%; margin: 0; color: var(--muted); font-size: 13.5px; line-height: 1.5; }
+/* "Confira a moldura em cima e embaixo…" no passo Bordas: âmbar, como os
+   avisos do resultado, e sempre com o texto (a cor nunca fala sozinha). */
+.ctr-aviso-b { flex: 1 1 100%; margin: 0; padding: 8px 10px; border-left: 3px solid var(--ctr-ambar); background: color-mix(in srgb, var(--ctr-ambar) 12%, var(--surface)); font-size: 13px; line-height: 1.45; }
+.ctr-grupo { display: flex; flex-direction: column; gap: 8px; }
+.ctr-ctl > .ctr-grupo { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 8px 10px; }
+.ctr-fila { display: flex; flex-wrap: wrap; gap: 8px; }
+.ctr-ctl .lst-mini, .ctr-col .lst-mini { min-height: 40px; }
+.ctr-campo { display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: 12.5px; font-weight: 700; }
+.ctr-campo .ctr-sel, .ctr-campo input { min-height: 40px; padding: 0 10px; border: 1px solid var(--line); background: var(--panel); color: var(--text); font-size: 14px; }
+.ctr-custom { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+/* Os jogos do tamanho escolhido (o select mostra só a medida). */
+.ctr-tam-jogos { margin: 0; color: var(--subtle); font-size: 12px; line-height: 1.4; }
+.ctr-tam-jogos:empty { display: none; }
+.ctr-nota-p { margin: 0; color: var(--subtle); font-size: 12px; line-height: 1.45; }
+.ctr-ang { margin: 0; font-size: 13.5px; font-weight: 700; }
+.ctr-ctl .ctr-largo { justify-content: center; gap: 8px; min-height: 48px; margin-left: auto; font-size: 16px; }
+.ctr-ctl .ctr-largo svg { width: 18px; height: 18px; }
+.ctr-ctl .cta.ctr-largo { border: 0; }
+.ctr-ctl > [data-bloco="linhaCtl"] { flex: 1 1 100%; }
+.ctr-ctl > [data-bloco="giro"] { flex: 1 1 300px; flex-direction: column; align-items: stretch; }
+.ctr-ctl [data-bloco="linhaCtl"] .ctr-ajuste { flex: 1 1 260px; }
+.ctr-toggle { justify-content: flex-start; gap: 8px; min-height: 40px; padding: 0 12px; border: 1px solid var(--line); border-radius: 0; background: var(--panel); color: var(--text); font-size: 13.5px; }
+.ctr-toggle svg { width: 16px; height: 16px; flex: none; }
+.ctr-toggle-v { margin-left: auto; color: var(--muted); font-weight: 600; }
+.ctr-toggle[aria-pressed="true"] { border-color: color-mix(in srgb, var(--fer-ink) 55%, var(--line)); }
+.ctr-toggle[aria-pressed="true"] svg, .ctr-toggle[aria-pressed="true"] .ctr-toggle-v { color: var(--fer-ink); }
+.ctr-valor { margin: 0; font-size: 14px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.ctr-ajuste { display: flex; align-items: center; gap: 8px; }
+.ctr-ajuste .ctr-ib { flex: none; width: 44px; min-height: 44px; }
+/* Régua fina: 10 px de arrasto = 1 px da foto. As marcas andam com o dedo. */
+.ctr-regua { position: relative; flex: 1 1 auto; height: 48px; overflow: hidden; border: 1px solid var(--line); background: var(--panel); cursor: ew-resize; touch-action: none; }
+.ctr-regua-m {
+  position: absolute; top: 0; bottom: 0; left: -20px; right: -20px;
+  background:
+    repeating-linear-gradient(90deg, var(--muted) 0 1px, transparent 1px 10px) center / 100% 36% no-repeat,
+    repeating-linear-gradient(90deg, var(--text) 0 1.5px, transparent 1.5px 50px) center / 100% 70% no-repeat;
+  opacity: .7;
+}
+.ctr-regua::after { content: ""; position: absolute; left: 50%; top: 4px; bottom: 4px; width: 2px; margin-left: -1px; background: var(--ctr-sel); }
+.ctr-giro-cab { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; }
+.ctr-giro-v { margin-left: auto; font-variant-numeric: tabular-nums; }
+.ctr-giro-cab .lst-mini { min-height: 32px; }
+.ctr-range { flex: 1 1 auto; min-width: 80px; height: 44px; margin: 0; background: none; accent-color: var(--fer-ink); }
+.ctr-zoom { align-items: center; }
+.ctr-zoom-v { min-width: 52px; font-size: 13px; font-weight: 700; text-align: center; font-variant-numeric: tabular-nums; }
+.ctr-prog { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+.ctr-prog span { height: 4px; background: var(--line); }
+.ctr-prog span.is-feito { background: var(--fer-ink); }
+.ctr-prog span.is-atual { background: var(--ctr-sel); }
+.ctr-guia-nav { display: grid; grid-template-columns: 1fr 1fr; }
+.ctr-guia-nav > button { justify-content: center; min-height: 48px; }
+
+/* Resultado (§5.6): números com 1 casa e ±σ, o eixo que limita contornado e
+   escrito, uma linha por graduadora; "no limite" em âmbar E em texto. */
+.ctr-res { display: flex; flex-direction: column; gap: 10px; font-size: 13.5px; }
+.ctr-res-t { margin: 4px 0 0; font-size: 15px; }
+.ctr-res-t:focus { outline: none; }
+.ctr-res-lado h4 { margin: 0 0 6px; color: var(--muted); font-size: 12px; letter-spacing: .05em; text-transform: uppercase; }
+.ctr-res-lado h4 span { margin-left: 4px; color: var(--subtle); font-weight: 600; letter-spacing: 0; text-transform: none; }
+.ctr-eixo { display: grid; grid-template-columns: 38px minmax(0, 1fr) auto; align-items: baseline; gap: 2px 8px; padding: 8px 10px; border: 1px solid var(--line); background: var(--panel); }
+.ctr-eixo + .ctr-eixo { margin-top: 6px; }
+.ctr-eixo.is-limita { border-color: var(--accent); box-shadow: inset 3px 0 0 var(--accent); }
+.ctr-eixo-n { color: var(--muted); font-size: 12.5px; font-weight: 800; }
+.ctr-eixo-v { font-variant-numeric: tabular-nums; }
+.ctr-eixo-v strong { font-size: 18px; }
+.ctr-sigma { color: var(--subtle); font-size: 12px; font-variant-numeric: tabular-nums; }
+.ctr-eixo-lim { grid-column: 2 / -1; justify-self: start; color: var(--accent); font-size: 11px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
+.ctr-eixo-obs { grid-column: 1 / -1; margin: 2px 0 0; color: var(--muted); font-size: 12px; }
+.ctr-res-vazio { margin: 0; color: var(--muted); }
+.ctr-res-verso { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 10px; border: 1px dashed var(--line); }
+.ctr-res-verso p { margin: 0; color: var(--muted); }
+.ctr-res-verso .lst-mini { min-height: 40px; }
+.ctr-avisos, .ctr-gs { display: flex; flex-direction: column; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.ctr-avisos li { padding: 8px 10px; border-left: 3px solid var(--ctr-ambar); background: color-mix(in srgb, var(--ctr-ambar) 10%, var(--surface)); font-size: 12.5px; line-height: 1.45; }
+.ctr-g { display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 2px 10px; padding: 8px 10px; border: 1px solid var(--line); }
+.ctr-g-n { font-weight: 800; }
+.ctr-g-v { font-size: 15px; font-weight: 800; }
+.ctr-g-v small { margin-left: 4px; color: var(--muted); font-size: 11px; font-weight: 700; }
+.ctr-g-d { grid-column: 2; margin: 0; color: var(--muted); font-size: 12px; line-height: 1.45; }
+.ctr-g.is-limite { border-color: var(--ctr-ambar); box-shadow: inset 3px 0 0 var(--ctr-ambar); }
+.ctr-g.is-limite .ctr-g-v { color: var(--ctr-ambar); }
+.ctr-cgc { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; color: var(--muted); font-size: 12.5px; font-weight: 700; }
+.ctr-cgc .ctr-seg button { min-height: 40px; }
+.ctr-mais summary { display: flex; align-items: center; min-height: 40px; font-weight: 700; cursor: pointer; }
+.ctr-mais ul { margin: 6px 0 10px; padding-left: 18px; color: var(--muted); font-size: 12.5px; line-height: 1.5; }
+.ctr-res .ctr-fim { margin: 4px 0 0; }
+
+/* Folha do resultado (celular em pé, M4): recolhida, média e cheia. */
+.ctr-folha { display: none; }
+.ctr-toast {
+  position: fixed; left: 50%; bottom: calc(22px + env(safe-area-inset-bottom, 0px)); z-index: 80; display: flex; align-items: center; gap: 12px;
+  max-width: calc(100vw - 32px); padding: 10px 16px; transform: translateX(-50%);
+  border: 1px solid rgba(255, 255, 255, .14); background: #15171d; color: #fff; font-size: 13.5px; font-weight: 700; box-shadow: 0 12px 32px rgba(0, 0, 0, .45);
+}
+.ctr-toast .ctr-toast-b { min-height: 40px; padding: 0 14px; border: 0; border-radius: 0; background: var(--accent); color: var(--on-accent); font-weight: 800; }
+/* Vazio = escondido sem sair da árvore de acessibilidade (role=status). */
+.ctr-toast:empty { padding: 0; border: 0; box-shadow: none; }
+
+/* Celular: editor IMERSIVO por cima da tabbar (z acima dela e abaixo do
+   scanner), sempre escuro — as variáveis do tema escuro valem aqui dentro em
+   qualquer tema, como no palco. */
+.ctr-editor.ctr-imersivo {
+  position: fixed; inset: 0; z-index: 70; display: flex; flex-direction: column; max-width: none; border: 0;
+  background: var(--ctr-palco); color: #f3f5f7;
+  --surface: #13151b; --panel: #1d212b; --panel-strong: #262b36; --text: #f3f5f7; --muted: #9ba4b3; --subtle: #8891a1;
+  --line: #2d333f; --fer-ink: #22d3ee; --ctr-ambar: #f59e0b; --ctr-on-ink: #06121a;
+}
+.ctr-imersivo button { touch-action: manipulation; }
+.ctr-imersivo .ctr-barra { flex: none; flex-wrap: nowrap; gap: 6px; min-height: 52px; padding: calc(4px + env(safe-area-inset-top, 0px)) calc(8px + env(safe-area-inset-right, 0px)) 4px calc(8px + env(safe-area-inset-left, 0px)); background: var(--surface); }
+.ctr-imersivo .ctr-so-pc, .ctr-imersivo .ctr-barra-esp { display: none; }
+.ctr-imersivo .ctr-ib { width: 44px; min-height: 44px; }
+.ctr-imersivo .ctr-titulo { flex: 1 1 auto; }
+.ctr-imersivo[data-passo="angulo"] .ctr-lados, .ctr-imersivo.is-guiado .ctr-lados { display: none; }
+.ctr-imersivo .ctr-lados button { padding: 0 10px; }
+/* Alvo de toque de 44 px em tudo que se toca no editor imersivo. */
+.ctr-imersivo .ctr-seg button, .ctr-imersivo .lst-mini, .ctr-imersivo .ctr-toggle,
+.ctr-imersivo .ctr-campo .ctr-sel, .ctr-imersivo .ctr-campo input, .ctr-imersivo .ctr-mais summary { min-height: 44px; }
+.ctr-imersivo .ctr-corpo { display: flex; flex: 1 1 auto; flex-direction: column; min-height: 0; }
+.ctr-imersivo .ctr-palco { flex: 1 1 auto; height: auto; min-height: 0; }
+/* A lupa e o resultado não usam a coluna no celular: a lupa mora no palco e
+   o resultado vai pra folha (em pé) ou pros controles (deitado). */
+.ctr-imersivo .ctr-col { display: none; }
+.ctr-imersivo .ctr-ctl {
+  flex: none; flex-direction: column; flex-wrap: nowrap; align-items: stretch; gap: 10px; min-height: 0; max-height: 48vh; max-height: 48dvh;
+  padding: 10px calc(12px + env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) calc(12px + env(safe-area-inset-left, 0px));
+  overflow: auto; overscroll-behavior: contain; border-top: 1px solid var(--line); background: var(--surface);
+}
+.ctr-imersivo:not(.ctr-deitado):not([data-passo="angulo"]) .ctr-ctl { padding-bottom: calc(62px + env(safe-area-inset-bottom, 0px)); }
+.ctr-imersivo .ctr-ctl > .ctr-grupo { flex-direction: column; align-items: stretch; }
+.ctr-imersivo .ctr-ctl .ctr-largo { width: 100%; margin-left: 0; }
+.ctr-imersivo .ctr-ctl > [data-bloco="giro"] { flex: none; }
+/* Ângulo em pé (M2): dica, [Girar 90°] e o tamanho numa linha, Endireitar
+   sempre à vista (grudado embaixo, se a coluna rolar). O "Foto já reta" e o
+   ímã vão pro menu (…). */
+.ctr-imersivo .ctr-ctl > .ctr-ang-ctl { flex-direction: row; flex-wrap: wrap; align-items: center; }
+/* Só o rótulo do TAMANHO (filho direto): os de Largura e Altura do
+   Personalizado ficam à vista, senão sobravam duas caixas com "63" e "88". */
+.ctr-imersivo .ctr-ang-ctl > .ctr-campo > span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.ctr-imersivo .ctr-ang-ctl .ctr-custom { flex: 1 1 100%; }
+.ctr-imersivo .ctr-ang-ctl .ctr-tam-jogos { flex: 1 1 100%; }
+.ctr-imersivo .ctr-ang-ctl .ctr-sel { max-width: 58vw; }
+.ctr-imersivo .ctr-ang-ctl .ctr-nota-p { display: none; }
+.ctr-imersivo .ctr-ang-ctl .ctr-ang { flex: 1 1 100%; font-size: 12.5px; color: var(--muted); }
+.ctr-imersivo .ctr-ctl [data-bloco="endireitar"] { position: sticky; bottom: 0; z-index: 1; }
+.ctr-imersivo:not(.ctr-deitado) .ctr-folha {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 3; display: flex; flex-direction: column;
+  height: calc(52px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--line); background: var(--surface);
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, .4); transition: height .2s ease;
+}
+.ctr-imersivo .ctr-folha[data-altura="1"] { height: 45%; }
+.ctr-imersivo .ctr-folha[data-altura="2"] { height: 84%; }
+.ctr-folha-cab { flex: none; justify-content: space-between; gap: 8px; width: 100%; min-height: 52px; padding: 0 14px; border: 0; border-radius: 0; background: none; color: var(--text); font-size: 14px; font-weight: 800; text-align: left; font-variant-numeric: tabular-nums; }
+.ctr-folha-cab svg { flex: none; width: 18px; height: 18px; transition: transform .2s; }
+.ctr-folha-cab[aria-expanded="true"] svg { transform: rotate(180deg); }
+.ctr-mini { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ctr-folha-corpo { flex: 1 1 auto; min-height: 0; padding: 0 14px calc(14px + env(safe-area-inset-bottom, 0px)); overflow: auto; overscroll-behavior: contain; }
+.ctr-folha[data-altura="0"] .ctr-folha-corpo { visibility: hidden; }
+/* Celular deitado (M5): palco com ~62% da largura e a coluna rolável ao lado,
+   sem folha (o resultado mora na coluna). */
+.ctr-imersivo.ctr-deitado .ctr-corpo { display: grid; grid-template-columns: 62% minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); }
+.ctr-imersivo.ctr-deitado .ctr-palco { grid-column: 1; grid-row: 1; height: auto; }
+.ctr-imersivo.ctr-deitado .ctr-ctl { grid-column: 2; grid-row: 1; max-height: none; border-top: 0; border-left: 1px solid var(--line); }
+
+/* Conteúdo indexável abaixo da ferramenta. */
+.ctr-secoes { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 4px; }
+.ctr-secoes .chip { min-height: 40px; }
+.ctr-page .ctr-sec { max-width: 1100px; margin-top: 16px; scroll-margin-top: calc(var(--header-h, 56px) + 12px); }
+.ctr-sec h2 { margin: 0 0 10px; font-size: 19px; }
+.ctr-sec h2:focus { outline: none; }
+.ctr-sec h3 { margin: 16px 0 6px; font-size: 15px; }
+.ctr-sec p { margin: 0 0 10px; color: var(--muted); line-height: 1.55; }
+.ctr-passos-txt, .ctr-lista { display: flex; flex-direction: column; gap: 6px; margin: 0; padding-left: 20px; line-height: 1.55; }
+.ctr-sec .ctr-exemplo { padding: 10px 12px; border-left: 3px solid var(--fer-ink); background: var(--panel); color: var(--text); font-variant-numeric: tabular-nums; }
+.ctr-sec-cab { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+.ctr-sec .ctr-sec-cab h2 { margin: 0; }
+.ctr-sec-cab .ctr-seg button { min-height: 40px; }
+/* Tabela com rolagem lateral e a 1ª coluna fixa (celular). */
+.ctr-tab-rola { margin: 12px 0; overflow-x: auto; border: 1px solid var(--line); }
+.ctr-tab { width: 100%; border-collapse: collapse; font-size: 13px; font-variant-numeric: tabular-nums; }
+.ctr-tab th, .ctr-tab td { padding: 7px 10px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+.ctr-tab thead th { background: var(--panel); color: var(--muted); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; }
+.ctr-tab tbody th, .ctr-tab thead th:first-child { position: sticky; left: 0; z-index: 1; }
+.ctr-tab tbody th { background: var(--surface); font-weight: 800; }
+.ctr-tab td { min-width: 96px; }
+.ctr-lim { display: block; font-weight: 700; }
+.ctr-rot, .ctr-obs { display: block; color: var(--subtle); font-size: 11px; }
+.ctr-tab-notas, .ctr-fontes { margin: 0 0 10px; padding-left: 18px; color: var(--muted); font-size: 12.5px; line-height: 1.5; }
+.ctr-fontes a { color: var(--fer-ink); overflow-wrap: anywhere; }
+.ctr-tab-sub { margin: 16px 0 6px; font-size: 14px; }
+.ctr-mais-grade { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; margin-top: 8px; }
+.ctr-mais-g h4 { margin: 0 0 6px; font-size: 14px; }
+.ctr-tab.ctr-tab-p { margin-bottom: 6px; border: 1px solid var(--line); }
+.ctr-tab-p td { min-width: 0; }
+
+@media (max-width: 1080px) {
+  .ctr-corpo { grid-template-columns: minmax(0, 1fr) 300px; }
+  .ctr-lupa-pc canvas { width: 100%; height: auto; aspect-ratio: 1; }
+}
+@media (max-width: 760px) {
+  .ctr-entrada { grid-template-columns: minmax(0, 1fr); }
+  .ctr-entrada .ctr-drop { min-height: 0; padding: 22px 16px; border-style: solid; border-width: 1px; }
+  /* M1: "Tirar foto" com a largura toda; Galeria e Colar lado a lado. */
+  .ctr-drop-btns { align-self: stretch; }
+  .ctr-drop-btns > * { flex: 1 1 0; justify-content: center; }
+  .ctr-drop-btns .cta { flex-basis: 100%; min-height: 52px; }
+  .ctr-toast { bottom: calc(var(--tabbar-lift, 10px) + var(--tabbar-h, 60px) + 12px); }
+  .preview-open .ctr-toast { bottom: calc(22px + env(safe-area-inset-bottom, 0px)); }
+}
+/* Fora do editor, na página (entrada, resultado guardado, tabela): os mesmos
+   44 px no toque. */
+@media (pointer: coarse) {
+  .ctr-secoes .chip, .ctr-sec-cab .ctr-seg button, .ctr-salvo-cab .lst-mini, .ctr-res-verso .lst-mini,
+  .ctr-cgc .ctr-seg button, .ctr-mais summary, .ctr-mais .lst-mini, .ctr-toast .ctr-toast-b { min-height: 44px; }
+  /* Atalhos do TECLADO: só onde há ponteiro fino (o "?" segue abrindo a
+     lista se houver teclado). */
+  .ctr-barra .ctr-so-tecla { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ctr-entrada .ctr-drop, .ctr-folha, .ctr-folha-cab svg { transition: none; }
+}
 
 /* ── Ferramentas do HUB em página própria (2026-10-01) ──────────────────────
    Guia de condição (condicao.html) e Sleeves e fichários (sleeves.html). Ver
@@ -12811,6 +13177,9 @@ a.fer-btn { display: inline-flex; align-items: center; justify-content: center; 
    ícone no ciano de instrumento, o que ela faz, se precisa de conta e o botão. */
 .fer-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; max-width: 1100px; margin-top: 18px; }
 .fer-tool { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 16px; align-content: start; scroll-margin-top: calc(var(--header-h, 56px) + 12px); }
+/* Âncoras dos endereços antigos (/ferramentas#medir chega aqui pelo 301 com o
+   fragmento): spans vazios no topo do cartão, com o mesmo respiro. */
+.fer-tool-b > span[id] { scroll-margin-top: calc(var(--header-h, 56px) + 12px); }
 .fer-tool-ic { display: grid; place-items: center; width: 56px; height: 56px; background: var(--panel); border: 1px solid var(--line); color: var(--fer-ink); }
 .fer-tool-ic svg { width: 28px; height: 28px; }
 .fer-tool-b { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; }

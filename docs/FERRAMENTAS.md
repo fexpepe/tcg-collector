@@ -10,7 +10,7 @@ a versão de produção.
 
 | Página | Endereço | Arquivos | O que faz |
 | --- | --- | --- | --- |
-| Guia de condição | `/condicao` | `condicao.html`, `src/condicao.js` | Cinco perguntas (danos, cantos, bordas, verso, superfície) e a condição na escala da Liga, com régua por critério e texto pra negociação |
+| Guia de condição | `/condition` (era `/condicao`, §7) | `condition.html`, `src/condicao.js` | Cinco perguntas (danos, cantos, bordas, verso, superfície) e a condição na escala da Liga, com régua por critério e texto pra negociação |
 | Sleeves e fichários | `/sleeves` | `sleeves.html`, `src/sleeves.js` | Sleeves no tamanho certo, inner, folhas, fichários, penny sleeves e toploaders, a partir da coleção e dos decks da pessoa |
 
 Textos das duas em `src/i18n-ferramentas.js` (pacote próprio, pt/en/es). CSS
@@ -110,7 +110,8 @@ e não no `:root`, pra viajar na folha da área em vez de pesar no núcleo.
   entra como mais um item da coluna Colecionar e mais um cartão da página.
 - Lista de jogos por tamanho de carta (hoje só o Yu-Gi-Oh! é citado como
   japonês).
-- Levar o medidor de centralização pra página própria também.
+- ~~Levar o medidor de centralização pra página própria também.~~ Feito na
+  v2: `/centering` (§7).
 
 ## 6. Estado (2026-10-01)
 
@@ -132,3 +133,51 @@ Fases 1–5 feitas e conferidas antes da subida:
 `/ferramentas` (seções 2 e 3 acima). O `shared.js` pagou o menu tirando um
 helper morto (`group()`, o menu de clique com botão, sem uso desde o
 mega-menu) e montando Coleção e Mais com o mesmo `mega()`.
+
+## 7. Endereços em inglês e o Centering Tool em página própria (2026-10-01, 3ª rodada)
+
+Pedido do Fernando junto com o Centering Tool v2: **todos os links das
+ferramentas em inglês**.
+
+| Antes | Agora | Arquivo |
+| --- | --- | --- |
+| `/ferramentas` | `/tools` | `tools.html` (era `ferramentas.html`) |
+| `/condicao` | `/condition` | `condition.html` (era `condicao.html`) |
+| modal por cima do HUB, da Coleção e da `/ferramentas` | `/centering` | `centering.html` (nova, na raiz, sem `<base>`) |
+
+- **301 no `_redirects`** pros dois endereços antigos: link salvo, post
+  compartilhado e o que o buscador já indexou chegam no novo. O sitemap
+  (`STATIC_URLS` do `prerender-catalog.mjs`) anuncia só os destinos:
+  `/tools`, `/condition` e `/centering`.
+- **Só os endereços mudaram.** As chaves de i18n (`title.condicao`,
+  `nav.condicao`, `title.ferramentas`), o pacote `src/i18n-ferramentas.js`,
+  o `src/condicao.js` e os prefixos de CSS (`fer-`, `gc-`, `slv-`) ficaram
+  com o nome antigo. A `/troca` e a `/sleeves` não mudam.
+- **Centering Tool** (o "Medir centralização" da v1, agora com o nome
+  "Centering Tool" nos três idiomas): página própria, pública e indexável. O
+  plano inteiro, com as tabelas das graduadoras e a precisão, está em
+  [`docs/PLANO-CENTERING-V2.md`](PLANO-CENTERING-V2.md). Ele é um item da
+  coluna Colecionar do "Mais" (`link("centering", …)`; não nasceu menu
+  "Tools" novo), um cartão da `/tools` e um atalho comum (`<a>`) na seção
+  Ferramentas do HUB. O `centering.js` saiu do HUB e da Coleção; só a
+  `centering.html` o carrega, e a área `medidor` do split-css (`ctr-`) ficou só
+  com ela. Ela também reusa o `.fer-page`/`.fer-card`, então está na área
+  `ferramentas`.
+- **Registro:** `data-active-page`, `moreActive`, `FOOTER_PAGES` (pelo último
+  segmento do caminho), rodapé e menu da conta, `isNeutralPage` do `game.js`
+  (as quatro ferramentas são neutras: antes o `/condicao` público saía com
+  `?game=` no link), `SHELL_ASSETS` + `SHELL_CACHE` v269, `SEM_VITRINE`,
+  `smoke-pages`, `diff-computed-style` e rótulos do Admin (as chaves antigas
+  ficam pro histórico das estatísticas).
+- **Guarda de recarga:** o `podeRecarregarSozinho` do `shared.js` não
+  recarrega por versão nova enquanto o `<html>` tiver `data-ocupado` (o
+  Centering Tool põe com a foto carregada, que só existe em memória).
+- **Lembrete das tabelas:** o `scripts/check.mjs` imprime uma linha própria
+  (e `::warning::` no Actions) quando algum `conferido` do
+  `src/centering-graders.js` passa de 180 dias
+  (`scripts/lib/lembrete-centering.mjs`). Nunca falha o CI.
+- **Testes:** `tests/tools-pages.test.mjs` (endereços, 301, `SHELL_ASSETS`,
+  rodapé, menu, ordem dos scripts da `centering.html`, guarda de recarga e
+  lembrete) e `tests/ferramentas.test.mjs` com os nomes novos. O
+  `tests/centering.test.mjs` da v1 saiu: o núcleo novo tem os dele
+  (`centering-core` e `centering-graders`).
