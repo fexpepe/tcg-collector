@@ -355,6 +355,7 @@ Ferramentas que rodam à mão (não estão em workflow nenhum):
 | `scripts/test-d1-search.mjs` | prova a busca da borda contra um SQLite real | `node scripts/build-d1.mjs` (gera `out/d1-cards.sql`); com o dump desatualizado ele acusa falhas que não são do código |
 | `scripts/seo-meta.mjs` | codemod de `<head>` do rebrand — **destrutivo, reescreve todos os HTML** | commit limpo e revisar o diff depois |
 | `scripts/build-og-image.mjs` | regera o `og-image.png` (a imagem que aparece quando alguém compartilha um link) a partir do template `scripts/og/og-image.html` | Chrome/Chromium instalado (ou `CHROME_PATH=/caminho/do/chrome`) |
+| `scripts/decodifica-erro.mjs` | traduz a fonte de um erro de JS do `/admin` (`shared.<hash>.js:linha:coluna`, minificado) pro arquivo e a linha do repositório, pelo `.map` que o deploy publica; leva que saiu do ar vai com `--origem` do deploy daquele dia (ver [docs/PLANO-TECNICO.md](docs/PLANO-TECNICO.md)) | nada (o `fetch` do Node 22) |
 
 ### Imagem de compartilhamento (og-image)
 
