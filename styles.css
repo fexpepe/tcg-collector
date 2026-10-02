@@ -11734,6 +11734,10 @@ select,
 /* Nome em até 2 LINHAS: com a capa ocupando 52px, uma linha só cortava quase
    todo nome de deck ("Mickey and Minnie ..."), que é justamente o que
    identifica o card na galeria. */
+/* Subtítulo da página (decks.html): no celular eram 3 linhas de texto em cima
+   da galeria e do deck aberto, empurrando o conteúdo pra baixo da dobra. O
+   título "Decks da comunidade" já diz o que é a página (2026-10-02). */
+@media (max-width: 700px) { .dkc-lead { display: none; } }
 .dkc-view-head { display: flex; align-items: center; gap: 13px; flex-wrap: wrap; margin-bottom: 16px; }
 .dkc-view-name { margin: 0; font-size: 22px; letter-spacing: -0.01em; }
 .dkc-view-head .cta { margin-left: auto; }
