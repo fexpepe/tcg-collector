@@ -11756,8 +11756,15 @@ select,
 .dkc-view-meta .dkc-author + .dkc-meta-item::before { content: "·"; margin-right: 10px; color: var(--subtle); }
 .dkc-meta-date { color: var(--subtle); }
 /* wrap: com o "Exportar lista" (2026-10-02) são três controles, e no celular
-   o CTA desce pra linha de baixo em vez de vazar a tela. */
+   o CTA desce pra linha de baixo em vez de vazar a tela. Lá a fileira pega a
+   largura toda: o Exportar completa a linha dos ícones e o CTA desce inteiro
+   (sozinho e encostado à direita, parecia sobra de layout). */
 .dkc-view-acts { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-left: auto; }
+@media (max-width: 640px) {
+  .dkc-view-acts { width: 100%; margin-left: 0; }
+  .dkc-view-acts .deck-mini { flex: 1; }
+  .dkc-view-acts .cta { flex: 1 1 100%; margin-left: 0; }
+}
 .dkc-lays { display: flex; gap: 6px; }
 /* padding 0: estes botões herdam `padding: 0 16px` da regra genérica de botão.
    Com 40px de largura sobravam 6px de área interna, e o `max-width: 100%` do
