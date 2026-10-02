@@ -32,7 +32,7 @@ function load() {
   return sandbox.window.TCGScan;
 }
 const S = load();
-// Arrays do outro realm do vm: copiar antes do deepEqual (ver centering.test).
+// Arrays do outro realm do vm: copiar antes do deepEqual (ver ferramentas.test).
 const arr = (x) => JSON.parse(JSON.stringify(x));
 
 // Imagem RGBA sintética: `cor(x, y)` devolve [r, g, b] em coordenadas 0-1.

@@ -27,6 +27,20 @@ Onde as pesquisas divergiram, a §4.4 diz qual versão vale e por quê. Os custo
 
 ---
 
+## Estado (2026-10-02): o que mudou depois do plano e o que já subiu
+
+**Decisões do Fernando posteriores ao plano** (valem por cima do texto abaixo):
+
+- **Sem menu "Tools" novo.** Depois do plano entrou na `main` o menu **"Mais"** (último item do topo, PR #150), com a fileira Ferramentas e a coluna Colecionar. O Centering Tool é um item dessa coluna e um cartão da página índice. As §7.1–7.4 descrevem o menu que **não** foi feito; ficam como registro.
+- **Endereços todos em inglês:** a ferramenta é **`/centering`** (`centering.html`, na raiz, caminho raso, sem `<base>` especial); o índice `/ferramentas` virou **`/tools`** e o Guia de condição `/condicao` virou **`/condition`**, com 301 dos antigos no `_redirects`. `/sleeves` já era inglês; `/troca` não muda (é página da Coleção, com login).
+- **Nome:** "Centering Tool" nos 3 idiomas (`ctr.title`).
+- **Sem a foto de exemplo do pedido:** ela é de terceiros. O aceite da F1 foi feito com fotos sintéticas: uma carta gerada com bordas conhecidas (verdade 60,0/40,0 · 52,0/48,0) fotografada em perspectiva, e scans do catálogo em perspectiva, um deles dentro de um toploader.
+- **Pacote de i18n** `src/i18n-centering.js` (chaves `cen.*`); a página reusa `.fer-page`/`.fer-card` e por isso está nas áreas `medidor` **e** `ferramentas` do split-css.
+
+**Entregue nesta rodada: F1a + F1b juntas**, com push direto na `main` a pedido. Ficaram de fora, como no plano: F2 (detecção automática, que espera o corpus real), F3 (compartilhar e variante em inglês), F4 (carta, preço e salvar), F5 (câmera ao vivo e eBay) e o evento de analytics `centering` (precisa de migração). O peso ficou acima do orçamento da §9.3: o `centering.js` tem ~27 KB gz contra ≤ 10 previstos, porque F1a e F1b vieram juntas. O núcleo `shared.js` subiu só +5 B.
+
+---
+
 ## 0. Resumo executivo
 
 O centeringcheck faz bem o essencial:
@@ -930,6 +944,7 @@ Sem folha: o resultado mora na coluna da direita, e a lupa fica no canto do palc
   - Vírgula decimal em pt e es; ponto em en.
   - Uma linha diz o lado mais grosso: "mais grosso à esquerda".
 - **Precisão baixa:** se `σ_total > 0,5`, o número **aparece** inteiro com "±" ("58/42 ±1"), com o aviso "Foto com pouca resolução: chegue mais perto ou use o zoom 2×". A nota segue decidida pela 1 casa (§4.6).
+  - (2026-10-02) O inteiro e o aviso de resolução olham o σ **só da foto** (ajuste, cantos e piso, sem a paralaxe). Sem dados de câmera (imagem colada, print, scanner, "Foto já reta") a paralaxe vai pro pior caso de 20° e passaria de 0,5 em toda foto nítida; ela já tem o aviso de ângulo. O "±" exibido continua sendo o total.
 - **Ângulo da foto:** sempre que a pose for estimável (§6.4).
   - Acima de ~10°: "Foto a ~14°: a espessura da carta pode somar até ±0,4 pt do lado mais perto da câmera. Pra precisão cheia, fotografe mais de frente."
   - Sem EXIF (imagem colada ou recortada): "ângulo desconhecido".

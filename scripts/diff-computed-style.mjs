@@ -16,8 +16,9 @@ const paginas = ["index.html", "login.html", "decks.html", "my-decks.html", "por
   // 2026-09-14: as páginas das áreas novas do split (troca, medalhas, 404, detalhe
   // de set/pokémon) e as que nasceram neste mês (busca, conta, listas, painel).
   "troca.html", "badges.html", "pastas.html", "search.html", "account.html", "404.html", "dashboard.html",
-  // 2026-10-01: as ferramentas do HUB em página própria (área "ferramentas").
-  "ferramentas.html", "condicao.html", "sleeves.html",
+  // 2026-10-01: as ferramentas do HUB em página própria (área "ferramentas"),
+  // com os endereços em inglês, e o Centering Tool v2 (área "medidor").
+  "tools.html", "condition.html", "sleeves.html", "centering.html",
   "detail.html?type=set&setId=base1&game=pokemon", "detail.html?type=set&game=lorcana&setId=1",
   "detail.html?type=pokemon&name=Charizard&game=pokemon"];
 const PROPS = ["display","position","color","background-color","border-radius","border-width","border-color",

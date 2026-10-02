@@ -126,9 +126,12 @@
   // /collection e ver "?game=pokemon" na barra dá a entender que a página está
   // presa no Pokémon, quando o filtro dela começa em "Todos".
   // Cobre URL limpa do Cloudflare (/, /index, /decks) e o .html.
+  // As ferramentas (2026-10-01: /tools, /condition, /centering, /sleeves) são
+  // neutras também: o HTML delas já dizia "página NEUTRA", mas faltavam aqui,
+  // e o /condition público saía com ?game= no link que a pessoa copia.
   function isNeutralPage() {
     var p = (location.pathname || "").replace(/\/+$/, "");
-    return p === "" || /\/(index|hub|explore|search|account|dashboard|badges|backup|decks|my-decks|collection|portfolio|sales|binders|wishlist|graded|troca)(\.html)?$/i.test(p);
+    return p === "" || /\/(index|hub|explore|search|account|dashboard|badges|backup|decks|my-decks|collection|portfolio|sales|binders|wishlist|graded|troca|tools|condition|centering|sleeves)(\.html)?$/i.test(p);
   }
   // Porta de entrada (Início/HUB): a única neutra onde ?game= grava a sessão.
   function isEntryPage() {

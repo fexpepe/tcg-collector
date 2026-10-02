@@ -2520,7 +2520,11 @@
       const modal = Array.from(document.querySelectorAll('dialog[open], [role="dialog"], [aria-modal="true"]'))
         .some((el) => !el.closest(".cmdk-page") && el.getClientRects().length > 0);
       if (modal) return false;
-      if (pageLoadingCount > 0) return false;
+      // data-ocupado no <html>: a página guarda algo que só existe em memória
+      // (o Centering Tool, com a foto carregada; docs/PLANO-CENTERING-V2.md
+      // §5.3). Recarregar por versão nova jogaria a foto fora justamente na
+      // volta do app da câmera, quando o visibilitychange chama o update().
+      if (pageLoadingCount > 0 || document.documentElement.hasAttribute("data-ocupado")) return false;
       return true;
     } catch (e) { return true; }
   }
@@ -3086,7 +3090,9 @@
     // "Mais" (2026-10-01): as ferramentas e o Blog. O Guia de condição e o
     // Sleeves moram nele (não na Coleção) desde que viraram ferramentas do
     // site; a Troca segue na Coleção, que é onde o histórico dela vive.
-    const moreActive = ["blog", "ferramentas", "condicao", "sleeves"].includes(active);
+    // Endereços em inglês desde 2026-10-01 (pedido do Fernando): /tools,
+    // /condition e /centering; os antigos têm 301 no _redirects.
+    const moreActive = ["blog", "tools", "condition", "centering", "sleeves"].includes(active);
 
     // `beta`: selo pequeno sobrescrito no rótulo — recurso ainda em construção
     // (pedido de 2026-08-25 pra Decks e Portfólio). "beta" é literal de
@@ -3128,10 +3134,10 @@
       megaCol("nav.colMore", link("sales", "nav.sales", "sales") + link("troca", "trade.title", "troca") + link("badges", "dash.badges", "badges")));
     // Mais (2026-10-01, pedido do Fernando): o ÚLTIMO item do menu, logado ou
     // não. O clique leva à página Ferramentas; o painel lista as ferramentas e
-    // o Blog, que saiu do meio do menu pra cá. "Medir centralização" abre o
-    // medidor por cima da página Ferramentas (ver o #medir no centering.js).
-    const moreMega = mega("ferramentas", "nav.more", moreActive, "dash.tools", "nav.toolsHint",
-      megaCol("nav.colCollect", link("condicao", "nav.condicao", "condicao") + link("ferramentas#medir", "ctr.title", "-") + link("sleeves", "nav.sleeves", "sleeves")) +
+    // o Blog, que saiu do meio do menu pra cá. O Centering Tool é página
+    // própria (/centering) desde a v2; o modal da v1 saiu.
+    const moreMega = mega("tools", "nav.more", moreActive, "dash.tools", "nav.toolsHint",
+      megaCol("nav.colCollect", link("condition", "nav.condicao", "condition") + link("centering", "ctr.title", "centering") + link("sleeves", "nav.sleeves", "sleeves")) +
       megaCol("nav.colTrade", link("troca", "trade.title", "troca")) +
       megaCol("nav.colRead", link("blog", "nav.blog", "blog")));
     // Decks fica FORA da Coleção e aparece deslogado de propósito: a galeria da
@@ -3501,7 +3507,7 @@
     // fontes de dados saíram daqui em 2026-08-05 — as duas já viviam, mais
     // completas e nos três idiomas, em Termos § Marcas e Sobre § De onde vêm os
     // dados. Repetidas no rodapé viravam um paredão de texto no pé da Início.
-    const FOOTER_PAGES = ["", "index", "about", "novidades", "blog", "ferramentas", "condicao", "lancamentos", "comparar", "faq", "help", "settings", "backup", "privacy", "terms", "login", "404"];
+    const FOOTER_PAGES = ["", "index", "about", "novidades", "blog", "tools", "condition", "centering", "lancamentos", "comparar", "faq", "help", "settings", "backup", "privacy", "terms", "login", "404"];
     const page = (window.location.pathname.split("/").pop() || "").replace(/\.html$/, "");
     if (!FOOTER_PAGES.includes(page)) return;
     if (document.querySelector(".site-footer")) return;
@@ -3528,7 +3534,7 @@
         <nav class="site-footer-links" aria-label="${escapeAttribute(t("footer.linksLabel"))}">
           <a href="about">${escapeHtml(t("footer.about"))}</a>
           <a href="blog">${escapeHtml(t("nav.blog"))}</a>
-          <a href="ferramentas">${escapeHtml(t("dash.tools"))}</a>
+          <a href="tools">${escapeHtml(t("dash.tools"))}</a>
           <a href="novidades" data-news-link>${escapeHtml(t("news.heading"))}</a>
           <a href="lancamentos">${escapeHtml(t("footer.releases"))}</a>
           <a href="faq">${escapeHtml(t("footer.faq"))}</a>
@@ -12168,7 +12174,7 @@
     // Blog e Ferramentas aqui também: no celular este menu É a tela Perfil
     // (account.html), e a barra de baixo não tem vaga pro "Mais" do topo.
     const aboutItems = `<li class="auth-sep" aria-hidden="true"></li>
-      <a class="lang-dd-option auth-link" role="menuitem" href="ferramentas">${escapeHtml(t("dash.tools"))}</a>
+      <a class="lang-dd-option auth-link" role="menuitem" href="tools">${escapeHtml(t("dash.tools"))}</a>
       <a class="lang-dd-option auth-link" role="menuitem" href="blog">${escapeHtml(t("nav.blog"))}</a>
       <a class="lang-dd-option auth-link" role="menuitem" href="novidades" data-news-link>${escapeHtml(t("news.heading"))}</a>
       <a class="lang-dd-option auth-link" role="menuitem" href="settings">${escapeHtml(t("footer.settings"))}</a>
@@ -12373,7 +12379,7 @@
       if (remoteAll && await moveMiracleBattle(aSubir)) changed = true;
       if (Object.keys(aSubir).length) await pushAllRemote(session.access_token, session.user.id, aSubir);
       pageLoading(false);
-      if (changed) { window.location.reload(); return; }
+      if (changed) { if (!document.documentElement.hasAttribute("data-ocupado")) window.location.reload(); return; } // data-ocupado: a foto do Centering Tool só existe em memória
       pullProfile(); // sincroniza o perfil (handle/visibilidade) sem bloquear
       startSyncLoop();
     })();

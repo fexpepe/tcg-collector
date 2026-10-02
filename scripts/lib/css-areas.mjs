@@ -64,14 +64,11 @@ export const AREAS = [
   // o card em pilha do Showcase (.coll-card-pile) e a pasta aberta usa o
   // cartão-herói e a "Visão geral" da Coleção.
   { nome: "colecao",   prefixos: ["coll-", "prof-", "tag-", "cond-"], paginas: ["collection.html", "pastas.html", "sales.html"] },
-  // ctr- é o medidor de centralização. Morou na aba Graded da Coleção (a
-  // página /graded saiu em 2026-09-14) e em 2026-09-16 virou atalho do HUB
-  // pessoal — o modal abre por cima do dashboard, que precisa da fatia. A
-  // Coleção segue carregando: o centering.js continua nela (o preview de
-  // slab pode chamá-lo).
-  // ferramentas.html entrou em 2026-10-01: o cartão do medidor na página
-  // Ferramentas (e o "Medir centralização" do menu Mais) abre a janela ali.
-  { nome: "medidor",   prefixos: ["ctr-"],                          paginas: ["collection.html", "dashboard.html", "ferramentas.html"] },
+  // ctr- é o Centering Tool. A v1 era um modal que morou na Coleção, no HUB
+  // e na página Ferramentas; a v2 (2026-10-01, docs/PLANO-CENTERING-V2.md) é
+  // página própria e só ela carrega o centering.js, então a fatia vai só pra
+  // lá. Coleção, HUB e /tools levam só um link pra /centering.
+  { nome: "medidor",   prefixos: ["ctr-"],                          paginas: ["centering.html"] },
   { nome: "detalhe",   prefixos: ["favorite-", "segmented-"],      paginas: ["detail.html"] },
   { nome: "404",       prefixos: ["notfound-"],                    paginas: ["404.html"] },
   { nome: "set",       prefixos: ["facet-", "mkt-"],               paginas: ["detail.html", "sets.html", "decks.html", "my-decks.html"] },
@@ -79,8 +76,11 @@ export const AREAS = [
   // Ferramentas do HUB em página própria (2026-10-01, docs/FERRAMENTAS.md):
   // fer- é o comum das duas, gc- o Guia de condição e slv- o Sleeves e
   // fichários. O guia NÃO usa cond-: esse prefixo é da área "colecao". A
-  // ferramentas.html (o índice, aonde leva o "Mais" do menu) usa o fer-.
-  { nome: "ferramentas", prefixos: ["fer-", "gc-", "slv-"],        paginas: ["condicao.html", "sleeves.html", "ferramentas.html"] },
+  // tools.html (o índice, aonde leva o "Mais" do menu) usa o fer-. Endereços
+  // em inglês desde 2026-10-01 (condicao.html → condition.html, ferramentas.html
+  // → tools.html). centering.html entra porque reusa o .fer-page/.fer-card
+  // (cores e cartão) em volta da ferramenta, que é ctr- (área "medidor").
+  { nome: "ferramentas", prefixos: ["fer-", "gc-", "slv-"],        paginas: ["condition.html", "sleeves.html", "tools.html", "centering.html"] },
   { nome: "goldfish",  prefixos: ["gf-"],                          paginas: ["decks.html", "my-decks.html"] },
   { nome: "faq",       prefixos: ["faq-"],                         paginas: ["faq.html"] },
   // blog- (2026-09-30): a lista, o post e o EDITOR — a prévia do editor desenha

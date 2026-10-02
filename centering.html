@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title data-i18n="cen.titulo">Centering Tool: centralização de cartas pela foto - Sleevu</title>
+    <meta name="description" content="Meça a centralização da carta pela foto, como PSA, BGS, CGC, SGC e TAG: corrige o ângulo (até no toploader), mede com uma casa decimal e mostra a nota máxima pela centralização. Grátis, sem cadastro, e a foto não sai do seu aparelho.">
+    <!-- Centering Tool v2 (2026-10-01, docs/PLANO-CENTERING-V2.md): PÚBLICA e
+         indexável, sem login. Endereço raso e em inglês (/centering), na raiz:
+         sem <base> especial, como as outras ferramentas da página /tools. -->
+    <link rel="canonical" href="https://sleevu.app/centering">
+    <meta property="og:site_name" content="Sleevu">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sleevu.app/centering">
+    <meta property="og:title" content="Centering Tool: centralização de cartas pela foto">
+    <meta property="og:description" content="Corrige o ângulo da foto, mede com uma casa decimal e mostra a nota pela centralização na PSA, BGS, CGC, SGC e TAG. A foto não sai do seu aparelho.">
+    <meta property="og:image" content="https://sleevu.app/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Centering Tool: centralização de cartas pela foto">
+    <meta name="twitter:description" content="Corrige o ângulo da foto, mede com uma casa decimal e mostra a nota pela centralização na PSA, BGS, CGC, SGC e TAG. A foto não sai do seu aparelho.">
+    <meta name="twitter:image" content="https://sleevu.app/og-image.png">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <meta name="theme-color" content="#e8ecf1" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#101218" media="(prefers-color-scheme: dark)">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Sleevu">
+    <script src="src/theme.js"></script>
+    <!-- Página NEUTRA (cross-game): a ferramenta não lê catálogo no boot. -->
+    <script src="src/game.js" data-catalog=""></script>
+    <link rel="preload" href="assets/fonts/outfit-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Dados estruturados FORA do par theme.js+game.js (o bundle-boot funde o
+         par, e script no meio reprova o deploy — tests/marca-json-ld.test.mjs). -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Centering Tool",
+      "url": "https://sleevu.app/centering",
+      "description": "Mede a centralização de cartas colecionáveis pela foto, com correção de ângulo, uma casa decimal e as tabelas oficiais de PSA, BGS, CGC, SGC e TAG. A foto é medida no aparelho e não é enviada.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Any",
+      "browserRequirements": "Requires JavaScript",
+      "inLanguage": ["pt-BR", "en", "es"],
+      "isAccessibleForFree": true,
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "BRL" },
+      "publisher": { "@id": "https://sleevu.app/#organization" }
+    }
+    </script>
+  </head>
+  <body>
+    <!-- Saída de emergência: só aparece se o app não subir (ver .falha-boot no styles.css). -->
+    <div class="falha-boot" hidden>
+      <p data-i18n="boot.stuck">Esta tela não terminou de carregar.</p>
+      <a class="primary" href="" data-i18n="boot.retry">Tentar de novo</a>
+      <a class="secondary" href="/" data-i18n="boot.home">Ir para o início</a>
+    </div>
+    <header class="app-header">
+      <div class="app-header-inner">
+        <a class="brand" href="/">Sleevu</a>
+        <nav class="page-nav" data-i18n-aria="aria.pages" aria-label="Páginas" data-active-page="centering"></nav>
+        <div class="header-actions">
+          <select id="languageSwitcher" class="lang-select"></select>
+        </div>
+      </div>
+    </header>
+
+    <main class="fer-page ctr-page">
+      <div class="page-head">
+        <h1 data-i18n="ctr.title">Centering Tool</h1>
+        <a href="tools" class="serie-back" data-i18n="cen.voltar">← Ferramentas</a>
+      </div>
+      <p class="collection-subtitle ctr-sub" data-i18n="cen.sub">Meça a centralização da carta pela foto, do jeito que PSA, BGS, CGC, SGC e TAG medem: corrige o ângulo, mede com uma casa decimal e mostra a nota máxima pela centralização. Grátis e sem cadastro.</p>
+      <p class="ctr-priv">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        <span data-i18n="cen.privacidade">O Sleevu nunca recebe sua foto: tudo é medido no seu aparelho.</span>
+      </p>
+
+      <!-- A ferramenta: a entrada fica no HTML (é o primeiro paint e o que o
+           buscador lê); o editor (palco, alças, lupa, resultado) é montado pelo
+           src/centering.js quando a foto chega. -->
+      <section id="ctrApp" class="ctr-app">
+        <div class="ctr-entrada" id="ctrEntrada">
+          <div class="fer-card ctr-drop" id="ctrDrop">
+            <svg class="ctr-drop-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg>
+            <p class="ctr-drop-lado" id="ctrEntradaLado" hidden></p>
+            <h2 class="ctr-drop-t" data-i18n="cen.entrada.arraste">Arraste a foto da carta aqui</h2>
+            <p class="ctr-drop-s" data-i18n="cen.entrada.cole">ou cole com Ctrl+V</p>
+            <div class="ctr-drop-btns">
+              <button type="button" class="cta ctr-cam" data-ctr-acao="camera" hidden>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5A2.5 2.5 0 0 1 5.5 6H7l2-2.5h6L17 6h1.5A2.5 2.5 0 0 1 21 8.5v9a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17.5Z"/><circle cx="12" cy="13" r="3.5"/></svg>
+                <span data-i18n="cen.entrada.camera">Tirar foto</span>
+              </button>
+              <button type="button" class="primary fer-btn" data-ctr-acao="galeria">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg>
+                <span data-i18n="cen.entrada.escolher">Escolher foto</span>
+              </button>
+              <button type="button" class="secondary fer-btn" data-ctr-acao="colar" hidden>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg>
+                <span data-i18n="cen.entrada.colar">Colar</span>
+              </button>
+            </div>
+            <p class="ctr-drop-f" data-i18n="cen.entrada.formatos">JPG, PNG ou WebP · HEIC só no Safari</p>
+            <p class="ctr-drop-f" id="ctrSinc" data-i18n="cen.entrada.sincronizando" hidden>Sincronizando a sua conta… a foto entra em instantes.</p>
+            <!-- Regiões vivas SEM hidden: ficam na árvore de acessibilidade e
+                 "somem" esvaziando (o :empty do CSS tira a caixa). Uma região
+                 que sai do hidden já com o texto não é lida pelo VoiceOver. -->
+            <p class="ctr-status" id="ctrStatus" role="status"></p>
+            <button type="button" class="lst-mini ctr-b ctr-continuar" data-ctr-acao="continuar" hidden>
+              <span data-i18n="cen.entrada.continuar">Continuar medindo</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
+            </button>
+            <!-- Dois inputs: no Android o capture abre a câmera DIRETO, sem
+                 galeria. A foto vira pixels em memória, nunca vai pra rede. -->
+            <input type="file" accept="image/*" capture="environment" id="ctrInCamera" class="ctr-in" tabindex="-1" aria-hidden="true">
+            <input type="file" accept="image/*" id="ctrInGaleria" class="ctr-in" tabindex="-1" aria-hidden="true">
+          </div>
+          <aside class="fer-card ctr-dicas-curtas" aria-labelledby="ctrDicaT">
+            <h2 id="ctrDicaT" data-i18n="cen.dica.titulo">Pra medir certo</h2>
+            <ol>
+              <li data-i18n="cen.dica.1">Luz difusa, sem reflexo na borda.</li>
+              <li data-i18n="cen.dica.2">Fundo que contraste com a carta.</li>
+              <li data-i18n="cen.dica.3">Carta grande no quadro, no centro da foto.</li>
+              <li data-i18n="cen.dica.4">O mais de frente possível: a ferramenta endireita o resto, inclusive no toploader.</li>
+            </ol>
+          </aside>
+        </div>
+        <p class="ctr-msg" id="ctrMsg" role="status" aria-live="polite"></p>
+        <div id="ctrSalvo" hidden></div>
+      </section>
+
+      <!-- Atalhos internos: BOTÕES que rolam por JS, nunca âncora com "#…" (o
+           mesmo cuidado do skip-link; ver o rola() do centering.js). -->
+      <nav class="ctr-secoes" data-i18n-aria="cen.aria.secoes" aria-label="Nesta página">
+        <button type="button" class="chip" data-ctr-rola="ctrComo" data-i18n="cen.atalho.como">Como funciona</button>
+        <button type="button" class="chip" data-ctr-rola="ctrDicas" data-i18n="cen.atalho.dicas">Dicas de foto</button>
+        <button type="button" class="chip" data-ctr-rola="ctrCriterios" data-i18n="cen.atalho.criterios">Critérios das graduadoras</button>
+      </nav>
+
+      <section class="fer-card ctr-sec" id="ctrComo" aria-labelledby="ctrComoT">
+        <h2 id="ctrComoT" data-i18n="cen.como.titulo">Como funciona</h2>
+        <ol class="ctr-passos-txt">
+          <li data-i18n="cen.como.1">Tire ou escolha a foto da carta. Ela não sai do seu aparelho.</li>
+          <li data-i18n="cen.como.2">Ângulo: arraste os 4 cantos até o encontro das bordas. A ferramenta endireita a carta, mesmo fotografada de lado ou dentro do toploader.</li>
+          <li data-i18n="cen.como.3">Bordas: confira as 8 linhas, o corte da carta (tracejado) e a moldura impressa (sólida) em cada lado. Elas já vêm sugeridas e grudam na borda.</li>
+          <li data-i18n="cen.como.4">Resultado: a proporção de cada eixo com uma casa decimal e a margem de erro, e a nota máxima pela centralização em cada graduadora.</li>
+        </ol>
+        <h3 data-i18n="cen.como.contaT">A conta</h3>
+        <p data-i18n="cen.como.conta">Em cada eixo, a borda de um lado dividida pela soma das duas. A esquerda (ou o topo) vem primeiro.</p>
+        <p class="ctr-exemplo" data-i18n="cen.como.exemplo">Exemplo: esquerda 2,3 mm e direita 1,7 mm → 2,3 ÷ (2,3 + 1,7) = 57,5% → L/R 57,5/42,5. A PSA pede cerca de 55/45 ou melhor na frente pro 10.</p>
+        <p data-i18n="cen.como.pior">A PSA mede no ponto mais descentralizado. Se a moldura estiver torta, a ferramenta usa o pior ponto quando ele se afasta do meio mais que o erro da medida; senão, o meio.</p>
+        <p data-i18n="cen.como.margem">O ± junta tudo o que pesa: o ajuste das linhas, os cantos, a espessura da carta numa foto inclinada e um piso de 0,2 ponto. Perto de um corte de nota, o resultado diz "no limite".</p>
+      </section>
+
+      <section class="fer-card ctr-sec" id="ctrDicas" aria-labelledby="ctrDicasT">
+        <h2 id="ctrDicasT" data-i18n="cen.dicas.titulo">Dicas de foto</h2>
+        <ul class="ctr-lista">
+          <li data-i18n="cen.dicas.1">Luz difusa, sem reflexo na borda: o reflexo esconde onde a borda termina.</li>
+          <li data-i18n="cen.dicas.2">Fundo que contraste: carta clara em fundo escuro, e vice-versa.</li>
+          <li data-i18n="cen.dicas.3">Carta grande no quadro e no centro da foto; evite a lente ultra-wide (0,5×).</li>
+          <li data-i18n="cen.dicas.4">De frente: até uns 10° a precisão é cheia; mais que isso, a espessura da carta soma erro do lado mais perto da câmera.</li>
+          <li data-i18n="cen.dicas.5">No toploader ou no sleeve, mire a borda da carta, não a do plástico.</li>
+        </ul>
+      </section>
+
+      <!-- A tabela é gerada do src/centering-graders.js (a fonte única: não
+           existe segunda cópia dos números no HTML). -->
+      <section class="fer-card ctr-sec" id="ctrCriterios" aria-labelledby="ctrCriteriosT">
+        <div class="ctr-sec-cab">
+          <h2 id="ctrCriteriosT" data-i18n="cen.tab.titulo">Critérios das graduadoras</h2>
+          <div class="ctr-seg" role="group" data-i18n-aria="cen.aria.tabLado" aria-label="Lado da tabela">
+            <button type="button" data-ctr-acao="tab" data-lado="f" aria-pressed="true" data-i18n="cen.tab.frente">Frente</button>
+            <button type="button" data-ctr-acao="tab" data-lado="v" aria-pressed="false" data-i18n="cen.tab.verso">Verso</button>
+          </div>
+        </div>
+        <p class="ctr-nota-p" data-i18n="cen.tab.sub">O limite do lado maior pra cada nota, pelas tabelas oficiais. "55/45" quer dizer 55/45 ou melhor.</p>
+        <div id="ctrTabela" class="ctr-tabela"></div>
+        <p class="fer-fine" data-i18n="cen.res.estimativa">Estimativa só da centralização. A nota real também considera cantos, bordas e superfície. PSA, BGS, CGC, SGC e TAG são marcas dos seus donos; o Sleevu não é afiliado a nenhuma.</p>
+      </section>
+
+      <!-- O resumo falado (aria-live) mora DENTRO do editor (montado pelo
+           src/centering.js): no celular o editor é um diálogo aria-modal, e
+           uma região fora dele não é anunciada. -->
+    </main>
+
+    <script defer src="src/i18n.js"></script>
+    <script defer src="src/i18n-centering.js"></script>
+    <script defer src="src/shared.js"></script>
+    <script defer src="src/centering-graders.js"></script>
+    <script defer src="src/centering-core.js"></script>
+    <script defer src="src/centering.js"></script>
+  </body>
+</html>

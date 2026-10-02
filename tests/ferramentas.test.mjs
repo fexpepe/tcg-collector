@@ -204,17 +204,21 @@ test("o menu de topo FECHA com o Mais, depois da Coleção e do Portfólio", () 
   assert.ok(!/link\("blog"/.test(corpo), "o Blog saiu do meio do menu: mora no painel do Mais");
 });
 
-test("o Guia de condição é público; o Sleeves segue exigindo login", () => {
+// Endereços em inglês desde 2026-10-01 (/tools, /condition, /centering): o
+// AUTH_PAGES olha o data-active-page, que passou a ter esses nomes.
+test("o Guia de condição e o Centering Tool são públicos; o Sleeves segue exigindo login", () => {
   const m = ler("src/shared.js").match(/const AUTH_PAGES = (\[[^\]]*\]);/);
   const auth = JSON.parse(m[1]);
-  assert.ok(!auth.includes("condicao") && !auth.includes("ferramentas"));
+  for (const p of ["condition", "tools", "centering", "condicao", "ferramentas"]) assert.ok(!auth.includes(p), p);
   assert.ok(auth.includes("sleeves"));
-  assert.ok(!/noindex/.test(ler("condicao.html")) && !/noindex/.test(ler("ferramentas.html")));
+  assert.ok(!/noindex/.test(ler("condition.html")) && !/noindex/.test(ler("tools.html")));
   assert.ok(/noindex/.test(ler("sleeves.html")));
 });
 
 test("o sitemap anuncia as páginas públicas e só elas", () => {
   const src = ler("scripts/prerender-catalog.mjs");
-  assert.ok(src.includes('"/ferramentas", "/condicao"'));
+  assert.ok(src.includes('"/tools", "/condition", "/centering"'));
+  // Os antigos são 301: sitemap que anuncia redirect vira aviso no Search Console.
+  assert.ok(!/"\/ferramentas"|"\/condicao"/.test(src), "endereço antigo (301) no sitemap");
   assert.ok(!/"\/sleeves"/.test(src), "o Sleeves exige login: anunciar no sitemap seria página fina");
 });

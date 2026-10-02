@@ -335,7 +335,11 @@
     collection: "Coleção", wishlist: "Desejos", portfolio: "Portfólio", binders: "Fichários", decks: "Decks",
     "my-decks": "Meus decks", explore: "Explorar", pokedex: "Pokédex", artists: "Artistas", trainers: "Treinadores",
     dashboard: "Painel", sales: "Vendas", graded: "Graded", badges: "Conquistas", profile: "Perfil",
-    settings: "Config.", account: "Conta", login: "Login", backup: "Backup", listas: "Listas", troca: "Trocas", ferramentas: "Ferramentas", condicao: "Guia de condição", sleeves: "Sleeves",
+    settings: "Config.", account: "Conta", login: "Login", backup: "Backup", listas: "Listas", troca: "Trocas", sleeves: "Sleeves",
+    // Ferramentas com endereço em inglês desde 2026-10-01 (/tools, /condition,
+    // /centering); as chaves antigas ficam pro histórico de antes da troca.
+    tools: "Ferramentas", condition: "Guia de condição", centering: "Centering Tool",
+    ferramentas: "Ferramentas (antigo)", condicao: "Guia de condição (antigo)",
     comparar: "Comparar", lancamentos: "Lançamentos", novidades: "Novidades", faq: "FAQ", help: "Ajuda",
     about: "Sobre", privacy: "Privacidade", terms: "Termos", users: "Perfil público", card: "Carta (SEO)",
     set: "Set (SEO)", admin: "Admin"

@@ -1,6 +1,8 @@
 // Textos das ferramentas do HUB que viraram PÁGINA (2026-10-01): o Guia de
-// condição (condicao.html), Sleeves e fichários (sleeves.html) e o índice
-// delas (ferramentas.html, o "Mais" do menu). Pacote
+// condição (condition.html), Sleeves e fichários (sleeves.html) e o índice
+// delas (tools.html, o "Mais" do menu). Endereços em inglês desde
+// 2026-10-01 (/condicao e /ferramentas têm 301). O Centering Tool
+// (centering.html) tem pacote próprio, o src/i18n-centering.js. Pacote
 // SEPARADO do i18n.js pelo mesmo motivo das Pastas e dos decks: só essas
 // páginas usam, e o monólito viaja em todo o site. O que o HUB e o menu mostram
 // (o nome de cada ferramenta e a dica do atalho) fica no i18n.js, que é o que
@@ -18,13 +20,13 @@
     "title.sleeves": "Sleeves e fichários - Sleevu",
     "title.ferramentas": "Ferramentas pra quem coleciona cartas - Sleevu",
 
-    // ── Página Ferramentas (ferramentas.html) ───────────────────────────────
+    // ── Página Ferramentas (tools.html) ───────────────────────────────
     "fer.subtitle": "Pra quem coleciona e negocia carta: conferir a condição, medir a centralização, calcular a proteção e fechar uma troca justa.",
     "fer.back": "← Ferramentas",
     "fer.cond.d": "Cinco perguntas sobre cantos, bordas, verso e superfície, e a condição na escala que as lojas usam, com o texto pronto pra mandar na negociação.",
     "fer.cond.cta": "Avaliar uma carta",
-    "fer.ctr.d": "Carregue a foto da carta, arraste as guias até a moldura e veja os percentuais que as graduadoras usam (55/45, 60/40).",
-    "fer.ctr.cta": "Medir agora",
+    "fer.ctr.d": "Tire ou escolha a foto da carta, endireite pelos quatro cantos e ajuste as linhas da borda: a centralização sai em porcentagem, frente e verso, com a nota de PSA, BGS, CGC, SGC e TAG.",
+    "fer.ctr.cta": "Medir uma carta",
     "fer.slv.d": "Quantas sleeves, inners, folhas de fichário e toploaders comprar, a partir da sua coleção e dos seus decks.",
     "fer.slv.cta": "Calcular",
     "fer.trade.d": "Some os dois lados de uma troca, com condição e quantidade, e veja se ela está equilibrada pela cotação de mercado.",
@@ -225,8 +227,8 @@
     "fer.back": "← Tools",
     "fer.cond.d": "Five questions about corners, edges, back and surface, and the condition on the scale stores use, with ready-to-send text for your trade.",
     "fer.cond.cta": "Check a card",
-    "fer.ctr.d": "Load a photo of the card, drag the guides to the border and see the percentages graders use (55/45, 60/40).",
-    "fer.ctr.cta": "Measure now",
+    "fer.ctr.d": "Take or pick a photo of the card, straighten it by its four corners and set the border lines: centering comes out as a percentage, front and back, with the PSA, BGS, CGC, SGC and TAG grade.",
+    "fer.ctr.cta": "Measure a card",
     "fer.slv.d": "How many sleeves, inners, binder pages and toploaders to buy, based on your collection and decks.",
     "fer.slv.cta": "Calculate",
     "fer.trade.d": "Add up both sides of a trade, with condition and quantity, and see if it's balanced at market prices.",
@@ -425,8 +427,8 @@
     "fer.back": "← Herramientas",
     "fer.cond.d": "Cinco preguntas sobre esquinas, bordes, reverso y superficie, y el estado en la escala que usan las tiendas, con el texto listo para enviar en la negociación.",
     "fer.cond.cta": "Evaluar una carta",
-    "fer.ctr.d": "Carga la foto de la carta, arrastra las guías hasta el marco y mira los porcentajes que usan las certificadoras (55/45, 60/40).",
-    "fer.ctr.cta": "Medir ahora",
+    "fer.ctr.d": "Saca o elige la foto de la carta, enderézala por las cuatro esquinas y ajusta las líneas del borde: el centrado sale en porcentaje, frente y reverso, con la nota de PSA, BGS, CGC, SGC y TAG.",
+    "fer.ctr.cta": "Medir una carta",
     "fer.slv.d": "Cuántas fundas, inners, hojas de carpeta y toploaders comprar, a partir de tu colección y tus mazos.",
     "fer.slv.cta": "Calcular",
     "fer.trade.d": "Suma los dos lados de un intercambio, con estado y cantidad, y mira si está equilibrado según el precio de mercado.",

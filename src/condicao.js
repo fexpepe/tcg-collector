@@ -1,4 +1,4 @@
-// Guia de condição (condicao.html, 2026-10-01). Cinco perguntas — danos,
+// Guia de condição (condition.html, 2026-10-01; era condicao.html). Cinco perguntas — danos,
 // cantos, bordas, marcas brancas no verso e superfície — e a condição na escala
 // da Liga (M · NM · SP · MP · HP · D), a mesma do CARD_CONDITIONS do shared.js.
 // Ver docs/FERRAMENTAS.md.

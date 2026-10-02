@@ -52,7 +52,13 @@
 // e, com o popup de uma carta, /games/<jogo>/<set>/<carta>). Mesmo desenho:
 // entrada própria por endereço e a do detail.html de reserva (o detail.js acha
 // o set e a carta pelo caminho quando a cópia não traz a rota da borda).
-const SHELL_CACHE = "tcg-shell-v268";
+// v269 (2026-10-01): endereços das ferramentas em inglês (ferramentas.html →
+// tools.html, condicao.html → condition.html; os antigos têm 301 no
+// _redirects) e o Centering Tool v2 em página própria (centering.html, com o
+// núcleo, as graduadoras e o pacote de i18n dele). Sem subir a versão, o
+// install não guardaria as páginas novas e a navegação offline pra /tools,
+// /condition e /centering cairia sem cópia.
+const SHELL_CACHE = "tcg-shell-v269";
 // Id do build: o hash-assets.mjs (deploy) acrescenta "-<8 hex>" ao nome acima,
 // calculado do conteúdo do shell (JS, CSS E as páginas HTML). É o mesmo id que
 // ele carimba em <meta name="sleevu-build"> de todo HTML — assim a página sabe
@@ -114,17 +120,22 @@ const SHELL_ASSETS = [
   "./", "index.html", "hub.html", "pokedex.html", "lore.html", "sets.html", "artists.html",
   "trainers.html", "collection.html", "wishlist.html", "portfolio.html", "explore.html", "dashboard.html", "badges.html",
   "backup.html", "detail.html", "binders.html", "cards.html", "sales.html", "about.html", "novidades.html", "blog.html", "lancamentos.html", "comparar.html", "faq.html", "help.html", "privacy.html", "terms.html", "login.html", "settings.html", "profile.html", "admin.html",
-  "decks.html", "my-decks.html", "pastas.html", "troca.html", "ferramentas.html", "condicao.html", "sleeves.html", "search.html", "account.html",
+  "decks.html", "my-decks.html", "pastas.html", "troca.html", "tools.html", "condition.html", "centering.html", "sleeves.html", "search.html", "account.html",
   "styles.css", "favicon.svg", "icon.svg", "assets/brand/sleevu-wordmark.svg", "manifest.json",
   // Fonte da marca (auto-hospedada): precisa estar no shell pra o app abrir
   // offline com a tipografia certa, sem "trocar de fonte" ao reconectar.
   "assets/fonts/outfit-latin.woff2", "assets/fonts/outfit-latin-ext.woff2",
-  "src/theme.js", "src/game.js", "src/login-boot.js", "src/i18n.js", "src/i18n-docs.js", "src/i18n-decks.js", "src/i18n-binders.js", "src/i18n-pastas.js", "src/i18n-vendas.js", "src/i18n-lore.js", "src/i18n-blog.js", "src/i18n-ferramentas.js", "src/shared.js", "src/app.js", "src/collection.js", "src/detail.js", "src/explore.js", "src/dashboard.js", "src/primeiros-passos.js", "src/badges.js", "src/lancamentos.js", "src/goldfish.js",
+  "src/theme.js", "src/game.js", "src/login-boot.js", "src/i18n.js", "src/i18n-docs.js", "src/i18n-decks.js", "src/i18n-binders.js", "src/i18n-pastas.js", "src/i18n-vendas.js", "src/i18n-lore.js", "src/i18n-blog.js", "src/i18n-ferramentas.js", "src/i18n-centering.js", "src/shared.js", "src/app.js", "src/collection.js", "src/detail.js", "src/explore.js", "src/dashboard.js", "src/primeiros-passos.js", "src/badges.js", "src/lancamentos.js", "src/goldfish.js",
   "src/home.js", "src/news.js", "src/wishlist.js", "src/portfolio.js", "src/binders.js",
-  "src/backup.js", "src/graded-ui.js", "src/cards.js", "src/sales.js", "src/centering.js", "src/login.js", "src/hub.js", "src/settings.js", "src/profile.js", "src/admin.js",
+  "src/backup.js", "src/graded-ui.js", "src/cards.js", "src/sales.js", "src/login.js", "src/hub.js", "src/settings.js", "src/profile.js", "src/admin.js",
   "src/deck-rules.js", "src/decks.js", "src/pastas.js", "src/lore.js", "src/export-liga.js", "src/export-ui.js", "src/troca.js",
   // Ferramentas do HUB que são página própria (2026-10-01).
   "src/condicao.js", "src/sleeves.js",
+  // Centering Tool v2 (centering.html): a página, o núcleo (geometria e
+  // medida) e as tabelas das graduadoras. Offline desde a instalação de
+  // propósito: ele é usado em loja e evento de cartas, com sinal ruim
+  // (docs/PLANO-CENTERING-V2.md §9.3).
+  "src/centering.js", "src/centering-core.js", "src/centering-graders.js",
   // Módulos que saíram do shared.js (2026-09-14): dois sob demanda e um por página.
   "src/backup-import.js", "src/card-rescue.js", "src/facets.js",
   // Ordenar (2026-09-30): o menu e os critérios de toda grade de cartas.
@@ -429,6 +440,18 @@ function reservaDaNavegacao(url) {
   return null;
 }
 
+// Endereços antigos das ferramentas (301 no _redirects desde 2026-10-01):
+// offline o 301 não chega, e o install da v269 já não guarda condicao.html nem
+// ferramentas.html — um atalho salvo (web clip do iOS) pro Guia de condição
+// caía na tela de "sem conexão" com o condition.html no cache. SÓ a reserva
+// final do offline usa isto: online (e na sessão ativa) o redirect segue, a
+// barra troca pro endereço novo e o menu acende a página certa (o shared.js
+// tira o nome da página do location.pathname).
+function enderecoNovo(url) {
+  const m = /^\/(condicao|ferramentas)(?:\.html)?$/.exec(new URL(url).pathname);
+  return m ? new URL({ condicao: "condition.html", ferramentas: "tools.html" }[m[1]], self.location).href : null;
+}
+
 // Quanto tempo uma confirmação da rede vale. Dentro desta janela a navegação
 // é cache-first (a página aparece na hora, a rede atualiza por trás — o
 // ganho do 4G que o network-first de antes não dava: toda troca de tela
@@ -585,7 +608,8 @@ async function navigationFast(event) {
     resposta = await rede;
   }
   if (resposta) return resposta;
-  return semRedirect(cached) || semRedirect(await caches.match(request, { ignoreSearch: true })) || Response.error();
+  const novo = enderecoNovo(request.url);
+  return semRedirect(cached) || (novo && semRedirect(await cache.match(novo))) || semRedirect(await caches.match(request, { ignoreSearch: true })) || Response.error();
 }
 
 async function staleWhileRevalidate(event) {

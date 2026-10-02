@@ -12,6 +12,14 @@
 # chegando no lugar certo.
 /graded     /collection?tab=graded   301
 
+# Ferramentas com endereço em inglês (2026-10-01, pedido do Fernando: todos os
+# links em inglês). /ferramentas virou /tools e /condicao virou /condition; o
+# Centering Tool já nasceu em /centering. 301: link salvo, post compartilhado e
+# o que o buscador já indexou chegam no lugar novo (e o Google troca o
+# endereço no índice). A /troca não muda.
+/ferramentas   /tools       301
+/condicao      /condition   301
+
 # /favicon.ico: caminho por CONVENÇÃO. O site declara os ícones por <link> (SVG
 # + PNG), mas muito consumidor não lê o HTML e vai direto nesta URL — o robô de
 # favicon do Google, leitores de feed, prévias de link. Antes ela dava 404 e o
