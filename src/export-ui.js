@@ -17,7 +17,9 @@
   "use strict";
 
   const FORMATOS = ["liga", "texto", "csv"];
-  let formato = "liga";
+  // Vazio até a pessoa escolher uma aba: abre no PRIMEIRO formato da página
+  // (Liga na Coleção, Archidekt no deck de Magic).
+  let formato = "";
   let jogo = "";
 
   const OPCOES_KEY = "tcg-export-opcoes";
