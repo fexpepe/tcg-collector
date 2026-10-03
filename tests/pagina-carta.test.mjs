@@ -4,7 +4,7 @@
 // e o texto da carta). Função pura: recebe a carta, o set e as vizinhas. O que
 // se trava aqui:
 //   - canonical e trilha no endereço /games/…;
-//   - preço e oferta só quando há preço;
+//   - preço e Product (com a oferta) só quando há preço;
 //   - nome de carta hostil não fecha o <script> do JSON-LD nem vira HTML;
 //   - outras impressões e vizinhas de número apontam pras páginas certas;
 //   - o título não corta o nome da carta.
@@ -52,8 +52,10 @@ test("preço e oferta só quando há preço", () => {
   assert.equal(produto.offers.lowPrice, "120.50");
   assert.equal(produto.offers.priceCurrency, "USD");
   assert.equal(produto.brand.name, "Pokémon TCG");
+  // Sem preço não sai Product nenhum: Product sem offers/review/aggregateRating
+  // é item inválido no Search Console (2026-10-02). Fica só a trilha.
   const semPreco = pecas(cartas[1], 0);
-  assert.equal(jsonLds(semPreco)[0].offers, undefined);
+  assert.deepEqual(jsonLds(semPreco).map((o) => o["@type"]), ["BreadcrumbList"]);
   assert.doesNotMatch(semPreco.corpoHtml, /seo-carta-preco">/);
   assert.equal(precoUSD({ u: 10 }), 10);
   assert.ok(Math.abs(precoUSD({ e: 10 }) - 11) < 1e-9, "sem US$, o do Cardmarket com a margem");
@@ -70,7 +72,8 @@ test("outras impressões e vizinhas de número apontam pras páginas certas", ()
 
 test("nome hostil não fecha o <script> do JSON-LD nem vira HTML", () => {
   const hostil = { ...cartas[1], id: "x-1", name: "</script><img src=x onerror=alert(1)>" };
-  const p = pecasDaCarta({ card: hostil, jogo, set, cartas: [hostil], slugs: slugsDasCartas([hostil]), preco: 0 });
+  // Com preço, pra sair também o Product (o nome vai nos dois blocos).
+  const p = pecasDaCarta({ card: hostil, jogo, set, cartas: [hostil], slugs: slugsDasCartas([hostil]), preco: 5 });
   const cabeca = cabecaDaRota(p, { caminho: "/x", set: "151", card: "x-1" });
   assert.doesNotMatch(cabeca + p.corpoHtml, /<img src=x/);
   assert.equal((cabeca.match(/<\/script>/g) || []).length, 2, "um </script> a mais fecharia o bloco antes da hora");
