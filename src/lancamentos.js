@@ -77,9 +77,11 @@
       // não saiu costuma não ter carta no catálogo, e a própria página de
       // detalhe trata isso (mensagem + busca) desde o P8.
       const href = shared.detailUrl("set", nome, "", s.g, { setId: s.id });
-      const logo = s.logo
-        ? `<span class="rel-logo">${shared.localizedImg(s.logo, { alt: "", loading: "lazy" })}</span>`
-        : "";
+      // A coluna do logo existe SEMPRE, vazia quando o set não tem logo: a
+      // grade do desktop tem 4 colunas (data, logo, nome, selo), e sem o span
+      // o nome caía na coluna de 40px ("Stor…") e o selo esticava na do nome —
+      // como estava no ar em 2026-10-03, com quase todo set sem logo.
+      const logo = `<span class="rel-logo">${s.logo ? shared.localizedImg(s.logo, { alt: "", loading: "lazy" }) : ""}</span>`;
       partes.push(`<a class="rel-row${sl.cls}" href="${escapeAttribute(href)}">
         <span class="rel-date">${escapeHtml(diaDe(s.d))}</span>
         ${logo}

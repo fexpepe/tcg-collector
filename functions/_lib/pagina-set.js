@@ -150,12 +150,15 @@ export function pecasDoSet({ jogo, slug, nome, cartas, slugs }) {
     itemListElement: trilha.map((t, i) => ({ "@type": "ListItem", position: i + 1, name: t.nome, item: t.url }))
   };
 
+  // Com JS, ele espera a grade (html[data-game] + grade vazia = escondido) —
+  // antes dela ficava na primeira dobra e descia quando as cartas chegavam
+  // (CLS, 2026-10-03, docs/PLANO-TECNICO.md S3); o robô sem JS vê como sempre.
   // Índice das cartas, recolhido num <details> no pé da tela: é o caminho do
   // robô que não roda JS até as páginas de carta (a grade do app é desenhada
   // no navegador). data-indice-set deixa o detail.js tirar o índice de uma
   // cópia guardada que chegue pra OUTRO set.
   const corpoHtml = lista.length ? `<section class="set-indice" data-indice-set="${escapeAttr(base)}">
-        <style>.set-indice{margin:40px 0 8px}.set-indice h2{font-size:1.05rem;margin:0 0 8px}.set-indice summary{cursor:pointer;color:var(--muted,#9aa0aa);min-height:44px;display:flex;align-items:center}.set-indice ul{list-style:none;padding:0;margin:12px 0 0;columns:3 220px;column-gap:24px}.set-indice li{margin:0 0 6px;break-inside:avoid}.set-indice a{color:var(--accent,#e63946);text-decoration:none}.set-indice small{color:var(--muted,#9aa0aa)}</style>
+        <style>html[data-game] #detailGrid:empty~.set-indice{display:none}.set-indice{margin:40px 0 8px}.set-indice h2{font-size:1.05rem;margin:0 0 8px}.set-indice summary{cursor:pointer;color:var(--muted,#9aa0aa);min-height:44px;display:flex;align-items:center}.set-indice ul{list-style:none;padding:0;margin:12px 0 0;columns:3 220px;column-gap:24px}.set-indice li{margin:0 0 6px;break-inside:avoid}.set-indice a{color:var(--accent,#e63946);text-decoration:none}.set-indice small{color:var(--muted,#9aa0aa)}</style>
         <h2>Todas as cartas de ${escapeHtml(nome)}</h2>
         <details><summary>Ver a lista (${lista.length})</summary><ul>${lista.map((c) =>
           `<li><a href="${escapeAttr(urlDaCarta(c))}">${escapeHtml(c.name)}</a>${codigo(c) ? ` <small>${escapeHtml(codigo(c))}</small>` : ""}</li>`).join("")}</ul></details>

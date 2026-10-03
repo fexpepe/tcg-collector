@@ -3761,6 +3761,22 @@ a.preview-print:hover { background: var(--panel); }
   font-size: 15px;
 }
 
+/* Cabeçalho ANTES do app subir (2026-10-03, docs/PLANO-TECNICO.md S3). A
+   ≤860px a .header-actions é a fileira do rodapé do drawer (borda, 12px,
+   seletor de idioma de 38px); até o shared.js montar o drawer ela aparecia
+   DENTRO do cabeçalho, com o seletor vazio — 76px, que viravam 59px (65px no
+   tablet) quando o app subia: a página inteira pulava em toda navegação no
+   celular, e é o primeiro paint que o celular mostra. Antes do data-app a
+   fileira some e o cabeçalho já nasce com a altura do app. O cabeçalho das
+   páginas estáticas (sem app, sem data-app) tem altura própria e fica fora. */
+@media (max-width: 860px) {
+  html:not([data-app]) .app-header:not(.app-header--estatica) .header-actions { display: none; }
+  html:not([data-app]) .app-header:not(.app-header--estatica) .app-header-inner { min-height: 64px; }
+}
+@media (max-width: 700px) {
+  html:not([data-app]) .app-header:not(.app-header--estatica) .app-header-inner { min-height: 58px; }
+}
+
 @media (max-width: 860px) {
   /* Header fixo no topo: marca à esquerda, hambúrguer à direita. A navegação
      e as ações ficam num drawer suspenso aberto pelo botão. */
@@ -4816,6 +4832,22 @@ a.hub-tile:active::after { opacity: 1; }
   }
 }
 
+/* Texto que o JS traduz e escreve (data-i18n-html: Ajuda, FAQ, Sobre…)
+   nasce vazio no HTML. Vazio, a seção ainda tinha caixa (17px de margem) e
+   crescia pra ~160px quando o texto chegava, empurrando tudo — CLS 0,8 na
+   /help no celular (2026-10-03, S3). Vazia, ela não ocupa lugar; ao ganhar o
+   texto, aparece já no lugar dela (aparecer não é pular). */
+[data-i18n-html]:empty { display: none; }
+/* Na Ajuda, o bloco de "Resolução de problemas" tem botão fixo no HTML e era
+   o único visível no pé: escondido (com o lugar guardado) até as seções de
+   cima ganharem o texto. */
+html[data-game] .help-content:has(> [data-i18n-html]:empty) > #help-trouble { visibility: hidden; }
+/* Rodapé de página cuja lista chega por fetch (Lançamentos, Novidades): ele
+   nascia no pé da primeira tela e era empurrado quando a lista chegava — CLS
+   0,24–0,73. Invisível enquanto a lista carrega, ele aparece já no lugar
+   final. Sem :has (navegador antigo), fica como era. */
+body:has(#relList > [data-i18n="rel.loading"]) .site-footer,
+body:has(#newsList > [data-i18n="news.loading"]) .site-footer { visibility: hidden; }
 .site-footer {
   border-top: 1px solid var(--line);
   margin-top: 40px;
@@ -12644,6 +12676,16 @@ select,
 .rel-subscribe .cta { min-height: 40px; padding: 0 20px; display: inline-flex; align-items: center; }
 .rel-subscribe-hint { color: var(--muted); font-size: 13px; }
 .rel-list { display: flex; flex-direction: column; gap: 6px; }
+/* Os chips de jogo chegam com a lista (mesmo fetch) e empurravam a lista
+   (2026-10-03, S3): a fileira já nasce com a altura de uma linha e, no
+   celular, rola de lado em vez de quebrar — a regra das fileiras de chips do
+   PLANO-MOBILE-3. */
+#relGames { min-height: 44px; }
+@media (max-width: 720px) {
+  #relGames { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+  #relGames::-webkit-scrollbar { display: none; }
+  #relGames > .chip { flex: none; }
+}
 .rel-month {
   margin: 18px 0 4px; font-size: 13px; font-weight: 700; letter-spacing: .04em;
   text-transform: uppercase; color: var(--muted);
@@ -13237,6 +13279,10 @@ a.fer-btn { display: inline-flex; align-items: center; justify-content: center; 
 /* Guia: o questionário à esquerda e a régua inteira à direita (embaixo, no
    celular). */
 .gc-layout { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 20px; align-items: start; max-width: 1180px; margin-top: 18px; }
+/* A régua (aside) ficava no topo enquanto o questionário (#gcApp) não era
+   desenhado, e descia ~600px quando ele chegava — CLS 0,6–0,76 no celular
+   (2026-10-03, S3). Com o app vazio, a régua espera; os dois aparecem juntos. */
+html[data-game] #gcApp:empty + .gc-scale { display: none; }
 .gc-app { scroll-margin-top: calc(var(--header-h, 56px) + 12px); }
 .gc-head { display: flex; justify-content: flex-end; margin: -4px 0 8px; color: var(--muted); font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; }
 
