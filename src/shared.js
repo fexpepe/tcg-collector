@@ -4136,7 +4136,8 @@
 
   // --- Error tracking first-party: erros de JS em produção viram eventos
   // anônimos (name="jserror") na MESMA tabela `events` do analytics — sem
-  // serviço terceiro, sem PII. O /admin lê o agregado (error_summary_v2).
+  // serviço terceiro, sem PII. O /admin lê o agregado (admin_erros, migração
+  // 20261003a; a error_summary antiga segue de reserva).
   //
   // v2 (2026-10-03, docs/PLANO-TECNICO.md): os ouvintes passaram pro
   // theme.js, que enfileira em window.__sleevuErros desde o 1º script da

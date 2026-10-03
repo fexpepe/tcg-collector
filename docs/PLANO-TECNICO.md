@@ -547,7 +547,7 @@ bloqueio no celular passa de 400 ms nas telas de set e carta).
 ## 5. Fase 2 — melhorias na detecção (celular × desktop em tudo)
 
 **D0. Painel atual, só SQL** (migração; pode ir antes de qualquer JS).
-`error_summary_v2(days, aparelho)`: aparelho pelo cruzamento com o pageview do
+`admin_erros(days)` (migração 20261003a): aparelho pelo cruzamento com o pageview do
 mesmo `anon` (o mesmo da Q1, então vale **retroativo**, pros 10 dias da
 campanha); `not bot` também pelo pageview; assinatura = mensagem normalizada +
 primeiro quadro sem hash; período do seletor (7/30/90); 200 linhas

@@ -384,7 +384,7 @@
   // `funnel` = admin_funnel (20260919a, recriada na 20260923a); o resto é da
   // 20260923a. Cada uma é buscada só quando uma aba que a usa abre.
   const NEEDS = {
-    geral: ["dash"], audiencia: ["dash"], conteudo: ["dash"], produto: ["dash"], qualidade: ["dash"],
+    geral: ["dash"], audiencia: ["dash"], conteudo: ["dash"], produto: ["dash"], qualidade: ["dash", "erros"],
     crescimento: ["growth"], parceiros: ["dash", "retention", "stores", "demand", "growth", "engagement", "users", "anuncios"],
     canais: ["retention", "growth"], retencao: ["retention"], funil: ["funnel", "retention", "engagement"],
     lojas: ["stores"], demanda: ["demand"], anuncios: ["anuncios", "apoiadores"],
@@ -395,7 +395,7 @@
   const RPC = {
     retention: "admin_retention", stores: "admin_stores", growth: "admin_growth", demand: "admin_demand", anuncios: "admin_vitrine", apoiadores: "admin_apoiadores",
     users: "admin_users", campaigns: "admin_campaigns", engagement: "admin_engagement", experiments: "admin_experiments",
-    partners: "admin_partner_links", health: "admin_health"
+    partners: "admin_partner_links", health: "admin_health", erros: "admin_erros"
   };
   // RPCs sem parâmetro: mandar { days } a elas faz o PostgREST procurar uma
   // assinatura que não existe (404) e o painel acharia que a migração falta.
@@ -404,9 +404,10 @@
   // a seção mostra o próprio aviso e o resto da aba pinta normal. É POR ABA:
   // no kit de parceiros, perfil de usuário e vitrine são enfeite (sem eles o
   // kit cai no plano B); nas abas Usuários e Vitrine, são a aba.
-  const OPCIONAIS = { anuncios: ["apoiadores"], parceiros: ["users", "anuncios"] };
+  // Na Qualidade, sem a 20261003a a aba cai na tabela antiga dos erros.
+  const OPCIONAIS = { anuncios: ["apoiadores"], parceiros: ["users", "anuncios"], qualidade: ["erros"] };
   const PERIODS = [7, 30, 90];
-  const state = { tab: "geral", days: 30, cache: {}, inflight: {}, errors: undefined, pages: {}, names: {}, meta: {}, metaPendente: false, marca: null };
+  const state = { tab: "geral", days: 30, cache: {}, inflight: {}, errors: undefined, pages: {}, names: {}, meta: {}, metaPendente: false, marca: null, aparelho: "todos" };
   // Hash antigo (#produto, #qualidade…) continua valendo: link salvo não quebra.
   const hashTab = (location.hash || "").replace(/^#/, "");
   if (TAB_GROUP[hashTab]) state.tab = hashTab;
@@ -698,17 +699,34 @@
       </div>`;
   }
 
-  function tabQualidade(d) {
+  // ── Técnico › Qualidade ───────────────────────────────────────────────
+  // v2 (2026-10-03, migração 20261003a, docs/PLANO-TECNICO.md D0/D3): os
+  // erros separados em celular × desktop — a pergunta da campanha paga. A
+  // admin_erros tira robô, junta o mesmo bug entre levas (o hash do arquivo
+  // abria uma linha por deploy) e vale RETROATIVO: o evento antigo, sem
+  // aparelho, ganha o do pageview do mesmo navegador. A taxa (erros a cada
+  // mil visitas, % dos visitantes com erro) é o que compara os dois lados;
+  // volume sozinho só repete quem teve mais tráfego.
+  const APARELHOS = [["todos", "Todos"], ["m", "Celular"], ["d", "Desktop"]];
+  const CLASSE = {
+    investigar: ["investigar", "pode ser bug nosso: traduza a fonte (scripts/decodifica-erro.mjs) e reproduza no navegador da maioria"],
+    rede: ["rede", "um pedido de rede que falhou (4G caindo, aba fechada, bloqueador)"],
+    terceiro: ["terceiro", "script de outro domínio (AdSense, Turnstile, beacon) — o navegador esconde o detalhe"],
+    extensao: ["extensão", "extensão do navegador da pessoa"],
+    "leva velha": ["leva velha", "página aberta antes de um deploy pedindo arquivo que saiu do ar"],
+    recurso: ["recurso", "script/CSS do próprio site que não carregou"],
+    csp: ["CSP", "algo barrado pela política de segurança (host novo de imagem, script)"],
+    armazenamento: ["armazenamento", "localStorage cheio ou bloqueado"],
+    falha: ["falha", "falha tratada que o usuário sente (câmbio, catálogo…)"],
+    ruido: ["ruído", "aviso inofensivo do navegador"]
+  };
+  const INFRA = ["leva velha", "recurso", "csp", "armazenamento", "falha"];
+  const taxa = (t) => (t && t.views ? (1000 * (t.erros || 0)) / t.views : null);
+  const fmtTaxa = (x) => (x == null ? "—" : x.toLocaleString("pt-BR", { maximumFractionDigits: 1 }));
+
+  function tabQualidade(d, er) {
     const o = d.overview || {}, daily = d.daily || [];
-    const errs = state.errors;
-    const errRows = Array.isArray(errs) ? errs.map((x) => `<tr><td>${esc(x.message)}<br><small>${esc(x.source || "")}</small></td><td class="num">${esc(fmt(x.hits))}</td><td class="num">${esc(fmt(x.users))}</td><td>${esc(x.last_seen ? new Date(x.last_seen).toLocaleString("pt-BR") : "—")}</td></tr>`) : [];
-    return `
-      <div class="admin-stats">
-        ${stat("Pageviews de gente", fmt(o.pageviews))}
-        ${stat("Pageviews de robô", fmt(o.pageviews_bot), "executaram JS e mesmo assim se denunciaram")}
-        ${stat("Orgânico", pct(o.pageviews, (o.pageviews || 0) + (o.pageviews_bot || 0)))}
-        ${stat("Erros de JS", fmt(o.errors), `no período`)}
-      </div>
+    const robos = `
       <div class="adm-grid-2">
         ${section("Gente × robôs", donut([
           { label: "Gente", value: o.pageviews, color: "var(--accent)" },
@@ -716,7 +734,73 @@
         ], { aria: "Proporção de pageviews de gente e de robôs" }), "Robô = user-agent de crawler/monitor, navegador sem user-agent ou navigator.webdriver ligado. Crawler que não executa JS nunca chega aqui — o Cloudflare (Security › Bots) é que vê esse.")}
         ${section("Páginas mais batidas por robô", hbars(((d.paths && d.paths.bots) || []).map((p) => ({ label: pageName(p.path), value: p.views, color: "#9aa3ae" }))))}
       </div>
-      ${section("Robôs por dia", dailyBars(daily, Object.assign(CW(), { keyA: "bots", keyB: "__none", labelA: "Robôs", classA: "adm-bar-b", swatchA: "adm-swatch-b", aria: "Pageviews de robôs por dia" })))}
+      ${section("Robôs por dia", dailyBars(daily, Object.assign(CW(), { keyA: "bots", keyB: "__none", labelA: "Robôs", classA: "adm-bar-b", swatchA: "adm-swatch-b", aria: "Pageviews de robôs por dia" })))}`;
+    if (!er) return qualidadeV1(d) + robos;
+
+    const tot = er.totais || {}, m = tot.m || {}, dk = tot.d || {};
+    const gente = Object.keys(tot).reduce((s, k) => s + (Number(tot[k].erros) || 0), 0);
+    const ap = state.aparelho;
+    const chave = ap === "m" ? "celular" : ap === "d" ? "desktop" : "vezes";
+    const lista = (er.assinaturas || []).filter((a) => ap === "todos" || a[chave] > 0)
+      .sort((a, b) => b[chave] - a[chave]);
+    // Série: erros a cada mil visitas, por dia, celular × desktop.
+    const porDia = new Map();
+    (er.serie || []).forEach((x) => {
+      const dia = String(x.dia).slice(0, 10);
+      const o2 = porDia.get(dia) || { day: dia };
+      if (x.d === "m" || x.d === "d") o2[x.d] = taxa(x) || 0;
+      porDia.set(dia, o2);
+    });
+    const serie = Array.from(porDia.values()).sort((a, b) => (a.day < b.day ? -1 : 1))
+      .map((x) => Object.assign({ m: 0, d: 0 }, x));
+    const lado = (nome, t) => stat(`${nome}: erros a cada mil visitas`, fmtTaxa(taxa(t)),
+      `${fmt(t.erros || 0)} erros · ${pct(t.navegadores || 0, t.visitantes || 0)} dos visitantes viram algum`);
+    const linha = (a) => {
+      const [rot, nota] = CLASSE[a.classe] || [a.classe, ""];
+      const tipo = a.classe === "investigar" ? "adm-classe adm-classe-investigar" : INFRA.indexOf(a.classe) >= 0 ? "adm-classe adm-classe-infra" : "adm-classe";
+      const marcas = [].concat((a.browsers || []).map((x) => `${x.b} (${fmt(x.n)})`), (a.apps || []).map((x) => `no app ${x.iab} (${fmt(x.n)})`));
+      const levas = (a.levas || []).length;
+      return `<tr>
+        <td><span class="${tipo}" title="${esc(nota)}">${esc(rot)}</span></td>
+        <td>${esc(a.msg)}${a.quadro ? `<br><small class="adm-mono">${esc(a.quadro)}</small>` : ""}${marcas.length ? `<br><small>${esc(marcas.join(" · "))}</small>` : ""}${levas ? `<br><small>${esc(`${levas} ${levas === 1 ? "leva" : "levas"}: ${(a.levas || []).join(", ")}`)}</small>` : ""}</td>
+        <td class="num">${esc(fmt(a.vezes))}</td>
+        <td class="num">${esc(fmt(a.celular))}</td>
+        <td class="num">${esc(fmt(a.desktop))}</td>
+        <td class="num">${esc(fmt(a.navegadores))}</td>
+        <td><small>${esc(a.ultimo ? new Date(a.ultimo).toLocaleString("pt-BR") : "—")}</small>${a.fonte ? `<br><small class="adm-mono" title="Cole no scripts/decodifica-erro.mjs">${esc(String(a.fonte).trim().slice(0, 90))}</small>` : ""}</td>
+      </tr>`;
+    };
+    return `
+      <div class="adm-period adm-aparelho" role="group" aria-label="Aparelho">${APARELHOS.map(([id, rot]) => `<button type="button" class="chip" data-aparelho="${id}" aria-pressed="${ap === id}">${rot}</button>`).join("")}</div>
+      <div class="admin-stats">
+        ${lado("Celular", m)}
+        ${lado("Desktop", dk)}
+        ${stat("Erros de gente no período", fmt(gente), `${fmt(er.dias)} dias, sem robô${tot["?"] && tot["?"].erros ? ` · ${fmt(tot["?"].erros)} sem aparelho (medição desligada)` : ""}`)}
+      </div>
+      ${section("Erros a cada mil visitas, por dia", lines(serie, [
+        { key: "m", label: "Celular (toque)", color: "var(--accent)" },
+        { key: "d", label: "Desktop (ponteiro)", color: "#2563eb" }
+      ], Object.assign(CW(), { aria: "Erros a cada mil visitas por dia, celular e desktop" })), "Celular = tela de toque (inclui tablet), a mesma régua do pageview. Dia em UTC.")}
+      ${section(`Erros ${ap === "m" ? "no celular" : ap === "d" ? "no desktop" : "de gente"} (${fmt(er.dias)} dias)`, paged("erros",
+        [{ t: "Classe" }, { t: "Erro" }, { t: "Vezes", num: true }, { t: "Celular", num: true }, { t: "Desktop", num: true }, { t: "Navegadores", num: true }, { t: "Último · fonte" }],
+        lista.map(linha), 15),
+        "Mesmo bug numa linha só, entre levas. \"investigar\" é o que pode ser nosso; rede, terceiro, extensão e ruído são contexto; leva velha, recurso, CSP, armazenamento e falha pedem ação de infra. A fonte (com o hash da leva) traduz pro código com o scripts/decodifica-erro.mjs — docs/PLANO-TECNICO.md, Fase 0.")}
+      ${robos}`;
+  }
+
+  // Sem a 20261003a: a tabela antiga (7 dias, agrupada pela fonte com hash).
+  function qualidadeV1(d) {
+    const o = d.overview || {};
+    const errs = state.errors;
+    const errRows = Array.isArray(errs) ? errs.map((x) => `<tr><td>${esc(x.message)}<br><small>${esc(x.source || "")}</small></td><td class="num">${esc(fmt(x.hits))}</td><td class="num">${esc(fmt(x.users))}</td><td>${esc(x.last_seen ? new Date(x.last_seen).toLocaleString("pt-BR") : "—")}</td></tr>`) : [];
+    return `
+      <p class="adm-banner">A RPC <code>admin_erros</code> ainda não existe no banco: aplique <code>supabase/migrations/20261003a_erros_v2.sql</code> no SQL Editor pra ver os erros separados em celular × desktop (vale também pros dias que já passaram).</p>
+      <div class="admin-stats">
+        ${stat("Pageviews de gente", fmt(o.pageviews))}
+        ${stat("Pageviews de robô", fmt(o.pageviews_bot), "executaram JS e mesmo assim se denunciaram")}
+        ${stat("Orgânico", pct(o.pageviews, (o.pageviews || 0) + (o.pageviews_bot || 0)))}
+        ${stat("Erros de JS", fmt(o.errors), `no período, robô incluído`)}
+      </div>
       ${section("Erros de JS (7 dias)", errs === undefined
         ? `<p class="admin-empty">Carregando…</p>`
         : errRows.length ? table([{ t: "Erro" }, { t: "Vezes", num: true }, { t: "Usuários", num: true }, { t: "Último" }], errRows) : `<p class="admin-empty">Nenhum erro registrado.</p>`)}`;
@@ -1668,7 +1752,7 @@ if (v === "b") { /* versão nova */ }</pre>
 
   const RENDER = {
     geral: (x) => tabGeral(x.dash), audiencia: (x) => tabAudiencia(x.dash), conteudo: (x) => tabConteudo(x.dash),
-    produto: (x) => tabProduto(x.dash), qualidade: (x) => tabQualidade(x.dash),
+    produto: (x) => tabProduto(x.dash), qualidade: (x) => tabQualidade(x.dash, x.erros),
     crescimento: (x) => tabCrescimento(x.growth),
     parceiros: (x) => tabParceiros(x.dash, x.retention, x.stores, x.demand, x.growth, x.engagement, x.users, x.anuncios),
     canais: (x) => tabCanais(x.retention, x.growth), retencao: (x) => tabRetencao(x.retention),
@@ -1723,7 +1807,8 @@ if (v === "b") { /* versão nova */ }</pre>
     demand: "20260923a_analytics_v2.sql", growth: "20260923a_analytics_v2.sql",
     anuncios: "20260927a_vitrine.sql", apoiadores: "20260928c_apoiador.sql",
     users: "20260928a_analytics_2_1.sql", campaigns: "20260928a_analytics_2_1.sql", engagement: "20260928a_analytics_2_1.sql",
-    experiments: "20260928a_analytics_2_1.sql", partners: "20260928a_analytics_2_1.sql", health: "20260928a_analytics_2_1.sql"
+    experiments: "20260928a_analytics_2_1.sql", partners: "20260928a_analytics_2_1.sql", health: "20260928a_analytics_2_1.sql",
+    erros: "20261003a_erros_v2.sql"
   };
   function pendente(keys) {
     const arqs = Array.from(new Set(keys.map((k) => MIGRACAO[k])));
@@ -1755,6 +1840,10 @@ if (v === "b") { /* versão nova */ }</pre>
       if (g && TAB_GROUP[state.tab] !== g[0]) go(g[2][0][0]);
     } else if (t.dataset.tab) {
       if (t.dataset.tab !== state.tab) go(t.dataset.tab);
+    } else if (t.dataset.aparelho) {
+      state.aparelho = t.dataset.aparelho;
+      state.pages.erros = 1;
+      render();
     } else if (t.dataset.days) {
       state.days = Number(t.dataset.days) || 30;
       state.pages = {};

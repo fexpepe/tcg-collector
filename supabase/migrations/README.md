@@ -8,6 +8,24 @@ poucos.)
 
 ## Pendentes de aplicar
 
+- `20261003a` — erros de JS v2 no /admin (`20261003a_erros_v2.sql`;
+  docs/PLANO-TECNICO.md, D0/D3). Cria a `admin_erros(days)`, só leitura, com o
+  portão de admin de sempre: os erros separados em **celular × desktop**, sem
+  robô, com o mesmo bug numa linha só entre levas (a `error_summary` agrupava
+  pela fonte com o hash do arquivo — uma linha por deploy). O aparelho vem do
+  próprio evento quando ele traz (`props.d`, o envio v2 de 2026-10-03) e, nos
+  eventos de antes, do pageview do mesmo navegador anônimo — vale
+  **retroativo**, a campanha inteira aparece separada. Aditiva e sem ordem com
+  o JS: sem ela, a aba Técnico › Qualidade mostra a tabela antiga com o aviso
+  pra aplicar. Testada no PGlite (aplicada duas vezes) com eventos v1 e v2,
+  robô por webdriver, duas levas do mesmo bug e não-admin (devolve null).
+
+  Conferir depois de aplicar (no app, logado como admin, a aba Qualidade
+  troca a tabela antiga pela chave Todos | Celular | Desktop), ou aqui:
+  ```sql
+  select proname from pg_proc where proname = 'admin_erros';  -- 1 linha
+  ```
+
 - `20261001e` — libera o slug `mbc` (Miracle Battle Carddass, o crossover da
   Jump que virou jogo próprio em 2026-10-01) nas DUAS whitelists de jogo:
   `card_views`/`increment_card_view` e `contribute_price`. Cópia da
