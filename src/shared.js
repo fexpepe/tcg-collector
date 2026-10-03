@@ -2649,7 +2649,7 @@
   function notifyStorageFull(revertido) {
     if (!storageFullNotified) {
       storageFullNotified = true;
-      try { logClientError("localStorage quota exceeded", "storage"); } catch (e) { /* segue pro toast */ }
+      try { logClientError("localStorage quota exceeded", "storage", "armazenamento"); } catch (e) { /* segue pro toast */ }
     } else if (storageFullToast && storageFullToast.isConnected) return;
     try {
       const el = document.createElement("div");
@@ -3843,7 +3843,7 @@
       try {
         fetch(`${SUPABASE_URL}/rest/v1/rpc/consent_tally`, {
           method: "POST", headers: authHeaders(), body: JSON.stringify({ p_on: !!valor }), keepalive: true
-        });
+        }).catch(semErro);
       } catch (e) { /* contador é opcional */ }
     }
     try { localStorage.setItem(CONSENT_KEY, JSON.stringify(c)); } catch (e) { /* storage bloqueado */ }
@@ -3939,6 +3939,13 @@
     } catch (e) { /* sem contexto, o pageview vale do mesmo jeito */ }
     return p;
   }
+  // Envio "dispara e esquece": a promessa do fetch REJEITA quando a rede
+  // pisca, a aba fecha no meio ou um bloqueador barra o Supabase — e sem
+  // .catch() isso vira "Failed to fetch"/"Load failed" não tratado, que o
+  // próprio rastreio mandava pro /admin como erro de JS (medido em
+  // 2026-10-02: duas por página com o envio falhando; docs/PLANO-TECNICO.md,
+  // S1). O try/catch em volta só pega erro SÍNCRONO.
+  const semErro = () => {};
   function mandaEvento(nome, props) {
     if (!AUTH_ENABLED || !hasConsent("analytics")) return;
     if (!/(^|\.)sleevu\.app$/i.test(location.hostname)) return;
@@ -3950,7 +3957,7 @@
         headers: Object.assign(authHeaders(tokenParaEvento()), { Prefer: "return=minimal" }),
         body: JSON.stringify(corpo),
         keepalive: true
-      });
+      }).catch(semErro);
     } catch (e) { /* analytics nunca quebra a página */ }
   }
   function logPageview() { mandaEvento("pageview", contextoPageview()); }
@@ -4129,38 +4136,43 @@
 
   // --- Error tracking first-party: erros de JS em produção viram eventos
   // anônimos (name="jserror") na MESMA tabela `events` do analytics — sem
-  // serviço terceiro, sem PII (só mensagem + arquivo:linha). O /admin lê o
-  // agregado via RPC error_summary. Dedupe por mensagem + teto por página
-  // pra um erro em loop não inundar o banco.
-  const errorsSeen = new Set();
-  let errorBudget = 5;
-  function logClientError(message, source) {
-    if (!AUTH_ENABLED) return;
-    try {
-      if (!/(^|\.)sleevu\.app$/i.test(location.hostname)) return; // só produção
-      const m = String(message || "").slice(0, 300);
-      if (!m || errorsSeen.has(m) || errorBudget <= 0) return;
-      errorsSeen.add(m);
-      errorBudget -= 1;
-      fetch(`${SUPABASE_URL}/rest/v1/events`, {
-        method: "POST",
-        headers: Object.assign(authHeaders(), { Prefer: "return=minimal" }),
-        body: JSON.stringify({
-          name: "jserror", path: analyticsPath(), anon: anonId(), game: currentGame(),
-          props: { m, s: String(source || "").slice(0, 200) }
-        }),
-        keepalive: true
-      });
-    } catch (e) { /* rastreio nunca quebra a página */ }
+  // serviço terceiro, sem PII. O /admin lê o agregado (error_summary_v2).
+  //
+  // v2 (2026-10-03, docs/PLANO-TECNICO.md): os ouvintes passaram pro
+  // theme.js, que enfileira em window.__sleevuErros desde o 1º script da
+  // página; aqui a fila só é ligada ao envio. O src/erros.js (contexto:
+  // aparelho, navegador, app embutido, leva; filtro de ruído; teto por
+  // sessão) desce sob demanda no primeiro erro — página sem erro não paga
+  // nada. Se nem ele vier (página de uma leva que já saiu do ar, o 404 do
+  // arquivo com hash), vai o mínimo direto daqui: é justamente o caso que
+  // mais importa ver.
+  function logClientError(message, source, k) {
+    try { if (window.__sleevuErroPoe) window.__sleevuErroPoe({ k: k || "js", m: message, s: source }); } catch (e) { /* rastreio nunca quebra a página */ }
   }
-  window.addEventListener("error", (e) => {
-    const src = (e.filename || "") + (e.lineno ? `:${e.lineno}:${e.colno || 0}` : "");
-    logClientError(e.message, src);
-  });
-  window.addEventListener("unhandledrejection", (e) => {
-    const r = e && e.reason;
-    logClientError(r && r.message ? r.message : String(r), (r && r.stack ? String(r.stack).split("\n")[1] : "") || "promise");
-  });
+  function initErros() {
+    if (!AUTH_ENABLED || !/(^|\.)sleevu\.app$/i.test(location.hostname)) return; // só produção
+    let modulo = null, minimos = 3;
+    const envio = () => ({
+      url: `${SUPABASE_URL}/rest/v1/events`,
+      headers: Object.assign(authHeaders(tokenParaEvento()), { Prefer: "return=minimal" }),
+      anon: anonId(), game: currentGame(), path: analyticsPath(),
+      lg: getSession() ? 1 : 0, pwa: isStandalonePWA() ? 1 : 0
+    });
+    window.__sleevuErroNovo = () => {
+      modulo = modulo || injectScript("src/erros.js");
+      modulo.then((ok) => {
+        if (ok && window.TCGErros) { window.TCGErros.despeja(envio()); return; }
+        const e = envio(), fila = window.__sleevuErros || [];
+        const lote = fila.splice(0, fila.length).slice(0, minimos);
+        minimos -= lote.length;
+        lote.forEach((x) => fetch(e.url, {
+          method: "POST", headers: e.headers, keepalive: true,
+          body: JSON.stringify({ name: "jserror", path: e.path, anon: e.anon, game: e.game, props: { m: String(x.m).slice(0, 300), s: String(x.s || "").slice(0, 200), k: x.k, v: buildDaPagina() } })
+        }).catch(semErro));
+      });
+    };
+    if ((window.__sleevuErros || []).length) window.__sleevuErroNovo();
+  }
 
   // --- Web push: aviso de quedas da wishlist (só logados; opt-in nas Config) ---
   // A assinatura do navegador vai pra push_subs (RLS por dono); o robô semanal do
@@ -4239,7 +4251,7 @@
         headers: authHeaders(),
         body: JSON.stringify({ p_game: game, p_card_id: card.id }),
         keepalive: true
-      });
+      }).catch(semErro);
     } catch (e) { /* contador é opcional */ }
   }
   // ── Preço da Comunidade: contribuição (F2 de docs/COMMUNITY-PRICES.md) ──────
@@ -4288,7 +4300,7 @@
           p_value_brl: Math.round(v * 100) / 100
         }),
         keepalive: true
-      });
+      }).catch(semErro);
     } catch (e) { /* contribuição é acessória */ }
   }
   // Converte pra BRL (moeda-base do agregado). Sem câmbio carregado devolve
@@ -4318,7 +4330,7 @@
         headers: authHeaders(),
         body: JSON.stringify({ p_share_id: shareId }),
         keepalive: true
-      });
+      }).catch(semErro);
     } catch (e) { /* contador é opcional */ }
   }
   // Contagem de views de VÁRIOS decks numa chamada (a galeria lista até 60).
@@ -10601,6 +10613,11 @@
   // chave é apagada EXPLICITAMENTE lá (deleteAccountFlow) — o esquecimento é
   // uma decisão, não um efeito colateral do prefixo.
   const LAST_ACCOUNT_KEY = "sleevu-ultima-conta-v1";
+  // A fila de erros do theme.js é ligada ao envio assim que dá — o envio lê
+  // as constantes de sessão acima (TDZ se viesse antes; ver
+  // tests/module-boot-order.test.mjs): erro que quebrar o resto deste arquivo
+  // ainda sai.
+  initErros();
   function rememberAccount(user) {
     const email = user && user.email;
     if (!email) return;
