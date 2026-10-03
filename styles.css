@@ -5636,6 +5636,19 @@ a.setting-open {
   :root:not([data-theme="light"]) .adm-bad { color: #f87171; }
 }
 .adm-mini { min-height: 32px; padding: 0 12px; font-size: 13px; }
+/* Qualidade v2 (2026-10-03): a chave Todos | Celular | Desktop usa o mesmo
+   controle colado do período; a classe do erro é uma pílula — vermelha no que
+   pode ser bug nosso ("investigar"), dourada no que pede ação de infra (leva
+   velha, recurso, CSP, armazenamento, falha), neutra no resto (rede,
+   terceiro, extensão, ruído), que é contexto. */
+.adm-aparelho { margin-bottom: 16px; }
+.adm-classe { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 12px; font-weight: 700; white-space: nowrap; background: color-mix(in srgb, var(--subtle) 18%, transparent); color: var(--text); }
+.adm-classe-investigar { background: color-mix(in srgb, #dc2626 18%, transparent); color: #b91c1c; }
+.adm-classe-infra { background: color-mix(in srgb, var(--gold) 24%, transparent); }
+:root[data-theme="dark"] .adm-classe-investigar { color: #f87171; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .adm-classe-investigar { color: #f87171; }
+}
 .adm-row-actions { display: flex; gap: 6px; flex-wrap: wrap; }
 .adm-form { display: flex; flex-wrap: wrap; gap: 10px 12px; align-items: flex-end; }
 .adm-form label { display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--muted); font-weight: 700; flex: 1 1 160px; min-width: 0; }
