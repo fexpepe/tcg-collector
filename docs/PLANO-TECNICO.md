@@ -41,6 +41,19 @@ lista de erros. Este plano faz três coisas, nesta ordem:
   desktop **do que já aconteceu** cruzando com o pageview do mesmo navegador
   (consultas da Fase 0) — e o `jserror` v2 passa a mandar isso direto.
 
+## Estado (2026-10-03)
+
+| Item | Estado | Observação |
+|---|---|---|
+| S1 + D1 | feito | `src/erros.js` sob demanda, fila no `theme.js`; já cobre a parte de cliente do D2 (`k: recurso` e `k: csp`) |
+| D0 + D3 | feito | **aplicar `supabase/migrations/20261003a_erros_v2.sql` no SQL Editor antes do deploy**; sem ela a aba Qualidade mostra a tabela antiga com o aviso da migração |
+| S2 | feito, sem a Function | `scripts/build-fx.mjs` grava `data/fx.generated.json` em todo deploy (PTAX, Frankfurter; AwesomeAPI se o secret `AWESOMEAPI_KEY` existir — opcional) e o `shared.js` cai nele; a falha vira `jserror` `k: falha` |
+| S3 | feito | CLS local a 412px: Sets 0,097 → 0,002, carta 0,225 → 0,099, Ajuda 0,83 → 0, Novidades/Lançamentos 0,24 → 0, Guia de condição 0,60 → 0; cabeçalho nasce com 59px. Sobra o resumo da tela de set/carta (~0,1), que aparece quando o app sobe |
+| S5 | feito | `data-iab` no `<html>` (theme.js); `pageview.props.iab` e `login_gate.props.iab` medem daqui pra frente |
+| S4, S7, S11 | configuração | Cloudflare (Early Hints, JS Detections) e um monitor externo: fora do repositório |
+| Fase 0 | a rodar | as consultas da seção 3.2 no SQL Editor; depois do S5, a Q5 pode separar por `props->>'iab'` |
+| S6, S8–S10, D2 (`report-to`), D4–D9 | próximos | ordem da seção 6 |
+
 ---
 
 ## 1. Como foi feito
