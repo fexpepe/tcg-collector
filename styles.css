@@ -5180,6 +5180,30 @@ body:has(#newsList > [data-i18n="news.loading"]) .site-footer { visibility: hidd
 }
 .login-sep::before,
 .login-sep::after { content: ""; flex: 1 1 0; height: 1px; background: var(--line); }
+/* Navegador embutido de app (data-iab, carimbado pelo theme.js antes da
+   primeira pintura — 2026-10-03, docs/PLANO-TECNICO.md S5). O Google recusa o
+   login ali: os botões dele (o genérico e o da última conta) e o "ou" saem, e
+   no lugar entra o aviso, com o link mágico logo abaixo como caminho. */
+.login-iab { display: none; }
+html[data-iab] .login-oauth,
+html[data-iab] .login-other,
+html[data-iab] .login-sep { display: none; }
+html[data-iab] .login-iab {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 0 0 18px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--panel);
+  color: var(--muted);
+  font-size: 13.5px;
+  line-height: 1.55;
+  text-align: left;
+}
+.login-iab p { margin: 0; }
+.login-iab-icon { width: 18px; height: 18px; flex: none; margin-top: 2px; color: var(--accent); }
 .login-msg { margin: 16px 0 0; font-size: 14px; line-height: 1.5; }
 .login-msg.ok { color: var(--accent); }
 .login-msg.err { color: #f87171; }

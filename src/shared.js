@@ -3927,6 +3927,10 @@
       const ref = document.referrer ? new URL(document.referrer).hostname.replace(/^www\./, "") : "";
       if (ref && !/(^|\.)sleevu\.app$/i.test(ref)) p.r = ref.slice(0, 60);
       if (navigator.webdriver) p.wd = 1;
+      // Navegador embutido de app (carimbado pelo theme.js): é de onde vem o
+      // anúncio, e onde o login com Google não funciona (S5).
+      const iab = document.documentElement.getAttribute("data-iab");
+      if (iab) p.iab = iab;
       // Aberto como app instalado: o /admin separa a retenção de app × navegador.
       if (isStandalonePWA()) p.s = 1;
       // Campanha (utm_source/utm_campaign) quando a URL traz. Só o rótulo, em
@@ -12590,7 +12594,7 @@
     // ralo do produto — a pessoa clica no anúncio, cai na Coleção e leva um
     // login na cara — e hoje ele é invisível. O keepalive do mandaEvento
     // entrega o beacon apesar do replace() logo abaixo.
-    logEvento("login_gate", { p: page });
+    logEvento("login_gate", document.documentElement.hasAttribute("data-iab") ? { p: page, iab: 1 } : { p: page });
     window.location.replace("login");
     return true;
   }

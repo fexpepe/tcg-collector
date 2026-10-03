@@ -96,6 +96,27 @@
     }
   } catch (e) { /* history bloqueado: segue com a URL como veio */ }
 
+  // --- Navegador embutido de app (Instagram, Facebook, TikTok…) -----------
+  // O anúncio abre DENTRO do app, e lá o Google recusa o login (403
+  // disallowed_useragent): quem tocava em "Continuar com Google" caía numa
+  // página de erro do Google e não voltava — e nada disso chegava ao /admin
+  // (2026-10-03, docs/PLANO-TECNICO.md S5). Carimbado aqui, síncrono, pra o
+  // /login já nascer sem o botão do Google (nada pisca nem pula) e o pageview
+  // levar o app junto. Mesma lista do familia() do src/erros.js; "; wv)" é a
+  // WebView do Android, que o Google também recusa.
+  try {
+    var ua = navigator.userAgent || "";
+    var iab = /Instagram/.test(ua) ? "instagram"
+      : /FBAN|FBAV|FB_IAB|FBIOS/.test(ua) ? "facebook"
+        : /musical_ly|BytedanceWebview|TikTok/i.test(ua) ? "tiktok"
+          : /\bLine\//.test(ua) ? "line"
+            : /Snapchat/.test(ua) ? "snapchat"
+              : /Pinterest/.test(ua) ? "pinterest"
+                : /LinkedInApp/.test(ua) ? "linkedin"
+                  : /; wv\)/.test(ua) ? "webview" : "";
+    if (iab) document.documentElement.setAttribute("data-iab", iab);
+  } catch (e) { /* sem user-agent: segue como navegador comum */ }
+
   // --- "Tentar de novo" da saída de emergência (.falha-boot) --------------
   // É um href="" (recarregar a própria tela). Nas telas com <base href="/">
   // (a de Sets e a do set, que respondem em /games/…) ele resolveria na raiz e
