@@ -834,6 +834,18 @@ jobs:
       - name: Mercado do jogo (trilho de altas e quedas)
         run: node scripts/build-market.mjs
 
+      # Câmbio do dia como RESERVA do app (data/fx.generated.json): o navegador
+      # busca o câmbio na AwesomeAPI sem chave, e quando ela nega (429, sem
+      # CORS — visto em 02/10) o visitante novo via a carta sem cotação. O
+      # shared.js cai neste arquivo, da mesma origem. Banco Central, depois BCE,
+      # depois o arquivo que já está no ar; AwesomeAPI com chave primeiro se o
+      # secret AWESOMEAPI_KEY existir. Nenhuma fonte = aviso amarelo, o build
+      # segue. Ver docs/PLANO-TECNICO.md (S2).
+      - name: Câmbio do dia (reserva do app)
+        run: node scripts/build-fx.mjs
+        env:
+          AWESOMEAPI_KEY: ${{ secrets.AWESOMEAPI_KEY }}
+
       # Reparte o monólito de preços de cada jogo em chunks POR SET (espelhando
       # os chunks de carta) e liga a flag `pc` no manifest. Roda em TODO deploy
       # pela mesma razão do enrich-manifest: no build rápido os syncs são
