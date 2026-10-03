@@ -164,7 +164,12 @@ function vizinhas(card, cartas, slugs, base) {
 
 // Estilo do bloco da carta no pé da tela do app. Inline porque só existe
 // nesta página (o styles.css do núcleo está no teto do orçamento de peso).
+// Com JS, o bloco espera a grade do app: antes dela ele ficava na primeira
+// dobra e descia quando as cartas chegavam — boa parte do CLS de 0,8 da tela
+// da carta no celular (2026-10-03, docs/PLANO-TECNICO.md S3). Sem JS (o robô
+// que lê este texto), o html não tem data-game e o bloco aparece como sempre.
 const ESTILO = `<style>
+        html[data-game] #detailGrid:empty ~ .seo-carta { display: none; }
         .seo-carta { margin: 40px 0 8px; max-width: 760px; line-height: 1.65; }
         .seo-carta summary { cursor: pointer; color: var(--muted, #9aa0aa); min-height: 44px; display: flex; align-items: center; }
         .seo-carta h3 { font-size: 1rem; margin: 22px 0 8px; }
