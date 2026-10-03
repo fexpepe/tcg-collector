@@ -109,6 +109,16 @@
             <span data-i18n="login.google">Continuar com Google</span>
           </button>
 
+          <!-- Navegador embutido de app (Instagram, Facebook, TikTok…): o
+               Google recusa o login ali (403 disallowed_useragent), e o anúncio
+               abre justamente nele. O theme.js marca o <html> com data-iab
+               antes da primeira pintura; o CSS troca os botões do Google por
+               este aviso, e o link mágico vira o caminho. -->
+          <div class="login-iab" role="note">
+            <svg class="login-iab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>
+            <p data-i18n="login.iab">O Google não deixa entrar pelo navegador de dentro de apps como o Instagram. Receba o link de acesso no seu e-mail aqui embaixo — ou abra o Sleevu no navegador (menu ⋯ › Abrir no navegador) pra usar o Google.</p>
+          </div>
+
           <div class="login-sep"><span data-i18n="login.or">ou</span></div>
 
           <form id="loginForm" class="login-form">
