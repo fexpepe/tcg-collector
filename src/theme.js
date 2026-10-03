@@ -41,6 +41,44 @@
     } catch (e) { /* nem redefinir dá: o try/catch de cada leitura segura o resto */ }
   });
 
+  // --- Erros de JS: a fila nasce AQUI (2026-10-03) ------------------------
+  // Antes os ouvintes viviam no shared.js, e tudo que quebrava antes dele (o
+  // próprio boot, o i18n) — justamente o que deixa a tela em branco — nunca
+  // chegava ao /admin. Aqui só se enfileira; o shared.js liga a fila ao envio
+  // (window.__sleevuErroNovo) e o src/erros.js monta o contexto. Ver
+  // docs/PLANO-TECNICO.md (D1/D2).
+  //  - Recurso: só <script>/<link> do próprio site. Imagem de carta falha o
+  //    tempo todo e tem cadeia de reserva própria.
+  //  - CSP: script inline barrado é o da detecção de robô do Cloudflare, que
+  //    a política recusa de propósito (functions/_vitrine-csp.js) — fica fora.
+  try {
+    var fila = window.__sleevuErros = [];
+    var poe = window.__sleevuErroPoe = function (x) {
+      if (fila.length >= 20) return;
+      fila.push(x);
+      if (typeof window.__sleevuErroNovo === "function") window.__sleevuErroNovo();
+    };
+    window.addEventListener("error", function (e) {
+      var alvo = e.target;
+      if (alvo && alvo !== window && alvo.tagName) {
+        var u = String(alvo.src || alvo.href || "");
+        if ((alvo.tagName === "SCRIPT" || alvo.tagName === "LINK") && u.indexOf(location.origin + "/") === 0) {
+          poe({ k: "recurso", m: alvo.tagName.toLowerCase() + " não carregou", s: u });
+        }
+        return;
+      }
+      poe({ k: "js", m: e.message, s: e.filename ? e.filename + ":" + e.lineno + ":" + e.colno : "", p: e.error && e.error.stack });
+    }, true);
+    window.addEventListener("unhandledrejection", function (e) {
+      var r = e && e.reason;
+      poe({ k: "promise", m: r && r.message ? r.message : String(r), p: r && r.stack });
+    });
+    document.addEventListener("securitypolicyviolation", function (e) {
+      if (e.blockedURI === "inline" || e.blockedURI === "eval") return;
+      poe({ k: "csp", m: e.effectiveDirective + " " + String(e.blockedURI).replace(/^(https?:\/\/[^/]+).*$/, "$1"), s: e.sourceFile || "" });
+    });
+  } catch (e) { /* sem ouvinte: o site segue igual, só sem rastreio */ }
+
   // --- Link colado com "&amp;" (query escapada como HTML) -----------------
   // Alguns apps de mensagem e clientes de e-mail escapam a URL antes de
   // entregar, e o link chega com "&amp;" no lugar de "&":
