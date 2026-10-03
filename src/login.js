@@ -126,11 +126,17 @@
   //
   // É dado LOCAL: nada aqui consulta o Google nem o Supabase. Num navegador
   // novo, ou depois de limpar os dados do site, simplesmente não aparece.
+  //
+  // Navegador embutido de app (data-iab, carimbado pelo theme.js): o Google
+  // recusa o login ali (S5, 2026-10-03) e o CSS já esconde os botões dele — o
+  // atalho também é Google. No lugar, o e-mail lembrado vai pro campo, como
+  // pra quem entra por link mágico: pedir o link é só apertar o botão.
   const lastBtn = document.getElementById("loginLast");
   const otherBtn = document.getElementById("loginOther");
   const conta = shared.getLastAccount ? shared.getLastAccount() : null;
+  const embutido = document.documentElement.hasAttribute("data-iab");
 
-  if (conta && conta.via === "google" && lastBtn && otherBtn && googleBtn) {
+  if (!embutido && conta && conta.via === "google" && lastBtn && otherBtn && googleBtn) {
     // textContent (nunca innerHTML): nome e e-mail são dado de usuário.
     lastBtn.querySelector(".login-last-avatar").textContent = (conta.nome || conta.email).charAt(0).toUpperCase();
     lastBtn.querySelector(".login-last-name").textContent = conta.nome ? t("login.lastAs", { nome: conta.nome }) : t("login.google");
@@ -193,7 +199,8 @@
         try { if (window.turnstile) window.turnstile.reset(); } catch (e) { /* sem widget */ }
         showMsg(t("login.captchaRejected"), "err");
       } else if (r.code === "over_email_send_rate_limit" || r.status === 429) {
-        showMsg(t("login.rateLimited"), "err");
+        // O texto de sempre manda usar o Google, que no navegador de app não há.
+        showMsg(t(embutido ? "login.rateLimitedIab" : "login.rateLimited"), "err");
       } else {
         showMsg(t("login.error"), "err");
       }

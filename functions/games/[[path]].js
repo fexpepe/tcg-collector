@@ -86,7 +86,11 @@ export function listaDeSets(mapa) {
 // Título, descrição, canonical e o índice de sets em HTML. O índice é o que o
 // robô que não roda JS encontra (a grade da tela é desenhada no navegador), e
 // é por ele que a página do jogo linka as páginas de set. Fica recolhido num
-// <details> pra não competir com a grade. data-indice-jogo deixa o app.js
+// <details> pra não competir com a grade.
+// Com JS, ele espera a grade (html[data-game] + grade vazia = escondido): antes
+// dela ficava na primeira dobra e descia quando os sets chegavam — CLS de 0,8
+// no celular (2026-10-03, docs/PLANO-TECNICO.md S3). O robô sem JS não tem o
+// data-game e vê o índice como sempre. data-indice-jogo deixa o app.js
 // tirar o índice se uma cópia guardada chegar pra OUTRO jogo (o service
 // worker guarda cada /games/<jogo> na entrada dele; é só uma garantia).
 export function metaDoJogo(jogo, sets) {
@@ -101,7 +105,7 @@ export function metaDoJogo(jogo, sets) {
     ? `Todos os ${n} sets de ${jogo.nome}${periodo}, com a lista de cartas de cada um. Acompanhe preços e o progresso da sua coleção no Sleevu, grátis.`
     : `Sets e cartas de ${jogo.nome} no Sleevu: acompanhe preços e o progresso da sua coleção, grátis.`;
   const indiceHtml = n ? `<section class="jogo-indice" data-indice-jogo="${escapeAttr(jogo.url)}">
-        <style>.jogo-indice{margin:40px 0 8px}.jogo-indice h2{font-size:1.05rem;margin:0 0 8px}.jogo-indice summary{cursor:pointer;color:var(--muted,#9aa0aa)}.jogo-indice ul{list-style:none;padding:0;margin:12px 0 0;columns:3 220px;column-gap:24px}.jogo-indice li{margin:0 0 6px;break-inside:avoid}.jogo-indice a{color:var(--accent,#e63946);text-decoration:none}.jogo-indice small{color:var(--muted,#9aa0aa)}</style>
+        <style>html[data-game] #cardGrid:empty~.jogo-indice{display:none}.jogo-indice{margin:40px 0 8px}.jogo-indice h2{font-size:1.05rem;margin:0 0 8px}.jogo-indice summary{cursor:pointer;color:var(--muted,#9aa0aa)}.jogo-indice ul{list-style:none;padding:0;margin:12px 0 0;columns:3 220px;column-gap:24px}.jogo-indice li{margin:0 0 6px;break-inside:avoid}.jogo-indice a{color:var(--accent,#e63946);text-decoration:none}.jogo-indice small{color:var(--muted,#9aa0aa)}</style>
         <h2>Todos os sets de ${escapeHtml(jogo.nome)}</h2>
         <details><summary>Ver a lista (${n})</summary><ul>${sets.map((s) =>
           `<li><a href="/games/${escapeAttr(jogo.url)}/${escapeAttr(s.slug)}">${escapeHtml(s.nome)}</a>${s.cartas ? ` <small>${s.cartas} cartas</small>` : ""}</li>`).join("")}</ul></details>

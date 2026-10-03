@@ -129,6 +129,13 @@ reimpressão; sem preço (nenhuma fonte grátis cota esses sets).
 > performance sem perder qualidade, 10 melhorias, 10 features e extras — estão
 > em [docs/PLANO-UX-2.md](docs/PLANO-UX-2.md). O item 1 abaixo (preço BR/MYP)
 > ganhou um caminho novo lá (F1: a API pública da MYP tem Swagger atualizado).
+>
+> Passe técnico depois da campanha paga (2026-10-02): como ler os erros do
+> /admin separando celular e desktop, a lista de correções e as melhorias de
+> detecção estão em [docs/PLANO-TECNICO.md](docs/PLANO-TECNICO.md). O P0 de lá
+> (o rastreio que gera o próprio erro, o câmbio de terceiro, a tela que pula no
+> celular e o Early Hints velho) vale antes do resto, enquanto a campanha ainda
+> traz gente.
 
 ### 0. Preço da Comunidade + graded no card — **F0 a F6 no ar**
 Plano e estado por fase em `docs/COMMUNITY-PRICES.md`. Prontas: F0 (merge de

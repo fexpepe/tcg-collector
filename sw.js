@@ -58,7 +58,7 @@
 // núcleo, as graduadoras e o pacote de i18n dele). Sem subir a versão, o
 // install não guardaria as páginas novas e a navegação offline pra /tools,
 // /condition e /centering cairia sem cópia.
-const SHELL_CACHE = "tcg-shell-v269";
+const SHELL_CACHE = "tcg-shell-v270";
 // Id do build: o hash-assets.mjs (deploy) acrescenta "-<8 hex>" ao nome acima,
 // calculado do conteúdo do shell (JS, CSS E as páginas HTML). É o mesmo id que
 // ele carimba em <meta name="sleevu-build"> de todo HTML — assim a página sabe
@@ -138,6 +138,8 @@ const SHELL_ASSETS = [
   "src/centering.js", "src/centering-core.js", "src/centering-graders.js",
   // Módulos que saíram do shared.js (2026-09-14): dois sob demanda e um por página.
   "src/backup-import.js", "src/card-rescue.js", "src/facets.js",
+  // Envio dos erros de JS (2026-10-03): sob demanda, no primeiro erro da página.
+  "src/erros.js",
   // Ordenar (2026-09-30): o menu e os critérios de toda grade de cartas.
   "src/ordenar.js",
   // Fichário (2026-09-16): motor das páginas de bolsos, carregado pelo set e pela Coleção.

@@ -355,6 +355,7 @@ Ferramentas que rodam à mão (não estão em workflow nenhum):
 | `scripts/test-d1-search.mjs` | prova a busca da borda contra um SQLite real | `node scripts/build-d1.mjs` (gera `out/d1-cards.sql`); com o dump desatualizado ele acusa falhas que não são do código |
 | `scripts/seo-meta.mjs` | codemod de `<head>` do rebrand — **destrutivo, reescreve todos os HTML** | commit limpo e revisar o diff depois |
 | `scripts/build-og-image.mjs` | regera o `og-image.png` (a imagem que aparece quando alguém compartilha um link) a partir do template `scripts/og/og-image.html` | Chrome/Chromium instalado (ou `CHROME_PATH=/caminho/do/chrome`) |
+| `scripts/decodifica-erro.mjs` | traduz a fonte de um erro de JS do `/admin` (`shared.<hash>.js:linha:coluna`, minificado) pro arquivo e a linha do repositório, pelo `.map` que o deploy publica; leva que saiu do ar vai com `--origem` do deploy daquele dia (ver [docs/PLANO-TECNICO.md](docs/PLANO-TECNICO.md)) | nada (o `fetch` do Node 22) |
 
 ### Imagem de compartilhamento (og-image)
 
@@ -803,7 +804,12 @@ Dois eixos independentes:
   daquele idioma. **"ZH" é um chinês único**: cobre zh-cn (simplificado, o
   padrão) com o zh-tw (tradicional) fundido dentro.
 
-Moeda: BRL (padrão), USD e EUR, com câmbio do dia da AwesomeAPI.
+Moeda: BRL (padrão), USD e EUR, com câmbio do dia da AwesomeAPI. Quando ela
+nega (sem chave, ela tem cota — em 02/10/2026 respondeu 429 sem CORS e a carta
+do visitante novo ficava sem cotação), vale a reserva que o build grava em
+`data/fx.generated.json` (`scripts/build-fx.mjs`: Banco Central, BCE ou o
+arquivo que já está no ar; AwesomeAPI com chave se o secret `AWESOMEAPI_KEY`
+existir). A falha vai pro /admin como `falha` no rastreio de erros.
 
 ---
 
