@@ -5359,41 +5359,52 @@
   // Retentativa de fundo (ver loadFxRates): mesma busca, sem prazo, e grava o
   // cache de 24h — mesmo que ninguém escute o evento, a próxima página já abre
   // com o câmbio na mão.
-  async function fetchFxRatesSemPrazo() {
-    try {
-      const response = await fetch("https://economia.awesomeapi.com.br/last/USD-BRL,EUR-BRL");
-      if (!response.ok) return null;
-      const json = await response.json();
-      const rates = { USD: Number(json.USDBRL && json.USDBRL.bid) || 0, EUR: Number(json.EURBRL && json.EURBRL.bid) || 0 };
-      if (!rates.USD && !rates.EUR) return null;
-      try { localStorage.setItem("tcg-fx-brl-v1", JSON.stringify({ t: Date.now(), r: rates })); } catch (e) { /* ignora */ }
-      return rates;
-    } catch (error) { return null; }
+  //
+  // RESERVA (2026-10-03, docs/PLANO-TECNICO.md S2): em 02/10 a AwesomeAPI
+  // respondeu 429 sem CORS, e o visitante novo (sem câmbio guardado) via a
+  // carta sem a cotação de Cardmarket e TCGplayer — sem câmbio a seção some.
+  // Quando a API falha, vale o data/fx.generated.json que o build grava
+  // (scripts/build-fx.mjs: Banco Central, BCE): mesma origem, sem cota, sem
+  // CORS. A falha vai pro /admin como `falha` (aparelho junto), que é como se
+  // sabe se ela pega mais o celular. Sem o arquivo (dev local), segue sem
+  // câmbio como antes.
+  const FX_KEY = "tcg-fx-brl-v1";
+  function gravaFx(t, rates) {
+    try { localStorage.setItem(FX_KEY, JSON.stringify({ t, r: rates })); } catch (e) { /* ignora */ }
+    return rates;
   }
-
-  async function fetchFxRatesBRL() {
-    const cacheKey = "tcg-fx-brl-v1";
+  async function fxComReserva(signal) {
     try {
-      const cached = JSON.parse(localStorage.getItem(cacheKey) || "null");
-      if (cached && Date.now() - cached.t < 86400000) return cached.r;
-    } catch (error) { /* ignora */ }
-    try {
-      // TIMEOUT obrigatório: as páginas de catálogo esperam este fetch junto com
-      // o catálogo (Promise.all) antes do primeiro render. Sem limite, uma API
-      // de terceiro LENTA (não caída — o catch já cobre a caída) segurava a
-      // grade inteira, com as cartas já baixadas. Como o cache local vale 24h,
-      // isso acontecia uma vez por dia, logo na primeira abertura.
-      const response = await fetch("https://economia.awesomeapi.com.br/last/USD-BRL,EUR-BRL", {
-        signal: AbortSignal.timeout ? AbortSignal.timeout(2500) : undefined
-      });
-      if (!response.ok) return null;
+      const response = await fetch("https://economia.awesomeapi.com.br/last/USD-BRL,EUR-BRL", signal ? { signal } : undefined);
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const json = await response.json();
       const rates = { USD: Number(json.USDBRL && json.USDBRL.bid) || 0, EUR: Number(json.EURBRL && json.EURBRL.bid) || 0 };
-      try { localStorage.setItem(cacheKey, JSON.stringify({ t: Date.now(), r: rates })); } catch (e) { /* ignora */ }
-      return rates;
+      if (!rates.USD && !rates.EUR) throw new Error("vazio");
+      return gravaFx(Date.now(), rates);
     } catch (error) {
+      logClientError(`câmbio: ${error && error.name === "TimeoutError" ? "demorou" : (error && error.message) || "falhou"}`, "awesomeapi", "falha");
+      try {
+        const r = await fetch("data/fx.generated.json");
+        const j = r.ok ? await r.json() : null;
+        if (j && j.r && Number(j.r.USD) > 0) return gravaFx(Number(j.t) || Date.now(), { USD: Number(j.r.USD), EUR: Number(j.r.EUR) || 0 });
+      } catch (e) { /* sem reserva: segue sem câmbio */ }
       return null;
     }
+  }
+  function fetchFxRatesSemPrazo() { return fxComReserva(); }
+
+  async function fetchFxRatesBRL() {
+    try {
+      const cached = JSON.parse(localStorage.getItem(FX_KEY) || "null");
+      if (cached && Date.now() - cached.t < 86400000) return cached.r;
+    } catch (error) { /* ignora */ }
+    // TIMEOUT obrigatório: as páginas de catálogo esperam este fetch junto com
+    // o catálogo (Promise.all) antes do primeiro render. Sem limite, uma API
+    // de terceiro LENTA (não caída — o catch já cobre a caída) segurava a
+    // grade inteira, com as cartas já baixadas. Como o cache local vale 24h,
+    // isso acontecia uma vez por dia, logo na primeira abertura.
+    // typeof: navegador sem AbortSignal (e o sandbox dos testes) segue sem prazo.
+    return fxComReserva(typeof AbortSignal !== "undefined" && AbortSignal.timeout ? AbortSignal.timeout(2500) : undefined);
   }
 
   // Estrutura o `pricing` da TCGdex em não-foil/foil com {min, med, max} por

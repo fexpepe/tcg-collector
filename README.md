@@ -804,7 +804,12 @@ Dois eixos independentes:
   daquele idioma. **"ZH" é um chinês único**: cobre zh-cn (simplificado, o
   padrão) com o zh-tw (tradicional) fundido dentro.
 
-Moeda: BRL (padrão), USD e EUR, com câmbio do dia da AwesomeAPI.
+Moeda: BRL (padrão), USD e EUR, com câmbio do dia da AwesomeAPI. Quando ela
+nega (sem chave, ela tem cota — em 02/10/2026 respondeu 429 sem CORS e a carta
+do visitante novo ficava sem cotação), vale a reserva que o build grava em
+`data/fx.generated.json` (`scripts/build-fx.mjs`: Banco Central, BCE ou o
+arquivo que já está no ar; AwesomeAPI com chave se o secret `AWESOMEAPI_KEY`
+existir). A falha vai pro /admin como `falha` no rastreio de erros.
 
 ---
 
