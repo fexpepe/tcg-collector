@@ -226,7 +226,12 @@ export function pecasDaCarta({ card, jogo, set, cartas, slugs, preco }) {
   if (usd > 0) frases.push("O preço de referência é apurado no mercado internacional; no Sleevu ele aparece convertido em reais, junto do histórico de variação.");
   frases.push(`Marque a carta na sua coleção para acompanhar o preço e ver quanto falta para completar ${set.nome}.`);
 
-  const produto = {
+  // Product SÓ com preço. O Google exige offers, review ou aggregateRating
+  // num Product, e o item sem nenhum dos três conta como INVÁLIDO no Search
+  // Console ("Especifique offers, review ou aggregateRating", 2026-10-02, em
+  // carta JP e promo sem cotação). Avaliação nós não temos e inventar oferta
+  // seria mentir; então carta sem preço fica só com a trilha.
+  const produto = usd > 0 ? {
     "@context": "https://schema.org",
     "@type": "Product",
     name: `${card.name}${codeBit} — ${set.nome}`,
@@ -235,11 +240,9 @@ export function pecasDaCarta({ card, jogo, set, cartas, slugs, preco }) {
     image: img || undefined,
     description: desc,
     brand: { "@type": "Brand", name: jogo.nome },
-    url: canonical
-  };
-  if (usd > 0) {
-    produto.offers = { "@type": "AggregateOffer", priceCurrency: "USD", lowPrice: usd.toFixed(2), offerCount: 1, availability: "https://schema.org/InStock" };
-  }
+    url: canonical,
+    offers: { "@type": "AggregateOffer", priceCurrency: "USD", lowPrice: usd.toFixed(2), offerCount: 1, availability: "https://schema.org/InStock" }
+  } : null;
   // Trilha Jogos > jogo > set > carta. O BreadcrumbList faz o Google mostrar o
   // caminho no lugar da URL crua, que é mais clicável.
   const trilha = [
@@ -280,7 +283,7 @@ export function pecasDaCarta({ card, jogo, set, cartas, slugs, preco }) {
     ogTitulo: `${nomeCompleto} — ${set.nome}`,
     ogImagem: img,
     alternates: [],
-    jsonLds: [produto, trilhaLd],
+    jsonLds: produto ? [produto, trilhaLd] : [trilhaLd],
     corpoHtml
   };
 }

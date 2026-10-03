@@ -81,7 +81,7 @@ página estática própria e o app seguia em `/detail?…`).
 | `/games` | todos os jogos, modernos e vintage | estática (`prerender-catalog`) |
 | `/games/<jogo>` | a tela de Sets do app, com título, descrição e índice de sets próprios | borda, por cima do `sets.html` |
 | `/games/<jogo>/<set>` | a tela do set do app, com título, JSON-LD (CollectionPage) e o índice das cartas | borda, por cima do `detail.html`, dos mesmos chunks do app |
-| `/games/<jogo>/<set>/<carta>` | a mesma tela com o popup da carta aberto, com o título, o JSON-LD (Product) e o texto da carta | borda, idem |
+| `/games/<jogo>/<set>/<carta>` | a mesma tela com o popup da carta aberto, com o título, o JSON-LD (Product só quando a carta tem preço; sem preço, só a trilha) e o texto da carta | borda, idem |
 | `/games/<jogo>/<set>-en` | a variante em inglês do set (hreflang) | estática (`prerender-catalog`) |
 | `/games/<jogo>/_id/<id>` | link de compartilhar do app | 301 pra carta |
 
