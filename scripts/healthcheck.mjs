@@ -194,7 +194,9 @@ await checkJson("Supabase REST (anon)", `${SUPABASE_URL}/rest/v1/card_views?sele
 // quase sempre medição quebrada — nome fora da whitelist, migração faltando,
 // busca de loja que mudou (store_click:<loja>). A RPC só devolve os NOMES em
 // alarme, nada de contagem. 404 = migração 20260928a ainda não aplicada: não é
-// falha de produção, só avisa.
+// falha de produção, só avisa. Desde a 20261004a o zero só alarma se o
+// TRÁFEGO das 48h fazia esperar 6+ eventos: o fim da campanha paga (04/10)
+// derrubou o scan_open junto com os visitantes e acendeu sem nada quebrado.
 log("\n[analytics]");
 await check("medição sem evento parado", async () => {
   const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/analytics_sentinela`, {
