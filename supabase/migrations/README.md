@@ -8,6 +8,30 @@ poucos.)
 
 ## Pendentes de aplicar
 
+- `20261004a` — alarme de medição parada leva o tráfego em conta
+  (`20261004a_sentinela_trafego.sql`). Em 2026-10-04 o healthcheck ficou
+  vermelho com "parou de chegar: scan_open" sem nada quebrado: a campanha paga
+  acabou em 01/10, os visitantes caíram de ~250 pra ~15 por dia e o esperado
+  de aberturas do scanner em 48h passou a menos de 1. Agora o zero só alarma se
+  a contagem dos 14 dias anteriores, escalada pela razão de pageviews (48h ÷
+  14 dias), esperava 6 ou mais — o `pageview` fica na regra antiga, senão ele
+  nunca acusaria a própria queda. Recria `_sentinela` (drop + create: ganhou
+  `esperado48h` e `alerta`), `analytics_sentinela` e `admin_health`; o retorno
+  anônimo segue só com nomes. **Até aplicar, o healthcheck fica vermelho todo
+  dia até ~11/10.** Aditiva e sem ordem com o JS. Testada no PGlite em cima
+  das funções da 20260928a, aplicada duas vezes: a regra velha reproduz o
+  falso alarme; a nova não acende com a campanha acabada (esperado 0,2),
+  acende com o evento zerado e o tráfego normal (7,6), acende o `pageview`
+  quando ele para, por loja no `store_click`, ignora robô e devolve null pra
+  não-admin no `admin_health`.
+
+  Conferir depois de aplicar:
+  ```sql
+  select public.analytics_sentinela();   -- [] (o scan_open sai)
+  select alvo, ultimas48h, media_dia, esperado48h, alerta
+  from public._sentinela() order by media_dia desc;
+  ```
+
 - `20261003a` — erros de JS v2 no /admin (`20261003a_erros_v2.sql`;
   docs/PLANO-TECNICO.md, D0/D3). Cria a `admin_erros(days)`, só leitura, com o
   portão de admin de sempre: os erros separados em **celular × desktop**, sem
