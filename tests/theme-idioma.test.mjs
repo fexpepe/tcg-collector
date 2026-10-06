@@ -10,7 +10,9 @@
 //   - gente segue com a detecção pelo navegador (e a escolha salva vence);
 //   - robô vê o idioma que o HTML declara;
 //   - página de idioma fixo nunca tem o lang trocado;
-//   - celular CUBOT não é robô (a régua é a do events_guard).
+//   - celular CUBOT não é robô (a régua é a do events_guard);
+//   - post do blog com versões (data-versoes): gente vai pra versão da
+//     bandeirinha; robô, a mesma língua e a conferência do editor ficam.
 // Roda com: node --test tests/
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -27,9 +29,11 @@ const GOOGLEBOT = "Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5X Build/MMB29P) App
 
 // Roda o theme.js num navegador de mentira e devolve o <html lang> final e o
 // window.SLEEVU_LANG que o shared.js vai ler.
-function roda({ ua = CHROME, languages = ["pt-BR"], htmlLang = "pt-BR", fixo = false, salvo = null } = {}) {
+function roda({ ua = CHROME, languages = ["pt-BR"], htmlLang = "pt-BR", fixo = false, salvo = null, versoes = null, pathname = "/", search = "" } = {}) {
   const attrs = new Map([["lang", htmlLang]]);
   if (fixo) attrs.set("data-idioma-fixo", "");
+  if (versoes) attrs.set("data-versoes", JSON.stringify(versoes));
+  let foiPara = null;
   const dados = new Map(salvo ? [["tcg-collector-ui-lang-v1", salvo]] : []);
   const storage = {
     getItem: (k) => (dados.has(k) ? dados.get(k) : null),
@@ -51,10 +55,10 @@ function roda({ ua = CHROME, languages = ["pt-BR"], htmlLang = "pt-BR", fixo = f
     document,
     navigator: { userAgent: ua, languages, language: languages[0] },
     localStorage: storage,
-    location: { search: "", pathname: "/", hash: "" },
+    location: { search, pathname, hash: "#secao", replace: (u) => { foiPara = u; } },
     history: { state: null, replaceState() {} }
   });
-  return { lang: attrs.get("lang"), sleevu: window.SLEEVU_LANG };
+  return versoes ? { lang: attrs.get("lang"), sleevu: window.SLEEVU_LANG, foiPara } : { lang: attrs.get("lang"), sleevu: window.SLEEVU_LANG };
 }
 
 test("gente: segue o navegador, e a escolha salva vence", () => {
@@ -103,4 +107,23 @@ test("o prerender marca como idioma fixo as páginas que carregam o theme.js", (
     if (!t.includes("/src/theme.js")) continue;
     assert.match(t, /^\s*<html lang="[^"]+" data-idioma-fixo>/, "template com theme.js sem data-idioma-fixo");
   }
+});
+
+test("post do blog com versões: gente vai pra versão da bandeirinha antes de pintar", () => {
+  const versoes = { pt: "/blog/guia", en: "/blog/en/guia" };
+  const pt = { versoes, pathname: "/blog/guia", htmlLang: "pt-BR" };
+  // Navegador em inglês abrindo a original em português: vai pra inglesa (com a âncora).
+  assert.equal(roda(Object.assign({ languages: ["en-US"] }, pt)).foiPara, "/blog/en/guia#secao");
+  // A escolha salva vence o navegador.
+  assert.equal(roda(Object.assign({ languages: ["pt-BR"], salvo: "en" }, pt)).foiPara, "/blog/en/guia#secao");
+  // Já na língua de quem lê: fica.
+  assert.equal(roda(Object.assign({ languages: ["pt-BR"] }, pt)).foiPara, null);
+  // Língua que o post não tem: fica na que está (o blog.js avisa).
+  assert.equal(roda(Object.assign({ languages: ["es-ES"] }, pt)).foiPara, null);
+  // Robô fica no endereço que pediu (cada versão é indexada no seu).
+  assert.equal(roda(Object.assign({ ua: GOOGLEBOT, languages: ["en-US"] }, pt)).foiPara, null);
+  // A conferência do editor (?fresco=1) abre a versão escolhida.
+  assert.equal(roda(Object.assign({ languages: ["en-US"], search: "?fresco=1" }, pt)).foiPara, null);
+  // A inglesa, aberta por quem lê em português, volta pra original.
+  assert.equal(roda({ versoes, pathname: "/blog/en/guia", htmlLang: "en-US", languages: ["pt-BR"] }).foiPara, "/blog/guia#secao");
 });
