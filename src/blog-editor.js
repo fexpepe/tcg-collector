@@ -10,6 +10,12 @@
 // A prévia usa o MESMO src/blog-render.js que a borda usa pra montar o post
 // publicado (functions/blog/[slug].js): o que aparece aqui é o que vai pro ar.
 //
+// Versões (2026-10-06, migração 20261006a): o post tem um idioma ORIGINAL (as
+// colunas de sempre) e até duas traduções (post.traducoes). As abas de idioma
+// trocam QUAIS campos o formulário edita — título, linha fina, texto, resumo,
+// descrição da capa e SEO; o resto (endereço, capa, jogo, datas) é do post.
+// Salvar grava as três versões juntas, num PATCH só.
+//
 // Texto em pt fixo — é uma página interna, como o /admin.
 (function () {
   "use strict";
@@ -20,12 +26,22 @@
   const esc = shared.escapeHtml;
   const attr = shared.escapeAttribute;
 
-  const COLUNAS = "id,slug,status,title,subtitle,excerpt,body_md,cover_url,cover_alt,game,category,tags,lang,featured,seo_title,seo_desc,author_name,reading_min,published_at,created_at,updated_at";
-  const COLUNAS_LISTA = "id,slug,status,title,cover_url,game,category,lang,featured,published_at,updated_at";
-  // O que o editor manda pro banco. card_refs, reading_min e as datas de
-  // controle o trigger calcula (o que viesse daqui seria ignorado).
+  const COLUNAS = "id,slug,status,title,subtitle,excerpt,body_md,cover_url,cover_alt,game,category,tags,lang,featured,seo_title,seo_desc,author_name,reading_min,published_at,created_at,updated_at,traducoes";
+  const COLUNAS_LISTA = "id,slug,status,title,cover_url,game,category,lang,featured,published_at,updated_at,versoes";
+  // O que o editor manda pro banco. card_refs, reading_min, versoes e as datas
+  // de controle o trigger calcula (o que viesse daqui seria ignorado).
   const CAMPOS = ["slug", "status", "title", "subtitle", "excerpt", "body_md", "cover_url", "cover_alt", "game", "category",
-    "tags", "lang", "featured", "seo_title", "seo_desc", "author_name", "published_at"];
+    "tags", "lang", "featured", "seo_title", "seo_desc", "author_name", "published_at", "traducoes"];
+  // Os campos de cada versão (os outros são do post).
+  const TEXTO = B.CAMPOS_VERSAO;
+  const NOME = B.NOME_IDIOMA;
+  // Versão que conta: o banco descarta a que não tem título nem texto.
+  const versaoVale = (t) => !!t && !!(String(t.title || "").trim() || String(t.body_md || "").trim());
+  // Traduções num formato comparável (ordem fixa de idioma e campo): o jsonb
+  // do banco devolve as chaves em outra ordem, e isso não é alteração.
+  const traducoesComparaveis = (tr) => B.IDIOMAS.filter((l) => tr && versaoVale(tr[l]))
+    .map((l) => [l, TEXTO.map((k) => String(tr[l][k] == null ? "" : tr[l][k]))]);
+  const copiaTraducoes = (tr) => JSON.parse(JSON.stringify(tr && typeof tr === "object" ? tr : {}));
   const BUCKET = "blog-media";
   const LOCAL = (id) => "tcg-blog-rascunho-" + (id || "novo");
 
@@ -75,7 +91,8 @@
   function mensagemDeErro(e) {
     if (!e) return "Algo deu errado.";
     if (e.code === "23505") return "Esse endereço já é de outro post. Troque o endereço nas configurações.";
-    if (e.code === "23514") return "Algum campo passou do limite (endereço, título, resumo ou SEO). Confira nas configurações.";
+    if (e.code === "23514") return "Algum campo passou do limite (endereço, título, resumo ou SEO, em alguma das versões). Confira nas configurações.";
+    if (e.code === "42703") return "Falta aplicar a migração 20261006a (as traduções do blog) no SQL Editor do Supabase.";
     if (e.code === "42501" || e.status === 401 || e.status === 403) return "Sem permissão: a sessão expirou ou esta conta não é editora do blog. Entre de novo.";
     if (e.status === 404) return "O banco ainda não tem o blog: aplique a migração 20260930b.";
     if (e.status === 413) return "Arquivo grande demais (o limite é 5 MB).";
@@ -225,7 +242,7 @@
             <span class="bed-row-title">${esc(p.title || "(sem título)")}</span>
             <span class="bed-row-slug">/blog/${esc(p.slug)}</span>
           </span>
-          <span class="bed-row-tags">${pilula(p)}${B.etiquetaJogo(p.game)}${p.featured ? '<span class="bed-pill">Destaque</span>' : ""}</span>
+          <span class="bed-row-tags">${pilula(p)}<span class="bed-pill" title="Versões do post">${esc(B.idiomasDo(p).map((l) => l.toUpperCase()).join(" · "))}</span>${B.etiquetaJogo(p.game)}${p.featured ? '<span class="bed-pill">Destaque</span>' : ""}</span>
           <span class="bed-row-date">${local ? '<span class="bed-row-local">alteração não salva neste aparelho</span>' : ""}Editado ${esc(fmtData(p.updated_at))}</span>
         </a>`;
       }).join("");
@@ -354,9 +371,10 @@
       atual = {
         id: null, slug: "", status: "draft", title: "", subtitle: "", excerpt: "", body_md: "", cover_url: "", cover_alt: "",
         game: "", category: "guias", tags: [], lang: "pt", featured: false, seo_title: "", seo_desc: "",
-        author_name: eu.nome || "", published_at: null, updated_at: null
+        author_name: eu.nome || "", published_at: null, updated_at: null, traducoes: {}
       };
     }
+    atual.traducoes = atual.traducoes && typeof atual.traducoes === "object" ? atual.traducoes : {};
     montaEditor(atual);
   }
 
@@ -364,11 +382,27 @@
     let atual = inicial;                  // última versão SALVA (do banco)
     let post = Object.assign({}, inicial); // o que está no formulário
     post.tags = (post.tags || []).slice();
+    post.traducoes = copiaTraducoes(inicial.traducoes);
+    // Idioma em edição: o original, ou o do ?versao= (o "Editar este post" de
+    // uma tradução abre nela).
+    const pedida = new URLSearchParams(location.search).get("versao");
+    let versao = pedida && post.traducoes[pedida] ? pedida : post.lang;
+    const ehOriginal = () => versao === post.lang;
+    // O valor de um campo de texto NA VERSÃO aberta.
+    const texto = (k) => {
+      const fonte = ehOriginal() ? post : post.traducoes[versao] || {};
+      return fonte[k] == null ? "" : String(fonte[k]);
+    };
+    function poeTexto(k, valor) {
+      if (ehOriginal()) post[k] = valor;
+      else (post.traducoes[versao] = post.traducoes[versao] || {})[k] = valor;
+    }
     // Endereço segue o título enquanto o post nunca foi ao ar e ninguém mexeu
     // nele à mão — depois disso, mudar o título não pode quebrar link.
     let slugAuto = !atual.published_at && (!atual.slug || atual.slug === B.slugify(atual.title));
     let salvando = false;
-    const campos = (p) => JSON.stringify(CAMPOS.map((k) => (k === "tags" ? p.tags || [] : p[k] == null ? "" : p[k])));
+    const campos = (p) => JSON.stringify(CAMPOS.map((k) => (k === "tags" ? p.tags || []
+      : k === "traducoes" ? traducoesComparaveis(p.traducoes) : p[k] == null ? "" : p[k])));
     let base = campos(atual);
     const sujo = () => campos(post) !== base;
     // Listeners no document morrem junto com a tela (voltar pra lista e abrir
@@ -420,6 +454,7 @@
         </div>
         <div class="bed-body">
           <section class="bed-write" aria-label="Texto">
+            <div class="bed-versoes" data-versoes role="group" aria-label="Versões do post"></div>
             <input class="bed-title" data-campo="title" maxlength="200" placeholder="Título do post" aria-label="Título">
             <input class="bed-subtitle" data-campo="subtitle" maxlength="300" placeholder="Linha fina: uma frase que complete o título (opcional)" aria-label="Linha fina">
             <div class="bed-toolbar" role="toolbar" aria-label="Formatação">
@@ -429,7 +464,7 @@
             <p class="bed-foot"><span data-contagem></span><span class="bed-foot-dica">Solte ou cole imagens direto no texto.</span></p>
           </section>
           <section class="bed-preview" aria-label="Prévia">
-            <div class="bed-preview-bar"><span>Prévia — é assim que vai pro ar</span><button type="button" class="lst-mini bed-wide" data-cheia>Tela cheia</button></div>
+            <div class="bed-preview-bar"><span data-previa-rotulo>Prévia — é assim que vai pro ar</span><button type="button" class="lst-mini bed-wide" data-cheia>Tela cheia</button></div>
             <div class="bed-preview-scroll"><div class="blog-page blog-post-page"><div class="blog-post-root" data-previa></div></div></div>
           </section>
           <aside class="bed-config" aria-label="Configurações do post" data-config>
@@ -449,19 +484,20 @@
                 <button type="button" class="lst-mini" data-capa-tira hidden>Remover</button>
               </div>
               <input class="bed-input" data-campo="cover_alt" maxlength="300" placeholder="Descrição da capa (pra leitor de tela e Google)" aria-label="Descrição da capa">
+              <p class="bed-hint">A imagem vale pras três versões; a descrição é de cada uma (<span data-versao-nome></span>).</p>
               <p class="bed-hint">Horizontal (16:9) fica melhor na lista e no link compartilhado.</p>
             </div>
 
             <div class="bed-field">
               <label for="bedExcerpt">Resumo</label>
               <textarea id="bedExcerpt" class="bed-input bed-area" data-campo="excerpt" maxlength="400" rows="3" placeholder="Vazio = usa o começo do texto."></textarea>
-              <p class="bed-hint"><span data-conta="excerpt"></span> · aparece no cartão da lista e no Google quando o SEO está vazio.</p>
+              <p class="bed-hint"><span data-conta="excerpt"></span> · aparece no cartão da lista e no Google quando o SEO está vazio. É da versão aberta (<span data-versao-nome></span>).</p>
             </div>
 
             <div class="bed-grid2">
               <div class="bed-field"><label for="bedGame">Jogo</label><select id="bedGame" class="bed-input" data-campo="game"><option value="">Geral (vários jogos)</option>${jogos}</select></div>
               <div class="bed-field"><label for="bedCat">Categoria</label><select id="bedCat" class="bed-input" data-campo="category">${categorias}</select></div>
-              <div class="bed-field"><label for="bedLang">Idioma do post</label><select id="bedLang" class="bed-input" data-campo="lang"><option value="pt">Português</option><option value="en">English</option><option value="es">Español</option></select></div>
+              <div class="bed-field"><label for="bedLang">Idioma original</label><select id="bedLang" class="bed-input" data-campo="lang"><option value="pt">Português</option><option value="en">English</option><option value="es">Español</option></select></div>
               <div class="bed-field"><label for="bedAutor">Autor</label><input id="bedAutor" class="bed-input" data-campo="author_name" maxlength="80"></div>
             </div>
 
@@ -479,7 +515,7 @@
               <p class="bed-hint">Vazio = na hora em que publicar. Data no futuro = o post fica agendado e aparece sozinho.</p>
             </div>
 
-            <h3 class="bed-sub">Google e redes</h3>
+            <h3 class="bed-sub">Google e redes · <span data-versao-nome></span></h3>
             <div class="bed-field">
               <label for="bedSeoT">Título pro Google</label>
               <input id="bedSeoT" class="bed-input" data-campo="seo_title" maxlength="120" placeholder="Vazio = o título do post">
@@ -502,7 +538,8 @@
       excluir: $("[data-excluir]"), historico: $("[data-historico]"), historico2: $("[data-historico2]"),
       menu: $("[data-menu]"), menuLista: $("[data-menu-lista]"), texto: $(".bed-text"), previa: $("[data-previa]"),
       contagem: $("[data-contagem]"), capa: $("[data-capa]"), capaTira: $("[data-capa-tira]"), tags: $("[data-tags]"),
-      data: $("[data-data]"), slugHint: $("[data-slug-hint]"), serp: $("[data-serp]"), configBtn: $("[data-config-btn]")
+      data: $("[data-data]"), slugHint: $("[data-slug-hint]"), serp: $("[data-serp]"), configBtn: $("[data-config-btn]"),
+      versoes: $("[data-versoes]"), previaRotulo: $("[data-previa-rotulo]")
     };
 
     // ── formulário ⇄ post ──
@@ -512,9 +549,10 @@
       root.querySelectorAll("[data-campo]").forEach((el) => {
         const k = el.dataset.campo;
         if (el.type === "checkbox") { el.checked = !!post[k]; return; }
-        const v = post[k] == null ? "" : String(post[k]);
+        const v = TEXTO.indexOf(k) >= 0 ? texto(k) : post[k] == null ? "" : String(post[k]);
         if (el.value !== v) el.value = v;
       });
+      desenhaVersoes();
       const tags = (post.tags || []).join(", ");
       if (document.activeElement !== ui.tags && ui.tags.value !== tags) ui.tags.value = tags;
       const data = isoParaLocal(post.published_at);
@@ -534,8 +572,11 @@
       const el = ev.target;
       if (el.dataset && el.dataset.campo) {
         const k = el.dataset.campo;
-        post[k] = el.type === "checkbox" ? el.checked : el.value;
-        if (k === "title" && slugAuto) {
+        if (k === "lang") return; // o "change" troca o idioma original (trocaOriginal)
+        if (TEXTO.indexOf(k) >= 0) poeTexto(k, el.value);
+        else post[k] = el.type === "checkbox" ? el.checked : el.value;
+        // O endereço segue o título da versão ORIGINAL.
+        if (k === "title" && slugAuto && ehOriginal()) {
           post.slug = B.slugify(post.title, 80);
           $("#bedSlug").value = post.slug;
         }
@@ -549,6 +590,7 @@
     });
     root.addEventListener("change", (ev) => {
       if (ev.target.type === "checkbox" && ev.target.dataset.campo) { post[ev.target.dataset.campo] = ev.target.checked; mudou(); }
+      if (ev.target.id === "bedLang") trocaOriginal(ev.target.value);
       if (ev.target === ui.tags) ui.tags.value = post.tags.join(", ");
       if (ev.target.id === "bedSlug") {
         // Normaliza o que a pessoa digitou (acento, espaço, maiúscula).
@@ -561,8 +603,9 @@
     function atualizaContadores() {
       root.querySelectorAll("[data-conta]").forEach((el) => {
         const k = el.dataset.conta;
-        el.textContent = `${(post[k] || "").length} caracteres`;
+        el.textContent = `${texto(k).length} caracteres`;
       });
+      root.querySelectorAll("[data-versao-nome]").forEach((el) => { el.textContent = NOME[versao] + (ehOriginal() ? ", original" : ""); });
       const valido = /^[a-z0-9]+(-[a-z0-9]+)*$/.test(post.slug || "") && post.slug.length >= 3;
       ui.slugHint.textContent = !post.slug ? "Escreva um título (ou um endereço) pra gerar o link."
         : !valido ? "Só letras minúsculas, números e hífen (mínimo 3)."
@@ -570,11 +613,70 @@
         : slugAuto ? "Segue o título até você mexer nele." : "";
       ui.slugHint.classList.toggle("is-erro", !!post.slug && !valido);
       // Como aparece no Google.
-      const tituloSerp = (post.seo_title || post.title || "Título do post").trim();
-      const descSerp = (post.seo_desc || post.excerpt || B.resumo(post.body_md, 155) || "O começo do texto aparece aqui.").trim();
-      ui.serp.innerHTML = `<span class="bed-serp-url">sleevu.app › blog › ${esc(post.slug || "…")}</span>`
+      const tituloSerp = (texto("seo_title") || texto("title") || "Título do post").trim();
+      const descSerp = (texto("seo_desc") || texto("excerpt") || B.resumo(texto("body_md"), 155) || "O começo do texto aparece aqui.").trim();
+      ui.serp.innerHTML = `<span class="bed-serp-url">sleevu.app › blog › ${ehOriginal() ? "" : versao + " › "}${esc(post.slug || "…")}</span>`
         + `<span class="bed-serp-title">${esc(tituloSerp.length + 9 <= 65 ? tituloSerp + " | Sleevu" : tituloSerp)}</span>`
         + `<span class="bed-serp-desc">${esc(descSerp.length > 160 ? descSerp.slice(0, 157) + "…" : descSerp)}</span>`;
+    }
+
+    // Abas de idioma: a original primeiro, depois as traduções que existem e,
+    // por último, as que dá pra criar.
+    function desenhaVersoes() {
+      const existe = (l) => l === post.lang || versaoVale(post.traducoes[l]) || (l === versao && !!post.traducoes[l]);
+      const ordem = [post.lang].concat(B.IDIOMAS.filter((l) => l !== post.lang));
+      ui.versoes.innerHTML = ordem.map((l) => (existe(l)
+        ? `<button type="button" class="bed-versao" data-versao="${l}" aria-pressed="${l === versao}">${esc(NOME[l])}${l === post.lang ? '<span class="bed-versao-tag">original</span>' : ""}</button>`
+        : `<button type="button" class="bed-versao bed-versao--nova" data-versao-nova="${l}">${I.mais}<span>${esc(NOME[l])}</span></button>`)).join("")
+        + (ehOriginal() ? "" : `<button type="button" class="bed-versao-tira" data-versao-tira>Remover a versão em ${esc(NOME[versao])}</button>`);
+    }
+    function abreVersao(l) {
+      versao = l;
+      preenche();
+      desenhaPrevia();
+      atualizaContadores();
+      atualizaBarra();
+    }
+    ui.versoes.addEventListener("click", (ev) => {
+      const aba = ev.target.closest("[data-versao]");
+      if (aba) { abreVersao(aba.dataset.versao); return; }
+      const nova = ev.target.closest("[data-versao-nova]");
+      if (nova) {
+        // Começa com o texto da original: cartas, imagens e a estrutura já
+        // ficam no lugar, e é só trocar o texto pelo traduzido.
+        const l = nova.dataset.versaoNova;
+        post.traducoes[l] = TEXTO.reduce((o, k) => { o[k] = post[k] == null ? "" : String(post[k]); return o; }, {});
+        abreVersao(l);
+        mudou();
+        estado(`Versão em ${NOME[l]} criada com o texto original: troque pelo texto traduzido.`);
+        return;
+      }
+      if (ev.target.closest("[data-versao-tira]")) {
+        if (!window.confirm(`Remover a versão em ${NOME[versao]}? Ela some do site quando você salvar.`)) return;
+        delete post.traducoes[versao];
+        abreVersao(post.lang);
+        mudou();
+      }
+    });
+    // Trocar o idioma original. Se já existe tradução no idioma novo, as duas
+    // trocam de lugar (o texto em inglês vira a original e o português vira
+    // tradução); sem tradução, é só corrigir o rótulo (escreveu em inglês e
+    // esqueceu de marcar).
+    function trocaOriginal(novo) {
+      const velho = post.lang;
+      if (!B.ROTULOS[novo] || novo === velho) return;
+      const traduzida = post.traducoes[novo];
+      if (versaoVale(traduzida)) {
+        const antiga = TEXTO.reduce((o, k) => { o[k] = post[k] == null ? "" : String(post[k]); return o; }, {});
+        TEXTO.forEach((k) => { post[k] = traduzida[k] == null ? "" : String(traduzida[k]); });
+        delete post.traducoes[novo];
+        post.traducoes[velho] = antiga;
+      } else {
+        delete post.traducoes[novo];
+      }
+      post.lang = novo;
+      abreVersao(novo);
+      mudou();
     }
 
     function desenhaCapa() {
@@ -595,12 +697,18 @@
       ui.publicar.textContent = futuro ? "Agendar" : "Publicar";
       const noAr = publicado && !(atual.published_at && new Date(atual.published_at) > new Date());
       ui.ver.hidden = !noAr;
-      if (noAr) ui.ver.href = "/blog/" + atual.slug + "?fresco=1";
+      if (noAr) ui.ver.href = enderecoNoSite(atual) + "?fresco=1";
       ui.despublicar.hidden = !publicado;
       ui.excluir.hidden = !atual.id;
       ui.historico.hidden = !atual.id;
       ui.historico2.hidden = !atual.id;
       document.title = (post.title || "Novo post") + " · editor do blog";
+    }
+    // Endereço da versão aberta no post SALVO (tradução que ainda não foi
+    // salva não tem página: aí vai a original).
+    function enderecoNoSite(salvo) {
+      const l = versao !== salvo.lang && salvo.traducoes && salvo.traducoes[versao] ? versao : salvo.lang;
+      return B.caminhoDaVersao(salvo.slug, l, salvo.lang);
     }
     function estado(texto, erro) {
       ui.estado.textContent = texto || "";
@@ -631,6 +739,8 @@
       ui.aviso.querySelector("[data-recupera]").addEventListener("click", () => {
         Object.assign(post, guardado.post);
         post.tags = (post.tags || []).slice();
+        post.traducoes = copiaTraducoes(post.traducoes);
+        if (versao !== post.lang && !post.traducoes[versao]) versao = post.lang;
         slugAuto = false;
         preenche();
         mostraAviso("");
@@ -676,14 +786,18 @@
     }
     const desenhaPrevia = shared.debounce(() => {
       const card = (ref) => cartas.get(ref) || null;
-      const r = B.render(post.body_md, { lang: post.lang, editor: true, card });
-      const comoVaiAoAr = Object.assign({}, post, {
+      // versoes vazio: o tempo de leitura sai da conta do texto, não do que
+      // o banco guardou da última vez.
+      const v = B.versao(Object.assign({}, post, {
         slug: post.slug || "rascunho",
         published_at: post.published_at || atual.published_at || new Date().toISOString(),
         updated_at: new Date().toISOString(),
-        reading_min: r.minutes
-      });
-      ui.previa.innerHTML = B.paginaDoPostHtml(comoVaiAoAr, r, { card });
+        versoes: {}
+      }), versao);
+      const r = B.render(v.body_md, { lang: v.lang, editor: true, card });
+      v.reading_min = r.minutes;
+      ui.previa.innerHTML = B.paginaDoPostHtml(v, r, { card });
+      ui.previaRotulo.textContent = "Prévia em " + NOME[v.lang] + " — é assim que vai pro ar";
       ui.contagem.textContent = `${r.words} ${r.words === 1 ? "palavra" : "palavras"} · ${r.minutes} min de leitura`;
       buscaCartas(r.refs);
     }, 180);
@@ -1003,7 +1117,7 @@
       dialogo({
         titulo: "Versões anteriores",
         classe: "bed-dlg",
-        corpo: '<p class="bed-hint">Cada salvamento guarda a versão ANTERIOR do título e do texto (as 40 mais novas). Carregar uma versão só muda o editor — nada vai pro ar até você salvar.</p><div class="bed-revs" data-revs><p class="bed-hint">Carregando…</p></div>',
+        corpo: '<p class="bed-hint">Cada salvamento guarda a versão ANTERIOR do título e do texto, com as traduções (as 40 mais novas). Carregar uma versão só muda o editor — nada vai pro ar até você salvar.</p><div class="bed-revs" data-revs><p class="bed-hint">Carregando…</p></div>',
         aoAbrir: async (box, fecha) => {
           const alvo = box.querySelector("[data-revs]");
           let revs = [];
@@ -1017,10 +1131,12 @@
             const b = ev.target.closest("[data-rev]");
             if (!b) return;
             try {
-              const [rev] = await api(`/rest/v1/post_revisions?id=eq.${encodeURIComponent(b.dataset.rev)}&select=title,body_md`);
+              const [rev] = await api(`/rest/v1/post_revisions?id=eq.${encodeURIComponent(b.dataset.rev)}&select=title,body_md,traducoes`);
               if (!rev) return;
               post.title = rev.title;
               post.body_md = rev.body_md;
+              post.traducoes = copiaTraducoes(rev.traducoes);
+              if (versao !== post.lang && !post.traducoes[versao]) versao = post.lang;
               fecha();
               preenche();
               mudou();
@@ -1042,6 +1158,13 @@
       c.published_at = p.published_at || null;
       ["title", "subtitle", "excerpt", "cover_alt", "seo_title", "seo_desc", "author_name"].forEach((k) => { c[k] = String(c[k] || "").trim(); });
       c.cover_url = B.safeImg(p.cover_url) || "";
+      // Só as traduções que valem, aparadas como os campos da original.
+      c.traducoes = {};
+      B.IDIOMAS.forEach((l) => {
+        const t = p.traducoes && p.traducoes[l];
+        if (l === p.lang || !versaoVale(t)) return;
+        c.traducoes[l] = TEXTO.reduce((o, k) => { o[k] = k === "body_md" ? String(t[k] || "") : String(t[k] || "").trim(); return o; }, {});
+      });
       return c;
     }
     async function salva(opcoes) {
@@ -1056,7 +1179,14 @@
       if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(alvo.slug)) { estado("Endereço inválido: só letras minúsculas, números e hífen.", true); return; }
       if (alvo.status === "published" && !alvo.title.trim()) { estado("Dê um título antes de publicar.", true); return; }
       if (alvo.status === "published" && /^rascunho-[0-9a-f]{6}$/.test(alvo.slug)) { estado("Troque o endereço provisório antes de publicar (Configurações › Endereço).", true); return; }
+      alvo.traducoes = copiaTraducoes(alvo.traducoes);
+      const semTitulo = B.IDIOMAS.find((l) => l !== alvo.lang && versaoVale(alvo.traducoes[l]) && !String(alvo.traducoes[l].title || "").trim());
+      if (alvo.status === "published" && semTitulo) { estado(`Dê um título à versão em ${NOME[semTitulo]} antes de publicar.`, true); return; }
       if (!String(alvo.excerpt || "").trim()) alvo.excerpt = B.resumo(alvo.body_md, 180);
+      Object.keys(alvo.traducoes).forEach((l) => {
+        const t = alvo.traducoes[l];
+        if (t && !String(t.excerpt || "").trim()) t.excerpt = B.resumo(t.body_md, 180);
+      });
       const corpo = corpoPraSalvar(alvo);
       // O que estava no formulário quando o salvar saiu: o que a pessoa mudar
       // DURANTE a gravação não pode ser atropelado pela resposta do banco.
@@ -1083,8 +1213,10 @@
         atual = salvo;
         const novo = Object.assign({}, salvo);
         novo.tags = (novo.tags || []).slice();
-        CAMPOS.forEach((k) => { if (JSON.stringify(post[k]) !== JSON.stringify(noInicio[k])) novo[k] = post[k]; });
+        novo.traducoes = copiaTraducoes(salvo.traducoes);
+        CAMPOS.forEach((k) => { if (JSON.stringify(post[k]) !== JSON.stringify(noInicio[k])) novo[k] = k === "traducoes" ? copiaTraducoes(post[k]) : post[k]; });
         post = novo;
+        if (versao !== post.lang && !post.traducoes[versao]) versao = post.lang;
         base = campos(atual);
         if (eraNovo) {
           history.replaceState(null, "", location.pathname + "?id=" + encodeURIComponent(salvo.id));
@@ -1098,7 +1230,7 @@
         if (o.status === "published") {
           mostraAviso(e.chave === "agendado"
             ? `<span>Agendado: aparece no blog em ${esc(fmtData(salvo.published_at))}.</span>`
-            : `<span>Publicado! Já está no ar.</span><a class="lst-mini" href="/blog/${attr(salvo.slug)}?fresco=1" target="_blank" rel="noopener">Ver no site</a>`, "ok");
+            : `<span>Publicado! Já está no ar.</span><a class="lst-mini" href="${attr(enderecoNoSite(salvo))}?fresco=1" target="_blank" rel="noopener">Ver no site</a>`, "ok");
         }
         estado("Salvo às " + hora());
       } catch (e) {

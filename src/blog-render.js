@@ -102,24 +102,79 @@
       semCarta: "Carta não encontrada", imagemBloqueada: "Imagem de endereço não permitido", cartas: "Cartas neste artigo",
       compartilhar: "Compartilhar", copiar: "Copiar link", leiaTambem: "Leia também", tags: "Assuntos",
       ctaTitulo: "Sua coleção, organizada", ctaTexto: "Marque as cartas que você tem, acompanhe o valor e monte sua lista de desejos no Sleevu. É grátis.",
-      ctaBotao: "Criar minha conta", locale: "pt-BR"
+      ctaBotao: "Criar minha conta", locale: "pt-BR",
+      leiaEm: "Leia em", emIdioma: { en: "Em inglês", es: "Em espanhol" }
     },
     en: {
       blog: "Blog", por: "By", min: "min read", atualizado: "Updated", indice: "In this article", trilha: "Breadcrumb",
       semCarta: "Card not found", imagemBloqueada: "Image from a blocked address", cartas: "Cards in this article",
       compartilhar: "Share", copiar: "Copy link", leiaTambem: "Keep reading", tags: "Topics",
       ctaTitulo: "Your collection, organized", ctaTexto: "Track the cards you own, follow their value and build your wishlist on Sleevu. It's free.",
-      ctaBotao: "Create my account", locale: "en-US"
+      ctaBotao: "Create my account", locale: "en-US",
+      leiaEm: "Read in", emIdioma: { pt: "In Portuguese", es: "In Spanish" }
     },
     es: {
       blog: "Blog", por: "Por", min: "min de lectura", atualizado: "Actualizado el", indice: "En este artículo", trilha: "Ruta de navegación",
       semCarta: "Carta no encontrada", imagemBloqueada: "Imagen de una dirección no permitida", cartas: "Cartas en este artículo",
       compartilhar: "Compartir", copiar: "Copiar enlace", leiaTambem: "Sigue leyendo", tags: "Temas",
       ctaTitulo: "Tu colección, organizada", ctaTexto: "Marca las cartas que tienes, sigue su valor y arma tu lista de deseos en Sleevu. Es gratis.",
-      ctaBotao: "Crear mi cuenta", locale: "es-ES"
+      ctaBotao: "Crear mi cuenta", locale: "es-ES",
+      leiaEm: "Leer en", emIdioma: { pt: "En portugués", en: "En inglés" }
     }
   };
   const rotulos = (lang) => ROTULOS[lang] || ROTULOS.pt;
+
+  // ── Versões (2026-10-06, migração 20261006a) ─────────────────────────────
+  // Um post, até três idiomas: as colunas da tabela são a versão ORIGINAL
+  // (post.lang) e post.traducoes (o texto inteiro, na página do post) ou
+  // post.versoes (o resumo leve, na lista) trazem as outras. Endereço, capa,
+  // jogo e datas são do post; os campos abaixo são de cada versão.
+  const IDIOMAS = ["pt", "en", "es"];
+  const CAMPOS_VERSAO = ["title", "subtitle", "excerpt", "body_md", "cover_alt", "seo_title", "seo_desc"];
+  // Nome de cada idioma nele mesmo (o seletor "Leia em" serve a quem NÃO lê o
+  // idioma da página). hreflang no mesmo molde das páginas de set (pt-BR, en).
+  const NOME_IDIOMA = { pt: "Português", en: "English", es: "Español" };
+  const HREFLANG = { pt: "pt-BR", en: "en", es: "es" };
+  const originalDo = (post) => (ROTULOS[post && post.lang] ? post.lang : "pt");
+  function traducaoDe(post, lang) {
+    const t = (post.traducoes && post.traducoes[lang]) || (post.versoes && post.versoes[lang]);
+    return t && typeof t === "object" ? t : null;
+  }
+  // Idiomas em que o post existe: o original primeiro, depois as traduções.
+  function idiomasDo(post) {
+    const original = originalDo(post);
+    return [original].concat(IDIOMAS.filter((l) => l !== original && traducaoDe(post, l)));
+  }
+  // /blog/<slug> é a versão original; /blog/<idioma>/<slug>, as traduções.
+  function caminhoDaVersao(slug, lang, original) {
+    return lang === original ? URL_DO_POST(slug) : "/blog/" + lang + "/" + slug;
+  }
+  // O post no idioma pedido, achatado: os mesmos campos da tabela, prontos pros
+  // pedaços de página abaixo, mais `idiomas` (as versões que existem), `caminhos`
+  // (idioma → endereço) e `caminho` (o desta versão). Idioma sem versão = a
+  // original. Campo vazio da tradução fica vazio: cair no original poria texto
+  // de outra língua na página (o SEO vazio já cai no título da própria versão).
+  function versao(post, lang) {
+    const original = originalDo(post);
+    const idiomas = idiomasDo(post);
+    const alvo = idiomas.indexOf(lang) >= 0 ? lang : original;
+    const v = Object.assign({}, post, { lang: alvo, original, idiomas, caminhos: {} });
+    if (alvo !== original) {
+      const t = traducaoDe(post, alvo);
+      CAMPOS_VERSAO.forEach((k) => { v[k] = t[k] == null ? "" : String(t[k]); });
+      // Tempo de leitura: o do trigger (versoes); sem ele (prévia do editor),
+      // a conta do render, na mesma régua de ~220 palavras por minuto.
+      const leve = post.versoes && post.versoes[alvo];
+      v.reading_min = Number(t.reading_min) || Number(leve && leve.reading_min)
+        || Math.max(1, Math.round(contaPalavras(v.body_md) / 220));
+    }
+    idiomas.forEach((l) => { v.caminhos[l] = caminhoDaVersao(post.slug || "", l, original); });
+    v.caminho = v.caminhos[alvo];
+    return v;
+  }
+  // Endereço do post já achatado por versao(); a linha crua da tabela cai no
+  // da original.
+  const caminhoDe = (post) => post.caminho || URL_DO_POST(post.slug || "");
 
   // ── URLs ─────────────────────────────────────────────────────────────────
   // Caractere de controle em URL é sempre truque (quebra de linha no meio de
@@ -686,8 +741,24 @@
   }
   const URL_DO_POST = (slug) => "/blog/" + slug;
 
+  // "Leia em: Português · English · Español" — só com mais de uma versão. É
+  // link de verdade (o robô sem JS segue, além do hreflang); no navegador o
+  // src/blog.js troca o idioma do SITE no clique, porque o post acompanha a
+  // bandeirinha (sem isso, a página de destino mandaria de volta).
+  function versoesHtml(post) {
+    const idiomas = post.idiomas || [];
+    if (idiomas.length < 2 || !post.caminhos) return "";
+    const L = rotulos(post.lang);
+    return '<nav class="blog-versoes" aria-label="' + esc(L.leiaEm) + '"><span class="blog-versoes-label">' + esc(L.leiaEm) + "</span>"
+      + idiomas.map((l) => (l === post.lang
+        ? '<span class="blog-versao is-on" aria-current="true" lang="' + HREFLANG[l] + '">' + esc(NOME_IDIOMA[l]) + "</span>"
+        : '<a class="blog-versao" href="' + esc(post.caminhos[l]) + '" hreflang="' + HREFLANG[l] + '" lang="' + HREFLANG[l] + '" data-idioma="' + l + '">' + esc(NOME_IDIOMA[l]) + "</a>")).join("")
+      + "</nav>";
+  }
+
   // Cabeçalho do artigo: trilha, jogo/categoria, título, linha fina, autor,
-  // data, tempo de leitura e capa. `post` são as colunas da tabela posts.
+  // data, tempo de leitura, versões e capa. `post` são as colunas da tabela
+  // posts (de preferência já passadas pelo versao()).
   function cabecalhoHtml(post) {
     const lang = ROTULOS[post.lang] ? post.lang : "pt";
     const L = rotulos(lang);
@@ -706,6 +777,7 @@
       + (quando ? '<time datetime="' + esc(quando) + '">' + esc(dataLonga(quando, lang)) + "</time>" : "")
       + '<span class="blog-reading">' + (Number(post.reading_min) || 1) + " " + esc(L.min) + "</span>"
       + "</p>"
+      + versoesHtml(post)
       + (capa ? '<figure class="blog-cover"><img src="' + esc(capa) + '"'
         + (info && info.small ? ' srcset="' + esc(info.small) + " 640w, " + esc(capa) + " " + info.w + 'w" sizes="(max-width: 900px) 100vw, 900px"' : "")
         + (info ? ' width="' + info.w + '" height="' + info.h + '"' : "")
@@ -752,7 +824,7 @@
     const o = opts || {};
     const lang = ROTULOS[post.lang] ? post.lang : "pt";
     const L = rotulos(lang);
-    const ancora = URL_DO_POST(post.slug || "");
+    const ancora = caminhoDe(post);
     const url = SITE + ancora;
     const titulo = post.title || "";
     const toc = r.toc || [];
@@ -801,46 +873,56 @@
       + "</div>";
   }
 
-  // "Leia também" no pé do post.
+  // "Leia também" no pé do post, cada um na versão do idioma da página quando
+  // ela existe.
   function relacionadosHtml(posts, lang) {
     if (!posts || !posts.length) return "";
     return '<section class="blog-related"><h2 class="blog-related-title">' + esc(rotulos(lang).leiaTambem) + '</h2><div class="blog-grid">'
-      + posts.map((p) => cartaoHtml(p, false)).join("") + "</div></section>";
+      + posts.map((p) => cartaoHtml(versao(p, lang), false, lang)).join("") + "</div></section>";
   }
 
   // A lista do /blog: o primeiro (o destaque mais novo, ou o post mais novo)
-  // vira o cartão grande, o resto a grade.
-  function listaHtml(posts) {
+  // vira o cartão grande, o resto a grade. `leitor` = idioma de quem lê: cada
+  // post sai na versão dele, e o que não tem essa versão ganha a etiqueta do
+  // idioma em que está. Sem `leitor` (a borda não sabe quem lê), a original.
+  function listaHtml(posts, leitor) {
     if (!posts || !posts.length) return "";
-    const heroi = posts.find((p) => p.featured) || posts[0];
-    const resto = posts.filter((p) => p !== heroi);
-    return cartaoHtml(heroi, true) + (resto.length ? '<div class="blog-grid">' + resto.map((p) => cartaoHtml(p, false)).join("") + "</div>" : "");
+    const vs = posts.map((p) => (leitor ? versao(p, leitor) : versao(p, originalDo(p))));
+    const heroi = vs.find((p) => p.featured) || vs[0];
+    const resto = vs.filter((p) => p !== heroi);
+    return cartaoHtml(heroi, true, leitor) + (resto.length ? '<div class="blog-grid">' + resto.map((p) => cartaoHtml(p, false, leitor)).join("") + "</div>" : "");
   }
 
   // Cartão de post na lista do /blog (e na faixa "Do blog"). `destaque` = o
-  // cartão grande do topo.
-  function cartaoHtml(post, destaque) {
+  // cartão grande do topo; `leitor`, ver listaHtml.
+  function cartaoHtml(post, destaque, leitor) {
     const lang = ROTULOS[post.lang] ? post.lang : "pt";
-    const L = rotulos(lang);
-    const cat = nomeCategoria(post.category, lang);
+    // Moldura (categoria, data, "min de leitura") no idioma de quem lê; título
+    // e resumo no da versão, marcados com lang quando os dois diferem.
+    const ui = leitor && ROTULOS[leitor] ? leitor : lang;
+    const L = rotulos(ui);
+    const outroIdioma = ui !== lang ? L.emIdioma[lang] || "" : "";
+    const marcaLang = ui !== lang ? ' lang="' + HREFLANG[lang] + '"' : "";
+    const cat = nomeCategoria(post.category, ui);
     const capaOrig = safeImg(post.cover_url);
     const capa = capaOrig ? (destaque ? capaOrig : imagemPequena(capaOrig)) : "";
     const info = capaOrig ? mediaInfo(capaOrig) : null;
     const quando = post.published_at || "";
     return '<article class="blog-item' + (destaque ? " blog-item--hero" : "") + '" data-game="' + esc(post.game || "") + '" data-cat="' + esc(post.category || "") + '" data-lang="' + esc(lang) + '">'
-      + '<a class="blog-item-link" href="' + esc(URL_DO_POST(post.slug)) + '">'
+      + '<a class="blog-item-link" href="' + esc(caminhoDe(post)) + '"' + (marcaLang ? ' hreflang="' + HREFLANG[lang] + '"' : "") + ">"
       + (capa ? '<span class="blog-item-cover">' : '<span class="blog-item-cover blog-item-cover--vazia"' + (GAMES[post.game] ? ' style="--gt:' + GAMES[post.game][1] + '"' : "") + ">")
       + (capa ? '<img src="' + esc(capa) + '"'
         + (destaque && info && info.small ? ' srcset="' + esc(info.small) + " 640w, " + esc(capaOrig) + " " + info.w + 'w" sizes="(max-width: 900px) 100vw, 60vw"' : "")
         + ' alt="' + esc(post.cover_alt || "") + '" loading="' + (destaque ? "eager" : "lazy") + '" decoding="async">' : "") + "</span>"
       + '<span class="blog-item-body">'
       + '<span class="blog-tags-top">' + etiquetaJogo(post.game) + (cat ? '<span class="blog-cat">' + esc(cat) + "</span>" : "") + "</span>"
-      + '<span class="blog-item-title">' + esc(post.title || "") + "</span>"
+      + '<span class="blog-item-title"' + marcaLang + ">" + esc(post.title || "") + "</span>"
       // Sem resumo, a linha fina segura o cartão (o editor preenche o resumo
       // ao salvar, mas post salvo direto no banco pode vir sem).
-      + ((post.excerpt || post.subtitle) ? '<span class="blog-item-excerpt">' + esc(post.excerpt || post.subtitle) + "</span>" : "")
-      + '<span class="blog-item-meta">' + (quando ? '<time datetime="' + esc(quando) + '">' + esc(dataLonga(quando, lang)) + "</time> · " : "")
-      + (Number(post.reading_min) || 1) + " " + esc(L.min) + "</span>"
+      + ((post.excerpt || post.subtitle) ? '<span class="blog-item-excerpt"' + marcaLang + ">" + esc(post.excerpt || post.subtitle) + "</span>" : "")
+      + '<span class="blog-item-meta">' + (quando ? '<time datetime="' + esc(quando) + '">' + esc(dataLonga(quando, ui)) + "</time> · " : "")
+      + (Number(post.reading_min) || 1) + " " + esc(L.min)
+      + (outroIdioma ? ' · <span class="blog-item-lang">' + esc(outroIdioma) + "</span>" : "") + "</span>"
       + "</span></a></article>";
   }
 
@@ -849,6 +931,8 @@
     safeHref, safeImg, mediaInfo, imagemPequena, imagemDeCarta, hrefDaCarta, precoTexto,
     cabecalhoHtml, indiceHtml, cartaoHtml, paginaDoPostHtml, relacionadosHtml, listaHtml,
     etiquetaJogo, nomeCategoria, dataLonga, rotulos,
-    esc, GAMES, CATEGORIAS, ROTULOS, IMG_HOSTS, SITE, SUPABASE_HOST, SUPABASE_URL, SUPABASE_KEY, REF_RE, URL_DO_POST
+    versao, idiomasDo, caminhoDaVersao, versoesHtml,
+    esc, GAMES, CATEGORIAS, ROTULOS, IMG_HOSTS, SITE, SUPABASE_HOST, SUPABASE_URL, SUPABASE_KEY, REF_RE, URL_DO_POST,
+    IDIOMAS, CAMPOS_VERSAO, NOME_IDIOMA, HREFLANG
   };
 })(typeof globalThis !== "undefined" ? globalThis : window);
