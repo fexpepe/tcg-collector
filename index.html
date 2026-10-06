@@ -100,8 +100,8 @@
       <!-- HERÓI (2026-10-06, proposta da home nova): dividido em duas colunas
            no desktop — a promessa à esquerda e o PRODUTO à direita, em vez de
            tudo empilhado no centro com as cartas espiando na dobra. No
-           celular volta a uma coluna e as cartas viram uma fileira deslizante
-           que cabe inteira acima da barra de baixo (medido a 390x844). -->
+           celular volta a uma coluna, com o aparelho logo abaixo dos botões
+           (o topo dele aparece na primeira tela, medido a 390x844). -->
       <section class="lp-hero">
         <div class="lp-hero-texto">
           <svg class="lp-wordmark" role="img" data-i18n-aria="aria.brand" aria-label="Sleevu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 667 178">
@@ -141,31 +141,72 @@
           </div>
           <p class="lp-hero-note" data-i18n="home.lp.note">Sem cartão, sem plano "pro", sem limite de cartas. Exporte seus dados quando quiser.</p>
         </div>
-        <!-- VITRINE (2026-10-06, auditoria de aquisição): cinco cartas REAIS,
-             uma por jogo, cada uma levando pra página dela no catálogo (o
-             visitante entra no produto em vez de só ler sobre ele). Não é o
-             leque atrás do wordmark que saiu em 23/07 (db7b9e16): é a grade da
-             coleção, em fileira. Imagens do espelho próprio (img.sleevu.app,
-             300/600 px) e o Naruto da curadoria local; sem preço de propósito —
-             número fixo aqui envelheceria calado. O data-game-accent de cada
-             item pinta o pontinho da legenda com a cor do jogo (as mesmas
-             variáveis do resto do site). O 6º bloco fecha o 3x2 do desktop e
-             leva pra busca de todos os jogos. -->
-        <ul class="lp-vitrine" data-i18n-aria="home.lp.showcaseAria" aria-label="Cartas do catálogo">
-          <li data-game-accent="pokemon"><a class="lp-vit-card" href="/games/pokemon/base-set/charizard-4-102"><img src="https://img.sleevu.app/assets.tcgdex.net/en/base/base1/4/high.png@300.webp" srcset="https://img.sleevu.app/assets.tcgdex.net/en/base/base1/4/high.png@300.webp 300w, https://img.sleevu.app/assets.tcgdex.net/en/base/base1/4/high.png@600.webp 600w" sizes="(max-width: 700px) 36vw, 190px" width="300" height="419" alt="Charizard" loading="lazy" decoding="async" fetchpriority="low"><span class="lp-vit-nome">Charizard</span><span class="lp-vit-meta">Pokémon<span class="lp-vit-var"> · Holo</span></span></a></li>
-          <li data-game-accent="ygo"><a class="lp-vit-card" href="/games/yu-gi-oh/legend-of-blue-eyes-white-dragon-worldwide-english/blue-eyes-white-dragon-lob-en001"><img src="https://img.sleevu.app/tcgplayer-cdn.tcgplayer.com/product/476160_in_1000x1000.jpg@300.webp" srcset="https://img.sleevu.app/tcgplayer-cdn.tcgplayer.com/product/476160_in_1000x1000.jpg@300.webp 300w, https://img.sleevu.app/tcgplayer-cdn.tcgplayer.com/product/476160_in_1000x1000.jpg@600.webp 600w" sizes="(max-width: 700px) 36vw, 190px" width="300" height="419" alt="Blue-Eyes White Dragon" loading="lazy" decoding="async" fetchpriority="low"><span class="lp-vit-nome">Blue-Eyes White Dragon</span><span class="lp-vit-meta">Yu-Gi-Oh!<span class="lp-vit-var"> · Ultra Rare</span></span></a></li>
-          <li data-game-accent="lorcana"><a class="lp-vit-card" href="/games/disney-lorcana/the-first-chapter/elsa-spirit-of-winter-207-216"><img src="https://img.sleevu.app/cards.lorcast.io/card/digital/large/crd_cbc18e77d7ec4d50bf19650a9a559686.avif@300.webp" srcset="https://img.sleevu.app/cards.lorcast.io/card/digital/large/crd_cbc18e77d7ec4d50bf19650a9a559686.avif@300.webp 300w, https://img.sleevu.app/cards.lorcast.io/card/digital/large/crd_cbc18e77d7ec4d50bf19650a9a559686.avif@600.webp 600w" sizes="(max-width: 700px) 36vw, 190px" width="300" height="419" alt="Elsa" loading="lazy" decoding="async" fetchpriority="low"><span class="lp-vit-nome">Elsa</span><span class="lp-vit-meta">Lorcana<span class="lp-vit-var"> · Enchanted</span></span></a></li>
-          <li data-game-accent="magic"><a class="lp-vit-card" href="/games/magic-the-gathering/limited-edition-alpha/black-lotus-232-295"><img src="https://img.sleevu.app/cards.scryfall.io/normal/front/b/0/b0faa7f2-b547-42c4-a810-839da50dadfe.jpg@300.webp" srcset="https://img.sleevu.app/cards.scryfall.io/normal/front/b/0/b0faa7f2-b547-42c4-a810-839da50dadfe.jpg@300.webp 300w, https://img.sleevu.app/cards.scryfall.io/normal/front/b/0/b0faa7f2-b547-42c4-a810-839da50dadfe.jpg@600.webp 600w" sizes="(max-width: 700px) 36vw, 190px" width="300" height="419" alt="Black Lotus" loading="lazy" decoding="async" fetchpriority="low"><span class="lp-vit-nome">Black Lotus</span><span class="lp-vit-meta">Magic<span class="lp-vit-var"> · Alpha</span></span></a></li>
-          <li data-game-accent="naruto"><a class="lp-vit-card" href="/games/naruto-card-game-2002/nrt-promo/naruto-uzumaki-foil-pr-1-r-jp"><img src="assets/cards/naruto/nrt-PRN-001R.webp" width="300" height="419" alt="Naruto Uzumaki" loading="lazy" decoding="async" fetchpriority="low"><span class="lp-vit-nome">Naruto Uzumaki</span><span class="lp-vit-meta">Naruto<span class="lp-vit-var"> · 2002</span></span></a></li>
-          <li class="lp-vit-mais">
-            <a class="lp-vit-explorar" href="/explore">
-              <span class="lp-vit-lupa" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span>
-              <strong data-i18n="home.ctaCards">Explorar cartas</strong>
-              <span class="lp-vit-mais-sub" data-i18n="home.lp.vitMore">Busque entre todos os jogos</span>
-              <svg class="lp-vit-seta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-            </a>
-          </li>
-        </ul>
+        <!-- CELULAR (2026-10-06, pedido do Fernando: "igual à home do
+             Collectr"): no lugar da vitrine solta, um celular desenhado com a
+             tela do Portfólio — patrimônio, gráfico, períodos e as cartas mais
+             valiosas. É HTML/CSS e não um print: fica nítido em qualquer tela,
+             segue o tema e o idioma (os rótulos são as chaves do próprio
+             Portfólio). As cinco cartas reais da vitrine (auditoria de
+             aquisição, PR #158) viraram as linhas da lista e continuam levando
+             cada uma pra página dela no catálogo — o visitante entra no
+             produto. Números ilustrativos (o mesmo patrimônio do mock das
+             features) ficam aria-hidden; nenhum preço por carta, de propósito:
+             número fixo aqui envelheceria calado. O celular de trás (tela de
+             jogos) e os dois cartões flutuantes são só do desktop. -->
+        <div class="lp-palco">
+          <div class="lp-cel lp-cel-tras" aria-hidden="true">
+            <div class="lp-cel-tela">
+              <div class="lp-cel-status"><span>9:41</span><i class="lp-cel-ilha"></i><span class="lp-cel-icones"><svg viewBox="0 0 34 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="21" y="1.5" width="11" height="9" rx="2.5" fill="none" stroke="currentColor"/><rect x="23" y="3.5" width="7" height="5" rx="1"/></svg></span></div>
+              <div class="lp-cel-jogos">
+                <span><img src="assets/games/game_pokemon.webp" alt="" loading="lazy" decoding="async"></span>
+                <span><img src="assets/games/game_magic-v2.webp" alt="" loading="lazy" decoding="async"></span>
+                <span><img src="assets/games/game_lorcana-v2.webp" alt="" loading="lazy" decoding="async"></span>
+                <span><img src="assets/games/game_onepiece.webp" alt="" loading="lazy" decoding="async"></span>
+                <span><img src="assets/games/game_ygo-v2.webp" alt="" loading="lazy" decoding="async"></span>
+                <span><img src="assets/games/game_riftbound-v2.webp" alt="" loading="lazy" decoding="async"></span>
+                <span><img src="assets/games/game_swu.webp" alt="" loading="lazy" decoding="async"></span>
+                <span><img src="assets/games/game_gundam-v2.webp" alt="" loading="lazy" decoding="async"></span>
+                <span><img src="assets/games/game_fab.webp" alt="" loading="lazy" decoding="async"></span>
+                <span><img src="assets/games/game_dbfw-v2.webp" alt="" loading="lazy" decoding="async"></span>
+                <span><img src="assets/games/game_digimon-v2.webp" alt="" loading="lazy" decoding="async"></span>
+                <span><img src="assets/games/game_unionarena.webp" alt="" loading="lazy" decoding="async"></span>
+                <span><img src="assets/games/game_cyberpunk.webp" alt="" loading="lazy" decoding="async"></span>
+                <span><img src="assets/games/game_sorcery.webp" alt="" loading="lazy" decoding="async"></span>
+              </div>
+            </div>
+          </div>
+          <div class="lp-cel lp-cel-frente">
+            <div class="lp-cel-tela">
+              <div class="lp-cel-status" aria-hidden="true"><span>9:41</span><i class="lp-cel-ilha"></i><span class="lp-cel-icones"><svg viewBox="0 0 34 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="21" y="1.5" width="11" height="9" rx="2.5" fill="none" stroke="currentColor"/><rect x="23" y="3.5" width="7" height="5" rx="1"/></svg></span></div>
+              <div class="lp-cel-topo" aria-hidden="true"><span data-i18n="nav.portfolio">Portfólio</span><span class="lp-cel-moeda">R$ BRL</span></div>
+              <div class="lp-cel-valor" aria-hidden="true">
+                <span class="lp-cel-rotulo" data-i18n="portfolio.series.combined">Patrimônio</span>
+                <strong>R$ 12.480,00</strong>
+                <span class="lp-cel-delta">+R$ 504,30 (4,2%) <span data-i18n="portfolio.chart.win.1m">no último mês</span></span>
+              </div>
+              <svg class="lp-cel-grafico" viewBox="0 0 300 110" preserveAspectRatio="none" aria-hidden="true"><path class="lp-area" d="M0 92 C18 90, 30 84, 46 86 S 74 78, 92 80 S 120 66, 140 68 S 168 58, 186 52 S 214 56, 232 40 S 268 30, 300 14 L300 110 L0 110 Z"/><path class="lp-linha" d="M0 92 C18 90, 30 84, 46 86 S 74 78, 92 80 S 120 66, 140 68 S 168 58, 186 52 S 214 56, 232 40 S 268 30, 300 14"/></svg>
+              <div class="lp-cel-periodos" aria-hidden="true"><span data-i18n="portfolio.range.7d">7D</span><span class="on" data-i18n="portfolio.range.1m">1M</span><span data-i18n="portfolio.range.3m">3M</span><span data-i18n="portfolio.range.6m">6M</span><span data-i18n="portfolio.range.1a">1A</span><span data-i18n="portfolio.range.max">MÁX</span></div>
+              <p class="lp-cel-lista-tit" data-i18n="portfolio.topCards">Cartas mais valiosas</p>
+              <ul class="lp-cel-lista" data-i18n-aria="home.lp.showcaseAria" aria-label="Cartas do catálogo">
+                <li data-game-accent="magic"><a href="/games/magic-the-gathering/limited-edition-alpha/black-lotus-232-295"><img src="https://img.sleevu.app/cards.scryfall.io/normal/front/b/0/b0faa7f2-b547-42c4-a810-839da50dadfe.jpg@300.webp" width="300" height="419" alt="" loading="lazy" decoding="async"><span class="lp-cel-carta"><b>Black Lotus</b><small>Magic · Alpha</small></span><em class="sobe" aria-hidden="true">+0,8%</em></a></li>
+                <li data-game-accent="pokemon"><a href="/games/pokemon/base-set/charizard-4-102"><img src="https://img.sleevu.app/assets.tcgdex.net/en/base/base1/4/high.png@300.webp" width="300" height="419" alt="" loading="lazy" decoding="async"><span class="lp-cel-carta"><b>Charizard</b><small>Pokémon · Base Set</small></span><em class="sobe" aria-hidden="true">+3,1%</em></a></li>
+                <li data-game-accent="ygo"><a href="/games/yu-gi-oh/legend-of-blue-eyes-white-dragon-worldwide-english/blue-eyes-white-dragon-lob-en001"><img src="https://img.sleevu.app/tcgplayer-cdn.tcgplayer.com/product/476160_in_1000x1000.jpg@300.webp" width="300" height="419" alt="" loading="lazy" decoding="async"><span class="lp-cel-carta"><b>Blue-Eyes White Dragon</b><small>Yu-Gi-Oh! · LOB</small></span><em class="desce" aria-hidden="true">−1,2%</em></a></li>
+                <li data-game-accent="lorcana"><a href="/games/disney-lorcana/the-first-chapter/elsa-spirit-of-winter-207-216"><img src="https://img.sleevu.app/cards.lorcast.io/card/digital/large/crd_cbc18e77d7ec4d50bf19650a9a559686.avif@300.webp" width="300" height="419" alt="" loading="lazy" decoding="async"><span class="lp-cel-carta"><b>Elsa</b><small>Lorcana · Enchanted</small></span><em class="sobe" aria-hidden="true">+2,4%</em></a></li>
+                <li data-game-accent="naruto"><a href="/games/naruto-card-game-2002/nrt-promo/naruto-uzumaki-foil-pr-1-r-jp"><img src="assets/cards/naruto/nrt-PRN-001R.webp" width="300" height="419" alt="" loading="lazy" decoding="async"><span class="lp-cel-carta"><b>Naruto Uzumaki</b><small>Naruto · 2002</small></span><em class="sobe" aria-hidden="true">+5,0%</em></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="lp-flut lp-flut-set" aria-hidden="true">
+            <span class="lp-flut-rot">Base Set</span>
+            <strong>64/102</strong>
+            <span class="lp-pm-barra"><i></i></span>
+          </div>
+          <div class="lp-flut lp-flut-alerta" aria-hidden="true">
+            <span class="lp-drop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg>18%</span>
+            <span class="lp-drop-name">Charizard ex 199/165</span>
+            <span class="lp-drop-tag" data-i18n="home.lp.mockAlert">alerta de queda</span>
+          </div>
+        </div>
       </section>
 
       <!-- NÚMEROS -->
