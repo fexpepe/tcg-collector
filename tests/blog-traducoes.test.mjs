@@ -17,6 +17,7 @@ import assert from "node:assert/strict";
 import "../src/blog-render.js";
 import { metaDoPost, paginaDoPost } from "../functions/blog/[slug].js";
 import { enderecosDoPost } from "../scripts/lib/sitemap.mjs";
+import { supabase, COLUNAS_POST } from "../functions/blog/_comum.js";
 
 const B = globalThis.SleevuBlog;
 
@@ -175,4 +176,22 @@ test("borda: maiúscula e endereço antigo mantêm o idioma do endereço", async
   const antigo = await pedeNaBorda("/blog/en/endereco-antigo", { pedido: "en", slug: "endereco-antigo", redirecionaPara: POST.slug });
   assert.equal(antigo.status, 301);
   assert.equal(antigo.headers.get("location"), "https://sleevu.app/blog/en/naruto-card-game-2002-grails");
+});
+
+test("borda sem a migração 20261006a: pede de novo sem as colunas das traduções", async () => {
+  const pedidos = [];
+  const fetchAntes = globalThis.fetch;
+  globalThis.fetch = async (url) => {
+    pedidos.push(String(url));
+    const semColuna = /versoes|traducoes/.test(String(url));
+    return new Response(semColuna ? "{\"code\":\"42703\"}" : "[]", { status: semColuna ? 400 : 200 });
+  };
+  try {
+    assert.deepEqual(await supabase({ BLOG_SUPABASE_URL: "https://s.teste" }, "/rest/v1/posts?slug=eq.x&select=" + COLUNAS_POST + "&limit=1"), []);
+    assert.equal(pedidos.length, 2);
+    assert.ok(!/versoes|traducoes/.test(pedidos[1]), pedidos[1]);
+    // Outro 400 (sem as colunas no pedido) continua sendo erro.
+    globalThis.fetch = async () => new Response("{}", { status: 400 });
+    await assert.rejects(() => supabase({}, "/rest/v1/posts?select=slug"), /supabase 400/);
+  } finally { globalThis.fetch = fetchAntes; }
 });

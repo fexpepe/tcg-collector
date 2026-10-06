@@ -1,16 +1,19 @@
 # Blog
 
-Área de artigos do Sleevu: **/blog** (lista), **/blog/&lt;endereço&gt;** (post) e
-**/blog-editor** (onde se escreve). Os posts moram no Supabase e são escritos
-pelo próprio site — publicar é instantâneo, sem commit nem deploy.
+Área de artigos do Sleevu: **/blog** (lista), **/blog/&lt;endereço&gt;** (post),
+**/blog/&lt;idioma&gt;/&lt;endereço&gt;** (as traduções) e **/blog-editor** (onde
+se escreve). Os posts moram no Supabase e são escritos pelo próprio site —
+publicar é instantâneo, sem commit nem deploy.
 
 ## Peças
 
 | Onde | O quê |
 |---|---|
 | `supabase/migrations/20260930b_blog.sql` | tabelas, RLS, triggers, bucket de imagens, papel de editor |
+| `supabase/migrations/20261006a_blog_traducoes.sql` | as versões em outros idiomas (`traducoes`, `versoes`), aplicada DEPOIS da 20260930b |
 | `src/blog-render.js` | **o** renderizador: Markdown enxuto → HTML seguro, mais cabeçalho do artigo, índice, carta embutida, cartão da lista, compartilhar, "leia também" |
-| `functions/blog/[slug].js` | a página do post, montada na borda (SEO, cartas do D1, 301, 404) |
+| `functions/blog/[slug].js` | a página do post, montada na borda (SEO, hreflang, cartas do D1, 301, 404) |
+| `functions/blog/{pt,en,es}/[slug].js` | as traduções: só dizem o idioma e chamam o `paginaDoPost` do `[slug].js` |
 | `functions/blog/index.js` | a lista, montada na borda (filtros da URL já aplicados) |
 | `functions/blog/feed.xml.js` | o RSS |
 | `functions/blog/_comum.js` | Supabase anônimo, cartas do D1, cache de borda |
@@ -25,6 +28,47 @@ carrega por `<script>` e as Functions fazem `import "../../src/blog-render.js"`.
 É isso que garante que a prévia do editor é a página publicada. No deploy o
 `hash-assets.mjs` renomeia o arquivo e reescreve o import das Functions (e
 reprova o build se algum import apontar pra arquivo que não existe).
+
+## Idiomas (desde 2026-10-06)
+
+O blog fala as línguas do site (pt, en, es) e **o post acompanha a
+bandeirinha** (pedido do Fernando). Um post é UMA linha da tabela:
+
+- as colunas de sempre (`title`, `body_md`…) são a versão no idioma
+  **original** (`lang`);
+- `traducoes` guarda as outras, cada uma com título, linha fina, resumo,
+  texto, descrição da capa e SEO. Endereço, capa, jogo, categoria, assuntos e
+  datas são do post, valem pras três;
+- `versoes` é o resumo leve de cada tradução (sem o texto), calculado pelo
+  trigger — é o que a lista e o sitemap leem.
+
+**Endereços.** `/blog/<slug>` é a original e `/blog/<idioma>/<slug>` cada
+tradução, com canonical própria e hreflang entre elas (x-default na original).
+Pedir `/blog/<idioma>/<slug>` no idioma original dá 301 pro endereço sem
+prefixo; tradução que não existe dá 302 pra original.
+
+**Quem lê vai pra versão da bandeirinha.** A borda põe no `<html>` o mapa
+idioma → endereço (`data-versoes`), e o `src/theme.js`, que roda antes da
+primeira pintura, troca de endereço quando a língua de quem lê tem versão.
+Robô não sai do lugar (cada versão é indexada no seu endereço) e o "Ver no
+site" do editor (`?fresco=1`) também não. No post, "Leia em" leva às outras
+versões — o clique troca o idioma do SITE, senão a página de destino mandaria
+de volta. Sem a versão de quem lê, o post sai na original com um aviso.
+
+**Lista.** A borda desenha cada post na original (ela não sabe quem lê); o
+`src/blog.js` redesenha na língua de quem lê. Post sem essa versão sai na
+original, com a etiqueta do idioma em que está ("In Portuguese").
+
+**No editor**, as abas de idioma em cima do título trocam os campos de texto
+que o formulário edita. Versão nova começa com o texto da original (cartas,
+imagens e estrutura já no lugar): é só trocar o texto pelo traduzido. Trocar o
+"Idioma original" pra um idioma que já tem tradução faz as duas trocarem de
+lugar. Salvar grava as três versões juntas (um PATCH só, a mesma trava
+otimista), e o histórico guarda as traduções junto.
+
+**Sem ordem com a migração.** Antes da 20261006a, as colunas novas não
+existem e o PostgREST responde 400: a borda, o `blog.js` e o sitemap pedem de
+novo sem elas e seguem só com as originais. O editor avisa pra aplicar.
 
 ## Quem escreve
 

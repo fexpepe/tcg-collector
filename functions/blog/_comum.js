@@ -33,9 +33,17 @@ export async function supabase(env, caminho) {
   const base = (env && env.BLOG_SUPABASE_URL) || SUPABASE_URL;
   const r = await fetch(base + caminho, { headers: { apikey: SUPABASE_KEY, Accept: "application/json" } });
   if (r.status === 404) return null;
+  // Sem a migração 20261006a as colunas das traduções não existem (400): pede
+  // de novo sem elas e o blog segue só com as originais — código e migração
+  // podem subir em qualquer ordem.
+  if (r.status === 400) {
+    const semElas = caminho.replace(SEM_TRADUCOES, "");
+    if (semElas !== caminho) return supabase(env, semElas);
+  }
   if (!r.ok) throw new Error("supabase " + r.status);
   return r.json();
 }
+const SEM_TRADUCOES = /,(?:versoes|traducoes)\b/g;
 
 // Cartas citadas no post → Map "jogo/id" → { name, set, setId, number, image, price }.
 // Consulta por PK no D1, em lotes (mesmo teto de parâmetros da /api/collection).

@@ -6843,7 +6843,7 @@ a.blog-versao:hover { border-color: var(--accent); color: var(--accent-ink); }
 @media (max-width: 700px) { .blog-versao { min-height: 44px; } }
 /* Quem lê numa língua que o post ainda não tem (o blog.js põe acima do título). */
 .blog-aviso-idioma {
-  margin: 0 0 4px; padding: 10px 14px; border: 1px solid var(--line); border-left: 4px solid var(--accent);
+  margin: 14px 0 0; padding: 10px 14px; border: 1px solid var(--line); border-left: 4px solid var(--accent);
   background: var(--panel); color: var(--text); font-size: 14.5px; line-height: 1.45;
 }
 .blog-cover { margin: 0; }
