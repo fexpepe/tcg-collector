@@ -8,6 +8,20 @@ poucos.)
 
 ## Pendentes de aplicar
 
+- `20261006a` — limite de eventos por VISITANTE, não por IP
+  (`20261006a_eventos_por_visitante.sql`). O `events_guard` descartava calado o
+  que passasse de 60 eventos/min por IP, e celular no Brasil sai por CGNAT
+  (muita gente atrás do mesmo IPv4): na campanha paga, visitantes diferentes
+  dividiam o mesmo balde e o excedente sumia sem erro (docs/PLANO-TECNICO.md,
+  L10). Agora são 60/min por (IP, anon) e um teto de 600/min pro IP inteiro.
+  O resto do guard é cópia fiel da 20260928a (o teste
+  `tests/eventos-por-visitante.test.mjs` compara). Aditiva e sem ordem com o JS.
+
+  Conferir depois de aplicar:
+  ```sql
+  select pg_get_functiondef('public.events_guard()'::regprocedure) ~ 'events:' as por_visitante;  -- true
+  ```
+
 - `20261004a` — alarme de medição parada leva o tráfego em conta
   (`20261004a_sentinela_trafego.sql`). Em 2026-10-04 o healthcheck ficou
   vermelho com "parou de chegar: scan_open" sem nada quebrado: a campanha paga
