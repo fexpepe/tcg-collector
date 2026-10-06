@@ -53,3 +53,12 @@ export function lerSitemap(xml) {
     locs: [...texto.matchAll(/<loc>\s*([^<]+?)\s*<\/loc>/g)].map((m) => desescapaXml(m[1]))
   };
 }
+
+// Endereços de um post: a original em /blog/<slug> e cada tradução em
+// /blog/<idioma>/<slug> — a mesma regra do caminhoDaVersao (src/blog-render.js;
+// tests/blog-traducoes.test.mjs confere as duas).
+export function enderecosDoPost(p) {
+  const original = ["pt", "en", "es"].includes(p.lang) ? p.lang : "pt";
+  const traducoes = ["pt", "en", "es"].filter((l) => l !== original && p.versoes && p.versoes[l]);
+  return [`/blog/${p.slug}`].concat(traducoes.map((l) => `/blog/${l}/${p.slug}`));
+}
