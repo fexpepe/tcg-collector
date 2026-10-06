@@ -2404,6 +2404,12 @@
         : allItems.reduce((s, it) => s + fromBRL(it.vbrl || 0) * (it.q || 1), 0);
     const bannerMoney = (isSale || isGraded) ? shared.formatMoney(saleCur, bannerTotal) : shared.formatMoney(shared.getCurrency(), bannerTotal);
     const kindLabel = isWish ? t("wishlist.shared.label") : isGraded ? t("graded.shared.label") : isSale ? t("sales.shared.label") : isPasta ? t("pastas.shared.label") : isTag ? t("tags.shared.label") : (isFolder ? t("folders.shared.label") : "");
+    // Convite pra criar a sua (2026-10-06): o lugar do botão no banner ficava
+    // vazio em vendas/graded/desejos/coleção — justamente os links que mais vão
+    // pros grupos de WhatsApp. Só pra quem chega sem conta; pasta/tag/lista
+    // seguem com o "Salvar", que já é o próximo passo de quem abriu.
+    const convite = (shared.getSession && shared.getSession()) ? ""
+      : `<a class="primary binder-shared-cta" href="login">${escapeHtml(t("collection.shared.cta"))}</a>`;
 
     // Filtro de jogo (Todos/Pokémon/Lorcana) — igual à página da coleção. Só
     // aparece quando o share tem MAIS DE UM jogo, pra quem está vendo conseguir
@@ -2429,7 +2435,7 @@
         </div>
         ${profileNav && profileNav.label
           ? `<button type="button" class="secondary" data-profile-nav>${escapeHtml(profileNav.label)}</button>`
-          : (isFolder || isTag || isPasta ? `<button type="button" class="primary" id="sharedSaveBtn">${escapeHtml(t(isPasta ? "pastas.shared.save" : isTag ? "tags.shared.save" : "folders.shared.save"))}</button>` : "")}
+          : (isFolder || isTag || isPasta ? `<button type="button" class="primary" id="sharedSaveBtn">${escapeHtml(t(isPasta ? "pastas.shared.save" : isTag ? "tags.shared.save" : "folders.shared.save"))}</button>` : (profileNav ? "" : convite))}
       </div>`;
     sv.innerHTML = `${(profileNav && profileNav.tabsHtml) || ""}${banner}${filterHtml}<div id="sharedBody"></div>`;
 
@@ -3257,12 +3263,23 @@
     function swapHtml() {
       return `${tabsHtml()}${actionsRowHtml()}${filterBarHtml()}${backHtml()}<div class="prof-content">${contentHtml()}</div>`;
     }
+    // Convite pra quem chega SEM conta (2026-10-06, auditoria de aquisição): o
+    // perfil é o link que mais circula — a prévia no WhatsApp já mostra a carta
+    // mais valiosa e o R$ total —, mas o visitante não tinha caminho nenhum pra
+    // criar a dele. Logado não vê (já tem conta; o dono olhando o próprio
+    // perfil também não). Fica entre o cartão do dono e as abas: no celular,
+    // ainda na primeira tela, sem disputar com a identidade de quem compartilhou.
+    const conviteHtml = (shared.getSession && shared.getSession()) ? "" : `
+      <aside class="prof-convite">
+        <p>${escapeHtml(t("profile.invite"))}</p>
+        <a class="primary prof-convite-cta" href="login">${escapeHtml(t("collection.shared.cta"))}</a>
+      </aside>`;
     function render() {
       shared.applyGameAccent(gFilter); // o filtro de jogo muda as cores (accent), por isso fica no topo
       // Topo PERSISTENTE (filtro de jogo + cartão-herói) + bloco trocável
       // (.prof-swap). Sem wrapper em volta do cartão: ele traz a própria margem
       // (inclusive o full-bleed do celular), exatamente como na Minha Coleção.
-      sv.innerHTML = `${gameFilterHtml()}${dashHtml()}<div class="prof-swap">${swapHtml()}</div>`;
+      sv.innerHTML = `${gameFilterHtml()}${dashHtml()}${conviteHtml}<div class="prof-swap">${swapHtml()}</div>`;
       // Espelho <select> do filtro de jogo pro celular: abaixo de 600px o CSS
       // esconde os chips, e o boot do shared.js só alcança as caixas que já
       // existiam no HTML — esta nasce aqui, a cada render.

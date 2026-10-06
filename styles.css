@@ -1340,6 +1340,13 @@ input::placeholder {
    coleção de alguém) em duas telas, tinham de ter a mesma forma.
    grid-auto-flow: column + auto-columns 1fr serve qualquer contagem de abas —
    e a contagem varia mesmo (aba só aparece se a pessoa tem aquele conteúdo). */
+/* Convite do perfil público pra quem chega sem conta (2026-10-06): faixa
+   entre o cartão do dono e as abas. Plana, no molde do .blog-cta (painel +
+   linha), pra ler como convite do site e não como parte da coleção de quem
+   compartilhou. O respiro de baixo é o mesmo 16px das abas → filtros. */
+.prof-convite { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; margin: 0 0 16px; padding: 12px 16px; border: 1px solid var(--line); background: var(--panel); }
+.prof-convite p { margin: 0; flex: 1 1 260px; color: var(--muted); font-size: 14px; }
+.prof-convite-cta { display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; font-weight: 700; text-decoration: none; }
 /* Respiro entre o painel do perfil e as abas. Estava ZERO — o cartão do
    dashboard encostava na fileira de abas e as duas coisas liam como um bloco
    só. O valor é o MESMO 16px que separa as abas da barra de filtros logo
@@ -10067,7 +10074,7 @@ html[data-detail="set"] .page-head-bar.page-head-stack,
 }
 /* Compartilhado (somente leitura): todos os pares, um embaixo do outro. */
 .binder-book.is-shared { display: grid; justify-items: center; gap: 22px; }
-.binder-shared-head .binder-shared-cta { display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; text-decoration: none; }
+.binder-shared-head .binder-shared-cta, .binder-shared-banner .binder-shared-cta { display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; text-decoration: none; }
 /* ── Binder aberto no celular/tablet = modo fichário (2026-09-26) ──────────
    Até 900px o binders.js monta o binder com o src/binder-view.js — o MESMO
    fichário da Coleção, do set e das Pastas (barra « ‹ Página › », trilha que

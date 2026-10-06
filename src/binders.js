@@ -1808,11 +1808,13 @@
       }
     }
 
-    // Rodapé / marca (cinza claro)
+    // Rodapé / marca (cinza claro). Com o endereço desde 2026-10-06: a imagem
+    // do binder vai pros grupos sem link nenhum junto, e era a única exportação
+    // do site que dizia só "Sleevu" — quem gostava não tinha como achar o site.
     ctx.fillStyle = "#999999";
     ctx.font = fnt(2.6, 400);
     ctx.textBaseline = "alphabetic";
-    ctx.fillText("Sleevu", MARGIN * PPM, height - MARGIN * PPM);
+    ctx.fillText("Sleevu · sleevu.app", MARGIN * PPM, height - MARGIN * PPM);
 
     const finish = () => { if (button) { button.disabled = false; button.innerHTML = label; } };
     try {
