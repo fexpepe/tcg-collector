@@ -11064,6 +11064,29 @@ select,
 .lp-sub { max-width: 720px; margin: clamp(12px, 1.8vw, 25px) auto 0; color: var(--subtle); font-size: clamp(15.5px, 1.4vw, 18px); line-height: 1.6; }
 .lp-ctas { display: flex; gap: 12px; justify-content: center; margin-top: clamp(22px, 3.5vw, 50px); flex-wrap: wrap; }
 .lp-hero-note { margin-top: clamp(14px, 1.7vw, 23px); font-size: 13px; color: var(--subtle); }
+/* Vitrine do herói (2026-10-06): cinco cartas reais em fileira logo abaixo
+   dos botões — o topo mostrava só a marca. Cada carta é um link pra página
+   dela; a imagem tem a proporção da carta (63:88) reservada antes de chegar,
+   pra fileira não empurrar nada (CLS). No celular, três cartas: cabem na
+   primeira tela junto com os botões. */
+.lp-vitrine { list-style: none; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: clamp(10px, 1.6vw, 18px); max-width: 860px; margin: clamp(26px, 3.6vw, 48px) auto 0; padding: 0; }
+.lp-vit-card { display: flex; flex-direction: column; align-items: center; min-width: 0; color: var(--text); text-decoration: none; }
+.lp-vit-card img { display: block; width: 100%; height: auto; aspect-ratio: 63 / 88; object-fit: cover; border-radius: 4.5% / 3.2%; background: var(--panel-strong); box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28); margin-bottom: 8px; }
+.lp-vit-nome, .lp-vit-meta { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lp-vit-nome { font-size: 13.5px; font-weight: 700; }
+.lp-vit-meta { font-size: 12px; color: var(--subtle); }
+@media (prefers-reduced-motion: no-preference) {
+  .lp-vit-card img { transition: transform 0.2s ease; }
+  .lp-vit-card:hover img { transform: translateY(-4px); }
+}
+@media (max-width: 560px) {
+  .lp-vitrine { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .lp-vitrine li:nth-child(n + 4) { display: none; }
+  /* ~110px por carta: o nome pode ir pra 2 linhas (Blue-Eyes White Dragon)
+     e a legenda fica só com o jogo — a variante cortada no meio não dizia nada. */
+  .lp-vit-nome { white-space: normal; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-height: 1.25; text-align: center; }
+  .lp-vit-var { display: none; }
+}
 
 /* --- Números ------------------------------------------------------------- */
 .lp-stats {
