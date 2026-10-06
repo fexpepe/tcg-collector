@@ -97,9 +97,14 @@
 
     <main class="lp-main">
 
-      <!-- HERO: wordmark em alta (SVG) sobre um leque de cartas reais dos jogos -->
+      <!-- HERÓI (2026-10-06, proposta da home nova): dividido em duas colunas
+           no desktop — a promessa à esquerda e o PRODUTO à direita, em vez de
+           tudo empilhado no centro com as cartas espiando na dobra. No
+           celular volta a uma coluna e as cartas viram uma fileira deslizante
+           que cabe inteira acima da barra de baixo (medido a 390x844). -->
       <section class="lp-hero">
-        <svg class="lp-wordmark" role="img" data-i18n-aria="aria.brand" aria-label="Sleevu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 667 178">
+        <div class="lp-hero-texto">
+          <svg class="lp-wordmark" role="img" data-i18n-aria="aria.brand" aria-label="Sleevu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 667 178">
 <defs>
 <clipPath id="clip_1">
 <path transform="matrix(1,0,0,-1,0,178)" d="M0 178H667V0H0Z"/>
@@ -124,34 +129,42 @@
 </g>
 </g>
 </svg>
-        <!-- É H1 e não <p>: a home não tinha NENHUM h1, e ele é um dos sinais
-             mais fortes de "sobre o que é esta página". O wordmark acima é um
-             SVG (bonito, mas o buscador só lê o aria-label "Sleevu", que não
-             diz o que o site faz). A troca é visualmente neutra: a .lp-tagline
-             já declara tamanho, peso e margem próprios, então nada do estilo
-             padrão de h1 aparece. -->
-        <h1 class="lp-tagline" data-i18n="home.lp.tagline">Sua coleção de cartas, levada a sério. 100% de graça!</h1>
-        <p class="lp-sub" data-i18n="home.lp.sub">Catalogue por variante e condição, crie decks, acompanhe o valor no tempo e sincronize em todos os seus aparelhos. Pokémon, Lorcana, One Piece e muitos outros jogos. Do lançamento de ontem ao Carddass de 1988. Tudo de graça.</p>
-        <div class="lp-ctas">
-          <a class="cta" href="hub" data-i18n="home.lp.cta">Começar agora, é grátis</a>
-          <a class="cta secondary-cta" href="login" data-i18n="home.lp.ctaLogin">Já tenho conta</a>
+          <!-- É H1 e não <p>: a home não tinha NENHUM h1, e ele é um dos sinais
+               mais fortes de "sobre o que é esta página". O wordmark acima é um
+               SVG (bonito, mas o buscador só lê o aria-label "Sleevu", que não
+               diz o que o site faz). -->
+          <h1 class="lp-tagline" data-i18n="home.lp.tagline">Sua coleção de cartas, levada a sério. 100% de graça!</h1>
+          <p class="lp-sub" data-i18n="home.lp.sub">Catalogue por variante e condição, crie decks, acompanhe o valor no tempo e sincronize em todos os seus aparelhos. Pokémon, Lorcana, One Piece e muitos outros jogos. Do lançamento de ontem ao Carddass de 1988. Tudo de graça.</p>
+          <div class="lp-ctas">
+            <a class="cta" href="hub" data-i18n="home.lp.cta">Começar agora, é grátis</a>
+            <a class="cta secondary-cta" href="login" data-i18n="home.lp.ctaLogin">Já tenho conta</a>
+          </div>
+          <p class="lp-hero-note" data-i18n="home.lp.note">Sem cartão, sem plano "pro", sem limite de cartas. Exporte seus dados quando quiser.</p>
         </div>
-        <p class="lp-hero-note" data-i18n="home.lp.note">Sem cartão, sem plano "pro", sem limite de cartas. Exporte seus dados quando quiser.</p>
-        <!-- VITRINE (2026-10-06, auditoria de aquisição): o topo mostrava só a
-             marca — nenhuma carta na primeira tela do celular. Cinco cartas
-             REAIS, uma por jogo, cada uma levando pra página dela no catálogo
-             (o visitante entra no produto em vez de só ler sobre ele). Não é o
-             leque atrás do wordmark que saiu em 23/07 (db7b9e16): fica abaixo
-             dos botões, em fileira, como a grade da coleção. Imagens do espelho
-             próprio (img.sleevu.app, 300/600 px) e o Naruto da curadoria local;
-             sem preço de propósito — número fixo aqui envelheceria calado. No
-             celular só as três primeiras (CSS), dentro da primeira tela. -->
+        <!-- VITRINE (2026-10-06, auditoria de aquisição): cinco cartas REAIS,
+             uma por jogo, cada uma levando pra página dela no catálogo (o
+             visitante entra no produto em vez de só ler sobre ele). Não é o
+             leque atrás do wordmark que saiu em 23/07 (db7b9e16): é a grade da
+             coleção, em fileira. Imagens do espelho próprio (img.sleevu.app,
+             300/600 px) e o Naruto da curadoria local; sem preço de propósito —
+             número fixo aqui envelheceria calado. O data-game-accent de cada
+             item pinta o pontinho da legenda com a cor do jogo (as mesmas
+             variáveis do resto do site). O 6º bloco fecha o 3x2 do desktop e
+             leva pra busca de todos os jogos. -->
         <ul class="lp-vitrine" data-i18n-aria="home.lp.showcaseAria" aria-label="Cartas do catálogo">
-          <li><a class="lp-vit-card" href="/games/pokemon/base-set/charizard-4-102"><img src="https://img.sleevu.app/assets.tcgdex.net/en/base/base1/4/high.png@300.webp" srcset="https://img.sleevu.app/assets.tcgdex.net/en/base/base1/4/high.png@300.webp 300w, https://img.sleevu.app/assets.tcgdex.net/en/base/base1/4/high.png@600.webp 600w" sizes="(max-width: 560px) 30vw, 160px" width="300" height="419" alt="Charizard" loading="lazy" decoding="async" fetchpriority="low"><span class="lp-vit-nome">Charizard</span><span class="lp-vit-meta">Pokémon<span class="lp-vit-var"> · Holo</span></span></a></li>
-          <li><a class="lp-vit-card" href="/games/yu-gi-oh/legend-of-blue-eyes-white-dragon-worldwide-english/blue-eyes-white-dragon-lob-en001"><img src="https://img.sleevu.app/tcgplayer-cdn.tcgplayer.com/product/476160_in_1000x1000.jpg@300.webp" srcset="https://img.sleevu.app/tcgplayer-cdn.tcgplayer.com/product/476160_in_1000x1000.jpg@300.webp 300w, https://img.sleevu.app/tcgplayer-cdn.tcgplayer.com/product/476160_in_1000x1000.jpg@600.webp 600w" sizes="(max-width: 560px) 30vw, 160px" width="300" height="419" alt="Blue-Eyes White Dragon" loading="lazy" decoding="async" fetchpriority="low"><span class="lp-vit-nome">Blue-Eyes White Dragon</span><span class="lp-vit-meta">Yu-Gi-Oh!<span class="lp-vit-var"> · Ultra Rare</span></span></a></li>
-          <li><a class="lp-vit-card" href="/games/disney-lorcana/the-first-chapter/elsa-spirit-of-winter-207-216"><img src="https://img.sleevu.app/cards.lorcast.io/card/digital/large/crd_cbc18e77d7ec4d50bf19650a9a559686.avif@300.webp" srcset="https://img.sleevu.app/cards.lorcast.io/card/digital/large/crd_cbc18e77d7ec4d50bf19650a9a559686.avif@300.webp 300w, https://img.sleevu.app/cards.lorcast.io/card/digital/large/crd_cbc18e77d7ec4d50bf19650a9a559686.avif@600.webp 600w" sizes="(max-width: 560px) 30vw, 160px" width="300" height="419" alt="Elsa" loading="lazy" decoding="async" fetchpriority="low"><span class="lp-vit-nome">Elsa</span><span class="lp-vit-meta">Lorcana<span class="lp-vit-var"> · Enchanted</span></span></a></li>
-          <li><a class="lp-vit-card" href="/games/magic-the-gathering/limited-edition-alpha/black-lotus-232-295"><img src="https://img.sleevu.app/cards.scryfall.io/normal/front/b/0/b0faa7f2-b547-42c4-a810-839da50dadfe.jpg@300.webp" srcset="https://img.sleevu.app/cards.scryfall.io/normal/front/b/0/b0faa7f2-b547-42c4-a810-839da50dadfe.jpg@300.webp 300w, https://img.sleevu.app/cards.scryfall.io/normal/front/b/0/b0faa7f2-b547-42c4-a810-839da50dadfe.jpg@600.webp 600w" sizes="(max-width: 560px) 30vw, 160px" width="300" height="419" alt="Black Lotus" loading="lazy" decoding="async" fetchpriority="low"><span class="lp-vit-nome">Black Lotus</span><span class="lp-vit-meta">Magic<span class="lp-vit-var"> · Alpha</span></span></a></li>
-          <li><a class="lp-vit-card" href="/games/naruto-card-game-2002/nrt-promo/naruto-uzumaki-foil-pr-1-r-jp"><img src="assets/cards/naruto/nrt-PRN-001R.webp" width="300" height="419" alt="Naruto Uzumaki" loading="lazy" decoding="async" fetchpriority="low"><span class="lp-vit-nome">Naruto Uzumaki</span><span class="lp-vit-meta">Naruto<span class="lp-vit-var"> · 2002</span></span></a></li>
+          <li data-game-accent="pokemon"><a class="lp-vit-card" href="/games/pokemon/base-set/charizard-4-102"><img src="https://img.sleevu.app/assets.tcgdex.net/en/base/base1/4/high.png@300.webp" srcset="https://img.sleevu.app/assets.tcgdex.net/en/base/base1/4/high.png@300.webp 300w, https://img.sleevu.app/assets.tcgdex.net/en/base/base1/4/high.png@600.webp 600w" sizes="(max-width: 700px) 36vw, 190px" width="300" height="419" alt="Charizard" loading="lazy" decoding="async" fetchpriority="low"><span class="lp-vit-nome">Charizard</span><span class="lp-vit-meta">Pokémon<span class="lp-vit-var"> · Holo</span></span></a></li>
+          <li data-game-accent="ygo"><a class="lp-vit-card" href="/games/yu-gi-oh/legend-of-blue-eyes-white-dragon-worldwide-english/blue-eyes-white-dragon-lob-en001"><img src="https://img.sleevu.app/tcgplayer-cdn.tcgplayer.com/product/476160_in_1000x1000.jpg@300.webp" srcset="https://img.sleevu.app/tcgplayer-cdn.tcgplayer.com/product/476160_in_1000x1000.jpg@300.webp 300w, https://img.sleevu.app/tcgplayer-cdn.tcgplayer.com/product/476160_in_1000x1000.jpg@600.webp 600w" sizes="(max-width: 700px) 36vw, 190px" width="300" height="419" alt="Blue-Eyes White Dragon" loading="lazy" decoding="async" fetchpriority="low"><span class="lp-vit-nome">Blue-Eyes White Dragon</span><span class="lp-vit-meta">Yu-Gi-Oh!<span class="lp-vit-var"> · Ultra Rare</span></span></a></li>
+          <li data-game-accent="lorcana"><a class="lp-vit-card" href="/games/disney-lorcana/the-first-chapter/elsa-spirit-of-winter-207-216"><img src="https://img.sleevu.app/cards.lorcast.io/card/digital/large/crd_cbc18e77d7ec4d50bf19650a9a559686.avif@300.webp" srcset="https://img.sleevu.app/cards.lorcast.io/card/digital/large/crd_cbc18e77d7ec4d50bf19650a9a559686.avif@300.webp 300w, https://img.sleevu.app/cards.lorcast.io/card/digital/large/crd_cbc18e77d7ec4d50bf19650a9a559686.avif@600.webp 600w" sizes="(max-width: 700px) 36vw, 190px" width="300" height="419" alt="Elsa" loading="lazy" decoding="async" fetchpriority="low"><span class="lp-vit-nome">Elsa</span><span class="lp-vit-meta">Lorcana<span class="lp-vit-var"> · Enchanted</span></span></a></li>
+          <li data-game-accent="magic"><a class="lp-vit-card" href="/games/magic-the-gathering/limited-edition-alpha/black-lotus-232-295"><img src="https://img.sleevu.app/cards.scryfall.io/normal/front/b/0/b0faa7f2-b547-42c4-a810-839da50dadfe.jpg@300.webp" srcset="https://img.sleevu.app/cards.scryfall.io/normal/front/b/0/b0faa7f2-b547-42c4-a810-839da50dadfe.jpg@300.webp 300w, https://img.sleevu.app/cards.scryfall.io/normal/front/b/0/b0faa7f2-b547-42c4-a810-839da50dadfe.jpg@600.webp 600w" sizes="(max-width: 700px) 36vw, 190px" width="300" height="419" alt="Black Lotus" loading="lazy" decoding="async" fetchpriority="low"><span class="lp-vit-nome">Black Lotus</span><span class="lp-vit-meta">Magic<span class="lp-vit-var"> · Alpha</span></span></a></li>
+          <li data-game-accent="naruto"><a class="lp-vit-card" href="/games/naruto-card-game-2002/nrt-promo/naruto-uzumaki-foil-pr-1-r-jp"><img src="assets/cards/naruto/nrt-PRN-001R.webp" width="300" height="419" alt="Naruto Uzumaki" loading="lazy" decoding="async" fetchpriority="low"><span class="lp-vit-nome">Naruto Uzumaki</span><span class="lp-vit-meta">Naruto<span class="lp-vit-var"> · 2002</span></span></a></li>
+          <li class="lp-vit-mais">
+            <a class="lp-vit-explorar" href="/explore">
+              <span class="lp-vit-lupa" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span>
+              <strong data-i18n="home.ctaCards">Explorar cartas</strong>
+              <span class="lp-vit-mais-sub" data-i18n="home.lp.vitMore">Busque entre todos os jogos</span>
+              <svg class="lp-vit-seta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+          </li>
         </ul>
       </section>
 
@@ -173,42 +186,108 @@
         <div class="lp-stat"><strong>R$ · $ · €</strong><span data-i18n="home.lp.statPrices">preços BR, EUA e Europa</span></div>
       </section>
 
-      <!-- JOGOS -->
-      <section class="lp-games">
-        <h2 data-i18n="home.lp.gamesTitle">Um app, todos os seus jogos</h2>
-        <ul class="lp-games-caps">
-          <li><a href="cards?game=pokemon" data-i18n-aria="nav.gamePokemon" aria-label="Pokémon TCG"><img src="assets/games/game_pokemon.webp" loading="lazy" alt="Pokémon TCG" decoding="async"></a></li>
-          <li><a href="cards?game=lorcana" data-i18n-aria="nav.gameLorcana" aria-label="Disney Lorcana"><img src="assets/games/game_lorcana-v2.webp" loading="lazy" alt="Disney Lorcana" decoding="async"></a></li>
-          <li><a href="cards?game=onepiece" data-i18n-aria="nav.gameOnePiece" aria-label="One Piece Card Game"><img src="assets/games/game_onepiece.webp" loading="lazy" alt="One Piece Card Game" decoding="async"></a></li>
-          <li><a href="cards?game=magic" data-i18n-aria="aria.gameMagic" aria-label="Magic: The Gathering"><img src="assets/games/game_magic-v2.webp" loading="lazy" alt="Magic: The Gathering" decoding="async"></a></li>
+      <!-- JOGOS: a parede de logos no lugar do parágrafo que listava os nomes.
+           Mesma lista, ordem e logos do hub.html (os 16 modernos e as linhas
+           vintage que têm logo); cada cápsula abre a tela de Sets do jogo
+           (/games/<jogo>). Jogo novo entra AQUI e no hub. -->
+      <section class="lp-secao lp-jogos">
+        <div class="lp-cab">
+          <h2 data-i18n="home.lp.gamesTitle">Um app, todos os seus jogos</h2>
+          <p data-i18n="home.lp.gamesLead">Do lançamento da semana aos clássicos japoneses dos anos 80 e 90. Escolha um jogo pra ver os sets.</p>
+        </div>
+        <ul class="lp-logos">
+          <li data-game-accent="pokemon"><a href="/games/pokemon"><img src="assets/games/game_pokemon.webp" alt="Pokémon TCG" loading="lazy" decoding="async"></a></li>
+          <li data-game-accent="magic"><a href="/games/magic-the-gathering"><img src="assets/games/game_magic-v2.webp" alt="Magic: The Gathering" loading="lazy" decoding="async"></a></li>
+          <li data-game-accent="lorcana"><a href="/games/disney-lorcana"><img src="assets/games/game_lorcana-v2.webp" alt="Disney Lorcana" loading="lazy" decoding="async"></a></li>
+          <li data-game-accent="onepiece"><a href="/games/one-piece-card-game"><img src="assets/games/game_onepiece.webp" alt="One Piece Card Game" loading="lazy" decoding="async"></a></li>
+          <li data-game-accent="riftbound"><a href="/games/riftbound"><img src="assets/games/game_riftbound-v2.webp" alt="Riftbound" loading="lazy" decoding="async"></a></li>
+          <li data-game-accent="swu"><a href="/games/star-wars-unlimited"><img src="assets/games/game_swu.webp" alt="Star Wars: Unlimited" loading="lazy" decoding="async"></a></li>
+          <li data-game-accent="gundam"><a href="/games/gundam-card-game"><img src="assets/games/game_gundam-v2.webp" alt="Gundam Card Game" loading="lazy" decoding="async"></a></li>
+          <li data-game-accent="fab"><a href="/games/flesh-and-blood"><img src="assets/games/game_fab.webp" alt="Flesh and Blood" loading="lazy" decoding="async"></a></li>
+          <li data-game-accent="ygo"><a href="/games/yu-gi-oh"><img src="assets/games/game_ygo-v2.webp" alt="Yu-Gi-Oh!" loading="lazy" decoding="async"></a></li>
+          <li data-game-accent="dbfw"><a href="/games/dragon-ball-fusion-world"><img src="assets/games/game_dbfw-v2.webp" alt="Dragon Ball Fusion World" loading="lazy" decoding="async"></a></li>
+          <li data-game-accent="digimon"><a href="/games/digimon-card-game"><img src="assets/games/game_digimon-v2.webp" alt="Digimon Card Game" loading="lazy" decoding="async"></a></li>
+          <li data-game-accent="unionarena"><a href="/games/union-arena"><img src="assets/games/game_unionarena.webp" alt="Union Arena" loading="lazy" decoding="async"></a></li>
+          <li data-game-accent="cyberpunk"><a href="/games/cyberpunk-tcg"><img src="assets/games/game_cyberpunk.webp" alt="Cyberpunk TCG" loading="lazy" decoding="async"></a></li>
+          <li data-game-accent="sorcery"><a href="/games/sorcery-contested-realm"><img src="assets/games/game_sorcery.webp" alt="Sorcery: Contested Realm" loading="lazy" decoding="async"></a></li>
+          <li data-game-accent="naruto"><a href="/games/naruto-card-game"><img src="assets/games/game_naruto_2027.webp" alt="Naruto Card Game (2027)" loading="lazy" decoding="async"></a></li>
+          <li data-game-accent="weiss"><a href="/games/weiss-schwarz"><img src="assets/games/game_weiss.webp" alt="Weiß Schwarz" loading="lazy" decoding="async"></a></li>
         </ul>
-        <p class="lp-games-foot" data-i18n="home.lp.gamesFoot">Flesh and Blood, Gundam, Star Wars: Unlimited, Cyberpunk TCG, Sorcery: Contested Realm, Dragon Ball Fusion World, Naruto, Hunter × Hunter, World of Warcraft TCG, o Senhor dos Anéis da Decipher, o Harry Potter TCG de 2001, Weiß Schwarz e os catálogos vintage japoneses (Carddass, Miracle Battle, Data Carddass) também estão aqui — atualizados e crescendo a cada dia.</p>
+        <!-- Vintage: mesma ordem cronológica do hub. O ano não se traduz. -->
+        <h3 class="lp-logos-rotulo" data-i18n="hub.vintage">Vintage</h3>
+        <ul class="lp-logos lp-logos-vintage">
+          <li data-game-accent="dbc"><a href="/games/dragon-ball-carddass"><img src="assets/games/game_dbc.webp" alt="Dragon Ball Carddass" loading="lazy" decoding="async"></a><span class="lp-logo-ano">1988–1997</span></li>
+          <li data-game-accent="hxh"><a href="/games/hunter-x-hunter-carddass"><img src="assets/games/game_hxh.webp" alt="HUNTER×HUNTER Carddass Hyper Battle" loading="lazy" decoding="async"></a><span class="lp-logo-ano">1999–2001</span></li>
+          <li data-game-accent="onepiece"><a href="/games/one-piece-carddass"><img src="assets/games/game_onepiece_carddass.webp" alt="One Piece Carddass Hyper Battle" loading="lazy" decoding="async"></a><span class="lp-logo-ano">1999–2002</span></li>
+          <li data-game-accent="harrypotter"><a href="/games/harry-potter-tcg"><img src="assets/games/game_harrypotter.webp" alt="Harry Potter Trading Card Game" loading="lazy" decoding="async"></a><span class="lp-logo-ano">2001–2002</span></li>
+          <li data-game-accent="lotr"><a href="/games/lord-of-the-rings-tcg"><img src="assets/games/game_lotr.webp" alt="The Lord of the Rings TCG" loading="lazy" decoding="async"></a><span class="lp-logo-ano">2001–2007</span></li>
+          <li data-game-accent="naruto"><a href="/games/naruto-card-game-2002"><img src="assets/games/game_naruto_vintage.webp" alt="Naruto Card Game (2002~2006)" loading="lazy" decoding="async"></a><span class="lp-logo-ano">2002–2006</span></li>
+          <li data-game-accent="naruto"><a href="/games/naruto-data-carddass"><img src="assets/games/game_naruto_datacarddass.webp" alt="Naruto Narutimate Card Battle (Data Carddass)" loading="lazy" decoding="async"></a><span class="lp-logo-ano">2005–2010</span></li>
+          <li data-game-accent="naruto"><a href="/games/naruto-ccg"><img src="assets/games/game_naruto_ccg.webp" alt="Naruto Collectible Card Game" loading="lazy" decoding="async"></a><span class="lp-logo-ano">2006–2013</span></li>
+          <li data-game-accent="wow"><a href="/games/world-of-warcraft-tcg"><img src="assets/games/game_wow.webp" alt="World of Warcraft Trading Card Game" loading="lazy" decoding="async"></a><span class="lp-logo-ano">2006–2013</span></li>
+          <li data-game-accent="mbc"><a href="/games/miracle-battle-carddass"><img src="assets/games/game_mbc.webp" alt="Miracle Battle Carddass" loading="lazy" decoding="async"></a><span class="lp-logo-ano">2009–2015</span></li>
+        </ul>
+        <p class="lp-jogos-foot" data-i18n="hub.moreSoon">Mais jogos em breve</p>
       </section>
 
-      <!-- MARKETPLACES: as lojas que os links das cartas abrem. Mesmo padrão do
-           hub: o logo é um <img> revelado no load (home.js) com o nome em texto
-           como fallback — os arquivos entram em assets/shops/ (ver o README de
-           lá) e aparecem sozinhos, sem tocar neste HTML. -->
-      <section class="lp-games lp-shops">
-        <h2 data-i18n="home.lp.shopsTitle">Link direto das cartas para as principais marketplaces</h2>
-        <ul class="lp-games-caps lp-shops-caps">
-          <li><span class="lp-shop-box"><img class="lp-shop-logo" src="assets/shops/shop_ligamagic.webp" alt="LigaMagic" loading="lazy" decoding="async"><span class="lp-shop-text">LigaMagic</span><span class="lp-shop-note" data-i18n="home.lp.shopAllGames">todos os jogos</span></span></li>
-          <li><span class="lp-shop-box"><img class="lp-shop-logo" src="assets/shops/shop_myp.webp" alt="MYP" loading="lazy" decoding="async"><span class="lp-shop-text">MYP</span></span></li>
-          <li><span class="lp-shop-box"><img class="lp-shop-logo" src="assets/shops/shop_ebay.webp" alt="eBay" loading="lazy" decoding="async"><span class="lp-shop-text">eBay</span></span></li>
-          <li><span class="lp-shop-box"><img class="lp-shop-logo" src="assets/shops/shop_tcgplayer.webp" alt="TCGplayer" loading="lazy" decoding="async"><span class="lp-shop-text">TCGplayer</span></span></li>
-          <li><span class="lp-shop-box"><img class="lp-shop-logo" src="assets/shops/shop_pricecharting.webp" alt="PriceCharting" loading="lazy" decoding="async"><span class="lp-shop-text">PriceCharting</span></span></li>
-        </ul>
+      <!-- COMO FUNCIONA: as chaves home.how/home.step* já existiam nos três
+           idiomas (sobra da home antiga) e voltam aqui. Cada passo tem uma
+           mini-tela do produto, não um ícone genérico; os mocks são
+           aria-hidden (o texto do passo já diz tudo). -->
+      <section class="lp-secao lp-passos">
+        <div class="lp-cab">
+          <h2 data-i18n="home.how.title">Como funciona</h2>
+        </div>
+        <ol class="lp-passos-lista">
+          <li class="lp-passo">
+            <div class="lp-pm lp-pm-busca" aria-hidden="true">
+              <span class="lp-pm-campo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>Charizard<i class="lp-pm-cursor"></i></span>
+              <span class="lp-pm-filtros"><span class="on">Base Set</span><span>4/102</span><span>Mitsuhiro Arita</span><span>Rare Holo</span></span>
+            </div>
+            <h3 data-i18n="home.step1.title">Explore</h3>
+            <p data-i18n="home.step1.body">Busque por nome, número, set, artista ou raridade.</p>
+          </li>
+          <li class="lp-passo">
+            <div class="lp-pm lp-pm-marca" aria-hidden="true">
+              <img src="https://assets.tcgdex.net/en/base/base1/2/low.webp" alt="" loading="lazy" decoding="async">
+              <span class="lp-pm-linhas">
+                <span class="lp-pm-linha"><span>Holo</span><span class="lp-pm-qtd"><b>−</b><em>2</em><b>+</b></span></span>
+                <span class="lp-pm-linha"><span>1st Edition</span><span class="lp-pm-qtd"><b>−</b><em>1</em><b>+</b></span></span>
+                <span class="lp-pm-cond">NM</span>
+              </span>
+            </div>
+            <h3 data-i18n="home.step2.title">Marque</h3>
+            <p data-i18n="home.step2.body">Registre cada variante que você tem, com a quantidade exata.</p>
+          </li>
+          <li class="lp-passo">
+            <div class="lp-pm lp-pm-set" aria-hidden="true">
+              <span class="lp-pm-set-topo"><strong>Base Set</strong><span>64/102</span></span>
+              <span class="lp-pm-barra"><i></i></span>
+              <span class="lp-pm-mini">
+                <img src="https://assets.tcgdex.net/en/base/base1/4/low.webp" alt="" loading="lazy" decoding="async">
+                <img src="https://assets.tcgdex.net/en/base/base1/2/low.webp" alt="" loading="lazy" decoding="async">
+                <img class="falta" src="https://assets.tcgdex.net/en/base/base1/15/low.webp" alt="" loading="lazy" decoding="async">
+                <img src="https://assets.tcgdex.net/en/base/base1/7/low.webp" alt="" loading="lazy" decoding="async">
+                <img class="falta" src="https://assets.tcgdex.net/en/base/base1/9/low.webp" alt="" loading="lazy" decoding="async">
+              </span>
+            </div>
+            <h3 data-i18n="home.step3.title">Complete</h3>
+            <p data-i18n="home.step3.body">Acompanhe o progresso por set e por artista.</p>
+          </li>
+        </ol>
       </section>
 
       <!-- FEATURES: mini-mocks do produto real, não ícones genéricos -->
-      <section class="lp-features">
-        <h2 data-i18n="home.lp.featTitle">Feito por colecionador, pra colecionador</h2>
+      <section class="lp-secao lp-features">
+        <div class="lp-cab">
+          <h2 data-i18n="home.lp.featTitle">Feito por colecionador, pra colecionador</h2>
+        </div>
         <div class="lp-grid">
 
           <article class="lp-card lp-card-wide">
             <div class="lp-mock lp-mock-chart" aria-hidden="true">
-              <svg viewBox="0 0 320 96" preserveAspectRatio="none"><path d="M0 78 C30 74, 48 62, 76 64 S 128 52, 156 46 S 208 40, 236 30 S 292 18, 320 12" fill="none" stroke="var(--accent)" stroke-width="2.5"/><path d="M0 78 C30 74, 48 62, 76 64 S 128 52, 156 46 S 208 40, 236 30 S 292 18, 320 12 L320 96 L0 96 Z" fill="var(--accent-soft)"/></svg>
               <div class="lp-mock-chart-row"><span data-i18n="home.lp.mockNetworth">patrimônio</span><strong>R$ 12.480</strong><em data-i18n="home.lp.mockDelta">+4,2% na semana</em></div>
+              <svg viewBox="0 0 320 96" preserveAspectRatio="none"><path class="lp-grade" d="M0 24H320M0 48H320M0 72H320"/><path d="M0 78 C30 74, 48 62, 76 64 S 128 52, 156 46 S 208 40, 236 30 S 292 18, 320 12 L320 96 L0 96 Z" class="lp-area"/><path d="M0 78 C30 74, 48 62, 76 64 S 128 52, 156 46 S 208 40, 236 30 S 292 18, 320 12" class="lp-linha"/></svg>
             </div>
             <h3 data-i18n="home.lp.f1">Portfólio de verdade</h3>
             <p data-i18n="home.lp.f1d">Valor da coleção no tempo, custo médio, lucro em vendas e maiores altas da semana — como uma corretora, só que de cartas.</p>
@@ -229,7 +308,7 @@
 
           <article class="lp-card">
             <div class="lp-mock lp-mock-alert" aria-hidden="true">
-              <span class="lp-drop">▼ −18%</span>
+              <span class="lp-drop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg>18%</span>
               <span class="lp-drop-name">Charizard ex 199/165</span>
               <span class="lp-drop-tag" data-i18n="home.lp.mockAlert">alerta de queda</span>
             </div>
@@ -239,8 +318,10 @@
 
           <article class="lp-card">
             <div class="lp-mock lp-mock-slab" aria-hidden="true">
-              <span class="lp-slab-grade">PSA 10</span>
-              <img src="https://assets.tcgdex.net/en/base/base1/4/low.webp" alt="" loading="lazy">
+              <span class="lp-slab">
+                <span class="lp-slab-label"><b>PSA</b><span>GEM MT</span><b>10</b></span>
+                <img src="https://assets.tcgdex.net/en/base/base1/4/low.webp" alt="" loading="lazy">
+              </span>
             </div>
             <h3 data-i18n="home.lp.f4">Graded e slabs</h3>
             <p data-i18n="home.lp.f4d">PSA, BGS, CGC — registre nota, certificado e valor de mercado das suas cartas graduadas.</p>
@@ -248,9 +329,9 @@
 
           <article class="lp-card">
             <div class="lp-mock lp-mock-sync" aria-hidden="true">
-              <span class="lp-sync-dev" data-i18n="home.lp.mockPhone">celular</span>
-              <svg viewBox="0 0 60 12" class="lp-sync-arrows"><path d="M4 4 H50 M46 1 L50 4 L46 7" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M56 8 H10 M14 5 L10 8 L14 11" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
-              <span class="lp-sync-dev" data-i18n="home.lp.mockDesktop">computador</span>
+              <span class="lp-sync-dev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2"/><path d="M11 18.5h2"/></svg><span data-i18n="home.lp.mockPhone">celular</span></span>
+              <svg class="lp-sync-arrows" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h15l-4-4M20 15H5l4 4"/></svg>
+              <span class="lp-sync-dev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4.5" width="16" height="11" rx="1"/><path d="M2 19.5h20"/></svg><span data-i18n="home.lp.mockDesktop">computador</span></span>
             </div>
             <h3 data-i18n="home.lp.f5">Seus dados são seus</h3>
             <p data-i18n="home.lp.f5d">Sincronização na nuvem grátis entre aparelhos, funciona offline como app instalável, e exporta tudo em JSON/CSV a qualquer momento.</p>
@@ -259,42 +340,65 @@
         </div>
       </section>
 
-      <!-- FONTES DE PREÇO -->
-      <section class="home-sources lp-sources">
-        <h2 data-i18n="home.sources.title">Preços de marketplaces de verdade</h2>
-        <p class="home-sources-lead" data-i18n-html="home.sources.lead">Os valores vêm direto das maiores fontes do mercado — nada inventado. E em <strong>cada carta</strong> você encontra os links das lojas pra comparar e comprar no melhor lugar.</p>
-        <ul class="lp-sources-row">
-          <li><a href="https://www.tcgplayer.com" target="_blank" rel="noopener">TCGplayer</a></li>
-          <li><a href="https://www.cardmarket.com" target="_blank" rel="noopener">Cardmarket</a></li>
-          <li><a href="https://www.ligapokemon.com.br" target="_blank" rel="noopener">LigaPokémon</a></li>
-          <li><a href="https://www.ligalorcana.com.br" target="_blank" rel="noopener">LigaLorcana</a></li>
-          <li><a href="https://www.ligaonepiece.com.br" target="_blank" rel="noopener">LigaOnePiece</a></li>
-          <li><a href="https://mypcards.com" target="_blank" rel="noopener">MYP Cards</a></li>
-          <li><a href="https://www.ebay.com" target="_blank" rel="noopener">eBay</a></li>
-        </ul>
-        <p class="home-sources-foot" data-i18n="home.sources.foot">Catálogo e imagens: TCGdex (Pokémon) · Lorcast (Lorcana) · Scryfall (Magic) · TCGCSV (One Piece, Yu-Gi-Oh!, Digimon e mais) · PokéAPI. Preços de mercado: PokemonPriceTracker, TCGplayer e Cardmarket. Câmbio do dia: AwesomeAPI.</p>
+      <!-- PREÇOS + LOJAS: eram duas seções dizendo quase a mesma coisa ("link
+           direto pras lojas" e "preços de marketplaces de verdade"); agora é
+           uma só, texto de um lado e as lojas do outro. As cápsulas das lojas
+           seguem o padrão do hub: o logo é um <img> revelado no load (home.js)
+           com o nome em texto como fallback — os arquivos entram em
+           assets/shops/ (ver o README de lá) e aparecem sozinhos. -->
+      <section class="lp-secao lp-precos">
+        <div class="lp-precos-texto">
+          <div class="lp-cab">
+            <h2 data-i18n="home.sources.title">Preços de marketplaces de verdade</h2>
+          </div>
+          <p class="lp-precos-lead" data-i18n-html="home.sources.lead">Os valores vêm direto das maiores fontes do mercado — nada inventado. E em <strong>cada carta</strong> você encontra os links das lojas pra comparar e comprar no melhor lugar.</p>
+          <ul class="lp-sources-row">
+            <li><a href="https://www.tcgplayer.com" target="_blank" rel="noopener">TCGplayer</a></li>
+            <li><a href="https://www.cardmarket.com" target="_blank" rel="noopener">Cardmarket</a></li>
+            <li><a href="https://www.ligapokemon.com.br" target="_blank" rel="noopener">LigaPokémon</a></li>
+            <li><a href="https://www.ligalorcana.com.br" target="_blank" rel="noopener">LigaLorcana</a></li>
+            <li><a href="https://www.ligaonepiece.com.br" target="_blank" rel="noopener">LigaOnePiece</a></li>
+            <li><a href="https://mypcards.com" target="_blank" rel="noopener">MYP Cards</a></li>
+            <li><a href="https://www.ebay.com" target="_blank" rel="noopener">eBay</a></li>
+          </ul>
+        </div>
+        <div class="lp-precos-lojas">
+          <h3 data-i18n="home.lp.shopsTitle">Link direto das cartas para as principais marketplaces</h3>
+          <ul class="lp-shops-caps">
+            <li><span class="lp-shop-box"><img class="lp-shop-logo" src="assets/shops/shop_ligamagic.webp" alt="LigaMagic" loading="lazy" decoding="async"><span class="lp-shop-text">LigaMagic</span><span class="lp-shop-note" data-i18n="home.lp.shopAllGames">todos os jogos</span></span></li>
+            <li><span class="lp-shop-box"><img class="lp-shop-logo" src="assets/shops/shop_myp.webp" alt="MYP" loading="lazy" decoding="async"><span class="lp-shop-text">MYP</span></span></li>
+            <li><span class="lp-shop-box"><img class="lp-shop-logo" src="assets/shops/shop_ebay.webp" alt="eBay" loading="lazy" decoding="async"><span class="lp-shop-text">eBay</span></span></li>
+            <li><span class="lp-shop-box"><img class="lp-shop-logo" src="assets/shops/shop_tcgplayer.webp" alt="TCGplayer" loading="lazy" decoding="async"><span class="lp-shop-text">TCGplayer</span></span></li>
+            <li><span class="lp-shop-box"><img class="lp-shop-logo" src="assets/shops/shop_pricecharting.webp" alt="PriceCharting" loading="lazy" decoding="async"><span class="lp-shop-text">PriceCharting</span></span></li>
+          </ul>
+        </div>
+        <p class="lp-precos-foot" data-i18n="home.sources.foot">Catálogo e imagens: TCGdex (Pokémon) · Lorcast (Lorcana) · Scryfall (Magic) · TCGCSV (One Piece, Yu-Gi-Oh!, Digimon e mais) · PokéAPI. Preços de mercado: PokemonPriceTracker, TCGplayer e Cardmarket. Câmbio do dia: AwesomeAPI.</p>
       </section>
 
-      <!-- APOIO -->
-      <section class="home-support" id="apoiar">
-        <div class="support-card">
+      <!-- APOIO: o #apoiar é o destino do link de Configurações → "Sem
+           anúncios, apoiando". -->
+      <section class="lp-secao lp-apoio" id="apoiar">
+        <div class="lp-apoio-texto">
           <h2 data-i18n="home.support.title">Gostou? Me paga uma coxinha</h2>
-          <p class="support-body" data-i18n="home.support.body">Esse projeto é mantido por uma pessoa só, nas horas livres. Se ele te ajudou, uma coxinha ajuda a manter o site no ar e a continuar melhorando. De quebra, cada apoio a partir de R$ 10 deixa sua conta 30 dias sem nenhum anúncio (depois, mande o @ ou o e-mail da conta para sleevuapp@gmail.com). Apoiar é 100% opcional. O app é e vai continuar grátis.</p>
-          <div class="support-actions">
-            <!-- Chave Pix ALEATÓRIA (formato UUID). É pública por natureza: serve
-                 pra receber, não dá acesso a nada — por isso vive no HTML, e o
-                 botão só a copia pra área de transferência. -->
-            <button type="button" id="pixButton" class="cta" data-pix="cbac5cce-4c48-4553-ae90-40bea883cd2f" data-i18n="home.support.pix">Copiar chave Pix</button>
-            <a class="cta secondary-cta" id="kofiButton" href="https://ko-fi.com/fernandopepe" target="_blank" rel="noopener" data-i18n="home.support.kofi">Ko-fi · apoio internacional</a>
-          </div>
-          <p class="support-note" data-i18n="home.support.note">Prefere ajudar de graça? Compartilhar com quem coleciona já faz diferença.</p>
+          <p class="lp-apoio-body" data-i18n="home.support.body">Esse projeto é mantido por uma pessoa só, nas horas livres. Se ele te ajudou, uma coxinha ajuda a manter o site no ar e a continuar melhorando. De quebra, cada apoio a partir de R$ 10 deixa sua conta 30 dias sem nenhum anúncio (depois, mande o @ ou o e-mail da conta para sleevuapp@gmail.com). Apoiar é 100% opcional. O app é e vai continuar grátis.</p>
+        </div>
+        <div class="lp-apoio-acoes">
+          <!-- Chave Pix ALEATÓRIA (formato UUID). É pública por natureza: serve
+               pra receber, não dá acesso a nada — por isso vive no HTML, e o
+               botão só a copia pra área de transferência. -->
+          <button type="button" id="pixButton" class="cta" data-pix="cbac5cce-4c48-4553-ae90-40bea883cd2f" data-i18n="home.support.pix">Copiar chave Pix</button>
+          <a class="cta secondary-cta" id="kofiButton" href="https://ko-fi.com/fernandopepe" target="_blank" rel="noopener" data-i18n="home.support.kofi">Ko-fi · apoio internacional</a>
+          <p class="lp-apoio-nota" data-i18n="home.support.note">Prefere ajudar de graça? Compartilhar com quem coleciona já faz diferença.</p>
         </div>
       </section>
 
       <!-- CTA FINAL -->
       <section class="lp-final">
         <h2 data-i18n="home.lp.finalTitle">Sua coleção merece mais que uma planilha.</h2>
-        <a class="cta" href="hub" data-i18n="home.lp.finalCta">Criar minha coleção grátis</a>
+        <div class="lp-ctas">
+          <a class="cta" href="hub" data-i18n="home.lp.finalCta">Criar minha coleção grátis</a>
+          <a class="cta secondary-cta" href="login" data-i18n="home.lp.ctaLogin">Já tenho conta</a>
+        </div>
       </section>
 
     </main>

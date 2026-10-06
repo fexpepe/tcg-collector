@@ -4599,70 +4599,8 @@ a.hub-tile:active::after { opacity: 1; }
   .hub-vintage .hub-logo-text.hub-logo-mark { font-size: 11px; letter-spacing: 0.1em; }
 }
 
-.home-sources {
-  margin-top: 44px;
-  text-align: center;
-}
-.home-sources-lead {
-  max-width: 640px;
-  margin: 8px auto 0;
-  color: var(--muted);
-}
-.home-sources-foot {
-  margin-top: 18px;
-  font-size: 12.5px;
-  color: var(--subtle);
-}
-
-.home-support {
-  margin-top: 44px;
-  /* #apoiar (link de Configurações → "Sem anúncios, apoiando"): o topo da
-     caixa não some atrás do cabeçalho fixo. */
-  scroll-margin-top: 88px;
-}
-
-.support-card {
-  background: linear-gradient(135deg, var(--accent-soft), rgba(240, 184, 75, 0.1));
-  border: 1px solid rgba(var(--accent-rgb), 0.25);
-  border-radius: 14px;
-  padding: 28px 24px;
-  text-align: center;
-}
-
-.support-card h2 {
-  font-size: 22px;
-  margin: 0 0 10px;
-}
-
-.support-body {
-  color: var(--muted);
-  font-size: 15px;
-  line-height: 1.6;
-  max-width: 56ch;
-  margin: 0 auto 20px;
-}
-
-.support-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  justify-content: center;
-}
-
-.support-actions .cta {
-  cursor: pointer;
-  border: none;
-  font-size: 14px;
-}
-
 #pixButton.copied {
   background: var(--accent-dark);
-}
-
-.support-note {
-  color: var(--subtle);
-  font-size: 12.5px;
-  margin: 18px 0 0;
 }
 
 /* Vitrine — o espaço de anúncio das páginas de catálogo (src/ads.js,
@@ -10911,7 +10849,6 @@ select,
 .hub-tile,
 .hub-logo-box,
 .source-chip,
-.support-card,
 .lang-select,
 .login-card,
 .faq-item,
@@ -11039,207 +10976,368 @@ select,
 [data-theme="light"] .setting-danger-btn:hover { color: #bb3a33; }
 
 /* ============================================================================
-   LANDING (index.html) — home redesenhada: wordmark em alta + leque de cartas
-   reais, números do catálogo, rail de jogos e features com mini-mocks do
-   produto. Tudo com as variáveis de tema (funciona no claro e no escuro).
+   LANDING (index.html) — home nova (proposta de 2026-10-06). A anterior era
+   uma pilha centralizada: wordmark gigante, texto, botões e as cartas só na
+   dobra; seções com o mesmo peso e duas delas dizendo a mesma coisa (lojas e
+   fontes de preço). Agora: herói em duas colunas com o PRODUTO à direita,
+   números, parede de logos dos jogos, "como funciona" com mini-telas,
+   features, preços+lojas numa seção só, apoio e CTA final.
+   Segue o passe flat do site (cantos retos, sem sombra em quem está no
+   fluxo; a carta é objeto físico e mantém a dela) e só usa os tokens de tema,
+   então vale no claro e no escuro. Só o index.html desenha lp-/support- (folha
+   "landing" do split-css): nada daqui pesa nas outras páginas.
    ========================================================================= */
-.lp-main { max-width: 1080px; margin: 0 auto; padding: 0 20px 64px; }
+.lp-main {
+  /* A faixa com as cores dos jogos é a assinatura da home: abre cada seção e
+     o CTA final. A home é neutra (accent "all", branco/preto), e a faixa diz
+     "vários jogos" sem pintar botão nenhum. Tons claros dos accents: como
+     traço, passam nos dois temas. */
+  --lp-faixa: linear-gradient(90deg, #ef4444 0 20%, #a78bfa 20% 40%, #facc15 40% 60%, #38bdf8 60% 80%, #fb923c 80%);
+  /* Sem padding lateral: o <main> já tem a calha de 20px (--content-w), a
+     mesma do cabeçalho. Com os 20px daqui por cima, o celular ficava com 40px
+     de cada lado e o texto do herói quebrava uma linha a mais. */
+  max-width: 1160px; margin: 0 auto; padding: 0 0 72px;
+}
+.lp-secao { margin-top: clamp(64px, 8vw, 112px); }
 
-/* --- Hero ---------------------------------------------------------------- */
-/* Espaçamentos FLUIDOS (clamp), não um valor fixo com um breakpoint no fim: o
-   herói é wordmark + título + subtítulo + botões empilhados, e num 360x640 a
-   soma das folgas de desktop empurrava os botões pra baixo da dobra. Com clamp
-   cada folga encolhe junto com a tela, em vez de dar um salto só aos 560px. */
-.lp-hero { position: relative; text-align: center; padding: clamp(40px, 8.5vw, 120px) 0 clamp(52px, 7vw, 100px); }
-/* glow discreto atrás do wordmark, na cor da marca */
-.lp-hero::before {
-  content: ""; position: absolute; inset: 0 8% auto; height: 390px;
-  background: radial-gradient(closest-side, rgba(var(--accent-rgb), 0.16), transparent 70%);
-  pointer-events: none; z-index: -1;
-}
-/* 100% (do contêiner), não 90vw: vw ignora o padding de 20px da .lp-main, então
-   o wordmark encostava/cortava na borda direita no celular. */
-.lp-wordmark { width: min(575px, 100%); height: auto; color: var(--text); display: inline-block; }
-.lp-tagline { font-size: clamp(24px, 3.3vw, 31px); font-weight: 650; margin: clamp(20px, 3.4vw, 48px) 0 0; letter-spacing: -0.01em; }
-.lp-sub { max-width: 720px; margin: clamp(12px, 1.8vw, 25px) auto 0; color: var(--subtle); font-size: clamp(15.5px, 1.4vw, 18px); line-height: 1.6; }
-.lp-ctas { display: flex; gap: 12px; justify-content: center; margin-top: clamp(22px, 3.5vw, 50px); flex-wrap: wrap; }
-.lp-hero-note { margin-top: clamp(14px, 1.7vw, 23px); font-size: 13px; color: var(--subtle); }
-/* Vitrine do herói (2026-10-06): cinco cartas reais em fileira logo abaixo
-   dos botões — o topo mostrava só a marca. Cada carta é um link pra página
-   dela; a imagem tem a proporção da carta (63:88) reservada antes de chegar,
-   pra fileira não empurrar nada (CLS). No celular, três cartas: cabem na
-   primeira tela junto com os botões. */
-.lp-vitrine { list-style: none; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: clamp(10px, 1.6vw, 18px); max-width: 860px; margin: clamp(26px, 3.6vw, 48px) auto 0; padding: 0; }
-.lp-vit-card { display: flex; flex-direction: column; align-items: center; min-width: 0; color: var(--text); text-decoration: none; }
-.lp-vit-card img { display: block; width: 100%; height: auto; aspect-ratio: 63 / 88; object-fit: cover; border-radius: 4.5% / 3.2%; background: var(--panel-strong); box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28); margin-bottom: 8px; }
-.lp-vit-nome, .lp-vit-meta { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.lp-vit-nome { font-size: 13.5px; font-weight: 700; }
-.lp-vit-meta { font-size: 12px; color: var(--subtle); }
-@media (prefers-reduced-motion: no-preference) {
-  .lp-vit-card img { transition: transform 0.2s ease; }
-  .lp-vit-card:hover img { transform: translateY(-4px); }
-}
-@media (max-width: 560px) {
-  .lp-vitrine { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .lp-vitrine li:nth-child(n + 4) { display: none; }
-  /* ~110px por carta: o nome pode ir pra 2 linhas (Blue-Eyes White Dragon)
-     e a legenda fica só com o jogo — a variante cortada no meio não dizia nada. */
-  .lp-vit-nome { white-space: normal; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-height: 1.25; text-align: center; }
-  .lp-vit-var { display: none; }
-}
+/* Cabeçalho de seção: faixa + título à esquerda + linha de apoio opcional. */
+.lp-cab { margin: 0 0 clamp(20px, 2.4vw, 30px); }
+.lp-cab::before { content: ""; display: block; width: 56px; height: 3px; margin-bottom: 16px; background: var(--lp-faixa); }
+.lp-cab h2 { margin: 0; font-size: clamp(25px, 3.2vw, 36px); font-weight: 700; line-height: 1.12; letter-spacing: -0.025em; text-wrap: balance; }
+.lp-cab p { margin: 10px 0 0; max-width: 62ch; color: var(--subtle); font-size: 15.5px; line-height: 1.55; }
 
-/* --- Números ------------------------------------------------------------- */
-.lp-stats {
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
-  border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
-  padding: 22px 4px; margin: 26px 0 0;
-}
-.lp-stat { text-align: center; }
-.lp-stat strong { display: block; font-size: clamp(20px, 2.6vw, 27px); letter-spacing: -0.02em; }
-.lp-stat span { font-size: 12.5px; color: var(--subtle); }
-
-/* --- Jogos: cápsulas de logo (mesmo visual da página Jogos) -------------- */
-.lp-games { margin-top: 56px; }
-.lp-games h2, .lp-features h2 { text-align: center; font-size: clamp(21px, 3vw, 27px); margin: 0 0 22px; letter-spacing: -0.01em; }
-.lp-games-caps { list-style: none; display: flex; justify-content: center; flex-wrap: nowrap; gap: 12px; margin: 0 auto; padding: 0; max-width: 940px; }
-/* O item flex é o <li>, não o <a> que está dentro dele — a divisão da linha tem
-   de ser declarada AQUI. (Já esteve no <a>, onde não fazia efeito nenhum: no
-   celular os 4 viravam 4 fileiras de largura cheia em vez de 2 por linha.)
-   flex 1 1 0 + nowrap: os 4 dividem a linha igualmente e encolhem pra caber; o
-   teto de max-width e a proporção fixa do <a> mantêm o visual de cápsula.
-   min-width 0 permite o encolhimento abaixo do tamanho do conteúdo. */
-.lp-games-caps li { flex: 1 1 0; max-width: 224px; min-width: 0; display: flex; }
-.lp-games-caps a {
-  flex: 1 1 auto; min-width: 0;
-  display: flex; align-items: center; justify-content: center;
-  aspect-ratio: 250 / 112; padding: 16px 22px; box-sizing: border-box;
-  background: #fff; border: 1px solid var(--line); border-radius: 0;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-.lp-games-caps a:hover { transform: translateY(-3px); }
-.lp-games-caps img { max-width: 100%; max-height: 100%; object-fit: contain; }
-@media (max-width: 560px) {
-  /* no celular, volta a quebrar: 2 por linha (4 numa fileira ficaria minúsculo);
-     a altura vem do aspect-ratio, então não fixa height.
-     50% - 5px de cada + 10px de gap = 100% exatos da linha. */
-  .lp-games-caps { gap: 10px; flex-wrap: wrap; }
-  .lp-games-caps li { flex: 0 0 calc(50% - 5px); max-width: none; }
-  .lp-games-caps a { padding: 12px 16px; }
-}
-.lp-games-foot { text-align: center; color: var(--subtle); font-size: 13px; margin: 18px auto 0; max-width: 560px; }
-/* MARKETPLACES da home: mesma cápsula branca dos jogos, com o logo revelado no
-   load (home.js) e o nome em texto como fallback — o padrão do hub. Os
-   arquivos moram em assets/shops/ (ver o README de lá); enquanto não
-   existirem, o nome segura a cápsula sem ícone de imagem quebrada. */
-.lp-shops-caps .lp-shop-box {
+/* --- Herói ---------------------------------------------------------------- */
+/* Duas colunas: a promessa à esquerda, a vitrine à direita. Espaçamentos
+   fluidos (clamp): num 360x640 as folgas de desktop empurravam os botões pra
+   baixo da dobra. */
+.lp-hero {
   position: relative;
-  flex: 1 1 auto;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-  aspect-ratio: 250 / 112;
-  padding: 16px 22px;
-  box-sizing: border-box;
-  background: #fff;
-  border: 1px solid var(--line);
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr);
+  gap: clamp(32px, 5vw, 80px); align-items: center;
+  padding: clamp(40px, 6vw, 88px) 0 clamp(44px, 5vw, 72px);
 }
-.lp-shop-logo {
-  position: absolute;
-  inset: 0;
-  margin: auto;
-  max-width: calc(100% - 44px);
-  max-height: calc(100% - 36px);
-  object-fit: contain;
-  opacity: 0;
+/* Brilho atrás das cartas, com as cores dos jogos (era um cinza só atrás do
+   wordmark). z-index -1 + pointer-events: decoração pura, não pega clique. */
+.lp-hero::before {
+  content: ""; position: absolute; z-index: -1; pointer-events: none;
+  top: 0; bottom: 0; left: 42%; right: -6%;
+  background:
+    radial-gradient(38% 42% at 28% 30%, rgba(239, 68, 68, 0.17), transparent 70%),
+    radial-gradient(40% 44% at 74% 36%, rgba(167, 139, 250, 0.17), transparent 70%),
+    radial-gradient(46% 40% at 50% 82%, rgba(250, 204, 21, 0.1), transparent 70%);
 }
-.lp-shop-logo.is-loaded { opacity: 1; }
-/* O respiro do logo estava MORTO: `.lp-games-caps img` (0,1,1) vence
-   `.lp-shop-logo` (0,1,0) e mandava max-width/max-height 100%, colando o logo
-   nas bordas da cápsula. Não aparecia porque nenhum logo de loja existia — o
-   primeiro quadrado (LigaMagic) encostou na legenda. Mesmo respiro dos tiles
-   do hub. */
-.lp-shops-caps .lp-shop-logo { max-width: calc(100% - 44px); max-height: calc(100% - 36px); }
-/* Cápsula COM legenda ("todos os jogos", só a LigaMagic): o logo se centra na
-   faixa acima dela em vez de encolher — a legenda é uma linha, não metade da
-   cápsula. Sem :has, volta a sobrepor, que é exatamente o estado de hoje. */
-.lp-shop-box.has-logo:has(.lp-shop-note) .lp-shop-logo { bottom: 18px; }
-/* Cores fixas, não tokens: a cápsula é branca nos dois temas (como o hub). */
-.lp-shop-text { font-size: 17px; font-weight: 800; color: #4b4b4b; text-align: center; }
-.lp-shop-note { font-size: 11px; color: #8a90a0; }
-/* Com o logo no lugar, a nota ("todos os jogos" da LigaMagic) vira legenda
-   colada na base da cápsula, embaixo do logo. */
-.lp-shop-box.has-logo .lp-shop-note {
-  position: absolute;
-  bottom: 5px;
-  left: 0;
-  right: 0;
-  text-align: center;
+[data-theme="light"] .lp-hero::before { opacity: 0.7; }
+/* Largura em px/% (nunca vw cru): vw ignora o padding da .lp-main e o wordmark
+   encostava na borda do celular (guarda do check-mobile). */
+.lp-wordmark { display: block; width: min(320px, 74%); height: auto; color: var(--text); }
+.lp-tagline { margin: clamp(22px, 2.6vw, 34px) 0 0; font-size: clamp(31px, 4.1vw, 52px); font-weight: 700; line-height: 1.06; letter-spacing: -0.035em; text-wrap: balance; }
+.lp-sub { margin: clamp(14px, 1.6vw, 20px) 0 0; max-width: 54ch; color: var(--muted); font-size: clamp(15.5px, 1.25vw, 17.5px); line-height: 1.6; }
+.lp-ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: clamp(22px, 2.6vw, 32px); }
+.lp-ctas .cta { justify-content: center; min-height: 52px; padding: 0 26px; font-size: 16px; }
+.lp-hero-note { margin: 14px 0 0; font-size: 13px; color: var(--subtle); }
+
+/* Vitrine: as cinco cartas reais em 3x2, o 6º bloco leva pra busca. A
+   coluna do meio desce um pouco: a grade ganha ritmo sem virar leque (o leque
+   saiu em 23/07, db7b9e16). A imagem tem a proporção da carta (63:88)
+   reservada antes de chegar, pra nada pular (CLS). */
+.lp-vitrine {
+  list-style: none; margin: 0; padding: 0 0 28px;
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px 18px;
 }
+.lp-vitrine > li { min-width: 0; }
+.lp-vitrine > li:nth-child(3n + 2) { transform: translateY(28px); }
+.lp-vit-card { display: flex; flex-direction: column; min-width: 0; color: var(--text); text-decoration: none; }
+.lp-vit-card img {
+  display: block; width: 100%; height: auto; aspect-ratio: 63 / 88; object-fit: cover;
+  margin-bottom: 10px; border-radius: 4.5% / 3.2%; background: var(--panel-strong);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.34);
+}
+[data-theme="light"] .lp-vit-card img { box-shadow: 0 12px 26px rgba(16, 24, 40, 0.18); }
+.lp-vit-nome, .lp-vit-meta { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lp-vit-nome { font-size: 14px; font-weight: 700; }
+.lp-vit-meta { font-size: 12.5px; color: var(--subtle); }
+/* Pontinho na cor do jogo: o data-game-accent do <li> troca o --accent ali
+   dentro (as mesmas regras de cor por jogo do resto do site). */
+.lp-vit-meta::before { content: ""; display: inline-block; width: 8px; height: 8px; margin-right: 6px; border-radius: 50%; background: var(--accent); vertical-align: 0.5px; }
+.lp-vit-explorar {
+  position: relative; display: flex; flex-direction: column; justify-content: flex-end; gap: 4px;
+  aspect-ratio: 63 / 88; padding: 16px; box-sizing: border-box;
+  background: var(--panel); border: 1px solid var(--line); color: var(--text); text-decoration: none;
+}
+.lp-vit-explorar:hover { border-color: var(--text); }
+.lp-vit-lupa { position: absolute; top: 16px; left: 16px; display: grid; place-items: center; width: 40px; height: 40px; border: 1px solid var(--line); }
+.lp-vit-lupa svg { width: 20px; height: 20px; }
+.lp-vit-explorar strong { font-size: 16px; line-height: 1.2; }
+.lp-vit-mais-sub { font-size: 12.5px; line-height: 1.4; color: var(--subtle); }
+.lp-vit-seta { width: 20px; height: 20px; margin-top: 8px; }
+@media (prefers-reduced-motion: no-preference) {
+  .lp-vit-card img, .lp-vit-seta { transition: transform 0.2s ease; }
+  .lp-vit-card:hover img { transform: translateY(-4px); }
+  .lp-vit-explorar:hover .lp-vit-seta { transform: translateX(4px); }
+}
+
+/* --- Números -------------------------------------------------------------- */
+/* Hairlines em cima e embaixo (as mesmas do og-image e do kit de parceiros),
+   números alinhados à esquerda com divisória entre eles. */
+.lp-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.lp-stat { padding: clamp(18px, 2.4vw, 28px) clamp(14px, 2vw, 26px); }
+.lp-stat:first-child { padding-left: 0; }
+.lp-stat + .lp-stat { border-left: 1px solid var(--line); }
+.lp-stat strong { display: block; font-size: clamp(26px, 3.2vw, 40px); font-weight: 700; line-height: 1.1; letter-spacing: -0.03em; }
+.lp-stat span { display: block; margin-top: 4px; font-size: 13px; color: var(--subtle); }
+
+/* --- Jogos: parede de logos ----------------------------------------------- */
+/* 8 por linha no desktop: os 16 modernos fecham 2 linhas. O vintage (10
+   linhas) é uma fileira só de cápsulas menores, com o ano embaixo. */
+.lp-logos { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 10px; }
+.lp-logos > li { min-width: 0; }
+.lp-logos a {
+  display: flex; align-items: center; justify-content: center;
+  aspect-ratio: 250 / 112; padding: 12px 18px; box-sizing: border-box;
+  /* Branca nos dois temas, como no hub: os logos são feitos pra fundo claro. */
+  background: #fff; border: 1px solid var(--line);
+  /* Traço na cor do jogo no hover/foco (o data-game-accent do <li>). */
+  box-shadow: inset 0 -3px 0 transparent;
+}
+.lp-logos a:hover, .lp-logos a:focus-visible { box-shadow: inset 0 -3px 0 var(--accent); }
+.lp-logos img { display: block; max-width: 100%; max-height: 100%; object-fit: contain; }
+.lp-logos-rotulo { margin: 26px 0 12px; font-size: 12px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--subtle); }
+.lp-logos-vintage { grid-template-columns: repeat(10, minmax(0, 1fr)); }
+.lp-logos-vintage a { padding: 8px 10px; }
+.lp-logo-ano { display: block; margin-top: 6px; font-size: 11.5px; color: var(--subtle); font-variant-numeric: tabular-nums; }
+.lp-jogos-foot { margin: 22px 0 0; font-size: 13px; color: var(--subtle); }
+
+/* --- Como funciona -------------------------------------------------------- */
+.lp-passos-lista { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; counter-reset: lp-passo; }
+.lp-passo { min-width: 0; display: flex; flex-direction: column; padding: 18px; background: var(--panel); border: 1px solid var(--line); counter-increment: lp-passo; }
+.lp-passo h3 { display: flex; align-items: center; gap: 10px; margin: 18px 0 6px; font-size: 18px; }
+.lp-passo h3::before { content: counter(lp-passo); display: inline-grid; place-items: center; flex: none; width: 28px; height: 28px; border: 1px solid var(--line); font-size: 13px; font-weight: 800; color: var(--muted); }
+.lp-passo p { margin: 0; color: var(--subtle); font-size: 14px; line-height: 1.55; }
+/* Mini-telas: o fundo dos mocks das features, a mesma altura nas três. */
+.lp-pm { height: 168px; padding: 16px; box-sizing: border-box; background: var(--panel-strong); overflow: hidden; }
+/* 1 · a busca, com os filtros que o texto do passo cita */
+.lp-pm-busca { display: flex; flex-direction: column; justify-content: center; gap: 14px; }
+.lp-pm-campo { display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 14px; background: var(--panel); border: 1px solid var(--line); font-size: 15px; font-weight: 600; }
+.lp-pm-campo svg { flex: none; width: 18px; height: 18px; color: var(--subtle); }
+.lp-pm-cursor { width: 2px; height: 18px; margin-left: -9px; background: var(--text); }
+@media (prefers-reduced-motion: no-preference) {
+  .lp-pm-cursor { animation: lp-pisca 1.1s steps(1) infinite; }
+}
+@keyframes lp-pisca { 50% { opacity: 0; } }
+.lp-pm-filtros { display: flex; flex-wrap: wrap; gap: 6px; }
+.lp-pm-filtros span { padding: 4px 9px; border: 1px solid var(--line); font-size: 12px; font-weight: 600; color: var(--muted); white-space: nowrap; }
+.lp-pm-filtros .on { background: var(--text); border-color: var(--text); color: var(--bg); }
+/* 2 · marcar: variante + quantidade + condição, como no modal da carta */
+.lp-pm-marca { display: flex; align-items: center; gap: 16px; }
+.lp-pm-marca img { flex: none; width: 96px; height: auto; aspect-ratio: 63 / 88; object-fit: cover; border-radius: 4px; }
+.lp-pm-linhas { flex: 1; min-width: 0; max-width: 240px; display: flex; flex-direction: column; gap: 8px; }
+.lp-pm-linha { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 13px; font-weight: 600; }
+.lp-pm-linha > span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lp-pm-qtd { flex: none; display: inline-flex; align-items: center; background: var(--panel); border: 1px solid var(--line); }
+.lp-pm-qtd b, .lp-pm-qtd em { display: grid; place-items: center; width: 26px; height: 26px; font-size: 13px; font-style: normal; font-weight: 800; }
+.lp-pm-qtd b { color: var(--subtle); }
+.lp-pm-cond { align-self: flex-start; padding: 3px 8px; font-size: 11px; font-weight: 800; letter-spacing: 0.06em; color: var(--money); border: 1px solid color-mix(in srgb, var(--money) 45%, transparent); }
+/* 3 · completar: progresso do set e as que faltam em preto e branco */
+.lp-pm-set { display: flex; flex-direction: column; justify-content: center; gap: 10px; }
+.lp-pm-set > * { width: 100%; max-width: 300px; }
+.lp-pm-set-topo { display: flex; align-items: baseline; justify-content: space-between; font-size: 14px; }
+.lp-pm-set-topo span { font-size: 13px; color: var(--subtle); font-variant-numeric: tabular-nums; }
+.lp-pm-barra { display: block; height: 6px; background: var(--line); }
+.lp-pm-barra i { display: block; width: 63%; height: 100%; background: var(--money); }
+.lp-pm-mini { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; margin-top: 4px; }
+.lp-pm-mini img { width: 100%; height: auto; aspect-ratio: 63 / 88; object-fit: cover; border-radius: 3px; }
+.lp-pm-mini .falta { filter: grayscale(1); opacity: 0.4; }
 
 /* --- Features (mini-mocks) ------------------------------------------------ */
-.lp-features { margin-top: 56px; }
-.lp-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; }
-.lp-card {
-  grid-column: span 2; background: var(--panel); border: 1px solid var(--line);
-  border-radius: 0; padding: 18px; display: flex; flex-direction: column; gap: 8px;
-}
+.lp-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 16px; }
+.lp-card { grid-column: span 2; display: flex; flex-direction: column; gap: 8px; padding: 18px; background: var(--panel); border: 1px solid var(--line); }
 .lp-card-wide { grid-column: span 3; }
-.lp-card h3 { margin: 6px 0 0; font-size: 16.5px; }
-.lp-card p { margin: 0; font-size: 13.5px; line-height: 1.55; color: var(--subtle); }
-.lp-mock { flex: 1 0 auto; border-radius: 0; background: var(--panel-strong); overflow: hidden; min-height: 96px; display: flex; align-items: center; justify-content: center; position: relative; }
-/* portfólio: linha + rodapé de valor */
-.lp-mock-chart { flex-direction: column; align-items: stretch; padding: 0; }
-.lp-mock-chart svg { display: block; width: 100%; height: 72px; }
-.lp-mock-chart-row { display: flex; align-items: baseline; gap: 10px; padding: 8px 12px 10px; font-size: 12px; color: var(--subtle); }
-.lp-mock-chart-row strong { font-size: 16px; color: var(--text); }
-/* O verde do "+4,2%" passa folgado no escuro (5.4:1), mas dava 2.9:1 sobre o
-   painel claro. Tom próprio no claro, em vez de baixar o do escuro. */
-.lp-mock-chart-row em { font-style: normal; color: #34a06a; font-weight: 600; margin-left: auto; }
-[data-theme="light"] .lp-mock-chart-row em { color: #287a51; }
-/* binder: grade 3×2 de cartas */
-.lp-mock-binder { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 10px; max-height: 224px; overflow: hidden; }
+.lp-card h3 { margin: 10px 0 0; font-size: 17px; }
+.lp-card p { margin: 0; font-size: 14px; line-height: 1.55; color: var(--subtle); }
+.lp-mock { position: relative; display: flex; align-items: center; justify-content: center; height: 148px; background: var(--panel-strong); overflow: hidden; }
+.lp-card-wide .lp-mock { height: 196px; }
+/* portfólio: valor em cima, curva em verde de dinheiro com grade de fundo */
+.lp-mock-chart { flex-direction: column; align-items: stretch; justify-content: space-between; }
+.lp-mock-chart-row { display: flex; align-items: baseline; gap: 10px; padding: 14px 16px 0; font-size: 12.5px; color: var(--subtle); }
+.lp-mock-chart-row strong { font-size: 22px; letter-spacing: -0.02em; color: var(--text); }
+.lp-mock-chart-row em { margin-left: auto; font-style: normal; font-weight: 700; color: var(--money); }
+.lp-mock-chart svg { display: block; width: 100%; height: 120px; }
+.lp-mock-chart .lp-grade { fill: none; stroke: var(--line); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.lp-mock-chart .lp-area { fill: color-mix(in srgb, var(--money) 16%, transparent); }
+.lp-mock-chart .lp-linha { fill: none; stroke: var(--money); stroke-width: 2.5; vector-effect: non-scaling-stroke; }
+/* binder: uma fileira de bolsos no desktop; 3x2 quando a coluna aperta */
+.lp-mock-binder { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; align-content: center; padding: 12px; }
 .lp-mock-binder img { width: 100%; aspect-ratio: 63 / 88; object-fit: cover; border-radius: 4px; }
-/* wishlist: chip de queda de preço */
-.lp-mock-alert { flex-direction: column; gap: 4px; padding: 16px 10px; }
-.lp-drop { font-weight: 800; font-size: 22px; color: #e05252; letter-spacing: -0.02em; }
-.lp-drop-name { font-size: 13px; }
-.lp-drop-tag { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--subtle); border: 1px solid var(--line); border-radius: 99px; padding: 2px 8px; margin-top: 4px; }
-/* slab */
-.lp-mock-slab { padding: 12px; gap: 10px; }
-.lp-mock-slab img { width: 52px; border-radius: 4px; }
-.lp-slab-grade { font-weight: 800; font-size: 17px; border: 2px solid var(--line); border-radius: 8px; padding: 8px 10px; background: var(--panel); }
-/* sync */
-.lp-mock-sync { gap: 14px; color: var(--subtle); font-size: 12.5px; }
-.lp-sync-dev { border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px; background: var(--panel); color: var(--text); }
-.lp-sync-arrows { width: 60px; height: 12px; }
+/* wishlist: queda de preço */
+.lp-mock-alert { flex-direction: column; gap: 4px; }
+.lp-drop { display: inline-flex; align-items: center; gap: 4px; font-size: 26px; font-weight: 800; letter-spacing: -0.02em; color: #ef4444; }
+[data-theme="light"] .lp-drop { color: #c81e1e; }
+.lp-drop svg { width: 22px; height: 22px; }
+.lp-drop-name { font-size: 13px; font-weight: 600; }
+.lp-drop-tag { margin-top: 6px; padding: 3px 9px; border: 1px solid var(--line); font-size: 10.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--subtle); }
+/* slab: a carta dentro do case, com a etiqueta da nota */
+.lp-slab { display: flex; flex-direction: column; width: 84px; padding: 5px; border: 2px solid color-mix(in srgb, var(--text) 28%, transparent); background: var(--panel); }
+.lp-slab-label { display: flex; align-items: center; justify-content: space-between; gap: 3px; margin-bottom: 5px; padding: 3px 4px; background: #fff; color: #b91c1c; font-size: 8px; font-weight: 800; white-space: nowrap; }
+.lp-slab-label span { font-size: 6.5px; color: #1b1f27; }
+.lp-slab img { width: 100%; height: auto; aspect-ratio: 63 / 88; object-fit: cover; border-radius: 3px; }
+/* sync: celular ⇄ computador */
+.lp-mock-sync { gap: 16px; color: var(--subtle); }
+.lp-sync-dev { display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
+.lp-sync-dev svg { width: 34px; height: 34px; color: var(--text); }
+.lp-sync-arrows { width: 30px; height: 30px; }
 
-/* --- Fontes de preço (compacto) ------------------------------------------ */
-.lp-sources { margin-top: 56px; }
-.lp-sources-row { list-style: none; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 22px; margin: 18px 0 0; padding: 0; }
-.lp-sources-row a { color: var(--subtle); text-decoration: none; font-weight: 650; font-size: 14.5px; letter-spacing: 0.01em; }
-.lp-sources-row a:hover { color: var(--text); }
+/* --- Preços + lojas ------------------------------------------------------- */
+.lp-precos { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px clamp(32px, 5vw, 72px); align-items: start; }
+.lp-precos-lead { margin: 0; max-width: 56ch; color: var(--muted); font-size: 15.5px; line-height: 1.6; }
+.lp-sources-row { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0 0; padding: 0; }
+.lp-sources-row a { display: inline-flex; align-items: center; min-height: 36px; padding: 0 12px; border: 1px solid var(--line); color: var(--muted); font-size: 13.5px; font-weight: 650; text-decoration: none; }
+.lp-sources-row a:hover { border-color: var(--text); color: var(--text); }
+/* 19px = a faixa (3) + a folga dela (16): a coluna das lojas começa na
+   altura do título da outra. */
+.lp-precos-lojas { padding-top: 19px; }
+.lp-precos-lojas h3 { margin: 0 0 14px; font-size: 15px; color: var(--muted); }
+/* Duas colunas, a LigaMagic (a única com todos os jogos) na linha de cima
+   inteira: as 5 lojas fecham um retângulo, sem buraco no fim. */
+.lp-shops-caps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.lp-shops-caps > li:first-child { grid-column: 1 / -1; }
+/* A cápsula da loja: logo revelado no load (home.js), nome em texto como
+   fallback. Cores fixas, não tokens: é branca nos dois temas (como o hub). */
+.lp-shop-box {
+  position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  height: 84px; padding: 14px 18px; box-sizing: border-box;
+  background: #fff; border: 1px solid var(--line);
+}
+.lp-shop-logo { position: absolute; inset: 0; margin: auto; max-width: calc(100% - 40px); max-height: calc(100% - 32px); object-fit: contain; opacity: 0; }
+.lp-shop-logo.is-loaded { opacity: 1; }
+/* Cápsula COM legenda ("todos os jogos", só a LigaMagic): o logo se centra na
+   faixa acima dela em vez de encolher. Sem :has, volta a sobrepor. */
+.lp-shop-box.has-logo:has(.lp-shop-note) .lp-shop-logo { bottom: 18px; }
+.lp-shop-text { font-size: 16px; font-weight: 800; color: #4b4b4b; text-align: center; }
+/* #6b7280 e não #8a90a0: o cinza antigo dava 3.2:1 sobre o branco (AA pede
+   4.5 em texto de 11px). */
+.lp-shop-note { font-size: 11px; color: #6b7280; }
+.lp-shop-box.has-logo .lp-shop-note { position: absolute; bottom: 5px; left: 0; right: 0; text-align: center; }
+.lp-precos-foot { grid-column: 1 / -1; margin: 8px 0 0; padding-top: 18px; border-top: 1px solid var(--line); font-size: 12.5px; line-height: 1.6; color: var(--subtle); }
+
+/* --- Apoio ---------------------------------------------------------------- */
+/* Texto de um lado, botões do outro: a caixa centralizada de antes era a
+   seção mais alta da página no celular. O traço dourado é a "coxinha". */
+.lp-apoio {
+  /* #apoiar (link de Configurações → "Sem anúncios, apoiando"): o topo da
+     caixa não some atrás do cabeçalho fixo. */
+  scroll-margin-top: 88px;
+  display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 20px clamp(28px, 4vw, 56px); align-items: center;
+  padding: clamp(22px, 3vw, 36px); background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--gold);
+}
+.lp-apoio h2 { margin: 0 0 10px; font-size: clamp(21px, 2.4vw, 27px); letter-spacing: -0.02em; }
+.lp-apoio-body { margin: 0; color: var(--muted); font-size: 14.5px; line-height: 1.65; }
+.lp-apoio-acoes { display: flex; flex-direction: column; gap: 10px; }
+.lp-apoio-acoes .cta { justify-content: center; width: 100%; font-size: 15px; }
+.lp-apoio-nota { margin: 4px 0 0; font-size: 12.5px; color: var(--subtle); text-align: center; }
 
 /* --- CTA final ------------------------------------------------------------ */
-.lp-final { text-align: center; margin-top: 64px; padding: 40px 20px 8px; border-top: 1px solid var(--line); }
-.lp-final h2 { font-size: clamp(20px, 2.8vw, 26px); margin: 0 0 18px; letter-spacing: -0.01em; }
+.lp-final {
+  position: relative; margin-top: clamp(64px, 8vw, 112px);
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 22px 40px;
+  padding: clamp(28px, 4vw, 52px); background: var(--panel-strong); border: 1px solid var(--line);
+}
+.lp-final::before { content: ""; position: absolute; top: -1px; left: -1px; right: -1px; height: 3px; background: var(--lp-faixa); }
+.lp-final h2 { margin: 0; max-width: 20ch; font-size: clamp(25px, 3.2vw, 38px); line-height: 1.1; letter-spacing: -0.03em; text-wrap: balance; }
+.lp-final .lp-ctas { margin-top: 0; }
 
 /* --- Responsivo ----------------------------------------------------------- */
-@media (max-width: 820px) {
+@media (max-width: 960px) {
+  /* Herói numa coluna: a vitrine vem logo abaixo dos botões. */
+  .lp-hero { grid-template-columns: minmax(0, 1fr); }
+  .lp-hero::before { top: 40%; left: 0; right: 0; }
+  .lp-vitrine { max-width: 640px; }
+  .lp-logos { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .lp-logos-vintage { grid-template-columns: repeat(5, minmax(0, 1fr)); }
   .lp-card, .lp-card-wide { grid-column: span 3; }
+  .lp-card:last-child { grid-column: span 6; }
+  .lp-card-wide .lp-mock { height: auto; min-height: 150px; }
+  .lp-mock-binder { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .lp-precos { grid-template-columns: minmax(0, 1fr); }
+  .lp-precos-lojas { padding-top: 0; }
 }
-@media (max-width: 560px) {
-  /* Empilhados, os dois CTAs tinham larguras diferentes ("Começar agora, é
-     grátis" contra "Já tenho conta") e ficavam escalonados no meio da tela.
-     Mesma largura resolve o desalinho e dá dois alvos de toque iguais. */
-  .lp-ctas { flex-direction: column; align-items: stretch; gap: 10px; }
-  /* .cta é inline-flex: esticado, o conteúdo encosta na esquerda se ninguém
-     centralizar (o text-align do herói não governa item de flex). */
-  .lp-ctas .cta { width: 100%; box-sizing: border-box; justify-content: center; }
-  .lp-stats { grid-template-columns: repeat(2, 1fr); row-gap: 18px; }
-  .lp-card, .lp-card-wide { grid-column: span 6; }
+@media (max-width: 820px) {
+  /* Como funciona vira fileira deslizante, como a vitrine: os três passos
+     empilhados, cada um com a mini-tela, eram a seção mais alta da página (e
+     no tablet as mini-telas ficavam largas e vazias). */
+  .lp-passos-lista {
+    display: flex; gap: 12px;
+    margin: 0 -20px; padding: 0 20px 6px; scroll-padding-inline: 20px;
+    overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; scrollbar-width: none;
+  }
+  .lp-passos-lista::-webkit-scrollbar { display: none; }
+  .lp-passo { flex: 0 0 min(88%, 340px); padding: 16px; scroll-snap-align: start; }
+}
+@media (max-width: 700px) {
+  /* Orçamento da primeira tela (390x844, cabeçalho e barra de baixo fora):
+     wordmark, título, texto, botões e a fileira de cartas inteira acima da
+     barra — o pedido da auditoria de aquisição (2026-10-06). */
+  .lp-hero { gap: 24px; padding: 22px 0 30px; }
+  .lp-wordmark { width: 168px; }
+  .lp-tagline { margin-top: 18px; font-size: 28px; }
+  .lp-sub { margin-top: 12px; font-size: 15px; line-height: 1.55; }
+  /* Empilhados e da mesma largura: dois alvos de toque iguais, sem o desalinho
+     de dois botões de tamanhos diferentes no meio da tela. */
+  .lp-ctas { flex-direction: column; align-items: stretch; gap: 10px; margin-top: 20px; }
+  .lp-ctas .cta { width: 100%; min-height: 50px; }
+  .lp-hero-note { margin-top: 12px; font-size: 12.5px; }
+  /* Vitrine vira fileira deslizante, de borda a borda (o -20px desfaz o
+     padding da .lp-main; o scroller ocupa a largura da tela, não mais). Dá
+     duas cartas e meia: a terceira cortada diz "tem mais pro lado". */
+  .lp-vitrine {
+    display: flex; gap: 12px; max-width: none;
+    margin: 0 -20px; padding: 2px 20px 6px; scroll-padding-inline: 20px;
+    overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; scrollbar-width: none;
+  }
+  .lp-vitrine::-webkit-scrollbar { display: none; }
+  .lp-vitrine > li, .lp-vitrine > li:nth-child(3n + 2) { flex: 0 0 36%; transform: none; scroll-snap-align: start; }
+  .lp-vit-card img { margin-bottom: 8px; box-shadow: 0 8px 18px rgba(0, 0, 0, 0.3); }
+  .lp-vit-nome { font-size: 13px; }
+  /* Com ~130px por carta, a variante cortada no meio não dizia nada. */
+  .lp-vit-var { display: none; }
+  .lp-vit-explorar { padding: 12px; }
+  .lp-vit-lupa { top: 12px; left: 12px; }
+
+  .lp-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lp-stat { padding: 16px 14px; }
+  .lp-stat:nth-child(odd) { padding-left: 0; }
+  .lp-stat:nth-child(3) { border-left: 0; }
+  .lp-stat:nth-child(n + 3) { border-top: 1px solid var(--line); }
+
+  .lp-logos, .lp-logos-vintage { gap: 8px; }
+  /* Altura fixa e não aspect-ratio + min-height: com os dois juntos o navegador
+     TRANSFERE o mínimo de altura pra largura (44px de altura viram ~98px de
+     largura mínima) e a grade de 4 vazava pela direita. 46/44px = alvo de
+     toque mínimo. */
+  .lp-logos a { aspect-ratio: auto; height: 46px; padding: 6px 8px; }
+  .lp-logos-vintage a { height: 44px; padding: 5px 6px; }
+  .lp-logo-ano { margin-top: 4px; font-size: 10px; }
+
+  .lp-pm { height: 150px; padding: 14px; }
+  .lp-pm-marca { gap: 14px; }
+  .lp-pm-marca img { width: 72px; }
+  .lp-pm-linha { font-size: 12px; }
+  .lp-pm-qtd b, .lp-pm-qtd em { width: 24px; height: 24px; }
+
+  .lp-card, .lp-card-wide, .lp-card:last-child { grid-column: span 6; }
+  .lp-mock, .lp-card-wide .lp-mock { height: 140px; min-height: 0; }
+  /* Valor e variação podem descer de linha; o número nunca quebra no meio. */
+  .lp-mock-chart-row { flex-wrap: wrap; row-gap: 2px; }
+  .lp-mock-chart-row strong, .lp-mock-chart-row em { white-space: nowrap; }
+  .lp-mock-chart svg { height: 84px; }
+  /* Binder: uma fileira de três bolsos cabe na altura do mock. */
+  .lp-mock-binder img:nth-child(n + 4) { display: none; }
+  .lp-sources-row a { min-height: 44px; }
+  .lp-shops-caps { gap: 8px; }
+  .lp-shop-box { height: 64px; }
+  .lp-shop-text { font-size: 14px; }
+  .lp-apoio { grid-template-columns: minmax(0, 1fr); }
+  .lp-final { flex-direction: column; align-items: stretch; }
+  .lp-final h2 { max-width: none; }
 }
 
 /* ============================================================================
