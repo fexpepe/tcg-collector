@@ -6796,6 +6796,8 @@ a.progress-row:hover {
   color: var(--muted); font-size: 14.5px; line-height: 1.5;
 }
 .blog-item-meta { margin-top: auto; padding-top: 2px; color: var(--subtle); font-size: 13px; }
+/* Post que não tem a versão de quem lê: "Em português", no idioma de quem lê. */
+.blog-item-lang { color: var(--muted); font-weight: 700; }
 .blog-item--hero .blog-item-link { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); }
 .blog-item--hero .blog-item-cover { aspect-ratio: auto; min-height: 100%; }
 .blog-item--hero .blog-item-cover img { aspect-ratio: 16 / 9; }
@@ -6828,6 +6830,22 @@ a.progress-row:hover {
 .blog-subtitle { margin: 0 0 16px; color: var(--muted); font-size: clamp(17px, 2.2vw, 20px); line-height: 1.45; }
 .blog-byline { display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 0 0 22px; color: var(--muted); font-size: 14px; }
 .blog-byline strong { color: var(--text); }
+/* "Leia em": as outras versões do post (2026-10-06). A aberta fica marcada e
+   sem link; 44px de toque no celular. */
+.blog-versoes { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: -8px 0 22px; }
+.blog-versoes-label { color: var(--muted); font-size: 13px; font-weight: 700; }
+.blog-versao {
+  display: inline-flex; align-items: center; min-height: 36px; padding: 0 12px;
+  border: 1px solid var(--line); color: var(--text); font-size: 14px; font-weight: 700; text-decoration: none;
+}
+a.blog-versao:hover { border-color: var(--accent); color: var(--accent-ink); }
+.blog-versao.is-on { border-color: var(--text); background: var(--panel-strong); }
+@media (max-width: 700px) { .blog-versao { min-height: 44px; } }
+/* Quem lê numa língua que o post ainda não tem (o blog.js põe acima do título). */
+.blog-aviso-idioma {
+  margin: 0 0 4px; padding: 10px 14px; border: 1px solid var(--line); border-left: 4px solid var(--accent);
+  background: var(--panel); color: var(--text); font-size: 14.5px; line-height: 1.45;
+}
 .blog-cover { margin: 0; }
 .blog-cover img { display: block; width: 100%; height: auto; background: var(--panel-strong); }
 
@@ -7073,6 +7091,24 @@ select.bed-input { padding: 0 10px; }
 .bed-tabs { display: none; }
 .bed-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; height: calc(100vh - 200px); height: calc(100dvh - 200px); min-height: 520px; }
 .bed-write { display: flex; flex-direction: column; gap: 10px; min-height: 0; }
+/* Abas de idioma do post (2026-10-06): a original, as traduções e, tracejadas,
+   as que dá pra criar. Trocam os campos que o formulário edita. */
+.bed-versoes { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.bed-versao {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 12px;
+  border: 1px solid var(--line); background: var(--panel); color: var(--text);
+  font: inherit; font-size: 14px; font-weight: 700; cursor: pointer;
+}
+.bed-versao:hover { border-color: var(--accent); }
+.bed-versao[aria-pressed="true"] { border-color: var(--accent); background: var(--panel-strong); color: var(--accent-ink); }
+.bed-versao--nova { border-style: dashed; color: var(--muted); }
+.bed-versao--nova svg { width: 16px; height: 16px; }
+.bed-versao-tag { color: var(--subtle); font-size: 11px; font-weight: 800; letter-spacing: 0.03em; text-transform: uppercase; }
+.bed-versao-tira {
+  margin-left: auto; min-height: 40px; padding: 0 6px; border: 0; background: none;
+  color: var(--accent-ink); font: inherit; font-size: 13px; font-weight: 700; cursor: pointer;
+}
+@media (max-width: 700px) { .bed-versao, .bed-versao-tira { min-height: 44px; } }
 .bed-title, .bed-subtitle {
   width: 100%; padding: 10px 12px; border: 1px solid var(--line); background: var(--panel); color: var(--text); font: inherit;
 }

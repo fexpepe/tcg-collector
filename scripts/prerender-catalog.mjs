@@ -597,10 +597,11 @@ function buildSitemaps(setPages, deckPages, artistPages, blogPosts) {
     ["sitemap-decks.xml", (deckPages || []).map((d) => `${ORIGIN}/deck/${d.slug}`)],
     // Posts do blog levam a data da última edição: é o que diz ao Google que
     // um guia atualizado merece ser relido (as outras páginas mudam a cada build).
-    ["sitemap-blog.xml", (blogPosts || []).map((p) => ({
-      loc: `${ORIGIN}/blog/${p.slug}`,
+    // Cada versão traduzida é uma página (/blog/<idioma>/<slug>, 2026-10-06).
+    ["sitemap-blog.xml", (blogPosts || []).flatMap((p) => enderecosDoPost(p).map((caminho) => ({
+      loc: ORIGIN + caminho,
       lastmod: p.updated_at ? String(p.updated_at).slice(0, 10) : ""
-    }))]
+    })))]
   ]);
 }
 
@@ -610,14 +611,29 @@ function buildSitemaps(setPages, deckPages, artistPages, blogPosts) {
 // passada (agendado entra no build seguinte ao dia dele). Tabela ainda não
 // criada (migração 20260930b pendente) ou Supabase fora = lista vazia; nunca
 // derruba o build.
+//
+// As traduções (migração 20261006a) vêm do resumo leve `versoes`. Sem a
+// migração, a coluna não existe e o PostgREST responde 400: aí vai de novo sem
+// ela, só com as originais (um sitemap sem o blog inteiro seria pior).
 async function fetchBlogPosts() {
-  try {
-    const r = await fetch(`${SUPABASE_URL}/rest/v1/posts?select=slug,updated_at&order=published_at.desc&limit=1000`, {
+  const pede = async (colunas) => {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/posts?select=${colunas}&order=published_at.desc&limit=1000`, {
       headers: { apikey: SUPABASE_ANON }, signal: AbortSignal.timeout(15000)
     });
-    const lista = r.ok ? await r.json() : [];
+    return r.ok ? r.json() : null;
+  };
+  try {
+    const lista = (await pede("slug,lang,versoes,updated_at")) || (await pede("slug,updated_at")) || [];
     return Array.isArray(lista) ? lista.filter((p) => p && /^[a-z0-9]+(-[a-z0-9]+)*$/.test(String(p.slug || ""))) : [];
   } catch { return []; }
+}
+
+// Endereços de um post: a original em /blog/<slug> e cada tradução em
+// /blog/<idioma>/<slug> — a mesma regra do caminhoDaVersao (src/blog-render.js).
+function enderecosDoPost(p) {
+  const original = ["pt", "en", "es"].includes(p.lang) ? p.lang : "pt";
+  const traducoes = ["pt", "en", "es"].filter((l) => l !== original && p.versoes && p.versoes[l]);
+  return [`/blog/${p.slug}`].concat(traducoes.map((l) => `/blog/${l}/${p.slug}`));
 }
 
 // ── Páginas de DECK da comunidade (/deck/<slug>.html) ────────────────────────

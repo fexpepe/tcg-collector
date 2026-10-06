@@ -183,6 +183,16 @@
       var lang = LANGS[savedLang] ? savedLang : (pareceRobo() ? doHtml : detectLang());
       window.SLEEVU_LANG = lang;
       raiz.setAttribute("lang", LANGS[lang]);
+      // Post do blog com mais de um idioma (2026-10-06): a borda põe no <html>
+      // o mapa idioma → endereço das versões (data-versoes), e quem lê vai pra
+      // versão da bandeirinha ANTES de a página pintar — o post acompanha o
+      // idioma do site. Robô não sai do lugar (o lang dele é o do HTML), nem a
+      // conferência do editor (?fresco), que abre a versão que escolheu.
+      var versoes = raiz.getAttribute("data-versoes");
+      if (versoes && lang !== doHtml && !/[?&]fresco\b/.test(location.search)) {
+        var destino = JSON.parse(versoes)[lang];
+        if (destino && destino !== location.pathname) location.replace(destino + location.hash);
+      }
     }
   } catch (e) { /* ignora: fica o lang do HTML */ }
 

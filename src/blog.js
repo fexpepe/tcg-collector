@@ -4,7 +4,10 @@
 // de QUEM está lendo:
 //   - lista: filtros sem recarregar, "carregar mais" e o botão do editor;
 //   - post: preço na moeda de quem lê, Tenho/Quero, preview da carta,
-//     compartilhar, índice que acompanha a leitura e "editar este post".
+//     compartilhar, índice que acompanha a leitura e "editar este post";
+//   - idiomas (2026-10-06): a lista na língua de quem lê, o "Leia em" que
+//     troca a bandeirinha e o aviso quando o post não tem a versão dela. Ir
+//     pra versão certa ao abrir é do src/theme.js, antes da primeira pintura.
 // Sem a borda (dev local; Supabase fora na hora em que a Function rodou), a
 // página vem vazia e isto busca e desenha sozinho, com o MESMO
 // src/blog-render.js — o resultado é o mesmo HTML.
@@ -15,10 +18,13 @@
   if (!shared || !B) return;
   const { t, escapeHtml, escapeAttribute } = shared;
 
-  const COLUNAS_LISTA = "slug,title,subtitle,excerpt,cover_url,cover_alt,game,category,tags,lang,featured,author_name,reading_min,published_at,updated_at";
-  const COLUNAS_POST = "id," + COLUNAS_LISTA + ",body_md,seo_title,seo_desc,card_refs";
+  // As mesmas do functions/blog/_comum.js (versoes/traducoes: migração 20261006a).
+  const COLUNAS_LISTA = "slug,title,subtitle,excerpt,cover_url,cover_alt,game,category,tags,lang,featured,author_name,reading_min,published_at,updated_at,versoes";
+  const COLUNAS_POST = "id," + COLUNAS_LISTA + ",body_md,seo_title,seo_desc,card_refs,traducoes";
   const POR_PAGINA = 36;
   const idioma = () => { const l = shared.getLanguage ? shared.getLanguage() : "pt"; return B.ROTULOS[l] ? l : "pt"; };
+  // A mesma chave do idioma do site que o shared.js e o theme.js leem.
+  const CHAVE_IDIOMA = "tcg-collector-ui-lang-v1";
 
   // Leitura ANÔNIMA (sem o token de quem está logado): a RLS de editor
   // entregaria rascunho junto, e a página pública mostra só o publicado.
@@ -83,7 +89,7 @@
     };
     function desenhaLista() {
       const v = visiveis();
-      lista.innerHTML = v.length ? B.listaHtml(v)
+      lista.innerHTML = v.length ? B.listaHtml(v, idioma())
         : `<p class="empty-state">${escapeHtml(t(posts.length ? "blog.emptyFilter" : "blog.empty"))}</p>`;
       mais.hidden = !temMais;
     }
@@ -143,6 +149,9 @@
       temMais = !!daBorda.temMais;
       desenhaFiltros();
       mais.hidden = !temMais;
+      // A borda desenha cada post na versão original (ela não sabe quem lê):
+      // quem lê em outra língua ganha a lista de novo, nas versões dela.
+      if (posts.some((p) => p.lang !== idioma())) desenhaLista();
     } else {
       leituraPublica(`/rest/v1/posts?select=${COLUNAS_LISTA}&status=eq.published&order=published_at.desc&limit=${POR_PAGINA + 1}`)
         .then((linhas) => {
@@ -165,11 +174,15 @@
   const ICONE_MAIS = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>';
   const ICONE_CORACAO = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 5.6a5.4 5.4 0 0 0-7.7 0L12 6.7l-1.1-1.1a5.4 5.4 0 0 0-7.7 7.7l1.1 1.1L12 22l7.7-7.6 1.1-1.1a5.4 5.4 0 0 0 0-7.7z"/></svg>';
 
-  function slugDaUrl() {
-    const m = /^\/blog\/([a-z0-9]+(?:-[a-z0-9]+)*)\/?$/.exec(location.pathname);
-    if (m) return m[1];
-    const s = new URLSearchParams(location.search).get("slug") || "";
-    return /^[a-z0-9]+(-[a-z0-9]+)*$/.test(s) ? s : "";
+  // { slug, lang }: /blog/<slug>, /blog/<idioma>/<slug> ou, sem a borda (dev
+  // local), blog-post?slug=…&lang=…. lang "" = sem idioma no endereço.
+  function enderecoDaUrl() {
+    const m = /^\/blog\/(?:(pt|en|es)\/)?([a-z0-9]+(?:-[a-z0-9]+)*)\/?$/.exec(location.pathname);
+    if (m) return { slug: m[2], lang: m[1] || "" };
+    const q = new URLSearchParams(location.search);
+    const s = q.get("slug") || "";
+    const l = q.get("lang") || "";
+    return { slug: /^[a-z0-9]+(-[a-z0-9]+)*$/.test(s) ? s : "", lang: B.ROTULOS[l] ? l : "" };
   }
 
   // Cartas citadas → Map "jogo/id" → carta do catálogo (com .game). Vem da
@@ -207,7 +220,7 @@
 
     if (!dados) {
       // Sem a borda: busca o post e desenha aqui, com o mesmo renderizador.
-      const slug = slugDaUrl();
+      const { slug, lang: pedido } = enderecoDaUrl();
       if (!slug) { naoAchou(raiz); return; }
       let post = null;
       try {
@@ -219,25 +232,27 @@
       }
       if (!post) { naoAchou(raiz); return; }
       try { porRef = await carregaCartas(post.card_refs, stores); } catch (e) { porRef = new Map(); }
-      const lang = B.ROTULOS[post.lang] ? post.lang : "pt";
+      // A versão do endereço; sem idioma nele, a da bandeirinha (se existir).
+      const v = B.versao(post, pedido || idioma());
       const card = (ref) => {
         const c = porRef.get(ref);
         return c ? { name: c.name, set: c.set, setId: c.setId, number: c.number, image: c.image, price: "" } : null;
       };
-      const r = B.render(post.body_md, { lang, card, ancora: B.URL_DO_POST(post.slug) });
-      raiz.innerHTML = B.paginaDoPostHtml(post, r, { card });
-      document.title = (post.seo_title || post.title || "Blog") + " | Sleevu";
-      dados = { id: post.id, slug: post.slug, lang, game: post.game || "", refs: r.refs };
+      const r = B.render(v.body_md, { lang: v.lang, card, ancora: v.caminho });
+      raiz.innerHTML = B.paginaDoPostHtml(v, r, { card });
+      document.title = (v.seo_title || v.title || "Blog") + " | Sleevu";
+      dados = { id: post.id, slug: post.slug, lang: v.lang, original: v.original, caminhos: v.caminhos, game: post.game || "", refs: r.refs };
     }
 
     acordaCompartilhar(raiz);
     acordaIndice(raiz);
+    acordaVersoes(raiz, dados);
     const cta = raiz.querySelector("[data-blog-cta]");
     if (cta && shared.getSession && shared.getSession()) cta.hidden = true;
     souEditor().then((sim) => {
       const botao = document.querySelector("[data-blog-manage]");
       if (!sim || !botao) return;
-      botao.href = "blog-editor?id=" + encodeURIComponent(dados.id);
+      botao.href = "blog-editor?id=" + encodeURIComponent(dados.id) + (dados.original && dados.lang !== dados.original ? "&versao=" + dados.lang : "");
       botao.hidden = false;
     });
 
@@ -314,6 +329,27 @@
     pintaAcoes();
     shared.loadFxRates().catch(() => null).then(pintaPrecos);
     document.addEventListener("sleevu:fx-updated", pintaPrecos);
+  }
+
+  // "Leia em": escolher outra versão troca o idioma do SITE (o post acompanha
+  // a bandeirinha; sem trocar, o theme.js da página de destino mandaria de
+  // volta). Post sem a versão de quem lê ganha um aviso, no idioma de quem lê.
+  function acordaVersoes(raiz, dados) {
+    raiz.addEventListener("click", (ev) => {
+      const a = ev.target.closest("a[data-idioma]");
+      if (!a || ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey || ev.button > 0) return;
+      try { localStorage.setItem(CHAVE_IDIOMA, a.dataset.idioma); } catch (e) { /* sem storage: só navega */ }
+    });
+    const quer = idioma();
+    const tem = Object.keys(dados.caminhos || {});
+    if (quer === dados.lang || tem.indexOf(quer) >= 0) return;
+    const cabeca = raiz.querySelector(".blog-article-head");
+    if (!cabeca) return;
+    const aviso = document.createElement("p");
+    aviso.className = "blog-aviso-idioma";
+    aviso.setAttribute("lang", document.documentElement.lang || "");
+    aviso.textContent = t("blog.noVersion");
+    cabeca.insertBefore(aviso, cabeca.querySelector(".blog-title"));
   }
 
   function acordaCompartilhar(raiz) {

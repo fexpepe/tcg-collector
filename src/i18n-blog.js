@@ -33,7 +33,8 @@
     "blog.haveAdd": "Marcar que tenho {card}",
     "blog.want": "Quero",
     "blog.wantOn": "Na lista de desejos",
-    "blog.wantToggle": "Lista de desejos: {card}"
+    "blog.wantToggle": "Lista de desejos: {card}",
+    "blog.noVersion": "Este post ainda não tem versão em português."
   });
 
   M.en = Object.assign(M.en || {}, {
@@ -61,7 +62,8 @@
     "blog.haveAdd": "Mark that I have {card}",
     "blog.want": "Want",
     "blog.wantOn": "On your wishlist",
-    "blog.wantToggle": "Wishlist: {card}"
+    "blog.wantToggle": "Wishlist: {card}",
+    "blog.noVersion": "This post isn’t available in English yet."
   });
 
   M.es = Object.assign(M.es || {}, {
@@ -89,6 +91,7 @@
     "blog.haveAdd": "Marcar que tengo {card}",
     "blog.want": "Quiero",
     "blog.wantOn": "En tu lista de deseos",
-    "blog.wantToggle": "Lista de deseos: {card}"
+    "blog.wantToggle": "Lista de deseos: {card}",
+    "blog.noVersion": "Este post todavía no tiene versión en español."
   });
 })();
