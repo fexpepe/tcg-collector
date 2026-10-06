@@ -673,7 +673,7 @@ function cardNamesFor(game) {
 }
 
 function deckPageHtml(dp) {
-  const { deck, slug, cardsList, total, priceUSD } = dp;
+  const { deck, slug, cardsList, total, priceUSD, image } = dp;
   const gameLabel = DECK_GAME_LABELS[deck.game] || deck.game;
   const canonical = `${ORIGIN}/deck/${slug}`;
   const priceBit = priceUSD > 0 ? ` — US$ ${priceUSD.toFixed(2)}` : "";
@@ -681,6 +681,10 @@ function deckPageHtml(dp) {
   const topNames = cardsList.slice(0, 6).map((c) => c.name).join(", ");
   const desc = `Lista completa do deck "${deck.name}" de ${gameLabel}: ${topNames}${cardsList.length > 6 ? "…" : ""}${priceUSD > 0 ? ` Custo de referência: US$ ${priceUSD.toFixed(2)}.` : ""} Veja a curva, o que falta na sua coleção e copie pra sua conta no Sleevu.`;
   const appUrl = `/decks?s=${encodeURIComponent(deck.shareId)}`;
+  // Prévia no WhatsApp/X (2026-10-06): a página de deck era a única do site sem
+  // og:image — o link colado num grupo chegava como texto puro. A imagem é a
+  // de uma carta do catálogo (ver deckImage); sem nenhuma, a arte do site.
+  const ogImage = absUrl(image) || `${ORIGIN}/og-image.png`;
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -688,7 +692,8 @@ function deckPageHtml(dp) {
     datePublished: deck.createdAt || undefined,
     author: deck.author ? { "@type": "Person", name: deck.author } : undefined,
     publisher: { "@type": "Organization", "@id": ORIGIN + "/#organization", name: "Sleevu" },
-    url: canonical
+    url: canonical,
+    image: ogImage
   };
   const rows = cardsList.map((c) => `<li>${c.qty}× ${escapeHtml(c.name)}${c.meta ? ` <small>${escapeHtml(c.meta)}</small>` : ""}${c.usd > 0 ? ` <b>US$ ${(c.usd * c.qty).toFixed(2)}</b>` : ""}</li>`).join("\n            ");
   return `<!doctype html>
@@ -704,6 +709,9 @@ function deckPageHtml(dp) {
     <meta property="og:url" content="${escapeAttr(canonical)}">
     <meta property="og:title" content="${escapeAttr(title)}">
     <meta property="og:description" content="${escapeAttr(desc)}">
+    <meta property="og:image" content="${escapeAttr(ogImage)}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="${escapeAttr(ogImage)}">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
     <script type="application/ld+json">${jsonLdSeguro(jsonLd)}</script>
@@ -751,6 +759,17 @@ async function pricingFor(game) {
   return table;
 }
 
+// Imagem de prévia do deck. A capa que o dono escolheu vem no payload como URL
+// (data.cover) — e o payload é escrito pelo cliente, então ela só vale se for a
+// imagem de uma carta DESTE deck no catálogo: uma URL qualquer gravada por fora
+// não vira og:image do nosso domínio. Sem capa válida, a carta mais cara (é a
+// que chama atenção na prévia); empate ou sem preço, a primeira da lista.
+function deckImage(cover, imagens) {
+  if (!imagens.length) return "";
+  if (cover && imagens.some((x) => x.image === cover)) return cover;
+  return imagens.reduce((m, x) => (x.usd > m.usd ? x : m), imagens[0]).image;
+}
+
 async function buildDeckPages() {
   const rowsRaw = await fetchPublicDecks();
   if (existsSync(DECK_OUT_DIR)) rmSync(DECK_OUT_DIR, { recursive: true, force: true });
@@ -763,6 +782,7 @@ async function buildDeckPages() {
     const names = cardNamesFor(d.game);
     const precos = await pricingFor(d.game);
     const cardsList = [];
+    const imagens = []; // { image, usd } das cartas do deck achadas no catálogo
     let total = 0, priceUSD = 0;
     Object.values(d.zones).forEach((list) => (Array.isArray(list) ? list : []).forEach((e) => {
       if (!e || !e.id) return;
@@ -775,6 +795,7 @@ async function buildDeckPages() {
       const usd = refPriceUSD(precos[String(e.id)]);
       priceUSD += usd * qty;
       cardsList.push({ qty, usd, name: c ? c.name : String(e.id), meta: c ? `${c.set || ""} ${c.number || ""}`.trim() : "" });
+      if (c && c.image) imagens.push({ image: c.image, usd });
     }));
     if (!total) continue;
     priceUSD = Math.round(priceUSD * 100) / 100;
@@ -788,7 +809,7 @@ async function buildDeckPages() {
     let s = base, i = 2;
     while (used.has(s)) s = `${base}-${i++}`;
     used.add(s);
-    writeFileSync(join(DECK_OUT_DIR, `${s}.html`), deckPageHtml({ deck, slug: s, cardsList, total, priceUSD }), "utf8");
+    writeFileSync(join(DECK_OUT_DIR, `${s}.html`), deckPageHtml({ deck, slug: s, cardsList, total, priceUSD, image: deckImage(d.cover, imagens) }), "utf8");
     out.push({ slug: s });
   }
   return out;
