@@ -28,7 +28,7 @@ import { cardCode } from "./lib/card-code.mjs";
 // nome de deck com "</script>" fechava o bloco e injetava HTML no <head> (ver
 // o porquê em scripts/lib/json-ld.mjs; tests/json-ld.test.mjs confere).
 import { jsonLdSeguro } from "./lib/json-ld.mjs";
-import { montaSitemaps } from "./lib/sitemap.mjs";
+import { montaSitemaps, enderecosDoPost } from "./lib/sitemap.mjs";
 // Endereço de cada jogo (/games/<url>) e o nome de cada carta no endereço:
 // moram em functions/_lib porque a borda usa a mesma régua (ver lá).
 import { JOGOS_URL, jogoDaUrl, urlDoSet } from "../functions/_lib/jogos.js";
@@ -626,14 +626,6 @@ async function fetchBlogPosts() {
     const lista = (await pede("slug,lang,versoes,updated_at")) || (await pede("slug,updated_at")) || [];
     return Array.isArray(lista) ? lista.filter((p) => p && /^[a-z0-9]+(-[a-z0-9]+)*$/.test(String(p.slug || ""))) : [];
   } catch { return []; }
-}
-
-// Endereços de um post: a original em /blog/<slug> e cada tradução em
-// /blog/<idioma>/<slug> — a mesma regra do caminhoDaVersao (src/blog-render.js).
-function enderecosDoPost(p) {
-  const original = ["pt", "en", "es"].includes(p.lang) ? p.lang : "pt";
-  const traducoes = ["pt", "en", "es"].filter((l) => l !== original && p.versoes && p.versoes[l]);
-  return [`/blog/${p.slug}`].concat(traducoes.map((l) => `/blog/${l}/${p.slug}`));
 }
 
 // ── Páginas de DECK da comunidade (/deck/<slug>.html) ────────────────────────
