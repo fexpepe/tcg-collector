@@ -28,7 +28,7 @@ import { cardCode } from "./lib/card-code.mjs";
 // nome de deck com "</script>" fechava o bloco e injetava HTML no <head> (ver
 // o porquê em scripts/lib/json-ld.mjs; tests/json-ld.test.mjs confere).
 import { jsonLdSeguro } from "./lib/json-ld.mjs";
-import { montaSitemaps } from "./lib/sitemap.mjs";
+import { montaSitemaps, enderecosDoPost } from "./lib/sitemap.mjs";
 // Endereço de cada jogo (/games/<url>) e o nome de cada carta no endereço:
 // moram em functions/_lib porque a borda usa a mesma régua (ver lá).
 import { JOGOS_URL, jogoDaUrl, urlDoSet } from "../functions/_lib/jogos.js";
@@ -597,10 +597,11 @@ function buildSitemaps(setPages, deckPages, artistPages, blogPosts) {
     ["sitemap-decks.xml", (deckPages || []).map((d) => `${ORIGIN}/deck/${d.slug}`)],
     // Posts do blog levam a data da última edição: é o que diz ao Google que
     // um guia atualizado merece ser relido (as outras páginas mudam a cada build).
-    ["sitemap-blog.xml", (blogPosts || []).map((p) => ({
-      loc: `${ORIGIN}/blog/${p.slug}`,
+    // Cada versão traduzida é uma página (/blog/<idioma>/<slug>, 2026-10-06).
+    ["sitemap-blog.xml", (blogPosts || []).flatMap((p) => enderecosDoPost(p).map((caminho) => ({
+      loc: ORIGIN + caminho,
       lastmod: p.updated_at ? String(p.updated_at).slice(0, 10) : ""
-    }))]
+    })))]
   ]);
 }
 
@@ -610,12 +611,19 @@ function buildSitemaps(setPages, deckPages, artistPages, blogPosts) {
 // passada (agendado entra no build seguinte ao dia dele). Tabela ainda não
 // criada (migração 20260930b pendente) ou Supabase fora = lista vazia; nunca
 // derruba o build.
+//
+// As traduções (migração 20261006a) vêm do resumo leve `versoes`. Sem a
+// migração, a coluna não existe e o PostgREST responde 400: aí vai de novo sem
+// ela, só com as originais (um sitemap sem o blog inteiro seria pior).
 async function fetchBlogPosts() {
-  try {
-    const r = await fetch(`${SUPABASE_URL}/rest/v1/posts?select=slug,updated_at&order=published_at.desc&limit=1000`, {
+  const pede = async (colunas) => {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/posts?select=${colunas}&order=published_at.desc&limit=1000`, {
       headers: { apikey: SUPABASE_ANON }, signal: AbortSignal.timeout(15000)
     });
-    const lista = r.ok ? await r.json() : [];
+    return r.ok ? r.json() : null;
+  };
+  try {
+    const lista = (await pede("slug,lang,versoes,updated_at")) || (await pede("slug,updated_at")) || [];
     return Array.isArray(lista) ? lista.filter((p) => p && /^[a-z0-9]+(-[a-z0-9]+)*$/.test(String(p.slug || ""))) : [];
   } catch { return []; }
 }

@@ -19,8 +19,10 @@ export const ORIGEM = "https://sleevu.app";
 
 // Colunas pedidas SEMPRE por nome (nunca select=*): se um dia a tabela ganhar
 // coluna que anon não pode ler, o * quebraria a página inteira.
-export const COLUNAS_LISTA = "slug,title,subtitle,excerpt,cover_url,cover_alt,game,category,tags,lang,featured,author_name,reading_min,published_at,updated_at";
-export const COLUNAS_POST = "id," + COLUNAS_LISTA + ",body_md,seo_title,seo_desc,card_refs";
+// `versoes` (o resumo leve de cada tradução) e `traducoes` (o texto inteiro)
+// vêm da migração 20261006a: a lista pede só o leve.
+export const COLUNAS_LISTA = "slug,title,subtitle,excerpt,cover_url,cover_alt,game,category,tags,lang,featured,author_name,reading_min,published_at,updated_at,versoes";
+export const COLUNAS_POST = "id," + COLUNAS_LISTA + ",body_md,seo_title,seo_desc,card_refs,traducoes";
 
 // Leitura anônima no PostgREST. null = a tabela ainda não existe (migração
 // 20260930b pendente: o PostgREST responde 404) — a página trata como "nenhum
@@ -31,9 +33,17 @@ export async function supabase(env, caminho) {
   const base = (env && env.BLOG_SUPABASE_URL) || SUPABASE_URL;
   const r = await fetch(base + caminho, { headers: { apikey: SUPABASE_KEY, Accept: "application/json" } });
   if (r.status === 404) return null;
+  // Sem a migração 20261006a as colunas das traduções não existem (400): pede
+  // de novo sem elas e o blog segue só com as originais — código e migração
+  // podem subir em qualquer ordem.
+  if (r.status === 400) {
+    const semElas = caminho.replace(SEM_TRADUCOES, "");
+    if (semElas !== caminho) return supabase(env, semElas);
+  }
   if (!r.ok) throw new Error("supabase " + r.status);
   return r.json();
 }
+const SEM_TRADUCOES = /,(?:versoes|traducoes)\b/g;
 
 // Cartas citadas no post → Map "jogo/id" → { name, set, setId, number, image, price }.
 // Consulta por PK no D1, em lotes (mesmo teto de parâmetros da /api/collection).
