@@ -33,6 +33,12 @@
   async function leituraPublica(caminho) {
     const r = await fetch(B.SUPABASE_URL + caminho, { headers: { apikey: B.SUPABASE_KEY } });
     if (r.status === 404) return [];
+    // Sem a migração 20261006a (colunas das traduções), o mesmo de novo sem
+    // elas — igual ao supabase() do functions/blog/_comum.js.
+    if (r.status === 400) {
+      const semElas = caminho.replace(/,(?:versoes|traducoes)\b/g, "");
+      if (semElas !== caminho) return leituraPublica(semElas);
+    }
     if (!r.ok) throw new Error("http " + r.status);
     return r.json();
   }
