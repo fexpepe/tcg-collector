@@ -19,8 +19,10 @@ export const ORIGEM = "https://sleevu.app";
 
 // Colunas pedidas SEMPRE por nome (nunca select=*): se um dia a tabela ganhar
 // coluna que anon não pode ler, o * quebraria a página inteira.
-export const COLUNAS_LISTA = "slug,title,subtitle,excerpt,cover_url,cover_alt,game,category,tags,lang,featured,author_name,reading_min,published_at,updated_at";
-export const COLUNAS_POST = "id," + COLUNAS_LISTA + ",body_md,seo_title,seo_desc,card_refs";
+// `versoes` (o resumo leve de cada tradução) e `traducoes` (o texto inteiro)
+// vêm da migração 20261006a: a lista pede só o leve.
+export const COLUNAS_LISTA = "slug,title,subtitle,excerpt,cover_url,cover_alt,game,category,tags,lang,featured,author_name,reading_min,published_at,updated_at,versoes";
+export const COLUNAS_POST = "id," + COLUNAS_LISTA + ",body_md,seo_title,seo_desc,card_refs,traducoes";
 
 // Leitura anônima no PostgREST. null = a tabela ainda não existe (migração
 // 20260930b pendente: o PostgREST responde 404) — a página trata como "nenhum
