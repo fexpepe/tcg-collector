@@ -3936,10 +3936,22 @@
       // Campanha (utm_source/utm_campaign) quando a URL traz. Só o rótulo, em
       // minúsculas e cortado — é o que o /admin usa como CANAL da 1ª visita,
       // pra medir quem cada campanha traz que FICA, não só quem chega.
+      // Desde 2026-10-06 (auditoria de aquisição) também o anúncio (a =
+      // utm_content), pra comparar criativo e não só campanha. O utm_medium
+      // ficou de fora pelo teto do check-size (sobravam 98 B): source +
+      // campaign + content já separam canal, campanha e peça.
       const qs = new URLSearchParams(location.search);
       const utm = (k) => String(qs.get(k) || "").toLowerCase().replace(/[^a-z0-9_.-]/g, "").slice(0, 30);
-      if (utm("utm_source")) p.u = utm("utm_source");
-      if (utm("utm_campaign")) p.c = utm("utm_campaign");
+      for (const x of ["usource", "ccampaign", "acontent"]) if (utm("utm_" + x.slice(1))) p[x[0]] = utm("utm_" + x.slice(1));
+      // Clique de anúncio que chega SEM utm (o Google Ads só carimba o gclid):
+      // o _canal do banco o contava como busca orgânica. Grava o NOME do
+      // parâmetro (k), nunca o id; gclid/gbraid/wbraid só existem em anúncio
+      // do Google e viram a origem "google-ads". O fbclid fica só no k: o
+      // Instagram/Facebook o põe em QUALQUER link, até de post orgânico.
+      // TikTok (ttclid) e Bing (msclkid) entram quando houver campanha lá.
+      const k = (location.search.match(/[?&](gclid|gbraid|wbraid|fbclid)=/) || [])[1];
+      if (k) p.k = k;
+      if (k && k[0] != "f" && !p.u) p.u = "google-ads";
     } catch (e) { /* sem contexto, o pageview vale do mesmo jeito */ }
     return p;
   }
