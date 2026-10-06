@@ -96,6 +96,27 @@
     }
   } catch (e) { /* history bloqueado: segue com a URL como veio */ }
 
+  // --- Quem já tem conta e chega DE FORA no Início vai pro Hub pessoal ----
+  // (2026-10-06, auditoria de aquisição.) O app instalado abre no start_url
+  // ("./", a landing), e a landing não olhava sessão: quem já usa o Sleevu
+  // abria o app e dava de cara com "Começar agora, é grátis" toda vez — igual
+  // a quem digita sleevu.app ou volta pelo Google. "De fora" = referrer vazio
+  // ou de outro site; o "Início" e o logo clicados DENTRO do site (referrer
+  // da própria origem) continuam mostrando a landing. Aqui, síncrono no
+  // <head>, pra a landing nem pintar antes de sair. A volta do link mágico
+  // (#access_token na home) fica de fora: quem consome o token é o shared.js,
+  // e ele já manda pro /dashboard depois. Só a PRESENÇA da sessão (cookie ou
+  // o localStorage fora de *.sleevu.app, como o getSession do shared.js): se
+  // ela estiver vencida, o portão do /dashboard resolve como sempre.
+  try {
+    if (/^\/(index(\.html)?)?$/.test(location.pathname)
+      && !/access_token|error_description/.test(location.hash)
+      && (document.referrer || "").indexOf(location.origin + "/") !== 0
+      && (/(?:^|; )sleevu_session=/.test(document.cookie) || localStorage.getItem("tcg-supabase-session-v1"))) {
+      location.replace("/dashboard");
+    }
+  } catch (e) { /* cookie/armazenamento bloqueado: fica na landing */ }
+
   // --- Navegador embutido de app (Instagram, Facebook, TikTok…) -----------
   // O anúncio abre DENTRO do app, e lá o Google recusa o login (403
   // disallowed_useragent): quem tocava em "Continuar com Google" caía numa
