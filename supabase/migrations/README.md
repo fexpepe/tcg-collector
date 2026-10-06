@@ -8,6 +8,33 @@ poucos.)
 
 ## Pendentes de aplicar
 
+- `20261006a` — blog em três idiomas (`20261006a_blog_traducoes.sql`;
+  `docs/BLOG.md`, seção "Idiomas"). **Depende da `20260930b`**: aplicar as
+  duas, nesta ordem (b primeiro). O post continua uma linha só: as colunas de
+  sempre são a versão no idioma original e a coluna `traducoes` guarda as
+  outras (pt/en/es); o trigger da 20260930b é refeito pra limpar as
+  traduções, montar `versoes` (o resumo leve que a lista lê) e juntar as
+  cartas de todas as versões em `card_refs`, e o histórico passa a guardar as
+  traduções. Aditiva e sem ordem com o JS: antes dela, a borda e o `blog.js`
+  pedem de novo sem as colunas novas e o blog segue só com as originais; o
+  editor avisa pra aplicar. Ensaiada em 2026-10-06 no PGlite em cima da
+  20260930b, aplicada duas vezes: 19 cenários — só pt/en/es e nunca o
+  idioma original, campo desconhecido fora, versão vazia some, teto = 23514,
+  `versoes`/`card_refs` forjados recalculados, cartas de todas as versões,
+  histórico com a tradução anterior, anon lê só o publicado, conta comum não
+  altera, 301 do endereço antigo segue.
+
+  Conferir depois de aplicar:
+  ```sql
+  select column_name from information_schema.columns
+   where table_schema = 'public' and table_name = 'posts'
+     and column_name in ('traducoes', 'versoes');                      -- 2 linhas
+  select column_name from information_schema.columns
+   where table_name = 'post_revisions' and column_name = 'traducoes';  -- 1 linha
+  ```
+  E, logado: no `/blog-editor`, o post mostra as abas Português · English ·
+  Español em cima do título.
+
 - `20261004a` — alarme de medição parada leva o tráfego em conta
   (`20261004a_sentinela_trafego.sql`). Em 2026-10-04 o healthcheck ficou
   vermelho com "parou de chegar: scan_open" sem nada quebrado: a campanha paga
