@@ -11854,21 +11854,8 @@ select,
    DECKS DA COMUNIDADE (decks.html) — galeria pública + viewer de deck.
    ========================================================================= */
 
-/* ── Galeria em DUAS COLUNAS: lista à esquerda, filtros + atalhos à direita ──
-   Mesma estética do resto do site (painéis com --panel/--line, cantos retos,
-   sem sombra colorida): o que veio da referência é a ESTRUTURA — destaque em
-   cima, lista compacta embaixo, coluna de apoio ao lado.
-   A coluna da direita é sticky, como a do editor de deck. */
-.dkc-layout { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 20px; align-items: start; }
-.dkc-main { min-width: 0; }
-.dkc-aside { display: grid; gap: 14px; position: sticky; top: var(--header-h, 56px); }
-.dkc-panel { border: 1px solid var(--line); background: var(--panel); padding: 16px; }
-.dkc-panel-h { display: flex; align-items: center; gap: 9px; margin: 0 0 12px; font-size: 15px; }
-.dkc-panel-h svg { flex: none; color: var(--accent); }
-.dkc-panel .deck-view-sel { width: 100%; }
-/* Campos do painel de filtros: rótulo em cima, controle embaixo, todos com o
-   mesmo espaçamento — ordenação, jogo, custo e cartas faltando são só linhas
-   da mesma pilha (o filtro por jogo já foi uma fileira de chips no topo). */
+/* Campos de filtro (popover "Filtros" da galeria): rótulo em cima, controle
+   embaixo, todos com o mesmo espaçamento. */
 .dkc-field { display: flex; flex-direction: column; align-items: stretch; gap: 6px; margin: 0 0 14px; }
 .dkc-field:last-child { margin-bottom: 0; }
 .dkc-field-lbl { font-size: 12px; font-weight: 700; color: var(--muted); }
@@ -11905,80 +11892,11 @@ select,
 .dkc-check.off input { cursor: default; }
 .dkc-miss-row { display: flex; align-items: center; gap: 8px; }
 .dkc-miss-row .dkc-check { min-width: 0; }
-.dkc-panel .dkc-miss-row .deck-view-sel { flex: none; width: auto; min-width: 62px; }
-.dkc-mine p { margin: 0 0 12px; font-size: 13px; color: var(--muted); line-height: 1.5; }
-.dkc-mine .cta { width: 100%; justify-content: center; }
-
-/* Seções da coluna principal: título com ícone + subtítulo, como no conceito. */
-.dkc-sec { margin-bottom: 26px; }
-.dkc-sec-h { display: flex; align-items: center; gap: 9px; margin: 0 0 2px; font-size: 17px; }
-.dkc-sec-h svg { flex: none; color: var(--accent); }
-.dkc-sec-sub { margin: 0 0 12px; font-size: 13px; color: var(--muted); }
-
-/* DESTAQUE: capa grande + nome + tags + metadados em fileira. */
-.dkc-hero { display: flex; gap: 16px; padding: 16px; border: 1px solid var(--line); background: var(--panel); color: var(--text); text-decoration: none; }
-.dkc-hero:hover { background: var(--panel-strong); border-color: var(--accent); }
-.dkc-hero-cover { flex: none; width: 132px; }
-.dkc-hero-cover img, .dkc-hero-cover .deck-noimg { width: 100%; aspect-ratio: 63/88; object-fit: cover; display: block; border: 1px solid var(--line); }
-.dkc-hero-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
-.dkc-hero-name { font-size: 21px; font-weight: 800; letter-spacing: -0.3px; line-height: 1.2; }
-.dkc-hero-tags, .dkc-row-tags { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.dkc-v-pop .dkc-miss-row .deck-view-sel { flex: none; width: auto; min-width: 62px; }
 .dkc-fmt { font-size: 12px; font-weight: 700; color: var(--muted); }
-/* Metadados em pares rótulo/valor separados por divisória — o padrão que o
-   cartão-herói da Coleção já usa, então a leitura é a mesma no site inteiro. */
-/* ESCOPADAS nos containers da galeria: o cabeçalho do deck publicado
-   (.dkc-view-meta) usa a MESMA classe .dkc-meta-item numa linha corrida
-   separada por "·". Sem escopo, o `flex-direction: column` daqui vazava pra lá
-   e empilhava o "·" ACIMA do texto (item de 33px em vez de 16px), e a borda
-   de separação aparecia solta no meio do cabeçalho. */
-.dkc-hero-meta, .dkc-row-meta { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: auto; }
-.dkc-hero-meta .dkc-meta-item,
-.dkc-row-meta .dkc-meta-item { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
-.dkc-hero-meta .dkc-meta-item + .dkc-meta-item,
-.dkc-row-meta .dkc-meta-item + .dkc-meta-item { border-left: 1px solid var(--line); padding-left: 18px; }
-.dkc-meta-k { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.03em; font-weight: 700; }
-.dkc-hero-meta .dkc-meta-item strong,
-.dkc-row-meta .dkc-meta-item strong { font-size: 14px; font-weight: 800; white-space: nowrap; }
-/* "Dá pra montar": único metadado sem rótulo em cima — é um veredito, não um
-   número. Verde de valores pra ler de relance no meio dos outros. */
-.dkc-meta-item.is-ok { justify-content: center; }
-.dkc-meta-item.is-ok strong { color: var(--money); }
-
-/* Lista compacta: uma linha por deck (capa pequena, nome+tags, metadados). */
-.dkc-rows { display: grid; gap: 8px; }
-.dkc-row { display: flex; align-items: center; gap: 14px; padding: 10px 14px; border: 1px solid var(--line); background: var(--panel); color: var(--text); text-decoration: none; }
-.dkc-row:hover { background: var(--panel-strong); border-color: var(--accent); }
-.dkc-row-cover { flex: none; width: 44px; }
-.dkc-row-cover img, .dkc-row-cover .deck-noimg { width: 100%; aspect-ratio: 63/88; object-fit: cover; display: block; border: 1px solid var(--line); }
-.dkc-row-main { flex: 1 1 40%; min-width: 0; display: flex; flex-direction: column; gap: 5px; }
-.dkc-row-name { font-size: 15px; font-weight: 800; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.dkc-row .dkc-row-meta { flex: 0 1 auto; margin-top: 0; justify-content: flex-end; }
-@media (max-width: 1080px) {
-  .dkc-layout { grid-template-columns: minmax(0, 1fr); }
-  .dkc-aside { position: static; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
-}
-@media (max-width: 620px) {
-  .dkc-hero { flex-direction: column; }
-  .dkc-hero-cover { width: 108px; }
-  .dkc-row { flex-wrap: wrap; }
-  .dkc-row .dkc-row-meta { flex-basis: 100%; justify-content: flex-start; gap: 6px 14px; }
-  .dkc-hero-meta .dkc-meta-item + .dkc-meta-item,
-  .dkc-row-meta .dkc-meta-item + .dkc-meta-item { padding-left: 14px; }
-  /* GRADE, não flex-wrap: com wrap, o 1º item da 2ª linha herdava o
-     `padding-left` do separador e a linha inteira ficava 14px pra dentro em
-     relação à de cima. Em 3 colunas fixas o :nth-child(3n+1) é sempre o começo
-     de linha, então dá pra tirar a borda dele e as duas linhas batem. */
-  .dkc-hero-meta { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px 0; }
-  .dkc-hero-meta .dkc-meta-item:nth-child(3n + 1) { border-left: none; padding-left: 0; }
-  .dkc-hero-meta .dkc-meta-item strong { overflow: hidden; text-overflow: ellipsis; }
-}
-/* Card da galeria: CAPA à esquerda (arte da 1ª carta que entrou no deck) +
-   nome, jogo, nº de cartas, autor e data. Antes era só nome + tag + data num
-   retângulo vazio — nada pra bater o olho e decidir se vale abrir. A capa é o
-   que os builders de referência usam pra dar identidade a cada deck na lista. */
-/* Nome em até 2 LINHAS: com a capa ocupando 52px, uma linha só cortava quase
-   todo nome de deck ("Mickey and Minnie ..."), que é justamente o que
-   identifica o card na galeria. */
+/* A linha da lista do deck aberto (.dkc-row-meta, set·nº) herdou este flex
+   da galeria antiga; fica pra lista não mudar de cara. */
+.dkc-row-meta { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: auto; }
 /* Subtítulo da página (decks.html): no celular eram 3 linhas de texto em cima
    da galeria e do deck aberto, empurrando o conteúdo pra baixo da dobra. O
    título "Decks da comunidade" já diz o que é a página (2026-10-02). */
@@ -12071,6 +11989,194 @@ select,
 @media (max-width: 900px) {
   .dkc-view-cols { grid-template-columns: minmax(0, 1fr); }
   .dkc-view-side { position: static; }
+}
+
+/* ── Versão "Vitrine" (2026-10-07) ────────────────────────────────────────
+   Galeria: chips de jogo no topo (o filtro mais usado, antes escondido num
+   select no fim da página no celular), ordenar + "Filtros" num popover, o
+   destaque como BANNER com a arte e os decks em cards com a arte da capa —
+   o padrão Moxfield/Dreamborn. Deck aberto: banner com a arte do comandante/
+   líder, o valor pra quem olha logo no topo e as cartas em PILHAS.
+   O banner é escuro nos dois temas (é pôster: texto claro sobre a arte), por
+   isso as cores fixas ali dentro; o resto segue os tokens. Cantos retos e sem
+   sombra no que está no fluxo — sombra só na carta (objeto) e no popover. */
+.dkc-v { display: grid; gap: 22px; }
+
+/* Barra: chips (rolam de lado) + ordenar/filtros/CTA. */
+.dkc-v-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; }
+.dkc-v-chips { flex: 1 1 420px; min-width: 0; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding: 2px; margin: -2px; }
+.dkc-v-chips::-webkit-scrollbar { display: none; }
+.dkc-v-chip {
+  flex: none; display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 14px;
+  border: 1px solid var(--line); border-radius: 0; background: var(--panel); color: var(--text);
+  font-size: 13.5px; font-weight: 700;
+}
+.dkc-v-chip b { font-size: 12px; font-weight: 800; color: var(--subtle); font-variant-numeric: tabular-nums; }
+.dkc-v-chip:hover { border-color: var(--text); }
+.dkc-v-chip.on { background: var(--text); border-color: var(--text); color: var(--bg); }
+.dkc-v-chip.on b { color: inherit; opacity: 0.7; }
+/* O data-game-accent do chip troca o --accent: o ponto sai na cor do jogo. */
+.dkc-v-dot { flex: none; width: 9px; height: 9px; border-radius: 50%; background: var(--accent); }
+.dkc-v-tools { position: relative; display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-left: auto; }
+/* Só o "Ordenar" da barra (filho direto) põe o rótulo AO LADO: os campos do
+   popover continuam com o rótulo em cima, como no painel. */
+.dkc-v-tools > .dkc-field { flex-direction: row; align-items: center; gap: 8px; margin: 0; }
+.dkc-v-tools > .dkc-field .dkc-field-lbl { white-space: nowrap; }
+.dkc-v-tools > .dkc-field .deck-view-sel, .dkc-v-tools > .cta { min-height: 40px; }
+.dkc-v-more > summary {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 14px;
+  border: 1px solid var(--line); background: var(--panel); font-size: 13.5px; font-weight: 700;
+  list-style: none; cursor: pointer;
+}
+.dkc-v-more > summary::-webkit-details-marker { display: none; }
+.dkc-v-more > summary svg { color: var(--subtle); }
+.dkc-v-more > summary b { display: inline-grid; place-items: center; min-width: 18px; height: 18px; background: var(--text); color: var(--bg); font-size: 11px; }
+.dkc-v-more[open] > summary { border-color: var(--text); }
+/* Popover dos filtros: flutua, então leva a sombra de popover. */
+.dkc-v-pop { position: absolute; right: 0; top: calc(100% + 6px); z-index: 20; width: 320px; padding: 16px; background: var(--panel); border: 1px solid var(--line); box-shadow: var(--shadow-pop); }
+
+/* Destaque: a arte da capa esticada e desfocada no fundo, véu escuro da
+   esquerda (onde vai o texto) pra direita, a carta inteira do lado. */
+.dkc-v-hero {
+  position: relative; isolation: isolate; overflow: hidden;
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 24px;
+  min-height: 280px; padding: clamp(20px, 3vw, 36px);
+  border: 1px solid var(--line); background: #11141a; color: #f3f5f7; text-decoration: none;
+}
+.dkc-v-hero-bg, .dkc-v-banner-bg {
+  position: absolute; inset: -30px; z-index: -2; width: calc(100% + 60px); height: calc(100% + 60px); max-width: none;
+  object-fit: cover; object-position: 50% 24%; filter: blur(14px) saturate(1.2); opacity: 0.8;
+}
+.dkc-v-hero::after, .dkc-v-banner::after {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(90deg, rgba(10, 12, 16, 0.93) 0%, rgba(10, 12, 16, 0.72) 50%, rgba(10, 12, 16, 0.3) 100%);
+}
+.dkc-v-hero-txt { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; min-width: 0; }
+.dkc-v-eyebrow { display: inline-flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: #f0b84b; }
+.dkc-v-hero-name { font-size: clamp(24px, 3vw, 36px); font-weight: 800; line-height: 1.08; letter-spacing: -0.02em; }
+.dkc-v-hero .dkc-v-stats, .dkc-v-hero .dkc-v-by, .dkc-v-hero .dkc-fmt, .dkc-v-hero .dkc-v-prog { color: rgba(243, 245, 247, 0.78); }
+.dkc-v-hero .dkc-v-money { color: #7ee2b8; }
+.dkc-v-hero .dkc-v-prog { min-width: 240px; }
+.dkc-v-hero .dkc-v-prog-bar { background: rgba(243, 245, 247, 0.18); }
+.dkc-v-go { display: inline-flex; align-items: center; gap: 8px; margin-top: 6px; min-height: 44px; padding: 0 18px; background: #f3f5f7; color: #0a0c10; font-size: 14px; font-weight: 800; }
+.dkc-v-hero:hover .dkc-v-go { background: #fff; }
+.dkc-v-hero-card { width: 172px; }
+.dkc-v-hero-img { display: block; width: 100%; aspect-ratio: 63 / 88; object-fit: cover; border-radius: 4.5% / 3.2%; box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5); }
+
+/* Grade de decks: arte da capa recortada (zoom na ILUSTRAÇÃO, não na carta
+   inteira) com a faixa da cor do jogo embaixo, e os dados no corpo. */
+.dkc-v-h { display: flex; align-items: center; gap: 9px; margin: 4px 0 -6px; font-size: 18px; }
+.dkc-v-h svg { flex: none; color: var(--subtle); }
+.dkc-v-h-n { font-size: 13px; font-weight: 700; color: var(--subtle); }
+.dkc-v-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 16px; }
+.dkc-v-card { display: flex; flex-direction: column; min-width: 0; border: 1px solid var(--line); background: var(--panel); color: var(--text); text-decoration: none; }
+.dkc-v-card:hover { border-color: var(--text); }
+.dkc-v-art { position: relative; display: block; aspect-ratio: 16 / 10; overflow: hidden; background: var(--panel-strong); border-bottom: 3px solid var(--accent); }
+.dkc-v-art-img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 24%; transform: scale(1.35); transform-origin: 50% 26%; }
+.dkc-v-body { display: flex; flex-direction: column; gap: 7px; padding: 12px 14px 14px; }
+.dkc-v-tags { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.dkc-v-name { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; font-size: 16px; font-weight: 800; line-height: 1.25; }
+.dkc-v-by { font-size: 12.5px; color: var(--subtle); }
+.dkc-v-stats { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; font-size: 13px; font-weight: 700; color: var(--muted); }
+.dkc-v-money { color: var(--money); }
+.dkc-v-views { display: inline-flex; align-items: center; gap: 4px; }
+.dkc-v-prog { display: flex; align-items: center; gap: 8px; margin-top: 2px; font-size: 12px; font-weight: 700; color: var(--muted); }
+.dkc-v-prog-bar { flex: 1; height: 5px; background: var(--line); }
+.dkc-v-prog-bar i { display: block; height: 100%; background: var(--money); }
+.dkc-v-prog.is-ok .dkc-v-prog-txt { color: var(--money); }
+@media (prefers-reduced-motion: no-preference) {
+  .dkc-v-art-img { transition: transform 0.25s ease; }
+  .dkc-v-card:hover .dkc-v-art-img { transform: scale(1.42); }
+}
+
+/* Deck aberto: banner (mesmo véu do destaque) com capa, nome, dono, os três
+   números de valor e as ações. O CTA pega a cor do JOGO do deck: o
+   data-game-accent do banner troca o --accent ali dentro. */
+.dkc-v-banner { position: relative; isolation: isolate; overflow: hidden; margin: 0 0 16px; border: 1px solid var(--line); background: #11141a; color: #f3f5f7; }
+.dkc-v-banner-in { padding: clamp(16px, 2.6vw, 30px); }
+.dkc-v-back { font-size: 13px; font-weight: 700; color: rgba(243, 245, 247, 0.8); text-decoration: none; }
+.dkc-v-back:hover { color: #fff; }
+.dkc-v-banner-grid { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: clamp(16px, 2.6vw, 30px); align-items: start; margin-top: 14px; }
+.dkc-v-banner-card { width: clamp(120px, 13vw, 184px); }
+.dkc-v-banner-card img { display: block; width: 100%; aspect-ratio: 63 / 88; object-fit: cover; border-radius: 4.5% / 3.2%; box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5); }
+.dkc-v-banner .dkc-view-meta { margin-top: 0; }
+.dkc-v-banner .dkc-view-meta .dkc-meta-item { color: rgba(243, 245, 247, 0.78); }
+.dkc-v-title { margin: 8px 0 6px; font-size: clamp(24px, 3.2vw, 38px); font-weight: 800; line-height: 1.08; letter-spacing: -0.02em; }
+.dkc-v-banner .dkc-v-by { display: flex; flex-wrap: wrap; gap: 4px 12px; margin: 0; font-size: 13px; }
+.dkc-v-banner .dkc-author, .dkc-v-banner .dkc-meta-date { color: rgba(243, 245, 247, 0.75); }
+.dkc-v-banner .dkc-author-link { color: #f3f5f7; }
+/* Colunas = quantos números houver (3 com conta; 2 sem, com o convite pra
+   entrar no lugar dos dois da coleção). */
+.dkc-v-kpis { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); max-width: 640px; margin-top: 18px; border: 1px solid rgba(243, 245, 247, 0.16); background: rgba(10, 12, 16, 0.45); }
+.dkc-v-kpi { display: flex; flex-direction: column; gap: 3px; min-width: 0; padding: 12px 14px; }
+.dkc-v-kpi + .dkc-v-kpi { border-left: 1px solid rgba(243, 245, 247, 0.16); }
+.dkc-v-kpi span { font-size: 11.5px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: rgba(243, 245, 247, 0.65); }
+.dkc-v-kpi strong { font-size: 20px; letter-spacing: -0.02em; white-space: nowrap; }
+.dkc-v-kpi strong.have { color: #7ee2b8; }
+.dkc-v-kpi strong.miss { color: #fbbf77; }
+.dkc-v-kpi small { font-size: 12px; color: rgba(243, 245, 247, 0.65); }
+.dkc-v-kpi-in a { font-size: 13px; font-weight: 700; color: #f3f5f7; }
+.dkc-v-acts { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+.dkc-v-acts .cta { min-height: 44px; }
+.dkc-v-acts .deck-mini { display: inline-flex; align-items: center; gap: 7px; min-height: 44px; padding: 0 14px; border-color: rgba(243, 245, 247, 0.24); background: rgba(243, 245, 247, 0.08); color: #f3f5f7; }
+.dkc-v-acts .deck-mini:hover { background: rgba(243, 245, 247, 0.16); }
+.dkc-v-toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 12px; margin: 0 0 14px; }
+.dkc-v-toolbar-lbl { font-size: 13px; font-weight: 700; color: var(--muted); }
+.dkc-v-legend { display: inline-flex; align-items: center; gap: 6px; margin-left: auto; font-size: 12px; font-weight: 700; color: var(--subtle); }
+.dkc-v-legend i { width: 10px; height: 10px; margin-left: 6px; }
+.dkc-v-legend i.is-have { background: #0c7a54; }
+.dkc-v-legend i.is-part { background: #b7791f; }
+
+/* PILHAS: cada categoria é uma coluna de cartas sobrepostas. O margin-top
+   negativo em % é relativo à LARGURA da coluna (= da carta): 88/63 = 139,7%
+   da largura é a altura da carta, e sobram 30px de faixa de cada uma. */
+.dkc-v-stacks { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 22px 14px; align-items: start; }
+.dkc-v-stack-h { display: flex; align-items: baseline; gap: 6px; margin: 0 0 8px; font-size: 12px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); }
+.dkc-v-pile { display: flex; flex-direction: column; }
+.dkc-v-pc { position: relative; border-radius: 4.5% / 3.2%; }
+.dkc-v-pc + .dkc-v-pc { margin-top: calc(-139.7% + 30px); }
+.dkc-v-pc img, .dkc-v-pc .deck-noimg { display: block; width: 100%; aspect-ratio: 63 / 88; object-fit: cover; border-radius: inherit; background: var(--panel-strong); box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.35); }
+.dkc-v-pc:hover { z-index: 5; }
+.dkc-v-pc-qty { position: absolute; top: 5px; right: 5px; padding: 1px 6px; background: rgba(10, 12, 16, 0.85); color: #f3f5f7; font-size: 11px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.dkc-v-pc.is-have .dkc-v-pc-qty { background: #0c7a54; }
+.dkc-v-pc.is-part .dkc-v-pc-qty { background: #b7791f; }
+@media (prefers-reduced-motion: no-preference) {
+  .dkc-v-pc { transition: transform 0.15s ease; }
+  .dkc-v-pc:hover { transform: translateY(-8px); }
+}
+.dkc-v-zone h3 { margin-bottom: 12px; }
+
+@media (max-width: 700px) {
+  /* Chips de borda a borda (o -20px desfaz a calha do <main>). */
+  .dkc-v-chips { flex-basis: 100%; margin: 0 -20px; padding: 2px 20px; }
+  .dkc-v-tools { width: 100%; margin-left: 0; }
+  .dkc-v-tools > .dkc-field { flex: 1 1 auto; }
+  .dkc-v-tools > .dkc-field .deck-view-sel { flex: 1; min-width: 0; }
+  .dkc-v-tools > .cta { flex: 1 1 100%; justify-content: center; }
+  .dkc-v-pop { left: 0; right: 0; width: auto; }
+  .dkc-v-more { position: static; }
+  .dkc-v-hero { grid-template-columns: minmax(0, 1fr) 92px; gap: 14px; min-height: 0; padding: 18px; }
+  .dkc-v-hero-card { width: 92px; align-self: start; }
+  .dkc-v-hero .dkc-v-prog { min-width: 0; width: 100%; }
+  .dkc-v-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .dkc-v-body { gap: 6px; padding: 10px; }
+  .dkc-v-name { font-size: 14px; }
+  .dkc-v-stats { font-size: 12px; gap: 2px 10px; }
+  .dkc-v-by { font-size: 11.5px; }
+  .dkc-v-banner-grid { grid-template-columns: 92px minmax(0, 1fr); gap: 14px; }
+  .dkc-v-banner-card { grid-row: span 3; width: 92px; }
+  .dkc-v-title { font-size: 23px; }
+  /* KPIs e ações ocupam a largura toda, embaixo da capa. */
+  .dkc-v-kpis, .dkc-v-acts { grid-column: 1 / -1; }
+  .dkc-v-banner-txt { display: contents; }
+  .dkc-v-banner-txt > .dkc-view-meta, .dkc-v-banner-txt > .dkc-v-title, .dkc-v-banner-txt > .dkc-v-by { grid-column: 2; }
+  .dkc-v-kpi { padding: 10px; }
+  .dkc-v-kpi strong { font-size: 16px; }
+  .dkc-v-kpi span { font-size: 10.5px; }
+  .dkc-v-acts .cta { flex: 1 1 100%; justify-content: center; }
+  .dkc-v-acts .deck-mini { flex: 1 1 calc(50% - 5px); justify-content: center; }
+  .dkc-v-stacks { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 10px; }
+  .dkc-v-pc + .dkc-v-pc { margin-top: calc(-139.7% + 26px); }
 }
 
 /* Leitura do histórico de preço (crosshair + tooltip do sparkline do preview).
