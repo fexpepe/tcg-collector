@@ -86,11 +86,14 @@ test("a faixa do conserto cobre a faixa em que o app empilha o menu e esconde a 
   assert.ok(nossa >= escondeMarca, `o app esconde a marca até ${escondeMarca}px e o conserto só vai até ${nossa}px`);
 });
 
-test("os moldes de set, artista e /games usam o cabeçalho do módulo; a carta é a tela do app", () => {
+test("os moldes de set, artista, /games e /deck usam o cabeçalho do módulo; a carta é a tela do app", () => {
   const prerender = ler("scripts/prerender-catalog.mjs");
   assert.doesNotMatch(prerender, /<header class="app-header"/, "cabeçalho escrito à mão no prerender");
-  assert.equal((prerender.match(/cabecalhoEstatico\(/g) || []).length, 3, "esperava set, artista e /games");
+  // O /deck/ entrou em 2026-10-07 (versão "Vitrine" dos decks): era a única
+  // página estática sem o topo do site, em system-ui sobre fundo fixo.
+  assert.equal((prerender.match(/cabecalhoEstatico\(/g) || []).length, 4, "esperava set, artista, /games e /deck");
   assert.match(prerender, /const PR_STYLE = `\s*<style>\n\$\{ESTILO_DO_CABECALHO\}/);
+  assert.match(prerender, /const DECK_STYLE = `\s*<style>\n\$\{ESTILO_DO_CABECALHO\}/);
 
   // A carta vai pra dentro da tela do app (que já tem o cabeçalho dele): as
   // peças dela não podem trazer outro.

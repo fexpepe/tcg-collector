@@ -12163,6 +12163,73 @@ select,
   .dkc-v-pc + .dkc-v-pc { margin-top: calc(-139.7% + 26px); }
 }
 
+/* ── Versão "Vitrine" em MEUS DECKS (my-decks, 2026-10-07) ─────────────────
+   A galeria dos meus decks usa os mesmos cards da comunidade (.dkc-v-card): a
+   arte entra depois (carregaCapas) e, enquanto não chega, fica o fundo
+   neutro na proporção certa — nada pula. O card é <article> (não <a>) porque
+   tem botões: o link cobre a arte e o corpo, as ações ficam no rodapé. */
+.dkc-v-mine-grid { margin-top: 14px; }
+.dkc-v-mine { position: relative; }
+.dkc-v-mine-open { display: flex; flex-direction: column; flex: 1; color: inherit; text-decoration: none; }
+.dkc-v-mine .dkc-v-art .deck-noimg { display: block; width: 100%; height: 100%; }
+.dkc-v-mine-acts { display: flex; gap: 8px; padding: 0 14px 14px; }
+.dkc-v-pub { padding: 2px 7px; border: 1px solid color-mix(in srgb, var(--money) 45%, transparent); font-size: 11px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; color: var(--money); }
+/* "Criar novo deck" como o 1º card da grade: tracejado, do tamanho dos outros. */
+.dkc-v-novo {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+  min-height: 220px; padding: 20px; border: 1px dashed var(--line); border-radius: 0; background: none;
+  color: var(--muted); font-size: 14px; font-weight: 800;
+}
+.dkc-v-novo:hover { border-color: var(--text); color: var(--text); }
+
+/* Editor: o mesmo banner do deck publicado, com o NOME num input que se
+   parece com o título (sem caixa até o foco), o veredito das regras e o
+   "Exibir" numa barra logo abaixo. */
+.dkc-v-name-input {
+  display: block; width: 100%; max-width: 760px; margin: 8px 0 6px; padding: 2px 6px; margin-left: -6px;
+  border: 1px solid transparent; border-radius: 0; background: transparent; color: #f3f5f7;
+  font-family: inherit; font-size: clamp(24px, 3.2vw, 38px); font-weight: 800; line-height: 1.1; letter-spacing: -0.02em;
+}
+.dkc-v-name-input:hover { border-color: rgba(243, 245, 247, 0.24); }
+.dkc-v-name-input:focus { border-color: rgba(243, 245, 247, 0.55); background: rgba(10, 12, 16, 0.45); outline: none; }
+.dkc-v-legal { display: inline-flex; align-items: center; gap: 6px; margin: 0; font-size: 13px; font-weight: 700; color: #7ee2b8; }
+.dkc-v-legal.is-bad { color: #fbbf77; }
+.dkc-v-ed-bar { position: relative; margin-top: 4px; }
+.dkc-v-ed-bar .deck-view { margin-left: 0; }
+/* A lista de pontos fora das regras (quando há) logo depois do banner. */
+.dkc-v-ed + .deck-issues { margin-top: 0; }
+
+/* PILHA do editor em colunas (as mesmas .dkc-v-stacks do deck publicado), com
+   os tiles do editor: a carta sob o cursor — ou FOCADA, no toque — vem pra
+   frente e mostra os botões −/P/+. Desfaz o leque horizontal antigo. */
+.dkc-v-pile.deck-pile { display: flex; flex-direction: column; flex-wrap: nowrap; gap: 0; padding-top: 0; }
+.dkc-v-pile .deck-tile { width: 100%; margin-right: 0; border-radius: 4.5% / 3.2%; }
+.dkc-v-pile .deck-tile + .deck-tile { margin-top: calc(-139.7% + 30px); }
+.dkc-v-pile .deck-tile-img { border: 0; border-radius: inherit; box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.35); }
+.dkc-v-pile .deck-tile:hover, .dkc-v-pile .deck-tile:focus-within { z-index: 5; }
+.dkc-v-pile .deck-tile:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.dkc-v-pile .deck-tile-qty { left: auto; right: 5px; top: 5px; border-radius: 0; }
+/* No toque, os botões de toda carta ficariam visíveis (regra de hover: none)
+   e os de baixo da pilha, tapados: só a carta focada mostra os dela. */
+@media (hover: none) {
+  .dkc-v-pile .deck-tile-btns { opacity: 0; }
+  .dkc-v-pile .deck-tile:focus-within .deck-tile-btns, .dkc-v-pile .deck-tile:last-child .deck-tile-btns { opacity: 1; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .dkc-v-pile .deck-tile { transition: transform 0.15s ease; }
+  .dkc-v-pile .deck-tile:hover, .dkc-v-pile .deck-tile:focus-within { transform: translateY(-8px); }
+}
+
+@media (max-width: 700px) {
+  .dkc-v-novo { min-height: 0; padding: 22px 12px; }
+  .dkc-v-mine-acts { padding: 0 10px 10px; }
+  .dkc-v-mine-acts .deck-mini { flex: 1; min-height: 40px; }
+  .dkc-v-banner-txt > .dkc-v-name-input, .dkc-v-banner-txt > .dkc-v-legal { grid-column: 2; }
+  .dkc-v-name-input { font-size: 22px; }
+  .dkc-v-ed .dkc-v-banner-card { grid-row: span 4; }
+  .dkc-v-pile .deck-tile + .deck-tile { margin-top: calc(-139.7% + 26px); }
+}
+
 /* Leitura do histórico de preço (crosshair + tooltip do sparkline do preview).
    Overlay em HTML sobre o SVG; posições em % seguem qualquer largura. */
 .price-history-chart svg { touch-action: pan-y; cursor: crosshair; }
