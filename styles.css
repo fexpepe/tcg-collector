@@ -11854,21 +11854,8 @@ select,
    DECKS DA COMUNIDADE (decks.html) — galeria pública + viewer de deck.
    ========================================================================= */
 
-/* ── Galeria em DUAS COLUNAS: lista à esquerda, filtros + atalhos à direita ──
-   Mesma estética do resto do site (painéis com --panel/--line, cantos retos,
-   sem sombra colorida): o que veio da referência é a ESTRUTURA — destaque em
-   cima, lista compacta embaixo, coluna de apoio ao lado.
-   A coluna da direita é sticky, como a do editor de deck. */
-.dkc-layout { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 20px; align-items: start; }
-.dkc-main { min-width: 0; }
-.dkc-aside { display: grid; gap: 14px; position: sticky; top: var(--header-h, 56px); }
-.dkc-panel { border: 1px solid var(--line); background: var(--panel); padding: 16px; }
-.dkc-panel-h { display: flex; align-items: center; gap: 9px; margin: 0 0 12px; font-size: 15px; }
-.dkc-panel-h svg { flex: none; color: var(--accent); }
-.dkc-panel .deck-view-sel { width: 100%; }
-/* Campos do painel de filtros: rótulo em cima, controle embaixo, todos com o
-   mesmo espaçamento — ordenação, jogo, custo e cartas faltando são só linhas
-   da mesma pilha (o filtro por jogo já foi uma fileira de chips no topo). */
+/* Campos de filtro (popover "Filtros" da galeria): rótulo em cima, controle
+   embaixo, todos com o mesmo espaçamento. */
 .dkc-field { display: flex; flex-direction: column; align-items: stretch; gap: 6px; margin: 0 0 14px; }
 .dkc-field:last-child { margin-bottom: 0; }
 .dkc-field-lbl { font-size: 12px; font-weight: 700; color: var(--muted); }
@@ -11905,94 +11892,16 @@ select,
 .dkc-check.off input { cursor: default; }
 .dkc-miss-row { display: flex; align-items: center; gap: 8px; }
 .dkc-miss-row .dkc-check { min-width: 0; }
-.dkc-panel .dkc-miss-row .deck-view-sel { flex: none; width: auto; min-width: 62px; }
-.dkc-mine p { margin: 0 0 12px; font-size: 13px; color: var(--muted); line-height: 1.5; }
-.dkc-mine .cta { width: 100%; justify-content: center; }
-
-/* Seções da coluna principal: título com ícone + subtítulo, como no conceito. */
-.dkc-sec { margin-bottom: 26px; }
-.dkc-sec-h { display: flex; align-items: center; gap: 9px; margin: 0 0 2px; font-size: 17px; }
-.dkc-sec-h svg { flex: none; color: var(--accent); }
-.dkc-sec-sub { margin: 0 0 12px; font-size: 13px; color: var(--muted); }
-
-/* DESTAQUE: capa grande + nome + tags + metadados em fileira. */
-.dkc-hero { display: flex; gap: 16px; padding: 16px; border: 1px solid var(--line); background: var(--panel); color: var(--text); text-decoration: none; }
-.dkc-hero:hover { background: var(--panel-strong); border-color: var(--accent); }
-.dkc-hero-cover { flex: none; width: 132px; }
-.dkc-hero-cover img, .dkc-hero-cover .deck-noimg { width: 100%; aspect-ratio: 63/88; object-fit: cover; display: block; border: 1px solid var(--line); }
-.dkc-hero-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
-.dkc-hero-name { font-size: 21px; font-weight: 800; letter-spacing: -0.3px; line-height: 1.2; }
-.dkc-hero-tags, .dkc-row-tags { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .dkc-fmt { font-size: 12px; font-weight: 700; color: var(--muted); }
-/* Metadados em pares rótulo/valor separados por divisória — o padrão que o
-   cartão-herói da Coleção já usa, então a leitura é a mesma no site inteiro. */
-/* ESCOPADAS nos containers da galeria: o cabeçalho do deck publicado
-   (.dkc-view-meta) usa a MESMA classe .dkc-meta-item numa linha corrida
-   separada por "·". Sem escopo, o `flex-direction: column` daqui vazava pra lá
-   e empilhava o "·" ACIMA do texto (item de 33px em vez de 16px), e a borda
-   de separação aparecia solta no meio do cabeçalho. */
-.dkc-hero-meta, .dkc-row-meta { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: auto; }
-.dkc-hero-meta .dkc-meta-item,
-.dkc-row-meta .dkc-meta-item { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
-.dkc-hero-meta .dkc-meta-item + .dkc-meta-item,
-.dkc-row-meta .dkc-meta-item + .dkc-meta-item { border-left: 1px solid var(--line); padding-left: 18px; }
-.dkc-meta-k { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.03em; font-weight: 700; }
-.dkc-hero-meta .dkc-meta-item strong,
-.dkc-row-meta .dkc-meta-item strong { font-size: 14px; font-weight: 800; white-space: nowrap; }
-/* "Dá pra montar": único metadado sem rótulo em cima — é um veredito, não um
-   número. Verde de valores pra ler de relance no meio dos outros. */
-.dkc-meta-item.is-ok { justify-content: center; }
-.dkc-meta-item.is-ok strong { color: var(--money); }
-
-/* Lista compacta: uma linha por deck (capa pequena, nome+tags, metadados). */
-.dkc-rows { display: grid; gap: 8px; }
-.dkc-row { display: flex; align-items: center; gap: 14px; padding: 10px 14px; border: 1px solid var(--line); background: var(--panel); color: var(--text); text-decoration: none; }
-.dkc-row:hover { background: var(--panel-strong); border-color: var(--accent); }
-.dkc-row-cover { flex: none; width: 44px; }
-.dkc-row-cover img, .dkc-row-cover .deck-noimg { width: 100%; aspect-ratio: 63/88; object-fit: cover; display: block; border: 1px solid var(--line); }
-.dkc-row-main { flex: 1 1 40%; min-width: 0; display: flex; flex-direction: column; gap: 5px; }
-.dkc-row-name { font-size: 15px; font-weight: 800; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.dkc-row .dkc-row-meta { flex: 0 1 auto; margin-top: 0; justify-content: flex-end; }
-@media (max-width: 1080px) {
-  .dkc-layout { grid-template-columns: minmax(0, 1fr); }
-  .dkc-aside { position: static; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
-}
-@media (max-width: 620px) {
-  .dkc-hero { flex-direction: column; }
-  .dkc-hero-cover { width: 108px; }
-  .dkc-row { flex-wrap: wrap; }
-  .dkc-row .dkc-row-meta { flex-basis: 100%; justify-content: flex-start; gap: 6px 14px; }
-  .dkc-hero-meta .dkc-meta-item + .dkc-meta-item,
-  .dkc-row-meta .dkc-meta-item + .dkc-meta-item { padding-left: 14px; }
-  /* GRADE, não flex-wrap: com wrap, o 1º item da 2ª linha herdava o
-     `padding-left` do separador e a linha inteira ficava 14px pra dentro em
-     relação à de cima. Em 3 colunas fixas o :nth-child(3n+1) é sempre o começo
-     de linha, então dá pra tirar a borda dele e as duas linhas batem. */
-  .dkc-hero-meta { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px 0; }
-  .dkc-hero-meta .dkc-meta-item:nth-child(3n + 1) { border-left: none; padding-left: 0; }
-  .dkc-hero-meta .dkc-meta-item strong { overflow: hidden; text-overflow: ellipsis; }
-}
-/* Card da galeria: CAPA à esquerda (arte da 1ª carta que entrou no deck) +
-   nome, jogo, nº de cartas, autor e data. Antes era só nome + tag + data num
-   retângulo vazio — nada pra bater o olho e decidir se vale abrir. A capa é o
-   que os builders de referência usam pra dar identidade a cada deck na lista. */
-/* Nome em até 2 LINHAS: com a capa ocupando 52px, uma linha só cortava quase
-   todo nome de deck ("Mickey and Minnie ..."), que é justamente o que
-   identifica o card na galeria. */
 /* Subtítulo da página (decks.html): no celular eram 3 linhas de texto em cima
    da galeria e do deck aberto, empurrando o conteúdo pra baixo da dobra. O
    título "Decks da comunidade" já diz o que é a página (2026-10-02). */
 @media (max-width: 700px) { .dkc-lead { display: none; } }
-.dkc-view-head { display: flex; align-items: center; gap: 13px; flex-wrap: wrap; margin-bottom: 16px; }
-.dkc-view-name { margin: 0; font-size: 22px; letter-spacing: -0.01em; }
-.dkc-view-head .cta { margin-left: auto; }
 .dkc-author { font-size: 13px; color: var(--subtle); font-weight: 700; }
 
-/* Cabeçalho do deck publicado: título + linha de metadados (jogo, formato,
-   nº de cartas, custo médio, autor, data) e as ações à direita. Os metadados
-   são o "cartão de visita" do deck — o que os builders de referência põem
-   acima da dobra. Separador por ponto médio via CSS, não no texto. */
-.dkc-view-title { flex: 1; min-width: 240px; }
+/* Linha de metadados do deck aberto (jogo, formato, nº de cartas, custo
+   médio) — o "cartão de visita" do deck, no topo do banner/da ficha.
+   Separador por ponto médio via CSS, não no texto. */
 .dkc-view-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 10px; margin-top: 6px; }
 /* ESCOPADAS no .dkc-view-meta de propósito: a galeria usa a MESMA classe
    .dkc-meta-item, só que empilhada (rótulo em cima, valor embaixo) e separada
@@ -12004,16 +11913,6 @@ select,
 .dkc-view-meta .dkc-meta-item + .dkc-author::before,
 .dkc-view-meta .dkc-author + .dkc-meta-item::before { content: "·"; margin-right: 10px; color: var(--subtle); }
 .dkc-meta-date { color: var(--subtle); }
-/* wrap: com o "Exportar lista" (2026-10-02) são três controles, e no celular
-   o CTA desce pra linha de baixo em vez de vazar a tela. Lá a fileira pega a
-   largura toda: o Exportar completa a linha dos ícones e o CTA desce inteiro
-   (sozinho e encostado à direita, parecia sobra de layout). */
-.dkc-view-acts { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-left: auto; }
-@media (max-width: 640px) {
-  .dkc-view-acts { width: 100%; margin-left: 0; }
-  .dkc-view-acts .deck-mini { flex: 1; }
-  .dkc-view-acts .cta { flex: 1 1 100%; margin-left: 0; }
-}
 .dkc-lays { display: flex; gap: 6px; }
 /* padding 0: estes botões herdam `padding: 0 16px` da regra genérica de botão.
    Com 40px de largura sobravam 6px de área interna, e o `max-width: 100%` do
@@ -12041,21 +11940,11 @@ select,
 .dkc-lays .deck-lay { flex: none; width: 40px; padding: 0; }
 .dkc-lays .deck-lay svg { flex: none; }
 
-/* Lista do deck publicado (padrão Dreamborn/Limitless): qtd × miniatura × nome
-   + set·nº, selo de posse e o PREÇO UNITÁRIO à direita — o formato de quem vai
-   comprar as cartas. A grade continua sendo a vitrine da arte. */
+/* O esqueleto de carregamento da galeria/deck usa .dkc-list; o preço por
+   carta da lista do EDITOR (my-decks) usa .dkc-row-price. A lista do deck
+   aberto é a .dkc-l-* (versão "Coleção"). */
 .dkc-list { display: grid; gap: 4px; }
-.dkc-row { display: flex; align-items: center; gap: 10px; padding: 5px 8px; border: 1px solid var(--line); background: var(--panel); }
-.dkc-row:hover { background: var(--panel-strong); }
-.dkc-row-thumb { flex: none; width: 26px; }
-.dkc-row-thumb img { width: 100%; aspect-ratio: 63/88; object-fit: cover; display: block; }
-.dkc-row-thumb .deck-noimg { width: 26px; }
-.dkc-row-body { flex: 1; min-width: 0; display: flex; align-items: baseline; gap: 8px; }
-.dkc-row-meta { font-size: 11.5px; color: var(--subtle); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .dkc-row-price { flex: none; font-size: 13px; font-weight: 800; font-variant-numeric: tabular-nums; color: var(--money); }
-@media (max-width: 560px) {
-  .dkc-row-meta { display: none; } /* tela estreita: nome e preço são o essencial */
-}
 
 /* Deck publicado: cartas à esquerda, contexto (valor + análise) numa coluna à
    direita — mesma divisão do editor, pra quem vê o deck de outra pessoa ter as
@@ -12063,14 +11952,197 @@ select,
    Empilha no mobile: as cartas primeiro, o contexto embaixo. */
 .dkc-view-cols { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 18px; align-items: start; }
 .dkc-view-side { display: grid; gap: 14px; position: sticky; top: 74px; }
-.dkc-value { margin: 0; }
-.dkc-value h3, .dkc-analysis h3 { margin: 0 0 10px; font-size: 15px; }
+.dkc-analysis h3 { margin: 0 0 10px; font-size: 15px; }
 /* "Custo médio: 2,4" ao lado do título da Análise — número pequeno, tom de
    apoio; referência direta do "Avg. cost" dos builders de torneio. */
 .deck-avg { font-size: 12.5px; font-weight: 700; color: var(--muted); margin-left: 8px; }
 @media (max-width: 900px) {
   .dkc-view-cols { grid-template-columns: minmax(0, 1fr); }
   .dkc-view-side { position: static; }
+}
+
+/* ── Versão "Coleção" (2026-10-07) ────────────────────────────────────────
+   Galeria em TABELA (Limitless, inkDecks, MTGGoldfish): filtros numa coluna à
+   esquerda (no celular, um "Filtros" no TOPO da lista — antes caíam depois dos
+   decks), abas de descoberta e uma linha por deck com cartas, custo, quanto
+   VOCÊ já tem e visitas. Deck aberto: FICHA com os três números da coleção de
+   quem olha (o "Total | Owned | Missing" do Dreamborn) e a LISTA de compras
+   como modo padrão, com a posse e o preço em cada linha. Flat como o resto:
+   cantos retos, sem sombra no que está no fluxo (só a carta, que é objeto). */
+/* Cor do "falta comprar": âmbar, com tom próprio no claro (o âmbar claro
+   some no branco). Declarada nos contêineres desta tela, não no :root — um
+   :root aqui iria pro NÚCLEO do split-css e pesaria em toda página. */
+.dkc-t, .dkc-f, .dkc-f-bar, .dkc-view-cols { --dkc-falta: #f0a03c; }
+[data-theme="light"] .dkc-t, [data-theme="light"] .dkc-f, [data-theme="light"] .dkc-f-bar, [data-theme="light"] .dkc-view-cols { --dkc-falta: #b45309; }
+
+.dkc-t { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 24px; align-items: start; }
+.dkc-t-main { min-width: 0; }
+.dkc-t-side { display: grid; gap: 14px; position: sticky; top: calc(var(--header-h, 56px) + 8px); }
+.dkc-t-filtros { border: 1px solid var(--line); background: var(--panel); }
+.dkc-t-filtros > summary { display: flex; align-items: center; gap: 9px; padding: 16px 16px 4px; font-size: 15px; font-weight: 800; list-style: none; cursor: pointer; }
+.dkc-t-filtros > summary::-webkit-details-marker { display: none; }
+.dkc-t-filtros > summary svg { flex: none; color: var(--subtle); }
+.dkc-t-filtros > summary b { display: inline-grid; place-items: center; min-width: 18px; height: 18px; margin-left: auto; background: var(--text); color: var(--bg); font-size: 11px; }
+.dkc-t-filtros-in { padding: 12px 16px 16px; }
+.dkc-t-filtros-in .dkc-miss-row .deck-view-sel { flex: none; width: auto; min-width: 62px; }
+/* Jogos: lista vertical; o ativo ganha o traço na cor do jogo à esquerda. */
+.dkc-t-games { display: grid; gap: 2px; }
+.dkc-t-game { display: flex; align-items: center; justify-content: flex-start; gap: 9px; min-height: 40px; padding: 0 10px; border: 1px solid transparent; border-radius: 0; background: none; color: var(--text); font-size: 13.5px; font-weight: 700; text-align: left; }
+.dkc-t-game span { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dkc-t-game b { font-size: 12px; color: var(--subtle); font-variant-numeric: tabular-nums; }
+.dkc-t-game:hover { background: var(--panel-strong); }
+.dkc-t-game.on { background: var(--panel-strong); border-color: var(--line); box-shadow: inset 3px 0 0 var(--accent); }
+.dkc-t-dot { flex: none; width: 9px; height: 9px; border-radius: 50%; background: var(--accent); }
+.dkc-t-mine { padding: 16px; border: 1px solid var(--line); background: var(--panel); }
+.dkc-t-mine h2 { margin: 0 0 6px; font-size: 15px; }
+.dkc-t-mine p { margin: 0 0 12px; font-size: 13px; line-height: 1.5; color: var(--muted); }
+.dkc-t-mine .cta { width: 100%; justify-content: center; }
+
+/* Abas de descoberta: sublinhado no ativo, como abas de verdade. */
+.dkc-t-tabs { display: flex; overflow-x: auto; scrollbar-width: none; border-bottom: 1px solid var(--line); }
+.dkc-t-tabs::-webkit-scrollbar { display: none; }
+.dkc-t-tab { flex: none; min-height: 44px; margin-bottom: -1px; padding: 0 16px; border: 0; border-bottom: 2px solid transparent; border-radius: 0; background: none; color: var(--muted); font-size: 14px; font-weight: 800; }
+.dkc-t-tab:hover { color: var(--text); }
+.dkc-t-tab.on { border-bottom-color: var(--text); color: var(--text); }
+.dkc-t-tab b { margin-left: 7px; padding: 1px 6px; background: var(--money); color: #0a0c10; font-size: 11px; }
+.dkc-t-sum { margin: 12px 0; font-size: 13px; font-weight: 600; color: var(--subtle); }
+
+/* Tabela: mesma grade no cabeçalho e nas linhas; a coluna "Você já tem" só
+   existe pra quem tem coleção (.com-colecao). */
+.dkc-t-table { border: 1px solid var(--line); background: var(--panel); }
+.dkc-t-head, .dkc-t-row { display: grid; grid-template-columns: 30px 44px minmax(0, 1fr) 64px 118px 78px; align-items: center; gap: 14px; padding: 0 16px; }
+.dkc-t-table.com-colecao .dkc-t-head, .dkc-t-table.com-colecao .dkc-t-row { grid-template-columns: 30px 44px minmax(0, 1fr) 64px 118px 150px 78px; }
+.dkc-t-head { min-height: 38px; border-bottom: 1px solid var(--line); font-size: 11.5px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: var(--subtle); }
+.dkc-t-row { min-height: 76px; padding-top: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--line); color: var(--text); text-decoration: none; }
+.dkc-t-row:last-child { border-bottom: 0; }
+.dkc-t-row:hover { background: var(--panel-strong); }
+.dkc-t-pos { font-size: 15px; font-weight: 800; color: var(--subtle); font-variant-numeric: tabular-nums; }
+.dkc-t-cover img, .dkc-t-cover .deck-noimg { display: block; width: 44px; aspect-ratio: 63 / 88; object-fit: cover; border-radius: 3px; }
+.dkc-t-deck { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.dkc-t-name { overflow: hidden; font-size: 15.5px; font-weight: 800; text-overflow: ellipsis; white-space: nowrap; }
+.dkc-t-sub { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; font-size: 12.5px; }
+.dkc-t-by { color: var(--subtle); }
+.dkc-t-c { font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.dkc-t-cost { color: var(--money); }
+.dkc-t-views { display: inline-flex; align-items: center; gap: 5px; color: var(--muted); }
+.dkc-t-have { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 3px 8px; }
+.dkc-t-bar { height: 6px; background: var(--line); }
+.dkc-t-bar i { display: block; height: 100%; background: var(--money); }
+.dkc-t-pct { font-size: 13px; font-weight: 800; }
+.dkc-t-bar.is-ok + .dkc-t-pct { color: var(--money); }
+.dkc-t-falta { grid-column: 1 / -1; font-size: 11.5px; font-weight: 600; color: var(--subtle); }
+.dkc-t-nada { color: var(--subtle); }
+
+/* ── Deck aberto: a ficha ── */
+.dkc-f { margin: 0 0 6px; }
+.dkc-f-top { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 22px; align-items: start; margin-top: 12px; }
+.dkc-f-cover { width: 132px; }
+.dkc-f-cover img { display: block; width: 100%; aspect-ratio: 63 / 88; object-fit: cover; border-radius: 4.5% / 3.2%; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35); }
+.dkc-f-title { margin: 8px 0 4px; font-size: clamp(24px, 3vw, 34px); font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; }
+.dkc-f-by { display: flex; flex-wrap: wrap; gap: 4px 12px; margin: 0; font-size: 13px; }
+.dkc-f-acts { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+.dkc-f-acts .cta, .dkc-f-acts .deck-mini { min-height: 42px; }
+.dkc-f-acts .deck-mini, .dkc-f-buy { display: inline-flex; align-items: center; gap: 7px; padding: 0 14px; }
+/* Os três números: valor | você já tem (anel + R$ + cartas) | falta comprar. */
+.dkc-f-kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 20px; border: 1px solid var(--line); background: var(--panel); }
+.dkc-f-kpis.is-out { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); }
+.dkc-f-kpi { display: flex; flex-direction: column; gap: 4px; min-width: 0; padding: 16px 18px; }
+.dkc-f-kpi + .dkc-f-kpi { border-left: 1px solid var(--line); }
+.dkc-f-k { font-size: 11.5px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: var(--subtle); }
+.dkc-f-kpi strong { font-size: 24px; line-height: 1.15; letter-spacing: -0.02em; white-space: nowrap; }
+.dkc-f-kpi small { font-size: 12.5px; font-weight: 600; color: var(--subtle); }
+.dkc-f-kpi.is-have strong { color: var(--money); }
+.dkc-f-kpi.is-miss strong { color: var(--dkc-falta); }
+.dkc-f-have { display: flex; align-items: center; gap: 12px; }
+.dkc-f-have > span:last-child { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+/* Anel do "% que você tem": conic na cor de dinheiro, furo no fundo do painel. */
+.dkc-f-ring { flex: none; display: grid; place-items: center; width: 54px; height: 54px; border-radius: 50%; background: radial-gradient(closest-side, var(--panel) 74%, transparent 75% 100%), conic-gradient(var(--money) calc(var(--p, 0) * 1%), var(--line) 0); }
+.dkc-f-ring b { font-size: 12.5px; font-weight: 800; }
+.dkc-f-buy { align-self: flex-start; min-height: 38px; margin-top: 8px; }
+.dkc-f-kpi.is-cta p { margin: 0; font-size: 13.5px; line-height: 1.5; color: var(--muted); }
+.dkc-f-kpi.is-cta .cta { align-self: flex-start; margin-top: 6px; }
+
+/* Barra de vista: FIXA no topo enquanto a lista rola, com o total e o que
+   falta sempre à vista (o rodapé fixo dos builders; aqui em cima, porque o
+   rodapé do celular é da barra de abas). */
+.dkc-f-bar { position: sticky; top: var(--header-h, 56px); z-index: 6; display: flex; align-items: center; flex-wrap: wrap; gap: 10px 16px; margin: 0 0 14px; padding: 10px 0; border-bottom: 1px solid var(--line); background: var(--bg); }
+.dkc-f-group { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; color: var(--muted); white-space: nowrap; }
+.dkc-f-hide { font-size: 13px; }
+.dkc-f-total { margin-left: auto; font-size: 13px; font-weight: 600; color: var(--muted); }
+.dkc-f-total b { color: var(--text); }
+.dkc-f-total em { font-style: normal; font-weight: 700; color: var(--dkc-falta); }
+
+/* Lista de compras: grupos em duas colunas que não quebram no meio. */
+.dkc-l-cols { columns: 2 320px; column-gap: 28px; }
+.dkc-l-group { break-inside: avoid; margin-bottom: 18px; }
+.dkc-l-zone h3 { margin-bottom: 10px; }
+.dkc-l-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.dkc-l-row { display: flex; align-items: center; gap: 8px; min-height: 36px; padding: 3px 6px; border-bottom: 1px solid var(--line); font-size: 13.5px; }
+.dkc-l-row:hover { background: var(--panel-strong); }
+.dkc-l-qty { flex: 0 0 22px; font-weight: 800; text-align: right; color: var(--muted); font-variant-numeric: tabular-nums; }
+.dkc-l-thumb { flex: 0 0 20px; }
+.dkc-l-thumb img, .dkc-l-thumb .deck-noimg { display: block; width: 20px; aspect-ratio: 63 / 88; object-fit: cover; border-radius: 2px; }
+.dkc-l-name { flex: 1; min-width: 0; overflow: hidden; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
+/* Custo num anel da cor da carta (tinta/cor do jogo): legível nos dois temas,
+   ao contrário de texto sobre a cor cheia. */
+.dkc-l-pip { flex: none; display: inline-grid; place-items: center; width: 22px; height: 22px; border: 2px solid var(--pip); border-radius: 50%; box-sizing: border-box; font-size: 11px; font-weight: 800; }
+.dkc-l-own { flex: none; display: inline-flex; align-items: center; gap: 3px; }
+.dkc-l-own small { font-size: 11px; font-weight: 800; }
+.dkc-l-own.is-have { color: var(--money); }
+.dkc-l-own.is-part { color: var(--dkc-falta); }
+.dkc-l-own.is-none { color: var(--subtle); }
+.dkc-l-price { flex: 0 0 74px; font-size: 13px; font-weight: 800; text-align: right; color: var(--money); font-variant-numeric: tabular-nums; }
+.dkc-l-hidden { margin: 4px 0 0; font-size: 12.5px; color: var(--subtle); }
+.dkc-l-tile.is-have .deck-tile-qty { background: #0c7a54; color: #fff; }
+.dkc-l-tile.is-part .deck-tile-qty { background: #b7791f; color: #fff; }
+
+@media (max-width: 900px) {
+  .dkc-t { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .dkc-t-side { position: static; grid-template-columns: minmax(0, 1fr) auto; align-items: start; }
+  .dkc-t-filtros > summary { min-height: 44px; padding: 0 14px; }
+  .dkc-t-filtros[open] > summary { border-bottom: 1px solid var(--line); }
+  .dkc-t-filtros[open] { grid-column: 1 / -1; }
+  /* "Meus Decks" vira só o botão ao lado do "Filtros". */
+  .dkc-t-mine { padding: 0; border: 0; background: none; }
+  .dkc-t-mine h2, .dkc-t-mine p { display: none; }
+  .dkc-t-mine .cta { min-height: 46px; }
+}
+@media (max-width: 700px) {
+  /* Linha da tabela vira cartão: capa + nome/tags na 1ª linha, números na 2ª. */
+  .dkc-t-head { display: none; }
+  .dkc-t-row, .dkc-t-table.com-colecao .dkc-t-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; padding: 12px 14px; }
+  .dkc-t-pos { display: none; }
+  .dkc-t-cover { flex: none; }
+  .dkc-t-deck { flex: 1 1 calc(100% - 56px); }
+  .dkc-t-c { font-size: 12.5px; }
+  .dkc-t-cards { margin-left: 56px; }
+  .dkc-t-cards::after { content: " " attr(data-k); font-weight: 600; color: var(--subtle); }
+  /* A barra do "você já tem" vai pra última linha; visitas ficam junto de
+     cartas e custo. */
+  .dkc-t-have { order: 2; flex: 1 1 100%; margin-left: 56px; }
+  .dkc-t-tab { padding: 0 11px; font-size: 13.5px; }
+  .dkc-f-top { grid-template-columns: 92px minmax(0, 1fr); gap: 14px; }
+  .dkc-f-cover { grid-row: span 3; width: 92px; }
+  .dkc-f-id { display: contents; }
+  .dkc-f-id > .dkc-view-meta, .dkc-f-id > .dkc-f-title, .dkc-f-id > .dkc-f-by { grid-column: 2; }
+  .dkc-f-acts { grid-column: 1 / -1; margin-top: 4px; }
+  .dkc-f-acts .cta { flex: 1 1 100%; justify-content: center; }
+  .dkc-f-acts .deck-mini { flex: 1 1 calc(50% - 5px); justify-content: center; }
+  .dkc-f-title { font-size: 23px; }
+  .dkc-f-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .dkc-f-kpis.is-out { grid-template-columns: minmax(0, 1fr); }
+  .dkc-f-kpis.is-out .dkc-f-kpi + .dkc-f-kpi { border-left: 0; border-top: 1px solid var(--line); }
+  .dkc-f-kpi { padding: 12px 14px; }
+  .dkc-f-kpi strong { font-size: 20px; }
+  .dkc-f-kpi.is-miss { grid-column: 1 / -1; border-left: 0; border-top: 1px solid var(--line); }
+  .dkc-f-ring { width: 46px; height: 46px; }
+  .dkc-f-buy { align-self: stretch; justify-content: center; }
+  .dkc-f-total { flex-basis: 100%; margin-left: 0; }
+  .dkc-l-cols { columns: 1; }
+  /* Sem a miniatura no celular: o nome da carta é o que precisa do espaço
+     (ela só servia de âncora pro preview do cursor, que no dedo não existe). */
+  .dkc-l-thumb { display: none; }
+  .dkc-l-price { flex-basis: 66px; }
 }
 
 /* Leitura do histórico de preço (crosshair + tooltip do sparkline do preview).

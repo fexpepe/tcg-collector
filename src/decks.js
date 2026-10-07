@@ -308,11 +308,15 @@
   // `let` depois dela ficaria em TDZ — a exceção travava o "Carregando…".
   let communityGame = "";                       // filtro ativo ("" = todos)
   // Ordenação da galeria (preferência do usuário, lembrada).
+  // Abas de descoberta (versão "Coleção", 2026-10-07): Em alta / Novos /
+  // Mais vistos / Dá pra montar — o padrão dos sites de deck (Moxfield,
+  // Dreamborn). Chave nova: a antiga guardava as ordens que saíram (nº de
+  // cartas, nome).
   let communitySort = (function () {
     try {
-      const v = localStorage.getItem("tcg-deck-community-sort");
-      return ["recent", "cards", "name"].includes(v) ? v : "recent";
-    } catch (e) { return "recent"; }
+      const v = localStorage.getItem("tcg-deck-community-tab");
+      return ["hot", "recent", "views", "build"].includes(v) ? v : "hot";
+    } catch (e) { return "hot"; }
   })();
   // ── Filtros da galeria ────────────────────────────────────────────────────
   // Só a ordenação é LEMBRADA. Os filtros abaixo nascem desligados de propósito:
@@ -329,6 +333,13 @@
   // Cache da listagem. Filtros e ordenação rodam todos no CLIENTE, então trocar
   // qualquer um deles NÃO refaz a chamada — só o jogo, que filtra no servidor.
   let comCache = null;                           // { game, rows, views }
+  // Jogos que TÊM deck publicado, com a contagem, tirados da listagem de
+  // "todos os jogos" (a primeira que a página faz): a lista de jogos dos
+  // filtros só mostra jogo que leva a algum deck.
+  let comGamesAll = null;                        // [[jogo, n], ...]
+  // Filtros no celular são um <details> no topo da lista; a galeria se
+  // redesenha inteira a cada mudança e ele fecharia no meio do ajuste.
+  let comFiltersOpen = false;
   // Cartas faltando por deck, contra a coleção local do visitante.
   let comMissing = null;                         // { [shareId]: n }
   let comMissState = "idle";                     // idle | loading | ready | off
@@ -339,7 +350,14 @@
   function initPublicPage(box) {
     const logged = !!(shared.getSession && shared.getSession());
     const sharedId = new URLSearchParams(location.search).get("s");
-    if (sharedId) { renderPublicDeck(box, sharedId, logged); return; }
+    if (sharedId) {
+      // No deck aberto, o "Decks da comunidade" do topo repetia o link de volta
+      // logo abaixo e empurrava a ficha. O nome do deck passa a ser o h1.
+      const cab = document.querySelector("main > .page-head");
+      if (cab) cab.hidden = true;
+      renderPublicDeck(box, sharedId, logged);
+      return;
+    }
     renderCommunity(box, logged);
   }
 
@@ -422,6 +440,11 @@
       comCache = { game: communityGame, rows: novas, views, hot };
       comMissing = null;
       comMissState = "idle";
+      if (!communityGame) {
+        const porJogo = new Map();
+        novas.forEach((r) => { const g = shared.normalizeGame(r.game || "pokemon"); porJogo.set(g, (porJogo.get(g) || 0) + 1); });
+        comGamesAll = [...porJogo.entries()].sort((a, b) => b[1] - a[1]);
+      }
     }
     const views = comCache.views;
     const nViews = (r) => Number(views[r.id]) || 0;
@@ -466,28 +489,19 @@
     });
     // Ordenação no CLIENTE: a lista vem limitada a 60 do servidor (mais
     // recentes), então reordenar aqui é barato e não gasta round-trip.
-    if (communitySort === "cards") rows.sort((a, b) => nCards(b) - nCards(a));
-    else if (communitySort === "name") rows.sort((a, b) => String(a.title || "").localeCompare(String(b.title || "")));
-    else if (communitySort === "views") rows.sort((a, b) => nViews(b) - nViews(a));
+    // "Em alta" usa o score com decaimento do build (views/(idade+2)^1.5); sem
+    // ele, as visitas; sem visitas, fica a ordem de chegada (mais recentes).
+    // "Dá pra montar" ordena pela fração que o visitante JÁ TEM — só existe
+    // depois do loadMissing; antes disso a aba nem aparece.
+    const fracTenho = (r) => { const n = nCards(r), f = faltamEm(r); return n && f != null ? (n - f) / n : -1; };
+    const aba = communitySort === "build" && comMissState !== "ready" ? "hot" : communitySort;
+    if (aba === "hot") rows.sort((a, b) => (temHot ? nHot(b) - nHot(a) : 0) || (nViews(b) - nViews(a)));
+    else if (aba === "views") rows.sort((a, b) => nViews(b) - nViews(a));
+    else if (aba === "build") rows.sort((a, b) => fracTenho(b) - fracTenho(a) || (custoDe(a) || 0) - (custoDe(b) || 0));
 
     const topCta = logged
       ? `<a class="cta secondary-cta" href="my-decks">${esc(t("decks.goMine"))}</a>`
       : `<a class="cta" href="login">${esc(t("decks.publicCta"))}</a>`;
-    // "Mais vistos" só entra quando HÁ contagem: sem a tabela de visitas a opção
-    // ordenaria por nada e pareceria quebrada.
-    const sortOpts = ["recent", "cards", "name"].concat(temViews ? ["views"] : []);
-    const sortSel = `<label class="dkc-field"><span class="dkc-field-lbl">${esc(t("decks.sortBy"))}</span>
-      <select class="deck-view-sel" data-dkc-sort>
-        ${sortOpts.map((s) => `<option value="${escA(s)}"${communitySort === s ? " selected" : ""}>${esc(t("decks.sortCom." + s))}</option>`).join("")}
-      </select></label>`;
-    // Jogo: select em vez dos chips coloridos que ficavam no topo. Um controle
-    // só, no mesmo lugar dos outros filtros — e no celular não empurra mais a
-    // lista pra baixo com 13 botões.
-    const gameSel = `<label class="dkc-field"><span class="dkc-field-lbl">${esc(t("decks.gameWord"))}</span>
-      <select class="deck-view-sel" data-dkc-game>
-        <option value=""${communityGame === "" ? " selected" : ""}>${esc(t("decks.allGames"))}</option>
-        ${shared.GAME_SLUGS.map((g) => `<option value="${escA(g)}"${communityGame === g ? " selected" : ""}>${esc(shared.gameLabel(g))}</option>`).join("")}
-      </select></label>`;
     // Rótulo curto da régua: sem centavos (o passo é de R$ 25) e na moeda do
     // header. O fmtMoney do shared devolveria "R$ 1.000,00" — e "—" no zero.
     const SIMB = { BRL: "R$", USD: "US$", EUR: "€" };
@@ -539,40 +553,37 @@
     const IC_CLOCK = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.5V12l3.2 2"/></svg>';
     const IC_FILTER = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M7.5 12h9M10.5 18h3"/></svg>';
 
-    // Linha de metadados de um deck. Só entra o que o registro TEM: a galeria lê
-    // campos por path (sem baixar as zonas), então cada número aqui existe de
-    // verdade — nada de placeholder. `cost` é retrato do publicar (decks antigos
-    // não têm) e vem em BRL: converte pra moeda do header.
-    const metaHtml = (r) => {
-      const n = Number(r.total) || 0;
-      const custoBRL = Number(r.cost) || 0;
-      const custo = custoBRL > 0
-        ? (shared.convertMoney(custoBRL, "BRL", shared.getCurrency()) == null ? custoBRL : shared.convertMoney(custoBRL, "BRL", shared.getCurrency()))
-        : 0;
-      const quando = r.created_at ? new Date(r.created_at).toLocaleDateString(shared.getLocale()) : "";
-      const vis = nViews(r);
-      // Quanto FALTA na coleção de quem está olhando. Só aparece depois do
-      // loadMissing (e só pra quem tem coleção) — é o número que o filtro ao
-      // lado usa, então mostrá-lo no card evita o "por que este deck sumiu?".
+    // ── Versão "Coleção" (2026-10-07) ─────────────────────────────────────────
+    // A galeria vira TABELA, como as de meta (Limitless, inkDecks, MTGGoldfish):
+    // uma linha por deck com cartas, custo, quanto VOCÊ já tem e visitas, e as
+    // abas de descoberta em cima. O diferencial do Sleevu — cruzar o deck com a
+    // coleção de quem olha — vira coluna e aba ("Dá pra montar"), não só um
+    // filtro escondido. Só entra o que o registro TEM (a galeria lê campos por
+    // path, sem baixar as zonas); `cost` vem em BRL e converte pra moeda do header.
+    const IC_EYE = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="2.8"/></svg>';
+    const custoDoDeck = (r) => {
+      const brl = Number(r.cost) || 0;
+      if (!(brl > 0)) return "";
+      const conv = shared.convertMoney(brl, "BRL", shared.getCurrency());
+      return shared.formatMoney(shared.getCurrency(), conv == null ? brl : conv);
+    };
+    const quandoDe = (r) => (r.created_at ? new Date(r.created_at).toLocaleDateString(shared.getLocale()) : "");
+    const comColecao = comMissState === "ready";
+    const tenhoHtml = (r) => {
       const falta = faltamEm(r);
-      return [
-        n ? `<span class="dkc-meta-item"><span class="dkc-meta-k">${esc(t("decks.cardsWord"))}</span><strong>${esc(String(n))}</strong></span>` : "",
-        falta === 0 ? `<span class="dkc-meta-item is-ok"><strong>${esc(t("decks.completeWord"))}</strong></span>`
-          : falta > 0 ? `<span class="dkc-meta-item"><span class="dkc-meta-k">${esc(t("decks.missingWord"))}</span><strong>${esc(String(falta))}</strong></span>` : "",
-        vis > 0 ? `<span class="dkc-meta-item"><span class="dkc-meta-k">${esc(t("decks.viewsWord"))}</span><strong>${esc(String(vis))}</strong></span>` : "",
-        custo > 0 ? `<span class="dkc-meta-item cm-val"><span class="dkc-meta-k">${esc(t("decks.costEstimated"))}</span><strong>${esc(shared.formatMoney(shared.getCurrency(), custo))}</strong></span>` : "",
-        r.author ? `<span class="dkc-meta-item"><span class="dkc-meta-k">${esc(t("decks.authorWord"))}</span><strong>${esc(String(r.author).slice(0, 30))}</strong></span>` : "",
-        quando ? `<span class="dkc-meta-item"><span class="dkc-meta-k">${esc(t("decks.publishedWord"))}</span><strong>${esc(quando)}</strong></span>` : ""
-      ].filter(Boolean).join("");
+      const n = nCards(r);
+      if (falta == null || !n) return `<span class="dkc-t-nada">—</span>`;
+      const pct = Math.max(0, Math.min(100, Math.round(((n - falta) / n) * 100)));
+      return `<span class="dkc-t-bar${falta === 0 ? " is-ok" : ""}"><i style="width:${pct}%"></i></span>
+        <span class="dkc-t-pct">${esc(falta === 0 ? t("decks.completeWord") : pct + "%")}</span>
+        ${falta > 0 ? `<span class="dkc-t-falta">${esc(t("decks.t.missingN", { n: falta }))}</span>` : ""}`;
     };
     const capaHtml = (r) => r.cover
-      ? `<img src="${escA(r.cover)}" alt="" loading="lazy">`
+      ? `<img src="${escA(r.cover)}" alt="" loading="lazy" decoding="async">`
       : `<span class="deck-noimg"></span>`;
 
     let body;
     if (!rows.length && filtrando) {
-      // Vazio POR FILTRO é outra história que vazio de verdade: aqui existe deck,
-      // só não bate com o que está marcado ao lado. O botão desfaz tudo de uma vez.
       body = `<section class="empty-state"><h2>${esc(t("decks.emptyFiltersTitle"))}</h2>
         <p>${esc(t("decks.emptyFilters"))}</p>
         <button type="button" class="cta secondary-cta" data-dkc-clear>${esc(t("decks.clearFilters"))}</button></section>`;
@@ -580,80 +591,96 @@
       body = `<section class="empty-state"><h2>${esc(t("decks.emptyCommunityTitle"))}</h2>
         <p>${esc(t(communityGame ? "decks.emptyCommunityGame" : "decks.emptyCommunity"))}</p></section>`;
     } else {
-      // DESTAQUE = o mais VISITADO (tabela deck_views) — destaque de verdade,
-      // por engajamento. Sem contagem nenhuma (migration não aplicada, ou
-      // galeria recém-nascida), cai pro primeiro da ordem escolhida e o rótulo
-      // muda pra "Último publicado": prefiro dizer o que é a mostrar um ranking
-      // inventado. O hero SAI da lista de baixo pra não aparecer duas vezes.
-      // Ordem de preferência: score com decaimento > visita acumulada > o
-      // primeiro da ordem escolhida. Só o DESTAQUE usa o score — a lista de
-      // baixo obedece o seletor de ordenação, que é escolha da pessoa.
-      const popular = temHot
-        ? rows.slice().sort((a, b) => nHot(b) - nHot(a)).find((r) => nHot(r) > 0) || null
-        : (temViews ? rows.slice().sort((a, b) => nViews(b) - nViews(a))[0] : null);
-      const heroForte = !!popular && (temHot ? nHot(popular) > 0 : nViews(popular) > 0);
-      const hero = heroForte ? popular : rows[0];
-      const destaqueReal = heroForte;
-      const resto = rows.filter((r) => r.id !== hero.id);
-      const gHero = shared.normalizeGame(hero.game || "pokemon");
-      const heroHtml = `<section class="dkc-sec">
-        <h2 class="dkc-sec-h">${IC_STAR}<span>${esc(t(destaqueReal ? "decks.featured" : "decks.spotlight"))}</span></h2>
-        <p class="dkc-sec-sub">${esc(t(destaqueReal ? "decks.featuredSub" : "decks.spotlightSub"))}</p>
-        <a class="dkc-hero" href="decks?s=${encodeURIComponent(hero.id)}">
-          <span class="dkc-hero-cover">${capaHtml(hero)}</span>
-          <span class="dkc-hero-body">
-            <span class="dkc-hero-name">${esc(String(hero.title || t("decks.untitled")).slice(0, 60))}</span>
-            <span class="dkc-hero-tags">${shared.gameTagHtml(gHero)}${hero.format ? `<span class="dkc-fmt">${esc(t("decks.format." + hero.format))}</span>` : ""}</span>
-            <span class="dkc-hero-meta">${metaHtml(hero)}</span>
+      const linhas = rows.map((r, i) => {
+        const g = shared.normalizeGame(r.game || "pokemon");
+        const custo = custoDoDeck(r);
+        const vis = nViews(r);
+        return `<a class="dkc-t-row" href="decks?s=${encodeURIComponent(r.id)}" data-game-accent="${escA(g)}">
+          <span class="dkc-t-pos">${esc(String(i + 1))}</span>
+          <span class="dkc-t-cover">${capaHtml(r)}</span>
+          <span class="dkc-t-deck">
+            <span class="dkc-t-name">${esc(String(r.title || t("decks.untitled")).slice(0, 60))}</span>
+            <span class="dkc-t-sub">${shared.gameTagHtml(g)}${r.format ? `<span class="dkc-fmt">${esc(t("decks.format." + r.format))}</span>` : ""}${r.author ? `<span class="dkc-t-by">${esc(t("decks.byAuthor", { author: String(r.author).slice(0, 30) }))}${quandoDe(r) ? ` · ${esc(quandoDe(r))}` : ""}</span>` : ""}</span>
           </span>
-        </a>
-      </section>`;
-
-      const listaHtml = resto.length ? `<section class="dkc-sec">
-        <h2 class="dkc-sec-h">${IC_CLOCK}<span>${esc(t(communitySort === "recent" ? "decks.recentTitle" : "decks.allTitle"))}</span></h2>
-        <p class="dkc-sec-sub">${esc(t(communitySort === "recent" ? "decks.recentSub" : "decks.allSub"))}</p>
-        <div class="dkc-rows">` + resto.map((r) => {
-          const g = shared.normalizeGame(r.game || "pokemon");
-          return `<a class="dkc-row" href="decks?s=${encodeURIComponent(r.id)}">
-            <span class="dkc-row-cover">${capaHtml(r)}</span>
-            <span class="dkc-row-main">
-              <span class="dkc-row-name">${esc(String(r.title || t("decks.untitled")).slice(0, 60))}</span>
-              <span class="dkc-row-tags">${shared.gameTagHtml(g)}${r.format ? `<span class="dkc-fmt">${esc(t("decks.format." + r.format))}</span>` : ""}</span>
-            </span>
-            <span class="dkc-row-meta">${metaHtml(r)}</span>
-          </a>`;
-        }).join("") + `</div></section>` : "";
-      body = heroHtml + listaHtml;
+          <span class="dkc-t-c dkc-t-cards" data-k="${escA(t("decks.cardsWord"))}">${esc(String(nCards(r) || "—"))}</span>
+          <span class="dkc-t-c dkc-t-cost">${custo ? esc(custo) : '<span class="dkc-t-nada">—</span>'}</span>
+          ${comColecao ? `<span class="dkc-t-c dkc-t-have">${tenhoHtml(r)}</span>` : ""}
+          <span class="dkc-t-c dkc-t-views">${vis > 0 ? `${IC_EYE}${esc(String(vis))}` : '<span class="dkc-t-nada">—</span>'}</span>
+        </a>`;
+      }).join("");
+      body = `<div class="dkc-t-table${comColecao ? " com-colecao" : ""}">
+          <div class="dkc-t-head" aria-hidden="true">
+            <span>#</span><span></span><span>${esc(t("decks.t.deck"))}</span>
+            <span>${esc(t("decks.t.cards"))}</span><span>${esc(t("decks.t.cost"))}</span>
+            ${comColecao ? `<span>${esc(t("decks.v.youHave"))}</span>` : ""}
+            <span>${esc(t("decks.viewsWord"))}</span>
+          </div>
+          ${linhas}
+        </div>`;
     }
 
-    // Coluna da direita: TODOS os filtros + ordenação, no mesmo painel, e o
-    // atalho pros decks do usuário embaixo.
-    const aside = `<aside class="dkc-aside">
-      <section class="dkc-panel">
-        <h2 class="dkc-panel-h">${IC_FILTER}<span>${esc(t("decks.filtersTitle"))}</span></h2>
-        ${sortSel}
-        ${gameSel}
-        ${costBox}
-        ${missBox}
-        ${filtrando ? `<button type="button" class="dkc-clear" data-dkc-clear>${esc(t("decks.clearFilters"))}</button>` : ""}
-      </section>
-      <section class="dkc-panel dkc-mine">
-        <h2 class="dkc-panel-h"><span>${esc(t("decks.mineTitle"))}</span></h2>
+    // Abas de descoberta. "Dá pra montar" só existe pra quem TEM coleção (sem
+    // ela todo deck estaria 100% faltando) e vem com quantos fecham hoje.
+    const abas = [["hot", "decks.t.tabHot"], ["recent", "decks.t.tabNew"]]
+      .concat(temViews ? [["views", "decks.t.tabViews"]] : [])
+      .concat(comColecao ? [["build", "decks.t.tabBuild"]] : []);
+    const abasHtml = `<div class="dkc-t-tabs" role="group" aria-label="${escA(t("decks.sortBy"))}">` + abas.map(([k, chave]) => {
+      const on = aba === k;
+      return `<button type="button" class="dkc-t-tab${on ? " on" : ""}" data-dkc-tab="${k}" aria-pressed="${on}">${esc(t(chave))}${k === "build" && completos ? `<b>${esc(String(completos))}</b>` : ""}</button>`;
+    }).join("") + `</div>`;
+    const nJogos = new Set(rows.map((r) => shared.normalizeGame(r.game || "pokemon"))).size;
+    const resumo = rows.length ? `<p class="dkc-t-sum">${esc(t("decks.t.summary", { n: rows.length, j: nJogos }))}</p>` : "";
+
+    // Jogos: lista vertical "Todos" + os que têm deck, com a contagem e o ponto
+    // na cor do jogo (data-game-accent troca o --accent ali dentro).
+    const jogos = [["", (comGamesAll || []).reduce((s, x) => s + x[1], 0)]].concat(comGamesAll || []);
+    if (communityGame && !jogos.some((c) => c[0] === communityGame)) jogos.push([communityGame, 0]);
+    const jogosHtml = `<div class="dkc-field">
+        <span class="dkc-field-lbl">${esc(t("decks.gameWord"))}</span>
+        <div class="dkc-t-games" role="group" aria-label="${escA(t("decks.gameWord"))}">` + jogos.map(([g, n]) => {
+      const on = communityGame === g;
+      return `<button type="button" class="dkc-t-game${on ? " on" : ""}" data-dkc-chip="${escA(g)}" aria-pressed="${on}"${g ? ` data-game-accent="${escA(g)}"` : ""}>
+          ${g ? '<i class="dkc-t-dot" aria-hidden="true"></i>' : ""}<span>${esc(g ? shared.gameLabel(g) : t("decks.allGames"))}</span>${n ? `<b>${esc(String(n))}</b>` : ""}
+        </button>`;
+    }).join("") + `</div></div>`;
+    const nFiltros = (communityGame ? 1 : 0) + (costOn ? 1 : 0) + (missOn ? 1 : 0);
+    // Desktop: o <details> nasce sempre aberto (o CSS some com o resumo). No
+    // celular ele fica no TOPO da lista, fechado por padrão — antes os filtros
+    // caíam depois dos decks.
+    const largo = !window.matchMedia || !window.matchMedia("(max-width: 900px)").matches;
+    const aside = `<aside class="dkc-t-side">
+      <details class="dkc-t-filtros" data-dkc-more${largo || comFiltersOpen ? " open" : ""}>
+        <summary>${IC_FILTER}<span>${esc(t("decks.t.filters"))}</span>${nFiltros ? `<b>${nFiltros}</b>` : ""}</summary>
+        <div class="dkc-t-filtros-in">
+          ${jogosHtml}
+          ${costBox}
+          ${missBox}
+          ${filtrando || communityGame ? `<button type="button" class="dkc-clear" data-dkc-clear>${esc(t("decks.clearFilters"))}</button>` : ""}
+        </div>
+      </details>
+      <section class="dkc-t-mine">
+        <h2>${esc(t("decks.mineTitle"))}</h2>
         <p>${esc(t(logged ? "decks.mineSub" : "decks.mineSubOut"))}</p>
         ${topCta}
       </section>
     </aside>`;
 
-    box.innerHTML = `<div class="dkc-layout"><div class="dkc-main">${body}</div>${aside}</div>`;
+    box.innerHTML = `<div class="dkc-t">${aside}<div class="dkc-t-main">${abasHtml}${resumo}${body}</div></div>`;
     const redraw = () => renderCommunity(box, logged);
-    const sel = box.querySelector("[data-dkc-sort]");
-    if (sel) sel.addEventListener("change", () => {
-      communitySort = sel.value;
-      try { localStorage.setItem("tcg-deck-community-sort", communitySort); } catch (e) { /* ignora */ }
+    box.querySelectorAll("[data-dkc-tab]").forEach((bt) => bt.addEventListener("click", () => {
+      communitySort = bt.dataset.dkcTab;
+      try { localStorage.setItem("tcg-deck-community-tab", communitySort); } catch (e) { /* ignora */ }
       redraw();
+    }));
+    box.querySelectorAll("[data-dkc-chip]").forEach((bt) => bt.addEventListener("click", () => {
+      if (communityGame === bt.dataset.dkcChip) return;
+      communityGame = bt.dataset.dkcChip;
+      redraw();
+    }));
+    const mais = box.querySelector("[data-dkc-more]");
+    if (mais) mais.addEventListener("toggle", () => {
+      if (window.matchMedia && window.matchMedia("(max-width: 900px)").matches) comFiltersOpen = mais.open;
     });
-    const gsel = box.querySelector("[data-dkc-game]");
-    if (gsel) gsel.addEventListener("change", () => { communityGame = gsel.value; redraw(); });
 
     // Régua de custo: arrastar só repinta o rótulo e a faixa cheia (barato); a
     // lista só é refeita no `change` (dedo/mouse soltos). Sem isso, cada pixel
@@ -698,6 +725,7 @@
     box.querySelectorAll("[data-dkc-clear]").forEach((b) => b.addEventListener("click", () => {
       communityCostMin = 0; communityCostMax = COM_COST_MAX;
       communityOnlyComplete = false; communityMaxMissing = null;
+      communityGame = "";
       redraw();
     }));
     if (comFocus) {
@@ -826,14 +854,6 @@
     };
     const haveOf = (e) => (owned.totalForCard ? owned.totalForCard(e.id) : 0);
 
-    // ── Grade × Lista ──────────────────────────────────────────────────────
-    // A grade mostra a ARTE; a lista mostra os DADOS (qtd, set·nº, preço
-    // unitário, se você já tem) — padrão Dreamborn/Limitless, e o formato que
-    // quem vai comprar as cartas realmente usa. Preferência lembrada.
-    const VIEW_KEY = "tcg-deck-public-view";
-    let pubView = "grid";
-    try { if (localStorage.getItem(VIEW_KEY) === "list") pubView = "list"; } catch (e) { /* ignora */ }
-
     // Dentro da ZONA, quebra por CATEGORIA de carta (Criaturas, Instantâneas,
     // Terrenos…). É como um deck de Magic é lido em qualquer lugar, e o
     // cardTypeGroup já devolve o tipo principal de cada jogo (categoria no
@@ -870,100 +890,210 @@
       return [...map.values()].sort((a, b) => (idx(a.key) - idx(b.key)) || (qtdDe(b.entries) - qtdDe(a.entries)));
     };
 
-    const linhaHtml = (e) => {
-      const card = byId[e.id];
-      const unit = unitOf(e);
-      const have = haveOf(e);
-      const thumb = card && card.image ? `<img src="${escA(card.image)}" alt="" loading="lazy">` : `<span class="deck-noimg"></span>`;
-      // data-art: fonte do preview que segue o cursor (ver hoverPreview).
-      return `<li class="deck-row dkc-row"${card && card.image ? ` data-art="${escA(card.image)}"` : ""}>
-        <span class="deck-qty">${esc(String(e.qty))}×</span>
-        <span class="dkc-row-thumb">${thumb}</span>
-        <span class="dkc-row-body">
-          <span class="deck-row-name">${esc((card && card.name) || e.id)}</span>
-          <span class="dkc-row-meta">${esc(card ? `${card.set || ""} ${card.number || ""}`.trim() : "")}</span>
-        </span>
-        ${logged && have >= e.qty ? `<span class="deck-own ok">${esc(t("decks.ownHave"))}</span>` : logged && have > 0 ? `<span class="deck-own part">${esc(t("decks.ownPartial").replace("{n}", String(have)))}</span>` : ""}
-        ${unit > 0 ? `<span class="dkc-row-price">${esc(money(unit))}</span>` : ""}
-      </li>`;
-    };
     const tileHtml = (e) => {
       const card = byId[e.id];
+      const have = haveOf(e);
+      const own = logged ? (have >= e.qty ? " is-have" : have > 0 ? " is-part" : "") : "";
       const img = card && card.image ? `<img src="${escA(card.image)}" alt="${escA(card.name || "")}" loading="lazy">` : `<span class="deck-noimg"></span>`;
-      return `<div class="deck-tile" title="${escA((card && card.name) || e.id)}">
+      return `<div class="deck-tile dkc-l-tile${own}" title="${escA((card && card.name) || e.id)}">
         <span class="deck-tile-img">${img}</span>
         <span class="deck-tile-qty">${esc(String(e.qty))}×</span>
       </div>`;
     };
-    const corpoHtml = (list) => (pubView === "list"
-      ? `<ul class="deck-list dkc-list">${list.map(linhaHtml).join("")}</ul>`
-      : `<div class="deck-tiles">${list.map(tileHtml).join("")}</div>`);
 
-    // Alça de arrastar (o "⠿" que todo reordenável usa). É <button> pra pegar
-    // foco e responder às setas — arrastar não pode ser o ÚNICO jeito.
-    const IC_GRIP = '<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>';
+    // ── Versão "Coleção" (2026-10-07): a LISTA é o modo padrão ──────────────
+    // Lista de compras, não vitrine: qtd, nome, custo (pip na cor da carta),
+    // a POSSE de quem olha (tenho / tenho parte / não tenho) e o preço da
+    // linha — o padrão Dreamborn/Limitless, com o diferencial do Sleevu (a
+    // coleção) em cada linha. Em duas colunas no desktop, e os grupos não
+    // quebram no meio. O preview que segue o cursor (data-art) mostra a carta.
+    const pack = rules.packFor(deck.game, deck.format);
+    const campoCusto = pack && typeof pack.curve === "string" ? pack.curve : null;
+    const campoCor = pack && typeof pack.dist === "string" ? pack.dist : null;
+    const coresDe = (v) => (Array.isArray(v) ? v : String(v || "").split(/[/,]/)).map((x) => String(x).trim()).filter(Boolean);
+    const custoDe = (card) => {
+      if (!campoCusto || !card) return null;
+      const v = Number(card[campoCusto]);
+      return card[campoCusto] == null || card[campoCusto] === "" || !Number.isFinite(v) ? null : v;
+    };
+    const IC_OK = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.7 2.7L16 9.8"/></svg>';
+    const IC_PART = '<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M12 3a9 9 0 0 1 0 18Z" fill="currentColor"/></svg>';
+    const IC_NO = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke-dasharray="3 3"/></svg>';
+    const posseHtml = (e) => {
+      if (!logged) return "";
+      const have = haveOf(e);
+      if (have >= e.qty) return `<span class="dkc-l-own is-have" title="${escA(t("decks.ownHave"))}">${IC_OK}</span>`;
+      if (have > 0) return `<span class="dkc-l-own is-part" title="${escA(t("decks.ownPartial").replace("{n}", String(have)))}">${IC_PART}<small>${esc(String(have))}/${esc(String(e.qty))}</small></span>`;
+      return `<span class="dkc-l-own is-none" title="${escA(t("decks.t.ownNone"))}">${IC_NO}</span>`;
+    };
+    const linhaHtml = (e) => {
+      const card = byId[e.id];
+      const unit = unitOf(e);
+      const custo = custoDe(card);
+      const cor = card && campoCor ? coresDe(card[campoCor]) : [];
+      const pip = custo == null ? "" : `<span class="dkc-l-pip" style="--pip:${escA(cor.length > 1 ? inkColor("multi") : inkColor(cor[0] || "none"))}">${esc(String(custo))}</span>`;
+      const thumb = card && card.image ? `<img src="${escA(card.image)}" alt="" loading="lazy" decoding="async">` : `<span class="deck-noimg"></span>`;
+      return `<li class="dkc-l-row"${card && card.image ? ` data-art="${escA(card.image)}"` : ""}>
+        <span class="dkc-l-qty">${esc(String(e.qty))}</span>
+        <span class="dkc-l-thumb">${thumb}</span>
+        <span class="dkc-l-name">${esc((card && card.name) || e.id)}</span>
+        ${pip}
+        ${posseHtml(e)}
+        <span class="dkc-l-price">${unit > 0 ? esc(money(unit * e.qty)) : ""}</span>
+      </li>`;
+    };
 
-    const zonesHtml = () => Object.keys(deck.zones).map((zk) => {
-      const list = deck.zones[zk];
-      if (!list.length) return "";
-      const label = t("decks.zone." + zk);
-      // "Ordem original" só aparece quando HÁ ordem própria: botão que não faz
-      // nada é ruído, e sem ele uma arrastada infeliz não teria volta.
-      const reset = lerOrdemCat(deck.game).length
-        ? `<button type="button" class="deck-cat-reset" data-dkc-cat-reset>${esc(t("decks.catReset"))}</button>`
-        : "";
-      const head = `<h3>${esc(label === "decks.zone." + zk ? zk : label)} <span class="deck-zone-n">${esc(String(qtdDe(list)))}</span>${reset}</h3>`;
-      const cats = categorias(list);
-      const corpo = (cats.length > 1)
-        ? cats.map((c) => `<div class="deck-cat" data-cat="${escA(c.key)}">
-            <h4 class="deck-cat-h">
-              <button type="button" class="deck-cat-grip" aria-label="${escA(t("decks.catDrag"))}" title="${escA(t("decks.catDrag"))}">${IC_GRIP}</button>
-              <span>${esc(c.label || t("decks.groupNone"))}</span> <span class="deck-cat-n">${esc(String(qtdDe(c.entries)))}</span>
-            </h4>
-            ${corpoHtml(c.entries)}
-          </div>`).join("")
-        : corpoHtml(list);
-      return `<section class="deck-zone">${head}${corpo}</section>`;
-    }).join("");
+    // Agrupar por TIPO (o de sempre, ordem canônica do jogo) ou por CUSTO
+    // (custo 0, 1, … 7+, quando o jogo tem custo numérico).
+    const VIEW_KEY = "tcg-deck-public-view-v2";
+    const GROUP_KEY = "tcg-deck-public-group";
+    const HIDE_KEY = "tcg-deck-public-hide-owned";
+    let pubView = "list";
+    let agrupar = "type";
+    let ocultar = false;
+    try {
+      if (localStorage.getItem(VIEW_KEY) === "grid") pubView = "grid";
+      if (campoCusto && localStorage.getItem(GROUP_KEY) === "cost") agrupar = "cost";
+      ocultar = logged && localStorage.getItem(HIDE_KEY) === "1";
+    } catch (e) { /* ignora */ }
+    const porCusto = (list) => {
+      const map = new Map();
+      list.forEach((e) => {
+        const c = custoDe(byId[e.id]);
+        const k = c == null ? "—" : c >= 7 ? "7+" : String(c);
+        if (!map.has(k)) map.set(k, { key: k, label: k === "—" ? t("decks.groupNone") : t("decks.t.costN", { n: k }), entries: [] });
+        map.get(k).entries.push(e);
+      });
+      const ordem = ["0", "1", "2", "3", "4", "5", "6", "7+", "—"];
+      return [...map.values()].sort((a, b) => ordem.indexOf(a.key) - ordem.indexOf(b.key));
+    };
+    const corpoHtml = (list) => (pubView === "grid"
+      ? `<div class="deck-tiles">${list.map(tileHtml).join("")}</div>`
+      : `<ul class="dkc-l-list">${list.map(linhaHtml).join("")}</ul>`);
+
+    // Comandante / Líder PRIMEIRO: é a carta que define o deck, e no deck
+    // publicado ela aparecia no fim, depois das 99.
+    const ZONA_TOPO = ["commander", "leader"];
+    const ordemZonas = Object.keys(deck.zones).sort((a, b) => {
+      const ia = ZONA_TOPO.indexOf(a), ib = ZONA_TOPO.indexOf(b);
+      return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib);
+    });
+    const zonesHtml = () => {
+      let escondidas = 0;
+      const html = ordemZonas.map((zk) => {
+        const todas = deck.zones[zk];
+        if (!todas.length) return "";
+        // "Ocultar o que já tenho": a lista vira a lista de COMPRAS.
+        const list = ocultar ? todas.filter((e) => haveOf(e) < e.qty) : todas;
+        escondidas += todas.length - list.length;
+        if (!list.length) return "";
+        const label = t("decks.zone." + zk);
+        const grupos = agrupar === "cost" ? porCusto(list) : categorias(list);
+        const head = `<h3>${esc(label === "decks.zone." + zk ? zk : label)} <span class="deck-zone-n">${esc(String(qtdDe(todas)))}</span></h3>`;
+        const corpo = grupos.length > 1
+          ? `<div class="dkc-l-cols">` + grupos.map((c) => `<div class="dkc-l-group">
+              <h4 class="deck-cat-h"><span>${esc(c.label || t("decks.groupNone"))}</span> <span class="deck-cat-n">${esc(String(qtdDe(c.entries)))}</span></h4>
+              ${corpoHtml(c.entries)}
+            </div>`).join("") + `</div>`
+          : corpoHtml(list);
+        return `<section class="deck-zone dkc-l-zone">${head}${corpo}</section>`;
+      }).join("");
+      const aviso = escondidas ? `<p class="dkc-l-hidden">${esc(t("decks.t.hiddenN", { n: escondidas }))}</p>` : "";
+      return (html || `<p class="deck-hint">${esc(t("decks.t.allOwned"))}</p>`) + aviso;
+    };
 
     // Data de publicação (created_at do share) — contexto de "quão atual é isto".
     let quando = "";
     try { if (row.created_at) quando = new Date(row.created_at).toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" }); } catch (e) { /* ignora */ }
     const formatLabel = deck.format ? `<span class="dkc-meta-item">${esc(t("decks.format." + deck.format))}</span>` : "";
 
+    // Capa da ficha: o comandante/líder (é a cara do deck); sem ele, a capa
+    // que quem publicou escolheu; sem ela, a primeira carta com imagem.
+    const capaCard = (() => {
+      for (const z of ZONA_TOPO) {
+        const e = (deck.zones[z] || [])[0];
+        if (e && byId[e.id] && byId[e.id].image) return byId[e.id].image;
+      }
+      const cover = row.data && typeof row.data.cover === "string" && /^https:\/\//.test(row.data.cover) ? row.data.cover : "";
+      if (cover) return cover;
+      const primeira = Object.values(deck.zones).flat().find((e) => byId[e.id] && byId[e.id].image);
+      return primeira ? byId[primeira.id].image : "";
+    })();
+    // Quanto do deck o visitante já tem, em CARTAS (o anel) e em R$.
+    const cartasTenho = Object.values(deck.zones).flat().reduce((s, e) => s + Math.min(e.qty, haveOf(e)), 0);
+    const cartasFalta = totalCartas - cartasTenho;
+    const pctTenho = totalCartas ? Math.round((cartasTenho / totalCartas) * 100) : 0;
+    const IC_HAND = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="9" height="13" rx="1.5" transform="rotate(-10 7.5 12.5)"/><rect x="12" y="5" width="9" height="13" rx="1.5" transform="rotate(8 16.5 11.5)"/></svg>';
+    const IC_CART = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2.5l2.2 10.5h10.6L20.5 7H7"/><circle cx="9.5" cy="19" r="1.4"/><circle cx="17" cy="19" r="1.4"/></svg>';
+
+    // Os três blocos da ficha (padrão Dreamborn: Total | Tenho % | Falta). Sem
+    // conta, o do meio e o da direita viram um convite: a posse vem da coleção
+    // de quem está logado.
+    const kpisHtml = () => !priceOk ? "" : `<div class="dkc-f-kpis${logged ? "" : " is-out"}">
+        <div class="dkc-f-kpi">
+          <span class="dkc-f-k">${esc(t("decks.valueTotal"))}</span>
+          <strong>${esc(money(total))}</strong>
+          <small>${esc(t("decks.cardsCount", { n: totalCartas }))}</small>
+        </div>
+        ${logged ? `<div class="dkc-f-kpi is-have">
+          <span class="dkc-f-k">${esc(t("decks.v.youHave"))}</span>
+          <div class="dkc-f-have">
+            <span class="dkc-f-ring" style="--p:${pctTenho}" role="img" aria-label="${escA(pctTenho + "%")}"><b>${esc(String(pctTenho))}%</b></span>
+            <span><strong>${esc(money(total - missing))}</strong><small>${esc(t("decks.t.ofCards", { n: cartasTenho, total: totalCartas }))}</small></span>
+          </div>
+        </div>
+        <div class="dkc-f-kpi is-miss">
+          <span class="dkc-f-k">${esc(t("decks.valueMissingYou"))}</span>
+          <strong>${esc(money(missing))}</strong>
+          <small>${esc(t("decks.cardsCount", { n: cartasFalta }))}</small>
+          ${missing > 0 ? `<button type="button" class="deck-mini dkc-f-buy" data-dkc-export-missing>${IC_CART}<span>${esc(t("decks.v.exportMissing"))}</span></button>` : ""}
+        </div>` : `<div class="dkc-f-kpi is-cta">
+          <span class="dkc-f-k">${esc(t("decks.t.yourCollection"))}</span>
+          <p>${esc(t("decks.t.loginPitch"))}</p>
+          <a class="cta" href="login">${esc(t("decks.t.loginCta"))}</a>
+        </div>`}
+      </div>`;
+
     const paint = () => {
       box.innerHTML = `
-      <div class="dkc-view-head">
+      <section class="dkc-f" data-game-accent="${escA(deck.game)}">
         <a href="decks" class="serie-back">${esc(t("decks.backCommunity"))}</a>
-        <div class="dkc-view-title">
-          <h2 class="dkc-view-name">${esc(deck.name)}</h2>
-          <div class="dkc-view-meta">
-            ${shared.gameTagHtml(deck.game)}
-            ${formatLabel}
-            <span class="dkc-meta-item">${esc(t("decks.cardsCount", { n: totalCartas }))}</span>
-            ${an.avgCost != null ? `<span class="dkc-meta-item">${esc(t("decks.avgCost"))}: ${esc(String(an.avgCost))}</span>` : ""}
-            ${deck.author ? `<span class="dkc-author">${authorHtml(deck.author)}</span>` : ""}
-            ${quando ? `<span class="dkc-meta-item dkc-meta-date">${esc(quando)}</span>` : ""}
+        <div class="dkc-f-top">
+          ${capaCard ? `<span class="dkc-f-cover" data-art="${escA(capaCard)}"><img src="${escA(capaCard)}" alt="" decoding="async"></span>` : ""}
+          <div class="dkc-f-id">
+            <div class="dkc-view-meta">
+              ${shared.gameTagHtml(deck.game)}
+              ${formatLabel}
+              <span class="dkc-meta-item">${esc(t("decks.cardsCount", { n: totalCartas }))}</span>
+              ${an.avgCost != null ? `<span class="dkc-meta-item">${esc(t("decks.avgCost"))}: ${esc(String(an.avgCost))}</span>` : ""}
+            </div>
+            <h1 class="dkc-f-title">${esc(deck.name)}</h1>
+            <p class="dkc-f-by">${deck.author ? `<span class="dkc-author">${authorHtml(deck.author)}</span>` : ""}${quando ? `<span class="dkc-meta-date">${esc(quando)}</span>` : ""}</p>
+            <div class="dkc-f-acts">
+              <button type="button" class="cta" data-dkc-copy>${esc(t(logged ? "decks.copyToMine" : "decks.loginToCopy"))}</button>
+              <button type="button" class="deck-mini" data-dkc-goldfish>${IC_HAND}<span>${esc(t("decks.goldfish"))}</span></button>
+              <button type="button" class="deck-mini" data-dkc-export>${esc(t("decks.exportList"))}</button>
+            </div>
           </div>
         </div>
-        <div class="dkc-view-acts">
-          <div class="deck-lays dkc-lays" role="group" aria-label="Layout">
-            <button type="button" class="deck-lay${pubView === "grid" ? " on" : ""}" data-dkc-view="grid" aria-pressed="${pubView === "grid"}" title="${escA(t("decks.layout.grid"))}"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg></button>
-            <button type="button" class="deck-lay${pubView === "list" ? " on" : ""}" data-dkc-view="list" aria-pressed="${pubView === "list"}" title="${escA(t("decks.layout.list"))}"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-          </div>
-          <button type="button" class="deck-mini" data-dkc-export>${esc(t("decks.exportList"))}</button>
-          <button type="button" class="cta" data-dkc-copy>${esc(t(logged ? "decks.copyToMine" : "decks.loginToCopy"))}</button>
+        ${kpisHtml()}
+      </section>
+      <div class="dkc-f-bar">
+        <div class="deck-lays dkc-lays" role="group" aria-label="${escA(t("decks.v.viewAs"))}">
+          <button type="button" class="deck-lay${pubView === "list" ? " on" : ""}" data-dkc-view="list" aria-pressed="${pubView === "list"}" title="${escA(t("decks.layout.list"))}" aria-label="${escA(t("decks.layout.list"))}"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+          <button type="button" class="deck-lay${pubView === "grid" ? " on" : ""}" data-dkc-view="grid" aria-pressed="${pubView === "grid"}" title="${escA(t("decks.layout.grid"))}" aria-label="${escA(t("decks.layout.grid"))}"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg></button>
         </div>
+        ${campoCusto ? `<label class="dkc-f-group"><span>${esc(t("decks.t.groupBy"))}</span>
+          <select class="deck-view-sel" data-dkc-group>
+            <option value="type"${agrupar === "type" ? " selected" : ""}>${esc(t("decks.t.groupType"))}</option>
+            <option value="cost"${agrupar === "cost" ? " selected" : ""}>${esc(t("decks.t.groupCost"))}</option>
+          </select></label>` : ""}
+        ${logged ? `<label class="dkc-check dkc-f-hide"><input type="checkbox" data-dkc-hide${ocultar ? " checked" : ""}><span>${esc(t("decks.t.hideOwned"))}</span></label>` : ""}
+        <span class="dkc-f-total">${esc(t("decks.cardsCount", { n: totalCartas }))}${priceOk ? ` · <b>${esc(money(total))}</b>` : ""}${logged && priceOk && missing > 0 ? ` · <em>${esc(t("decks.t.missingMoney", { v: money(missing) }))}</em>` : ""}</span>
       </div>
       <div class="dkc-view-cols">
         <div class="dkc-view-main">${zonesHtml()}</div>
         <aside class="dkc-view-side">
-          ${priceOk ? `<section class="deck-value dkc-value">
-            <h3>${esc(t("decks.value"))}</h3>
-            <div class="deck-value-row"><span>${esc(t("decks.valueTotal"))}</span><strong>${esc(money(total))}</strong></div>
-            <div class="deck-value-row"><span>${esc(t("decks.valueHave"))}</span><strong class="have">${esc(money(total - missing))}</strong></div>
-            <div class="deck-value-row missing"><span>${esc(t("decks.valueMissingYou"))}</span><strong>${esc(money(missing))}</strong></div>
-          </section>` : ""}
           ${analiseHtml}
         </aside>
       </div>`;
@@ -972,10 +1102,24 @@
 
     function bind() {
       box.querySelectorAll("[data-dkc-view]").forEach((b) => b.addEventListener("click", () => {
-        pubView = b.dataset.dkcView === "list" ? "list" : "grid";
+        pubView = b.dataset.dkcView === "grid" ? "grid" : "list";
         try { localStorage.setItem(VIEW_KEY, pubView); } catch (e) { /* ignora */ }
         paint();
       }));
+      const selG = box.querySelector("[data-dkc-group]");
+      if (selG) selG.addEventListener("change", () => {
+        agrupar = selG.value === "cost" ? "cost" : "type";
+        try { localStorage.setItem(GROUP_KEY, agrupar); } catch (e) { /* ignora */ }
+        paint();
+      });
+      const chkH = box.querySelector("[data-dkc-hide]");
+      if (chkH) chkH.addEventListener("change", () => {
+        ocultar = chkH.checked;
+        try { localStorage.setItem(HIDE_KEY, ocultar ? "1" : "0"); } catch (e) { /* ignora */ }
+        paint();
+        const de = box.querySelector("[data-dkc-hide]");
+        if (de) de.focus();
+      });
       bindCatDrag(box, deck.game, paint);
       box.querySelectorAll("[data-dkc-cat-reset]").forEach((b) => b.addEventListener("click", () => {
         limparOrdemCat(deck.game);
@@ -985,6 +1129,23 @@
       // Exportar não exige conta: é o "me passa a lista" de quem viu o deck
       // (comprar pela Liga, montar no Archidekt). Sai na ordem do deck publicado.
       box.querySelector("[data-dkc-export]").addEventListener("click", () => abrirExportDeck(deck, byId));
+      // "Exportar o que falta": a mesma lista, só com o que a coleção de quem
+      // olha NÃO cobre (qtd do deck − qtd que tenho). Vai direto pra Compra
+      // por Lista da Liga ou pro carrinho de quem for comprar.
+      const bFalta = box.querySelector("[data-dkc-export-missing]");
+      if (bFalta) bFalta.addEventListener("click", () => {
+        const zones = {};
+        Object.keys(deck.zones).forEach((k) => {
+          zones[k] = deck.zones[k].map((e) => ({ id: e.id, qty: Math.max(0, e.qty - haveOf(e)) })).filter((e) => e.qty > 0);
+        });
+        abrirExportDeck(Object.assign({}, deck, { zones, name: deck.name + " " + t("decks.v.missingSuffix") }), byId);
+      });
+      // Testar mão no deck de OUTRA pessoa: o módulo do editor (goldfish.js) já
+      // vem nesta página — só faltava o botão. Não precisa de conta.
+      const bMao = box.querySelector("[data-dkc-goldfish]");
+      if (bMao) bMao.addEventListener("click", () => {
+        if (window.TCGGoldfish) window.TCGGoldfish.abrir({ game: deck.game, format: deck.format, zones: deck.zones }, pack, byId);
+      });
     }
 
     paint();
