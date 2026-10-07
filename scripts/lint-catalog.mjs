@@ -204,7 +204,7 @@ async function checarEstabilidadeDeId() {
       }
       const tipo = classificaMudanca(jogo, id, antigo, nova);
       if (tipo === "repontado") repontados.push(`${id} (${assinatura(antigo)} -> ${assinatura(nova)})`);
-      else if (tipo === "movido") movidos.push(`${id} (${antigo.setId} -> ${nova.setId})`);
+      else if (tipo === "movido") movidos.push(`${id} (${antigo.setId} -> ${nova.setId}${antigo.name !== nova.name ? `, "${antigo.name}" -> "${nova.name}"` : ""})`);
       else if (tipo === "renumerado") renumerados.push(`${id} (nº ${antigo.number} -> ${nova.number})`);
     }
     const lista = (arr) => arr.slice(0, 10).join(", ") + (arr.length > 10 ? `, +${arr.length - 10}` : "");
@@ -212,7 +212,7 @@ async function checarEstabilidadeDeId() {
     if (mudaramDeJogo.length) console.log(`  estabilidade de id: ${jogo} — ${mudaramDeJogo.length} id(s) mudaram de JOGO, com o mesmo id (a conta de quem marcou migra): ${lista(mudaramDeJogo)}`);
     if (sumidos.length) { achou = true; (ACEITA_ID ? warnings : errors).push(`${jogo}: ${sumidos.length} id(s) PUBLICADO(S) sumiram do catálogo — some da coleção de quem tem: ${lista(sumidos)}`); }
     if (repontados.length) { achou = true; (ACEITA_ID ? warnings : errors).push(`${jogo}: ${repontados.length} id(s) passaram a apontar pra OUTRA carta (idioma/set): ${lista(repontados)}`); }
-    if (movidos.length) warnings.push(`${jogo}: ${movidos.length} id(s) o TCGplayer mudou de set (mesmo produto, mesmo nome — a carta de quem tem não muda): ${lista(movidos)}`);
+    if (movidos.length) warnings.push(`${jogo}: ${movidos.length} id(s) o TCGplayer mudou de set (mesmo produto, mesmo nome ou só qualificador a mais/a menos — a carta de quem tem não muda): ${lista(movidos)}`);
     if (renumerados.length) warnings.push(`${jogo}: ${renumerados.length} id(s) mudaram de número (mesma carta?): ${lista(renumerados)}`);
     if (!sumidos.length && !repontados.length) {
       const extras = [movidos.length && `${movidos.length} mudado(s) de set na fonte`, renumerados.length && `${renumerados.length} renumerado(s)`].filter(Boolean);

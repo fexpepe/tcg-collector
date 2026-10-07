@@ -75,7 +75,7 @@ aparecer no passo "Lint dos catálogos" do deploy:
 |---|---|---|
 | `N id(s) PUBLICADO(S) sumiram do catálogo` | erro, deploy barrado | a fonte tirou ou re-identificou cartas. Achar o motivo antes de tudo. O `--aceitar-mudanca-de-id` só entra com a lista de quem perde carta na mão |
 | `N id(s) passaram a apontar pra OUTRA carta` | erro, deploy barrado | o mesmo: é o caso que troca a carta da pessoa por outra |
-| `N id(s) o TCGplayer mudou de set` | aviso | nada: é o mesmo produto (exceção `ID_DE_PRODUTO`, item A5) |
+| `N id(s) o TCGplayer mudou de set` | aviso | nada: é o mesmo produto (exceção `ID_DE_PRODUTO`, item A5). Vale com o nome igual, ou com o mesmo número e o nome só ganhando/perdendo qualificador no fim (`… (Alternate Art)`); o item da lista mostra o nome antigo e o novo |
 | `N id(s) mudaram de número` | aviso | conferir se é só formatação da fonte (`4/102` → `4`) |
 | `N cartas < régua` ou `imagens X% (régua Y%)` | aviso | regressão da fonte? Conferir antes de rodar `--update-baseline` |
 
