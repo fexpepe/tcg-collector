@@ -1056,7 +1056,7 @@
               <p class="dkc-v-by">${deck.author ? `<span class="dkc-author">${authorHtml(deck.author)}</span>` : ""}${quando ? `<span class="dkc-meta-date">${esc(quando)}</span>` : ""}</p>
               ${priceOk ? `<div class="dkc-v-kpis">
                 <div class="dkc-v-kpi"><span>${esc(t("decks.valueTotal"))}</span><strong>${esc(money(total))}</strong></div>
-                ${logged ? `<div class="dkc-v-kpi"><span>${esc(t("decks.v.youHave"))}</span><strong class="have">${esc(t("decks.v.havePct", { pct: pctTenho }))}</strong><small>${esc(money(total - missing))}</small></div>
+                ${logged ? `<div class="dkc-v-kpi"><span>${esc(t("decks.v.youHave"))}</span><strong class="have">${esc(String(pctTenho))}%</strong><small>${esc(money(total - missing))}</small></div>
                 <div class="dkc-v-kpi"><span>${esc(t("decks.valueMissingYou"))}</span><strong class="miss">${esc(money(missing))}</strong></div>`
                   : `<div class="dkc-v-kpi dkc-v-kpi-in"><span>${esc(t("decks.v.youHave"))}</span><a href="login">${esc(t("decks.v.loginCompare"))}</a></div>`}
               </div>` : ""}
