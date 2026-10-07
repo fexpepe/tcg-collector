@@ -11901,16 +11901,11 @@ select,
    da galeria e do deck aberto, empurrando o conteúdo pra baixo da dobra. O
    título "Decks da comunidade" já diz o que é a página (2026-10-02). */
 @media (max-width: 700px) { .dkc-lead { display: none; } }
-.dkc-view-head { display: flex; align-items: center; gap: 13px; flex-wrap: wrap; margin-bottom: 16px; }
-.dkc-view-name { margin: 0; font-size: 22px; letter-spacing: -0.01em; }
-.dkc-view-head .cta { margin-left: auto; }
 .dkc-author { font-size: 13px; color: var(--subtle); font-weight: 700; }
 
-/* Cabeçalho do deck publicado: título + linha de metadados (jogo, formato,
-   nº de cartas, custo médio, autor, data) e as ações à direita. Os metadados
-   são o "cartão de visita" do deck — o que os builders de referência põem
-   acima da dobra. Separador por ponto médio via CSS, não no texto. */
-.dkc-view-title { flex: 1; min-width: 240px; }
+/* Linha de metadados do deck aberto (jogo, formato, nº de cartas, custo
+   médio) — o "cartão de visita" do deck, no topo do banner/da ficha.
+   Separador por ponto médio via CSS, não no texto. */
 .dkc-view-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 10px; margin-top: 6px; }
 /* ESCOPADAS no .dkc-view-meta de propósito: a galeria usa a MESMA classe
    .dkc-meta-item, só que empilhada (rótulo em cima, valor embaixo) e separada
@@ -11922,16 +11917,6 @@ select,
 .dkc-view-meta .dkc-meta-item + .dkc-author::before,
 .dkc-view-meta .dkc-author + .dkc-meta-item::before { content: "·"; margin-right: 10px; color: var(--subtle); }
 .dkc-meta-date { color: var(--subtle); }
-/* wrap: com o "Exportar lista" (2026-10-02) são três controles, e no celular
-   o CTA desce pra linha de baixo em vez de vazar a tela. Lá a fileira pega a
-   largura toda: o Exportar completa a linha dos ícones e o CTA desce inteiro
-   (sozinho e encostado à direita, parecia sobra de layout). */
-.dkc-view-acts { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-left: auto; }
-@media (max-width: 640px) {
-  .dkc-view-acts { width: 100%; margin-left: 0; }
-  .dkc-view-acts .deck-mini { flex: 1; }
-  .dkc-view-acts .cta { flex: 1 1 100%; margin-left: 0; }
-}
 .dkc-lays { display: flex; gap: 6px; }
 /* padding 0: estes botões herdam `padding: 0 16px` da regra genérica de botão.
    Com 40px de largura sobravam 6px de área interna, e o `max-width: 100%` do
@@ -11981,8 +11966,7 @@ select,
    Empilha no mobile: as cartas primeiro, o contexto embaixo. */
 .dkc-view-cols { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 18px; align-items: start; }
 .dkc-view-side { display: grid; gap: 14px; position: sticky; top: 74px; }
-.dkc-value { margin: 0; }
-.dkc-value h3, .dkc-analysis h3 { margin: 0 0 10px; font-size: 15px; }
+.dkc-analysis h3 { margin: 0 0 10px; font-size: 15px; }
 /* "Custo médio: 2,4" ao lado do título da Análise — número pequeno, tom de
    apoio; referência direta do "Avg. cost" dos builders de torneio. */
 .deck-avg { font-size: 12.5px; font-weight: 700; color: var(--muted); margin-left: 8px; }
