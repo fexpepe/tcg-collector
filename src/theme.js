@@ -141,14 +141,56 @@
   // --- "Tentar de novo" da saída de emergência (.falha-boot) --------------
   // É um href="" (recarregar a própria tela). Nas telas com <base href="/">
   // (a de Sets e a do set, que respondem em /games/…) ele resolveria na raiz e
-  // levaria pro início; data-recarrega pede a URL de verdade. Aqui, e não no
-  // app, porque a saída existe justamente pra quando o app não subiu.
+  // levaria pro início; data-recarrega pede a URL de verdade. Quem acerta o
+  // href primeiro é o <script> logo depois do link, no próprio HTML: ele roda
+  // até quando ESTE arquivo não chegou (o boot.js com 404 é justamente um dos
+  // jeitos de o cartão aparecer). Aqui fica a reserva pra página que saiu sem
+  // a CSP de nonce (aí o <script> do HTML é barrado), e no TOQUE: até
+  // 2026-10-07 era no DOMContentLoaded, que espera os scripts `defer` — com o
+  // shared.js ainda baixando, o cartão aparecia aos 15 s com o href vazio e
+  // "Tentar de novo" levava pro início (sets do Cyberpunk, no celular).
   try {
-    document.addEventListener("DOMContentLoaded", function () {
-      var retry = document.querySelector(".falha-boot [data-recarrega]");
+    document.addEventListener("click", function (e) {
+      var retry = e.target && e.target.closest && e.target.closest(".falha-boot [data-recarrega]");
       if (retry) retry.href = location.href;
-    });
+    }, true);
   } catch (e) { /* sem DOM de verdade: sem saída de emergência pra acertar */ }
+
+  // --- A saída de emergência deixa rastro (2026-10-07) --------------------
+  // O cartão aparece pelo CSS, e nada chegava ao /admin: a pessoa via "Esta
+  // tela não terminou de carregar" e o painel ficava zerado. Aos 15 s sem
+  // data-app (a mesma régua do CSS), a tela guarda uma marca com o endereço e
+  // os scripts do site que ainda não tinham chegado; a PRÓXIMA página (a do
+  // "Tentar de novo", ou a do início) a põe na fila, e o shared.js dela manda
+  // com o aparelho e o navegador. Na própria tela não dá: o shared.js é o que
+  // não subiu. Só o endereço, sem a query (a mesma regra do resto do rastreio).
+  // O cartão que aparece NA HORA (sem data-game: este arquivo nem rodou) não
+  // deixa marca — não há JS do site pra marcar. Página sem o cartão (as
+  // pré-renderizadas carregam este arquivo sem o shared.js e nunca ganham o
+  // data-app) também não.
+  try {
+    var MARCA_FALHA = "sleevu-falha-boot";
+    var marca = sessionStorage.getItem(MARCA_FALHA);
+    if (marca) {
+      sessionStorage.removeItem(MARCA_FALHA);
+      poe(JSON.parse(marca));
+    }
+    setTimeout(function () {
+      try {
+        if (document.documentElement.hasAttribute("data-app") || !document.querySelector(".falha-boot")) return;
+        var chegou = {};
+        (performance.getEntriesByType ? performance.getEntriesByType("resource") : []).forEach(function (r) { chegou[r.name] = 1; });
+        var faltam = [].filter.call(document.scripts, function (s) {
+          return s.src && s.src.indexOf(location.origin + "/") === 0 && !chegou[s.src];
+        }).map(function (s) { return s.src.slice(location.origin.length + 1); });
+        sessionStorage.setItem(MARCA_FALHA, JSON.stringify({
+          k: "falha",
+          m: "saída de emergência: a tela não subiu em 15 s",
+          s: location.pathname + (faltam.length ? " · faltavam " + faltam.slice(0, 3).join(" ") : "")
+        }));
+      } catch (e) { /* sem armazenamento: o cartão segue valendo, só sem rastro */ }
+    }, 15000);
+  } catch (e) { /* sem fila ou sem armazenamento: sem rastro */ }
 
   // --- Tema: salvo > prefers-color-scheme ---------------------------------
   try {
