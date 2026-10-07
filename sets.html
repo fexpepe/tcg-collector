@@ -52,12 +52,17 @@
   </head>
   <body>
     <!-- Saída de emergência: só aparece se o app não subir (ver .falha-boot no
-         styles.css). O "Tentar de novo" leva data-recarrega: o theme.js troca o
-         href="" pela URL da própria tela (com o <base href="/"> desta página, o
-         href="" sozinho resolveria na raiz e levaria pro início). -->
+         styles.css). Com o <base href="/"> desta página, o href="" do "Tentar
+         de novo" resolveria na raiz e levaria pro início: o <script> logo
+         depois do link põe a URL da própria tela. Inline, e não no theme.js,
+         porque o cartão aparece justamente quando os arquivos do app não
+         rodaram (2026-10-07: boot.js que não chega levava pro início); a borda
+         carimba o nonce da CSP nele como em todo <script> desta página
+         (functions/_vitrine-csp.js). O theme.js segura a reserva no toque. -->
     <div class="falha-boot" hidden>
       <p data-i18n="boot.stuck">Esta tela não terminou de carregar.</p>
       <a class="primary" href="" data-recarrega data-i18n="boot.retry">Tentar de novo</a>
+      <script>document.currentScript.previousElementSibling.href = location.href;</script>
       <a class="secondary" href="/" data-i18n="boot.home">Ir para o início</a>
     </div>
     <header class="app-header">
