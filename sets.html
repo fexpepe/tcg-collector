@@ -8,6 +8,16 @@
          detail?… da grade) resolveriam dentro de /games/ e quebrariam. Em /sets
          é inócuo (já é raiz). -->
     <base href="/">
+    <!-- "Tentar de novo" da saída de emergência (.falha-boot, no começo do
+         <body>): com a base acima, o href="" dele resolveria na raiz e levaria
+         pro início. Este ouvinte põe a URL da tela no link NA HORA DO TOQUE.
+         Inline e aqui no <head>: roda antes de qualquer arquivo do app (o
+         cartão aparece justamente quando eles não rodaram) e antes de o cartão
+         existir. Um <script> logo depois do link perdia a corrida: o cartão
+         pintava antes de ele rodar (medido em produção, 2026-10-07). A borda
+         carimba o nonce da CSP em todo <script> desta página
+         (functions/_vitrine-csp.js); sem nonce, a reserva é a do theme.js. -->
+    <script>document.addEventListener("click", function (e) { var a = e.target && e.target.closest && e.target.closest(".falha-boot [data-recarrega]"); if (a) a.href = location.href; }, true);</script>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title data-i18n="title.sets">Sets - Sleevu</title>
     <meta name="description" content="Todos os sets de Pokémon TCG — internacionais, japoneses e chineses — com progresso de coleção e datas de lançamento.">
@@ -52,17 +62,12 @@
   </head>
   <body>
     <!-- Saída de emergência: só aparece se o app não subir (ver .falha-boot no
-         styles.css). Com o <base href="/"> desta página, o href="" do "Tentar
-         de novo" resolveria na raiz e levaria pro início: o <script> logo
-         depois do link põe a URL da própria tela. Inline, e não no theme.js,
-         porque o cartão aparece justamente quando os arquivos do app não
-         rodaram (2026-10-07: boot.js que não chega levava pro início); a borda
-         carimba o nonce da CSP nele como em todo <script> desta página
-         (functions/_vitrine-csp.js). O theme.js segura a reserva no toque. -->
+         styles.css). O "Tentar de novo" leva data-recarrega: o ouvinte inline
+         do <head> troca o href="" pela URL da própria tela no toque (com o
+         <base href="/"> desta página, o href="" sozinho levaria pro início). -->
     <div class="falha-boot" hidden>
       <p data-i18n="boot.stuck">Esta tela não terminou de carregar.</p>
       <a class="primary" href="" data-recarrega data-i18n="boot.retry">Tentar de novo</a>
-      <script>document.currentScript.previousElementSibling.href = location.href;</script>
       <a class="secondary" href="/" data-i18n="boot.home">Ir para o início</a>
     </div>
     <header class="app-header">
