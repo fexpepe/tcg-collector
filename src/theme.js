@@ -142,13 +142,13 @@
   // É um href="" (recarregar a própria tela). Nas telas com <base href="/">
   // (a de Sets e a do set, que respondem em /games/…) ele resolveria na raiz e
   // levaria pro início; data-recarrega pede a URL de verdade. Quem acerta o
-  // href primeiro é o <script> logo depois do link, no próprio HTML: ele roda
+  // href é um ouvinte inline no <head> dessas duas páginas, no toque: ele roda
   // até quando ESTE arquivo não chegou (o boot.js com 404 é justamente um dos
   // jeitos de o cartão aparecer). Aqui fica a reserva pra página que saiu sem
-  // a CSP de nonce (aí o <script> do HTML é barrado), e no TOQUE: até
-  // 2026-10-07 era no DOMContentLoaded, que espera os scripts `defer` — com o
-  // shared.js ainda baixando, o cartão aparecia aos 15 s com o href vazio e
-  // "Tentar de novo" levava pro início (sets do Cyberpunk, no celular).
+  // a CSP de nonce (aí o inline é barrado), também no TOQUE: até 2026-10-07
+  // era no DOMContentLoaded, que espera os scripts `defer` — com o shared.js
+  // ainda baixando, o cartão aparecia aos 15 s com o href vazio e "Tentar de
+  // novo" levava pro início (sets do Cyberpunk, no celular).
   try {
     document.addEventListener("click", function (e) {
       var retry = e.target && e.target.closest && e.target.closest(".falha-boot [data-recarrega]");

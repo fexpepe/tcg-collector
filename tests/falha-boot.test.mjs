@@ -10,8 +10,10 @@
 //   - um script `defer` (shared.js) ainda baixando aos 15 s: o cartão aparece
 //     e o DOMContentLoaded, que espera os `defer`, ainda não disparou.
 // Reproduzido em produção com o Chromium nos dois modos. Trava:
-//   - toda página com data-recarrega tem, logo depois do link, o <script>
-//     inline que põe location.href nele (roda sem nenhum arquivo do app);
+//   - toda página com data-recarrega e <base> tem, no <head>, o ouvinte
+//     inline que põe location.href no link NO TOQUE (roda sem nenhum arquivo
+//     do app). A 1ª versão era um <script> logo depois do link, e perdia a
+//     corrida: o cartão pintava antes de ele rodar (medido em produção);
 //   - o theme.js acerta o href NO TOQUE (reserva pra página sem nonce);
 //   - aos 15 s sem data-app, o theme.js guarda uma marca que a próxima página
 //     põe na fila de erros (o /admin passa a ver a saída de emergência).
@@ -26,35 +28,47 @@ import vm from "node:vm";
 const raiz = join(dirname(fileURLToPath(import.meta.url)), "..");
 const ler = (f) => readFileSync(join(raiz, f), "utf8");
 const THEME = ler("src/theme.js");
-const RETRY = /<a [^>]*data-recarrega[^>]*>[^<]*<\/a>\s*<script>([^<]*)<\/script>/;
+// O ouvinte inline do <head>: o 1º <script> sem src que cita o data-recarrega.
+const OUVINTE = /<script>([^<]*\[data-recarrega\][^<]*)<\/script>/;
+const cabeca = (html) => html.slice(0, html.indexOf("</head>"));
 
-test("toda página com o \"Tentar de novo\" acerta o link no próprio HTML", () => {
+test("toda página com <base> e o \"Tentar de novo\" acerta o link desde o <head>", () => {
   const paginas = readdirSync(raiz).filter((f) => f.endsWith(".html") && /data-recarrega/.test(ler(f)));
   assert.ok(paginas.includes("detail.html") && paginas.includes("sets.html"), `páginas com data-recarrega: ${paginas.join(", ")}`);
   for (const f of paginas) {
     const html = ler(f);
-    assert.match(html, RETRY, `${f}: o <script> não está logo depois do link data-recarrega`);
-    // Página que depende disto (com <base>) precisa sair pela borda com nonce:
-    // o _headers barra script inline (script-src 'self').
-    if (/<base href=/.test(html)) {
-      const funcao = { "detail.html": "functions/detail.js", "sets.html": "functions/sets.js" }[f];
-      assert.ok(funcao, `${f}: <base> + data-recarrega numa página que não sai pela vitrine (sem nonce, o script inline é barrado)`);
-      assert.match(ler(funcao), /comVitrine|paginaComVitrine/, `${funcao} não passa pela CSP com nonce`);
-    }
+    if (!/<base href=/.test(html)) continue; // sem <base>, o href="" já é a própria tela
+    assert.match(cabeca(html), OUVINTE, `${f}: sem o ouvinte inline no <head>`);
+    assert.ok(cabeca(html).indexOf("<base") < cabeca(html).search(OUVINTE), `${f}: o ouvinte tem de vir depois do <base> (é dele que o link depende)`);
+    assert.doesNotMatch(html, /<\/a>\s*<script>/, `${f}: voltou o <script> depois do link, que perde a corrida pro cartão`);
+    // Precisa sair pela borda com nonce: o _headers barra script inline
+    // (script-src 'self').
+    const funcao = { "detail.html": "functions/detail.js", "sets.html": "functions/sets.js" }[f];
+    assert.ok(funcao, `${f}: <base> + data-recarrega numa página que não sai pela vitrine (sem nonce, o script inline é barrado)`);
+    assert.match(ler(funcao), /comVitrine|paginaComVitrine/, `${funcao} não passa pela CSP com nonce`);
   }
   // As telas do endereço /games/... (detail e sets decorados) também saem com nonce.
   assert.match(ler("functions/games/[[path]].js"), /comVitrine\(/);
   assert.match(ler("functions/_vitrine-csp.js"), /\.on\("script", \{ element\(el\) \{ el\.setAttribute\("nonce", nonce\)/, "o nonce tem de ir em TODO <script>, inclusive o inline");
 });
 
-test("o <script> do HTML põe a URL da tela no link, sem nenhum arquivo do app", () => {
-  const codigo = ler("detail.html").match(RETRY)[1];
-  const link = { href: "" };
-  vm.runInNewContext(codigo, {
-    document: { currentScript: { previousElementSibling: link } },
-    location: { href: "https://sleevu.app/games/cyberpunk-tcg/welcome-to-night-city-beta" }
-  });
-  assert.equal(link.href, "https://sleevu.app/games/cyberpunk-tcg/welcome-to-night-city-beta");
+test("o ouvinte do <head> põe a URL da tela no link no toque, sem nenhum arquivo do app", () => {
+  for (const f of ["detail.html", "sets.html"]) {
+    const codigo = cabeca(ler(f)).match(OUVINTE)[1];
+    const ouvintes = {};
+    vm.runInNewContext(codigo, {
+      document: { addEventListener: (tipo, fn, captura) => { ouvintes[tipo] = { fn, captura: !!captura }; } },
+      location: { href: "https://sleevu.app/games/cyberpunk-tcg/welcome-to-night-city-beta" }
+    });
+    assert.ok(ouvintes.click && ouvintes.click.captura, `${f}: o ouvinte tem de ser de clique, na captura`);
+    const link = { href: "" };
+    ouvintes.click.fn({ target: { closest: (sel) => (sel === ".falha-boot [data-recarrega]" ? link : null) } });
+    assert.equal(link.href, "https://sleevu.app/games/cyberpunk-tcg/welcome-to-night-city-beta", f);
+    const outro = { href: "/x" };
+    ouvintes.click.fn({ target: { closest: () => null } });
+    ouvintes.click.fn({ target: null });
+    assert.equal(outro.href, "/x");
+  }
 });
 
 // theme.js num navegador de mentira, com relógio e armazenamento controlados.
