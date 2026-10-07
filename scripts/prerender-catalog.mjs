@@ -672,8 +672,55 @@ function cardNamesFor(game) {
   return map;
 }
 
+// Zonas na ordem da página: comandante/líder (a cara do deck) primeiro.
+const DECK_ZONA_ROTULO = { commander: "Comandante", leader: "Líder", main: "Deck", side: "Side Deck", extra: "Extra Deck", egg: "Deck de Ovos", maybe: "Talvez" };
+const DECK_ZONA_TOPO = ["commander", "leader"];
+const ordemDasZonas = (zonas) => Object.keys(zonas).sort((a, b) => {
+  const ia = DECK_ZONA_TOPO.indexOf(a), ib = DECK_ZONA_TOPO.indexOf(b);
+  return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib);
+});
+
+// Versão "Vitrine" (2026-10-07), a mesma do deck aberto no app: banner escuro
+// com a arte da capa desfocada no fundo, a carta ao lado, nome, jogo, custo
+// de referência e o CTA. Antes era system-ui em fundo fixo, sem o cabeçalho
+// do site. A folha "decks" do split-css não chega aqui (a página só carrega o
+// styles.css núcleo), então o desenho mora neste <style>, como o PR_STYLE.
+const DECK_STYLE = `    <style>
+${ESTILO_DO_CABECALHO}
+      .dk-wrap { max-width: 1100px; margin: 0 auto; padding: 16px 20px 56px; }
+      .dk-banner { position: relative; isolation: isolate; overflow: hidden; border: 1px solid var(--line, #2d333f); background: #11141a; color: #f3f5f7; }
+      .dk-bg { position: absolute; inset: -30px; z-index: -2; width: calc(100% + 60px); height: calc(100% + 60px); max-width: none; object-fit: cover; object-position: 50% 24%; filter: blur(14px) saturate(1.2); opacity: 0.8; }
+      .dk-banner::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, rgba(10, 12, 16, 0.93) 0%, rgba(10, 12, 16, 0.72) 50%, rgba(10, 12, 16, 0.3) 100%); }
+      .dk-in { padding: clamp(16px, 2.6vw, 30px); }
+      .dk-back { font-size: 13px; font-weight: 700; color: rgba(243, 245, 247, 0.8); text-decoration: none; }
+      .dk-grid { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: clamp(16px, 2.6vw, 30px); align-items: start; margin-top: 14px; }
+      .dk-card { display: block; width: clamp(110px, 13vw, 184px); height: auto; aspect-ratio: 63 / 88; object-fit: cover; border-radius: 4.5% / 3.2%; box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5); }
+      .dk-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin: 0; font-size: 13px; font-weight: 700; color: rgba(243, 245, 247, 0.78); }
+      .dk-tag { padding: 3px 8px; background: rgba(243, 245, 247, 0.14); color: #f3f5f7; }
+      .dk-banner h1 { margin: 8px 0 6px; font-size: clamp(24px, 3.2vw, 38px); font-weight: 800; line-height: 1.08; letter-spacing: -0.02em; }
+      .dk-price { margin: 0; font-size: 14px; color: rgba(243, 245, 247, 0.8); }
+      .dk-price strong { color: #7ee2b8; font-size: 18px; }
+      .dk-cta { display: inline-flex; align-items: center; min-height: 44px; margin-top: 16px; padding: 0 18px; background: #f3f5f7; color: #0a0c10; font-weight: 800; text-decoration: none; }
+      .dk-cta:hover { background: #fff; }
+      .dk-list-h { margin: 28px 0 4px; font-size: 20px; }
+      .dk-zona { margin: 18px 0 8px; font-size: 13px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted, #9ba4b3); }
+      .dk-list { list-style: none; margin: 0; padding: 0; columns: 2 300px; column-gap: 28px; }
+      .dk-list li { display: flex; align-items: baseline; gap: 8px; padding: 6px 4px; border-bottom: 1px solid var(--line, #2d333f); break-inside: avoid; font-size: 14px; }
+      .dk-list li b { min-width: 26px; text-align: right; font-variant-numeric: tabular-nums; }
+      .dk-list li small { color: var(--subtle, #8891a1); }
+      .dk-list li em { margin-left: auto; font-style: normal; font-weight: 700; color: var(--money, #7ee2b8); white-space: nowrap; }
+      .dk-foot { margin-top: 24px; }
+      @media (max-width: 560px) {
+        .dk-wrap { padding: 12px 16px 48px; }
+        .dk-grid { grid-template-columns: 92px minmax(0, 1fr); gap: 14px; }
+        .dk-card { width: 92px; }
+        .dk-cta { display: flex; justify-content: center; }
+        .dk-list { columns: 1; }
+      }
+    </style>`;
+
 function deckPageHtml(dp) {
-  const { deck, slug, cardsList, total, priceUSD, image } = dp;
+  const { deck, slug, cardsList, total, priceUSD, image, capa } = dp;
   const gameLabel = DECK_GAME_LABELS[deck.game] || deck.game;
   const canonical = `${ORIGIN}/deck/${slug}`;
   const priceBit = priceUSD > 0 ? ` — US$ ${priceUSD.toFixed(2)}` : "";
@@ -695,9 +742,19 @@ function deckPageHtml(dp) {
     url: canonical,
     image: ogImage
   };
-  const rows = cardsList.map((c) => `<li>${c.qty}× ${escapeHtml(c.name)}${c.meta ? ` <small>${escapeHtml(c.meta)}</small>` : ""}${c.usd > 0 ? ` <b>US$ ${(c.usd * c.qty).toFixed(2)}</b>` : ""}</li>`).join("\n            ");
+  // A lista sai por ZONA (o comandante/líder primeiro, já na ordem do
+  // cardsList); com uma zona só, sem rótulo.
+  const zonas = [...new Set(cardsList.map((c) => c.zone))];
+  const linhaDe = (c) => `<li><b>${c.qty}×</b> ${escapeHtml(c.name)}${c.meta ? ` <small>${escapeHtml(c.meta)}</small>` : ""}${c.usd > 0 ? ` <em>US$ ${(c.usd * c.qty).toFixed(2)}</em>` : ""}</li>`;
+  const rows = zonas.map((z) => {
+    const itens = cardsList.filter((c) => c.zone === z);
+    const n = itens.reduce((a, c) => a + c.qty, 0);
+    const rotulo = zonas.length > 1 ? `<h3 class="dk-zona">${escapeHtml(DECK_ZONA_ROTULO[z] || z)} · ${n}</h3>` : "";
+    return `${rotulo}<ul class="dk-list">${itens.map(linhaDe).join("")}</ul>`;
+  }).join("\n      ");
+  const banner = absUrl(capa || image);
   return `<!doctype html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-idioma-fixo>
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -715,27 +772,31 @@ function deckPageHtml(dp) {
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
     <script type="application/ld+json">${jsonLdSeguro(jsonLd)}</script>
-    <style>
-      body { font-family: system-ui, sans-serif; background: #101218; color: #e8eaf0; margin: 0; padding: 24px 16px; }
-      main { max-width: 720px; margin: 0 auto; }
-      a { color: #ff6b6b; }
-      .cta { display: inline-block; background: #e23030; color: #fff; text-decoration: none; font-weight: 700; padding: 12px 22px; margin: 14px 0; }
-      ul { columns: 2; gap: 32px; padding-left: 20px; } li { margin: 3px 0; break-inside: avoid; }
-      small { color: #9aa3b2; }
-      @media (max-width: 560px) { ul { columns: 1; } }
-    </style>
+    <script src="/src/theme.js"></script>
+    <link rel="stylesheet" href="/styles.css">
+${DECK_STYLE}
   </head>
   <body>
-    <main>
-      <p><a href="/decks">← Decks da comunidade</a></p>
-      <h1>${escapeHtml(deck.name)}</h1>
-      <p>Deck de <strong>${escapeHtml(gameLabel)}</strong> · ${total} cartas${deck.author ? ` · por @${escapeHtml(deck.author)}` : ""}${priceUSD > 0 ? ` · custo de referência <strong>US$ ${priceUSD.toFixed(2)}</strong>` : ""}</p>
-      <a class="cta" href="${escapeAttr(appUrl)}">Abrir no Sleevu — valor, curva de custo e copiar o deck</a>
-      <h2>Lista de cartas</h2>
-      <ul>
-            ${rows}
-      </ul>
-      <p><a href="${escapeAttr(appUrl)}">Ver este deck com preços e análise no Sleevu →</a></p>
+    ${cabecalhoEstatico([["/decks", "Decks"], ["/explore", "Explorar"], ["/collection", "Coleção"]])}
+    <main class="dk-wrap">
+      <section class="dk-banner">
+        ${banner ? `<img class="dk-bg" src="${escapeAttr(banner)}" alt="" aria-hidden="true" decoding="async">` : ""}
+        <div class="dk-in">
+          <a class="dk-back" href="/decks">← Decks da comunidade</a>
+          <div class="dk-grid">
+            ${banner ? `<img class="dk-card" src="${escapeAttr(banner)}" alt="${escapeAttr(`Capa do deck ${deck.name}`)}" width="245" height="342" decoding="async">` : "<span></span>"}
+            <div>
+              <p class="dk-meta"><span class="dk-tag">${escapeHtml(gameLabel)}</span><span>${total} cartas</span>${deck.author ? `<span>por @${escapeHtml(deck.author)}</span>` : ""}</p>
+              <h1>${escapeHtml(deck.name)}</h1>
+              ${priceUSD > 0 ? `<p class="dk-price">Custo de referência <strong>US$ ${priceUSD.toFixed(2)}</strong></p>` : ""}
+              <a class="dk-cta" href="${escapeAttr(appUrl)}">Abrir no Sleevu — valor, curva de custo e copiar o deck</a>
+            </div>
+          </div>
+        </div>
+      </section>
+      <h2 class="dk-list-h">Lista de cartas</h2>
+      ${rows}
+      <p class="dk-foot"><a href="${escapeAttr(appUrl)}">Ver este deck com preços e análise no Sleevu →</a></p>
     </main>
   </body>
 </html>
@@ -784,7 +845,10 @@ async function buildDeckPages() {
     const cardsList = [];
     const imagens = []; // { image, usd } das cartas do deck achadas no catálogo
     let total = 0, priceUSD = 0;
-    Object.values(d.zones).forEach((list) => (Array.isArray(list) ? list : []).forEach((e) => {
+    // Capa do BANNER: o comandante/líder, que é a cara do deck. A og:image
+    // continua no deckImage (capa escolhida > carta mais cara).
+    let capa = "";
+    ordemDasZonas(d.zones).forEach((zona) => (Array.isArray(d.zones[zona]) ? d.zones[zona] : []).forEach((e) => {
       if (!e || !e.id) return;
       const qty = Math.max(1, Math.min(99, Number(e.qty) || 1));
       total += qty;
@@ -794,8 +858,9 @@ async function buildDeckPages() {
       // pergunta que traz o clique.
       const usd = refPriceUSD(precos[String(e.id)]);
       priceUSD += usd * qty;
-      cardsList.push({ qty, usd, name: c ? c.name : String(e.id), meta: c ? `${c.set || ""} ${c.number || ""}`.trim() : "" });
+      cardsList.push({ zone: zona, qty, usd, name: c ? c.name : String(e.id), meta: c ? `${c.set || ""} ${c.number || ""}`.trim() : "" });
       if (c && c.image) imagens.push({ image: c.image, usd });
+      if (!capa && DECK_ZONA_TOPO.includes(zona) && c && c.image) capa = c.image;
     }));
     if (!total) continue;
     priceUSD = Math.round(priceUSD * 100) / 100;
@@ -809,7 +874,7 @@ async function buildDeckPages() {
     let s = base, i = 2;
     while (used.has(s)) s = `${base}-${i++}`;
     used.add(s);
-    writeFileSync(join(DECK_OUT_DIR, `${s}.html`), deckPageHtml({ deck, slug: s, cardsList, total, priceUSD, image: deckImage(d.cover, imagens) }), "utf8");
+    writeFileSync(join(DECK_OUT_DIR, `${s}.html`), deckPageHtml({ deck, slug: s, cardsList, total, priceUSD, image: deckImage(d.cover, imagens), capa }), "utf8");
     out.push({ slug: s });
   }
   return out;

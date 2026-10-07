@@ -1287,6 +1287,10 @@
   function show(view) {
     el.gallery.hidden = view !== "gallery";
     el.editor.hidden = view !== "editor";
+    // No editor, o "Meus Decks / ← Hub" do topo repetia o link de volta do
+    // banner e empurrava o deck pra baixo (versão "Vitrine", 2026-10-07).
+    const cab = document.querySelector("main > .page-head");
+    if (cab) cab.hidden = view === "editor";
   }
 
   // Etiqueta preenchida na cor do jogo (mesmo idioma visual da Coleção). O
@@ -1294,31 +1298,103 @@
   function gameTag(game) { return shared.gameTagHtml(game); }
 
   // ---------- Galeria ----------
+  // ── Meus Decks na versão "Vitrine" (2026-10-07) ──────────────────────────
+  // Mesma linguagem da galeria da comunidade: chips de jogo (só os que TÊM
+  // deck), cards com a ARTE da capa e "você tem X%" — antes eram retângulos só
+  // com nome. A arte chega depois do primeiro paint: o catálogo de cada jogo é
+  // carregado só com os ids das capas (ensureCards), e a galeria não espera.
+  let meusJogo = "";
+  // Capa do card: a que o deck guarda (1ª carta que entrou); sem ela, o
+  // comandante/líder; sem ele, a 1ª carta de qualquer zona.
+  function capaIdDe(d) {
+    if (d.coverCardId) return d.coverCardId;
+    for (const z of ["commander", "leader"]) { const e = ((d.zones || {})[z] || [])[0]; if (e) return e.id; }
+    const e = allEntries(d)[0];
+    return e ? e.entry.id : null;
+  }
+  // Quanto do deck a coleção cobre, em CARTAS (só precisa do store, não do
+  // catálogo — sai na hora). Proxy conta como "não tenho", igual ao painel.
+  function pctTenhoDe(d) {
+    let tot = 0, tenho = 0;
+    allEntries(d).forEach(({ entry }) => {
+      const q = entry.qty || 0;
+      tot += q;
+      if (!entry.px) tenho += Math.min(q, ownedCountOf(d, entry.id));
+    });
+    return tot ? Math.round((tenho / tot) * 100) : 0;
+  }
   function renderGallery() {
-    const decks = list();
+    const todos = list();
     const head = `
       <div class="deck-gal-head">
         <h2 class="dash-section-head">${esc(t("decks.mine"))}</h2>
         <button type="button" class="cta" id="deckNew">${esc(t("decks.new"))}</button>
       </div>`;
-    if (!decks.length) {
-      el.gallery.innerHTML = head + `<p class="empty-state">${esc(t("decks.emptyMine"))}</p>`;
+    if (!todos.length) {
+      el.gallery.innerHTML = head + `<p class="empty-state">${esc(t("decks.emptyMine"))}</p><div id="deckPublished"></div>`;
+      renderPublished();
       return;
     }
-    el.gallery.innerHTML = head + `<div class="deck-grid">` + decks.map((d) => {
+    const porJogo = new Map();
+    todos.forEach((d) => porJogo.set(d.game, (porJogo.get(d.game) || 0) + 1));
+    if (meusJogo && !porJogo.has(meusJogo)) meusJogo = "";
+    const decks = meusJogo ? todos.filter((d) => d.game === meusJogo) : todos;
+    // Chips só quando há mais de um jogo: com um só, filtrar não muda nada.
+    const chips = porJogo.size > 1
+      ? `<div class="dkc-v-chips" role="group" aria-label="${escA(t("decks.gameWord"))}">` +
+        [["", todos.length]].concat([...porJogo.entries()].sort((a, b) => b[1] - a[1])).map(([g, n]) => {
+          const on = meusJogo === g;
+          return `<button type="button" class="dkc-v-chip${on ? " on" : ""}" data-meus-jogo="${escA(g)}" aria-pressed="${on}"${g ? ` data-game-accent="${escA(g)}"` : ""}>
+            ${g ? '<i class="dkc-v-dot" aria-hidden="true"></i>' : ""}<span>${esc(g ? shared.gameLabel(g) : t("decks.allGames"))}</span><b>${esc(String(n))}</b>
+          </button>`;
+        }).join("") + `</div>`
+      : "";
+    const IC_PLUS = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>';
+    const novo = `<button type="button" class="dkc-v-novo" data-deck-new>${IC_PLUS}<span>${esc(t("decks.new"))}</span></button>`;
+    const quando = (ts) => (ts ? new Date(ts).toLocaleDateString(shared.getLocale()) : "");
+    const cards = decks.map((d) => {
       const n = totalCards(d);
-      return `<article class="deck-card" data-deck-id="${escA(d.id)}">
-        <a class="deck-card-open" href="my-decks?id=${encodeURIComponent(d.id)}">
-          <span class="deck-card-name">${esc(d.name)}</span>
-          <span class="deck-card-meta">${gameTag(d.game)}${d.format ? "<span>" + esc(t("decks.format." + d.format)) + "</span>" : ""}<span>${esc(String(n))} ${esc(t("decks.cardsWord"))}</span></span>
+      const pct = pctTenhoDe(d);
+      const capa = capaIdDe(d);
+      return `<article class="dkc-v-card dkc-v-mine" data-deck-id="${escA(d.id)}" data-game-accent="${escA(d.game)}">
+        <a class="dkc-v-mine-open" href="my-decks?id=${encodeURIComponent(d.id)}">
+          <span class="dkc-v-art"${capa ? ` data-capa="${escA(capa)}"` : ""}><span class="dkc-v-art-img deck-noimg"></span></span>
+          <span class="dkc-v-body">
+            <span class="dkc-v-tags">${gameTag(d.game)}${d.format ? `<span class="dkc-fmt">${esc(t("decks.format." + d.format))}</span>` : ""}${d.publishedId ? `<span class="dkc-v-pub">${esc(t("decks.v.public"))}</span>` : ""}</span>
+            <span class="dkc-v-name">${esc(d.name)}</span>
+            ${d.updatedAt ? `<span class="dkc-v-by">${esc(t("decks.v.updated", { d: quando(d.updatedAt) }))}</span>` : ""}
+            <span class="dkc-v-stats"><span>${esc(t("decks.cardsCount", { n }))}</span></span>
+            ${n ? `<span class="dkc-v-prog${pct === 100 ? " is-ok" : ""}"><span class="dkc-v-prog-bar"><i style="width:${pct}%"></i></span><span class="dkc-v-prog-txt">${esc(pct === 100 ? t("decks.completeWord") : t("decks.v.havePct", { pct }))}</span></span>` : ""}
+          </span>
         </a>
-        <div class="deck-card-actions">
+        <div class="dkc-v-mine-acts">
           <button type="button" class="deck-mini" data-deck-dup="${escA(d.id)}">${esc(t("decks.duplicate"))}</button>
           <button type="button" class="deck-mini danger" data-deck-del="${escA(d.id)}">${esc(t("decks.delete"))}</button>
         </div>
       </article>`;
-    }).join("") + `</div>` + `<div id="deckPublished"></div>`;
+    }).join("");
+    // Com decks na tela, o "Criar novo deck" é o 1º card da grade — o botão
+    // do topo só fica no estado vazio (antes eram os dois, um repetindo o outro).
+    const headSemBotao = `<div class="deck-gal-head"><h2 class="dash-section-head">${esc(t("decks.mine"))}</h2></div>`;
+    el.gallery.innerHTML = headSemBotao + chips + `<div class="dkc-v-grid dkc-v-mine-grid">${novo}${cards}</div>` + `<div id="deckPublished"></div>`;
     renderPublished();
+    carregaCapas(decks);
+  }
+  // Capas depois do paint: um carregamento por JOGO, só com os ids das capas.
+  // Galeria redesenhada no meio do caminho (trocou de chip) só recebe o que
+  // ainda estiver na tela — o seletor por data-capa acha os spans atuais.
+  function carregaCapas(decks) {
+    const porJogo = {};
+    decks.forEach((d) => { const id = capaIdDe(d); if (id) (porJogo[d.game] = porJogo[d.game] || []).push(id); });
+    Object.keys(porJogo).forEach((g) => {
+      ensureCards(g, porJogo[g]).then((cat) => {
+        el.gallery.querySelectorAll(`.dkc-v-mine[data-game-accent="${g}"] .dkc-v-art[data-capa]`).forEach((art) => {
+          const card = cat.byId[art.dataset.capa];
+          if (!card || !card.image || art.querySelector("img")) return;
+          art.innerHTML = `<img class="dkc-v-art-img" src="${escA(card.image)}" alt="" loading="lazy" decoding="async">`;
+        });
+      }).catch(() => { /* sem catálogo: fica o fundo neutro */ });
+    });
   }
 
   // ── Meus decks PUBLICADOS ────────────────────────────────────────────────
@@ -1780,10 +1856,14 @@
 
     function entriesHtml(zoneKey, list) {
       if (view.layout === "grid" || view.layout === "stack") {
-        const cls = view.layout === "grid" ? "deck-tiles" : "deck-pile";
+        // Pilha (versão "Vitrine"): coluna de cartas sobrepostas. tabindex
+        // porque no dedo não há hover: tocar a faixa FOCA a carta, que vem pra
+        // frente com os botões −/P/+ à vista.
+        const pilha = view.layout === "stack";
+        const cls = pilha ? "deck-pile dkc-v-pile" : "deck-tiles";
         return `<div class="${cls}">` + list.map((e) => {
           const card = cat.byId[e.id];
-          return `<div class="deck-tile${e.px ? " is-proxy" : ""}" data-zone="${escA(zoneKey)}" data-card="${escA(e.id)}" title="${escA((card && card.name) || e.id)}">
+          return `<div class="deck-tile${e.px ? " is-proxy" : ""}" data-zone="${escA(zoneKey)}" data-card="${escA(e.id)}" title="${escA((card && card.name) || e.id)}"${pilha ? ' tabindex="0"' : ""}>
             <span class="deck-tile-img">${imgOf(card)}</span>
             <span class="deck-tile-qty">${esc(String(e.qty))}×</span>
             ${e.px ? `<span class="deck-tile-proxy">${esc(t("decks.proxyTag"))}</span>` : ""}
@@ -1824,12 +1904,18 @@
       } else {
         // Ordena DENTRO de cada grupo: agrupar antes tornaria a ordenação
         // global inútil (os grupos já separam).
-        body = groupEntries(deck, entries).map((g) => {
-          const inner = entriesHtml(z.key, sortEntries(deck, g.entries));
-          const qty = g.entries.reduce((s, e) => s + (e.qty || 0), 0);
-          return g.label == null ? inner
-            : `<div class="deck-group"><h4>${esc(g.label)} <span>${esc(String(qty))}</span></h4>${inner}</div>`;
-        }).join("");
+        const grupos = groupEntries(deck, entries).map((g) => ({
+          g, inner: entriesHtml(z.key, sortEntries(deck, g.entries)),
+          qty: g.entries.reduce((s, e) => s + (e.qty || 0), 0)
+        }));
+        // Pilha: cada grupo vira uma COLUNA, como no deck publicado; nos outros
+        // layouts os grupos seguem um embaixo do outro.
+        body = view.layout === "stack"
+          ? `<div class="dkc-v-stacks">` + grupos.map(({ g, inner, qty }) => `<div class="dkc-v-stack">
+              ${g.label == null ? "" : `<h4 class="dkc-v-stack-h"><span>${esc(g.label)}</span><span class="deck-cat-n">${esc(String(qty))}</span></h4>`}${inner}
+            </div>`).join("") + `</div>`
+          : grupos.map(({ g, inner, qty }) => (g.label == null ? inner
+            : `<div class="deck-group"><h4>${esc(g.label)} <span>${esc(String(qty))}</span></h4>${inner}</div>`)).join("");
       }
       return `<section class="deck-zone">
         <h3>${esc(t("decks.zone." + z.key))} <span class="deck-zone-n">${esc(limit)}</span></h3>
@@ -1841,19 +1927,60 @@
       ? `<ul class="deck-issues">` + issues.map((i) => `<li>${esc(issueText(i))}</li>`).join("") + `</ul>`
       : `<p class="deck-legal">${esc(pack.free ? t("decks.freeMode") : t("decks.legal"))}</p>`;
 
+    // ── Banner da versão "Vitrine" (2026-10-07) ──────────────────────────
+    // O mesmo do deck publicado: arte da capa no fundo, a carta ao lado, o
+    // NOME editável no lugar do título, o veredito das regras, os três números
+    // (valor | você já tem | falta comprar) e as ações. Antes era uma linha de
+    // botões e o valor ficava na lateral, depois da busca.
+    const capaId = capaIdDe(deck);
+    const capaImg = (capaId && cat.byId[capaId] && cat.byId[capaId].image) || "";
+    const pctTenho = pctTenhoDe(deck);
+    const IC_HAND = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="9" height="13" rx="1.5" transform="rotate(-10 7.5 12.5)"/><rect x="12" y="5" width="9" height="13" rx="1.5" transform="rotate(8 16.5 11.5)"/></svg>';
+    const IC_CART = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2.5l2.2 10.5h10.6L20.5 7H7"/><circle cx="9.5" cy="19" r="1.4"/><circle cx="17" cy="19" r="1.4"/></svg>';
+    const IC_OK = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>';
+    const IC_WARN = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4 2.5 20h19Z"/><path d="M12 10v4M12 17.2v.1"/></svg>';
+    const nTotal = totalCards(deck);
+    const veredito = issues.length
+      ? `<p class="dkc-v-legal is-bad">${IC_WARN}<span>${esc(t("decks.v.issuesN", { n: issues.length }))}</span></p>`
+      : `<p class="dkc-v-legal">${IC_OK}<span>${esc(pack.free ? t("decks.freeMode") : t("decks.legal"))}</span></p>`;
     el.editor.innerHTML = `
-      <div class="deck-ed-head">
-        <a href="my-decks" class="serie-back">${esc(t("decks.backList"))}</a>
-        <input id="deckName" class="deck-name-input" value="${escA(deck.name)}" aria-label="${escA(t("decks.nameLabel"))}">
-        <span class="deck-ed-game">${gameTag(deck.game)}${pack.format ? "<span>" + esc(t("decks.format." + pack.format)) + "</span>" : ""}</span>
-        <button type="button" class="deck-mini" data-deck-import>${esc(t("decks.import"))}</button>
-        <button type="button" class="deck-mini" data-deck-export>${esc(t("decks.exportList"))}</button>
-        <button type="button" class="deck-mini" data-deck-goldfish>${esc(t("decks.goldfish"))}</button>
-        <button type="button" class="deck-mini" data-deck-publish>${esc(t(deck.publishedId ? "decks.savePublic" : "decks.publish"))}</button>
-        ${deck.publishedId ? `<button type="button" class="deck-mini deck-unpub" data-deck-unpublish>${esc(t("decks.unpublish"))}</button>` : ""}
+      <section class="dkc-v-banner dkc-v-ed" data-game-accent="${escA(deck.game)}">
+        ${capaImg ? `<img class="dkc-v-banner-bg" src="${escA(capaImg)}" alt="" aria-hidden="true" decoding="async">` : ""}
+        <div class="dkc-v-banner-in">
+          <a href="my-decks" class="dkc-v-back">${esc(t("decks.backList"))}</a>
+          <div class="dkc-v-banner-grid">
+            ${capaImg ? `<span class="dkc-v-banner-card"><img src="${escA(capaImg)}" alt="" decoding="async"></span>` : ""}
+            <div class="dkc-v-banner-txt">
+              <div class="dkc-view-meta">
+                ${gameTag(deck.game)}
+                ${pack.format ? `<span class="dkc-meta-item">${esc(t("decks.format." + pack.format))}</span>` : ""}
+                <span class="dkc-meta-item">${esc(t("decks.cardsCount", { n: nTotal }))}</span>
+                ${an.avgCost != null ? `<span class="dkc-meta-item">${esc(t("decks.avgCost"))}: ${esc(String(an.avgCost))}</span>` : ""}
+              </div>
+              <input id="deckName" class="dkc-v-title dkc-v-name-input" value="${escA(deck.name)}" aria-label="${escA(t("decks.nameLabel"))}">
+              ${veredito}
+              <div class="dkc-v-kpis">
+                <div class="dkc-v-kpi"><span>${esc(t("decks.valueTotal"))}</span><strong>${esc(money(val.total))}</strong></div>
+                <div class="dkc-v-kpi"><span>${esc(t("decks.v.youHave"))}</span><strong class="have">${esc(String(pctTenho))}%</strong><small>${esc(money(val.have))}</small></div>
+                <div class="dkc-v-kpi"><span>${esc(t("decks.valueMissing"))}</span><strong class="miss">${esc(money(val.missing))}</strong><small>${esc(t("decks.missingCount").replace("{n}", String(val.missingCards)))}${val.proxyCards ? " · " + esc(t("decks.proxyCount").replace("{n}", String(val.proxyCards))) : ""}</small></div>
+              </div>
+              <div class="dkc-v-acts">
+                <button type="button" class="cta" data-deck-publish>${esc(t(deck.publishedId ? "decks.savePublic" : "decks.publish"))}</button>
+                ${deck.publishedId ? `<button type="button" class="deck-mini deck-unpub" data-deck-unpublish>${esc(t("decks.unpublish"))}</button>` : ""}
+                <button type="button" class="deck-mini" data-deck-goldfish>${IC_HAND}<span>${esc(t("decks.goldfish"))}</span></button>
+                ${val.missing > 0 ? `<button type="button" class="deck-mini" data-deck-export-missing>${IC_CART}<span>${esc(t("decks.v.exportMissing"))}</span></button>` : ""}
+                <button type="button" class="deck-mini" data-deck-export>${esc(t("decks.exportList"))}</button>
+                <button type="button" class="deck-mini" data-deck-import>${esc(t("decks.import"))}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      ${issues.length ? issuesHtml : ""}
+      <div class="dkc-v-toolbar dkc-v-ed-bar">
         ${viewMenuHtml()}
+        <span class="dkc-v-toolbar-lbl">${esc(t("decks.layout." + view.layout))}</span>
       </div>
-      ${issuesHtml}
       <!-- Abas SÓ no mobile (CSS esconde no desktop, onde as 2 colunas cabem):
            sem elas, a busca fica embaixo do deck inteiro e cada carta
            adicionada exige rolar até o fim e voltar. -->
@@ -1876,14 +2003,6 @@
             <div id="deckResults" class="deck-results"></div>
           </div>
           <div class="deck-stats">
-          <section class="deck-value">
-            <h3>${esc(t("decks.value"))}</h3>
-            <div class="deck-value-row"><span>${esc(t("decks.valueTotal"))}</span><strong>${esc(money(val.total))}</strong></div>
-            <div class="deck-value-row"><span>${esc(t("decks.valueHave"))}</span><strong class="have">${esc(money(val.have))}</strong></div>
-            <div class="deck-value-row missing"><span>${esc(t("decks.valueMissing"))}</span><strong>${esc(money(val.missing))}</strong></div>
-            <p class="deck-value-note">${esc(t("decks.missingCount").replace("{n}", String(val.missingCards)))}</p>
-            ${val.proxyCards ? `<p class="deck-value-note is-proxy">${esc(t("decks.proxyCount").replace("{n}", String(val.proxyCards)))}</p>` : ""}
-          </section>
           ${(an.curve || an.dist || an.rarity || an.pips) ? `<section class="deck-analysis">
             <h3>${esc(t("decks.analysis"))}${an.avgCost != null ? ` <span class="deck-avg">${esc(t("decks.avgCost"))}: ${esc(String(an.avgCost))}</span>` : ""}</h3>
             ${curveHtml(an.curve)}
@@ -2150,7 +2269,9 @@
   // Eventos (delegação — a UI é re-renderizada inteira a cada mudança)
   // ---------------------------------------------------------------------------
   el.gallery.addEventListener("click", (ev) => {
-    if (ev.target.closest("#deckNew")) { openNewDeckModal(); return; }
+    if (ev.target.closest("#deckNew, [data-deck-new]")) { openNewDeckModal(); return; }
+    const chip = ev.target.closest("[data-meus-jogo]");
+    if (chip) { meusJogo = chip.dataset.meusJogo; renderGallery(); return; }
     const dup = ev.target.closest("[data-deck-dup]");
     if (dup) {
       const src = getDeck(dup.dataset.deckDup);
@@ -2301,6 +2422,16 @@
     }
     if (ev.target.closest("[data-deck-export]")) {
       abrirExportDeck(current, cat.byId, (lista) => sortEntries(current, lista));
+      return;
+    }
+    if (ev.target.closest("[data-deck-export-missing]")) {
+      const zones = {};
+      Object.keys(current.zones || {}).forEach((k) => {
+        zones[k] = (current.zones[k] || []).filter((e) => !e.px)
+          .map((e) => Object.assign({}, e, { qty: Math.max(0, (e.qty || 0) - ownedCountOf(current, e.id)) }))
+          .filter((e) => e.qty > 0);
+      });
+      abrirExportDeck(Object.assign({}, current, { zones, name: current.name + " " + t("decks.v.missingSuffix") }), cat.byId, (lista) => sortEntries(current, lista));
       return;
     }
 
