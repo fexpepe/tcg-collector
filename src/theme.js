@@ -259,6 +259,16 @@
   // do shared.js — a mesma posição que o monólito ocupava.
   // Em dev o mapa é null e o atributo não existe: as tags estáticas dos
   // monólitos seguem valendo e este bloco não faz nada.
+  //
+  // Esqueleto da tabela ANTES de qualquer pacote (2026-10-08): o arquivo do
+  // idioma é um pedido de rede como outro qualquer, e quando ele falhava (rede
+  // do celular oscilou, 404 momentâneo) o shared.js rodava mesmo assim, lia
+  // TCG_MESSAGES indefinido e o primeiro t() lançava TypeError antes de marcar
+  // o data-app: tela sem navegação e o cartão de emergência aos 15 s
+  // (reproduzido em produção abortando só o i18n.pt). Com o pt:{} aqui, o t()
+  // cai no `return key` e a tela sobe com as chaves cruas. Os pacotes mesclam
+  // por idioma (o `|| {}` do topo de cada um), então nenhum deles apaga isto.
+  window.TCG_MESSAGES = window.TCG_MESSAGES || { pt: {} };
   var I18N = null; /* SLEEVU_I18N */
   try {
     // data-i18n-packs: "data-i18n" puro é o marcador de elemento traduzível do
