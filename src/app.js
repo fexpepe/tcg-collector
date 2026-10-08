@@ -400,12 +400,6 @@
       // tenho" continua carta a carta, no botão de cada card.
     }
 
-    const eras = document.getElementById("sxEras");
-    if (eras) eras.addEventListener("click", (event) => {
-      const chip = event.target.closest("[data-era]");
-      if (chip) irParaEra(chip.dataset.era);
-    });
-
     if (elements.setsViewToggle) {
       applySetsView(); // estado inicial (antes do primeiro render) a partir da pref salva
       elements.setsViewToggle.addEventListener("click", (event) => {
@@ -498,31 +492,6 @@
     });
   }
 
-  // Chips de era (Vitrine, 2026-10-08): uma faixa com as seções da lista —
-  // séries no Pokémon, anos no Magic, categorias nos outros — que salta pra
-  // seção. O pager desenha 60 itens por vez; se a seção ainda não está na
-  // tela, o "Mostrar mais" (irmão da grade) é acionado até ela aparecer.
-  // Só na lista inteira, com 3 seções ou mais.
-  function montaEras(items) {
-    const nav = document.getElementById("sxEras");
-    if (!nav) return;
-    const heads = items.filter((item) => item.type === "series-head" || item.type === "category-head");
-    if (heads.length < 3 || normalize(elements.search.value)) { nav.hidden = true; nav.innerHTML = ""; return; }
-    nav.innerHTML = heads.map((h) => `<button type="button" class="sx-era" data-era="${escapeAttribute(h.name)}">${escapeHtml(h.name)}</button>`).join("");
-    nav.hidden = false;
-  }
-  function irParaEra(nome) {
-    const acha = () => Array.from(elements.grid.children).find((node) => node.classList.contains("set-series-head") && node.dataset.cat === nome);
-    let alvo = acha();
-    for (let guarda = 0; !alvo && guarda < 40; guarda++) {
-      const mais = elements.grid.parentElement.querySelector(".load-more");
-      if (!mais) break;
-      mais.click();
-      alvo = acha();
-    }
-    if (alvo) alvo.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
-
   // Categorias de sets recolhíveis (Lorcana/One Piece: Principais/Promos/Vintage…).
   // Estado por (jogo + categoria) no localStorage — persiste entre visitas.
   const COLLAPSE_KEY = "tcg-sets-collapsed";
@@ -567,7 +536,7 @@
     const items = view === "pokedex" ? pokedexViewItems()
       : getViewItems(manifestMode() ? [] : filterCards());
     pager.render(items, createViewItem, { resetCount }); // onAppend reaplica o recolhido
-    if (view === "sets") { applyCollapsed(); refineVisibleSets(); montaEras(items); }
+    if (view === "sets") { applyCollapsed(); refineVisibleSets(); }
 
     // Cabeçalhos de série não contam como resultado.
     const realCount = items.filter((item) => item.type !== "series-head" && item.type !== "category-head").length;

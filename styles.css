@@ -7672,8 +7672,9 @@ html[data-collector-mode] .hb-worth .collector-badge { font-size: 28px; font-wei
    TELA DE SETS, versão "Vitrine" (sets.html, 2026-10-08)
    O padrão que a pesquisa de concorrentes achou nas vitrines (TCGplayer,
    Pokellector, pkmn.gg, TCG Collector): o lançamento em destaque no topo, o
-   que vem por aí ao lado, os sets em andamento de quem coleciona e uma faixa
-   de chips que salta pra cada era. Os produtos de um lançamento (Commander,
+   que vem por aí ao lado e os sets em andamento de quem coleciona. (A faixa
+   de chips de era saiu a pedido em 08/10: ocupava tela demais pro que fazia.)
+   Os produtos de um lançamento (Commander,
    Promos, Trainer Gallery…) moram como chips DENTRO do cartão do set.
    Prefixo sx-: folha própria, só desta página (scripts/lib/css-areas.mjs).
    ========================================================================== */
@@ -7748,25 +7749,6 @@ html[data-collector-mode] .hb-worth .collector-badge { font-size: 28px; font-wei
 .sx-cont-title { margin: 0 0 10px; font-size: 17px; }
 .sx-cont-rail { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
 
-/* ── Chips de era: faixa que salta pra cada série/ano ─────────────────── */
-.sx-eras {
-  display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none;
-  margin: 0 0 14px; padding: 8px 0; background: var(--bg);
-}
-.sx-eras::-webkit-scrollbar { display: none; }
-.sx-era {
-  flex: none; min-height: 36px; padding: 0 14px;
-  background: var(--panel); border: 1px solid var(--line); color: var(--text);
-  font: inherit; font-size: 13px; font-weight: 700; white-space: nowrap; cursor: pointer;
-}
-.sx-era:hover { border-color: var(--accent); color: var(--accent); }
-/* No desktop a faixa gruda logo abaixo do topo do site enquanto a lista
-   rola; o cabeçalho da seção pra onde ela salta para abaixo da faixa. */
-@media (min-width: 861px) {
-  .sx-eras { position: sticky; top: var(--header-h, 58px); z-index: 4; }
-  .sx-grid .set-series-head { scroll-margin-top: calc(var(--header-h, 58px) + 64px); }
-}
-
 /* ── Cartão de set ─────────────────────────────────────────────────────── */
 /* Logo maior: o cartão é o rosto do set (a vitrine é visual). */
 .sx-grid .set-art { min-height: 116px; }
@@ -7810,8 +7792,6 @@ html[data-collector-mode] .hb-worth .collector-badge { font-size: 28px; font-wei
   }
   .sx-cont-rail::-webkit-scrollbar { display: none; }
   .sx-cont-rail > .sx-mini { flex: 0 0 82%; scroll-snap-align: start; }
-  .sx-era { min-height: 44px; }
-  .sx-eras { margin-inline: -20px; padding-inline: 20px; }
   .sx-grid .set-art { min-height: 96px; }
   .sx-grid .set-logo { max-height: 60px; }
   .sx-kid { min-height: 44px; }
