@@ -33,6 +33,11 @@ export const AREAS = [
   // hub- só existe no hub.html/hub.js. (O "hub-vs-jogo" que aparece no
   // shared.js é texto de comentário, não classe — conferido.)
   { nome: "hub",       prefixos: ["hub-"],                         paginas: ["hub.html"] },
+  // hb- (2026-10-08) é o Hub PESSOAL (dashboard.html/dashboard.js), não o
+  // hub.html de cima. O .dash- antigo segue no núcleo porque vendas, desejos,
+  // badges e backup também desenham .dash-head/.dash-stat-*; o redesenho do
+  // Hub entrou com prefixo próprio pra não pesar nas outras ~30 páginas.
+  { nome: "painel",    prefixos: ["hb-"],                          paginas: ["dashboard.html"] },
   // xpl- (2026-09-28) é o que só a busca global desenha: os chips de resultado
   // por jogo e o selo de posição das mais vistas. Só o src/explore.js monta
   // essas classes (o prefixo "explore-" não serve: a .explore-subnav é das

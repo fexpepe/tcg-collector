@@ -53,119 +53,113 @@
       </div>
     </header>
 
-    <main class="dash-main">
+    <!-- Hub versão "Estante" (2026-10-08): o molde do Dex e do CardNexus — a
+         home do COLECIONADOR. O valor vira uma linha de contexto (leva ao
+         Portfólio, que é onde a progressão mora desde 2026-08-25) e o topo
+         passa a ser a coleção andando: os sets que você mexeu por último com o
+         quanto falta, os que estão quase completos e as cartas que chegaram.
+         Os doze atalhos, que eram doze linhas de 71px antes de qualquer carta
+         no celular, viraram uma lista compacta na lateral. Classes hb- (folha
+         "painel"). -->
+    <main class="hb-main hb-estante">
       <div class="page-head dash-head">
         <h1 data-i18n="nav.dashboard">Hub</h1>
         <div id="dashProfileLine" class="dash-profile-line" hidden></div>
       </div>
 
-      <!-- Resumo instantâneo (localStorage + cookie do Portfólio; sem catálogo)
-           Cada cartão LEVA à tela que explica o número (o link cobre o cartão
-           inteiro, ver .stat-link). Antes eram números mortos: a pessoa via
-           "12 slabs" no Hub e tinha que achar a página Graded pelo menu.
-           O rótulo acessível é o próprio <p> do cartão (aria-labelledby), então
-           ele já vem traduzido junto com o resto da tela. -->
-      <!-- Resumo em DOIS blocos irmãos (2026-09-10): o patrimônio (.dash-grand)
-           e os cartões de contagem (.dash-info). No desktop o .dash-summary os
-           encaixa numa fileira só (1,6fr + 4 colunas), como antes; no celular
-           o wrapper some (display: contents) e cada bloco ganha a própria
-           posição na página — o patrimônio segue no topo e as contagens vão
-           pra baixo do "Ir para", ordem que o CSS do .dash-main define. -->
-      <div class="dash-summary">
-      <section class="stats-grid dash-grand" data-i18n-aria="portfolio.networth" aria-label="patrimônio (cartas + graded)">
-        <article class="stat-grand">
-          <span id="dhValue">—</span>
-          <span class="collector-badge" data-i18n="collector.badge">Modo Colecionador</span>
-          <!-- Transparência do número grande: quantas cópias têm preço de fato.
-               Só aparece quando falta alguma (ver dashboard.js). -->
-          <span id="dhPriced" class="dash-priced" hidden></span>
-          <p id="dhValueLabel" data-i18n="portfolio.networth">patrimônio (cartas + graded)</p>
-          <a class="stat-link" href="portfolio" aria-labelledby="dhValueLabel"></a>
-        </article>
-      </section>
-      <section class="stats-grid dash-info" data-i18n-aria="aria.sumCollector" aria-label="Resumo do colecionador">
-        <article>
-          <span id="dhCopies">0</span>
-          <p id="dhCopiesLabel" data-i18n="stats.copies">cópias no total</p>
-          <a class="stat-link" href="collection" aria-labelledby="dhCopiesLabel"></a>
-        </article>
-        <article>
-          <span id="dhDistinct">0</span>
-          <p id="dhDistinctLabel" data-i18n="stats.distinct">cartas distintas</p>
-          <a class="stat-link" href="collection" aria-labelledby="dhDistinctLabel"></a>
-        </article>
-        <article>
-          <span id="dhWish">0</span>
-          <p id="dhWishLabel" data-i18n="dash.wish">na lista de desejos</p>
-          <a class="stat-link" href="wishlist" aria-labelledby="dhWishLabel"></a>
-        </article>
-        <article>
-          <span id="dhSlabs">0</span>
-          <p id="dhSlabsLabel" data-i18n="dash.slabs">slabs graded</p>
-          <a class="stat-link" href="collection?tab=graded" aria-labelledby="dhSlabsLabel"></a>
-        </article>
-        <!-- Pokédex: só aparece quando há Pokémon capturado (ver dashboard.js).
-             O link abre a Pokédex já no "Ainda faltam". -->
-        <article id="dhDexCard" hidden>
-          <span id="dhDex">0</span>
-          <p id="dhDexLabel" data-i18n="stats.dexTotal">Pokémon na Pokédex</p>
-          <a class="stat-link" href="pokedex?game=pokemon&amp;dex=missing" aria-labelledby="dhDexLabel"></a>
-        </article>
-      </section>
-      </div>
+      <!-- Linha de resumo: o patrimônio é o primeiro item, do mesmo tamanho
+           dos outros. Cada número LEVA à tela que o explica. -->
+      <nav class="hb-sum" data-i18n-aria="aria.sumCollector" aria-label="Resumo do colecionador">
+        <a href="portfolio" class="hb-sum-money"><strong id="dhValue" class="sensitive-value">—</strong><span data-i18n="dash.b.networth">patrimônio</span></a>
+        <span class="collector-badge" data-i18n="collector.badge">Modo Colecionador</span>
+        <a href="collection"><strong id="dhDistinct">0</strong><span data-i18n="stats.distinct">cartas distintas</span></a>
+        <a href="collection"><strong id="dhCopies">0</strong><span data-i18n="stats.copies">cópias no total</span></a>
+        <a href="wishlist"><strong id="dhWish">0</strong><span data-i18n="dash.wish">na lista de desejos</span></a>
+        <a href="collection?tab=graded"><strong id="dhSlabs">0</strong><span data-i18n="dash.slabs">slabs graded</span></a>
+        <!-- Novidades do mês (timestamps do collection-meta-v1); nasce escondida. -->
+        <a id="dhFreshCard" href="collection" hidden><strong id="dhFreshN"></strong><span id="dhFresh"></span></a>
+      </nav>
+      <!-- Transparência do patrimônio: quantas cópias têm preço de fato. -->
+      <span id="dhPriced" class="hb-priced hb-money" hidden></span>
 
-      <!-- Distribuição por marca (contagem de cartas distintas). O rótulo tem o
-           MESMO estilo do "Ir para": as três zonas da página (resumo, jogos,
-           atalhos) ficam com o mesmo ritmo de título (proposta de 2026-08-25). -->
-      <!-- Primeiros passos (E3): nasce ESCONDIDA e só o JS a revela — quem já
-           fez tudo, ou dispensou, nunca vê nem o buraco de layout. -->
+      <!-- Primeiros passos (E3): nasce ESCONDIDA e só o JS a revela. -->
       <section id="dhSteps" class="dash-steps" hidden></section>
 
-      <!-- Atalhos: o HUB do jogador. Vêm ANTES das seções de histórico:
-           são o que a pessoa mais clica, e as de histórico podem nem
-           existir (nascem escondidas). -->
-      <h2 class="dash-section-head" data-i18n="dash.shortcuts">Ir para</h2>
-      <section id="dhLinks" class="dash-links" data-i18n-aria="aria.shortcuts" aria-label="Atalhos"></section>
-      <!-- Ferramentas (2026-10-01): o "Ir para" ficou só com navegação; troca,
-           centralização, guia de condição e sleeves moram aqui. Mesma grade. -->
-      <h2 class="dash-section-head" id="dhToolsHead" data-i18n="dash.tools">Ferramentas</h2>
-      <section id="dhTools" class="dash-links" data-i18n-aria="dash.tools" aria-label="Ferramentas"></section>
+      <div class="hb-cols">
+        <div class="hb-col-main">
+          <!-- Continue de onde parou: os sets em que você marcou carta por
+               último (carimbo meta.mod), com a barra e o quanto falta. Hidrata
+               com as suas cartas; até lá, o lugar fica guardado. -->
+          <section id="dhCont" class="hb-sec" hidden>
+            <div class="hb-sec-head">
+              <h2 data-i18n="dash.b.continue">Continue de onde parou</h2>
+              <a class="hb-more" href="collection?tab=sets" data-i18n="dash.b.allSets">Todos os sets</a>
+            </div>
+            <ol id="dhContList" class="hb-sets"></ol>
+          </section>
+          <!-- Quase lá: os incompletos mais perto do fim (metade ou mais). -->
+          <section id="dhNear" class="hb-sec" hidden>
+            <div class="hb-sec-head"><h2 data-i18n="dash.b.near">Quase lá</h2></div>
+            <ol id="dhNearList" class="hb-sets"></ol>
+          </section>
+          <!-- Chegaram por último: as cartas com o carimbo mais recente. -->
+          <section id="dhRecent" class="hb-sec" hidden>
+            <div class="hb-sec-head">
+              <h2 data-i18n="dash.b.recent">Chegaram por último</h2>
+              <a class="hb-more" href="collection" data-i18n="dash.b.seeCollection">Ver a Coleção</a>
+            </div>
+            <ol id="dhRecentList" class="hb-rail hb-rail-recent"></ol>
+          </section>
+          <!-- Por jogo (contagem, 4 formas de ver) | Por região: na coluna
+               principal, pra ela não acabar 300px antes da lateral. -->
+          <section id="dhCaps" class="dash-row hb-row" data-i18n-aria="aria.sumDetailed" aria-label="Resumo detalhado">
+            <article class="dash-card dash-games-card">
+              <div class="dash-games-head">
+                <h3 data-i18n="dash.byGame">Por jogo</h3>
+                <div id="dhGamesModes" class="view-toggle dash-games-modes" role="group" data-i18n-aria="dash.viewAria" aria-label="Forma de ver a distribuição"></div>
+              </div>
+              <section id="dhGames" class="dash-games" data-i18n-aria="aria.collectionsByGame" aria-label="Coleções por jogo"></section>
+            </article>
+            <article id="dhDist" class="dash-card dash-dist" hidden>
+              <div class="dash-games-head">
+                <h3 data-i18n="dash.regionTitle">Distribuição por região</h3>
+                <div id="dhRegionModes" class="view-toggle dash-games-modes" role="group" data-i18n-aria="dash.viewAria" aria-label="Forma de ver a distribuição"></div>
+              </div>
+              <div id="dhRegion" class="dash-games"></div>
+            </article>
+          </section>
+        </div>
 
-      <!-- Novidades na coleção: sai dos timestamps que o collection-meta-v1 já
-           carimba a cada adição (e que só o merge de sync lia). Nasce
-           escondida; sem adição no mês, a seção não existe. -->
-      <h2 class="dash-section-head" id="dhFreshHead" data-i18n="dash.fresh" hidden>Novidades na sua coleção</h2>
-      <p id="dhFresh" class="dash-fresh" hidden></p>
+        <aside class="hb-col-side">
+          <!-- Metas: Pokédex, sets completos, desejos. -->
+          <section class="hb-box" id="dhGoals">
+            <h2 class="hb-eyebrow" data-i18n="dash.b.goals">Metas</h2>
+            <ul id="dhGoalsList" class="hb-goals"></ul>
+            <!-- Pokédex: só aparece quando há Pokémon capturado (ver dashboard.js). -->
+            <a id="dhDexCard" class="hb-goal" href="pokedex?game=pokemon&amp;dex=missing" hidden>
+              <span class="hb-goal-top"><span data-i18n="stats.dexTotal">Pokémon na Pokédex</span><strong id="dhDex">0</strong></span>
+              <span class="hb-bar"><span id="dhDexBar"></span></span>
+            </a>
+          </section>
+          <!-- Mais valiosas: lista curta (a vitrine grande é da versão
+               "Carteira"; aqui o valor é contexto). -->
+          <section id="dhTop" class="hb-box" hidden>
+            <div class="hb-sec-head">
+              <h2 class="hb-eyebrow" data-i18n="dash.topTitle">Mais valiosas</h2>
+              <a class="hb-more hb-money" href="portfolio" data-i18n="dash.b.seeAll">Ver todas</a>
+            </div>
+            <ol id="dhTopList" class="hb-toplist"></ol>
+          </section>
+          <!-- Atalhos: "Ir para" + "Ferramentas" numa lista compacta. -->
+          <section class="hb-box">
+            <h2 class="hb-eyebrow" data-i18n="dash.shortcuts">Ir para</h2>
+            <div id="dhLinks" class="hb-links" data-i18n-aria="aria.shortcuts" aria-label="Atalhos"></div>
+            <h2 class="hb-eyebrow" id="dhToolsHead" data-i18n="dash.tools">Ferramentas</h2>
+            <div id="dhTools" class="hb-links" data-i18n-aria="dash.tools" aria-label="Ferramentas"></div>
+          </section>
+        </aside>
+      </div>
 
-      <!-- Fileira de três cards: Por jogo | Mais valiosas | Por região.
-           O primeiro renderiza INSTANTÂNEO (só localStorage); os outros dois
-           nascem escondidos e hidratam carregando só as suas cartas. -->
-      <section id="dhCaps" class="dash-row" data-i18n-aria="aria.sumDetailed" aria-label="Resumo detalhado">
-        <!-- Por jogo: QUATRO formas de ver a mesma distribuição (mosaico,
-             cápsulas, pizza, barras), escolhidas no seletor à direita do
-             título. O miolo é um QUADRADO de tamanho fixo nas duas direções:
-             trocar a forma nunca mexe no tamanho nem na proporção na tela. -->
-        <article class="dash-card dash-games-card">
-          <div class="dash-games-head">
-            <h3 data-i18n="dash.byGame">Por jogo</h3>
-            <div id="dhGamesModes" class="view-toggle dash-games-modes" role="group" data-i18n-aria="dash.viewAria" aria-label="Forma de ver a distribuição"></div>
-          </div>
-          <section id="dhGames" class="dash-games" data-i18n-aria="aria.collectionsByGame" aria-label="Coleções por jogo"></section>
-        </article>
-        <article id="dhTop" class="dash-card dash-top" hidden>
-          <h3 data-i18n="dash.topTitle">Mais valiosas</h3>
-          <ol id="dhTopList" class="dash-top-list dash-top-grid"></ol>
-        </article>
-        <!-- Por região: o MESMO painel de 4 formas do "Por jogo" (pizza por
-             padrão), com o seu próprio seletor e preferência. -->
-        <article id="dhDist" class="dash-card dash-dist" hidden>
-          <div class="dash-games-head">
-            <h3 data-i18n="dash.regionTitle">Distribuição por região</h3>
-            <div id="dhRegionModes" class="view-toggle dash-games-modes" role="group" data-i18n-aria="dash.viewAria" aria-label="Forma de ver a distribuição"></div>
-          </div>
-          <div id="dhRegion" class="dash-games"></div>
-        </article>
-      </section>
     </main>
 
     <script defer src="src/i18n.js"></script>
