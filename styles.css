@@ -7668,6 +7668,160 @@ html[data-collector-mode] .hb-worth .collector-badge { font-size: 28px; font-wei
   .hb-app-body strong { font-size: 12px; overflow-wrap: anywhere; }
 }
 
+/* ============================================================================
+   TELA DE SETS, versão "Vitrine" (sets.html, 2026-10-08)
+   O padrão que a pesquisa de concorrentes achou nas vitrines (TCGplayer,
+   Pokellector, pkmn.gg, TCG Collector): o lançamento em destaque no topo, o
+   que vem por aí ao lado, os sets em andamento de quem coleciona e uma faixa
+   de chips que salta pra cada era. Os produtos de um lançamento (Commander,
+   Promos, Trainer Gallery…) moram como chips DENTRO do cartão do set.
+   Prefixo sx-: folha própria, só desta página (scripts/lib/css-areas.mjs).
+   ========================================================================== */
+.sx-eyebrow {
+  margin: 0; font-size: 12px; font-weight: 800; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--muted);
+}
+/* O chip branco FIXO atrás do logo (o mesmo do .set-art): logos escuros
+   sumiriam no fundo do tema escuro. */
+.sx-hero-art, .sx-mini-art {
+  display: grid; place-items: center;
+  background: radial-gradient(circle at 50% 0%, #ffffff, #eef0f3 78%);
+}
+/* Set sem logo: o nome em título, preto sobre o chip claro. */
+.sx-nologo {
+  color: #0a0c10; font-weight: 800; line-height: 1.15; text-align: center; text-wrap: balance;
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; overflow-wrap: anywhere;
+}
+
+/* ── Destaque: o lançamento mais novo + "Em breve" ao lado ─────────────── */
+.sx-hero { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 2.2fr) minmax(0, 1fr); gap: 12px; margin-bottom: 10px; }
+.sx-hero-main {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  min-height: 236px; background: var(--panel); border: 1px solid var(--line);
+  color: var(--text); text-decoration: none; transition: border-color .15s ease;
+}
+.sx-hero-main:hover { border-color: var(--accent); }
+.sx-hero-art { padding: 26px; }
+.sx-hero-logo { max-width: 88%; max-height: 156px; object-fit: contain; }
+.sx-hero-art .sx-nologo { font-size: 26px; }
+.sx-hero-info { display: flex; flex-direction: column; justify-content: center; gap: 8px; padding: 24px 26px; min-width: 0; }
+.sx-hero-name { font-size: clamp(24px, 1.2rem + 1vw, 32px); font-weight: 800; line-height: 1.1; letter-spacing: -0.01em; }
+.sx-hero-meta { font-size: 14px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.sx-money { color: var(--text); font-weight: 700; }
+.sx-trend { font-weight: 800; }
+.sx-trend small { font-weight: 600; color: var(--muted); }
+.sx-trend.is-up { color: #2ecc71; }
+.sx-trend.is-down { color: #e8553c; }
+[data-theme="light"] .sx-trend.is-up { color: #1a7f45; }
+[data-theme="light"] .sx-trend.is-down { color: #c0392b; }
+.sx-hero-cta {
+  display: inline-flex; align-items: center; gap: 8px; align-self: flex-start; margin-top: 6px;
+  min-height: 44px; padding: 0 18px; background: var(--accent); color: var(--on-accent); font-weight: 800;
+}
+.sx-hero-cta svg { width: 18px; height: 18px; }
+.sx-hero-side { display: flex; flex-direction: column; gap: 10px; padding: 18px; background: var(--panel); border: 1px solid var(--line); min-width: 0; }
+
+/* Linha compacta de set (Em breve, Também recentes, Continue completando). */
+.sx-mini {
+  display: grid; grid-template-columns: 92px minmax(0, 1fr); align-items: center; gap: 12px;
+  min-height: 64px; padding: 8px; background: var(--panel-strong); border: 1px solid transparent;
+  color: var(--text); text-decoration: none;
+}
+.sx-mini:hover { border-color: var(--accent); }
+.sx-mini-art { height: 52px; padding: 6px; }
+.sx-mini-logo { max-width: 100%; max-height: 40px; object-fit: contain; }
+.sx-mini-art .sx-nologo { font-size: 11px; -webkit-line-clamp: 2; }
+.sx-mini-info { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.sx-mini-info strong { font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sx-mini-info > span:not(.sx-prog) { font-size: 12.5px; color: var(--muted); }
+
+/* Barra + "n/total · %" (destaque e Continue completando). */
+.sx-prog { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.sx-bar { flex: 1 1 auto; height: 6px; background: var(--line); overflow: hidden; }
+.sx-bar > span { display: block; height: 100%; background: var(--accent); }
+.sx-prog-n { flex: none; font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.sx-prog-n b { color: var(--text); }
+.sx-hero-info .sx-prog { max-width: 340px; }
+
+/* ── Continue completando (só pra quem tem carta no jogo) ─────────────── */
+.sx-cont { grid-column: 1 / -1; margin: 6px 0 8px; }
+.sx-cont-title { margin: 0 0 10px; font-size: 17px; }
+.sx-cont-rail { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+
+/* ── Chips de era: faixa que salta pra cada série/ano ─────────────────── */
+.sx-eras {
+  display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none;
+  margin: 0 0 14px; padding: 8px 0; background: var(--bg);
+}
+.sx-eras::-webkit-scrollbar { display: none; }
+.sx-era {
+  flex: none; min-height: 36px; padding: 0 14px;
+  background: var(--panel); border: 1px solid var(--line); color: var(--text);
+  font: inherit; font-size: 13px; font-weight: 700; white-space: nowrap; cursor: pointer;
+}
+.sx-era:hover { border-color: var(--accent); color: var(--accent); }
+/* No desktop a faixa gruda logo abaixo do topo do site enquanto a lista
+   rola; o cabeçalho da seção pra onde ela salta para abaixo da faixa. */
+@media (min-width: 861px) {
+  .sx-eras { position: sticky; top: var(--header-h, 58px); z-index: 4; }
+  .sx-grid .set-series-head { scroll-margin-top: calc(var(--header-h, 58px) + 64px); }
+}
+
+/* ── Cartão de set ─────────────────────────────────────────────────────── */
+/* Logo maior: o cartão é o rosto do set (a vitrine é visual). */
+.sx-grid .set-art { min-height: 116px; }
+.sx-grid .set-logo { max-height: 74px; }
+/* Produtos do lançamento como chips no pé do cartão. Até 4 à vista; o "+N"
+   abre o resto (no celular, até 2). */
+.sx-kids { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.sx-kid {
+  display: inline-flex; align-items: center; min-height: 30px; padding: 0 9px;
+  border: 1px solid var(--line); background: var(--panel-strong); color: var(--muted);
+  font: inherit; font-size: 12px; font-weight: 700; text-decoration: none; white-space: nowrap; cursor: pointer;
+  max-width: 100%; overflow: hidden; text-overflow: ellipsis;
+}
+.sx-kid:hover { color: var(--accent); border-color: var(--accent); }
+.sx-kids:not(.is-open) > a.sx-kid:nth-child(n + 5) { display: none; }
+.sx-kids.is-open > .sx-kid-more, .sx-kid-more.sx-so-cel { display: none; }
+.sx-n-cel { display: none; }
+
+@media (max-width: 960px) {
+  .sx-hero { grid-template-columns: minmax(0, 1fr); }
+  .sx-hero-side { flex-direction: row; flex-wrap: wrap; }
+  .sx-hero-side .sx-eyebrow { flex-basis: 100%; }
+  .sx-hero-side .sx-mini { flex: 1 1 260px; }
+  .sx-cont-rail { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 700px) {
+  /* Destaque empilhado: logo em cima, dados embaixo. */
+  .sx-hero-main { grid-template-columns: minmax(0, 1fr); min-height: 0; }
+  .sx-hero-art { padding: 18px; min-height: 120px; }
+  .sx-hero-logo { max-height: 96px; }
+  .sx-hero-info { padding: 16px 18px 18px; gap: 6px; }
+  .sx-hero-side { padding: 14px; }
+  .sx-hero-side .sx-mini { flex-basis: 100%; }
+  /* "Também recentes" sai no celular (já estão no topo da lista logo
+     abaixo); "Em breve" fica, que é informação que a lista não dá. */
+  .sx-hero-side.sx-so-desk { display: none; }
+  /* Continue completando: trilho que rola de lado, encostado nas bordas. */
+  .sx-cont-rail {
+    display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
+    margin-inline: -20px; padding: 0 20px 4px; scroll-padding-inline: 20px;
+  }
+  .sx-cont-rail::-webkit-scrollbar { display: none; }
+  .sx-cont-rail > .sx-mini { flex: 0 0 82%; scroll-snap-align: start; }
+  .sx-era { min-height: 44px; }
+  .sx-eras { margin-inline: -20px; padding-inline: 20px; }
+  .sx-grid .set-art { min-height: 96px; }
+  .sx-grid .set-logo { max-height: 60px; }
+  .sx-kid { min-height: 44px; }
+  .sx-kids:not(.is-open) > a.sx-kid:nth-child(n + 3) { display: none; }
+  .sx-kid-more.sx-so-cel { display: inline-flex; }
+  .sx-kids.is-open > .sx-kid-more { display: none; }
+  .sx-n-cel { display: inline; }
+  .sx-n-desk { display: none; }
+}
+
 /* Badges (gamification): placar, torre de cartas e grade de medalhas. */
 .bdg-score { display: flex; align-items: center; gap: 16px; padding: 16px; border-radius: 12px; background: var(--panel); border: 1px solid var(--line); margin-bottom: 18px; }
 .bdg-score-num { font-size: 34px; font-weight: 800; }
