@@ -7450,31 +7450,37 @@ select.bed-input { padding: 0 10px; }
 /* ============================================================================
    HUB PESSOAL, versão "Carteira" (dashboard.html, 2026-10-08)
    O molde das corretoras e do Collectr, que a pesquisa de concorrentes achou em
-   quase todo app de coleção: o patrimônio é a manchete; do lado, ONDE ele está
-   (por jogo, em dinheiro); embaixo, o que mexeu na semana e a vitrine das mais
-   valiosas. Os doze atalhos viram grade de ícones (no celular eram doze linhas
-   de 71px antes de qualquer carta). Prefixo hb-: folha "painel", só desta
-   página (scripts/lib/css-areas.mjs). Canto reto e sem sombra, como o resto.
+   quase todo app de coleção. Revisão do mesmo dia, a pedido do Fernando:
+   - no desktop o topo é dividido em dois — o patrimônio CONDENSADO à esquerda
+     (número, variação e onde ele está) e os atalhos à direita;
+   - logo abaixo vem a "Minha Coleção" (a vitrine das cartas principais, com o
+     botão pra Coleção), depois os maiores movimentos e os gráficos;
+   - no celular: patrimônio, Minha Coleção, atalhos e o resto.
+   Prefixo hb-: folha "painel", só desta página (scripts/lib/css-areas.mjs).
+   Canto reto e sem sombra, como o resto.
    ========================================================================== */
 .hb-eyebrow {
   margin: 0 0 10px; font-size: 12px; font-weight: 800;
   letter-spacing: .06em; text-transform: uppercase; color: var(--muted);
 }
-.hb-hero {
-  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 36px;
-  padding: 26px 28px; margin-bottom: 12px;
-  background: var(--panel); border: 1px solid var(--line);
-}
+/* Topo em duas metades do mesmo peso, esticadas à mesma altura. */
+.hb-top { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; margin-bottom: 30px; }
+.hb-hero, .hb-apps-wrap { padding: 22px 24px; background: var(--panel); border: 1px solid var(--line); min-width: 0; }
+.hb-hero { display: flex; flex-direction: column; gap: 22px; }
 .hb-worth { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; }
+/* Rótulo à esquerda, "Abrir o Portfólio" à direita: o botão que era uma
+   linha inteira embaixo do número sobe pro canto (patrimônio condensado). */
+.hb-worth-head { display: flex; align-items: center; gap: 12px; align-self: stretch; margin-bottom: 4px; }
+.hb-worth-head .hb-eyebrow { margin: 0; }
 /* O número leva ao Portfólio (era o .stat-link do cartão antigo). */
 .hb-value {
   color: var(--text); text-decoration: none;
-  font-size: clamp(36px, 1.6rem + 1.6vw, 54px); font-weight: 800;
+  font-size: clamp(34px, 1.4rem + 1.4vw, 48px); font-weight: 800;
   letter-spacing: -0.02em; line-height: 1.05; font-variant-numeric: tabular-nums;
 }
 .hb-value:hover { color: var(--accent); }
 /* Variação em 7 dias, em TEXTO (sem o desenho que saiu em 2026-08-25). */
-.hb-delta { margin: 10px 0 0; font-size: 15px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.hb-delta { margin: 8px 0 0; font-size: 15px; font-weight: 800; font-variant-numeric: tabular-nums; }
 .hb-delta small { font-size: 13px; font-weight: 600; color: var(--muted); }
 .hb-delta.is-up, .hb-mv-chg.is-up { color: #2ecc71; }
 .hb-delta.is-down, .hb-mv-chg.is-down { color: #e8553c; }
@@ -7482,25 +7488,25 @@ select.bed-input { padding: 0 10px; }
    tons mais fundos, acima de 4,5:1. */
 [data-theme="light"] .hb-delta.is-up, [data-theme="light"] .hb-mv-chg.is-up { color: #1a7f45; }
 [data-theme="light"] .hb-delta.is-down, [data-theme="light"] .hb-mv-chg.is-down { color: #c0392b; }
-.hb-split { margin: 10px 0 0; font-size: 14px; color: var(--muted); }
+.hb-split { margin: 8px 0 0; font-size: 14px; color: var(--muted); }
 .hb-split strong { color: var(--text); font-weight: 700; }
 .hb-priced { margin-top: 4px; font-size: 12px; font-weight: 600; color: var(--subtle); font-variant-numeric: tabular-nums; }
 .hb-cta {
-  display: inline-flex; align-items: center; gap: 8px; margin-top: 22px;
-  min-height: 44px; padding: 0 16px; border: 1px solid var(--line);
-  color: var(--text); font-weight: 700; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 6px; margin-left: auto;
+  min-height: 36px; padding: 0 12px; border: 1px solid var(--line);
+  color: var(--text); font-size: 13.5px; font-weight: 700; text-decoration: none; white-space: nowrap;
 }
 .hb-cta:hover { border-color: var(--accent); color: var(--accent); }
-.hb-cta svg { width: 18px; height: 18px; }
+.hb-cta svg { width: 16px; height: 16px; }
 
 /* Onde está o valor: barra empilhada + linhas (cor, jogo, cartas, %, valor). */
 .hb-alloc { min-width: 0; }
-.hb-alloc-bar { display: flex; gap: 2px; height: 12px; margin-bottom: 8px; }
+.hb-alloc-bar { display: flex; gap: 2px; height: 10px; margin-bottom: 6px; }
 .hb-alloc-bar span { min-width: 3px; }
 .hb-alloc-list { list-style: none; margin: 0; padding: 0; }
 .hb-alloc-row {
   display: grid; grid-template-columns: 10px minmax(0, 1fr) auto 44px minmax(88px, auto);
-  align-items: center; gap: 12px; min-height: 40px;
+  align-items: center; gap: 12px; min-height: 36px;
   border-top: 1px solid var(--line); color: var(--text); text-decoration: none; font-size: 14px;
 }
 .hb-alloc-list li:first-child .hb-alloc-row { border-top: 0; }
@@ -7511,22 +7517,27 @@ select.bed-input { padding: 0 10px; }
 .hb-alloc-pct { text-align: right; color: var(--muted); font-variant-numeric: tabular-nums; }
 .hb-alloc-val { text-align: right; font-weight: 800; white-space: nowrap; font-variant-numeric: tabular-nums; }
 
-/* Os números da coleção numa faixa: colunas iguais no desktop, quantas
-   houver (a Pokédex e as novidades só aparecem quando existem). */
-.hb-stats {
-  display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr);
-  margin-bottom: 28px; background: var(--panel); border: 1px solid var(--line);
+/* Atalhos (a metade direita do topo): azulejos de 4 por fileira, ícone em
+   cima, nome e o número da tela embaixo (25 desejos, 3 slabs…). */
+.hb-apps-wrap { display: flex; flex-direction: column; gap: 18px; }
+.hb-apps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.hb-app {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 10px;
+  min-width: 0; min-height: 92px; padding: 14px;
+  background: var(--panel-strong); border: 1px solid transparent; color: var(--text); text-decoration: none;
+  transition: border-color .15s ease;
 }
-.hb-stats > a {
-  display: flex; flex-direction: column; gap: 2px; min-width: 0; padding: 14px 18px;
-  border-left: 1px solid var(--line); color: var(--text); text-decoration: none;
+.hb-app:hover { border-color: var(--accent); }
+.hb-app-ic { flex: none; width: 22px; height: 22px; color: var(--accent); }
+.hb-app-ic svg { display: block; width: 100%; height: 100%; }
+.hb-app-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; width: 100%; }
+.hb-app-body span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* Nome em até 2 linhas: "Analisador de troca" não cabe numa em ~150px. */
+.hb-app-body strong {
+  font-size: 14px; line-height: 1.25; overflow: hidden;
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;
 }
-.hb-stats > a:first-child { border-left: 0; }
-/* display: flex venceria o [hidden] do navegador. */
-.hb-stats > a[hidden] { display: none; }
-.hb-stats strong { font-size: 22px; font-weight: 800; font-variant-numeric: tabular-nums; }
-.hb-stats span { font-size: 12.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.hb-stats > a:hover strong { color: var(--accent); }
+.hb-app-body span { font-size: 12px; color: var(--muted); }
 
 .hb-sec { margin: 0 0 30px; }
 .hb-sec-head { display: flex; align-items: baseline; gap: 12px; margin: 0 0 12px; }
@@ -7535,7 +7546,45 @@ select.bed-input { padding: 0 10px; }
 .hb-more { margin-left: auto; font-size: 13.5px; font-weight: 700; color: var(--accent); text-decoration: none; }
 .hb-more:hover { text-decoration: underline; }
 
-/* Mexeram na sua coleção (7 dias): altas | quedas, em dinheiro. */
+/* Minha Coleção: título, os números da coleção numa linha e o botão cheio
+   (é a ação principal da seção) à direita. */
+.hb-mine-head { flex-wrap: wrap; align-items: center; gap: 6px 18px; margin-bottom: 14px; }
+.hb-mine-head h2 { font-size: 19px; }
+.hb-mine-stats { display: flex; flex-wrap: wrap; gap: 4px 18px; margin: 0; font-size: 13.5px; color: var(--muted); }
+.hb-mine-stats strong { color: var(--text); font-weight: 800; font-variant-numeric: tabular-nums; }
+/* display: flex do pai não mexe no span, mas o [hidden] precisa valer. */
+.hb-mine-stats [hidden] { display: none; }
+.hb-btn {
+  display: inline-flex; align-items: center; gap: 8px; margin-left: auto;
+  min-height: 44px; padding: 0 18px; background: var(--accent); color: var(--on-accent);
+  font-weight: 800; text-decoration: none; white-space: nowrap;
+}
+.hb-btn:hover { filter: brightness(1.08); }
+.hb-btn svg { width: 18px; height: 18px; }
+
+/* Vitrine: 7 cartas + o azulejo "+N" numa fileira de 8 no desktop. */
+.hb-rail { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 14px; }
+.hb-rail > li { min-width: 0; }
+.hb-card { display: flex; flex-direction: column; gap: 6px; min-width: 0; color: var(--text); text-decoration: none; }
+.hb-card-img { display: block; aspect-ratio: 63 / 88; background: var(--panel-strong); overflow: hidden; }
+.hb-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.hb-card strong { font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hb-card-val { margin-top: -4px; font-size: 14px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.hb-card:hover strong { color: var(--accent); }
+/* "+66 cartas": do tamanho de uma carta, borda tracejada (é atalho, não carta). */
+.hb-card-more .hb-card-img {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  background: transparent; border: 1px dashed var(--line); color: var(--muted);
+}
+.hb-card-more .hb-card-img strong { font-size: 28px; color: var(--text); }
+.hb-card-more:hover .hb-card-img { border-color: var(--accent); }
+.hb-skel { animation: skel-pulse 1.2s ease-in-out infinite; }
+.hb-skel .hb-card-img { opacity: .5; background: var(--line); }
+.hb-skel .skel-line { width: 80%; }
+.hb-skel .skel-line.short { width: 45%; }
+@media (prefers-reduced-motion: reduce) { .hb-skel { animation: none; } }
+
+/* Maiores movimentos na coleção (7 dias): altas | quedas, em dinheiro. */
 .hb-movers { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 24px; }
 /* Só altas ou só quedas: a coluna que sobrou ocupa a largura. */
 .hb-movers:has(> [hidden]) { grid-template-columns: minmax(0, 1fr); }
@@ -7555,47 +7604,12 @@ select.bed-input { padding: 0 10px; }
 .hb-mv-chg { display: flex; flex-direction: column; align-items: flex-end; font-weight: 800; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .hb-mv-chg small { font-size: 12px; font-weight: 700; opacity: .85; }
 
-/* Vitrine das mais valiosas: oito numa fileira no desktop. */
-.hb-rail { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 14px; }
-.hb-rail > li { min-width: 0; }
-.hb-card { display: flex; flex-direction: column; gap: 6px; min-width: 0; color: var(--text); text-decoration: none; }
-.hb-card-img { display: block; aspect-ratio: 63 / 88; background: var(--panel-strong); overflow: hidden; }
-.hb-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.hb-card strong { font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.hb-card-val { margin-top: -4px; font-size: 14px; font-weight: 800; font-variant-numeric: tabular-nums; }
-.hb-card:hover strong { color: var(--accent); }
-.hb-skel { animation: skel-pulse 1.2s ease-in-out infinite; }
-.hb-skel .hb-card-img { opacity: .5; background: var(--line); }
-.hb-skel .skel-line { width: 80%; }
-.hb-skel .skel-line.short { width: 45%; }
-@media (prefers-reduced-motion: reduce) { .hb-skel { animation: none; } }
-
-/* Atalhos: "Ir para" (4 colunas) e "Ferramentas" (2) lado a lado, mesmas
-   larguras de azulejo — 2fr/1fr com o mesmo vão. */
-.hb-apps-wrap { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 12px 24px; margin: 0 0 30px; }
-.hb-apps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
-.hb-apps-tools { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.hb-app {
-  display: flex; align-items: center; gap: 12px; min-width: 0; min-height: 64px; padding: 12px 14px;
-  background: var(--panel); border: 1px solid var(--line); color: var(--text); text-decoration: none;
-  transition: border-color .15s ease;
-}
-.hb-app:hover { border-color: var(--accent); }
-.hb-app-ic { flex: none; width: 22px; height: 22px; color: var(--accent); }
-.hb-app-ic svg { display: block; width: 100%; height: 100%; }
-.hb-app-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-.hb-app-body strong, .hb-app-body span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.hb-app-body strong { font-size: 14px; }
-.hb-app-body span { font-size: 12px; color: var(--muted); }
-
-/* Por jogo (o quadrado de 398px) | Por região. As "Mais valiosas" saíram
-   desta fileira e subiram pra vitrine. */
+/* Gráficos: Por jogo (o quadrado de 398px) | Por região. */
 .hb-row { grid-template-columns: 398px minmax(0, 1fr); margin-top: 0; }
 /* A pizza de região esticava até ~400px no cartão largo: rosca e legenda
    ficam do tamanho que tinham na fileira de três. */
 .hb-row .dash-gv-pie { grid-template-columns: minmax(0, 300px) minmax(0, 340px); gap: 32px; justify-content: center; }
-/* Primeiros passos entre a faixa de números e as seções: o respiro de baixo
-   é o mesmo das seções (o de cima já vem da faixa). */
+/* Primeiros passos logo abaixo do topo, com o respiro das seções. */
 .hb-main .dash-steps { margin: 0 0 30px; }
 
 /* Modo Colecionador: some o dinheiro, ficam as porcentagens. */
@@ -7603,12 +7617,27 @@ html[data-collector-mode] .hb-money { display: none !important; }
 html[data-collector-mode] .hb-worth .collector-badge { font-size: 28px; font-weight: 800; color: var(--accent); }
 
 @media (max-width: 1200px) {
-  .hb-apps-wrap { grid-template-columns: minmax(0, 1fr); }
-  .hb-apps-tools { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  /* Metade do topo ficaria com ~130px por azulejo: o nome cabe, o número
+     embaixo some (continua no title). */
+  .hb-app-body span { display: none; }
+  .hb-app { min-height: 78px; }
 }
 @media (max-width: 960px) {
-  .hb-hero { grid-template-columns: minmax(0, 1fr); gap: 26px; }
+  /* Uma coluna: o topo se desfaz (display: contents) e cada bloco ganha a
+     sua ORDEM — patrimônio, Minha Coleção, atalhos e o resto (pedido de
+     2026-10-08). O `order` não muda o DOM: o leitor de tela e o Tab seguem
+     a ordem do HTML. */
+  .hb-main { display: flex; flex-direction: column; }
+  .hb-top { display: contents; }
+  .hb-main > .dash-head { order: 0; }
+  .hb-hero { order: 1; margin-bottom: 24px; }
+  .hb-main > .dash-steps { order: 2; }
+  #dhTop { order: 3; }
+  .hb-apps-wrap { order: 4; margin-bottom: 30px; }
+  #dhMovers { order: 5; }
+  #dhCaps { order: 6; }
   .hb-row { grid-template-columns: minmax(0, 1fr); }
+  .hb-app-body span { display: block; }
   /* A vitrine vira trilho que rola de lado, encostado nas bordas da tela. */
   .hb-rail {
     display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory;
@@ -7618,27 +7647,25 @@ html[data-collector-mode] .hb-worth .collector-badge { font-size: 28px; font-wei
   .hb-rail > li { flex: 0 0 132px; scroll-snap-align: start; }
 }
 @media (max-width: 720px) {
-  .hb-hero { padding: 20px 18px; margin-bottom: 10px; }
+  .hb-hero { padding: 18px; gap: 18px; }
+  .hb-cta { min-height: 44px; }
+  /* O número é link (leva ao Portfólio): 44px de toque. */
+  .hb-value { padding: 4px 0; }
   .hb-alloc-row { grid-template-columns: 10px minmax(0, 1fr) 40px auto; min-height: 44px; }
   .hb-alloc-n { display: none; }
-  /* A faixa de números rola de lado (o Collectr faz igual com os blocos). */
-  .hb-stats {
-    display: flex; overflow-x: auto; scrollbar-width: none; margin-bottom: 24px;
-  }
-  .hb-stats::-webkit-scrollbar { display: none; }
-  .hb-stats > a { flex: 0 0 auto; min-width: 112px; padding: 12px 16px; }
-  .hb-stats strong { font-size: 20px; }
+  /* Minha Coleção: título e botão na 1ª linha, os números embaixo. */
+  .hb-mine-stats { order: 3; flex-basis: 100%; font-size: 13px; }
   .hb-movers { grid-template-columns: minmax(0, 1fr); }
   .hb-sec-head .hb-more { min-height: 44px; display: inline-flex; align-items: center; }
+  /* Título longo ("Maiores movimentos na coleção"): o "7 dias" desce pra
+     uma linha própria e o "Ver todas" fica na do título. */
+  .hb-sec-head { flex-wrap: wrap; row-gap: 0; }
+  .hb-sec-head small { order: 3; flex-basis: 100%; margin-top: -6px; }
   /* Atalhos: grade de 4 com o ícone em cima e só o nome (até 2 linhas). */
-  .hb-apps-wrap { gap: 6px; }
-  .hb-apps, .hb-apps-tools { gap: 8px; }
-  .hb-app { flex-direction: column; justify-content: center; gap: 8px; min-height: 84px; padding: 12px 4px; text-align: center; }
+  .hb-apps-wrap { padding: 18px 14px; gap: 14px; }
+  .hb-app { align-items: center; justify-content: center; gap: 8px; min-height: 84px; padding: 12px 4px; text-align: center; }
   .hb-app-body span { display: none; }
-  .hb-app-body strong {
-    white-space: normal; font-size: 12px; line-height: 1.25; overflow-wrap: anywhere;
-    display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;
-  }
+  .hb-app-body strong { font-size: 12px; overflow-wrap: anywhere; }
 }
 
 /* Badges (gamification): placar, torre de cartas e grade de medalhas. */
