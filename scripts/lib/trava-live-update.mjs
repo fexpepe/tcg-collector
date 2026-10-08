@@ -32,7 +32,9 @@ export const AMBIENTE = "app-live-update";
 const ESTE = "scripts/lib/trava-live-update.mjs";
 
 const RE_CLI = /@capgo\/cli\b|\bcapgo\s+(?:bundle|upload|channel|login)\b/i;
-const RE_TOKEN = /\bCAPGO_[A-Z0-9_]+\b/;
+// CAPGO sozinho também: foi o nome que o segredo ganhou na 1ª configuração do
+// ambiente (2026-10-08), e `secrets.CAPGO` passava reto por `CAPGO_…`.
+const RE_TOKEN = /\bCAPGO(?:_[A-Z0-9_]+)?\b/;
 const RE_AMBIENTE = /\benvironment\s*:\s*(?:name\s*:\s*)?["']?app-live-update\b/;
 const RE_SEGREDO = /\bsecrets\./;
 const RE_DESVIO = /\b(?:always|failure|cancelled)\s*\(\s*\)/;

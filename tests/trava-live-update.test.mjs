@@ -91,6 +91,7 @@ test("CLI, token ou ambiente do Capgo fora da porta quebram", () => {
   const casos = {
     ".github/workflows/deploy.yml": "jobs:\n  x:\n    steps:\n      - run: npx --yes @capgo/cli@8.64.1 bundle upload\n",
     "codemagic.yaml": "workflows:\n  ios:\n    environment:\n      vars:\n        T: $CAPGO_TOKEN\n",
+    ".github/workflows/sem-sufixo.yml": "jobs:\n  x:\n    env:\n      T: ${{ secrets.CAPGO }}\n",
     ".github/workflows/outro.yml": "jobs:\n  x:\n    environment: app-live-update\n",
     "package.json (scripts)": JSON.stringify({ "app:publica": "capgo bundle upload --channel production" }),
     "scripts/publica.mjs": "execSync('npx @capgo/cli bundle upload')\n"
