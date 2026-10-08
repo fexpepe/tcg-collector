@@ -707,7 +707,7 @@ main {
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
 }
 
-/* Selo "beta" nos itens do menu ainda em construção (Decks, Portfólio) e no
+/* Selo "beta" nos itens do menu ainda em construção (Portfólio) e no
    título da seção Vintage do Hub (linhas ainda em evolução). Os
    links são inline-flex, então o sobrescrito sai por align-self (vertical-align
    não vale em item de flex). Neutro por tokens de tema, e não pelo accent —
