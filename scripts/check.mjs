@@ -348,6 +348,17 @@ let lembreteCentering = null;
   lembreteCentering = lembreteTabelas(texto);
 }
 
+// 11) Trava do live update do app (pedida pelo Fernando em 2026-10-08): o
+//     envio pro Capgo troca o código de todo app instalado, então só sai do
+//     .github/workflows/app-live-update.yml — à mão, da main e com aprovação
+//     no ambiente do GitHub. Outra automação chamando a CLI, ou a porta
+//     perdendo uma das travas, quebra o CI. A regra e o porquê estão em
+//     scripts/lib/trava-live-update.mjs.
+{
+  const { arquivosDeAutomacao, confereTravaLiveUpdate } = await import("./lib/trava-live-update.mjs");
+  for (const e of confereTravaLiveUpdate(arquivosDeAutomacao(ROOT))) fail(e);
+}
+
 // Relatório. Avisos só listam com --verbose (senão poluem o uso diário).
 const verbose = process.argv.includes("--verbose") || process.argv.includes("-v");
 console.log(`\n  i18n: ${ptKeys.size} chaves (pt) · ${enKeys.size} (en)`);

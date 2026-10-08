@@ -1,0 +1,137 @@
+name: App — live update (Capgo)
+
+# A ÚNICA porta de saída do live update do app (trava pedida pelo Fernando em
+# 2026-10-08).
+#
+# Live update troca o HTML/JS/CSS de TODO app instalado, sem loja e sem
+# revisão. A main recebe vários pushes por dia (snapshot do catálogo, sessões
+# em paralelo); se o envio pegasse carona num push, cada um viraria update pra
+# todo mundo — ~2 GB de tráfego por update com 2.000 usuários, e o plano Solo
+# do Capgo aguenta uns 50 por mês. Por isso nada aqui roda sozinho:
+#
+#   1. Só `workflow_dispatch`: alguém aperta "Run workflow" na aba Actions,
+#      escolhe versão e canal e digita PUBLICAR. Push, tag e cron não entram.
+#   2. O job `confere` (sem segredo nenhum) barra o pedido que não veio da
+#      main, sem a palavra, com versão fora do formato ou com o ambiente
+#      desprotegido.
+#   3. O job `publica` roda no ambiente `app-live-update`, que pede aprovação
+#      manual do Fernando na tela do GitHub. O token do Capgo é segredo DESSE
+#      ambiente: fora dele (outro workflow, a máquina de dev, uma sessão do
+#      Claude) não existe token, e sem token a CLI não publica.
+#   4. O scripts/check.mjs (seção 11, regra em scripts/lib/trava-live-update.mjs)
+#      quebra o CI se este arquivo perder uma das travas acima, ou se qualquer
+#      outro arquivo de automação chamar a CLI do Capgo ou tocar o token.
+#
+# Ambiente no GitHub (Settings → Environments → app-live-update):
+#   - Required reviewers: fexpepe. NÃO marcar "Prevent self-review": quem
+#     dispara e quem aprova é a mesma pessoa.
+#   - "Allow administrators to bypass" DESLIGADO — admin pulando a aprovação
+#     é exatamente o atalho que a trava existe pra fechar.
+#   - Deployment branches: só `main`.
+#   - Secret CAPGO_TOKEN: chave do Capgo com permissão de upload. Ela não fica
+#     em mais lugar nenhum: nem secret do repositório, nem .env local.
+# Workflow que cita ambiente inexistente faz o GitHub CRIAR o ambiente sem
+# proteção nenhuma — por isso o `confere` lê as regras pela API e recusa se a
+# aprovação manual não estiver lá.
+
+on:
+  workflow_dispatch:
+    inputs:
+      versao:
+        description: "Versão do pacote web (ex.: 1.4.2). O Capgo não aceita a mesma duas vezes."
+        required: true
+        type: string
+      canal:
+        description: "Canal do Capgo"
+        required: true
+        type: choice
+        options:
+          - beta
+          - production
+        default: beta
+      confirmacao:
+        description: "Digite PUBLICAR: este update vai pra todo app instalado no canal escolhido"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+# Um envio por vez. O segundo espera; nunca cancela o que está no meio.
+concurrency:
+  group: app-live-update
+  cancel-in-progress: false
+
+jobs:
+  confere:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Confere o pedido
+        env:
+          VERSAO: ${{ inputs.versao }}
+          CONFIRMACAO: ${{ inputs.confirmacao }}
+        run: |
+          if [ "$GITHUB_REF" != "refs/heads/main" ]; then
+            echo "::error::Live update só sai da main (este pedido veio de $GITHUB_REF)."; exit 1
+          fi
+          if [ "$CONFIRMACAO" != "PUBLICAR" ]; then
+            echo "::error::Faltou digitar PUBLICAR na confirmação."; exit 1
+          fi
+          if ! printf '%s' "$VERSAO" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+            echo "::error::Versão \"$VERSAO\" fora do formato X.Y.Z."; exit 1
+          fi
+
+      # A API de ambientes é pública em repositório público; o token do job vai
+      # junto só pra não cair no limite de chamadas anônimas por IP do runner.
+      - name: Confere a proteção do ambiente
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          url="repos/$GITHUB_REPOSITORY/environments/app-live-update"
+          dados=$(gh api "$url" 2>/dev/null || curl -fsS "https://api.github.com/$url" 2>/dev/null || true)
+          regras=$(printf '%s' "$dados" | jq -r '[.protection_rules[]?.type] | join(",")' 2>/dev/null || true)
+          bypass=$(printf '%s' "$dados" | jq -r '.can_admins_bypass' 2>/dev/null || true)
+          case ",$regras," in
+            *,required_reviewers,*) ;;
+            *) echo "::error::O ambiente app-live-update não pede aprovação manual (regras: ${regras:-nenhuma}). Configure em Settings → Environments antes de publicar."; exit 1 ;;
+          esac
+          if [ "$bypass" != "false" ]; then
+            echo "::error::O ambiente app-live-update deixa admin pular a aprovação (can_admins_bypass=$bypass). Desligue \"Allow administrators to bypass\"."; exit 1
+          fi
+          echo "Ambiente protegido: $regras"
+
+  publica:
+    needs: confere
+    runs-on: ubuntu-latest
+    environment: app-live-update
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: 22
+
+      # O projeto Capacitor (PR seguinte) traz o capacitor.config.json e o
+      # `npm run app:web`, que monta a pasta webDir só com o código do app. O
+      # catálogo (data/, centenas de MB) fica de fora e chega pela rede, como
+      # no site — embutido, cada update custaria o catálogo inteiro.
+      - name: Monta o pacote web
+        run: |
+          if [ ! -f capacitor.config.json ]; then
+            echo "::error::Ainda não existe o projeto Capacitor (capacitor.config.json): nada a publicar."; exit 1
+          fi
+          npm ci
+          npm run app:web
+
+      - name: Envia pro Capgo
+        env:
+          CAPGO_TOKEN: ${{ secrets.CAPGO_TOKEN }}
+          VERSAO: ${{ inputs.versao }}
+          CANAL: ${{ inputs.canal }}
+        run: |
+          if [ -z "$CAPGO_TOKEN" ]; then
+            echo "::error::O segredo CAPGO_TOKEN não existe no ambiente app-live-update."; exit 1
+          fi
+          app_id=$(node -p "require('./capacitor.config.json').appId")
+          npx --yes @capgo/cli@8.64.1 bundle upload "$app_id" --apikey "$CAPGO_TOKEN" --bundle "$VERSAO" --channel "$CANAL"
