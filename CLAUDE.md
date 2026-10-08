@@ -39,6 +39,28 @@ a PR.
 Se a feature ficou pela metade (bloqueio, dúvida que muda o resultado), não
 abre PR: commita na branch, sobe a branch e diz o que falta.
 
+## Live update do app: só com pedido explícito
+
+O live update (Capgo) troca o HTML/JS/CSS de **todo app instalado**, sem loja
+e sem revisão. A única porta é o `.github/workflows/app-live-update.yml`:
+disparado à mão, só da `main`, e aprovado pelo Fernando no ambiente
+`app-live-update` do GitHub, o único lugar onde o token do Capgo existe. O
+`check.mjs` quebra o CI se outra automação chamar a CLI do Capgo ou se a porta
+perder uma trava. O Claude:
+
+- só dispara esse workflow (`gh workflow run app-live-update.yml`) quando o
+  Fernando pede **aquele envio** na conversa, com versão e canal. Um pedido
+  vale pra um envio; o próximo precisa de outro pedido;
+- nunca aprova a execução pendente (`pending_deployments`), nem com pedido.
+  A aprovação é do Fernando, na tela do GitHub: são dois passos humanos de
+  propósito;
+- não roda a CLI do Capgo na máquina local e não guarda a chave do Capgo em
+  arquivo nenhum (`.env`, `.dev.vars`, config);
+- não afrouxa a trava (gatilho novo, job fora do ambiente, guarda do
+  `check.mjs`) sem pedido explícito pra isso.
+
+Merge na `main`, inclusive push direto, **não** autoriza live update.
+
 ## Carta, set, linha ou jogo novo no catálogo
 
 Segue o [docs/CATALOGO.md](docs/CATALOGO.md). Jogo ou linha nova só vira PR com
