@@ -74,7 +74,7 @@ if (has("--names")) {
   const h = await html(LISTA_DE_EXPANSOES);
   const nomes = h ? parseExpansionList(h) : {};
   await writeFile(new URL("_set-names.json", OUT), JSON.stringify({
-    _: "Nome japonês -> nome traduzido, da coluna 'Translated name' da lista de expansões da Bulbapedia (sync-bulbapedia-ja --names). É a fonte do JA_SET_EN do src/shared.js: set ja cujo nome do chunk esteja aqui e não esteja lá é candidato a entrar no mapa (copiar verbatim).",
+    _: "Nome japonês -> nome traduzido, da coluna 'Translated name' da lista de expansões da Bulbapedia (sync-bulbapedia-ja --names). É a fonte do JA_SET_EN do src/nomes-sets.js: set ja cujo nome do chunk esteja aqui e não esteja lá é candidato a entrar no mapa (copiar verbatim).",
     at: new Date().toISOString().slice(0, 10), names: nomes
   }, null, 1) + "\n", "utf8");
   console.log(`_set-names.json: ${Object.keys(nomes).length} nome(s)`);
@@ -87,12 +87,13 @@ let setIds = pedidos;
 if (has("--all")) setIds = (await readdir(CHUNKS)).filter((f) => f.endsWith(".json")).map((f) => f.replace(/\.json$/, "")).sort();
 if (!setIds.length) { console.log("nada pedido: use --set A,B ou --all (ou --names / --probe)."); process.exit(0); }
 
-// Título da página: _pages.json > JA_SET_EN (shared.js) + " (TCG)" > nome
+// Título da página: _pages.json > JA_SET_EN (src/nomes-sets.js) + " (TCG)" > nome
 // traduzido da lista de expansões (_set-names.json, casado pelo nome japonês
 // do chunk) + " (TCG)" > nome do chunk se ASCII + " (TCG)".
 const pages = (await leJson(new URL("_pages.json", OUT), {})).pages || {};
-const shared = await readFile(new URL("src/shared.js", RAIZ), "utf8");
-const m = /const JA_SET_EN = (\{[\s\S]*?\n  \});/.exec(shared);
+// O JA_SET_EN mora em src/nomes-sets.js desde 2026-10-08 (saiu do shared.js).
+const nomesSets = await readFile(new URL("src/nomes-sets.js", RAIZ), "utf8");
+const m = /const JA_SET_EN = (\{[\s\S]*?\n  \});/.exec(nomesSets);
 const JA_SET_EN = m ? new Function(`return ${m[1]}`)() : {};
 const nomesTraduzidos = mapaDeNomes((await leJson(new URL("_set-names.json", OUT), {})).names);
 function tituloDe(setId, chunk) {

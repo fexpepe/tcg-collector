@@ -150,7 +150,7 @@ const IMG = (scan) => `https://wsrv.nl/?url=${encodeURIComponent(`tcg-db.nikita.
 // Nome do set no catálogo: "Miracle Battle <código> — <nome japonês sem a
 // franquia>". É a CHAVE do set (link, lista, slug do endereço), então os sets
 // que já estavam no ar seguem com o nome de sempre; o nome em inglês é só de
-// exibição (VINTAGE_SET_EN no shared.js).
+// exibição (VINTAGE_SET_EN em src/nomes-sets.js).
 export function setNameOf(set, serie) {
   const nome = serie.strip ? set.name.replace(serie.strip, "") : set.name;
   return `Miracle Battle ${set.code} — ${nome.trim()}`;

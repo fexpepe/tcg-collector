@@ -10,7 +10,7 @@
 // "<setId> Logo JP.png" (era SV/MEGA), "<setId> <Nome EN> Logo.png" (subsets) e
 // nomes por extenso nos vintages — então o de-para é CURADO no FILES abaixo, e
 // não adivinhado. Set que não está no mapa não tem logo publicado: fica sem, e
-// o tile mostra o NOME (agora em inglês, via JA_SET_EN no shared.js).
+// o tile mostra o NOME (agora em inglês, via JA_SET_EN em src/nomes-sets.js).
 //
 // Dois modos, porque o CI não deve depender do Bulbagarden:
 //   node scripts/mirror-ja-set-logos.mjs             baixa o que falta e carimba
