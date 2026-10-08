@@ -3095,7 +3095,8 @@
     const moreActive = ["blog", "tools", "condition", "centering", "sleeves"].includes(active);
 
     // `beta`: selo pequeno sobrescrito no rótulo — recurso ainda em construção
-    // (pedido de 2026-08-25 pra Decks e Portfólio). "beta" é literal de
+    // (pedido de 2026-08-25 pra Decks e Portfólio; Decks saiu do beta em
+    // 2026-10-08, depois do redesign da PR #163). "beta" é literal de
     // propósito: é a mesma palavra nos três idiomas do site.
     const link = (href, key, page, beta) => `<a href="${escapeAttribute(href)}"${page === active ? ' class="active"' : ""}>${escapeHtml(t(key))}${beta ? '<sup class="nav-beta">beta</sup>' : ""}</a>`;
     // Site único (sleevu.app): tudo é relativo. Menu ÚNICO e idêntico em todas as
@@ -3148,7 +3149,7 @@
     nav.innerHTML = `
       ${link(apexUrl, "nav.home", "home")}
       ${exploreMega}
-      ${link("decks", "nav.decks", "decks", true)}
+      ${link("decks", "nav.decks", "decks")}
       ${loggedIn ? `${collectionMega}
       ${link("portfolio", "nav.portfolio", "portfolio", true)}` : ""}
       ${moreMega}
