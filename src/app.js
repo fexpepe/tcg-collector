@@ -400,6 +400,12 @@
       // tenho" continua carta a carta, no botão de cada card.
     }
 
+    const eras = document.getElementById("sxEras");
+    if (eras) eras.addEventListener("click", (event) => {
+      const chip = event.target.closest("[data-era]");
+      if (chip) irParaEra(chip.dataset.era);
+    });
+
     if (elements.setsViewToggle) {
       applySetsView(); // estado inicial (antes do primeiro render) a partir da pref salva
       elements.setsViewToggle.addEventListener("click", (event) => {
@@ -481,12 +487,40 @@
         const head = toggle.closest(".set-series-head");
         if (head && head.dataset.cat) { toggleCategory(head.dataset.cat); return; }
       }
+      // "+N" dos produtos do lançamento: abre os chips que estavam guardados.
+      const maisKids = event.target.closest("[data-kids-more]");
+      if (maisKids) { maisKids.parentElement.classList.add("is-open"); return; }
       // Card de set compacto: clicar em qualquer lugar (menos num link) navega.
       const setCard = event.target.closest(".set-card");
       if (setCard && setCard.dataset.href && !event.target.closest("a")) {
         window.location.href = setCard.dataset.href;
       }
     });
+  }
+
+  // Chips de era (Vitrine, 2026-10-08): uma faixa com as seções da lista —
+  // séries no Pokémon, anos no Magic, categorias nos outros — que salta pra
+  // seção. O pager desenha 60 itens por vez; se a seção ainda não está na
+  // tela, o "Mostrar mais" (irmão da grade) é acionado até ela aparecer.
+  // Só na lista inteira, com 3 seções ou mais.
+  function montaEras(items) {
+    const nav = document.getElementById("sxEras");
+    if (!nav) return;
+    const heads = items.filter((item) => item.type === "series-head" || item.type === "category-head");
+    if (heads.length < 3 || normalize(elements.search.value)) { nav.hidden = true; nav.innerHTML = ""; return; }
+    nav.innerHTML = heads.map((h) => `<button type="button" class="sx-era" data-era="${escapeAttribute(h.name)}">${escapeHtml(h.name)}</button>`).join("");
+    nav.hidden = false;
+  }
+  function irParaEra(nome) {
+    const acha = () => Array.from(elements.grid.children).find((node) => node.classList.contains("set-series-head") && node.dataset.cat === nome);
+    let alvo = acha();
+    for (let guarda = 0; !alvo && guarda < 40; guarda++) {
+      const mais = elements.grid.parentElement.querySelector(".load-more");
+      if (!mais) break;
+      mais.click();
+      alvo = acha();
+    }
+    if (alvo) alvo.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   // Categorias de sets recolhíveis (Lorcana/One Piece: Principais/Promos/Vintage…).
@@ -533,7 +567,7 @@
     const items = view === "pokedex" ? pokedexViewItems()
       : getViewItems(manifestMode() ? [] : filterCards());
     pager.render(items, createViewItem, { resetCount }); // onAppend reaplica o recolhido
-    if (view === "sets") { applyCollapsed(); refineVisibleSets(); }
+    if (view === "sets") { applyCollapsed(); refineVisibleSets(); montaEras(items); }
 
     // Cabeçalhos de série não contam como resultado.
     const realCount = items.filter((item) => item.type !== "series-head" && item.type !== "category-head").length;
@@ -611,8 +645,15 @@
       if ((window.SLEEVU && window.SLEEVU.game) === "weiss") return groupWeissSets(setItems);
       if ((window.SLEEVU && window.SLEEVU.game) === "mbc") return groupMbcSets(setItems);
       if ((window.SLEEVU && window.SLEEVU.game) === "harrypotter") return groupHarryPotterSets(setItems);
-      // Página de Sets: agrupada por série (coleção).
-      return groupSetsBySeries(setItems);
+      // Página de Sets: Pokémon por série (coleção); Magic por ano, com os
+      // produtos de cada lançamento dentro do set; os demais jogos por ano.
+      const grupos = isPokemonGame() ? groupSetsBySeries(setItems)
+        : jogoAtual === "magic" ? groupMagicSets(setItems)
+          : groupSetsByYear(setItems);
+      // Versão "Vitrine" (2026-10-08): na lista inteira do jogo — sem busca —
+      // o topo ganha o lançamento em destaque e, pra quem tem coleção, os sets
+      // em andamento.
+      return normalize(elements.search.value) ? grupos : vitrineDoTopo(grupos).concat(grupos);
     }
 
     // Sem as cartas em mãos (abertura da página — ver soIndices), as cápsulas
@@ -1039,6 +1080,9 @@
       return createSetCard(item);
     }
 
+    if (item.type === "sx-hero") return createHero(item);
+    if (item.type === "sx-continue") return createContinue(item);
+
     return createGroupCard(item);
   }
 
@@ -1216,6 +1260,24 @@
     const valueHtml = item.value > 0
       ? `<span class="set-value">${escapeHtml(shared.formatMoney(shared.getCurrency(), item.value))}</span>`
       : "";
+    // Vitrine (2026-10-08): quem não tem carta NENHUMA no jogo via "0/158 ·
+    // 0%" em todo cartão — ruído, não progresso. Aí vale o tamanho do set.
+    const semColecao = !owned.size;
+    // Produtos do mesmo lançamento (Commander, Promos, Trainer Gallery…), que
+    // agora moram dentro do cartão do set: um chip por produto. À vista vão 4
+    // no desktop e 2 no celular (CSS); o "+N" abre o resto — o N de cada
+    // largura vem pronto em dois <span>, e o CSS mostra o certo.
+    // Um chip por NOME: o catálogo tem Trainer Gallery em dobro (swsh10tg e
+    // swsh10.5tg, mesmo nome, data e 30 cartas; idem 9, 11 e 12 — visto em
+    // 08/10/2026), e "Trainer Gallery | Trainer Gallery" no cartão só confundia.
+    const vistos = new Set();
+    const filhos = (item.filhos || []).filter((f) => !vistos.has(f.displayName) && vistos.add(f.displayName));
+    const maisKids =filhos.length > 2
+      ? `<button type="button" class="sx-kid sx-kid-more${filhos.length <= 4 ? " sx-so-cel" : ""}" data-kids-more aria-label="${escapeAttribute(t("sets.sx.moreProducts"))}"><span class="sx-n-cel">+${filhos.length - 2}</span><span class="sx-n-desk">+${filhos.length - 4}</span></button>`
+      : "";
+    const kidsHtml = filhos.length
+      ? `<div class="sx-kids">${filhos.map((f) => `<a class="sx-kid" href="${escapeAttribute(setDetailUrl(f))}" title="${escapeAttribute(`${f.displayName} · ${tn("count.cards", f.totalCount)}`)}">${escapeHtml(f.rotulo || f.displayName)}</a>`).join("")}${maisKids}</div>`
+      : "";
     // Nos vintages japoneses o título em inglês SUBSTITUI o japonês na lista
     // (antes vinha numa linha extra acima da arte, e o japonês continuava sendo
     // o título — duas linhas dizendo a mesma coisa, uma delas ilegível pra
@@ -1233,16 +1295,19 @@
           <h3>${escapeHtml(item.displayName)}</h3>
           ${item.languageLabel ? `<span class="tag">${escapeHtml(item.languageLabel)}</span>` : ""}
         </div>
-        <div class="progress-bar${altN ? " has-alt" : ""}" role="progressbar" aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="100" aria-label="${escapeAttribute(t("progress.aria", { name: item.name }))}">
+        ${semColecao ? "" : `<div class="progress-bar${altN ? " has-alt" : ""}" role="progressbar" aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="100" aria-label="${escapeAttribute(t("progress.aria", { name: item.name }))}">
           <span style="width: ${progressAqui}%"></span>${altN ? `<span class="progress-alt" style="width: ${progress - progressAqui}%"></span>` : ""}
-        </div>
+        </div>`}
         <div class="set-footer">
-          <span class="set-count">${tenho}/${item.totalCount}<span class="set-pct"> · ${progress}%</span></span>
+          ${semColecao
+            ? `<span class="set-count">${escapeHtml(tn("count.cards", item.totalCount))}</span>`
+            : `<span class="set-count">${tenho}/${item.totalCount}<span class="set-pct"> · ${progress}%</span></span>`}
           ${altHtml}
           ${trendChip}
           ${valueHtml}
           ${item.releaseDate ? `<span class="set-date-list" title="${escapeAttribute(formatReleaseDate(item.releaseDate, "long"))}">${escapeHtml(formatReleaseDate(item.releaseDate))}</span>` : ""}
         </div>
+        ${kidsHtml}
       </div>
     `;
 
@@ -1349,6 +1414,11 @@
   const SERIES_BY_PREFIX = SERIES_DEFS.slice().sort((a, b) => b[0].length - a[0].length);
 
   function deriveSerieId(setId) {
+    // As séries são as do POKÉMON. Nos outros jogos o prefixo casava por acaso
+    // e inventava série (medido em 08/10/2026): 19 "Duelist Pack" do Yu-Gi-Oh
+    // viravam "Diamond & Pearl", "neo" do Magic virava "Neo", 13 sets do
+    // Digimon viravam "EX".
+    if (!isPokemonGame()) return "misc";
     const id = String(setId || "").toLowerCase();
     const hit = SERIES_BY_PREFIX.find(([prefix]) => id.startsWith(prefix));
     return hit ? hit[0] : "misc";
@@ -1367,7 +1437,10 @@
   function groupSetsBySeries(setItems) {
     const decks = setItems.filter((set) => set.kind === "deck").sort(sortByReleaseDesc);
     const bySerie = new Map();
-    setItems.filter((set) => set.kind !== "deck").forEach((set) => {
+    // Trainer Gallery, Galarian Gallery, Shiny Vault e Energy entram DENTRO do
+    // set de que fazem parte (chips no cartão) em vez de cartões soltos ao lado
+    // — ver aninhaPorNome.
+    aninhaPorNome(setItems.filter((set) => set.kind !== "deck")).forEach((set) => {
       const key = set.serieId || "misc";
       if (!bySerie.has(key)) bySerie.set(key, { serieId: key, serieName: set.serieName, sets: [] });
       bySerie.get(key).sets.push(set);
@@ -1388,6 +1461,91 @@
       decks.forEach((set) => items.push(set));
     }
     return items;
+  }
+
+  // ── Topo da Vitrine (2026-10-08) ─────────────────────────────────────────
+  // O padrão que a pesquisa de concorrentes achou (TCGplayer, Pokellector,
+  // pkmn.gg, TCG Collector): o set mais novo em destaque e o que vem por aí.
+  // Destaque = o set principal mais novo já lançado (sem promo, deck, energia
+  // ou coleção do McDonald's; no Magic, sem os eventos/coleções especiais). Ao
+  // lado, até dois "Em breve" (lançamento no futuro) e, se faltar, os outros
+  // lançamentos recentes. Pra quem tem carta no jogo, "Continue completando":
+  // os sets começados e não completos, do mais perto do fim pro mais longe.
+  const NAO_DESTAQUE = /promo|mcdonald|energy|trainer kit|black star/i;
+  function vitrineDoTopo(grupos) {
+    const hoje = new Date().toISOString().slice(0, 10);
+    const sets = grupos.filter((item) => item.type === "set" && item.kind !== "deck" && !item.especial && !NAO_DESTAQUE.test(item.name) && item.releaseDate);
+    const lancados = sets.filter((set) => set.releaseDate <= hoje).sort(sortByReleaseDesc);
+    const futuros = sets.filter((set) => set.releaseDate > hoje).sort(sortByReleaseAsc);
+    const items = [];
+    if (lancados.length) {
+      const lado = futuros.slice(0, 2);
+      const emBreve = lado.length > 0;
+      lancados.slice(1).forEach((set) => { if (lado.length < 2) lado.push(set); });
+      items.push({ type: "sx-hero", set: lancados[0], lado, emBreve, hoje });
+    }
+    if (owned.size) {
+      const todos = [];
+      grupos.forEach((item) => { if (item.type === "set") { todos.push(item); (item.filhos || []).forEach((f) => todos.push(f)); } });
+      const andamento = todos.filter((set) => set.totalCount > 0 && set.ownedCount > 0 && set.ownedCount < set.totalCount)
+        .sort((a, b) => b.ownedCount / b.totalCount - a.ownedCount / a.totalCount || sortByReleaseDesc(a, b)).slice(0, 6);
+      if (andamento.length) items.push({ type: "sx-continue", sets: andamento });
+    }
+    return items;
+  }
+
+  // Arte do set no tamanho pedido: logo, ou o nome em título quando o set não
+  // tem logo (a regra de todos os jogos).
+  function arteDoSet(set, className) {
+    return set.logo
+      ? localizedImg(set.logo, { alt: set.displayName, className, loading: "lazy", fallback: gameLogoUrl(jogoAtual) })
+      : `<span class="sx-nologo">${escapeHtml(set.displayName)}</span>`;
+  }
+  // Barra + "n/total" do set (com as cartas em outra língua somando, como no
+  // cartão da grade).
+  function progressoDoSet(set) {
+    const tenho = set.ownedCount + (set.alt ? set.alt.n : 0);
+    const pct = set.totalCount ? Math.min(100, Math.round((tenho / set.totalCount) * 100)) : 0;
+    return `<span class="sx-prog"><span class="sx-bar"><span style="width:${pct}%"></span></span><span class="sx-prog-n"><b>${tenho}/${set.totalCount}</b> · ${pct}%</span></span>`;
+  }
+  function createHero(item) {
+    const set = item.set;
+    const node = document.createElement("section");
+    node.className = "sx-hero";
+    const dv = set.dv7 != null ? set.dv7 : set.dv30;
+    const meta = [tn("count.cards", set.totalCount)];
+    if (set.value > 0) meta.push(`<span class="sx-money">${escapeHtml(shared.formatMoney(shared.getCurrency(), set.value))}</span>`);
+    const trend = dv != null
+      ? `<span class="sx-trend ${dv >= 0 ? "is-up" : "is-down"}">${dv >= 0 ? "▲" : "▼"} ${escapeHtml(Math.abs(dv).toLocaleString(shared.getLocale(), { maximumFractionDigits: 1 }))}% <small>${escapeHtml(t("sets.sx.inDays", { d: set.dv7 != null ? 7 : 30 }))}</small></span>`
+      : "";
+    const mini = (s) => `<a class="sx-mini" href="${escapeAttribute(setDetailUrl(s))}">
+        <span class="sx-mini-art">${arteDoSet(s, "sx-mini-logo")}</span>
+        <span class="sx-mini-info"><strong>${escapeHtml(s.displayName)}</strong><span>${escapeHtml(s.releaseDate > item.hoje ? t("sets.sx.releases", { date: formatReleaseDate(s.releaseDate, "long") }) : formatReleaseDate(s.releaseDate, "long"))}</span></span></a>`;
+    node.innerHTML = `
+      <a class="sx-hero-main" href="${escapeAttribute(setDetailUrl(set))}">
+        <span class="sx-hero-art">${arteDoSet(set, "sx-hero-logo")}</span>
+        <span class="sx-hero-info">
+          <span class="sx-eyebrow">${escapeHtml(t("sets.sx.latest"))} · ${escapeHtml(formatReleaseDate(set.releaseDate, "long"))}</span>
+          <strong class="sx-hero-name">${escapeHtml(set.displayName)}</strong>
+          <span class="sx-hero-meta">${meta.join(" · ")}${trend ? ` · ${trend}` : ""}</span>
+          ${owned.size ? progressoDoSet(set) : ""}
+          <span class="sx-hero-cta">${escapeHtml(t("sets.sx.open"))}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
+        </span>
+      </a>
+      ${item.lado.length ? `<div class="sx-hero-side${item.emBreve ? "" : " sx-so-desk"}">
+        <p class="sx-eyebrow">${escapeHtml(t(item.emBreve ? "sets.sx.soon" : "sets.sx.recent"))}</p>
+        ${item.lado.map(mini).join("")}
+      </div>` : ""}`;
+    return node;
+  }
+  function createContinue(item) {
+    const node = document.createElement("section");
+    node.className = "sx-cont";
+    node.innerHTML = `<h2 class="sx-cont-title">${escapeHtml(t("sets.sx.continue"))}</h2>
+      <div class="sx-cont-rail">${item.sets.map((s) => `<a class="sx-mini sx-mini-prog" href="${escapeAttribute(setDetailUrl(s))}">
+        <span class="sx-mini-art">${arteDoSet(s, "sx-mini-logo")}</span>
+        <span class="sx-mini-info"><strong>${escapeHtml(s.displayName)}</strong>${progressoDoSet(s)}</span></a>`).join("")}</div>`;
+    return node;
   }
 
   // Lorcana: 2 categorias, com cabeçalho simples (sem página de série). "Promos"
@@ -1721,6 +1879,83 @@
       if (!sets.length) continue;
       items.push({ type: "category-head", name: t(key), count: sets.length });
       sets.sort(sortByReleaseAsc).forEach((set) => items.push(set));
+    }
+    return items;
+  }
+
+  // Magic: The Gathering (2026-10-08). O Magic caía no groupSetsBySeries, que
+  // deduz a série do Pokémon pelo COMEÇO do setId — e as siglas de três letras
+  // do Magic casavam: "neo" (Kamigawa: Neon Dynasty) virava a série "Neo",
+  // "pls" virava "Platinum", "exo" virava "EX". O resto (623 sets) ia todo
+  // pra um "Outros" único: expansão, Commander, Promos e evento misturados.
+  //
+  // O manifest do Magic não traz o tipo do set (o sync usa o set_type do
+  // Scryfall só pra filtrar), mas os produtos de um lançamento levam o NOME do
+  // set principal: "Final Fantasy Commander", "Final Fantasy Promos", "Edge of
+  // Eternities: Stellar Sights". Então o pai de um set é o set de nome mais
+  // longo que é prefixo do nome dele (seguido de espaço ou dois-pontos),
+  // lançado a até 400 dias — no manifest de 08/10/2026 são 175 produtos
+  // aninhados em 650. Filho de filho sobe pro avô.
+  // A mesma regra vale no Pokémon: "Silver Tempest Trainer Gallery", "Crown
+  // Zenith Galarian Gallery", "Scarlet & Violet Energy".
+  // Das raízes do Magic, as de evento/premiação/coleção avulsa (MagicFest,
+  // Wizards Play Network, Secret Lair, The List…) vão pra seção de especiais,
+  // pelo nome.
+  const MAGIC_ESPECIAL =/magicfest|wizards play network|judge|secret lair|the list|mystery booster|arena league|friday night|player rewards|game day|prerelease|championship|showdown|heroes of the realm|love your lgs|pro tour|celebration|league|box topper|duel deck|from the vault|signature spellbook|premium deck|promo|gift|anniversary|launch party|release event|open house|summer magic|unique and miscellaneous|planechase|archenemy|starter|welcome deck|intro pack|spotlight|playtest|unknown event|commander collection|game night|challenger deck|global series|guild kit|clash pack|holiday/i;
+  // Devolve as RAÍZES (cada uma com `filhos`); os filhos ganham `rotulo`.
+  function aninhaPorNome(setItems) {
+    const DIA = 86400000;
+    const dias = (a, b) => Math.abs(Date.parse(a.releaseDate || "1970-01-01") - Date.parse(b.releaseDate || "1970-01-01")) / DIA;
+    const porTamanho = setItems.slice().sort((a, b) => a.name.length - b.name.length);
+    const pai = new Map();
+    setItems.forEach((set) => {
+      let melhor = null;
+      for (const p of porTamanho) {
+        if (p === set || p.name.length >= set.name.length) continue;
+        if (!set.name.startsWith(p.name) || !/^[\s:]/.test(set.name.slice(p.name.length))) continue;
+        if (dias(p, set) > 400) continue;
+        if (!melhor || p.name.length > melhor.name.length) melhor = p;
+      }
+      if (melhor) pai.set(set, melhor);
+    });
+    const raizDe = (set) => { let r = set; while (pai.has(r)) r = pai.get(r); return r; };
+    const raizes = setItems.filter((set) => !pai.has(set)).map((set) => Object.assign(set, { filhos: [] }));
+    pai.forEach((_, set) => {
+      const r = raizDe(set);
+      // O rótulo do produto é o que sobra do nome ("Commander", "Stellar Sights").
+      set.rotulo = set.name.slice(r.name.length).replace(/^[\s:]+/, "") || set.displayName;
+      r.filhos.push(set);
+    });
+    raizes.forEach((r) => r.filhos.sort(sortByReleaseDesc));
+    return raizes;
+  }
+
+  // Seções por ANO de lançamento, do mais novo pro mais antigo: o Magic e os
+  // jogos sem série nem agrupamento próprio (Yu-Gi-Oh, Digimon, FAB, Gundam…),
+  // que antes caíam num "Outros" único. Set sem data vai pro fim.
+  function groupSetsByYear(setItems) {
+    const porAno = new Map();
+    setItems.slice().sort(sortByReleaseDesc).forEach((set) => {
+      const ano = (set.releaseDate || "").slice(0, 4) || t("sets.category.noDate");
+      if (!porAno.has(ano)) porAno.set(ano, []);
+      porAno.get(ano).push(set);
+    });
+    const items = [];
+    porAno.forEach((sets, ano) => {
+      items.push({ type: "category-head", name: ano, count: sets.length });
+      sets.forEach((set) => items.push(set));
+    });
+    return items;
+  }
+
+  function groupMagicSets(setItems) {
+    const raizes = aninhaPorNome(setItems);
+    const especiais = raizes.filter((set) => MAGIC_ESPECIAL.test(set.name)).sort(sortByReleaseDesc);
+    especiais.forEach((set) => { set.especial = true; });
+    const items = groupSetsByYear(raizes.filter((set) => !set.especial));
+    if (especiais.length) {
+      items.push({ type: "category-head", name: t("sets.category.mtgSpecial"), count: especiais.length });
+      especiais.forEach((set) => items.push(set));
     }
     return items;
   }
