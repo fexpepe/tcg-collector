@@ -137,7 +137,7 @@ export function chaveDoPublicado(setId, nome) {
 
 // setId PEGAJOSO. Era a POSIÇÃO do set na ordem por data (`s${i + 1}`), então
 // corrigir uma data renumerava metade dos sets — e o setId é link de set
-// (?setId=), chave do nome em inglês (VINTAGE_SET_EN no shared.js) e nome do
+// (?setId=), chave do nome em inglês (VINTAGE_SET_EN em src/nomes-sets.js) e nome do
 // chunk. Agora cada chave herda o setId que já tem no catálogo publicado; se
 // duas viraram uma, fica o do set com mais cartas (o outro vai pro log, pra
 // registrar o de-para). Chave nova ganha o próximo número livre, acima de todo

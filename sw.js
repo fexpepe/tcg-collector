@@ -142,6 +142,9 @@ const SHELL_ASSETS = [
   "src/erros.js",
   // Ordenar (2026-09-30): o menu e os critérios de toda grade de cartas.
   "src/ordenar.js",
+  // Nomes em inglês dos sets vintage/japoneses (2026-10-08, saíram do shared.js):
+  // carregado pelas telas de Sets, set e Coleção.
+  "src/nomes-sets.js",
   // Fichário (2026-09-16): motor das páginas de bolsos, carregado pelo set e pela Coleção.
   // Resumo (2026-09-16): gráficos de raridade/tipo, carregados pelo set e pela Coleção.
   "src/binder-view.js", "src/insights.js",
