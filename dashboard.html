@@ -53,70 +53,99 @@
       </div>
     </header>
 
-    <!-- Hub versão "Carteira" (2026-10-08): o molde das casas de corretagem e do
-         Collectr — o patrimônio é a manchete e, do lado, ONDE ele está (por
-         jogo, em dinheiro). Sem gráfico de propósito: a variação + sparkline
-         saíram do Hub em 2026-08-25 ("a progressão vive no Portfólio"). Os doze
-         atalhos, que eram doze linhas de 71px e empurravam tudo pro fim no
-         celular, viraram uma grade de ícones. Classes hb- (folha "painel"). -->
+    <!-- Hub versão "Carteira" (2026-10-08, revisão do mesmo dia a pedido do
+         Fernando): o molde das corretoras e do Collectr. No desktop o topo é
+         dividido em dois — à esquerda o patrimônio CONDENSADO (número,
+         variação e onde ele está), à direita os atalhos. Logo abaixo, a
+         "Minha Coleção" com as cartas principais em vitrine; depois os maiores
+         movimentos e os gráficos. Sem gráfico de linha de propósito: a
+         sparkline saiu do Hub em 2026-08-25 ("a progressão vive no
+         Portfólio"). Classes hb- (folha "painel"). -->
     <main class="hb-main">
       <div class="page-head dash-head">
         <h1 data-i18n="nav.dashboard">Hub</h1>
         <div id="dashProfileLine" class="dash-profile-line" hidden></div>
       </div>
 
-      <!-- Patrimônio + composição. O número pinta NA HORA com o último ponto do
-           histórico (localStorage) e é trocado pela conta fresca quando as
-           cartas chegam — a mesma de Coleção e Portfólio. -->
-      <section class="hb-hero" data-i18n-aria="portfolio.networth" aria-label="patrimônio (cartas + graded)">
-        <div class="hb-worth">
-          <p class="hb-eyebrow" id="dhValueLabel" data-i18n="dash.a.networth">Patrimônio</p>
-          <a class="hb-value" href="portfolio" aria-labelledby="dhValueLabel"><span id="dhValue" class="sensitive-value">—</span></a>
-          <span class="collector-badge" data-i18n="collector.badge">Modo Colecionador</span>
-          <!-- Variação em ~7 dias, em TEXTO: a pesquisa de concorrentes achou
-               o par total + variação em quase todo app de coleção. O desenho
-               miniatura (sparkline) que saiu em 2026-08-25 NÃO volta. Só aparece
-               com histórico de 2 dias ou mais e variação diferente de zero. -->
-          <p id="dhDelta" class="hb-delta hb-money" hidden></p>
-          <p id="dhSplit" class="hb-split hb-money" hidden></p>
-          <!-- Transparência do número grande: quantas cópias têm preço de fato.
-               Só aparece quando falta alguma (ver dashboard.js). -->
-          <span id="dhPriced" class="hb-priced hb-money" hidden></span>
-          <a class="hb-cta hb-money" href="portfolio"><span data-i18n="dash.a.openPortfolio">Abrir o Portfólio</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a>
-        </div>
-        <!-- Onde está o valor: barra empilhada + as maiores fatias, cada uma
-             leva à Coleção já filtrada no jogo. Nasce escondida: sem histórico
-             nem cartas com preço, não há o que repartir. -->
-        <div id="dhAlloc" class="hb-alloc" hidden>
-          <h2 class="hb-eyebrow" data-i18n="dash.a.valueWhere">Onde está o valor</h2>
-          <div id="dhAllocBar" class="hb-alloc-bar" aria-hidden="true"></div>
-          <ol id="dhAllocList" class="hb-alloc-list"></ol>
-        </div>
-      </section>
+      <!-- Topo em duas metades (no celular cada uma vai pro seu lugar na
+           ordem da página, ver o @media do .hb-main). -->
+      <div class="hb-top">
+        <!-- Patrimônio + composição. O número pinta NA HORA com o último ponto
+             do histórico (localStorage) e é trocado pela conta fresca quando as
+             cartas chegam — a mesma de Coleção e Portfólio. -->
+        <section class="hb-hero" data-i18n-aria="portfolio.networth" aria-label="patrimônio (cartas + graded)">
+          <div class="hb-worth">
+            <div class="hb-worth-head">
+              <p class="hb-eyebrow" id="dhValueLabel" data-i18n="dash.a.networth">Patrimônio</p>
+              <a class="hb-cta hb-money" href="portfolio"><span data-i18n="dash.a.openPortfolio">Abrir o Portfólio</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a>
+            </div>
+            <a class="hb-value" href="portfolio" aria-labelledby="dhValueLabel"><span id="dhValue" class="sensitive-value">—</span></a>
+            <span class="collector-badge" data-i18n="collector.badge">Modo Colecionador</span>
+            <!-- Variação em ~7 dias, em TEXTO: a pesquisa de concorrentes achou
+                 o par total + variação em quase todo app de coleção. O desenho
+                 miniatura (sparkline) que saiu em 2026-08-25 NÃO volta. Só
+                 aparece com histórico de 2 dias ou mais e variação ≠ zero. -->
+            <p id="dhDelta" class="hb-delta hb-money" hidden></p>
+            <p id="dhSplit" class="hb-split hb-money" hidden></p>
+            <!-- Transparência do número grande: quantas cópias têm preço de
+                 fato. Só aparece quando falta alguma (ver dashboard.js). -->
+            <span id="dhPriced" class="hb-priced hb-money" hidden></span>
+          </div>
+          <!-- Onde está o valor: barra empilhada + as maiores fatias, cada uma
+               leva à Coleção já filtrada no jogo. Nasce escondida: sem
+               histórico nem cartas com preço, não há o que repartir. -->
+          <div id="dhAlloc" class="hb-alloc" hidden>
+            <h2 class="hb-eyebrow" data-i18n="dash.a.valueWhere">Onde está o valor</h2>
+            <div id="dhAllocBar" class="hb-alloc-bar" aria-hidden="true"></div>
+            <ol id="dhAllocList" class="hb-alloc-list"></ol>
+          </div>
+        </section>
 
-      <!-- Os números da coleção numa faixa só (no celular ela rola de lado).
-           Cada um LEVA à tela que o explica. -->
-      <nav class="hb-stats" data-i18n-aria="aria.sumCollector" aria-label="Resumo do colecionador">
-        <a href="collection"><strong id="dhCopies">0</strong><span data-i18n="stats.copies">cópias no total</span></a>
-        <a href="collection"><strong id="dhDistinct">0</strong><span data-i18n="stats.distinct">cartas distintas</span></a>
-        <a href="wishlist"><strong id="dhWish">0</strong><span data-i18n="dash.wish">na lista de desejos</span></a>
-        <a href="collection?tab=graded"><strong id="dhSlabs">0</strong><span data-i18n="dash.slabs">slabs graded</span></a>
-        <!-- Pokédex: só aparece quando há Pokémon capturado (ver dashboard.js). -->
-        <a id="dhDexCard" href="pokedex?game=pokemon&amp;dex=missing" hidden><strong id="dhDex">0</strong><span data-i18n="stats.dexTotal">Pokémon na Pokédex</span></a>
-        <!-- Novidades do mês (timestamps do collection-meta-v1); nasce escondida. -->
-        <a id="dhFreshCard" href="collection" hidden><strong id="dhFreshN"></strong><span id="dhFresh"></span></a>
-      </nav>
+        <!-- Atalhos: "Ir para" (navegação) e "Ferramentas", em azulejos. -->
+        <div class="hb-apps-wrap">
+          <section class="hb-apps-group">
+            <h2 class="hb-eyebrow" data-i18n="dash.shortcuts">Ir para</h2>
+            <div id="dhLinks" class="hb-apps" data-i18n-aria="aria.shortcuts" aria-label="Atalhos"></div>
+          </section>
+          <section class="hb-apps-group">
+            <h2 class="hb-eyebrow" id="dhToolsHead" data-i18n="dash.tools">Ferramentas</h2>
+            <div id="dhTools" class="hb-apps" data-i18n-aria="dash.tools" aria-label="Ferramentas"></div>
+          </section>
+        </div>
+      </div>
 
       <!-- Primeiros passos (E3): nasce ESCONDIDA e só o JS a revela. -->
       <section id="dhSteps" class="dash-steps" hidden></section>
 
-      <!-- Mexeram na sua coleção: as cartas SUAS que mais subiram e caíram em
-           7 dias, ordenadas pelo efeito em dinheiro no seu lote (carta de
-           centavos que dobrou não passa na frente). Sai do price-deltas-7d do
-           build; sem carta sua que se mexeu, a seção não existe. -->
+      <!-- Minha Coleção: a vitrine de cartas grandes (o molde das "mais
+           valiosas") com as cartas PRINCIPAIS da coleção — as de maior valor e,
+           sem preço, as mais recentes — e o botão pra Coleção. Os números da
+           coleção moram no cabeçalho dela (a faixa de números saiu: desejos e
+           slabs já estão nos atalhos). Hidrata com as cartas; até lá, o lugar
+           fica guardado por cartas fantasma. -->
+      <section id="dhTop" class="hb-sec hb-mine" hidden>
+        <div class="hb-sec-head hb-mine-head">
+          <h2 data-i18n="dash.a.myCollection">Minha Coleção</h2>
+          <p class="hb-mine-stats">
+            <span><strong id="dhDistinct">0</strong> <span data-i18n="stats.distinct">cartas distintas</span></span>
+            <span><strong id="dhCopies">0</strong> <span data-i18n="stats.copies">cópias no total</span></span>
+            <!-- Pokédex: só aparece quando há Pokémon capturado (ver dashboard.js). -->
+            <span id="dhDexCard" hidden><strong id="dhDex">0</strong> <span data-i18n="stats.dexTotal">Pokémon na Pokédex</span></span>
+            <!-- Novidades do mês (timestamps do collection-meta-v1). -->
+            <span id="dhFreshCard" hidden><strong id="dhFreshN"></strong> <span id="dhFresh"></span></span>
+          </p>
+          <a class="hb-btn" href="collection"><span data-i18n="dash.a.seeCollection">Ver minha coleção</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a>
+        </div>
+        <ol id="dhTopList" class="hb-rail"></ol>
+      </section>
+
+      <!-- Maiores movimentos na coleção: as cartas SUAS que mais subiram e
+           caíram em 7 dias, ordenadas pelo efeito em dinheiro no seu lote
+           (carta de centavos que dobrou não passa na frente). Sai do
+           price-deltas-7d do build; sem carta sua que se mexeu, não existe. -->
       <section id="dhMovers" class="hb-sec hb-money" hidden>
         <div class="hb-sec-head">
-          <h2 data-i18n="dash.a.moved">Mexeram na sua coleção</h2>
+          <h2 data-i18n="dash.a.moved">Maiores movimentos na coleção</h2>
           <small data-i18n="dash.a.week">7 dias</small>
           <a class="hb-more" href="portfolio" data-i18n="dash.a.seeAll">Ver todas</a>
         </div>
@@ -126,32 +155,8 @@
         </div>
       </section>
 
-      <!-- Vitrine das mais valiosas: a fileira de cartas grandes que o Collectr
-           põe logo abaixo do patrimônio. Hidrata depois (só as suas cartas);
-           até lá, o lugar fica guardado por cartas fantasma. -->
-      <section id="dhTop" class="hb-sec" hidden>
-        <div class="hb-sec-head">
-          <h2 data-i18n="dash.topTitle">Mais valiosas</h2>
-          <a class="hb-more hb-money" href="portfolio" data-i18n="dash.a.seeAll">Ver todas</a>
-        </div>
-        <ol id="dhTopList" class="hb-rail"></ol>
-      </section>
-
-      <!-- Atalhos: "Ir para" (navegação) e "Ferramentas" lado a lado no desktop,
-           em grade de ícones no celular. -->
-      <div class="hb-apps-wrap">
-        <section class="hb-apps-group">
-          <h2 class="hb-eyebrow" data-i18n="dash.shortcuts">Ir para</h2>
-          <div id="dhLinks" class="hb-apps" data-i18n-aria="aria.shortcuts" aria-label="Atalhos"></div>
-        </section>
-        <section class="hb-apps-group">
-          <h2 class="hb-eyebrow" id="dhToolsHead" data-i18n="dash.tools">Ferramentas</h2>
-          <div id="dhTools" class="hb-apps hb-apps-tools" data-i18n-aria="dash.tools" aria-label="Ferramentas"></div>
-        </section>
-      </div>
-
-      <!-- Por jogo (contagem, 4 formas de ver) | Por região. O primeiro pinta
-           NA HORA; o segundo hidrata com as cartas. -->
+      <!-- Gráficos: Por jogo (contagem, 4 formas de ver) | Por região. O
+           primeiro pinta NA HORA; o segundo hidrata com as cartas. -->
       <section id="dhCaps" class="dash-row hb-row" data-i18n-aria="aria.sumDetailed" aria-label="Resumo detalhado">
         <article class="dash-card dash-games-card">
           <div class="dash-games-head">

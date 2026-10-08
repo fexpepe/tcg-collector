@@ -61,9 +61,11 @@
   el.copies.textContent = String(counts.copies);
   el.distinct.textContent = String(counts.distinct);
   const wishTotal = shared.GAME_SLUGS.reduce((n, g) => n + wishlistByGame[g].knownCardIds().length, 0);
-  el.wish.textContent = String(wishTotal);
+  // Desejos e slabs saíram da faixa de números na revisão da "Carteira"
+  // (2026-10-08): o número mora no subtítulo do atalho deles.
+  if (el.wish) el.wish.textContent = String(wishTotal);
   const slabs = gradedCount();
-  el.slabs.textContent = String(slabs);
+  if (el.slabs) el.slabs.textContent = String(slabs);
   // Pokédex: capturados/total do cache da página da Pokédex (marcados OU com
   // carta). Quem marcou pelo herói do Pokémon sem abrir a Pokédex ainda conta
   // pelo store — daí o max. Sem nada capturado, o cartão nem aparece.
@@ -143,6 +145,18 @@
     cartao.hidden = false;
   })();
 
+  // Carimbo de cada carta (meta.mod, ms): desempata a vitrine da Minha Coleção
+  // quando falta preço (a mexida mais recente vem antes). Lido uma vez por jogo.
+  const modPorJogo = {};
+  const modOf = (card) => {
+    const g = card.game || "pokemon";
+    if (!(g in modPorJogo)) {
+      const meta = rawJson(`tcg-collector-${g}-collection-meta-v1`);
+      modPorJogo[g] = meta && meta.mod && typeof meta.mod === "object" ? meta.mod : {};
+    }
+    return Number(modPorJogo[g][card.id]) || 0;
+  };
+
   // ── Onde está o valor (versão "Carteira") ──────────────────────────────────
   // A composição do patrimônio por jogo, em DINHEIRO (o "Por jogo" lá embaixo
   // conta cartas). O primeiro paint sai do último ponto do histórico de cada
@@ -165,7 +179,9 @@
         <span class="hb-alloc-n">${escapeHtml(tn("count.cards", x.n))}</span>
         <span class="hb-alloc-pct">${pct(x.val)}</span>
         <span class="hb-alloc-val hb-money sensitive-value">${escapeHtml(money(x.val))}</span></a></li>`;
-    const MAX = 5;
+    // 4 fatias + "mais N jogos": o patrimônio divide o topo com os atalhos,
+    // então a lista é a versão condensada.
+    const MAX = 4;
     const vis = rows.length > MAX + 1 ? rows.slice(0, MAX) : rows;
     const resto = rows.slice(vis.length);
     const restoVal = resto.reduce((n, x) => n + x.val, 0);
@@ -511,10 +527,11 @@
   // com o valor congelado do cookie pra sempre.
   const idsByGame = shared.collectionLoadIds(ownedByGame);
   if (!Object.values(idsByGame).some((ids) => ids.length)) return;
-  // A vitrine das mais valiosas guarda o lugar com cartas fantasma enquanto a
-  // carga anda: aparecer do nada no meio da página empurrava os atalhos pra
-  // baixo justo quando o dedo ia neles. Se a carga falhar, ela some.
-  const TOP_N = 8;
+  // A vitrine da Minha Coleção guarda o lugar com cartas fantasma enquanto a
+  // carga anda: aparecer do nada logo abaixo do patrimônio empurraria o resto
+  // da página. Se a carga falhar, ela some. 7 cartas + o azulejo "+N" = uma
+  // fileira de 8 no desktop.
+  const TOP_N = 7;
   el.topList.innerHTML = Array.from({ length: TOP_N }, () =>
     '<li class="hb-skel" aria-hidden="true"><span class="hb-card-img skel-img"></span><span class="skel-line"></span><span class="skel-line short"></span></li>').join("");
   el.top.hidden = false;
@@ -628,25 +645,34 @@
       el.movers.hidden = false;
     });
 
-    // Mais valiosas: a vitrine de 8 com a imagem grande (é o card que mais se
-    // olha), nome e valor — o set vai no title. No desktop é uma fileira; no
-    // celular, um trilho que rola de lado (o padrão do Collectr).
+    // Minha Coleção: as cartas PRINCIPAIS em vitrine (imagem grande, nome e
+    // valor — o set vai no title). Principal = a de maior valor; sem preço, a
+    // mexida mais recente (carimbo meta.mod), pra quem não usa preço também
+    // ver a coleção aqui. No desktop é uma fileira; no celular, um trilho que
+    // rola de lado (o padrão do Collectr). O último azulejo é o "+N cartas",
+    // que leva à Coleção.
     // A variante MAIS VALIOSA entre as que você tem, não a primeira da lista:
     // quem tem a Normal e a Foil era rankeado pela Normal, e o "top" daqui
     // discordava do da tabela do Portfólio (que ranqueia por lote).
     const top = myCards.map((card) => {
       const minhas = shared.cardVariants(card).filter((v) => owned.variantTotal(card.id, v) > 0);
       const val = minhas.reduce((max, v) => Math.max(max, shared.cardValue(card, v, prices).value || 0), 0);
-      return { card, val };
-    }).filter((x) => x.val > 0).sort((a, b) => b.val - a.val).slice(0, TOP_N);
+      return { card, val, mod: modOf(card) };
+    }).sort((a, b) => b.val - a.val || b.mod - a.mod).slice(0, TOP_N);
     if (!top.length) someTop();
-    else el.topList.innerHTML = top.map(({ card, val }) => {
-      const src = shared.cardImageSources(card);
-      const thumb = shared.localizedImg(src.url, { alt: "", fallback: src.fallback, loading: "lazy", thumb: true });
-      return `<li><a class="hb-card" href="${escapeAttribute(shared.detailUrl("set", card.set, "", card.game, { card: card.id, setId: card.setId }))}" title="${escapeAttribute(`${card.name} · ${card.set}`)}"><span class="hb-card-img">${thumb}</span>
+    else {
+      const resto = Math.max(0, counts.distinct - top.length);
+      el.topList.innerHTML = top.map(({ card, val }) => {
+        const src = shared.cardImageSources(card);
+        const thumb = shared.localizedImg(src.url, { alt: "", fallback: src.fallback, loading: "lazy", thumb: true });
+        return `<li><a class="hb-card" href="${escapeAttribute(shared.detailUrl("set", card.set, "", card.game, { card: card.id, setId: card.setId }))}" title="${escapeAttribute(`${card.name} · ${card.set}`)}"><span class="hb-card-img">${thumb}</span>
             <strong>${escapeHtml(card.name)}</strong>
-            <span class="hb-card-val hb-money sensitive-value">${escapeHtml(money(val))}</span></a></li>`;
-    }).join("");
+            ${val > 0 ? `<span class="hb-card-val hb-money sensitive-value">${escapeHtml(money(val))}</span>` : ""}</a></li>`;
+      }).join("") + (resto > 0
+        ? `<li><a class="hb-card hb-card-more" href="collection"><span class="hb-card-img"><strong>+${resto.toLocaleString(shared.getLocale())}</strong><span>${escapeHtml(tn("dash.a.cardsWord", resto))}</span></span>
+            <strong>${escapeHtml(t("dash.a.seeCollection"))}</strong></a></li>`
+        : "");
+    }
 
     // A "Distribuição por jogo" que morava aqui saiu (proposta de 2026-08-25):
     // era a MESMA contagem da fileira de chips #dhGames, repetida na tela.
