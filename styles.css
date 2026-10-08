@@ -7668,6 +7668,122 @@ html[data-collector-mode] .hb-worth .collector-badge { font-size: 28px; font-wei
   .hb-app-body strong { font-size: 12px; overflow-wrap: anywhere; }
 }
 
+/* ============================================================================
+   TELA DE SETS, versão "Painel" (sets.html, 2026-10-08)
+   O molde das ferramentas que a pesquisa de concorrentes achou (Scryfall,
+   Limitless, TCG Collector): a lista de sets com colunas — lançamento,
+   cartas, valor, variação em 7 dias e o seu progresso —, filtro e ordenação.
+   Os produtos de um lançamento (Commander, Promos, Trainer Gallery…) vêm
+   recuados logo abaixo do set, como no Scryfall. A grade de cartões continua
+   no botão de visualização pra quem preferir.
+   Prefixo sx-: folha própria (scripts/lib/css-areas.mjs).
+   ========================================================================== */
+/* Resumo + filtro + ordenação. */
+.sx-ctl { margin: 0 0 12px; }
+.sx-ctl-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; }
+.sx-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.sx-chip-n { margin-left: 4px; opacity: .7; font-variant-numeric: tabular-nums; }
+.sx-sort { margin-left: auto; display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; color: var(--muted); }
+.sx-sort select { min-height: 38px; }
+
+/* A lista: uma coluna, linhas encostadas com um fio entre elas. */
+.group-grid.sx-table[data-view="sets"] { grid-template-columns: minmax(0, 1fr); gap: 0; }
+.sx-table .set-series-head { margin: 22px 0 0; }
+.sx-table .set-series-head:first-child, .sx-table .sx-cols + .set-series-head { margin-top: 6px; }
+
+/* Mesmas colunas no rótulo e na linha: arte | set | lançamento | cartas |
+   valor | 7 dias [| seu progresso]. */
+.sx-row, .sx-cols {
+  display: grid; align-items: center; gap: 16px;
+  grid-template-columns: 76px minmax(0, 1fr) 118px 64px 116px 82px;
+}
+.sx-row.has-prog, .sx-cols.has-prog { grid-template-columns: 76px minmax(0, 1fr) 118px 64px 116px 82px 190px; }
+.sx-cols {
+  position: sticky; top: var(--header-h, 58px); z-index: 3;
+  padding: 10px 12px 8px 6px; background: var(--bg); border-bottom: 1px solid var(--line);
+  font-size: 11.5px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; color: var(--subtle);
+}
+.sx-row {
+  min-height: 58px; padding: 7px 12px 7px 6px;
+  background: var(--panel); border-bottom: 1px solid var(--line);
+  color: var(--text); text-decoration: none;
+}
+.sx-row:hover { background: var(--panel-strong); }
+.sx-row:hover .sx-row-name strong { color: var(--accent); }
+/* O chip branco FIXO atrás do logo/símbolo, o mesmo dos cartões. */
+.sx-row-art {
+  display: grid; place-items: center; height: 42px; padding: 4px;
+  background: radial-gradient(circle at 50% 0%, #ffffff, #eef0f3 78%);
+}
+.sx-row-logo { max-width: 100%; max-height: 34px; object-fit: contain; }
+.sx-row-nologo {
+  color: #0a0c10; font-size: 10px; font-weight: 800; line-height: 1.1; text-align: center;
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; overflow-wrap: anywhere;
+}
+.sx-row-name { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.sx-row-name strong { display: flex; align-items: center; gap: 6px; min-width: 0; font-size: 14.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sx-row-sub { font-size: 12px; color: var(--subtle); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sx-row-sub-cel { display: none; }
+.sx-row-date { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); white-space: nowrap; }
+.sx-soon {
+  padding: 1px 6px; border: 1px solid var(--accent); color: var(--accent);
+  font-size: 10.5px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase;
+}
+.sx-num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.sx-row-n { font-size: 13px; color: var(--muted); }
+.sx-row-val { font-size: 13.5px; font-weight: 800; }
+.sx-row-dv { font-size: 12.5px; font-weight: 700; color: var(--subtle); }
+.sx-row-dv.is-up { color: #2ecc71; }
+.sx-row-dv.is-down { color: #e8553c; }
+[data-theme="light"] .sx-row-dv.is-up { color: #1a7f45; }
+[data-theme="light"] .sx-row-dv.is-down { color: #c0392b; }
+.sx-row-prog { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.sx-bar { flex: 1 1 auto; height: 6px; background: var(--line); overflow: hidden; }
+.sx-bar > span { display: block; height: 100%; background: var(--accent); }
+.sx-row.is-complete .sx-bar > span { background: var(--gold); }
+.sx-row-pn { flex: none; min-width: 64px; text-align: right; font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.sx-row-pn b { color: var(--text); }
+/* Produto do lançamento: linha mais baixa, recuada (a arte some, a seta
+   aponta pro set de cima). */
+.sx-row.is-kid { min-height: 44px; background: transparent; }
+.sx-row.is-kid .sx-row-art { visibility: hidden; height: 28px; }
+.sx-row.is-kid .sx-row-name strong { font-size: 13.5px; font-weight: 700; }
+.sx-kid-ic { flex: none; width: 16px; height: 16px; color: var(--subtle); }
+
+@media (max-width: 1100px) {
+  /* Sem a coluna de 7 dias: a variação some antes do valor e do progresso. */
+  .sx-row, .sx-cols { grid-template-columns: 76px minmax(0, 1fr) 112px 60px 112px; }
+  .sx-row.has-prog, .sx-cols.has-prog { grid-template-columns: 76px minmax(0, 1fr) 112px 60px 112px 170px; }
+  .sx-row-dv, .sx-cols > :nth-child(6) { display: none; }
+}
+@media (max-width: 700px) {
+  /* Celular: arte | nome (com sigla, data e cartas embaixo) | valor — ou o
+     progresso, pra quem tem carta no jogo. */
+  .sx-cols { display: none; }
+  .sx-row, .sx-row.has-prog { grid-template-columns: 60px minmax(0, 1fr) auto; gap: 12px; min-height: 60px; padding: 8px 10px 8px 8px; }
+  .sx-row-art { height: 40px; }
+  .sx-row-date, .sx-row-n, .sx-row-dv { display: none; }
+  .sx-row.has-prog .sx-row-val { display: none; }
+  .sx-row-sub-cel { display: inline; }
+  .sx-row-name strong { font-size: 14px; }
+  .sx-row-prog { flex-direction: column; align-items: flex-end; gap: 4px; }
+  .sx-row-prog .sx-bar { flex: none; width: 64px; }
+  .sx-row-pn { min-width: 0; }
+  .sx-row.is-kid { min-height: 48px; }
+  /* Filtro: chips de 44px numa faixa que rola de lado; ordenação embaixo. */
+  .sx-chips { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-inline: -20px; padding-inline: 20px; }
+  .sx-chips::-webkit-scrollbar { display: none; }
+  .sx-chip { flex: none; min-height: 44px; }
+  .sx-ctl-row { flex-direction: column; align-items: stretch; }
+  .sx-sort { margin-left: 0; justify-content: space-between; }
+  .sx-sort select { min-height: 44px; font-size: 16px; }
+  /* O resumo (no lugar do "N resultados") é mais longo: ganha a linha dele, e
+     idioma + grade/lista ficam na de baixo — senão o botão da lista saía da
+     tela (medido: 420px numa tela de 390). */
+  main:has(.sx-ctl) .results-header-sets { flex-wrap: wrap; }
+  main:has(.sx-ctl) .results-header-sets #resultCount { flex-basis: 100%; }
+}
+
 /* Badges (gamification): placar, torre de cartas e grade de medalhas. */
 .bdg-score { display: flex; align-items: center; gap: 16px; padding: 16px; border-radius: 12px; background: var(--panel); border: 1px solid var(--line); margin-bottom: 18px; }
 .bdg-score-num { font-size: 34px; font-weight: 800; }

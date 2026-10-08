@@ -77,6 +77,12 @@ export const AREAS = [
   { nome: "detalhe",   prefixos: ["favorite-", "segmented-"],      paginas: ["detail.html"] },
   { nome: "404",       prefixos: ["notfound-"],                    paginas: ["404.html"] },
   { nome: "set",       prefixos: ["facet-", "mkt-"],               paginas: ["detail.html", "sets.html", "decks.html", "my-decks.html"] },
+  // sx- (2026-10-08) é o redesenho da tela de Sets de cada jogo (/games/<jogo>,
+  // o sets.html): só o app.js desenha, e só na vista de sets. Folha própria
+  // pra não pesar no núcleo, que viaja nas ~30 páginas. Artistas, Pokédex e
+  // Treinadores entram porque carregam o MESMO app.js (o check.mjs cruza as
+  // classes de cada .js com as páginas que o carregam), mesmo sem desenhar sets.
+  { nome: "sets",      prefixos: ["sx-"],                          paginas: ["sets.html", "artists.html", "pokedex.html", "trainers.html"] },
   { nome: "troca",     prefixos: ["trade-"],                       paginas: ["troca.html", "badges.html"] },
   // Ferramentas do HUB em página própria (2026-10-01, docs/FERRAMENTAS.md):
   // fer- é o comum das duas, gc- o Guia de condição e slv- o Sleeves e
