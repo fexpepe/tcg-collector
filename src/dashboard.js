@@ -19,7 +19,15 @@
     dist: document.getElementById("dhDist"),
     topList: document.getElementById("dhTopList"),
     region: document.getElementById("dhRegion"),
-    priced: document.getElementById("dhPriced")
+    priced: document.getElementById("dhPriced"),
+    // Versão "Carteira" (2026-10-08): cartas × graded embaixo do número e a
+    // composição do patrimônio por jogo ao lado.
+    split: document.getElementById("dhSplit"),
+    delta: document.getElementById("dhDelta"),
+    movers: document.getElementById("dhMovers"),
+    alloc: document.getElementById("dhAlloc"),
+    allocBar: document.getElementById("dhAllocBar"),
+    allocList: document.getElementById("dhAllocList")
   };
 
   // ── Leituras locais (read-only, defensivas) ─────────────────────────────────
@@ -106,8 +114,9 @@
   // 13 jogos. A contagem responde a mesma pergunta sem baixar nada.
   (function renderNovidades() {
     const linha = document.getElementById("dhFresh");
-    const head = document.getElementById("dhFreshHead");
-    if (!linha) return;
+    const cartao = document.getElementById("dhFreshCard");
+    const num = document.getElementById("dhFreshN");
+    if (!linha || !cartao || !num) return;
     const agora = new Date();
     const inicioDoMes = new Date(agora.getFullYear(), agora.getMonth(), 1).getTime();
     let noMes = 0;
@@ -126,10 +135,106 @@
     const mes = agora.toLocaleDateString(shared.getLocale(), { month: "long" });
     const dias = Math.floor((Date.now() - ultima) / 86400000);
     const quando = dias <= 0 ? t("dash.freshToday") : tn("dash.freshDays", dias);
-    linha.innerHTML = `<strong>+${noMes.toLocaleString(shared.getLocale())}</strong> `
-      + escapeHtml(tn("dash.freshMonth", noMes, { month: mes })) + " · " + escapeHtml(quando);
-    linha.hidden = false;
-    if (head) head.hidden = false;
+    // Na faixa de números: "+61" grande e "cartas entraram em outubro"
+    // embaixo; o "a última hoje" vai no title (não cabe na faixa).
+    num.textContent = "+" + noMes.toLocaleString(shared.getLocale());
+    linha.textContent = tn("dash.freshMonth", noMes, { month: mes });
+    cartao.title = quando;
+    cartao.hidden = false;
+  })();
+
+  // ── Onde está o valor (versão "Carteira") ──────────────────────────────────
+  // A composição do patrimônio por jogo, em DINHEIRO (o "Por jogo" lá embaixo
+  // conta cartas). O primeiro paint sai do último ponto do histórico de cada
+  // jogo — o mesmo retrato que já pinta o número grande, sem rede —, e a
+  // hidratação troca pela conta fresca. Barra empilhada + as cinco maiores
+  // fatias; seis ou mais jogos juntam o resto numa linha "mais N jogos".
+  const money = (v) => shared.formatMoney(shared.getCurrency(), v);
+  function renderAlloc(porJogo) {
+    if (!el.alloc) return;
+    const rows = porJogo.filter((x) => x.val > 0).sort((a, b) => b.val - a.val);
+    const total = rows.reduce((n, x) => n + x.val, 0);
+    if (!total) { el.alloc.hidden = true; return; }
+    const pct = (v) => {
+      const p = (v / total) * 100;
+      return p > 0 && p < 1 ? "<1%" : `${Math.round(p)}%`;
+    };
+    const linha = (x) => `<li><a class="hb-alloc-row" href="collection?filter=${escapeAttribute(x.g)}">
+        <span class="hb-dot" style="background:${x.cor}"></span>
+        <span class="hb-alloc-name">${escapeHtml(x.label)}</span>
+        <span class="hb-alloc-n">${escapeHtml(tn("count.cards", x.n))}</span>
+        <span class="hb-alloc-pct">${pct(x.val)}</span>
+        <span class="hb-alloc-val hb-money sensitive-value">${escapeHtml(money(x.val))}</span></a></li>`;
+    const MAX = 5;
+    const vis = rows.length > MAX + 1 ? rows.slice(0, MAX) : rows;
+    const resto = rows.slice(vis.length);
+    const restoVal = resto.reduce((n, x) => n + x.val, 0);
+    el.allocBar.innerHTML = rows.map((x) =>
+      `<span style="flex-grow:${(x.val / total).toFixed(4)};background:${x.cor}" title="${escapeAttribute(`${x.label} · ${pct(x.val)}`)}"></span>`).join("");
+    el.allocList.innerHTML = vis.map(linha).join("") + (resto.length
+      ? `<li><a class="hb-alloc-row hb-alloc-rest" href="collection">
+          <span class="hb-dot"></span>
+          <span class="hb-alloc-name">${escapeHtml(tn("dash.a.moreGames", resto.length))}</span>
+          <span class="hb-alloc-n"></span>
+          <span class="hb-alloc-pct">${pct(restoVal)}</span>
+          <span class="hb-alloc-val hb-money sensitive-value">${escapeHtml(money(restoVal))}</span></a></li>`
+      : "");
+    el.alloc.hidden = false;
+  }
+  // Cartas R$ X · Graded R$ Y embaixo do número: o "(cartas + graded)" do
+  // rótulo antigo, agora com os dois valores. Graded zerado não aparece.
+  function renderSplit(raw, graded) {
+    if (!el.split) return;
+    if (!(raw > 0) || !(graded > 0)) { el.split.hidden = true; return; }
+    el.split.innerHTML = `${escapeHtml(t("dash.a.cards"))} <strong class="sensitive-value">${escapeHtml(money(raw))}</strong>`
+      + ` · ${escapeHtml(t("dash.a.graded"))} <strong class="sensitive-value">${escapeHtml(money(graded))}</strong>`;
+    el.split.hidden = false;
+  }
+  // Variação do patrimônio em ~7 dias, em TEXTO (a sparkline que saiu em
+  // 2026-08-25 não volta). A base é o histórico do Portfólio: por jogo, o
+  // último ponto com data até 7 dias atrás (jogo que ainda não existia conta
+  // zero — o que entrou depois É crescimento do patrimônio). Sem ponto tão
+  // velho, vale o mais antigo, desde que tenha 2 dias ou mais: com menos, a
+  // "variação" seria só a carga de hoje contra a de ontem à noite.
+  const DIA = 86400000;
+  function renderDelta(agora) {
+    if (!el.delta) return;
+    const hojeMs = Date.parse(new Date().toISOString().slice(0, 10));
+    const hists = shared.GAME_SLUGS.map((g) => shared.valueHistory(g)).filter((h) => h.length);
+    const datas = hists.map((h) => h[0].d).sort();
+    if (!datas.length) return;
+    const alvo = new Date(hojeMs - 7 * DIA).toISOString().slice(0, 10);
+    const base = datas[0] <= alvo ? alvo : datas[0];
+    const dias = Math.round((hojeMs - Date.parse(base)) / DIA);
+    let antes = 0;
+    hists.forEach((h) => {
+      for (let i = h.length - 1; i >= 0; i--) {
+        if (h[i].d <= base) { antes += (Number(h[i].c) || 0) + (Number(h[i].b) || 0); break; }
+      }
+    });
+    antes = shared.moneyToCurrent(antes, "BRL");
+    const dif = agora - antes;
+    const pctTxt = antes > 0 ? ` (${dif >= 0 ? "+" : "−"}${Math.abs((dif / antes) * 100).toLocaleString(shared.getLocale(), { maximumFractionDigits: 1 })}%)` : "";
+    if (dias < 2 || !(antes > 0) || Math.abs(dif) < 0.01) { el.delta.hidden = true; return; }
+    const sobe = dif > 0;
+    el.delta.className = `hb-delta hb-money ${sobe ? "is-up" : "is-down"}`;
+    el.delta.innerHTML = `<span class="sensitive-value">${sobe ? "▲" : "▼"} ${sobe ? "+" : "−"}${escapeHtml(money(Math.abs(dif)))}</span>${escapeHtml(pctTxt)} <small>${escapeHtml(tn("dash.a.inDays", dias))}</small>`;
+    el.delta.hidden = false;
+  }
+  const corDe = (g) => shared.GAME_COLOR[g] || shared.GAME_COLOR.pokemon;
+  (function allocInstantaneo() {
+    let raw = 0, graded = 0;
+    const porJogo = shared.GAME_SLUGS.map((g) => {
+      const h = shared.valueHistory(g);
+      const p = h.length ? h[h.length - 1] : null;
+      const c = p ? shared.moneyToCurrent(Number(p.c) || 0, "BRL") : 0;
+      const b = p ? shared.moneyToCurrent(Number(p.b) || 0, "BRL") : 0;
+      raw += c; graded += b;
+      return { g, label: shared.gameLabel(g), cor: corDe(g), n: distinctOf(g), val: c + b };
+    });
+    renderAlloc(porJogo);
+    renderSplit(raw, graded);
+    renderDelta(raw + graded);
   })();
 
   // ── Distribuição por marca: 4 formas de ver, no MESMO quadrado ──────────
@@ -387,10 +492,12 @@
     { href: "condition", icon: "condition", key: "nav.condicao", stat: t("dash.condHint") },
     { href: "sleeves", icon: "sleeves", key: "nav.sleeves", stat: t("dash.slvHint") }
   ];
-  const linkInner = (l) => `<span class="dash-link-ic" aria-hidden="true">${IC[l.icon]}</span>
-      <span class="dash-link-body"><strong>${escapeHtml(t(l.key))}</strong>${l.stat ? `<span>${escapeHtml(l.stat)}</span>` : ""}</span>
-      <span class="dash-link-go" aria-hidden="true">→</span>`;
-  const linkHtml = (l) => `<a class="dash-link" href="${escapeAttribute(l.href)}">${linkInner(l)}</a>`;
+  // Versão "Carteira": azulejo de ícone (o "→" de texto saiu — a regra da casa
+  // é ícone em SVG). No desktop é ícone + nome + subtítulo em linha; no
+  // celular vira grade de 4 com o ícone em cima e só o nome (styles.css, hb-).
+  const linkInner = (l) => `<span class="hb-app-ic" aria-hidden="true">${IC[l.icon]}</span>
+      <span class="hb-app-body"><strong>${escapeHtml(t(l.key))}</strong>${l.stat ? `<span>${escapeHtml(l.stat)}</span>` : ""}</span>`;
+  const linkHtml = (l) => `<a class="hb-app" href="${escapeAttribute(l.href)}">${linkInner(l)}</a>`;
   // HTML velho em cache (sem a seção #dhTools) com este JS: as ferramentas
   // voltam pro fim do "Ir para" em vez de sumir do HUB.
   el.links.innerHTML = (el.tools ? links : links.concat(tools)).map(linkHtml).join("");
@@ -404,6 +511,14 @@
   // com o valor congelado do cookie pra sempre.
   const idsByGame = shared.collectionLoadIds(ownedByGame);
   if (!Object.values(idsByGame).some((ids) => ids.length)) return;
+  // A vitrine das mais valiosas guarda o lugar com cartas fantasma enquanto a
+  // carga anda: aparecer do nada no meio da página empurrava os atalhos pra
+  // baixo justo quando o dedo ia neles. Se a carga falhar, ela some.
+  const TOP_N = 8;
+  el.topList.innerHTML = Array.from({ length: TOP_N }, () =>
+    '<li class="hb-skel" aria-hidden="true"><span class="hb-card-img skel-img"></span><span class="skel-line"></span><span class="skel-line short"></span></li>').join("");
+  el.top.hidden = false;
+  const someTop = () => { el.top.hidden = true; el.topList.innerHTML = ""; };
   const pricesByGame = Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, shared.createPriceStore(g)]));
   const cardGameMap = new Map();
   const gameOf = (id) => cardGameMap.get(id) || "pokemon";
@@ -424,7 +539,7 @@
     // Quem só tem carta GRADUADA (raw zerada) não tem `myCards` — mas tem
     // patrimônio. Sair aqui deixava essa pessoa com o retrato velho do cookie
     // pra sempre; o collectionNetWorth abaixo já soma os slabs.
-    if (!myCards.length && !shared.gradedCardIds().length) return;
+    if (!myCards.length && !shared.gradedCardIds().length) { someTop(); return; }
 
     // Vintage no "Por jogo": conta agora (a regra precisa da carta), guarda
     // pro próximo primeiro paint e redesenha só se o número mudou.
@@ -461,20 +576,61 @@
     // ou jogo/chunk que falhou no caminho de chunks): o total está subestimado
     // e gravá-lo marcaria no gráfico uma queda que não aconteceu. priced/copies:
     // cobertura de preços, pra guarda de queda falsa do recordValueSnapshot.
+    // A mesma conta por jogo alimenta o histórico E a composição do topo — duas
+    // somas separadas divergiriam (a regra do patrimônio: uma fórmula só).
+    const valoresPorJogo = shared.GAME_SLUGS.map((g) => {
+      const linhas = shared.collectionValueLines(myCards, owned, prices, { gameFilter: g });
+      return { g, raw: linhas.total, graded: shared.gradedTotalValue(gameOf, g), priced: linhas.pricedCopies, copies: linhas.totalCopies };
+    });
     if (!catalog.parcial) {
-      shared.recordValueSnapshot(Object.fromEntries(shared.GAME_SLUGS.map((g) => {
-        const linhas = shared.collectionValueLines(myCards, owned, prices, { gameFilter: g });
-        return [g, {
-          raw: linhas.total,
-          graded: shared.gradedTotalValue(gameOf, g),
-          priced: linhas.pricedCopies,
-          copies: linhas.totalCopies
-        }];
-      })));
+      shared.recordValueSnapshot(Object.fromEntries(valoresPorJogo.map((x) => [x.g, {
+        raw: x.raw, graded: x.graded, priced: x.priced, copies: x.copies
+      }])));
     }
+    renderAlloc(valoresPorJogo.map((x) => ({ g: x.g, label: shared.gameLabel(x.g), cor: corDe(x.g), n: distinctOf(x.g), val: x.raw + x.graded })));
+    renderSplit(valoresPorJogo.reduce((n, x) => n + x.raw, 0), valoresPorJogo.reduce((n, x) => n + x.graded, 0));
+    if (patrimonio > 0) renderDelta(patrimonio);
 
-    // Mais valiosas: top 6 por valor unitário, em grade 3×2 com a imagem
-    // grande (é o card que mais se olha), nome e valor — o set vai no title.
+    // Mexeram na sua coleção (7 dias): o price-deltas-7d de cada jogo em que
+    // você tem carta (o mesmo arquivo do "Ordenar por variação" e do aviso de
+    // queda da Lista de Desejos), cruzado com as SUAS cartas. Ordena pelo
+    // efeito no seu lote em dinheiro, não pela %: a carta de R$ 0,50 que
+    // dobrou não passa na frente da de R$ 400 que subiu 5%. O efeito é exato
+    // (valor de hoje × p/(100+p)), não o valor × p do Portfólio.
+    const jogosMeus = shared.unique(myCards.map((c) => c.game));
+    Promise.all(jogosMeus.map((g) => shared.loadPriceDeltas7d(g).then((d) => [g, d]).catch(() => [g, null]))).then((lista) => {
+      const pct = new Map();
+      lista.forEach(([g, d]) => { if (d && d.c) Object.keys(d.c).forEach((id) => pct.set(`${g}|${id}`, Number(d.c[id]) || 0)); });
+      const linhas = myCards.map((card) => {
+        const p = pct.get(`${card.game}|${card.id}`);
+        if (!p) return null;
+        const lote = shared.cardVariants(card).reduce((n, v) => n + (shared.cardValue(card, v, prices).value || 0) * owned.variantTotal(card.id, v), 0);
+        return { card, p, chg: (lote * p) / (100 + p) };
+      }).filter((x) => x && Math.abs(x.chg) >= 0.01);
+      const ups = linhas.filter((x) => x.chg > 0).sort((a, b) => b.chg - a.chg).slice(0, 3);
+      const downs = linhas.filter((x) => x.chg < 0).sort((a, b) => a.chg - b.chg).slice(0, 3);
+      if (!el.movers || (!ups.length && !downs.length)) return;
+      const loc = shared.getLocale();
+      const linha = ({ card, p, chg }) => {
+        const src = shared.cardImageSources(card);
+        const thumb = shared.localizedImg(src.url, { alt: "", fallback: src.fallback, loading: "lazy", thumb: true });
+        const sobe = chg > 0;
+        return `<li><a class="hb-mv" href="${escapeAttribute(shared.detailUrl("set", card.set, "", card.game, { card: card.id, setId: card.setId }))}">
+          <span class="hb-mv-img">${thumb}</span>
+          <span class="hb-mv-info"><strong>${escapeHtml(card.name)}</strong><span>${escapeHtml(shared.dotJoin(card.set, card.number))}</span></span>
+          <span class="hb-mv-chg ${sobe ? "is-up" : "is-down"}"><span class="sensitive-value">${sobe ? "+" : "−"}${escapeHtml(money(Math.abs(chg)))}</span><small>${sobe ? "▲" : "▼"} ${Math.abs(p).toLocaleString(loc, { maximumFractionDigits: 1 })}%</small></span></a></li>`;
+      };
+      document.getElementById("dhMvUp").innerHTML = ups.map(linha).join("");
+      document.getElementById("dhMvDown").innerHTML = downs.map(linha).join("");
+      // Coluna vazia (nada caiu) some com o título, e a outra ocupa a largura.
+      document.getElementById("dhMvUp").parentElement.hidden = !ups.length;
+      document.getElementById("dhMvDown").parentElement.hidden = !downs.length;
+      el.movers.hidden = false;
+    });
+
+    // Mais valiosas: a vitrine de 8 com a imagem grande (é o card que mais se
+    // olha), nome e valor — o set vai no title. No desktop é uma fileira; no
+    // celular, um trilho que rola de lado (o padrão do Collectr).
     // A variante MAIS VALIOSA entre as que você tem, não a primeira da lista:
     // quem tem a Normal e a Foil era rankeado pela Normal, e o "top" daqui
     // discordava do da tabela do Portfólio (que ranqueia por lote).
@@ -482,16 +638,15 @@
       const minhas = shared.cardVariants(card).filter((v) => owned.variantTotal(card.id, v) > 0);
       const val = minhas.reduce((max, v) => Math.max(max, shared.cardValue(card, v, prices).value || 0), 0);
       return { card, val };
-    }).filter((x) => x.val > 0).sort((a, b) => b.val - a.val).slice(0, 6);
-    el.topList.innerHTML = top.length
-      ? top.map(({ card, val }) => {
-          const src = shared.cardImageSources(card);
-          const thumb = shared.localizedImg(src.url, { alt: "", fallback: src.fallback, loading: "lazy", thumb: true });
-          return `<li><a href="${escapeAttribute(shared.detailUrl("set", card.set, "", card.game, { card: card.id, setId: card.setId }))}" title="${escapeAttribute(`${card.name} · ${card.set}`)}"><span class="dash-top-thumb">${thumb}</span>
+    }).filter((x) => x.val > 0).sort((a, b) => b.val - a.val).slice(0, TOP_N);
+    if (!top.length) someTop();
+    else el.topList.innerHTML = top.map(({ card, val }) => {
+      const src = shared.cardImageSources(card);
+      const thumb = shared.localizedImg(src.url, { alt: "", fallback: src.fallback, loading: "lazy", thumb: true });
+      return `<li><a class="hb-card" href="${escapeAttribute(shared.detailUrl("set", card.set, "", card.game, { card: card.id, setId: card.setId }))}" title="${escapeAttribute(`${card.name} · ${card.set}`)}"><span class="hb-card-img">${thumb}</span>
             <strong>${escapeHtml(card.name)}</strong>
-            <span class="dash-top-val">${escapeHtml(shared.formatMoney(shared.getCurrency(), val))}</span></a></li>`;
-        }).join("")
-      : `<li class="dash-empty">${escapeHtml(t("dash.empty"))}</li>`;
+            <span class="hb-card-val hb-money sensitive-value">${escapeHtml(money(val))}</span></a></li>`;
+    }).join("");
 
     // A "Distribuição por jogo" que morava aqui saiu (proposta de 2026-08-25):
     // era a MESMA contagem da fileira de chips #dhGames, repetida na tela.
@@ -522,7 +677,6 @@
       title: (x) => escapeAttribute(t("dash.gameShare", { name: x.label, n: x.n, pct: Math.round((x.n / Math.max(1, regionTotal)) * 100) }))
     });
 
-    el.top.hidden = false;
     el.dist.hidden = false;
-  }).catch(() => { /* rede: o resto do dashboard já está renderizado */ });
+  }).catch(() => { someTop(); /* rede: o resto do dashboard já está renderizado */ });
 })();

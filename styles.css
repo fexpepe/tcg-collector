@@ -476,7 +476,7 @@ img, svg, video, canvas {
    celular. `min-width: 0` devolve o controle ao grid.
    :where() = especificidade ZERO: qualquer regra específica continua vencendo. */
 :where(.card-grid, .group-grid, .deck-grid, .deck-tiles, .deck-ed-cols, .deck-facets,
-       .dash-links, .dash-main, .backup-grid, .bdg-grid,
+       .backup-grid, .bdg-grid,
        .lp-grid, .lp-stats, .detail-summary, .detail-hero, .help-layout) > * {
   min-width: 0;
 }
@@ -799,40 +799,7 @@ button {
 
 .stats-grid article {
   padding: 16px;
-  position: relative; /* âncora do .stat-link, que cobre o cartão inteiro */
-}
-
-/* Cartão de número que LEVA à tela dele (Hub): o link cobre o cartão inteiro em
-   vez de virar um "ver mais" espremido no canto — alvo de toque do tamanho do
-   card, e o texto continua selecionável porque o link fica por cima sem
-   conteúdo. Só o Hub tem os .stat-link; nas outras telas o bloco segue igual. */
-.stats-grid .stat-link {
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-}
-.stats-grid article:has(> .stat-link):hover {
-  border-color: var(--accent);
-}
-.stats-grid .stat-link:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
-/* "X/Y com preço": nota de rodapé do patrimônio, discreta de propósito — é
-   ressalva, não manchete. */
-/* Seletor composto de propósito: o genérico `.stats-grid span` (28px, peso
-   800) e o `.stat-grand span` (cor do accent) venciam `.dash-priced` sozinho
-   por especificidade — o "865/1197 com preço" saía do MESMO tamanho e cor do
-   patrimônio, disputando com o número que ele só anota. */
-.stats-grid .dash-priced {
-  display: block;
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 1.35;
-  margin-top: 4px;
-  color: var(--subtle);
-  font-variant-numeric: tabular-nums;
+  position: relative;
 }
 
 
@@ -7365,47 +7332,6 @@ select.bed-input { padding: 0 10px; }
 .dash-head { align-items: baseline; gap: 14px; }
 .dash-profile-line { color: var(--muted); font-size: 14px; }
 .dash-profile-line a { color: var(--accent); }
-/* Ritmo do Dashboard: o resumo vira UMA linha equilibrada (patrimônio um pouco
-   maior), sem o 3+2 desigual do grid genérico; números tabulares e sem quebra
-   pra os cards não mudarem de altura/largura entre si. */
-/* O resumo é um wrapper (.dash-summary) com dois blocos: o patrimônio
-   (.dash-grand, 1,6fr) e as contagens (.dash-info, 4 colunas iguais) — a
-   MESMA fileira de antes, só que em dois <section> pra o celular poder
-   separá-los (ver o @media 720 abaixo). Os dois esticam à mesma altura. */
-.dash-summary { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 4fr); gap: 12px; margin-bottom: 14px; }
-.dash-main .stats-grid { margin-bottom: 0; }
-.dash-main .dash-grand { grid-template-columns: minmax(0, 1fr); }
-.dash-main .dash-info { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-.dash-main .stats-grid article { display: flex; flex-direction: column; justify-content: center; }
-.dash-main .stats-grid span { font-variant-numeric: tabular-nums; white-space: nowrap; }
-.dash-main .stats-grid p { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-@media (max-width: 1080px) {
-  /* Tablet: patrimônio numa linha inteira, contagens em 2×2. */
-  .dash-summary { grid-template-columns: minmax(0, 1fr); }
-  .dash-main .dash-info { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-/* Celular (2026-09-10): a página vira uma coluna flex e cada seção recebe a
-   sua ORDEM — o patrimônio fica no topo, os cartões de contagem descem pra
-   uma seção logo abaixo do "Ir para" (os atalhos são o que se mais clica; os
-   números vinham antes e empurravam tudo pra baixo). O .dash-summary some
-   (display: contents) pra os dois blocos dele entrarem soltos na ordem. O
-   `order` não muda o DOM: o leitor de tela e o Tab seguem a ordem do HTML. */
-@media (max-width: 720px) {
-  .dash-main { display: flex; flex-direction: column; }
-  .dash-main > * { order: 20; }
-  .dash-summary { display: contents; }
-  .dash-main .dash-head { order: 0; }
-  .dash-main .dash-grand { order: 1; margin-bottom: 14px; }
-  .dash-main .dash-steps { order: 2; }
-  .dash-main .dash-section-head { order: 3; }
-  .dash-main .dash-links { order: 4; }
-  /* Ferramentas logo depois do "Ir para" (mesma ordem; o DOM desempata). */
-  .dash-main #dhToolsHead, .dash-main #dhTools { order: 4; }
-  .dash-main .dash-info { order: 5; margin-top: 22px; }
-  .dash-main #dhFreshHead { order: 6; }
-  .dash-main #dhFresh { order: 7; }
-  .dash-main #dhCaps { order: 8; }
-}
 /* Por jogo: título + seletor da forma de ver (mosaico | cápsulas | pizza |
    barras) na primeira linha do card. Reusa o .view-toggle da Coleção (só
    ícone; o nome vai no title/aria), encolhido pro cabeçalho. */
@@ -7510,30 +7436,6 @@ select.bed-input { padding: 0 10px; }
   color: inherit;
 }
 .dash-section-head { font-size: 17px; margin: 26px 0 12px; }
-/* O patrimônio é o único número de DINHEIRO do resumo, mas saía nos mesmos
-   28px dos contadores — só a cor e a largura o distinguiam. 34px é o tamanho
-   que o placar de Conquistas (.bdg-score-num) já usa: hierarquia sem elemento
-   novo (proposta de 2026-08-25). */
-.dash-main .stat-grand > #dhValue { font-size: 34px; }
-/* Mais valiosas do Hub: 6 cartas em grade 3×2 com a imagem grande, nome e
-   valor. A grade tem a MESMA altura (360px) dos miolos vizinhos e as duas
-   fileiras dividem essa altura: a carta cresce até encher a célula, em vez
-   de deixar um vão morto embaixo. */
-.dash-top-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); height: 360px; gap: 10px 8px; }
-.dash-top-grid li { min-width: 0; min-height: 0; }
-/* .dash-top-list.dash-top-grid: mesma especificidade+1 da regra base
-   `.dash-top-list a` (que vem DEPOIS no arquivo e alinha ao centro) — sem
-   isso o nome vira shrink-to-fit e estoura pro azulejo vizinho. */
-.dash-top-list.dash-top-grid a { flex-direction: column; align-items: stretch; gap: 4px; min-width: 0; height: 100%; }
-/* A imagem toma a altura que sobra da célula (nome + valor embaixo) na
-   proporção da carta (63:88), centrada; o fundo segura o lugar enquanto a
-   imagem desce (ou se falhar). */
-.dash-top-grid .dash-top-thumb { flex: 1 1 auto; min-height: 0; width: auto; display: flex; justify-content: center; }
-.dash-top-grid .dash-top-thumb img { width: auto; height: 100%; max-width: 100%; aspect-ratio: 63 / 88; object-fit: cover; background: var(--panel-strong); }
-.dash-top-grid strong { display: block; min-width: 0; font-size: 12.5px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.dash-top-grid .dash-top-val { text-align: center; }
-.dash-top-grid .dash-empty { grid-column: 1 / -1; }
-.dash-top-grid a:hover strong { color: var(--accent); }
 /* Fileira de três cards: Por jogo (coluna FIXA de 398px = quadrado de 360 +
    2×18 de padding + 2×1 de borda do card) | Mais valiosas (um pouco mais
    larga: nome + set + valor) | Por região. Os dois últimos nascem escondidos e
@@ -7544,43 +7446,200 @@ select.bed-input { padding: 0 10px; }
   .dash-row { grid-template-columns: minmax(0, 1fr); }
   .dash-games-card { width: min(100%, 398px); }
 }
-/* Atalhos: COLUNAS FIXAS, não auto-fill, pra nenhuma fileira ficar órfã com um
-   cartão solto. Desde 2026-10-01 são DUAS grades com a mesma classe (listas
-   fixas no dashboard.js): "Ir para" com 8 itens (navegação) e "Ferramentas"
-   com 4 (troca, centralização, guia de condição, sleeves). 4 colunas fecham
-   as duas cheias no desktop largo; abaixo de ~1200px 4 cartões espremeriam o
-   texto ("110 à venda · 10 vendidas" não cabe em 200px), então cai pra 2
-   (fileiras cheias nas duas) e no celular pra 1. Se um item entrar ou sair,
-   a conta aqui tem de acompanhar (9 -> 3 col; 10 -> 5). */
-.dash-links {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
+
+/* ============================================================================
+   HUB PESSOAL, versão "Carteira" (dashboard.html, 2026-10-08)
+   O molde das corretoras e do Collectr, que a pesquisa de concorrentes achou em
+   quase todo app de coleção: o patrimônio é a manchete; do lado, ONDE ele está
+   (por jogo, em dinheiro); embaixo, o que mexeu na semana e a vitrine das mais
+   valiosas. Os doze atalhos viram grade de ícones (no celular eram doze linhas
+   de 71px antes de qualquer carta). Prefixo hb-: folha "painel", só desta
+   página (scripts/lib/css-areas.mjs). Canto reto e sem sombra, como o resto.
+   ========================================================================== */
+.hb-eyebrow {
+  margin: 0 0 10px; font-size: 12px; font-weight: 800;
+  letter-spacing: .06em; text-transform: uppercase; color: var(--muted);
 }
-@media (max-width: 1200px) { .dash-links { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 560px) { .dash-links { grid-template-columns: minmax(0, 1fr); } }
-.dash-link {
-  display: flex; align-items: center; gap: 12px;
-  /* Altura mínima = a de um cartão com subtítulo (17px de padding em cima e
-     embaixo + título de 14px + 2px + subtítulo de 12px): o Binders, que não
-     tem subtítulo, ficava 13px mais baixo que os vizinhos na coluna única do
-     celular (na grade do desktop a fileira já estica todos). */
-  min-height: 71px;
-  padding: 17px 16px; border-radius: 12px;
+.hb-hero {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 36px;
+  padding: 26px 28px; margin-bottom: 12px;
   background: var(--panel); border: 1px solid var(--line);
-  color: var(--text); text-decoration: none;
-  transition: border-color .15s ease, transform .15s ease;
 }
-.dash-link:hover { border-color: var(--accent); transform: translateY(-1px); }
-/* O atalho que abre uma ferramenta na própria tela (Medir centralização) é um
-   <button> com a MESMA cara dos links: zera o que o button base impõe. */
-button.dash-link { width: 100%; min-height: 0; justify-content: flex-start; text-align: left; font: inherit; font-weight: inherit; line-height: inherit; cursor: pointer; }
-.dash-link-ic { width: 22px; height: 22px; flex: none; color: var(--accent); }
-.dash-link-ic svg { width: 100%; height: 100%; }
-.dash-link-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-.dash-link-body strong { font-size: 14px; }
-.dash-link-body span { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.dash-link-go { margin-left: auto; color: var(--subtle); }
+.hb-worth { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; }
+/* O número leva ao Portfólio (era o .stat-link do cartão antigo). */
+.hb-value {
+  color: var(--text); text-decoration: none;
+  font-size: clamp(36px, 1.6rem + 1.6vw, 54px); font-weight: 800;
+  letter-spacing: -0.02em; line-height: 1.05; font-variant-numeric: tabular-nums;
+}
+.hb-value:hover { color: var(--accent); }
+/* Variação em 7 dias, em TEXTO (sem o desenho que saiu em 2026-08-25). */
+.hb-delta { margin: 10px 0 0; font-size: 15px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.hb-delta small { font-size: 13px; font-weight: 600; color: var(--muted); }
+.hb-delta.is-up, .hb-mv-chg.is-up { color: #2ecc71; }
+.hb-delta.is-down, .hb-mv-chg.is-down { color: #e8553c; }
+/* No tema claro o verde/vermelho do escuro dão ~2:1 sobre o painel branco:
+   tons mais fundos, acima de 4,5:1. */
+[data-theme="light"] .hb-delta.is-up, [data-theme="light"] .hb-mv-chg.is-up { color: #1a7f45; }
+[data-theme="light"] .hb-delta.is-down, [data-theme="light"] .hb-mv-chg.is-down { color: #c0392b; }
+.hb-split { margin: 10px 0 0; font-size: 14px; color: var(--muted); }
+.hb-split strong { color: var(--text); font-weight: 700; }
+.hb-priced { margin-top: 4px; font-size: 12px; font-weight: 600; color: var(--subtle); font-variant-numeric: tabular-nums; }
+.hb-cta {
+  display: inline-flex; align-items: center; gap: 8px; margin-top: 22px;
+  min-height: 44px; padding: 0 16px; border: 1px solid var(--line);
+  color: var(--text); font-weight: 700; text-decoration: none;
+}
+.hb-cta:hover { border-color: var(--accent); color: var(--accent); }
+.hb-cta svg { width: 18px; height: 18px; }
+
+/* Onde está o valor: barra empilhada + linhas (cor, jogo, cartas, %, valor). */
+.hb-alloc { min-width: 0; }
+.hb-alloc-bar { display: flex; gap: 2px; height: 12px; margin-bottom: 8px; }
+.hb-alloc-bar span { min-width: 3px; }
+.hb-alloc-list { list-style: none; margin: 0; padding: 0; }
+.hb-alloc-row {
+  display: grid; grid-template-columns: 10px minmax(0, 1fr) auto 44px minmax(88px, auto);
+  align-items: center; gap: 12px; min-height: 40px;
+  border-top: 1px solid var(--line); color: var(--text); text-decoration: none; font-size: 14px;
+}
+.hb-alloc-list li:first-child .hb-alloc-row { border-top: 0; }
+.hb-alloc-row:hover .hb-alloc-name { color: var(--accent); }
+.hb-dot { width: 10px; height: 10px; background: var(--subtle); }
+.hb-alloc-name { font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hb-alloc-n { font-size: 12.5px; color: var(--subtle); white-space: nowrap; }
+.hb-alloc-pct { text-align: right; color: var(--muted); font-variant-numeric: tabular-nums; }
+.hb-alloc-val { text-align: right; font-weight: 800; white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+/* Os números da coleção numa faixa: colunas iguais no desktop, quantas
+   houver (a Pokédex e as novidades só aparecem quando existem). */
+.hb-stats {
+  display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr);
+  margin-bottom: 28px; background: var(--panel); border: 1px solid var(--line);
+}
+.hb-stats > a {
+  display: flex; flex-direction: column; gap: 2px; min-width: 0; padding: 14px 18px;
+  border-left: 1px solid var(--line); color: var(--text); text-decoration: none;
+}
+.hb-stats > a:first-child { border-left: 0; }
+/* display: flex venceria o [hidden] do navegador. */
+.hb-stats > a[hidden] { display: none; }
+.hb-stats strong { font-size: 22px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.hb-stats span { font-size: 12.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hb-stats > a:hover strong { color: var(--accent); }
+
+.hb-sec { margin: 0 0 30px; }
+.hb-sec-head { display: flex; align-items: baseline; gap: 12px; margin: 0 0 12px; }
+.hb-sec-head h2 { margin: 0; font-size: 17px; }
+.hb-sec-head small { font-size: 13px; color: var(--subtle); font-weight: 600; }
+.hb-more { margin-left: auto; font-size: 13.5px; font-weight: 700; color: var(--accent); text-decoration: none; }
+.hb-more:hover { text-decoration: underline; }
+
+/* Mexeram na sua coleção (7 dias): altas | quedas, em dinheiro. */
+.hb-movers { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 24px; }
+/* Só altas ou só quedas: a coluna que sobrou ocupa a largura. */
+.hb-movers:has(> [hidden]) { grid-template-columns: minmax(0, 1fr); }
+.hb-mv-col { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; align-content: start; }
+.hb-mv {
+  display: grid; grid-template-columns: 38px minmax(0, 1fr) auto; align-items: center; gap: 12px;
+  padding: 8px 14px 8px 8px; background: var(--panel); border: 1px solid var(--line);
+  color: var(--text); text-decoration: none;
+}
+.hb-mv:hover { border-color: var(--accent); }
+.hb-mv-img { display: block; width: 38px; aspect-ratio: 63 / 88; background: var(--panel-strong); overflow: hidden; }
+.hb-mv-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.hb-mv-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.hb-mv-info strong, .hb-mv-info span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hb-mv-info strong { font-size: 14px; }
+.hb-mv-info span { font-size: 12px; color: var(--muted); }
+.hb-mv-chg { display: flex; flex-direction: column; align-items: flex-end; font-weight: 800; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.hb-mv-chg small { font-size: 12px; font-weight: 700; opacity: .85; }
+
+/* Vitrine das mais valiosas: oito numa fileira no desktop. */
+.hb-rail { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 14px; }
+.hb-rail > li { min-width: 0; }
+.hb-card { display: flex; flex-direction: column; gap: 6px; min-width: 0; color: var(--text); text-decoration: none; }
+.hb-card-img { display: block; aspect-ratio: 63 / 88; background: var(--panel-strong); overflow: hidden; }
+.hb-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.hb-card strong { font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hb-card-val { margin-top: -4px; font-size: 14px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.hb-card:hover strong { color: var(--accent); }
+.hb-skel { animation: skel-pulse 1.2s ease-in-out infinite; }
+.hb-skel .hb-card-img { opacity: .5; background: var(--line); }
+.hb-skel .skel-line { width: 80%; }
+.hb-skel .skel-line.short { width: 45%; }
+@media (prefers-reduced-motion: reduce) { .hb-skel { animation: none; } }
+
+/* Atalhos: "Ir para" (4 colunas) e "Ferramentas" (2) lado a lado, mesmas
+   larguras de azulejo — 2fr/1fr com o mesmo vão. */
+.hb-apps-wrap { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 12px 24px; margin: 0 0 30px; }
+.hb-apps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.hb-apps-tools { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.hb-app {
+  display: flex; align-items: center; gap: 12px; min-width: 0; min-height: 64px; padding: 12px 14px;
+  background: var(--panel); border: 1px solid var(--line); color: var(--text); text-decoration: none;
+  transition: border-color .15s ease;
+}
+.hb-app:hover { border-color: var(--accent); }
+.hb-app-ic { flex: none; width: 22px; height: 22px; color: var(--accent); }
+.hb-app-ic svg { display: block; width: 100%; height: 100%; }
+.hb-app-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.hb-app-body strong, .hb-app-body span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hb-app-body strong { font-size: 14px; }
+.hb-app-body span { font-size: 12px; color: var(--muted); }
+
+/* Por jogo (o quadrado de 398px) | Por região. As "Mais valiosas" saíram
+   desta fileira e subiram pra vitrine. */
+.hb-row { grid-template-columns: 398px minmax(0, 1fr); margin-top: 0; }
+/* A pizza de região esticava até ~400px no cartão largo: rosca e legenda
+   ficam do tamanho que tinham na fileira de três. */
+.hb-row .dash-gv-pie { grid-template-columns: minmax(0, 300px) minmax(0, 340px); gap: 32px; justify-content: center; }
+/* Primeiros passos entre a faixa de números e as seções: o respiro de baixo
+   é o mesmo das seções (o de cima já vem da faixa). */
+.hb-main .dash-steps { margin: 0 0 30px; }
+
+/* Modo Colecionador: some o dinheiro, ficam as porcentagens. */
+html[data-collector-mode] .hb-money { display: none !important; }
+html[data-collector-mode] .hb-worth .collector-badge { font-size: 28px; font-weight: 800; color: var(--accent); }
+
+@media (max-width: 1200px) {
+  .hb-apps-wrap { grid-template-columns: minmax(0, 1fr); }
+  .hb-apps-tools { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+@media (max-width: 960px) {
+  .hb-hero { grid-template-columns: minmax(0, 1fr); gap: 26px; }
+  .hb-row { grid-template-columns: minmax(0, 1fr); }
+  /* A vitrine vira trilho que rola de lado, encostado nas bordas da tela. */
+  .hb-rail {
+    display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory;
+    margin-inline: -20px; padding: 0 20px 4px; scroll-padding-inline: 20px; scrollbar-width: none;
+  }
+  .hb-rail::-webkit-scrollbar { display: none; }
+  .hb-rail > li { flex: 0 0 132px; scroll-snap-align: start; }
+}
+@media (max-width: 720px) {
+  .hb-hero { padding: 20px 18px; margin-bottom: 10px; }
+  .hb-alloc-row { grid-template-columns: 10px minmax(0, 1fr) 40px auto; min-height: 44px; }
+  .hb-alloc-n { display: none; }
+  /* A faixa de números rola de lado (o Collectr faz igual com os blocos). */
+  .hb-stats {
+    display: flex; overflow-x: auto; scrollbar-width: none; margin-bottom: 24px;
+  }
+  .hb-stats::-webkit-scrollbar { display: none; }
+  .hb-stats > a { flex: 0 0 auto; min-width: 112px; padding: 12px 16px; }
+  .hb-stats strong { font-size: 20px; }
+  .hb-movers { grid-template-columns: minmax(0, 1fr); }
+  .hb-sec-head .hb-more { min-height: 44px; display: inline-flex; align-items: center; }
+  /* Atalhos: grade de 4 com o ícone em cima e só o nome (até 2 linhas). */
+  .hb-apps-wrap { gap: 6px; }
+  .hb-apps, .hb-apps-tools { gap: 8px; }
+  .hb-app { flex-direction: column; justify-content: center; gap: 8px; min-height: 84px; padding: 12px 4px; text-align: center; }
+  .hb-app-body span { display: none; }
+  .hb-app-body strong {
+    white-space: normal; font-size: 12px; line-height: 1.25; overflow-wrap: anywhere;
+    display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;
+  }
+}
 
 /* Badges (gamification): placar, torre de cartas e grade de medalhas. */
 .bdg-score { display: flex; align-items: center; gap: 16px; padding: 16px; border-radius: 12px; background: var(--panel); border: 1px solid var(--line); margin-bottom: 18px; }
@@ -10886,7 +10945,6 @@ select,
 .cmdk-add,
 .mtab,
 .dash-game-chip,
-.dash-link,
 .bdg-score,
 .bdg-fun-track,
 .bdg-fun-track span,
@@ -13013,8 +13071,6 @@ select,
 .ios-sheet-icon { font-size: 17px; color: var(--accent); }
 .trade-balance { margin: 0 0 12px; color: var(--muted); font-size: 13px; }
 .trade-balance strong { color: var(--text); font-size: 15px; font-variant-numeric: tabular-nums; }
-.dash-fresh { margin: -4px 0 18px; color: var(--muted); font-size: 13px; }
-.dash-fresh strong { color: var(--accent); font-size: 16px; font-variant-numeric: tabular-nums; margin-right: 2px; }
 
 /* "À venda na comunidade" no card: quem tem esta carta anunciada. O bloco só
    nasce quando alguém tem (mesma regra do resto do preview). */
@@ -13883,8 +13939,10 @@ html[data-game] #gcApp:empty + .gc-scale { display: none; }
 .pp-x:hover { color: var(--text); background: var(--panel-strong); }
 .pp-x svg { width: 16px; height: 16px; }
 .pp-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+/* justify-content: o passo do app é <button>, e o button base centraliza o
+   conteúdo — "Instale o Sleevu" saía no meio da linha (2026-10-08). */
 .pp-go {
-  display: flex; align-items: center; gap: 12px; width: 100%; text-align: left;
+  display: flex; align-items: center; justify-content: flex-start; gap: 12px; width: 100%; text-align: left;
   padding: 12px 14px; border-radius: 12px; background: var(--panel-strong);
   border: 1px solid transparent; color: var(--text); text-decoration: none;
   font: inherit; cursor: pointer; transition: border-color .15s ease, transform .15s ease;
@@ -13925,16 +13983,12 @@ html[data-game] #gcApp:empty + .gc-scale { display: none; }
      Sales…) empilhavam em 1 coluna e comiam uma tela inteira antes do
      conteúdo — a Pokédex tinha 10.700px de altura. No desktop são uma
      fileira; aqui viram a mesma fileira, compacta (3 × ~115px em 390px):
-     número menor, rótulo em 2 linhas. O Hub mantém as 2 colunas dele
-     (.dash-main, regra mais específica); só deixa o rótulo quebrar linha
-     em vez de cortar com reticências ("Pokémon na Pokédex" saía "Pokémon
-     in the Po…"). */
+     número menor, rótulo em 2 linhas. */
   .stats-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
   .stats-grid article { padding: 12px 10px; }
   .stats-grid span { font-size: 22px; }
   .stats-grid p { font-size: 12px; line-height: 1.25; margin-top: 6px; }
   .stats-grid .dex-progress { margin-top: 8px; }
-  .dash-main .stats-grid p { white-space: normal; overflow: visible; text-overflow: clip; }
   /* Portfólio: UMA cápsula por fileira (2026-09-10). São valores em dinheiro
      de 7 dígitos com rótulos longos ("desejos (wishlist + binder)"): em 3
      colunas de ~115px o número vazava da caixa e o texto quebrava torto. Uma
