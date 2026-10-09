@@ -3,3 +3,9 @@
 # LF<->CRLF do Windows e o ruído de diff a cada regeneração.
 data/magic/set-logos/*.svg -text
 data/*/set-logos/*.webp -text binary
+
+# App (mobile/): o gradlew é script de shell. No checkout Windows (autocrlf)
+# ele chegaria com CRLF e quebraria com "bad interpreter" no Git Bash/WSL;
+# eol=lf mantém LF em todo checkout (o .bat é o par do Windows).
+mobile/android/gradlew text eol=lf
+mobile/android/gradlew.bat text eol=crlf

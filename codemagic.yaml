@@ -1,0 +1,118 @@
+# Builds de LOJA do app (Android e iOS), plano de 2026-10-08: GitHub +
+# Codemagic (build, assinatura e envio às lojas) + Capgo só pra live update.
+#
+# O Codemagic lê este arquivo da raiz do repositório (exigência dele); o app
+# mora em mobile/. Os dois workflows de loja disparam por TAG vX.Y.Z — merge e
+# push na main não geram build de loja. A tag vira a versão (versionName /
+# CFBundleShortVersionString) e o contador de builds do Codemagic vira o número
+# (versionCode / CFBundleVersion), que as lojas exigem sempre maior.
+#
+# Live update NÃO sai daqui: o pacote web vai embutido no binário, e update
+# por fora da loja só pelo .github/workflows/app-live-update.yml (à mão e com
+# aprovação). O scripts/check.mjs quebra o CI se este arquivo chamar a CLI do
+# Capgo.
+#
+# Configuração no painel do Codemagic (uma vez, por quem tem as contas):
+#   - Android: keystore de upload com o nome `sleevu_upload` (Code signing
+#     identities) e o grupo de variáveis `google_play` com
+#     GCLOUD_SERVICE_ACCOUNT_CREDENTIALS (JSON da conta de serviço da Play).
+#     A PRIMEIRA versão vai à mão no Play Console; a API da Play só aceita
+#     envio depois que o app existe lá.
+#   - iOS: integração da App Store Connect (chave de API) com o nome
+#     `sleevu_asc`. Com ela o Codemagic gera certificado e perfil sozinho.
+#   - mac_mini_m2: é a máquina dos 500 min grátis da conta pessoal (Linux não
+#     tem minuto grátis), por isso o Android também roda nela.
+
+workflows:
+  android-loja:
+    name: Android — Play (teste interno)
+    instance_type: mac_mini_m2
+    max_build_duration: 45
+    working_directory: mobile
+    environment:
+      android_signing:
+        - sleevu_upload
+      groups:
+        - google_play
+      node: 22
+      java: 21
+    triggering:
+      events:
+        - tag
+      tag_patterns:
+        - pattern: "v*"
+          include: true
+    scripts:
+      - name: Versão a partir da tag
+        script: |
+          VERSAO="${CM_TAG#v}"
+          if ! printf '%s' "$VERSAO" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+            echo "Tag \"$CM_TAG\" fora do formato vX.Y.Z"; exit 1
+          fi
+          echo "SLEEVU_VERSION_NAME=$VERSAO" >> "$CM_ENV"
+          echo "SLEEVU_VERSION_CODE=$BUILD_NUMBER" >> "$CM_ENV"
+      - name: Pacote web + sync
+        script: |
+          npm ci
+          npm run app:web
+          npx cap sync android
+      - name: Compila o AAB assinado
+        script: |
+          cd android
+          ./gradlew --no-daemon bundleRelease
+    artifacts:
+      - mobile/android/app/build/outputs/bundle/release/*.aab
+    publishing:
+      google_play:
+        credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
+        track: internal
+        submit_as_draft: true
+
+  ios-loja:
+    name: iOS — TestFlight
+    instance_type: mac_mini_m2
+    max_build_duration: 60
+    working_directory: mobile
+    integrations:
+      app_store_connect: sleevu_asc
+    environment:
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: app.sleevu
+      node: 22
+      xcode: latest
+    triggering:
+      events:
+        - tag
+      tag_patterns:
+        - pattern: "v*"
+          include: true
+    scripts:
+      - name: Versão a partir da tag
+        script: |
+          VERSAO="${CM_TAG#v}"
+          if ! printf '%s' "$VERSAO" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+            echo "Tag \"$CM_TAG\" fora do formato vX.Y.Z"; exit 1
+          fi
+          echo "SLEEVU_VERSION_NAME=$VERSAO" >> "$CM_ENV"
+      - name: Pacote web + sync
+        script: |
+          npm ci
+          npm run app:web
+          npx cap sync ios
+      - name: Perfis de assinatura
+        script: xcode-project use-profiles --project ios/App/App.xcodeproj
+      - name: Compila o IPA
+        script: |
+          xcode-project build-ipa \
+            --project ios/App/App.xcodeproj \
+            --scheme App \
+            --archive-xcargs "COMPILER_INDEX_STORE_ENABLE=NO MARKETING_VERSION=$SLEEVU_VERSION_NAME CURRENT_PROJECT_VERSION=$BUILD_NUMBER"
+    artifacts:
+      - mobile/build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+    publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
+        submit_to_app_store: false

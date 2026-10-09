@@ -8,6 +8,10 @@ on:
       - "**.md"
       - "docs/**"
       - "LICENSE"
+      # O app (mobile/, codemagic.yaml) não vai pro site: push só dele não
+      # republica nada — e não cancela o build agendado que estiver rodando.
+      - "mobile/**"
+      - "codemagic.yaml"
   schedule:
     # DIÁRIO, 06:20 UTC = 03:20 de Brasília. Todo dia o catálogo e os preços das
     # fontes GRÁTIS (TCGdex, TCGCSV, Scryfall, Lorcast e os vintage) são
@@ -986,9 +990,13 @@ jobs:
       # não conteúdo do site. O CLAUDE.md ficava de fora desta lista e subia
       # junto — acessível em sleevu.app/CLAUDE.md, expondo nome e processo de
       # desenvolvimento pra quem adivinhasse a URL.
+      #
+      # mobile/ e codemagic.yaml (2026-10-09): o app (Capacitor) mora no mesmo
+      # repo. São os projetos Android/iOS e a receita de build de loja — nada
+      # disso é página, e ainda somaria uns 100 arquivos à conta do teto abaixo.
       - name: Remove arquivos que não vão para o site
         run: |
-          rm -rf .git .github .claude data/.cache data/cards.generated.js data/magic/cards.js data/ygo/cards.js scripts out README.md ROADMAP.md CLAUDE.md docs supabase tests .gitattributes .gitignore
+          rm -rf .git .github .claude data/.cache data/cards.generated.js data/magic/cards.js data/ygo/cards.js scripts out README.md ROADMAP.md CLAUDE.md docs supabase tests .gitattributes .gitignore mobile codemagic.yaml
           rm -f assets/brand/Flesh_and_Blood_TCG_Logo.png assets/brand/Magic-The-Gathering-logo.png assets/brand/digimon.webp assets/brand/logo_title_dbfwcardgame.webp assets/brand/riftbound.webp assets/brand/yugioh.jpg
           rm -f assets/games/README.md assets/shops/README.md
 

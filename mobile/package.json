@@ -1,0 +1,23 @@
+{
+  "name": "sleevu-app",
+  "private": true,
+  "description": "App do Sleevu (Android e iOS) via Capacitor: empacota o código do site e busca o catálogo e as APIs em https://sleevu.app.",
+  "scripts": {
+    "app:web": "node ../scripts/app-web.mjs",
+    "sync": "npm run app:web && cap sync",
+    "android": "npm run sync && cap open android",
+    "ios": "npm run sync && cap open ios"
+  },
+  "dependencies": {
+    "@capacitor/android": "8.5.2",
+    "@capacitor/core": "8.5.2",
+    "@capacitor/ios": "8.5.2",
+    "@capgo/capacitor-updater": "8.51.25"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "8.5.2"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

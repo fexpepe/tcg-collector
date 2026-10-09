@@ -7094,7 +7094,7 @@
       const urlDoSet = (window.SLEEVU || {}).urlDoSet;
       const base = activeCard.set && urlDoSet && urlDoSet(activeCard.game || currentGame(), activeCard.setId);
       const url = base
-        ? `${location.origin}${base}/_id/${encodeURIComponent(activeCard.id)}?setName=${encodeURIComponent(activeCard.set)}`
+        ? `${window.SLEEVU.origem}${base}/_id/${encodeURIComponent(activeCard.id)}?setName=${encodeURIComponent(activeCard.set)}`
         : cardShareUrl(activeCard);
       if (navigator.share) {
         navigator.share({ title: label, text, url }).catch(() => {});
@@ -9649,7 +9649,7 @@
   function cardShareUrl(card) {
     if (!card || !card.set) return location.href; // carta sem set: nada melhor a oferecer
     const rel = detailUrl("set", card.set, "", card.game, { card: card.id, setId: card.setId });
-    try { return new URL(`/${rel}`, location.origin).href; } catch (e) { return location.href; }
+    try { return new URL(`/${rel}`, window.SLEEVU.origem).href; } catch (e) { return location.href; }
   }
 
   function unique(values) {

@@ -148,6 +148,34 @@ test("recusa da medição: só a decisão, só quando muda, só em produção", 
   assert.match(m[1], /p_on: !!valor/);
 });
 
+// O emProducao() em ação (a trava acima confere o texto): o sleevu.app OU o
+// app das lojas, que roda em capacitor://localhost / https://localhost e se
+// reconhece pela ponte nativa do Capacitor. O pacote do app aberto num
+// navegador comum (o ensaio local do mobile/README.md) não tem a ponte e
+// não é produção.
+test("produção = sleevu.app ou o app nativo; localhost e preview ficam de fora", () => {
+  const loc = (hostname) => ({ pathname: "/", search: "", hash: "", origin: `https://${hostname}`, hostname, href: `https://${hostname}/` });
+  // Carrega em localhost (o boot em "sleevu.app" leria o cookie de sessão, que
+  // o sandbox não tem) e troca o endereço depois: a régua lê na hora da chamada.
+  const sb = loadShared("window.__test = { emProducao };");
+  const em = (hostname, nativo) => {
+    sb.location = loc(hostname);
+    sb.Capacitor = nativo === undefined ? undefined : { isNativePlatform: () => nativo };
+    return sb.window.__test.emProducao();
+  };
+  assert.equal(em("sleevu.app"), true);
+  assert.equal(em("www.sleevu.app"), true);
+  assert.equal(em("localhost"), false);
+  assert.equal(em("tcg-collector.pages.dev"), false);
+  assert.equal(em("sleevu.app.golpe.com"), false);
+  assert.equal(em("localhost", true), true);
+  assert.equal(em("localhost", false), false);
+  // Os seis caminhos de medição passam pela mesma régua; o beacon da
+  // Cloudflare e o cookie .sleevu.app continuam só no domínio.
+  assert.equal((shared.match(/(?<!function )emProducao\(\)/g) || []).length, 6);
+  assert.match(/function injectCfBeacon\(\) \{([\s\S]*?)\n  \}\n/.exec(shared)[1], /sleevu\\\.app\$\/i\.test\(location\.hostname\)/);
+});
+
 test("busca com resultado também é registrada, com as mesmas travas", () => {
   assert.match(shared, /if \(achados\) logEvento\("search_hit", \{ q: nq\.slice\(0, 40\)/);
   assert.match(shared, /else logEvento\("search_empty"/);
