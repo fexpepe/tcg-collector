@@ -229,7 +229,7 @@ test("política (pt/en/es): diz que a conta vai junto quando logado, a base lega
   for (const [lg, rs] of Object.entries(regras)) {
     const a = M[lg]["privacy.s.analytics"];
     for (const r of rs) assert.match(a, r, `${lg}: privacy.s.analytics sem ${r}`);
-    assert.match(M[lg]["privacy.s.contact"], /mailto:sleevuapp@gmail\.com/, `${lg}: contato sem e-mail`);
+    assert.match(M[lg]["privacy.s.contact"], /mailto:hi@sleevu\.app/, `${lg}: contato sem e-mail`);
     assert.match(M[lg]["privacy.s.retention"], /13/, lg);
     for (const k of ["privacy.s.analytics", "privacy.s.cookies", "privacy.s.retention"]) {
       assert.doesNotMatch(M[lg][k], /Nada disso identifica|None of this identifies|Nada de esto te identifica|sin datos personales|with no personal data|sem dados pessoais/, `${lg}: ${k} ainda promete anonimato total`);

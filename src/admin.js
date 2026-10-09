@@ -1198,7 +1198,7 @@
     mbc: "game_mbc.webp"
   };
   // Contato público: o mesmo da página Sobre e do data/ads.json (`contato`).
-  const KIT_CONTATO = { email: "sleevuapp@gmail.com", instagram: "@sleevu.app", site: "sleevu.app" };
+  const KIT_CONTATO = { email: "hi@sleevu.app", instagram: "@sleevu.app", site: "sleevu.app" };
   const KIT_PAGINAS = 4;
   // Largura do A4 em px CSS (210 mm a 96 dpi): a prévia é desenhada nela e
   // encolhe com zoom quando a tela é mais estreita (ajustaKit).

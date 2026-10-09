@@ -441,7 +441,7 @@ caminho" da fase 1):
   cada apoio compra um período. Apagar a conta leva a linha junto.
 - **Quem grava:** só o dono do site, pela aba Mercado › Vitrine do /admin
   (`admin_apoiador(e-mail ou @, dias)`; 0 dias encerra). A marcação é à mão:
-  quem apoiou manda o @ ou o e-mail da conta pra sleevuapp@gmail.com (no
+  quem apoiou manda o @ ou o e-mail da conta pra hi@sleevu.app (no
   Ko-fi, na mensagem). Webhook do Ko-fi numa Function é passo posterior.
 - **Como o app lê:** `apoio_status()` devolve a data da PRÓPRIA conta. O
   `ads.js` pergunta em paralelo ao `ads.json` e guarda a resposta por conta
