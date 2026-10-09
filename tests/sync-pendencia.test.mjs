@@ -27,7 +27,7 @@ const PENDENCIA = "tcg-sync-pendente-v1";
 const SESSAO = "tcg-supabase-session-v1";
 const UID = "u-teste";
 
-function montaApp({ seed = {}, hash = "", pullOk = true, linhas = [], pushOk = true } = {}) {
+function montaApp({ seed = {}, hash = "", pullOk = true, linhas = [], pushOk = true, tokenStatus = 200, marcas401 = 0, cota = Infinity } = {}) {
   const noop = () => {};
   const makeEl = (extra = {}) => new Proxy(
     Object.assign({ dataset: {}, style: {}, classList: { add: noop, remove: noop, toggle: noop, contains: () => false }, children: [], childNodes: [], options: [], attributes: [] }, extra),
@@ -54,21 +54,51 @@ function montaApp({ seed = {}, hash = "", pullOk = true, linhas = [], pushOk = t
   const nav = makeEl({ dataset: { activePage: "detail" } });
   const acoes = makeEl();
   const store = { ...seed };
+  // `cota`: quantos caracteres cabem por chave de coleção (simula o iPhone no teto).
   const ls = {
-    getItem: (k) => (k in store ? store[k] : null), setItem: (k, v) => { store[k] = String(v); }, removeItem: (k) => { delete store[k]; },
+    getItem: (k) => (k in store ? store[k] : null),
+    setItem: (k, v) => { if (/-collection-v3$/.test(k) && String(v).length > cota) throw new Error("QuotaExceededError"); store[k] = String(v); },
+    removeItem: (k) => { delete store[k]; },
     clear: () => { for (const k of Object.keys(store)) delete store[k]; }, get length() { return Object.keys(store).length; }, key: (i) => Object.keys(store)[i] ?? null
   };
   const ouvintes = {};
   const ouve = (tipo, fn) => { (ouvintes[tipo] = ouvintes[tipo] || []).push(fn); };
   const pushes = [];
+  const reloads = [];
+  const intervalos = [];
+  const gets = []; // URLs dos GET em /collections (o pull leve pede as versões e só depois os dados)
+  const tokens = []; // pedidos de renovação do token
+  // Linhas da conta: { game, data, updated_at }. O GET responde como o PostgREST:
+  // select=game,updated_at traz as versões; game=in.(…) restringe as linhas.
+  const nuvem = linhas.map((l) => ({ updated_at: "2026-10-08T10:00:00.000+00:00", ...l }));
   const resposta = (ok, corpo, status = ok ? 200 : 503) => Promise.resolve({ ok, status, json: async () => corpo, text: async () => JSON.stringify(corpo) });
   const fetch = (url, init = {}) => {
     const u = String(url);
     if (u.includes("/auth/v1/user")) return resposta(true, { id: UID, email: "a@b.c" });
-    if (u.includes("/auth/v1/token")) return resposta(true, { access_token: "t2", refresh_token: "r2", user: { id: UID, email: "a@b.c" } });
-    if (u.includes("/rest/v1/collections") && (init.method || "GET") === "GET") return pullOk ? resposta(true, linhas) : resposta(false, { message: "fora" });
+    if (u.includes("/auth/v1/token")) {
+      tokens.push(u);
+      return tokenStatus === 200 ? resposta(true, { access_token: "t2", refresh_token: "r2", user: { id: UID, email: "a@b.c" } }) : resposta(false, { error: "x" }, tokenStatus);
+    }
+    if (u.includes("/rest/v1/collections") && (init.method || "GET") === "GET") {
+      gets.push(u);
+      if (!pullOk) return resposta(false, { message: "fora" });
+      if (u.includes("select=game,updated_at")) {
+        if (marcas401 > 0) { marcas401--; return resposta(false, { message: "JWT expired" }, 401); }
+        return resposta(true, nuvem.map((l) => ({ game: l.game, updated_at: l.updated_at })));
+      }
+      const m = /game=in\.\(([^)]*)\)/.exec(u);
+      const quais = m ? m[1].split(",") : null;
+      return resposta(true, nuvem.filter((l) => !quais || quais.includes(l.game)).map((l) => ({ game: l.game, data: l.data })));
+    }
     if (u.includes("/rest/v1/collections") && init.method === "POST") {
-      pushes.push({ corpo: JSON.parse(init.body), keepalive: !!init.keepalive });
+      const corpo = JSON.parse(init.body);
+      pushes.push({ corpo, keepalive: !!init.keepalive });
+      // A nuvem guarda o updated_at que o push manda (sem gatilho), como o upsert faz.
+      if (pushOk) [].concat(corpo).forEach((l) => {
+        const i = nuvem.findIndex((x) => x.game === l.game);
+        const linha = { game: l.game, data: l.data, updated_at: l.updated_at.replace("Z", "+00:00") };
+        if (i >= 0) nuvem[i] = linha; else nuvem.push(linha);
+      });
       return resposta(pushOk, null);
     }
     return resposta(false, null, 599);
@@ -83,10 +113,10 @@ function montaApp({ seed = {}, hash = "", pullOk = true, linhas = [], pushOk = t
     },
     localStorage: ls, sessionStorage: { getItem: () => null, setItem: noop, removeItem: noop },
     navigator: { language: "pt-BR", languages: ["pt-BR"], serviceWorker: undefined, onLine: true, userAgent: "Mozilla/5.0 (Linux; Android 14)" },
-    location: { pathname: "/collection", search: "", hash, origin: "http://localhost", hostname: "localhost", host: "localhost", protocol: "http:", href: "http://localhost/collection" + hash, replace: noop, reload: noop },
+    location: { pathname: "/collection", search: "", hash, origin: "http://localhost", hostname: "localhost", host: "localhost", protocol: "http:", href: "http://localhost/collection" + hash, replace: noop, reload: () => reloads.push(1) },
     history: { replaceState: noop, pushState: noop, state: null },
     fetch,
-    setInterval: noop, clearTimeout: noop, clearInterval: noop, setTimeout: noop, requestIdleCallback: noop, requestAnimationFrame: noop,
+    setInterval: (fn) => { intervalos.push(fn); return intervalos.length; }, clearTimeout: noop, clearInterval: noop, setTimeout: noop, requestIdleCallback: noop, requestAnimationFrame: noop,
     console: { ...console, warn: noop, log: noop, info: noop }, URL, URLSearchParams, Blob: class {}, CustomEvent: class {},
     MessageChannel: class { constructor() { this.port1 = {}; this.port2 = {}; } },
     addEventListener: ouve, removeEventListener: noop, dispatchEvent: noop,
@@ -107,7 +137,7 @@ function montaApp({ seed = {}, hash = "", pullOk = true, linhas = [], pushOk = t
   const espera = async () => { for (let i = 0; i < 60; i++) await new Promise((r) => setImmediate(r)); };
   const dispara = (tipo) => (ouvintes[tipo] || []).forEach((fn) => fn({ type: tipo }));
   const pendencia = () => { const p = ls.getItem(PENDENCIA); return p ? JSON.parse(p) : null; };
-  return { sandbox, t: sandbox.__t, ls, pushes, espera, dispara, pendencia };
+  return { sandbox, t: sandbox.__t, ls, pushes, gets, tokens, nuvem, store, reloads, intervalos, espera, dispara, pendencia };
 }
 
 const comSessao = (extra = {}) => ({
@@ -126,12 +156,29 @@ test("login com o pull FALHANDO não sobe nada e deixa todos os jogos devendo", 
   assert.deepEqual([...p.g].sort(), [...app.t.GAME_SLUGS].sort());
 });
 
-test("login com o pull bom segue subindo os jogos mesclados, sem pendência", async () => {
-  const app = montaApp({ hash: "#access_token=t1&refresh_token=r1", linhas: [], seed: { "tcg-collector-profile-v1": JSON.stringify({ handle: "teste" }) } });
+// Linha só pra jogo com dado (2026-10-08): o login subia os 22 jogos, cada
+// linha com uma cópia das chaves globais, e todo pull baixava as 22.
+test("login com o pull bom sobe só os jogos com dado e os que já têm linha, sem pendência", async () => {
+  const app = montaApp({
+    hash: "#access_token=t1&refresh_token=r1",
+    linhas: [{ game: "lorcana", data: {} }],
+    seed: {
+      "tcg-collector-profile-v1": JSON.stringify({ handle: "teste" }),
+      "tcg-collector-pokemon-collection-v3": UMA_CARTA,
+      "tcg-collector-magic-wishlist-v1": JSON.stringify({ "mtg-lea-1": ["Normal"] })
+    }
+  });
   await app.espera();
   assert.equal(app.pushes.length, 1);
-  assert.equal(app.pushes[0].corpo.length, app.t.GAME_SLUGS.length);
+  assert.deepEqual(app.pushes[0].corpo.map((l) => l.game).sort(), ["lorcana", "magic", "pokemon"], "Pokémon e Magic têm dado; Lorcana já tinha linha");
   assert.equal(app.pendencia(), null);
+});
+
+test("login de conta nova sem dado nenhum sobe no máximo UMA linha", async () => {
+  const app = montaApp({ hash: "#access_token=t1&refresh_token=r1", linhas: [], seed: { "tcg-collector-profile-v1": JSON.stringify({ handle: "teste" }) } });
+  await app.espera();
+  assert.ok(app.pushes.length <= 1);
+  if (app.pushes.length) assert.ok(app.pushes[0].corpo.length <= 1, `subiu ${app.pushes[0].corpo.length} linhas`);
 });
 
 test("sessão com o pull FALHANDO não sobe nada; o que for editado vira pendência na saída", async () => {
@@ -201,4 +248,137 @@ test("keepalive só com corpo que cabe nos 64 KB do Fetch", () => {
   assert.equal(t.comKeepalive(true, "x".repeat(1000)), true);
   assert.equal(t.comKeepalive(true, "x".repeat(30000)), false, "corpo grande com keepalive é recusado pelo navegador na hora");
   assert.equal(t.comKeepalive(false, "x"), false);
+});
+
+// ── Sync leve (2026-10-08) ──────────────────────────────────────────────────
+// O boot de TODA página logada renovava o token e baixava as linhas inteiras
+// de todos os jogos, mudasse algo ou não. Agora pede as versões (updated_at) e
+// desce só a linha que mudou desde o que este aparelho viu.
+const VISTO = "tcg-sync-visto-v1";
+const DUAS_LINHAS = () => [
+  { game: "pokemon", data: { collection: JSON.parse(UMA_CARTA) }, updated_at: "2026-10-08T10:00:00.000+00:00" },
+  { game: "magic", data: { wishlist: { "mtg-lea-1": ["Normal"] } }, updated_at: "2026-10-08T11:00:00.000+00:00" }
+];
+const dados = (gets) => gets.filter((u) => !u.includes("select=game,updated_at"));
+
+test("1º boot depois da troca: pede as versões, baixa as linhas e guarda o que viu", async () => {
+  const app = montaApp({ seed: comSessao(), linhas: DUAS_LINHAS() });
+  await app.espera();
+  assert.ok(app.gets[0].includes("select=game,updated_at"), "primeiro as versões");
+  assert.equal(dados(app.gets).length, 1);
+  assert.match(dados(app.gets)[0], /game=in\.\((pokemon,magic|magic,pokemon)\)/, "só as linhas que existem");
+  // As duas linhas trouxeram novidade pro aparelho (vazio) e subiram de volta
+  // mescladas: o que fica visto é a versão que o push gravou na nuvem.
+  const visto = JSON.parse(app.ls.getItem(VISTO));
+  assert.equal(visto.u, UID);
+  for (const g of ["pokemon", "magic"]) {
+    assert.equal(visto.g[g], Date.parse(app.nuvem.find((l) => l.game === g).updated_at), `${g}: a versão da nuvem depois do boot`);
+  }
+});
+
+test("linha baixada que não muda nada no aparelho conta como vista pela versão dela", async () => {
+  const app = montaApp({ seed: comSessao({ "tcg-collector-pokemon-collection-v3": UMA_CARTA }), linhas: [{ game: "pokemon", data: { collection: JSON.parse(UMA_CARTA) }, updated_at: "2026-10-08T10:00:00.000+00:00" }] });
+  await app.espera();
+  assert.equal(app.pushes.length, 0);
+  assert.equal(JSON.parse(app.ls.getItem(VISTO)).g.pokemon, Date.parse("2026-10-08T10:00:00.000+00:00"));
+});
+
+test("boot com nada mudado na nuvem: só as versões, nenhuma linha inteira, nenhum push", async () => {
+  const primeiro = montaApp({ seed: comSessao(), linhas: DUAS_LINHAS() });
+  await primeiro.espera();
+  const app = montaApp({ seed: { ...primeiro.store }, linhas: primeiro.nuvem });
+  await app.espera();
+  assert.equal(app.gets.length, 1, `pediu ${JSON.stringify(app.gets)}`);
+  assert.equal(app.pushes.length, 0);
+  assert.equal(app.tokens.length, 0, "token com menos de 50 min não é renovado");
+});
+
+test("linha que mudou em OUTRO aparelho: desce só ela", async () => {
+  const primeiro = montaApp({ seed: comSessao(), linhas: DUAS_LINHAS() });
+  await primeiro.espera();
+  const nuvem = primeiro.nuvem.map((l) => (l.game === "magic" ? { ...l, data: { wishlist: { "mtg-lea-1": ["Normal"], "mtg-lea-2": ["Normal"] } }, updated_at: "2026-10-08T12:00:00.000+00:00" } : l));
+  const app = montaApp({ seed: { ...primeiro.store }, linhas: nuvem });
+  await app.espera();
+  assert.equal(dados(app.gets).length, 1);
+  assert.match(dados(app.gets)[0], /game=in\.\(magic\)/);
+  assert.ok(JSON.parse(app.ls.getItem("tcg-collector-magic-wishlist-v1"))["mtg-lea-2"], "a novidade da outra máquina chegou");
+});
+
+// O 1º boot de um aparelho vazio traz novidade e RECARREGA a página (sem
+// ligar o laço); quem edita e sai é a página seguinte, que abre sem novidade.
+async function aparelhoEmDia(linhas) {
+  const primeiro = montaApp({ seed: comSessao(), linhas });
+  await primeiro.espera();
+  const app = montaApp({ seed: { ...primeiro.store }, linhas: primeiro.nuvem });
+  await app.espera();
+  assert.equal(app.reloads.length, 0, "a 2ª página abre sem novidade");
+  assert.equal(app.intervalos.length, 1, "e com o laço de sync ligado");
+  return app;
+}
+const sai = async (app) => { app.sandbox.document.visibilityState = "hidden"; app.dispara("visibilitychange"); await app.espera(); };
+
+test("o push confirmado guarda a versão que gravou: o boot seguinte não baixa a própria edição", async () => {
+  const app = await aparelhoEmDia(DUAS_LINHAS());
+  app.t.createCollectionStore("pokemon").add("base1-2", "Normal", "NM", 1);
+  app.t.flushWrites();
+  await sai(app);
+  assert.equal(app.pushes.length, 1, "a edição subiu na saída");
+  const seguinte = montaApp({ seed: { ...app.store }, linhas: app.nuvem });
+  await seguinte.espera();
+  assert.equal(dados(seguinte.gets).length, 0, `baixou de novo o que acabou de subir: ${JSON.stringify(seguinte.gets)}`);
+});
+
+test("edição numa chave GLOBAL sobe só as linhas que existem, não os 22 jogos", async () => {
+  const app = await aparelhoEmDia(DUAS_LINHAS());
+  // Um binder novo (chave global: muda o snapshot dos 22 jogos) e uma carta,
+  // que é o que acorda o laço (a escrita direta do binder não passa pelo
+  // scheduleWrite).
+  app.ls.setItem("tcg-collector-binders-all-v1", JSON.stringify({ binders: [{ id: "b1", name: "x", slots: [] }] }));
+  app.t.createCollectionStore("pokemon").add("base1-3", "Normal", "NM", 1);
+  app.t.flushWrites();
+  await sai(app);
+  const subiram = app.pushes.flatMap((p) => [].concat(p.corpo).map((l) => l.game)).sort();
+  assert.deepEqual(subiram, ["magic", "pokemon"], "as duas linhas que existem levam o binder; os outros 20 jogos não ganham linha");
+});
+
+test("token velho (> 50 min) renova antes do pull; token recusado (401) renova e tenta de novo", async () => {
+  const velho = montaApp({ seed: comSessao({ [SESSAO]: JSON.stringify({ access_token: "t1", refresh_token: "r1", user: { id: UID, email: "a@b.c" }, ts: Date.now() - 3600e3 }) }), linhas: DUAS_LINHAS() });
+  await velho.espera();
+  assert.equal(velho.tokens.length, 1);
+  const recusado = montaApp({ seed: comSessao(), linhas: DUAS_LINHAS(), marcas401: 1 });
+  await recusado.espera();
+  assert.equal(recusado.tokens.length, 1, "o 401 renovou o token");
+  assert.equal(recusado.gets.filter((u) => u.includes("select=game,updated_at")).length, 2, "e pediu as versões de novo");
+  assert.ok(recusado.ls.getItem(VISTO), "o boot seguiu até o fim");
+});
+
+test("renovação com a nuvem soluçando (5xx/429) não desloga; 400/401 desloga", async () => {
+  const velhaSessao = () => comSessao({ [SESSAO]: JSON.stringify({ access_token: "t1", refresh_token: "r1", user: { id: UID, email: "a@b.c" }, ts: Date.now() - 3600e3 }) });
+  for (const status of [503, 429]) {
+    const app = montaApp({ seed: velhaSessao(), linhas: [], tokenStatus: status });
+    await app.espera();
+    assert.ok(app.ls.getItem(SESSAO), `HTTP ${status} na renovação deslogou`);
+  }
+  for (const status of [400, 401]) {
+    const app = montaApp({ seed: velhaSessao(), linhas: [], tokenStatus: status });
+    await app.espera();
+    assert.equal(app.ls.getItem(SESSAO), null, `HTTP ${status} na renovação tinha de deslogar`);
+  }
+});
+
+// Cota cheia (iPhone perto do teto): o mesclado não cabe no aparelho. Desde que
+// o writeSnapshot deixou de lançar (pra pílula "Carregando" não ficar presa),
+// o boot seguia: recarregava a página — e o boot seguinte mesclava e de novo
+// não gravava, em laço — e ligava o laço de sync, que subiria o local VELHO por
+// cima da nuvem.
+test("linha que não coube no aparelho (cota cheia): sobe o mesclado, não recarrega, não liga o laço, não conta como vista", async () => {
+  const grande = { game: "pokemon", data: { collection: Object.fromEntries(Array.from({ length: 50 }, (_, i) => [`base1-${i + 1}`, { Normal: { NM: 1 } }])) } };
+  const app = montaApp({ seed: comSessao(), linhas: [grande], cota: 200 });
+  await app.espera();
+  const visto = JSON.parse(app.ls.getItem(VISTO) || "null");
+  assert.ok(!visto || visto.g.pokemon === undefined, "o próximo boot tem de baixar a linha e tentar gravar de novo");
+  assert.equal(app.reloads.length, 0, "recarregar aqui entra em laço");
+  assert.equal(app.intervalos.length, 0, "o laço de sync subiria o local velho por cima da nuvem");
+  const subiu = app.pushes.flatMap((p) => [].concat(p.corpo)).find((l) => l.game === "pokemon");
+  assert.ok(subiu && Object.keys(subiu.data.collection).length === 50, "o mesclado (em memória) sobe inteiro");
 });
