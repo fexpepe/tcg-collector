@@ -34,3 +34,12 @@ test("as mais vistas e o ?card= vêm pela borda, não pelos chunks dos sets", ()
   assert.ok(cards.includes("shared.loadOwnedFast({ [game]: top.map((row) => row.card_id) })"));
   assert.ok(cards.includes("shared.loadOwnedFast({ [game]: [id] })"));
 });
+
+// A carta que vem da borda não traz o nameEn das japonesas: refiltrar o
+// resultado pelo texto no cliente derrubava as que a borda achou pelo nome em
+// inglês (12 de 400 em "charizard", a MリザードンEX entre elas).
+test("o resultado da borda não é refiltrado pelo texto no cliente", () => {
+  assert.ok(cards.includes("parcial = { chave, cards: achadas, daBorda: q.length >= 2 };"));
+  assert.ok(cards.includes("const textoJaCasado = !catalogPronto && parcialValida() && parcial.daBorda;"));
+  assert.ok(cards.includes("if (!textoJaCasado && !shared.matchesCardQuery(card, elements.search.value)) return false;"));
+});
