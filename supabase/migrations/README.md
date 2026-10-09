@@ -8,33 +8,6 @@ poucos.)
 
 ## Pendentes de aplicar
 
-- `20261009b` — apagar a conta tira a conta das estatísticas
-  (`20261009b_eventos_sem_conta.sql`). Desde a `20260914a` o `events_guard`
-  grava em cada evento a conta do JWT (`uid`), e a política de privacidade
-  revisada em 2026-10-09 (achado A11 do docs/PLANO-ANALYTICS-3.md) diz isso
-  e promete que, ao apagar a conta, o vínculo some junto. A
-  `delete_account` (fora do repo) não mexia em `events`. O que entra:
-  - trigger `eventos_sem_conta` AFTER DELETE em `auth.users` → `events.uid =
-    null` da conta que saiu (vale pra `delete_account`, pro painel do
-    Supabase e qualquer outro caminho). Falha ali nunca impede apagar a conta;
-  - índice parcial `events_uid_idx`;
-  - limpeza retroativa das contas já apagadas.
-
-  O evento fica (com o id aleatório do navegador): as visitas do passado não
-  mudam, só deixam de contar aquela conta como logada. Aditiva, sem ordem com
-  o JS, pode aplicar duas vezes. Testada no PGlite em cima de todas as
-  migrações de analytics + a 20261009a, aplicada duas vezes: apagar a conta
-  tira o uid dos 3 eventos dela e só dela, o evento continua, a conta órfã
-  de antes sai na limpeza, e um erro forçado dentro da limpeza não impede o
-  delete da conta.
-
-  Conferir depois de aplicar:
-  ```sql
-  select tgname from pg_trigger where tgname = 'eventos_sem_conta';       -- 1 linha
-  select count(*) from public.events e where e.uid is not null
-    and not exists (select 1 from auth.users u where u.id = e.uid);       -- 0
-  ```
-
 - `20261004a` — alarme de medição parada leva o tráfego em conta
   (`20261004a_sentinela_trafego.sql`). Em 2026-10-04 o healthcheck ficou
   vermelho com "parou de chegar: scan_open" sem nada quebrado: a campanha paga
@@ -164,6 +137,35 @@ poucos.)
   E, logado como admin, abrir `/admin`: as abas aparecem e o aviso amarelo some.
 
 ### Já aplicadas (verificado em produção)
+
+- `20261009b` — apagar a conta tira a conta das estatísticas
+  (`20261009b_eventos_sem_conta.sql`). **Aplicada em 2026-10-09** pelo
+  Fernando: a conferência de órfãs voltou **0** (nenhum evento ligado a
+  conta que não existe mais). Desde a `20260914a` o `events_guard`
+  grava em cada evento a conta do JWT (`uid`), e a política de privacidade
+  revisada em 2026-10-09 (achado A11 do docs/PLANO-ANALYTICS-3.md) diz isso
+  e promete que, ao apagar a conta, o vínculo some junto. A
+  `delete_account` (fora do repo) não mexia em `events`. O que entra:
+  - trigger `eventos_sem_conta` AFTER DELETE em `auth.users` → `events.uid =
+    null` da conta que saiu (vale pra `delete_account`, pro painel do
+    Supabase e qualquer outro caminho). Falha ali nunca impede apagar a conta;
+  - índice parcial `events_uid_idx`;
+  - limpeza retroativa das contas já apagadas.
+
+  O evento fica (com o id aleatório do navegador): as visitas do passado não
+  mudam, só deixam de contar aquela conta como logada. Aditiva, sem ordem com
+  o JS, pode aplicar duas vezes. Testada no PGlite em cima de todas as
+  migrações de analytics + a 20261009a, aplicada duas vezes: apagar a conta
+  tira o uid dos 3 eventos dela e só dela, o evento continua, a conta órfã
+  de antes sai na limpeza, e um erro forçado dentro da limpeza não impede o
+  delete da conta.
+
+  Conferir depois de aplicar:
+  ```sql
+  select tgname from pg_trigger where tgname = 'eventos_sem_conta';       -- 1 linha
+  select count(*) from public.events e where e.uid is not null
+    and not exists (select 1 from auth.users u where u.id = e.uid);       -- 0
+  ```
 
 - `20261009a` — /admin v3 (`20261009a_admin_v3.sql`;
   docs/PLANO-ANALYTICS-3.md). **Aplicada em 2026-10-09** (o Fernando rodou no
