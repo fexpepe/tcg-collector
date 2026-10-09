@@ -619,3 +619,19 @@ test("job do espelho: regravação e host mutável sobem com 7 dias, e as regrav
   const wf = readFileSync(join(raiz, ".github/workflows/mirror-images.yml"), "utf8");
   assert.ok(wf.includes("CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}") && wf.includes("CF_PURGE_TOKEN: ${{ secrets.CF_PURGE_TOKEN }}"));
 });
+
+// A borda da Cloudflare guarda /data/* por horas e o deploy do Pages não limpa
+// essa cópia (conferido em 2026-10-09: 41 min depois do deploy a borda servia o
+// manifest anterior). O deploy purga os mesmos arquivos-índice que o SW
+// revalida — se o secret existir; sem ele o passo só avisa.
+test("deploy: purga da borda os arquivos-índice do catálogo, os mesmos do SW", () => {
+  const wf = readFileSync(join(raiz, ".github/workflows/deploy.yml"), "utf8");
+  const i = wf.indexOf("- name: Purga da borda os arquivos-índice do catálogo");
+  assert.ok(i > 0 && i > wf.indexOf("- name: Deploy para Cloudflare Pages"), "o passo vem depois do deploy");
+  const passo = wf.slice(i, wf.indexOf("- name:", i + 10));
+  assert.ok(passo.includes("continue-on-error: true"), "purga falha não derruba o deploy");
+  for (const p of ["-name 'manifest.generated.js'", "-name 'indexes-*.json'", "-name 'cmdk-names*.json'", "-path '*/game-pages/*'"]) assert.ok(passo.includes(p), p);
+  const sw = readFileSync(join(raiz, "sw.js"), "utf8");
+  const indiceDoSw = (/const INDICE_DO_CATALOGO = (.+);/.exec(sw) || [])[1] || "";
+  for (const nome of ["manifest", "indexes-", "cmdk-names", "game-pages"]) assert.ok(indiceDoSw.includes(nome), `o SW e a purga cobrem ${nome}`);
+});
