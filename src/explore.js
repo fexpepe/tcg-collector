@@ -151,7 +151,13 @@
       if (tops.length < 4) return;
       const idsByGame = {};
       games.forEach((g) => { idsByGame[g] = tops.filter((x) => x.game === g).map((x) => x.id); });
-      const [catalog] = await Promise.all([shared.loadOwnedAcrossGames(idsByGame), cambioPronto]);
+      // Pela BORDA (/api/collection: só as ~30 cartas, já com preço). Antes a
+      // carga cruzada injetava, por jogo das mais vistas, o manifest e o
+      // indexes.generated.js INTEIRO (663 KB no Pokémon, 514 KB no Magic) e os
+      // chunks dos sets — 1,5 MB de dado medido em produção só pra abrir o
+      // Explorar. Borda fora do ar: os chunks, dentro do loadOwnedFast.
+      const [catalog] = await Promise.all([shared.loadOwnedFast(idsByGame), cambioPronto]);
+      shared.enrichSetTotals(catalog.cards || []).then((mudou) => { if (mudou) atualizaRotulos(); }).catch(() => { /* fica o número sozinho */ });
       const byId = new Map((catalog.cards || []).map((c) => [c.id, c]));
       const pairs = [];
       for (const { id } of tops) {
@@ -500,7 +506,20 @@
   // escopo (o termo é lido uma vez, no começo, e vale pro pedido inteiro).
   async function apiApply() {
     try { await apiApplyInner(); }
-    catch (e) { renderFromCatalog(); }
+    catch (e) { semBorda(); }
+  }
+  // A borda NÃO respondeu (rede caiu, 429/5xx, ou a pausa de 30 s que vem
+  // depois de um erro). Até 2026-10-08 isso baixava o catálogo dos 22 jogos
+  // (~6 mil arquivos, ~14 MB comprimidos) — e justo na rede ruim do celular,
+  // onde a borda mais falha. Agora a tela diz que não deu e oferece tentar de
+  // novo (recarregar refaz a busca: o ?q= está na URL). No dev local, sem
+  // manifest, o catálogo de amostra é pequeno e segue respondendo.
+  function semBorda() {
+    if (!(window.SLEEVU && window.SLEEVU.manifest)) { renderFromCatalog(); return; }
+    elements.intro.hidden = true;
+    elements.grid.innerHTML = "";
+    elements.resultCount.textContent = "";
+    shared.mostraErroDeCatalogo(elements.empty, new Error("busca da borda indisponível"));
   }
   async function apiApplyInner() {
     const seq = ++apiSeq;
@@ -516,10 +535,11 @@
     // centenas de ms e, com o câmbio em cache, a espera extra é zero.
     const [respostas] = await Promise.all([Promise.all(jogos.map((g) => shared.searchApiFull(g, q))), cambioPronto]);
     if (seq !== apiSeq || catalogPronto) return; // o catálogo chegou no meio: o render dele já cobre
-    // null = borda desligada/soluço (ou Function sem o modo completo): o
-    // catálogo local responde. Um jogo do vintage falhar também — resultado
-    // pela metade com contagem de inteiro é o que esta página não pode dar.
-    if (respostas.some((r) => !r)) { renderFromCatalog(); return; }
+    // null = borda desligada/soluço (ou Function sem o modo completo): a tela
+    // avisa e oferece tentar de novo (semBorda). Um jogo do vintage falhar
+    // também — resultado pela metade com contagem de inteiro é o que esta
+    // página não pode dar.
+    if (respostas.some((r) => !r)) { semBorda(); return; }
     let found = [].concat(...respostas.map((r) => r.cards));
     // VAZIO É a resposta (27/09/2026, decisão do Fernando): "nenhuma carta"
     // na hora. Até aqui um vazio da borda mandava baixar o catálogo INTEIRO
@@ -530,8 +550,8 @@
     // carta tem uma palavra começando por cada termo. O que se perde, de
     // propósito: pedaço do MEIO de palavra ("kachu" achava Pikachu pelo
     // catálogo local) e campos que a borda não indexa (raridade, variante,
-    // idioma). Borda FORA (null, acima) continua caindo no catálogo local —
-    // aí não há outra resposta possível.
+    // idioma). Borda FORA (null, acima) vira aviso com "tentar de novo"
+    // (semBorda) — o catálogo dos 22 jogos não desce mais no celular.
     // Os preços vêm na mesma resposta: entram na tabela da sessão, que é onde
     // o cardValue procura (união, como o loadAcrossGames faz — outra busca
     // desta página já pode ter posto preço de outras cartas ali).

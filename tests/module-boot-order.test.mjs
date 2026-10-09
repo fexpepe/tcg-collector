@@ -125,7 +125,9 @@ test("explore.js: a busca pela borda declara o termo que usa", () => {
   const corpo = corpoDaFuncao(texto, "apiApplyInner");
   assert.ok(corpo, "apiApplyInner existe");
   assert.match(corpo, /\bconst q = term\(\)/);
-  // e o invólucro que chama tem o catch que cai no catálogo
+  // e o invólucro que chama tem o catch: desde 2026-10-08 ele avisa e oferece
+  // tentar de novo (semBorda), em vez de baixar o catálogo dos 22 jogos — só o
+  // dev local, sem manifest, ainda cai na amostra (ver tests/explore-borda).
   const wrap = corpoDaFuncao(texto, "apiApply");
-  assert.match(wrap, /catch \(e\) \{ renderFromCatalog\(\); \}/);
+  assert.match(wrap, /catch \(e\) \{ semBorda\(\); \}/);
 });
