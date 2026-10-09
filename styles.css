@@ -1905,6 +1905,9 @@ input::placeholder {
   grid-template-columns: 86px 1fr;
   align-items: center;
   gap: 6px;
+  /* Palpite da altura de quem ainda não apareceu (ver content-visibility no
+     .card-tile): a linha da lista tem ~130 px, não os 380 do tile em grade. */
+  contain-intrinsic-size: auto 130px;
 }
 .card-grid.is-list .card-tile .card-image { padding: 6px; }
 .card-grid.is-list .card-tile .image-open img { max-height: 116px; width: auto; margin: 0 auto; }
@@ -2658,7 +2661,8 @@ input::placeholder {
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.3px;
-  backdrop-filter: blur(4px);
+  /* Sem backdrop-filter (2026-10-08): sobre o fundo opaco ele não aparecia, e
+     criava uma camada de composição por cartão de set. */
   white-space: nowrap;
 }
 
@@ -12905,6 +12909,7 @@ select,
   align-items: center;
   gap: 10px;
   min-height: 48px;
+  contain-intrinsic-size: auto 48px; /* idem: a linha compacta tem 48 px */
   padding: 0 10px;
   border: 0;
   border-bottom: 1px solid var(--line);
