@@ -9480,9 +9480,15 @@
       // (HTML -> shared -> chunk -> render), esse era o único pedaço do atraso
       // grátis de recuperar. O prerender de /set/ e /card/ já fazia assim.
       // Só no primeiro append: no scroll infinito, lazy é o comportamento certo.
-      if (primeiroAppend) {
+      // No celular são DUAS (2026-10-08): na tela de set o trilho ocupa a
+      // primeira tela e só a primeira fileira aparece, e as 8 eager (100 a 210
+      // KB cada, na variante de 600 px) desciam juntas — ~1,2 MB disputando
+      // banda com o que estava à vista. Com o popup aberto (pouso na rota da
+      // carta), a imagem que importa é a dele: nenhuma eager.
+      if (primeiroAppend && !document.body.classList.contains("preview-open")) {
         const acimaDaDobra = fragment.querySelectorAll("img");
-        for (let i = 0; i < Math.min(8, acimaDaDobra.length); i++) {
+        const n = window.matchMedia && window.matchMedia("(max-width: 720px)").matches ? 2 : 8;
+        for (let i = 0; i < Math.min(n, acimaDaDobra.length); i++) {
           acimaDaDobra[i].loading = "eager";
           acimaDaDobra[i].setAttribute("fetchpriority", i < 4 ? "high" : "auto");
         }
