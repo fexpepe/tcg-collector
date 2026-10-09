@@ -277,30 +277,53 @@ test("dev (sem hash): sempre rede primeiro, mesmo com confirmação recente", as
   assert.equal(await texto(await sw.nav(evento("/portfolio"))), "nova");
 });
 
-test("HTML de OUTRO build vindo da rede: responde, não entra no cache e pede a atualização do SW (uma vez)", async () => {
+// Resposta como o servidor manda: com o Date de agora (a cópia do cache HTTP
+// guarda o Date de quando foi baixada).
+const doServidor = (res, quando = Date.now()) => { res.headers.set("date", new Date(quando).toUTCString()); return res; };
+
+test("HTML de OUTRO build vindo do servidor: responde com UM pedido, não entra no cache e o SW não pede a própria atualização", async () => {
   const sw = carrega({ hashed: true, build: "abc12345" });
   const shell = await sw.sandbox.caches.open(sw.SHELL);
   await shell.put("portfolio.html", html("velha"));
   const pedidos = [];
-  sw.estado.fetch = async (...args) => { pedidos.push(args); return html("deploy-novo", "ffff0000"); };
-  // parado há tempo: rede primeiro — a página nova é entregue mesmo assim,
-  // depois de CONFERIDA direto no servidor (não é a cópia velha do cache HTTP)
+  sw.estado.fetch = async (...args) => { pedidos.push(args); return doServidor(html("deploy-novo", "ffff0000")); };
+  // parado há tempo: rede primeiro — o Date de agora diz que a página veio do
+  // servidor, então é a leva atual: entregue sem baixar o mesmo HTML de novo
   const ev = evento("/portfolio");
   assert.equal(await texto(await sw.nav(ev)), "deploy-novo");
-  assert.equal(pedidos.length, 2, "o HTML de outra leva foi conferido com um 2º pedido");
-  assert.equal(pedidos[1][0], ORIGEM + "/portfolio");
-  assert.equal(pedidos[1][1].cache, "reload", "a conferência fura o cache HTTP");
-  assert.equal(pedidos[1][1].redirect, "manual", "e não segue redirect (a navegação recusa resposta redirecionada)");
+  assert.equal(pedidos.length, 1, "HTML fresco do servidor não é pedido duas vezes");
   await Promise.all(ev.pendentes);
   assert.equal(await texto(await shell.match("portfolio.html")), "velha", "página de outra leva não entra neste cache");
-  assert.equal(sw.updates.length, 1, "pediu registration.update()");
+  // Quem pede a atualização é a página, depois da carga (shared.js): pedida
+  // daqui, o install do SW novo disputava banda com a página recém-chegada.
+  assert.equal(sw.updates.length, 0, "o SW não pede registration.update() no meio da navegação");
   assert.equal(await (await sw.sandbox.caches.open(sw.META)).match("shell-confirmado"), undefined, "sem confirmação: a próxima navegação volta à rede");
   // sessão ativa: cache na hora, e a rede por trás percebe o deploy
   await (await sw.sandbox.caches.open(sw.META)).put("shell-confirmado", new Response(String(Date.now())));
   const ev2 = evento("/portfolio");
   assert.equal(await texto(await sw.nav(ev2)), "velha");
   await Promise.all(ev2.pendentes);
-  assert.equal(sw.updates.length, 1, "o pedido de atualização não se repete no mesmo SW");
+  assert.equal(sw.updates.length, 0);
+});
+
+test("HTML de OUTRO build que pode ter saído do cache HTTP (Date velho ou ausente, histórico): confere no servidor", async () => {
+  for (const [nome, resposta, pedido] of [
+    ["Date de ontem", () => doServidor(html("deploy-novo", "ffff0000"), Date.now() - 864e5)],
+    ["sem Date", () => html("deploy-novo", "ffff0000")],
+    // relógio do aparelho atrasado: o Date "do futuro" também não conta como agora
+    ["Date de daqui a 1 h", () => doServidor(html("deploy-novo", "ffff0000"), Date.now() + 36e5)],
+    ["histórico (force-cache), mesmo com Date de agora", () => doServidor(html("deploy-novo", "ffff0000")), { cache: "force-cache" }]
+  ]) {
+    const sw = carrega({ hashed: true, build: "abc12345" });
+    const pedidos = [];
+    sw.estado.fetch = async (...args) => { pedidos.push(args); return resposta(); };
+    const ev = evento("/portfolio", { pedido });
+    assert.equal(await texto(await sw.nav(ev)), "deploy-novo", nome);
+    assert.equal(pedidos.length, 2, `${nome}: conferido com um 2º pedido`);
+    assert.equal(pedidos[1][0], ORIGEM + "/portfolio");
+    assert.equal(pedidos[1][1].cache, "reload", "a conferência fura o cache HTTP");
+    assert.equal(pedidos[1][1].redirect, "manual", "e não segue redirect (a navegação recusa resposta redirecionada)");
+  }
 });
 
 // O set que "não abria" no PWA do iPhone (2026-09-29): voltar pra uma tela (ou
@@ -465,4 +488,103 @@ test("tela do set novo: o detail.js busca o manifest de novo (query nova) antes 
   const detail = readFileSync(join(raiz, "src/detail.js"), "utf8");
   assert.ok(detail.includes("manifest.generated.js?v=${Date.now()}"), "sem o recarregaManifest com query nova");
   assert.ok(/if \(!entries\.length && detailName\) \{\s*const fresco = await recarregaManifest\(\);/.test(detail), "o resolveCards tem de tentar o manifest fresco antes de devolver []");
+});
+
+// ── Deploy novo sem competir com a página aberta (2026-10-08) ──────────────
+// O install soltava os ~150 arquivos do precache de uma vez, na hora em que a
+// página recém-chegada de um deploy ainda baixava os scripts dela.
+test("install: no máximo INSTALL_PARALELO pedidos no ar, e as páginas por último", async () => {
+  const sw = carrega({ hashed: true, build: "abc12345", ajusta: comHash });
+  let noAr = 0, pico = 0;
+  const ordem = [];
+  sw.estado.fetch = async (req) => {
+    ordem.push(new URL(req.url).pathname);
+    noAr++;
+    pico = Math.max(pico, noAr);
+    await new Promise((r) => setTimeout(r, 2));
+    noAr--;
+    return new Response("ok");
+  };
+  await instala(sw);
+  const lista = vm.runInContext("SHELL_ASSETS", sw.sandbox);
+  assert.equal(ordem.length, lista.length, "cada arquivo pedido uma vez");
+  assert.equal(pico, vm.runInContext("INSTALL_PARALELO", sw.sandbox), "a fila respeita o teto");
+  const ehPagina = (p) => p === "/" || p.endsWith(".html");
+  const primeira = ordem.findIndex(ehPagina);
+  assert.ok(primeira > 0, "o shell começa pelos arquivos");
+  assert.ok(ordem.slice(primeira).every(ehPagina), "depois da 1ª página, só páginas");
+  assert.equal(sw.skips.length, 1);
+});
+
+test("fetch: /api/ e /cdn-cgi/ não passam pelo SW (a borda tem cache HTTP próprio)", () => {
+  const sw = carrega({ hashed: true, build: "abc12345" });
+  for (const p of ["/api/search?game=all&q=dragon&full=1", "/api/collection?ids=x", "/cdn-cgi/rum?x=1"]) {
+    let respondeu = false;
+    sw.listeners.fetch({ request: { url: ORIGEM + p, method: "GET", mode: "cors" }, respondWith: () => { respondeu = true; } });
+    assert.equal(respondeu, false, p);
+  }
+  let respondeu = false;
+  sw.listeners.fetch({ request: { url: ORIGEM + "/data/sets/en/sv1.json", method: "GET", mode: "cors" }, respondWith: () => { respondeu = true; }, waitUntil: () => {} });
+  assert.equal(respondeu, true, "o catálogo segue com o SW");
+});
+
+test("navegação: 5xx do servidor com cópia guardada entrega a cópia; 404 é resposta", async () => {
+  const sw = carrega({ hashed: true, build: "abc12345" });
+  const shell = await sw.sandbox.caches.open(sw.SHELL);
+  await shell.put("portfolio.html", html("guardada"));
+  sw.estado.fetch = async () => new Response("erro", { status: 503, headers: { "content-type": "text/html" } });
+  assert.equal(await texto(await sw.nav(evento("/portfolio"))), "guardada");
+  sw.estado.fetch = async () => new Response("sumiu", { status: 404, headers: { "content-type": "text/html" } });
+  assert.equal((await sw.nav(evento("/portfolio"))).status, 404, "página que deixou de existir é resposta");
+  sw.estado.fetch = async () => new Response("erro", { status: 502 });
+  assert.equal((await sw.nav(evento("/blog"))).status, 502, "sem cópia, o erro passa (não há nada melhor pra mostrar)");
+});
+
+test("networkFirst: 404/5xx de um arquivo com cópia guardada entrega a cópia", async () => {
+  const sw = carrega({ hashed: true, build: "abc12345" });
+  const nf = vm.runInContext("networkFirst", sw.sandbox);
+  const shell = await sw.sandbox.caches.open(sw.SHELL);
+  await shell.put(ORIGEM + "/manifest.json", new Response("guardado"));
+  sw.estado.fetch = async () => new Response("erro", { status: 503 });
+  const req = new sw.sandbox.Request(ORIGEM + "/manifest.json");
+  assert.equal(await (await nf(req, new URL(req.url))).text(), "guardado");
+  const outro = new sw.sandbox.Request(ORIGEM + "/speculation-rules.json");
+  assert.equal((await nf(outro, new URL(outro.url))).status, 503, "sem cópia, o erro passa");
+});
+
+test("imagem de host mutável: erro na revalidação entrega a cópia guardada", async () => {
+  const sw = carrega({ hashed: true, build: "abc12345" });
+  const cf = vm.runInContext("cacheFirst", sw.sandbox);
+  const img = await sw.sandbox.caches.open(vm.runInContext("IMAGE_CACHE", sw.sandbox));
+  const url = new URL("https://tcgplayer-cdn.tcgplayer.com/product/1_in_1000x1000.jpg");
+  await img.put(url.href, new Response("arte-guardada"));
+  sw.estado.fetch = async () => new Response("", { status: 403 });
+  assert.equal(await (await cf(url)).text(), "arte-guardada");
+});
+
+test("precache: sem as páginas raras e com todo script das páginas que ele guarda", () => {
+  const sw = readFileSync(join(raiz, "sw.js"), "utf8");
+  const lista = new Set([...sw.match(/const SHELL_ASSETS = \[([\s\S]*?)\];/)[1].matchAll(/"([^"]+)"/g)].map((m) => m[1]));
+  for (const rara of ["admin.html", "src/admin.js", "faq.html", "privacy.html", "terms.html"]) assert.ok(!lista.has(rara), `${rara} voltou pro precache`);
+  const faltando = [];
+  for (const a of lista) {
+    if (!(a === "./" || a.endsWith(".html"))) continue;
+    const pagina = readFileSync(join(raiz, a === "./" ? "index.html" : a), "utf8");
+    for (const m of pagina.matchAll(/<script[^>]*\ssrc="([^"]+)"/g)) {
+      const s = m[1].replace(/^\.?\//, "");
+      if (s.startsWith("src/") && !lista.has(s)) faltando.push(`${a} -> ${s}`);
+    }
+  }
+  assert.deepEqual(faltando, [], "script de página precacheada fora do SHELL_ASSETS: offline a página pede um arquivo que o cache não tem");
+});
+
+// A atualização do SW sai da PÁGINA, depois da carga: quando o build dela é
+// outro que o do SW no comando (saiu deploy). E a volta do segundo plano
+// confere no máximo a cada 30 min.
+test("shared.js: a página pede a atualização do SW depois da carga, e a volta do app tem intervalo", () => {
+  const shared = readFileSync(join(raiz, "src/shared.js"), "utf8");
+  const bloco = shared.slice(shared.indexOf('navigator.serviceWorker.register("sw.js")'), shared.indexOf('navigator.serviceWorker.addEventListener("controllerchange"'));
+  assert.ok(bloco.includes("buildDoServiceWorker().then((dele) => { if (dele !== null && dele !== buildDaPagina()) reg.update()"));
+  assert.ok(/Date\.now\(\) - conferiu < 18e5\) return;/.test(bloco), "a volta do segundo plano sem intervalo pede um update (e um install) por troca de app");
+  assert.ok(/requestIdleCallback\(instala/.test(shared), "o registro segue depois do load e de um respiro");
 });
