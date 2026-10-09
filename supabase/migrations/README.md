@@ -8,7 +8,72 @@ poucos.)
 
 ## Pendentes de aplicar
 
+- `20261009a` — /admin v3 (`20261009a_admin_v3.sql`;
+  docs/PLANO-ANALYTICS-3.md). **Contém a `20261006a` inteira** (o
+  `events_guard` dela, com o limite por visitante): aplicada esta, a 06a não
+  precisa rodar — e **não rode a 06a DEPOIS desta**, que ela tiraria o
+  contador de descartes (sem quebrar mais nada). Aditiva e sem ordem com o
+  JS: sem ela, as telas novas do `/admin` mostram o aviso "aplique a
+  20261009a" e o resto do painel segue igual. O que entra:
+  - `admin_pulso(days)` — o Resumo com o período ANTERIOR do mesmo tamanho,
+    cortado na mesma hora do dia, a série dos dois, o que mais mudou (página,
+    jogo, canal, origem, plataforma), as campanhas que começaram (viram
+    marco no gráfico) e o cruzamento hora × dia da semana;
+  - `admin_paginas(days, p_areas)` — páginas e ÁREAS do site (o mapa
+    página → área vem do `AREAS` do admin.js): entradas, saídas, rejeição
+    por visita, caminhos de área pra área, porta de entrada por canal;
+  - `admin_plataformas(days)` — navegador × app da web instalado × Android ×
+    iOS e a soma, com ativação, retenção, tempo e erros por plataforma,
+    versões do app (`av`) e os números das lojas (`app_store_daily`);
+  - `admin_anuncios()` — o `utm_content` (peça do anúncio) e o tipo de
+    clique pago (`k`), que chegam desde 06/10 e nada lia;
+  - `admin_descartes(days)` + tabela `events_descartes` — o guard passa a
+    CONTAR o que descarta (nome fora da lista, tamanho, ritmo por visitante,
+    ritmo por IP). Nome fora da lista ganha linha própria se parece nome de
+    evento, até 20 por dia; o resto cai em `(outro)`;
+  - marcos dos gráficos: tabela `admin_notas` + `admin_notas()`,
+    `admin_nota_save`, `admin_nota_delete`;
+  - números das lojas de app: tabela `app_store_daily` +
+    `admin_app_loja_save` (do painel) e `app_store_import(p_key, p_linhas)`
+    pro robô futuro, que entra pelo SHA-256 da chave guardado na tabela
+    trancada `app_store_robo` (vazia = ninguém importa; mesmo desenho do
+    `push_sender_key`).
+
+  Testada em 2026-10-09 no PGlite, em cima de TODAS as migrações de
+  analytics do repo (20260723a → 20261006a, com o esqueleto do Supabase),
+  aplicada duas vezes seguidas. Cenário com números conferidos à mão:
+  visitantes, visitas (30 min), novos, ativações, cartas, contas, erros e
+  tempo mediano do período atual × anterior; entrada/saída/rejeição por
+  página; visitantes DISTINTOS por área (quem viu Sets e uma carta conta
+  uma vez); caminhos; plataforma por pageview e por navegador (Android >
+  PWA > web), retenção D1/D7 por plataforma, conta logada em duas
+  plataformas, versões; anúncios e clique pago; descartes (nome inventado
+  com linha própria, `<script>` no balde, teto de 20 nomes por dia, tamanho,
+  o 61º evento do mesmo visitante no minuto); `search_hit` passa no guard;
+  WebView do Android (`; wv`) não vira robô; não-admin e sem JWT recebem
+  null em tudo; marcos e números de loja validam dia, loja, métrica e
+  faixa; o robô sem chave, com chave errada e com linhas ruins no lote.
+  Carga: 200 mil eventos em 120 dias, 20 mil navegadores — `admin_pulso(90)`
+  2,6 s, `admin_paginas(90)` 2,1 s, `admin_plataformas(90)` 1,5 s no PGlite
+  (Postgres em WASM, bem mais lento que o do Supabase).
+
+  Conferir depois de aplicar:
+  ```sql
+  select proname from pg_proc where proname in ('admin_pulso', 'admin_paginas',
+    'admin_plataformas', 'admin_descartes', 'admin_notas', 'admin_anuncios') order by 1;  -- 6 linhas
+  select pg_get_functiondef('public.events_guard()'::regprocedure) ~ '_descarta' as conta_descartes;  -- true
+  select pg_get_functiondef('public.events_guard()'::regprocedure) ~ 'events:' as por_visitante;      -- true
+  ```
+  E, logado como admin, abrir `/admin`: o Resumo ganha a régua do período
+  anterior, e Páginas, App e plataformas e Técnico › Marcos saem do aviso.
+
+  Pra ligar o robô das lojas um dia (a chave crua fica SÓ no GitHub Secret):
+  ```sql
+  insert into public.app_store_robo values (encode(sha256(convert_to('<chave>', 'UTF8')), 'hex'));
+  ```
+
 - `20261006a` — limite de eventos por VISITANTE, não por IP
+  **(coberta pela `20261009a`: aplicada aquela, esta não precisa rodar).**
   (`20261006a_eventos_por_visitante.sql`). O `events_guard` descartava calado o
   que passasse de 60 eventos/min por IP, e celular no Brasil sai por CGNAT
   (muita gente atrás do mesmo IPv4): na campanha paga, visitantes diferentes

@@ -8,11 +8,23 @@
 // Técnico (Qualidade) — e tabelas longas paginadas. Cada aba busca só as RPCs
 // de que precisa (NEEDS), uma vez por período.
 //
+// v3 (2026-10-09, migração 20261009a, docs/PLANO-ANALYTICS-3.md): oito
+// grupos numa barra LATERAL (no celular, um seletor nativo) — entram Páginas
+// (as páginas do site agrupadas em ÁREAS: catálogo, coleção, decks…) e App e
+// plataformas (web × app instalado × Android × iOS, a soma, versões e os
+// números das lojas). Todo número do Resumo vem com a RÉGUA do período
+// anterior (mesmo tamanho, cortado na mesma hora do dia), e os gráficos de
+// tempo ganharam média de 7 dias, a linha fantasma do período anterior e os
+// MARCOS (campanha, deploy, lançamento) desenhados em cima.
+//
 // Gráficos em SVG inline, desenhados aqui mesmo — sem biblioteca, como o resto
 // do site (sem build, sem bundler). São quatro formas: barras por dia (gente ×
 // robô empilhados), linhas (visitantes × logados), rosca (proporções) e
 // mosaico/treemap (tamanho = volume). Cor vem das variáveis do tema, e a cor de
-// cada jogo é a mesma da marca no resto do site (GAME_COLOR).
+// cada jogo é a mesma da marca no resto do site (GAME_COLOR). O v3 soma a
+// série no tempo com régua (serieTempo), o mini-gráfico do cartão
+// (sparkline), o mapa de calor hora × dia, a matriz de caminhos e as barras
+// empilhadas (com a chave número | %).
 //
 // Texto em pt fixo — é uma página interna.
 (function () {
@@ -140,10 +152,11 @@
   }
 
   // Linhas: series = [{key, label, color}] sobre a mesma série diária.
+  // v3: `marcos` (os mesmos do serieTempo) desenha as linhas verticais.
   function lines(daily, series, opts) {
-    const o = Object.assign({ w: 720, h: 160 }, opts || {});
+    const o = Object.assign({ w: 720, h: 160, marcos: null }, opts || {});
     if (!daily || !daily.length) return `<p class="admin-empty">Sem dados no período.</p>`;
-    const P = { l: 40, r: 8, t: 10, b: 22 };
+    const P = { l: 40, r: 8, t: o.marcos && o.marcos.length ? 24 : 10, b: 22 };
     const iw = o.w - P.l - P.r, ih = o.h - P.t - P.b, n = daily.length;
     const max = Math.max(1, ...daily.map((d) => Math.max(...series.map((s) => Number(d[s.key]) || 0))));
     const x = (i) => P.l + (n === 1 ? iw / 2 : (i / (n - 1)) * iw);
@@ -160,7 +173,23 @@
     const step = n > 45 ? 14 : n > 14 ? 7 : 1;
     const labs = daily.map((d, i) => (i % step === 0 || (n <= 14 && i === n - 1)) ? `<text x="${x(i).toFixed(1)}" y="${o.h - 6}" text-anchor="middle" class="adm-axis">${esc(String(d.day).slice(5))}</text>` : "").join("");
     const legend = series.map((s, si) => `<li><span class="adm-swatch" style="background:${esc(s.color || colorAt(si))}"></span>${esc(s.label)}</li>`).join("");
-    return `<div class="admin-chart adm-chart-tall"><svg viewBox="0 0 ${o.w} ${o.h}" role="img" aria-label="${esc(o.aria || "Linhas")}">${grid}${paths}${labs}</svg></div><ul class="adm-legend adm-legend-row">${legend}</ul>`;
+    const mk = marcosSvg(o.marcos, daily.map((d) => d.day), x, P.t, P.t + ih);
+    return `<div class="admin-chart adm-chart-tall"><svg viewBox="0 0 ${o.w} ${o.h}" role="img" aria-label="${esc(o.aria || "Linhas")}">${grid}${paths}${mk.svg}${labs}</svg></div><ul class="adm-legend adm-legend-row">${legend}</ul>${mk.lista}`;
+  }
+  // Marcos num gráfico de tempo: linha vertical tracejada no dia, um número
+  // num círculo em cima e a lista numerada embaixo (texto no SVG embolaria
+  // com dois marcos perto). Marco fora dos dias do gráfico não aparece.
+  function marcosSvg(marcos, dias, cx, topo, chao) {
+    const idx = new Map((dias || []).map((d, i) => [String(d).slice(0, 10), i]));
+    const ms = (marcos || []).map((m) => ({ m, i: idx.get(String(m.day).slice(0, 10)) })).filter((x) => x.i != null)
+      .map((x, k) => Object.assign(x, { k: k + 1 }));
+    if (!ms.length) return { svg: "", lista: "" };
+    const svg = ms.map(({ m, i, k }) => {
+      const xx = cx(i).toFixed(1);
+      return `<g class="adm-st-marco" data-tipo="${esc(m.tipo || "outro")}"><title>${esc(diaCurto(m.day))} · ${esc(m.texto)}</title><line x1="${xx}" x2="${xx}" y1="${topo - 2}" y2="${chao}"/><circle cx="${xx}" cy="${topo - 11}" r="8.5"/><text x="${xx}" y="${(topo - 7.5).toFixed(1)}" text-anchor="middle">${k}</text></g>`;
+    }).join("");
+    const lista = `<ol class="adm-marcos">${ms.map(({ m, k }) => `<li data-tipo="${esc(m.tipo || "outro")}"><b>${k}</b><span>${esc(diaCurto(m.day))}</span>${esc(m.texto)}</li>`).join("")}</ol>`;
+    return { svg, lista };
   }
 
   // Colunas simples (hora do dia, dia da semana): items = [{label, value}].
@@ -308,7 +337,167 @@
       + `<text x="${(ux - 8).toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="end" class="adm-kit-area-ult">${esc(fmt(ult.v))}</text></svg>`;
   }
 
-  window.TCGAdminCharts = { squarify, treemap, donut, dailyBars, lines, columns, hbars, funnel, esc, fmt, pct, pageSlice, toCsv, monthly, niceMax, compacto, area };
+  // ── v3: régua, média, marcos, calor, caminhos (2026-10-09) ───────────────
+  // Variação de b pra a, em fração. Sem base (b = 0) é null: "+∞%" não diz
+  // nada; quem desenha mostra "novo" quando a > 0.
+  function variacao(a, b) {
+    const x = Number(a) || 0, y = Number(b) || 0;
+    return y > 0 ? (x - y) / y : null;
+  }
+  // Média móvel de k dias olhando pra TRÁS (o ponto de hoje não espera o
+  // futuro). Os primeiros k−1 pontos usam o que há, senão a linha começaria
+  // uma semana depois das barras. É o que tira o serrilhado de dia útil ×
+  // fim de semana e deixa a tendência à vista.
+  function mediaMovel(vals, k) {
+    const n = Math.max(1, Math.floor(k) || 7), v = (vals || []).map((x) => Number(x) || 0), out = [];
+    let soma = 0;
+    v.forEach((x, i) => {
+      soma += x;
+      if (i >= n) soma -= v[i - n];
+      out.push(soma / Math.min(i + 1, n));
+    });
+    return out;
+  }
+  // O que mais mudou entre os dois períodos, pelo IMPACTO (a − b), não pela
+  // porcentagem: 1 → 4 é "+300%" e não muda nada; 400 → 520 muda. `min` corta
+  // o recorte pequeno demais pra conclusão (o maior dos dois tem de passar);
+  // e a mudança tem de ser de 10%+ e 3+ unidades — 39 → 38 é ruído.
+  function movimentos(lista, opts) {
+    const o = Object.assign({ min: 10, n: 3, rel: 0.1, abs: 3 }, opts || {});
+    const xs = (lista || []).map((x) => ({ k: x.k, a: Number(x.a) || 0, b: Number(x.b) || 0 }))
+      .filter((x) => x.k != null && Math.max(x.a, x.b) >= o.min && Math.abs(x.a - x.b) >= o.abs
+        && Math.abs(x.a - x.b) >= o.rel * Math.max(x.a, x.b))
+      .map((x) => Object.assign(x, { d: x.a - x.b, v: variacao(x.a, x.b) }));
+    return {
+      sobe: xs.filter((x) => x.d > 0).sort((p, q) => q.d - p.d).slice(0, o.n),
+      desce: xs.filter((x) => x.d < 0).sort((p, q) => p.d - q.d).slice(0, o.n)
+    };
+  }
+  // Data curta pt-BR de "2026-10-09" (sem fuso: meio-dia não vira ontem).
+  function diaCurto(day) {
+    const s = String(day || "").slice(0, 10);
+    return /^\d{4}-\d{2}-\d{2}$/.test(s) ? `${s.slice(8, 10)}/${s.slice(5, 7)}` : s;
+  }
+  // Mini-gráfico do cartão: a linha do período e, tracejada atrás, a do
+  // anterior. Sem eixo nem número — é forma, o número está no cartão.
+  function sparkline(vals, opts) {
+    const o = Object.assign({ w: 160, h: 36, cor: "var(--accent)", fantasma: null }, opts || {});
+    const v = (vals || []).map((x) => Number(x) || 0);
+    if (v.length < 2) return "";
+    const fz = Array.isArray(o.fantasma) && o.fantasma.length === v.length ? o.fantasma.map((x) => Number(x) || 0) : null;
+    const max = Math.max(1, ...v, ...(fz || []));
+    const x = (i) => 2 + (i / (v.length - 1)) * (o.w - 4);
+    const y = (val) => o.h - 3 - (val / max) * (o.h - 6);
+    const linha = (arr) => arr.map((val, i) => `${i ? "L" : "M"}${x(i).toFixed(1)} ${y(val).toFixed(1)}`).join("");
+    const u = v.length - 1;
+    return `<svg class="adm-spark" viewBox="0 0 ${o.w} ${o.h}" aria-hidden="true" focusable="false">${fz ? `<path d="${linha(fz)}" class="adm-spark-ant"/>` : ""}<path d="${linha(v)}" fill="none" stroke="${esc(o.cor)}" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/><circle cx="${x(u).toFixed(1)}" cy="${y(v[u]).toFixed(1)}" r="2.6" fill="${esc(o.cor)}"/></svg>`;
+  }
+  // Série no tempo COM RÉGUA: barras do período, a média de 7 dias por cima,
+  // o período anterior como linha tracejada alinhada dia a dia e os marcos
+  // (campanha, deploy…) numerados em cima, com a lista embaixo. pontos =
+  // [{day, v}]; fantasma = [v] do mesmo tamanho; marcos = [{day, texto, tipo}].
+  function serieTempo(pontos, opts) {
+    const o = Object.assign({ w: 960, h: 240, media: true, fantasma: null, marcos: [], fmtv: fmt, aria: "Série no tempo", rotulo: "Período" }, opts || {});
+    const pts = (pontos || []).filter((p) => p && p.day);
+    if (!pts.length) return `<p class="admin-empty">Sem dados no período.</p>`;
+    const P = { l: 46, r: 10, t: 24, b: 24 };
+    const iw = o.w - P.l - P.r, ih = o.h - P.t - P.b, n = pts.length;
+    const vals = pts.map((p) => Number(p.v) || 0);
+    const fz = Array.isArray(o.fantasma) && o.fantasma.length === n ? o.fantasma.map((x) => Number(x) || 0) : null;
+    const mm = o.media && n >= 7 ? mediaMovel(vals, 7) : null;
+    const max = niceMax(Math.max(1, ...vals, ...(fz || [])));
+    const bw = iw / n;
+    const cx = (i) => P.l + i * bw + bw / 2;
+    const y = (v) => P.t + ih - (Math.max(0, v) / max) * ih;
+    const grade = [0, 0.5, 1].map((f) => {
+      const yy = y(max * f).toFixed(1);
+      return `<line x1="${P.l}" x2="${o.w - P.r}" y1="${yy}" y2="${yy}" class="adm-grid"/><text x="${P.l - 6}" y="${(Number(yy) + 3.5).toFixed(1)}" text-anchor="end" class="adm-axis">${esc(compacto(max * f))}</text>`;
+    }).join("");
+    const barras = pts.map((p, i) => {
+      const yy = y(vals[i]), w = Math.max(1, bw - (n > 60 ? 1 : 2));
+      return `<rect x="${(P.l + i * bw + (bw - w) / 2).toFixed(1)}" y="${yy.toFixed(1)}" width="${w.toFixed(1)}" height="${Math.max(0, P.t + ih - yy).toFixed(1)}" rx="2" class="adm-st-bar${mm ? " adm-st-fraca" : ""}"><title>${esc(diaCurto(p.day))}: ${esc(o.fmtv(vals[i]))}${mm ? ` · média 7d ${esc(o.fmtv(Math.round(mm[i] * 10) / 10))}` : ""}${fz ? ` · período anterior ${esc(o.fmtv(fz[i]))}` : ""}</title></rect>`;
+    }).join("");
+    const caminho = (arr) => arr.map((v, i) => `${i ? "L" : "M"}${cx(i).toFixed(1)} ${y(v).toFixed(1)}`).join("");
+    const mk = marcosSvg(o.marcos, pts.map((p) => p.day), cx, P.t, P.t + ih);
+    const passo = n > 60 ? 14 : n > 20 ? 7 : n > 10 ? 2 : 1;
+    const eixo = pts.map((p, i) => ((n - 1 - i) % passo === 0 ? `<text x="${cx(i).toFixed(1)}" y="${o.h - 6}" text-anchor="middle" class="adm-axis">${esc(diaCurto(p.day))}</text>` : "")).join("");
+    const leg = [`<li><span class="adm-swatch adm-swatch-a"></span>${esc(o.rotulo)}</li>`]
+      .concat(mm ? [`<li><span class="adm-leg-linha"></span>Média de 7 dias</li>`] : [])
+      .concat(fz ? [`<li><span class="adm-leg-linha adm-leg-ant"></span>Período anterior</li>`] : []).join("");
+    return `<div class="admin-chart adm-chart-tall"><svg viewBox="0 0 ${o.w} ${o.h}" role="img" aria-label="${esc(o.aria)}">${grade}${barras}${fz ? `<path d="${caminho(fz)}" class="adm-st-ant"/>` : ""}${mm ? `<path d="${caminho(mm)}" class="adm-st-media"/>` : ""}${mk.svg}${eixo}</svg></div><ul class="adm-legend adm-legend-row">${leg}</ul>${mk.lista}`;
+  }
+  // Mapa de calor hora × dia da semana: [{dow, h, n}] → grade 7 × 24 com a
+  // semana começando na segunda. A intensidade é n ÷ o maior; o número
+  // exato fica no title (passar o dedo/mouse).
+  function mapaCalor(celulas, opts) {
+    const o = Object.assign({ unidade: "páginas" }, opts || {});
+    const NOMES = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+    const m = new Map();
+    let max = 0;
+    (celulas || []).forEach((c) => {
+      const k = (Number(c.dow) || 0) * 24 + (Number(c.h) || 0);
+      m.set(k, (m.get(k) || 0) + (Number(c.n) || 0));
+      max = Math.max(max, m.get(k));
+    });
+    if (!max) return `<p class="admin-empty">Sem dados no período.</p>`;
+    const cab = `<span></span>${Array.from({ length: 24 }, (_, h) => `<span class="adm-calor-h">${h % 3 === 0 ? `${h}h` : ""}</span>`).join("")}`;
+    const linhas = [1, 2, 3, 4, 5, 6, 0].map((d) => `<span class="adm-calor-d">${NOMES[d]}</span>${Array.from({ length: 24 }, (_, h) => {
+      const n = m.get(d * 24 + h) || 0;
+      return `<span class="adm-calor-c" style="--p:${Math.round((100 * n) / max)}%" title="${esc(`${NOMES[d]} ${h}h–${h + 1}h: ${fmt(n)} ${o.unidade}`)}"></span>`;
+    }).join("")}`).join("");
+    return `<div class="adm-calor" role="img" aria-label="${esc(`Mapa de calor de ${o.unidade} por hora e dia da semana`)}">${cab}${linhas}</div>`;
+  }
+  // Matriz linha × coluna (caminhos de área pra área, entrada × canal): a
+  // cor é a fração da LINHA (de onde a pessoa vem), o número é absoluto.
+  function matriz(linhas, colunas, valor, opts) {
+    const o = Object.assign({ canto: "" }, opts || {});
+    if (!linhas.length || !colunas.length) return `<p class="admin-empty">Sem dados no período.</p>`;
+    const head = `<tr><th>${esc(o.canto)}</th>${colunas.map((c) => `<th class="num">${esc(c.label)}</th>`).join("")}</tr>`;
+    const body = linhas.map((l) => {
+      const vs = colunas.map((c) => Number(valor(l.k, c.k)) || 0);
+      const tot = vs.reduce((s, v) => s + v, 0);
+      return `<tr><th scope="row">${esc(l.label)}</th>${vs.map((v, i) => v
+        ? `<td class="num adm-heat" style="--p:${Math.round(Math.min(0.6, tot ? v / tot : 0) * 100)}%" title="${esc(`${l.label} → ${colunas[i].label}: ${fmt(v)} (${pct(v, tot)} da linha)`)}">${esc(fmt(v))}</td>`
+        : `<td class="num adm-zero">·</td>`).join("")}</tr>`;
+    }).join("");
+    return `<div class="adm-scroll"><table class="admin-table adm-matriz"><thead>${head}</thead><tbody>${body}</tbody></table></div>`;
+  }
+  // Barras empilhadas por dia (plataforma, área): dias = [{day, <k>: v}],
+  // series = [{key, label, color}]. `pct` empilha em 100% — é a leitura de
+  // PARTICIPAÇÃO (o app cresce mesmo se o total cair?), que o número absoluto
+  // esconde quando o tráfego oscila.
+  function barrasEmpilhadas(dias, series, opts) {
+    const o = Object.assign({ w: 960, h: 220, pct: false, aria: "Barras empilhadas por dia" }, opts || {});
+    if (!dias || !dias.length || !series || !series.length) return `<p class="admin-empty">Sem dados no período.</p>`;
+    const P = { l: 46, r: 10, t: 10, b: 24 };
+    const iw = o.w - P.l - P.r, ih = o.h - P.t - P.b, n = dias.length, bw = iw / n;
+    const tot = dias.map((d) => series.reduce((s, se) => s + (Number(d[se.key]) || 0), 0));
+    const max = o.pct ? 1 : niceMax(Math.max(1, ...tot));
+    const grade = [0, 0.5, 1].map((f) => {
+      const yy = (P.t + ih - f * ih).toFixed(1);
+      return `<line x1="${P.l}" x2="${o.w - P.r}" y1="${yy}" y2="${yy}" class="adm-grid"/><text x="${P.l - 6}" y="${(Number(yy) + 3.5).toFixed(1)}" text-anchor="end" class="adm-axis">${esc(o.pct ? `${Math.round(f * 100)}%` : compacto(max * f))}</text>`;
+    }).join("");
+    const col = dias.map((d, i) => {
+      let acc = 0;
+      const w = Math.max(1, bw - (n > 60 ? 1 : 2)), x = P.l + i * bw + (bw - w) / 2;
+      const partes = series.map((se) => {
+        const v = Number(d[se.key]) || 0;
+        if (!v) return "";
+        const f = o.pct ? (tot[i] ? v / tot[i] : 0) : v / max;
+        const hh = f * ih, yy = P.t + ih - acc - hh;
+        acc += hh;
+        return `<rect x="${x.toFixed(1)}" y="${yy.toFixed(1)}" width="${w.toFixed(1)}" height="${hh.toFixed(1)}" fill="${esc(se.color)}"><title>${esc(diaCurto(d.day))} · ${esc(se.label)}: ${esc(fmt(v))} (${esc(pct(v, tot[i]))})</title></rect>`;
+      }).join("");
+      return `<g>${partes}</g>`;
+    }).join("");
+    const passo = n > 60 ? 14 : n > 20 ? 7 : n > 10 ? 2 : 1;
+    const eixo = dias.map((d, i) => ((n - 1 - i) % passo === 0 ? `<text x="${(P.l + i * bw + bw / 2).toFixed(1)}" y="${o.h - 6}" text-anchor="middle" class="adm-axis">${esc(diaCurto(d.day))}</text>` : "")).join("");
+    const leg = series.map((se) => `<li><span class="adm-swatch" style="background:${esc(se.color)}"></span>${esc(se.label)}</li>`).join("");
+    return `<div class="admin-chart adm-chart-tall"><svg viewBox="0 0 ${o.w} ${o.h}" role="img" aria-label="${esc(o.aria)}">${grade}${col}${eixo}</svg></div><ul class="adm-legend adm-legend-row">${leg}</ul>`;
+  }
+
+  window.TCGAdminCharts = { squarify, treemap, donut, dailyBars, lines, columns, hbars, funnel, esc, fmt, pct, pageSlice, toCsv, monthly, niceMax, compacto, area,
+    variacao, mediaMovel, movimentos, diaCurto, sparkline, serieTempo, mapaCalor, matriz, barrasEmpilhadas, marcosSvg };
 
   // ── Página ────────────────────────────────────────────────────────────────
   const shared = window.TCGShared;
@@ -342,9 +531,53 @@
     ferramentas: "Ferramentas (antigo)", condicao: "Guia de condição (antigo)",
     comparar: "Comparar", lancamentos: "Lançamentos", novidades: "Novidades", faq: "FAQ", help: "Ajuda",
     about: "Sobre", privacy: "Privacidade", terms: "Termos", users: "Perfil público", card: "Carta (SEO)",
-    set: "Set (SEO)", admin: "Admin"
+    set: "Set (SEO)", admin: "Admin",
+    // v3: as que apareciam com a chave crua.
+    deck: "Deck público", pastas: "Pastas", blog: "Blog", parceiro: "Portal da loja", "blog-editor": "Editor do blog",
+    lore: "Lore", 404: "Página não encontrada"
   };
   const pageName = (p) => PAGE_NAME[p] || p;
+
+  // ── Áreas do site (v3) ────────────────────────────────────────────────────
+  // Cada página (o `path` do analyticsPath: 1º segmento do endereço) cai numa
+  // ÁREA — a pergunta passa de "qual arquivo abriu" pra "onde a pessoa está":
+  // descobrindo carta (Catálogo), cuidando do que tem (Coleção), montando
+  // deck… O mapa vai inteiro pra admin_paginas, então área nova ou página
+  // nova é uma linha AQUI, sem migração. Página fora do mapa vira "Outras"
+  // (e aparece na aba Todas as páginas pra ganhar área). Atenção: "detail" é
+  // a tela de set E a de carta (/games/<jogo>/<set>[/<carta>] viram a mesma
+  // chave no cliente) — as duas são Catálogo.
+  const AREAS = [
+    ["entrada", "Entrada e institucional", "#64748b", ["home", "about", "faq", "help", "privacy", "terms", "404"]],
+    ["catalogo", "Catálogo", "#2563eb", ["cards", "sets", "detail", "search", "explore", "pokedex", "artists", "trainers", "lancamentos", "comparar", "lore", "card", "set"]],
+    ["colecao", "Minha coleção", "#16a34a", ["hub", "dashboard", "collection", "wishlist", "portfolio", "binders", "pastas", "listas", "graded", "sales", "badges"]],
+    ["decks", "Decks", "#7c3aed", ["decks", "my-decks", "deck"]],
+    ["comunidade", "Comunidade e conteúdo", "#db2777", ["users", "troca", "blog", "novidades"]],
+    ["tools", "Ferramentas", "#d97706", ["tools", "condition", "centering", "sleeves"]],
+    ["conta", "Conta e login", "#0891b2", ["login", "account", "settings", "profile", "backup"]],
+    ["interno", "Interno", "#9aa3ae", ["admin", "parceiro", "blog-editor"]]
+  ];
+  const AREA_INFO = { outros: ["Outras", "#7a4a2b"] };
+  AREAS.forEach(([id, label, cor]) => { AREA_INFO[id] = [label, cor]; });
+  const areaNome = (a) => (AREA_INFO[a] || [a])[0];
+  const areaCor = (a) => (AREA_INFO[a] || [0, "#9aa3ae"])[1];
+  // {path: área} — o que vai pra RPC.
+  const MAPA_AREAS = {};
+  AREAS.forEach(([id, , , paths]) => paths.forEach((p) => { MAPA_AREAS[p] = id; }));
+  // Os endereços de antes de 2026-10-01 (/ferramentas, /condicao) seguem no
+  // histórico. Sem aspas de propósito: a guarda de link antigo
+  // (tests/tools-pages.test.mjs) procura o nome entre aspas.
+  MAPA_AREAS.ferramentas = MAPA_AREAS.condicao = "tools";
+  const areaDe = (path) => MAPA_AREAS[path] || "outros";
+
+  // Plataformas (admin_plataformas): o pageview diz onde foi visto; a pessoa
+  // (navegador anônimo) cai na de maior prioridade que usou.
+  const PLAT = {
+    web: ["Navegador", "#2563eb"], pwa: ["App da web (instalado)", "#0891b2"],
+    android: ["App Android", "#16a34a"], ios: ["App iOS", "#7c3aed"]
+  };
+  const platNome = (p) => (PLAT[p] || [p])[0];
+  const platCor = (p) => (PLAT[p] || [0, "#9aa3ae"])[1];
   const EVENT_NAME = {
     export_done: "Exportações", import_done: "Importações", deck_created: "Decks criados",
     backup_done: "Backups", share_created: "Links compartilhados"
@@ -370,44 +603,70 @@
   // fica? o que procura? está tudo bem?); as ABAS são os recortes de cada uma.
   // 2.1 (2026-09-28): grupo Usuários (quem são, maiores coleções, segmentos)
   // e as abas Campanhas, Tempo de uso, Experimentos, Portal, Sets e Medição.
+  // v3 (2026-10-09): os grupos viram uma barra LATERAL no desktop (todas as
+  // abas à vista, um clique) e um seletor nativo no celular — 30 telas em
+  // chips não cabiam em nenhum dos dois. Entram Páginas (áreas do site) e
+  // App e plataformas, e a ordem segue o caminho da pessoa: chega
+  // (Aquisição), navega (Páginas), fica (Engajamento), quem é (Usuários), o
+  // que procura e compra (Mercado), em que aparelho (App) — e se a medição
+  // está de pé (Técnico).
   const GROUPS = [
     ["visao", "Visão geral", [["geral", "Resumo"], ["crescimento", "Crescimento"], ["parceiros", "Para parceiros"]]],
-    ["usuarios", "Usuários", [["usuarios", "Perfil"], ["colecoes", "Maiores coleções"], ["segmentos", "Segmentos"]]],
     ["aquisicao", "Aquisição", [["audiencia", "Audiência"], ["canais", "Canais"], ["campanhas", "Campanhas"]]],
+    ["paginas", "Páginas", [["areas", "Áreas do site"], ["paginas", "Todas as páginas"], ["caminhos", "Caminhos"]]],
     ["engajamento", "Engajamento", [["retencao", "Retenção"], ["funil", "Funil"], ["tempo", "Tempo de uso"], ["produto", "Produto"], ["experimentos", "Experimentos"]]],
+    ["usuarios", "Usuários", [["usuarios", "Perfil"], ["colecoes", "Maiores coleções"], ["segmentos", "Segmentos"]]],
     ["mercado", "Mercado", [["lojas", "Lojas"], ["portal", "Portal da loja"], ["demanda", "Demanda"], ["sets", "Sets"], ["anuncios", "Vitrine"], ["conteudo", "Conteúdo"]]],
-    ["tecnico", "Técnico", [["qualidade", "Qualidade"], ["medicao", "Medição"]]]
+    ["app", "App e plataformas", [["plataformas", "Web × app"], ["versoes", "Versões do app"], ["lojasapp", "Lojas de apps"]]],
+    ["tecnico", "Técnico", [["qualidade", "Qualidade"], ["medicao", "Medição"], ["marcos", "Marcos"]]]
   ];
-  const TAB_GROUP = {};
-  GROUPS.forEach(([g, , tabs]) => tabs.forEach(([t]) => { TAB_GROUP[t] = g; }));
+  const TAB_GROUP = {}, TAB_NOME = {};
+  GROUPS.forEach(([g, , tabs]) => tabs.forEach(([t, nome]) => { TAB_GROUP[t] = g; TAB_NOME[t] = nome; }));
   // Quais RPCs cada aba precisa. `dash` = admin_dashboard (20260914a),
   // `funnel` = admin_funnel (20260919a, recriada na 20260923a); o resto é da
   // 20260923a. Cada uma é buscada só quando uma aba que a usa abre.
   const NEEDS = {
-    geral: ["dash"], audiencia: ["dash"], conteudo: ["dash"], produto: ["dash"], qualidade: ["dash", "erros"],
-    crescimento: ["growth"], parceiros: ["dash", "retention", "stores", "demand", "growth", "engagement", "users", "anuncios"],
+    geral: ["dash", "pulso", "notas"], audiencia: ["dash", "pulso"], conteudo: ["dash"], produto: ["dash"], qualidade: ["dash", "erros"],
+    crescimento: ["growth", "notas"], parceiros: ["dash", "retention", "stores", "demand", "growth", "engagement", "users", "anuncios"],
     canais: ["retention", "growth"], retencao: ["retention"], funil: ["funnel", "retention", "engagement"],
     lojas: ["stores"], demanda: ["demand"], anuncios: ["anuncios", "apoiadores"],
-    usuarios: ["users"], colecoes: ["users"], segmentos: ["users"], campanhas: ["campaigns"],
+    usuarios: ["users"], colecoes: ["users"], segmentos: ["users"], campanhas: ["campaigns", "anunciosutm"],
     tempo: ["engagement"], experimentos: ["experiments"], portal: ["partners", "stores"], sets: ["demand"],
-    medicao: ["health", "engagement"]
+    medicao: ["health", "engagement", "descartes"],
+    areas: ["paginas"], paginas: ["paginas"], caminhos: ["paginas"],
+    plataformas: ["plataformas"], versoes: ["plataformas"], lojasapp: ["plataformas"],
+    marcos: ["notas"]
   };
   const RPC = {
     retention: "admin_retention", stores: "admin_stores", growth: "admin_growth", demand: "admin_demand", anuncios: "admin_vitrine", apoiadores: "admin_apoiadores",
     users: "admin_users", campaigns: "admin_campaigns", engagement: "admin_engagement", experiments: "admin_experiments",
-    partners: "admin_partner_links", health: "admin_health", erros: "admin_erros"
+    partners: "admin_partner_links", health: "admin_health", erros: "admin_erros",
+    pulso: "admin_pulso", paginas: "admin_paginas", plataformas: "admin_plataformas", descartes: "admin_descartes",
+    notas: "admin_notas", anunciosutm: "admin_anuncios"
   };
   // RPCs sem parâmetro: mandar { days } a elas faz o PostgREST procurar uma
   // assinatura que não existe (404) e o painel acharia que a migração falta.
-  const SEM_DIAS = ["campaigns", "partners", "health", "apoiadores"];
+  const SEM_DIAS = ["campaigns", "partners", "health", "apoiadores", "notas", "anunciosutm"];
+  // Corpo próprio: a admin_paginas leva o mapa página → área junto do período.
+  const CORPO = { paginas: (days) => ({ days, p_areas: MAPA_AREAS }) };
   // Pedaço de aba que não segura a aba inteira quando a migração dele falta:
   // a seção mostra o próprio aviso e o resto da aba pinta normal. É POR ABA:
   // no kit de parceiros, perfil de usuário e vitrine são enfeite (sem eles o
   // kit cai no plano B); nas abas Usuários e Vitrine, são a aba.
   // Na Qualidade, sem a 20261003a a aba cai na tabela antiga dos erros.
-  const OPCIONAIS = { anuncios: ["apoiadores"], parceiros: ["users", "anuncios"], qualidade: ["erros"] };
+  // v3: no Resumo, sem a 20261009a a aba cai no Resumo antigo com o aviso; na
+  // Audiência, sem o mapa de calor; marcos e anúncios são enfeite.
+  const OPCIONAIS = {
+    anuncios: ["apoiadores"], parceiros: ["users", "anuncios"], qualidade: ["erros"],
+    geral: ["pulso", "notas"], audiencia: ["pulso"], crescimento: ["notas"], campanhas: ["anunciosutm"],
+    medicao: ["descartes"]
+  };
   const PERIODS = [7, 30, 90];
-  const state = { tab: "geral", days: 30, cache: {}, inflight: {}, errors: undefined, pages: {}, names: {}, meta: {}, metaPendente: false, marca: null, aparelho: "todos" };
+  // metrica = a série do gráfico principal do Resumo; pct = barras
+  // empilhadas em % (participação) em vez de número; areaFiltro = a área
+  // escolhida em Todas as páginas.
+  const state = { tab: "geral", days: 30, cache: {}, inflight: {}, errors: undefined, pages: {}, names: {}, meta: {}, metaPendente: false, marca: null, aparelho: "todos",
+    metrica: "visitantes", pct: false, areaFiltro: "todas" };
   // Hash antigo (#produto, #qualidade…) continua valendo: link salvo não quebra.
   const hashTab = (location.hash || "").replace(/^#/, "");
   if (TAB_GROUP[hashTab]) state.tab = hashTab;
@@ -416,8 +675,23 @@
     prev: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>`,
     next: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>`,
     down: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="M7 10l5 5 5-5"/><path d="M5 20h14"/></svg>`,
-    print: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6"/><rect x="6" y="14" width="12" height="7" rx="1"/><path d="M6 18H4a1 1 0 0 1-1-1v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6a1 1 0 0 1-1 1h-2"/></svg>`
+    print: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6"/><rect x="6" y="14" width="12" height="7" rx="1"/><path d="M6 18H4a1 1 0 0 1-1-1v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6a1 1 0 0 1-1 1h-2"/></svg>`,
+    sobe: `<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"/><path d="M6 11l6-6 6 6"/></svg>`,
+    desce: `<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="M6 13l6 6 6-6"/></svg>`,
+    lixo: `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16"/><path d="M10 11v6M14 11v6"/><path d="M6 7l1 13h10l1-13"/><path d="M9 7V4h6v3"/></svg>`
   };
+  // Ícone de cada grupo na barra lateral (traço, currentColor).
+  const ICON_GRUPO = {
+    visao: `<path d="M3 13h4v8H3zM10 8h4v13h-4zM17 3h4v18h-4z"/>`,
+    aquisicao: `<path d="M3 12h13"/><path d="M11 6l6 6-6 6"/><path d="M21 4v16"/>`,
+    paginas: `<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>`,
+    engajamento: `<path d="M17 2l4 4-4 4"/><path d="M3 11V9a3 3 0 0 1 3-3h15"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a3 3 0 0 1-3 3H3"/>`,
+    usuarios: `<circle cx="9" cy="8" r="4"/><path d="M2 21a7 7 0 0 1 14 0"/><path d="M16 4a4 4 0 0 1 0 8M22 21a7 7 0 0 0-4-6.3"/>`,
+    mercado: `<path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.5L21 8H6"/><circle cx="10" cy="20" r="1.5"/><circle cx="17" cy="20" r="1.5"/>`,
+    app: `<rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/>`,
+    tecnico: `<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>`
+  };
+  const iconeGrupo = (g) => `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${ICON_GRUPO[g] || ""}</svg>`;
 
   const stat = (label, val, hint) => `<div class="admin-stat"><span class="admin-stat-val">${esc(val)}</span><span class="admin-stat-label">${esc(label)}</span>${hint ? `<span class="admin-stat-hint">${esc(hint)}</span>` : ""}</div>`;
   const section = (title, body, note) => `<section class="admin-section"><h2>${esc(title)}</h2>${body}${note ? `<p class="admin-note">${esc(note)}</p>` : ""}</section>`;
@@ -461,6 +735,53 @@
   const gameChip = (g) => `<span class="adm-game" style="--g:${esc(gameColor(g))}">${esc(gameName(g))}</span>`;
   const cardRow = (c, cols) => `<tr><td>${gameChip(c.game)}</td><td>${cardCell(c.game, c.card_id)}</td>${cols.map((k) => `<td class="num">${esc(fmt(c[k]))}</td>`).join("")}</tr>`;
 
+  // ── v3: cartão com régua, marcos e janela de dias ────────────────────────
+  // Selo da variação contra o período anterior. `ruim` inverte a cor (erro
+  // que sobe é vermelho). Abaixo de 2% é "igual": oscilação, não notícia.
+  function deltaChip(a, b, ruim) {
+    const v = variacao(a, b);
+    if (v == null) return Number(a) > 0 ? `<span class="adm-delta adm-delta-novo">novo</span>` : "";
+    const igual = Math.abs(v) < 0.02;
+    const cls = igual ? "adm-delta-igual" : (v > 0) !== !!ruim ? "adm-delta-bom" : "adm-delta-ruim";
+    return `<span class="adm-delta ${cls}">${igual ? "" : v > 0 ? ICON.sobe : ICON.desce}${esc(sinal(v))}</span>`;
+  }
+  // Cartão do Resumo: o número, a variação, o valor de antes e a forma da
+  // série (o período tracejado atrás). `o.antes` troca o texto do "antes".
+  function kpi(rotulo, valor, a, b, o) {
+    const op = o || {};
+    const antes = op.antes != null ? op.antes : `antes: ${fmt(b)}`;
+    return `<div class="admin-stat adm-kpi"><span class="admin-stat-label">${esc(rotulo)}</span><span class="admin-stat-val">${esc(valor)}</span><span class="adm-kpi-cmp">${deltaChip(a, b, op.ruim)}<small>${esc(antes)}</small></span>${op.serie ? sparkline(op.serie, { fantasma: op.fantasma, cor: op.ruim ? "#dc2626" : "var(--accent)" }) : ""}${op.nota ? `<span class="admin-stat-hint">${esc(op.nota)}</span>` : ""}</div>`;
+  }
+  // Cartão sem régua no MESMO desenho do kpi (rótulo em cima). `texto` =
+  // o valor é uma palavra ("Minha coleção"), não um número: fonte menor e
+  // quebra de linha, senão o nome da área estoura o cartão.
+  function cartao(rotulo, valor, nota, texto) {
+    return `<div class="admin-stat adm-kpi${texto ? " adm-stat-txt" : ""}"><span class="admin-stat-label">${esc(rotulo)}</span><span class="admin-stat-val">${esc(valor)}</span>${nota ? `<span class="admin-stat-hint">${esc(nota)}</span>` : ""}</div>`;
+  }
+  // Marcos do gráfico: os anotados (admin_notas) + o começo de cada campanha
+  // que a admin_pulso achou sozinha (utm com 5+ visitantes).
+  function marcosDe(notas, pulso) {
+    const m = (Array.isArray(notas) ? notas : []).map((n) => ({ day: String(n.dia).slice(0, 10), texto: n.texto, tipo: n.tipo }));
+    ((pulso && pulso.campanhas) || []).forEach((c) => {
+      const day = String(c.inicio).slice(0, 10);
+      if (m.some((x) => x.day === day && x.tipo === "campanha")) return;
+      m.push({ day, tipo: "campanha", texto: `Começou ${c.fonte}${c.campanha ? ` / ${c.campanha}` : ""} (${fmt(c.visitantes)} visitantes)` });
+    });
+    return m.sort((a, b) => (a.day < b.day ? -1 : a.day > b.day ? 1 : 0));
+  }
+  // Os últimos n dias (data local, que é a de Brasília pra quem abre o painel)
+  // — pra série que só traz os dias com dado não encolher o eixo.
+  function diasJanela(n) {
+    const out = [], hoje = new Date();
+    for (let i = n - 1; i >= 0; i--) {
+      const d = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate() - i, 12);
+      out.push(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`);
+    }
+    return out;
+  }
+  // Aviso de aba que precisa da 20261009a.
+  const pedeV3 = (oque) => `<p class="adm-banner">${esc(oque)} precisa da migração <code>supabase/migrations/20261009a_admin_v3.sql</code> — aplique no SQL Editor. Nada se perde enquanto isso: estas telas só leem eventos que já chegam.</p>`;
+
   // ── Abas ──────────────────────────────────────────────────────────────────
   function tabGeral(d) {
     const o = d.overview || {}, daily = d.daily || [];
@@ -495,7 +816,7 @@
       </div>`;
   }
 
-  function tabAudiencia(d) {
+  function tabAudiencia(d, pu) {
     const a = d.audience || {}, r = d.retention || {};
     const hours = Array.from({ length: 24 }, (_, h) => ({ label: `${h}h`, title: `${h}h–${h + 1}h`, value: ((a.hours || []).find((x) => x.h === h) || {}).views || 0 }));
     const dows = DOW.map((n, i) => ({ label: n, value: ((a.weekdays || []).find((x) => x.dow === i) || {}).views || 0 }));
@@ -517,6 +838,8 @@
         ${section("Idioma do navegador", donut((a.langs || []).map((x, i) => ({ label: LANG[x.k] || x.k, value: x.views, color: colorAt(i) })), { aria: "Pageviews por idioma" }))}
         ${section("De onde vêm", hbars((a.referrers || []).map((x) => ({ label: x.k, value: x.views, sub: `${fmt(x.visitors)} visitantes` }))), "Só o domínio de origem quando vem de fora. Acesso direto, app instalado e buscas sem referrer não aparecem.")}
       </div>
+      ${pu && pu.hora_semana ? section("Quando o site é usado (hora × dia da semana, Brasília)", mapaCalor(pu.hora_semana),
+        "Cada quadrado é uma hora de um dia da semana; mais forte = mais páginas vistas. Os dois gráficos separados (hora, dia) escondem que o pico de sábado pode ser de manhã e o de terça à noite — é a grade pra marcar post, push e campanha.") : ""}
       <div class="adm-grid-2">
         ${section("Hora do dia (Brasília)", columns(hours, Object.assign(CWS(), { aria: "Pageviews por hora do dia" })))}
         ${section("Dia da semana", columns(dows, Object.assign(CWS(), { aria: "Pageviews por dia da semana" })))}
@@ -807,8 +1130,9 @@
   }
 
   // ── Crescimento (admin_growth: série diária da metrics_daily) ────────────
-  function tabCrescimento(g) {
+  function tabCrescimento(g, notas) {
     const serie = g.serie || [];
+    const marcos = marcosDe(notas, null);
     if (!serie.length) return `<p class="admin-empty">A série ainda está vazia.</p>`;
     const ult = serie[serie.length - 1] || {};
     const mes = monthly(serie);
@@ -832,13 +1156,13 @@
         { key: "mau", label: "Últimos 30 dias", color: "var(--accent)" },
         { key: "wau", label: "Últimos 7 dias", color: "#2563eb" },
         { key: "dau", label: "No dia", color: "#16a34a" }
-      ], Object.assign(CW(), { aria: "Visitantes únicos em janelas de 30, 7 e 1 dia" })),
+      ], Object.assign(CW(), { marcos, aria: "Visitantes únicos em janelas de 30, 7 e 1 dia" })),
         "Cada ponto é quantos visitantes únicos houve nos 30/7/1 dias até aquele dia. É a curva que investidor pede: MAU subindo e a distância entre MAU e DAU diminuindo (hábito).")}
       ${section("Por dia: ativações, contas novas e cliques em loja", lines(serie.slice(-90), [
         { key: "ativacoes", label: "Ativações", color: "#16a34a" },
         { key: "contas_novas", label: "Contas novas", color: "#2563eb" },
         { key: "cliques_loja", label: "Cliques em loja", color: "#d97706" }
-      ], Object.assign(CW(), { aria: "Ativações, contas novas e cliques em loja por dia" })))}
+      ], Object.assign(CW(), { marcos, aria: "Ativações, contas novas e cliques em loja por dia" })))}
       ${section("Mês a mês", paged("mes", [
         { t: "Mês" }, { t: "Visitantes 30d", num: true }, { t: "Crescimento", num: true }, { t: "Contas", num: true },
         { t: "Contas novas", num: true }, { t: "Ativações", num: true }, { t: "Cartas cadastradas", num: true }, { t: "Cliques em loja", num: true },
@@ -1586,7 +1910,7 @@
   }
 
   // ── P2 · Campanhas (custo × resultado) ───────────────────────────────────
-  function tabCampanhas(c) {
+  function tabCampanhas(c, an) {
     const camp = c.campanhas || [];
     const por = (custo, n) => (custo > 0 && n > 0 ? brl(custo / n) : "—");
     const rows = camp.map((x) => `<tr><td><strong>${esc(x.fonte)}</strong>${x.campanha ? `<br><small>${esc(x.campanha)}</small>` : ""}</td><td><small>${esc(dataBR(x.desde))}</small></td>
@@ -1607,7 +1931,8 @@
         { t: "Fonte / campanha" }, { t: "Desde" }, { t: "Visitantes", num: true }, { t: "Ativaram", num: true }, { t: "Conta", num: true },
         { t: "D7", num: true }, { t: "Custo", num: true }, { t: "Por visitante", num: true }, { t: "Por ativação", num: true }, { t: "Por conta", num: true }
       ], rows, 10), "Custo por ATIVAÇÃO (1ª carta na coleção) é o número que decide se vale continuar pagando: visitante que não ativa não volta.")}
-      ${section("Custos anotados", table([{ t: "Campanha" }, { t: "Valor", num: true }, { t: "Nota" }, { t: "Anotado em" }, { t: "" }], custos))}`;
+      ${section("Custos anotados", table([{ t: "Campanha" }, { t: "Valor", num: true }, { t: "Nota" }, { t: "Anotado em" }, { t: "" }], custos))}
+      ${secaoAnuncios(an)}`;
   }
 
   // ── P3 · Experimentos ────────────────────────────────────────────────────
@@ -1720,7 +2045,7 @@ if (v === "b") { /* versão nova */ }</pre>
     page_time: "Tempo de página", onboard_state: "Primeiros passos", exp_view: "Experimentos", ad_view: "Vitrine vista", ad_click: "Vitrine clicada",
     pwa_install: "App instalado", export_done: "Exportações", import_done: "Importações", deck_created: "Decks criados", backup_done: "Backups"
   };
-  function tabMedicao(h, e) {
+  function tabMedicao(h, e, ds) {
     const alvos = (h.alvos || []).slice().sort((a, b) => (b.alerta - a.alerta) || (b.media_dia - a.media_dia));
     const cs = (e && e.consentimento) || {};
     const medidos = cs.visitantes_total || 0, recusas = (cs.recusou_total || 0) - (cs.reativou_total || 0);
@@ -1752,21 +2077,382 @@ if (v === "b") { /* versão nova */ }</pre>
           <li>Último resumo diário dos eventos: <strong>${esc(dataBR(h.rollup_ultimo))}</strong></li>
           <li>Evento bruto mais antigo guardado: <strong>${esc(dataBR(h.eventos_mais_antigo))}</strong></li>
         </ul>`,
-        "O evento bruto (com o id anônimo do navegador) fica 13 meses; depois sobra só o resumo por dia e a série de crescimento. A limpeza roda no dia 1 de cada mês pelo pg_cron. Efeito colateral: quem volta depois de 13+ meses sem visitar conta como visitante novo.")}`;
+        "O evento bruto (com o id anônimo do navegador) fica 13 meses; depois sobra só o resumo por dia e a série de crescimento. A limpeza roda no dia 1 de cada mês pelo pg_cron. Efeito colateral: quem volta depois de 13+ meses sem visitar conta como visitante novo.")}
+      ${secaoDescartes(ds)}
+      ${secaoEquipe()}`;
+  }
+
+  // ══ v3 (2026-10-09) ═══════════════════════════════════════════════════════
+
+  // ── Visão geral › Resumo ──────────────────────────────────────────────────
+  // Antes, 12 cartões de número solto. Agora cada um traz a régua (período
+  // anterior do mesmo tamanho, cortado na mesma hora) e a forma da série; o
+  // gráfico principal troca de métrica sem recarregar e traz a média de 7
+  // dias, o período anterior tracejado e os marcos; e "O que mudou" diz onde
+  // olhar antes de alguém precisar procurar.
+  const METRICAS = [
+    ["visitantes", "Visitantes"], ["visitas", "Visitas"], ["pageviews", "Páginas vistas"], ["ativacoes", "Ativações"],
+    ["cartas", "Cartas cadastradas"], ["cliques_loja", "Cliques em loja"], ["contas", "Contas novas"], ["erros", "Erros de JS"]
+  ];
+  function tabResumo(d, pu, notas) {
+    if (!pu) return pedeV3("O Resumo com o período anterior") + tabGeral(d);
+    const A = pu.atual || {}, B = pu.anterior || {}, n = pu.days || state.days;
+    const serie = pu.serie || [];
+    const atual = serie.slice(-n), antes = serie.slice(0, Math.max(0, serie.length - n));
+    const col = (k) => atual.map((x) => Number(x[k]) || 0);
+    const colAnt = (k) => (antes.length === atual.length ? antes.map((x) => Number(x[k]) || 0) : null);
+    const sp = (k) => ({ serie: col(k), fantasma: colAnt(k) });
+    const porMil = (x) => (x.pageviews ? (1000 * (x.erros || 0)) / x.pageviews : null);
+    const o = d.overview || {};
+    const met = METRICAS.find((m) => m[0] === state.metrica) || METRICAS[0];
+    const marcos = marcosDe(notas, pu);
+    const cmp = `${n} dias anteriores`;
+    const porA = (xs) => xs.slice().sort((p, q) => q.a - p.a);
+    const plats = porA((pu.movimento && pu.movimento.plataformas) || []);
+    const canais = porA((pu.movimento && pu.movimento.canais) || []);
+    const paginas = porA((pu.movimento && pu.movimento.paginas) || []).slice(0, 10);
+    // Barras com o selo da variação do lado (o hbars não tem a régua).
+    const barrasMov = (lista, nome, cor) => {
+      if (!lista.length) return `<p class="admin-empty">Sem dados no período.</p>`;
+      const max = Math.max(1, ...lista.map((x) => x.a));
+      return `<ul class="adm-hbars adm-hbars-delta">${lista.map((x) => `<li><span class="adm-hbar-label">${esc(nome(x.k))}<small>antes: ${esc(fmt(x.b))}</small></span><span class="adm-hbar-track"><span class="adm-hbar-fill" style="width:${((100 * x.a) / max).toFixed(1)}%;background:${esc(cor(x.k))}"></span></span><span class="adm-hbar-val">${esc(fmt(x.a))} ${deltaChip(x.a, x.b)}</span></li>`).join("")}</ul>`;
+    };
+    return `
+      <p class="adm-agora"><span>Agora</span> <b>${esc(fmt(o.dau))}</b> visitantes hoje · <b>${esc(fmt(o.wau))}</b> em 7 dias · <b>${esc(fmt(o.mau))}</b> em 30 dias · <b>${esc(fmt(o.dau_users))}</b> logados hoje</p>
+      <div class="admin-stats adm-kpis">
+        ${kpi("Visitantes", fmt(A.visitantes), A.visitantes, B.visitantes, sp("visitantes"))}
+        ${kpi("Visitas", fmt(A.visitas), A.visitas, B.visitas, Object.assign(sp("visitas"), { nota: A.visitantes ? `${(A.visitas / A.visitantes).toLocaleString("pt-BR", { maximumFractionDigits: 1 })} por visitante` : "" }))}
+        ${kpi("Páginas vistas", fmt(A.pageviews), A.pageviews, B.pageviews, sp("pageviews"))}
+        ${kpi("Visitantes novos", fmt(A.novos), A.novos, B.novos, { nota: `${pct(A.novos, A.visitantes)} dos visitantes` })}
+        ${kpi("Logados", fmt(A.logados), A.logados, B.logados, sp("logados"))}
+        ${kpi("Contas novas", fmt(A.contas), A.contas, B.contas, sp("contas"))}
+        ${kpi("Ativações", fmt(A.ativacoes), A.ativacoes, B.ativacoes, Object.assign(sp("ativacoes"), { nota: `${pct(A.ativacoes, A.novos)} dos novos · 1ª carta da vida` }))}
+        ${kpi("Cartas cadastradas", fmt(A.cartas), A.cartas, B.cartas, sp("cartas"))}
+        ${kpi("Cliques em loja", fmt(A.cliques_loja), A.cliques_loja, B.cliques_loja, sp("cliques_loja"))}
+        ${kpi("Tempo por visita", dur(A.tempo_ms), A.tempo_ms, B.tempo_ms, { antes: `antes: ${dur(B.tempo_ms)}`, nota: "mediana, tempo com a aba à vista" })}
+        ${kpi("Erros a cada mil páginas", fmtTaxa(porMil(A)), porMil(A), porMil(B), Object.assign(sp("erros"), { ruim: true, antes: `antes: ${fmtTaxa(porMil(B))}` }))}
+      </div>
+      ${section("O que mudou", oQueMudou(pu), `Contra os ${cmp}, cortados na mesma hora do dia (às 10h, hoje tem 10h de dado e o último dia de antes também). Só entra o que tem volume pra conclusão; a ordem é pelo tamanho da mudança, não pela porcentagem.`)}
+      <section class="admin-section">
+        <div class="adm-sec-head"><h2>${esc(met[1])} por dia</h2>
+          <div class="adm-seg adm-seg-metrica" role="group" aria-label="Métrica do gráfico">${METRICAS.map(([k, l]) => `<button type="button" class="chip" data-metrica="${k}" aria-pressed="${met[0] === k}">${esc(l)}</button>`).join("")}</div>
+          <label class="adm-metrica-sel"><span class="sr-only">Métrica do gráfico</span><select class="adm-select" data-metrica-sel>${METRICAS.map(([k, l]) => `<option value="${k}"${met[0] === k ? " selected" : ""}>${esc(l)}</option>`).join("")}</select></label></div>
+        ${serieTempo(atual.map((x) => ({ day: x.day, v: x[met[0]] })), Object.assign(CW(), { fantasma: colAnt(met[0]), marcos, rotulo: `${met[1]} (${n} dias)`, aria: `${met[1]} por dia, com a média de 7 dias e o período anterior` }))}
+        <p class="admin-note">Barras = o período; linha cheia = média dos últimos 7 dias (tira o vaivém de dia útil × fim de semana); tracejada = os ${esc(cmp)}, dia a dia. Os números nos círculos são os marcos (Técnico › Marcos), e campanha nova entra sozinha.</p>
+      </section>
+      <div class="adm-grid-2">
+        ${section("Plataforma (visitantes)", barrasMov(plats, platNome, platCor), "Navegador, app da web instalado e os apps das lojas. Detalhe em App e plataformas.")}
+        ${section("Canal de entrada (visitas)", barrasMov(canais, (k) => CANAL[k] || k, () => "var(--accent)"), "De onde veio a 1ª página de cada visita.")}
+      </div>
+      ${section("Páginas mais vistas", barrasMov(paginas, (k) => pageName(k), (k) => areaCor(areaDe(k))), "A cor é a área do site (Páginas › Áreas do site).")}`;
+  }
+  // Frases do "O que mudou": os maiores movimentos de cada recorte, juntos.
+  function oQueMudou(pu) {
+    const mv = pu.movimento || {};
+    const RECORTES = [
+      ["página", mv.paginas, pageName, "páginas vistas", 15],
+      ["jogo", mv.jogos, gameName, "páginas vistas", 15],
+      ["canal", mv.canais, (k) => CANAL[k] || k, "visitas", 5],
+      ["origem", mv.origens, (k) => k, "visitas", 5],
+      ["plataforma", mv.plataformas, platNome, "visitantes", 5]
+    ];
+    const itens = [];
+    RECORTES.forEach(([tipo, lista, nome, unidade, min]) => {
+      const m = movimentos(lista, { min, n: 3 });
+      m.sobe.concat(m.desce).forEach((x) => itens.push(Object.assign({ tipo, nome: nome(x.k), unidade }, x)));
+    });
+    const sobe = itens.filter((i) => i.d > 0).sort((p, q) => q.d - p.d).slice(0, 4);
+    const desce = itens.filter((i) => i.d < 0).sort((p, q) => p.d - q.d).slice(0, 4);
+    if (!sobe.length && !desce.length) return `<p class="admin-empty">Nada mudou o bastante pra virar notícia — com pouco tráfego, o recorte pequeno não entra.</p>`;
+    const li = (x) => `<li class="adm-mov ${x.d > 0 ? "adm-mov-sobe" : "adm-mov-desce"}"><span class="adm-mov-ico">${x.d > 0 ? ICON.sobe : ICON.desce}</span><span class="adm-mov-txt"><b>${esc(x.nome)}</b> <small>${esc(x.tipo)}</small></span><span class="adm-mov-num">${esc(fmt(x.a))} <small>${esc(x.unidade)} · antes ${esc(fmt(x.b))}</small></span>${deltaChip(x.a, x.b)}</li>`;
+    return `<div class="adm-grid-2 adm-mov-cols"><div><h3 class="adm-mov-h">Subiu</h3>${sobe.length ? `<ul class="adm-movs">${sobe.map(li).join("")}</ul>` : `<p class="admin-empty">Nada subiu com volume.</p>`}</div><div><h3 class="adm-mov-h">Caiu</h3>${desce.length ? `<ul class="adm-movs">${desce.map(li).join("")}</ul>` : `<p class="admin-empty">Nada caiu com volume.</p>`}</div></div>`;
+  }
+
+  // ── Páginas › Áreas do site ───────────────────────────────────────────────
+  const taxaTxt = (a, b) => (b ? pct(a, b) : "—");
+  function tabAreas(pg) {
+    const areas = pg.areas || [];
+    const visitas = Number(pg.visitas) || 0;
+    const views = areas.reduce((s, a) => s + a.views, 0);
+    const ent = areas.reduce((s, a) => s + a.entradas, 0), rej = areas.reduce((s, a) => s + a.rejeicoes, 0);
+    const porta = areas.slice().sort((p, q) => q.entradas - p.entradas)[0];
+    const segura = areas.slice().sort((p, q) => (Number(q.total_ms) || 0) - (Number(p.total_ms) || 0))[0];
+    const dias = diasJanela(pg.days || state.days);
+    const porDia = {};
+    (pg.serie || []).forEach((x) => { (porDia[x.area] = porDia[x.area] || {})[x.day] = x.views; });
+    const multiplos = areas.map((a) => {
+      const vals = dias.map((d) => (porDia[a.area] || {})[d] || 0);
+      return `<div class="adm-mult"><p class="adm-mult-t"><span class="adm-swatch" style="background:${esc(areaCor(a.area))}"></span>${esc(areaNome(a.area))}</p><p class="adm-mult-n"><b>${esc(fmt(a.views))}</b> ${deltaChip(a.views, a.views_ant)}</p>${sparkline(vals, { cor: areaCor(a.area) })}</div>`;
+    }).join("");
+    return `
+      <div class="admin-stats">
+        ${kpi("Visitas", fmt(visitas), visitas, pg.visitas_ant)}
+        ${cartao("Páginas por visita", visitas ? (views / visitas).toLocaleString("pt-BR", { maximumFractionDigits: 1 }) : "—", "quantas telas cada visita abre")}
+        ${cartao("Rejeição", taxaTxt(rej, ent), "visitas de uma página só")}
+        ${cartao("Porta de entrada", porta ? areaNome(porta.area) : "—", porta ? `${pct(porta.entradas, visitas)} das visitas começam aqui` : "", true)}
+        ${cartao("Onde o tempo vai", segura && segura.total_ms ? areaNome(segura.area) : "—", segura && segura.total_ms ? `${dur(segura.total_ms)} somados com a aba à vista` : "", true)}
+      </div>
+      <div class="adm-grid-2">
+        ${section("Tamanho de cada área", treemap(areas.map((a) => ({ label: areaNome(a.area), value: a.views, color: areaCor(a.area), hint: `${fmt(a.visitantes)} visitantes` })), Object.assign(CWT(), { aria: "Mosaico de páginas vistas por área do site" })), "Área = páginas vistas. Passe o mouse pra ver os visitantes.")}
+        ${section("Quem entra em cada área", hbars(areas.slice().sort((p, q) => q.visitantes - p.visitantes).map((a) => ({ label: areaNome(a.area), value: a.visitantes, color: areaCor(a.area), sub: `${pct(a.visitantes, pg.visitantes)} dos visitantes · ${fmt(a.logados)} logados` }))), "Pessoas distintas: quem viu Sets e uma carta conta uma vez no Catálogo.")}
+      </div>
+      ${section("Áreas lado a lado", table(
+        [{ t: "Área" }, { t: "Visitantes", num: true }, { t: "Antes", num: true }, { t: "Páginas vistas", num: true }, { t: "Visitas", num: true }, { t: "Entradas", num: true }, { t: "Rejeição", num: true }, { t: "Saída", num: true }, { t: "No celular", num: true }, { t: "Tempo somado", num: true }],
+        areas.map((a) => `<tr><td><span class="adm-area" style="--g:${esc(areaCor(a.area))}">${esc(areaNome(a.area))}</span></td><td class="num">${esc(fmt(a.visitantes))} ${deltaChip(a.visitantes, a.visitantes_ant)}</td><td class="num"><small>${esc(fmt(a.visitantes_ant))}</small></td><td class="num">${esc(fmt(a.views))}</td><td class="num">${esc(fmt(a.visitas))}</td><td class="num">${esc(fmt(a.entradas))}</td><td class="num">${esc(taxaTxt(a.rejeicoes, a.entradas))}</td><td class="num">${esc(taxaTxt(a.saidas, a.views))}</td><td class="num">${esc(taxaTxt(a.celular, a.views))}</td><td class="num">${esc(a.total_ms ? dur(a.total_ms) : "—")}</td></tr>`)),
+        "Visita = páginas do mesmo navegador sem pausa de 30 minutos. Entrada = a visita começou nesta área; rejeição = das entradas, as visitas que pararam na 1ª página; saída = das páginas vistas aqui, as que foram a última da visita. Rejeição alta numa porta de entrada é o primeiro lugar pra consertar.")}
+      ${section("Cada área no tempo", `<div class="adm-mults">${multiplos}</div>`, `Páginas vistas por dia nos ${pg.days} dias, uma área por quadro — a escala é de cada quadro, então compare a FORMA (cresce, cai, pico), não a altura.`)}`;
+  }
+
+  // ── Páginas › Todas as páginas ────────────────────────────────────────────
+  function tabTodasPaginas(pg) {
+    const todas = pg.paginas || [];
+    const presentes = Array.from(new Set(todas.map((p) => p.area)));
+    const filtro = presentes.indexOf(state.areaFiltro) >= 0 ? state.areaFiltro : "todas";
+    const lista = todas.filter((p) => filtro === "todas" || p.area === filtro);
+    const semArea = todas.filter((p) => p.area === "outros").map((p) => p.path);
+    return `
+      <div class="adm-seg adm-seg-wrap" role="group" aria-label="Filtrar por área"><button type="button" class="chip" data-area-filtro="todas" aria-pressed="${filtro === "todas"}">Todas</button>${presentes.map((a) => `<button type="button" class="chip" data-area-filtro="${esc(a)}" aria-pressed="${filtro === a}"><span class="adm-swatch" style="background:${esc(areaCor(a))}"></span>${esc(areaNome(a))}</button>`).join("")}</div>
+      ${section(`Páginas${filtro === "todas" ? "" : ` · ${areaNome(filtro)}`} (${fmt(lista.length)})`, paged(`pg-${filtro}`,
+        [{ t: "Página" }, { t: "Área" }, { t: "Vistas", num: true }, { t: "Antes", num: true }, { t: "Visitantes", num: true }, { t: "Entradas", num: true }, { t: "Rejeição", num: true }, { t: "Saída", num: true }, { t: "Tempo (mediana)", num: true }, { t: "No celular", num: true }],
+        lista.map((p) => `<tr><td><strong>${esc(pageName(p.path))}</strong>${PAGE_NAME[p.path] ? `<br><small class="adm-mono">${esc(p.path)}</small>` : ""}</td><td><span class="adm-area" style="--g:${esc(areaCor(p.area))}">${esc(areaNome(p.area))}</span></td><td class="num">${esc(fmt(p.views))} ${deltaChip(p.views, p.views_ant)}</td><td class="num"><small>${esc(fmt(p.views_ant))}</small></td><td class="num">${esc(fmt(p.visitantes))}</td><td class="num">${esc(fmt(p.entradas))}</td><td class="num">${esc(taxaTxt(p.rejeicoes, p.entradas))}</td><td class="num">${esc(taxaTxt(p.saidas, p.views))}</td><td class="num">${esc(p.mediana_ms == null ? "—" : dur(p.mediana_ms))}</td><td class="num">${esc(taxaTxt(p.celular, p.views))}</td></tr>`), 15),
+        `"detail" é a tela do set e a da carta juntas (os endereços /games/<jogo>/<set>[/<carta>] viram a mesma chave no envio). Páginas estáticas da borda (índice /games, sets em inglês, artistas) não mandam evento nenhum — essas só o Cloudflare Web Analytics vê.${semArea.length ? ` Sem área ainda: ${semArea.join(", ")} — ganham área numa linha do AREAS no src/admin.js.` : ""}`)}`;
+  }
+
+  // ── Páginas › Caminhos ────────────────────────────────────────────────────
+  function tabCaminhos(pg) {
+    const fluxo = pg.fluxo || [];
+    const ec = pg.entradas_canal || [];
+    const ordem = (pg.areas || []).map((a) => a.area);
+    const v = (lista, ka, kb) => { const m = {}; lista.forEach((x) => { m[`${x[ka]}|${x[kb]}`] = x.n; }); return (a, b) => m[`${a}|${b}`] || 0; };
+    const vf = v(fluxo, "de", "para"), ve = v(ec, "area", "canal");
+    const linhas = ordem.map((a) => ({ k: a, label: areaNome(a) }));
+    const colF = ordem.map((a) => ({ k: a, label: areaNome(a) })).concat([{ k: "(saiu)", label: "Saiu" }]);
+    const canais = Array.from(new Set(ec.map((x) => x.canal)));
+    const colC = canais.map((c) => ({ k: c, label: CANAL[c] || c }));
+    const top = fluxo.filter((x) => x.de !== x.para).slice(0, 12).map((x) => ({
+      label: `${areaNome(x.de)} → ${x.para === "(saiu)" ? "saiu do site" : areaNome(x.para)}`, value: x.n, color: x.para === "(saiu)" ? "#9aa3ae" : areaCor(x.para)
+    }));
+    return `
+      ${section("De onde → para onde, dentro da visita", matriz(linhas, colF, vf, { canto: "Da área ↓ / para →" }), "Cada número é quantas vezes a próxima página da mesma visita foi daquela área. A cor é a fração da LINHA: lida da esquerda pra direita, diz pra onde vai quem está numa área. A diagonal é quem continua na mesma área; \"Saiu\" é a última página da visita.")}
+      ${section("Porta de entrada por canal", matriz(linhas.filter((l) => colC.some((c) => ve(l.k, c.k))), colC, ve, { canto: "Entrou em ↓ / veio de →" }), "Onde começa a visita de cada canal: busca costuma cair no Catálogo (carta, set); direto, na Coleção. Campanha que entra pela Entrada e para lá é dinheiro rejeitado.")}
+      ${section("Os caminhos mais comuns", hbars(top).replace("adm-hbars", "adm-hbars adm-hbars-largo"), "Sem a diagonal (ficar na mesma área). É a ordem em que o site é usado de verdade.")}`;
+  }
+
+  // ── App e plataformas › Web × app ─────────────────────────────────────────
+  // Uma coluna por plataforma e a SOMA. Antes do app chegar às lojas, as
+  // colunas Android e iOS ficam zeradas e a aba já serve pro navegador × app
+  // da web instalado (PWA).
+  function tabPlataformas(pl) {
+    const ps = pl.plataformas || [];
+    const P = {};
+    ps.forEach((x) => { P[x.pl] = x; });
+    const tot = pl.total || {};
+    const soma = (k) => ps.reduce((s, x) => s + (Number(x[k]) || 0), 0);
+    const nativo = ["android", "ios"].some((k) => P[k] && P[k].pageviews);
+    const tx = (a, b) => (b ? pct(a, b) : "—");
+    const porMil = (x) => (x.pageviews_nav ? fmtTaxa((1000 * x.erros) / x.pageviews_nav) : "—");
+    const LINHAS = [
+      ["Navegadores", (x) => fmt(x.navegadores), fmt(tot.navegadores), "cada aparelho conta uma vez, na plataforma de maior prioridade que usou"],
+      ["Visitantes (por página vista)", (x) => fmt(x.visitantes), "—", "quem viu ao menos uma página ali; um Android com o app da web instalado aparece nas duas"],
+      ["Páginas vistas", (x) => fmt(x.pageviews), fmt(tot.pageviews), ""],
+      ["Logados", (x) => fmt(x.logados), fmt(tot.contas), "na soma, contas distintas"],
+      ["Novos no período", (x) => fmt(x.novos), fmt(soma("novos")), "1ª visita da vida dentro do período"],
+      ["Ativação", (x) => tx(x.ativacoes, x.navegadores), tx(soma("ativacoes"), tot.navegadores), "puseram a 1ª carta na coleção ÷ navegadores"],
+      ["Cartas cadastradas", (x) => fmt(x.cartas), fmt(soma("cartas")), ""],
+      ["Cliques em loja", (x) => fmt(x.cliques_loja), fmt(soma("cliques_loja")), ""],
+      ["Volta no dia seguinte (D1)", (x) => tx(x.d1, x.el1), tx(soma("d1"), soma("el1")), "pela plataforma da 1ª visita, quem chegou nos últimos 120 dias"],
+      ["Volta na 2ª semana (D7)", (x) => tx(x.d7, x.el7), tx(soma("d7"), soma("el7")), ""],
+      ["Tempo por visita", (x) => dur(x.tempo_ms), "—", "mediana"],
+      ["Erros a cada mil páginas", porMil, fmtTaxa(soma("pageviews_nav") ? (1000 * soma("erros")) / soma("pageviews_nav") : null), ""]
+    ];
+    const ordem = ["web", "pwa", "android", "ios"];
+    const dias = diasJanela(pl.days || state.days);
+    const porDia = {};
+    (pl.serie || []).forEach((x) => { (porDia[x.day] = porDia[x.day] || {})[x.pl] = x.visitantes; });
+    const pilha = dias.map((d) => Object.assign({ day: d }, porDia[d] || {}));
+    const cards = ordem.map((k) => {
+      const x = P[k] || {};
+      return `<div class="adm-plat" style="--g:${esc(platCor(k))}"><p class="adm-plat-t">${esc(platNome(k))}</p><p class="adm-plat-n">${esc(fmt(x.navegadores || 0))}</p><p class="adm-plat-s">navegadores · ${esc(pct(x.navegadores || 0, tot.navegadores))} do total</p><dl><dt>Ativação</dt><dd>${esc(tx(x.ativacoes, x.navegadores))}</dd><dt>D7</dt><dd>${esc(tx(x.d7, x.el7))}</dd><dt>Tempo/visita</dt><dd>${esc(dur(x.tempo_ms))}</dd></dl></div>`;
+    }).join("");
+    return `
+      ${nativo ? "" : `<p class="adm-banner">O app das lojas ainda não mandou nenhum evento: as colunas Android e iOS aparecem sozinhas quando ele mandar o 1º (o site já marca <code>pl</code> e <code>av</code> no pageview quando roda dentro do Capacitor). Até lá, esta aba compara o navegador com o app da web instalado.</p>`}
+      <div class="adm-plats">${cards}<div class="adm-plat adm-plat-soma"><p class="adm-plat-t">Soma web + app</p><p class="adm-plat-n">${esc(fmt(tot.navegadores))}</p><p class="adm-plat-s">navegadores · ${esc(fmt(tot.contas))} contas</p><dl><dt>Contas em 2+ plataformas</dt><dd>${esc(fmt(tot.contas_multi))}</dd><dt>Contas no app nativo</dt><dd>${esc(fmt(tot.contas_app))}</dd></dl></div></div>
+      <section class="admin-section">
+        <div class="adm-sec-head"><h2>Visitantes por dia, por plataforma</h2>
+          <div class="adm-seg" role="group" aria-label="Escala"><button type="button" class="chip" data-pct="0" aria-pressed="${!state.pct}">Número</button><button type="button" class="chip" data-pct="1" aria-pressed="${state.pct}">Participação %</button></div></div>
+        ${barrasEmpilhadas(pilha, ordem.map((k) => ({ key: k, label: platNome(k), color: platCor(k) })), Object.assign(CW(), { pct: state.pct, aria: "Visitantes por dia, empilhados por plataforma" }))}
+        <p class="admin-note">Em "Participação %" cada dia soma 100%: é onde se vê o app ganhando espaço mesmo num dia de tráfego baixo.</p>
+      </section>
+      ${section("Lado a lado", table(
+        [{ t: "" }].concat(ordem.map((k) => ({ t: platNome(k), num: true }))).concat([{ t: "Soma", num: true }]),
+        LINHAS.map(([rot, f, s, nota]) => `<tr><td>${esc(rot)}${nota ? `<br><small>${esc(nota)}</small>` : ""}</td>${ordem.map((k) => `<td class="num">${esc(f(P[k] || {}))}</td>`).join("")}<td class="num"><strong>${esc(s)}</strong></td></tr>`)),
+        "Plataforma do PAGEVIEW: app nativo (o site manda pl=android|ios quando roda no Capacitor) > app da web instalado (display-mode standalone) > navegador. Ações (ativação, cartas, cliques, erros, tempo) contam pela plataforma do NAVEGADOR — no app nativo o armazenamento é do app, então ninguém se mistura com a web; no Android, o app da web instalado e o Chrome dividem o mesmo, e a pessoa cai no app. A ponte entre site e app é a CONTA: quem entra logado nos dois aparece em \"contas em 2+ plataformas\".")}`;
+  }
+
+  // ── App e plataformas › Versões do app ────────────────────────────────────
+  function tabVersoes(pl) {
+    const vs = pl.versoes || [];
+    const porPl = {};
+    vs.forEach((v) => { porPl[v.pl] = (porPl[v.pl] || 0) + v.navegadores; });
+    if (!vs.length) {
+      return section("Nenhuma versão do app ainda", `<p class="admin-note">Quando o app das lojas mandar o 1º pageview, cada versão do binário (a do Play/App Store, que o site lê pela ponte do Capacitor e manda como <code>av</code>) aparece aqui com quantos aparelhos estão nela. É a régua do live update: um JS novo que chama um plugin que a versão instalada não tem quebra o app — antes de publicar, olhe quantos ainda estão na versão velha.</p>`);
+    }
+    return `
+      ${section("Adoção por versão", ["android", "ios"].filter((k) => porPl[k]).map((k) => `<div class="adm-sub"><h3>${esc(platNome(k))}</h3>${hbars(vs.filter((v) => v.pl === k).map((v) => ({ label: v.av, value: v.navegadores, color: platCor(k), sub: `${pct(v.navegadores, porPl[k])} dos aparelhos · até ${diaCurto(v.ultimo)}` })))}</div>`).join(""),
+        "Aparelhos (navegadores do app) vistos em cada versão no período. Um aparelho que atualizou no meio do período aparece nas duas.")}
+      ${section("Todas as versões", table(
+        [{ t: "Versão" }, { t: "Plataforma" }, { t: "Aparelhos", num: true }, { t: "Páginas vistas", num: true }, { t: "Primeiro dia" }, { t: "Último dia" }],
+        vs.map((v) => `<tr><td class="adm-mono">${esc(v.av)}</td><td>${esc(platNome(v.pl))}</td><td class="num">${esc(fmt(v.navegadores))}</td><td class="num">${esc(fmt(v.pageviews))}</td><td><small>${esc(dataBR(v.primeiro))}</small></td><td><small>${esc(dataBR(v.ultimo))}</small></td></tr>`)),
+        "\"?\" = pageview do app sem versão (a ponte não respondeu em 800 ms). A versão do JS (o pacote do live update) vai no erro de JS, campo v.")}`;
+  }
+
+  // ── App e plataformas › Lojas de apps ─────────────────────────────────────
+  // O que o Play Console e o App Store Connect sabem e o site não: quem viu a
+  // página na loja, quem instalou e desinstalou, nota e travamento nativo.
+  // Entra à mão aqui (um número por dia) ou, quando houver, pelo robô
+  // (app_store_import). Somado ao que o próprio app mede, vira o funil
+  // inteiro: loja → instalação → abriu → ativou.
+  const LOJA_APP = { play: "Google Play", appstore: "App Store" };
+  const METRICA_APP = [
+    ["impressoes", "Impressões na loja", "fluxo", "Play: Estatísticas › Aquisição (visualizações da página) · App Store: App Analytics › Impressões"],
+    ["visitas_loja", "Visitas à página do app", "fluxo", "Play: visitantes da página da loja · App Store: visualizações da página do produto"],
+    ["instalacoes", "Instalações", "fluxo", "Play: aquisições de usuários · App Store: primeiros downloads"],
+    ["desinstalacoes", "Desinstalações", "fluxo", "Play: Estatísticas › desinstalações · App Store: App Analytics › exclusões"],
+    ["ativos", "Aparelhos ativos", "estoque", "Play: dispositivos ativos · App Store: dispositivos ativos (30 dias)"],
+    ["nota", "Nota média", "estoque", "0 a 5"],
+    ["avaliacoes", "Avaliações novas", "fluxo", ""],
+    ["travamentos", "Travamentos (%)", "estoque", "Play: Android vitals › taxa de falhas · App Store: Xcode Organizer › Crashes (% das sessões)"]
+  ];
+  function tabLojasApp(pl) {
+    const rows = pl.lojas || [];
+    const nome = {};
+    METRICA_APP.forEach(([k, l]) => { nome[k] = l; });
+    const resumo = (loja) => {
+      const r = rows.filter((x) => x.loja === loja);
+      const o = {};
+      METRICA_APP.forEach(([k, , tipo]) => {
+        const xs = r.filter((x) => x.metrica === k).sort((a, b) => (a.day < b.day ? -1 : 1));
+        o[k] = !xs.length ? null : tipo === "fluxo" ? xs.reduce((s, x) => s + Number(x.valor), 0) : Number(xs[xs.length - 1].valor);
+      });
+      return o;
+    };
+    const R = { play: resumo("play"), appstore: resumo("appstore") };
+    const PS = {};
+    (pl.plataformas || []).forEach((x) => { PS[x.pl] = x; });
+    const novosApp = ((PS.android || {}).novos || 0) + ((PS.ios || {}).novos || 0);
+    const atvApp = ((PS.android || {}).ativacoes || 0) + ((PS.ios || {}).ativacoes || 0);
+    const visitas = (R.play.visitas_loja || 0) + (R.appstore.visitas_loja || 0);
+    const inst = (R.play.instalacoes || 0) + (R.appstore.instalacoes || 0);
+    const val = (v, k) => (v == null ? "—" : k === "nota" ? Number(v).toLocaleString("pt-BR", { maximumFractionDigits: 2 }) : k === "travamentos" ? `${Number(v).toLocaleString("pt-BR", { maximumFractionDigits: 2 })}%` : fmt(v));
+    const hoje = diasJanela(1)[0];
+    return `
+      ${section("Anotar um número da loja", `<form class="adm-form" data-loja-form>
+          <label>Dia<input name="dia" type="date" required max="${esc(hoje)}" value="${esc(hoje)}"></label>
+          <label>Loja<select name="loja">${Object.keys(LOJA_APP).map((k) => `<option value="${k}">${esc(LOJA_APP[k])}</option>`).join("")}</select></label>
+          <label>Métrica<select name="metrica">${METRICA_APP.map(([k, l]) => `<option value="${k}">${esc(l)}</option>`).join("")}</select></label>
+          <label>Valor<input name="valor" inputmode="decimal" placeholder="em branco apaga" autocomplete="off"></label>
+          <button type="submit" class="chip adm-primary">Salvar</button>
+        </form><p class="admin-note" data-loja-msg role="status" hidden></p>`,
+        "Um número por dia, loja e métrica (gravar de novo troca o valor; em branco apaga). Fluxos — impressões, visitas, instalações, desinstalações, avaliações — somam no período; aparelhos ativos, nota e travamentos valem o último dia anotado. Quando os números vierem por robô (API do Play Console / App Store Connect), eles entram aqui marcados como \"robô\".")}
+      ${section("Da loja ao uso", funnel([
+        { label: "visitas à página do app nas lojas", value: visitas, color: "#64748b" },
+        { label: "instalações", value: inst, color: "#2563eb", hint: visitas ? `${pct(inst, visitas)} de conversão da loja` : "anote as visitas pra ver a conversão" },
+        { label: "abriram o app (navegadores novos no Android e no iOS)", value: novosApp, color: "#16a34a", hint: "medido pelo próprio app" },
+        { label: "ativaram (1ª carta)", value: atvApp, color: "#7c3aed" }
+      ]), "Os dois primeiros passos vêm da loja (anotados aqui); os dois últimos, do app. Instalação sem abertura é gente que baixou e esqueceu; abertura sem ativação é onboarding.")}
+      ${section(`Resumo do período (${pl.days} dias)`, table(
+        [{ t: "Métrica" }].concat(Object.keys(LOJA_APP).map((k) => ({ t: LOJA_APP[k], num: true }))).concat([{ t: "Onde achar" }]),
+        METRICA_APP.map(([k, l, , onde]) => `<tr><td>${esc(l)}</td>${Object.keys(LOJA_APP).map((lj) => `<td class="num">${esc(val(R[lj][k], k))}</td>`).join("")}<td><small>${esc(onde)}</small></td></tr>`)),
+        pl.lojas_ultimo ? `Último dia anotado: ${dataBR(pl.lojas_ultimo)}.` : "Nada anotado ainda.")}
+      ${section("Números anotados", paged("lojasapp", [{ t: "Dia" }, { t: "Loja" }, { t: "Métrica" }, { t: "Valor", num: true }, { t: "Fonte" }, { t: "" }],
+        rows.slice().reverse().map((x) => `<tr><td>${esc(dataBR(x.day))}</td><td>${esc(LOJA_APP[x.loja] || x.loja)}</td><td>${esc(nome[x.metrica] || x.metrica)}</td><td class="num">${esc(val(x.valor, x.metrica))}</td><td><small>${esc(x.fonte === "robo" ? "robô" : "painel")}</small></td><td><button type="button" class="chip adm-mini adm-icone" data-loja-del="${esc(`${x.day}|${x.loja}|${x.metrica}`)}" aria-label="Apagar este número">${ICON.lixo}</button></td></tr>`), 10))}`;
+  }
+
+  // ── Técnico › Marcos ──────────────────────────────────────────────────────
+  const TIPO_MARCO = { campanha: "Campanha", deploy: "Deploy / mudança no site", lancamento: "Lançamento (set, jogo)", imprensa: "Imprensa / post viral", problema: "Problema / queda", outro: "Outro" };
+  function tabMarcos(notas) {
+    const lista = Array.isArray(notas) ? notas : [];
+    const hoje = diasJanela(1)[0];
+    return `
+      ${section("Anotar um marco", `<form class="adm-form" data-nota-form>
+          <label>Dia<input name="dia" type="date" required value="${esc(hoje)}"></label>
+          <label>Tipo<select name="tipo">${Object.keys(TIPO_MARCO).map((k) => `<option value="${k}">${esc(TIPO_MARCO[k])}</option>`).join("")}</select></label>
+          <label class="adm-form-largo">O que aconteceu<input name="texto" required maxlength="80" placeholder="ex.: Campanha Instagram começou" autocomplete="off"></label>
+          <button type="submit" class="chip adm-primary">Salvar marco</button>
+        </form>`,
+        "O marco vira uma linha numerada em todo gráfico de tempo do painel (Resumo, Crescimento, Web × app). Pico sem explicação é o que mais se lê errado: \"o site cresceu\" quando foi a campanha, \"quebrou\" quando foi o feriado. Campanha com utm entra sozinha; o resto, anote aqui.")}
+      ${section(`Marcos (${fmt(lista.length)})`, table([{ t: "Dia" }, { t: "Tipo" }, { t: "O que aconteceu" }, { t: "" }],
+        lista.map((n) => `<tr><td>${esc(dataBR(n.dia))}</td><td><span class="adm-tipo" data-tipo="${esc(n.tipo)}">${esc(TIPO_MARCO[n.tipo] || n.tipo)}</span></td><td>${esc(n.texto)}</td><td><button type="button" class="chip adm-mini adm-icone" data-nota-del="${esc(n.id)}" aria-label="Apagar este marco">${ICON.lixo}</button></td></tr>`)))}`;
+  }
+
+  // ── Aquisição › Campanhas: por anúncio (utm_content) ─────────────────────
+  const CLIQUE = { gclid: "Google Ads (gclid)", gbraid: "Google Ads no iOS (gbraid)", wbraid: "Google Ads web→app (wbraid)", fbclid: "Meta: Instagram/Facebook (fbclid)" };
+  function secaoAnuncios(an) {
+    if (an === undefined) return pedeV3("A comparação por anúncio (utm_content)");
+    if (!an) return "";
+    const ads = an.anuncios || [], ck = an.cliques || [];
+    return `
+      ${section("Por anúncio (utm_content)", paged("ads-utm", [{ t: "Fonte / campanha" }, { t: "Anúncio" }, { t: "Visitantes", num: true }, { t: "No celular", num: true }, { t: "Engajaram", num: true }, { t: "Ativaram", num: true }, { t: "Conta", num: true }, { t: "Loja", num: true }, { t: "D7", num: true }, { t: "Período" }],
+        ads.map((x) => `<tr><td><strong>${esc(x.fonte || "—")}</strong>${x.campanha ? `<br><small>${esc(x.campanha)}</small>` : ""}</td><td class="adm-mono">${esc(x.anuncio)}</td><td class="num">${esc(fmt(x.visitantes))}</td><td class="num">${esc(pct(x.celular, x.visitantes))}</td><td class="num">${esc(pct(x.engajados, x.visitantes))}</td><td class="num"><strong>${esc(pct(x.ativados, x.visitantes))}</strong></td><td class="num">${esc(pct(x.contas, x.visitantes))}</td><td class="num">${esc(pct(x.loja, x.visitantes))}</td><td class="num">${esc(x.el7 ? pct(x.d7, x.el7) : "—")}</td><td><small>${esc(`${dataBR(x.desde)} – ${dataBR(x.ate)}`)}</small></td></tr>`), 10),
+        "Pela 1ª visita de cada navegador, como a tabela de campanhas, mas uma linha por PEÇA (utm_content) — o vídeo × o carrossel da mesma campanha. Engajou = 2+ páginas. Peça com muito visitante e pouca ativação é clique barato que não vira uso.")}
+      ${ck.length ? section("Clique pago sem utm", table([{ t: "Origem do clique" }, { t: "Visitantes", num: true }, { t: "Ativaram", num: true }, { t: "Conta", num: true }],
+        ck.map((x) => `<tr><td>${esc(CLIQUE[x.clique] || x.clique)}</td><td class="num">${esc(fmt(x.visitantes))}</td><td class="num">${esc(pct(x.ativados, x.visitantes))}</td><td class="num">${esc(pct(x.contas, x.visitantes))}</td></tr>`)),
+        "O nome do parâmetro de clique que o anúncio carimbou (o id nunca é gravado). O fbclid aparece em QUALQUER link do Instagram/Facebook, até de post orgânico — não é prova de anúncio pago.") : ""}`;
+  }
+
+  // ── Técnico › Medição: descartes e o que nunca chegou ────────────────────
+  // O que o site manda (a lista EVENTOS do shared.js, mais os que não passam
+  // por ela). Os raros podem passar dias sem chegar; os de toda visita, não.
+  const ENVIADOS = {
+    pageview: "toda visita", page_time: "toda visita", jserror: "raro (bom sinal)", store_click: "diário", card_added: "diário",
+    collection_first: "diário", scan_open: "semanal", scan_done: "semanal", search_hit: "diário", search_empty: "semanal",
+    login_gate: "diário", signup: "semanal", share_created: "semanal", share_open: "semanal", onboard_state: "diário",
+    ad_view: "diário (com anúncio)", ad_click: "raro", pwa_install: "raro", export_done: "raro", import_done: "raro",
+    deck_created: "raro", backup_done: "raro", exp_view: "só com experimento", push_sent: "semanal (robô)"
+  };
+  const MOTIVO = { lista: "Nome fora da lista do banco", tamanho: "Grande demais", ritmo: "Ritmo (60/min por visitante)", ritmo_ip: "Ritmo (600/min por IP)" };
+  const EQUIPE = "sleevu-equipe-v1";
+  function equipe() { try { return localStorage.getItem(EQUIPE) === "1"; } catch (e) { return false; } }
+  function secaoDescartes(ds) {
+    if (ds === undefined) return pedeV3("O contador de eventos descartados");
+    if (!ds) return "";
+    const rec = {};
+    (ds.recebidos || []).forEach((x) => { rec[x.nome] = x; });
+    const faltam = Object.keys(ENVIADOS).filter((k) => !rec[k]);
+    return `
+      ${section(`Descartados pelo banco (${ds.days} dias)`, (ds.descartes || []).length ? table([{ t: "Motivo" }, { t: "Evento" }, { t: "Vezes", num: true }, { t: "Último" }],
+        ds.descartes.map((x) => `<tr><td>${esc(MOTIVO[x.motivo] || x.motivo)}</td><td class="adm-mono">${esc(x.nome === "(outro)" ? `(outro)${x.exemplo ? ` · ex.: ${x.exemplo}` : ""}` : x.nome)}</td><td class="num">${esc(fmt(x.n))}</td><td><small>${esc(x.ultimo ? new Date(x.ultimo).toLocaleString("pt-BR") : "—")}</small></td></tr>`))
+        : `<p class="admin-empty">Nenhum evento descartado${ds.desde ? ` desde ${esc(dataBR(ds.desde))}` : " desde que o contador foi ligado"}.</p>`,
+        "O banco descarta CALADO (o site recebe 201 do mesmo jeito): nome que não está na lista do events_guard, evento grande demais e ritmo acima do limite. Nome fora da lista é quase sempre evento novo no JS antes da migração; ritmo é visitante fazendo muita coisa por minuto — ou robô.")}
+      ${section(`O que chegou nos ${ds.days} dias`, `${faltam.length ? `<p class="adm-banner">Nunca chegaram no período: ${faltam.map((k) => `<code>${esc(k)}</code> <small>(${esc(ENVIADOS[k])})</small>`).join(", ")}. Os de "toda visita" e "diário" parados é medição quebrada; os raros podem ser só falta de uso.</p>` : ""}${table([{ t: "Evento" }, { t: "Frequência esperada" }, { t: "Recebidos", num: true }, { t: "Último" }],
+        Object.keys(ENVIADOS).concat((ds.recebidos || []).map((x) => x.nome).filter((k) => !ENVIADOS[k])).map((k) => `<tr><td class="adm-mono">${esc(k)}</td><td><small>${esc(ENVIADOS[k] || "—")}</small></td><td class="num">${rec[k] ? esc(fmt(rec[k].n)) : `<span class="adm-bad">0</span>`}</td><td><small>${esc(rec[k] && rec[k].ultimo ? new Date(rec[k].ultimo).toLocaleString("pt-BR") : "—")}</small></td></tr>`))}`,
+        "A sentinela de cima só enxerga evento que JÁ chegou alguma vez nos últimos 16 dias; esta lista compara com o que o site manda, então pega também o que nunca chegou (foi assim que o search_hit passou 16 dias zerado sem alarme).")}`;
+  }
+  function secaoEquipe() {
+    const fora = equipe();
+    return section("Este navegador", `<p class="admin-note adm-equipe">${fora
+      ? "Este navegador <strong>não conta</strong> nas estatísticas (pageview e eventos de produto). Erros de JS continuam chegando."
+      : "Este navegador <strong>conta</strong> nas estatísticas como um visitante qualquer."}</p>
+      <div class="adm-actions"><button type="button" class="chip" data-equipe="${fora ? "0" : "1"}">${fora ? "Voltar a contar este navegador" : "Parar de contar este navegador"}</button></div>`,
+      "Com ~15 visitantes por dia, o dono navegando e testando é uma fatia visível do tráfego. O painel marca sozinho o navegador em que é aberto pela 1ª vez; desmarque pra testar um evento em produção.");
   }
 
   const RENDER = {
-    geral: (x) => tabGeral(x.dash), audiencia: (x) => tabAudiencia(x.dash), conteudo: (x) => tabConteudo(x.dash),
+    geral: (x) => tabResumo(x.dash, x.pulso, x.notas),
+    areas: (x) => tabAreas(x.paginas), paginas: (x) => tabTodasPaginas(x.paginas), caminhos: (x) => tabCaminhos(x.paginas),
+    plataformas: (x) => tabPlataformas(x.plataformas), versoes: (x) => tabVersoes(x.plataformas), lojasapp: (x) => tabLojasApp(x.plataformas),
+    marcos: (x) => tabMarcos(x.notas),
+    audiencia: (x) => tabAudiencia(x.dash, x.pulso), conteudo: (x) => tabConteudo(x.dash),
     produto: (x) => tabProduto(x.dash), qualidade: (x) => tabQualidade(x.dash, x.erros),
-    crescimento: (x) => tabCrescimento(x.growth),
+    crescimento: (x) => tabCrescimento(x.growth, x.notas),
     parceiros: (x) => tabParceiros(x.dash, x.retention, x.stores, x.demand, x.growth, x.engagement, x.users, x.anuncios),
     canais: (x) => tabCanais(x.retention, x.growth), retencao: (x) => tabRetencao(x.retention),
     funil: (x) => tabFunil(x.funnel, x.retention, x.engagement), lojas: (x) => tabLojas(x.stores), demanda: (x) => tabDemanda(x.demand),
     anuncios: (x) => tabVitrine(x.anuncios, x.apoiadores),
     usuarios: (x) => tabUsuarios(x.users), colecoes: (x) => tabColecoes(x.users), segmentos: (x) => tabSegmentos(x.users),
-    campanhas: (x) => tabCampanhas(x.campaigns), tempo: (x) => tabTempo(x.engagement),
+    campanhas: (x) => tabCampanhas(x.campaigns, x.anunciosutm), tempo: (x) => tabTempo(x.engagement),
     experimentos: (x) => tabExperimentos(x.experiments), portal: (x) => tabPortal(x.partners, x.stores),
-    sets: (x) => tabSets(x.demand), medicao: (x) => tabMedicao(x.health, x.engagement)
+    sets: (x) => tabSets(x.demand), medicao: (x) => tabMedicao(x.health, x.engagement, x.descartes)
   };
 
   // ── Painel legado (enquanto a migração 20260914a não for aplicada) ───────
@@ -1796,7 +2482,7 @@ if (v === "b") { /* versão nova */ }</pre>
     const days = state.days;
     const p = (key === "dash" ? shared.adminDashboard(days)
       : key === "funnel" ? shared.adminFunnel(days)
-      : shared.adminRpc(RPC[key], days, SEM_DIAS.indexOf(key) >= 0 ? {} : undefined)
+      : shared.adminRpc(RPC[key], days, CORPO[key] ? CORPO[key](days) : SEM_DIAS.indexOf(key) >= 0 ? {} : undefined)
     ).then((v) => {
       delete state.inflight[ck];
       if (v !== null) state.cache[ck] = v;
@@ -1813,12 +2499,16 @@ if (v === "b") { /* versão nova */ }</pre>
     anuncios: "20260927a_vitrine.sql", apoiadores: "20260928c_apoiador.sql",
     users: "20260928a_analytics_2_1.sql", campaigns: "20260928a_analytics_2_1.sql", engagement: "20260928a_analytics_2_1.sql",
     experiments: "20260928a_analytics_2_1.sql", partners: "20260928a_analytics_2_1.sql", health: "20260928a_analytics_2_1.sql",
-    erros: "20261003a_erros_v2.sql"
+    erros: "20261003a_erros_v2.sql",
+    pulso: "20261009a_admin_v3.sql", paginas: "20261009a_admin_v3.sql", plataformas: "20261009a_admin_v3.sql",
+    descartes: "20261009a_admin_v3.sql", notas: "20261009a_admin_v3.sql", anunciosutm: "20261009a_admin_v3.sql"
   };
   function pendente(keys) {
     const arqs = Array.from(new Set(keys.map((k) => MIGRACAO[k])));
     const rpcs = keys.map((k) => (k === "dash" ? "admin_dashboard" : k === "funnel" ? "admin_funnel" : RPC[k]));
     const v21 = keys.some((k) => MIGRACAO[k] === "20260928a_analytics_2_1.sql");
+    const v3 = keys.every((k) => MIGRACAO[k] === "20261009a_admin_v3.sql");
+    if (v3) return pedeV3("Esta tela");
     const descartados = keys.indexOf("anuncios") >= 0
       ? "Enquanto a 20260927a não for aplicada, os eventos da vitrine (espaço visto, espaço clicado) são descartados pelo banco sem erro"
       : v21
@@ -1827,14 +2517,24 @@ if (v === "b") { /* versão nova */ }</pre>
     return `<p class="adm-banner">${rpcs.map((r) => `A RPC <code>${esc(r)}</code> ainda não existe no banco`).join("; ")}: aplique <code>supabase/migrations/${arqs.map(esc).join("</code>, <code>supabase/migrations/")}</code> no SQL Editor. <strong>${descartados}</strong> — aplique o SQL ANTES de subir o JS.</p>`;
   }
 
+  // Barra do topo (v3): onde estou (grupo › aba) e o período. No celular, o
+  // "onde estou" é um <select> nativo com os grupos em <optgroup> — o
+  // seletor do sistema é a lista de 30 telas que cabe no dedo.
   function nav() {
-    const grupo = TAB_GROUP[state.tab];
-    const abas = (GROUPS.find((g) => g[0] === grupo) || GROUPS[0])[2];
-    return `<div class="adm-nav">
-        <div class="adm-groups" role="tablist" aria-label="Seções">${GROUPS.map(([id, label]) => `<button type="button" class="chip" role="tab" data-group="${id}" aria-selected="${grupo === id}">${esc(label)}</button>`).join("")}</div>
-        ${abas.length > 1 ? `<div class="adm-tabs" role="tablist" aria-label="Painéis de ${esc((GROUPS.find((g) => g[0] === grupo) || [])[1] || "")}">${abas.map(([id, label]) => `<button type="button" class="chip" role="tab" data-tab="${id}" aria-selected="${state.tab === id}">${esc(label)}</button>`).join("")}</div>` : ""}
+    const grupo = GROUPS.find((g) => g[0] === TAB_GROUP[state.tab]) || GROUPS[0];
+    return `<div class="adm-onde">
+        <label class="adm-select-rot"><span class="sr-only">Painel</span><select class="adm-select" data-nav>${GROUPS.map(([id, label, abas]) => `<optgroup label="${esc(label)}">${abas.map(([t, l]) => `<option value="${t}"${state.tab === t ? " selected" : ""}>${esc(l)}</option>`).join("")}</optgroup>`).join("")}</select></label>
+        <p class="adm-titulo"><span>${esc(grupo[1])}</span>${esc(TAB_NOME[state.tab] || "")}</p>
       </div>
       <div class="adm-period" role="group" aria-label="Período">${PERIODS.map((p) => `<button type="button" class="chip" data-days="${p}" aria-pressed="${state.days === p}">${p} dias</button>`).join("")}</div>`;
+  }
+  // Barra lateral (desktop): todos os grupos e abas à vista.
+  function lateral() {
+    const atual = TAB_GROUP[state.tab];
+    return GROUPS.map(([id, label, abas]) => `<div class="adm-side-grupo${atual === id ? " is-atual" : ""}">
+        <p class="adm-side-titulo">${iconeGrupo(id)}<span>${esc(label)}</span></p>
+        <ul>${abas.map(([t, l]) => `<li><button type="button" data-tab="${t}"${state.tab === t ? ' aria-current="page"' : ""}>${esc(l)}</button></li>`).join("")}</ul>
+      </div>`).join("");
   }
 
   function onClick(e) {
@@ -1848,7 +2548,26 @@ if (v === "b") { /* versão nova */ }</pre>
     } else if (t.dataset.aparelho) {
       state.aparelho = t.dataset.aparelho;
       state.pages.erros = 1;
-      render();
+      render(true);
+    } else if (t.dataset.metrica) {
+      state.metrica = t.dataset.metrica;
+      render(true);
+    } else if (t.dataset.pct) {
+      state.pct = t.dataset.pct === "1";
+      render(true);
+    } else if (t.dataset.areaFiltro) {
+      state.areaFiltro = t.dataset.areaFiltro;
+      render(true);
+    } else if (t.dataset.equipe) {
+      try { localStorage.setItem(EQUIPE, t.dataset.equipe); } catch (err) { /* sem storage, nada a fazer */ }
+      render(true);
+    } else if (t.dataset.notaDel) {
+      if (!window.confirm("Apagar este marco?")) return;
+      escreve("admin_nota_delete", { p_id: Number(t.dataset.notaDel) }, ["notas"]);
+    } else if (t.dataset.lojaDel) {
+      const [dia, loja, metrica] = t.dataset.lojaDel.split("|");
+      if (!window.confirm("Apagar este número?")) return;
+      escreve("admin_app_loja_save", { p_dia: dia, p_loja: loja, p_metrica: metrica, p_valor: null }, ["plataformas"]);
     } else if (t.dataset.days) {
       state.days = Number(t.dataset.days) || 30;
       state.pages = {};
@@ -1906,6 +2625,23 @@ if (v === "b") { /* versão nova */ }</pre>
             : r && r.ate ? `${quem}: sem anúncio até ${dataBR(r.ate)}.`
               : "Não deu certo — tente de novo em instantes.";
       });
+    } else if (f.matches("[data-nota-form]")) {
+      e.preventDefault();
+      const texto = String(f.texto.value || "").trim();
+      if (!f.dia.value || !texto) return;
+      escreve("admin_nota_save", { p_dia: f.dia.value, p_texto: texto, p_tipo: f.tipo.value }, ["notas"]);
+    } else if (f.matches("[data-loja-form]")) {
+      e.preventDefault();
+      const bruto = String(f.valor.value || "").trim();
+      // "1.234,5" (pt) e "1234.5" viram o mesmo número; em branco apaga.
+      const valor = bruto === "" ? null : Number(bruto.indexOf(",") >= 0 ? bruto.replace(/\./g, "").replace(",", ".") : bruto);
+      if (!f.dia.value || (valor !== null && !(valor >= 0))) return;
+      escreve("admin_app_loja_save", { p_dia: f.dia.value, p_loja: f.loja.value, p_metrica: f.metrica.value, p_valor: valor }, ["plataformas"]).then((ok) => {
+        const box = root.querySelector("[data-loja-msg]");
+        if (!box) return;
+        box.hidden = false;
+        box.textContent = ok === true ? (valor === null ? "Apagado." : "Salvo.") : "Não salvou: confira o dia (não pode ser no futuro) e o valor (nota até 5, travamentos até 100%).";
+      });
     } else if (f.matches("[data-portal-form]")) {
       e.preventDefault();
       shared.adminRpc("admin_partner_link_create", 0, { p_loja: f.loja.value, p_rotulo: f.rotulo.value || null }).then((token) => {
@@ -1926,8 +2662,17 @@ if (v === "b") { /* versão nova */ }</pre>
     render();
   }
 
-  let seq = 0;
-  async function render() {
+  function onChange(e) {
+    const s = e.target;
+    if (s.matches && s.matches("select[data-nav]") && s.value && s.value !== state.tab) go(s.value);
+    else if (s.matches && s.matches("select[data-metrica-sel]")) { state.metrica = s.value; render(true); }
+  }
+
+  // `suave` = repinta a aba com o que já está em cache (trocar a métrica do
+  // gráfico, o filtro de área, Número | %), sem o "Carregando…" piscar e a
+  // página pular.
+  let seq = 0, avisoEquipe = false;
+  async function render(suave) {
     const my = ++seq;
     if (!document.getElementById("admBody")) {
       // 1ª pintura: a admin_dashboard decide se é admin e se o banco está no
@@ -1943,15 +2688,30 @@ if (v === "b") { /* versão nova */ }</pre>
         root.innerHTML = `<p class="empty-state">Acesso restrito — entre com a conta de admin.</p>`;
         return;
       }
-      root.innerHTML = `<div class="adm-toolbar" id="admToolbar"></div><div id="admBody" class="adm-body"></div><p class="admin-note" id="admNote"></p>`;
+      root.innerHTML = `<div class="adm-shell"><nav class="adm-side" id="admSide" aria-label="Painéis do admin"></nav><div class="adm-main"><div class="adm-toolbar" id="admToolbar"></div><div id="admBody" class="adm-body"></div><p class="admin-note" id="admNote"></p></div></div>`;
       root.addEventListener("click", onClick);
       root.addEventListener("submit", onSubmit);
+      root.addEventListener("change", onChange);
       let quadro = 0;
       window.addEventListener("resize", () => { cancelAnimationFrame(quadro); quadro = requestAnimationFrame(ajustaKit); });
+      // O navegador em que o painel abre é do dono: a 1ª vez, ele deixa de
+      // contar nas estatísticas sozinho (Técnico › Medição desfaz).
+      try {
+        if (localStorage.getItem(EQUIPE) == null) { localStorage.setItem(EQUIPE, "1"); avisoEquipe = true; }
+      } catch (err) { /* sem storage, segue contando */ }
     }
     document.getElementById("admToolbar").innerHTML = nav();
+    const lado = document.getElementById("admSide");
+    lado.innerHTML = lateral();
+    // 30 abas não cabem na altura da tela: a lateral rola sozinha até a aba
+    // aberta quando ela está fora de vista (a lateral é a referência do
+    // offsetTop, por ser sticky).
+    const aberta = lado.querySelector("[aria-current]");
+    if (aberta && (aberta.offsetTop < lado.scrollTop || aberta.offsetTop + aberta.offsetHeight > lado.scrollTop + lado.clientHeight)) {
+      lado.scrollTop = Math.max(0, aberta.offsetTop - lado.clientHeight / 3);
+    }
     const body = document.getElementById("admBody");
-    body.innerHTML = `<p class="empty-state">Carregando…</p>`;
+    if (!suave) body.innerHTML = `<p class="empty-state">Carregando…</p>`;
     body.setAttribute("aria-busy", "true");
     paginaDoKit(state.tab === "parceiros");
 
@@ -1977,10 +2737,20 @@ if (v === "b") { /* versão nova */ }</pre>
       const aviso = alarmes.length && state.tab !== "medicao"
         ? `<p class="adm-banner"><strong>${alarmes.length === 1 ? "Um evento parou" : `${alarmes.length} eventos pararam`} de chegar</strong> nas últimas 48h — normalmente é medição quebrada, não falta de uso. <button type="button" class="chip adm-mini" data-tab="medicao">Ver em Medição</button></p>`
         : "";
-      const pinta = (tab) => aviso + RENDER[tab](data);
+      const daEquipe = avisoEquipe
+        ? `<p class="adm-banner adm-banner-info">Este navegador deixou de contar nas estatísticas — é o seu, e com o tráfego de hoje o dono navegando aparecia nos números. Pra voltar a contar (testar um evento em produção): Técnico › Medição › Este navegador.</p>`
+        : "";
+      avisoEquipe = false;
+      const pinta = (tab) => daEquipe + aviso + RENDER[tab](data);
       const tab = state.tab;
       if (tab === "sets") state.metaPendente = true;
-      body.innerHTML = pinta(tab);
+      // Aba que quebra ao desenhar (dado num formato que ela não espera) não
+      // pode deixar o painel parado em "Carregando…": mostra o erro e segue.
+      try { body.innerHTML = pinta(tab); } catch (err) {
+        body.innerHTML = `<p class="adm-banner">Esta aba não conseguiu desenhar: <code>${esc(err && err.message)}</code>. As outras seguem funcionando.</p>`;
+        setTimeout(() => { throw err; });   // vai pro rastreio de erros como qualquer outro
+        return;
+      }
       ajustaKit();
       // Nomes das cartas chegam depois (catálogo estático): pinta com id e
       // repinta com nome, sem segurar a aba esperando o catálogo.
@@ -1991,7 +2761,7 @@ if (v === "b") { /* versão nova */ }</pre>
     }
     const d = state.cache[`dash:${state.days}`];
     document.getElementById("admNote").textContent = d
-      ? `Atualizado em ${new Date(d.generated_at).toLocaleString("pt-BR")} · janela de ${d.days} dias desde ${new Date(d.since).toLocaleDateString("pt-BR")}. "Gente" = pageview com JS executado, user-agent de navegador e sem webdriver; visitantes contam uuid anônimo first-party (só com consentimento de medição), logados contam a conta pelo JWT. O Cloudflare Web Analytics mede o resto: país, navegador, Core Web Vitals e o tráfego que nem chega a rodar JS.`
+      ? `Atualizado em ${new Date(d.generated_at).toLocaleString("pt-BR")} · janela de ${d.days} dias desde ${new Date(d.since).toLocaleDateString("pt-BR")}. "Gente" = pageview com JS executado, user-agent de navegador e sem webdriver; visitantes contam uuid anônimo first-party (só com consentimento de medição), logados contam a conta pelo JWT. O Cloudflare Web Analytics mede o resto: país, navegador, Core Web Vitals e o tráfego que nem chega a rodar JS.${equipe() ? " Este navegador não conta nas estatísticas (Técnico › Medição)." : ""}`
       : "";
   }
   render();

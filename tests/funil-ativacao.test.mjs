@@ -30,8 +30,13 @@ function limitePorMinuto() {
   const arqs = readdirSync(dir).filter((f) => f.endsWith(".sql")).sort();
   const define = arqs.filter((f) => /create or replace function public\.events_guard\(\)/.test(ler(join("supabase/migrations", f))));
   const sql = ler(join("supabase/migrations", define[define.length - 1]));
-  const m = /_rate_ok\('events',\s*(\d+)\)/.exec(sql);
-  assert.ok(m, "não achei o _rate_ok('events', N) na migração do events_guard");
+  // Desde a 20261006a o balde de UMA pessoa é o por visitante (60/min por
+  // anon); o 'events' puro virou o teto do IP inteiro (600). Antes, este
+  // teste achava o 60 num COMENTÁRIO do cabeçalho da 06a e passava por
+  // sorte — a 20261009a, sem o comentário, leu o 600.
+  const corpo = sql.slice(sql.indexOf("create or replace function public.events_guard()"));
+  const m = /_rate_ok\('events:' \|\| left\(coalesce\(new\.anon, ''\), 64\),\s*(\d+)\)/.exec(corpo) || /_rate_ok\('events',\s*(\d+)\)/.exec(corpo);
+  assert.ok(m, "não achei o limite por visitante (ou o antigo por IP) no events_guard");
   return Number(m[1]);
 }
 

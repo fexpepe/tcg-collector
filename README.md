@@ -391,6 +391,17 @@ pela da imagem — renomear o PNG não adianta. Force o re-scrape no
 no [Card Validator](https://cards-dev.twitter.com/validator) do X; o WhatsApp
 solta sozinho em algumas semanas.
 
+### Painel `/admin` (v3)
+
+Oito grupos numa barra lateral (no celular, um seletor): Visão geral,
+Aquisição, Páginas (o site agrupado em áreas), Engajamento, Usuários,
+Mercado, App e plataformas (navegador × app instalado × Android × iOS, e a
+soma) e Técnico. Os números do Resumo vêm com o período anterior; os gráficos
+de tempo, com média de 7 dias e marcos. A análise da medição, o que cada
+gráfico quer dizer e o plano do app estão em
+[docs/PLANO-ANALYTICS-3.md](docs/PLANO-ANALYTICS-3.md). Área nova do site =
+uma linha no `AREAS` do `src/admin.js`.
+
 ### Kit para parceiros (PDF)
 
 O material que vai pra loja, anunciante e investidor sai do `/admin` › Visão

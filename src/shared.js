@@ -304,6 +304,16 @@
   function isStandalonePWA() {
     return (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) || navigator.standalone === true;
   }
+  // App das lojas (Capacitor, Android e iOS — docs/PLANO-ANALYTICS-3.md): a
+  // ponte nativa existe desde o início da página, antes de qualquer script.
+  function appNativo() {
+    const C = window.Capacitor;
+    return !!(C && C.isNativePlatform && C.isNativePlatform());
+  }
+  // Onde a medição vale: o site de produção e o app. O app roda em
+  // capacitor://localhost (iOS) e https://localhost (Android), e a trava
+  // antiga, só por host, deixaria o app inteiro sem um evento.
+  function emProducao() { return /(^|\.)sleevu\.app$/i.test(location.hostname) || appNativo(); }
   // Mostra o botão quando dá pra instalar: tem o prompt (Android/desktop) ou é
   // iOS (dica manual) — e o app ainda não está instalado/aberto em standalone.
   function canInstallPWA() { return !isStandalonePWA() && (!!deferredInstallPrompt || isIOSDevice()); }
@@ -3842,7 +3852,7 @@
     // sabe quanto do público o painel enxerga. Vai só a decisão, no momento
     // dela, pra um contador por dia — sem id, sem página, sem nada que ligue a
     // você (o mesmo grão do contador de views de carta). Só em produção.
-    if (cat === "analytics" && antes !== !!valor && AUTH_ENABLED && /(^|\.)sleevu\.app$/i.test(location.hostname)) {
+    if (cat === "analytics" && antes !== !!valor && AUTH_ENABLED && emProducao()) {
       try {
         fetch(`${SUPABASE_URL}/rest/v1/rpc/consent_tally`, {
           method: "POST", headers: authHeaders(), body: JSON.stringify({ p_on: !!valor }), keepalive: true
@@ -3936,6 +3946,8 @@
       if (iab) p.iab = iab;
       // Aberto como app instalado: o /admin separa a retenção de app × navegador.
       if (isStandalonePWA()) p.s = 1;
+      // App das lojas: android | ios (Web × app no /admin, admin_plataformas).
+      if (appNativo()) p.pl = window.Capacitor.getPlatform();
       // Campanha (utm_source/utm_campaign) quando a URL traz. Só o rótulo, em
       // minúsculas e cortado — é o que o /admin usa como CANAL da 1ª visita,
       // pra medir quem cada campanha traz que FICA, não só quem chega.
@@ -3967,7 +3979,10 @@
   const semErro = () => {};
   function mandaEvento(nome, props) {
     if (!AUTH_ENABLED || !hasConsent("analytics")) return;
-    if (!/(^|\.)sleevu\.app$/i.test(location.hostname)) return;
+    if (!emProducao()) return;
+    // Navegador da equipe (marcado no /admin): com ~15 visitantes por dia,
+    // o dono navegando e testando era uma fatia visível do tráfego.
+    try { if (localStorage.getItem("sleevu-equipe-v1") === "1") return; } catch (e) { /* sem storage, mede */ }
     try {
       const corpo = { name: nome, path: analyticsPath(), anon: anonId(), game: currentGame() };
       if (props) corpo.props = props;
@@ -3979,7 +3994,17 @@
       }).catch(semErro);
     } catch (e) { /* analytics nunca quebra a página */ }
   }
-  function logPageview() { mandaEvento("pageview", contextoPageview()); }
+  // No app, a versão do binário (Play/App Store) vai junto: é o que diz se
+  // um JS novo do live update pode chamar um plugin que a versão instalada
+  // não tem. Ela só sai assíncrona da ponte; 800 ms de teto, e sem ela o
+  // pageview vai do mesmo jeito.
+  function logPageview() {
+    const p = contextoPageview(), app = p.pl && window.Capacitor.Plugins && window.Capacitor.Plugins.App;
+    if (!app || !app.getInfo) return mandaEvento("pageview", p);
+    Promise.race([app.getInfo(), new Promise((r) => setTimeout(r, 800))])
+      .then((i) => { if (i && i.version) p.av = String(i.version).slice(0, 20); }, semErro)
+      .then(() => mandaEvento("pageview", p));
+  }
   // Eventos de PRODUTO (E6). Cada um é uma AÇÃO CONCLUÍDA que a pessoa escolheu
   // fazer — não um clique de caminho. É o que responde "quantos importaram de
   // fato", pergunta que hoje se responde no palpite. Os nomes têm que existir na
@@ -4093,18 +4118,25 @@
     let visivelDesde = document.visibilityState === "visible" ? Date.now() : 0;
     let acumulado = 0, enviado = false;
     const pausa = () => { if (visivelDesde) { acumulado += Date.now() - visivelDesde; visivelDesde = 0; } };
-    document.addEventListener("visibilitychange", () => {
-      if (document.visibilityState === "visible") { if (!visivelDesde) visivelDesde = Date.now(); }
-      else pausa();
-    });
-    window.addEventListener("pagehide", () => {
+    const envia = () => {
       pausa();
       if (enviado || acumulado < 2000) return;
       enviado = true;
       let d = "d";
       try { d = (window.matchMedia && matchMedia("(pointer: coarse)").matches) ? "m" : "d"; } catch (e) { /* sem aparelho */ }
       logEvento("page_time", { ms: Math.min(Math.round(acumulado), 1800000), d });
+    };
+    // No app das lojas, ir pro segundo plano NÃO dispara pagehide (é a mesma
+    // página, só escondida) e o sistema pode fechar o app ali: a última tela
+    // da visita sumiria e o tempo do app sairia menor que o da web. Lá, o
+    // envio sai no 1º "escondeu" (o que voltar depois na mesma tela não
+    // soma). Na web segue só o pagehide, pra série não mudar de régua.
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible") { if (!visivelDesde) visivelDesde = Date.now(); }
+      else if (appNativo()) envia();
+      else pausa();
     });
+    window.addEventListener("pagehide", envia);
   }
 
   // EXPERIMENTOS A/B (Analytics 2.1). Uso:
@@ -4170,7 +4202,7 @@
     try { if (window.__sleevuErroPoe) window.__sleevuErroPoe({ k: k || "js", m: message, s: source }); } catch (e) { /* rastreio nunca quebra a página */ }
   }
   function initErros() {
-    if (!AUTH_ENABLED || !/(^|\.)sleevu\.app$/i.test(location.hostname)) return; // só produção
+    if (!AUTH_ENABLED || !emProducao()) return; // só produção
     let modulo = null, minimos = 3;
     const envio = () => ({
       url: `${SUPABASE_URL}/rest/v1/events`,
@@ -4260,7 +4292,7 @@
     if (!AUTH_ENABLED || !card || !card.id) return;
     // Só produção, mesma razão do logPageview: abrir cartas em localhost
     // testando empurrava elas pro ranking de "mais vistas" do site real.
-    if (!/(^|\.)sleevu\.app$/i.test(location.hostname)) return;
+    if (!emProducao()) return;
     try {
       const game = normalizeGame(card.game || currentGame());
       const k = `tcg-viewed:${game}:${card.id}`;
@@ -4301,7 +4333,7 @@
   function contributePrice(opts) {
     const o = opts || {};
     if (!AUTH_ENABLED || !communityPricesEnabled() || !getSession()) return;
-    if (!/(^|\.)sleevu\.app$/i.test(location.hostname)) return;
+    if (!emProducao()) return;
     const v = Number(o.valueBrl);
     if (!(v > 0) || v > 1000000) return;
     if (!o.cardId || !o.variant || !o.cond) return;
@@ -4340,7 +4372,7 @@
   // mexer no ranking do site real) e falha em silêncio.
   function logDeckView(shareId) {
     if (!AUTH_ENABLED || !shareId) return;
-    if (!/(^|\.)sleevu\.app$/i.test(location.hostname)) return;
+    if (!emProducao()) return;
     try {
       const k = `tcg-deckviewed:${shareId}`;
       if (sessionStorage.getItem(k)) return;
