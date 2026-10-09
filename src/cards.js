@@ -196,7 +196,7 @@
     }
     achadas.forEach((card) => cardsById.set(card.id, card));
     priceMemo = new Map();
-    parcial = { chave, cards: achadas };
+    parcial = { chave, cards: achadas, daBorda: q.length >= 2 };
     hydrateFiltersDoManifest(achadas); // raridades do resultado: o filtro funciona sem o catálogo
     render({ resetCount: true });
   }
@@ -399,8 +399,13 @@
     // IGUAL sobre ela. A chave guarda texto e set: apagar "pikachu" pra "p" não
     // pode seguir filtrando sobre o resultado de "pikachu".
     const base = catalogPronto ? cards : (parcialValida() ? parcial.cards : []);
+    // O que veio da BORDA já casou o texto — inclusive pelo nome em inglês
+    // das cartas japonesas, que a carta da resposta não traz (sem nameEn).
+    // Refiltrar no cliente derrubava justo essas: "charizard" perdia a
+    // MリザードンEX e outras 11 japonesas que a borda tinha achado.
+    const textoJaCasado = !catalogPronto && parcialValida() && parcial.daBorda;
     return base.filter((card) => {
-      if (!shared.matchesCardQuery(card, elements.search.value)) return false;
+      if (!textoJaCasado && !shared.matchesCardQuery(card, elements.search.value)) return false;
       if (setValue && card.set !== setValue) return false;
       if (languageValue && shared.normalizeCardLanguage(card.language) !== languageValue) return false;
       if (rarityValue && card.rarity !== rarityValue) return false;
