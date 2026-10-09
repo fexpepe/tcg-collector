@@ -241,3 +241,18 @@ test("tela do set: nome de set com HTML sai escapado no índice e no <head>", ()
   assert.doesNotMatch(p.corpoHtml, /<img src=x/);
   assert.doesNotMatch(cabecaDaRota(p, { caminho: "/games/pokemon/img-src-x", set: nome }), /<img src=x/);
 });
+
+// Set gigante (o "The List" do Magic tem 5,6 mil cartas): o JSON-LD no <head>
+// leva só as primeiras MAX_ITENS_LD, com o total no numberOfItems; o índice no
+// pé da tela (o caminho do robô até cada página de carta) segue completo.
+test("set gigante: o ItemList do JSON-LD para no teto, o índice do pé não", async () => {
+  const { pecasDoSet: pecas, MAX_ITENS_LD } = await import("../functions/_lib/pagina-set.js");
+  const jogo = { url: "magic-the-gathering", nome: "Magic: The Gathering", game: "magic" };
+  const cartas = Array.from({ length: MAX_ITENS_LD + 50 }, (_, i) => ({ id: `mtg-plst-${i + 1}`, name: `Carta ${i + 1}`, number: String(i + 1), set: "The List", setId: "plst", language: "en" }));
+  const p = pecas({ jogo, slug: "the-list", nome: "The List", cartas, slugs: slugsDasCartas(cartas) });
+  const [colecao] = [...cabecaDaRota(p, { caminho: "/games/magic-the-gathering/the-list" })
+    .matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map((m) => JSON.parse(m[1]));
+  assert.equal(colecao.mainEntity.numberOfItems, MAX_ITENS_LD + 50);
+  assert.equal(colecao.mainEntity.itemListElement.length, MAX_ITENS_LD);
+  assert.equal((p.corpoHtml.match(/<li>/g) || []).length, MAX_ITENS_LD + 50, "o índice do pé leva todas");
+});

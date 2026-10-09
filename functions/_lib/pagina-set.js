@@ -107,6 +107,7 @@ export function repDoSet(cards) {
 // jogo: a entrada do registro (functions/_lib/jogos.js); slug: o do set no
 // endereço; cartas: todas as da página (as do mapa, fora as aposentadas);
 // slugs: Map id -> nome da carta no endereço (slugsDasCartas).
+export const MAX_ITENS_LD = 300; // cartas no ItemList do JSON-LD (ver `colecao`)
 export function pecasDoSet({ jogo, slug, nome, cartas, slugs }) {
   const L = SET_L10N.pt;
   const ordenadas = [...(cartas || [])].sort((a, b) => cmpNumber(a.number, b.number));
@@ -125,6 +126,11 @@ export function pecasDoSet({ jogo, slug, nome, cartas, slugs }) {
   // CollectionPage com a lista (nome + endereço de cada carta). Sem a imagem de
   // cada uma, que a página estática antiga levava: aqui o JSON-LD viaja dentro
   // da tela do app, e 300 URLs de imagem pesavam no HTML de quem só quer usar.
+  // As primeiras MAX_ITENS_LD cartas (2026-10-08): o JSON-LD mora no <head>, e
+  // o "The List" do Magic (5,6 mil cartas) saía com 1,5 MB de HTML (176 KB em
+  // brotli) antes de o navegador chegar ao corpo. O numberOfItems segue com o
+  // total, e o caminho do robô até TODAS as páginas de carta é o índice no pé
+  // da tela (corpoHtml, abaixo), que continua completo.
   const colecao = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
@@ -135,7 +141,7 @@ export function pecasDoSet({ jogo, slug, nome, cartas, slugs }) {
     mainEntity: {
       "@type": "ItemList",
       numberOfItems: lista.length,
-      itemListElement: lista.map((c, i) => ({ "@type": "ListItem", position: i + 1, name: rotulo(c), url: `${ORIGEM}${urlDaCarta(c)}` }))
+      itemListElement: lista.slice(0, MAX_ITENS_LD).map((c, i) => ({ "@type": "ListItem", position: i + 1, name: rotulo(c), url: `${ORIGEM}${urlDaCarta(c)}` }))
     }
   };
   // Trilha Jogos > jogo > set: o Google troca a URL crua do resultado por ela.
