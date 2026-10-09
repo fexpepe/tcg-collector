@@ -398,6 +398,7 @@
   // um dataset ausente não pode derrubar a página inteira.
   var resolveReady;
   var catalogReady = new Promise(function (res) { resolveReady = res; });
+  var catalogoAtrasado = false; // o teto soltou o catalogReady com arquivo pendente (ver abaixo)
   // Dedupe: a detail.html pede `indexes:auto` + `indexes:sets`, e com ?type=set
   // os dois resolvem pro mesmo arquivo.
   var files = [];
@@ -432,6 +433,15 @@
   else {
     var pending = files.length;
     var done = function () { if (--pending === 0) resolveReady(); };
+    // TETO (2026-10-08): um <script> de catálogo cuja conexão pendura (nem
+    // load, nem error) segurava o catalogReady pra sempre — a grade ficava em
+    // esqueleto com "Carregando", sem erro nem saída, e o cartão de emergência
+    // não aparece porque o app já subiu. Passados 30 s (folga até pra rede
+    // muito fraca) ele resolve assim mesmo e marca o atraso: sem o manifest,
+    // o shared.js (awaitCatalog) vira o erro com "Tentar de novo".
+    setTimeout(function () {
+      if (pending > 0) { catalogoAtrasado = true; resolveReady(); }
+    }, 30000);
     var head = document.head || document.documentElement;
     for (var j = 0; j < files.length; j++) {
       var file = files[j];
@@ -452,6 +462,7 @@
     manifest: MANIFEST,
     imgMirrorHosts: IMG_MIRROR_HOSTS,
     catalogReady: catalogReady,
+    get catalogoAtrasado() { return catalogoAtrasado; },
     // "set" no endereço /games/<jogo>/<set>[/<carta>], senão o ?type= (ver tipoDaTela).
     tipo: tipoDaTela(),
     // O registro INTEIRO, não só o jogo da sessão: nas páginas neutras a sessão
