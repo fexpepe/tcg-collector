@@ -51,10 +51,20 @@
 # com a URL mudando a cada versão, revalidar deixa de ser necessário e as ~6
 # requisições condicionais por navegação somem. Se algum dia o passo de hash sair
 # do build, estes valores precisam VOLTAR ao no-cache.
+#
+# `! Link` nos ARQUIVOS (2026-10-08): no deploy o hash-assets pendura no bloco
+# `/*` o `Link: </styles.<hash>.css>; rel=preload` do Early Hints, e ele ia em
+# TODA resposta, inclusive nos JS, CSS, fontes e logos imutáveis. A Cloudflare
+# guarda esses arquivos por semanas com o header do deploy em que foram
+# cacheados, e o Chrome segue `Link: preload` de sub-recurso: cada visita fria
+# baixava de 1 a 10 núcleos de CSS de builds antigos que ninguém usa (até ~330
+# KB, com prioridade máxima). O Early Hints continua: ele sai da resposta HTML.
 /src/*
   Cache-Control: no-cache
+  ! Link
 /styles.css
   Cache-Control: no-cache
+  ! Link
 
 # Fonte da marca: conteúdo imutável (o .woff2 do Outfit v15 não muda). Cache
 # longo evita re-baixar 31KB a cada visita. Ao trocar a fonte, RENOMEIE o
@@ -75,6 +85,7 @@
 # navegadores que já a viram.
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
+  ! Link
 
 # Catálogo (data/*): sem regra, caía no default do Pages (max-age=0,
 # must-revalidate) e toda revisita pagava uma requisição condicional por chunk —
@@ -83,6 +94,7 @@
 # (HTML/JS com hash) continua network-first, então só o dado atrasa até 1h.
 /data/*
   Cache-Control: public, max-age=3600, stale-while-revalidate=86400
+  ! Link
 
 # Calendário de lançamentos (.ics). Content-Type explícito porque é ele que faz
 # o celular abrir no app de calendário em vez de baixar como texto solto. Cache
