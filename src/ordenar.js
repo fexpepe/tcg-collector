@@ -143,7 +143,11 @@
     const locale = shared.getLocale();
     const nomeDe = (x) => String(carta(x).name || "");
     const porNum = (a, b) => shared.compareCardNumbers(carta(a).number, carta(b).number);
-    const porNome = (a, b) => nomeDe(a).localeCompare(nomeDe(b), locale, { sensitivity: "base", numeric: true });
+    // UM Collator por ordenação (2026-10-08): o localeCompare com locale e
+    // opções monta a regra de comparação a CADA chamada — ordenar o "The List"
+    // (5,6 mil cartas) por nome custava 279 ms por render no desktop.
+    const colacao = new Intl.Collator(locale, { sensitivity: "base", numeric: true });
+    const porNome = (a, b) => colacao.compare(nomeDe(a), nomeDe(b));
     const desempate = (a, b) => porNum(a, b) || porNome(a, b);
     // Número com "desconhecido vai pro fim" nos dois sentidos: carta sem preço
     // não é "a mais barata", é uma que a gente não sabe.
