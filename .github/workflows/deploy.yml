@@ -1022,6 +1022,42 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
+      # Arquivos-ÍNDICE do catálogo frescos na borda (2026-10-09). A borda da
+      # Cloudflare guarda /data/* por horas (a zona sobe o max-age do _headers
+      # pra 4 h) e o deploy do Pages NÃO limpa essa cópia: conferido em
+      # produção, 41 min depois de um deploy a borda ainda servia o manifest
+      # anterior. É o manifest que diz quais sets existem (o set novo no dia do
+      # lançamento) e o que o cliente pode usar (pc, hs); os mapas de /games e
+      # as fatias de índice vão juntos — os mesmos que o sw.js revalida
+      # (INDICE_DO_CATALOGO). Os chunks seguem no tempo da borda.
+      # Opcional: precisa dos secrets CF_ZONE_ID e CF_PURGE_TOKEN (token com
+      # Zone > Cache Purge na zona sleevu.app; o mesmo par liga a purga do
+      # espelho de imagens). Sem eles, o passo só avisa.
+      - name: Purga da borda os arquivos-índice do catálogo
+        if: github.ref == 'refs/heads/main' && env.CF_API_TOKEN != ''
+        continue-on-error: true
+        env:
+          CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
+          CF_PURGE_TOKEN: ${{ secrets.CF_PURGE_TOKEN }}
+        run: |
+          if [ -z "$CF_ZONE_ID" ] || [ -z "$CF_PURGE_TOKEN" ]; then
+            echo "::notice::Sem CF_ZONE_ID/CF_PURGE_TOKEN: o manifest e os índices seguem com a cópia do deploy anterior na borda até expirar."
+            exit 0
+          fi
+          lista="$RUNNER_TEMP/indices.txt"
+          find data -type f \( -name 'manifest.generated.js' -o -name 'indexes-*.json' -o -name 'cmdk-names*.json' -o -path '*/game-pages/*' \) \
+            | sed 's#^#https://sleevu.app/#' > "$lista"
+          total=$(wc -l < "$lista"); ok=0
+          split -l 30 "$lista" "$RUNNER_TEMP/lote-"   # 30 URLs por pedido: o teto do plano grátis
+          for lote in "$RUNNER_TEMP"/lote-*; do
+            corpo=$(node -e 'const fs=require("fs");console.log(JSON.stringify({files:fs.readFileSync(process.argv[1],"utf8").split("\n").filter(Boolean)}))' "$lote")
+            code=$(curl -sS -o "$RUNNER_TEMP/purga.txt" -w "%{http_code}" --max-time 30 -X POST \
+              "https://api.cloudflare.com/client/v4/zones/$CF_ZONE_ID/purge_cache" \
+              -H "Authorization: Bearer $CF_PURGE_TOKEN" -H "Content-Type: application/json" --data "$corpo") || true
+            if [ "$code" = "200" ]; then ok=$((ok + $(wc -l < "$lote"))); else echo "::warning::purga da borda respondeu HTTP $code: $(head -c 200 "$RUNNER_TEMP/purga.txt")"; fi
+          done
+          echo "Purga da borda: $ok de $total arquivos-índice."
+
       # IndexNow, parte 2 de 2: com o site novo no ar, manda os lotes que a
       # parte 1 separou. Um POST vale pra Bing, Yandex, Seznam, Naver e Yep.
       # 200 = aceito; 202 = aceito, chave em verificação. Outro código vira
