@@ -8,7 +8,7 @@
 // ?cat= / ?jogo= / ?tag= (os links da trilha e das etiquetas do post) já saem
 // filtrados daqui. A canonical é sempre /blog: filtro é navegação, não página
 // nova pro Google.
-import { B, supabase, COLUNAS_LISTA, setHtml, respostaFinal, daBorda, guardaNaBorda } from "./_comum.js";
+import { B, supabase, COLUNAS_LISTA, setHtml, respostaFinal, daBorda, guardaNaBorda, chaveDaBorda } from "./_comum.js";
 import { jsonLdSeguro } from "../_lib/json-ld.js";
 
 export const POR_PAGINA = 36;
@@ -40,12 +40,14 @@ export async function onRequestGet(context) {
   if (f.cat) q.set("cat", f.cat);
   if (f.jogo) q.set("jogo", f.jogo);
   if (f.tag) q.set("tag", f.tag);
-  const chave = new Request(url.origin + "/blog" + (q.toString() ? "?" + q : ""), { method: "GET" });
+  // A casca primeiro: o build dela entra na chave do cache (ver chaveDaBorda).
+  const cascaResp = await env.ASSETS.fetch(new URL("/blog", request.url));
+  if (!cascaResp.ok) return cascaResp;
+  const cascaHtml = await cascaResp.text();
+  const chave = chaveDaBorda(url.origin, "/blog" + (q.toString() ? "?" + q : ""), cascaHtml);
   const guardada = await daBorda(chave, url.searchParams.has("fresco"));
   if (guardada) return guardada;
-
-  const shell = await env.ASSETS.fetch(new URL("/blog", request.url));
-  if (!shell.ok) return shell;
+  const shell = new Response(cascaHtml, cascaResp);
 
   let posts = [];
   let falhou = false;

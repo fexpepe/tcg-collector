@@ -112,8 +112,19 @@ export function respostaFinal(transformada, status, segundosNaBorda) {
   return new Response(transformada.body, { status: status || 200, headers });
 }
 
-// Cache de borda (caches.default) com chave fixa por caminho: ?utm_… e afins
-// não criam cópia nova. `fresco` força remontar (e regrava a cópia).
+// Chave do cache da borda: o caminho (?utm_… e afins não criam cópia nova) e o
+// BUILD da casca (2026-10-08). A cópia guardada é do build em que foi montada e
+// pede os arquivos com hash dele; por até SEGUNDOS_NA_BORDA depois de cada
+// deploy ela era servida pedindo arquivos que o Pages já não serve. Com o build
+// na chave, a cópia de antes do deploy deixa de ser achada — o mesmo cuidado da
+// tela do set (functions/games). "dev" sem o carimbo.
+export function chaveDaBorda(origem, caminho, cascaHtml) {
+  const build = (/<meta name="sleevu-build" content="([^"]*)"/.exec(String(cascaHtml || "")) || [])[1] || "dev";
+  return new Request(origem + caminho + (caminho.includes("?") ? "&" : "?") + "b=" + encodeURIComponent(build), { method: "GET" });
+}
+
+// Cache de borda (caches.default) pela chave acima. `fresco` força remontar
+// (e regrava a cópia).
 export async function daBorda(chave, fresco) {
   if (fresco) return null;
   try { return (await caches.default.match(chave)) || null; } catch (e) { return null; }

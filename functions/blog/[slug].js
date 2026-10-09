@@ -14,7 +14,7 @@
 //   - Supabase fora       → 503 com a casca vazia: o src/blog.js tenta buscar o
 //                            post do navegador, e o Google volta depois.
 import { B, supabase, cartasDoD1, COLUNAS_POST, COLUNAS_LISTA, ORIGEM,
-  setMeta, setHref, setText, remove, setHtml, naoAchou, respostaFinal, daBorda, guardaNaBorda } from "./_comum.js";
+  setMeta, setHref, setText, remove, setHtml, naoAchou, respostaFinal, daBorda, guardaNaBorda, chaveDaBorda } from "./_comum.js";
 import { jsonLdSeguro } from "../_lib/json-ld.js";
 
 const SEGUNDOS_NA_BORDA = 120;
@@ -67,9 +67,13 @@ export function escolheRelacionados(post, lista) {
   return mesmoJogo.concat(resto).slice(0, 3);
 }
 
+// A casca do post, lida UMA vez: o build dela entra na chave do cache da borda
+// (chaveDaBorda), e cada uso pede uma Response nova do mesmo HTML.
 async function casca(env, request) {
   const r = await env.ASSETS.fetch(new URL("/blog-post", request.url));
-  return r.ok ? r : null;
+  if (!r.ok) return null;
+  const html = await r.text();
+  return { html, nova: () => new Response(html, r) };
 }
 
 export async function onRequestGet(context) {
@@ -82,7 +86,9 @@ export async function onRequestGet(context) {
   // Endereço com maiúscula (link digitado à mão, colado de outro lugar): 301
   // pro canônico, em vez de responder a mesma página em duas URLs.
   if (bruto !== slug) return new Response(null, { status: 301, headers: { Location: url.origin + B.URL_DO_POST(slug), "Cache-Control": "public, max-age=3600" } });
-  const chave = new Request(url.origin + "/blog/" + slug, { method: "GET" });
+  const cascaDoPost = await casca(env, request);
+  if (!cascaDoPost) return naoAchou(env, request);
+  const chave = chaveDaBorda(url.origin, "/blog/" + slug, cascaDoPost.html);
   const fresco = url.searchParams.has("fresco");
   const guardada = await daBorda(chave, fresco);
   if (guardada) return guardada;
@@ -94,9 +100,7 @@ export async function onRequestGet(context) {
   } catch (e) {
     // Supabase fora: a casca sem miolo, com 503. O src/blog.js percebe o miolo
     // vazio e busca o post do navegador.
-    const vazia = await casca(env, request);
-    if (!vazia) return naoAchou(env, request);
-    const r = respostaFinal(vazia, 503, 0);
+    const r = respostaFinal(cascaDoPost.nova(), 503, 0);
     r.headers.set("Retry-After", "60");
     return r;
   }
@@ -116,12 +120,11 @@ export async function onRequestGet(context) {
   }
 
   const lang = B.ROTULOS[post.lang] ? post.lang : "pt";
-  const [cartas, lista, shell] = await Promise.all([
+  const [cartas, lista] = await Promise.all([
     cartasDoD1(env, post.card_refs || [], lang),
-    supabase(env, `/rest/v1/posts?select=${COLUNAS_LISTA}&order=published_at.desc&limit=12`).catch(() => []),
-    casca(env, request)
+    supabase(env, `/rest/v1/posts?select=${COLUNAS_LISTA}&order=published_at.desc&limit=12`).catch(() => [])
   ]);
-  if (!shell) return naoAchou(env, request);
+  const shell = cascaDoPost.nova();
 
   const card = (ref) => cartas.get(ref) || null;
   const r = B.render(post.body_md, { lang, card, ancora: B.URL_DO_POST(post.slug) });
