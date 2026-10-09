@@ -7766,10 +7766,13 @@ html[data-collector-mode] .hb-worth .collector-badge { font-size: 28px; font-wei
 .sx-grid .set-art { min-height: 116px; }
 .sx-grid .set-logo { max-height: 74px; }
 /* Produtos do lançamento como chips no pé do cartão. Até 4 à vista; o "+N"
-   abre o resto (no celular, até 2). */
+   abre o resto (no celular, até 2). inline-block com line-height, não
+   inline-flex: no flex o texto vira item anônimo e o ellipsis não pega — o
+   "3rd Anniversary Tournament Cards" do One Piece saía cortado seco na borda
+   (2026-10-09, quando os chips passaram a valer em todo jogo). */
 .sx-kids { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
 .sx-kid {
-  display: inline-flex; align-items: center; min-height: 30px; padding: 0 9px;
+  display: inline-block; min-height: 30px; line-height: 28px; padding: 0 9px;
   border: 1px solid var(--line); background: var(--panel-strong); color: var(--muted);
   font: inherit; font-size: 12px; font-weight: 700; text-decoration: none; white-space: nowrap; cursor: pointer;
   max-width: 100%; overflow: hidden; text-overflow: ellipsis;
@@ -7806,9 +7809,11 @@ html[data-collector-mode] .hb-worth .collector-badge { font-size: 28px; font-wei
   .sx-cont-rail > .sx-mini { flex: 0 0 82%; scroll-snap-align: start; }
   .sx-grid .set-art { min-height: 96px; }
   .sx-grid .set-logo { max-height: 60px; }
-  .sx-kid { min-height: 44px; }
+  .sx-kid { min-height: 44px; line-height: 42px; }
+  /* O "+1" tinha 31px de largura: alvo de toque de 44px nos dois eixos. */
+  .sx-kid-more { min-width: 44px; text-align: center; }
   .sx-kids:not(.is-open) > a.sx-kid:nth-child(n + 3) { display: none; }
-  .sx-kid-more.sx-so-cel { display: inline-flex; }
+  .sx-kid-more.sx-so-cel { display: inline-block; }
   .sx-kids.is-open > .sx-kid-more { display: none; }
   .sx-n-cel { display: inline; }
   .sx-n-desk { display: none; }
