@@ -98,6 +98,9 @@ aparecer no passo "Lint dos catálogos" do deploy:
 - O set caiu na **categoria certa**. Lorcana, One Piece, Naruto, HxH e DBC
   agrupam pelo `setId` (`group<Jogo>Sets` em [src/app.js](../src/app.js)), e
   um formato de código inédito pode cair em "outros".
+- O set **entrou no cartão certo** (3.4): produto do lançamento ("<Set>
+  Pre-Release Cards", "<Set> Promos") vira chip dentro do cartão do set; set
+  novo da série ("<Set> Vol. 2") ganha cartão próprio.
 - **Filtros**: nada a fazer. As facetas (`GAME_FACETS` em
   [src/facets.js](../src/facets.js)) saem dos campos que o sync grava, e um
   valor inédito aparece sozinho no fim da lista.
@@ -128,6 +131,61 @@ v1"):
   grava o de-para, e a conta de quem marcou migra sozinha. Não há passo manual.
 - Set japonês que a TCGdex não tem entra inteiro pela TCGCSV (ids
   `<CÓDIGO>-<número>-ja`). Código ambíguo precisa de apelido em `ja.alias`.
+
+### 3.4 A página de Sets: o padrão de todo jogo
+
+A página de Sets (`/games/<jogo>`) tem **um visual só**, o do Pokémon e do
+Magic. Ele vale em todo jogo e em toda linha desde 2026-10-09 (antes, 13 jogos
+e as linhas vintage ficavam sem ele). Jogo ou linha nova já nasce assim; não
+há o que ligar. São três peças, todas no
+[src/app.js](../src/app.js), num caminho só
+(`getViewItems` → `aninhaPorNome` → `agrupaSetsDoJogo` → `vitrineDoTopo`):
+
+1. **Produtos do lançamento dentro do cartão do set** (`aninhaPorNome`). O
+   pai de um set é o set de nome mais longo que é prefixo do nome dele
+   (seguido de espaço ou dois-pontos), lançado a até 400 dias. "Paramount War
+   Pre-Release Cards" vira o chip "Pre-Release Cards" no cartão do Paramount
+   War. Não viram chip:
+   - o **volume seguinte**: o que sobra do nome é só número ("Vol. 2", "2",
+     "II", "2019", "第1章");
+   - **deck/caixa** (`setKind: "deck"`), que tem seção própria.
+
+   O chip sai do nome de exibição (o inglês dos vintages japoneses), sem o
+   separador e sem os parênteses.
+2. **Seções do jogo** (`agrupaSetsDoJogo`). É o único lugar que escolhe o
+   agrupamento:
+   - Pokémon por série;
+   - Magic por ano, mais a seção de eventos e coleções especiais;
+   - jogo com `group<Jogo>Sets` próprio pelas seções dele;
+   - linha vintage em ordem de lançamento;
+   - o resto por ano.
+
+   Agrupador novo entra no mapa `porJogo` e monta os cabeçalhos com
+   `cabecalhoDeSecao(chave, n)`. Nunca é um `return` direto no
+   `getViewItems`: o `tests/sets-padrao.test.mjs` barra os dois casos.
+3. **Topo da Vitrine** (`vitrineDoTopo`), só na lista inteira (sem busca):
+   - o **destaque** é o set principal mais novo já lançado. Não disputam as
+     seções de promo, deck, raid e eventos (`SECOES_FORA_DO_DESTAQUE`), nem o
+     nome que não é lançamento (`NAO_DESTAQUE`: promo, energia, kit, deck
+     inicial, pré-release, evento, caixa);
+   - **ao lado**, até dois "Em breve" (lançamento no futuro) e, se faltar,
+     os outros recentes;
+   - jogo parado há mais de um ano (vintage) mostra "Último set" e
+     "Anteriores", com a data na precisão que o catálogo tem ("outubro de
+     2002", sem dia inventado);
+   - pra quem tem carta no jogo, **"Continue completando"**;
+   - sem nenhum set com data (Miracle Battle), não há destaque.
+
+O cartão do set é o mesmo em todos (`createSetCard`): logo, ou o nome do set
+quando não há logo (política de logo); data; "N cartas" pra quem não tem
+coleção no jogo e "X/Y · %" pra quem tem; tendência e valor quando há preço.
+
+**Limite conhecido:** sequência com nome próprio, lançada a até 400 dias, vira
+chip do primeiro set. Exemplos: "Legendary Duelists: Ancient Millennium" no
+Yu-Gi-Oh! e "BanG Dream! Girls Band Party!" no Weiß, uns 6 casos em ~1.400
+sets fora do Magic e do Pokémon (medido em 2026-10-09). O chip continua
+levando ao set. Apertar a janela mudaria o Pokémon e o Magic, que são a
+referência.
 
 ## 4. Linha ou jogo novo
 
@@ -248,7 +306,7 @@ valem só nesse caso.
 | B13 | `src/backup-import.js` (`mapCsvGame`) e `tests/csv-import.test.mjs` | o nome do jogo como Collectr e TCGplayer escrevem | import de CSV tenta todos os jogos (mais lento; pode casar carta homônima de outro jogo) | — |
 | B14 | `src/portfolio.js` (`CSV_GAME_NAMES`) | nome no CSV do Portfólio, até a F6 | CSV sai com o slug (hoje já sai assim em 9 jogos, 5.2) | — |
 | B15 | `hub.html` | tile: grade moderna ou Vintage (anos e bandeira), com a posição da ficha; `href="/games/<endereço>"` e `data-game="<slug>"` (desde 2026-09-30) | jogo sem porta de entrada | `games-url.test.mjs` (todo endereço tem tile e todo tile aponta pro registro) |
-| B16 | opcionais: `src/facets.js`, `src/detail.js` (`RARITY_LISTED_GAMES`), `src/app.js` (`group<Jogo>Sets`), `src/scan.js`, `src/deck-rules.js` | filtros, agrupamento, scanner e regras de deck próprios | tudo genérico (funciona) | — |
+| B16 | opcionais: `src/facets.js`, `src/detail.js` (`RARITY_LISTED_GAMES`), `src/app.js` (`group<Jogo>Sets`, registrado no `agrupaSetsDoJogo` — padrão da página de Sets em 3.4), `src/scan.js`, `src/deck-rules.js` | filtros, agrupamento, scanner e regras de deck próprios | tudo genérico (funciona) | `tests/sets-padrao.test.mjs` (agrupador fora do padrão) |
 | B17 | `src/game.js` (`URL_DOS_JOGOS`) | a cópia do C17: `[endereço, slug, linha, prefixos]` | a tela do jogo em `/games/<endereço>` não sabe qual jogo abrir e cai no da sessão | `games-url.test.mjs` (a cópia bate com o C17) |
 
 **C. Borda, build e deploy** (commit 2)

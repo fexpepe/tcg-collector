@@ -1509,7 +1509,14 @@
   // Jogo que parou (vintage, ou sem set novo há mais de um ano): o destaque
   // é o "Último set", e os do lado são "Anteriores" — "Lançamento" e
   // "Também recentes" num set de 2002 seriam mentira.
-  const NAO_DESTAQUE = /promo|mcdonald|energy|trainer kit|black star/i;
+  // Nome que não é lançamento: promo, energia, kit — e, desde que o destaque
+  // vale em todo jogo (2026-10-09), os produtos de evento que ficam sem o set
+  // pai no catálogo (o Digimon destacava "Revision Pack Cards" e punha um
+  // "Release Event Cards" ao lado; o Yu-Gi-Oh!, "World Championship JPP Cards")
+  // e o deck inicial e a caixa dos jogos sem seção de decks (Union Arena,
+  // Digimon, "Deck Build Box" do Gundam, "Worlds Champion Bundles" do
+  // Riftbound).
+  const NAO_DESTAQUE = /promo|mcdonald|energy|trainer kit|black star|pre-?release|event cards|tournament|championship|revision pack|starter deck|deck build box|bundle/i;
   function vitrineDoTopo(grupos) {
     const hoje = new Date().toISOString().slice(0, 10);
     const sets = [];
