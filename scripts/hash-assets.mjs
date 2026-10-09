@@ -360,6 +360,15 @@ if (existsSync(headersPath)) {
     const marca = "  Speculation-Rules: \"/speculation-rules.json\"\n";
     if (!depois.includes(marca)) morra("não achei o bloco /* pra pendurar o Link de Early Hints.");
     depois = depois.replace(marca, `${marca}  Link: ${link}\n`);
+    // O `/*` vale pra TODA resposta, e a Cloudflare guarda os arquivos
+    // imutáveis por semanas com o header do deploy em que foram cacheados: sem
+    // o `! Link` nos blocos dos arquivos, cada JS/CSS/fonte/logo levava um
+    // preload pro núcleo de CSS de um build antigo, que o Chrome baixava
+    // (2026-10-08, de 1 a 10 CSS inúteis por visita fria). Só o HTML leva o Link.
+    for (const bloco of ["/src/*", "/styles*", "/assets/*", "/data/*"]) {
+      const m = new RegExp(`^${bloco.replace(/[*]/g, "\\*")}\\n((?:  .*\\n)+)`, "m").exec(depois);
+      if (!m || !/^  ! Link$/m.test(m[1])) morra(`o bloco ${bloco} do _headers perdeu o "! Link" (o preload do CSS iria em todo arquivo).`);
+    }
   }
   writeFileSync(headersPath, depois, "utf8");
 }
