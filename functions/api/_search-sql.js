@@ -342,23 +342,42 @@ export function cardRows(game, card) {
   for (const fonte of [card.name, card.set, num, numCompact === num ? "" : numCompact, card.artist]) {
     for (const w of palavras(fonte)) unicas.add(w);
   }
-  // `extras`: as palavras que entraram DEPOIS da carga inicial — hoje o TOTAL
-  // do set ("94" da Nymble 9/94), que é o que faz o código impresso "009/094"
-  // achar a carta guardada como número "9" + setTotal 94. Separadas das
-  // `legado` (a régua original, acima) de propósito: o deploy (d1-delta) só
-  // INSERE as extras nas cartas cuja impressão remota ainda é a legada, em vez
-  // de apagar e reescrever todas as palavras do catálogo — 10× menos escritas
-  // na cota do D1. Palavra nova aqui = acrescentar em `fontesExtras`, nunca em
-  // cima; e nunca mudar a régua das legado sem aceitar a reescrita total.
+  // `extras`: as palavras que entraram DEPOIS da carga inicial, em RÉGUAS — uma
+  // leva por vez, na ordem em que entraram, sempre no FIM da lista. Separadas
+  // das `legado` (a régua original, acima) de propósito: o deploy (d1-delta)
+  // compara a impressão remota com a de cada régua anterior e só INSERE o que
+  // veio depois da régua em que a carta remota está, em vez de apagar e
+  // reescrever todas as palavras dela — 10× menos escritas na cota do D1.
+  // Palavra nova = régua NOVA no fim de `reguas`, nunca em cima nem dentro de
+  // uma régua que já subiu (aí a remota não bate com régua nenhuma e cai na
+  // reescrita); e nunca mudar a régua das legado sem aceitar a reescrita total.
   const legado = [...unicas];
   const total = String(card.setTotal || "");
-  // nameEn (20/09/2026): o nome em inglês das cartas japonesas do Pokémon
-  // (enrich-ja), pra "boss's orders" achar a carta cujo `name` é o japonês.
-  const fontesExtras = [num.includes("/") || !/^\d+$/.test(total) ? "" : total, card.nameEn && card.nameEn !== card.name ? card.nameEn : ""];
-  const extras = [];
-  for (const fonte of fontesExtras) {
-    for (const w of palavras(fonte)) if (!unicas.has(w)) { unicas.add(w); extras.push(w); }
+  const reguas = [
+    // 1ª: o TOTAL do set ("94" da Nymble 9/94), que é o que faz o código
+    // impresso "009/094" achar a carta guardada como número "9" + setTotal 94;
+    // e o nameEn (20/09/2026), o nome em inglês das cartas japonesas do
+    // Pokémon (enrich-ja), pra "boss's orders" achar a carta cujo `name` é o
+    // japonês.
+    [num.includes("/") || !/^\d+$/.test(total) ? "" : total, card.nameEn && card.nameEn !== card.name ? card.nameEn : ""],
+    // 2ª (08/10/2026): a ESPÉCIE em inglês (pokemonName), que o haystack do
+    // cliente já tinha. Carta JA/ZH sem nameEn só tinha o nome no idioma dela:
+    // "charizard" achava 400 cartas pela borda e 477 pelo catálogo local — a
+    // M2-116-ja "メガリザードンXex" ficava de fora. Vale também pra PT que
+    // traduz o nome ("Presa Grande ex" = Great Tusk). Na carta EN a espécie já
+    // está no nome e o dedupe não acrescenta nada.
+    [card.pokemonName && card.pokemonName !== card.name ? card.pokemonName : ""]
+  ];
+  // `cortes`: quantas palavras a carta tinha ANTES de cada régua — a impressão
+  // das palavras até ali é o que uma carta remota parada naquela régua tem
+  // (impressaoCarta/diffCartas).
+  const extras = [], cortes = [];
+  for (const fontes of reguas) {
+    cortes.push(legado.length + extras.length);
+    for (const fonte of fontes) {
+      for (const w of palavras(fonte)) if (!unicas.has(w)) { unicas.add(w); extras.push(w); }
+    }
   }
   const palavra = (w) => ({ game, word: w, id: card.id });
-  return { linha, words: [...legado, ...extras].map(palavra), legado: legado.map(palavra), extras: extras.map(palavra) };
+  return { linha, words: [...legado, ...extras].map(palavra), legado: legado.map(palavra), extras: extras.map(palavra), cortes };
 }

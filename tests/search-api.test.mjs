@@ -15,7 +15,8 @@ import { SCHEMA, SCHEMA_PRICES, cardRows } from "../functions/api/_search-sql.js
 import { onRequestGet } from "../functions/api/search.js";
 import { loadShared } from "./lib/shared-sandbox.mjs";
 
-function banco() {
+// `mais`: [jogo, carta] a acrescentar às cartas de sempre.
+function banco(mais = []) {
   const db = new DatabaseSync(":memory:");
   db.exec(SCHEMA);
   db.exec(SCHEMA_PRICES);
@@ -33,6 +34,7 @@ function banco() {
   poe("pokemon", { id: "sv3pt5-151-pt", name: "Mew", set: "151", setId: "sv3pt5", number: "151", language: "pt", variants: ["Holo"], setReleaseDate: "2023-09-22" });
   poe("pokemon", { id: "sv3pt5-150", name: "Mewtwo", set: "151", setId: "sv3pt5", number: "150", language: "en", setReleaseDate: "2023-09-22" });
   poe("magic", { id: "mtg-1", name: "Mewling Horror", set: "X", setId: "x", number: "1", language: "en", variants: ["Normal", "Foil"], setReleaseDate: "2010-01-01" });
+  for (const [game, c] of mais) poe(game, c);
   const preco = db.prepare("INSERT INTO prices (game,id,j) VALUES (?,?,?)");
   preco.run("pokemon", "sv3pt5-151", JSON.stringify({ u: 12.5, v: { Holo: 20 } }));
   preco.run("pokemon", "sv3pt5-150", JSON.stringify({ u: 3 }));
@@ -98,6 +100,30 @@ test("busca curta (decks, listas, scanner) segue no contrato de sempre, agora co
   assert.equal(corpo.p, undefined);    // sem preço: poucos KB por tecla digitada
   assert.deepEqual(Object.keys(corpo.c[0]).sort(), ["c", "g", "i", "k", "n", "r", "s", "t", "u", "x"]);
   assert.equal(corpo.c[0].n, "Mew");
+});
+
+// Medido em 08/10/2026: "charizard" achava 400 cartas pela borda e 477 pelo
+// catálogo local (cardSearchHaystack inclui pokemonName). As que faltavam eram
+// JA/ZH sem nameEn, cujo nome só existe no idioma delas — 16,5 mil no catálogo.
+test("carta JA/ZH sem nameEn acha pela ESPÉCIE em inglês (pokemonName), como no catálogo local", async () => {
+  const cartas = {
+    ja: { id: "M2-116-ja", name: "メガリザードンXex", pokemonName: "Charizard", set: "メガドリームex", setId: "M2", number: "116", setTotal: 80, language: "ja", setReleaseDate: "2025-11-28" },
+    zh: { id: "SV2a-006-zh-tw", name: "噴火龍ex", pokemonName: "Charizard", set: "寶可夢卡牌151", setId: "SV2a", number: "006", setTotal: 165, language: "zh-tw", setReleaseDate: "2023-06-16" },
+    en: { id: "sv3-125", name: "Charizard ex", pokemonName: "Charizard", set: "Obsidian Flames", setId: "sv3", number: "125", setTotal: 197, language: "en", setReleaseDate: "2023-08-11" },
+    pt: { id: "sv04-123-pt", name: "Presa Grande ex", pokemonName: "Great Tusk", set: "Fenda Paradoxal", setId: "sv04", number: "123", setTotal: 182, language: "pt", setReleaseDate: "2023-11-03" }
+  };
+  const db = banco(Object.values(cartas).map((c) => ["pokemon", c]));
+  const { corpo } = await chama(db, "game=all&q=charizard&full=1");
+  assert.deepEqual(corpo.c.map((c) => c.id).sort(), ["M2-116-ja", "SV2a-006-zh-tw", "sv3-125"]);
+  // palavra INTEIRA: a japonesa entra na relevância da borda como a inglesa
+  assert.deepEqual(corpo.c.map((c) => c.x), [1, 1, 1]);
+  // por prefixo e junto do número impresso também
+  assert.deepEqual((await chama(db, "game=pokemon&q=chari%20116")).corpo.c.map((c) => c.i), ["M2-116-ja"]);
+  // espécie de duas palavras, na carta PT que traduz o nome
+  assert.deepEqual((await chama(db, "game=pokemon&q=great%20tusk")).corpo.c.map((c) => c.i), ["sv04-123-pt"]);
+  // na carta EN a espécie já está no nome: nenhuma palavra a mais
+  assert.deepEqual(cardRows("pokemon", cartas.en).extras.map((w) => w.word), ["197"]);
+  assert.deepEqual(cardRows("pokemon", cartas.ja).extras.map((w) => w.word), ["80", "charizard"]);
 });
 
 test("vazio não vai pro cache (nem o do navegador)", async () => {
