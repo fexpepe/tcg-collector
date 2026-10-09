@@ -35,6 +35,11 @@ migrações de analytics do repo (detalhes no `supabase/migrations/README.md`).
 - **O dono contava como visitante.** Com ~15 visitantes por dia, isso pesa.
   O painel marca sozinho o navegador da equipe, e esse navegador para de
   mandar evento.
+- **A política de privacidade prometia mais do que o código fazia.** Dizia
+  "nada disso identifica você", mas o evento de quem está logado leva a conta,
+  e o relatório de erro e o Cloudflare seguiam com a medição desligada. A
+  política foi reescrita (pt/en/es), e o código agora cumpre o que ela diz
+  (A11).
 
 ## 1. Como a medição funciona
 
@@ -92,7 +97,7 @@ Medição confere.
 | A8 | Navegação do dono contada como visitante | Com ~15 visitantes por dia, o dono testando é uma fatia visível | **Resolvido**: `sleevu-equipe-v1`, marcado sozinho no 1º acesso ao `/admin` |
 | A9 | Número sem régua (sem período anterior), gráfico sem contexto | Pico de campanha lido como crescimento; queda de feriado lida como quebra | **Resolvido**: régua, média de 7 dias, fantasma, marcos |
 | A10 | Página por página (top 20), sem visita | Não dava pra dizer qual área segura gente nem onde a visita termina | **Resolvido**: grupo Páginas (`admin_paginas`) |
-| A11 | **Eventos de quem está logado levam a conta (`uid`)**, mas a política de privacidade diz que "nada disso identifica você" | A frase é forte demais: o `uid` liga o uso à conta, de forma pseudônima, só pra contar logados e a retenção por conta. Pra loja de app isso é "dado ligado a você" | **Decisão do Fernando**: ajustar o texto (proposta na seção 4.6) ou parar de gravar `uid` e contar logados de outro jeito |
+| A11 | **Eventos de quem está logado levam a conta (`uid`)**, mas a política de privacidade diz que "nada disso identifica você" | A frase é forte demais: o `uid` liga o uso à conta, de forma pseudônima, só pra contar logados e a retenção por conta. Pra loja de app isso é "dado ligado a você" | **Resolvido** (2026-10-09, seção 4.6): a política (pt/en/es) diz o que vai, pra quê, a base legal e o contato; apagar a conta tira o `uid` dos eventos (`20261009b`); com a medição desligada, o erro sai sem a conta e o Cloudflare não carrega |
 | A12 | `detail` é a tela do set E a da carta | Não dá pra separar "olhou o set" de "olhou a carta" | **Pendente**: proposta na seção 5 |
 | A13 | Páginas estáticas da borda (índice /games, sets em inglês, artistas) não carregam o shared.js | Tráfego de SEO dessas páginas só aparece no Cloudflare | **Pendente** (seção 5) |
 | A14 | `admin_erros` agrupa o dia em UTC; `admin_experiments`, `admin_users` e o `events_purge` cortam em UTC; o resto usa Brasília | Erro das 21h–0h cai no dia seguinte | **Pendente**, baixo impacto |
@@ -287,28 +292,43 @@ O que o app coleta, pra Data safety (Play) e App Privacy (Apple):
 - **Interações com o app e diagnóstico (erros)**: sem localização, sem
   contatos, sem identificador de publicidade, sem rastreio entre apps.
   Então **não pede ATT** no iOS.
-- **O ponto delicado é o A11.** Quando a pessoa está logada, o evento leva
-  a conta. Pra Apple, isso é "Dados de uso ligados a você".
+- **Uso ligado à conta (A11).** Quando a pessoa está logada, o evento leva
+  a conta. Pra Apple, isso é "Dados de uso → ligados a você, sem rastreio";
+  no Play, "Atividade no app" e "Diagnóstico", coletados, não compartilhados,
+  com opção de desligar.
 
-Proposta de texto pra política, no lugar de "nada disso identifica você":
-"Quando você está logado, esses registros levam o identificador da sua
-conta — usado só pra contar quantas pessoas logadas usam o Sleevu e quantas
-voltam; não é usado pra publicidade nem compartilhado." A troca precisa do
-aval do Fernando: é texto legal.
+A política foi reescrita em 2026-10-09 (pt/en/es), com o aval do Fernando:
+- **Estatísticas de uso** (antes "Estatísticas anônimas") lista tudo o que
+  entra, campo por campo:
+  - as visitas com o identificador aleatório e o contexto (incluindo utm,
+    clique de anúncio e a plataforma e a versão do app);
+  - as funções contadas;
+  - os relatórios de erro;
+  - o contador por carta e o Cloudflare.
+- Diz que, logado, vai o identificador interno da conta (nunca o e-mail),
+  pra quê ele serve e quem vê; que ao apagar a conta o vínculo some; que o
+  IP não é guardado (só um hash, por pouco tempo, pro limite de abuso); a
+  base legal (legítimo interesse, LGPD art. 7º, IX); e como desligar.
+- Cookies, retenção e a chave das Configurações deixaram de prometer
+  anonimato total. O contato ganhou o e-mail (sleevuapp@gmail.com), com
+  os pedidos da LGPD.
+
+O código passou a cumprir o texto:
+- apagar a conta tira o `uid` dos eventos (trigger da `20261009b`);
+- com "Contar minhas visitas" desligado, o relatório de erro sai sem o token
+  (sem conta) e o beacon do Cloudflare não carrega.
 
 ## 5. Fica pra depois (em ordem de valor)
 
-1. **A11**: ajustar a política (ou parar de gravar `uid`) antes de enviar o
-   app às lojas.
-2. **A6 depois de aplicar a 20261009a**: se `search_hit` seguir zerado SEM
+1. **A6 depois de aplicar a 20261009a**: se `search_hit` seguir zerado SEM
    descarte, a causa é do cliente.
    - Conferir a paleta (`talvezBuscaVazia`).
    - Conferir as páginas `/search` e `/explore`, que talvez usem outra busca
      (a da borda) e nunca passem pela paleta.
-3. **"page_time v2"** (A15): enviar em pedaços no `hidden`, com a marca de
+2. **"page_time v2"** (A15): enviar em pedaços no `hidden`, com a marca de
    continuação, e as RPCs somarem os pedaços. Sem isso, o tempo na web é um
    piso. Quando trocar, anotar um marco: a série muda de régua.
-4. **Set × carta** (A12):
+3. **Set × carta** (A12):
    - O `analyticsPath` devolver `set` para `/games/<jogo>/<set>` e `card`
      para `/games/<jogo>/<set>/<carta>`.
    - As chaves antigas `card`/`set` (endereços de antes, hoje 301) já estão
@@ -316,23 +336,25 @@ aval do Fernando: é texto legal.
    - O que muda nas RPCs antigas: nenhuma filtra `path = 'detail'` (é só
      rótulo), mas a série histórica de "Detalhe" acaba no dia da troca.
      Anotar um marco.
-5. **Páginas estáticas** (A13): um beacon mínimo (pageview só com `d`/`l`/`r`)
+4. **Páginas estáticas** (A13): um beacon mínimo (pageview só com `d`/`l`/`r`)
    no HTML da borda, ou aceitar que o SEO dessas páginas se lê no
    Cloudflare.
-6. **Vitals no painel** (D5 do `docs/PLANO-TECNICO.md`): o evento `vitals`
+5. **Vitals no painel** (D5 do `docs/PLANO-TECNICO.md`): o evento `vitals`
    tem de entrar na lista do guard ANTES de o JS mandar. Agora, se esquecer,
    aparece em Descartados.
-7. **Série longa por plataforma**: o `metrics_daily` guarda MAU sem separar
+6. **Série longa por plataforma**: o `metrics_daily` guarda MAU sem separar
    plataforma, e o evento bruto some em 13 meses. Antes de o app fazer um
    ano, o retrato diário precisa de `mau_app`.
-8. **Fuso e robô nas RPCs antigas** (A14, A16) e o **cron real** (A17).
-9. **README das migrações** (A18).
+7. **Fuso e robô nas RPCs antigas** (A14, A16) e o **cron real** (A17).
+8. **README das migrações** (A18).
 
 ## 6. Aplicar e conferir
 
-1. Aplicar `supabase/migrations/20261009a_admin_v3.sql` no SQL Editor. Ela
-   contém a 20261006a: **não rodar a 06a depois**. As consultas de conferir
-   estão no README das migrações.
+1. Aplicar `supabase/migrations/20261009a_admin_v3.sql` no SQL Editor
+   (aplicada em 2026-10-09). Ela contém a 20261006a: **não rodar a 06a
+   depois**. Depois, a `20261009b_eventos_sem_conta.sql` (apagar a conta
+   tira a conta das estatísticas, como a política promete). As consultas de
+   conferir estão no README das migrações.
 2. Abrir o `/admin` logado. O 1º acesso marca o navegador como da equipe (o
    aviso explica), e o Resumo ganha a régua.
 3. Em Técnico › Marcos, anotar o que já aconteceu:
