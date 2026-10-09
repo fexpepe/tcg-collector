@@ -2688,7 +2688,7 @@
     // Quota estourada aqui é grave: quem chama (sales.js) REMOVE a cópia da
     // coleção depois de add() retornar, então engolir o erro apagava a carta
     // sem deixar o registro da venda no lugar dela.
-    const save = () => { data.updatedAt = Date.now(); try { localStorage.setItem(SOLD_KEY, JSON.stringify(data)); } catch (e) { notifyStorageFull(); } };
+    const save = () => { data.updatedAt = Date.now(); try { localStorage.setItem(SOLD_KEY, JSON.stringify(data)); marcaSuja(SOLD_KEY); } catch (e) { notifyStorageFull(); } };
     const uid = () => "v_" + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
     return {
       any: () => data.order.some((k) => data.items[k]),
@@ -2787,7 +2787,7 @@
   function buildCostsStore() {
     let data = { costs: {}, updatedAt: 0 };
     try { const raw = JSON.parse(localStorage.getItem(COSTS_KEY) || "null"); if (raw && raw.costs) data = raw; } catch (e) { /* começa vazio */ }
-    const save = () => { data.updatedAt = Date.now(); try { localStorage.setItem(COSTS_KEY, JSON.stringify(data)); } catch (e) { notifyStorageFull(); } };
+    const save = () => { data.updatedAt = Date.now(); try { localStorage.setItem(COSTS_KEY, JSON.stringify(data)); marcaSuja(COSTS_KEY); } catch (e) { notifyStorageFull(); } };
     const keyOf = (cardId, variant) => `${cardId}|${variant}`;
     return {
       get(cardId, variant) { const e = data.costs[keyOf(cardId, variant)]; return e ? { v: Number(e.v) || 0, cur: e.cur || "BRL" } : null; },
@@ -10476,7 +10476,10 @@
       // Escrita DIRETA (não passa pelo scheduleWrite): marca a chave à mão pro
       // laço de sync não dormir sobre um dado que acabou de mudar no disco.
       marcaSuja(key);
-      localStorage.setItem(key, JSON.stringify(data[k]));
+      // Cota cheia (iPhone perto do teto) lançava aqui pra fora do boot: a pílula
+      // "Carregando" ficava na tela e o laço de sync nunca ligava. Agora avisa e
+      // segue; o push que vem logo depois leva o mesclado pra nuvem do mesmo jeito.
+      try { localStorage.setItem(key, JSON.stringify(data[k])); } catch (e) { notifyStorageFull(); }
     });
   }
   // LWW-element-set por carta: para cada id, compara o "presente mais novo"
@@ -10912,13 +10915,21 @@
     jogos.forEach((g) => { subir[g] = localSnapshot(g); });
     return jogos.length > 0;
   }
+  // keepalive tem teto de 64 KB por corpo (especificação do Fetch): acima dele
+  // o navegador RECUSA o pedido na hora, e o blob de um jogo com algumas
+  // centenas de cartas já passa disso — o push de saída falhava sempre. Acima
+  // do teto (contando 3 bytes por caractere, o pior caso do UTF-8) vai sem
+  // keepalive: com a aba oculta ele costuma completar, e se a página fechar
+  // antes, a pendência (lePendencia) leva o jogo pro próximo boot.
+  const comKeepalive = (keepalive, body) => !!keepalive && body.length < 21000;
   async function pushRemote(token, uid, data, keepalive, game) {
     try {
+      const body = JSON.stringify({ user_id: uid, game: game || currentGame(), data, updated_at: new Date().toISOString() });
       const r = await fetch(`${SUPABASE_URL}/rest/v1/collections?on_conflict=user_id,game`, {
         method: "POST",
         headers: Object.assign(authHeaders(token), { Prefer: "resolution=merge-duplicates,return=minimal" }),
-        body: JSON.stringify({ user_id: uid, game: game || currentGame(), data, updated_at: new Date().toISOString() }),
-        keepalive: !!keepalive
+        body,
+        keepalive: comKeepalive(keepalive, body)
       });
       recordSync("push", r.ok, r.ok ? "" : `HTTP ${r.status}`);
       return r.ok;
@@ -10936,13 +10947,15 @@
     }));
     if (!linhas.length) return true;
     try {
+      const body = JSON.stringify(linhas);
       const r = await fetch(`${SUPABASE_URL}/rest/v1/collections?on_conflict=user_id,game`, {
         method: "POST",
         headers: Object.assign(authHeaders(token), { Prefer: "resolution=merge-duplicates,return=minimal" }),
-        body: JSON.stringify(linhas),
+        body,
         // keepalive: o laço de sync também usa este caminho no pagehide/aba
-        // escondida, e sem isto o navegador mataria o POST ao fechar.
-        keepalive: !!keepalive
+        // escondida, e sem isto o navegador mataria o POST ao fechar (só cabe
+        // corpo pequeno — ver comKeepalive).
+        keepalive: comKeepalive(keepalive, body)
       });
       if (r.ok) { recordSync("push", true); return true; }
       // Rede de segurança: se o upsert em lote for recusado (uma versão do
@@ -11619,6 +11632,42 @@
   }
 
   const lastPushedByGame = {};
+  // PENDÊNCIA que sobrevive à página (2026-10-08). O que foi editado e não teve
+  // o push confirmado ficava só neste aparelho: a saída da página tenta um
+  // push keepalive, mas o corpo de um jogo passa dos 64 KB que o keepalive
+  // aceita com algumas centenas de cartas, e o boot seguinte carimba o local
+  // como "já enviado" quando a nuvem não traz nada novo. Agora a saída grava
+  // QUAIS jogos ficaram devendo (com o dono, pra não subir pra outra conta) e
+  // o próximo boot com pull bom sobe o snapshot mesclado deles. Também é o que
+  // segura o login cujo pull falhou: ele não sobe nada e deixa todos os jogos
+  // devendo, pro merge acontecer quando a nuvem responder.
+  const PENDENCIA_KEY = "tcg-sync-pendente-v1";
+  function lePendencia(uid) {
+    try {
+      const p = JSON.parse(localStorage.getItem(PENDENCIA_KEY) || "null");
+      return p && p.u === uid && Array.isArray(p.g) ? p.g.filter((g) => GAME_SLUGS.includes(g)) : [];
+    } catch (e) { return []; }
+  }
+  function gravaPendencia(uid, jogos) {
+    try {
+      if (jogos.length) localStorage.setItem(PENDENCIA_KEY, JSON.stringify({ u: uid, g: [...new Set(jogos)] }));
+      else localStorage.removeItem(PENDENCIA_KEY);
+    } catch (e) { /* sem armazenamento: fica como antes */ }
+  }
+  // Jogos tocados pelas chaves sujas: chave de um jogo -> o jogo; chave GLOBAL
+  // de sync (binders, listas, custos…) -> todos, porque ela vai em toda linha
+  // (o syncPush faz igual).
+  const BASES_DO_JOGO = ["collection-v3", "collection-meta-v1", "wishlist-v1", "wishlist-meta-v1", "prices-v1", "history-v2"];
+  function jogosDasChaves() {
+    const globais = new Set(Object.values(SYNC_KEYS));
+    const out = new Set();
+    chavesSujas.forEach((key) => {
+      const g = GAME_SLUGS.find((x) => BASES_DO_JOGO.some((b) => key === `tcg-collector-${x}-${b}`));
+      if (g) out.add(g);
+      else if (globais.has(key)) GAME_SLUGS.forEach((x) => out.add(x));
+    });
+    return [...out];
+  }
   // Lê a sessão na hora de cada push (pega o token renovado) e renova de forma
   // preguiçosa antes de expirar (token do Supabase dura ~1h) — sem isso o sync
   // morre silenciosamente depois de uma hora. Percorre TODOS os jogos (páginas
@@ -11642,15 +11691,18 @@
     // caía em cima de qualquer toque que acontecesse junto.
     //
     // A saída é conservadora de propósito:
-    //  · vale só pro laço automático — o push de saída (pagehide / aba oculta,
-    //    keepalive=true) sempre varre tudo, que é a hora de não deixar nada pra trás;
     //  · a cada 5 minutos uma rodada varre tudo mesmo assim, então uma escrita
     //    que não passe pelo scheduleWrite atrasa no máximo isso (antes desta
     //    guarda ela seria pega em 20 s — é o preço, e é pequeno perto de um push
     //    que só acontece quando algo muda);
     //  · quem decide o que sobe continua sendo a comparação com o último JSON
     //    enviado, logo abaixo. Isto aqui só evita CALCULAR esse JSON à toa.
-    const varreduraCompleta = keepalive || ++rodadasDesdeVarredura >= RODADAS_ATE_VARREDURA;
+    // O push de SAÍDA (pagehide / aba oculta, keepalive=true) varria tudo
+    // sempre, duas vezes por navegação (os dois eventos disparam juntos): ~45 ms
+    // no desktop com uma coleção grande, sem nada editado. Desde 2026-10-08 ele
+    // respeita o mesmo portão — o que sobrar fica na pendência (abaixo), que o
+    // próximo boot sobe.
+    const varreduraCompleta = !keepalive && ++rodadasDesdeVarredura >= RODADAS_ATE_VARREDURA;
     if (varreduraCompleta) rodadasDesdeVarredura = 0;
     // `pushPendente` mantém a rodada acordada enquanto houver push que não
     // confirmou (offline, 5xx). Sem ele, o retry de 20 segundos viraria um
@@ -11670,11 +11722,17 @@
     }
     const jogos = Object.keys(aSubir);
     if (!jogos.length) return;
+    // Saindo da página: grava ANTES de enviar quais jogos ficam devendo. Se o
+    // push de saída não chegar (página fechada, corpo acima do teto do
+    // keepalive), o próximo boot sobe esses jogos depois do merge.
+    if (keepalive) gravaPendencia(s.user.id, lePendencia(s.user.id).concat(jogos));
     // Só marca como enviado APÓS o push confirmar (r.ok) — marcar antes fazia
     // um push falho (offline/5xx) nunca ser retentado até a PRÓXIMA edição.
     const confirma = (ok) => {
-      if (ok) jogos.forEach((g) => { lastPushedByGame[g] = jsonPorJogo[g]; });
-      else pushPendente = true; // tenta de novo na próxima rodada
+      if (ok) {
+        jogos.forEach((g) => { lastPushedByGame[g] = jsonPorJogo[g]; });
+        gravaPendencia(s.user.id, lePendencia(s.user.id).filter((g) => !jogos.includes(g)));
+      } else pushPendente = true; // tenta de novo na próxima rodada
     };
     // UM POST pros vários jogos (o PostgREST faz upsert de um array, linha a
     // linha). Qualquer edição numa chave GLOBAL (decks, listas, binders,
@@ -11690,8 +11748,15 @@
   }
   function startSyncLoop() {
     setInterval(() => syncPush(false), 20000);
-    document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") syncPush(true); });
-    window.addEventListener("pagehide", () => syncPush(true));
+    // UM push por saída: na navegação a aba fica oculta e a página vai embora
+    // no mesmo instante, e cada evento disparava o seu.
+    // A página que volta (aba visível de novo, ou restaurada do bfcache) pode
+    // sair de novo.
+    let saindo = false;
+    const sai = () => { if (!saindo) { saindo = true; syncPush(true); } };
+    document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") sai(); else saindo = false; });
+    window.addEventListener("pagehide", sai);
+    window.addEventListener("pageshow", () => { saindo = false; });
   }
 
   // --- Troubleshooting (suporte): versão + limpar cache + forçar sync ---
@@ -11731,6 +11796,7 @@
     }
     await moveMiracleBattle(mesclado);
     if (!(await pushAllRemote(session.access_token, session.user.id, mesclado))) { fail(t("ts.syncError")); return; }
+    gravaPendencia(session.user.id, []); // subiu tudo: nada mais devendo
     window.location.reload();
   }
 
@@ -11997,16 +12063,23 @@
         renderLoggedIn(fresh);
         pageLoading(true); // sync inicial da conta (a página recarrega no fim)
         const remoteAll = await pullAllRemote(fresh.access_token, fresh.user.id);
-        const mesclado = {};
-        for (const g of GAME_SLUGS) {
-          // remoteAll null = a requisição falhou; passa null adiante pro
-          // mergeData tratar igual ao que o pullRemote por jogo devolvia.
-          const merged = mergeData(localSnapshot(g), remoteAll ? (remoteAll[g] || {}) : null);
-          writeSnapshot(merged, g);
-          mesclado[g] = merged;
+        if (remoteAll) {
+          const mesclado = {};
+          for (const g of GAME_SLUGS) {
+            const merged = mergeData(localSnapshot(g), remoteAll[g] || {});
+            writeSnapshot(merged, g);
+            mesclado[g] = merged;
+          }
+          await moveMiracleBattle(mesclado);
+          if (!(await pushAllRemote(fresh.access_token, fresh.user.id, mesclado))) gravaPendencia(fresh.user.id, GAME_SLUGS);
+        } else {
+          // Pull FALHOU (5xx, 429, rede trocando de Wi-Fi pra 4G): não sobe
+          // nada. Sem o remoto na mão, o upsert trocaria cada linha da conta
+          // pelo que este aparelho tem — num celular novo, a coleção vazia por
+          // cima da nuvem (2026-10-08). Todos os jogos ficam devendo e o boot
+          // da próxima página faz o merge e sobe quando a nuvem responder.
+          gravaPendencia(fresh.user.id, GAME_SLUGS);
         }
-        await moveMiracleBattle(mesclado);
-        await pushAllRemote(fresh.access_token, fresh.user.id, mesclado);
         await pullProfile();
         // Sem @ depois de puxar o perfil = primeiro login (ou conta antiga que
         // nunca escolheu um): pergunta AQUI, em cima da tela "Entrando…" — o
@@ -12039,11 +12112,23 @@
       const aSubir = {};
       pageLoading(true); // puxando a coleção da nuvem (1º acesso pode demorar)
       const remoteAll = await pullAllRemote(session.access_token, session.user.id);
-      // remoteAll null = a requisição falhou (não mexe em nada). Jogo sem linha
-      // na nuvem vale {} — é o que o pullRemote por jogo devolvia, e é o que
-      // mantém o `lastPushedByGame` carimbado pro laço de sync.
+      if (!remoteAll) {
+        // Pull FALHOU: esta página não sobe nada (2026-10-08). Com o laço
+        // ligado e o `lastPushedByGame` vazio, o 1º push subia o snapshot local
+        // de todos os jogos SEM o merge, apagando da nuvem o que outro aparelho
+        // gravou desde o último pull deste (o upsert troca a linha inteira). O
+        // que for editado aqui vira pendência na saída e sobe mesclado no
+        // próximo boot com pull bom.
+        pageLoading(false);
+        const marca = () => gravaPendencia(session.user.id, lePendencia(session.user.id).concat(jogosDasChaves()));
+        window.addEventListener("pagehide", marca);
+        document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") marca(); });
+        return;
+      }
+      // Jogo sem linha na nuvem vale {} — é o que o pullRemote por jogo
+      // devolvia, e é o que mantém o `lastPushedByGame` carimbado pro laço.
       const cacheBoot = new Map(); // ver localSnapshot: não reparseia as globais
-      for (const g of remoteAll ? GAME_SLUGS : []) {
+      for (const g of GAME_SLUGS) {
         const remote = remoteAll[g] || {};
         const local = localSnapshot(g, cacheBoot);
         const localJson = JSON.stringify(local);
@@ -12082,9 +12167,22 @@
           lastPushedByGame[g] = localJson;
         }
       }
+      // O que ficou DEVENDO de outra página (saída sem push confirmado, pull
+      // falho, login que não leu a nuvem) sobe agora, já mesclado. Sem isto o
+      // laço acima carimbava o local como enviado quando a nuvem não trazia
+      // nada novo, e a edição ficava só neste aparelho.
+      lePendencia(session.user.id).forEach((g) => { if (!aSubir[g]) aSubir[g] = localSnapshot(g, cacheBoot); });
       // Só com o pull que deu certo: o push abaixo regrava a linha inteira.
-      if (remoteAll && await moveMiracleBattle(aSubir)) changed = true;
-      if (Object.keys(aSubir).length) await pushAllRemote(session.access_token, session.user.id, aSubir);
+      if (await moveMiracleBattle(aSubir)) changed = true;
+      const jogosASubir = Object.keys(aSubir);
+      if (jogosASubir.length) {
+        const ok = await pushAllRemote(session.access_token, session.user.id, aSubir);
+        // Falhou: tudo o que ia subir passa a dever (inclusive o merge que
+        // trouxe novidade, que senão se perdia no reload logo abaixo) e o laço
+        // tenta de novo na próxima rodada.
+        gravaPendencia(session.user.id, ok ? [] : jogosASubir);
+        if (!ok) { jogosASubir.forEach((g) => { delete lastPushedByGame[g]; }); pushPendente = true; }
+      }
       pageLoading(false);
       if (changed) { if (!document.documentElement.hasAttribute("data-ocupado")) window.location.reload(); return; } // data-ocupado: a foto do Centering Tool só existe em memória
       pullProfile(); // sincroniza o perfil (handle/visibilidade) sem bloquear
