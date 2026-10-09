@@ -61,14 +61,13 @@
       </div>
     </header>
 
-    <main>
+    <main class="pf-main">
       <div class="page-head pf-head dash-head">
         <h1 data-i18n="nav.portfolio">Portfólio</h1>
         <!-- Linha de baixo do cabeçalho (2026-09-10): "← Hub" à esquerda e as
              três ações à direita, SÓ-ÍCONE (padrão .icon-btn: o rótulo fica
-             no <span> escondido pro leitor de tela e no title). Antes eram
-             três botões de texto que, no celular, empilhavam em duas linhas
-             tortas entre o título e o "← Hub". -->
+             no <span> escondido pro leitor de tela e no title). No celular o
+             portfolio.js move as ações pra linha do select de jogo. -->
         <div class="pf-head-row">
           <a href="dashboard" class="serie-back" data-i18n="nav.backDashboard">← Hub</a>
           <div class="pf-head-actions">
@@ -87,109 +86,72 @@
         </div>
       </div>
 
-      <p class="collection-subtitle" data-i18n="portfolio.subtitle">Visão financeira da sua coleção: tudo o que você tem (cartas + graded), por jogo, com a progressão de valor no tempo.</p>
-
       <!-- Os chips saem do GAME_SLUGS (shared.initGameFilterChips) e depois são
            reduzidos aos jogos em que você tem alguma coisa (setGameFilterScope),
-           como na Coleção/Graded/Vendas. Antes eram CINCO fixos aqui: quem tinha
-           Magic, YGO, Gundam, FAB, DBFW, Digimon, Riftbound ou Union Arena não
-           conseguia filtrar por eles, e o <select> da gaveta mobile ficava vazio
-           porque procura por [data-game-filter]. -->
+           como na Coleção/Graded/Vendas. No celular viram o <select> da gaveta. -->
       <div id="gameFilter" class="chip-filter game-filter pf-game-filter" role="group" data-i18n-aria="pfmi.game" aria-label="Jogo">
         <button type="button" class="chip" data-game-filter="all" aria-pressed="true" data-i18n="filter.gameAll">Todos</button>
       </div>
 
-      <section id="portfolioChart" class="pf-chart" data-i18n-aria="portfolio.chart.title" aria-label="Progressão do portfólio" hidden>
-        <!-- Cabeçalho: valor da série principal + variação da faixa escolhida.
-             Ao arrastar no gráfico, os dois passam a mostrar o dia sob o dedo. -->
-        <div class="pf-chart-head">
-          <strong id="pfChartValue" class="pf-head-value">—</strong>
-          <span id="pfChartDelta" class="pf-head-delta"></span>
-          <span id="pfChartWhen" class="pf-head-when"></span>
-        </div>
-        <!-- Séries × Por jogo (+ o % que normaliza as linhas). Só aparece com 2+
-             jogos com histórico — ver renderControls. -->
-        <div id="pfChartModes" class="pf-modes" role="group" data-i18n-aria="aria.chartMode" aria-label="Modo do gráfico" hidden></div>
-        <div class="pf-chart-controls">
-          <div id="pfSeries" class="pf-series" role="group" data-i18n-aria="portfolio.chart.modeSeries" aria-label="Séries"></div>
-          <div id="pfRanges" class="pf-ranges" role="group" data-i18n-aria="aria.period" aria-label="Período"></div>
-        </div>
-        <div id="pfChartBody" class="pf-chart-body"></div>
-      </section>
+      <!-- TOPO (2026-10-09, Portfólio 3.0): o patrimônio É o cabeçalho do
+           gráfico — um número grande só, que o scrub move junto com o dedo.
+           Antes havia dois (o do gráfico e o do cartão "patrimônio"), a um
+           polegar de distância e às vezes discordando no centavo. Ao lado, o
+           resumo em quatro peças; no celular ele vira uma grade 2×2 embaixo. -->
+      <div class="pf-top">
+        <section id="portfolioChart" class="pf-hero" data-i18n-aria="portfolio.chart.title" aria-label="Progressão do portfólio">
+          <div class="pf-hero-head">
+            <p class="pf-eyebrow"><span data-i18n="portfolio.eyebrow">Patrimônio</span> <small data-i18n="portfolio.eyebrowSub">cartas + graded</small></p>
+            <strong id="grandTotal" class="pf-hero-value sensitive-value">—</strong>
+            <!-- Variação da FAIXA escolhida (ou do dia sob o dedo, no scrub). -->
+            <p id="pfChartDelta" class="pf-hero-delta"></p>
+            <!-- Variação do DIA (padrão corretora): dos MESMOS pontos do gráfico. -->
+            <p id="grandDelta" class="pf-hero-today" hidden></p>
+          </div>
+          <div class="pf-chart-tools">
+            <!-- Total × Por jogo (+ o % e o Mercado). Só com 2+ jogos com histórico. -->
+            <div id="pfChartModes" class="pf-modes" role="group" data-i18n-aria="aria.chartMode" aria-label="Modo do gráfico" hidden></div>
+            <div id="pfSeries" class="pf-legend" role="group" data-i18n-aria="portfolio.chart.modeSeries" aria-label="Séries"></div>
+          </div>
+          <div id="pfChartBody" class="pf-chart-body"></div>
+          <div id="pfRanges" class="pf-seg pf-ranges" role="group" data-i18n-aria="aria.period" aria-label="Período"></div>
+        </section>
 
-      <!-- .pf-stats: no celular estas cápsulas vão UMA por fileira (ver CSS) —
-           em 3 colunas o "R$ 186.980,60" vazava da caixa e o rótulo quebrava
-           torto. -->
-      <section class="stats-grid pf-stats" data-i18n-aria="aria.sumPortfolio" aria-label="Resumo do portfólio">
-        <article class="stat-grand">
-          <span id="grandTotal">—</span>
-          <!-- Variação do DIA (padrão corretora): pintada pelo updateChart a
-               partir dos MESMOS pontos do gráfico — nunca por uma segunda
-               fórmula (ver o aviso das cápsulas removidas no portfolio.js). -->
-          <small id="grandDelta" class="pf-grand-delta" hidden></small>
-          <p data-i18n="portfolio.networth">patrimônio (cartas + graded)</p>
-        </article>
-        <article>
-          <span id="rawValue">R$ 0,00</span>
-          <p data-i18n="portfolio.rawValue">cartas (raw)</p>
-        </article>
-        <article>
-          <span id="gradedValue">R$ 0,00</span>
-          <p data-i18n="portfolio.gradedValue">graded</p>
-        </article>
-        <article>
-          <span id="investedValue">—</span>
-          <p data-i18n="portfolio.investedValue">total investido (custo)</p>
-        </article>
-        <article>
-          <span id="wishlistValue">R$ 0,00</span>
-          <p data-i18n="portfolio.desejos">desejos (wishlist + binder)</p>
-          <!-- Abre o número em wishlist × faltantes de binder: as duas metades
-               levam a ações diferentes. Só aparece quando as duas existem. -->
-          <small id="wishlistSplit" class="pf-stat-split" hidden></small>
-        </article>
-        <article>
-          <span id="pricedCopies">0/0</span>
-          <p data-i18n="portfolio.pricedCopies">cópias precificadas</p>
-        </article>
-      </section>
+        <section id="pfSummary" class="pf-summary" data-i18n-aria="aria.sumPortfolio" aria-label="Resumo do portfólio">
+          <div id="pfKpis" class="pf-kpis">
+            <a class="pf-kpi" href="collection">
+              <span class="pf-kpi-label" data-i18n="portfolio.series.collection">Cartas (raw)</span>
+              <strong id="rawValue" class="pf-kpi-value sensitive-value">—</strong>
+              <small id="rawCopies" class="pf-kpi-sub"></small>
+            </a>
+            <a class="pf-kpi" href="graded">
+              <span class="pf-kpi-label" data-i18n="portfolio.series.graded">Graded</span>
+              <strong id="gradedValue" class="pf-kpi-value sensitive-value">—</strong>
+              <small id="gradedCount" class="pf-kpi-sub"></small>
+            </a>
+          </div>
+          <p id="pricedCopies" class="pf-coverage-line"></p>
+        </section>
+      </div>
 
-      <section id="pfComposition" class="pf-composition" data-i18n-aria="aria.portfolioMix" aria-label="Composição do portfólio" hidden></section>
+      <div class="pf-grid2 pf-mid">
+        <section id="pfAlloc" class="pf-card" data-i18n-aria="aria.portfolioMix" aria-label="Composição do portfólio" hidden></section>
+        <section id="pfMovers" class="pf-card" data-i18n-aria="aria.weekMovers" aria-label="Maiores altas e quedas da semana" hidden></section>
+      </div>
 
-      <section id="pfBreakdown" class="pf-breakdown" data-i18n-aria="aria.breakdownCategory" aria-label="Detalhamento por categoria" hidden>
-        <div id="pfBreakdownTabs" class="pf-bd-tabs" role="group" data-i18n-aria="aria.breakdownBy" aria-label="Detalhar por">
-          <button type="button" class="pf-bd-tab active" data-bd="set" data-i18n="portfolio.bd.set">Por set</button>
-          <button type="button" class="pf-bd-tab" data-bd="rarity" data-i18n="portfolio.bd.rarity">Por raridade</button>
-          <button type="button" class="pf-bd-tab" data-bd="artist" data-i18n="portfolio.bd.artist">Por artista</button>
-          <!-- Desejos: a wishlist só existia como um número no cartão de cima.
-               Agora dá pra ver QUAIS cartas formam ele, com o preço-alvo que a
-               página de Wishlist já deixa anotar. -->
-          <button type="button" class="pf-bd-tab" data-bd="wish" data-i18n="portfolio.bd.wish">Desejos</button>
-        </div>
-        <div id="pfBreakdownBody" class="pf-comp-block"></div>
-      </section>
-
-      <section id="pfLists" class="pf-invest" data-i18n-aria="aria.listsBindersValue" aria-label="Valor das listas e binders" hidden></section>
-
-      <!-- Selados e itens MANUAIS (F4 do PLANO-UX): booster box, ETB, lata ou
-           qualquer item fora do catálogo, com preço manual. Visível mesmo
-           vazio DE PROPÓSITO (exceção à regra do bloco-sem-dado): a seção é o
-           único ponto de entrada — escondida, ninguém descobriria que existe.
-           FORA do patrimônio por ora; somar é decisão registrada no plano. -->
-      <section id="pfManual" class="pf-invest pf-manual" data-i18n-aria="pfmi.title" aria-label="Selados e itens manuais"></section>
-
-      <section id="pfInvest" class="pf-invest" data-i18n-aria="aria.positions" aria-label="Posições (custo e lucro potencial)" hidden></section>
-
-      <section id="pfSales" class="pf-invest" data-i18n-aria="sales.sold.heading" aria-label="Vendas realizadas" hidden></section>
-
-      <section id="pfMovers" class="pf-invest" data-i18n-aria="aria.weekMovers" aria-label="Maiores altas e quedas da semana" hidden></section>
-
-      <section class="results-header">
-        <h2 data-i18n="portfolio.topCards">Cartas mais valiosas</h2>
-      </section>
-
-      <section id="topCards" class="portfolio-table-wrap" aria-live="polite"></section>
+      <section id="pfTop" class="pf-card" aria-live="polite" hidden></section>
       <p id="emptyState" class="empty-state" data-i18n-html="portfolio.empty" hidden>Nenhuma carta com preço ainda. Abra uma carta da sua <a href="collection">coleção</a>, confira o valor nos sites (Liga, LigaBRA, MYP) e registre no campo "Preço BR".</p>
+
+      <section id="pfInvest" class="pf-card" data-i18n-aria="aria.positions" aria-label="Posições (custo e lucro potencial)" hidden></section>
+
+      <!-- Metas e selados: FORA do patrimônio (o total tem que bater com a
+           Coleção no centavo). A seção de selados fica visível mesmo vazia DE
+           PROPÓSITO: é o único ponto de entrada dela. -->
+      <div class="pf-grid2 pf-end">
+        <section id="pfGoals" class="pf-card" data-i18n-aria="aria.listsBindersValue" aria-label="Valor das listas e binders" hidden></section>
+        <section id="pfManual" class="pf-card pf-manual" data-i18n-aria="pfmi.title" aria-label="Selados e itens manuais"></section>
+      </div>
+
       <p class="portfolio-note" data-i18n="portfolio.note">Patrimônio = tudo o que você tem (cartas + graded), igual à sua Coleção. Binders e wishlist são visões, não somam ao patrimônio. Valores na moeda do topo; condições sem preço próprio são estimadas a partir do NM.</p>
     </main>
 

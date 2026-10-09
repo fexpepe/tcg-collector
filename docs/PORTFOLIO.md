@@ -7,6 +7,9 @@ Plano da feature **e** registro do que foi construído. Complementa o
 > **Estado: F0–F4 implementadas e mescladas na `main`** (2026-08-16). A proposta
 > saiu da auditoria da tela + pesquisa de 10 concorrentes; o que mudou durante a
 > execução está na seção 7, o que ficou de fora na 8.
+>
+> **2026-10-09 — Portfólio 3.0 (desenho).** A tela foi reorganizada sem mexer
+> nas contas: ver a seção 10, que também é o guia de componentes pro app nativo.
 
 **Tese:** o Portfólio é a **visão financeira da Coleção** — não um segundo
 inventário. O total dele tem que bater com o da Coleção no centavo, porque a
@@ -216,3 +219,71 @@ Preferências locais da tela: `tcg-pf-chart-mode`, `tcg-pf-chart-pct`,
   precisam ser pedidos a todos os jogos.
 - A **retrospectiva** usa o histórico local: quem nunca abriu as telas pessoais
   no aparelho vê o que veio pelo sync, não mais que isso.
+
+---
+
+## 10. Portfólio 3.0 — o desenho (2026-10)
+
+A 2.0 acrescentou dados por camadas e a tela ficou com a cara disso: dois números
+grandes de patrimônio (o do gráfico e o do cartão), seis cartões do mesmo peso
+(inclusive "cópias precificadas"), três blocos com três desenhos pra mesma
+pergunta e tabelas de seis colunas que no celular escondiam "Atual" e "Lucro".
+A 3.0 reorganiza a tela **pela ordem das perguntas** de quem abre um portfólio.
+Nenhuma conta mudou: as regras da seção 5 seguem valendo, pelas mesmas funções.
+
+| Pergunta | Seção | O que tem |
+|---|---|---|
+| Quanto eu tenho, e como foi? | Topo (`.pf-hero`) | Patrimônio = cabeçalho do gráfico (o scrub move ele), variação do período e do dia, períodos **embaixo** do gráfico |
+| Do que isso é feito? | Resumo (`.pf-summary`) | 4 peças: cartas e graded fixas; lucro potencial e resultado das vendas pra quem usa o modo investidor; senão desejos e selados ("fora do patrimônio"). Cobertura de preço no rodapé |
+| Onde está o dinheiro? | Onde está o valor (`#pfAlloc`) | Abas jogo · raw × graded · set · raridade · artista, barra empilhada, linhas com % |
+| O que mexeu? | Movimentos da semana (`#pfMovers`) | Só as SUAS cartas, pelo `price-deltas-7d` (o mesmo do Hub), com o efeito somado em dinheiro |
+| Quais cartas pesam? | Mais valiosas (`#pfTop`) | Linhas com a arte; "as 10 primeiras somam X% do patrimônio" (concentração) |
+| Quanto ganhei? | Investimento (`#pfInvest`) | Abas posições · vendas; quanto da coleção tem custo informado; sem dado, explica como ligar |
+| O que está fora? | Metas (`#pfGoals`) e Selados (`#pfManual`) | Desejos · pastas e binders; itens manuais |
+
+Decisões que valem lembrar:
+
+- **Desejos saiu das linhas do gráfico.** Não é patrimônio e, no mesmo eixo,
+  achatava a escala ou se lia como parte dele. O `w` continua gravado no
+  histórico (retrospectiva e Hub leem); o valor vive em Metas.
+- **A aba "Mercado" dos movimentos saiu**, junto com a carga dos
+  `price-movers` dos 13 jogos (e das cartas deles que você não tem). Altas do
+  mercado inteiro não respondem "o que aconteceu com o meu patrimônio"; o
+  painel de mercado da tela de Sets mostra isso.
+- **% e Mercado valem pra todo mundo com histórico**, não só pra quem tem 2+
+  jogos: "o mercado caiu 10%, você caiu 7%" serve a quem coleciona um jogo só.
+- **O gráfico é desenhado na largura real do cartão** (viewBox = px, com
+  `ResizeObserver`). Com o viewBox fixo de 820, a 390 px os rótulos ficavam com
+  4–5 px.
+- **Selados seguem fora do patrimônio** (seção 8). A 3.0 só os tornou visíveis
+  no resumo de quem não usa o modo investidor.
+
+### Componentes (e o equivalente nativo)
+
+O app em Capacitor empacota esta mesma página; a ideia é que ela já se comporte
+como uma tela de app e que, se uma parte virar nativa, o molde seja o mesmo.
+
+| Peça | Classe | Equivalente nativo |
+|---|---|---|
+| Número grande + variação + gráfico com scrub | `.pf-hero` | Cabeçalho grande + gráfico com arrasto (háptico a cada dia) |
+| Períodos e Total/Por jogo | `.pf-seg` | `UISegmentedControl` / Material *segmented button* |
+| Peças do resumo (levam a outras telas) | `.pf-kpi` | Células de número em grade 2×2 |
+| Seção com cabeçalho, abas e "Ver mais" | `.pf-card` + `.pf-tabs` + `.pf-more` | Lista agrupada com cabeçalho de seção; "Ver mais" = empurrar uma tela |
+| Linha de carta (arte, nome, apoio, valor) | `.pf-row` | Célula de lista (*list item* de duas linhas com imagem e trailing) |
+| Formulário de item manual | `.pfmi-modal` | Folha de baixo (*bottom sheet*) |
+
+Alvo de toque de 44 px em tudo (`@media (pointer: coarse)`), sem informação que
+só apareça no *hover* (o tooltip do gráfico abre no toque e some ao soltar).
+
+### Pesquisa de 2026-10 (resumo)
+
+Collectr, Card Ladder, PriceCharting, Dragon Shield, Ludex/CollX e, fora do
+nicho, Robinhood, Delta/CoinStats e Kubera/Empower. O que se repete: número
+grande com variação em dinheiro e %, **períodos embaixo do gráfico**, lucro só
+sobre itens com custo e separado em não realizado × realizado (o Collectr chama
+de *Unrealized/Realized Gains*), bloco de altas e quedas, widget de tela inicial.
+O que ninguém faz bem — e virou peça da 3.0: alocação entre jogos, sets e
+raw × graded; dizer **quanto da coleção tem custo informado**. Fica de ideia:
+separar ganho de mercado de dinheiro novo (uma linha de custo acumulado sob a de
+valor) — exige guardar a data do custo, que hoje não existe (seção 8).
+

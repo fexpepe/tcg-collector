@@ -5974,17 +5974,8 @@ a.setting-open {
 [data-sensitive="on"] #grandTotal,
 [data-sensitive="on"] #dashValue,
 [data-sensitive="on"] #salesDashValue,
-[data-sensitive="on"] #topCards .num,
-[data-sensitive="on"] #rawValue,
-[data-sensitive="on"] #gradedValue,
-[data-sensitive="on"] #investedValue,
-[data-sensitive="on"] #wishlistSplit,
-[data-sensitive="on"] #pfChartValue,
-[data-sensitive="on"] .pf-head-delta .pf-cash,
-[data-sensitive="on"] .pf-grand-delta .pf-cash,
-[data-sensitive="on"] .pf-comp-val,
-[data-sensitive="on"] .pf-list-val,
-[data-sensitive="on"] .pf-list-gap,
+[data-sensitive="on"] .pf-hero-delta .pf-cash,
+[data-sensitive="on"] .pf-hero-today .pf-cash,
 [data-sensitive="on"] .pf-axis,
 [data-sensitive="on"] .pf-hilo text,
 [data-sensitive="on"] .pf-tip strong,
@@ -6631,48 +6622,6 @@ a.progress-row:hover {
   100% { opacity: 0; transform: translateY(62vh) rotate(540deg); }
 }
 
-/* Insights do portfólio: variação 7d / 30d / desde o início. */
-.pf-insights { display: flex; gap: 10px; flex-wrap: wrap; margin: 14px 0; }
-.pf-insight { flex: 1 1 140px; min-width: 0; display: flex; flex-direction: column; gap: 3px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); }
-.pf-insight-label { font-size: 12px; color: var(--muted); font-weight: 700; }
-.pf-insight-pct { font-size: 20px; font-weight: 800; color: var(--muted); }
-.pf-insight-abs { font-size: 12px; color: var(--subtle); font-weight: 700; }
-.pf-insight-up .pf-insight-pct { color: #2ecc71; }
-.pf-insight-down .pf-insight-pct { color: #e8553c; }
-/* Composição do portfólio: blocos de barras (tipo: raw×graded; e por jogo). */
-.pf-composition { display: flex; flex-wrap: wrap; gap: 14px; margin: 6px 0 18px; }
-.pf-comp-block { flex: 1 1 280px; min-width: 0; padding: 14px 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); }
-.pf-comp-block h3 { margin: 0 0 10px; font-size: 12px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; color: var(--subtle); }
-.pf-comp-row { display: grid; grid-template-columns: 84px 1fr auto; align-items: center; gap: 10px; margin-bottom: 8px; }
-.pf-comp-row:last-child { margin-bottom: 0; }
-.pf-comp-label { font-size: 13px; font-weight: 700; color: var(--muted); }
-.pf-comp-track { height: 8px; border-radius: 999px; background: var(--panel-strong); overflow: hidden; }
-.pf-comp-fill { display: block; height: 100%; border-radius: 999px; }
-.pf-comp-val { font-size: 13px; font-weight: 800; color: var(--text); }
-/* Linha CLICÁVEL da composição (barra do jogo -> aplica o filtro) e do
-   detalhamento por set (-> Coleção já filtrada naquele set). Fica logo depois
-   da .pf-comp-row de propósito: ela é quem define o grid e o margin-bottom, e
-   estas regras só tiram a aparência de botão/link. O alvo é a linha inteira. */
-.pf-comp-row-btn,
-.pf-comp-row-link {
-  width: 100%;
-  border: 0;
-  background: none;
-  font: inherit;
-  color: inherit;
-  text-align: left;
-  text-decoration: none;
-  cursor: pointer;
-  border-radius: 8px;
-  padding: 2px 4px;
-  margin-left: -4px;
-  margin-right: -4px;
-}
-.pf-comp-row-btn:hover,
-.pf-comp-row-link:hover { background: color-mix(in srgb, var(--accent) 8%, transparent); }
-.pf-comp-row-btn:focus-visible,
-.pf-comp-row-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
-
 /* "Mover da coleção" no picker de graded: linha própria acima da lista, alvo de
    toque de 44px como o resto dos controles em tela estreita. */
 .sales-picker-move {
@@ -6686,28 +6635,6 @@ a.progress-row:hover {
   cursor: pointer;
 }
 .sales-picker-move input { width: 18px; height: 18px; accent-color: var(--accent); }
-/* Etiqueta da graduadora na tabela de mais valiosas. */
-.pf-graded-tag { display: inline-block; font-size: 11px; font-weight: 800; padding: 1px 7px; border-radius: 6px; background: color-mix(in srgb, var(--accent) 16%, transparent); color: var(--text); border: 1px solid var(--line); }
-/* Detalhamento (por set / por raridade): tabs + barras rankeadas. */
-.pf-breakdown { margin: 0 0 18px; }
-.pf-bd-tabs { display: flex; gap: 8px; margin-bottom: 10px; }
-.pf-bd-tab { border: 1px solid var(--line); background: var(--panel); color: var(--muted); padding: 6px 13px; border-radius: 999px; font-size: 12px; font-weight: 700; cursor: pointer; }
-.pf-bd-tab.active { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
-#pfBreakdown .pf-comp-row { grid-template-columns: minmax(110px, 30%) 1fr auto; }
-/* Aba Desejos: no lugar da barra vai o set/variante (e o preço-alvo quando há),
-   então a coluna do meio é texto, não gráfico. */
-.pf-wish-meta {
-  font-size: 12.5px;
-  color: var(--subtle);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.pf-wish-target { color: var(--muted); font-weight: 700; }
-.pf-wish-hit { color: #2ecc71; font-weight: 800; }
-.pf-bd-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.pf-bd-empty { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
-
 /* Cabeçalho do Portfólio: título em cima; embaixo o "← Hub" à esquerda e as
    três ações (privacidade, retrospectiva, exportar) à direita, como botões
    QUADRADOS só-ícone (2026-09-10 — eram três botões de texto que no celular
@@ -6724,9 +6651,6 @@ a.progress-row:hover {
 .pf-privacy[aria-pressed="true"] .pf-eye-on { display: none; }
 .pf-privacy[aria-pressed="true"] .pf-eye-off { display: inline; }
 @media (pointer: coarse) { .pf-head-actions .icon-btn { width: 44px; min-width: 44px; min-height: 44px; } }
-
-/* "Ver todas / top 15" embaixo da tabela de mais valiosas. */
-.pf-top-more { margin-top: 12px; text-align: center; }
 
 /* Submenu fixo do Explorar (abaixo do título das páginas de jogo). */
 .explore-subnav { margin: -8px 0 18px; }
@@ -8113,8 +8037,8 @@ html[data-collector-mode] .hb-worth .collector-badge { font-size: 28px; font-wei
 .sold-paid, .sold-price { font-size: 13px; font-weight: 700; text-align: right; }
 .sold-price { font-weight: 800; }
 .sold-pnl { font-size: 13px; font-weight: 800; text-align: right; }
-.sold-pnl.is-up, .pf-pnl.is-up { color: #2ecc71; }
-.sold-pnl.is-down, .pf-pnl.is-down { color: #e8553c; }
+.sold-pnl.is-up { color: #2ecc71; }
+.sold-pnl.is-down { color: #e8553c; }
 .sold-pnl.is-na { color: var(--subtle); font-weight: 600; }
 .sold-del { position: static; }
 @media (max-width: 700px) {
@@ -8122,11 +8046,6 @@ html[data-collector-mode] .hb-worth .collector-badge { font-size: 28px; font-wei
   .sold-date, .sold-paid { display: none; }
   .sold-row-head { display: none; }
 }
-/* Portfólio: seção Investimento. */
-.pf-invest { margin: 6px 0 18px; }
-.pf-invest-title { margin: 0 0 10px; font-size: 17px; }
-.pf-pnl-pct { font-size: 11.5px; font-weight: 700; opacity: .85; }
-
 /* Wishlist: cartas desejadas à venda por outros colecionadores (trade matching). */
 .wish-sellers { margin: 4px 0 14px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); }
 .wish-sellers h2 { margin: 0 0 10px; font-size: 15px; }
@@ -8366,22 +8285,8 @@ html:not([data-game]) .falha-boot[hidden] { display: flex !important; animation:
 
 /* Variação de preço (▲▼ % da semana) no preview e nos movers. */
 .price-delta { display: inline-flex; align-items: center; gap: 3px; margin-left: 8px; font-size: 12px; font-weight: 800; padding: 1px 8px; border-radius: 999px; vertical-align: middle; }
-.price-delta.is-up, .pf-mover-pct.is-up { color: #2ecc71; background: color-mix(in srgb, #2ecc71 12%, transparent); }
-.price-delta.is-down, .pf-mover-pct.is-down { color: #e8553c; background: color-mix(in srgb, #e8553c 12%, transparent); }
-/* Maiores altas e quedas (Portfólio). */
-.pf-movers-since { font-size: 12px; font-weight: 600; color: var(--subtle); }
-.pf-movers-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
-.pf-movers-col { padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); }
-.pf-movers-col h3 { margin: 0 0 8px; font-size: 12px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; color: var(--subtle); }
-.pf-mover { display: flex; align-items: center; gap: 10px; padding: 6px 0; text-decoration: none; color: var(--text); border-bottom: 1px solid var(--line); }
-.pf-mover:last-child { border-bottom: 0; }
-.pf-mover-thumb { flex: none; width: 32px; border-radius: 4px; overflow: hidden; }
-.pf-mover-thumb img { display: block; width: 100%; }
-.pf-mover-info { display: flex; flex-direction: column; min-width: 0; flex: 1; }
-.pf-mover-info strong { font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.pf-mover-info span { font-size: 11.5px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.pf-mover-owned { color: var(--accent); font-weight: 800; font-size: 10.5px !important; text-transform: uppercase; letter-spacing: .03em; }
-.pf-mover-pct { flex: none; font-size: 12.5px; font-weight: 800; padding: 2px 8px; border-radius: 999px; }
+.price-delta.is-up { color: #2ecc71; background: color-mix(in srgb, #2ecc71 12%, transparent); }
+.price-delta.is-down { color: #e8553c; background: color-mix(in srgb, #e8553c 12%, transparent); }
 /* Card da tag na vitrine: faixa colorida no topo + bolinha da cor antes do nome. */
 .tag-card { box-shadow: inset 0 4px 0 var(--tag); }
 .tag-card .coll-card-title { display: flex; align-items: center; gap: 6px; }
@@ -8648,54 +8553,6 @@ html:not([data-game]) .falha-boot[hidden] { display: flex !important; animation:
   .br-link { display: flex; align-items: center; min-height: 44px; }
 }
 
-/* Portfólio: tabela de cartas mais valiosas */
-.portfolio-table-wrap {
-  overflow-x: auto;
-}
-
-.portfolio-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  overflow: hidden;
-  font-size: 14px;
-}
-
-.portfolio-table th,
-.portfolio-table td {
-  padding: 10px 12px;
-  text-align: left;
-  border-bottom: 1px solid var(--line);
-}
-
-.portfolio-table th {
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--subtle);
-  background: var(--surface);
-}
-
-.portfolio-table tr:last-child td {
-  border-bottom: none;
-}
-
-.portfolio-table .num {
-  text-align: right;
-  white-space: nowrap;
-}
-
-.portfolio-table a {
-  color: var(--text);
-  text-decoration: none;
-}
-
-.portfolio-table a:hover {
-  color: var(--accent);
-}
-
 .price-estimated {
   color: var(--gold);
   cursor: help;
@@ -8708,249 +8565,310 @@ html:not([data-game]) .falha-boot[hidden] { display: flex !important; animation:
   line-height: 1.6;
 }
 
-/* Gráfico de progressão do portfólio */
-.pf-chart {
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 16px;
-  margin-bottom: 18px;
-  box-shadow: var(--shadow);
+/* ============================================================================
+   PORTFÓLIO 3.0 (portfolio.html, 2026-10-09)
+   Redesenho no molde das outras telas novas (Hub "Carteira", Sets, Decks):
+   canto reto, sem sombra, painéis com borda fina. A ordem da tela é a das
+   perguntas de quem abre um portfólio:
+     1. quanto eu tenho e como foi no período  -> topo: número + gráfico
+     2. do que isso é feito                    -> resumo (4 peças)
+     3. onde está o dinheiro / o que mexeu     -> Onde está o valor | Movimentos
+     4. quais cartas pesam                     -> Mais valiosas (com a arte)
+     5. quanto ganhei                          -> Investimento (posições | vendas)
+     6. o que está fora                        -> Metas | Selados
+   Cada seção é um .pf-card com cabeçalho, abas (.pf-tabs) e linhas (.pf-row):
+   o mesmo molde de lista agrupada que o app nativo usa (docs/PORTFOLIO.md §10).
+   Prefixo pf-: folha "portfolio" (scripts/lib/css-areas.mjs).
+   ========================================================================== */
+.pf-main .is-up { color: #2ecc71; }
+.pf-main .is-down { color: #e8553c; }
+/* No tema claro o verde/vermelho do escuro dão ~2:1 sobre o painel branco. */
+[data-theme="light"] .pf-main .is-up { color: #1a7f45; }
+[data-theme="light"] .pf-main .is-down { color: #c0392b; }
+.pf-eyebrow {
+  margin: 0; font-size: 12px; font-weight: 800;
+  letter-spacing: .06em; text-transform: uppercase; color: var(--muted);
 }
-/* Cabeçalho do gráfico: valor grande + variação da faixa + rótulo do período.
-   baseline e não center: os três têm tamanhos bem diferentes e alinhar pelo
-   meio deixava o "(3,4%)" flutuando acima da base do número grande. */
-.pf-chart-head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 4px 10px;
-  margin-bottom: 10px;
-}
-.pf-head-value {
-  font-size: 28px;
-  font-weight: 800;
-  letter-spacing: -0.02em;
+.pf-eyebrow small { font-size: inherit; font-weight: 600; letter-spacing: .02em; text-transform: none; color: var(--subtle); }
+
+/* Topo: o gráfico (2/3) e o resumo (1/3), esticados à mesma altura. */
+.pf-top { display: grid; grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr); gap: 12px; margin-bottom: 12px; }
+.pf-hero, .pf-summary, .pf-card { background: var(--panel); border: 1px solid var(--line); min-width: 0; }
+.pf-hero { display: flex; flex-direction: column; padding: 22px 24px 18px; }
+.pf-hero-head { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+.pf-hero-value {
+  margin-top: 2px;
+  font-size: clamp(34px, 1.4rem + 1.5vw, 50px); font-weight: 800;
+  letter-spacing: -0.02em; line-height: 1.05;
   /* O scrub troca este número a cada pixel do arrasto: sem largura fixa por
-     dígito, o texto ao lado dança horizontalmente enquanto o dedo anda. */
+     dígito, o texto dança horizontalmente enquanto o dedo anda. */
   font-variant-numeric: tabular-nums;
 }
-.pf-head-delta { font-size: 14px; font-weight: 800; color: var(--muted); font-variant-numeric: tabular-nums; }
-.pf-head-delta.is-up { color: #2ecc71; }
-.pf-head-delta.is-down { color: #e8553c; }
+.pf-hero-delta, .pf-hero-today { margin: 0; font-size: 15px; font-weight: 800; font-variant-numeric: tabular-nums; min-height: 1.4em; }
+.pf-hero-today { min-height: 0; font-size: 13px; color: var(--muted); }
+.pf-when { font-weight: 600; color: var(--subtle); }
+.pf-hero-today .pf-when { color: var(--muted); }
 
-/* Variação do DIA no cartão do patrimônio (padrão corretora). Os spans de
-   dentro (.pf-cash/.pf-pct) precisam DESFAZER o `.stats-grid span` (28px,
-   block) — aqui é chip de apoio, não manchete. */
-.pf-grand-delta {
-  display: block; margin-top: 7px;
-  font-size: 13px; font-weight: 800; color: var(--muted);
-  font-variant-numeric: tabular-nums;
+/* Ferramentas do gráfico numa linha: Total | Por jogo + % + Mercado à
+   esquerda, as séries (legenda que liga e desliga) à direita. */
+.pf-chart-tools { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; margin: 16px 0 6px; }
+.pf-modes { display: flex; align-items: center; gap: 6px; }
+.pf-modes[hidden] { display: none; }
+.pf-legend { display: flex; flex-wrap: wrap; gap: 6px; }
+.pf-seg { display: inline-flex; border: 1px solid var(--line); }
+.pf-seg-btn, .pf-toggle, .pf-chip, .pf-tab, .pf-more {
+  min-height: 34px; padding: 0 12px; border: 0; border-radius: 0;
+  background: transparent; color: var(--muted);
+  font-size: 13px; font-weight: 700; white-space: nowrap; cursor: pointer;
 }
-.pf-grand-delta span { display: inline; font-size: inherit; line-height: inherit; font-weight: inherit; color: inherit; }
-.pf-grand-delta.is-up { color: #2ecc71; }
-.pf-grand-delta.is-down { color: #e8553c; }
-.pf-grand-delta .pf-grand-when { color: var(--subtle); font-weight: 600; }
+.pf-seg-btn + .pf-seg-btn { border-left: 1px solid var(--line); }
+.pf-seg-btn:hover, .pf-toggle:hover, .pf-chip:hover, .pf-tab:hover { color: var(--text); }
+.pf-seg-btn.active { background: var(--accent-soft); color: var(--accent); }
+.pf-toggle { border: 1px solid var(--line); min-width: 38px; }
+.pf-toggle.active { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+/* Chip de série: bolinha na cor da linha; apagado = linha fora do gráfico. */
+.pf-chip { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); }
+.pf-chip .pf-dot { opacity: .35; }
+.pf-chip.active { color: var(--text); border-color: color-mix(in srgb, var(--pf-color, var(--accent)) 60%, var(--line)); }
+.pf-chip.active .pf-dot { opacity: 1; }
+.pf-chip-fixed { cursor: default; }
+.pf-chip .pf-dot { background: var(--pf-color, var(--accent)); }
+.pf-games-all.active { border-color: var(--accent); color: var(--accent); }
+.pf-dot { flex: none; width: 10px; height: 10px; background: var(--subtle); }
 
-/* Dinheiro tabular no resto da tela (mesma razão do .stats-grid span). */
-.pf-comp-val, .pf-insight-pct, .pf-insight-abs, .pf-mover-pct, .pf-mover-cash { font-variant-numeric: tabular-nums; }
-
-/* Selados e itens manuais (F4): lista simples + modal de cadastro. */
-.pf-mi-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.pf-mi-add { flex: 0 0 auto; padding: 6px 14px; min-height: 34px; font-size: 13px; }
-.pf-mi-rows { display: grid; gap: 6px; }
-.pf-mi-row {
-  display: flex; align-items: center; gap: 12px;
-  padding: 9px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel);
-}
-.pf-mi-name { flex: 1 1 auto; min-width: 0; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.pf-mi-name strong { font-size: 14px; }
-.pf-mi-game { flex: none; padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 800; background: var(--gc); color: var(--gc-fg); }
-.pf-mi-cost { font-size: 12px; color: var(--subtle); }
-.pf-mi-qty { flex: none; font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
-.pf-mi-val { flex: none; font-size: 14px; font-variant-numeric: tabular-nums; }
-.pf-mi-actions { flex: none; display: flex; gap: 4px; }
-.pf-mi-btn { min-height: 30px; min-width: 30px; padding: 0; border: 1px solid var(--line); border-radius: 8px; background: none; color: var(--muted); font-size: 14px; }
-.pf-mi-btn:hover { border-color: var(--accent); color: var(--accent); }
-.pf-mi-btn svg { width: 14px; height: 14px; } /* o X de remover (o font-size acima é do ✎) */
-.pf-mi-total { margin: 10px 0 0; font-size: 14px; }
-.pf-mi-total strong { font-variant-numeric: tabular-nums; }
-.pf-mi-note { margin: 6px 0 0; font-size: 12px; color: var(--subtle); }
-.pf-mi-form { display: grid; gap: 10px; margin: 12px 0; }
-.pf-mi-form label { display: grid; gap: 4px; font-size: 13px; font-weight: 700; color: var(--muted); }
-.pf-mi-form input, .pf-mi-form select {
-  min-height: 42px; padding: 0 12px; border: 1px solid var(--line); border-radius: 8px;
-  background: var(--panel-strong); color: var(--text); font-size: 16px;
-}
-@media (pointer: coarse) { .pf-mi-btn { min-height: 44px; min-width: 42px; } }
-.pf-head-when { font-size: 12.5px; color: var(--subtle); font-weight: 600; margin-left: auto; }
-.pf-chart-controls {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 12px;
-}
-/* Seletor de modo do gráfico (Séries | Por jogo | %). Mesmo idioma visual do
-   .pf-ranges — são os dois controles do mesmo cartão. */
-.pf-modes { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; margin-bottom: 10px; }
-.pf-mode-btn {
-  min-height: 32px;
-  padding: 0 12px;
-  border: none;
-  background: var(--panel);
-  color: var(--muted);
-  font-size: 12.5px;
-  font-weight: 700;
-  cursor: pointer;
-}
-.pf-mode-btn.active { background: var(--accent-soft); color: var(--accent); }
-/* O % é um liga-desliga, não uma 3ª opção do grupo: a divisória separa ele dos
-   dois modos, que são exclusivos entre si. */
-.pf-mode-pct { border-left: 1px solid var(--line); min-width: 38px; }
-.pf-series { display: flex; flex-wrap: wrap; gap: 6px; }
-/* "Todos os jogos": o quadradinho ☑/☐ no lugar da bolinha de cor — não é uma
-   série, é um atalho que liga/desliga as outras. */
-.pf-games-all .pf-tick { font-size: 13px; line-height: 1; }
-.pf-games-all.active { color: var(--text); border-color: var(--accent); background: var(--accent-soft); }
-.pf-series-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  min-height: 32px;
-  padding: 0 12px;
-  border-radius: 999px;
-  border: 1px solid var(--line);
-  background: var(--panel);
-  color: var(--muted);
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-}
-.pf-series-chip .pf-dot {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: var(--pf-color);
-  flex: none;
-  opacity: 0.45;
-}
-.pf-series-chip.active {
-  color: var(--text);
-  border-color: var(--pf-color);
-  background: color-mix(in srgb, var(--pf-color) 14%, transparent);
-}
-.pf-series-chip.active .pf-dot { opacity: 1; }
-.pf-ranges {
-  display: inline-flex;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  overflow: hidden;
-}
-.pf-range-btn {
-  min-height: 32px;
-  min-width: 42px;
-  padding: 0 10px;
-  border: none;
-  background: var(--panel);
-  color: var(--muted);
-  font-size: 12.5px;
-  font-weight: 700;
-  cursor: pointer;
-}
-.pf-range-btn.active { background: var(--accent-soft); color: var(--accent); }
-.pf-chart-body { width: 100%; }
+.pf-chart-body { width: 100%; min-height: 196px; margin-top: 4px; }
 .pf-chart-rel { position: relative; width: 100%; }
-.pf-svg { width: 100%; height: auto; display: block; }
+/* width/height vêm no próprio SVG (a largura real do cartão, ver renderChart);
+   o max-width só segura o quadro enquanto o ResizeObserver não redesenha. */
+.pf-svg { display: block; max-width: 100%; height: auto; touch-action: pan-y; }
 .pf-line { fill: none; stroke-width: 2.4; stroke-linejoin: round; stroke-linecap: round; }
-/* Marcador de dia: bolinha VAZADA (miolo na cor do cartão, anel na cor da
-   série). Vazada e não cheia porque são muitas numa linha só — cheias
-   engrossariam a curva e competiriam com a ponta, que é o valor de hoje.
-   O miolo usa --surface (o fundo do cartão do gráfico), então o furo continua
-   parecendo furo no tema claro e no escuro. */
-.pf-dot { fill: var(--surface); stroke-width: 2; }
+/* Cartas e graded por cima do patrimônio: linhas de apoio, mais finas. */
+.pf-line-sub { stroke-width: 1.8; opacity: .9; }
+/* Marcador de dia: bolinha VAZADA (miolo na cor do cartão, anel na da série). */
+.pf-svg .pf-dot { fill: var(--panel); stroke-width: 2; }
 .pf-area { stroke: none; }
-/* Linha do MERCADO (benchmark): tracejada e mais fina — é referência, não uma
-   coleção sua, e a diferença precisa aparecer sem depender da cor. */
-.pf-line-bench { stroke-width: 1.8; stroke-dasharray: 5 4; opacity: 0.85; }
-.pf-mode-bench { border-left: 1px solid var(--line); }
-.pf-grid { stroke: var(--line); stroke-width: 1; opacity: 0.5; }
-.pf-axis { fill: var(--subtle); font-size: 11px; }
-.pf-xaxis { fill: var(--subtle); font-size: 11px; }
-/* Marcadores de Alta/Baixa (pílulas escuras, estilo tooltip). */
+/* Linha do MERCADO (benchmark): tracejada — é referência, não uma coleção sua,
+   e a diferença precisa aparecer sem depender da cor. */
+.pf-line-bench { stroke-width: 1.8; stroke-dasharray: 5 4; opacity: .85; }
+.pf-grid { stroke: var(--line); stroke-width: 1; opacity: .6; }
+.pf-axis, .pf-xaxis { fill: var(--subtle); font-size: 11px; font-weight: 600; }
+/* Os rótulos do eixo Y ficam DENTRO da área, à direita, e a linha passa por
+   cima deles: um contorno na cor do cartão os mantém legíveis. */
+.pf-axis { paint-order: stroke; stroke: var(--panel); stroke-width: 3px; stroke-linejoin: round; }
 .pf-hilo rect { fill: #15171d; }
 .pf-hilo text { fill: #ffffff; font-size: 11px; font-weight: 800; }
-/* Guia de hover + pontos. */
-.pf-guide { stroke: var(--subtle); stroke-width: 1; stroke-dasharray: 3 3; opacity: 0.7; }
-.pf-hover-dot { stroke: var(--surface); stroke-width: 1.5; }
-/* Tooltip que segue o cursor com o valor do dia. */
-.pf-tip { position: absolute; pointer-events: none; z-index: 3; top: 0; background: #15171d; color: #fff; border: 1px solid rgba(255,255,255,0.12); border-radius: 9px; padding: 7px 10px; font-size: 12px; line-height: 1.35; white-space: nowrap; box-shadow: 0 10px 26px rgba(0,0,0,0.4); }
-.pf-tip-date { display: block; font-weight: 800; margin-bottom: 3px; opacity: 0.85; }
+.pf-guide { stroke: var(--subtle); stroke-width: 1; stroke-dasharray: 3 3; opacity: .7; }
+.pf-hover-dot { stroke: var(--panel); stroke-width: 1.5; }
+.pf-tip { position: absolute; pointer-events: none; z-index: 3; top: 0; background: #15171d; color: #fff; border: 1px solid rgba(255,255,255,.12); padding: 7px 10px; font-size: 12px; line-height: 1.35; white-space: nowrap; box-shadow: 0 10px 26px rgba(0,0,0,.4); }
+.pf-tip-date { display: block; font-weight: 800; margin-bottom: 3px; opacity: .85; }
 .pf-tip-row { display: block; }
-.pf-tip-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 5px; vertical-align: middle; }
-/* Vendas: nota de cobertura ("o resultado considera N de M vendas") + barras por
-   mês. A nota é informação, não erro — daí o tom neutro com destaque só no link. */
-.pf-coverage {
-  margin: 10px 0 0;
-  padding: 9px 12px;
-  border: 1px dashed var(--line);
-  border-radius: 10px;
-  font-size: 12.5px;
-  color: var(--muted);
+.pf-tip-dot { display: inline-block; width: 8px; height: 8px; margin-right: 5px; vertical-align: middle; }
+.pf-chart-empty { margin: 0; padding: 48px 12px; text-align: center; color: var(--subtle); font-size: 14px; }
+/* Períodos EMBAIXO do gráfico (Collectr, Robinhood): o polegar está ali, e o
+   número grande lá em cima fica sem nada competindo com ele. */
+.pf-ranges { display: flex; margin-top: 12px; align-self: flex-start; }
+.pf-ranges .pf-seg-btn { min-width: 46px; }
+
+/* Resumo: peças em coluna no desktop (rótulo e apoio à esquerda, valor à
+   direita); grade 2×2 no celular. */
+.pf-summary { display: flex; flex-direction: column; padding: 8px 0 0; }
+.pf-kpis { display: flex; flex-direction: column; flex: 1 1 auto; }
+.pf-kpi {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "rot val" "sub sub";
+  align-items: baseline; gap: 2px 12px; padding: 14px 22px;
+  border-top: 1px solid var(--line); color: var(--text); text-decoration: none;
+  /* As peças dividem a altura do topo (que o gráfico define): sem isso
+     sobrava um vão embaixo da última. */
+  flex: 1 1 0; align-content: center;
 }
+.pf-kpi:first-child { border-top: 0; }
+a.pf-kpi:hover .pf-kpi-label { color: var(--accent); }
+.pf-kpi-label { grid-area: rot; font-size: 13.5px; font-weight: 700; color: var(--muted); }
+.pf-kpi-value { grid-area: val; font-size: 20px; font-weight: 800; letter-spacing: -0.01em; text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.pf-kpi-sub { grid-area: sub; font-size: 12.5px; color: var(--subtle); font-weight: 600; }
+.pf-coverage-line { margin: auto 0 0; padding: 12px 22px 14px; border-top: 1px solid var(--line); font-size: 12.5px; color: var(--subtle); }
+.pf-coverage-line[hidden] { display: none; }
+
+/* Seções: cartão com cabeçalho, abas e corpo. */
+.pf-grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.pf-grid2 > [hidden] { display: none; }
+/* Uma das duas vazia: a outra ocupa a largura. */
+.pf-grid2:has(> [hidden]) { grid-template-columns: minmax(0, 1fr); }
+.pf-card { padding: 20px 22px; margin-bottom: 12px; }
+.pf-grid2 > .pf-card { margin-bottom: 0; }
+.pf-grid2 { margin-bottom: 12px; }
+.pf-sec-head { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 12px; margin: 0 0 14px; }
+.pf-sec-head h2 { margin: 0; font-size: 17px; }
+.pf-sec-head small { font-size: 13px; color: var(--subtle); font-weight: 600; }
+.pf-sec-total { margin-left: auto; font-size: 17px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.pf-sec-link { margin-left: auto; font-size: 13.5px; font-weight: 700; color: var(--accent); text-decoration: none; }
+.pf-sec-link:hover { text-decoration: underline; }
+/* Abas de seção: sublinhado na ativa (não pílula), pra não brigar com os
+   chips de jogo do topo. Rolam de lado no celular em vez de quebrar. */
+.pf-tabs { display: flex; gap: 2px; margin: -4px 0 16px; border-bottom: 1px solid var(--line); overflow-x: auto; scrollbar-width: none; }
+.pf-tabs::-webkit-scrollbar { display: none; }
+.pf-tab { padding: 0 12px; min-height: 38px; box-shadow: inset 0 -2px 0 transparent; }
+.pf-tab[aria-pressed="true"] { color: var(--text); box-shadow: inset 0 -2px 0 var(--accent); }
+.pf-empty { margin: 0; color: var(--muted); font-size: 13.5px; line-height: 1.55; }
+.pf-empty a { color: var(--accent); font-weight: 700; white-space: nowrap; }
+.pf-more { display: flex; width: 100%; justify-content: center; margin-top: 10px; border: 1px solid var(--line); color: var(--text); }
+.pf-more:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Onde está o valor: barra empilhada + linhas (cor, nome, cópias, %, valor). */
+.pf-alloc-bar { display: flex; gap: 2px; height: 12px; margin-bottom: 10px; background: var(--panel-strong); }
+.pf-alloc-bar span { min-width: 3px; }
+.pf-alloc-list { list-style: none; margin: 0; padding: 0; }
+.pf-alloc-row {
+  display: grid; grid-template-columns: 10px minmax(0, 1fr) auto 48px minmax(92px, auto);
+  align-items: center; gap: 12px; width: 100%; min-height: 40px; padding: 0;
+  border: 0; border-top: 1px solid var(--line); border-radius: 0; background: none;
+  color: var(--text); font: inherit; font-size: 14px; text-align: left; text-decoration: none;
+}
+.pf-alloc-list li:first-child .pf-alloc-row { border-top: 0; }
+button.pf-alloc-row, a.pf-alloc-row { cursor: pointer; }
+button.pf-alloc-row:hover .pf-alloc-name, a.pf-alloc-row:hover .pf-alloc-name { color: var(--accent); }
+.pf-alloc-row.is-rest .pf-alloc-name { color: var(--muted); font-weight: 600; }
+.pf-alloc-name { font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pf-alloc-n { font-size: 12.5px; color: var(--subtle); white-space: nowrap; }
+.pf-alloc-pct { text-align: right; color: var(--muted); font-variant-numeric: tabular-nums; }
+.pf-alloc-val { text-align: right; font-weight: 800; white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+/* Linha de carta (Mais valiosas, Movimentos, Posições, Desejos). */
+.pf-rows { list-style: none; margin: 0; padding: 0; }
+.pf-row {
+  display: flex; align-items: center; gap: 12px; min-height: 64px; padding: 8px 0;
+  border-top: 1px solid var(--line); color: var(--text); text-decoration: none;
+}
+.pf-rows > li:first-child > .pf-row { border-top: 0; }
+.pf-row:hover strong { color: var(--accent); }
+.pf-row:hover .pf-row-end strong { color: inherit; }
+.pf-rank { flex: none; width: 20px; text-align: right; font-size: 12.5px; font-weight: 800; color: var(--subtle); font-variant-numeric: tabular-nums; }
+.pf-thumb { flex: none; width: 36px; aspect-ratio: 63 / 88; background: var(--panel-strong); overflow: hidden; }
+.pf-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.pf-row-main { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1 1 auto; }
+.pf-row-main strong { font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pf-row-sub { display: flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pf-row-sub > span { flex: none; }
+.pf-row-end { flex: none; display: flex; flex-direction: column; align-items: flex-end; gap: 2px; text-align: right; font-variant-numeric: tabular-nums; }
+.pf-row-end strong { font-size: 14.5px; font-weight: 800; white-space: nowrap; }
+.pf-row-end small { font-size: 12px; font-weight: 700; color: var(--subtle); white-space: nowrap; }
+.pf-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+.pf-tag { padding: 1px 6px; background: var(--panel-strong); font-size: 11px; font-weight: 700; color: var(--muted); }
+.pf-tag-grade { background: color-mix(in srgb, #e8c46a 22%, transparent); color: var(--text); }
+/* Mais valiosas em DUAS colunas no desktop largo: 10 linhas viram 5 por
+   coluna, e a seção fica da altura das outras em vez de uma tripa. */
+@media (min-width: 1100px) {
+  .pf-top-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-flow: column; grid-template-rows: repeat(var(--pf-linhas, 5), auto); column-gap: 32px; }
+  .pf-top-list > li:nth-child(n) > .pf-row { border-top: 1px solid var(--line); }
+}
+
+/* Movimentos: o efeito somado da semana em cima da lista. */
+.pf-moves-sum { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; margin: -6px 0 10px; font-size: 13.5px; color: var(--muted); }
+.pf-moves-sum strong { font-size: 18px; font-variant-numeric: tabular-nums; }
+.pf-moves-count { margin-left: auto; font-weight: 800; font-variant-numeric: tabular-nums; }
+
+/* Faixa de números de uma seção (Pago | Atual | Lucro…). */
+.pf-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1px; margin: 0 0 14px; background: var(--line); border: 1px solid var(--line); }
+.pf-stat { display: flex; flex-direction: column; gap: 2px; padding: 12px 14px; background: var(--panel); min-width: 0; }
+.pf-stat > span { font-size: 12.5px; font-weight: 700; color: var(--muted); }
+.pf-stat strong { font-size: 19px; font-weight: 800; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.pf-stat small { font-size: 12px; font-weight: 700; color: var(--subtle); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* Nota de cobertura (custo informado, vendas sem custo): informação, não erro. */
+.pf-coverage { margin: 0 0 12px; padding: 9px 12px; border: 1px dashed var(--line); font-size: 12.5px; color: var(--muted); }
 .pf-coverage a { color: var(--accent); font-weight: 700; margin-left: 6px; }
 .pf-months { margin-top: 14px; }
 .pf-months-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; font-size: 12.5px; color: var(--muted); margin-bottom: 6px; }
 .pf-months-head strong { color: var(--text); font-size: 13px; }
 .pf-mbars { display: flex; align-items: flex-end; gap: 4px; height: 90px; }
-/* Cada barra é uma coluna que cresce de baixo: flex-end no pai + altura em % no
-   preenchimento. O rótulo fica FORA da área que escala, senão encolhe junto. */
+/* Cada barra é uma coluna que cresce de baixo; o rótulo fica FORA da área que
+   escala, senão encolhe junto. */
 .pf-mbar { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; justify-content: flex-end; height: 100%; gap: 3px; }
-.pf-mbar-fill { display: block; width: 100%; background: var(--accent); opacity: 0.55; border-radius: 3px 3px 0 0; }
-.pf-mbar:hover .pf-mbar-fill { opacity: 0.9; }
+.pf-mbar-fill { display: block; width: 100%; background: var(--accent); opacity: .55; }
+.pf-mbar:hover .pf-mbar-fill { opacity: .9; }
 .pf-mbar-lbl { font-size: 10px; color: var(--subtle); text-align: center; white-space: nowrap; overflow: hidden; }
-/* Taxa descontada, ao lado do preço bruto no histórico de vendas. */
-.sold-fee { display: block; font-size: 10.5px; color: var(--subtle); font-weight: 700; cursor: help; }
-/* Os dois campos de taxa (% e dinheiro) dividem a linha no modal "Vendi". */
-.sold-fee-fields { display: flex; gap: 8px; }
-.sold-fee-pct { flex: 0 0 78px; }
-/* Listas & Binders: uma linha por visão, clicável, com o valor à direita. */
-.pf-list-note { margin: 0 0 10px; font-size: 12.5px; color: var(--subtle); }
-.pf-list-rows { display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--panel); }
-.pf-list-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 14px;
-  border-bottom: 1px solid var(--line);
-  text-decoration: none;
-  color: var(--text);
-  font-size: 14px;
-}
-.pf-list-row:last-child { border-bottom: none; }
-.pf-list-row:hover { background: var(--surface); }
-.pf-list-dot { width: 10px; height: 10px; border-radius: 3px; flex: none; }
-.pf-list-name { font-weight: 650; }
-/* O nome cede espaço antes de tudo: numa lista com nome longo, é ele que deve
-   truncar, não o valor (que é o dado da tela). */
-.pf-list-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.pf-list-meta { font-size: 12px; color: var(--muted); white-space: nowrap; }
-.pf-list-gap { margin-left: auto; font-size: 12.5px; color: #96700f; font-weight: 700; white-space: nowrap; font-variant-numeric: tabular-nums; }
-.pf-list-val { margin-left: auto; font-weight: 750; font-variant-numeric: tabular-nums; white-space: nowrap; }
-/* Com "completar" na linha, ele já empurrou tudo pra direita — o valor não pode
-   empurrar de novo, senão os dois se separam nas pontas. */
-.pf-list-gap + .pf-list-val { margin-left: 0; }
+
+/* Metas: abertura wishlist × binder e as linhas de pasta/binder. */
+.pf-split { margin: -4px 0 8px; font-size: 13px; color: var(--muted); }
+.pf-list-row { min-height: 52px; }
+.pf-list-dot { flex: none; width: 10px; height: 10px; }
 .pf-list-floor { color: var(--subtle); font-weight: 700; cursor: help; }
-[data-theme="dark"] .pf-list-gap { color: #e8c46a; }
-/* Abertura do card de desejos (wishlist × binder). */
-.pf-stat-split { display: block; margin-top: 2px; font-size: 11.5px; color: var(--subtle); font-weight: 600; }
-.pf-chart-empty {
-  margin: 0;
-  padding: 40px 12px;
-  text-align: center;
-  color: var(--subtle);
-  font-size: 14px;
+.pf-list-gap { color: #96700f !important; }
+[data-theme="dark"] .pf-list-gap { color: #e8c46a !important; }
+
+/* Selados e itens manuais: linhas com editar/remover e o botão no rodapé. */
+.pf-mi-row { display: flex; align-items: center; gap: 12px; min-height: 60px; padding: 8px 0; border-top: 1px solid var(--line); }
+.pf-mi-rows > .pf-mi-row:first-child { border-top: 0; }
+.pf-mi-game { flex: none; padding: 1px 7px; font-size: 11px; font-weight: 800; background: var(--gc); color: var(--gc-fg); }
+.pf-mi-cost { color: var(--subtle); }
+.pf-mi-val { flex: none; font-size: 14.5px; font-variant-numeric: tabular-nums; }
+.pf-mi-actions { flex: none; display: flex; gap: 4px; }
+.pf-mi-btn { min-height: 34px; min-width: 34px; padding: 0; border: 1px solid var(--line); border-radius: 0; background: none; color: var(--muted); }
+.pf-mi-btn:hover { border-color: var(--accent); color: var(--accent); }
+.pf-mi-btn svg { width: 15px; height: 15px; }
+.pf-mi-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin-top: 14px; }
+.pf-mi-add { flex: none; min-height: 38px; padding: 0 14px; font-size: 13.5px; }
+.pf-mi-note { flex: 1 1 220px; margin: 0; font-size: 12px; color: var(--subtle); }
+.pf-mi-form { display: grid; gap: 10px; margin: 12px 0; }
+.pf-mi-form label { display: grid; gap: 4px; font-size: 13px; font-weight: 700; color: var(--muted); }
+.pf-mi-form input, .pf-mi-form select {
+  min-height: 42px; padding: 0 12px; border: 1px solid var(--line); border-radius: 0;
+  background: var(--panel-strong); color: var(--text); font-size: 16px;
+}
+
+/* Toque: alvo mínimo de 44px em tudo que se toca. */
+@media (pointer: coarse) {
+  .pf-seg-btn, .pf-toggle, .pf-chip, .pf-tab, .pf-more, .pf-mi-add { min-height: 44px; }
+  .pf-alloc-row { min-height: 48px; }
+  .pf-mi-btn { min-height: 44px; min-width: 44px; }
+}
+
+@media (max-width: 960px) {
+  .pf-top { grid-template-columns: minmax(0, 1fr); }
+  /* O resumo vira grade 2×2 embaixo do gráfico: rótulo, valor e apoio
+     empilhados, como os cartões de número dos apps. */
+  .pf-summary { padding: 0; }
+  .pf-kpis { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; background: var(--line); }
+  .pf-kpi { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; padding: 14px 16px; border: 0; background: var(--panel); }
+  .pf-kpi-value { text-align: left; font-size: 19px; }
+  /* Peças em número ímpar: a última ocupa a fileira inteira. */
+  .pf-kpis[data-n="3"] .pf-kpi:last-child { grid-column: 1 / -1; }
+  .pf-coverage-line { padding: 10px 16px; }
+  .pf-grid2 { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 600px) {
+  /* Celular: a ordem muda sem mexer no DOM (o leitor de tela e o Tab seguem o
+     HTML): Movimentos sobem pra logo depois do resumo — "o que mexeu hoje" é
+     o motivo de abrir o app todo dia —, e o resto segue a ordem do desktop. */
+  .pf-main { display: flex; flex-direction: column; }
+  .pf-main > * { order: 5; }
+  .pf-main > .pf-mobile-toolbar, .pf-main > .page-head, .pf-main > .chip-scroll, .pf-main > .game-filter, .pf-main > .game-filter-select { order: 0; }
+  .pf-main > .pf-top { order: 1; }
+  .pf-main > .pf-mid { display: contents; }
+  #pfMovers { order: 2; }
+  #pfAlloc { order: 4; }
+  #pfTop { order: 3; }
+  .pf-grid2 > .pf-card { margin-bottom: 12px; }
+  .pf-hero { padding: 18px 16px 14px; }
+  .pf-hero-value { font-size: 36px; }
+  .pf-chart-tools { margin: 14px 0 4px; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; justify-content: flex-start; }
+  .pf-chart-tools::-webkit-scrollbar { display: none; }
+  .pf-legend { flex-wrap: nowrap; }
+  /* Períodos de ponta a ponta: seis alvos iguais, fáceis de acertar com o
+     polegar (o estudo do Robinhood achou 4 de 7 errando o toque nos dele). */
+  .pf-ranges { align-self: stretch; }
+  .pf-ranges .pf-seg-btn { flex: 1 1 0; min-width: 0; padding: 0; }
+  .pf-card { padding: 16px; }
+  .pf-alloc-row { grid-template-columns: 10px minmax(0, 1fr) 44px minmax(84px, auto); gap: 10px; }
+  .pf-alloc-n { display: none; }
+  .pf-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* Número ímpar de peças: a última ocupa a fileira (sem célula vazia). */
+  .pf-stat:last-child:nth-child(odd) { grid-column: 1 / -1; }
+  .pf-stat strong { font-size: 17px; }
+  /* A legenda fixa "Patrimônio" repete o rótulo que está logo acima do
+     número; no celular a fileira de ferramentas precisa do espaço. */
+  .pf-chip-fixed { display: none; }
+  .pf-mi-row .pf-row-sub { flex-wrap: wrap; white-space: normal; }
+  .pf-moves-count { margin-left: 0; }
 }
 
 .tile-want:hover:not(:disabled) {
@@ -11263,12 +11181,6 @@ select,
 .group-summary,
 .progress-row,
 .progress-row-art,
-.pf-insight,
-.pf-comp-block,
-.pf-comp-track,
-.pf-comp-fill,
-.pf-graded-tag,
-.pf-bd-tab,
 .ach-emoji-strip span,
 .cmdk-thumb img,
 .cmdk-add,
@@ -11306,19 +11218,11 @@ select,
 .undo-toast-btn,
 .backup-banner-btn,
 .price-delta,
-.pf-movers-col,
-.pf-mover-thumb,
-.pf-mover-pct,
 .tag-editor-name,
 .price-cell,
 .price-cell input,
 .market-card,
 .br-link,
-.portfolio-table,
-.pf-chart,
-.pf-series-chip,
-.pf-ranges,
-.pf-tip,
 .nav-group-toggle,
 .nav-dropdown,
 #collectionDashboard .dash-card.dash-stats,
@@ -14319,21 +14223,6 @@ html[data-game] #gcApp:empty + .gc-scale { display: none; }
   .stats-grid span { font-size: 22px; }
   .stats-grid p { font-size: 12px; line-height: 1.25; margin-top: 6px; }
   .stats-grid .dex-progress { margin-top: 8px; }
-  /* Portfólio: UMA cápsula por fileira (2026-09-10). São valores em dinheiro
-     de 7 dígitos com rótulos longos ("desejos (wishlist + binder)"): em 3
-     colunas de ~115px o número vazava da caixa e o texto quebrava torto. Uma
-     por linha dá ~350px pra cada; o número volta ao tamanho do desktop. */
-  .stats-grid.pf-stats { grid-template-columns: minmax(0, 1fr); }
-  .stats-grid.pf-stats article { padding: 14px 16px; }
-  .stats-grid.pf-stats span { font-size: 26px; }
-  /* Sem o cartão "patrimônio (cartas + graded)" quando o cabeçalho do gráfico
-     já mostra o patrimônio (2026-09-12): no celular os dois ficam a um
-     polegar de distância, número grande sobre número grande, e o segundo só
-     dizia de novo o que o primeiro acabou de dizer. A classe vem do
-     setChartHead (portfolio.js); sem ela o cartão fica, porque aí é a única
-     fonte do número. No desktop os dois cabem lado a lado e o cartão segue. */
-  .pf-chart.is-patrimonio + .pf-stats .stat-grand { display: none; }
-
   /* 2) CONTROLES DO EXPLORAR. Em tela larga Jogo/Ordenar/Versões formam uma
      linha com a busca; abaixo de 1080px viravam um flex encostado à direita,
      flutuando sob o título com os rótulos soltos. Grade de 2 colunas, campo
