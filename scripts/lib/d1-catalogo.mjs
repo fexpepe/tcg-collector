@@ -45,17 +45,20 @@ const h16 = (s) => createHash("sha256").update(s).digest("hex").slice(0, 16);
 // reescrever as palavras custa 8 escritas por palavra (apagar + inserir, com
 // índices). Vivem aqui, e não no d1-delta, porque a projeção da carta pro
 // banco e a sua impressão são a MESMA coisa: quem muda uma muda a outra.
-// `hwLegado` é a impressão das palavras SEM as `extras` (ver cardRows): quando
-// a remota bate com ela, a carta só precisa das extras inseridas — não da
-// reescrita de todas as palavras. Só existe quando há extras.
-export function impressaoCarta({ linha, words, legado, extras }) {
+// `anteriores` são as impressões das palavras nas RÉGUAS anteriores (ver os
+// `cortes` do cardRows): [{n, hw}], hw = impressão das n primeiras palavras.
+// Quando a remota bate com uma delas, a carta só precisa das palavras dali pra
+// frente (words.slice(n)) inseridas — não da reescrita de todas. Só entram os
+// cortes que de fato ficam atrás da carta inteira: régua que não acrescentou
+// nada à carta não é estado diferente.
+export function impressaoCarta({ linha, words, extras, cortes }) {
   const dado = COLUNAS.filter((k) => k !== "h" && k !== "hw").map((k) => linha[k]);
   const h = h16(JSON.stringify(dado));
   const hashPalavras = (ws) => h16(ws.map((w) => w.word).join("\n"));
   const hw = hashPalavras(words);
-  const ex = extras || [];
-  const hwLegado = ex.length ? hashPalavras(legado || words.slice(0, words.length - ex.length)) : null;
-  return { linha: { ...linha, h, hw }, words, extras: ex, h, hw, hwLegado };
+  const anteriores = [...new Set(cortes || [])].filter((n) => n < words.length)
+    .map((n) => ({ n, hw: hashPalavras(words.slice(0, n)) }));
+  return { linha: { ...linha, h, hw }, words, extras: extras || [], h, hw, anteriores };
 }
 export function impressaoPreco(p) {
   return { ...p, h: h16(p.j) };

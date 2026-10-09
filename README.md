@@ -238,10 +238,12 @@ lê na borda da carta. Um lugar por camada, todos com a mesma régua (travada em
   pelo `total` do manifest e baixa só esses chunks;
 - **borda D1** (`/api/search`): termo numérico casa por **igualdade** nas suas
   escritas (`word IN ('9','009')`), não por prefixo, e o total do set é
-  indexado como palavra **extra** (`cardRows`) — o deploy só a insere nas cartas
-  que ainda estão na régua antiga (`acrescentar` no d1-delta), sem reescrever
-  todas as palavras do catálogo; com fração na busca, o **número** da carta
-  ainda é conferido na SQL (a EB03-009 de um set de 94 não entra em "009/094");
+  indexado como palavra **extra** (`cardRows`). As extras entram em **réguas**
+  (uma leva por vez, sempre no fim): o deploy compara a impressão remota com a
+  de cada régua anterior e só insere o que falta a partir da régua em que a
+  carta está (`acrescentar` no d1-delta), sem reescrever todas as palavras do
+  catálogo; com fração na busca, o **número** da carta ainda é conferido na SQL
+  (a EB03-009 de um set de 94 não entra em "009/094");
 - **índice estático** (decks/listas): `numberSearchForms` no número;
 - **SEO** (tela da carta, decorada na borda com as peças de
   `functions/_lib/pagina-carta.js`): título, description e JSON-LD usam o
@@ -261,7 +263,9 @@ Acima de 10 mil o Explorar avisa quantas existem e pede pra refinar. As regras
 [tests/search-api.test.mjs](tests/search-api.test.mjs)):
 
 - **Casamento**: cada palavra da busca é um prefixo de palavra da carta (nome,
-  set, número, artista, total do set, `nameEn`); número e termo de **uma letra**
+  set, número, artista, total do set, `nameEn` e, desde 08/10/2026, a espécie
+  em inglês `pokemonName` — "charizard" acha a M2-116-ja "メガリザードンXex",
+  que não tem `nameEn`); número e termo de **uma letra**
   casam por igualdade ("charizard x" quer a X). A interseção não tem corte por
   palavra abaixo de 50 mil linhas — o corte antigo de 2 mil fazia "blue eyes"
   voltar vazio e "charizard ex" achar metade.
