@@ -8957,7 +8957,8 @@ html:not([data-game]) .falha-boot[hidden] { display: flex !important; animation:
   vertical-align: middle;
 }
 
-.card-flag svg {
+/* A <img> de data: URI da bandeira (cardFlag no shared.js, desde 2026-10-08). */
+.card-flag > * {
   width: 100%;
   height: 100%;
   display: block;

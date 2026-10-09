@@ -4943,6 +4943,10 @@
     return LANG_SIGLA[code] || String(language || "").toUpperCase();
   }
 
+  // A bandeira vai como UMA <img> de data: URI (2026-10-08): o SVG inline da
+  // dos EUA são 17 nós em CADA tile (que tinha ~67) — numa grade de 60 cartas,
+  // mil nós só de bandeira. Mesma figura, e o navegador decodifica cada URI uma vez.
+  const flagUri = {};
   function cardFlag(language) {
     const code = normalizeCardLanguage(language);
     const label = cardLanguageLabel(language);
@@ -4950,7 +4954,8 @@
     if (!svg) {
       return `<span class="card-flag card-flag-text" title="${escapeAttribute(label)}">${escapeHtml(cardLangSigla(language))}</span>`;
     }
-    return `<span class="card-flag" title="${escapeAttribute(label)}" role="img" aria-label="${escapeAttribute(label)}">${svg}</span>`;
+    const uri = flagUri[code] || (flagUri[code] = "data:image/svg+xml," + encodeURIComponent(svg.replace("<svg ", '<svg xmlns="http://www.w3.org/2000/svg" ')));
+    return `<span class="card-flag" title="${escapeAttribute(label)}" role="img" aria-label="${escapeAttribute(label)}"><img src="${uri}" alt="" width="20" height="14"></span>`;
   }
 
   // Variante de qualidade/formato de um asset da TCGdex. Cartas aceitam
@@ -7970,7 +7975,7 @@
     // sem saber que existe um modo novo.
     if (opts && opts.compact) {
       article.classList.add("tile-compact");
-      article.innerHTML = `
+      article.innerHTML = semEspacos(`
         <button class="tile-name" data-preview-card-id="${escapeAttribute(card.id)}"${previewVariantAttr} data-hover-thumb="${escapeAttribute(img.url || "")}">
           ${cardFlag(card.language)}<span>${escapeHtml(card.name)}</span>
         </button>
@@ -7978,11 +7983,11 @@
         <span class="tile-c-set">${gameTag}${escapeHtml(card.set || "")}</span>
         <span class="tile-c-var variant-${escapeAttribute(variantSlug(variant))}">${variantLabel}</span>
         <span class="tile-c-price">${tilePriceHtml(card, variant, prices)}</span>
-        ${actionsHtml}`;
+        ${actionsHtml}`);
       return article;
     }
 
-    article.innerHTML = `
+    article.innerHTML = semEspacos(`
       <div class="card-image">${image}</div>
       <div class="tile-info">
         <h3>${escapeHtml(cardLabel(card))}</h3>
@@ -7993,9 +7998,17 @@
           ${actionsHtml}
         </div>
       </div>
-    `;
+    `);
 
     return article;
+  }
+
+  // Tira do HTML do tile a indentação do template (quebra de linha + espaços
+  // entre duas tags): cada uma virava um nó de texto — 17 por tile, e o tile
+  // inteiro tinha ~67 nós (2026-10-08). Só some espaço que tem QUEBRA DE
+  // LINHA: o espaço de verdade entre dois elementos na mesma linha fica.
+  function semEspacos(html) {
+    return html.replace(/>\s*\n\s*</g, "><").trim();
   }
 
   // Atualiza o estado de posse de um tile no DOM existente, sem recriar a
