@@ -100,18 +100,46 @@ test("CLI, token ou ambiente do Capgo fora da porta quebram", () => {
   for (const caminho of Object.keys(casos)) acusa(erros, caminho);
 });
 
-test("dependência do plugin (e da CLI) no package.json não conta; só o comando nos scripts", () => {
+// Repositório de mentira em pasta temporária, com o app em mobile/.
+function comRepo(arquivos, fn) {
   const raiz = mkdtempSync(join(tmpdir(), "trava-live-update-"));
   try {
-    writeFileSync(join(raiz, "package.json"), JSON.stringify({
-      scripts: { "app:web": "node scripts/app-web.mjs" },
-      dependencies: { "@capgo/capacitor-updater": "7.0.0" },
-      devDependencies: { "@capgo/cli": "8.64.1" }
-    }));
-    mkdirSync(join(raiz, ".github/workflows"), { recursive: true });
-    writeFileSync(join(raiz, ".github/workflows/ci.yml"), "on:\n  push:\njobs:\n  t:\n    runs-on: ubuntu-latest\n");
-    assert.deepEqual(confereTravaLiveUpdate(arquivosDeAutomacao(raiz)), []);
+    for (const [rel, texto] of Object.entries(arquivos)) {
+      mkdirSync(dirname(join(raiz, rel)), { recursive: true });
+      writeFileSync(join(raiz, rel), texto);
+    }
+    return fn(raiz);
   } finally {
     rmSync(raiz, { recursive: true, force: true });
   }
+}
+
+test("dependência do plugin (e da CLI) no package.json não conta; só o comando nos scripts", () => {
+  const pkg = JSON.stringify({
+    scripts: { "app:web": "node ../scripts/app-web.mjs", "sync": "npm run app:web && cap sync" },
+    dependencies: { "@capgo/capacitor-updater": "8.51.25" },
+    devDependencies: { "@capgo/cli": "8.64.1" }
+  });
+  comRepo({
+    "package.json": pkg,
+    "mobile/package.json": pkg,
+    ".github/workflows/ci.yml": "on:\n  push:\njobs:\n  t:\n    runs-on: ubuntu-latest\n",
+    // O que é gerado no app não é receita: a CLI instalada e a cópia do pacote.
+    "mobile/node_modules/@capgo/cli/dist/index.js": "capgo bundle upload; process.env.CAPGO_TOKEN",
+    "mobile/android/app/src/main/assets/public/src/x.js": "npx @capgo/cli bundle upload",
+    "mobile/android/app/build.gradle": "android { defaultConfig { applicationId \"app.sleevu\" } }\n"
+  }, (raiz) => assert.deepEqual(confereTravaLiveUpdate(arquivosDeAutomacao(raiz)), []));
+});
+
+test("o app (mobile/) também é varrido: scripts do package.json, Gradle e Xcode", () => {
+  comRepo({
+    "mobile/package.json": JSON.stringify({ scripts: { "publica": "capgo bundle upload --channel production" } }),
+    "mobile/android/app/build.gradle": "task publica(type: Exec) { commandLine 'npx', '@capgo/cli', 'bundle', 'upload' }\n",
+    "mobile/ios/App/App.xcodeproj/project.pbxproj": "shellScript = \"npx @capgo/cli bundle upload\";\n"
+  }, (raiz) => {
+    const erros = confereTravaLiveUpdate(arquivosDeAutomacao(raiz));
+    for (const caminho of ["mobile/package.json (scripts)", "mobile/android/app/build.gradle", "mobile/ios/App/App.xcodeproj/project.pbxproj"]) {
+      acusa(erros, caminho);
+    }
+  });
 });
