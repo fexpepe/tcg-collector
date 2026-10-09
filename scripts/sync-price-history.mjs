@@ -48,10 +48,11 @@ const PROD = "https://tcg-collector.pages.dev";
 const WINDOW_7D = 7;     // dias da janela longa (aviso de queda da wishlist)
 // Pontos da JANELA publicada pro cliente. É o tamanho que o arquivo sempre teve:
 // o acervo longo cresce no -long, mas o download de quem abre um card NÃO cresce
-// junto. Hoje o navegador baixa o histórico INTEIRO do jogo pra desenhar o
-// gráfico de UMA carta — enquanto isso for verdade, engordar este arquivo pra
-// mostrar sparkline mais comprida é um mau negócio. Quando o gráfico passar a
-// pedir só a carta (borda/D1 ou chunk por set), é aqui que se muda.
+// junto. Desde 2026-10-08 o popup não baixa mais o histórico INTEIRO do jogo:
+// pede só o fragmento do set da carta (history-shards, escritos pelo
+// split-pricing a partir desta janela — ~15 a 55 KB em brotli no Pokémon).
+// Engordar a janela agora engorda cada fragmento na mesma proporção; é aqui
+// que se muda quando o gráfico quiser mostrar mais tempo.
 const PONTOS_JANELA = 60;
 const MIN_DELTA_PCT = 1; // abaixo disso é ruído, não entra no arquivo de deltas
 const MIN_MOVER = 1;     // valor mínimo (na moeda da fonte) pra rankear nos movers

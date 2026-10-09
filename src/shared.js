@@ -5681,7 +5681,8 @@
     return `<span class="price-delta ${up ? "is-up" : "is-down"}" title="${escapeAttribute(title)}">${up ? "▲" : "▼"} ${up ? "+" : "−"}${n}%</span>`;
   }
   async function fillPriceDelta(section, card) {
-    const d = await loadPriceDeltas(card.game || currentGame());
+    const f = await fragmentoDaCarta(card);
+    const d = f === undefined ? await loadPriceDeltas(card.game || currentGame()) : f && { from: f.xf, c: f.x };
     if (!d || !d.c || !section.isConnected) return;
     const pct = d.c[card.id] != null ? d.c[card.id] : d.c[basePricingId(card.id)];
     if (pct == null) return;
@@ -5691,8 +5692,26 @@
 
   // --- Histórico de preço (série DIÁRIA do build, sem servidor) ---
   // price-history.generated.json: { d: [datas], c: { id: { s: "u"|"e"|"b", p } } }.
-  // Pesado no Pokémon (~260KB gz) → baixado 1x por jogo SÓ quando um preview
-  // abre (o SW guarda no DATA_CACHE; as visitas seguintes são locais).
+  // O arquivo do jogo inteiro chegou a 1,5 MB brotli (17,8 MB de JSON) no
+  // Pokémon, baixado e interpretado pra desenhar UMA carta. Desde 2026-10-08
+  // o popup pede só o FRAGMENTO do set dela (history-shards/<k>.json, ~25 KB,
+  // com a série, a variação de 24 h e o graded) quando o manifest anuncia
+  // `hs` — ver scripts/lib/history-shards.mjs. `undefined` = deploy sem
+  // fragmentos (ou dev): os arquivos inteiros, como antes.
+  const fragmentoPorUrl = {};
+  function fragmentoDoSet(setId, n) {
+    let h = 2166136261;
+    for (const ch of String(setId || "")) h = Math.imul(h ^ ch.charCodeAt(0), 16777619);
+    return (h >>> 0) % n;
+  }
+  async function fragmentoDaCarta(card) {
+    const g = normalizeGame(card.game || currentGame());
+    const meta = await cmdkLoadGameMeta(g).catch(() => null);
+    const n = meta && meta.manifest && meta.manifest.hs;
+    if (!n) return undefined;
+    const url = `${gameDataDir(g)}history-shards/${fragmentoDoSet(card.setId, n)}.json`;
+    return fragmentoPorUrl[url] || (fragmentoPorUrl[url] = fetch(url).then((r) => (r.ok ? r.json() : null)).catch(() => null));
+  }
   // ── Eixo X por TEMPO dos gráficos de série do card ────────────────────────
   // Uma régua só, usada pelo gráfico de preço e pelo de graded — a conta vivia
   // duplicada nos dois, e duas cópias divergem (esse bug já custou caro no
@@ -5737,7 +5756,8 @@
   // Moeda da série pelo `s` da fonte (u=TCGplayer USD, e=Cardmarket EUR, b=MYP BRL).
   const HISTORY_CUR = { u: "USD", e: "EUR", b: "BRL" };
   async function fillPriceHistory(section, card, fx) {
-    const h = await loadPriceHistory(card.game || currentGame());
+    const f = await fragmentoDaCarta(card);
+    const h = f === undefined ? await loadPriceHistory(card.game || currentGame()) : f;
     if (!h || !h.c || !section.isConnected) return;
     const entry = h.c[card.id] || h.c[basePricingId(card.id)];
     if (!entry || !Array.isArray(entry.p)) return;
@@ -5985,7 +6005,8 @@
     return gradedHistoryByGame[g];
   }
   async function fillGradedHistory(section, card) {
-    const h = await loadGradedHistory(card.game || currentGame());
+    const f = await fragmentoDaCarta(card); // o graded vem no mesmo fragmento (gd, g)
+    const h = f === undefined ? await loadGradedHistory(card.game || currentGame()) : f && { d: f.gd, c: f.g };
     if (!h || !h.c || !section.isConnected || section.querySelector(".gp-history")) return;
     const entry = h.c[card.id] || h.c[basePricingId(card.id)];
     if (!entry) return;
