@@ -508,11 +508,66 @@
   }
 
   // ---------------------------------------------------------------------------
-  // Catálogo (carregado sob demanda — só ao abrir o editor e buscar).
+  // Cartas: SÓ as que a tela mostra, pela borda (2026-10-08).
   // ---------------------------------------------------------------------------
-  let catalogPromise = null;
+  // Tocar num bolso vazio, em "Info" ou em imprimir chamava o
+  // loadAllGamesCatalog: o catálogo dos 22 jogos (~6 mil arquivos, ~14 MB
+  // comprimidos, centenas de MB de memória) — no celular, minutos de rede e
+  // risco de a aba morrer. Agora cada uso pede o que mostra: as cartas do
+  // binder, as da Coleção ou dos Desejos (a aba aberta do editor), e a aba
+  // Catálogo busca pela borda (/api/search completa) o que for digitado. No
+  // dev local, sem manifest nem borda, o catálogo de amostra segue respondendo.
   let cardsById = new Map();
-  let allCards = [];
+  const comBorda = () => !!(window.SLEEVU && window.SLEEVU.manifest);
+  let amostraPromise = null;
+  function guardaCartas(lista) {
+    (lista || []).forEach((card) => {
+      if (!card || !card.id) return;
+      cardsById.set(card.id, card);
+      if (card.game) cardGameMap.set(card.id, card.game);
+    });
+  }
+  function catalogoDeAmostra() {
+    if (!amostraPromise) amostraPromise = shared.loadAllGamesCatalog().then((catalog) => { guardaCartas(catalog.cards); });
+    return amostraPromise;
+  }
+  // As cartas destes ids em cardsById: pela borda, com os chunks dos sets de
+  // reserva (loadOwnedFast). Espera a carga de preços do binder aberto, que
+  // também mexe na tabela de preços.
+  async function garanteCartas(ids) {
+    if (!comBorda()) return catalogoDeAmostra();
+    const faltam = [...new Set(ids)].filter((id) => id && !cardsById.has(id));
+    if (!faltam.length) return;
+    const porJogo = {};
+    faltam.forEach((id) => jogosDoId(id).forEach((g) => { (porJogo[g] = porJogo[g] || []).push(id); }));
+    try { await precoPromise; } catch (e) { /* segue sem esperar */ }
+    const r = await shared.loadOwnedFast(porJogo);
+    guardaCartas(r.cards);
+  }
+  // Aba Catálogo: a resposta da borda pro (jogo, termo) da vez.
+  let buscaCatalogo = null; // { chave, cards } — cards null = a borda não respondeu
+  let buscaSeq = 0;
+  const chaveDoCatalogo = (term) => `${editorGameFilter}|${String(term || "").trim().toLowerCase()}`;
+  async function buscaNaBorda(term) {
+    const seq = ++buscaSeq;
+    const chave = chaveDoCatalogo(term);
+    const r = await shared.searchApiFull(editorGameFilter === "all" ? "all" : editorGameFilter, String(term).trim());
+    if (seq !== buscaSeq || !editing) return;
+    if (r) {
+      Object.assign(window.TCG_PRICING = window.TCG_PRICING || {}, r.pricing);
+      guardaCartas(r.cards);
+      shared.enrichSetTotals(r.cards).then((mudou) => { if (mudou && seq === buscaSeq && editing) renderSearchResults(editing.query || ""); }).catch(() => { /* fica o número sozinho */ });
+    }
+    buscaCatalogo = { chave, cards: r ? r.cards : null };
+    renderSearchResults(editing.query || "");
+  }
+  // O que a aba aberta do editor precisa ter em cardsById antes de listar.
+  function preparaAba() {
+    if (!editing) return Promise.resolve();
+    const ids = editing.tab === "collection" ? [...collectionIds] : editing.tab === "wishlist" ? [...wishlistIds] : [];
+    if (editing.draft && editing.draft.cardId) ids.push(editing.draft.cardId);
+    return garanteCartas(ids).catch(() => { /* sem as cartas: a aba mostra o vazio */ });
+  }
 
   // Preview da carta — o MESMO modal do Explorar, aberto pelo botão "info" do
   // slot, pra ver as infos da carta direto do binder.
@@ -523,23 +578,6 @@
     wishlist: wishlistStore,
     onOwnedChange: () => render()
   });
-  function ensureCatalog() {
-    if (!catalogPromise) {
-      // Binder cross-game: catálogo INTEIRO dos dois jogos (cada carta com .game).
-      // Espera a carga de preços do binder aberto (carregaPrecosDoBinder) se
-      // ela estiver no ar: as duas escrevem no window.TCG_PRICING, e a da borda
-      // TROCA a tabela — rodando em paralelo, a que terminasse por último
-      // apagava a outra.
-      catalogPromise = (precoPromise || Promise.resolve()).then(() => shared.loadAllGamesCatalog()).then((catalog) => {
-        allCards = catalog.cards || [];
-        cardsById = new Map(allCards.map((card) => [card.id, card]));
-        allCards.forEach((card) => cardGameMap.set(card.id, card.game));
-        return allCards;
-      });
-    }
-    return catalogPromise;
-  }
-
   // ── Preço de mercado das cartas do binder aberto (2026-09-26) ─────────────
   // Desde o split-pricing (2026-09-19) a tabela de preços do site NASCE VAZIA
   // em produção e só enche com os sets que a tela carrega. Esta página não
@@ -575,8 +613,6 @@
   const precoPedido = new Set(); // ids já pedidos nesta visita (render repinta sem repedir)
   let precoPromise = null;
   function carregaPrecosDoBinder(binder) {
-    // Com o catálogo inteiro já pedido (editor aberto), os preços vêm com ele.
-    if (catalogPromise) return;
     const ids = [...new Set((binder.slots || []).map((slot) => slot && slot.cardId).filter((id) => id && !precoPedido.has(id)))];
     if (!ids.length) return;
     ids.forEach((id) => precoPedido.add(id));
@@ -588,7 +624,7 @@
       return shared.loadOwnedFast(porJogo).then((r) => {
         // A borda TROCA a tabela pela da resposta; mescla de volta o que já havia.
         window.TCG_PRICING = Object.assign({}, antes, window.TCG_PRICING || {});
-        (r.cards || []).forEach((card) => { if (card.game) cardGameMap.set(card.id, card.game); });
+        guardaCartas(r.cards); // as cartas do binder ficam: Info e imprimir não pedem de novo
       });
     }).catch(() => {
       ids.forEach((id) => precoPedido.delete(id)); // falhou: a próxima visita tenta de novo
@@ -617,9 +653,12 @@
   // Lista-base de cartas para a aba de busca atual.
   function baseListForTab() {
     const byGame = (card) => editorGameFilter === "all" || card.game === editorGameFilter;
-    if (editing && editing.tab === "collection") return allCards.filter((card) => byGame(card) && collectionIds.has(card.id));
-    if (editing && editing.tab === "wishlist") return allCards.filter((card) => byGame(card) && wishlistIds.has(card.id));
-    return allCards.filter(byGame);
+    const deIds = (ids) => [...ids].map((id) => cardsById.get(id)).filter((card) => card && byGame(card));
+    if (editing && editing.tab === "collection") return deIds(collectionIds);
+    if (editing && editing.tab === "wishlist") return deIds(wishlistIds);
+    if (!comBorda()) return [...cardsById.values()].filter(byGame); // dev: a amostra inteira
+    const term = editing ? editing.query || "" : "";
+    return buscaCatalogo && buscaCatalogo.cards && buscaCatalogo.chave === chaveDoCatalogo(term) ? buscaCatalogo.cards.filter(byGame) : [];
   }
 
   // ---------------------------------------------------------------------------
@@ -1228,7 +1267,7 @@
       render(); paintSlotSheet();
     } else if (act === "info" && slot.cardId) {
       closeSlotSheet();
-      ensureCatalog().then(() => cardPreview.open(slot.cardId, variant));
+      garanteCartas([slot.cardId]).catch(() => {}).then(() => cardPreview.open(slot.cardId, variant));
     } else if (act === "edit") {
       closeSlotSheet();
       openEditor(binder.id, index);
@@ -1281,7 +1320,7 @@
     };
     refreshUserSources();
     renderEditor();
-    ensureCatalog().then(() => {
+    preparaAba().then(() => {
       if (!editing) return;
       // Slot preenchido: busca pelo NOME DO POKÉMON da carta (mais amplo que o
       // nome da carta, ex.: "Charizard" em vez de "Mega Charizard X ex").
@@ -1447,10 +1486,22 @@
       if (countEl) countEl.textContent = "";
     };
     const term = String(query || "").trim();
+    // Aba Catálogo: a borda responde o termo (mínimo de 2 letras, o mesmo
+    // portão dela). Enquanto não respondeu, avisa que está carregando; se não
+    // respondeu (rede, 429/5xx), diz que não deu em vez de baixar os 22 jogos.
+    if (editing.tab === "catalog" && comBorda()) {
+      if (term.length < 2) { hint(t("binders.editor.search")); return; }
+      if (!buscaCatalogo || buscaCatalogo.chave !== chaveDoCatalogo(term)) { hint(t("binders.editor.loadingCatalog")); buscaNaBorda(term); return; }
+      if (!buscaCatalogo.cards) { hint(t("error.catalogSoft")); return; }
+    }
     const pool = baseListForTab();
     let matches;
     if (term) {
-      matches = pool.filter((card) => matchesCardQuery(card, term));
+      // O que a borda devolveu JÁ casou o termo — inclusive pelo nome em
+      // inglês das cartas japonesas, que a carta da resposta não traz (sem
+      // nameEn). Refiltrar aqui derrubava a MリザードンEX numa busca por
+      // "charizard" (medido: 12 das 400).
+      matches = editing.tab === "catalog" && comBorda() ? pool.slice() : pool.filter((card) => matchesCardQuery(card, term));
     } else if (editing.tab === "catalog") {
       // Catálogo tem ~48k cartas: só busca sob demanda (não lista tudo).
       hint(t("binders.editor.search"));
@@ -1879,7 +1930,7 @@
     if (button) { button.disabled = true; button.textContent = "…"; }
     const esc = escapeHtml;
     try {
-      await ensureCatalog();
+      await garanteCartas(binder.slots.map((slot) => slot && slot.cardId)).catch(() => { /* imprime com o que o bolso guarda */ });
       const g = GRIDS[binder.grid] || GRIDS[DEFAULT_GRID];
       const per = slotCount(binder.grid);
       let body = "";
@@ -2120,7 +2171,7 @@
       const binder = eventBinder(infoBtn);
       const slot = binder && binder.slots[Number(infoBtn.dataset.slotInfo)];
       if (slot && slot.cardId) {
-        ensureCatalog().then(() => cardPreview.open(slot.cardId, slot.variant || "Normal"));
+        garanteCartas([slot.cardId]).catch(() => {}).then(() => cardPreview.open(slot.cardId, slot.variant || "Normal"));
       }
       return;
     }
@@ -2367,7 +2418,7 @@
       return;
     }
     const tabBtn = event.target.closest("[data-edit-tab]");
-    if (tabBtn) { editing.tab = tabBtn.dataset.editTab; renderEditor(); if (editing.tab !== "free") renderSearchResults(editing.query || ""); return; }
+    if (tabBtn) { editing.tab = tabBtn.dataset.editTab; renderEditor(); if (editing.tab !== "free") preparaAba().then(() => renderSearchResults(editing ? editing.query || "" : "")); return; }
     const result = event.target.closest("[data-result-id]");
     if (result) { selectCard(result.dataset.resultId); return; }
   });
