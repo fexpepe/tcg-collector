@@ -2039,12 +2039,21 @@
 
 
   // Data de lançamento do set: badge compacto (mês/ano) e tooltip completo.
+  // UM formatador por estilo e idioma (2026-10-08): o toLocaleDateString com
+  // opções monta o formatador a cada chamada, e cada cartão de set chama duas
+  // ou três vezes (selo, lista e o title).
+  const formatosDeData = new Map();
   function formatReleaseDate(value, style) {
     const date = new Date(value);
     if (Number.isNaN(date.getTime())) return value;
-    const options = style === "long"
-      ? { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }
-      : { month: "short", year: "numeric", timeZone: "UTC" };
-    return date.toLocaleDateString(shared.getLocale(), options);
+    const chave = `${style === "long" ? "l" : "c"}|${shared.getLocale()}`;
+    let f = formatosDeData.get(chave);
+    if (!f) {
+      f = new Intl.DateTimeFormat(shared.getLocale(), style === "long"
+        ? { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }
+        : { month: "short", year: "numeric", timeZone: "UTC" });
+      formatosDeData.set(chave, f);
+    }
+    return f.format(date);
   }
 })();

@@ -45,10 +45,13 @@
     "creature", "instant", "sorcery", "artifact", "enchantment", "land", "planeswalker", "battle",
     "kindred", "tribal", "conspiracy", "dungeon", "phenomenon", "plane", "scheme", "vanguard", "emblem"
   ];
+  // As 17 RegExp compiladas UMA vez (2026-10-08): eram montadas por carta, 17
+  // por carta a cada contagem da faceta — num set grande, dezenas de milhares.
+  const MTG_TYPE_RE = MTG_TYPES.map((tipo) => [tipo, new RegExp(`\\b${tipo}\\b`)]);
   function mtgTypeBuckets(card) {
     const linha = String(card.cardType || "").toLowerCase();
     // Uma carta pode ser vários tipos ("Artifact Creature", "Land Creature").
-    const achados = MTG_TYPES.filter((tipo) => new RegExp(`\\b${tipo}\\b`).test(linha));
+    const achados = MTG_TYPE_RE.filter(([, re]) => re.test(linha)).map(([tipo]) => tipo);
     if (achados.length) return achados;
     // "Summon — Dinosaur" / "Summon Wolf": grafia dos anos 90 (Legends/The Dark)
     // pro que hoje é Creature. Sem isto cada Summon virava um tipo só dele.
