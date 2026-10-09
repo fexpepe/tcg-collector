@@ -5356,7 +5356,12 @@
 
   // Preço da carta direto da API da TCGdex (atualizado diariamente), com cache
   // de 24h no localStorage. Retorna o objeto `pricing` ou null.
+  // Só Pokémon, e com prazo (2026-10-08): a TCGdex não tem carta de outro jogo,
+  // e todo popup de Magic/One Piece/… pedia api.tcgdex.net/…/mtg-fra-459 e
+  // levava 404 — a cotação, o gráfico e os vendedores esperavam esse pedido,
+  // que não tinha prazo. 404 também fica guardado (a carta não está lá).
   async function fetchCardPricing(card) {
+    if (normalizeGame(card.game || currentGame()) !== "pokemon") return null;
     const ref = tcgdexCardRef(card);
     const cacheKey = `tcg-pricing-${ref.lang}-${ref.id}`;
     try {
@@ -5364,9 +5369,10 @@
       if (cached && Date.now() - cached.t < 86400000) return cached.p;
     } catch (error) { /* cache inválido */ }
     try {
-      const response = await fetch(`https://api.tcgdex.net/v2/${ref.lang}/cards/${encodeURIComponent(ref.id)}`);
-      if (!response.ok) return null;
-      const json = await response.json();
+      const response = await fetch(`https://api.tcgdex.net/v2/${ref.lang}/cards/${encodeURIComponent(ref.id)}`,
+        typeof AbortSignal !== "undefined" && AbortSignal.timeout ? { signal: AbortSignal.timeout(5000) } : undefined);
+      const json = response.ok ? await response.json() : null;
+      if (!response.ok && response.status !== 404) return null;
       const pricing = json && json.pricing ? json.pricing : null;
       try { localStorage.setItem(cacheKey, JSON.stringify({ t: Date.now(), p: pricing })); } catch (e) { /* cheio */ }
       return pricing;
