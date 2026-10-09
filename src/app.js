@@ -408,6 +408,7 @@
         setsView = button.dataset.gridView === "list" ? "list" : "grid";
         localStorage.setItem("tcg-sets-view", setsView);
         applySetsView();
+        refineVisibleSets(); // na lista do celular o valor aparece: agora vale refinar
       });
     }
 
@@ -528,7 +529,19 @@
     }
   }
 
+  // Quantas cartas a coleção tem, UMA conta por render: o owned.size percorre a
+  // coleção inteira e aloca dois arrays por carta, e a Vitrine (2026-10-08) o
+  // lia em cada cartão de set — medido em Node, 12, 76 e 338 ms por página de
+  // 60 cartões com 1, 5 e 20 mil cartas no jogo, e o boot faz ao menos três
+  // renders. O pager desenha cartões depois do render (rolagem): vale o mesmo.
+  let tamanhoDaColecao = null;
+  function colecaoTem() {
+    if (tamanhoDaColecao == null) tamanhoDaColecao = owned.size;
+    return tamanhoDaColecao;
+  }
+
   function render({ resetCount = false } = {}) {
+    tamanhoDaColecao = null;
     // Pokédex não filtra cartas (roda por espécie via índices); as outras
     // visões partem das cartas visíveis após os filtros.
     // filterCards() varre o catálogo; sets e pokedex não têm catálogo carregado
@@ -543,10 +556,10 @@
     elements.empty.hidden = realCount > 0;
     elements.resultCount.textContent = tn("results.count", realCount);
     if (view === "pokedex") { updatePokedexStats(); return; }
-    if (elements.ownedCount) elements.ownedCount.textContent = owned.size;
+    if (elements.ownedCount) elements.ownedCount.textContent = colecaoTem();
     if (elements.totalCount) elements.totalCount.textContent = totalCatalogCount;
     if (elements.completionRate) {
-      elements.completionRate.textContent = totalCatalogCount ? `${Math.round((owned.size / totalCatalogCount) * 100)}%` : "0%";
+      elements.completionRate.textContent = totalCatalogCount ? `${Math.round((colecaoTem() / totalCatalogCount) * 100)}%` : "0%";
     }
   }
 
@@ -892,32 +905,63 @@
       .sort(sortByName);
   }
 
-  // Valor exato dos sets VISÍVEIS em que você já tem alguma carta — o único
-  // número que ainda precisa das cartas (o manifest não conhece preço manual
-  // seu). Roda depois do paint, um chunk por set, e re-renderiza quando
-  // termina. Set sem carta sua não entra: não há preço manual pra corrigir.
+  // Valor exato dos sets VISÍVEIS que têm carta com PREÇO MANUAL seu — o único
+  // número que ainda precisa das cartas (o do manifest é o de mercado; o preço
+  // manual seu ele não conhece). Roda depois do paint, um chunk por set, e troca
+  // só o texto do valor no cartão (pintaValor). Até 2026-10-08 refinava TODO set
+  // com carta sua — chunk e preço de cada um, em série — e redesenhava a grade
+  // inteira a cada leva, inclusive no celular, onde o valor nem aparece.
   const refining = new Set();
+  function idsComPrecoManual() {
+    const ids = new Set();
+    Object.entries(prices.toObject()).forEach(([id, porVariante]) => {
+      if (Object.values(porVariante || {}).some((e) => e && e.prices && Object.values(e.prices).some((v) => v > 0))) ids.add(id);
+    });
+    return ids;
+  }
+  // O valor some no modo colecionador e na GRADE do celular (ver .set-value no
+  // @media ≤720px do styles.css); a lista (≣) mostra.
+  function valorAparece() {
+    if (document.documentElement.hasAttribute("data-collector-mode")) return false;
+    return !(window.matchMedia && window.matchMedia("(max-width: 720px)").matches && !elements.grid.classList.contains("is-list"));
+  }
+  function pintaValor(key, value) {
+    elements.grid.querySelectorAll(".set-card").forEach((node) => {
+      if (node.dataset.entryKey !== key) return;
+      let span = node.querySelector(".set-value");
+      const pe = node.querySelector(".set-footer");
+      if (!(value > 0) || !pe) { if (span) span.remove(); return; }
+      if (!span) {
+        span = document.createElement("span");
+        span.className = "set-value";
+        pe.insertBefore(span, pe.querySelector(".set-date-list")); // o mesmo lugar do createSetCard
+      }
+      span.textContent = shared.formatMoney(shared.getCurrency(), value);
+    });
+  }
   async function refineVisibleSets() {
-    if (!manifestMode()) return;
+    if (!manifestMode() || !valorAparece()) return;
+    const manuais = idsComPrecoManual();
+    if (!manuais.size) return;
     const visiveis = new Set(Array.from(elements.grid.querySelectorAll(".set-card"))
       .map((node) => node.dataset.entryKey).filter(Boolean));
     const pendentes = manifest.sets.filter((entry) => {
       const key = entryKey(entry);
-      return visiveis.has(key) && !refinedSets.has(key) && !refining.has(key) && entryOwnedCount(entry) > 0;
+      return visiveis.has(key) && !refinedSets.has(key) && !refining.has(key)
+        && (cardIdsByEntry.get(key) || []).some((id) => manuais.has(id));
     });
-    if (!pendentes.length) return;
     pendentes.forEach((entry) => refining.add(entryKey(entry)));
-    let mudou = false;
     for (const entry of pendentes) {
+      const key = entryKey(entry);
       try {
         const chunk = await shared.fetchSetChunks([entry]);
-        refinedSets.set(entryKey(entry), { value: shared.sumCardsValue(chunk.filter((card) => !shared.isBonusCard(card)), prices).value });
-        mudou = true;
+        const value = shared.sumCardsValue(chunk.filter((card) => !shared.isBonusCard(card)), prices).value;
+        refinedSets.set(key, { value });
+        pintaValor(key, value);
       } catch (error) {
-        refining.delete(entryKey(entry)); // rede caiu: tenta de novo no próximo render
+        refining.delete(key); // rede caiu: tenta de novo no próximo render
       }
     }
-    if (mudou) render();
   }
 
   // Cápsulas de artista/treinador a partir SÓ do índice `{ name, cardIds }`.
@@ -1231,7 +1275,7 @@
       : "";
     // Vitrine (2026-10-08): quem não tem carta NENHUMA no jogo via "0/158 ·
     // 0%" em todo cartão — ruído, não progresso. Aí vale o tamanho do set.
-    const semColecao = !owned.size;
+    const semColecao = !colecaoTem();
     // Produtos do mesmo lançamento (Commander, Promos, Trainer Gallery…), que
     // agora moram dentro do cartão do set: um chip por produto. À vista vão 4
     // no desktop e 2 no celular (CSS); o "+N" abre o resto — o N de cada
@@ -1453,7 +1497,7 @@
       lancados.slice(1).forEach((set) => { if (lado.length < 2) lado.push(set); });
       items.push({ type: "sx-hero", set: lancados[0], lado, emBreve, hoje });
     }
-    if (owned.size) {
+    if (colecaoTem()) {
       const todos = [];
       grupos.forEach((item) => { if (item.type === "set") { todos.push(item); (item.filhos || []).forEach((f) => todos.push(f)); } });
       const andamento = todos.filter((set) => set.totalCount > 0 && set.ownedCount > 0 && set.ownedCount < set.totalCount)
@@ -1497,7 +1541,7 @@
           <span class="sx-eyebrow">${escapeHtml(t("sets.sx.latest"))} · ${escapeHtml(formatReleaseDate(set.releaseDate, "long"))}</span>
           <strong class="sx-hero-name">${escapeHtml(set.displayName)}</strong>
           <span class="sx-hero-meta">${meta.join(" · ")}${trend ? ` · ${trend}` : ""}</span>
-          ${owned.size ? progressoDoSet(set) : ""}
+          ${colecaoTem() ? progressoDoSet(set) : ""}
           <span class="sx-hero-cta">${escapeHtml(t("sets.sx.open"))}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
         </span>
       </a>
