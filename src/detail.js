@@ -839,6 +839,25 @@
   }
 
   // No modo manifest, baixa apenas os chunks de set necessários para esta página.
+  // O manifest.generated.js de novo, por um <script> com query nova: fura o
+  // cache HTTP e a entrada do service worker (a chave leva a query). O arquivo
+  // reatribui window.TCG_MANIFEST; devolve ele (ou null se não carregou).
+  let manifestRecarregado = null;
+  function recarregaManifest() {
+    const sleevu = window.SLEEVU || {};
+    if (!sleevu.manifest || !sleevu.dataDir) return Promise.resolve(null);
+    if (!manifestRecarregado) {
+      manifestRecarregado = new Promise((resolve) => {
+        const s = document.createElement("script");
+        s.src = `${sleevu.dataDir}manifest.generated.js?v=${Date.now()}`;
+        s.onload = () => resolve(window.TCG_MANIFEST && Array.isArray(window.TCG_MANIFEST.sets) ? window.TCG_MANIFEST : null);
+        s.onerror = () => resolve(null);
+        (document.head || document.documentElement).appendChild(s);
+      });
+    }
+    return manifestRecarregado;
+  }
+
   async function resolveCards() {
     if (rotaPendente) await rotaPendente;
     await shared.awaitCatalog();
@@ -855,7 +874,19 @@
     if (detailType === "set") {
       // Chunk congelado de set aposentado (`retired`) só quando o link pede o
       // id dele — e mesmo esse link já foi mandado pro set novo (mergedSetId).
-      let entries = manifest.sets.filter((set) => set.name === detailName && (!set.retired || set.id === detailSetId));
+      const doSet = (m) => m.sets.filter((set) => set.name === detailName && (!set.retired || set.id === detailSetId));
+      let entries = doSet(manifest);
+      // Set que o manifest guardado NÃO conhece (2026-10-08): no dia do
+      // lançamento, quem já usa o app tem o manifest de ontem no service worker
+      // (stale-while-revalidate) e no cache HTTP (1 h + 1 dia de stale), e a
+      // tela dizia "Nenhuma carta encontrada" pro set novo — reproduzido em
+      // produção. Antes de concluir, busca o manifest de novo furando os dois
+      // caches (a query nova é outra chave nos dois) e procura outra vez. Uma
+      // vez por página: nome que não existe mesmo paga só esse pedido.
+      if (!entries.length && detailName) {
+        const fresco = await recarregaManifest();
+        if (fresco) entries = doSet(fresco);
+      }
       // O link da lista já diz QUAL edição abrir (?setId=/?region=): baixa só o
       // chunk dela. Sem isso, um nome que existe em duas línguas puxava os dois
       // chunks pra usar um. Link solto (sem os parâmetros) segue trazendo os

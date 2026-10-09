@@ -432,3 +432,37 @@ test("caches: só os desta leva sobrevivem ao activate", async () => {
   await ev.p;
   assert.deepEqual((await c.keys()).sort(), [sw.SHELL, "tcg-data-v1"].sort());
 });
+
+// Dia de lançamento (2026-10-08): o manifest e os mapas de /games dizem QUAIS
+// sets existem. Revalidando pelo cache HTTP (max-age=3600 + swr=86400), o SW
+// recebia a cópia velha do próprio navegador e ficava dois deploys atrás — a
+// lista de Sets não mostrava o set novo e a tela dele abria vazia. Os
+// arquivos-índice revalidam com no-cache; os chunks seguem pelo cache HTTP.
+test("catálogo: o índice revalida sem o cache HTTP, o chunk com ele, e a resposta sai do cache na hora", async () => {
+  const sw = carrega({ hashed: true, build: "abc12345" });
+  const swr = vm.runInContext("staleWhileRevalidate", sw.sandbox);
+  const cache = await sw.sandbox.caches.open(vm.runInContext("DATA_CACHE", sw.sandbox));
+  const pedidos = [];
+  sw.estado.fetch = async (req, init) => { pedidos.push([new URL(req.url).pathname, (init && init.cache) || "default"]); return new Response("novo", { status: 200 }); };
+  for (const p of ["/data/manifest.generated.js", "/data/magic/game-pages/x.json", "/data/game-pages/pokemon.json", "/data/indexes-sets.generated.json", "/data/sets/en/sv1.json", "/data/magic/pricing-chunks/lea.json"]) {
+    await cache.put(ORIGEM + p, new Response("velho"));
+    let atras = null;
+    const r = await swr({ request: new sw.sandbox.Request(ORIGEM + p), waitUntil: (x) => { atras = x; } });
+    assert.equal(await r.text(), "velho", `${p}: a página não espera a rede`);
+    await atras;
+  }
+  assert.deepEqual(pedidos, [
+    ["/data/manifest.generated.js", "no-cache"],
+    ["/data/magic/game-pages/x.json", "no-cache"],
+    ["/data/game-pages/pokemon.json", "no-cache"],
+    ["/data/indexes-sets.generated.json", "no-cache"],
+    ["/data/sets/en/sv1.json", "default"],
+    ["/data/magic/pricing-chunks/lea.json", "default"]
+  ]);
+});
+
+test("tela do set novo: o detail.js busca o manifest de novo (query nova) antes de declarar o set vazio", () => {
+  const detail = readFileSync(join(raiz, "src/detail.js"), "utf8");
+  assert.ok(detail.includes("manifest.generated.js?v=${Date.now()}"), "sem o recarregaManifest com query nova");
+  assert.ok(/if \(!entries\.length && detailName\) \{\s*const fresco = await recarregaManifest\(\);/.test(detail), "o resolveCards tem de tentar o manifest fresco antes de devolver []");
+});

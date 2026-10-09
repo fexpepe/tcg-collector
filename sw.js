@@ -617,15 +617,27 @@ async function navigationFast(event) {
   return semRedirect(cached) || (novo && semRedirect(await cache.match(novo))) || semRedirect(await caches.match(request, { ignoreSearch: true })) || Response.error();
 }
 
+// Arquivos-ÍNDICE do catálogo: o manifest, os mapas de /games (game-pages), as
+// fatias de índice e os nomes do Ctrl+K. São poucos e pequenos, e dizem QUAIS
+// sets existem.
+const INDICE_DO_CATALOGO = /\/(manifest\.generated\.js|indexes-[^/]+\.json|cmdk-names[^/]*\.json)$|\/game-pages\//;
+
 async function staleWhileRevalidate(event) {
   const request = event.request;
   const cache = await caches.open(DATA_CACHE);
   const cached = await cache.match(request);
-  // Sem cache:"no-cache": agora que o _headers dá /data/* um Cache-Control real
-  // (max-age=3600, swr=86400), forçar revalidação anulava esse cache HTTP e cada
-  // chunk pagava uma requisição condicional em toda revisita. Deixar o padrão
-  // permite o navegador servir do próprio cache enquanto fresco.
-  const rede = fetch(request).then((response) => {
+  // Sem cache:"no-cache" nos CHUNKS: agora que o _headers dá /data/* um
+  // Cache-Control real (max-age=3600, swr=86400), forçar revalidação anulava
+  // esse cache HTTP e cada chunk pagava uma requisição condicional em toda
+  // revisita. Deixar o padrão permite o navegador servir do próprio cache
+  // enquanto fresco.
+  // Os arquivos-índice revalidam com no-cache (2026-10-08): pelo cache HTTP a
+  // revalidação daqui recebia a cópia velha do próprio navegador, então o
+  // índice ficava DOIS deploys atrás — no dia de lançamento a lista de Sets não
+  // mostrava o set novo e a tela dele abria vazia. A condicional devolve 304
+  // quando nada mudou, e é por trás: a página não espera.
+  const indice = INDICE_DO_CATALOGO.test(new URL(request.url).pathname);
+  const rede = fetch(request, indice ? { cache: "no-cache" } : undefined).then((response) => {
     if (response && response.ok) {
       cache.put(request, response.clone());
       maybeTrim(DATA_CACHE, MAX_DATA);
