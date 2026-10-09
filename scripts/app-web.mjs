@@ -18,7 +18,7 @@ import { fileURLToPath } from "node:url";
 import { execSync } from "node:child_process";
 import {
   ORIGEM_PADRAO, ARQUIVOS_DA_RAIZ, paginaDoApp, assetDoApp,
-  transformaGameJs, transformaHtml, transformaCss, preenchePonte, confereOrigem
+  transformaGameJs, transformaHtml, transformaCss, preenchePonte, supabaseDoSite, confereOrigem
 } from "./lib/app-web.mjs";
 import { ESPELHO, ESQUEMA_ESPELHO, ORDEM } from "./lib/img-mirror.mjs";
 
@@ -80,7 +80,8 @@ export async function montar({ saida = join(RAIZ, "mobile/www"), origem = ORIGEM
   const hostsEspelho = semRede ? [] : await hostsDoEspelho();
   const game = transformaGameJs(readFileSync(join(RAIZ, "src/game.js"), "utf8"), { origem, hostsEspelho });
   writeFileSync(join(saida, "src/game.js"), game.texto);
-  writeFileSync(join(saida, "src/app-nativo.js"), preenchePonte(readFileSync(PONTE, "utf8"), { origem, paginas }));
+  const supabase = supabaseDoSite(readFileSync(join(RAIZ, "src/shared.js"), "utf8"));
+  writeFileSync(join(saida, "src/app-nativo.js"), preenchePonte(readFileSync(PONTE, "utf8"), { origem, paginas, supabase }));
 
   for (const f of ARQUIVOS_DA_RAIZ) {
     if (!existsSync(join(RAIZ, f))) throw new Error(`app-web: ${f} sumiu da raiz`);

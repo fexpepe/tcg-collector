@@ -8,8 +8,10 @@ import { readFileSync, readdirSync, existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import vm from "node:vm";
+import { webcrypto, createHash } from "node:crypto";
+import { loadShared, makeLocalStorage } from "./lib/shared-sandbox.mjs";
 import {
-  paginaDoApp, assetDoApp, transformaGameJs, transformaHtml, transformaCss, preenchePonte, confereOrigem, temVitrine, ORIGEM_PADRAO
+  paginaDoApp, assetDoApp, transformaGameJs, transformaHtml, transformaCss, preenchePonte, supabaseDoSite, confereOrigem, temVitrine, temTurnstile, ORIGEM_PADRAO
 } from "../scripts/lib/app-web.mjs";
 
 const RAIZ = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -104,9 +106,21 @@ test("origem: https, ou http só em localhost (ensaio); sem caminho", () => {
 
 const PONTE = ler("mobile/web/app-nativo.js");
 
-function carregaPonte({ href = "http://localhost/", pagina = "index", base, nativo = false } = {}) {
+// Armazenamento de mentira que sobrevive entre "páginas" (cada carregaPonte é
+// uma página nova do mesmo app): é o que o PKCE e a volta do login usam.
+function armazem() {
+  const dados = {};
+  return {
+    getItem: (k) => (k in dados ? dados[k] : null),
+    setItem: (k, v) => { dados[k] = String(v); },
+    removeItem: (k) => { delete dados[k]; },
+    _dados: dados
+  };
+}
+
+function carregaPonte({ href = "http://localhost/", pagina = "index", base, nativo = false, local = armazem(), sessao = armazem(), lancamento = null, sessaoSupabase = null } = {}) {
   const u = new URL(href);
-  const reg = { replace: [], replaceState: [], write: [], nativo: [], fetch: [], xhr: [], beacon: [], voltar: 0, ouvintes: {}, minimizou: 0 };
+  const reg = { replace: [], replaceState: [], write: [], nativo: [], fetch: [], xhr: [], beacon: [], voltar: 0, ouvintes: {}, minimizou: 0, abriu: [], fechou: 0, token: [] };
   const comAcessor = (proto, props) => {
     for (const p of props) {
       Object.defineProperty(proto, p, { configurable: true, enumerable: true, get() { return this["_" + p]; }, set(v) { this["_" + p] = v; } });
@@ -132,7 +146,17 @@ function carregaPonte({ href = "http://localhost/", pagina = "index", base, nati
     history: { state: null, replaceState: (s, t, x) => reg.replaceState.push(x), back: () => { reg.voltar++; } },
     navigator: { serviceWorker: {}, sendBeacon: (x) => { reg.beacon.push(x); return true; } },
     PushManager: function () {},
-    fetch: (x) => { reg.fetch.push(typeof x === "string" ? x : x.url); return Promise.resolve({}); },
+    fetch: (x, opcoes) => {
+      const alvo = typeof x === "string" ? x : x.url;
+      reg.fetch.push(alvo);
+      if (/\/auth\/v1\/token\?grant_type=pkce$/.test(alvo)) {
+        reg.token.push({ alvo, opcoes });
+        return Promise.resolve({ ok: !!sessaoSupabase, json: async () => sessaoSupabase });
+      }
+      return Promise.resolve({});
+    },
+    localStorage: local, sessionStorage: sessao,
+    crypto: webcrypto, TextEncoder, btoa,
     XMLHttpRequest, Element, HTMLImageElement, HTMLScriptElement,
     URL, URLSearchParams, Request
   };
@@ -145,16 +169,23 @@ function carregaPonte({ href = "http://localhost/", pagina = "index", base, nati
       Plugins: {
         App: {
           addListener: (evento, fn) => { reg.ouvintes[evento] = fn; return Promise.resolve({ remove() {} }); },
-          minimizeApp: () => { reg.minimizou++; return Promise.resolve(); }
+          minimizeApp: () => { reg.minimizou++; return Promise.resolve(); },
+          getLaunchUrl: () => Promise.resolve(lancamento ? { url: lancamento } : undefined)
+        },
+        Browser: {
+          open: (o) => { reg.abriu.push(o.url); return Promise.resolve(); },
+          close: () => { reg.fechou++; return Promise.resolve(); }
         }
       }
     };
   }
   janela.window = janela;
   vm.createContext(janela);
-  vm.runInContext(preenchePonte(PONTE, { origem: "https://sleevu.app", paginas: PAGINAS }), janela);
+  vm.runInContext(preenchePonte(PONTE, { origem: "https://sleevu.app", paginas: PAGINAS, supabase: SUPABASE_DO_SITE }), janela);
   return { janela, reg, app: janela.SLEEVU_APP };
 }
+const SUPABASE_DO_SITE = supabaseDoSite(ler("src/shared.js"));
+const espera = () => new Promise((r) => setTimeout(r, 20));
 
 test("rotas: cada endereço que a borda serve abre a página certa do pacote", () => {
   const { app } = carregaPonte();
@@ -282,6 +313,131 @@ test("cada página do app leva o commit do pacote como build (o `v` do rastreio 
   assert.match(html, /data-pagina="hub"><\/script>\n<meta name="sleevu-build" content="app-2cfc8ed8">/);
   assert.match(transformaHtml(ler("hub.html"), { pagina: "hub" }), /content="app-dev"/);
   assert.throws(() => transformaHtml(ler("hub.html"), { pagina: "hub", build: '"><script>' }), /build inválido/);
+});
+
+// ── Login no app (PKCE) ─────────────────────────────────────────────────────
+
+test("entrar: guarda o segredo e abre o login do SITE com o desafio S256", async () => {
+  const local = armazem();
+  const { app, reg } = carregaPonte({ href: "http://localhost/login.html", pagina: "login", nativo: true, local });
+  assert.equal(await app.entrar(), true);
+  assert.equal(reg.abriu.length, 1);
+  const u = new URL(reg.abriu[0]);
+  assert.equal(u.origin + u.pathname, "https://sleevu.app/login");
+  assert.equal(u.searchParams.get("m"), "s256");
+  assert.equal(u.searchParams.get("p"), "android");
+  const guardado = JSON.parse(local.getItem("sleevu-app-pkce"));
+  assert.match(guardado.v, /^[\w-]{43}$/);
+  const esperado = createHash("sha256").update(guardado.v).digest("base64url");
+  assert.equal(u.searchParams.get("app"), esperado, "o desafio é o SHA-256 do segredo, e o segredo não sai do app");
+  assert.ok(!reg.abriu[0].includes(guardado.v));
+  // Fora do app (ensaio no navegador) não há plugin: não abre nada.
+  assert.equal(await carregaPonte({ href: "http://localhost/login.html", pagina: "login" }).app.entrar(), false);
+});
+
+test("volta do login: troca o código pela sessão com o segredo e entra pelo caminho do site", async () => {
+  const local = armazem();
+  local.setItem("sleevu-app-pkce", JSON.stringify({ v: "segredo-de-teste-".padEnd(43, "x"), t: Date.now() }));
+  const sessaoSupabase = { access_token: "tok.acesso", refresh_token: "tok-renova", expires_in: 3600 };
+  const { app, reg, janela } = carregaPonte({ href: "http://localhost/hub.html", pagina: "hub", nativo: true, local, sessaoSupabase });
+  assert.equal(app._trataVolta("app.sleevu://login?code=c0d1g0"), true);
+  await espera();
+  assert.equal(reg.token.length, 1);
+  assert.equal(reg.token[0].alvo, `${SUPABASE_DO_SITE.url}/auth/v1/token?grant_type=pkce`);
+  assert.equal(reg.token[0].opcoes.headers.apikey, SUPABASE_DO_SITE.chave);
+  assert.deepEqual(JSON.parse(reg.token[0].opcoes.body), { auth_code: "c0d1g0", code_verifier: "segredo-de-teste-".padEnd(43, "x") });
+  const destino = new URL(janela.location.href, "http://localhost/");
+  assert.equal(destino.pathname, "/login.html");
+  const h = new URLSearchParams(destino.hash.slice(1));
+  assert.equal(h.get("access_token"), "tok.acesso");
+  assert.equal(h.get("refresh_token"), "tok-renova");
+  assert.equal(reg.fechou, 1, "fecha o navegador do login (iOS)");
+  assert.equal(local.getItem("sleevu-app-pkce"), null, "o segredo é de uso único");
+});
+
+test("volta do login: recusa do Supabase, segredo ausente, repetição e outro endereço", async () => {
+  // Link vencido: o motivo do Supabase vai pro login.js mostrar.
+  const r1 = carregaPonte({ href: "http://localhost/hub.html", pagina: "hub", nativo: true });
+  r1.app._trataVolta("app.sleevu://login?error=access_denied&error_code=otp_expired&error_description=Email+link+is+invalid");
+  const h1 = new URLSearchParams(new URL(r1.janela.location.href, "http://x/").hash.slice(1));
+  assert.equal(h1.get("error_code"), "otp_expired");
+  // Código sem segredo (outro aparelho, app reinstalado): aviso do app, sem chamar o Supabase.
+  const r2 = carregaPonte({ href: "http://localhost/hub.html", pagina: "hub", nativo: true });
+  r2.app._trataVolta("app.sleevu://login?code=x");
+  assert.equal(new URLSearchParams(new URL(r2.janela.location.href, "http://x/").hash.slice(1)).get("error"), "app_login");
+  assert.equal(r2.reg.token.length, 0);
+  // Segredo velho (mais de 30 min) também não vale.
+  const local = armazem();
+  local.setItem("sleevu-app-pkce", JSON.stringify({ v: "v".repeat(43), t: Date.now() - 31 * 60 * 1000 }));
+  const r3 = carregaPonte({ href: "http://localhost/hub.html", pagina: "hub", nativo: true, local });
+  r3.app._trataVolta("app.sleevu://login?code=x");
+  assert.equal(r3.reg.token.length, 0);
+  // A mesma volta duas vezes na mesma abertura do app (evento + getLaunchUrl): só a 1ª.
+  const sessao = armazem();
+  const r4 = carregaPonte({ href: "http://localhost/hub.html", pagina: "hub", nativo: true, sessao });
+  assert.equal(r4.app._trataVolta("app.sleevu://login?code=um"), true);
+  const r5 = carregaPonte({ href: "http://localhost/login.html", pagina: "login", nativo: true, sessao });
+  assert.equal(r5.app._trataVolta("app.sleevu://login?code=um"), false);
+  // Qualquer outro endereço não é volta de login.
+  assert.equal(r5.app._trataVolta("https://sleevu.app/login?code=x"), false);
+  assert.equal(r5.app._trataVolta("app.sleevu://outra-coisa?code=x"), false);
+});
+
+test("volta do login chega pelo evento e pela abertura do app — mas não no index que está saindo", async () => {
+  const fica = carregaPonte({ href: "http://localhost/", pagina: "index", nativo: true, lancamento: "app.sleevu://login?code=z" });
+  assert.equal(typeof fica.reg.ouvintes.appUrlOpen, "function");
+  await espera();
+  assert.match(String(fica.janela.location.href), /\/login\.html#error=app_login/, "abriu pelo link: tratou (sem segredo, aviso)");
+  const sai = carregaPonte({ href: "http://localhost/games/pokemon", pagina: "index", nativo: true, lancamento: "app.sleevu://login?code=z" });
+  assert.equal(sai.reg.ouvintes.appUrlOpen, undefined, "o index que redireciona não ouve a volta");
+});
+
+test("pacote do app: a ponte leva o Supabase do site e o login fica sem o Turnstile", () => {
+  assert.match(SUPABASE_DO_SITE.url, /^https:\/\/[a-z0-9]+\.supabase\.co$/);
+  assert.ok(SUPABASE_DO_SITE.chave.length > 10);
+  const ponte = preenchePonte(PONTE, { origem: "https://sleevu.app", paginas: PAGINAS, supabase: SUPABASE_DO_SITE });
+  assert.ok(ponte.includes(JSON.stringify(SUPABASE_DO_SITE.url)));
+  assert.throws(() => preenchePonte(PONTE, { origem: "https://sleevu.app", paginas: PAGINAS }), /Supabase/);
+  assert.ok(temTurnstile(ler("login.html")), "o site segue com o Turnstile");
+  assert.ok(!temTurnstile(transformaHtml(ler("login.html"), { pagina: "login" })), "o app não");
+  // O bloco do app e o aviso do navegador aberto pelo app estão no login.html.
+  const login = ler("login.html");
+  assert.match(login, /id="loginApp"/);
+  assert.match(login, /class="login-app-web"/);
+});
+
+test("site: login pedido pelo app volta pro app (link e Google), com o desafio; sem pedido, nada muda", async () => {
+  const sb = loadShared("window.__test = { sendMagicLink, oauthSignIn };");
+  const pedidos = [];
+  sb.fetch = async (url, opcoes) => { pedidos.push({ url, corpo: JSON.parse(opcoes.body) }); return { ok: true }; };
+  sb.sessionStorage = makeLocalStorage();
+  sb.location = { origin: "https://sleevu.app", pathname: "/login", href: "https://sleevu.app/login", search: "", hash: "" };
+  const { sendMagicLink, oauthSignIn } = sb.window.__test;
+
+  // Login normal: volta pra esta página, sem PKCE.
+  await sendMagicLink("a@b.com", "tok");
+  assert.match(pedidos[0].url, /\/auth\/v1\/otp\?redirect_to=https%3A%2F%2Fsleevu\.app%2Flogin$/);
+  assert.equal(pedidos[0].corpo.code_challenge, undefined);
+
+  // Pedido do app (o login.js guardou): volta pro app, com o desafio.
+  const c = "A".repeat(43);
+  sb.sessionStorage.setItem("sleevu-login-app", JSON.stringify({ c, m: "s256", p: "android" }));
+  await sendMagicLink("a@b.com", "tok");
+  assert.match(pedidos[1].url, /redirect_to=app\.sleevu%3A%2F%2Flogin$/);
+  assert.equal(pedidos[1].corpo.code_challenge, c);
+  assert.equal(pedidos[1].corpo.code_challenge_method, "s256");
+  assert.equal(pedidos[1].corpo.gotrue_meta_security.captcha_token, "tok", "o captcha segue indo");
+  oauthSignIn("google", { login_hint: "a@b.com" });
+  const u = new URL(sb.location.href);
+  assert.equal(u.searchParams.get("redirect_to"), "app.sleevu://login");
+  assert.equal(u.searchParams.get("code_challenge"), c);
+  assert.equal(u.searchParams.get("code_challenge_method"), "s256");
+  assert.equal(u.searchParams.get("login_hint"), "a@b.com");
+
+  // Pedido torto (desafio fora do formato) não desvia o login de ninguém.
+  sb.sessionStorage.setItem("sleevu-login-app", JSON.stringify({ c: "curto", m: "s256" }));
+  await sendMagicLink("a@b.com", "tok");
+  assert.match(pedidos[2].url, /redirect_to=https%3A%2F%2Fsleevu\.app%2Flogin$/);
 });
 
 // ── Amarras do projeto ──────────────────────────────────────────────────────

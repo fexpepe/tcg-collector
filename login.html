@@ -72,6 +72,18 @@
           <h1 data-i18n="login.heading">Entrar</h1>
           <p class="login-sub" data-i18n="login.sub">Entre pra registrar sua coleção — grátis, sem senha, só o seu e-mail.</p>
 
+          <!-- App (Capacitor, mobile/README.md). DENTRO do app o login não roda
+               aqui: o botão abre esta mesma página no navegador do sistema, e
+               a volta chega pela ponte do app. O CSS só mostra este bloco
+               (e esconde o formulário) com html[data-iab="app"]. -->
+          <div class="login-app">
+            <p class="login-app-texto" data-i18n="login.app.intro">Pra sua segurança, o login abre numa janela do navegador. Depois de entrar, você volta pro app sozinho.</p>
+            <button type="button" id="loginApp" class="primary login-app-botao" data-i18n="login.app.button">Entrar</button>
+          </div>
+          <!-- E no navegador que o app abriu (html[data-login-app]): avisa pra
+               onde o login vai voltar. -->
+          <p class="login-app-web" data-i18n="login.app.webNote">Você está entrando no app do Sleevu. Ao concluir, ele abre sozinho.</p>
+
           <!-- Atalho da ÚLTIMA CONTA. Quem já entrou pelo Google neste navegador
                volta e vê o próprio e-mail: um clique e pronto, sem seletor de
                conta no meio (o login.js manda um login_hint junto). Nasce
