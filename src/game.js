@@ -342,16 +342,30 @@
   // token `indexes:<chave>` pega só uma fatia (ver writeSplitIndexes no
   // sync-common). `indexes:auto` é da detail.html, que só sabe de qual índice
   // precisa lendo o ?type= da URL.
-  var AUTO_INDEX = { artist: "artists", trainer: "trainers", set: "sets" };
+  //
+  // A tela de SET não lê fatia nenhuma (2026-10-08): ela resolve tudo pelo
+  // manifest e pelo chunk do set; o detail.js só usa índice nas telas de
+  // Pokémon, artista e treinador. Antes o `set` pedia a fatia `sets` (102 KB
+  // no Pokémon, 122 KB no Magic) e, no endereço /games/<jogo>/<set> — que não
+  // tem ?type= —, caía no padrão `pokedex` (224 KB, 926 KB de JSON no
+  // Pokémon). Como o catalogReady espera todos os arquivos, o chunk do set só
+  // começava a descer depois dela: medido em produção, +1,1 s no primeiro
+  // tile no 4G lento. O tipo da tela também vai pro window.SLEEVU.tipo, que é
+  // por onde o shared.js acende a aba certa (Sets) no endereço sem ?type=.
+  var AUTO_INDEX = { artist: "artists", trainer: "trainers", set: "" };
+  function tipoDaTela() {
+    if (TELA_DO_SET.test(location.pathname || "")) return "set";
+    try { return new URLSearchParams(location.search).get("type") || ""; } catch (e) { return ""; }
+  }
   function autoIndexKey() {
-    var type = "";
-    try { type = new URLSearchParams(location.search).get("type") || ""; } catch (e) { /* ignora */ }
-    return AUTO_INDEX[type] || "pokedex";
+    var type = tipoDaTela();
+    return Object.prototype.hasOwnProperty.call(AUTO_INDEX, type) ? AUTO_INDEX[type] : "pokedex";
   }
   function fileFor(token) {
     if (token.slice(0, 8) === "indexes:") {
       var key = token.slice(8);
       if (key === "auto") key = autoIndexKey();
+      if (!key) return null;
       // .json: entra por fetch + JSON.parse (ver loadJson), não por <script>.
       return "indexes-" + key + (MANIFEST ? ".generated.json" : ".json");
     }
@@ -359,6 +373,9 @@
     // pokedex.html declaram os dois pra qualquer jogo, e em Lorcana/Magic/etc.
     // isso virava um 404 por pageview — round-trip jogado fora.
     if (token.slice(0, 8) === "pokemon-" && cfg.slug !== "pokemon") return null;
+    // Os nomes das espécies só servem ao hero da tela de POKÉMON (anterior e
+    // próximo) e à Pokédex: na tela de set eram 17 KB a mais no caminho.
+    if (token === "pokemon-names" && tipoDaTela() === "set") return null;
     // set-id-map é a MESMA história e faltava a guarda: o de-para de id de set
     // pro fallback de imagem EN só existe no Pokémon (build-set-id-map.mjs), mas
     // detail/sets/cards declaram o token pra todo jogo — 11 dos 12 pagavam um
@@ -435,6 +452,8 @@
     manifest: MANIFEST,
     imgMirrorHosts: IMG_MIRROR_HOSTS,
     catalogReady: catalogReady,
+    // "set" no endereço /games/<jogo>/<set>[/<carta>], senão o ?type= (ver tipoDaTela).
+    tipo: tipoDaTela(),
     // O registro INTEIRO, não só o jogo da sessão: nas páginas neutras a sessão
     // é "hub" (name = "Sleevu"), mas elas mostram todos os jogos e precisam do
     // nome de cada um. O CSV do Portfólio lê daqui (csvGameName no portfolio.js).

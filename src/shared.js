@@ -3079,7 +3079,9 @@
       if (sp.get("scope") === "collection") {
         active = "collection";
       } else {
-        const type = sp.get("type");
+        // O endereço /games/<jogo>/<set> não tem ?type=: o game.js deduz pelo
+        // caminho (sem isto a tela de set acendia a aba Pokédex).
+        const type = (window.SLEEVU && window.SLEEVU.tipo) || sp.get("type");
         active = type === "set" ? "sets" : type === "artist" ? "artists" : type === "trainer" ? "trainers" : "pokedex";
       }
     }
