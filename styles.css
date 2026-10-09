@@ -2915,6 +2915,14 @@ input::placeholder {
   --insight-cat-4: #8b3fd1; --insight-cat-5: #0f9a8a; --insight-cat-6: #7b8290;
 }
 .set-insights { margin: -6px 0 18px; }
+/* Tela de SET antes do catálogo (2026-10-08): o trilho só aparece quando o
+   chunk do set chega, no lugar do .detail-summary (stats zerados, 112 px) — a
+   barra de Ordenar e a grade desciam ~169 px de uma vez (CLS 0,11 no celular,
+   0,08 no desktop). Até o detail.js marcar data-set-pronto, o resumo some e o
+   trilho guarda a altura mais comum dele (216 a 281 px, conforme o set). */
+html[data-detail="set"]:not([data-set-pronto]) .detail-summary,
+html[data-detail="set"]:not([data-set-pronto]) .set-indice { display: none; }
+html[data-detail="set"]:not([data-set-pronto]) #setInsights { display: block !important; height: 235px; margin-top: 0; border: 1px solid var(--line); border-radius: 14px; background: var(--panel); }
 .set-insights-rail {
   display: flex; gap: 12px; overflow-x: auto; overscroll-behavior-x: contain;
   scroll-snap-type: x mandatory; scrollbar-width: none; padding-bottom: 4px;

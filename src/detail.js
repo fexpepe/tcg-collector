@@ -438,6 +438,7 @@
       preparaEnderecos();
     })
     .catch((error) => {
+      setPronto(); // sem catálogo, sem trilho: o lugar reservado sai
       shared.mostraErroDeCatalogo(elements.empty, error);
       elements.empty.hidden = false;
     });
@@ -498,7 +499,11 @@
     initCollapsibles();
     applyGridView();
     render();
+    setPronto();
   }
+  // Fim da reserva de lugar do trilho do set (ver data-set-pronto no styles.css):
+  // daqui pra frente vale o que o init desenhou — trilho, ou o hero no resumo.
+  function setPronto() { document.documentElement.setAttribute("data-set-pronto", ""); }
 
   // Página de SET (2026-09-16): o hero (logo + nome) vira o PRIMEIRO cartão do
   // trilho de resumo, ao lado de raridade / tipo / conjunto completo — no
