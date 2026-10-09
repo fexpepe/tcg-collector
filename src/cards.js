@@ -94,9 +94,9 @@
   // realmente precisa de tudo. O problema era PAGAR isso sempre: no Pokémon são
   // 234 chunks / ~15MB, e nada renderizava antes de o último chegar — inclusive
   // a tela inicial, que nem grade tem (é o intro + "mais vistas").
-  // Agora: o intro sobe na hora (as "mais vistas" vêm por loadCatalogForCardIds,
-  // que baixa só os chunks daquelas ~40 cartas), e o catálogo completo só começa
-  // a descer quando o usuário demonstra intenção de buscar. Quem cai aqui pelo
+  // Agora: o intro sobe na hora (as "mais vistas" vêm pela borda, só aquelas
+  // ~40 cartas), a busca digitada é respondida pela borda (ver carregaParcial)
+  // e o catálogo completo só desce quando só ele responde. Quem cai aqui pelo
   // Google e não busca não baixa mais o catálogo inteiro à toa.
   let catalogPromise = null;
   let catalogPronto = false;
@@ -135,10 +135,10 @@
   //    sem tocar na rede — adiar só deixaria os filtros vazios à toa.
   const sp0 = new URLSearchParams(window.location.search);
   const catalogoEmMemoria = Array.isArray(window.TCG_CARDS) && window.TCG_CARDS.length > 0;
-  // ?card= (popup de carta compartilhado) também é intenção: precisa do catálogo
-  // pra resolver o id e reabrir o modal.
   const temDeepLink = !!(sp0.get("q") || sp0.get("card") || URL_FILTERS.some(([param]) => sp0.get(param)));
-  const carregarNoBoot = temDeepLink || catalogoEmMemoria;
+  // Deep-link com busca/filtro: no boot, o mesmo caminho da interação (borda,
+  // chunk do set ou catálogo inteiro, ver carregaParcial). ?card= (popup
+  // compartilhado) resolve SÓ aquela carta pela borda (abreCartaDaUrl).
   // Skeleton só no deep-link de verdade: com o catálogo em memória não há espera.
   if (temDeepLink && elements.grid) shared.showSkeletons(elements.grid, "card", 12);
 
@@ -149,6 +149,57 @@
   // O erro só aparecia em PRODUÇÃO: sem manifest (dev), hydrateFiltersDoManifest
   // volta na primeira linha e nunca chega no reidratando.
   const FILTER_SELECTS = ["setFilter", "languageFilter", "rarityFilter"];
+
+  // ── Busca pela BORDA, catálogo inteiro só quando nada mais responde ────────
+  // (2026-10-08) Tocar no campo de busca baixava o jogo INTEIRO — medido em
+  // produção no Pokémon: 1.506 pedidos e 5,4 MB, heap em 54 MB, sem digitar
+  // nada —, e a primeira busca também; a borda só fazia uma ponte de 60
+  // cartas enquanto isso. Agora a busca digitada é respondida pela
+  // /api/search completa (full=1: TODAS as cartas que casam, já com preço,
+  // como no Explorar), e os filtros e a ordenação valem sobre esse resultado.
+  // Filtro de set sem texto baixa só os chunks daquele set. O catálogo inteiro
+  // só desce quando nada disso responde: raridade ou faixa de preço sem texto
+  // nem set, borda fora do ar, ou busca com mais de 10 mil cartas.
+  let parcial = null; // { chave, cards }: a base enquanto o catálogo inteiro não está em memória
+  let parcialSeq = 0;
+  const chaveDaBusca = () => `${elements.search.value.trim()}|${elements.setFilter.value}`;
+  const parcialValida = () => !!(parcial && parcial.chave === chaveDaBusca());
+  function precisaDoCatalogo() {
+    return isSearching() && elements.search.value.trim().length < 2 && !elements.setFilter.value;
+  }
+  async function carregaParcial() {
+    const seq = ++parcialSeq;
+    const chave = chaveDaBusca();
+    const q = elements.search.value.trim();
+    const game = (window.SLEEVU && window.SLEEVU.game) || "pokemon";
+    const scope = shared.lineScope(game, shared.lineParamOf());
+    let achadas = null;
+    if (q.length >= 2) {
+      const r = await shared.searchApiFull(game, q);
+      if (r && !r.truncated) {
+        Object.assign(window.TCG_PRICING = window.TCG_PRICING || {}, r.pricing);
+        achadas = r.cards.filter((card) => scope.includes(card.setId));
+        shared.enrichSetTotals(achadas).then((mudou) => { if (mudou && parcialValida()) render(); });
+      }
+    } else if (elements.setFilter.value) {
+      const manifest = window.TCG_MANIFEST;
+      const doSet = manifest && Array.isArray(manifest.sets)
+        ? manifest.sets.filter((s) => s.name === elements.setFilter.value && scope.includes(s.id)) : [];
+      if (doSet.length) { try { achadas = await shared.fetchSetChunks(doSet); } catch (e) { achadas = null; } }
+    }
+    if (seq !== parcialSeq || catalogPronto) return;
+    if (!achadas) {
+      // Borda fora do ar (ou na pausa depois de um erro), busca grande demais,
+      // set sem chunk: o catálogo inteiro responde, como antes.
+      ensureCatalog().then(() => render({ resetCount: true })).catch(() => { /* erro já exibido */ });
+      return;
+    }
+    achadas.forEach((card) => cardsById.set(card.id, card));
+    priceMemo = new Map();
+    parcial = { chave, cards: achadas };
+    hydrateFiltersDoManifest(achadas); // raridades do resultado: o filtro funciona sem o catálogo
+    render({ resetCount: true });
+  }
 
   // Ordem importa: as opções primeiro, o valor da URL depois. Um <select> não
   // aceita um value cuja <option> ainda não existe.
@@ -163,8 +214,31 @@
   // falha no câmbio não pode impedir a página de listar cartas.
   Promise.all([
     shared.loadFxRates().catch(() => { /* sem conversão: cai no preço cru */ }),
-    carregarNoBoot ? ensureCatalog().catch(() => { /* erro já exibido */ }) : Promise.resolve()
-  ]).then(() => { render(); loadTopViewed(); preview.openFromUrl(); });
+    catalogoEmMemoria ? ensureCatalog().catch(() => { /* erro já exibido */ }) : Promise.resolve()
+  ]).then(() => {
+    if (!catalogPronto && isSearching()) {
+      if (precisaDoCatalogo()) ensureCatalog().then(() => render({ resetCount: true })).catch(() => { /* erro já exibido */ });
+      else carregaParcial();
+    }
+    render();
+    loadTopViewed();
+    abreCartaDaUrl();
+  });
+
+  // ?card=<id>: o popup compartilhado precisa da carta. Antes isso baixava o
+  // catálogo inteiro do jogo; agora só ela, pela borda (com os chunks do set
+  // de reserva, dentro do loadOwnedFast).
+  async function abreCartaDaUrl() {
+    const id = new URLSearchParams(window.location.search).get("card");
+    if (id && !cardsById.has(id)) {
+      const game = (window.SLEEVU && window.SLEEVU.game) || "pokemon";
+      try {
+        const r = await shared.loadOwnedFast({ [game]: [id] });
+        (r.cards || []).forEach((card) => { if (!cardsById.has(card.id)) cardsById.set(card.id, card); });
+      } catch (e) { /* sem a carta: o popup não abre, a página segue */ }
+    }
+    preview.openFromUrl();
+  }
 
   // Os filtros são hidratados DUAS vezes: primeiro com o que o manifest dá, e
   // de novo quando o catálogo completo chega. Um <select> descarta o `value`
@@ -187,7 +261,9 @@
   // set — 46KB que o game.js carregou junto com a página). Cobre 2 dos 3 filtros
   // sem tocar em nenhum chunk; a raridade só existe na carta, então espera o
   // catálogo. Assim os selects não abrem vazios enquanto ninguém buscou ainda.
-  function hydrateFiltersDoManifest() {
+  // `raridadesDe` (opcional): cartas de onde tirar as raridades — o resultado
+  // da busca pela borda, enquanto o catálogo inteiro não está em memória.
+  function hydrateFiltersDoManifest(raridadesDe) {
     const manifest = window.TCG_MANIFEST;
     if (!manifest || !Array.isArray(manifest.sets)) return;
     const scope = shared.lineScope((window.SLEEVU && window.SLEEVU.game) || "pokemon", shared.lineParamOf());
@@ -196,6 +272,7 @@
       addOptions(elements.setFilter, unique(sets.map((s) => s.name)));
       addOptions(elements.languageFilter, unique(sets.map((s) => shared.normalizeCardLanguage(s.language))), (value) => shared.cardLanguageLabel(value));
       applyCardLangDefault(elements.languageFilter);
+      if (raridadesDe) addOptions(elements.rarityFilter, unique(raridadesDe.map((card) => card.rarity).filter(Boolean)));
     });
   }
 
@@ -222,18 +299,19 @@
     // render mostra os skeletons — o campo continua digitável.
     const apply = () => {
       writeFiltersToUrl();
-      render({ resetCount: true });
       if (!catalogPronto && isSearching()) {
-        apiBridge(); // resultados JÁ, pela borda, enquanto o catálogo desce
-        ensureCatalog().then(() => render({ resetCount: true })).catch(() => { /* erro já exibido */ });
+        if (precisaDoCatalogo()) ensureCatalog().then(() => render({ resetCount: true })).catch(() => { /* erro já exibido */ });
+        else if (!parcialValida()) carregaParcial();
       }
+      render({ resetCount: true });
     };
-    // Focar a busca ou os filtros JÁ é intenção: adianta o download em vez de
-    // esperar a primeira tecla, senão o usuário digita e encara o skeleton.
-    const adiantar = () => { ensureCatalog().catch(() => { /* erro já exibido */ }); };
-    [elements.search, elements.setFilter, elements.languageFilter, elements.rarityFilter,
-      elements.priceMin, elements.priceMax].forEach((element) => {
-      if (element) element.addEventListener("focus", adiantar, { once: true });
+    // Focar a RARIDADE ou a faixa de PREÇO sem texto nem set na busca adianta
+    // o catálogo: é o único caso em que só ele responde (e a raridade só tem
+    // opções com cartas em memória). Focar a busca não adianta mais nada — a
+    // borda responde o que for digitado.
+    const adiantar = () => { if (!parcialValida() && !elements.search.value.trim() && !elements.setFilter.value) ensureCatalog().catch(() => { /* erro já exibido */ }); };
+    [elements.rarityFilter, elements.priceMin, elements.priceMax].forEach((element) => {
+      if (element) element.addEventListener("focus", adiantar);
     });
 
     elements.search.addEventListener("input", debounce(apply, 200));
@@ -303,37 +381,6 @@
     });
   }
 
-  // PONTE pela borda enquanto o catálogo completo (15MB no Pokémon) desce: a
-  // /api/search do jogo da sessão responde a busca digitada em poucos KB, os
-  // ≤60 resultados são hidratados pelos chunks dos sets deles e entram como
-  // BASE do filterCards — os filtros de set/idioma/raridade/preço e a
-  // ordenação valem igual. Quando o catálogo chega, o render de sempre assume.
-  // API desligada/sem resultado: nada muda — o fluxo atual já cobre.
-  // Guarda a CONSULTA junto do resultado: sem isso, apagar "pikachu" pra "p" (ou
-  // limpar o texto e deixar só um filtro de set) continuava filtrando sobre os
-  // 60 hits de "pikachu" e mostrando a contagem como se fosse a resposta certa,
-  // até o catálogo inteiro chegar — o que em 4G demora.
-  let apiResultado = null;   // { q, cards }
-  let apiSeq = 0;
-  const ponteValida = () => !!(apiResultado && apiResultado.q === elements.search.value.trim());
-  async function apiBridge() {
-    const q = elements.search.value.trim();
-    if (q.length < 2) { apiResultado = null; return; } // filtro sem texto: só o catálogo inteiro responde
-    const seq = ++apiSeq;
-    const game = (window.SLEEVU && window.SLEEVU.game) || "pokemon";
-    const hits = await shared.searchApi(game, q, 60);
-    if (seq !== apiSeq || catalogPronto || !hits || !hits.length) return;
-    let r;
-    try { r = await shared.loadCatalogForCardIds(hits.map((h) => h.i)); } catch (e) { return; }
-    if (seq !== apiSeq || catalogPronto) return;
-    // Mesmo escopo de linha da página (vintage não vaza pro jogo principal).
-    const scope = shared.lineScope(game, shared.lineParamOf());
-    const achadas = (r.cards || []).filter((card) => scope.includes(card.setId));
-    apiResultado = { q, cards: achadas };
-    achadas.forEach((card) => cardsById.set(card.id, card));
-    render({ resetCount: true });
-  }
-
   // Só busca quando há texto na busca ou um filtro de set/raridade ativo. Sem
   // isso, a página fica "vazia" (placeholder do futuro "em alta").
   function isSearching() {
@@ -347,11 +394,11 @@
     const rarityValue = elements.rarityFilter.value;
     const pMin = parsePrice(elements.priceMin);
     const pMax = parsePrice(elements.priceMax);
-    // Enquanto o catálogo completo não chegou, a base é o que a API da borda
-    // trouxe (apiBridge) — os filtros e a ordenação valem IGUAL sobre ela, só
-    // que sobre ≤60 cartas em vez de 48k. Com o catálogo pronto, a base volta a
-    // ser tudo e a ponte é ignorada.
-    const base = (!catalogPronto && ponteValida()) ? apiResultado.cards : cards;
+    // Sem o catálogo inteiro em memória, a base é o resultado da busca pela
+    // borda (ou os chunks do set filtrado) — os filtros e a ordenação valem
+    // IGUAL sobre ela. A chave guarda texto e set: apagar "pikachu" pra "p" não
+    // pode seguir filtrando sobre o resultado de "pikachu".
+    const base = catalogPronto ? cards : (parcialValida() ? parcial.cards : []);
     return base.filter((card) => {
       if (!shared.matchesCardQuery(card, elements.search.value)) return false;
       if (setValue && card.set !== setValue) return false;
@@ -413,11 +460,14 @@
       const game = (window.SLEEVU && window.SLEEVU.game) || "pokemon";
       const top = await shared.fetchTopViewed(game, 40);
       if (!top.length) return;
-      // Só os chunks das cartas em destaque (~40 ids => punhado de sets), em vez
-      // do catálogo inteiro. É isto que deixa o intro subir sem esperar os 15MB.
+      // Só as cartas em destaque, pela borda (/api/collection: um pedido com os
+      // ~40 ids, já com preço). Antes vinham os chunks INTEIROS dos sets delas —
+      // ~75 pedidos e 415 KB medidos no Pokémon só pra montar esta fileira. Borda
+      // fora do ar: os chunks, dentro do loadOwnedFast.
       if (!catalogPronto) {
-        const r = await shared.loadCatalogForCardIds(top.map((row) => row.card_id));
+        const r = await shared.loadOwnedFast({ [game]: top.map((row) => row.card_id) });
         (r.cards || []).forEach((card) => { if (!cardsById.has(card.id)) cardsById.set(card.id, card); });
+        shared.enrichSetTotals(r.cards || []).then((mudou) => { if (mudou && !isSearching()) render(); });
       }
       const seen = new Set();
       const picked = [];
@@ -456,21 +506,14 @@
     elements.intro.hidden = true;
     elements.resultsHeader.hidden = false;
     if (elements.resultsTitle) elements.resultsTitle.textContent = t("results.heading.cards");
-    // Buscando com o catálogo ainda a caminho: a PONTE da borda (apiBridge)
-    // renderiza o que já achou; sem ela, skeletons em vez de "nenhum
-    // resultado" — a página não pode afirmar que a carta não existe só porque
-    // os chunks não chegaram. O `render` é chamado de novo quando eles chegam,
-    // e aí a base volta a ser o catálogo inteiro.
-    if (!catalogPronto) {
+    // Sem o catálogo inteiro e sem a resposta desta busca ainda: skeletons em
+    // vez de "nenhum resultado" — a página não afirma que a carta não existe
+    // antes de alguém responder. Com a resposta da borda na mão, ela É o
+    // resultado (vazio inclusive, como no Explorar).
+    if (!catalogPronto && !parcialValida()) {
       elements.empty.hidden = true;
-      const ponte = ponteValida() ? tilePairs() : [];
-      if (!ponte.length) {
-        elements.resultCount.textContent = "";
-        shared.showSkeletons(elements.grid, "card", 12);
-        return;
-      }
-      pager.render(ponte, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true, grouped: agrupaVersoes, compact: cardsView === "compact", lists: true }), options || {});
-      elements.resultCount.textContent = tn("results.count", ponte.length);
+      elements.resultCount.textContent = "";
+      shared.showSkeletons(elements.grid, "card", 12);
       return;
     }
     const tiles = tilePairs();
