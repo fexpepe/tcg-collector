@@ -61,11 +61,16 @@ export async function montar({ saida = join(RAIZ, "mobile/www"), origem = ORIGEM
   rmSync(saida, { recursive: true, force: true });
   mkdirSync(join(saida, "src"), { recursive: true });
 
+  // De onde saiu este pacote: vai no app-build.json e no <meta name="sleevu-build">
+  // de cada página (o `v` do rastreio de erro).
+  let commit = "";
+  try { commit = execSync("git rev-parse --short=8 HEAD", { cwd: RAIZ, stdio: ["ignore", "pipe", "ignore"] }).toString().trim(); } catch { /* sem git */ }
+
   // Páginas: os .html da raiz, menos os que são só do navegador.
   const paginas = readdirSync(RAIZ).filter((f) => f.endsWith(".html")).map((f) => f.slice(0, -5)).filter(paginaDoApp).sort();
   if (!paginas.includes("index")) throw new Error("app-web: sem index.html na raiz — é ele que o Capacitor serve primeiro");
   for (const p of paginas) {
-    writeFileSync(join(saida, `${p}.html`), transformaHtml(readFileSync(join(RAIZ, `${p}.html`), "utf8"), { pagina: p, origem }));
+    writeFileSync(join(saida, `${p}.html`), transformaHtml(readFileSync(join(RAIZ, `${p}.html`), "utf8"), { pagina: p, origem, build: `app-${commit || "dev"}` }));
   }
 
   // Código: src/*.js como está no repositório (o mesmo modo "sem build" do
@@ -84,9 +89,6 @@ export async function montar({ saida = join(RAIZ, "mobile/www"), origem = ORIGEM
   writeFileSync(join(saida, "styles.css"), transformaCss(readFileSync(join(RAIZ, "styles.css"), "utf8")));
   const assets = copiaPasta(join(RAIZ, "assets"), join(saida, "assets"), assetDoApp);
 
-  // De onde saiu este pacote: aparece no diagnóstico e na conferência do CI.
-  let commit = "";
-  try { commit = execSync("git rev-parse --short HEAD", { cwd: RAIZ, stdio: ["ignore", "pipe", "ignore"] }).toString().trim(); } catch { /* sem git */ }
   const resumo = { origem, commit, montadoEm: new Date().toISOString(), paginas: paginas.length, js: js.length + 1, assets, jogos: game.jogos, hostsEspelho };
   writeFileSync(join(saida, "app-build.json"), JSON.stringify(resumo, null, 2) + "\n");
   return resumo;
