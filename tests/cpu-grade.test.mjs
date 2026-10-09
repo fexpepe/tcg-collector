@@ -34,3 +34,15 @@ test("a faceta Tipo do Magic compila as RegExp uma vez", () => {
   const i = f.indexOf("function mtgTypeBuckets(");
   assert.ok(!f.slice(i, f.indexOf("\n  }\n", i)).includes("new RegExp"));
 });
+
+// CSS (2026-10-08): o palpite de altura do content-visibility (380 px, o tile
+// em grade) valia também pras linhas da lista (~130 px) e do compacto (48 px)
+// — a barra de rolagem mentia o tamanho da página; e o .set-release tinha um
+// backdrop-filter invisível (fundo opaco) que criava uma camada por cartão.
+test("palpite de altura por modo da grade, e sem backdrop-filter no selo de lançamento", () => {
+  const css = ler("styles.css");
+  const regra = (sel) => { const i = css.indexOf(`${sel} {`); assert.ok(i >= 0, sel); return css.slice(i, css.indexOf("}", i)); };
+  assert.match(regra(".card-grid.is-list .card-tile"), /contain-intrinsic-size: auto 130px;/);
+  assert.match(regra(".card-tile.tile-compact"), /contain-intrinsic-size: auto 48px;/);
+  assert.ok(!/backdrop-filter/.test(regra(".set-release")));
+});
