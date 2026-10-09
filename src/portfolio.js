@@ -6,6 +6,18 @@
   function money(value) {
     return shared.formatMoney(shared.getCurrency(), value > 0 ? value : 0);
   }
+  // Variação, lucro e resultado andam sempre com os três juntos: sinal, valor
+  // absoluto e a classe da cor. A seta vai ALÉM da cor (verde/vermelho sozinho
+  // não serve a quem não distingue as duas).
+  const sign = (v) => (v >= 0 ? "+" : "−");
+  const cls = (v) => (v > 0.005 ? "is-up" : (v < -0.005 ? "is-down" : ""));
+  const seta = (v) => (v > 0.005 ? "▲" : (v < -0.005 ? "▼" : "→"));
+  const signedMoney = (v) => sign(v) + money(Math.abs(v));
+  // Porcentagem pelo locale (vírgula em pt/es, ponto em en).
+  const pctTxt = (v, casas) => {
+    const c = casas == null ? 1 : casas;
+    return Math.abs(v).toLocaleString(getLocale(), { minimumFractionDigits: c, maximumFractionDigits: c }) + "%";
+  };
 
   // ===========================================================================
   // Portfólio: visão FINANCEIRA da Minha Coleção — TODOS os jogos, com filtro
@@ -16,17 +28,34 @@
   // Binders e wishlist são VISÕES (filtros), não somam ao patrimônio.
   // Coleção unificada igual à collection.js (stores por jogo + facades).
   // A página é NEUTRA (sessão "hub", ver isNeutralPage no game.js): nada aqui
-  // depende do jogo da sessão. Já houve um "portfólio combinado" separado que
-  // somava por cookie sleevu_pf_<g> quando a sessão era hub — removido: esta
-  // visão É a combinada, com dado real em vez de resumo de cookie. Os cookies
-  // continuam sendo GRAVADOS (shared.recordValueSnapshot): o valueSnapshot do
-  // shared.js ainda os lê como fallback do retrato instantâneo.
+  // depende do jogo da sessão.
+  //
+  // PORTFÓLIO 3.0 (2026-10-09) — o que mudou no desenho, e por quê:
+  // - UM número grande: o patrimônio é o cabeçalho do gráfico (o scrub move
+  //   ele). Antes eram dois, o do gráfico e o do cartão, que no celular ficavam
+  //   a um polegar de distância.
+  // - Seis cartões do mesmo tamanho (patrimônio, cartas, graded, custo,
+  //   desejos, cópias precificadas) viraram um RESUMO de quatro peças que se
+  //   adapta a quem você é: com custo informado entra o lucro potencial; com
+  //   venda, o resultado; sem os dois, as peças "fora do patrimônio". A
+  //   cobertura de preço virou rodapé — é confiança no número, não um número.
+  // - "Composição por tipo", "Por jogo" e o detalhamento por set/raridade/
+  //   artista eram três blocos com três desenhos. Agora é UMA seção, "Onde está
+  //   o valor", com abas, barra empilhada e linhas com %.
+  // - Movimentos: as SUAS cartas na semana (price-deltas-7d, o mesmo arquivo do
+  //   Hub), com o efeito em dinheiro. A aba "Mercado" saiu: altas do mercado
+  //   inteiro não respondem "o que aconteceu com o meu patrimônio", e o
+  //   painel de mercado da tela de Sets já mostra.
+  // - Tabelas viraram LINHAS com a arte da carta (no celular as colunas
+  //   "Atual" e "Lucro" ficavam fora da tela). Cada seção é um cartão com
+  //   cabeçalho, abas e "Ver mais" — o mesmo molde de lista agrupada que o
+  //   app nativo vai usar (ver docs/PORTFOLIO.md, seção 10).
   // ===========================================================================
   const GAMES = shared.GAME_SLUGS;
   const GAME_COLOR = shared.GAME_COLOR;
   const { ownedByGame, wishlistByGame, cardGameMap, gameOf, owned, wishlist, prices } = shared.createCrossGameStores();
   // Preço-alvo da wishlist ("me avisa quando chegar a R$X"): global, anotado na
-  // página de Wishlist. Aqui ele vira a coluna que diz o quanto falta cair.
+  // página de Wishlist. Aqui ele vira a linha que diz o quanto falta cair.
   const wishTargets = shared.createWishTargetsStore();
   // Modo investidor (opcional): custo pago por carta + vendas realizadas.
   const costsStore = shared.createCostsStore();
@@ -36,31 +65,32 @@
   let cards = [];
   let cardsById = new Map();
   let gameFilter = "all";
-  let breakdownMode = "set"; // set | rarity | artist | wish
-  let topShowAll = false; // "mais valiosas": top 15 ou a lista inteira
+  // Aba ativa e "Ver mais" de cada seção. Trocar de aba redesenha SÓ a seção
+  // (redesenhaSecao) — o gráfico e o resto da tela não piscam.
+  const aba = { alloc: null, invest: null, goals: null };
+  const aberta = { alloc: false, movers: false, top: false, invest: false, goals: false };
+  // Patrimônio fresco do último render: é o número grande "parado". O scrub do
+  // gráfico troca pelo do dia sob o dedo e, ao soltar, volta a este.
+  let networthAgora = null;
 
   const elements = {
     grandTotal: document.getElementById("grandTotal"),
     rawValue: document.getElementById("rawValue"),
+    rawCopies: document.getElementById("rawCopies"),
     gradedValue: document.getElementById("gradedValue"),
+    gradedCount: document.getElementById("gradedCount"),
     pricedCopies: document.getElementById("pricedCopies"),
-    investedValue: document.getElementById("investedValue"),
-    wishlistValue: document.getElementById("wishlistValue"),
-    composition: document.getElementById("pfComposition"),
-    breakdown: document.getElementById("pfBreakdown"),
-    breakdownTabs: document.getElementById("pfBreakdownTabs"),
-    breakdownBody: document.getElementById("pfBreakdownBody"),
+    kpis: document.getElementById("pfKpis"),
+    alloc: document.getElementById("pfAlloc"),
+    movers: document.getElementById("pfMovers"),
+    top: document.getElementById("pfTop"),
+    invest: document.getElementById("pfInvest"),
+    goals: document.getElementById("pfGoals"),
     gameFilter: document.getElementById("gameFilter"),
-    topCards: document.getElementById("topCards"),
     export: document.getElementById("pfExport"),
     empty: document.getElementById("emptyState")
   };
 
-  const inGameId = (g) => gameFilter === "all" || (g || "pokemon") === gameFilter;
-
-  // Maiores altas/quedas do MERCADO (price-movers do build diário).
-  const moversByGame = Object.fromEntries(GAMES.map((g) => [g, null]));
-  const fetchMovers = (dir) => fetch(dir + "price-movers.generated.json").then((r) => (r.ok ? r.json() : null)).catch(() => null);
   // ÍNDICE DE MERCADO por jogo (build): { d: [datas], i: [valores base 1000] }.
   // É o benchmark do gráfico — a resposta pra "isso é a minha coleção ou é o
   // mercado inteiro?". Arquivo minúsculo (centenas de bytes), buscado só quando
@@ -80,10 +110,10 @@
 
   // RETRATO INSTANTÂNEO antes de qualquer rede (estilo Collectr): o último
   // valor conhecido (histórico sincronizado ou cookie, via shared.valueSnapshot)
-  // pinta os cartões NA HORA, esmaecido de leve; o cálculo fresco do render()
+  // pinta os números NA HORA, esmaecido de leve; o cálculo fresco do render()
   // troca os números e tira o esmaecido quando os chunks chegam. Quem abre o
   // Portfólio abre pra ver o número — ele não pode esperar 50 requisições.
-  const SNAP_ELS = ["grandTotal", "rawValue", "gradedValue", "wishlistValue"];
+  const SNAP_ELS = ["grandTotal", "rawValue", "gradedValue"];
   // Ponto de partida do patrimônio "assentando" (ver pintaPatrimonio): é o
   // valor do retrato que o usuário JÁ está vendo — contar a partir do zero
   // animaria um número que nunca foi verdade.
@@ -97,22 +127,15 @@
     pinta(elements.grandTotal, snap.total);
     pinta(elements.rawValue, snap.raw);
     pinta(elements.gradedValue, snap.graded);
-    pinta(elements.wishlistValue, snap.wish);
   })();
 
-  // O patrimônio PRIMEIRO, só com as suas cartas. Antes esta página buscava os
-  // movers dos 12 jogos ANTES de tudo e somava os ids deles à carga — o que
-  // arrastava chunks de sets de jogos onde você não tem carta nenhuma, e
-  // segurava o número que a pessoa abriu a página pra ver. Agora o mercado é
-  // uma segunda etapa: quando chega, só re-renderiza a própria seção.
+  // O patrimônio PRIMEIRO, só com as suas cartas; o mercado (variações da
+  // semana) e as cartas de listas/binders que você não tem são segundas
+  // etapas, que só re-renderizam a própria seção quando chegam.
   // loadOwnedFast: pede à borda (/api/collection) exatamente as cartas que você
-  // tem, em vez de baixar os chunks INTEIROS de cada set em que tem alguma —
-  // era o download que segurava esta página. Sem a borda, cai nos chunks.
-  // Possuídas + DESEJADAS. As desejadas entravam na conta de "desejos" mas nunca
-  // eram carregadas — e wishlistTotal varre `cards`, então a carta que você quer
-  // (e por definição não tem) não estava lá pra ser somada: o número saía quase
-  // sempre só com os faltantes de binder. A wishlist.js já carregava as duas
-  // listas juntas; aqui faltava. Mesma requisição, sem ida extra à rede.
+  // tem, em vez de baixar os chunks INTEIROS de cada set em que tem alguma.
+  // Possuídas + DESEJADAS: wishlistTotal varre `cards`, então a carta que você
+  // quer (e por definição não tem) precisa estar lá pra ser somada.
   // collectionLoadIds soma ainda os ids que estão em SLAB: graduar e tirar a
   // cópia raw (o certo — senão a carta conta duas vezes) tirava o id de
   // knownCardIds, e o slab ficava sem carta: sumia da Graded, perdia o valor
@@ -123,8 +146,8 @@
   );
   // ANTES de esperar catálogo e cotações: o layout do celular (ações na
   // linha do select de jogo) tem que estar montado no primeiro paint — quando
-  // rodava só depois dos dados (dentro do bindExport), a tela abria com o
-  // cabeçalho antigo e "pulava" pro novo segundos depois (2026-09-20).
+  // rodava só depois dos dados, a tela abria com o cabeçalho antigo e "pulava"
+  // pro novo segundos depois (2026-09-20).
   initMobileToolbar();
   Promise.all([shared.loadOwnedFast(idsOwned), shared.loadFxRates()])
     .then(([catalog]) => {
@@ -133,8 +156,8 @@
       // caminhos marcam `parcial`): os totais desta sessão estão
       // subestimados, então NÃO grava o ponto do dia — ele substituiria o de
       // hoje e o gráfico mostraria uma queda que não houve. Vale pra sessão
-      // inteira: as cargas seguintes (listas, binders, movers) não completam o
-      // que faltou aqui.
+      // inteira: as cargas seguintes (listas, binders) não completam o que
+      // faltou aqui.
       if (catalog.parcial) cargaParcial = true;
       GAMES.forEach((g) => ownedByGame[g].migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId))));
       const escopo = escopoDeJogos();
@@ -148,12 +171,11 @@
         shared.applyGameAccent(pedido);
       }
       bindGameFilter();
-      bindComposition();
-      bindBreakdown();
+      bindSecoes();
       bindExport();
       render();
       hidrataListas();
-      hidrataMovers();
+      hidrataVariacoes();
     })
     .catch((error) => {
       shared.mostraErroDeCatalogo(elements.empty, error);
@@ -161,9 +183,8 @@
     });
 
   function indexaCartas(lista) {
-    // Dedupe por id: a carga dos movers traz o CHUNK INTEIRO do set, então pode
-    // repetir carta que já veio na carga das suas — e carta repetida na lista
-    // seria valor contado duas vezes nos totais.
+    // Dedupe por id: uma carga extra pode repetir carta que já veio na das
+    // suas — e carta repetida na lista seria valor contado duas vezes.
     const porId = new Map();
     (lista || []).forEach((card) => { if (!porId.has(card.id)) porId.set(card.id, card); });
     cards = Array.from(porId.values());
@@ -173,13 +194,9 @@
     cardsById = porId;
   }
 
-  // Segunda etapa: busca os movers e, se algum deles for carta que você não
-  // tem, carrega SÓ esses ids antes de desenhar. Falhar aqui não pode estragar
-  // a página — a seção simplesmente não aparece (o renderMovers já descarta
-  // mover sem carta no catálogo).
   // 2ª etapa das Listas/Binders: as cartas de uma lista de COMPRA não estão na
   // sua coleção, então não vieram na carga inicial — sem elas a lista valeria
-  // zero. Buscamos só os ids que faltam, como o hidrataMovers faz.
+  // zero. Buscamos só os ids que faltam.
   //
   // O jogo de um id desconhecido não dá pra adivinhar (o id não carrega a marca),
   // então: usa o `game` da lista quando ele existe e, no resto, pede o id a todos
@@ -199,40 +216,27 @@
     lerBinders().forEach((b) => (b.slots || []).forEach((s) => querido(s && s.cardId, null)));
     const orfaos = [...new Set(semJogo)].slice(0, TETO_IDS_SEM_JOGO);
     GAMES.forEach((g) => { porJogo[g] = [...new Set(porJogo[g].concat(orfaos))]; });
-    if (!Object.values(porJogo).some((ids) => ids.length)) { renderListas(); return Promise.resolve(); }
+    if (!Object.values(porJogo).some((ids) => ids.length)) { renderGoals(); return Promise.resolve(); }
     return shared.loadOwnedAcrossGames(porJogo)
-      .then((extra) => { indexaCartas(cards.concat(extra.cards || [])); renderListas(); })
-      .catch(() => { renderListas(); }); // sem as extras a seção ainda mostra o que dá
+      .then((extra) => { indexaCartas(cards.concat(extra.cards || [])); renderGoals(); })
+      .catch(() => { renderGoals(); }); // sem as extras a seção ainda mostra o que dá
   }
 
-  function hidrataMovers() {
-    return Promise.all(GAMES.map((g) => fetchMovers(shared.gameDataDir(g))))
-      .then((movers) => {
-        GAMES.forEach((g, i) => { moversByGame[g] = movers[i]; });
-        const idsOf = (m) => m ? (m.up || []).concat(m.down || []).map((x) => x.id) : [];
-        const faltando = Object.fromEntries(GAMES.map((g, i) => [g, idsOf(movers[i]).filter((id) => !cardsById.has(id))]));
-        if (!Object.values(faltando).some((ids) => ids.length)) { renderMovers(); return; }
-        return shared.loadOwnedAcrossGames(faltando).then((extra) => {
-          indexaCartas(cards.concat(extra.cards || []));
-          renderMovers();
-        });
-      })
-      .catch(() => { /* mercado é acessório: sem ele a página segue inteira */ });
+  // Variação de 7 dias das SUAS cartas: price-deltas-7d do build, o MESMO
+  // arquivo do "Maiores movimentos" do Hub — as duas telas contam a mesma
+  // semana. Só dos jogos em que você tem carta: quem coleciona um jogo baixa
+  // um arquivo, não treze. Falhar aqui não estraga nada: a seção não aparece.
+  const deltasByGame = {};
+  function hidrataVariacoes() {
+    const meus = GAMES.filter((g) => ownedByGame[g].size > 0);
+    return Promise.all(meus.map((g) => shared.loadPriceDeltas7d(g)
+      .then((d) => { deltasByGame[g] = d && d.c ? d : null; })
+      .catch(() => { deltasByGame[g] = null; })))
+      .then(() => renderMovers());
   }
 
-  // Barra da composição -> aplica o filtro do jogo (ver renderComposition).
-  // Delegado no container, que é reescrito a cada render.
-  function bindComposition() {
-    if (!elements.composition) return;
-    elements.composition.addEventListener("click", (event) => {
-      const btn = event.target.closest("[data-comp-game]");
-      if (!btn) return;
-      aplicaFiltroDeJogo(btn.dataset.compGame);
-    });
-  }
-
-  // Um caminho só pra trocar o filtro de jogo — o clique no chip, a barra da
-  // composição e o ?filter= da URL fazem exatamente a mesma coisa.
+  // Um caminho só pra trocar o filtro de jogo — o clique no chip, a linha do
+  // jogo em "Onde está o valor" e o ?filter= da URL fazem a mesma coisa.
   function aplicaFiltroDeJogo(slug) {
     if (!slug || slug === gameFilter) return;
     gameFilter = slug;
@@ -272,18 +276,82 @@
       || loadHist(g).length > 0);
   }
 
-  function bindBreakdown() {
-    if (!elements.breakdownTabs) return;
-    elements.breakdownTabs.addEventListener("click", (event) => {
-      const tab = event.target.closest("[data-bd]");
-      if (!tab || tab.dataset.bd === breakdownMode) return;
-      breakdownMode = tab.dataset.bd;
-      Array.from(elements.breakdownTabs.children).forEach((node) =>
-        node.classList.toggle("active", node === tab));
-      render();
+  // Abas, "Ver mais" e as linhas de jogo de todas as seções: UM ouvinte no
+  // <main>, delegado — as seções são reescritas a cada render e perderiam
+  // ouvintes próprios.
+  function bindSecoes() {
+    const main = document.querySelector(".pf-main");
+    if (!main) return;
+    main.addEventListener("click", (event) => {
+      const tab = event.target.closest("[data-pf-tab]");
+      if (tab) {
+        const grupo = tab.dataset.pfTab;
+        if (aba[grupo] === tab.dataset.k) return;
+        aba[grupo] = tab.dataset.k;
+        aberta[grupo] = false;
+        redesenhaSecao(grupo);
+        return;
+      }
+      const mais = event.target.closest("[data-pf-more]");
+      if (mais) {
+        const grupo = mais.dataset.pfMore;
+        aberta[grupo] = !aberta[grupo];
+        redesenhaSecao(grupo);
+        // Ao FECHAR uma lista longa, a seção pode ter ficado lá em cima: traz o
+        // cabeçalho dela de volta pra vista em vez de deixar a pessoa perdida.
+        if (!aberta[grupo]) {
+          const sec = mais.closest(".pf-card");
+          if (sec && sec.getBoundingClientRect().top < 0) sec.scrollIntoView({ block: "start", behavior: "smooth" });
+        }
+        return;
+      }
+      const jogo = event.target.closest("[data-comp-game]");
+      if (jogo) { event.preventDefault(); aplicaFiltroDeJogo(jogo.dataset.compGame); }
     });
   }
+  function redesenhaSecao(grupo) {
+    if (grupo === "alloc") renderAlloc();
+    else if (grupo === "movers") renderMovers();
+    else if (grupo === "top") renderTop();
+    else if (grupo === "invest") renderInvest();
+    else if (grupo === "goals") renderGoals();
+  }
 
+  // ---- Peças de desenho compartilhadas pelas seções -------------------------
+  // Cabeçalho de seção: título, complemento curto e (opcional) um valor à
+  // direita — o mesmo molde em todas, que é o que faz a tela ler como uma só.
+  function cabecalho(titulo, sub, direita) {
+    return `<header class="pf-sec-head"><h2>${escapeHtml(titulo)}</h2>${sub ? `<small>${escapeHtml(sub)}</small>` : ""}${direita || ""}</header>`;
+  }
+  // Abas de uma seção (segmentado). aria-pressed e não role=tab: são filtros
+  // do conteúdo logo abaixo, como os chips de jogo.
+  function abas(grupo, itens, ativa) {
+    if (itens.length < 2) return "";
+    return `<div class="pf-tabs" role="group">${itens.map(([k, rotulo]) =>
+      `<button type="button" class="pf-tab" data-pf-tab="${grupo}" data-k="${escapeAttribute(k)}" aria-pressed="${k === ativa}">${escapeHtml(rotulo)}</button>`).join("")}</div>`;
+  }
+  // "Ver mais 23" (quantas faltam), e não "Ver todas (33)": serve a cartas,
+  // sets e movimentos sem brigar com o gênero de cada um.
+  function botaoMais(grupo, faltam, aberto) {
+    return `<button type="button" class="pf-more" data-pf-more="${grupo}" aria-expanded="${aberto}">${escapeHtml(aberto ? t("portfolio.less") : t("portfolio.more", { n: faltam }))}</button>`;
+  }
+  // "2 de out" no lugar do 2026-10-02 cru do arquivo do build.
+  const diaCurto = (iso) => new Date(iso + "T00:00:00").toLocaleDateString(getLocale(), { day: "numeric", month: "short" }).replace(".", "");
+  function thumbDe(card) {
+    const src = shared.cardImageSources(card);
+    return `<span class="pf-thumb">${shared.localizedImg(src.url, { alt: "", fallback: src.fallback, loading: "lazy", thumb: true })}</span>`;
+  }
+  const cardHref = (card) => detailUrl("set", card.set, "", card.game, { card: card.id, setId: card.setId });
+  // Linha de carta: arte, nome, linha de apoio e o valor à direita. É a célula
+  // das listas de Mais valiosas, Movimentos, Posições e Desejos.
+  function linhaCarta({ card, href, rank, sub, tags, valor, apoio, apoioCls }) {
+    return `<li><a class="pf-row" href="${escapeAttribute(href || cardHref(card))}">
+      ${rank != null ? `<span class="pf-rank">${rank}</span>` : ""}
+      ${thumbDe(card)}
+      <span class="pf-row-main"><strong>${escapeHtml(card.name)}</strong><span class="pf-row-sub">${escapeHtml(sub || shared.dotJoin(card.set, card.number))}</span>${tags ? `<span class="pf-tags">${tags}</span>` : ""}</span>
+      <span class="pf-row-end">${valor}${apoio ? `<small class="${apoioCls || ""}">${apoio}</small>` : ""}</span>
+    </a></li>`;
+  }
   // ---- Export CSV do portfólio (snapshot financeiro, respeita o filtro de jogo).
   // Diferente do CSV do menu da conta (inventário do jogo da sessão, preço manual):
   // aqui vai TODO o patrimônio precificado — cartas raw com valor de mercado por
@@ -401,24 +469,7 @@
     if (!elements.export) return;
     elements.export.hidden = false;
     elements.export.addEventListener("click", exportPortfolioCsv);
-    // Toggle "ver todas / top 15" da tabela de mais valiosas (a tabela é
-    // re-renderizada a cada render; delega no container, que é fixo).
-    if (elements.topCards) elements.topCards.addEventListener("click", (event) => {
-      if (!event.target.closest("[data-pf-top-toggle]")) return;
-      topShowAll = !topShowAll;
-      render();
-    });
-    // Abas Minhas/Mercado dos movers (mesma delegação: a seção é re-renderizada).
-    const movers = document.getElementById("pfMovers");
-    if (movers) movers.addEventListener("click", (event) => {
-      const aba = event.target.closest("[data-movers-tab]");
-      if (!aba) return;
-      event.preventDefault();
-      moversTab = aba.dataset.moversTab;
-      renderMovers();
-    });
   }
-
   // ---- Retrospectiva do ano (PNG pra compartilhar) ---------------------------
   // O "Unpacked" do Dragon Shield mostrou que retrospectiva é o conteúdo que o
   // colecionador posta sozinho. Aqui ela sai do dado que a tela já tem: o
@@ -609,51 +660,74 @@
 
   function render() {
     limpaMemo(); // ver collectionLines: um render inteiro reusa as mesmas contas
-    const { lines, totalCopies, pricedCopies, total: rawTotal } = collectionLines(gameFilter);
+    const { totalCopies, pricedCopies, total: rawTotal } = collectionLines(gameFilter);
     const slabs = gradedSlabs(gameFilter);
     const gradedTotal = slabs.reduce((sum, s) => sum + (s.value || 0), 0);
-    const networth = rawTotal + gradedTotal;
-    // Desejos vinham somados num número só e ninguém sabia o que era o quê —
-    // "R$ 890" pode ser wishlist inteira ou buraco de binder, e as duas coisas
-    // levam a ações diferentes. Agora o card mostra a soma e abre embaixo.
-    const wishOnly = wishlistTotal(gameFilter);
-    const binderGap = binderWishTotal(gameFilter);
-    const wish = wishOnly + binderGap;
+    networthAgora = rawTotal + gradedTotal;
 
     // Números frescos: substituem o retrato instantâneo e tiram o esmaecido.
     SNAP_ELS.forEach((k) => { if (elements[k]) elements[k].style.opacity = ""; });
-    if (elements.grandTotal) pintaPatrimonio(networth);
+    if (elements.grandTotal) pintaPatrimonio(networthAgora);
     if (elements.rawValue) elements.rawValue.textContent = money(rawTotal);
+    if (elements.rawCopies) elements.rawCopies.textContent = tn("portfolio.kpi.copies", totalCopies);
     if (elements.gradedValue) elements.gradedValue.textContent = money(gradedTotal);
-    if (elements.pricedCopies) elements.pricedCopies.textContent = `${pricedCopies}/${totalCopies}`;
-    if (elements.wishlistValue) elements.wishlistValue.textContent = money(wish);
-    // A abertura só aparece quando as duas metades existem — com uma só, repetir
-    // o mesmo número embaixo do card não informa nada.
-    const wishSplit = document.getElementById("wishlistSplit");
-    if (wishSplit) {
-      const mostra = wishOnly > 0 && binderGap > 0;
-      wishSplit.hidden = !mostra;
-      wishSplit.textContent = mostra
-        ? `${t("portfolio.wish.list")} ${money(wishOnly)} · ${t("portfolio.wish.binder")} ${money(binderGap)}`
-        : "";
+    if (elements.gradedCount) elements.gradedCount.textContent = tn("portfolio.kpi.slabs", slabs.length);
+    // As duas peças fixas levam às telas das cartas (com o filtro de jogo).
+    const sufixo = gameFilter !== "all" ? `?filter=${encodeURIComponent(gameFilter)}` : "";
+    const linkRaw = elements.rawValue && elements.rawValue.closest("a");
+    const linkGraded = elements.gradedValue && elements.gradedValue.closest("a");
+    if (linkRaw) linkRaw.href = "collection" + sufixo;
+    if (linkGraded) linkGraded.href = "graded" + sufixo;
+    // Cobertura da avaliação: rodapé do resumo, não um cartão do tamanho do
+    // patrimônio. É CONFIANÇA no número ("43 de 43 cópias com preço").
+    if (elements.pricedCopies) {
+      elements.pricedCopies.hidden = !totalCopies;
+      elements.pricedCopies.textContent = totalCopies ? t("portfolio.coverage", { n: pricedCopies, total: totalCopies }) : "";
     }
-    // Total investido: mesma soma da seção "Investimento" lá embaixo (uma
-    // fórmula só). Sem nenhum custo preenchido fica "—" em vez de "R$ 0,00":
-    // zero investido e "não registrei custo" são coisas diferentes.
-    if (elements.investedValue) {
-      const { invested } = investPositions();
-      elements.investedValue.textContent = invested > 0 ? money(invested) : "—";
-    }
-
-    renderComposition(rawTotal, gradedTotal);
-    renderBreakdown(lines, slabs);
-    renderListas();
-    renderManual();
-    renderInvest();
-    renderVendas();
+    renderKpisExtras();
+    renderAlloc();
     renderMovers();
-    renderTop(lines, slabs);
+    renderTop();
+    renderInvest();
+    renderGoals();
+    renderManual();
     updateChart();
+  }
+
+  // Resumo: cartas e graded são fixas; as outras DUAS peças dependem de quem
+  // você é. Com custo informado entra o lucro potencial; com venda, o
+  // resultado. Sem os dois (a maioria), entram as peças "fora do patrimônio"
+  // — desejos e selados —, pra a grade nunca ter um "—" ocupando lugar.
+  function renderKpisExtras() {
+    const box = elements.kpis;
+    if (!box) return;
+    box.querySelectorAll("[data-extra]").forEach((n) => n.remove());
+    const peca = (rotulo, valorHtml, sub, href) =>
+      `<a class="pf-kpi" data-extra href="${escapeAttribute(href)}"><span class="pf-kpi-label">${escapeHtml(rotulo)}</span>
+        <strong class="pf-kpi-value sensitive-value">${valorHtml}</strong><small class="pf-kpi-sub">${escapeHtml(sub)}</small></a>`;
+    const pecas = [];
+    const { positions, invested, currentTotal } = investPositions();
+    if (positions.length) {
+      const pnl = currentTotal - invested;
+      const pct = invested > 0 ? (pnl / invested) * 100 : 0;
+      pecas.push(peca(t("portfolio.kpi.pnl"), `<span class="${cls(pnl)}">${escapeHtml(signedMoney(pnl))}</span>`,
+        `${sign(pnl)}${pctTxt(pct)} · ${t("portfolio.kpi.pnlOn", { v: money(invested) })}`, "#pfInvest"));
+    }
+    const vs = resumoVendas();
+    if (vs && vs.comCusto) {
+      pecas.push(peca(t("portfolio.kpi.realized"), `<span class="${cls(vs.realizado)}">${escapeHtml(signedMoney(vs.realizado))}</span>`,
+        `${tn("portfolio.invest.soldCount", vs.vendas.length)} · ${t("portfolio.kpi.roi", { pct: sign(vs.roi) + pctTxt(vs.roi, 0) })}`, "#pfInvest"));
+    } else if (vs) {
+      pecas.push(peca(t("portfolio.invest.sales"), escapeHtml(money(vs.liquido)), tn("portfolio.invest.soldCount", vs.vendas.length), "#pfInvest"));
+    }
+    const fora = [];
+    const desejos = wishlistTotal(gameFilter) + binderWishTotal(gameFilter);
+    if (desejos > 0) fora.push(peca(t("portfolio.kpi.wish"), escapeHtml(money(desejos)), t("portfolio.kpi.outside"), "#pfGoals"));
+    const selados = manualTotal(gameFilter);
+    if (selados > 0) fora.push(peca(t("pfmi.title"), escapeHtml(money(selados)), t("portfolio.kpi.outside"), "#pfManual"));
+    while (pecas.length < 2 && fora.length) pecas.push(fora.shift());
+    box.insertAdjacentHTML("beforeend", pecas.join(""));
+    box.dataset.n = String(2 + pecas.length);
   }
 
   // O patrimônio ASSENTA no valor fresco em vez de trocar seco: anima do
@@ -661,6 +735,7 @@
   // vez por carga. Iguais, sem retrato ou com prefers-reduced-motion: troca
   // direta — a animação é tempero, nunca requisito.
   let patrimonioAssentou = false;
+  let assentando = false; // enquanto anima, o cabeçalho do gráfico não pinta o número
   const podeAnimar = !(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
   function pintaPatrimonio(alvo) {
     const el = elements.grandTotal;
@@ -668,20 +743,21 @@
     patrimonioAssentou = true; // trocas de filtro pintam direto: não é o mercado se mexendo
     if (de == null || !podeAnimar || Math.abs(alvo - de) < 0.01) { el.textContent = money(alvo); return; }
     const t0 = performance.now(), dur = 600;
+    assentando = true;
     const passo = (agora) => {
       const p = Math.min(1, (agora - t0) / dur);
       el.textContent = money(de + (alvo - de) * (1 - Math.pow(1 - p, 3)));
-      if (p < 1) requestAnimationFrame(passo);
+      if (p < 1) requestAnimationFrame(passo); else { assentando = false; el.textContent = money(networthAgora); }
     };
     requestAnimationFrame(passo);
   }
 
-  // Variação do DIA no cartão do patrimônio — o gancho diário da corretora
+  // Variação do DIA embaixo do patrimônio — o gancho diário da corretora
   // (valor grande + quanto mexeu hoje, o padrão que o Collectr consagrou).
   // Calculada dos MESMOS pontos do gráfico (chartHistory), nunca por um segundo
-  // caminho — ver o aviso das cápsulas removidas, mais abaixo. O rótulo só diz
-  // "hoje" quando o ponto anterior é de ontem; visita mais espaçada mostra a
-  // data ("variação desde …") — o número não finge ser mais fresco do que é.
+  // caminho. O rótulo só diz "hoje" quando o ponto anterior é de ontem; visita
+  // mais espaçada mostra a data ("variação desde …") — o número não finge ser
+  // mais fresco do que é.
   function pintaDeltaDoDia(pts) {
     const el = document.getElementById("grandDelta");
     if (!el) return;
@@ -691,101 +767,79 @@
     if (!antes || !(v0 > 0)) { el.hidden = true; el.innerHTML = ""; return; }
     const delta = ((hoje.c || 0) + (hoje.b || 0)) - v0;
     const pct = (delta / v0) * 100;
-    const dir = delta > 0.005 ? "up" : (delta < -0.005 ? "down" : "flat");
-    const seta = dir === "up" ? "▲" : (dir === "down" ? "▼" : "→");
-    const sinal = dir === "up" ? "+" : (dir === "down" ? "−" : "");
-    const pctTxt = Math.abs(pct).toLocaleString(getLocale(), { minimumFractionDigits: 1, maximumFractionDigits: 1 });
     const ontem = new Date(Date.now() - 864e5).toISOString().slice(0, 10);
     const quando = antes.d >= ontem ? t("portfolio.deltaToday") : t("market.deltaSince", { date: antes.d });
     // Dinheiro no .pf-cash próprio (o modo privacidade borra SÓ ele e preserva
-    // a porcentagem), como no cabeçalho do gráfico. O histórico é gravado em
-    // BRL — converte pra moeda do header como o renderChart faz (fromBRL).
-    el.innerHTML = `${seta} <span class="pf-cash">${escapeHtml(sinal + money(Math.abs(fromBRL(delta))))}</span> <span class="pf-pct">(${escapeHtml(sinal + pctTxt + "%")})</span> <span class="pf-grand-when">${escapeHtml(quando)}</span>`;
-    el.className = "pf-grand-delta is-" + dir;
+    // a porcentagem). O histórico é gravado em BRL — converte pra moeda do
+    // header como o renderChart faz (fromBRL).
+    el.innerHTML = `<span class="pf-when">${escapeHtml(quando)}</span> <span class="${cls(delta)}">${seta(delta)} <span class="pf-cash">${escapeHtml(signedMoney(fromBRL(delta)))}</span> <span class="pf-pct">(${escapeHtml(sign(pct) + pctTxt(pct))})</span></span>`;
     el.hidden = false;
   }
 
-  // Maiores altas e quedas entre o snapshot anterior e o de hoje (builds
-  // diários — o "desde {data}" do título diz a janela real), em DUAS abas:
-  //   "Minhas"  — só cartas suas, ordenadas pelo IMPACTO no seu bolso
-  //               (variação × quantidade que você tem), não pelo % puro. Uma
-  //               carta de R$ 2 que subiu 80% mexe menos no seu patrimônio que
-  //               uma de R$ 900 que subiu 5%, e é essa a pergunta aqui.
-  //   "Mercado" — a visão de sempre (o que se moveu no mercado, tenha você ou não).
-  // Dragon Shield, Delta e CoinStats convergem no mesmo ponto: o mover que
-  // importa é o SEU. Por isso "Minhas" é a aba padrão quando você tem alguma.
-  let moversTab = "mine";
+  // ---- Movimentos da semana (as SUAS cartas) ---------------------------------
+  // Ordenados pelo EFEITO no seu bolso (variação × valor × cópias), não pelo %
+  // puro: uma carta de R$ 2 que subiu 80% mexe menos no patrimônio que uma de
+  // R$ 900 que subiu 5% — e é essa a pergunta desta tela. A conta é a do Hub
+  // (lote × p / (100 + p): quanto do valor de HOJE veio da variação), pra os
+  // dois números baterem.
   function renderMovers() {
-    const sec = document.getElementById("pfMovers");
+    const sec = elements.movers;
     if (!sec) return;
     const pool = gameFilter === "all" ? GAMES : [gameFilter];
-    let up = [], down = [], from = null;
-    pool.forEach((g) => {
-      const m = moversByGame[g];
-      if (!m) return;
-      if (m.from) from = from || m.from;
-      up = up.concat(m.up || []); down = down.concat(m.down || []);
+    const comDado = pool.filter((g) => deltasByGame[g]);
+    if (!comDado.length) { sec.hidden = true; sec.innerHTML = ""; return; }
+    let desde = null;
+    comDado.forEach((g) => { const f = deltasByGame[g].from; if (f && (!desde || f < desde)) desde = f; });
+    // O lote de cada carta sai das MESMAS linhas do patrimônio (valor por
+    // variante × condição): uma LP não pode mexer como se fosse NM.
+    const lotes = new Map();
+    collectionLines(gameFilter).lines.forEach((l) => {
+      const x = lotes.get(l.card.id) || { card: l.card, lote: 0, qtd: 0 };
+      x.lote += l.total; x.qtd += l.quantity;
+      lotes.set(l.card.id, x);
     });
-    // Quantas cópias você tem da carta (todas as variantes) — o peso do impacto.
-    const copias = (card) => shared.cardVariants(card).reduce((n, v) => n + owned.variantTotal(card.id, v), 0);
-    const resolve = (arr, minhas) => {
-      const linhas = arr
-        .map((x) => ({ x, card: cardsById.get(x.id) }))
-        .filter((r) => r.card && (!minhas || owned.has(r.card.id)));
-      if (!minhas) return linhas.sort((a, b) => Math.abs(b.x.pct) - Math.abs(a.x.pct)).slice(0, 8);
-      // Impacto em dinheiro: o valor de hoje × a variação × as cópias. O valor
-      // atual já embute o preço da carta, então isto é "quanto do seu patrimônio
-      // essa carta moveu no período".
-      linhas.forEach((r) => {
-        const v = shared.cardValue(r.card, shared.defaultVariant(r.card), prices).value || 0;
-        r.qtd = copias(r.card);
-        r.impacto = v * r.qtd * (r.x.pct / 100);
-      });
-      return linhas.sort((a, b) => Math.abs(b.impacto) - Math.abs(a.impacto)).slice(0, 8);
-    };
-    const temMinhas = up.concat(down).some((x) => { const c = cardsById.get(x.id); return c && owned.has(c.id); });
-    if (moversTab === "mine" && !temMinhas) moversTab = "market";
-    const minhas = moversTab === "mine";
-    const ups = resolve(up, minhas), downs = resolve(down, minhas);
-    if (!ups.length && !downs.length && !temMinhas) { sec.hidden = true; sec.innerHTML = ""; return; }
+    const linhas = [];
+    let efeito = 0, subiram = 0, cairam = 0;
+    lotes.forEach(({ card, lote, qtd }) => {
+      const g = card.game || "pokemon";
+      if (!deltasByGame[g] || !(lote > 0)) return;
+      const p = Number(deltasByGame[g].c[card.id]);
+      if (!p) return;
+      const chg = (lote * p) / (100 + p);
+      if (Math.abs(chg) < 0.01) return;
+      efeito += chg;
+      if (chg > 0) subiram++; else cairam++;
+      linhas.push({ card, p, chg, qtd });
+    });
+    const sub = desde ? t("portfolio.moves.sub", { date: diaCurto(desde) }) : "";
+    if (!linhas.length) {
+      sec.innerHTML = cabecalho(t("portfolio.moves.title"), sub) + `<p class="pf-empty">${escapeHtml(t("portfolio.movers.noneMine"))}</p>`;
+      sec.hidden = false;
+      return;
+    }
+    linhas.sort((a, b) => Math.abs(b.chg) - Math.abs(a.chg));
+    const LIM = 5;
+    const visiveis = aberta.movers ? linhas.slice(0, 30) : linhas.slice(0, LIM);
     const loc = getLocale();
-    const row = ({ x, card, impacto, qtd }) => {
-      const src = shared.cardImageSources(card);
-      const thumb = shared.localizedImg(src.url, { alt: "", fallback: src.fallback, loading: "lazy", thumb: true });
-      // Na aba "Minhas" o selo vira a QUANTIDADE (×3) — "você tem" já é dado.
-      const tag = minhas
-        ? (qtd > 1 ? `<span class="pf-mover-owned">×${qtd}</span>` : "")
-        : (owned.has(card.id) ? `<span class="pf-mover-owned">${escapeHtml(t("portfolio.movers.owned"))}</span>` : "");
-      const pct = `${x.pct > 0 ? "+" : "−"}${Math.abs(x.pct).toLocaleString(loc, { maximumFractionDigits: 1 })}%`;
-      // Na aba "Minhas", o que a variação fez com o SEU dinheiro, embaixo do %.
-      const emReais = minhas && Math.abs(impacto || 0) >= 0.01
-        ? `<span class="pf-mover-cash sensitive-value">${impacto > 0 ? "+" : "−"}${escapeHtml(money(Math.abs(impacto)))}</span>` : "";
-      return `<a class="pf-mover" href="${escapeAttribute(detailUrl("set", card.set, "", card.game, { card: card.id, setId: card.setId }))}">
-        <span class="pf-mover-thumb">${thumb}</span>
-        <span class="pf-mover-info"><strong>${escapeHtml(card.name)}</strong><span>${escapeHtml(shared.dotJoin(card.set, card.number))}</span>${tag}</span>
-        <span class="pf-mover-pct ${x.pct > 0 ? "is-up" : "is-down"}">${x.pct > 0 ? "▲" : "▼"} ${escapeHtml(pct)}${emReais}</span>
-      </a>`;
-    };
-    const col = (title, arr) => arr.length ? `<div class="pf-movers-col"><h3>${escapeHtml(title)}</h3>${arr.map(row).join("")}</div>` : "";
-    const aba = (k, rotulo, ativa) =>
-      `<button type="button" class="pf-bd-tab${ativa ? " active" : ""}" data-movers-tab="${k}">${escapeHtml(rotulo)}</button>`;
-    const abas = temMinhas
-      ? `<div class="pf-bd-tabs pf-movers-tabs">${aba("mine", t("portfolio.movers.mine"), minhas)}${aba("market", t("portfolio.movers.market"), !minhas)}</div>`
-      : "";
-    const vazio = !ups.length && !downs.length
-      ? `<p class="pf-bd-empty">${escapeHtml(t("portfolio.movers.noneMine"))}</p>` : "";
-    sec.innerHTML = `<h2 class="pf-invest-title">${escapeHtml(t("portfolio.movers.title"))}${from ? ` <span class="pf-movers-since">${escapeHtml(t("market.deltaSince", { date: from }))}</span>` : ""}</h2>
-      ${abas}${vazio}
-      <div class="pf-movers-grid">${col(t("portfolio.movers.up"), ups)}${col(t("portfolio.movers.down"), downs)}</div>`;
+    const resumo = `<p class="pf-moves-sum"><strong class="${cls(efeito)}"><span class="sensitive-value">${escapeHtml(signedMoney(efeito))}</span></strong>
+      <span>${escapeHtml(t("portfolio.moves.net"))}</span>
+      <span class="pf-moves-count"><span class="is-up">▲ ${subiram}</span> <span class="is-down">▼ ${cairam}</span></span></p>`;
+    const corpo = visiveis.map(({ card, p, chg, qtd }) => linhaCarta({
+      card,
+      sub: shared.dotJoin(card.set, card.number) + (qtd > 1 ? ` · ×${qtd}` : ""),
+      valor: `<strong class="${cls(chg)}"><span class="sensitive-value">${escapeHtml(signedMoney(chg))}</span></strong>`,
+      apoio: `${p > 0 ? "▲" : "▼"} ${escapeHtml(Math.abs(p).toLocaleString(loc, { maximumFractionDigits: 1 }))}%`,
+      apoioCls: cls(p)
+    })).join("");
+    sec.innerHTML = cabecalho(t("portfolio.moves.title"), sub) + resumo
+      + `<ul class="pf-rows">${corpo}</ul>`
+      + (linhas.length > LIM ? botaoMais("movers", linhas.length - LIM, aberta.movers) : "");
     sec.hidden = false;
   }
 
-  // --- Investimento (opcional): só aparece pra quem preenche custo ou vende ---
-  // Posições = cartas COM custo que você ainda tem: pago (unitário × qtd) vs
-  // valor atual, com lucro/prejuízo não realizado. Vendas realizadas entram como
-  // resultado REALIZADO (vendido − pago; só registros com custo contam no P&L).
+  // --- Investimento (opcional): só tem número pra quem preenche custo ou vende ---
   // Posições abertas (custo preenchido + carta ainda na coleção). Fica FORA do
-  // renderInvest porque o resumo lá em cima também mostra o total investido:
+  // renderInvest porque o resumo lá em cima também mostra o lucro potencial:
   // duas somas separadas divergiriam mais cedo ou mais tarde — é a mesma razão
   // de o patrimônio ter uma fórmula só.
   function investPositions() {
@@ -809,109 +863,108 @@
     return { positions, invested, currentTotal };
   }
 
-  // Posições (o que você TEM, com lucro potencial) e Vendas (o que já virou
-  // dinheiro, com resultado realizado) viraram duas seções. Misturar as duas num
-  // bloco só é o que tornava a leitura confusa — e "potencial" × "realizado" é a
-  // distinção que todo app de investimento separa (o Card Ladder chama a primeira
-  // de "Potential Profit" justamente pra fugir de "não realizado").
-  const sign = (v) => (v >= 0 ? "+" : "−");
-  const cls = (v) => (v > 0.005 ? "is-up" : (v < -0.005 ? "is-down" : ""));
-  const statCard = (label, value, extra, klass) =>
-    `<article class="pf-insight ${klass || ""}"><span class="pf-insight-label">${escapeHtml(label)}</span>
-      <span class="pf-insight-pct sensitive-value">${value}</span>${extra ? `<span class="pf-insight-abs">${extra}</span>` : ""}</article>`;
-
-  function renderInvest() {
-    const sec = document.getElementById("pfInvest");
-    if (!sec) return;
-    const { positions, invested, currentTotal } = investPositions();
-    if (!positions.length) { sec.hidden = true; sec.innerHTML = ""; return; }
-
-    const unreal = currentTotal - invested;
-    const pct = invested > 0 ? (unreal / invested) * 100 : 0;
-    let html = `<h2 class="pf-invest-title">${escapeHtml(t("portfolio.invest.title"))}</h2><div class="pf-insights">`;
-    html += statCard(t("portfolio.invest.paid"), escapeHtml(money(invested)));
-    html += statCard(t("portfolio.invest.now"), escapeHtml(money(currentTotal)));
-    html += statCard(t("portfolio.invest.unreal"),
-      `${sign(unreal)}${escapeHtml(money(Math.abs(unreal)))}`,
-      `${sign(unreal)}${Math.abs(pct).toFixed(1)}%`, `pf-insight-${cls(unreal) === "is-up" ? "up" : cls(unreal) === "is-down" ? "down" : "flat"}`);
-    html += `</div>`;
-    {
-      positions.sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta));
-      const rows = positions.slice(0, 12).map((p) => {
-        const dPct = p.paid > 0 ? (p.delta / p.paid) * 100 : 0;
-        return `<tr>
-          <td><a href="${escapeAttribute(detailUrl("set", p.card.set, "", p.card.game))}">${escapeHtml(`${p.card.name} · ${p.card.set} ${p.card.number}`)}</a></td>
-          <td>${escapeHtml(p.variant)}</td>
-          <td class="num">${p.qty}</td>
-          <td class="num">${escapeHtml(money(p.paid))}</td>
-          <td class="num">${escapeHtml(money(p.now))}</td>
-          <td class="num pf-pnl ${cls(p.delta)}"><strong>${sign(p.delta)}${escapeHtml(money(Math.abs(p.delta)))}</strong> <span class="pf-pnl-pct">${sign(p.delta)}${Math.abs(dPct).toFixed(0)}%</span></td>
-        </tr>`;
-      }).join("");
-      html += `<div class="portfolio-table-wrap"><table class="portfolio-table">
-        <thead><tr>
-          <th>${escapeHtml(t("portfolio.col.card"))}</th><th>${escapeHtml(t("portfolio.col.variant"))}</th>
-          <th class="num">${escapeHtml(t("portfolio.col.qty"))}</th>
-          <th class="num">${escapeHtml(t("portfolio.invest.col.paid"))}</th>
-          <th class="num">${escapeHtml(t("portfolio.invest.col.now"))}</th>
-          <th class="num">${escapeHtml(t("portfolio.invest.col.delta"))}</th>
-        </tr></thead><tbody>${rows}</tbody></table></div>`;
-    }
-    sec.innerHTML = html;
-    sec.hidden = false;
-  }
-
-  // ---- Vendas (realizado) ----------------------------------------------------
-  // O Sleevu tem o que o líder da categoria não tem: o Collectr (~4M usuários)
-  // não registra venda realizada, e o PriceCharting só ganhou isso em mar/2026.
-  // Estava enterrado no fim de um bloco compartilhado — agora é seção própria.
-  function renderVendas() {
-    const sec = document.getElementById("pfSales");
-    if (!sec) return;
+  // Vendas (o que já virou dinheiro). As contas de UMA venda vivem no shared
+  // (soldValues: líquido = preço − taxa; resultado = líquido − pago, com o BRL
+  // congelado na data); aqui só se soma. Mesma razão do investPositions: o
+  // resumo lá em cima e a seção leem a mesma função.
+  function resumoVendas() {
     const inG = (id) => gameFilter === "all" || gameOf(id) === gameFilter;
     const vendas = soldStore.list().filter((it) => inG(it.cardId));
-    if (!vendas.length) { sec.hidden = true; sec.innerHTML = ""; return; }
-
-    let bruto = 0, taxas = 0, realizado = 0, comCusto = 0, melhor = null;
+    if (!vendas.length) return null;
+    let bruto = 0, taxas = 0, realizado = 0, comCusto = 0, pagoNasComCusto = 0, melhor = null;
     vendas.forEach((it) => {
       const v = shared.soldValues(it);
       bruto += v.price; taxas += v.fee;
       if (v.hasCost) {
-        realizado += v.pnl; comCusto++;
+        realizado += v.pnl; comCusto++; pagoNasComCusto += v.paid;
         if (!melhor || v.pnl > melhor.pnl) melhor = { pnl: v.pnl, it };
       }
     });
-    const liquido = bruto - taxas;
     // ROI sobre o que foi PAGO nas vendas com custo — só faz sentido nesse
     // subconjunto, que é o mesmo do resultado realizado.
-    const pagoNasComCusto = vendas.reduce((s, it) => { const v = shared.soldValues(it); return s + (v.hasCost ? v.paid : 0); }, 0);
     const roi = pagoNasComCusto > 0 ? (realizado / pagoNasComCusto) * 100 : 0;
+    return { vendas, bruto, taxas, liquido: bruto - taxas, realizado, comCusto, melhor, roi };
+  }
 
-    let html = `<h2 class="pf-invest-title">${escapeHtml(t("portfolio.sales.title"))}</h2><div class="pf-insights">`;
-    html += statCard(t("portfolio.sales.gross"), escapeHtml(money(bruto)), escapeHtml(tn("portfolio.invest.soldCount", vendas.length)));
-    if (taxas > 0) html += statCard(t("portfolio.sales.fees"), `− ${escapeHtml(money(taxas))}`, escapeHtml(t("portfolio.sales.net", { v: money(liquido) })));
-    if (comCusto) {
-      html += statCard(t("portfolio.sales.realized"),
-        `${sign(realizado)}${escapeHtml(money(Math.abs(realizado)))}`,
-        escapeHtml(t("portfolio.sales.roi", { pct: `${sign(roi)}${Math.abs(roi).toFixed(0)}` })),
-        `pf-insight-${realizado >= 0 ? "up" : "down"}`);
-    }
-    if (melhor) {
-      const card = cardsById.get(melhor.it.cardId);
-      html += statCard(t("portfolio.sales.best"), `+${escapeHtml(money(melhor.pnl))}`,
-        escapeHtml(card ? card.name : ""), "pf-insight-up");
-    }
-    html += `</div>`;
+  // Faixa de números de uma seção (Pago | Atual | Lucro…).
+  const numeros = (itens) => `<div class="pf-stats">${itens.map(({ rotulo, valor, extra, klass }) =>
+    `<div class="pf-stat"><span>${escapeHtml(rotulo)}</span><strong class="${klass || ""}"><span class="sensitive-value">${valor}</span></strong>${extra ? `<small>${extra}</small>` : ""}</div>`).join("")}</div>`;
 
-    // COBERTURA: dizer quantas vendas entram no resultado, e dar o caminho pra
-    // corrigir. É o padrão "flag-then-fix" (Quicken, CoinLedger): nunca chutar
-    // um custo em silêncio, nunca deixar o usuário achar que o número cobre tudo.
-    if (comCusto < vendas.length) {
-      html += `<p class="pf-coverage">${escapeHtml(t("portfolio.sales.coverage", { n: comCusto, total: vendas.length }))}
-        <a href="sales">${escapeHtml(t("portfolio.sales.fixCosts"))}</a></p>`;
+  // Posições (o que você TEM, com lucro potencial) e Vendas (o que já virou
+  // dinheiro, com resultado realizado) são abas da mesma seção: "potencial" ×
+  // "realizado" é a distinção que todo app de investimento separa (o Card
+  // Ladder chama a primeira de "Potential Profit" justamente pra fugir de
+  // "não realizado"). Sem nenhum dos dois, a seção EXPLICA como ligar — o
+  // modo investidor era invisível pra quem nunca achou o campo "Paguei".
+  function renderInvest() {
+    const sec = elements.invest;
+    if (!sec) return;
+    const pos = investPositions();
+    const vs = resumoVendas();
+    const temPos = pos.positions.length > 0;
+    if (!temPos && !vs) {
+      sec.innerHTML = cabecalho(t("portfolio.invest.title"))
+        + `<p class="pf-empty">${escapeHtml(t("portfolio.invest.empty"))} <a href="collection">${escapeHtml(t("portfolio.invest.emptyCta"))}</a></p>`;
+      sec.hidden = false;
+      return;
     }
-    html += renderVendasPorMes(vendas);
-    sec.innerHTML = html;
+    const opcoes = [];
+    if (temPos) opcoes.push(["positions", t("portfolio.invest.positions")]);
+    if (vs) opcoes.push(["sales", t("portfolio.invest.sales")]);
+    if (!opcoes.some(([k]) => k === aba.invest)) aba.invest = opcoes[0][0];
+    let corpo = "";
+    if (aba.invest === "positions") {
+      const pnl = pos.currentTotal - pos.invested;
+      const pct = pos.invested > 0 ? (pnl / pos.invested) * 100 : 0;
+      corpo += numeros([
+        { rotulo: t("portfolio.invest.paid"), valor: escapeHtml(money(pos.invested)) },
+        { rotulo: t("portfolio.invest.now"), valor: escapeHtml(money(pos.currentTotal)) },
+        { rotulo: t("portfolio.kpi.pnl"), valor: escapeHtml(signedMoney(pnl)), extra: escapeHtml(sign(pnl) + pctTxt(pct)), klass: cls(pnl) }
+      ]);
+      // Quanto da coleção TEM custo informado. Sem isso o lucro parece o da
+      // coleção inteira, quando é só o das cartas em que você anotou o
+      // "Paguei" — a pesquisa de 2026-10 não achou concorrente que diga isso.
+      const { totalCopies, total: rawTotal } = collectionLines(gameFilter);
+      const comCusto = pos.positions.reduce((n, p) => n + p.qty, 0);
+      if (comCusto < totalCopies) {
+        corpo += `<p class="pf-coverage">${escapeHtml(t("portfolio.invest.costCoverage", {
+          n: comCusto, total: totalCopies, pct: rawTotal > 0 ? Math.round((pos.currentTotal / rawTotal) * 100) : 0
+        }))}</p>`;
+      }
+      const lista = pos.positions.slice().sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta));
+      const LIM = 6;
+      const visiveis = aberta.invest ? lista : lista.slice(0, LIM);
+      corpo += `<ul class="pf-rows">${visiveis.map((p) => {
+        const dPct = p.paid > 0 ? (p.delta / p.paid) * 100 : 0;
+        return linhaCarta({
+          card: p.card,
+          sub: `${p.variant} · ×${p.qty} · ${t("pfmi.paid", { v: money(p.paid) })}`,
+          valor: `<strong><span class="sensitive-value">${escapeHtml(money(p.now))}</span></strong>`,
+          apoio: `<span class="sensitive-value">${escapeHtml(signedMoney(p.delta))}</span> (${escapeHtml(sign(p.delta) + pctTxt(dPct, 0))})`,
+          apoioCls: cls(p.delta)
+        });
+      }).join("")}</ul>`;
+      if (lista.length > LIM) corpo += botaoMais("invest", lista.length - LIM, aberta.invest);
+    } else {
+      const itens = [{ rotulo: t("portfolio.sales.gross"), valor: escapeHtml(money(vs.bruto)), extra: escapeHtml(tn("portfolio.invest.soldCount", vs.vendas.length)) }];
+      if (vs.taxas > 0) itens.push({ rotulo: t("portfolio.sales.fees"), valor: `− ${escapeHtml(money(vs.taxas))}`, extra: escapeHtml(t("portfolio.sales.net", { v: money(vs.liquido) })) });
+      if (vs.comCusto) itens.push({ rotulo: t("portfolio.sales.realized"), valor: escapeHtml(signedMoney(vs.realizado)), extra: escapeHtml(t("portfolio.sales.roi", { pct: `${sign(vs.roi)}${Math.abs(vs.roi).toFixed(0)}` })), klass: cls(vs.realizado) });
+      if (vs.melhor) {
+        const card = cardsById.get(vs.melhor.it.cardId);
+        itens.push({ rotulo: t("portfolio.sales.best"), valor: `+${escapeHtml(money(vs.melhor.pnl))}`, extra: escapeHtml(card ? card.name : ""), klass: "is-up" });
+      }
+      corpo += numeros(itens);
+      // COBERTURA: dizer quantas vendas entram no resultado, e dar o caminho pra
+      // corrigir. É o padrão "flag-then-fix" (Quicken, CoinLedger): nunca chutar
+      // um custo em silêncio, nunca deixar o usuário achar que o número cobre tudo.
+      if (vs.comCusto < vs.vendas.length) {
+        corpo += `<p class="pf-coverage">${escapeHtml(t("portfolio.sales.coverage", { n: vs.comCusto, total: vs.vendas.length }))}
+          <a href="sales">${escapeHtml(t("portfolio.sales.fixCosts"))}</a></p>`;
+      }
+      corpo += renderVendasPorMes(vs.vendas);
+    }
+    sec.innerHTML = cabecalho(t("portfolio.invest.title"), "", `<a class="pf-sec-link" href="sales">${escapeHtml(t("portfolio.invest.openSales"))}</a>`)
+      + abas("invest", opcoes, aba.invest) + corpo;
     sec.hidden = false;
   }
 
@@ -953,22 +1006,31 @@
       </div>`;
   }
 
-  // ---- Listas & Binders: quanto valem as suas VISÕES -------------------------
-  // Continuam fora do patrimônio (o total tem que bater com a Coleção) — a seção
-  // diz isso na própria tela, porque é a primeira pergunta de quem vê os números.
-  // O "custo pra completar" de um binder é o recurso que o TCG Collector cobra
-  // US$ 3,99/mês; aqui sai junto e ainda serve as listas de compra da Liga.
-  function renderListas() {
-    const sec = document.getElementById("pfLists");
-    if (!sec) return;
+  // ---- Metas: desejos + pastas e binders (FORA do patrimônio) ---------------
+  // O total tem que bater com a Coleção no centavo, então nada aqui soma lá em
+  // cima — a seção diz isso no próprio cabeçalho, porque é a primeira pergunta
+  // de quem vê os números. "Custo pra completar" um binder é o recurso que o
+  // TCG Collector cobra; aqui sai junto e ainda serve as listas de compra.
+  function linhasDeDesejo() {
+    const linhas = [];
+    cards.forEach((card) => {
+      if (gameFilter !== "all" && card.game !== gameFilter) return;
+      wishlist.variants(card.id).forEach((variante) => {
+        const valor = shared.cardValue(card, variante, prices).value || 0;
+        const alvo = wishTargets.get(card.id);
+        linhas.push({ card, variante, valor, alvo: alvo ? shared.convertMoney(alvo.v, alvo.cur || "BRL", shared.getCurrency()) : null });
+      });
+    });
+    return linhas.sort((a, b) => b.valor - a.valor);
+  }
+  function linhasDeListas() {
     const linhas = [];
     listStore.list().forEach((l) => {
       const { total, itens, semPreco } = valorDaLista(l, gameFilter);
       if (!itens) return; // lista vazia, ou toda de outro jogo que o filtro cortou
       linhas.push({
-        tipo: "lista", nome: l.name || t("lists.untitled"), cor: l.color || "var(--accent)",
-        // Abre a PASTA (a página é pastas?id=; antes apontava pra um lists.html
-        // que nunca existiu — todo clique caía em 404).
+        nome: l.name || t("lists.untitled"), cor: l.color || "var(--accent)",
+        // Abre a PASTA (a página é pastas?id=).
         href: `pastas?id=${encodeURIComponent(l.id)}`,
         meta: tn("portfolio.lists.cards", itens), total, semPreco
       });
@@ -979,35 +1041,76 @@
       linhas.push({
         // `lists.untitled` e não `binders.new`: aquela vive no pacote i18n dos
         // binders, que esta página não carrega (o check.mjs pega isso).
-        tipo: "binder", nome: b.name || t("lists.untitled"), cor: b.color || "#8b5cf6",
+        nome: b.name || t("lists.untitled"), cor: b.color || "#8b5cf6",
         href: `binders#${encodeURIComponent(b.id)}`,
         meta: t("portfolio.lists.slots", { tem: v.nTem, total: v.slots }),
         total: v.tem, semPreco: v.semPreco, completar: v.falta
       });
     });
-    if (!linhas.length) { sec.hidden = true; sec.innerHTML = ""; return; }
-    linhas.sort((a, b) => b.total - a.total);
-    const corpo = linhas.map((r) => {
-      // "≥" quando alguma carta ficou sem cotação: a soma é um PISO. Dizer isso é
-      // mais útil que um número redondo que o usuário não consegue auditar.
-      const piso = r.semPreco > 0
-        ? `<span class="pf-list-floor" title="${escapeAttribute(tn("portfolio.lists.noPrice", r.semPreco))}">≥</span> ` : "";
-      const completar = r.completar > 0
-        ? `<span class="pf-list-gap">${escapeHtml(t("portfolio.lists.toComplete", { v: money(r.completar) }))}</span>` : "";
-      return `<a class="pf-list-row" href="${escapeAttribute(r.href)}">
-        <span class="pf-list-dot" style="background:${escapeAttribute(r.cor)}"></span>
-        <span class="pf-list-name">${escapeHtml(r.nome)}</span>
-        <span class="pf-list-meta">${escapeHtml(r.meta)}</span>
-        ${completar}
-        <span class="pf-list-val sensitive-value">${piso}${escapeHtml(money(r.total))}</span>
-      </a>`;
-    }).join("");
-    sec.innerHTML = `<h2 class="pf-invest-title">${escapeHtml(t("portfolio.lists.title"))}</h2>
-      <p class="pf-list-note">${escapeHtml(t("portfolio.lists.note"))}</p>
-      <div class="pf-list-rows">${corpo}</div>`;
+    return linhas.sort((a, b) => b.total - a.total);
+  }
+  function renderGoals() {
+    const sec = elements.goals;
+    if (!sec) return;
+    const desejos = linhasDeDesejo();
+    const listas = linhasDeListas();
+    const wishOnly = wishlistTotal(gameFilter);
+    const binderGap = binderWishTotal(gameFilter);
+    if (!desejos.length && !listas.length) { sec.hidden = true; sec.innerHTML = ""; return; }
+    const opcoes = [];
+    if (desejos.length || binderGap > 0) opcoes.push(["wish", t("portfolio.bd.wish")]);
+    if (listas.length) opcoes.push(["lists", t("portfolio.lists.title")]);
+    if (!opcoes.some(([k]) => k === aba.goals)) aba.goals = opcoes[0][0];
+    const total = wishOnly + binderGap;
+    const direita = total > 0 ? `<strong class="pf-sec-total"><span class="sensitive-value">${escapeHtml(money(total))}</span></strong>` : "";
+    let corpo = "";
+    if (aba.goals === "wish") {
+      // Desejos vinham somados num número só e ninguém sabia o que era o quê —
+      // "R$ 890" pode ser wishlist inteira ou buraco de binder, e as duas coisas
+      // levam a ações diferentes. A abertura só aparece com as duas metades.
+      if (wishOnly > 0 && binderGap > 0) {
+        corpo += `<p class="pf-split sensitive-value">${escapeHtml(`${t("portfolio.wish.list")} ${money(wishOnly)} · ${t("portfolio.wish.binder")} ${money(binderGap)}`)}</p>`;
+      }
+      if (!desejos.length) corpo += `<p class="pf-empty">${escapeHtml(t("portfolio.bd.wishNone"))}</p>`;
+      const LIM = 5;
+      const visiveis = aberta.goals ? desejos.slice(0, 60) : desejos.slice(0, LIM);
+      corpo += `<ul class="pf-rows">${visiveis.map((r) => {
+        // Alvo já batido = oportunidade agora; senão mostra a distância que falta.
+        let alvo = "", alvoCls = "";
+        if (r.alvo != null && r.alvo > 0) {
+          const bateu = r.valor > 0 && r.valor <= r.alvo;
+          const falta = r.valor > 0 ? ((r.valor - r.alvo) / r.valor) * 100 : 0;
+          alvo = bateu ? t("portfolio.bd.wishHit", { v: money(r.alvo) }) : t("portfolio.bd.wishTarget", { v: money(r.alvo), pct: Math.round(falta) });
+          alvoCls = bateu ? "is-up" : "";
+        }
+        return linhaCarta({
+          card: r.card,
+          sub: shared.dotJoin(r.card.set, r.variante),
+          valor: `<strong><span class="sensitive-value">${escapeHtml(r.valor > 0 ? money(r.valor) : "—")}</span></strong>`,
+          apoio: alvo ? escapeHtml(alvo) : "",
+          apoioCls: alvoCls
+        });
+      }).join("")}</ul>`;
+      if (desejos.length > LIM) corpo += botaoMais("goals", desejos.length - LIM, aberta.goals);
+    } else {
+      corpo += `<ul class="pf-rows">${listas.map((r) => {
+        // "≥" quando alguma carta ficou sem cotação: a soma é um PISO. Dizer isso é
+        // mais útil que um número redondo que o usuário não consegue auditar.
+        const piso = r.semPreco > 0
+          ? `<span class="pf-list-floor" title="${escapeAttribute(tn("portfolio.lists.noPrice", r.semPreco))}">≥</span> ` : "";
+        const completar = r.completar > 0
+          ? `<small class="pf-list-gap"><span class="sensitive-value">${escapeHtml(t("portfolio.lists.toComplete", { v: money(r.completar) }))}</span></small>` : "";
+        return `<li><a class="pf-row pf-list-row" href="${escapeAttribute(r.href)}">
+          <span class="pf-list-dot" style="background:${escapeAttribute(r.cor)}"></span>
+          <span class="pf-row-main"><strong>${escapeHtml(r.nome)}</strong><span class="pf-row-sub">${escapeHtml(r.meta)}</span></span>
+          <span class="pf-row-end"><strong>${piso}<span class="sensitive-value">${escapeHtml(money(r.total))}</span></strong>${completar}</span>
+        </a></li>`;
+      }).join("")}</ul>`;
+    }
+    sec.innerHTML = cabecalho(t("portfolio.goals.title"), t("portfolio.kpi.outside"), direita)
+      + abas("goals", opcoes, aba.goals) + corpo;
     sec.hidden = false;
   }
-
   // ── Selados e itens MANUAIS (F4 do PLANO-UX) ───────────────────────────────
   // Booster box, ETB, lata ou item fora do catálogo, com preço 100% manual.
   // FORA do patrimônio de propósito (a nota na tela diz): somar tocaria a
@@ -1021,39 +1124,46 @@
     const v = parseFloat(x);
     return isFinite(v) && v > 0 ? Math.round(v * 100) / 100 : 0;
   };
+  const manuaisDoFiltro = (gf) => {
+    const todos = manualStore.list();
+    return !gf || gf === "all" ? todos : todos.filter((x) => (x.g || "") === gf);
+  };
+  const totalDoManual = (x) => shared.moneyToCurrent(x.v, x.cur) * (Number(x.q) || 1);
+  function manualTotal(gf) {
+    return manuaisDoFiltro(gf).reduce((s, x) => s + totalDoManual(x), 0);
+  }
+  // Lápis de editar em SVG (traço, currentColor), como o X de remover — era o
+  // glifo ✎, que cada sistema desenha de um jeito.
+  const LAPIS = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16v4Z"/><path d="m13.5 6.5 4 4"/></svg>';
   function renderManual() {
     const sec = document.getElementById("pfManual");
     if (!sec) return;
-    const todos = manualStore.list();
-    const itens = gameFilter === "all" ? todos : todos.filter((x) => (x.g || "") === gameFilter);
+    const itens = manuaisDoFiltro(gameFilter);
     const linha = (x) => {
       const cor = GAME_COLOR[x.g] || "#8b93a7";
-      const unit = shared.moneyToCurrent(x.v, x.cur);
-      const total = unit * (Number(x.q) || 1);
       const jogo = x.g
         ? `<span class="pf-mi-game" style="--gc:${cor};--gc-fg:${shared.textOnColor(cor)}">${escapeHtml(shared.gameLabel(x.g))}</span>`
         : "";
       const pago = Number(x.c) > 0
         ? `<span class="pf-mi-cost sensitive-value">${escapeHtml(t("pfmi.paid", { v: money(shared.moneyToCurrent(x.c, x.ccur) * (Number(x.q) || 1)) }))}</span>`
         : "";
-      return `<div class="pf-mi-row" data-mi-id="${escapeAttribute(x.id)}">
-        <span class="pf-mi-name"><strong>${escapeHtml(x.n)}</strong>${jogo}${pago}</span>
-        <span class="pf-mi-qty">×${Number(x.q) || 1}</span>
-        <strong class="pf-mi-val sensitive-value">${escapeHtml(money(total))}</strong>
+      return `<li class="pf-mi-row" data-mi-id="${escapeAttribute(x.id)}">
+        <span class="pf-row-main"><strong>${escapeHtml(x.n)}</strong><span class="pf-row-sub">${jogo}<span>×${Number(x.q) || 1}</span>${pago}</span></span>
+        <strong class="pf-mi-val sensitive-value">${escapeHtml(money(totalDoManual(x)))}</strong>
         <span class="pf-mi-actions">
-          <button type="button" class="pf-mi-btn" data-mi-edit title="${escapeAttribute(t("pfmi.edit"))}" aria-label="${escapeAttribute(t("pfmi.edit"))}">✎</button>
+          <button type="button" class="pf-mi-btn" data-mi-edit title="${escapeAttribute(t("pfmi.edit"))}" aria-label="${escapeAttribute(t("pfmi.edit"))}">${LAPIS}</button>
           <button type="button" class="pf-mi-btn" data-mi-remove title="${escapeAttribute(t("pfmi.remove"))}" aria-label="${escapeAttribute(t("pfmi.remove"))}">${shared.CLOSE_ICON}</button>
         </span>
-      </div>`;
+      </li>`;
     };
-    const totalGeral = itens.reduce((s, x) => s + shared.moneyToCurrent(x.v, x.cur) * (Number(x.q) || 1), 0);
-    sec.innerHTML = `<h2 class="pf-invest-title pf-mi-head">${escapeHtml(t("pfmi.title"))}
-        <button type="button" class="secondary pf-mi-add" data-mi-add>${escapeHtml(t("pfmi.add"))}</button></h2>
-      ${itens.length
-        ? `<div class="pf-mi-rows">${itens.map(linha).join("")}</div>
-           <p class="pf-mi-total">${escapeHtml(t("pfmi.total"))} <strong class="sensitive-value">${escapeHtml(money(totalGeral))}</strong></p>`
-        : `<p class="pf-bd-empty">${escapeHtml(t("pfmi.empty"))}</p>`}
-      <p class="pf-mi-note">${escapeHtml(t("pfmi.note"))}</p>`;
+    const totalGeral = itens.reduce((s, x) => s + totalDoManual(x), 0);
+    const direita = itens.length ? `<strong class="pf-sec-total"><span class="sensitive-value">${escapeHtml(money(totalGeral))}</span></strong>` : "";
+    sec.innerHTML = cabecalho(t("pfmi.title"), t("portfolio.kpi.outside"), direita)
+      + (itens.length
+        ? `<ul class="pf-rows pf-mi-rows">${itens.map(linha).join("")}</ul>`
+        : `<p class="pf-empty">${escapeHtml(t("pfmi.empty"))}</p>`)
+      + `<div class="pf-mi-foot"><button type="button" class="secondary pf-mi-add" data-mi-add>${escapeHtml(t("pfmi.add"))}</button>
+        <p class="pf-mi-note">${escapeHtml(t("pfmi.note"))}</p></div>`;
   }
   function abreManualModal(id) {
     const it = id ? manualStore.get(id) : null;
@@ -1100,6 +1210,7 @@
       else manualStore.add(Object.assign({ t: Date.now() }, patch));
       wrap.remove();
       renderManual();
+      renderKpisExtras(); // a peça "Selados" do resumo pode ter nascido ou mudado
     });
   }
   (function bindManual() {
@@ -1119,217 +1230,205 @@
         const undo = shared.snapshotKeys([manualStore.STORAGE_KEY]);
         manualStore.remove(row.dataset.miId);
         renderManual();
+        if (cards.length) renderKpisExtras();
         shared.toastUndo(t("undo.manualRemoved"), undo);
       }
     });
     renderManual(); // independe do catálogo: aparece já no primeiro paint
   })();
 
-  // Agrega valor (cartas raw + slabs graded) por uma chave da carta (set, raridade…).
-  function breakdownBy(lines, slabs, keyFn) {
+  // ---- Onde está o valor -----------------------------------------------------
+  // Era três blocos com três desenhos (composição por tipo, barras por jogo e o
+  // detalhamento por set/raridade/artista). Virou UMA seção com abas: a mesma
+  // pergunta ("onde está o meu dinheiro?") cortada de cinco jeitos, com a barra
+  // empilhada no topo e as linhas com a fatia em % — o formato do "Onde está o
+  // valor" do Hub, pra quem vem de lá reconhecer.
+  // Paleta das fatias que não são jogo (set, raridade, artista): 8 tons que se
+  // distinguem nos dois temas; da 9ª fatia em diante tudo vira "Outros", cinza.
+  const PALETA = ["#5b8def", "#2dd4bf", "#e8c46a", "#f472b6", "#a78bfa", "#fb923c", "#4ade80", "#38bdf8"];
+  // Agrega valor (cartas raw + slabs graded) e cópias por uma chave da carta.
+  function fatiasPor(lines, slabs, keyFn) {
     const map = new Map();
-    lines.forEach((l) => { const k = keyFn(l.card); if (!k) return; map.set(k, (map.get(k) || 0) + l.total); });
-    slabs.forEach((s) => { const c = cardsById.get(s.cardId); if (!c || !(s.value > 0)) return; const k = keyFn(c); if (!k) return; map.set(k, (map.get(k) || 0) + s.value); });
-    return Array.from(map.entries()).map(([label, value]) => ({ label, value })).sort((a, b) => b.value - a.value);
+    const soma = (k, v, n) => { const f = map.get(k) || { label: k, value: 0, n: 0 }; f.value += v; f.n += n; map.set(k, f); };
+    lines.forEach((l) => { const k = keyFn(l.card); if (k) soma(k, l.total, l.quantity); });
+    slabs.forEach((s) => { const c = cardsById.get(s.cardId); if (!c || !(s.value > 0)) return; const k = keyFn(c); if (k) soma(k, s.value, 1); });
+    return Array.from(map.values()).filter((f) => f.value > 0).sort((a, b) => b.value - a.value);
   }
-
-  // Detalhamento: valor por set/artista (top 12) ou por raridade (todas). Barras
-  // rankeadas. Visão sem dados (ex.: artista num jogo sem crédito de arte) mostra
-  // uma nota em vez de sumir com a seção — senão as abas desapareceriam juntas.
-  function renderBreakdown(lines, slabs) {
-    const sec = elements.breakdown;
+  function fatiasPorJogo() {
+    return GAMES.map((g) => {
+      const l = collectionLines(g), sl = gradedSlabs(g);
+      return {
+        label: shared.gameLabel(g), color: GAME_COLOR[g], game: g,
+        value: l.total + sl.reduce((s, x) => s + (x.value || 0), 0),
+        n: l.totalCopies + sl.length
+      };
+    }).filter((f) => f.value > 0).sort((a, b) => b.value - a.value);
+  }
+  function renderAlloc() {
+    const sec = elements.alloc;
     if (!sec) return;
-    if (breakdownMode === "wish") { renderWishBreakdown(); return; }
-    const rows = breakdownMode === "rarity" ? breakdownBy(lines, slabs, (c) => c.rarity)
-      : breakdownMode === "artist" ? breakdownBy(lines, slabs, (c) => c.artist)
-      : breakdownBy(lines, slabs, (c) => c.set);
-    const shown = breakdownMode === "rarity" ? rows : rows.slice(0, 12);
-    if (!shown.length) {
-      if (breakdownMode === "set") { sec.hidden = true; return; } // sem dado nenhum
-      elements.breakdownBody.innerHTML = `<p class="pf-bd-empty">${escapeHtml(t("portfolio.bd.none"))}</p>`;
-      sec.hidden = false;
-      return;
+    const { lines, total: rawTotal, totalCopies } = collectionLines(gameFilter);
+    const slabs = gradedSlabs(gameFilter);
+    const gradedTotal = slabs.reduce((s, x) => s + (x.value || 0), 0);
+    const total = rawTotal + gradedTotal;
+    if (!(total > 0)) { sec.hidden = true; sec.innerHTML = ""; return; }
+    const porJogo = gameFilter === "all" ? fatiasPorJogo() : [];
+    const opcoes = [];
+    // "Jogo" só no filtro Todos e com 2+ jogos: com um só, a barra seria 100%.
+    if (porJogo.length > 1) opcoes.push(["game", t("portfolio.alloc.game")]);
+    if (slabs.some((s) => s.value > 0) && rawTotal > 0) opcoes.push(["type", t("portfolio.alloc.type")]);
+    opcoes.push(["set", t("portfolio.alloc.set")], ["rarity", t("portfolio.alloc.rarity")], ["artist", t("portfolio.alloc.artist")]);
+    if (!opcoes.some(([k]) => k === aba.alloc)) aba.alloc = opcoes[0][0];
+    let fatias;
+    if (aba.alloc === "game") fatias = porJogo;
+    else if (aba.alloc === "type") {
+      fatias = [
+        { label: t("portfolio.series.collection"), value: rawTotal, n: totalCopies, color: "#2dd4bf" },
+        { label: t("portfolio.series.graded"), value: gradedTotal, n: slabs.length, color: "#e8c46a" }
+      ].filter((f) => f.value > 0);
+    } else {
+      const chave = aba.alloc === "rarity" ? (c) => c.rarity : aba.alloc === "artist" ? (c) => c.artist : (c) => c.set;
+      fatias = fatiasPor(lines, slabs, chave);
     }
-    const max = Math.max(1, ...shown.map((r) => r.value));
-    // No modo SET a linha vira link pra Coleção já filtrada naquele set (e no
-    // jogo do filtro atual): "meus R$ 800 em Destined Rivals" leva às cartas
-    // que somam esse valor, em vez de ser um número sem saída. Raridade e
-    // artista não têm filtro equivalente na Coleção, então seguem estáticos.
-    elements.breakdownBody.innerHTML = shown.map((r) => {
-      const miolo = `<span class="pf-comp-label pf-bd-name" title="${escapeAttribute(r.label)}">${escapeHtml(r.label)}</span>
-        <span class="pf-comp-track"><span class="pf-comp-fill" style="width:${Math.round((r.value / max) * 100)}%;background:var(--accent)"></span></span>
-        <span class="pf-comp-val">${escapeHtml(money(r.value))}</span>`;
-      if (breakdownMode !== "set") return `<div class="pf-comp-row">${miolo}</div>`;
-      const params = new URLSearchParams({ set: r.label });
-      if (gameFilter && gameFilter !== "all") params.set("filter", gameFilter);
-      return `<a class="pf-comp-row pf-comp-row-link" href="collection?${params.toString()}"
-        title="${escapeAttribute(t("portfolio.bd.openSet", { set: r.label }))}">${miolo}</a>`;
-    }).join("");
-    sec.hidden = false;
-  }
-
-  // Desejos, carta a carta: o que você quer, quanto custa hoje e — quando você
-  // anotou um preço-alvo na Wishlist — o quanto falta o mercado cair pra chegar
-  // lá. O cartão lá em cima dá o total; esta aba responde "de onde ele vem".
-  // Ordenado pelo mais caro, que é onde a decisão de compra costuma travar.
-  function renderWishBreakdown() {
-    const sec = elements.breakdown;
-    const linhas = [];
-    cards.forEach((card) => {
-      if (gameFilter !== "all" && card.game !== gameFilter) return;
-      wishlist.variants(card.id).forEach((variante) => {
-        const valor = shared.cardValue(card, variante, prices).value || 0;
-        const alvo = wishTargets.get(card.id);
-        linhas.push({ card, variante, valor, alvo: alvo ? shared.convertMoney(alvo.v, alvo.cur || "BRL", shared.getCurrency()) : null });
-      });
-    });
-    if (!linhas.length) {
-      elements.breakdownBody.innerHTML = `<p class="pf-bd-empty">${escapeHtml(t("portfolio.bd.wishNone"))}</p>`;
-      sec.hidden = false;
-      return;
-    }
-    linhas.sort((a, b) => b.valor - a.valor);
-    elements.breakdownBody.innerHTML = linhas.slice(0, 30).map((r) => {
-      // Alvo já batido = oportunidade agora; senão mostra a distância que falta.
-      let alvoHtml = "";
-      if (r.alvo != null && r.alvo > 0) {
-        const bateu = r.valor > 0 && r.valor <= r.alvo;
-        const falta = r.valor > 0 ? ((r.valor - r.alvo) / r.valor) * 100 : 0;
-        alvoHtml = bateu
-          ? `<span class="pf-wish-hit">${escapeHtml(t("portfolio.bd.wishHit", { v: money(r.alvo) }))}</span>`
-          : `<span class="pf-wish-target">${escapeHtml(t("portfolio.bd.wishTarget", { v: money(r.alvo), pct: Math.round(falta) }))}</span>`;
-      }
-      const url = detailUrl("set", r.card.set, "", r.card.game, { card: r.card.id, setId: r.card.setId });
-      return `<a class="pf-comp-row pf-comp-row-link" href="${escapeAttribute(url)}">
-        <span class="pf-comp-label pf-bd-name" title="${escapeAttribute(r.card.name)}">${escapeHtml(r.card.name)}</span>
-        <span class="pf-wish-meta">${escapeHtml(r.card.set)} · ${escapeHtml(r.variante)}${alvoHtml ? " · " : ""}${alvoHtml}</span>
-        <span class="pf-comp-val">${escapeHtml(r.valor > 0 ? money(r.valor) : "—")}</span>
-      </a>`;
-    }).join("");
-    sec.hidden = false;
-  }
-
-  // Composição: cartas (raw) × graded; e por jogo (só no filtro "Todos").
-  function renderComposition(rawTotal, gradedTotal) {
-    const sec = elements.composition;
-    if (!sec) return;
-    // `game` na linha: a barra vira BOTÃO que aplica o filtro daquele jogo — a
-    // pergunta seguinte a "quanto é Magic?" é sempre "me mostra o Magic", e a
-    // barra era inerte. Sem jogo (a divisão cartas × graded), segue estática.
-    const bars = (title, rows) => {
-      const max = Math.max(1, ...rows.map((r) => r.value));
-      const body = rows.filter((r) => r.value > 0).map((r) => {
-        const miolo = `<span class="pf-comp-label">${escapeHtml(r.label)}</span>
-          <span class="pf-comp-track"><span class="pf-comp-fill" style="width:${Math.round((r.value / max) * 100)}%;background:${r.color}"></span></span>
-          <span class="pf-comp-val">${escapeHtml(money(r.value))}</span>`;
-        return r.game
-          ? `<button type="button" class="pf-comp-row pf-comp-row-btn" data-comp-game="${escapeAttribute(r.game)}"
-              title="${escapeAttribute(t("portfolio.comp.filterHint", { game: r.label }))}">${miolo}</button>`
-          : `<div class="pf-comp-row">${miolo}</div>`;
-      }).join("");
-      return body ? `<div class="pf-comp-block"><h3>${escapeHtml(title)}</h3>${body}</div>` : "";
+    fatias.forEach((f, i) => { if (!f.color) f.color = i < PALETA.length ? PALETA[i] : "var(--subtle)"; });
+    const loc = getLocale();
+    const pctDe = (v) => {
+      const p = (v / total) * 100;
+      // Fatia minúscula não é "0%": ela existe, só não chega a 0,1%.
+      if (p > 0 && p < 0.1) return "<" + (0.1).toLocaleString(loc) + "%";
+      return (p >= 10 ? Math.round(p) : p.toLocaleString(loc, { maximumFractionDigits: 1 })) + "%";
     };
-    let html = bars(t("portfolio.comp.type"), [
-      { label: t("portfolio.rawValue"), value: rawTotal, color: "#2dd4bf" },
-      { label: t("portfolio.gradedValue"), value: gradedTotal, color: "#e8c46a" }
-    ]);
-    if (gameFilter === "all") {
-      const byGame = GAMES.map((g) => ({
-        label: shared.gameLabel(g),
-        color: GAME_COLOR[g],
-        game: g,
-        value: collectionLines(g).total + gradedSlabs(g).reduce((s, x) => s + (x.value || 0), 0)
-      }));
-      if (byGame.filter((r) => r.value > 0).length > 1) html += bars(t("portfolio.comp.game"), byGame);
+    // A soma das fatias pode ficar abaixo do total (carta sem raridade, slab sem
+    // carta no catálogo): a barra é proporcional ao TOTAL, e o que não tem
+    // chave fica de fora em vez de esticar as outras.
+    const LIM = 6;
+    const visiveis = aberta.alloc ? fatias.slice(0, 40) : fatias.slice(0, LIM);
+    const resto = fatias.slice(visiveis.length);
+    const restoValor = resto.reduce((s, f) => s + f.value, 0);
+    const naBarra = fatias.slice(0, PALETA.length);
+    const barraResto = fatias.slice(PALETA.length).reduce((s, f) => s + f.value, 0);
+    const barra = `<div class="pf-alloc-bar" aria-hidden="true">${naBarra.map((f) =>
+      `<span style="width:${((f.value / total) * 100).toFixed(2)}%;background:${f.color}" title="${escapeAttribute(`${f.label} · ${pctDe(f.value)}`)}"></span>`).join("")}${barraResto > 0 ? `<span style="width:${((barraResto / total) * 100).toFixed(2)}%;background:var(--line)"></span>` : ""}</div>`;
+    const miolo = (f) => `<span class="pf-dot" style="background:${f.color}"></span>
+      <span class="pf-alloc-name" title="${escapeAttribute(f.label)}">${escapeHtml(f.label)}</span>
+      <span class="pf-alloc-n">${escapeHtml(tn("portfolio.kpi.copies", f.n))}</span>
+      <span class="pf-alloc-pct">${pctDe(f.value)}</span>
+      <span class="pf-alloc-val sensitive-value">${escapeHtml(money(f.value))}</span>`;
+    // Jogo -> aplica o filtro (a pergunta seguinte a "quanto é Magic?" é "me
+    // mostra o Magic"); set -> Coleção já filtrada naquele set. Raridade e
+    // artista não têm filtro equivalente na Coleção e ficam estáticos.
+    const linha = (f) => {
+      if (aba.alloc === "game") {
+        return `<li><button type="button" class="pf-alloc-row" data-comp-game="${escapeAttribute(f.game)}" title="${escapeAttribute(t("portfolio.comp.filterHint", { game: f.label }))}">${miolo(f)}</button></li>`;
+      }
+      if (aba.alloc === "set") {
+        const params = new URLSearchParams({ set: f.label });
+        if (gameFilter !== "all") params.set("filter", gameFilter);
+        return `<li><a class="pf-alloc-row" href="collection?${params.toString()}" title="${escapeAttribute(t("portfolio.bd.openSet", { set: f.label }))}">${miolo(f)}</a></li>`;
+      }
+      return `<li><div class="pf-alloc-row">${miolo(f)}</div></li>`;
+    };
+    let corpo;
+    if (!fatias.length) corpo = `<p class="pf-empty">${escapeHtml(t("portfolio.bd.none"))}</p>`;
+    else {
+      const outros = resto.length
+        ? `<li><div class="pf-alloc-row is-rest">${miolo({ label: t("portfolio.alloc.others", { n: resto.length }), value: restoValor, n: resto.reduce((s, f) => s + f.n, 0), color: "var(--line)" })}</div></li>`
+        : "";
+      corpo = barra + `<ul class="pf-alloc-list">${visiveis.map(linha).join("")}${outros}</ul>`
+        + (fatias.length > LIM ? botaoMais("alloc", fatias.length - LIM, aberta.alloc) : "");
     }
-    sec.innerHTML = html;
-    sec.hidden = !html;
+    sec.innerHTML = cabecalho(t("portfolio.alloc.title")) + abas("alloc", opcoes, aba.alloc) + corpo;
+    sec.hidden = false;
   }
 
-  // Mais valiosas: raw + graded juntos, por valor do lote/slab (top 15).
-  function renderTop(lines, slabs) {
+  // ---- Cartas mais valiosas ---------------------------------------------------
+  // Raw + graded juntos, por valor do lote/slab. Era uma tabela de seis colunas
+  // que no celular rolava de lado; agora é a lista com a arte, e o lote
+  // (variante, condição, nota) vira etiqueta. A concentração ("as 10 mais
+  // valiosas são 82% do patrimônio") é o dado de risco que nenhum concorrente
+  // mostra: diz o quanto o seu patrimônio depende de poucas cartas.
+  function linhasDoTopo() {
+    const { lines } = collectionLines(gameFilter);
     const rows = lines.map((line) => ({
-      name: `${line.card.name} · ${line.card.set} ${line.card.number}`,
-      href: detailUrl("set", line.card.set, "", line.card.game),
-      kind: line.variant,
-      cond: line.condition,
+      card: line.card,
+      tags: [line.variant, line.condition],
       estTitle: line.source === "ref" ? t("portfolio.estRef") : line.source === "myp" ? t("portfolio.estMyp") : t("portfolio.estimated"),
       estimated: line.estimated,
       qty: line.quantity, unit: line.unit, total: line.total
     }));
-    slabs.forEach((s) => {
+    gradedSlabs(gameFilter).forEach((s) => {
       const card = cardsById.get(s.cardId);
       if (!card || !(s.value > 0)) return;
       rows.push({
-        name: `${card.name} · ${card.set} ${card.number}`,
-        href: detailUrl("set", card.set, "", card.game, { card: card.id, setId: card.setId }),
-        kind: `${String(s.company || "").toUpperCase()} ${shared.gradedGradeText(s.grade, s.pristine)}`,
-        cond: t("nav.graded"), graded: true,
+        card, grade: `${String(s.company || "").toUpperCase()} ${shared.gradedGradeText(s.grade, s.pristine)}`,
         estimated: false, qty: 1, unit: s.value, total: s.value
       });
     });
-    rows.sort((a, b) => b.total - a.total);
-    const top = topShowAll ? rows : rows.slice(0, 15);
-
-    elements.empty.hidden = top.length > 0;
-    if (!top.length) { elements.topCards.innerHTML = ""; return; }
-
-    const body = top.map((r) => {
-      const unit = `${money(r.unit)}${r.estimated ? ` <span class="price-estimated" title="${escapeAttribute(r.estTitle)}">≈</span>` : ""}`;
-      const kind = r.graded ? `<span class="pf-graded-tag">${escapeHtml(r.kind)}</span>` : escapeHtml(r.kind);
-      return `<tr>
-        <td><a href="${escapeAttribute(r.href)}">${escapeHtml(r.name)}</a></td>
-        <td>${kind}</td>
-        <td>${escapeHtml(r.cond)}</td>
-        <td class="num">${r.qty}</td>
-        <td class="num">${unit}</td>
-        <td class="num"><strong>${money(r.total)}</strong></td>
-      </tr>`;
-    }).join("");
-
-    const toggle = rows.length > 15
-      ? `<div class="pf-top-more"><button type="button" class="secondary" data-pf-top-toggle>${escapeHtml(topShowAll ? t("portfolio.topLess") : t("portfolio.topAll", { n: rows.length }))}</button></div>`
-      : "";
-    elements.topCards.innerHTML = `
-      <table class="portfolio-table">
-        <thead>
-          <tr>
-            <th>${escapeHtml(t("portfolio.col.card"))}</th>
-            <th>${escapeHtml(t("portfolio.col.variant"))}</th>
-            <th>${escapeHtml(t("portfolio.col.condition"))}</th>
-            <th class="num">${escapeHtml(t("portfolio.col.qty"))}</th>
-            <th class="num">${escapeHtml(t("portfolio.col.unit"))}</th>
-            <th class="num">${escapeHtml(t("portfolio.col.total"))}</th>
-          </tr>
-        </thead>
-        <tbody>${body}</tbody>
-      </table>${toggle}`;
+    return rows.filter((r) => r.total > 0).sort((a, b) => b.total - a.total);
   }
-
+  function renderTop() {
+    const sec = elements.top;
+    if (!sec) return;
+    const rows = linhasDoTopo();
+    elements.empty.hidden = rows.length > 0;
+    if (!rows.length) { sec.hidden = true; sec.innerHTML = ""; return; }
+    const total = rows.reduce((s, r) => s + r.total, 0);
+    const LIM = 10;
+    const visiveis = aberta.top ? rows.slice(0, 200) : rows.slice(0, LIM);
+    let sub = "";
+    if (rows.length > LIM && total > 0) {
+      const topo = rows.slice(0, LIM).reduce((s, r) => s + r.total, 0);
+      sub = t("portfolio.top.share", { n: LIM, pct: Math.round((topo / total) * 100) });
+    }
+    const corpo = visiveis.map((r, i) => {
+      const tags = r.grade
+        ? `<span class="pf-tag pf-tag-grade">${escapeHtml(r.grade)}</span>`
+        : r.tags.filter(Boolean).map((x) => `<span class="pf-tag">${escapeHtml(x)}</span>`).join("");
+      const est = r.estimated ? ` <span class="price-estimated" title="${escapeAttribute(r.estTitle)}">≈</span>` : "";
+      return linhaCarta({
+        card: r.card, rank: i + 1, tags,
+        valor: `<strong><span class="sensitive-value">${escapeHtml(money(r.total))}</span>${est}</strong>`,
+        apoio: r.qty > 1
+          ? `×${r.qty} · <span class="sensitive-value">${escapeHtml(t("portfolio.top.each", { v: money(r.unit) }))}</span>`
+          : escapeHtml(t("portfolio.top.ofTotal", { pct: pctTxt((r.total / total) * 100) }))
+      });
+    }).join("");
+    sec.innerHTML = cabecalho(t("portfolio.topCards"), sub)
+      // --pf-linhas: no desktop largo a lista vira duas colunas que enchem de
+      // cima pra baixo (1–5 na esquerda, 6–10 na direita), e a grade precisa
+      // saber quantas linhas cabem em cada uma.
+      + `<ol class="pf-rows pf-top-list" style="--pf-linhas:${Math.ceil(visiveis.length / 2)}">${corpo}</ol>`
+      + (rows.length > LIM ? botaoMais("top", rows.length - LIM, aberta.top) : "");
+    sec.hidden = false;
+  }
   // ---------------------------------------------------------------------------
-  // Progressão — snapshot diário POR JOGO (em BRL), pro gráfico local somar/filtrar
-  // e pros cookies do hub ficarem corretos por jogo. Esquema do ponto: {d, c, b, w}
-  // = raw, graded, desejos (em BRL). combined = c+b = patrimônio do jogo.
+  // Progressão — snapshot diário POR JOGO (em BRL), pro gráfico local somar/filtrar.
+  // Esquema do ponto: {d, c, b, w} = raw, graded, desejos (em BRL).
+  // combined = c+b = patrimônio do jogo.
   // ---------------------------------------------------------------------------
+  // "Desejos" saiu das linhas do gráfico (3.0): não é patrimônio, e no mesmo
+  // eixo do dinheiro que você TEM ele achatava a escala ou se lia como parte
+  // dele. O `w` segue sendo gravado no histórico (a retrospectiva e o Hub leem);
+  // o valor vive na seção Metas.
   const SERIES = {
     combined: { color: "#34d399", get: (p) => (p.c || 0) + (p.b || 0) },
     collection: { color: "#2dd4bf", get: (p) => p.c || 0 },
-    graded: { color: "#e8c46a", get: (p) => p.b || 0 },
-    wishlist: { color: "#f5a524", get: (p) => p.w || 0 }
+    graded: { color: "#e8c46a", get: (p) => p.b || 0 }
   };
-  const SERIES_ORDER = ["combined", "collection", "graded", "wishlist"];
+  const SERIES_ORDER = ["combined", "collection", "graded"];
   // "1D" saiu: o ponto é DIÁRIO, então um dia de faixa nunca tem os 2 pontos que
-  // o gráfico exige pra desenhar — o botão só sabia mostrar "o histórico começa
-  // hoje". No lugar entrou "1A", que faltava entre 6M e MÁX.
+  // o gráfico exige pra desenhar. No lugar entrou "1A", que faltava entre 6M e MÁX.
   const RANGES = [["7d", 7], ["1m", 30], ["3m", 90], ["6m", 180], ["1a", 365], ["max", 1e9]];
+  // O patrimônio está SEMPRE na tela (é o número grande); cartas e graded são
+  // linhas opcionais por cima dele.
   let activeSeries = new Set(["combined"]);
   let activeRange = "1m";
   let controlsBound = false;
-  // Modo do gráfico: "series" (patrimônio/cartas/graded/desejos) ou "games" (uma
-  // LINHA POR JOGO). Nenhum concorrente tem o segundo — e o dado já estava aqui,
-  // porque o histórico sempre foi gravado por jogo. `pctMode` normaliza cada
-  // linha a 100 no início da faixa: sem isso um jogo grande achata os pequenos e
-  // o gráfico só conta quem é maior, não quem está subindo.
+  // Modo do gráfico: "series" (o total) ou "games" (uma LINHA POR JOGO).
+  // Nenhum concorrente tem o segundo — e o dado já estava aqui, porque o
+  // histórico sempre foi gravado por jogo. `pctMode` normaliza cada linha a 100
+  // no início da faixa: sem isso um jogo grande achata os pequenos e o gráfico
+  // só conta quem é maior, não quem está subindo.
   const MODE_KEY = "tcg-pf-chart-mode", PCT_KEY = "tcg-pf-chart-pct";
   const lePref = (k, def) => { try { return localStorage.getItem(k) || def; } catch (e) { return def; } };
   const gravaPref = (k, v) => { try { localStorage.setItem(k, v); } catch (e) { /* ignora */ } };
@@ -1340,9 +1439,9 @@
   let activeGames = null; // Set de jogos ligados; null = ainda não inicializado
 
   const fromBRL = (v) => { const r = shared.convertMoney(v, "BRL", shared.getCurrency()); return r == null ? v : r; };
-  // O histórico (leitura, gravação, migração do v1 e o cookie do hub) vive no
-  // shared: o Hub e a Coleção também gravam o ponto do dia, então quem nunca
-  // abre esta tela não fica mais com buracos no gráfico.
+  // O histórico (leitura, gravação, migração do v1) vive no shared: o Hub e a
+  // Coleção também gravam o ponto do dia, então quem nunca abre esta tela não
+  // fica com buracos no gráfico.
   const loadHist = (g) => shared.valueHistory(g);
   const jogosComHistorico = () => GAMES.filter((g) => loadHist(g).length > 0);
 
@@ -1354,11 +1453,8 @@
   // Pokémon registrou na terça e o Lorcana não, a terça saía valendo só o
   // Pokémon — e a linha do patrimônio DESPENCAVA num dia em que nada aconteceu.
   // Não ter medido não é valer zero: é continuar valendo o que valia.
-  // ANTES do primeiro ponto de um jogo o valor é `null`, não zero. São coisas
-  // diferentes: zero é "não tenho nada", null é "ainda não media isso". Quem
-  // começou a acompanhar Lorcana um mês depois do Pokémon não teve a coleção
-  // valendo zero naquele mês — e desenhar a linha no chão inventaria uma alta
-  // gigante no dia em que ela começou a ser medida.
+  // ANTES do primeiro ponto de um jogo o valor é `null`, não zero: zero é "não
+  // tenho nada", null é "ainda não media isso".
   function serieUnificada(games) {
     const datas = [...new Set(games.flatMap((g) => loadHist(g).map((p) => p.d)))].sort();
     const cursor = Object.fromEntries(games.map((g) => [g, 0]));
@@ -1392,15 +1488,14 @@
   function updateChart() {
     const section = document.getElementById("portfolioChart");
     if (!section) return;
-    section.hidden = false;
     // Snapshot de CADA jogo (não só o filtrado) -> histórico do hub correto.
     // Esta é a única tela que sabe os DESEJOS (wishlist + faltantes de binder),
     // então é a única que manda o `w`.
     //
     // UMA VEZ por carga, não a cada render: os números não mudam quando você
-    // troca o chip de jogo ou a aba do detalhamento, e gravar de novo custava 13
+    // troca o chip de jogo ou a aba de uma seção, e gravar de novo custava 13
     // varreduras da coleção + escrita no localStorage (que ainda acorda o sync)
-    // em todo clique. Se chegarem cartas novas (listas, binders, movers), o
+    // em todo clique. Se chegarem cartas novas (listas, binders), o
     // indexaCartas libera outro registro.
     if (!snapshotGravado && !cargaParcial) {
       snapshotGravado = true;
@@ -1429,12 +1524,6 @@
     if (pctMode) hidrataIndices(); // preferência já vinha ligada de outra visita
   }
 
-  // As três cápsulas de variação (7d / 30d / desde o início) saíram daqui: o
-  // cabeçalho do gráfico agora mostra a variação da FAIXA escolhida, e as faixas
-  // já incluem 7D e 1M. Eram o mesmo número duas vezes na mesma tela — e, pior,
-  // calculado por outro caminho, que é como dois números que deveriam bater
-  // começam a divergir.
-
   // O modo "por jogo" só existe no filtro "Todos": com um jogo escolhido lá em
   // cima, a linha por jogo e a do patrimônio seriam a MESMA linha.
   const podeModoJogos = () => gameFilter === "all" && jogosComHistorico().length > 1;
@@ -1457,7 +1546,8 @@
       const s = e.target.closest("[data-series]");
       if (s) {
         const k = s.dataset.series;
-        if (activeSeries.has(k)) { if (activeSeries.size > 1) activeSeries.delete(k); } else activeSeries.add(k);
+        if (k === "combined") return; // o patrimônio não desliga: é o número grande
+        if (activeSeries.has(k)) activeSeries.delete(k); else activeSeries.add(k);
         redesenha(); return;
       }
       // "Todos os jogos": liga tudo; se já estava tudo ligado, é um jeito rápido
@@ -1496,6 +1586,18 @@
       const b = e.target.closest("[data-chart-bench]");
       if (b) { benchOn = !benchOn; gravaPref(BENCH_KEY, benchOn ? "on" : "off"); redesenha(); }
     });
+    // O gráfico é desenhado na LARGURA REAL do cartão (ver renderChart): ao
+    // girar o celular ou redimensionar a janela, redesenha — senão o texto dos
+    // eixos voltaria a encolher junto com o SVG.
+    const body = document.getElementById("pfChartBody");
+    if (body && window.ResizeObserver) {
+      let largura = body.clientWidth, agendado = false;
+      new ResizeObserver(() => {
+        if (agendado || Math.abs(body.clientWidth - largura) < 8) return;
+        agendado = true;
+        requestAnimationFrame(() => { agendado = false; largura = body.clientWidth; renderChart(chartHistory()); });
+      }).observe(body);
+    }
   }
 
   function renderControls() {
@@ -1509,31 +1611,35 @@
         const ligados = new Set(gamesAtivos());
         const tudo = disponiveis.every((g) => ligados.has(g));
         seriesEl.innerHTML =
-          `<button type="button" class="pf-series-chip pf-games-all${tudo ? " active" : ""}" data-games-all aria-pressed="${tudo}">
-             <span class="pf-tick" aria-hidden="true">${tudo ? "☑" : "☐"}</span>${escapeHtml(t("portfolio.series.allGames"))}
-           </button>`
+          `<button type="button" class="pf-chip pf-games-all${tudo ? " active" : ""}" data-games-all aria-pressed="${tudo}">${escapeHtml(t("portfolio.series.allGames"))}</button>`
           + disponiveis.map((g) =>
-            `<button type="button" class="pf-series-chip${ligados.has(g) ? " active" : ""}" data-game-series="${escapeAttribute(g)}" style="--pf-color:${GAME_COLOR[g]}">
+            `<button type="button" class="pf-chip${ligados.has(g) ? " active" : ""}" data-game-series="${escapeAttribute(g)}" aria-pressed="${ligados.has(g)}" style="--pf-color:${GAME_COLOR[g]}">
                <span class="pf-dot"></span>${escapeHtml(shared.gameLabel(g))}
              </button>`).join("");
       } else {
-        seriesEl.innerHTML = SERIES_ORDER.map((k) =>
-          `<button type="button" class="pf-series-chip${activeSeries.has(k) ? " active" : ""}" data-series="${k}" style="--pf-color:${SERIES[k].color}">
-             <span class="pf-dot"></span>${escapeHtml(t(`portfolio.series.${k}`))}
-           </button>`).join("");
+        // Patrimônio fixo (legenda), cartas e graded como liga-desliga.
+        seriesEl.innerHTML = SERIES_ORDER.map((k) => k === "combined"
+          ? `<span class="pf-chip pf-chip-fixed active" style="--pf-color:${SERIES[k].color}"><span class="pf-dot"></span>${escapeHtml(t("portfolio.series.combined"))}</span>`
+          : `<button type="button" class="pf-chip${activeSeries.has(k) ? " active" : ""}" data-series="${k}" aria-pressed="${activeSeries.has(k)}" style="--pf-color:${SERIES[k].color}">
+               <span class="pf-dot"></span>${escapeHtml(t(`portfolio.series.${k}`))}
+             </button>`).join("");
       }
     }
     if (rangeEl) rangeEl.innerHTML = RANGES.map(([k]) =>
-      `<button type="button" class="pf-range-btn${k === activeRange ? " active" : ""}" data-range="${k}">${escapeHtml(t(`portfolio.range.${k}`))}</button>`).join("");
+      `<button type="button" class="pf-seg-btn${k === activeRange ? " active" : ""}" data-range="${k}" aria-pressed="${k === activeRange}">${escapeHtml(t(`portfolio.range.${k}`))}</button>`).join("");
     if (modeEl) {
-      // Sem 2 jogos com histórico o seletor de modo não tem o que oferecer.
-      modeEl.hidden = !podeModoJogos();
-      modeEl.innerHTML = modeEl.hidden ? "" :
-        `<button type="button" class="pf-mode-btn${emJogos ? "" : " active"}" data-chart-mode="series">${escapeHtml(t("portfolio.chart.modeSeries"))}</button>
-         <button type="button" class="pf-mode-btn${emJogos ? " active" : ""}" data-chart-mode="games">${escapeHtml(t("portfolio.chart.modeGames"))}</button>
-         <button type="button" class="pf-mode-btn pf-mode-pct${pctMode ? " active" : ""}" data-chart-pct aria-pressed="${pctMode}" title="${escapeAttribute(t("portfolio.chart.pctHint"))}">%</button>`
+      // Total × Por jogo só com 2+ jogos com histórico; o % e o Mercado valem
+      // pra todo mundo com histórico — "o mercado caiu 10%, você caiu 7%" serve
+      // também a quem coleciona um jogo só.
+      const temHistorico = chartHistory().length >= 2;
+      modeEl.hidden = !temHistorico;
+      modeEl.innerHTML = !temHistorico ? "" :
+        (podeModoJogos()
+          ? `<span class="pf-seg"><button type="button" class="pf-seg-btn${emJogos ? "" : " active"}" data-chart-mode="series" aria-pressed="${!emJogos}">${escapeHtml(t("portfolio.chart.total"))}</button><button type="button" class="pf-seg-btn${emJogos ? " active" : ""}" data-chart-mode="games" aria-pressed="${emJogos}">${escapeHtml(t("portfolio.chart.modeGames"))}</button></span>`
+          : "")
+        + `<button type="button" class="pf-toggle${pctMode ? " active" : ""}" data-chart-pct aria-pressed="${pctMode}" title="${escapeAttribute(t("portfolio.chart.pctHint"))}">%</button>`
         // O benchmark só aparece com o % ligado — é lá que ele é comparável.
-        + (pctMode ? `<button type="button" class="pf-mode-btn pf-mode-bench${benchOn ? " active" : ""}" data-chart-bench aria-pressed="${benchOn}" title="${escapeAttribute(t("portfolio.chart.marketHint"))}">${escapeHtml(t("portfolio.chart.market"))}</button>` : "");
+        + (pctMode ? `<button type="button" class="pf-toggle pf-toggle-bench${benchOn ? " active" : ""}" data-chart-bench aria-pressed="${benchOn}" title="${escapeAttribute(t("portfolio.chart.marketHint"))}">${escapeHtml(t("portfolio.chart.market"))}</button>` : "");
     }
   }
 
@@ -1541,8 +1647,7 @@
   // datas DELE (os dias de build), então cada ponto do gráfico pega o último
   // valor do índice até aquela data — carregar pra frente é o tratamento certo
   // pra um índice: entre duas medições ele não "vale zero", vale a última.
-  // Buraco no meio (build que falhou) também é carregado; buraco no COMEÇO fica
-  // null e a linha só nasce quando o índice nasce.
+  // Buraco no COMEÇO fica null e a linha só nasce quando o índice nasce.
   function serieDoMercado(pts) {
     const jogos = (gameFilter === "all" ? GAMES : [gameFilter]).filter((g) => indexByGame[g]);
     if (!jogos.length) return null;
@@ -1568,33 +1673,20 @@
     });
   }
 
-  // Escreve (ou apaga, sem argumento) o cabeçalho do gráfico. Fica fora do
-  // renderChart porque o caminho "histórico curto demais" também precisa dele —
-  // pra não deixar o número da faixa anterior pendurado sobre um gráfico vazio.
-  function setChartHead(d) {
-    const elValor = document.getElementById("pfChartValue");
+  // Cabeçalho = o TOPO da tela: o número grande e a variação embaixo dele.
+  // Sem argumento, apaga a variação (histórico curto). `valor` null mantém o
+  // patrimônio fresco no número grande — só o scrub passa um valor.
+  function setHero(d) {
     const elDelta = document.getElementById("pfChartDelta");
-    const elQuando = document.getElementById("pfChartWhen");
-    if (!elValor) return;
-    // Marca no <section> quando o número grande daqui É o patrimônio: no
-    // celular o CSS esconde o cartão "patrimônio (cartas + graded)" logo
-    // abaixo, que repetia este valor e a variação a um polegar de distância
-    // (2026-09-12). Com histórico curto (cabeçalho em "—") ou com o traço
-    // principal sendo outra série, o cartão volta — ele é a única fonte do
-    // número nesses casos.
-    const section = document.getElementById("portfolioChart");
-    if (section) section.classList.toggle("is-patrimonio", !!(d && d.patrimonio));
-    elValor.textContent = d ? d.valor : "—";
-    if (elDelta) {
-      // O dinheiro vai num <span> próprio pro modo privacidade borrar SÓ ele: a
-      // porcentagem continua legível, que é o ponto do modo (dá pra mostrar o
-      // desempenho num print sem mostrar o patrimônio).
-      elDelta.innerHTML = d
-        ? `${escapeHtml(d.seta)} <span class="pf-cash">${escapeHtml(d.cash)}</span> <span class="pf-pct">(${escapeHtml(d.pct)})</span>`
-        : "";
-      elDelta.className = "pf-head-delta" + (d ? " is-" + d.dir : "");
+    if (elements.grandTotal && !assentando && networthAgora != null) {
+      elements.grandTotal.textContent = d && d.valor != null ? d.valor : money(networthAgora);
     }
-    if (elQuando) elQuando.textContent = d ? d.quando : "";
+    if (!elDelta) return;
+    // O dinheiro vai num <span> próprio pro modo privacidade borrar SÓ ele: a
+    // porcentagem continua legível, que é o ponto do modo.
+    elDelta.innerHTML = d
+      ? `<span class="${d.dir}">${escapeHtml(d.seta)} <span class="pf-cash">${escapeHtml(d.cash)}</span> <span class="pf-pct">(${escapeHtml(d.pct)})</span></span> <span class="pf-when">${escapeHtml(d.quando)}</span>`
+      : "";
   }
 
   function renderChart(history) {
@@ -1605,10 +1697,10 @@
     const pts = days >= 1e9 ? history.slice() : history.filter((p) => new Date(p.d + "T00:00:00").getTime() >= cutoff);
     if (pts.length < 2) {
       body.innerHTML = `<p class="pf-chart-empty">${escapeHtml(t("portfolio.chart.startsToday"))}</p>`;
-      setChartHead(null);
+      setHero(null);
       return;
     }
-    // TRAÇOS: o gráfico não conhece mais "séries" nem "jogos", só uma lista de
+    // TRAÇOS: o gráfico não conhece "séries" nem "jogos", só uma lista de
     // linhas {chave, rótulo, cor, vals[]} sobre o mesmo eixo de datas. Foi o que
     // permitiu o modo por jogo caber sem um segundo renderizador.
     const emJogos = chartMode === "games" && podeModoJogos();
@@ -1627,8 +1719,7 @@
           vals: pts.map((p) => fromBRL(SERIES[k].get(p)))
         }));
     // `from` = índice do 1º valor real do traço. Os nulos só aparecem no COMEÇO
-    // (depois do 1º ponto o valor é sempre carregado pra frente), então guardar
-    // um índice basta — não é preciso quebrar a linha em pedaços.
+    // (depois do 1º ponto o valor é sempre carregado pra frente).
     traces.forEach((tr) => {
       tr.from = tr.vals.findIndex((v) => v != null);
       if (tr.from < 0) tr.from = tr.vals.length; // traço sem dado nenhum na faixa
@@ -1638,77 +1729,74 @@
     traces.length = 0; vivos.forEach((tr) => traces.push(tr));
     if (!traces.length) {
       body.innerHTML = `<p class="pf-chart-empty">${escapeHtml(t("portfolio.chart.startsToday"))}</p>`;
-      setChartHead(null);
+      setHero(null);
       return;
     }
-    // Modo %: cada linha vira "quanto rendeu desde o início da faixa" (base 100).
-    // Sem isso, comparar YGO (46 mil cartas) com HxH (38) é comparar o tamanho
-    // das coleções, não o desempenho delas. A base é o 1º valor REAL do traço
-    // (não o do eixo), senão um jogo que entrou depois normalizaria por zero.
     const money = (v) => shared.formatMoney(shared.getCurrency(), v);
     const loc = getLocale();
     const fmtPct = (v) => v.toLocaleString(loc, { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + "%";
     // BENCHMARK: a linha do mercado, só no modo % (comparar um índice base 1000
-    // com reais não diz nada). É o enquadramento que a literatura de UX de
-    // investimento recomenda pra queda — "o mercado caiu 10%, você caiu 7%" põe
-    // o resultado em perspectiva em vez de parecer erro seu.
+    // com reais não diz nada). "O mercado caiu 10%, você caiu 7%" põe o
+    // resultado em perspectiva em vez de parecer erro seu.
     if (pctMode && benchOn) {
       const serie = serieDoMercado(pts);
       if (serie) traces.push({ key: "bench", label: t("portfolio.chart.market"), color: "#8b93a7", bench: true, vals: serie, from: serie.findIndex((v) => v != null) });
     }
+    // Modo %: cada linha vira "quanto rendeu desde o início da faixa" (base 100).
+    // A base é o 1º valor REAL do traço (não o do eixo), senão um jogo que
+    // entrou depois normalizaria por zero.
     if (pctMode) {
       traces.forEach((tr) => {
         const base = tr.vals[tr.from];
-        tr.brutos = tr.vals;                        // guarda o R$ pro cabeçalho
+        tr.brutos = tr.vals;
         tr.vals = tr.vals.map((v) => (v == null ? null : (base > 0 ? (v / base) * 100 : 100)));
       });
     }
     const fmtVal = (v) => (v == null ? "—" : (pctMode ? fmtPct(v) : money(v)));
-    const W = 820, H = 252, PL = 6, PR = 6, PT = 14, PB = 28;
+    // LARGURA REAL do cartão como viewBox (3.0): com o viewBox fixo de 820 px,
+    // no celular o SVG encolhia pra ~350 px e levava o texto junto — rótulos
+    // de eixo de 4–5 px, ilegíveis. Desenhando na largura de verdade, 11 px é
+    // 11 px em qualquer tela; o ResizeObserver redesenha quando ela muda.
+    const W = Math.max(280, Math.round(body.clientWidth || 820));
+    const H = W < 560 ? 196 : 260;
+    const PL = 4, PR = 4, PT = 16, PB = 26;
     let yMin = Infinity, yMax = -Infinity;
     traces.forEach((tr) => tr.vals.forEach((v) => { if (v == null) return; if (v < yMin) yMin = v; if (v > yMax) yMax = v; }));
     if (!isFinite(yMin)) { yMin = 0; yMax = 1; }
     if (yMin === yMax) { yMin -= 1; yMax += 1; }
-    const padY = (yMax - yMin) * 0.12; yMin -= padY; yMax += padY;
-    // A folga de 12% embaixo puxava o eixo pra baixo de zero em coleção pequena,
-    // e "−1.134" num eixo de dinheiro é um valor que não existe.
+    const padY = (yMax - yMin) * 0.14; yMin -= padY; yMax += padY;
+    // A folga embaixo puxava o eixo pra baixo de zero em coleção pequena, e
+    // "−1.134" num eixo de dinheiro é um valor que não existe.
     if (yMin < 0) yMin = 0;
     const plotW = W - PL - PR, plotH = H - PT - PB;
     const baseY = PT + plotH;
-    // Eixo X pelo TEMPO, não pela posição na lista. Os pontos eram equidistantes:
-    // quem passava 20 dias sem abrir o site via esse intervalo ocupar a mesma
-    // largura de um dia, e a linha mentia sobre quando as coisas aconteceram.
-    // A escala vai do primeiro ao último ponto MEDIDO (e não à borda da faixa),
-    // pra não sobrar uma calha vazia em quem tem histórico curto.
+    // Eixo X pelo TEMPO, não pela posição na lista: quem passava 20 dias sem
+    // abrir o site via esse intervalo ocupar a mesma largura de um dia.
     const msDe = (p) => new Date(p.d + "T00:00:00").getTime();
     const t0 = msDe(pts[0]), t1 = msDe(pts[pts.length - 1]);
     const spanMs = t1 - t0;
     const X = (i) => PL + (spanMs <= 0 ? plotW / 2 : ((msDe(pts[i]) - t0) / spanMs) * plotW);
     const Y = (v) => PT + plotH - ((v - yMin) / (yMax - yMin)) * plotH;
-    const fmtDay = (s) => { const dt = new Date(s + "T00:00:00"); return ("0" + dt.getDate()).slice(-2) + "/" + ("0" + (dt.getMonth() + 1)).slice(-2); };
-    // Ponto mais próximo de um x do viewBox. Com o eixo temporal os pontos não
-    // são mais equidistantes, então não dá pra achar o índice por regra de três.
+    const fmtDay = (s) => new Date(s + "T00:00:00").toLocaleDateString(loc, { day: "2-digit", month: "short" }).replace(".", "");
     const pontoEmX = (vx) => {
       let melhor = 0, dist = Infinity;
       for (let i = 0; i < pts.length; i++) { const d = Math.abs(X(i) - vx); if (d < dist) { dist = d; melhor = i; } }
       return melhor;
     };
 
-    // Grade horizontal + rótulos do eixo Y.
+    // Grade horizontal + rótulos do eixo Y em notação COMPACTA ("36,5 mil"):
+    // o número inteiro competia com a linha e não cabia no celular.
+    const compacto = new Intl.NumberFormat(loc, { notation: "compact", maximumFractionDigits: 1 });
     let grid = "";
     for (let g = 0; g <= 3; g++) {
       const v = yMin + (g / 3) * (yMax - yMin), y = Y(v);
       grid += `<line class="pf-grid" x1="${PL}" y1="${y.toFixed(1)}" x2="${W - PR}" y2="${y.toFixed(1)}"/>`;
-      // No modo % o eixo é em pontos-base 100, não em dinheiro — sem o sufixo,
-      // "112" ao lado de uma linha normalizada se lê como R$ 112.
-      const rotulo = pctMode ? Math.round(v).toLocaleString(loc) + "%" : Math.round(v).toLocaleString(loc);
-      grid += `<text class="pf-axis" x="${PL + 2}" y="${(y - 4).toFixed(1)}">${escapeHtml(rotulo)}</text>`;
+      if (g === 0) continue; // o rótulo do chão encostaria nas datas
+      const rotulo = pctMode ? Math.round(v).toLocaleString(loc) + "%" : compacto.format(v);
+      grid += `<text class="pf-axis" x="${W - PR - 2}" y="${(y - 5).toFixed(1)}" text-anchor="end">${escapeHtml(rotulo)}</text>`;
     }
-    // Régua de datas (eixo X): ~6 marcações espaçadas no TEMPO (não de N em N
-    // pontos — com o eixo temporal, pontos vizinhos podem estar colados e dois
-    // rótulos sairiam um por cima do outro). Cada marca pega o ponto medido mais
-    // próximo do instante alvo; repetidos entram uma vez só.
-    const T = Math.min(6, pts.length);
+    // Régua de datas: marcações espaçadas no TEMPO — 3 no celular, 5 no desktop.
+    const T = Math.min(W < 560 ? 3 : 5, pts.length);
     let xaxis = "";
     const marcados = new Set();
     for (let j = 0; j < T; j++) {
@@ -1717,56 +1805,42 @@
       if (marcados.has(i)) continue;
       marcados.add(i);
       const x = X(i), anchor = j === 0 ? "start" : (j === T - 1 ? "end" : "middle");
-      xaxis += `<text class="pf-xaxis" x="${x.toFixed(1)}" y="${(H - 8).toFixed(1)}" text-anchor="${anchor}">${escapeHtml(fmtDay(pts[i].d))}</text>`;
+      xaxis += `<text class="pf-xaxis" x="${x.toFixed(1)}" y="${(H - 7).toFixed(1)}" text-anchor="${anchor}">${escapeHtml(fmtDay(pts[i].d))}</text>`;
     }
-    // MENOR distância entre dois pontos vizinhos, em unidades do viewBox — decide
-    // se cabe marcador por ponto (ver o uso logo abaixo). É o mínimo, e não a
-    // média, porque com o eixo temporal o espaçamento é irregular: uma média
-    // folgada esconderia um trecho de dias seguidos todo grudado.
+    // MENOR distância entre dois pontos vizinhos, em px — decide se cabe
+    // marcador por ponto.
     let dotSpacing = plotW;
     for (let i = 1; i < pts.length; i++) dotSpacing = Math.min(dotSpacing, X(i) - X(i - 1));
-    // Área (gradiente) + linha + ponta de cada traço.
     let defs = "", areas = "", lines = "";
-    // A área embaixo da linha só ajuda quando há POUCAS linhas: com 13 jogos
-    // ligados, treze gradientes empilhados viram uma sopa onde não se enxerga
-    // linha nenhuma. Acima de 4, fica só o traço.
-    const comArea = traces.filter((tr) => !tr.bench).length <= 4;
+    // A área embaixo da linha só ajuda com POUCAS linhas: com 13 jogos ligados,
+    // treze gradientes empilhados viram uma sopa. Acima de 4, fica só o traço.
+    // No total ela fica só no patrimônio — cartas e graded são linhas de apoio.
+    const meusTracos = traces.filter((tr) => !tr.bench);
+    const comArea = meusTracos.length <= 4;
     traces.forEach((tr) => {
       const gid = "pfg-" + tr.key;
-      // Começa no 1º ponto real do traço (tr.from), não no início do eixo.
       const linePts = tr.vals.slice(tr.from)
         .map((v, j) => `${X(tr.from + j).toFixed(1)},${Y(v).toFixed(1)}`).join(" ");
-      if (comArea && !tr.bench) {
-        defs += `<linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${tr.color}" stop-opacity="0.28"/><stop offset="100%" stop-color="${tr.color}" stop-opacity="0"/></linearGradient>`;
+      const area = comArea && !tr.bench && (emJogos || tr.key === "combined");
+      if (area) {
+        defs += `<linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${tr.color}" stop-opacity="0.26"/><stop offset="100%" stop-color="${tr.color}" stop-opacity="0"/></linearGradient>`;
         areas += `<polygon class="pf-area" points="${X(tr.from).toFixed(1)},${baseY.toFixed(1)} ${linePts} ${X(pts.length - 1).toFixed(1)},${baseY.toFixed(1)}" fill="url(#${gid})"/>`;
       }
-      // O mercado vai TRACEJADO: é referência, não uma coleção sua — a diferença
-      // precisa ser visível também pra quem não distingue as cores.
-      lines += `<polyline class="pf-line${tr.bench ? " pf-line-bench" : ""}" points="${linePts}" stroke="${tr.color}"/>`;
-      // Marcador por DIA (bolinha vazada). Só quando os pontos têm folga entre
-      // si: o espaçamento vai de 135px em "7D" a 4,5px em "6M", e a partir de
-      // certo ponto as bolinhas se encostam e a linha vira um borrão. O corte é
-      // pelo espaço REAL (não pela faixa escolhida), porque o histórico pode ter
-      // buracos — 90 dias de faixa com 12 pontos medidos cabe bolinha à vontade.
-      if (dotSpacing >= 12 && comArea && !tr.bench) {
+      // O mercado vai TRACEJADO: é referência, não uma coleção sua.
+      lines += `<polyline class="pf-line${tr.bench ? " pf-line-bench" : ""}${!emJogos && tr.key !== "combined" && !tr.bench ? " pf-line-sub" : ""}" points="${linePts}" stroke="${tr.color}"/>`;
+      if (dotSpacing >= 14 && comArea && !tr.bench) {
         lines += tr.vals.map((v, i) => (v == null ? "" :
           `<circle class="pf-dot" cx="${X(i).toFixed(1)}" cy="${Y(v).toFixed(1)}" r="3" stroke="${tr.color}"/>`)).join("");
       }
-      // Ponta do traço: bolinha CHEIA, desenhada depois pra cobrir a vazada —
-      // é o valor de hoje, o único que merece destaque na linha.
+      // Ponta do traço: bolinha CHEIA — é o valor de hoje.
       lines += `<circle cx="${X(pts.length - 1).toFixed(1)}" cy="${Y(tr.vals[tr.vals.length - 1]).toFixed(1)}" r="3.5" fill="${tr.color}"/>`;
     });
-    // Alta/Baixa do traço PRINCIPAL: o patrimônio quando ele está na tela; no
-    // modo por jogo, o de maior valor hoje (a linha que o olho segue).
-    // Comparação pelo valor em DINHEIRO mesmo no modo % — lá as linhas foram
-    // normalizadas e "a maior" viraria "a que mais subiu", que não é a linha que
-    // o olho segue no gráfico.
+    // Alta/Baixa do traço PRINCIPAL: o patrimônio no total; no modo por jogo, o
+    // de maior valor hoje (a linha que o olho segue). Comparação pelo valor em
+    // DINHEIRO mesmo no modo %.
     const ultimoBruto = (tr) => { const a = tr.brutos || tr.vals; return a[a.length - 1] || 0; };
-    // O mercado nunca é o traço principal: o número grande é o SEU dinheiro, e
-    // o benchmark está ali só como régua.
-    const meus = traces.filter((tr) => !tr.bench);
-    const principal = meus.find((tr) => tr.key === "combined")
-      || meus.slice().sort((a, b) => ultimoBruto(b) - ultimoBruto(a))[0] || traces[0];
+    const principal = meusTracos.find((tr) => tr.key === "combined")
+      || meusTracos.slice().sort((a, b) => ultimoBruto(b) - ultimoBruto(a))[0] || traces[0];
     const vals = principal.vals;
     let maxI = principal.from, minI = principal.from;
     vals.forEach((v, i) => {
@@ -1776,63 +1850,47 @@
     });
     const pill = (i, label, color, above) => {
       const x = X(i), y = Y(vals[i]), txt = `${label} ${fmtVal(vals[i])}`;
-      const w = 14 + txt.length * 6.1, h = 19;
-      let bx = Math.max(PL, Math.min(W - PR - w, x - w / 2));
-      const by = above ? y - h - 10 : y + 10;
+      const w = 14 + txt.length * 6.2, h = 20;
+      const bx = Math.max(PL, Math.min(W - PR - w, x - w / 2));
+      const by = above ? Math.max(0, y - h - 9) : Math.min(baseY - h, y + 9);
       return `<g class="pf-hilo"><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="4" fill="${color}"/>
-        <rect x="${bx.toFixed(1)}" y="${by.toFixed(1)}" width="${w.toFixed(1)}" height="${h}" rx="6"/>
-        <text x="${(bx + w / 2).toFixed(1)}" y="${(by + h / 2 + 3.6).toFixed(1)}" text-anchor="middle">${escapeHtml(txt)}</text></g>`;
+        <rect x="${bx.toFixed(1)}" y="${by.toFixed(1)}" width="${w.toFixed(1)}" height="${h}"/>
+        <text x="${(bx + w / 2).toFixed(1)}" y="${(by + h / 2 + 3.8).toFixed(1)}" text-anchor="middle">${escapeHtml(txt)}</text></g>`;
     };
     const hilo = maxI !== minI ? pill(maxI, t("portfolio.chart.high"), "#a78bfa", true) + pill(minI, t("portfolio.chart.low"), "#f0883e", false) : "";
 
-    // Cabeçalho: o valor da série principal + a variação DA FAIXA escolhida.
-    // Sem argumento pinta a ponta (hoje) e o rótulo do período; com um índice,
-    // pinta o dia sob o cursor — é o scrub do Robinhood, onde arrastar no gráfico
-    // move o número grande junto. A variação vai no formato combinado
-    // "+R$ 120,00 (3,4%)": o Collectr mostra os dois juntos em vez de oferecer um
-    // toggle %/absoluto, e num cartão estreito isso economiza um controle.
-    // O cabeçalho é SEMPRE em dinheiro, inclusive no modo %: quem normalizou as
-    // linhas quer comparar desempenho no gráfico, não parar de saber quanto tem.
-    // (No modo %, `vals` está em base 100 — daí os `brutos` guardados.)
-    const valsHead = principal.brutos || vals;
+    // O número grande é SEMPRE o patrimônio (do filtro), em qualquer modo:
+    // no "por jogo" as linhas são os pedaços dele, e o tooltip diz cada um.
+    // Parado, ele mostra o valor FRESCO (o mesmo do resumo) e a variação desde
+    // o início da faixa; arrastando, o dia sob o dedo — o scrub do Robinhood.
+    // A variação vai no formato combinado "+R$ 120,00 (3,4%)", como o Collectr.
+    const patri = pts.map((p) => fromBRL((p.c || 0) + (p.b || 0)));
+    const base = patri.find((v) => v > 0) || 0;
     function pintaCabecalho(i) {
-      const idx = i == null ? valsHead.length - 1 : Math.max(i, principal.from);
-      const base = valsHead[principal.from];
-      const delta = valsHead[idx] - base;
+      const parado = i == null;
+      const valor = parado ? (networthAgora != null ? networthAgora : patri[patri.length - 1]) : patri[i];
+      const delta = valor - base;
       const pct = base > 0 ? (delta / base) * 100 : 0;
-      const dir = delta > 0.005 ? "up" : (delta < -0.005 ? "down" : "flat");
-      // Seta ALÉM da cor: verde/vermelho sozinho não serve a quem não distingue
-      // as duas (a mesma regra das cápsulas de variação).
-      const seta = dir === "up" ? "▲" : (dir === "down" ? "▼" : "→");
-      const sinal = dir === "up" ? "+" : (dir === "down" ? "−" : "");
-      // Porcentagem pelo locale (vírgula em pt/es, ponto em en) — toFixed(1)
-      // escreveria "28.6%" no site inteiro em português.
-      const pctTxt = Math.abs(pct).toLocaleString(loc, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
-      setChartHead({
-        valor: money(valsHead[idx]),
-        patrimonio: principal.key === "combined",
-        seta,
-        cash: `${sinal}${money(Math.abs(delta))}`,
-        pct: `${sinal}${pctTxt}%`,
-        dir,
-        // No modo por jogo, dizer QUAL linha o número grande está seguindo —
-        // senão "R$ 6.015,00" sobre 5 linhas coloridas é um número órfão.
-        quando: i == null
-          ? (emJogos ? `${principal.label} · ${t("portfolio.chart.win." + activeRange)}` : t("portfolio.chart.win." + activeRange))
-          : fmtDay(pts[idx].d)
+      setHero({
+        valor: parado ? null : money(valor),
+        seta: seta(delta),
+        cash: signedMoney(delta),
+        pct: sign(pct) + pctTxt(pct),
+        dir: cls(delta),
+        quando: parado ? t("portfolio.chart.win." + activeRange) : fmtDay(pts[i].d)
       });
     }
     pintaCabecalho();
 
     body.innerHTML = `<div class="pf-chart-rel">
-      <svg viewBox="0 0 ${W} ${H}" class="pf-svg" role="img" aria-label="${escapeAttribute(t("portfolio.chart.title"))}">
+      <svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" class="pf-svg" role="img" aria-label="${escapeAttribute(t("portfolio.chart.title"))}">
         <defs>${defs}</defs>${grid}${areas}${lines}${xaxis}${hilo}
         <g class="pf-hover" style="display:none"></g>
       </svg>
       <div class="pf-tip" hidden></div>
     </div>`;
 
-    // Hover: guia vertical + pontos + tooltip com o valor do dia.
+    // Hover/toque: guia vertical + pontos + tooltip com o valor do dia.
     const svg = body.querySelector(".pf-svg");
     const hoverG = body.querySelector(".pf-hover");
     const tip = body.querySelector(".pf-tip");
@@ -1850,8 +1908,7 @@
         g += `<circle class="pf-hover-dot" cx="${x.toFixed(1)}" cy="${Y(tr.vals[i]).toFixed(1)}" r="3.6" fill="${tr.color}"/>`;
       });
       hoverG.innerHTML = g; hoverG.style.display = "";
-      // Linhas ordenadas por valor DESCENDO: com 13 jogos, achar o seu na lista
-      // alfabética é procurar; no topo está sempre quem mais pesa naquele dia.
+      // Linhas ordenadas por valor DESCENDO: no topo está sempre quem mais pesa.
       const rows = traces.filter((tr) => tr.vals[i] != null)
         .sort((a, b) => b.vals[i] - a.vals[i])
         .map((tr) => `<span class="pf-tip-row"><span class="pf-tip-dot" style="background:${tr.color}"></span>${escapeHtml(tr.label)}: <strong>${escapeHtml(fmtVal(tr.vals[i]))}</strong></span>`).join("");
@@ -1859,7 +1916,6 @@
       tip.hidden = false;
       const leftPx = (x / W) * r.width;
       tip.style.left = Math.max(0, Math.min(r.width - tip.offsetWidth, leftPx - tip.offsetWidth / 2)) + "px";
-      // Ancora no traço principal; antes de ele existir (nulo), no topo da área.
       const topPx = (Y(vals[i] == null ? yMax : vals[i]) / H) * r.height - tip.offsetHeight - 12;
       tip.style.top = Math.max(0, topPx) + "px";
     }
@@ -1868,5 +1924,8 @@
     svg.addEventListener("mouseleave", onLeave);
     svg.addEventListener("touchstart", onMove, { passive: true });
     svg.addEventListener("touchmove", onMove, { passive: true });
+    // No toque não existe "mouseleave": ao soltar o dedo, o número volta.
+    svg.addEventListener("touchend", onLeave);
+    svg.addEventListener("touchcancel", onLeave);
   }
 })();
