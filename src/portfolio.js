@@ -50,6 +50,10 @@
   //   "Atual" e "Lucro" ficavam fora da tela). Cada seção é um cartão com
   //   cabeçalho, abas e "Ver mais" — o mesmo molde de lista agrupada que o
   //   app nativo vai usar (ver docs/PORTFOLIO.md, seção 10).
+  //
+  // VERSÃO A "Corretora" (proposta de 2026-10-09, em cima da 3.0): Mais
+  // valiosas, Movimentos e Posições viram UMA lista de posições com três
+  // lentes (renderHoldings), e a alocação vira rosca na lateral.
   // ===========================================================================
   const GAMES = shared.GAME_SLUGS;
   const GAME_COLOR = shared.GAME_COLOR;
@@ -67,7 +71,7 @@
   let gameFilter = "all";
   // Aba ativa e "Ver mais" de cada seção. Trocar de aba redesenha SÓ a seção
   // (redesenhaSecao) — o gráfico e o resto da tela não piscam.
-  const aba = { alloc: null, invest: null, goals: null };
+  const aba = { alloc: null, invest: null, goals: null, lente: "value" };
   const aberta = { alloc: false, movers: false, top: false, invest: false, goals: false };
   // Patrimônio fresco do último render: é o número grande "parado". O scrub do
   // gráfico troca pelo do dia sob o dedo e, ao soltar, volta a este.
@@ -232,7 +236,7 @@
     return Promise.all(meus.map((g) => shared.loadPriceDeltas7d(g)
       .then((d) => { deltasByGame[g] = d && d.c ? d : null; })
       .catch(() => { deltasByGame[g] = null; })))
-      .then(() => renderMovers());
+      .then(() => { renderHoldings(); renderKpisExtras(); });
   }
 
   // Um caminho só pra trocar o filtro de jogo — o clique no chip, a linha do
@@ -292,7 +296,15 @@
         redesenhaSecao(grupo);
         return;
       }
+      const cab = event.target.closest("[data-pf-group]");
+      if (cab) { grupoFechado[cab.dataset.pfGroup] = !grupoFechado[cab.dataset.pfGroup]; renderHoldings(); return; }
       const mais = event.target.closest("[data-pf-more]");
+      if (mais && mais.dataset.pfMore.startsWith("g:")) {
+        const g = mais.dataset.pfMore.slice(2);
+        grupoAberto[g] = !grupoAberto[g];
+        renderHoldings();
+        return;
+      }
       if (mais) {
         const grupo = mais.dataset.pfMore;
         aberta[grupo] = !aberta[grupo];
@@ -311,8 +323,7 @@
   }
   function redesenhaSecao(grupo) {
     if (grupo === "alloc") renderAlloc();
-    else if (grupo === "movers") renderMovers();
-    else if (grupo === "top") renderTop();
+    else if (grupo === "lente") renderHoldings();
     else if (grupo === "invest") renderInvest();
     else if (grupo === "goals") renderGoals();
   }
@@ -686,8 +697,7 @@
     }
     renderKpisExtras();
     renderAlloc();
-    renderMovers();
-    renderTop();
+    renderHoldings();
     renderInvest();
     renderGoals();
     renderManual();
@@ -706,6 +716,15 @@
       `<a class="pf-kpi" data-extra href="${escapeAttribute(href)}"><span class="pf-kpi-label">${escapeHtml(rotulo)}</span>
         <strong class="pf-kpi-value sensitive-value">${valorHtml}</strong><small class="pf-kpi-sub">${escapeHtml(sub)}</small></a>`;
     const pecas = [];
+    // Semana (versão A): o efeito das variações de 7 dias nas suas cartas. O
+    // toque leva à lente "Semana" da lista de posições.
+    const semana = linhasDePosicao().filter((r) => r.p);
+    if (semana.length) {
+      const efeito = semana.reduce((s, r) => s + r.chg, 0);
+      const up = semana.filter((r) => r.chg > 0).length;
+      pecas.push(peca(t("portfolio.kpi.week"), `<span class="${cls(efeito)}">${escapeHtml(signedMoney(efeito))}</span>`,
+        `▲ ${up} · ▼ ${semana.length - up}`, "#pfHoldings"));
+    }
     const { positions, invested, currentTotal } = investPositions();
     if (positions.length) {
       const pnl = currentTotal - invested;
@@ -725,7 +744,7 @@
     if (desejos > 0) fora.push(peca(t("portfolio.kpi.wish"), escapeHtml(money(desejos)), t("portfolio.kpi.outside"), "#pfGoals"));
     const selados = manualTotal(gameFilter);
     if (selados > 0) fora.push(peca(t("pfmi.title"), escapeHtml(money(selados)), t("portfolio.kpi.outside"), "#pfManual"));
-    while (pecas.length < 2 && fora.length) pecas.push(fora.shift());
+    while (pecas.length < 3 && fora.length) pecas.push(fora.shift());
     box.insertAdjacentHTML("beforeend", pecas.join(""));
     box.dataset.n = String(2 + pecas.length);
   }
@@ -774,67 +793,6 @@
     // header como o renderChart faz (fromBRL).
     el.innerHTML = `<span class="pf-when">${escapeHtml(quando)}</span> <span class="${cls(delta)}">${seta(delta)} <span class="pf-cash">${escapeHtml(signedMoney(fromBRL(delta)))}</span> <span class="pf-pct">(${escapeHtml(sign(pct) + pctTxt(pct))})</span></span>`;
     el.hidden = false;
-  }
-
-  // ---- Movimentos da semana (as SUAS cartas) ---------------------------------
-  // Ordenados pelo EFEITO no seu bolso (variação × valor × cópias), não pelo %
-  // puro: uma carta de R$ 2 que subiu 80% mexe menos no patrimônio que uma de
-  // R$ 900 que subiu 5% — e é essa a pergunta desta tela. A conta é a do Hub
-  // (lote × p / (100 + p): quanto do valor de HOJE veio da variação), pra os
-  // dois números baterem.
-  function renderMovers() {
-    const sec = elements.movers;
-    if (!sec) return;
-    const pool = gameFilter === "all" ? GAMES : [gameFilter];
-    const comDado = pool.filter((g) => deltasByGame[g]);
-    if (!comDado.length) { sec.hidden = true; sec.innerHTML = ""; return; }
-    let desde = null;
-    comDado.forEach((g) => { const f = deltasByGame[g].from; if (f && (!desde || f < desde)) desde = f; });
-    // O lote de cada carta sai das MESMAS linhas do patrimônio (valor por
-    // variante × condição): uma LP não pode mexer como se fosse NM.
-    const lotes = new Map();
-    collectionLines(gameFilter).lines.forEach((l) => {
-      const x = lotes.get(l.card.id) || { card: l.card, lote: 0, qtd: 0 };
-      x.lote += l.total; x.qtd += l.quantity;
-      lotes.set(l.card.id, x);
-    });
-    const linhas = [];
-    let efeito = 0, subiram = 0, cairam = 0;
-    lotes.forEach(({ card, lote, qtd }) => {
-      const g = card.game || "pokemon";
-      if (!deltasByGame[g] || !(lote > 0)) return;
-      const p = Number(deltasByGame[g].c[card.id]);
-      if (!p) return;
-      const chg = (lote * p) / (100 + p);
-      if (Math.abs(chg) < 0.01) return;
-      efeito += chg;
-      if (chg > 0) subiram++; else cairam++;
-      linhas.push({ card, p, chg, qtd });
-    });
-    const sub = desde ? t("portfolio.moves.sub", { date: diaCurto(desde) }) : "";
-    if (!linhas.length) {
-      sec.innerHTML = cabecalho(t("portfolio.moves.title"), sub) + `<p class="pf-empty">${escapeHtml(t("portfolio.movers.noneMine"))}</p>`;
-      sec.hidden = false;
-      return;
-    }
-    linhas.sort((a, b) => Math.abs(b.chg) - Math.abs(a.chg));
-    const LIM = 5;
-    const visiveis = aberta.movers ? linhas.slice(0, 30) : linhas.slice(0, LIM);
-    const loc = getLocale();
-    const resumo = `<p class="pf-moves-sum"><strong class="${cls(efeito)}"><span class="sensitive-value">${escapeHtml(signedMoney(efeito))}</span></strong>
-      <span>${escapeHtml(t("portfolio.moves.net"))}</span>
-      <span class="pf-moves-count"><span class="is-up">▲ ${subiram}</span> <span class="is-down">▼ ${cairam}</span></span></p>`;
-    const corpo = visiveis.map(({ card, p, chg, qtd }) => linhaCarta({
-      card,
-      sub: shared.dotJoin(card.set, card.number) + (qtd > 1 ? ` · ×${qtd}` : ""),
-      valor: `<strong class="${cls(chg)}"><span class="sensitive-value">${escapeHtml(signedMoney(chg))}</span></strong>`,
-      apoio: `${p > 0 ? "▲" : "▼"} ${escapeHtml(Math.abs(p).toLocaleString(loc, { maximumFractionDigits: 1 }))}%`,
-      apoioCls: cls(p)
-    })).join("");
-    sec.innerHTML = cabecalho(t("portfolio.moves.title"), sub) + resumo
-      + `<ul class="pf-rows">${corpo}</ul>`
-      + (linhas.length > LIM ? botaoMais("movers", linhas.length - LIM, aberta.movers) : "");
-    sec.hidden = false;
   }
 
   // --- Investimento (opcional): só tem número pra quem preenche custo ou vende ---
@@ -901,7 +859,10 @@
     if (!sec) return;
     const pos = investPositions();
     const vs = resumoVendas();
-    const temPos = pos.positions.length > 0;
+    // Versão A: as posições vivem na lente "Lucro" da lista; aqui fica o que já
+    // virou dinheiro. Sem venda e sem custo, a seção explica como ligar.
+    const temPos = false;
+    if (!vs && pos.positions.length) { sec.hidden = true; sec.innerHTML = ""; return; }
     if (!temPos && !vs) {
       sec.innerHTML = cabecalho(t("portfolio.invest.title"))
         + `<p class="pf-empty">${escapeHtml(t("portfolio.invest.empty"))} <a href="collection">${escapeHtml(t("portfolio.invest.emptyCta"))}</a></p>`;
@@ -1237,6 +1198,183 @@
     renderManual(); // independe do catálogo: aparece já no primeiro paint
   })();
 
+  // ---- Suas posições (versão A "Corretora") ----------------------------------
+  // UMA lista de tudo o que você tem — cada lote carta×variante×condição e cada
+  // slab —, agrupada por jogo, com três LENTES em vez de três seções:
+  //   Valor  — o que pesa (era "Mais valiosas");
+  //   Semana — o que mexeu, pelo efeito em dinheiro (era "Movimentos");
+  //   Lucro  — quanto rendeu sobre o que você pagou (era "Posições").
+  // É a tela de posições das corretoras e do Collectr: a pessoa reconhece o
+  // molde, e a mesma linha responde as três perguntas (as colunas ficam).
+  const grupoAberto = {};  // jogo -> mostrando todas as linhas
+  const grupoFechado = {}; // jogo -> grupo recolhido
+  function linhasDePosicao() {
+    const { lines } = collectionLines(gameFilter);
+    const custoUnit = new Map(costsStore.entries().map((e) => [e.cardId + "|" + e.variant, shared.moneyToCurrent(e.v, e.cur)]));
+    const pctDe = (card) => {
+      const d = deltasByGame[card.game || "pokemon"];
+      const p = d && Number(d.c[card.id]);
+      return p || null;
+    };
+    const rows = lines.map((l) => {
+      const p = l.total > 0 ? pctDe(l.card) : null;
+      const chave = l.card.id + "|" + l.variant;
+      const pago = custoUnit.has(chave) ? custoUnit.get(chave) * l.quantity : null;
+      return {
+        card: l.card, game: l.card.game || "pokemon", tags: [l.variant, l.condition],
+        estimated: l.estimated,
+        estTitle: l.source === "ref" ? t("portfolio.estRef") : l.source === "myp" ? t("portfolio.estMyp") : t("portfolio.estimated"),
+        qty: l.quantity, unit: l.unit, total: l.total,
+        // Efeito da semana no lote: a conta do Hub (quanto do valor de HOJE
+        // veio da variação), pra os dois números baterem.
+        p, chg: p ? (l.total * p) / (100 + p) : 0,
+        pago, pnl: pago != null ? l.total - pago : null
+      };
+    });
+    // Carta com custo e SEM cotação não está nas linhas do patrimônio (que só
+    // levam lote com preço), mas é posição: entra valendo zero, senão a lente
+    // "Lucro" esconderia justamente o prejuízo.
+    investPositions().positions.forEach((pos) => {
+      if (pos.now > 0) return;
+      rows.push({
+        card: pos.card, game: pos.card.game || "pokemon", tags: [pos.variant],
+        qty: pos.qty, unit: 0, total: 0, p: null, chg: 0, pago: pos.paid, pnl: -pos.paid
+      });
+    });
+    gradedSlabs(gameFilter).forEach((s) => {
+      const card = cardsById.get(s.cardId);
+      if (!card) return;
+      rows.push({
+        card, game: card.game || "pokemon",
+        grade: `${String(s.company || "").toUpperCase()} ${shared.gradedGradeText(s.grade, s.pristine)}`,
+        qty: 1, unit: s.value || 0, total: s.value || 0, p: null, chg: 0, pago: null, pnl: null
+      });
+    });
+    return rows;
+  }
+  function renderHoldings() {
+    const sec = document.getElementById("pfHoldings");
+    if (!sec) return;
+    const todas = linhasDePosicao();
+    elements.empty.hidden = todas.some((r) => r.total > 0);
+    if (!todas.length) { sec.hidden = true; sec.innerHTML = ""; return; }
+    const temSemana = todas.some((r) => r.p);
+    const temLucro = todas.some((r) => r.pnl != null);
+    const lentes = [["value", t("portfolio.hold.value")]];
+    if (temSemana) lentes.push(["week", t("portfolio.hold.week")]);
+    if (temLucro) lentes.push(["profit", t("portfolio.hold.profit")]);
+    if (!lentes.some(([k]) => k === aba.lente)) aba.lente = "value";
+    // Cada lente filtra o que não tem o dado dela (sem variação, sem custo) e
+    // ordena pelo que ela mede.
+    let rows = todas;
+    if (aba.lente === "week") rows = todas.filter((r) => r.p && Math.abs(r.chg) >= 0.01).sort((a, b) => Math.abs(b.chg) - Math.abs(a.chg));
+    else if (aba.lente === "profit") rows = todas.filter((r) => r.pnl != null).sort((a, b) => b.pnl - a.pnl);
+    else rows = todas.slice().sort((a, b) => b.total - a.total);
+    const total = todas.reduce((s, r) => s + r.total, 0);
+    const loc = getLocale();
+    const pctTxtCurto = (p) => `${p > 0 ? "▲" : "▼"} ${Math.abs(p).toLocaleString(loc, { maximumFractionDigits: 1 })}%`;
+    // Agrupa por jogo só no filtro "Todos" e com 2+ jogos; os grupos vão pelo
+    // valor (a ordem da rosca ao lado).
+    const porJogo = new Map();
+    rows.forEach((r) => { if (!porJogo.has(r.game)) porJogo.set(r.game, []); porJogo.get(r.game).push(r); });
+    const valorDoJogo = (g) => todas.filter((r) => r.game === g).reduce((s, r) => s + r.total, 0);
+    const jogos = [...porJogo.keys()].sort((a, b) => valorDoJogo(b) - valorDoJogo(a));
+    const agrupa = gameFilter === "all" && new Set(todas.map((r) => r.game)).size > 1;
+    const colLucro = temLucro;
+    const LIM = 5;
+    const linha = (r) => {
+      const tags = r.grade
+        ? `<span class="pf-tag pf-tag-grade">${escapeHtml(r.grade)}</span>`
+        : r.tags.filter(Boolean).map((x) => `<span class="pf-tag">${escapeHtml(x)}</span>`).join("");
+      const est = r.estimated ? ` <span class="price-estimated" title="${escapeAttribute(r.estTitle)}">≈</span>` : "";
+      // 7 dias: a % e, embaixo, o que ela fez com o seu dinheiro naquele lote.
+      const semana = r.p ? `<span class="${cls(r.p)}">${escapeHtml(pctTxtCurto(r.p))}</span>` : `<span class="pf-hold-na">—</span>`;
+      const efeito = r.p ? `<small class="${cls(r.chg)}"><span class="sensitive-value">${escapeHtml(signedMoney(r.chg))}</span></small>` : "";
+      const lucro = r.pnl != null
+        ? `<span class="${cls(r.pnl)}"><span class="sensitive-value">${escapeHtml(signedMoney(r.pnl))}</span></span>`
+        : `<span class="pf-hold-na">—</span>`;
+      return `<li><a class="pf-hold-row${colLucro ? " has-pnl" : ""}" href="${escapeAttribute(cardHref(r.card))}">
+        <span class="pf-hold-card">${thumbDe(r.card)}<span class="pf-row-main"><strong>${escapeHtml(r.card.name)}</strong><span class="pf-row-sub">${escapeHtml(shared.dotJoin(r.card.set, r.card.number))}</span><span class="pf-tags">${tags}</span></span></span>
+        <span class="pf-hold-qty">${r.qty > 1 ? `×${r.qty} · ` : ""}<span class="sensitive-value">${escapeHtml(r.unit > 0 ? money(r.unit) : "—")}</span></span>
+        <span class="pf-hold-chg">${semana}${efeito}</span>
+        ${colLucro ? `<span class="pf-hold-pnl">${lucro}</span>` : ""}
+        <span class="pf-hold-total"><strong><span class="sensitive-value">${escapeHtml(r.total > 0 ? money(r.total) : "—")}</span>${est}</strong>
+          <small class="pf-hold-mob">${aba.lente === "profit" && r.pnl != null ? lucro
+            : aba.lente === "week" && r.p ? `<span class="${cls(r.chg)}"><span class="sensitive-value">${escapeHtml(signedMoney(r.chg))}</span></span> · ${semana}` : semana}</small></span>
+      </a></li>`;
+    };
+    const cabecaDasColunas = `<div class="pf-hold-head${colLucro ? " has-pnl" : ""}" aria-hidden="true">
+      <span>${escapeHtml(t("portfolio.hold.colCard"))}</span><span>${escapeHtml(t("portfolio.hold.colQty"))}</span>
+      <span>${escapeHtml(t("portfolio.hold.col7d"))}</span>${colLucro ? `<span>${escapeHtml(t("portfolio.hold.profit"))}</span>` : ""}
+      <span>${escapeHtml(t("portfolio.chart.total"))}</span></div>`;
+    const blocoDe = (g, lista) => {
+      const aberto = !!grupoAberto[g];
+      const visiveis = aberto ? lista.slice(0, 300) : lista.slice(0, LIM);
+      return `<ul class="pf-rows pf-hold-list">${visiveis.map(linha).join("")}</ul>`
+        + (lista.length > LIM ? `<button type="button" class="pf-more" data-pf-more="${escapeAttribute("g:" + g)}" aria-expanded="${aberto}">${escapeHtml(aberto ? t("portfolio.less") : t("portfolio.more", { n: lista.length - LIM }))}</button>` : "");
+    };
+    let corpo = "";
+    if (!rows.length) corpo = `<p class="pf-empty">${escapeHtml(t("portfolio.movers.noneMine"))}</p>`;
+    else if (!agrupa) corpo = cabecaDasColunas + blocoDe(jogos[0] || "all", rows);
+    else {
+      corpo = cabecaDasColunas + jogos.map((g) => {
+        const lista = porJogo.get(g);
+        const v = valorDoJogo(g);
+        const efeito = todas.filter((r) => r.game === g).reduce((s, r) => s + r.chg, 0);
+        const fechado = !!grupoFechado[g];
+        const copias = todas.filter((r) => r.game === g).reduce((n, r) => n + r.qty, 0);
+        return `<div class="pf-hold-group${fechado ? " is-closed" : ""}">
+          <button type="button" class="pf-hold-ghead" data-pf-group="${escapeAttribute(g)}" aria-expanded="${!fechado}">
+            <span class="pf-dot" style="background:${GAME_COLOR[g]}"></span>
+            <strong>${escapeHtml(shared.gameLabel(g))}</strong>
+            <span class="pf-hold-gmeta">${escapeHtml(tn("portfolio.kpi.copies", copias))} · ${total > 0 ? Math.round((v / total) * 100) : 0}%</span>
+            ${Math.abs(efeito) >= 0.01 ? `<span class="pf-hold-geff ${cls(efeito)}"><span class="sensitive-value">${escapeHtml(signedMoney(efeito))}</span></span>` : ""}
+            <span class="pf-hold-gval sensitive-value">${escapeHtml(money(v))}</span>
+            <svg class="pf-hold-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          ${fechado ? "" : blocoDe(g, lista)}
+        </div>`;
+      }).join("");
+    }
+    // Nota da lente: o que ela deixa de fora, dito em uma linha.
+    let nota = "";
+    if (aba.lente === "profit") {
+      const { totalCopies, total: rawTotal } = collectionLines(gameFilter);
+      const comCusto = rows.reduce((n, r) => n + r.qty, 0);
+      const valorComCusto = rows.reduce((s, r) => s + r.total, 0);
+      if (comCusto < totalCopies) nota = `<p class="pf-coverage">${escapeHtml(t("portfolio.invest.costCoverage", { n: comCusto, total: totalCopies, pct: rawTotal > 0 ? Math.round((valorComCusto / rawTotal) * 100) : 0 }))}</p>`;
+    } else if (aba.lente === "week") {
+      const desde = Object.values(deltasByGame).filter(Boolean).map((d) => d.from).filter(Boolean).sort()[0];
+      const efeito = rows.reduce((s, r) => s + r.chg, 0);
+      nota = `<p class="pf-moves-sum"><strong class="${cls(efeito)}"><span class="sensitive-value">${escapeHtml(signedMoney(efeito))}</span></strong>
+        <span>${escapeHtml(t("portfolio.moves.net"))}${desde ? " · " + escapeHtml(t("market.deltaSince", { date: diaCurto(desde) })) : ""}</span></p>`;
+    }
+    sec.innerHTML = cabecalho(t("portfolio.hold.title"), tn("portfolio.kpi.copies", todas.reduce((n, r) => n + r.qty, 0)))
+      + abas("lente", lentes, aba.lente) + nota + corpo;
+    sec.hidden = false;
+  }
+
+  // Rosca de alocação (a lateral da versão A): cada fatia é um arco de um
+  // círculo só (stroke-dasharray), com 1,5 px de folga entre elas. No centro,
+  // a maior fatia em % — "68% Pokémon" é a primeira coisa que a rosca diz.
+  function rosca(fatias, total) {
+    const S = 132, C0 = S / 2, R = 50, ESP = 16;
+    const circ = 2 * Math.PI * R;
+    let acc = 0;
+    const arcos = fatias.map((f) => {
+      const len = (f.value / total) * circ;
+      const vis = Math.max(0, len - (fatias.length > 1 ? 1.5 : 0));
+      const arco = `<circle cx="${C0}" cy="${C0}" r="${R}" fill="none" stroke="${f.color}" stroke-width="${ESP}" stroke-dasharray="${vis.toFixed(2)} ${(circ - vis).toFixed(2)}" stroke-dashoffset="${(-acc).toFixed(2)}" transform="rotate(-90 ${C0} ${C0})"><title>${escapeHtml(f.label)}</title></circle>`;
+      acc += len;
+      return arco;
+    }).join("");
+    const maior = fatias[0];
+    const pct = maior ? Math.round((maior.value / total) * 100) : 0;
+    return `<div class="pf-donut"><svg viewBox="0 0 ${S} ${S}" width="${S}" height="${S}" aria-hidden="true">
+        <circle cx="${C0}" cy="${C0}" r="${R}" fill="none" stroke="var(--panel-strong)" stroke-width="${ESP}"/>${arcos}</svg>
+      ${maior ? `<span class="pf-donut-mid"><strong>${pct}%</strong><small>${escapeHtml(maior.label)}</small></span>` : ""}</div>`;
+  }
+
   // ---- Onde está o valor -----------------------------------------------------
   // Era três blocos com três desenhos (composição por tipo, barras por jogo e o
   // detalhamento por set/raridade/artista). Virou UMA seção com abas: a mesma
@@ -1299,7 +1437,7 @@
       return (p >= 10 ? Math.round(p) : p.toLocaleString(loc, { maximumFractionDigits: 1 })) + "%";
     };
     // A soma das fatias pode ficar abaixo do total (carta sem raridade, slab sem
-    // carta no catálogo): a barra é proporcional ao TOTAL, e o que não tem
+    // carta no catálogo): a rosca é proporcional ao TOTAL, e o que não tem
     // chave fica de fora em vez de esticar as outras.
     const LIM = 6;
     const visiveis = aberta.alloc ? fatias.slice(0, 40) : fatias.slice(0, LIM);
@@ -1307,8 +1445,6 @@
     const restoValor = resto.reduce((s, f) => s + f.value, 0);
     const naBarra = fatias.slice(0, PALETA.length);
     const barraResto = fatias.slice(PALETA.length).reduce((s, f) => s + f.value, 0);
-    const barra = `<div class="pf-alloc-bar" aria-hidden="true">${naBarra.map((f) =>
-      `<span style="width:${((f.value / total) * 100).toFixed(2)}%;background:${f.color}" title="${escapeAttribute(`${f.label} · ${pctDe(f.value)}`)}"></span>`).join("")}${barraResto > 0 ? `<span style="width:${((barraResto / total) * 100).toFixed(2)}%;background:var(--line)"></span>` : ""}</div>`;
     const miolo = (f) => `<span class="pf-dot" style="background:${f.color}"></span>
       <span class="pf-alloc-name" title="${escapeAttribute(f.label)}">${escapeHtml(f.label)}</span>
       <span class="pf-alloc-n">${escapeHtml(tn("portfolio.kpi.copies", f.n))}</span>
@@ -1334,73 +1470,14 @@
       const outros = resto.length
         ? `<li><div class="pf-alloc-row is-rest">${miolo({ label: t("portfolio.alloc.others", { n: resto.length }), value: restoValor, n: resto.reduce((s, f) => s + f.n, 0), color: "var(--line)" })}</div></li>`
         : "";
-      corpo = barra + `<ul class="pf-alloc-list">${visiveis.map(linha).join("")}${outros}</ul>`
+      corpo = rosca(naBarra.concat(barraResto > 0 ? [{ label: t("portfolio.alloc.others", { n: fatias.length - naBarra.length }), value: barraResto, color: "var(--line)" }] : []), total)
+        + `<ul class="pf-alloc-list">${visiveis.map(linha).join("")}${outros}</ul>`
         + (fatias.length > LIM ? botaoMais("alloc", fatias.length - LIM, aberta.alloc) : "");
     }
     sec.innerHTML = cabecalho(t("portfolio.alloc.title")) + abas("alloc", opcoes, aba.alloc) + corpo;
     sec.hidden = false;
   }
 
-  // ---- Cartas mais valiosas ---------------------------------------------------
-  // Raw + graded juntos, por valor do lote/slab. Era uma tabela de seis colunas
-  // que no celular rolava de lado; agora é a lista com a arte, e o lote
-  // (variante, condição, nota) vira etiqueta. A concentração ("as 10 mais
-  // valiosas são 82% do patrimônio") é o dado de risco que nenhum concorrente
-  // mostra: diz o quanto o seu patrimônio depende de poucas cartas.
-  function linhasDoTopo() {
-    const { lines } = collectionLines(gameFilter);
-    const rows = lines.map((line) => ({
-      card: line.card,
-      tags: [line.variant, line.condition],
-      estTitle: line.source === "ref" ? t("portfolio.estRef") : line.source === "myp" ? t("portfolio.estMyp") : t("portfolio.estimated"),
-      estimated: line.estimated,
-      qty: line.quantity, unit: line.unit, total: line.total
-    }));
-    gradedSlabs(gameFilter).forEach((s) => {
-      const card = cardsById.get(s.cardId);
-      if (!card || !(s.value > 0)) return;
-      rows.push({
-        card, grade: `${String(s.company || "").toUpperCase()} ${shared.gradedGradeText(s.grade, s.pristine)}`,
-        estimated: false, qty: 1, unit: s.value, total: s.value
-      });
-    });
-    return rows.filter((r) => r.total > 0).sort((a, b) => b.total - a.total);
-  }
-  function renderTop() {
-    const sec = elements.top;
-    if (!sec) return;
-    const rows = linhasDoTopo();
-    elements.empty.hidden = rows.length > 0;
-    if (!rows.length) { sec.hidden = true; sec.innerHTML = ""; return; }
-    const total = rows.reduce((s, r) => s + r.total, 0);
-    const LIM = 10;
-    const visiveis = aberta.top ? rows.slice(0, 200) : rows.slice(0, LIM);
-    let sub = "";
-    if (rows.length > LIM && total > 0) {
-      const topo = rows.slice(0, LIM).reduce((s, r) => s + r.total, 0);
-      sub = t("portfolio.top.share", { n: LIM, pct: Math.round((topo / total) * 100) });
-    }
-    const corpo = visiveis.map((r, i) => {
-      const tags = r.grade
-        ? `<span class="pf-tag pf-tag-grade">${escapeHtml(r.grade)}</span>`
-        : r.tags.filter(Boolean).map((x) => `<span class="pf-tag">${escapeHtml(x)}</span>`).join("");
-      const est = r.estimated ? ` <span class="price-estimated" title="${escapeAttribute(r.estTitle)}">≈</span>` : "";
-      return linhaCarta({
-        card: r.card, rank: i + 1, tags,
-        valor: `<strong><span class="sensitive-value">${escapeHtml(money(r.total))}</span>${est}</strong>`,
-        apoio: r.qty > 1
-          ? `×${r.qty} · <span class="sensitive-value">${escapeHtml(t("portfolio.top.each", { v: money(r.unit) }))}</span>`
-          : escapeHtml(t("portfolio.top.ofTotal", { pct: pctTxt((r.total / total) * 100) }))
-      });
-    }).join("");
-    sec.innerHTML = cabecalho(t("portfolio.topCards"), sub)
-      // --pf-linhas: no desktop largo a lista vira duas colunas que enchem de
-      // cima pra baixo (1–5 na esquerda, 6–10 na direita), e a grade precisa
-      // saber quantas linhas cabem em cada uma.
-      + `<ol class="pf-rows pf-top-list" style="--pf-linhas:${Math.ceil(visiveis.length / 2)}">${corpo}</ol>`
-      + (rows.length > LIM ? botaoMais("top", rows.length - LIM, aberta.top) : "");
-    sec.hidden = false;
-  }
   // ---------------------------------------------------------------------------
   // Progressão — snapshot diário POR JOGO (em BRL), pro gráfico local somar/filtrar.
   // Esquema do ponto: {d, c, b, w} = raw, graded, desejos (em BRL).

@@ -8871,6 +8871,106 @@ button.pf-alloc-row:hover .pf-alloc-name, a.pf-alloc-row:hover .pf-alloc-name { 
   .pf-moves-count { margin-left: 0; }
 }
 
+/* ============================================================================
+   VERSÃO A "Corretora" (proposta de 2026-10-09, em cima da 3.0)
+   O centro é a lista de posições (agrupada por jogo, com as lentes Valor,
+   Semana e Lucro); a lateral fixa tem o resumo e a rosca de alocação. No
+   celular a lateral se desfaz e entra logo depois do gráfico.
+   ========================================================================== */
+.pf-a { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 12px; align-items: start; }
+.pf-a-main { min-width: 0; display: flex; flex-direction: column; gap: 12px; }
+.pf-a-main > .pf-card, .pf-a-main > .pf-grid2 { margin-bottom: 0; }
+/* A lateral acompanha a rolagem: a rosca e o resumo seguem à vista enquanto
+   a pessoa desce pela lista. */
+.pf-a-side { position: sticky; top: calc(var(--header-h, 56px) + 16px); display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.pf-a-side > .pf-card { margin-bottom: 0; }
+.pf-a-side .pf-summary { padding: 0; }
+.pf-a-side .pf-kpi { padding: 13px 18px; }
+.pf-a-side .pf-coverage-line { padding: 11px 18px 12px; }
+.pf-a-side .pf-card { padding: 18px; }
+.pf-a-side .pf-alloc-row { grid-template-columns: 10px minmax(0, 1fr) 44px auto; gap: 10px; font-size: 13.5px; }
+.pf-a-side .pf-alloc-n { display: none; }
+
+/* Rosca: um círculo só, cada fatia um arco; no centro a maior fatia. */
+.pf-donut { position: relative; width: 132px; margin: 2px auto 14px; }
+.pf-donut svg { display: block; }
+.pf-donut-mid { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; pointer-events: none; }
+.pf-donut-mid strong { font-size: 24px; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; }
+.pf-donut-mid small { max-width: 84px; margin-top: 3px; font-size: 11.5px; font-weight: 700; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Posições: cabeçalho das colunas + linhas na mesma grade. */
+.pf-hold-head, .pf-hold-row { display: grid; grid-template-columns: minmax(0, 1fr) 128px 76px 112px; align-items: center; gap: 12px; }
+.pf-hold-head.has-pnl, .pf-hold-row.has-pnl { grid-template-columns: minmax(0, 1fr) 128px 76px 104px 112px; }
+.pf-hold-head { padding: 0 0 8px; font-size: 11.5px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; color: var(--subtle); }
+.pf-hold-head span:not(:first-child) { text-align: right; }
+.pf-hold-row { min-height: 64px; padding: 8px 0; border-top: 1px solid var(--line); color: var(--text); text-decoration: none; }
+.pf-hold-list > li:first-child > .pf-hold-row { border-top: 0; }
+.pf-hold-row:hover .pf-row-main strong { color: var(--accent); }
+.pf-hold-card { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.pf-hold-qty, .pf-hold-chg, .pf-hold-pnl, .pf-hold-total { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; font-size: 13.5px; }
+.pf-hold-qty { color: var(--muted); }
+.pf-hold-chg, .pf-hold-pnl { font-weight: 800; }
+.pf-hold-chg { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; }
+.pf-hold-chg small { font-size: 11.5px; font-weight: 700; }
+.pf-hold-total strong { font-size: 14.5px; font-weight: 800; }
+.pf-hold-mob { display: none; }
+.pf-hold-na { color: var(--subtle); font-weight: 600; }
+/* Grupo por jogo: o cabeçalho recolhe o grupo (subtotal, % e semana nele). */
+.pf-hold-ghead {
+  display: flex; align-items: center; gap: 10px; width: 100%; min-height: 46px; padding: 0 2px;
+  border: 0; border-radius: 0; border-top: 1px solid var(--line); border-bottom: 2px solid var(--line);
+  background: var(--panel-strong); color: var(--text); font: inherit; font-size: 14px; text-align: left; cursor: pointer;
+}
+.pf-hold-ghead { padding: 0 12px; }
+.pf-hold-ghead strong { font-size: 15px; }
+.pf-hold-gmeta { flex: 1 1 auto; min-width: 0; font-size: 12.5px; color: var(--subtle); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pf-hold-geff { flex: none; font-size: 13px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.pf-hold-gval { flex: none; font-weight: 800; font-variant-numeric: tabular-nums; }
+.pf-hold-caret { flex: none; width: 18px; height: 18px; color: var(--muted); transition: transform .15s ease; }
+.pf-hold-group.is-closed .pf-hold-caret { transform: rotate(-90deg); }
+.pf-hold-group + .pf-hold-group { margin-top: 10px; }
+.pf-hold-group .pf-more { margin-bottom: 4px; }
+
+@media (max-width: 1180px) {
+  .pf-a { grid-template-columns: minmax(0, 1fr) 300px; }
+  .pf-hold-head, .pf-hold-row { grid-template-columns: minmax(0, 1fr) 110px 70px 104px; }
+  .pf-hold-head.has-pnl, .pf-hold-row.has-pnl { grid-template-columns: minmax(0, 1fr) 70px 96px 104px; }
+  .pf-hold-head.has-pnl > :nth-child(2), .pf-hold-row.has-pnl > .pf-hold-qty { display: none; }
+}
+@media (max-width: 960px) {
+  /* Uma coluna: a lateral se desfaz e cada bloco ganha a sua ordem —
+     gráfico, resumo, posições, rosca e o resto. O `order` não muda o DOM. */
+  /* stretch (e não o start da grade do desktop): com start, cada bloco
+     ficava da largura do próprio conteúdo, e o SVG do gráfico — que tem a
+     largura em px — empurrava a tela pro lado. */
+  .pf-a { display: flex; flex-direction: column; align-items: stretch; }
+  .pf-a-main, .pf-a-side { display: contents; }
+  .pf-main-a #portfolioChart { order: 1; }
+  .pf-main-a #pfSummary { order: 2; }
+  .pf-main-a #pfHoldings, .pf-main-a #emptyState { order: 3; }
+  .pf-main-a #pfAlloc { order: 4; }
+  .pf-main-a #pfInvest { order: 5; }
+  .pf-main-a .pf-end { order: 6; }
+  .pf-kpis[data-n="5"] .pf-kpi:last-child { grid-column: 1 / -1; }
+  /* A rosca ao lado da legenda, e não em cima dela, quando a largura sobra. */
+  .pf-main-a #pfAlloc:not([hidden]) { display: grid; grid-template-columns: 132px minmax(0, 1fr); column-gap: 20px; align-items: start; }
+  .pf-main-a #pfAlloc > .pf-sec-head, .pf-main-a #pfAlloc > .pf-tabs, .pf-main-a #pfAlloc > .pf-more, .pf-main-a #pfAlloc > .pf-empty { grid-column: 1 / -1; }
+  .pf-main-a #pfAlloc .pf-donut { margin: 0; }
+}
+@media (max-width: 700px) {
+  .pf-hold-head { display: none; }
+  .pf-hold-row, .pf-hold-row.has-pnl { grid-template-columns: minmax(0, 1fr) auto; }
+  .pf-hold-qty, .pf-hold-chg, .pf-hold-pnl { display: none !important; }
+  .pf-hold-total { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+  .pf-hold-mob { display: block; font-size: 12px; font-weight: 800; }
+  .pf-hold-gmeta { display: none; }
+  .pf-hold-ghead strong { flex: 1 1 auto; }
+}
+@media (max-width: 420px) {
+  .pf-main-a #pfAlloc:not([hidden]) { grid-template-columns: minmax(0, 1fr); }
+  .pf-main-a #pfAlloc .pf-donut { margin: 0 auto 12px; }
+}
+
 .tile-want:hover:not(:disabled) {
   border-color: #f0719a;
   color: #f0719a;

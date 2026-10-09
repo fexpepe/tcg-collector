@@ -61,7 +61,7 @@
       </div>
     </header>
 
-    <main class="pf-main">
+    <main class="pf-main pf-main-a">
       <div class="page-head pf-head dash-head">
         <h1 data-i18n="nav.portfolio">Portfólio</h1>
         <!-- Linha de baixo do cabeçalho (2026-09-10): "← Hub" à esquerda e as
@@ -93,63 +93,57 @@
         <button type="button" class="chip" data-game-filter="all" aria-pressed="true" data-i18n="filter.gameAll">Todos</button>
       </div>
 
-      <!-- TOPO (2026-10-09, Portfólio 3.0): o patrimônio É o cabeçalho do
-           gráfico — um número grande só, que o scrub move junto com o dedo.
-           Antes havia dois (o do gráfico e o do cartão "patrimônio"), a um
-           polegar de distância e às vezes discordando no centavo. Ao lado, o
-           resumo em quatro peças; no celular ele vira uma grade 2×2 embaixo. -->
-      <div class="pf-top">
-        <section id="portfolioChart" class="pf-hero" data-i18n-aria="portfolio.chart.title" aria-label="Progressão do portfólio">
-          <div class="pf-hero-head">
-            <p class="pf-eyebrow"><span data-i18n="portfolio.eyebrow">Patrimônio</span> <small data-i18n="portfolio.eyebrowSub">cartas + graded</small></p>
-            <strong id="grandTotal" class="pf-hero-value sensitive-value">—</strong>
-            <!-- Variação da FAIXA escolhida (ou do dia sob o dedo, no scrub). -->
-            <p id="pfChartDelta" class="pf-hero-delta"></p>
-            <!-- Variação do DIA (padrão corretora): dos MESMOS pontos do gráfico. -->
-            <p id="grandDelta" class="pf-hero-today" hidden></p>
+      <!-- VERSÃO A "Corretora" (2026-10-09): a tela de posições das corretoras
+           e do Collectr. O centro é UMA lista de tudo o que você tem, agrupada
+           por jogo, com três lentes (valor, semana, lucro) — ela substitui as
+           seções separadas de Mais valiosas, Movimentos e Posições. A lateral
+           (no celular, logo abaixo do gráfico) tem o resumo e a rosca de
+           alocação. -->
+      <div class="pf-a">
+        <div class="pf-a-main">
+          <section id="portfolioChart" class="pf-hero" data-i18n-aria="portfolio.chart.title" aria-label="Progressão do portfólio">
+            <div class="pf-hero-head">
+              <p class="pf-eyebrow"><span data-i18n="portfolio.eyebrow">Patrimônio</span> <small data-i18n="portfolio.eyebrowSub">cartas + graded</small></p>
+              <strong id="grandTotal" class="pf-hero-value sensitive-value">—</strong>
+              <p id="pfChartDelta" class="pf-hero-delta"></p>
+              <p id="grandDelta" class="pf-hero-today" hidden></p>
+            </div>
+            <div class="pf-chart-tools">
+              <div id="pfChartModes" class="pf-modes" role="group" data-i18n-aria="aria.chartMode" aria-label="Modo do gráfico" hidden></div>
+              <div id="pfSeries" class="pf-legend" role="group" data-i18n-aria="portfolio.chart.modeSeries" aria-label="Séries"></div>
+            </div>
+            <div id="pfChartBody" class="pf-chart-body"></div>
+            <div id="pfRanges" class="pf-seg pf-ranges" role="group" data-i18n-aria="aria.period" aria-label="Período"></div>
+          </section>
+
+          <section id="pfHoldings" class="pf-card pf-a-holdings" aria-live="polite" hidden></section>
+          <p id="emptyState" class="empty-state" data-i18n-html="portfolio.empty" hidden>Nenhuma carta com preço ainda. Abra uma carta da sua <a href="collection">coleção</a>, confira o valor nos sites (Liga, LigaBRA, MYP) e registre no campo "Preço BR".</p>
+
+          <section id="pfInvest" class="pf-card" data-i18n-aria="sales.sold.heading" aria-label="Vendas realizadas" hidden></section>
+          <div class="pf-grid2 pf-end">
+            <section id="pfGoals" class="pf-card" data-i18n-aria="aria.listsBindersValue" aria-label="Valor das listas e binders" hidden></section>
+            <section id="pfManual" class="pf-card pf-manual" data-i18n-aria="pfmi.title" aria-label="Selados e itens manuais"></section>
           </div>
-          <div class="pf-chart-tools">
-            <!-- Total × Por jogo (+ o % e o Mercado). Só com 2+ jogos com histórico. -->
-            <div id="pfChartModes" class="pf-modes" role="group" data-i18n-aria="aria.chartMode" aria-label="Modo do gráfico" hidden></div>
-            <div id="pfSeries" class="pf-legend" role="group" data-i18n-aria="portfolio.chart.modeSeries" aria-label="Séries"></div>
-          </div>
-          <div id="pfChartBody" class="pf-chart-body"></div>
-          <div id="pfRanges" class="pf-seg pf-ranges" role="group" data-i18n-aria="aria.period" aria-label="Período"></div>
-        </section>
+        </div>
 
-        <section id="pfSummary" class="pf-summary" data-i18n-aria="aria.sumPortfolio" aria-label="Resumo do portfólio">
-          <div id="pfKpis" class="pf-kpis">
-            <a class="pf-kpi" href="collection">
-              <span class="pf-kpi-label" data-i18n="portfolio.series.collection">Cartas (raw)</span>
-              <strong id="rawValue" class="pf-kpi-value sensitive-value">—</strong>
-              <small id="rawCopies" class="pf-kpi-sub"></small>
-            </a>
-            <a class="pf-kpi" href="graded">
-              <span class="pf-kpi-label" data-i18n="portfolio.series.graded">Graded</span>
-              <strong id="gradedValue" class="pf-kpi-value sensitive-value">—</strong>
-              <small id="gradedCount" class="pf-kpi-sub"></small>
-            </a>
-          </div>
-          <p id="pricedCopies" class="pf-coverage-line"></p>
-        </section>
-      </div>
-
-      <div class="pf-grid2 pf-mid">
-        <section id="pfAlloc" class="pf-card" data-i18n-aria="aria.portfolioMix" aria-label="Composição do portfólio" hidden></section>
-        <section id="pfMovers" class="pf-card" data-i18n-aria="aria.weekMovers" aria-label="Maiores altas e quedas da semana" hidden></section>
-      </div>
-
-      <section id="pfTop" class="pf-card" aria-live="polite" hidden></section>
-      <p id="emptyState" class="empty-state" data-i18n-html="portfolio.empty" hidden>Nenhuma carta com preço ainda. Abra uma carta da sua <a href="collection">coleção</a>, confira o valor nos sites (Liga, LigaBRA, MYP) e registre no campo "Preço BR".</p>
-
-      <section id="pfInvest" class="pf-card" data-i18n-aria="aria.positions" aria-label="Posições (custo e lucro potencial)" hidden></section>
-
-      <!-- Metas e selados: FORA do patrimônio (o total tem que bater com a
-           Coleção no centavo). A seção de selados fica visível mesmo vazia DE
-           PROPÓSITO: é o único ponto de entrada dela. -->
-      <div class="pf-grid2 pf-end">
-        <section id="pfGoals" class="pf-card" data-i18n-aria="aria.listsBindersValue" aria-label="Valor das listas e binders" hidden></section>
-        <section id="pfManual" class="pf-card pf-manual" data-i18n-aria="pfmi.title" aria-label="Selados e itens manuais"></section>
+        <aside class="pf-a-side">
+          <section id="pfSummary" class="pf-summary" data-i18n-aria="aria.sumPortfolio" aria-label="Resumo do portfólio">
+            <div id="pfKpis" class="pf-kpis">
+              <a class="pf-kpi" href="collection">
+                <span class="pf-kpi-label" data-i18n="portfolio.series.collection">Cartas (raw)</span>
+                <strong id="rawValue" class="pf-kpi-value sensitive-value">—</strong>
+                <small id="rawCopies" class="pf-kpi-sub"></small>
+              </a>
+              <a class="pf-kpi" href="graded">
+                <span class="pf-kpi-label" data-i18n="portfolio.series.graded">Graded</span>
+                <strong id="gradedValue" class="pf-kpi-value sensitive-value">—</strong>
+                <small id="gradedCount" class="pf-kpi-sub"></small>
+              </a>
+            </div>
+            <p id="pricedCopies" class="pf-coverage-line"></p>
+          </section>
+          <section id="pfAlloc" class="pf-card" data-i18n-aria="aria.portfolioMix" aria-label="Composição do portfólio" hidden></section>
+        </aside>
       </div>
 
       <p class="portfolio-note" data-i18n="portfolio.note">Patrimônio = tudo o que você tem (cartas + graded), igual à sua Coleção. Binders e wishlist são visões, não somam ao patrimônio. Valores na moeda do topo; condições sem preço próprio são estimadas a partir do NM.</p>
