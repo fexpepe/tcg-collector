@@ -1,0 +1,10 @@
+{
+  "appId": "app.sleevu",
+  "appName": "Sleevu",
+  "webDir": "www",
+  "plugins": {
+    "CapacitorUpdater": {
+      "autoUpdate": "atBackground"
+    }
+  }
+}

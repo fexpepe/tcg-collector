@@ -1074,7 +1074,7 @@
     const res = await shared.createShare("collection", listName(current), data, current.game || undefined);
     if (btn) btn.disabled = false;
     if (res && res.id) {
-      const link = `${window.location.origin}${window.location.pathname.replace(/[^/]*$/, "")}collection?s=${res.id}`;
+      const link = `${window.SLEEVU.origem}${window.location.pathname.replace(/[^/]*$/, "")}collection?s=${res.id}`;
       try { await navigator.clipboard.writeText(link); setLabel(t("collection.share.copied")); setOk(true); }
       catch (e) { shared.caixaDeTexto({ titulo: t("collection.share.copyManual"), valor: link, leitura: true }); setLabel(original); }
     } else {

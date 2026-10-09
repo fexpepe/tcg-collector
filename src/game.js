@@ -475,6 +475,12 @@
     // Endereço da tela de Sets de um jogo (e linha), e o de um set: os links
     // da tela de Sets, do hub e do "compartilhar" saem daqui.
     urlDoJogo: urlDoJogo,
-    urlDoSet: urlDoSet
+    urlDoSet: urlDoSet,
+    // Origem dos links que saem daqui pra outra pessoa (compartilhar binder,
+    // deck, coleção, carta). No site é a própria; no app (Capacitor) a página
+    // roda em capacitor://localhost ou https://localhost, e o link copiado
+    // tem que ser o do sleevu.app — a ponte do app (mobile/web/app-nativo.js)
+    // diz qual em window.SLEEVU_APP.
+    origem: (window.SLEEVU_APP && window.SLEEVU_APP.origem) || location.origin
   };
 })();

@@ -2472,7 +2472,7 @@
       const res = await shared.createShare("binder", binder.name, binder);
       shareBtn.disabled = false;
       if (res && res.id) {
-        const link = `${window.location.origin}${window.location.pathname.replace(/[^/]*$/, "")}binders?s=${res.id}`;
+        const link = `${window.SLEEVU.origem}${window.location.pathname.replace(/[^/]*$/, "")}binders?s=${res.id}`;
         if (shared.compartilharLink(t("binders.share.copied"), link)) {
           shareBtn.textContent = t("binders.share.copied");
         } else {

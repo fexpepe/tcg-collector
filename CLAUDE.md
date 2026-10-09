@@ -39,6 +39,28 @@ a PR.
 Se a feature ficou pela metade (bloqueio, dúvida que muda o resultado), não
 abre PR: commita na branch, sobe a branch e diz o que falta.
 
+## App (mobile/) anda junto com o site
+
+O app (Capacitor, [mobile/README.md](mobile/README.md)) roda o mesmo código do
+site, servido de dentro do aparelho, sem a borda da Cloudflare. Página nova
+entra no app sozinha. O que **não** entra sozinho:
+
+- **Endereço novo servido pela borda** (Function nova, regra nova no
+  `_redirects`): precisa entrar no `destino()` da ponte
+  (`mobile/web/app-nativo.js`), com o caso no `tests/app-web.test.mjs`. Senão,
+  no app, o endereço abre a página de erro.
+- **Arquivo novo que só existe no servidor** fora de `/data/` e `/api/` (gerado
+  no deploy): precisa entrar no `SERVIDOR` da ponte.
+- **Link pra outra pessoa** (compartilhar): sai de `SLEEVU.origem`, nunca de
+  `location.origin`, que no app é o endereço do aparelho.
+
+Mexeu em `mobile/`, na ponte ou no `scripts/app-web.mjs`: o
+`app-nativo.yml` compila Android e iOS na PR. Se a mudança aparece na tela,
+confira no ensaio do pacote no navegador (receita no `mobile/README.md`).
+
+**Tag `vX.Y.Z` dispara build de LOJA no Codemagic.** O Claude não cria nem
+sobe tag de versão sem o Fernando pedir aquela versão na conversa.
+
 ## Carta, set, linha ou jogo novo no catálogo
 
 Segue o [docs/CATALOGO.md](docs/CATALOGO.md). Jogo ou linha nova só vira PR com

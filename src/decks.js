@@ -2393,7 +2393,7 @@
           current.publishedId = res.id;
           current.publishedAt = Date.now();
           touch(current);
-          const url = `${location.origin}${location.pathname.replace(/[^/]*$/, "")}decks?s=${res.id}`;
+          const url = `${window.SLEEVU.origem}${location.pathname.replace(/[^/]*$/, "")}decks?s=${res.id}`;
           try { await navigator.clipboard.writeText(url); } catch (e) { /* sem clipboard: o prompt abaixo cobre */ }
           // No celular o link vai direto pro grupo pelo sheet do sistema; sem
           // suporte (desktop, webview), segue o prompt de sempre com a URL.
