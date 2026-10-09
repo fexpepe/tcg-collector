@@ -21,6 +21,10 @@ data/set-pages/
 # derivados do pricing.generated + chunks — nunca versionados)
 data/pricing-chunks/
 data/*/pricing-chunks/
+# Fragmentos do histórico de preço (split-pricing.mjs, todo deploy; derivados
+# do price-history + chunks — nunca versionados)
+data/history-shards/
+data/*/history-shards/
 # Magic segue o padrão POKÉMON: chunks versionados (delta pequeno por set no
 # git), e o cards.js monolítico (~30MB, mudaria toda semana = blob novo gigante)
 # fica de fora — é regenerado dos chunks no build (sync-magic.mjs --no-fetch).

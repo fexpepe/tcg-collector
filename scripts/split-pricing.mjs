@@ -22,9 +22,17 @@
 // caminho rápido (foi exatamente assim que a tela de Sets perdeu os logos).
 // Idempotente: apaga e reescreve os diretórios pricing-chunks/ inteiros.
 //
+// Desde 2026-10-08 escreve também os FRAGMENTOS do histórico de preço
+// (history-shards/<k>.json + a flag `hs` no manifest): o popup de uma carta
+// baixava o price-history do jogo inteiro (1,5 MB brotli no Pokémon). Aqui e
+// não no sync-price-history pela mesma razão dos chunks de preço — o build
+// rápido pula os syncs e restaura o histórico do cache. O desenho e o porquê
+// de não ser um arquivo por set estão em scripts/lib/history-shards.mjs.
+//
 // Uso: node scripts/split-pricing.mjs
 import { readFile, writeFile, mkdir, rm } from "node:fs/promises";
 import { basePricingId } from "./lib/sync-common.mjs";
+import { montaFragmentos } from "./lib/history-shards.mjs";
 
 const RAIZ = new URL("../", import.meta.url);
 const DIRS = [
@@ -38,6 +46,9 @@ async function leGlobal(caminho, nomeDaVar) {
   const igual = texto.indexOf("=");
   if (igual < 0 || !texto.includes(nomeDaVar)) throw new Error(`${caminho} sem ${nomeDaVar}`);
   return JSON.parse(texto.slice(igual + 1).trim().replace(/;\s*$/, ""));
+}
+async function leJson(caminho) {
+  try { return JSON.parse(await readFile(new URL(caminho, RAIZ), "utf8")); } catch { return null; }
 }
 
 let jogos = 0;
@@ -57,6 +68,7 @@ for (const dir of DIRS) {
   }
 
   let escritos = 0, entradasTotais = 0;
+  const idsPorSet = new Map(); // setId -> ids das cartas (pros fragmentos do histórico)
   for (const entrada of manifest.sets) {
     if (!entrada.file || !entrada.file.includes("/sets/")) continue;
     let cartas;
@@ -67,6 +79,10 @@ for (const dir of DIRS) {
       if (pricing[id]) tabela[id] = pricing[id];
       const base = basePricingId(id);
       if (base !== id && pricing[base]) tabela[base] = pricing[base];
+      // O setId DA CARTA, que é o que o cliente tem na mão ao abrir o popup.
+      const setId = carta.setId || entrada.id;
+      if (!idsPorSet.has(setId)) idsPorSet.set(setId, new Set());
+      idsPorSet.get(setId).add(id);
     }
     const destino = entrada.file.replace("/sets/", "/pricing-chunks/");
     await mkdir(new URL(destino.replace(/\/[^/]+$/, "/"), RAIZ), { recursive: true });
@@ -79,8 +95,33 @@ for (const dir of DIRS) {
   // A flag no manifest é o contrato com o cliente: pc presente = pode pular o
   // monólito e confiar que todo chunk de carta tem o irmão de preço.
   manifest.pc = 1;
+
+  // Fragmentos do histórico (ver o cabeçalho). Sem price-history (dev, jogo
+  // sem preço) a flag `hs` sai e o cliente fica nos arquivos inteiros.
+  await rm(new URL(`${dir}history-shards/`, RAIZ), { recursive: true, force: true });
+  const montados = montaFragmentos({
+    hist: await leJson(`${dir}price-history.generated.json`),
+    deltas: await leJson(`${dir}price-deltas.generated.json`),
+    graded: await leJson(`${dir}graded-history.generated.json`),
+    idsPorSet,
+    basePricingId
+  });
+  let resumoHist = "sem histórico";
+  if (montados) {
+    await mkdir(new URL(`${dir}history-shards/`, RAIZ), { recursive: true });
+    let bytes = 0;
+    for (let k = 0; k < montados.n; k++) {
+      const texto = JSON.stringify(montados.fragmentos[k]);
+      bytes = Math.max(bytes, texto.length);
+      await writeFile(new URL(`${dir}history-shards/${k}.json`, RAIZ), texto, "utf8");
+    }
+    manifest.hs = montados.n;
+    resumoHist = `${montados.n} fragmento(s) de histórico, o maior com ${Math.round(bytes / 1024)} KB`;
+  } else {
+    delete manifest.hs;
+  }
   await writeFile(new URL(`${dir}manifest.generated.js`, RAIZ), `window.TCG_MANIFEST = ${JSON.stringify(manifest)};\n`, "utf8");
-  console.log(`split-pricing: ${dir} — ${escritos} chunks de preço (${entradasTotais} entradas; monólito com ${Object.keys(pricing).length})`);
+  console.log(`split-pricing: ${dir} — ${escritos} chunks de preço (${entradasTotais} entradas; monólito com ${Object.keys(pricing).length}); ${resumoHist}`);
   jogos++;
 }
 if (!jogos) {
