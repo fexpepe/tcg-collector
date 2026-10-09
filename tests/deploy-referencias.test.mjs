@@ -234,3 +234,24 @@ test("nenhuma Function importa de pasta que o deploy apaga antes do wrangler", (
   }
   assert.deepEqual(problemas, []);
 });
+
+// 2026-10-09: o build-deploy da PR do /admin v3 parou em "os hashes não
+// estabilizaram (referência circular dentro de src/?)". Um texto do admin.js
+// citava "src/admin.js" numa STRING: o hash-assets troca o caminho pelo nome
+// com hash, isso muda o próprio conteúdo, o hash muda de novo — e nunca
+// converge. Em comentário não faz mal (o esbuild apaga antes do hash-assets;
+// o ads.js e o export-liga.js se citam assim). A regex é a do hash-assets.
+test("nenhum src/*.js cita o próprio caminho fora de comentário (o hash-assets não converge)", () => {
+  // Tira /* … */ e // até o fim da linha (menos o // de "https://" e de
+  // dentro de aspas): sobra mais texto do que o esbuild deixaria, então o
+  // teste pode acusar a mais, nunca a menos.
+  const semComentario = (s) => s.replace(/\/\*[\s\S]*?\*\//g, "").replace(/(^|[^:"'`\\])\/\/.*$/gm, "$1");
+  const escapa = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const problemas = [];
+  for (const arq of readdirSync(join(raiz, "src")).filter((f) => f.endsWith(".js"))) {
+    const caminho = `src/${arq}`;
+    const re = new RegExp(`(?<![\\w.-])(?:\\.?/)?${escapa(caminho)}(?!\\.map)\\b`);
+    if (re.test(semComentario(readFileSync(join(raiz, caminho), "utf8")))) problemas.push(caminho);
+  }
+  assert.deepEqual(problemas, [], `cita o próprio caminho fora de comentário: ${problemas.join(", ")}`);
+});
