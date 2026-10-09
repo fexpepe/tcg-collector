@@ -13,7 +13,7 @@ e push, ficou de fora por risco de depender de um fornecedor só.
 
 | Caminho | O que é |
 |---|---|
-| `mobile/package.json` | Capacitor, o plugin do Capgo e o `@capacitor/app`, com versões fixas. `npm ci` usa o `package-lock.json` |
+| `mobile/package.json` | Capacitor, o plugin do Capgo, o `@capacitor/app` e o `@capacitor/browser` (login), com versões fixas. `npm ci` usa o `package-lock.json` |
 | `mobile/capacitor.config.json` | `appId` **`app.sleevu`** (permanente nas lojas), `webDir` `www`, live update `atBackground` |
 | `mobile/android/`, `mobile/ios/` | Projetos nativos versionados. iOS usa Swift Package Manager (sem CocoaPods) |
 | `mobile/web/app-nativo.js` | A **ponte**: 1º script de toda página do app (ver abaixo) |
@@ -68,11 +68,46 @@ de quatro coisas:
     `@capacitor/app`);
   - o erro leva o commit do pacote (`<meta name="sleevu-build" content="app-<sha>">`);
   - os detalhes estão no `docs/PLANO-ANALYTICS-3.md`, seção 4;
-- o `<html>` ganha `data-iab="app"`, que esconde o login com Google (ver Limites).
+- o `<html>` ganha `data-iab="app"`, e a página de login vira o botão que abre o login no navegador (ver Login).
 
 **Do lado do servidor** entra só o CORS. O catálogo estático manda
 `Access-Control-Allow-Origin: *` (no `_headers`). As APIs `/api/*` liberam só as
 duas origens do app (`functions/api/_middleware.js`): o D1 cobra por linha lida.
+
+## Login
+
+O app **não** faz login dentro dele, por dois motivos:
+- o Turnstile (o captcha do link mágico) não roda na origem do app;
+- o Google recusa login em WebView embutido.
+
+O caminho:
+1. **A página de login do app** (`html[data-iab="app"]`) mostra só um texto e o
+   botão **Entrar**, que chama `SLEEVU_APP.entrar()` na ponte.
+2. **A ponte gera um segredo PKCE** e guarda no `localStorage` por 30 min.
+   Depois abre o login **do site** no navegador do sistema (plugin Browser:
+   Custom Tab no Android, Safari no iOS), em
+   `https://sleevu.app/login?app=<desafio>&m=s256&p=<android|ios>`.
+3. **Lá o login é o de sempre** (Turnstile e Google funcionam), com um aviso de
+   que é o app.
+   - O `login.js` guarda o pedido no `sessionStorage`.
+   - O `shared.js` (`voltaDoLogin`) manda o link mágico e o Google voltarem pra
+     **`app.sleevu://login?code=…`**, com o desafio.
+   - No iOS o Google some (ver Limites).
+4. **O sistema abre o app pela volta.** O esquema `app.sleevu` está registrado
+   no `AndroidManifest.xml` e no `Info.plist`.
+   - A ponte troca o código pela sessão (`/auth/v1/token?grant_type=pkce`) com o
+     segredo e vai pra `/login.html#access_token=…`.
+   - Dali em diante é o caminho do site: `consumeAuthRedirect`, sincronização e Hub.
+5. **Quem interceptar o link de volta não entra**: tem o código, mas não o
+   segredo. O link do e-mail tem que ser aberto **no celular do app**; em
+   outro aparelho, a troca não acontece.
+
+Falhas que voltam pra página de login com aviso:
+- código sem segredo;
+- segredo vencido;
+- troca recusada pelo Supabase.
+
+Recusa do próprio Supabase (link vencido) mostra o motivo, como no site.
 
 ## Rodar
 
@@ -125,19 +160,19 @@ qualquer Android, com "fontes desconhecidas", e fala com produção.
   (padrão de upload). Feito em 2026-10-08.
 - **GitHub**: ambiente `app-live-update`, com o Fernando como revisor obrigatório, sem
   atalho de admin, só a `main` e o segredo `CAPGO_TOKEN`. Feito em 2026-10-09.
+- **Supabase, login no app**: em **Authentication → URL Configuration → Redirect
+  URLs**, incluir **`app.sleevu://login`**. Sem isso o Supabase ignora a volta pro
+  app e manda pro endereço padrão do site: a pessoa entra no SITE, não no app.
 - **R2 (`img.sleevu.app`)**: incluir `capacitor://localhost` e `https://localhost` no
   CORS do bucket. Sem isso, exportar imagem (binder, grade) com carta espelhada falha
   no app; o resto não depende disso.
 
 ## Limites conhecidos (próximos passos)
 
-1. **Login dentro do app.**
-   - O link mágico e o Google voltam pro navegador, não pro app.
-   - Falta deep link (`app.sleevu://` ou App Links/Universal Links) e o
-     endereço de volta liberado no Supabase.
-   - A Apple exige **Sign in with Apple** quando há login com Google.
-   - Por ora o app esconde o botão do Google (`data-iab="app"`); o visitante usa a
-     coleção local.
+1. **Entrar com Apple.** Login social no app obriga o "Entrar com Apple" junto
+   (regra 4.8 da App Store). Até ele existir, o login aberto pelo app no **iOS**
+   esconde o Google e fica só o e-mail. Precisa da conta Apple: a capacidade
+   "Sign in with Apple" no ID `app.sleevu` e o provedor Apple no Supabase.
 2. **Push nativo** (FCM/APNs). O Web Push não existe na WebView.
 3. **Bloqueios de loja já mapeados**:
    - denunciar e bloquear conteúdo de outros usuários;

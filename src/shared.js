@@ -10445,13 +10445,28 @@
     try { localStorage.removeItem(LAST_ACCOUNT_KEY); } catch (e) { /* ignora */ }
   }
 
+  // Pra onde o login volta. Normalmente, pra esta mesma página (o hash com os
+  // tokens é lido pelo consumeAuthRedirect). Quando o login foi pedido PELO
+  // APP (Capacitor, mobile/README.md), o app abriu esta página no navegador do
+  // sistema com ?app=<desafio PKCE> e o login.js guardou o desafio aqui: aí o
+  // link mágico e o Google voltam pro app (app.sleevu://login?code=…), e só o
+  // app — que guarda o segredo do desafio — troca o código por sessão. Quem
+  // interceptar o link não entra. Desafio fora do formato = login normal.
+  function voltaDoLogin() {
+    let app = null;
+    try { app = JSON.parse(sessionStorage.getItem("sleevu-login-app") || "null"); } catch (e) { /* sem storage */ }
+    if (app && /^[\w-]{43,128}$/.test(app.c) && /^(s256|plain)$/.test(app.m)) {
+      return { redirect: "app.sleevu://login", pkce: { code_challenge: app.c, code_challenge_method: app.m } };
+    }
+    return { redirect: window.location.origin + window.location.pathname, pkce: null };
+  }
   async function sendMagicLink(email, captchaToken) {
-    const redirect = window.location.origin + window.location.pathname;
+    const { redirect, pkce } = voltaDoLogin();
     // Turnstile (Cloudflare): com a proteção de captcha LIGADA no Supabase Auth,
     // o token vai em gotrue_meta_security e o Supabase valida no siteverify.
     // Sem token (widget bloqueado/omitido), o campo fica de fora — funciona
     // enquanto a proteção estiver desligada e falha explícito quando ligada.
-    const body = { email, create_user: true };
+    const body = Object.assign({ email, create_user: true }, pkce);
     if (captchaToken) body.gotrue_meta_security = { captcha_token: captchaToken };
     const res = await fetch(`${SUPABASE_URL}/auth/v1/otp?redirect_to=${encodeURIComponent(redirect)}`, {
       method: "POST", headers: authHeaders(), body: JSON.stringify(body)
@@ -10485,10 +10500,10 @@
   // certa escolhida, pulando o seletor pra quem segue logado lá. Se algum dia
   // o hint for ignorado, o pior que acontece é aparecer o seletor de sempre.
   function oauthSignIn(provider, extras) {
-    const redirect = window.location.origin + window.location.pathname;
+    const { redirect, pkce } = voltaDoLogin();
     let url = `${SUPABASE_URL}/auth/v1/authorize?provider=${encodeURIComponent(provider)}` +
       `&redirect_to=${encodeURIComponent(redirect)}`;
-    Object.entries(extras || {}).forEach(([chave, valor]) => {
+    Object.entries(Object.assign({}, extras, pkce)).forEach(([chave, valor]) => {
       if (valor) url += `&${encodeURIComponent(chave)}=${encodeURIComponent(valor)}`;
     });
     window.location.href = url;

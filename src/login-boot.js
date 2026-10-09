@@ -22,6 +22,15 @@
 // acontece aqui é a piscada voltar: nada quebra.
 (function () {
   try {
+    // Login pedido pelo APP (o app abriu esta página no navegador do sistema
+    // com ?app=…; o login.js guarda o pedido no sessionStorage). Aqui nunca é
+    // "entrando": a sessão que importa é a do app, não a deste navegador, e o
+    // formulário tem que aparecer mesmo pra quem já está logado no site. O
+    // atributo também esconde o Google no iOS antes da 1ª pintura (styles.css).
+    var q = window.location.search || "";
+    var pedido = /[?&]app=/.test(q) ? { p: /[?&]p=ios(&|$)/.test(q) ? "ios" : "android" }
+      : JSON.parse(sessionStorage.getItem("sleevu-login-app") || "null");
+    if (pedido && pedido.p) { document.documentElement.setAttribute("data-login-app", pedido.p === "ios" ? "ios" : "android"); return; }
     var entrando = (window.location.hash || "").indexOf("access_token") >= 0
       || sessionStorage.getItem("sleevu-entrando") === "1"
       || document.cookie.indexOf("sleevu_session=") >= 0

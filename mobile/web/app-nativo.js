@@ -67,6 +67,80 @@
     } catch (e) { /* segue com o voltar padrão */ }
   }
 
+  // ── Login ──────────────────────────────────────────────────────────────────
+  // O app não faz login aqui dentro: o Turnstile (captcha do link mágico) não
+  // roda na origem do app, e o Google recusa WebView embutido. O botão da
+  // página de login chama entrar(), que abre o login do SITE no navegador do
+  // sistema (plugin Browser: Custom Tab no Android, Safari no iOS) com um
+  // desafio PKCE. O link mágico e o Google voltam pra app.sleevu://login?code=…
+  // (shared.js, voltaDoLogin), e aqui o código é trocado por sessão com o
+  // SEGREDO que só o app guarda — quem interceptar o link não entra. Com a
+  // sessão em mãos o app vai pra /login.html#access_token=…, e daí em diante é
+  // o caminho de sempre do site (consumeAuthRedirect, sync, Hub pessoal).
+  var SUPABASE = { url: "", chave: "" }; /* SLEEVU_APP_SUPABASE */
+  var VOLTA = "app.sleevu://login";
+  var CHAVE_PKCE = "sleevu-app-pkce";
+  var VALIDADE_PKCE = 30 * 60 * 1000;
+  var plugins = (nativo && cap.Plugins) || {};
+  function base64url(bytes) {
+    return btoa(String.fromCharCode.apply(null, bytes)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+  }
+  function entrar() {
+    var navegador = plugins.Browser;
+    if (!navegador || typeof navegador.open !== "function") return Promise.resolve(false);
+    var bytes = new Uint8Array(32);
+    crypto.getRandomValues(bytes);
+    var segredo = base64url(bytes);
+    // S256 quando o WebView tem crypto.subtle; senão "plain" (o desafio é o
+    // próprio segredo, e ele só viaja no endereço https do navegador do
+    // sistema — nunca no link de volta, que é o que outro app poderia pegar).
+    var sub = window.crypto && window.crypto.subtle;
+    var desafio = sub
+      ? sub.digest("SHA-256", new TextEncoder().encode(segredo)).then(function (h) { return { c: base64url(new Uint8Array(h)), m: "s256" }; })
+      : Promise.resolve({ c: segredo, m: "plain" });
+    return desafio.catch(function () { return { c: segredo, m: "plain" }; }).then(function (d) {
+      // localStorage (e não sessionStorage): o Android pode fechar o app
+      // enquanto a pessoa está no navegador; a volta reabre o app do zero.
+      try { localStorage.setItem(CHAVE_PKCE, JSON.stringify({ v: segredo, t: Date.now() })); } catch (e) { return false; }
+      var alvo = ORIGEM + "/login?app=" + encodeURIComponent(d.c) + "&m=" + d.m + "&p=" + (plataforma === "ios" ? "ios" : "android");
+      return Promise.resolve(navegador.open({ url: alvo })).then(function () { return true; }, function () { return false; });
+    });
+  }
+  function trataVolta(endereco) {
+    if (typeof endereco !== "string" || endereco.indexOf(VOLTA) !== 0) return false;
+    // A mesma volta chega mais de uma vez: pelo evento e pelo getLaunchUrl de
+    // cada página da mesma abertura do app. Só a 1ª conta.
+    try {
+      if (sessionStorage.getItem("sleevu-app-volta") === endereco) return false;
+      sessionStorage.setItem("sleevu-app-volta", endereco);
+    } catch (e) { /* sem storage: segue */ }
+    if (plugins.Browser && typeof plugins.Browser.close === "function") {
+      try { Promise.resolve(plugins.Browser.close()).catch(function () {}); } catch (e) { /* Android: a Custom Tab some sozinha */ }
+    }
+    var p = new URLSearchParams(endereco.slice(VOLTA.length).replace(/^[?#]/, "").replace("#", "&"));
+    var guardado = null;
+    try { guardado = JSON.parse(localStorage.getItem(CHAVE_PKCE) || "null"); localStorage.removeItem(CHAVE_PKCE); } catch (e) { /* sem storage */ }
+    var vaiPro = function (hash) { location.href = "/login.html#" + new URLSearchParams(hash).toString(); };
+    // Recusa do Supabase (link vencido, consentimento negado): o login.js
+    // mostra o motivo, como no site.
+    if (p.get("error")) {
+      vaiPro({ error: p.get("error"), error_code: p.get("error_code") || "", error_description: p.get("error_description") || "" });
+      return true;
+    }
+    var falhou = function (porque) { vaiPro({ error: "app_login", error_description: porque }); };
+    var codigo = p.get("code");
+    if (!codigo || !guardado || !guardado.v || !(Date.now() - guardado.t < VALIDADE_PKCE)) { falhou("sem código ou sem segredo"); return true; }
+    fetch(SUPABASE.url + "/auth/v1/token?grant_type=pkce", {
+      method: "POST",
+      headers: { apikey: SUPABASE.chave, "Content-Type": "application/json" },
+      body: JSON.stringify({ auth_code: codigo, code_verifier: guardado.v })
+    }).then(function (r) { return r.ok ? r.json() : null; }).then(function (s) {
+      if (!s || !s.access_token) { falhou("troca recusada"); return; }
+      vaiPro({ access_token: s.access_token, refresh_token: s.refresh_token || "", expires_in: String(s.expires_in || ""), token_type: "bearer", type: "pkce" });
+    }, function () { falhou("rede"); });
+    return true;
+  }
+
   // ── 2. Endereço bonito ─────────────────────────────────────────────────────
   var temPagina = function (nome) { return PAGINAS.indexOf(nome) !== -1; };
   // Caminho -> a página que a borda serviria, ou null (raiz, ou endereço que
@@ -135,6 +209,16 @@
     if (/^\/(?!\/)/.test(rota)) {
       try { history.replaceState(history.state, "", rota); } catch (e) { /* segue com o .html na barra */ }
     }
+  }
+
+  // A volta do login só é ouvida em página que FICA (o index.html que acabou
+  // de mandar pra outra página saiu antes, no return acima).
+  if (plugins.App && typeof plugins.App.addListener === "function") {
+    try { plugins.App.addListener("appUrlOpen", function (e) { trataVolta(e && e.url); }); } catch (e) { /* segue */ }
+  }
+  // App fechado e aberto PELO link: a volta vem como o endereço de abertura.
+  if (plugins.App && typeof plugins.App.getLaunchUrl === "function") {
+    try { Promise.resolve(plugins.App.getLaunchUrl()).then(function (r) { trataVolta(r && r.url); }, function () {}); } catch (e) { /* segue */ }
   }
 
   // ── 3. Pedido ao servidor -> ORIGEM ───────────────────────────────────────
@@ -251,7 +335,10 @@
     nativo: nativo,
     plataforma: plataforma,
     origem: ORIGEM,
+    // Login: o botão do login.js chama isto (abre o navegador do sistema).
+    entrar: entrar,
     // Testes (tests/app-web.test.mjs) leem a mesma régua que o app usa.
+    _trataVolta: trataVolta,
     _destino: destino,
     _paraOrigem: paraOrigem,
     _trocaHtml: trocaHtml
