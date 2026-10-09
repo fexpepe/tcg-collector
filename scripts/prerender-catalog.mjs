@@ -33,6 +33,7 @@ import { montaSitemaps } from "./lib/sitemap.mjs";
 // moram em functions/_lib porque a borda usa a mesma régua (ver lá).
 import { JOGOS_URL, jogoDaUrl, urlDoSet } from "../functions/_lib/jogos.js";
 import { slugify, slugsDasCartas } from "../functions/_lib/slug-carta.js";
+import { fatiaDoLegado } from "../functions/_lib/borda.js";
 // Cabeçalho das páginas estáticas (marcação + CSS do celular).
 import { ESTILO_DO_CABECALHO, cabecalhoEstatico } from "../functions/_lib/cabecalho-estatico.js";
 // Textos e réguas da página de set (título, data, uma carta por número): a
@@ -883,10 +884,9 @@ async function buildDeckPages() {
 // ── Cartas que tinham página estática (/card/<slug>) até 2026-09-30 ─────────
 // Eram as ~1.500 mais valiosas (pricing do build) + as mais vistas (card_views
 // do Supabase). Hoje toda carta tem página na borda, em /games/<jogo>/<set>/
-// <carta> (functions/games/). O ranking continua aqui SÓ pra gerar o mapa
-// slug antigo -> endereço novo (legado-cartas.json), que o functions/card/
-// [slug].js usa pro 301: a régua dos slugs antigos não pode mudar.
-const MAX_CARD_PAGES = 1500;
+// <carta> (functions/games/). Daqui sai SÓ o mapa slug antigo -> endereço
+// novo (legado-cartas/), que o functions/card/[slug].js usa pro 301: a régua
+// dos slugs antigos não pode mudar. O preço segue servindo de ordem pro -2.
 const SUPABASE_URL = "https://dlnalopazitfdgnmdguu.supabase.co";
 const SUPABASE_ANON = "sb_publishable_0Qlei5ZvRcEsr18QRdWfGg_N3aR1zyL"; // pública
 
@@ -900,15 +900,6 @@ function refPriceUSD(entry) {
   if (entry.e > 0) return entry.e * 1.1; // EUR ~ USD pra RANQUEAR (não exibimos convertido)
   return 0;
 }
-async function fetchTopViews() {
-  try {
-    const r = await fetch(`${SUPABASE_URL}/rest/v1/card_views?select=game,card_id,views&order=views.desc&limit=600`, {
-      headers: { apikey: SUPABASE_ANON }, signal: AbortSignal.timeout(15000)
-    });
-    return r.ok ? await r.json() : [];
-  } catch { return []; }
-}
-
 // ── Mapa set -> página estática (data/set-pages/<jogo>.json) ────────────────
 // Quem consome é a Function da borda (functions/detail.js): o link do APP
 // (/detail?type=set&...) é uma casca sem conteúdo — colado no WhatsApp não
@@ -952,8 +943,10 @@ function escreveMapaDeSets(pages) {
 // Um arquivo por jogo, e não por set: o deploy está perto do teto de arquivos
 // do Pages, e 2.700 mapas a mais não caberiam.
 //
-// legado-sets.json e legado-cartas.json levam os endereços ANTIGOS (/set/ e
-// /card/) pros novos: são eles que o 301 de functions/set/ e functions/card/ lê.
+// legado-sets.json e legado-cartas/<letra>.json levam os endereços ANTIGOS
+// (/set/ e /card/) pros novos: são eles que o 301 de functions/set/ e
+// functions/card/ lê. O das cartas é fatiado pela 1ª letra (fatiaDoLegado):
+// inteiro passa de 7 MB, e cada 301 leria tudo.
 function escreveMapasDosJogos(pages, legadoCartas) {
   if (existsSync(MAPAS_DIR)) rmSync(MAPAS_DIR, { recursive: true, force: true });
   mkdirSync(MAPAS_DIR, { recursive: true });
@@ -973,13 +966,27 @@ function escreveMapasDosJogos(pages, legadoCartas) {
   }
   for (const [url, m] of porUrl) writeFileSync(join(MAPAS_DIR, `${url}.json`), JSON.stringify(m), "utf8");
   writeFileSync(join(MAPAS_DIR, "legado-sets.json"), JSON.stringify(legadoSets), "utf8");
-  writeFileSync(join(MAPAS_DIR, "legado-cartas.json"), JSON.stringify(legadoCartas), "utf8");
+  const fatias = new Map();
+  for (const slug of Object.keys(legadoCartas)) {
+    const f = fatiaDoLegado(slug);
+    if (!f) continue;
+    if (!fatias.has(f)) fatias.set(f, {});
+    fatias.get(f)[slug] = legadoCartas[slug];
+  }
+  mkdirSync(join(MAPAS_DIR, "legado-cartas"), { recursive: true });
+  for (const [f, parte] of fatias) writeFileSync(join(MAPAS_DIR, "legado-cartas", `${f}.json`), JSON.stringify(parte), "utf8");
   console.log(`prerender-catalog: mapas de ${porUrl.size} jogos em ${MAPAS_DIR}/ + ${Object.keys(legadoSets).length} sets e ${Object.keys(legadoCartas).length} cartas com endereço antigo.`);
 }
 
-// Slug antigo -> endereço novo das cartas que tinham página estática. Mesmo
-// ranking e mesma régua de slug de antes (ver o comentário da seção), pra que
-// cada /card/<slug> que existia ache o seu destino.
+// Slug antigo -> endereço novo das cartas que tinham página estática, com a
+// mesma régua de slug de antes (ver o comentário da seção).
+//
+// Até 2026-10-08 o mapa refazia também o RANKING (as 1.500 mais caras com o
+// preço do dia, mais as mais vistas): quem tinha página em julho e saiu do
+// top perdia o 301, e 906 das 1.269 cartas do sitemap de julho davam 404. O
+// ranking de cada dia antigo não volta, então entra TODA carta dos três jogos
+// que tinham página (1.266 das 1.269 voltam a achar o destino). O preço só
+// ordena: num empate de slug, a mais cara leva o nome sem -2, como no ranking.
 async function mapaDasCartasAntigas(pages) {
   const pricingByGame = {
     pokemon: await loadPricingTable("data/"),
@@ -988,27 +995,16 @@ async function mapaDasCartasAntigas(pages) {
   };
   const candidates = new Map();
   for (const p of pages) {
-    const pricing = pricingByGame[p.game] || {};
+    const pricing = pricingByGame[p.game];
+    if (!pricing) continue;
     for (const card of p.cards) {
       const usd = refPriceUSD(pricing[card.id]);
-      if (usd <= 0) continue;
       const k = `${p.game}|${card.id}`;
       if (!candidates.has(k) || candidates.get(k).score < usd) candidates.set(k, { card, setPage: p, score: usd });
     }
   }
-  const ranked = [...candidates.values()].sort((a, b) => b.score - a.score).slice(0, MAX_CARD_PAGES - 300);
-  const views = await fetchTopViews();
-  const have = new Set(ranked.map((r) => `${r.setPage.game}|${r.card.id}`));
-  for (const v of views) {
-    if (ranked.length >= MAX_CARD_PAGES) break;
-    const k = `${v.game}|${v.card_id}`;
-    if (have.has(k)) continue;
-    for (const p of pages) {
-      if (p.game !== v.game) continue;
-      const card = p.cards.find((c) => c.id === v.card_id);
-      if (card) { ranked.push({ card, setPage: p, score: 0 }); have.add(k); break; }
-    }
-  }
+  const porId = (a, b) => (String(a.card.id) < String(b.card.id) ? -1 : String(a.card.id) > String(b.card.id) ? 1 : 0);
+  const ranked = [...candidates.values()].sort((a, b) => b.score - a.score || porId(a, b));
   const usados = new Set();
   const mapa = {};
   for (const cp of ranked) {

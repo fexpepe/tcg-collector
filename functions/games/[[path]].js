@@ -21,17 +21,20 @@
 //                                   sabe o id e o set, não o nome no endereço;
 //                                   ?set= não, que o robots.txt barra)
 //   /games/<apelido>/…           -> 301 pro endereço oficial (/games/swu)
+//   set ou carta que mudou de    -> 301 pro endereço de hoje (o total do set
+//   endereço                        cresceu, o set ganhou prefixo no nome…;
+//                                   ver cartaParecida e setRenomeado)
 //   o resto                      -> 404 de verdade
 //
 // As páginas estáticas passarem por aqui custa uma execução de Function por
 // visita (a conta é Workers Paid desde 10/09/2026).
 import { buscaPagina, comVitrine } from "../_vitrine-csp.js";
 import { jogoDaUrl, urlOficial } from "../_lib/jogos.js";
-import { slugsDasCartas, cartasDoSet } from "../_lib/slug-carta.js";
+import { slugsDasCartas, cartasDoSet, cartaParecida } from "../_lib/slug-carta.js";
 import { pecasDaCarta, precoUSD, escapeHtml, escapeAttr, ORIGEM } from "../_lib/pagina-carta.js";
 import { pecasDoSet } from "../_lib/pagina-set.js";
 import { decoraApp } from "../_lib/decora-app.js";
-import { naoAchou, redireciona, jsonDoSite, daBorda, guardaNaBorda, hasOwn } from "../_lib/borda.js";
+import { naoAchou, redireciona, jsonDoSite, daBorda, guardaNaBorda, hasOwn, setRenomeado } from "../_lib/borda.js";
 import { basePricingId } from "../api/_search-sql.js";
 
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -185,9 +188,18 @@ async function telaDoSet(context, rota) {
   const { env, request } = context;
   const mapa = await jsonDoSite(env, request, `/data/game-pages/${rota.jogo.url}.json`);
   const sets = (mapa && mapa.s) || {};
+  const busca = new URL(request.url).search;
   if (!hasOwn(sets, rota.set)) {
     // A variante em inglês (<set>-en) é página estática do prerender.
     if (!rota.carta && /-en$/.test(rota.set) && hasOwn(sets, rota.set.slice(0, -3))) return context.next();
+    // Set renomeado: 301 pro nome de hoje, com a carta junto (se o nome dela
+    // também mudou, o próximo pedido resolve).
+    const chaves = Object.keys(sets);
+    const novo = setRenomeado(chaves, rota.set);
+    if (novo) return redireciona(request, `/games/${rota.jogo.url}/${novo}${rota.carta ? `/${rota.carta}` : ""}${busca}`, 301);
+    const en = !rota.carta && /^(.+)-en$/.exec(rota.set);
+    const novoEn = en && setRenomeado(chaves, en[1]);
+    if (novoEn) return redireciona(request, `/games/${rota.jogo.url}/${novoEn}-en${busca}`, 301);
     return naoAchou(env, request);
   }
   const entrada = sets[rota.set];
@@ -205,7 +217,13 @@ async function telaDoSet(context, rota) {
   let card = null;
   if (rota.carta) {
     card = cartas.find((c) => slugs.get(String(c.id)) === rota.carta) || null;
-    if (!card) return naoAchou(env, request);
+    if (!card) {
+      // Endereço de antes da carta (o total do set mudou, o nome mudou…).
+      const hoje = cartaParecida(cartas, slugs, rota.carta);
+      return hoje
+        ? redireciona(request, `/games/${rota.jogo.url}/${rota.set}/${hoje}${busca}`, 301)
+        : naoAchou(env, request);
+    }
     const preco = await precoDaCarta(env, request, card, arquivo.get(card));
     pecas = pecasDaCarta({ card, jogo: rota.jogo, set: { slug: rota.set, nome: entrada.n }, cartas, slugs, preco });
   } else {

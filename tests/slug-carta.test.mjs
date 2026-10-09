@@ -13,7 +13,7 @@ import assert from "node:assert/strict";
 import { readFileSync, existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
-import { slugify, baseDoSlug, slugsDasCartas, cartasDoSet } from "../functions/_lib/slug-carta.js";
+import { slugify, baseDoSlug, slugsDasCartas, cartasDoSet, cartaParecida } from "../functions/_lib/slug-carta.js";
 
 const raiz = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -61,6 +61,44 @@ test("empate: -2, -3 na ordem do id, qualquer que seja a ordem de leitura", () =
   assert.deepEqual([...slugsDasCartas([...cartas].reverse())].sort(), esperado);
   // A mesma impressão lida duas vezes não gasta um -2.
   assert.equal(slugsDasCartas([...cartas, cartas[1]]).size, 3);
+});
+
+// Endereço que deixou de existir: o total do set cresceu (Secret Lair, set em
+// pré-venda), o nome da carta mudou, o desempate andou. A borda manda pro
+// endereço de hoje em vez do 404 (functions/games/).
+test("carta parecida: total que mudou, nome que mudou, desempate e idioma", () => {
+  const cartas = [
+    { id: "sld-1", name: "Snow-Covered Plains", number: "1", setTotal: 2822, language: "en" },
+    { id: "sld-2", name: "Snow-Covered Island", number: "2", setTotal: 2822, language: "en" },
+    { id: "rb-178", name: "K'Sante, Courageous (Overnumbered)", number: "178", setTotal: 167, language: "en" },
+    { id: "op-1", name: "Luffy", number: "OP01-001" },
+    { id: "op-2", name: "Luffy", number: "OP01-001" },
+    { id: "pt-67", name: "Toxel", number: "067", setTotal: 94, language: "pt" },
+    { id: "zh-91a", name: "ピカチュウ", number: "091", setTotal: 98, language: "zh-cn" },
+    { id: "zh-91b", name: "ピカチュウ", number: "091", setTotal: 98, language: "zh-cn", nameEn: "Pikachu" }
+  ];
+  const slugs = slugsDasCartas(cartas);
+  const acha = (pedido) => cartaParecida(cartas, slugs, pedido);
+  // O total do set mudou (ou o endereço vinha sem ele).
+  assert.equal(acha("snow-covered-plains-1-2821"), "snow-covered-plains-1-2822");
+  assert.equal(acha("snow-covered-island-2-2774"), "snow-covered-island-2-2822");
+  assert.equal(acha("snow-covered-plains-1"), "snow-covered-plains-1-2822");
+  // O nome mudou: o número e o total dizem qual é.
+  assert.equal(acha("k-sante-courageous-showcase-178-167"), "k-sante-courageous-overnumbered-178-167");
+  // Arte paralela com o mesmo nome e número: o -2 do pedido escolhe a 2ª.
+  assert.equal(acha("luffy-op01-001-3"), "luffy-op01-001");
+  assert.equal(acha("monkey-d-luffy-op01-001-2"), "luffy-op01-001-2");
+  // Idioma é parte da carta: a portuguesa não vira a inglesa nem o contrário.
+  assert.equal(acha("toxel-067-095-pt"), "toxel-067-094-pt");
+  assert.equal(acha("toxel-067-094"), null);
+  // Carta chinesa que ganhou nome em inglês: o -2 do endereço sem nome acha a 2ª.
+  assert.equal(acha("091-098-zh-2"), "pikachu-091-098-zh");
+  // Número que não existe, número parecido e endereço vazio: nada.
+  assert.equal(acha("snow-covered-plains-3-2821"), null);
+  assert.equal(acha("snow-covered-plains-11-2822"), null);
+  assert.equal(acha("raichu-14-102"), null);
+  assert.equal(acha(""), null);
+  assert.equal(cartaParecida(cartas, null, "snow-covered-plains-1-2821"), null);
 });
 
 test("a página do set é a das cartas com aquele nome, fora as aposentadas", () => {
