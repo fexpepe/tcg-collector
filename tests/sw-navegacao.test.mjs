@@ -588,3 +588,34 @@ test("shared.js: a página pede a atualização do SW depois da carga, e a volta
   assert.ok(/Date\.now\(\) - conferiu < 18e5\) return;/.test(bloco), "a volta do segundo plano sem intervalo pede um update (e um install) por troca de app");
   assert.ok(/requestIdleCallback\(instala/.test(shared), "o registro segue depois do load e de um respiro");
 });
+
+// Espelho das imagens (2026-10-08): o job regrava a MESMA chave do
+// img.sleevu.app quando a arte muda na origem (o TCGplayer troca o arquivo na
+// mesma URL; o Scryfall muda a versão), e com o immutable de um ano o aparelho
+// e a borda seguiam com a arte velha. O espelho do TCGplayer passa a valer a
+// regra do host mutável no SW (revalida em 7 dias, furando o cache HTTP).
+test("espelho do TCGplayer é mutável no SW: revalida vencido, com no-cache", async () => {
+  const sw = carrega({ hashed: true, build: "abc12345" });
+  const mutavel = vm.runInContext("imagemMutavel", sw.sandbox);
+  assert.equal(mutavel(new URL("https://img.sleevu.app/tcgplayer-cdn.tcgplayer.com/product/1_in_1000x1000.jpg@600.webp")), true);
+  assert.equal(mutavel(new URL("https://img.sleevu.app/cards.scryfall.io/normal/front/a/b.jpg@600.webp")), false);
+  assert.equal(mutavel(new URL("https://tcgplayer-cdn.tcgplayer.com/product/1_in_1000x1000.jpg")), true);
+  const cf = vm.runInContext("cacheFirst", sw.sandbox);
+  const img = await sw.sandbox.caches.open(vm.runInContext("IMAGE_CACHE", sw.sandbox));
+  const url = new URL("https://img.sleevu.app/tcgplayer-cdn.tcgplayer.com/product/2_in_1000x1000.jpg@600.webp");
+  await img.put(url.href, new Response("arte-velha"));
+  const pedidos = [];
+  sw.estado.fetch = async (u, init) => { pedidos.push(init && init.cache); return new Response("arte-nova", { status: 200 }); };
+  assert.equal(await (await cf(url)).text(), "arte-nova", "sem carimbo de validade, a cópia é conferida");
+  assert.deepEqual(pedidos, ["no-cache"]);
+});
+
+test("job do espelho: regravação e host mutável sobem com 7 dias, e as regravadas vão pra purga da borda", () => {
+  const job = readFileSync(join(raiz, "scripts/mirror-r2.mjs"), "utf8");
+  assert.ok(job.includes('const CACHE_MUTAVEL = "public, max-age=604800";'));
+  assert.ok(job.includes("const cacheControl = tem || f.mutavel ? CACHE_MUTAVEL : undefined;"));
+  assert.ok(job.includes("if (tem) LARGURAS.forEach((w) => regravadas.push("));
+  assert.ok(job.includes("if (!SECO) await purgaBorda();"));
+  const wf = readFileSync(join(raiz, ".github/workflows/mirror-images.yml"), "utf8");
+  assert.ok(wf.includes("CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}") && wf.includes("CF_PURGE_TOKEN: ${{ secrets.CF_PURGE_TOKEN }}"));
+});

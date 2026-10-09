@@ -101,6 +101,37 @@ const status = await leJson("_index/status.json", { hosts: {} });
 status.hosts = status.hosts || {};
 let feitosNoTotal = 0;
 
+// Cache das imagens que podem mudar na mesma chave (ver o put lá embaixo).
+const CACHE_MUTAVEL = "public, max-age=604800";
+// URLs regravadas nesta rodada: a borda da Cloudflare guarda a cópia velha por
+// até um ano (o immutable de antes) e ignora a query na chave do cache, então
+// só a PURGA tira a arte velha de lá. Precisa de CF_ZONE_ID e de um token com
+// permissão de purgar cache da zona (CF_PURGE_TOKEN) — sem os dois, a rodada
+// só avisa quantas ficaram de fora, e elas seguem velhas na borda até expirar.
+const regravadas = [];
+async function purgaBorda() {
+  if (!regravadas.length) return;
+  const zona = process.env.CF_ZONE_ID, token = process.env.CF_PURGE_TOKEN;
+  if (!zona || !token) {
+    console.log(`mirror-r2: ${regravadas.length} URL(s) regravada(s) seguem com a arte velha na borda — defina CF_ZONE_ID e CF_PURGE_TOKEN pra purgar.`);
+    return;
+  }
+  let ok = 0;
+  for (let i = 0; i < regravadas.length; i += 30) { // 30 URLs por pedido: o teto do plano grátis
+    try {
+      const r = await fetch(`https://api.cloudflare.com/client/v4/zones/${zona}/purge_cache`, {
+        method: "POST",
+        headers: { authorization: `Bearer ${token}`, "content-type": "application/json" },
+        body: JSON.stringify({ files: regravadas.slice(i, i + 30) }),
+        signal: AbortSignal.timeout(20000)
+      });
+      if (r.ok) ok += Math.min(30, regravadas.length - i);
+      else console.log(`mirror-r2: purga recusada (HTTP ${r.status}) — as URLs seguem velhas na borda até expirar.`);
+    } catch (e) { console.log(`mirror-r2: purga falhou (${String(e && e.message || e).slice(0, 80)}).`); }
+  }
+  console.log(`mirror-r2: ${ok} de ${regravadas.length} URL(s) regravada(s) purgada(s) da borda.`);
+}
+
 // ── 3. Host a host, na ordem do rollout ─────────────────────────────────────
 for (const host of ORDEM) {
   if (SO_HOST && host !== SO_HOST) continue;
@@ -143,8 +174,19 @@ for (const host of ORDEM) {
       // Três larguras a partir da mesma decodificação; sem ampliar.
       const saidas = await Promise.all(LARGURAS.map((w) =>
         sharp(matriz).resize({ width: w, withoutEnlargement: true }).webp({ quality: QUALIDADE_WEBP }).toBuffer()));
-      const subidas = await Promise.all(LARGURAS.map((w, i) => r2.put(chaveDe(o.url, w), saidas[i], { contentType: "image/webp" })));
+      // Arte que PODE mudar na mesma chave (2026-10-08): a de host mutável
+      // (TCGplayer troca o arquivo na mesma URL) e toda REGRAVAÇÃO (o Scryfall
+      // mudou a versão, o TCGplayer mudou o tamanho). Com o immutable de um ano
+      // padrão, navegador e borda seguiam com a arte velha por um ano; com 7
+      // dias (o ritmo da reconferência), a nova chega na semana. O resto segue
+      // imutável por URL.
+      const cacheControl = tem || f.mutavel ? CACHE_MUTAVEL : undefined;
+      const subidas = await Promise.all(LARGURAS.map((w, i) => r2.put(chaveDe(o.url, w), saidas[i], { contentType: "image/webp", cacheControl })));
       if (subidas.some((p) => !p.ok)) { erros++; return; }
+      // Regravação: a borda da Cloudflare ainda guarda a arte velha (e ignora a
+      // query na chave dela). Entra na purga do fim da rodada (purgaBorda).
+      // A URL como o cliente a pede (mirrorImg no shared.js: a do wsrv.nl vai codificada).
+      if (tem) LARGURAS.forEach((w) => regravadas.push(`https://img.sleevu.app/${host === "wsrv.nl" ? encodeURI(chaveDe(o.url, w)) : chaveDe(o.url, w)}`));
       idx.objetos[base] = [matriz.length, o.versao, HOJE];
       delete idx.faltando[base];
       geradas++; feitosNoTotal++;
@@ -171,5 +213,6 @@ for (const host of ORDEM) {
 
 status.atualizadoEm = new Date().toISOString();
 await gravaJson("_index/status.json", status);
+if (!SECO) await purgaBorda();
 console.log(`mirror-r2: ${feitosNoTotal} cartas nesta rodada em ${Math.round((Date.now() - INICIO) / 60000)} min. Completos: `
   + `${Object.entries(status.hosts).filter(([, s]) => s.completo && s.esquema === ESQUEMA_ESPELHO).map(([h]) => h).join(", ") || "nenhum ainda"}.`);

@@ -106,6 +106,11 @@ jobs:
           R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           R2_BUCKET: sleevu-img
+          # Purga da borda das imagens REGRAVADAS (arte que mudou na mesma
+          # chave). Opcional: sem os dois secrets, o job só avisa quantas ficaram
+          # velhas na borda. O token precisa de Zone > Cache Purge na zona sleevu.app.
+          CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
+          CF_PURGE_TOKEN: ${{ secrets.CF_PURGE_TOKEN }}
           IN_HOST: ${{ inputs.host }}
           IN_LIMIT: ${{ inputs.limit }}
           IN_MINUTES: ${{ inputs.minutes }}

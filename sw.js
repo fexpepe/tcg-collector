@@ -117,6 +117,11 @@ const LOCAL_IMAGE_RE = /\/(?:set-logos|vintage-images|vintage-images-2002)\//;
 // Aqui elas passam a valer pelo mesmo TTL das respostas opacas: servem do cache
 // (rápido e offline), mas depois de 7 dias são conferidas de novo.
 const MUTABLE_IMAGE_HOSTS = new Set(["tcgplayer-cdn.tcgplayer.com"]);
+// O ESPELHO das imagens do TCGplayer (img.sleevu.app/tcgplayer-cdn…) herda a
+// mesma regra (2026-10-08): o job regrava a mesma chave quando a arte muda na
+// origem, e como imutável o aparelho ficava com a arte velha pra sempre.
+const imagemMutavel = (url) => MUTABLE_IMAGE_HOSTS.has(url.hostname)
+  || (url.hostname === "img.sleevu.app" && url.pathname.startsWith("/tcgplayer-cdn.tcgplayer.com/"));
 
 // Esqueleto do app: arquivos que existem tanto local quanto em produção
 // (os JS de src e o styles não são trocados pelo deploy; o HTML é, mas a
@@ -384,7 +389,7 @@ async function cacheFirst(url) {
   // Host de URL mutável (TCGplayer): mesma regra de validade das opacas. Sem o
   // carimbo (entrada antiga, de antes desta regra) trata como vencida — é uma
   // requisição a mais UMA vez, e é justamente a que conserta a arte errada.
-  const revalidar = MUTABLE_IMAGE_HOSTS.has(url.hostname) && !(await opaqueFresh(url.href));
+  const revalidar = imagemMutavel(url) && !(await opaqueFresh(url.href));
   if (cached && !revalidar && (cached.type !== "opaque" || await opaqueFresh(url.href))) return cached;
   // 1) cors PRIMEIRO: se o host responde (mesmo com erro), o status é VISÍVEL.
   //    - ok         -> cacheia (imutável por URL) e retorna;
@@ -392,7 +397,10 @@ async function cacheFirst(url) {
   //      pra não cravar um 404 transitório no cache por dias. NÃO cai pro no-cors
   //      (que esconderia o status).
   try {
-    const res = await fetch(url.href, { mode: "cors", credentials: "omit" });
+    // Revalidação de imagem mutável fura o cache HTTP (no-cache = pedido
+    // condicional, 304 se nada mudou): sem isso o navegador devolvia a própria
+    // cópia velha — a do espelho veio com immutable de um ano até 2026-10-08.
+    const res = await fetch(url.href, { mode: "cors", credentials: "omit", cache: revalidar ? "no-cache" : "default" });
     if (res && res.ok) {
       // sem await de proposito (nao segurar a resposta), mas COM catch: com o
       // teto maior, QuotaExceededError deixa de ser hipotese — e uma rejeicao
@@ -401,7 +409,7 @@ async function cacheFirst(url) {
       // Carimba a hora só nos hosts mutáveis — é o que dá a validade de 7 dias.
       // Os demais (TCGdex, Scryfall, Lorcast) são imutáveis de verdade e seguem
       // sem carimbo, então nunca voltam à rede.
-      if (MUTABLE_IMAGE_HOSTS.has(url.hostname)) markOpaque(url.href);
+      if (imagemMutavel(url)) markOpaque(url.href);
       maybeTrimImages();
       return res;
     }
