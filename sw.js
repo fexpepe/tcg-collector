@@ -58,7 +58,16 @@
 // núcleo, as graduadoras e o pacote de i18n dele). Sem subir a versão, o
 // install não guardaria as páginas novas e a navegação offline pra /tools,
 // /condition e /centering cairia sem cópia.
-const SHELL_CACHE = "tcg-shell-v270";
+// v271 (2026-10-08): deploy novo deixa de competir com a página aberta. O SW
+// não pede mais a própria atualização no meio da navegação (a página pede,
+// depois da carga e de um respiro — ver o register no shared.js), o install
+// baixa no máximo INSTALL_PARALELO arquivos por vez e as páginas por último,
+// o HTML de outra leva só é pedido de novo quando pode ter vindo do cache
+// HTTP (veioDoServidorAgora), /api/ e /cdn-cgi/ saem do SW, erro 5xx da rede
+// não passa por cima de cópia guardada, e o precache perde as páginas raras
+// (admin, FAQ, termos, privacidade) e ganha o src/mercado.js, que a tela de
+// Sets carrega e ficava fora.
+const SHELL_CACHE = "tcg-shell-v271";
 // Id do build: o hash-assets.mjs (deploy) acrescenta "-<8 hex>" ao nome acima,
 // calculado do conteúdo do shell (JS, CSS E as páginas HTML). É o mesmo id que
 // ele carimba em <meta name="sleevu-build"> de todo HTML — assim a página sabe
@@ -116,10 +125,15 @@ const MUTABLE_IMAGE_HOSTS = new Set(["tcgplayer-cdn.tcgplayer.com"]);
 // nomes. Ver o uso no install.
 const HASHED_ASSETS = false; /* SLEEVU_HASHED */
 
+// Páginas raras FICAM DE FORA (2026-10-08): admin.html (e o admin.js, ~40 KB
+// que iam pra todo visitante), faq.html, privacy.html e terms.html. O carimbo
+// do build muda todo HTML a cada deploy, então cada página da lista desce de
+// novo 5 a 6 vezes por dia em todo aparelho com o app. Visitadas uma vez, a
+// navegação guarda a cópia delas como guarda qualquer outra (navigationFast).
 const SHELL_ASSETS = [
   "./", "index.html", "hub.html", "pokedex.html", "lore.html", "sets.html", "artists.html",
   "trainers.html", "collection.html", "wishlist.html", "portfolio.html", "explore.html", "dashboard.html", "badges.html",
-  "backup.html", "detail.html", "binders.html", "cards.html", "sales.html", "about.html", "novidades.html", "blog.html", "lancamentos.html", "comparar.html", "faq.html", "help.html", "privacy.html", "terms.html", "login.html", "settings.html", "profile.html", "admin.html",
+  "backup.html", "detail.html", "binders.html", "cards.html", "sales.html", "about.html", "novidades.html", "blog.html", "lancamentos.html", "comparar.html", "help.html", "login.html", "settings.html", "profile.html",
   "decks.html", "my-decks.html", "pastas.html", "troca.html", "tools.html", "condition.html", "centering.html", "sleeves.html", "search.html", "account.html",
   "styles.css", "favicon.svg", "icon.svg", "assets/brand/sleevu-wordmark.svg", "manifest.json",
   // Fonte da marca (auto-hospedada): precisa estar no shell pra o app abrir
@@ -127,7 +141,10 @@ const SHELL_ASSETS = [
   "assets/fonts/outfit-latin.woff2", "assets/fonts/outfit-latin-ext.woff2",
   "src/theme.js", "src/game.js", "src/login-boot.js", "src/i18n.js", "src/i18n-docs.js", "src/i18n-decks.js", "src/i18n-binders.js", "src/i18n-pastas.js", "src/i18n-vendas.js", "src/i18n-lore.js", "src/i18n-blog.js", "src/i18n-ferramentas.js", "src/i18n-centering.js", "src/shared.js", "src/app.js", "src/collection.js", "src/detail.js", "src/explore.js", "src/dashboard.js", "src/primeiros-passos.js", "src/badges.js", "src/lancamentos.js", "src/goldfish.js",
   "src/home.js", "src/news.js", "src/wishlist.js", "src/portfolio.js", "src/binders.js",
-  "src/backup.js", "src/graded-ui.js", "src/cards.js", "src/sales.js", "src/login.js", "src/hub.js", "src/settings.js", "src/profile.js", "src/admin.js",
+  "src/backup.js", "src/graded-ui.js", "src/cards.js", "src/sales.js", "src/login.js", "src/hub.js", "src/settings.js", "src/profile.js",
+  // Mercado do jogo: a tela de Sets carrega (sets.html) e ele não estava aqui —
+  // offline a tela pedia um arquivo que o cache não tinha.
+  "src/mercado.js",
   "src/deck-rules.js", "src/decks.js", "src/pastas.js", "src/lore.js", "src/export-liga.js", "src/export-ui.js", "src/troca.js",
   // Ferramentas do HUB que são página própria (2026-10-01).
   "src/condicao.js", "src/sleeves.js",
@@ -177,17 +194,24 @@ const SHELL_ASSETS = [
 const MAX_IMAGES = 4000;
 const MAX_DATA = 3000;
 
+// Quantos arquivos do precache descem AO MESMO TEMPO no install. Eram todos
+// de uma vez (~150, ~0,9 MB em brotli num install do zero): o install de um
+// deploy novo disputava banda com os scripts da página aberta, que o
+// navegador baixa com prioridade baixa. 6 é o que o navegador abre por host
+// em HTTP/1.1 — a fila anda sem afogar a página.
+const INSTALL_PARALELO = 6;
+const ehPagina = (asset) => asset === "./" || /\.html$/.test(asset);
+
 self.addEventListener("install", (event) => {
   event.waitUntil((async () => {
     const cache = await caches.open(SHELL_CACHE);
-    // allSettled + a conta dos buracos lá embaixo: HTML/fonte/ícone ausente não
-    // derruba a instalação; arquivo com hash ausente derruba.
+    // Resultado por arquivo + a conta dos buracos lá embaixo: HTML/fonte/ícone
+    // ausente não derruba a instalação; arquivo com hash ausente derruba.
     //
     // cache:reload fura o cache HTTP do navegador. Isso era OBRIGATÓRIO enquanto
     // os arquivos não tinham versão na URL: sem furar, a instalação podia gravar
-    // uma cópia velha do deploy anterior. O custo é que TODO deploy re-baixava os
-    // 69 itens do shell (~345 KB) do zero, porque o SHELL_CACHE muda e o install
-    // roda de novo.
+    // uma cópia velha do deploy anterior. O custo é que TODO deploy re-baixava o
+    // shell inteiro do zero, porque o SHELL_CACHE muda e o install roda de novo.
     // Com hash no nome (scripts/hash-assets.mjs, só em produção) a URL É a versão:
     // não existe cópia velha pra furar, e o install passa a reaproveitar o cache
     // do navegador — num deploy que mexe em 3 arquivos, só esses 3 saem da rede.
@@ -202,7 +226,21 @@ self.addEventListener("install", (event) => {
       if (!res || !res.ok) throw new Error(`${asset}: ${res ? res.status : "sem resposta"}`);
       await cache.put(asset, semRedirect(res));
     };
-    const resultados = await Promise.allSettled(SHELL_ASSETS.map((asset) => baixa(asset).catch(() => baixa(asset))));
+    // Fila com INSTALL_PARALELO pedidos no ar, as PÁGINAS por último: elas são
+    // as que mais mudam (o carimbo do build muda todas a cada deploy) e as que
+    // menos fazem falta — sem a cópia, a navegação só vai à rede.
+    const ordem = SHELL_ASSETS.map((asset, i) => i).sort((a, b) => ehPagina(SHELL_ASSETS[a]) - ehPagina(SHELL_ASSETS[b]));
+    const resultados = [];
+    let proximo = 0;
+    const fila = async () => {
+      while (proximo < ordem.length) {
+        const i = ordem[proximo++];
+        const asset = SHELL_ASSETS[i];
+        try { await baixa(asset).catch(() => baixa(asset)); resultados[i] = { status: "fulfilled" }; }
+        catch (e) { resultados[i] = { status: "rejected", reason: e }; }
+      }
+    };
+    await Promise.all(Array.from({ length: INSTALL_PARALELO }, fila));
     // Arquivo COM HASH que ficou de fora (rede oscilou, cota) é um shell com
     // buraco, e isso não pode assumir o comando: no próximo deploy o Pages
     // deixa de servir esta leva, e a página que sair deste cache pede um
@@ -266,6 +304,13 @@ self.addEventListener("fetch", (event) => {
     return;
   }
   if (url.origin === self.location.origin) {
+    // A borda (/api/) e a Cloudflare (/cdn-cgi/) ficam com o navegador
+    // (2026-10-08). A busca caía no networkFirst: o cache:"no-cache" anulava
+    // os 5 min de cache HTTP da resposta, e cada busca ficava guardada no
+    // shell até o próximo deploy, sem poda — três buscas no Explorar deixaram
+    // 3,9 MB lá ("dragon" sozinha, 3,47 MB). Offline quem chama já tem o
+    // caminho sem a borda (os chunks dos sets, que o SW guarda).
+    if (url.pathname.startsWith("/api/") || url.pathname.startsWith("/cdn-cgi/")) return;
     // Imagem espelhada aqui mesmo: mesmo tratamento das imagens de fora
     // (cache-first no IMAGE_CACHE), fora da fila do catálogo. Ver LOCAL_IMAGE_RE.
     if (LOCAL_IMAGE_RE.test(url.pathname) && event.request.mode !== "navigate") {
@@ -360,7 +405,9 @@ async function cacheFirst(url) {
       maybeTrimImages();
       return res;
     }
-    if (res) return res; // erro visível: não polui o cache
+    // Erro visível: não polui o cache. Com cópia guardada (a revalidação do
+    // host mutável, ou a opaca vencida), a cópia vale mais que o erro.
+    if (res) return cached || res;
   } catch (e) { /* cors rejeitado -> host sem CORS, tenta no-cors abaixo */ }
   // 2) no-cors: só pros hosts que REJEITAM cors (ex.: cards.lorcast.io do Lorcana).
   //    A resposta opaca esconde o status, então ganha TTL (opaqueFresh) pra se
@@ -397,12 +444,14 @@ const HASHED_URL_RE = /\.[0-9a-f]{8}\.(?:js|css)(?:\.map)?$/;
 async function assetCacheFirst(request) {
   const cached = await caches.match(request);
   if (cached) return cached;
-  const response = await fetch(request);
-  if (response && response.ok) {
-    const cache = await caches.open(SHELL_CACHE);
-    cache.put(request, response.clone());
-  }
-  return response;
+  try {
+    const response = await fetch(request);
+    if (response && response.ok) {
+      const cache = await caches.open(SHELL_CACHE);
+      cache.put(request, response.clone()).catch(() => { /* cota cheia: só não guarda */ });
+    }
+    return response;
+  } catch (e) { return Response.error(); } // offline sem cópia: erro de rede, sem rejeição solta
 }
 
 // Chave de cache de uma navegação: UMA por página, seja como for que ela é
@@ -506,17 +555,21 @@ async function buildDoHtml(response) {
 
 // HTML de OUTRA leva chegou da rede: saiu deploy e este SW ainda é o antigo.
 // Não guarda essa página aqui (ela pede arquivos que este cache não tem e o SW
-// novo vai precacheá-la no cache dele) e pede a atualização do SW na hora —
-// é o que faz a versão nova entrar em segundos, sem depender da checagem que
-// o navegador faz no register() (o Chrome a pula quando checou há pouco;
-// visto em 2026-09-14: uma navegação logo depois de outra ficava 30 s sem
-// perceber o deploy). Uma vez por vida deste SW basta: o novo, ao ativar,
-// assume tudo.
-let atualizacaoPedida = false;
-function pedeAtualizacao() {
-  if (atualizacaoPedida || !self.registration || !self.registration.update) return;
-  atualizacaoPedida = true;
-  try { self.registration.update().catch(() => {}); } catch (e) { /* ignora */ }
+// novo vai precacheá-la no cache dele). A atualização do SW quem pede é a
+// PÁGINA, depois da carga e de um respiro (o register no shared.js compara o
+// build dela com o deste SW). Até 2026-10-08 o pedido saía daqui, no meio da
+// navegação: o install do SW novo baixava o shell inteiro junto com os
+// scripts da página que acabava de chegar — com 5 a 6 deploys por dia, era a
+// primeira abertura depois de cada um, no aparelho de quem mais usa o app.
+
+// A resposta acabou de vir do SERVIDOR? A cópia que o cache HTTP do navegador
+// devolve guarda o Date de quando foi baixada; a do servidor traz o de agora.
+// Navegação de histórico (force-cache) nunca conta como "agora", e relógio do
+// aparelho fora por mais de 2 min também não — aí confere sempre, como antes.
+function veioDoServidorAgora(request, response) {
+  if (request.cache === "force-cache" || request.cache === "only-if-cached") return false;
+  const data = Date.parse((response.headers && response.headers.get("date")) || "");
+  return Math.abs(Date.now() - data) < 2 * 60 * 1000;
 }
 
 // A página que a REDE entrega pra esta navegação, e o build dela.
@@ -542,6 +595,10 @@ function pedeAtualizacao() {
 // redirect "manual" porque a resposta vai direto pra navegação, que recusa
 // resposta redirecionada (ver semRedirect); o redirect opaco o navegador segue.
 // Sem rede pra conferir, a navegação cai na cópia deste cache (a da leva certa).
+// A conferência só acontece quando a resposta PODE ter saído do cache HTTP
+// (veioDoServidorAgora): a que acabou de vir do servidor já é a leva atual, e
+// pedir de novo baixava o mesmo HTML duas vezes na primeira abertura depois
+// de cada deploy.
 async function paginaDaRede(event) {
   const request = event.request;
   // preloadResponse: a resposta que o navegador já começou a buscar enquanto o
@@ -549,7 +606,7 @@ async function paginaDaRede(event) {
   // sem suporte, ou preload desligado), busca normalmente.
   let response = (await event.preloadResponse) || await fetch(request);
   let build = response && response.ok ? await buildDoHtml(response) : null;
-  if (HASHED_ASSETS && build !== null && build !== BUILD_ID) {
+  if (HASHED_ASSETS && build !== null && build !== BUILD_ID && !veioDoServidorAgora(request, response)) {
     response = await fetch(request.url, { cache: "reload", redirect: "manual" });
     build = response && response.ok ? await buildDoHtml(response) : null;
   }
@@ -586,13 +643,10 @@ async function navigationFast(event) {
   const cached = (await cache.match(chave)) || (reserva ? await cache.match(reserva) : undefined);
   const rede = paginaDaRede(event)
     .then(({ response, build }) => {
-      if (response && response.ok) {
-        if (build === null || build === BUILD_ID) {
-          cache.put(chave, semRedirect(response.clone()));
-          marcaConfirmacao();
-        } else {
-          pedeAtualizacao();
-        }
+      // Página de outra leva não entra neste cache (ver veioDoServidorAgora).
+      if (response && response.ok && (build === null || build === BUILD_ID)) {
+        cache.put(chave, semRedirect(response.clone()));
+        marcaConfirmacao();
       }
       return response;
     }).catch(() => null);
@@ -612,7 +666,9 @@ async function navigationFast(event) {
   } else {
     resposta = await rede;
   }
-  if (resposta) return resposta;
+  // Erro do SERVIDOR (5xx) com cópia guardada: a cópia vale mais que a página
+  // de erro. 404 não entra aqui — página que deixou de existir é resposta.
+  if (resposta && !(cached && resposta.status >= 500)) return resposta;
   const novo = enderecoNovo(request.url);
   return semRedirect(cached) || (novo && semRedirect(await cache.match(novo))) || semRedirect(await caches.match(request, { ignoreSearch: true })) || Response.error();
 }
@@ -663,8 +719,12 @@ async function networkFirst(request, url) {
       const cache = await caches.open(cacheName);
       cache.put(request, response.clone());
       maybeTrim(cacheName, cacheName === DATA_CACHE ? MAX_DATA : Infinity);
+      return response;
     }
-    return response;
+    // 404/5xx com cópia guardada deste arquivo: entrega a cópia (um deploy que
+    // saiu pela metade ou o servidor soluçando não apagam o que já funcionava).
+    const guardada = response && response.status >= 400 && request.mode !== "navigate" ? await caches.match(request) : null;
+    return guardada || response;
   } catch (error) {
     // Offline: navegações ignoram a query (detail.html?type=... → detail.html).
     const cached = await caches.match(request, { ignoreSearch: request.mode === "navigate" });

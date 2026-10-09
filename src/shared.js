@@ -12563,11 +12563,19 @@
     window.addEventListener("load", () => {
       const instala = () => navigator.serviceWorker.register("sw.js").then((reg) => {
         if (!reg) return;
+        // Página de uma leva MAIS NOVA que o SW no comando (saiu deploy): pede a
+        // atualização agora, com a página carregada. Era o SW que pedia, no meio
+        // da navegação, e o install do novo disputava banda com esta página.
+        buildDoServiceWorker().then((dele) => { if (dele !== null && dele !== buildDaPagina()) reg.update().catch(() => {}); });
         // App voltando do segundo plano é o momento natural de conferir se saiu
         // versão nova: sem isto, uma sessão parada numa tela (o Portfólio
-        // aberto o dia todo) nunca pede atualização nenhuma.
+        // aberto o dia todo) nunca pede atualização nenhuma. No máximo a cada
+        // 30 min: trocar de app toda hora não precisa de uma conferência por vez.
+        let conferiu = Date.now();
         document.addEventListener("visibilitychange", () => {
-          if (document.visibilityState === "visible") reg.update().catch(() => { /* offline: tenta na próxima */ });
+          if (document.visibilityState !== "visible" || Date.now() - conferiu < 18e5) return;
+          conferiu = Date.now();
+          reg.update().catch(() => { /* offline: tenta na próxima */ });
         });
       }).catch(() => { /* SW é só otimização: ignora falha */ });
       if (typeof requestIdleCallback === "function") requestIdleCallback(instala, { timeout: 3000 });
