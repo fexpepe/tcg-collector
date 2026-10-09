@@ -1096,7 +1096,7 @@
     const res = await shared.createShare("collection", g.name, buildSaleShareData(gid));
     if (btn) btn.disabled = false;
     if (res && res.id) {
-      await copia(`${window.location.origin}${window.location.pathname.replace(/[^/]*$/, "")}collection?s=${res.id}`, t("collection.share.copied"));
+      await copia(`${window.SLEEVU.origem}${window.location.pathname.replace(/[^/]*$/, "")}collection?s=${res.id}`, t("collection.share.copied"));
     } else {
       setLabel(original);
       alert(res && res.error === "auth" ? t("collection.share.needLogin") : t("collection.share.error"));

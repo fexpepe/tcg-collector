@@ -1,0 +1,4 @@
+# Gerados: o pacote web sai do scripts/app-web.mjs a cada build, e as
+# dependências do npm voltam pelo `npm ci` (o package-lock.json é versionado).
+node_modules/
+www/

@@ -92,8 +92,17 @@
 # 648 no Magic, 200 no Pokémon EN. 1h fresco + 1 dia servindo stale enquanto
 # revalida é seguro: o sync é união preservadora (carta não some) e o app shell
 # (HTML/JS com hash) continua network-first, então só o dado atrasa até 1h.
+#
+# Access-Control-Allow-Origin (2026-10-09): o app (Capacitor, mobile/) roda
+# fora do sleevu.app — capacitor://localhost no iOS, https://localhost no
+# Android — e lê o catálogo daqui por fetch (fatias de índice, chunks, câmbio).
+# Sem a licença o WebView recebe o JSON e não entrega ao código. `*` e não a
+# origem do app porque o _headers não responde por origem, e o catálogo já é
+# público e servido sem custo por leitura (a API do D1, que cobra por linha,
+# libera só as origens do app: functions/_lib/cors-app.js).
 /data/*
   Cache-Control: public, max-age=3600, stale-while-revalidate=86400
+  Access-Control-Allow-Origin: *
   ! Link
 
 # Calendário de lançamentos (.ics). Content-Type explícito porque é ele que faz

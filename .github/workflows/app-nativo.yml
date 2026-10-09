@@ -1,0 +1,95 @@
+name: App nativo (compila Android e iOS)
+
+# Portão de compilação do app (mobile/, Capacitor). Só COMPILA: não assina,
+# não publica em loja e não manda live update. Loja é o Codemagic
+# (codemagic.yaml, tag vX.Y.Z) e live update é só o app-live-update.yml, à mão.
+#
+# Existe porque o projeto nativo quebra por coisas que nenhum teste em Node vê
+# (Gradle, SPM, plugin que mudou de API) e porque ninguém aqui roda Xcode: o
+# runner macOS do GitHub é grátis em repositório público. Roda quando muda o
+# app ou o montador do pacote web; mudança só do site não passa por aqui.
+on:
+  pull_request:
+    paths:
+      - "mobile/**"
+      - "scripts/app-web.mjs"
+      - "scripts/lib/app-web.mjs"
+      - ".github/workflows/app-nativo.yml"
+  push:
+    branches: [main]
+    paths:
+      - "mobile/**"
+      - "scripts/app-web.mjs"
+      - "scripts/lib/app-web.mjs"
+      - ".github/workflows/app-nativo.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: app-nativo-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: 22
+      - uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Pacote web + sync
+        working-directory: mobile
+        run: |
+          npm ci
+          npm run app:web
+          npx cap sync android
+
+      - name: Compila (APK de debug)
+        working-directory: mobile/android
+        run: ./gradlew --no-daemon assembleDebug
+
+      # O APK de debug instala em qualquer Android (fontes desconhecidas) e
+      # fala com produção: é o jeito de testar o app antes de existir conta na
+      # Play. Some em 7 dias.
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: sleevu-debug-apk
+          path: mobile/android/app/build/outputs/apk/debug/*.apk
+          retention-days: 7
+
+  ios:
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: 22
+
+      - name: Pacote web + sync
+        working-directory: mobile
+        run: |
+          npm ci
+          npm run app:web
+          npx cap sync ios
+
+      # Capacitor 8 pede Xcode 26+. Simulador, sem assinatura: prova que o
+      # projeto e os pacotes do SPM resolvem e compilam.
+      - name: Compila (simulador, sem assinatura)
+        working-directory: mobile/ios/App
+        run: |
+          xcodebuild -version
+          xcodebuild -project App.xcodeproj -scheme App -configuration Debug \
+            -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' \
+            CODE_SIGNING_ALLOWED=NO build | tail -n 40
+          test "${PIPESTATUS[0]}" -eq 0

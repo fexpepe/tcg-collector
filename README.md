@@ -861,8 +861,23 @@ dependem de secret são no-op sem ele — o build sai igual, só sem aquela font
 
 Outros workflows: `ci.yml` (portão rápido em todo push/PR — testes, smoke de
 i18n e ordem de scripts, guardas de mobile, sintaxe dos scripts, minificação
-compila), `healthcheck.yml`, `uptime.yml` (probe de 30 em 30 min) e
-`push-wishlist.yml` (notificação de queda de preço, segunda 09:00 UTC).
+compila), `healthcheck.yml`, `uptime.yml` (probe de 30 em 30 min),
+`push-wishlist.yml` (notificação de queda de preço, segunda 09:00 UTC) e
+`app-nativo.yml` (compila o app Android/iOS quando `mobile/` muda).
+
+---
+
+## App (Android e iOS)
+
+O app nativo mora em [mobile/](mobile/) (Capacitor 8, id `app.sleevu`) e roda o
+**mesmo código** deste repositório: `npm run app:web` monta o pacote a partir das
+páginas, de `src/` e de `assets/`. O catálogo e as APIs continuam no
+`sleevu.app`, buscados pela rede. Build de loja é o Codemagic (`codemagic.yaml`,
+tag `vX.Y.Z`); correção de HTML/JS/CSS chega por live update (Capgo), só pelo
+`app-live-update.yml`, à mão. O site enxerga o app por `window.SLEEVU_APP`
+(links de compartilhar, medição) e libera CORS pra ele no `_headers` (`/data/*`)
+e em `functions/api/_middleware.js`. Tudo — inclusive o que ainda falta, como o
+login dentro do app — está em [mobile/README.md](mobile/README.md).
 
 ---
 

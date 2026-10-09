@@ -125,16 +125,21 @@
   // /login já nascer sem o botão do Google (nada pisca nem pula) e o pageview
   // levar o app junto. Mesma lista do familia() do src/erros.js; "; wv)" é a
   // WebView do Android, que o Google também recusa.
+  // O nosso app (Capacitor, mobile/) entra primeiro, como "app": no Android a
+  // WebView dele cairia em "webview", e no iOS o WKWebView não se denuncia no
+  // user-agent — o botão do Google apareceria e abriria o Safari, que loga o
+  // SITE e não o app. A ponte (mobile/web/app-nativo.js) roda antes daqui.
   try {
     var ua = navigator.userAgent || "";
-    var iab = /Instagram/.test(ua) ? "instagram"
-      : /FBAN|FBAV|FB_IAB|FBIOS/.test(ua) ? "facebook"
-        : /musical_ly|BytedanceWebview|TikTok/i.test(ua) ? "tiktok"
-          : /\bLine\//.test(ua) ? "line"
-            : /Snapchat/.test(ua) ? "snapchat"
-              : /Pinterest/.test(ua) ? "pinterest"
-                : /LinkedInApp/.test(ua) ? "linkedin"
-                  : /; wv\)/.test(ua) ? "webview" : "";
+    var iab = window.SLEEVU_APP && window.SLEEVU_APP.nativo ? "app"
+      : /Instagram/.test(ua) ? "instagram"
+        : /FBAN|FBAV|FB_IAB|FBIOS/.test(ua) ? "facebook"
+          : /musical_ly|BytedanceWebview|TikTok/i.test(ua) ? "tiktok"
+            : /\bLine\//.test(ua) ? "line"
+              : /Snapchat/.test(ua) ? "snapchat"
+                : /Pinterest/.test(ua) ? "pinterest"
+                  : /LinkedInApp/.test(ua) ? "linkedin"
+                    : /; wv\)/.test(ua) ? "webview" : "";
     if (iab) document.documentElement.setAttribute("data-iab", iab);
   } catch (e) { /* sem user-agent: segue como navegador comum */ }
 

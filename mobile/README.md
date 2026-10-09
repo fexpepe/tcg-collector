@@ -1,0 +1,161 @@
+# App do Sleevu (Android e iOS)
+
+O app é o **mesmo código do site**, empacotado com o [Capacitor 8](https://capacitorjs.com).
+O HTML, o JS e o CSS vão dentro do app. O catálogo (`data/`, ~550 MB e muda todo
+dia) e as APIs da borda (`/api/*`) continuam no `https://sleevu.app`, e o app
+busca pela rede, como o site.
+
+A stack foi decidida em 2026-10-08: GitHub + Cloudflare (site), **Codemagic**
+(build e envio às lojas) e **Capgo** (só o live update). O Capgo completo, com build
+e push, ficou de fora por risco de depender de um fornecedor só.
+
+## O que mora onde
+
+| Caminho | O que é |
+|---|---|
+| `mobile/package.json` | Capacitor e o plugin do Capgo, com versões fixas. `npm ci` usa o `package-lock.json` |
+| `mobile/capacitor.config.json` | `appId` **`app.sleevu`** (permanente nas lojas), `webDir` `www`, live update `atBackground` |
+| `mobile/android/`, `mobile/ios/` | Projetos nativos versionados. iOS usa Swift Package Manager (sem CocoaPods) |
+| `mobile/web/app-nativo.js` | A **ponte**: 1º script de toda página do app (ver abaixo) |
+| `mobile/assets/` | Fontes do ícone e da splash, geradas do `icon.svg` do site |
+| `mobile/www/` | O pacote montado. **Gerado**, fora do git |
+| `scripts/app-web.mjs` + `scripts/lib/app-web.mjs` | Monta o `www/` a partir do site |
+| `codemagic.yaml` (raiz) | Build de loja. O Codemagic exige o arquivo na raiz |
+| `.github/workflows/app-nativo.yml` | CI: compila Android e iOS quando o app muda |
+| `.github/workflows/app-live-update.yml` | A única porta do live update (PR #171) |
+
+O deploy do site apaga `mobile/` e `codemagic.yaml` antes de publicar. Push que só
+mexe no app não republica o site.
+
+## Como o site roda dentro do app
+
+O app serve as páginas de dentro do aparelho: `capacitor://localhost` no iOS e
+`https://localhost` no Android. O que no site a borda da Cloudflare faz, aqui
+fica a cargo de duas peças.
+
+**A montagem (`npm run app:web`)** copia as páginas, `src/`, `styles.css` e
+`assets/`, e muda o mínimo:
+- põe o `game.js` em modo manifest, com o `dataDir` de cada jogo apontando pro `sleevu.app`;
+- tira a vitrine (`src/ads.js`): AdSense em WebView viola a política do Google, e o
+  "apoie: R$10 = 30 dias sem anúncio" é desbloqueio pago fora da loja;
+- põe na frente de cada `env(safe-area-inset-*)` a medida que o Capacitor injeta
+  (`--safe-area-inset-*`), porque a WebView do Android anterior à 140 erra o `env()`.
+
+Painéis de administração (admin, parceiro, editor do blog) ficam fora.
+
+**A ponte (`mobile/web/app-nativo.js`)** roda antes de tudo em cada página e cuida
+de quatro coisas:
+1. **Avisa o Capgo** (`notifyAppReady`). Sem o aviso em 10 s, o Capgo desfaz o live update.
+2. **Endereço bonito.** O Capacitor serve o `index.html` pra todo caminho sem ponto.
+   - A ponte, no `index.html`, descobre a página que a borda serviria (`/sets`,
+     `/games/<jogo>/<set>`, `/users/<handle>`, os 301 do `_redirects`) e vai pra ela.
+   - A página nova devolve o endereço bonito pra barra antes do `game.js` ler o
+     `location.pathname`.
+   - A tabela de rotas é o `destino()` dela; `tests/app-web.test.mjs` trava cada caso.
+3. **Pedidos ao servidor.** `fetch`, XHR, `sendBeacon` e as imagens do catálogo
+   (`data/set-logos/…` dentro de `innerHTML`, `src`, `srcset`) saem pro `sleevu.app`.
+4. **Sem service worker, sem Web Push e sem convite de "instalar"**: quem atualiza o
+   código é o Capgo.
+
+**O site sabe que está no app** por `window.SLEEVU_APP`, e isso muda três coisas:
+- os links de compartilhar saem com `SLEEVU.origem` (o `sleevu.app`, nunca o
+  endereço do aparelho);
+- medição e rastreio de erro contam o app como produção (`emProducao()` no `shared.js`);
+- o `<html>` ganha `data-iab="app"`, que esconde o login com Google (ver Limites).
+
+**Do lado do servidor** entra só o CORS. O catálogo estático manda
+`Access-Control-Allow-Origin: *` (no `_headers`). As APIs `/api/*` liberam só as
+duas origens do app (`functions/api/_middleware.js`): o D1 cobra por linha lida.
+
+## Rodar
+
+```bash
+cd mobile
+npm ci
+npm run sync          # monta o www/ e copia pros projetos nativos
+npx cap open android  # Android Studio
+npx cap open ios      # Xcode (só no macOS)
+```
+
+**Sem Android Studio:** o CI (`app-nativo.yml`) gera um APK de debug em toda PR
+que mexe no app, no artefato `sleevu-debug-apk` (fica 7 dias). Ele instala em
+qualquer Android, com "fontes desconhecidas", e fala com produção.
+
+**Ensaio no navegador** (o jeito mais rápido de ver uma mudança da ponte):
+1. Monte o pacote apontando pra um servidor local:
+   `node scripts/app-web.mjs --origem http://localhost:8790 --saida <pasta>`.
+2. Sirva a pasta com a regra do Capacitor: caminho sem ponto = `index.html`.
+3. Na porta 8790, deixe um repasse pro `sleevu.app` que devolva os cabeçalhos de
+   CORS (fazendo o papel do `_headers` e do middleware).
+
+## Publicar
+
+| O que mudou | Caminho |
+|---|---|
+| Só HTML/JS/CSS do site | **Live update**: workflow `app-live-update.yml`, à mão, versão X.Y.Z e canal, com aprovação do Fernando no GitHub |
+| Algo nativo (plugin, permissão, ícone, `capacitor.config.json`, versão do Capacitor) | **Loja**: tag `vX.Y.Z` → Codemagic gera, assina e envia (Play: teste interno, como rascunho; iOS: TestFlight) |
+
+- **Versão vem da tag.** A tag vira o `versionName` / `CFBundleShortVersionString`, e
+  o contador do Codemagic vira o `versionCode` / `CFBundleVersion`.
+- **Live update não pode depender de nativo novo.** JS que chama um plugin que o
+  binário instalado não tem quebra o app. O plugin vai primeiro pela loja.
+- **O canal do Capgo bloqueia update entre versões principais**, então um pacote 2.x
+  não chega a um app 1.x.
+
+## Configuração fora do repositório
+
+- **Codemagic**:
+  - conectar o repositório;
+  - keystore de upload com o nome `sleevu_upload`;
+  - grupo `google_play` com `GCLOUD_SERVICE_ACCOUNT_CREDENTIALS`;
+  - integração da App Store Connect com o nome `sleevu_asc`.
+
+  A **primeira** versão vai à mão no Play Console, porque a API da Play só aceita
+  envio depois que o app existe lá.
+- **Google Play, conta pessoal**: teste fechado com 12 testadores por 14 dias seguidos
+  antes de liberar a produção.
+- **Capgo**: app `app.sleevu`, canais `production` (padrão de download) e `beta`
+  (padrão de upload). Feito em 2026-10-08.
+- **GitHub**: ambiente `app-live-update`, com o Fernando como revisor obrigatório, sem
+  atalho de admin, só a `main` e o segredo `CAPGO_TOKEN`. Feito em 2026-10-09.
+- **R2 (`img.sleevu.app`)**: incluir `capacitor://localhost` e `https://localhost` no
+  CORS do bucket. Sem isso, exportar imagem (binder, grade) com carta espelhada falha
+  no app; o resto não depende disso.
+
+## Limites conhecidos (próximos passos)
+
+1. **Login dentro do app.**
+   - O link mágico e o Google voltam pro navegador, não pro app.
+   - Falta deep link (`app.sleevu://` ou App Links/Universal Links) e o
+     endereço de volta liberado no Supabase.
+   - A Apple exige **Sign in with Apple** quando há login com Google.
+   - Por ora o app esconde o botão do Google (`data-iab="app"`); o visitante usa a
+     coleção local.
+2. **Push nativo** (FCM/APNs). O Web Push não existe na WebView.
+3. **Bloqueios de loja já mapeados**:
+   - denunciar e bloquear conteúdo de outros usuários;
+   - o "apoie" como compra dentro do app;
+   - o `delete_account` versionado.
+4. **Endereços que só a borda resolve**: apelido (`/games/magic`) e o 301 do
+   compartilhar (`/games/<jogo>/_id/<id>`). Os links do próprio app nunca usam esses
+   endereços; aberto de fora, cai na página de erro.
+5. **Caminho com ponto no último pedaço**: `/users/h/personagens/Mr.%20Mime` não
+   reabre depois de recarregar, porque o Capacitor procura um arquivo. O app não
+   recarrega no lugar: o Capgo volta pra raiz.
+
+## Ícone e splash
+
+As fontes ficam em `mobile/assets/`, geradas do `icon.svg`, com fundo `#0d0e12`. Pra
+regerar:
+
+```bash
+cd mobile
+npx --yes @capacitor/assets@3.0.5 generate --android --ios --assetPath assets
+```
+
+A ferramenta reescreve `mipmap-anydpi-v26/ic_launcher*.xml` com inset de 16,7%, e
+isso deixa o "S" pequeno. Depois de rodar, é preciso:
+- devolver esses dois arquivos ao formato de fundo em cor
+  (`@color/ic_launcher_background`, `#0D0E12`) com a frente sem inset;
+- gerar as `ic_launcher_foreground.png` no tamanho da camada adaptável (108 dp: 432 px
+  no xxxhdpi), a partir de `assets/icon-foreground.png`.
