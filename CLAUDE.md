@@ -39,6 +39,27 @@ a PR.
 Se a feature ficou pela metade (bloqueio, dúvida que muda o resultado), não
 abre PR: commita na branch, sobe a branch e diz o que falta.
 
+## Carta, set, linha ou jogo novo no catálogo
+
+Segue o [docs/CATALOGO.md](docs/CATALOGO.md). Jogo ou linha nova só vira PR com
+a ficha da seção 4.1 preenchida na descrição, os itens do checklist 4.2 feitos
+(ou marcados "não se aplica", com o motivo) e os orçamentos de arquivos e de
+peso medidos (seção 7). A maior parte dos esquecimentos não quebra nada no CI e
+vai calada pro ar.
+
+## Convenções que já valem no código
+
+- Comentários e mensagens de commit em **português**, no tom do resto do
+  código (explicam a decisão e o bug que motivou, com data quando ajuda).
+- Sem build e sem bundler: HTML estático + JS global + `styles.css` único.
+  CSS novo entra perto das regras do mesmo componente, com comentário.
+- Texto de interface passa pelo i18n (`src/i18n.js`, pt/en/es) — chave nova
+  entra nos três idiomas, senão o `check.mjs` reclama.
+- Ícones em SVG inline (traço, `currentColor`), nunca emoji nem glifo de
+  texto em botão.
+- Alvo de toque mínimo de 44px no celular; campo de texto com 16px no toque
+  (iOS dá zoom abaixo disso).
+
 ## App (mobile/) anda junto com o site
 
 O app (Capacitor, [mobile/README.md](mobile/README.md)) roda o mesmo código do
@@ -60,24 +81,3 @@ confira no ensaio do pacote no navegador (receita no `mobile/README.md`).
 
 **Tag `vX.Y.Z` dispara build de LOJA no Codemagic.** O Claude não cria nem
 sobe tag de versão sem o Fernando pedir aquela versão na conversa.
-
-## Carta, set, linha ou jogo novo no catálogo
-
-Segue o [docs/CATALOGO.md](docs/CATALOGO.md). Jogo ou linha nova só vira PR com
-a ficha da seção 4.1 preenchida na descrição, os itens do checklist 4.2 feitos
-(ou marcados "não se aplica", com o motivo) e os orçamentos de arquivos e de
-peso medidos (seção 7). A maior parte dos esquecimentos não quebra nada no CI e
-vai calada pro ar.
-
-## Convenções que já valem no código
-
-- Comentários e mensagens de commit em **português**, no tom do resto do
-  código (explicam a decisão e o bug que motivou, com data quando ajuda).
-- Sem build e sem bundler: HTML estático + JS global + `styles.css` único.
-  CSS novo entra perto das regras do mesmo componente, com comentário.
-- Texto de interface passa pelo i18n (`src/i18n.js`, pt/en/es) — chave nova
-  entra nos três idiomas, senão o `check.mjs` reclama.
-- Ícones em SVG inline (traço, `currentColor`), nunca emoji nem glifo de
-  texto em botão.
-- Alvo de toque mínimo de 44px no celular; campo de texto com 16px no toque
-  (iOS dá zoom abaixo disso).
