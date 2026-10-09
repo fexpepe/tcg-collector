@@ -9165,8 +9165,12 @@
     const viaApi = await withPageLoading(fetchCollectionApi(pedido));
     if (viaApi) {
       // Mesmo efeito colateral do loadAcrossGames: a tabela de preços da sessão
-      // passa a ser a UNIÃO dos jogos, que é onde o cardValue procura.
-      window.TCG_PRICING = viaApi.pricing || {};
+      // passa a ser a UNIÃO dos jogos, que é onde o cardValue procura. MESCLA,
+      // não troca (2026-10-08): quem chamava duas vezes na mesma página (Cartas:
+      // as mais vistas e o popup do ?card=; Portfólio: listas e movers em
+      // paralelo) perdia o preço do que a outra carga tinha trazido. Preço não
+      // colide entre jogos (ids próprios).
+      Object.assign(window.TCG_PRICING = window.TCG_PRICING || {}, viaApi.pricing);
       // `parcial`: veio menos carta do que se pediu (ver fetchCollectionApi).
       // Quem grava o ponto do dia no histórico deve PULAR nesse caso, senão
       // registra uma queda de patrimônio que não existiu.
