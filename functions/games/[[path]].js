@@ -184,7 +184,18 @@ async function precoDaCarta(env, request, card, arquivo) {
 
 // A tela do set do app no endereço do set; com `rota.carta`, a mesma tela com
 // o popup da carta aberto (o detail.js lê a rota do <meta> que vai no HTML).
+// Exceção na decoração (um chunk ou mapa fora do formato, um caso que as peças
+// não previram) virava a página de erro da Cloudflare (2026-10-08). A casca
+// crua abre a mesma tela: o detail.js acha o set e a carta pelo endereço — a
+// tela do jogo (telaDoJogo) já fazia assim.
 async function telaDoSet(context, rota) {
+  try {
+    return await telaDoSetDecorada(context, rota);
+  } catch (e) {
+    return context.env.ASSETS.fetch(new URL("/detail.html", context.request.url));
+  }
+}
+async function telaDoSetDecorada(context, rota) {
   const { env, request } = context;
   const mapa = await jsonDoSite(env, request, `/data/game-pages/${rota.jogo.url}.json`);
   const sets = (mapa && mapa.s) || {};
