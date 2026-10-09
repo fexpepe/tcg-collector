@@ -130,3 +130,33 @@ test("RSS: itens escapados, data RFC 822, categoria, autor e capa só https", ()
   assert.ok(vazio.includes("<lastBuildDate>Wed, 30 Sep 2026 00:00:00 GMT</lastBuildDate>"));
   assert.ok(!vazio.includes("<item>"));
 });
+
+// Cache da borda do blog com o BUILD na chave (2026-10-08): a cópia guardada
+// pede os arquivos com hash do build em que foi montada, e por até 2 min
+// depois de cada deploy ela era servida pedindo arquivos que o Pages já não
+// serve. Agora a cópia de antes do deploy deixa de ser achada.
+test("chave do cache do blog leva o build da casca", async () => {
+  const { chaveDaBorda } = await import("../functions/blog/_comum.js");
+  const casca = (b) => `<html><head><meta name="sleevu-build" content="${b}"></head></html>`;
+  assert.equal(chaveDaBorda("https://sleevu.app", "/blog/guia", casca("abc12345")).url, "https://sleevu.app/blog/guia?b=abc12345");
+  assert.equal(chaveDaBorda("https://sleevu.app", "/blog?cat=guias", casca("ffff0000")).url, "https://sleevu.app/blog?cat=guias&b=ffff0000");
+  assert.equal(chaveDaBorda("https://sleevu.app", "/blog", "<html></html>").url, "https://sleevu.app/blog?b=dev");
+  assert.notEqual(chaveDaBorda("https://sleevu.app", "/blog/guia", casca("a")).url, chaveDaBorda("https://sleevu.app", "/blog/guia", casca("b")).url);
+});
+
+test("post com o Supabase fora: 503 com a casca (lida uma vez, a mesma do build da chave)", async () => {
+  const { onRequestGet } = await import("../functions/blog/[slug].js");
+  const pedidos = [];
+  const env = {
+    BLOG_SUPABASE_URL: "https://supabase.invalid",
+    ASSETS: { fetch: async (u) => { pedidos.push(new URL(String(u)).pathname); return new Response('<html><head><meta name="sleevu-build" content="abc12345"></head><body><main id="blogPost"></main></body></html>', { headers: { "content-type": "text/html; charset=utf-8" } }); } }
+  };
+  const fetchOriginal = globalThis.fetch;
+  globalThis.fetch = async () => { throw new Error("rede fora"); };
+  try {
+    const r = await onRequestGet({ params: { slug: "guia-do-charizard" }, env, request: new Request("https://sleevu.app/blog/guia-do-charizard"), waitUntil() {} });
+    assert.equal(r.status, 503);
+    assert.match(await r.text(), /blogPost/);
+    assert.deepEqual(pedidos, ["/blog-post"], "a casca é lida uma vez só");
+  } finally { globalThis.fetch = fetchOriginal; }
+});
