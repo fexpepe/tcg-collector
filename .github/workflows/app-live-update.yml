@@ -112,19 +112,24 @@ jobs:
         with:
           node-version: 22
 
-      # O projeto Capacitor (PR seguinte) traz o capacitor.config.json e o
-      # `npm run app:web`, que monta a pasta webDir só com o código do app. O
-      # catálogo (data/, centenas de MB) fica de fora e chega pela rede, como
-      # no site — embutido, cada update custaria o catálogo inteiro.
+      # O app mora em mobile/ (projeto Capacitor): o capacitor.config.json de
+      # lá diz o appId e a pasta do pacote (webDir), e o `npm run app:web`
+      # monta essa pasta só com o código do site. O catálogo (data/, centenas
+      # de MB) fica de fora e chega pela rede, como no site — embutido, cada
+      # update custaria o catálogo inteiro.
       - name: Monta o pacote web
+        working-directory: mobile
         run: |
           if [ ! -f capacitor.config.json ]; then
-            echo "::error::Ainda não existe o projeto Capacitor (capacitor.config.json): nada a publicar."; exit 1
+            echo "::error::Ainda não existe o projeto Capacitor (mobile/capacitor.config.json): nada a publicar."; exit 1
           fi
           npm ci
           npm run app:web
 
+      # Roda de dentro de mobile/: a CLI lê o webDir do capacitor.config.json e
+      # confere os plugins nativos no package.json de lá.
       - name: Envia pro Capgo
+        working-directory: mobile
         env:
           CAPGO_TOKEN: ${{ secrets.CAPGO_TOKEN }}
           VERSAO: ${{ inputs.versao }}

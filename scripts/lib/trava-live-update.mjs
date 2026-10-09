@@ -16,9 +16,10 @@
 //     que deixariam o job de publicar rodar com o `confere` vermelho.
 //
 // Fora da porta, nenhum arquivo de automação (workflows, codemagic.yaml,
-// scripts do package.json, scripts/) pode chamar a CLI do Capgo, tocar o
-// token ou usar o ambiente. O plugin do app (`@capgo/capacitor-updater`) não
-// conta: ele só BAIXA update, quem publica é a CLI.
+// scripts dos package.json, scripts/, projetos nativos em mobile/) pode
+// chamar a CLI do Capgo, tocar o token ou usar o ambiente. O plugin do app
+// (`@capgo/capacitor-updater`) não conta: ele só BAIXA update, quem publica é
+// a CLI.
 //
 // Lido como texto por regex, sem parser de YAML (o repo não tem dependência).
 // O formato que a guarda entende é o dos workflows daqui: chave de topo na
@@ -149,28 +150,37 @@ export function confereTravaLiveUpdate(arquivos) {
   return erros;
 }
 
+// Pastas geradas dentro do app (mobile/): dependências, o pacote web montado
+// e a cópia dele nos projetos nativos, saídas de build. Nada disso é receita.
+const GERADO_NO_APP = /^(?:node_modules|www|public|build|\.gradle|DerivedData|Pods)$/;
+
 // Junta os arquivos de automação do repositório no formato que a guarda lê.
-// Do package.json só entram os "scripts": a dependência do plugin ou da CLI
-// não publica nada sozinha; o comando que roda, sim.
+// Do package.json (o da raiz e o do app) só entram os "scripts": a
+// dependência do plugin ou da CLI não publica nada sozinha; o comando que
+// roda, sim. No app também entram os projetos nativos: uma tarefa do Gradle ou
+// um "Run Script" do Xcode chamando a CLI seria um envio escondido no build
+// de loja.
 export function arquivosDeAutomacao(raiz) {
   const arquivos = {};
   const ler = (rel) => { arquivos[rel] = readFileSync(join(raiz, rel), "utf8"); };
-  const varre = (dir, re) => {
+  const varre = (dir, re, pula = null) => {
     if (!existsSync(join(raiz, dir))) return;
     for (const nome of readdirSync(join(raiz, dir))) {
       const rel = `${dir}/${nome}`;
-      if (statSync(join(raiz, rel)).isDirectory()) varre(rel, re);
+      if (statSync(join(raiz, rel)).isDirectory()) { if (!(pula && pula.test(nome))) varre(rel, re, pula); }
       else if (re.test(nome) && rel !== ESTE) ler(rel);
     }
   };
   varre(".github", /\.(?:ya?ml|sh|m?js|cjs|json)$/);
   varre("scripts", /\.(?:m?js|cjs|sh|ps1)$/);
+  varre("mobile", /\.(?:gradle|kts|pbxproj|sh|m?js|cjs|ps1|ya?ml)$/, GERADO_NO_APP);
   for (const f of ["codemagic.yaml", "codemagic.yml"]) if (existsSync(join(raiz, f))) ler(f);
-  if (existsSync(join(raiz, "package.json"))) {
+  for (const pkg of ["package.json", "mobile/package.json"]) {
+    if (!existsSync(join(raiz, pkg))) continue;
     let scripts = {};
-    try { scripts = JSON.parse(readFileSync(join(raiz, "package.json"), "utf8")).scripts || {}; }
+    try { scripts = JSON.parse(readFileSync(join(raiz, pkg), "utf8")).scripts || {}; }
     catch { /* package.json quebrado é problema de outro check */ }
-    arquivos["package.json (scripts)"] = JSON.stringify(scripts, null, 2);
+    arquivos[`${pkg} (scripts)`] = JSON.stringify(scripts, null, 2);
   }
   return arquivos;
 }
