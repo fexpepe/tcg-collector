@@ -61,11 +61,20 @@ export function transformaGameJs(texto, { origem = ORIGEM_PADRAO, hostsEspelho =
 //    relativos ao caminho fundo — 404 à toa. Na raiz a base é a mesma de
 //    sempre. NÃO vai nas outras páginas: com base "/", href="?aba=x" e
 //    href="" passariam a apontar pro início (as que têm base já tratam isso).
-export function transformaHtml(texto, { pagina, origem = ORIGEM_PADRAO }) {
+// 5. <meta name="sleevu-build"> com o commit do pacote ("app-<sha>"). No site
+//    quem carimba é o hash-assets do deploy; é dele que o rastreio de erro
+//    tira o `v` ("corrigido?" por leva — docs/PLANO-ANALYTICS-3.md, 4.3 item
+//    7). Sem ele, todo erro do app chegaria sem versão, e depois de um live
+//    update não daria pra saber se o erro é do JS velho ou do novo. A
+//    comparação com o service worker (versaoNovaAssumiu) não roda no app:
+//    lá não há SW.
+export function transformaHtml(texto, { pagina, origem = ORIGEM_PADRAO, build = "app-dev" }) {
   const head = /<head(?:\s[^>]*)?>/i.exec(texto);
   if (!head) throw new Error(`app-web: ${pagina}.html sem <head>`);
+  if (!/^app-[a-z0-9]+$/.test(build)) throw new Error(`app-web: build inválido: ${build}`);
   let ponte = `<script src="/src/app-nativo.js" data-pagina="${pagina}"></script>`;
   if (pagina === "index" && !/<base\s/i.test(texto)) ponte += `\n<base href="/">`;
+  if (!/name="sleevu-build"/.test(texto)) ponte += `\n<meta name="sleevu-build" content="${build}">`;
   let out = texto.slice(0, head.index + head[0].length) + "\n" + ponte + texto.slice(head.index + head[0].length);
   out = out.replace(/(\s(?:src|href)=")(?:\.?\/)?data\//g, `$1${origem}/data/`);
   // O .ics dos lançamentos também é gerado no deploy: o link de assinar o

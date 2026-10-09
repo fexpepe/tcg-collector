@@ -231,29 +231,44 @@ caso, Sentry ou Crashlytics só pra crash. O erro de JS do app já chega pelo
 
 ### 4.3 Checklist pro esqueleto do Capacitor (pra medição funcionar)
 
+O esqueleto (PR #175, `mobile/`, 2026-10-09) cumpriu os itens 1–4 e 7. O 5
+mudou de forma, e o 6 segue pra depois.
+
 1. **Instalar o `@capacitor/app`.** Sem ele não há `getInfo()`, e o
    pageview do app vai sem versão (a aba Versões mostra "?").
+   **Feito** (8.1.1). A ponte do app também usa o plugin pro botão
+   "voltar" do Android.
 2. **Não ligar o `CapacitorHttp` pras chamadas ao Supabase.** Ele troca o
    `fetch` do WebView pelo HTTP nativo. O user-agent pode deixar de ser o
    do WebView (Dalvik/okhttp no Android, CFNetwork no iOS), e a regex de
    robô do guard pega `okhttp` (A19). Se um dia precisar ligar, mandar um
    pageview de teste do app e conferir em Técnico › Qualidade (gente ×
-   robôs) antes de publicar.
+   robôs) antes de publicar. **Feito**: desligado. A ponte só reescreve o
+   endereço de `/data` e `/api` e deixa o `fetch` do WebView.
 3. **Não sobrescrever o user-agent.** O `appendUserAgent` com
-   "SleevuApp/x" pode; trocar o UA inteiro, não.
+   "SleevuApp/x" pode; trocar o UA inteiro, não. **Feito**: o UA é o do
+   WebView, intacto.
 4. **CORS das APIs da Cloudflare** (`functions/api/*`): aceitar
    `capacitor://localhost` e `https://localhost`. O Supabase já aceita
-   qualquer origem.
-5. **Login com Google no Android.** O WebView carimba `iab=webview` e o
-   login com Google fica escondido (o Google recusa OAuth em WebView
-   embutido). No app, isso pede o plugin nativo de login ou o navegador do
-   sistema. Não é medição, mas é o 1º atrito que o funil do app vai mostrar.
+   qualquer origem. **Feito**: `functions/api/_middleware.js`, só pras duas
+   origens. O catálogo estático manda `*` (`_headers`).
+5. **Login com Google no app.** O app carimba `data-iab="app"` nos DOIS
+   sistemas (theme.js, antes do `webview` do Android). O botão do Google
+   some e o pageview leva `iab=app`. No iOS, sem isso, o botão aparecia e
+   abria o Safari, que logava o SITE. O login dentro do app (deep link, e
+   Sign in with Apple quando houver Google) fica pra próxima PR. Até lá o
+   funil do app mostra esse atrito.
 6. **Atribuição de instalação** (fase 2, opcional): o Install Referrer do
    Play diz de qual campanha veio a instalação. Exige plugin nativo. No
    iOS, só pelo App Analytics (links de campanha da App Store).
 7. **Live update (Capgo):** a versão do JS vai no `jserror` (`v`). Antes de
    publicar JS que chama plugin novo, olhar quantos aparelhos ainda estão na
-   versão velha do binário (Versões do app).
+   versão velha do binário (Versões do app). **Feito**: toda página do
+   pacote leva `<meta name="sleevu-build" content="app-<commit>">`, então o
+   `v` do erro diz de qual commit veio o JS. O pageview do app também leva
+   `s=1`: a ponte declara `navigator.standalone` pra esconder o convite de
+   instalar o PWA. O `pl` decide a plataforma pela prioridade
+   ios > android > pwa.
 
 ### 4.4 Web + app: o que soma e o que não soma
 
