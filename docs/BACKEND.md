@@ -313,6 +313,12 @@ no contrato:
   `admin_notas`/`admin_nota_save`/`admin_nota_delete`, `admin_app_loja_save`.
   Única porta anônima: `app_store_import(p_key, p_linhas)`, pro robô das
   lojas, que entra pelo SHA-256 da chave em `app_store_robo`.
+- **Conta nos eventos × privacidade (`20261009b`).** O `uid` gravado com
+  sessão está na política (seção Estatísticas de uso). O trigger
+  `eventos_sem_conta` (AFTER DELETE em `auth.users`) zera o `uid` dos eventos
+  da conta apagada, e falha ali nunca segura o delete. Com "Contar minhas
+  visitas" desligado: sem `anon`, sem pageview nem evento de produto, o erro
+  de JS sai sem o token (logo sem `uid`) e o beacon do Cloudflare não carrega.
 - **Plataforma de uma pessoa.** Por pageview, onde a página foi vista; por
   navegador, a de maior prioridade usada no período (ios > android > pwa >
   web). A ponte entre web e app é a conta (`uid`): a mesma conta nos dois

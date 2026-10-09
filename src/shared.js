@@ -4204,9 +4204,12 @@
   function initErros() {
     if (!AUTH_ENABLED || !emProducao()) return; // só produção
     let modulo = null, minimos = 3;
+    // Com a medição desligada, o erro ainda sai (é o que deixa consertar o
+    // site), mas SEM nada da pessoa: o anonId() já vem nulo, e sem o token o
+    // banco não grava a conta (uid). A política de privacidade promete isso.
     const envio = () => ({
       url: `${SUPABASE_URL}/rest/v1/events`,
-      headers: Object.assign(authHeaders(tokenParaEvento()), { Prefer: "return=minimal" }),
+      headers: Object.assign(authHeaders(hasConsent("analytics") ? tokenParaEvento() : null), { Prefer: "return=minimal" }),
       anon: anonId(), game: currentGame(), path: analyticsPath(),
       lg: getSession() ? 1 : 0, pwa: isStandalonePWA() ? 1 : 0
     });
@@ -4426,8 +4429,11 @@
   // Cloudflare Web Analytics: agregado e cookieless (tráfego/origem/países/web vitals).
   // Pages não injeta sozinho, então plugamos o beacon aqui. SÓ em produção
   // (sleevu.app) pra não contar localhost/preview. CSP já libera o host.
+  // Respeita a chave "Contar minhas visitas" (2026-10-09): a política diz que,
+  // desligada, o site para de contar o uso, Cloudflare incluído. No app nativo
+  // não entra: o beacon é do site (o host do app é localhost).
   function injectCfBeacon() {
-    if (!/(^|\.)sleevu\.app$/i.test(location.hostname)) return;
+    if (!/(^|\.)sleevu\.app$/i.test(location.hostname) || !hasConsent("analytics")) return;
     if (document.querySelector("script[data-cf-beacon]")) return;
     const s = document.createElement("script");
     s.defer = true;

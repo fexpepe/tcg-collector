@@ -215,6 +215,49 @@ test("todas as travas de medição usam o emProducao (nenhuma ficou só no host)
   }
 });
 
+// ── privacidade: o que a política promete, o código cumpre (A11) ───────────
+test("política (pt/en/es): diz que a conta vai junto quando logado, a base legal, o contato e como desligar", () => {
+  const docs = ler("src/i18n-docs.js");
+  const sb = { window: { TCG_MESSAGES: {} } };
+  vm.runInNewContext(docs, sb);
+  const M = sb.window.TCG_MESSAGES;
+  const regras = {
+    pt: [/identificador interno da sua conta/, /LGPD, art\. 7º, IX/, /Ao apagar a conta, esse vínculo é apagado/, /relatórios de erro, sem identificador e sem a sua conta/, /Cloudflare Web Analytics\. Continuam/],
+    en: [/account's internal identifier/, /LGPD, art\. 7, IX/, /Deleting your account deletes this link/, /error reports, with no identifier and no account/],
+    es: [/identificador interno de tu cuenta/, /LGPD de Brasil, art\. 7, IX/, /Al borrar la cuenta, ese vínculo se borra/, /informes de error, sin identificador y sin tu cuenta/]
+  };
+  for (const [lg, rs] of Object.entries(regras)) {
+    const a = M[lg]["privacy.s.analytics"];
+    for (const r of rs) assert.match(a, r, `${lg}: privacy.s.analytics sem ${r}`);
+    assert.match(M[lg]["privacy.s.contact"], /mailto:sleevuapp@gmail\.com/, `${lg}: contato sem e-mail`);
+    assert.match(M[lg]["privacy.s.retention"], /13/, lg);
+    for (const k of ["privacy.s.analytics", "privacy.s.cookies", "privacy.s.retention"]) {
+      assert.doesNotMatch(M[lg][k], /Nada disso identifica|None of this identifies|Nada de esto te identifica|sin datos personales|with no personal data|sem dados pessoais/, `${lg}: ${k} ainda promete anonimato total`);
+    }
+  }
+  const i18n = ler("src/i18n.js");
+  assert.doesNotMatch(i18n, /"settings\.analyticsDesc": "(Estatística anônima|Anonymous, aggregated|Estadística anónima)/, "a chave das Configurações ainda diz anônima");
+  assert.match(ler("settings.html"), /data-i18n="settings\.analyticsDesc">Estatística de uso/);
+});
+
+test("medição desligada: o erro sai sem a conta e o Cloudflare não carrega", () => {
+  const shared = ler("src/shared.js");
+  const i = shared.indexOf("function initErros()");
+  assert.match(shared.slice(i, i + 900), /authHeaders\(hasConsent\("analytics"\) \? tokenParaEvento\(\) : null\)/, "sem consentimento, o erro não pode levar o token (uid)");
+  const j = shared.indexOf("function injectCfBeacon()");
+  assert.match(shared.slice(j, j + 200), /!hasConsent\("analytics"\)\) return;/, "o beacon do Cloudflare tem de respeitar a chave");
+});
+
+test("20261009b: apagar a conta tira a conta dos eventos, sem nunca segurar o delete", () => {
+  const b = ler("supabase/migrations/20261009b_eventos_sem_conta.sql");
+  assert.match(b, /create trigger eventos_sem_conta after delete on auth\.users\s*\n\s*for each row execute function public\._eventos_sem_conta\(\);/);
+  assert.match(b, /update events set uid = null where uid = old\.id;\s*\n\s*return old;\s*\nexception when others then\s*\n\s*return old;/, "falha na limpeza não pode impedir apagar a conta");
+  assert.match(b, /revoke all on function public\._eventos_sem_conta\(\) from public, anon, authenticated;/);
+  assert.match(b, /create index if not exists events_uid_idx on public\.events \(uid\) where uid is not null;/);
+  assert.match(b, /not exists \(select 1 from auth\.users u where u\.id = e\.uid\)/, "limpa as contas apagadas antes");
+  assert.match(ler("supabase/migrations/README.md"), /`20261009b` — apagar a conta tira a conta das estatísticas/);
+});
+
 // ── SQL da 20261009a ────────────────────────────────────────────────────────
 const guardDe = (txt) => {
   const i = txt.indexOf("create or replace function public.events_guard()");
