@@ -8871,6 +8871,109 @@ button.pf-alloc-row:hover .pf-alloc-name, a.pf-alloc-row:hover .pf-alloc-name { 
   .pf-moves-count { margin-left: 0; }
 }
 
+/* ============================================================================
+   VERSÃO B "Painel" (proposta de 2026-10-09, em cima da 3.0)
+   Desktop: grade de 12 colunas com tudo à vista — faixa de números, gráfico
+   (8) + rosca (4), mapa do valor (8) + cortes em lista (4), movimentos e mais
+   valiosas lado a lado, investimento inteiro, metas e selados.
+   Celular: quatro abas presas no topo; cada seção diz a sua (data-v).
+   ========================================================================== */
+.pf-b-views { display: none; }
+.pf-b-strip {
+  display: grid; grid-template-columns: minmax(300px, 1.3fr) minmax(0, 3fr);
+  gap: 1px; margin-bottom: 12px; background: var(--line); border: 1px solid var(--line);
+}
+.pf-b-worth { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; min-width: 0; padding: 20px 22px; background: var(--panel); }
+.pf-b-strip .pf-kpis { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 1px; background: var(--line); }
+.pf-b-strip .pf-kpi { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 4px; padding: 16px 18px; border: 0; background: var(--panel); }
+.pf-b-strip .pf-kpi-value { text-align: left; font-size: 21px; }
+.pf-b-strip .pf-coverage-line { grid-column: 1 / -1; margin: 0; padding: 9px 22px; border: 0; background: var(--panel); }
+
+.pf-b-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-auto-flow: row dense; gap: 12px; margin-bottom: 12px; }
+.pf-b-grid > .pf-card, .pf-b-grid > .empty-state { margin: 0; }
+.pf-b-grid > [hidden] { display: none; }
+.pf-b-chart { grid-column: span 8; display: flex; flex-direction: column; }
+.pf-b-chart .pf-chart-tools { margin-top: 0; }
+.pf-b-donut, .pf-b-side { grid-column: span 4; }
+.pf-b-tree { grid-column: span 8; }
+.pf-b-half { grid-column: span 6; }
+/* Em meia largura, as duas colunas da 3.0 nas Mais valiosas cortariam os
+   nomes: aqui a lista fica numa coluna só. */
+.pf-b-half .pf-top-list { display: block; }
+.pf-b-full { grid-column: 1 / -1; }
+
+/* Rosca + legenda. */
+.pf-b-donut-body { display: flex; flex-direction: column; align-items: stretch; gap: 16px; }
+.pf-donut { position: relative; width: 168px; margin: 0 auto; }
+.pf-donut svg { display: block; }
+.pf-donut-mid { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; pointer-events: none; }
+.pf-donut-mid strong { font-size: 28px; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; }
+.pf-donut-mid small { max-width: 104px; margin-top: 4px; font-size: 12px; font-weight: 700; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pf-b-donut .pf-alloc-row, .pf-b-side .pf-alloc-row { grid-template-columns: 10px minmax(0, 1fr) 44px auto; gap: 10px; font-size: 13.5px; }
+.pf-b-side .pf-alloc-n { display: none; }
+
+/* Mapa do valor: blocos posicionados em % sobre o quadro (squarified no JS).
+   A borda na cor do cartão separa blocos vizinhos do MESMO jogo. */
+.pf-tree { position: relative; width: 100%; overflow: hidden; background: var(--panel-strong); }
+.pf-tree-tile {
+  position: absolute; display: flex; flex-direction: column; gap: 1px;
+  padding: 6px 8px; border: 1px solid var(--panel); overflow: hidden; text-decoration: none;
+}
+.pf-tree-tile strong { font-size: 12.5px; font-weight: 800; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pf-tree-tile span { font-size: 12.5px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.pf-tree-tile small { font-size: 11px; font-weight: 700; opacity: .85; }
+a.pf-tree-tile:hover { filter: brightness(1.12); }
+a.pf-tree-tile:focus-visible { outline: 2px solid var(--text); outline-offset: -3px; }
+
+@media (max-width: 1180px) {
+  .pf-b-strip { grid-template-columns: minmax(0, 1fr); }
+  .pf-b-chart, .pf-b-tree { grid-column: span 7; }
+  .pf-b-donut, .pf-b-side { grid-column: span 5; }
+}
+@media (max-width: 960px) {
+  /* Abas presas logo abaixo do cabeçalho: quatro alvos iguais de ponta a
+     ponta. Só as seções da aba ativa aparecem (data-vista no <main>). */
+  .pf-b-views {
+    display: flex; position: sticky; top: var(--header-h, 56px); z-index: 4;
+    margin: 0 0 12px; background: var(--bg); border-bottom: 1px solid var(--line);
+  }
+  .pf-b-view {
+    /* Largura pelo rótulo (não quatro partes iguais): "Investimento" não cabe
+       em um quarto de 390 px, e "Metas" sobraria. */
+    flex: 1 1 auto; min-width: 0; min-height: 46px; padding: 0 6px; border: 0; border-radius: 0;
+    background: transparent; color: var(--muted); font-size: 13px; font-weight: 800;
+    box-shadow: inset 0 -2px 0 transparent; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .pf-b-view[aria-pressed="true"] { color: var(--text); box-shadow: inset 0 -3px 0 var(--accent); }
+  .pf-main-b[data-vista="resumo"] [data-v]:not([data-v="resumo"]),
+  .pf-main-b[data-vista="composicao"] [data-v]:not([data-v="composicao"]),
+  .pf-main-b[data-vista="investimento"] [data-v]:not([data-v="investimento"]),
+  .pf-main-b[data-vista="metas"] [data-v]:not([data-v="metas"]) { display: none !important; }
+  .pf-b-strip { grid-template-columns: minmax(0, 1fr); }
+  .pf-b-strip .pf-kpis { grid-auto-flow: row; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pf-b-strip .pf-kpi { padding: 14px 16px; }
+  .pf-b-strip .pf-kpi-value { font-size: 19px; }
+  .pf-b-strip .pf-coverage-line { padding: 10px 16px; }
+  .pf-b-grid { grid-template-columns: minmax(0, 1fr); }
+  .pf-b-grid > * { grid-column: 1 / -1 !important; }
+  /* A rosca ao lado da legenda quando a largura sobra. */
+  .pf-b-donut-body { flex-direction: row; align-items: center; }
+  .pf-b-donut-body .pf-alloc-list { flex: 1 1 auto; min-width: 0; }
+}
+@media (max-width: 600px) {
+  /* A ordem da 3.0 (que sobe Movimentos no celular) não vale aqui: as abas
+     já separam tudo, e a sequência da aba Resumo é a do HTML. */
+  .pf-main-b > * { order: 0; }
+  .pf-main-b #pfMovers, .pf-main-b #pfAlloc, .pf-main-b #pfTop { order: 0; }
+  .pf-b-worth { padding: 16px; }
+  .pf-b-worth .pf-hero-value { font-size: 34px; }
+  .pf-b-chart { padding: 14px 16px; }
+}
+@media (max-width: 460px) {
+  .pf-b-donut-body { flex-direction: column; align-items: stretch; }
+  .pf-donut { width: 168px; }
+}
+
 .tile-want:hover:not(:disabled) {
   border-color: #f0719a;
   color: #f0719a;

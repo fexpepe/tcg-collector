@@ -50,6 +50,10 @@
   //   "Atual" e "Lucro" ficavam fora da tela). Cada seção é um cartão com
   //   cabeçalho, abas e "Ver mais" — o mesmo molde de lista agrupada que o
   //   app nativo vai usar (ver docs/PORTFOLIO.md, seção 10).
+  //
+  // VERSÃO B "Painel" (proposta de 2026-10-09, em cima da 3.0): grade de
+  // widgets no desktop — faixa de números, gráfico + rosca, mapa do valor por
+  // set (treemap) — e quatro abas no topo no celular (ver aplicaVista).
   // ===========================================================================
   const GAMES = shared.GAME_SLUGS;
   const GAME_COLOR = shared.GAME_COLOR;
@@ -67,7 +71,7 @@
   let gameFilter = "all";
   // Aba ativa e "Ver mais" de cada seção. Trocar de aba redesenha SÓ a seção
   // (redesenhaSecao) — o gráfico e o resto da tela não piscam.
-  const aba = { alloc: null, invest: null, goals: null };
+  const aba = { alloc: null, invest: null, goals: null, donut: null };
   const aberta = { alloc: false, movers: false, top: false, invest: false, goals: false };
   // Patrimônio fresco do último render: é o número grande "parado". O scrub do
   // gráfico troca pelo do dia sob o dedo e, ao soltar, volta a este.
@@ -311,6 +315,7 @@
   }
   function redesenhaSecao(grupo) {
     if (grupo === "alloc") renderAlloc();
+    else if (grupo === "donut") renderDonut();
     else if (grupo === "movers") renderMovers();
     else if (grupo === "top") renderTop();
     else if (grupo === "invest") renderInvest();
@@ -685,6 +690,8 @@
       elements.pricedCopies.textContent = totalCopies ? t("portfolio.coverage", { n: pricedCopies, total: totalCopies }) : "";
     }
     renderKpisExtras();
+    renderDonut();
+    renderTreemap();
     renderAlloc();
     renderMovers();
     renderTop();
@@ -1237,6 +1244,173 @@
     renderManual(); // independe do catálogo: aparece já no primeiro paint
   })();
 
+  // ---- Versão B "Painel": rosca, mapa do valor e as abas do celular ---------
+  // Abas do celular (Resumo · Composição · Investimento · Metas): cada seção
+  // diz a qual pertence (data-v) e o CSS mostra só as da aba ativa. No desktop
+  // as abas somem e tudo fica à vista. A aba fica lembrada no aparelho.
+  const VISTA_KEY = "tcg-pf-vista";
+  const VISTAS = ["resumo", "composicao", "investimento", "metas"];
+  function aplicaVista(v, rolar) {
+    const main = document.querySelector(".pf-main");
+    if (!main || !VISTAS.includes(v)) return;
+    main.dataset.vista = v;
+    document.querySelectorAll("[data-pf-view]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.pfView === v)));
+    try { localStorage.setItem(VISTA_KEY, v); } catch (e) { /* ignora */ }
+    // Trocar de aba lá embaixo deixaria a pessoa no meio da aba nova: volta ao
+    // topo das abas (que ficam presas embaixo do cabeçalho).
+    const abasEl = document.getElementById("pfViews");
+    if (rolar && abasEl && abasEl.getBoundingClientRect().top < 0) abasEl.scrollIntoView({ block: "start" });
+  }
+  (function bindVistas() {
+    const abasEl = document.getElementById("pfViews");
+    if (!abasEl) return;
+    let salva = null;
+    try { salva = localStorage.getItem(VISTA_KEY); } catch (e) { /* ignora */ }
+    aplicaVista(VISTAS.includes(salva) ? salva : "resumo", false);
+    abasEl.addEventListener("click", (e) => {
+      const b = e.target.closest("[data-pf-view]");
+      if (b) aplicaVista(b.dataset.pfView, true);
+    });
+  })();
+
+  // Rosca de alocação: cada fatia é um arco de um círculo só
+  // (stroke-dasharray), com 1,5 px de folga entre elas. No centro, a maior
+  // fatia em % — "68% Pokémon" é a primeira coisa que a rosca diz.
+  function rosca(fatias, total) {
+    const S = 168, C0 = S / 2, R = 64, ESP = 20;
+    const circ = 2 * Math.PI * R;
+    let acc = 0;
+    const arcos = fatias.map((f) => {
+      const len = (f.value / total) * circ;
+      const vis = Math.max(0, len - (fatias.length > 1 ? 1.5 : 0));
+      const arco = `<circle cx="${C0}" cy="${C0}" r="${R}" fill="none" stroke="${f.color}" stroke-width="${ESP}" stroke-dasharray="${vis.toFixed(2)} ${(circ - vis).toFixed(2)}" stroke-dashoffset="${(-acc).toFixed(2)}" transform="rotate(-90 ${C0} ${C0})"><title>${escapeHtml(f.label)}</title></circle>`;
+      acc += len;
+      return arco;
+    }).join("");
+    const maior = fatias[0];
+    const pct = maior ? Math.round((maior.value / total) * 100) : 0;
+    return `<div class="pf-donut"><svg viewBox="0 0 ${S} ${S}" width="${S}" height="${S}" aria-hidden="true">
+        <circle cx="${C0}" cy="${C0}" r="${R}" fill="none" stroke="var(--panel-strong)" stroke-width="${ESP}"/>${arcos}</svg>
+      ${maior ? `<span class="pf-donut-mid"><strong>${pct}%</strong><small>${escapeHtml(maior.label)}</small></span>` : ""}</div>`;
+  }
+  function renderDonut() {
+    const sec = document.getElementById("pfDonut");
+    if (!sec) return;
+    const { total: rawTotal, totalCopies } = collectionLines(gameFilter);
+    const slabs = gradedSlabs(gameFilter);
+    const gradedTotal = slabs.reduce((s, x) => s + (x.value || 0), 0);
+    const total = rawTotal + gradedTotal;
+    if (!(total > 0)) { sec.hidden = true; sec.innerHTML = ""; return; }
+    const porJogo = gameFilter === "all" ? fatiasPorJogo() : [];
+    const opcoes = [];
+    if (porJogo.length > 1) opcoes.push(["game", t("portfolio.alloc.game")]);
+    opcoes.push(["type", t("portfolio.alloc.type")]);
+    if (!opcoes.some(([k]) => k === aba.donut)) aba.donut = opcoes[0][0];
+    const fatias = aba.donut === "game" ? porJogo : [
+      { label: t("portfolio.series.collection"), value: rawTotal, n: totalCopies, color: "#2dd4bf" },
+      { label: t("portfolio.series.graded"), value: gradedTotal, n: slabs.length, color: "#e8c46a" }
+    ].filter((f) => f.value > 0);
+    const loc = getLocale();
+    const pctDe = (v) => { const p = (v / total) * 100; return (p >= 10 ? Math.round(p) : p.toLocaleString(loc, { maximumFractionDigits: 1 })) + "%"; };
+    const legenda = fatias.map((f) => {
+      const miolo = `<span class="pf-dot" style="background:${f.color}"></span><span class="pf-alloc-name">${escapeHtml(f.label)}</span>
+        <span class="pf-alloc-pct">${pctDe(f.value)}</span><span class="pf-alloc-val sensitive-value">${escapeHtml(money(f.value))}</span>`;
+      return f.game
+        ? `<li><button type="button" class="pf-alloc-row" data-comp-game="${escapeAttribute(f.game)}" title="${escapeAttribute(t("portfolio.comp.filterHint", { game: f.label }))}">${miolo}</button></li>`
+        : `<li><div class="pf-alloc-row">${miolo}</div></li>`;
+    }).join("");
+    sec.innerHTML = cabecalho(t("portfolio.alloc.title")) + abas("donut", opcoes, aba.donut)
+      + `<div class="pf-b-donut-body">${rosca(fatias, total)}<ul class="pf-alloc-list">${legenda}</ul></div>`;
+    sec.hidden = false;
+  }
+
+  // MAPA DO VALOR (treemap): cada bloco é um set, do tamanho do que ele vale,
+  // na cor do jogo. Responde de relance o que nenhuma lista responde — "o meu
+  // patrimônio é dois sets e uma poeira" — e a pesquisa de 2026-10 não achou
+  // concorrente que mostre a alocação assim. Squarified (Bruls, Huizing e van
+  // Wijk): fileiras ao longo do lado curto, cada uma fechada quando o próximo
+  // bloco pioraria a proporção — blocos perto do quadrado, rótulo que cabe.
+  function squarify(itens, x, y, w, h) {
+    const soma = itens.reduce((s, it) => s + it.value, 0);
+    if (!(soma > 0)) return [];
+    const escala = (w * h) / soma;
+    let resto = itens.map((it) => Object.assign({}, it, { a: it.value * escala }));
+    const out = [];
+    const pior = (fila, lado) => {
+      const s = fila.reduce((a, it) => a + it.a, 0);
+      const mx = Math.max(...fila.map((it) => it.a)), mn = Math.min(...fila.map((it) => it.a));
+      return Math.max((lado * lado * mx) / (s * s), (s * s) / (lado * lado * mn));
+    };
+    while (resto.length) {
+      const lado = Math.min(w, h);
+      const fila = [resto[0]];
+      let i = 1;
+      while (i < resto.length && pior(fila.concat(resto[i]), lado) <= pior(fila, lado)) { fila.push(resto[i]); i++; }
+      const s = fila.reduce((a, it) => a + it.a, 0);
+      if (w >= h) {
+        const fw = s / h; let yy = y;
+        fila.forEach((it) => { const fh = it.a / fw; out.push(Object.assign(it, { x, y: yy, w: fw, h: fh })); yy += fh; });
+        x += fw; w -= fw;
+      } else {
+        const fh = s / w; let xx = x;
+        fila.forEach((it) => { const fw = it.a / fh; out.push(Object.assign(it, { x: xx, y, w: fw, h: fh })); xx += fw; });
+        y += fh; h -= fh;
+      }
+      resto = resto.slice(i);
+    }
+    return out;
+  }
+  function renderTreemap() {
+    const sec = document.getElementById("pfTreemap");
+    if (!sec) return;
+    const { lines, total: rawTotal } = collectionLines(gameFilter);
+    const slabs = gradedSlabs(gameFilter);
+    const total = rawTotal + slabs.reduce((s, x) => s + (x.value || 0), 0);
+    if (!(total > 0)) { sec.hidden = true; sec.innerHTML = ""; return; }
+    // Set + jogo na chave: dois jogos podem ter um set de mesmo nome.
+    const jogoDoSet = new Map();
+    const fatias = fatiasPor(lines, slabs, (c) => { const k = c.set; if (k && !jogoDoSet.has(k)) jogoDoSet.set(k, c.game || "pokemon"); return k; });
+    const MAX = 24;
+    const blocos = fatias.slice(0, MAX).map((f) => ({ label: f.label, value: f.value, game: jogoDoSet.get(f.label) }));
+    const resto = fatias.slice(MAX).reduce((s, f) => s + f.value, 0);
+    if (resto > 0) blocos.push({ label: t("portfolio.alloc.others", { n: fatias.length - MAX }), value: resto, outros: true });
+    // A grade é calculada na proporção REAL do quadro (largura medida × altura
+    // fixa); o ResizeObserver refaz quando a largura muda.
+    const caixa = sec.querySelector(".pf-tree") || null;
+    const W = Math.max(280, (caixa && caixa.clientWidth) || sec.clientWidth - 44 || 800);
+    const H = W < 560 ? 280 : 320;
+    const loc = getLocale();
+    const rects = squarify(blocos, 0, 0, W, H);
+    const tiles = rects.map((r) => {
+      const cor = r.outros ? "var(--panel-strong)" : (GAME_COLOR[r.game] || "#8b93a7");
+      const fg = r.outros ? "var(--muted)" : shared.textOnColor(GAME_COLOR[r.game] || "#8b93a7");
+      const pct = (r.value / total) * 100;
+      const cabe = r.w > 64 && r.h > 34;
+      const cabeValor = r.w > 84 && r.h > 52;
+      const estilo = `left:${((r.x / W) * 100).toFixed(3)}%;top:${((r.y / H) * 100).toFixed(3)}%;width:${((r.w / W) * 100).toFixed(3)}%;height:${((r.h / H) * 100).toFixed(3)}%;background:${cor};color:${fg}`;
+      const titulo = `${r.label} · ${money(r.value)} · ${pct.toLocaleString(loc, { maximumFractionDigits: 1 })}%`;
+      const miolo = cabe ? `<strong>${escapeHtml(r.label)}</strong>${cabeValor ? `<span class="sensitive-value">${escapeHtml(money(r.value))}</span><small>${pct.toLocaleString(loc, { maximumFractionDigits: 1 })}%</small>` : ""}` : "";
+      if (r.outros) return `<span class="pf-tree-tile is-rest" style="${estilo}" title="${escapeAttribute(titulo)}">${miolo}</span>`;
+      const params = new URLSearchParams({ set: r.label });
+      if (gameFilter !== "all") params.set("filter", gameFilter);
+      return `<a class="pf-tree-tile" href="collection?${params.toString()}" style="${estilo}" title="${escapeAttribute(titulo)}">${miolo}</a>`;
+    }).join("");
+    sec.innerHTML = cabecalho(t("portfolio.tree.title"), t("portfolio.tree.sub"))
+      + `<div class="pf-tree" style="height:${H}px">${tiles}</div>`;
+    sec.hidden = false;
+    if (!treemapObservado && window.ResizeObserver) {
+      treemapObservado = true;
+      let largura = W, agendado = false;
+      new ResizeObserver(() => {
+        const cx = sec.querySelector(".pf-tree");
+        if (!cx || agendado || Math.abs(cx.clientWidth - largura) < 8 || !cx.clientWidth) return;
+        agendado = true;
+        requestAnimationFrame(() => { agendado = false; largura = cx.clientWidth; renderTreemap(); });
+      }).observe(sec);
+    }
+  }
+  let treemapObservado = false;
+
   // ---- Onde está o valor -----------------------------------------------------
   // Era três blocos com três desenhos (composição por tipo, barras por jogo e o
   // detalhamento por set/raridade/artista). Virou UMA seção com abas: a mesma
@@ -1272,11 +1446,10 @@
     const gradedTotal = slabs.reduce((s, x) => s + (x.value || 0), 0);
     const total = rawTotal + gradedTotal;
     if (!(total > 0)) { sec.hidden = true; sec.innerHTML = ""; return; }
-    const porJogo = gameFilter === "all" ? fatiasPorJogo() : [];
+    // Versão B: jogo e raw × graded vivem na rosca; aqui ficam os cortes que
+    // pedem lista (set, raridade, artista).
+    const porJogo = [];
     const opcoes = [];
-    // "Jogo" só no filtro Todos e com 2+ jogos: com um só, a barra seria 100%.
-    if (porJogo.length > 1) opcoes.push(["game", t("portfolio.alloc.game")]);
-    if (slabs.some((s) => s.value > 0) && rawTotal > 0) opcoes.push(["type", t("portfolio.alloc.type")]);
     opcoes.push(["set", t("portfolio.alloc.set")], ["rarity", t("portfolio.alloc.rarity")], ["artist", t("portfolio.alloc.artist")]);
     if (!opcoes.some(([k]) => k === aba.alloc)) aba.alloc = opcoes[0][0];
     let fatias;
@@ -1337,7 +1510,7 @@
       corpo = barra + `<ul class="pf-alloc-list">${visiveis.map(linha).join("")}${outros}</ul>`
         + (fatias.length > LIM ? botaoMais("alloc", fatias.length - LIM, aberta.alloc) : "");
     }
-    sec.innerHTML = cabecalho(t("portfolio.alloc.title")) + abas("alloc", opcoes, aba.alloc) + corpo;
+    sec.innerHTML = cabecalho(t("portfolio.alloc.detail")) + abas("alloc", opcoes, aba.alloc) + corpo;
     sec.hidden = false;
   }
 
