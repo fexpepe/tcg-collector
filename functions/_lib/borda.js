@@ -21,6 +21,29 @@ export function redireciona(request, destino, status) {
   return Response.redirect(new URL(destino, request.url).href, status || 301);
 }
 
+// Set que mudou de nome ganhando um prefixo na frente: em 30/09/2026 o TCGCSV
+// passou a chamar "Starter Deck 11: Uta" de "ST-11 Starter Deck 11: Uta", e
+// os 34 Starter Decks do One Piece trocaram de endereço (68 endereços do
+// sitemap de julho davam 404, com as -en). O endereço antigo é o FIM do novo.
+// Só vale com um candidato, e não pra pedaço curto ("promos" casaria com meio
+// jogo).
+// Usado em /games/<jogo>/<set> e no /set/<slug> antigo.
+export function setRenomeado(chaves, slug) {
+  const s = String(slug || "");
+  if (s.length < 8 || !s.includes("-")) return null;
+  const achados = (chaves || []).filter((k) => k.endsWith(`-${s}`));
+  return achados.length === 1 ? achados[0] : null;
+}
+
+// O mapa das cartas que tinham página em /card/<slug> é fatiado pela 1ª letra
+// do slug (data/game-pages/legado-cartas/<letra>.json, 2026-10-08): com toda
+// carta de Pokémon, Lorcana e One Piece ele passa de 7 MB, e cada 301 leria o
+// arquivo inteiro. O prerender escreve as fatias com esta mesma régua.
+export function fatiaDoLegado(slug) {
+  const c = String(slug || "").charAt(0);
+  return /^[a-z0-9]$/.test(c) ? c : null;
+}
+
 // JSON publicado junto do site (data/…), lido direto do armazenamento dos
 // arquivos (env.ASSETS não passa por Function nem custa requisição externa).
 // Qualquer falha vira null: quem chama decide entre 404 e seguir sem o dado.

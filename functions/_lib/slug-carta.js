@@ -87,6 +87,66 @@ export function slugsDasCartas(cards) {
   return mapa;
 }
 
+// Endereço de carta que não existe mais no set (2026-10-08). O nome no
+// endereço leva número e total, e o total muda quando o set cresce: o Secret
+// Lair Drop ganha cartas a cada build, e 2.821 -> 2.822 trocou de uma vez o
+// endereço das 2.617 cartas dele (um dos motivos dos 615 404 do Search
+// Console em 08/10).
+// Às vezes muda o nome ("showcase" virou "overnumbered" no Riftbound) ou o
+// desempate. O endereço antigo segue no índice do Google e em links; em vez
+// do 404, a borda acha a carta que ele queria dizer e manda pro de hoje (301).
+// Duas tentativas, da mais segura pra menos:
+//   1. mesmo nome, número e idioma, com qualquer total (ou sem);
+//   2. mesmo número, total e idioma, com outro nome (o número identifica a
+//      carta dentro do set).
+// Mais de uma carta casando (arte paralela com o mesmo nome e número) escolhe
+// pelo -2, -3 do endereço pedido, na ordem do id, como o slugsDasCartas faz.
+// Se o -N não cabe no que casou (a carta chinesa sem nome que ganhou nome em
+// inglês: "091-098-zh-2" era a 2ª das sem nome), a tentativa seguinte decide;
+// a 1ª que achou algo fica de reserva.
+// Devolve o nome de hoje, ou null. Os pedaços já saem do slugify ([a-z0-9-]),
+// então entram na regex sem escape.
+export function cartaParecida(cards, slugs, pedido) {
+  const p = String(pedido || "");
+  if (!p || !slugs) return null;
+  const porId = [...(cards || [])].filter((c) => c && c.id != null && slugs.has(String(c.id)))
+    .sort((a, b) => (String(a.id) < String(b.id) ? -1 : String(a.id) > String(b.id) ? 1 : 0));
+  const tentativas = [
+    (c) => {
+      const num = slugify(c.number);
+      if (!num) return null;
+      const nome = nomeDoEndereco(c);
+      const idioma = idiomaDoEndereco(c);
+      return new RegExp(`^${nome ? `${nome}-` : ""}${num}(?:-\\d+)?${idioma ? `-${idioma}` : ""}(?:-(\\d+))?$`);
+    },
+    (c) => {
+      if (!slugify(c.number)) return null;
+      const idioma = idiomaDoEndereco(c);
+      return new RegExp(`^(?:[a-z0-9-]+-)?${slugify(numeroDoEndereco(c))}${idioma ? `-${idioma}` : ""}(?:-(\\d+))?$`);
+    }
+  ];
+  let reserva = null;
+  for (const regra of tentativas) {
+    const achadas = [];
+    let empate = 0;
+    for (const c of porId) {
+      const re = regra(c);
+      const m = re && re.exec(p);
+      if (!m) continue;
+      achadas.push(c);
+      if (m[1]) empate = Number(m[1]);
+    }
+    if (!achadas.length) continue;
+    if (empate < 2 || achadas[empate - 1]) {
+      const s = slugs.get(String(achadas[empate >= 2 ? empate - 1 : 0].id));
+      if (s && s !== p) return s;
+    } else if (!reserva) {
+      reserva = slugs.get(String(achadas[0].id)) || null;
+    }
+  }
+  return reserva && reserva !== p ? reserva : null;
+}
+
 // As cartas que formam a página de um set: as do chunk com aquele NOME de set,
 // fora as aposentadas (set incorporado a outro fica congelado no chunk). É a
 // mesma régua do prerender, que agrupa por nome.

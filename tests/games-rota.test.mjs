@@ -15,7 +15,8 @@ import { cabecaDaRota } from "../functions/_lib/decora-app.js";
 import { slugsDasCartas } from "../functions/_lib/slug-carta.js";
 import { destinoDoSets } from "../functions/sets.js";
 import { destinoDoSetAntigo } from "../functions/set/[slug].js";
-import { destinoDaCartaAntiga } from "../functions/card/[slug].js";
+import { destinoDaCartaAntiga, arquivoDaCartaAntiga } from "../functions/card/[slug].js";
+import { setRenomeado, fatiaDoLegado } from "../functions/_lib/borda.js";
 import { jogoDaUrl } from "../functions/_lib/jogos.js";
 
 const rota = (caminho, pathname) => decideRota(caminho, pathname || `/games/${[].concat(caminho).join("/")}`);
@@ -82,6 +83,38 @@ test("/set/<slug> antigo acha o endereço novo, inclusive a variante em inglês"
   assert.equal(destinoDoSetAntigo(null, "base-set"), null);
 });
 
+// Os Starter Decks do One Piece mudaram de nome no TCGCSV em 30/09/2026 ("ST-11
+// Starter Deck 11: Uta") e o /set/ antigo deles dava 404 (68 endereços do
+// sitemap de julho, com as -en): o mapa sai do nome de hoje.
+test("/set/<slug> antigo de set renomeado: prefixo novo e os que mudaram no meio", () => {
+  const mapa = {
+    "st-11-starter-deck-11-uta": "one-piece-card-game/st-11-starter-deck-11-uta",
+    "st-21-starter-deck-21-ex-gear-5": "one-piece-card-game/st-21-starter-deck-21-ex-gear-5",
+    "st-01-starter-deck-1-straw-hat-crew": "one-piece-card-game/st-01-starter-deck-1-straw-hat-crew",
+    "st-01-starter-deck-1-straw-hat-crew-super-pre-release-edition": "one-piece-card-game/st-01-starter-deck-1-straw-hat-crew-super-pre-release-edition"
+  };
+  assert.equal(destinoDoSetAntigo(mapa, "starter-deck-11-uta"), "/games/one-piece-card-game/st-11-starter-deck-11-uta");
+  assert.equal(destinoDoSetAntigo(mapa, "starter-deck-11-uta-en"), "/games/one-piece-card-game/st-11-starter-deck-11-uta-en");
+  assert.equal(destinoDoSetAntigo(mapa, "starter-deck-ex-gear-5"), "/games/one-piece-card-game/st-21-starter-deck-21-ex-gear-5");
+  assert.equal(destinoDoSetAntigo(mapa, "starter-deck-1-straw-hat-crew"), "/games/one-piece-card-game/st-01-starter-deck-1-straw-hat-crew");
+  assert.equal(destinoDoSetAntigo(mapa, "super-pre-release-starter-deck-1-straw-hat-crew-en"),
+    "/games/one-piece-card-game/st-01-starter-deck-1-straw-hat-crew-super-pre-release-edition-en");
+  assert.equal(destinoDoSetAntigo(mapa, "starter-deck-99-ninguem"), null);
+});
+
+test("set renomeado: o endereço antigo é o fim do novo, com um candidato só", () => {
+  const chaves = ["st-11-starter-deck-11-uta", "black-star-promos", "xy-black-star-promos", "base-set"];
+  assert.equal(setRenomeado(chaves, "starter-deck-11-uta"), "st-11-starter-deck-11-uta");
+  // Dois candidatos: não chuta.
+  assert.equal(setRenomeado(chaves, "star-promos"), null);
+  // Pedaço curto ou sem hífen não casa com nada.
+  assert.equal(setRenomeado(chaves, "promos"), null);
+  assert.equal(setRenomeado(chaves, "set"), null);
+  // A própria chave não é renomeação dela mesma (quem chama já olhou o mapa).
+  assert.equal(setRenomeado(chaves, "base-set"), null);
+  assert.equal(setRenomeado(null, "starter-deck-11-uta"), null);
+});
+
 // O link que o "compartilhar" do app gera passa por /games/<jogo>/_id/<id> com
 // o nome do set na query. Se o parâmetro cair num Disallow do robots.txt (o
 // ?set= do filtro do Explorar cairia), o robô do X não lê a página e o link
@@ -108,8 +141,23 @@ test("o link de compartilhar do app não cai num Disallow do robots.txt", () => 
 test("/card/<slug> antigo acha a página nova da carta", () => {
   const mapa = { "charizard-4": "pokemon/base-set/charizard-4-102" };
   assert.equal(destinoDaCartaAntiga(mapa, "charizard-4"), "/games/pokemon/base-set/charizard-4-102");
+  assert.equal(destinoDaCartaAntiga(mapa, "Charizard-4.html"), "/games/pokemon/base-set/charizard-4-102");
   assert.equal(destinoDaCartaAntiga(mapa, "toString"), null);
   assert.equal(destinoDaCartaAntiga(mapa, "sumiu-1"), null);
+});
+
+// O mapa das cartas antigas é fatiado pela 1ª letra: o prerender escreve e a
+// borda lê com a mesma régua (fatiaDoLegado), senão o 301 procura no arquivo
+// errado e dá 404 sem erro nenhum.
+test("/card/<slug> antigo: a borda lê a fatia que o prerender escreveu", () => {
+  assert.equal(arquivoDaCartaAntiga("charizard-4"), `/data/game-pages/legado-cartas/${fatiaDoLegado("charizard-4")}.json`);
+  assert.equal(arquivoDaCartaAntiga("Charizard-4.html"), "/data/game-pages/legado-cartas/c.json");
+  assert.equal(arquivoDaCartaAntiga("151-pikachu"), "/data/game-pages/legado-cartas/1.json");
+  assert.equal(arquivoDaCartaAntiga("../x"), null);
+  assert.equal(arquivoDaCartaAntiga(""), null);
+  const prerender = readFileSync(new URL("../scripts/prerender-catalog.mjs", import.meta.url), "utf8");
+  assert.match(prerender, /fatiaDoLegado\(slug\)/, "o prerender fatia o mapa com a mesma régua");
+  assert.match(prerender, /"legado-cartas", `\$\{f\}\.json`/, "e grava cada fatia em legado-cartas/<letra>.json");
 });
 
 test("tela do jogo: sets mais novos primeiro, título no orçamento, índice com os links", () => {

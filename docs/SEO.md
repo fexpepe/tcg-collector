@@ -103,12 +103,24 @@ página estática própria e o app seguia em `/detail?…`).
   idioma quando não é inglês (`charizard-4-102`, `charizard-4-102-jp`). Empate
   ganha `-2`, `-3` na ordem do id. A regra é uma só
   (`functions/_lib/slug-carta.js`) pro build e pra borda.
-- **Endereços antigos seguem valendo**, como 301: `/set/<slug>` e
-  `/card/<slug>` pelos mapas `data/game-pages/legado-*.json` (vão direto pra
-  tela do set/da carta), e
+- **Endereços antigos seguem valendo**, como 301: `/set/<slug>` pelo
+  `data/game-pages/legado-sets.json` e `/card/<slug>` pelas fatias
+  `data/game-pages/legado-cartas/<1ª letra>.json` (vão direto pra tela do
+  set/da carta), e
   `/sets?game=<jogo>[&line=…]` pelo `functions/sets.js`. O `/sets` sem jogo
   continua respondendo 200 (é o que o service worker guarda no install e o
   que o PWA instalado abre), com `noindex`.
+- **Endereço de set ou carta que mudou também leva 301** (2026-10-08). O nome
+  da carta no endereço leva o total do set, e o total muda quando o set
+  cresce: cada build completo trocava o endereço das ~2.600 cartas do Secret
+  Lair Drop, e os sets em pré-venda (Lorcana) mudavam a cada leva revelada.
+  Quando a carta pedida não existe no set, a borda procura a mesma carta com
+  outro total, ou o mesmo número com outro nome (`cartaParecida`); quando o
+  set não existe, procura um set cujo nome termine no pedido (`setRenomeado`:
+  o TCGCSV pôs "ST-11" na frente dos Starter Decks do One Piece). Conferido
+  contra os snapshots do catálogo de 29/09 a 04/10: as 10.253 cartas que
+  mudaram de endereço dentro do mesmo set acham a carta certa, nenhuma errada.
+  O que não acha segue 404.
 - **Offline e PWA**: o service worker guarda cada `/games/<jogo>` na entrada
   dela (com o título e o índice daquele jogo) e usa a do `sets.html`, que o
   install guarda, de reserva: a tela de um jogo nunca visitado abre offline.
@@ -176,6 +188,32 @@ Em ordem de impacto:
 - Bing: Webmaster Tools → URLs enviadas por IndexNow, e o Site Explorer.
 - O robô vê o texto do HTML, em pt-BR. O que o Google renderizou aparece na
   Inspeção de URL → HTML renderizado.
+
+## Relatório de Páginas (2026-10-08)
+
+Uma semana depois das cartas entrarem no sitemap (337.556 URLs), o Search
+Console mostrava isto em "Por que as páginas não foram indexadas". A leitura
+de cada linha veio de medição ao vivo (amostra de 1.606 URLs do sitemap: todas
+200; os sitemaps de julho versionados no git; os snapshots do catálogo; o log
+do IndexNow), porque o painel só dá exemplos:
+
+| Motivo | Páginas | O que é |
+|---|---|---|
+| Detectada, mas não indexada | 304.451 | o Google achou pelo sitemap e ainda não rastreou: domínio novo, pouca autoridade (ver abaixo). Não é erro de código |
+| Excluída pela tag "noindex" | 1.875 | as cascas do app em `/detail?…`, de propósito. O app linka pra elas (cada carta tem ~13 links de "Impressões" pra `/detail?type=set&…&card=<id>`; a grade de Sets linka cada set por `/detail?…`), e o robô gasta rastreio nelas |
+| Não encontrado (404) | 615 | era bug: `/card/` e `/set/` antigos sem 301 (906 das 1.269 cartas e 68 dos 1.236 sets do sitemap de julho) e cartas de `/games` que mudaram de endereço a cada build. Corrigido em 2026-10-08 (ver "Endereços") |
+| Rastreada, mas não indexada | 596 | o Google leu e achou fraca ou repetida. Carta chinesa ou japonesa sem nome em inglês sai com endereço só de número (`091-098-zh-2`) e texto quase igual ao da edição inglesa |
+| Página com redirecionamento | 81 | www, http, apelidos e endereços antigos: esperado |
+| Página alternativa com tag canônica adequada | 25 | `/detail?type=set&…` com canonical pro set e variações com query: esperado |
+| Bloqueada pelo robots.txt | 6 | telas pessoais e conta (`/login`, `/collection`…): esperado |
+| Indexada, mas bloqueada pelo robots.txt | 3 | telas que o robots barra mas que têm link em toda página (o menu): o Google indexa o endereço sem ler. Pra sair do índice, a página tem que ser liberada no robots e levar `noindex` |
+| Erro soft 404 | 1 | sem exemplo; abrir a linha no painel |
+| Cópia, Google escolheu canônica diferente | 3 | sem exemplo |
+
+O build completo trocava ~2.600 endereços de carta por vez (o "N nova(s) e N
+removida(s)" do passo do IndexNow). Depois do 301 eles param de virar 404, mas
+o Secret Lair segue mudando de endereço a cada build: o Google vê as cartas
+dele como redirecionamento até o total parar de crescer.
 
 ## O que o código não resolve
 
