@@ -551,8 +551,10 @@
     pager.render(items, createViewItem, { resetCount }); // onAppend reaplica o recolhido
     if (view === "sets") { applyCollapsed(); refineVisibleSets(); }
 
-    // Cabeçalhos de série não contam como resultado.
-    const realCount = items.filter((item) => item.type !== "series-head" && item.type !== "category-head").length;
+    // Cabeçalhos de série não contam como resultado, nem o topo da Vitrine
+    // (destaque e "Continue completando"): o Yu-Gi-Oh! dizia "595 resultados"
+    // com 594 sets.
+    const realCount = items.filter((item) => !/^(series-head|category-head|sx-hero|sx-continue)$/.test(item.type)).length;
     elements.empty.hidden = realCount > 0;
     elements.resultCount.textContent = tn("results.count", realCount);
     if (view === "pokedex") { updatePokedexStats(); return; }
@@ -604,37 +606,18 @@
       const setItems = manifestMode()
         ? manifestSetItems()
         : indexedGroupsToItems(indexes.sets, visibleIds, toSetItem, null, splitGroupsBySetId).filter((set) => lineScope.includes(set.setId));
-      // Linha vintage (?line=): sempre do mais antigo pro mais novo. O Data
-      // Carddass do Naruto junta os quatro títulos do arcade, um por seção.
-      if (lineScope.line === "nrt-dc") return groupNarutoDataCarddass(setItems);
-      if (lineDef) return setItems.sort(sortByReleaseAsc);
       // Página de uma série (?serie=id): só os sets dela, sem cabeçalhos — e
       // sem os decks/caixas, que a lista mostra na seção deles (o "X sets →"
       // do cabeçalho da série não os conta).
       if (serieParam) return setItems.filter((set) => set.serieId === serieParam && set.kind !== "deck").sort(sortByReleaseDesc);
-      // Lorcana não tem séries: separa em 2 categorias (Principais + Promos).
-      if ((window.SLEEVU && window.SLEEVU.game) === "lorcana") return groupLorcanaSets(setItems);
-      // One Piece: Boosters (OP01…) + Starter Decks (ST-…) + o resto (promos etc.).
-      if ((window.SLEEVU && window.SLEEVU.game) === "onepiece") return groupOnePieceSets(setItems);
-      if ((window.SLEEVU && window.SLEEVU.game) === "naruto") return groupNarutoSets(setItems);
-      if ((window.SLEEVU && window.SLEEVU.game) === "hxh") return groupHxhSets(setItems);
-      if ((window.SLEEVU && window.SLEEVU.game) === "dbc") return groupDbcSets(setItems);
-      if ((window.SLEEVU && window.SLEEVU.game) === "swu") return groupSwuSets(setItems);
-      if ((window.SLEEVU && window.SLEEVU.game) === "cyberpunk") return groupCyberpunkSets(setItems);
-      if ((window.SLEEVU && window.SLEEVU.game) === "sorcery") return groupSorcerySets(setItems);
-      if ((window.SLEEVU && window.SLEEVU.game) === "wow") return groupWowSets(setItems);
-      if ((window.SLEEVU && window.SLEEVU.game) === "lotr") return groupLotrSets(setItems);
-      if ((window.SLEEVU && window.SLEEVU.game) === "weiss") return groupWeissSets(setItems);
-      if ((window.SLEEVU && window.SLEEVU.game) === "mbc") return groupMbcSets(setItems);
-      if ((window.SLEEVU && window.SLEEVU.game) === "harrypotter") return groupHarryPotterSets(setItems);
-      // Página de Sets: Pokémon por série (coleção); Magic por ano, com os
-      // produtos de cada lançamento dentro do set; os demais jogos por ano.
-      const grupos = isPokemonGame() ? groupSetsBySeries(setItems)
-        : jogoAtual === "magic" ? groupMagicSets(setItems)
-          : groupSetsByYear(setItems);
-      // Versão "Vitrine" (2026-10-08): na lista inteira do jogo — sem busca —
-      // o topo ganha o lançamento em destaque e, pra quem tem coleção, os sets
-      // em andamento.
+      // PADRÃO da página de Sets (2026-10-09), o mesmo em todo jogo e linha —
+      // até aqui só o Pokémon e o Magic tinham: os produtos de um lançamento
+      // (pré-release, promos, Commander, Trainer Gallery…) moram DENTRO do
+      // cartão do set (aninhaPorNome); as seções são as do jogo
+      // (agrupaSetsDoJogo); e a lista inteira — sem busca — ganha no topo o
+      // lançamento em destaque e, pra quem tem coleção, os sets em andamento
+      // (vitrineDoTopo). Regra escrita em docs/CATALOGO.md, 3.4.
+      const grupos = agrupaSetsDoJogo(aninhaPorNome(setItems));
       return normalize(elements.search.value) ? grupos : vitrineDoTopo(grupos).concat(grupos);
     }
 
@@ -1450,10 +1433,9 @@
   function groupSetsBySeries(setItems) {
     const decks = setItems.filter((set) => set.kind === "deck").sort(sortByReleaseDesc);
     const bySerie = new Map();
-    // Trainer Gallery, Galarian Gallery, Shiny Vault e Energy entram DENTRO do
-    // set de que fazem parte (chips no cartão) em vez de cartões soltos ao lado
-    // — ver aninhaPorNome.
-    aninhaPorNome(setItems.filter((set) => set.kind !== "deck")).forEach((set) => {
+    // Trainer Gallery, Galarian Gallery, Shiny Vault e Energy já chegam DENTRO
+    // do set de que fazem parte (chips no cartão) — ver aninhaPorNome.
+    setItems.filter((set) => set.kind !== "deck").forEach((set) => {
       const key = set.serieId || "misc";
       if (!bySerie.has(key)) bySerie.set(key, { serieId: key, serieName: set.serieName, sets: [] });
       bySerie.get(key).sets.push(set);
@@ -1470,24 +1452,72 @@
       group.sets.forEach((set) => items.push(set));
     });
     if (decks.length) {
-      items.push({ type: "category-head", name: t("sets.category.decksBoxes"), count: decks.length });
+      items.push(cabecalhoDeSecao("sets.category.decksBoxes", decks.length));
       decks.forEach((set) => items.push(set));
     }
     return items;
+  }
+
+  // As seções de cada jogo (2026-10-09: um lugar só, antes eram 15 `return`
+  // no getViewItems). Recebe as RAÍZES do aninhaPorNome. Jogo sem agrupamento
+  // próprio vai por ano (Yu-Gi-Oh!, Digimon, FAB, Gundam…).
+  function agrupaSetsDoJogo(raizes) {
+    // Linha vintage (?line=): do mais antigo pro mais novo, como checklist. O
+    // Data Carddass do Naruto junta os quatro títulos do arcade, um por seção.
+    if (lineScope.line === "nrt-dc") return groupNarutoDataCarddass(raizes);
+    if (lineDef) return raizes.sort(sortByReleaseAsc);
+    if (isPokemonGame()) return groupSetsBySeries(raizes);
+    const porJogo = {
+      magic: groupMagicSets,
+      // Lorcana não tem séries: Principais + Promos.
+      lorcana: groupLorcanaSets,
+      // One Piece: Boosters (OP01…) + Starter Decks (ST-…) + o resto.
+      onepiece: groupOnePieceSets,
+      naruto: groupNarutoSets,
+      hxh: groupHxhSets,
+      dbc: groupDbcSets,
+      swu: groupSwuSets,
+      cyberpunk: groupCyberpunkSets,
+      sorcery: groupSorcerySets,
+      wow: groupWowSets,
+      lotr: groupLotrSets,
+      weiss: groupWeissSets,
+      mbc: groupMbcSets,
+      harrypotter: groupHarryPotterSets
+    };
+    return (porJogo[jogoAtual] || groupSetsByYear)(raizes);
+  }
+
+  // Cabeçalho de seção da página de Sets. Promo, deck, raid e coleção avulsa
+  // ficam FORA do destaque do topo (vitrineDoTopo): o lançamento em destaque
+  // é sempre um set principal — sem isto, o starter deck ou a caixa de promo
+  // mais nova do One Piece/Cyberpunk/WoW roubava o lugar do booster.
+  const SECOES_FORA_DO_DESTAQUE = ["sets.category.promos", "sets.category.decks", "sets.category.decksBoxes", "sets.category.wowRaids", "sets.category.mtgSpecial"];
+  function cabecalhoDeSecao(key, count) {
+    return { type: "category-head", name: t(key), count, foraDoDestaque: SECOES_FORA_DO_DESTAQUE.includes(key) };
   }
 
   // ── Topo da Vitrine (2026-10-08) ─────────────────────────────────────────
   // O padrão que a pesquisa de concorrentes achou (TCGplayer, Pokellector,
   // pkmn.gg, TCG Collector): o set mais novo em destaque e o que vem por aí.
   // Destaque = o set principal mais novo já lançado (sem promo, deck, energia
-  // ou coleção do McDonald's; no Magic, sem os eventos/coleções especiais). Ao
-  // lado, até dois "Em breve" (lançamento no futuro) e, se faltar, os outros
-  // lançamentos recentes. Pra quem tem carta no jogo, "Continue completando":
-  // os sets começados e não completos, do mais perto do fim pro mais longe.
+  // ou coleção do McDonald's; fora das seções de promo/deck/raid/eventos — ver
+  // cabecalhoDeSecao). Ao lado, até dois "Em breve" (lançamento no futuro) e,
+  // se faltar, os outros lançamentos recentes. Pra quem tem carta no jogo,
+  // "Continue completando": os sets começados e não completos, do mais perto
+  // do fim pro mais longe.
+  // Jogo que parou (vintage, ou sem set novo há mais de um ano): o destaque
+  // é o "Último set", e os do lado são "Anteriores" — "Lançamento" e
+  // "Também recentes" num set de 2002 seriam mentira.
   const NAO_DESTAQUE = /promo|mcdonald|energy|trainer kit|black star/i;
   function vitrineDoTopo(grupos) {
     const hoje = new Date().toISOString().slice(0, 10);
-    const sets = grupos.filter((item) => item.type === "set" && item.kind !== "deck" && !item.especial && !NAO_DESTAQUE.test(item.name) && item.releaseDate);
+    const sets = [];
+    let foraDoDestaque = false;
+    grupos.forEach((item) => {
+      if (item.type === "category-head" || item.type === "series-head") foraDoDestaque = !!item.foraDoDestaque;
+      else if (item.type === "set" && !foraDoDestaque && item.kind !== "deck" && !NAO_DESTAQUE.test(item.name) && item.releaseDate) sets.push(item);
+    });
     const lancados = sets.filter((set) => set.releaseDate <= hoje).sort(sortByReleaseDesc);
     const futuros = sets.filter((set) => set.releaseDate > hoje).sort(sortByReleaseAsc);
     const items = [];
@@ -1495,7 +1525,8 @@
       const lado = futuros.slice(0, 2);
       const emBreve = lado.length > 0;
       lancados.slice(1).forEach((set) => { if (lado.length < 2) lado.push(set); });
-      items.push({ type: "sx-hero", set: lancados[0], lado, emBreve, hoje });
+      const parado = !emBreve && Date.parse(hoje) - Date.parse(lancados[0].releaseDate) > 365 * 86400000;
+      items.push({ type: "sx-hero", set: lancados[0], lado, emBreve, parado, hoje });
     }
     if (colecaoTem()) {
       const todos = [];
@@ -1538,7 +1569,7 @@
       <a class="sx-hero-main" href="${escapeAttribute(setDetailUrl(set))}">
         <span class="sx-hero-art">${arteDoSet(set, "sx-hero-logo")}</span>
         <span class="sx-hero-info">
-          <span class="sx-eyebrow">${escapeHtml(t("sets.sx.latest"))} · ${escapeHtml(formatReleaseDate(set.releaseDate, "long"))}</span>
+          <span class="sx-eyebrow">${escapeHtml(t(item.parado ? "sets.sx.last" : "sets.sx.latest"))} · ${escapeHtml(formatReleaseDate(set.releaseDate, "long"))}</span>
           <strong class="sx-hero-name">${escapeHtml(set.displayName)}</strong>
           <span class="sx-hero-meta">${meta.join(" · ")}${trend ? ` · ${trend}` : ""}</span>
           ${colecaoTem() ? progressoDoSet(set) : ""}
@@ -1546,7 +1577,7 @@
         </span>
       </a>
       ${item.lado.length ? `<div class="sx-hero-side${item.emBreve ? "" : " sx-so-desk"}">
-        <p class="sx-eyebrow">${escapeHtml(t(item.emBreve ? "sets.sx.soon" : "sets.sx.recent"))}</p>
+        <p class="sx-eyebrow">${escapeHtml(t(item.emBreve ? "sets.sx.soon" : item.parado ? "sets.sx.earlier" : "sets.sx.recent"))}</p>
         ${item.lado.map(mini).join("")}
       </div>` : ""}`;
     return node;
@@ -1570,11 +1601,11 @@
     const promos = setItems.filter(isPromo).sort(sortByReleaseDesc);
     const items = [];
     if (main.length) {
-      items.push({ type: "category-head", name: t("sets.category.main"), count: main.length });
+      items.push(cabecalhoDeSecao("sets.category.main", main.length));
       main.forEach((set) => items.push(set));
     }
     if (promos.length) {
-      items.push({ type: "category-head", name: t("sets.category.promos"), count: promos.length });
+      items.push(cabecalhoDeSecao("sets.category.promos", promos.length));
       promos.forEach((set) => items.push(set));
     }
     return items;
@@ -1592,11 +1623,11 @@
     const promos = setItems.filter(isPromo).sort(sortByReleaseDesc);
     const items = [];
     if (main.length) {
-      items.push({ type: "category-head", name: t("sets.category.main"), count: main.length });
+      items.push(cabecalhoDeSecao("sets.category.main", main.length));
       main.forEach((set) => items.push(set));
     }
     if (promos.length) {
-      items.push({ type: "category-head", name: t("sets.category.promos"), count: promos.length });
+      items.push(cabecalhoDeSecao("sets.category.promos", promos.length));
       promos.forEach((set) => items.push(set));
     }
     return items;
@@ -1616,7 +1647,7 @@
     const items = [];
     for (const [key, sets] of grupos) {
       if (!sets.length) continue;
-      items.push({ type: "category-head", name: t(key), count: sets.length });
+      items.push(cabecalhoDeSecao(key, sets.length));
       sets.sort(sortByReleaseDesc).forEach((set) => items.push(set));
     }
     return items;
@@ -1639,7 +1670,7 @@
     const items = [];
     for (const [key, sets] of grupos) {
       if (!sets.length) continue;
-      items.push({ type: "category-head", name: t(key), count: sets.length });
+      items.push(cabecalhoDeSecao(key, sets.length));
       sets.sort(sortByReleaseDesc).forEach((set) => items.push(set));
     }
     return items;
@@ -1667,7 +1698,7 @@
     const items = [];
     for (const [key, sets] of grupos) {
       if (!sets.length) continue;
-      items.push({ type: "category-head", name: t(key), count: sets.length });
+      items.push(cabecalhoDeSecao(key, sets.length));
       sets.sort(sortByReleaseAsc).forEach((set) => items.push(set));
     }
     return items;
@@ -1691,7 +1722,7 @@
     const items = [];
     for (const [key, sets] of grupos) {
       if (!sets.length) continue;
-      items.push({ type: "category-head", name: t(key), count: sets.length });
+      items.push(cabecalhoDeSecao(key, sets.length));
       sets.sort(sortByReleaseDesc).forEach((set) => items.push(set));
     }
     return items;
@@ -1710,15 +1741,15 @@
     const promos = rest.filter((s) => !isMain(s) && !isDeck(s)).sort(sortByReleaseDesc);
     const items = [];
     if (main.length) {
-      items.push({ type: "category-head", name: t("sets.category.main"), count: main.length });
+      items.push(cabecalhoDeSecao("sets.category.main", main.length));
       main.forEach((set) => items.push(set));
     }
     if (decks.length) {
-      items.push({ type: "category-head", name: t("sets.category.decks"), count: decks.length });
+      items.push(cabecalhoDeSecao("sets.category.decks", decks.length));
       decks.forEach((set) => items.push(set));
     }
     if (promos.length) {
-      items.push({ type: "category-head", name: t("sets.category.promos"), count: promos.length });
+      items.push(cabecalhoDeSecao("sets.category.promos", promos.length));
       promos.forEach((set) => items.push(set));
     }
     return items;
@@ -1732,11 +1763,11 @@
     const extras = setItems.filter((s) => !isMain(s)).sort(sortByReleaseAsc);
     const items = [];
     if (main.length) {
-      items.push({ type: "category-head", name: t("sets.category.main"), count: main.length });
+      items.push(cabecalhoDeSecao("sets.category.main", main.length));
       main.forEach((set) => items.push(set));
     }
     if (extras.length) {
-      items.push({ type: "category-head", name: t("sets.category.promos"), count: extras.length });
+      items.push(cabecalhoDeSecao("sets.category.promos", extras.length));
       extras.forEach((set) => items.push(set));
     }
     return items;
@@ -1763,7 +1794,7 @@
     const items = [];
     const section = (list, key) => {
       if (!list.length) return;
-      items.push({ type: "category-head", name: t(key), count: list.length });
+      items.push(cabecalhoDeSecao(key, list.length));
       list.sort(sortByReleaseAsc).forEach((set) => items.push(set));
     };
     TITLES.forEach(([key], i) => section(setItems.filter((s) => titleOf(s) === i), key));
@@ -1785,7 +1816,7 @@
     const items = [];
     const section = (list, key) => {
       if (!list.length) return;
-      items.push({ type: "category-head", name: t(key), count: list.length });
+      items.push(cabecalhoDeSecao(key, list.length));
       list.forEach((set) => items.push(set));
     };
     section(parts, "sets.category.main");
@@ -1809,7 +1840,7 @@
     const items = [];
     for (const [key, list] of [["sets.category.main", setItems.filter((s) => !isPromo(s))], ["sets.category.promos", setItems.filter(isPromo)]]) {
       if (!list.length) continue;
-      items.push({ type: "category-head", name: t(key), count: list.length });
+      items.push(cabecalhoDeSecao(key, list.length));
       list.sort(porId).forEach((set) => items.push(set));
     }
     return items;
@@ -1823,12 +1854,12 @@
     for (const [code, key] of SERIES) {
       const list = setItems.filter((s) => serieOf(s) === code).sort((a, b) => idOf(a).localeCompare(idOf(b), "en", { numeric: true }));
       if (!list.length) continue;
-      items.push({ type: "category-head", name: t(key), count: list.length });
+      items.push(cabecalhoDeSecao(key, list.length));
       list.forEach((set) => items.push(set));
     }
     const rest = setItems.filter((s) => !SERIES.some(([code]) => serieOf(s) === code)).sort(sortByReleaseAsc);
     if (rest.length) {
-      items.push({ type: "category-head", name: t("sets.category.promos"), count: rest.length });
+      items.push(cabecalhoDeSecao("sets.category.promos", rest.length));
       rest.forEach((set) => items.push(set));
     }
     return items;
@@ -1871,7 +1902,7 @@
     const items = [];
     const section = (list, key) => {
       if (!list.length) return;
-      items.push({ type: "category-head", name: t(key), count: list.length });
+      items.push(cabecalhoDeSecao(key, list.length));
       list.sort(ordem).forEach((set) => items.push(set));
     };
     SERIES.forEach(([key], i) => section(setItems.filter((s) => serieDe(s) === i).map((s) => semFranquia(s, i)), key));
@@ -1890,7 +1921,7 @@
     const items = [];
     for (const [key, sets] of grupos) {
       if (!sets.length) continue;
-      items.push({ type: "category-head", name: t(key), count: sets.length });
+      items.push(cabecalhoDeSecao(key, sets.length));
       sets.sort(sortByReleaseAsc).forEach((set) => items.push(set));
     }
     return items;
@@ -1911,21 +1942,38 @@
   // aninhados em 650. Filho de filho sobe pro avô.
   // A mesma regra vale no Pokémon: "Silver Tempest Trainer Gallery", "Crown
   // Zenith Galarian Gallery", "Scarlet & Violet Energy".
+  // Desde 2026-10-09 vale em TODO jogo (padrão da página de Sets): o
+  // pré-release e o release event do One Piece, Digimon, DBFW e Union Arena,
+  // os Weekly Play Promos do Star Wars, o Treasure dos raids do WoW. Medido
+  // com os catálogos de 09/10/2026: Union Arena 77 → 48 cartões, Digimon
+  // 99 → 69, One Piece 85 → 65, DBFW 49 → 29, Yu-Gi-Oh! 594 → 571.
   // Das raízes do Magic, as de evento/premiação/coleção avulsa (MagicFest,
   // Wizards Play Network, Secret Lair, The List…) vão pra seção de especiais,
   // pelo nome.
   const MAGIC_ESPECIAL =/magicfest|wizards play network|judge|secret lair|the list|mystery booster|arena league|friday night|player rewards|game day|prerelease|championship|showdown|heroes of the realm|love your lgs|pro tour|celebration|league|box topper|duel deck|from the vault|signature spellbook|premium deck|promo|gift|anniversary|launch party|release event|open house|summer magic|unique and miscellaneous|planechase|archenemy|starter|welcome deck|intro pack|spotlight|playtest|unknown event|commander collection|game night|challenger deck|global series|guild kit|clash pack|holiday/i;
+  // O que sobra do nome é um NÚMERO de volume, não um produto: "Vol. 2",
+  // "2", "II", "Volume II", "2019", "Round 2", e o "第1章" (capítulo) do
+  // Data Carddass. É o set SEGUINTE da série, com cartão próprio — sem isto, o
+  // Extra Booster Vol. 2 (EB-05) do One Piece sumia dentro do EB-03, o Hidden
+  // Arsenal 2 e 3 dentro do 1, e os capítulos do Narutimate Formation dentro de
+  // um cartão só.
+  const VOLUME_SEGUINTE = /^(?:(?:vol(?:ume)?\.?|round)\s*)?(?:\d+|[ivx]+)$|^第.+章/i;
   // Devolve as RAÍZES (cada uma com `filhos`); os filhos ganham `rotulo`.
+  // Deck/caixa (`kind: "deck"`) fica de fora dos dois lados: tem seção
+  // própria (Pokémon chinês, Harry Potter).
   function aninhaPorNome(setItems) {
     const DIA = 86400000;
     const dias = (a, b) => Math.abs(Date.parse(a.releaseDate || "1970-01-01") - Date.parse(b.releaseDate || "1970-01-01")) / DIA;
-    const porTamanho = setItems.slice().sort((a, b) => a.name.length - b.name.length);
+    const candidatos = setItems.filter((set) => set.kind !== "deck");
+    const porTamanho = candidatos.slice().sort((a, b) => a.name.length - b.name.length);
     const pai = new Map();
-    setItems.forEach((set) => {
+    candidatos.forEach((set) => {
       let melhor = null;
       for (const p of porTamanho) {
         if (p === set || p.name.length >= set.name.length) continue;
-        if (!set.name.startsWith(p.name) || !/^[\s:]/.test(set.name.slice(p.name.length))) continue;
+        const resto = set.name.slice(p.name.length);
+        if (!set.name.startsWith(p.name) || !/^[\s:]/.test(resto)) continue;
+        if (VOLUME_SEGUINTE.test(resto.replace(/^[\s:]+/, ""))) continue;
         if (dias(p, set) > 400) continue;
         if (!melhor || p.name.length > melhor.name.length) melhor = p;
       }
@@ -1935,8 +1983,15 @@
     const raizes = setItems.filter((set) => !pai.has(set)).map((set) => Object.assign(set, { filhos: [] }));
     pai.forEach((_, set) => {
       const r = raizDe(set);
-      // O rótulo do produto é o que sobra do nome ("Commander", "Stellar Sights").
-      set.rotulo = set.name.slice(r.name.length).replace(/^[\s:]+/, "") || set.displayName;
+      // O rótulo do produto é o que sobra do nome ("Commander", "Stellar
+      // Sights"), sem o separador ("Compendium of Rathe - Antiquity Pack") nem
+      // os parênteses ("ST-01 … (Super Pre-Release Edition)"). Sai do nome de
+      // EXIBIÇÃO quando ele também tem o do pai na frente: nos vintages
+      // japoneses o cartão diz "Narutimate Formation", e o chip "極秘任務"
+      // destoava do título em inglês.
+      const exibe = set.displayName && r.displayName && set.displayName.startsWith(r.displayName);
+      const resto = exibe ? set.displayName.slice(r.displayName.length) : set.name.slice(r.name.length);
+      set.rotulo = resto.replace(/^[\s:]+(?:[-–—]\s+)?/, "").replace(/^\((.+)\)$/, "$1") || set.displayName;
       r.filhos.push(set);
     });
     raizes.forEach((r) => r.filhos.sort(sortByReleaseDesc));
@@ -1961,13 +2016,12 @@
     return items;
   }
 
-  function groupMagicSets(setItems) {
-    const raizes = aninhaPorNome(setItems);
+  // Recebe as raízes do aninhaPorNome, como todo agrupador (agrupaSetsDoJogo).
+  function groupMagicSets(raizes) {
     const especiais = raizes.filter((set) => MAGIC_ESPECIAL.test(set.name)).sort(sortByReleaseDesc);
-    especiais.forEach((set) => { set.especial = true; });
-    const items = groupSetsByYear(raizes.filter((set) => !set.especial));
+    const items = groupSetsByYear(raizes.filter((set) => !MAGIC_ESPECIAL.test(set.name)));
     if (especiais.length) {
-      items.push({ type: "category-head", name: t("sets.category.mtgSpecial"), count: especiais.length });
+      items.push(cabecalhoDeSecao("sets.category.mtgSpecial", especiais.length));
       especiais.forEach((set) => items.push(set));
     }
     return items;
@@ -2042,16 +2096,19 @@
   // UM formatador por estilo e idioma (2026-10-08): o toLocaleDateString com
   // opções monta o formatador a cada chamada, e cada cartão de set chama duas
   // ou três vezes (selo, lista e o title).
+  // Data só com ano e mês (as vintage: "2002-10") sai sem dia — o estilo
+  // longo, o do destaque do topo, inventava um "1 de outubro de 2002".
   const formatosDeData = new Map();
   function formatReleaseDate(value, style) {
     const date = new Date(value);
     if (Number.isNaN(date.getTime())) return value;
-    const chave = `${style === "long" ? "l" : "c"}|${shared.getLocale()}`;
+    const longo = style === "long" ? (/^\d{4}-\d{2}$/.test(String(value)) ? "m" : "l") : "c";
+    const chave = `${longo}|${shared.getLocale()}`;
     let f = formatosDeData.get(chave);
     if (!f) {
-      f = new Intl.DateTimeFormat(shared.getLocale(), style === "long"
+      f = new Intl.DateTimeFormat(shared.getLocale(), longo === "l"
         ? { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }
-        : { month: "short", year: "numeric", timeZone: "UTC" });
+        : { month: longo === "m" ? "long" : "short", year: "numeric", timeZone: "UTC" });
       formatosDeData.set(chave, f);
     }
     return f.format(date);
