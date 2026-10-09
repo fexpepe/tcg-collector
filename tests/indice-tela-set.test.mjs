@@ -38,7 +38,8 @@ function pedidos(pathname, search = "") {
     history: { state: null, replaceState() {} },
     navigator: { language: "pt-BR", languages: ["pt-BR"] },
     fetch: (u) => { fetches.push(String(u)); return new Promise(() => {}); },
-    URLSearchParams, URL, matchMedia: () => ({ matches: false }), addEventListener() {}
+    URLSearchParams, URL, matchMedia: () => ({ matches: false }), addEventListener() {},
+    setTimeout: () => 0 // o teto do catalogReady (30 s) não dispara aqui
   };
   sandbox.window = sandbox;
   vm.runInNewContext(GAME, sandbox);

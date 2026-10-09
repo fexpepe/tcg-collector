@@ -8592,7 +8592,12 @@
 
   function awaitCatalog() {
     const ready = (window.SLEEVU && window.SLEEVU.catalogReady) || Promise.resolve();
-    return Promise.all([ready, loadPricing()]);
+    return Promise.all([ready, loadPricing()]).then((r) => {
+      // O teto do game.js soltou o catalogReady sem o manifest (conexão que
+      // pendurou): erro com saída na tela de quem chamou, não "nenhuma carta".
+      if (window.SLEEVU && window.SLEEVU.catalogoAtrasado && !window.TCG_MANIFEST && !window.TCG_CARDS) throw new Error("catálogo não chegou");
+      return r;
+    });
   }
 
   // `cardLang` opcional ("all" ou um idioma): no modo manifest baixa só os
@@ -9345,8 +9350,13 @@
     // erro sobe, senão o catálogo resolveria vazio e a busca afirmaria
     // "nenhum resultado" — mentira pior que a tela de erro.
     let falhas = 0;
+    // Prazo por pedido (2026-10-08): conexão que pendura (nem resposta, nem
+    // erro) segurava a grade em esqueleto pra sempre. 45 s é folga até pra um
+    // chunk grande dividindo banda com outros 7 na rede fraca; só pega o que
+    // travou de vez. E a 2ª tentativa espera 1,5 s: tentar na hora repetia o soluço.
+    const prazo = () => (typeof AbortSignal !== "undefined" && AbortSignal.timeout ? { signal: AbortSignal.timeout(45000) } : undefined);
     const baixa = async (url) => {
-      const r = await fetch(url);
+      const r = await fetch(url, prazo());
       if (!r.ok) throw new Error(`HTTP ${r.status}`);
       return r.json();
     };
@@ -9354,12 +9364,13 @@
       while (list.length) {
         const entry = list.shift();
         const buscaPreco = pc && entry.file.includes("/sets/")
-          ? fetch(entry.file.replace("/sets/", "/pricing-chunks/"))
+          ? fetch(entry.file.replace("/sets/", "/pricing-chunks/"), prazo())
               .then((r) => (r.ok ? r.json() : null)).catch(() => null)
           : null;
         let dados = null;
         try { dados = await baixa(entry.file); }
         catch (e) {
+          await new Promise((res) => setTimeout(res, 1500));
           try { dados = await baixa(entry.file); }
           catch (e2) { falhas++; console.warn(`Sleevu: chunk pulado (${entry.file})`, e2); }
         }
