@@ -4966,11 +4966,13 @@
 
   // Avança o <img> para a próxima URL da cadeia de fallback quando a atual
   // falha (webp → png do mesmo host → fonte alternativa de outro host). Quando a
-  // cadeia esgota, RE-TENTA a cadeia inteira após um backoff: abrir uma coleção
-  // grande dispara muitas imagens de uma vez e algumas falham por rate-limit /
-  // limite de conexões — o retry dispensa o "ficar dando F5". Para no fim com o
-  // placeholder cinza (sem ícone de imagem quebrada).
-  const IMG_MAX_RETRIES = 4;
+  // cadeia esgota num host SÓ, tenta a URL original mais UMA vez depois de um
+  // respiro (rate-limit/limite de conexões numa coleção grande). Cadeia que
+  // falhou em hosts diferentes é falta de imagem, não soluço — até 2026-10-08
+  // ela era refeita inteira 4 vezes: 15 pedidos por carta sem imagem, em toda
+  // visita (set recém-lançado: 404 do espelho e 403 do TCGplayer, 150 pedidos
+  // falhos em 10 cartas). Para no fim com o placeholder cinza.
+  const IMG_MAX_RETRIES = 1;
   const TCGImg = {
     fallback(img) {
       // Guarda o estado original na 1ª falha, p/ reiniciar a cadeia no retry.
@@ -4993,22 +4995,21 @@
         img.src = next;
         return;
       }
-      // Cadeia esgotada: reagenda a cadeia inteira (backoff + jitter p/ não
-      // saturar todas as imagens ao mesmo tempo de novo).
+      // Cadeia esgotada: só a URL original, uma vez, com jitter (p/ não
+      // saturar todas as imagens ao mesmo tempo de novo) — e só se a cadeia
+      // inteira era de um host (ver acima).
       img.removeAttribute("data-img-fallbacks");
       const tries = +img.getAttribute("data-img-retries") || 0;
-      if (tries >= IMG_MAX_RETRIES) return; // desiste: fica o placeholder cinza
-      img.setAttribute("data-img-retries", String(tries + 1));
       const orig = img.getAttribute("data-img-orig") || "";
-      const origFb = img.getAttribute("data-img-orig-fb") || "";
-      if (!orig) return;
-      const delay = 1000 * (tries + 1) + Math.random() * 1500;
+      if (tries >= IMG_MAX_RETRIES || !orig) return; // desiste: fica o placeholder cinza
+      const host = (u) => { try { return new URL(u, location.href).host; } catch (e) { return u; } };
+      if ((img.getAttribute("data-img-orig-fb") || "").split("|").some((u) => u && host(u) !== host(orig))) return;
+      img.setAttribute("data-img-retries", String(tries + 1));
       setTimeout(() => {
         if (!img.isConnected || img.classList.contains("is-loaded")) return; // já apareceu/saiu da tela
-        if (origFb) img.setAttribute("data-img-fallbacks", origFb);
         // Cache-buster força um fetch novo (a mesma URL não re-dispara load).
-        img.src = orig + (orig.indexOf("?") >= 0 ? "&" : "?") + "_r=" + (tries + 1);
-      }, delay);
+        img.src = orig + (orig.indexOf("?") >= 0 ? "&" : "?") + "_r=1";
+      }, 1500 + Math.random() * 1500);
     }
   };
   window.TCGImg = TCGImg;
