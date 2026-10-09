@@ -924,7 +924,17 @@
     }
 
     const setIds = manifest.sets.map((set) => set.id);
-    const neededSetIds = new Set(group.cardIds.map((cardId) => shared.setIdForCard(cardId, setIds)));
+    const conhecidos = new Set(setIds);
+    // Id que NÃO começa pelo setId (Magic: "mtg-10e-1", set "10e"): o
+    // setIdForCard devolvia "mtg-10e", que não existe no manifest, e a página
+    // do artista abria VAZIA — os 2.520 artistas do Magic (visto em produção
+    // em 2026-10-08: "Pete Venters", 567 cartas no índice, 0 na tela). Sem o
+    // prefixo do jogo, o set aparece.
+    const setDoId = (cardId) => {
+      const direto = shared.setIdForCard(cardId, setIds);
+      return conhecidos.has(direto) ? direto : shared.setIdForCard(cardId.replace(/^[a-z0-9]+-/i, ""), setIds);
+    };
+    const neededSetIds = new Set(group.cardIds.map(setDoId));
     return shared.fetchSetChunks(manifest.sets.filter((set) => neededSetIds.has(set.id)));
   }
 
