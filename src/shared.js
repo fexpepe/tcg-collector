@@ -6820,6 +6820,12 @@
         // no desktop — e open() recria tudo, então não fica estado preso.
         const acoes = modal.querySelector(".preview-actions");
         if (acoes && acoes.parentNode) acoes.insertAdjacentElement("afterend", det);
+        // As Impressões descem junto (2026-10-08): elas nascem escondidas e
+        // aparecem quando a borda responde — entre a carta e o título, a
+        // fileira do "+" pulava ~60 px uns 0,2 a 0,8 s depois de abrir, bem
+        // quando a pessoa ia tocar nela.
+        const imp = modal.querySelector("[data-preview-prints]");
+        if (imp) det.insertAdjacentElement("afterend", imp);
       }
     }
 
