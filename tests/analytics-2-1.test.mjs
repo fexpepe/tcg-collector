@@ -141,7 +141,10 @@ test("recusa da medição: só a decisão, só quando muda, só em produção", 
   const m = /function setConsent\(cat, valor\) \{([\s\S]*?)\n  \}\n/.exec(shared);
   assert.match(m[1], /antes !== !!valor/);
   assert.match(m[1], /rpc\/consent_tally/);
-  assert.match(m[1], /sleevu\\\.app/);
+  // Só em produção: desde a v3 do admin (2026-10-09) a trava é o
+  // emProducao(), que é o sleevu.app OU o app das lojas (Capacitor).
+  assert.match(m[1], /emProducao\(\)/);
+  assert.match(shared, /function emProducao\(\) \{ return \/\(\^\|\\\.\)sleevu\\\.app\$\/i\.test\(location\.hostname\) \|\| appNativo\(\); \}/);
   assert.match(m[1], /p_on: !!valor/);
 });
 

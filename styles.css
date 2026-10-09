@@ -5647,6 +5647,151 @@ a.setting-open {
   .adm-toolbar .chip, .adm-pager .chip, .adm-actions .chip, .adm-kit-barra .chip { min-height: 44px; }
 }
 
+/* ── Admin v3 (2026-10-09): barra lateral, cartão com régua, gráficos ────
+   Desktop (1024px+): grupos e abas numa barra lateral fixa, todas à vista —
+   30 telas em chips quebravam em linhas tortas. Abaixo disso a barra some e
+   a barra do topo mostra um <select> nativo com os grupos em optgroup. */
+.adm-shell { display: grid; grid-template-columns: 212px minmax(0, 1fr); gap: 28px; align-items: start; }
+.adm-main { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+.adm-side { position: sticky; top: calc(var(--header-h, 56px) + 16px); max-height: calc(100vh - var(--header-h, 56px) - 32px); overflow-y: auto; display: flex; flex-direction: column; gap: 14px; padding: 2px 4px 12px 0; scrollbar-width: thin; }
+.adm-side-titulo { display: flex; align-items: center; gap: 8px; margin: 0 0 4px; font-size: 11.5px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; color: var(--subtle); }
+.adm-side-titulo svg { flex: none; }
+.adm-side-grupo.is-atual .adm-side-titulo { color: var(--text); }
+.adm-side ul { list-style: none; margin: 0; padding: 0 0 0 26px; display: flex; flex-direction: column; gap: 1px; }
+/* display/justify/min-height vencem o button global (flex centrado, 42px). */
+.adm-side button { display: flex; justify-content: flex-start; align-items: center; width: 100%; min-height: 32px; text-align: left; border: 0; background: none; color: var(--muted); font: inherit; font-size: 13.5px; font-weight: 500; padding: 6px 10px; border-radius: 8px; cursor: pointer; line-height: 1.25; }
+.adm-side button:hover { background: var(--panel); color: var(--text); }
+.adm-side button[aria-current="page"] { background: color-mix(in srgb, var(--accent) 14%, transparent); color: var(--text); font-weight: 700; box-shadow: inset 3px 0 0 var(--accent); }
+.adm-side button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+/* Topo: onde estou (grupo pequeno em cima, aba grande) + período. */
+.adm-toolbar { align-items: center; }
+.adm-onde { min-width: 0; }
+.adm-titulo { margin: 0; font-size: 22px; font-weight: 800; letter-spacing: -0.01em; line-height: 1.15; }
+.adm-titulo span { display: block; font-size: 12px; font-weight: 700; color: var(--subtle); letter-spacing: 0.03em; text-transform: uppercase; margin-bottom: 2px; }
+.adm-select-rot { display: none; }
+.adm-select { width: 100%; min-height: 44px; padding: 0 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); color: var(--text); font: inherit; font-size: 16px; font-weight: 700; }
+@media (max-width: 1023px) {
+  .adm-shell { grid-template-columns: minmax(0, 1fr); }
+  .adm-side { display: none; }
+  .adm-select-rot { display: block; }
+  .adm-titulo { display: none; }
+}
+/* "Agora": a linha fina de hoje/7/30 dias em cima dos cartões. */
+.adm-agora { margin: 0; font-size: 13px; color: var(--muted); }
+.adm-agora span { display: inline-block; margin-right: 6px; padding: 1px 8px; border-radius: 999px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; background: color-mix(in srgb, #16a34a 16%, transparent); color: var(--text); }
+.adm-agora b { color: var(--text); font-variant-numeric: tabular-nums; }
+/* Cartão com régua: número, selo da variação, o "antes" e a forma da série. */
+.adm-kpis { grid-template-columns: repeat(auto-fill, minmax(176px, 1fr)); }
+.adm-kpi { gap: 6px; }
+.adm-kpi .admin-stat-label { margin: 0; font-weight: 700; }
+.adm-kpi-cmp { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 8px; font-size: 12px; color: var(--subtle); }
+.adm-kpi .adm-spark { width: 100%; height: 34px; margin-top: 2px; display: block; }
+.adm-stat-txt .admin-stat-val { font-size: 19px; white-space: normal; line-height: 1.2; }
+.adm-spark-ant { fill: none; stroke: var(--subtle); stroke-width: 1.2; stroke-dasharray: 3 3; opacity: 0.8; }
+.adm-delta { display: inline-flex; align-items: center; gap: 2px; padding: 1px 7px; border-radius: 999px; font-size: 12px; font-weight: 800; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.adm-delta-bom { background: color-mix(in srgb, #16a34a 16%, transparent); color: #15803d; }
+.adm-delta-ruim { background: color-mix(in srgb, #dc2626 16%, transparent); color: #b91c1c; }
+.adm-delta-igual, .adm-delta-novo { background: color-mix(in srgb, var(--subtle) 16%, transparent); color: var(--muted); }
+:root[data-theme="dark"] .adm-delta-bom { color: #4ade80; }
+:root[data-theme="dark"] .adm-delta-ruim { color: #f87171; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .adm-delta-bom { color: #4ade80; }
+  :root:not([data-theme="light"]) .adm-delta-ruim { color: #f87171; }
+}
+/* Cabeçalho de seção com controle à direita (métrica, Número | %). */
+.adm-sec-head { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px 16px; margin-bottom: 14px; }
+.adm-sec-head h2 { margin: 0; }
+.adm-seg { display: flex; flex-wrap: wrap; gap: 6px; }
+.adm-seg .chip { min-height: 34px; padding: 0 12px; font-size: 13px; display: inline-flex; align-items: center; gap: 6px; }
+.adm-seg .chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+/* Métrica do gráfico: 8 chips no desktop; no celular viravam 4 linhas, lá é um select. */
+.adm-metrica-sel { display: none; flex: 1 1 100%; }
+@media (max-width: 700px) {
+  .adm-seg-metrica { display: none; }
+  .adm-metrica-sel { display: block; }
+}
+/* Série no tempo com régua: barra do período, média de 7 dias por cima, o
+   período anterior tracejado e os marcos numerados. */
+.adm-st-bar { fill: var(--accent); }
+.adm-st-fraca { opacity: 0.38; }
+.adm-st-media { fill: none; stroke: var(--accent); stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
+.adm-st-ant { fill: none; stroke: var(--text); stroke-width: 1.6; stroke-dasharray: 5 4; opacity: 0.45; }
+.adm-st-marco line { stroke: var(--gold); stroke-width: 1.5; stroke-dasharray: 4 3; }
+.adm-st-marco circle { fill: var(--gold); }
+.adm-st-marco text { fill: #101218; font-size: 10.5px; font-weight: 800; }
+.adm-st-marco[data-tipo="deploy"] line { stroke: #2563eb; }
+.adm-st-marco[data-tipo="deploy"] circle { fill: #2563eb; }
+.adm-st-marco[data-tipo="problema"] line { stroke: #dc2626; }
+.adm-st-marco[data-tipo="problema"] circle { fill: #dc2626; }
+.adm-st-marco[data-tipo="deploy"] text, .adm-st-marco[data-tipo="problema"] text { fill: #fff; }
+.adm-leg-linha { display: inline-block; width: 18px; height: 0; border-top: 2.5px solid var(--accent); flex: none; }
+.adm-leg-ant { border-top: 2px dashed var(--muted); }
+.adm-marcos { list-style: none; margin: 10px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 12.5px; color: var(--muted); }
+.adm-marcos li { display: inline-flex; align-items: center; gap: 6px; }
+.adm-marcos b { display: inline-grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; background: var(--gold); color: #101218; font-size: 10.5px; }
+.adm-marcos li[data-tipo="deploy"] b { background: #2563eb; color: #fff; }
+.adm-marcos li[data-tipo="problema"] b { background: #dc2626; color: #fff; }
+.adm-marcos span { font-variant-numeric: tabular-nums; color: var(--subtle); }
+/* O que mudou: duas colunas (subiu | caiu), uma linha por movimento. */
+.adm-mov-h { font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--subtle); margin: 0 0 8px; }
+.adm-movs { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.adm-mov { display: grid; grid-template-columns: 24px minmax(0, 1fr) auto auto; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 10px; background: var(--panel-strong); font-size: 13.5px; }
+.adm-mov-ico { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; }
+.adm-mov-sobe .adm-mov-ico { background: color-mix(in srgb, #16a34a 18%, transparent); color: #16a34a; }
+.adm-mov-desce .adm-mov-ico { background: color-mix(in srgb, #dc2626 18%, transparent); color: #dc2626; }
+.adm-mov-txt { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.adm-mov-txt small, .adm-mov-num small { color: var(--subtle); font-size: 11px; }
+.adm-mov-num { font-variant-numeric: tabular-nums; text-align: right; }
+.adm-hbars-delta li { grid-template-columns: minmax(90px, 200px) 1fr auto; }
+.adm-hbars-delta .adm-hbar-val { display: inline-flex; align-items: center; gap: 6px; }
+/* Rótulo comprido ("Entrada e institucional → Coleção"): coluna larga. */
+.adm-hbars-largo li { grid-template-columns: minmax(120px, 360px) 1fr auto; }
+/* Mapa de calor hora × dia: 24 colunas de hora + o rótulo do dia. */
+.adm-calor { display: grid; grid-template-columns: 34px repeat(24, minmax(0, 1fr)); gap: 2px; font-size: 10px; color: var(--subtle); }
+.adm-calor-h { text-align: left; white-space: nowrap; overflow: visible; }
+.adm-calor-d { align-self: center; font-weight: 700; }
+.adm-calor-c { aspect-ratio: 1.6; min-height: 12px; border-radius: 3px; background: color-mix(in srgb, var(--accent) var(--p, 0%), var(--panel-strong)); }
+/* Matriz de caminhos / entrada × canal: cor = fração da linha. */
+.adm-matriz th[scope="row"] { font-weight: 700; color: var(--text); font-size: 13px; white-space: nowrap; }
+.adm-matriz td, .adm-matriz th { white-space: nowrap; }
+.adm-zero { color: var(--subtle); opacity: 0.6; }
+/* Pílula de área (a cor vem de --g, como a do jogo). */
+.adm-area { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 12px; font-weight: 700; line-height: 1.4; white-space: nowrap; background: color-mix(in srgb, var(--g) 18%, transparent); border: 1px solid color-mix(in srgb, var(--g) 50%, transparent); }
+/* Pequenos múltiplos: um quadro por área, mesma forma, escala própria. */
+.adm-mults { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; }
+.adm-mult { border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; min-width: 0; }
+.adm-mult-t { display: flex; align-items: center; gap: 6px; margin: 0; font-size: 12.5px; font-weight: 700; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.adm-mult-n { display: flex; align-items: center; gap: 8px; margin: 4px 0 2px; font-size: 18px; font-variant-numeric: tabular-nums; }
+.adm-mult .adm-spark { width: 100%; height: 36px; display: block; }
+/* Web × app: um cartão por plataforma e o da soma. */
+.adm-plats { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; }
+.adm-plat { border: 1px solid var(--line); border-top: 4px solid var(--g, var(--accent)); border-radius: 12px; background: var(--panel); padding: 14px 16px; min-width: 0; }
+.adm-plat-soma { --g: var(--text); background: var(--panel-strong); }
+.adm-plat-t { margin: 0; font-size: 13px; font-weight: 800; }
+.adm-plat-n { margin: 6px 0 0; font-size: 28px; font-weight: 800; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.adm-plat-s { margin: 0 0 10px; font-size: 12px; color: var(--subtle); }
+.adm-plat dl { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; margin: 0; font-size: 12.5px; }
+.adm-plat dt { color: var(--muted); }
+.adm-plat dd { margin: 0; font-weight: 700; font-variant-numeric: tabular-nums; text-align: right; }
+/* Botão só com ícone (apagar marco/número): 44px no toque pela regra de cima. */
+.adm-icone { display: inline-flex; align-items: center; justify-content: center; min-width: 36px; padding: 0 8px; }
+.adm-tipo { font-size: 12px; font-weight: 700; color: var(--muted); }
+.adm-form-largo { flex: 2 1 260px; }
+.adm-banner-info { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, transparent); }
+@media (max-width: 700px) {
+  .adm-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .adm-kpi { padding: 12px; }
+  .adm-mov { grid-template-columns: 22px minmax(0, 1fr) auto; }
+  .adm-mov .adm-delta { grid-column: 2 / -1; justify-self: start; }
+  .adm-calor { grid-template-columns: 28px repeat(24, minmax(0, 1fr)); gap: 1px; font-size: 9px; }
+  .adm-seg .chip { min-height: 44px; }
+  .adm-plats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .adm-plat { padding: 12px; }
+  .adm-plat-soma { grid-column: 1 / -1; }
+  .adm-plat-n { font-size: 22px; }
+  .adm-plat dl { font-size: 12px; gap: 3px 6px; }
+}
+
 /* ── Kit para parceiros (Visão geral › Para parceiros) ───────────────────
    (2026-09-29) O PDF que vai pra loja, anunciante e investidor: um documento
    A4 desenhado pra papel, e a aba mostra a prévia fiel dele (mesma largura e
@@ -5793,15 +5938,20 @@ a.setting-open {
   body:has(#adminRoot) .mobile-tabbar,
   body:has(#adminRoot) .page-head,
   body:has(#adminRoot) .collection-subtitle,
-  .adm-toolbar, .adm-noprint, #admNote, .adm-pager { display: none !important; }
+  .adm-toolbar, .adm-side, .adm-noprint, #admNote, .adm-pager { display: none !important; }
+  .adm-shell { display: block !important; }
   .admin-section { break-inside: avoid; }
   body:has(.adm-kit) { margin: 0 !important; padding: 0 !important; background: #fff !important; }
   body:has(.adm-kit) > :not(main),
   body:has(.adm-kit) main > :not(#adminRoot),
-  body:has(.adm-kit) #adminRoot > :not(#admBody),
+  body:has(.adm-kit) #adminRoot > :not(.adm-shell),
+  body:has(.adm-kit) .adm-shell > :not(.adm-main),
+  body:has(.adm-kit) .adm-main > :not(#admBody),
   body:has(.adm-kit) #admBody > :not(.adm-kit-prev) { display: none !important; }
   body:has(.adm-kit) main,
   body:has(.adm-kit) #adminRoot,
+  body:has(.adm-kit) .adm-shell,
+  body:has(.adm-kit) .adm-main,
   body:has(.adm-kit) #admBody,
   .adm-kit-prev { display: block !important; width: auto !important; max-width: none !important; margin: 0 !important; padding: 0 !important; overflow: visible !important; }
   .adm-kit { zoom: 1 !important; margin: 0 !important; }

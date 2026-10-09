@@ -257,7 +257,8 @@ coorte não volta pra ser medida depois. Daí mais cinco:
 | `login_gate` | `p` | atrito: quem bateu no portão de login, e em qual página |
 
 **Por que são agregados, e não um evento por carta.** O `events_guard` aceita
-**60 eventos por minuto por IP** e descarta o resto com `return null` — sem erro,
+**60 eventos por minuto por IP** (desde a `20261006a`, que a `20261009a`
+contém: 60 por minuto por VISITANTE e 600 pro IP inteiro) e descarta o resto com `return null` — sem erro,
 sem 4xx, sem nada. Um evento por carta (abriu/leu/achou/adicionou) estoura isso
 a partir de ~15 cartas/min, ou seja, apagaria justamente a medição de quem abre
 um booster inteiro: a pessoa que o funil existe pra enxergar. Então o scanner
@@ -282,6 +283,40 @@ SQL Editor. O trigger `profiles_admin_guard` devolve `is_admin` ao valor
 anterior em qualquer escrita que chegue pela API (JWT de anon/authenticated):
 sem ele, a policy "dono edita a própria linha" deixava qualquer conta se
 promover com um PATCH.
+
+### /admin v3 (`20261009a`): áreas, web × app, descartes
+
+A análise inteira e o plano estão em `docs/PLANO-ANALYTICS-3.md`. O que muda
+no contrato:
+
+- **Onde se mede.** A trava "só produção" virou `emProducao()` no shared.js:
+  o `sleevu.app` **ou o app das lojas** (Capacitor). O app roda em
+  `capacitor://localhost` (iOS) e `https://localhost` (Android), e a trava
+  antiga, só por host, deixaria o app inteiro sem um evento. `localhost` de
+  desenvolvimento segue sem medir.
+- **Pageview do app.** `props.pl` = `android` | `ios` (só no app nativo, pela
+  ponte do Capacitor) e `props.av` = versão do binário das lojas (pela ponte,
+  com teto de 800 ms; sem ela o pageview vai sem `av`). Na web nada muda. O
+  `page_time` do app sai no 1º `visibilitychange → hidden` (no app não existe
+  `pagehide` ao ir pro segundo plano); na web segue no `pagehide`.
+- **Navegador da equipe.** `localStorage['sleevu-equipe-v1'] = '1'` faz o
+  `mandaEvento` não mandar nada (erros de JS continuam). O `/admin` marca
+  sozinho o navegador em que é aberto pela 1ª vez; Técnico › Medição desfaz.
+- **Descartes contados.** O `events_guard` grava em `events_descartes` (dia ×
+  motivo × nome) tudo o que descarta: nome fora da lista (até 20 nomes por
+  dia com linha própria; o resto em `(outro)`), tamanho, ritmo por visitante
+  e por IP. Lido em Técnico › Medição, junto da lista do que o site manda ×
+  o que chegou.
+- **RPCs novas** (todas com o portão `_is_admin()`): `admin_pulso`,
+  `admin_paginas(days, p_areas)` (o mapa página → área vem do `AREAS` do
+  admin.js), `admin_plataformas`, `admin_descartes`, `admin_anuncios`,
+  `admin_notas`/`admin_nota_save`/`admin_nota_delete`, `admin_app_loja_save`.
+  Única porta anônima: `app_store_import(p_key, p_linhas)`, pro robô das
+  lojas, que entra pelo SHA-256 da chave em `app_store_robo`.
+- **Plataforma de uma pessoa.** Por pageview, onde a página foi vista; por
+  navegador, a de maior prioridade usada no período (ios > android > pwa >
+  web). A ponte entre web e app é a conta (`uid`): a mesma conta nos dois
+  aparece em `contas_multi`.
 
 ---
 
