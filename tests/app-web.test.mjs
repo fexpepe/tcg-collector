@@ -106,7 +106,7 @@ const PONTE = ler("mobile/web/app-nativo.js");
 
 function carregaPonte({ href = "http://localhost/", pagina = "index", base, nativo = false } = {}) {
   const u = new URL(href);
-  const reg = { replace: [], replaceState: [], write: [], nativo: [], fetch: [], xhr: [], beacon: [] };
+  const reg = { replace: [], replaceState: [], write: [], nativo: [], fetch: [], xhr: [], beacon: [], voltar: 0, ouvintes: {}, minimizou: 0 };
   const comAcessor = (proto, props) => {
     for (const p of props) {
       Object.defineProperty(proto, p, { configurable: true, enumerable: true, get() { return this["_" + p]; }, set(v) { this["_" + p] = v; } });
@@ -129,7 +129,7 @@ function carregaPonte({ href = "http://localhost/", pagina = "index", base, nati
       currentScript: { getAttribute: (n) => (n === "data-pagina" ? pagina : null) },
       write: (s) => reg.write.push(s)
     },
-    history: { state: null, replaceState: (s, t, x) => reg.replaceState.push(x) },
+    history: { state: null, replaceState: (s, t, x) => reg.replaceState.push(x), back: () => { reg.voltar++; } },
     navigator: { serviceWorker: {}, sendBeacon: (x) => { reg.beacon.push(x); return true; } },
     PushManager: function () {},
     fetch: (x) => { reg.fetch.push(typeof x === "string" ? x : x.url); return Promise.resolve({}); },
@@ -140,7 +140,14 @@ function carregaPonte({ href = "http://localhost/", pagina = "index", base, nati
     janela.Capacitor = {
       isNativePlatform: () => true,
       getPlatform: () => "android",
-      nativePromise: (plugin, metodo) => { reg.nativo.push(`${plugin}.${metodo}`); return Promise.resolve({}); }
+      nativePromise: (plugin, metodo) => { reg.nativo.push(`${plugin}.${metodo}`); return Promise.resolve({}); },
+      // O que a ponte nativa injeta pra cada plugin instalado (JSExport).
+      Plugins: {
+        App: {
+          addListener: (evento, fn) => { reg.ouvintes[evento] = fn; return Promise.resolve({ remove() {} }); },
+          minimizeApp: () => { reg.minimizou++; return Promise.resolve(); }
+        }
+      }
     };
   }
   janela.window = janela;
@@ -256,6 +263,25 @@ test("no aparelho: avisa o Capgo, some com SW e Web Push e já é 'app instalado
   assert.deepEqual(web.reg.nativo, []);
   assert.equal(web.app.nativo, false);
   assert.equal(web.janela.navigator.standalone, undefined);
+});
+
+test("voltar do Android: anda no histórico; sem pra onde voltar, minimiza", () => {
+  const { reg } = carregaPonte({ href: "http://localhost/hub.html", pagina: "hub", nativo: true });
+  assert.equal(typeof reg.ouvintes.backButton, "function");
+  reg.ouvintes.backButton({ canGoBack: true });
+  assert.equal(reg.voltar, 1);
+  assert.equal(reg.minimizou, 0);
+  reg.ouvintes.backButton({ canGoBack: false });
+  assert.equal(reg.voltar, 1);
+  assert.equal(reg.minimizou, 1);
+  assert.deepEqual(carregaPonte({ href: "http://localhost/hub.html", pagina: "hub" }).reg.ouvintes, {}, "no navegador comum não há botão nativo");
+});
+
+test("cada página do app leva o commit do pacote como build (o `v` do rastreio de erro)", () => {
+  const html = transformaHtml(ler("hub.html"), { pagina: "hub", build: "app-2cfc8ed8" });
+  assert.match(html, /data-pagina="hub"><\/script>\n<meta name="sleevu-build" content="app-2cfc8ed8">/);
+  assert.match(transformaHtml(ler("hub.html"), { pagina: "hub" }), /content="app-dev"/);
+  assert.throws(() => transformaHtml(ler("hub.html"), { pagina: "hub", build: '"><script>' }), /build inválido/);
 });
 
 // ── Amarras do projeto ──────────────────────────────────────────────────────

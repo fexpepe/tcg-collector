@@ -13,7 +13,7 @@ e push, ficou de fora por risco de depender de um fornecedor só.
 
 | Caminho | O que é |
 |---|---|
-| `mobile/package.json` | Capacitor e o plugin do Capgo, com versões fixas. `npm ci` usa o `package-lock.json` |
+| `mobile/package.json` | Capacitor, o plugin do Capgo e o `@capacitor/app`, com versões fixas. `npm ci` usa o `package-lock.json` |
 | `mobile/capacitor.config.json` | `appId` **`app.sleevu`** (permanente nas lojas), `webDir` `www`, live update `atBackground` |
 | `mobile/android/`, `mobile/ios/` | Projetos nativos versionados. iOS usa Swift Package Manager (sem CocoaPods) |
 | `mobile/web/app-nativo.js` | A **ponte**: 1º script de toda página do app (ver abaixo) |
@@ -56,11 +56,18 @@ de quatro coisas:
    (`data/set-logos/…` dentro de `innerHTML`, `src`, `srcset`) saem pro `sleevu.app`.
 4. **Sem service worker, sem Web Push e sem convite de "instalar"**: quem atualiza o
    código é o Capgo.
+5. **Botão "voltar" do Android**: volta no histórico (o que também fecha o popup
+   da carta); na 1ª tela, minimiza o app.
 
-**O site sabe que está no app** por `window.SLEEVU_APP`, e isso muda três coisas:
-- os links de compartilhar saem com `SLEEVU.origem` (o `sleevu.app`, nunca o
-  endereço do aparelho);
-- medição e rastreio de erro contam o app como produção (`emProducao()` no `shared.js`);
+**O site sabe que está no app** e muda três coisas:
+- os links de compartilhar saem com `SLEEVU.origem`, que vem do `window.SLEEVU_APP`
+  da ponte (o `sleevu.app`, nunca o endereço do aparelho);
+- medição e rastreio de erro contam o app como produção, pelo
+  `emProducao()`/`appNativo()` do `shared.js` (`Capacitor.isNativePlatform()`):
+  - o pageview leva a plataforma (`pl`) e a versão do binário (`av`, do
+    `@capacitor/app`);
+  - o erro leva o commit do pacote (`<meta name="sleevu-build" content="app-<sha>">`);
+  - os detalhes estão no `docs/PLANO-ANALYTICS-3.md`, seção 4;
 - o `<html>` ganha `data-iab="app"`, que esconde o login com Google (ver Limites).
 
 **Do lado do servidor** entra só o CORS. O catálogo estático manda

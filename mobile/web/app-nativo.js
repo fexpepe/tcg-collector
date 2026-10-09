@@ -25,8 +25,10 @@
 //      um SW servindo o shell velho do cache brigaria com ele. Push no app,
 //      quando vier, é nativo.
 //
-// window.SLEEVU_APP diz ao site que ele está no app (o game.js lê a origem
-// pública dali pros links de compartilhar; o shared.js, se é produção).
+// window.SLEEVU_APP diz ao site que ele está no app: o game.js lê dali a
+// origem pública dos links de compartilhar, e o theme.js carimba
+// data-iab="app". A medição (emProducao/appNativo no shared.js) pergunta
+// direto ao Capacitor.
 (function () {
   "use strict";
   var ORIGEM = "https://sleevu.app"; /* SLEEVU_APP_ORIGEM */
@@ -47,6 +49,22 @@
   // plugin. Falha aqui não pode derrubar a página.
   if (nativo && typeof cap.nativePromise === "function") {
     try { cap.nativePromise("CapacitorUpdater", "notifyAppReady", {}).catch(function () {}); } catch (e) { /* segue */ }
+  }
+
+  // Botão "voltar" do Android. Com o @capacitor/app instalado (é dele que a
+  // medição tira a versão do app), o voltar sem ouvinte só anda pra trás no
+  // histórico — na 1ª tela ele não faz NADA, e o Android espera que o app
+  // saia. Aqui: tem pra onde voltar, volta (fecha o popup da carta, que é uma
+  // entrada do histórico); não tem, minimiza, como qualquer app.
+  var appNativoPlugin = nativo && cap.Plugins && cap.Plugins.App;
+  if (appNativoPlugin && typeof appNativoPlugin.addListener === "function") {
+    try {
+      appNativoPlugin.addListener("backButton", function (e) {
+        if (e && e.canGoBack) { history.back(); return; }
+        var sai = appNativoPlugin.minimizeApp || appNativoPlugin.exitApp;
+        if (typeof sai === "function") sai.call(appNativoPlugin);
+      });
+    } catch (e) { /* segue com o voltar padrão */ }
   }
 
   // ── 2. Endereço bonito ─────────────────────────────────────────────────────
