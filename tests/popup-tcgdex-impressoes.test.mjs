@@ -3,6 +3,9 @@
 //    api.tcgdex.net/…/mtg-… e levava 404, e a cotação, o gráfico e os
 //    vendedores esperavam esse pedido, que não tinha prazo. Agora sai cedo
 //    fora do Pokémon, tem prazo, e o 404 fica guardado como "não tem".
+// 2. No celular as Impressões nasciam escondidas ENTRE a carta e o título e
+//    apareciam quando a borda respondia: a fileira do "+" pulava ~60 px bem na
+//    hora do toque. Agora descem com a ficha, pra depois das ações.
 // Roda com: node --test tests/
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -39,3 +42,11 @@ test("fetchCardPricing tem prazo", () => {
   assert.ok(corpo.includes("AbortSignal.timeout(5000)"));
 });
 
+test("no celular as Impressões descem com a ficha, pra depois das ações", () => {
+  const shared = readFileSync(join(raiz, "src/shared.js"), "utf8");
+  const i = shared.indexOf('if (acoes && acoes.parentNode) acoes.insertAdjacentElement("afterend", det);');
+  assert.ok(i > 0, "sumiu a descida da ficha no celular");
+  const depois = shared.slice(i, i + 700);
+  assert.ok(depois.includes('const imp = modal.querySelector("[data-preview-prints]");'));
+  assert.ok(depois.includes('if (imp) det.insertAdjacentElement("afterend", imp);'));
+});
