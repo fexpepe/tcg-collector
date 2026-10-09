@@ -81,8 +81,16 @@ export function transformaHtml(texto, { pagina, origem = ORIGEM_PADRAO, build = 
   // calendário abre o do servidor (no app, fora dele — o sistema cuida do .ics).
   out = out.replace(/(\shref=")(?:\.?\/)?lancamentos\.ics"/g, `$1${origem}/lancamentos.ics"`);
   out = out.replace(RE_VITRINE, "");
+  out = out.replace(RE_TURNSTILE, "");
   return out;
 }
+
+// 6. Sem o Turnstile (captcha do link mágico) no app. O login não roda dentro
+//    do app — o botão abre a página do SITE no navegador do sistema, onde o
+//    widget funciona —, e aqui ele só tentaria montar um widget escondido numa
+//    origem que o painel da Cloudflare não libera (capacitor://localhost).
+const RE_TURNSTILE = /[ \t]*<script\b[^>]*\bsrc="https:\/\/challenges\.cloudflare\.com\/turnstile\/[^"]*"[^>]*><\/script>[ \t]*\r?\n?/g;
+export const temTurnstile = (html) => new RegExp(RE_TURNSTILE.source).test(html);
 
 // 4. Sem vitrine (src/ads.js) no app. O AdSense dentro de WebView viola a
 //    política do Google (no app seria AdMob), e a "casa" da vitrine oferece o
@@ -106,7 +114,7 @@ export function transformaCss(texto) {
 }
 
 // ── A ponte ──────────────────────────────────────────────────────────────────
-export function preenchePonte(texto, { origem = ORIGEM_PADRAO, paginas }) {
+export function preenchePonte(texto, { origem = ORIGEM_PADRAO, paginas, supabase }) {
   let out = texto;
   const troca = (re, por, oQue) => {
     if (!re.test(out)) throw new Error(`app-web: não achei ${oQue} em mobile/web/app-nativo.js`);
@@ -114,7 +122,19 @@ export function preenchePonte(texto, { origem = ORIGEM_PADRAO, paginas }) {
   };
   troca(/var ORIGEM = "[^"]*"; \/\* SLEEVU_APP_ORIGEM \*\//, `var ORIGEM = ${JSON.stringify(origem)}; /* SLEEVU_APP_ORIGEM */`, "SLEEVU_APP_ORIGEM");
   troca(/var PAGINAS = \[[^\]]*\]; \/\* SLEEVU_APP_PAGINAS \*\//, `var PAGINAS = ${JSON.stringify(paginas)}; /* SLEEVU_APP_PAGINAS */`, "SLEEVU_APP_PAGINAS");
+  if (!supabase || !/^https:\/\/[a-z0-9]+\.supabase\.co$/.test(supabase.url) || !supabase.chave) throw new Error("app-web: Supabase do login sem url/chave");
+  troca(/var SUPABASE = \{[^}]*\}; \/\* SLEEVU_APP_SUPABASE \*\//, `var SUPABASE = ${JSON.stringify({ url: supabase.url, chave: supabase.chave })}; /* SLEEVU_APP_SUPABASE */`, "SLEEVU_APP_SUPABASE");
   return out;
+}
+
+// O Supabase que a ponte usa pra trocar o código do login (PKCE) por sessão:
+// o MESMO do site, lido do src/shared.js (é a chave pública, a "publishable").
+// Uma fonte só: se o projeto do Supabase mudar lá, o app acompanha.
+export function supabaseDoSite(sharedJs) {
+  const url = /const SUPABASE_URL = "([^"]+)";/.exec(sharedJs);
+  const chave = /const SUPABASE_KEY = "([^"]+)";/.exec(sharedJs);
+  if (!url || !chave) throw new Error("app-web: não achei SUPABASE_URL/SUPABASE_KEY no src/shared.js");
+  return { url: url[1], chave: chave[1] };
 }
 
 // Origem válida: https (ou http só em localhost, pra testar contra um servidor

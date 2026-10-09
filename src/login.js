@@ -21,6 +21,29 @@
     document.documentElement.removeAttribute("data-entering");
     try { sessionStorage.removeItem("sleevu-entrando"); } catch (e) { /* ignora */ }
   }
+  // ── Login pedido pelo APP (Capacitor, mobile/README.md) ─────────────────────
+  // O app não faz login dentro dele: o Turnstile não roda na origem do app
+  // (capacitor://localhost) e o Google recusa WebView embutido. Então o app
+  // abre ESTA página no navegador do sistema (Custom Tab no Android, Safari no
+  // iOS) com ?app=<desafio PKCE>&m=<s256|plain>&p=<android|ios>. Aqui o pedido
+  // fica no sessionStorage, onde o shared.js (voltaDoLogin) o lê pra mandar o
+  // link mágico e o Google de volta pro app. Sem o parâmetro, vale o que já
+  // estava guardado nesta aba (reload do bfcache, reset do Turnstile).
+  const pedidoDoApp = (function () {
+    const url = new URL(window.location.href);
+    const c = url.searchParams.get("app");
+    if (c) {
+      const pedido = { c, m: url.searchParams.get("m") === "plain" ? "plain" : "s256", p: url.searchParams.get("p") === "ios" ? "ios" : "android" };
+      try { sessionStorage.setItem("sleevu-login-app", JSON.stringify(pedido)); } catch (e) { /* sem storage: vira login normal */ }
+      ["app", "m", "p"].forEach((k) => url.searchParams.delete(k));
+      history.replaceState(null, "", url.pathname + url.search + url.hash);
+    }
+    try { const a = JSON.parse(sessionStorage.getItem("sleevu-login-app") || "null"); return a && a.c ? a : null; } catch (e) { return null; }
+  })();
+  // E DENTRO do app: a página só tem o botão que abre o navegador (a ponte do
+  // app, mobile/web/app-nativo.js, cuida do resto e da volta).
+  const noApp = window.SLEEVU_APP && window.SLEEVU_APP.nativo ? window.SLEEVU_APP : null;
+
   function returnTarget() {
     let ret = null;
     try { ret = localStorage.getItem("tcg-login-return"); localStorage.removeItem("tcg-login-return"); } catch (e) { /* ignora */ }
@@ -58,12 +81,15 @@
     if (!fonte) return;
     mostraFormulario(); // deu errado: ninguém está entrando
     const motivo = fonte.get("error_description") || fonte.get("error_code") || fonte.get("error");
+    // "app_login" é da ponte do app: a volta chegou, mas a troca do código pela
+    // sessão falhou (o segredo do PKCE sumiu, o código venceu). Não é o Google.
+    const doApp = fonte.get("error") === "app_login";
     // Limpa a URL: um F5 não pode repetir a mensagem (nem deixar o erro colado
     // no endereço que o usuário eventualmente compartilha).
     ["error", "error_code", "error_description"].forEach((k) => { doHash.delete(k); url.searchParams.delete(k); });
     const sobra = doHash.toString();
     history.replaceState(null, "", url.pathname + url.search + (sobra ? `#${sobra}` : ""));
-    showMsg(`${t("login.oauthFailed")} ${motivo}`, "err");
+    showMsg(doApp ? t("login.app.failed") : `${t("login.oauthFailed")} ${motivo}`, "err");
   })();
 
   // NÃO dá pra olhar o #access_token aqui: o shared.js roda antes deste arquivo
@@ -74,8 +100,9 @@
   const entrando = document.documentElement.hasAttribute("data-entering");
 
   // Já logado: redireciona pra onde veio (ou home). Segue "entrando" na tela —
-  // é um pulo instantâneo, e o formulário aqui só piscaria.
-  if (shared.getSession && shared.getSession()) {
+  // é um pulo instantâneo, e o formulário aqui só piscaria. Menos no pedido
+  // do app: estar logado NESTE navegador não loga o app, que precisa do código.
+  if (!pedidoDoApp && shared.getSession && shared.getSession()) {
     document.documentElement.setAttribute("data-entering", "1");
     window.location.replace(returnTarget());
     return;
@@ -98,6 +125,21 @@
   } else {
     // Página de login de verdade: formulário à vista.
     mostraFormulario();
+  }
+
+  // Dentro do app: um botão que abre o login no navegador do sistema. A volta
+  // (app.sleevu://login?code=…) chega pela ponte, que troca o código por
+  // sessão e traz o app de volta a esta página com o #access_token — daí em
+  // diante é o mesmo caminho do link mágico no site.
+  const appBtn = document.getElementById("loginApp");
+  if (noApp && appBtn) {
+    appBtn.addEventListener("click", async () => {
+      appBtn.disabled = true;
+      let abriu = false;
+      try { abriu = await noApp.entrar(); } catch (e) { /* cai no aviso de falha */ }
+      appBtn.disabled = false;
+      showMsg(t(abriu ? "login.app.waiting" : "login.app.failed"), abriu ? "ok" : "err");
+    });
   }
 
   // Google: uma navegação e mais nada. O Supabase devolve os tokens no mesmo
@@ -189,7 +231,9 @@
       if (submit) { submit.disabled = false; submit.textContent = t("login.submit"); }
       if (r.ok) {
         form.hidden = true;
-        showMsg(t("login.sent"), "ok");
+        // Pedido do app: o link volta pro APP, então tem que ser aberto no
+        // celular onde ele está (o segredo do PKCE mora lá).
+        showMsg(t(pedidoDoApp ? "login.app.webSent" : "login.sent"), "ok");
       } else if (r.code === "captcha_failed") {
         // Falha na VALIDAÇÃO do captcha (não no widget): ou o token expirou na
         // digitação, ou o secret do Turnstile no painel do Supabase está errado

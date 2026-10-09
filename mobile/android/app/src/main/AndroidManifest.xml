@@ -22,6 +22,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
+            <!-- Volta do login (mobile/README.md, "Login"): o link mágico e o
+                 Google voltam pra app.sleevu://login?code=…, e o app troca o
+                 código por sessão com o segredo PKCE que só ele guarda. -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="app.sleevu" android:host="login" />
+            </intent-filter>
+
         </activity>
 
         <provider

@@ -64,6 +64,17 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>app.sleevu</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>app.sleevu</string>
+			</array>
+		</dict>
+	</array>
 	<key>NSCameraUsageDescription</key>
 	<string>O Sleevu usa a câmera para escanear suas cartas e adicioná-las à coleção.</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
