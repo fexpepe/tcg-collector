@@ -424,7 +424,10 @@
       if (!pageCards.length && detailType === "set" && (detailName || detailSetId)) {
         rescueWrongGame();
       }
-      init();
+      // O popup da carta abre ANTES da grade (2026-10-08): quem pousa na rota
+      // de uma carta veio ver a CARTA, e a imagem grande dela entrava na fila
+      // depois das imagens eager da grade. Aberto antes, ele sai primeiro e a
+      // grade nasce sem eager (o pager vê o popup aberto).
       // ?card=<id>: reabre o popup da carta — é onde o link compartilhado do
       // modal e as páginas /card/<slug>.html do Google aterrissam.
       preview.openFromUrl();
@@ -435,6 +438,7 @@
         slugsDoSet = new Map([[cartaDaRota, caminhoLimpo[3]]]);
         preview.open(cartaDaRota, undefined, { semHistorico: true });
       }
+      init();
       preparaEnderecos();
     })
     .catch((error) => {
