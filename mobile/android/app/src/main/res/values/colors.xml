@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Fundo do tema escuro do site (a variável bg do styles.css). É o que aparece
+         atrás das barras do sistema quando o WebView é anterior à versão 140:
+         aí o Capacitor não desenha o app por baixo delas (SystemBars) e encolhe
+         a tela, e o tema Android pintava essas faixas de cinza. -->
+    <color name="fundo_app">#101218</color>
+</resources>

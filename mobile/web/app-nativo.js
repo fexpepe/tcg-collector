@@ -318,6 +318,28 @@
     return setAttributeOriginal.call(this, nome, ATRIBUTO_URL.test(nome) ? trocaAtributo(nome, valor) : valor);
   };
 
+  // ── Barras do sistema ──────────────────────────────────────────────────────
+  // O app desenha por baixo da barra de status e da barra de navegação do
+  // Android (o site já afasta o conteúdo com env(safe-area-inset-*), o mesmo
+  // do PWA no iPhone). Os ÍCONES dessas barras (hora, bateria, os botões do
+  // Android) têm de contrastar com o fundo do TEMA DO SITE — o do celular pode
+  // ser outro, e aí ficavam brancos no fundo claro. O theme.js marca o tema
+  // claro com data-theme="light"; o padrão é o escuro. No SystemBars, "DARK" é
+  // fundo escuro com ícones claros.
+  if (plugins.SystemBars && typeof plugins.SystemBars.setStyle === "function") {
+    var estiloBarras = "";
+    var pintaBarras = function () {
+      var estilo = document.documentElement.getAttribute("data-theme") === "light" ? "LIGHT" : "DARK";
+      if (estilo === estiloBarras) return;
+      estiloBarras = estilo;
+      try { Promise.resolve(plugins.SystemBars.setStyle({ style: estilo })).catch(function () {}); } catch (e) { /* segue */ }
+    };
+    // O theme.js roda DEPOIS desta ponte: pinta no começo do documento e de
+    // novo quando o tema aparece ou muda (o botão de tema do menu).
+    document.addEventListener("DOMContentLoaded", pintaBarras);
+    try { new MutationObserver(pintaBarras).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] }); } catch (e) { /* segue */ }
+  }
+
   // ── 4. Sem service worker e sem Web Push ──────────────────────────────────
   // O site guarda pelo OBJETO (`if (navigator.serviceWorker)`) e o Web Push
   // por `"PushManager" in window`: sumir com os dois desliga os dois caminhos.

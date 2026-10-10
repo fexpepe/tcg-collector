@@ -5,6 +5,9 @@
   "plugins": {
     "CapacitorUpdater": {
       "autoUpdate": "atBackground"
+    },
+    "SystemBars": {
+      "initialViewportFitValueHint": "cover"
     }
   }
 }

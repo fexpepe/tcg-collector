@@ -120,7 +120,8 @@ function armazem() {
 
 function carregaPonte({ href = "http://localhost/", pagina = "index", base, nativo = false, local = armazem(), sessao = armazem(), lancamento = null, sessaoSupabase = null } = {}) {
   const u = new URL(href);
-  const reg = { replace: [], replaceState: [], write: [], nativo: [], fetch: [], xhr: [], beacon: [], voltar: 0, ouvintes: {}, minimizou: 0, abriu: [], fechou: 0, token: [] };
+  const reg = { replace: [], replaceState: [], write: [], nativo: [], fetch: [], xhr: [], beacon: [], voltar: 0, ouvintes: {}, minimizou: 0, abriu: [], fechou: 0, token: [], barras: [], aoCarregar: [], observadores: [] };
+  const atributosHtml = {};
   const comAcessor = (proto, props) => {
     for (const p of props) {
       Object.defineProperty(proto, p, { configurable: true, enumerable: true, get() { return this["_" + p]; }, set(v) { this["_" + p] = v; } });
@@ -141,8 +142,11 @@ function carregaPonte({ href = "http://localhost/", pagina = "index", base, nati
     document: {
       baseURI: base || href,
       currentScript: { getAttribute: (n) => (n === "data-pagina" ? pagina : null) },
-      write: (s) => reg.write.push(s)
+      write: (s) => reg.write.push(s),
+      documentElement: { getAttribute: (n) => (n in atributosHtml ? atributosHtml[n] : null) },
+      addEventListener: (ev, fn) => { if (ev === "DOMContentLoaded") reg.aoCarregar.push(fn); }
     },
+    MutationObserver: class { constructor(fn) { reg.observadores.push(fn); } observe() {} },
     history: { state: null, replaceState: (s, t, x) => reg.replaceState.push(x), back: () => { reg.voltar++; } },
     navigator: { serviceWorker: {}, sendBeacon: (x) => { reg.beacon.push(x); return true; } },
     PushManager: function () {},
@@ -175,14 +179,15 @@ function carregaPonte({ href = "http://localhost/", pagina = "index", base, nati
         Browser: {
           open: (o) => { reg.abriu.push(o.url); return Promise.resolve(); },
           close: () => { reg.fechou++; return Promise.resolve(); }
-        }
+        },
+        SystemBars: { setStyle: (o) => { reg.barras.push(o.style); return Promise.resolve(); } }
       }
     };
   }
   janela.window = janela;
   vm.createContext(janela);
   vm.runInContext(preenchePonte(PONTE, { origem: "https://sleevu.app", paginas: PAGINAS, supabase: SUPABASE_DO_SITE }), janela);
-  return { janela, reg, app: janela.SLEEVU_APP };
+  return { janela, reg, app: janela.SLEEVU_APP, atributosHtml };
 }
 const SUPABASE_DO_SITE = supabaseDoSite(ler("src/shared.js"));
 const espera = () => new Promise((r) => setTimeout(r, 20));
@@ -313,6 +318,32 @@ test("cada página do app leva o commit do pacote como build (o `v` do rastreio 
   assert.match(html, /data-pagina="hub"><\/script>\n<meta name="sleevu-build" content="app-2cfc8ed8">/);
   assert.match(transformaHtml(ler("hub.html"), { pagina: "hub" }), /content="app-dev"/);
   assert.throws(() => transformaHtml(ler("hub.html"), { pagina: "hub", build: '"><script>' }), /build inválido/);
+});
+
+test("barras do sistema: ícones claros no tema escuro do site, escuros no claro — e acompanham a troca", () => {
+  const { reg, atributosHtml } = carregaPonte({ href: "http://localhost/hub.html", pagina: "hub", nativo: true });
+  reg.aoCarregar.forEach((fn) => fn());
+  assert.deepEqual(reg.barras, ["DARK"], "tema escuro (padrão): fundo escuro, ícones claros");
+  atributosHtml["data-theme"] = "light";
+  reg.observadores.forEach((fn) => fn());
+  assert.deepEqual(reg.barras, ["DARK", "LIGHT"]);
+  reg.observadores.forEach((fn) => fn());
+  assert.deepEqual(reg.barras, ["DARK", "LIGHT"], "sem chamada repetida pro mesmo tema");
+  // No navegador comum não há barras nativas.
+  const web = carregaPonte({ href: "http://localhost/hub.html", pagina: "hub" });
+  assert.deepEqual(web.reg.barras, []);
+});
+
+test("toda página do app pede viewport-fit=cover (o app desenha por baixo das barras)", () => {
+  for (const p of PAGINAS) {
+    const meta = /<meta[^>]+name="viewport"[^>]*>/i.exec(ler(`${p}.html`));
+    assert.ok(meta, `${p}.html sem viewport`);
+    assert.match(meta[0], /viewport-fit=cover/, `${p}.html sem viewport-fit=cover: no Android o app ganharia faixas nas barras`);
+  }
+  const cfg = JSON.parse(ler("mobile/capacitor.config.json"));
+  assert.equal(cfg.plugins.SystemBars.initialViewportFitValueHint, "cover");
+  assert.match(ler("mobile/android/app/src/main/res/values/styles.xml"), /android:windowBackground">@color\/fundo_app</);
+  assert.match(ler("mobile/android/app/src/main/java/app/sleevu/MainActivity.java"), /onRenderProcessGone[\s\S]*recreate\(\);[\s\S]*return true;/, "WebView que cai não pode fechar o app");
 });
 
 // ── Login no app (PKCE) ─────────────────────────────────────────────────────
