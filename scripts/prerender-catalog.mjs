@@ -571,6 +571,10 @@ ${PR_STYLE}
 // Cartas: um arquivo por jogo, e jogo com mais de CARTAS_POR_SITEMAP cartas em
 // vários (-2, -3): o protocolo aceita até 50.000 URLs por arquivo, e o Magic
 // sozinho tem ~100 mil cartas.
+//
+// O /blog só entra com post publicado (2026-10-10): vazio, ele diz "volte em
+// breve", que conta como site em construção — o AdSense reprovou o site por
+// "Low value content". A Function dele põe noindex no mesmo caso.
 // Devolve { nomeDoArquivo: conteúdo }, com o sitemap.xml (índice) incluído.
 const CARTAS_POR_SITEMAP = 45000;
 function buildSitemaps(setPages, deckPages, artistPages, blogPosts) {
@@ -589,7 +593,7 @@ function buildSitemaps(setPages, deckPages, artistPages, blogPosts) {
     }
   }
   return montaSitemaps(ORIGIN, [
-    ["sitemap-pages.xml", STATIC_URLS.map((p) => ORIGIN + p)],
+    ["sitemap-pages.xml", STATIC_URLS.filter((p) => p !== "/blog" || (blogPosts || []).length).map((p) => ORIGIN + p)],
     ["sitemap-games.xml", jogos.map((url) => `${ORIGIN}/games/${url}`)],
     ["sitemap-sets.xml", setPages.map((s) => `${ORIGIN}/games/${s.url}/${s.slug}`)],
     ["sitemap-sets-en.xml", setPages.map((s) => `${ORIGIN}/games/${s.url}/${s.slug}-en`)],
@@ -1254,7 +1258,7 @@ async function main() {
   for (const [nome, conteudo] of Object.entries(sitemaps)) writeFileSync(nome, conteudo, "utf8");
   const nUrls = Object.entries(sitemaps).filter(([nome]) => nome !== "sitemap.xml")
     .reduce((n, [, xml]) => n + (xml.match(/<loc>/g) || []).length, 0);
-  console.log(`prerender-catalog: ${blogPosts.length} posts do blog no sitemap.`);
+  console.log(`prerender-catalog: ${blogPosts.length} posts do blog no sitemap${blogPosts.length ? "" : " (sem post, o /blog fica fora)"}.`);
   const perGame = GAMES.map((g) => `${g.slug} ${pages.filter((p) => p.game === g.slug).length}`).join(" · ");
   console.log(`prerender-catalog: ${pages.length} páginas de set em /${GAMES_DIR}/ (${perGame}) + ${artistPages.length} páginas de artista em /${ARTIST_OUT_DIR}/ (de ${porArtista.size} artistas no catálogo, teto ${ARTIST_PAGES}) + ${deckPages.length} páginas de deck em /${DECK_OUT_DIR}/ + sitemap.xml (índice de ${Object.keys(sitemaps).length - 1} arquivos, ${nUrls} URLs).`);
 }
