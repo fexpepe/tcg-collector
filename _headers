@@ -87,6 +87,16 @@
   Cache-Control: public, max-age=31536000, immutable
   ! Link
 
+# Motor do scanner (Tesseract) pro APP (2026-10-10): no app ele vem daqui, não
+# do pacote (src/scan.js, ORIGEM_MOTOR), e o worker baixa o dicionário
+# (eng.traineddata.gz) por fetch a partir de https://localhost /
+# capacitor://localhost — sem a licença o WebView barra a resposta. `*` pelo
+# mesmo motivo do /data/*: o _headers não responde por origem e o arquivo é
+# público. O worker e o motor em si vêm por importScripts, que não pede CORS.
+/assets/vendor/*
+  Access-Control-Allow-Origin: *
+  ! Link
+
 # Catálogo (data/*): sem regra, caía no default do Pages (max-age=0,
 # must-revalidate) e toda revisita pagava uma requisição condicional por chunk —
 # 648 no Magic, 200 no Pokémon EN. 1h fresco + 1 dia servindo stale enquanto

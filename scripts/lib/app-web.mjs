@@ -26,9 +26,12 @@ export function paginaDoApp(nome) { return !PAGINA_FORA.test(nome); }
 export const ARQUIVOS_DA_RAIZ = ["styles.css", "favicon.svg", "icon.svg", "icon-192.png", "icon-512.png", "apple-touch-icon.png", "manifest.json"];
 
 // assets/: tudo, menos o que o deploy também não publica (matéria-prima dos
-// logos e os README de cada pasta). O vendor do scanner (tesseract, ~10 MB)
-// ENTRA: o Worker dele tem que vir da mesma origem da página.
-const ASSET_FORA = /(?:^|\/)README\.md$|^brand\/(?!sleevu-wordmark\.svg$)/;
+// logos e os README de cada pasta) e o motor do scanner (vendor/, ~10 MB).
+// O motor entrava no pacote até 2026-10-10, mas no Galaxy S10 o worker dele
+// ficava mudo dentro do app — os pedidos de dentro de um Web Worker dependem
+// de o WebView repassá-los ao servidor do Capacitor. Agora o scan.js busca o
+// motor no sleevu.app (ORIGEM_MOTOR), como o site, e o APK fica ~10 MB menor.
+const ASSET_FORA = /(?:^|\/)README\.md$|^brand\/(?!sleevu-wordmark\.svg$)|^vendor\//;
 export function assetDoApp(rel) { return !ASSET_FORA.test(rel); }
 
 // ── game.js ──────────────────────────────────────────────────────────────────
