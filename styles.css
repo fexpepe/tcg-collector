@@ -4172,9 +4172,16 @@ a.preview-print:hover { background: var(--panel); }
 
   /* Cap por LARGURA, não por altura: com a moldura em 63/88, limitar a altura
      encolheria a moldura e o `cover` cortaria mais a carta. Derivando a largura
-     do teto de 58vh a proporção se mantém e a carta sai inteira. */
+     do teto de 58vh a proporção se mantém e a carta sai inteira.
+     --carta-w (2026-10-10) vem do encaixaCartaNoPainel (shared.js): em tela
+     baixa ele encolhe a carta o bastante pra −/Tenho/+ e Pastas / Lista de
+     Desejo caberem inteiros ao abrir.
+     display: block pro margin auto centralizar: inline, a carta mais estreita
+     que a coluna encostava à esquerda e a miniatura de carregamento (absoluta,
+     essa sim centrada) aparecia por trás, sobrando à direita. */
   .preview-image-wrap img {
-    width: min(100%, calc(58vh * 63 / 88));
+    display: block;
+    width: min(100%, calc(58vh * 63 / 88), var(--carta-w, 100%));
   }
 
   /* Duas colunas TAMBÉM no celular (2026-09-12). Empilhar rótulo em cima do
