@@ -366,6 +366,21 @@ test("toda página do app pede viewport-fit=cover (o app desenha por baixo das b
   assert.match(ler("mobile/android/app/src/main/java/app/sleevu/MainActivity.java"), /onRenderProcessGone[\s\S]*recreate\(\);[\s\S]*return true;/, "WebView que cai não pode fechar o app");
 });
 
+test("Android antigo de ponta a ponta: sem a altura das barras contada duas vezes", () => {
+  // Galaxy S10 (Android 12, 2026-10-10): o SystemBars passa a altura das
+  // barras pra página contando que o WebView está por baixo delas; com a
+  // janela encaixada entre as barras, vinha a faixa preta embaixo da de status.
+  const act = ler("mobile/android/app/src/main/java/app/sleevu/MainActivity.java");
+  assert.match(act, /super\.onCreate\(savedInstanceState\);\s*desenhaAtrasDasBarras\(\);/);
+  assert.match(act, /WindowCompat\.setDecorFitsSystemWindows\(janela, false\);/);
+  assert.match(act, /setStatusBarColor\(Color\.TRANSPARENT\)/);
+  assert.match(act, /setNavigationBarColor\(Color\.TRANSPARENT\)/);
+  assert.match(act, /setNavigationBarContrastEnforced\(false\)/);
+  // E nada de inverter o tratamento do SystemBars: é ele que põe a altura na página.
+  const cfg = JSON.parse(ler("mobile/capacitor.config.json"));
+  assert.notEqual(cfg.plugins.SystemBars.insetsHandling, "disable");
+});
+
 // ── Login no app (PKCE) ─────────────────────────────────────────────────────
 
 test("entrar: guarda o segredo e abre o login do SITE com o desafio S256", async () => {
