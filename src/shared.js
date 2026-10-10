@@ -12768,6 +12768,21 @@
       el.click();
     }
   });
+  // "Buscar" no teclado do celular fecha o teclado (2026-10-10, teste do
+  // Fernando no Galaxy S10). As buscas do site filtram enquanto a pessoa
+  // digita, então o Enter não fazia nada e o teclado seguia cobrindo metade
+  // dos resultados. Em tela de toque, Enter num campo de busca tira o foco,
+  // que é o que fecha o teclado no Android e no iPhone. É no keyup, e não no
+  // keydown: até lá o ouvinte da própria página já rodou (a paleta navega) e
+  // o envio do formulário da busca do topo também — ele nasce do keypress no
+  // campo focado, e um blur antes disso cancelava a busca em silêncio.
+  if (window.matchMedia("(pointer: coarse)").matches) {
+    document.addEventListener("keyup", (event) => {
+      const el = event.target;
+      if (event.key !== "Enter" || !el || el.tagName !== "INPUT") return;
+      if (el.type === "search" || el.getAttribute("enterkeyhint") === "search") el.blur();
+    });
+  }
   initCommandPalette();
   initPageSearchScan();
   initGameFilterChips();   // ANTES do applyTranslations não: os rótulos usam t()

@@ -24,7 +24,7 @@ export function makeLocalStorage(seed = {}) {
   };
 }
 
-export function loadShared(expose, { localStorage, location, history } = {}) {
+export function loadShared(expose, { localStorage, location, history, antes } = {}) {
   let src = readFileSync(join(here, "..", "..", "src", "shared.js"), "utf8");
   src = src.replace("window.TCGShared = {", `${expose || ""}\nwindow.TCGShared = {`);
 
@@ -69,6 +69,9 @@ export function loadShared(expose, { localStorage, location, history } = {}) {
   sandbox.__flushTimers = () => { while (timers.length) timers.shift()(); };
 
   sandbox.window = sandbox; sandbox.self = sandbox; sandbox.globalThis = sandbox;
+  // `antes` mexe nos stubs antes do shared.js rodar (ex.: matchMedia de tela
+  // de toque, ou capturar os ouvintes que ele registra no document).
+  if (antes) antes(sandbox);
   vm.createContext(sandbox);
   vm.runInContext(src, sandbox);
   return sandbox;
