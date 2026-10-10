@@ -152,7 +152,11 @@ async function pedeNaBorda(caminho, { pedido = "", slug, post = POST, redirecion
     return new Response(JSON.stringify(corpo), { status: 200, headers: { "content-type": "application/json" } });
   };
   try {
-    const env = { BLOG_SUPABASE_URL: "https://supabase.teste", ASSETS: { fetch: async () => new Response("404", { status: 404 }) } };
+    // A casca é lida antes de tudo (o build dela entra na chave do cache da
+    // borda, d9b87dd5), então o /blog-post precisa existir aqui.
+    const casca = '<html><head><meta name="sleevu-build" content="teste"></head><body></body></html>';
+    const env = { BLOG_SUPABASE_URL: "https://supabase.teste", ASSETS: { fetch: async (u) =>
+      new URL(String(u)).pathname === "/blog-post" ? new Response(casca, { status: 200 }) : new Response("404", { status: 404 }) } };
     return await paginaDoPost({ params: { slug }, env, request: new Request("https://sleevu.app" + caminho), waitUntil: () => {} }, pedido);
   } finally { globalThis.fetch = fetchAntes; }
 }

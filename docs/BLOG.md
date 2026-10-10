@@ -87,9 +87,12 @@ delete from public.blog_editores
  where user_id = (select id from auth.users where email = 'pessoa@exemplo.com');
 ```
 
-A migração já põe a conta do dono (a única com `is_admin` no dia). Quem é
-editor vê "Escrever e editar" em /blog e "Editar este post" em cada post; o
-endereço direto é /blog-editor.
+A migração já põe a conta do dono (a única com `is_admin` no dia), assinando
+**Sleevu** (2026-10-10: os posts saem em nome do site, não do Fernando). O
+campo "Autor" de cada post continua livre. Assinado "Sleevu" (ou vazio), o
+JSON-LD do post põe a organização como autora; qualquer outro nome vira
+`Person`. Quem é editor vê "Escrever e editar" em /blog e "Editar este post"
+em cada post; o endereço direto é /blog-editor.
 
 ## Escrever
 

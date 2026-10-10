@@ -23,9 +23,10 @@
 --     delete from public.blog_editores
 --      where user_id = (select id from auth.users where email = 'pessoa@exemplo.com');
 --
--- A semente lá embaixo põe a conta do dono (hoje a única com is_admin). É o
--- ÚNICO ponto em que os dois papéis se tocam: depois dela, tirar o admin não
--- tira o blog e vice-versa, e nenhuma policy daqui olha o is_admin.
+-- A semente lá embaixo põe a conta do dono (hoje a única com is_admin),
+-- assinando "Sleevu". É o ÚNICO ponto em que os dois papéis se tocam: depois
+-- dela, tirar o admin não tira o blog e vice-versa, e nenhuma policy daqui
+-- olha o is_admin.
 --
 -- O que faz:
 --   1) `blog_editores` + is_blog_editor() (usada pelas policies) e blog_me()
@@ -282,8 +283,11 @@ create policy blog_media_editor_apaga on storage.objects for delete to authentic
   using (bucket_id = 'blog-media' and (select public.is_blog_editor()));
 
 -- ── Semente: a conta do dono ────────────────────────────────────────────────
+-- Assina "Sleevu", não o nome dele (pedido do Fernando, 2026-10-10): os posts
+-- saem em nome do site. A página trata esse nome como a organização no JSON-LD
+-- (metaDoPost em functions/blog/[slug].js), não como uma pessoa.
 insert into public.blog_editores (user_id, nome)
-select p.user_id, coalesce(nullif(p.display_name, ''), p.handle, '')
+select p.user_id, 'Sleevu'
   from public.profiles p
  where p.is_admin
 on conflict (user_id) do nothing;
