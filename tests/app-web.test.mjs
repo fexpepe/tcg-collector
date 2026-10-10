@@ -91,7 +91,26 @@ test("o que fica de fora do app", () => {
   assert.equal(assetDoApp("brand/Magic-The-Gathering-logo.png"), false);
   assert.equal(assetDoApp("brand/sleevu-wordmark.svg"), true);
   assert.equal(assetDoApp("games/README.md"), false);
-  assert.equal(assetDoApp("vendor/tesseract-7.0.0/worker.min.js"), true, "o Worker do scanner tem de vir da origem da página");
+  // O motor do scanner vem do sleevu.app no app (worker mudo no S10, 2026-10-10).
+  assert.equal(assetDoApp("vendor/tesseract-7.0.0/worker.min.js"), false, "o motor do scanner vem da origem, não do pacote");
+  assert.equal(assetDoApp("vendor/tesseract-7.0.0/eng.traineddata.gz"), false);
+});
+
+test("scanner no app: motor da origem, worker por blob e dicionário com CORS", () => {
+  const scan = readFileSync(join(RAIZ, "src/scan.js"), "utf8");
+  // A origem do motor é a do SLEEVU (sleevu.app no app, a própria no site)…
+  assert.match(scan, /const ORIGEM_MOTOR = \(window\.SLEEVU && window\.SLEEVU\.origem\) \|\| location\.origin;/);
+  assert.match(scan, /const BASE = ORIGEM_MOTOR \+ "\/" \+ VENDOR;/);
+  // …e o worker de outra origem só nasce por blob; no site segue por URL (CSP).
+  assert.match(scan, /const MOTOR_DE_FORA = ORIGEM_MOTOR !== location\.origin;/);
+  assert.match(scan, /workerBlobURL: MOTOR_DE_FORA,/);
+  // Worker mudo vira erro com prazo, não "Preparando o leitor" pra sempre.
+  assert.match(scan, /Promise\.race\(\[pronto, prazo\]\)/);
+  // O dicionário sai por fetch de dentro do worker: precisa da licença.
+  const headers = readFileSync(join(RAIZ, "_headers"), "utf8").replace(/\r/g, "").split("\n");
+  const i = headers.indexOf("/assets/vendor/*");
+  assert.ok(i > 0, "_headers sem o bloco /assets/vendor/*");
+  assert.equal(headers[i + 1].trim(), "Access-Control-Allow-Origin: *");
 });
 
 test("origem: https, ou http só em localhost (ensaio); sem caminho", () => {

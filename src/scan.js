@@ -3,7 +3,8 @@
 // docs/PLANO-SCANNER.md pro plano inteiro e os limites conhecidos.
 //
 // A FOTO NUNCA SAI DO APARELHO: o OCR é o Tesseract.js rodando em WASM dentro
-// do navegador (auto-hospedado em assets/vendor/, a CSP é 'self'). Pra rede vai
+// do navegador (auto-hospedado em assets/vendor/, a CSP é 'self'; no app vem
+// do sleevu.app, ver ORIGEM_MOTOR). Pra rede vai
 // só o CÓDIGO lido — o mesmo texto que a pessoa digitaria na busca. E a foto
 // também não fica NO aparelho: o quadro congelado no disparo vive num canvas
 // em memória só enquanto a leitura roda e é descartado no fim (nada vai pra
@@ -20,8 +21,26 @@
   // Pasta VERSIONADA no nome (ver o README dela). URL absoluta de propósito: o
   // worker do Tesseract resolve langPath/corePath contra a URL DELE, não a da
   // página — um caminho relativo viraria assets/vendor/…/assets/vendor/….
+  //
+  // No APP (Capacitor) o motor vem do sleevu.app, não do pacote (2026-10-10).
+  // No Galaxy S10 o scanner ficava em "Preparando o leitor" pra sempre dentro
+  // do app, enquanto o mesmo site no Chrome do aparelho lia normal. O worker
+  // do Tesseract é a única parte do site que pede arquivo de DENTRO de um Web
+  // Worker, e no app esses pedidos dependem de o WebView repassá-los ao
+  // servidor interno do Capacitor. Da origem o caminho é o do site: rede
+  // normal, com o dicionário liberado por CORS no _headers. SLEEVU.origem é
+  // location.origin no site e https://sleevu.app no app (game.js).
   const VENDOR = "assets/vendor/tesseract-7.0.0/";
-  const BASE = location.origin + "/" + VENDOR;
+  const ORIGEM_MOTOR = (window.SLEEVU && window.SLEEVU.origem) || location.origin;
+  const BASE = ORIGEM_MOTOR + "/" + VENDOR;
+  // Worker de outra origem só nasce por blob (new Worker(url) exige a mesma
+  // origem da página); no app não há CSP pra barrar blob:. No site segue por
+  // URL, que a CSP (worker-src 'self') exige.
+  const MOTOR_DE_FORA = ORIGEM_MOTOR !== location.origin;
+  // Teto pra o leitor ficar pronto. Antes, um worker mudo deixava a tela em
+  // "Preparando o leitor" pra sempre; agora vira erro, com a etapa no rastreio.
+  // Folgado porque a 1ª vez baixa ~4 MB, às vezes no 3G.
+  const PRAZO_MOTOR = 60000;
   const WHITELIST = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/-. ";
   const FAIXA = 0.24;        // fração INFERIOR da carta onde o código mora em quase todo jogo
   const RODAPE = 0.18;       // fração inferior JUSTA: o rodapé de verdade quando a carta encaixa
@@ -715,16 +734,22 @@
   }
   function obterWorker(status) {
     if (workerPromise) return workerPromise;
-    workerPromise = (async () => {
+    let etapa = "tesseract.min.js"; // a última fase que o motor anunciou
+    const pronto = (async () => {
       await carregarScript(BASE + "tesseract.min.js");
+      etapa = "worker";
       const T = window.Tesseract;
       const criar = (core) => T.createWorker("eng", T.OEM.LSTM_ONLY, {
         workerPath: BASE + "worker.min.js",
         corePath: BASE + core,
         langPath: BASE.replace(/\/$/, ""),
-        workerBlobURL: false, // worker por URL: worker-src 'self' sem blob:
+        workerBlobURL: MOTOR_DE_FORA, // no site, por URL: worker-src 'self' sem blob:
         gzip: true,
-        logger: (m) => { if (status && m && m.status) status(m.status, m.progress); }
+        logger: (m) => {
+          if (!m || !m.status) return;
+          etapa = m.status;
+          if (status) status(m.status, m.progress);
+        }
       });
       let w;
       try { w = await criar("tesseract-core-simd-lstm.wasm.js"); }
@@ -738,7 +763,17 @@
       });
       return w;
     })();
-    workerPromise.catch(() => { workerPromise = null; }); // deixa tentar de novo
+    let relogio = null;
+    const prazo = new Promise((_, falha) => {
+      relogio = setTimeout(() => falha(new Error(`leitor sem resposta em ${PRAZO_MOTOR / 1000} s`)), PRAZO_MOTOR);
+    });
+    workerPromise = Promise.race([pronto, prazo]).finally(() => clearTimeout(relogio));
+    workerPromise.catch((e) => {
+      workerPromise = null; // deixa tentar de novo
+      // Pro rastreio de erros (theme.js → /admin): sem isto a falha do motor
+      // morria no catch da leitura, e do app não dava pra saber onde parou.
+      if (window.__sleevuErroPoe) window.__sleevuErroPoe({ k: "promise", m: `scanner: ${(e && e.message) || e} (etapa: ${etapa}; motor: ${ORIGEM_MOTOR})` });
+    });
     return workerPromise;
   }
   // Devolve o texto E as palavras com a confiança (0-100) que o motor dá a
