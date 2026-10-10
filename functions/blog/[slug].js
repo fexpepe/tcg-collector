@@ -47,8 +47,11 @@ export function metaDoPost(postOuVersao) {
   const capa = B.safeImg(post.cover_url);
   const imagem = capa && /^https:\/\//.test(capa) ? capa : "";
   const categoria = B.nomeCategoria(post.category, lang);
-  const autor = post.author_name
-    ? { "@type": "Person", name: post.author_name }
+  // Post assinado "Sleevu" (o padrão da conta do dono desde 2026-10-10) ou sem
+  // autor é do site: a organização, não uma pessoa chamada Sleevu.
+  const nomeAutor = String(post.author_name || "").trim();
+  const autor = nomeAutor && nomeAutor.toLowerCase() !== "sleevu"
+    ? { "@type": "Person", name: nomeAutor }
     : { "@type": "Organization", name: "Sleevu", url: ORIGEM + "/" };
   const artigo = {
     "@type": "BlogPosting",

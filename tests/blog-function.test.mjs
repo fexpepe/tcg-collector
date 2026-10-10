@@ -50,6 +50,15 @@ test("metaDoPost: título longo sem a marca; SEO do editor manda; sem autor = or
   assert.equal(seo.desc, "Tudo sobre.");
 });
 
+test("metaDoPost: assinado \"Sleevu\" (padrão da conta do dono) = a organização, não uma pessoa", () => {
+  for (const nome of ["Sleevu", " sleevu ", "SLEEVU"]) {
+    const autor = metaDoPost(Object.assign({}, POST, { author_name: nome })).jsonLd["@graph"][0].author;
+    assert.deepEqual(autor, { "@type": "Organization", name: "Sleevu", url: "https://sleevu.app/" }, nome);
+  }
+  const fe = metaDoPost(Object.assign({}, POST, { author_name: " Fê " })).jsonLd["@graph"][0].author;
+  assert.deepEqual(fe, { "@type": "Person", name: "Fê" });
+});
+
 test("escolheRelacionados: mesmo jogo primeiro, sem o próprio post, no máximo 3", () => {
   const lista = [
     { slug: "guia-do-charizard", game: "pokemon" }, { slug: "a", game: "magic" }, { slug: "b", game: "pokemon" },
