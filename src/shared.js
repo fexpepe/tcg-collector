@@ -5080,7 +5080,13 @@
     // carta pela metade. Marca o stack e o CSS troca a moldura pela proporção
     // da própria imagem (30/09/2026).
     const pai = img.parentNode;
-    if (img.naturalWidth > img.naturalHeight && pai.classList.contains("preview-image-stack")) pai.classList.add("is-landscape");
+    if (!pai || !pai.classList || !pai.classList.contains("preview-image-stack")) return;
+    if (img.naturalWidth > img.naturalHeight) pai.classList.add("is-landscape");
+    // A grande chegou: a miniatura de baixo sai (2026-10-10). Ela só serve de
+    // placeholder, e qualquer diferença entre as duas — a grande caindo pra
+    // outra fonte na cadeia, com outro recorte ou canto transparente — virava
+    // "duas cartas uma em cima da outra" (teste do Fernando no app, no S10).
+    if (!img.classList.contains("preview-image-thumb")) pai.classList.add("tem-grande");
   }, true);
 
   // setId da pokemontcg.io a partir do da TCGdex. Primeiro consulta o de-para

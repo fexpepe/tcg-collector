@@ -3503,6 +3503,9 @@ html[data-detail="set"]:not([data-set-pronto]) #setInsights { display: block !im
 .cs-art .preview-image-stack { position: relative; display: block; width: 100%; }
 .cs-art .preview-image-stack .preview-image-thumb { position: absolute; inset: 0; z-index: 0; }
 .cs-art .preview-image-stack img:not(.preview-image-thumb) { position: relative; z-index: 1; }
+/* Carregada a grande (tem-grande, do shared.js), a miniatura some: qualquer
+   pedaço dela sobrando em volta da grande parecia uma segunda carta. */
+.cs-art .preview-image-stack.tem-grande .preview-image-thumb { visibility: hidden; }
 .cs-art img {
   display: block;
   width: 100%;
