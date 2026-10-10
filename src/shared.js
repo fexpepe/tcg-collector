@@ -3106,11 +3106,10 @@
     // /condition e /centering; os antigos têm 301 no _redirects.
     const moreActive = ["blog", "tools", "condition", "centering", "sleeves"].includes(active);
 
-    // `beta`: selo pequeno sobrescrito no rótulo — recurso ainda em construção
-    // (pedido de 2026-08-25 pra Decks e Portfólio; Decks saiu do beta em
-    // 2026-10-08, depois do redesign da PR #163). "beta" é literal de
-    // propósito: é a mesma palavra nos três idiomas do site.
-    const link = (href, key, page, beta) => `<a href="${escapeAttribute(href)}"${page === active ? ' class="active"' : ""}>${escapeHtml(t(key))}${beta ? '<sup class="nav-beta">beta</sup>' : ""}</a>`;
+    // O selo "beta" que Decks e Portfólio levavam desde 2026-08-25 saiu: Decks
+    // em 2026-10-08 (redesign da PR #163) e Portfólio em 2026-10-10 (Portfólio
+    // 3.0, PR #179, já é a v1). Sem item em construção, o link perdeu o parâmetro.
+    const link = (href, key, page) => `<a href="${escapeAttribute(href)}"${page === active ? ' class="active"' : ""}>${escapeHtml(t(key))}</a>`;
     // Site único (sleevu.app): tudo é relativo. Menu ÚNICO e idêntico em todas as
     // páginas (sem ramo hub-vs-jogo). O jogo é a sessão do site; os links de
     // Explorar carregam ?game= pra ENTRAR no jogo escolhido.
@@ -3163,7 +3162,7 @@
       ${exploreMega}
       ${link("decks", "nav.decks", "decks")}
       ${loggedIn ? `${collectionMega}
-      ${link("portfolio", "nav.portfolio", "portfolio", true)}` : ""}
+      ${link("portfolio", "nav.portfolio", "portfolio")}` : ""}
       ${moreMega}
     `;
 
