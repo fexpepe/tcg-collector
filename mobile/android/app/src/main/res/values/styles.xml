@@ -13,6 +13,8 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:background">@null</item>
+        <!-- Faixas das barras do sistema com o fundo do app (values/colors.xml). -->
+        <item name="android:windowBackground">@color/fundo_app</item>
     </style>
 
 
