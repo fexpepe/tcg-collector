@@ -5,6 +5,7 @@
 // se trava aqui:
 //   - canonical e trilha no endereço /games/…;
 //   - preço e Product (com a oferta) só quando há preço;
+//   - o parágrafo que o popup copia (.seo-carta-texto);
 //   - nome de carta hostil não fecha o <script> do JSON-LD nem vira HTML;
 //   - outras impressões e vizinhas de número apontam pras páginas certas;
 //   - o título não corta o nome da carta.
@@ -60,6 +61,13 @@ test("preço e oferta só quando há preço", () => {
   assert.equal(precoUSD({ u: 10 }), 10);
   assert.ok(Math.abs(precoUSD({ e: 10 }) - 11) < 1e-9, "sem US$, o do Cardmarket com a margem");
   assert.equal(precoUSD(null), 0);
+});
+
+// AdSense "Low value content" (2026-10-10): o detail.js copia este parágrafo
+// pra dentro do popup da carta (textoDaCartaNoPopup) e o acha pela classe.
+test("o parágrafo da carta leva a classe que o detail.js copia pro popup", () => {
+  assert.match(pecas(cartas[0], 1.5).corpoHtml, /<p class="seo-carta-texto">Charmander é uma carta de raridade Common do set 151/);
+  assert.equal((pecas(cartas[1]).corpoHtml.match(/seo-carta-texto/g) || []).length, 1, "um parágrafo só, também sem preço nem imagem");
 });
 
 test("outras impressões e vizinhas de número apontam pras páginas certas", () => {

@@ -99,6 +99,44 @@
     const alvo = el.getAttribute("data-indice-set") || el.getAttribute("data-seo-carta") || "";
     if (!alvo || location.pathname.indexOf(alvo) !== 0) el.remove();
   });
+  // O texto da carta DENTRO do popup (2026-10-10). Quem pousa no endereço de
+  // uma carta vê o popup por cima do set, e o "Sobre esta carta" da borda
+  // (functions/_lib/pagina-carta.js) ficava no pé da tela, fechado, depois da
+  // grade inteira. O AdSense reprovou o site por "Low value content" vendo só
+  // a tela de ação (Não tenho, +, preço). Aqui o parágrafo entra embaixo da
+  // ficha enquanto o popup mostra a carta do endereço. Só em português: a
+  // borda escreve o texto em pt, e é em pt que o robô lê a página (theme.js).
+  // open() recria o popup a cada troca de variante e close() o remove, por
+  // isso os dois observadores (o do body vê o popup nascer).
+  function textoDaCartaNoPopup() {
+    const bloco = document.querySelector("[data-seo-carta]");
+    const texto = bloco && bloco.querySelector(".seo-carta-texto");
+    if (!texto || shared.getLanguage() !== "pt") return;
+    const alvo = bloco.getAttribute("data-seo-carta");
+    const poe = () => {
+      const modal = document.getElementById("cardPreviewModal");
+      const ficha = modal && modal.querySelector("[data-preview-details]");
+      if (!ficha || modal.querySelector(".preview-sobre")) return;
+      if (location.pathname.replace(/\/+$/, "") !== alvo) return;
+      const caixa = document.createElement("details");
+      caixa.className = "preview-details preview-sobre";
+      // Aberto/fechado igual à ficha: aberta no desktop, fechada no celular.
+      caixa.open = ficha.open;
+      caixa.innerHTML = `<summary><h3>${escapeHtml(t("modal.about"))}</h3></summary><p>${escapeHtml(texto.textContent)}</p>`;
+      const seta = ficha.querySelector(".preview-caret");
+      if (seta) caixa.firstElementChild.appendChild(seta.cloneNode(true));
+      ficha.insertAdjacentElement("afterend", caixa);
+    };
+    let popup = null;
+    const doPopup = new MutationObserver(poe);
+    const acompanha = () => {
+      const modal = document.getElementById("cardPreviewModal");
+      if (modal && modal !== popup) { popup = modal; doPopup.observe(modal, { childList: true }); }
+      poe();
+    };
+    new MutationObserver(acompanha).observe(document.body, { childList: true });
+    acompanha();
+  }
   const detailType = params.get("type") || "";
   // Link de set APOSENTADO: o set entrou pelo import com um setId escolhido à
   // mão e a TCGdex depois publicou o mesmo set com outro (cel30 -> 30th,
@@ -437,6 +475,7 @@
       if (cartaDaRota && cardsById.has(cartaDaRota)) {
         slugsDoSet = new Map([[cartaDaRota, caminhoLimpo[3]]]);
         preview.open(cartaDaRota, undefined, { semHistorico: true });
+        textoDaCartaNoPopup();
       }
       init();
       preparaEnderecos();

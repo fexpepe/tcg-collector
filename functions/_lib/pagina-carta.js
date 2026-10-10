@@ -265,7 +265,10 @@ export function pecasDaCarta({ card, jogo, set, cartas, slugs, preco }) {
   // O texto da carta, recolhido no pé da tela: quem abre o endereço vê a
   // carta no popup (desenhado pelo JS); o robô que não roda JS lê daqui.
   // data-seo-carta deixa o detail.js tirar o bloco de uma cópia guardada que
-  // chegue pra OUTRA carta.
+  // chegue pra OUTRA carta. O .seo-carta-texto também aparece DENTRO do popup
+  // (o detail.js copia, ver textoDaCartaNoPopup): no pé da tela, atrás da
+  // grade inteira do set, nem o revisor do AdSense nem quem chegou pela busca
+  // o via.
   const nomeCompleto = `${card.name}${codeBit}${codeBitDesc}`;
   const corpoHtml = `<details class="seo-carta" data-seo-carta="${escapeAttr(caminho)}">
         ${ESTILO}
@@ -273,7 +276,7 @@ export function pecasDaCarta({ card, jogo, set, cartas, slugs, preco }) {
         ${img ? `<img class="seo-carta-img" src="${escapeAttr(img)}" alt="${escapeAttr(`${nomeCompleto} — ${set.nome}`)}" loading="lazy" decoding="async" width="180" height="251">` : ""}
         <p class="seo-carta-sub">${escapeHtml(`${jogo.nome} · ${set.nome}${card.rarity && card.rarity !== "None" ? ` · ${card.rarity}` : ""}`)}</p>
         ${usd > 0 ? `<p class="seo-carta-preco">US$ ${usd.toFixed(2)}</p><p class="seo-carta-nota">Preço de referência de mercado. No Sleevu você vê em reais e acompanha o histórico.</p>` : ""}
-        <p>${escapeHtml(frases.join(" "))}</p>
+        <p class="seo-carta-texto">${escapeHtml(frases.join(" "))}</p>
         ${fichaTecnica(card, jogo, set, sCode)}
         ${listaDeCartas("Outras impressões desta carta", impressoes)}
         ${listaDeCartas(`Mais cartas de ${set.nome}`, irmas)}

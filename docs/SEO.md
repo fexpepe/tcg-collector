@@ -41,7 +41,7 @@ Medido ao vivo no dia em que este registro nasceu:
 
 | Sitemap | Conteúdo |
 |---|---|
-| `sitemap-pages.xml` | páginas fixas (home, hub, /games, blog, FAQ…) |
+| `sitemap-pages.xml` | páginas fixas (home, hub, /games, FAQ…); o `/blog` só com post publicado |
 | `sitemap-games.xml` | a tela de cada jogo (`/games/<jogo>`) |
 | `sitemap-sets.xml` | páginas de set em português |
 | `sitemap-sets-en.xml` | as mesmas em inglês |
@@ -49,6 +49,18 @@ Medido ao vivo no dia em que este registro nasceu:
 | `sitemap-artists.xml` | artistas |
 | `sitemap-decks.xml` | decks da comunidade |
 | `sitemap-blog.xml` | posts do blog, com `lastmod` |
+
+**AdSense "Low value content" (2026-10-10).** O `/blog` sem post leva
+`noindex` (a Function) e sai do sitemap; volta sozinho no primeiro post. Na
+página da carta, o parágrafo "Sobre esta carta" aparece também dentro do
+popup (antes só no pé da tela, atrás da grade do set).
+
+Tirar do índice as cartas sem imagem ou sem preço foi medido e **descartado**:
+numa amostra de produção, ficariam ~88% das cartas (corta pouco da escala) e
+sairiam inteiras as linhas vintage sem cotação (Carddass, Naruto, Harry
+Potter, LOTR, Miracle Battle), que são o diferencial do site. Fora delas, o
+que saía tinha imagem e só não tinha preço. Decisão do Fernando: o catálogo
+inteiro segue indexado.
 
 **IndexNow.** A chave fica publicada em `sleevu.app/<chave>.txt`, o que o
 protocolo exige; não é segredo. Na primeira vez (chave ainda fora do ar) vai o

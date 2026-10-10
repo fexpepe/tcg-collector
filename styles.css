@@ -3577,6 +3577,15 @@ html[data-detail="set"]:not([data-set-pronto]) #setInsights { display: block !im
   line-height: 1.45;
 }
 
+/* "Sobre esta carta" no popup aberto pelo endereço da carta (detail.js,
+   textoDaCartaNoPopup): o parágrafo da borda, no recuo da ficha. */
+.preview-sobre p {
+  margin: 0;
+  padding: 12px 16px;
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
 /* Impressões (popup da carta): lista de sets onde a carta de mesmo nome saiu.
    Rola dentro da própria caixa — "Lightning Bolt" tem dezenas de impressões e
    empurraria a ficha pra fora da tela. */

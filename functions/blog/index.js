@@ -69,10 +69,16 @@ export async function onRequestGet(context) {
   const vazio = posts.length
     ? '<p class="empty-state" data-i18n="blog.emptyFilter">Nenhum post com esse filtro.</p>'
     : '<p class="empty-state" data-i18n="blog.empty">Nenhum post por aqui ainda. Volte em breve.</p>';
-  const resposta = respostaFinal(new HTMLRewriter()
+  let rw = new HTMLRewriter()
     .on("#blogList", setHtml(B.listaHtml(visiveis) || vazio))
-    .on("#blogData", setHtml(jsonLdSeguro(dados)))
-    .transform(shell), 200, SEGUNDOS_NA_BORDA);
+    .on("#blogData", setHtml(jsonLdSeguro(dados)));
+  // Blog sem post nenhum (2026-10-10): a página só diz "volte em breve", e
+  // tela assim conta como site em construção — o AdSense reprovou o site por
+  // "Low value content". Fica no ar, fora do índice, até o primeiro post (o
+  // build também o tira do sitemap). Com post e filtro sem resultado, não:
+  // a canonical é o /blog, que tem post.
+  if (!posts.length) rw = rw.on("head", { element(el) { el.append('<meta name="robots" content="noindex, follow">', { html: true }); } });
+  const resposta = respostaFinal(rw.transform(shell), 200, SEGUNDOS_NA_BORDA);
   guardaNaBorda(waitUntil, chave, resposta);
   return resposta;
 }
