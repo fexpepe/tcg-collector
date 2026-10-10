@@ -6567,6 +6567,30 @@
       return true;
     }
 
+    // A carta do popup no celular encolhe pra caber a primeira tela (2026-10-10,
+    // teste do Fernando no Galaxy S10 e no PWA do iPhone 16). O teto de 58vh
+    // do CSS não sabe o que vem embaixo, e em tela mais baixa — ou com barra
+    // de status e notch comendo a altura — a fileira Pastas / Lista de Desejo
+    // abria cortada no pé do painel, com cara de quebrado. Aqui mede quanto
+    // ela passa da borda e tira só isso da altura da carta (via --carta-w, a
+    // largura; a altura vem da moldura 63/88). Medir em vez de reservar uma
+    // altura fixa no CSS porque o bloco do nome varia (uma ou duas linhas,
+    // linha da variante). Piso de 45% do painel: em tela minúscula a carta
+    // não vira selo — aí a fileira volta a rolar, como antes. Roda no fim do
+    // open(), só no celular (≤720px) e DEPOIS de a ficha descer pra baixo dos
+    // botões: medido antes, os ~220px dela contavam e a carta encolhia demais.
+    function encaixaCartaNoPainel(modal) {
+      const panel = modal.querySelector(".card-preview-panel");
+      const img = panel && panel.querySelector(".preview-image-wrap img:not(.preview-image-thumb)");
+      const fim = panel && (panel.querySelector(".preview-actions-row") || panel.querySelector(".preview-own-row"));
+      if (!img || !fim) return;
+      const caixa = panel.getBoundingClientRect();
+      const sobra = caixa.bottom - parseFloat(getComputedStyle(panel).paddingBottom) - fim.getBoundingClientRect().bottom;
+      if (sobra >= 0) return;
+      const altura = Math.max(img.getBoundingClientRect().height + sobra, caixa.height * 0.45);
+      panel.style.setProperty("--carta-w", `${Math.floor(altura * 63 / 88)}px`);
+    }
+
     function open(cardId, variant, opts) {
       activeCard = lookupCard(cardId);
       if (!activeCard) return;
@@ -6868,6 +6892,7 @@
         // quando a pessoa ia tocar nela.
         const imp = modal.querySelector("[data-preview-prints]");
         if (imp) det.insertAdjacentElement("afterend", imp);
+        encaixaCartaNoPainel(modal); // depois da mudança: a ficha não conta mais
       }
     }
 
