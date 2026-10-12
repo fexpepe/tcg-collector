@@ -255,7 +255,7 @@ do IndexNow), porque o painel só dá exemplos:
 | Motivo | Páginas | O que é |
 |---|---|---|
 | Detectada, mas não indexada | 304.451 | o Google achou pelo sitemap e ainda não rastreou: domínio novo, pouca autoridade (ver abaixo). Não é erro de código |
-| Excluída pela tag "noindex" | 1.875 | as cascas do app em `/detail?…`, de propósito. O app linka pra elas (cada carta tem ~13 links de "Impressões" pra `/detail?type=set&…&card=<id>`; a grade de Sets linka cada set por `/detail?…`), e o robô gasta rastreio nelas |
+| Excluída pela tag "noindex" | 1.875 | as cascas do app em `/detail?…`, de propósito. O app linka pra elas (cada carta tem ~13 links de "Impressões" pra `/detail?type=set&…&card=<id>`; a grade de Sets linka cada set por `/detail?…`), e o robô gasta rastreio nelas. Viraram 301 em 12/10 (ver abaixo) |
 | Não encontrado (404) | 615 | era bug: `/card/` e `/set/` antigos sem 301 (906 das 1.269 cartas e 68 dos 1.236 sets do sitemap de julho) e cartas de `/games` que mudaram de endereço a cada build. Corrigido em 2026-10-08 (ver "Endereços") |
 | Rastreada, mas não indexada | 596 | o Google leu e achou fraca ou repetida. Carta chinesa ou japonesa sem nome em inglês sai com endereço só de número (`091-098-zh-2`) e texto quase igual ao da edição inglesa |
 | Página com redirecionamento | 81 | www, http, apelidos e endereços antigos: esperado |
@@ -269,6 +269,55 @@ O build completo trocava ~2.600 endereços de carta por vez (o "N nova(s) e N
 removida(s)" do passo do IndexNow). Depois do 301 eles param de virar 404, mas
 o Secret Lair segue mudando de endereço a cada build: o Google vê as cartas
 dele como redirecionamento até o total parar de crescer.
+
+## Relatório de Páginas (2026-10-12)
+
+| Motivo | 08/10 | 12/10 | Leitura |
+|---|---|---|---|
+| Indexadas | — | 46,4 mil | de ~6 páginas em 30/09 |
+| Detectada, mas não indexada | 304.451 | 295.982 | a fila andando (~8,5 mil rastreadas em 4 dias) |
+| Excluída pela tag "noindex" | 1.875 | 5.427 | os links do app pra `/detail?type=set&…` (abaixo). Corrigido |
+| Não encontrado (404) | 615 | 971 | atraso: o 301 dos endereços que mudaram entrou em 09/10, e o 404 fica listado até o Google voltar na URL |
+| Rastreada, mas não indexada | 596 | 1.586 | página achada fraca ou repetida (ver 08/10) |
+| Página com redirecionamento | 81 | 529 | os 301 de 09/10 funcionando: esperado |
+| Erro no servidor (5xx) | — | 1 | sem exemplo; abrir a linha no painel |
+
+O servidor não é o freio do rastreio: numa amostra de 110 URLs de todos os
+sitemaps, todas deram 200, `index, follow` e canonical pra si mesma, com
+TTFB de 182 ms na mediana e 334 ms no p90 (user agent do Googlebot).
+
+**O noindex que cresceu.** O Googlebot renderiza o JS, e a tela de uma carta
+renderizada tinha 46 links pra `/detail?type=set&…` (45 Impressões no popup e
+o nome do set) contra 9 pra endereços `/games/…`. Cada carta rastreada
+apresentava ao Google dezenas de cascas `noindex` novas, uma por impressão: a
+fila de URLs inúteis podia ficar do tamanho do catálogo, gastando o rastreio
+que falta pras ~296 mil cartas. E esses links, que podiam contar como links
+internos pras páginas das outras cartas, morriam na casca.
+
+Desde 2026-10-12 o `functions/detail.js` responde **301** ao link de set puro
+(só `type=set`, `name`, `setId`, `game`, `card`, `region`) pro endereço
+`/games/<jogo>/<set>[/<carta>]`. O set sai do mapa do jogo pelo nome (todos os
+mapas da marca) e, sem nome, pelo chunk do `setId` (na pasta da `region`,
+quando vem); a carta, da mesma conta de nome da borda (`slugsDasCartas`).
+Quando o `setId` serve a mais de uma edição (japonesa e chinesa), quem
+desempata é a carta do link. O que não resolve com certeza fica na casca de
+sempre: `scope=collection`, link com filtro ou `utm`, set sem carta com duas
+edições, carta que não está no set. Quem navega no app quase não vê: dentro da
+sessão o service worker responde `/detail?…` com a cópia guardada.
+
+Conferido com os links reais de 11 telas de produção (cartas de Pokémon EN,
+JP e chinesa, Magic, One Piece, Lorcana, Naruto Data Carddass e as grades de
+Sets): 227 dos 233 viram 301 pro set e pra carta certos; os 6 que ficam na
+casca são o S8a sem carta (edição japonesa e chinesa) e cartas do Data
+Carddass cujo `setId` (`nrt-dc-dn`) não é o nome do chunk.
+
+Ficam em `/detail?…` (noindex de propósito, sem endereço próprio): as telas de
+Pokémon, artista e treinador. A página estática `/artist/<slug>` linka a tela
+do artista no app (uma URL por jogo).
+
+No painel, depois do deploy: "Validar correção" nas linhas do 404 e do
+noindex faz o Google voltar nessas URLs. Na do noindex a validação vai
+"falhar" pras telas de Pokémon e artista, que seguem noindex de propósito.
 
 ## O que o código não resolve
 
