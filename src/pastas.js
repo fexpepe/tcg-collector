@@ -522,7 +522,7 @@
     const unit = entryUnit(current, entry, card);
     const img = (card && shared.cardImageSources(card)) || {};
     const image = img.url
-      ? shared.localizedImg(img.url, { alt: name, fallback: img.fallback || "", loading: "lazy", thumb: true })
+      ? shared.localizedImg(img.url, { alt: name, fallback: img.fallback || "", loading: "lazy", thumb: true, sizes: shared.SIZES_CARD_TILE })
       : "";
     const varLabel = card ? shared.variantDisplayLabel(card, variant) : variant;
     const preco = unit ? esc(shared.formatMoney(shared.getCurrency(), unit)) : "";

@@ -2296,7 +2296,10 @@
   }
 
   function sharedTile(it) {
-    const img = shared.localizedImg(it.img, { alt: it.n, fallback: it.fb, loading: "lazy", thumb: true });
+    // sizes: é a mesma .card-grid da página do set. Sem ele o <img> não ganha
+    // srcset e fica preso na variante de 300 px — num celular DPR 3 o tile
+    // pede ~420 px e a carta aparecia esticada 1,4x (medido em 13/10/2026).
+    const img = shared.localizedImg(it.img, { alt: it.n, fallback: it.fb, loading: "lazy", thumb: true, sizes: shared.SIZES_CARD_TILE });
     const flag = shared.cardFlag(it.lang);
     // Graded: mostra o valor graded (gv). Venda: o PREÇO DE VENDA (sp). Senão, mercado.
     let priceHtml = "";
@@ -3093,7 +3096,7 @@
       const metaTxt = `${copies}${val > 0 ? `<span class="cm-val"> · ${escapeHtml(shared.formatMoney(shared.getCurrency(), val))}</span>` : ""}`;
       let cover = gp.cover ? gp.items.find((it) => it.id === gp.cover) : null;
       if (!cover) cover = gp.items.slice().sort((a, b) => (b.vbrl * b.q) - (a.vbrl * a.q))[0];
-      const coverImg = cover ? shared.localizedImg(cover.img, { alt: "", fallback: cover.fb, loading: "lazy", thumb: true }) : `<span class="coll-card-empty">—</span>`;
+      const coverImg = cover ? shared.localizedImg(cover.img, { alt: "", fallback: cover.fb, loading: "lazy", thumb: true, sizes: shared.SIZES_CARD_TILE }) : `<span class="coll-card-empty">—</span>`;
       let stars = ""; if (gp.stars != null) for (let i = 1; i <= 3; i++) stars += `<span class="coll-star${i <= (gp.stars || 0) ? " on" : ""}">★</span>`;
       const gset = new Set(gp.items.map((it) => it.g).filter(Boolean));
       const dot = gp.color ? `<span class="tag-dot" style="background:${shared.safeColor(gp.color)}"></span>` : "";
@@ -3152,7 +3155,7 @@
     function setSlotTile(card, ownedItems) {
       const owned = ownedItems.length > 0;
       const src = shared.cardImageSources(card);
-      const img = shared.localizedImg(src.url, { alt: card.name, fallback: src.fallback || "", loading: "lazy", thumb: true });
+      const img = shared.localizedImg(src.url, { alt: card.name, fallback: src.fallback || "", loading: "lazy", thumb: true, sizes: shared.SIZES_CARD_TILE });
       const flag = shared.cardFlag(card.language);
       const variant = owned ? ownedItems[0].v : shared.defaultVariant(card);
       let priceHtml = "";
