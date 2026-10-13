@@ -24,6 +24,7 @@
 import { B, supabase, cartasDoD1, COLUNAS_POST, COLUNAS_LISTA, ORIGEM,
   setMeta, setHref, setText, remove, setHtml, naoAchou, respostaFinal, daBorda, guardaNaBorda, chaveDaBorda } from "./_comum.js";
 import { jsonLdSeguro } from "../_lib/json-ld.js";
+import { headDoGet } from "../_lib/borda.js";
 
 const SEGUNDOS_NA_BORDA = 120;
 const TITULO_MAX = 65;
@@ -99,6 +100,7 @@ const vaiPara = (location, status, segundos) => new Response(null, { status, hea
 export function onRequestGet(context) {
   return paginaDoPost(context, "");
 }
+export const onRequestHead = headDoGet(onRequestGet);
 
 // `pedido` = idioma do endereço (/blog/en/<slug> → "en"); "" = a original.
 export async function paginaDoPost(context, pedido) {

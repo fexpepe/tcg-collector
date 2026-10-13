@@ -89,8 +89,10 @@ export function cspComNonce(base, nonce) {
 export function buscaPagina(env, request, caminho) {
   const url = new URL(caminho, request.url);
   const headers = new Headers(request.headers);
-  headers.delete("if-none-match");
-  headers.delete("if-modified-since");
+  // A casca é sempre a página INTEIRA: sem os condicionais (304) e sem Range
+  // (206). Um pedido com Range ia parar, cortado, no cache da borda da tela
+  // do set (guardado pra todo mundo por um dia; 2026-10-13).
+  for (const h of ["if-none-match", "if-modified-since", "if-match", "if-unmodified-since", "if-range", "range"]) headers.delete(h);
   return env.ASSETS.fetch(new Request(url, { method: "GET", headers }));
 }
 
@@ -118,9 +120,13 @@ export function comVitrine(resposta, request) {
 }
 
 // O handler inteiro de uma página de catálogo sem outra lógica de borda.
-export async function paginaComVitrine(context, caminho) {
+// `decora` (opcional): (casca, context) -> Response, antes do nonce (o índice
+// de páginas de /artists e /decks, functions/_lib/indices.js).
+export async function paginaComVitrine(context, caminho, decora) {
   try {
-    return comVitrine(await buscaPagina(context.env, context.request, caminho), context.request);
+    let pagina = await buscaPagina(context.env, context.request, caminho);
+    if (decora && pagina.status === 200) pagina = await decora(pagina, context);
+    return comVitrine(pagina, context.request);
   } catch (e) {
     // Qualquer falha aqui devolve a página como sempre foi (CSP do _headers,
     // sem nonce): o ads.js não acha rede de anúncio e mostra a casa.

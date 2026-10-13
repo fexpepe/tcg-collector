@@ -57,8 +57,10 @@ export async function onRequestGet(context) {
   // sem câmbio na borda, moeda diferente fica de fora — aproxima a menor).
   let value = 0;
   if (prof.show_values) {
-    value = items.reduce((s, it) => s + (Number(it.vbrl) || 0) * (it.q || 1), 0)
-      + slabs.reduce((s, it) => s + (((it.cur || "BRL") === "BRL" ? Number(it.gv) : 0) || 0), 0);
+    // `it &&`: o data é jsonb escrito pelo dono, e um item null derrubava a
+    // página inteira (erro 1101 da Cloudflare). O de vendas já se guardava.
+    value = items.reduce((s, it) => s + ((it && Number(it.vbrl)) || 0) * ((it && it.q) || 1), 0)
+      + slabs.reduce((s, it) => s + ((it && (it.cur || "BRL") === "BRL" ? Number(it.gv) : 0) || 0), 0);
   }
 
   const title = `${name} (@${handle}) · Sleevu`;

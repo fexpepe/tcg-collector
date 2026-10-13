@@ -5,14 +5,38 @@
 const hasOwn = (o, k) => Object.prototype.hasOwnProperty.call(o, k);
 export { hasOwn };
 
+// Os cabeçalhos de um asset (a CSP, o frame-ancestors, HSTS, nosniff… que o
+// _headers põe) pra uma resposta nova com o corpo dele. Até 2026-10-13 a 404
+// montada à mão levava só content-type: toda página inexistente de /games,
+// /blog, /set, /card e /users saía sem CSP e podia ir pra um iframe. Saem os
+// que descrevem o corpo ORIGINAL (o daqui já vem decodificado: repassar o
+// content-encoding quebra a resposta).
+export function cabecalhosDoAsset(asset) {
+  const headers = new Headers(asset.headers);
+  for (const h of ["content-length", "content-encoding", "etag", "last-modified"]) headers.delete(h);
+  if (!headers.get("content-type")) headers.set("content-type", "text/html; charset=utf-8");
+  return headers;
+}
+
 // 404 de verdade: a 404.html com o status certo (Pages só dá 404 sozinho pra
 // arquivo que não existe; aqui a Function responde antes).
 export async function naoAchou(env, request) {
   const page = await env.ASSETS.fetch(new URL("/404.html", request.url));
-  return new Response(page.body, {
-    status: 404,
-    headers: { "content-type": page.headers.get("content-type") || "text/html; charset=utf-8", "cache-control": "no-store" }
-  });
+  const headers = cabecalhosDoAsset(page);
+  headers.set("cache-control", "no-store");
+  return new Response(page.body, { status: 404, headers });
+}
+
+// HEAD: a mesma resposta do GET, sem o corpo. Function que só exporta GET não
+// responde HEAD, e o Pages cai no 404 quando não há arquivo no endereço
+// (/blog/<post>, /set/<slug>, /card/<slug>): verificador de link, monitor e
+// robô que pergunta antes de baixar viam a página como quebrada. A árvore
+// /games já fazia isto à mão (functions/games/[[path]].js).
+export function headDoGet(get) {
+  return async (context) => {
+    const resposta = await get(context);
+    return new Response(null, { status: resposta.status, headers: resposta.headers });
+  };
 }
 
 // Redirecionamento com a query junto quando ela vem no destino. 301 é o

@@ -5,6 +5,7 @@
 // leitura anônima da lista (a RLS só entrega o publicado com data passada).
 // Rota estática: vence o [slug].js pro caminho /blog/feed.xml.
 import { B, supabase, ORIGEM } from "./_comum.js";
+import { daBorda, guardaNaBorda, headDoGet } from "../_lib/borda.js";
 
 const MAX_ITENS = 30;
 const SEGUNDOS_NA_BORDA = 600;
@@ -47,14 +48,20 @@ export function rssDoBlog(posts, agora) {
 }
 
 export async function onRequestGet(context) {
-  const { env } = context;
+  const { env, waitUntil } = context;
+  // O s-maxage sozinho não guarda resposta de Function na borda (ver
+  // functions/api/search.js): sem isto, cada leitor de RSS que passava custava
+  // uma execução e uma consulta ao Supabase (2026-10-13).
+  const chave = new Request(`${ORIGEM}/blog/feed.xml`, { method: "GET" });
+  const guardada = await daBorda(chave);
+  if (guardada) return guardada;
   let posts;
   try {
     posts = (await supabase(env, `/rest/v1/posts?select=slug,title,subtitle,excerpt,cover_url,game,category,lang,author_name,published_at&order=published_at.desc&limit=${MAX_ITENS}`)) || [];
   } catch (e) {
     return new Response("feed indisponível", { status: 503, headers: { "Content-Type": "text/plain; charset=utf-8", "Retry-After": "300", "Cache-Control": "no-store" } });
   }
-  return new Response(rssDoBlog(posts, new Date().toISOString()), {
+  const resposta = new Response(rssDoBlog(posts, new Date().toISOString()), {
     status: 200,
     headers: {
       "Content-Type": "application/rss+xml; charset=utf-8",
@@ -62,4 +69,7 @@ export async function onRequestGet(context) {
       "Cache-Control": `public, max-age=300, s-maxage=${SEGUNDOS_NA_BORDA}`
     }
   });
+  guardaNaBorda(waitUntil, chave, resposta);
+  return resposta;
 }
+export const onRequestHead = headDoGet(onRequestGet);

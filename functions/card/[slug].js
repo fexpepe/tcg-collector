@@ -9,7 +9,7 @@
 // que o sitemap de julho listava davam 404. Agora ele leva TODA carta dos três
 // jogos que tinham página (Pokémon, Lorcana e One Piece), em fatias pela 1ª
 // letra do slug (ver fatiaDoLegado).
-import { naoAchou, redireciona, jsonDoSite, hasOwn, fatiaDoLegado } from "../_lib/borda.js";
+import { naoAchou, redireciona, jsonDoSite, hasOwn, fatiaDoLegado, headDoGet } from "../_lib/borda.js";
 
 const limpa = (slug) => String(slug || "").toLowerCase().replace(/\.html$/, "");
 
@@ -32,3 +32,5 @@ export async function onRequestGet(context) {
   const destino = destinoDaCartaAntiga(mapa, params && params.slug);
   return destino ? redireciona(request, destino, 301) : naoAchou(env, request);
 }
+
+export const onRequestHead = headDoGet(onRequestGet);

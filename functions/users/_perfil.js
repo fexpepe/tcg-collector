@@ -6,6 +6,7 @@
 // do Supabase vira 404 num link de pasta que alguém acabou de mandar no grupo.
 // Sem handler exportado de propósito: não vira rota (mesmo desenho do
 // functions/api/_search-sql.js).
+import { cabecalhosDoAsset } from "../_lib/borda.js";
 export const SUPABASE_URL = "https://dlnalopazitfdgnmdguu.supabase.co";
 export const SUPABASE_KEY = "sb_publishable_0Qlei5ZvRcEsr18QRdWfGg_N3aR1zyL";
 
@@ -61,14 +62,14 @@ export const addNoindex = {
 // 200 pro caminho pedido, então o status é reescrito aqui. Sem isto, handle
 // inexistente respondia 200 com a casca vazia da coleção — que é a definição de
 // "soft 404" pro Google (e era reportado como tal no Search Console).
-// Cabeçalho montado à mão em vez de copiar os do asset: repassar um
-// content-encoding junto de um corpo já decodificado quebra a resposta.
+// Com os cabeçalhos de segurança do asset, menos os que descrevem o corpo
+// original (ver cabecalhosDoAsset: repassar um content-encoding junto de um
+// corpo já decodificado quebra a resposta).
 export async function notFound(env, request) {
   const page = await env.ASSETS.fetch(new URL("/404.html", request.url));
-  return new Response(page.body, {
-    status: 404,
-    headers: { "content-type": page.headers.get("content-type") || "text/html; charset=utf-8" }
-  });
+  const headers = cabecalhosDoAsset(page);
+  headers.set("cache-control", "no-store");
+  return new Response(page.body, { status: 404, headers });
 }
 
 // ABSOLUTIZA o caminho da imagem: img pode ser relativo (ex.: data/onepiece/

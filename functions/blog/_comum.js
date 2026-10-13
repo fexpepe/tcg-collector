@@ -100,14 +100,9 @@ export const remove = { element(el) { el.remove(); } };
 // HTML que JÁ SAIU do renderizador (tudo escapado lá) ou JSON do jsonLdSeguro.
 export const setHtml = (html) => ({ element(el) { el.setInnerContent(html, { html: true }); } });
 
-// 404 de verdade (a 404.html com o status certo), como o functions/users/.
-export async function naoAchou(env, request) {
-  const page = await env.ASSETS.fetch(new URL("/404.html", request.url));
-  return new Response(page.body, {
-    status: 404,
-    headers: { "content-type": page.headers.get("content-type") || "text/html; charset=utf-8", "cache-control": "no-store" }
-  });
-}
+// 404 de verdade (a 404.html com o status certo e os cabeçalhos de segurança
+// dela): é a do functions/_lib/borda.js.
+export { naoAchou } from "../_lib/borda.js";
 
 // Resposta final: os cabeçalhos da casca (a CSP do _headers vem junto — a
 // casca é um asset) e o cache dividido em dois: o navegador revalida sempre

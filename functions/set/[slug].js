@@ -12,7 +12,7 @@
 // O mapa sai do nome de HOJE: set renomeado depois do /set/ perdia o 301
 // (2026-10-08, os Starter Decks do One Piece davam 404). A maioria ganhou só
 // um prefixo e o setRenomeado acha; os de baixo mudaram no meio do nome.
-import { naoAchou, redireciona, jsonDoSite, hasOwn, setRenomeado } from "../_lib/borda.js";
+import { naoAchou, redireciona, jsonDoSite, hasOwn, setRenomeado, headDoGet } from "../_lib/borda.js";
 
 // Slug antigo -> chave de hoje no legado-sets.json (renomeados pelo TCGCSV em
 // 30/09/2026).
@@ -46,3 +46,5 @@ export async function onRequestGet(context) {
   const destino = destinoDoSetAntigo(mapa, params && params.slug);
   return destino ? redireciona(request, destino, 301) : naoAchou(env, request);
 }
+
+export const onRequestHead = headDoGet(onRequestGet);
