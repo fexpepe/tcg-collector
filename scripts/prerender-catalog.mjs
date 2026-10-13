@@ -40,6 +40,7 @@ import { ESTILO_DO_CABECALHO, cabecalhoEstatico } from "../functions/_lib/cabeca
 // página pt é a tela do app decorada NA BORDA (functions/games/) e a -en sai
 // daqui, então os dois lados leem o mesmo módulo.
 import { SET_L10N, cardsForLang, cmpNumber } from "../functions/_lib/pagina-set.js";
+import { imagemDePrevia } from "../functions/_lib/pagina-carta.js";
 
 const ORIGIN = "https://sleevu.app";
 const SETS_DIR = "data/sets";
@@ -290,7 +291,7 @@ function setPageHtml(page, canonical, otherSets, lang) {
   const dateHuman = L.fmtDate(rep.setReleaseDate);
   const title = L.title(name, gameLabel);
   const desc = L.desc(cards.length, name, gameLabel, dateHuman);
-  const ogImage = absUrl(rep.setLogo) || `${ORIGIN}/og-image.png`;
+  const ogImage = imagemDePrevia(rep.setLogo) || `${ORIGIN}/og-image.png`;
   const baseDoJogo = `/games/${page.url}`;
   const baseDoSet = `${baseDoJogo}/${page.slug}`;
   // hreflang: cada variante aponta pra si e pra irmã; pt é o x-default.
@@ -472,6 +473,11 @@ function artistPageHtml(ap) {
   const canonical = `${ORIGIN}/${ARTIST_OUT_DIR}/${slug}`;
   const ogImage = absUrl(mostra[0] && mostra[0].image) || `${ORIGIN}/og-image.png`;
   const appUrl = (c) => `/detail?type=artist&name=${encodeURIComponent(name)}&game=${c.game}`;
+  // Cada miniatura leva pra página da CARTA (/games/…), como na página de set.
+  // Até 2026-10-13 as 120 levavam pro mesmo link do app (/detail?type=artist),
+  // que é noindex: a página de artista não passava autoridade pra carta
+  // nenhuma. O "Ver no Sleevu" e o "ver todas" seguem na tela do artista.
+  const hrefDaCarta = (c) => c.href || appUrl(c);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -487,6 +493,7 @@ function artistPageHtml(ap) {
       itemListElement: mostra.map((c, i) => ({
         "@type": "ListItem", position: i + 1,
         name: `${c.name}${c.number ? ` ${cardCode(c)}` : ""}`,
+        url: c.href ? `${ORIGIN}${c.href}` : undefined,
         image: absUrl(c.image) || undefined
       }))
     }
@@ -504,7 +511,7 @@ function artistPageHtml(ap) {
     const img = c.image
       ? `<img class="pr-card-img" src="${escapeAttr(absUrl(thumbUrl(c.image)))}"${srcsetAttr} alt="${escapeAttr(alt)}"${prioridade} decoding="async" width="245" height="342">`
       : `<span class="pr-card-noimg">${escapeHtml(c.name)}</span>`;
-    return `<li class="pr-card"><a href="${escapeAttr(appUrl(c))}">${img}<span class="pr-card-meta"><span class="pr-card-num">${num}</span> <span class="pr-card-name">${escapeHtml(c.name)}</span></span></a></li>`;
+    return `<li class="pr-card"><a href="${escapeAttr(hrefDaCarta(c))}">${img}<span class="pr-card-meta"><span class="pr-card-num">${num}</span> <span class="pr-card-name">${escapeHtml(c.name)}</span></span></a></li>`;
   }).join("");
 
   const restante = total - mostra.length;
@@ -721,6 +728,9 @@ ${ESTILO_DO_CABECALHO}
       .dk-list li { display: flex; align-items: baseline; gap: 8px; padding: 6px 4px; border-bottom: 1px solid var(--line, #2d333f); break-inside: avoid; font-size: 14px; }
       .dk-list li b { min-width: 26px; text-align: right; font-variant-numeric: tabular-nums; }
       .dk-list li small { color: var(--subtle, #8891a1); }
+      /* Nome da carta com link pra página dela: mesma cara do texto de antes. */
+      .dk-list li a { color: inherit; text-decoration: none; }
+      .dk-list li a:hover { text-decoration: underline; }
       .dk-list li em { margin-left: auto; font-style: normal; font-weight: 700; color: var(--money, #7ee2b8); white-space: nowrap; }
       .dk-foot { margin-top: 24px; }
       @media (max-width: 560px) {
@@ -758,7 +768,11 @@ function deckPageHtml(dp) {
   // A lista sai por ZONA (o comandante/líder primeiro, já na ordem do
   // cardsList); com uma zona só, sem rótulo.
   const zonas = [...new Set(cardsList.map((c) => c.zone))];
-  const linhaDe = (c) => `<li><b>${c.qty}×</b> ${escapeHtml(c.name)}${c.meta ? ` <small>${escapeHtml(c.meta)}</small>` : ""}${c.usd > 0 ? ` <em>US$ ${(c.usd * c.qty).toFixed(2)}</em>` : ""}</li>`;
+  // O nome linka a página da carta (/games/…) quando ela existe no catálogo:
+  // até 2026-10-13 a lista era texto puro, e a página do deck não levava o
+  // robô a carta nenhuma.
+  const nomeDe = (c) => (c.href ? `<a href="${escapeAttr(c.href)}">${escapeHtml(c.name)}</a>` : escapeHtml(c.name));
+  const linhaDe = (c) => `<li><b>${c.qty}×</b> ${nomeDe(c)}${c.meta ? ` <small>${escapeHtml(c.meta)}</small>` : ""}${c.usd > 0 ? ` <em>US$ ${(c.usd * c.qty).toFixed(2)}</em>` : ""}</li>`;
   const rows = zonas.map((z) => {
     const itens = cardsList.filter((c) => c.zone === z);
     const n = itens.reduce((a, c) => a + c.qty, 0);
@@ -844,7 +858,8 @@ function deckImage(cover, imagens) {
   return imagens.reduce((m, x) => (x.usd > m.usd ? x : m), imagens[0]).image;
 }
 
-async function buildDeckPages() {
+// hrefs: Map "<jogo>|<id da carta>" -> endereço da página da carta.
+async function buildDeckPages(hrefs = new Map()) {
   const rowsRaw = await fetchPublicDecks();
   if (existsSync(DECK_OUT_DIR)) rmSync(DECK_OUT_DIR, { recursive: true, force: true });
   mkdirSync(DECK_OUT_DIR, { recursive: true });
@@ -871,7 +886,8 @@ async function buildDeckPages() {
       // pergunta que traz o clique.
       const usd = refPriceUSD(precos[String(e.id)]);
       priceUSD += usd * qty;
-      cardsList.push({ zone: zona, qty, usd, name: c ? c.name : String(e.id), meta: c ? `${c.set || ""} ${c.number || ""}`.trim() : "" });
+      cardsList.push({ zone: zona, qty, usd, name: c ? c.name : String(e.id), meta: c ? `${c.set || ""} ${c.number || ""}`.trim() : "",
+        href: c ? hrefs.get(`${d.game}|${String(e.id)}`) || "" : "" });
       if (c && c.image) imagens.push({ image: c.image, usd });
       if (!capa && DECK_ZONA_TOPO.includes(zona) && c && c.image) capa = c.image;
     }));
@@ -888,7 +904,7 @@ async function buildDeckPages() {
     while (used.has(s)) s = `${base}-${i++}`;
     used.add(s);
     writeFileSync(join(DECK_OUT_DIR, `${s}.html`), deckPageHtml({ deck, slug: s, cardsList, total, priceUSD, image: deckImage(d.cover, imagens), capa }), "utf8");
-    out.push({ slug: s });
+    out.push({ slug: s, nome: deck.name, jogo: DECK_GAME_LABELS[deck.game] || deck.game });
   }
   return out;
 }
@@ -928,9 +944,12 @@ function escreveMapaDeSets(pages) {
   for (const page of pages) {
     let mapa = porJogo.get(page.game);
     if (!mapa) porJogo.set(page.game, (mapa = {}));
-    const img = absUrl(page.rep.setLogo || page.rep.image || "");
+    // Logo em SVG (Magic) não vira prévia (ver imagemDePrevia): fica a carta.
+    const img = imagemDePrevia(page.rep.setLogo) || imagemDePrevia(page.rep.image || "");
     const data = page.rep.setReleaseDate || "";
-    const linha = [`${page.url}/${page.slug}`, page.name, img, page.cards.length, data];
+    // Nº de cartas como a página do set conta (uma por número, ver
+    // cardsForLang): o page.cards junta as edições, e o "151" anunciava 415.
+    const linha = [`${page.url}/${page.slug}`, page.name, img, cardsForLang(page.cards, "pt").length, data];
     // Uma entrada por setId do grupo: a página junta os chunks do mesmo set
     // (edições/línguas), e o link do app carrega UM desses ids.
     for (const id of new Set(page.cards.map((c) => c.setId).filter(Boolean))) mapa[id] = linha;
@@ -1222,7 +1241,10 @@ async function main() {
       if (!e) { e = { name: nome, cards: [], jogos: new Map() }; porArtista.set(nome, e); }
       // O jogo vive na PÁGINA, não na carta do chunk: sem carimbar aqui, o link
       // pro app saía com `game=undefined` e caía no jogo errado da sessão.
-      e.cards.push({ ...c, game: page.game });
+      // E o endereço da página da carta (a miniatura da página do artista
+      // linka pra ela).
+      const slugCarta = page.slugsCartas.get(String(c.id));
+      e.cards.push({ ...c, game: page.game, href: slugCarta ? `/games/${page.url}/${page.slug}/${slugCarta}` : "" });
       const j = e.jogos.get(page.game) || { game: page.game, label: page.gameLabel, n: 0 };
       j.n++; e.jogos.set(page.game, j);
     }
@@ -1256,7 +1278,19 @@ async function main() {
 
   // Decks da comunidade: nunca derruba o build (galeria fora do ar = 0 páginas).
   let deckPages = [];
-  try { deckPages = await buildDeckPages(); } catch (e) { console.warn(`decks: pulado (${e.message})`); }
+  const hrefsDasCartas = new Map();
+  for (const page of pages) {
+    for (const [id, slugCarta] of page.slugsCartas) hrefsDasCartas.set(`${page.game}|${id}`, `/games/${page.url}/${page.slug}/${slugCarta}`);
+  }
+  try { deckPages = await buildDeckPages(hrefsDasCartas); } catch (e) { console.warn(`decks: pulado (${e.message})`); }
+
+  // Índices pras telas /artists e /decks (functions/_lib/indices.js): o app
+  // abre o artista em /detail?type=artist (noindex) e o deck em /decks?s=
+  // (canonical /decks), então nenhum link do site chegava nestas páginas —
+  // só o sitemap (2026-10-13). [slug, nome, nº de cartas | jogo], por nome.
+  const porNome = (a, b) => String(a[1]).localeCompare(String(b[1]));
+  writeFileSync(join(MAPAS_DIR, "artistas.json"), JSON.stringify(artistPages.map((a) => [a.slug, a.name, a.cards.length]).sort(porNome)));
+  writeFileSync(join(MAPAS_DIR, "decks.json"), JSON.stringify(deckPages.map((d) => [d.slug, d.nome, d.jogo]).sort(porNome)));
 
   const blogPosts = await fetchBlogPosts();
   // Os sitemap-*.xml de uma rodada anterior saem antes: tipo que ficou sem

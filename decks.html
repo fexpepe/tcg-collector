@@ -11,6 +11,13 @@
     <meta property="og:url" content="https://sleevu.app/decks">
     <meta property="og:title" content="Decks da comunidade — Sleevu">
     <meta property="og:description" content="Decks criados pela comunidade, com custo total e quanto falta pra você montar o seu.">
+    <meta property="og:image" content="https://sleevu.app/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Decks da comunidade — Sleevu">
+    <meta name="twitter:description" content="Decks criados pela comunidade, com custo total e quanto falta pra você montar o seu.">
+    <meta name="twitter:image" content="https://sleevu.app/og-image.png">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
     <link rel="preconnect" href="https://assets.tcgdex.net">
@@ -84,7 +91,8 @@
     <script defer src="src/export-ui.js"></script>
     <script defer src="src/decks.js"></script>
     <!-- Vitrine (espaço de anúncio, docs/PLANO-ADS.md): só página de catálogo.
-         Sem data-grade: a galeria se recria inteira a cada render, então aqui só o trilho de tela larga. -->
-    <script defer src="src/ads.js"></script>
+         Sem data-grade: a galeria se recria inteira a cada render, então aqui só o trilho de tela larga.
+         data-conteudo: o trilho espera a galeria (ou o deck aberto) ter o que mostrar. -->
+    <script defer src="src/ads.js" data-conteudo="#deckCommunity"></script>
   </body>
 </html>

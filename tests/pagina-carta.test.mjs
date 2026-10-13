@@ -12,7 +12,7 @@
 // Roda com: node --test tests/
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { pecasDaCarta, precoUSD, tituloDaCarta } from "../functions/_lib/pagina-carta.js";
+import { pecasDaCarta, precoUSD, precoDeReferencia, tituloDaCarta } from "../functions/_lib/pagina-carta.js";
 import { cabecaDaRota } from "../functions/_lib/decora-app.js";
 import { slugsDasCartas } from "../functions/_lib/slug-carta.js";
 import { jogoDaUrl } from "../functions/_lib/jogos.js";
@@ -63,11 +63,43 @@ test("preço e oferta só quando há preço", () => {
   assert.equal(precoUSD(null), 0);
 });
 
+// Até 2026-10-13 a carta só com Cardmarket saía como "US$" (o euro × 1,1) no
+// texto e como USD no JSON-LD: um preço que não existe em mercado nenhum.
+test("preço só do Cardmarket sai em euro, sem conversão", () => {
+  assert.deepEqual(precoDeReferencia({ u: 10, e: 8 }), { valor: 10, moeda: "USD" });
+  assert.deepEqual(precoDeReferencia({ e: 8 }), { valor: 8, moeda: "EUR" });
+  assert.equal(precoDeReferencia({}), null);
+  assert.equal(precoDeReferencia(null), null);
+  const p = pecasDaCarta({ card: cartas[2], jogo, set, cartas, slugs, preco: 1234.5, moeda: "EUR" });
+  const [produto] = jsonLds(p);
+  assert.equal(produto.offers.priceCurrency, "EUR");
+  assert.equal(produto.offers.lowPrice, "1234.50", "o JSON-LD segue com ponto");
+  assert.match(p.desc, /Preço de referência: € 1\.234,50\./);
+  assert.match(p.corpoHtml, /seo-carta-preco">€ 1\.234,50</);
+  assert.doesNotMatch(p.desc + p.corpoHtml, /US\$/);
+  // O padrão continua dólar, no formato daqui.
+  assert.match(pecas(cartas[2], 120.5).desc, /US\$ 120,50\./);
+});
+
 // AdSense "Low value content" (2026-10-10): o detail.js copia este parágrafo
 // pra dentro do popup da carta (textoDaCartaNoPopup) e o acha pela classe.
 test("o parágrafo da carta leva a classe que o detail.js copia pro popup", () => {
   assert.match(pecas(cartas[0], 1.5).corpoHtml, /<p class="seo-carta-texto">Charmander é uma carta de raridade Common do set 151/);
   assert.equal((pecas(cartas[1]).corpoHtml.match(/seo-carta-texto/g) || []).length, 1, "um parágrafo só, também sem preço nem imagem");
+});
+
+// 2026-10-13: o mesmo parágrafo em inglês e espanhol, em <template> (não
+// aparece na página nem conta como texto dela), pro popup de quem usa o site
+// nesses idiomas; e o nome da carta num <h2>, o único título da página que o
+// tem (o h1 é o do set).
+test("o parágrafo da carta vem também em en e es, e o nome dela num h2", () => {
+  const { corpoHtml } = pecas(cartas[0], 1.5);
+  assert.match(corpoHtml, /<template data-texto-carta="en">Charmander is a card from the 151 set of Pokémon TCG, rarity Common, numbered 004\/165[^<]*September 22, 2023[^<]*US market[^<]*<\/template>/);
+  assert.match(corpoHtml, /<template data-texto-carta="es">Charmander es una carta del set 151, de Pokémon TCG, de rareza Common[^<]*22 de septiembre de 2023[^<]*<\/template>/);
+  assert.match(corpoHtml, /<summary><h2>Sobre esta carta: Charmander 004\/165<\/h2><\/summary>/);
+  const hostil = { ...cartas[1], id: "x-2", name: "<b>x</b>" };
+  const h = pecasDaCarta({ card: hostil, jogo, set, cartas: [hostil], slugs: slugsDasCartas([hostil]), preco: 0 }).corpoHtml;
+  assert.doesNotMatch(h, /<b>x<\/b>/, "o template também sai escapado");
 });
 
 test("outras impressões e vizinhas de número apontam pras páginas certas", () => {

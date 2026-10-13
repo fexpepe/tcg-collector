@@ -93,10 +93,18 @@
       return posts.filter((p) => (!f.cat || p.category === f.cat) && (!f.jogo || p.game === f.jogo)
         && (!tag || (p.tags || []).some((x) => String(x).toLowerCase() === tag)));
     };
+    // Sem post nenhum: o que já dá pra ler no site, no lugar do "volte em
+    // breve" (o mesmo HTML da borda, functions/blog/index.js).
+    function vazioSemPost() {
+      const links = [["/condition", "blog.vazio.condicao"], ["/centering", "blog.vazio.centering"],
+        ["/lancamentos", "blog.vazio.lancamentos"], ["/faq", "blog.vazio.faq"]];
+      return `<div class="empty-state blog-vazio"><p>${escapeHtml(t("blog.empty"))}</p><ul>`
+        + links.map(([href, k]) => `<li><a href="${href}">${escapeHtml(t(k))}</a></li>`).join("") + "</ul></div>";
+    }
     function desenhaLista() {
       const v = visiveis();
       lista.innerHTML = v.length ? B.listaHtml(v, idioma())
-        : `<p class="empty-state">${escapeHtml(t(posts.length ? "blog.emptyFilter" : "blog.empty"))}</p>`;
+        : posts.length ? `<p class="empty-state">${escapeHtml(t("blog.emptyFilter"))}</p>` : vazioSemPost();
       mais.hidden = !temMais;
     }
     function desenhaFiltros() {

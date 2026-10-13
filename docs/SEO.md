@@ -55,6 +55,44 @@ Medido ao vivo no dia em que este registro nasceu:
 página da carta, o parágrafo "Sobre esta carta" aparece também dentro do
 popup (antes só no pé da tela, atrás da grade do set).
 
+**Revisão de 2026-10-13** (code review de SEO e AdSense):
+
+- *Preço na página da carta na moeda certa.* Carta só com cotação do
+  Cardmarket aparecia como "US$" (o euro × 1,1) no texto e como USD no
+  JSON-LD. Agora é € com o valor real (`precoDeReferencia`), no formato daqui
+  ("US$ 1.234,50"); o JSON-LD leva `priceCurrency` EUR.
+- *"Sobre esta carta" em en e es.* A borda escreve o parágrafo nos três
+  idiomas: o pt no corpo (é o que o robô lê) e en/es em `<template>`, que o
+  popup usa conforme o idioma da tela. Antes quem abria a carta em inglês via
+  só a tela de ação. O nome da carta vai num `<h2>` no resumo do bloco (o `h1`
+  da tela é o do set).
+- *Links internos pras páginas órfãs.* As ~900 de artista e as de deck só
+  eram achadas pelo sitemap (o app abre o artista em `/detail?type=artist`,
+  noindex, e o deck em `/decks?s=`). Agora `/artists` e `/decks` têm um índice
+  recolhido no pé (`functions/_lib/indices.js`, mapas
+  `data/game-pages/artistas.json` e `decks.json` do prerender), e as
+  miniaturas da página de artista e os nomes da lista do deck linkam a página
+  da carta.
+- *Logo SVG não vira og:image* (os ~1.000 do Magic): prévia de link não
+  desenha SVG; fica o `og-image.png`.
+- *Título do set em pt*: "Base Set — lista de cartas de Pokémon TCG" (era
+  "cartas do set Pokémon TCG", que lia como se o set se chamasse assim).
+  Home e Hub com título que diz o que o site é.
+- *Erro na decoração da tela* (jogo, set ou carta) responde 503 com
+  `Retry-After`, não mais 200 com a casca crua (noindex e canonical `/sets`).
+- *HEAD* em `/blog/<post>`, no feed, em `/set/<slug>` e `/card/<slug>` (antes
+  404); a 404 das Functions leva a CSP e os outros cabeçalhos do `_headers`;
+  a casca é pedida sem `Range`.
+- *`/blog` sem post* mostra o que já dá pra ler no site (guia de condição,
+  Centering Tool, lançamentos, FAQ) no lugar do "volte em breve".
+
+Ficou de fora, pra decidir: o texto das páginas institucionais (Sobre, FAQ,
+Privacidade) ainda nasce vazio no HTML e é escrito pelo i18n no navegador
+(o Google renderiza, mas robô sem JS e buscas de IA veem pouco); o `h1` da
+tela de cada jogo é "Sets" com o nome do jogo só no CSS; e as telas
+`/users/<@>/…` abaixo do perfil caem na casca da Coleção (canonical
+`/collection`).
+
 Tirar do índice as cartas sem imagem ou sem preço foi medido e **descartado**:
 numa amostra de produção, ficariam ~88% das cartas (corta pouco da escala) e
 sairiam inteiras as linhas vintage sem cotação (Carddass, Naruto, Harry

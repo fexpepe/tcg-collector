@@ -34,13 +34,41 @@ export function absUrl(u) {
   return /^https?:\/\//.test(s) ? s : `${ORIGEM}/` + s.replace(/^\/+/, "");
 }
 
+// Imagem que serve de PRÉVIA (og:image, twitter:image). SVG fica de fora: o
+// Facebook, o X, o WhatsApp e o Discord não desenham SVG, e os logos de set do
+// Magic são todos SVG — o link colado saía sem imagem nenhuma. Sem prévia
+// própria, a página fica com o og-image.png genérico (e as dimensões dele).
+export function imagemDePrevia(u) {
+  const s = absUrl(u);
+  return /\.svgz?(?:[?#]|$)/i.test(s) ? "" : s;
+}
+
 // Preço de referência em US$: o `u` do preço (mercado americano) ou, sem ele,
-// o do Cardmarket (EUR) com a margem que o ranqueamento antigo já usava.
+// o do Cardmarket (EUR) com a margem que o ranqueamento antigo já usava. Só
+// serve pra ORDENAR; o que a página mostra é o precoDeReferencia.
 export function precoUSD(entrada) {
   if (!entrada) return 0;
   if (entrada.u > 0) return entrada.u;
   if (entrada.e > 0) return entrada.e * 1.1;
   return 0;
+}
+
+// O preço que a página MOSTRA, na moeda em que ele foi cotado: o `u` em US$
+// ou, sem ele, o do Cardmarket em €. Até 2026-10-13 a página exibia o euro
+// convertido (× 1,1) com "US$" na frente, e o JSON-LD anunciava esse número
+// como USD: um preço que não existe em mercado nenhum (o build já avisava
+// "não exibimos convertido"). É a mesma régua do precoTexto do blog.
+export function precoDeReferencia(entrada) {
+  if (!entrada) return null;
+  if (entrada.u > 0) return { valor: Number(entrada.u), moeda: "USD" };
+  if (entrada.e > 0) return { valor: Number(entrada.e), moeda: "EUR" };
+  return null;
+}
+const SIMBOLO = { USD: "US$", EUR: "€" };
+// "US$ 1.234,50": o texto da página é em português (o JSON-LD segue com ponto).
+function precoPtBr(valor, moeda) {
+  const [inteiro, centavos] = valor.toFixed(2).split(".");
+  return `${SIMBOLO[moeda] || moeda} ${inteiro.replace(/\B(?=(\d{3})+(?!\d))/g, ".")},${centavos}`;
 }
 
 const MESES = ["janeiro", "fevereiro", "março", "abril", "maio", "junho",
@@ -50,6 +78,61 @@ function dataPtBr(iso) {
   if (!m) return "";
   const mes = MESES[Number(m[2]) - 1];
   return mes ? `${Number(m[3])} de ${mes} de ${m[1]}` : "";
+}
+
+const MESES_EN = ["January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"];
+const MESES_ES = ["enero", "febrero", "marzo", "abril", "mayo", "junio",
+  "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+function dataNaLingua(iso, lang) {
+  if (lang === "pt") return dataPtBr(iso);
+  const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(iso || ""));
+  const i = m ? Number(m[2]) - 1 : -1;
+  if (i < 0 || i > 11) return "";
+  return lang === "es" ? `${Number(m[3])} de ${MESES_ES[i]} de ${m[1]}` : `${MESES_EN[i]} ${Number(m[3])}, ${m[1]}`;
+}
+
+// O parágrafo "Sobre esta carta" num idioma (pt, en ou es). Frases curtas, só
+// com o que a carta tem: cada fato varia por carta, e é isso que separa a
+// página de um texto de molde. O pt é o que o robô lê (theme.js); en e es vão
+// em <template> pro popup de quem usa o site nesses idiomas (detail.js,
+// textoDaCartaNoPopup). Até 2026-10-13 só o pt existia, e quem abria a carta
+// em inglês via só a tela de ação (Não tenho, +, preço): o que fez o AdSense
+// reprovar o site por "Low value content".
+// f: { nome, rar, setBit, setNome, jogo, code, alt, artista, acab, iso, total, nImpressoes, valor, moeda }
+export function textoDaCarta(lang, f) {
+  const frases = [];
+  const dt = dataNaLingua(f.iso, lang);
+  const t = f.total;
+  const eur = f.moeda === "EUR";
+  if (lang === "en") {
+    // "the Base Set set": set cujo nome já termina em "Set" não ganha outro.
+    const jaDizSet = /\bset$/i.test(f.setNome);
+    frases.push(`${f.nome} is a card from the ${f.setBit}${jaDizSet ? "" : " set"} of ${f.jogo}${f.rar ? `, rarity ${f.rar}` : ""}${f.code ? `, numbered ${f.code}${f.alt.length ? ` (also written ${f.alt.join(" or ")})` : ""}` : ""}.`);
+    if (f.artista) frases.push(`The illustration is by ${f.artista}.`);
+    if (f.acab.length > 1) frases.push(`It comes in ${f.acab.length} finishes (${f.acab.join(", ")}), each priced separately on the market.`);
+    if (dt || t) frases.push(`The ${f.setNome}${jaDizSet ? "" : " set"}${dt ? ` was released on ${dt}` : ""}${dt && t ? " and" : ""}${t ? ` has ${t} cards` : ""}.`);
+    if (f.nImpressoes) frases.push(`This card also appears ${f.nImpressoes === 1 ? "in another print" : `in ${f.nImpressoes} other prints`} in this set, and each one has its own market value.`);
+    if (f.valor > 0) frases.push(`The reference price comes from the ${eur ? "European market (Cardmarket)" : "US market"}; on Sleevu it is shown in your currency, along with its price history.`);
+    frases.push(`Add the card to your collection to track its price and see how much is left to complete ${f.setNome}.`);
+  } else if (lang === "es") {
+    frases.push(`${f.nome} es una carta del set ${f.setBit}, de ${f.jogo}${f.rar ? `, de rareza ${f.rar}` : ""}${f.code ? `, numerada ${f.code}${f.alt.length ? ` (también escrita ${f.alt.join(" o ")})` : ""}` : ""}.`);
+    if (f.artista) frases.push(`La ilustración es de ${f.artista}.`);
+    if (f.acab.length > 1) frases.push(`Sale en ${f.acab.length} acabados (${f.acab.join(", ")}), que se cotizan por separado en el mercado.`);
+    if (dt || t) frases.push(`El set ${f.setNome}${dt ? ` salió el ${dt}` : ""}${dt && t ? " y" : ""}${t ? ` reúne ${t} cartas` : ""}.`);
+    if (f.nImpressoes) frases.push(`Esta carta también aparece ${f.nImpressoes === 1 ? "en otra impresión" : `en otras ${f.nImpressoes} impresiones`} en este set, y cada una tiene su propio valor de mercado.`);
+    if (f.valor > 0) frases.push(`El precio de referencia viene del mercado ${eur ? "europeo (Cardmarket)" : "estadounidense"}; en Sleevu aparece convertido a tu moneda, junto con su historial de precios.`);
+    frases.push(`Marca la carta en tu colección para seguir su precio y ver cuánto te falta para completar ${f.setNome}.`);
+  } else {
+    frases.push(`${f.nome} é uma carta${f.rar ? ` de raridade ${f.rar}` : ""} do set ${f.setBit}, de ${f.jogo}${f.code ? `, numerada ${f.code}${f.alt.length ? ` (também escrita ${f.alt.join(" ou ")})` : ""}` : ""}.`);
+    if (f.artista) frases.push(`A ilustração é de ${f.artista}.`);
+    if (f.acab.length > 1) frases.push(`Sai em ${f.acab.length} acabamentos (${f.acab.join(", ")}), que são cotados separadamente no mercado.`);
+    if (dt || t) frases.push(`O set ${f.setNome}${dt ? ` foi lançado em ${dt}` : ""}${dt && t ? " e" : ""}${t ? ` reúne ${t} cartas` : ""}.`);
+    if (f.nImpressoes) frases.push(`Esta carta também aparece ${f.nImpressoes === 1 ? "em outra impressão" : `em outras ${f.nImpressoes} impressões`} neste set, e cada uma tem o seu valor de mercado.`);
+    if (f.valor > 0) frases.push(`O preço de referência é apurado no mercado ${eur ? "europeu (Cardmarket)" : "americano"}; no Sleevu ele aparece convertido em reais, junto do histórico de variação.`);
+    frases.push(`Marque a carta na sua coleção para acompanhar o preço e ver quanto falta para completar ${f.setNome}.`);
+  }
+  return frases.join(" ");
 }
 
 // CÓDIGO DO SET como o jogador digita ("Ms. All Sunday OP16"): só quando o
@@ -172,6 +255,7 @@ const ESTILO = `<style>
         html[data-game] #detailGrid:empty ~ .seo-carta { display: none; }
         .seo-carta { margin: 40px 0 8px; max-width: 760px; line-height: 1.65; }
         .seo-carta summary { cursor: pointer; color: var(--muted, #9aa0aa); min-height: 44px; display: flex; align-items: center; }
+        .seo-carta summary h2 { font: inherit; margin: 0; }
         .seo-carta h3 { font-size: 1rem; margin: 22px 0 8px; }
         .seo-carta-img { float: right; width: min(180px, 38vw); height: auto; margin: 0 0 12px 16px; border-radius: 10px; }
         .seo-carta-sub, .seo-carta-nota { color: var(--muted, #9aa0aa); }
@@ -188,7 +272,8 @@ const ESTILO = `<style>
 // da carta é a tela do set com o popup dela aberto, como era o &card=).
 // jogo: a entrada do registro (functions/_lib/jogos.js). set: { slug, nome }.
 // cartas: todas as cartas da página do set; slugs: Map id -> nome no endereço.
-export function pecasDaCarta({ card, jogo, set, cartas, slugs, preco }) {
+// preco: o valor (número) na `moeda` ("USD" ou "EUR", ver precoDeReferencia).
+export function pecasDaCarta({ card, jogo, set, cartas, slugs, preco, moeda = "USD" }) {
   const baseDoSet = `/games/${jogo.url}/${set.slug}`;
   const caminho = `${baseDoSet}/${slugs.get(String(card.id))}`;
   const canonical = `${ORIGEM}${caminho}`;
@@ -202,41 +287,45 @@ export function pecasDaCarta({ card, jogo, set, cartas, slugs, preco }) {
   const enBit = nomeEn && !/^[\x00-\x7F]/.test(card.name) ? ` (${nomeEn})` : "";
   const sCode = codigoDoSet(card);
   const titulo = tituloDaCarta(`${card.name}${enBit}`, code, sCode, set.nome);
-  const usd = Number(preco) || 0;
-  const priceBit = usd > 0 ? ` Preço de referência: US$ ${usd.toFixed(2)}.` : "";
+  const valor = Number(preco) || 0;
+  const moedaOk = SIMBOLO[moeda] ? moeda : "USD";
+  const precoTxt = valor > 0 ? precoPtBr(valor, moedaOk) : "";
+  const priceBit = valor > 0 ? ` Preço de referência: ${precoTxt}.` : "";
   const codeBitDesc = sCode ? ` (${sCode})` : "";
   const desc = `${card.name}${codeBit}${altBit}${codeBitDesc} do set ${set.nome} de ${jogo.nome}.${priceBit} Veja a imagem, acompanhe o preço e marque na sua coleção grátis no Sleevu.`;
   const img = absUrl(card.image) || "";
   const { impressoes, irmas } = vizinhas(card, cartas, slugs, baseDoSet);
 
-  // Parágrafo de abertura: frases curtas, só com o que a carta tem. Cada fato
-  // varia por carta, e é isso que separa a página de um texto de molde.
-  const frases = [];
+  // Parágrafo de abertura (ver textoDaCarta): o pt no corpo, en e es em
+  // <template> pro popup.
   const rarOk = card.rarity && card.rarity !== "None" &&
     !/[^\x00-\x7F]/.test(card.rarity) && String(card.rarity).length <= 24;
-  const rarBit = rarOk ? ` de raridade ${card.rarity}` : "";
-  const setBit = sCode ? `${set.nome} (${sCode})` : set.nome;
-  frases.push(`${card.name} é uma carta${rarBit} do set ${setBit}, de ${jogo.nome}${code ? `, numerada ${code}${altCodes.length ? ` (também escrita ${altCodes.join(" ou ")})` : ""}` : ""}.`);
-  if (card.artist) frases.push(`A ilustração é de ${card.artist}.`);
-  const acab = Array.isArray(card.variants) ? card.variants.filter(Boolean) : [];
-  if (acab.length > 1) frases.push(`Sai em ${acab.length} acabamentos (${acab.join(", ")}), que são cotados separadamente no mercado.`);
-  const dtSet = dataPtBr(card.setReleaseDate);
-  const totalSet = Number(card.setTotal) || 0;
-  if (dtSet || totalSet) {
-    frases.push(`O set ${set.nome}${dtSet ? ` foi lançado em ${dtSet}` : ""}${dtSet && totalSet ? " e" : ""}${totalSet ? ` reúne ${totalSet} cartas` : ""}.`);
-  }
-  if (impressoes.length) {
-    frases.push(`Esta carta também aparece ${impressoes.length === 1 ? "em outra impressão" : `em outras ${impressoes.length} impressões`} neste set, e cada uma tem o seu valor de mercado.`);
-  }
-  if (usd > 0) frases.push("O preço de referência é apurado no mercado internacional; no Sleevu ele aparece convertido em reais, junto do histórico de variação.");
-  frases.push(`Marque a carta na sua coleção para acompanhar o preço e ver quanto falta para completar ${set.nome}.`);
+  const fatos = {
+    nome: card.name,
+    rar: rarOk ? card.rarity : "",
+    setBit: sCode ? `${set.nome} (${sCode})` : set.nome,
+    setNome: set.nome,
+    jogo: jogo.nome,
+    code,
+    alt: altCodes,
+    artista: card.artist || "",
+    acab: Array.isArray(card.variants) ? card.variants.filter(Boolean) : [],
+    iso: card.setReleaseDate,
+    total: Number(card.setTotal) || 0,
+    nImpressoes: impressoes.length,
+    valor,
+    moeda: moedaOk
+  };
+  const textoPt = textoDaCarta("pt", fatos);
+  const outrasLinguas = ["en", "es"]
+    .map((l) => `<template data-texto-carta="${l}">${escapeHtml(textoDaCarta(l, fatos))}</template>`).join("");
 
   // Product SÓ com preço. O Google exige offers, review ou aggregateRating
   // num Product, e o item sem nenhum dos três conta como INVÁLIDO no Search
   // Console ("Especifique offers, review ou aggregateRating", 2026-10-02, em
   // carta JP e promo sem cotação). Avaliação nós não temos e inventar oferta
   // seria mentir; então carta sem preço fica só com a trilha.
-  const produto = usd > 0 ? {
+  const produto = valor > 0 ? {
     "@context": "https://schema.org",
     "@type": "Product",
     name: `${card.name}${codeBit} — ${set.nome}`,
@@ -246,7 +335,7 @@ export function pecasDaCarta({ card, jogo, set, cartas, slugs, preco }) {
     description: desc,
     brand: { "@type": "Brand", name: jogo.nome },
     url: canonical,
-    offers: { "@type": "AggregateOffer", priceCurrency: "USD", lowPrice: usd.toFixed(2), offerCount: 1, availability: "https://schema.org/InStock" }
+    offers: { "@type": "AggregateOffer", priceCurrency: moedaOk, lowPrice: valor.toFixed(2), offerCount: 1, availability: "https://schema.org/InStock" }
   } : null;
   // Trilha Jogos > jogo > set > carta. O BreadcrumbList faz o Google mostrar o
   // caminho no lugar da URL crua, que é mais clicável.
@@ -272,11 +361,11 @@ export function pecasDaCarta({ card, jogo, set, cartas, slugs, preco }) {
   const nomeCompleto = `${card.name}${codeBit}${codeBitDesc}`;
   const corpoHtml = `<details class="seo-carta" data-seo-carta="${escapeAttr(caminho)}">
         ${ESTILO}
-        <summary>Sobre esta carta: ${escapeHtml(nomeCompleto)}</summary>
+        <summary><h2>Sobre esta carta: ${escapeHtml(nomeCompleto)}</h2></summary>
         ${img ? `<img class="seo-carta-img" src="${escapeAttr(img)}" alt="${escapeAttr(`${nomeCompleto} — ${set.nome}`)}" loading="lazy" decoding="async" width="180" height="251">` : ""}
         <p class="seo-carta-sub">${escapeHtml(`${jogo.nome} · ${set.nome}${card.rarity && card.rarity !== "None" ? ` · ${card.rarity}` : ""}`)}</p>
-        ${usd > 0 ? `<p class="seo-carta-preco">US$ ${usd.toFixed(2)}</p><p class="seo-carta-nota">Preço de referência de mercado. No Sleevu você vê em reais e acompanha o histórico.</p>` : ""}
-        <p class="seo-carta-texto">${escapeHtml(frases.join(" "))}</p>
+        ${valor > 0 ? `<p class="seo-carta-preco">${escapeHtml(precoTxt)}</p><p class="seo-carta-nota">Preço de referência de mercado. No Sleevu você vê em reais e acompanha o histórico.</p>` : ""}
+        <p class="seo-carta-texto">${escapeHtml(textoPt)}</p>${outrasLinguas}
         ${fichaTecnica(card, jogo, set, sCode)}
         ${listaDeCartas("Outras impressões desta carta", impressoes)}
         ${listaDeCartas(`Mais cartas de ${set.nome}`, irmas)}

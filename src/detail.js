@@ -28,10 +28,14 @@
         forms: species ? species.varieties.filter((variety) => !variety.is_default).map((variety) => variety.pokemon.name) : []
       };
 
-      try {
-        localStorage.setItem(cacheKey, JSON.stringify(meta));
-      } catch (error) {
-        // localStorage cheio: ok, só não cacheia
+      // Só guarda resposta completa: um 429/5xx passageiro da PokéAPI virava
+      // tipos e formas vazios pra sempre neste aparelho.
+      if (pokemon && species) {
+        try {
+          localStorage.setItem(cacheKey, JSON.stringify(meta));
+        } catch (error) {
+          // localStorage cheio: ok, só não cacheia
+        }
       }
       return meta;
     } catch (error) {
@@ -104,14 +108,21 @@
   // (functions/_lib/pagina-carta.js) ficava no pé da tela, fechado, depois da
   // grade inteira. O AdSense reprovou o site por "Low value content" vendo só
   // a tela de ação (Não tenho, +, preço). Aqui o parágrafo entra embaixo da
-  // ficha enquanto o popup mostra a carta do endereço. Só em português: a
-  // borda escreve o texto em pt, e é em pt que o robô lê a página (theme.js).
+  // ficha enquanto o popup mostra a carta do endereço. No idioma da tela: o
+  // pt é o parágrafo que o robô lê (theme.js), e en/es vêm da borda em
+  // <template> (2026-10-13; antes quem usava o site em inglês ou espanhol
+  // não via o texto). Cópia guardada sem o template do idioma: sem texto.
   // open() recria o popup a cada troca de variante e close() o remove, por
   // isso os dois observadores (o do body vê o popup nascer).
   function textoDaCartaNoPopup() {
     const bloco = document.querySelector("[data-seo-carta]");
-    const texto = bloco && bloco.querySelector(".seo-carta-texto");
-    if (!texto || shared.getLanguage() !== "pt") return;
+    if (!bloco) return;
+    const lingua = shared.getLanguage();
+    const fonte = lingua === "pt"
+      ? bloco.querySelector(".seo-carta-texto")
+      : bloco.querySelector(`template[data-texto-carta="${lingua}"]`);
+    const texto = fonte ? String((fonte.content || fonte).textContent || "").trim() : "";
+    if (!texto) return;
     const alvo = bloco.getAttribute("data-seo-carta");
     const poe = () => {
       const modal = document.getElementById("cardPreviewModal");
@@ -122,7 +133,7 @@
       caixa.className = "preview-details preview-sobre";
       // Aberto/fechado igual à ficha: aberta no desktop, fechada no celular.
       caixa.open = ficha.open;
-      caixa.innerHTML = `<summary><h3>${escapeHtml(t("modal.about"))}</h3></summary><p>${escapeHtml(texto.textContent)}</p>`;
+      caixa.innerHTML = `<summary><h3>${escapeHtml(t("modal.about"))}</h3></summary><p>${escapeHtml(texto)}</p>`;
       const seta = ficha.querySelector(".preview-caret");
       if (seta) caixa.firstElementChild.appendChild(seta.cloneNode(true));
       ficha.insertAdjacentElement("afterend", caixa);
@@ -1441,7 +1452,7 @@
         // Já no fichário: o clique troca o tamanho (9 → 12 → 16 → 4 → 9…).
         if (querBinder && eraBinder) binderView.cycle();
         gridView = shared.gridViewValue(button.dataset.gridView);
-        localStorage.setItem("tcg-detail-view", gridView);
+        try { localStorage.setItem("tcg-detail-view", gridView); } catch (e) { /* storage cheio ou bloqueado: a troca vale só nesta visita */ }
         const virouCompacto = gridView === "compact";
         applyGridView();
         if (eraCompacto !== virouCompacto || eraBinder || querBinder) render();

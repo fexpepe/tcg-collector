@@ -90,18 +90,25 @@ async function montaDetail(env, request) {
   }
 
   const shell = await buscaPagina(env, request, "/detail.html");
+  // Tela que não é de set conhecido (Pokémon, artista, treinador…): a casca
+  // traz og:url = /sets, e o Facebook usa o og:url como o link da prévia —
+  // a página do Pikachu compartilhada abria a de Sets. Fica o próprio
+  // endereço (a casca segue noindex; isto é só pra quem compartilha).
+  const proprio = () => new HTMLRewriter()
+    .on('meta[property="og:url"]', setMeta(`${ORIGIN}${url.pathname}${url.search}`))
+    .transform(shell);
   try {
     const p = url.searchParams;
-    if (p.get("type") !== "set") return shell;
+    if (p.get("type") !== "set") return proprio();
     const game = String(p.get("game") || "pokemon");
-    if (!JOGOS.includes(game)) return shell;
+    if (!JOGOS.includes(game)) return proprio();
 
     const mapaRes = await env.ASSETS.fetch(new URL(`/data/set-pages/${game}.json`, request.url));
-    if (!mapaRes.ok) return shell;
+    if (!mapaRes.ok) return proprio();
     const mapa = await mapaRes.json();
 
     const meta = metaDoSet(mapa, p.get("setId"), p.get("name"));
-    if (!meta) return shell;
+    if (!meta) return proprio();
     const { canonical, titulo, desc, imagem, setNome } = meta;
 
     let rw = new HTMLRewriter()

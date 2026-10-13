@@ -198,8 +198,12 @@
   // UE (27) + EEE (Islândia, Liechtenstein, Noruega) + Reino Unido + Suíça:
   // anúncio personalizado lá exige CMP certificado pelo Google (IAB TCF), que o
   // Sleevu não tem. Não chamar a rede é o jeito mais simples de estar certo.
+  // As regiões ultraperiféricas e Åland são UE (o GDPR vale lá), mas a borda
+  // as informa com código próprio. "XX" é a borda sem saber o país: na dúvida,
+  // sem rede.
   const PAISES_SEM_REDE = new Set(["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IE", "IT",
-    "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE", "IS", "LI", "NO", "GB", "CH"]);
+    "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE", "IS", "LI", "NO", "GB", "CH",
+    "RE", "GP", "MQ", "GF", "YT", "MF", "AX", "XX"]);
   // A rede só é chamada com TUDO isto (ver o cabeçalho do arquivo). `pais`
   // vazio = a página não veio pela borda com nonce (dev, ou a Function falhou)
   // — e aí a CSP do _headers bloquearia o script do Google de qualquer jeito.
@@ -549,17 +553,49 @@
     window.addEventListener("resize", () => { clearTimeout(espera); espera = setTimeout(posiciona, 200); });
   }
 
+  // A página tem o que ler? `alvo` é a grade (data-grade) ou o contêiner do
+  // conteúdo (data-conteudo, a galeria de decks). Esqueleto, "nenhuma carta
+  // encontrada", grade vazia ou escondida (modo fichário) = não. Sem alvo
+  // declarado, sim (como sempre foi).
+  function temConteudo(alvo) {
+    if (!alvo) return true;
+    if (alvo.querySelector(".skel, .empty-state")) return false;
+    return Array.prototype.some.call(alvo.children, (f) => !f.hidden && f.offsetParent !== null
+      && !f.classList.contains("vtr-espaco") && !f.classList.contains("grid-sentinel"));
+  }
+  // O popup da carta (e o zoom da imagem) por cima da página.
+  const popupAberto = () => document.body.classList.contains("preview-open");
+
   // Trilho: fixo na margem que o conteúdo de 1440 px deixa vazia em tela
-  // larga. Só nasce (e só conta como servido) quando a tela é larga de fato.
-  function montaTrilho(c, cfg) {
+  // larga. Só nasce (e só conta como servido) quando a tela é larga de fato,
+  // a página tem conteúdo e nenhum popup a cobre (2026-10-13): antes ele
+  // pedia o anúncio já no carregamento — com a grade em esqueleto, numa busca
+  // sem resultado, e embaixo do popup que o endereço de carta abre sozinho.
+  // AdSense não quer anúncio em tela sem conteúdo nem coberto por conteúdo.
+  // E anúncio pedido nunca fica escondido: a janela que estreita troca a rede
+  // pela casa (o CSS esconde o trilho abaixo de 1888 px, e esconder bloco de
+  // tamanho fixo com display:none também é contra a política). Depois de
+  // nascer, o trilho não olha mais a grade: o esqueleto de um filtro não é
+  // "página sem conteúdo".
+  function montaTrilho(c, cfg, alvo) {
     let el = null;
     const aplica = () => {
-      if (!LARGA.matches || el) return;
+      if (el) {
+        if (el.dataset.vitrineTipo === "adsense" && !LARGA.matches) viraCasa(el);
+        return;
+      }
+      if (!LARGA.matches || popupAberto() || !temConteudo(alvo)) return;
       el = criaEspaco("t", c, "trilho", cfg);
+      observadores.forEach((mo) => mo.disconnect()); // nasceu: daqui em diante só a largura importa
       if (!el) return;
       document.body.appendChild(el);
       marcaServida(el);
     };
+    let espera = 0;
+    const depois = () => { clearTimeout(espera); espera = setTimeout(aplica, 150); };
+    const observadores = [new MutationObserver(depois), new MutationObserver(depois)];
+    if (alvo) observadores[0].observe(alvo, { childList: true });
+    observadores[1].observe(document.body, { attributes: true, attributeFilter: ["class"] });
     aplica();
     if (LARGA.addEventListener) LARGA.addEventListener("change", aplica);
   }
@@ -594,7 +630,11 @@
     // Economia de dados ligada: nada de rede de anúncio (fase 1) — a casa e o
     // parceiro são leves e locais, esses ficam.
     const economia = !!(navigator.connection && navigator.connection.saveData);
-    const pais = document.documentElement.getAttribute("data-pais") || "";
+    // Rede só no domínio aprovado no AdSense (2026-10-13): o preview de cada
+    // branch (*.pages.dev) e o tcg-collector.pages.dev servem o site inteiro
+    // com o país da borda, e impressão de teste ali é tráfego inválido pro
+    // Google. Fora dele, `pais` vazio = só a casa (sem aviso, sem script).
+    const pais = /^(www\.)?sleevu\.app$/.test(location.hostname) ? (document.documentElement.getAttribute("data-pais") || "") : "";
     // O aviso só faz sentido onde a rede PODERIA rodar (mesmas condições, sem
     // o consentimento — que é justamente a pergunta).
     if (adsenseLiberado({ cfg, consentiu: true, pais, economia })) mostraAviso();
@@ -625,7 +665,8 @@
       const i = escolhidos.findIndex((c) => c.tipo === "casa" || (c.tipo === "parceiro" && c.imagens.trilho) || (c.tipo === "adsense" && cfg.adsense.blocos.trilho));
       if (i >= 0) noTrilho = escolhidos.splice(i, 1)[0];
     }
-    if (noTrilho) montaTrilho(noTrilho, cfg);
+    const conteudo = tag.getAttribute("data-conteudo") ? document.querySelector(tag.getAttribute("data-conteudo")) : grade;
+    if (noTrilho) montaTrilho(noTrilho, cfg, conteudo);
     if (grade && escolhidos.length) montaGrade(grade, escolhidos.slice(0, nFaixas), cfg);
   }
 

@@ -11,6 +11,19 @@
 import { B, supabase, COLUNAS_LISTA, setHtml, respostaFinal, daBorda, guardaNaBorda, chaveDaBorda } from "./_comum.js";
 import { jsonLdSeguro } from "../_lib/json-ld.js";
 
+// Blog sem post nenhum (2026-10-13): no lugar do "volte em breve" (tela em
+// construção, que o AdSense reprova), o que já dá pra ler no site. O
+// src/blog.js desenha o mesmo (vazioSemPost) no idioma de quem lê; aqui vai
+// em pt com data-i18n, como o resto da casca.
+const LINKS_DO_VAZIO = [
+  ["/condition", "blog.vazio.condicao", "Guia de condição: NM, SP, MP e HP na prática"],
+  ["/centering", "blog.vazio.centering", "Centering Tool: a centralização da carta pela foto"],
+  ["/lancamentos", "blog.vazio.lancamentos", "Próximos lançamentos de todos os jogos"],
+  ["/faq", "blog.vazio.faq", "Perguntas frequentes"]
+];
+const VAZIO_SEM_POST = '<div class="empty-state blog-vazio"><p data-i18n="blog.empty">Os primeiros posts estão a caminho. Enquanto isso, já dá pra ler no Sleevu:</p><ul>'
+  + LINKS_DO_VAZIO.map(([href, chave, texto]) => `<li><a href="${href}" data-i18n="${chave}">${texto}</a></li>`).join("") + "</ul></div>";
+
 export const POR_PAGINA = 36;
 const SEGUNDOS_NA_BORDA = 120;
 
@@ -68,7 +81,7 @@ export async function onRequestGet(context) {
   // idioma de quem lê (o texto aqui é o fallback em pt, igual ao do dicionário).
   const vazio = posts.length
     ? '<p class="empty-state" data-i18n="blog.emptyFilter">Nenhum post com esse filtro.</p>'
-    : '<p class="empty-state" data-i18n="blog.empty">Nenhum post por aqui ainda. Volte em breve.</p>';
+    : VAZIO_SEM_POST;
   let rw = new HTMLRewriter()
     .on("#blogList", setHtml(B.listaHtml(visiveis) || vazio))
     .on("#blogData", setHtml(jsonLdSeguro(dados)));

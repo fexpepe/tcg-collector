@@ -142,6 +142,8 @@ test("rede só com aceite, fora da UE/UK/CH, com a página vinda da borda e sem 
   assert.equal(V.adsenseLiberado({ ...base, consentiu: false }), false, "recusou (ou não respondeu) = nem o script do Google");
   for (const pais of ["DE", "FR", "PT", "ES", "GB", "CH", "NO", "IS", "LI"]) assert.equal(V.adsenseLiberado({ ...base, pais }), false, pais);
   assert.equal(V.adsenseLiberado({ ...base, pais: "" }), false, "sem data-pais a página não veio com a CSP de nonce");
+  // Regiões da UE com código próprio na borda, e o "XX" (país desconhecido).
+  for (const pais of ["RE", "GP", "MQ", "GF", "YT", "MF", "AX", "XX"]) assert.equal(V.adsenseLiberado({ ...base, pais }), false, pais);
   assert.equal(V.adsenseLiberado({ ...base, economia: true }), false);
   assert.equal(V.adsenseLiberado({ ...base, cfg: V.configValida({ ativo: true }) }), false, "sem ca-pub, dormente");
 });
@@ -299,11 +301,11 @@ test("toda página com vitrine passa pela CSP de nonce na borda, e só elas", ()
     const pagina = f.replace(/\.html$/, "");
     const fn = ler(`functions/${pagina}.js`);
     if (pagina === "detail") assert.match(fn, /return comVitrine\(await montaDetail\(env, request\), request\)/, "detail.js sem o nonce");
-    else assert.match(fn, new RegExp(`paginaComVitrine\\(context, "/${pagina}\\.html"\\)`), `functions/${pagina}.js não serve o ${f} com nonce`);
+    else assert.match(fn, new RegExp(`paginaComVitrine\\(context, "/${pagina}\\.html"[,)]`), `functions/${pagina}.js não serve o ${f} com nonce`);
   }
   // Nenhuma Function aplica a CSP de anúncio numa página SEM vitrine.
   for (const f of readdirSync(join(raiz, "functions")).filter((f) => f.endsWith(".js") && !f.startsWith("_"))) {
-    const m = /paginaComVitrine\(context, "\/([\w-]+)\.html"\)/.exec(ler(join("functions", f)));
+    const m = /paginaComVitrine\(context, "\/([\w-]+)\.html"[,)]/.exec(ler(join("functions", f)));
     if (m) assert.ok(comVitrine.includes(`${m[1]}.html`), `functions/${f} dá CSP de anúncio pra ${m[1]}.html, que não tem vitrine`);
   }
 });

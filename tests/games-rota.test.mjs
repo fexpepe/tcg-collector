@@ -208,7 +208,7 @@ test("tela do set: título, descrição, canonical, hreflang, JSON-LD e índice 
     { id: "base1-4-pt", name: "Charizard", number: "4", setTotal: 102, set: "Base Set", setId: "base1", language: "pt" }
   ];
   const p = pecasDoSet({ jogo, slug: "base-set", nome: "Base Set", cartas, slugs: slugsDasCartas(cartas) });
-  assert.equal(p.titulo, "Base Set — cartas do set Pokémon TCG | Sleevu");
+  assert.equal(p.titulo, "Base Set — lista de cartas de Pokémon TCG | Sleevu");
   assert.equal(p.desc, "Lista completa das 2 cartas do set Base Set de Pokémon TCG, lançado em 9 de janeiro de 1999. Veja imagens, números e raridades e monte sua coleção no Sleevu.");
   assert.equal(p.canonical, "https://sleevu.app/games/pokemon/base-set");
   assert.equal(p.h1, "Base Set");
@@ -231,6 +231,14 @@ test("tela do set: título, descrição, canonical, hreflang, JSON-LD e índice 
   assert.match(p.corpoHtml, /<a href="\/games\/pokemon\/base-set\/mewtwo-10-102">Mewtwo<\/a> <small>10\/102<\/small>/);
   // Set sem cartas: sem índice (e sem quebrar).
   assert.equal(pecasDoSet({ jogo, slug: "x", nome: "X", cartas: [], slugs: new Map() }).corpoHtml, "");
+});
+
+// Os logos de set do Magic são SVG, e prévia de link (Facebook, X, WhatsApp,
+// Discord) não desenha SVG: sem og:image próprio, a casca fica com o genérico.
+test("tela do set: logo em SVG não vira og:image", () => {
+  const jogo = jogoDaUrl("magic-the-gathering");
+  const cartas = [{ id: "m-1", name: "A", number: "1", set: "Dominaria", setId: "dom", language: "en", setLogo: "data/magic/set-logos/dom.svg" }];
+  assert.equal(pecasDoSet({ jogo, slug: "dominaria", nome: "Dominaria", cartas, slugs: slugsDasCartas(cartas) }).ogImagem, "");
 });
 
 test("tela do set: nome de set com HTML sai escapado no índice e no <head>", () => {

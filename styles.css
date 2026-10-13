@@ -4762,6 +4762,12 @@ a.hub-tile:active::after { opacity: 1; }
   .vtr-acoes .vtr-cta { flex: 1 1 auto; }
   /* O link do rótulo ganha 44 px de toque sem engordar a linha. */
   .vtr-sobre { display: inline-flex; align-items: center; min-height: 44px; margin: -12px 0; }
+  /* Folga pro dedo em volta do anúncio (2026-10-13; AdSense: clique acidental
+     perto de elemento clicável). Com 10 px, o toque do "Sobre este espaço"
+     (12 px pra baixo do rótulo) entrava 2 px no anúncio; e embaixo a próxima
+     linha de cartas — a imagem inteira é botão — ficava a 24 px. */
+  .vtr-topo { margin-bottom: 16px; }
+  .vtr-espaco { padding-bottom: 22px; }
   /* O aviso sobe acima da tabbar, como o convite de instalação. */
   .vtr-aviso {
     left: 10px;
@@ -6818,6 +6824,11 @@ a.progress-row:hover {
 
 /* Lista: o cartão grande do topo e a grade. */
 .blog-list { display: grid; gap: 24px; }
+/* Blog sem post: a lista do que já dá pra ler no site (functions/blog/index.js
+   e src/blog.js). Cada link com 44 px de toque. */
+.blog-vazio p { margin: 0 0 8px; }
+.blog-vazio ul { list-style: none; margin: 0; padding: 0; display: grid; justify-items: center; }
+.blog-vazio a { display: inline-flex; align-items: center; min-height: 44px; }
 .blog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 22px; }
 .blog-item { min-width: 0; }
 .blog-item-link {

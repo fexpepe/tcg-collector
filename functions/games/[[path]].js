@@ -31,7 +31,7 @@
 import { buscaPagina, comVitrine } from "../_vitrine-csp.js";
 import { jogoDaUrl, urlOficial } from "../_lib/jogos.js";
 import { slugsDasCartas, cartasDoSet, cartaParecida } from "../_lib/slug-carta.js";
-import { pecasDaCarta, precoUSD, escapeHtml, escapeAttr, ORIGEM } from "../_lib/pagina-carta.js";
+import { pecasDaCarta, precoDeReferencia, escapeHtml, escapeAttr, ORIGEM } from "../_lib/pagina-carta.js";
 import { pecasDoSet } from "../_lib/pagina-set.js";
 import { decoraApp } from "../_lib/decora-app.js";
 import { naoAchou, redireciona, jsonDoSite, daBorda, guardaNaBorda, hasOwn, setRenomeado } from "../_lib/borda.js";
@@ -147,8 +147,21 @@ async function telaDoJogo(context, jogo) {
   } catch (e) {
     // A tela sem os dados do jogo continua funcionando: o game.js lê o jogo do
     // endereço.
-    return env.ASSETS.fetch(new URL("/sets.html", request.url));
+    return provisoria(await env.ASSETS.fetch(new URL("/sets.html", request.url)));
   }
+}
+
+// A casca crua num endereço indexado, quando a decoração falha. Ela traz o
+// canonical pra /sets (e a do detail.html, noindex): com 200, um erro
+// passageiro dizia ao Google que a página do jogo, do set ou da carta não
+// era pra indexar. 503 com Retry-After diz "volte depois" (2026-10-13). A
+// pessoa vê a mesma tela (o navegador mostra o corpo de qualquer status, e o
+// service worker, com cópia guardada, prefere a cópia num 5xx).
+export function provisoria(resposta) {
+  const headers = new Headers(resposta.headers);
+  headers.set("retry-after", "3600");
+  headers.set("cache-control", "no-store");
+  return new Response(resposta.body, { status: resposta.ok ? 503 : resposta.status, headers });
 }
 
 // ── Tela do set (e da carta) ────────────────────────────────────────────────
@@ -174,12 +187,13 @@ async function cartasDaPagina(env, request, entrada) {
   return { cartas: cartasDoSet(todas, entrada.n), arquivo };
 }
 
+// { valor, moeda } ou null (ver precoDeReferencia).
 async function precoDaCarta(env, request, card, arquivo) {
-  if (!arquivo) return 0;
+  if (!arquivo) return null;
   const tabela = await jsonDoSite(env, request, "/" + arquivo.replace("/sets/", "/pricing-chunks/"));
-  if (!tabela) return 0;
+  if (!tabela) return null;
   const id = String(card.id);
-  return precoUSD(hasOwn(tabela, id) ? tabela[id] : tabela[basePricingId(id)]);
+  return precoDeReferencia(hasOwn(tabela, id) ? tabela[id] : tabela[basePricingId(id)]);
 }
 
 // A tela do set do app no endereço do set; com `rota.carta`, a mesma tela com
@@ -187,12 +201,12 @@ async function precoDaCarta(env, request, card, arquivo) {
 // Exceção na decoração (um chunk ou mapa fora do formato, um caso que as peças
 // não previram) virava a página de erro da Cloudflare (2026-10-08). A casca
 // crua abre a mesma tela: o detail.js acha o set e a carta pelo endereço — a
-// tela do jogo (telaDoJogo) já fazia assim.
+// tela do jogo (telaDoJogo) já fazia assim. Com 503 (ver provisoria).
 async function telaDoSet(context, rota) {
   try {
     return await telaDoSetDecorada(context, rota);
   } catch (e) {
-    return context.env.ASSETS.fetch(new URL("/detail.html", context.request.url));
+    return provisoria(await context.env.ASSETS.fetch(new URL("/detail.html", context.request.url)));
   }
 }
 async function telaDoSetDecorada(context, rota) {
@@ -216,7 +230,8 @@ async function telaDoSetDecorada(context, rota) {
   const entrada = sets[rota.set];
   const caminho = `/games/${rota.jogo.url}/${rota.set}${rota.carta ? `/${rota.carta}` : ""}`;
   const casca = await buscaPagina(env, request, "/detail.html");
-  if (!casca.ok) return casca;
+  // Só a casca inteira (200) é decorada e vai pro cache da borda.
+  if (casca.status !== 200) return casca;
   const cascaHtml = await casca.text();
   const chave = new Request(`${ORIGEM}${caminho}?b=${encodeURIComponent(buildDaCasca(cascaHtml) || "dev")}`);
   const guardada = await daBorda(chave);
@@ -236,7 +251,8 @@ async function telaDoSetDecorada(context, rota) {
         : naoAchou(env, request);
     }
     const preco = await precoDaCarta(env, request, card, arquivo.get(card));
-    pecas = pecasDaCarta({ card, jogo: rota.jogo, set: { slug: rota.set, nome: entrada.n }, cartas, slugs, preco });
+    pecas = pecasDaCarta({ card, jogo: rota.jogo, set: { slug: rota.set, nome: entrada.n }, cartas, slugs,
+      preco: preco ? preco.valor : 0, moeda: preco ? preco.moeda : "USD" });
   } else {
     pecas = pecasDoSet({ jogo: rota.jogo, slug: rota.set, nome: entrada.n, cartas, slugs });
   }

@@ -1035,7 +1035,11 @@ continua vendo só a casa e os parceiros.
   logo depois de um cabeçalho; 1ª depois de ~1,6 tela (2 no celular), teto de
   3 por página.
 - **Trilho** só em tela ≥ 1888 px, fixo na margem que o conteúdo de 1440 px
-  deixa vazia.
+  deixa vazia. Nasce quando a grade (ou o `data-conteudo`, na galeria de
+  decks) tem itens e nenhum popup está aberto; se a janela estreita, o anúncio
+  vira casa (2026-10-13).
+- **Rede só em `sleevu.app`**: em preview (`*.pages.dev`) e localhost o espaço
+  fica com a casa, sem aviso e sem script do Google.
 - **Config** em `data/ads.json`: `"ativo": false` desliga tudo; regras de
   densidade por aparelho, teto por dia de cada criativo da casa, criativos de
   parceiro (imagem em `/assets/partners/`, segmentação por jogo, idioma e

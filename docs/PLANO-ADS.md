@@ -622,6 +622,28 @@ O que mudou no caminho, e por quê:
   não respondeu (aviso, script não desce), Alemanha (nem aviso, nem script) e
   filtro depois do anúncio pedido (vira casa, um pedido só).
 
+**Revisão de 2026-10-13** (regras do AdSense, depois do "Low value content"):
+
+- **Trilho só com conteúdo e sem nada por cima.** Ele pedia o anúncio já no
+  carregamento: com a grade em esqueleto, numa busca sem resultado e embaixo
+  do popup que o endereço de carta abre sozinho. Agora espera a grade (ou a
+  galeria de decks, `data-conteudo`) ter itens e o popup fechar. Janela que
+  estreita abaixo de 1888 px troca o anúncio pela casa (esconder bloco de
+  tamanho fixo com `display:none` é contra a política).
+- **Rede só em `sleevu.app`** (e `www`): os previews `*.pages.dev` servem o
+  site inteiro, e impressão de teste lá é tráfego inválido.
+- **UE completa**: as regiões ultraperiféricas (RE, GP, MQ, GF, YT, MF) e Åland
+  (AX), que a borda informa com código próprio, e o país desconhecido (XX)
+  também ficam sem rede.
+- **Folga pro dedo no celular**: o toque do "Sobre este espaço" encostava 2 px
+  no anúncio, e a próxima linha de cartas ficava a 24 px; agora 16 px abaixo
+  do rótulo e 33 px até a carta.
+- **Política de privacidade** com o texto que o AdSense pede: "fornecedores
+  terceiros, incluindo o Google", o uso de cookies de publicidade pelo Google e
+  parceiros, e o opt-out alternativo (aboutads.info), nos três idiomas.
+- **Conteúdo onde o revisor olha**: o "Sobre esta carta" aparece no popup em
+  en e es também, e o `/blog` vazio virou uma lista do que já dá pra ler.
+
 ### Fase 2 — Rede premium (≥ ~100 mil pageviews/mês)
 - [ ] Candidatura à Nitro e/ou Playwire (ou Journey, se o tráfego anglófono
       bater 1.000 sessões/mês); A/B contra o AdSense; `ads.txt` atualizado

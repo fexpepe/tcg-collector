@@ -11,7 +11,7 @@
 // prerender com os MESMOS textos: por isso o SET_L10N e as réguas de título,
 // data e lista moram aqui e o prerender importa daqui.
 import { cardCode } from "./card-code.js";
-import { ORIGEM, escapeHtml, escapeAttr, absUrl } from "./pagina-carta.js";
+import { ORIGEM, escapeHtml, escapeAttr, imagemDePrevia } from "./pagina-carta.js";
 
 // ORÇAMENTO DE TÍTULO. O Google mostra ~60-65 caracteres e corta o resto com
 // "…". O NOME do set nunca é truncado (é o que a pessoa digitou); quem sai são
@@ -47,7 +47,10 @@ export const SET_L10N = {
   pt: {
     htmlLang: "pt-BR",
     fmtDate: fmtDatePt,
-    title: (name, gameLabel) => tituloSet(name, [`cartas do set ${gameLabel}`, gameLabel]),
+    // "lista de cartas" é o que se digita (e o que o en diz: "card list"). O
+    // "cartas do set Pokémon TCG" de antes lia como se o set se chamasse
+    // "Pokémon TCG" (2026-10-13).
+    title: (name, gameLabel) => tituloSet(name, [`lista de cartas de ${gameLabel}`, gameLabel]),
     desc: (n, name, gameLabel, dateHuman) => `Lista completa das ${n} cartas do set ${name} de ${gameLabel}${dateHuman ? `, lançado em ${dateHuman}` : ""}. Veja imagens, números e raridades e monte sua coleção no Sleevu.`,
     sub: (gameLabel, total, dateHuman, n) => `${gameLabel} · ${total} cartas oficiais${dateHuman ? ` · lançado em ${dateHuman}` : ""} · ${n} no catálogo do Sleevu`,
     cta: "Abrir o set no Sleevu",
@@ -176,7 +179,7 @@ export function pecasDoSet({ jogo, slug, nome, cartas, slugs }) {
     canonical,
     h1: nome,
     ogTitulo: `${nome} — ${jogo.nome}`,
-    ogImagem: absUrl(rep.setLogo) || "",
+    ogImagem: imagemDePrevia(rep.setLogo),
     alternates: [
       { hreflang: "pt-BR", href: canonical },
       { hreflang: "en", href: `${canonical}-en` },

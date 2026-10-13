@@ -9,7 +9,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { onRequestGet } from "../functions/games/[[path]].js";
 
-test("exceção ao decorar a tela do set devolve a casca crua do detail.html", async () => {
+test("exceção ao decorar a tela do set devolve a casca crua do detail.html, com 503", async () => {
   const pedidos = [];
   const env = {
     ASSETS: {
@@ -25,7 +25,12 @@ test("exceção ao decorar a tela do set devolve a casca crua do detail.html", a
   };
   const request = new Request("https://sleevu.app/games/pokemon/base-set");
   const r = await onRequestGet({ request, env, params: { path: ["pokemon", "base-set"] }, waitUntil() {}, next: async () => new Response("next") });
-  assert.equal(r.status, 200);
+  // 503 + Retry-After (2026-10-13): a casca crua é noindex e aponta o
+  // canonical pra /sets; com 200, um erro passageiro tirava a página do índice.
+  // A pessoa vê a mesma tela (o corpo é a casca).
+  assert.equal(r.status, 503);
+  assert.equal(r.headers.get("retry-after"), "3600");
+  assert.equal(r.headers.get("cache-control"), "no-store");
   assert.match(await r.text(), /casca/);
   assert.equal(pedidos.filter((p) => p === "/detail.html").length >= 2, true, "a casca crua foi pedida de novo como reserva");
 });
