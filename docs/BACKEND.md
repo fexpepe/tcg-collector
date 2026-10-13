@@ -185,9 +185,20 @@ do parâmetro `url`.
   com `srcset` 300w/600w em todas as fontes, popup com a de 1000, e a origem
   logo atrás na cadeia de fallback — carta nova de hoje continua aparecendo.
   Espelho vazio ou fora do ar = lista vazia = site como sempre.
+- **Gerações (13/10/2026):** mudar a forma de gerar (matriz, qualidade) não
+  pode regravar a chave antiga — navegador, service worker e borda guardam a
+  imagem por um ano e a borda ignora a query. Cada geração tem chave própria
+  (`…@600.g2.webp`; a 1 é a sem sufixo). O job faz primeiro a manutenção de
+  todos os hosts (carta nova, arte trocada) e depois regera as cartas de
+  geração antiga; o status publica, por host, a geração COMPLETA, e o deploy
+  injeta isso no `game.js` (`window.SLEEVU.imgMirrorGen`). O site segue na
+  geração antiga de um host até a nova fechar. A geração 2 tira a compressão
+  dupla da TCGdex (matriz `high.png`, não mais o `high.webp`) e faz a 1000
+  (popup) em q90 com `smartSubsample` — a grade segue em q80.
 - **Custo:** ~760 mil objetos, ~45 GB no R2 (os primeiros 10 GB grátis,
   US$ 0,015/GB depois), saída de dados grátis, leituras quase todas no cache
-  da Cloudflare.
+  da Cloudflare. A geração 2 soma outro tanto (~50 GB, o popup ficou maior):
+  a geração 1 fica no bucket, sem uso depois da troca, até alguém limpar.
 - **Ainda na origem:** as páginas pré-renderizadas (`/set/`, `/card/`,
   `/artist/`) — são HTML estático sem a cadeia de fallback do app, então
   apontá-las pro espelho exige um tratamento de erro próprio. Fica pra depois.

@@ -325,7 +325,10 @@
   // Hosts de imagem já ESPELHADOS por completo no R2 (img.sleevu.app): o
   // deploy preenche a lista (scripts/apply-img-mirror.mjs) com o status que o
   // job de espelho publica. Vazia = toda imagem vem da origem, como sempre.
+  // IMG_MIRROR_GEN: a geração completa de cada host (host -> n), quando passa
+  // da 1 — a chave da imagem muda com ela (scripts/lib/img-mirror.mjs).
   var IMG_MIRROR_HOSTS = []; /* SLEEVU_IMG_MIRROR */
+  var IMG_MIRROR_GEN = {}; /* SLEEVU_IMG_MIRROR_GEN */
 
   // dataset declarado -> arquivo real (depende do modo). set-id-map e os
   // pokemon-* não são mesclados, então são o mesmo arquivo nos dois modos.
@@ -461,6 +464,7 @@
     dataDir: cfg.dataDir,
     manifest: MANIFEST,
     imgMirrorHosts: IMG_MIRROR_HOSTS,
+    imgMirrorGen: IMG_MIRROR_GEN,
     catalogReady: catalogReady,
     get catalogoAtrasado() { return catalogoAtrasado; },
     // "set" no endereço /games/<jogo>/<set>[/<carta>], senão o ?type= (ver tipoDaTela).

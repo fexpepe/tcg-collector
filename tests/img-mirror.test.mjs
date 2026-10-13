@@ -1,6 +1,6 @@
 // Espelho de imagens no R2 (img.sleevu.app). O que está travado: (1) a
 // MATRIZ que o job baixa é a melhor imagem de cada fonte; (2) a regra da URL
-// espelhada (<host><caminho>@<largura>.webp) é a MESMA no build
+// espelhada (<host><caminho>@<largura>[.g<geração>].webp) é a MESMA no build
 // (scripts/lib/img-mirror.mjs) e no cliente (src/shared.js, mirrorImg),
 // inclusive no wsrv.nl, cuja base vem da query; (3) na cadeia do <img> o
 // espelho vem na frente com srcset 300w/600w em TODA fonte, e a origem logo
@@ -9,7 +9,8 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { loadShared } from "./lib/shared-sandbox.mjs";
-import { ESPELHO, LARGURAS, ORDEM, chaveBase, chaveDe, matrizDe, urlEspelho, versaoDe } from "../scripts/lib/img-mirror.mjs";
+import { ESPELHO, GERACAO, LARGURAS, ORDEM, chaveBase, chaveDe, injetaEspelho, matrizDe, statusDoEspelho, urlEspelho, versaoDe, webpDe } from "../scripts/lib/img-mirror.mjs";
+import { readFileSync } from "node:fs";
 
 const sb = loadShared("window.__test = { mirrorImg };");
 const { mirrorImg } = sb.window.__test;
@@ -29,7 +30,10 @@ const WSRV = "https://wsrv.nl/?url=static.wikia.nocookie.net%2Fhunterxhunter%2Fi
 const WSRV_WE = "https://wsrv.nl/?url=www.tv-tokyo.co.jp%2Fanime%2Fnaruto2002%2Fgoods%2Fcardimg%2Fa%20b.jpg&w=440&we&output=webp";
 
 test("matriz: a melhor imagem que cada fonte publica", () => {
-  assert.equal(matrizDe(TCGDEX), "https://assets.tcgdex.net/en/base/base1/4/high.webp");
+  // high.png, sem perdas: o high.webp já vem comprimido pela TCGdex e o job
+  // comprimia por cima (geração 2, 13/10/2026).
+  assert.equal(matrizDe(TCGDEX), "https://assets.tcgdex.net/en/base/base1/4/high.png");
+  assert.equal(matrizDe(TCGDEX.replace("high.png", "low.webp")), TCGDEX);
   assert.equal(matrizDe(TCGP400), TCGP.replace("81834", "108589"));
   assert.equal(matrizDe(TCGP), TCGP);
   assert.equal(matrizDe(LORCAST), LORCAST);
@@ -81,6 +85,59 @@ test("URL espelhada: só host COMPLETO — igual no build e no cliente", () => {
     assert.equal(mirrorImg(u, w), esperado, `cliente: ${u}`);
   }
   delete sb.SLEEVU;
+});
+
+// Geração (13/10/2026): imagem regerada vai pra chave NOVA (.g<n>) — o cache
+// guarda a velha por um ano e a borda ignora a query — e o site só troca de
+// geração num host quando o status diz que ela está completa.
+test("geração: chave com sufixo, igual no build e no cliente; host sem geração declarada segue na 1", () => {
+  assert.ok(GERACAO >= 2);
+  assert.equal(chaveDe(TCGDEX, 600, 2), "assets.tcgdex.net/en/base/base1/4/high.png@600.g2.webp");
+  assert.equal(chaveDe(TCGDEX, 600, 1), chaveDe(TCGDEX, 600));
+  assert.equal(chaveDe(WSRV_WE, 1000, 2), "wsrv.nl/www.tv-tokyo.co.jp/anime/naruto2002/goods/cardimg/a b.jpg@1000.g2.webp");
+  const geracoes = { "assets.tcgdex.net": 2, "wsrv.nl": 2 };
+  const casos = [
+    [TCGDEX, 300, `${ESPELHO}assets.tcgdex.net/en/base/base1/4/high.png@300.g2.webp`],
+    [WSRV_WE, 600, `${ESPELHO}wsrv.nl/www.tv-tokyo.co.jp/anime/naruto2002/goods/cardimg/a%20b.jpg@600.g2.webp`],
+    [SCRY, 1000, `${ESPELHO}cards.scryfall.io/normal/front/7/a/7a5cd03c.jpg@1000.webp`]   // ainda na geração 1
+  ];
+  for (const [u, w, esperado] of casos) {
+    assert.equal(urlEspelho(u, ORDEM, w, geracoes), esperado, `build: ${u}`);
+    sb.SLEEVU = { imgMirrorHosts: ORDEM, imgMirrorGen: geracoes };
+    assert.equal(mirrorImg(u, w), esperado, `cliente: ${u}`);
+  }
+  // srcset da grade também na geração do host.
+  const html = localizedImg(TCGDEX, { thumb: true, sizes: "100px" });
+  assert.equal(srcset(html), `${ESPELHO}assets.tcgdex.net/en/base/base1/4/high.png@300.g2.webp 300w, ${ESPELHO}assets.tcgdex.net/en/base/base1/4/high.png@600.g2.webp 600w`);
+  delete sb.SLEEVU;
+});
+
+test("status do job → o que o site usa: só host completo no esquema atual, e a geração completa dele", () => {
+  const st = { hosts: {
+    "assets.tcgdex.net": { esquema: 2, completo: true, geracao: 2 },
+    "cards.scryfall.io": { esquema: 2, completo: true },               // status de antes da geração: 1
+    "wsrv.nl": { esquema: 2, completo: true, geracao: 1 },
+    "cards.lorcast.io": { esquema: 2, completo: false, geracao: 2 },   // não fechou: fora
+    "tcgplayer-cdn.tcgplayer.com": { esquema: 1, completo: true }       // esquema velho: fora
+  } };
+  assert.deepEqual(statusDoEspelho(st), { hosts: ["wsrv.nl", "assets.tcgdex.net", "cards.scryfall.io"], geracoes: { "assets.tcgdex.net": 2 } });
+  assert.deepEqual(statusDoEspelho(null), { hosts: [], geracoes: {} });
+});
+
+test("deploy: injeta hosts E geração no game.js, e para se faltar um dos marcadores", () => {
+  const game = readFileSync(new URL("../src/game.js", import.meta.url), "utf8");
+  const out = injetaEspelho(game, { hosts: ["assets.tcgdex.net"], geracoes: { "assets.tcgdex.net": 2 } });
+  assert.match(out, /var IMG_MIRROR_HOSTS = \["assets\.tcgdex\.net"\]; \/\* SLEEVU_IMG_MIRROR \*\//);
+  assert.match(out, /var IMG_MIRROR_GEN = \{"assets\.tcgdex\.net":2\}; \/\* SLEEVU_IMG_MIRROR_GEN \*\//);
+  assert.match(game, /imgMirrorGen: IMG_MIRROR_GEN/, "o game.js expõe a geração pro mirrorImg");
+  assert.throws(() => injetaEspelho(game.replace(/var IMG_MIRROR_GEN[^\n]*/, ""), {}), /SLEEVU_IMG_MIRROR_GEN/);
+  assert.throws(() => injetaEspelho(game.replace(/var IMG_MIRROR_HOSTS[^\n]*/, ""), {}), /SLEEVU_IMG_MIRROR/);
+});
+
+test("qualidade: o popup (1000) com mais qualidade e croma inteligente; a grade como sempre", () => {
+  assert.deepEqual(webpDe(300), { quality: 80 });
+  assert.deepEqual(webpDe(600), { quality: 80 });
+  assert.deepEqual(webpDe(1000), { quality: 90, smartSubsample: true });
 });
 
 test("sem hosts espelhados o <img> sai exatamente como antes", () => {

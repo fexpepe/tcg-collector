@@ -613,8 +613,11 @@ test("espelho do TCGplayer é mutável no SW: revalida vencido, com no-cache", a
 test("job do espelho: regravação e host mutável sobem com 7 dias, e as regravadas vão pra purga da borda", () => {
   const job = readFileSync(join(raiz, "scripts/mirror-r2.mjs"), "utf8");
   assert.ok(job.includes('const CACHE_MUTAVEL = "public, max-age=604800";'));
-  assert.ok(job.includes("const cacheControl = tem || f.mutavel ? CACHE_MUTAVEL : undefined;"));
-  assert.ok(job.includes("if (tem) LARGURAS.forEach((w) => regravadas.push("));
+  // `mesma`: regravação na MESMA chave. A carta de geração anterior vai pra
+  // chave nova (.g<n>), que nasce imutável e não precisa de purga.
+  assert.ok(job.includes("const mesma = !!tem && geracaoDe(tem) === GERACAO;"));
+  assert.ok(job.includes("const cacheControl = mesma || f.mutavel ? CACHE_MUTAVEL : undefined;"));
+  assert.ok(job.includes("if (mesma) LARGURAS.forEach((w) => regravadas.push("));
   assert.ok(job.includes("if (!SECO) await purgaBorda();"));
   const wf = readFileSync(join(raiz, ".github/workflows/mirror-images.yml"), "utf8");
   assert.ok(wf.includes("CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}") && wf.includes("CF_PURGE_TOKEN: ${{ secrets.CF_PURGE_TOKEN }}"));

@@ -5177,9 +5177,11 @@
   // toda query e a base sai do parâmetro url. A origem continua na cadeia de
   // fallback logo atrás do espelho — carta nova de hoje, ainda não espelhada,
   // cai nela sem ninguém perceber. Mesma regra de scripts/lib/img-mirror.mjs
-  // (o teste trava as duas).
+  // (o teste trava as duas). Geração > 1 (.imgMirrorGen) = chave com sufixo
+  // .g<n>: imagem regerada não reaproveita a URL que o cache guarda por um ano.
   function mirrorImg(u, w) {
-    const hosts = (window.SLEEVU && window.SLEEVU.imgMirrorHosts) || [];
+    const S = window.SLEEVU || {};
+    const hosts = S.imgMirrorHosts || [];
     const m = /^https:\/\/([^/?#]+)(\/[^?#]*)/.exec(u || "");
     if (!m || hosts.indexOf(m[1]) < 0) return "";
     let base = m[1] + m[2];
@@ -5188,7 +5190,8 @@
       if (!q) return "";
       base = encodeURI("wsrv.nl/" + decodeURIComponent(q[1]).replace(/^https?:\/\//, ""));
     }
-    return "https://img.sleevu.app/" + base + "@" + w + ".webp";
+    const g = (S.imgMirrorGen || {})[m[1]];
+    return "https://img.sleevu.app/" + base + "@" + w + (g > 1 ? ".g" + g : "") + ".webp";
   }
 
   // Mesma carta na OUTRA língua do par EN/PT. A TCGdex publica os scans por

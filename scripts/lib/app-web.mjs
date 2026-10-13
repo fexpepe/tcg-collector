@@ -8,6 +8,7 @@
 // (https://sleevu.app): o catálogo (data/, ~550 MB, muda todo dia), as APIs da
 // borda (/api/*) e as páginas que a borda monta. O pacote leva o código e a
 // ponte (mobile/web/app-nativo.js), que entra como 1º script de toda página.
+import { injetaEspelho } from "./img-mirror.mjs";
 
 export const ORIGEM_PADRAO = "https://sleevu.app";
 
@@ -34,15 +35,16 @@ export function assetDoApp(rel) { return !ASSET_FORA.test(rel); }
 // Os mesmos marcadores que o deploy troca por sed (MANIFEST e o espelho de
 // imagens), mais o dataDir de cada jogo, que no app aponta pra ORIGEM: é dele
 // que saem o <script> do catálogo e o fetch das fatias de índice.
-export function transformaGameJs(texto, { origem = ORIGEM_PADRAO, hostsEspelho = [] } = {}) {
+export function transformaGameJs(texto, { origem = ORIGEM_PADRAO, hostsEspelho = [], geracoesEspelho = {} } = {}) {
   let out = texto;
   const troca = (re, por, oQue) => {
     if (!re.test(out)) throw new Error(`app-web: não achei ${oQue} no src/game.js — o formato mudou?`);
     out = out.replace(re, por);
   };
   troca(/var MANIFEST = false; \/\* SLEEVU_MANIFEST \*\//, "var MANIFEST = true; /* SLEEVU_MANIFEST */", "o marcador SLEEVU_MANIFEST");
-  troca(/var IMG_MIRROR_HOSTS = \[[^\]]*\]; \/\* SLEEVU_IMG_MIRROR \*\//,
-    `var IMG_MIRROR_HOSTS = ${JSON.stringify(hostsEspelho)}; /* SLEEVU_IMG_MIRROR */`, "o marcador SLEEVU_IMG_MIRROR");
+  // Hosts espelhados + a geração de cada um: a mesma injeção do deploy.
+  try { out = injetaEspelho(out, { hosts: hostsEspelho, geracoes: geracoesEspelho }); }
+  catch (e) { throw new Error(`app-web: ${e.message} — o formato mudou?`); }
   const antes = (out.match(/dataDir: "data\//g) || []).length;
   if (!antes) throw new Error("app-web: nenhum `dataDir: \"data/…\"` no src/game.js — o registro de jogos mudou?");
   out = out.replace(/dataDir: "data\//g, `dataDir: "${origem}/data/`);

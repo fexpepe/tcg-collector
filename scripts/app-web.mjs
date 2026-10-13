@@ -20,7 +20,7 @@ import {
   ORIGEM_PADRAO, ARQUIVOS_DA_RAIZ, paginaDoApp, assetDoApp,
   transformaGameJs, transformaHtml, transformaCss, preenchePonte, supabaseDoSite, confereOrigem
 } from "./lib/app-web.mjs";
-import { ESPELHO, ESQUEMA_ESPELHO, ORDEM } from "./lib/img-mirror.mjs";
+import { ESPELHO, statusDoEspelho } from "./lib/img-mirror.mjs";
 
 const RAIZ = dirname(dirname(fileURLToPath(import.meta.url)));
 const PONTE = join(RAIZ, "mobile/web/app-nativo.js");
@@ -30,16 +30,16 @@ function arg(nome) {
   return i > 0 ? process.argv[i + 1] : undefined;
 }
 
-// Hosts de imagem já espelhados por completo no R2 — a mesma pergunta do
-// scripts/apply-img-mirror.mjs no deploy. Sem rede ou espelho fora do ar =
-// lista vazia = toda imagem vem da origem (o site igual ao de sempre).
-async function hostsDoEspelho() {
+// Hosts de imagem já espelhados por completo no R2, e a geração de cada um —
+// a mesma pergunta do scripts/apply-img-mirror.mjs no deploy. Sem rede ou
+// espelho fora do ar = lista vazia = toda imagem vem da origem (o site igual
+// ao de sempre).
+async function espelhoDoStatus() {
+  const vazio = { hosts: [], geracoes: {} };
   try {
     const r = await fetch(`${ESPELHO}_index/status.json`, { signal: AbortSignal.timeout(15000), headers: { "cache-control": "no-cache" } });
-    if (!r.ok) return [];
-    const j = await r.json();
-    return ORDEM.filter((h) => j && j.hosts && j.hosts[h] && j.hosts[h].completo && j.hosts[h].esquema === ESQUEMA_ESPELHO);
-  } catch { return []; }
+    return r.ok ? statusDoEspelho(await r.json()) : vazio;
+  } catch { return vazio; }
 }
 
 function copiaPasta(de, para, filtro, base = de) {
@@ -77,8 +77,9 @@ export async function montar({ saida = join(RAIZ, "mobile/www"), origem = ORIGEM
   // desenvolvimento local), com o game.js no modo de produção.
   const js = readdirSync(join(RAIZ, "src")).filter((f) => f.endsWith(".js"));
   for (const f of js) copyFileSync(join(RAIZ, "src", f), join(saida, "src", f));
-  const hostsEspelho = semRede ? [] : await hostsDoEspelho();
-  const game = transformaGameJs(readFileSync(join(RAIZ, "src/game.js"), "utf8"), { origem, hostsEspelho });
+  const espelho = semRede ? { hosts: [], geracoes: {} } : await espelhoDoStatus();
+  const hostsEspelho = espelho.hosts;
+  const game = transformaGameJs(readFileSync(join(RAIZ, "src/game.js"), "utf8"), { origem, hostsEspelho, geracoesEspelho: espelho.geracoes });
   writeFileSync(join(saida, "src/game.js"), game.texto);
   const supabase = supabaseDoSite(readFileSync(join(RAIZ, "src/shared.js"), "utf8"));
   writeFileSync(join(saida, "src/app-nativo.js"), preenchePonte(readFileSync(PONTE, "utf8"), { origem, paginas, supabase }));

@@ -22,9 +22,10 @@ const PAGINAS = readdirSync(RAIZ).filter((f) => f.endsWith(".html")).map((f) => 
 // ── Montagem ────────────────────────────────────────────────────────────────
 
 test("game.js do app: modo manifest, espelho e o catálogo de todo jogo na origem", () => {
-  const { texto, jogos } = transformaGameJs(ler("src/game.js"), { origem: "https://sleevu.app", hostsEspelho: ["wsrv.nl"] });
+  const { texto, jogos } = transformaGameJs(ler("src/game.js"), { origem: "https://sleevu.app", hostsEspelho: ["wsrv.nl"], geracoesEspelho: { "wsrv.nl": 2 } });
   assert.match(texto, /var MANIFEST = true; \/\* SLEEVU_MANIFEST \*\//);
   assert.match(texto, /var IMG_MIRROR_HOSTS = \["wsrv\.nl"\]; \/\* SLEEVU_IMG_MIRROR \*\//);
+  assert.match(texto, /var IMG_MIRROR_GEN = \{"wsrv\.nl":2\}; \/\* SLEEVU_IMG_MIRROR_GEN \*\//);
   assert.ok(jogos >= 20, `só ${jogos} jogos no registro`);
   assert.doesNotMatch(texto, /dataDir: "data\//, "sobrou dataDir relativo: o catálogo desse jogo pediria ao próprio aparelho");
   assert.equal((texto.match(/dataDir: "https:\/\/sleevu\.app\/data\//g) || []).length, jogos);
