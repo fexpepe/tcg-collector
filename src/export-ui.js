@@ -159,8 +159,12 @@
         const a = document.createElement("a");
         a.href = url;
         a.download = `${opts.arquivo || "sleevu"}.${ext}`;
+        // Na página e com o revoke adiado: o Safari aborta o download se a
+        // URL some no mesmo tique.
+        document.body.appendChild(a);
         a.click();
-        URL.revokeObjectURL(url);
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
       }
     });
   }

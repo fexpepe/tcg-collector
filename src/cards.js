@@ -327,7 +327,7 @@
       elements.cardsSortSelect.value = cardsSort;
       elements.cardsSortSelect.addEventListener("change", () => {
         cardsSort = elements.cardsSortSelect.value;
-        localStorage.setItem("tcg-cards-sort", cardsSort);
+        try { localStorage.setItem("tcg-cards-sort", cardsSort); } catch (e) { /* storage cheio ou bloqueado: a troca vale só nesta visita */ }
         writeFiltersToUrl();
         render({ resetCount: true });
       });
@@ -357,7 +357,7 @@
         // entrar ou sair dele exige reconstruir a grade. grid<->lista é só CSS.
         const eraCompacto = cardsView === "compact";
         cardsView = shared.gridViewValue(button.dataset.gridView);
-        localStorage.setItem("tcg-cards-view", cardsView);
+        try { localStorage.setItem("tcg-cards-view", cardsView); } catch (e) { /* storage cheio ou bloqueado: a troca vale só nesta visita */ }
         const virouCompacto = cardsView === "compact";
         applyCardsView();
         if (eraCompacto !== virouCompacto) render({ resetCount: false });

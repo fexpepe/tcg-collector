@@ -653,7 +653,7 @@ async function navigationFast(event) {
     .then(({ response, build }) => {
       // Página de outra leva não entra neste cache (ver veioDoServidorAgora).
       if (response && response.ok && (build === null || build === BUILD_ID)) {
-        cache.put(chave, semRedirect(response.clone()));
+        cache.put(chave, semRedirect(response.clone())).catch(() => { /* cota cheia: só não guarda */ });
         marcaConfirmacao();
       }
       return response;
@@ -703,7 +703,7 @@ async function staleWhileRevalidate(event) {
   const indice = INDICE_DO_CATALOGO.test(new URL(request.url).pathname);
   const rede = fetch(request, indice ? { cache: "no-cache" } : undefined).then((response) => {
     if (response && response.ok) {
-      cache.put(request, response.clone());
+      cache.put(request, response.clone()).catch(() => { /* cota cheia: só não guarda */ });
       maybeTrim(DATA_CACHE, MAX_DATA);
     }
     return response;
@@ -725,7 +725,7 @@ async function networkFirst(request, url) {
     const response = await fetch(request, init);
     if (response && response.ok) {
       const cache = await caches.open(cacheName);
-      cache.put(request, response.clone());
+      cache.put(request, response.clone()).catch(() => { /* cota cheia: só não guarda */ });
       maybeTrim(cacheName, cacheName === DATA_CACHE ? MAX_DATA : Infinity);
       return response;
     }
@@ -782,7 +782,10 @@ self.addEventListener("notificationclick", (event) => {
 //
 // O caminho das IMAGENS chamava trim() direto e era o pior caso justamente: a
 // grade fria é exatamente a hora em que o SW mais precisa responder rápido.
+// Um contador por caminho (2026-10-13): dividido, as gravações de dado
+// zeravam o das imagens, e a poda delas podia não chegar nunca.
 let putsDesdePoda = 0;
+let putsDesdePodaImg = 0;
 // Teto EFETIVO das imagens. O FIFO conta entradas, nao bytes — e depois do
 // srcset (P4) uma entrada pode ser a variante de 600px (~48 KB) em vez da de
 // 245px (~14 KB), entao o mesmo 4.000 significa ~55 MB num desktop 1x e ~190 MB
@@ -803,8 +806,8 @@ async function tetoDeImagens() {
 }
 
 function maybeTrimImages() {
-  if (++putsDesdePoda < 50) return;
-  putsDesdePoda = 0;
+  if (++putsDesdePodaImg < 50) return;
+  putsDesdePodaImg = 0;
   tetoDeImagens().then((teto) => trim(IMAGE_CACHE, teto)).catch(() => {});
 }
 
@@ -820,8 +823,13 @@ async function trim(cacheName, maxEntries) {
   const cache = await caches.open(cacheName);
   const keys = await cache.keys();
   const excess = keys.length - maxEntries;
+  // O carimbo de validade das imagens mutáveis (markOpaque) mora em cache
+  // próprio e sai junto com a imagem: antes ele ficava pra sempre, crescendo
+  // sem teto e contando no uso que o tetoDeImagens mede.
+  const carimbos = cacheName === IMAGE_CACHE && excess > 0 ? await caches.open(OPAQUE_TS_CACHE) : null;
   // keys() vem na ordem de inserção: remover os primeiros é um FIFO simples.
   for (let i = 0; i < excess; i++) {
     await cache.delete(keys[i]);
+    if (carimbos) await carimbos.delete(keys[i].url);
   }
 }

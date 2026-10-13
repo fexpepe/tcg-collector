@@ -6,14 +6,14 @@
     <!-- Listas viraram PASTAS (2026-09-16): a página mudou de endereço pra
          /pastas. Este arquivo só existe pra link salvo (favorito, share de tag
          antigo, histórico) não cair em 404. O JS leva a query junto (?id= da
-         pasta aberta); o meta refresh é o plano B sem JS, e perde a query. -->
+         pasta aberta, src/listas.js); o meta refresh é o plano B sem JS, e perde a query. -->
     <meta name="robots" content="noindex">
     <meta name="theme-color" content="#e8ecf1" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#101218" media="(prefers-color-scheme: dark)">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta http-equiv="refresh" content="0; url=pastas">
     <title>Pastas - Sleevu</title>
-    <script>location.replace("pastas" + location.search + location.hash);</script>
+    <script src="src/listas.js"></script>
   </head>
   <body></body>
 </html>

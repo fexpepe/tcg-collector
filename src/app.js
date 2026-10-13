@@ -406,7 +406,7 @@
         const button = event.target.closest("[data-grid-view]");
         if (!button) return;
         setsView = button.dataset.gridView === "list" ? "list" : "grid";
-        localStorage.setItem("tcg-sets-view", setsView);
+        try { localStorage.setItem("tcg-sets-view", setsView); } catch (e) { /* storage cheio ou bloqueado: a troca vale só nesta visita */ }
         applySetsView();
         refineVisibleSets(); // na lista do celular o valor aparece: agora vale refinar
       });

@@ -1832,14 +1832,17 @@
       if (String(q).trim() === cardHitsQuery && cardHits.length) {
         cardHits.filter(inScope).forEach((h) => out.push({
           group: t("cmdk.cards"), card: h.card, game: h.game,
-          name: h.card.name, url: `${detailUrl("set", h.card.set)}&game=${h.game}`
+          name: h.card.name, url: detailUrl("set", h.card.set, "", h.game)
         }));
       }
       if (nq && cmdkIndex) {
         const match = (x) => inScope(x) && normalize(x.name).includes(nq);
         const rank = (x) => (normalize(x.name).startsWith(nq) ? 0 : 1);
         const top = (arr) => arr.filter(match).sort((a, b) => rank(a) - rank(b) || a.name.localeCompare(b.name)).slice(0, 5);
-        const push = (group, type, x) => out.push({ group, name: x.name, game: x.game, url: `${detailUrl(type, x.name)}&game=${x.game}` });
+        // O jogo vai pelo detailUrl: anexado depois, o ?game= saía duas vezes
+        // (o da sessão primeiro, e é o primeiro que vale) e o resultado de
+        // outro jogo abria vazio no jogo da página.
+        const push = (group, type, x) => out.push({ group, name: x.name, game: x.game, url: detailUrl(type, x.name, "", x.game) });
         top(cmdkIndex.species).forEach((x) => push(t("toolbar.pokemon"), "pokemon", x));
         top(cmdkIndex.sets).forEach((x) => push(t("nav.sets"), "set", x));
         top(cmdkIndex.artists).forEach((x) => push(t("nav.artists"), "artist", x));
@@ -4825,7 +4828,7 @@
         <span class="lang-dd-caret" aria-hidden="true">▾</span>
       </button>
       <ul class="lang-dd-menu" role="listbox" hidden>
-        ${items.map((item) => `<li role="option" data-value="${escapeAttribute(item.value)}" aria-selected="${item.value === current}" class="lang-dd-option${item.value === current ? " active" : ""}">${item.flag}<span>${escapeHtml(item.sigla)}</span></li>`).join("")}
+        ${items.map((item) => `<li role="option" tabindex="0" data-value="${escapeAttribute(item.value)}" aria-selected="${item.value === current}" class="lang-dd-option${item.value === current ? " active" : ""}">${item.flag}<span>${escapeHtml(item.sigla)}</span></li>`).join("")}
       </ul>
     `;
     const toggle = dd.querySelector(".lang-dd-toggle");
@@ -5396,6 +5399,26 @@
     };
   }
 
+  // Cache de preço da TCGdex (fetchCardPricing, abaixo): uma chave por carta
+  // aberta, e nada as apagava. ~0,5 KB cada, dividindo os 5 MB do
+  // localStorage com a coleção (a fonte da verdade): cheio, a gravação da
+  // coleção falha e a edição é desfeita. Uma vez por página, antes de gravar a
+  // próxima, saem as vencidas (2026-10-13).
+  let pricingPodado = false;
+  function podaPricing() {
+    if (pricingPodado) return;
+    pricingPodado = true;
+    try {
+      for (let i = localStorage.length - 1; i >= 0; i--) {
+        const k = localStorage.key(i);
+        if (!k || k.indexOf("tcg-pricing-") !== 0) continue;
+        let vencida = true;
+        try { vencida = !(Date.now() - JSON.parse(localStorage.getItem(k)).t < 86400000); } catch (e) { /* inválida: sai */ }
+        if (vencida) localStorage.removeItem(k);
+      }
+    } catch (e) { /* sem storage */ }
+  }
+
   // Preço da carta direto da API da TCGdex (atualizado diariamente), com cache
   // de 24h no localStorage. Retorna o objeto `pricing` ou null.
   // Só Pokémon, e com prazo (2026-10-08): a TCGdex não tem carta de outro jogo,
@@ -5416,6 +5439,7 @@
       const json = response.ok ? await response.json() : null;
       if (!response.ok && response.status !== 404) return null;
       const pricing = json && json.pricing ? json.pricing : null;
+      podaPricing();
       try { localStorage.setItem(cacheKey, JSON.stringify({ t: Date.now(), p: pricing })); } catch (e) { /* cheio */ }
       return pricing;
     } catch (error) {
@@ -6186,7 +6210,9 @@
   async function fillPrints(card) {
     const box = document.querySelector("#cardPreviewModal [data-preview-prints]");
     if (!box || !card || !card.name) return;
-    const game = currentGame();
+    // O jogo da CARTA: nas telas sem jogo (Explorar, Coleção, Decks…) o da
+    // sessão é "hub", e a busca recusava (400) — o painel nunca aparecia.
+    const game = card.game || currentGame();
     // A busca da borda é interseção por PREFIXO de palavra. Palavra
     // hiper-comum ("the%" casa com 42 mil linhas do Magic) não diz nada sobre
     // a carta — e, até o teto por palavra subir pra 50 mil (27/09/2026),
@@ -6387,6 +6413,10 @@
           if (btn) btn.focus();
           return;
         }
+        // Sem popup aberto, o Esc não é dele: fechar destravava a rolagem por
+        // baixo de outro modal (vender, graded, importar deck) e tirava o
+        // ?card= da URL antes de o catálogo abrir a carta.
+        if (!activeCard && !document.getElementById("cardPreviewModal")) return;
         close();
       }
     });
@@ -9572,7 +9602,9 @@
       // banda com o que estava à vista. Com o popup aberto (pouso na rota da
       // carta), a imagem que importa é a dele: nenhuma eager.
       if (primeiroAppend && !document.body.classList.contains("preview-open")) {
-        const acimaDaDobra = fragment.querySelectorAll("img");
+        // Sem as de data: URI (a bandeira de idioma do tile, desde 2026-10-08):
+        // elas não vão à rede, e contadas tiravam o eager da metade das cartas.
+        const acimaDaDobra = fragment.querySelectorAll('img:not([src^="data:"])');
         const n = window.matchMedia && window.matchMedia("(max-width: 720px)").matches ? 2 : 8;
         for (let i = 0; i < Math.min(n, acimaDaDobra.length); i++) {
           acimaDaDobra[i].loading = "eager";
@@ -12085,8 +12117,11 @@
       const blob = new Blob([content], { type });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
-      a.href = url; a.download = filename; a.click();
-      URL.revokeObjectURL(url);
+      // Na página e com o revoke adiado, como os outros downloads do site: o
+      // Safari aborta o download do backup se a URL some no mesmo tique.
+      a.href = url; a.download = filename;
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
     }
     // O que fica de FORA, de propósito:
     //  • `collectionMeta`/`favoritesMeta`/`dexOwnedMeta` (carimbos de LWW do sync). Restaurar um
@@ -12146,7 +12181,7 @@
     window.TCGShared.deleteAccountFlow = deleteAccountFlow;
 
     // Instalar como app (PWA): só aparece quando dá pra instalar.
-    const installItem = `<li class="lang-dd-option auth-install" role="menuitem" data-pwa-install hidden>${escapeHtml(t("pwa.install"))}</li>`;
+    const installItem = `<li class="lang-dd-option auth-install" role="menuitem" tabindex="0" data-pwa-install hidden>${escapeHtml(t("pwa.install"))}</li>`;
     function updateInstallItem() {
       const el = slot.querySelector("[data-pwa-install]");
       if (el) el.hidden = !canInstallPWA();
@@ -12174,7 +12209,7 @@
       <a class="lang-dd-option auth-link" role="menuitem" href="novidades" data-news-link>${escapeHtml(t("news.heading"))}</a>
       <a class="lang-dd-option auth-link" role="menuitem" href="settings">${escapeHtml(t("footer.settings"))}</a>
       <a class="lang-dd-option auth-link" role="menuitem" href="help">${escapeHtml(t("footer.help"))}</a>
-      <li class="lang-dd-option" role="menuitem" data-troubleshoot>${escapeHtml(t("ts.title"))}</li>
+      <li class="lang-dd-option" role="menuitem" tabindex="0" data-troubleshoot>${escapeHtml(t("ts.title"))}</li>
       <a class="lang-dd-option auth-link" role="menuitem" href="privacy">${escapeHtml(t("footer.privacy"))}</a>
       <a class="lang-dd-option auth-link" role="menuitem" href="terms">${escapeHtml(t("footer.terms"))}</a>`;
     // Apagar dados (zona de perigo).
@@ -12234,7 +12269,7 @@
           ${aboutItems}
           ${deleteItem}
           <li class="auth-sep" aria-hidden="true"></li>
-          <li class="lang-dd-option" role="menuitem" data-auth-logout>${escapeHtml(t("auth.signOut"))}</li>
+          <li class="lang-dd-option" role="menuitem" tabindex="0" data-auth-logout>${escapeHtml(t("auth.signOut"))}</li>
         </ul>
         ${fileInput}
       </div>`;
@@ -12784,10 +12819,13 @@
   initTroubleshootTriggers();
   // A11y: spans/divs com role="button" (chips de tag, slots, etc.) ativam com
   // Enter/Espaço como um <button> real — um listener global cobre o site todo.
+  // Também os itens <li> dos menus do cabeçalho (idioma, moeda, conta): sem
+  // isso o teclado abria o menu e não escolhia nada (2026-10-13).
   document.addEventListener("keydown", (event) => {
     if (event.key !== "Enter" && event.key !== " ") return;
     const el = event.target;
-    if (el && el.getAttribute && el.getAttribute("role") === "button"
+    const papel = el && el.getAttribute && el.getAttribute("role");
+    if ((papel === "button" || papel === "option" || papel === "menuitem")
       && el.tagName !== "BUTTON" && el.tagName !== "A" && el.tagName !== "INPUT") {
       event.preventDefault();
       el.click();
