@@ -48,7 +48,7 @@ export const JOGOS_URL = [
   { url: "one-piece-card-game-2002", game: "onepiece", linha: "op2002", prefixos: ["op2002-"], nome: "One Piece Card Game (2002)", logo: "", vintage: "2002–2005" },
   { url: "naruto-card-game-2002", game: "naruto", nome: "Naruto Card Game (2002~2006)", logo: "assets/games/game_naruto_vintage.webp", vintage: "2002~2006" },
   { url: "naruto-data-carddass", game: "naruto", linha: "nrt-dc", prefixos: ["nrt-dc-", "nrt-nf-", "nrt-nx-"], nome: "Naruto Data Carddass", logo: "assets/games/game_naruto_datacarddass.webp", vintage: "2005–2010" },
-  { url: "naruto-ccg", game: "naruto", linha: "nrt-ccg", prefixos: ["nrt-ccg-"], nome: "Naruto Collectible Card Game", logo: "assets/games/game_naruto_ccg.webp", vintage: "2006–2013" },
+  { url: "naruto-ccg", game: "naruto", linha: "nrt-ccg", prefixos: ["nrt-ccg-"], nome: "Naruto Collectible Card Game", logo: "assets/games/game_naruto_ccg-v2.webp", vintage: "2006–2013" },
   { url: "world-of-warcraft-tcg", game: "wow", nome: "World of Warcraft TCG", logo: "assets/games/game_wow.webp", vintage: "2006–2013" },
   { url: "miracle-battle-carddass", game: "mbc", nome: "Miracle Battle Carddass", logo: "assets/games/game_mbc.webp", vintage: "2009–2015" }
 ];

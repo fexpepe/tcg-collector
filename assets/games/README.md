@@ -60,14 +60,28 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
   branco das letras na cápsula branca do hub.
 - `game_naruto.webp` — logo NARUTO genérico (tile do jogo e `setLogo` do Data
   Carddass Cross Formation nrt-nx/nrt-nf)
-- `game_naruto_ccg.webp` — Naruto Collectible Card Game americano 2006+ (tile
-  vintage EN do hub e `setLogo` da linha `nrt-ccg`, via sync-naruto-ccg.mjs).
-  Fonte: verso da carta enviado pelo Fernando em 2026-09-30 — o medalhão com
-  um pouco do fogo em volta, recortado num QUADRADO de cantos arredondados
-  (512×512, alfa só nos cantos). Era um oval largo; com o fogo sobrando dos
-  lados o medalhão ficava pequeno na prateleira, e o quadrado justo o deixa
-  maior (pedido do Fernando, mesmo dia). O fundo escuro fica de propósito: é
-  o que faz o fogo aparecer
+- `game_naruto_ccg-v2.webp` — Naruto Collectible Card Game americano 2006+
+  (tile vintage EN do hub, parede de logos do index e `setLogo` da linha
+  `nrt-ccg`, via sync-naruto-ccg.mjs). Logo SOLTO, recortado como os outros
+  vintage (2026-10-14). Até então era o medalhão do verso da carta num quadrado
+  com o fogo em volta (`game_naruto_ccg.webp`, apagado): o único tile vintage
+  com fundo, e com o "Collectible Card Game" ilegível na miniatura. Fonte: o
+  logo chapado em fundo branco da Wiki Naruto em português
+  (`File:Naruto_Collectible_Card_Game_(Capa).jpg`, 881×462) — o mesmo da
+  embalagem dos starters e do verso, sem medalhão. Melhor que as outras
+  achadas: o verso em foto do eBay dá ~440 px de logo com granulação, e o site
+  antigo da Bandai (bandaicg.com no Wayback: livro de regras em PDF e os Flash
+  do cabeçalho) só tem bitmap de ~250 px. O branco do fundo saiu por distância
+  até a "tinta" (escuro ou saturado), não por preenchimento a partir da borda:
+  na embalagem o logo tem um contorno BRANCO externo em volta de tudo, invisível
+  na fonte branca. Ele foi devolvido com 5 px na escala da fonte (borda feita
+  em 4× e reduzida, sem serrilhado) — sem ele o contorno preto some no tema
+  escuro da página do set. Miolos brancos maiores que o contorno (dentro do O,
+  entre o redemoinho e as letras) viram transparentes, como na embalagem. A
+  fonte foi ganhando 12 px de margem branca antes: a sombra azul do O acaba a
+  3 px da borda e o contorno sairia cortado reto. Recortado no conteúdo (+2px),
+  reduzido pra 512×262 em alfa pré-multiplicado, alfa abaixo de 12 zerado;
+  WebP com perda q88 e alfa sem perda (49 KB)
 - `game_naruto_vintage.webp` — Naruto Card Game japonês 2002~2006 (tile vintage
   do hub e `setLogo` da linha `nrtcg`, via sync-naruto-vintage.mjs). Fonte: o
   verso da carta enviado pelo Fernando em 2026-09-30 — logo recortado do fundo
