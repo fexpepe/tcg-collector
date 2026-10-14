@@ -6345,7 +6345,10 @@
   // da carta, em que a grade do set nem chega a aparecer). Sem ela, e na
   // camada por cima da grade, vale a ordem dos tiles no DOM. aoAbrir(carta,
   // pagina): a página acrescenta o que é dela (o "Mais de <set>" do detail.js).
-  function createCardPreview({ getCard, store, onOwnedChange, prices, wishlist, folders, sale, graded, onSiblingCards, cardPath, listaDaTela, aoAbrir }) {
+  // abrePagina(id, variante): no desktop o clique leva à PÁGINA da carta; a
+  // página que sabe mostrá-la sem recarregar (a tela do set) faz isso e
+  // devolve true. Sem ela, ou devolvendo false, vai pelo endereço.
+  function createCardPreview({ getCard, store, onOwnedChange, prices, wishlist, folders, sale, graded, onSiblingCards, cardPath, listaDaTela, aoAbrir, abrePagina }) {
     let activeCard = null;
     let activeVariant = null;
     let activeGraded = null; // { company, grade, pristine } quando aberto de uma carta GRADUADA
@@ -6640,10 +6643,11 @@
     // nome, o VALOR em destaque, as versões, as ações e o gráfico, e depois os
     // mercados, as graduadas, as lojas, a ficha e as outras impressões. A
     // mesma tela tem dois jeitos de aparecer:
-    // - CAMADA (clique numa grade): por cima da lista, sem perder o lugar nela.
-    //   No celular ocupa a tela inteira, com voltar no topo e a barra de ação
-    //   presa embaixo (o "empurrar tela" dos apps); no desktop é uma folha
-    //   larga com ‹ › pra percorrer a grade (← → no teclado).
+    // - CAMADA (clique numa grade, no CELULAR): por cima da lista, sem perder
+    //   o lugar nela, em tela inteira, com voltar no topo e a barra de ação
+    //   presa embaixo (o "empurrar tela" dos apps). No desktop o clique leva à
+    //   página (irParaPaginaDaCarta, 2026-10-14); a folha larga com ‹ › só
+    //   aparece se a carta não tiver endereço.
     // - PÁGINA (opts.pagina, a rota /games/<jogo>/<set>/<carta>): no fluxo da
     //   página, com trilha no lugar do fechar. É o que o Google e quem recebe
     //   o link veem — antes era a tela do set com o popup por cima (o AdSense
@@ -6745,7 +6749,30 @@
       return n > 0 ? conditionSummary(store, activeCard.id, v) : t("cs.mineEmpty");
     }
 
+    // DESKTOP = PÁGINA (2026-10-14, pedido do Fernando: a folha por cima, com
+    // a rolagem dela, ficou estranha no desktop). Acima do corte do celular o
+    // clique numa carta vai pra página dela — o padrão de TCGplayer, Scryfall
+    // e Collectr na web. A tela do set troca sem recarregar (abrePagina, no
+    // detail.js) e o voltar devolve a grade no lugar; nas outras telas é o
+    // link do compartilhar (/games/<jogo>/_id/<id>, a borda manda pro
+    // endereço da carta). No celular segue a camada em tela cheia. Andar pelo
+    // ‹ ›, trocar de versão ou de idioma e o próprio modo página não navegam.
+    function irParaPaginaDaCarta(card, variant, opts) {
+      try { if (window.matchMedia("(max-width: 720px)").matches) return false; } catch (e) { return false; }
+      if (abrePagina && abrePagina(card.id, variant)) return true;
+      const urlDoSet = (window.SLEEVU || {}).urlDoSet;
+      const base = card.set && urlDoSet && urlDoSet(card.game || currentGame(), card.setId);
+      const url = base ? `${base}/_id/${encodeURIComponent(card.id)}?setName=${encodeURIComponent(card.set)}` : cardShareUrl(card);
+      if (!url || url === location.href) return false;
+      // Link que chegou com ?card= (openFromUrl): troca, pra o voltar não
+      // cair de novo nele.
+      if (opts && opts.semHistorico) location.replace(url); else location.assign(url);
+      return true;
+    }
+
     function open(cardId, variant, opts) {
+      if (!(opts && (opts.pagina || opts.nav || opts.versao)) && lookupCard(cardId)
+        && irParaPaginaDaCarta(lookupCard(cardId), variant, opts)) return;
       activeCard = lookupCard(cardId);
       if (!activeCard) return;
       const veioDoNav = !!(opts && opts.nav);

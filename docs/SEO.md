@@ -141,9 +141,11 @@ página estática própria e o app seguia em `/detail?…`).
   offline), acha o set no mapa do jogo e a carta pelo nome no endereço.
 - **Dentro do app**, `/detail?type=set&…` continua funcionando (a grade de Sets,
   a busca e os links antigos usam), e a barra passa sozinha pro endereço do
-  set assim que a tela carrega. Clicar numa carta abre a tela da carta POR
-  CIMA da grade (camada; tela cheia no celular) e troca a barra pro endereço
-  dela; fechar volta pro do set. Quem chega no endereço da carta (Google, link
+  set assim que a tela carrega. Clicar numa carta no DESKTOP leva à página
+  dela (na tela do set, sem recarregar: o voltar devolve a grade no lugar; nas
+  outras telas, pelo link `/_id/` do compartilhar). No CELULAR a tela da carta
+  abre por cima da grade, em tela cheia, e troca a barra pro endereço dela;
+  fechar volta pro do set. Quem chega no endereço da carta (Google, link
   compartilhado, nova aba, `?card=` antigo) vê a mesma tela como página, com
   "Mais de <set>" embaixo (links de carta de verdade). A tela "dentro da coleção"
   (`&scope=collection`) e as de Pokémon, artista e treinador seguem em
@@ -284,5 +286,5 @@ da busca viam): a tela da carta entra no lugar do conteúdo do set
 (`body.carta-pagina`), o `h1` servido pela borda passa a ser o da carta e o
 "Sobre esta carta" fica aberto dentro dela. É o padrão do mercado (TCGplayer,
 Scryfall, Cardmarket, PriceCharting, Collectr na web: página por carta); o
-clique dentro do app segue abrindo por cima da grade, como o Moxfield e o
-pkmn.gg fazem (modal no clique, página no acesso direto).
+clique dentro do app, no celular, abre por cima da grade em tela cheia; no
+desktop, desde 2026-10-14, leva à página (a folha por cima ficou estranha).

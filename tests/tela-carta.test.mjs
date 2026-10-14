@@ -58,6 +58,19 @@ test("o ‹ › da página anda pelo set em ordem de número; a camada, pela gra
   assert.ok(detail.includes(".sort((a, b) => shared.compareCardNumbers(a.number, b.number))"));
 });
 
+test("desktop: o clique leva à PÁGINA da carta; celular segue na camada", () => {
+  // 2026-10-14: a folha por cima ficou estranha no desktop. Acima do corte do
+  // celular o open() vai pra página — e o ‹ ›, a troca de versão/idioma e o
+  // próprio modo página não podem navegar (virariam um laço de recarga).
+  assert.ok(shared.includes('if (window.matchMedia("(max-width: 720px)").matches) return false;'));
+  assert.ok(shared.includes("if (!(opts && (opts.pagina || opts.nav || opts.versao)) && lookupCard(cardId)"));
+  assert.ok(shared.includes("/_id/${encodeURIComponent(card.id)}?setName="), "o mesmo link do compartilhar");
+  // Na tela do set a troca é no próprio documento, e o voltar devolve a grade.
+  assert.ok(detail.includes('history.pushState({ sleevuCarta: 1 }, "", caminho);'));
+  assert.ok(detail.includes("if (!m[1]) { if (naPagina) voltaPraGrade(); return; }"));
+  assert.ok(detail.includes("window.scrollTo(0, scrollDaGrade);"));
+});
+
 test("o valor em destaque é o MESMO cardValue do tile", () => {
   const i = shared.indexOf("function precoHeroiHtml() {");
   const corpo = shared.slice(i, shared.indexOf("\n    }\n", i));

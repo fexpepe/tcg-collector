@@ -476,7 +476,49 @@
     listaDaTela: () => pageCards.slice()
       .sort((a, b) => shared.compareCardNumbers(a.number, b.number))
       .map((c) => ({ id: c.id, v: "" })),
-    aoAbrir: maisDoSet
+    aoAbrir: maisDoSet,
+    // Desktop: o clique numa carta da grade vira a PÁGINA dela aqui mesmo,
+    // sem recarregar (2026-10-14). Só no endereço limpo do set, com o nome da
+    // carta já conhecido; antes disso (ou em artista/Pokémon) o shared.js
+    // segue pelo link da carta.
+    abrePagina: (id, variante) => {
+      const caminho = caminhoDaCarta(id);
+      if (!caminho || caminho === enderecoDoSet || !cardsById.has(id)) return false;
+      scrollDaGrade = window.scrollY;
+      history.pushState({ sleevuCarta: 1 }, "", caminho);
+      mostraPaginaDaCarta(id, variante);
+      return true;
+    }
+  });
+
+  // Ida e volta entre a grade e a página da carta, no mesmo documento: a
+  // grade continua montada por baixo (só escondida), então voltar a devolve
+  // na mesma posição de rolagem, com os filtros como estavam.
+  let scrollDaGrade = 0;
+  let tituloDaGrade = "";
+  function mostraPaginaDaCarta(id, variante) {
+    if (!document.body.classList.contains("carta-pagina")) tituloDaGrade = document.title;
+    document.body.classList.add("carta-pagina");
+    preview.open(id, variante, { semHistorico: true, pagina: true });
+    window.scrollTo(0, 0);
+  }
+  function voltaPraGrade() {
+    preview.close({ viaVolta: true });
+    maisDoSet(null, false);
+    saiDaPaginaDaCarta();
+    document.title = tituloDaGrade || `${detailName} | Sleevu`;
+    window.scrollTo(0, scrollDaGrade);
+  }
+  window.addEventListener("popstate", () => {
+    // Pelo endereço da barra (não pelo do carregamento): quem entrou por
+    // /detail?type=set&… já está no endereço limpo depois do preparaEnderecos.
+    const m = /^\/games\/[a-z0-9-]+\/[a-z0-9-]+(?:\/([a-z0-9-]+))?\/?$/.exec(location.pathname);
+    if (!m) return;
+    const naPagina = !!document.querySelector("#cardPreviewModal.is-page");
+    if (!m[1]) { if (naPagina) voltaPraGrade(); return; }
+    let id = "";
+    if (slugsDoSet) slugsDoSet.forEach((slug, cardId) => { if (!id && slug === m[1]) id = cardId; });
+    if (id && cardsById.has(id)) mostraPaginaDaCarta(id);
   });
 
   // "Mais de <set>" embaixo da carta, no modo página: as vizinhas por número
@@ -487,6 +529,12 @@
   function maisDoSet(card, pagina) {
     document.querySelectorAll("[data-cs-more]").forEach((el) => el.remove());
     if (!pagina || !card) return;
+    // Título da aba: a carta do endereço servido pela borda já chega com o
+    // dela (que o Google lê); as outras (vindas da grade, do ‹ › ou daqui)
+    // ganham um no mesmo molde.
+    if (!(rotaDaBorda && rotaDaBorda.card === card.id && metaDaRota.content === location.pathname.replace(/\/+$/, ""))) {
+      document.title = `${[card.name, shared.cardCode(card)].filter(Boolean).join(" ")} · ${card.set || detailName} | Sleevu`;
+    }
     const tela = document.getElementById("cardPreviewModal");
     const ordem = pageCards.slice().sort((a, b) => shared.compareCardNumbers(a.number, b.number));
     const i = ordem.findIndex((c) => c.id === card.id);
@@ -509,10 +557,21 @@
     </section>`);
   }
   document.addEventListener("click", (event) => {
+    if (event.ctrlKey || event.metaKey || event.shiftKey || event.button) return;
     const ir = event.target.closest("[data-cs-ir]");
-    if (!ir || event.ctrlKey || event.metaKey || event.shiftKey || event.button) return;
-    event.preventDefault();
-    preview.open(ir.dataset.csIr, undefined, { semHistorico: true, pagina: true, nav: true });
+    if (ir) {
+      event.preventDefault();
+      preview.open(ir.dataset.csIr, undefined, { semHistorico: true, pagina: true, nav: true });
+      return;
+    }
+    // O set da carta (trilha, linha de cima do nome, "Ver as N cartas"): é
+    // esta mesma tela, então volta pra grade sem recarregar.
+    const praGrade = event.target.closest("#cardPreviewModal.is-page a.preview-set-link, [data-cs-more] .cs-more-head a");
+    if (praGrade && detailType === "set" && enderecoDoSet && location.pathname.indexOf("/games/") === 0) {
+      event.preventDefault();
+      history.pushState(null, "", enderecoDoSet);
+      voltaPraGrade();
+    }
   });
 
   // Esqueleto enquanto o chunk do set desce: esta é a tela mais aberta do
