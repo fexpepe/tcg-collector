@@ -6768,7 +6768,13 @@
       if (abrePagina && abrePagina(card.id, variant)) return true;
       const urlDoSet = (window.SLEEVU || {}).urlDoSet;
       const base = card.set && urlDoSet && urlDoSet(card.game || currentGame(), card.setId);
-      const url = base ? `${base}/_id/${encodeURIComponent(card.id)}?setName=${encodeURIComponent(card.set)}` : cardShareUrl(card);
+      // No APP (Capacitor, celular deitado ou tablet passam de 720px) vai pelo
+      // /detail?…&card=: o /_id/ é um 301 que só a borda resolve, o id com
+      // ponto no fim do caminho (sv10.5b-172) o Capacitor serve como ARQUIVO —
+      // 404 antes da ponte rodar — e o cardShareUrl sairia pro sleevu.app. O
+      // detail.js abre a carta como página e troca a barra pro endereço limpo.
+      const url = window.SLEEVU_APP && card.set ? `/${detailUrl("set", card.set, "", card.game, { card: card.id, setId: card.setId })}`
+        : base ? `${base}/_id/${encodeURIComponent(card.id)}?setName=${encodeURIComponent(card.set)}` : cardShareUrl(card);
       if (!url || url === location.href) return false;
       // Link que chegou com ?card= (openFromUrl): troca, pra o voltar não
       // cair de novo nele.

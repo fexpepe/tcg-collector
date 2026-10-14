@@ -543,3 +543,16 @@ test("codemagic.yaml: build de loja só por tag vX.Y.Z", () => {
   assert.match(cm, /pattern: "v\*"/);
   assert.doesNotMatch(cm, /@capgo\/cli|capgo (?:bundle|upload)/i, "live update não sai do Codemagic");
 });
+
+test("página da carta no app: o clique vai pelo /detail?…&card=, não pelo /_id/ da borda", () => {
+  // Tela da carta 2026-10-14: acima de 720px (celular deitado, tablet) o
+  // clique navega pra página da carta. No site o link é /games/<jogo>/_id/<id>,
+  // um 301 que só a borda resolve; no app ele caía na página de erro, e com
+  // ponto no id (sv10.5b-172) o Capacitor nem servia HTML (último pedaço com
+  // ponto = arquivo).
+  const s = ler("src/shared.js");
+  const f = s.slice(s.indexOf("function irParaPaginaDaCarta"), s.indexOf("function open(cardId"));
+  assert.ok(f.includes("window.SLEEVU_APP && card.set ? `/${detailUrl(\"set\", card.set, \"\", card.game, { card: card.id, setId: card.setId })}`"),
+    "no app a página da carta vai pelo /detail?…&card=");
+  assert.ok(f.includes("/_id/"), "no site segue o link da borda");
+});
