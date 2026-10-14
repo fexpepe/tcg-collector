@@ -82,6 +82,24 @@
   const metaDaRota = document.querySelector('meta[name="sleevu-rota"]');
   const rotaDaBorda = caminhoLimpo && metaDaRota && metaDaRota.content === location.pathname.replace(/\/+$/, "")
     ? metaDaRota.dataset : null;
+  // A CARTA COMO PÁGINA (2026-10-13). O endereço de uma carta mostra a carta
+  // (a tela da carta no fluxo da página, ver createCardPreview no shared.js),
+  // não mais a tela do set com o popup por cima: é o padrão de quem vive de
+  // página de carta (TCGplayer, Scryfall, Cardmarket, LigaPokémon, Collectr
+  // na web) e é o que o Google e quem recebe o link precisam ver. O resto da
+  // tela do set fica escondido pela classe; um esqueleto segura o lugar até o
+  // catálogo chegar. Carta que não existe no set: a classe sai e o set aparece.
+  const cartaNaQuery = new URLSearchParams(location.search).get("card") || "";
+  const rotaDeCarta = !!(caminhoLimpo && caminhoLimpo[3]) || !!cartaNaQuery;
+  if (rotaDeCarta) {
+    document.body.classList.add("carta-pagina");
+    const main = document.querySelector("main");
+    if (main) main.insertAdjacentHTML("afterbegin", '<div class="cs-esqueleto" aria-hidden="true"><span></span><span></span></div>');
+  }
+  function saiDaPaginaDaCarta() {
+    document.body.classList.remove("carta-pagina");
+    document.querySelectorAll(".cs-esqueleto").forEach((el) => el.remove());
+  }
   const params = new URLSearchParams(window.location.search);
   if (caminhoLimpo) {
     params.set("type", "set");
@@ -130,7 +148,7 @@
       if (!ficha || modal.querySelector(".preview-sobre")) return;
       if (location.pathname.replace(/\/+$/, "") !== alvo) return;
       const caixa = document.createElement("details");
-      caixa.className = "preview-details preview-sobre";
+      caixa.className = "cs-sec preview-details preview-sobre";
       // Aberto/fechado igual à ficha: aberta no desktop, fechada no celular.
       caixa.open = ficha.open;
       caixa.innerHTML = `<summary><h3>${escapeHtml(t("modal.about"))}</h3></summary><p>${escapeHtml(texto)}</p>`;
@@ -452,7 +470,49 @@
     prices,
     wishlist,
     onOwnedChange: () => refreshOwnership(),
-    cardPath: caminhoDaCarta
+    cardPath: caminhoDaCarta,
+    // No modo página o ‹ › anda pelo set em ordem de número (a grade, que
+    // daria a ordem da tela, nem aparece ali).
+    listaDaTela: () => pageCards.slice()
+      .sort((a, b) => shared.compareCardNumbers(a.number, b.number))
+      .map((c) => ({ id: c.id, v: "" })),
+    aoAbrir: maisDoSet
+  });
+
+  // "Mais de <set>" embaixo da carta, no modo página: as vizinhas por número
+  // (6 antes, 6 depois), com imagem e valor, e o link pro set inteiro. Na
+  // camada não precisa: a grade está logo atrás. Os links são endereços de
+  // carta de verdade (o robô segue; o Ctrl+clique abre aba); o clique comum
+  // troca a carta na própria tela.
+  function maisDoSet(card, pagina) {
+    document.querySelectorAll("[data-cs-more]").forEach((el) => el.remove());
+    if (!pagina || !card) return;
+    const tela = document.getElementById("cardPreviewModal");
+    const ordem = pageCards.slice().sort((a, b) => shared.compareCardNumbers(a.number, b.number));
+    const i = ordem.findIndex((c) => c.id === card.id);
+    if (!tela || i < 0 || ordem.length < 2) return;
+    const janela = ordem.slice(Math.max(0, i - 6), i + 7).filter((c) => c.id !== card.id);
+    const itens = janela.map((c) => {
+      const img = shared.cardImageSources(c, false);
+      const v = shared.cardValue(c, shared.defaultVariant(c), prices);
+      const href = caminhoDaCarta(c.id) || shared.cardShareUrl(c);
+      return `<a class="cs-more-card" href="${escapeAttribute(href)}" data-cs-ir="${escapeAttribute(c.id)}">`
+        + `<span class="print-art">${img.url ? localizedImg(img.url, { alt: "", loading: "lazy", thumb: true, fallback: img.fallback }) : ""}</span>`
+        + `<span class="print-set">${escapeHtml(c.name)}</span>`
+        + `<span class="print-meta">${escapeHtml([shared.cardCode(c), v.value > 0 ? shared.formatMoney(v.currency, v.value) : ""].filter(Boolean).join(" · "))}</span></a>`;
+    }).join("");
+    const linkDoSet = enderecoDoSet && location.pathname.indexOf("/games/") === 0 ? enderecoDoSet : "";
+    tela.insertAdjacentHTML("afterend", `<section class="cs-more" data-cs-more>
+      <div class="cs-more-head"><h2>${escapeHtml(t("cs.moreFromSet", { set: detailType === "set" ? (card.set || detailName) : detailName }))}</h2>
+        ${linkDoSet ? `<a href="${escapeAttribute(linkDoSet)}">${escapeHtml(t("cs.viewSet", { n: pageCards.length }))}</a>` : ""}</div>
+      <div class="cs-more-row">${itens}</div>
+    </section>`);
+  }
+  document.addEventListener("click", (event) => {
+    const ir = event.target.closest("[data-cs-ir]");
+    if (!ir || event.ctrlKey || event.metaKey || event.shiftKey || event.button) return;
+    event.preventDefault();
+    preview.open(ir.dataset.csIr, undefined, { semHistorico: true, pagina: true, nav: true });
   });
 
   // Esqueleto enquanto o chunk do set desce: esta é a tela mais aberta do
@@ -473,26 +533,36 @@
       if (!pageCards.length && detailType === "set" && (detailName || detailSetId)) {
         rescueWrongGame();
       }
-      // O popup da carta abre ANTES da grade (2026-10-08): quem pousa na rota
-      // de uma carta veio ver a CARTA, e a imagem grande dela entrava na fila
-      // depois das imagens eager da grade. Aberto antes, ele sai primeiro e a
-      // grade nasce sem eager (o pager vê o popup aberto).
-      // ?card=<id>: reabre o popup da carta — é onde o link compartilhado do
-      // modal e as páginas /card/<slug>.html do Google aterrissam.
-      preview.openFromUrl();
-      // /games/<jogo>/<set>/<carta> com a rota da borda: a carta já veio no
-      // <meta>, e o nome dela no endereço já é conhecido.
+      // A carta abre ANTES da grade (2026-10-08): quem pousa no endereço de
+      // uma carta veio ver a CARTA, e a imagem grande dela entrava na fila
+      // depois das imagens eager da grade. Aberta antes, sai primeiro, e a
+      // grade (escondida no modo página) nasce sem eager.
+      // Duas portas, a mesma página: /games/<jogo>/<set>/<carta> com a rota da
+      // borda (a carta já veio no <meta>, e o nome dela no endereço já é
+      // conhecido) e o ?card=<id> dos links antigos e das Impressões (o
+      // preparaEnderecos troca a barra pro endereço limpo).
       const cartaDaRota = caminhoLimpo && caminhoLimpo[3] && rotaDaBorda && rotaDaBorda.card;
-      if (cartaDaRota && cardsById.has(cartaDaRota)) {
-        slugsDoSet = new Map([[cartaDaRota, caminhoLimpo[3]]]);
-        preview.open(cartaDaRota, undefined, { semHistorico: true });
-        textoDaCartaNoPopup();
+      const cartaAberta = cartaDaRota || cartaNaQuery;
+      if (cartaAberta && cardsById.has(cartaAberta)) {
+        if (cartaDaRota) slugsDoSet = new Map([[cartaDaRota, caminhoLimpo[3]]]);
+        preview.open(cartaAberta, undefined, { semHistorico: true, pagina: true });
+        document.querySelectorAll(".cs-esqueleto").forEach((el) => el.remove());
+        if (cartaDaRota) textoDaCartaNoPopup();
+      } else if (rotaDaBorda || cartaNaQuery) {
+        saiDaPaginaDaCarta(); // a carta do endereço não está no set: mostra o set
       }
       init();
-      preparaEnderecos();
+      // Com os nomes de todas as cartas do set, os links do "Mais de" ganham
+      // o endereço limpo.
+      preparaEnderecos().then(() => {
+        const aberta = document.querySelector("#cardPreviewModal.is-page [data-card-id]");
+        if (aberta) maisDoSet(cardsById.get(aberta.dataset.cardId), true);
+        else if (rotaDeCarta) saiDaPaginaDaCarta();
+      });
     })
     .catch((error) => {
       setPronto(); // sem catálogo, sem trilho: o lugar reservado sai
+      saiDaPaginaDaCarta(); // e o erro aparece no lugar do set, não atrás da página da carta
       shared.mostraErroDeCatalogo(elements.empty, error);
       elements.empty.hidden = false;
     });
@@ -883,7 +953,10 @@
       if (caminhoLimpo[3] && !rotaDaBorda) {
         let id = "";
         slugsDoSet.forEach((slug, cardId) => { if (!id && slug === caminhoLimpo[3]) id = cardId; });
-        if (id && cardsById.has(id)) preview.open(id, undefined, { semHistorico: true });
+        if (id && cardsById.has(id)) {
+          preview.open(id, undefined, { semHistorico: true, pagina: true });
+          document.querySelectorAll(".cs-esqueleto").forEach((el) => el.remove());
+        }
       }
       return;
     }

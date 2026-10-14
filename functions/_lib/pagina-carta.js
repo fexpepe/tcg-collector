@@ -268,8 +268,10 @@ const ESTILO = `<style>
         .seo-carta a { color: var(--accent, #e63946); text-decoration: none; }
       </style>`;
 
-// As peças da página da carta, pra borda pôr na tela do set do app (o endereço
-// da carta é a tela do set com o popup dela aberto, como era o &card=).
+// As peças da página da carta, pra borda pôr na casca do app (detail.html). Desde
+// 2026-10-13 o endereço da carta mostra a CARTA como página (a tela da carta no
+// fluxo, ver createCardPreview no shared.js); antes era a tela do set com o
+// popup dela aberto, como era o &card=.
 // jogo: a entrada do registro (functions/_lib/jogos.js). set: { slug, nome }.
 // cartas: todas as cartas da página do set; slugs: Map id -> nome no endereço.
 // preco: o valor (número) na `moeda` ("USD" ou "EUR", ver precoDeReferencia).
@@ -352,12 +354,11 @@ export function pecasDaCarta({ card, jogo, set, cartas, slugs, preco, moeda = "U
   };
 
   // O texto da carta, recolhido no pé da tela: quem abre o endereço vê a
-  // carta no popup (desenhado pelo JS); o robô que não roda JS lê daqui.
-  // data-seo-carta deixa o detail.js tirar o bloco de uma cópia guardada que
-  // chegue pra OUTRA carta. O .seo-carta-texto também aparece DENTRO do popup
-  // (o detail.js copia, ver textoDaCartaNoPopup): no pé da tela, atrás da
-  // grade inteira do set, nem o revisor do AdSense nem quem chegou pela busca
-  // o via.
+  // página da carta (desenhada pelo JS, que esconde este bloco); o robô que não
+  // roda JS lê daqui. data-seo-carta deixa o detail.js tirar o bloco de uma
+  // cópia guardada que chegue pra OUTRA carta. O .seo-carta-texto também
+  // aparece DENTRO da tela da carta, como "Sobre esta carta" (o detail.js
+  // copia, ver textoDaCartaNoPopup).
   const nomeCompleto = `${card.name}${codeBit}${codeBitDesc}`;
   const corpoHtml = `<details class="seo-carta" data-seo-carta="${escapeAttr(caminho)}">
         ${ESTILO}
@@ -376,7 +377,9 @@ export function pecasDaCarta({ card, jogo, set, cartas, slugs, preco, moeda = "U
     titulo,
     desc,
     canonical,
-    h1: set.nome,
+    // O h1 é o da CARTA desde que o endereço dela mostra a carta como página
+    // (2026-10-13); antes era o do set, que era a tela por baixo do popup.
+    h1: `${card.name}${codeBit}`,
     ogTitulo: `${nomeCompleto} — ${set.nome}`,
     ogImagem: img,
     alternates: [],

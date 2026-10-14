@@ -14,8 +14,8 @@
 //                                   (2026-10-01; antes era uma página estática
 //                                   à parte, e o app seguia em /detail?…)
 //   /games/<jogo>/<set>-en       -> a variante em inglês, estática (next())
-//   /games/<jogo>/<set>/<carta>  -> a mesma tela do set, com o popup da carta
-//                                   aberto e o SEO da carta
+//   /games/<jogo>/<set>/<carta>  -> a mesma casca, com a CARTA como página
+//                                   (2026-10-13) e o SEO da carta
 //   /games/<jogo>/_id/<id>?setName=  -> 301 pra página da carta (é o link
 //                                   que o "compartilhar" do app gera: o app
 //                                   sabe o id e o set, não o nome no endereço;
@@ -196,8 +196,8 @@ async function precoDaCarta(env, request, card, arquivo) {
   return precoDeReferencia(hasOwn(tabela, id) ? tabela[id] : tabela[basePricingId(id)]);
 }
 
-// A tela do set do app no endereço do set; com `rota.carta`, a mesma tela com
-// o popup da carta aberto (o detail.js lê a rota do <meta> que vai no HTML).
+// A tela do set do app no endereço do set; com `rota.carta`, a mesma casca com
+// a página da carta (o detail.js lê a rota do <meta> que vai no HTML).
 // Exceção na decoração (um chunk ou mapa fora do formato, um caso que as peças
 // não previram) virava a página de erro da Cloudflare (2026-10-08). A casca
 // crua abre a mesma tela: o detail.js acha o set e a carta pelo endereço — a

@@ -21,12 +21,14 @@ const shared = readFileSync(join(raiz, "src/shared.js"), "utf8");
 const detail = readFileSync(join(raiz, "src/detail.js"), "utf8");
 
 test("eager: 2 no celular, 8 no desktop, nenhuma com o popup aberto", () => {
-  assert.ok(shared.includes('if (primeiroAppend && !document.body.classList.contains("preview-open")) {'));
+  // carta-pagina: na rota da carta a grade do set nem aparece (2026-10-13).
+  assert.ok(shared.includes('if (primeiroAppend && !document.body.classList.contains("preview-open") && !document.body.classList.contains("carta-pagina")) {'));
   assert.ok(shared.includes('const n = window.matchMedia && window.matchMedia("(max-width: 720px)").matches ? 2 : 8;'));
 });
 
-test("na rota da carta o popup abre antes de a grade ser montada", () => {
-  const bloco = detail.slice(detail.indexOf("preview.openFromUrl();"), detail.indexOf("preparaEnderecos();", detail.indexOf("preview.openFromUrl();")));
-  assert.ok(bloco.includes("preview.open(cartaDaRota"), "a rota da carta abre o popup");
-  assert.ok(bloco.indexOf("preview.open(cartaDaRota") < bloco.indexOf("init();"), "o init (grade) vem depois do popup");
+test("na rota da carta a página da carta abre antes de a grade ser montada", () => {
+  const ini = detail.indexOf("const cartaAberta = cartaDaRota || cartaNaQuery;");
+  const bloco = detail.slice(ini, detail.indexOf("preparaEnderecos()", ini));
+  assert.ok(ini > 0 && bloco.includes("preview.open(cartaAberta, undefined, { semHistorico: true, pagina: true });"), "a rota da carta abre a tela no modo página");
+  assert.ok(bloco.indexOf("preview.open(cartaAberta") < bloco.indexOf("init();"), "o init (grade) vem depois da carta");
 });

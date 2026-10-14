@@ -34,7 +34,7 @@ test("canonical, trilha e o que vai pro <head>", () => {
   const p = pecas(cartas[2], 120.5);
   assert.equal(p.canonical, "https://sleevu.app/games/pokemon/sv03-5-151/charizard-ex-006-165");
   assert.equal(p.titulo, "Charizard ex 006/165 · 151 | Sleevu");
-  assert.equal(p.h1, "151", "o h1 da tela é o do set: a carta abre no popup");
+  assert.equal(p.h1, "Charizard ex 006/165", "o h1 é o da carta: o endereço dela mostra a carta como página");
   assert.equal(p.ogImagem, "", "carta sem imagem não inventa og:image");
   const [, trilha] = jsonLds(p);
   assert.deepEqual(trilha.itemListElement.map((i) => i.item), [
@@ -90,8 +90,8 @@ test("o parágrafo da carta leva a classe que o detail.js copia pro popup", () =
 
 // 2026-10-13: o mesmo parágrafo em inglês e espanhol, em <template> (não
 // aparece na página nem conta como texto dela), pro popup de quem usa o site
-// nesses idiomas; e o nome da carta num <h2>, o único título da página que o
-// tem (o h1 é o do set).
+// nesses idiomas; e o nome da carta também no <h2> do bloco (o h1, desde
+// 2026-10-13, é o da carta).
 test("o parágrafo da carta vem também em en e es, e o nome dela num h2", () => {
   const { corpoHtml } = pecas(cartas[0], 1.5);
   assert.match(corpoHtml, /<template data-texto-carta="en">Charmander is a card from the 151 set of Pokémon TCG, rarity Common, numbered 004\/165[^<]*September 22, 2023[^<]*US market[^<]*<\/template>/);

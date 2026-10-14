@@ -131,7 +131,7 @@ página estática própria e o app seguia em `/detail?…`).
 | `/games` | todos os jogos, modernos e vintage | estática (`prerender-catalog`) |
 | `/games/<jogo>` | a tela de Sets do app, com título, descrição e índice de sets próprios | borda, por cima do `sets.html` |
 | `/games/<jogo>/<set>` | a tela do set do app, com título, JSON-LD (CollectionPage) e o índice das cartas | borda, por cima do `detail.html`, dos mesmos chunks do app |
-| `/games/<jogo>/<set>/<carta>` | a mesma tela com o popup da carta aberto, com o título, o JSON-LD (Product só quando a carta tem preço; sem preço, só a trilha) e o texto da carta | borda, idem |
+| `/games/<jogo>/<set>/<carta>` | a CARTA como página (desde 2026-10-13; antes, a tela do set com o popup por cima), com o `h1` da carta, o título, o JSON-LD (Product só quando a carta tem preço; sem preço, só a trilha) e o texto da carta | borda, idem |
 | `/games/<jogo>/<set>-en` | a variante em inglês do set (hreflang) | estática (`prerender-catalog`) |
 | `/games/<jogo>/_id/<id>` | link de compartilhar do app | 301 pra carta |
 
@@ -141,8 +141,11 @@ página estática própria e o app seguia em `/detail?…`).
   offline), acha o set no mapa do jogo e a carta pelo nome no endereço.
 - **Dentro do app**, `/detail?type=set&…` continua funcionando (a grade de Sets,
   a busca e os links antigos usam), e a barra passa sozinha pro endereço do
-  set assim que a tela carrega. O popup troca a barra pro endereço da carta ao
-  abrir e volta pro do set ao fechar. A tela "dentro da coleção"
+  set assim que a tela carrega. Clicar numa carta abre a tela da carta POR
+  CIMA da grade (camada; tela cheia no celular) e troca a barra pro endereço
+  dela; fechar volta pro do set. Quem chega no endereço da carta (Google, link
+  compartilhado, nova aba, `?card=` antigo) vê a mesma tela como página, com
+  "Mais de <set>" embaixo (links de carta de verdade). A tela "dentro da coleção"
   (`&scope=collection`) e as de Pokémon, artista e treinador seguem em
   `/detail?…`.
 
@@ -274,3 +277,12 @@ dele como redirecionamento até o total parar de crescer.
   menções com o nome escrito sempre igual (Sleevu, sleevu.app), perfis
   oficiais com o link, e gente buscando o nome e clicando no site. Perfil
   oficial novo (TikTok, YouTube…) entra no `sameAs` do JSON-LD da home.
+
+**Tela da carta como página (2026-10-13).** O endereço da carta deixou de ser
+"a tela do set com o popup por cima" (o que o revisor do AdSense e quem vinha
+da busca viam): a tela da carta entra no lugar do conteúdo do set
+(`body.carta-pagina`), o `h1` servido pela borda passa a ser o da carta e o
+"Sobre esta carta" fica aberto dentro dela. É o padrão do mercado (TCGplayer,
+Scryfall, Cardmarket, PriceCharting, Collectr na web: página por carta); o
+clique dentro do app segue abrindo por cima da grade, como o Moxfield e o
+pkmn.gg fazem (modal no clique, página no acesso direto).

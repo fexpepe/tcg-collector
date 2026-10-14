@@ -1683,7 +1683,7 @@ input::placeholder {
 }
 /* Selo da nota + preço graded na linha de metadados do popup (junto do ano,
    bandeira e número) quando a carta é graduada. */
-.preview-subtitle .graded-badge { margin-left: 2px; font-size: 12px; padding: 2px 9px; }
+.cs-eyebrow .graded-badge { margin-left: 2px; font-size: 12px; padding: 2px 9px; }
 .preview-graded-price { font-weight: 800; color: var(--gold); font-size: 14px; }
 /* "Set · nº" do slab editável na GRADE (2026-09-29): SEMPRE duas linhas —
    reservadas quando o texto é curto ("151 · 198"), cortadas com reticências
@@ -2325,56 +2325,6 @@ input::placeholder {
 .variant-conditions.owned {
   border-color: rgba(var(--accent-rgb), 0.45);
 }
-
-/* Cabeçalho da variante = <summary> clicável do <details>. Sem o marcador
-   nativo; o chevron gira ao abrir. Colapsado por padrão. */
-.variant-conditions-head {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  list-style: none;
-}
-.variant-conditions-head::-webkit-details-marker { display: none; }
-.variant-conditions[open] > .variant-conditions-head { margin-bottom: 8px; }
-
-.variant-row-name {
-  font-weight: 700;
-  font-size: 13px;
-  color: var(--muted);
-  margin-right: auto;
-}
-.variant-conditions-head:hover .variant-row-name { color: var(--text); }
-
-.variant-breakdown {
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--accent);
-  white-space: nowrap;
-}
-.variant-breakdown-empty { color: var(--subtle); font-weight: 600; }
-
-.variant-chevron {
-  color: var(--subtle);
-  font-size: 11px;
-  transition: transform 120ms ease;
-}
-.variant-conditions[open] .variant-chevron { transform: rotate(180deg); }
-
-/* +/− RÁPIDOS na linha da variante do card: soma/tira 1 NM sem expandir o
-   "tocar para gerenciar" (que segue existindo pro ajuste por condição). Vivem
-   dentro do <summary>; o JS dá preventDefault pro details não abrir junto. */
-.variant-quick { display: inline-flex; gap: 4px; flex: 0 0 auto; }
-.vq-btn {
-  width: 30px; height: 30px;
-  display: inline-flex; align-items: center; justify-content: center;
-  border: 1px solid var(--line); background: var(--panel-strong);
-  color: var(--text); font-size: 15px; font-weight: 700; line-height: 1;
-  cursor: pointer;
-}
-.vq-btn:hover { border-color: var(--accent); color: var(--accent-ink); }
-.vq-btn[disabled] { opacity: .35; cursor: default; }
-
 
 .condition-grid {
   display: grid;
@@ -3414,319 +3364,96 @@ html[data-detail="set"]:not([data-set-pronto]) #setInsights { display: block !im
 /* 20px com o traço 2.4 do ícone = o X de antes (dois traços de 14×2px). */
 .preview-close svg, .ts-close svg { width: 20px; height: 20px; }
 
-/* Coluna da esquerda do preview: carta + "Detalhes da carta" embaixo dela.
-   Os detalhes moraram na coluna da direita até 2026-08-07; passaram pra cá
-   porque são leitura de ficha, não ação — e a direita já tinha coleção, tags,
-   graded, dois campos de preço e três blocos de valor. Rola só esta coluna se
-   a ficha aberta passar da altura do painel. */
-.preview-image-wrap {
-  display: grid;
-  grid-auto-rows: min-content;
-  align-content: start;
-  gap: 14px;
-  min-height: 0;
+/* ── TELA DA CARTA (2026-10-13) ───────────────────────────────────────────
+   O popup virou a página da carta (ver o comentário no open() do shared.js):
+   imagem grande à esquerda, presa enquanto a coluna da direita rola; nome,
+   VALOR em destaque, versões, ações e gráfico logo em cima; depois mercados,
+   graduadas, lojas, ficha e as outras impressões. Tudo escopado no
+   #cardPreviewModal: .card-preview-modal/.card-preview-panel/.preview-close
+   também vestem o editor de pasta, o picker de graded e os modais de venda,
+   que seguem com o desenho de antes.
+   Antes: modal de 960 px com DUAS colunas rolando cada uma por si (e a lista
+   de Impressões rolando dentro de uma delas — três rolagens numa tela). Agora
+   a folha rola inteira, uma vez só, como uma página. */
+#cardPreviewModal { align-items: start; padding: 24px 24px 0; }
+#cardPreviewModal .card-preview-panel {
+  width: min(1180px, 100%);
+  height: calc(100vh - 24px);
+  height: calc(100dvh - 24px);
+  max-height: none;
   overflow-y: auto;
-  overscroll-behavior: contain;
-  /* Goteira reservada SEMPRE: senão a carta mede 400px quando a ficha fechada
-     cabe e 385px quando a aberta não cabe — voltaria a ter dois tamanhos, que é
-     exatamente o que esta mudança veio consertar. */
-  scrollbar-gutter: stable;
-}
-
-/* TAMANHO PADRÃO DA CARTA — não depende da resolução da fonte.
-   Antes era `width: auto; max-width: 100%`: a carta renderizava no tamanho
-   NATURAL da imagem, então cada jogo abria num tamanho diferente (Lorcana serve
-   674px de largura, Magic 488, o scan vintage do HxH 440 — e o painel mostrava
-   exatamente isso). Agora a moldura é 63/88 (a proporção física da carta, a
-   mesma dos tiles) e a imagem preenche com `cover`: fonte grande escala pra
-   baixo, fonte pequena escala pra cima, e o recorte fica em fração de por cento
-   porque as fontes ficam todas entre 0,68 e 0,73 de proporção.
-   Se a altura disponível apertar (viewport baixa), o max-height corta a moldura
-   e o `cover` recentraliza — nunca distorce. */
-/* Miniatura (já em cache, veio do tile) por baixo da imagem grande: o modal
-   abre com a carta visível em vez de um retângulo cinza esperando o high-res,
-   que é ~10x maior. As duas ocupam a mesma caixa; a grande cobre a pequena
-   quando termina de carregar (antes disso, um <img> ainda vazio não pinta). */
-.preview-image-stack {
-  position: relative;
-  display: block;
-  width: 100%;
-}
-.preview-image-stack .preview-image-thumb {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-}
-.preview-image-stack img:not(.preview-image-thumb) {
-  position: relative;
-  z-index: 1;
-}
-
-.preview-image-wrap img {
-  width: 100%;
-  aspect-ratio: 63 / 88;
-  height: auto;
-  max-height: 100%;
-  object-fit: cover;
-  margin: 0 auto;
-  border-radius: 4.8% / 3.4%;
-  /* Sem sombra: a ficha "Detalhes da carta" mora logo abaixo da imagem e a
-     drop-shadow de 34px caía em cima dela, escurecendo o topo do bloco. */
-}
-
-/* Carta DEITADA (a imagem é mais larga que alta — Líder/Base do Star Wars,
-   Battlefield do Riftbound, Location do Lorcana): a moldura retrato com
-   `cover` mostrava só o miolo. O shared.js marca o stack no load e a moldura
-   passa a ser a da própria imagem, na largura toda da coluna. */
-.preview-image-stack.is-landscape img {
-  width: 100%;
-  aspect-ratio: auto;
-  border-radius: 3.4% / 4.8%;
-}
-
-/* Nome do set no popup (eyebrow e linha "Set" da ficha): atalho pra página
-   do set. Herda a cor do lugar onde está — só sublinha ao passar o mouse. */
-.preview-set-link {
-  color: inherit;
-  text-decoration: none;
-}
-.preview-set-link:hover,
-.preview-set-link:focus-visible {
-  text-decoration: underline;
-}
-
-/* Só a coluna de detalhes rola quando o conteúdo passa da altura do painel —
-   a imagem e a moldura do modal ficam sempre inteiras na tela. */
-.preview-content {
-  min-width: 0;
-  min-height: 0;
   display: grid;
-  align-content: start;
-  gap: 14px;
-  overscroll-behavior: contain;
-  padding-right: 12px;
-  overflow-y: auto;
-}
-
-.preview-content h2 {
-  margin: 0 40px 6px 0;
-  font-size: clamp(24px, 3vw, 34px);
-  line-height: 1.05;
-}
-
-.preview-subtitle {
-  color: var(--muted);
-  margin-bottom: 0;
-}
-
-/* Ficha e Impressões do popup: caixas QUADRADAS (o passe flat já deixou os
-   controles do site assim; a caixa de 12px de raio com 44px de altura virava
-   uma pílula quando fechada, no celular). O cabeçalho é o <summary> inteiro —
-   ver "Detalhes recolhível" mais abaixo, onde mora o chevron. */
-.preview-details,
-.preview-prints {
-  border: 1px solid var(--line);
-  border-radius: 0;
-  overflow: hidden;
-  background: var(--panel-strong);
-}
-
-.preview-details h3,
-.preview-prints h3 {
-  margin: 0;
-  font-size: 15px;
-}
-
-.preview-details dl {
-  margin: 0;
-}
-
-.preview-details div {
-  display: grid;
-  grid-template-columns: 112px 1fr;
-  align-items: baseline;
-  gap: 16px;
-  padding: 10px 16px;
-  border-bottom: 1px solid var(--line);
-  font-size: 13.5px;
-}
-
-.preview-details div:last-child {
+  grid-template-columns: minmax(280px, 430px) minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  align-items: start;
+  gap: 0 44px;
+  padding: 0 36px 48px;
+  border-color: var(--line);
   border-bottom: 0;
+  border-radius: 18px 18px 0 0;
 }
+#cardPreviewModal .card-preview-panel:focus { outline: none; }
+/* Entrada: a folha sobe um tico, como página chegando (só na 1ª abertura). */
+#cardPreviewModal.is-entering .card-preview-panel { animation: cs-rise 0.22s cubic-bezier(0.2, 0.8, 0.25, 1) both; }
+#cardPreviewModal.is-entering .card-preview-backdrop { animation: preview-fade 0.18s ease-out both; }
+@keyframes cs-rise { from { transform: translateY(18px); opacity: 0; } }
 
-.preview-details dt {
-  color: var(--muted);
-  font-weight: 700;
-}
-
-.preview-details dd {
-  margin: 0;
-  text-align: right;
-  color: var(--text);
-  font-weight: 700;
-  overflow-wrap: anywhere;
-}
-
-/* Aviso da carta PT completada pela edição inglesa (prov "en"): uma linha
-   discreta no pé da ficha, no mesmo recuo das linhas acima. */
-.preview-prov-note {
-  margin: 0;
-  padding: 10px 16px;
-  border-top: 1px solid var(--line);
-  color: var(--muted);
-  font-size: 12.5px;
-  line-height: 1.45;
-}
-
-/* "Sobre esta carta" no popup aberto pelo endereço da carta (detail.js,
-   textoDaCartaNoPopup): o parágrafo da borda, no recuo da ficha. */
-.preview-sobre p {
-  margin: 0;
-  padding: 12px 16px;
-  font-size: 13.5px;
-  line-height: 1.6;
-}
-
-/* Impressões (popup da carta): lista de sets onde a carta de mesmo nome saiu.
-   Rola dentro da própria caixa — "Lightning Bolt" tem dezenas de impressões e
-   empurraria a ficha pra fora da tela. */
-.preview-prints-list {
-  max-height: 236px;
-  overflow-y: auto;
-}
-
-.preview-print {
+/* Barra do topo: trilha (jogo / set / carta), ‹ › da grade, compartilhar, X.
+   Presa no topo da folha enquanto ela rola. */
+#cardPreviewModal .cs-bar {
+  grid-column: 1 / -1;
+  position: sticky;
+  top: 0;
+  z-index: 3;
   display: flex;
-  align-items: baseline;
-  justify-content: space-between;
+  align-items: center;
   gap: 12px;
-  padding: 7px 16px;
+  min-height: 64px;
+  margin: 0 -36px 12px;
+  padding: 0 18px 0 36px;
+  background: var(--surface);
   border-bottom: 1px solid var(--line);
-  font-size: 13px;
-  color: var(--text);
-  text-decoration: none;
 }
-
-.preview-print:last-child { border-bottom: 0; }
-a.preview-print:hover { background: var(--panel); }
-
-/* A impressão aberta agora: marcada, e não é link (ver fillPrints). */
-.preview-print.is-current {
-  background: var(--accent-soft);
-  font-weight: 700;
-}
-
-.preview-print .print-set {
+.cs-trail {
+  flex: 1 1 auto;
   min-width: 0;
-  overflow-wrap: anywhere;
-}
-
-.preview-print .print-meta {
-  color: var(--muted);
-  white-space: nowrap;
-  font-variant-numeric: tabular-nums;
-}
-
-/* Prévia da impressão sob o mouse: cartão flutuante posicionado por JS
-   (position fixed foge do overflow da lista). pointer-events none: se o cursor
-   alcançasse a prévia, o hover por baixo morreria e ela piscaria. */
-.preview-print-thumb {
-  position: fixed;
-  z-index: 60; /* acima do modal (50) */
-  width: 230px;
-  aspect-ratio: 63 / 88;
-  object-fit: contain;
-  border-radius: 10px;
-  box-shadow: var(--shadow);
-  background: var(--panel-strong);
-  pointer-events: none;
-}
-
-/* Ações da carta (2026-09-21): em cima a linha PRINCIPAL [−] [Não tenho /
-   Tenho N] [+], no desenho do TCGCollector; embaixo a linha secundária com
-   Pastas, Lista de Desejo e o compartilhar só com o ícone. Tudo em pílula
-   (999px), como o botão "tenho" já era — os dois lados da linha principal
-   viram círculos de 46px. */
-.preview-actions {
-  display: grid;
-  gap: 10px;
-}
-
-.preview-own-row {
-  display: grid;
-  grid-template-columns: 46px minmax(0, 1fr) 46px;
-  gap: 10px;
-  align-items: stretch;
-}
-
-.preview-qty-btn {
-  width: 46px;
-  min-height: 46px;
-  padding: 0;
-  border-radius: 999px;
-  border: 1px solid var(--line);
-  background: var(--panel-strong);
-  color: var(--text);
-}
-.preview-qty-btn svg { width: 18px; height: 18px; }
-.preview-qty-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
-.preview-qty-btn:disabled { opacity: 0.4; cursor: default; }
-
-.preview-actions-row {
-  display: grid;
-  /* Duas pílulas de texto dividindo a largura — a MESMA da linha de cima, pra
-     as bordas das duas fileiras casarem. O compartilhar ficava aqui num
-     círculo de 46px na ponta, e as pílulas terminavam antes do [+] de cima;
-     em 2026-09-22 ele subiu pro topo, ao lado do X. */
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 10px;
-}
-/* Sem wishlist na página (ex.: Pastas): só Pastas, na largura inteira. */
-.preview-actions-row.no-want { grid-template-columns: minmax(0, 1fr); }
-
-.preview-folders,
-.preview-want {
+  display: flex;
+  align-items: center;
   gap: 8px;
-  min-height: 46px;
-  font-size: 15px;
-  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 600;
 }
-/* Pílula com DUAS classes de propósito: o passe flat global (`.secondary
-   { border-radius: 0 }`, mais abaixo no arquivo) vencia a classe sozinha e
-   estes botões saíam quadrados ao lado do "tenho", que é pílula. */
-.preview-actions-row .secondary { border-radius: 999px; }
-.preview-folders span,
-.preview-want span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.preview-folders svg,
-.preview-want svg { flex: none; }
-
-/* Compartilhar: só o ícone, no MESMO círculo do X e colado à esquerda dele
-   (2026-09-22) — mesma caixa, borda, fundo e sombra; a diferença é só o
-   desenho dentro. O "Link copiado!" (quando não há menu nativo de
-   compartilhar) é um balão EMBAIXO do botão: em cima não há mais espaço. */
-.preview-share {
-  position: absolute;
-  top: 12px;
-  right: 54px;         /* 12 do X + 34 do X + 8 de respiro */
-  z-index: 2;
-  display: inline-flex; align-items: center; justify-content: center;
-  width: 34px;
-  height: 34px;
-  min-width: 34px;
-  min-height: 34px;
-  flex: none;
-  aspect-ratio: 1;
+.cs-trail a { color: inherit; text-decoration: none; flex: none; }
+.cs-trail a:hover { color: var(--text); text-decoration: underline; }
+.cs-trail span[aria-hidden] { color: var(--subtle); flex: none; }
+.cs-trail-here { min-width: 0; overflow: hidden; text-overflow: ellipsis; color: var(--text); font-weight: 700; }
+.cs-bar-acts { flex: none; display: flex; align-items: center; gap: 8px; }
+#cardPreviewModal .cs-bar :is(.cs-nav, .cs-back, .preview-share, .preview-close) {
+  position: static;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  min-height: 40px;
   padding: 0;
-  border-radius: 50%;
   border: 1px solid var(--line);
+  border-radius: 50%;
   background: var(--panel);
   color: var(--text);
-  box-shadow: var(--shadow-pop);
+  box-shadow: none;
   cursor: pointer;
 }
-.preview-share:hover { color: var(--accent); border-color: var(--accent); }
-.preview-share svg { width: 16px; height: 16px; }
+#cardPreviewModal .cs-bar :is(.cs-nav, .cs-back, .preview-share, .preview-close):hover:not(:disabled) { color: var(--accent-ink); border-color: var(--accent); }
+#cardPreviewModal .cs-bar .cs-back { display: none; }
+.cs-nav:disabled { opacity: 0.35; cursor: default; }
+.preview-share svg { width: 17px; height: 17px; }
+/* "Link copiado!" (sem menu nativo de compartilhar): balão embaixo do botão. */
+.preview-share { position: relative; }
 .preview-share.is-copied::after {
   content: attr(data-copied);
   position: absolute;
@@ -3743,18 +3470,350 @@ a.preview-print:hover { background: var(--panel); }
   pointer-events: none;
 }
 
-.preview-want.active {
-  background: var(--accent-soft);
-  border-color: var(--accent);
-  color: var(--accent);
+/* A CARTA: presa embaixo da barra enquanto a coluna da direita rola, com a
+   própria miniatura borrada fazendo o brilho atrás (as cores da carta, sem
+   sombra — o site é flat). Clicar amplia (lupa no canto ao passar o mouse). */
+.cs-media {
+  position: sticky;
+  top: 88px;
+  display: grid;
+  justify-items: center;
+  padding-top: 4px;
+}
+.cs-glow {
+  position: absolute;
+  inset: 6% -6% 0;
+  z-index: 0;
+  opacity: 0.55;
+  filter: blur(56px) saturate(1.6);
+  pointer-events: none;
+}
+.cs-glow img { width: 100%; height: 100%; object-fit: cover; }
+.cs-art {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 4.8% / 3.4%;
+  background: none;
+  cursor: zoom-in;
+}
+.cs-art .preview-image-stack { position: relative; display: block; width: 100%; }
+.cs-art .preview-image-stack .preview-image-thumb { position: absolute; inset: 0; z-index: 0; }
+.cs-art .preview-image-stack img:not(.preview-image-thumb) { position: relative; z-index: 1; }
+.cs-art img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 63 / 88;
+  height: auto;
+  object-fit: cover;
+  border-radius: 4.8% / 3.4%;
+}
+/* Carta DEITADA (Líder do Star Wars, Battlefield do Riftbound, Location do
+   Lorcana): a moldura passa a ser a da própria imagem (o shared.js marca). */
+.cs-art .preview-image-stack.is-landscape img { aspect-ratio: auto; border-radius: 3.4% / 4.8%; }
+.cs-zoom-ico {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+.cs-art:hover .cs-zoom-ico,
+.cs-art:focus-visible .cs-zoom-ico { opacity: 1; }
+/* Ampliada: a carta sozinha na tela, tocar em qualquer lugar fecha. */
+.cs-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.92);
+  cursor: zoom-out;
+}
+.cs-lightbox img { max-width: 100%; max-height: 100%; width: auto; height: auto; border-radius: 3.6% / 2.6%; }
+#cardPreviewModal .cs-lightbox .preview-close { position: absolute; top: 16px; right: 16px; }
+
+/* Coluna da direita: UMA coluna em fluxo (a folha é quem rola). */
+#cardPreviewModal .preview-content {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding-top: 4px;
+}
+/* Página no desktop largo (a coluna da direita passa de ~860px): o VALOR e
+   as ações dividem a linha, em vez de uma pílula de 900px. Na folha (até
+   1180px) e no celular, um embaixo do outro. */
+@media (min-width: 1200px) {
+  #cardPreviewModal.is-page .preview-content { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 22px 20px; }
+  #cardPreviewModal.is-page .preview-content > * { grid-column: 1 / -1; }
+  #cardPreviewModal.is-page .preview-content > [data-cs-price-slot] { grid-column: 1; grid-row: 2; }
+  #cardPreviewModal.is-page .preview-content > .preview-actions { grid-column: 2; grid-row: 2; align-self: center; }
+}
+/* Carta de uma versão só: o lugar das pílulas some (senão dobra o vão). */
+[data-cs-variants-slot]:empty { display: none; }
+.cs-head { display: grid; gap: 10px; }
+.cs-eyebrow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 700;
+}
+.cs-eyebrow > :is(span, a) + :is(span, a)::before { content: "·"; margin-right: 10px; color: var(--subtle); }
+.cs-eyebrow .preview-set-link { color: var(--accent-ink); }
+.preview-set-link { color: inherit; text-decoration: none; }
+.preview-set-link:hover,
+.preview-set-link:focus-visible { text-decoration: underline; }
+.cs-name { margin: 0; font-size: clamp(28px, 3.1vw, 40px); line-height: 1.06; letter-spacing: -0.01em; overflow-wrap: anywhere; }
+.cs-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; }
+.cs-chips > * {
+  padding: 5px 12px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+}
+.cs-chips a:hover { color: var(--accent-ink); border-color: var(--accent); }
+
+/* O VALOR em destaque (o mesmo cardValue do tile), com a variação e a fonte. */
+.cs-price {
+  display: grid;
+  gap: 4px;
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+}
+.cs-price-label { color: var(--subtle); font-size: 12px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; }
+.cs-price-row { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; }
+.cs-price-val { font-size: clamp(30px, 3.2vw, 40px); line-height: 1.1; font-weight: 800; font-variant-numeric: tabular-nums; }
+.cs-price.is-empty .cs-price-val { font-size: 20px; color: var(--muted); }
+.cs-price-src { color: var(--subtle); font-size: 13px; font-weight: 600; }
+
+/* Versões lado a lado: nome, valor e quantas você tem (o selo). */
+.cs-variants { display: flex; flex-wrap: wrap; gap: 8px; }
+.cs-variant {
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: center;
+  gap: 1px 10px;
+  min-height: 54px;
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+}
+.cs-variant:hover { border-color: var(--accent); }
+.cs-variant.is-on { border-color: var(--accent); background: var(--accent-soft); box-shadow: inset 0 0 0 1px var(--accent); }
+.cs-variant-name { grid-column: 1; font-size: 14px; font-weight: 800; }
+.cs-variant-price { grid-column: 1; color: var(--muted); font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.cs-variant-n {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  display: grid;
+  place-items: center;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 7px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-size: 12px;
+  font-weight: 800;
 }
 
-.preview-owned {
-  min-height: 46px;
-  min-width: 0;
-  padding: 0 12px;
+/* AÇÕES: [−] [Não tenho / Tenho N] [+] e, embaixo, Lista de Desejo e Pastas.
+   Tudo em pílula; no celular a fileira vira a barra presa no pé (ver ≤720px). */
+.preview-actions { display: grid; gap: 10px; }
+.preview-own-row {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) 48px;
+  gap: 10px;
+  align-items: stretch;
+}
+.preview-qty-btn {
+  width: 48px;
+  min-height: 48px;
+  padding: 0;
   border-radius: 999px;
-  font-size: 15px;
+  border: 1px solid var(--line);
+  background: var(--panel-strong);
+  color: var(--text);
+}
+.preview-qty-btn svg { width: 18px; height: 18px; }
+.preview-qty-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+.preview-qty-btn:disabled { opacity: 0.4; cursor: default; }
+.preview-actions-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; }
+.preview-actions-row.no-want { grid-template-columns: minmax(0, 1fr); }
+.preview-folders,
+.preview-want { gap: 8px; min-height: 46px; min-width: 0; font-size: 15px; }
+/* .secondary vem com raio 0 mais abaixo no arquivo e venceria a classe. */
+.preview-actions-row .secondary { border-radius: 999px; }
+.preview-folders span,
+.preview-want span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.preview-folders svg,
+.preview-want svg { flex: none; }
+.preview-want.active { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+.preview-owned { min-height: 48px; min-width: 0; padding: 0 12px; border-radius: 999px; font-size: 15px; }
+
+/* Gráfico do histórico logo abaixo das ações, mais alto que o sparkline de
+   antes, com os períodos à direita do título. */
+.cs-chart:empty { display: none; }
+#cardPreviewModal .cs-chart .price-history-plot { height: 168px; }
+.ph-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px; margin-bottom: 10px; }
+.ph-head .market-finish-label { margin: 0; }
+.ph-ranges { display: inline-flex; gap: 2px; padding: 3px; border: 1px solid var(--line); background: var(--panel); }
+.ph-range {
+  min-width: 42px;
+  min-height: 30px;
+  padding: 0 10px;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font-size: 12.5px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.ph-range.is-on { background: var(--panel-strong); color: var(--text); }
+
+/* SEÇÕES embaixo (gaveta da coleção, mercados, comunidade, graduadas, lojas,
+   ficha, impressões): sem caixa, separadas por um traço, título de 17px. */
+#cardPreviewModal .cs-sec { margin: 0; padding-top: 20px; border-top: 1px solid var(--line); }
+#cardPreviewModal .cs-sec > h3,
+#cardPreviewModal .cs-sec .market-quote-head h3,
+#cardPreviewModal .cs-sec > summary h3 { margin: 0; font-size: 17px; }
+#cardPreviewModal .cs-sec > h3 { margin-bottom: 12px; }
+#cardPreviewModal .cs-sec > summary h3 { flex: none; }
+#cardPreviewModal .cs-sec .market-quote-head { margin: 0 0 12px; }
+#cardPreviewModal .cs-sec > summary {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+#cardPreviewModal .cs-sec > summary::-webkit-details-marker { display: none; }
+#cardPreviewModal .cs-sec > summary .preview-caret { margin-left: auto; }
+#cardPreviewModal .cs-sec[open] > summary .preview-caret { transform: rotate(180deg); }
+/* Gaveta "Na sua coleção": o resumo ("NM ×2") no título; dentro, pasta,
+   graded, os campos de dinheiro e a grade de condições já aberta. */
+.cs-mine-sum { min-width: 0; margin-left: auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted); font-size: 13.5px; font-weight: 700; }
+#cardPreviewModal .cs-sec > summary .cs-mine-sum + .preview-caret { margin-left: 0; }
+.cs-mine[open] > :not(summary) { margin-top: 12px; }
+.cs-mine .variant-quantities { display: grid; gap: 10px; }
+#cardPreviewModal .market-links { margin-top: 0; }
+/* Ficha: sem caixa, duas colunas de pares no desktop. */
+#cardPreviewModal .preview-details { border: 0; border-top: 1px solid var(--line); border-radius: 0; background: none; overflow: visible; }
+#cardPreviewModal .preview-details dl { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); column-gap: 32px; margin: 4px 0 0; }
+.preview-details dl div {
+  display: grid;
+  grid-template-columns: 112px 1fr;
+  align-items: baseline;
+  gap: 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+}
+.preview-details dt { color: var(--muted); font-weight: 700; }
+.preview-details dd { margin: 0; text-align: right; color: var(--text); font-weight: 700; overflow-wrap: anywhere; }
+.preview-prov-note { margin: 10px 0 0; color: var(--muted); font-size: 12.5px; line-height: 1.45; }
+/* "Sobre esta carta" (o parágrafo da borda, ver textoDaCartaNoPopup). */
+.preview-sobre p { margin: 6px 0 0; max-width: 72ch; color: var(--muted); font-size: 14.5px; line-height: 1.65; }
+/* Impressões: uma fileira de cartas (rola de lado), a aberta com o contorno.
+   As mesmas peças (print-art/-set/-meta) vestem o "Mais de <set>" da página. */
+.preview-prints-list,
+.cs-more-row {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+  padding: 2px 2px 8px;
+}
+.preview-print,
+.cs-more-card {
+  flex: 0 0 118px;
+  display: grid;
+  align-content: start;
+  gap: 4px;
+  min-width: 0;
+  color: var(--text);
+  font-size: 12.5px;
+  text-decoration: none;
+  scroll-snap-align: start;
+}
+.print-art { display: block; aspect-ratio: 63 / 88; border-radius: 4.8% / 3.4%; overflow: hidden; background: var(--panel); }
+.print-art img,
+.print-art .card-back { display: block; width: 100%; height: 100%; object-fit: cover; }
+a.preview-print:hover .print-art,
+.cs-more-card:hover .print-art { outline: 2px solid var(--line); outline-offset: 2px; }
+.preview-print.is-current .print-art { outline: 2px solid var(--accent); outline-offset: 2px; }
+.print-set { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 700; }
+.print-meta { color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* MODO PÁGINA (a rota /games/<jogo>/<set>/<carta>): a mesma tela no fluxo da
+   página, sem folha, sem fundo escuro e sem X — a trilha no lugar dele. O
+   resto da tela do set some (body.carta-pagina, posto pelo detail.js). */
+#cardPreviewModal.is-page { position: static; display: block; padding: 0; z-index: auto; }
+#cardPreviewModal.is-page .card-preview-panel {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  margin: 4px 0 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+#cardPreviewModal.is-page .cs-bar { position: static; margin: 0 0 12px; padding: 0; min-height: 52px; background: none; border: 0; }
+#cardPreviewModal.is-page .cs-media { top: 96px; }
+body.carta-pagina main > :not(#cardPreviewModal):not(.cs-more):not(.cs-esqueleto) { display: none; }
+.cs-more { margin: 0 0 48px; }
+.cs-more-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 16px; margin-bottom: 14px; padding-top: 20px; border-top: 1px solid var(--line); }
+.cs-more-head h2 { margin: 0; font-size: 20px; }
+.cs-more-head a { color: var(--accent-ink); font-weight: 700; text-decoration: none; }
+.cs-more-head a:hover { text-decoration: underline; }
+.cs-more-card { flex-basis: 140px; }
+/* Esqueleto enquanto o catálogo do set desce (só na rota da carta). */
+.cs-esqueleto { display: grid; grid-template-columns: minmax(240px, 400px) minmax(0, 1fr); gap: 44px; margin: 68px 0 40px; }
+.cs-esqueleto span { background: var(--panel); animation: skel-pulse 1.4s ease-in-out infinite; }
+.cs-esqueleto span:first-child { aspect-ratio: 63 / 88; }
+.cs-esqueleto span:last-child { height: 260px; }
+
+/* Desktop médio (720–1000px): a carta encolhe antes do texto. */
+@media (max-width: 1000px) {
+  #cardPreviewModal .card-preview-panel { grid-template-columns: minmax(240px, 340px) minmax(0, 1fr); gap: 0 28px; padding: 0 24px 40px; }
+  #cardPreviewModal .cs-bar { margin: 0 -24px 12px; padding: 0 14px 0 24px; }
+}
+@keyframes cs-push { from { transform: translateX(28%); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  #cardPreviewModal.is-entering .card-preview-panel,
+  #cardPreviewModal.is-entering .card-preview-backdrop { animation: none; }
 }
 
 /* Cabeçalho ANTES do app subir (2026-10-03, docs/PLANO-TECNICO.md S3). A
@@ -4117,9 +4176,6 @@ a.preview-print:hover { background: var(--panel); }
     overflow: auto;
   }
 
-  .preview-content {
-    overflow-y: visible;
-  }
 
   /* ENTRADA do popup no celular (2026-09-21): o painel sobe de baixo, bem
      curto (220ms), só na primeira abertura (.is-entering vem do JS e cai
@@ -4155,22 +4211,6 @@ a.preview-print:hover { background: var(--panel); }
     background-clip: padding-box;
     box-shadow: inset 0 0 0 1px var(--line);
   }
-  /* Compartilhar acompanha o X: fixo, mesma caixa de 44 / círculo de 36, à
-     esquerda dele (22 + 44 do X + 4 — os 8px de respiro entre os círculos
-     visíveis já vêm das bordas transparentes). */
-  .preview-share {
-    position: fixed;
-    top: calc(22px + env(safe-area-inset-top, 0px));
-    right: 70px;
-    z-index: 60;
-    width: 44px;
-    height: 44px;
-    min-width: 44px;
-    min-height: 44px;
-    border: 4px solid transparent;
-    background-clip: padding-box;
-    box-shadow: inset 0 0 0 1px var(--line);
-  }
   /* O hover/foco pintava a border-color: com a borda transparente de 4px isso
      virava um anel de 44px em volta do círculo de 36. O realce vai no anel
      interno. */
@@ -4185,28 +4225,108 @@ a.preview-print:hover { background: var(--panel); }
     outline-offset: -2px;
   }
 
-  /* Cap por LARGURA, não por altura: com a moldura em 63/88, limitar a altura
-     encolheria a moldura e o `cover` cortaria mais a carta. Derivando a largura
-     do teto de 58vh a proporção se mantém e a carta sai inteira.
-     --carta-w (2026-10-10) vem do encaixaCartaNoPainel (shared.js): em tela
-     baixa ele encolhe a carta o bastante pra −/Tenho/+ e Pastas / Lista de
-     Desejo caberem inteiros ao abrir.
-     display: block pro margin auto centralizar: inline, a carta mais estreita
-     que a coluna encostava à esquerda e a miniatura de carregamento (absoluta,
-     essa sim centrada) aparecia por trás, sobrando à direita. */
-  .preview-image-wrap img {
-    display: block;
-    width: min(100%, calc(58vh * 63 / 88), var(--carta-w, 100%));
+  /* TELA DA CARTA no celular (2026-10-13): tela INTEIRA, como o "empurrar
+     tela" dos apps (Collectr, TCGplayer, Dex) — voltar no topo, a carta, o
+     nome e o VALOR na primeira dobra, e a fileira −/Tenho/+ presa no pé com
+     Desejo e Pastas em ícone. Antes era uma folha com 14px de margem que
+     abria só com a carta na tela (o preço ficava a três rolagens). Entra
+     deslizando da direita; o voltar do Android fecha (entrada de histórico). */
+  #cardPreviewModal { padding: 0; align-items: stretch; }
+  #cardPreviewModal .card-preview-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    max-height: none;
+    padding: 0 16px;
+    border: 0;
+    border-radius: 0;
+    overflow-x: hidden; /* o brilho da carta passa da borda */
+    overflow-y: auto;
   }
-
-  /* Duas colunas TAMBÉM no celular (2026-09-12). Empilhar rótulo em cima do
-     valor dobrava a altura de cada linha e a ficha aberta ocupava meia tela
-     antes do preço; rótulo de 96px + valor à direita cabe em 390px, e o
-     overflow-wrap do dd segura nome japonês ou set comprido. */
-  .preview-details div {
-    grid-template-columns: 96px 1fr;
-    gap: 12px;
+  #cardPreviewModal.is-entering .card-preview-panel { animation: cs-push 0.24s cubic-bezier(0.2, 0.8, 0.25, 1) both; }
+  #cardPreviewModal .cs-bar {
+    gap: 4px;
+    min-height: 56px;
+    margin: 0 -16px 4px;
+    padding: env(safe-area-inset-top, 0px) 8px 0;
   }
+  #cardPreviewModal .cs-bar :is(.cs-nav, .cs-back, .preview-share) {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    border-color: transparent;
+    background: none;
+  }
+  #cardPreviewModal .cs-bar .preview-close { display: none; }
+  /* No celular o voltar (‹ grande à esquerda) é o fechar. */
+  #cardPreviewModal .cs-bar .cs-back { display: inline-flex; }
+  #cardPreviewModal .cs-back svg { width: 24px; height: 24px; }
+  /* A trilha encolhe pra "set / carta" (o jogo já é o da tela). */
+  .cs-trail > a:first-child:not(.preview-set-link),
+  .cs-trail > a:first-child:not(.preview-set-link) + span { display: none; }
+  .cs-trail { font-size: 13.5px; gap: 6px; }
+  /* A carta ocupa a metade de cima da tela: o nome e o valor ainda cabem na
+     primeira dobra, acima da barra de ação. */
+  .cs-media,
+  #cardPreviewModal.is-page .cs-media { position: relative; top: auto; padding: 6px 0 2px; }
+  .cs-art { width: min(100%, calc(50vh * 63 / 88)); width: min(100%, calc(50dvh * 63 / 88)); }
+  .cs-zoom-ico { opacity: 0.85; width: 34px; height: 34px; }
+  #cardPreviewModal .preview-content { gap: 18px; padding-top: 10px; }
+  .cs-head { gap: 8px; }
+  .cs-name { font-size: 27px; }
+  .cs-price { padding: 14px 16px; }
+  .cs-price-val { font-size: 30px; }
+  .cs-variant { flex: 1 1 calc(50% - 4px); min-height: 52px; }
+  .ph-range { min-height: 36px; }
+  /* A BARRA DE AÇÃO presa no pé (último filho da coluna, por order). O piso
+     do max() garante a folga do gesto de home no PWA do iOS (env() zero). */
+  #cardPreviewModal .preview-content > .preview-actions {
+    order: 99;
+    position: sticky;
+    bottom: 0;
+    z-index: 2;
+    display: flex;
+    gap: 8px;
+    margin: 0 -16px;
+    padding: 10px 16px max(12px, var(--tabbar-lift, 12px));
+    border-top: 1px solid var(--line);
+    background: var(--surface);
+  }
+  #cardPreviewModal .preview-own-row { flex: 1 1 auto; grid-template-columns: 46px minmax(0, 1fr) 46px; gap: 8px; }
+  #cardPreviewModal .preview-actions-row { order: -1; display: flex; gap: 8px; }
+  #cardPreviewModal .preview-actions-row .secondary { width: 46px; min-height: 46px; padding: 0; justify-content: center; }
+  /* Desejo e Pastas só com o ícone: o texto vira leitura de tela. */
+  #cardPreviewModal .preview-actions-row .secondary span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  #cardPreviewModal .preview-actions-row svg { width: 20px; height: 20px; }
+  #cardPreviewModal .preview-details dl div { grid-template-columns: 96px 1fr; gap: 12px; }
+  .preview-print { flex-basis: 104px; }
+  /* Modo página no celular: o cabeçalho e a tabbar do site continuam, e a
+     barra de ação flutua logo acima da tabbar, no mesmo desenho de cápsula. */
+  #cardPreviewModal.is-page .cs-bar { min-height: 44px; margin: 0 0 4px; padding: 0; }
+  #cardPreviewModal.is-page .card-preview-panel { height: auto; padding: 0; overflow: visible; }
+  /* Aqui o cabeçalho e a tabbar do site também ocupam a tela: a carta
+     encolhe pra o valor ainda aparecer acima da barra de ação. */
+  #cardPreviewModal.is-page .cs-art { width: min(100%, calc(40vh * 63 / 88)); width: min(100%, calc(40dvh * 63 / 88)); }
+  #cardPreviewModal.is-page .preview-content > .preview-actions {
+    bottom: calc(var(--tabbar-h, 60px) + var(--tabbar-lift, 10px) + 8px);
+    margin: 0;
+    padding: 8px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    box-shadow: var(--shadow-pop);
+  }
+  .cs-esqueleto { grid-template-columns: 1fr; gap: 18px; margin: 16px auto 32px; width: min(100%, 300px); }
 }
 
 @keyframes preview-rise {
@@ -5275,9 +5395,7 @@ html[data-login-app="ios"] .login-sep { display: none; }
 
 /* Preço da Comunidade no card: reusa o gráfico do histórico de mercado
    (.price-history-chart) e acrescenta a legenda das DUAS séries — com 2 séries a
-   legenda é obrigatória, senão a cor não diz nada. Container próprio (não dentro
-   do bloco de mercado), então tem a margem dele. */
-.community-price { margin-top: 14px; }
+   legenda é obrigatória, senão a cor não diz nada. */
 .community-price .market-quote-head { display: flex; align-items: center; gap: 8px; }
 .cp-hint {
   display: inline-flex; align-items: center; justify-content: center;
@@ -5291,18 +5409,9 @@ html[data-login-app="ios"] .login-sep { display: none; }
 .cp-dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
 .cp-n { color: var(--subtle); font-weight: 700; }
 
-/* Os TRÊS blocos de valores do card (Mercado, Comunidade, Graded) são irmãos e
-   agora leem como um grupo: mesmo título, mesma separação e um traço entre eles.
-   Antes o de mercado tinha um espaçamento e os novos outro — pareciam avulsos.
-   Só o PRIMEIRO visível ganha borda de cima; :not(:has()) evitaria isso mas o
-   irmão anterior pode estar hidden, então a regra usa o irmão-visível. */
-/* Nada de font-size aqui: os três títulos já saem iguais (15px) pela regra de
-   .market-quote-head h3, que os três blocos usam. Tentei redefinir e a regra
-   morreu em especificidade — CSS morto é pior que nenhum. */
-.community-price, .graded-price { padding-top: 12px; border-top: 1px solid var(--line); }
-/* Bloco escondido não deixa traço órfão (o [hidden] já não pinta, mas o irmão
-   seguinte não deve dobrar o espaçamento por causa dele). */
-.community-price[hidden] + .graded-price { border-top: 1px solid var(--line); }
+/* Os TRÊS blocos de valores do card (Mercado, Comunidade, Graded) leem como
+   um grupo: a margem e o traço entre eles vêm do .cs-sec da tela da carta, e
+   os títulos saem iguais pela regra de .market-quote-head h3. */
 
 /* "+ Graded" no card: reusa o chip do "+ Tag" e abre uma linha por graduadora
    com as notas. Grid pra as notas ficarem alinhadas entre as linhas. */
@@ -5321,24 +5430,8 @@ html[data-login-app="ios"] .login-sep { display: none; }
 }
 .pg-grade:hover { border-color: var(--accent); color: var(--accent); }
 .pg-have { font-size: 11.5px; font-weight: 700; color: var(--muted); }
-/* Detalhes recolhível: no desktop nasce aberto, no celular fechado (JS). O
-   marcador nativo sai; a afordância é o summary inteiro como linha de 48px
-   (alvo de toque) com o chevron num botão redondo na ponta direita, que gira
-   180° quando a seção abre. A borda de baixo só existe ABERTO: fechado, a
-   caixa é só o cabeçalho e uma linha a mais virava um risco solto. */
-.preview-details > summary,
-.preview-prints > summary {
-  list-style: none; cursor: pointer;
-  display: flex; align-items: center; justify-content: space-between; gap: 12px;
-  min-height: 48px; padding: 8px 12px 8px 16px;
-  -webkit-tap-highlight-color: transparent;
-}
-.preview-details > summary::-webkit-details-marker,
-.preview-prints > summary::-webkit-details-marker { display: none; }
-.preview-details[open] > summary,
-.preview-prints[open] > summary { border-bottom: 1px solid var(--line); }
-.preview-details > summary:hover .preview-caret,
-.preview-prints > summary:hover .preview-caret { border-color: var(--accent); color: var(--accent); }
+/* Chevron redondo dos títulos recolhíveis da tela da carta (e do botão de
+   idioma): gira 180° quando a seção abre. */
 .preview-caret {
   flex: none; display: inline-flex; align-items: center; justify-content: center;
   width: 30px; height: 30px; border: 1px solid var(--line); border-radius: 999px;
@@ -5346,21 +5439,19 @@ html[data-login-app="ios"] .login-sep { display: none; }
   transition: transform .18s ease;
 }
 .preview-caret svg { width: 18px; height: 18px; }
-.preview-details[open] > summary .preview-caret,
-.preview-prints[open] > summary .preview-caret { transform: rotate(180deg); }
+#cardPreviewModal .cs-sec > summary:hover .preview-caret { border-color: var(--accent); color: var(--accent); }
 
 /* Valores graded (PSA) no card: lista nota → valor, a nota mais alta primeiro.
    Números tabulares pra coluna de preço não dançar entre as linhas. */
-.graded-price { margin-top: 14px; }
-.gp-rows { display: grid; gap: 4px; }
 
 /* "Vale a pena gradear?": o prêmio da melhor nota sobre a carta crua. */
 .gp-premium { margin: 8px 0 0; font-size: 12.5px; font-weight: 700; color: var(--gold); }
 .gp-premium-note { font-weight: 400; color: var(--subtle); }
-.gp-row { display: flex; align-items: baseline; gap: 10px; }
-.gp-grade { flex: 1 1 auto; font-size: 13px; font-weight: 700; color: var(--muted); }
-.gp-val { flex: none; font-size: 14px; font-weight: 800; font-variant-numeric: tabular-nums; }
-.gp-n { flex: none; font-size: 11.5px; color: var(--subtle); font-weight: 700; }
+/* Nota e valor numa linha; vendas e recente/mediana embaixo. */
+.gp-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 12px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.gp-grade { font-size: 15px; font-weight: 800; }
+.gp-val { font-size: 16px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.gp-n, .gp-sub { grid-column: 1 / -1; font-size: 12.5px; color: var(--subtle); font-weight: 600; }
 /* Histórico graded (F6): reusa o gráfico e a legenda das outras séries do card;
    só o respiro acima e o rótulo em bloco são dele. */
 .gp-history { margin-top: 10px; }
@@ -8527,66 +8618,28 @@ html:not([data-game]) .falha-boot[hidden] { display: flex !important; animation:
   margin-bottom: 8px;
 }
 
-.market-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 8px;
-}
-
+/* Uma linha por fonte (EUA, Europa, Brasil): o nome à esquerda, "mín." e a
+   MEDIANA à direita em números tabulares (tela da carta, 2026-10-13; antes
+   eram caixas vermelhas com mín./mediana/máx. em três colunas). */
+.market-cards { display: grid; gap: 8px; }
 .market-card {
-  background: var(--accent-soft);
-  border: 1px solid rgba(var(--accent-rgb), 0.18);
-  border-radius: 10px;
-  padding: 10px 13px;
-}
-
-.market-card-cur {
-  display: block;
-  font-size: 11px;
-  font-weight: 800;
-  color: var(--muted);
-  letter-spacing: 0.04em;
-  margin-bottom: 6px;
-}
-
-.market-cells {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 4px;
-}
-
-.market-cell {
   display: flex;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px 16px;
+  padding: 12px 16px;
+  border: 1px solid var(--line);
+  background: var(--panel);
 }
-
-.market-cell span {
-  font-size: 9.5px;
-  font-weight: 800;
-  letter-spacing: 0.03em;
-  color: var(--subtle);
-}
-
-.market-cell strong {
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--text);
-  white-space: nowrap;
-}
-
-.market-cell.med strong {
-  color: var(--accent);
-}
+.market-card-cur { min-width: 0; font-size: 14px; font-weight: 800; }
+.market-cells { flex: none; display: flex; gap: clamp(14px, 3vw, 22px); }
+.market-cell { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+.market-cell span { font-size: 11px; font-weight: 800; letter-spacing: 0.03em; color: var(--subtle); }
+.market-cell strong { font-size: 15px; font-weight: 700; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.market-cell.med strong { font-size: 17px; font-weight: 800; }
 
 /* Graded (PSA): mesma estrutura da cotação, com tom neutro pra diferenciar do
    preço raw, e seta de tendência colorida. */
-.graded-finish { margin-top: 12px; }
-.graded-card {
-  background: var(--panel-strong);
-  border-color: var(--line);
-}
 .graded-trend.up { color: #15a06f; }
 .graded-trend.down { color: #d4574e; }
 
@@ -9172,12 +9225,6 @@ button.pf-alloc-row:hover .pf-alloc-name, a.pf-alloc-row:hover .pf-alloc-name { 
   white-space: nowrap;
 }
 
-.preview-subtitle {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  flex-wrap: wrap;
-}
 .preview-year {
   font-weight: 700;
   color: var(--muted);
@@ -13240,7 +13287,6 @@ select,
   /* Menu de versões no toque: mesma régua de 44px do "+ Lista". */
   .vm-add { min-height: 44px; }
   .vm-minus { width: 42px; }
-  .vq-btn { width: 38px; height: 38px; }
 }
 
 /* Movimento reduzido: rede geral pra transições/animações não cobertas caso a

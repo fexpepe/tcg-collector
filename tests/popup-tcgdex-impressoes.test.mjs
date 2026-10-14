@@ -42,11 +42,15 @@ test("fetchCardPricing tem prazo", () => {
   assert.ok(corpo.includes("AbortSignal.timeout(5000)"));
 });
 
-test("no celular as Impressões descem com a ficha, pra depois das ações", () => {
+test("as Impressões moram no fim da tela da carta, depois das ações e da ficha", () => {
+  // Desde a tela nova (2026-10-13) a ordem é a mesma no celular e no desktop:
+  // elas nascem escondidas no FIM da coluna, então aparecer quando a borda
+  // responde não empurra a fileira do "+" (que no celular ainda fica presa no
+  // pé da tela). A ficha não desce mais por DOM.
   const shared = readFileSync(join(raiz, "src/shared.js"), "utf8");
-  const i = shared.indexOf('if (acoes && acoes.parentNode) acoes.insertAdjacentElement("afterend", det);');
-  assert.ok(i > 0, "sumiu a descida da ficha no celular");
-  const depois = shared.slice(i, i + 700);
-  assert.ok(depois.includes('const imp = modal.querySelector("[data-preview-prints]");'));
-  assert.ok(depois.includes('if (imp) det.insertAdjacentElement("afterend", imp);'));
+  const acoes = shared.indexOf('<div class="preview-actions">');
+  const ficha = shared.indexOf('<details class="cs-sec preview-details" data-preview-details open>');
+  const imp = shared.indexOf('<section class="cs-sec preview-prints" data-preview-prints hidden>');
+  assert.ok(acoes > 0 && ficha > acoes && imp > ficha, "ações → ficha → impressões");
+  assert.ok(!shared.includes('acoes.insertAdjacentElement("afterend", det)'), "a ficha não desce mais por DOM");
 });

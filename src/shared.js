@@ -5576,10 +5576,13 @@
 
   // Um "card" de fonte (EUA / Europa / Brasil) com MÍN/MEDIANA/MÁX já na moeda
   // escolhida no site. `source` é o rótulo (ex.: "EUA · TCGplayer").
+  // Mínimo e MEDIANA (2026-10-13). O máximo saiu: é o anúncio mais caro do
+  // mercado, quase sempre um ponto fora da curva (R$ 50 mil numa carta de
+  // R$ 1.600), e nenhuma referência (TCGplayer, Cardmarket) o mostra.
   function marketSourceCard(source, q) {
     const cur = currentCurrency;
     const cell = (label, key) => `<div class="market-cell${key === "med" ? " med" : ""}"><span>${label}</span><strong>${fmtMoney(cur, q[key])}</strong></div>`;
-    return `<div class="market-card"><span class="market-card-cur">${escapeHtml(source)}</span><div class="market-cells">${cell(t("market.min"), "min")}${cell(t("market.median"), "med")}${cell(t("market.max"), "max")}</div></div>`;
+    return `<div class="market-card"><span class="market-card-cur">${escapeHtml(source)}</span><div class="market-cells">${cell(t("market.min"), "min")}${cell(t("market.median"), "med")}</div></div>`;
   }
 
   // Linha de um acabamento (não-foil/foil): EUA (TCGplayer/USD) e Europa
@@ -5609,35 +5612,6 @@
     if (!b || !(b.mn || b.md || b.mx)) return "";
     const q = { min: toChosenCurrency(b.mn, "BRL", fx), med: toChosenCurrency(b.md, "BRL", fx), max: toChosenCurrency(b.mx, "BRL", fx) };
     return `<div class="market-finish"><span class="market-finish-label">${escapeHtml(t("market.br"))}</span><div class="market-cards">${marketSourceCard(t("market.brSource"), q)}</div></div>`;
-  }
-
-  // Graded (eBay por nota PSA), do catálogo (TCG_PRICING.g). Mostra PSA 10 e 9
-  // com Mercado (smart) + Recente (7d) + Mediana (90d), em USD convertido.
-  function gradedCardHtml(grade, g, fx) {
-    const cur = currentCurrency;
-    const cell = (label, v, cls) => v ? `<div class="market-cell${cls ? " " + cls : ""}"><span>${label}</span><strong>${fmtMoney(cur, toChosenCurrency(v, "USD", fx))}</strong></div>` : "";
-    const cells = cell(t("graded.smart"), g.s, "med") + cell(t("graded.recent"), g.r) + cell(t("graded.median"), g.m);
-    const trend = g.t === 1 ? ' <span class="graded-trend up" aria-hidden="true">▲</span>' : g.t === -1 ? ' <span class="graded-trend down" aria-hidden="true">▼</span>' : "";
-    const sales = g.n ? ` · ${tn("graded.sales", g.n)}` : "";
-    // "eBay" no cabeçalho do card, e não só no texto explicativo embaixo: estes
-    // números são vendas REAIS de um marketplace específico, diferentes em
-    // natureza do preço de referência do TCGplayer que aparece logo acima. Sem
-    // a fonte à vista, os dois blocos parecem duas medidas da mesma coisa.
-    // Nome próprio: não passa pelo i18n.
-    return `<div class="market-card graded-card"><span class="market-card-cur">PSA ${grade}${trend} · eBay${sales}</span><div class="market-cells">${cells}</div></div>`;
-  }
-  function gradedHtml(card, fx) {
-    const table = window.TCG_PRICING;
-    if (!table) return "";
-    // Mesmo fallback do gradedValue: o g vive na entrada base; a entrada própria
-    // de uma carta localizada (só preço raw) não pode sombreá-lo.
-    const own = card && card.id && table[card.id];
-    const base = card && card.id && table[basePricingId(card.id)];
-    const g = (own && own.g) || (base && base.g);
-    if (!g) return "";
-    const cards = ["10", "9"].map((grade) => g[grade] ? gradedCardHtml(grade, g[grade], fx) : "").join("");
-    if (!cards) return "";
-    return `<div class="market-finish graded-finish"><span class="market-finish-label">${escapeHtml(t("graded.label"))}</span><div class="market-cards">${cards}</div></div>`;
   }
 
   // Cotação do Lorcana: o preço vem da Lorcast (mercado TCGplayer) — só market
@@ -5705,17 +5679,15 @@
       }
     }
     const br = marketBrRow(card, fx);
-    const graded = gradedHtml(card, fx);
-    if (!tcgdex && !br && !graded) return "";
+    // As notas PSA moram só na seção de graduadas (fillGradedPrice) desde
+    // 2026-10-13: aqui elas apareciam de novo, com os mesmos números.
+    if (!tcgdex && !br) return "";
     const updated = data.updated ? `<span class="market-updated">${escapeHtml(t("market.updated", { date: data.updated }))}</span>` : "";
-    const srcMarket = (tcgdex || br) ? `<p class="market-source">${escapeHtml(t("market.source"))}</p>` : "";
-    const srcGraded = graded ? `<p class="market-source">${escapeHtml(t("graded.source"))}</p>` : "";
+    const srcMarket = `<p class="market-source">${escapeHtml(t("market.source"))}</p>`;
     return `<div class="market-quote-head"><h3>${escapeHtml(t("market.title"))}</h3>${updated}</div>`
       + tcgdex
       + br
-      + srcMarket
-      + graded
-      + srcGraded;
+      + srcMarket;
   }
 
   // --- Variação de preço (histórico semanal do build, sem servidor) ---
@@ -5762,6 +5734,9 @@
     if (!d || !d.c || !section.isConnected) return;
     const pct = d.c[card.id] != null ? d.c[card.id] : d.c[basePricingId(card.id)];
     if (pct == null) return;
+    // Ao lado do VALOR em destaque da tela da carta; sem ele, no título da cotação.
+    const alvo = document.querySelector("#cardPreviewModal [data-cs-delta]");
+    if (alvo) { if (!alvo.firstChild) alvo.innerHTML = priceDeltaChipHtml(pct, d.from); return; }
     const head = section.querySelector(".market-quote-head h3");
     if (head && !section.querySelector(".price-delta")) head.insertAdjacentHTML("afterend", priceDeltaChipHtml(pct, d.from));
   }
@@ -5842,33 +5817,56 @@
     if (pts.length < 3) return; // série curta demais (o acumulador cresce 1 ponto/dia)
     const cur = getCurrency();
     const conv = (v) => { const r = toChosenCurrency(v, HISTORY_CUR[entry.s] || "USD", fx); return r == null ? v : r; };
-    const vals = pts.map((p) => conv(p[1]));
     const W = 560, H = 120, P = 6;
-    let mn = Math.min.apply(null, vals), mx = Math.max.apply(null, vals);
-    if (mn === mx) { mn *= 0.95; mx = mx * 1.05 || 1; }
-    const { X, pontoEmX } = eixoTemporal(pts.map((p) => p[0]), W, P);
-    const Y = (v) => H - P - ((v - mn) / (mx - mn)) * (H - 2 * P);
-    const line = vals.map((v, i) => `${X(i).toFixed(1)},${Y(v).toFixed(1)}`).join(" ");
-    const first = vals[0], last = vals[vals.length - 1];
-    const color = last >= first ? "#34d399" : "#f0883e";
+    // PERÍODOS (1M, 3M, 6M, 1A, Tudo), no molde do Collectr e do TCGplayer
+    // (2026-10-13). Só os que cortam a série de verdade: com 58 dias de
+    // histórico aparecem "1M" e "Tudo"; o acervo longo ganha os outros sozinho.
+    const DIA = 864e5;
+    const fim = Date.parse(pts[pts.length - 1][0]);
+    const faixas = [30, 90, 180, 365].filter((d) => (fim - Date.parse(pts[0][0])) / DIA > d * 1.2);
+    let faixa = 0; // 0 = a série inteira
+    const FAIXA_ROT = { 30: "cs.r30", 90: "cs.r90", 180: "cs.r180", 365: "cs.r365", 0: "cs.rAll" };
     const fmtDay = (s) => { const m = /^\d{4}-(\d{2})-(\d{2})/.exec(s); return m ? `${m[2]}/${m[1]}` : s; };
-    if (!section.isConnected || section.querySelector(".price-history")) return;
-    section.insertAdjacentHTML("beforeend",
-      `<div class="market-finish price-history"><span class="market-finish-label">${escapeHtml(t("market.history", { n: pts.length }))}</span>
+    // Onde o gráfico mora: embaixo do VALOR, na tela da carta (é o par que a
+    // pessoa lê junto); sem ela, no fim da cotação, como antes.
+    const alvo = document.querySelector("#cardPreviewModal [data-cs-chart]") || section;
+    if (!section.isConnected || alvo.querySelector(".price-history")) return;
+    alvo.insertAdjacentHTML("beforeend", '<div class="market-finish price-history"></div>');
+    const bloco = alvo.querySelector(".price-history");
+    function desenha() {
+      const sel = faixa ? pts.filter((p) => fim - Date.parse(p[0]) <= faixa * DIA) : pts;
+      const vals = sel.map((p) => conv(p[1]));
+      let mn = Math.min.apply(null, vals), mx = Math.max.apply(null, vals);
+      if (mn === mx) { mn *= 0.95; mx = mx * 1.05 || 1; }
+      const { X, pontoEmX } = eixoTemporal(sel.map((p) => p[0]), W, P);
+      const Y = (v) => H - P - ((v - mn) / (mx - mn)) * (H - 2 * P);
+      const line = vals.map((v, i) => `${X(i).toFixed(1)},${Y(v).toFixed(1)}`).join(" ");
+      const first = vals[0], last = vals[vals.length - 1];
+      const color = last >= first ? "#34d399" : "#f0883e";
+      const rotulo = escapeHtml(t("market.history", { n: sel.length }));
+      const abas = faixas.length
+        ? `<span class="ph-ranges" role="group">${faixas.concat(0).map((d) => `<button type="button" class="ph-range${d === faixa ? " is-on" : ""}" data-ph-range="${d}" aria-pressed="${d === faixa}">${escapeHtml(t(FAIXA_ROT[d]))}</button>`).join("")}</span>`
+        : "";
+      bloco.innerHTML = `<div class="ph-head"><span class="market-finish-label">${rotulo}</span>${abas}</div>
         <div class="price-history-chart">
           <div class="price-history-plot">
-            <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="${escapeAttribute(t("market.history", { n: pts.length }))}">
+            <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="${rotulo}">
               <defs><linearGradient id="phg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${color}" stop-opacity="0.25"/><stop offset="100%" stop-color="${color}" stop-opacity="0"/></linearGradient></defs>
               <polygon points="${X(0).toFixed(1)},${(H - P).toFixed(1)} ${line} ${X(vals.length - 1).toFixed(1)},${(H - P).toFixed(1)}" fill="url(#phg)"/>
-              <polyline points="${line}" fill="none" stroke="${color}" stroke-width="2"/>
+              <polyline points="${line}" fill="none" stroke="${color}" stroke-width="2" vector-effect="non-scaling-stroke"/>
             </svg>
           </div>
-          <div class="price-history-meta"><span>${escapeHtml(`${fmtDay(pts[0][0])} · ${fmtMoney(cur, first)}`)}</span><span>${escapeHtml(`${fmtDay(pts[pts.length - 1][0])} · ${fmtMoney(cur, last)}`)}</span></div>
-        </div></div>`);
-    // Leitura ponto a ponto: mouse no desktop, dedo no celular. Os dados ficam
-    // no próprio elemento (o modal é descartado ao fechar — nada vaza).
-    const chart = section.querySelector(".price-history-chart");
-    if (chart) attachPriceHistoryPointer(chart, { pts, vals, cur, W, H, X, Y, fmtDay, pontoEmX });
+          <div class="price-history-meta"><span>${escapeHtml(`${fmtDay(sel[0][0])} · ${fmtMoney(cur, first)}`)}</span><span>${escapeHtml(`${fmtDay(sel[sel.length - 1][0])} · ${fmtMoney(cur, last)}`)}</span></div>
+        </div>`;
+      // Leitura ponto a ponto: mouse no desktop, dedo no celular. Os dados
+      // ficam no próprio elemento (o modal é descartado ao fechar).
+      attachPriceHistoryPointer(bloco.querySelector(".price-history-chart"), { pts: sel, vals, cur, W, H, X, Y, fmtDay, pontoEmX });
+    }
+    bloco.addEventListener("click", (e) => {
+      const b = e.target.closest("[data-ph-range]");
+      if (b) { faixa = Number(b.dataset.phRange); desenha(); }
+    });
+    desenha();
   }
 
   // Crosshair + tooltip do sparkline. Overlay em HTML (não dentro do SVG): o
@@ -6032,10 +6030,19 @@
       const v = convertMoney(Number(node.s), "USD", cur);
       if (v == null) return "";
       const n = Number(node.n) || 0;
+      // Recente (7 dias) e mediana (90 dias) na linha de baixo: moravam num
+      // segundo bloco "GRADED · PSA" dentro da cotação, com as MESMAS notas
+      // repetidas (até 2026-10-13). eBay no texto: são vendas reais de um
+      // marketplace, outra natureza que o preço de referência do TCGplayer.
+      const extra = [["graded.recent", node.r], ["graded.median", node.m]]
+        .map(([k, usd]) => { const x = usd > 0 && convertMoney(Number(usd), "USD", cur); return x ? `${t(k)} ${fmtMoney(cur, x)}` : ""; })
+        .filter(Boolean).join(" · ");
+      const seta = node.t === 1 ? ' <span class="graded-trend up" aria-hidden="true">▲</span>' : node.t === -1 ? ' <span class="graded-trend down" aria-hidden="true">▼</span>' : "";
       return `<div class="gp-row">
-        <span class="gp-grade">PSA ${escapeHtml(nota)}</span>
+        <span class="gp-grade">PSA ${escapeHtml(nota)}${seta}</span>
         <strong class="gp-val">${escapeHtml(fmtMoney(cur, v))}</strong>
-        ${n ? `<span class="gp-n">${escapeHtml(t("community.fromN", { n: n }))}</span>` : ""}
+        ${n ? `<span class="gp-n">eBay · ${escapeHtml(tn("graded.sales", n))}</span>` : ""}
+        ${extra ? `<span class="gp-sub">${escapeHtml(extra)}</span>` : ""}
       </div>`;
     }).filter(Boolean).join("");
     if (!linhas) { section.hidden = true; return; }
@@ -6246,7 +6253,9 @@
     if (rows.length < 2) return; // só a própria carta: seção viraria ruído
     // Mais recente primeiro (como o "all prints" do Scryfall); sem data (cache
     // de resposta antiga, sem &img=1), cai pra set e número.
-    rows.sort((a, b) => String(b.d || "").localeCompare(String(a.d || ""))
+    // Com imagem antes (2026-10-13): na fileira, a impressão sem scan vira o
+    // verso genérico, e cinco versos seguidos na frente escondiam as cartas.
+    rows.sort((a, b) => (!a.m - !b.m) || String(b.d || "").localeCompare(String(a.d || ""))
       || String(a.s || "").localeCompare(String(b.s || ""))
       || compareCardNumbers(a.u, b.u));
     // ?setId= no link quando dá pra derivar do manifest: desambigua sets
@@ -6270,23 +6279,24 @@
     list.innerHTML = rows.map((x) => {
       const yr = /^\d{4}/.test(String(x.d || "")) ? String(x.d).slice(0, 4) : "";
       const meta = `#${x.u || "?"}${yr ? ` · ${yr}` : ""}`;
-      const inner = `<span class="print-set">${escapeHtml(x.s || "")}</span><span class="print-meta">${escapeHtml(meta)}</span>`;
-      const img = ` data-print-img="${escapeAttribute(x.m || "")}" data-print-fb="${escapeAttribute(printFallback(x))}"`;
+      const dentro = `<span class="print-set">${escapeHtml(x.s || "")}</span><span class="print-meta">${escapeHtml(meta)}</span>`;
+      // A IMAGEM de cada impressão, numa fileira (2026-10-13): antes era uma
+      // lista de texto com a imagem só no hover do desktop — no toque, nada.
+      const capa = x.m ? localizedImg(x.m, { alt: "", loading: "lazy", thumb: true, fallback: printFallback(x) }) : cardBackPlaceholder();
+      const inner = `<span class="print-art">${capa}</span>${dentro}`;
       // A impressão ABERTA entra na lista (situa a carta entre as irmãs), mas
       // como texto marcado, não link — navegar pra si mesma é um não-clique.
       // Comparação por id BASE: com a carta -pt aberta, a linha (deduplicada
       // pra base EN) é a MESMA impressão e tem que aparecer marcada, não como
       // link pra edição inglesa do próprio set.
-      if (basePricingId(x.i) === basePricingId(card.id)) return `<span class="preview-print is-current"${img}>${inner}</span>`;
+      if (basePricingId(x.i) === basePricingId(card.id)) return `<span class="preview-print is-current">${inner}</span>`;
       const extra = { card: x.i };
       const sid = setIds ? setIdForCard(x.i, setIds) : "";
       if (sid) extra.setId = sid;
       const href = detailUrl("set", x.s || "", "", x.g || game, extra);
-      return `<a class="preview-print" href="${escapeAttribute(href)}"${img}>${inner}</a>`;
+      return `<a class="preview-print" href="${escapeAttribute(href)}">${inner}</a>`;
     }).join("");
     box.hidden = false;
-    // Fechada no celular, como os Detalhes: lista longa empurraria as ações.
-    if (window.matchMedia && window.matchMedia("(max-width: 720px)").matches) box.open = false;
   }
 
   // Símbolo da moeda atual (R$/$/€…). Valor != 0 de propósito: fmtMoney(cur, 0)
@@ -6330,29 +6340,42 @@
   // não passam e o botão nem aparece. De propósito não criamos um store aqui:
   // ele guarda o blob inteiro em memória e grava tudo de uma vez, então uma
   // segunda instância sobrescreveria o que a instância da página tem.
-  function createCardPreview({ getCard, store, onOwnedChange, prices, wishlist, folders, sale, graded, onSiblingCards, cardPath }) {
+  // listaDaTela (opcional): () => [{ id, v }] na ordem em que a página mostra
+  // as cartas — é o que o ‹ › da tela da carta percorre no modo PÁGINA (a rota
+  // da carta, em que a grade do set nem chega a aparecer). Sem ela, e na
+  // camada por cima da grade, vale a ordem dos tiles no DOM. aoAbrir(carta,
+  // pagina): a página acrescenta o que é dela (o "Mais de <set>" do detail.js).
+  function createCardPreview({ getCard, store, onOwnedChange, prices, wishlist, folders, sale, graded, onSiblingCards, cardPath, listaDaTela, aoAbrir }) {
     let activeCard = null;
     let activeVariant = null;
     let activeGraded = null; // { company, grade, pristine } quando aberto de uma carta GRADUADA
     let openerElement = null;
+    let modoPagina = false; // a tela está no fluxo da página (rota da carta), não por cima dela
+    let zoomAberto = false;
+    let listaNav = [];      // a grade que abriu a carta, pro ‹ ›
+    let navIdx = -1;
     const previewCosts = createCostsStore(); // custo "Paguei" (global, modo investidor)
 
     document.addEventListener("click", handleClick);
     window.addEventListener("popstate", () => {
-      if (!activeCard) return; // não é nossa entrada (ou já fechamos)
+      if (!activeCard || modoPagina) return; // não é nossa entrada (ou já fechamos)
       close({ viaVolta: true });
     });
 
-    // Arrastar o painel pra baixo fecha — o primeiro gesto que quem usa app
-    // tenta num painel desses. Só vale com o conteúdo NO TOPO (scrollTop 0),
-    // senão o gesto brigaria com a rolagem interna do painel; e exige que o
-    // movimento seja claramente vertical, pra não disparar em rolagem oblíqua.
+    // Gestos no celular. Deslizar a CARTA pro lado passa pra anterior/próxima
+    // da grade, como numa galeria de app. Arrastar o painel pra baixo com o
+    // conteúdo no topo fecha (o gesto que já existia na folha antiga e que
+    // quem usa app tenta primeiro) — só na camada: no modo página não há o que
+    // fechar. Os dois exigem direção clara, pra não disparar em rolagem oblíqua.
     let toqueY = null;
     let toqueX = null;
+    let toqueNaCarta = false;
     document.addEventListener("touchstart", (event) => {
       toqueY = null;
       const panel = event.target.closest("#cardPreviewModal .card-preview-panel");
-      if (!panel || panel.scrollTop > 0) return;
+      if (!panel || zoomAberto) return;
+      toqueNaCarta = !!event.target.closest(".cs-media");
+      if (!toqueNaCarta && (modoPagina || panel.scrollTop > 0)) return;
       toqueY = event.touches[0].clientY;
       toqueX = event.touches[0].clientX;
     }, { passive: true });
@@ -6361,7 +6384,9 @@
       const dy = event.changedTouches[0].clientY - toqueY;
       const dx = event.changedTouches[0].clientX - toqueX;
       toqueY = null;
-      if (dy > 80 && Math.abs(dy) > 2 * Math.abs(dx)) close();
+      if (toqueNaCarta && Math.abs(dx) > 60 && Math.abs(dx) > 2 * Math.abs(dy)) { navega(dx < 0 ? 1 : -1); return; }
+      const panel = document.querySelector("#cardPreviewModal .card-preview-panel");
+      if (!modoPagina && panel && panel.scrollTop <= 0 && dy > 80 && Math.abs(dy) > 2 * Math.abs(dx)) close();
     }, { passive: true });
     // Salva o preço BR digitado ao sair do campo (change = blur ou Enter).
     // Aceita vírgula ou ponto como decimal ("12,50", "12.50", "1.250,00").
@@ -6406,6 +6431,14 @@
         : "";
     });
     document.addEventListener("keydown", (event) => {
+      // ← → percorrem a grade de onde a carta veio (fora de campo de texto).
+      if ((event.key === "ArrowLeft" || event.key === "ArrowRight") && activeCard && !zoomAberto
+        && !event.altKey && !event.metaKey && !event.ctrlKey
+        && !/^(INPUT|SELECT|TEXTAREA)$/.test((event.target && event.target.tagName) || "")) {
+        if (navega(event.key === "ArrowRight" ? 1 : -1)) event.preventDefault();
+        return;
+      }
+      if (event.key === "Escape" && zoomAberto) { fechaZoom(); return; }
       if (event.key === "Escape") {
         // Menu de idioma aberto: o Esc fecha só ele (e devolve o foco ao botão),
         // não o popup inteiro.
@@ -6420,7 +6453,7 @@
         // baixo de outro modal (vender, graded, importar deck) e tirava o
         // ?card= da URL antes de o catálogo abrir a carta.
         if (!activeCard && !document.getElementById("cardPreviewModal")) return;
-        close();
+        if (!modoPagina) close(); // a página não fecha
       }
     });
 
@@ -6508,7 +6541,8 @@
     }
     function langButtonHtml() {
       const flag = cardFlag(activeCard.language);
-      const sigla = escapeHtml(dotJoin(activeCard.number, cardLangSigla(activeCard.language)));
+      // Só a língua: o número da carta tem lugar próprio na linha (tela nova).
+      const sigla = escapeHtml(cardLangSigla(activeCard.language));
       if (!intlIdsOf(activeCard)) return `${flag}<span>${sigla}</span>`;
       return `<button type="button" class="preview-lang-btn" data-preview-lang-toggle aria-expanded="${langPanelOpen ? "true" : "false"}" title="${escapeAttribute(t("langSwitch.open"))}">${flag}<span>${sigla}</span>${PREVIEW_CARET}</button>`;
     }
@@ -6600,43 +6634,135 @@
       return true;
     }
 
-    // A carta do popup no celular encolhe pra caber a primeira tela (2026-10-10,
-    // teste do Fernando no Galaxy S10 e no PWA do iPhone 16). O teto de 58vh
-    // do CSS não sabe o que vem embaixo, e em tela mais baixa — ou com barra
-    // de status e notch comendo a altura — a fileira Pastas / Lista de Desejo
-    // abria cortada no pé do painel, com cara de quebrado. Aqui mede quanto
-    // ela passa da borda e tira só isso da altura da carta (via --carta-w, a
-    // largura; a altura vem da moldura 63/88). Medir em vez de reservar uma
-    // altura fixa no CSS porque o bloco do nome varia (uma ou duas linhas,
-    // linha da variante). Piso de 45% do painel: em tela minúscula a carta
-    // não vira selo — aí a fileira volta a rolar, como antes. Roda no fim do
-    // open(), só no celular (≤720px) e DEPOIS de a ficha descer pra baixo dos
-    // botões: medido antes, os ~220px dela contavam e a carta encolhia demais.
-    function encaixaCartaNoPainel(modal) {
-      const panel = modal.querySelector(".card-preview-panel");
-      const img = panel && panel.querySelector(".preview-image-wrap img:not(.preview-image-thumb)");
-      const fim = panel && (panel.querySelector(".preview-actions-row") || panel.querySelector(".preview-own-row"));
-      if (!img || !fim) return;
-      const caixa = panel.getBoundingClientRect();
-      const sobra = caixa.bottom - parseFloat(getComputedStyle(panel).paddingBottom) - fim.getBoundingClientRect().bottom;
-      if (sobra >= 0) return;
-      const altura = Math.max(img.getBoundingClientRect().height + sobra, caixa.height * 0.45);
-      panel.style.setProperty("--carta-w", `${Math.floor(altura * 63 / 88)}px`);
+    // ── TELA DA CARTA (2026-10-13) ─────────────────────────────────────────
+    // O popup virou a PÁGINA da carta, no molde do mercado (TCGplayer,
+    // Scryfall, Cardmarket, Collectr): imagem grande de um lado, do outro o
+    // nome, o VALOR em destaque, as versões, as ações e o gráfico, e depois os
+    // mercados, as graduadas, as lojas, a ficha e as outras impressões. A
+    // mesma tela tem dois jeitos de aparecer:
+    // - CAMADA (clique numa grade): por cima da lista, sem perder o lugar nela.
+    //   No celular ocupa a tela inteira, com voltar no topo e a barra de ação
+    //   presa embaixo (o "empurrar tela" dos apps); no desktop é uma folha
+    //   larga com ‹ › pra percorrer a grade (← → no teclado).
+    // - PÁGINA (opts.pagina, a rota /games/<jogo>/<set>/<carta>): no fluxo da
+    //   página, com trilha no lugar do fechar. É o que o Google e quem recebe
+    //   o link veem — antes era a tela do set com o popup por cima (o AdSense
+    //   leu "pouco conteúdo" ali, ver docs/SEO.md).
+    // Antes: modal de 960 px com DUAS colunas rolando separadas (e a lista de
+    // Impressões rolando dentro de uma delas), o preço de mercado escondido no
+    // meio da cotação e a folha do celular abrindo só com a carta na tela.
+    const CS_ICON = (d) => `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+    const CS_PREV = CS_ICON('<path d="M15 18l-6-6 6-6"/>');
+    const CS_NEXT = CS_ICON('<path d="M9 18l6-6-6-6"/>');
+    const CS_ZOOM = CS_ICON('<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5M11 8v6M8 11h6"/>');
+
+    // A grade que abriu a carta, na ordem da tela: uma entrada por
+    // carta×variante (o tile do Holo e o do Reverse são dois passos do ‹ ›).
+    function montaListaNav() {
+      listaNav = [];
+      if (modoPagina && listaDaTela) {
+        try { listaNav = listaDaTela() || []; } catch (e) { listaNav = []; }
+        return;
+      }
+      const vistos = new Set();
+      document.querySelectorAll(".image-open[data-preview-card-id], .tile-name[data-preview-card-id]").forEach((el) => {
+        const k = `${el.dataset.previewCardId}|${el.dataset.previewVariant || ""}`;
+        if (vistos.has(k) || el.closest("#cardPreviewModal")) return;
+        vistos.add(k);
+        listaNav.push({ id: el.dataset.previewCardId, v: el.dataset.previewVariant || "" });
+      });
+    }
+    function navega(passo) {
+      const alvo = navIdx >= 0 ? listaNav[navIdx + passo] : null;
+      if (!alvo || !lookupCard(alvo.id)) return false;
+      navIdx += passo;
+      open(alvo.id, alvo.v || undefined, { semHistorico: true, pagina: modoPagina, nav: true });
+      return true;
+    }
+    // Ampliar: a carta na tela inteira, sem nada em volta (tocar fecha).
+    function abreZoom() {
+      const modal = document.getElementById("cardPreviewModal");
+      const img = modal && modal.querySelector(".preview-image-stack img:not(.preview-image-thumb)");
+      if (!img) return;
+      const caixa = document.createElement("div");
+      caixa.className = "cs-lightbox";
+      caixa.setAttribute("data-cs-zoom-close", "");
+      caixa.innerHTML = `<img src="${escapeAttribute(img.currentSrc || img.src)}" alt="${escapeAttribute(img.alt || "")}">`
+        + `<button type="button" class="preview-close" data-cs-zoom-close aria-label="${escapeAttribute(t("modal.close"))}">${CLOSE_ICON}</button>`;
+      modal.appendChild(caixa);
+      zoomAberto = true;
+    }
+    function fechaZoom() {
+      const caixa = document.querySelector("#cardPreviewModal .cs-lightbox");
+      if (caixa) caixa.remove();
+      zoomAberto = false;
+    }
+
+    // VALOR em destaque, logo abaixo do nome: o número que a pessoa veio ver
+    // (até aqui ele só existia lá embaixo, dentro da cotação por mercado). É o
+    // MESMO cardValue do tile — o que a grade mostra é o que a tela mostra —,
+    // com a fonte dita em uma linha.
+    function precoHeroiHtml() {
+      const v = activeVariant || defaultVariant(activeCard);
+      const cv = cardValue(activeCard, v, prices);
+      const multi = (activeCard.variants || []).length > 1;
+      const rotulo = escapeHtml(t("cs.marketValue") + (multi ? ` · ${variantDisplayLabel(activeCard, v)}` : ""));
+      if (!(cv.value > 0)) {
+        return `<div class="cs-price is-empty"><span class="cs-price-label">${rotulo}</span><strong class="cs-price-val">${escapeHtml(t("cs.noPrice"))}</strong></div>`;
+      }
+      const ref = pricingRefFor(activeCard.id);
+      const fonte = cv.source === "manual" ? "cs.srcManual" : cv.source === "myp" ? "cs.srcMyp"
+        : (ref && usdForVariant(ref, v) > 0 ? "cs.srcUs" : "cs.srcEu");
+      return `<div class="cs-price"><span class="cs-price-label">${rotulo}</span>`
+        + `<span class="cs-price-row"><strong class="cs-price-val">${escapeHtml(fmtMoney(cv.currency, cv.value))}</strong><span data-cs-delta></span></span>`
+        + `<span class="cs-price-src">${escapeHtml(t(fonte))}</span></div>`;
+    }
+    // VERSÕES lado a lado (Normal / Holo / Reverse / 1ª edição…), cada uma com
+    // o seu valor e quantas você tem. A escolhida é a que o −/+ e o desejo
+    // marcam — antes era uma linha "Holo · tocar para gerenciar" por versão,
+    // com o preço de cada uma só na cotação lá embaixo.
+    function variantesHtml() {
+      const vs = activeCard.variants || [];
+      if (vs.length < 2) return "";
+      return `<div class="cs-variants" role="group" aria-label="${escapeAttribute(t("cs.version"))}">` + vs.map((v) => {
+        const cv = cardValue(activeCard, v, prices);
+        const n = store.variantTotal(activeCard.id, v);
+        const on = v === activeVariant;
+        return `<button type="button" class="cs-variant${on ? " is-on" : ""}" data-cs-variant="${escapeAttribute(v)}" aria-pressed="${on}">`
+          + `<span class="cs-variant-name variant-${escapeAttribute(variantSlug(v))}">${escapeHtml(variantDisplayLabel(activeCard, v))}</span>`
+          + `<span class="cs-variant-price">${cv.value > 0 ? escapeHtml(fmtMoney(cv.currency, cv.value)) : "—"}</span>`
+          + (n ? `<span class="cs-variant-n" title="${escapeAttribute(t("card.haveN", { n }))}">${n}</span>` : "")
+          + `</button>`;
+      }).join("") + `</div>`;
+    }
+    // "Na sua coleção": condição, quanto pagou, por quanto vende, pasta e
+    // graded. Ficavam na frente de todo mundo (o campo "Preço NM" aparecia
+    // antes do preço de mercado); agora moram numa gaveta, com o resumo
+    // ("NM ×2") no título.
+    function minhaColecaoResumo() {
+      const v = activeVariant || defaultVariant(activeCard);
+      const n = store.variantTotal(activeCard.id, v);
+      return n > 0 ? conditionSummary(store, activeCard.id, v) : t("cs.mineEmpty");
     }
 
     function open(cardId, variant, opts) {
       activeCard = lookupCard(cardId);
       if (!activeCard) return;
+      const veioDoNav = !!(opts && opts.nav);
+      const mesmaLista = veioDoNav || !!(opts && opts.versao);
+      const paginaAntes = modoPagina;
+      modoPagina = !!(opts && opts.pagina);
       // O painel de idioma só continua aberto quando a troca veio dele mesmo
       // (ver a carta no outro idioma); abrir outra carta pelo tile o fecha.
       if (!keepLangPanel) langPanelOpen = false;
       keepLangPanel = false;
+      fechaZoom();
       // Empilha UMA vez por sessão de popup: trocar de carta com o popup aberto
       // (ou de variante) só reescreve o ?card=, senão um voltar por carta vista.
       // openFromUrl não empilha — a URL JÁ chegou com ?card= (link
       // compartilhado, página /card/<slug> do Google), e ali voltar tem que
       // sair da página, que é de onde a pessoa veio.
-      const empilha = gestoDeVolta() && !entradaNoHistorico && !(opts && opts.semHistorico);
+      const empilha = !modoPagina && gestoDeVolta() && !entradaNoHistorico && !(opts && opts.semHistorico);
       stampCardUrl(activeCard.id, empilha);
       if (empilha) entradaNoHistorico = true;
       logCardView(activeCard); // "mais vistas": 1 view por carta por sessão (anônimo)
@@ -6645,80 +6771,180 @@
       activeGraded = (opts && opts.graded && opts.graded.company) ? { company: String(opts.graded.company), grade: String(opts.graded.grade || ""), pristine: !!opts.graded.pristine } : null;
       const variants = activeCard.variants && activeCard.variants.length ? activeCard.variants : [defaultVariant(activeCard)];
       activeVariant = variant && variants.includes(variant) ? variant : null;
+      // Carta com mais de uma versão tem SEMPRE uma escolhida (a padrão, se o
+      // tile não disse qual): é a que os botões marcam e cujo valor aparece.
+      if (!activeVariant && variants.length > 1) activeVariant = defaultVariant(activeCard);
+      // A grade do ‹ ›: montada quando a carta vem de fora (tile, link); ao
+      // andar por ela (ou trocar de versão) a lista é a mesma e só o lugar muda.
+      if (!mesmaLista) montaListaNav();
+      const pedida = `${activeCard.id}|${variant || ""}`;
+      navIdx = listaNav.findIndex((x) => `${x.id}|${x.v}` === pedida);
+      if (navIdx < 0) navIdx = listaNav.findIndex((x) => x.id === activeCard.id);
 
       let modal = document.getElementById("cardPreviewModal");
+      if (modal && paginaAntes !== modoPagina) { modal.remove(); modal = null; }
       if (!modal) {
         modal = document.createElement("div");
         modal.id = "cardPreviewModal";
         // is-entering: só na PRIMEIRA abertura. open() roda de novo ao trocar
         // de variante com o popup aberto e recria o painel — sem a marca, a
         // animação de entrada (celular, ver CSS) tocaria a cada troca.
-        modal.className = "card-preview-modal is-entering";
-        document.body.appendChild(modal);
-        setTimeout(() => modal.classList.remove("is-entering"), 400);
+        modal.className = modoPagina ? "card-preview-modal is-page" : "card-preview-modal is-entering";
+        // No modo página a tela entra no lugar do conteúdo da página (o
+        // <main>), antes de tudo; na camada, no fim do body, por cima.
+        const host = modoPagina && document.querySelector("main");
+        if (host) host.insertBefore(modal, host.firstChild); else document.body.appendChild(modal);
+        if (!modoPagina) setTimeout(() => modal.classList.remove("is-entering"), 400);
       }
 
       const ownedCount = previewOwnedCount();
       const isOwned = ownedCount > 0;
       const wantVariant = activeVariant || defaultVariant(activeCard);
       const isWanted = wishlist ? wishlist.has(activeCard.id, wantVariant) : false;
-      // LINK DA PÁGINA DO SET: o nome do set aparece duas vezes no popup (o
-      // eyebrow em cima do nome e a linha "Set" da ficha) e as duas viram
-      // atalho pra página do set. Mesmo detailUrl das Impressões, com setId
-      // quando a carta traz (desambigua sets homônimos EN/PT).
+      const jogo = activeCard.game || currentGame();
+      // LINK DA PÁGINA DO SET: o nome do set aparece na trilha, na linha de cima
+      // do nome e na ficha, e os três levam pra página do set. Mesmo detailUrl
+      // das Impressões, com setId quando a carta traz (desambigua sets
+      // homônimos EN/PT).
       const setHref = activeCard.set
-        ? detailUrl("set", activeCard.set, "", activeCard.game, { setId: activeCard.setId })
+        ? detailUrl("set", activeCard.set, "", jogo, { setId: activeCard.setId })
         : "";
       const setLink = (cls) => setHref
         ? `<a class="${cls}" href="${escapeAttribute(setHref)}">${escapeHtml(activeCard.set)}</a>`
         : escapeHtml(activeCard.set || "-");
+      const urlJogo = (window.SLEEVU && window.SLEEVU.urlDoJogo && window.SLEEVU.urlDoJogo(jogo, "")) || "";
+      const ano = String(activeCard.setReleaseDate || "").slice(0, 4);
+      const codigo = cardCode(activeCard);
+      const tratamentos = String(activeCard.treat || "").split(";").filter((tk) => tk && !TREAT_NOISE.has(tk)).map(treatLabel);
+      const navOk = navIdx >= 0 && listaNav.length > 1;
+      const navBtn = (passo) => `<button type="button" class="cs-nav" data-cs-nav="${passo}" aria-label="${escapeAttribute(t(passo < 0 ? "cs.prev" : "cs.next"))}"${listaNav[navIdx + passo] ? "" : " disabled"}>${passo < 0 ? CS_PREV : CS_NEXT}</button>`;
+      const Titulo = modoPagina ? "h1" : "h2";
 
       modal.innerHTML = `
-        <div class="card-preview-backdrop" data-preview-close></div>
-        <section class="card-preview-panel" role="dialog" aria-modal="true" aria-label="${escapeAttribute(activeCard.name)}">
-          <button class="preview-close" data-preview-close aria-label="${escapeAttribute(t("modal.close"))}">${CLOSE_ICON}</button>
-          <!-- Compartilhar: mesmo círculo do X, à esquerda dele (2026-09-22).
-               Só o ícone; o "Link copiado!" é um balão embaixo do botão. -->
-          <button type="button" class="preview-share" data-preview-share aria-label="${escapeAttribute(t("modal.share"))}" title="${escapeAttribute(t("modal.share"))}">${TILE_ICONS.share}<span class="sr-only">${escapeHtml(t("modal.share"))}</span></button>
-          <div class="preview-image-wrap">
+        ${modoPagina ? "" : '<div class="card-preview-backdrop" data-preview-close></div>'}
+        <section class="card-preview-panel"${modoPagina ? "" : ` role="dialog" aria-modal="true" tabindex="-1"`} aria-label="${escapeAttribute(activeCard.name)}">
+          <div class="cs-bar">
+            ${modoPagina ? "" : `<button type="button" class="cs-back" data-preview-close aria-label="${escapeAttribute(t("cs.back"))}">${CS_PREV}</button>`}
+            <nav class="cs-trail" aria-label="${escapeAttribute(t("cs.trail"))}">
+              ${urlJogo ? `<a href="${escapeAttribute(urlJogo)}">${escapeHtml(gameLabel(jogo))}</a><span aria-hidden="true">/</span>` : ""}
+              ${activeCard.set ? `${setLink("preview-set-link")}<span aria-hidden="true">/</span>` : ""}
+              <span class="cs-trail-here">${escapeHtml(activeCard.name)}</span>
+            </nav>
+            <span class="cs-bar-acts">
+              ${navOk ? `${navBtn(-1)}${navBtn(1)}` : ""}
+              <!-- Compartilhar: só o ícone; o "Link copiado!" é um balão
+                   embaixo do botão. -->
+              <button type="button" class="preview-share" data-preview-share aria-label="${escapeAttribute(t("modal.share"))}" title="${escapeAttribute(t("modal.share"))}">${TILE_ICONS.share}<span class="sr-only">${escapeHtml(t("modal.share"))}</span></button>
+              ${modoPagina ? "" : `<button class="preview-close" data-preview-close aria-label="${escapeAttribute(t("modal.close"))}">${CLOSE_ICON}</button>`}
+            </span>
+          </div>
+          <div class="cs-media">
             ${(function () {
               const img = cardImageSources(activeCard, true);
-              if (!img.url) return cardBackPlaceholder();
+              if (!img.url) return `<div class="cs-art">${cardBackPlaceholder()}</div>`;
               // A MINIATURA entra por baixo da imagem grande. Ela quase sempre
               // já está na tela (é o tile que a pessoa tocou) e no cache do
               // service worker, então aparece no mesmo quadro — antes o modal
-              // abria cinza até o high-res chegar, que é ~10x maior (no
-              // fallback da pokemontcg.io, mais de 1 MB). Quando o grande
-              // carrega, o fade `is-loaded` que já existe o revela por cima.
+              // abria cinza até o high-res chegar, que é ~10x maior. Quando o
+              // grande carrega, o fade is-loaded que já existe o revela por
+              // cima. A MESMA miniatura, borrada, vira o brilho atrás da carta.
               const grande = localizedImg(img.url, { alt: activeCard.name, fallback: img.fallback });
               const thumb = localizedImg(img.url, { alt: "", className: "preview-image-thumb", thumb: true });
-              // As duas na MESMA célula: o wrap é um grid com gap, então sem o
-              // stack elas virariam duas linhas (carta pequena em cima da
-              // grande). Enquanto a grande não carrega ela não pinta nada, e a
-              // miniatura atrás é o que se vê.
-              return `<div class="preview-image-stack">${thumb}${grande}</div>`;
+              return `<div class="cs-glow" aria-hidden="true">${localizedImg(img.url, { alt: "", thumb: true })}</div>`
+                + `<button type="button" class="cs-art" data-cs-zoom aria-label="${escapeAttribute(t("cs.zoom"))}">`
+                + `<span class="preview-image-stack">${thumb}${grande}</span><span class="cs-zoom-ico">${CS_ZOOM}</span></button>`;
             })()}
-            <!-- DETALHES embaixo da CARTA (moraram na coluna da direita até
-                 2026-08-07). São a ficha da carta — raridade, artista, set, id —,
-                 ou seja, leitura, não ação: pertencem ao lado da imagem. A
-                 direita fica só com o que se FAZ (ter, querer, precificar) e com
-                 os valores. Continua <details> com abrir/fechar: aberto no
-                 desktop (open) e fechado no celular por JS, porque na vertical
-                 cada linha vira duas e o bloco custava ~10 linhas de rolagem
-                 antes do preço. -->
-            <details class="preview-details" data-preview-details open>
+          </div>
+          <div class="preview-content">
+            <div class="cs-head">
+              <p class="cs-eyebrow">${activeCard.set ? setLink("preview-set-link") : ""}${codigo ? `<span>${escapeHtml(codigo)}</span>` : ""}${ano.length === 4 && +ano > 1900 ? `<span class="preview-year">${ano}</span>` : ""}${langButtonHtml()}${activeGraded ? `${gradedBadgeHtml(activeGraded)}${(function () {
+                const gv = gradedValue(activeCard, activeGraded.company, activeGraded.grade);
+                return gv.value > 0 ? `<span class="preview-graded-price">${escapeHtml(fmtMoney(getCurrency(), gv.value))}</span>` : "";
+              })()}` : ""}</p>
+              <${Titulo} class="cs-name">${escapeHtml(activeCard.name)}</${Titulo}>
+              <div data-preview-lang-slot>${langPanelHtml()}</div>
+              ${activeCard.rarity || tratamentos.length || activeCard.artist ? `<p class="cs-chips">
+                ${activeCard.rarity ? `<span>${escapeHtml(activeCard.rarity)}</span>` : ""}
+                ${tratamentos.map((x) => `<span>${escapeHtml(x)}</span>`).join("")}
+                ${activeCard.artist ? (jogo === "pokemon"
+                  ? `<a href="${escapeAttribute(detailUrl("artist", activeCard.artist, "", jogo))}">${escapeHtml(t("cs.byArtist", { name: activeCard.artist }))}</a>`
+                  : `<span>${escapeHtml(t("cs.byArtist", { name: activeCard.artist }))}</span>`) : ""}
+              </p>` : ""}
+            </div>
+            <div data-cs-price-slot>${precoHeroiHtml()}</div>
+            <div data-cs-variants-slot>${variantesHtml()}</div>
+            <div class="preview-actions">
+              <!-- AÇÃO PRINCIPAL: [−] [Não tenho / Tenho N] [+]. O botão do meio
+                   segue sendo o liga/desliga de sempre (data-card-id); o − e o +
+                   somam/tiram UMA cópia NM da versão escolhida. No celular a
+                   fileira inteira fica PRESA no pé da tela (CSS), com Desejo e
+                   Pastas como ícones ao lado. -->
+              <div class="preview-own-row">
+                <button type="button" class="preview-qty-btn" data-preview-qty="dec" aria-label="${escapeAttribute(t("modal.removeOne"))}"${ownedCount > 0 ? "" : " disabled"}>${TILE_ICONS.minus}</button>
+                <button class="owned-toggle preview-owned" data-card-id="${escapeAttribute(activeCard.id)}"${activeVariant ? ` data-variant="${escapeAttribute(activeVariant)}"` : ""} aria-pressed="${isOwned}">
+                  ${escapeHtml(ownedLabel(ownedCount))}
+                </button>
+                <button type="button" class="preview-qty-btn" data-preview-qty="inc" aria-label="${escapeAttribute(t("modal.addOne"))}">${TILE_ICONS.plus}</button>
+              </div>
+              <div class="preview-actions-row${wishlist ? "" : " no-want"}">
+                ${wishlist ? `<button type="button" class="secondary preview-want${isWanted ? " active" : ""}" data-preview-want aria-pressed="${isWanted}">${isWanted ? TILE_ICONS.heartFilled : TILE_ICONS.heart}<span>${escapeHtml(isWanted ? t("modal.wanted") : t("modal.want"))}</span></button>` : ""}
+                <button type="button" class="secondary preview-folders" data-list-card-id="${escapeAttribute(activeCard.id)}"${activeVariant ? ` data-list-variant="${escapeAttribute(activeVariant)}"` : ""} aria-haspopup="dialog">${TILE_ICONS.folder}<span>${escapeHtml(t("modal.folders"))}</span></button>
+              </div>
+            </div>
+            <!-- Gráfico do histórico, logo abaixo do valor (fillPriceHistory
+                 escreve aqui; nasce vazio e some se não houver série). -->
+            <div class="cs-chart" data-cs-chart></div>
+            <details class="cs-sec cs-mine">
+              <summary><h3>${escapeHtml(t("cs.mine"))}</h3><span class="cs-mine-sum" data-cs-mine-sum>${escapeHtml(minhaColecaoResumo())}</span>${PREVIEW_CARET}</summary>
+              ${((folders && folders.list().length) || (graded && isOwned)) ? `<div class="preview-org-row">
+                ${(folders && folders.list().length) ? `<label class="preview-folder-row"><span>${escapeHtml(t("folders.assign"))}</span>
+                  <select class="preview-folder" data-preview-folder>
+                    <option value="">${escapeHtml(t("folders.none"))}</option>
+                    ${folders.list().map((f) => `<option value="${escapeAttribute(f.id)}"${folders.currentOf(activeCard.id) === f.id ? " selected" : ""}>${escapeHtml(f.name || t("folders.untitled"))}</option>`).join("")}
+                  </select></label>` : ""}
+                ${graded && isOwned ? `<div class="preview-tags-row"><span>${escapeHtml(t("nav.graded"))}</span>
+                  <div class="preview-graded-ctl" data-preview-graded>${previewGradedCtlHtml(false)}</div></div>` : ""}
+              </div>` : ""}
+              <!-- Os campos de dinheiro num container SÓ pra alinharem entre si
+                   (subgrid): cada rótulo tem largura diferente. -->
+              <div class="preview-money">
+              ${sale ? `<label class="preview-sale-row"><span>${escapeHtml(t("sales.sell"))}</span><span class="preview-sale-cur">${escapeHtml(saleCurrencySymbol())}</span>
+                <input type="text" inputmode="decimal" class="preview-sale-price" data-preview-sale value="${escapeAttribute((function () { const p = sale.priceOf(activeCard.id, activeVariant || defaultVariant(activeCard)); return p > 0 ? String(p).replace(".", ",") : ""; })())}" placeholder="0,00"></label>` : ""}
+              ${isOwned ? `<label class="preview-sale-row preview-cost-row" title="${escapeAttribute(t("cost.hint"))}"><span>${escapeHtml(t("cost.label"))}</span><span class="preview-sale-cur">${escapeHtml(saleCurrencySymbol())}</span>
+                <input type="text" inputmode="decimal" class="preview-sale-price" data-preview-cost value="${escapeAttribute((function () { const c = previewCosts.get(activeCard.id, activeVariant || defaultVariant(activeCard)); if (!c) return ""; const v = moneyToCurrent(c.v, c.cur); return v > 0 ? v.toFixed(2).replace(".", ",") : ""; })())}" placeholder="0,00"></label>` : ""}
+              ${prices ? (function () {
+                // ATALHO do preço MANUAL na condição padrão (NM) da versão
+                // escolhida, com os mesmos data-price-* da grade de condições
+                // (o listener de preço já existente grava e reformata isto).
+                const v = activeVariant || defaultVariant(activeCard);
+                const atual = prices.getPrice(activeCard.id, v, DEFAULT_CONDITION);
+                const display = atual > 0 ? atual.toFixed(2).replace(".", ",") : "";
+                return `<label class="preview-sale-row preview-price-row" title="${escapeAttribute(t("price.nmHint"))}"><span>${escapeHtml(t("price.nmLabel"))}</span><span class="preview-sale-cur">${escapeHtml(brCurrencySymbol())}</span>
+                  <input type="text" inputmode="decimal" class="preview-sale-price" placeholder="0,00" value="${escapeAttribute(display)}" data-price-fmt="2"
+                    data-price-card-id="${escapeAttribute(activeCard.id)}" data-price-variant="${escapeAttribute(v)}" data-price-condition="${DEFAULT_CONDITION}"
+                    aria-label="${escapeAttribute(t("price.inputAria", { variant: v, condition: t(`condition.${DEFAULT_CONDITION}`) }))}"></label>`;
+              })() : ""}
+              </div>
+              <div class="variant-quantities">${variantQuantityRows(activeCard, store, prices, activeVariant)}</div>
+            </details>
+            <section class="cs-sec market-quote" data-market-quote><p class="market-loading">${escapeHtml(t("market.loading"))}</p></section>
+            <!-- Preço da Comunidade: container PRÓPRIO, não dentro do bloco de
+                 mercado — aquele se esconde quando a carta não tem cotação, e
+                 carta sem preço de mercado (vintage, por exemplo) é justamente
+                 onde a comunidade mais importa. Nasce hidden. -->
+            <section class="cs-sec community-price" data-community-price hidden></section>
+            <!-- Graduadas (PSA): a tabela por nota, o prêmio e o histórico, num
+                 lugar só (até aqui as notas apareciam duas vezes, na cotação e
+                 aqui). Nasce hidden: carta sem nó graded não mostra nada. -->
+            <section class="cs-sec graded-price" data-graded-price hidden></section>
+            ${prices ? `<section class="cs-sec cs-shops"><h3>${escapeHtml(t("cs.shops"))}</h3>${brMarketplaceLinks(activeCard, gradedSearchTag(activeGraded), valorEmReais(activeCard, activeVariant || defaultVariant(activeCard), prices))}</section>` : ""}
+            <!-- FICHA da carta: raridade, artista, set, id. Aberta nos dois
+                 tamanhos (é curta, e é texto que a página precisa ter). -->
+            <details class="cs-sec preview-details" data-preview-details open>
               <summary><h3>${escapeHtml(t("modal.details"))}</h3>${PREVIEW_CARET}</summary>
               <dl>
                 <div><dt>${escapeHtml(t("modal.rarity"))}</dt><dd>${escapeHtml(activeCard.rarity || "-")}</dd></div>
-                ${(function () {
-                  // TRATAMENTO da impressão (Magic: Surge Foil, Borderless…). O
-                  // badge "Foil" do tile vem do finishes do Scryfall, que não
-                  // distingue foil comum de Surge/Galaxy/Halo — o nome especial
-                  // vive no `treat`, que até aqui só a faceta da página do set
-                  // mostrava. Mesmo filtro de ruído da faceta.
-                  const ts = String(activeCard.treat || "").split(";").filter((tk) => tk && !TREAT_NOISE.has(tk));
-                  return ts.length ? `<div><dt>${escapeHtml(t("facet.treatment"))}</dt><dd>${escapeHtml(ts.map(treatLabel).join(" · "))}</dd></div>` : "";
-                })()}
+                ${tratamentos.length ? `<div><dt>${escapeHtml(t("facet.treatment"))}</dt><dd>${escapeHtml(tratamentos.join(" · "))}</dd></div>` : ""}
                 <div><dt>${escapeHtml(t("modal.artist"))}</dt><dd>${escapeHtml(activeCard.artist || t("card.unknownArtist"))}</dd></div>
                 <div><dt>${escapeHtml(t("modal.set"))}</dt><dd>${setLink("preview-set-link")}</dd></div>
                 ${activeCard.nameEn && activeCard.nameEn !== activeCard.name
@@ -6736,145 +6962,50 @@
                 ? `<p class="preview-prov-note">${escapeHtml(t("modal.provEn"))}</p>`
                 : ""}
             </details>
-            <!-- IMPRESSÕES (estilo Scryfall): todos os sets do jogo em que uma
-                 carta com este nome saiu, cada linha linkando pra página do set
-                 com o popup dela já aberto (?card=). Nasce hidden: quem enche é
-                 o fillPrints, e SÓ quando o /api/search responde 2+ impressões —
-                 sem D1 a seção nem aparece (mesma degradação da busca global). -->
-            <details class="preview-prints" data-preview-prints hidden open>
-              <summary><h3>${escapeHtml(t("modal.prints"))}</h3>${PREVIEW_CARET}</summary>
+            <!-- IMPRESSÕES (estilo Scryfall), agora com a IMAGEM de cada uma
+                 numa fileira: todos os sets do jogo em que uma carta com este
+                 nome saiu. Nasce hidden: quem enche é o fillPrints, e SÓ quando
+                 o /api/search responde 2+ impressões. -->
+            <section class="cs-sec preview-prints" data-preview-prints hidden>
+              <h3>${escapeHtml(t("modal.prints"))}</h3>
               <div class="preview-prints-list" data-preview-prints-list></div>
-            </details>
-          </div>
-          <div class="preview-content">
-            <div>
-              <p class="eyebrow">${setLink("preview-set-link")}</p>
-              <h2>${escapeHtml(cardLabel(activeCard))}</h2>
-              <p class="preview-subtitle">${(function () {
-                const year = String(activeCard.setReleaseDate || "").slice(0, 4);
-                return /^\d{4}$/.test(year) ? `<span class="preview-year">${year}</span>` : "";
-              })()}${langButtonHtml()}${activeGraded ? `${gradedBadgeHtml(activeGraded)}${(function () {
-                const gv = gradedValue(activeCard, activeGraded.company, activeGraded.grade);
-                return gv.value > 0 ? `<span class="preview-graded-price">${escapeHtml(fmtMoney(getCurrency(), gv.value))}</span>` : "";
-              })()}` : ""}</p>
-              <div data-preview-lang-slot>${langPanelHtml()}</div>
-            </div>
-            <div class="preview-actions">
-              <!-- AÇÃO PRINCIPAL (2026-09-21): [−] [Não tenho / Tenho N] [+], no
-                   desenho do TCGCollector. O botão do meio segue sendo o
-                   liga/desliga de sempre (data-card-id); o − e o + somam/tiram
-                   UMA cópia NM da variante aberta (ou da padrão), como os +/−
-                   das linhas de versão lá embaixo — só que sem precisar rolar
-                   até elas. O texto diz a QUANTIDADE ("Tenho 3"): "Tenho na
-                   coleção" escondia quantas eram. -->
-              <div class="preview-own-row">
-                <button type="button" class="preview-qty-btn" data-preview-qty="dec" aria-label="${escapeAttribute(t("modal.removeOne"))}"${ownedCount > 0 ? "" : " disabled"}>${TILE_ICONS.minus}</button>
-                <button class="owned-toggle preview-owned" data-card-id="${escapeAttribute(activeCard.id)}"${activeVariant ? ` data-variant="${escapeAttribute(activeVariant)}"` : ""} aria-pressed="${isOwned}">
-                  ${escapeHtml(ownedLabel(ownedCount))}
-                </button>
-                <button type="button" class="preview-qty-btn" data-preview-qty="inc" aria-label="${escapeAttribute(t("modal.addOne"))}">${TILE_ICONS.plus}</button>
-              </div>
-              <!-- Linha SECUNDÁRIA, embaixo da principal (moraram em cima até
-                   2026-09-21): Pastas (abre o popup de "adicionar a uma pasta",
-                   o mesmo do + Pasta do tile, em modo folha centralizada) e
-                   Lista de Desejo, dividindo a largura da linha de cima. O
-                   compartilhar morava aqui num círculo à direita, que tirava
-                   as duas pílulas do alinhamento com o [−] [tenho] [+]; foi
-                   pro topo, ao lado do X (pedido de 2026-09-22). -->
-              <div class="preview-actions-row${wishlist ? "" : " no-want"}">
-                <button type="button" class="secondary preview-folders" data-list-card-id="${escapeAttribute(activeCard.id)}"${activeVariant ? ` data-list-variant="${escapeAttribute(activeVariant)}"` : ""} aria-haspopup="dialog">${TILE_ICONS.folder}<span>${escapeHtml(t("modal.folders"))}</span></button>
-                ${wishlist ? `<button type="button" class="secondary preview-want${isWanted ? " active" : ""}" data-preview-want aria-pressed="${isWanted}">${isWanted ? TILE_ICONS.heartFilled : TILE_ICONS.heart}<span>${escapeHtml(isWanted ? t("modal.wanted") : t("modal.want"))}</span></button>` : ""}
-              </div>
-              ${((folders && folders.list().length) || (graded && isOwned)) ? `<div class="preview-org-row">
-                ${(folders && folders.list().length) ? `<label class="preview-folder-row"><span>${escapeHtml(t("folders.assign"))}</span>
-                  <select class="preview-folder" data-preview-folder>
-                    <option value="">${escapeHtml(t("folders.none"))}</option>
-                    ${folders.list().map((f) => `<option value="${escapeAttribute(f.id)}"${folders.currentOf(activeCard.id) === f.id ? " selected" : ""}>${escapeHtml(f.name || t("folders.untitled"))}</option>`).join("")}
-                  </select></label>` : ""}
-                ${graded && isOwned ? `<div class="preview-tags-row"><span>${escapeHtml(t("nav.graded"))}</span>
-                  <div class="preview-graded-ctl" data-preview-graded>${previewGradedCtlHtml(false)}</div></div>` : ""}
-              </div>` : ""}
-              <!-- Os campos de dinheiro num container SÓ pra alinharem entre si:
-                   como cada rótulo tem largura diferente ("Paguei" 41px, "Preço
-                   NM" 58px), com cada linha sendo seu próprio flex os inputs
-                   começavam em x diferentes — 16px de degrau, bem visível. O
-                   container define as colunas e as linhas herdam por subgrid. -->
-              <div class="preview-money">
-              ${sale ? `<label class="preview-sale-row"><span>${escapeHtml(t("sales.sell"))}</span><span class="preview-sale-cur">${escapeHtml(saleCurrencySymbol())}</span>
-                <input type="text" inputmode="decimal" class="preview-sale-price" data-preview-sale value="${escapeAttribute((function () { const p = sale.priceOf(activeCard.id, activeVariant || defaultVariant(activeCard)); return p > 0 ? String(p).replace(".", ",") : ""; })())}" placeholder="0,00"></label>` : ""}
-              ${isOwned ? `<label class="preview-sale-row preview-cost-row" title="${escapeAttribute(t("cost.hint"))}"><span>${escapeHtml(t("cost.label"))}</span><span class="preview-sale-cur">${escapeHtml(saleCurrencySymbol())}</span>
-                <input type="text" inputmode="decimal" class="preview-sale-price" data-preview-cost value="${escapeAttribute((function () { const c = previewCosts.get(activeCard.id, activeVariant || defaultVariant(activeCard)); if (!c) return ""; const v = moneyToCurrent(c.v, c.cur); return v > 0 ? v.toFixed(2).replace(".", ",") : ""; })())}" placeholder="0,00"></label>` : ""}
-              ${prices ? (function () {
-                // ATALHO do preço de MERCADO na condição padrão (NM) da variante
-                // aberta: antes só existia dentro da gaveta de condições lá
-                // embaixo — pra anotar o valor de uma carta era preciso abrir o
-                // acordeão e achar a célula certa. Quem tem carta em OUTRA
-                // condição continua usando a grade completa de lá (o campo aqui
-                // é o caso comum, não a substituição dela).
-                // Sem handler novo: os mesmos data-price-* que a grade usa, então
-                // o listener de preço já existente grava e reformata isto.
-                const v = activeVariant || defaultVariant(activeCard);
-                const atual = prices.getPrice(activeCard.id, v, DEFAULT_CONDITION);
-                // Duas casas, como o "Paguei" logo acima: reusando o formato da
-                // GRADE de condições este campo mostrava "12000" ao lado de um
-                // "7000,00" — mesma linha, dois formatos. data-price-fmt diz ao
-                // listener compartilhado pra reformatar assim depois de gravar
-                // (as células da grade são estreitas e seguem compactas).
-                const display = atual > 0 ? atual.toFixed(2).replace(".", ",") : "";
-                return `<label class="preview-sale-row preview-price-row" title="${escapeAttribute(t("price.nmHint"))}"><span>${escapeHtml(t("price.nmLabel"))}</span><span class="preview-sale-cur">${escapeHtml(brCurrencySymbol())}</span>
-                  <input type="text" inputmode="decimal" class="preview-sale-price" placeholder="0,00" value="${escapeAttribute(display)}" data-price-fmt="2"
-                    data-price-card-id="${escapeAttribute(activeCard.id)}" data-price-variant="${escapeAttribute(v)}" data-price-condition="${DEFAULT_CONDITION}"
-                    aria-label="${escapeAttribute(t("price.inputAria", { variant: v, condition: t(`condition.${DEFAULT_CONDITION}`) }))}"></label>`;
-              })() : ""}
-              </div>
-            </div>
-            <div class="variant-quantities">${variantQuantityRows(activeCard, store, prices, activeVariant)}</div>
-            <section class="market-quote" data-market-quote><p class="market-loading">${escapeHtml(t("market.loading"))}</p></section>
-            <!-- Preço da Comunidade: container PRÓPRIO, não dentro do bloco de
-                 mercado — aquele se esconde quando a carta não tem cotação, e
-                 carta sem preço de mercado (vintage, por exemplo) é justamente
-                 onde a comunidade mais importa. Nasce hidden: aparece só quando
-                 a RPC devolve bucket (o servidor já exige n>=3). -->
-            <section class="community-price" data-community-price hidden></section>
-            <!-- Valores GRADED (PSA): tabela nota-valor do TCG_PRICING.g, que o
-                 sync já traz. Container próprio pelo mesmo motivo do de
-                 comunidade, e nasce hidden: carta sem nó graded não mostra
-                 nada. (Sem backtick neste comentário: ele vive DENTRO de um
-                 template literal e fecharia a string.) -->
-            <section class="graded-price" data-graded-price hidden></section>
-            ${prices ? brMarketplaceLinks(activeCard, gradedSearchTag(activeGraded), valorEmReais(activeCard, activeVariant || defaultVariant(activeCard), prices)) : ""}
+            </section>
           </div>
         </section>
-        <!-- Prévia da impressão sob o mouse (fillPrints posiciona). pointer-events
-             none no CSS: se o cursor alcançasse a prévia, o mouseover esconderia
-             e o hover por baixo reabriria — pisca-pisca infinito. -->
-        <img class="preview-print-thumb" data-print-thumb hidden alt="">
       `;
 
-      // Focus trap: guarda quem abriu (só na primeira abertura, não nos
-      // re-renders após toggle), foca o fechar e prende o Tab dentro do modal.
-      if (!document.body.classList.contains("preview-open")) {
-        openerElement = document.activeElement;
-      }
-      document.body.classList.add("preview-open");
-
-      const closeButton = modal.querySelector(".preview-close");
-      if (closeButton) closeButton.focus();
-
-      modal.onkeydown = (event) => {
-        if (event.key !== "Tab") return;
-        const focusables = Array.from(modal.querySelectorAll("button, a[href], input, select")).filter((el) => !el.disabled);
-        if (!focusables.length) return;
-        const first = focusables[0];
-        const last = focusables[focusables.length - 1];
-        if (event.shiftKey && document.activeElement === first) {
-          last.focus();
-          event.preventDefault();
-        } else if (!event.shiftKey && document.activeElement === last) {
-          first.focus();
-          event.preventDefault();
+      // Focus trap (só na camada): guarda quem abriu (só na primeira abertura,
+      // não nos re-renders), foca o fechar e prende o Tab dentro do modal.
+      if (!modoPagina) {
+        if (!document.body.classList.contains("preview-open")) {
+          openerElement = document.activeElement;
         }
-      };
+        document.body.classList.add("preview-open");
+        // O foco vai pro PAINEL (o diálogo), não pro X: focado por script, o X
+        // abria com o anel vermelho de foco, com cara de erro. Andando pelo
+        // ‹ ›, fica no botão que a pessoa está usando.
+        const foco = veioDoNav && modal.querySelector(".cs-nav:not([disabled])") || modal.querySelector(".card-preview-panel");
+        if (foco) foco.focus({ preventScroll: true });
+        modal.onkeydown = (event) => {
+          if (event.key !== "Tab") return;
+          const focusables = Array.from(modal.querySelectorAll("button, a[href], input, select")).filter((el) => !el.disabled);
+          if (!focusables.length) return;
+          const first = focusables[0];
+          const last = focusables[focusables.length - 1];
+          if (event.shiftKey && document.activeElement === first) {
+            last.focus();
+            event.preventDefault();
+          } else if (!event.shiftKey && document.activeElement === last) {
+            first.focus();
+            event.preventDefault();
+          }
+        };
+        // Trocou de carta pelo ‹ ›: a folha volta pro topo, como página nova.
+        const panel = modal.querySelector(".card-preview-panel");
+        if (panel && veioDoNav) panel.scrollTop = 0;
+      } else if (veioDoNav) {
+        modal.scrollIntoView({ block: "start" });
+      }
 
       // Cotação de mercado (TCGdex ao vivo + câmbio): carrega assíncrono.
       fillMarketQuote(activeCard);
@@ -6883,50 +7014,7 @@
       fillCommunityPrice(activeCard, activeVariant);
       fillGradedPrice(activeCard); // valores PSA, quando o catálogo tem
       fillPrints(activeCard); // outras impressões do mesmo nome (via /api/search)
-      // Hover numa impressão mostra a IMAGEM dela ao lado da linha (desktop; no
-      // touch não há hover — o toque navega direto). Propriedade em vez de
-      // addEventListener de propósito: open() roda de novo a cada carta e
-      // empilharia um handler por abertura.
-      modal.onmouseover = (event) => {
-        let thumb = modal.querySelector("[data-print-thumb]");
-        if (!thumb) return;
-        const row = event.target.closest("[data-print-img]");
-        const src = row && row.dataset.printImg;
-        if (!src) { thumb.hidden = true; return; }
-        // Com a cadeia de fallback da imagem grande (webp → png → pokemontcg.io
-        // → outra língua), e não a URL crua: ver hoverThumb.
-        thumb = hoverThumb(thumb, src, { fallback: row.dataset.printFb || "" });
-        // À direita da linha (à esquerda se não couber), presa à janela.
-        const rect = row.getBoundingClientRect();
-        const w = 230, h = Math.round(w * 88 / 63); // proporção 63×88 da carta
-        let left = rect.right + 10;
-        if (left + w > window.innerWidth - 8) left = rect.left - w - 10;
-        const top = Math.max(8, Math.min(rect.top + rect.height / 2 - h / 2, window.innerHeight - h - 8));
-        thumb.style.left = `${Math.max(8, left)}px`;
-        thumb.style.top = `${top}px`;
-        thumb.hidden = false;
-      };
-      // Detalhes fechados no CELULAR (aberto no desktop, onde é um dl de 2
-      // colunas e custa pouco). Em JS e não em CSS porque <details> abre/fecha
-      // por atributo — CSS não desmarca `open`.
-      const det = document.querySelector("#cardPreviewModal [data-preview-details]");
-      if (det && window.matchMedia && window.matchMedia("(max-width: 720px)").matches) {
-        det.open = false;
-        // No CELULAR (2026-09-21) a ficha desce pra baixo dos campos de dinheiro
-        // (Paguei / Preço NM): empilhado, ela ficava entre a carta e o botão de
-        // "tenho", e era a primeira coisa a rolar pra chegar na ação. É uma
-        // mudança de DOM, não de CSS, porque a ficha mora na coluna da imagem
-        // no desktop — e open() recria tudo, então não fica estado preso.
-        const acoes = modal.querySelector(".preview-actions");
-        if (acoes && acoes.parentNode) acoes.insertAdjacentElement("afterend", det);
-        // As Impressões descem junto (2026-10-08): elas nascem escondidas e
-        // aparecem quando a borda responde — entre a carta e o título, a
-        // fileira do "+" pulava ~60 px uns 0,2 a 0,8 s depois de abrir, bem
-        // quando a pessoa ia tocar nela.
-        const imp = modal.querySelector("[data-preview-prints]");
-        if (imp) det.insertAdjacentElement("afterend", imp);
-        encaixaCartaNoPainel(modal); // depois da mudança: a ficha não conta mais
-      }
+      if (aoAbrir) aoAbrir(activeCard, modoPagina);
     }
 
     // Quantas cópias o botão principal representa: da VARIANTE aberta quando o
@@ -6948,6 +7036,7 @@
       const modal = document.getElementById("cardPreviewModal");
       if (modal) modal.remove();
       activeCard = null;
+      modoPagina = zoomAberto = false;
       if (entradaNoHistorico) {
         entradaNoHistorico = false;
         // O history.back() dispara um popstate — mas activeCard já é null acima,
@@ -6970,6 +7059,19 @@
         && !event.target.closest("#cardPreviewModal [data-preview-lang], #cardPreviewModal [data-preview-lang-toggle]")) {
         langPanelOpen = false;
         refreshLang();
+      }
+      // Tela da carta: ampliar a imagem, ‹ ›, e a troca de versão (re-render
+      // com a mesma grade de navegação).
+      if (event.target.closest("#cardPreviewModal [data-cs-zoom-close]")) { fechaZoom(); return; }
+      if (event.target.closest("#cardPreviewModal [data-cs-zoom]")) { abreZoom(); return; }
+      const nav = event.target.closest("#cardPreviewModal [data-cs-nav]");
+      if (nav) { navega(Number(nav.dataset.csNav)); return; }
+      const versao = activeCard && event.target.closest("#cardPreviewModal [data-cs-variant]");
+      if (versao) {
+        open(activeCard.id, versao.dataset.csVariant, { semHistorico: true, pagina: modoPagina, versao: true, graded: activeGraded });
+        const on = document.querySelector("#cardPreviewModal .cs-variant.is-on");
+        if (on) on.focus({ preventScroll: true });
+        return;
       }
       if (event.target.closest("[data-preview-close]")) {
         close();
@@ -7000,7 +7102,7 @@
           if (!ok) { refreshLang(); return; }
           keepLangPanel = true;
           langPanelOpen = true;
-          open(alvo, variante, { semHistorico: true });
+          open(alvo, variante, { semHistorico: true, pagina: modoPagina, versao: true });
         });
         return;
       }
@@ -7055,26 +7157,6 @@
         return;
       }
 
-      // +/− rápidos da LINHA da variante (fora do details). preventDefault:
-      // o botão vive dentro do <summary> — sem ele, além de mexer na
-      // quantidade, o clique abriria/fecharia o "gerenciar" junto.
-      const vq = event.target.closest("#cardPreviewModal [data-vq-card-id]");
-      if (vq && activeCard) {
-        event.preventDefault();
-        if (vq.dataset.vqAction === "inc") {
-          store.add(vq.dataset.vqCardId, vq.dataset.vqVariant, DEFAULT_CONDITION, 1);
-          if (wishlist && store.variantTotal(vq.dataset.vqCardId, vq.dataset.vqVariant) > 0) {
-            wishlist.remove(vq.dataset.vqCardId, vq.dataset.vqVariant);
-          }
-        } else {
-          removeOneCopy(store, vq.dataset.vqCardId, vq.dataset.vqVariant);
-        }
-        onOwnedChange();
-        refreshQuantities();
-        refreshWishlistButton();
-        return;
-      }
-
       // Stepper de condição: atualiza só a seção de quantidades (não recria a
       // imagem grande, evitando o flicker a cada clique).
       if (event.target.closest("#cardPreviewModal") && handleQuantityClick(event, store)) {
@@ -7102,15 +7184,7 @@
       if (!modal || !activeCard) return;
       const wrap = modal.querySelector(".variant-quantities");
       if (wrap) {
-        // Preserva quais variantes estavam expandidas (o <details> recriado volta
-        // fechado por padrão; sem isto, cada +/- colapsaria o editor).
-        const openNames = new Set([...wrap.querySelectorAll(".variant-conditions[open]")]
-          .map((d) => d.querySelector(".variant-row-name") && d.querySelector(".variant-row-name").textContent));
         wrap.innerHTML = variantQuantityRows(activeCard, store, prices, activeVariant);
-        wrap.querySelectorAll(".variant-conditions").forEach((d) => {
-          const nm = d.querySelector(".variant-row-name");
-          if (nm && openNames.has(nm.textContent)) d.open = true;
-        });
       }
       const ownedButton = modal.querySelector(".preview-owned");
       if (ownedButton) {
@@ -7120,6 +7194,11 @@
         const dec = modal.querySelector('[data-preview-qty="dec"]');
         if (dec) dec.disabled = n <= 0;
       }
+      // As contagens nas pílulas de versão e o resumo da gaveta acompanham.
+      const pilulas = modal.querySelector("[data-cs-variants-slot]");
+      if (pilulas) pilulas.innerHTML = variantesHtml();
+      const resumo = modal.querySelector("[data-cs-mine-sum]");
+      if (resumo) resumo.textContent = minhaColecaoResumo();
       // As contagens por idioma do painel acompanham qualquer +/− da carta.
       refreshLang();
     }
@@ -7820,31 +7899,15 @@
           </div>
         `;
       }).join("");
-      // Colapsado por padrão (<details>): a linha-resumo já mostra o que você tem
-      // ("NM ×2 · M ×1"); expandir revela os steppers por condição + o Preço BR.
-      // Economiza muito espaço vertical no preview.
-      const breakdown = total > 0 ? conditionSummary(store, card.id, variant) : "";
-      // Rótulo de EXIBIÇÃO (Surge Foil etc.) — a chave de dados segue `variant`.
-      const rotulo = variantDisplayLabel(card, variant);
-      // +/− RÁPIDOS na própria linha: soma/tira 1 NM sem expandir o "tocar para
-      // gerenciar" (que continua existindo pro ajuste fino por condição).
-      const quick = `<span class="variant-quick">
-            <button type="button" class="vq-btn" data-vq-action="dec" data-vq-card-id="${escapeAttribute(card.id)}" data-vq-variant="${escapeAttribute(variant)}" aria-label="${escapeAttribute(t("tile.removeOneAria", { variant: rotulo }))}"${total > 0 ? "" : " disabled"}>−</button>
-            <button type="button" class="vq-btn" data-vq-action="inc" data-vq-card-id="${escapeAttribute(card.id)}" data-vq-variant="${escapeAttribute(variant)}" aria-label="${escapeAttribute(t("tile.addAria", { variant: rotulo }))}">+</button>
-          </span>`;
+      // A gaveta "Na sua coleção" da tela da carta (2026-10-13) é o
+      // "gerenciar": a grade vem aberta, sem a linha-resumo com −/+ rápidos e
+      // "tocar para gerenciar" — a versão já é escolhida nas pílulas e o −/+
+      // da barra de ação soma e tira a NM.
       return `
-        <details class="variant-conditions${total > 0 ? " owned" : ""}">
-          <summary class="variant-conditions-head">
-            <span class="variant-row-name variant-${escapeAttribute(variantSlug(variant))}">${escapeHtml(rotulo)}</span>
-            ${breakdown
-              ? `<span class="variant-breakdown">${escapeHtml(breakdown)}</span>`
-              : `<span class="variant-breakdown variant-breakdown-empty">${escapeHtml(t("variant.manage"))}</span>`}
-            ${quick}
-            <span class="variant-chevron" aria-hidden="true">▾</span>
-          </summary>
+        <div class="variant-conditions${total > 0 ? " owned" : ""}">
           <div class="condition-grid">${conditions}</div>
           ${prices ? variantPriceRow(card, variant, prices) : ""}
-        </details>
+        </div>
       `;
     }).join("");
   }
@@ -9604,7 +9667,7 @@
       // KB cada, na variante de 600 px) desciam juntas — ~1,2 MB disputando
       // banda com o que estava à vista. Com o popup aberto (pouso na rota da
       // carta), a imagem que importa é a dele: nenhuma eager.
-      if (primeiroAppend && !document.body.classList.contains("preview-open")) {
+      if (primeiroAppend && !document.body.classList.contains("preview-open") && !document.body.classList.contains("carta-pagina")) {
         // Sem as de data: URI (a bandeira de idioma do tile, desde 2026-10-08):
         // elas não vão à rede, e contadas tiravam o eager da metade das cartas.
         const acimaDaDobra = fragment.querySelectorAll('img:not([src^="data:"])');
