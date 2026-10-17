@@ -153,6 +153,8 @@ const SHELL_ASSETS = [
   "src/deck-rules.js", "src/decks.js", "src/pastas.js", "src/lore.js", "src/export-liga.js", "src/export-ui.js", "src/troca.js",
   // Artistas e Treinadores (2026-10-17): o desenho das duas telas.
   "src/entidades.js",
+  // Pokédex (2026-10-17): o desenho da grade.
+  "src/dex.js",
   // Ferramentas do HUB que são página própria (2026-10-01).
   "src/condicao.js", "src/sleeves.js",
   // Centering Tool v2 (centering.html): a página, o núcleo (geometria e
