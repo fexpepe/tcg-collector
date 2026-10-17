@@ -87,6 +87,9 @@ export const AREAS = [
   // src/entidades.js, que SÓ essas duas páginas carregam — por isso Sets e
   // Pokédex (que dividem o app.js com elas) ficam fora desta folha.
   { nome: "entidades", prefixos: ["ent-"],                         paginas: ["artists.html", "trainers.html"] },
+  // pdx- (2026-10-17): a Pokédex redesenhada. Quem desenha é o src/dex.js,
+  // que só o pokedex.html carrega.
+  { nome: "pokedex",   prefixos: ["pdx-"],                         paginas: ["pokedex.html"] },
   { nome: "troca",     prefixos: ["trade-"],                       paginas: ["troca.html", "badges.html"] },
   // Ferramentas do HUB em página própria (2026-10-01, docs/FERRAMENTAS.md):
   // fer- é o comum das duas, gc- o Guia de condição e slv- o Sleeves e
