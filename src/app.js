@@ -56,6 +56,9 @@
     setsViewToggle: document.getElementById("setsViewToggle")
   };
   const view = elements.grid.dataset.view || "pokedex";
+  // Artistas e Treinadores (2026-10-17): o desenho, a ordem e o resumo moram no
+  // src/entidades.js, que só essas duas páginas carregam. Aqui ficam os dados.
+  const ent = (view === "artists" || view === "trainers") ? window.SleevuEntidades || null : null;
   // Visão grade/lista dos Sets (só na página de Sets). Mesma UI e persistência
   // da página de Cartas; a classe .is-list na grade faz o CSS virar linhas.
   let setsView = localStorage.getItem("tcg-sets-view") === "list" ? "list" : "grid";
@@ -87,7 +90,10 @@
     grid: elements.grid,
     pageSize: 60,
     // Scroll infinito: reaplica o estado recolhido aos cards recém-inseridos.
-    onAppend: () => { if (view === "sets") { applyCollapsed(); refineVisibleSets(); } }
+    onAppend: () => {
+      if (view === "sets") { applyCollapsed(); refineVisibleSets(); }
+      if (ent) ent.pintou(elements.grid); // capas dos cartões que acabaram de entrar
+    }
   });
   let selectedGeneration = "";
   // Região padrão segue a preferência de idioma de carta; sem preferência ("all")
@@ -211,6 +217,17 @@
         indexCardIdsByEntry();
         limpaContagens();
         render();
+      });
+    }
+    if (ent) {
+      ent.liga({
+        view,
+        game: jogoAtual,
+        manifest: () => manifest,
+        // O recorte de idioma/região muda as cartas de cada um (e a capa).
+        recorte: () => `${cardLang}|${elements.setRegionChips && !elements.setRegionChips.hidden ? selectedLangRegion : ""}`,
+        busca: () => elements.search.value.trim(),
+        onChange: () => render({ resetCount: true })
       });
     }
     if (view === "sets" && serieParam) applySerieTitle();
@@ -550,6 +567,7 @@
       : getViewItems(manifestMode() ? [] : filterCards());
     pager.render(items, createViewItem, { resetCount }); // onAppend reaplica o recolhido
     if (view === "sets") { applyCollapsed(); refineVisibleSets(); }
+    if (ent) ent.pintou(elements.grid);
 
     // Cabeçalhos de série não contam como resultado, nem o topo da Vitrine
     // (destaque e "Continue completando"): o Yu-Gi-Oh! dizia "595 resultados"
@@ -624,16 +642,20 @@
     // Sem as cartas em mãos (abertura da página — ver soIndices), as cápsulas
     // saem direto dos ids do índice. Assim que a busca traz o catálogo, o
     // caminho volta a ser o de sempre, com os filtros todos valendo.
+    // A ordem e o recorte final (sem o "Artista desconhecido") são do
+    // src/entidades.js — ver o `ent` no topo.
     if (view === "artists") {
-      return cards.length
+      const lista = cards.length
         ? indexedGroupsToItems(indexes.artists, visibleIds, toGroupItem)
         : groupItemsFromIds(indexes.artists);
+      return ent ? ent.itens(lista) : lista;
     }
 
     if (view === "trainers") {
-      return cards.length
+      const lista = cards.length
         ? indexedGroupsToItems(indexes.trainers, visibleIds, toGroupItem)
         : groupItemsFromIds(indexes.trainers);
+      return ent ? ent.itens(lista) : lista;
     }
 
     return pokedexViewItems();
@@ -974,6 +996,7 @@
           type: "group",
           name: group.name,
           cards: [],
+          cardIds: ids, // capa e anos do cartão (src/entidades.js)
           totalCount: ids.length,
           ownedCount: ids.reduce((n, id) => n + (owned.has(id) ? 1 : 0), 0)
         };
@@ -1167,6 +1190,7 @@
   // Cápsula compacta e clicável (estilo Pokédex): abre a página do grupo com
   // as cartas filtradas — sem listar todas as cartas aqui dentro.
   function createGroupCard(item) {
+    if (ent) return ent.desenha(item);
     const link = document.createElement("a");
     // 100%: o mesmo dourado da Pokédex, agora pro grupo COMPLETO — por
     // contagem exata, não pelo % arredondado (149/150 mostra 99→100%).
@@ -1352,6 +1376,7 @@
       type: "group",
       name: group.name,
       cards: sortedCards,
+      cardIds: sortedCards.map((card) => card.id),
       totalCount: sortedCards.length,
       ownedCount: sortedCards.filter((card) => owned.has(card.id)).length
     };

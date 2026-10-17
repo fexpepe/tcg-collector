@@ -2578,6 +2578,99 @@ input::placeholder {
   background: var(--gold);
 }
 
+/* --- Artistas e Treinadores (src/entidades.js, 2026-10-17) ---
+   Versão A, "Vitrine": no topo o Top 8 de quem tem mais cartas, cada um com as
+   cartas mais valiosas da amostra em leque (a da frente é a "Mais valiosa");
+   o resto vem em cartões menores com o próprio leque. Nome INTEIRO em até duas
+   linhas (antes cortava com 7 letras), cartas · anos embaixo e progresso só
+   pra quem tem carta daquele artista. Prefixo ent- = área "entidades" do
+   split-css: só artists.html e trainers.html baixam estas regras. */
+.ent-topo { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 20px; min-height: 38px; margin: 2px 0 16px; }
+.ent-resumo { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 18px; margin: 0; font-size: 14px; color: var(--muted); }
+.ent-num strong { margin-right: 3px; font-size: 18px; font-weight: 800; color: var(--text); }
+.ent-ordem { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.ent-ordem-rot { margin-right: 2px; font-size: 13px; font-weight: 700; color: var(--subtle); }
+.ent-ordem .chip { min-height: 36px; padding: 0 14px; font-size: 13.5px; }
+
+.ent-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(196px, 1fr)); gap: 14px; }
+.ent-grid > * { min-width: 0; }
+.ent-sec-head { grid-column: 1 / -1; margin: 14px 0 0; font-size: 18px; font-weight: 800; }
+.ent-top { grid-column: 1 / -1; display: flex; flex-direction: column; gap: 12px; }
+.ent-top .ent-sec-head { margin-top: 0; }
+.ent-top-row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+
+.ent-card { position: relative; display: flex; flex-direction: column; min-width: 0; border: 1px solid var(--line); background: var(--panel); color: var(--text); text-decoration: none; }
+.ent-card:hover { border-color: var(--text); }
+.ent-card.is-complete { border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold); }
+
+/* Capa de altura FIXA: o leque entra depois (vem da borda) e nada pula. */
+.ent-capa { position: relative; display: block; height: 150px; overflow: hidden; background: var(--panel-strong); border-bottom: 3px solid var(--accent); }
+.ent-card-g .ent-capa { height: 214px; }
+.ent-fan { position: absolute; inset: 0; }
+.ent-c { position: absolute; left: 50%; top: 16px; width: 86px; aspect-ratio: 63 / 88; object-fit: cover; border-radius: 4.5% / 3.2%; transform: translateX(-50%); }
+/* A carta só aparece quando carregou (o shared marca .is-loaded): a que a
+   cadeia de fallback não salva não vira um retângulo branco no leque. */
+.ent-c:not(.is-loaded) { opacity: 0; }
+.ent-c-l { top: 26px; transform: translateX(calc(-50% - 44px)) rotate(-9deg); }
+.ent-c-r { top: 26px; transform: translateX(calc(-50% + 44px)) rotate(9deg); }
+.ent-fan-2 .ent-c-f { transform: translateX(calc(-50% - 22px)); }
+.ent-fan-2 .ent-c-r { transform: translateX(calc(-50% + 30px)) rotate(8deg); }
+.ent-card-g .ent-c { top: 22px; width: 124px; }
+.ent-card-g .ent-c-l { top: 34px; transform: translateX(calc(-50% - 64px)) rotate(-9deg); }
+.ent-card-g .ent-c-r { top: 34px; transform: translateX(calc(-50% + 64px)) rotate(9deg); }
+.ent-card-g .ent-fan-2 .ent-c-f { transform: translateX(calc(-50% - 30px)); }
+.ent-card-g .ent-fan-2 .ent-c-r { transform: translateX(calc(-50% + 40px)) rotate(8deg); }
+@media (prefers-reduced-motion: no-preference) {
+  .ent-c { transition: transform 0.2s ease, opacity 0.2s ease; }
+  .ent-card:hover .ent-fan-3 .ent-c-l { transform: translateX(calc(-50% - 52px)) rotate(-12deg); }
+  .ent-card:hover .ent-fan-3 .ent-c-r { transform: translateX(calc(-50% + 52px)) rotate(12deg); }
+  .ent-card-g:hover .ent-fan-3 .ent-c-l { transform: translateX(calc(-50% - 74px)) rotate(-12deg); }
+  .ent-card-g:hover .ent-fan-3 .ent-c-r { transform: translateX(calc(-50% + 74px)) rotate(12deg); }
+  .ent-card:hover .ent-c-f { transform: translateX(-50%) translateY(-4px); }
+  .ent-mono.is-loading { animation: ent-pulso 1.4s ease-in-out infinite; }
+}
+@keyframes ent-pulso { 50% { opacity: 0.55; } }
+/* Iniciais: enquanto a capa não chega (pulsando) ou quando não há capa. */
+.ent-mono { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 34px; font-weight: 800; letter-spacing: 0.02em; color: var(--accent); background: var(--accent-soft); }
+.ent-rank { position: absolute; left: 10px; top: 10px; z-index: 1; display: inline-flex; align-items: center; justify-content: center; min-width: 26px; height: 26px; padding: 0 7px; font-size: 13px; font-weight: 800; background: var(--accent); color: var(--on-accent); }
+
+.ent-corpo { display: flex; flex-direction: column; gap: 5px; padding: 10px 12px 12px; }
+.ent-nome { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; overflow-wrap: anywhere; font-size: 15px; font-weight: 800; line-height: 1.25; }
+.ent-card-g .ent-nome { font-size: 17px; }
+.ent-meta { font-size: 12.5px; font-weight: 700; color: var(--muted); }
+.ent-topcard { min-height: 1.35em; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 12.5px; color: var(--subtle); }
+.ent-topcard-nome { font-weight: 700; color: var(--text); }
+.ent-topcard-preco { font-weight: 800; color: var(--money); }
+.ent-prog { display: flex; align-items: center; gap: 8px; margin-top: 2px; font-size: 12px; font-weight: 700; color: var(--muted); }
+.ent-prog-bar { flex: 1; height: 5px; background: var(--line); }
+.ent-prog-bar i { display: block; height: 100%; background: var(--money); }
+.ent-card.is-complete .ent-prog-bar i { background: var(--gold); }
+.ent-rodape { margin: 24px 0 0; font-size: 13.5px; color: var(--subtle); }
+.ent-rodape a { font-weight: 700; color: var(--accent); }
+
+/* Tablet e celular: o Top 8 vira fileira que rola de lado (o 2º cartão
+   aparece "espiando"), como as vitrines das outras telas. */
+@media (max-width: 900px) {
+  .ent-top-row { display: flex; gap: 12px; margin: 0 -16px; padding: 0 16px 4px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+  .ent-top-row::-webkit-scrollbar { display: none; }
+  .ent-top-row > .ent-card { flex: 0 0 min(250px, 72vw); scroll-snap-align: start; scroll-margin-left: 16px; }
+}
+@media (max-width: 700px) {
+  .ent-topo { margin: 10px 0 12px; }
+  .ent-resumo { font-size: 13px; }
+  .ent-num strong { font-size: 16px; }
+  .ent-ordem { flex-wrap: nowrap; width: 100%; overflow-x: auto; scrollbar-width: none; }
+  .ent-ordem .chip { flex: none; min-height: 44px; }
+  .ent-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .ent-capa { height: 132px; }
+  .ent-c { width: 72px; top: 14px; }
+  .ent-c-l { top: 22px; transform: translateX(calc(-50% - 36px)) rotate(-9deg); }
+  .ent-c-r { top: 22px; transform: translateX(calc(-50% + 36px)) rotate(9deg); }
+  .ent-corpo { padding: 9px 10px 11px; }
+  .ent-nome { font-size: 14px; }
+  .ent-sec-head { font-size: 17px; }
+}
+
 .set-art-link {
   display: block;
   text-decoration: none;

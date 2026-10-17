@@ -92,36 +92,24 @@
         <button type="button" class="chip" data-lang-region="chinese" aria-pressed="false" data-i18n="setRegion.chinese">Chinês</button>
       </div>
 
-      <section class="stats-grid" data-i18n-aria="aria.sumCollection" aria-label="Resumo da coleção">
-        <article>
-          <span id="ownedCount">0</span>
-          <p data-i18n="stats.owned">cartas marcadas</p>
-        </article>
-        <article>
-          <span id="totalCount">0</span>
-          <p data-i18n="stats.total">cartas no catálogo</p>
-        </article>
-        <article>
-          <span id="completionRate">0%</span>
-          <p data-i18n="stats.progress">progresso</p>
-        </article>
+      <!-- Resumo + Ordenar (2026-10-17): quem desenha é o src/entidades.js. O
+           #resultCount fica porque o app.js escreve nele, mas escondido: o
+           resumo já diz quantos Treinadores a lista tem. -->
+      <section id="entTopo" class="ent-topo" data-i18n-aria="ent.summaryAria" aria-label="Resumo e ordem">
+        <p id="entResumo" class="ent-resumo"></p>
+        <div id="entOrdem" class="ent-ordem" role="group" data-i18n-aria="ent.sort" aria-label="Ordenar"></div>
+        <p id="resultCount" hidden></p>
       </section>
 
-      <section class="toolbar" data-i18n-aria="filters.show" aria-label="Filtros">
-      </section>
-
-      <section class="results-header">
-        <h2 data-i18n="results.heading.trainers">Treinadores</h2>
-        <p id="resultCount">0 resultados</p>
-      </section>
-
-      <section id="cardGrid" class="group-grid" data-view="trainers" aria-live="polite"></section>
+      <section id="cardGrid" class="ent-grid" data-view="trainers" aria-live="polite"></section>
       <p id="emptyState" class="empty-state" data-i18n="empty.trainers" hidden>Nenhum treinador encontrado com esses filtros.</p>
     </main>
 
     <script defer src="src/i18n.js"></script>
+    <script defer src="src/i18n-entidades.js"></script>
     <script defer src="src/nomes-sets.js"></script>
     <script defer src="src/shared.js"></script>
+    <script defer src="src/entidades.js"></script>
     <script defer src="src/app.js"></script>
     <!-- Vitrine (espaço de anúncio, docs/PLANO-ADS.md): só página de catálogo.
          data-grade = a grade onde entram as faixas. -->

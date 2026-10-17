@@ -9871,6 +9871,15 @@
       .trim();
   }
 
+  // Chave do ARTISTA (2026-10-17): o catálogo traz o mesmo ilustrador com
+  // grafias diferentes ("takuyoa" 384 cartas e "Takuyoa" 2; "Juan Diego León"
+  // e "Leon"; aspas retas e curvas). Caixa, acento e pontuação não separam
+  // gente — a lista de Artistas junta pela chave e a página do artista filtra
+  // por ela, senão o cartão diria 51 cartas e a página abriria 28.
+  function artistKey(value) {
+    return normalize(value).replace(/[^\p{L}\p{N}]+/gu, " ").trim();
+  }
+
   function escapeHtml(value) {
     return String(value || "")
       .replace(/&/g, "&amp;")
@@ -10430,6 +10439,7 @@
     setCrumbs,
     lineParamOf,
     normalize,
+    artistKey,
     escapeHtml,
     escapeAttribute,
     safeColor,
