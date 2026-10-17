@@ -85,36 +85,26 @@
         </section>
       </div>
 
-      <section class="stats-grid" data-i18n-aria="aria.sumCollection" aria-label="Resumo da coleção">
-        <article>
-          <span id="ownedCount">0</span>
-          <p data-i18n="stats.owned">cartas marcadas</p>
-        </article>
-        <article>
-          <span id="totalCount">0</span>
-          <p data-i18n="stats.total">cartas no catálogo</p>
-        </article>
-        <article>
-          <span id="completionRate">0%</span>
-          <p data-i18n="stats.progress">progresso</p>
-        </article>
+      <!-- Resumo, Ordenar e eras (2026-10-17): quem desenha é o src/entidades.js. O
+           #resultCount fica porque o app.js escreve nele, mas escondido: o
+           resumo já diz quantos artistas a lista tem. -->
+      <section id="entTopo" class="ent-topo" data-i18n-aria="ent.summaryAria" aria-label="Resumo e ordem">
+        <p id="entResumo" class="ent-resumo"></p>
+        <div id="entOrdem" class="ent-ordem" role="group" data-i18n-aria="ent.sort" aria-label="Ordenar"></div>
+        <div id="entEras" class="ent-eras" role="group" data-i18n-aria="ent.erasAria" aria-label="Era de estreia" hidden></div>
+        <p id="resultCount" hidden></p>
       </section>
 
-      <section class="toolbar" data-i18n-aria="filters.show" aria-label="Filtros">
-      </section>
-
-      <section class="results-header">
-        <h2 data-i18n="results.heading.artists">Artistas</h2>
-        <p id="resultCount">0 resultados</p>
-      </section>
-
-      <section id="cardGrid" class="group-grid" data-view="artists" aria-live="polite"></section>
+      <section id="cardGrid" class="ent-grid" data-view="artists" aria-live="polite"></section>
       <p id="emptyState" class="empty-state" data-i18n="empty.artists" hidden>Nenhum artista encontrado com esses filtros.</p>
+      <p id="entRodape" class="ent-rodape" hidden></p>
     </main>
 
     <script defer src="src/i18n.js"></script>
+    <script defer src="src/i18n-entidades.js"></script>
     <script defer src="src/nomes-sets.js"></script>
     <script defer src="src/shared.js"></script>
+    <script defer src="src/entidades.js"></script>
     <script defer src="src/app.js"></script>
     <!-- Vitrine (espaço de anúncio, docs/PLANO-ADS.md): só página de catálogo.
          data-grade = a grade onde entram as faixas. -->

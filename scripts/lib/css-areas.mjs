@@ -83,6 +83,10 @@ export const AREAS = [
   // Treinadores entram porque carregam o MESMO app.js (o check.mjs cruza as
   // classes de cada .js com as páginas que o carregam), mesmo sem desenhar sets.
   { nome: "sets",      prefixos: ["sx-"],                          paginas: ["sets.html", "artists.html", "pokedex.html", "trainers.html"] },
+  // ent- (2026-10-17): Artistas e Treinadores redesenhados. Quem desenha é o
+  // src/entidades.js, que SÓ essas duas páginas carregam — por isso Sets e
+  // Pokédex (que dividem o app.js com elas) ficam fora desta folha.
+  { nome: "entidades", prefixos: ["ent-"],                         paginas: ["artists.html", "trainers.html"] },
   { nome: "troca",     prefixos: ["trade-"],                       paginas: ["troca.html", "badges.html"] },
   // Ferramentas do HUB em página própria (2026-10-01, docs/FERRAMENTAS.md):
   // fer- é o comum das duas, gc- o Guia de condição e slv- o Sleeves e

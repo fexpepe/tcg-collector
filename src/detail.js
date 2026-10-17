@@ -1094,7 +1094,14 @@
     const groups = detailType === "artist" ? indexes?.artists
       : detailType === "trainer" ? indexes?.trainers
       : indexes?.pokedex;
-    const group = (groups || []).find((candidate) => candidate.name === detailName);
+    // Artista: todas as grafias do mesmo nome (shared.artistKey) — a lista de
+    // Artistas junta "takuyoa" e "Takuyoa" num cartão só, e a página tem que
+    // abrir as cartas das duas.
+    const chaveArtista = detailType === "artist" ? shared.artistKey(detailName) : "";
+    const group = chaveArtista
+      ? (groups || []).filter((candidate) => shared.artistKey(candidate.name) === chaveArtista)
+        .reduce((soma, g) => (soma ? { name: soma.name, cardIds: soma.cardIds.concat(g.cardIds || []) } : g), null)
+      : (groups || []).find((candidate) => candidate.name === detailName);
     if (!group) {
       // Índice CARREGADO e o nome não está nele = o nome não existe neste jogo
       // (link antigo, grafia trocada, URL digitada à mão). O índice sai do
@@ -1137,7 +1144,8 @@
     }
 
     if (detailType === "artist") {
-      return cards.filter((card) => (card.artist || "Artista desconhecido") === detailName);
+      const chave = shared.artistKey(detailName);
+      return cards.filter((card) => shared.artistKey(card.artist || "Artista desconhecido") === chave);
     }
 
     if (detailType === "pokemon") {

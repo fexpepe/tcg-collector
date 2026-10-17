@@ -2578,6 +2578,79 @@ input::placeholder {
   background: var(--gold);
 }
 
+/* --- Artistas e Treinadores (src/entidades.js, 2026-10-17) ---
+   Versão B, "Índice por era": uma LINHA por artista (carta-capa, nome
+   inteiro, anos e nº de sets, e o nº de cartas à direita) em colunas,
+   agrupadas pela era de estreia, cada uma com o seu cabeçalho; os chips de
+   era no topo pulam direto pra uma delas. Progresso só pra quem tem carta
+   daquele artista. Prefixo ent- = área "entidades" do split-css: só
+   artists.html e trainers.html baixam estas regras. */
+.ent-topo { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 20px; margin: 2px 0 14px; }
+.ent-resumo { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 18px; margin: 0; font-size: 14px; color: var(--muted); }
+.ent-num strong { margin-right: 3px; font-size: 18px; font-weight: 800; color: var(--text); }
+.ent-ordem { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.ent-ordem-rot { margin-right: 2px; font-size: 13px; font-weight: 700; color: var(--subtle); }
+.ent-ordem .chip { min-height: 36px; padding: 0 14px; font-size: 13.5px; }
+.ent-eras { display: flex; flex-wrap: wrap; flex-basis: 100%; gap: 6px; }
+.ent-eras[hidden] { display: none; }
+.ent-eras .chip { min-height: 32px; padding: 0 12px; font-size: 13px; }
+.ent-eras-n { margin-left: 3px; font-weight: 600; opacity: 0.7; }
+/* Os <select> de ordem e era são a cara do celular; no desktop, os chips. */
+.ent-sel { display: none; }
+
+.ent-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 8px 14px; }
+.ent-grid > * { min-width: 0; }
+/* O esqueleto do carregamento (shared.showSkeletons, molde de carta) com a
+   altura de uma LINHA: cartões altos virando linhas baixas pulavam a tela. */
+.ent-grid > .skel { height: 78px; overflow: hidden; }
+.ent-grid > .skel .skel-img { display: none; }
+.ent-era-head { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin: 20px 0 4px; padding-bottom: 8px; border-bottom: 1px solid var(--line); font-size: 18px; font-weight: 800; }
+.ent-era-head:first-child { margin-top: 0; }
+.ent-era-anos { font-size: 14px; font-weight: 700; color: var(--muted); }
+.ent-era-n { margin-left: auto; font-size: 13px; font-weight: 700; color: var(--subtle); }
+
+.ent-row { display: grid; grid-template-columns: 46px minmax(0, 1fr) auto; align-items: center; gap: 12px; min-height: 78px; padding: 8px 14px 8px 8px; border: 1px solid var(--line); background: var(--panel); color: var(--text); text-decoration: none; }
+.ent-row:hover { border-color: var(--text); }
+.ent-row.is-complete { border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold); }
+/* Capa de tamanho FIXO: a carta entra depois (vem da borda) e nada pula. */
+.ent-capa { position: relative; display: block; width: 46px; aspect-ratio: 63 / 88; overflow: hidden; border-radius: 4.5% / 3.2%; background: var(--panel-strong); }
+.ent-c { display: block; width: 100%; height: 100%; object-fit: cover; }
+/* A carta só aparece quando carregou (o shared marca .is-loaded): a que a
+   cadeia de fallback não salva não vira um retângulo branco. */
+.ent-c:not(.is-loaded) { opacity: 0; }
+/* Iniciais: enquanto a capa não chega (pulsando) ou quando não há capa. */
+.ent-mono { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 800; color: var(--accent); background: var(--accent-soft); }
+@media (prefers-reduced-motion: no-preference) {
+  .ent-c { transition: opacity 0.2s ease; }
+  .ent-mono.is-loading { animation: ent-pulso 1.4s ease-in-out infinite; }
+}
+@keyframes ent-pulso { 50% { opacity: 0.55; } }
+.ent-corpo { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.ent-nome { overflow-wrap: anywhere; font-size: 15px; font-weight: 800; line-height: 1.25; }
+.ent-meta { font-size: 12.5px; font-weight: 700; color: var(--muted); }
+.ent-qtd { display: flex; flex-direction: column; align-items: flex-end; font-size: 11.5px; font-weight: 700; color: var(--subtle); text-align: right; }
+.ent-qtd strong { font-size: 18px; font-weight: 800; line-height: 1.1; color: var(--text); }
+.ent-prog { display: flex; align-items: center; gap: 8px; margin-top: 2px; font-size: 12px; font-weight: 700; color: var(--muted); }
+.ent-prog-bar { flex: 1; max-width: 120px; height: 5px; background: var(--line); }
+.ent-prog-bar i { display: block; height: 100%; background: var(--money); }
+.ent-row.is-complete .ent-prog-bar i { background: var(--gold); }
+.ent-rodape { margin: 24px 0 0; font-size: 13.5px; color: var(--subtle); }
+.ent-rodape a { font-weight: 700; color: var(--accent); }
+
+@media (max-width: 700px) {
+  .ent-topo { margin: 10px 0 12px; }
+  .ent-resumo { flex-basis: 100%; font-size: 13px; }
+  .ent-num strong { font-size: 16px; }
+  /* Ordem e era numa linha só: dois selects meio a meio. */
+  .ent-ordem,
+  .ent-eras { flex: 1 1 0; min-width: 0; }
+  .ent-ordem > :not(.ent-sel),
+  .ent-eras > :not(.ent-sel) { display: none; }
+  .ent-sel { display: block; width: 100%; min-height: 44px; font-size: 16px; }
+  .ent-grid { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .ent-era-head { font-size: 17px; }
+}
+
 .set-art-link {
   display: block;
   text-decoration: none;
