@@ -16,7 +16,7 @@
 // e no SW por causa das cartas JP da PPT). _in_1000x1000 = alta resolução.
 //
 //   node scripts/sync-onepiece.mjs
-import { writeFile, mkdir } from "node:fs/promises";
+import { writeFile, mkdir, access } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { writeGameCatalog } from "./lib/sync-common.mjs";
 
@@ -33,9 +33,25 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 // mais novas de página (OP05/09/13/14/15/16, EB03/04, PRB02, ST23-30…); os sets
 // antigos não têm logo público em site nenhum (auditado: EN, JP, Asia-EN, wiki,
 // Limitless, agregadores). Modelo IGUAL ao do Lorcana: logo próprio quando
-// existe; senão o logo genérico do One Piece Card Game (_onepiece.png); e só em
-// último caso a arte da 1ª carta. Tudo hospedado local em set-logos/.
+// existe; sem ele o setLogo fica vazio e o site desenha o nome do set. Tudo
+// hospedado local em set-logos/.
+//
+// Logo que JÁ está em set-logos/ vence e não é rebaixado (2026-10-17). Antes o
+// sync caçava na Bandai a cada build e, sem achar, zerava o setLogo — um logo
+// recortado à mão nunca chegava à produção. Caso que motivou: o OP-17 (The
+// World's Strongest Warriors) ganhou uma página especial de 4º aniversário; o
+// products/op17.html é só um <meta refresh> pra ela, e lá os candidatos a
+// "logo" são o selo do aniversário e o logo da marca, não o título do set.
 const LOGOS_DIR = new URL("set-logos/", OUT);
+async function localLogo(code) {
+  for (const ext of ["webp", "png"]) {
+    try {
+      await access(new URL(`${code}.${ext}`, LOGOS_DIR));
+      return `data/onepiece/set-logos/${code}.${ext}`;
+    } catch { /* tenta a próxima extensão */ }
+  }
+  return null;
+}
 const UA_HEADERS = { "User-Agent": "Mozilla/5.0 (Sleevu catalog sync; sleevu.app)" };
 const normCode = (s) => String(s || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
 // "OP04 PRE"/"OP15 RE"/"ST-30" -> código base do produto ("op04"/"op15"/"st30").
@@ -84,6 +100,8 @@ async function fetchSetLogo(code) {
 const downloadedLogos = new Map(); // baseCode -> caminho relativo (ou null)
 async function downloadSetLogo(code) {
   if (downloadedLogos.has(code)) return downloadedLogos.get(code);
+  const local = await localLogo(code);
+  if (local) { downloadedLogos.set(code, local); return local; }
   const url = await fetchSetLogo(code);
   let rel = null;
   if (url) {
