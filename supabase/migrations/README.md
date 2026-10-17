@@ -8,6 +8,32 @@ poucos.)
 
 ## Pendentes de aplicar
 
+- `20261017a` — alarme de medição parada sem estourar o tempo do anônimo
+  (`20261017a_sentinela_rapida.sql`). Em 2026-10-17 o healthcheck ficou
+  vermelho com "medição sem evento parado: HTTP 500": era o Postgres
+  cancelando a `analytics_sentinela` (57014, statement timeout) nos 3 s do
+  papel anon — a `_sentinela` lia 16 dias de `events` três vezes, linha por
+  linha na tabela, robôs e `props` inclusive. Medido de fora: 3,5 s e 500 com
+  o cache frio, 2,0 s e 0,4 s nas chamadas seguintes. Cria o índice parcial
+  `events_humano_ts_idx (ts, name) where not bot`, reescreve a `_sentinela`
+  com o mesmo retorno e a mesma regra em duas passadas (a grande só no
+  índice) e põe `statement_timeout = 15s` na `analytics_sentinela`. **Até
+  aplicar, o healthcheck pode ficar vermelho nos dias de cache frio.** Aditiva
+  e sem ordem com o JS; o `create index` segura os inserts no `events` por
+  alguns segundos. Ensaiada no PGlite em cima da 20261004a, aplicada duas
+  vezes: velha × nova na mesma transação dão a MESMA saída em 6 cenários
+  (vazio, tráfego normal com scan_open e loja zerados, tráfego caído, pageview
+  parado, sem pageview nenhum, 300 mil linhas), anon chama só a
+  `analytics_sentinela`, `admin_health` segue null pra não-admin e o plano
+  da passada por nome é Index Only Scan no índice novo.
+
+  Conferir depois de aplicar:
+  ```sql
+  select public.analytics_sentinela();   -- [] (e rápido)
+  select indexname from pg_indexes where indexname = 'events_humano_ts_idx';  -- 1 linha
+  select proconfig from pg_proc where proname = 'analytics_sentinela';  -- {statement_timeout=15s}
+  ```
+
 - `20261006a` — blog em três idiomas (`20261006a_blog_traducoes.sql`;
   `docs/BLOG.md`, seção "Idiomas"). **Depende da `20260930b`**: aplicar as
   duas, nesta ordem (b primeiro). O post continua uma linha só: as colunas de

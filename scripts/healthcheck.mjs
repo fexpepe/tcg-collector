@@ -206,7 +206,12 @@ await check("medição sem evento parado", async () => {
     signal: AbortSignal.timeout(30000)
   });
   if (res.status === 404) return "RPC ausente (migração 20260928a pendente)";
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  if (!res.ok) {
+    // O erro do PostgREST traz o motivo no corpo. Em 2026-10-17 o log dizia só
+    // "HTTP 500" e era 57014: a consulta passou dos 3 s do anon (20261017a).
+    const motivo = await res.json().then((j) => j?.message, () => null);
+    throw new Error(`HTTP ${res.status}${motivo ? ` — ${motivo}` : ""}`);
+  }
   const parados = await res.json();
   if (Array.isArray(parados) && parados.length) throw new Error(`parou de chegar: ${parados.join(", ")}`);
 });
