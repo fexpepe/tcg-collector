@@ -290,7 +290,7 @@
       Object.keys(salvo).forEach((k) => {
         const s = salvo[k] || {};
         const imgs = Array.isArray(s.i) ? s.i : [];
-        capas.set(k, { imgs, estado: imgs.length ? "ok" : "sem", top: s.n ? { nome: s.n, usd: s.u || 0 } : null, daBorda: true });
+        capas.set(k, { imgs, estado: imgs.length ? "ok" : "sem", top: s.n ? { nome: s.n, usd: s.u || 0 } : null, daBorda: true, grande: Boolean(s.g) });
       });
     } catch (e) { /* sessão sem storage: pede de novo, só isso */ }
   }
@@ -299,7 +299,7 @@
       const out = {};
       capas.forEach((c, k) => {
         if (!c.daBorda) return;
-        out[k] = c.top ? { i: c.imgs, n: c.top.nome, u: c.top.usd } : { i: c.imgs };
+        out[k] = Object.assign({ i: c.imgs }, c.top ? { n: c.top.nome, u: c.top.usd } : {}, c.grande ? { g: 1 } : {});
       });
       sessionStorage.setItem(CAPAS_KEY, JSON.stringify(out));
     } catch (e) { /* cheio: a próxima visita pede de novo */ }
@@ -338,11 +338,16 @@
 
   function enfileira(el) {
     const k = el.dataset.entK;
-    if (!k || capas.has(k) || fila.has(k)) return;
+    const grande = Boolean(el.dataset.entGrande);
+    const ja = capas.get(k);
+    // Já tem capa: só pede de novo se este é um cartão do destaque e a capa
+    // veio da amostra pequena (a pessoa passou pela A–Z antes de voltar pra
+    // "Mais cartas") — senão o "Destaque" sairia da amostra de 12.
+    if (!k || fila.has(k) || (ja && (ja.grande || !grande || !ja.daBorda))) return;
     const item = porChave.get(k);
     if (!item) return;
-    if (bordaFora) { capas.set(k, { imgs: [], estado: "sem" }); pinta(k); return; }
-    fila.set(k, [item, Boolean(el.dataset.entGrande)]);
+    if (bordaFora) { if (!ja) { capas.set(k, { imgs: [], estado: "sem" }); pinta(k); } return; }
+    fila.set(k, [item, grande]);
     clearTimeout(espera);
     espera = setTimeout(pede, 60);
   }
@@ -354,7 +359,7 @@
     for (const [k, [item, grande]] of fila) {
       const ids = amostra(item, grande);
       if (n + ids.length > MAX_IDS && lote.length) break;
-      lote.push([k, item, ids]);
+      lote.push([k, item, ids, grande]);
       n += ids.length;
     }
     lote.forEach(([k]) => fila.delete(k));
@@ -374,7 +379,8 @@
     } catch (e) {
       bordaFora = true;
     }
-    lote.forEach(([k, , amostraIds]) => {
+    lote.forEach(([k, , amostraIds, grande]) => {
+      if (bordaFora && capas.has(k)) return; // falhou o pedido de novo: fica a capa que já havia
       const candidatas = amostraIds.map((id) => cartas.get(id)).filter((c) => c && c.image)
         .map((c) => {
           const p = precos[c.id] || precos[shared.basePricingId(c.id)];
@@ -383,7 +389,7 @@
         .sort((a, b) => b.peso - a.peso || b.data.localeCompare(a.data));
       const imgs = [...new Set(candidatas.map((c) => c.img))].slice(0, 3);
       const top = candidatas[0] ? { nome: candidatas[0].nome, usd: candidatas[0].usd } : null;
-      capas.set(k, { imgs, estado: imgs.length ? "ok" : "sem", top, daBorda: !bordaFora });
+      capas.set(k, { imgs, estado: imgs.length ? "ok" : "sem", top, daBorda: !bordaFora, grande });
       pinta(k);
     });
     gravaCapasNaSessao();
