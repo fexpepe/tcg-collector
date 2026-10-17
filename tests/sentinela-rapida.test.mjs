@@ -11,7 +11,8 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
 const raiz = join(dirname(fileURLToPath(import.meta.url)), "..");
-const sql = readFileSync(join(raiz, "supabase", "migrations", "20261017a_sentinela_rapida.sql"), "utf8");
+// Sem o \r do checkout do Windows (autocrlf): os recortes abaixo procuram \n.
+const sql = readFileSync(join(raiz, "supabase", "migrations", "20261017a_sentinela_rapida.sql"), "utf8").replace(/\r\n/g, "\n");
 const corpo = (() => {
   const i = sql.indexOf("function public._sentinela(");
   assert.ok(i >= 0, "_sentinela não está na migração");
