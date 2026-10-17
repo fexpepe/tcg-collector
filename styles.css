@@ -10082,6 +10082,17 @@ html[data-detail="set"] .page-head-bar.page-head-stack,
 .page-head-stack:has(> .page-head-bar-text > h1[hidden]) { row-gap: 14px; }
 .page-head-stack > .explore-subnav { grid-area: nav; }
 .page-head-stack:has(> .explore-subnav) .page-search { grid-area: search; }
+/* Trilha → título (2026-10-17, pedido do Fernando): com 6px em cima e 40px
+   embaixo, o título do jogo ficava colado na trilha e longe das abas. Ele
+   desce 10px e o respiro até as abas encolhe os MESMOS 10px — abas, busca e
+   grade não se mexem, só o título fica mais no meio. Só na fileira larga: no
+   empilhado (≤1080px) são 6px em cima e 8px embaixo, já equilibrado, e no
+   celular a trilha nem aparece. Cita .crumbs de propósito (área "trilha" do
+   split-css); o h1 visível exclui a vista sem título (row-gap 14px, acima). */
+@media (min-width: 1081px) {
+  .page-head-explore .crumbs:not([hidden]) ~ h1:not([hidden]) { margin-top: 10px; }
+  .page-head-explore.page-head-stack:has(.crumbs:not([hidden]) ~ h1:not([hidden])):has(> .explore-subnav) { row-gap: 30px; }
+}
 
 /* Sem largura pras 3 colunas: título numa linha, busca na linha inteira de
    baixo (no celular o shared.js já move a busca pro header). Abas e controles
