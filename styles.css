@@ -2133,6 +2133,72 @@ input::placeholder {
   font-variant-numeric: tabular-nums;
 }
 
+/* --- Pokédex (src/dex.js, 2026-10-17) ---
+   Versão B, "Caixas": no lugar dos cartões de 181×295 px (uns 2 Pokémon por
+   tela no celular), a Pokédex em caixas de 30 (6×5), como as caixas do PC dos
+   jogos. Só o sprite em cada casa (o nome vai no title/aria-label); quem já
+   tem fica em cor com o selo dourado, quem falta vira silhueta (com alguma
+   captura); a caixa completa fica dourada. 3 caixas lado a lado no desktop,
+   1 por linha no celular. O Modo marcar troca o toque (abrir o Pokémon) por
+   marcar "já tenho". Prefixo pdx- = área "pokedex" do split-css. */
+.pdx-topo { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px; margin: 4px 0 16px; }
+.pdx-cont { display: flex; flex: 1 1 320px; flex-direction: column; gap: 8px; max-width: 560px; }
+.pdx-cont-n { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 6px; margin: 0; font-size: 15px; font-weight: 700; color: var(--muted); }
+.pdx-cont-n strong { font-size: 30px; font-weight: 800; line-height: 1; color: var(--text); font-variant-numeric: tabular-nums; }
+.pdx-pct { margin-left: 4px; padding: 1px 8px; font-size: 12.5px; font-weight: 800; color: #1c1605; background: var(--gold); }
+.pdx-barra { display: block; height: 6px; overflow: hidden; background: var(--line); }
+.pdx-barra i { display: block; height: 100%; background: var(--gold); }
+.pdx-barra-g { height: 8px; }
+.pdx-marcar { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px; border: 1px solid var(--line); background: var(--panel); color: var(--text); font: inherit; font-size: 14px; font-weight: 800; cursor: pointer; }
+.pdx-marcar svg { width: 18px; height: 18px; flex: none; }
+.pdx-marcar:hover { border-color: var(--gold); }
+.pdx-marcar[aria-pressed="true"] { border-color: var(--gold); background: var(--gold); color: #1c1605; }
+.pdx-dica { flex-basis: 100%; margin: 0; font-size: 13.5px; color: var(--muted); }
+
+.pdx-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 14px; }
+.pdx-grid > * { min-width: 0; }
+.pdx-caixa { border: 1px solid var(--line); background: var(--panel); }
+.pdx-caixa-head { display: flex; align-items: baseline; gap: 10px; padding: 9px 12px; border-bottom: 1px solid var(--line); background: var(--panel-strong); }
+.pdx-caixa-nome { margin: 0; font-size: 15px; font-weight: 800; }
+.pdx-caixa-faixa { font-size: 12px; font-weight: 700; color: var(--muted); font-variant-numeric: tabular-nums; }
+.pdx-caixa-n { margin-left: auto; font-size: 13px; font-weight: 800; font-variant-numeric: tabular-nums; }
+/* "Marcar caixa": só com o Modo marcar ligado. */
+.pdx-caixa-tudo { display: none; align-items: center; min-height: 32px; padding: 0 10px; border: 1px solid var(--line); background: var(--panel); color: var(--text); font: inherit; font-size: 12.5px; font-weight: 800; cursor: pointer; }
+.pdx-grid.is-marcando .pdx-caixa-tudo { display: inline-flex; }
+.pdx-caixa.is-completa { border-color: var(--gold); }
+.pdx-caixa.is-completa .pdx-caixa-head { background: var(--gold); color: #1c1605; }
+.pdx-caixa.is-completa .pdx-caixa-faixa { color: #1c1605; }
+.pdx-caixa-grade { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 2px; padding: 6px; }
+
+.pdx-cel { position: relative; display: flex; align-items: center; justify-content: center; aspect-ratio: 1; min-width: 0; color: var(--text); text-decoration: none; }
+.pdx-cel:hover { background: var(--panel-strong); }
+.pdx-num { position: absolute; left: 3px; top: 1px; font-size: 10px; font-weight: 700; color: var(--subtle); font-variant-numeric: tabular-nums; }
+/* 96 px nativos encolhidos pra caber na casa: suaviza em vez de serrilhar.
+   O sprite traz vazio em volta, então ele pode passar um pouco da casa. */
+.pdx-sprite { display: block; width: 118%; max-width: none; height: auto; margin: -9%; }
+.pdx-check { position: absolute; right: 2px; top: 2px; display: none; align-items: center; justify-content: center; width: 16px; height: 16px; background: var(--gold); color: #1c1605; }
+.pdx-check svg { width: 11px; height: 11px; }
+/* Fora do Modo marcar a cor já diz quem tem (e quem falta é sombra): o selo
+   numa casa de 58 px só cobria o sprite. Ele aparece quando o toque marca. */
+.pdx-grid.is-marcando .pdx-cel.is-tenho .pdx-check { display: inline-flex; }
+/* Silhueta: o "ainda não registrado" da Pokédex dos jogos. */
+.pdx-cel.is-falta .pdx-sprite { filter: brightness(0); opacity: 0.32; }
+:root[data-theme="light"] .pdx-cel.is-falta .pdx-sprite { opacity: 0.22; }
+/* Modo marcar: o quadradinho vazio aparece em todas, pra ficar claro que o
+   toque agora marca. */
+.pdx-grid.is-marcando .pdx-cel { cursor: pointer; }
+.pdx-grid.is-marcando .pdx-cel:not(.is-tenho) .pdx-check { display: inline-flex; border: 2px solid var(--subtle); background: transparent; color: transparent; }
+
+@media (max-width: 700px) {
+  .pdx-topo { margin: 10px 0 12px; }
+  .pdx-cont-n strong { font-size: 26px; }
+  .pdx-marcar { flex: 1 1 100%; justify-content: center; }
+  .pdx-grid { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  .pdx-caixa-grade { padding: 4px; }
+  .pdx-caixa-head { align-items: center; }
+  .pdx-caixa-tudo { min-height: 44px; }
+}
+
 /* Barra de progressão dentro do cartão "progresso" do resumo da Pokédex. */
 .stats-grid .dex-progress {
   margin-top: 10px;
