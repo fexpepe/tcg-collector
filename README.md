@@ -862,8 +862,11 @@ dependem de secret são no-op sem ele — o build sai igual, só sem aquela font
 Outros workflows: `ci.yml` (portão rápido em todo push/PR — testes, smoke de
 i18n e ordem de scripts, guardas de mobile, sintaxe dos scripts, minificação
 compila), `healthcheck.yml`, `uptime.yml` (probe de 30 em 30 min),
-`push-wishlist.yml` (notificação de queda de preço, segunda 09:00 UTC) e
-`app-nativo.yml` (compila o app Android/iOS quando `mobile/` muda).
+`push-wishlist.yml` (notificação de queda de preço, segunda 09:00 UTC),
+`cacar-logos-set.yml` (segunda 10:40 UTC: acha logo de set que falta e
+**propõe numa PR** a branch `bot/logos-de-set`, nunca publica; ver
+`docs/CATALOGO.md` 3.2) e `app-nativo.yml` (compila o app Android/iOS quando
+`mobile/` muda).
 
 ---
 

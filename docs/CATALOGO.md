@@ -108,6 +108,20 @@ aparecer no passo "Lint dos catálogos" do deploy:
   arquivo vai em `data/<jogo>/set-logos/<setId>.<ext>`. Nos jogos com logo
   local (Lorcana, One Piece, FAB e Star Wars), o sync usa o arquivo que existe
   e não baixa por cima.
+  - **Caçador semanal** (`scripts/cacar-logos-set.mjs`, workflow "Caça logos
+    de set", segunda 10:40 UTC e Run workflow): procura logo pros sets sem logo
+    do Lorcana (página do produto + Fandom), One Piece (Bandai, identidade pelo
+    alt da imagem) e FAB (the-fab-cube por código ou nome), normaliza no padrão
+    do jogo e **propõe numa PR** da branch `bot/logos-de-set`, com tabela de
+    fontes e galeria (chip claro e fundo escuro). Nunca publica: quem decide é
+    quem revisa. Logo recusado vai pra `scripts/data/logos-set-ignorar.json`
+    com o motivo, senão volta na semana seguinte. Jogo cujo sync não tem a
+    guarda "logo local vence" é pulado (o relatório diz), e o
+    `tests/cacar-logos-set.test.mjs` trava o nome de arquivo e a guarda contra
+    os syncs. Os demais jogos saem no relatório com o motivo de ficarem de fora.
+  - Sem permissão do Actions pra abrir PR (Settings → Actions → General →
+    "Allow GitHub Actions to create and approve pull requests", desligada por
+    padrão), a rodada sobe a branch e abre uma issue com o link de um clique.
 - **Nome em inglês** (set japonês do Pokémon e vintages): `JA_SET_EN` e
   `VINTAGE_SET_EN` no [src/shared.js](../src/shared.js), com a fonte verbatim
   (Bulbapedia no japonês). Cada nome **custa bytes do `shared.js`**, que está no

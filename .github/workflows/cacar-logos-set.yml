@@ -1,0 +1,179 @@
+name: Caça logos de set
+
+# Procura, em TODOS os jogos, os sets sem logo (setLogo vazio no cards.js
+# versionado), acha um candidato nas fontes conhecidas, normaliza e abre UMA
+# pull request pro Fernando revisar — ver scripts/cacar-logos-set.mjs. Nunca
+# publica direto na main: escolher a imagem errada é o risco principal (no
+# OP-17 o "logo.webp" da Bandai era o selo do 4º aniversário, não o título).
+#
+# A PR sai da branch bot/logos-de-set, refeita a partir da main a cada rodada
+# (force-push), então conflito no cards.js se resolve rodando de novo. Se
+# alguém commitou nela, a rodada não sobrescreve. A galeria vai pra branch
+# órfã bot/logos-de-set-galeria (nunca mesclada, fora do deploy) e entra no
+# corpo da PR pelo link raw do commit.
+#
+# PR aberta pelo GITHUB_TOKEN exige a opção "Allow GitHub Actions to create
+# and approve pull requests" (Settings → Actions → General → Workflow
+# permissions), que vem DESLIGADA. Sem ela, a rodada sobe a branch e abre (ou
+# atualiza) uma ISSUE com o link de um clique pra criar a PR. Alternativa: o
+# secret LOGOS_PR_TOKEN (token pessoal com contents e pull-requests); com ele a
+# PR também dispara o CI, que PR do GITHUB_TOKEN não dispara.
+on:
+  schedule:
+    # Segunda 10:40 UTC: longe do build diário (06:20 + até 3h30 de atraso da
+    # fila do GitHub), que commita o snapshot do catálogo na main.
+    - cron: "40 10 * * 1"
+  workflow_dispatch:
+    inputs:
+      jogos:
+        description: "Só estes jogos (lorcana,onepiece,fab separados por vírgula; vazio = todos)"
+        required: false
+        default: ""
+      seco:
+        description: "Só relatório e galeria, sem branch nem PR"
+        type: boolean
+        default: false
+  # PR que mexe no caçador: ensaio SECO (log, resumo e galeria nos artefatos).
+  pull_request:
+    paths:
+      - scripts/cacar-logos-set.mjs
+      - scripts/lib/logos-set.mjs
+      - scripts/data/logos-set-ignorar.json
+      - .github/workflows/cacar-logos-set.yml
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+# Uma rodada de verdade por vez (duas brigariam pela branch do bot).
+concurrency:
+  group: cacar-logos-set-${{ github.event_name == 'pull_request' && github.ref || 'main' }}
+  cancel-in-progress: false
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+  BRANCH: bot/logos-de-set
+  GALERIA: bot/logos-de-set-galeria
+
+jobs:
+  cacar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: 22
+
+      # Mesmo esquema do mirror-swu-set-logos no deploy: o site não tem
+      # package.json e nada disso chega ao front.
+      - name: Instala o sharp (fora do repositório)
+        run: |
+          mkdir -p "$RUNNER_TEMP/sharp" && cd "$RUNNER_TEMP/sharp"
+          npm init -y >/dev/null
+          npm install --no-audit --no-fund sharp@0.33.5 >/dev/null
+
+      # Fora da main (PR, ou disparo manual em outra branch) é sempre seco: a
+      # branch do bot nasce da main e não pode levar commit de feature junto.
+      - name: Caça os logos
+        env:
+          SHARP_DIR: ${{ runner.temp }}/sharp/node_modules/sharp
+          JOGOS: ${{ inputs.jogos }}
+          SECO: ${{ github.event_name == 'pull_request' || inputs.seco == true || github.ref != 'refs/heads/main' }}
+        run: |
+          args=(--saida "$RUNNER_TEMP/logos")
+          if [ -n "$JOGOS" ]; then args+=(--jogos "$JOGOS"); fi
+          if [ "$SECO" = "true" ]; then args+=(--seco); fi
+          node scripts/cacar-logos-set.mjs "${args[@]}"
+          cat "$RUNNER_TEMP/logos/relatorio.md" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Guarda relatório, galeria e logos
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: logos-de-set
+          path: ${{ runner.temp }}/logos
+          retention-days: 30
+          if-no-files-found: ignore
+
+      - name: Abre ou atualiza a PR
+        if: github.event_name != 'pull_request' && inputs.seco != true && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ secrets.LOGOS_PR_TOKEN || github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          OUT="$RUNNER_TEMP/logos"
+          N=$(node -e "console.log(require('$OUT/relatorio.json').propostas.length)")
+          if [ "$N" = "0" ]; then echo "Nenhum logo novo: nada a propor."; exit 0; fi
+          TITULO=$(node -e "console.log(require('$OUT/relatorio.json').titulo)")
+
+          # Só arquivo de logo e cards.js podem ter mudado; qualquer outra coisa
+          # é bug do caçador e não sobe.
+          FORA=$(git status --porcelain --untracked-files=all | awk '{print $2}' | grep -vE '^data/[^/]+/(set-logos/[^/]+|cards\.js)$' || true)
+          if [ -n "$FORA" ]; then echo "::error::O caçador mexeu fora de set-logos/ e cards.js: $FORA"; exit 1; fi
+
+          # A rodada não sobrescreve commit de gente na branch da PR.
+          if git ls-remote --exit-code --heads origin "$BRANCH" >/dev/null 2>&1; then
+            for autor in $(gh api "repos/$GH_REPO/compare/main...$BRANCH" --jq '[.commits[].commit.author.email] | unique | .[]'); do
+              case "$autor" in
+                *github-actions*) ;;
+                *) echo "::warning::A branch $BRANCH tem commit de $autor; esta rodada não sobrescreve. Mescle a PR ou apague a branch pra o caçador voltar."; exit 0 ;;
+              esac
+            done
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # Galeria: commit órfão só com o PNG (índice temporário, sem tocar a
+          # árvore de trabalho). O link raw é pelo SHA, então não muda depois.
+          BLOB=$(git hash-object -w "$OUT/galeria.png")
+          export GIT_INDEX_FILE="$RUNNER_TEMP/galeria.index"
+          git update-index --add --cacheinfo "100644,$BLOB,galeria.png"
+          ARVORE=$(git write-tree)
+          unset GIT_INDEX_FILE
+          GAL=$(git commit-tree "$ARVORE" -m "Galeria dos logos de set propostos ($(date -u +%F))")
+          git push -f origin "$GAL:refs/heads/$GALERIA"
+          IMG="https://raw.githubusercontent.com/$GH_REPO/$GAL/galeria.png"
+
+          git switch -c "$BRANCH"
+          git add -A data # a checagem acima garante que só há logo e cards.js
+          git commit -q -m "$TITULO" -m "Proposto pelo caçador de logos (scripts/cacar-logos-set.mjs, workflow \"Caça logos de set\"). A fonte e a galeria de cada logo estão na PR."
+          git push -f origin "$BRANCH"
+
+          CORPO="$RUNNER_TEMP/corpo.md"
+          sed "s#{{GALERIA}}#![Galeria dos logos propostos]($IMG)#" "$OUT/relatorio.md" > "$CORPO"
+          printf '\n_Rodada: %s/%s/actions/runs/%s_\n' "$GITHUB_SERVER_URL" "$GH_REPO" "$GITHUB_RUN_ID" >> "$CORPO"
+
+          PR=$(gh pr list --head "$BRANCH" --base main --state open --json number --jq '.[0].number // empty')
+          if [ -n "$PR" ]; then
+            gh pr edit "$PR" --title "$TITULO" --body-file "$CORPO"
+            echo "PR #$PR atualizada."
+          elif gh pr create --base main --head "$BRANCH" --title "$TITULO" --body-file "$CORPO"; then
+            echo "PR aberta."
+          else
+            # Sem permissão pra PR (o padrão do repositório): a branch já subiu;
+            # a issue leva o link de um clique e o mesmo texto.
+            ISSUE_TITULO="Logos de set: proposta do caçador esperando a PR"
+            AVISO="$RUNNER_TEMP/issue.md"
+            {
+              echo "**A branch \`$BRANCH\` está pronta, mas o Actions não pode abrir PR neste repositório.** [Abrir a PR com um clique]($GITHUB_SERVER_URL/$GH_REPO/compare/main...$BRANCH?expand=1) e colar o texto abaixo."
+              echo
+              echo "Pra a PR sair sozinha nas próximas rodadas: Settings → Actions → General → Workflow permissions → \"Allow GitHub Actions to create and approve pull requests\", ou o secret \`LOGOS_PR_TOKEN\`."
+              echo
+              echo "---"
+              echo
+              cat "$CORPO"
+            } > "$AVISO"
+            ISSUE=$(gh issue list --state open --search "in:title \"$ISSUE_TITULO\"" --json number --jq '.[0].number // empty')
+            if [ -n "$ISSUE" ]; then
+              gh issue edit "$ISSUE" --body-file "$AVISO"
+              echo "::warning::Sem permissão pra abrir PR; issue #$ISSUE atualizada com o link."
+            else
+              gh issue create --title "$ISSUE_TITULO" --body-file "$AVISO"
+              echo "::warning::Sem permissão pra abrir PR; issue aberta com o link."
+            fi
+          fi
