@@ -130,8 +130,13 @@
       shared.vibrar(12);
       // Captura = marcado OU tem carta: desmarcar quem tem carta não apaga.
       const tem = marcado || Number(cel.dataset.cartas) > 0;
+      // A primeira marcação liga o "quem falta fica cinza" na tela toda.
+      if (tem && !algumCapturado) {
+        algumCapturado = true;
+        grade.querySelectorAll(".pdx-cel:not(.is-tenho)").forEach((c) => { if (c !== cel) c.classList.add("is-falta"); });
+      }
       cel.classList.toggle("is-tenho", tem);
-      cel.classList.toggle("is-falta", !tem);
+      cel.classList.toggle("is-falta", !tem && algumCapturado);
       repintaCabecalhos();
     });
   }
