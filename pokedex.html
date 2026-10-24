@@ -85,20 +85,20 @@
         </section>
       </div>
 
-      <section class="stats-grid" data-i18n-aria="aria.sumCollection" aria-label="Resumo da coleção">
-        <article>
-          <span id="ownedCount">0</span>
-          <p data-i18n="stats.dexOwned">Pokémon que você tem</p>
-        </article>
-        <article>
-          <span id="totalCount">0</span>
-          <p data-i18n="stats.dexTotal">Pokémon na Pokédex</p>
-        </article>
-        <article>
-          <span id="completionRate">0%</span>
-          <p data-i18n="stats.progress">progresso</p>
-          <div class="progress-bar dex-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" data-i18n-aria="stats.progress" aria-label="progresso"><span id="dexProgressFill" style="width: 0%"></span></div>
-        </article>
+      <!-- Contador da Pokédex (2026-10-17): "412 de 1.025 Pokémon" numa linha,
+           com a barra embaixo, no lugar dos três cartões altos. Os ids são os
+           de antes — o app.js (updatePokedexStats) escreve neles. Ao lado, o
+           Modo marcar do src/dex.js: ligado, tocar marca "já tenho". -->
+      <section class="pdx-topo" data-i18n-aria="aria.sumCollection" aria-label="Resumo da coleção">
+        <div class="pdx-cont">
+          <p class="pdx-cont-n"><strong id="ownedCount">0</strong> <span data-i18n="pdx.of">de</span> <span id="totalCount">1025</span> <span data-i18n="pdx.pokemon">Pokémon</span> <span id="completionRate" class="pdx-pct">0%</span></p>
+          <div class="pdx-barra pdx-barra-g" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" data-i18n-aria="stats.progress" aria-label="progresso"><i id="dexProgressFill" style="width: 0%"></i></div>
+        </div>
+        <button type="button" id="pdxMarcar" class="pdx-marcar" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><polyline points="17 8.5 10.5 15 7 11.5"/></svg>
+          <span data-i18n="pdx.mark">Marcar os que tenho</span>
+        </button>
+        <p id="pdxDica" class="pdx-dica" data-i18n="pdx.markHint" hidden>Toque nos Pokémon que você já tem. Toque de novo pra desmarcar.</p>
       </section>
 
       <!-- Chips de geração FORA do toolbar: no celular o toolbar recolhe em
@@ -133,22 +133,18 @@
         </div>
       </section>
 
-      <!-- No celular esta linha some (ver .results-header-pokedex no
-           styles.css): "Pokémon · 1025 resultados" só repetia o resumo logo
-           acima e empurrava a grade pra baixo. O #resultCount continua no DOM
-           porque o app.js escreve nele a cada render. -->
-      <section class="results-header results-header-pokedex">
-        <h2 data-i18n="results.heading.pokedex">Pokémon</h2>
-        <p id="resultCount">0 resultados</p>
-      </section>
+      <!-- "Pokémon · 1025 resultados" saiu (2026-10-17): o contador lá em cima
+           já diz. O #resultCount fica escondido porque o app.js escreve nele. -->
+      <p id="resultCount" hidden></p>
 
-      <section id="cardGrid" class="card-grid" data-view="pokedex" aria-live="polite"></section>
+      <section id="cardGrid" class="pdx-grid" data-view="pokedex" aria-live="polite"></section>
       <p id="emptyState" class="empty-state" data-i18n="empty.pokedex" hidden>Nenhuma carta encontrada com esses filtros.</p>
     </main>
 
     <script defer src="src/i18n.js"></script>
     <script defer src="src/nomes-sets.js"></script>
     <script defer src="src/shared.js"></script>
+    <script defer src="src/dex.js"></script>
     <script defer src="src/app.js"></script>
     <!-- Vitrine (espaço de anúncio, docs/PLANO-ADS.md): só página de catálogo.
          data-grade = a grade onde entram as faixas. -->
