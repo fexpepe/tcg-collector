@@ -59,6 +59,9 @@
   // Artistas e Treinadores (2026-10-17): o desenho, a ordem e o resumo moram no
   // src/entidades.js, que só essas duas páginas carregam. Aqui ficam os dados.
   const ent = (view === "artists" || view === "trainers") ? window.SleevuEntidades || null : null;
+  // Pokédex (2026-10-17): o desenho da grade mora no src/dex.js, que só o
+  // pokedex.html carrega. Os dados (espécies, captura, filtros) ficam aqui.
+  const dex = view === "pokedex" ? window.SleevuDex || null : null;
   // Visão grade/lista dos Sets (só na página de Sets). Mesma UI e persistência
   // da página de Cartas; a classe .is-list na grade faz o CSS virar linhas.
   let setsView = localStorage.getItem("tcg-sets-view") === "list" ? "list" : "grid";
@@ -228,6 +231,19 @@
         recorte: () => `${cardLang}|${elements.setRegionChips && !elements.setRegionChips.hidden ? selectedLangRegion : ""}`,
         busca: () => elements.search.value.trim(),
         onChange: () => render({ resetCount: true })
+      });
+    }
+    if (dex) {
+      dex.liga({
+        progresso: dexProgress,
+        busca: () => elements.search.value.trim(),
+        // "Já tenho" pelo Modo marcar: grava, atualiza resumo e chips, e
+        // devolve se a espécie ficou marcada (a célula se acerta no lugar).
+        marca: (dexId) => {
+          dexOwned.toggle(String(dexId));
+          updatePokedexStats();
+          return dexOwned.has(String(dexId));
+        }
       });
     }
     if (view === "sets" && serieParam) applySerieTitle();
@@ -563,7 +579,7 @@
     // visões partem das cartas visíveis após os filtros.
     // filterCards() varre o catálogo; sets e pokedex não têm catálogo carregado
     // (e não precisam) — passam direto.
-    const items = view === "pokedex" ? pokedexViewItems()
+    const items = view === "pokedex" ? (dex ? dex.itens(pokedexViewItems()) : pokedexViewItems())
       : getViewItems(manifestMode() ? [] : filterCards());
     pager.render(items, createViewItem, { resetCount }); // onAppend reaplica o recolhido
     if (view === "sets") { applyCollapsed(); refineVisibleSets(); }
@@ -572,7 +588,7 @@
     // Cabeçalhos de série não contam como resultado, nem o topo da Vitrine
     // (destaque e "Continue completando"): o Yu-Gi-Oh! dizia "595 resultados"
     // com 594 sets.
-    const realCount = items.filter((item) => !/^(series-head|category-head|sx-hero|sx-continue)$/.test(item.type)).length;
+    const realCount = items.filter((item) => !item.cabecalho && !/^(series-head|category-head|sx-hero|sx-continue)$/.test(item.type)).length;
     elements.empty.hidden = realCount > 0;
     elements.resultCount.textContent = tn("results.count", realCount);
     if (view === "pokedex") { updatePokedexStats(); return; }
@@ -590,7 +606,9 @@
     if (dexOwned.has(String(entry.dexId))) return true;
     return entry.cardIds.some((id) => owned.has(id) && langMatch(shared.cardLanguageFromId(id)));
   }
-  function updatePokedexStats() {
+  // Capturados/total, no geral e por geração — o resumo, os chips e (desde
+  // 2026-10-17) os cabeçalhos de região do src/dex.js contam com a mesma régua.
+  function dexProgress() {
     const entries = pokedexEntries();
     const progress = { c: 0, t: entries.length, gen: {} };
     entries.forEach((entry) => {
@@ -599,10 +617,16 @@
       p.t += 1;
       if (pokemonCaptured(entry)) { p.c += 1; progress.c += 1; }
     });
+    return progress;
+  }
+  function updatePokedexStats() {
+    const entries = pokedexEntries();
+    const progress = dexProgress();
     const captured = progress.c;
     const pct = entries.length ? Math.round((captured / entries.length) * 100) : 0;
-    if (elements.ownedCount) elements.ownedCount.textContent = captured;
-    if (elements.totalCount) elements.totalCount.textContent = entries.length;
+    // "1.025", não "1025" (o contador da Pokédex ficou grande em 2026-10-17).
+    if (elements.ownedCount) elements.ownedCount.textContent = captured.toLocaleString(shared.getLocale());
+    if (elements.totalCount) elements.totalCount.textContent = entries.length.toLocaleString(shared.getLocale());
     if (elements.completionRate) elements.completionRate.textContent = `${pct}%`;
     if (elements.dexProgressFill) {
       elements.dexProgressFill.style.width = `${pct}%`;
@@ -1090,6 +1114,9 @@
     if (item.type === "category-head") {
       return createCategoryHead(item);
     }
+
+    // Espécie e o que o src/dex.js intercala (cabeçalho de região).
+    if (dex && (item.type === "pokedex" || item.doDex)) return dex.desenha(item);
 
     if (item.type === "pokedex") {
       return createPokedexCard(item);
