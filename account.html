@@ -51,25 +51,160 @@
       </div>
     </header>
 
-    <main>
+    <!-- Página Perfil do CELULAR — aberta pelo botão de perfil do topo; no
+         desktop nada aponta pra cá. Até 2026-10-26 era o menu de conta do
+         header aberto em fluxo (14 linhas de texto sem ícone, e deslogado só
+         o botão Entrar). Agora é a tela de ajustes do app, versão A "Ajustes":
+         quem você é, preferências que mudam na hora e a lista agrupada.
+         Os links vivem no HTML (traduzidos pelos data-i18n, e a bolinha de
+         Novidades do shared.js os acha); o src/perfil.js liga o que muda. -->
+    <main class="acc-pagina">
       <div class="page-head">
         <h1 data-i18n="tabbar.profile">Perfil</h1>
       </div>
 
-      <!-- Página Perfil do CELULAR (2026-09-14): substitui o hambúrguer do
-           header. O .header-actions mora AQUI, e não no header: o shared.js
-           procura essa classe pra montar moeda, idioma, olho, tema e o menu
-           de conta (e-mail, sincronização, Meu perfil, Instalar app, Apoiar,
-           Exportar/Importar, Novidades, Configurações, Ajuda, Resolução de
-           problemas, Privacidade, Termos, Sair), e o CSS .account-actions
-           deixa o menu sempre aberto, em fluxo. Deslogado, o mesmo lugar
-           mostra o botão Entrar. No desktop nada aponta pra cá. -->
-      <div class="header-actions account-actions">
-        <select id="languageSwitcher" class="lang-select"></select>
-      </div>
+      <section class="acc-quem" id="accQuem"></section>
+
+      <section class="acc-grupo" aria-labelledby="accPrefsT">
+        <h2 class="acc-eyebrow" id="accPrefsT" data-i18n="acc.prefs">Preferências</h2>
+        <div class="acc-lista">
+          <!-- Moeda e idioma: o <select> nativo cobre a linha inteira (opacidade
+               zero), então o toque abre a roleta do sistema no celular. -->
+          <label class="acc-row">
+            <span class="acc-ic"><svg viewBox="0 0 24 24"><rect x="2.5" y="6" width="19" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 9.5v5M18 9.5v5"/></svg></span>
+            <span class="acc-rot" data-i18n="acc.currency">Moeda</span>
+            <span class="acc-valor" id="accMoedaValor"></span>
+            <span class="acc-seta" aria-hidden="true"></span>
+            <select class="acc-select" id="accMoeda" data-i18n-aria="acc.currency" aria-label="Moeda">
+              <option value="BRL">R$ BRL</option>
+              <option value="USD">US$ USD</option>
+              <option value="EUR">€ EUR</option>
+            </select>
+          </label>
+          <label class="acc-row">
+            <span class="acc-ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg></span>
+            <span class="acc-rot" data-i18n="acc.language">Idioma</span>
+            <span class="acc-valor" id="accIdiomaValor"></span>
+            <span class="acc-seta" aria-hidden="true"></span>
+            <!-- Nome de cada idioma na própria língua, como nas Configurações. -->
+            <select class="acc-select" id="accIdioma" data-i18n-aria="acc.language" aria-label="Idioma">
+              <option value="pt">Português (BR)</option>
+              <option value="en">English</option>
+              <option value="es">Español</option>
+            </select>
+          </label>
+          <div class="acc-row">
+            <span class="acc-ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18z" fill="currentColor"/></svg></span>
+            <span class="acc-rot" data-i18n="acc.theme">Tema</span>
+            <div class="acc-seg" id="accTema" role="group" data-i18n-aria="acc.theme" aria-label="Tema">
+              <button type="button" data-tema="auto" aria-pressed="false" data-i18n="acc.theme.auto">Auto</button>
+              <button type="button" data-tema="light" aria-pressed="false" data-i18n="acc.theme.light">Claro</button>
+              <button type="button" data-tema="dark" aria-pressed="false" data-i18n="acc.theme.dark">Escuro</button>
+            </div>
+          </div>
+          <button type="button" class="acc-row" id="accPrecos" role="switch" aria-checked="false">
+            <span class="acc-ic"><svg viewBox="0 0 24 24"><path d="M4.5 4.5l15 15"/><path d="M9.9 5.9A10.4 10.4 0 0 1 12 5.5c6.5 0 10 6.5 10 6.5a17.3 17.3 0 0 1-3.2 3.9M6.1 6.7A16.6 16.6 0 0 0 2 12s3.5 6.5 10 6.5a10.7 10.7 0 0 0 4-.8"/><path d="M9.9 10.1a2.8 2.8 0 0 0 4 4"/></svg></span>
+            <span class="acc-rot"><span data-i18n="acc.hidePrices">Esconder preços</span><small data-i18n="acc.hidePricesSub">Modo Colecionador: o site todo sem valores</small></span>
+            <span class="acc-switch" aria-hidden="true"></span>
+          </button>
+        </div>
+      </section>
+
+      <section class="acc-grupo" aria-labelledby="accContaT">
+        <h2 class="acc-eyebrow" id="accContaT" data-i18n="acc.account">Sua conta</h2>
+        <div class="acc-lista">
+          <a class="acc-row" href="profile" data-so-logado hidden>
+            <span class="acc-ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg></span>
+            <span class="acc-rot" data-i18n="profile.heading">Meu perfil</span>
+            <span class="acc-seta" aria-hidden="true"></span>
+          </a>
+          <a class="acc-row" href="settings">
+            <span class="acc-ic"><svg viewBox="0 0 24 24"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg></span>
+            <span class="acc-rot" data-i18n="footer.settings">Configurações</span>
+            <span class="acc-seta" aria-hidden="true"></span>
+          </a>
+          <a class="acc-row" href="backup">
+            <span class="acc-ic"><svg viewBox="0 0 24 24"><path d="M7 4v14M3.5 14.5 7 18l3.5-3.5M17 20V6M13.5 9.5 17 6l3.5 3.5"/></svg></span>
+            <span class="acc-rot" data-i18n="auth.transfer">Exportar / Importar</span>
+            <span class="acc-seta" aria-hidden="true"></span>
+          </a>
+          <button type="button" class="acc-row" id="accInstalar" hidden>
+            <span class="acc-ic"><svg viewBox="0 0 24 24"><rect x="6" y="2.5" width="12" height="19" rx="2"/><path d="M12 7v7M9 11l3 3 3-3"/></svg></span>
+            <span class="acc-rot" data-i18n="acc.install">Instalar app</span>
+            <span class="acc-seta" aria-hidden="true"></span>
+          </button>
+        </div>
+      </section>
+
+      <section class="acc-grupo" aria-labelledby="accExplorarT">
+        <h2 class="acc-eyebrow" id="accExplorarT" data-i18n="acc.discover">Explorar</h2>
+        <div class="acc-lista">
+          <a class="acc-row" href="tools">
+            <span class="acc-ic"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.8-3.8a6 6 0 0 1-7.9 7.9l-6.9 6.9a2.1 2.1 0 0 1-3-3l6.9-6.9a6 6 0 0 1 7.9-7.9z"/></svg></span>
+            <span class="acc-rot" data-i18n="dash.tools">Ferramentas</span>
+            <span class="acc-seta" aria-hidden="true"></span>
+          </a>
+          <a class="acc-row" href="blog">
+            <span class="acc-ic"><svg viewBox="0 0 24 24"><rect x="4" y="3.5" width="16" height="17" rx="1.5"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span>
+            <span class="acc-rot" data-i18n="nav.blog">Blog</span>
+            <span class="acc-seta" aria-hidden="true"></span>
+          </a>
+          <a class="acc-row" href="novidades" data-news-link>
+            <span class="acc-ic"><svg viewBox="0 0 24 24"><path d="M12 3c.6 4.8 2.7 7.2 8 9-5.3 1.8-7.4 4.2-8 9-.6-4.8-2.7-7.2-8-9 5.3-1.8 7.4-4.2 8-9z"/></svg></span>
+            <span class="acc-rot" data-i18n="news.heading">Novidades</span>
+            <span class="acc-seta" aria-hidden="true"></span>
+          </a>
+        </div>
+      </section>
+
+      <section class="acc-grupo" aria-labelledby="accSobreT">
+        <h2 class="acc-eyebrow" id="accSobreT" data-i18n="acc.about">Ajuda e termos</h2>
+        <div class="acc-lista">
+          <a class="acc-row" href="help">
+            <span class="acc-ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.2 9.2a2.9 2.9 0 0 1 5.6 1c0 1.9-2.8 2.6-2.8 2.6M12 17h.01"/></svg></span>
+            <span class="acc-rot" data-i18n="footer.help">Ajuda</span>
+            <span class="acc-seta" aria-hidden="true"></span>
+          </a>
+          <!-- data-open-troubleshoot: o shared.js abre o painel de qualquer tela. -->
+          <button type="button" class="acc-row" data-open-troubleshoot>
+            <span class="acc-ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/><path d="m5.6 5.6 3.9 3.9M14.5 14.5l3.9 3.9M14.5 9.5l3.9-3.9M5.6 18.4l3.9-3.9"/></svg></span>
+            <span class="acc-rot" data-i18n="ts.title">Resolução de problemas</span>
+            <span class="acc-seta" aria-hidden="true"></span>
+          </button>
+          <a class="acc-row" href="privacy">
+            <span class="acc-ic"><svg viewBox="0 0 24 24"><path d="M12 3 4.5 6v5.5c0 4.7 3.2 8.3 7.5 9.5 4.3-1.2 7.5-4.8 7.5-9.5V6z"/></svg></span>
+            <span class="acc-rot" data-i18n="footer.privacy">Privacidade</span>
+            <span class="acc-seta" aria-hidden="true"></span>
+          </a>
+          <a class="acc-row" href="terms">
+            <span class="acc-ic"><svg viewBox="0 0 24 24"><path d="M14 3H6.5v18h11V6.5z"/><path d="M14 3v3.5h3.5M9.5 12h5M9.5 16h5"/></svg></span>
+            <span class="acc-rot" data-i18n="footer.terms">Termos de Uso</span>
+            <span class="acc-seta" aria-hidden="true"></span>
+          </a>
+        </div>
+      </section>
+
+      <a class="acc-apoio" href="https://ko-fi.com/fernandopepe" target="_blank" rel="noopener">
+        <span class="acc-ic"><svg viewBox="0 0 24 24"><path d="M12 20s-7.5-4.5-7.5-10.2A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.5 2.6C19.5 15.5 12 20 12 20z"/></svg></span>
+        <span class="acc-rot"><strong data-i18n="acc.support">Apoiar o Sleevu</strong><small data-i18n="acc.supportSub">Mantém o site no ar e, a partir de R$ 10, deixa sua conta 30 dias sem anúncio.</small></span>
+        <span class="acc-seta" aria-hidden="true"></span>
+      </a>
+
+      <button type="button" class="acc-row acc-sair" id="accSair" data-so-logado hidden>
+        <span class="acc-ic"><svg viewBox="0 0 24 24"><path d="M14 4h4.5A1.5 1.5 0 0 1 20 5.5v13a1.5 1.5 0 0 1-1.5 1.5H14M10 8l-4 4 4 4M6 12h10"/></svg></span>
+        <span class="acc-rot" data-i18n="auth.signOut">Sair</span>
+      </button>
+
+      <!-- O .header-actions fica escondido, mas precisa existir: é nele que o
+           initAuth do shared.js pendura o login e a sincronização com a nuvem
+           (sem ele a página não puxaria nem subiria nada). A tela não usa os
+           controles que nascem ali. -->
+      <div class="header-actions" hidden></div>
     </main>
 
     <script defer src="src/i18n.js"></script>
+    <script defer src="src/i18n-perfil.js"></script>
     <script defer src="src/shared.js"></script>
+    <script defer src="src/perfil.js"></script>
   </body>
 </html>
