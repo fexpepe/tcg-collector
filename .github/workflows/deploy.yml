@@ -614,10 +614,23 @@ jobs:
       # Dragon Ball Carddass (Bandai 1988-1997): o jogo vintage dbc. Lista carta
       # a carta do Hondan pelo 80storage.com (snapshot versionado em
       # data/vintage/dbc-carddass.json, nao regride, ids fixos). Cria data/dbc/
-      # sozinho, sem depender de outro sync. Sem imagem e sem preco por ora.
+      # sozinho, sem depender de outro sync. Imagem so a curada em
+      # assets/cards/dbc/ (Hondan 1-15, do Wayback); sem preco.
       - name: Catalogo vintage Dragon Ball Carddass
         if: env.RODA_SYNC == 'true'
         run: node scripts/sync-dbc-carddass.mjs || echo "sync-dbc-carddass falhou; segue com o snapshot versionado"
+
+      # O mesmo jogo no build RAPIDO (push), sem rede. Sem este passo o
+      # data/dbc/sets/ vem do cache do ultimo build completo, e e ele que a tela
+      # do set le -- nao o cards.js. Foi assim que as 631 imagens do PR #215
+      # (2026-10-27) entraram na main e nao apareceram ate o cron. Com --no-fetch
+      # o sync monta tudo do snapshot versionado + da pasta de imagens em ~1 s,
+      # igual ao build completo enquanto o 80storage nao mudar (o Hondan acabou
+      # em 1997). Mesmo lugar da fila do passo de cima, pra lint, prerender e
+      # enrich-manifest verem o dbc igual nos dois modos.
+      - name: Catalogo vintage Dragon Ball Carddass (build rapido, sem rede)
+        if: env.RODA_SYNC != 'true'
+        run: node scripts/sync-dbc-carddass.mjs --no-fetch || echo "sync-dbc-carddass --no-fetch falhou; segue com o catalogo do cache"
 
       # The Lord of the Rings TCG (Decipher 2001-2007): o jogo vintage lotr.
       # Monta data/lotr/ do snapshot versionado (data/vintage/lotr-pc.json, do
