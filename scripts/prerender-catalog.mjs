@@ -295,7 +295,9 @@ function setPageHtml(page, canonical, otherSets, lang) {
   const ogImage = imagemDePrevia(rep.setLogo) || `${ORIGIN}/og-image.png`;
   const baseDoJogo = `/games/${page.url}`;
   const baseDoSet = `${baseDoJogo}/${page.slug}`;
-  // hreflang: cada variante aponta pra si e pra irmã; pt é o x-default.
+  // hreflang: cada variante aponta pra si e pra irmã; en é o x-default (quem
+  // busca num idioma que não temos cai no inglês, como no app — ver
+  // functions/_lib/pagina-set.js, que tem que dizer o mesmo).
   const altPt = `${ORIGIN}${baseDoSet}`;
   const altEn = `${ORIGIN}${baseDoSet}-en`;
   // Cada miniatura leva pra página da CARTA (montada na borda, uma pra cada
@@ -305,7 +307,7 @@ function setPageHtml(page, canonical, otherSets, lang) {
   const hreflangs = `
     <link rel="alternate" hreflang="pt-BR" href="${escapeAttr(altPt)}">
     <link rel="alternate" hreflang="en" href="${escapeAttr(altEn)}">
-    <link rel="alternate" hreflang="x-default" href="${escapeAttr(altPt)}">`;
+    <link rel="alternate" hreflang="x-default" href="${escapeAttr(altEn)}">`;
   // O botão leva pra tela do set no app, que mora no endereço pt do set desde
   // 2026-10-01 (o jogo e o set saem do próprio endereço).
   const appUrl = baseDoSet;
@@ -1215,7 +1217,7 @@ async function main() {
     // "Outros sets" só do MESMO /games/<jogo> (linkar 700 sets de outro jogo
     // em cada página viraria ruído pro leitor e pro crawler).
     const others = pages.filter((p) => p.url === page.url && p.slug !== page.slug).map((p) => ({ name: p.name, slug: p.slug }));
-    // Só a variante en (hreflang) é arquivo: a pt (padrão/x-default) é a tela
+    // Só a variante en (hreflang, e o x-default) é arquivo: a pt é a tela
     // do set do app, decorada na borda com os mesmos textos (functions/games/
     // e functions/_lib/pagina-set.js). As duas se referenciam via
     // <link rel=alternate>.

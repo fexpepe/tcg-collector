@@ -216,7 +216,8 @@ test("tela do set: título, descrição, canonical, hreflang, JSON-LD e índice 
   assert.deepEqual(p.alternates.map((a) => `${a.hreflang} ${a.href}`), [
     "pt-BR https://sleevu.app/games/pokemon/base-set",
     "en https://sleevu.app/games/pokemon/base-set-en",
-    "x-default https://sleevu.app/games/pokemon/base-set"
+    // x-default no inglês: idioma que não temos cai no inglês, como no app.
+    "x-default https://sleevu.app/games/pokemon/base-set-en"
   ]);
   const [colecao, trilha] = [...cabecaDaRota(p, { caminho: "/games/pokemon/base-set" })
     .matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map((m) => JSON.parse(m[1]));

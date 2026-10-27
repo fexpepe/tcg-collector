@@ -41,8 +41,8 @@ export function fmtDateEn(iso) {
   return `${MONTHS_EN[Number(m[2]) - 1]} ${Number(m[3])}, ${m[1]}`;
 }
 
-// Textos da página de set nos DOIS idiomas (pt = padrão/x-default, en = a
-// variante hreflang).
+// Textos da página de set nos DOIS idiomas (pt = o endereço sem sufixo, en =
+// a variante -en, que é também o x-default do hreflang).
 export const SET_L10N = {
   pt: {
     htmlLang: "pt-BR",
@@ -183,7 +183,11 @@ export function pecasDoSet({ jogo, slug, nome, cartas, slugs }) {
     alternates: [
       { hreflang: "pt-BR", href: canonical },
       { hreflang: "en", href: `${canonical}-en` },
-      { hreflang: "x-default", href: canonical }
+      // x-default = inglês: é pra onde o Google manda quem busca num idioma
+      // que não temos (francês, alemão...). Era o pt, e o mesmo visitante que
+      // o app abriria em inglês (theme.js, detectLang) chegava pela busca na
+      // versão em português (2026-10-27). Tem que bater com o prerender-catalog.
+      { hreflang: "x-default", href: `${canonical}-en` }
     ],
     jsonLds: [colecao, trilhaLd],
     corpoHtml
