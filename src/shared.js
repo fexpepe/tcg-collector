@@ -10193,6 +10193,7 @@
     createPriceStore,
     createListStore,
     isStandalonePWA,
+    canInstallPWA,
     pwaInstallFlow,
     marcaPasso,
     logEvento,
@@ -10274,6 +10275,8 @@
     sendMagicLink,
     oauthSignIn,
     getSession,
+    getSyncStatus,
+    authSignOut,
     getLastAccount,
     forgetLastAccount,
     createShare,
@@ -12316,8 +12319,9 @@
     const dataItems = `<li class="auth-sep" aria-hidden="true"></li>
       <a class="lang-dd-option auth-link" role="menuitem" href="backup">${escapeHtml(t("auth.transfer"))}</a>`;
     // Sobre (ajuda + troubleshooting + privacidade/termos).
-    // Blog e Ferramentas aqui também: no celular este menu É a tela Perfil
-    // (account.html), e a barra de baixo não tem vaga pro "Mais" do topo.
+    // Blog e Ferramentas aqui também: o celular tem a mesma lista na tela
+    // Perfil (account.html, desenhada à parte desde 2026-10-26), e a barra de
+    // baixo não tem vaga pro "Mais" do topo.
     const aboutItems = `<li class="auth-sep" aria-hidden="true"></li>
       <a class="lang-dd-option auth-link" role="menuitem" href="tools">${escapeHtml(t("dash.tools"))}</a>
       <a class="lang-dd-option auth-link" role="menuitem" href="blog">${escapeHtml(t("nav.blog"))}</a>

@@ -1,0 +1,107 @@
+// Textos da tela Perfil do celular (account.html), redesenhada em 2026-10-26
+// — quem liga a tela é o src/perfil.js. Pacote SEPARADO do i18n.js pelo mesmo
+// motivo do lore e das entidades: só uma página usa. Merge por IDIOMA, como os
+// outros pacotes: a ordem de carga não importa, desde que venha antes do
+// shared.js (é ele que traduz os data-i18n do HTML).
+(function () {
+  const M = (window.TCG_MESSAGES = window.TCG_MESSAGES || {});
+
+  M.pt = Object.assign(M.pt || {}, {
+    "acc.prefs": "Preferências",
+    "acc.shortcuts": "Atalhos",
+    "acc.about": "Ajuda e termos",
+    "acc.currency": "Moeda",
+    "acc.language": "Idioma",
+    "acc.theme": "Tema",
+    "acc.theme.auto": "Auto",
+    "acc.theme.light": "Claro",
+    "acc.theme.dark": "Escuro",
+    "acc.prices": "Preços",
+    "acc.prices.shown": "Visíveis",
+    "acc.prices.hidden": "Ocultos",
+    "acc.publicProfile": "Perfil público",
+    "acc.install": "Instalar app",
+    "acc.d.settings": "Privacidade, avisos e mais",
+    "acc.d.backup": "Backup e planilha CSV",
+    "acc.d.tools": "Condição, centralização e trocas",
+    "acc.d.news": "O que mudou no site",
+    "acc.d.blog": "Guias e notícias",
+    "acc.d.help": "Perguntas frequentes",
+    "acc.d.install": "Atalho na tela inicial",
+    "acc.support": "Apoiar o Sleevu",
+    "acc.supportSub": "Mantém o site no ar e, a partir de R$ 10, deixa sua conta 30 dias sem anúncio.",
+    "acc.sync.ok": "Sincronizado {quando}",
+    "acc.sync.now": "Sincronizado agora",
+    "acc.sync.fail": "A última sincronização falhou",
+    "acc.sync.idle": "Ainda não sincronizado",
+    "acc.guest.title": "Entre na sua conta",
+    "acc.guest.sub": "Guarde a coleção na nuvem e abra em qualquer aparelho. Grátis e sem senha.",
+    "acc.guest.local": "Sem conta, tudo fica salvo só neste aparelho."
+  });
+
+  M.en = Object.assign(M.en || {}, {
+    "acc.prefs": "Preferences",
+    "acc.shortcuts": "Shortcuts",
+    "acc.about": "Help and legal",
+    "acc.currency": "Currency",
+    "acc.language": "Language",
+    "acc.theme": "Theme",
+    "acc.theme.auto": "Auto",
+    "acc.theme.light": "Light",
+    "acc.theme.dark": "Dark",
+    "acc.prices": "Prices",
+    "acc.prices.shown": "Shown",
+    "acc.prices.hidden": "Hidden",
+    "acc.publicProfile": "Public profile",
+    "acc.install": "Install app",
+    "acc.d.settings": "Privacy, alerts and more",
+    "acc.d.backup": "Backup and CSV spreadsheet",
+    "acc.d.tools": "Condition, centering and trades",
+    "acc.d.news": "What changed on the site",
+    "acc.d.blog": "Guides and news",
+    "acc.d.help": "Frequently asked questions",
+    "acc.d.install": "Shortcut on your home screen",
+    "acc.support": "Support Sleevu",
+    "acc.supportSub": "Keeps the site online, and R$ 10 or more keeps your account ad-free for 30 days.",
+    "acc.sync.ok": "Synced {quando}",
+    "acc.sync.now": "Synced just now",
+    "acc.sync.fail": "The last sync failed",
+    "acc.sync.idle": "Not synced yet",
+    "acc.guest.title": "Sign in to your account",
+    "acc.guest.sub": "Keep your collection in the cloud and open it on any device. Free and passwordless.",
+    "acc.guest.local": "Without an account, everything is saved on this device only."
+  });
+
+  M.es = Object.assign(M.es || {}, {
+    "acc.prefs": "Preferencias",
+    "acc.shortcuts": "Accesos",
+    "acc.about": "Ayuda y términos",
+    "acc.currency": "Moneda",
+    "acc.language": "Idioma",
+    "acc.theme": "Tema",
+    "acc.theme.auto": "Auto",
+    "acc.theme.light": "Claro",
+    "acc.theme.dark": "Oscuro",
+    "acc.prices": "Precios",
+    "acc.prices.shown": "Visibles",
+    "acc.prices.hidden": "Ocultos",
+    "acc.publicProfile": "Perfil público",
+    "acc.install": "Instalar app",
+    "acc.d.settings": "Privacidad, avisos y más",
+    "acc.d.backup": "Copia de seguridad y CSV",
+    "acc.d.tools": "Estado, centrado e intercambios",
+    "acc.d.news": "Qué cambió en el sitio",
+    "acc.d.blog": "Guías y noticias",
+    "acc.d.help": "Preguntas frecuentes",
+    "acc.d.install": "Acceso en la pantalla de inicio",
+    "acc.support": "Apoyar a Sleevu",
+    "acc.supportSub": "Mantiene el sitio en línea y, desde R$ 10, deja tu cuenta 30 días sin anuncios.",
+    "acc.sync.ok": "Sincronizado {quando}",
+    "acc.sync.now": "Sincronizado ahora",
+    "acc.sync.fail": "La última sincronización falló",
+    "acc.sync.idle": "Aún no sincronizado",
+    "acc.guest.title": "Entra en tu cuenta",
+    "acc.guest.sub": "Guarda la colección en la nube y ábrela en cualquier dispositivo. Gratis y sin contraseña.",
+    "acc.guest.local": "Sin cuenta, todo queda guardado solo en este dispositivo."
+  });
+})();

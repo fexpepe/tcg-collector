@@ -7728,29 +7728,117 @@ select.bed-input { padding: 0 10px; }
   .mtab { font-size: 9.5px; padding: 6px 1px; }
 }
 
-/* Página PERFIL do celular (account.html, 2026-09-14): o conteúdo do menu de
-   conta do header (e-mail, sincronização, atalhos, Sair) e a fileira de
-   preferências (moeda, idioma, olho, tema) viram uma PÁGINA, aberta pela aba
-   Perfil da tabbar. O .header-actions dela mora no <main>: os mesmos
-   construtores do shared.js montam os mesmos controles ali, e o dropdown de
-   conta fica sempre aberto, em fluxo, com alvos de 48px. O [hidden] global é
-   !important, por isso o !important aqui (especificidade maior decide). */
-.account-actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; }
-.account-actions > .auth-slot { flex: 1 0 100%; display: block; margin-top: 10px; }
-.account-actions .auth-avatar { display: none; }
-.account-actions .auth-dd { position: static; }
-.account-actions .lang-dd-menu.auth-menu[hidden] { display: block !important; }
-.account-actions .lang-dd-menu.auth-menu { position: static; width: 100%; min-width: 0; max-width: none; padding: 4px; box-shadow: none; }
-.account-actions .auth-menu .lang-dd-option { min-height: 48px; font-size: 15px; white-space: normal; }
-.account-actions .auth-menu .auth-email, .account-actions .auth-menu .auth-sync { min-height: 0; }
-.account-actions .auth-signin { width: 100%; min-height: 48px; }
-/* Fileira de preferências com UMA altura (2026-10-01): moeda e idioma vinham
-   com os 38px da cápsula do header, e olho e tema com os 42px do
-   button { min-height } global, que vence o height deles. Os quatro ficavam
-   em degrau. Agora todos têm 44px, o alvo de toque do celular, como na
-   fileira do drawer. Olho e tema continuam quadrados. */
-.account-actions .lang-dd-toggle { height: 44px; min-height: 44px; }
-.account-actions .theme-toggle { width: 44px; height: 44px; min-height: 44px; }
+/* ==========================================================================
+   Página PERFIL do celular (account.html) — redesenho de 2026-10-26, versão
+   B "Painel". Até aqui era o menu de conta do header aberto em fluxo (o
+   bloco .account-actions, que morava no CSS núcleo de toda página). Agora é
+   a tela de ajustes do app: cartão de quem está logado, quatro controles
+   rápidos e os atalhos em blocos com uma linha de descrição — o molde dos
+   atalhos do Hub (.hb-app). Prefixo acc-: folha "perfil", só desta página
+   (scripts/lib/css-areas.mjs). Canto reto e sem sombra, como o resto.
+   ========================================================================== */
+main.acc-pagina { width: min(640px, var(--content-w)); }
+.acc-pagina .page-head { margin-bottom: 14px; }
+.acc-eyebrow {
+  margin: 0 0 8px; font-size: 12px; font-weight: 800;
+  letter-spacing: .06em; text-transform: uppercase; color: var(--muted);
+}
+.acc-grupo, .acc-quem, .acc-rapidos { margin: 0 0 22px; }
+.acc-pagina svg { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Cartão do topo: logado (monograma, nome, @ · e-mail, sincronização e os
+   botões do perfil) ou o convite pra entrar. */
+.acc-cartao { display: flex; flex-direction: column; gap: 14px; padding: 16px; background: var(--panel); border: 1px solid var(--line); }
+.acc-cartao-topo { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.acc-avatar {
+  flex: none; display: grid; place-items: center; width: 56px; height: 56px; border-radius: 50%;
+  background: var(--accent); color: var(--on-accent); font-size: 24px; font-weight: 800;
+}
+.acc-id { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.acc-id strong { font-size: 18px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.acc-id > span { font-size: 13px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.acc-id .acc-sync { display: flex; align-items: center; gap: 6px; margin-top: 3px; font-size: 12.5px; font-weight: 600; color: var(--subtle); }
+.acc-sync::before { content: ""; flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--subtle); }
+.acc-sync.is-ok::before { background: #2ecc71; }
+.acc-id .acc-sync.is-falha { color: #e8553c; }
+.acc-sync.is-falha::before { background: #e8553c; }
+.acc-cartao-botoes { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 8px; }
+.acc-botao {
+  display: flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 12px;
+  background: var(--panel-strong); border: 1px solid var(--line); color: var(--text);
+  font-size: 14px; font-weight: 700; text-decoration: none; white-space: nowrap;
+}
+.acc-botao:hover { border-color: var(--text); }
+.acc-convite { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; padding: 18px 16px; background: var(--panel); border: 1px solid var(--line); }
+.acc-convite strong { font-size: 18px; font-weight: 800; }
+.acc-convite p { margin: 0; font-size: 14px; line-height: 1.45; color: var(--muted); }
+.acc-convite small { font-size: 12.5px; color: var(--subtle); }
+.acc-entrar { display: flex; align-items: center; justify-content: center; align-self: stretch; min-height: 48px; margin-top: 6px; font-weight: 800; text-decoration: none; }
+
+/* Controles rápidos: quatro quadrados com o valor de agora em destaque e o
+   nome embaixo. Preços escondidos acendem no verde-azulado dos interruptores
+   das Configurações (.setting-switch). */
+.acc-rapidos { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.acc-rapido {
+  position: relative; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start; gap: 2px;
+  min-width: 0; min-height: 86px; margin: 0; padding: 12px 10px 10px;
+  border: 1px solid var(--line); border-radius: 0; background: var(--panel); color: var(--text);
+  font-weight: 600; text-align: left; cursor: pointer;
+}
+.acc-rapido:hover { border-color: var(--text); }
+.acc-rapido svg { flex: none; width: 20px; height: 20px; margin-bottom: auto; color: var(--muted); }
+.acc-rapido-v { max-width: 100%; font-size: 15px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.acc-rapido-r { font-size: 11.5px; font-weight: 600; color: var(--muted); }
+.acc-rapido[aria-pressed="true"] { border-color: #14b8a6; background: rgba(20, 184, 166, .12); }
+.acc-rapido[aria-pressed="true"] svg { color: #14b8a6; }
+/* Moeda e idioma: o <select> nativo cobre o quadrado, invisível — o toque
+   abre a roleta do sistema. */
+.acc-select { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+
+/* Atalhos: blocos de 2 colunas no celular, 3 a partir de 560px (seis
+   blocos fecham as linhas nos dois). Instalar app, quando aparece, ocupa a
+   linha inteira. */
+.acc-blocos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+@media (min-width: 560px) { .acc-blocos { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.acc-bloco {
+  position: relative; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start; gap: 4px;
+  min-width: 0; min-height: 108px; margin: 0; padding: 14px;
+  border: 1px solid var(--line); border-radius: 0; background: var(--panel); color: var(--text);
+  font-weight: 400; text-align: left; text-decoration: none; cursor: pointer;
+}
+.acc-bloco:hover { border-color: var(--accent); }
+.acc-bloco svg { flex: none; width: 22px; height: 22px; margin-bottom: 8px; color: var(--accent); }
+.acc-bloco strong { font-size: 14.5px; line-height: 1.25; }
+.acc-bloco span { font-size: 12.5px; line-height: 1.35; color: var(--muted); }
+.acc-bloco--largo { grid-column: 1 / -1; min-height: 0; }
+/* A bolinha de Novidades (regra [data-news-link].has-news::after do núcleo)
+   vai pro canto do bloco. */
+.acc-bloco.has-news::after { position: absolute; top: 16px; right: 16px; margin: 0; }
+
+/* Apoiar: uma faixa à parte, no tom do jogo. Fora do app das lojas
+   (data-iab="app"): link de pagamento por fora da loja reprova a revisão. */
+.acc-apoio {
+  display: flex; align-items: center; gap: 14px; margin: 0 0 16px; padding: 14px 16px;
+  background: var(--accent-soft); border: 1px solid rgba(var(--accent-rgb), .3); color: var(--text); text-decoration: none;
+}
+.acc-apoio:hover { border-color: var(--accent); }
+.acc-apoio svg { flex: none; width: 22px; height: 22px; color: var(--accent); }
+.acc-apoio span { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.acc-apoio strong { font-size: 15px; }
+.acc-apoio small { font-size: 12.5px; line-height: 1.35; color: var(--muted); }
+html[data-iab="app"] .acc-apoio { display: none; }
+.acc-sair {
+  width: 100%; min-height: 48px; margin: 0 0 10px; border: 1px solid rgba(232, 85, 60, .45); border-radius: 0;
+  background: transparent; color: #e8553c; font-size: 15px; font-weight: 800;
+}
+.acc-sair:hover { background: rgba(232, 85, 60, .1); }
+/* Rodapé: Resolução de problemas, Privacidade e Termos, em texto. */
+.acc-legal { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 14px; margin: 0 0 8px; }
+.acc-legal a, .acc-legal button {
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0; border: 0; border-radius: 0;
+  background: none; color: var(--muted); font-size: 13px; font-weight: 600; text-decoration: none;
+}
+.acc-legal a:hover, .acc-legal button:hover { color: var(--text); text-decoration: underline; }
 
 /* Skeletons: cards fantasma enquanto os chunks do catálogo baixam. Pulso de
    opacidade (funciona igual nos temas claro/escuro, sem gradiente). */

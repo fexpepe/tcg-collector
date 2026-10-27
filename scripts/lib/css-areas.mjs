@@ -90,6 +90,9 @@ export const AREAS = [
   // pdx- (2026-10-17): a Pokédex redesenhada. Quem desenha é o src/dex.js,
   // que só o pokedex.html carrega.
   { nome: "pokedex",   prefixos: ["pdx-"],                         paginas: ["pokedex.html"] },
+  // acc- (2026-10-26): o Perfil do celular (account.html) redesenhado — a
+  // lista de ajustes saiu do núcleo (era o .account-actions).
+  { nome: "perfil",    prefixos: ["acc-"],                         paginas: ["account.html"] },
   { nome: "troca",     prefixos: ["trade-"],                       paginas: ["troca.html", "badges.html"] },
   // Ferramentas do HUB em página própria (2026-10-01, docs/FERRAMENTAS.md):
   // fer- é o comum das duas, gc- o Guia de condição e slv- o Sleeves e
