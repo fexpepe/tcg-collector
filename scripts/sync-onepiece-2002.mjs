@@ -11,8 +11,10 @@
 // em data/vintage/onepiece-2002cardgame.json; o fetch do wiki só ATUALIZA quando
 // responde e não regride. Determinístico e imune ao uptime/throttle do wiki.
 //
-// Imagens: os scans do wiki são grandes -> proxy wsrv.nl (resize p/ ~440px webp).
-// Espelhadas em data/onepiece/vintage-images-2002/ quando existirem (mirror).
+// Imagens: o wiki não tem scan do 2002. Desde 2026-10-27 vêm do One Piece
+// Collection pelo wsrv.nl, a partir do mapa versionado que o
+// scans-onepiece-2002.mjs grava (1308 das 1317 cartas). Arquivo em
+// data/onepiece/vintage-images-2002/, se um dia existir, vence.
 //
 // Roda DEPOIS do sync-onepiece + sync-onepiece-vintage: anexa ao mesmo catálogo
 // do One Piece, dedupe pelo prefixo op2002- (coexiste com o Carddass opcd-).
@@ -21,10 +23,12 @@ import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { decodeEntities as decode, slug, readGlobalVar, readSnapshot, writeSnapshot, snapshotCardCount, sleep, writeGameCatalog } from "./lib/sync-common.mjs";
+import { opcImageUrl } from "./lib/onepiececollection.mjs";
 
 const ROOT = new URL("../", import.meta.url);
 const OUT = new URL("data/onepiece/", ROOT);
 const SNAP = new URL("data/vintage/onepiece-2002cardgame.json", ROOT);
+const SCANS = new URL("data/vintage/onepiece-2002-scans.json", ROOT);
 const CACHE = new URL("data/.cache/onepiece-2002.html", ROOT);
 const IMG_DIR = new URL("data/onepiece/vintage-images-2002/", ROOT);
 const OVERVIEW = "https://grandlinewiki.net/tcg/opcardgame2002.html";
@@ -85,14 +89,15 @@ async function refreshSnapshot(existing) {
   return (await readSnapshot(SNAP)) || candidate;
 }
 
-// Imagem: só a local espelhada (num sem hífen, minúsculo -> lkc01.webp). O wiki
-// NÃO tem scans do 2002 (o caminho wsrv 404-ava em todas as ~1300 cartas), então
-// sem espelho a carta fica SEM image — o app mostra placeholder e o prerender de
-// SEO não emite <img> quebrado. Se um dia os scans forem espelhados, reaparecem.
-function cardImage(num) {
+// Imagem: a local espelhada (num sem hífen, minúsculo -> lkc01.webp) vence; senão
+// o scan do One Piece Collection DAQUELE set (o Treasure Sheet reimprime números
+// com outro visual). Sem nenhum dos dois a carta fica SEM image — o app mostra
+// placeholder e o prerender de SEO não emite <img> quebrado.
+function cardImage(num, setName, scans) {
   const file = String(num).toLowerCase().replace(/-/g, "");
-  if (existsSync(new URL(`${file}.webp`, IMG_DIR))) return `data/onepiece/vintage-images-2002/${file}.webp`;
-  return "";
+  if (file && existsSync(new URL(`${file}.webp`, IMG_DIR))) return `data/onepiece/vintage-images-2002/${file}.webp`;
+  const path = scans?.sets?.[setName]?.scans?.[num];
+  return path ? opcImageUrl(path) : "";
 }
 
 async function run() {
@@ -100,6 +105,7 @@ async function run() {
   let snap = await readSnapshot(SNAP);
   if (!NO_FETCH || !snap) snap = await refreshSnapshot(snap);
   if (!snap || !snap.sets || !snap.sets.length) { console.error("  ERRO: sem snapshot nem fonte."); process.exit(1); }
+  const scans = await readSnapshot(SCANS);
 
   const cards2002 = [];
   const takenIds = new Set();
@@ -120,7 +126,7 @@ async function run() {
         rarity: "",
         artist: "",
         language: "ja",
-        image: cardImage(c.num),
+        image: cardImage(c.num, s.name, scans),
         variants: ["Normal"],
         setLogo: "",
         opColor: null,
@@ -133,12 +139,12 @@ async function run() {
       });
     }
   }
-  const localImgs = cards2002.filter((c) => c.image).length;
-  console.log(`  build: ${cards2002.length} cartas em ${snap.sets.length} sets (${localImgs} com imagem espelhada).`);
+  const withImg = cards2002.filter((c) => c.image).length;
+  console.log(`  build: ${cards2002.length} cartas em ${snap.sets.length} sets (${withImg} com imagem).`);
 
-  const cover = {};
-  for (const c of cards2002) { if (!cover[c.setId]) cover[c.setId] = c.image; }
-  for (const c of cards2002) { c.setLogo = cover[c.setId]; }
+  // setLogo fica vazio (o front mostra o NOME do set): nenhum set do 2002 tem
+  // logo, e a arte da 1ª carta no lugar dele foi abolida em todos os jogos
+  // (docs/CATALOGO.md, regra 3). Antes dos scans isso já saía vazio sozinho.
 
   // Anexa ao catálogo: mantém tudo que NÃO é desta linha (op2002-), acrescenta o rebuild.
   const existing = (await readGlobalVar(new URL("cards.js", OUT), "TCG_CARDS")) || [];
