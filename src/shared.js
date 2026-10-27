@@ -1377,9 +1377,16 @@
   // Moeda de exibição dos valores (global, ao lado da bandeira de idioma).
   const CURRENCIES = ["BRL", "USD", "EUR"];
   const currencyStorageKey = "tcg-collector-currency-v1";
+  // Sem escolha salva, a moeda segue o idioma da interface: português = real,
+  // o resto = dólar, que é a moeda internacional do hobby (2026-10-27). Antes
+  // era BRL pra todo mundo, e quem abria o site em inglês via "R$" num site
+  // em inglês. Só a exibição muda: todo valor guardado leva a própria moeda
+  // (cur) e o histórico é gravado em BRL. Como no idioma, o padrão NÃO é
+  // gravado: só a escolha explícita (setCurrency).
   const currentCurrency = (function () {
     const saved = localStorage.getItem(currencyStorageKey);
-    return CURRENCIES.includes(saved) ? saved : "BRL";
+    if (CURRENCIES.includes(saved)) return saved;
+    return currentLanguage === "pt" ? "BRL" : "USD";
   })();
   function getCurrency() {
     return currentCurrency;
