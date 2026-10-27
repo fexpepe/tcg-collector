@@ -949,7 +949,7 @@
     return ids;
   }
   // O valor some no modo colecionador e na GRADE do celular (ver .set-value no
-  // @media ≤720px do styles.css); a lista (≣) mostra.
+  // @media ≤720px do styles.css); a lista mostra.
   function valorAparece() {
     if (document.documentElement.hasAttribute("data-collector-mode")) return false;
     return !(window.matchMedia && window.matchMedia("(max-width: 720px)").matches && !elements.grid.classList.contains("is-list"));

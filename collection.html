@@ -154,7 +154,7 @@
             <div class="dash-stat-money"><span class="dash-stat-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.2v9.6M14.4 9.6c0-1-1.1-1.6-2.4-1.6s-2.4.6-2.4 1.6 1 1.5 2.4 1.9 2.5 1 2.5 2-1.1 1.7-2.5 1.7-2.5-.7-2.5-1.7"/></svg></span><span class="dash-stat-txt"><span class="dash-stat-val" id="dashValue">—</span><span class="dash-stat-label" data-i18n="dash.value">valor de mercado</span></span></div><div class="dash-stat-money collector-badge"><span class="dash-stat-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 4.5l15 15"/><path d="M9.9 5.9A10.4 10.4 0 0 1 12 5.5c6.5 0 10 6.5 10 6.5a17.3 17.3 0 0 1-3.2 3.9M6.1 6.7A16.6 16.6 0 0 0 2 12s3.5 6.5 10 6.5a10.7 10.7 0 0 0 4-.8"/><path d="M9.9 10.1a2.8 2.8 0 0 0 4 4"/></svg></span><span class="dash-stat-txt"><span class="dash-stat-val" data-i18n="collector.badge">Modo Colecionador</span></span></div>
             <div class="collection-toolbar-actions">
               <button type="button" id="bulkSelectBtn" class="secondary bulk-toggle" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="m8.8 12.2 2.3 2.3 4.4-4.6"/></svg><span data-i18n="bulk.enter">Selecionar</span></button>
-              <!-- Visualização (▦/≣) e Filtros NÃO moram mais aqui: desceram pra
+              <!-- Visualização (grade/lista) e Filtros NÃO moram mais aqui: desceram pra
                    linha do título "Minhas Cartas" (.results-header), na ponta
                    direita, junto do que comandam (a grade e a barra de filtros). -->
               <!-- Compartilhar é SÓ-ÍCONE: o rótulo fica no <span> escondido pro
@@ -217,9 +217,9 @@
                  grande; nos sets, o logo; o padrão, como no site todo), lista
                  (a linha de sempre) e compacta. -->
             <div id="groupsViewToggle" class="view-toggle" role="group" data-i18n-aria="toolbar.view" aria-label="Visualização">
-              <button type="button" class="view-toggle-btn" data-groups-view="grid" aria-pressed="true" data-i18n-aria="aria.viewGrid" aria-label="Grade" title="Grade">▦</button>
-              <button type="button" class="view-toggle-btn" data-groups-view="list" aria-pressed="false" data-i18n-aria="aria.viewList" aria-label="Lista" title="Lista">≣</button>
-              <button type="button" class="view-toggle-btn" data-groups-view="compact" aria-pressed="false" data-i18n-title="view.compact" data-i18n-aria="view.compact" aria-label="Compacta" title="Compacta">☰</button>
+              <button type="button" class="view-toggle-btn" data-groups-view="grid" aria-pressed="true" data-i18n-aria="aria.viewGrid" aria-label="Grade" title="Grade"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="6.5" height="6.5"/><rect x="13.5" y="4" width="6.5" height="6.5"/><rect x="4" y="13.5" width="6.5" height="6.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5"/></svg></button>
+              <button type="button" class="view-toggle-btn" data-groups-view="list" aria-pressed="false" data-i18n-aria="aria.viewList" aria-label="Lista" title="Lista"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6h1M4 12h1M4 18h1"/></svg></button>
+              <button type="button" class="view-toggle-btn" data-groups-view="compact" aria-pressed="false" data-i18n-title="view.compact" data-i18n-aria="view.compact" aria-label="Compacta" title="Compacta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 4.5h16M4 9.5h16M4 14.5h16M4 19.5h16"/></svg></button>
             </div>
           </div>
         </section>
@@ -229,7 +229,7 @@
 
       <div id="cardsView" hidden>
         <!-- Linha do título: "Minhas Cartas" à esquerda; na ponta DIREITA a
-             o Filtros e a Visualização (▦/≣) (vieram do cartão-herói), que
+             o Filtros e a Visualização (grade/lista) (vieram do cartão-herói), que
              empurram pra esquerda o que já morava aqui (Novo showcase, "N
              resultados"). Os dois somem nas abas de progresso (ver render()). -->
         <!-- results-header-cards: o título ("Minhas Cartas") e o contador
@@ -247,9 +247,9 @@
             <button type="button" id="gradedAddBtn" class="secondary graded-add-btn" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span data-i18n="graded.add">Adicionar cartas</span></button>
             <button type="button" id="collectionFiltersBtn" class="secondary" aria-expanded="false" aria-controls="collectionFilters"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M7.5 12h9M10.5 18h3"/></svg><span data-i18n="filters.show">Filtros</span></button>
             <div id="cardsViewToggle" class="view-toggle" role="group" data-i18n-aria="toolbar.view" aria-label="Visualização">
-              <button type="button" class="view-toggle-btn" data-grid-view="grid" aria-pressed="true" data-i18n-aria="aria.viewGrid" aria-label="Grade" title="Grade">▦</button>
-              <button type="button" class="view-toggle-btn" data-grid-view="list" aria-pressed="false" data-i18n-aria="aria.viewList" aria-label="Lista" title="Lista">≣</button>
-              <button type="button" class="view-toggle-btn" data-grid-view="compact" aria-pressed="false" data-i18n-title="view.compact" data-i18n-aria="view.compact" aria-label="Compacta" title="Compacta">☰</button>
+              <button type="button" class="view-toggle-btn" data-grid-view="grid" aria-pressed="true" data-i18n-aria="aria.viewGrid" aria-label="Grade" title="Grade"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="6.5" height="6.5"/><rect x="13.5" y="4" width="6.5" height="6.5"/><rect x="4" y="13.5" width="6.5" height="6.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5"/></svg></button>
+              <button type="button" class="view-toggle-btn" data-grid-view="list" aria-pressed="false" data-i18n-aria="aria.viewList" aria-label="Lista" title="Lista"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6h1M4 12h1M4 18h1"/></svg></button>
+              <button type="button" class="view-toggle-btn" data-grid-view="compact" aria-pressed="false" data-i18n-title="view.compact" data-i18n-aria="view.compact" aria-label="Compacta" title="Compacta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 4.5h16M4 9.5h16M4 14.5h16M4 19.5h16"/></svg></button>
               <!-- Fichário (2026-09-16): o mesmo botão da página de set — o número
                    no canto é o nº de bolsos, e clicar com o modo já ativo troca. -->
               <button type="button" class="view-toggle-btn view-toggle-binder" data-grid-view="binder" aria-pressed="false" data-i18n-title="view.binder" data-i18n-aria="view.binder" aria-label="Fichário" title="Fichário"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="3" width="14" height="18" rx="2"/><path d="M4 7.5h4M4 12h4M4 16.5h4"/></svg><span class="view-toggle-badge" data-binder-badge aria-hidden="true">9</span></button>

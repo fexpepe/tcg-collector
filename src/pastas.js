@@ -40,6 +40,11 @@
   // pra "exportar a pasta" e "compartilhar a pasta" terem a mesma cara que
   // "exportar/compartilhar a coleção". Inline (CSP 'self', currentColor).
   const IC = {
+    // Visualização (grade, lista, compacta): os mesmos ícones da Coleção e dos
+    // Fichários. Eram os glifos de texto ▦ ≣ ☰ até 2026-10-27.
+    grid: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="6.5" height="6.5"/><rect x="13.5" y="4" width="6.5" height="6.5"/><rect x="4" y="13.5" width="6.5" height="6.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5"/></svg>',
+    list: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6h1M4 12h1M4 18h1"/></svg>',
+    compact: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 4.5h16M4 9.5h16M4 14.5h16M4 19.5h16"/></svg>',
     add: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>',
     export: '<svg class="icon-btn-main" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v11"/><path d="m8 10.5 4 4 4-4"/><path d="M4.5 16.5v2a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-2"/></svg>',
     share: '<svg class="icon-btn-main" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5.5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="18.5" r="2.6"/><path d="m8.4 10.8 7.2-4M8.4 13.2l7.2 4"/></svg><svg class="icon-btn-ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>',
@@ -648,9 +653,9 @@
       `<button type="button" class="view-toggle-btn${extra || ""}" data-grid-view="${v}" aria-pressed="${cardsView === v}" aria-label="${escA(rotulo)}" title="${escA(rotulo)}">${miolo}</button>`;
     return `<button type="button" class="secondary" data-pasta-filters aria-expanded="${filtrosAbertos}" aria-controls="pastaFilters"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M7.5 12h9M10.5 18h3"/></svg><span>${esc(t("filters.show"))}</span></button>
       <div class="view-toggle" role="group" aria-label="${escA(t("toolbar.view"))}">
-        ${botao("grid", t("aria.viewGrid"), "▦")}
-        ${botao("list", t("aria.viewList"), "≣")}
-        ${botao("compact", t("view.compact"), "☰")}
+        ${botao("grid", t("aria.viewGrid"), IC.grid)}
+        ${botao("list", t("aria.viewList"), IC.list)}
+        ${botao("compact", t("view.compact"), IC.compact)}
         ${binderView ? botao("binder", t("view.binder"), `${IC.binder}<span class="view-toggle-badge" data-binder-badge aria-hidden="true">9</span>`, " view-toggle-binder") : ""}
       </div>`;
   }

@@ -1079,7 +1079,7 @@ input::placeholder {
    base, o "Novo showcase" crescia e desalinhava a fileira no celular. */
 .new-folder-btn { height: 36px; min-height: 36px; padding: 0 14px; font-size: 13px; white-space: nowrap; }
 .results-header h2 { margin-right: auto; }
-/* Visualização (▦/≣) + Filtros na ponta DIREITA da linha do título (Coleção):
+/* Visualização (grade/lista) + Filtros na ponta DIREITA da linha do título (Coleção):
    o grupo é o último filho e o h2 já empurra tudo pra direita, então o
    contador/Novo showcase ficam à esquerda dele. Altura casada com o
    .new-folder-btn (36px) — não com os 42px do button base — pra linha não
@@ -1090,7 +1090,7 @@ input::placeholder {
 .results-actions button { display: inline-flex; align-items: center; gap: 7px; min-height: 36px; padding: 0 14px; font-size: 13px; white-space: nowrap; }
 .results-actions svg { width: 16px; height: 16px; flex: none; }
 .results-actions .view-toggle { border-radius: 0; } /* canto reto, como o resto do site */
-.results-actions .view-toggle-btn { width: 34px; min-width: 34px; height: 34px; min-height: 34px; padding: 0; font-size: 1rem; justify-content: center; }
+.results-actions .view-toggle-btn { width: 34px; min-width: 34px; height: 34px; min-height: 34px; padding: 0; justify-content: center; }
 .results-actions button[aria-expanded="true"] { border-color: var(--accent); color: var(--accent); }
 /* "Ordenar:" no MESMO canto — nas abas de progresso da Coleção são chips
    (herdam o visual do antigo .sort-row: rótulo cinza, chips de 32px); nas
@@ -1144,7 +1144,7 @@ input::placeholder {
   .srt-opt { min-height: 44px; font-size: 15px; }
 }
 /* Sets do Pokémon: a origem (EN/PT/JA/ZH) é um FILTRO, então mora na linha do
-   contador, colada à esquerda do ▦/≣ — o grupo inteiro na ponta direita — em
+   contador, colada à esquerda da Visualização — o grupo inteiro na ponta direita — em
    vez de uma faixa própria de 38px acima (pedido de 2026-09-10). Chips na
    altura dos botões de visualização, que aqui descem de 44 pra 38px no mouse
    (no toque ficam nos 44 do .view-toggle-btn base). O <select> é a versão de
@@ -1160,7 +1160,7 @@ input::placeholder {
   clip-path: inset(50%); white-space: nowrap;
 }
 @media (min-width: 701px) {
-  .results-header-sets .view-toggle-btn { min-width: 38px; min-height: 38px; font-size: 1rem; }
+  .results-header-sets .view-toggle-btn { min-width: 38px; min-height: 38px; }
 }
 /* Explorar — resultados POR JOGO (2026-09-28): um chip por jogo com a
    contagem, no vão que sobrava entre o contador e os botões. Mesmo idioma do
@@ -1216,7 +1216,7 @@ input::placeholder {
 /* Barra de filtros da busca de Cartas: colapsa em QUALQUER largura, como a da
    Coleção e a do set (o botão mora na linha do título). */
 .cards-filters.is-collapsed { display: none; }
-/* Celular: o grupo da direita (Ordenar + ▦/≣/☰ + Filtros) não cabe ao lado do
+/* Celular: o grupo da direita (Ordenar + Visualização + Filtros) não cabe ao lado do
    título — desce pra uma faixa própria, largura cheia, com o select do Ordenar
    numa linha só dele (elástico) e os botões na linha de baixo. Sem isto o
    flex:none empurrava a página pra fora da tela (rolagem lateral). */
@@ -1263,16 +1263,16 @@ input::placeholder {
   /* "Adicionar cartas" (aba Graded) fica só com o ícone, como o Filtros. */
   .results-actions .graded-add-btn span { display: none; }
   /* Sets: o order:1 acima (da Coleção) jogava o contador pro FIM da linha e
-     o ▦/≣ pra esquerda — o inverso do desktop. Aqui a ordem volta a ser
-     contador · origem · visualização, e os 4 chips (que não cabem ao lado do
-     ▦/≣ em 390px) dão lugar ao <select>, na mesma altura dos botões (44px). */
+     a Visualização pra esquerda — o inverso do desktop. Aqui a ordem volta a ser
+     contador · origem · visualização, e os 4 chips (que não cabem ao lado da
+     Visualização em 390px) dão lugar ao <select>, na mesma altura dos botões (44px). */
   .results-header-sets > p { order: 0; }
   .results-header-sets .set-region-chips { display: none; }
   .results-header-sets .set-region-select { display: block; }
   .results-header-sets .set-region-select select { width: auto; height: 44px; font-weight: 700; }
 }
 /* Tela bem estreita: o "Filtros" vira só o ícone pra caber ao lado de "Novo
-   showcase" + ▦/≣/☰ numa linha (mesmo recurso dos botões de pasta ≤560px). */
+   showcase" + a Visualização numa linha (mesmo recurso dos botões de pasta ≤560px). */
 @media (max-width: 480px) {
   /* Escondido só da vista (padrão .sr-only): com display:none o botão ficava
      sem nome pro leitor de tela (o ícone é aria-hidden). */
@@ -1884,15 +1884,22 @@ input::placeholder {
   overflow: hidden;
 }
 .view-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   min-width: 44px;
   min-height: 44px;
   border: none;
   background: var(--panel);
   color: var(--muted);
-  font-size: 1.15rem;
   line-height: 1;
   cursor: pointer;
 }
+/* Ícone de traço (grade, lista, compacta, fichário). Até 2026-10-27 os três
+   primeiros eram os glifos de texto ▦ ≣ ☰, com tamanho por font-size — e cada
+   sistema desenhava um diferente. 18px em qualquer lugar do site; o cartão-
+   herói da Coleção desce pra 16px, como os outros ícones de lá. */
+.view-toggle-btn svg { flex: none; width: 18px; height: 18px; }
 .view-toggle-btn[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); }
 
 /* Visualização em lista: cada carta vira uma linha (imagem à esquerda, infos à
@@ -1922,7 +1929,6 @@ input::placeholder {
    somem (o card abre no clique, como sempre). Bolso vazio (fim do set) é uma
    caixa tracejada na proporção da carta, pra página não encolher. */
 .view-toggle-btn.view-toggle-binder { position: relative; }
-.view-toggle-btn.view-toggle-binder svg { width: 18px; height: 18px; }
 .view-toggle-badge {
   position: absolute; right: 2px; bottom: 2px;
   min-width: 14px; height: 14px; padding: 0 3px; border-radius: 7px;
@@ -4268,7 +4274,7 @@ body.carta-pagina main > :not(#cardPreviewModal):not(.cs-more):not(.cs-esqueleto
   /* Cards de set no celular (2026-09-14, grade): sem a barra de progresso, a
      tendência, o valor e a % — em 2 colunas de ~170px isso virava um rodapé
      apertado e repetia o que a página do set mostra. Fica só a contagem
-     (tenho/total), centralizada. A LISTA (≣) não muda: lá cabe. */
+     (tenho/total), centralizada. A LISTA não muda: lá cabe. */
   .group-grid[data-view="sets"]:not(.is-list) .set-card .progress-bar,
   .group-grid[data-view="sets"]:not(.is-list) .set-card .set-trend,
   .group-grid[data-view="sets"]:not(.is-list) .set-card .set-value,
@@ -9669,8 +9675,6 @@ html:not([data-cardlang="all"]) #setRegionChips {
 .binder-new-toggle svg { width: 16px; height: 16px; flex: none; }
 .binder-new-toggle[aria-expanded="true"] { background: var(--accent-dark); }
 .binder-gallery-tools { display: flex; align-items: center; gap: 10px; }
-.binder-view-toggle .view-toggle-btn { display: inline-flex; align-items: center; justify-content: center; }
-.binder-view-toggle svg { width: 18px; height: 18px; }
 .binder-sort-label {
   display: inline-flex;
   align-items: center;
@@ -9874,13 +9878,13 @@ html:not([data-cardlang="all"]) #setRegionChips {
 .collection-dashboard-hero .collection-toolbar-actions button { display: inline-flex; align-items: center; gap: 7px; }
 #collectionDashboard .collection-toolbar-actions svg,
 .collection-dashboard-hero .collection-toolbar-actions svg { width: 16px; height: 16px; flex: none; }
-/* Visualização (▦/≣) e Compartilhar QUADRADOS (1:1), na MESMA altura dos
+/* Visualização (grade/lista) e Compartilhar QUADRADOS (1:1), na MESMA altura dos
    botões vizinhos (42px do button base). A moldura do .view-toggle tem 1px de
    borda em volta: os botões internos ficam 40px pra caixa fechar em 42. */
 #collectionDashboard .view-toggle,
 .collection-dashboard-hero .view-toggle { border-radius: 0; } /* canto reto, como o resto do site */
 #collectionDashboard .view-toggle-btn,
-.collection-dashboard-hero .view-toggle-btn { width: 40px; min-width: 40px; height: 40px; min-height: 40px; padding: 0; font-size: 1.05rem; }
+.collection-dashboard-hero .view-toggle-btn { width: 40px; min-width: 40px; height: 40px; min-height: 40px; padding: 0; }
 #collectionDashboard .icon-btn,
 .collection-dashboard-hero .icon-btn { width: 42px; min-width: 42px; padding: 0; justify-content: center; }
 /* "Filtros" aberto = destacado (o estado mora no aria-expanded). */
@@ -9991,7 +9995,7 @@ html:not([data-cardlang="all"]) #setRegionChips {
 /* Mobile: herói compacto. A linha de cima QUEBRA quando precisa: identidade
    (que encolhe até ~100px, com reticências no nome) + valor (caixa de 128px,
    sem ícone — o espaço é do número) ficam na 1ª linha; as ações só-ícone
-   (exportar/compartilhar no dono; ▦/≣ + Filtros no perfil público) cabem ao
+   (exportar/compartilhar no dono; Visualização + Filtros no perfil público) cabem ao
    lado em 390px e descem pra uma linha própria, à direita, em telas menores.
    O "Selecionar" não mora mais aqui no celular: o collection.js o leva pra
    linha do título "Minhas Cartas", ao lado do Filtros. As 3 contagens numa
@@ -13142,7 +13146,7 @@ select,
 /* Fileira de ações da pasta: Aplicar · Criar deck · Filtros · Visualização.
    QUEBRA linha de propósito — a regra geral do .results-header manda nowrap
    no celular, e com quatro controles em 390px o alternador (que tem
-   overflow: hidden) era espremido até sobrar só o ▦. O flex:none garante que
+   overflow: hidden) era espremido até sobrar só o 1º botão. O flex:none garante que
    quem encolhe nunca é ele. */
 .results-header.pasta-results .results-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
 .pasta-results .view-toggle { flex: none; }

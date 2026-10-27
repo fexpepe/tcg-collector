@@ -1,6 +1,14 @@
 (function () {
   const shared = window.TCGShared;
   const { addOptions, detailUrl, unique, normalize, speciesName, debounce, t, tn, escapeHtml, escapeAttribute } = shared;
+  // Ícones da Visualização (grade, lista, compacta) dos toggles montados aqui —
+  // os mesmos do collection.html e dos Fichários. Eram os glifos de texto
+  // ▦ ≣ ☰ até 2026-10-27 (a regra do site é ícone em SVG).
+  const VISTA_IC = {
+    grid: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="6.5" height="6.5"/><rect x="13.5" y="4" width="6.5" height="6.5"/><rect x="4" y="13.5" width="6.5" height="6.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5"/></svg>',
+    list: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6h1M4 12h1M4 18h1"/></svg>',
+    compact: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 4.5h16M4 9.5h16M4 14.5h16M4 19.5h16"/></svg>'
+  };
 
   // (vieram do shared.js em 2026-09-14: só a Coleção aquece imagens e monta o
   // indexesByGame a partir das fatias.)
@@ -1050,7 +1058,7 @@
       if (activeTab !== "cards" && bulkMode) setBulkMode(false);
     }
     if (elements.tagsNewBtn) elements.tagsNewBtn.hidden = true; // tags viraram Listas; criar aqui era buraco negro
-    // Visualização (▦/≣) e Filtros, na linha do título "Minhas Cartas",
+    // Visualização (grade/lista) e Filtros, na linha do título "Minhas Cartas",
     // comandam a toolbar do cardsView: somem nas abas de progresso
     // (Pokémon/Artistas/Sets).
     if (elements.cardsViewToggle) elements.cardsViewToggle.hidden = !isCardsLike;
@@ -2788,7 +2796,7 @@
     // Barra de filtros da aba "Toda Coleção" — MESMOS campos, MESMA ordem e
     // MESMA moldura da tela de Coleção (Pokémon/Personagem, Set, Idioma,
     // Raridade, Valor, Ordenar), recolhida atrás do botão "Filtros" do cartão-
-    // herói. A Visualização (▦/≣) saiu daqui e foi pro canto do cartão, como lá.
+    // herói. A Visualização (grade/lista) saiu daqui e foi pro canto do cartão, como lá.
     function filterBarHtml() {
       if (!cardsLike()) return "";
       const pool = col.items.filter((it) => gFilter === "all" || (it.g || "pokemon") === gFilter);
@@ -2818,7 +2826,7 @@
     // topo: no trilho de cartões (2026-09-20) o cartão é estreito demais pra
     // elas. São as da Coleção menos as que só o dono pode fazer (Selecionar,
     // Exportar, Compartilhar): Ordenar (nas abas sem barra de filtros),
-    // "Filtros" (só onde há barra pra abrir) e Visualização (▦/≣) nas abas de
+    // "Filtros" (só onde há barra pra abrir) e Visualização (grade/lista) nas abas de
     // grade plana. Ícones idênticos aos do collection.html — é o mesmo botão.
     function actionsRowHtml() {
       if (!cardsLike()) return "";
@@ -2828,9 +2836,9 @@
       const filtros = `<button type="button" class="secondary" data-pf-filters aria-expanded="${filtersOpen}" aria-controls="profileFilters"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M7.5 12h9M10.5 18h3"/></svg><span>${escapeHtml(t("filters.show"))}</span></button>`;
       const btn = (v, label, inner, extra) => `<button type="button" class="view-toggle-btn${extra || ""}" data-pf-view="${v}" aria-pressed="${cardView === v}" aria-label="${escapeAttribute(label)}" title="${escapeAttribute(label)}">${inner}</button>`;
       const visual = `<div class="view-toggle" role="group" aria-label="${escapeAttribute(t("toolbar.view"))}">
-            ${btn("grid", t("aria.viewGrid"), "▦")}
-            ${btn("list", t("aria.viewList"), "≣")}
-            ${btn("compact", t("view.compact"), "☰")}
+            ${btn("grid", t("aria.viewGrid"), VISTA_IC.grid)}
+            ${btn("list", t("aria.viewList"), VISTA_IC.list)}
+            ${btn("compact", t("view.compact"), VISTA_IC.compact)}
             ${binderView ? btn("binder", t("view.binder"), `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="3" width="14" height="18" rx="2"/><path d="M4 7.5h4M4 12h4M4 16.5h4"/></svg><span class="view-toggle-badge" data-binder-badge aria-hidden="true">9</span>`, " view-toggle-binder") : ""}
           </div>`;
       return `<section class="results-header results-header-cards"><div class="results-actions">${filtros}${visual}</div></section>`;
@@ -3006,7 +3014,7 @@
       const chip = (v, k) => `<button type="button" class="chip" data-group-sort="${v}" aria-pressed="${sortNow === v}">${escapeHtml(t(k))}</button>`;
       // Visualização: o MESMO toggle das grades de cartas, sem o fichário.
       const vbtn = (v, label, inner) => `<button type="button" class="view-toggle-btn" data-pg-view="${v}" aria-pressed="${groupsView === v}" aria-label="${escapeAttribute(label)}" title="${escapeAttribute(label)}">${inner}</button>`;
-      const viewToggle = `<div class="view-toggle" role="group" aria-label="${escapeAttribute(t("toolbar.view"))}">${vbtn("grid", t("aria.viewGrid"), "▦")}${vbtn("list", t("aria.viewList"), "≣")}${vbtn("compact", t("view.compact"), "☰")}</div>`;
+      const viewToggle = `<div class="view-toggle" role="group" aria-label="${escapeAttribute(t("toolbar.view"))}">${vbtn("grid", t("aria.viewGrid"), VISTA_IC.grid)}${vbtn("list", t("aria.viewList"), VISTA_IC.list)}${vbtn("compact", t("view.compact"), VISTA_IC.compact)}</div>`;
       const listCls = groupsView === "grid" ? " is-grid" : groupsView === "compact" ? " is-compact" : "";
       const rows = groups.map((g) => `<button type="button" class="progress-row" data-vitrine-open="${escapeAttribute(g.gp.id)}">
           <div class="progress-row-art">${artOf(g.gp)}</div>
