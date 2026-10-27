@@ -51,7 +51,7 @@ que ordem e como saber que terminou**.
    `setLogo: ""` e a tela mostra o **nome** (sem arte da primeira carta, sem
    logo genérico do jogo). Exceção decidida pelo Fernando, jogo a jogo: os
    vintage em que nenhum set tem logo e o logo do jogo é a marca impressa
-   (linhas do Naruto e o LOTR desde 2026-10-27) levam o `game_<slug>.webp` em
+   (linhas do Naruto; LOTR e WoW desde 2026-10-27) levam o `game_<slug>.webp` em
    todo set, e o nome segue embaixo do tile. Carta sem preço fica sem preço. Nome traduzido só
    com fonte citada, e marcado quando a tradução é nossa (os títulos de cena do
    Naruto). Set fan-made fica fora do catálogo (`skip: true` no snapshot, como o

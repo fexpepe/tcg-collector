@@ -49,7 +49,10 @@
 // Warcraft Trading Card Game", lista de expansões e raids), 30/09/2026. Onde
 // só o mês tem fonte, o dia é 01.
 //
-// Logo de set: nenhum curado — a tela mostra o NOME (política única do site).
+// Logo de set: nenhum set tem logo próprio. Desde 2026-10-27, a pedido do
+// Fernando, todo set leva o logo do JOGO (como o Naruto vintage e o LOTR) e o
+// nome do set segue embaixo do tile; antes a vitrine era só uma parede de
+// nomes em chip branco.
 //
 //   node scripts/sync-wow.mjs
 import { fileURLToPath } from "node:url";
@@ -205,7 +208,7 @@ async function run() {
     || a.id.localeCompare(b.id));
   console.log(`Total: ${merged.length} cartas, ${Object.keys(pricing).length} com preço.`);
 
-  for (const c of merged) c.setLogo = "";
+  for (const c of merged) c.setLogo = "/assets/games/game_wow.webp";
 
   const bySet = new Map();
   for (const c of merged) { if (!bySet.has(c.set)) bySet.set(c.set, []); bySet.get(c.set).push(c.id); }
