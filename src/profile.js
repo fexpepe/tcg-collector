@@ -21,8 +21,11 @@
     let s = null;
     try { s = JSON.parse(localStorage.getItem("tcg-badges-summary-v1") || "null"); } catch (e) { /* corrompido */ }
     const count = s ? ` <span class="ach-count">${s.earned}/${s.total}</span>` : "";
-    const body = s && Array.isArray(s.emojis) && s.emojis.length
-      ? `<div class="ach-emoji-strip" aria-hidden="true">${s.emojis.map((e) => `<span>${esc(e)}</span>`).join("")}</div>`
+    // Os ícones são o traço SVG de cada medalha (badges.js grava em `icones`;
+    // até 2026-10-27 eram `emojis`). Só passa o que parece um "d" de <path>.
+    const icones = s && Array.isArray(s.icones) ? s.icones.filter((d) => typeof d === "string" && /^[MmLlHhVvCcSsQqTtAaZz0-9.,\s-]+$/.test(d)) : [];
+    const body = icones.length
+      ? `<div class="ach-strip" aria-hidden="true">${icones.map((d) => `<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="${esc(d)}"/></svg></span>`).join("")}</div>`
       : `<p class="profile-hint">${esc(t("profile.badgesHint"))}</p>`;
     return `<section class="profile-card ach-card" aria-label="${esc(t("dash.badges"))}">
       <h2 class="ach-heading">${esc(t("dash.badges"))}${count}</h2>

@@ -3101,13 +3101,14 @@
     const exploreActive = ["pokedex", "lore", "trainers", "sets", "artists", "cards", "hub"].includes(active);
     // "Meus Decks" é página PESSOAL (entra pelo Dashboard), então acende a
     // Coleção — diferente de "Decks", que é a galeria PÚBLICA e tem item próprio.
-    const collectionActive = ["dashboard", "collection", "wishlist", "binders", "sales", "mydecks", "pastas", "troca"].includes(active);
+    const collectionActive = ["dashboard", "collection", "wishlist", "binders", "sales", "mydecks", "pastas"].includes(active);
     // "Mais" (2026-10-01): as ferramentas e o Blog. O Guia de condição e o
     // Sleeves moram nele (não na Coleção) desde que viraram ferramentas do
-    // site; a Troca segue na Coleção, que é onde o histórico dela vive.
+    // site; a Troca veio da Coleção em 2026-10-27, quando deixou de exigir
+    // conta e virou página pública como as outras.
     // Endereços em inglês desde 2026-10-01 (pedido do Fernando): /tools,
     // /condition e /centering; os antigos têm 301 no _redirects.
-    const moreActive = ["blog", "tools", "condition", "centering", "sleeves"].includes(active);
+    const moreActive = ["blog", "tools", "condition", "centering", "sleeves", "troca"].includes(active);
 
     // O selo "beta" que Decks e Portfólio levavam desde 2026-08-25 saiu: Decks
     // em 2026-10-08 (redesign da PR #163) e Portfólio em 2026-10-10 (Portfólio
@@ -3522,7 +3523,7 @@
     // fontes de dados saíram daqui em 2026-08-05 — as duas já viviam, mais
     // completas e nos três idiomas, em Termos § Marcas e Sobre § De onde vêm os
     // dados. Repetidas no rodapé viravam um paredão de texto no pé da Início.
-    const FOOTER_PAGES = ["", "index", "about", "novidades", "blog", "tools", "condition", "centering", "lancamentos", "comparar", "faq", "help", "settings", "backup", "privacy", "terms", "login", "404"];
+    const FOOTER_PAGES = ["", "index", "about", "novidades", "blog", "tools", "condition", "centering", "troca", "lancamentos", "comparar", "faq", "help", "settings", "backup", "privacy", "terms", "login", "404"];
     const page = (window.location.pathname.split("/").pop() || "").replace(/\.html$/, "");
     if (!FOOTER_PAGES.includes(page)) return;
     if (document.querySelector(".site-footer")) return;
@@ -11617,7 +11618,7 @@
         <section class="ts-panel" role="dialog" aria-modal="true" aria-labelledby="obTitle">
           <h2 id="obTitle">${escapeHtml(t("onboard.title"))}</h2>
           <p class="ts-intro">${escapeHtml(t("onboard.intro"))}</p>
-          <span class="setting-handle"><span class="setting-handle-at" aria-hidden="true">@</span><input type="text" id="obHandle" class="setting-input" maxlength="24" placeholder="fexpepe" autocomplete="off" spellcheck="false" aria-label="${escapeAttribute(t("settings.handle"))}"></span>
+          <span class="setting-handle"><span class="setting-handle-at" aria-hidden="true">@</span><input type="text" id="obHandle" class="setting-input" maxlength="24" autocomplete="off" spellcheck="false" aria-label="${escapeAttribute(t("settings.handle"))}"></span>
           <span class="setting-field-status" id="obStatus" aria-live="polite"></span>
           <p class="ts-hint">${escapeHtml(t("onboard.publicNote"))}</p>
           <div class="onboard-actions">
@@ -12778,7 +12779,9 @@
     // localStorage o que NUNCA sobe pra nuvem — e descobria isso ao abrir em
     // outro aparelho. A galeria pública e o viewer ?s= vivem em decks.html, que
     // segue aberta; my-decks é só o editor de quem tem conta.
-    const AUTH_PAGES = ["dashboard", "collection", "wishlist", "binders", "sales", "portfolio", "badges", "backup", "troca", "sleeves", "pastas", "mydecks"];
+    // "troca" saiu em 2026-10-27: o Analisador não lê nada da conta (busca da
+    // borda, cotação do catálogo, histórico local) e virou página pública.
+    const AUTH_PAGES = ["dashboard", "collection", "wishlist", "binders", "sales", "portfolio", "badges", "backup", "sleeves", "pastas", "mydecks"];
     const nav = document.querySelector(".page-nav[data-active-page]");
     const page = nav ? nav.dataset.activePage : "";
     if (!AUTH_PAGES.includes(page) || getSession()) return false;

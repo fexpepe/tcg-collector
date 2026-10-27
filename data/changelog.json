@@ -1,5 +1,75 @@
 [
  {
+  "d": "2026-10-27",
+  "pt": "Analisador de troca aberto pra todo mundo, sem precisar de conta: some os dois lados da troca, com condição e quantidade, e veja se ela está equilibrada pela cotação de mercado. As análises que você salva ficam neste aparelho. Ele mora em Mais → Ferramentas, junto do Guia de condição e do Centering Tool.",
+  "en": "The trade analyzer is now open to everyone, no account needed: add up both sides of a trade, with condition and quantity, and see whether it is balanced at market prices. The analyses you save stay on this device. It lives in More → Tools, next to the condition guide and the Centering Tool."
+ },
+ {
+  "d": "2026-10-27",
+  "pt": "Perfil no celular reorganizado: moeda, idioma, tema e preços viraram quatro botões logo no topo, e os atalhos (Configurações, Backup, Ferramentas, Novidades, Blog e Ajuda) viraram blocos com uma linha dizendo o que tem em cada um. Sem conta, a tela agora mostra tudo isso e um convite pra entrar — antes aparecia só o botão Entrar.",
+  "en": "The profile screen on phones was reorganized: currency, language, theme and prices are now four buttons right at the top, and the shortcuts (Settings, Backup, Tools, What's new, Blog and Help) became blocks with a line saying what each one holds. Without an account, the screen now shows all of that plus an invitation to sign in — before, it only had the Sign in button."
+ },
+ {
+  "d": "2026-10-27",
+  "pt": "Ajustes pequenos: as medalhas ganharam ícones próprios no lugar dos emoji (também na imagem de compartilhar e no seu perfil); o Explorar ganhou o mesmo cabeçalho de Todas as cartas, com o Ordenar acima da grade e o Jogo dentro de Filtros; Vendas e Trocas e a Lista de Desejos não quebram mais o título em duas linhas no computador; e o Español apareceu também em Configurações → Idioma.",
+  "en": "Small fixes: badges got their own icons instead of emoji (also in the share image and on your profile); Explore now has the same header as All cards, with Sort above the grid and Game inside Filters; Sales & Trades and the Wishlist no longer break their title into two lines on desktop; and Español now shows up in Settings → Language too."
+ },
+ {
+  "d": "2026-10-26",
+  "pt": "Pokédex nova: os 1.025 Pokémon numa grade por região, cada um com o número, o nome e quantas cartas dele você tem, e o progresso de cada região no cabeçalho. O Modo marcar, no topo, faz o toque marcar o Pokémon como já tenho em vez de abrir a página dele — pra registrar vários de uma vez.",
+  "en": "A new Pokédex: all 1,025 Pokémon in a grid by region, each with its number, name and how many of its cards you own, and each region's progress in its header. Mark mode, at the top, makes a tap mark the Pokémon as owned instead of opening its page — to log many at once."
+ },
+ {
+  "d": "2026-10-17",
+  "pt": "Artistas e Treinadores de cara nova: uma linha por nome, com uma carta de capa, os anos em atividade, quantos sets e quantas cartas, agrupados pela época em que estrearam. Grafias diferentes do mesmo artista agora contam como uma pessoa só.",
+  "en": "Artists and Trainers got a new look: one row per name, with a cover card, the years active, how many sets and how many cards, grouped by the era they debuted in. Different spellings of the same artist now count as one person."
+ },
+ {
+  "d": "2026-10-14",
+  "pt": "Cada carta tem a sua página. No computador, clicar numa carta abre a página dela, com preço, histórico e as outras impressões, e o voltar devolve você pra grade no mesmo ponto. No celular a carta abre em tela cheia, com o −, o Tenho e o + presos embaixo.",
+  "en": "Every card has its own page. On desktop, clicking a card opens its page, with price, history and the other printings, and Back returns you to the grid where you were. On phones the card opens full screen, with −, Owned and + pinned at the bottom."
+ },
+ {
+  "d": "2026-10-10",
+  "pt": "Portfólio e Decks deixaram de ser beta no menu.",
+  "en": "Portfolio and Decks are no longer marked as beta in the menu."
+ },
+ {
+  "d": "2026-10-09",
+  "pt": "Portfólio 3.0: o valor total em destaque com o gráfico logo embaixo, onde esse valor está (por jogo, set ou raridade), as cartas suas que mais mexeram na semana, quanto você investiu e já vendeu e as suas metas — desejos e pastas de venda.",
+  "en": "Portfolio 3.0: your total value up front with the chart right below, where that value sits (by game, set or rarity), your cards that moved the most this week, how much you invested and have sold, and your goals — wishlist and sale folders."
+ },
+ {
+  "d": "2026-10-09",
+  "pt": "Tela de Sets nova, em todos os jogos: o lançamento mais recente em destaque, o que vem por aí em \"Em breve\", os sets que você está completando e os produtos (caixas, decks, coleções) dentro do set de que fazem parte, em vez de espalhados pela lista.",
+  "en": "A new Sets screen, in every game: the latest release up front, what's coming in \"Coming soon\", the sets you are completing, and products (boxes, decks, collections) inside the set they belong to instead of scattered across the list."
+ },
+ {
+  "d": "2026-10-09",
+  "pt": "O e-mail de contato do Sleevu agora é hi@sleevu.app.",
+  "en": "Sleevu's contact email is now hi@sleevu.app."
+ },
+ {
+  "d": "2026-10-08",
+  "pt": "Hub novo: o valor da sua coleção como manchete, em que jogos ele está e quais cartas suas mais mexeram na semana, com a Minha Coleção logo abaixo e os atalhos ao lado. E o site ficou mais leve no celular: a busca, o Explorar e as telas de set pedem só as cartas que vão mostrar, em vez de baixar o jogo inteiro.",
+  "en": "A new Hub: your collection's value as the headline, which games it sits in and which of your cards moved the most this week, with My Collection right below and the shortcuts on the side. The site also got lighter on phones: search, Explore and set screens fetch only the cards they show instead of downloading the whole game."
+ },
+ {
+  "d": "2026-10-07",
+  "pt": "Decks de cara nova: a galeria da comunidade virou uma vitrine com a arte de cada deck, e o deck aberto mostra as cartas em pilhas, com o valor no topo. No deck de outra pessoa dá pra testar uma mão inicial e exportar só o que falta pra você montar.",
+  "en": "Decks got a new look: the community gallery became a showcase with each deck's art, and an open deck shows its cards in stacks with the value at the top. On someone else's deck you can test an opening hand and export just what you're missing to build it."
+ },
+ {
+  "d": "2026-10-06",
+  "pt": "Página inicial nova: o que o Sleevu faz logo no topo, a parede com os logos de todos os jogos e um \"como funciona\" em três passos.",
+  "en": "A new home page: what Sleevu does right at the top, a wall with every game's logo and a three-step \"how it works\"."
+ },
+ {
+  "d": "2026-10-02",
+  "pt": "Decks: o \"Copiar lista\" virou \"Exportar lista\", no editor e no deck público. A lista sai com a edição de cada carta, no formato do Archidekt e do Moxfield, do deck da LigaMagic ou da Compra por Lista da LigaMagic.",
+  "en": "Decks: \"Copy list\" became \"Export list\", in the editor and on public decks. The list comes out with each card's edition, in Archidekt and Moxfield format, as a LigaMagic deck or as a LigaMagic buy list."
+ },
+ {
   "d": "2026-10-01",
   "pt": "Centering Tool: a medida de centralização ganhou página própria, em /centering. Tire ou escolha a foto da carta, endireite pelos quatro cantos (vale foto tirada meio de lado) e ajuste as linhas da borda, com lupa, linhas já sugeridas e um ímã que gruda na borda. Sai a centralização em porcentagem, frente e verso, com a nota estimada de PSA, BGS, CGC, SGC e TAG e quanto falta pra próxima. A foto não sai do seu aparelho. E as ferramentas passaram a ter endereço em inglês: /tools e /condition (os links antigos continuam funcionando).",
   "en": "Centering Tool: centering measurement now has its own page, at /centering. Take or pick a photo of the card, straighten it by its four corners (a photo taken at a slight angle works too) and set the border lines, with a loupe, suggested lines and a magnet that snaps to the edge. You get centering as a percentage, front and back, with the estimated PSA, BGS, CGC, SGC and TAG grade and how far you are from the next one. The photo never leaves your device. The tools also moved to English addresses: /tools and /condition (old links still work)."

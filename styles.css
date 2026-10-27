@@ -7018,17 +7018,21 @@ a.progress-row:hover {
 .ach-card { margin-top: 18px; }
 .ach-heading { margin: 0 0 12px; font-size: 17px; }
 .ach-count { color: var(--muted); font-size: 14px; font-weight: 700; }
-.ach-emoji-strip { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
-.ach-emoji-strip span {
-  font-size: 22px; line-height: 1;
+/* Faixa com o ícone de cada medalha ganha (SVG desde 2026-10-27; era emoji). */
+.ach-strip { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+.ach-strip span {
+  display: grid; place-items: center; color: var(--accent);
   padding: 8px; border: 1px solid var(--line); border-radius: 10px;
   background: var(--panel-strong);
 }
+.ach-strip svg { display: block; width: 22px; height: 22px; }
 
 /* Página de Novidades + bolinha "novo" nos links do changelog. */
 .news-list { max-width: 720px; }
 .news-day { margin-bottom: 22px; }
-.news-date { font-size: 15px; color: var(--accent); margin: 0 0 8px; text-transform: capitalize; }
+/* Sem text-transform: o capitalize virava "1 De Outubro De 2026" (até
+   2026-10-27). A data sai do toLocaleDateString já com a caixa de cada idioma. */
+.news-date { font-size: 15px; color: var(--accent); margin: 0 0 8px; }
 .news-day ul { margin: 0; padding-left: 20px; display: grid; gap: 7px; color: var(--text); }
 [data-news-link].has-news::after { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); margin-left: 6px; vertical-align: middle; }
 
@@ -8333,7 +8337,8 @@ html[data-collector-mode] .hb-worth .collector-badge { font-size: 28px; font-wei
 .bdg-fun-line strong { color: var(--text); }
 .bdg-fun-bars { display: flex; flex-direction: column; gap: 8px; }
 .bdg-fun-bar { display: flex; align-items: center; gap: 10px; }
-.bdg-fun-ic { flex: none; font-size: 18px; }
+.bdg-fun-ic { flex: none; display: grid; color: var(--muted); }
+.bdg-fun-ic svg { width: 20px; height: 20px; }
 .bdg-fun-track { flex: 1; height: 22px; border-radius: 999px; background: var(--panel); border: 1px solid var(--line); overflow: hidden; }
 .bdg-fun-track span { display: block; height: 100%; border-radius: 999px; background: var(--accent); }
 .bdg-fun-x { flex: none; min-width: 150px; font-size: 13px; color: var(--muted); }
@@ -8343,9 +8348,16 @@ html[data-collector-mode] .hb-worth .collector-badge { font-size: 28px; font-wei
 .bdg.is-done { opacity: 1; border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent-soft); }
 .bdg.is-new { animation: bdg-pop .5s ease; }
 @keyframes bdg-pop { 0% { transform: scale(.92); } 60% { transform: scale(1.04); } 100% { transform: scale(1); } }
-.bdg-new { position: absolute; top: 8px; right: 10px; }
-.bdg-emoji { font-size: 34px; line-height: 1; filter: grayscale(.7); }
-.bdg.is-done .bdg-emoji { filter: none; }
+.bdg-new { position: absolute; top: 8px; right: 10px; display: grid; color: var(--gold); }
+.bdg-new svg { width: 18px; height: 18px; }
+/* Ícone (SVG desde 2026-10-27; era emoji em cinza): travada fica no tom
+   apagado; ganha acende na cor da raridade, a mesma do chip embaixo. */
+.bdg-ic { display: grid; place-items: center; width: 56px; height: 56px; background: var(--panel-strong); color: var(--subtle); }
+.bdg-ic svg { width: 28px; height: 28px; }
+.bdg.is-done .bdg-ic { background: var(--accent-soft); color: var(--accent); }
+.bdg.is-done[data-tier="rare"] .bdg-ic { background: rgba(59, 130, 246, .14); color: #3b82f6; }
+.bdg.is-done[data-tier="epic"] .bdg-ic { background: rgba(168, 85, 247, .14); color: #a855f7; }
+.bdg.is-done[data-tier="legendary"] .bdg-ic { background: rgba(240, 184, 75, .16); color: var(--gold); }
 .bdg-name { font-size: 13px; }
 .bdg-desc { font-size: 11px; color: var(--muted); min-height: 26px; }
 /* V2: chips de dificuldade (tier curado) + sazonal, e o share da medalha. */
@@ -8370,7 +8382,8 @@ html[data-collector-mode] .hb-worth .collector-badge { font-size: 28px; font-wei
 .bdg-share:hover { color: var(--accent); border-color: var(--accent); }
 .bdg-bar { width: 100%; height: 5px; }
 .bdg-progress { font-size: 11px; color: var(--subtle); }
-.bdg-done-tag { font-size: 12px; font-weight: 800; color: var(--accent); }
+.bdg-done-tag { display: grid; color: var(--accent); }
+.bdg-done-tag svg { width: 16px; height: 16px; }
 @media (max-width: 560px) { .bdg-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .bdg-fun-x { min-width: 110px; } }
 
 /* Pill global de carregamento (sync da conta / download de catálogo). Fica
@@ -10235,32 +10248,26 @@ html[data-detail="set"] #detailType,
 html[data-detail="set"] #detailTitle { display: none; }
 .page-head-bar .page-search { grid-column: 2; margin: 0; min-width: 0; }
 .page-head-bar .page-search input { height: 46px; }
-
-/* FILEIRA ÚNICA: a 3ª coluna deixa de ser fantasma e ganha conteúdo de verdade.
-   São dois arranjos, porque o conteúdo é de naturezas diferentes.
-
-   1) EXPLORAR (Jogo/Ordenar/Versões): controles na ponta direita, busca no meio.
-   Eles vêm prontos no HTML, então a largura deles nunca muda depois do paint e
-   a busca pode ser o `1fr` que sobra entre as duas pontas. */
-.page-head-bar:has(> .page-head-bar-tools) {
-  grid-template-columns: auto minmax(220px, 1fr) auto;
+/* Título de duas ou três palavras numa linha só (2026-10-27): "Vendas e
+   Trocas" e "Lista de Desejo" medem ~250px em 34px, e em 1280px a coluna do
+   título tinha 224px — o h1 quebrava em duas linhas ao lado de uma busca de
+   uma. A coluna cresce até o título caber e a busca cede a diferença (sai
+   uns 20px do centro). Só as telas pessoais (.dash-head), que têm título
+   fixo e curto; a pasta de vendas aberta fica de fora porque o h1 dela é o
+   campo do nome, de até 560px (pelo "h1 input", e não pela classe do campo:
+   com o prefixo de Vendas o split-css levaria a regra pra folha de lá e a
+   Wishlist ficaria sem). Abaixo de 1081px a faixa já empilha. */
+@media (min-width: 1081px) {
+  .dash-head.page-head-bar:not(:has(h1 input)) { grid-template-columns: minmax(max-content, 1fr) minmax(0, 720px) minmax(0, 1fr); }
 }
-.page-head-bar > .page-head-bar-tools { grid-column: 3; margin: 0; min-width: 0; }
-/* O "Agrupar" é um .chip (38px) entre dois <select> (42px): a caixa dele
-   saía mais baixa e, centrada na fileira, com o rótulo "Versões" 2px abaixo
-   do "Jogo:" e do "Ordenar:" (2026-09-28). Na altura dos selects, rótulos e
-   bases fecham numa linha só. Só no mouse: no toque o .chip já tem 44px. */
-@media (pointer: fine) {
-  .page-head-bar-tools .sort-select .chip { min-height: 42px; }
-}
-/* Os controles do Explorar têm rótulo EM CIMA (Jogo:, Ordenar:, Versões), então
-   a caixa deles é mais alta que a busca. Alinhados pelo centro, os campos
-   ficavam ~10px fora de registro; pelo fim, a base do input casa com a base dos
-   selects e a fileira lê como uma linha só de campos. */
-.page-head-bar:has(> .page-head-bar-tools) { align-items: end; }
 
-/* 2) TELAS DO EXPLORAR (abas Cartas/Sets/Pokédex/…): as abas ficam à ESQUERDA,
-   coladas no título, e a busca vai pra ponta direita. Aqui a busca NÃO pode ser
+/* FILEIRA ÚNICA nas TELAS DO EXPLORAR (abas Cartas/Sets/Pokédex/…): a 3ª
+   coluna deixa de ser fantasma e ganha a busca. (Até 2026-10-27 havia um 2º
+   arranjo, com Jogo/Ordenar/Versões na 3ª coluna do /explore; ele virou a
+   linha de resultados do cards.html e as regras saíram.)
+
+   As abas ficam à ESQUERDA, coladas no título, e a busca vai pra ponta
+   direita. Aqui a busca NÃO pode ser
    o `1fr`: o shared.js só preenche as abas depois do primeiro paint, e uma
    fileira de chips que nasce com 0 e vira 148–574px (varia com o jogo e o
    idioma) empurraria a busca de lado — foi exatamente isso que subiu o CLS
@@ -10280,7 +10287,7 @@ html[data-detail="set"] #detailTitle { display: none; }
   width: clamp(240px, 30vw, 520px);
 }
 
-/* 3) LISTAGENS DO EXPLORAR (.page-head-stack): o título fica SOZINHO na 1ª
+/* LISTAGENS DO EXPLORAR (.page-head-stack): o título fica SOZINHO na 1ª
    linha; abas à esquerda e busca à direita na 2ª. Nasceu na tela de Sets: na
    fileira única, um título comprido ("Magic: The Gathering Sets") atropelava
    as abas e a busca (pedido de 2026-09-10). Em 2026-09-14 o Fernando pediu o
@@ -10327,12 +10334,10 @@ html[data-detail="set"] .page-head-bar.page-head-stack,
    mais que `.page-head-bar` e venceria dentro da media query. */
 @media (max-width: 1080px) {
   .page-head-bar,
-  .page-head-bar:has(> .explore-subnav),
-  .page-head-bar:has(> .page-head-bar-tools) { grid-template-columns: minmax(0, 1fr); }
+  .page-head-bar:has(> .explore-subnav) { grid-template-columns: minmax(0, 1fr); }
   .page-head-bar .page-search,
   .page-head-bar:has(> .explore-subnav) .page-search { grid-column: 1; width: auto; }
-  .page-head-bar > .explore-subnav,
-  .page-head-bar > .page-head-bar-tools { grid-column: 1; }
+  .page-head-bar > .explore-subnav { grid-column: 1; }
   .page-head-bar h1 { font-size: 28px; }
   /* Empilhado: as áreas nomeadas de cima saem (a coluna é uma só) e o respiro
      entre título e abas volta aos 8px do empilhado — em tela curta os 40px
@@ -11576,7 +11581,7 @@ select,
 .group-summary,
 .progress-row,
 .progress-row-art,
-.ach-emoji-strip span,
+.ach-strip span,
 .cmdk-thumb img,
 .cmdk-add,
 .mtab,
@@ -13258,6 +13263,11 @@ select,
 .vnd-new-card span:last-child { font-size: 12.5px; text-align: center; }
 .vnd-new-ic { display: inline-flex; align-items: center; justify-content: center; width: 48px; height: 48px; border: 1px solid currentColor; }
 .vnd-new-ic svg { width: 22px; height: 22px; }
+/* Sem nenhuma pasta o card é o estado vazio inteiro: ocupa a linha e baixa
+   pra altura do conteúdo (os 290px eram pra acompanhar os cards em pilha,
+   que aqui não existem). A dica é a frase longa, então ganha largura. */
+.vnd-new-card.is-vazio { flex-basis: 100%; min-height: 0; padding: 32px 20px; }
+.vnd-new-card.is-vazio span:last-child { max-width: 46ch; font-size: 13.5px; line-height: 1.45; }
 /* Picker: busca + Jogo + Raridade + Ordenar numa GRADE com os pés alinhados
    (em flex-wrap cada um tinha a largura do conteúdo e, no celular, virava uma
    escada de caixas de tamanhos diferentes). */
@@ -13270,10 +13280,10 @@ select,
 .sales-pick.vnd-elsewhere { opacity: 0.72; }
 .vnd-pick-where { display: block; margin-top: 3px; font-size: 10px; font-weight: 700; color: var(--accent); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 @media (max-width: 680px) {
-  .vnd-new-card { min-height: 240px; }
+  .vnd-new-card:not(.is-vazio) { min-height: 240px; }
 }
 @media (max-width: 460px) {
-  .vnd-new-card { min-height: 196px; }
+  .vnd-new-card:not(.is-vazio) { min-height: 196px; }
   /* As ações largas ("Adicionar cartas"/"Compartilhar", "Nova pasta"/
      "Analisar troca") não cabem lado a lado em ~130px cada — viram linhas
      inteiras, e as quatro de baixo da pasta seguem na régua de 4 colunas. */
@@ -14621,22 +14631,7 @@ html[data-game] #gcApp:empty + .gc-scale { display: none; }
   .stats-grid span { font-size: 22px; }
   .stats-grid p { font-size: 12px; line-height: 1.25; margin-top: 6px; }
   .stats-grid .dex-progress { margin-top: 8px; }
-  /* 2) CONTROLES DO EXPLORAR. Em tela larga Jogo/Ordenar/Versões formam uma
-     linha com a busca; abaixo de 1080px viravam um flex encostado à direita,
-     flutuando sob o título com os rótulos soltos. Grade de 2 colunas, campo
-     ocupando a célula. */
-  .page-head-bar > .page-head-bar-tools {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
-    width: 100%;
-    margin-left: 0;
-  }
-  .page-head-bar-tools .sort-select { min-width: 0; margin: 0; }
-  .page-head-bar-tools .sort-select select,
-  .page-head-bar-tools .sort-select .chip { width: 100%; justify-content: center; }
-
-  /* 3) FILEIRAS DE CHIPS (idioma dos sets, geração da Pokédex). Com o piso de
+  /* 2) FILEIRAS DE CHIPS (idioma dos sets, geração da Pokédex). Com o piso de
      44px do toque, 4–10 chips quebravam em 2–3 linhas e empurravam o
      conteúdo. Viram UMA fileira que rola de lado, sangrando até a borda da
      tela (mesmo padrão do .chip-scroll das regiões). */
@@ -14652,12 +14647,12 @@ html[data-game] #gcApp:empty + .gc-scale { display: none; }
   .master-filter::-webkit-scrollbar { display: none; }
   .master-filter .chip { flex: none; }
 
-  /* 4) Medalhas: o selo de raridade era 9px — ilegível no vidro. */
+  /* 3) Medalhas: o selo de raridade era 9px — ilegível no vidro. */
   .bdg-chip { font-size: 10px; }
 }
 
 @media (max-width: 560px) {
-  /* 5) AÇÕES DO TILE. A Coleção ganhou o 5º botão (Lista) e no tile de 2
+  /* 4) AÇÕES DO TILE. A Coleção ganhou o 5º botão (Lista) e no tile de 2
      colunas os 5 não cabiam: o + e o badge ×N saíam pela borda direita. Os
      botões dividem a linha e encolhem só o necessário (teto de 34px: com 3
      botões ficam do tamanho de sempre, à direita). Generaliza a regra que já
@@ -14671,13 +14666,13 @@ html[data-game] #gcApp:empty + .gc-scale { display: none; }
      (carta sem cópia) não reserva lugar: os outros ocupam a linha. */
   .tile-actions .tile-folder { display: none; }
   .tile-actions .tile-btn { aspect-ratio: 1 / 1; min-height: 0; height: auto; align-self: center; }
-  /* 6) VENDAS: a fileira de seis botões e os chips de percentual moram agora
+  /* 5) VENDAS: a fileira de seis botões e os chips de percentual moram agora
      no cartão-herói e no "Preço pela referência" da pasta, em grade desde o
      desktop (ver o bloco vnd- depois das Pastas). */
 }
 
 @media (pointer: coarse), (max-width: 700px) {
-  /* 7) ALVOS DE TOQUE que nasceram no desktop com altura de texto: o "Já
+  /* 6) ALVOS DE TOQUE que nasceram no desktop com altura de texto: o "Já
      tenho" do card da Pokédex (28px), o cabeçalho de série dos Sets
      (▾ Scarlet & Violet, 25px) com o "2 sets →" (16px), o compartilhar da
      medalha (26px). Piso de 36–44px, sem mudar o desenho. */

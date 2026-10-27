@@ -476,15 +476,18 @@
           <span class="dash-top-info"><strong>${esc(card.name)}</strong><span class="dash-top-set">${esc(pasta ? pasta.name : card.set)}</span></span>
           <span class="dash-top-val">${esc(money(it.price))}</span></a></li>`;
     }).join("");
-    const vazio = !grupos.length
-      ? `<p class="empty-state vnd-empty">${esc(t("sales.folders.empty"))}<br><span class="empty-hint">${esc(t("sales.folders.emptyHint"))}</span></p>`
-      : (q && !visiveis.length ? `<p class="empty-state vnd-empty">${esc(t("collection.noResults"))}</p>` : "");
+    // Sem nenhuma pasta, o estado vazio É o card "Nova pasta" (na linha
+    // inteira, com a explicação de pra que serve a pasta). Até 2026-10-27
+    // eram dois: a caixa tracejada "Você ainda não tem pastas" e, logo
+    // embaixo, o card tracejado — o mesmo convite duas vezes.
+    const semPastas = !grupos.length;
+    const vazio = q && !visiveis.length ? `<p class="empty-state vnd-empty">${esc(t("collection.noResults"))}</p>` : "";
     // "Nova pasta" como o último card da fileira: a ação mora onde a pasta
     // nova vai aparecer. Some durante a busca (não é resultado).
-    const novo = q ? "" : `<button type="button" class="coll-card coll-card-pile vnd-new-card" data-vnd-new>
+    const novo = q ? "" : `<button type="button" class="coll-card coll-card-pile vnd-new-card${semPastas ? " is-vazio" : ""}" data-vnd-new>
         <span class="vnd-new-ic" aria-hidden="true">${IC.plus}</span>
         <strong>${esc(t("sales.folders.new"))}</strong>
-        <span>${esc(t("sales.folders.newHint"))}</span>
+        <span>${esc(t(semPastas ? "sales.folders.emptyHint" : "sales.folders.newHint"))}</span>
       </button>`;
     view.innerHTML = `
       <section class="collection-dashboard collection-dashboard-hero set-insights vnd-insights" aria-label="${escA(t("aria.sumSales"))}">

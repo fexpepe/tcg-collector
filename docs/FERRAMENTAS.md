@@ -181,3 +181,20 @@ ferramentas em inglês**.
   lembrete) e `tests/ferramentas.test.mjs` com os nomes novos. O
   `tests/centering.test.mjs` da v1 saiu: o núcleo novo tem os dele
   (`centering-core` e `centering-graders`).
+
+## 8. Analisador de troca público (2026-10-27)
+
+Pedido do Fernando na PR de ajustes pequenos: a Troca era a ferramenta da
+`/tools` que ainda mandava pro login, sem precisar da conta pra nada — a busca
+é a da borda, a cotação é a do catálogo e o histórico ("Análises salvas") fica
+neste navegador (`tcg-trade-checks-v1`, fora do sync).
+
+- Saiu do `AUTH_PAGES` e do `noindex`; ganhou canonical e Open Graph e entrou
+  no sitemap (`STATIC_URLS`). O título passou a dizer o que ela faz
+  ("Analisador de troca de cartas: a troca está justa?").
+- **O endereço segue `/troca`** (decisão da §7). O "← Hub" virou
+  "← Ferramentas" (o Hub exige conta) e no topo ela acende o "Mais", como as
+  outras ferramentas; antes acendia a Coleção. Ganhou o rodapé das páginas
+  públicas (`FOOTER_PAGES`).
+- Na `/tools` o selo passou de "Com conta" pra "Sem conta". O Sleeves segue
+  com conta: ele lê a coleção e os decks.

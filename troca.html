@@ -3,11 +3,26 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <title data-i18n="title.troca">Analisador de troca - Sleevu</title>
+    <title data-i18n="title.troca">Analisador de troca de cartas: a troca está justa? - Sleevu</title>
     <meta name="description" content="Some os dois lados de uma troca de cartas, com condição e quantidade, e veja se ela está equilibrada.">
-    <!-- Ferramenta pessoal (histórico local, exige login): fora do índice,
-         como my-decks. -->
-    <meta name="robots" content="noindex">
+    <!-- PÚBLICA e indexável desde 2026-10-27, como o Guia de condição e o
+         Centering Tool: a análise não lê nada da conta (a busca é da borda, a
+         cotação é a do catálogo e o histórico fica neste navegador), então o
+         login era um portão sem motivo (o Sleeves segue com conta: ele lê a
+         coleção e os decks). O endereço segue /troca (ver _redirects). -->
+    <link rel="canonical" href="https://sleevu.app/troca">
+    <meta property="og:site_name" content="Sleevu">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sleevu.app/troca">
+    <meta property="og:title" content="Analisador de troca de cartas: a troca está justa?">
+    <meta property="og:description" content="Some os dois lados de uma troca de cartas, com condição e quantidade, e veja se ela está equilibrada pela cotação de mercado.">
+    <meta property="og:image" content="https://sleevu.app/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Analisador de troca de cartas: a troca está justa?">
+    <meta name="twitter:description" content="Some os dois lados de uma troca de cartas, com condição e quantidade, e veja se ela está equilibrada pela cotação de mercado.">
+    <meta name="twitter:image" content="https://sleevu.app/og-image.png">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
     <link rel="manifest" href="manifest.json">
@@ -44,7 +59,7 @@
     <main>
       <div class="page-head">
         <h1 data-i18n="trade.title">Analisador de troca</h1>
-        <a href="dashboard" class="serie-back" data-i18n="nav.backDashboard">← Hub</a>
+        <a href="tools" class="serie-back" data-i18n="trade.back">← Ferramentas</a>
       </div>
       <p class="collection-subtitle" data-i18n="trade.subtitle">Some os dois lados de uma troca — com condição e quantidade — e veja se ela está equilibrada. Os valores vêm da cotação de mercado e são editáveis.</p>
 

@@ -60,12 +60,12 @@
 
           <div class="setting-row setting-row-stack">
             <span class="setting-field-label"><strong data-i18n="settings.displayName">Nome de exibição</strong><span class="setting-count" id="nameCount">0/24</span></span>
-            <input type="text" id="profileName" class="setting-input" maxlength="24" placeholder="Fernando" autocomplete="off" data-i18n-aria="settings.displayName" aria-label="Nome de exibição">
+            <input type="text" id="profileName" class="setting-input" maxlength="24" autocomplete="off" data-i18n-aria="settings.displayName" aria-label="Nome de exibição">
           </div>
 
           <div class="setting-row setting-row-stack">
             <span class="setting-field-label"><strong data-i18n="settings.handle">Seu @</strong><span class="setting-count" id="handleCount">0/24</span></span>
-            <span class="setting-handle"><span class="setting-handle-at" aria-hidden="true">@</span><input type="text" id="profileHandle" class="setting-input" maxlength="24" placeholder="fexpepe" autocomplete="off" spellcheck="false" data-i18n-aria="settings.handle" aria-label="Seu @"></span>
+            <span class="setting-handle"><span class="setting-handle-at" aria-hidden="true">@</span><input type="text" id="profileHandle" class="setting-input" maxlength="24" autocomplete="off" spellcheck="false" data-i18n-aria="settings.handle" aria-label="Seu @"></span>
             <span class="setting-field-hint" data-i18n="settings.handleHint">Letras minúsculas, números e _. Vira o link do seu perfil.</span>
             <span class="setting-field-status" id="handleStatus" aria-live="polite"></span>
           </div>
@@ -148,7 +148,12 @@
             </div>
             <button type="button" class="setting-switch" id="dexAutoMarkToggle" role="switch" aria-checked="false" data-i18n-aria="settings.dexAutoMark" aria-label="Pokédex: marcar ao adicionar carta"><span class="setting-switch-knob"></span></button>
           </div>
-          <div class="setting-row">
+          <!-- UI Editor: ferramenta de design de quem mantém o site, não do visitante.
+               Nasce escondido e o settings.js só mostra a linha pra quem já
+               está com ele ligado (pra poder desligar) ou abriu esta tela com
+               ?uieditor=1 — é por aí que se liga. Até 2026-10-27 aparecia pra
+               todo mundo. -->
+          <div class="setting-row" id="uiEditorRow" hidden>
             <div class="setting-info">
               <strong data-i18n="settings.uiEditor">UI Editor (experimental)</strong>
               <span data-i18n="settings.uiEditorDesc">Ferramenta de design ao vivo: mova, redimensione e ajuste a interface, e exporte os ajustes em JSON. Só pra testes — os ajustes ficam neste navegador.</span>
@@ -233,6 +238,7 @@
             <select id="settingLang" class="setting-select" data-i18n-aria="settings.language" aria-label="Idioma">
               <option value="pt">Português (BR)</option>
               <option value="en">English</option>
+              <option value="es">Español</option>
             </select>
           </div>
 

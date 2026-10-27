@@ -110,9 +110,10 @@ const STATIC_URLS = [
   "/decks", "/blog",
   // Ferramentas (2026-10-01): o índice, o Guia de condição e o Centering Tool,
   // que são públicos, nos endereços em inglês (/ferramentas e /condicao são
-  // 301 e não entram: sitemap só anuncia o destino). Sleeves e Troca exigem
-  // login e ficam de fora, como as telas pessoais.
-  "/tools", "/condition", "/centering",
+  // 301 e não entram: sitemap só anuncia o destino). A Troca entrou em
+  // 2026-10-27, quando deixou de exigir login (segue em /troca). O Sleeves
+  // exige login e fica de fora, como as telas pessoais.
+  "/tools", "/condition", "/centering", "/troca",
   "/about", "/novidades", "/lancamentos", "/comparar", "/faq", "/help", "/privacy", "/terms"
 ];
 

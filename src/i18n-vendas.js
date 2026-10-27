@@ -15,7 +15,6 @@
     // Galeria
     "sales.folders.heading": "Pastas de venda",
     "sales.folders.searchGallery": "Procurar nas pastas de venda…",
-    "sales.folders.empty": "Você ainda não tem pastas de venda.",
     "sales.folders.emptyHint": "Crie uma pasta pra cada grupo, feira ou lista — cada uma com preço em lote e link público próprios.",
     "sales.folders.emptyFolder": "Pasta vazia",
     "sales.folders.new": "Nova pasta",
@@ -69,7 +68,6 @@
     // Galeria
     "sales.folders.heading": "Sale folders",
     "sales.folders.searchGallery": "Search your sale folders…",
-    "sales.folders.empty": "You don't have any sale folders yet.",
     "sales.folders.emptyHint": "Create one folder per group, fair or list — each with its own bulk pricing and public link.",
     "sales.folders.emptyFolder": "Empty folder",
     "sales.folders.new": "New folder",
@@ -123,7 +121,6 @@
     // Galeria
     "sales.folders.heading": "Carpetas de venta",
     "sales.folders.searchGallery": "Buscar en las carpetas de venta…",
-    "sales.folders.empty": "Todavía no tienes carpetas de venta.",
     "sales.folders.emptyHint": "Crea una carpeta por grupo, feria o lista — cada una con precio en lote y enlace público propios.",
     "sales.folders.emptyFolder": "Carpeta vacía",
     "sales.folders.new": "Nueva carpeta",

@@ -590,7 +590,8 @@
   };
   elements.search.addEventListener("input", debounce(apply, 250));
 
-  // Jogo é um <select> ao lado do Ordenar (eram 13 chips numa faixa inteira).
+  // Jogo é um <select> no painel de Filtros (eram 13 chips numa faixa inteira;
+  // até 2026-10-27 ficava no topo, ao lado do Ordenar).
   // Opções reconstruídas de GAME_SLUGS: jogo novo no registro aparece sozinho,
   // mesma garantia que os chips antigos tinham via initGameFilterChips.
   if (elements.gameFilter) {

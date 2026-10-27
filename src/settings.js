@@ -165,7 +165,6 @@
     groupVariants.addEventListener("click", () => { shared.setGroupVariants(!shared.groupVariantsEnabled()); sync(); });
   }
 
-  // UI Editor (experimental) — liga/desliga e recarrega (o script é injetado no boot).
   // Pokédex automática: carta de Pokémon adicionada marca o Pokémon como "já tenho".
   const dexAuto = document.getElementById("dexAutoMarkToggle");
   if (dexAuto) {
@@ -174,8 +173,15 @@
     dexAuto.addEventListener("click", () => { shared.setDexAutoMark(!shared.dexAutoMarkEnabled()); sync(); });
   }
 
+  // UI Editor (experimental) — liga/desliga e recarrega (o script é injetado no boot).
   const uiEditor = document.getElementById("uiEditorToggle");
   if (uiEditor) {
+    // A linha só aparece pra quem já liga o editor ou chegou com ?uieditor=1
+    // (ver o comentário no settings.html) — visitante não vê ferramenta de dev.
+    const row = document.getElementById("uiEditorRow");
+    let pelaUrl = false;
+    try { pelaUrl = new URLSearchParams(window.location.search).get("uieditor") === "1"; } catch (e) { /* ignora */ }
+    if (row) row.hidden = !(shared.uiEditorEnabled() || pelaUrl);
     uiEditor.setAttribute("aria-checked", String(shared.uiEditorEnabled()));
     uiEditor.addEventListener("click", () => {
       shared.setUiEditor(!shared.uiEditorEnabled());

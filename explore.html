@@ -74,60 +74,15 @@
         <svg class="page-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="20" y1="20" x2="16.5" y2="16.5"/></svg>
         <input id="exploreSearch" type="search" enterkeyhint="search" data-i18n-placeholder="explore.placeholder" placeholder="Qualquer carta, de qualquer jogo — nome, set, artista, número…">
         </section>
-        <!-- Jogo é um <select> ao lado do Ordenar (eram 13 chips ocupando uma
-             faixa inteira). As opções são RECONSTRUÍDAS pelo explore.js a
-             partir de GAME_SLUGS no boot — jogo novo entra sozinho, mesma
-             garantia dos chips antigos; a lista completa vem no HTML só pra
-             primeira pintura não mudar de conteúdo (CLS/no-JS).
-             Os três moram DENTRO da faixa, na 3a coluna: mesma fileira do
-             título e da busca (ver .page-head-bar-tools no styles.css). -->
-        <div class="collection-toolbar-actions page-head-bar-tools">
-          <div class="sort-select">
-            <label for="exploreGameSelect" data-i18n="toolbar.gameFilter">Jogo:</label>
-            <select id="exploreGameSelect">
-              <option value="all" data-i18n="filter.gameAll">Todos</option>
-              <option value="pokemon" data-i18n="filter.gamePokemon">Pokémon</option>
-              <option value="lorcana" data-i18n="filter.gameLorcana">Lorcana</option>
-              <option value="onepiece" data-i18n="filter.gameOnePiece">One Piece</option>
-              <option value="magic" data-i18n="filter.gameMagic">Magic</option>
-              <option value="fab" data-i18n="filter.gameFab">Flesh and Blood</option>
-              <option value="gundam" data-i18n="filter.gameGundam">Gundam</option>
-              <option value="swu" data-i18n="filter.gameSwu">Star Wars</option>
-              <option value="cyberpunk" data-i18n="filter.gameCyberpunk">Cyberpunk</option>
-              <option value="sorcery" data-i18n="filter.gameSorcery">Sorcery</option>
-              <option value="dbfw" data-i18n="filter.gameDbfw">Dragon Ball Fusion</option>
-              <option value="ygo" data-i18n="filter.gameYgo">Yu-Gi-Oh!</option>
-              <option value="digimon" data-i18n="filter.gameDigimon">Digimon</option>
-              <option value="riftbound" data-i18n="filter.gameRiftbound">Riftbound</option>
-              <option value="unionarena" data-i18n="filter.gameUnionArena">Union Arena</option>
-              <option value="naruto" data-i18n="filter.gameNaruto">Naruto</option>
-              <option value="hxh" data-i18n="filter.gameHxh">Hunter × Hunter</option>
-              <option value="dbc" data-i18n="filter.gameDbc">Dragon Ball Carddass</option>
-              <option value="wow" data-i18n="filter.gameWow">WoW TCG</option>
-              <option value="lotr" data-i18n="filter.gameLotr">LOTR</option>
-              <option value="weiss" data-i18n="filter.gameWeiss">Weiß Schwarz</option>
-              <option value="mbc" data-i18n="filter.gameMbc">Miracle Battle</option>
-              <option value="harrypotter" data-i18n="filter.gameHarryPotter">Harry Potter</option>
-              <option value="vintage" data-i18n="filter.gameVintage">Vintage</option>
-            </select>
-          </div>
-          <div class="sort-select srt-host">
-            <label for="exploreSortSelect" data-i18n="sort.label">Ordenar:</label>
-            <select id="exploreSortSelect" data-ordenar="relevance value change num name pct views rarity release"></select>
-          </div>
-          <!-- Mesmo liga-desliga de Configurações → "Agrupar versões da carta"
-               (ver o chip no cards.html). Religa a grade sem reload. -->
-          <div class="sort-select">
-            <label for="groupVariantsChip" data-i18n="toolbar.variants">Versões</label>
-            <button type="button" id="groupVariantsChip" class="chip" aria-pressed="false" data-i18n="filter.groupVariants" data-i18n-title="settings.groupVariantsDesc" title="Nas listas de cartas e na busca, mostra uma carta só em vez de uma entrada por versão (Normal, Foil, Reverse…). O + abre a carta pra você escolher qual versão adicionar. A Coleção e a Wishlist continuam mostrando cada versão que você tem.">Agrupar</button>
-          </div>
-        </div>
       </div>
 
-      <!-- Linha do título, no MESMO molde da Coleção e da página do set: título
-           + contador à esquerda; Filtros e Visualização (▦/≣/☰/fichário) na
-           ponta direita. O Jogo e o Ordenar ficam na faixa do topo, onde já
-           estavam — são o escopo e a ordem da busca, não refinamento. -->
+      <!-- Linha do título, no MESMO molde de Todas as cartas (cards.html), da
+           Coleção e da página do set: título + contador à esquerda; Ordenar,
+           Filtros e Visualização (▦/≣/☰/fichário) na ponta direita. Até
+           2026-10-27 o Jogo, o Ordenar e o Versões moravam na faixa do topo,
+           com o rótulo em cima — o Explorar era a única tela de cartas com
+           outro cabeçalho. O Jogo e o Versões foram pros Filtros, como no
+           cards.html; os chips por jogo (abaixo) seguem trocando o jogo. -->
       <section class="results-header" id="exploreResultsHeader" hidden>
         <h2 data-i18n="results.heading.cards">Cartas</h2>
         <p id="exploreResultCount">0 resultados</p>
@@ -136,6 +91,10 @@
              no vão entre o contador e os botões; o explore.js monta. -->
         <div id="exploreFacets" class="xpl-facets" role="group" data-i18n-aria="explore.facetsAria" aria-label="Resultados por jogo" hidden></div>
         <div class="results-actions">
+          <div class="results-sort srt-host">
+            <label for="exploreSortSelect" data-i18n="sort.label">Ordenar:</label>
+            <select id="exploreSortSelect" data-ordenar="relevance value change num name pct views rarity release"></select>
+          </div>
           <button type="button" id="exploreFiltersBtn" class="secondary" aria-expanded="false" aria-controls="exploreFilters"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M7.5 12h9M10.5 18h3"/></svg><span data-i18n="filters.show">Filtros</span></button>
           <div id="exploreViewToggle" class="view-toggle" role="group" data-i18n-aria="toolbar.view" aria-label="Visualização">
             <button type="button" class="view-toggle-btn" data-grid-view="grid" aria-pressed="true" data-i18n-aria="aria.viewGrid" aria-label="Grade" title="Grade">▦</button>
@@ -158,6 +117,38 @@
            "catálogo da página" pra listar set e raridade de antemão, e um
            <select> com os sets dos 15 jogos seria ilegível. -->
       <section id="exploreFilters" class="toolbar cards-filters is-collapsed" data-i18n-aria="filters.show" aria-label="Filtros" data-own-toggle hidden>
+        <!-- Jogo: as opções são RECONSTRUÍDAS pelo explore.js a partir de
+             GAME_SLUGS no boot (jogo novo entra sozinho); a lista completa vem
+             no HTML só pra primeira pintura não mudar de conteúdo. -->
+        <div>
+          <label for="exploreGameSelect" data-i18n="toolbar.gameFilter">Jogo</label>
+          <select id="exploreGameSelect">
+            <option value="all" data-i18n="filter.gameAll">Todos</option>
+            <option value="pokemon" data-i18n="filter.gamePokemon">Pokémon</option>
+            <option value="lorcana" data-i18n="filter.gameLorcana">Lorcana</option>
+            <option value="onepiece" data-i18n="filter.gameOnePiece">One Piece</option>
+            <option value="magic" data-i18n="filter.gameMagic">Magic</option>
+            <option value="fab" data-i18n="filter.gameFab">Flesh and Blood</option>
+            <option value="gundam" data-i18n="filter.gameGundam">Gundam</option>
+            <option value="swu" data-i18n="filter.gameSwu">Star Wars</option>
+            <option value="cyberpunk" data-i18n="filter.gameCyberpunk">Cyberpunk</option>
+            <option value="sorcery" data-i18n="filter.gameSorcery">Sorcery</option>
+            <option value="dbfw" data-i18n="filter.gameDbfw">Dragon Ball Fusion</option>
+            <option value="ygo" data-i18n="filter.gameYgo">Yu-Gi-Oh!</option>
+            <option value="digimon" data-i18n="filter.gameDigimon">Digimon</option>
+            <option value="riftbound" data-i18n="filter.gameRiftbound">Riftbound</option>
+            <option value="unionarena" data-i18n="filter.gameUnionArena">Union Arena</option>
+            <option value="naruto" data-i18n="filter.gameNaruto">Naruto</option>
+            <option value="hxh" data-i18n="filter.gameHxh">Hunter × Hunter</option>
+            <option value="dbc" data-i18n="filter.gameDbc">Dragon Ball Carddass</option>
+            <option value="wow" data-i18n="filter.gameWow">WoW TCG</option>
+            <option value="lotr" data-i18n="filter.gameLotr">LOTR</option>
+            <option value="weiss" data-i18n="filter.gameWeiss">Weiß Schwarz</option>
+            <option value="mbc" data-i18n="filter.gameMbc">Miracle Battle</option>
+            <option value="harrypotter" data-i18n="filter.gameHarryPotter">Harry Potter</option>
+            <option value="vintage" data-i18n="filter.gameVintage">Vintage</option>
+          </select>
+        </div>
         <div>
           <label for="exploreSetFilter" data-i18n="toolbar.set">Set</label>
           <select id="exploreSetFilter">
@@ -183,6 +174,12 @@
             <span aria-hidden="true">–</span>
             <input id="explorePriceMax" type="text" inputmode="decimal" placeholder="máx" data-i18n-aria="aria.priceMax" aria-label="Preço máximo">
           </div>
+        </div>
+        <!-- O mesmo liga-desliga de Configurações → "Agrupar versões da carta"
+             (e o mesmo campo do cards.html). Religa a grade sem reload. -->
+        <div class="view-toggle-field">
+          <label for="groupVariantsChip" data-i18n="toolbar.variants">Versões</label>
+          <button type="button" id="groupVariantsChip" class="chip" aria-pressed="false" data-i18n="filter.groupVariants" data-i18n-title="settings.groupVariantsDesc" title="Nas listas de cartas e na busca, mostra uma carta só em vez de uma entrada por versão (Normal, Foil, Reverse…). O + abre a carta pra você escolher qual versão adicionar. A Coleção e a Wishlist continuam mostrando cada versão que você tem.">Agrupar</button>
         </div>
       </section>
 
