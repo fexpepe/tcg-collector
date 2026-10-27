@@ -13,10 +13,12 @@
 //                     Só tem uma foto por parte (os prismas, em ângulo), não
 //                     scan por carta — por isso os totais em SETS vêm de lá,
 //                     mas as cartas não.
-//   Nenhuma fonte acessível tem scan carta a carta (dragonballcards.com tem,
-//   mas só serve HTTP e o fetch do CI/sessão é HTTPS). As cartas entram SEM
-//   imagem, como as do One Piece 2002; scan curado entra por
-//   assets/cards/dbc/<id>.webp (mesmo mecanismo do hxh).
+//   Nenhuma fonte VIVA tem scan carta a carta. O dragonballcards.com tinha e
+//   saiu do ar (2026-10: Cloudflare 1001); o que o Wayback guardou dele (só o
+//   第1弾 ao 第15弾, 225 px com marca d'água) está curado em
+//   assets/cards/dbc/<id>.webp — ver o README de lá (2026-10-27). Do 第16弾 em
+//   diante as cartas seguem SEM imagem, como as do One Piece 2002; scan novo
+//   entra pela mesma pasta (mecanismo do hxh).
 //
 // Sets sem lista carta a carta NÃO geram cartas: a numeração do Carddass tem
 // pegadinhas (dois No.215 no 第6弾, o No.216 escondido no 第7弾, No.0 e E-1..9
