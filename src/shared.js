@@ -4451,78 +4451,39 @@
     s.setAttribute("data-cf-beacon", '{"token":"bbd254728c214168ab583464d013e2a7"}');
     document.head.appendChild(s);
   }
-  // Números agregados (tráfego + produto). Só retorna p/ admin (gate no servidor);
-  // senão null. Usado pela página /admin.
-  async function analyticsSummary(days) {
+  // RPC logada: as do /admin (admin_*, error_summary, analytics_summary) e as
+  // apoio_* da própria conta (ads.js, Configurações). Uma porta só desde
+  // 2026-10-31. Antes eram cinco funções que repetiam sessão + refresh, NÃO
+  // renovavam o token recusado (401) como o resto deste arquivo e devolviam
+  // null pra QUALQUER falha — e o /admin lia esse null como "não é admin": o
+  // tempo esgotado do banco (57014, a 1ª consulta do dia pega o cache frio)
+  // virava "Acesso restrito" e o dono precisava de vários F5 pra ver o painel.
+  // Devolve { st, v } (status HTTP + JSON); na falha, { st, code, msg } com o
+  // code/message do PostgREST. st 0 = sem sessão ("sessao") ou sem rede ("rede").
+  const RPC_LOGADA = /^(admin|apoio)_[a-z_]+$|^(error|analytics)_summary$/;
+  async function adminChamada(nome, body) {
+    if (!RPC_LOGADA.test(nome)) return { st: 0, code: "nome" };
     let s = getSession();
-    if (!s) return null;
-    if (Date.now() - (s.ts || 0) > 50 * 60 * 1000) s = (await refreshSession()) || s;
-    if (!s) return null;
+    if (s && Date.now() - (s.ts || 0) > 50 * 60 * 1000) s = (await refreshSession()) || getSession();
+    if (!s) return { st: 0, code: "sessao" };
+    const post = (tok) => fetch(`${SUPABASE_URL}/rest/v1/rpc/${nome}`, {
+      method: "POST", headers: authHeaders(tok), body: JSON.stringify(body)
+    });
     try {
-      const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/analytics_summary`, {
-        method: "POST", headers: authHeaders(s.access_token), body: JSON.stringify({ days: days || 30 })
-      });
-      if (!r.ok) return null;
-      return await r.json();
-    } catch (e) { return null; }
+      let r = await post(s.access_token);
+      if (r.status === 401) { const ns = await refreshSession(); if (ns) r = await post(ns.access_token); }
+      if (r.ok) return { st: r.status, v: r.status === 204 ? null : await r.json() };
+      let b = {};
+      try { b = await r.json(); } catch (e) { /* corpo não-JSON (gateway) */ }
+      return { st: r.status, code: b.code || "", msg: b.message || "" };
+    } catch (e) { return { st: 0, code: "rede", msg: String((e && e.message) || e) }; }
   }
-  // Painel 2.0 (migração 20260914a): tudo numa RPC só — overview, série diária,
-  // páginas, jogos, cartas, decks, audiência, produto, retenção. Mesmo gate:
-  // null pra quem não é admin. Devolve `undefined` (≠ null) quando a RPC ainda
-  // não existe no banco (404), pra página avisar que a migração está pendente
-  // em vez de dizer "acesso restrito" pra quem é admin.
-  async function adminDashboard(days) {
-    let s = getSession();
-    if (!s) return null;
-    if (Date.now() - (s.ts || 0) > 50 * 60 * 1000) s = (await refreshSession()) || s;
-    if (!s) return null;
-    try {
-      const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/admin_dashboard`, {
-        method: "POST", headers: authHeaders(s.access_token), body: JSON.stringify({ days: days || 30 })
-      });
-      if (r.status === 404) return undefined;
-      if (!r.ok) return null;
-      return await r.json();
-    } catch (e) { return null; }
-  }
-  // Funil de ativação (migração 20260919a). Mesma convenção da adminDashboard:
-  // undefined = a RPC ainda não existe no banco, pra aba avisar que a migração
-  // está pendente em vez de mostrar zeros que parecem "ninguém usa".
-  async function adminFunnel(days) {
-    let s = getSession();
-    if (!s) return null;
-    if (Date.now() - (s.ts || 0) > 50 * 60 * 1000) s = (await refreshSession()) || s;
-    if (!s) return null;
-    try {
-      const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/admin_funnel`, {
-        method: "POST", headers: authHeaders(s.access_token), body: JSON.stringify({ days: days || 30 })
-      });
-      if (r.status === 404) return undefined;
-      if (!r.ok) return null;
-      return await r.json();
-    } catch (e) { return null; }
-  }
-  // RPCs do Analytics v2 (migração 20260923a): admin_stores, admin_retention,
-  // admin_demand, admin_growth. Mesma convenção da adminFunnel — undefined =
-  // RPC ainda não existe no banco (404), null = sem acesso ou falha.
-  // `body` opcional (2.1): RPCs de escrita do painel (custo de campanha, link
-  // de parceiro) mandam os próprios parâmetros; sem ele vai { days }.
-  // `apoio_*` (20260928c) passa pelo mesmo caminho: é a conta logada
-  // perguntando da PRÓPRIA data de apoiador (ads.js, Configurações).
+  // Quem só quer o valor (ads.js, Configurações, as escritas do /admin):
+  // undefined = a RPC não existe no banco (404, migração pendente), null = sem
+  // acesso ou falha. `body` opcional: sem ele vai { days }.
   async function adminRpc(nome, days, body) {
-    if (!/^(admin|apoio)_[a-z_]+$/.test(nome)) return null;
-    let s = getSession();
-    if (!s) return null;
-    if (Date.now() - (s.ts || 0) > 50 * 60 * 1000) s = (await refreshSession()) || s;
-    if (!s) return null;
-    try {
-      const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${nome}`, {
-        method: "POST", headers: authHeaders(s.access_token), body: JSON.stringify(body || { days: days || 30 })
-      });
-      if (r.status === 404) return undefined;
-      if (!r.ok) return null;
-      return await r.json();
-    } catch (e) { return null; }
+    const r = await adminChamada(nome, body || { days: days || 30 });
+    return r.st === 404 ? undefined : "v" in r ? r.v : null;
   }
   // Portal da loja (parceiro.html): leitura ANÔNIMA, a credencial é o token do
   // link. undefined = RPC ainda não existe; null = link inválido/revogado.
@@ -4533,22 +4494,6 @@
         method: "POST", headers: authHeaders(), body: JSON.stringify({ p_token: token, p_days: days || 30 })
       });
       if (r.status === 404) return undefined;
-      if (!r.ok) return null;
-      return await r.json();
-    } catch (e) { return null; }
-  }
-  // Erros de JS agregados (name="jserror" na tabela events). Mesmo gate do
-  // analytics_summary: só responde pra admin; senão null. Usado pelo /admin.
-  // Devolve null também enquanto a RPC não existir no banco (404).
-  async function errorSummary(days) {
-    let s = getSession();
-    if (!s) return null;
-    if (Date.now() - (s.ts || 0) > 50 * 60 * 1000) s = (await refreshSession()) || s;
-    if (!s) return null;
-    try {
-      const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/error_summary`, {
-        method: "POST", headers: authHeaders(s.access_token), body: JSON.stringify({ days: days || 7 })
-      });
       if (!r.ok) return null;
       return await r.json();
     } catch (e) { return null; }
@@ -10266,9 +10211,7 @@
     portfolioValueTotal,
     publicProfileUrl,
     saleFolderSlugs,
-    analyticsSummary,
-    adminDashboard,
-    adminFunnel,
+    adminChamada,
     adminRpc,
     // fetch no Supabase com a sessão (renova o token velho antes). Nasceu pro
     // push; o blog (editor e o "sou editor?") usa o mesmo, em vez de repetir
@@ -10349,7 +10292,6 @@
     mostraErroDeCatalogo,
     vibrar,
     compartilharLink,
-    errorSummary,
     loadPriceDeltas7d,
     basePricingId,
     sameCardKey,

@@ -182,6 +182,8 @@ test("o painel avisa quando a migração está pendente, em vez de mostrar zero"
   assert.match(admin, /k === "funnel" \? "admin_funnel"/, "o aviso tem de nomear a admin_funnel");
   assert.match(admin, /funil: \["funnel"/, "a aba Funil tem de depender da admin_funnel");
   assert.match(admin, /20260919a_funil_ativacao\.sql/, "o aviso tem de dizer QUAL migração aplicar");
-  assert.match(shared, /rpc\/admin_funnel[\s\S]{0,300}?status === 404\) return undefined/,
+  // Desde 2026-10-31 as RPCs do painel passam pela adminChamada (status cru) e
+  // é o need() do admin.js que traduz: 404 = pendente (tests/admin-entrada).
+  assert.match(admin, /const v = r\.st === 404 \? undefined : "v" in r \? r\.v : null;/,
     "404 tem de virar undefined, que é como o painel distingue 'pendente' de 'sem acesso'");
 });

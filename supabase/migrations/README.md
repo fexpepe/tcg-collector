@@ -8,6 +8,32 @@ poucos.)
 
 ## Pendentes de aplicar
 
+- `20261031a` — 30 s de tempo-limite nas RPCs do /admin
+  (`20261031a_admin_tempo_limite.sql`). Em 2026-10-31 o Fernando contou que
+  "quase todas as vezes" o /admin abria em "Acesso restrito" na conta de
+  admin e só aparecia depois de vários F5. O `authenticated` tem 8 s de
+  `statement_timeout`, e a `admin_dashboard` (que é o portão do painel) é a
+  consulta mais pesada do banco: com o cache frio ela passa do limite, o
+  Postgres cancela (57014), o PostgREST devolve 500 e o JS lia isso como "não
+  é admin". O JS já foi corrigido (diz o motivo e tenta de novo sozinho no
+  5xx); esta migração dá a folga do lado do banco. Não há lista feita à mão:
+  ela põe `statement_timeout = 30s` em toda `admin_*` que existir no banco,
+  mais a `error_summary` e a `analytics_summary`, como a 20261017a fez com a
+  `analytics_sentinela`. **Função criada ou recriada (`create or replace`)
+  depois disto volta aos 8 s**: repita o SET no próprio create. É aditiva e
+  não tem ordem com o JS. Ensaiada no PGlite e aplicada duas vezes: o
+  `search_path` e o grant ficam, `partner_report`/`apoio_status` não são
+  tocadas e quem não é admin segue recebendo null. O tempo real da consulta
+  com o cache frio NÃO foi medido daqui (sem acesso ao banco); a medição está
+  no cabeçalho do arquivo.
+
+  Conferir depois de aplicar:
+  ```sql
+  select proname, proconfig from pg_proc
+   where left(proname, 6) = 'admin_' or proname in ('error_summary', 'analytics_summary')
+   order by 1;   -- toda linha com statement_timeout=30s
+  ```
+
 - `20261017a` — alarme de medição parada sem estourar o tempo do anônimo
   (`20261017a_sentinela_rapida.sql`). Em 2026-10-17 o healthcheck ficou
   vermelho com "medição sem evento parado: HTTP 500": era o Postgres

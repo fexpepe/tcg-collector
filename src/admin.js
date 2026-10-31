@@ -665,7 +665,7 @@
   // metrica = a série do gráfico principal do Resumo; pct = barras
   // empilhadas em % (participação) em vez de número; areaFiltro = a área
   // escolhida em Todas as páginas.
-  const state = { tab: "geral", days: 30, cache: {}, inflight: {}, errors: undefined, pages: {}, names: {}, meta: {}, metaPendente: false, marca: null, aparelho: "todos",
+  const state = { tab: "geral", days: 30, cache: {}, inflight: {}, falha: {}, errors: undefined, pages: {}, names: {}, meta: {}, metaPendente: false, marca: null, aparelho: "todos",
     metrica: "visitantes", pct: false, areaFiltro: "todas" };
   // Hash antigo (#produto, #qualidade…) continua valendo: link salvo não quebra.
   const hashTab = (location.hash || "").replace(/^#/, "");
@@ -781,6 +781,9 @@
   }
   // Aviso de aba que precisa da 20261009a.
   const pedeV3 = (oque) => `<p class="adm-banner">${esc(oque)} precisa da migração <code>supabase/migrations/20261009a_admin_v3.sql</code> — aplique no SQL Editor. Nada se perde enquanto isso: estas telas só leem eventos que já chegam.</p>`;
+  // Pedaço opcional que FALHOU (≠ migração pendente, que é undefined): o
+  // motivo e o botão, sem esconder o resto da aba.
+  const naoVeio = (key, oque) => `<p class="adm-banner">${esc(oque)} não carregou: ${esc(motivo(state.falha[key]))}. ${deNovo}</p>`;
 
   // ── Abas ──────────────────────────────────────────────────────────────────
   function tabGeral(d) {
@@ -2095,7 +2098,9 @@ if (v === "b") { /* versão nova */ }</pre>
     ["cartas", "Cartas cadastradas"], ["cliques_loja", "Cliques em loja"], ["contas", "Contas novas"], ["erros", "Erros de JS"]
   ];
   function tabResumo(d, pu, notas) {
-    if (!pu) return pedeV3("O Resumo com o período anterior") + tabGeral(d);
+    // undefined = a 20261009a falta; null = a admin_pulso falhou (tempo
+    // esgotado, rede) — até 2026-10-31 os dois pediam a migração.
+    if (!pu) return (pu === undefined ? pedeV3("O Resumo com o período anterior") : naoVeio("pulso", "O Resumo com o período anterior")) + tabGeral(d);
     const A = pu.atual || {}, B = pu.anterior || {}, n = pu.days || state.days;
     const serie = pu.serie || [];
     const atual = serie.slice(-n), antes = serie.slice(0, Math.max(0, serie.length - n));
@@ -2474,22 +2479,72 @@ if (v === "b") { /* versão nova */ }</pre>
   // ── Orquestração ──────────────────────────────────────────────────────────
   // Cada RPC é buscada uma vez por período, só quando uma aba que a usa abre
   // (NEEDS). undefined = a RPC não existe no banco (migração pendente); null =
-  // sem acesso ou falha — esse não fica no cache, tenta de novo na próxima.
+  // sem acesso ou falha — esse não fica no cache, tenta de novo na próxima, e
+  // o motivo fica em state.falha pra tela dizer qual foi.
+  const rpcDe = (k) => (k === "dash" ? "admin_dashboard" : k === "funnel" ? "admin_funnel" : RPC[k]);
   function need(key) {
     const ck = `${key}:${state.days}`;
     if (ck in state.cache) return Promise.resolve(state.cache[ck]);
     if (state.inflight[ck]) return state.inflight[ck];
     const days = state.days;
-    const p = (key === "dash" ? shared.adminDashboard(days)
-      : key === "funnel" ? shared.adminFunnel(days)
-      : shared.adminRpc(RPC[key], days, CORPO[key] ? CORPO[key](days) : SEM_DIAS.indexOf(key) >= 0 ? {} : undefined)
-    ).then((v) => {
+    const body = CORPO[key] ? CORPO[key](days) : SEM_DIAS.indexOf(key) >= 0 ? {} : { days };
+    const p = (key === "health" ? shared.adminChamada(rpcDe(key), body) : comFolga(rpcDe(key), body)).then((r) => {
       delete state.inflight[ck];
-      if (v !== null) state.cache[ck] = v;
+      const v = r.st === 404 ? undefined : "v" in r ? r.v : null;
+      if (v !== null) { state.cache[ck] = v; delete state.falha[key]; }
+      else state.falha[key] = r;
       return v;
     });
     state.inflight[ck] = p;
     return p;
+  }
+  // Leitura com folga (2026-10-31). O painel é a consulta mais pesada do
+  // banco, e a 1ª do dia pega o cache frio: o Postgres cancela no tempo-limite
+  // (57014, HTTP 500) e na 2ª ou 3ª já responde — era o F5 que o dono dava à
+  // mão, vendo "Acesso restrito" na conta de admin. Aqui o painel tenta de
+  // novo sozinho no 5xx, no 429 e sem rede. Só LEITURA passa por aqui: a
+  // escrita (escreve) vai uma vez, porque repetir um POST que pode ter
+  // gravado duplicaria custo de campanha e link de loja. A saúde da medição
+  // (health) também não: ela vem junto com TODA aba só pelo aviso de alarme,
+  // e três tentativas dela segurariam a aba inteira esperando um enfeite.
+  const TENTATIVAS = 3;
+  async function comFolga(nome, body) {
+    let r;
+    for (let i = 1; i <= TENTATIVAS; i++) {
+      r = await shared.adminChamada(nome, body);
+      const passageira = r.st >= 500 || r.st === 429 || r.code === "rede";
+      if (!passageira || i === TENTATIVAS) return r;
+      avisaTentativa(i + 1, r);
+      await new Promise((ok) => setTimeout(ok, 1500 * i));
+    }
+    return r;
+  }
+  // Troca o "Carregando…" da vez por "tentando de novo": sem isso, 20 s de
+  // espera parecem o painel travado.
+  function avisaTentativa(n, r) {
+    const alvo = document.getElementById("admBody") || root;
+    const p = alvo.querySelector(":scope > .empty-state");
+    const m = motivo(r);
+    if (p) p.textContent = `${m.charAt(0).toUpperCase()}${m.slice(1)} — tentando de novo (${n} de ${TENTATIVAS})…`;
+  }
+  // Falha em palavras: o que a tela mostra quando nem a 3ª tentativa deu.
+  function motivo(r) {
+    if (!r) return "sem resposta";
+    if (r.code === "57014") return "o banco passou do tempo-limite (57014)";
+    if (r.code === "rede") return "sem conexão";
+    if (r.st === 401) return "a sessão expirou";
+    return `HTTP ${r.st}${r.code ? ` · ${r.code}` : ""}${r.msg ? ` — ${String(r.msg).slice(0, 120)}` : ""}`;
+  }
+  const deNovo = `<button type="button" class="chip adm-mini" data-retry>Tentar de novo</button>`;
+  // Por que o painel não abriu. Só "respondeu null" (200) é conta sem
+  // is_admin; sem sessão, sessão vencida e banco fora do ar são outra coisa —
+  // e a passageira ganha o botão em vez de pedir F5.
+  function barrado(r) {
+    const entrar = `<a href="/login" data-entrar>entre</a>`;
+    if (!r || r.code === "sessao") return `<p class="empty-state">Acesso restrito — ${entrar} com a conta de admin.</p>`;
+    if (r.st >= 200 && r.st < 300) return `<p class="empty-state">Acesso restrito — esta conta não é a de admin.</p>`;
+    if (r.st === 401) return `<p class="empty-state">A sessão expirou — ${entrar} de novo.</p>`;
+    return `<p class="empty-state">Não consegui abrir o painel: ${esc(motivo(r))}. ${deNovo}</p>`;
   }
   const MIGRACAO = {
     dash: "20260914a_admin_dashboard.sql",
@@ -2505,7 +2560,7 @@ if (v === "b") { /* versão nova */ }</pre>
   };
   function pendente(keys) {
     const arqs = Array.from(new Set(keys.map((k) => MIGRACAO[k])));
-    const rpcs = keys.map((k) => (k === "dash" ? "admin_dashboard" : k === "funnel" ? "admin_funnel" : RPC[k]));
+    const rpcs = keys.map(rpcDe);
     const v21 = keys.some((k) => MIGRACAO[k] === "20260928a_analytics_2_1.sql");
     const v3 = keys.every((k) => MIGRACAO[k] === "20261009a_admin_v3.sql");
     if (v3) return pedeV3("Esta tela");
@@ -2540,6 +2595,16 @@ if (v === "b") { /* versão nova */ }</pre>
   function onClick(e) {
     const t = e.target.closest("button, a");
     if (!t || !root.contains(t)) return;
+    if (t.hasAttribute("data-entrar")) {
+      // O login volta pra cá depois de entrar (o login.js lê a chave).
+      try { localStorage.setItem("tcg-login-return", "/admin"); } catch (err) { /* sem storage: volta pro início */ }
+      return;
+    }
+    if (t.hasAttribute("data-retry")) {
+      (document.getElementById("admBody") || root).innerHTML = `<p class="empty-state">Carregando…</p>`;
+      render();
+      return;
+    }
     if (t.dataset.group) {
       const g = GROUPS.find((x) => x[0] === t.dataset.group);
       if (g && TAB_GROUP[state.tab] !== g[0]) go(g[2][0][0]);
@@ -2676,22 +2741,20 @@ if (v === "b") { /* versão nova */ }</pre>
     const my = ++seq;
     if (!document.getElementById("admBody")) {
       // 1ª pintura: a admin_dashboard decide se é admin e se o banco está no
-      // 20260914a (senão cai no painel legado).
+      // 20260914a (senão cai no painel legado). Falha NÃO é "não é admin"
+      // (2026-10-31): o barrado diz o motivo de verdade.
       const d = await need("dash");
       if (my !== seq) return;
       if (d === undefined) {
-        const old = await shared.analyticsSummary(30);
-        root.innerHTML = old ? renderLegado(old) : `<p class="empty-state">Acesso restrito — entre com a conta de admin.</p>`;
+        const old = await shared.adminRpc("analytics_summary", 30);
+        root.innerHTML = old ? renderLegado(old) : barrado(state.falha.dash);
         return;
       }
       if (!d) {
-        root.innerHTML = `<p class="empty-state">Acesso restrito — entre com a conta de admin.</p>`;
+        root.innerHTML = barrado(state.falha.dash);
         return;
       }
       root.innerHTML = `<div class="adm-shell"><nav class="adm-side" id="admSide" aria-label="Painéis do admin"></nav><div class="adm-main"><div class="adm-toolbar" id="admToolbar"></div><div id="admBody" class="adm-body"></div><p class="admin-note" id="admNote"></p></div></div>`;
-      root.addEventListener("click", onClick);
-      root.addEventListener("submit", onSubmit);
-      root.addEventListener("change", onChange);
       let quadro = 0;
       window.addEventListener("resize", () => { cancelAnimationFrame(quadro); quadro = requestAnimationFrame(ajustaKit); });
       // O navegador em que o painel abre é do dono: a 1ª vez, ele deixa de
@@ -2716,7 +2779,8 @@ if (v === "b") { /* versão nova */ }</pre>
     paginaDoKit(state.tab === "parceiros");
 
     if (state.tab === "qualidade" && state.errors === undefined) {
-      shared.errorSummary(7).then((errs) => { state.errors = errs; if (state.tab === "qualidade") render(); });
+      // null (não undefined) também sem a RPC no banco: undefined aqui é "ainda não buscou".
+      shared.adminRpc("error_summary", 7).then((errs) => { state.errors = errs || null; if (state.tab === "qualidade") render(); });
     }
     const keys = NEEDS[state.tab] || ["dash"];
     // A saúde da medição vem junto em toda aba: alarme (evento que parou de
@@ -2731,7 +2795,7 @@ if (v === "b") { /* versão nova */ }</pre>
     const faltam = keys.filter((k) => data[k] === undefined && opcionais.indexOf(k) < 0);
     const falhou = keys.filter((k) => data[k] === null && opcionais.indexOf(k) < 0);
     if (faltam.length) body.innerHTML = pendente(faltam);
-    else if (falhou.length) body.innerHTML = `<p class="empty-state">Não consegui carregar esta aba (${esc(falhou.join(", "))}). Tente de novo em instantes.</p>`;
+    else if (falhou.length) body.innerHTML = `<p class="empty-state">Não consegui carregar esta aba — ${esc(falhou.map((k) => `${k}: ${motivo(state.falha[k])}`).join("; "))}. ${deNovo}</p>`;
     else {
       const alarmes = saude && Array.isArray(saude.alvos) ? saude.alvos.filter((a) => a.alerta) : [];
       const aviso = alarmes.length && state.tab !== "medicao"
@@ -2764,5 +2828,10 @@ if (v === "b") { /* versão nova */ }</pre>
       ? `Atualizado em ${new Date(d.generated_at).toLocaleString("pt-BR")} · janela de ${d.days} dias desde ${new Date(d.since).toLocaleDateString("pt-BR")}. "Gente" = pageview com JS executado, user-agent de navegador e sem webdriver; visitantes contam uuid anônimo first-party (só com consentimento de medição), logados contam a conta pelo JWT. O Cloudflare Web Analytics mede o resto: país, navegador, Core Web Vitals e o tráfego que nem chega a rodar JS.${equipe() ? " Este navegador não conta nas estatísticas (Técnico › Medição)." : ""}`
       : "";
   }
+  // Ouvintes desde o início (antes só depois do portão): o "Tentar de novo" e
+  // o "entre" do barrado também são cliques no root.
+  root.addEventListener("click", onClick);
+  root.addEventListener("submit", onSubmit);
+  root.addEventListener("change", onChange);
   render();
 })();
