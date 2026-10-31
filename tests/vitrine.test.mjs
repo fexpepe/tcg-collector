@@ -359,7 +359,10 @@ test("apoiador: o ads.js pergunta ao banco antes de montar e o shared.js deixa p
   assert.match(ads, /adminRpc\("apoio_status", 0, \{\}\)/);
   assert.match(ads, /if \(cfg && !apoia\) inicia\(cfg\)/, "quem apoia não passa pelo inicia (nem aviso, nem ad_view)");
   const shared = ler("src/shared.js");
-  assert.match(shared, /if \(!\/\^\(admin\|apoio\)_\[a-z_\]\+\$\/\.test\(nome\)\) return null;/);
+  // Desde 2026-10-31 a trava mora na porta única (adminChamada); o
+  // comportamento (delete_account barrada) está em tests/admin-entrada.
+  assert.match(shared, /const RPC_LOGADA = \/\^\(admin\|apoio\)_\[a-z_\]\+\$\|\^\(error\|analytics\)_summary\$\/;/);
+  assert.match(shared, /if \(!RPC_LOGADA\.test\(nome\)\) return \{ st: 0, code: "nome" \};/);
 });
 
 test("migração 20260928c: tabela trancada, leitura só da própria data, escrita só de admin", () => {
