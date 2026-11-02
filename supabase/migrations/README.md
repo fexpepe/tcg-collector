@@ -103,23 +103,6 @@ poucos.)
   select proname from pg_proc where proname = 'admin_erros';  -- 1 linha
   ```
 
-- `20261101a` — libera o slug `dbz` (Dragon Ball Z CCG da Score, 2000–2006)
-  nas DUAS whitelists de jogo: `card_views`/`increment_card_view` e
-  `contribute_price`. Cópia da `20261001e` com o `dbz` a mais; só a lista
-  muda, conferido por diff. A lista é a INTEIRA, com o `mbc`: aplicada sozinha,
-  libera também o Miracle Battle da `20261001e`, que ainda não tinha rodado.
-  Aditiva e sem ordem com o JS: antes dela, a view de carta do DBZ CCG e a do
-  Miracle Battle são descartadas em silêncio (as funções só dão `return`) e o
-  resto do jogo funciona. Conferir com os `curl` do fim do arquivo: o de
-  `dbz-s1-1` responde 204 **e cria a linha** em `card_views` (repetir com
-  `"p_game":"mbc","p_card_id":"mb-db01-01"` pro Miracle Battle). **A próxima
-  migração de jogo copia esta.**
-
-- `20261001e` (Miracle Battle) — **NÃO aplicar: a `20261101a` já cobre o
-  `mbc`.** A lista dela é a da `20261101a` sem o `dbz`: rodada depois, tiraria
-  o DBZ CCG das duas whitelists sem erro nenhum. O arquivo fica como registro,
-  com o aviso no topo.
-
 - `20260930b` — blog (`20260930b_blog.sql`; o `b` porque a `20260930a` do mesmo
   dia é a do Star Wars). Cria o papel de editor do blog (`blog_editores`,
   tabela trancada, SEPARADA do `is_admin`), a tabela `posts` com RLS
@@ -195,6 +178,23 @@ poucos.)
   E, logado como admin, abrir `/admin`: as abas aparecem e o aviso amarelo some.
 
 ### Já aplicadas (verificado em produção)
+
+- `20261101a` — libera o slug `dbz` (Dragon Ball Z CCG da Score, 2000–2006)
+  nas DUAS whitelists de jogo: `card_views`/`increment_card_view` e
+  `contribute_price`. Cópia da `20261001e` com o `dbz` a mais; só a lista
+  muda, conferido por diff. A lista é a INTEIRA, com o `mbc`. **Aplicada em
+  2026-11-02** pelo Fernando, sozinha, e verificada por curl no mesmo dia:
+  `increment_card_view` com `dbz` responde 204 **e cria a linha**
+  (`{"card_id":"dbz-s1-1","views":1}`); o Miracle Battle, que estava pendente
+  na `20261001e`, também passou a contar (`mb-db01-01` criou a dele); o jogo
+  inventado dá 204 sem criar nada; a contribuição anônima segue **401**. Sem
+  prova direta, como nas anteriores: o `contribute_price` logado. **A próxima
+  migração de jogo copia esta.**
+
+- `20261001e` (Miracle Battle) — **NÃO aplicar: a `20261101a` já cobre o
+  `mbc`.** A lista dela é a da `20261101a` sem o `dbz`: rodada agora, tiraria
+  o DBZ CCG das duas whitelists sem erro nenhum. O arquivo fica como registro,
+  com o aviso no topo.
 
 - `20261031a` — 30 s de tempo-limite nas RPCs do /admin
   (`20261031a_admin_tempo_limite.sql`). **Aplicada em 2026-10-31** pelo
