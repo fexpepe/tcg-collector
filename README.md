@@ -59,6 +59,7 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 | `dbc` | Dragon Ball Carddass | Carddass Bandai 1988–1997: Hondan carta a carta (80storage), sem imagem por enquanto | sem preço |
 | `wow` | World of Warcraft TCG | TCGCSV cat. 13 (Upper Deck 2006–2010, Cryptozoic 2010–2013; vintage, só os sets que o TCGplayer lista, sem número de coleção e com scan de ~200 px; setId, nome e data fixos por groupId) | USD |
 | `lotr` | The Lord of the Rings TCG | Decipher 2001–2007: banco e scans originais do Player's Council (snapshot `data/vintage/lotr-pc.json`) | sem preço |
+| `dbz` | Dragon Ball Z CCG | Score 2000–2006: o CCG das 11 sagas, o GT TCG e o relançamento de 2005, com subsets e promos; galerias do retrodbzccg.com, nomes faltantes do kizmt/dbz-ccg-data e lidos no scan (snapshot `data/vintage/dbz-retro.json`) | sem preço |
 | `harrypotter` | Harry Potter TCG | Wizards of the Coast 2001–2002: hpjson (GitHub) + imagens do accio.cards; premium, decks e promos = cartas próprias | sem preço |
 | `mbc` | Miracle Battle Carddass | Bandai 2009–2015, o crossover da Jump: sete séries (Dragon Ball Kai, One Piece, Toriko, Hunter × Hunter, Naruto Shippuden, Kuroko, J-Heroes), uma seção por série; tcg-db (snapshot `data/vintage/miracle-battle.json`). Até 2026-10-01 eram linhas do One Piece, do Naruto e do HxH (ids `op-mb-`/`nrt-mb-`/`hxh-mb-` mantidos; `src/migra-mbc.js` leva a coleção de quem marcou) | sem preço |
 | `jump` | JUMP | curadoria versionada em `data/jump/curated/` | — |
@@ -119,6 +120,36 @@ monta `data/lotr/` do snapshot `data/vintage/lotr-pc.json`, sem rede; o
   via wsrv.nl. As pastas `double/` e `huge/` do mesmo host são cartas
   REDESENHADAS pelo PC, não scans: não usar. Os Sites são cartas deitadas; o
   popup já troca a moldura (`is-landscape`).
+
+### Dragon Ball Z CCG (`dbz`)
+
+O CCG da Score (abr/2000 – jun/2006), em [scripts/sync-dbz.mjs](scripts/sync-dbz.mjs).
+Três títulos da mesma editora e do mesmo motor, uma seção cada na página de
+Sets (`groupDbzSets`): o Dragon Ball Z CCG das 11 sagas, o Dragon Ball GT TCG
+(fev/2004) e o Dragon Ball Z TCG do relançamento de jul/2005. Não confundir
+com o DBZ TCG da Panini (2014–2019, a categoria 23 da TCGCSV). O CI só monta
+`data/dbz/` do snapshot `data/vintage/dbz-retro.json`, sem rede; o
+`--importar` relê as galerias e regrava o snapshot se não regredir.
+
+- **Fonte**: as galerias do retrodbzccg.com (uma por set e raridade), pela API
+  REST do WordPress; o título de cada imagem é `<número> <nome>`. Em oito
+  sagas a galeria só tem o número, e o nome vem do kizmt/dbz-ccg-data (cópia
+  do banco do dragonballzocg, commit pinado), menos no Kid Buu, onde ele
+  mistura a numeração do Bojack Unbound. O que nenhuma das duas nomeia, e os
+  erros de digitação da galeria, foram lidos no scan (`NOMES_LIDOS`, que vence
+  as duas). O ccgtrader ficou de fora: o robots.txt dele barra agentes de IA.
+- **Id = set + número**: `dbz-s3-40` (o "040" do Trunks Saga),
+  `dbz-p1-p3` (o P3 dos promos do Saiyan); carta sem número leva o nome
+  (`dbz-gpr-earth-dragon-ball-1-alt-art`).
+- **Promos por saga**: cada saga tem um set `<Saga> Promos` (P, os previews
+  PR que saíram antes dela e os resgates), que a página de Sets mostra como
+  chip no cartão da saga.
+- **Sem data por set**: com fonte só há o mês de 5 sets, e data pela metade
+  punha o Arrival como "Último set" no topo. A ordem vem do `groupDbzSets`.
+- **Sem variantes**: Limited/Unlimited/Foil existem, mas nenhuma fonte diz
+  quais cartas saíram em quais; só a Silver dos 7 promos de revista do Saiyan.
+- **Imagens**: os scans do retrodbzccg via wsrv.nl — 400×550 nas sagas do
+  DBZ, 312×440 no GT, 250×350 no TCG de 2005.
 
 ### Dragon Ball Carddass (`dbc`)
 
