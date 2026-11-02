@@ -61,7 +61,12 @@ test("Starter Deck do complemento não ganha foil paralelo; Common de booster ga
 });
 
 test("snapshot do complemento: só sets de booster 3–15, sem código repetido nem do narutocards", () => {
-  const doNc = new Set(snap.sets.flatMap((s) => s.cards.map((c) => codigoCanonico(c.code))));
+  // Pelo número IMPRESSO (data/vintage/naruto-ccg-numero-impresso.json): o
+  // M-275 do narutocards é o M-274, e o M-275 de verdade entra com id próprio.
+  const impresso = json("data/vintage/naruto-ccg-numero-impresso.json");
+  const numero = (key, c) => ((impresso.sets[key] || {})[c.code] || {}).numero || c.code;
+  const doNc = new Set(snap.sets.filter((s) => /^s(0\d|1[0-6])$/.test(s.key)).flatMap((s) => s.cards.map((c) => codigoCanonico(numero(s.key, c)))));
+  const idsDoNc = new Set(snap.sets.flatMap((s) => s.cards.map((c) => `nrt-ccg-${c.code.toLowerCase()}`)));
   const vistos = new Set();
   const RARIDADES = new Set(["Common", "Uncommon", "Rare", "Super Rare", "Starter Deck"]);
   for (const s of comp.sets) {
@@ -69,6 +74,9 @@ test("snapshot do complemento: só sets de booster 3–15, sem código repetido 
     for (const c of s.cards) {
       const k = codigoCanonico(c.code);
       assert.ok(!doNc.has(k), `${c.code} já está no narutocards`);
+      // Id próprio só quando o código impresso é id publicado de outra carta.
+      const colide = idsDoNc.has(`nrt-ccg-${c.code.toLowerCase()}`);
+      assert.equal(c.id, colide ? `nrt-ccg-${s.key}-${c.code.toLowerCase()}` : undefined, c.code);
       assert.ok(!vistos.has(k), `${c.code} repetido no complemento`);
       vistos.add(k);
       assert.ok(RARIDADES.has(c.rarity), `${c.code}: raridade "${c.rarity}"`);

@@ -177,19 +177,22 @@ export function cartasDoSet(set, def, comp, impresso) {
       code: c.code,
       numero: imp.numero || c.code,
       name: c.name,
-      rarity: comp && comp.starter && comp.starter.includes(c.code) ? "Starter Deck" : c.rarity,
+      rarity: imp.raridade || (comp && comp.starter && comp.starter.includes(c.code) ? "Starter Deck" : c.rarity),
       scan: imp.img ? scanDoFan(imp.img)
         : c.img ? `https://wsrv.nl/?url=${encodeURIComponent(`${CDN}${def.slug}/${c.code}-EN.jpg`)}&w=440&output=webp` : ""
     };
   });
   if (!comp) return doNc;
-  const tem = new Set(doNc.flatMap((c) => [codigoCanonico(c.code), codigoCanonico(c.numero)]));
+  // Pelo número IMPRESSO: o M-275 do narutocards é o M-274 impresso, e o M-275
+  // de verdade (do complemento) entra.
+  const tem = new Set(doNc.map((c) => codigoCanonico(c.numero)));
   const extra = comp.cards.filter((c) => !tem.has(codigoCanonico(c.code))).map((c) => ({
     code: c.code,
     numero: c.code,
     name: c.name,
     rarity: c.rarity,
-    scan: c.img ? scanDoFan(c.img) : ""
+    scan: c.img ? scanDoFan(c.img) : "",
+    ...(c.id ? { id: c.id } : {})
   }));
   return doNc.concat(extra);
 }
@@ -261,20 +264,44 @@ async function refreshSnapshot(existing) {
 // que passa a ser N-883 herdariam o id de outra. O id de quem já está
 // publicado é exatamente nrt-ccg-<código>, então nenhum muda; o de-para
 // (data/vintage/naruto-ccg-numero-impresso.json) é a ponte explícita.
+//
+// CÓDIGO IMPRESSO QUE COLIDE COM ID PUBLICADO DE OUTRA CARTA ganha `-<set>-`:
+// o M-275 de verdade do The Chosen ("Riot in High-Security Facility") não
+// pode ser nrt-ccg-m-275, que é o id do "Frustrated Ambition" (o narutocards
+// o chamou de M-275; impresso, M-274). Vira nrt-ccg-s09-m-275, e o J-526 do
+// Emerging Alliance, nrt-ccg-s14-j-526. O id fica GRAVADO no complemento
+// (campo `id`), pra não depender de a colisão continuar existindo.
+//
+// CARTA NO SET ERRADO (de-para com `set`): sai do set do narutocards e entra
+// no de destino com o mesmo id (o N-099 Raido do Quest for Power é do Curse of
+// the Sand).
 export function montaLinha(snap, complemento, impresso) {
   const defByKey = new Map(SETS.map((d) => [d.key, d]));
   const compByKey = new Map(((complemento && complemento.sets) || []).map((s) => [s.key, s]));
   const impressoDe = (impresso && impresso.sets) || {};
+  const vemDeOutro = new Map(); // set de destino -> { cards, impresso }
+  for (const s of snap.sets) {
+    for (const c of s.cards) {
+      const imp = (impressoDe[s.key] || {})[c.code];
+      if (!imp || !imp.set) continue;
+      const destino = vemDeOutro.get(imp.set) || vemDeOutro.set(imp.set, { cards: [], impresso: {} }).get(imp.set);
+      destino.cards.push(c);
+      destino.impresso[c.code] = imp;
+    }
+  }
   const line = [];
   let doComplemento = 0;
   for (const s of snap.sets) {
     const def = defByKey.get(s.key);
     if (!def || def.skip) continue;
     const setId = `nrt-ccg-${def.key}`;
-    const cartas = cartasDoSet(s, def, compByKey.get(s.key), impressoDe[s.key]);
-    doComplemento += cartas.length - s.cards.length;
+    const chega = vemDeOutro.get(s.key);
+    const ficam = s.cards.filter((c) => !((impressoDe[s.key] || {})[c.code] || {}).set);
+    const doSet = chega ? { ...s, cards: ficam.concat(chega.cards) } : { ...s, cards: ficam };
+    const cartas = cartasDoSet(doSet, def, compByKey.get(s.key), { ...(impressoDe[s.key] || {}), ...(chega ? chega.impresso : {}) });
+    doComplemento += cartas.length - doSet.cards.length;
     for (const c of cartas) {
-      const cardId = `nrt-ccg-${c.code.toLowerCase()}`;
+      const cardId = c.id || `nrt-ccg-${c.code.toLowerCase()}`;
       const { rarity, variants } = raridadeEVersoes(def.key, c.rarity);
       line.push({
         id: cardId,
@@ -308,7 +335,7 @@ async function run() {
   const impresso = await readSnapshot(NUMERO_IMPRESSO);
   const { line, doComplemento } = montaLinha(snap, complemento, impresso);
   const semImg = line.filter((c) => !c.image).length;
-  const renumeradas = line.filter((c) => c.id !== `nrt-ccg-${c.number.toLowerCase()}`).length;
+  const renumeradas = line.filter((c) => !c.id.endsWith(`-${c.number.toLowerCase()}`)).length;
   console.log(`  build: ${line.length} cartas em ${snap.sets.length} sets (${semImg} sem scan; ${doComplemento} do complemento; ${renumeradas} com o número impresso do de-para).`);
 
   const existing = (await readGlobalVar(new URL("cards.js", OUT), "TCG_CARDS")) || [];

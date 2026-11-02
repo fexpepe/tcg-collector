@@ -101,6 +101,26 @@ test("carta parecida: total que mudou, nome que mudou, desempate e idioma", () =
   assert.equal(cartaParecida(cartas, null, "snow-covered-plains-1-2821"), null);
 });
 
+// Carta RENUMERADA com o id de antes (Naruto CCG, 2026-11-02): o id guarda o
+// código antigo, e o número de antes pode ter virado o de outra carta.
+test("carta parecida: renumerada pelo id, e o número que mudou de dono não leva pra outra carta", () => {
+  const cartas = [
+    { id: "nrt-ccg-n-880", name: "Neji Hyuga", number: "N-883" },
+    { id: "nrt-ccg-n-883", name: "Kakashi Hatake", number: "N-886" },
+    { id: "nrt-ccg-n-886", name: "Neji Hyuga", number: "N-889" },
+    { id: "nrt-ccg-n-899", name: "Gaara of the Desert", number: "N-902" }
+  ];
+  const slugs = slugsDasCartas(cartas);
+  const acha = (pedido) => cartaParecida(cartas, slugs, pedido);
+  assert.equal(acha("kakashi-hatake-n-883"), "kakashi-hatake-n-886"); // não o Neji, que é o N-883 de hoje
+  assert.equal(acha("neji-hyuga-n-880"), "neji-hyuga-n-883");
+  assert.equal(acha("neji-hyuga-n-886"), "neji-hyuga-n-889"); // não o Kakashi, que é o N-886 de hoje
+  // Nome que não é de carta nenhuma do set: o número ainda decide (nome mudou).
+  assert.equal(acha("kakashi-hatake-anbu-n-886"), "kakashi-hatake-n-886");
+  // Nome de outra carta do set + número de hoje de outra: nada, em vez da errada.
+  assert.equal(acha("gaara-of-the-desert-n-883"), null);
+});
+
 test("a página do set é a das cartas com aquele nome, fora as aposentadas", () => {
   const cartas = [
     { id: "a", set: "151" }, { id: "b", set: "151", retired: true }, { id: "c", set: "Outro" }, null
