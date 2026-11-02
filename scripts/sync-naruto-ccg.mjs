@@ -109,7 +109,7 @@ const SETS = [
 //     sets a fonte não separa o starter (vem com a raridade nominal);
 //   - PR = Promo. O nome vai por extenso, como está no verso do Narutopedia e
 //     no ccgtrader — sigla solta ("UR") no filtro não diz nada a ninguém.
-const RARIDADE = {
+export const RARIDADE = {
   C: "Common", U: "Uncommon", R: "Rare",
   SR: "Super Rare", UR: "Super Rare", MR: "Super Rare",
   F: "Starter Deck", PR: "Promo",
@@ -127,6 +127,16 @@ const RARIDADE = {
 // primeira (e a padrão): é sob ela que as coleções já marcadas estão.
 const FOIL_PARALELO = new Set(["Common", "Uncommon", "Rare"]);
 const VERSOES_FOIL = ["Normal", "Diamond Foil", "Wavy Foil"];
+
+// Raridade e versões de uma carta da fonte. `setKey` é a chave do SETS: só
+// set de booster (s01…s28) tem foil paralelo. Sigla que a tabela não conhece
+// passa crua (e aparece no filtro) em vez de sumir — é o sinal de que a fonte
+// mudou o vocabulário.
+export function raridadeEVersoes(setKey, sigla) {
+  const rarity = Object.prototype.hasOwnProperty.call(RARIDADE, sigla) ? RARIDADE[sigla] : sigla;
+  const booster = /^s\d+$/.test(setKey);
+  return { rarity, variants: booster && FOIL_PARALELO.has(rarity) ? [...VERSOES_FOIL] : ["Normal"] };
+}
 
 async function fetchPage(url) {
   for (let i = 0; i < 3; i++) {
@@ -204,13 +214,10 @@ async function run() {
     const def = defByKey.get(s.key);
     if (!def || def.skip) continue;
     const setId = `nrt-ccg-${def.key}`;
-    const booster = /^s\d+$/.test(def.key);
     for (const c of s.cards) {
       const cardId = idByNum.get(c.code) || `nrt-ccg-${c.code.toLowerCase()}`;
       const scan = c.img ? `https://wsrv.nl/?url=${encodeURIComponent(`${CDN}${def.slug}/${c.code}-EN.jpg`)}&w=440&output=webp` : "";
-      // Sigla que a tabela não conhece passa crua (e aparece no filtro) em vez
-      // de sumir — é o sinal de que a fonte mudou o vocabulário.
-      const rarity = Object.prototype.hasOwnProperty.call(RARIDADE, c.rarity) ? RARIDADE[c.rarity] : c.rarity;
+      const { rarity, variants } = raridadeEVersoes(def.key, c.rarity);
       line.push({
         id: cardId,
         name: c.name,
@@ -227,7 +234,7 @@ async function run() {
         artist: "",
         language: "en",
         image: curatedImg(cardId) || scan,
-        variants: booster && FOIL_PARALELO.has(rarity) ? [...VERSOES_FOIL] : ["Normal"],
+        variants,
         setLogo: "/assets/games/game_naruto_ccg-v2.webp",
         vintage: true,
         vintageLine: "nrt-ccg"
@@ -245,4 +252,5 @@ async function run() {
   console.log(`Gravado em ${fileURLToPath(OUT)} — ${merged.length} cartas totais.`);
 }
 
-await run();
+// Importável pelos testes sem rodar o sync (ver tests/naruto-ccg-raridade.test.mjs).
+if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) await run();
