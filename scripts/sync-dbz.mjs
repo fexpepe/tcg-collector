@@ -135,18 +135,31 @@ for (const [saga, code] of Object.entries(PROMOS_DA_SAGA)) {
 // cabeçalho).
 const KIZMT_SET = { s1: "Saiyan Saga", s2: "Frieza Saga", s3: "Trunks Saga", s4: "Android Saga", s5: "Cell Saga", s6: "Cell Games Saga", s7: "World Games Saga", s8: "Babidi Saga", s9: "Buu Saga", s10: "Fusion Saga" };
 
-// Nomes lidos no scan (2026-11-01). VENCEM as duas fontes. Servem pra carta que
-// nenhuma fonte nomeia (os promos e previews das galerias só com número e as
-// 24 cartas das sagas que o kizmt também não tem) e pros erros de digitação da
-// galeria conferidos no scan ("Pupper", "Saiyn", "Strugles"). Personagem leva o
-// nível do selo ("Lv. N"), como o resto do catálogo; ® e ™ ficam de fora. Os
-// oito do Buu Saga Starter de 160 a 200 são as cartas gigantes (800×550) de
-// nível 2. Chave: <set>|<número>.
+// Nomes lidos no scan (2026-11-01). VENCEM as duas fontes, no --importar e no
+// build (correção nova vale sem rede). Servem pra carta que nenhuma fonte
+// nomeia (os promos e previews das galerias só com número e as 24 cartas das
+// sagas que o kizmt também não tem) e pros erros de digitação da galeria ou do
+// kizmt conferidos no scan ("Pupper", "Saiyn", "Saiayn", "Rigth"). Erro que está
+// IMPRESSO na carta fica como a Score imprimiu ("Chaiotzu's Self Destruct",
+// "Saiyan Desparation Blast", "Gotenk's Head Butt", "Meanacing Evil").
+// Personagem leva o nível do selo ("Lv. N"), como o resto do catálogo; ® e ™
+// ficam de fora. Os oito do Buu Saga Starter de 160 a 200 são as cartas
+// gigantes (800×550) de nível 2. Chave: <set>|<número>.
+//
+// A varredura de 2026-11-02 conferiu no scan as palavras raras perto de uma
+// frequente ("Saiyn" × "Saiyan") e as fora de um dicionário de inglês
+// (dwyl/english-words) — 35 suspeitas, 16 corrigidas aqui.
 export const NOMES_LIDOS = {
   "s1|192": "Teaching the Unteachable Forces Observation", "s5|162": "Goku, the Saiyan Lv. 2",
   "p6|P2": "A Father Struggles", "lv|LV6": "Cell's Neck Grab",
   "lv|PS1": "Cell, the Puppet Lv. 3", "lv|PS2": "Goku, the Puppet Lv. 1", "lv|PS3": "Piccolo, the Puppet Lv. 1",
   "lv|PS4": "Vegeta, the Puppet Lv. 1", "lv|PS5": "Hercule, the Puppet Lv. 1",
+  // Varredura de 2026-11-02 (o CA21 nem era "Catch": o impresso é "Latch").
+  "s2|38": "Dodoria Lv. 1", "s3|17": "Black Defensive Aura", "s4|43": "Hyperbolic Time Chamber",
+  "s4|56": "Blue Right Cross", "s4|80": "Saiyan Wrist Block", "s4|81": "Saiyan Destiny", "s4|112": "Severe Bruises",
+  "s8|69": "Majin Vegeta's Powerful Drill", "p4|P5": "Android 19 Is Stoic", "p4|P9": "Goku's Hesitation",
+  "p6|P9": "A Raditz Memory", "m7|M23": "Super Saiyan Trunks", "ca|CA21": "Goku's Super Saiyan Latch",
+  "ca|CA28": "Goku's Quick Dodge", "ca|CA36": "Black Scout Maneuver", "t1|109": "Blue Bubble Breath",
   "s3|2": "Red Kienzan Discs", "s3|74": "Black Energy Deflection Drill", "s3|141": "Black Physical Focus",
   "s5|8": "Black Fatality", "s5|33": "Red Face Strike",
   "s6|2": "Black Fist Lock", "s6|44": "Blue Energy Blast", "s6|98": "Cell Jr. 2 Lv. 1",
@@ -353,6 +366,10 @@ async function importar(existing) {
 // Do snapshot pro catálogo
 // ---------------------------------------------------------------------------
 
+// O nome que vai pro ar: o lido no scan vence o do snapshot, então correção
+// nova no NOMES_LIDOS chega no build do CI sem precisar reimportar.
+export const nomeDaCarta = (setCode, c) => NOMES_LIDOS[`${setCode}|${c.num}`] || c.name;
+
 export const imageUrl = (file) => (file
   ? `https://wsrv.nl/?url=${encodeURIComponent(RETRO_UPLOADS + file)}&w=440&we&output=webp`
   : "");
@@ -381,7 +398,7 @@ async function build(snapshot) {
       if (image) comImagem++;
       line.push({
         id: c.id,
-        name: c.name,
+        name: nomeDaCarta(s.code, c),
         set: def.name,
         setId: `${ID_PREFIX}${def.code}`,
         number: c.num,

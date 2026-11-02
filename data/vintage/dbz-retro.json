@@ -2106,9 +2106,10 @@
     {
      "id": "dbz-s2-38",
      "num": "38",
-     "name": "Dodorio Lv. 1",
+     "name": "Dodoria Lv. 1",
      "rarity": "Uncommon",
-     "img": "2012/02/38.jpg"
+     "img": "2012/02/38.jpg",
+     "nameSource": "scan"
     },
     {
      "id": "dbz-s2-39",
@@ -3034,10 +3035,10 @@
     {
      "id": "dbz-s3-17",
      "num": "17",
-     "name": "Black Defensuve Aura",
+     "name": "Black Defensive Aura",
      "rarity": "Common",
      "img": "2012/02/017.jpg",
-     "nameSource": "kizmt"
+     "nameSource": "scan"
     },
     {
      "id": "dbz-s3-16",
@@ -4867,9 +4868,10 @@
     {
      "id": "dbz-s4-43",
      "num": "43",
-     "name": "Hyberbolic Time Chamber",
+     "name": "Hyperbolic Time Chamber",
      "rarity": "Uncommon",
-     "img": "2012/02/0431.jpg"
+     "img": "2012/02/0431.jpg",
+     "nameSource": "scan"
     },
     {
      "id": "dbz-s4-44",
@@ -4959,9 +4961,10 @@
     {
      "id": "dbz-s4-56",
      "num": "56",
-     "name": "Blue Rigth Cross",
+     "name": "Blue Right Cross",
      "rarity": "Uncommon",
-     "img": "2012/02/0562.jpg"
+     "img": "2012/02/0562.jpg",
+     "nameSource": "scan"
     },
     {
      "id": "dbz-s4-57",
@@ -5127,16 +5130,18 @@
     {
      "id": "dbz-s4-80",
      "num": "80",
-     "name": "Saiayn Wrist Block",
+     "name": "Saiyan Wrist Block",
      "rarity": "Uncommon",
-     "img": "2012/02/0802.jpg"
+     "img": "2012/02/0802.jpg",
+     "nameSource": "scan"
     },
     {
      "id": "dbz-s4-81",
      "num": "81",
-     "name": "Saiayn Destiny",
+     "name": "Saiyan Destiny",
      "rarity": "Uncommon",
-     "img": "2012/02/0812.jpg"
+     "img": "2012/02/0812.jpg",
+     "nameSource": "scan"
     },
     {
      "id": "dbz-s4-82",
@@ -5353,9 +5358,10 @@
     {
      "id": "dbz-s4-112",
      "num": "112",
-     "name": "Serve Bruises",
+     "name": "Severe Bruises",
      "rarity": "Rare",
-     "img": "2012/02/1122.jpg"
+     "img": "2012/02/1122.jpg",
+     "nameSource": "scan"
     },
     {
      "id": "dbz-s4-113",
@@ -5541,9 +5547,10 @@
     {
      "id": "dbz-p4-p5",
      "num": "P5",
-     "name": "Android 19 is Stotic",
+     "name": "Android 19 Is Stoic",
      "rarity": "Promo",
-     "img": "2012/02/P52.jpg"
+     "img": "2012/02/P52.jpg",
+     "nameSource": "scan"
     },
     {
      "id": "dbz-p4-p6",
@@ -5569,9 +5576,10 @@
     {
      "id": "dbz-p4-p9",
      "num": "P9",
-     "name": "Goku's Hestiation",
+     "name": "Goku's Hesitation",
      "rarity": "Promo",
-     "img": "2012/02/P92.jpg"
+     "img": "2012/02/P92.jpg",
+     "nameSource": "scan"
     },
     {
      "id": "dbz-p4-p10",
@@ -8530,9 +8538,10 @@
     {
      "id": "dbz-p6-p9",
      "num": "P9",
-     "name": "A Radditz Memory",
+     "name": "A Raditz Memory",
      "rarity": "Promo",
-     "img": "2012/02/P94.jpg"
+     "img": "2012/02/P94.jpg",
+     "nameSource": "scan"
     },
     {
      "id": "dbz-p6-p10",
@@ -10802,10 +10811,10 @@
     {
      "id": "dbz-s8-69",
      "num": "69",
-     "name": "Majin Veteta's Powerful Drill",
+     "name": "Majin Vegeta's Powerful Drill",
      "rarity": "Uncommon",
      "img": "2012/02/0696.jpg",
-     "nameSource": "kizmt"
+     "nameSource": "scan"
     },
     {
      "id": "dbz-s8-68",
@@ -15733,9 +15742,10 @@
     {
      "id": "dbz-m7-m23",
      "num": "M23",
-     "name": "Super Saiyn Trunks",
+     "name": "Super Saiyan Trunks",
      "rarity": "Subset",
-     "img": "2012/02/M23.jpg"
+     "img": "2012/02/M23.jpg",
+     "nameSource": "scan"
     },
     {
      "id": "dbz-m7-m24",
@@ -16220,9 +16230,10 @@
     {
      "id": "dbz-ca-ca21",
      "num": "CA21",
-     "name": "Goku's Super Saiyn Catch",
+     "name": "Goku's Super Saiyan Latch",
      "rarity": "Subset",
-     "img": "2012/02/CA21.jpg"
+     "img": "2012/02/CA21.jpg",
+     "nameSource": "scan"
     },
     {
      "id": "dbz-ca-ca22",
@@ -16269,9 +16280,10 @@
     {
      "id": "dbz-ca-ca28",
      "num": "CA28",
-     "name": "Goku's Quick Doge",
+     "name": "Goku's Quick Dodge",
      "rarity": "Subset",
-     "img": "2012/02/CA28.jpg"
+     "img": "2012/02/CA28.jpg",
+     "nameSource": "scan"
     },
     {
      "id": "dbz-ca-ca29",
@@ -16325,9 +16337,10 @@
     {
      "id": "dbz-ca-ca36",
      "num": "CA36",
-     "name": "Black Scout Manuever",
+     "name": "Black Scout Maneuver",
      "rarity": "Subset",
-     "img": "2012/02/CA36.jpg"
+     "img": "2012/02/CA36.jpg",
+     "nameSource": "scan"
     }
    ]
   },
@@ -27405,9 +27418,10 @@
     {
      "id": "dbz-t1-109",
      "num": "109",
-     "name": "Blue Buble Breath",
+     "name": "Blue Bubble Breath",
      "rarity": "",
-     "img": "2014/11/109-Blue-Buble-Breath.jpg"
+     "img": "2014/11/109-Blue-Buble-Breath.jpg",
+     "nameSource": "scan"
     },
     {
      "id": "dbz-t1-110",
