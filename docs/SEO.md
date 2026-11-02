@@ -176,6 +176,18 @@ página estática própria e o app seguia em `/detail?…`).
   contra os snapshots do catálogo de 29/09 a 04/10: as 10.253 cartas que
   mudaram de endereço dentro do mesmo set acham a carta certa, nenhuma errada.
   O que não acha segue 404.
+- **Carta que mudou de SET também leva 301** (2026-11-02). Mesmo id, outra
+  página: o TCGplayer tira produto de um grupo e põe noutro depois do
+  lançamento (a OP18-055 nasceu no EB-05), e a PR #224 trocou 39 cartas do
+  Data Carddass entre o 第1弾 e o 第2弾. Procurar nos outros sets na hora leria
+  um chunk por set a cada 404 de robô; em vez disso, o endereço antigo fica no
+  `data/cartas-movidas.json` (endereço antigo → id), que o
+  `scripts/registra-cartas-movidas.mjs` grava comparando o catálogo novo com o
+  HEAD: no deploy, logo depois do lint, indo junto no commit do snapshot; à
+  mão, na PR que move carta de set. O prerender resolve cada id no endereço
+  de hoje e grava no mapa do jogo (campo `m`), que a borda já lê: o 301 não
+  custa leitura a mais. Endereço antigo que voltou a ser de outra carta sai
+  do mapa (a carta de hoje vence).
 - **Offline e PWA**: o service worker guarda cada `/games/<jogo>` na entrada
   dela (com o título e o índice daquele jogo) e usa a do `sets.html`, que o
   install guarda, de reserva: a tela de um jogo nunca visitado abre offline.

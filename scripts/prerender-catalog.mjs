@@ -31,15 +31,19 @@ import { jsonLdSeguro } from "./lib/json-ld.mjs";
 import { montaSitemaps, enderecosDoPost } from "./lib/sitemap.mjs";
 // Endereço de cada jogo (/games/<url>) e o nome de cada carta no endereço:
 // moram em functions/_lib porque a borda usa a mesma régua (ver lá).
-import { JOGOS_URL, jogoDaUrl, urlDoSet } from "../functions/_lib/jogos.js";
-import { slugify, slugsDasCartas } from "../functions/_lib/slug-carta.js";
+import { JOGOS_URL, jogoDaUrl } from "../functions/_lib/jogos.js";
+import { slugify } from "../functions/_lib/slug-carta.js";
 import { fatiaDoLegado } from "../functions/_lib/borda.js";
+// Página de set de cada jogo e o endereço de cada carta (a régua saiu daqui
+// pra lib), e o registro das cartas que mudaram de set.
+import { paginasDoJogo } from "./lib/paginas-de-set.mjs";
+import { destinosDasMovidas } from "./lib/cartas-movidas.mjs";
 // Cabeçalho das páginas estáticas (marcação + CSS do celular).
 import { ESTILO_DO_CABECALHO, cabecalhoEstatico } from "../functions/_lib/cabecalho-estatico.js";
 // Textos e réguas da página de set (título, data, uma carta por número): a
 // página pt é a tela do app decorada NA BORDA (functions/games/) e a -en sai
 // daqui, então os dois lados leem o mesmo módulo.
-import { SET_L10N, cardsForLang, cmpNumber } from "../functions/_lib/pagina-set.js";
+import { SET_L10N, cardsForLang } from "../functions/_lib/pagina-set.js";
 import { imagemDePrevia } from "../functions/_lib/pagina-carta.js";
 
 const ORIGIN = "https://sleevu.app";
@@ -974,9 +978,13 @@ function escreveMapaDeSets(pages) {
 // de sets da tela do jogo e, pra montar a página de uma carta, de quais chunks
 // sai cada página de set:
 //   { g: chave do jogo, l?: linha, n: nome, s: { <set>: { n: nome do set,
-//     f: [chunks], c: nº de cartas, d: lançamento } } }
+//     f: [chunks], c: nº de cartas, d: lançamento } },
+//     m?: { "<set>/<carta>" antigo: "<url>/<set>/<carta>" de hoje } }
 // Um arquivo por jogo, e não por set: o deploy está perto do teto de arquivos
 // do Pages, e 2.700 mapas a mais não caberiam.
+// O "m" são as cartas que mudaram de SET (data/cartas-movidas.json resolvido
+// no catálogo de hoje, ver scripts/lib/cartas-movidas.mjs): a borda manda o
+// endereço antigo pro de hoje sem ler chunk nenhum.
 //
 // legado-sets.json e legado-cartas/<letra>.json levam os endereços ANTIGOS
 // (/set/ e /card/) pros novos: são eles que o 301 de functions/set/ e
@@ -985,6 +993,9 @@ function escreveMapaDeSets(pages) {
 function escreveMapasDosJogos(pages, legadoCartas) {
   if (existsSync(MAPAS_DIR)) rmSync(MAPAS_DIR, { recursive: true, force: true });
   mkdirSync(MAPAS_DIR, { recursive: true });
+  let registro = {};
+  try { registro = JSON.parse(readFileSync(join("data", "cartas-movidas.json"), "utf8")); } catch { /* nenhuma carta mudou de set */ }
+  const movidas = destinosDasMovidas(registro, pages);
   const porUrl = new Map();
   const legadoSets = {};
   for (const page of pages) {
@@ -999,7 +1010,12 @@ function escreveMapasDosJogos(pages, legadoCartas) {
     m.s[page.slug] = { n: page.name, f: arquivos, c: cardsForLang(page.cards, "pt").length, d: page.rep.setReleaseDate || "" };
     legadoSets[page.slugAntigo] = `${page.url}/${page.slug}`;
   }
-  for (const [url, m] of porUrl) writeFileSync(join(MAPAS_DIR, `${url}.json`), JSON.stringify(m), "utf8");
+  let nMovidas = 0;
+  for (const [url, m] of porUrl) {
+    if (movidas.has(url)) { m.m = movidas.get(url); nMovidas += Object.keys(m.m).length; }
+    writeFileSync(join(MAPAS_DIR, `${url}.json`), JSON.stringify(m), "utf8");
+  }
+  if (nMovidas) console.log(`prerender-catalog: ${nMovidas} carta(s) que mudaram de set com 301 do endereço antigo (data/cartas-movidas.json).`);
   writeFileSync(join(MAPAS_DIR, "legado-sets.json"), JSON.stringify(legadoSets), "utf8");
   const fatias = new Map();
   for (const slug of Object.keys(legadoCartas)) {
@@ -1161,6 +1177,8 @@ async function main() {
   // só pro mapa do 301. O NOVO é único dentro do seu /games/<jogo>/, então
   // os -2 entre jogos somem (o "Unleashed" do Riftbound deixa de ser
   // unleashed-2 por causa do Pokémon). A base é a mesma nas duas réguas.
+  // A régua dos dois mora em scripts/lib/paginas-de-set.mjs (o registro das
+  // cartas que mudaram de set calcula o endereço antigo com ela).
   const usedAntigo = new Set();
   const usadosPorJogo = new Map();
   const pages = [];
@@ -1170,36 +1188,17 @@ async function main() {
       console.log(`prerender-catalog: sem catálogo de ${game} — pulando.`);
       continue;
     }
-    const gamePages = [];
-    for (const [name, cards] of byName) {
-      cards.sort((a, b) => cmpNumber(a.number, b.number));
-      const rep = cards.find((c) => c.setLogo) || cards.find((c) => c.setReleaseDate) || cards[0];
-      let base = slugify(name) || slugify(rep.setId) || "set";
-      // Nome quase todo CJK (sobra só um dígito, ex.: ※確認中1 -> "1"): slug
-      // curto demais colide — prefixa o setId.
-      if (base.length < 4) base = slugify(rep.setId) ? `${slugify(rep.setId)}-${base}` : `set-${base}`;
-      let antigo = base, i = 2;
-      while (usedAntigo.has(antigo)) antigo = `${base}-${i++}`;
-      usedAntigo.add(antigo);
-      const url = urlDoSet(game, rep.setId);
-      if (!url) {
-        console.warn(`prerender-catalog: ${game} sem endereço em functions/_lib/jogos.js — set "${name}" pulado.`);
-        continue;
-      }
-      let usados = usadosPorJogo.get(url);
-      if (!usados) usadosPorJogo.set(url, (usados = new Set()));
-      // O -en é a variante em inglês DESTE set: um set cujo nome já termine em
-      // "-en" não pode tomar o arquivo da variante de outro.
-      let s = base, j = 2;
-      while (usados.has(s) || usados.has(`${s}-en`)) s = `${base}-${j++}`;
-      usados.add(s);
-      usados.add(`${s}-en`);
-      gamePages.push({
-        name, slug: s, slugAntigo: antigo, cards, rep, game, url,
-        gameLabel: jogoDaUrl(url).nome,
-        slugsCartas: slugsDasCartas(cards)
-      });
-    }
+    const gamePages = paginasDoJogo(game, byName, {
+      usadosPorJogo,
+      slugAntigo: (base) => {
+        let antigo = base, i = 2;
+        while (usedAntigo.has(antigo)) antigo = `${base}-${i++}`;
+        usedAntigo.add(antigo);
+        return antigo;
+      },
+      aoPular: (name) => console.warn(`prerender-catalog: ${game} sem endereço em functions/_lib/jogos.js — set "${name}" pulado.`)
+    });
+    for (const p of gamePages) p.gameLabel = jogoDaUrl(p.url).nome;
     gamePages.sort((a, b) => a.name.localeCompare(b.name));
     pages.push(...gamePages);
   }

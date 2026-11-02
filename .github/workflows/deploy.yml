@@ -710,6 +710,17 @@ jobs:
       - name: Lint dos catálogos (integridade + estabilidade de id)
         run: node scripts/lint-catalog.mjs
 
+      # Carta que mudou de SET (mesmo id, outra página: o TCGplayer tira
+      # produto de um grupo e põe noutro) perdia o endereço /games/<jogo>/
+      # <set>/<carta> — a borda só procura a carta no set do endereço. Aqui,
+      # com o HEAD ainda sendo o catálogo no ar (a comparação do lint), o
+      # endereço antigo entra no data/cartas-movidas.json, que vai no commit
+      # do snapshot logo abaixo e que o prerender transforma em 301 no mapa do
+      # jogo. Falhar aqui só deixa a carta movida hoje sem 301.
+      - name: Registra cartas que mudaram de set (301 do endereço antigo)
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/registra-cartas-movidas.mjs || echo "registra-cartas-movidas falhou; a carta que mudou de set hoje fica sem 301"
+
       # Durabilidade: versiona o catálogo VALIDADO de volta no repo (chunks do
       # Pokémon + cards/indexes/pricing dos outros jogos; o .gitignore filtra
       # caches e .generated). Junto com a união preservadora do sync-tcgdex
@@ -1018,9 +1029,12 @@ jobs:
       # mobile/ e codemagic.yaml (2026-10-09): o app (Capacitor) mora no mesmo
       # repo. São os projetos Android/iOS e a receita de build de loja — nada
       # disso é página, e ainda somaria uns 100 arquivos à conta do teto abaixo.
+      #
+      # data/cartas-movidas.json (2026-11-02): o registro das cartas que mudaram
+      # de set só serve ao prerender, que já o gravou nos mapas do jogo.
       - name: Remove arquivos que não vão para o site
         run: |
-          rm -rf .git .github .claude data/.cache data/cards.generated.js data/magic/cards.js data/ygo/cards.js scripts out README.md ROADMAP.md CLAUDE.md docs supabase tests .gitattributes .gitignore mobile codemagic.yaml
+          rm -rf .git .github .claude data/.cache data/cards.generated.js data/magic/cards.js data/ygo/cards.js data/cartas-movidas.json scripts out README.md ROADMAP.md CLAUDE.md docs supabase tests .gitattributes .gitignore mobile codemagic.yaml
           rm -f assets/brand/Flesh_and_Blood_TCG_Logo.png assets/brand/Magic-The-Gathering-logo.png assets/brand/digimon.webp assets/brand/logo_title_dbfwcardgame.webp assets/brand/riftbound.webp assets/brand/yugioh.jpg
           rm -f assets/games/README.md assets/shops/README.md
 
