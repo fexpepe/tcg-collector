@@ -646,8 +646,12 @@ jobs:
       # do snapshot versionado (data/vintage/dbz-retro.json, das galerias do
       # retrodbzccg.com), SEM rede: o jogo acabou em 2006. Imagens pelo wsrv.nl.
       # Sem preco.
+      # Roda nos DOIS modos (sem `if`): sem --importar o sync nao usa rede, e no
+      # build rapido o data/dbz/sets/ viria do cache do ultimo build completo.
+      # Foi assim que os 16 nomes corrigidos da PR #229 e os promos renomeados
+      # (2026-11-02) entraram na main e nao apareceram ate o cron, como as
+      # imagens do dbc antes do passo --no-fetch dele.
       - name: Catalogo vintage Dragon Ball Z CCG
-        if: env.RODA_SYNC == 'true'
         run: node scripts/sync-dbz.mjs || echo "sync-dbz falhou; segue com o catalogo versionado"
 
       # Harry Potter TCG (Wizards of the Coast 2001-2002): o jogo vintage
