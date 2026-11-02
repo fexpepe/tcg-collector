@@ -27,26 +27,51 @@
 // cardcheckbox (dcd-naruto-ncb.html e dcd-narutospd-nm.html); null = só
 // relistagem. O 第1弾 e o 第2弾 vão pela página do CONTEÚDO, não pelo título
 // que o noihjp dá a ela (ver acima).
+//
+// `data`: estreia na máquina (AAAA-MM-DD), pelo 発売日 das mesmas duas páginas
+// do cardcheckbox (conferidas em 02/11/2026; o texto da fonte vai no fim de
+// cada linha). Até aqui o sync gravava "" e a tela dizia "N/A". A régua do 旬
+// é a do naruto-dc-capitulos.mjs — 中旬 = 15, 下旬 = 25, só o mês = dia 1 — e
+// o 上旬 (dias 1–10), que ela não tinha, vira dia 5: o meio da dezena, como o
+// 15 e o 25 são o das outras duas. Serve pra ordenar, não pra citar o dia.
+// Quando a fonte dá o dia, vale o dia: o 第4章 e o 特別任務の章 têm o 発売日
+// exato, e o 第1章–第3章 trazem "(… 確認)", o dia em que o cardcheckbox viu a
+// máquina já com o 章. Esse dia é o TETO da estreia e vence o 旬: o 下旬 = 25
+// do 第1章 cairia depois do 23/02 confirmado, e o 中旬 = 15 do 第3章, depois
+// do 14/06.
 export const PAGES = [
-  { seq: 1,  page: "02.php",                    name: "ナルティメットカードバトル 第１弾", estreia: ["DN-001", "DN-050"] },
-  { seq: 2,  page: "01.php",                    name: "ナルティメットカードバトル 第２弾", estreia: ["DN-051", "DN-065"] },
-  { seq: 3,  page: "03.php",                    name: "ナルティメットカードバトル 第３弾", estreia: ["DN-066", "DN-082"] },
-  // "すべて再録カードです" (cardcheckbox).
-  { seq: 4,  page: "Special-Combo-Sheet.php",   name: "ナルティメットカードバトル スペシャルコンボシート", estreia: null },
-  { seq: 5,  page: "04.php",                    name: "ナルティメットカードバトル 第４弾", estreia: ["DN-083", "DN-107"] },
-  { seq: 6,  page: "05.php",                    name: "ナルティメットカードバトル 第５弾", estreia: ["DN-108", "DN-135"] },
-  { seq: 7,  page: "Special-Combo-Sheet_2.php", name: "ナルティメットカードバトル スペシャルコンボシート２", estreia: ["DN-136", "DN-140"] },
-  { seq: 8,  page: "06.php",                    name: "ナルティメットカードバトル 第６弾", estreia: ["DN-141", "DN-171"] },
+  { seq: 1,  page: "02.php",                    name: "ナルティメットカードバトル 第１弾", estreia: ["DN-001", "DN-050"], data: "2005-10-25" }, // 2005年10月下旬
+  { seq: 2,  page: "01.php",                    name: "ナルティメットカードバトル 第２弾", estreia: ["DN-051", "DN-065"], data: "2005-12-15" }, // 2005年12月中旬
+  { seq: 3,  page: "03.php",                    name: "ナルティメットカードバトル 第３弾", estreia: ["DN-066", "DN-082"], data: "2006-02-25" }, // 2006年2月下旬
+  // "すべて再録カードです" (cardcheckbox). Sem estreia, o set não chega ao
+  // catálogo; a data fica pela checklist completa.
+  { seq: 4,  page: "Special-Combo-Sheet.php",   name: "ナルティメットカードバトル スペシャルコンボシート", estreia: null, data: "2006-03-25" }, // 2006年3月下旬
+  { seq: 5,  page: "04.php",                    name: "ナルティメットカードバトル 第４弾", estreia: ["DN-083", "DN-107"], data: "2006-04-15" }, // 2006年4月中旬
+  { seq: 6,  page: "05.php",                    name: "ナルティメットカードバトル 第５弾", estreia: ["DN-108", "DN-135"], data: "2006-06-25" }, // 2006年6月下旬
+  // No cardcheckbox é a "ナルティメットコンボシート 2" (a mesma DN-136–140; a
+  // "ナルティメットコンボシート" sem número de lá é o brinde da Vジャンプ,
+  // DNP-021–023, que o noihjp não lista).
+  { seq: 7,  page: "Special-Combo-Sheet_2.php", name: "ナルティメットカードバトル スペシャルコンボシート２", estreia: ["DN-136", "DN-140"], data: "2006-07-15" }, // 2006年7月中旬
+  { seq: 8,  page: "06.php",                    name: "ナルティメットカードバトル 第６弾", estreia: ["DN-141", "DN-171"], data: "2006-08-05" }, // 2006年8月上旬
   // O cardcheckbox conta DN-173–209 como novas e o DN-172 como relistagem do
   // brinde do guia (ナルティメットガイド 巻ノ二); na máquina, ele sai aqui.
-  { seq: 9,  page: "07.php",                    name: "ナルティメットカードバトル 第７弾", estreia: ["DN-172", "DN-209"] },
-  { seq: 10, page: "08.php",                    name: "ナルティメットカードバトル 第８弾 ナルティメットSP！", estreia: ["DN-210", "DN-249"] },
-  { seq: 11, page: "Shippuden/NarutimateMission/01.php",      name: "究極任務 ナルティメットミッション 第１章 蒼天！新たなる旅立ち編", estreia: ["NM-001", "NM-050"] },
-  { seq: 12, page: "Shippuden/NarutimateMission/02.php",      name: "究極任務 ナルティメットミッション 第２章 君臨！黄砂に舞う風編", estreia: ["NM-051", "NM-092"] },
-  { seq: 13, page: "Shippuden/NarutimateMission/03.php",      name: "究極任務 ナルティメットミッション 第３章 強襲！赤き絶望の毒牙編", estreia: ["NM-093", "NM-136"] },
-  { seq: 14, page: "Shippuden/NarutimateMission/04.php",      name: "究極任務 ナルティメットミッション 第４章 激闘！闇を運ぶ暗雲編", estreia: ["NM-137", "NM-187"] },
-  { seq: 15, page: "Shippuden/NarutimateMission/Tokunin.php", name: "究極任務 ナルティメットミッション 特別任務の章", estreia: ["NM-188", "NM-237"] }
+  { seq: 9,  page: "07.php",                    name: "ナルティメットカードバトル 第７弾", estreia: ["DN-172", "DN-209"], data: "2006-10-25" }, // 2006年10月下旬
+  { seq: 10, page: "08.php",                    name: "ナルティメットカードバトル 第８弾 ナルティメットSP！", estreia: ["DN-210", "DN-249"], data: "2006-12-15" }, // 2006年12月中旬
+  // O "2003年" do 確認 é erro de digitação da fonte: o 第1章 é de 2007年2月
+  // (o 発売日 dela e a Wikipedia ja).
+  { seq: 11, page: "Shippuden/NarutimateMission/01.php",      name: "究極任務 ナルティメットミッション 第１章 蒼天！新たなる旅立ち編", estreia: ["NM-001", "NM-050"], data: "2007-02-23" }, // 2007年2月下旬(2003年2月23日 確認)
+  { seq: 12, page: "Shippuden/NarutimateMission/02.php",      name: "究極任務 ナルティメットミッション 第２章 君臨！黄砂に舞う風編", estreia: ["NM-051", "NM-092"], data: "2007-04-27" }, // 2007年4月下旬(2007年4月27日 確認)
+  { seq: 13, page: "Shippuden/NarutimateMission/03.php",      name: "究極任務 ナルティメットミッション 第３章 強襲！赤き絶望の毒牙編", estreia: ["NM-093", "NM-136"], data: "2007-06-14" }, // 2007年6月中旬(2007年6月14日 確認)
+  { seq: 14, page: "Shippuden/NarutimateMission/04.php",      name: "究極任務 ナルティメットミッション 第４章 激闘！闇を運ぶ暗雲編", estreia: ["NM-137", "NM-187"], data: "2007-08-03" }, // 2007年8月3日
+  { seq: 15, page: "Shippuden/NarutimateMission/Tokunin.php", name: "究極任務 ナルティメットミッション 特別任務の章", estreia: ["NM-188", "NM-237"], data: "2007-10-11" }  // 2007年10月11日
 ];
+
+// Data de estreia do set (AAAA-MM-DD) pelo seq da página; "" = página fora da
+// lista (não acontece hoje — a lista é fixa).
+export function dataDoSet(seq) {
+  const pagina = PAGES.find((p) => p.seq === seq);
+  return pagina ? pagina.data : "";
+}
 
 // A numeração é GLOBAL na série (DN-001… / NM-001…) e os 弾 seguintes
 // relistam cartas antigas (re-impressões pra máquina). Mesmo código = mesma

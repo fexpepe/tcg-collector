@@ -19,7 +19,7 @@ import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { readGlobalVar, readSnapshot, writeSnapshot, snapshotCardCount, writeGameCatalog, sleep } from "./lib/sync-common.mjs";
-import { PAGES, estreias, estreiasForaDaFaixa } from "./lib/naruto-datacarddass.mjs";
+import { PAGES, estreias, estreiasForaDaFaixa, dataDoSet } from "./lib/naruto-datacarddass.mjs";
 
 const ROOT = new URL("../", import.meta.url);
 const OUT = new URL("data/naruto/", ROOT);
@@ -47,7 +47,7 @@ const NO_FETCH = process.argv.includes("--no-fetch");
 const CARD_BATTLE_LOGO = "/assets/games/game_naruto_datacarddass.webp";
 const isCardBattle = (s) => s.name.startsWith("ナルティメットカードバトル");
 
-// As 15 páginas da fonte (ordem, nome e faixa oficial de estreia) moram em
+// As 15 páginas da fonte (ordem, nome, faixa oficial de estreia e data) moram em
 // scripts/lib/naruto-datacarddass.mjs, que o teste trava: o noihjp troca o
 // título do 第1弾 com o do 第2弾 (02/11/2026).
 
@@ -137,7 +137,8 @@ async function run() {
         setId,
         number: c.code,
         setTotal: fresh.length,
-        setReleaseDate: "",
+        // Curada por página (o noihjp não dá data): cardcheckbox, no PAGES.
+        setReleaseDate: dataDoSet(s.seq),
         rarity: "",
         artist: "",
         language: "ja",
