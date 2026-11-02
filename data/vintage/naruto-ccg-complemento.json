@@ -380,6 +380,13 @@
      "img": "set_9_the_chosen/jus073.webp"
     },
     {
+     "code": "M-275",
+     "name": "Riot in High-Security Facility",
+     "rarity": "Common",
+     "img": "set_9_the_chosen/m275.webp",
+     "id": "nrt-ccg-s09-m-275"
+    },
+    {
      "code": "N-307",
      "name": "Naruto Uzumaki",
      "rarity": "Common",
@@ -1956,6 +1963,13 @@
      "img": "set_14_emerging_alliance/j514.webp"
     },
     {
+     "code": "J-526",
+     "name": "Thunder Funeral: Feast of Lightning",
+     "rarity": "Uncommon",
+     "img": "set_14_emerging_alliance/j526.webp",
+     "id": "nrt-ccg-s14-j-526"
+    },
+    {
      "code": "J-538",
      "name": "Giant Rasengan",
      "rarity": "Rare",
@@ -2469,18 +2483,5 @@
    ]
   }
  ],
- "pendentes": [
-  {
-   "key": "s09",
-   "code": "M-274",
-   "name": "Frustrated Ambition",
-   "motivo": "o nome já está no set sob outro código (número errado no narutocards)"
-  },
-  {
-   "key": "s14",
-   "code": "J-525",
-   "name": "Chakra Cannon",
-   "motivo": "o nome já está no set sob outro código (número errado no narutocards)"
-  }
- ]
+ "pendentes": []
 }

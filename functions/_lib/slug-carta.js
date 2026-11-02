@@ -95,10 +95,16 @@ export function slugsDasCartas(cards) {
 // Às vezes muda o nome ("showcase" virou "overnumbered" no Riftbound) ou o
 // desempate. O endereço antigo segue no índice do Google e em links; em vez
 // do 404, a borda acha a carta que ele queria dizer e manda pro de hoje (301).
-// Duas tentativas, da mais segura pra menos:
+// Três tentativas, da mais segura pra menos:
 //   1. mesmo nome, número e idioma, com qualquer total (ou sem);
-//   2. mesmo número, total e idioma, com outro nome (o número identifica a
-//      carta dentro do set).
+//   2. mesmo nome e idioma, e o ID da carta termina no número do endereço: a
+//      carta foi RENUMERADA com o id de antes (2026-11-02, Naruto CCG: o id
+//      nrt-ccg-n-883 guarda o código do narutocards, e o número passou a ser
+//      o impresso, N-886). "kakashi-hatake-n-883" é desse Kakashi;
+//   3. mesmo número, total e idioma, com outro nome (o número identifica a
+//      carta dentro do set) — MAS não quando o nome do endereço é de outra
+//      carta do set: aí o número mudou de dono, e "kakashi-hatake-n-883"
+//      levaria pro Neji, que é o N-883 de hoje.
 // Mais de uma carta casando (arte paralela com o mesmo nome e número) escolhe
 // pelo -2, -3 do endereço pedido, na ordem do id, como o slugsDasCartas faz.
 // Se o -N não cabe no que casou (a carta chinesa sem nome que ganhou nome em
@@ -111,18 +117,40 @@ export function cartaParecida(cards, slugs, pedido) {
   if (!p || !slugs) return null;
   const porId = [...(cards || [])].filter((c) => c && c.id != null && slugs.has(String(c.id)))
     .sort((a, b) => (String(a.id) < String(b.id) ? -1 : String(a.id) > String(b.id) ? 1 : 0));
+  const nomesDoSet = new Set(porId.map(nomeDoEndereco).filter(Boolean));
   const tentativas = [
-    (c) => {
-      const num = slugify(c.number);
-      if (!num) return null;
-      const nome = nomeDoEndereco(c);
-      const idioma = idiomaDoEndereco(c);
-      return new RegExp(`^${nome ? `${nome}-` : ""}${num}(?:-\\d+)?${idioma ? `-${idioma}` : ""}(?:-(\\d+))?$`);
+    {
+      re: (c) => {
+        const num = slugify(c.number);
+        if (!num) return null;
+        const nome = nomeDoEndereco(c);
+        const idioma = idiomaDoEndereco(c);
+        return new RegExp(`^${nome ? `${nome}-` : ""}${num}(?:-\\d+)?${idioma ? `-${idioma}` : ""}(?:-(?<emp>\\d+))?$`);
+      }
     },
-    (c) => {
-      if (!slugify(c.number)) return null;
-      const idioma = idiomaDoEndereco(c);
-      return new RegExp(`^(?:[a-z0-9-]+-)?${slugify(numeroDoEndereco(c))}${idioma ? `-${idioma}` : ""}(?:-(\\d+))?$`);
+    {
+      re: (c) => {
+        const nome = nomeDoEndereco(c);
+        if (!nome) return null;
+        // Os finais do id que têm dígito: "nrt-ccg-n-883" -> 883, n-883, ccg-n-883…
+        const pedacos = slugify(c.id).split("-");
+        const finais = [];
+        for (let i = pedacos.length - 1; i >= 0; i--) {
+          const f = pedacos.slice(i).join("-");
+          if (/\d/.test(f)) finais.push(f);
+        }
+        if (!finais.length) return null;
+        const idioma = idiomaDoEndereco(c);
+        return new RegExp(`^${nome}-(?:${finais.join("|")})${idioma ? `-${idioma}` : ""}(?:-(?<emp>\\d+))?$`);
+      }
+    },
+    {
+      re: (c) => {
+        if (!slugify(c.number)) return null;
+        const idioma = idiomaDoEndereco(c);
+        return new RegExp(`^(?:(?<nome>[a-z0-9-]+)-)?${slugify(numeroDoEndereco(c))}${idioma ? `-${idioma}` : ""}(?:-(?<emp>\\d+))?$`);
+      },
+      aceita: (c, m) => !m.groups.nome || m.groups.nome === nomeDoEndereco(c) || !nomesDoSet.has(m.groups.nome)
     }
   ];
   let reserva = null;
@@ -130,11 +158,11 @@ export function cartaParecida(cards, slugs, pedido) {
     const achadas = [];
     let empate = 0;
     for (const c of porId) {
-      const re = regra(c);
+      const re = regra.re(c);
       const m = re && re.exec(p);
-      if (!m) continue;
+      if (!m || (regra.aceita && !regra.aceita(c, m))) continue;
       achadas.push(c);
-      if (m[1]) empate = Number(m[1]);
+      if (m.groups && m.groups.emp) empate = Number(m.groups.emp);
     }
     if (!achadas.length) continue;
     if (empate < 2 || achadas[empate - 1]) {

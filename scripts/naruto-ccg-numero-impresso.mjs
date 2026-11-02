@@ -144,6 +144,16 @@ export const FIXO = {
 // a imagem fica a do narutocards. O j470 de lá é o "Body Manipulation".
 export const SCAN_ERRADO = { s13: ["J-470"] };
 
+// Carta que o narutocards põe no SET errado: vai pro set certo com o MESMO id
+// (decisão de 2026-11-02, na conversa da PR). O N-099 Raido Namiashi dele está
+// no Quest for Power com o scan do N-244 (o Raido de lá, que já existe); o
+// N-099 impresso é do Curse of the Sand, carta de Starter Deck (ponto vermelho
+// no scan; "ST" no ccgtrader). Sai daqui como { set, raridade, img } no de-para,
+// e o sync tira a carta de um set e põe no outro.
+export const MUDA_DE_SET = {
+  s07: { "N-099": { set: "s03", raridade: "Starter Deck", img: "set_3_curse_of_the_sand/n099.webp" } }
+};
+
 // Código do N-CCG-DB → número impresso, na grafia do catálogo.
 export function numeroImpresso(code) {
   return String(code || "").toUpperCase().trim()
@@ -263,6 +273,12 @@ async function run() {
     const cartas = {};
     let n = 0;
     for (const c of s.cards) {
+      const muda = (MUDA_DE_SET[s.key] || {})[c.code];
+      if (muda) {
+        if (par.has(c.code)) throw new Error(`${s.key} ${c.code}: em MUDA_DE_SET e casada no próprio set`);
+        cartas[c.code] = { ...muda };
+        continue;
+      }
       const f = par.get(c.code);
       if (!f) continue;
       const numero = numeroImpresso(f.code);
@@ -283,8 +299,11 @@ async function run() {
     sets[s.key] = cartas;
     mudam += n;
     scans += Object.keys(cartas).length;
+    const movidas = Object.entries(MUDA_DE_SET[s.key] || {}).map(([code, m]) => `${code} → ${m.set}`);
+    const faltam = semPar.filter((code) => !(MUDA_DE_SET[s.key] || {})[code]);
     relatorio.push(`  ${s.key}: ${String(s.cards.length).padStart(3)} cartas, ${String(n).padStart(3)} com número novo, ${String(Object.keys(cartas).length).padStart(3)} com scan do N-CCG-DB`
-      + (semPar.length ? ` — sem par: ${semPar.join(", ")}` : ""));
+      + (movidas.length ? ` — muda de set: ${movidas.join(", ")}` : "")
+      + (faltam.length ? ` — sem par: ${faltam.join(", ")}` : ""));
   }
   const out = {
     fontes: {
@@ -296,7 +315,7 @@ async function run() {
     sets
   };
   // Uma carta por linha: o diff de uma rodada nova mostra só o que mudou.
-  const texto = JSON.stringify(out, null, 1).replace(/\{\n\s+("numero"|"img")([^{}]*?)\n\s+\}/g,
+  const texto = JSON.stringify(out, null, 1).replace(/\{\n\s+("numero"|"img"|"set")([^{}]*?)\n\s+\}/g,
     (_, k, resto) => `{ ${k}${resto.replace(/\n\s+/g, " ")} }`);
   await writeFile(OUT, texto + "\n", "utf8");
   console.log(relatorio.join("\n"));

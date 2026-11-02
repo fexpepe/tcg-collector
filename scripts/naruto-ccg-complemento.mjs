@@ -35,9 +35,15 @@
 //   - código que já existe no narutocards (inclusive com outra grafia:
 //     NC-001 lá = N-C001 aqui);
 //   - carta cujo NOME já está no set sob outro código: o narutocards errou o
-//     número (no The Chosen o "Frustrated Ambition" está como M-275, que é o
-//     "Riot in High-Security Facility"). Vai pra `pendentes`, porque importar
-//     duplicaria a carta. Corrigir o número é outra conversa (ids publicados);
+//     número e o de-para do número impresso não corrige. Vai pra `pendentes`,
+//     porque importar duplicaria a carta. Os dois casos de 2026-11-02 (no The
+//     Chosen o "Frustrated Ambition" estava como M-275, que é o "Riot in
+//     High-Security Facility"; no Emerging Alliance, o J-526) saíram daqui: o
+//     de-para (scripts/naruto-ccg-numero-impresso.mjs) dá o número impresso
+//     de cada carta do narutocards, e é por ELE que este script compara. A
+//     carta verdadeira entra, e como o id óbvio (nrt-ccg-m-275) é o do
+//     Frustrated Ambition, ganha `-<set>-` (nrt-ccg-s09-m-275), gravado no
+//     campo `id`;
 //   - os sets 16 em diante, os Tournament Packs, as tins e as promos: lá a
 //     numeração do narutocards NÃO é a impressa (o scan que ele chama de N-880
 //     tem "883" impresso), então casar por código não vale.
@@ -53,6 +59,7 @@ const ROOT = new URL("../", import.meta.url);
 const SNAP = new URL("data/vintage/naruto-ccg.json", ROOT);
 const CCGT = new URL("data/vintage/naruto-ccg-ccgtrader.json", ROOT);
 const OUT = new URL("data/vintage/naruto-ccg-complemento.json", ROOT);
+const IMPRESSO = new URL("data/vintage/naruto-ccg-numero-impresso.json", ROOT);
 const CACHE_DIR = new URL("data/.cache/", ROOT);
 export const FAN_SHA = "778f6376296dd2a4a810dfb5e76b1dc28cea1cba"; // 2026-10-17
 const FAN_URL = `https://raw.githubusercontent.com/N-CCG-DB/naruto-ccg-deckbuilder/${FAN_SHA}/narutoccgdatabase.json`;
@@ -162,8 +169,18 @@ async function run() {
   const fan = await baixaFan();
   const snap = JSON.parse(await readFile(SNAP, "utf8"));
   const ccgt = JSON.parse(await readFile(CCGT, "utf8"));
+  // O número IMPRESSO de cada carta do narutocards (o código dele, fora o que o
+  // de-para corrige), e os ids que ele já ocupa.
+  let impresso = { sets: {} };
+  try { impresso = JSON.parse(await readFile(IMPRESSO, "utf8")); } catch { /* sem de-para: código = número */ }
+  const numeroDe = (key, c) => ((impresso.sets[key] || {})[c.code] || {}).numero || c.code;
   const doSnap = new Map(snap.sets.map((s) => [s.key, s.cards]));
-  const todosCodigos = new Set(snap.sets.flatMap((s) => s.cards.map((c) => codigoCanonico(c.code))));
+  // Só nos sets 1–16: do 17 em diante o número impresso das reimpressões
+  // repete o de cartas destes sets (a tin 2 traz o N-086, o TP1 o N-114), e
+  // barraria a original. Lá vale o código do narutocards, que é único.
+  const todosCodigos = new Set(snap.sets.flatMap((s) => s.cards.map((c) =>
+    codigoCanonico(/^s(0\d|1[0-6])$/.test(s.key) ? numeroDe(s.key, c) : c.code))));
+  const idsDoNc = new Set(snap.sets.flatMap((s) => s.cards.map((c) => `nrt-ccg-${c.code.toLowerCase()}`)));
 
   const sets = [];
   const pendentes = [];
@@ -175,7 +192,7 @@ async function run() {
       .sort((a, b) => refKey(a.code).localeCompare(refKey(b.code)));
     const pares = alinha(daFan, lista);
     const nossas = doSnap.get(key) || [];
-    const nossoPorCodigo = new Map(nossas.map((c) => [codigoCanonico(c.code), c]));
+    const nossoPorCodigo = new Map(nossas.map((c) => [codigoCanonico(numeroDe(key, c)), c]));
 
     // Carta nossa com nome que não bate com o da mesma posição no N-CCG-DB =
     // número errado no narutocards; o nome dela não pode entrar de novo.
@@ -204,7 +221,10 @@ async function run() {
         pendentes.push({ key, code: f.code, name, motivo: "o nome já está no set sob outro código (número errado no narutocards)" });
         continue;
       }
-      cards.push({ code: f.code, name, rarity, img: f.img || "" });
+      // Código impresso que é id publicado de OUTRA carta (o narutocards usou o
+      // número dela): ganha `-<set>-`.
+      const id = idsDoNc.has(`nrt-ccg-${f.code.toLowerCase()}`) ? { id: `nrt-ccg-${key}-${f.code.toLowerCase()}` } : {};
+      cards.push({ code: f.code, name, rarity, img: f.img || "", ...id });
       todosCodigos.add(canon); // a mesma carta não entra por dois sets
     }
 
@@ -215,7 +235,8 @@ async function run() {
     const chave = (c) => norm(ccgtDoCodigo.get(codigoCanonico(c.code)) || c.name);
     const conta = (arr, f) => arr.reduce((m, c) => m.set(f(c), (m.get(f(c)) || 0) + 1), new Map());
     const noCcgt = conta(lista, (c) => norm(c.name));
-    const depois = conta([...nossas, ...cards], chave);
+    // As nossas contam pelo número impresso (o M-275 do narutocards é o M-274).
+    const depois = conta([...nossas.map((c) => ({ ...c, code: numeroDe(key, c) })), ...cards], chave);
     for (const c of cards) {
       const n = chave(c);
       if (depois.get(n) > (noCcgt.get(n) || 0)) throw new Error(`${key} ${c.code}: "${c.name}" ficaria ${depois.get(n)}× (ccgtrader: ${noCcgt.get(n) || 0}×)`);

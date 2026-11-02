@@ -11,6 +11,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { numeroImpresso, chaveNome, casaSet, FIXO } from "../scripts/naruto-ccg-numero-impresso.mjs";
 import { montaLinha } from "../scripts/sync-naruto-ccg.mjs";
+import { slugsDasCartas, cartaParecida } from "../functions/_lib/slug-carta.js";
 
 const json = (arq) => JSON.parse(readFileSync(new URL(`../${arq}`, import.meta.url), "utf8"));
 const snap = json("data/vintage/naruto-ccg.json");
@@ -130,9 +131,15 @@ test("de-para: nos sets 1–15 o narutocards já usa o impresso, fora os dois n�
 test("sync: NENHUM id muda com o de-para, e o id não vem do número", () => {
   const sem = montaLinha(snap, comp, null).line;
   const com = montaLinha(snap, comp, dp).line;
-  assert.deepEqual(com.map((c) => c.id), sem.map((c) => c.id));
-  assert.deepEqual(com.map((c) => c.setId), sem.map((c) => c.setId));
   const porId = new Map(com.map((c) => [c.id, c]));
+  const semPorId = new Map(sem.map((c) => [c.id, c]));
+  // Todo id de antes continua, no mesmo set (fora o N-099, que o de-para muda
+  // de set de propósito); só entram as duas cartas que faltavam.
+  for (const c of sem) {
+    assert.ok(porId.has(c.id), `${c.id} sumiu`);
+    if (c.id !== "nrt-ccg-n-099") assert.equal(porId.get(c.id).setId, c.setId, c.id);
+  }
+  assert.deepEqual(com.filter((c) => !semPorId.has(c.id)).map((c) => c.id).sort(), ["nrt-ccg-s09-m-275", "nrt-ccg-s14-j-526"]);
   // A armadilha: a carta impressa N-880 (Yamato, TP1) NÃO herda o nrt-ccg-n-880.
   assert.equal(porId.get("nrt-ccg-n-880").name, "Neji Hyuga");
   assert.equal(porId.get("nrt-ccg-n-880").number, "N-883");
@@ -142,8 +149,31 @@ test("sync: NENHUM id muda com o de-para, e o id não vem do número", () => {
   assert.match(porId.get("nrt-ccg-n-880").image, /n-ccg-db\.github\.io.*set_18_fangs_of_the_snake%2Fn883\.webp/);
   // O scan errado do N-CCG-DB (J-470) fica fora: segue o do narutocards.
   assert.match(porId.get("nrt-ccg-j-470").image, /cdn\.narutocards\.ca/);
-  const renumeradas = com.filter((c, i) => c.number !== sem[i].number).length;
+  const renumeradas = sem.filter((c) => porId.get(c.id).number !== c.number).length;
   assert.ok(renumeradas >= 1800, `renumeradas: ${renumeradas}`);
+});
+
+test("número trocado com a vizinha: o id antigo segue com a MESMA carta, e a verdadeira entra com -<set>-", () => {
+  const porId = new Map(montaLinha(snap, comp, dp).line.map((c) => [c.id, c]));
+  const ve = (id) => { const c = porId.get(id); return [c.setId, c.number, c.name]; };
+  assert.deepEqual(ve("nrt-ccg-m-275"), ["nrt-ccg-s09", "M-274", "Frustrated Ambition"]);
+  assert.deepEqual(ve("nrt-ccg-s09-m-275"), ["nrt-ccg-s09", "M-275", "Riot in High-Security Facility"]);
+  assert.deepEqual(ve("nrt-ccg-j-526"), ["nrt-ccg-s14", "J-525", "Chakra Cannon"]);
+  assert.deepEqual(ve("nrt-ccg-s14-j-526"), ["nrt-ccg-s14", "J-526", "Thunder Funeral: Feast of Lightning"]);
+});
+
+test("carta no set errado: o N-099 Raido vai pro Curse of the Sand, Starter Deck, com o mesmo id", () => {
+  const linha = montaLinha(snap, comp, dp).line;
+  const raido = linha.filter((c) => c.id === "nrt-ccg-n-099");
+  assert.equal(raido.length, 1);
+  assert.equal(raido[0].setId, "nrt-ccg-s03");
+  assert.equal(raido[0].rarity, "Starter Deck");
+  assert.deepEqual(raido[0].variants, ["Normal"]);
+  assert.match(raido[0].image, /set_3_curse_of_the_sand%2Fn099\.webp/);
+  // O Raido do Quest for Power (N-244) continua lá, sozinho.
+  assert.deepEqual(linha.filter((c) => c.setId === "nrt-ccg-s07" && c.name === "Raido Namiashi").map((c) => c.id), ["nrt-ccg-n-244"]);
+  // setTotal acompanha: o Curse of the Sand fica com as 148 do ccgtrader.
+  assert.equal(raido[0].setTotal, 148);
 });
 
 test("catálogo versionado: regerado com o de-para (mesmos ids, mesmo set, número impresso)", () => {
@@ -156,4 +186,35 @@ test("catálogo versionado: regerado com o de-para (mesmos ids, mesmo set, núme
     assert.equal(v.setId, c.setId, c.id);
     assert.equal(v.number, c.number, c.id);
   }
+});
+
+// O endereço /games/naruto-ccg/<set>/<carta> leva o número, então os 1.844
+// renumerados mudam de endereço. Sem registro (o mapa da borda cresceria
+// ~200 KB): o cartaParecida acha a carta pelo id, que guarda o código antigo.
+// Com a regra de antes, 461 iam pra carta ERRADA (o antigo kakashi-hatake-n-883
+// caía no Neji, que é o N-883 de hoje) e 1.383 davam 404.
+test("endereço antigo de TODA carta renumerada leva pra ela mesma, nenhum pra outra", () => {
+  const porSet = (cs) => { const m = new Map(); for (const c of cs) (m.get(c.set) || m.set(c.set, []).get(c.set)).push(c); return m; };
+  const antes = porSet(montaLinha(snap, comp, null).line);
+  const depois = porSet(montaLinha(snap, comp, dp).line);
+  let conferidos = 0;
+  const erros = [];
+  for (const [nome, cartas] of antes) {
+    const velhos = slugsDasCartas(cartas);
+    const hoje = depois.get(nome);
+    const novos = slugsDasCartas(hoje);
+    const vivos = new Set(novos.values());
+    for (const [id, velho] of velhos) {
+      const novo = novos.get(id);
+      if (novo === velho) continue;
+      conferidos++;
+      if (vivos.has(velho)) { erros.push(`${id}: ${velho} é o endereço de outra carta hoje`); continue; }
+      const achado = cartaParecida(hoje, novos, velho);
+      // Carta que saiu do set (o N-099) não pode cair em outra: fica pro
+      // data/cartas-movidas.json.
+      if (achado !== (novo || null)) erros.push(`${id}: ${velho} -> ${achado} (devia ${novo || "nada"})`);
+    }
+  }
+  assert.deepEqual(erros, []);
+  assert.ok(conferidos >= 1845, `conferidos: ${conferidos}`);
 });
