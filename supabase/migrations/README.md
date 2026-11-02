@@ -103,17 +103,22 @@ poucos.)
   select proname from pg_proc where proname = 'admin_erros';  -- 1 linha
   ```
 
-- `20261001e` — libera o slug `mbc` (Miracle Battle Carddass, o crossover da
-  Jump que virou jogo próprio em 2026-10-01) nas DUAS whitelists de jogo:
-  `card_views`/`increment_card_view` e `contribute_price`. Cópia da
-  `20261001d` (já aplicada) com o `mbc` a mais; só a lista muda, conferido por
-  diff. Aditiva e sem ordem com o JS: antes dela, a view de carta do Miracle
-  Battle é descartada em silêncio (as funções só dão `return`) e o resto do
-  jogo funciona. As views antigas das cartas que eram linha do One Piece, do
-  Naruto e do HxH ficam nas linhas desses jogos (é só o contador de "mais
-  vistas"). Conferir com os `curl` do fim do arquivo: o de `mb-db01-01`
-  responde 204 **e cria a linha** em `card_views`. **A próxima migração de
-  jogo copia esta.**
+- `20261101a` — libera o slug `dbz` (Dragon Ball Z CCG da Score, 2000–2006)
+  nas DUAS whitelists de jogo: `card_views`/`increment_card_view` e
+  `contribute_price`. Cópia da `20261001e` com o `dbz` a mais; só a lista
+  muda, conferido por diff. A lista é a INTEIRA, com o `mbc`: aplicada sozinha,
+  libera também o Miracle Battle da `20261001e`, que ainda não tinha rodado.
+  Aditiva e sem ordem com o JS: antes dela, a view de carta do DBZ CCG e a do
+  Miracle Battle são descartadas em silêncio (as funções só dão `return`) e o
+  resto do jogo funciona. Conferir com os `curl` do fim do arquivo: o de
+  `dbz-s1-1` responde 204 **e cria a linha** em `card_views` (repetir com
+  `"p_game":"mbc","p_card_id":"mb-db01-01"` pro Miracle Battle). **A próxima
+  migração de jogo copia esta.**
+
+- `20261001e` (Miracle Battle) — **NÃO aplicar: a `20261101a` já cobre o
+  `mbc`.** A lista dela é a da `20261101a` sem o `dbz`: rodada depois, tiraria
+  o DBZ CCG das duas whitelists sem erro nenhum. O arquivo fica como registro,
+  com o aviso no topo.
 
 - `20260930b` — blog (`20260930b_blog.sql`; o `b` porque a `20260930a` do mesmo
   dia é a do Star Wars). Cria o papel de editor do blog (`blog_editores`,

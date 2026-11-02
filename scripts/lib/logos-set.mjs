@@ -148,6 +148,7 @@ export const FORA = {
   sorcery: "sem fonte de logo de set (o sync grava vazio)",
   wow: "vintage sem logo de set publicado",
   lotr: "vintage sem logo de set publicado",
+  dbz: "vintage sem logo de set publicado",
   naruto: "logo de linha/título vem do sync; os capítulos sem logo não têm um publicado"
 };
 

@@ -294,6 +294,18 @@
   --accent: #4d7c0f; --accent-dark: #3f6212; --accent-rgb: 77, 124, 15;
   --accent-soft: rgba(77, 124, 15, 0.1); --on-accent: #ffffff;
 }
+/* Dragon Ball Z CCG da Score: CARMIM, o fundo do anúncio de lançamento (2000).
+   Rosa-avermelhado claro com texto escuro no escuro (7.3:1); o carmim do
+   GAME_COLOR com texto branco no claro (8.0:1). */
+[data-game-accent="dbz"] {
+  --accent: #fb7185; --accent-dark: #f43f5e; --accent-rgb: 251, 113, 133;
+  --accent-soft: rgba(251, 113, 133, 0.16); --on-accent: #0a0c10;
+}
+[data-theme="light"][data-game-accent="dbz"],
+[data-theme="light"] [data-game-accent="dbz"] {
+  --accent: #9f1239; --accent-dark: #881337; --accent-rgb: 159, 18, 57;
+  --accent-soft: rgba(159, 18, 57, 0.1); --on-accent: #ffffff;
+}
 /* Harry Potter TCG: ESCARLATE da Grifinória (#740001, a cor da casa). Vermelho
    claro com texto escuro no escuro (a ~110 do vermelho do Pokémon); o
    escarlate com texto branco no claro (12:1). */

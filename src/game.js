@@ -36,6 +36,7 @@
     dbc: { slug: "dbc", name: "Dragon Ball Carddass", dataDir: "data/dbc/" },       // vintage Bandai 1988–1997 (Hondan; cartas sem scan ainda)
     wow: { slug: "wow", name: "World of Warcraft TCG", dataDir: "data/wow/" },     // vintage Upper Deck/Cryptozoic 2006–2013, TCGCSV cat. 13 (EN, com preço)
     lotr: { slug: "lotr", name: "The Lord of the Rings TCG", dataDir: "data/lotr/" }, // vintage Decipher 2001–2007 (banco do Player's Council)
+    dbz: { slug: "dbz", name: "Dragon Ball Z CCG", dataDir: "data/dbz/" }, // vintage Score 2000–2006: DBZ CCG, GT TCG e o DBZ TCG de 2005 (galerias do retrodbzccg)
     harrypotter: { slug: "harrypotter", name: "Harry Potter TCG", dataDir: "data/harrypotter/" }, // vintage Wizards of the Coast 2001–2002 (hpjson; premium = cartas próprias)
     weiss: { slug: "weiss", name: "Weiß Schwarz", dataDir: "data/weiss/" }, // TCGCSV cat. 20 (Bushiroad, só a edição EN, 2013+; paralelas = cartas próprias)
     mbc: { slug: "mbc", name: "Miracle Battle Carddass", dataDir: "data/mbc/" }, // vintage Bandai 2009–2015, crossover da Jump (7 séries; tcg-db)
@@ -63,6 +64,7 @@
     ["weiss-schwarz", "weiss"],
     ["dragon-ball-carddass", "dbc"], ["hunter-x-hunter-carddass", "hxh"],
     ["one-piece-carddass", "onepiece", "opcd", "opcd-"], ["lord-of-the-rings-tcg", "lotr"], ["harry-potter-tcg", "harrypotter"],
+    ["dragon-ball-z-ccg", "dbz"],
     ["one-piece-card-game-2002", "onepiece", "op2002", "op2002-"],
     ["naruto-card-game-2002", "naruto"], ["naruto-data-carddass", "naruto", "nrt-dc", "nrt-dc-,nrt-nf-,nrt-nx-"],
     ["naruto-ccg", "naruto", "nrt-ccg", "nrt-ccg-"], ["world-of-warcraft-tcg", "wow"], ["miracle-battle-carddass", "mbc"]
@@ -253,6 +255,7 @@
     naruto: ["https://wsrv.nl"],
     hxh: ["https://wsrv.nl"],
     lotr: ["https://wsrv.nl"],
+    dbz: ["https://wsrv.nl"],
     harrypotter: ["https://wsrv.nl"]
   };
   // SEM crossorigin, igual às tags que já existem no HTML: na PRIMEIRA visita —

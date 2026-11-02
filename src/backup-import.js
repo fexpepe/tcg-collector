@@ -126,6 +126,10 @@
     if (flat.includes("sorcery")) return "sorcery";
     // Carddass vintage ANTES do Fusion World: "Dragon Ball Carddass" também contém "dragonball".
     if (flat === "dbc" || (flat.includes("dragonball") && flat.includes("carddass"))) return "dbc";
+    // O CCG da Score (2000–2006) também antes do Fusion World. O "Dragon Ball Z
+    // TCG" do TCGplayer é o relançamento da Panini, que não está no catálogo:
+    // segue pro dbfw como antes.
+    if (flat === "dbz" || flat.includes("dbzccg") || flat.includes("dragonballzccg") || flat.includes("dragonballgt")) return "dbz";
     if (flat.includes("dragonball") || flat.includes("fusionworld") || flat === "dbfw") return "dbfw";
     if (flat.includes("riftbound") || flat.includes("leagueoflegends")) return "riftbound";
     if (flat.includes("unionarena")) return "unionarena";

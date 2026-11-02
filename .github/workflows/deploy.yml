@@ -115,6 +115,7 @@ jobs:
             data/dbc/sets
             data/wow/sets
             data/lotr/sets
+            data/dbz/sets
             data/weiss/sets
             data/harrypotter/sets
             data/mbc/sets
@@ -143,8 +144,8 @@ jobs:
           fi
           faltando=""
           # data/dbc/, data/swu/, data/cyberpunk/, data/wow/, data/lotr/,
-          # data/sorcery/, data/harrypotter/, data/weiss/ e data/mbc/: jogos novos
-          # (2026-09-24 a 2026-10-01). Enquanto o cache
+          # data/sorcery/, data/harrypotter/, data/weiss/, data/mbc/ e data/dbz/:
+          # jogos novos (2026-09-24 a 2026-11-01). Enquanto o cache
           # for de antes deles, o build rápido publicaria o tile do hub sem
           # catálogo nenhum atrás.
           for f in data/manifest.generated.js data/pricing.generated.js \
@@ -155,7 +156,8 @@ jobs:
                    data/lotr/manifest.generated.js data/sorcery/manifest.generated.js \
                    data/harrypotter/manifest.generated.js \
                    data/weiss/manifest.generated.js \
-                   data/mbc/manifest.generated.js; do
+                   data/mbc/manifest.generated.js \
+                   data/dbz/manifest.generated.js; do
             [ -s "$f" ] || faltando="$faltando $f"
           done
           if [ -n "$faltando" ]; then
@@ -640,6 +642,14 @@ jobs:
         if: env.RODA_SYNC == 'true'
         run: node scripts/sync-lotr.mjs || echo "sync-lotr falhou; segue com o catalogo versionado"
 
+      # Dragon Ball Z CCG (Score 2000-2006): o jogo vintage dbz. Monta data/dbz/
+      # do snapshot versionado (data/vintage/dbz-retro.json, das galerias do
+      # retrodbzccg.com), SEM rede: o jogo acabou em 2006. Imagens pelo wsrv.nl.
+      # Sem preco.
+      - name: Catalogo vintage Dragon Ball Z CCG
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/sync-dbz.mjs || echo "sync-dbz falhou; segue com o catalogo versionado"
+
       # Harry Potter TCG (Wizards of the Coast 2001-2002): o jogo vintage
       # harrypotter. Cartas do hpjson (GitHub), imagens do accio.cards via wsrv;
       # snapshot versionado em data/vintage/hptcg.json (nao regride, ids pelo
@@ -800,6 +810,7 @@ jobs:
             data/dbc/sets
             data/wow/sets
             data/lotr/sets
+            data/dbz/sets
             data/weiss/sets
             data/harrypotter/sets
             data/mbc/sets
