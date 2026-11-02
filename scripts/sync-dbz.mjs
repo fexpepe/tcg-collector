@@ -104,9 +104,12 @@ const SETS = [
   { code: "tf", name: "Tuff Enuff", serie: "zsub", pages: [R(1174, "Subset")] },
   { code: "cc", name: "Capsule Corp Power Pack", serie: "zsub", pages: [R(2636, "Subset")] },
   // Promos fora de saga. Os de liga (Seasons) e os de juiz ficam à parte: o
-  // K1 do juiz (King Kai) e o K1 da Kraft são cartas diferentes.
-  { code: "pr", name: "Dragon Ball Z Promos", serie: "zsub", promo: true, pages: [R(494, "Promo"), R(2604, "Promo"), R(2597, "Promo"), R(2567, "Promo"), R(2572, "Promo"), R(2578, "Promo"), R(2588, "Promo"), R(2554, "Promo"), R(2542, "Promo"), R(2529, "Promo"), R(2617, "Promo"), R(2684, "Promo")] },
-  { code: "lg", name: "Dragon Ball Z League & Judge Promos", serie: "zsub", promo: true, pages: [R(2740, "League"), R(2753, "League"), R(2726, "League"), R(2780, "League"), R(2766, "League"), R(2793, "League"), R(2625, "Judge")] },
+  // K1 do juiz (King Kai) e o K1 da Kraft são cartas diferentes. Sem
+  // "Dragon Ball Z" na frente desde 2026-11-02: é o nome do jogo (contrato 7
+  // do docs/CATALOGO.md); o GT fica com a sigla, que separa os promos dele
+  // destes.
+  { code: "pr", name: "Promos", serie: "zsub", promo: true, pages: [R(494, "Promo"), R(2604, "Promo"), R(2597, "Promo"), R(2567, "Promo"), R(2572, "Promo"), R(2578, "Promo"), R(2588, "Promo"), R(2554, "Promo"), R(2542, "Promo"), R(2529, "Promo"), R(2617, "Promo"), R(2684, "Promo")] },
+  { code: "lg", name: "League & Judge Promos", serie: "zsub", promo: true, pages: [R(2740, "League"), R(2753, "League"), R(2726, "League"), R(2780, "League"), R(2766, "League"), R(2793, "League"), R(2625, "Judge")] },
   // Dragon Ball GT TCG. As galerias trazem junto os previews e promos da saga
   // ("Preview 1 …", "Promo 1 …"), que vão pro set "<Saga> Promos".
   { code: "g1", name: "Baby Saga", serie: "gt", pages: [R(9940)] },
@@ -115,7 +118,7 @@ const SETS = [
   { code: "g4", name: "Lost Episodes Saga", serie: "gt", pages: [R(11009)] },
   { code: "gbc", name: "Broly: The Second Coming", serie: "gt", pages: [R(10294, "Subset")] },
   { code: "gvi", name: "Villain Invasion", serie: "gt", pages: [R(10837, "Subset")] },
-  { code: "gpr", name: "Dragon Ball GT Promos", serie: "gt", promo: true, pages: [R(2482, "Preview"), R(11075, "Promo"), R(11132, "League"), R(11167, "Promo"), R(10481, "Redemption")] },
+  { code: "gpr", name: "GT Promos", serie: "gt", promo: true, pages: [R(2482, "Preview"), R(11075, "Promo"), R(11132, "League"), R(11167, "Promo"), R(10481, "Redemption")] },
   // Dragon Ball Z TCG (2005).
   { code: "t1", name: "Arrival", serie: "tcg", pages: [R(11459)] },
   { code: "t2", name: "Showdown", serie: "tcg", pages: [R(11589)] },

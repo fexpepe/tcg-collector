@@ -7,7 +7,7 @@
 //
 // Em 2026-11-02 os sets vintage perderam o nome do jogo ou da linha que os
 // syncs punham na frente ("Naruto CCG — The Path to Hokage" virou "The Path to
-// Hokage"; contrato 7 do docs/CATALOGO.md): 194 sets em sete endereços de
+// Hokage"; contrato 7 do docs/CATALOGO.md): 197 sets em oito endereços de
 // jogo. Nos de nome só em japonês o slug passou a sair do setId
 // ("data-carddass-1" virou "nrt-dc-s01-1"), sem relação de texto com o antigo.
 //

@@ -135,7 +135,7 @@ aparecer no passo "Lint dos catálogos" do deploy:
   `data/game-pages/<jogo>.json`. O prerender põe o de-para no mapa do jogo
   (campo `r`) e no `legado-sets.json`, e a borda responde 301 no set, na
   variante `-en`, nas cartas e no link de compartilhar com o nome antigo. Foi
-  assim com os 194 sets vintage que perderam o prefixo em 2026-11-02.
+  assim com os 197 sets vintage que perderam o prefixo em 2026-11-02.
 - O set caiu na **categoria certa**. Lorcana, One Piece, Naruto, HxH e DBC
   agrupam pelo `setId` (`group<Jogo>Sets` em [src/app.js](../src/app.js)), e
   um formato de código inédito pode cair em "outros".

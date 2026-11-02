@@ -1,4 +1,9 @@
 {
+  "dragon-ball-z-ccg": {
+    "dragon-ball-gt-promos": "dbz-gpr",
+    "dragon-ball-z-league-judge-promos": "dbz-lg",
+    "dragon-ball-z-promos": "dbz-pr"
+  },
   "harry-potter-tcg": {
     "harry-potter-league-promos": "hp-league"
   },

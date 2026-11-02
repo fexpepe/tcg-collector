@@ -31,6 +31,7 @@ const NOMES_DO_JOGO = {
   mbc: { nomes: ["Miracle Battle", "ミラクルバトル"] },
   hxh: { nomes: ["Hunter", "HUNTER", "ハンター", "Hyper Battle", "ハイパーバトル", "Carddass", "カードダス"] },
   dbc: { nomes: ["Dragon Ball", "DRAGON BALL", "ドラゴンボール", "Carddass", "カードダス"] },
+  dbz: { nomes: ["Dragon Ball", "DBZ"] },
   harrypotter: { nomes: ["Harry Potter"] },
   // "LOTR Online" é o jogo DIGITAL da Decipher, outro produto: sem ele o nome
   // viraria "Online Promos".
@@ -102,7 +103,7 @@ test("sets-renomeados.json: todo endereço antigo leva a um set que existe naque
       assert.ok(!slugsDeHoje.has(antigo), `${url}/${antigo}: é o slug de um set de hoje`);
     }
   }
-  assert.ok(total >= 194, `de-para encolheu: ${total}`);
+  assert.ok(total >= 197, `de-para encolheu: ${total}`);
 });
 
 test("enderecosRenomeados: setId -> slug de hoje; set vivo com o slug antigo vence", () => {
