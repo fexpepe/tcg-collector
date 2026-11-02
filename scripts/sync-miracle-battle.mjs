@@ -83,11 +83,15 @@ function parseSetList(html) {
   return sets;
 }
 
-// cardlist inteiro: scan "OP01/23" (código do set / número local) + nome.
-function parseCards(html) {
+// cardlist inteiro: scan "OP01/23" (código do set / número local) + nome +
+// raridade. A raridade é o texto logo depois do link do set na mesma linha
+// ("…ブースターパック 第1弾</a>　SR<br />"); vazio = sem marca = comum
+// (Wikipedia JA: "マークなし（コモン）"). Até 2026-11-01 o parse parava no nome e
+// a raridade, que estava na página o tempo todo, nunca chegava ao catálogo.
+export function parseCards(html) {
   const cards = [];
   const seen = new Set();
-  const re = /<img src='\/img\/card\/mb\/([^']+)\.jpg'[^>]*>[\s\S]{0,200}?<span style='font-weight:bold;font-size:120%;'>([^<]+?)[\s　]+<a href='\?name=[^']*'>([^<]+)<\/a>/g;
+  const re = /<img src='\/img\/card\/mb\/([^']+)\.jpg'[^>]*>[\s\S]{0,200}?<span style='font-weight:bold;font-size:120%;'>([^<]+?)[\s　]+<a href='\?name=[^']*'>([^<]+)<\/a>(?:[\s\S]{0,400}?<a href='\?exp=[^']*'>[^<]*<\/a>([^<]*)<br)?/g;
   let m;
   while ((m = re.exec(html))) {
     const scan = m[1].trim();
@@ -96,7 +100,7 @@ function parseCards(html) {
     const slash = scan.indexOf("/");
     const setCode = slash > 0 ? scan.slice(0, slash) : "";
     if (!setCode) continue;
-    cards.push({ scan, setCode, num: m[2].trim(), name: m[3].trim() });
+    cards.push({ scan, setCode, num: m[2].trim(), name: m[3].trim(), rarity: String(m[4] || "").replace(/[\s　]/g, "") });
   }
   return cards;
 }
@@ -114,7 +118,7 @@ async function refreshSnapshot(existing) {
   const byCode = new Map();
   for (const c of all) {
     if (!byCode.has(c.setCode)) byCode.set(c.setCode, []);
-    byCode.get(c.setCode).push({ scan: c.scan, num: c.num, name: c.name });
+    byCode.get(c.setCode).push({ scan: c.scan, num: c.num, name: c.name, rarity: c.rarity });
   }
   // Ordem do explist (starters -> boosters -> promos, por franquia); códigos que
   // só aparecem nos scans (sem entrada no explist) vão pro fim.
@@ -129,8 +133,25 @@ async function refreshSnapshot(existing) {
   const newCount = snapshotCardCount(candidate);
   const oldCount = snapshotCardCount(existing);
   console.log(`  tcg-db mb: ${sets.length} sets, ${newCount} cartas (snapshot: ${oldCount}).`);
-  if (newCount < oldCount) { console.log(`  ⚠ REGRESSÃO (${newCount} < ${oldCount}) — snapshot mantido.`); return existing; }
-  if (newCount !== oldCount) await writeSnapshot(SNAP, candidate);
+  if (newCount < oldCount) {
+    console.log(`  ⚠ REGRESSÃO (${newCount} < ${oldCount}) — snapshot mantido.`);
+    // A lista encolheu (o tcg-db tirou 1 carta em 2026-11), mas a raridade das
+    // que continuam lá ainda vale: anexa pelo caminho do scan, sem tirar nada
+    // do snapshot. Carta que só o snapshot tem fica sem o campo (sem raridade).
+    const porScan = new Map(all.map((c) => [c.scan, c.rarity]));
+    let anexadas = 0;
+    for (const s of existing?.sets || []) {
+      for (const c of s.cards) {
+        if (!("rarity" in c) && porScan.has(c.scan)) { c.rarity = porScan.get(c.scan); anexadas++; }
+      }
+    }
+    if (anexadas) { await writeSnapshot(SNAP, existing); console.log(`  raridade anexada a ${anexadas} cartas do snapshot.`); }
+    return existing;
+  }
+  // Snapshot de antes de 2026-11-01 não tem a raridade: reescreve mesmo com a
+  // contagem igual.
+  const semRaridade = (existing?.sets || []).some((s) => s.cards.some((c) => !("rarity" in c)));
+  if (newCount !== oldCount || semRaridade) await writeSnapshot(SNAP, candidate);
   return (await readSnapshot(SNAP)) || candidate;
 }
 
@@ -163,6 +184,16 @@ export function setNameOf(set, serie) {
 // dos nomes de Naruto (scripts/data/naruto-names-en.json): até 2026-10-01 o
 // translate-naruto-names.mjs traduzia estas cartas dentro do catálogo do
 // Naruto; aqui a tradução vem junto, no mesmo formato (original no `nameJp`).
+// Raridade impressa do Miracle Battle: U, R, SR, M (ミラクルキラ), B (ブースト
+// キラ), Ω, 超Ω, P (promo). Sem marca é a comum — "C" pra ela ser escolhível no
+// filtro. "R(foil)" no scan base é a rara que só saiu foil: fica "R". Snapshot
+// sem o campo (anterior à leitura da raridade) fica vazio, não vira comum.
+export function raridadeMb(bruta) {
+  if (bruta === undefined || bruta === null) return "";
+  const r = String(bruta).replace(/\(foil\)/i, "").trim();
+  return r || "C";
+}
+
 export function buildCards(snap, { nomesEn = {}, imagemCurada = () => null } = {}) {
   const cards = [];
   for (const s of snap.sets || []) {
@@ -172,11 +203,16 @@ export function buildCards(snap, { nomesEn = {}, imagemCurada = () => null } = {
     const setId = `${serie.idPrefix}-${code}`;
     const setName = setNameOf(s, serie);
     // 2+ scans pro mesmo número (re-impressão, ex.: OP01/86 e OP01/86_2) é a
-    // MESMA carta física: fica um registro, com o scan de código base.
+    // MESMA carta física: fica um registro, com o scan de código base. Quando
+    // o scan extra vem marcado "(foil)"/"R(foil)" ele é a versão FOIL dessa
+    // carta (os decks prontos do DBZ Kai saíram com as duas): vira a versão
+    // "Foil" do registro, e a raridade é a do scan base.
     const byNum = new Map();
+    const temFoil = new Set();
     for (const c of s.cards) {
       const cur = byNum.get(c.num);
       if (!cur || (cur.scan.includes("_") && !c.scan.includes("_"))) byNum.set(c.num, c);
+      if (c.scan.includes("_") && /foil/i.test(c.rarity || "")) temFoil.add(c.num);
     }
     for (const c of byNum.values()) {
       // Id pelo NÚMERO oficial (não pelo arquivo do scan): estável mesmo que o
@@ -192,11 +228,11 @@ export function buildCards(snap, { nomesEn = {}, imagemCurada = () => null } = {
         number: c.num,
         setTotal: s.cards.length,
         setReleaseDate: "",
-        rarity: "",
+        rarity: raridadeMb(c.rarity),
         artist: "",
         language: "ja",
         image: imagemCurada(cardId) || (c.scan ? IMG(c.scan) : ""),
-        variants: ["Normal"],
+        variants: temFoil.has(c.num) ? ["Normal", "Foil"] : ["Normal"],
         setLogo: LOGO,
         vintage: true,
         vintageLine: serie.key,

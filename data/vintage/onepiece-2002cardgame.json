@@ -1,6 +1,6 @@
 {
  "source": "https://grandlinewiki.net/tcg/opcardgame2002.html",
- "updatedAt": "2026-07-05",
+ "updatedAt": "2026-11-02",
  "sets": [
   {
    "name": "Road to the Pirate King",
@@ -10,332 +10,398 @@
     {
      "num": "LK-C01",
      "nameEn": "Luffy",
-     "nameJp": "ルフィ"
+     "nameJp": "ルフィ",
+     "rarity": "Holo"
     },
     {
      "num": "LK-C02",
      "nameEn": "Zoro",
-     "nameJp": "ゾロ"
+     "nameJp": "ゾロ",
+     "rarity": "Holo"
     },
     {
      "num": "LK-C03",
      "nameEn": "Sanji",
-     "nameJp": "サンジ"
+     "nameJp": "サンジ",
+     "rarity": "Holo"
     },
     {
      "num": "LK-C04",
      "nameEn": "Chopper",
-     "nameJp": "チョッパー"
+     "nameJp": "チョッパー",
+     "rarity": "Holo"
     },
     {
      "num": "LK-C05",
      "nameEn": "Ace",
-     "nameJp": "エース"
+     "nameJp": "エース",
+     "rarity": "Holo"
     },
     {
      "num": "LK-C06",
      "nameEn": "Smoker",
-     "nameJp": "スモーカー"
+     "nameJp": "スモーカー",
+     "rarity": "Holo"
     },
     {
      "num": "LK-C07",
      "nameEn": "Luffy",
-     "nameJp": "ルフィ"
+     "nameJp": "ルフィ",
+     "rarity": "Normal"
     },
     {
      "num": "LK-C08",
      "nameEn": "Zoro",
-     "nameJp": "ゾロ"
+     "nameJp": "ゾロ",
+     "rarity": "Normal"
     },
     {
      "num": "LK-C09",
      "nameEn": "Nami",
-     "nameJp": "ナミ"
+     "nameJp": "ナミ",
+     "rarity": "Normal"
     },
     {
      "num": "LK-C10",
      "nameEn": "Usopp",
-     "nameJp": "ウソップ"
+     "nameJp": "ウソップ",
+     "rarity": "Normal"
     },
     {
      "num": "LK-C11",
      "nameEn": "Sanji",
-     "nameJp": "サンジ"
+     "nameJp": "サンジ",
+     "rarity": "Normal"
     },
     {
      "num": "LK-C12",
      "nameEn": "Chopper",
-     "nameJp": "チョッパー"
+     "nameJp": "チョッパー",
+     "rarity": "Normal"
     },
     {
      "num": "LK-C13",
      "nameEn": "Ace",
-     "nameJp": "エース"
+     "nameJp": "エース",
+     "rarity": "Normal"
     },
     {
      "num": "LK-C14",
      "nameEn": "Tashigi",
-     "nameJp": "たしぎ"
+     "nameJp": "たしぎ",
+     "rarity": "Normal"
     },
     {
      "num": "LK-C15",
      "nameEn": "Miss All-Sunday",
-     "nameJp": "ミス・オールサンデー"
+     "nameJp": "ミス・オールサンデー",
+     "rarity": "Normal"
     },
     {
      "num": "LK-C16",
      "nameEn": "Mr.2",
-     "nameJp": "Ｍｒ．２"
+     "nameJp": "Ｍｒ．２",
+     "rarity": "Normal"
     },
     {
      "num": "LK-C17",
      "nameEn": "Count Battler",
-     "nameJp": "バトラー伯爵"
+     "nameJp": "バトラー伯爵",
+     "rarity": "Normal"
     },
     {
      "num": "LK-C18",
      "nameEn": "Vivi",
-     "nameJp": "ビビ"
+     "nameJp": "ビビ",
+     "rarity": "Normal"
     },
     {
      "num": "LK-C19",
      "nameEn": "Luffy",
-     "nameJp": "ルフィ"
+     "nameJp": "ルフィ",
+     "rarity": "Holo"
     },
     {
      "num": "LK-C20",
      "nameEn": "Zoro",
-     "nameJp": "ゾロ"
+     "nameJp": "ゾロ",
+     "rarity": "Holo"
     },
     {
      "num": "LK-C21",
      "nameEn": "Nami",
-     "nameJp": "ナミ"
+     "nameJp": "ナミ",
+     "rarity": "Holo"
     },
     {
      "num": "LK-C22",
      "nameEn": "Chopper",
-     "nameJp": "チョッパー"
+     "nameJp": "チョッパー",
+     "rarity": "Holo"
     },
     {
      "num": "LK-C23",
      "nameEn": "Crocodile",
-     "nameJp": "クロコダイル"
+     "nameJp": "クロコダイル",
+     "rarity": "Holo"
     },
     {
      "num": "LK-C24",
      "nameEn": "Vivi",
-     "nameJp": "ビビ"
+     "nameJp": "ビビ",
+     "rarity": "Holo"
     },
     {
      "num": "LK-C25",
      "nameEn": "Smoker",
-     "nameJp": "スモーカー"
+     "nameJp": "スモーカー",
+     "rarity": "Normal"
     },
     {
      "num": "LK-C26",
      "nameEn": "Crocodile",
-     "nameJp": "クロコダイル"
+     "nameJp": "クロコダイル",
+     "rarity": "Normal"
     },
     {
      "num": "LK-C27",
      "nameEn": "General Hotdog",
-     "nameJp": "ホットドッグ将軍"
+     "nameJp": "ホットドッグ将軍",
+     "rarity": "Normal"
     },
     {
      "num": "LK-C28",
      "nameEn": "President Heabi",
-     "nameJp": "ヘビー総裁"
+     "nameJp": "ヘビー総裁",
+     "rarity": "Normal"
     },
     {
      "num": "LK-C29",
      "nameEn": "Chaka",
-     "nameJp": "チャカ"
+     "nameJp": "チャカ",
+     "rarity": "Normal"
     },
     {
      "num": "LK-C30",
      "nameEn": "Pell",
-     "nameJp": "ペル"
+     "nameJp": "ペル",
+     "rarity": "Normal"
     },
     {
      "num": "LK-C31",
      "nameEn": "Koza",
-     "nameJp": "コーザ"
+     "nameJp": "コーザ",
+     "rarity": "Normal"
     },
     {
      "num": "LK-C32",
      "nameEn": "Mobambi",
-     "nameJp": "モバンビー"
+     "nameJp": "モバンビー",
+     "rarity": "Normal"
     },
     {
      "num": "LK-W01",
      "nameEn": "Gomu Gomu no Gatling",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W02",
      "nameEn": "Gomu Gomu no Bazooka",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W03",
      "nameEn": "Onigiri",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W04",
      "nameEn": "Tatsu Maki",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W05",
      "nameEn": "Thief's Quick Work",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W06",
      "nameEn": "Spirit",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W07",
      "nameEn": "Épaule",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W08",
      "nameEn": "Joue",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W09",
      "nameEn": "Walking Point",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W10",
      "nameEn": "Guard Point",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W11",
      "nameEn": "Fire Fist",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W12",
      "nameEn": "Kagero",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W13",
      "nameEn": "White Snake",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W14",
      "nameEn": "Kiri Musubi",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W15",
      "nameEn": "Tres Fleur",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W16",
      "nameEn": "Sneak Attack",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W17",
      "nameEn": "Mystical Power",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W18",
      "nameEn": "Kujakki String Slasher",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W19",
      "nameEn": "Single Combat",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W20",
      "nameEn": "Wounded All Over",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W21",
      "nameEn": "Evasion",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W22",
      "nameEn": "Courage",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W23",
      "nameEn": "A Pirates Banquet",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W24",
      "nameEn": "Friendship",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W25",
      "nameEn": "Desert Spada",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W26",
      "nameEn": "Barján",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W27",
      "nameEn": "3 Revolutions, 1 Kick",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W28",
      "nameEn": "Serpent Swordsmanship",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W29",
      "nameEn": "Decleration",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W30",
      "nameEn": "Model: Falcon",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W31",
      "nameEn": "Rebellion",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W32",
      "nameEn": "Wild Can",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W33",
      "nameEn": "I Was Fooled!",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W34",
      "nameEn": "Great Escape",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     }
    ]
   },
@@ -347,302 +413,362 @@
     {
      "num": "CE-C01",
      "nameEn": "Luffy",
-     "nameJp": "ルフィ"
+     "nameJp": "ルフィ",
+     "rarity": "Holo"
     },
     {
      "num": "CE-C02",
      "nameEn": "Zoro",
-     "nameJp": "ゾロ"
+     "nameJp": "ゾロ",
+     "rarity": "Holo"
     },
     {
      "num": "CE-C03",
      "nameEn": "Nami",
-     "nameJp": "ナミ"
+     "nameJp": "ナミ",
+     "rarity": "Holo"
     },
     {
      "num": "CE-C04",
      "nameEn": "Usopp",
-     "nameJp": "ウソップ"
+     "nameJp": "ウソップ",
+     "rarity": "Holo"
     },
     {
      "num": "CE-C05",
      "nameEn": "Sanji",
-     "nameJp": "サンジ"
+     "nameJp": "サンジ",
+     "rarity": "Holo"
     },
     {
      "num": "CE-C06",
      "nameEn": "Shanks",
-     "nameJp": "シャンクス"
+     "nameJp": "シャンクス",
+     "rarity": "Holo"
     },
     {
      "num": "CE-C07",
      "nameEn": "Alvida",
-     "nameJp": "アルビダ"
+     "nameJp": "アルビダ",
+     "rarity": "Holo"
     },
     {
      "num": "CE-C08",
      "nameEn": "Buggy",
-     "nameJp": "バギー"
+     "nameJp": "バギー",
+     "rarity": "Holo"
     },
     {
      "num": "CE-C09",
      "nameEn": "Kuro",
-     "nameJp": "クロ"
+     "nameJp": "クロ",
+     "rarity": "Holo"
     },
     {
      "num": "CE-C10",
      "nameEn": "Luffy",
-     "nameJp": "ルフィ"
+     "nameJp": "ルフィ",
+     "rarity": "Normal"
     },
     {
      "num": "CE-C11",
      "nameEn": "Zoro",
-     "nameJp": "ゾロ"
+     "nameJp": "ゾロ",
+     "rarity": "Normal"
     },
     {
      "num": "CE-C12",
      "nameEn": "Usopp",
-     "nameJp": "ウソップ"
+     "nameJp": "ウソップ",
+     "rarity": "Normal"
     },
     {
      "num": "CE-C13",
      "nameEn": "Sanji",
-     "nameJp": "サンジ"
+     "nameJp": "サンジ",
+     "rarity": "Normal"
     },
     {
      "num": "CE-C14",
      "nameEn": "Chopper",
-     "nameJp": "チョッパー"
+     "nameJp": "チョッパー",
+     "rarity": "Normal"
     },
     {
      "num": "CE-C15",
      "nameEn": "Beckmann",
-     "nameJp": "ベックマン"
+     "nameJp": "ベックマン",
+     "rarity": "Normal"
     },
     {
      "num": "CE-C16",
      "nameEn": "Lucky Roux",
-     "nameJp": "ラッキー・ルウ"
+     "nameJp": "ラッキー・ルウ",
+     "rarity": "Normal"
     },
     {
      "num": "CE-C17",
      "nameEn": "Yasopp",
-     "nameJp": "ヤソップ"
+     "nameJp": "ヤソップ",
+     "rarity": "Normal"
     },
     {
      "num": "CE-C18",
      "nameEn": "Ace",
-     "nameJp": "エース"
+     "nameJp": "エース",
+     "rarity": "Normal"
     },
     {
      "num": "CE-C19",
      "nameEn": "Morgan",
-     "nameJp": "モーガン"
+     "nameJp": "モーガン",
+     "rarity": "Normal"
     },
     {
      "num": "CE-C20",
      "nameEn": "Koby",
-     "nameJp": "コビー"
+     "nameJp": "コビー",
+     "rarity": "Normal"
     },
     {
      "num": "CE-C21",
      "nameEn": "Alvida",
-     "nameJp": "アルビダ"
+     "nameJp": "アルビダ",
+     "rarity": "Normal"
     },
     {
      "num": "CE-C22",
      "nameEn": "Cabaji",
-     "nameJp": "カバジ"
+     "nameJp": "カバジ",
+     "rarity": "Normal"
     },
     {
      "num": "CE-C23",
      "nameEn": "Mohji",
-     "nameJp": "モージ"
+     "nameJp": "モージ",
+     "rarity": "Normal"
     },
     {
      "num": "CE-C24",
      "nameEn": "Jango",
-     "nameJp": "ジャンゴ"
+     "nameJp": "ジャンゴ",
+     "rarity": "Normal"
     },
     {
      "num": "CE-C25",
      "nameEn": "Sham",
-     "nameJp": "シャム"
+     "nameJp": "シャム",
+     "rarity": "Normal"
     },
     {
      "num": "CE-C26",
      "nameEn": "Buchi",
-     "nameJp": "ブチ"
+     "nameJp": "ブチ",
+     "rarity": "Normal"
     },
     {
      "num": "CE-W01",
      "nameEn": "Gomu Gomu no Kane",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "CE-W02",
      "nameEn": "Gomu Gomu no Fusen",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "CE-W03",
      "nameEn": "Tora Gari",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "CE-W04",
      "nameEn": "Oni Giri",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "CE-W05",
      "nameEn": "Escaping on Foot",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "CE-W06",
      "nameEn": "Gunpower Star",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "CE-W07",
      "nameEn": "Caltrop Hell",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "CE-W08",
      "nameEn": "Mouton Shot",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "CE-W09",
      "nameEn": "Quasi",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "CE-W10",
      "nameEn": "Scope",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "CE-W11",
      "nameEn": "Fighting For Your Friends",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "CE-W12",
      "nameEn": "Match for a Thousand",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "CE-W13",
      "nameEn": "Gluttony",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "CE-W14",
      "nameEn": "Clean Hit",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "CE-W15",
      "nameEn": "A Great Pirate's Lunch",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "CE-W16",
      "nameEn": "Down Swing",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "CE-W17",
      "nameEn": "A Man's Willpower",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "CE-W18",
      "nameEn": "Seduction",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "CE-W19",
      "nameEn": "Extreme Blow",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "CE-W20",
      "nameEn": "Bara Bara Ho",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "CE-W21",
      "nameEn": "Kamikaze Hyakkoma Gekijo",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "CE-W22",
      "nameEn": "Wild Animal Show",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "CE-W23",
      "nameEn": "Stealth Foot",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "CE-W24",
      "nameEn": "Mass Hypnosis",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "CE-W25",
      "nameEn": "Cat Snatch",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "CE-W26",
      "nameEn": "Runaway Force",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "CE-W27",
      "nameEn": "Objective Sighted!",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "CE-W28",
      "nameEn": "Resolution",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "CE-W29",
      "nameEn": "Words of Our Predecessors",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "CE-W30",
      "nameEn": "Memories of Chouchou",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "CE-W31",
      "nameEn": "Quip",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "CE-W32",
      "nameEn": "Respectful Salute",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "CE-W33",
      "nameEn": "Pirate Scheme",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "CE-W34",
      "nameEn": "Defensive Fight",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     }
    ]
   },
@@ -654,207 +780,248 @@
     {
      "num": "BA-C01",
      "nameEn": "Luffy",
-     "nameJp": "ルフィ"
+     "nameJp": "ルフィ",
+     "rarity": "Holo"
     },
     {
      "num": "BA-C02",
      "nameEn": "Sanji",
-     "nameJp": "サンジ"
+     "nameJp": "サンジ",
+     "rarity": "Holo"
     },
     {
      "num": "BA-C03",
      "nameEn": "Chopper",
-     "nameJp": "チョッパー"
+     "nameJp": "チョッパー",
+     "rarity": "Holo"
     },
     {
      "num": "BA-C04",
      "nameEn": "Smoker",
-     "nameJp": "スモーカー"
+     "nameJp": "スモーカー",
+     "rarity": "Holo"
     },
     {
      "num": "BA-C05",
      "nameEn": "Crocodile",
-     "nameJp": "クロコダイル"
+     "nameJp": "クロコダイル",
+     "rarity": "Holo"
     },
     {
      "num": "BA-C06",
      "nameEn": "Cobra",
-     "nameJp": "コブラ"
+     "nameJp": "コブラ",
+     "rarity": "Holo"
     },
     {
      "num": "BA-C07",
      "nameEn": "Zoro",
-     "nameJp": "ゾロ"
+     "nameJp": "ゾロ",
+     "rarity": "Normal"
     },
     {
      "num": "BA-C08",
      "nameEn": "Nami",
-     "nameJp": "ナミ"
+     "nameJp": "ナミ",
+     "rarity": "Normal"
     },
     {
      "num": "BA-C09",
      "nameEn": "Usopp",
-     "nameJp": "ウソップ"
+     "nameJp": "ウソップ",
+     "rarity": "Normal"
     },
     {
      "num": "BA-C10",
      "nameEn": "Sanji",
-     "nameJp": "サンジ"
+     "nameJp": "サンジ",
+     "rarity": "Normal"
     },
     {
      "num": "BA-C11",
      "nameEn": "Chopper",
-     "nameJp": "チョッパー"
+     "nameJp": "チョッパー",
+     "rarity": "Normal"
     },
     {
      "num": "BA-C12",
      "nameEn": "Mr. 2",
-     "nameJp": "Ｍｒ．２"
+     "nameJp": "Ｍｒ．２",
+     "rarity": "Normal"
     },
     {
      "num": "BA-C13",
      "nameEn": "Mr. 4",
-     "nameJp": "Ｍｒ．４"
+     "nameJp": "Ｍｒ．４",
+     "rarity": "Normal"
     },
     {
      "num": "BA-C14",
      "nameEn": "Miss Merry Christmas",
-     "nameJp": "ミス・メリークリスマス"
+     "nameJp": "ミス・メリークリスマス",
+     "rarity": "Normal"
     },
     {
      "num": "BA-C15",
      "nameEn": "Vivi",
-     "nameJp": "ビビ"
+     "nameJp": "ビビ",
+     "rarity": "Normal"
     },
     {
      "num": "BA-C16",
      "nameEn": "Karoo",
-     "nameJp": "カルー"
+     "nameJp": "カルー",
+     "rarity": "Normal"
     },
     {
      "num": "BA-C17",
      "nameEn": "Chaka",
-     "nameJp": "チャカ"
+     "nameJp": "チャカ",
+     "rarity": "Normal"
     },
     {
      "num": "BA-C18",
      "nameEn": "Pell",
-     "nameJp": "ペル"
+     "nameJp": "ペル",
+     "rarity": "Normal"
     },
     {
      "num": "BA-W01",
      "nameEn": "Gomu Gomu no Stamp",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "BA-W02",
      "nameEn": "Funny Gag",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "BA-W03",
      "nameEn": "Sword of War",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "BA-W04",
      "nameEn": "Gathering Signs",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "BA-W05",
      "nameEn": "Usopp Pound",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "BA-W06",
      "nameEn": "Anti-Manner Kick Course",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "BA-W07",
      "nameEn": "Galavant",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "BA-W08",
      "nameEn": "Moving Crab Meeting!",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "BA-W09",
      "nameEn": "Kokutei Roseo",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "BA-W10",
      "nameEn": "Jitte User",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "BA-W11",
      "nameEn": "Sables",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "BA-W12",
      "nameEn": "Swan Arabesque",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "BA-W13",
      "nameEn": "Bombardment",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "BA-W14",
      "nameEn": "Molehill Intersection Number 4",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "BA-W15",
      "nameEn": "Qualities of a King",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "BA-W16",
      "nameEn": "Commitment and Trust",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "BA-W17",
      "nameEn": "Commanders Ability",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "BA-W19",
      "nameEn": "Air Glide",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "BA-W20",
      "nameEn": "Travel Preperation",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "BA-W21",
      "nameEn": "Kingdom in Crisis",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "BA-W22",
      "nameEn": "Harsh Words",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "BA-W23",
      "nameEn": "Bananawani Den",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "BA-W24",
      "nameEn": "Eve of the Decisive Battle",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     }
    ]
   },
@@ -866,302 +1033,362 @@
     {
      "num": "MS-C01",
      "nameEn": "Luffy",
-     "nameJp": "ルフィ"
+     "nameJp": "ルフィ",
+     "rarity": "Holo"
     },
     {
      "num": "MS-C02",
      "nameEn": "Zoro",
-     "nameJp": "ゾロ"
+     "nameJp": "ゾロ",
+     "rarity": "Holo"
     },
     {
      "num": "MS-C03",
      "nameEn": "Nami",
-     "nameJp": "ナミ"
+     "nameJp": "ナミ",
+     "rarity": "Holo"
     },
     {
      "num": "MS-C04",
      "nameEn": "Sanji",
-     "nameJp": "サンジ"
+     "nameJp": "サンジ",
+     "rarity": "Holo"
     },
     {
      "num": "MS-C05",
      "nameEn": "Mihawk",
-     "nameJp": "ミホーク"
+     "nameJp": "ミホーク",
+     "rarity": "Holo"
     },
     {
      "num": "MS-C06",
      "nameEn": "Dragon",
-     "nameJp": "ドラゴン"
+     "nameJp": "ドラゴン",
+     "rarity": "Holo"
     },
     {
      "num": "MS-C07",
      "nameEn": "Krieg",
-     "nameJp": "クリーク"
+     "nameJp": "クリーク",
+     "rarity": "Holo"
     },
     {
      "num": "MS-C08",
      "nameEn": "Arlong",
-     "nameJp": "アーロン"
+     "nameJp": "アーロン",
+     "rarity": "Holo"
     },
     {
      "num": "MS-C09",
      "nameEn": "Zeff",
-     "nameJp": "ゼフ"
+     "nameJp": "ゼフ",
+     "rarity": "Holo"
     },
     {
      "num": "MS-C10",
      "nameEn": "Luffy",
-     "nameJp": "ルフィ"
+     "nameJp": "ルフィ",
+     "rarity": "Normal"
     },
     {
      "num": "MS-C11",
      "nameEn": "Usopp",
-     "nameJp": "ウソップ"
+     "nameJp": "ウソップ",
+     "rarity": "Normal"
     },
     {
      "num": "MS-C12",
      "nameEn": "Chopper",
-     "nameJp": "チョッパー"
+     "nameJp": "チョッパー",
+     "rarity": "Normal"
     },
     {
      "num": "MS-C13",
      "nameEn": "Fullbody",
-     "nameJp": "フルボディ"
+     "nameJp": "フルボディ",
+     "rarity": "Normal"
     },
     {
      "num": "MS-C14",
      "nameEn": "Nezumi",
-     "nameJp": "ネズミ"
+     "nameJp": "ネズミ",
+     "rarity": "Normal"
     },
     {
      "num": "MS-C15",
      "nameEn": "Smoker",
-     "nameJp": "スモーカー"
+     "nameJp": "スモーカー",
+     "rarity": "Normal"
     },
     {
      "num": "MS-C16",
      "nameEn": "Tashigi",
-     "nameJp": "たしぎ"
+     "nameJp": "たしぎ",
+     "rarity": "Normal"
     },
     {
      "num": "MS-C17",
      "nameEn": "Gin",
-     "nameJp": "ギン"
+     "nameJp": "ギン",
+     "rarity": "Normal"
     },
     {
      "num": "MS-C18",
      "nameEn": "Pearl",
-     "nameJp": "パール"
+     "nameJp": "パール",
+     "rarity": "Normal"
     },
     {
      "num": "MS-C19",
      "nameEn": "Hatchan",
-     "nameJp": "はっちゃん"
+     "nameJp": "はっちゃん",
+     "rarity": "Normal"
     },
     {
      "num": "MS-C20",
      "nameEn": "Kuroobi",
-     "nameJp": "クロオビ"
+     "nameJp": "クロオビ",
+     "rarity": "Normal"
     },
     {
      "num": "MS-C21",
      "nameEn": "Chew",
-     "nameJp": "チュウ"
+     "nameJp": "チュウ",
+     "rarity": "Normal"
     },
     {
      "num": "MS-C22",
      "nameEn": "Gaimon",
-     "nameJp": "ガイモン"
+     "nameJp": "ガイモン",
+     "rarity": "Normal"
     },
     {
      "num": "MS-C23",
      "nameEn": "Johnny",
-     "nameJp": "ジョニー"
+     "nameJp": "ジョニー",
+     "rarity": "Normal"
     },
     {
      "num": "MS-C24",
      "nameEn": "Yosaku",
-     "nameJp": "ヨサク"
+     "nameJp": "ヨサク",
+     "rarity": "Normal"
     },
     {
      "num": "MS-C25",
      "nameEn": "Patty",
-     "nameJp": "パティ"
+     "nameJp": "パティ",
+     "rarity": "Normal"
     },
     {
      "num": "MS-C26",
      "nameEn": "Carne",
-     "nameJp": "カルネ"
+     "nameJp": "カルネ",
+     "rarity": "Normal"
     },
     {
      "num": "MS-W01",
      "nameEn": "Gomu Gomu no Kazaguruma",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "MS-W02",
      "nameEn": "Sanzen Sekai",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "MS-W03",
      "nameEn": "Tears",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "MS-W04",
      "nameEn": "Ketchup Boshi",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "MS-W05",
      "nameEn": "Collier",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "MS-W06",
      "nameEn": "Jumping Point",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "MS-W07",
      "nameEn": "The Black Sword Unsheathed",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "MS-W08",
      "nameEn": "Foreboding Storm",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "MS-W09",
      "nameEn": "Fist of Destruction",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "MS-W10",
      "nameEn": "Counting Money",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "MS-W11",
      "nameEn": "White Out",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "MS-W12",
      "nameEn": "Iai",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "MS-W13",
      "nameEn": "Hand-to-hand Combat",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "MS-W14",
      "nameEn": "Cho Tennen Pearl Present",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "MS-W15",
      "nameEn": "Shark On Darts",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "MS-W16",
      "nameEn": "Takohachi Black",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "MS-W17",
      "nameEn": "Hyakumaigawara Seiken",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "MS-W18",
      "nameEn": "Hyappatsu Mizudeppo",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "MS-W19",
      "nameEn": "Things to Protect",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "MS-W20",
      "nameEn": "Sword Strike from the Left",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "MS-W21",
      "nameEn": "Sword Strike from the Right",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "MS-W22",
      "nameEn": "Chef's Prosthetic Kick",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "MS-W23",
      "nameEn": "Food Poisoning Cannonball",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "MS-W24",
      "nameEn": "Giant Fork",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "MS-W25",
      "nameEn": "Sympathizer",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "MS-W26",
      "nameEn": "Bounty Hunter's Target",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "MS-W27",
      "nameEn": "A Man's Departure",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "MS-W28",
      "nameEn": "A Good Bargain",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "MS-W29",
      "nameEn": "Last Extremity",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "MS-W30",
      "nameEn": "MH5",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "MS-W31",
      "nameEn": "Corrupt Control",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "MS-W32",
      "nameEn": "Launching Ceremony",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "MS-W33",
      "nameEn": "Ambush",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "MS-W34",
      "nameEn": "Rising to Action",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     }
    ]
   },
@@ -1173,392 +1400,470 @@
     {
      "num": "SB-C01",
      "nameEn": "Luffy",
-     "nameJp": "ルフィ"
+     "nameJp": "ルフィ",
+     "rarity": "Holo"
     },
     {
      "num": "SB-C02",
      "nameEn": "Zoro",
-     "nameJp": "ゾロ"
+     "nameJp": "ゾロ",
+     "rarity": "Holo"
     },
     {
      "num": "SB-C03",
      "nameEn": "Nami",
-     "nameJp": "ナミ"
+     "nameJp": "ナミ",
+     "rarity": "Holo"
     },
     {
      "num": "SB-C04",
      "nameEn": "Sanji",
-     "nameJp": "サンジ"
+     "nameJp": "サンジ",
+     "rarity": "Holo"
     },
     {
      "num": "SB-C05",
      "nameEn": "Mr. 1",
-     "nameJp": "Ｍｒ．１"
+     "nameJp": "Ｍｒ．１",
+     "rarity": "Holo"
     },
     {
      "num": "SB-C06",
      "nameEn": "Miss Doublefinger",
-     "nameJp": "ミス・ダブルフィンガー"
+     "nameJp": "ミス・ダブルフィンガー",
+     "rarity": "Holo"
     },
     {
      "num": "SB-C07",
      "nameEn": "Luffy",
-     "nameJp": "ルフィ"
+     "nameJp": "ルフィ",
+     "rarity": "Normal"
     },
     {
      "num": "SB-C08",
      "nameEn": "Zoro",
-     "nameJp": "ゾロ"
+     "nameJp": "ゾロ",
+     "rarity": "Normal"
     },
     {
      "num": "SB-C09",
      "nameEn": "Nami",
-     "nameJp": "ナミ"
+     "nameJp": "ナミ",
+     "rarity": "Normal"
     },
     {
      "num": "SB-C10",
      "nameEn": "Usopp",
-     "nameJp": "ウソップ"
+     "nameJp": "ウソップ",
+     "rarity": "Normal"
     },
     {
      "num": "SB-C11",
      "nameEn": "Chopper",
-     "nameJp": "チョッパー"
+     "nameJp": "チョッパー",
+     "rarity": "Normal"
     },
     {
      "num": "SB-C12",
      "nameEn": "Tashigi",
-     "nameJp": "たしぎ"
+     "nameJp": "たしぎ",
+     "rarity": "Normal"
     },
     {
      "num": "SB-C13",
      "nameEn": "Crocodile",
-     "nameJp": "クロコダイル"
+     "nameJp": "クロコダイル",
+     "rarity": "Normal"
     },
     {
      "num": "SB-C14",
      "nameEn": "Miss All Sunday",
-     "nameJp": "ミス・オールサンデー"
+     "nameJp": "ミス・オールサンデー",
+     "rarity": "Normal"
     },
     {
      "num": "SB-C15",
      "nameEn": "Mr. 1",
-     "nameJp": "Ｍｒ．１"
+     "nameJp": "Ｍｒ．１",
+     "rarity": "Normal"
     },
     {
      "num": "SB-C16",
      "nameEn": "Miss Doublefinger",
-     "nameJp": "ミス・ダブルフィンガー"
+     "nameJp": "ミス・ダブルフィンガー",
+     "rarity": "Normal"
     },
     {
      "num": "SB-C17",
      "nameEn": "Mr. 2",
-     "nameJp": "Ｍｒ．２"
+     "nameJp": "Ｍｒ．２",
+     "rarity": "Normal"
     },
     {
      "num": "SB-C18",
      "nameEn": "Cobra",
-     "nameJp": "コブラ"
+     "nameJp": "コブラ",
+     "rarity": "Normal"
     },
     {
      "num": "SB-C19",
      "nameEn": "Vivi",
-     "nameJp": "ビビ"
+     "nameJp": "ビビ",
+     "rarity": "Normal"
     },
     {
      "num": "SB-C20",
      "nameEn": "Chaka",
-     "nameJp": "チャカ"
+     "nameJp": "チャカ",
+     "rarity": "Normal"
     },
     {
      "num": "SB-C21",
      "nameEn": "Pell",
-     "nameJp": "ペル"
+     "nameJp": "ペル",
+     "rarity": "Normal"
     },
     {
      "num": "SB-C22",
      "nameEn": "Luffy",
-     "nameJp": "ルフィ"
+     "nameJp": "ルフィ",
+     "rarity": "Holo"
     },
     {
      "num": "SB-C23",
      "nameEn": "Zoro",
-     "nameJp": "ゾロ"
+     "nameJp": "ゾロ",
+     "rarity": "Holo"
     },
     {
      "num": "SB-C24",
      "nameEn": "Sanji",
-     "nameJp": "サンジ"
+     "nameJp": "サンジ",
+     "rarity": "Holo"
     },
     {
      "num": "SB-C25",
      "nameEn": "Smoker",
-     "nameJp": "スモーカー"
+     "nameJp": "スモーカー",
+     "rarity": "Holo"
     },
     {
      "num": "SB-C26",
      "nameEn": "Crocodile",
-     "nameJp": "クロコダイル"
+     "nameJp": "クロコダイル",
+     "rarity": "Holo"
     },
     {
      "num": "SB-C27",
      "nameEn": "Koza",
-     "nameJp": "コーザ"
+     "nameJp": "コーザ",
+     "rarity": "Holo"
     },
     {
      "num": "SB-C28",
      "nameEn": "Nami",
-     "nameJp": "ナミ"
+     "nameJp": "ナミ",
+     "rarity": "Normal"
     },
     {
      "num": "SB-C29",
      "nameEn": "Chopper",
-     "nameJp": "チョッパー"
+     "nameJp": "チョッパー",
+     "rarity": "Normal"
     },
     {
      "num": "SB-C30",
      "nameEn": "Ace",
-     "nameJp": "エース"
+     "nameJp": "エース",
+     "rarity": "Normal"
     },
     {
      "num": "SB-C31",
      "nameEn": "Mr. 7",
-     "nameJp": "Ｍｒ．７"
+     "nameJp": "Ｍｒ．７",
+     "rarity": "Normal"
     },
     {
      "num": "SB-C32",
      "nameEn": "Miss Father's Day",
-     "nameJp": "ミス・ファーザーズデー"
+     "nameJp": "ミス・ファーザーズデー",
+     "rarity": "Normal"
     },
     {
      "num": "SB-W01",
      "nameEn": "Shishi Sonson",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Holo"
     },
     {
      "num": "SB-W02",
      "nameEn": "Veau Shot",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Holo"
     },
     {
      "num": "SB-W03",
      "nameEn": "The Silent Battle",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SB-W04",
      "nameEn": "Arranged Conflict",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SB-W05",
      "nameEn": "Scorched Hell",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SB-W06",
      "nameEn": "Fleeing for your Life",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SB-W07",
      "nameEn": "Escape Plan",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SB-W08",
      "nameEn": "Unexpected Help",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SB-W09",
      "nameEn": "The Losers Fate",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SB-W10",
      "nameEn": "Imperial Council",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SB-W11",
      "nameEn": "False Emissary",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SB-W12",
      "nameEn": "Arabasta's Future",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SB-W13",
      "nameEn": "Mizu Luffy",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SB-W14",
      "nameEn": "Gomu Gomu no Shot",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SB-W15",
      "nameEn": "Ushi Bari",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SB-W16",
      "nameEn": "Tornado Tempo",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SB-W17",
      "nameEn": "Usopp Noise",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SB-W18",
      "nameEn": "Uso-Cho Hammer Suisei",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SB-W19",
      "nameEn": "Fortunate Passing",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SB-W20",
      "nameEn": "Ground Death",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SB-W21",
      "nameEn": "Absolute Defense",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SB-W22",
      "nameEn": "Dieciséis Fleur",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SB-W23",
      "nameEn": "Atomic Spurt",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SB-W24",
      "nameEn": "Spiral Hollow",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SB-W25",
      "nameEn": "Toge Toge Doping",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SB-W26",
      "nameEn": "Stinger Flail",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SB-W27",
      "nameEn": "Urabure Swan Butokai",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SB-W28",
      "nameEn": "Mane Mane Panic",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SB-W29",
      "nameEn": "King Chop",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SB-W30",
      "nameEn": "Mediator",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SB-W31",
      "nameEn": "Confusion Strategy",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SB-W32",
      "nameEn": "Narikiba",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SB-W33",
      "nameEn": "Devoted Blade to the Princess",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SB-W34",
      "nameEn": "Gomu Gomu no Storm",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Holo"
     },
     {
      "num": "SB-W35",
      "nameEn": "Desert la Spada",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Holo"
     },
     {
      "num": "SB-W36",
      "nameEn": "Tendron",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SB-W37",
      "nameEn": "Flame Bearer",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SB-W38",
      "nameEn": "The Invulnerable Man",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SB-W39",
      "nameEn": "Yellow Gun",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SB-W40",
      "nameEn": "Gero Gero Gun",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SB-W41",
      "nameEn": "Persued Truth",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SB-W42",
      "nameEn": "Oasis Water",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SB-W43",
      "nameEn": "Premonition of Mortal Combat",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SB-W44",
      "nameEn": "Rising Tension",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SB-W45",
      "nameEn": "1 Person & 1 Animal Savior",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SB-W46",
      "nameEn": "The Strange Grand Troop Line",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     }
    ]
   },
@@ -1570,302 +1875,362 @@
     {
      "num": "RG-C01",
      "nameEn": "Luffy",
-     "nameJp": "ルフィ"
+     "nameJp": "ルフィ",
+     "rarity": "Holo"
     },
     {
      "num": "RG-C02",
      "nameEn": "Chopper",
-     "nameJp": "チョッパー"
+     "nameJp": "チョッパー",
+     "rarity": "Holo"
     },
     {
      "num": "RG-C03",
      "nameEn": "Dorry",
-     "nameJp": "ドリー"
+     "nameJp": "ドリー",
+     "rarity": "Holo"
     },
     {
      "num": "RG-C04",
      "nameEn": "Brogy",
-     "nameJp": "ブロギー"
+     "nameJp": "ブロギー",
+     "rarity": "Holo"
     },
     {
      "num": "RG-C05",
      "nameEn": "Dr. Kureha",
-     "nameJp": "Ｄｒ．くれは"
+     "nameJp": "Ｄｒ．くれは",
+     "rarity": "Holo"
     },
     {
      "num": "RG-C06",
      "nameEn": "Mr. 3",
-     "nameJp": "Ｍｒ．３"
+     "nameJp": "Ｍｒ．３",
+     "rarity": "Holo"
     },
     {
      "num": "RG-C07",
      "nameEn": "Miss Goldenweek",
-     "nameJp": "ミス・ゴールデンウィーク"
+     "nameJp": "ミス・ゴールデンウィーク",
+     "rarity": "Holo"
     },
     {
      "num": "RG-C08",
      "nameEn": "Wapol",
-     "nameJp": "ワポル"
+     "nameJp": "ワポル",
+     "rarity": "Holo"
     },
     {
      "num": "RG-C09",
      "nameEn": "Luffy",
-     "nameJp": "ルフィ"
+     "nameJp": "ルフィ",
+     "rarity": "Normal"
     },
     {
      "num": "RG-C10",
      "nameEn": "Zoro",
-     "nameJp": "ゾロ"
+     "nameJp": "ゾロ",
+     "rarity": "Normal"
     },
     {
      "num": "RG-C11",
      "nameEn": "Nami",
-     "nameJp": "ナミ"
+     "nameJp": "ナミ",
+     "rarity": "Normal"
     },
     {
      "num": "RG-C12",
      "nameEn": "Usopp",
-     "nameJp": "ウソップ"
+     "nameJp": "ウソップ",
+     "rarity": "Normal"
     },
     {
      "num": "RG-C13",
      "nameEn": "Sanji",
-     "nameJp": "サンジ"
+     "nameJp": "サンジ",
+     "rarity": "Normal"
     },
     {
      "num": "RG-C14",
      "nameEn": "Chopper",
-     "nameJp": "チョッパー"
+     "nameJp": "チョッパー",
+     "rarity": "Normal"
     },
     {
      "num": "RG-C15",
      "nameEn": "Garp",
-     "nameJp": "ガープ"
+     "nameJp": "ガープ",
+     "rarity": "Normal"
     },
     {
      "num": "RG-C16",
      "nameEn": "Mr. 3",
-     "nameJp": "Ｍｒ．３"
+     "nameJp": "Ｍｒ．３",
+     "rarity": "Normal"
     },
     {
      "num": "RG-C17",
      "nameEn": "Mr. 5",
-     "nameJp": "Ｍｒ．５"
+     "nameJp": "Ｍｒ．５",
+     "rarity": "Normal"
     },
     {
      "num": "RG-C18",
      "nameEn": "Miss Valentine",
-     "nameJp": "ミス・バレンタイン"
+     "nameJp": "ミス・バレンタイン",
+     "rarity": "Normal"
     },
     {
      "num": "RG-C19",
      "nameEn": "Miss Monday",
-     "nameJp": "ミス・マンデー"
+     "nameJp": "ミス・マンデー",
+     "rarity": "Normal"
     },
     {
      "num": "RG-C20",
      "nameEn": "Mr. 9",
-     "nameJp": "Ｍｒ．９"
+     "nameJp": "Ｍｒ．９",
+     "rarity": "Normal"
     },
     {
      "num": "RG-C21",
      "nameEn": "Unluckies",
-     "nameJp": "アンラッキーズ"
+     "nameJp": "アンラッキーズ",
+     "rarity": "Normal"
     },
     {
      "num": "RG-C22",
      "nameEn": "Chess",
-     "nameJp": "チェス"
+     "nameJp": "チェス",
+     "rarity": "Normal"
     },
     {
      "num": "RG-C23",
      "nameEn": "Kuromarimo",
-     "nameJp": "クロマーリモ"
+     "nameJp": "クロマーリモ",
+     "rarity": "Normal"
     },
     {
      "num": "RG-C24",
      "nameEn": "Crocus",
-     "nameJp": "クロッカス"
+     "nameJp": "クロッカス",
+     "rarity": "Normal"
     },
     {
      "num": "RG-C25",
      "nameEn": "Laboon",
-     "nameJp": "ラブーン"
+     "nameJp": "ラブーン",
+     "rarity": "Normal"
     },
     {
      "num": "RG-C26",
      "nameEn": "Dalton",
-     "nameJp": "ドルトン"
+     "nameJp": "ドルトン",
+     "rarity": "Normal"
     },
     {
      "num": "RG-W01",
      "nameEn": "Hakoku",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Holo"
     },
     {
      "num": "RG-W02",
      "nameEn": "Gomu Gomu no Bazooka",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RG-W03",
      "nameEn": "Taka Nami",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RG-W04",
      "nameEn": "Sharp Insight",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RG-W05",
      "nameEn": "Tokusei Tabasco Boshi",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RG-W06",
      "nameEn": "Armée de L'Air Gomu Shoot",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RG-W07",
      "nameEn": "Kokutei Roseo",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RG-W08",
      "nameEn": "Blue Ogre's Sword",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RG-W09",
      "nameEn": "Red Ogre's Battle Axe",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RG-W10",
      "nameEn": "Doctor's Order to Cease",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RG-W11",
      "nameEn": "Super Fist",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RG-W12",
      "nameEn": "Tokudai Candle Service Set",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RG-W13",
      "nameEn": "Candle Lock",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RG-W14",
      "nameEn": "Colors Trap",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RG-W15",
      "nameEn": "Nose Fancy Cannon",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RG-W16",
      "nameEn": "10,000 Kilo Guillotine",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RG-W17",
      "nameEn": "Kairiki Meriken",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RG-W18",
      "nameEn": "Nekketsu Nine Konjo Bat",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RG-W19",
      "nameEn": "Kill Order",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RG-W20",
      "nameEn": "Baku Baku Factory",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RG-W21",
      "nameEn": "Slim-up Wapol",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RG-W22",
      "nameEn": "Weak Point Detection",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RG-W23",
      "nameEn": "Eleki-Marimo",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RG-W24",
      "nameEn": "Quatro Axe",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RG-W25",
      "nameEn": "Reunion Pledge",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RG-W26",
      "nameEn": "Drastic Treatment",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RG-W27",
      "nameEn": "Fiddle Banff",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RG-W28",
      "nameEn": "Great Sacrifice",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RG-W29",
      "nameEn": "Endless Duel",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RG-W30",
      "nameEn": "Recreation",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RG-W31",
      "nameEn": "Strange Behavior of a Genius",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RG-W32",
      "nameEn": "Future of the Navy",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RG-W33",
      "nameEn": "Premeditated Crime",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RG-W34",
      "nameEn": "Tough Inhabitants",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     }
    ]
   },
@@ -1877,272 +2242,326 @@
     {
      "num": "RK-C01",
      "nameEn": "Luffy",
-     "nameJp": "ルフィ"
+     "nameJp": "ルフィ",
+     "rarity": "Holo"
     },
     {
      "num": "RK-C02",
      "nameEn": "Ace",
-     "nameJp": "エース"
+     "nameJp": "エース",
+     "rarity": "Holo"
     },
     {
      "num": "RK-C03",
      "nameEn": "Smoker",
-     "nameJp": "スモーカー"
+     "nameJp": "スモーカー",
+     "rarity": "Holo"
     },
     {
      "num": "RK-C04",
      "nameEn": "Hina",
-     "nameJp": "ヒナ"
+     "nameJp": "ヒナ",
+     "rarity": "Holo"
     },
     {
      "num": "RK-C05",
      "nameEn": "Crocodile",
-     "nameJp": "クロコダイル"
+     "nameJp": "クロコダイル",
+     "rarity": "Holo"
     },
     {
      "num": "RK-C06",
      "nameEn": "Vivi",
-     "nameJp": "ビビ"
+     "nameJp": "ビビ",
+     "rarity": "Holo"
     },
     {
      "num": "RK-C07",
      "nameEn": "Luffy",
-     "nameJp": "ルフィ"
+     "nameJp": "ルフィ",
+     "rarity": "Normal"
     },
     {
      "num": "RK-C08",
      "nameEn": "Zoro",
-     "nameJp": "ゾロ"
+     "nameJp": "ゾロ",
+     "rarity": "Normal"
     },
     {
      "num": "RK-C09",
      "nameEn": "Nami",
-     "nameJp": "ナミ"
+     "nameJp": "ナミ",
+     "rarity": "Normal"
     },
     {
      "num": "RK-C10",
      "nameEn": "Usopp",
-     "nameJp": "ウソップ"
+     "nameJp": "ウソップ",
+     "rarity": "Normal"
     },
     {
      "num": "RK-C11",
      "nameEn": "Sanji",
-     "nameJp": "サンジ"
+     "nameJp": "サンジ",
+     "rarity": "Normal"
     },
     {
      "num": "RK-C12",
      "nameEn": "Chopper",
-     "nameJp": "チョッパー"
+     "nameJp": "チョッパー",
+     "rarity": "Normal"
     },
     {
      "num": "RK-C13",
      "nameEn": "Tashigi",
-     "nameJp": "たしぎ"
+     "nameJp": "たしぎ",
+     "rarity": "Normal"
     },
     {
      "num": "RK-C14",
      "nameEn": "Fullbody",
-     "nameJp": "フルボディ"
+     "nameJp": "フルボディ",
+     "rarity": "Normal"
     },
     {
      "num": "RK-C15",
      "nameEn": "Jango",
-     "nameJp": "ジャンゴ"
+     "nameJp": "ジャンゴ",
+     "rarity": "Normal"
     },
     {
      "num": "RK-C16",
      "nameEn": "Mr. 1",
-     "nameJp": "Ｍｒ．１"
+     "nameJp": "Ｍｒ．１",
+     "rarity": "Normal"
     },
     {
      "num": "RK-C17",
      "nameEn": "Miss Doublefinger",
-     "nameJp": "ミス・ダブルフィンガー"
+     "nameJp": "ミス・ダブルフィンガー",
+     "rarity": "Normal"
     },
     {
      "num": "RK-C18",
      "nameEn": "Mr. 2",
-     "nameJp": "Ｍｒ．２"
+     "nameJp": "Ｍｒ．２",
+     "rarity": "Normal"
     },
     {
      "num": "RK-C19",
      "nameEn": "Mr. 4",
-     "nameJp": "Ｍｒ．４"
+     "nameJp": "Ｍｒ．４",
+     "rarity": "Normal"
     },
     {
      "num": "RK-C20",
      "nameEn": "Miss Merry Christmas",
-     "nameJp": "ミス・メリークリスマス"
+     "nameJp": "ミス・メリークリスマス",
+     "rarity": "Normal"
     },
     {
      "num": "RK-C21",
      "nameEn": "Igaram",
-     "nameJp": "イガラム"
+     "nameJp": "イガラム",
+     "rarity": "Normal"
     },
     {
      "num": "RK-W01",
      "nameEn": "Pledge of Friendship (1)",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Holo"
     },
     {
      "num": "RK-W02",
      "nameEn": "Pledge of Friendship (2)",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Holo"
     },
     {
      "num": "RK-W03",
      "nameEn": "Personification of Combat",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RK-W04",
      "nameEn": "Mizu Mizu no Pistol",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RK-W05",
      "nameEn": "Gazami Dori",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RK-W06",
      "nameEn": "Shiawase Punch",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RK-W07",
      "nameEn": "The Blood of an Engineer",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RK-W08",
      "nameEn": "Basse Côte",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RK-W09",
      "nameEn": "Horn Point",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RK-W10",
      "nameEn": "Enjomo",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RK-W11",
      "nameEn": "The Meaning of Justice",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RK-W12",
      "nameEn": "Black Spear of Battle",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RK-W13",
      "nameEn": "Tashigi's Justce",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RK-W14",
      "nameEn": "Two Iron Fists",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RK-W15",
      "nameEn": "Honed Hypnotism",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RK-W16",
      "nameEn": "Sables: Pesado",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RK-W17",
      "nameEn": "Desert Tyrant",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RK-W18",
      "nameEn": "Sparkling Daisy",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RK-W19",
      "nameEn": "Sea Urchin Stinger",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RK-W20",
      "nameEn": "Perfect Defense Against Sanji",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RK-W21",
      "nameEn": "Yonhyappon Punk Knock",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RK-W22",
      "nameEn": "Mogura Banana",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RK-W23",
      "nameEn": "Kujakki String Slasher Runback",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RK-W24",
      "nameEn": "Where the Truth Lies",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RK-W25",
      "nameEn": "Declaration of Victory",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RK-W26",
      "nameEn": "A New Companion",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RK-W27",
      "nameEn": "Band Together",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RK-W28",
      "nameEn": "A Man's Profile",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RK-W29",
      "nameEn": "The Navy's Problem Child",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RK-W30",
      "nameEn": "Intruder Detected",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RK-W31",
      "nameEn": "Tsumegeri Guard Assault",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RK-W32",
      "nameEn": "Last Waltz",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RK-W33",
      "nameEn": "Pirate Queen",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     }
    ]
   },
@@ -2154,212 +2573,254 @@
     {
      "num": "LK-C01",
      "nameEn": "Luffy",
-     "nameJp": "ルフィ"
+     "nameJp": "ルフィ",
+     "rarity": "☆"
     },
     {
      "num": "LK-C02",
      "nameEn": "Zoro",
-     "nameJp": "ゾロ"
+     "nameJp": "ゾロ",
+     "rarity": "☆"
     },
     {
      "num": "LK-C03",
      "nameEn": "Sanji",
-     "nameJp": "サンジ"
+     "nameJp": "サンジ",
+     "rarity": "☆"
     },
     {
      "num": "LK-C04",
      "nameEn": "Chopper",
-     "nameJp": "チョッパー"
+     "nameJp": "チョッパー",
+     "rarity": "☆"
     },
     {
      "num": "LK-C05",
      "nameEn": "Ace",
-     "nameJp": "エース"
+     "nameJp": "エース",
+     "rarity": "☆"
     },
     {
      "num": "LK-C06",
      "nameEn": "Smoker",
-     "nameJp": "スモーカー"
+     "nameJp": "スモーカー",
+     "rarity": "☆"
     },
     {
      "num": "LK-C07",
      "nameEn": "Luffy",
-     "nameJp": "ルフィ"
+     "nameJp": "ルフィ",
+     "rarity": "Normal"
     },
     {
      "num": "LK-C08",
      "nameEn": "Zoro",
-     "nameJp": "ゾロ"
+     "nameJp": "ゾロ",
+     "rarity": "Normal"
     },
     {
      "num": "LK-C09",
      "nameEn": "Nami",
-     "nameJp": "ナミ"
+     "nameJp": "ナミ",
+     "rarity": "Normal"
     },
     {
      "num": "LK-C10",
      "nameEn": "Usopp",
-     "nameJp": "ウソップ"
+     "nameJp": "ウソップ",
+     "rarity": "Normal"
     },
     {
      "num": "LK-C11",
      "nameEn": "Sanji",
-     "nameJp": "サンジ"
+     "nameJp": "サンジ",
+     "rarity": "Normal"
     },
     {
      "num": "LK-C12",
      "nameEn": "Chopper",
-     "nameJp": "チョッパー"
+     "nameJp": "チョッパー",
+     "rarity": "Normal"
     },
     {
      "num": "LK-C13",
      "nameEn": "Ace",
-     "nameJp": "エース"
+     "nameJp": "エース",
+     "rarity": "Normal"
     },
     {
      "num": "LK-C14",
      "nameEn": "Tashigi",
-     "nameJp": "たしぎ"
+     "nameJp": "たしぎ",
+     "rarity": "Normal"
     },
     {
      "num": "LK-C15",
      "nameEn": "Miss All-Sunday",
-     "nameJp": "ミス・オールサンデー"
+     "nameJp": "ミス・オールサンデー",
+     "rarity": "Normal"
     },
     {
      "num": "LK-C16",
      "nameEn": "Mr.2",
-     "nameJp": "Ｍｒ．２"
+     "nameJp": "Ｍｒ．２",
+     "rarity": "Normal"
     },
     {
      "num": "LK-C17",
      "nameEn": "Count Battler",
-     "nameJp": "バトラー伯爵"
+     "nameJp": "バトラー伯爵",
+     "rarity": "Normal"
     },
     {
      "num": "LK-C18",
      "nameEn": "Vivi",
-     "nameJp": "ビビ"
+     "nameJp": "ビビ",
+     "rarity": "Normal"
     },
     {
      "num": "LK-W01",
      "nameEn": "Gomu Gomu no Gatling",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W02",
      "nameEn": "Gomu Gomu no Bazooka",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W03",
      "nameEn": "Onigiri",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W04",
      "nameEn": "Tatsu Maki",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W05",
      "nameEn": "Thief's Quick Work",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W06",
      "nameEn": "Spirit",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W07",
      "nameEn": "Épaule",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W08",
      "nameEn": "Joue",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W09",
      "nameEn": "Walking Point",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W10",
      "nameEn": "Guard Point",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W11",
      "nameEn": "Fire Fist",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W12",
      "nameEn": "Kagero",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W13",
      "nameEn": "White Snake",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W14",
      "nameEn": "Kiri Musubi",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W15",
      "nameEn": "Tres Fleur",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W16",
      "nameEn": "Sneak Attack",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W17",
      "nameEn": "Mystical Power",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W18",
      "nameEn": "Kujakki String Slasher",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W19",
      "nameEn": "Single Combat",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W20",
      "nameEn": "Wounded All Over",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W21",
      "nameEn": "Evasion",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W22",
      "nameEn": "Courage",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W23",
      "nameEn": "A Pirates Banquet",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "LK-W24",
      "nameEn": "Friendship",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     }
    ]
   },
@@ -2371,407 +2832,488 @@
     {
      "num": "JS-C01",
      "nameEn": "Luffy",
-     "nameJp": "ルフィ"
+     "nameJp": "ルフィ",
+     "rarity": "☆☆☆"
     },
     {
      "num": "JS-C02",
      "nameEn": "Robin",
-     "nameJp": "ロビン"
+     "nameJp": "ロビン",
+     "rarity": "☆☆☆"
     },
     {
      "num": "JS-C03",
      "nameEn": "Shanks",
-     "nameJp": "シャンクス"
+     "nameJp": "シャンクス",
+     "rarity": "☆☆☆"
     },
     {
      "num": "JS-C04",
      "nameEn": "Luffy",
-     "nameJp": "ルフィ"
+     "nameJp": "ルフィ",
+     "rarity": "☆☆"
     },
     {
      "num": "JS-C05",
      "nameEn": "Zoro",
-     "nameJp": "ゾロ"
+     "nameJp": "ゾロ",
+     "rarity": "☆☆"
     },
     {
      "num": "JS-C06",
      "nameEn": "Sanji",
-     "nameJp": "サンジ"
+     "nameJp": "サンジ",
+     "rarity": "☆☆"
     },
     {
      "num": "JS-C07",
      "nameEn": "Robin",
-     "nameJp": "ロビン"
+     "nameJp": "ロビン",
+     "rarity": "☆☆"
     },
     {
      "num": "JS-C08",
      "nameEn": "Buggy",
-     "nameJp": "バギー"
+     "nameJp": "バギー",
+     "rarity": "☆☆"
     },
     {
      "num": "JS-C09",
      "nameEn": "Bellamy",
-     "nameJp": "ベラミー"
+     "nameJp": "ベラミー",
+     "rarity": "☆☆"
     },
     {
      "num": "JS-C10",
      "nameEn": "Gasparde",
-     "nameJp": "ガスパーデ"
+     "nameJp": "ガスパーデ",
+     "rarity": "☆☆"
     },
     {
      "num": "JS-C11",
      "nameEn": "Cricket",
-     "nameJp": "クリケット"
+     "nameJp": "クリケット",
+     "rarity": "☆☆"
     },
     {
      "num": "JS-C12",
      "nameEn": "Chopper",
-     "nameJp": "チョッパー"
+     "nameJp": "チョッパー",
+     "rarity": "☆"
     },
     {
      "num": "JS-C13",
      "nameEn": "Smoker",
-     "nameJp": "スモーカー"
+     "nameJp": "スモーカー",
+     "rarity": "☆"
     },
     {
      "num": "JS-C14",
      "nameEn": "Alvida",
-     "nameJp": "アルビダ"
+     "nameJp": "アルビダ",
+     "rarity": "☆"
     },
     {
      "num": "JS-C15",
      "nameEn": "Kuro",
-     "nameJp": "クロ"
+     "nameJp": "クロ",
+     "rarity": "☆"
     },
     {
      "num": "JS-C16",
      "nameEn": "Krieg",
-     "nameJp": "クリーク"
+     "nameJp": "クリーク",
+     "rarity": "☆"
     },
     {
      "num": "JS-C17",
      "nameEn": "Arlong",
-     "nameJp": "アーロン"
+     "nameJp": "アーロン",
+     "rarity": "☆"
     },
     {
      "num": "JS-C18",
      "nameEn": "Masira",
-     "nameJp": "マシラ"
+     "nameJp": "マシラ",
+     "rarity": "☆"
     },
     {
      "num": "JS-C19",
      "nameEn": "Shoujou",
-     "nameJp": "ショウジョウ"
+     "nameJp": "ショウジョウ",
+     "rarity": "☆"
     },
     {
      "num": "JS-C20",
      "nameEn": "Shuraiya",
-     "nameJp": "シュライヤ"
+     "nameJp": "シュライヤ",
+     "rarity": "☆"
     },
     {
      "num": "JS-C21",
      "nameEn": "Luffy",
-     "nameJp": "ルフィ"
+     "nameJp": "ルフィ",
+     "rarity": "Normal"
     },
     {
      "num": "JS-C22",
      "nameEn": "Zoro",
-     "nameJp": "ゾロ"
+     "nameJp": "ゾロ",
+     "rarity": "Normal"
     },
     {
      "num": "JS-C23",
      "nameEn": "Nami",
-     "nameJp": "ナミ"
+     "nameJp": "ナミ",
+     "rarity": "Normal"
     },
     {
      "num": "JS-C24",
      "nameEn": "Usopp",
-     "nameJp": "ウソップ"
+     "nameJp": "ウソップ",
+     "rarity": "Normal"
     },
     {
      "num": "JS-C25",
      "nameEn": "Sanji",
-     "nameJp": "サンジ"
+     "nameJp": "サンジ",
+     "rarity": "Normal"
     },
     {
      "num": "JS-C26",
      "nameEn": "Chopper",
-     "nameJp": "チョッパー"
+     "nameJp": "チョッパー",
+     "rarity": "Normal"
     },
     {
      "num": "JS-C27",
      "nameEn": "Robin",
-     "nameJp": "ロビン"
+     "nameJp": "ロビン",
+     "rarity": "Normal"
     },
     {
      "num": "JS-C28",
      "nameEn": "Morgan",
-     "nameJp": "モーガン"
+     "nameJp": "モーガン",
+     "rarity": "Normal"
     },
     {
      "num": "JS-C29",
      "nameEn": "Wapol",
-     "nameJp": "ワポル"
+     "nameJp": "ワポル",
+     "rarity": "Normal"
     },
     {
      "num": "JS-T01",
      "nameEn": "Luffy & Shanks",
-     "nameJp": "ルフィ＆シャンクス"
+     "nameJp": "ルフィ＆シャンクス",
+     "rarity": "☆☆☆"
     },
     {
      "num": "JS-T02",
      "nameEn": "Buggy & Alvida",
-     "nameJp": "バギー＆アルビダ"
+     "nameJp": "バギー＆アルビダ",
+     "rarity": "☆☆"
     },
     {
      "num": "JS-T03",
      "nameEn": "Krieg & Arlong",
-     "nameJp": "クリーク＆アーロン"
+     "nameJp": "クリーク＆アーロン",
+     "rarity": "☆☆"
     },
     {
      "num": "JS-T04",
      "nameEn": "Luffy & Zoro",
-     "nameJp": "ルフィ＆ゾロ"
+     "nameJp": "ルフィ＆ゾロ",
+     "rarity": "☆"
     },
     {
      "num": "JS-T05",
      "nameEn": "Nami & Sanji",
-     "nameJp": "ナミ＆サンジ"
+     "nameJp": "ナミ＆サンジ",
+     "rarity": "☆"
     },
     {
      "num": "JS-W01",
      "nameEn": "100 Million Berry Fist",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆☆"
     },
     {
      "num": "JS-W02",
      "nameEn": "Monsters of the East Blue",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆☆"
     },
     {
      "num": "JS-W03",
      "nameEn": "Gomu Gomu no Rocket",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "JS-W04",
      "nameEn": "Offensive Move",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "JS-W05",
      "nameEn": "Defensive Move",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "JS-W06",
      "nameEn": "Seis Fleur Clutch",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "JS-W07",
      "nameEn": "Rush",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "JS-W08",
      "nameEn": "Onslaught",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "JS-W09",
      "nameEn": "Spring Snipe",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "JS-W10",
      "nameEn": "Confronting the Fantasy",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "JS-W11",
      "nameEn": "Forced Exit",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "JS-W12",
      "nameEn": "Chopper!",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JS-W13",
      "nameEn": "Calm Before the Storm",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JS-W14",
      "nameEn": "Fascination",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JS-W15",
      "nameEn": "Usopp Wagomu",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JS-W16",
      "nameEn": "Serving the Ladies",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JS-W17",
      "nameEn": "First-Aid Treatment",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JS-W18",
      "nameEn": "Archeology",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JS-W19",
      "nameEn": "The Pirate's Way",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JS-W20",
      "nameEn": "Unexpected Appearance",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JS-W21",
      "nameEn": "White Blow",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JS-W22",
      "nameEn": "Threaten",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JS-W23",
      "nameEn": "Sube Sube Spur",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JS-W24",
      "nameEn": "Hunter of Love",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JS-W25",
      "nameEn": "Bara Bara Festival",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JS-W26",
      "nameEn": "Special Buggy Ball",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JS-W27",
      "nameEn": "Cat's Hands",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JS-W28",
      "nameEn": "Nukiashi",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JS-W29",
      "nameEn": "Volley Firing",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JS-W30",
      "nameEn": "Golden Armor",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JS-W31",
      "nameEn": "Shark On Tooth",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JS-W32",
      "nameEn": "Tooth Gum",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JS-W33",
      "nameEn": "Bliking Canon",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JS-W34",
      "nameEn": "Gluttony",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JS-W35",
      "nameEn": "The Hyena's Way",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JS-W36",
      "nameEn": "Enigma of the Mysterious Ability",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JS-W37",
      "nameEn": "Saru Naguri",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JS-W38",
      "nameEn": "Havoc Sonar",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JS-W39",
      "nameEn": "Saruyama Alliance Bonds",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JS-W40",
      "nameEn": "Saruyama Alliance Solidarity",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JS-W41",
      "nameEn": "Empty-Handed",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JS-W42",
      "nameEn": "Festival Fever",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JS-W43",
      "nameEn": "Targeting Rookies",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JS-W44",
      "nameEn": "A Pirates Main Buisness",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JS-W45",
      "nameEn": "Proud to be a Pirate",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JS-W46",
      "nameEn": "Battlefield Bouquets",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JS-W47",
      "nameEn": "Overcoming Adversity",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     }
    ]
   },
@@ -2783,297 +3325,356 @@
     {
      "num": "JO-C01",
      "nameEn": "Sanji",
-     "nameJp": "サンジ"
+     "nameJp": "サンジ",
+     "rarity": "☆☆☆"
     },
     {
      "num": "JO-C02",
      "nameEn": "Hina",
-     "nameJp": "ヒナ"
+     "nameJp": "ヒナ",
+     "rarity": "☆☆☆"
     },
     {
      "num": "JO-C03",
      "nameEn": "Luffy",
-     "nameJp": "ルフィ"
+     "nameJp": "ルフィ",
+     "rarity": "☆☆"
     },
     {
      "num": "JO-C04",
      "nameEn": "Mihawk",
-     "nameJp": "ミホーク"
+     "nameJp": "ミホーク",
+     "rarity": "☆☆"
     },
     {
      "num": "JO-C05",
      "nameEn": "Zeff",
-     "nameJp": "ゼフ"
+     "nameJp": "ゼフ",
+     "rarity": "☆☆"
     },
     {
      "num": "JO-C06",
      "nameEn": "Sengoku",
-     "nameJp": "センゴク"
+     "nameJp": "センゴク",
+     "rarity": "☆☆"
     },
     {
      "num": "JO-C07",
      "nameEn": "Smoker",
-     "nameJp": "スモーカー"
+     "nameJp": "スモーカー",
+     "rarity": "☆☆"
     },
     {
      "num": "JO-C08",
      "nameEn": "Nami",
-     "nameJp": "ナミ"
+     "nameJp": "ナミ",
+     "rarity": "☆"
     },
     {
      "num": "JO-C09",
      "nameEn": "Robin",
-     "nameJp": "ロビン"
+     "nameJp": "ロビン",
+     "rarity": "☆"
     },
     {
      "num": "JO-C10",
      "nameEn": "Tashigi",
-     "nameJp": "たしぎ"
+     "nameJp": "たしぎ",
+     "rarity": "☆"
     },
     {
      "num": "JO-C11",
      "nameEn": "Bellamy",
-     "nameJp": "ベラミー"
+     "nameJp": "ベラミー",
+     "rarity": "☆"
     },
     {
      "num": "JO-C12",
      "nameEn": "Gan Fall",
-     "nameJp": "ガン・フォール"
+     "nameJp": "ガン・フォール",
+     "rarity": "☆"
     },
     {
      "num": "JO-C13",
      "nameEn": "Luffy",
-     "nameJp": "ルフィ"
+     "nameJp": "ルフィ",
+     "rarity": "Normal"
     },
     {
      "num": "JO-C14",
      "nameEn": "Zoro",
-     "nameJp": "ゾロ"
+     "nameJp": "ゾロ",
+     "rarity": "Normal"
     },
     {
      "num": "JO-C15",
      "nameEn": "Usopp",
-     "nameJp": "ウソップ"
+     "nameJp": "ウソップ",
+     "rarity": "Normal"
     },
     {
      "num": "JO-C16",
      "nameEn": "Sanji",
-     "nameJp": "サンジ"
+     "nameJp": "サンジ",
+     "rarity": "Normal"
     },
     {
      "num": "JO-C17",
      "nameEn": "Chopper",
-     "nameJp": "チョッパー"
+     "nameJp": "チョッパー",
+     "rarity": "Normal"
     },
     {
      "num": "JO-C18",
      "nameEn": "Koby",
-     "nameJp": "コビー"
+     "nameJp": "コビー",
+     "rarity": "Normal"
     },
     {
      "num": "JO-C19",
      "nameEn": "Helmeppo",
-     "nameJp": "ヘルメッポ"
+     "nameJp": "ヘルメッポ",
+     "rarity": "Normal"
     },
     {
      "num": "JO-C201",
      "nameEn": "Fullbody",
-     "nameJp": "フルボディ"
+     "nameJp": "フルボディ",
+     "rarity": "Normal"
     },
     {
      "num": "JO-C21",
      "nameEn": "Jango",
-     "nameJp": "ジャンゴ"
+     "nameJp": "ジャンゴ",
+     "rarity": "Normal"
     },
     {
      "num": "JO-C22",
      "nameEn": "Attachan",
-     "nameJp": "アタっちゃん"
+     "nameJp": "アタっちゃん",
+     "rarity": "Normal"
     },
     {
      "num": "JO-C23",
      "nameEn": "Sarquiss",
-     "nameJp": "サーキース"
+     "nameJp": "サーキース",
+     "rarity": "Normal"
     },
     {
      "num": "JO-C24",
      "nameEn": "Kaya",
-     "nameJp": "カヤ"
+     "nameJp": "カヤ",
+     "rarity": "Normal"
     },
     {
      "num": "JO-C25",
      "nameEn": "Usopp Pirates",
-     "nameJp": "ウソップ海賊団"
+     "nameJp": "ウソップ海賊団",
+     "rarity": "Normal"
     },
     {
      "num": "JO-C26",
      "nameEn": "Nojiko",
-     "nameJp": "ノジコ"
+     "nameJp": "ノジコ",
+     "rarity": "Normal"
     },
     {
      "num": "JO-C27",
      "nameEn": "Conis",
-     "nameJp": "コニス"
+     "nameJp": "コニス",
+     "rarity": "Normal"
     },
     {
      "num": "JO-T01",
      "nameEn": "Smoker & Tashigi",
-     "nameJp": "スモーカー＆たしぎ"
+     "nameJp": "スモーカー＆たしぎ",
+     "rarity": "☆☆☆"
     },
     {
      "num": "JO-T02",
      "nameEn": "Luffy & Smoker",
-     "nameJp": "ルフィ＆スモーカー"
+     "nameJp": "ルフィ＆スモーカー",
+     "rarity": "☆☆"
     },
     {
      "num": "JO-T03",
      "nameEn": "Sanji & Zeff",
-     "nameJp": "サンジ＆ゼフ"
+     "nameJp": "サンジ＆ゼフ",
+     "rarity": "☆☆"
     },
     {
      "num": "JO-T04",
      "nameEn": "Usopp & Usopp Pirates",
-     "nameJp": "ウソップ＆ウソップ海賊団"
+     "nameJp": "ウソップ＆ウソップ海賊団",
+     "rarity": "☆"
     },
     {
      "num": "JO-T05",
      "nameEn": "Fullbody & Jango",
-     "nameJp": "フルボディ＆ジャンゴ"
+     "nameJp": "フルボディ＆ジャンゴ",
+     "rarity": "☆"
     },
     {
      "num": "JO-W01",
      "nameEn": "Absolute Justice",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆☆"
     },
     {
      "num": "JO-W02",
      "nameEn": "Hand-to-Hand Combat",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "JO-W03",
      "nameEn": "Journey Into the Sky",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "JO-W04",
      "nameEn": "Resolute Blade",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "JO-W05",
      "nameEn": "White Guardien Deity",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "JO-W06",
      "nameEn": "Confinement",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "JO-W07",
      "nameEn": "Gomu Gomu no Hanabi",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JO-W08",
      "nameEn": "Scold!",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JO-W09",
      "nameEn": "Kaen Boshi",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JO-W10",
      "nameEn": "Full Course",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JO-W11",
      "nameEn": "Wicked Trick",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JO-W12",
      "nameEn": "Fleet Admiral's Sharp Tongue",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JO-W13",
      "nameEn": "Duel",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JO-W14",
      "nameEn": "For the Sake of One's Friends",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JO-W15",
      "nameEn": "For One's Own Sake",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JO-W16",
      "nameEn": "Spring Hopper",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JO-W17",
      "nameEn": "Big Chop",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JO-W18",
      "nameEn": "Beginning of a Dream",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JO-W19",
      "nameEn": "All-Out Assault",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JO-W20",
      "nameEn": "Zeff's Conviction",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JO-W21",
      "nameEn": "The Hidden Truth",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JO-W22",
      "nameEn": "Dog Fight",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JO-W23",
      "nameEn": "Guidance",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JO-W24",
      "nameEn": "Undersea Treasures",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JO-W25",
      "nameEn": "Dancing Time",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JO-W26",
      "nameEn": "Vice Admiral's Wisdom",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JO-W27",
      "nameEn": "Lunch",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     }
    ]
   },
@@ -3085,242 +3686,290 @@
     {
      "num": "CE-C13",
      "nameEn": "Sanji",
-     "nameJp": "サンジ"
+     "nameJp": "サンジ",
+     "rarity": "Normal"
     },
     {
      "num": "CE-C21",
      "nameEn": "Alvida",
-     "nameJp": "アルビダ"
+     "nameJp": "アルビダ",
+     "rarity": "Normal"
     },
     {
      "num": "MS-C07",
      "nameEn": "Krieg",
-     "nameJp": "クリーク"
+     "nameJp": "クリーク",
+     "rarity": "☆"
     },
     {
      "num": "MS-C08",
      "nameEn": "Arlong",
-     "nameJp": "アーロン"
+     "nameJp": "アーロン",
+     "rarity": "☆"
     },
     {
      "num": "MS-C09",
      "nameEn": "Zeff",
-     "nameJp": "ゼフ"
+     "nameJp": "ゼフ",
+     "rarity": "☆"
     },
     {
      "num": "MS-C15",
      "nameEn": "Smoker",
-     "nameJp": "スモーカー"
+     "nameJp": "スモーカー",
+     "rarity": "Normal"
     },
     {
      "num": "MS-C17",
      "nameEn": "Gin",
-     "nameJp": "ギン"
+     "nameJp": "ギン",
+     "rarity": "Normal"
     },
     {
      "num": "MS-C19",
      "nameEn": "Hatchan",
-     "nameJp": "はっちゃん"
+     "nameJp": "はっちゃん",
+     "rarity": "Normal"
     },
     {
      "num": "MS-C23",
      "nameEn": "Johnny",
-     "nameJp": "ジョニー"
+     "nameJp": "ジョニー",
+     "rarity": "Normal"
     },
     {
      "num": "MS-C24",
      "nameEn": "Yosaku",
-     "nameJp": "ヨサク"
+     "nameJp": "ヨサク",
+     "rarity": "Normal"
     },
     {
      "num": "RG-C01",
      "nameEn": "Luffy",
-     "nameJp": "ルフィ"
+     "nameJp": "ルフィ",
+     "rarity": "☆"
     },
     {
      "num": "RG-C05",
      "nameEn": "Dr. Kureha",
-     "nameJp": "Ｄｒ．くれは"
+     "nameJp": "Ｄｒ．くれは",
+     "rarity": "☆"
     },
     {
      "num": "RG-C09",
      "nameEn": "Luffy",
-     "nameJp": "ルフィ"
+     "nameJp": "ルフィ",
+     "rarity": "Normal"
     },
     {
      "num": "RG-C10",
      "nameEn": "Zoro",
-     "nameJp": "ゾロ"
+     "nameJp": "ゾロ",
+     "rarity": "Normal"
     },
     {
      "num": "RG-C25",
      "nameEn": "Laboon",
-     "nameJp": "ラブーン"
+     "nameJp": "ラブーン",
+     "rarity": "Normal"
     },
     {
      "num": "TS-C01",
      "nameEn": "Nami",
-     "nameJp": "ナミ"
+     "nameJp": "ナミ",
+     "rarity": "Normal"
     },
     {
      "num": "TS-C02",
      "nameEn": "Usopp",
-     "nameJp": "ウソップ"
+     "nameJp": "ウソップ",
+     "rarity": "Normal"
     },
     {
      "num": "TS-C03",
      "nameEn": "Chopper",
-     "nameJp": "チョッパー"
+     "nameJp": "チョッパー",
+     "rarity": "Normal"
     },
     {
      "num": "TS-C04",
      "nameEn": "Robin",
-     "nameJp": "ロビン"
+     "nameJp": "ロビン",
+     "rarity": "Normal"
     },
     {
      "num": "TS-C05",
      "nameEn": "Shanks",
-     "nameJp": "シャンクス"
+     "nameJp": "シャンクス",
+     "rarity": "☆"
     },
     {
      "num": "TS-C06",
      "nameEn": "Mihawk",
-     "nameJp": "ミホーク"
+     "nameJp": "ミホーク",
+     "rarity": "☆"
     },
     {
      "num": "TS-C07",
      "nameEn": "Ace",
-     "nameJp": "エース"
+     "nameJp": "エース",
+     "rarity": "☆"
     },
     {
      "num": "TS-C08",
      "nameEn": "Hina",
-     "nameJp": "ヒナ"
+     "nameJp": "ヒナ",
+     "rarity": "☆"
     },
     {
      "num": "TS-C09",
      "nameEn": "Buggy",
-     "nameJp": "バギー"
+     "nameJp": "バギー",
+     "rarity": "☆"
     },
     {
      "num": "TS-T01",
      "nameEn": "Luffy & Ace",
-     "nameJp": "ルフィ＆エース"
+     "nameJp": "ルフィ＆エース",
+     "rarity": "☆"
     },
     {
      "num": "TS-T02",
      "nameEn": "Zoro & Mihawk",
-     "nameJp": "ゾロ＆ミホーク"
+     "nameJp": "ゾロ＆ミホーク",
+     "rarity": "☆"
     },
     {
      "num": "TS-T03",
      "nameEn": "Sanji & Robin",
-     "nameJp": "サンジ＆ロビン"
+     "nameJp": "サンジ＆ロビン",
+     "rarity": "☆"
     },
     {
      "num": "CE-W05",
      "nameEn": "Escaping on Foot",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "CE-W06",
      "nameEn": "Gunpower Star",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "CE-W08",
      "nameEn": "Mouton Shot",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "CE-W10",
      "nameEn": "Scope",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "CE-W11",
      "nameEn": "Fighting For Your Friends",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "CE-W15",
      "nameEn": "A Great Pirate's Lunch",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "CE-W19",
      "nameEn": "Extreme Blow",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "CE-W20",
      "nameEn": "Bara Bara Cannon",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "MS-W01",
      "nameEn": "Gomu Gomu no Pinwheel",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "MS-W02",
      "nameEn": "Three Thousand Worlds",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "MS-W07",
      "nameEn": "The Black Sword Unsheathed",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "MS-W11",
      "nameEn": "White Out",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "MS-W13",
      "nameEn": "Hand-to-hand Combat",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "MS-W15",
      "nameEn": "Shark On Darts",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "MS-W16",
      "nameEn": "Takohachi Black",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "MS-W20",
      "nameEn": "Sword Strike from the Left",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "MS-W21",
      "nameEn": "Sword Strike from the Right",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "MS-W22",
      "nameEn": "Chef's Prosthetic Kick",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "MS-W30",
      "nameEn": "MH5",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RG-W04",
      "nameEn": "Sharp Insight",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RG-W10",
      "nameEn": "Doctor's Order to Cease",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     }
    ]
   },
@@ -3332,412 +3981,494 @@
     {
      "num": "CS-C01",
      "nameEn": "Luffy",
-     "nameJp": "ルフィ"
+     "nameJp": "ルフィ",
+     "rarity": "☆☆☆"
     },
     {
      "num": "CS-C02",
      "nameEn": "Wyper",
-     "nameJp": "ワイパー"
+     "nameJp": "ワイパー",
+     "rarity": "☆☆☆"
     },
     {
      "num": "CS-C03",
      "nameEn": "Enel",
-     "nameJp": "エネル"
+     "nameJp": "エネル",
+     "rarity": "☆☆☆"
     },
     {
      "num": "CS-C04",
      "nameEn": "Luffy",
-     "nameJp": "ルフィ"
+     "nameJp": "ルフィ",
+     "rarity": "☆☆"
     },
     {
      "num": "CS-C05",
      "nameEn": "Zoro",
-     "nameJp": "ゾロ"
+     "nameJp": "ゾロ",
+     "rarity": "☆☆"
     },
     {
      "num": "CS-C06",
      "nameEn": "Nami",
-     "nameJp": "ナミ"
+     "nameJp": "ナミ",
+     "rarity": "☆☆"
     },
     {
      "num": "CS-C07",
      "nameEn": "Robin",
-     "nameJp": "ロビン"
+     "nameJp": "ロビン",
+     "rarity": "☆☆"
     },
     {
      "num": "CS-C08",
      "nameEn": "Ohm",
-     "nameJp": "オーム"
+     "nameJp": "オーム",
+     "rarity": "☆☆"
     },
     {
      "num": "CS-C09",
      "nameEn": "Gedatsu",
-     "nameJp": "ゲダツ"
+     "nameJp": "ゲダツ",
+     "rarity": "☆☆"
     },
     {
      "num": "CS-C10",
      "nameEn": "Gan Fall",
-     "nameJp": "ガン・フォール"
+     "nameJp": "ガン・フォール",
+     "rarity": "☆☆"
     },
     {
      "num": "CS-C11",
      "nameEn": "Usopp",
-     "nameJp": "ウソップ"
+     "nameJp": "ウソップ",
+     "rarity": "☆"
     },
     {
      "num": "CS-C12",
      "nameEn": "Sanji",
-     "nameJp": "サンジ"
+     "nameJp": "サンジ",
+     "rarity": "☆"
     },
     {
      "num": "CS-C13",
      "nameEn": "Raki",
-     "nameJp": "ラキ"
+     "nameJp": "ラキ",
+     "rarity": "☆"
     },
     {
      "num": "CS-C14",
      "nameEn": "Braham",
-     "nameJp": "ブラハム"
+     "nameJp": "ブラハム",
+     "rarity": "☆"
     },
     {
      "num": "CS-C15",
      "nameEn": "Enel",
-     "nameJp": "エネル"
+     "nameJp": "エネル",
+     "rarity": "☆"
     },
     {
      "num": "CS-C16",
      "nameEn": "Shura",
-     "nameJp": "シュラ"
+     "nameJp": "シュラ",
+     "rarity": "☆"
     },
     {
      "num": "CS-C17",
      "nameEn": "Satori",
-     "nameJp": "サトリ"
+     "nameJp": "サトリ",
+     "rarity": "☆"
     },
     {
      "num": "CS-C18",
      "nameEn": "Master of the Sky",
-     "nameJp": "空の主"
+     "nameJp": "空の主",
+     "rarity": "☆"
     },
     {
      "num": "CS-C19",
      "nameEn": "Luffy",
-     "nameJp": "ルフィ"
+     "nameJp": "ルフィ",
+     "rarity": "Normal"
     },
     {
      "num": "CS-C20",
      "nameEn": "Zoro",
-     "nameJp": "ゾロ"
+     "nameJp": "ゾロ",
+     "rarity": "Normal"
     },
     {
      "num": "CS-C21",
      "nameEn": "Nami",
-     "nameJp": "ナミ"
+     "nameJp": "ナミ",
+     "rarity": "Normal"
     },
     {
      "num": "CS-C22",
      "nameEn": "Chopper",
-     "nameJp": "チョッパー"
+     "nameJp": "チョッパー",
+     "rarity": "Normal"
     },
     {
      "num": "CS-C23",
      "nameEn": "Robin",
-     "nameJp": "ロビン"
+     "nameJp": "ロビン",
+     "rarity": "Normal"
     },
     {
      "num": "CS-C24",
      "nameEn": "Wyper",
-     "nameJp": "ワイパー"
+     "nameJp": "ワイパー",
+     "rarity": "Normal"
     },
     {
      "num": "CS-C25",
      "nameEn": "Kamakiri",
-     "nameJp": "カマキリ"
+     "nameJp": "カマキリ",
+     "rarity": "Normal"
     },
     {
      "num": "CS-C26",
      "nameEn": "Genbo",
-     "nameJp": "ゲンボウ"
+     "nameJp": "ゲンボウ",
+     "rarity": "Normal"
     },
     {
      "num": "CS-C27",
      "nameEn": "Ohm",
-     "nameJp": "オーム"
+     "nameJp": "オーム",
+     "rarity": "Normal"
     },
     {
      "num": "CS-C28",
      "nameEn": "Gedatsu",
-     "nameJp": "ゲダツ"
+     "nameJp": "ゲダツ",
+     "rarity": "Normal"
     },
     {
      "num": "CS-C29",
      "nameEn": "Shura",
-     "nameJp": "シュラ"
+     "nameJp": "シュラ",
+     "rarity": "Normal"
     },
     {
      "num": "CS-C30",
      "nameEn": "Yama",
-     "nameJp": "ヤマ"
+     "nameJp": "ヤマ",
+     "rarity": "Normal"
     },
     {
      "num": "CS-C31",
      "nameEn": "Holy",
-     "nameJp": "ホーリー"
+     "nameJp": "ホーリー",
+     "rarity": "Normal"
     },
     {
      "num": "CS-C32",
      "nameEn": "Fuza",
-     "nameJp": "フザ"
+     "nameJp": "フザ",
+     "rarity": "Normal"
     },
     {
      "num": "CS-C33",
      "nameEn": "Gan Fall",
-     "nameJp": "ガン・フォール"
+     "nameJp": "ガン・フォール",
+     "rarity": "Normal"
     },
     {
      "num": "CS-C34",
      "nameEn": "Pierre",
-     "nameJp": "ピエール"
+     "nameJp": "ピエール",
+     "rarity": "Normal"
     },
     {
      "num": "CS-C35",
      "nameEn": "Aisa",
-     "nameJp": "アイサ"
+     "nameJp": "アイサ",
+     "rarity": "Normal"
     },
     {
      "num": "CS-C36",
      "nameEn": "Conis",
-     "nameJp": "コニス"
+     "nameJp": "コニス",
+     "rarity": "Normal"
     },
     {
      "num": "CS-C37",
      "nameEn": "Pagaya",
-     "nameJp": "パガヤ"
+     "nameJp": "パガヤ",
+     "rarity": "Normal"
     },
     {
      "num": "CS-C38",
      "nameEn": "McKinley",
-     "nameJp": "マッキンリー"
+     "nameJp": "マッキンリー",
+     "rarity": "Normal"
     },
     {
      "num": "CS-T01",
      "nameEn": "Wyper & Gan Fall",
-     "nameJp": "ワイパー＆ガン・フォール"
+     "nameJp": "ワイパー＆ガン・フォール",
+     "rarity": "☆☆☆"
     },
     {
      "num": "CS-T02",
      "nameEn": "Usopp & Sanji",
-     "nameJp": "ウソップ＆サンジ"
+     "nameJp": "ウソップ＆サンジ",
+     "rarity": "☆☆"
     },
     {
      "num": "CS-T03",
      "nameEn": "Gan Fall & Pierre",
-     "nameJp": "ガン・フォール＆ピエール"
+     "nameJp": "ガン・フォール＆ピエール",
+     "rarity": "☆☆"
     },
     {
      "num": "CS-T04",
      "nameEn": "Ohm & Holy",
-     "nameJp": "オーム＆ホーリー"
+     "nameJp": "オーム＆ホーリー",
+     "rarity": "☆"
     },
     {
      "num": "CS-T05",
      "nameEn": "Shura & Fuza",
-     "nameJp": "シュラ＆フザ"
+     "nameJp": "シュラ＆フザ",
+     "rarity": "☆"
     },
     {
      "num": "CS-T06",
      "nameEn": "Chopper & Robin",
-     "nameJp": "チョッパー＆ロビン"
+     "nameJp": "チョッパー＆ロビン",
+     "rarity": "Normal"
     },
     {
      "num": "CS-W01",
      "nameEn": "Heaven's Challengers",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆☆☆"
     },
     {
      "num": "CS-W02",
      "nameEn": "Gomu Gomu no Rifle",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆☆"
     },
     {
      "num": "CS-W03",
      "nameEn": "Reject",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆☆"
     },
     {
      "num": "CS-W04",
      "nameEn": "El Thor",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆☆"
     },
     {
      "num": "CS-W05",
      "nameEn": "Hyakuhachi Pound Ho",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "CS-W06",
      "nameEn": "Usopp AAaaaAAAaaaAA!",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "CS-W07",
      "nameEn": "Concassé",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "CS-W08",
      "nameEn": "Kokutei Cross",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "CS-W09",
      "nameEn": "Maneuver Warfare",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "CS-W10",
      "nameEn": "Flash Guns",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "CS-W11",
      "nameEn": "20,000,000 Volt Vari",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "CS-W12",
      "nameEn": "Tama Dragon",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "CS-W13",
      "nameEn": "Interception",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "CS-W14",
      "nameEn": "Treasures of the Land of Clouds",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "CS-W15",
      "nameEn": "Sanctions Against God",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "CS-W16",
      "nameEn": "Sanjuroku Pound Ho",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "CS-W17",
      "nameEn": "Impact Dial",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "CS-W18",
      "nameEn": "Whistle of Life",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "CS-W19",
      "nameEn": "Seis Fleur Twist",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "CS-W20",
      "nameEn": "Burn Bazooka",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "CS-W21",
      "nameEn": "Burn Blade",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "CS-W22",
      "nameEn": "Iron Cannonball",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "CS-W23",
      "nameEn": "Eisen Fan",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "CS-W24",
      "nameEn": "Jet Punch",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "CS-W25",
      "nameEn": "Heat Javelin",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "CS-W26",
      "nameEn": "Axe Mountain",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "CS-W27",
      "nameEn": "Boxing",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "CS-W28",
      "nameEn": "Flame Dial",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "CS-W29",
      "nameEn": "Teachings of an Old Soldier",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "CS-W30",
      "nameEn": "Glide",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "CS-W31",
      "nameEn": "Voice of the Heart",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "CS-W32",
      "nameEn": "Nursing with All Your Strength",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "CS-W33",
      "nameEn": "Machine Repair",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "CS-W34",
      "nameEn": "The White Troops",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "CS-W35",
      "nameEn": "God's Invitation",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "CS-W36",
      "nameEn": "Pirate's Adventure",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "CS-W37",
      "nameEn": "Shandian Youth",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "CS-W38",
      "nameEn": "Relentless Pursuers",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     }
    ]
   },
@@ -3749,347 +4480,416 @@
     {
      "num": "BP-C01",
      "nameEn": "Zoro",
-     "nameJp": "ゾロ"
+     "nameJp": "ゾロ",
+     "rarity": "☆☆☆"
     },
     {
      "num": "BP-C02",
      "nameEn": "Nami",
-     "nameJp": "ナミ"
+     "nameJp": "ナミ",
+     "rarity": "☆☆☆"
     },
     {
      "num": "BP-C03",
      "nameEn": "Luffy",
-     "nameJp": "ルフィ"
+     "nameJp": "ルフィ",
+     "rarity": "☆☆"
     },
     {
      "num": "BP-C04",
      "nameEn": "Zoro",
-     "nameJp": "ゾロ"
+     "nameJp": "ゾロ",
+     "rarity": "☆☆"
     },
     {
      "num": "BP-C05",
      "nameEn": "Nami",
-     "nameJp": "ナミ"
+     "nameJp": "ナミ",
+     "rarity": "☆☆"
     },
     {
      "num": "BP-C06",
      "nameEn": "Enel",
-     "nameJp": "エネル"
+     "nameJp": "エネル",
+     "rarity": "☆☆"
     },
     {
      "num": "BP-C07",
      "nameEn": "Zoro",
-     "nameJp": "ゾロ"
+     "nameJp": "ゾロ",
+     "rarity": "☆"
     },
     {
      "num": "BP-C08",
      "nameEn": "Usopp",
-     "nameJp": "ウソップ"
+     "nameJp": "ウソップ",
+     "rarity": "☆"
     },
     {
      "num": "BP-C09",
      "nameEn": "Koushirou",
-     "nameJp": "コウシロウ"
+     "nameJp": "コウシロウ",
+     "rarity": "☆"
     },
     {
      "num": "BP-C10",
      "nameEn": "Ohm",
-     "nameJp": "オーム"
+     "nameJp": "オーム",
+     "rarity": "☆"
     },
     {
      "num": "BP-C11",
      "nameEn": "Kuina",
-     "nameJp": "くいな"
+     "nameJp": "くいな",
+     "rarity": "☆"
     },
     {
      "num": "BP-C12",
      "nameEn": "Nami",
-     "nameJp": "ナミ"
+     "nameJp": "ナミ",
+     "rarity": "☆"
     },
     {
      "num": "BP-C13",
      "nameEn": "Sanji",
-     "nameJp": "サンジ"
+     "nameJp": "サンジ",
+     "rarity": "☆"
     },
     {
      "num": "BP-C14",
      "nameEn": "Arlong",
-     "nameJp": "アーロン"
+     "nameJp": "アーロン",
+     "rarity": "☆"
     },
     {
      "num": "BP-C15",
      "nameEn": "Bell-mère",
-     "nameJp": "ベルメール"
+     "nameJp": "ベルメール",
+     "rarity": "☆"
     },
     {
      "num": "BP-C16",
      "nameEn": "Genzo",
-     "nameJp": "ゲンゾウ"
+     "nameJp": "ゲンゾウ",
+     "rarity": "☆"
     },
     {
      "num": "BP-C17",
      "nameEn": "Luffy",
-     "nameJp": "ルフィ"
+     "nameJp": "ルフィ",
+     "rarity": "Normal"
     },
     {
      "num": "BP-C18",
      "nameEn": "Zoro",
-     "nameJp": "ゾロ"
+     "nameJp": "ゾロ",
+     "rarity": "Normal"
     },
     {
      "num": "BP-C19",
      "nameEn": "Nami",
-     "nameJp": "ナミ"
+     "nameJp": "ナミ",
+     "rarity": "Normal"
     },
     {
      "num": "BP-C20",
      "nameEn": "Usopp",
-     "nameJp": "ウソップ"
+     "nameJp": "ウソップ",
+     "rarity": "Normal"
     },
     {
      "num": "BP-C21",
      "nameEn": "Sanji",
-     "nameJp": "サンジ"
+     "nameJp": "サンジ",
+     "rarity": "Normal"
     },
     {
      "num": "BP-C22",
      "nameEn": "Chopper",
-     "nameJp": "チョッパー"
+     "nameJp": "チョッパー",
+     "rarity": "Normal"
     },
     {
      "num": "BP-C23",
      "nameEn": "Robin",
-     "nameJp": "ロビン"
+     "nameJp": "ロビン",
+     "rarity": "Normal"
     },
     {
      "num": "BP-C24",
      "nameEn": "Kuina",
-     "nameJp": "くいな"
+     "nameJp": "くいな",
+     "rarity": "Normal"
     },
     {
      "num": "BP-C25",
      "nameEn": "Braham",
-     "nameJp": "ブラハム"
+     "nameJp": "ブラハム",
+     "rarity": "Normal"
     },
     {
      "num": "BP-C26",
      "nameEn": "Tashigi",
-     "nameJp": "たしぎ"
+     "nameJp": "たしぎ",
+     "rarity": "Normal"
     },
     {
      "num": "BP-C27",
      "nameEn": "Bell-mère",
-     "nameJp": "ベルメール"
+     "nameJp": "ベルメール",
+     "rarity": "Normal"
     },
     {
      "num": "BP-C28",
      "nameEn": "Cabaji",
-     "nameJp": "カバジ"
+     "nameJp": "カバジ",
+     "rarity": "Normal"
     },
     {
      "num": "BP-C29",
      "nameEn": "Hatchan",
-     "nameJp": "はっちゃん"
+     "nameJp": "はっちゃん",
+     "rarity": "Normal"
     },
     {
      "num": "BP-C30",
      "nameEn": "Mr. 1",
-     "nameJp": "Ｍｒ．１"
+     "nameJp": "Ｍｒ．１",
+     "rarity": "Normal"
     },
     {
      "num": "BP-C31",
      "nameEn": "Miss Doublefinger",
-     "nameJp": "ミス・ダブルフィンガー"
+     "nameJp": "ミス・ダブルフィンガー",
+     "rarity": "Normal"
     },
     {
      "num": "BP-C32",
      "nameEn": "Vivi",
-     "nameJp": "ビビ"
+     "nameJp": "ビビ",
+     "rarity": "Normal"
     },
     {
      "num": "BP-C33",
      "nameEn": "Johnny",
-     "nameJp": "ジョニー"
+     "nameJp": "ジョニー",
+     "rarity": "Normal"
     },
     {
      "num": "BP-C34",
      "nameEn": "Yosaku",
-     "nameJp": "ヨサク"
+     "nameJp": "ヨサク",
+     "rarity": "Normal"
     },
     {
      "num": "BP-T01",
      "nameEn": "Zoro & Nami",
-     "nameJp": "ゾロ＆ナミ"
+     "nameJp": "ゾロ＆ナミ",
+     "rarity": "☆☆☆"
     },
     {
      "num": "BP-T02",
      "nameEn": "Luffy & Zoro",
-     "nameJp": "ルフィ＆ゾロ"
+     "nameJp": "ルフィ＆ゾロ",
+     "rarity": "☆☆"
     },
     {
      "num": "BP-T03",
      "nameEn": "Luffy & Nami",
-     "nameJp": "ルフィ＆ナミ"
+     "nameJp": "ルフィ＆ナミ",
+     "rarity": "☆☆"
     },
     {
      "num": "BP-T04",
      "nameEn": "Zoro & Kuina",
-     "nameJp": "ゾロ＆くいな"
+     "nameJp": "ゾロ＆くいな",
+     "rarity": "☆"
     },
     {
      "num": "BP-T05",
      "nameEn": "Zoro & Tashigi",
-     "nameJp": "ゾロ＆たしぎ"
+     "nameJp": "ゾロ＆たしぎ",
+     "rarity": "☆"
     },
     {
      "num": "BP-T06",
      "nameEn": "Nami & Arlong",
-     "nameJp": "ナミ＆アーロン"
+     "nameJp": "ナミ＆アーロン",
+     "rarity": "☆"
     },
     {
      "num": "BP-T07",
      "nameEn": "Nami & Vivi",
-     "nameJp": "ナミ＆ビビ"
+     "nameJp": "ナミ＆ビビ",
+     "rarity": "☆"
     },
     {
      "num": "BP-T08",
      "nameEn": "Johnny & Yosaku",
-     "nameJp": "ジョニー＆ヨサク"
+     "nameJp": "ジョニー＆ヨサク",
+     "rarity": "Normal"
     },
     {
      "num": "BP-W01",
      "nameEn": "Bonds of Fellowship",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆☆☆"
     },
     {
      "num": "BP-W02",
      "nameEn": "30,000,000 Volt Kiten",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆☆"
     },
     {
      "num": "BP-W03",
      "nameEn": "Great Pirate's Hospitality",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆☆"
     },
     {
      "num": "BP-W04",
      "nameEn": "Great Pirate's Banquet",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆☆"
     },
     {
      "num": "BP-W05",
      "nameEn": "Decleration of Invicibility",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "BP-W06",
      "nameEn": "Master Swordsman",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "BP-W07",
      "nameEn": "Eisen Back",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "BP-W08",
      "nameEn": "Memories of the Mikan Orchard",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "BP-W09",
      "nameEn": "Tooth Gum",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "BP-W10",
      "nameEn": "Struggle of Endurance",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "BP-W11",
      "nameEn": "Gomu Gomu no Bazooka",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "BP-W12",
      "nameEn": "Toro Nagashi",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "BP-W13",
      "nameEn": "Forward-Thinking Navigator",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "BP-W14",
      "nameEn": "Escort",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "BP-W15",
      "nameEn": "Inability to Hide True Emotions",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "BP-W16",
      "nameEn": "Insatiable Curiousity",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "BP-W17",
      "nameEn": "Eternal Rivals",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "BP-W18",
      "nameEn": "Milky Dial",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "BP-W19",
      "nameEn": "Connoisseur of Swords",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "BP-W20",
      "nameEn": "The Former Marine Mother",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "BP-W21",
      "nameEn": "Kaji Oyaji",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "BP-W22",
      "nameEn": "Rokuto no Waltz",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "BP-W23",
      "nameEn": "Spar Claw",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "BP-W24",
      "nameEn": "Smile of Composure",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "BP-W25",
      "nameEn": "A Moments Rest",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "BP-W26",
      "nameEn": "Uruheee!!",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "BP-W27",
      "nameEn": "Situation Report",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     }
    ]
   },
@@ -4101,242 +4901,290 @@
     {
      "num": "G3-C01",
      "nameEn": "Luffy",
-     "nameJp": "ルフィ"
+     "nameJp": "ルフィ",
+     "rarity": "☆☆"
     },
     {
      "num": "G3-C02",
      "nameEn": "Zoro",
-     "nameJp": "ゾロ"
+     "nameJp": "ゾロ",
+     "rarity": "☆☆"
     },
     {
      "num": "G3-C03",
      "nameEn": "Wyper",
-     "nameJp": "ワイパー"
+     "nameJp": "ワイパー",
+     "rarity": "☆☆"
     },
     {
      "num": "G3-C04",
      "nameEn": "Enel",
-     "nameJp": "エネル"
+     "nameJp": "エネル",
+     "rarity": "☆☆"
     },
     {
      "num": "G3-C05",
      "nameEn": "Nami",
-     "nameJp": "ナミ"
+     "nameJp": "ナミ",
+     "rarity": "Normal"
     },
     {
      "num": "G3-C06",
      "nameEn": "Usopp",
-     "nameJp": "ウソップ"
+     "nameJp": "ウソップ",
+     "rarity": "Normal"
     },
     {
      "num": "G3-C07",
      "nameEn": "Sanji",
-     "nameJp": "サンジ"
+     "nameJp": "サンジ",
+     "rarity": "Normal"
     },
     {
      "num": "G3-C08",
      "nameEn": "Chopper",
-     "nameJp": "チョッパー"
+     "nameJp": "チョッパー",
+     "rarity": "Normal"
     },
     {
      "num": "G3-C09",
      "nameEn": "Robin",
-     "nameJp": "ロビン"
+     "nameJp": "ロビン",
+     "rarity": "Normal"
     },
     {
      "num": "G3-C10",
      "nameEn": "Shanks",
-     "nameJp": "シャンクス"
+     "nameJp": "シャンクス",
+     "rarity": "Normal"
     },
     {
      "num": "G3-C11",
      "nameEn": "Ace",
-     "nameJp": "エース"
+     "nameJp": "エース",
+     "rarity": "Normal"
     },
     {
      "num": "G3-C12",
      "nameEn": "Smoker",
-     "nameJp": "スモーカー"
+     "nameJp": "スモーカー",
+     "rarity": "Normal"
     },
     {
      "num": "G3-C13",
      "nameEn": "Hina",
-     "nameJp": "ヒナ"
+     "nameJp": "ヒナ",
+     "rarity": "Normal"
     },
     {
      "num": "G3-C14",
      "nameEn": "Crocodile",
-     "nameJp": "クロコダイル"
+     "nameJp": "クロコダイル",
+     "rarity": "Normal"
     },
     {
      "num": "G3-C15",
      "nameEn": "Bon Kurei",
-     "nameJp": "ボン・クレー"
+     "nameJp": "ボン・クレー",
+     "rarity": "Normal"
     },
     {
      "num": "G3-C16",
      "nameEn": "Ohm",
-     "nameJp": "オーム"
+     "nameJp": "オーム",
+     "rarity": "Normal"
     },
     {
      "num": "G3-W01",
      "nameEn": "Gomu Gomu no Gatling",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "G3-W02",
      "nameEn": "Sanjuroku Pound Ho",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "G3-W03",
      "nameEn": "Burn Bazooka",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "G3-W04",
      "nameEn": "30,000,000 Voly Hino",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "G3-W05",
      "nameEn": "Supporter! Knight of the Sky",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "G3-W06",
      "nameEn": "Elegy to the Duelists",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "G3-W07",
      "nameEn": "Kamaitachi",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "G3-W08",
      "nameEn": "Executioner Summons",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "G3-W09",
      "nameEn": "Tornado Tempo",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "G3-W10",
      "nameEn": "Usopp Pound",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "G3-W11",
      "nameEn": "Inheritor of the Red Leg",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "G3-W12",
      "nameEn": "Kokutei Cross",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "G3-W13",
      "nameEn": "Veinte Fleur Calendula",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "G3-W14",
      "nameEn": "True Pirates",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "G3-W15",
      "nameEn": "Hiken",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "G3-W16",
      "nameEn": "White Out",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "G3-W17",
      "nameEn": "Lock",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "G3-W18",
      "nameEn": "Desert Spada",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "G3-W19",
      "nameEn": "Ano Natsu no Hi no Memoir",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "G3-W20",
      "nameEn": "Eisen Whip",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "G3-W21",
      "nameEn": "Ingenuity",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "G3-W22",
      "nameEn": "Sink or Swim",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "G3-W23",
      "nameEn": "First Strike",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "G3-W24",
      "nameEn": "Rapid Attack!",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "G3-W25",
      "nameEn": "Overwhelm",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "G3-W26",
      "nameEn": "Lucky Chance",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "G3-W27",
      "nameEn": "Secret Messenger",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "G3-W28",
      "nameEn": "Harbrigner of Mortal Combat",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "G3-W29",
      "nameEn": "Beginning of the Trials",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "G3-W30",
      "nameEn": "The Red Hair Pirates Strike",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "G3-W31",
      "nameEn": "Funky Style",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "G3-W32",
      "nameEn": "Luring Trap",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     }
    ]
   },
@@ -4348,327 +5196,392 @@
     {
      "num": "PA-C01",
      "nameEn": "Luffy",
-     "nameJp": "ルフィ"
+     "nameJp": "ルフィ",
+     "rarity": "☆☆☆"
     },
     {
      "num": "PA-C02",
      "nameEn": "Enel",
-     "nameJp": "エネル"
+     "nameJp": "エネル",
+     "rarity": "☆☆☆"
     },
     {
      "num": "PA-C03",
      "nameEn": "Noland",
-     "nameJp": "ノーランド"
+     "nameJp": "ノーランド",
+     "rarity": "☆☆"
     },
     {
      "num": "PA-C04",
      "nameEn": "Calgara",
-     "nameJp": "カルガラ"
+     "nameJp": "カルガラ",
+     "rarity": "☆☆"
     },
     {
      "num": "PA-C05",
      "nameEn": "Saga",
-     "nameJp": "サガ"
+     "nameJp": "サガ",
+     "rarity": "☆☆"
     },
     {
      "num": "PA-C06",
      "nameEn": "Luffy",
-     "nameJp": "ルフィ"
+     "nameJp": "ルフィ",
+     "rarity": "☆"
     },
     {
      "num": "PA-C07",
      "nameEn": "Zoro",
-     "nameJp": "ゾロ"
+     "nameJp": "ゾロ",
+     "rarity": "☆"
     },
     {
      "num": "PA-C08",
      "nameEn": "Wyper",
-     "nameJp": "ワイパー"
+     "nameJp": "ワイパー",
+     "rarity": "☆"
     },
     {
      "num": "PA-C09",
      "nameEn": "Luffy",
-     "nameJp": "ルフィ"
+     "nameJp": "ルフィ",
+     "rarity": "Normal"
     },
     {
      "num": "PA-C10",
      "nameEn": "Nami",
-     "nameJp": "ナミ"
+     "nameJp": "ナミ",
+     "rarity": "Normal"
     },
     {
      "num": "PA-C11",
      "nameEn": "Nami",
-     "nameJp": "ナミ"
+     "nameJp": "ナミ",
+     "rarity": "Normal"
     },
     {
      "num": "PA-C12",
      "nameEn": "Usopp",
-     "nameJp": "ウソップ"
+     "nameJp": "ウソップ",
+     "rarity": "Normal"
     },
     {
      "num": "PA-C13",
      "nameEn": "Sanji",
-     "nameJp": "サンジ"
+     "nameJp": "サンジ",
+     "rarity": "Normal"
     },
     {
      "num": "PA-C14",
      "nameEn": "Chopper",
-     "nameJp": "チョッパー"
+     "nameJp": "チョッパー",
+     "rarity": "Normal"
     },
     {
      "num": "PA-C15",
      "nameEn": "Robin",
-     "nameJp": "ロビン"
+     "nameJp": "ロビン",
+     "rarity": "Normal"
     },
     {
      "num": "PA-C16",
      "nameEn": "Wyper",
-     "nameJp": "ワイパー"
+     "nameJp": "ワイパー",
+     "rarity": "Normal"
     },
     {
      "num": "PA-C17",
      "nameEn": "Ace",
-     "nameJp": "エース"
+     "nameJp": "エース",
+     "rarity": "Normal"
     },
     {
      "num": "PA-C18",
      "nameEn": "Saga",
-     "nameJp": "サガ"
+     "nameJp": "サガ",
+     "rarity": "Normal"
     },
     {
      "num": "PA-C19",
      "nameEn": "Toma",
-     "nameJp": "トウマ"
+     "nameJp": "トウマ",
+     "rarity": "Normal"
     },
     {
      "num": "PA-C20",
      "nameEn": "Bismark",
-     "nameJp": "ビスマルク"
+     "nameJp": "ビスマルク",
+     "rarity": "Normal"
     },
     {
      "num": "PA-C21",
      "nameEn": "Ohm",
-     "nameJp": "オーム"
+     "nameJp": "オーム",
+     "rarity": "Normal"
     },
     {
      "num": "PA-C22",
      "nameEn": "Gedatsu",
-     "nameJp": "ゲダツ"
+     "nameJp": "ゲダツ",
+     "rarity": "Normal"
     },
     {
      "num": "PA-C23",
      "nameEn": "Shura",
-     "nameJp": "シュラ"
+     "nameJp": "シュラ",
+     "rarity": "Normal"
     },
     {
      "num": "PA-C24",
      "nameEn": "Satori",
-     "nameJp": "サトリ"
+     "nameJp": "サトリ",
+     "rarity": "Normal"
     },
     {
      "num": "PA-C25",
      "nameEn": "Gan Fall",
-     "nameJp": "ガン・フォール"
+     "nameJp": "ガン・フォール",
+     "rarity": "Normal"
     },
     {
      "num": "PA-C26",
      "nameEn": "Conis",
-     "nameJp": "コニス"
+     "nameJp": "コニス",
+     "rarity": "Normal"
     },
     {
      "num": "PA-C27",
      "nameEn": "Maya",
-     "nameJp": "マヤ"
+     "nameJp": "マヤ",
+     "rarity": "Normal"
     },
     {
      "num": "PA-C28",
      "nameEn": "Luffy",
-     "nameJp": "ルフィ"
+     "nameJp": "ルフィ",
+     "rarity": "☆☆"
     },
     {
      "num": "PA-C29",
      "nameEn": "Zoro",
-     "nameJp": "ゾロ"
+     "nameJp": "ゾロ",
+     "rarity": "☆☆"
     },
     {
      "num": "PA-T01",
      "nameEn": "Noland & Calgara",
-     "nameJp": "ノーランド＆カルガラ"
+     "nameJp": "ノーランド＆カルガラ",
+     "rarity": "☆☆☆"
     },
     {
      "num": "PA-T02",
      "nameEn": "Luff & Wyper",
-     "nameJp": "ルフィ＆ワイパー"
+     "nameJp": "ルフィ＆ワイパー",
+     "rarity": "☆☆"
     },
     {
      "num": "PA-T03",
      "nameEn": "Zoro & Saga",
-     "nameJp": "ゾロ＆サガ"
+     "nameJp": "ゾロ＆サガ",
+     "rarity": "☆☆"
     },
     {
      "num": "PA-T04",
      "nameEn": "Ohm & Gedatsu",
-     "nameJp": "オーム＆ゲダツ"
+     "nameJp": "オーム＆ゲダツ",
+     "rarity": "☆"
     },
     {
      "num": "PA-T05",
      "nameEn": "Shura & Satori",
-     "nameJp": "シュラ＆サトリ"
+     "nameJp": "シュラ＆サトリ",
+     "rarity": "☆"
     },
     {
      "num": "PA-T06",
      "nameEn": "Nami & Robin",
-     "nameJp": "ナミ＆ロビン"
+     "nameJp": "ナミ＆ロビン",
+     "rarity": "Normal"
     },
     {
      "num": "PA-T07",
      "nameEn": "Usopp & Chopper",
-     "nameJp": "ウソップ＆チョッパー"
+     "nameJp": "ウソップ＆チョッパー",
+     "rarity": "Normal"
     },
     {
      "num": "PA-T08",
      "nameEn": "Luffy & Chopper",
-     "nameJp": "ルフィ＆チョッパー"
+     "nameJp": "ルフィ＆チョッパー",
+     "rarity": "☆"
     },
     {
      "num": "PA-T09",
      "nameEn": "Zoro & Sanji",
-     "nameJp": "ゾロ＆サンジ"
+     "nameJp": "ゾロ＆サンジ",
+     "rarity": "☆"
     },
     {
      "num": "PA-W01",
      "nameEn": "Decisive Battle",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆☆☆"
     },
     {
      "num": "PA-W02",
      "nameEn": "Gomu Gomu no Ogon Rifle",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆☆"
     },
     {
      "num": "PA-W03",
      "nameEn": "200,000,000 Volt Amaru",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆☆"
     },
     {
      "num": "PA-W04",
      "nameEn": "Destructive Fist",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆☆"
     },
     {
      "num": "PA-W05",
      "nameEn": "Sword that Cuts Open the Path",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆☆"
     },
     {
      "num": "PA-W06",
      "nameEn": "Gomu Gomu no Hanabi: Ogon Botan",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "PA-W07",
      "nameEn": "Hero's Cry",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "PA-W08",
      "nameEn": "The Great Warrior's Question",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "PA-W09",
      "nameEn": "Raigo",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "PA-W10",
      "nameEn": "Yoja: Gashuzan",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "PA-W11",
      "nameEn": "Turning a Blade Towards a Friend",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "PA-W12",
      "nameEn": "Nami's Fury",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "PA-W13",
      "nameEn": "Usopp Spell",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "PA-W14",
      "nameEn": "Rule of Judgement",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "PA-W15",
      "nameEn": "Defensive Battle",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "PA-W16",
      "nameEn": "Lone Warrior",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "PA-W17",
      "nameEn": "Going Undercover",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "PA-W18",
      "nameEn": "Battle Expert",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "PA-W19",
      "nameEn": "Sky Island Residents",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "PA-W20",
      "nameEn": "Sacred Prayer",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "PA-W21",
      "nameEn": "Protect Another",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "PA-W22",
      "nameEn": "Campfire",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "PA-W23",
      "nameEn": "Superior Swordsmanship",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "PA-W24",
      "nameEn": "Mantra",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "PA-W25",
      "nameEn": "Pirate Baseball",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "PA-W26",
      "nameEn": "Indestructable Willpower",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆☆"
     },
     {
      "num": "PA-W27",
      "nameEn": "Indominitable Spirit",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆☆"
     }
    ]
   },
@@ -4680,312 +5593,374 @@
     {
      "num": "ES-C01",
      "nameEn": "Luffy",
-     "nameJp": "ルフィ"
+     "nameJp": "ルフィ",
+     "rarity": "☆☆"
     },
     {
      "num": "ES-C02",
      "nameEn": "Zoro",
-     "nameJp": "ゾロ"
+     "nameJp": "ゾロ",
+     "rarity": "☆☆"
     },
     {
      "num": "ES-C03",
      "nameEn": "Sanji",
-     "nameJp": "サンジ"
+     "nameJp": "サンジ",
+     "rarity": "☆☆"
     },
     {
      "num": "ES-C04",
      "nameEn": "Enel",
-     "nameJp": "エネル"
+     "nameJp": "エネル",
+     "rarity": "☆☆"
     },
     {
      "num": "ES-C05",
      "nameEn": "Teach",
-     "nameJp": "ティーチ"
+     "nameJp": "ティーチ",
+     "rarity": "☆☆"
     },
     {
      "num": "ES-C06",
      "nameEn": "Doflamingo",
-     "nameJp": "ドフラミンゴ"
+     "nameJp": "ドフラミンゴ",
+     "rarity": "☆☆"
     },
     {
      "num": "ES-C07",
      "nameEn": "Luffy",
-     "nameJp": "ルフィ"
+     "nameJp": "ルフィ",
+     "rarity": "☆"
     },
     {
      "num": "ES-C08",
      "nameEn": "Wyper",
-     "nameJp": "ワイパー"
+     "nameJp": "ワイパー",
+     "rarity": "☆"
     },
     {
      "num": "ES-C09",
      "nameEn": "Noland",
-     "nameJp": "ノーランド"
+     "nameJp": "ノーランド",
+     "rarity": "☆"
     },
     {
      "num": "ES-C10",
      "nameEn": "Calgara",
-     "nameJp": "カルガラ"
+     "nameJp": "カルガラ",
+     "rarity": "☆"
     },
     {
      "num": "ES-C11",
      "nameEn": "Zoro",
-     "nameJp": "ゾロ"
+     "nameJp": "ゾロ",
+     "rarity": "Normal"
     },
     {
      "num": "ES-C12",
      "nameEn": "Nami",
-     "nameJp": "ナミ"
+     "nameJp": "ナミ",
+     "rarity": "Normal"
     },
     {
      "num": "ES-C13",
      "nameEn": "Usopp",
-     "nameJp": "ウソップ"
+     "nameJp": "ウソップ",
+     "rarity": "Normal"
     },
     {
      "num": "ES-C14",
      "nameEn": "Sanji",
-     "nameJp": "サンジ"
+     "nameJp": "サンジ",
+     "rarity": "Normal"
     },
     {
      "num": "ES-C15",
      "nameEn": "Chopper",
-     "nameJp": "チョッパー"
+     "nameJp": "チョッパー",
+     "rarity": "Normal"
     },
     {
      "num": "ES-C16",
      "nameEn": "Robin",
-     "nameJp": "ロビン"
+     "nameJp": "ロビン",
+     "rarity": "Normal"
     },
     {
      "num": "ES-C17",
      "nameEn": "Braham",
-     "nameJp": "ブラハム"
+     "nameJp": "ブラハム",
+     "rarity": "Normal"
     },
     {
      "num": "ES-C18",
      "nameEn": "Raki",
-     "nameJp": "ラキ"
+     "nameJp": "ラキ",
+     "rarity": "Normal"
     },
     {
      "num": "ES-C19",
      "nameEn": "Ohm",
-     "nameJp": "オーム"
+     "nameJp": "オーム",
+     "rarity": "Normal"
     },
     {
      "num": "ES-C20",
      "nameEn": "Gedatsu",
-     "nameJp": "ゲダツ"
+     "nameJp": "ゲダツ",
+     "rarity": "Normal"
     },
     {
      "num": "ES-C21",
      "nameEn": "Shura",
-     "nameJp": "シュラ"
+     "nameJp": "シュラ",
+     "rarity": "Normal"
     },
     {
      "num": "ES-C22",
      "nameEn": "Satori",
-     "nameJp": "サトリ"
+     "nameJp": "サトリ",
+     "rarity": "Normal"
     },
     {
      "num": "ES-C23",
      "nameEn": "Van Augur",
-     "nameJp": "ヴァン・オーガー"
+     "nameJp": "ヴァン・オーガー",
+     "rarity": "Normal"
     },
     {
      "num": "ES-C24",
      "nameEn": "Jesus Burgess",
-     "nameJp": "ジーザス・バージェス"
+     "nameJp": "ジーザス・バージェス",
+     "rarity": "Normal"
     },
     {
      "num": "ES-C25",
      "nameEn": "Doc Q",
-     "nameJp": "ドクＱ"
+     "nameJp": "ドクＱ",
+     "rarity": "Normal"
     },
     {
      "num": "ES-C26",
      "nameEn": "Cricket",
-     "nameJp": "クリケット"
+     "nameJp": "クリケット",
+     "rarity": "Normal"
     },
     {
      "num": "ES-C27",
      "nameEn": "Gan Fall",
-     "nameJp": "ガン・フォール"
+     "nameJp": "ガン・フォール",
+     "rarity": "Normal"
     },
     {
      "num": "ES-C28",
      "nameEn": "Aisa",
-     "nameJp": "アイサ"
+     "nameJp": "アイサ",
+     "rarity": "Normal"
     },
     {
      "num": "ES-C29",
      "nameEn": "Conis",
-     "nameJp": "コニス"
+     "nameJp": "コニス",
+     "rarity": "Normal"
     },
     {
      "num": "ES-C30",
      "nameEn": "Pagaya",
-     "nameJp": "パガヤ"
+     "nameJp": "パガヤ",
+     "rarity": "Normal"
     },
     {
      "num": "ES-T01",
      "nameEn": "Zoro & Braham",
-     "nameJp": "ゾロ＆ブラハム"
+     "nameJp": "ゾロ＆ブラハム",
+     "rarity": "☆☆"
     },
     {
      "num": "ES-T02",
      "nameEn": "Nami & Gan Fall",
-     "nameJp": "ナミ＆ガン・フォール"
+     "nameJp": "ナミ＆ガン・フォール",
+     "rarity": "☆☆"
     },
     {
      "num": "ES-T03",
      "nameEn": "Nami & Usopp",
-     "nameJp": "ナミ＆ウソップ"
+     "nameJp": "ナミ＆ウソップ",
+     "rarity": "☆"
     },
     {
      "num": "ES-T04",
      "nameEn": "Usopp & Pagaya",
-     "nameJp": "ウソップ＆パガヤ"
+     "nameJp": "ウソップ＆パガヤ",
+     "rarity": "☆"
     },
     {
      "num": "ES-T05",
      "nameEn": "Coni & Aisa",
-     "nameJp": "コニス＆アイサ"
+     "nameJp": "コニス＆アイサ",
+     "rarity": "Normal"
     },
     {
      "num": "ES-W01",
      "nameEn": "Treasure Get!",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆☆☆"
     },
     {
      "num": "ES-W02",
      "nameEn": "Inherited Souls",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆☆"
     },
     {
      "num": "ES-W03",
      "nameEn": "Furious Blow",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆☆"
     },
     {
      "num": "ES-W04",
      "nameEn": "Mamaragan",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆☆"
     },
     {
      "num": "ES-W05",
      "nameEn": "Song of the Earth",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆☆"
     },
     {
      "num": "ES-W06",
      "nameEn": "Feast of the Earth",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆☆"
     },
     {
      "num": "ES-W07",
      "nameEn": "Gomu Gomu no Boh...",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "ES-W08",
      "nameEn": "Aerial Battle",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "ES-W09",
      "nameEn": "Maximum Power Waver",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "ES-W10",
      "nameEn": "Man's Resolve",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "ES-W11",
      "nameEn": "Gloam Paddling",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "ES-W12",
      "nameEn": "Everyone's Gathered!",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "ES-W13",
      "nameEn": "Maintenance",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "ES-W14",
      "nameEn": "Solo Ship Watch",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "ES-W15",
      "nameEn": "Cien Fleur Delphinium",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "ES-W16",
      "nameEn": "Standing Firm",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "ES-W17",
      "nameEn": "Botany",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "ES-W18",
      "nameEn": "The Great Warriors Onslaught",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "ES-W19",
      "nameEn": "Absolute Dominance",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "ES-W20",
      "nameEn": "A Friend's Shared Dream",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "ES-W21",
      "nameEn": "Faithful Companion",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "ES-W22",
      "nameEn": "Passage to a Hideen Village",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "ES-W23",
      "nameEn": "Sacrilege Against God",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "ES-W24",
      "nameEn": "Shandia Warriors",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "ES-W25",
      "nameEn": "50 Enforcers",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "ES-W26",
      "nameEn": "Definition of a Pirate",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "ES-W27",
      "nameEn": "Strategy Meeting",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     }
    ]
   },
@@ -4997,112 +5972,134 @@
     {
      "num": "DG-W01",
      "nameEn": "Straw Hat of Promise",
-     "nameJp": "約束の麦わら帽子"
+     "nameJp": "約束の麦わら帽子",
+     "rarity": "☆"
     },
     {
      "num": "CE-C10",
      "nameEn": "Luffy",
-     "nameJp": "ルフィ"
+     "nameJp": "ルフィ",
+     "rarity": "Normal"
     },
     {
      "num": "TS-C05",
      "nameEn": "Shanks",
-     "nameJp": "シャンクス"
+     "nameJp": "シャンクス",
+     "rarity": "Normal"
     },
     {
      "num": "CE-C19",
      "nameEn": "Morgan",
-     "nameJp": "モーガン"
+     "nameJp": "モーガン",
+     "rarity": "Normal"
     },
     {
      "num": "DG-W02",
      "nameEn": "Oath from Long Ago",
-     "nameJp": "遠き日の誓い"
+     "nameJp": "遠き日の誓い",
+     "rarity": "☆"
     },
     {
      "num": "JO-C14",
      "nameEn": "Zoro",
-     "nameJp": "ゾロ"
+     "nameJp": "ゾロ",
+     "rarity": "Normal"
     },
     {
      "num": "BP-C24",
      "nameEn": "Kuina",
-     "nameJp": "くいな"
+     "nameJp": "くいな",
+     "rarity": "Normal"
     },
     {
      "num": "TS-C06",
      "nameEn": "Emotion Filled Farewell",
-     "nameJp": "万感の別れ"
+     "nameJp": "万感の別れ",
+     "rarity": "Normal"
     },
     {
      "num": "CE-C13",
      "nameEn": "Sanji",
-     "nameJp": "サンジ"
+     "nameJp": "サンジ",
+     "rarity": "Normal"
     },
     {
      "num": "JS-C16",
      "nameEn": "Krieg",
-     "nameJp": "クリーク"
+     "nameJp": "クリーク",
+     "rarity": "Normal"
     },
     {
      "num": "MS-C25",
      "nameEn": "Patty",
-     "nameJp": "パティ"
+     "nameJp": "パティ",
+     "rarity": "Normal"
     },
     {
      "num": "DG-W03",
      "nameEn": "Starting Anew with a Smile",
-     "nameJp": "笑顔の再出発"
+     "nameJp": "笑顔の再出発",
+     "rarity": "☆"
     },
     {
      "num": "JO-C08",
      "nameEn": "Nami",
-     "nameJp": "ナミ"
+     "nameJp": "ナミ",
+     "rarity": "Normal"
     },
     {
      "num": "DG-W07",
      "nameEn": "The Lone Inquirer",
-     "nameJp": "孤影の探訪者"
+     "nameJp": "孤影の探訪者",
+     "rarity": "Normal"
     },
     {
      "num": "SB-C14",
      "nameEn": "Miss All Sunday",
-     "nameJp": "ミス・オールサンデー"
+     "nameJp": "ミス・オールサンデー",
+     "rarity": "Normal"
     },
     {
      "num": "DG-W04",
      "nameEn": "Captain's Final Orders",
-     "nameJp": "最後のキャプテン命令"
+     "nameJp": "最後のキャプテン命令",
+     "rarity": "Normal"
     },
     {
      "num": "MS-C11",
      "nameEn": "Usopp",
-     "nameJp": "ウソップ"
+     "nameJp": "ウソップ",
+     "rarity": "Normal"
     },
     {
      "num": "DG-W06",
      "nameEn": "Cherry Blossom Blizzard Departure",
-     "nameJp": "旅立ちの桜吹雪"
+     "nameJp": "旅立ちの桜吹雪",
+     "rarity": "☆"
     },
     {
      "num": "RG-C14",
      "nameEn": "Chopper",
-     "nameJp": "チョッパー"
+     "nameJp": "チョッパー",
+     "rarity": "Normal"
     },
     {
      "num": "DG-W08",
      "nameEn": "Luffy",
-     "nameJp": "ルフィ"
+     "nameJp": "ルフィ",
+     "rarity": "☆"
     },
     {
      "num": "CS-C15",
      "nameEn": "Enel",
-     "nameJp": "エネル"
+     "nameJp": "エネル",
+     "rarity": "Normal"
     },
     {
      "num": "CS-C24",
      "nameEn": "Wyper",
-     "nameJp": "ワイパー"
+     "nameJp": "ワイパー",
+     "rarity": "Normal"
     }
    ]
   },
@@ -5114,317 +6111,380 @@
     {
      "num": "LK-C01R",
      "nameEn": "Luffy",
-     "nameJp": "ルフィ"
+     "nameJp": "ルフィ",
+     "rarity": "☆"
     },
     {
      "num": "LK-C26R",
      "nameEn": "Crocodile",
-     "nameJp": "クロコダイル"
+     "nameJp": "クロコダイル",
+     "rarity": "Normal"
     },
     {
      "num": "CE-C18R",
      "nameEn": "Ace",
-     "nameJp": "エース"
+     "nameJp": "エース",
+     "rarity": "Normal"
     },
     {
      "num": "BA-C18R",
      "nameEn": "Pell",
-     "nameJp": "ペル"
+     "nameJp": "ペル",
+     "rarity": "Normal"
     },
     {
      "num": "MS-C15R",
      "nameEn": "Smoker",
-     "nameJp": "スモーカー"
+     "nameJp": "スモーカー",
+     "rarity": "Normal"
     },
     {
      "num": "SB-C25R",
      "nameEn": "Smoker",
-     "nameJp": "スモーカー"
+     "nameJp": "スモーカー",
+     "rarity": "☆"
     },
     {
      "num": "RG-C17R",
      "nameEn": "Mr. 5",
-     "nameJp": "Mr. 5"
+     "nameJp": "Mr. 5",
+     "rarity": "Normal"
     },
     {
      "num": "RG-C18R",
      "nameEn": "Miss Valentine",
-     "nameJp": "ミス・バレンタイン"
+     "nameJp": "ミス・バレンタイン",
+     "rarity": "Normal"
     },
     {
      "num": "RG-C26R",
      "nameEn": "Dalton",
-     "nameJp": "ドルトン"
+     "nameJp": "ドルトン",
+     "rarity": "Normal"
     },
     {
      "num": "RK-C12R",
      "nameEn": "Chopper",
-     "nameJp": "チョッパー"
+     "nameJp": "チョッパー",
+     "rarity": "Normal"
     },
     {
      "num": "RK-C16R",
      "nameEn": "Mr. 1",
-     "nameJp": "Mr. 1"
+     "nameJp": "Mr. 1",
+     "rarity": "Normal"
     },
     {
      "num": "JS-C27R",
      "nameEn": "Robin",
-     "nameJp": "ロビン"
+     "nameJp": "ロビン",
+     "rarity": "Normal"
     },
     {
      "num": "JO-C09R",
      "nameEn": "Robin",
-     "nameJp": "ロビン"
+     "nameJp": "ロビン",
+     "rarity": "Normal"
     },
     {
      "num": "TS-C09R",
      "nameEn": "Buggy",
-     "nameJp": "バギー"
+     "nameJp": "バギー",
+     "rarity": "Normal"
     },
     {
      "num": "CS-C15R",
      "nameEn": "Enel",
-     "nameJp": "エネル"
+     "nameJp": "エネル",
+     "rarity": "☆"
     },
     {
      "num": "BP-C30R",
      "nameEn": "Mr. 1",
-     "nameJp": "Mr. 1"
+     "nameJp": "Mr. 1",
+     "rarity": "Normal"
     },
     {
      "num": "G3-C15R",
      "nameEn": "Bon Kurei",
-     "nameJp": "ボン・クレー"
+     "nameJp": "ボン・クレー",
+     "rarity": "Normal"
     },
     {
      "num": "CA-T01",
      "nameEn": "Luffy & Smoker",
-     "nameJp": "ルフィ＆スモーカー"
+     "nameJp": "ルフィ＆スモーカー",
+     "rarity": "☆☆"
     },
     {
      "num": "CA-W01",
      "nameEn": "March of the Mariners",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆☆"
     },
     {
      "num": "CA-W03",
      "nameEn": "Fugue of the Justice Bearers",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "LK-W02R",
      "nameEn": "Gomu Gomu no Bazooka",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "CE-W20R",
      "nameEn": "Bara Bara Ho",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "MS-W11R",
      "nameEn": "White Out",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SB-W27R",
      "nameEn": "Urabure Swan Butokai",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SB-W33R",
      "nameEn": "Devoted Blade to the Princess",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RG-W15R",
      "nameEn": "Nose Fancy Cannon",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RG-W16R",
      "nameEn": "10,000 Kilo Guillotine",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RG-W27R",
      "nameEn": "Fiddle Banff",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RK-W18R",
      "nameEn": "Sparkling Daisy",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JS-W17R",
      "nameEn": "First-Aid Treatment",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JO-W11R",
      "nameEn": "Wicked Trick",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "CS-W11R",
      "nameEn": "20,000,000 Volt Vari",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "LK-C15R",
      "nameEn": "Miss All Sunday",
-     "nameJp": "ミス・オールサンデー"
+     "nameJp": "ミス・オールサンデー",
+     "rarity": "Normal"
     },
     {
      "num": "BA-C13R",
      "nameEn": "Mr. 4",
-     "nameJp": "Ｍｒ．４"
+     "nameJp": "Ｍｒ．４",
+     "rarity": "Normal"
     },
     {
      "num": "BA-C14R",
      "nameEn": "Miss Merry Christmas",
-     "nameJp": "ミス・メリークリスマス"
+     "nameJp": "ミス・メリークリスマス",
+     "rarity": "Normal"
     },
     {
      "num": "BA-C17R",
      "nameEn": "Chaka",
-     "nameJp": "チャカ"
+     "nameJp": "チャカ",
+     "rarity": "Normal"
     },
     {
      "num": "SB-C14R",
      "nameEn": "Miss All Sunday",
-     "nameJp": "ミス・オールサンデー"
+     "nameJp": "ミス・オールサンデー",
+     "rarity": "Normal"
     },
     {
      "num": "SB-C16R",
      "nameEn": "Miss Doublefinger",
-     "nameJp": "ミス・ダブルフィンガー"
+     "nameJp": "ミス・ダブルフィンガー",
+     "rarity": "Normal"
     },
     {
      "num": "RG-C16R",
      "nameEn": "Mr. 3",
-     "nameJp": "Ｍｒ．３"
+     "nameJp": "Ｍｒ．３",
+     "rarity": "Normal"
     },
     {
      "num": "RK-C02R",
      "nameEn": "Ace",
-     "nameJp": "エース"
+     "nameJp": "エース",
+     "rarity": "☆"
     },
     {
      "num": "RK-C05R",
      "nameEn": "Crocodile",
-     "nameJp": "クロコダイル"
+     "nameJp": "クロコダイル",
+     "rarity": "☆"
     },
     {
      "num": "JS-C14R",
      "nameEn": "Alvida",
-     "nameJp": "アルビダ"
+     "nameJp": "アルビダ",
+     "rarity": "Normal"
     },
     {
      "num": "JS-C29R",
      "nameEn": "Wapol",
-     "nameJp": "ワポル"
+     "nameJp": "ワポル",
+     "rarity": "Normal"
     },
     {
      "num": "JO-C11R",
      "nameEn": "Bellamy",
-     "nameJp": "ベラミー"
+     "nameJp": "ベラミー",
+     "rarity": "Normal"
     },
     {
      "num": "JO-C17R",
      "nameEn": "Chopper",
-     "nameJp": "チョッパー"
+     "nameJp": "チョッパー",
+     "rarity": "Normal"
     },
     {
      "num": "TS-C08R",
      "nameEn": "Hina",
-     "nameJp": "ヒナ"
+     "nameJp": "ヒナ",
+     "rarity": "☆"
     },
     {
      "num": "BP-C17R",
      "nameEn": "Luffy",
-     "nameJp": "ルフィ"
+     "nameJp": "ルフィ",
+     "rarity": "Normal"
     },
     {
      "num": "BP-C31R",
      "nameEn": "Miss Doublefinger",
-     "nameJp": "ミス・ダブルフィンガー"
+     "nameJp": "ミス・ダブルフィンガー",
+     "rarity": "Normal"
     },
     {
      "num": "G3-C13R",
      "nameEn": "Hina",
-     "nameJp": "ヒナ"
+     "nameJp": "ヒナ",
+     "rarity": "Normal"
     },
     {
      "num": "CA-T02",
      "nameEn": "The Joyful Opera of the Ambitious",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆☆"
     },
     {
      "num": "CA-W04",
      "nameEn": "The Lone Wanderer's Symphony",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "LK-W15R",
      "nameEn": "Tres Fleur",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "BA-W13R",
      "nameEn": "Bombardment",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SB-W25R",
      "nameEn": "Toge Toge Doping",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SB-W32R",
      "nameEn": "Narikiba",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SB-W37R",
      "nameEn": "Flame Bearer",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RG-W13R",
      "nameEn": "Candle Lock",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RK-W17R",
      "nameEn": "Desert Tyrant",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "RK-W22R",
      "nameEn": "Mogura Banana",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JS-W23R",
      "nameEn": "Sube Sube Spur",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JS-W33R",
      "nameEn": "Bliking Canon",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "JO-W16R",
      "nameEn": "Spring Hopper",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "G3-W17R",
      "nameEn": "Lock",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     }
    ]
   },
@@ -5436,297 +6496,356 @@
     {
      "num": "TD-C01",
      "nameEn": "Luffy",
-     "nameJp": "ルフィ"
+     "nameJp": "ルフィ",
+     "rarity": "☆☆"
     },
     {
      "num": "TD-C02",
      "nameEn": "Zoro",
-     "nameJp": "ゾロ"
+     "nameJp": "ゾロ",
+     "rarity": "☆☆"
     },
     {
      "num": "TD-C03",
      "nameEn": "Sanji",
-     "nameJp": "サンジ"
+     "nameJp": "サンジ",
+     "rarity": "☆☆"
     },
     {
      "num": "TD-C04",
      "nameEn": "Bartholomew Kuma",
-     "nameJp": "バーソロミュー・くま"
+     "nameJp": "バーソロミュー・くま",
+     "rarity": "☆☆"
     },
     {
      "num": "TD-C05",
      "nameEn": "Doflamingo",
-     "nameJp": "ドフラミンゴ"
+     "nameJp": "ドフラミンゴ",
+     "rarity": "☆☆"
     },
     {
      "num": "TD-C06",
      "nameEn": "Foxy",
-     "nameJp": "フォクシー"
+     "nameJp": "フォクシー",
+     "rarity": "☆☆"
     },
     {
      "num": "TD-C07",
      "nameEn": "Nami",
-     "nameJp": "ナミ"
+     "nameJp": "ナミ",
+     "rarity": "☆"
     },
     {
      "num": "TD-C08",
      "nameEn": "Sengoku",
-     "nameJp": "センゴク"
+     "nameJp": "センゴク",
+     "rarity": "☆"
     },
     {
      "num": "TD-C09",
      "nameEn": "Tsuru",
-     "nameJp": "つる"
+     "nameJp": "つる",
+     "rarity": "☆"
     },
     {
      "num": "TD-C10",
      "nameEn": "Chopper",
-     "nameJp": "チョッパー"
+     "nameJp": "チョッパー",
+     "rarity": "☆"
     },
     {
      "num": "TD-C11",
      "nameEn": "Luffy",
-     "nameJp": "ルフィ"
+     "nameJp": "ルフィ",
+     "rarity": "Normal"
     },
     {
      "num": "TD-C12",
      "nameEn": "Zoro",
-     "nameJp": "ゾロ"
+     "nameJp": "ゾロ",
+     "rarity": "Normal"
     },
     {
      "num": "TD-C13",
      "nameEn": "Nami",
-     "nameJp": "ナミ"
+     "nameJp": "ナミ",
+     "rarity": "Normal"
     },
     {
      "num": "TD-C14",
      "nameEn": "Usopp",
-     "nameJp": "ウソップ"
+     "nameJp": "ウソップ",
+     "rarity": "Normal"
     },
     {
      "num": "TD-C15",
      "nameEn": "Sanji",
-     "nameJp": "サンジ"
+     "nameJp": "サンジ",
+     "rarity": "Normal"
     },
     {
      "num": "TD-C16",
      "nameEn": "Chopper",
-     "nameJp": "チョッパー"
+     "nameJp": "チョッパー",
+     "rarity": "Normal"
     },
     {
      "num": "TD-C17",
      "nameEn": "Robin",
-     "nameJp": "ロビン"
+     "nameJp": "ロビン",
+     "rarity": "Normal"
     },
     {
      "num": "TD-C18",
      "nameEn": "Bellamy",
-     "nameJp": "ベラミー"
+     "nameJp": "ベラミー",
+     "rarity": "Normal"
     },
     {
      "num": "TD-C19",
      "nameEn": "Sarquiss",
-     "nameJp": "サーキース"
+     "nameJp": "サーキース",
+     "rarity": "Normal"
     },
     {
      "num": "TD-C20",
      "nameEn": "Laffitte",
-     "nameJp": "ラフィット"
+     "nameJp": "ラフィット",
+     "rarity": "Normal"
     },
     {
      "num": "TD-C21",
      "nameEn": "Foxy",
-     "nameJp": "フォクシー"
+     "nameJp": "フォクシー",
+     "rarity": "Normal"
     },
     {
      "num": "TD-C22",
      "nameEn": "Porche",
-     "nameJp": "ポルチェ"
+     "nameJp": "ポルチェ",
+     "rarity": "Normal"
     },
     {
      "num": "TD-C23",
      "nameEn": "Hamburg",
-     "nameJp": "ハンバーグ"
+     "nameJp": "ハンバーグ",
+     "rarity": "Normal"
     },
     {
      "num": "TD-C24",
      "nameEn": "Capote",
-     "nameJp": "カポーティ"
+     "nameJp": "カポーティ",
+     "rarity": "Normal"
     },
     {
      "num": "TD-C25",
      "nameEn": "Monda",
-     "nameJp": "モンダ"
+     "nameJp": "モンダ",
+     "rarity": "Normal"
     },
     {
      "num": "TD-C26",
      "nameEn": "Pickles",
-     "nameJp": "ピクルス"
+     "nameJp": "ピクルス",
+     "rarity": "Normal"
     },
     {
      "num": "TD-C27",
      "nameEn": "Big Pan",
-     "nameJp": "ビッグパン"
+     "nameJp": "ビッグパン",
+     "rarity": "Normal"
     },
     {
      "num": "TD-C28",
      "nameEn": "Tonjit",
-     "nameJp": "トンジット"
+     "nameJp": "トンジット",
+     "rarity": "Normal"
     },
     {
      "num": "TD-T01",
      "nameEn": "Luffy & Usopp",
-     "nameJp": "ルフィ＆ウソップ"
+     "nameJp": "ルフィ＆ウソップ",
+     "rarity": "☆☆"
     },
     {
      "num": "TD-T02",
      "nameEn": "Zoro & Sanji",
-     "nameJp": "ゾロ＆サンジ"
+     "nameJp": "ゾロ＆サンジ",
+     "rarity": "☆☆"
     },
     {
      "num": "TD-T03",
      "nameEn": "Davy Back Fight",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆☆"
     },
     {
      "num": "TD-W02",
      "nameEn": "Unwavering Spirit",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆☆☆"
     },
     {
      "num": "TD-W03",
      "nameEn": "Gomu Gomu no Flail",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆☆"
     },
     {
      "num": "TD-W04",
      "nameEn": "Noro Noro Beam",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆☆"
     },
     {
      "num": "TD-W05",
      "nameEn": "Monster Burger",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆☆"
     },
     {
      "num": "TD-W06",
      "nameEn": "Mutoryu Tatsu Maki",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "TD-W07",
      "nameEn": "Armée de L'Air Power Shoot",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "TD-W08",
      "nameEn": "Ocho Fleur Flip",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "TD-W09",
      "nameEn": "Ohana Shuriken",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "TD-W10",
      "nameEn": "Hamburg Hammer",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "TD-W11",
      "nameEn": "Yellow Card",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "TD-W12",
      "nameEn": "Gomu Hook",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "TD-W13",
      "nameEn": "World of Pirates",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "TD-W14",
      "nameEn": "Serious Reprimand!",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "TD-W15",
      "nameEn": "Cover Fire",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "TD-W16",
      "nameEn": "Troisième Hachis",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "TD-W17",
      "nameEn": "Check Ahead!",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "TD-W18",
      "nameEn": "Silent Oppresion",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "TD-W19",
      "nameEn": "Fleet Admirals Smile",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "TD-W20",
      "nameEn": "Managers of the Ocean",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "TD-W21",
      "nameEn": "Hyenas Persistence",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "TD-W22",
      "nameEn": "Ruthless Fight to the Death",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "TD-W23",
      "nameEn": "The New Age",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "TD-W24",
      "nameEn": "Megaton Kyubi Rush",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "TD-W25",
      "nameEn": "Sling Tackle",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "TD-W26",
      "nameEn": "Two-Fish Engine",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "TD-W27",
      "nameEn": "Ray of Hope",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "TD-W28",
      "nameEn": "Creeping Intruder",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "TD-W29",
      "nameEn": "Endless Adventure",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     }
    ]
   },
@@ -5738,352 +6857,422 @@
     {
      "num": "SH-C01",
      "nameEn": "Luffy",
-     "nameJp": "ルフィ"
+     "nameJp": "ルフィ",
+     "rarity": "☆☆"
     },
     {
      "num": "SH-C02",
      "nameEn": "Zoro",
-     "nameJp": "ゾロ"
+     "nameJp": "ゾロ",
+     "rarity": "☆☆"
     },
     {
      "num": "SH-C03",
      "nameEn": "Sanji",
-     "nameJp": "サンジ"
+     "nameJp": "サンジ",
+     "rarity": "☆☆"
     },
     {
      "num": "SH-C04",
      "nameEn": "Robin",
-     "nameJp": "ロビン"
+     "nameJp": "ロビン",
+     "rarity": "☆☆"
     },
     {
      "num": "SH-C05",
      "nameEn": "Shanks",
-     "nameJp": "シャンクス"
+     "nameJp": "シャンクス",
+     "rarity": "☆☆"
     },
     {
      "num": "SH-C06",
      "nameEn": "Smoker",
-     "nameJp": "スモーカー"
+     "nameJp": "スモーカー",
+     "rarity": "☆☆"
     },
     {
      "num": "SH-C07",
      "nameEn": "Aokiji",
-     "nameJp": "青キジ"
+     "nameJp": "青キジ",
+     "rarity": "☆☆"
     },
     {
      "num": "SH-C08",
      "nameEn": "Nami",
-     "nameJp": "ナミ"
+     "nameJp": "ナミ",
+     "rarity": "☆"
     },
     {
      "num": "SH-C09",
      "nameEn": "Crocodile",
-     "nameJp": "クロコダイル"
+     "nameJp": "クロコダイル",
+     "rarity": "☆"
     },
     {
      "num": "SH-C10",
      "nameEn": "Enel",
-     "nameJp": "エネル"
+     "nameJp": "エネル",
+     "rarity": "☆"
     },
     {
      "num": "SH-C11",
      "nameEn": "Foxy",
-     "nameJp": "フォクシー"
+     "nameJp": "フォクシー",
+     "rarity": "☆"
     },
     {
      "num": "SH-C12",
      "nameEn": "Luffy",
-     "nameJp": "ルフィ"
+     "nameJp": "ルフィ",
+     "rarity": "Normal"
     },
     {
      "num": "SH-C13",
      "nameEn": "Zoro",
-     "nameJp": "ゾロ"
+     "nameJp": "ゾロ",
+     "rarity": "Normal"
     },
     {
      "num": "SH-C14",
      "nameEn": "Nami",
-     "nameJp": "ナミ"
+     "nameJp": "ナミ",
+     "rarity": "Normal"
     },
     {
      "num": "SH-C15",
      "nameEn": "Usopp",
-     "nameJp": "ウソップ"
+     "nameJp": "ウソップ",
+     "rarity": "Normal"
     },
     {
      "num": "SH-C16",
      "nameEn": "Sanji",
-     "nameJp": "サンジ"
+     "nameJp": "サンジ",
+     "rarity": "Normal"
     },
     {
      "num": "SH-C17",
      "nameEn": "Chopper",
-     "nameJp": "チョッパー"
+     "nameJp": "チョッパー",
+     "rarity": "Normal"
     },
     {
      "num": "SH-C18",
      "nameEn": "Robin",
-     "nameJp": "ロビン"
+     "nameJp": "ロビン",
+     "rarity": "Normal"
     },
     {
      "num": "SH-C19",
      "nameEn": "Wyper",
-     "nameJp": "ワイパー"
+     "nameJp": "ワイパー",
+     "rarity": "Normal"
     },
     {
      "num": "SH-C20",
      "nameEn": "Tashigi",
-     "nameJp": "たしぎ"
+     "nameJp": "たしぎ",
+     "rarity": "Normal"
     },
     {
      "num": "SH-C21",
      "nameEn": "Aokiji",
-     "nameJp": "青キジ"
+     "nameJp": "青キジ",
+     "rarity": "Normal"
     },
     {
      "num": "SH-C22",
      "nameEn": "Porche",
-     "nameJp": "ポルチェ"
+     "nameJp": "ポルチェ",
+     "rarity": "Normal"
     },
     {
      "num": "SH-C23",
      "nameEn": "Hamburg",
-     "nameJp": "ハンバーグ"
+     "nameJp": "ハンバーグ",
+     "rarity": "Normal"
     },
     {
      "num": "SH-C24",
      "nameEn": "Muchigoro",
-     "nameJp": "ムチゴロウ"
+     "nameJp": "ムチゴロウ",
+     "rarity": "Normal"
     },
     {
      "num": "SH-C25",
      "nameEn": "Iceburg",
-     "nameJp": "アイスバーグ"
+     "nameJp": "アイスバーグ",
+     "rarity": "Normal"
     },
     {
      "num": "SH-C26",
      "nameEn": "Kaku",
-     "nameJp": "カク"
+     "nameJp": "カク",
+     "rarity": "Normal"
     },
     {
      "num": "SH-C27",
      "nameEn": "Paulie",
-     "nameJp": "パウリー"
+     "nameJp": "パウリー",
+     "rarity": "Normal"
     },
     {
      "num": "SH-C28",
      "nameEn": "Kalifa",
-     "nameJp": "カリファ"
+     "nameJp": "カリファ",
+     "rarity": "Normal"
     },
     {
      "num": "SH-C29",
      "nameEn": "Luffy",
-     "nameJp": "ルフィ"
+     "nameJp": "ルフィ",
+     "rarity": "☆☆"
     },
     {
      "num": "SH-C30",
      "nameEn": "Baron Omatsuri",
-     "nameJp": "オマツリ男爵"
+     "nameJp": "オマツリ男爵",
+     "rarity": "☆"
     },
     {
      "num": "SH-C31",
      "nameEn": "Kokoro",
-     "nameJp": "ココロ"
+     "nameJp": "ココロ",
+     "rarity": "Normal"
     },
     {
      "num": "SH-T01",
      "nameEn": "Luffy & Shanks",
-     "nameJp": "ルフィ＆シャンクス"
+     "nameJp": "ルフィ＆シャンクス",
+     "rarity": "☆☆"
     },
     {
      "num": "SH-T02",
      "nameEn": "Smoker & Tashigi",
-     "nameJp": "スモーカー＆たしぎ"
+     "nameJp": "スモーカー＆たしぎ",
+     "rarity": "☆"
     },
     {
      "num": "SH-T03",
      "nameEn": "Foxy & Porche & Hamburg",
-     "nameJp": "フォクシー＆ポルチェ＆ハンバーグ"
+     "nameJp": "フォクシー＆ポルチェ＆ハンバーグ",
+     "rarity": "☆"
     },
     {
      "num": "SH-T04",
      "nameEn": "Iceburg & Kalifa",
-     "nameJp": "アイスバーグ＆カリファ"
+     "nameJp": "アイスバーグ＆カリファ",
+     "rarity": "Normal"
     },
     {
      "num": "SH-T05",
      "nameEn": "Zoro & Sanji & Usopp",
-     "nameJp": "ゾロ＆サンジ＆ウソップ"
+     "nameJp": "ゾロ＆サンジ＆ウソップ",
+     "rarity": "☆"
     },
     {
      "num": "SH-W01",
      "nameEn": "Captain's Orders: \"Single Combat\"",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆☆☆"
     },
     {
      "num": "SH-W02",
      "nameEn": "Galley-La Company",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆☆☆"
     },
     {
      "num": "SH-W03",
      "nameEn": "Gomu Gomu no Storm",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆☆"
     },
     {
      "num": "SH-W04",
      "nameEn": "Ice Time",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆☆"
     },
     {
      "num": "SH-W05",
      "nameEn": "Bullish Negotiations",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "SH-W06",
      "nameEn": "Urgent Care",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "SH-W07",
      "nameEn": "Treinta Fleur Clutch",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "SH-W08",
      "nameEn": "Flying Foxy",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "SH-W09",
      "nameEn": "Nitoryu Sai Kuru",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SH-W10",
      "nameEn": "5-Star Goldfish Catching",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SH-W11",
      "nameEn": "Slice Shoot",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SH-W12",
      "nameEn": "Ice Age",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SH-W13",
      "nameEn": "Operation: \"Utopia\"",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SH-W14",
      "nameEn": "Activate \"Deathpia\"",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SH-W15",
      "nameEn": "Floral Cheerleaders",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SH-W16",
      "nameEn": "Four-Legged Dash",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SH-W17",
      "nameEn": "No Way!!!!",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SH-W18",
      "nameEn": "Mountain Wind",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SH-W19",
      "nameEn": "Round Turn",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SH-W20",
      "nameEn": "Rude!!",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SH-W21",
      "nameEn": "Bonds of Fellowship",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SH-W22",
      "nameEn": "Red Hair's Solidarity",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SH-W23",
      "nameEn": "Execution of Justice",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SH-W24",
      "nameEn": "Trials of Omatsuri Island",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SH-W25",
      "nameEn": "Beginning of the Grand Voyage",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SH-W26",
      "nameEn": "Fletching of Arrows",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "SH-W27",
      "nameEn": "Kokoro's Letter of Inroduction",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SH-F01",
      "nameEn": "The Great Crimson Pirate Ship",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆☆"
     },
     {
      "num": "SH-F02",
      "nameEn": "Ship of Piercing Justice",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆☆"
     },
     {
      "num": "SH-F03",
      "nameEn": "Full",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "SH-F04",
      "nameEn": "Maxim",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆"
     },
     {
      "num": "SH-F05",
      "nameEn": "Ship of the Pirate King",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "SH-F06",
      "nameEn": "Going Merry",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆☆"
     },
     {
      "num": "SH-F07",
      "nameEn": "Sea Train",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     }
    ]
   },
@@ -6095,292 +7284,350 @@
     {
      "num": "TW-C01",
      "nameEn": "Luffy",
-     "nameJp": "ルフィ"
+     "nameJp": "ルフィ",
+     "rarity": "☆☆"
     },
     {
      "num": "TW-C02",
      "nameEn": "Usopp",
-     "nameJp": "ウソップ"
+     "nameJp": "ウソップ",
+     "rarity": "☆☆"
     },
     {
      "num": "TW-C03",
      "nameEn": "Zoro",
-     "nameJp": "ゾロ"
+     "nameJp": "ゾロ",
+     "rarity": "☆☆"
     },
     {
      "num": "TW-C04",
      "nameEn": "Sanji",
-     "nameJp": "サンジ"
+     "nameJp": "サンジ",
+     "rarity": "☆☆"
     },
     {
      "num": "TW-C05",
      "nameEn": "Aokiji",
-     "nameJp": "青キジ"
+     "nameJp": "青キジ",
+     "rarity": "Normal"
     },
     {
      "num": "TW-C06",
      "nameEn": "Franky",
-     "nameJp": "フランキー"
+     "nameJp": "フランキー",
+     "rarity": "☆☆"
     },
     {
      "num": "TW-C07",
      "nameEn": "Nami",
-     "nameJp": "ナミ"
+     "nameJp": "ナミ",
+     "rarity": "Normal"
     },
     {
      "num": "TW-C08",
      "nameEn": "Chopper",
-     "nameJp": "チョッパー"
+     "nameJp": "チョッパー",
+     "rarity": "Normal"
     },
     {
      "num": "TW-C09",
      "nameEn": "Robin",
-     "nameJp": "ロビン"
+     "nameJp": "ロビン",
+     "rarity": "Normal"
     },
     {
      "num": "TW-C10",
      "nameEn": "Mihawk",
-     "nameJp": "ミホーク"
+     "nameJp": "ミホーク",
+     "rarity": "Normal"
     },
     {
      "num": "TW-C11",
      "nameEn": "Ace",
-     "nameJp": "エース"
+     "nameJp": "エース",
+     "rarity": "Normal"
     },
     {
      "num": "TW-C12",
      "nameEn": "Robin",
-     "nameJp": "ロビン"
+     "nameJp": "ロビン",
+     "rarity": "Normal"
     },
     {
      "num": "TW-C13",
      "nameEn": "Kaku",
-     "nameJp": "カク"
+     "nameJp": "カク",
+     "rarity": "Normal"
     },
     {
      "num": "TW-C14",
      "nameEn": "Kalifa",
-     "nameJp": "カリファ"
+     "nameJp": "カリファ",
+     "rarity": "Normal"
     },
     {
      "num": "TW-C15",
      "nameEn": "Lucci",
-     "nameJp": "ルッチ"
+     "nameJp": "ルッチ",
+     "rarity": "Normal"
     },
     {
      "num": "TW-C16",
      "nameEn": "Blueno",
-     "nameJp": "ブルーノ"
+     "nameJp": "ブルーノ",
+     "rarity": "Normal"
     },
     {
      "num": "TW-C17",
      "nameEn": "Kreig",
-     "nameJp": "クリーク"
+     "nameJp": "クリーク",
+     "rarity": "Normal"
     },
     {
      "num": "TW-C18",
      "nameEn": "Square Sisters",
-     "nameJp": "スクエアシスターズ"
+     "nameJp": "スクエアシスターズ",
+     "rarity": "Normal"
     },
     {
      "num": "TW-C19",
      "nameEn": "Kokoro",
-     "nameJp": "ココロ"
+     "nameJp": "ココロ",
+     "rarity": "Normal"
     },
     {
      "num": "TW-C20",
      "nameEn": "Iceberg",
-     "nameJp": "アイスバーグ"
+     "nameJp": "アイスバーグ",
+     "rarity": "Normal"
     },
     {
      "num": "TW-C21",
      "nameEn": "Paulie",
-     "nameJp": "パウリー"
+     "nameJp": "パウリー",
+     "rarity": "Normal"
     },
     {
      "num": "TW-C22",
      "nameEn": "Lulu",
-     "nameJp": "ルル"
+     "nameJp": "ルル",
+     "rarity": "Normal"
     },
     {
      "num": "TW-C23",
      "nameEn": "Tilestone",
-     "nameJp": "タイルストン"
+     "nameJp": "タイルストン",
+     "rarity": "Normal"
     },
     {
      "num": "TW-C24",
      "nameEn": "Tom",
-     "nameJp": "トム"
+     "nameJp": "トム",
+     "rarity": "Normal"
     },
     {
      "num": "TW-C25",
      "nameEn": "Franky",
-     "nameJp": "フランキー"
+     "nameJp": "フランキー",
+     "rarity": "Normal"
     },
     {
      "num": "TW-T01",
      "nameEn": "Luffy & Zoro",
-     "nameJp": "ルフィ＆ゾロ"
+     "nameJp": "ルフィ＆ゾロ",
+     "rarity": "Normal"
     },
     {
      "num": "TW-T02",
      "nameEn": "Robin & Blueno",
-     "nameJp": "ロビン＆ブルーノ"
+     "nameJp": "ロビン＆ブルーノ",
+     "rarity": "Normal"
     },
     {
      "num": "TW-T03",
      "nameEn": "Kaku & Lucci & Kalifa",
-     "nameJp": "カク＆ルッチ＆カリファ"
+     "nameJp": "カク＆ルッチ＆カリファ",
+     "rarity": "☆☆"
     },
     {
      "num": "TW-T04",
      "nameEn": "Franky & Square Sisters",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "TW-W01",
      "nameEn": "Klabautermann",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆☆"
     },
     {
      "num": "TW-W02",
      "nameEn": "Gomu Gomu no Cannon",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "TW-W03",
      "nameEn": "Great Swordsman of Rage",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "TW-W04",
      "nameEn": "How to Become a Navigator",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "TW-W05",
      "nameEn": "Impact Dial",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "TW-W06",
      "nameEn": "Santen Découpage",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "TW-W07",
      "nameEn": "Looking for Usopp",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "TW-W08",
      "nameEn": "Girl Who Lived in the Darkness",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "TW-W09",
      "nameEn": "You Who Are Weak...",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "TW-W10",
      "nameEn": "The Ship-Breaking \"Fire Fist\"",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "TW-W11",
      "nameEn": "Man of Ice",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "TW-W12",
      "nameEn": "Model: Leopard",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆☆"
     },
     {
      "num": "TW-W13",
      "nameEn": "Invincibility Armor",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "TW-W14",
      "nameEn": "Coup de Vent",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "TW-W15",
      "nameEn": "Franky House",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "TW-W16",
      "nameEn": "Sea Train Veteran",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "TW-W17",
      "nameEn": "Tekkai",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "TW-W19",
      "nameEn": "Rankyaku",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "TW-W20",
      "nameEn": "Shigan",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "TW-W21",
      "nameEn": "Soru",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "TW-W22",
      "nameEn": "City of Craftsmen",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "TW-W23",
      "nameEn": "Aqua Laguna",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "TW-F01",
      "nameEn": "The Ship that Soars the Sky",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "☆☆"
     },
     {
      "num": "TW-F02",
      "nameEn": "The Lonely Ship",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "TW-F03",
      "nameEn": "The Boat Chasing Blackbeard",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "TW-F04",
      "nameEn": "Bicycle on the Sea",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "TW-F05",
      "nameEn": "Giant Galleon Ship",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "TW-F06",
      "nameEn": "Going Merry",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     },
     {
      "num": "TW-F07",
      "nameEn": "Rocketman",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": "Normal"
     }
    ]
   },
@@ -6392,352 +7639,422 @@
     {
      "num": "JF-1",
      "nameEn": "Luffy",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "JF-2",
      "nameEn": "Crocodile",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "GA-01",
      "nameEn": "Luffy",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "GA-02",
      "nameEn": "Giant Feast",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "G2-01",
      "nameEn": "Luffy",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "G2-02",
      "nameEn": "Zoro",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "G2-03",
      "nameEn": "Rescue! Nami & Sanji",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "G2-04",
      "nameEn": "Luffy",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "WJ-01",
      "nameEn": "Luffy",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "WJ-02",
      "nameEn": "Zoro",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "WJ-03",
      "nameEn": "Sanji",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "WJ-04",
      "nameEn": "Luffy",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "WJ-05",
      "nameEn": "Zoro",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "WJ-06",
      "nameEn": "Sanji",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "WJ-07",
      "nameEn": "Nami & Robin",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "WJ-08",
      "nameEn": "Usopp & Chopper",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "WJ-09",
      "nameEn": "Sanji",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "WJ-10",
      "nameEn": "Zoro",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "WJ-11",
      "nameEn": "Luffy",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "WJ-12",
      "nameEn": "Nami & Robin",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "WJ-13",
      "nameEn": "Usopp & Chopper",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "BN-01",
      "nameEn": "Luffy",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "BN-02",
      "nameEn": "Zoro",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "BN-03",
      "nameEn": "Sanji",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "BN-04",
      "nameEn": "Chopper",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "BN-05",
      "nameEn": "Nami",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "BN-06",
      "nameEn": "Usopp",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "BN-07",
      "nameEn": "Luffy",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "BN-08",
      "nameEn": "Zoro & Sanji",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "BN-09",
      "nameEn": "Nami & Robin",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "BN-10",
      "nameEn": "Usopp & Chopper",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "BN-11",
      "nameEn": "Luffy",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "BN-12",
      "nameEn": "Luffy & Chopper",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "BN-12",
      "nameEn": "Going Merry",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "BN-14",
      "nameEn": "Pirate Band",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "BN-15",
      "nameEn": "Fighting for One Piece",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "BN-16",
      "nameEn": "Luffy & Zoro & Franky",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "NJ-01",
      "nameEn": "Traveling Companion",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "VJ-01",
      "nameEn": "Legendary Treasure",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "VJ-02",
      "nameEn": "Duel With A God",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "VJ-03",
      "nameEn": "Luffy & Chopper",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "JF-01",
      "nameEn": "Luffy",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "JF-02",
      "nameEn": "Zoro",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "JF-03",
      "nameEn": "Nami",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "JF-04",
      "nameEn": "Usopp",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "JF-05",
      "nameEn": "Sanji",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "JF-06",
      "nameEn": "Chopper",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "JF-07",
      "nameEn": "Vivi",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "JF-08",
      "nameEn": "Friends of Arabasta",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "JF-09",
      "nameEn": "Battlefield of Outlaws",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "TB-1",
      "nameEn": "Rocky Hattari",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "TB-2",
      "nameEn": "Rhapsody of a Gentle Pirate",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "TB-3",
      "nameEn": "Sword and Flame Round",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "TB-4",
      "nameEn": "Ballad Dedicated to Gold",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "TB-5",
      "nameEn": "The Great Reversal March",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "FA-W01",
      "nameEn": "Pirates of Recklessness",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "KB-01",
      "nameEn": "King of Treasure",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "CD-01",
      "nameEn": "Those Called to the Sword (1)",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "CD-02",
      "nameEn": "Those Called to the Sword (2)",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "MV-01",
      "nameEn": "The Cursed Holy Sword",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "GF-01",
      "nameEn": "Those Who Stand Against God",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "GBA-1",
      "nameEn": "The Boy Who Takes Away Memories",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "-",
      "nameEn": "Pirate King",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "-",
      "nameEn": "Pirate Queen",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "-",
      "nameEn": "Shichibukai",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "-",
      "nameEn": "Great Pirate",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "WN-01",
      "nameEn": "Victory Lineup",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "-",
      "nameEn": "Captain",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "-",
      "nameEn": "Pirate",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     },
     {
      "num": "-",
      "nameEn": "Rookie",
-     "nameJp": ""
+     "nameJp": "",
+     "rarity": ""
     }
    ]
   }
