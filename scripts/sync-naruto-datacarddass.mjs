@@ -139,7 +139,9 @@ async function run() {
   const line = [];
   for (const s of [...snap.sets].sort((a, b) => a.seq - b.seq)) {
     const setId = `nrt-dc-s${String(s.seq).padStart(2, "0")}`;
-    const setName = `Data Carddass — ${s.name}`;
+    // Sem "Data Carddass — " na frente desde 2026-11-02: a linha já aparece
+    // no cabeçalho e no endereço (contrato 7 do docs/CATALOGO.md).
+    const setName = s.name;
     const fresh = s.cards.filter((c) => !seen.has(c.code));
     fresh.forEach((c) => seen.add(c.code));
     for (const c of fresh) {

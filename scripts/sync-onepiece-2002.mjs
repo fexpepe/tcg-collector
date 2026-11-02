@@ -118,7 +118,9 @@ async function run() {
       cards2002.push({
         id,
         name: c.nameEn || c.num,
-        set: `OP 2002 — ${s.name}`,
+        // Só o nome do set (até 2026-11-02 era "OP 2002 — …"): a linha já
+        // está no cabeçalho e no endereço. Regra 3.0 do docs/CATALOGO.md.
+        set: s.name,
         setId,
         number: c.num,
         setTotal: s.official || s.cards.length,

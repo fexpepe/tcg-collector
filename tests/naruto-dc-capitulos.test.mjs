@@ -9,7 +9,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import {
-  CAPITULOS, SETIDS_APOSENTADOS, capituloDaCarta, chaveDoSet, dataDoSet, atribuiSetIds
+  CAPITULOS, SETIDS_APOSENTADOS, capituloDaCarta, chaveDoSet, dataDoSet, atribuiSetIds, nomeDoSet
 } from "../scripts/lib/naruto-dc-capitulos.mjs";
 import { readGlobalVar } from "../scripts/lib/sync-common.mjs";
 
@@ -79,10 +79,19 @@ test("setId pegajoso: capítulo juntado fica com o id do set maior; novo não re
   assert.equal(ids.get("nf:ポケットファイルダス"), "nrt-nf-s26");
   assert.equal(ids.get("nf:cap4"), "nrt-nf-s27");
   assert.deepEqual(juntados, [{ de: "nrt-nf-s09", para: "nrt-nf-s06", chave: "nf:cap2" }]);
+  // Catálogo de depois de 2026-11-02, sem "Data Carddass — " no nome: os mesmos ids.
+  const semPrefixo = publicados.map((c) => ({ ...c, set: c.set.replace(/^Data Carddass — /, "") }));
+  assert.deepEqual([...atribuiSetIds(chaves, semPrefixo).ids], [...ids]);
   // Catálogo sem nada acima do s08: o próximo pula os aposentados (s20 é o maior).
   const { ids: novos } = atribuiSetIds([{ chave: "nx:cap1", linha: "nx" }], pub("nrt-nf-s08", "Data Carddass — ナルティメットフォーメーション 第7章", 1));
   assert.equal(novos.get("nx:cap1"), "nrt-nx-s21");
   for (const [de, para] of Object.entries(SETIDS_APOSENTADOS)) assert.notEqual(de, para);
+});
+
+test("nome do set sem o nome da linha na frente (contrato 7 do docs/CATALOGO.md)", () => {
+  assert.equal(nomeDoSet("nf:cap1", "ナルティメットフォーメーション 第1章"), "ナルティメットフォーメーション 第1章");
+  assert.equal(nomeDoSet("nx:ポケットファイルダス", "ポケットファイルダス ナルティメットクロス"), "ポケットファイルダス ナルティメットクロス");
+  assert.doesNotMatch(nomeDoSet("nx:cap2", ""), /Data Carddass/);
 });
 
 test("o snapshot não tem carta de capítulo fora das faixas oficiais", () => {

@@ -195,7 +195,7 @@ Sync em [scripts/sync-harrypotter.mjs](scripts/sync-harrypotter.mjs), snapshot e
 | Adventures at Hogwarts | jun/2002 | 80 + 30 premium | 110 |
 | Chamber of Secrets | out/2002 | 140 + 55 premium | 195 |
 | Decks: Diagon Alley 2-Player, Chamber of Secrets 2-Player e Theme Decks | 2002 | 8 versões exclusivas | 8 |
-| Promo Cards e Harry Potter League Promos | 2001–2002 | 21 | 21 |
+| Promo Cards e League Promos | 2001–2002 | 21 | 21 |
 
 - **Cartas**: o `cards.json` do [hpjson](https://github.com/Tressley/hpjson)
   (nome, número, tipo, lição, raridade, artista, arquivo da imagem). Ele também

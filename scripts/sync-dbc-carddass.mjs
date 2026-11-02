@@ -46,9 +46,12 @@ const ID_PREFIX = "dbc-";
 const LOGO = "/assets/games/game_dbc.webp";
 
 // Séries: `code` é o prefixo do setId (dbc-h06, dbc-sb01…); `ja` vai no nome
-// do set. A ordem aqui é a ordem das seções na página de Sets.
+// do set. A ordem aqui é a ordem das seções na página de Sets. O Hondan era
+// "カードダス本弾" até 2026-11-02: "カードダス" é o nome do jogo, que já está
+// no cabeçalho (contrato 7 do docs/CATALOGO.md). O endereço não muda: nome só
+// em japonês vira slug pelo setId.
 const SERIES = {
-  h: { ja: "カードダス本弾", en: "Hondan" },
+  h: { ja: "本弾", en: "Hondan" },
   sb: { ja: "スーパーバトル", en: "Super Battle" },
   va: { ja: "ビジュアルアドベンチャー", en: "Visual Adventure" },
   bw: { ja: "スーパーバーコードウォーズ", en: "Super Barcode Wars" }

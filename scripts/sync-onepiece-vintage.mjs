@@ -134,7 +134,9 @@ async function run() {
       vintage.push({
         id: uniqueId(c.num, s.name),
         name: c.nameEn || c.num,
-        set: `Carddass — ${s.name}`,
+        // Só o nome do set (até 2026-11-02 era "Carddass — …"): a linha já
+        // está no cabeçalho e no endereço. Regra 3.0 do docs/CATALOGO.md.
+        set: s.name,
         setId,
         number: c.num,
         setTotal: s.official || s.cards.length,

@@ -34,6 +34,8 @@ import { montaSitemaps, enderecosDoPost } from "./lib/sitemap.mjs";
 import { JOGOS_URL, jogoDaUrl, urlDoSet } from "../functions/_lib/jogos.js";
 import { slugify, slugsDasCartas } from "../functions/_lib/slug-carta.js";
 import { fatiaDoLegado } from "../functions/_lib/borda.js";
+// De-para dos sets renomeados (endereço antigo -> setId), ver o módulo.
+import { enderecosRenomeados } from "./lib/sets-renomeados.mjs";
 // Cabeçalho das páginas estáticas (marcação + CSS do celular).
 import { ESTILO_DO_CABECALHO, cabecalhoEstatico } from "../functions/_lib/cabecalho-estatico.js";
 // Textos e réguas da página de set (título, data, uma carta por número): a
@@ -974,9 +976,11 @@ function escreveMapaDeSets(pages) {
 // de sets da tela do jogo e, pra montar a página de uma carta, de quais chunks
 // sai cada página de set:
 //   { g: chave do jogo, l?: linha, n: nome, s: { <set>: { n: nome do set,
-//     f: [chunks], c: nº de cartas, d: lançamento } } }
+//     f: [chunks], c: nº de cartas, d: lançamento } },
+//     r?: { <set antigo>: <set de hoje> } }
 // Um arquivo por jogo, e não por set: o deploy está perto do teto de arquivos
-// do Pages, e 2.700 mapas a mais não caberiam.
+// do Pages, e 2.700 mapas a mais não caberiam. O `r` é o de-para dos sets
+// renomeados (scripts/lib/sets-renomeados.mjs), que a borda usa pro 301.
 //
 // legado-sets.json e legado-cartas/<letra>.json levam os endereços ANTIGOS
 // (/set/ e /card/) pros novos: são eles que o 301 de functions/set/ e
@@ -999,6 +1003,23 @@ function escreveMapasDosJogos(pages, legadoCartas) {
     m.s[page.slug] = { n: page.name, f: arquivos, c: cardsForLang(page.cards, "pt").length, d: page.rep.setReleaseDate || "" };
     legadoSets[page.slugAntigo] = `${page.url}/${page.slug}`;
   }
+  // Sets renomeados: o slug antigo no mapa do jogo (301 de /games) e no legado
+  // do /set/, cujos slugs eram os mesmos nesses sets. Slug que hoje é de outro
+  // set não é tocado.
+  const tabela = JSON.parse(readFileSync(new URL("./data/sets-renomeados.json", import.meta.url), "utf8"));
+  const { porUrl: renomeados, avisos } = enderecosRenomeados(pages, tabela);
+  for (const aviso of avisos) console.warn(`prerender-catalog: set renomeado sem destino — ${aviso}`);
+  let deParas = 0;
+  for (const [url, r] of renomeados) {
+    const m = porUrl.get(url);
+    if (!m) continue;
+    m.r = r;
+    for (const [antigo, hoje] of Object.entries(r)) {
+      deParas++;
+      if (!Object.prototype.hasOwnProperty.call(legadoSets, antigo)) legadoSets[antigo] = `${url}/${hoje}`;
+    }
+  }
+  if (deParas) console.log(`prerender-catalog: ${deParas} endereços de set renomeado com 301.`);
   for (const [url, m] of porUrl) writeFileSync(join(MAPAS_DIR, `${url}.json`), JSON.stringify(m), "utf8");
   writeFileSync(join(MAPAS_DIR, "legado-sets.json"), JSON.stringify(legadoSets), "utf8");
   const fatias = new Map();

@@ -34,14 +34,14 @@ test("as séries que já estavam no ar mantêm o prefixo da marca", () => {
   for (const k of ["db", "tr", "jh", "kb"]) assert.equal(prefixo[k], "mb", k);
 });
 
-test("o nome do set (a chave dele) é o mesmo de antes da mudança de jogo", () => {
+test("o nome do set: código e nome japonês, sem o nome do jogo na frente (contrato 7)", () => {
   const set = (code) => snap.sets.find((s) => s.code === code);
-  assert.equal(setNameOf(set("OP01"), seriesOf("OP01")), "Miracle Battle OP01 — ブースターパック 第1弾");
-  assert.equal(setNameOf(set("NRS01"), seriesOf("NRS01")), "Miracle Battle NRS01 — 構築済みデッキ 木ノ葉の絆");
-  assert.equal(setNameOf(set("HH"), seriesOf("HH")), "Miracle Battle HH — プロモーションカード");
-  assert.equal(setNameOf(set("DB01"), seriesOf("DB01")), "Miracle Battle DB01 — ブースターパック 第1弾");
+  assert.equal(setNameOf(set("OP01"), seriesOf("OP01")), "OP01 — ブースターパック 第1弾");
+  assert.equal(setNameOf(set("NRS01"), seriesOf("NRS01")), "NRS01 — 構築済みデッキ 木ノ葉の絆");
+  assert.equal(setNameOf(set("HH"), seriesOf("HH")), "HH — プロモーションカード");
+  assert.equal(setNameOf(set("DB01"), seriesOf("DB01")), "DB01 — ブースターパック 第1弾");
   // J-Heroes não tem franquia no nome pra tirar.
-  assert.equal(setNameOf(set("AS01"), seriesOf("AS01")), "Miracle Battle AS01 — Jヒーローブースター 1弾");
+  assert.equal(setNameOf(set("AS01"), seriesOf("AS01")), "AS01 — Jヒーローブースター 1弾");
 });
 
 test("as cartas: ids únicos, formato por série, re-impressão (_2) colapsada", () => {

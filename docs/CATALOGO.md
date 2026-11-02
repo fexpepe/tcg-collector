@@ -69,6 +69,31 @@ que ordem e como saber que terminou**.
 6. **Um jogo, um registro.** Comportamento por jogo mora nas tabelas que já
    existem (4.2). Um `if (game === "x")` novo só entra quando o comportamento
    não cabe em tabela nenhuma, e com o porquê no comentário.
+7. **O nome do set é só o nome do set** (Fernando, 2026-11-02). Nada do jogo
+   nem da linha na frente: eles já estão no cabeçalho, no logo, no chip e no
+   endereço (`/games/naruto-ccg`), e o tile corta justo o fim do nome, que é
+   a parte que diferencia os sets. Vale pra jogo moderno, vintage e linha:
+   - é **"The Path to Hokage"**, não "Naruto CCG — The Path to Hokage"; "First
+     Stage", não "Carddass — First Stage"; "本弾 第1弾「…」", não
+     "カードダス本弾 第1弾「…」". O código oficial do set pode ficar quando é
+     ele que separa sets de mesmo nome dentro do jogo (Miracle Battle: "DB01 —
+     ブースターパック 第1弾", porque "ブースターパック 第1弾" existe em seis
+     franquias);
+   - nome oficial em que a marca é parte do título fica como a fonte publica
+     ("Magic 2015", "Pokémon GO", "LOTR Online Promos", que é o jogo digital);
+   - o nome é a **chave** do set e do endereço: dois sets do mesmo jogo não
+     dividem nome. Quando uma linha tem nome igual a outra da mesma marca
+     ("Promotional Cards" no Naruto 2002 e no CCG), o logo do set e a seção
+     separam os dois;
+   - nome em inglês de exibição (`VINTAGE_SET_EN`) pode levar a série quando
+     é ela que separa os sets fora da página do jogo ("Narutimate Card Battle —
+     Vol. 1"); dentro da seção da série, o `group<Jogo>Sets` tira o prefixo
+     (`groupMbcSets`, `groupNarutoDataCarddass`);
+   - quem trava: `tests/nome-do-set.test.mjs`, nos catálogos cujo nome sai dos
+     nossos syncs (vintage e linhas vintage). Nome que a fonte moderna publica
+     não passa pela trava.
+   Renomear set já publicado troca o endereço dele e o de todas as cartas: ver
+   "Set renomeado" em 3.2.
 
 ## 2. Carta nova num set que já existe
 
@@ -98,7 +123,19 @@ aparecer no passo "Lint dos catálogos" do deploy:
 ### 3.2 O que conferir quando um set novo aparece
 
 - A tela de Sets mostra o set com **nome, data e X/Y**. O Y é o total oficial
-  (`setTotal`) quando a fonte tem, senão a contagem do chunk.
+  (`setTotal`) quando a fonte tem, senão a contagem do chunk. O nome é só o do
+  set, sem o jogo ou a linha na frente (contrato 7).
+- **Set renomeado** (mudança de sync, ou a fonte trocou o nome): o slug de
+  `/games/<jogo>/<set>` sai do nome, então o endereço do set e o das cartas
+  mudam. O 301 cobre sozinho o nome que só GANHOU prefixo (`setRenomeado` em
+  [functions/_lib/borda.js](../functions/_lib/borda.js)). O resto entra em
+  [scripts/data/sets-renomeados.json](../scripts/data/sets-renomeados.json)
+  (`<endereço do jogo>: { <slug antigo>: <setId> }`): rodar o prerender sem
+  rede antes e depois da mudança e copiar os slugs que sumiram de
+  `data/game-pages/<jogo>.json`. O prerender põe o de-para no mapa do jogo
+  (campo `r`) e no `legado-sets.json`, e a borda responde 301 no set, na
+  variante `-en`, nas cartas e no link de compartilhar com o nome antigo. Foi
+  assim com os 194 sets vintage que perderam o prefixo em 2026-11-02.
 - O set caiu na **categoria certa**. Lorcana, One Piece, Naruto, HxH e DBC
   agrupam pelo `setId` (`group<Jogo>Sets` em [src/app.js](../src/app.js)), e
   um formato de código inédito pode cair em "outros".
@@ -240,6 +277,10 @@ hub). A ficha preenchida vai na descrição da PR.
 - **Prefixo de id**: ver 1.1 e o comando da 7.3.
 - **Fonte e família** (3.1). Na TCGCSV, anotar a categoria e a `tcgLine`: o
   prefixo do slug na URL de produto da própria TCGCSV é a linha do TCGplayer.
+- **Nome dos sets** (contrato 7): o nome que o set tem, sem o jogo ou a linha
+  na frente. Se dois sets do jogo têm o mesmo nome, o que os separa (código
+  impresso, franquia) e onde isso aparece. Jogo vintage entra na trava do
+  `tests/nome-do-set.test.mjs` (`NOMES_DO_JOGO`).
 - **Durabilidade**: no padrão FAB, o `cards.js` inteiro é versionado e os
   chunks saem no build. Perto do teto de **25 MiB por arquivo** do Pages, vale o
   padrão Magic/YGO: chunks versionados e monólito fora do git e do deploy
@@ -276,6 +317,7 @@ Ficha do jogo — <Nome completo> (`<slug>`)
 - Rótulo curto (chip): <…>
 - Prefixo de id: `<prefixo>-` (7.3: livre)
 - Fonte: <TCGCSV cat. N | API <nome> | fã: <site>, snapshot data/vintage/<x>.json | curadoria> — conferida em <data>
+- Nome dos sets: <como a fonte publica | montado no sync: <regra>> — sem o jogo na frente (contrato 7); homônimos: <nenhum | separados por …>
 - Durabilidade: <padrão FAB | padrão Magic | snapshot>
 - Preço: <u/uf/e de <fonte> | sem preço>
 - Imagem: <host>, <largura> px — host novo? <não | sim (C16)>
@@ -304,6 +346,7 @@ valem só nesse caso.
 | A4 | `data/catalog-baseline.json` | `node scripts/lint-catalog.mjs --update-baseline` e commitar **só a linha do jogo novo** | sem régua, catálogo zerado desse jogo não barra o deploy | — |
 | A5 | `scripts/lib/id-stability.mjs` (`ID_DE_PRODUTO`) | formato do id, se ele é `productId` do TCGplayer | quando o TCGplayer mudar uma carta de grupo, o lint derruba o deploy agendado (foi o que criou a exceção, com Gundam e FAB, em 26/09/2026) | lint, mas tarde |
 | A6 | `scripts/lint-catalog.mjs` (`GAMES`) | slug e dataDir | jogo fora da checagem de integridade e da régua | — |
+| A7 | `tests/nome-do-set.test.mjs` (`NOMES_DO_JOGO`) | só vintage ou linha vintage: os nomes do jogo e da linha (em latim e em japonês) que não podem abrir nome de set | sync que ponha o jogo na frente do set passa calado (contrato 7) | o próprio teste, depois de registrado |
 
 **B. Registro no front** (commit 2)
 

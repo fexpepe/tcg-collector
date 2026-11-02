@@ -114,6 +114,13 @@
     return setsCache[game];
   }
 
+  // A pasta de set guarda o NOME do set. Até 2026-11-02 os sets vintage
+  // levavam o jogo ou a linha na frente ("Naruto CCG — The Path to Hokage");
+  // hoje é só o nome (contrato 7 do docs/CATALOGO.md). Pasta criada antes
+  // segue achando o set e mostra o nome de hoje.
+  const PREFIXO_ANTIGO = /^(?:Naruto CCG — |Data Carddass — |Carddass — |OP 2002 — |Miracle Battle |Hyper Battle |カードダス(?=本弾)|Harry Potter (?=League Promos$))/;
+  const nomeDoSetDaPasta = (nome) => String(nome || "").replace(PREFIXO_ANTIGO, "");
+
   // Stores por jogo, criados UMA vez cada (leem e parseiam o localStorage inteiro).
   const ownedCache = {}, priceCache = {};
   const ownedFor = (g) => ownedCache[g] || (ownedCache[g] = shared.createCollectionStore(g));
@@ -382,7 +389,8 @@
       renderSource();
       try {
         const sets = await setsOf(current.game);
-        const found = sets.find((s) => s.name === current.set);
+        const found = sets.find((s) => s.name === current.set)
+          || sets.find((s) => s.name === nomeDoSetDaPasta(current.set));
         const ids = (found && found.cardIds) || [];
         const c = await ensureCards(current.game, ids);
         sourceCards = ids.map((id) => c.byId[id]).filter(Boolean);
@@ -746,7 +754,7 @@
                 <div class="dash-profile-id">
                   <span class="pasta-meta">
                     ${list.game ? shared.gameTagHtml(list.game) : ""}
-                    ${list.set ? `<span class="lst-setname">${esc(list.set)}</span>` : ""}
+                    ${list.set ? `<span class="lst-setname">${esc(nomeDoSetDaPasta(list.set))}</span>` : ""}
                     <span class="list-card-badge${list.linked ? " is-linked" : ""}">${esc(list.linked ? t("lists.linkedBadge") : t("lists.standaloneBadge"))}</span>
                   </span>
                   <span class="pasta-meta">
@@ -792,7 +800,7 @@
            sozinho, numa pasta vazia. -->
       <section class="lst-panel pasta-add" id="pastaAddPanel"${addOpen ? "" : " hidden"}>
         <header class="lst-panel-head">
-          <h2>${list.set ? esc(t("lists.sourceSet", { setName: list.set })) : esc(t("lists.source"))}</h2>
+          <h2>${list.set ? esc(t("lists.sourceSet", { setName: nomeDoSetDaPasta(list.set) })) : esc(t("lists.source"))}</h2>
           <button type="button" class="lst-mini" data-list-add-close>${esc(t("lists.addCardsHide"))}</button>
         </header>
         <input type="search" id="lstSearch" class="list-input"

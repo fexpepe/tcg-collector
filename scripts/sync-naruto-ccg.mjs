@@ -178,7 +178,11 @@ async function run() {
       line.push({
         id: cardId,
         name: c.name,
-        set: `Naruto CCG — ${def.name}`,
+        // Só o nome do set: o jogo já está no cabeçalho, no logo e no
+        // endereço (/games/naruto-ccg). Até 2026-11-02 era "Naruto CCG — …"
+        // (contrato 7 do docs/CATALOGO.md; o 301 dos endereços antigos sai de
+        // scripts/data/sets-renomeados.json).
+        set: def.name,
         setId,
         number: c.code,
         setTotal: s.cards.length,

@@ -147,13 +147,16 @@ function curatedImg(id) {
 
 const IMG = (scan) => `https://wsrv.nl/?url=${encodeURIComponent(`tcg-db.nikita.jp/img/card/mb/${scan}.jpg`)}&w=440&output=webp`;
 
-// Nome do set no catálogo: "Miracle Battle <código> — <nome japonês sem a
-// franquia>". É a CHAVE do set (link, lista, slug do endereço), então os sets
-// que já estavam no ar seguem com o nome de sempre; o nome em inglês é só de
-// exibição (VINTAGE_SET_EN em src/nomes-sets.js).
+// Nome do set no catálogo: "<código> — <nome japonês sem a franquia>". É a
+// CHAVE do set (link, lista, slug do endereço); o nome em inglês é só de
+// exibição (VINTAGE_SET_EN em src/nomes-sets.js). O código fica porque sem a
+// franquia "ブースターパック 第1弾" seria o nome de seis sets do jogo. Até
+// 2026-11-02 levava "Miracle Battle " na frente, o nome do jogo (contrato 7
+// do docs/CATALOGO.md); o 301 dos endereços antigos sai de
+// scripts/data/sets-renomeados.json.
 export function setNameOf(set, serie) {
   const nome = serie.strip ? set.name.replace(serie.strip, "") : set.name;
-  return `Miracle Battle ${set.code} — ${nome.trim()}`;
+  return `${set.code} — ${nome.trim()}`;
 }
 
 // As cartas do jogo a partir do snapshot. `nomesEn` é o mapa japonês -> inglês

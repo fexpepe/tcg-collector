@@ -59,6 +59,19 @@ export function setRenomeado(chaves, slug) {
   return achados.length === 1 ? achados[0] : null;
 }
 
+// Set renomeado pelo de-para do build: o campo `r` do mapa do jogo
+// (data/game-pages/<jogo>.json), que o prerender monta de
+// scripts/data/sets-renomeados.json. É o caso que o setRenomeado não acha: o
+// nome PERDEU o prefixo ou mudou inteiro (em 2026-11-02 os vintage perderam o
+// nome do jogo na frente, e os de nome japonês passaram a ter slug pelo
+// setId). Só devolve set que existe no mapa.
+export function setDoDePara(mapa, slug) {
+  const r = mapa && mapa.r;
+  const s = String(slug || "");
+  if (!r || !hasOwn(r, s)) return null;
+  return mapa.s && hasOwn(mapa.s, r[s]) ? r[s] : null;
+}
+
 // O mapa das cartas que tinham página em /card/<slug> é fatiado pela 1ª letra
 // do slug (data/game-pages/legado-cartas/<letra>.json, 2026-10-08): com toda
 // carta de Pokémon, Lorcana e One Piece ele passa de 7 MB, e cada 301 leria o

@@ -82,7 +82,7 @@ test("alvos do One Piece: OP17 e OP17 RE dividem o op17.webp; linhas vintage e p
     carta("op-3", "OP-PR", "One Piece Promotion Cards"),
     carta("op-4", "OP01", "Romance Dawn"),
     carta("op-5", "ST-36", "Starter", ""),
-    carta("op2002-1", "op2002-promos", "OP 2002 — Promos")
+    carta("op2002-1", "op2002-promos", "Promos")
   ];
   const { alvos, pulados } = alvosDoJogo("onepiece", cards, { ignorar: { OP01: "auditado" }, existe: (a) => a === "st36.webp" });
   assert.equal(alvos.length, 1);

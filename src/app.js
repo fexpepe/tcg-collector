@@ -1841,23 +1841,31 @@
   // dois é fechada e a Mission começa no set 11 (PAGES do
   // sync-naruto-datacarddass.mjs). Sem as seções, a ordem por data jogava
   // Formation e Cross (com data) na frente de Card Battle e Mission (sem data).
+  // O nome em inglês leva o título ("Narutimate Card Battle — Vol. 1", pra
+  // Coleção e o popup saberem de qual dos quatro é); dentro da seção ele
+  // repete o cabeçalho e o tile cortava justo o volume, então aqui ele sai,
+  // como a franquia no groupMbcSets (contrato 7 do docs/CATALOGO.md).
   function groupNarutoDataCarddass(setItems) {
     const idOf = (set) => String(set.setId || "").trim().toLowerCase();
     const TITLES = [
-      ["sets.category.dcnrCardBattle", (id) => /^nrt-dc-s(0[1-9]|10)$/.test(id)],
-      ["sets.category.dcnrMission", (id) => id.startsWith("nrt-dc-")],
-      ["sets.category.dcnrFormation", (id) => id.startsWith("nrt-nf-")],
-      ["sets.category.dcnrCross", (id) => id.startsWith("nrt-nx-")]
+      ["sets.category.dcnrCardBattle", (id) => /^nrt-dc-s(0[1-9]|10)$/.test(id), "Narutimate Card Battle — "],
+      ["sets.category.dcnrMission", (id) => id.startsWith("nrt-dc-"), "Narutimate Mission — "],
+      ["sets.category.dcnrFormation", (id) => id.startsWith("nrt-nf-"), "Narutimate Formation — "],
+      ["sets.category.dcnrCross", (id) => id.startsWith("nrt-nx-"), "Narutimate Cross — "]
     ];
     // A PRIMEIRA que casa leva o set (Card Battle antes da Mission).
     const titleOf = (set) => TITLES.findIndex(([, match]) => match(idOf(set)));
+    const semTitulo = (set, i) => {
+      const nome = String(set.displayName || ""), titulo = TITLES[i][2];
+      return nome.indexOf(titulo) === 0 ? Object.assign({}, set, { displayName: nome.slice(titulo.length) }) : set;
+    };
     const items = [];
     const section = (list, key) => {
       if (!list.length) return;
       items.push(cabecalhoDeSecao(key, list.length));
       list.sort(sortByReleaseAsc).forEach((set) => items.push(set));
     };
-    TITLES.forEach(([key], i) => section(setItems.filter((s) => titleOf(s) === i), key));
+    TITLES.forEach(([key], i) => section(setItems.filter((s) => titleOf(s) === i).map((s) => semTitulo(s, i)), key));
     // Rede de segurança: prefixo novo na linha (GAME_LINES) sem título aqui
     // ainda aparece, em vez de sumir da página.
     section(setItems.filter((s) => titleOf(s) < 0), "sets.category.promos");

@@ -69,6 +69,11 @@ a ficha da seção 4.1 preenchida na descrição, os itens do checklist 4.2 feit
 peso medidos (seção 7). A maior parte dos esquecimentos não quebra nada no CI e
 vai calada pro ar.
 
+O nome do set é **só o nome do set**, em todo jogo, moderno ou vintage: nada
+do jogo nem da linha na frente ("The Path to Hokage", não "Naruto CCG — The
+Path to Hokage"). Renomear set já publicado troca o endereço dele e das cartas,
+e pede o de-para do 301. Contrato 7 e "Set renomeado" (3.2) do CATALOGO.
+
 ## Convenções que já valem no código
 
 - Comentários e mensagens de commit em **português**, no tom do resto do

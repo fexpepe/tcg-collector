@@ -111,10 +111,12 @@ function capituloDaChave(chave) {
   return m ? (CAPITULOS[m[1]] || []).find((c) => c.cap === Number(m[2])) || null : null;
 }
 
-// Nome do set: capítulo pelo nome oficial; série, pelo texto do anúncio.
+// Nome do set: capítulo pelo nome oficial; série, pelo texto do anúncio. Sem
+// "Data Carddass — " na frente desde 2026-11-02 (contrato 7 do
+// docs/CATALOGO.md: a linha já está no cabeçalho e no endereço).
 export function nomeDoSet(chave, serie) {
   const cap = capituloDaChave(chave);
-  return cap ? `Data Carddass — ${TITULO[chave.slice(0, 2)]} ${cap.nome}` : `Data Carddass — ${serie}`;
+  return cap ? `${TITULO[chave.slice(0, 2)]} ${cap.nome}` : serie;
 }
 
 // Data do set (AAAA-MM-DD, "" = sem data): a curada do capítulo/série; senão
@@ -131,6 +133,7 @@ export function dataDoSet(chave, datasDosItens) {
 // Chave de um set JÁ publicado, pelo nome dele (o prefixo do setId diz a linha).
 export function chaveDoPublicado(setId, nome) {
   const linha = String(setId).startsWith("nrt-nx-") ? "nx" : "nf";
+  // O catálogo publicado antes de 2026-11-02 ainda traz o prefixo da linha.
   const serie = String(nome || "").replace(/^Data Carddass — /, "");
   return chaveDoSet(linha, capituloDaCarta(linha, "", serie), serie);
 }

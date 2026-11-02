@@ -923,12 +923,15 @@
   // Endereço limpo sem a rota da borda (cópia de reserva do service worker,
   // offline): o nome do set sai do mapa. A variante -en estática que caia aqui
   // (offline, sem cópia própria) abre a tela do set, que é o que dá pra abrir.
+  // Endereço de set renomeado (o `r` do mapa, ver scripts/lib/sets-renomeados.mjs)
+  // abre o set de hoje, como o 301 da borda faria online.
   async function rotaPeloMapa() {
     const mapa = await carregaMapa(caminhoLimpo[1]);
     const sets = (mapa && mapa.s) || {};
+    const r = (mapa && mapa.r) || {};
     const temSet = (k) => Object.prototype.hasOwnProperty.call(sets, k);
-    const slug = temSet(caminhoLimpo[2]) ? caminhoLimpo[2]
-      : (/-en$/.test(caminhoLimpo[2]) && temSet(caminhoLimpo[2].slice(0, -3)) ? caminhoLimpo[2].slice(0, -3) : "");
+    const deHoje = (k) => (temSet(k) ? k : (Object.prototype.hasOwnProperty.call(r, k) && temSet(r[k]) ? r[k] : ""));
+    const slug = deHoje(caminhoLimpo[2]) || (/-en$/.test(caminhoLimpo[2]) ? deHoje(caminhoLimpo[2].slice(0, -3)) : "");
     if (!slug) return;
     detailName = sets[slug].n;
     pintaTituloDoSet();

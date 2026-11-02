@@ -163,7 +163,9 @@ export const EXTRAS = [
     // Harry Potter League (jan–set/2002): uma promo por mês, numeradas de 1 a 8
     // ("promo #1" nos anúncios). A Pojo dá "115" pro Hover Charm (o número dele
     // no Chamber of Secrets, que ainda não tinha saído): fica como ela diz.
-    code: "league", name: "Harry Potter League Promos", date: "2002-01", semTotal: true,
+    // Era "Harry Potter League Promos" até 2026-11-02: o nome do jogo na
+    // frente sobrava (contrato 7 do docs/CATALOGO.md).
+    code: "league", name: "League Promos", date: "2002-01", semTotal: true,
     cards: [
       { from: "qc", num: "35", kind: "leagueFoil", numero: "1" },    // Diffindo, jan/2002
       { from: "bs", num: "85", kind: "leagueFoil", numero: "2" },    // Forest Troll, fev/2002

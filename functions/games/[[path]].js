@@ -22,19 +22,20 @@
 //                                   ?set= não, que o robots.txt barra)
 //   /games/<apelido>/…           -> 301 pro endereço oficial (/games/swu)
 //   set ou carta que mudou de    -> 301 pro endereço de hoje (o total do set
-//   endereço                        cresceu, o set ganhou prefixo no nome…;
-//                                   ver cartaParecida e setRenomeado)
+//   endereço                        cresceu, o set ganhou ou perdeu prefixo no
+//                                   nome…; ver cartaParecida, setRenomeado e
+//                                   setDoDePara)
 //   o resto                      -> 404 de verdade
 //
 // As páginas estáticas passarem por aqui custa uma execução de Function por
 // visita (a conta é Workers Paid desde 10/09/2026).
 import { buscaPagina, comVitrine } from "../_vitrine-csp.js";
 import { jogoDaUrl, urlOficial } from "../_lib/jogos.js";
-import { slugsDasCartas, cartasDoSet, cartaParecida } from "../_lib/slug-carta.js";
+import { slugify, slugsDasCartas, cartasDoSet, cartaParecida } from "../_lib/slug-carta.js";
 import { pecasDaCarta, precoDeReferencia, escapeHtml, escapeAttr, ORIGEM } from "../_lib/pagina-carta.js";
 import { pecasDoSet } from "../_lib/pagina-set.js";
 import { decoraApp } from "../_lib/decora-app.js";
-import { naoAchou, redireciona, jsonDoSite, daBorda, guardaNaBorda, hasOwn, setRenomeado } from "../_lib/borda.js";
+import { naoAchou, redireciona, jsonDoSite, daBorda, guardaNaBorda, hasOwn, setRenomeado, setDoDePara } from "../_lib/borda.js";
 import { basePricingId } from "../api/_search-sql.js";
 
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -218,12 +219,13 @@ async function telaDoSetDecorada(context, rota) {
     // A variante em inglês (<set>-en) é página estática do prerender.
     if (!rota.carta && /-en$/.test(rota.set) && hasOwn(sets, rota.set.slice(0, -3))) return context.next();
     // Set renomeado: 301 pro nome de hoje, com a carta junto (se o nome dela
-    // também mudou, o próximo pedido resolve).
+    // também mudou, o próximo pedido resolve). Primeiro o de-para do build
+    // (setDoDePara), depois o prefixo ganho (setRenomeado).
     const chaves = Object.keys(sets);
-    const novo = setRenomeado(chaves, rota.set);
+    const novo = setDoDePara(mapa, rota.set) || setRenomeado(chaves, rota.set);
     if (novo) return redireciona(request, `/games/${rota.jogo.url}/${novo}${rota.carta ? `/${rota.carta}` : ""}${busca}`, 301);
     const en = !rota.carta && /^(.+)-en$/.exec(rota.set);
-    const novoEn = en && setRenomeado(chaves, en[1]);
+    const novoEn = en && (setDoDePara(mapa, en[1]) || setRenomeado(chaves, en[1]));
     if (novoEn) return redireciona(request, `/games/${rota.jogo.url}/${novoEn}-en${busca}`, 301);
     return naoAchou(env, request);
   }
@@ -277,7 +279,11 @@ async function cartaPeloId(context, rota) {
   const { env, request } = context;
   const nomeDoSet = new URL(request.url).searchParams.get("setName") || "";
   const mapa = await jsonDoSite(env, request, `/data/game-pages/${rota.jogo.url}.json`);
-  const achado = mapa && mapa.s ? Object.keys(mapa.s).find((slug) => mapa.s[slug].n === nomeDoSet) : null;
+  // Link compartilhado antes de o set ser renomeado leva o nome antigo: o
+  // slug dele é a chave do de-para.
+  const achado = mapa && mapa.s
+    ? Object.keys(mapa.s).find((slug) => mapa.s[slug].n === nomeDoSet) || setDoDePara(mapa, slugify(nomeDoSet))
+    : null;
   if (!achado) return redireciona(request, `/games/${rota.jogo.url}`, 302);
   const { cartas } = await cartasDaPagina(env, request, mapa.s[achado]);
   const slug = slugsDasCartas(cartas).get(rota.id);

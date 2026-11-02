@@ -38,7 +38,7 @@ test("vintage (Naruto/One Piece/HxH) casa só por id, sem idioma", () => {
   // Miracle Battle (jogo mbc desde 2026-10-01): as séries dividem o jogo, então
   // o nome leva a franquia; as séries novas (mb-) também têm nome.
   assert.equal(api.setDisplayName("op-mb-op01", "ブースターパック1"), "One Piece Booster Pack 1");
-  assert.equal(api.setDisplayName("mb-db01", "Miracle Battle DB01 — ブースターパック 第1弾"), "Dragon Ball Kai Booster Pack 1");
+  assert.equal(api.setDisplayName("mb-db01", "DB01 — ブースターパック 第1弾"), "Dragon Ball Kai Booster Pack 1");
 });
 
 test("sem entrada no mapa, o nome do catálogo passa direto", () => {

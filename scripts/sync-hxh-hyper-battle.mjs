@@ -198,7 +198,9 @@ async function build(snapshot) {
     const def = SET_BY_CODE.get(s.code);
     if (!def) continue;
     const setId = `${ID_PREFIX}-${s.code}`;
-    const setName = `Hyper Battle ${def.name}`;
+    // Sem "Hyper Battle " na frente desde 2026-11-02: é o nome do jogo, que
+    // já está no cabeçalho e no endereço (contrato 7 do docs/CATALOGO.md).
+    const setName = def.name;
     for (const c of s.cards) {
       const cardId = `${setId}-${String(c.num).toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
       line.push({
