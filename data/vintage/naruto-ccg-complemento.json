@@ -1,0 +1,2486 @@
+{
+ "fontes": {
+  "cartas": "https://github.com/N-CCG-DB/naruto-ccg-deckbuilder/blob/778f6376296dd2a4a810dfb5e76b1dc28cea1cba/narutoccgdatabase.json",
+  "raridade": "https://www.ccgtrader.net/games/naruto-ccg (data/vintage/naruto-ccg-ccgtrader.json)",
+  "scans": "https://n-ccg-db.github.io/naruto-ccg-deckbuilder/cards_database/"
+ },
+ "updatedAt": "2026-11-02",
+ "sets": [
+  {
+   "key": "s03",
+   "ccgtrader": 148,
+   "starter": [
+    "C-009",
+    "C-014",
+    "J-099",
+    "J-123",
+    "M-106",
+    "M-107",
+    "M-108",
+    "M-114",
+    "M-128"
+   ],
+   "cards": [
+    {
+     "code": "J-101",
+     "name": "Mind Transfer Jutsu",
+     "rarity": "Uncommon",
+     "img": "set_3_curse_of_the_sand/j101.webp"
+    },
+    {
+     "code": "J-106",
+     "name": "Lightning Blade",
+     "rarity": "Starter Deck",
+     "img": "set_3_curse_of_the_sand/j106.webp"
+    },
+    {
+     "code": "J-108",
+     "name": "Byakugan",
+     "rarity": "Uncommon",
+     "img": "set_3_curse_of_the_sand/j108.webp"
+    },
+    {
+     "code": "J-109",
+     "name": "Summoning Jutsu",
+     "rarity": "Rare",
+     "img": "set_3_curse_of_the_sand/j109.webp"
+    },
+    {
+     "code": "J-110",
+     "name": "Sexy Jutsu",
+     "rarity": "Rare",
+     "img": "set_3_curse_of_the_sand/j110.webp"
+    },
+    {
+     "code": "J-113",
+     "name": "A Thousand Years of Death",
+     "rarity": "Common",
+     "img": "set_3_curse_of_the_sand/j113.webp"
+    },
+    {
+     "code": "M-123",
+     "name": "Coward",
+     "rarity": "Uncommon",
+     "img": "set_3_curse_of_the_sand/m123.webp"
+    },
+    {
+     "code": "N-085",
+     "name": "Naruto Uzumaki",
+     "rarity": "Super Rare",
+     "img": "set_3_curse_of_the_sand/n085.webp"
+    },
+    {
+     "code": "N-086",
+     "name": "Sasuke Uchiha",
+     "rarity": "Rare",
+     "img": "set_3_curse_of_the_sand/n086e.webp"
+    },
+    {
+     "code": "N-087",
+     "name": "Sakura Haruno",
+     "rarity": "Rare",
+     "img": "set_3_curse_of_the_sand/n087.webp"
+    },
+    {
+     "code": "N-088",
+     "name": "Ino Yamanaka",
+     "rarity": "Starter Deck",
+     "img": "set_3_curse_of_the_sand/n088.webp"
+    },
+    {
+     "code": "N-089",
+     "name": "Shikamaru Nara",
+     "rarity": "Starter Deck",
+     "img": "set_3_curse_of_the_sand/n089.webp"
+    },
+    {
+     "code": "N-090",
+     "name": "Choji Akimichi",
+     "rarity": "Starter Deck",
+     "img": "set_3_curse_of_the_sand/n090.webp"
+    },
+    {
+     "code": "N-091",
+     "name": "Kiba Inuzuka",
+     "rarity": "Starter Deck",
+     "img": "set_3_curse_of_the_sand/n091.webp"
+    },
+    {
+     "code": "N-092",
+     "name": "Shino Aburame",
+     "rarity": "Common",
+     "img": "set_3_curse_of_the_sand/n092.webp"
+    },
+    {
+     "code": "N-093",
+     "name": "Hinata Hyuga",
+     "rarity": "Starter Deck",
+     "img": "set_3_curse_of_the_sand/n093.webp"
+    },
+    {
+     "code": "N-094",
+     "name": "Rock Lee",
+     "rarity": "Rare",
+     "img": "set_3_curse_of_the_sand/n094.webp"
+    },
+    {
+     "code": "N-095",
+     "name": "Neji Hyuga",
+     "rarity": "Uncommon",
+     "img": "set_3_curse_of_the_sand/n095.webp"
+    },
+    {
+     "code": "N-096",
+     "name": "Tenten",
+     "rarity": "Common",
+     "img": "set_3_curse_of_the_sand/n096.webp"
+    },
+    {
+     "code": "N-103",
+     "name": "Dosu Kinuta",
+     "rarity": "Common",
+     "img": "set_3_curse_of_the_sand/n103.webp"
+    },
+    {
+     "code": "N-104",
+     "name": "Zaku Abumi",
+     "rarity": "Common",
+     "img": "set_3_curse_of_the_sand/n104.webp"
+    },
+    {
+     "code": "N-108",
+     "name": "Kabuto Yakushi",
+     "rarity": "Rare",
+     "img": "set_3_curse_of_the_sand/n108.webp"
+    },
+    {
+     "code": "N-109",
+     "name": "Kakashi Hatake",
+     "rarity": "Rare",
+     "img": "set_3_curse_of_the_sand/n109.webp"
+    },
+    {
+     "code": "N-110",
+     "name": "Might Guy",
+     "rarity": "Rare",
+     "img": "set_3_curse_of_the_sand/n110.webp"
+    },
+    {
+     "code": "N-111",
+     "name": "Akamaru",
+     "rarity": "Starter Deck",
+     "img": "set_3_curse_of_the_sand/n111.webp"
+    },
+    {
+     "code": "N-112",
+     "name": "Gaara of the Desert",
+     "rarity": "Super Rare",
+     "img": "set_3_curse_of_the_sand/n112.webp"
+    },
+    {
+     "code": "N-113",
+     "name": "Kankuro",
+     "rarity": "Rare",
+     "img": "set_3_curse_of_the_sand/n113.webp"
+    },
+    {
+     "code": "N-114",
+     "name": "Temari",
+     "rarity": "Uncommon",
+     "img": "set_3_curse_of_the_sand/n114.webp"
+    },
+    {
+     "code": "N-115",
+     "name": "Naruto Uzumaki",
+     "rarity": "Uncommon",
+     "img": "set_3_curse_of_the_sand/n115.webp"
+    },
+    {
+     "code": "N-116",
+     "name": "Sasuke Uchiha",
+     "rarity": "Uncommon",
+     "img": "set_3_curse_of_the_sand/n116.webp"
+    },
+    {
+     "code": "N-117",
+     "name": "Gaara of the Desert",
+     "rarity": "Starter Deck",
+     "img": "set_3_curse_of_the_sand/n117.webp"
+    },
+    {
+     "code": "N-118",
+     "name": "Naruto Uzumaki",
+     "rarity": "Uncommon",
+     "img": "set_3_curse_of_the_sand/n118.webp"
+    },
+    {
+     "code": "N-119",
+     "name": "Sasuke Uchiha",
+     "rarity": "Uncommon",
+     "img": "set_3_curse_of_the_sand/n119.webp"
+    },
+    {
+     "code": "N-120",
+     "name": "Sakura Haruno",
+     "rarity": "Uncommon",
+     "img": "set_3_curse_of_the_sand/n120.webp"
+    },
+    {
+     "code": "N-121",
+     "name": "Ebisu",
+     "rarity": "Rare",
+     "img": "set_3_curse_of_the_sand/n121e.webp"
+    },
+    {
+     "code": "N-122",
+     "name": "Hayate Gekko",
+     "rarity": "Rare",
+     "img": "set_3_curse_of_the_sand/n122.webp"
+    },
+    {
+     "code": "N-123",
+     "name": "Kakashi Hatake",
+     "rarity": "Rare",
+     "img": "set_3_curse_of_the_sand/n123.webp"
+    },
+    {
+     "code": "N-124",
+     "name": "Asuma Sarutobi",
+     "rarity": "Uncommon",
+     "img": "set_3_curse_of_the_sand/n124.webp"
+    },
+    {
+     "code": "N-127",
+     "name": "Jiraiya",
+     "rarity": "Super Rare",
+     "img": "set_3_curse_of_the_sand/n127.webp"
+    }
+   ]
+  },
+  {
+   "key": "s04",
+   "ccgtrader": 114,
+   "starter": [],
+   "cards": [
+    {
+     "code": "N-143",
+     "name": "Kotetsu Hagane",
+     "rarity": "Common",
+     "img": "set_4_revenge_and_rebirth/n143.webp"
+    }
+   ]
+  },
+  {
+   "key": "s07",
+   "ccgtrader": 161,
+   "starter": [
+    "M-211",
+    "M-235"
+   ],
+   "cards": [
+    {
+     "code": "J-US044",
+     "name": "Ninja Art: Mitotic Regeneration",
+     "rarity": "Rare",
+     "img": "set_7_quest_for_power/jus044.webp"
+    }
+   ]
+  },
+  {
+   "key": "s08",
+   "ccgtrader": 151,
+   "starter": [],
+   "cards": [
+    {
+     "code": "J-US046",
+     "name": "Paper Bomb",
+     "rarity": "Common",
+     "img": "set_8_battle_for_destiny/jus046.webp"
+    },
+    {
+     "code": "N-255",
+     "name": "Orochimaru",
+     "rarity": "Rare",
+     "img": "set_8_battle_for_destiny/n255.webp"
+    }
+   ]
+  },
+  {
+   "key": "s09",
+   "ccgtrader": 169,
+   "starter": [
+    "J-282",
+    "J-US074"
+   ],
+   "cards": [
+    {
+     "code": "C-US001",
+     "name": "Yukie Fujikaze",
+     "rarity": "Uncommon",
+     "img": "set_9_the_chosen/cus001.webp"
+    },
+    {
+     "code": "J-295",
+     "name": "Summoning Jutsu",
+     "rarity": "Uncommon",
+     "img": "set_9_the_chosen/j295.webp"
+    },
+    {
+     "code": "J-US057",
+     "name": "Food Pills",
+     "rarity": "Uncommon",
+     "img": "set_9_the_chosen/jus057.webp"
+    },
+    {
+     "code": "J-US058",
+     "name": "Sexy Jutsu",
+     "rarity": "Uncommon",
+     "img": "set_9_the_chosen/jus058.webp"
+    },
+    {
+     "code": "J-US059",
+     "name": "Food Pills",
+     "rarity": "Uncommon",
+     "img": "set_9_the_chosen/jus059.webp"
+    },
+    {
+     "code": "J-US061",
+     "name": "Sealing Jutsu: Fire Seal",
+     "rarity": "Uncommon",
+     "img": "set_9_the_chosen/jus061.webp"
+    },
+    {
+     "code": "J-US062",
+     "name": "Byakugan",
+     "rarity": "Rare",
+     "img": "set_9_the_chosen/jus062.webp"
+    },
+    {
+     "code": "J-US064",
+     "name": "8 Trigrams Palms Rotation",
+     "rarity": "Super Rare",
+     "img": "set_9_the_chosen/jus064.webp"
+    },
+    {
+     "code": "J-US065",
+     "name": "Chidori",
+     "rarity": "Rare",
+     "img": "set_9_the_chosen/jus065.webp"
+    },
+    {
+     "code": "J-US066",
+     "name": "Lightning Blade",
+     "rarity": "Super Rare",
+     "img": "set_9_the_chosen/jus066e.webp"
+    },
+    {
+     "code": "J-US073",
+     "name": "Sacrifice",
+     "rarity": "Uncommon",
+     "img": "set_9_the_chosen/jus073.webp"
+    },
+    {
+     "code": "N-307",
+     "name": "Naruto Uzumaki",
+     "rarity": "Common",
+     "img": "set_9_the_chosen/n307.webp"
+    },
+    {
+     "code": "N-308",
+     "name": "Sasuke Uchiha",
+     "rarity": "Common",
+     "img": "set_9_the_chosen/n308e.webp"
+    },
+    {
+     "code": "N-309",
+     "name": "Ino Yamanaka",
+     "rarity": "Common",
+     "img": "set_9_the_chosen/n309.webp"
+    },
+    {
+     "code": "N-310",
+     "name": "Neji Hyuga",
+     "rarity": "Common",
+     "img": "set_9_the_chosen/n310.webp"
+    },
+    {
+     "code": "N-311",
+     "name": "Tenten",
+     "rarity": "Uncommon",
+     "img": "set_9_the_chosen/n311.webp"
+    },
+    {
+     "code": "N-312",
+     "name": "Pakkun",
+     "rarity": "Common",
+     "img": "set_9_the_chosen/n312.webp"
+    },
+    {
+     "code": "N-313",
+     "name": "Anko Mitarashi",
+     "rarity": "Rare",
+     "img": "set_9_the_chosen/n313.webp"
+    },
+    {
+     "code": "N-315",
+     "name": "Shizune",
+     "rarity": "Rare",
+     "img": "set_9_the_chosen/n315.webp"
+    },
+    {
+     "code": "N-316",
+     "name": "Kakashi Hatake",
+     "rarity": "Rare",
+     "img": "set_9_the_chosen/n316.webp"
+    },
+    {
+     "code": "N-317",
+     "name": "Might Guy",
+     "rarity": "Common",
+     "img": "set_9_the_chosen/n317.webp"
+    },
+    {
+     "code": "N-318",
+     "name": "The Third Hokage",
+     "rarity": "Super Rare",
+     "img": "set_9_the_chosen/n318.webp"
+    },
+    {
+     "code": "N-319",
+     "name": "Jiraiya",
+     "rarity": "Rare",
+     "img": "set_9_the_chosen/n319.webp"
+    },
+    {
+     "code": "N-320",
+     "name": "Orochimaru",
+     "rarity": "Rare",
+     "img": "set_9_the_chosen/n320.webp"
+    },
+    {
+     "code": "N-321",
+     "name": "Tsunade",
+     "rarity": "Rare",
+     "img": "set_9_the_chosen/n321.webp"
+    },
+    {
+     "code": "N-322",
+     "name": "Haku",
+     "rarity": "Rare",
+     "img": "set_9_the_chosen/n322.webp"
+    },
+    {
+     "code": "N-323",
+     "name": "Zabuza Momochi",
+     "rarity": "Super Rare",
+     "img": "set_9_the_chosen/n323.webp"
+    },
+    {
+     "code": "N-324",
+     "name": "Kisame Hoshigaki",
+     "rarity": "Rare",
+     "img": "set_9_the_chosen/n324.webp"
+    },
+    {
+     "code": "N-325",
+     "name": "Naruto Uzumaki",
+     "rarity": "Common",
+     "img": "set_9_the_chosen/n325.webp"
+    },
+    {
+     "code": "N-326",
+     "name": "Sasuke Uchiha",
+     "rarity": "Common",
+     "img": "set_9_the_chosen/n326.webp"
+    },
+    {
+     "code": "N-327",
+     "name": "Sakura Haruno",
+     "rarity": "Common",
+     "img": "set_9_the_chosen/n327.webp"
+    },
+    {
+     "code": "N-328",
+     "name": "Kiba Inuzuka",
+     "rarity": "Common",
+     "img": "set_9_the_chosen/n328.webp"
+    },
+    {
+     "code": "N-329",
+     "name": "Shino Aburame",
+     "rarity": "Common",
+     "img": "set_9_the_chosen/n329.webp"
+    },
+    {
+     "code": "N-330",
+     "name": "Hinata Hyuga",
+     "rarity": "Rare",
+     "img": "set_9_the_chosen/n330.webp"
+    },
+    {
+     "code": "N-331",
+     "name": "Rock Lee",
+     "rarity": "Uncommon",
+     "img": "set_9_the_chosen/n331.webp"
+    },
+    {
+     "code": "N-333",
+     "name": "Kakashi Hatake",
+     "rarity": "Uncommon",
+     "img": "set_9_the_chosen/n333.webp"
+    },
+    {
+     "code": "N-334",
+     "name": "The Fifth Hokage",
+     "rarity": "Super Rare",
+     "img": "set_9_the_chosen/n334.webp"
+    },
+    {
+     "code": "N-335",
+     "name": "Mizuki",
+     "rarity": "Rare",
+     "img": "set_9_the_chosen/n335.webp"
+    },
+    {
+     "code": "N-339",
+     "name": "Gaara of the Desert",
+     "rarity": "Uncommon",
+     "img": "set_9_the_chosen/n339.webp"
+    },
+    {
+     "code": "N-343",
+     "name": "Naruto Uzumaki",
+     "rarity": "Common",
+     "img": "set_9_the_chosen/n343.webp"
+    },
+    {
+     "code": "N-US069",
+     "name": "Gaara of the Desert",
+     "rarity": "Uncommon",
+     "img": "set_9_the_chosen/nus069.webp"
+    },
+    {
+     "code": "N-US070",
+     "name": "Gaara of the Desert",
+     "rarity": "Super Rare",
+     "img": "set_9_the_chosen/nus070.webp"
+    },
+    {
+     "code": "N-US071",
+     "name": "Temari",
+     "rarity": "Rare",
+     "img": "set_9_the_chosen/nus071.webp"
+    },
+    {
+     "code": "N-US072",
+     "name": "Gamakichi",
+     "rarity": "Common",
+     "img": "set_9_the_chosen/nus072.webp"
+    },
+    {
+     "code": "N-US073",
+     "name": "Kabuto Yakushi",
+     "rarity": "Uncommon",
+     "img": "set_9_the_chosen/nus073.webp"
+    },
+    {
+     "code": "N-US074",
+     "name": "Kabuto Yakushi",
+     "rarity": "Starter Deck",
+     "img": "set_9_the_chosen/nus074.webp"
+    },
+    {
+     "code": "N-US075",
+     "name": "Kankuro",
+     "rarity": "Uncommon",
+     "img": "set_9_the_chosen/nus075.webp"
+    },
+    {
+     "code": "N-US076",
+     "name": "Sakura Haruno",
+     "rarity": "Starter Deck",
+     "img": "set_9_the_chosen/nus076.webp"
+    },
+    {
+     "code": "N-US077",
+     "name": "Tsunade",
+     "rarity": "Starter Deck",
+     "img": "set_9_the_chosen/nus077.webp"
+    },
+    {
+     "code": "N-US078",
+     "name": "Kisame Hoshigaki",
+     "rarity": "Super Rare",
+     "img": "set_9_the_chosen/nus078.webp"
+    },
+    {
+     "code": "N-US080",
+     "name": "Kimimaro",
+     "rarity": "Uncommon",
+     "img": "set_9_the_chosen/nus080.webp"
+    },
+    {
+     "code": "N-US081",
+     "name": "Itachi Uchiha",
+     "rarity": "Rare",
+     "img": "set_9_the_chosen/nus081.webp"
+    },
+    {
+     "code": "N-US082",
+     "name": "Neji Hyuga",
+     "rarity": "Common",
+     "img": "set_9_the_chosen/nus082.webp"
+    },
+    {
+     "code": "N-US083",
+     "name": "The Third Hokage",
+     "rarity": "Super Rare",
+     "img": "set_9_the_chosen/nus083.webp"
+    },
+    {
+     "code": "N-US085",
+     "name": "Kurenai Yuhi",
+     "rarity": "Starter Deck",
+     "img": "set_9_the_chosen/nus085.webp"
+    },
+    {
+     "code": "N-US086",
+     "name": "Dotou Kazahana",
+     "rarity": "Uncommon",
+     "img": "set_9_the_chosen/nus086.webp"
+    },
+    {
+     "code": "N-US087",
+     "name": "Choji Akimichi",
+     "rarity": "Common",
+     "img": "set_9_the_chosen/nus087.webp"
+    },
+    {
+     "code": "N-US088",
+     "name": "The Third Hokage",
+     "rarity": "Uncommon",
+     "img": "set_9_the_chosen/nus088.webp"
+    },
+    {
+     "code": "N-US089",
+     "name": "Iruka Umino",
+     "rarity": "Rare",
+     "img": "set_9_the_chosen/nus089.webp"
+    },
+    {
+     "code": "N-US090",
+     "name": "Sasuke Uchiha",
+     "rarity": "Common",
+     "img": "set_9_the_chosen/nus090.webp"
+    },
+    {
+     "code": "N-US091",
+     "name": "Haku",
+     "rarity": "Super Rare",
+     "img": "set_9_the_chosen/nus091.webp"
+    },
+    {
+     "code": "N-US092",
+     "name": "Sakura Haruno",
+     "rarity": "Uncommon",
+     "img": "set_9_the_chosen/nus092.webp"
+    }
+   ]
+  },
+  {
+   "key": "s10",
+   "ccgtrader": 208,
+   "starter": [],
+   "cards": [
+    {
+     "code": "J-317",
+     "name": "Gentle Fist",
+     "rarity": "Uncommon",
+     "img": "set_10_lineage_of_the_legends/j317.webp"
+    },
+    {
+     "code": "J-322",
+     "name": "Tsukuyomi",
+     "rarity": "Uncommon",
+     "img": "set_10_lineage_of_the_legends/j322.webp"
+    },
+    {
+     "code": "J-323",
+     "name": "Shark Skin",
+     "rarity": "Common",
+     "img": "set_10_lineage_of_the_legends/j323.webp"
+    },
+    {
+     "code": "J-324",
+     "name": "Multi Shadow Clone Jutsu",
+     "rarity": "Common",
+     "img": "set_10_lineage_of_the_legends/j324.webp"
+    },
+    {
+     "code": "J-325",
+     "name": "Striking Shadow Snake",
+     "rarity": "Uncommon",
+     "img": "set_10_lineage_of_the_legends/j325.webp"
+    },
+    {
+     "code": "J-328",
+     "name": "Lightning Blade",
+     "rarity": "Super Rare",
+     "img": "set_10_lineage_of_the_legends/j328.webp"
+    },
+    {
+     "code": "J-329",
+     "name": "Fire Style: Dragon Flame Jutsu",
+     "rarity": "Uncommon",
+     "img": "set_10_lineage_of_the_legends/j329.webp"
+    },
+    {
+     "code": "J-330",
+     "name": "Deformable Body",
+     "rarity": "Common",
+     "img": "set_10_lineage_of_the_legends/j330.webp"
+    },
+    {
+     "code": "J-331",
+     "name": "Chakra Absorption Jutsu",
+     "rarity": "Common",
+     "img": "set_10_lineage_of_the_legends/j331.webp"
+    },
+    {
+     "code": "J-US077",
+     "name": "Water Style: Giant Vortex Jutsu",
+     "rarity": "Rare",
+     "img": "set_10_lineage_of_the_legends/jus077.webp"
+    },
+    {
+     "code": "J-US078",
+     "name": "Clematis Dance: Flower",
+     "rarity": "Common",
+     "img": "set_10_lineage_of_the_legends/jus078.webp"
+    },
+    {
+     "code": "J-US079",
+     "name": "Paper Bomb",
+     "rarity": "Uncommon",
+     "img": "set_10_lineage_of_the_legends/jus079.webp"
+    },
+    {
+     "code": "J-US080",
+     "name": "Gentle Fist Style: 8 Trigrams 64 Palms",
+     "rarity": "Uncommon",
+     "img": "set_10_lineage_of_the_legends/jus080.webp"
+    },
+    {
+     "code": "J-US090",
+     "name": "Armed Puppet",
+     "rarity": "Common",
+     "img": "set_10_lineage_of_the_legends/jus090.webp"
+    },
+    {
+     "code": "J-US093",
+     "name": "Smoke Pellet",
+     "rarity": "Uncommon",
+     "img": "set_10_lineage_of_the_legends/jus093.webp"
+    },
+    {
+     "code": "M-US095",
+     "name": "Shadow of the Nine-Tailed Fox Spirit",
+     "rarity": "Common",
+     "img": "set_10_lineage_of_the_legends/mus095.webp"
+    },
+    {
+     "code": "M-US109",
+     "name": "Curse Sealing",
+     "rarity": "Uncommon",
+     "img": "set_10_lineage_of_the_legends/mus109.webp"
+    },
+    {
+     "code": "N-344",
+     "name": "Naruto Uzumaki",
+     "rarity": "Common",
+     "img": "set_10_lineage_of_the_legends/n344.webp"
+    },
+    {
+     "code": "N-345",
+     "name": "Sakura Haruno",
+     "rarity": "Common",
+     "img": "set_10_lineage_of_the_legends/n345.webp"
+    },
+    {
+     "code": "N-346",
+     "name": "Rock Lee",
+     "rarity": "Common",
+     "img": "set_10_lineage_of_the_legends/n346.webp"
+    },
+    {
+     "code": "N-347",
+     "name": "Neji Hyuga",
+     "rarity": "Common",
+     "img": "set_10_lineage_of_the_legends/n347.webp"
+    },
+    {
+     "code": "N-348",
+     "name": "Tenten",
+     "rarity": "Common",
+     "img": "set_10_lineage_of_the_legends/n348.webp"
+    },
+    {
+     "code": "N-349",
+     "name": "Might Guy",
+     "rarity": "Rare",
+     "img": "set_10_lineage_of_the_legends/n349.webp"
+    },
+    {
+     "code": "N-352",
+     "name": "Jiraiya",
+     "rarity": "Super Rare",
+     "img": "set_10_lineage_of_the_legends/n352.webp"
+    },
+    {
+     "code": "N-353",
+     "name": "Orochimaru",
+     "rarity": "Super Rare",
+     "img": "set_10_lineage_of_the_legends/n353.webp"
+    },
+    {
+     "code": "N-354",
+     "name": "Tsunade",
+     "rarity": "Super Rare",
+     "img": "set_10_lineage_of_the_legends/n354.webp"
+    },
+    {
+     "code": "N-361",
+     "name": "Konohamaru Ninja Squad",
+     "rarity": "Common",
+     "img": "set_10_lineage_of_the_legends/n361.webp"
+    },
+    {
+     "code": "N-365",
+     "name": "Itachi Uchiha",
+     "rarity": "Super Rare",
+     "img": "set_10_lineage_of_the_legends/n365e.webp"
+    },
+    {
+     "code": "N-366",
+     "name": "Kisame Hoshigaki",
+     "rarity": "Rare",
+     "img": "set_10_lineage_of_the_legends/n366.webp"
+    },
+    {
+     "code": "N-368",
+     "name": "The First Hokage",
+     "rarity": "Super Rare",
+     "img": "set_10_lineage_of_the_legends/n368.webp"
+    },
+    {
+     "code": "N-369",
+     "name": "The Second Hokage",
+     "rarity": "Super Rare",
+     "img": "set_10_lineage_of_the_legends/n369.webp"
+    },
+    {
+     "code": "N-370",
+     "name": "The Third Hokage",
+     "rarity": "Super Rare",
+     "img": "set_10_lineage_of_the_legends/n370.webp"
+    },
+    {
+     "code": "N-371",
+     "name": "The Fourth Hokage",
+     "rarity": "Super Rare",
+     "img": "set_10_lineage_of_the_legends/n371e.webp"
+    },
+    {
+     "code": "N-372",
+     "name": "The Fifth Hokage",
+     "rarity": "Super Rare",
+     "img": "set_10_lineage_of_the_legends/n372.webp"
+    },
+    {
+     "code": "N-373",
+     "name": "Naruto Uzumaki",
+     "rarity": "Rare",
+     "img": "set_10_lineage_of_the_legends/n373.webp"
+    },
+    {
+     "code": "N-374",
+     "name": "Shino Aburame",
+     "rarity": "Common",
+     "img": "set_10_lineage_of_the_legends/n374.webp"
+    },
+    {
+     "code": "N-375",
+     "name": "Ino Yamanaka",
+     "rarity": "Common",
+     "img": "set_10_lineage_of_the_legends/n375.webp"
+    },
+    {
+     "code": "N-376",
+     "name": "Anko Mitarashi",
+     "rarity": "Uncommon",
+     "img": "set_10_lineage_of_the_legends/n376.webp"
+    },
+    {
+     "code": "N-377",
+     "name": "Kakashi Hatake",
+     "rarity": "Super Rare",
+     "img": "set_10_lineage_of_the_legends/n377.webp"
+    },
+    {
+     "code": "N-383",
+     "name": "Sasuke Uchiha",
+     "rarity": "Rare",
+     "img": "set_10_lineage_of_the_legends/n383.webp"
+    },
+    {
+     "code": "N-386",
+     "name": "Yoroi Akado",
+     "rarity": "Uncommon",
+     "img": "set_10_lineage_of_the_legends/n386.webp"
+    },
+    {
+     "code": "N-387",
+     "name": "Misumi Tsurugi",
+     "rarity": "Uncommon",
+     "img": "set_10_lineage_of_the_legends/n387.webp"
+    },
+    {
+     "code": "N-US099",
+     "name": "Temujin",
+     "rarity": "Uncommon",
+     "img": "set_10_lineage_of_the_legends/nus099.webp"
+    },
+    {
+     "code": "N-US101",
+     "name": "Sasuke Uchiha",
+     "rarity": "Uncommon",
+     "img": "set_10_lineage_of_the_legends/nus101.webp"
+    },
+    {
+     "code": "N-US102",
+     "name": "Ino Yamanaka",
+     "rarity": "Common",
+     "img": "set_10_lineage_of_the_legends/nus102.webp"
+    },
+    {
+     "code": "N-US103",
+     "name": "Shukaku",
+     "rarity": "Super Rare",
+     "img": "set_10_lineage_of_the_legends/nus103e.webp"
+    },
+    {
+     "code": "N-US104",
+     "name": "Naruto Uzumaki",
+     "rarity": "Common",
+     "img": "set_10_lineage_of_the_legends/nus104.webp"
+    },
+    {
+     "code": "N-US105",
+     "name": "Hinata Hyuga",
+     "rarity": "Uncommon",
+     "img": "set_10_lineage_of_the_legends/nus105.webp"
+    },
+    {
+     "code": "N-US106",
+     "name": "Kurenai Yuhi",
+     "rarity": "Rare",
+     "img": "set_10_lineage_of_the_legends/nus106.webp"
+    },
+    {
+     "code": "N-US107",
+     "name": "Choji Akimichi",
+     "rarity": "Common",
+     "img": "set_10_lineage_of_the_legends/nus107.webp"
+    },
+    {
+     "code": "N-US108",
+     "name": "Haku",
+     "rarity": "Rare",
+     "img": "set_10_lineage_of_the_legends/nus108.webp"
+    },
+    {
+     "code": "N-US111",
+     "name": "Shino Aburame",
+     "rarity": "Common",
+     "img": "set_10_lineage_of_the_legends/nus111.webp"
+    },
+    {
+     "code": "N-US112",
+     "name": "Gaara of the Desert (Possessed Mode)",
+     "rarity": "Rare",
+     "img": "set_10_lineage_of_the_legends/nus112.webp"
+    },
+    {
+     "code": "N-US114",
+     "name": "Asuma Sarutobi",
+     "rarity": "Uncommon",
+     "img": "set_10_lineage_of_the_legends/nus114.webp"
+    },
+    {
+     "code": "N-US115",
+     "name": "Might Guy",
+     "rarity": "Uncommon",
+     "img": "set_10_lineage_of_the_legends/nus115.webp"
+    },
+    {
+     "code": "N-US116",
+     "name": "Kakashi Hatake",
+     "rarity": "Rare",
+     "img": "set_10_lineage_of_the_legends/nus116.webp"
+    },
+    {
+     "code": "N-US117",
+     "name": "Kimimaro",
+     "rarity": "Uncommon",
+     "img": "set_10_lineage_of_the_legends/nus117.webp"
+    },
+    {
+     "code": "N-US118",
+     "name": "Kankuro",
+     "rarity": "Common",
+     "img": "set_10_lineage_of_the_legends/nus118.webp"
+    },
+    {
+     "code": "N-US119",
+     "name": "Kakashi Hatake & Might Guy",
+     "rarity": "Uncommon",
+     "img": "set_10_lineage_of_the_legends/nus119.webp"
+    },
+    {
+     "code": "N-US120",
+     "name": "Choji Akimichi",
+     "rarity": "Common",
+     "img": "set_10_lineage_of_the_legends/nus120.webp"
+    },
+    {
+     "code": "N-US121",
+     "name": "Temari",
+     "rarity": "Common",
+     "img": "set_10_lineage_of_the_legends/nus121.webp"
+    },
+    {
+     "code": "N-US122",
+     "name": "Naruto Uzumaki",
+     "rarity": "Super Rare",
+     "img": "set_10_lineage_of_the_legends/nus122.webp"
+    },
+    {
+     "code": "N-US123",
+     "name": "Sasuke Uchiha",
+     "rarity": "Super Rare",
+     "img": "set_10_lineage_of_the_legends/nus123.webp"
+    },
+    {
+     "code": "N-US124",
+     "name": "Kimimaro",
+     "rarity": "Super Rare",
+     "img": "set_10_lineage_of_the_legends/nus124.webp"
+    }
+   ]
+  },
+  {
+   "key": "s11",
+   "ccgtrader": 163,
+   "starter": [
+    "C-045",
+    "J-365",
+    "M-323",
+    "M-344",
+    "N-412"
+   ],
+   "cards": [
+    {
+     "code": "C-044",
+     "name": "Hikaru Tsuki",
+     "rarity": "Uncommon",
+     "img": "set_11_approaching_wind/c044.webp"
+    },
+    {
+     "code": "J-362",
+     "name": "Kunai",
+     "rarity": "Common",
+     "img": "set_11_approaching_wind/j362.webp"
+    },
+    {
+     "code": "J-363",
+     "name": "Shadow Clone Jutsu",
+     "rarity": "Uncommon",
+     "img": "set_11_approaching_wind/j363.webp"
+    },
+    {
+     "code": "J-364",
+     "name": "Summoning Jutsu",
+     "rarity": "Uncommon",
+     "img": "set_11_approaching_wind/j364.webp"
+    },
+    {
+     "code": "J-366",
+     "name": "Tunneling Fang",
+     "rarity": "Common",
+     "img": "set_11_approaching_wind/j366.webp"
+    },
+    {
+     "code": "J-367",
+     "name": "Fire Style: Fire Ball Jutsu",
+     "rarity": "Uncommon",
+     "img": "set_11_approaching_wind/j367.webp"
+    },
+    {
+     "code": "J-368",
+     "name": "Hidden Mist Jutsu",
+     "rarity": "Starter Deck",
+     "img": "set_11_approaching_wind/j368.webp"
+    },
+    {
+     "code": "J-369",
+     "name": "Curse Mark Jutsu",
+     "rarity": "Uncommon",
+     "img": "set_11_approaching_wind/j369.webp"
+    },
+    {
+     "code": "J-370",
+     "name": "Crystal Ice Mirror",
+     "rarity": "Common",
+     "img": "set_11_approaching_wind/j370.webp"
+    },
+    {
+     "code": "J-373",
+     "name": "Earth Style: Headhunter Jutsu",
+     "rarity": "Uncommon",
+     "img": "set_11_approaching_wind/j373.webp"
+    },
+    {
+     "code": "J-374",
+     "name": "Substitution Jutsu",
+     "rarity": "Uncommon",
+     "img": "set_11_approaching_wind/j374.webp"
+    },
+    {
+     "code": "J-375",
+     "name": "Shadow Possession Jutsu",
+     "rarity": "Common",
+     "img": "set_11_approaching_wind/j375.webp"
+    },
+    {
+     "code": "J-377",
+     "name": "Rasengan",
+     "rarity": "Starter Deck",
+     "img": "set_11_approaching_wind/j377e.webp"
+    },
+    {
+     "code": "J-378",
+     "name": "Harem Jutsu",
+     "rarity": "Rare",
+     "img": "set_11_approaching_wind/j378.webp"
+    },
+    {
+     "code": "J-381",
+     "name": "Kaleidoscope Sharingan",
+     "rarity": "Uncommon",
+     "img": "set_11_approaching_wind/j381.webp"
+    },
+    {
+     "code": "J-383",
+     "name": "The Eight Inner Gates",
+     "rarity": "Super Rare",
+     "img": "set_11_approaching_wind/j383.webp"
+    },
+    {
+     "code": "J-384",
+     "name": "Water Style: Water Dragon Jutsu",
+     "rarity": "Uncommon",
+     "img": "set_11_approaching_wind/j384e.webp"
+    },
+    {
+     "code": "J-386",
+     "name": "Fire Style: Phoenix Flower Jutsu",
+     "rarity": "Uncommon",
+     "img": "set_11_approaching_wind/j386.webp"
+    },
+    {
+     "code": "M-355",
+     "name": "The Final Valley",
+     "rarity": "Uncommon",
+     "img": "set_11_approaching_wind/m355.webp"
+    },
+    {
+     "code": "N-389",
+     "name": "Neji Hyuga",
+     "rarity": "Uncommon",
+     "img": "set_11_approaching_wind/n389.webp"
+    },
+    {
+     "code": "N-390",
+     "name": "Might Guy",
+     "rarity": "Uncommon",
+     "img": "set_11_approaching_wind/n390.webp"
+    },
+    {
+     "code": "N-393",
+     "name": "Naruto Uzumaki",
+     "rarity": "Uncommon",
+     "img": "set_11_approaching_wind/n393.webp"
+    },
+    {
+     "code": "N-394",
+     "name": "Sakura Haruno",
+     "rarity": "Common",
+     "img": "set_11_approaching_wind/n394.webp"
+    },
+    {
+     "code": "N-395",
+     "name": "Rock Lee",
+     "rarity": "Uncommon",
+     "img": "set_11_approaching_wind/n395.webp"
+    },
+    {
+     "code": "N-396",
+     "name": "Kakashi Hatake",
+     "rarity": "Common",
+     "img": "set_11_approaching_wind/n396.webp"
+    },
+    {
+     "code": "N-397",
+     "name": "Naruto Uzumaki",
+     "rarity": "Uncommon",
+     "img": "set_11_approaching_wind/n397.webp"
+    },
+    {
+     "code": "N-398",
+     "name": "Sakura Haruno",
+     "rarity": "Common",
+     "img": "set_11_approaching_wind/n398.webp"
+    },
+    {
+     "code": "N-399",
+     "name": "Rock Lee",
+     "rarity": "Uncommon",
+     "img": "set_11_approaching_wind/n399.webp"
+    },
+    {
+     "code": "N-400",
+     "name": "Kakashi Hatake",
+     "rarity": "Uncommon",
+     "img": "set_11_approaching_wind/n400.webp"
+    },
+    {
+     "code": "N-415",
+     "name": "Sasuke Uchiha",
+     "rarity": "Super Rare",
+     "img": "set_11_approaching_wind/n415.webp"
+    },
+    {
+     "code": "N-416",
+     "name": "Kabuto Yakushi",
+     "rarity": "Super Rare",
+     "img": "set_11_approaching_wind/n416.webp"
+    },
+    {
+     "code": "N-418",
+     "name": "Naruto Uzumaki",
+     "rarity": "Super Rare",
+     "img": "set_11_approaching_wind/n418.webp"
+    },
+    {
+     "code": "N-419",
+     "name": "Sakura Haruno",
+     "rarity": "Super Rare",
+     "img": "set_11_approaching_wind/n419.webp"
+    },
+    {
+     "code": "N-420",
+     "name": "Shikamaru Nara",
+     "rarity": "Uncommon",
+     "img": "set_11_approaching_wind/n420.webp"
+    },
+    {
+     "code": "N-421",
+     "name": "Kakashi Hatake",
+     "rarity": "Starter Deck",
+     "img": "set_11_approaching_wind/n421.webp"
+    },
+    {
+     "code": "N-422",
+     "name": "Jiraiya",
+     "rarity": "Rare",
+     "img": "set_11_approaching_wind/n422.webp"
+    },
+    {
+     "code": "N-423",
+     "name": "Tsunade",
+     "rarity": "Rare",
+     "img": "set_11_approaching_wind/n423.webp"
+    },
+    {
+     "code": "N-424",
+     "name": "Konohamaru",
+     "rarity": "Uncommon",
+     "img": "set_11_approaching_wind/n424.webp"
+    },
+    {
+     "code": "N-425",
+     "name": "Naruto Uzumaki",
+     "rarity": "Rare",
+     "img": "set_11_approaching_wind/n425.webp"
+    },
+    {
+     "code": "N-426",
+     "name": "Sasuke Uchiha",
+     "rarity": "Rare",
+     "img": "set_11_approaching_wind/n426.webp"
+    },
+    {
+     "code": "N-427",
+     "name": "Kiba Inuzuka",
+     "rarity": "Starter Deck",
+     "img": "set_11_approaching_wind/n427.webp"
+    },
+    {
+     "code": "N-428",
+     "name": "Shino Aburame",
+     "rarity": "Common",
+     "img": "set_11_approaching_wind/n428.webp"
+    },
+    {
+     "code": "N-429",
+     "name": "Hinata Hyuga",
+     "rarity": "Common",
+     "img": "set_11_approaching_wind/n429.webp"
+    },
+    {
+     "code": "N-430",
+     "name": "Rock Lee",
+     "rarity": "Common",
+     "img": "set_11_approaching_wind/n430.webp"
+    },
+    {
+     "code": "N-431",
+     "name": "Tenten",
+     "rarity": "Common",
+     "img": "set_11_approaching_wind/n431.webp"
+    },
+    {
+     "code": "N-432",
+     "name": "Neji Hyuga",
+     "rarity": "Common",
+     "img": "set_11_approaching_wind/n432.webp"
+    },
+    {
+     "code": "N-433",
+     "name": "Ino Yamanaka",
+     "rarity": "Uncommon",
+     "img": "set_11_approaching_wind/n433.webp"
+    },
+    {
+     "code": "N-434",
+     "name": "Choji Akimichi",
+     "rarity": "Common",
+     "img": "set_11_approaching_wind/n434.webp"
+    },
+    {
+     "code": "N-435",
+     "name": "Akamaru",
+     "rarity": "Starter Deck",
+     "img": "set_11_approaching_wind/n435.webp"
+    },
+    {
+     "code": "N-436",
+     "name": "Iruka Umino",
+     "rarity": "Common",
+     "img": "set_11_approaching_wind/n436.webp"
+    },
+    {
+     "code": "N-437",
+     "name": "Might Guy",
+     "rarity": "Common",
+     "img": "set_11_approaching_wind/n437.webp"
+    },
+    {
+     "code": "N-438",
+     "name": "Asuma Sarutobi",
+     "rarity": "Common",
+     "img": "set_11_approaching_wind/n438.webp"
+    },
+    {
+     "code": "N-439",
+     "name": "Hayate Gekko",
+     "rarity": "Rare",
+     "img": "set_11_approaching_wind/n439.webp"
+    },
+    {
+     "code": "N-440",
+     "name": "Anko Mitarashi",
+     "rarity": "Rare",
+     "img": "set_11_approaching_wind/n440.webp"
+    },
+    {
+     "code": "N-442",
+     "name": "Zaku Abumi",
+     "rarity": "Uncommon",
+     "img": "set_11_approaching_wind/n442.webp"
+    },
+    {
+     "code": "N-443",
+     "name": "Dosu Kinuta",
+     "rarity": "Starter Deck",
+     "img": "set_11_approaching_wind/n443.webp"
+    },
+    {
+     "code": "N-444",
+     "name": "Haku",
+     "rarity": "Uncommon",
+     "img": "set_11_approaching_wind/n444.webp"
+    },
+    {
+     "code": "N-445",
+     "name": "Zabuza Momochi",
+     "rarity": "Super Rare",
+     "img": "set_11_approaching_wind/n445.webp"
+    },
+    {
+     "code": "N-446",
+     "name": "Kimimaro",
+     "rarity": "Rare",
+     "img": "set_11_approaching_wind/n446.webp"
+    },
+    {
+     "code": "N-447",
+     "name": "Orochimaru",
+     "rarity": "Starter Deck",
+     "img": "set_11_approaching_wind/n447.webp"
+    },
+    {
+     "code": "N-448",
+     "name": "Naruto Uzumaki",
+     "rarity": "Rare",
+     "img": "set_11_approaching_wind/n448.webp"
+    },
+    {
+     "code": "N-449",
+     "name": "Sakura Haruno",
+     "rarity": "Rare",
+     "img": "set_11_approaching_wind/n449.webp"
+    },
+    {
+     "code": "N-450",
+     "name": "Pakkun",
+     "rarity": "Common",
+     "img": "set_11_approaching_wind/n450.webp"
+    },
+    {
+     "code": "N-451",
+     "name": "Shizune",
+     "rarity": "Uncommon",
+     "img": "set_11_approaching_wind/n451.webp"
+    },
+    {
+     "code": "N-452",
+     "name": "Naruto Uzumaki",
+     "rarity": "Uncommon",
+     "img": "set_11_approaching_wind/n452.webp"
+    },
+    {
+     "code": "N-453",
+     "name": "Itachi Uchiha",
+     "rarity": "Super Rare",
+     "img": "set_11_approaching_wind/n453.webp"
+    },
+    {
+     "code": "N-454",
+     "name": "Kisame Hoshigaki",
+     "rarity": "Super Rare",
+     "img": "set_11_approaching_wind/n454.webp"
+    },
+    {
+     "code": "N-455",
+     "name": "Naruto Uzumaki & Gamabunta",
+     "rarity": "Super Rare",
+     "img": "set_11_approaching_wind/n455.webp"
+    },
+    {
+     "code": "N-456",
+     "name": "Zabuza Momochi",
+     "rarity": "Rare",
+     "img": "set_11_approaching_wind/n456.webp"
+    },
+    {
+     "code": "N-457",
+     "name": "Sakon",
+     "rarity": "Uncommon",
+     "img": "set_11_approaching_wind/n457.webp"
+    },
+    {
+     "code": "N-458",
+     "name": "Jirobo",
+     "rarity": "Uncommon",
+     "img": "set_11_approaching_wind/n458.webp"
+    },
+    {
+     "code": "N-459",
+     "name": "Tayuya",
+     "rarity": "Uncommon",
+     "img": "set_11_approaching_wind/n459.webp"
+    },
+    {
+     "code": "N-460",
+     "name": "Kidomaru",
+     "rarity": "Uncommon",
+     "img": "set_11_approaching_wind/n460.webp"
+    }
+   ]
+  },
+  {
+   "key": "s12",
+   "ccgtrader": 172,
+   "starter": [],
+   "cards": [
+    {
+     "code": "J-387",
+     "name": "Sexy Jutsu",
+     "rarity": "Rare",
+     "img": "set_12_a_new_chronicle/j387.webp"
+    },
+    {
+     "code": "J-392",
+     "name": "Forbidden Word",
+     "rarity": "Common",
+     "img": "set_12_a_new_chronicle/j392.webp"
+    },
+    {
+     "code": "J-394",
+     "name": "Wind Scythe Jutsu",
+     "rarity": "Rare",
+     "img": "set_12_a_new_chronicle/j394.webp"
+    },
+    {
+     "code": "J-395",
+     "name": "Sand Shield",
+     "rarity": "Common",
+     "img": "set_12_a_new_chronicle/j395.webp"
+    },
+    {
+     "code": "J-401",
+     "name": "Genjutsu",
+     "rarity": "Common",
+     "img": "set_12_a_new_chronicle/j401.webp"
+    },
+    {
+     "code": "J-409",
+     "name": "Water Prison Jutsu",
+     "rarity": "Rare",
+     "img": "set_12_a_new_chronicle/j409.webp"
+    },
+    {
+     "code": "J-410",
+     "name": "Shark Skin",
+     "rarity": "Rare",
+     "img": "set_12_a_new_chronicle/j410.webp"
+    },
+    {
+     "code": "J-413",
+     "name": "Puppet Master Jutsu",
+     "rarity": "Uncommon",
+     "img": "set_12_a_new_chronicle/j413.webp"
+    },
+    {
+     "code": "J-416",
+     "name": "Sand Coffin",
+     "rarity": "Super Rare",
+     "img": "set_12_a_new_chronicle/j416.webp"
+    },
+    {
+     "code": "J-422",
+     "name": "Arhat Fist",
+     "rarity": "Rare",
+     "img": "set_12_a_new_chronicle/j422.webp"
+    },
+    {
+     "code": "J-423",
+     "name": "Spider Bow: Fierce Rip",
+     "rarity": "Rare",
+     "img": "set_12_a_new_chronicle/j423.webp"
+    },
+    {
+     "code": "J-425",
+     "name": "Demon Flute: Chains of Fantasia",
+     "rarity": "Uncommon",
+     "img": "set_12_a_new_chronicle/j425.webp"
+    },
+    {
+     "code": "J-429",
+     "name": "Gentle Fist Style: 8 Trigrams 64 Palms",
+     "rarity": "Rare",
+     "img": "set_12_a_new_chronicle/j429.webp"
+    },
+    {
+     "code": "J-430",
+     "name": "Shadow Strangle Jutsu",
+     "rarity": "Uncommon",
+     "img": "set_12_a_new_chronicle/j430.webp"
+    },
+    {
+     "code": "J-434",
+     "name": "Striking Shadow Snake",
+     "rarity": "Uncommon",
+     "img": "set_12_a_new_chronicle/j434.webp"
+    },
+    {
+     "code": "J-435",
+     "name": "Reaper Death Seal",
+     "rarity": "Rare",
+     "img": "set_12_a_new_chronicle/j435e.webp"
+    },
+    {
+     "code": "J-436",
+     "name": "Shadow Clone Jutsu",
+     "rarity": "Rare",
+     "img": "set_12_a_new_chronicle/j436.webp"
+    },
+    {
+     "code": "J-437",
+     "name": "Summoning Jutsu",
+     "rarity": "Common",
+     "img": "set_12_a_new_chronicle/j437.webp"
+    },
+    {
+     "code": "J-438",
+     "name": "Playing Possum Jutsu",
+     "rarity": "Common",
+     "img": "set_12_a_new_chronicle/j438.webp"
+    },
+    {
+     "code": "J-441",
+     "name": "Sealing Jutsu: Fire Seal",
+     "rarity": "Common",
+     "img": "set_12_a_new_chronicle/j441.webp"
+    },
+    {
+     "code": "J-446",
+     "name": "Larch Dance",
+     "rarity": "Uncommon",
+     "img": "set_12_a_new_chronicle/j446.webp"
+    },
+    {
+     "code": "J-449",
+     "name": "Fire Style: Fire Ball Jutsu",
+     "rarity": "Common",
+     "img": "set_12_a_new_chronicle/j449.webp"
+    },
+    {
+     "code": "M-401",
+     "name": "Ichiraku Noodle Shop",
+     "rarity": "Rare",
+     "img": "set_12_a_new_chronicle/m401.webp"
+    },
+    {
+     "code": "N-461",
+     "name": "Kankuro",
+     "rarity": "Super Rare",
+     "img": "set_12_a_new_chronicle/n461e.webp"
+    },
+    {
+     "code": "N-462",
+     "name": "Temari",
+     "rarity": "Rare",
+     "img": "set_12_a_new_chronicle/n462.webp"
+    },
+    {
+     "code": "N-464",
+     "name": "Baki",
+     "rarity": "Uncommon",
+     "img": "set_12_a_new_chronicle/n464.webp"
+    },
+    {
+     "code": "N-466",
+     "name": "Naruto Uzumaki",
+     "rarity": "Uncommon",
+     "img": "set_12_a_new_chronicle/n466.webp"
+    },
+    {
+     "code": "N-467",
+     "name": "Sakura Haruno",
+     "rarity": "Rare",
+     "img": "set_12_a_new_chronicle/n467.webp"
+    },
+    {
+     "code": "N-468",
+     "name": "Iruka Umino",
+     "rarity": "Uncommon",
+     "img": "set_12_a_new_chronicle/n468.webp"
+    },
+    {
+     "code": "N-469",
+     "name": "Konohamaru",
+     "rarity": "Common",
+     "img": "set_12_a_new_chronicle/n469.webp"
+    },
+    {
+     "code": "N-470",
+     "name": "Moegi",
+     "rarity": "Common",
+     "img": "set_12_a_new_chronicle/n470.webp"
+    },
+    {
+     "code": "N-471",
+     "name": "Udon",
+     "rarity": "Common",
+     "img": "set_12_a_new_chronicle/n471.webp"
+    },
+    {
+     "code": "N-472",
+     "name": "Ebisu",
+     "rarity": "Common",
+     "img": "set_12_a_new_chronicle/n472.webp"
+    },
+    {
+     "code": "N-473",
+     "name": "Kakashi Hatake",
+     "rarity": "Super Rare",
+     "img": "set_12_a_new_chronicle/n473.webp"
+    },
+    {
+     "code": "N-474",
+     "name": "Might Guy",
+     "rarity": "Rare",
+     "img": "set_12_a_new_chronicle/n474.webp"
+    },
+    {
+     "code": "N-475",
+     "name": "Rock Lee",
+     "rarity": "Rare",
+     "img": "set_12_a_new_chronicle/n475.webp"
+    },
+    {
+     "code": "N-476",
+     "name": "Neji Hyuga",
+     "rarity": "Uncommon",
+     "img": "set_12_a_new_chronicle/n476.webp"
+    },
+    {
+     "code": "N-477",
+     "name": "Tenten",
+     "rarity": "Uncommon",
+     "img": "set_12_a_new_chronicle/n477.webp"
+    },
+    {
+     "code": "N-478",
+     "name": "Itachi Uchiha",
+     "rarity": "Super Rare",
+     "img": "set_12_a_new_chronicle/n478.webp"
+    },
+    {
+     "code": "N-479",
+     "name": "Kisame Hoshigaki",
+     "rarity": "Rare",
+     "img": "set_12_a_new_chronicle/n479.webp"
+    },
+    {
+     "code": "N-483",
+     "name": "Gaara of the Desert",
+     "rarity": "Uncommon",
+     "img": "set_12_a_new_chronicle/n483.webp"
+    },
+    {
+     "code": "N-484",
+     "name": "Crow",
+     "rarity": "Uncommon",
+     "img": "set_12_a_new_chronicle/n484e.webp"
+    },
+    {
+     "code": "N-485",
+     "name": "Black Ant",
+     "rarity": "Uncommon",
+     "img": "set_12_a_new_chronicle/n485e.webp"
+    },
+    {
+     "code": "N-490",
+     "name": "Naruto Uzumaki",
+     "rarity": "Common",
+     "img": "set_12_a_new_chronicle/n490.webp"
+    },
+    {
+     "code": "N-491",
+     "name": "Sakura Haruno",
+     "rarity": "Common",
+     "img": "set_12_a_new_chronicle/n491.webp"
+    },
+    {
+     "code": "N-492",
+     "name": "Rock Lee",
+     "rarity": "Uncommon",
+     "img": "set_12_a_new_chronicle/n492.webp"
+    },
+    {
+     "code": "N-493",
+     "name": "Hinata Hyuga",
+     "rarity": "Common",
+     "img": "set_12_a_new_chronicle/n493.webp"
+    },
+    {
+     "code": "N-496",
+     "name": "Sasuke Uchiha",
+     "rarity": "Uncommon",
+     "img": "set_12_a_new_chronicle/n496.webp"
+    },
+    {
+     "code": "N-497",
+     "name": "Naruto Uzumaki",
+     "rarity": "Uncommon",
+     "img": "set_12_a_new_chronicle/n497.webp"
+    },
+    {
+     "code": "N-498",
+     "name": "Kiba Inuzuka",
+     "rarity": "Common",
+     "img": "set_12_a_new_chronicle/n498.webp"
+    },
+    {
+     "code": "N-504",
+     "name": "Kiba Inuzuka & Akamaru",
+     "rarity": "Uncommon",
+     "img": "set_12_a_new_chronicle/n504.webp"
+    },
+    {
+     "code": "N-506",
+     "name": "Kurenai Yuhi",
+     "rarity": "Uncommon",
+     "img": "set_12_a_new_chronicle/n506.webp"
+    },
+    {
+     "code": "N-507",
+     "name": "Genma Shiranui",
+     "rarity": "Common",
+     "img": "set_12_a_new_chronicle/n507.webp"
+    },
+    {
+     "code": "N-508",
+     "name": "Hayate Gekko",
+     "rarity": "Uncommon",
+     "img": "set_12_a_new_chronicle/n508.webp"
+    },
+    {
+     "code": "N-509",
+     "name": "Hanabi Hyuga",
+     "rarity": "Common",
+     "img": "set_12_a_new_chronicle/n509.webp"
+    },
+    {
+     "code": "N-510",
+     "name": "Kankuro",
+     "rarity": "Uncommon",
+     "img": "set_12_a_new_chronicle/n510.webp"
+    },
+    {
+     "code": "N-511",
+     "name": "Shino Aburame",
+     "rarity": "Rare",
+     "img": "set_12_a_new_chronicle/n511.webp"
+    },
+    {
+     "code": "N-513",
+     "name": "Neji Hyuga",
+     "rarity": "Common",
+     "img": "set_12_a_new_chronicle/n513e.webp"
+    },
+    {
+     "code": "N-514",
+     "name": "Inoichi Yamanaka",
+     "rarity": "Rare",
+     "img": "set_12_a_new_chronicle/n514.webp"
+    },
+    {
+     "code": "N-515",
+     "name": "Shikaku Nara",
+     "rarity": "Rare",
+     "img": "set_12_a_new_chronicle/n515.webp"
+    },
+    {
+     "code": "N-516",
+     "name": "Choza Akimichi",
+     "rarity": "Rare",
+     "img": "set_12_a_new_chronicle/n516.webp"
+    },
+    {
+     "code": "N-517",
+     "name": "Gen Aburame",
+     "rarity": "Rare",
+     "img": "set_12_a_new_chronicle/n517.webp"
+    },
+    {
+     "code": "N-518",
+     "name": "Hiashi Hyuga",
+     "rarity": "Rare",
+     "img": "set_12_a_new_chronicle/n518.webp"
+    },
+    {
+     "code": "N-519",
+     "name": "Choji Akimichi",
+     "rarity": "Common",
+     "img": "set_12_a_new_chronicle/n519.webp"
+    },
+    {
+     "code": "N-520",
+     "name": "Deidara",
+     "rarity": "Uncommon",
+     "img": "set_12_a_new_chronicle/n520.webp"
+    },
+    {
+     "code": "N-521",
+     "name": "Sasori",
+     "rarity": "Uncommon",
+     "img": "set_12_a_new_chronicle/n521.webp"
+    }
+   ]
+  },
+  {
+   "key": "s14",
+   "ccgtrader": 145,
+   "starter": [],
+   "cards": [
+    {
+     "code": "J-498",
+     "name": "Fire Style: Phoenix Flower Jutsu",
+     "rarity": "Rare",
+     "img": "set_14_emerging_alliance/j498.webp"
+    },
+    {
+     "code": "J-500",
+     "name": "Water Style: Water Shark Bomb Jutsu",
+     "rarity": "Super Rare",
+     "img": "set_14_emerging_alliance/j500.webp"
+    },
+    {
+     "code": "J-514",
+     "name": "Ninja Art: Super Beast Scroll Rat",
+     "rarity": "Uncommon",
+     "img": "set_14_emerging_alliance/j514.webp"
+    },
+    {
+     "code": "J-538",
+     "name": "Giant Rasengan",
+     "rarity": "Rare",
+     "img": "set_14_emerging_alliance/j538.webp"
+    },
+    {
+     "code": "M-478",
+     "name": "Ninja Info Cards",
+     "rarity": "Rare",
+     "img": "set_14_emerging_alliance/m478.webp"
+    },
+    {
+     "code": "N-590",
+     "name": "Kakashi Hatake & Might Guy",
+     "rarity": "Uncommon",
+     "img": "set_14_emerging_alliance/n590.webp"
+    },
+    {
+     "code": "N-591",
+     "name": "Naruto Uzumaki (Tailed Beast Mode)",
+     "rarity": "Super Rare",
+     "img": "set_14_emerging_alliance/n591.webp"
+    },
+    {
+     "code": "N-592",
+     "name": "Naruto Uzumaki",
+     "rarity": "Common",
+     "img": "set_14_emerging_alliance/n592.webp"
+    },
+    {
+     "code": "N-593",
+     "name": "Sakura Haruno",
+     "rarity": "Common",
+     "img": "set_14_emerging_alliance/n593.webp"
+    },
+    {
+     "code": "N-595",
+     "name": "Ino Yamanaka",
+     "rarity": "Common",
+     "img": "set_14_emerging_alliance/n595.webp"
+    },
+    {
+     "code": "N-596",
+     "name": "Shikamaru Nara",
+     "rarity": "Common",
+     "img": "set_14_emerging_alliance/n596.webp"
+    },
+    {
+     "code": "N-597",
+     "name": "Choji Akimichi",
+     "rarity": "Common",
+     "img": "set_14_emerging_alliance/n597.webp"
+    },
+    {
+     "code": "N-599",
+     "name": "Shizune",
+     "rarity": "Common",
+     "img": "set_14_emerging_alliance/n599.webp"
+    },
+    {
+     "code": "N-601",
+     "name": "Chiyo",
+     "rarity": "Uncommon",
+     "img": "set_14_emerging_alliance/n601.webp"
+    },
+    {
+     "code": "N-606",
+     "name": "Kabuto Yakushi",
+     "rarity": "Super Rare",
+     "img": "set_14_emerging_alliance/n606.webp"
+    },
+    {
+     "code": "N-607",
+     "name": "Orochimaru",
+     "rarity": "Super Rare",
+     "img": "set_14_emerging_alliance/n607.webp"
+    },
+    {
+     "code": "N-610",
+     "name": "Homura Mitomon",
+     "rarity": "Uncommon",
+     "img": "set_14_emerging_alliance/n610.webp"
+    },
+    {
+     "code": "N-611",
+     "name": "Koharu Utatane",
+     "rarity": "Uncommon",
+     "img": "set_14_emerging_alliance/n611.webp"
+    },
+    {
+     "code": "N-612",
+     "name": "The First Hokage",
+     "rarity": "Super Rare",
+     "img": "set_14_emerging_alliance/n612.webp"
+    },
+    {
+     "code": "N-613",
+     "name": "The Second Hokage",
+     "rarity": "Super Rare",
+     "img": "set_14_emerging_alliance/n613.webp"
+    },
+    {
+     "code": "N-614",
+     "name": "Haku",
+     "rarity": "Common",
+     "img": "set_14_emerging_alliance/n614.webp"
+    },
+    {
+     "code": "N-615",
+     "name": "Kabuto Yakushi",
+     "rarity": "Rare",
+     "img": "set_14_emerging_alliance/n615.webp"
+    },
+    {
+     "code": "N-617",
+     "name": "Dosu Kinuta",
+     "rarity": "Common",
+     "img": "set_14_emerging_alliance/n617.webp"
+    },
+    {
+     "code": "N-618",
+     "name": "Zaku",
+     "rarity": "Common",
+     "img": "set_14_emerging_alliance/n618.webp"
+    },
+    {
+     "code": "N-619",
+     "name": "Kin Tsuchi",
+     "rarity": "Common",
+     "img": "set_14_emerging_alliance/n619e.webp"
+    },
+    {
+     "code": "N-623",
+     "name": "Ranmaru",
+     "rarity": "Common",
+     "img": "set_14_emerging_alliance/n623.webp"
+    },
+    {
+     "code": "N-624",
+     "name": "Manda",
+     "rarity": "Rare",
+     "img": "set_14_emerging_alliance/n624.webp"
+    },
+    {
+     "code": "N-625",
+     "name": "Raiga Kurosuki",
+     "rarity": "Rare",
+     "img": "set_14_emerging_alliance/n625.webp"
+    },
+    {
+     "code": "N-629",
+     "name": "Misumi Tsurugi",
+     "rarity": "Common",
+     "img": "set_14_emerging_alliance/n629.webp"
+    },
+    {
+     "code": "N-630",
+     "name": "Yoroi Akado",
+     "rarity": "Common",
+     "img": "set_14_emerging_alliance/n630.webp"
+    },
+    {
+     "code": "N-631",
+     "name": "Ino Yamanaka",
+     "rarity": "Common",
+     "img": "set_14_emerging_alliance/n631.webp"
+    },
+    {
+     "code": "N-632",
+     "name": "Naruto Uzumaki",
+     "rarity": "Rare",
+     "img": "set_14_emerging_alliance/n632.webp"
+    },
+    {
+     "code": "N-634",
+     "name": "Shikamaru Nara",
+     "rarity": "Super Rare",
+     "img": "set_14_emerging_alliance/n634.webp"
+    },
+    {
+     "code": "N-635",
+     "name": "Choji Akimichi",
+     "rarity": "Common",
+     "img": "set_14_emerging_alliance/n635.webp"
+    },
+    {
+     "code": "N-637",
+     "name": "Sasuke Uchiha",
+     "rarity": "Common",
+     "img": "set_14_emerging_alliance/n637.webp"
+    },
+    {
+     "code": "N-638",
+     "name": "Gaara of the Desert (Possessed Mode)",
+     "rarity": "Super Rare",
+     "img": "set_14_emerging_alliance/n638.webp"
+    },
+    {
+     "code": "N-640",
+     "name": "Might Guy",
+     "rarity": "Super Rare",
+     "img": "set_14_emerging_alliance/n640e.webp"
+    },
+    {
+     "code": "N-642",
+     "name": "Temari",
+     "rarity": "Rare",
+     "img": "set_14_emerging_alliance/n642.webp"
+    },
+    {
+     "code": "N-643",
+     "name": "Itachi Uchiha",
+     "rarity": "Rare",
+     "img": "set_14_emerging_alliance/n643.webp"
+    },
+    {
+     "code": "N-644",
+     "name": "Kisame Hoshigaki",
+     "rarity": "Rare",
+     "img": "set_14_emerging_alliance/n644.webp"
+    }
+   ]
+  },
+  {
+   "key": "s15",
+   "ccgtrader": 178,
+   "starter": [
+    "J-543",
+    "M-508",
+    "M-549",
+    "N-645",
+    "N-689"
+   ],
+   "cards": [
+    {
+     "code": "J-547",
+     "name": "Fire Style: Fireball Jutsu",
+     "rarity": "Common",
+     "img": "set_15_fortold_prophecy/j547e.webp"
+    },
+    {
+     "code": "J-555",
+     "name": "Leaf Hurricane",
+     "rarity": "Rare",
+     "img": "set_15_fortold_prophecy/j555.webp"
+    },
+    {
+     "code": "J-558",
+     "name": "Hidden Lotus",
+     "rarity": "Uncommon",
+     "img": "set_15_fortold_prophecy/j558.webp"
+    },
+    {
+     "code": "J-568",
+     "name": "Nine-Tail's Cloak",
+     "rarity": "Common",
+     "img": "set_15_fortold_prophecy/j568e.webp"
+    },
+    {
+     "code": "J-573",
+     "name": "Snake Sword",
+     "rarity": "Starter Deck",
+     "img": "set_15_fortold_prophecy/j573.webp"
+    },
+    {
+     "code": "J-583",
+     "name": "Gentle Fist",
+     "rarity": "Uncommon",
+     "img": "set_15_fortold_prophecy/j583.webp"
+    },
+    {
+     "code": "J-590",
+     "name": "8 Trigrams Air Palm",
+     "rarity": "Common",
+     "img": "set_15_fortold_prophecy/j590.webp"
+    },
+    {
+     "code": "M-503",
+     "name": "Sacrifice",
+     "rarity": "Common",
+     "img": "set_15_fortold_prophecy/m503.webp"
+    },
+    {
+     "code": "M-515",
+     "name": "Punishment",
+     "rarity": "Uncommon",
+     "img": "set_15_fortold_prophecy/m515.webp"
+    },
+    {
+     "code": "N-647",
+     "name": "Shizuku",
+     "rarity": "Uncommon",
+     "img": "set_15_fortold_prophecy/n647.webp"
+    },
+    {
+     "code": "N-650",
+     "name": "The Nine-Tailed Fox Spirit",
+     "rarity": "Rare",
+     "img": "set_15_fortold_prophecy/n650.webp"
+    },
+    {
+     "code": "N-651",
+     "name": "Naruto Uzumaki",
+     "rarity": "Common",
+     "img": "set_15_fortold_prophecy/n651.webp"
+    },
+    {
+     "code": "N-652",
+     "name": "Sakura Haruno",
+     "rarity": "Uncommon",
+     "img": "set_15_fortold_prophecy/n652.webp"
+    },
+    {
+     "code": "N-653",
+     "name": "Sasuke Uchiha",
+     "rarity": "Rare",
+     "img": "set_15_fortold_prophecy/n653.webp"
+    },
+    {
+     "code": "N-654",
+     "name": "Sai",
+     "rarity": "Rare",
+     "img": "set_15_fortold_prophecy/n654.webp"
+    },
+    {
+     "code": "N-655",
+     "name": "Yamato",
+     "rarity": "Super Rare",
+     "img": "set_15_fortold_prophecy/n655.webp"
+    },
+    {
+     "code": "N-656",
+     "name": "Kiba Inuzuka",
+     "rarity": "Uncommon",
+     "img": "set_15_fortold_prophecy/n656.webp"
+    },
+    {
+     "code": "N-657",
+     "name": "Shino Aburame",
+     "rarity": "Common",
+     "img": "set_15_fortold_prophecy/n657.webp"
+    },
+    {
+     "code": "N-658",
+     "name": "Hinata Hyuga",
+     "rarity": "Uncommon",
+     "img": "set_15_fortold_prophecy/n658.webp"
+    },
+    {
+     "code": "N-659",
+     "name": "Hiashi Hyuga",
+     "rarity": "Uncommon",
+     "img": "set_15_fortold_prophecy/n659.webp"
+    },
+    {
+     "code": "N-660",
+     "name": "Akamaru",
+     "rarity": "Uncommon",
+     "img": "set_15_fortold_prophecy/n660.webp"
+    },
+    {
+     "code": "N-662",
+     "name": "Kankuro",
+     "rarity": "Rare",
+     "img": "set_15_fortold_prophecy/n662e.webp"
+    },
+    {
+     "code": "N-663",
+     "name": "Ebizo",
+     "rarity": "Uncommon",
+     "img": "set_15_fortold_prophecy/n663.webp"
+    },
+    {
+     "code": "N-665",
+     "name": "Deidara",
+     "rarity": "Uncommon",
+     "img": "set_15_fortold_prophecy/n665.webp"
+    },
+    {
+     "code": "N-666",
+     "name": "Orochimaru",
+     "rarity": "Super Rare",
+     "img": "set_15_fortold_prophecy/n666.webp"
+    },
+    {
+     "code": "N-667",
+     "name": "Kabuto Yakushi",
+     "rarity": "Rare",
+     "img": "set_15_fortold_prophecy/n667.webp"
+    },
+    {
+     "code": "N-668",
+     "name": "Sasuke Uchiha",
+     "rarity": "Super Rare",
+     "img": "set_15_fortold_prophecy/n668.webp"
+    },
+    {
+     "code": "N-669",
+     "name": "Naruto Uzumaki",
+     "rarity": "Super Rare",
+     "img": "set_15_fortold_prophecy/n669.webp"
+    },
+    {
+     "code": "N-670",
+     "name": "Sasuke Uchiha",
+     "rarity": "Super Rare",
+     "img": "set_15_fortold_prophecy/n670.webp"
+    },
+    {
+     "code": "N-671",
+     "name": "Sai",
+     "rarity": "Starter Deck",
+     "img": "set_15_fortold_prophecy/n671.webp"
+    },
+    {
+     "code": "N-672",
+     "name": "Sakura Haruno",
+     "rarity": "Common",
+     "img": "set_15_fortold_prophecy/n672.webp"
+    },
+    {
+     "code": "N-674",
+     "name": "Shikamaru Nara",
+     "rarity": "Uncommon",
+     "img": "set_15_fortold_prophecy/n674.webp"
+    },
+    {
+     "code": "N-675",
+     "name": "Kakashi Hatake",
+     "rarity": "Rare",
+     "img": "set_15_fortold_prophecy/n675.webp"
+    },
+    {
+     "code": "N-676",
+     "name": "Itachi Uchiha",
+     "rarity": "Starter Deck",
+     "img": "set_15_fortold_prophecy/n676e.webp"
+    },
+    {
+     "code": "N-677",
+     "name": "Yamato",
+     "rarity": "Rare",
+     "img": "set_15_fortold_prophecy/n677.webp"
+    },
+    {
+     "code": "N-678",
+     "name": "Baki",
+     "rarity": "Rare",
+     "img": "set_15_fortold_prophecy/n678.webp"
+    },
+    {
+     "code": "N-679",
+     "name": "Temari",
+     "rarity": "Common",
+     "img": "set_15_fortold_prophecy/n679.webp"
+    },
+    {
+     "code": "N-680",
+     "name": "Jiraiya",
+     "rarity": "Uncommon",
+     "img": "set_15_fortold_prophecy/n680.webp"
+    },
+    {
+     "code": "N-681",
+     "name": "Tsunade",
+     "rarity": "Common",
+     "img": "set_15_fortold_prophecy/n681.webp"
+    },
+    {
+     "code": "N-682",
+     "name": "Orochimaru",
+     "rarity": "Uncommon",
+     "img": "set_15_fortold_prophecy/n682.webp"
+    },
+    {
+     "code": "N-683",
+     "name": "Konohamaru",
+     "rarity": "Uncommon",
+     "img": "set_15_fortold_prophecy/n683.webp"
+    },
+    {
+     "code": "N-686",
+     "name": "Naruto Uzumaki & Yamato",
+     "rarity": "Common",
+     "img": "set_15_fortold_prophecy/n686.webp"
+    },
+    {
+     "code": "N-687",
+     "name": "Naruto Uzumaki & Sai",
+     "rarity": "Starter Deck",
+     "img": "set_15_fortold_prophecy/n687.webp"
+    },
+    {
+     "code": "N-693",
+     "name": "Giant Snake",
+     "rarity": "Uncommon",
+     "img": "set_15_fortold_prophecy/n693.webp"
+    },
+    {
+     "code": "N-694",
+     "name": "Tonton",
+     "rarity": "Common",
+     "img": "set_15_fortold_prophecy/n694e.webp"
+    },
+    {
+     "code": "N-695",
+     "name": "Tortoise Ninja",
+     "rarity": "Common",
+     "img": "set_15_fortold_prophecy/n695.webp"
+    }
+   ]
+  }
+ ],
+ "pendentes": [
+  {
+   "key": "s09",
+   "code": "M-274",
+   "name": "Frustrated Ambition",
+   "motivo": "o nome já está no set sob outro código (número errado no narutocards)"
+  },
+  {
+   "key": "s14",
+   "code": "J-525",
+   "name": "Chakra Cannon",
+   "motivo": "o nome já está no set sob outro código (número errado no narutocards)"
+  }
+ ]
+}

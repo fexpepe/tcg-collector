@@ -11,16 +11,27 @@
 // atualiza quando responde e não regride. ANEXA ao catálogo do Naruto
 // (ids nrt-ccg-*); roda DEPOIS dos outros syncs do Naruto no CI.
 //
+// COMPLEMENTO (2026-11-02): o narutocards não tem ~400 cartas dos sets 3–15
+// (buracos na numeração: o Approaching Wind tem 90 lá e 163 no ccgtrader).
+// Elas vêm de data/vintage/naruto-ccg-complemento.json — N-CCG-DB (código
+// impresso + scan) cruzado com o ccgtrader (raridade), montado à mão por
+// scripts/naruto-ccg-complemento.mjs — e entram no set de origem DEPOIS das
+// do narutocards, que ganham sempre que o código já existe. O mesmo arquivo
+// marca as cartas nossas que são de Starter Deck (o narutocards as dá como
+// U/C).
+//
 //   node scripts/sync-naruto-ccg.mjs             # fetch + build
 //   node scripts/sync-naruto-ccg.mjs --no-fetch  # só build
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { readGlobalVar, readSnapshot, writeSnapshot, snapshotCardCount, writeGameCatalog, decodeEntities, sleep } from "./lib/sync-common.mjs";
+import { FAN_IMG, codigoCanonico } from "./naruto-ccg-complemento.mjs";
 
 const ROOT = new URL("../", import.meta.url);
 const OUT = new URL("data/naruto/", ROOT);
 const SNAP = new URL("data/vintage/naruto-ccg.json", ROOT);
+const COMPLEMENTO = new URL("data/vintage/naruto-ccg-complemento.json", ROOT);
 const CACHE_DIR = new URL("data/.cache/", ROOT);
 const BASE = "https://www.narutocards.ca/sets/bandai-ccg/";
 const CDN = "cdn.narutocards.ca/bandai-ccg/";
@@ -131,11 +142,34 @@ const VERSOES_FOIL = ["Normal", "Diamond Foil", "Wavy Foil"];
 // Raridade e versões de uma carta da fonte. `setKey` é a chave do SETS: só
 // set de booster (s01…s28) tem foil paralelo. Sigla que a tabela não conhece
 // passa crua (e aparece no filtro) em vez de sumir — é o sinal de que a fonte
-// mudou o vocabulário.
+// mudou o vocabulário. O complemento já manda o nome por extenso ("Starter
+// Deck", "Common"), que passa pelo mesmo caminho.
 export function raridadeEVersoes(setKey, sigla) {
   const rarity = Object.prototype.hasOwnProperty.call(RARIDADE, sigla) ? RARIDADE[sigla] : sigla;
   const booster = /^s\d+$/.test(setKey);
   return { rarity, variants: booster && FOIL_PARALELO.has(rarity) ? [...VERSOES_FOIL] : ["Normal"] };
+}
+
+// Cartas de um set do snapshot + o complemento do mesmo set. Do narutocards
+// sai { code, name, rarity: sigla, scan: url|"" }; do complemento a raridade
+// já vem por extenso e o scan é o do N-CCG-DB. Código que o narutocards já
+// tem (mesmo com outra grafia, NC-001 × N-C001) não entra de novo.
+export function cartasDoSet(set, def, comp) {
+  const doNc = set.cards.map((c) => ({
+    code: c.code,
+    name: c.name,
+    rarity: comp && comp.starter && comp.starter.includes(c.code) ? "Starter Deck" : c.rarity,
+    scan: c.img ? `https://wsrv.nl/?url=${encodeURIComponent(`${CDN}${def.slug}/${c.code}-EN.jpg`)}&w=440&output=webp` : ""
+  }));
+  if (!comp) return doNc;
+  const tem = new Set(doNc.map((c) => codigoCanonico(c.code)));
+  const extra = comp.cards.filter((c) => !tem.has(codigoCanonico(c.code))).map((c) => ({
+    code: c.code,
+    name: c.name,
+    rarity: c.rarity,
+    scan: c.img ? `https://wsrv.nl/?url=${encodeURIComponent(FAN_IMG + c.img)}&w=440&output=webp` : ""
+  }));
+  return doNc.concat(extra);
 }
 
 async function fetchPage(url) {
@@ -209,14 +243,18 @@ async function run() {
   }
 
   const defByKey = new Map(SETS.map((d) => [d.key, d]));
+  const complemento = await readSnapshot(COMPLEMENTO);
+  const compByKey = new Map(((complemento && complemento.sets) || []).map((s) => [s.key, s]));
   const line = [];
+  let doComplemento = 0;
   for (const s of snap.sets) {
     const def = defByKey.get(s.key);
     if (!def || def.skip) continue;
     const setId = `nrt-ccg-${def.key}`;
-    for (const c of s.cards) {
+    const cartas = cartasDoSet(s, def, compByKey.get(s.key));
+    doComplemento += cartas.length - s.cards.length;
+    for (const c of cartas) {
       const cardId = idByNum.get(c.code) || `nrt-ccg-${c.code.toLowerCase()}`;
-      const scan = c.img ? `https://wsrv.nl/?url=${encodeURIComponent(`${CDN}${def.slug}/${c.code}-EN.jpg`)}&w=440&output=webp` : "";
       const { rarity, variants } = raridadeEVersoes(def.key, c.rarity);
       line.push({
         id: cardId,
@@ -228,12 +266,12 @@ async function run() {
         set: def.name,
         setId,
         number: c.code,
-        setTotal: s.cards.length,
+        setTotal: cartas.length,
         setReleaseDate: def.date,
         rarity,
         artist: "",
         language: "en",
-        image: curatedImg(cardId) || scan,
+        image: curatedImg(cardId) || c.scan,
         variants,
         setLogo: "/assets/games/game_naruto_ccg-v2.webp",
         vintage: true,
@@ -242,7 +280,7 @@ async function run() {
     }
   }
   const semImg = line.filter((c) => !c.image).length;
-  console.log(`  build: ${line.length} cartas em ${snap.sets.length} sets (${semImg} sem scan).`);
+  console.log(`  build: ${line.length} cartas em ${snap.sets.length} sets (${semImg} sem scan; ${doComplemento} do complemento).`);
 
   const kept = existing.filter((c) => c && !/^nrt-ccg-/.test(String(c.id)));
   const have = new Set(kept.map((c) => c.id));
