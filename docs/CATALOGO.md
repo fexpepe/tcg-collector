@@ -79,8 +79,18 @@ que ordem e como saber que terminou**.
      ele que separa sets de mesmo nome dentro do jogo (Miracle Battle: "DB01 —
      ブースターパック 第1弾", porque "ブースターパック 第1弾" existe em seis
      franquias);
-   - nome oficial em que a marca é parte do título fica como a fonte publica
-     ("Magic 2015", "Pokémon GO", "LOTR Online Promos", que é o jogo digital);
+   - nos modernos da família TCGCSV, o TCGplayer põe o jogo na frente dos
+     grupos genéricos ("One Piece Promotion Cards", "Flesh and Blood: Promo
+     Cards", "Yu-Gi-Oh! Tokens"): todo sync da família passa o nome do grupo
+     por `nomeDoSet` ([scripts/lib/nome-do-set.mjs](../scripts/lib/nome-do-set.mjs)),
+     que tira a marca, então grupo novo já entra limpo. Jogo novo da família
+     entra no `NOMES_DO_JOGO` de lá;
+   - fica como a fonte publica o nome em que a marca abre o **título de outra
+     obra** (série, mangá, videogame, filme, evento) e sem ela perde o sentido:
+     "Magic 2015", "Pokémon GO", "Digimon LIBERATOR", "Yu-Gi-Oh! GX Tag Force
+     Promotional Cards", "Yu-Gi-Oh! Day Promos", "Lorcana Challenge Year 3",
+     "LOTR Online Promos" (o jogo digital). Na família TCGCSV, essas exceções
+     são o `TITULOS_COM_A_MARCA` do mesmo arquivo;
    - o nome é a **chave** do set e do endereço: dois sets do mesmo jogo não
      dividem nome. Quando uma linha tem nome igual a outra da mesma marca
      ("Promotional Cards" no Naruto 2002 e no CCG), o logo do set e a seção
@@ -89,9 +99,10 @@ que ordem e como saber que terminou**.
      é ela que separa os sets fora da página do jogo ("Narutimate Card Battle —
      Vol. 1"); dentro da seção da série, o `group<Jogo>Sets` tira o prefixo
      (`groupMbcSets`, `groupNarutoDataCarddass`);
-   - quem trava: `tests/nome-do-set.test.mjs`, nos catálogos cujo nome sai dos
-     nossos syncs (vintage e linhas vintage). Nome que a fonte moderna publica
-     não passa pela trava.
+   - quem trava: `tests/nome-do-set.test.mjs`, nos catálogos vintage (o nome
+     sai dos nossos syncs) e nos da família TCGCSV (o nome gravado tem de ser o
+     que o `nomeDoSet` devolve). Pokémon, Magic e Lorcana usam o nome oficial
+     da fonte.
    Renomear set já publicado troca o endereço dele e o de todas as cartas: ver
    "Set renomeado" em 3.2.
 
@@ -129,13 +140,19 @@ aparecer no passo "Lint dos catálogos" do deploy:
   `/games/<jogo>/<set>` sai do nome, então o endereço do set e o das cartas
   mudam. O 301 cobre sozinho o nome que só GANHOU prefixo (`setRenomeado` em
   [functions/_lib/borda.js](../functions/_lib/borda.js)). O resto entra em
-  [scripts/data/sets-renomeados.json](../scripts/data/sets-renomeados.json)
-  (`<endereço do jogo>: { <slug antigo>: <setId> }`): rodar o prerender sem
-  rede antes e depois da mudança e copiar os slugs que sumiram de
-  `data/game-pages/<jogo>.json`. O prerender põe o de-para no mapa do jogo
-  (campo `r`) e no `legado-sets.json`, e a borda responde 301 no set, na
-  variante `-en`, nas cartas e no link de compartilhar com o nome antigo. Foi
-  assim com os 197 sets vintage que perderam o prefixo em 2026-11-02.
+  [scripts/data/sets-renomeados.json](../scripts/data/sets-renomeados.json):
+  rodar o prerender sem rede antes e depois da mudança, copiar pra `games`
+  (`<endereço do jogo>: { <slug antigo>: <setId> }`) os slugs que sumiram de
+  `data/game-pages/<jogo>.json` e, pra `set` (`<slug do /set/>: "<endereço
+  do jogo>/<setId>"`), as chaves do `legado-sets.json` que passaram a levar a
+  OUTRO set. Esse mapa do `/set/` de antes de 2026-09-30 é refeito a cada
+  build com os nomes de hoje e dá o slug sem -2 ao primeiro jogo da lista:
+  quando o One Piece virou "Promotion Cards", o `/set/promotion-cards` (os
+  promos do Naruto) ia passar a levar pro One Piece. O prerender põe o de-para
+  no mapa do jogo (campo `r`) e no `legado-sets.json`, e a borda responde 301
+  no set, na variante `-en`, nas cartas e no link de compartilhar com o nome
+  antigo. Foi assim com os 213 sets que perderam o prefixo em 2026-11-02 (197
+  vintage e 16 grupos do TCGplayer).
 - O set caiu na **categoria certa**. Lorcana, One Piece, Naruto, HxH e DBC
   agrupam pelo `setId` (`group<Jogo>Sets` em [src/app.js](../src/app.js)), e
   um formato de código inédito pode cair em "outros".
@@ -346,7 +363,7 @@ valem só nesse caso.
 | A4 | `data/catalog-baseline.json` | `node scripts/lint-catalog.mjs --update-baseline` e commitar **só a linha do jogo novo** | sem régua, catálogo zerado desse jogo não barra o deploy | — |
 | A5 | `scripts/lib/id-stability.mjs` (`ID_DE_PRODUTO`) | formato do id, se ele é `productId` do TCGplayer | quando o TCGplayer mudar uma carta de grupo, o lint derruba o deploy agendado (foi o que criou a exceção, com Gundam e FAB, em 26/09/2026) | lint, mas tarde |
 | A6 | `scripts/lint-catalog.mjs` (`GAMES`) | slug e dataDir | jogo fora da checagem de integridade e da régua | — |
-| A7 | `tests/nome-do-set.test.mjs` (`NOMES_DO_JOGO`) | só vintage ou linha vintage: os nomes do jogo e da linha (em latim e em japonês) que não podem abrir nome de set | sync que ponha o jogo na frente do set passa calado (contrato 7) | o próprio teste, depois de registrado |
+| A7 | vintage: `tests/nome-do-set.test.mjs` (`NOMES_DO_JOGO`); TCGCSV: `scripts/lib/nome-do-set.mjs` (`NOMES_DO_JOGO`, e `set: nomeDoSet("<slug>", g.name)` no sync) | os nomes do jogo e da linha (em latim e em japonês) que não podem abrir nome de set | o jogo na frente do set passa calado (contrato 7) | o próprio teste, depois de registrado |
 
 **B. Registro no front** (commit 2)
 
@@ -410,10 +427,10 @@ valem só nesse caso.
 | E6 | `src/i18n-docs.js` (`vs.s.table`, linha "Jogos" da página /comparar, em pt, en e es) | número de jogos com catálogo | o CI falha | `tests/comparar-veracidade.test.mjs` (compara com o `catalog-baseline.json`, então depende do A4) |
 
 Contagem: um jogo TCGCSV com preço, sem host novo e sem opcionais, passa por
-**38 itens** (A1, A3–A6; B1, B3–B6, B10–B15; C1–C15; D1; E1–E6). Só 4 têm
+**39 itens** (A1, A3–A7; B1, B3–B6, B10–B15; C1–C15; D1; E1–E6). Só 4 têm
 alguma trava automática: A3 (pela guarda C15), A5 (pelo lint, que derruba o
 deploy agendado), B5 (pelo `check.mjs`, por acaso) e E6 (pelo teste do
-/comparar). Os outros 34 dependem de alguém lembrar. Parte aparece na tela quando se testa (tile, cor, página do
+/comparar). Os outros 35 dependem de alguém lembrar. Parte aparece na tela quando se testa (tile, cor, página do
 jogo), mas os da borda, do build, do banco e os mapas que caem no Pokémon vão
 calados pro ar.
 
@@ -490,7 +507,7 @@ O commit do `dbc` mexeu em 51 arquivos, e os 3 commits do Star Wars (`swu`),
 em 62. A lista de jogos (slug, dataDir ou os dois) se repete em 10 scripts, nas
 3 Functions, no `DATA_GAMES` e no `game.js`; o nome completo, em pelo menos 5
 lugares; o prefixo de id, em 3 mapas (`binders.js`, `card-rescue.js`,
-`id-stability.mjs`). São 38 itens por jogo, e 34 deles sem trava automática
+`id-stability.mjs`). São 39 itens por jogo, e 35 deles sem trava automática
 (4.2).
 
 ### 5.2 Mapas que envelhecem e caem no Pokémon

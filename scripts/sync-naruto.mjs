@@ -28,6 +28,7 @@
 // versionado em vez de apagar a linha.
 import { fetchJsonRetry, mapLimit, readGlobalVar, writeGameCatalog, preserveMissingCards, slug } from "./lib/sync-common.mjs";
 import { fileURLToPath } from "node:url";
+import { nomeDoSet } from "./lib/nome-do-set.mjs";
 
 const ROOT = new URL("../", import.meta.url);
 const OUT = new URL("data/naruto/", ROOT);
@@ -130,7 +131,9 @@ export function cardOf(p, g, setId, by = new Map()) {
   const card = {
     id: `nrt-ncg-${p.productId}`,
     name: NOME_OFICIAL[p.productId] || p.name,
-    set: g.name,
+    // Nome do grupo do TCGplayer sem o jogo na frente (2026-11-02):
+    // contrato 7 do docs/CATALOGO.md, regra em scripts/lib/nome-do-set.mjs.
+    set: nomeDoSet("naruto", g.name),
     setId,
     number: ext(p, "Number"),
     setTotal: 0, // contado por set em uniformizaSets

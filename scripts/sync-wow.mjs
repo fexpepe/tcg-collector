@@ -57,6 +57,7 @@
 //   node scripts/sync-wow.mjs
 import { fileURLToPath } from "node:url";
 import { writeGameCatalog, readGlobalVar, preserveMissingCards, fetchJsonRetry, sleep } from "./lib/sync-common.mjs";
+import { nomeDoSet } from "./lib/nome-do-set.mjs";
 
 const ROOT = new URL("../", import.meta.url);
 const OUT = new URL("data/wow/", ROOT);
@@ -126,7 +127,8 @@ export const ext = (p, key) => {
 };
 
 export const setIdOf = (g) => ABREV_FIXA[g.groupId] || `G${g.groupId}`;
-export const setNameOf = (g) => NOME_FIXO[g.groupId] || g.name;
+// Sem o jogo na frente do nome do grupo (contrato 7 do docs/CATALOGO.md).
+export const setNameOf = (g) => NOME_FIXO[g.groupId] || nomeDoSet("wow", g.name);
 export const releaseOf = (g) => DATA_FIXA[g.groupId] || String(g.publishedOn || "").slice(0, 10);
 export const isCard = (p) => !!ext(p, "Rarity");
 

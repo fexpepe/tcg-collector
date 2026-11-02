@@ -19,6 +19,7 @@
 import { writeFile, mkdir, access } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { writeGameCatalog } from "./lib/sync-common.mjs";
+import { nomeDoSet } from "./lib/nome-do-set.mjs";
 
 const ROOT = new URL("../", import.meta.url);
 const OUT = new URL("data/onepiece/", ROOT);
@@ -196,7 +197,9 @@ async function run() {
       cards.push({
         id,
         name: cleanName(p.name),
-        set: g.name,
+        // Nome do grupo do TCGplayer sem o jogo na frente (2026-11-02):
+        // contrato 7 do docs/CATALOGO.md, regra em scripts/lib/nome-do-set.mjs.
+        set: nomeDoSet("onepiece", g.name),
         setId,
         number: ext(p, "Number"),
         setTotal: setCards.length,

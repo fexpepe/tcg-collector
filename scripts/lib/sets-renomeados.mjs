@@ -5,26 +5,37 @@
 // setRenomeado da borda (functions/_lib/borda.js) só acha o nome que GANHOU um
 // prefixo; o que PERDEU o prefixo ou mudou no meio precisa de um de-para.
 //
-// Em 2026-11-02 os sets vintage perderam o nome do jogo ou da linha que os
-// syncs punham na frente ("Naruto CCG — The Path to Hokage" virou "The Path to
-// Hokage"; contrato 7 do docs/CATALOGO.md): 197 sets em oito endereços de
-// jogo. Nos de nome só em japonês o slug passou a sair do setId
-// ("data-carddass-1" virou "nrt-dc-s01-1"), sem relação de texto com o antigo.
+// Em 2026-11-02 os sets perderam o nome do jogo ou da linha na frente
+// (contrato 7 do docs/CATALOGO.md): 197 vintage, que os syncs montavam
+// ("Naruto CCG — The Path to Hokage" virou "The Path to Hokage"), e 16
+// grupos genéricos do TCGplayer nos modernos ("One Piece Promotion Cards"
+// virou "Promotion Cards"). Nos de nome só em japonês o slug passou a sair do
+// setId ("data-carddass-1" virou "nrt-dc-s01-1"), sem relação de texto com o
+// antigo.
 //
-// scripts/data/sets-renomeados.json guarda, por endereço de jogo, o slug
-// ANTIGO -> o setId. O destino é o setId, e não o slug novo, porque o slug de
-// hoje depende do nome de hoje: se o set mudar de nome de novo, o 301 continua
-// achando a página certa. O prerender chama isto e grava o resultado no mapa
-// do jogo (campo `r` de data/game-pages/<jogo>.json, lido pela borda) e no
-// legado-sets.json (o 301 do /set/<slug> de antes de 2026-09-30, cujos slugs
-// eram os mesmos nesses sets).
+// scripts/data/sets-renomeados.json tem duas partes:
+//   games: { <url do jogo>: { <slug antigo>: <setId> } } — o 301 de
+//     /games/<jogo>/<set> (campo `r` de data/game-pages/<jogo>.json). Vale
+//     também pro /set/<slug> de antes de 2026-09-30, que nesses sets tinha o
+//     mesmo slug, quando a chave está livre no legado-sets.json.
+//   set: { <slug do /set/ antigo>: "<url do jogo>/<setId>" } — chave do
+//     legado que o nome novo de OUTRO set tomaria. O legado-sets.json é
+//     refeito a cada build com os nomes de hoje e único entre todos os jogos
+//     (o primeiro da lista leva o slug sem -2): com o One Piece virando
+//     "Promotion Cards", o /set/promotion-cards (os promos do Naruto) passaria
+//     a levar pro One Piece. A fixação segura o destino de antes.
+// O destino é o setId, e não o slug novo, porque o slug de hoje depende do
+// nome de hoje: se o set mudar de nome de novo, o 301 continua achando a
+// página certa.
 //
-// Mudança de sync que renomeie set já publicado: rodar o prerender antes e
-// depois e acrescentar na tabela os slugs que sumiram (docs/CATALOGO.md, 3.2).
+// Mudança de sync que renomeie set já publicado: rodar o prerender sem rede
+// antes e depois, acrescentar em `games` os slugs que sumiram e, em `set`, as
+// chaves do legado-sets.json que passaram a levar a outro set
+// (docs/CATALOGO.md, 3.2).
 
 // pages: as páginas de set do prerender ({ url, slug, cards }).
-// tabela: { <url do jogo>: { <slug antigo>: <setId> } }.
-// Devolve { porUrl: Map(url -> { <slug antigo>: <slug de hoje> }), avisos }.
+// Devolve { porUrl: Map(url -> { <slug antigo>: <slug de hoje> }),
+//           legado: { <slug do /set/>: "<url>/<slug de hoje>" }, avisos }.
 export function enderecosRenomeados(pages, tabela) {
   const slugDoSetId = new Map();
   const vivos = new Set();
@@ -36,8 +47,9 @@ export function enderecosRenomeados(pages, tabela) {
     }
   }
   const porUrl = new Map();
+  const legado = {};
   const avisos = [];
-  for (const [url, dePara] of Object.entries(tabela || {})) {
+  for (const [url, dePara] of Object.entries((tabela && tabela.games) || {})) {
     const r = {};
     for (const [antigo, setId] of Object.entries(dePara || {})) {
       // Um set de hoje com o slug antigo é dono do endereço: o de-para não
@@ -49,5 +61,12 @@ export function enderecosRenomeados(pages, tabela) {
     }
     if (Object.keys(r).length) porUrl.set(url, r);
   }
-  return { porUrl, avisos };
+  for (const [antigo, destino] of Object.entries((tabela && tabela.set) || {})) {
+    const corte = String(destino).indexOf("/");
+    const url = String(destino).slice(0, corte), setId = String(destino).slice(corte + 1);
+    const hoje = slugDoSetId.get(`${url}\t${setId}`);
+    if (!hoje) { avisos.push(`/set/${antigo}: o set ${setId} não está mais em /games/${url}`); continue; }
+    legado[antigo] = `${url}/${hoje}`;
+  }
+  return { porUrl, legado, avisos };
 }

@@ -1004,10 +1004,11 @@ function escreveMapasDosJogos(pages, legadoCartas) {
     legadoSets[page.slugAntigo] = `${page.url}/${page.slug}`;
   }
   // Sets renomeados: o slug antigo no mapa do jogo (301 de /games) e no legado
-  // do /set/, cujos slugs eram os mesmos nesses sets. Slug que hoje é de outro
-  // set não é tocado.
+  // do /set/, cujos slugs eram os mesmos nesses sets (só com a chave livre).
+  // As chaves fixadas do legado ganham de qualquer outra: seguram o destino
+  // que o nome novo de outro set tomaria (ver scripts/lib/sets-renomeados.mjs).
   const tabela = JSON.parse(readFileSync(new URL("./data/sets-renomeados.json", import.meta.url), "utf8"));
-  const { porUrl: renomeados, avisos } = enderecosRenomeados(pages, tabela);
+  const { porUrl: renomeados, legado: fixados, avisos } = enderecosRenomeados(pages, tabela);
   for (const aviso of avisos) console.warn(`prerender-catalog: set renomeado sem destino — ${aviso}`);
   let deParas = 0;
   for (const [url, r] of renomeados) {
@@ -1019,7 +1020,8 @@ function escreveMapasDosJogos(pages, legadoCartas) {
       if (!Object.prototype.hasOwnProperty.call(legadoSets, antigo)) legadoSets[antigo] = `${url}/${hoje}`;
     }
   }
-  if (deParas) console.log(`prerender-catalog: ${deParas} endereços de set renomeado com 301.`);
+  Object.assign(legadoSets, fixados);
+  if (deParas) console.log(`prerender-catalog: ${deParas} endereços de set renomeado com 301 (${Object.keys(fixados).length} chaves do /set/ fixadas).`);
   for (const [url, m] of porUrl) writeFileSync(join(MAPAS_DIR, `${url}.json`), JSON.stringify(m), "utf8");
   writeFileSync(join(MAPAS_DIR, "legado-sets.json"), JSON.stringify(legadoSets), "utf8");
   const fatias = new Map();

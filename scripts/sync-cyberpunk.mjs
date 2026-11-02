@@ -39,6 +39,7 @@
 import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { writeGameCatalog, readGlobalVar, preserveMissingCards, winSafeName, fetchJsonRetry, sleep } from "./lib/sync-common.mjs";
+import { nomeDoSet } from "./lib/nome-do-set.mjs";
 
 const ROOT = new URL("../", import.meta.url);
 const OUT = new URL("data/cyberpunk/", ROOT);
@@ -101,7 +102,9 @@ export function cardOf(p, g, setId, setTotal, by = new Map()) {
   const card = {
     id,
     name: p.name,
-    set: g.name,
+    // Nome do grupo do TCGplayer sem o jogo na frente (2026-11-02):
+    // contrato 7 do docs/CATALOGO.md, regra em scripts/lib/nome-do-set.mjs.
+    set: nomeDoSet("cyberpunk", g.name),
     setId,
     number: ext(p, "Number"),
     setTotal,

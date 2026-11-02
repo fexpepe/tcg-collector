@@ -54,6 +54,7 @@
 //   node scripts/sync-sorcery.mjs
 import { fileURLToPath } from "node:url";
 import { writeGameCatalog, readGlobalVar, preserveMissingCards, fetchJsonRetry, sleep } from "./lib/sync-common.mjs";
+import { nomeDoSet } from "./lib/nome-do-set.mjs";
 
 const ROOT = new URL("../", import.meta.url);
 const OUT = new URL("data/sorcery/", ROOT);
@@ -157,7 +158,9 @@ export function cardOf(pair, g, setId, setTotal, priceBy = new Map(), prevIds = 
   const card = {
     id,
     name: baseName(main.name),
-    set: g.name,
+    // Nome do grupo do TCGplayer sem o jogo na frente (2026-11-02):
+    // contrato 7 do docs/CATALOGO.md, regra em scripts/lib/nome-do-set.mjs.
+    set: nomeDoSet("sorcery", g.name),
     setId,
     number: "",
     setTotal,
