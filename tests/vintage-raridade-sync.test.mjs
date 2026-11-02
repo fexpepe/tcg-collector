@@ -9,6 +9,17 @@ import { cardsIn } from "../scripts/sync-onepiece-vintage.mjs";
 import { parseCards, raridadeMb, buildCards } from "../scripts/sync-miracle-battle.mjs";
 import { parseOverview, raridade2002 } from "../scripts/sync-onepiece-2002.mjs";
 import { parseHinokunian, aplicaRaridade } from "../scripts/naruto-raridade-hinokunian.mjs";
+import { raridadeDbc, PRISMA_HONDAN } from "../scripts/sync-dbc-carddass.mjs";
+
+test("Dragon Ball Carddass: prisma só onde há lista (弾 1–4); fora dela a raridade fica vazia", () => {
+  assert.equal(raridadeDbc("h01", "6"), "Prism");
+  assert.equal(raridadeDbc("h01", "7"), "Normal");
+  assert.equal(raridadeDbc("h04", "131"), "Normal"); // no 第4弾 as prismas não são seguidas
+  assert.equal(raridadeDbc("h04", "132"), "Prism");
+  assert.equal(raridadeDbc("h05", "170"), "");
+  // 6 prismas por parte, como o 80storage conta.
+  for (const [parte, nums] of Object.entries(PRISMA_HONDAN)) assert.equal(nums.length, 6, parte);
+});
 
 // Linha do hinokunian: 1ª célula a raridade, 2ª o número, 3ª o nome.
 const linhaHino = (rar, num, nome) => `<TR><TD>${rar}</TD><TD>${num}</TD><TD>${nome}</TD><TD></TD></TR>`;

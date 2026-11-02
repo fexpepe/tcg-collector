@@ -240,6 +240,24 @@ function curatedImg(id) {
   return "";
 }
 
+// PRISMA (キラ) do 本弾, curado (2026-11-01). Cada parte tinha 6 prismas em 42
+// cartas, mas a lista POR NÚMERO só existe em texto pros 弾 1–4
+// (hinichijyou.com/dragonball-card-list/); do 第5弾 em diante a fonte é foto,
+// e a posição não serve de régua (no 第4弾 elas não são seguidas). Nessas 4
+// partes a carta que não é prisma é "Normal"; nas outras a raridade fica
+// vazia — não dá pra afirmar que uma carta NÃO é prisma sem a lista.
+export const PRISMA_HONDAN = {
+  h01: [1, 2, 3, 4, 5, 6],
+  h02: [43, 44, 45, 46, 47, 48],
+  h03: [85, 86, 87, 88, 89, 90],
+  h04: [128, 129, 130, 132, 148, 150]
+};
+export function raridadeDbc(setCode, num) {
+  const prismas = PRISMA_HONDAN[setCode];
+  if (!prismas) return "";
+  return prismas.includes(Number(num)) ? "Prism" : "Normal";
+}
+
 export function setName(def) { return `${SERIES[def.series].ja} ${def.ja}`; }
 export function setNameEn(def) { return `${SERIES[def.series].en} ${def.en}`; }
 
@@ -263,7 +281,7 @@ async function build(snapshot) {
         number: c.num,
         setTotal: s.cards.length,
         setReleaseDate: def.date,
-        rarity: "",
+        rarity: raridadeDbc(s.code, c.num),
         artist: "",
         language: "ja",
         image: curatedImg(c.id),
