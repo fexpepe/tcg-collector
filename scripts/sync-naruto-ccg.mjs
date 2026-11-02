@@ -20,6 +20,15 @@
 // marca as cartas nossas que são de Starter Deck (o narutocards as dá como
 // U/C).
 //
+// NÚMERO IMPRESSO (2026-11-02): do set 17 em diante (e nas missões do 16, nos
+// Tournament Packs e nas tins) o código do narutocards NÃO é o impresso — ele
+// renumerou em sequência. data/vintage/naruto-ccg-numero-impresso.json
+// (montado por scripts/naruto-ccg-numero-impresso.mjs) dá, por código do
+// narutocards, o número impresso e o scan do N-CCG-DB (750×1050, contra os
+// 214×300 de lá, que ainda se repetem entre cartas de mesmo nome). O sync
+// troca só o `number` e a imagem; o id continua o código do narutocards, que
+// é o que está publicado.
+//
 //   node scripts/sync-naruto-ccg.mjs             # fetch + build
 //   node scripts/sync-naruto-ccg.mjs --no-fetch  # só build
 import { readFile, writeFile, mkdir } from "node:fs/promises";
@@ -32,6 +41,7 @@ const ROOT = new URL("../", import.meta.url);
 const OUT = new URL("data/naruto/", ROOT);
 const SNAP = new URL("data/vintage/naruto-ccg.json", ROOT);
 const COMPLEMENTO = new URL("data/vintage/naruto-ccg-complemento.json", ROOT);
+const NUMERO_IMPRESSO = new URL("data/vintage/naruto-ccg-numero-impresso.json", ROOT);
 const CACHE_DIR = new URL("data/.cache/", ROOT);
 const BASE = "https://www.narutocards.ca/sets/bandai-ccg/";
 const CDN = "cdn.narutocards.ca/bandai-ccg/";
@@ -150,24 +160,36 @@ export function raridadeEVersoes(setKey, sigla) {
   return { rarity, variants: booster && FOIL_PARALELO.has(rarity) ? [...VERSOES_FOIL] : ["Normal"] };
 }
 
+const scanDoFan = (img) => `https://wsrv.nl/?url=${encodeURIComponent(FAN_IMG + img)}&w=440&output=webp`;
+
 // Cartas de um set do snapshot + o complemento do mesmo set. Do narutocards
-// sai { code, name, rarity: sigla, scan: url|"" }; do complemento a raridade
-// já vem por extenso e o scan é o do N-CCG-DB. Código que o narutocards já
-// tem (mesmo com outra grafia, NC-001 × N-C001) não entra de novo.
-export function cartasDoSet(set, def, comp) {
-  const doNc = set.cards.map((c) => ({
-    code: c.code,
-    name: c.name,
-    rarity: comp && comp.starter && comp.starter.includes(c.code) ? "Starter Deck" : c.rarity,
-    scan: c.img ? `https://wsrv.nl/?url=${encodeURIComponent(`${CDN}${def.slug}/${c.code}-EN.jpg`)}&w=440&output=webp` : ""
-  }));
+// sai { code, numero, name, rarity: sigla, scan: url|"" }: `code` é o dele
+// (de onde sai o id), `numero` o impresso, que o de-para do número impresso
+// (`impresso`: código do narutocards → { numero?, img? }) corrige, e o scan
+// o do N-CCG-DB quando o de-para tem. Do complemento a raridade já vem por
+// extenso, e código e número são o impresso. Código que o narutocards já tem
+// (mesmo com outra grafia, NC-001 × N-C001, ou só como número impresso) não
+// entra de novo.
+export function cartasDoSet(set, def, comp, impresso) {
+  const doNc = set.cards.map((c) => {
+    const imp = (impresso && impresso[c.code]) || {};
+    return {
+      code: c.code,
+      numero: imp.numero || c.code,
+      name: c.name,
+      rarity: comp && comp.starter && comp.starter.includes(c.code) ? "Starter Deck" : c.rarity,
+      scan: imp.img ? scanDoFan(imp.img)
+        : c.img ? `https://wsrv.nl/?url=${encodeURIComponent(`${CDN}${def.slug}/${c.code}-EN.jpg`)}&w=440&output=webp` : ""
+    };
+  });
   if (!comp) return doNc;
-  const tem = new Set(doNc.map((c) => codigoCanonico(c.code)));
+  const tem = new Set(doNc.flatMap((c) => [codigoCanonico(c.code), codigoCanonico(c.numero)]));
   const extra = comp.cards.filter((c) => !tem.has(codigoCanonico(c.code))).map((c) => ({
     code: c.code,
+    numero: c.code,
     name: c.name,
     rarity: c.rarity,
-    scan: c.img ? `https://wsrv.nl/?url=${encodeURIComponent(FAN_IMG + c.img)}&w=440&output=webp` : ""
+    scan: c.img ? scanDoFan(c.img) : ""
   }));
   return doNc.concat(extra);
 }
@@ -229,39 +251,37 @@ async function refreshSnapshot(existing) {
   return (await readSnapshot(SNAP)) || candidate;
 }
 
-async function run() {
-  console.log("Naruto CCG (Bandai USA 2006–2013, vintage EN)");
-  let snap = await readSnapshot(SNAP);
-  if (!NO_FETCH) snap = await refreshSnapshot(snap);
-  if (!snap || !snapshotCardCount(snap)) { console.log("  snapshot vazio — nada a construir."); return; }
-
-  // Ids pegajosos: número oficial -> id já publicado (coleções referenciam ids).
-  const existing = (await readGlobalVar(new URL("cards.js", OUT), "TCG_CARDS")) || [];
-  const idByNum = new Map();
-  for (const c of existing) {
-    if (/^nrt-ccg-/.test(String(c.id)) && c.number && !idByNum.has(c.number)) idByNum.set(c.number, c.id);
-  }
-
+// O catálogo da linha, sem disco (os testes chamam com os snapshots).
+//
+// O ID SAI DO CÓDIGO DO NARUTOCARDS, nunca do `number`. Até 2026-11-02 havia
+// aqui um mapa "número -> id já publicado" (ids pegajosos), inofensivo enquanto
+// número e código eram a mesma coisa. Com o número impresso eles se separam, e
+// o mapa viraria ladrão: o catálogo publicado tem o Neji como N-880 (código do
+// narutocards; impresso, 883), e a carta impressa N-880 (Yamato, do TP1) ou a
+// que passa a ser N-883 herdariam o id de outra. O id de quem já está
+// publicado é exatamente nrt-ccg-<código>, então nenhum muda; o de-para
+// (data/vintage/naruto-ccg-numero-impresso.json) é a ponte explícita.
+export function montaLinha(snap, complemento, impresso) {
   const defByKey = new Map(SETS.map((d) => [d.key, d]));
-  const complemento = await readSnapshot(COMPLEMENTO);
   const compByKey = new Map(((complemento && complemento.sets) || []).map((s) => [s.key, s]));
+  const impressoDe = (impresso && impresso.sets) || {};
   const line = [];
   let doComplemento = 0;
   for (const s of snap.sets) {
     const def = defByKey.get(s.key);
     if (!def || def.skip) continue;
     const setId = `nrt-ccg-${def.key}`;
-    const cartas = cartasDoSet(s, def, compByKey.get(s.key));
+    const cartas = cartasDoSet(s, def, compByKey.get(s.key), impressoDe[s.key]);
     doComplemento += cartas.length - s.cards.length;
     for (const c of cartas) {
-      const cardId = idByNum.get(c.code) || `nrt-ccg-${c.code.toLowerCase()}`;
+      const cardId = `nrt-ccg-${c.code.toLowerCase()}`;
       const { rarity, variants } = raridadeEVersoes(def.key, c.rarity);
       line.push({
         id: cardId,
         name: c.name,
         set: `Naruto CCG — ${def.name}`,
         setId,
-        number: c.code,
+        number: c.numero,
         setTotal: cartas.length,
         setReleaseDate: def.date,
         rarity,
@@ -275,9 +295,23 @@ async function run() {
       });
     }
   }
-  const semImg = line.filter((c) => !c.image).length;
-  console.log(`  build: ${line.length} cartas em ${snap.sets.length} sets (${semImg} sem scan; ${doComplemento} do complemento).`);
+  return { line, doComplemento };
+}
 
+async function run() {
+  console.log("Naruto CCG (Bandai USA 2006–2013, vintage EN)");
+  let snap = await readSnapshot(SNAP);
+  if (!NO_FETCH) snap = await refreshSnapshot(snap);
+  if (!snap || !snapshotCardCount(snap)) { console.log("  snapshot vazio — nada a construir."); return; }
+
+  const complemento = await readSnapshot(COMPLEMENTO);
+  const impresso = await readSnapshot(NUMERO_IMPRESSO);
+  const { line, doComplemento } = montaLinha(snap, complemento, impresso);
+  const semImg = line.filter((c) => !c.image).length;
+  const renumeradas = line.filter((c) => c.id !== `nrt-ccg-${c.number.toLowerCase()}`).length;
+  console.log(`  build: ${line.length} cartas em ${snap.sets.length} sets (${semImg} sem scan; ${doComplemento} do complemento; ${renumeradas} com o número impresso do de-para).`);
+
+  const existing = (await readGlobalVar(new URL("cards.js", OUT), "TCG_CARDS")) || [];
   const kept = existing.filter((c) => c && !/^nrt-ccg-/.test(String(c.id)));
   const have = new Set(kept.map((c) => c.id));
   const merged = kept.concat(line.filter((c) => !have.has(c.id)));
