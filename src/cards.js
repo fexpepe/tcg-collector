@@ -272,7 +272,7 @@
       addOptions(elements.setFilter, unique(sets.map((s) => s.name)));
       addOptions(elements.languageFilter, unique(sets.map((s) => shared.normalizeCardLanguage(s.language))), (value) => shared.cardLanguageLabel(value));
       applyCardLangDefault(elements.languageFilter);
-      if (raridadesDe) addOptions(elements.rarityFilter, unique(raridadesDe.map((card) => card.rarity).filter(Boolean)));
+      if (raridadesDe) addOptions(elements.rarityFilter, shared.sortRarities(unique(raridadesDe.map((card) => card.rarity).filter(Boolean))));
     });
   }
 
@@ -281,7 +281,7 @@
       addOptions(elements.setFilter, unique(cards.map((card) => card.set)));
       addOptions(elements.languageFilter, unique(cards.map((card) => shared.normalizeCardLanguage(card.language))), (value) => shared.cardLanguageLabel(value));
       applyCardLangDefault(elements.languageFilter);
-      addOptions(elements.rarityFilter, unique(cards.map((card) => card.rarity)));
+      addOptions(elements.rarityFilter, shared.sortRarities(unique(cards.map((card) => card.rarity))));
     });
   }
 

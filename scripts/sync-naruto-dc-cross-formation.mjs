@@ -39,12 +39,26 @@ function curatedImg(id) {
 // Normaliza fullwidth (ＮＦ→NF, Ｎ→N) e espaços ideográficos.
 const normalize = (s) => String(s || "").replace(/[Ａ-Ｚａ-ｚ０-９]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 0xfee0)).replace(/　/g, " ").trim();
 
+// Raridade: o Suruga-ya escreve a SIGLA impressa na carta (N, R, SR, UR, NR,
+// NP, SP, WNR, P) quase sempre, mas às vezes o nome por extenso em japonês —
+// e a mesma promo aparecia como "P", "プロモ" e "プロモーションカード", três
+// opções no filtro de raridade pra uma coisa só (2026-11-01). Aqui vira a
+// sigla; o que não tem sigla impressa vai em inglês, como o resto do jogo.
+const RARIDADE_JP = {
+  "プロモ": "P",
+  "プロモーションカード": "P",
+  "ホログラフィックレア": "HR",
+  "銀ホロカード": "Silver Holo",
+  "デザインレア": "Design Rare"
+};
+
 // "NX-003[NR]：うずまきナルト(...)" -> { num, rarity, name }
 function parseTitle(raw) {
   const t = normalize(raw);
   const m = t.match(/^([A-Za-z0-9-]+(?:\s?[IVX]+)?)\s*(?:\[([^\]]+)\])?[：:](.+)$/);
   if (!m) return null;
-  return { num: m[1].replace(/\s+/g, ""), rarity: (m[2] || "").trim(), name: m[3].trim() };
+  const rarity = (m[2] || "").trim();
+  return { num: m[1].replace(/\s+/g, ""), rarity: RARIDADE_JP[rarity] || rarity, name: m[3].trim() };
 }
 
 // Linha pela SÉRIE (nome contém フォーメーション/クロス); fallback pela família

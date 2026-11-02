@@ -96,6 +96,38 @@ const SETS = [
   { key: "promo", slug: "bandai-ccg-promo", name: "Promotional Cards",         date: "2006-04-28" }
 ];
 
+// RARIDADE: a fonte dá uma sigla própria, e o próprio narutocards marca o dado
+// como "Unverified" — conferi set a set contra o ccgtrader.net (2026-11-01,
+// 28 sets, contagem por raridade) e a tradução é esta:
+//   - UR (sets 3–22, TPs, tin 1), SR (sets 1–2 e 23–28) e MR (2 cartas, que o
+//     site chama de "Movie Rare") são TODAS a Super Rare do jogo — a de 3
+//     pontos, dourada. Nos sets 4, 7 e 8 a contagem de UR bate 1:1 com a de
+//     Super Rare do ccgtrader;
+//   - F, que o site chama de "Foil", é a carta de STARTER DECK (ponto
+//     vermelho): as 13 F do set 1 são as 12 "Starter Deck" do ccgtrader + 1
+//     Haku, e as 10 do Hero's Ascension estão entre as 12 de lá. Nos outros
+//     sets a fonte não separa o starter (vem com a raridade nominal);
+//   - PR = Promo. O nome vai por extenso, como está no verso do Narutopedia e
+//     no ccgtrader — sigla solta ("UR") no filtro não diz nada a ninguém.
+const RARIDADE = {
+  C: "Common", U: "Uncommon", R: "Rare",
+  SR: "Super Rare", UR: "Super Rare", MR: "Super Rare",
+  F: "Starter Deck", PR: "Promo",
+  // s29 (Shinobi's Dream, fora do catálogo) vem com "UNKNOWN": vazio, um chip
+  // "UNKNOWN" na UI seria ruído, não informação.
+  UNKNOWN: ""
+};
+
+// FOIL PARALELO: todo booster trazia um foil de raridade aleatória, e cada set
+// saiu em duas embalagens — numa o foil tem padrão de DIAMANTE, na outra
+// ONDULADO (Narutopedia, "Naruto Collectible Card Game" › Rarity; anúncios
+// "Wavy Foil / Diamond Foil" dos sets 4–8 confirmam). Vale pra Common,
+// Uncommon e Rare de booster; a Super Rare já é dourada e não tem paralelo, e
+// carta de starter, TP, tin ou promo não sai em booster. A "Normal" continua a
+// primeira (e a padrão): é sob ela que as coleções já marcadas estão.
+const FOIL_PARALELO = new Set(["Common", "Uncommon", "Rare"]);
+const VERSOES_FOIL = ["Normal", "Diamond Foil", "Wavy Foil"];
+
 async function fetchPage(url) {
   for (let i = 0; i < 3; i++) {
     try {
@@ -172,9 +204,13 @@ async function run() {
     const def = defByKey.get(s.key);
     if (!def || def.skip) continue;
     const setId = `nrt-ccg-${def.key}`;
+    const booster = /^s\d+$/.test(def.key);
     for (const c of s.cards) {
       const cardId = idByNum.get(c.code) || `nrt-ccg-${c.code.toLowerCase()}`;
       const scan = c.img ? `https://wsrv.nl/?url=${encodeURIComponent(`${CDN}${def.slug}/${c.code}-EN.jpg`)}&w=440&output=webp` : "";
+      // Sigla que a tabela não conhece passa crua (e aparece no filtro) em vez
+      // de sumir — é o sinal de que a fonte mudou o vocabulário.
+      const rarity = Object.prototype.hasOwnProperty.call(RARIDADE, c.rarity) ? RARIDADE[c.rarity] : c.rarity;
       line.push({
         id: cardId,
         name: c.name,
@@ -183,13 +219,11 @@ async function run() {
         number: c.code,
         setTotal: s.cards.length,
         setReleaseDate: def.date,
-        // s29 (Shinobi's Dream, cancelado) vem com "UNKNOWN" da fonte: vira
-        // vazio — chip "UNKNOWN" na UI seria ruído, não informação.
-        rarity: c.rarity === "UNKNOWN" ? "" : c.rarity,
+        rarity,
         artist: "",
         language: "en",
         image: curatedImg(cardId) || scan,
-        variants: ["Normal"],
+        variants: booster && FOIL_PARALELO.has(rarity) ? [...VERSOES_FOIL] : ["Normal"],
         setLogo: "/assets/games/game_naruto_ccg-v2.webp",
         vintage: true,
         vintageLine: "nrt-ccg"
