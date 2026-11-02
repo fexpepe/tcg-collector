@@ -7,7 +7,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { numeroENome, limpaNome, idDe, itensDaGaleria, cartasDasGalerias, mergeSnapshotCards, setTotalOf, imageUrl, NOMES_LIDOS, SETS } from "../scripts/sync-dbz.mjs";
+import { numeroENome, limpaNome, idDe, itensDaGaleria, cartasDasGalerias, mergeSnapshotCards, setTotalOf, imageUrl, nomeDaCarta, NOMES_LIDOS, SETS } from "../scripts/sync-dbz.mjs";
 
 // Uma imagem de galeria como o WordPress (Jetpack tiled gallery) escreve.
 const img = (titulo, arquivo) =>
@@ -98,6 +98,19 @@ test("GT: preview e promo embutidos vão pro set de promos da saga; título com 
     ["dbz-g1-1", ""], ["dbz-g1p-pr1", "Preview"], ["dbz-g1p-p2", "Promo"], ["dbz-g1p-the-golden-ticket", "Promo"], ["dbz-g1-206", ""]
   ]);
   assert.equal(cards[4].name, "Goku, Golden Oozaru Lv. 4");
+});
+
+test("build: o nome lido no scan vence o do snapshot (correção sem reimportar)", () => {
+  assert.equal(nomeDaCarta("ca", { num: "CA21", name: "Goku's Super Saiyn Catch" }), "Goku's Super Saiyan Latch");
+  assert.equal(nomeDaCarta("s4", { num: "80", name: "Saiayn Wrist Block" }), "Saiyan Wrist Block");
+  assert.equal(nomeDaCarta("s1", { num: "1", name: "Orange Standing Fist Punch" }), "Orange Standing Fist Punch");
+  // Erro impresso pela Score fica como está.
+  assert.equal(nomeDaCarta("t1", { num: "117", name: "Chaiotzu's Self Destruct" }), "Chaiotzu's Self Destruct");
+  const snap = JSON.parse(readFileSync(new URL("../data/vintage/dbz-retro.json", import.meta.url), "utf8"));
+  for (const s of snap.sets) for (const c of s.cards) {
+    const lido = NOMES_LIDOS[`${s.code}|${c.num}`];
+    if (lido) assert.equal(c.name, lido, `${c.id}: snapshot fora do NOMES_LIDOS`);
+  }
 });
 
 test("re-import reaproveita o id conhecido e mantém o que a fonte tirou", () => {
