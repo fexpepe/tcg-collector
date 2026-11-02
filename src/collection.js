@@ -789,6 +789,9 @@
         const sec = event.target.closest("[data-folder-id]");
         const tile = event.target.closest(".card-tile");
         if (sec && tile && sec.dataset.folderId === coverPickId) {
+          // O nome do set na cápsula é link: escolhendo capa, o toque nele
+          // escolhe a carta, não sai da página.
+          event.preventDefault();
           folders.setCover(coverPickId, tile.dataset.tileCardId);
           coverPickId = null;
           renderCards();
@@ -1374,7 +1377,7 @@
       <div class="tile-info">
         <h3>${escapeHtml(card.name)}</h3>
         <p class="tile-variant">${shared.cardFlag(card.language)}${badge}${etiquetaJogo(card, gameTag)}</p>
-        <p class="tile-set"><span>${escapeHtml(shared.dotJoin(card.set, card.number))}</span></p>
+        <p class="tile-set">${shared.tileSetHtml(card)}</p>
         ${priceHtml}
       </div>
     </article>`;
@@ -2327,7 +2330,7 @@
         <div class="tile-info">
           <h3>${escapeHtml(it.n)}</h3>
           <p class="tile-variant">${flag}${shared.gradedBadgeHtml({ company: it.co, grade: it.gr, pristine: it.pr })}</p>
-          <p class="tile-set"><span>${escapeHtml(shared.dotJoin(it.s, it.num))}</span></p>
+          <p class="tile-set">${shared.tileSetHtml({ set: it.s, number: it.num, game: it.g, setId: (cardsById.get(it.id) || {}).setId })}</p>
           ${priceHtml}
         </div>
       </article>`;
@@ -2336,7 +2339,7 @@
       <div class="card-image"><button type="button" class="image-open" data-preview-card-id="${escapeAttribute(it.id)}" data-preview-variant="${escapeAttribute(it.v)}" aria-label="${escapeAttribute(t("card.zoom", { name: it.n }))}">${img}</button></div>
       <div class="tile-info">
         <h3>${escapeHtml(it.n)}</h3>
-        <p class="tile-set"><span>${escapeHtml(shared.dotJoin(it.s, it.num))}</span></p>
+        <p class="tile-set">${shared.tileSetHtml({ set: it.s, number: it.num, game: it.g, setId: (cardsById.get(it.id) || {}).setId })}</p>
         <p class="tile-variant">${flag}<span>${escapeHtml(it.v)}${it.q > 1 ? ` ×${it.q}` : ""}</span>${it.sp > 0 && it.cond ? `<span class="cond-badge">${escapeHtml(it.cond)}</span>` : ""}</p>
         ${priceHtml}
       </div>
