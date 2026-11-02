@@ -1646,7 +1646,9 @@
     // Cartas sem imagem vão para o fim (sort estável preserva a ordem da ordenação escolhida).
     tiles.sort((a, b) => Number(shared.cardHasImage(b.card)) - Number(shared.cardHasImage(a.card)));
     const tileOf = ({ card, variant }) => {
-      const tile = shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true, grouped: agrupaVersoes, compact: gridView === "compact", lists: true });
+      // setAtual: na página do set, o nome dele na cápsula não vira link (levaria
+      // pra cá mesmo); na do artista/Pokémon cada carta leva pro set dela.
+      const tile = shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true, grouped: agrupaVersoes, compact: gridView === "compact", lists: true, setAtual: detailType === "set" ? detailName : "" });
       marcaOutraLingua(tile);
       return tile;
     };

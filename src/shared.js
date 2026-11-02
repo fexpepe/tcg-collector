@@ -7988,6 +7988,26 @@
     return `<p class="${cls}" title="${escapeAttribute(title)}">${escapeHtml(prefix + fmtMoney(val.currency, val.value))}</p>`;
   }
 
+  // NOME DO SET CLICÁVEL na cápsula (2026-11-01, pedido do Fernando): achar uma
+  // carta boa na busca e querer ver o set dela era voltar, abrir Sets e
+  // procurar. Leva pra página do set com o MESMO detailUrl do modal da carta
+  // (o setId desambigua sets homônimos EN/PT). Na página do próprio set o
+  // link levaria pra onde a pessoa já está: lá a página passa opts.setAtual
+  // (o nome do set aberto) e o nome fica texto.
+  function tileSetLink(card, opts) {
+    const nome = escapeHtml(card.set || "");
+    if (!card.set || (opts && opts.setAtual === card.set)) return card.set ? `<span>${nome}</span>` : "";
+    const href = detailUrl("set", card.set, "", card.game || currentGame(), { setId: card.setId });
+    return `<a class="tile-set-link" href="${escapeAttribute(href)}">${nome}</a>`;
+  }
+  // A linha "Set · número" inteira da cápsula, com o set clicável. Exportada
+  // pras cápsulas que a Coleção monta à mão (slab, perfil público).
+  function tileSetHtml(card, opts) {
+    const numero = escapeHtml(String(card.number == null ? "" : card.number).trim());
+    if (!card.set) return `<span>${numero}</span>`;
+    return tileSetLink(card, opts) + (numero ? `<span class="tile-set-num">· ${numero}</span>` : "");
+  }
+
   function variantTile(card, variant, store, wishlist, prices, opts) {
     // addMode (página de busca): o botão sempre é "+" e cada clique soma +1 (com
     // feedback de ✓ por 2s). Fora dele, o botão alterna posse (liga/desliga).
@@ -8130,7 +8150,7 @@
           ${cardFlag(card.language)}<span>${escapeHtml(card.name)}</span>
         </button>
         <span class="tile-c-num">${escapeHtml(card.number || "")}</span>
-        <span class="tile-c-set">${gameTag}${escapeHtml(card.set || "")}</span>
+        <span class="tile-c-set">${gameTag}${tileSetLink(card, opts)}</span>
         <span class="tile-c-var variant-${escapeAttribute(variantSlug(variant))}">${variantLabel}</span>
         <span class="tile-c-price">${tilePriceHtml(card, variant, prices)}</span>
         ${actionsHtml}`);
@@ -8142,7 +8162,7 @@
       <div class="tile-info">
         <h3>${escapeHtml(cardLabel(card))}</h3>
         <p class="tile-variant variant-${escapeAttribute(variantSlug(variant))}">${cardFlag(card.language)}<span>${variantLabel}</span>${gameTag}</p>
-        <p class="tile-set"><span>${escapeHtml(dotJoin(card.set, card.number))}</span></p>
+        <p class="tile-set">${tileSetHtml(card, opts)}</p>
         ${tilePriceHtml(card, variant, prices)}
         <div class="tile-foot">
           ${actionsHtml}
@@ -10158,6 +10178,7 @@
     DEFAULT_CONDITION,
     cardVariantPairs,
     variantTile,
+    tileSetHtml,
     gridViewValue,
     applyGridViewClasses,
     refreshTileOwnership,

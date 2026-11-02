@@ -9473,6 +9473,34 @@ button.pf-alloc-row:hover .pf-alloc-name, a.pf-alloc-row:hover .pf-alloc-name { 
   white-space: nowrap;
 }
 
+/* Nome do set CLICÁVEL (2026-11-01): leva pra página do set. O link é quem
+   encolhe com reticências e o número fica sempre à mostra — antes um span só
+   cortava "Set · 123" inteiro, e em set de nome comprido o número sumia
+   primeiro. Cor herdada: o link não grita na cápsula, só responde ao mouse. */
+.tile-set > .tile-set-link {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: inherit;
+  text-decoration: none;
+}
+.tile-set-link:hover {
+  color: var(--text);
+  text-decoration: underline;
+}
+.tile-set > .tile-set-num { flex: none; }
+.tile-c-set .tile-set-link { color: inherit; text-decoration: none; }
+.tile-c-set .tile-set-link:hover { color: var(--text); text-decoration: underline; }
+/* No dedo o link ganha os 44px de alvo sem mexer no layout: padding vertical
+   com margem negativa do mesmo tamanho. O .tile-set deixa de cortar (overflow
+   visível) pra área extra receber o toque — quem corta o texto agora é cada
+   item lá dentro. Os botões do pé vêm depois no DOM e ganham na sobreposição. */
+@media (pointer: coarse) {
+  .tile-set { overflow: visible; }
+  .tile-set > .tile-set-link { padding-block: 14px; margin-block: -14px; }
+}
+
 .preview-year {
   font-weight: 700;
   color: var(--muted);
