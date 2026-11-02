@@ -1570,13 +1570,17 @@
   // Digimon, "Deck Build Box" do Gundam, "Worlds Champion Bundles" do
   // Riftbound).
   const NAO_DESTAQUE = /promo|mcdonald|energy|trainer kit|black star|pre-?release|event cards|tournament|championship|revision pack|starter deck|deck build box|bundle/i;
+  // O destaque fica FORA das seções: set que perdeu o título da série dentro
+  // dela (groupNarutoDataCarddass, groupMbcSets) volta com o nome cheio, senão
+  // o "Último set" seria só "Ch. 7".
+  const foraDaSecao = (set) => (set.nomeForaDaSecao ? Object.assign({}, set, { displayName: set.nomeForaDaSecao }) : set);
   function vitrineDoTopo(grupos) {
     const hoje = new Date().toISOString().slice(0, 10);
     const sets = [];
     let foraDoDestaque = false;
     grupos.forEach((item) => {
       if (item.type === "category-head" || item.type === "series-head") foraDoDestaque = !!item.foraDoDestaque;
-      else if (item.type === "set" && !foraDoDestaque && item.kind !== "deck" && !NAO_DESTAQUE.test(item.name) && item.releaseDate) sets.push(item);
+      else if (item.type === "set" && !foraDoDestaque && item.kind !== "deck" && !NAO_DESTAQUE.test(item.name) && item.releaseDate) sets.push(foraDaSecao(item));
     });
     const lancados = sets.filter((set) => set.releaseDate <= hoje).sort(sortByReleaseDesc);
     const futuros = sets.filter((set) => set.releaseDate > hoje).sort(sortByReleaseAsc);
@@ -1590,7 +1594,7 @@
     }
     if (colecaoTem()) {
       const todos = [];
-      grupos.forEach((item) => { if (item.type === "set") { todos.push(item); (item.filhos || []).forEach((f) => todos.push(f)); } });
+      grupos.forEach((item) => { if (item.type === "set") { todos.push(foraDaSecao(item)); (item.filhos || []).forEach((f) => todos.push(f)); } });
       const andamento = todos.filter((set) => set.totalCount > 0 && set.ownedCount > 0 && set.ownedCount < set.totalCount)
         .sort((a, b) => b.ownedCount / b.totalCount - a.ownedCount / a.totalCount || sortByReleaseDesc(a, b)).slice(0, 6);
       if (andamento.length) items.push({ type: "sx-continue", sets: andamento });
@@ -1857,7 +1861,7 @@
     const titleOf = (set) => TITLES.findIndex(([, match]) => match(idOf(set)));
     const semTitulo = (set, i) => {
       const nome = String(set.displayName || ""), titulo = TITLES[i][2];
-      return nome.indexOf(titulo) === 0 ? Object.assign({}, set, { displayName: nome.slice(titulo.length) }) : set;
+      return nome.indexOf(titulo) === 0 ? Object.assign({}, set, { displayName: nome.slice(titulo.length), nomeForaDaSecao: nome }) : set;
     };
     const items = [];
     const section = (list, key) => {
@@ -1895,7 +1899,9 @@
   // Dragon Ball Carddass: uma seção por SÉRIE (Hondan, Super Battle, Visual
   // Adventure, Super Barcode Wars), cada uma em ordem crescente de parte — são
   // séries lineares, lidas como checklist. A série vem do setId (dbc-h06,
-  // dbc-sb01…), que o sync-dbc-carddass.mjs fixa.
+  // dbc-sb01…), que o sync-dbc-carddass.mjs fixa. Dentro da seção o nome em
+  // inglês perde a série ("Hondan Part 1 — …" vira "Part 1 — …"), como no
+  // groupNarutoDataCarddass (contrato 7 do docs/CATALOGO.md).
   // LOTR TCG da Decipher: os 19 sets em ordem de lançamento (vintage se lê do
   // mais antigo pro mais novo) e os promos no fim — o set 0 e os quatro que o
   // sync-lotr.mjs separou por numeração — os impressos primeiro (0P e as
@@ -1942,11 +1948,15 @@
 
   function groupDbcSets(setItems) {
     const idOf = (set) => String(set.setId || "").trim().toLowerCase();
-    const SERIES = [["h", "sets.category.dbcHondan"], ["sb", "sets.category.dbcSuperBattle"], ["va", "sets.category.dbcVisualAdventure"], ["bw", "sets.category.dbcBarcodeWars"]];
+    const SERIES = [["h", "sets.category.dbcHondan", "Hondan "], ["sb", "sets.category.dbcSuperBattle", "Super Battle "], ["va", "sets.category.dbcVisualAdventure", "Visual Adventure "], ["bw", "sets.category.dbcBarcodeWars", "Super Barcode Wars "]];
     const serieOf = (set) => (idOf(set).match(/^dbc-([a-z]+)\d+$/) || [])[1] || "";
+    const semSerie = (set, serie) => {
+      const nome = String(set.displayName || "");
+      return nome.indexOf(serie) === 0 ? Object.assign({}, set, { displayName: nome.slice(serie.length), nomeForaDaSecao: nome }) : set;
+    };
     const items = [];
-    for (const [code, key] of SERIES) {
-      const list = setItems.filter((s) => serieOf(s) === code).sort((a, b) => idOf(a).localeCompare(idOf(b), "en", { numeric: true }));
+    for (const [code, key, serie] of SERIES) {
+      const list = setItems.filter((s) => serieOf(s) === code).map((s) => semSerie(s, serie)).sort((a, b) => idOf(a).localeCompare(idOf(b), "en", { numeric: true }));
       if (!list.length) continue;
       items.push(cabecalhoDeSecao(key, list.length));
       list.forEach((set) => items.push(set));
@@ -1987,7 +1997,7 @@
     ];
     const semFranquia = (set, i) => {
       const nome = String(set.displayName || ""), franquia = i >= 0 ? SERIES[i][2] : "";
-      return franquia && nome.indexOf(franquia) === 0 ? Object.assign({}, set, { displayName: nome.slice(franquia.length) }) : set;
+      return franquia && nome.indexOf(franquia) === 0 ? Object.assign({}, set, { displayName: nome.slice(franquia.length), nomeForaDaSecao: nome }) : set;
     };
     const codigo = (set) => idOf(set).replace(/^(op|nrt|hxh)-mb-|^mb-/, "");
     const tipo = (c) => (!/\d/.test(c) ? 3 : /^(dbs|ops|hhs|nrs|das)\d/.test(c) ? 1 : /^(opc|hhex|js)\d/.test(c) ? 2 : 0);
