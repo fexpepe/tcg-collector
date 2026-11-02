@@ -1842,8 +1842,8 @@
   // título, do mais antigo pro mais novo, como as séries do Dragon Ball
   // Carddass. O título sai do setId: Formation é nrt-nf-*, Cross é nrt-nx-*, e
   // Card Battle e Mission dividem o nrt-dc- (mesma fonte). A checklist desses
-  // dois é fechada e a Mission começa no set 11 (PAGES do
-  // sync-naruto-datacarddass.mjs). Sem as seções, a ordem por data jogava
+  // dois é fechada e a Mission começa no set 11 (PAGES em
+  // scripts/lib/naruto-datacarddass.mjs). Sem as seções, a ordem por data jogava
   // Formation e Cross (com data) na frente de Card Battle e Mission (sem data).
   // O nome em inglês leva o título ("Narutimate Card Battle — Vol. 1", pra
   // Coleção e o popup saberem de qual dos quatro é); dentro da seção ele
