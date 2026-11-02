@@ -122,6 +122,17 @@ test("jogo parado: o destaque vira \"Último set\" e o lado \"Anteriores\"", () 
   assert.ok(hero.includes('item.parado ? "sets.sx.earlier" : "sets.sx.recent"'));
 });
 
+test("o destaque fica fora das seções: volta o nome que a seção tirou", () => {
+  // groupNarutoDataCarddass tira "Narutimate Cross — " dentro da seção; no
+  // topo, sem o cabeçalho, "Ch. 7" sozinho não diz de qual título é.
+  const [heroi] = vitrine([
+    set("ナルティメットクロス 第6章", "2009-11-15", { displayName: "Ch. 6", nomeForaDaSecao: "Narutimate Cross — Ch. 6" }),
+    set("ナルティメットクロス 第7章", "2010-01-15", { displayName: "Ch. 7", nomeForaDaSecao: "Narutimate Cross — Ch. 7" })
+  ], "2026-11-02T12:00:00Z");
+  assert.equal(heroi.set.displayName, "Narutimate Cross — Ch. 7");
+  assert.deepEqual(heroi.lado.map((s) => s.displayName), ["Narutimate Cross — Ch. 6"]);
+});
+
 test("data só com ano e mês não ganha dia inventado no estilo longo", () => {
   const formatReleaseDate = new Function("shared",
     `const formatosDeData = new Map();\n${corpo("formatReleaseDate")}\nreturn formatReleaseDate;`)({ getLocale: () => "pt-BR" });

@@ -1570,12 +1570,12 @@
   // Digimon, "Deck Build Box" do Gundam, "Worlds Champion Bundles" do
   // Riftbound).
   const NAO_DESTAQUE = /promo|mcdonald|energy|trainer kit|black star|pre-?release|event cards|tournament|championship|revision pack|starter deck|deck build box|bundle/i;
-  // O destaque fica FORA das seções: set que perdeu o título da série dentro
-  // dela (groupNarutoDataCarddass, groupMbcSets) volta com o nome cheio, senão
-  // o "Último set" seria só "Ch. 7".
-  const foraDaSecao = (set) => (set.nomeForaDaSecao ? Object.assign({}, set, { displayName: set.nomeForaDaSecao }) : set);
   function vitrineDoTopo(grupos) {
     const hoje = new Date().toISOString().slice(0, 10);
+    // O destaque fica FORA das seções: set que perdeu o título da série dentro
+    // dela (groupNarutoDataCarddass, groupDbcSets, groupMbcSets) volta com o
+    // nome cheio, senão o "Último set" seria só "Ch. 7".
+    const foraDaSecao = (set) => (set.nomeForaDaSecao ? Object.assign({}, set, { displayName: set.nomeForaDaSecao }) : set);
     const sets = [];
     let foraDoDestaque = false;
     grupos.forEach((item) => {
