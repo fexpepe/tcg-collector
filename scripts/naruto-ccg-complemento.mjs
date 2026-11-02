@@ -54,7 +54,7 @@ const SNAP = new URL("data/vintage/naruto-ccg.json", ROOT);
 const CCGT = new URL("data/vintage/naruto-ccg-ccgtrader.json", ROOT);
 const OUT = new URL("data/vintage/naruto-ccg-complemento.json", ROOT);
 const CACHE_DIR = new URL("data/.cache/", ROOT);
-const FAN_SHA = "778f6376296dd2a4a810dfb5e76b1dc28cea1cba"; // 2026-10-17
+export const FAN_SHA = "778f6376296dd2a4a810dfb5e76b1dc28cea1cba"; // 2026-10-17
 const FAN_URL = `https://raw.githubusercontent.com/N-CCG-DB/naruto-ccg-deckbuilder/${FAN_SHA}/narutoccgdatabase.json`;
 export const FAN_IMG = "n-ccg-db.github.io/naruto-ccg-deckbuilder/cards_database/";
 const UA = { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Sleevu/1.0 (+sleevu.app)" };
@@ -133,7 +133,8 @@ export function alinha(a, b, nomeA = (x) => x.name, nomeB = (x) => x.name) {
   return pares.reverse();
 }
 
-async function baixaFan() {
+// Também usada pelo scripts/naruto-ccg-numero-impresso.mjs (mesmo commit, mesmo cache).
+export async function baixaFan() {
   const file = new URL(`naruto-ccg-nccgdb-${FAN_SHA.slice(0, 8)}.json`, CACHE_DIR);
   try { return JSON.parse(await readFile(file, "utf8")); } catch { /* sem cache */ }
   if (SEM_REDE) throw new Error("sem cache do N-CCG-DB; rode sem --sem-rede uma vez");
