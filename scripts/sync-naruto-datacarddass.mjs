@@ -19,6 +19,8 @@ import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { readGlobalVar, readSnapshot, writeSnapshot, snapshotCardCount, writeGameCatalog, sleep } from "./lib/sync-common.mjs";
+import { aplicaRaridade } from "./naruto-raridade-hinokunian.mjs";
+const SNAP_RARIDADE = new URL("../data/vintage/naruto-raridade.json", import.meta.url);
 
 const ROOT = new URL("../", import.meta.url);
 const OUT = new URL("data/naruto/", ROOT);
@@ -165,6 +167,10 @@ async function run() {
       });
     }
   }
+  // Raridade (N/R/SR/UR) do snapshot do hinokunian — só o Card Battle 第一〜四弾
+  // (DN-001–107) tem página lá; o resto do DN e a Mission ficam sem.
+  const rar = aplicaRaridade(line, await readSnapshot(SNAP_RARIDADE), { nomeDe: (c) => c.name });
+  console.log(`  raridade: ${rar.aplicadas} cartas (hinokunian); ${rar.nomeDiferente} com nome diferente ficaram sem.`);
   console.log(`  build: ${line.length} cartas em ${snap.sets.length} sets.`);
 
   const existing = (await readGlobalVar(new URL("cards.js", OUT), "TCG_CARDS")) || [];

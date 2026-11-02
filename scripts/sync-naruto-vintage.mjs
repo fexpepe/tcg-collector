@@ -25,6 +25,8 @@ import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { readGlobalVar, readSnapshot, writeSnapshot, snapshotCardCount, writeGameCatalog, sleep } from "./lib/sync-common.mjs";
+import { aplicaRaridade } from "./naruto-raridade-hinokunian.mjs";
+const SNAP_RARIDADE = new URL("../data/vintage/naruto-raridade.json", import.meta.url);
 
 const ROOT = new URL("../", import.meta.url);
 const OUT = new URL("data/naruto/", ROOT);
@@ -350,6 +352,11 @@ async function run() {
       });
     }
   });
+  // Raridade carta a carta (N/R/SR/UR/Memorial) do snapshot do hinokunian
+  // (scripts/naruto-raridade-hinokunian.mjs): só entra com número E nome
+  // batendo. O nome aqui ainda é o japonês (a tradução roda depois, no CI).
+  const rar = aplicaRaridade(cardsNrt, await readSnapshot(SNAP_RARIDADE), { nomeDe: (c) => c.name });
+  console.log(`  raridade: ${rar.aplicadas} cartas (hinokunian); ${rar.nomeDiferente} com nome diferente ficaram sem.`);
   const withScan = cardsNrt.filter((c) => c.image.includes("tcg-db")).length;
   const withThumb = cardsNrt.filter((c) => c.image.includes("tv-tokyo")).length;
   console.log(`  build: ${cardsNrt.length} cartas em ${orderedNames.length} sets (${withScan} scans tcg-db, ${withThumb} thumbs TV Tokyo, ${cardsNrt.length - withScan - withThumb} sem imagem).`);

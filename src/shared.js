@@ -9809,11 +9809,12 @@
   // (Super_rare/Legendary/Enchanted...). Heurística por palavra-chave, do mais
   // específico pro mais genérico; raridade vazia/desconhecida (vintage) = 0.
   // Siglas EXATAS: One Piece (C/UC/R/SR/L/SEC/PR/TR), Lorcana (Super_rare) e
-  // as dos vintage (2026-11-01) — N/Normal do Data Carddass e do Carddass, e o
-  // Miracle Battle (U, P, B = ブーストキラ, M = ミラクルキラ, Ω, 超Ω).
+  // as dos vintage (2026-11-01) — N/Normal/UR/Memorial do Naruto japonês e
+  // do Data Carddass, e o Miracle Battle (U, P, B = ブーストキラ, M =
+  // ミラクルキラ, Ω, 超Ω).
   const RARITY_SIGLA = {
     c: 10, n: 10, normal: 10, u: 20, uc: 20, r: 30, p: 35, pr: 35, tr: 35, promo: 35,
-    b: 45, sr: 50, super_rare: 50, l: 55, m: 55, "ω": 60, "超ω": 65, sec: 70
+    b: 45, sr: 50, super_rare: 50, l: 55, m: 55, ur: 60, "ω": 60, "超ω": 65, memorial: 65, sec: 70
   };
   function rarityRank(rarity) {
     const s = String(rarity || "").toLowerCase().trim();
