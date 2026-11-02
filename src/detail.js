@@ -446,11 +446,12 @@
     mbc: ["C", "U", "R", "SR", "B", "M", "Ω", "超Ω", "P"],
     // Naruto: uma página de set é de UMA linha, então as escadas convivem.
     // CCG americano (2006–2013): os nomes do verso (sync-naruto-ccg.mjs).
-    // Data Carddass (Formation/Cross): as siglas impressas, Normal → Rare →
-    // Super/Ultra, as especiais e as promos no fim (sync-naruto-dc-cross-
-    // formation.mjs). Promo do NARUTO CARD GAME novo é "Promo".
+    // Card Game japonês (2002–06) e Data Carddass: as siglas — N → R → SR →
+    // UR (e a Memorial do 巻ノ十三) do hinokunian (naruto-raridade-
+    // hinokunian.mjs); as especiais e as promos do Formation/Cross no fim
+    // (sync-naruto-dc-cross-formation.mjs). Promo do NARUTO CARD GAME novo é "Promo".
     naruto: ["Common", "Uncommon", "Rare", "Super Rare", "Starter Deck",
-      "N", "NP", "R", "SR", "UR", "HR", "NR", "WNR", "SP", "Silver Holo", "Design Rare", "P", "Promo"],
+      "N", "NP", "R", "SR", "UR", "Memorial", "HR", "NR", "WNR", "SP", "Silver Holo", "Design Rare", "P", "Promo"],
     // HxH Carddass Hyper Battle: Normal, a Holo do booster e a Secret Holo.
     hxh: ["Normal", "Holo", "Secret Holo", "Promo"]
   };
