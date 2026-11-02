@@ -161,7 +161,7 @@ test("o scanner confere pela foto ANTES de mostrar e conta o que a pessoa corrig
   assert.match(scanSrc, /ler\(img, \{[^}]*galeria: true/);
   // O resumo da sessão leva a precisão, e os contadores são somados onde a
   // pessoa age: trocar o 1º (uma vez por leitura) e buscar digitando.
-  const m = /logEvento\("scan_done",\s*\{([\s\S]{0,240}?)\}\)/.exec(scanSrc);
+  const m = /logEvento\("scan_done",\s*\{([\s\S]{0,360}?)\}\)/.exec(scanSrc);
   assert.ok(m, "não achei o payload do scan_done");
   for (const campo of ["amb", "vis", "troca", "dig"]) assert.match(m[1], new RegExp(`\\b${campo}:`), `scan_done sem "${campo}"`);
   assert.match(scanSrc, /if \(i !== primario && trocaConta\) \{ funil\.troca \+= 1; trocaConta = false; \}/);

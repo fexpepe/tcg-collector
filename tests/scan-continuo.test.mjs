@@ -129,7 +129,7 @@ test("o laço pausa com folha aberta, e a leitura automática sem código não a
   assert.match(scanSrc, /async function ler\(fonte, rec, auto\) \{[\s\S]{0,300}?estAuto = \{ armado: false, parados: 0 \};/);
   assert.match(scanSrc, /if \(auto && !codigo\) \{ dicaFalha = t\("scan\.hint\.retry"\); return; \}/);
   // O resumo conta as leituras automáticas.
-  const m = /logEvento\("scan_done",\s*\{([\s\S]{0,260}?)\}\)/.exec(scanSrc);
+  const m = /logEvento\("scan_done",\s*\{([\s\S]{0,360}?)\}\)/.exec(scanSrc);
   assert.ok(m && /\bauto: funil\.auto/.test(m[1]), "scan_done sem auto");
 });
 

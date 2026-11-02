@@ -43,6 +43,17 @@ test("Digimon, Gundam, DBFW e Yu-Gi-Oh seguem o mesmo molde", () => {
   assert.equal(codigos("LOB-EN001 1ST EDITION")[0], "LOB-EN001");
 });
 
+test("DBFW Manga Booster (SB01-001) é formato de jogo e crava o DBFW", () => {
+  // O copyright do DBFW vem na vertical e o OCR não lê: o formato é a única
+  // pista. Antes o SB01 valia peso 1 e a leitura ia até a carta inteira.
+  assert.equal(codigos("SAIYAN SB01-042 SCR")[0], "SB01-042");
+  const d = S.detectarJogo("SB01-042", ["SB01-042"], "hub");
+  assert.equal(d.jogos[0], "dbfw");
+  assert.equal(d.confiante, true);
+  // Os sets "SB" do Yu-Gi-Oh (SBAD-EN001) seguem Yu-Gi-Oh.
+  assert.equal(S.detectarJogo("SBAD-EN001", ["SBAD-EN001"], "hub").jogos[0], "ygo");
+});
+
 test("confusão de OCR na parte numérica é corrigida; no prefixo a letra fica", () => {
   // "OP" é prefixo (letras); "O5" e "II9" são numéricos: O->0, I->1.
   assert.equal(codigos("OPO5-II9")[0], "OP05-119");

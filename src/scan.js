@@ -300,6 +300,11 @@
     [/^P-\d{3}$/, ["digimon", "onepiece"]],
     [/^(GD\d{2}|EXB|EXR|EXBP|EXRP)-/, ["gundam"]],
     [/^(FB|FS|FC|FP)\d{0,2}-/, ["dbfw"]],
+    // Manga Booster do DBFW (SB01-001): sem isto o código valia peso 1, o
+    // jogo não saía do formato (o DBFW imprime o copyright NA VERTICAL,
+    // "©B.S./S., T.A", e o OCR não lê) e toda leitura ia até a carta inteira.
+    // Dígitos exigidos: o Yu-Gi-Oh tem sets "SB" com letra (SBAD-EN001).
+    [/^SB\d{2}-\d{3}$/, ["dbfw"]],
     [/^[A-Z0-9]{2,4}-[A-Z]{2}\d{3}/, ["ygo"]],
     [/^UE\d{2}/, ["unionarena"]],
     [/^[A-Z]{3}\d{3}$/, ["fab"]],
@@ -649,7 +654,8 @@
     }));
     const { ordem, mudou, claro } = ordemPelaFoto(sims);
     achados.splice(0, lista.length, ...ordem.map((i) => lista[i]));
-    return { mudou, claro };
+    // `notas` na ordem nova: só o diagnóstico lê (a semelhança de cada um).
+    return { mudou, claro, notas: ordem.map((i) => sims[i]) };
   }
 
   // ── Leitura AUTOMÁTICA (funções PURAS; testadas em tests/scan-continuo.test.mjs) ──
@@ -718,6 +724,65 @@
     if (pref === "reverse") return acha(/reverse/i) || vs[0];
     if (pref === "foil") return acha(/foil|holo|etched/i, /reverse/i) || vs[0];
     return vs[0];
+  }
+
+  // ── Captura e diagnóstico (funções PURAS; testadas em tests/scan-captura.test.mjs) ──
+  // Cinza (luminância) de um RGBA de canvas, com o mesmo peso do preparar().
+  function cinzaDe(d) {
+    const g = new Uint8Array(d.length / 4);
+    for (let i = 0, j = 0; j < g.length; i += 4, j++) g[j] = (d[i] * 299 + d[i + 1] * 587 + d[i + 2] * 114) / 1000;
+    return g;
+  }
+  // NITIDEZ de uma amostra em cinza (w×h): a média do quadrado do laplaciano
+  // de 4 vizinhos. Borda de glifo nítida é um salto grande entre vizinhos; o
+  // tremor da mão e o foco ainda procurando espalham o salto, e o número cai.
+  // Depende do conteúdo, então só serve pra COMPARAR quadros da mesma cena —
+  // que é o que a rajada do disparo faz (lerAgora).
+  function nitidez(g, w, h) {
+    let s = 0, n = 0;
+    for (let y = 1; y < h - 1; y++) {
+      for (let x = 1, i = y * w + 1; x < w - 1; x++, i++) {
+        const l = 4 * g[i] - g[i - 1] - g[i + 1] - g[i - w] - g[i + w];
+        s += l * l;
+        n++;
+      }
+    }
+    return n ? s / n : 0;
+  }
+  // Relatório do DIAGNÓSTICO em texto — o que a pessoa copia e cola pra
+  // contar um erro. Uma linha por etapa, com identificadores curtos do código
+  // (é log, não frase de interface: título, botão e aviso passam pelo i18n).
+  // `dg` é montado pelo ler(); campo ausente vira "?" e a linha some.
+  function relatorio(dg) {
+    if (!dg) return "";
+    const n = (x, k) => (typeof x === "number" && isFinite(x) ? x.toFixed(k || 0) : "?");
+    const dim = (a) => (a && a.length === 2 ? `${n(a[0])}x${n(a[1])}` : "?");
+    const L = [];
+    L.push(`sleevu scan · ${new Date(dg.t || 0).toISOString().slice(0, 19).replace("T", " ")} · ${dg.modo || "?"}`);
+    L.push(`fonte ${dim(dg.fonte)} · carta ${dim(dg.rec)} · foco ${dg.poi || "padrao"}`);
+    const q = dg.quadros || [];
+    if (q.length) {
+      const m = q[dg.escolhido] || q[0];
+      L.push(`quadros nitidez ${q.map((x, i) => n(x.nitidez) + (i === dg.escolhido ? "*" : "")).join(" ")} · luz ${n(m.brilho)} · reflexo ${n(m.reflexo * 100, 1)}%`);
+    }
+    (dg.passos || []).forEach((p, i) => {
+      L.push(`#${i + 1} ${p.nome} ${p.w}x${p.h} ${n(p.ms)}ms`);
+      const tx = String(p.texto || "").trim();
+      L.push(tx ? tx.split("\n").map((l) => `   | ${l}`).join("\n") : "   | -");
+      L.push(`   -> ${(p.cands || []).map((c) => `${c.codigo} p${c.peso} c${n(c.conf)}`).join(", ") || "-"}`);
+    });
+    const j = dg.jogo;
+    if (j) {
+      const pts = Object.keys(j.pontos || {}).sort((a, b) => j.pontos[b] - j.pontos[a]).map((g) => `${g}:${j.pontos[g]}`).join(" ");
+      L.push(`jogo ${pts || "-"}${j.confiante ? " !" : ""} · busca ${(j.busca || []).join(",") || "*"}${j.trava ? ` · trava ${j.trava}` : ""}`);
+    }
+    const b = dg.busca;
+    if (b) L.push(`achou ${b.codigo || "-"} -> ${b.n}${b.cartas && b.cartas.length ? ` · ${b.cartas.join(" | ")}` : ""}`);
+    const f = dg.foto;
+    if (f) L.push(`foto ${f.mudou ? "mudou" : "manteve"}${f.claro ? " claro" : ""}${f.notas && f.notas.length ? ` · ${f.notas.map((x) => n(x, 2)).join(" ")}` : ""}`);
+    if (dg.erro) L.push(`erro ${dg.erro}`);
+    if (typeof dg.ms === "number") L.push(`total ${n(dg.ms)}ms`);
+    return L.join("\n");
   }
 
   // ── Motor de OCR (carregado sob demanda, um worker por sessão) ─────────────
@@ -970,6 +1035,8 @@
 .scan-shutter span { width: 76px; height: 76px; border-radius: 999px; background: #fff; display: block; }
 .scan-shutter[disabled] { opacity: .55; cursor: wait; }
 .scan-shutter[hidden] { display: none; }
+/* Segurar o disparador liga o diagnóstico (2026-11-01): sem o menu do toque longo nem seleção. */
+.scan-shutter { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; touch-action: manipulation; }
 .scan-lote { height: 44px; min-height: 0; flex: none; padding: 0 14px 0 12px; border: 1px solid rgba(255,255,255,.14); border-radius: 999px; background: rgba(13,14,18,.62); color: #f3f5f7; font: inherit; font-size: 13px; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
 .scan-lote.is-vazio { visibility: hidden; }
 /* Leitura automática e lista da sessão (2026-09-28) — o "modo ManaBox": a
@@ -1063,7 +1130,24 @@
 .scan-vazio { margin: 0; padding: 0 4px; font-size: 13px; color: #9ba4b3; line-height: 1.5; }
 .scan-vazio[hidden] { display: none; }
 .scan-vazio a { color: var(--accent-ink, #ef4444); font-weight: 700; }
-.scan-priv { margin: 0; font-size: 11.5px; color: #8891a1; text-align: center; }`;
+.scan-priv { margin: 0; font-size: 11.5px; color: #8891a1; text-align: center; }
+/* DIAGNÓSTICO (2026-11-01): o que o leitor viu em cada leitura — as fotos já
+   tratadas que foram pro OCR, o texto lido, o jogo e a busca —, pra dizer no
+   aparelho se o erro foi de luz, de leitura ou de catálogo. Tracejado ciano
+   pra não se confundir com a interface de sempre. O botão fica no canto da
+   moldura (posicionaGuia) e abre a folha. */
+.scan-diag-btn { position: absolute; min-height: 44px; padding: 0 14px; border: 1px dashed rgba(0,229,255,.75); border-radius: 999px; background: rgba(13,14,18,.78); color: #9eeaf5; font: inherit; font-size: 12.5px; font-weight: 800; cursor: pointer; }
+.scan-diag-btn[hidden], .scan-diag[hidden] { display: none; }
+.scan-diag { padding: 4px 10px 10px; border: 1px dashed rgba(0,229,255,.45); border-radius: 12px; }
+.scan-diag > * + * { margin-top: 8px; }
+.scan-diag summary { min-height: 44px; display: flex; align-items: center; color: #9eeaf5; font-size: 13.5px; font-weight: 800; cursor: pointer; }
+.scan-diag pre { margin: 0; max-height: 42vh; overflow: auto; white-space: pre-wrap; word-break: break-word; color: #cfd6e2; font: 11.5px/1.45 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; -webkit-user-select: text; user-select: text; }
+.scan-diag-imgs { display: flex; flex-direction: column; gap: 8px; }
+.scan-diag-imgs:empty { display: none; }
+.scan-diag-imgs figure { margin: 0; display: flex; flex-direction: column; gap: 4px; }
+.scan-diag-imgs canvas { display: block; max-width: 100%; height: auto; border-radius: 6px; }
+.scan-diag-imgs figcaption { color: #8891a1; font: 11px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+.scan-diag .lst-mini { min-height: 44px; border-radius: 9px; background: #1d212b; border-color: #2d333f; color: #f3f5f7; }`;
 
   const ICO = {
     x: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>',
@@ -1198,7 +1282,11 @@
     // leitura) e `dig` as buscas digitadas na folha de correção. Troca e busca
     // à mão são a pessoa dizendo que o scanner errou: é a taxa de erro real.
     // `auto` (2026-09-28): leituras disparadas sozinhas, sem o toque no disparador.
-    const funil = { n: 0, lido: 0, achou: 0, t0: Date.now(), t1: 0, amb: 0, vis: 0, troca: 0, dig: 0, auto: 0 };
+    // `luz` (2026-11-01): leituras cuja foto escolhida tinha pouca luz ou
+    // reflexo (o mesmo critério da dica ao vivo), e `luzOk` quantas dessas
+    // acharam carta. Responde se o erro do scanner é da luz ou não: em campo
+    // a suspeita era a luz, e nada no funil dizia.
+    const funil = { n: 0, lido: 0, achou: 0, t0: Date.now(), t1: 0, amb: 0, vis: 0, troca: 0, dig: 0, auto: 0, luz: 0, luzOk: 0 };
     let trocaConta = false; // a próxima troca de candidato ainda conta como erro desta leitura
     shared.logEvento("scan_open");
     // Toda carta que entrar daqui conta como cadastro por scanner (o store não
@@ -1215,6 +1303,7 @@
     wrap.innerHTML = `
       <video class="scan-video" autoplay playsinline muted data-scan-video></video>
       <div class="scan-guia" data-scan-guia aria-hidden="true"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i><div class="scan-guia-int"></div></div>
+      <button type="button" class="scan-diag-btn" data-scan-diag-abrir hidden>${escapeHtml(t("scan.diag.chip"))}</button>
       <p class="scan-semcam" data-scan-semcam hidden></p>
       <div class="scan-top">
         <button type="button" class="scan-ico" data-scan-close aria-label="${escapeAttribute(t("export.close"))}" title="${escapeAttribute(t("export.close"))}">${ICO.x}</button>
@@ -1255,6 +1344,13 @@
           <button type="button" class="scan-heart" data-scan-add="wl:0" aria-label="${escapeAttribute(t("cmdk.addWl"))}" title="${escapeAttribute(t("cmdk.addWl"))}">${ICO.heart}</button>
           <button type="button" class="scan-heart" data-scan-trava-folha aria-pressed="false">${ICO.cadeado}</button>
         </div>
+        <details class="scan-diag" data-scan-diag open hidden>
+          <summary>${escapeHtml(t("scan.diag.title"))}</summary>
+          <pre data-scan-diag-txt></pre>
+          <div class="scan-diag-imgs" data-scan-diag-imgs></div>
+          <button type="button" class="lst-mini" data-scan-diag-copiar>${escapeHtml(t("scan.diag.copy"))}</button>
+          <p class="scan-priv">${escapeHtml(t("scan.diag.private"))}</p>
+        </details>
         <p class="scan-priv">${escapeHtml(t("scan.privacy"))}</p>
       </div>
       <div class="scan-sheet" data-scan-som-folha hidden>
@@ -1717,28 +1813,36 @@
       btnAuto.setAttribute("aria-label", rot);
       btnAuto.title = rot;
     }
+    // As dicas ao vivo (pouca luz, reflexo) rodam com a leitura automática
+    // DESLIGADA também (2026-11-01): antes o laço inteiro parava, e quem usa o
+    // disparador — o caso de luz ruim, em que a pessoa mira com calma — ficava
+    // sem aviso nenhum. Desligada, só não dispara.
     function tickAuto() {
       tmAuto = 0;
       if (!wrap.isConnected) return;
-      const pausado = !autoLigado || !motorPronto || !stream || !video.videoWidth || ocupado
+      const pausado = !motorPronto || !stream || !video.videoWidth || ocupado || disparando
         || !folha.hidden || !folhaSom.hidden || !folhaLista.hidden || document.hidden;
       if (!pausado) {
         try {
           const rec = recorteDaGuia(video, wrap, guia);
           ctxAmostra.drawImage(video, rec.sx, rec.sy, rec.sw, rec.sh, 0, 0, 48, 66);
-          const d = ctxAmostra.getImageData(0, 0, 48, 66).data;
-          const g = new Uint8Array(48 * 66);
-          for (let i = 0, j = 0; j < g.length; i += 4, j++) g[j] = (d[i] * 299 + d[i + 1] * 587 + d[i + 2] * 114) / 1000;
+          const g = cinzaDe(ctxAmostra.getImageData(0, 0, 48, 66).data);
           const m = medirQuadro(g, 48, 66, amostraAnt);
           amostraAnt = g;
           const chaveDica = dicaDoQuadro(m);
-          const dq = chaveDica ? t(chaveDica) : "";
-          const r = passoAuto(estAuto, m);
-          // A cena mudou (carta trocada): a dica da leitura que falhou sai.
-          if (!estAuto.armado && r.st.armado && dicaFalha) { dicaFalha = ""; if (!dq) pronto(); }
-          estAuto = r.st;
+          const escuro = chaveDica === "scan.hint.dark";
+          // Sem lanterna (iPhone pela web), a dica não manda acendê-la.
+          const dq = chaveDica ? t(escuro && btnTorch.hidden ? "scan.hint.darkNoTorch" : chaveDica) : "";
+          sugerirLanterna(escuro);
+          let r = null;
+          if (autoLigado) {
+            r = passoAuto(estAuto, m);
+            // A cena mudou (carta trocada): a dica da leitura que falhou sai.
+            if (!estAuto.armado && r.st.armado && dicaFalha) { dicaFalha = ""; if (!dq) pronto(); }
+            estAuto = r.st;
+          }
           if (dq !== dicaQuadro) { dicaQuadro = dq; pronto(); }
-          if (r.disparar) lerAgora(true);
+          if (r && r.disparar) lerAgora(true);
         } catch (e) { /* o vídeo ainda não tem quadro */ }
       }
       tmAuto = setTimeout(tickAuto, AUTO.intervalo);
@@ -1755,6 +1859,165 @@
       if (codigoAtual && !ocupado) buscarManual(codigoAtual);
     });
 
+    // ── Captura e diagnóstico ────────────────────────────────────────────────
+    // O jogo que já se sabe antes de ler (trava, seletor, página): decide a
+    // faixa onde o código mora — o topo no Gundam, o rodapé nos outros.
+    const jogoSabido = () => (trava ? trava.game : (selJogo.value || sessao));
+    let poi = "";            // ponto de foco/luz pedido à câmera ("x,y" do quadro), pro relatório
+    let disparando = false;  // a rajada do disparo está colhendo quadros
+    let captura = null;      // a rajada da leitura em curso: { quadros, escolhido, ruim }
+    // FOCO E LUZ NA FAIXA DO CÓDIGO (2026-11-01), onde o Android/Chrome deixa
+    // pedir (pointsOfInterest, coordenadas 0-1 do quadro). Sem isso a câmera
+    // mede a luz da cena inteira: a carta clara na mesa escura sai estourada,
+    // e a faixa escura do código do DBFW (cinza-claro miúdo sobre azul-
+    // marinho) sai escura demais. O iPhone não tem a API e segue como estava.
+    async function focarNoCodigo() {
+      try {
+        const tr = stream && stream.getVideoTracks()[0];
+        const sup = navigator.mediaDevices.getSupportedConstraints ? navigator.mediaDevices.getSupportedConstraints() : {};
+        if (!tr || !sup.pointsOfInterest || !video.videoWidth) return;
+        const rec = recorteDaGuia(video, wrap, guia);
+        const x = (rec.sx + rec.sw / 2) / video.videoWidth;
+        const y = (rec.sy + rec.sh * (jogoSabido() === "gundam" ? RODAPE / 2 : 1 - RODAPE / 2)) / video.videoHeight;
+        await tr.applyConstraints({ advanced: [{ pointsOfInterest: [{ x, y }] }] });
+        poi = `${x.toFixed(2)},${y.toFixed(2)}`;
+      } catch (e) { poi = ""; }
+    }
+    // No escuro, o raio da lanterna ganha o anel de sugestão (o mesmo do
+    // cadeado) — só com a lanterna apagada e num aparelho que tem uma.
+    function sugerirLanterna(escuro) {
+      btnTorch.classList.toggle("is-sugere", escuro && !btnTorch.hidden && btnTorch.getAttribute("aria-pressed") !== "true");
+    }
+    // MELHOR DE N QUADROS (2026-11-01). O disparo congelava UM quadro, o do
+    // instante do toque — justo o que sai tremido (o dedo empurra o celular),
+    // e no escuro a câmera alonga a exposição e qualquer tremor vira borrão.
+    // Agora o disparo colhe uma rajada curta (4 quadros no toque; 3 na leitura
+    // automática, que já esperou a carta parar), com 90 ms ou mais entre eles,
+    // e fica com o mais NÍTIDO na faixa do código. Só UM quadro inteiro vive
+    // na memória: o canvas é redesenhado quando chega um mais nítido. Custa
+    // ~0,3 s antes do OCR, que leva 1-3 s.
+    const RAJADA = { toque: 4, auto: 3, intervalo: 90 };
+    // Espera um quadro NOVO do vídeo, pelo menos `ms` depois (requestVideo-
+    // FrameCallback onde há; senão, só o tempo). Com teto: vídeo parado (aba
+    // escondida, câmera caiu) não trava a leitura.
+    function proximoQuadro(ms) {
+      return new Promise((ok) => {
+        const t0 = performance.now();
+        if (!video.requestVideoFrameCallback) { setTimeout(ok, ms); return; }
+        const teto = setTimeout(ok, ms * 4);
+        const novo = () => {
+          if (performance.now() - t0 < ms) { video.requestVideoFrameCallback(novo); return; }
+          clearTimeout(teto);
+          ok();
+        };
+        video.requestVideoFrameCallback(novo);
+      });
+    }
+    async function rajada(rec, n) {
+      const c = document.createElement("canvas");
+      c.width = video.videoWidth;
+      c.height = video.videoHeight;
+      const ctx = c.getContext("2d");
+      // A nitidez é medida na faixa do código reduzida a até 480 px (reduzir
+      // também tira parte do ruído do escuro, que inflaria o laplaciano); a
+      // luz e o reflexo, na carta inteira a 48×66, como na dica ao vivo.
+      const fw = Math.max(8, Math.min(480, Math.round(rec.sw)));
+      const fh = Math.max(8, Math.round((rec.sh * RODAPE * fw) / rec.sw));
+      const fy = rec.sy + (jogoSabido() === "gundam" ? 0 : rec.sh * (1 - RODAPE));
+      const faixa = document.createElement("canvas");
+      faixa.width = fw;
+      faixa.height = fh;
+      const cf = faixa.getContext("2d", { willReadFrequently: true });
+      const quadros = [];
+      let escolhido = -1;
+      for (let k = 0; k < n; k++) {
+        if (k) await proximoQuadro(RAJADA.intervalo);
+        if (!stream || !video.videoWidth) break;
+        cf.drawImage(video, rec.sx, fy, rec.sw, rec.sh * RODAPE, 0, 0, fw, fh);
+        ctxAmostra.drawImage(video, rec.sx, rec.sy, rec.sw, rec.sh, 0, 0, 48, 66);
+        const m = medirQuadro(cinzaDe(ctxAmostra.getImageData(0, 0, 48, 66).data), 48, 66, null);
+        m.nitidez = nitidez(cinzaDe(cf.getImageData(0, 0, fw, fh).data), fw, fh);
+        quadros.push(m);
+        if (escolhido < 0 || m.nitidez > quadros[escolhido].nitidez) {
+          escolhido = k;
+          ctx.drawImage(video, 0, 0);
+        }
+      }
+      if (escolhido < 0) { c.width = c.height = 0; return null; }
+      return { canvas: c, quadros, escolhido, ruim: !!dicaDoQuadro(quadros[escolhido]) };
+    }
+
+    // DIAGNÓSTICO (2026-11-01). Em campo, com cartas de DBFW e Pokémon, o
+    // scanner errou e a suspeita era a luz — mas nada dizia em que etapa: o
+    // OCR não leu, leu errado, leu e o catálogo não casou, ou casou a versão
+    // errada. Segurar o disparador (ou abrir com ?scandiag=1; =0 desliga)
+    // liga um modo que guarda, da ÚLTIMA leitura, a foto escolhida, a nitidez
+    // da rajada, cada recorte já tratado que foi pro OCR, o texto lido, o jogo
+    // e a busca; o botão "Diagnóstico" no canto da moldura abre a folha com
+    // tudo e um "Copiar relatório" (só o texto). Fica SÓ na memória, troca a
+    // cada leitura e morre ao fechar: a foto continua sem sair do aparelho.
+    const CHAVE_DIAG = "tcg-scan-diag-v1";
+    let diagLigado = false;
+    try {
+      const q = /[?&]scandiag=([01])\b/.exec(location.search);
+      diagLigado = q ? q[1] === "1" : localStorage.getItem(CHAVE_DIAG) === "1";
+      if (q) localStorage.setItem(CHAVE_DIAG, q[1]);
+    } catch (e) { /* sem storage: vale o que o endereço disse */ }
+    let diagAtual = null; // relatório da última leitura, com as miniaturas dos recortes
+    let tmDiagAviso = 0;
+    const btnDiag = $("[data-scan-diag-abrir]");
+    const caixaDiag = $("[data-scan-diag]");
+    btnDiag.hidden = !diagLigado;
+    function alternarDiag() {
+      diagLigado = !diagLigado;
+      try { localStorage.setItem(CHAVE_DIAG, diagLigado ? "1" : "0"); } catch (e) { /* vale só nesta sessão */ }
+      if (!diagLigado) diagAtual = null;
+      btnDiag.hidden = !diagLigado;
+      shared.vibrar(diagLigado ? [20, 40, 20] : 20);
+      dizer(t(diagLigado ? "scan.diag.on" : "scan.diag.off"));
+      clearTimeout(tmDiagAviso);
+      tmDiagAviso = setTimeout(() => { if (!ocupado) pronto(); }, 4000);
+    }
+    // Cópia reduzida de um retângulo de `fonte` pro relatório: o recorte que
+    // foi pro OCR tem até 1800 px, e a folha só precisa mostrar.
+    function copiaDiag(fonte, sx, sy, sw, sh, largura) {
+      const k = Math.min(1, largura / sw);
+      const c = document.createElement("canvas");
+      c.width = Math.max(1, Math.round(sw * k));
+      c.height = Math.max(1, Math.round(sh * k));
+      c.getContext("2d").drawImage(fonte, sx, sy, sw, sh, 0, 0, c.width, c.height);
+      return c;
+    }
+    function pintarDiag() {
+      caixaDiag.hidden = !diagLigado;
+      if (!diagLigado) return;
+      $("[data-scan-diag-txt]").textContent = diagAtual ? relatorio(diagAtual) : t("scan.diag.empty");
+      $("[data-scan-diag-copiar]").textContent = t("scan.diag.copy");
+      const imgs = $("[data-scan-diag-imgs]");
+      imgs.textContent = "";
+      if (!diagAtual) return;
+      [{ c: diagAtual.recorte, nome: "foto" }]
+        .concat(diagAtual.passos.map((p, i) => ({ c: p.img, nome: `#${i + 1} ${p.nome}` })))
+        .forEach((f) => {
+          if (!f.c) return;
+          const fig = document.createElement("figure");
+          const cap = document.createElement("figcaption");
+          cap.textContent = f.nome;
+          fig.appendChild(f.c);
+          fig.appendChild(cap);
+          imgs.appendChild(fig);
+        });
+    }
+    // Copia só o TEXTO. Sem a API da área de transferência (http, webview
+    // antiga), seleciona o relatório pra pessoa copiar à mão.
+    function copiarDiag(btn) {
+      const txt = relatorio(diagAtual);
+      if (!txt) return;
+      const seleciona = () => { try { window.getSelection().selectAllChildren($("[data-scan-diag-txt]")); } catch (e) { /* fica à vista */ } };
+      try { navigator.clipboard.writeText(txt).then(() => { btn.textContent = t("scan.diag.copied"); }, seleciona); }
+      catch (e) { seleciona(); }
+    }
+
     // Moldura: 86 % da largura (teto de 440 px), limitada pela altura que sobra
     // entre a barra de cima e a área do resultado + disparador. Em JS porque
     // width + aspect-ratio + max-height não fecham em CSS puro.
@@ -1769,6 +2032,8 @@
       guia.style.height = `${Math.round(h)}px`;
       guia.style.top = `${Math.round(y)}px`;
       dica.style.top = `${Math.round(y + h + 10)}px`;
+      btnDiag.style.top = `${Math.round(y + 8)}px`;
+      btnDiag.style.left = `${Math.round((W - w) / 2 + 8)}px`;
     }
     posicionaGuia();
     window.addEventListener("resize", posicionaGuia);
@@ -1780,10 +2045,13 @@
       shared.logEvento("scan_done", {
         n: funil.n, lido: funil.lido, achou: funil.achou, add: lote,
         ms: Math.max(0, Date.now() - funil.t0), t1: funil.t1 || 0,
-        amb: funil.amb, vis: funil.vis, troca: funil.troca, dig: funil.dig, auto: funil.auto
+        amb: funil.amb, vis: funil.vis, troca: funil.troca, dig: funil.dig, auto: funil.auto,
+        luz: funil.luz, luzOk: funil.luzOk
       });
       clearTimeout(tmAuto);
       clearTimeout(tmLimpar);
+      clearTimeout(tmDiagAviso);
+      diagAtual = null; // as miniaturas do diagnóstico morrem com o scanner
       if (stream) stream.getTracks().forEach((tr) => tr.stop());
       stream = null;
       wrap.remove();
@@ -1832,6 +2100,7 @@
       } catch (e) { /* sem controle de foco/lanterna */ }
       await new Promise((r) => { if (video.readyState >= 1) r(); else video.onloadedmetadata = () => r(); });
       try { await video.play(); } catch (e) { /* autoplay já cuidou */ }
+      focarNoCodigo();
       btnLer.disabled = false;
       pronto();
     }
@@ -1941,14 +2210,16 @@
         cad.title = rot;
         cad.classList.toggle("done", nesta);
       }
+      pintarDiag();
     }
-    function abrirFolha() {
+    // `semFoco`: aberta pelo botão do diagnóstico — é pra ler, não pra digitar.
+    function abrirFolha(semFoco) {
       pintarFolha();
       folhaSom.hidden = true;
       folhaLista.hidden = true;
       folha.hidden = false;
       atualizarFundo();
-      if (!resultados.length) { try { input.focus(); } catch (e) { /* teclado não abriu */ } }
+      if (!resultados.length && !semFoco) { try { input.focus(); } catch (e) { /* teclado não abriu */ } }
     }
     // Fechar a folha que veio do "Conferir" da lista volta pra lista.
     function fecharFolha() {
@@ -1963,6 +2234,10 @@
       if (achados.length > 1) funil.amb += 1;   // com mais de uma carta
       if (foto && foto.mudou) funil.vis += 1;   // e a foto mudou qual vem primeiro
       if (auto) funil.auto += 1;                // leitura disparada sozinha
+      if (captura && captura.ruim) {            // a foto escolhida tinha pouca luz ou reflexo
+        funil.luz += 1;
+        if (achados.length) funil.luzOk += 1;
+      }
       trocaConta = achados.length > 1;
       codigoAtual = codigo || "";
       resultados = achados;
@@ -2074,6 +2349,20 @@
       fecharFolha();
       guia.classList.add("is-lendo");
       pintarLendo(fonte, rec);
+      // Diagnóstico desta leitura (só com o modo ligado): vira o `diagAtual`
+      // já no começo, e cada etapa preenche o seu pedaço.
+      const t0 = performance.now();
+      const dg = diagLigado ? {
+        t: Date.now(), modo: rec.galeria ? "galeria" : auto ? "auto" : "toque",
+        fonte: [fonte.videoWidth || fonte.width || 0, fonte.videoHeight || fonte.height || 0],
+        rec: [rec.sw, rec.sh], poi: rec.galeria ? "" : poi,
+        quadros: captura ? captura.quadros : null, escolhido: captura ? captura.escolhido : -1,
+        recorte: null, passos: []
+      } : null;
+      if (dg) {
+        try { dg.recorte = copiaDiag(fonte, rec.sx, rec.sy, rec.sw, rec.sh, 240); } catch (e) { /* sem miniatura */ }
+        diagAtual = dg;
+      }
       try {
         aviso(t("scan.status.loading"));
         const worker = await obterWorker(progresso);
@@ -2081,20 +2370,30 @@
         const leituras = [];
         let texto = "";
         // `origem`: onde o recorte fica na carta ("base", "topo"; vazio = a
-        // carta inteira) — vira pista do jogo em detectarJogo.
-        const passo = async (canvas, origem) => {
+        // carta inteira) — vira pista do jogo em detectarJogo. `nome`: só pro
+        // relatório do diagnóstico.
+        const passo = async (canvas, origem, nome) => {
+          const t1 = performance.now();
           const r = await ocr(worker, canvas);
           texto += (texto ? "\n" : "") + r.texto;
-          leituras.push(extrair(r.texto, r.palavras).map((x) => Object.assign(x, { origem: origem || "" })));
+          const lidos = extrair(r.texto, r.palavras).map((x) => Object.assign(x, { origem: origem || "" }));
+          leituras.push(lidos);
+          if (dg) {
+            dg.passos.push({
+              nome, w: canvas.width, h: canvas.height, ms: performance.now() - t1, texto: r.texto,
+              cands: lidos.map((x) => ({ codigo: x.codigo, peso: x.peso, conf: x.conf })),
+              img: copiaDiag(canvas, 0, 0, canvas.width, canvas.height, 600)
+            });
+          }
           return juntar(leituras);
         };
-        let cands = await passo(recorte(fonte, rec, 0, 1 - RODAPE, 1, RODAPE, LARGURA_RODAPE), "base");
+        let cands = await passo(recorte(fonte, rec, 0, 1 - RODAPE, 1, RODAPE, LARGURA_RODAPE), "base", "rodape");
         // "Forte" = candidato com formato de jogo. O Magic entra mesmo com
         // peso 1: o artista fica entre o número e o set no texto, e "MH3 123"
         // casado de longe é o caso comum, não lixo.
         const forte = () => cands.length && (cands[0].peso >= 2 || (cands[0].peso === 1 && /^[A-Z][A-Z0-9]{2,3} \d+$/.test(cands[0].codigo)));
         if (cands.length && cands[0].peso >= 2 && cands[0].conf < CONF_SEGURA) {
-          cands = await passo(recorte(fonte, rec, 0, 1 - RODAPE, 1, RODAPE, LARGURA_RODAPE_2), "base");
+          cands = await passo(recorte(fonte, rec, 0, 1 - RODAPE, 1, RODAPE, LARGURA_RODAPE_2), "base", "rodape2");
         }
         // CANTOS DIREITOS ampliados (2026-09-29), só quando o rodapé inteiro
         // não deu código com formato de jogo. Magic, Pokémon e Lorcana
@@ -2108,21 +2407,25 @@
           const jogo = trava ? trava.game : (selJogo.value || sessao);
           const ordem = jogo === "gundam" ? ["topo", "base"] : ["base", "topo"];
           for (const onde of ordem) {
-            cands = await passo(recorte(fonte, rec, 1 - CANTO, onde === "topo" ? 0 : 1 - RODAPE, CANTO, RODAPE, LARGURA_CANTO), onde);
+            cands = await passo(recorte(fonte, rec, 1 - CANTO, onde === "topo" ? 0 : 1 - RODAPE, CANTO, RODAPE, LARGURA_CANTO), onde, `canto-${onde}`);
             if (forte()) break;
           }
         }
-        if (!forte()) cands = await passo(recorte(fonte, rec, 0, 1 - FAIXA, 1, FAIXA, LARGURA_OCR), "base");
+        if (!forte()) cands = await passo(recorte(fonte, rec, 0, 1 - FAIXA, 1, FAIXA, LARGURA_OCR), "base", "faixa");
         let codigos = cands.map((c) => c.codigo);
         const origens = () => cands.reduce((o, c) => { o[c.codigo] = c.origem; return o; }, {});
         const deteccao = detectarJogo(texto, codigos, sessao, origens());
         // Com o set travado o jogo já é sabido: a carta inteira só se não houver código.
         if (!codigos.length || (!selJogo.value && !trava && !deteccao.confiante)) {
-          cands = await passo(recorte(fonte, rec, 0, 0, 1, 1, LARGURA_OCR));
+          cands = await passo(recorte(fonte, rec, 0, 0, 1, 1, LARGURA_OCR), "", "carta");
           codigos = cands.map((c) => c.codigo);
         }
         ultimoTexto = texto;
         ultimasOrigens = origens();
+        if (dg) {
+          const d = detectarJogo(texto, codigos, sessao, ultimasOrigens);
+          dg.jogo = { pontos: d.pontos, confiante: d.confiante, busca: jogosDaBusca(codigos), trava: trava ? trava.nome : "" };
+        }
         // O seletor de jogo é SÓ da pessoa (2026-09-10). Antes, uma detecção
         // confiante gravava o jogo no seletor — e o seletor preenchido vale
         // como filtro FIXO em jogosDaBusca, sem a segunda chance sem filtro.
@@ -2131,7 +2434,7 @@
         // cada leitura detecta o jogo de novo pelas pistas da própria carta
         // (o cartão de resultado já diz qual foi); escolher um jogo no seletor
         // é a forma de FORÇAR um só, quando a detecção errar.
-        if (!codigos.length) { entregar("", [], null, auto); return; }
+        if (!codigos.length) { if (dg) dg.ms = performance.now() - t0; entregar("", [], null, auto); return; }
         const { codigo, achados } = await procurar(codigos);
         // Mesmo código, cartas diferentes (Alternate Art, Parallel, Manga…):
         // a foto desempata ANTES de o resultado aparecer — trocar a carta
@@ -2142,9 +2445,11 @@
           aviso(t("scan.status.comparing"));
           try { foto = await conferirPelaFoto(fonte, rec, achados); } catch (e) { /* fica a ordem da busca */ }
         }
+        if (dg) Object.assign(dg, { busca: { codigo, n: achados.length, cartas: achados.slice(0, 3).map((h) => h.card.name) }, foto, ms: performance.now() - t0 });
         entregar(codigo, achados, foto, auto);
       } catch (e) {
         falhou = true;
+        if (dg) Object.assign(dg, { erro: String((e && e.message) || e), ms: performance.now() - t0 });
         lendoTexto = null;
         resCard.classList.remove("is-lendo");
         resCard.hidden = true;
@@ -2200,14 +2505,41 @@
         return c;
       } catch (e) { return null; }
     }
+    // A foto agora sai da RAJADA (o quadro mais nítido de 3-4, ver rajada); o
+    // congelar() de um quadro só fica de reserva, se a rajada falhar.
     async function lerAgora(auto) {
-      if (!stream || !video.videoWidth || ocupado) return;
+      if (!stream || !video.videoWidth || ocupado || disparando) return;
       const rec = recorteDaGuia(video, wrap, guia);
-      const quadro = congelar();
+      disparando = true;
+      btnLer.disabled = true;
+      guia.classList.add("is-lendo");
+      let cap = null;
+      try { cap = await rajada(rec, auto ? RAJADA.auto : RAJADA.toque); } catch (e) { cap = null; }
+      disparando = false;
+      // Fechou, ou a busca digitada ocupou o leitor durante a rajada: descarta.
+      if (!stream || ocupado) {
+        if (cap) cap.canvas.width = cap.canvas.height = 0;
+        guia.classList.remove("is-lendo");
+        if (stream) btnLer.disabled = false;
+        return;
+      }
+      captura = cap;
+      const quadro = cap ? cap.canvas : congelar();
       try { await ler(quadro || video, rec, auto); }
-      finally { if (quadro) quadro.width = quadro.height = 0; } // zerar libera o buffer (~44 MB em 4K)
+      finally { captura = null; if (quadro) quadro.width = quadro.height = 0; } // zerar libera o buffer (~44 MB em 4K)
     }
+    // Segurar o disparador ~1,2 s liga/desliga o diagnóstico; o clique que
+    // vem ao soltar não lê (o `segurou` engole ele).
+    let tmSegura = 0, segurou = false;
+    btnLer.addEventListener("pointerdown", () => {
+      segurou = false;
+      clearTimeout(tmSegura);
+      tmSegura = setTimeout(() => { segurou = true; alternarDiag(); }, 1200);
+    });
+    ["pointerup", "pointerleave", "pointercancel"].forEach((tipo) => btnLer.addEventListener(tipo, () => clearTimeout(tmSegura)));
+    btnLer.addEventListener("contextmenu", (ev) => ev.preventDefault());
     btnLer.addEventListener("click", async () => {
+      if (segurou) { segurou = false; return; } // foi o toque longo do diagnóstico
       if (som.on) contextoAudio(); // dentro do toque: é o que o Safari exige pra tocar depois
       await lerAgora(false);
     });
@@ -2245,6 +2577,9 @@
     });
     wrap.addEventListener("click", (ev) => {
       if (ev.target.closest("[data-scan-close]")) { fechar(); return; }
+      if (ev.target.closest("[data-scan-diag-abrir]")) { abrirFolha(true); return; }
+      const copiar = ev.target.closest("[data-scan-diag-copiar]");
+      if (copiar) { copiarDiag(copiar); return; }
       if (ev.target.closest("[data-scan-backdrop]") || ev.target.closest(".scan-sheet-handle")) {
         if (!folhaLista.hidden) fecharLista(); else if (!folhaSom.hidden) fecharSom(); else fecharFolha();
         return;
@@ -2343,6 +2678,7 @@
     integral, assinatura, semelhanca, assinaturasDoQuadro, ordemPelaFoto,
     numeroDe, noSet,
     faixaDePreco, configSom, SONS, VIBRA,
-    medirQuadro, passoAuto, dicaDoQuadro, varianteDe, AUTO
+    medirQuadro, passoAuto, dicaDoQuadro, varianteDe, AUTO,
+    cinzaDe, nitidez, relatorio
   };
 })();
