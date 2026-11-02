@@ -356,6 +356,55 @@ Chopper marcada pra conferir (empata com a reimpressão do Premium Booster,
 de outro preço), o "Conferir" trocando pela reimpressão, a coleção recebendo
 Foil em SP, e a lista de volta depois de fechar — em 390 e 320 px.
 
+## Fase 1.7 — luz e diagnóstico (2026-11-01)
+
+Em campo, cartas de DBFW e Pokémon deram erro com a luz do lugar, e nada no
+scanner dizia em que etapa: o OCR não leu, leu errado, leu e o catálogo não
+casou, ou casou a versão errada. Esta entrega mexe na captura e passa a medir.
+
+- **Melhor de N quadros** (`rajada`, `nitidez`). O disparo congelava o quadro
+  do instante do toque — justo o tremido (o dedo empurra o celular), e no
+  escuro a câmera alonga a exposição. Agora colhe 4 quadros (3 na leitura
+  automática, que já esperou a carta parar), com 90 ms ou mais entre eles, e
+  lê o mais nítido na faixa do código: média do quadrado do laplaciano, a até
+  480 px (reduzir também tira parte do ruído do escuro). Só um quadro inteiro
+  na memória. Custa ~0,3 s antes do OCR.
+- **Dicas de luz sempre.** Pouca luz e reflexo só eram medidos com a leitura
+  automática ligada; quem usa o disparador ficava sem aviso. Agora o laço mede
+  sempre e só não dispara. No escuro, a lanterna ganha o anel de sugestão; sem
+  lanterna (iPhone pela web), a dica não manda acendê-la.
+- **Foco e luz na faixa do código** (`focarNoCodigo`): `pointsOfInterest` no
+  Android/Chrome, no meio do rodapé (topo no Gundam). A câmera media a cena
+  inteira, e a faixa escura do código do DBFW (cinza-claro miúdo sobre azul-
+  marinho) saía escura demais. Sem conferir em aparelho: o relatório diz se o
+  pedido pegou (`foco x,y`) ou não (`foco padrao`).
+- **Modo diagnóstico.** Segurar o disparador ~1,2 s (ou abrir com
+  `?scandiag=1`; `=0` desliga) liga um botão "Diagnóstico" no canto da
+  moldura. Ele abre a folha com a última leitura: a foto escolhida, a nitidez
+  de cada quadro da rajada, cada recorte tratado que foi pro OCR (a imagem que
+  o Tesseract viu), o texto lido, os candidatos, o jogo e a busca, com
+  "Copiar relatório" (só texto). Fica só na memória e some ao fechar.
+- **`scan_done` com `luz` e `luzOk`**: leituras cuja foto escolhida tinha
+  pouca luz ou reflexo (o mesmo critério da dica) e quantas dessas acharam
+  carta. Sem migração ainda: o `/admin` não soma; os números já ficam nos
+  eventos.
+- **DBFW Manga Booster** (`SB01-001`) virou formato de jogo. O DBFW imprime o
+  copyright na VERTICAL ("©B.S./S., T.A") e o OCR não lê: o formato é a única
+  pista, e o SB01 valia peso 1 e levava toda leitura até a carta inteira.
+
+**O que o diagnóstico já mostrou** (câmera falsa no Chromium, carta sintética
+no molde do DBFW: código cinza-claro em fonte de 1,7 % da altura da carta,
+sobre a faixa azul-marinho). A rajada escolheu o quadro nítido (nitidez
+`15 15 465*`), luz boa, e mesmo assim nenhuma das cinco passadas leu o código.
+No recorte tratado o "FB03-036" está nítido e com contraste. Relido no
+mesmo motor, só mudando a escala, ele sai com a palavra entre 10 e 31 px de
+altura e some a partir de ~37 px: o rodapé a 1800 px e o canto a 1400 px
+ampliavam demais ESTA carta, e o scanner não tem passada em escala menor.
+Inverter (claro↔escuro) não muda nada. É uma carta desenhada, não uma foto: o
+código do One Piece foi lido com ~50 px em setembro. Próximo passo: conferir
+com o diagnóstico em cartas reais e, se repetir, medir uma passada em escala
+menor no banco de `data/.cache/scan-test/`, com um cenário escuro.
+
 ## Fase 2 — hash perceptual da arte
 
 Pra vintage e pra quando o código não sai: hash de 64–256 bits por carta,

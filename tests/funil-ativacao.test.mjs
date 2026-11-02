@@ -77,7 +77,7 @@ test("o scanner manda UM resumo, não um evento por leitura", () => {
 });
 
 test("o resumo do scanner carrega o funil inteiro em props", () => {
-  const m = /logEvento\("scan_done",\s*\{([\s\S]{0,240}?)\}\)/.exec(scan);
+  const m = /logEvento\("scan_done",\s*\{([\s\S]{0,360}?)\}\)/.exec(scan);
   assert.ok(m, "não achei o payload do scan_done");
   for (const campo of ["n", "lido", "achou", "add", "ms"]) {
     assert.match(m[1], new RegExp(`\\b${campo}:`), `o scan_done não manda "${campo}" — o passo some do funil`);

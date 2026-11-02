@@ -1992,7 +1992,9 @@
       caixaDiag.hidden = !diagLigado;
       if (!diagLigado) return;
       $("[data-scan-diag-txt]").textContent = diagAtual ? relatorio(diagAtual) : t("scan.diag.empty");
-      $("[data-scan-diag-copiar]").textContent = t("scan.diag.copy");
+      const copiar = $("[data-scan-diag-copiar]");
+      copiar.textContent = t("scan.diag.copy");
+      copiar.hidden = !diagAtual;
       const imgs = $("[data-scan-diag-imgs]");
       imgs.textContent = "";
       if (!diagAtual) return;
