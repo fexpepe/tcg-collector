@@ -599,7 +599,7 @@
     ["op-mb-", "mbc"], ["nrt-mb-", "mbc"], ["hxh-mb-", "mbc"], ["mb-", "mbc"],
     ["mtg-", "magic"], ["ygo-", "ygo"], ["op-", "onepiece"], ["opcd-", "onepiece"], ["op2002-", "onepiece"],
     ["fab-", "fab"], ["gcg-", "gundam"], ["swu-", "swu"], ["cpk-", "cyberpunk"], ["sor-", "sorcery"], ["dbfw-", "dbfw"], ["dgm-", "digimon"], ["rb-", "riftbound"],
-    ["ua-", "unionarena"], ["nrt-", "naruto"], ["hxh-", "hxh"], ["dbc-", "dbc"], ["wow-", "wow"], ["lotr-", "lotr"], ["ws-", "weiss"], ["hp-", "harrypotter"]
+    ["ua-", "unionarena"], ["nrt-", "naruto"], ["hxh-", "hxh"], ["dbc-", "dbc"], ["wow-", "wow"], ["lotr-", "lotr"], ["dbz-", "dbz"], ["ws-", "weiss"], ["hp-", "harrypotter"]
   ];
   function jogosDoId(id) {
     const conhecido = cardGameMap.get(id);

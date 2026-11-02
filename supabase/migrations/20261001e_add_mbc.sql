@@ -1,4 +1,9 @@
 -- ============================================================================
+-- NÃO APLICAR: a 20261101a (Dragon Ball Z CCG) traz a lista inteira, com o
+-- `mbc`. Esta não tem o `dbz`: rodada depois dela, tiraria o DBZ CCG das duas
+-- whitelists em silêncio. Fica como registro.
+-- ============================================================================
+-- ============================================================================
 -- Migração aditiva: libera o slug `mbc` (Miracle Battle Carddass, Bandai
 -- 2009–2015 — o crossover da Jump que virou jogo próprio em 2026-10-01) nas
 -- whitelists de jogo do banco. Aplicar no SQL Editor do Supabase (projeto

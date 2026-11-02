@@ -416,6 +416,9 @@
     // especiais; os quatro últimos moram nos sets de promo.
     lotr: ["Common", "Uncommon", "Rare", "Rare Plus", "Starter", "Premium", "Tengwar", "Legends", "Masterwork", "Promo",
       "Megasized Promo", "Digital Promo", "W-Series", "April Fool's", "St. Patrick's Day"],
+    // Dragon Ball Z CCG da Score: a galeria de cada raridade do retrodbzccg
+    // (sync-dbz.mjs). O GT e o DBZ TCG de 2005 vêm sem raridade na fonte.
+    dbz: ["Common", "Uncommon", "Rare", "Ultra Rare", "Starter", "Subset", "Preview", "Promo", "Redemption", "League", "Judge"],
     // Sorcery: Contested Realm (01/10/2026): as 4 da carta (Ordinary até
     // Unique) e Promo, que o TCGplayer dá às impressões de loja e de evento. O
     // Avatar e os tokens não têm raridade.

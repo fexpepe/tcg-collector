@@ -78,6 +78,7 @@
     dbc: ["Dragon Ball Carddass", "#db2777"],
     wow: ["WoW TCG", "#00aeff"],
     lotr: ["LOTR", "#4d7c0f"],
+    dbz: ["DBZ CCG", "#9f1239"],
     harrypotter: ["Harry Potter", "#740001"],
     weiss: ["Weiß Schwarz", "#ffffff"],
     mbc: ["Miracle Battle", "#fb923c"]

@@ -3258,6 +3258,7 @@
     naruto: SUBNAV_MIN,
     hxh: SUBNAV_MIN,
     dbc: SUBNAV_MIN,
+    dbz: SUBNAV_MIN,
     lotr: SUBNAV_MIN,
     harrypotter: SUBNAV_ARTISTS
   };
@@ -7327,6 +7328,12 @@
     // (nameOnly): os anúncios escrevem o código "1R284", então o número puro
     // + ano dos outros vintages zerava a busca.
     lotr:      { myp: "lotr", usText: "lord of the rings tcg", noTcgplayer: true, nameOnly: true },
+    // DBZ CCG da Score (conferido em 01/11/2026): sem loja BR (o MYP não tem
+    // seção — /dbz, /dragonballz e /dragon-ball-z dão 404 — e a LigaDragonBall
+    // é só Fusion World e Masters), sem TCGplayer (a linha "Dragon Ball Z TCG"
+    // de lá é a da Panini) e sem Cardmarket. eBay só com o nome (nameOnly): o
+    // catálogo não tem o ano do set.
+    dbz:       { usText: "dragon ball z ccg", noTcgplayer: true, nameOnly: true },
     // Harry Potter TCG (conferido em 30/09/2026): o MYP tem a seção /hp com os
     // cinco sets; sem Liga, sem TCGplayer (a TCGCSV não tem a categoria) e sem
     // Cardmarket. O PriceCharting tem os sets ("2001 Wizards Harry Potter").
@@ -8892,6 +8899,7 @@
     { game: "naruto", dataDir: "data/naruto/" },
     { game: "hxh", dataDir: "data/hxh/" },
     { game: "dbc", dataDir: "data/dbc/" },
+    { game: "dbz", dataDir: "data/dbz/" },
     { game: "wow", dataDir: "data/wow/" },
     { game: "lotr", dataDir: "data/lotr/" },
     { game: "harrypotter", dataDir: "data/harrypotter/" },
@@ -8929,6 +8937,7 @@
     naruto: "#ea580c",     // laranja
     hxh: "#15803d",        // verde
     dbc: "#db2777",        // rosa (a 70 do FaB, o vizinho mais próximo; 4.6:1 com preto)
+    dbz: "#9f1239",        // carmim (o fundo do anúncio de 2000); 8.0:1 com branco, a 67 do FaB e a 71 do DBC
     wow: "#00aeff",        // azul da Blizzard; 8.5:1 com preto, a 83 do Union Arena (os azuis estão cheios)
     lotr: "#4d7c0f"  ,      // verde-musgo (pedido do Fernando: "algum tom de verde"); 5.0:1 com branco, a 73 do verde do HxH
     weiss: "#ffffff",      // branco ("Weiß"; o preto é do Star Wars); 21:1 com preto, a 159 do prata do DBFW
@@ -8972,7 +8981,7 @@
     fab: "filter.gameFab", gundam: "filter.gameGundam", swu: "filter.gameSwu", cyberpunk: "filter.gameCyberpunk", sorcery: "filter.gameSorcery", dbfw: "filter.gameDbfw",
     ygo: "filter.gameYgo", digimon: "filter.gameDigimon", riftbound: "filter.gameRiftbound",
     unionarena: "filter.gameUnionArena", naruto: "filter.gameNaruto", hxh: "filter.gameHxh",
-    dbc: "filter.gameDbc", wow: "filter.gameWow", lotr: "filter.gameLotr", weiss: "filter.gameWeiss", harrypotter: "filter.gameHarryPotter",
+    dbc: "filter.gameDbc", dbz: "filter.gameDbz", wow: "filter.gameWow", lotr: "filter.gameLotr", weiss: "filter.gameWeiss", harrypotter: "filter.gameHarryPotter",
     mbc: "filter.gameMbc"
   };
   function gameLabel(g) { return t(GAME_LABEL_KEY[g] || GAME_LABEL_KEY.pokemon); }
@@ -9072,6 +9081,7 @@
     mbc: ["mb-", "op-mb-", "nrt-mb-", "hxh-mb-"], // Miracle Battle 2009–2015: idem (os 3 últimos são os ids de antes de virar jogo)
     wow: ["wow-"],                            // WoW TCG 2006–2013: idem (e é o único vintage com preço)
     lotr: ["lotr-"],                          // Decipher 2001–2007: idem
+    dbz: ["dbz-"],                            // Score 2000–2006: idem
     harrypotter: ["hp-"],                     // Wizards 2001–2002: idem
     naruto: ["nrt-"]                          // Bandai 2003–2013 inteiro…
   };

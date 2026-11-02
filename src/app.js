@@ -16,7 +16,7 @@
     magic: "game_magic-v2.webp", fab: "game_fab.webp", gundam: "game_gundam-v2.webp", swu: "game_swu.webp", cyberpunk: "game_cyberpunk.webp", sorcery: "game_sorcery.webp", dbfw: "game_dbfw-v2.webp",
     ygo: "game_ygo-v2.webp", digimon: "game_digimon-v2.webp", riftbound: "game_riftbound-v2.webp",
     unionarena: "game_unionarena.webp", naruto: "game_naruto.webp", hxh: "game_hxh.webp",
-    dbc: "game_dbc.webp", wow: "game_wow.webp", lotr: "game_lotr.webp", weiss: "game_weiss.webp", harrypotter: "game_harrypotter.webp",
+    dbc: "game_dbc.webp", wow: "game_wow.webp", lotr: "game_lotr.webp", dbz: "", weiss: "game_weiss.webp", harrypotter: "game_harrypotter.webp",
     mbc: "game_mbc.webp"
   };
   function gameLogoUrl(game) {
@@ -1533,6 +1533,7 @@
       sorcery: groupSorcerySets,
       wow: groupWowSets,
       lotr: groupLotrSets,
+      dbz: groupDbzSets,
       weiss: groupWeissSets,
       mbc: groupMbcSets,
       harrypotter: groupHarryPotterSets
@@ -1902,6 +1903,32 @@
       items.push(cabecalhoDeSecao(key, list.length));
       list.sort(porId).forEach((set) => items.push(set));
     }
+    return items;
+  }
+
+  // Dragon Ball Z CCG da Score: uma seção por fase do jogo (o CCG das 11
+  // sagas, o GT TCG e o relançamento de 2005), e os subsets e promos avulsos do
+  // CCG numa seção própria. Os sets não têm data (sync-dbz.mjs), então a ordem
+  // dentro da seção é a da lista: sagas na ordem do anime, e os promos de cada
+  // saga ("<Saga> Promos") viram chip no cartão dela pelo aninhaPorNome.
+  function groupDbzSets(setItems) {
+    const ORDEM = ["s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s9", "s10", "s11",
+      "lv", "m7", "m8", "ca", "bu", "b2", "tf", "cc", "pr", "lg",
+      "g1", "g2", "g3", "g4", "gbc", "gvi", "gpr", "t1", "t2", "t3"];
+    const codigo = (set) => String(set.setId || "").toLowerCase().replace(/^dbz-/, "");
+    const SECOES = [["sets.category.dbzCcg", /^[sp]\d+$/], ["sets.category.dbzExtras", /^(lv|m7|m8|ca|bu|b2|tf|cc|pr|lg)$/],
+      ["sets.category.dbzGt", /^g/], ["sets.category.dbzTcg", /^t\d$/]];
+    const pos = (set) => { const i = ORDEM.indexOf(codigo(set)); return i < 0 ? ORDEM.length : i; };
+    const items = [];
+    const usados = new Set();
+    const secao = (key, list) => {
+      if (!list.length) return;
+      items.push(cabecalhoDeSecao(key, list.length));
+      list.sort((a, b) => pos(a) - pos(b) || codigo(a).localeCompare(codigo(b), "en", { numeric: true })).forEach((set) => { usados.add(set); items.push(set); });
+    };
+    SECOES.forEach(([key, re]) => secao(key, setItems.filter((s) => re.test(codigo(s)))));
+    // Rede de segurança: set novo no sync sem seção aqui ainda aparece.
+    secao("sets.category.promos", setItems.filter((s) => !usados.has(s)));
     return items;
   }
 
