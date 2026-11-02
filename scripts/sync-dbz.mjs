@@ -392,7 +392,12 @@ async function build(snapshot) {
         language: "en",
         image,
         variants: c.variants || ["Normal"],
-        setLogo: "",
+        // Não há logo de saga pra usar (o retrodbzccg não publica, e foto de
+        // embalagem não é logo — docs/CATALOGO.md, contrato 3), e só os nomes
+        // deixavam a vitrine de Sets crua. Como no LOTR, no WoW e no Naruto,
+        // todo set leva o logo do JOGO (pedido do Fernando, 2026-11-02); o
+        // nome do set segue embaixo do tile.
+        setLogo: "/assets/games/game_dbz.webp",
         vintage: true
       });
     }

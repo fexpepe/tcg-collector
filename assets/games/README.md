@@ -137,14 +137,22 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
   preto desfeita, e os pontinhos soltos da retícula foram tirados. Recortado no
   conteúdo +2px e reduzido pra 512×393 (webp com alfa). A textura de retícula
   das letras é da impressão original.
-- Dragon Ball Z CCG (`dbz`, Score 2000–2006) — **sem logo ainda** (2026-11-01):
-  o tile do hub mostra o nome e o jogo fica fora da parede de logos da
-  landing. A fonte que existe é o anúncio de lançamento de 2000 que o Fernando
-  mandou, com o "DRAGON BALL Z" amarelo e vermelho sobre fundo carmim: o
-  vermelho das letras se confunde com o fundo e o recorte por cor não sai
-  limpo. Quando vier uma fonte sobre fundo liso, entra como `game_dbz.webp` em
-  `GAME_LOGO` (src/app.js), `KIT_LOGO` (src/admin.js), `functions/_lib/jogos.js`
-  e no tile do hub.html.
+- `game_dbz.webp` — Dragon Ball Z Collectible Card Game (Score, 2000–2006;
+  tile vintage do jogo `dbz` e `setLogo` de todos os sets dele). Fonte: o
+  verso do anúncio de lançamento, o sell sheet da Score com o calendário de
+  2000, que o retrodbzccg publica (`wp-content/uploads/2021/06/s-l1600-1.jpg`,
+  1221×1600). Escolhido em vez da frente que o Fernando mandou porque ali o
+  selo "New!" cobre o D. O "DRAGON BALL Z" tem contorno preto e um filete
+  branco por fora, sobre fundo carmim: o fundo saiu por preenchimento a partir
+  da borda da imagem (scipy `ndimage.label` nas regiões escuras que não são
+  amarelo, vermelho vivo nem branco), que para no filete — a cor sozinha não
+  separava o vermelho das letras do carmim. O contorno preto puxava pro carmim
+  no impresso e foi fechado em preto (luminância < 85 dentro do logo). O
+  subtítulo "Collectible Card Game" não tem filete: saiu por chave de cor
+  (amarelo) e ganhou de volta o contorno escuro de 3 px por dilatação, senão
+  sumia na cápsula branca. Recortado no conteúdo +2px, alfa abaixo de 12
+  zerado, reduzido pra 512×179 (Pillow, webp q90 com alfa sem perda). Script
+  no scratchpad da sessão de 2026-11-02.
 - `game_naruto.svg` — FONTE vetorial do logo do Naruto (Inkscape). Se editar,
   re-exporte o webp: @resvg/resvg-js (ou qualquer rasterizador) em 512px e
   depois `ffmpeg -i logo.png -c:v libwebp -quality 90 game_naruto.webp`.
