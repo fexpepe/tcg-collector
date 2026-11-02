@@ -436,8 +436,14 @@
     weiss: ["Common", "Uncommon", "Rare", "Double Rare", "Triple Rare", "Super Rare", "Special Rare",
       "Super Special Rare", "Over-Frame Rare", "Secret Rare", "Climax Common", "Climax Rare", "Trial Deck", "Promo", "Reprint"],
     // One Piece Card Game (TCGCSV): as siglas da carta, Líder primeiro como no
-    // jogo. As linhas vintage (2002 e Carddass) não têm raridade na fonte.
-    onepiece: ["L", "C", "UC", "R", "SR", "SEC", "SP", "TR", "PR"],
+    // jogo. Depois as vintage: o acabamento do Carddass Hyper Battle
+    // (sync-onepiece-vintage.mjs) e as estrelas do Card Game 2002
+    // (sync-onepiece-2002.mjs; "Holo" nos sets do começo).
+    onepiece: ["L", "C", "UC", "R", "SR", "SEC", "SP", "TR", "PR",
+      "Normal", "Holo", "☆", "☆☆", "☆☆☆", "Gold Stamp", "Secret Rare"],
+    // Miracle Battle Carddass (sync-miracle-battle.mjs): a marca impressa — C
+    // (sem marca), U, R, SR, as kira (B = ブースト, M = ミラクル), Ω, 超Ω e P.
+    mbc: ["C", "U", "R", "SR", "B", "M", "Ω", "超Ω", "P"],
     // Naruto: uma página de set é de UMA linha, então as escadas convivem.
     // CCG americano (2006–2013): os nomes do verso (sync-naruto-ccg.mjs).
     // Data Carddass (Formation/Cross): as siglas impressas, Normal → Rare →

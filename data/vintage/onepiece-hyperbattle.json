@@ -1,7 +1,7 @@
 {
  "source": "https://grandlinewiki.net/tcg/carddasshyper.html",
  "note": "Snapshot versionado da checklist Carddass Hyper Battle. O build SEMPRE parte daqui; o sync só atualiza quando a fonte responde e nao regride.",
- "updatedAt": "2026-07-10",
+ "updatedAt": "2026-11-02",
  "sets": [
   {
    "name": "First Stage",
@@ -14,7 +14,8 @@
      "nameJp": "ルフィ",
      "type": "Pirate",
      "mark": "Ｌ",
-     "power": "500"
+     "power": "500",
+     "finish": "Holo"
     },
     {
      "num": "C02",
@@ -22,7 +23,8 @@
      "nameJp": "ルフィ",
      "type": "Devil Fruit/Technique",
      "mark": "賊 武 Ｌ",
-     "power": "250"
+     "power": "250",
+     "finish": "Normal"
     },
     {
      "num": "C03",
@@ -30,7 +32,8 @@
      "nameJp": "ルフィ",
      "type": "Devil Fruit/Technique",
      "mark": "賊 Ｌ",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C04",
@@ -38,7 +41,8 @@
      "nameJp": "ルフィ",
      "type": "Others",
      "mark": "賊 民 Ｌ",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C05",
@@ -46,7 +50,8 @@
      "nameJp": "ルフィの帽子",
      "type": "Item",
      "mark": "賊 民 Ｌ",
-     "power": "150 &#8594; 300"
+     "power": "150 &#8594; 300",
+     "finish": "Normal"
     },
     {
      "num": "C06",
@@ -54,7 +59,8 @@
      "nameJp": "ゾロ",
      "type": "Swordsman/Technique",
      "mark": "剣",
-     "power": "300"
+     "power": "300",
+     "finish": "Normal"
     },
     {
      "num": "C07",
@@ -62,7 +68,8 @@
      "nameJp": "ゾロ",
      "type": "Swordsman/Technique",
      "mark": "剣 Ｌ",
-     "power": "250 &#8594; 400"
+     "power": "250 &#8594; 400",
+     "finish": "Holo"
     },
     {
      "num": "C08",
@@ -70,7 +77,8 @@
      "nameJp": "ゾロ",
      "type": "Swordsman",
      "mark": "剣 民 武",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C09",
@@ -78,7 +86,8 @@
      "nameJp": "ナミ",
      "type": "Others",
      "mark": "知",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C10",
@@ -86,7 +95,8 @@
      "nameJp": "ナミ",
      "type": "Wisdom",
      "mark": "知 Ｌ",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C11",
@@ -94,7 +104,8 @@
      "nameJp": "ナミ",
      "type": "Technique",
      "mark": "民 武 知",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "C12",
@@ -102,7 +113,8 @@
      "nameJp": "ウソップ",
      "type": "Technique",
      "mark": "賊 武 Ｌ",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C13",
@@ -110,7 +122,8 @@
      "nameJp": "ウソップ",
      "type": "Wisdom",
      "mark": "賊 知",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C14",
@@ -118,7 +131,8 @@
      "nameJp": "シャンクス",
      "type": "Pirate",
      "mark": "賊",
-     "power": "600"
+     "power": "600",
+     "finish": "Holo"
     },
     {
      "num": "C15",
@@ -126,7 +140,8 @@
      "nameJp": "ベックマン",
      "type": "Pirate/Swordsman",
      "mark": "賊 剣",
-     "power": "400"
+     "power": "400",
+     "finish": "Normal"
     },
     {
      "num": "C16",
@@ -134,7 +149,8 @@
      "nameJp": "くいな",
      "type": "Swordsman",
      "mark": "剣 武 民",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C17",
@@ -142,7 +158,8 @@
      "nameJp": "コビー",
      "type": "Marine",
      "mark": "軍 民 武",
-     "power": "150 &#8594; 250"
+     "power": "150 &#8594; 250",
+     "finish": "Normal"
     },
     {
      "num": "C18",
@@ -150,7 +167,8 @@
      "nameJp": "リカ",
      "type": "Citizen",
      "mark": "民 料 知",
-     "power": "50"
+     "power": "50",
+     "finish": "Normal"
     },
     {
      "num": "C19",
@@ -158,7 +176,8 @@
      "nameJp": "ブードル",
      "type": "Citizen",
      "mark": "民 武 獣",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C20",
@@ -166,7 +185,8 @@
      "nameJp": "シュシュ",
      "type": "Citizen/Animal",
      "mark": "民 獣",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C21",
@@ -174,7 +194,8 @@
      "nameJp": "アルビダ",
      "type": "Pirate",
      "mark": "賊 知",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C22",
@@ -182,7 +203,8 @@
      "nameJp": "モーガン",
      "type": "Marine",
      "mark": "軍 武",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C23",
@@ -190,7 +212,8 @@
      "nameJp": "ヘルメッポ",
      "type": "Marine",
      "mark": "軍 民 知",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C24",
@@ -198,7 +221,8 @@
      "nameJp": "バギー",
      "type": "Pirate",
      "mark": "賊",
-     "power": "300"
+     "power": "300",
+     "finish": "Holo"
     },
     {
      "num": "C25",
@@ -206,7 +230,8 @@
      "nameJp": "バギー",
      "type": "Devil Fruit/Technique",
      "mark": "賊 知",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "C26",
@@ -214,7 +239,8 @@
      "nameJp": "バギー砲",
      "type": "Item",
      "mark": "賊 武",
-     "power": "150 &#8594; 300"
+     "power": "150 &#8594; 300",
+     "finish": "Normal"
     },
     {
      "num": "C27",
@@ -222,7 +248,8 @@
      "nameJp": "モージ",
      "type": "Pirate/Wisdom",
      "mark": "賊 獣 武",
-     "power": "150 &#8594; 250"
+     "power": "150 &#8594; 250",
+     "finish": "Normal"
     },
     {
      "num": "C28",
@@ -230,7 +257,8 @@
      "nameJp": "リッチー",
      "type": "Animal/Technique",
      "mark": "賊 獣 武",
-     "power": "150 &#8594; 250"
+     "power": "150 &#8594; 250",
+     "finish": "Normal"
     },
     {
      "num": "C29",
@@ -238,7 +266,8 @@
      "nameJp": "カバジ",
      "type": "Pirate/Swordsman",
      "mark": "賊 剣",
-     "power": "250"
+     "power": "250",
+     "finish": "Normal"
     },
     {
      "num": "C30",
@@ -246,7 +275,8 @@
      "nameJp": "近海の主",
      "type": "Animal/Technique",
      "mark": "獣 武",
-     "power": "250"
+     "power": "250",
+     "finish": "Normal"
     },
     {
      "num": "C31",
@@ -254,7 +284,8 @@
      "nameJp": "アルビダ一家",
      "type": "Pirate/Battalion",
      "mark": "賊 民 武",
-     "power": "150 &#8594; 200"
+     "power": "150 &#8594; 200",
+     "finish": "Normal"
     },
     {
      "num": "C32",
@@ -262,7 +293,8 @@
      "nameJp": "モーガン部隊",
      "type": "Marine/Battalion",
      "mark": "軍 民 武",
-     "power": "200 &#8594; 0"
+     "power": "200 &#8594; 0",
+     "finish": "Normal"
     },
     {
      "num": "C33",
@@ -270,7 +302,8 @@
      "nameJp": "バギー一味",
      "type": "Pirate/Battalion",
      "mark": "賊 剣 知",
-     "power": "150 &#8594; 200"
+     "power": "150 &#8594; 200",
+     "finish": "Normal"
     },
     {
      "num": "C34",
@@ -278,7 +311,8 @@
      "nameJp": "赤髪海賊団",
      "type": "Pirate/Battalion",
      "mark": "賊",
-     "power": "150 &#8594; 300"
+     "power": "150 &#8594; 300",
+     "finish": "Normal"
     },
     {
      "num": "S01",
@@ -286,7 +320,8 @@
      "nameJp": "ルフィ海賊団",
      "type": "Special",
      "mark": "逆",
-     "power": "700"
+     "power": "700",
+     "finish": "Holo"
     },
     {
      "num": "S02",
@@ -294,7 +329,8 @@
      "nameJp": "ルフィ",
      "type": "Special",
      "mark": "逆",
-     "power": "200 &#8594; 500"
+     "power": "200 &#8594; 500",
+     "finish": "Normal"
     },
     {
      "num": "S03",
@@ -302,7 +338,8 @@
      "nameJp": "ゴムゴムの実",
      "type": "Special",
      "mark": "逆",
-     "power": "250 &#8594; 450"
+     "power": "250 &#8594; 450",
+     "finish": "Normal"
     },
     {
      "num": "S04",
@@ -310,7 +347,8 @@
      "nameJp": "ゾロ",
      "type": "Special",
      "mark": "逆",
-     "power": "300 &#8594; –"
+     "power": "300 &#8594; –",
+     "finish": "Normal"
     },
     {
      "num": "S05",
@@ -318,7 +356,8 @@
      "nameJp": "ナミ",
      "type": "Special",
      "mark": "逆",
-     "power": "0"
+     "power": "0",
+     "finish": "Holo"
     },
     {
      "num": "S06",
@@ -326,7 +365,8 @@
      "nameJp": "シャンクス",
      "type": "Special",
      "mark": "逆",
-     "power": "0"
+     "power": "0",
+     "finish": "Normal"
     },
     {
      "num": "S07",
@@ -334,7 +374,8 @@
      "nameJp": "モーガン",
      "type": "Special",
      "mark": "逆",
-     "power": "300"
+     "power": "300",
+     "finish": "Normal"
     },
     {
      "num": "S08",
@@ -342,7 +383,8 @@
      "nameJp": "バギー",
      "type": "Special",
      "mark": "逆",
-     "power": "250"
+     "power": "250",
+     "finish": "Normal"
     }
    ]
   },
@@ -357,7 +399,8 @@
      "nameJp": "ルフィ",
      "type": "Devil Fruit/Technique",
      "mark": "Ｌ",
-     "power": "400"
+     "power": "400",
+     "finish": "Holo"
     },
     {
      "num": "C36",
@@ -365,7 +408,8 @@
      "nameJp": "ルフィ",
      "type": "Others",
      "mark": "Ｌ",
-     "power": "300 &#8594; 600"
+     "power": "300 &#8594; 600",
+     "finish": "Normal"
     },
     {
      "num": "C37",
@@ -373,7 +417,8 @@
      "nameJp": "ルフィ",
      "type": "Devil Fruit/Technique",
      "mark": "武 Ｌ",
-     "power": "400"
+     "power": "400",
+     "finish": "Normal"
     },
     {
      "num": "C38",
@@ -381,7 +426,8 @@
      "nameJp": "ゾロ",
      "type": "Swordsman/Technique",
      "mark": "剣 武",
-     "power": "200 &#8594; 450"
+     "power": "200 &#8594; 450",
+     "finish": "Holo"
     },
     {
      "num": "C39",
@@ -389,7 +435,8 @@
      "nameJp": "ゾロ",
      "type": "Swordsman",
      "mark": "剣 武",
-     "power": "150 &#8594; 300"
+     "power": "150 &#8594; 300",
+     "finish": "Normal"
     },
     {
      "num": "C40",
@@ -397,7 +444,8 @@
      "nameJp": "ゾロ",
      "type": "Swordsman",
      "mark": "剣",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C41",
@@ -405,7 +453,8 @@
      "nameJp": "ナミ",
      "type": "Wisdom",
      "mark": "知 Ｌ",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C42",
@@ -413,7 +462,8 @@
      "nameJp": "ナミ",
      "type": "Wisdom",
      "mark": "民 知",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C43",
@@ -421,7 +471,8 @@
      "nameJp": "ナミ",
      "type": "Wisdom",
      "mark": "知 Ｌ",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C44",
@@ -429,7 +480,8 @@
      "nameJp": "ウソップ",
      "type": "Pirate/Technique",
      "mark": "賊 Ｌ",
-     "power": "200"
+     "power": "200",
+     "finish": "Holo"
     },
     {
      "num": "C45",
@@ -437,7 +489,8 @@
      "nameJp": "ウソップ",
      "type": "Others",
      "mark": "賊",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "C46",
@@ -445,7 +498,8 @@
      "nameJp": "ウソップの武器",
      "type": "Item",
      "mark": "賊 民 Ｌ",
-     "power": "150 &#8594; 300"
+     "power": "150 &#8594; 300",
+     "finish": "Normal"
     },
     {
      "num": "C47",
@@ -453,7 +507,8 @@
      "nameJp": "シュシュ",
      "type": "Citizen/Animal",
      "mark": "民 獣 Ｌ",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C48",
@@ -461,7 +516,8 @@
      "nameJp": "ヤソップ",
      "type": "Pirate/Technique",
      "mark": "賊 民",
-     "power": "300"
+     "power": "300",
+     "finish": "Normal"
     },
     {
      "num": "C49",
@@ -469,7 +525,8 @@
      "nameJp": "カヤ",
      "type": "Citizen",
      "mark": "民 知",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C50",
@@ -477,7 +534,8 @@
      "nameJp": "メリー",
      "type": "Citizen/Wisdom",
      "mark": "民 獣 知",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C51",
@@ -485,7 +543,8 @@
      "nameJp": "クラハドール",
      "type": "Citizen/Wisdom",
      "mark": "民 知",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "C52",
@@ -493,7 +552,8 @@
      "nameJp": "たまねぎ",
      "type": "Citizen",
      "mark": "賊 民 知",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C53",
@@ -501,7 +561,8 @@
      "nameJp": "ピーマン",
      "type": "Citizen",
      "mark": "賊 民 剣",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C54",
@@ -509,7 +570,8 @@
      "nameJp": "にんじん",
      "type": "Citizen",
      "mark": "賊 民 武",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C55",
@@ -517,7 +579,8 @@
      "nameJp": "バギー",
      "type": "Pirate/Technique",
      "mark": "賊 武",
-     "power": "250"
+     "power": "250",
+     "finish": "Normal"
     },
     {
      "num": "C56",
@@ -525,7 +588,8 @@
      "nameJp": "バギー",
      "type": "Pirate/Devil Fruit",
      "mark": "賊",
-     "power": "500"
+     "power": "500",
+     "finish": "Normal"
     },
     {
      "num": "C57",
@@ -533,7 +597,8 @@
      "nameJp": "モージ＆リッチー",
      "type": "Pirate/Animal",
      "mark": "賊 獣 武",
-     "power": "250"
+     "power": "250",
+     "finish": "Normal"
     },
     {
      "num": "C58",
@@ -541,7 +606,8 @@
      "nameJp": "カバジ",
      "type": "Pirate/Swordsman",
      "mark": "賊 剣 武",
-     "power": "150 &#8594; 300"
+     "power": "150 &#8594; 300",
+     "finish": "Normal"
     },
     {
      "num": "C59",
@@ -549,7 +615,8 @@
      "nameJp": "バギーの三下",
      "type": "Pirate/Battalion",
      "mark": "賊 民 武",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C60",
@@ -557,7 +624,8 @@
      "nameJp": "クロ",
      "type": "Pirate/Technique",
      "mark": "賊",
-     "power": "300"
+     "power": "300",
+     "finish": "Holo"
     },
     {
      "num": "C61",
@@ -565,7 +633,8 @@
      "nameJp": "クロ",
      "type": "Pirate/Technique",
      "mark": "賊 武",
-     "power": "150 &#8594; 400"
+     "power": "150 &#8594; 400",
+     "finish": "Normal"
     },
     {
      "num": "C62",
@@ -573,7 +642,8 @@
      "nameJp": "ジャンゴ",
      "type": "Pirate/Wisdom",
      "mark": "賊 知",
-     "power": "100 &#8594; 400"
+     "power": "100 &#8594; 400",
+     "finish": "Normal"
     },
     {
      "num": "C63",
@@ -581,7 +651,8 @@
      "nameJp": "ジャンゴの武器",
      "type": "Item",
      "mark": "賊 知",
-     "power": "150 &#8594; 300"
+     "power": "150 &#8594; 300",
+     "finish": "Normal"
     },
     {
      "num": "C64",
@@ -589,7 +660,8 @@
      "nameJp": "シャム",
      "type": "Pirate/Animal",
      "mark": "賊 獣",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "C65",
@@ -597,7 +669,8 @@
      "nameJp": "ブチ",
      "type": "Pirate/Animal",
      "mark": "賊 獣",
-     "power": "150 &#8594; 300"
+     "power": "150 &#8594; 300",
+     "finish": "Normal"
     },
     {
      "num": "C66",
@@ -605,7 +678,8 @@
      "nameJp": "クロネコ海賊団",
      "type": "Pirates/Battalion",
      "mark": "賊 獣 武",
-     "power": "150 &#8594; 200"
+     "power": "150 &#8594; 200",
+     "finish": "Normal"
     },
     {
      "num": "S09",
@@ -613,7 +687,8 @@
      "nameJp": "ルフィ海賊団",
      "type": "Special",
      "mark": "逆",
-     "power": "100 &#8594; 1200"
+     "power": "100 &#8594; 1200",
+     "finish": "Holo"
     },
     {
      "num": "S10",
@@ -621,7 +696,8 @@
      "nameJp": "ルフィ",
      "type": "Special",
      "mark": "逆",
-     "power": "600"
+     "power": "600",
+     "finish": "Normal"
     },
     {
      "num": "S11",
@@ -629,7 +705,8 @@
      "nameJp": "ゾロ",
      "type": "Special",
      "mark": "逆",
-     "power": "300 &#8594; –"
+     "power": "300 &#8594; –",
+     "finish": "Normal"
     },
     {
      "num": "S12",
@@ -637,7 +714,8 @@
      "nameJp": "ウソップ",
      "type": "Special",
      "mark": "逆",
-     "power": "400"
+     "power": "400",
+     "finish": "Normal"
     },
     {
      "num": "S13",
@@ -645,7 +723,8 @@
      "nameJp": "サンジ",
      "type": "Special",
      "mark": "逆",
-     "power": "200 &#8594; –"
+     "power": "200 &#8594; –",
+     "finish": "Holo"
     },
     {
      "num": "S14",
@@ -653,7 +732,8 @@
      "nameJp": "バギー",
      "type": "Special",
      "mark": "逆",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "S15",
@@ -661,7 +741,8 @@
      "nameJp": "クロ",
      "type": "Special",
      "mark": "逆",
-     "power": "200 &#8594; 600"
+     "power": "200 &#8594; 600",
+     "finish": "Normal"
     },
     {
      "num": "S16",
@@ -669,7 +750,8 @@
      "nameJp": "ジャンゴ",
      "type": "Special",
      "mark": "逆",
-     "power": "300"
+     "power": "300",
+     "finish": "Normal"
     },
     {
      "num": "FP1",
@@ -677,7 +759,8 @@
      "nameJp": "大渦巻",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     },
     {
      "num": "FP2",
@@ -685,7 +768,8 @@
      "nameJp": "バギー船",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     }
    ]
   },
@@ -700,7 +784,8 @@
      "nameJp": "赤髪海賊団",
      "type": "Pirate/Battalion",
      "mark": "賊 武",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "C68",
@@ -708,7 +793,8 @@
      "nameJp": "ウソップ海賊団",
      "type": "Citizen/Battalion",
      "mark": "民 賊 武",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C69",
@@ -716,7 +802,8 @@
      "nameJp": "ルフィ",
      "type": "Others",
      "mark": "Ｌ",
-     "power": "350 &#8594; 650"
+     "power": "350 &#8594; 650",
+     "finish": "Holo"
     },
     {
      "num": "C70",
@@ -724,7 +811,8 @@
      "nameJp": "ルフィ",
      "type": "Devil Fruit/Technique",
      "mark": "武 Ｌ",
-     "power": "400"
+     "power": "400",
+     "finish": "Normal"
     },
     {
      "num": "C71",
@@ -732,7 +820,8 @@
      "nameJp": "ルフィの帽子",
      "type": "Item",
      "mark": "賊 Ｌ",
-     "power": "100 &#8594; 350"
+     "power": "100 &#8594; 350",
+     "finish": "Normal"
     },
     {
      "num": "C72",
@@ -740,7 +829,8 @@
      "nameJp": "ゾロ",
      "type": "Swordsman",
      "mark": "剣",
-     "power": "150 &#8594; 600"
+     "power": "150 &#8594; 600",
+     "finish": "Gold Stamp"
     },
     {
      "num": "C73",
@@ -748,7 +838,8 @@
      "nameJp": "ゾロ",
      "type": "Swordsman",
      "mark": "剣 武 Ｌ",
-     "power": "0"
+     "power": "0",
+     "finish": "Normal"
     },
     {
      "num": "C74",
@@ -756,7 +847,8 @@
      "nameJp": "ゾロ",
      "type": "Swordsman/Technique",
      "mark": "剣 武",
-     "power": "150 &#8594; 250"
+     "power": "150 &#8594; 250",
+     "finish": "Normal"
     },
     {
      "num": "C75",
@@ -764,7 +856,8 @@
      "nameJp": "ナミ",
      "type": "Wisdom",
      "mark": "知",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C76",
@@ -772,7 +865,8 @@
      "nameJp": "ナミ",
      "type": "Wisdom",
      "mark": "知 Ｌ",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "C77",
@@ -780,7 +874,8 @@
      "nameJp": "ナミの三節棍",
      "type": "Item",
      "mark": "知 Ｌ",
-     "power": "150 &#8594; 300"
+     "power": "150 &#8594; 300",
+     "finish": "Normal"
     },
     {
      "num": "C78",
@@ -788,7 +883,8 @@
      "nameJp": "ウソップ",
      "type": "Wisdom",
      "mark": "賊 知",
-     "power": "100 &#8594; 600"
+     "power": "100 &#8594; 600",
+     "finish": "Normal"
     },
     {
      "num": "C79",
@@ -796,7 +892,8 @@
      "nameJp": "ウソップ",
      "type": "Technique",
      "mark": "賊 民 Ｌ",
-     "power": "50"
+     "power": "50",
+     "finish": "Normal"
     },
     {
      "num": "C80",
@@ -804,7 +901,8 @@
      "nameJp": "サンジ",
      "type": "Technique",
      "mark": "料 武",
-     "power": "350 &#8594; 550"
+     "power": "350 &#8594; 550",
+     "finish": "Normal"
     },
     {
      "num": "C81",
@@ -812,7 +910,8 @@
      "nameJp": "サンジ",
      "type": "Wisdom",
      "mark": "料 知 Ｌ",
-     "power": "250"
+     "power": "250",
+     "finish": "Holo"
     },
     {
      "num": "C82",
@@ -820,7 +919,8 @@
      "nameJp": "シャンクス",
      "type": "Pirate",
      "mark": "賊",
-     "power": "700"
+     "power": "700",
+     "finish": "Normal"
     },
     {
      "num": "C83",
@@ -828,7 +928,8 @@
      "nameJp": "シャンクス",
      "type": "Pirate",
      "mark": "賊 民 武",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "C84",
@@ -836,7 +937,8 @@
      "nameJp": "ベックマン",
      "type": "Pirate",
      "mark": "賊 剣 知",
-     "power": "350"
+     "power": "350",
+     "finish": "Normal"
     },
     {
      "num": "C85",
@@ -844,7 +946,8 @@
      "nameJp": "ラッキー・ルウ",
      "type": "Pirate",
      "mark": "賊 料 武",
-     "power": "300"
+     "power": "300",
+     "finish": "Normal"
     },
     {
      "num": "C86",
@@ -852,7 +955,8 @@
      "nameJp": "ヤソップ",
      "type": "Pirate",
      "mark": "賊 武",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C87",
@@ -860,7 +964,8 @@
      "nameJp": "マキノ",
      "type": "Citizen",
      "mark": "民 料",
-     "power": "0"
+     "power": "0",
+     "finish": "Normal"
     },
     {
      "num": "C88",
@@ -868,7 +973,8 @@
      "nameJp": "コビー",
      "type": "Citizen/Marine",
      "mark": "軍 民 知",
-     "power": "100 &#8594; 250"
+     "power": "100 &#8594; 250",
+     "finish": "Normal"
     },
     {
      "num": "C89",
@@ -876,7 +982,8 @@
      "nameJp": "リカ",
      "type": "Citizen",
      "mark": "民 料 知",
-     "power": "0"
+     "power": "0",
+     "finish": "Normal"
     },
     {
      "num": "C90",
@@ -884,7 +991,8 @@
      "nameJp": "くいな",
      "type": "Swordsman/Technique",
      "mark": "剣 武",
-     "power": "50"
+     "power": "50",
+     "finish": "Normal"
     },
     {
      "num": "C91",
@@ -892,7 +1000,8 @@
      "nameJp": "ブードル",
      "type": "Citizen",
      "mark": "民 武",
-     "power": "150 &#8594; 300"
+     "power": "150 &#8594; 300",
+     "finish": "Normal"
     },
     {
      "num": "C92",
@@ -900,7 +1009,8 @@
      "nameJp": "シュシュ",
      "type": "Citizen/Animal",
      "mark": "民 獣",
-     "power": "150 &#8594; 300"
+     "power": "150 &#8594; 300",
+     "finish": "Normal"
     },
     {
      "num": "C93",
@@ -908,7 +1018,8 @@
      "nameJp": "カヤ",
      "type": "Citizen",
      "mark": "民 知",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C94",
@@ -916,7 +1027,8 @@
      "nameJp": "クラハドール",
      "type": "Citizen/Wisdom",
      "mark": "武 民 知",
-     "power": "100 &#8594; 300"
+     "power": "100 &#8594; 300",
+     "finish": "Normal"
     },
     {
      "num": "C95",
@@ -924,7 +1036,8 @@
      "nameJp": "アルビダ",
      "type": "Pirate/Technique",
      "mark": "賊",
-     "power": "200 &#8594; 400"
+     "power": "200 &#8594; 400",
+     "finish": "Normal"
     },
     {
      "num": "C96",
@@ -932,7 +1045,8 @@
      "nameJp": "モーガン",
      "type": "Marine/Technique",
      "mark": "軍 剣 武",
-     "power": "200 &#8594; 450"
+     "power": "200 &#8594; 450",
+     "finish": "Normal"
     },
     {
      "num": "C97",
@@ -940,7 +1054,8 @@
      "nameJp": "ヘルメッポ",
      "type": "Citizen/Wisdom",
      "mark": "軍 民 知",
-     "power": "50 &#8594; 150"
+     "power": "50 &#8594; 150",
+     "finish": "Normal"
     },
     {
      "num": "C98",
@@ -948,7 +1063,8 @@
      "nameJp": "バギー",
      "type": "Pirate/Devil Fruit",
      "mark": "賊 武",
-     "power": "150 &#8594; 350"
+     "power": "150 &#8594; 350",
+     "finish": "Normal"
     },
     {
      "num": "C99",
@@ -956,7 +1072,8 @@
      "nameJp": "バギー",
      "type": "Pirate",
      "mark": "賊 民 知",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "C100",
@@ -964,7 +1081,8 @@
      "nameJp": "カバジ",
      "type": "Pirate/Swordsman",
      "mark": "賊 剣 武",
-     "power": "250 &#8594; 500"
+     "power": "250 &#8594; 500",
+     "finish": "Normal"
     },
     {
      "num": "C101",
@@ -972,7 +1090,8 @@
      "nameJp": "カバジ",
      "type": "Pirate/Wisdom",
      "mark": "賊 剣",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "C102",
@@ -980,7 +1099,8 @@
      "nameJp": "モージ＆リッチー",
      "type": "Pirate/Animal",
      "mark": "賊 獣",
-     "power": "300"
+     "power": "300",
+     "finish": "Normal"
     },
     {
      "num": "C103",
@@ -988,7 +1108,8 @@
      "nameJp": "クロの武器",
      "type": "Item",
      "mark": "賊 武",
-     "power": "150 &#8594; 300"
+     "power": "150 &#8594; 300",
+     "finish": "Normal"
     },
     {
      "num": "C104",
@@ -996,7 +1117,8 @@
      "nameJp": "ジャンゴ",
      "type": "Pirate/Wisdom",
      "mark": "賊 知",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C105",
@@ -1004,7 +1126,8 @@
      "nameJp": "ブチ",
      "type": "Pirate/Animal",
      "mark": "賊 獣",
-     "power": "150 &#8594; 350"
+     "power": "150 &#8594; 350",
+     "finish": "Normal"
     },
     {
      "num": "C106",
@@ -1012,7 +1135,8 @@
      "nameJp": "シャム",
      "type": "Pirate/Animal",
      "mark": "賊 獣",
-     "power": "150 &#8594; 350"
+     "power": "150 &#8594; 350",
+     "finish": "Normal"
     },
     {
      "num": "C107",
@@ -1020,7 +1144,8 @@
      "nameJp": "クリーク",
      "type": "Pirate",
      "mark": "賊",
-     "power": "350 &#8594; 700"
+     "power": "350 &#8594; 700",
+     "finish": "Gold Stamp"
     },
     {
      "num": "C108",
@@ -1028,7 +1153,8 @@
      "nameJp": "クリーク",
      "type": "Pirate/Wisdom",
      "mark": "賊 武 知",
-     "power": "50"
+     "power": "50",
+     "finish": "Normal"
     },
     {
      "num": "C109",
@@ -1036,7 +1162,8 @@
      "nameJp": "バギー一味",
      "type": "Pirate/Battalion",
      "mark": "賊 剣 武",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C110",
@@ -1044,7 +1171,8 @@
      "nameJp": "クロネコ海賊団",
      "type": "Pirate/Battalion",
      "mark": "賊 獣 武",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "S17",
@@ -1052,7 +1180,8 @@
      "nameJp": "ルフィ海賊団",
      "type": "Special",
      "mark": "逆",
-     "power": "800"
+     "power": "800",
+     "finish": "Holo"
     },
     {
      "num": "S18",
@@ -1060,7 +1189,8 @@
      "nameJp": "ルフィ",
      "type": "Special",
      "mark": "逆",
-     "power": "450"
+     "power": "450",
+     "finish": "Normal"
     },
     {
      "num": "S19",
@@ -1068,7 +1198,8 @@
      "nameJp": "ゾロ",
      "type": "Special",
      "mark": "逆",
-     "power": "750"
+     "power": "750",
+     "finish": "Normal"
     },
     {
      "num": "S20",
@@ -1076,7 +1207,8 @@
      "nameJp": "ナミ",
      "type": "Special",
      "mark": "逆",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "S21",
@@ -1084,7 +1216,8 @@
      "nameJp": "ウソップ",
      "type": "Special",
      "mark": "逆",
-     "power": "300"
+     "power": "300",
+     "finish": "Normal"
     },
     {
      "num": "S22",
@@ -1092,7 +1225,8 @@
      "nameJp": "シャンクス",
      "type": "Special",
      "mark": "逆",
-     "power": "250"
+     "power": "250",
+     "finish": "Gold Stamp"
     },
     {
      "num": "S23",
@@ -1100,7 +1234,8 @@
      "nameJp": "アルビダ",
      "type": "Special",
      "mark": "逆",
-     "power": "250 &#8594; 500"
+     "power": "250 &#8594; 500",
+     "finish": "Normal"
     },
     {
      "num": "S24",
@@ -1108,7 +1243,8 @@
      "nameJp": "モーガン",
      "type": "Special",
      "mark": "逆",
-     "power": "250 &#8594; 450"
+     "power": "250 &#8594; 450",
+     "finish": "Normal"
     },
     {
      "num": "S25",
@@ -1116,7 +1252,8 @@
      "nameJp": "バギー",
      "type": "Special",
      "mark": "逆",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "S26",
@@ -1124,7 +1261,8 @@
      "nameJp": "クロ",
      "type": "Special",
      "mark": "逆",
-     "power": "250 &#8594; 450"
+     "power": "250 &#8594; 450",
+     "finish": "Normal"
     },
     {
      "num": "FP3",
@@ -1132,7 +1270,8 @@
      "nameJp": "ウソップの村",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     },
     {
      "num": "FP4",
@@ -1140,7 +1279,8 @@
      "nameJp": "マキノの酒場",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     },
     {
      "num": "FP5",
@@ -1148,7 +1288,8 @@
      "nameJp": "ドリンカーパブ",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     },
     {
      "num": "FP6",
@@ -1156,7 +1297,8 @@
      "nameJp": "ジャンゴの海賊船",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     },
     {
      "num": "FP7",
@@ -1164,7 +1306,8 @@
      "nameJp": "ゴーイング・メリー号",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     },
     {
      "num": "FP8",
@@ -1172,7 +1315,8 @@
      "nameJp": "バラティエ営業中",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     }
    ]
   },
@@ -1187,7 +1331,8 @@
      "nameJp": "ルフィ",
      "type": "Wisdom",
      "mark": "Ｌ",
-     "power": "250"
+     "power": "250",
+     "finish": "Normal"
     },
     {
      "num": "C112",
@@ -1195,7 +1340,8 @@
      "nameJp": "ルフィ",
      "type": "Devil Fruit",
      "mark": "民 武 Ｌ",
-     "power": "550"
+     "power": "550",
+     "finish": "Holo"
     },
     {
      "num": "C113",
@@ -1203,7 +1349,8 @@
      "nameJp": "ルフィ",
      "type": "Devil Fruit/ Technique",
      "mark": "武 Ｌ",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C114",
@@ -1211,7 +1358,8 @@
      "nameJp": "ゾロ",
      "type": "Swordsman",
      "mark": "剣",
-     "power": "900"
+     "power": "900",
+     "finish": "Holo"
     },
     {
      "num": "C115",
@@ -1219,7 +1367,8 @@
      "nameJp": "ゾロ",
      "type": "Swordsman",
      "mark": "剣 武 Ｌ",
-     "power": "450"
+     "power": "450",
+     "finish": "Normal"
     },
     {
      "num": "C116",
@@ -1227,7 +1376,8 @@
      "nameJp": "ナミ",
      "type": "Wisdom",
      "mark": "賊 知",
-     "power": "0"
+     "power": "0",
+     "finish": "Normal"
     },
     {
      "num": "C117",
@@ -1235,7 +1385,8 @@
      "nameJp": "ナミ",
      "type": "Citizen/Wisdom",
      "mark": "民 知 Ｌ",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C118",
@@ -1243,7 +1394,8 @@
      "nameJp": "ウソップ",
      "type": "Pirate/Technique",
      "mark": "賊",
-     "power": "50 &#8594; 500"
+     "power": "50 &#8594; 500",
+     "finish": "Normal"
     },
     {
      "num": "C119",
@@ -1251,7 +1403,8 @@
      "nameJp": "ウソップ",
      "type": "Pirate",
      "mark": "賊 Ｌ",
-     "power": "150 &#8594; 300"
+     "power": "150 &#8594; 300",
+     "finish": "Normal"
     },
     {
      "num": "C120",
@@ -1259,7 +1412,8 @@
      "nameJp": "サンジ",
      "type": "Others",
      "mark": "料 武",
-     "power": "150 &#8594; 350"
+     "power": "150 &#8594; 350",
+     "finish": "Normal"
     },
     {
      "num": "C121",
@@ -1267,7 +1421,8 @@
      "nameJp": "サンジ",
      "type": "Cooking",
      "mark": "料 Ｌ",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C122",
@@ -1275,7 +1430,8 @@
      "nameJp": "シャンクス",
      "type": "Others",
      "mark": "賊 Ｌ",
-     "power": "250"
+     "power": "250",
+     "finish": "Normal"
     },
     {
      "num": "C123",
@@ -1283,7 +1439,8 @@
      "nameJp": "シャンクス",
      "type": "Others",
      "mark": "賊 Ｌ",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "C124",
@@ -1291,7 +1448,8 @@
      "nameJp": "カヤ",
      "type": "Citizens",
      "mark": "民 知",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C125",
@@ -1299,7 +1457,8 @@
      "nameJp": "ガイモン",
      "type": "Pirate/Animal",
      "mark": "賊 獣",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C126",
@@ -1307,7 +1466,8 @@
      "nameJp": "ゼフ",
      "type": "Technique",
      "mark": "料 武",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C127",
@@ -1315,7 +1475,8 @@
      "nameJp": "ジョニー",
      "type": "Swordsman/Technique",
      "mark": "剣 武",
-     "power": "100 &#8594; 400"
+     "power": "100 &#8594; 400",
+     "finish": "Normal"
     },
     {
      "num": "C128",
@@ -1323,7 +1484,8 @@
      "nameJp": "ヨサク",
      "type": "Swordsman/Technique",
      "mark": "剣 武",
-     "power": "100 &#8594; 400"
+     "power": "100 &#8594; 400",
+     "finish": "Normal"
     },
     {
      "num": "C129",
@@ -1331,7 +1493,8 @@
      "nameJp": "岩蔵",
      "type": "Citizen",
      "mark": "民 料",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C130",
@@ -1339,7 +1502,8 @@
      "nameJp": "岩蔵",
      "type": "Citizen",
      "mark": "民 料 知",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C131",
@@ -1347,7 +1511,8 @@
      "nameJp": "トビオ",
      "type": "Citizen",
      "mark": "賊 民 Ｌ",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C132",
@@ -1355,7 +1520,8 @@
      "nameJp": "ウーナン",
      "type": "Pirate",
      "mark": "賊 民",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C133",
@@ -1363,7 +1529,8 @@
      "nameJp": "ウーナン",
      "type": "Pirate",
      "mark": "賊",
-     "power": "1200"
+     "power": "1200",
+     "finish": "Normal"
     },
     {
      "num": "C134",
@@ -1371,7 +1538,8 @@
      "nameJp": "クロ",
      "type": "Pirate/Wisdom",
      "mark": "賊 知",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C135",
@@ -1379,7 +1547,8 @@
      "nameJp": "ジャンゴ",
      "type": "Pirate/Technique",
      "mark": "賊 知",
-     "power": "200 &#8594; 350"
+     "power": "200 &#8594; 350",
+     "finish": "Normal"
     },
     {
      "num": "C136",
@@ -1387,7 +1556,8 @@
      "nameJp": "ジャンゴ",
      "type": "Pirate/Technique",
      "mark": "賊 知",
-     "power": "0"
+     "power": "0",
+     "finish": "Normal"
     },
     {
      "num": "C137",
@@ -1395,7 +1565,8 @@
      "nameJp": "クリーク",
      "type": "Pirate/Technique",
      "mark": "賊 武",
-     "power": "500"
+     "power": "500",
+     "finish": "Normal"
     },
     {
      "num": "C138",
@@ -1403,7 +1574,8 @@
      "nameJp": "ギン",
      "type": "Pirate",
      "mark": "賊 武",
-     "power": "100 &#8594; 500"
+     "power": "100 &#8594; 500",
+     "finish": "Holo"
     },
     {
      "num": "C139",
@@ -1411,7 +1583,8 @@
      "nameJp": "エルドラゴ",
      "type": "Devil Fruit/Animal",
      "mark": "賊",
-     "power": "650"
+     "power": "650",
+     "finish": "Normal"
     },
     {
      "num": "C140",
@@ -1419,7 +1592,8 @@
      "nameJp": "ゴラス",
      "type": "Swordsman/Technique",
      "mark": "賊 剣",
-     "power": "150 &#8594; 350"
+     "power": "150 &#8594; 350",
+     "finish": "Normal"
     },
     {
      "num": "C141",
@@ -1427,7 +1601,8 @@
      "nameJp": "ルフィ海賊団",
      "type": "Pirates",
      "mark": "賊",
-     "power": "100 &#8594; 900"
+     "power": "100 &#8594; 900",
+     "finish": "Normal"
     },
     {
      "num": "C142",
@@ -1435,7 +1610,8 @@
      "nameJp": "ウソップ海賊団",
      "type": "Wisdom/Battalion",
      "mark": "賊 民 武",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C143",
@@ -1443,7 +1619,8 @@
      "nameJp": "クリーク略奪部隊",
      "type": "Pirates/Battalion",
      "mark": "賊 剣 武",
-     "power": "150 &#8594; 200"
+     "power": "150 &#8594; 200",
+     "finish": "Normal"
     },
     {
      "num": "C144",
@@ -1451,7 +1628,8 @@
      "nameJp": "エルドラゴ三人衆",
      "type": "Pirates/Battalion",
      "mark": "賊 民 獣",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "S27",
@@ -1459,7 +1637,8 @@
      "nameJp": "ルフィ",
      "type": "Special",
      "mark": "逆",
-     "power": "400"
+     "power": "400",
+     "finish": "Normal"
     },
     {
      "num": "S28",
@@ -1467,7 +1646,8 @@
      "nameJp": "ウソップ",
      "type": "Special",
      "mark": "逆",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "S29",
@@ -1475,7 +1655,8 @@
      "nameJp": "サンジ",
      "type": "Special",
      "mark": "逆",
-     "power": "100"
+     "power": "100",
+     "finish": "Holo"
     },
     {
      "num": "S30",
@@ -1483,7 +1664,8 @@
      "nameJp": "クラハドール",
      "type": "Special",
      "mark": "逆",
-     "power": "200 &#8594; 600"
+     "power": "200 &#8594; 600",
+     "finish": "Normal"
     },
     {
      "num": "S31",
@@ -1491,7 +1673,8 @@
      "nameJp": "クリーク",
      "type": "Special",
      "mark": "逆",
-     "power": "500"
+     "power": "500",
+     "finish": "Holo"
     },
     {
      "num": "S32",
@@ -1499,7 +1682,8 @@
      "nameJp": "エルドラゴ",
      "type": "Special",
      "mark": "逆",
-     "power": "250"
+     "power": "250",
+     "finish": "Holo"
     },
     {
      "num": "FP09",
@@ -1507,7 +1691,8 @@
      "nameJp": "クリーク大艦隊",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     },
     {
      "num": "FP10",
@@ -1515,7 +1700,8 @@
      "nameJp": "ガイモンの島",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     }
    ]
   },
@@ -1530,7 +1716,8 @@
      "nameJp": "ルフィ",
      "type": "Devil Fruit/Technique",
      "mark": "Ｌ",
-     "power": "650"
+     "power": "650",
+     "finish": "Holo"
     },
     {
      "num": "C146",
@@ -1538,7 +1725,8 @@
      "nameJp": "ルフィ",
      "type": "Pirate",
      "mark": "武 Ｌ",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "C147",
@@ -1546,7 +1734,8 @@
      "nameJp": "骨つき肉",
      "type": "Item",
      "mark": "武 料 Ｌ",
-     "power": "50"
+     "power": "50",
+     "finish": "Normal"
     },
     {
      "num": "C148",
@@ -1554,7 +1743,8 @@
      "nameJp": "ゾロ",
      "type": "Swordsman/Tecnhique",
      "mark": "賊 剣 Ｌ",
-     "power": "350"
+     "power": "350",
+     "finish": "Normal"
     },
     {
      "num": "C149",
@@ -1562,7 +1752,8 @@
      "nameJp": "ゾロ",
      "type": "Swordsman",
      "mark": "剣 Ｌ",
-     "power": "50"
+     "power": "50",
+     "finish": "Normal"
     },
     {
      "num": "C150",
@@ -1570,7 +1761,8 @@
      "nameJp": "和道一文字",
      "type": "Item",
      "mark": "剣",
-     "power": "50 &#8594; 500"
+     "power": "50 &#8594; 500",
+     "finish": "Normal"
     },
     {
      "num": "C151",
@@ -1578,7 +1770,8 @@
      "nameJp": "ナミ",
      "type": "Pirate",
      "mark": "魚 知",
-     "power": "500"
+     "power": "500",
+     "finish": "Holo"
     },
     {
      "num": "C152",
@@ -1586,7 +1779,8 @@
      "nameJp": "ナミ",
      "type": "Tecnique",
      "mark": "武 知 Ｌ",
-     "power": "100 &#8594; 300"
+     "power": "100 &#8594; 300",
+     "finish": "Normal"
     },
     {
      "num": "C153",
@@ -1594,7 +1788,8 @@
      "nameJp": "ウソップ",
      "type": "Pirate/Wisdom",
      "mark": "賊 知",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "C154",
@@ -1602,7 +1797,8 @@
      "nameJp": "ウソップ",
      "type": "Pirate",
      "mark": "賊 Ｌ",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C155",
@@ -1610,7 +1806,8 @@
      "nameJp": "サンジ",
      "type": "Technique/Cooking",
      "mark": "料 Ｌ",
-     "power": "450"
+     "power": "450",
+     "finish": "Normal"
     },
     {
      "num": "C156",
@@ -1618,7 +1815,8 @@
      "nameJp": "サンジ",
      "type": "Others",
      "mark": "料 知",
-     "power": "150 &#8594; 350"
+     "power": "150 &#8594; 350",
+     "finish": "Normal"
     },
     {
      "num": "C157",
@@ -1626,7 +1824,8 @@
      "nameJp": "サンジ",
      "type": "Cooking",
      "mark": "料 民 知",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C158",
@@ -1634,7 +1833,8 @@
      "nameJp": "くいな",
      "type": "Swordsman",
      "mark": "民 剣",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "159",
@@ -1642,7 +1842,8 @@
      "nameJp": "ガイモン",
      "type": "Technique",
      "mark": "賊 知 獣",
-     "power": "50"
+     "power": "50",
+     "finish": "Normal"
     },
     {
      "num": "C160",
@@ -1650,7 +1851,8 @@
      "nameJp": "ゼフ",
      "type": "Cooking",
      "mark": "料 知",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C161",
@@ -1658,7 +1860,8 @@
      "nameJp": "ゼフ",
      "type": "Pirate/Technique",
      "mark": "料",
-     "power": "100 &#8594; 600"
+     "power": "100 &#8594; 600",
+     "finish": "Normal"
     },
     {
      "num": "C162",
@@ -1666,7 +1869,8 @@
      "nameJp": "パティ",
      "type": "Technique/Cooking",
      "mark": "料 武",
-     "power": "150 &#8594; 350"
+     "power": "150 &#8594; 350",
+     "finish": "Normal"
     },
     {
      "num": "C163",
@@ -1674,7 +1878,8 @@
      "nameJp": "カルネ",
      "type": "Cooking",
      "mark": "料 知",
-     "power": "150 &#8594; 350"
+     "power": "150 &#8594; 350",
+     "finish": "Normal"
     },
     {
      "num": "C164",
@@ -1682,7 +1887,8 @@
      "nameJp": "ヨサク",
      "type": "Technique",
      "mark": "剣 武",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C165",
@@ -1690,7 +1896,8 @@
      "nameJp": "ジョニー",
      "type": "Technique",
      "mark": "剣 知",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C166",
@@ -1698,7 +1905,8 @@
      "nameJp": "ノジコ",
      "type": "Citizen",
      "mark": "民 知",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C167",
@@ -1706,7 +1914,8 @@
      "nameJp": "ベルメール",
      "type": "Others",
      "mark": "軍 知",
-     "power": "150 &#8594; 350"
+     "power": "150 &#8594; 350",
+     "finish": "Normal"
     },
     {
      "num": "C168",
@@ -1714,7 +1923,8 @@
      "nameJp": "ゲンゾウ",
      "type": "Citizen",
      "mark": "民 武 知",
-     "power": "100 &#8594; 300"
+     "power": "100 &#8594; 300",
+     "finish": "Normal"
     },
     {
      "num": "C169",
@@ -1722,7 +1932,8 @@
      "nameJp": "フルボディ",
      "type": "Marine/Technique",
      "mark": "軍 民 武",
-     "power": "350 &#8594; 0"
+     "power": "350 &#8594; 0",
+     "finish": "Normal"
     },
     {
      "num": "C170",
@@ -1730,7 +1941,8 @@
      "nameJp": "ミホーク",
      "type": "Pirate/Technique",
      "mark": "剣",
-     "power": "1150"
+     "power": "1150",
+     "finish": "Holo"
     },
     {
      "num": "C171",
@@ -1738,7 +1950,8 @@
      "nameJp": "ミホークの刀",
      "type": "Item",
      "mark": "剣",
-     "power": "50 &#8594; 600"
+     "power": "50 &#8594; 600",
+     "finish": "Normal"
     },
     {
      "num": "C172",
@@ -1746,7 +1959,8 @@
      "nameJp": "クリーク",
      "type": "Pirate",
      "mark": "賊",
-     "power": "450"
+     "power": "450",
+     "finish": "Normal"
     },
     {
      "num": "C173",
@@ -1754,7 +1968,8 @@
      "nameJp": "クリークの武器",
      "type": "Item",
      "mark": "賊 武",
-     "power": "150 &#8594; 300"
+     "power": "150 &#8594; 300",
+     "finish": "Normal"
     },
     {
      "num": "C174",
@@ -1762,7 +1977,8 @@
      "nameJp": "ギン",
      "type": "Pirate",
      "mark": "賊 武",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C175",
@@ -1770,7 +1986,8 @@
      "nameJp": "パール",
      "type": "Pirate/Technique",
      "mark": "賊 武",
-     "power": "500"
+     "power": "500",
+     "finish": "Normal"
     },
     {
      "num": "C176",
@@ -1778,7 +1995,8 @@
      "nameJp": "アーロン",
      "type": "Fishman",
      "mark": "賊 魚",
-     "power": "500"
+     "power": "500",
+     "finish": "Holo"
     },
     {
      "num": "C177",
@@ -1786,7 +2004,8 @@
      "nameJp": "戦うコックさん",
      "type": "Battalion/Cooking",
      "mark": "民 料 武",
-     "power": "150 &#8594; 200"
+     "power": "150 &#8594; 200",
+     "finish": "Normal"
     },
     {
      "num": "S33",
@@ -1794,7 +2013,8 @@
      "nameJp": "ルフィ",
      "type": "Special",
      "mark": "逆",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "S34",
@@ -1802,7 +2022,8 @@
      "nameJp": "ゾロ",
      "type": "Special",
      "mark": "逆",
-     "power": "1000"
+     "power": "1000",
+     "finish": "Holo"
     },
     {
      "num": "S35",
@@ -1810,7 +2031,8 @@
      "nameJp": "ナミ",
      "type": "Special",
      "mark": "逆",
-     "power": "200 &#8594; 400"
+     "power": "200 &#8594; 400",
+     "finish": "Normal"
     },
     {
      "num": "S36",
@@ -1818,7 +2040,8 @@
      "nameJp": "クリーク",
      "type": "Special",
      "mark": "逆",
-     "power": "100"
+     "power": "100",
+     "finish": "Holo"
     },
     {
      "num": "S37",
@@ -1826,7 +2049,8 @@
      "nameJp": "ギン",
      "type": "Special",
      "mark": "逆",
-     "power": "750"
+     "power": "750",
+     "finish": "Normal"
     },
     {
      "num": "S38",
@@ -1834,7 +2058,8 @@
      "nameJp": "アーロン",
      "type": "Special",
      "mark": "逆",
-     "power": "400"
+     "power": "400",
+     "finish": "Normal"
     },
     {
      "num": "S39",
@@ -1842,7 +2067,8 @@
      "nameJp": "ルフィVSアーロン",
      "type": "Special",
      "mark": "逆",
-     "power": "50"
+     "power": "50",
+     "finish": "Normal"
     },
     {
      "num": "FP11",
@@ -1850,7 +2076,8 @@
      "nameJp": "バラティエ戦闘中",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     },
     {
      "num": "FP12",
@@ -1858,7 +2085,8 @@
      "nameJp": "クリークの沈没船",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     }
    ]
   },
@@ -1873,7 +2101,8 @@
      "nameJp": "ルフィ",
      "type": "Devil Fruit/Technique",
      "mark": "Ｌ",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C179",
@@ -1881,7 +2110,8 @@
      "nameJp": "ルフィ",
      "type": "Wisdom",
      "mark": "民 知 Ｌ",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C180",
@@ -1889,7 +2119,8 @@
      "nameJp": "ゾロ",
      "type": "Swordsman",
      "mark": "剣 武",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C181",
@@ -1897,7 +2128,8 @@
      "nameJp": "ゾロ",
      "type": "Swordsman/Technique",
      "mark": "剣",
-     "power": "100 &#8594; 600"
+     "power": "100 &#8594; 600",
+     "finish": "Normal"
     },
     {
      "num": "C182",
@@ -1905,7 +2137,8 @@
      "nameJp": "ナミ",
      "type": "Pirate/Wisdom",
      "mark": "魚 知",
-     "power": "500"
+     "power": "500",
+     "finish": "Normal"
     },
     {
      "num": "C183",
@@ -1913,7 +2146,8 @@
      "nameJp": "ナミ",
      "type": "Others",
      "mark": "民 知 Ｌ",
-     "power": "250"
+     "power": "250",
+     "finish": "Normal"
     },
     {
      "num": "C184",
@@ -1921,7 +2155,8 @@
      "nameJp": "ナミ",
      "type": "Citizen",
      "mark": "民 知 Ｌ",
-     "power": "0"
+     "power": "0",
+     "finish": "Normal"
     },
     {
      "num": "C185",
@@ -1929,7 +2164,8 @@
      "nameJp": "ウソップ",
      "type": "Pirate/Technique",
      "mark": "賊",
-     "power": "200 &#8594; 600"
+     "power": "200 &#8594; 600",
+     "finish": "Gold Stamp"
     },
     {
      "num": "C186",
@@ -1937,7 +2173,8 @@
      "nameJp": "ウソップ",
      "type": "Wisdom",
      "mark": "賊 知 Ｌ",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C187",
@@ -1945,7 +2182,8 @@
      "nameJp": "サンジ",
      "type": "Technique",
      "mark": "料 武",
-     "power": "150 &#8594; 350"
+     "power": "150 &#8594; 350",
+     "finish": "Normal"
     },
     {
      "num": "C188",
@@ -1953,7 +2191,8 @@
      "nameJp": "サンジ",
      "type": "Cooking",
      "mark": "料 Ｌ",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C189",
@@ -1961,7 +2200,8 @@
      "nameJp": "カヤ",
      "type": "Citizen",
      "mark": "民 Ｌ",
-     "power": "0"
+     "power": "0",
+     "finish": "Normal"
     },
     {
      "num": "C190",
@@ -1969,7 +2209,8 @@
      "nameJp": "ガイモン",
      "type": "Pirate",
      "mark": "賊 武 Ｌ",
-     "power": "50"
+     "power": "50",
+     "finish": "Normal"
     },
     {
      "num": "C191",
@@ -1977,7 +2218,8 @@
      "nameJp": "ゼフ",
      "type": "Citizen",
      "mark": "料 知",
-     "power": "0"
+     "power": "0",
+     "finish": "Normal"
     },
     {
      "num": "C192",
@@ -1985,7 +2227,8 @@
      "nameJp": "パティ",
      "type": "Cooking",
      "mark": "民 料 知",
-     "power": "100 &#8594; 300"
+     "power": "100 &#8594; 300",
+     "finish": "Normal"
     },
     {
      "num": "C193",
@@ -1993,7 +2236,8 @@
      "nameJp": "カルネ",
      "type": "Cooking",
      "mark": "民 料 武",
-     "power": "100 &#8594; 300"
+     "power": "100 &#8594; 300",
+     "finish": "Normal"
     },
     {
      "num": "C194",
@@ -2001,7 +2245,8 @@
      "nameJp": "料理包丁",
      "type": "Item",
      "mark": "料 知",
-     "power": "150 &#8594; 300"
+     "power": "150 &#8594; 300",
+     "finish": "Normal"
     },
     {
      "num": "C195",
@@ -2009,7 +2254,8 @@
      "nameJp": "サバガシラ１号",
      "type": "Item",
      "mark": "料 武",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "C196",
@@ -2017,7 +2263,8 @@
      "nameJp": "ヨサク",
      "type": "Swordsman/Technique",
      "mark": "剣 武 Ｌ",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C197",
@@ -2025,7 +2272,8 @@
      "nameJp": "ジョニー",
      "type": "Swordsman/Wisdom",
      "mark": "剣 知 Ｌ",
-     "power": "250"
+     "power": "250",
+     "finish": "Normal"
     },
     {
      "num": "C198",
@@ -2033,7 +2281,8 @@
      "nameJp": "ノジコ",
      "type": "Citizen/Wisdom",
      "mark": "民 知",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "C199",
@@ -2041,7 +2290,8 @@
      "nameJp": "ベルメール",
      "type": "Marine/Citizen",
      "mark": "軍 武 知",
-     "power": "300"
+     "power": "300",
+     "finish": "Normal"
     },
     {
      "num": "C200",
@@ -2049,7 +2299,8 @@
      "nameJp": "ベルメール親子",
      "type": "Citizen",
      "mark": "民 知",
-     "power": "50 &#8594; 500"
+     "power": "50 &#8594; 500",
+     "finish": "Normal"
     },
     {
      "num": "C201",
@@ -2057,7 +2308,8 @@
      "nameJp": "ココヤシの村人",
      "type": "Citizen/Battalion",
      "mark": "軍 民 知",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "C202",
@@ -2065,7 +2317,8 @@
      "nameJp": "フルボディ",
      "type": "Marine",
      "mark": "軍 武",
-     "power": "300"
+     "power": "300",
+     "finish": "Normal"
     },
     {
      "num": "C203",
@@ -2073,7 +2326,8 @@
      "nameJp": "スモーカー",
      "type": "Devil Fruit/Marine",
      "mark": "軍",
-     "power": "650"
+     "power": "650",
+     "finish": "Gold Stamp"
     },
     {
      "num": "C204",
@@ -2081,7 +2335,8 @@
      "nameJp": "たしぎ",
      "type": "Marine/Swordsman",
      "mark": "軍 剣",
-     "power": "250"
+     "power": "250",
+     "finish": "Normal"
     },
     {
      "num": "C205",
@@ -2089,7 +2344,8 @@
      "nameJp": "クロ",
      "type": "Pirate/Wisdom",
      "mark": "賊 獣 知",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "C206",
@@ -2097,7 +2353,8 @@
      "nameJp": "ジャンゴ",
      "type": "Pirate/Wisdom",
      "mark": "賊 知",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C207",
@@ -2105,7 +2362,8 @@
      "nameJp": "クリーク",
      "type": "Pirate/Technique",
      "mark": "賊",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C208",
@@ -2113,7 +2371,8 @@
      "nameJp": "クリーク",
      "type": "Pirate/Technique",
      "mark": "賊 武",
-     "power": "200 &#8594; 350"
+     "power": "200 &#8594; 350",
+     "finish": "Normal"
     },
     {
      "num": "C209",
@@ -2121,7 +2380,8 @@
      "nameJp": "ギン",
      "type": "Pirate",
      "mark": "賊 料 武",
-     "power": "250"
+     "power": "250",
+     "finish": "Normal"
     },
     {
      "num": "C210",
@@ -2129,7 +2389,8 @@
      "nameJp": "ギン",
      "type": "Pirate/Technique",
      "mark": "賊 武",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C211",
@@ -2137,7 +2398,8 @@
      "nameJp": "パール",
      "type": "Pirate/Technique",
      "mark": "賊 武",
-     "power": "400"
+     "power": "400",
+     "finish": "Normal"
     },
     {
      "num": "C212",
@@ -2145,7 +2407,8 @@
      "nameJp": "アーロン",
      "type": "Fishman/Technique",
      "mark": "魚",
-     "power": "700"
+     "power": "700",
+     "finish": "Holo"
     },
     {
      "num": "C213",
@@ -2153,7 +2416,8 @@
      "nameJp": "アーロンの武器",
      "type": "Item",
      "mark": "魚 武",
-     "power": "150 &#8594; 300"
+     "power": "150 &#8594; 300",
+     "finish": "Normal"
     },
     {
      "num": "C214",
@@ -2161,7 +2425,8 @@
      "nameJp": "はっちゃん",
      "type": "Fishman/Swordsman",
      "mark": "魚 剣 武",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C215",
@@ -2169,7 +2434,8 @@
      "nameJp": "クロオビ",
      "type": "Fishman/Technique",
      "mark": "魚 武",
-     "power": "150 &#8594; 300"
+     "power": "150 &#8594; 300",
+     "finish": "Normal"
     },
     {
      "num": "C216",
@@ -2177,7 +2443,8 @@
      "nameJp": "チュウ",
      "type": "Fishman/Wisdom",
      "mark": "魚 知",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C217",
@@ -2185,7 +2452,8 @@
      "nameJp": "モーム",
      "type": "Animal",
      "mark": "魚 獣",
-     "power": "400"
+     "power": "400",
+     "finish": "Normal"
     },
     {
      "num": "C218",
@@ -2193,7 +2461,8 @@
      "nameJp": "クロネコ海賊団",
      "type": "Pirate/Battalion",
      "mark": "賊 獣 知",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C219",
@@ -2201,7 +2470,8 @@
      "nameJp": "クリーク突撃部隊",
      "type": "Pirate/Battalion",
      "mark": "賊 剣 武",
-     "power": "200 &#8594; 0"
+     "power": "200 &#8594; 0",
+     "finish": "Normal"
     },
     {
      "num": "C220",
@@ -2209,7 +2479,8 @@
      "nameJp": "アーロン一味",
      "type": "Fishman/Battalion",
      "mark": "賊 魚 武",
-     "power": "150 &#8594; 200"
+     "power": "150 &#8594; 200",
+     "finish": "Normal"
     },
     {
      "num": "S40",
@@ -2217,7 +2488,8 @@
      "nameJp": "ルフィ海賊団",
      "type": "Special",
      "mark": "逆",
-     "power": "1200"
+     "power": "1200",
+     "finish": "Holo"
     },
     {
      "num": "S41",
@@ -2225,7 +2497,8 @@
      "nameJp": "ルフィ",
      "type": "Special",
      "mark": "逆",
-     "power": "100 &#8594; 900"
+     "power": "100 &#8594; 900",
+     "finish": "Gold Stamp"
     },
     {
      "num": "S42",
@@ -2233,7 +2506,8 @@
      "nameJp": "ゾロ",
      "type": "Special",
      "mark": "逆",
-     "power": "500"
+     "power": "500",
+     "finish": "Holo"
     },
     {
      "num": "S43",
@@ -2241,7 +2515,8 @@
      "nameJp": "ナミ",
      "type": "Special",
      "mark": "逆",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "S44",
@@ -2249,7 +2524,8 @@
      "nameJp": "ウソップ",
      "type": "Special",
      "mark": "逆",
-     "power": "50"
+     "power": "50",
+     "finish": "Normal"
     },
     {
      "num": "S45",
@@ -2257,7 +2533,8 @@
      "nameJp": "サンジ",
      "type": "Special",
      "mark": "逆",
-     "power": "600"
+     "power": "600",
+     "finish": "Normal"
     },
     {
      "num": "S46",
@@ -2265,7 +2542,8 @@
      "nameJp": "ゼフ",
      "type": "Special",
      "mark": "逆",
-     "power": "350"
+     "power": "350",
+     "finish": "Normal"
     },
     {
      "num": "S47",
@@ -2273,7 +2551,8 @@
      "nameJp": "ミホーク",
      "type": "Special",
      "mark": "逆",
-     "power": "500"
+     "power": "500",
+     "finish": "Normal"
     },
     {
      "num": "S48",
@@ -2281,7 +2560,8 @@
      "nameJp": "クロ",
      "type": "Special",
      "mark": "逆",
-     "power": "250 &#8594; 450"
+     "power": "250 &#8594; 450",
+     "finish": "Normal"
     },
     {
      "num": "S49",
@@ -2289,7 +2569,8 @@
      "nameJp": "クリーク",
      "type": "Special",
      "mark": "逆",
-     "power": "200 &#8594; 600"
+     "power": "200 &#8594; 600",
+     "finish": "Normal"
     },
     {
      "num": "S50",
@@ -2297,7 +2578,8 @@
      "nameJp": "アーロン",
      "type": "Special",
      "mark": "逆",
-     "power": "100 &#8594; 800"
+     "power": "100 &#8594; 800",
+     "finish": "Normal"
     },
     {
      "num": "FP13",
@@ -2305,7 +2587,8 @@
      "nameJp": "決戦の坂道",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     },
     {
      "num": "FP14",
@@ -2313,7 +2596,8 @@
      "nameJp": "クリークの巨大ガレー",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     },
     {
      "num": "FP15",
@@ -2321,7 +2605,8 @@
      "nameJp": "バラティエ接客中",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     },
     {
      "num": "FP16",
@@ -2329,7 +2614,8 @@
      "nameJp": "アーロンパーク",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     },
     {
      "num": "FP17",
@@ -2337,7 +2623,8 @@
      "nameJp": "ココヤシ村",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     },
     {
      "num": "FP18",
@@ -2345,7 +2632,8 @@
      "nameJp": "メリー号の船旅",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     }
    ]
   },
@@ -2360,7 +2648,8 @@
      "nameJp": "ルフィ",
      "type": "Pirate",
      "mark": "賊 Ｌ",
-     "power": "500"
+     "power": "500",
+     "finish": "Normal"
     },
     {
      "num": "C222",
@@ -2368,7 +2657,8 @@
      "nameJp": "ルフィ",
      "type": "Fishman/Wisdom",
      "mark": "魚 知 Ｌ",
-     "power": "200 &#8594; 300"
+     "power": "200 &#8594; 300",
+     "finish": "Normal"
     },
     {
      "num": "C223",
@@ -2376,7 +2666,8 @@
      "nameJp": "ルフィ",
      "type": "Technique/Devil Fruit",
      "mark": "武 Ｌ",
-     "power": "450"
+     "power": "450",
+     "finish": "Holo"
     },
     {
      "num": "C224",
@@ -2384,7 +2675,8 @@
      "nameJp": "魚人ナミ",
      "type": "Item",
      "mark": "民 知 Ｌ",
-     "power": "100 &#8594; 200"
+     "power": "100 &#8594; 200",
+     "finish": "Normal"
     },
     {
      "num": "C225",
@@ -2392,7 +2684,8 @@
      "nameJp": "ゾロ",
      "type": "Swordsman/Technique",
      "mark": "剣 Ｌ",
-     "power": "700"
+     "power": "700",
+     "finish": "Holo"
     },
     {
      "num": "C226",
@@ -2400,7 +2693,8 @@
      "nameJp": "ゾロ",
      "type": "Swordsman",
      "mark": "剣 武",
-     "power": "450"
+     "power": "450",
+     "finish": "Normal"
     },
     {
      "num": "C227",
@@ -2408,7 +2702,8 @@
      "nameJp": "雪走",
      "type": "Item",
      "mark": "剣 知",
-     "power": "100 &#8594; 400"
+     "power": "100 &#8594; 400",
+     "finish": "Normal"
     },
     {
      "num": "C228",
@@ -2416,7 +2711,8 @@
      "nameJp": "三代鬼徹",
      "type": "Item",
      "mark": "剣 武",
-     "power": "550"
+     "power": "550",
+     "finish": "Normal"
     },
     {
      "num": "C229",
@@ -2424,7 +2720,8 @@
      "nameJp": "ナミ",
      "type": "Others",
      "mark": "民 知",
-     "power": "200"
+     "power": "200",
+     "finish": "Holo"
     },
     {
      "num": "C230",
@@ -2432,7 +2729,8 @@
      "nameJp": "ナミ",
      "type": "Wisdom",
      "mark": "賊 知 Ｌ",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C231",
@@ -2440,7 +2738,8 @@
      "nameJp": "ナミ",
      "type": "Fishman/Wisdom",
      "mark": "魚 武",
-     "power": "200 &#8594; 350"
+     "power": "200 &#8594; 350",
+     "finish": "Normal"
     },
     {
      "num": "C232",
@@ -2448,7 +2747,8 @@
      "nameJp": "ウソップ",
      "type": "Pirate/Wisdom",
      "mark": "賊 知",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C233",
@@ -2456,7 +2756,8 @@
      "nameJp": "ウソップ",
      "type": "Wisdom",
      "mark": "賊 Ｌ",
-     "power": "300"
+     "power": "300",
+     "finish": "Normal"
     },
     {
      "num": "C234",
@@ -2464,7 +2765,8 @@
      "nameJp": "サンジ",
      "type": "Technique",
      "mark": "料 武",
-     "power": "150 &#8594; 350"
+     "power": "150 &#8594; 350",
+     "finish": "Normal"
     },
     {
      "num": "C235",
@@ -2472,7 +2774,8 @@
      "nameJp": "サンジ",
      "type": "Cooking/Technique",
      "mark": "料 Ｌ",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "C236",
@@ -2480,7 +2783,8 @@
      "nameJp": "サンジ",
      "type": "Others",
      "mark": "料 武",
-     "power": "300 &#8594; 50"
+     "power": "300 &#8594; 50",
+     "finish": "Normal"
     },
     {
      "num": "C237",
@@ -2488,7 +2792,8 @@
      "nameJp": "ヨサク",
      "type": "Swordsman",
      "mark": "剣 武",
-     "power": "300 &#8594; 0"
+     "power": "300 &#8594; 0",
+     "finish": "Normal"
     },
     {
      "num": "C238",
@@ -2496,7 +2801,8 @@
      "nameJp": "ジョニー",
      "type": "Swordsman",
      "mark": "剣 知",
-     "power": "300 &#8594; 0"
+     "power": "300 &#8594; 0",
+     "finish": "Normal"
     },
     {
      "num": "C239",
@@ -2504,7 +2810,8 @@
      "nameJp": "ゲンゾウ",
      "type": "Citizen/Wisdom",
      "mark": "民 知",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "C240",
@@ -2512,7 +2819,8 @@
      "nameJp": "ノジコ",
      "type": "Citizen/Wisdom",
      "mark": "民 知",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C241",
@@ -2520,7 +2828,8 @@
      "nameJp": "ベルメール",
      "type": "Marine/Citizen",
      "mark": "軍 知",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C242",
@@ -2528,7 +2837,8 @@
      "nameJp": "いっぽんマツ",
      "type": "Citizen/Wisdom",
      "mark": "剣 民",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C243",
@@ -2536,7 +2846,8 @@
      "nameJp": "ネズミ",
      "type": "Marine/Wisdom",
      "mark": "軍 魚",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C244",
@@ -2544,7 +2855,8 @@
      "nameJp": "たしぎ",
      "type": "Marine/Swordsman",
      "mark": "軍 剣",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C245",
@@ -2552,7 +2864,8 @@
      "nameJp": "時雨",
      "type": "Item",
      "mark": "剣 武",
-     "power": "100 &#8594; 400"
+     "power": "100 &#8594; 400",
+     "finish": "Normal"
     },
     {
      "num": "C246",
@@ -2560,7 +2873,8 @@
      "nameJp": "アーロン",
      "type": "Fishman",
      "mark": "魚",
-     "power": "250 &#8594; 500"
+     "power": "250 &#8594; 500",
+     "finish": "Normal"
     },
     {
      "num": "C247",
@@ -2568,7 +2882,8 @@
      "nameJp": "アーロン",
      "type": "Fishman/Technique",
      "mark": "魚 武",
-     "power": "600"
+     "power": "600",
+     "finish": "Normal"
     },
     {
      "num": "C248",
@@ -2576,7 +2891,8 @@
      "nameJp": "はっちゃん",
      "type": "Fishman/Technique",
      "mark": "剣 魚",
-     "power": "150 &#8594; 350"
+     "power": "150 &#8594; 350",
+     "finish": "Normal"
     },
     {
      "num": "C249",
@@ -2584,7 +2900,8 @@
      "nameJp": "クロオビ",
      "type": "Fishman/Technique",
      "mark": "魚 武",
-     "power": "400"
+     "power": "400",
+     "finish": "Normal"
     },
     {
      "num": "C250",
@@ -2592,7 +2909,8 @@
      "nameJp": "チュウ",
      "type": "Fishman/Wisdom",
      "mark": "魚 知",
-     "power": "400"
+     "power": "400",
+     "finish": "Normal"
     },
     {
      "num": "C251",
@@ -2600,7 +2918,8 @@
      "nameJp": "モーム",
      "type": "Fishman/Animal",
      "mark": "魚 獣",
-     "power": "450"
+     "power": "450",
+     "finish": "Normal"
     },
     {
      "num": "C252",
@@ -2608,7 +2927,8 @@
      "nameJp": "バギー",
      "type": "Pirate",
      "mark": "賊",
-     "power": "250-500"
+     "power": "250-500",
+     "finish": "Normal"
     },
     {
      "num": "C253",
@@ -2616,7 +2936,8 @@
      "nameJp": "アーロン一味",
      "type": "Fishman/Battalion",
      "mark": "賊 魚",
-     "power": "100 &#8594; 250"
+     "power": "100 &#8594; 250",
+     "finish": "Normal"
     },
     {
      "num": "C254",
@@ -2624,7 +2945,8 @@
      "nameJp": "新生バギー一味",
      "type": "Pirate/Battalion",
      "mark": "賊 知",
-     "power": "100 &#8594; 250"
+     "power": "100 &#8594; 250",
+     "finish": "Normal"
     },
     {
      "num": "S51",
@@ -2632,7 +2954,8 @@
      "nameJp": "ルフィ",
      "type": "Special",
      "mark": "逆",
-     "power": "800"
+     "power": "800",
+     "finish": "Holo"
     },
     {
      "num": "S52",
@@ -2640,7 +2963,8 @@
      "nameJp": "ゾロ",
      "type": "Special",
      "mark": "逆",
-     "power": "50 &#8594; 600"
+     "power": "50 &#8594; 600",
+     "finish": "Normal"
     },
     {
      "num": "S53",
@@ -2648,7 +2972,8 @@
      "nameJp": "シャンクス",
      "type": "Special",
      "mark": "逆",
-     "power": "500"
+     "power": "500",
+     "finish": "Holo"
     },
     {
      "num": "S54",
@@ -2656,7 +2981,8 @@
      "nameJp": "スモーカー",
      "type": "Special",
      "mark": "逆",
-     "power": "350 &#8594; 700"
+     "power": "350 &#8594; 700",
+     "finish": "Normal"
     },
     {
      "num": "S55",
@@ -2664,7 +2990,8 @@
      "nameJp": "アーロン",
      "type": "Special",
      "mark": "逆",
-     "power": "200 &#8594; 650"
+     "power": "200 &#8594; 650",
+     "finish": "Normal"
     },
     {
      "num": "S56",
@@ -2672,7 +2999,8 @@
      "nameJp": "アルビダ",
      "type": "Special",
      "mark": "逆",
-     "power": "300"
+     "power": "300",
+     "finish": "Holo"
     },
     {
      "num": "FP19",
@@ -2680,7 +3008,8 @@
      "nameJp": "ナミの測量室",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     },
     {
      "num": "FP20",
@@ -2688,7 +3017,8 @@
      "nameJp": "ローグタウン",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     }
    ]
   },
@@ -2703,7 +3033,8 @@
      "nameJp": "ルフィ",
      "type": "Pirate",
      "mark": "Ｌ",
-     "power": "600"
+     "power": "600",
+     "finish": "Holo"
     },
     {
      "num": "C256",
@@ -2711,7 +3042,8 @@
      "nameJp": "ルフィ",
      "type": "Technique/Devil Fruit",
      "mark": "Ｌ 武",
-     "power": "200 &#8594; 350"
+     "power": "200 &#8594; 350",
+     "finish": "Normal"
     },
     {
      "num": "C257",
@@ -2719,7 +3051,8 @@
      "nameJp": "ルフィ",
      "type": "Pirate",
      "mark": "Ｌ 武 知",
-     "power": "100 &#8594; 300"
+     "power": "100 &#8594; 300",
+     "finish": "Normal"
     },
     {
      "num": "C258",
@@ -2727,7 +3060,8 @@
      "nameJp": "ゾロ",
      "type": "Swordsman",
      "mark": "剣",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "C259",
@@ -2735,7 +3069,8 @@
      "nameJp": "ゾロ",
      "type": "Swordsman/Technique",
      "mark": "剣 知",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "C260",
@@ -2743,7 +3078,8 @@
      "nameJp": "ゾロ",
      "type": "Swordsman/Technique",
      "mark": "剣 武 Ｌ",
-     "power": "250"
+     "power": "250",
+     "finish": "Normal"
     },
     {
      "num": "C261",
@@ -2751,7 +3087,8 @@
      "nameJp": "ナミ",
      "type": "Citizen/Wisdom",
      "mark": "知 Ｌ",
-     "power": "250"
+     "power": "250",
+     "finish": "Normal"
     },
     {
      "num": "C262",
@@ -2759,7 +3096,8 @@
      "nameJp": "ナミ",
      "type": "Others",
      "mark": "民 知",
-     "power": "100 &#8594; 400"
+     "power": "100 &#8594; 400",
+     "finish": "Normal"
     },
     {
      "num": "C263",
@@ -2767,7 +3105,8 @@
      "nameJp": "ウソップ",
      "type": "Pirate/Cooking",
      "mark": "賊 料",
-     "power": "100 &#8594; 400"
+     "power": "100 &#8594; 400",
+     "finish": "Normal"
     },
     {
      "num": "C264",
@@ -2775,7 +3114,8 @@
      "nameJp": "ウソップ",
      "type": "Pirate/Wisdom",
      "mark": "賊 Ｌ",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "C265",
@@ -2783,7 +3123,8 @@
      "nameJp": "サンジ",
      "type": "Cooking",
      "mark": "民 料",
-     "power": "250"
+     "power": "250",
+     "finish": "Normal"
     },
     {
      "num": "C266",
@@ -2791,7 +3132,8 @@
      "nameJp": "サンジ",
      "type": "Technique",
      "mark": "料 Ｌ",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "C267",
@@ -2799,7 +3141,8 @@
      "nameJp": "シャンクス",
      "type": "Pirate",
      "mark": "賊 Ｌ",
-     "power": "250"
+     "power": "250",
+     "finish": "Normal"
     },
     {
      "num": "C268",
@@ -2807,7 +3150,8 @@
      "nameJp": "ノジコ",
      "type": "Citizen/Wisdom",
      "mark": "民 知 Ｌ",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C269",
@@ -2815,7 +3159,8 @@
      "nameJp": "ベルメール",
      "type": "Others",
      "mark": "軍 民 知",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "C270",
@@ -2823,7 +3168,8 @@
      "nameJp": "アビス",
      "type": "Citizen/Devil Fruit",
      "mark": "獣 Ｌ",
-     "power": "50"
+     "power": "50",
+     "finish": "Normal"
     },
     {
      "num": "C271",
@@ -2831,7 +3177,8 @@
      "nameJp": "リュウ爺",
      "type": "Wisdom/Animal",
      "mark": "超 獣",
-     "power": "50 &#8594; 500"
+     "power": "50 &#8594; 500",
+     "finish": "Normal"
     },
     {
      "num": "C272",
@@ -2839,7 +3186,8 @@
      "nameJp": "ドラゴン",
      "type": "Pirate",
      "mark": "賊",
-     "power": "50"
+     "power": "50",
+     "finish": "Normal"
     },
     {
      "num": "C273",
@@ -2847,7 +3195,8 @@
      "nameJp": "プリンプリン",
      "type": "Marine/Wisdom",
      "mark": "軍 民 武",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C274",
@@ -2855,7 +3204,8 @@
      "nameJp": "ネズミ",
      "type": "Marine/Wisdom",
      "mark": "軍 魚 知",
-     "power": "50"
+     "power": "50",
+     "finish": "Normal"
     },
     {
      "num": "C275",
@@ -2863,7 +3213,8 @@
      "nameJp": "ブランニュー",
      "type": "Marine",
      "mark": "軍 知",
-     "power": "50"
+     "power": "50",
+     "finish": "Normal"
     },
     {
      "num": "C276",
@@ -2871,7 +3222,8 @@
      "nameJp": "スモーカー",
      "type": "Technique/Devil Fruit",
      "mark": "軍",
-     "power": "0 &#8594; –"
+     "power": "0 &#8594; –",
+     "finish": "Holo"
     },
     {
      "num": "C277",
@@ -2879,7 +3231,8 @@
      "nameJp": "ネルソン・ロイヤル",
      "type": "Marine/Wisdom",
      "mark": "賊 軍 知",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C278",
@@ -2887,7 +3240,8 @@
      "nameJp": "海軍本部直轄部隊",
      "type": "Marine/Battalion",
      "mark": "軍",
-     "power": "250"
+     "power": "250",
+     "finish": "Normal"
     },
     {
      "num": "C279",
@@ -2895,7 +3249,8 @@
      "nameJp": "アーロン",
      "type": "Fishman",
      "mark": "魚",
-     "power": "300"
+     "power": "300",
+     "finish": "Normal"
     },
     {
      "num": "C280",
@@ -2903,7 +3258,8 @@
      "nameJp": "はっちゃん",
      "type": "Swordsman/Fishman",
      "mark": "剣 魚",
-     "power": "200 &#8594; 350"
+     "power": "200 &#8594; 350",
+     "finish": "Normal"
     },
     {
      "num": "C281",
@@ -2911,7 +3267,8 @@
      "nameJp": "クロオビ",
      "type": "Fishman/Technique",
      "mark": "魚 武",
-     "power": "200 &#8594; 350"
+     "power": "200 &#8594; 350",
+     "finish": "Normal"
     },
     {
      "num": "C282",
@@ -2919,7 +3276,8 @@
      "nameJp": "チュウ",
      "type": "Fishman/Technique",
      "mark": "魚 知",
-     "power": "200 &#8594; 350"
+     "power": "200 &#8594; 350",
+     "finish": "Normal"
     },
     {
      "num": "C283",
@@ -2927,7 +3285,8 @@
      "nameJp": "アルビダ",
      "type": "Wisdom/Devil Fruit",
      "mark": "賊",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "C284",
@@ -2935,7 +3294,8 @@
      "nameJp": "バギー",
      "type": "Pirate",
      "mark": "賊",
-     "power": "200 &#8594; 600"
+     "power": "200 &#8594; 600",
+     "finish": "Normal"
     },
     {
      "num": "C285",
@@ -2943,7 +3303,8 @@
      "nameJp": "カバジ",
      "type": "Swordsman/Wisdom",
      "mark": "賊 剣",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "C286",
@@ -2951,7 +3312,8 @@
      "nameJp": "リッチーバイク",
      "type": "Animal/Technique",
      "mark": "賊 獣",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "C287",
@@ -2959,7 +3321,8 @@
      "nameJp": "エリック",
      "type": "Technique/Devil Fruit",
      "mark": "賊 軍",
-     "power": "600"
+     "power": "600",
+     "finish": "Normal"
     },
     {
      "num": "S57",
@@ -2967,7 +3330,8 @@
      "nameJp": "ルフィ海賊団",
      "type": "Special",
      "mark": "逆",
-     "power": "200 &#8594; 1000"
+     "power": "200 &#8594; 1000",
+     "finish": "Holo"
     },
     {
      "num": "S58",
@@ -2975,7 +3339,8 @@
      "nameJp": "ルフィ",
      "type": "Special",
      "mark": "逆",
-     "power": "300"
+     "power": "300",
+     "finish": "Normal"
     },
     {
      "num": "S59",
@@ -2983,7 +3348,8 @@
      "nameJp": "ゾロ",
      "type": "Special",
      "mark": "逆",
-     "power": "150 &#8594; 650"
+     "power": "150 &#8594; 650",
+     "finish": "Holo"
     },
     {
      "num": "S60",
@@ -2991,7 +3357,8 @@
      "nameJp": "サンジ",
      "type": "Special",
      "mark": "逆",
-     "power": "400"
+     "power": "400",
+     "finish": "Holo"
     },
     {
      "num": "S61",
@@ -2999,7 +3366,8 @@
      "nameJp": "ドラゴン",
      "type": "Special",
      "mark": "逆",
-     "power": "100"
+     "power": "100",
+     "finish": "Holo"
     },
     {
      "num": "S62",
@@ -3007,7 +3375,8 @@
      "nameJp": "バギー",
      "type": "Special",
      "mark": "逆",
-     "power": "250 &#8594; 450"
+     "power": "250 &#8594; 450",
+     "finish": "Normal"
     },
     {
      "num": "S63",
@@ -3015,7 +3384,8 @@
      "nameJp": "アーロン",
      "type": "Special",
      "mark": "逆",
-     "power": "150 &#8594; 600"
+     "power": "150 &#8594; 600",
+     "finish": "Normal"
     },
     {
      "num": "FP21",
@@ -3023,7 +3393,8 @@
      "nameJp": "海賊王の死刑台",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     },
     {
      "num": "FP22",
@@ -3031,7 +3402,8 @@
      "nameJp": "ロストアイランド",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     }
    ]
   },
@@ -3046,7 +3418,8 @@
      "nameJp": "ルフィ",
      "type": "Pirate/Technique",
      "mark": "Ｌ",
-     "power": "300 &#8594; 1000"
+     "power": "300 &#8594; 1000",
+     "finish": "Gold Stamp"
     },
     {
      "num": "C289",
@@ -3054,7 +3427,8 @@
      "nameJp": "ルフィ",
      "type": "Pirate",
      "mark": "Ｌ 武",
-     "power": "250"
+     "power": "250",
+     "finish": "Normal"
     },
     {
      "num": "C290",
@@ -3062,7 +3436,8 @@
      "nameJp": "ルフィ",
      "type": "Technique/Devil Fruit",
      "mark": "Ｌ 知",
-     "power": "250"
+     "power": "250",
+     "finish": "Normal"
     },
     {
      "num": "C291",
@@ -3070,7 +3445,8 @@
      "nameJp": "ゾロ",
      "type": "Pirate/Technique",
      "mark": "剣 Ｌ",
-     "power": "250 &#8594; 550"
+     "power": "250 &#8594; 550",
+     "finish": "Gold Stamp"
     },
     {
      "num": "C292",
@@ -3078,7 +3454,8 @@
      "nameJp": "ゾロ",
      "type": "Swordsman/Technique",
      "mark": "剣 武",
-     "power": "500"
+     "power": "500",
+     "finish": "Normal"
     },
     {
      "num": "C293",
@@ -3086,7 +3463,8 @@
      "nameJp": "ゾロ",
      "type": "Swordsman",
      "mark": "剣 知",
-     "power": "250"
+     "power": "250",
+     "finish": "Normal"
     },
     {
      "num": "C294",
@@ -3094,7 +3472,8 @@
      "nameJp": "ナミ",
      "type": "Citizen",
      "mark": "知 Ｌ",
-     "power": "250"
+     "power": "250",
+     "finish": "Normal"
     },
     {
      "num": "C295",
@@ -3102,7 +3481,8 @@
      "nameJp": "ナミ",
      "type": "Pirate/Wisdom",
      "mark": "賊 知 Ｌ",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C296",
@@ -3110,7 +3490,8 @@
      "nameJp": "ナミ",
      "type": "Citizen/Wisdom",
      "mark": "民 知",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C297",
@@ -3118,7 +3499,8 @@
      "nameJp": "ウソップ",
      "type": "Pirate",
      "mark": "賊",
-     "power": "50"
+     "power": "50",
+     "finish": "Normal"
     },
     {
      "num": "C298",
@@ -3126,7 +3508,8 @@
      "nameJp": "ウソップ",
      "type": "Pirate/Technique",
      "mark": "賊 Ｌ",
-     "power": "250"
+     "power": "250",
+     "finish": "Normal"
     },
     {
      "num": "C299",
@@ -3134,7 +3517,8 @@
      "nameJp": "ウソップ",
      "type": "Citizen/Wisdom",
      "mark": "賊 民",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "C300",
@@ -3142,7 +3526,8 @@
      "nameJp": "サンジ",
      "type": "Pirate/Technique",
      "mark": "料 Ｌ",
-     "power": "250 &#8594; 550"
+     "power": "250 &#8594; 550",
+     "finish": "Gold Stamp"
     },
     {
      "num": "C301",
@@ -3150,7 +3535,8 @@
      "nameJp": "サンジ",
      "type": "Technique",
      "mark": "料 武",
-     "power": "250"
+     "power": "250",
+     "finish": "Normal"
     },
     {
      "num": "C302",
@@ -3158,7 +3544,8 @@
      "nameJp": "サンジ",
      "type": "Cooking/Wisdom",
      "mark": "料 知 Ｌ",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C303",
@@ -3166,7 +3553,8 @@
      "nameJp": "シャンクス",
      "type": "Pirate/Swordsman",
      "mark": "賊 剣",
-     "power": "250"
+     "power": "250",
+     "finish": "Normal"
     },
     {
      "num": "C304",
@@ -3174,7 +3562,8 @@
      "nameJp": "ベックマン",
      "type": "Pirate/Technique",
      "mark": "賊 武",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C305",
@@ -3182,7 +3571,8 @@
      "nameJp": "ラッキー・ルウ",
      "type": "Pirate/Cooking",
      "mark": "賊 料",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C306",
@@ -3190,7 +3580,8 @@
      "nameJp": "マキノ",
      "type": "Citizen/Cooking",
      "mark": "民 料",
-     "power": "0"
+     "power": "0",
+     "finish": "Normal"
     },
     {
      "num": "C307",
@@ -3198,7 +3589,8 @@
      "nameJp": "ヨサク ＆ ジョニー",
      "type": "Swordsman",
      "mark": "剣 武",
-     "power": "450"
+     "power": "450",
+     "finish": "Normal"
     },
     {
      "num": "C308",
@@ -3206,7 +3598,8 @@
      "nameJp": "ベルメール親子",
      "type": "Citizen/Cooking",
      "mark": "軍 民 知",
-     "power": "400"
+     "power": "400",
+     "finish": "Normal"
     },
     {
      "num": "C309",
@@ -3214,7 +3607,8 @@
      "nameJp": "アピス",
      "type": "Cooking/Wisdom",
      "mark": "料 獣 Ｌ",
-     "power": "50"
+     "power": "50",
+     "finish": "Normal"
     },
     {
      "num": "C310",
@@ -3222,7 +3616,8 @@
      "nameJp": "リュウ爺",
      "type": "Animal",
      "mark": "超 獣",
-     "power": "0"
+     "power": "0",
+     "finish": "Normal"
     },
     {
      "num": "C311",
@@ -3230,7 +3625,8 @@
      "nameJp": "ボクデン",
      "type": "Citizen/Wisdom",
      "mark": "民 獣",
-     "power": "50"
+     "power": "50",
+     "finish": "Normal"
     },
     {
      "num": "C312",
@@ -3238,7 +3634,8 @@
      "nameJp": "ドラゴン",
      "type": "Pirate",
      "mark": "賊",
-     "power": "300"
+     "power": "300",
+     "finish": "Normal"
     },
     {
      "num": "C313",
@@ -3246,7 +3643,8 @@
      "nameJp": "コビー",
      "type": "Marine/Technique",
      "mark": "軍 民 武",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C314",
@@ -3254,7 +3652,8 @@
      "nameJp": "ヘルメッポ",
      "type": "Marine/Wisdom",
      "mark": "軍 民 知",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C315",
@@ -3262,7 +3661,8 @@
      "nameJp": "スモーカー",
      "type": "Marine/Devil Fruit",
      "mark": "軍 武",
-     "power": "900"
+     "power": "900",
+     "finish": "Holo"
     },
     {
      "num": "C316",
@@ -3270,7 +3670,8 @@
      "nameJp": "たしぎ",
      "type": "Marine/Swordsman",
      "mark": "軍 剣",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C317",
@@ -3278,7 +3679,8 @@
      "nameJp": "ネルソン・ロイヤル",
      "type": "Marine/Wisdom",
      "mark": "賊 軍",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C318",
@@ -3286,7 +3688,8 @@
      "nameJp": "ローグタウン守備隊",
      "type": "Marine/Battlion",
      "mark": "軍 剣",
-     "power": "100 &#8594; 250"
+     "power": "100 &#8594; 250",
+     "finish": "Normal"
     },
     {
      "num": "C319",
@@ -3294,7 +3697,8 @@
      "nameJp": "ロイヤル海兵隊",
      "type": "Marine/Battlion",
      "mark": "賊 軍 武",
-     "power": "150 &#8594; 200"
+     "power": "150 &#8594; 200",
+     "finish": "Normal"
     },
     {
      "num": "C320",
@@ -3302,7 +3706,8 @@
      "nameJp": "アーロン",
      "type": "Fishman",
      "mark": "賊 魚",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C321",
@@ -3310,7 +3715,8 @@
      "nameJp": "はっちゃん",
      "type": "Fishman/Swordsman",
      "mark": "魚 剣",
-     "power": "250"
+     "power": "250",
+     "finish": "Normal"
     },
     {
      "num": "C322",
@@ -3318,7 +3724,8 @@
      "nameJp": "クロオビ",
      "type": "Fishman/Technique",
      "mark": "魚 武",
-     "power": "150 &#8594; 350"
+     "power": "150 &#8594; 350",
+     "finish": "Normal"
     },
     {
      "num": "C323",
@@ -3326,7 +3733,8 @@
      "nameJp": "チュウ",
      "type": "Fishman/Wisdom",
      "mark": "魚 知",
-     "power": "150 &#8594; 350"
+     "power": "150 &#8594; 350",
+     "finish": "Normal"
     },
     {
      "num": "C324",
@@ -3334,7 +3742,8 @@
      "nameJp": "アルビダ",
      "type": "Wisdom/Devil Fruit",
      "mark": "賊",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C325",
@@ -3342,7 +3751,8 @@
      "nameJp": "バギー",
      "type": "Technique/Devil Fruit",
      "mark": "賊",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C326",
@@ -3350,7 +3760,8 @@
      "nameJp": "カバジ＆モージ",
      "type": "Pirate",
      "mark": "賊 獣 武",
-     "power": "300"
+     "power": "300",
+     "finish": "Normal"
     },
     {
      "num": "C327",
@@ -3358,7 +3769,8 @@
      "nameJp": "リッチー",
      "type": "Pirate/Animal",
      "mark": "賊 獣",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C328",
@@ -3366,7 +3778,8 @@
      "nameJp": "エリック",
      "type": "Technique/Devil Fruit",
      "mark": "賊 軍",
-     "power": "250 &#8594; 500"
+     "power": "250 &#8594; 500",
+     "finish": "Normal"
     },
     {
      "num": "C329",
@@ -3374,7 +3787,8 @@
      "nameJp": "コウモリ",
      "type": "Pirate/Animal",
      "mark": "賊 獣",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C330",
@@ -3382,7 +3796,8 @@
      "nameJp": "キャプテン・ジョーク",
      "type": "Pirate/Animal",
      "mark": "賊 獣",
-     "power": "50 &#8594; 450"
+     "power": "50 &#8594; 450",
+     "finish": "Normal"
     },
     {
      "num": "S64",
@@ -3390,7 +3805,8 @@
      "nameJp": "ルフィ海賊団",
      "type": "Special",
      "mark": "逆",
-     "power": "800"
+     "power": "800",
+     "finish": "Holo"
     },
     {
      "num": "S65",
@@ -3398,7 +3814,8 @@
      "nameJp": "ルフィ",
      "type": "Special",
      "mark": "逆",
-     "power": "500"
+     "power": "500",
+     "finish": "Normal"
     },
     {
      "num": "S66",
@@ -3406,7 +3823,8 @@
      "nameJp": "ゾロ",
      "type": "Special",
      "mark": "逆",
-     "power": "400"
+     "power": "400",
+     "finish": "Normal"
     },
     {
      "num": "S67",
@@ -3414,7 +3832,8 @@
      "nameJp": "アピス",
      "type": "Special",
      "mark": "逆",
-     "power": "0"
+     "power": "0",
+     "finish": "Holo"
     },
     {
      "num": "S68",
@@ -3422,7 +3841,8 @@
      "nameJp": "スモーカー",
      "type": "Special",
      "mark": "逆",
-     "power": "350"
+     "power": "350",
+     "finish": "Normal"
     },
     {
      "num": "S69",
@@ -3430,7 +3850,8 @@
      "nameJp": "たしぎ",
      "type": "Special",
      "mark": "逆",
-     "power": "600"
+     "power": "600",
+     "finish": "Normal"
     },
     {
      "num": "S70",
@@ -3438,7 +3859,8 @@
      "nameJp": "アーロン",
      "type": "Special",
      "mark": "逆",
-     "power": "300"
+     "power": "300",
+     "finish": "Normal"
     },
     {
      "num": "S71",
@@ -3446,7 +3868,8 @@
      "nameJp": "アルビダ",
      "type": "Special",
      "mark": "逆",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "S72",
@@ -3454,7 +3877,8 @@
      "nameJp": "バギー",
      "type": "Special",
      "mark": "逆",
-     "power": "100 &#8594; 750"
+     "power": "100 &#8594; 750",
+     "finish": "Normal"
     },
     {
      "num": "S73",
@@ -3462,7 +3886,8 @@
      "nameJp": "エリック",
      "type": "Special",
      "mark": "逆",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "S74",
@@ -3470,7 +3895,8 @@
      "nameJp": "ゴールド・ロジャー",
      "type": "Special",
      "mark": "逆",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "FP23",
@@ -3478,7 +3904,8 @@
      "nameJp": "ゴサの村",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     },
     {
      "num": "FP24",
@@ -3486,7 +3913,8 @@
      "nameJp": "解放の宴",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     },
     {
      "num": "FP25",
@@ -3494,7 +3922,8 @@
      "nameJp": "怪物達の集う町",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     },
     {
      "num": "FP26",
@@ -3502,7 +3931,8 @@
      "nameJp": "軍艦島",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     },
     {
      "num": "FP27",
@@ -3510,7 +3940,8 @@
      "nameJp": "アーロンの海賊船",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     },
     {
      "num": "FP28",
@@ -3518,7 +3949,8 @@
      "nameJp": "メリー号の食事",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     }
    ]
   },
@@ -3533,7 +3965,8 @@
      "nameJp": "ルフィ",
      "type": "Devil Fruit/Technique",
      "mark": "Ｌ",
-     "power": "200 &#8594; 600"
+     "power": "200 &#8594; 600",
+     "finish": "Normal"
     },
     {
      "num": "C332",
@@ -3541,7 +3974,8 @@
      "nameJp": "ルフィ",
      "type": "Pirate",
      "mark": "賊 武 Ｌ",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C333",
@@ -3549,7 +3983,8 @@
      "nameJp": "ゾロ",
      "type": "Swordsman/Technique",
      "mark": "剣",
-     "power": "700"
+     "power": "700",
+     "finish": "Normal"
     },
     {
      "num": "C334",
@@ -3557,7 +3992,8 @@
      "nameJp": "ゾロ",
      "type": "Swordsman",
      "mark": "剣 武",
-     "power": "300"
+     "power": "300",
+     "finish": "Normal"
     },
     {
      "num": "C335",
@@ -3565,7 +4001,8 @@
      "nameJp": "ゾロ",
      "type": "Swordsman",
      "mark": "剣 Ｌ",
-     "power": "300 &#8594; 50"
+     "power": "300 &#8594; 50",
+     "finish": "Normal"
     },
     {
      "num": "C336",
@@ -3573,7 +4010,8 @@
      "nameJp": "ナミ",
      "type": "Citizen/Wisdom",
      "mark": "民 知",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C337",
@@ -3581,7 +4019,8 @@
      "nameJp": "ナミ",
      "type": "Wisdom",
      "mark": "知 Ｌ",
-     "power": "300 &#8594; 50"
+     "power": "300 &#8594; 50",
+     "finish": "Normal"
     },
     {
      "num": "C338",
@@ -3589,7 +4028,8 @@
      "nameJp": "ログポース",
      "type": "Item",
      "mark": "民 知",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "C339",
@@ -3597,7 +4037,8 @@
      "nameJp": "ウソップ",
      "type": "Pirate",
      "mark": "賊",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "C340",
@@ -3605,7 +4046,8 @@
      "nameJp": "ウソップ",
      "type": "Wisdom",
      "mark": "賊 Ｌ",
-     "power": "300 &#8594; 50"
+     "power": "300 &#8594; 50",
+     "finish": "Normal"
     },
     {
      "num": "C341",
@@ -3613,7 +4055,8 @@
      "nameJp": "サンジ",
      "type": "Others",
      "mark": "料 Ｌ",
-     "power": "600"
+     "power": "600",
+     "finish": "Holo"
     },
     {
      "num": "C342",
@@ -3621,7 +4064,8 @@
      "nameJp": "サンジ",
      "type": "Cooking",
      "mark": "料 知",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C343",
@@ -3629,7 +4073,8 @@
      "nameJp": "サンジ",
      "type": "Technique",
      "mark": "料 Ｌ",
-     "power": "300 &#8594; 50"
+     "power": "300 &#8594; 50",
+     "finish": "Normal"
     },
     {
      "num": "C344",
@@ -3637,7 +4082,8 @@
      "nameJp": "カルメン",
      "type": "Cooking",
      "mark": "民 料",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C345",
@@ -3645,7 +4091,8 @@
      "nameJp": "アピス",
      "type": "Others",
      "mark": "民 獣 Ｌ",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "C346",
@@ -3653,7 +4100,8 @@
      "nameJp": "ボロード",
      "type": "Citizen",
      "mark": "罪 Ｌ",
-     "power": "50"
+     "power": "50",
+     "finish": "Normal"
     },
     {
      "num": "C347",
@@ -3661,7 +4109,8 @@
      "nameJp": "アキース",
      "type": "Citizen",
      "mark": "罪 知 Ｌ",
-     "power": "50"
+     "power": "50",
+     "finish": "Normal"
     },
     {
      "num": "C348",
@@ -3669,7 +4118,8 @@
      "nameJp": "クロッカス",
      "type": "Pirate/Citizen",
      "mark": "民 獣",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C349",
@@ -3677,7 +4127,8 @@
      "nameJp": "ラブーン",
      "type": "Animal",
      "mark": "獣 超 Ｌ",
-     "power": "900"
+     "power": "900",
+     "finish": "Holo"
     },
     {
      "num": "C350",
@@ -3685,7 +4136,8 @@
      "nameJp": "スモーカー",
      "type": "Devil Fruit/Marine",
      "mark": "軍",
-     "power": "0 &#8594; 600"
+     "power": "0 &#8594; 600",
+     "finish": "Normal"
     },
     {
      "num": "C351",
@@ -3693,7 +4145,8 @@
      "nameJp": "たしぎ",
      "type": "Marine/Swordsman",
      "mark": "軍 剣",
-     "power": "300"
+     "power": "300",
+     "finish": "Normal"
     },
     {
      "num": "C352",
@@ -3701,7 +4154,8 @@
      "nameJp": "電伝虫",
      "type": "Item",
      "mark": "軍 民",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C353",
@@ -3709,7 +4163,8 @@
      "nameJp": "ダディ",
      "type": "Marine/Technique",
      "mark": "軍 民 武",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "C354",
@@ -3717,7 +4172,8 @@
      "nameJp": "バギー＆アルビダ",
      "type": "Pirate/Wisdom",
      "mark": "賊 知",
-     "power": "500"
+     "power": "500",
+     "finish": "Normal"
     },
     {
      "num": "C355",
@@ -3725,7 +4181,8 @@
      "nameJp": "エリック",
      "type": "Devil Fruit/Technique",
      "mark": "賊 武",
-     "power": "850"
+     "power": "850",
+     "finish": "Normal"
     },
     {
      "num": "C356",
@@ -3733,7 +4190,8 @@
      "nameJp": "キャプテン・ジョーク",
      "type": "Pirate",
      "mark": "賊",
-     "power": "400"
+     "power": "400",
+     "finish": "Normal"
     },
     {
      "num": "C357",
@@ -3741,7 +4199,8 @@
      "nameJp": "ベアキング",
      "type": "Devil Fruit/Pirate",
      "mark": "賊",
-     "power": "250 &#8594; 1000"
+     "power": "250 &#8594; 1000",
+     "finish": "Holo"
     },
     {
      "num": "C358",
@@ -3749,7 +4208,8 @@
      "nameJp": "ピンジョーカー",
      "type": "Devil Fruit/Swordsman",
      "mark": "賊 剣",
-     "power": "250 &#8594; 300"
+     "power": "250 &#8594; 300",
+     "finish": "Normal"
     },
     {
      "num": "C359",
@@ -3757,7 +4217,8 @@
      "nameJp": "スカンクワン",
      "type": "Devil Fruit/Pirate",
      "mark": "賊 知",
-     "power": "250 &#8594; 300"
+     "power": "250 &#8594; 300",
+     "finish": "Normal"
     },
     {
      "num": "C360",
@@ -3765,7 +4226,8 @@
      "nameJp": "ハニークイーン",
      "type": "Devil Fruit/Wisdom",
      "mark": "賊 民",
-     "power": "250 &#8594; 300"
+     "power": "250 &#8594; 300",
+     "finish": "Normal"
     },
     {
      "num": "C361",
@@ -3773,7 +4235,8 @@
      "nameJp": "ブージャック",
      "type": "Devil Fruit/Technique",
      "mark": "賊 武",
-     "power": "250 &#8594; 300"
+     "power": "250 &#8594; 300",
+     "finish": "Normal"
     },
     {
      "num": "C362",
@@ -3781,7 +4244,8 @@
      "nameJp": "Ｍｒ．９",
      "type": "Organization/Technique",
      "mark": "罪 武",
-     "power": "0"
+     "power": "0",
+     "finish": "Holo"
     },
     {
      "num": "C363",
@@ -3789,7 +4253,8 @@
      "nameJp": "ミス・ウェンズデー",
      "type": "Organization/Technique",
      "mark": "罪 Ｌ",
-     "power": "0"
+     "power": "0",
+     "finish": "Holo"
     },
     {
      "num": "C364",
@@ -3797,7 +4262,8 @@
      "nameJp": "ルフィ海賊団",
      "type": "Others",
      "mark": "Ｌ",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "S75",
@@ -3805,7 +4271,8 @@
      "nameJp": "",
      "type": "",
      "mark": "",
-     "power": ""
+     "power": "",
+     "finish": "Secret Rare"
     },
     {
      "num": "S75",
@@ -3813,7 +4280,8 @@
      "nameJp": "ルフィ海賊団",
      "type": "Special",
      "mark": "逆",
-     "power": "1600"
+     "power": "1600",
+     "finish": "Normal"
     },
     {
      "num": "S76",
@@ -3821,7 +4289,8 @@
      "nameJp": "ルフィ",
      "type": "Special",
      "mark": "逆",
-     "power": "1200"
+     "power": "1200",
+     "finish": "Holo"
     },
     {
      "num": "S77",
@@ -3829,7 +4298,8 @@
      "nameJp": "ウソップ",
      "type": "Special",
      "mark": "逆",
-     "power": "0"
+     "power": "0",
+     "finish": "Normal"
     },
     {
      "num": "S78",
@@ -3837,7 +4307,8 @@
      "nameJp": "リュウ爺",
      "type": "Special",
      "mark": "逆",
-     "power": "300 &#8594; 600"
+     "power": "300 &#8594; 600",
+     "finish": "Normal"
     },
     {
      "num": "S79",
@@ -3845,7 +4316,8 @@
      "nameJp": "ラブーン",
      "type": "Special",
      "mark": "逆",
-     "power": "750"
+     "power": "750",
+     "finish": "Normal"
     },
     {
      "num": "S80",
@@ -3853,7 +4325,8 @@
      "nameJp": "ベアキング",
      "type": "Special",
      "mark": "逆",
-     "power": "300"
+     "power": "300",
+     "finish": "Normal"
     },
     {
      "num": "S81",
@@ -3861,7 +4334,8 @@
      "nameJp": "アンラッキーズ",
      "type": "Special",
      "mark": "逆",
-     "power": "600"
+     "power": "600",
+     "finish": "Normal"
     },
     {
      "num": "FP29",
@@ -3869,7 +4343,8 @@
      "nameJp": "ねじまき島",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     },
     {
      "num": "FP30",
@@ -3877,7 +4352,8 @@
      "nameJp": "リバースマウンテン",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     }
    ]
   },
@@ -3892,7 +4368,8 @@
      "nameJp": "ルフィ",
      "type": "Devil Fruit/Technique",
      "mark": "Ｌ",
-     "power": "1100"
+     "power": "1100",
+     "finish": "Holo"
     },
     {
      "num": "C366",
@@ -3900,7 +4377,8 @@
      "nameJp": "ルフィ",
      "type": "Pirate",
      "mark": "賊 Ｌ",
-     "power": "50"
+     "power": "50",
+     "finish": "Normal"
     },
     {
      "num": "C367",
@@ -3908,7 +4386,8 @@
      "nameJp": "ゾロ",
      "type": "Swordsman/Technique",
      "mark": "剣",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "C368",
@@ -3916,7 +4395,8 @@
      "nameJp": "ゾロ",
      "type": "Swordsman/Citizen",
      "mark": "剣 知 Ｌ",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C369",
@@ -3924,7 +4404,8 @@
      "nameJp": "ナミ",
      "type": "Pirate/Wisdom",
      "mark": "知",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C370",
@@ -3932,7 +4413,8 @@
      "nameJp": "ナミ",
      "type": "Citizen/Wisdom",
      "mark": "武 知 Ｌ",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C371",
@@ -3940,7 +4422,8 @@
      "nameJp": "ウソップ",
      "type": "Pirate",
      "mark": "賊",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "C372",
@@ -3948,7 +4431,8 @@
      "nameJp": "ウソップ",
      "type": "Pirate/Citizen",
      "mark": "賊 武 Ｌ",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C373",
@@ -3956,7 +4440,8 @@
      "nameJp": "サンジ",
      "type": "Cooking",
      "mark": "民 料",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C374",
@@ -3964,7 +4449,8 @@
      "nameJp": "サンジ",
      "type": "Cooking/Citizen",
      "mark": "料 知 Ｌ",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C375",
@@ -3972,7 +4458,8 @@
      "nameJp": "シャンクス",
      "type": "Pirate",
      "mark": "賊",
-     "power": "350"
+     "power": "350",
+     "finish": "Normal"
     },
     {
      "num": "C376",
@@ -3980,7 +4467,8 @@
      "nameJp": "アピス",
      "type": "Citizen",
      "mark": "Ｌ 民 獣",
-     "power": "0"
+     "power": "0",
+     "finish": "Normal"
     },
     {
      "num": "C377",
@@ -3988,7 +4476,8 @@
      "nameJp": "リュウ爺",
      "type": "Animal",
      "mark": "超 獣",
-     "power": "800"
+     "power": "800",
+     "finish": "Normal"
     },
     {
      "num": "C378",
@@ -3996,7 +4485,8 @@
      "nameJp": "クロッカス ＆ ラブーン",
      "type": "Citizen/Wisdom",
      "mark": "超 獣 知",
-     "power": "0"
+     "power": "0",
+     "finish": "Normal"
     },
     {
      "num": "C379",
@@ -4004,7 +4494,8 @@
      "nameJp": "クロッカス",
      "type": "Wisdom",
      "mark": "民 獣",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C380",
@@ -4012,7 +4503,8 @@
      "nameJp": "ラブーン",
      "type": "Animal",
      "mark": "超 獣",
-     "power": "900"
+     "power": "900",
+     "finish": "Normal"
     },
     {
      "num": "C381",
@@ -4020,7 +4512,8 @@
      "nameJp": "ビビ",
      "type": "Organization/Government",
      "mark": "罪 政 Ｌ",
-     "power": "250"
+     "power": "250",
+     "finish": "Normal"
     },
     {
      "num": "C382",
@@ -4028,7 +4521,8 @@
      "nameJp": "カルー",
      "type": "Government/Animal",
      "mark": "政 獣",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "C383",
@@ -4036,7 +4530,8 @@
      "nameJp": "街の守護者",
      "type": "Marine/Citizen",
      "mark": "軍 民",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C384",
@@ -4044,7 +4539,8 @@
      "nameJp": "ピンジョーカー",
      "type": "Pirate/Swordsman",
      "mark": "賊 剣",
-     "power": "250 &#8594; 500"
+     "power": "250 &#8594; 500",
+     "finish": "Normal"
     },
     {
      "num": "C385",
@@ -4052,7 +4548,8 @@
      "nameJp": "スカンクワン",
      "type": "Pirate/Wisdom",
      "mark": "賊 知",
-     "power": "250 &#8594; 500"
+     "power": "250 &#8594; 500",
+     "finish": "Normal"
     },
     {
      "num": "C386",
@@ -4060,7 +4557,8 @@
      "nameJp": "ハニークイーン",
      "type": "Devil Fruit/Wisdom",
      "mark": "賊 民",
-     "power": "250 &#8594; 500"
+     "power": "250 &#8594; 500",
+     "finish": "Normal"
     },
     {
      "num": "C387",
@@ -4068,7 +4566,8 @@
      "nameJp": "ブージャック",
      "type": "Pirate/Technique",
      "mark": "賊 武",
-     "power": "250 &#8594; 500"
+     "power": "250 &#8594; 500",
+     "finish": "Normal"
     },
     {
      "num": "C388",
@@ -4076,7 +4575,8 @@
      "nameJp": "キング砲",
      "type": "Item",
      "mark": "賊",
-     "power": "450"
+     "power": "450",
+     "finish": "Normal"
     },
     {
      "num": "C389",
@@ -4084,7 +4584,8 @@
      "nameJp": "Ｍｒ．５",
      "type": "Devil Fruit/Technique",
      "mark": "罪 武",
-     "power": "600"
+     "power": "600",
+     "finish": "Gold Stamp"
     },
     {
      "num": "C390",
@@ -4092,7 +4593,8 @@
      "nameJp": "Ｍｒ．８",
      "type": "Organization/Government",
      "mark": "罪 政 武",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "C391",
@@ -4100,7 +4602,8 @@
      "nameJp": "Ｍｒ．９",
      "type": "Organization/Technique",
      "mark": "罪 武",
-     "power": "450"
+     "power": "450",
+     "finish": "Normal"
     },
     {
      "num": "C392",
@@ -4108,7 +4611,8 @@
      "nameJp": "Ｍｒ．９",
      "type": "Organization/Swordsman",
      "mark": "罪 剣",
-     "power": "250 &#8594; 450"
+     "power": "250 &#8594; 450",
+     "finish": "Normal"
     },
     {
      "num": "C393",
@@ -4116,7 +4620,8 @@
      "nameJp": "ミス・バレンタイン",
      "type": "Devil Fruit/Organization",
      "mark": "罪 知",
-     "power": "100"
+     "power": "100",
+     "finish": "Gold Stamp"
     },
     {
      "num": "C394",
@@ -4124,7 +4629,8 @@
      "nameJp": "ミス・マンデー",
      "type": "Organization/Technique",
      "mark": "罪 武",
-     "power": "400"
+     "power": "400",
+     "finish": "Normal"
     },
     {
      "num": "C395",
@@ -4132,7 +4638,8 @@
      "nameJp": "ミス・ウェンズデー　機転",
      "type": "Organization/Wisdom",
      "mark": "罪 知",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C396",
@@ -4140,7 +4647,8 @@
      "nameJp": "金属バット",
      "type": "Item",
      "mark": "民 罪 武",
-     "power": "150 &#8594; 350"
+     "power": "150 &#8594; 350",
+     "finish": "Normal"
     },
     {
      "num": "C397",
@@ -4148,7 +4656,8 @@
      "nameJp": "孔雀スラッシャー",
      "type": "Item",
      "mark": "罪 政 知",
-     "power": "150 &#8594; 350"
+     "power": "150 &#8594; 350",
+     "finish": "Normal"
     },
     {
      "num": "S82",
@@ -4156,7 +4665,8 @@
      "nameJp": "ルフィ海賊団",
      "type": "Special",
      "mark": "逆",
-     "power": "900"
+     "power": "900",
+     "finish": "Holo"
     },
     {
      "num": "S83",
@@ -4164,7 +4674,8 @@
      "nameJp": "ベアキング一味",
      "type": "Special",
      "mark": "逆",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "S84",
@@ -4172,7 +4683,8 @@
      "nameJp": "ルフィ ＆ ゾロ",
      "type": "Special",
      "mark": "逆",
-     "power": "1200"
+     "power": "1200",
+     "finish": "Gold Stamp"
     },
     {
      "num": "S85",
@@ -4180,7 +4692,8 @@
      "nameJp": "アピス ＆ ボクデン",
      "type": "Special",
      "mark": "逆",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "S86",
@@ -4188,7 +4701,8 @@
      "nameJp": "エリック ＆ ネルソン",
      "type": "Special",
      "mark": "逆",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "S87",
@@ -4196,7 +4710,8 @@
      "nameJp": "エージェントたち",
      "type": "Special",
      "mark": "逆",
-     "power": "650"
+     "power": "650",
+     "finish": "Normal"
     },
     {
      "num": "S88",
@@ -4204,7 +4719,8 @@
      "nameJp": "ルフィ",
      "type": "Special",
      "mark": "逆",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "S89",
@@ -4212,7 +4728,8 @@
      "nameJp": "ゾロ",
      "type": "Special",
      "mark": "逆",
-     "power": "1000"
+     "power": "1000",
+     "finish": "Holo"
     },
     {
      "num": "S90",
@@ -4220,7 +4737,8 @@
      "nameJp": "ボロード",
      "type": "Special",
      "mark": "逆",
-     "power": "300"
+     "power": "300",
+     "finish": "Normal"
     },
     {
      "num": "S91",
@@ -4228,7 +4746,8 @@
      "nameJp": "アキース",
      "type": "Special",
      "mark": "逆",
-     "power": "300"
+     "power": "300",
+     "finish": "Normal"
     },
     {
      "num": "S92",
@@ -4236,7 +4755,8 @@
      "nameJp": "ねじまき島の住人",
      "type": "Special",
      "mark": "逆",
-     "power": "250 &#8594; 500"
+     "power": "250 &#8594; 500",
+     "finish": "Normal"
     },
     {
      "num": "S93",
@@ -4244,7 +4764,8 @@
      "nameJp": "ベアキング",
      "type": "Special",
      "mark": "逆",
-     "power": "300 &#8594; 600"
+     "power": "300 &#8594; 600",
+     "finish": "Normal"
     },
     {
      "num": "H01",
@@ -4252,7 +4773,8 @@
      "nameJp": "武闘術",
      "type": "Hyper",
      "mark": "",
-     "power": ""
+     "power": "",
+     "finish": "Normal"
     },
     {
      "num": "H02",
@@ -4260,7 +4782,8 @@
      "nameJp": "助太刀",
      "type": "Hyper",
      "mark": "",
-     "power": ""
+     "power": "",
+     "finish": "Normal"
     },
     {
      "num": "H03",
@@ -4268,7 +4791,8 @@
      "nameJp": "抹殺指令",
      "type": "Hyper",
      "mark": "",
-     "power": ""
+     "power": "",
+     "finish": "Normal"
     },
     {
      "num": "H04",
@@ -4276,7 +4800,8 @@
      "nameJp": "機動力",
      "type": "Hyper",
      "mark": "",
-     "power": ""
+     "power": "",
+     "finish": "Normal"
     },
     {
      "num": "H05",
@@ -4284,7 +4809,8 @@
      "nameJp": "専守防衛",
      "type": "Hyper",
      "mark": "",
-     "power": ""
+     "power": "",
+     "finish": "Normal"
     },
     {
      "num": "H06",
@@ -4292,7 +4818,8 @@
      "nameJp": "気合",
      "type": "Hyper",
      "mark": "",
-     "power": ""
+     "power": "",
+     "finish": "Normal"
     },
     {
      "num": "H07",
@@ -4300,7 +4827,8 @@
      "nameJp": "三倍剣",
      "type": "Hyper",
      "mark": "",
-     "power": ""
+     "power": "",
+     "finish": "Normal"
     },
     {
      "num": "H08",
@@ -4308,7 +4836,8 @@
      "nameJp": "スタンピード",
      "type": "Hyper",
      "mark": "",
-     "power": ""
+     "power": "",
+     "finish": "Normal"
     },
     {
      "num": "H09",
@@ -4316,7 +4845,8 @@
      "nameJp": "強奪",
      "type": "Hyper",
      "mark": "",
-     "power": ""
+     "power": "",
+     "finish": "Normal"
     },
     {
      "num": "FP31",
@@ -4324,7 +4854,8 @@
      "nameJp": "嵐のローグタウン",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     },
     {
      "num": "FP32",
@@ -4332,7 +4863,8 @@
      "nameJp": "戦場のロストアイランド",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     },
     {
      "num": "FP33",
@@ -4340,7 +4872,8 @@
      "nameJp": "ロイヤル艦隊",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     },
     {
      "num": "FP34",
@@ -4348,7 +4881,8 @@
      "nameJp": "海王類の巣",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     },
     {
      "num": "FP35",
@@ -4356,7 +4890,8 @@
      "nameJp": "トランプ城",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     },
     {
      "num": "FP36",
@@ -4364,7 +4899,8 @@
      "nameJp": "ウィスキーピーク",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     }
    ]
   },
@@ -4379,7 +4915,8 @@
      "nameJp": "ルフィ",
      "type": "Devil Fruit/Technique",
      "mark": "Ｌ",
-     "power": "1050"
+     "power": "1050",
+     "finish": "Holo"
     },
     {
      "num": "C399",
@@ -4387,7 +4924,8 @@
      "nameJp": "ルフィ",
      "type": "Others",
      "mark": "民 武 Ｌ",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "C400",
@@ -4395,7 +4933,8 @@
      "nameJp": "ルフィ",
      "type": "Pirate/Cooking",
      "mark": "賊 料 Ｌ",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C401",
@@ -4403,7 +4942,8 @@
      "nameJp": "ゾロ",
      "type": "Swordsman/Technique",
      "mark": "剣",
-     "power": "900"
+     "power": "900",
+     "finish": "Holo"
     },
     {
      "num": "C402",
@@ -4411,7 +4951,8 @@
      "nameJp": "ゾロ",
      "type": "Swordsman",
      "mark": "剣 武 Ｌ",
-     "power": "150 &#8594; 250"
+     "power": "150 &#8594; 250",
+     "finish": "Normal"
     },
     {
      "num": "C403",
@@ -4419,7 +4960,8 @@
      "nameJp": "ナミ",
      "type": "Citizen/Wisdom",
      "mark": "知",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C404",
@@ -4427,7 +4969,8 @@
      "nameJp": "ナミ",
      "type": "Pirate/Cooking",
      "mark": "賊 知 Ｌ",
-     "power": "200 &#8594; 350"
+     "power": "200 &#8594; 350",
+     "finish": "Normal"
     },
     {
      "num": "C405",
@@ -4435,7 +4978,8 @@
      "nameJp": "ウソップ",
      "type": "Pirate/Cooking",
      "mark": "賊 料",
-     "power": "500"
+     "power": "500",
+     "finish": "Normal"
     },
     {
      "num": "C406",
@@ -4443,7 +4987,8 @@
      "nameJp": "ウソップ",
      "type": "Pirate/Wisdom",
      "mark": "賊 武 Ｌ",
-     "power": "350"
+     "power": "350",
+     "finish": "Normal"
     },
     {
      "num": "C407",
@@ -4451,7 +4996,8 @@
      "nameJp": "サンジ",
      "type": "Wisdom",
      "mark": "料 知",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C408",
@@ -4459,7 +5005,8 @@
      "nameJp": "サンジ",
      "type": "Citizen/Cooking",
      "mark": "民 料 Ｌ",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C409",
@@ -4467,7 +5014,8 @@
      "nameJp": "クロッカス",
      "type": "Citizen/Wisdom",
      "mark": "民 獣",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C410",
@@ -4475,7 +5023,8 @@
      "nameJp": "ラブーン",
      "type": "Animal",
      "mark": "超 賊 獣",
-     "power": "400"
+     "power": "400",
+     "finish": "Normal"
     },
     {
      "num": "C411",
@@ -4483,7 +5032,8 @@
      "nameJp": "ビビ",
      "type": "Government",
      "mark": "政 Ｌ",
-     "power": "0"
+     "power": "0",
+     "finish": "Normal"
     },
     {
      "num": "C412",
@@ -4491,7 +5041,8 @@
      "nameJp": "カルー",
      "type": "Government/Animal",
      "mark": "民 政 獣",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "C413",
@@ -4499,7 +5050,8 @@
      "nameJp": "コビー",
      "type": "Marine/Technique",
      "mark": "軍 民 武",
-     "power": "350"
+     "power": "350",
+     "finish": "Normal"
     },
     {
      "num": "C414",
@@ -4507,7 +5059,8 @@
      "nameJp": "ヘルメッポ",
      "type": "Marine/Wisdom",
      "mark": "軍 民 知",
-     "power": "300 &#8594; 0"
+     "power": "300 &#8594; 0",
+     "finish": "Normal"
     },
     {
      "num": "C415",
@@ -4515,7 +5068,8 @@
      "nameJp": "ドリー ＆ ブロギー",
      "type": "Pirate",
      "mark": "超 賊",
-     "power": "50"
+     "power": "50",
+     "finish": "Normal"
     },
     {
      "num": "C416",
@@ -4523,7 +5077,8 @@
      "nameJp": "ブロギー",
      "type": "Pirate",
      "mark": "超",
-     "power": "1000"
+     "power": "1000",
+     "finish": "Normal"
     },
     {
      "num": "C417",
@@ -4531,7 +5086,8 @@
      "nameJp": "ドリー",
      "type": "Pirate",
      "mark": "超",
-     "power": "1000"
+     "power": "1000",
+     "finish": "Normal"
     },
     {
      "num": "C418",
@@ -4539,7 +5095,8 @@
      "nameJp": "Ｍｒ．３",
      "type": "Devil Fruit/Organization",
      "mark": "罪 知",
-     "power": "250"
+     "power": "250",
+     "finish": "Holo"
     },
     {
      "num": "C419",
@@ -4547,7 +5104,8 @@
      "nameJp": "Ｍｒ．３",
      "type": "Devil Fruit/Organization",
      "mark": "罪 武",
-     "power": "200 &#8594; 500"
+     "power": "200 &#8594; 500",
+     "finish": "Normal"
     },
     {
      "num": "C420",
@@ -4555,7 +5113,8 @@
      "nameJp": "Ｍｒ．８",
      "type": "Organization/Wisdom",
      "mark": "罪 政",
-     "power": "250"
+     "power": "250",
+     "finish": "Normal"
     },
     {
      "num": "C421",
@@ -4563,7 +5122,8 @@
      "nameJp": "Ｍｒ．８",
      "type": "Organization/Technique",
      "mark": "罪 政 武",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "C422",
@@ -4571,7 +5131,8 @@
      "nameJp": "ミス・ゴールデンウィーク",
      "type": "Organization/Wisdom",
      "mark": "民 罪",
-     "power": "250"
+     "power": "250",
+     "finish": "Normal"
     },
     {
      "num": "C423",
@@ -4579,7 +5140,8 @@
      "nameJp": "ミス・ゴールデンウィーク",
      "type": "Citizen/Organization",
      "mark": "罪 知",
-     "power": "50"
+     "power": "50",
+     "finish": "Normal"
     },
     {
      "num": "C424",
@@ -4587,7 +5149,8 @@
      "nameJp": "ミス・バレンタイン",
      "type": "Devil Fruit/Organization",
      "mark": "罪 知",
-     "power": "200 &#8594; 600"
+     "power": "200 &#8594; 600",
+     "finish": "Normal"
     },
     {
      "num": "C425",
@@ -4595,7 +5158,8 @@
      "nameJp": "ミス・マンデー",
      "type": "Organization/Technique",
      "mark": "罪 武",
-     "power": "600"
+     "power": "600",
+     "finish": "Normal"
     },
     {
      "num": "C426",
@@ -4603,7 +5167,8 @@
      "nameJp": "Ｍｒ．９ ＆ ミス・ウェンズデー",
      "type": "Organization/Technique",
      "mark": "罪 武",
-     "power": "400"
+     "power": "400",
+     "finish": "Normal"
     },
     {
      "num": "C427",
@@ -4611,7 +5176,8 @@
      "nameJp": "ミリオンズ",
      "type": "Basttalion/Cooking",
      "mark": "罪 料 知",
-     "power": "100 200"
+     "power": "100 200",
+     "finish": "Normal"
     },
     {
      "num": "S94",
@@ -4619,7 +5185,8 @@
      "nameJp": "ルフィ海賊団",
      "type": "Special",
      "mark": "逆",
-     "power": "450 &#8594; 900"
+     "power": "450 &#8594; 900",
+     "finish": "Normal"
     },
     {
      "num": "S95",
@@ -4627,7 +5194,8 @@
      "nameJp": "エージェントたち",
      "type": "Special",
      "mark": "逆",
-     "power": "800"
+     "power": "800",
+     "finish": "Normal"
     },
     {
      "num": "S96",
@@ -4635,7 +5203,8 @@
      "nameJp": "ルフィ＆ゾロ",
      "type": "Special",
      "mark": "逆",
-     "power": "500"
+     "power": "500",
+     "finish": "Normal"
     },
     {
      "num": "S97",
@@ -4643,7 +5212,8 @@
      "nameJp": "ゾロ＆サンジ",
      "type": "Special",
      "mark": "逆",
-     "power": "200"
+     "power": "200",
+     "finish": "Holo"
     },
     {
      "num": "S98",
@@ -4651,7 +5221,8 @@
      "nameJp": "ナミ",
      "type": "Special",
      "mark": "逆",
-     "power": "50"
+     "power": "50",
+     "finish": "Normal"
     },
     {
      "num": "S99",
@@ -4659,7 +5230,8 @@
      "nameJp": "Ｍｒ．９",
      "type": "Special",
      "mark": "逆",
-     "power": "250 &#8594; 550"
+     "power": "250 &#8594; 550",
+     "finish": "Normal"
     },
     {
      "num": "S100",
@@ -4667,7 +5239,8 @@
      "nameJp": "ミス・オールサンデー",
      "type": "Special",
      "mark": "逆",
-     "power": "300 &#8594; –"
+     "power": "300 &#8594; –",
+     "finish": "Holo"
     },
     {
      "num": "H10",
@@ -4675,7 +5248,8 @@
      "nameJp": "長き道のり",
      "type": "Hyper",
      "mark": "",
-     "power": ""
+     "power": "",
+     "finish": "Holo"
     },
     {
      "num": "H11",
@@ -4683,7 +5257,8 @@
      "nameJp": "覇国",
      "type": "Hyper",
      "mark": "",
-     "power": ""
+     "power": "",
+     "finish": "Holo"
     },
     {
      "num": "H12",
@@ -4691,7 +5266,8 @@
      "nameJp": "先見の明",
      "type": "Hyper",
      "mark": "",
-     "power": ""
+     "power": "",
+     "finish": "Normal"
     },
     {
      "num": "H13",
@@ -4699,7 +5275,8 @@
      "nameJp": "大ウソ",
      "type": "Hyper",
      "mark": "",
-     "power": ""
+     "power": "",
+     "finish": "Normal"
     },
     {
      "num": "H14",
@@ -4707,7 +5284,8 @@
      "nameJp": "超常者",
      "type": "Hyper",
      "mark": "",
-     "power": ""
+     "power": "",
+     "finish": "Normal"
     },
     {
      "num": "H15",
@@ -4715,7 +5293,8 @@
      "nameJp": "組織力",
      "type": "Hyper",
      "mark": "",
-     "power": ""
+     "power": "",
+     "finish": "Normal"
     }
    ]
   },
@@ -4730,7 +5309,8 @@
      "nameJp": "ルフィ",
      "type": "Devil Fruit/Pirate",
      "mark": "賊 Ｌ",
-     "power": "800"
+     "power": "800",
+     "finish": "Holo"
     },
     {
      "num": "C429",
@@ -4738,7 +5318,8 @@
      "nameJp": "ゾロ",
      "type": "Swordsman/Technique",
      "mark": "剣 武",
-     "power": "700"
+     "power": "700",
+     "finish": "Holo"
     },
     {
      "num": "C430",
@@ -4746,7 +5327,8 @@
      "nameJp": "ゾロ",
      "type": "Swordsman",
      "mark": "剣 Ｌ",
-     "power": "450"
+     "power": "450",
+     "finish": "Normal"
     },
     {
      "num": "C431",
@@ -4754,7 +5336,8 @@
      "nameJp": "ナミ",
      "type": "Citizen",
      "mark": "知 Ｌ",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C432",
@@ -4762,7 +5345,8 @@
      "nameJp": "ナミ",
      "type": "Citizen/Wisdom",
      "mark": "民 知",
-     "power": "350"
+     "power": "350",
+     "finish": "Normal"
     },
     {
      "num": "C433",
@@ -4770,7 +5354,8 @@
      "nameJp": "ウソップ",
      "type": "Pirate/Technique",
      "mark": "賊 Ｌ",
-     "power": "50"
+     "power": "50",
+     "finish": "Normal"
     },
     {
      "num": "C434",
@@ -4778,7 +5363,8 @@
      "nameJp": "サンジ",
      "type": "Citizen/Cooking",
      "mark": "料 Ｌ",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "C435",
@@ -4786,7 +5372,8 @@
      "nameJp": "チョッパー",
      "type": "Animal/Wisdom",
      "mark": "獣 知",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C436",
@@ -4794,7 +5381,8 @@
      "nameJp": "チョッパー",
      "type": "Devil Fruit/Animal",
      "mark": "獣 Ｌ",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C437",
@@ -4802,7 +5390,8 @@
      "nameJp": "ビビ",
      "type": "Organization/Government",
      "mark": "罪 政 Ｌ",
-     "power": "50"
+     "power": "50",
+     "finish": "Normal"
     },
     {
      "num": "C438",
@@ -4810,7 +5399,8 @@
      "nameJp": "カルー",
      "type": "Cooking/Animal",
      "mark": "政 獣 Ｌ",
-     "power": "50"
+     "power": "50",
+     "finish": "Normal"
     },
     {
      "num": "C439",
@@ -4818,7 +5408,8 @@
      "nameJp": "ブロギー",
      "type": "Pirate",
      "mark": "超",
-     "power": "500"
+     "power": "500",
+     "finish": "Normal"
     },
     {
      "num": "C440",
@@ -4826,7 +5417,8 @@
      "nameJp": "ドリー",
      "type": "Pirate",
      "mark": "超",
-     "power": "650"
+     "power": "650",
+     "finish": "Normal"
     },
     {
      "num": "C441",
@@ -4834,7 +5426,8 @@
      "nameJp": "Ⅾｒ．くれは",
      "type": "Technique/Wisdom",
      "mark": "超 知",
-     "power": "300"
+     "power": "300",
+     "finish": "Holo"
     },
     {
      "num": "C442",
@@ -4842,7 +5435,8 @@
      "nameJp": "ドルトン",
      "type": "Devil Fruit/Swordsman",
      "mark": "民 政 剣",
-     "power": "200 &#8594; 450"
+     "power": "200 &#8594; 450",
+     "finish": "Normal"
     },
     {
      "num": "C443",
@@ -4850,7 +5444,8 @@
      "nameJp": "ドルトン",
      "type": "Devil Fruit/Animal",
      "mark": "政 武 獣",
-     "power": "200 &#8594; 450"
+     "power": "200 &#8594; 450",
+     "finish": "Normal"
     },
     {
      "num": "C444",
@@ -4858,7 +5453,8 @@
      "nameJp": "ネギ熊まりあ",
      "type": "Citizen/Cooking",
      "mark": "民 料 獣",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C445",
@@ -4866,7 +5462,8 @@
      "nameJp": "コビー",
      "type": "Marine/Technique",
      "mark": "軍 民 武",
-     "power": "150 &#8594; 350"
+     "power": "150 &#8594; 350",
+     "finish": "Normal"
     },
     {
      "num": "C446",
@@ -4874,7 +5471,8 @@
      "nameJp": "ヘルメッポ",
      "type": "Marine/Wisdom",
      "mark": "軍 民 知",
-     "power": "150 &#8594; 350"
+     "power": "150 &#8594; 350",
+     "finish": "Normal"
     },
     {
      "num": "C447",
@@ -4882,7 +5480,8 @@
      "nameJp": "ワポル",
      "type": "Devil Fruit/Government",
      "mark": "政 武",
-     "power": "250 &#8594; 650"
+     "power": "250 &#8594; 650",
+     "finish": "Normal"
     },
     {
      "num": "C448",
@@ -4890,7 +5489,8 @@
      "nameJp": "チェス",
      "type": "Government/Wisdom",
      "mark": "政 知",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "C449",
@@ -4898,7 +5498,8 @@
      "nameJp": "クロマーリモ",
      "type": "Government/Technique",
      "mark": "政 武",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "C450",
@@ -4906,7 +5507,8 @@
      "nameJp": "Ｍｒ．３",
      "type": "Wisdom/Organization",
      "mark": "罪 知",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C451",
@@ -4914,7 +5516,8 @@
      "nameJp": "Ｍｒ．３",
      "type": "Devil Fruit/Organization",
      "mark": "罪 武",
-     "power": "450"
+     "power": "450",
+     "finish": "Normal"
     },
     {
      "num": "C452",
@@ -4922,7 +5525,8 @@
      "nameJp": "Ｍｒ．５",
      "type": "Devil Fruit/Organization",
      "mark": "罪 知",
-     "power": "50"
+     "power": "50",
+     "finish": "Normal"
     },
     {
      "num": "C453",
@@ -4930,7 +5534,8 @@
      "nameJp": "ミス・ゴールデンウィーク",
      "type": "Wisdom/Organization",
      "mark": "罪 知",
-     "power": "0"
+     "power": "0",
+     "finish": "Normal"
     },
     {
      "num": "C454",
@@ -4938,7 +5543,8 @@
      "nameJp": "ミス・バレンタイン",
      "type": "Organization/Wisdom",
      "mark": "罪 武",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "C455",
@@ -4946,7 +5552,8 @@
      "nameJp": "ラパーン",
      "type": "Animal/Battalion",
      "mark": "獣",
-     "power": "150 &#8594; 250"
+     "power": "150 &#8594; 250",
+     "finish": "Normal"
     },
     {
      "num": "C456",
@@ -4954,7 +5561,8 @@
      "nameJp": "ルフィ海賊団",
      "type": "Pirate",
      "mark": "Ｌ",
-     "power": "800"
+     "power": "800",
+     "finish": "Normal"
     },
     {
      "num": "S101",
@@ -4962,7 +5570,8 @@
      "nameJp": "ルフィ海賊団",
      "type": "Special",
      "mark": "逆",
-     "power": "1000"
+     "power": "1000",
+     "finish": "Holo"
     },
     {
      "num": "S102",
@@ -4970,7 +5579,8 @@
      "nameJp": "ルフィ",
      "type": "Special",
      "mark": "逆",
-     "power": "300"
+     "power": "300",
+     "finish": "Normal"
     },
     {
      "num": "S103",
@@ -4978,7 +5588,8 @@
      "nameJp": "サンジ",
      "type": "Special",
      "mark": "逆",
-     "power": "200 &#8594; 400"
+     "power": "200 &#8594; 400",
+     "finish": "Holo"
     },
     {
      "num": "S104",
@@ -4986,7 +5597,8 @@
      "nameJp": "チョッパー",
      "type": "Special",
      "mark": "逆",
-     "power": "500"
+     "power": "500",
+     "finish": "Normal"
     },
     {
      "num": "S105",
@@ -4994,7 +5606,8 @@
      "nameJp": "ガープ",
      "type": "Special",
      "mark": "逆",
-     "power": "600"
+     "power": "600",
+     "finish": "Normal"
     },
     {
      "num": "S106",
@@ -5002,7 +5615,8 @@
      "nameJp": "Ｍｒ．２",
      "type": "Special",
      "mark": "逆",
-     "power": "250"
+     "power": "250",
+     "finish": "Normal"
     },
     {
      "num": "S107",
@@ -5010,7 +5624,8 @@
      "nameJp": "ミス・オールサンデー",
      "type": "Special",
      "mark": "逆",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "H16",
@@ -5018,7 +5633,8 @@
      "nameJp": "超弩級",
      "type": "Hyper",
      "mark": "",
-     "power": ""
+     "power": "",
+     "finish": "Normal"
     },
     {
      "num": "H17",
@@ -5026,7 +5642,8 @@
      "nameJp": "連続攻撃",
      "type": "Hyper",
      "mark": "",
-     "power": ""
+     "power": "",
+     "finish": "Normal"
     },
     {
      "num": "H18",
@@ -5034,7 +5651,8 @@
      "nameJp": "完治！",
      "type": "Hyper",
      "mark": "",
-     "power": ""
+     "power": "",
+     "finish": "Holo"
     },
     {
      "num": "H19",
@@ -5042,7 +5660,8 @@
      "nameJp": "ハイスピード",
      "type": "Hyper",
      "mark": "",
-     "power": ""
+     "power": "",
+     "finish": "Normal"
     },
     {
      "num": "H20",
@@ -5050,7 +5669,8 @@
      "nameJp": "突撃命令",
      "type": "Hyper",
      "mark": "",
-     "power": ""
+     "power": "",
+     "finish": "Normal"
     },
     {
      "num": "H21",
@@ -5058,7 +5678,8 @@
      "nameJp": "侵略",
      "type": "Hyper",
      "mark": "",
-     "power": ""
+     "power": "",
+     "finish": "Normal"
     }
    ]
   },
@@ -5073,7 +5694,8 @@
      "nameJp": "ルフィ",
      "type": "Devil Fruit/Pirate",
      "mark": "Ｌ",
-     "power": "900"
+     "power": "900",
+     "finish": "Holo"
     },
     {
      "num": "C458",
@@ -5081,7 +5703,8 @@
      "nameJp": "ルフィ",
      "type": "Pirate",
      "mark": "民 武 Ｌ",
-     "power": "300"
+     "power": "300",
+     "finish": "Normal"
     },
     {
      "num": "C459",
@@ -5089,7 +5712,8 @@
      "nameJp": "ゾロ",
      "type": "Pirate/Swordsman",
      "mark": "剣 武",
-     "power": "100 &#8594; 600"
+     "power": "100 &#8594; 600",
+     "finish": "Normal"
     },
     {
      "num": "C460",
@@ -5097,7 +5721,8 @@
      "nameJp": "ゾロ",
      "type": "Swordsman/Technique",
      "mark": "剣 武 Ｌ",
-     "power": "50 &#8594; 400"
+     "power": "50 &#8594; 400",
+     "finish": "Normal"
     },
     {
      "num": "C461",
@@ -5105,7 +5730,8 @@
      "nameJp": "ナミ",
      "type": "Pirate/Wisdom",
      "mark": "民 知",
-     "power": "250"
+     "power": "250",
+     "finish": "Normal"
     },
     {
      "num": "C462",
@@ -5113,7 +5739,8 @@
      "nameJp": "ナミ",
      "type": "Wisdom",
      "mark": "政 知 Ｌ",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C463",
@@ -5121,7 +5748,8 @@
      "nameJp": "ウソップ",
      "type": "Pirate",
      "mark": "賊 民",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C464",
@@ -5129,7 +5757,8 @@
      "nameJp": "ウソップ",
      "type": "Pirate/Technique",
      "mark": "賊 民 Ｌ",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C465",
@@ -5137,7 +5766,8 @@
      "nameJp": "サンジ",
      "type": "Citizen/Cooking",
      "mark": "料 武",
-     "power": "50 &#8594; 400"
+     "power": "50 &#8594; 400",
+     "finish": "Normal"
     },
     {
      "num": "C466",
@@ -5145,7 +5775,8 @@
      "nameJp": "サンジ",
      "type": "Wisdom",
      "mark": "料 知 Ｌ",
-     "power": "400"
+     "power": "400",
+     "finish": "Normal"
     },
     {
      "num": "C467",
@@ -5153,7 +5784,8 @@
      "nameJp": "チョッパー",
      "type": "Pirate/Animal",
      "mark": "獣 Ｌ",
-     "power": "600"
+     "power": "600",
+     "finish": "Gold Stamp"
     },
     {
      "num": "C468",
@@ -5161,7 +5793,8 @@
      "nameJp": "ランブルボール",
      "type": "Item",
      "mark": "獣 知",
-     "power": "50 &#8594; 450"
+     "power": "50 &#8594; 450",
+     "finish": "Normal"
     },
     {
      "num": "C469",
@@ -5169,7 +5802,8 @@
      "nameJp": "アミウダケ",
      "type": "Item",
      "mark": "知 獣",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C470",
@@ -5177,7 +5811,8 @@
      "nameJp": "ビビ",
      "type": "Government",
      "mark": "民 政 Ｌ",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C471",
@@ -5185,7 +5820,8 @@
      "nameJp": "カルー",
      "type": "Animal/Technique",
      "mark": "政 獣 Ｌ",
-     "power": "400"
+     "power": "400",
+     "finish": "Normal"
     },
     {
      "num": "C472",
@@ -5193,7 +5829,8 @@
      "nameJp": "ドリー ＆ ブロギー",
      "type": "Pirate",
      "mark": "賊 剣 Ｌ",
-     "power": "50"
+     "power": "50",
+     "finish": "Normal"
     },
     {
      "num": "C473",
@@ -5201,7 +5838,8 @@
      "nameJp": "ブロギー",
      "type": "Pirate/Technique",
      "mark": "超",
-     "power": "800"
+     "power": "800",
+     "finish": "Normal"
     },
     {
      "num": "C474",
@@ -5209,7 +5847,8 @@
      "nameJp": "ドリー",
      "type": "Pirate/Swordsman",
      "mark": "超",
-     "power": "800"
+     "power": "800",
+     "finish": "Normal"
     },
     {
      "num": "C475",
@@ -5217,7 +5856,8 @@
      "nameJp": "Ⅾｒ．くれは",
      "type": "Technique/Wisdom",
      "mark": "超 知",
-     "power": "500"
+     "power": "500",
+     "finish": "Normal"
     },
     {
      "num": "C476",
@@ -5225,7 +5865,8 @@
      "nameJp": "Ⅾｒ．ヒルルク",
      "type": "Wisdom",
      "mark": "知 獣",
-     "power": "300"
+     "power": "300",
+     "finish": "Normal"
     },
     {
      "num": "C477",
@@ -5233,7 +5874,8 @@
      "nameJp": "万能薬",
      "type": "Item",
      "mark": "知 獣",
-     "power": "50"
+     "power": "50",
+     "finish": "Normal"
     },
     {
      "num": "C478",
@@ -5241,7 +5883,8 @@
      "nameJp": "ドルトン",
      "type": "Government/Technique",
      "mark": "政 剣 獣",
-     "power": "500"
+     "power": "500",
+     "finish": "Normal"
     },
     {
      "num": "C479",
@@ -5249,7 +5892,8 @@
      "nameJp": "ドルトン",
      "type": "Government/Swordsman",
      "mark": "民 政 剣",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C480",
@@ -5257,7 +5901,8 @@
      "nameJp": "ワポル",
      "type": "Devil Fruit/Government",
      "mark": "政 武",
-     "power": "500"
+     "power": "500",
+     "finish": "Normal"
     },
     {
      "num": "C481",
@@ -5265,7 +5910,8 @@
      "nameJp": "ワポル",
      "type": "Devil Fruit/Government",
      "mark": "政 武",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C482",
@@ -5273,7 +5919,8 @@
      "nameJp": "チェス",
      "type": "Government/Wisdom",
      "mark": "政 知",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C483",
@@ -5281,7 +5928,8 @@
      "nameJp": "クロマーリモ",
      "type": "Government/Technique",
      "mark": "政 武",
-     "power": "150 &#8594; 450"
+     "power": "150 &#8594; 450",
+     "finish": "Normal"
     },
     {
      "num": "C484",
@@ -5289,7 +5937,8 @@
      "nameJp": "Ｍｒ．３",
      "type": "Devil Fruit/Organization",
      "mark": "罪 知",
-     "power": "550"
+     "power": "550",
+     "finish": "Normal"
     },
     {
      "num": "C485",
@@ -5297,7 +5946,8 @@
      "nameJp": "Ｍｒ．５",
      "type": "Devil Fruit/Organization",
      "mark": "罪 武",
-     "power": "400"
+     "power": "400",
+     "finish": "Normal"
     },
     {
      "num": "C486",
@@ -5305,7 +5955,8 @@
      "nameJp": "ミス・ゴールデンウィーク",
      "type": "Organization/Wisdom",
      "mark": "罪 知",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C487",
@@ -5313,7 +5964,8 @@
      "nameJp": "島食い",
      "type": "Animal",
      "mark": "超 獣",
-     "power": "400"
+     "power": "400",
+     "finish": "Normal"
     },
     {
      "num": "C488",
@@ -5321,7 +5973,8 @@
      "nameJp": "ブリキング海賊団",
      "type": "Government/Battalion",
      "mark": "軍 政 武",
-     "power": "150 &#8594; 200"
+     "power": "150 &#8594; 200",
+     "finish": "Normal"
     },
     {
      "num": "C489",
@@ -5329,7 +5982,8 @@
      "nameJp": "ルフィ海賊団",
      "type": "Pirate",
      "mark": "Ｌ",
-     "power": "300"
+     "power": "300",
+     "finish": "Holo"
     },
     {
      "num": "S108",
@@ -5337,7 +5991,8 @@
      "nameJp": "ルフィ海賊団",
      "type": "Special",
      "mark": "逆",
-     "power": "1200"
+     "power": "1200",
+     "finish": "Holo"
     },
     {
      "num": "S109",
@@ -5345,7 +6000,8 @@
      "nameJp": "ナミ ＆ ビビ",
      "type": "Special",
      "mark": "逆",
-     "power": "450"
+     "power": "450",
+     "finish": "Normal"
     },
     {
      "num": "S110",
@@ -5353,7 +6009,8 @@
      "nameJp": "ルフィ",
      "type": "Special",
      "mark": "逆",
-     "power": "100 &#8594; 1300"
+     "power": "100 &#8594; 1300",
+     "finish": "Gold Stamp"
     },
     {
      "num": "S111",
@@ -5361,7 +6018,8 @@
      "nameJp": "チョッパー",
      "type": "Special",
      "mark": "逆",
-     "power": "300"
+     "power": "300",
+     "finish": "Normal"
     },
     {
      "num": "S112",
@@ -5369,7 +6027,8 @@
      "nameJp": "チョッパー",
      "type": "Special",
      "mark": "逆",
-     "power": "300"
+     "power": "300",
+     "finish": "Normal"
     },
     {
      "num": "S113",
@@ -5377,7 +6036,8 @@
      "nameJp": "チョッパー",
      "type": "Special",
      "mark": "逆",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "S114",
@@ -5385,7 +6045,8 @@
      "nameJp": "チョッパー",
      "type": "Special",
      "mark": "逆",
-     "power": "850"
+     "power": "850",
+     "finish": "Normal"
     },
     {
      "num": "S115",
@@ -5393,7 +6054,8 @@
      "nameJp": "チョッパー",
      "type": "Special",
      "mark": "逆",
-     "power": "600"
+     "power": "600",
+     "finish": "Normal"
     },
     {
      "num": "S116",
@@ -5401,7 +6063,8 @@
      "nameJp": "クロコダイル",
      "type": "Special",
      "mark": "逆",
-     "power": "1400"
+     "power": "1400",
+     "finish": "Gold Stamp"
     },
     {
      "num": "S117",
@@ -5409,7 +6072,8 @@
      "nameJp": "Ｍｒ．３",
      "type": "Special",
      "mark": "逆",
-     "power": "250 &#8594; 500"
+     "power": "250 &#8594; 500",
+     "finish": "Normal"
     },
     {
      "num": "S118",
@@ -5417,7 +6081,8 @@
      "nameJp": "ワポル",
      "type": "Special",
      "mark": "逆",
-     "power": "850"
+     "power": "850",
+     "finish": "Normal"
     },
     {
      "num": "S119",
@@ -5425,7 +6090,8 @@
      "nameJp": "アンラッキーズ",
      "type": "Special",
      "mark": "逆",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "H22",
@@ -5433,7 +6099,8 @@
      "nameJp": "空軍ゴムシュート",
      "type": "Hyper",
      "mark": "",
-     "power": ""
+     "power": "",
+     "finish": "Normal"
     },
     {
      "num": "H23",
@@ -5441,7 +6108,8 @@
      "nameJp": "刻蹄桜",
      "type": "Hyper",
      "mark": "",
-     "power": ""
+     "power": "",
+     "finish": "Normal"
     },
     {
      "num": "H24",
@@ -5449,7 +6117,8 @@
      "nameJp": "四本戦斧",
      "type": "Hyper",
      "mark": "",
-     "power": ""
+     "power": "",
+     "finish": "Normal"
     },
     {
      "num": "H25",
@@ -5457,7 +6126,8 @@
      "nameJp": "超常バトル",
      "type": "Hyper",
      "mark": "",
-     "power": ""
+     "power": "",
+     "finish": "Normal"
     },
     {
      "num": "H26",
@@ -5465,7 +6135,8 @@
      "nameJp": "陰謀",
      "type": "Hyper",
      "mark": "",
-     "power": ""
+     "power": "",
+     "finish": "Normal"
     },
     {
      "num": "H27",
@@ -5473,7 +6144,8 @@
      "nameJp": "悪政",
      "type": "Hyper",
      "mark": "",
-     "power": ""
+     "power": "",
+     "finish": "Normal"
     },
     {
      "num": "H28",
@@ -5481,7 +6153,8 @@
      "nameJp": "戦士の血",
      "type": "Hyper",
      "mark": "",
-     "power": ""
+     "power": "",
+     "finish": "Normal"
     },
     {
      "num": "H29",
@@ -5489,7 +6162,8 @@
      "nameJp": "頭脳プレイ",
      "type": "Hyper",
      "mark": "",
-     "power": ""
+     "power": "",
+     "finish": "Normal"
     },
     {
      "num": "H30",
@@ -5497,7 +6171,8 @@
      "nameJp": "ツールマスター",
      "type": "Hyper",
      "mark": "",
-     "power": ""
+     "power": "",
+     "finish": "Normal"
     },
     {
      "num": "FP37",
@@ -5505,7 +6180,8 @@
      "nameJp": "Ｍｒ．３の別荘",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     },
     {
      "num": "FP38",
@@ -5513,7 +6189,8 @@
      "nameJp": "サイクロン",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     },
     {
      "num": "FP39",
@@ -5521,7 +6198,8 @@
      "nameJp": "ブリキング号",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     },
     {
      "num": "FP40",
@@ -5529,7 +6207,8 @@
      "nameJp": "国盗りの舞台裏",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     },
     {
      "num": "FP41",
@@ -5537,7 +6216,8 @@
      "nameJp": "ドラム城",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     },
     {
      "num": "FP42",
@@ -5545,7 +6225,8 @@
      "nameJp": "ヒルルクの桜",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     }
    ]
   },
@@ -5560,7 +6241,8 @@
      "nameJp": "ルフィ",
      "type": "Pirate",
      "mark": "武 Ｌ",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C491",
@@ -5568,7 +6250,8 @@
      "nameJp": "ルフィ",
      "type": "Pirate/Technique",
      "mark": "知 Ｌ",
-     "power": "250"
+     "power": "250",
+     "finish": "Normal"
     },
     {
      "num": "C492",
@@ -5576,7 +6259,8 @@
      "nameJp": "ゾロ",
      "type": "Swordsman/Wisdom",
      "mark": "剣 武",
-     "power": "700"
+     "power": "700",
+     "finish": "Holo"
     },
     {
      "num": "C493",
@@ -5584,7 +6268,8 @@
      "nameJp": "ナミ",
      "type": "Citizen/Wisdom",
      "mark": "知 Ｌ",
-     "power": "350"
+     "power": "350",
+     "finish": "Normal"
     },
     {
      "num": "C494",
@@ -5592,7 +6277,8 @@
      "nameJp": "ウソップ",
      "type": "Pirate/Technique",
      "mark": "賊 Ｌ",
-     "power": "100 &#8594; 450"
+     "power": "100 &#8594; 450",
+     "finish": "Normal"
     },
     {
      "num": "C495",
@@ -5600,7 +6286,8 @@
      "nameJp": "ウソップ",
      "type": "Citizen/Wisdom",
      "mark": "賊 民 知",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C496",
@@ -5608,7 +6295,8 @@
      "nameJp": "サンジ",
      "type": "Citizen/Cooking",
      "mark": "料 Ｌ",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C497",
@@ -5616,7 +6304,8 @@
      "nameJp": "チョッパー",
      "type": "Animal/Wisdom",
      "mark": "獣 知",
-     "power": "50"
+     "power": "50",
+     "finish": "Holo"
     },
     {
      "num": "C498",
@@ -5624,7 +6313,8 @@
      "nameJp": "チョッパー",
      "type": "Pirate/Animal",
      "mark": "賊 獣 Ｌ",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C499",
@@ -5632,7 +6322,8 @@
      "nameJp": "ゾロ ＆ サンジ",
      "type": "Swordsman/Cooking",
      "mark": "剣 料 Ｌ",
-     "power": "250 &#8594; 500"
+     "power": "250 &#8594; 500",
+     "finish": "Normal"
     },
     {
      "num": "C500",
@@ -5640,7 +6331,8 @@
      "nameJp": "ビビ",
      "type": "Government",
      "mark": "政 Ｌ",
-     "power": "50"
+     "power": "50",
+     "finish": "Normal"
     },
     {
      "num": "C501",
@@ -5648,7 +6340,8 @@
      "nameJp": "ドルトン",
      "type": "Citizen/Swordsman",
      "mark": "政 剣 武",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C502",
@@ -5656,7 +6349,8 @@
      "nameJp": "ドルトン",
      "type": "Devil Fruit/Animal",
      "mark": "民 政 獣",
-     "power": "500"
+     "power": "500",
+     "finish": "Normal"
     },
     {
      "num": "C503",
@@ -5664,7 +6358,8 @@
      "nameJp": "Ⅾｒ．くれは",
      "type": "Wisdom",
      "mark": "超 知",
-     "power": "150 &#8594; 450"
+     "power": "150 &#8594; 450",
+     "finish": "Normal"
     },
     {
      "num": "C504",
@@ -5672,7 +6367,8 @@
      "nameJp": "Ⅾｒ．ヒルルク",
      "type": "Citizen/Wisdom",
      "mark": "知 獣",
-     "power": "50"
+     "power": "50",
+     "finish": "Normal"
     },
     {
      "num": "C505",
@@ -5680,7 +6376,8 @@
      "nameJp": "スモーカー",
      "type": "Devil Fruit/Marine",
      "mark": "軍 武",
-     "power": "100 &#8594; 1300"
+     "power": "100 &#8594; 1300",
+     "finish": "Normal"
     },
     {
      "num": "C506",
@@ -5688,7 +6385,8 @@
      "nameJp": "たしぎ",
      "type": "Marine/Swordsman",
      "mark": "軍 剣 武",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C507",
@@ -5696,7 +6394,8 @@
      "nameJp": "クロコダイル",
      "type": "Devil Fruit/Organization",
      "mark": "賊 罪",
-     "power": "1300"
+     "power": "1300",
+     "finish": "Holo"
     },
     {
      "num": "C508",
@@ -5704,7 +6403,8 @@
      "nameJp": "Ｍｒ．２",
      "type": "Devil Fruit/Organization",
      "mark": "罪 知",
-     "power": "700"
+     "power": "700",
+     "finish": "Normal"
     },
     {
      "num": "C509",
@@ -5712,7 +6412,8 @@
      "nameJp": "ワポル",
      "type": "Devil Fruit/Government",
      "mark": "政 武",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C510",
@@ -5720,7 +6421,8 @@
      "nameJp": "ブリキング大砲",
      "type": "Item",
      "mark": "政 武",
-     "power": "200 &#8594; 400"
+     "power": "200 &#8594; 400",
+     "finish": "Normal"
     },
     {
      "num": "C511",
@@ -5728,7 +6430,8 @@
      "nameJp": "チェス",
      "type": "Government/Technique",
      "mark": "政 知",
-     "power": "200 &#8594; 400"
+     "power": "200 &#8594; 400",
+     "finish": "Normal"
     },
     {
      "num": "C512",
@@ -5736,7 +6439,8 @@
      "nameJp": "クロマーリモ",
      "type": "Government/Technique",
      "mark": "政 武",
-     "power": "200 &#8594; 400"
+     "power": "200 &#8594; 400",
+     "finish": "Normal"
     },
     {
      "num": "C513",
@@ -5744,7 +6448,8 @@
      "nameJp": "エース",
      "type": "Devil Fruit/Pirate",
      "mark": "賊 Ｌ",
-     "power": "1300"
+     "power": "1300",
+     "finish": "Holo"
     },
     {
      "num": "C514",
@@ -5752,7 +6457,8 @@
      "nameJp": "ハイキングベア",
      "type": "Animal/Wisdom",
      "mark": "民 獣 知",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C515",
@@ -5760,7 +6466,8 @@
      "nameJp": "イッシー２０",
      "type": "Wisdom/Battalion",
      "mark": "民 政 知",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C516",
@@ -5768,7 +6475,8 @@
      "nameJp": "ルフィ ＆ チョッパー",
      "type": "Pirate",
      "mark": "獣 Ｌ",
-     "power": "50"
+     "power": "50",
+     "finish": "Normal"
     },
     {
      "num": "C517",
@@ -5776,7 +6484,8 @@
      "nameJp": "ルフィと仲間達１",
      "type": "Others",
      "mark": "料 知 Ｌ",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C518",
@@ -5784,7 +6493,8 @@
      "nameJp": "ルフィと仲間達２",
      "type": "Others",
      "mark": "政 剣 Ｌ",
-     "power": "150 &#8594; 450"
+     "power": "150 &#8594; 450",
+     "finish": "Normal"
     },
     {
      "num": "C519",
@@ -5792,7 +6502,8 @@
      "nameJp": "ルフィと仲間達３",
      "type": "Others",
      "mark": "獣 Ｌ",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "S120",
@@ -5800,7 +6511,8 @@
      "nameJp": "ルフィ海賊団",
      "type": "Special",
      "mark": "逆",
-     "power": "500"
+     "power": "500",
+     "finish": "Holo"
     },
     {
      "num": "S121",
@@ -5808,7 +6520,8 @@
      "nameJp": "ルフィ",
      "type": "Special",
      "mark": "逆",
-     "power": "500"
+     "power": "500",
+     "finish": "Normal"
     },
     {
      "num": "S122",
@@ -5816,7 +6529,8 @@
      "nameJp": "ナミ",
      "type": "Special",
      "mark": "逆",
-     "power": "200"
+     "power": "200",
+     "finish": "Normal"
     },
     {
      "num": "S123",
@@ -5824,7 +6538,8 @@
      "nameJp": "サンジ",
      "type": "Special",
      "mark": "逆",
-     "power": "300 &#8594; 600"
+     "power": "300 &#8594; 600",
+     "finish": "Holo"
     },
     {
      "num": "S124",
@@ -5832,7 +6547,8 @@
      "nameJp": "Ｍｒ．２",
      "type": "Special",
      "mark": "逆",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "S125",
@@ -5840,7 +6556,8 @@
      "nameJp": "ワポル",
      "type": "Special",
      "mark": "逆",
-     "power": "250 &#8594; 500"
+     "power": "250 &#8594; 500",
+     "finish": "Normal"
     },
     {
      "num": "S126",
@@ -5848,7 +6565,8 @@
      "nameJp": "コブラ",
      "type": "Special",
      "mark": "逆",
-     "power": "250"
+     "power": "250",
+     "finish": "Normal"
     },
     {
      "num": "H31",
@@ -5856,7 +6574,8 @@
      "nameJp": "出航！",
      "type": "Hyper",
      "mark": "",
-     "power": ""
+     "power": "",
+     "finish": "Normal"
     },
     {
      "num": "H32",
@@ -5864,7 +6583,8 @@
      "nameJp": "一騎打ち",
      "type": "Hyper",
      "mark": "",
-     "power": ""
+     "power": "",
+     "finish": "Normal"
     },
     {
      "num": "H33",
@@ -5872,7 +6592,8 @@
      "nameJp": "智将",
      "type": "Hyper",
      "mark": "",
-     "power": ""
+     "power": "",
+     "finish": "Normal"
     },
     {
      "num": "H34",
@@ -5880,7 +6601,8 @@
      "nameJp": "見えざる敵",
      "type": "Hyper",
      "mark": "",
-     "power": ""
+     "power": "",
+     "finish": "Normal"
     },
     {
      "num": "H35",
@@ -5888,7 +6610,8 @@
      "nameJp": "勅令",
      "type": "Hyper",
      "mark": "",
-     "power": ""
+     "power": "",
+     "finish": "Normal"
     }
    ]
   },
@@ -5903,7 +6626,8 @@
      "nameJp": "ルフィ",
      "type": "Devil Fruit/Pirate",
      "mark": "Ｌ",
-     "power": "300"
+     "power": "300",
+     "finish": "Holo"
     },
     {
      "num": "C521",
@@ -5911,7 +6635,8 @@
      "nameJp": "ゾロ",
      "type": "Swordsman/Technique",
      "mark": "剣 Ｌ",
-     "power": "100 &#8594; 900"
+     "power": "100 &#8594; 900",
+     "finish": "Normal"
     },
     {
      "num": "C522",
@@ -5919,7 +6644,8 @@
      "nameJp": "ゾロ",
      "type": "Swordsman",
      "mark": "賊 剣 武",
-     "power": "800"
+     "power": "800",
+     "finish": "Normal"
     },
     {
      "num": "C523",
@@ -5927,7 +6653,8 @@
      "nameJp": "ナミ",
      "type": "Technique/Wisdom",
      "mark": "武 知",
-     "power": "200 &#8594; 500"
+     "power": "200 &#8594; 500",
+     "finish": "Normal"
     },
     {
      "num": "C524",
@@ -5935,7 +6662,8 @@
      "nameJp": "ウソップ",
      "type": "Pirate/Wisdom",
      "mark": "賊 武",
-     "power": "50"
+     "power": "50",
+     "finish": "Normal"
     },
     {
      "num": "C525",
@@ -5943,7 +6671,8 @@
      "nameJp": "ウソップ",
      "type": "Pirate",
      "mark": "賊 武 Ｌ",
-     "power": "0"
+     "power": "0",
+     "finish": "Normal"
     },
     {
      "num": "C526",
@@ -5951,7 +6680,8 @@
      "nameJp": "サンジ",
      "type": "Cooking/Technique",
      "mark": "料 Ｌ",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C527",
@@ -5959,7 +6689,8 @@
      "nameJp": "サンジ",
      "type": "Cooking",
      "mark": "賊 民 料",
-     "power": "350"
+     "power": "350",
+     "finish": "Normal"
     },
     {
      "num": "C528",
@@ -5967,7 +6698,8 @@
      "nameJp": "チョッパー",
      "type": "Pirate/Animal",
      "mark": "獣 Ｌ",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C529",
@@ -5975,7 +6707,8 @@
      "nameJp": "チョッパー",
      "type": "Animal/Wisdom",
      "mark": "賊 獣 知",
-     "power": "50"
+     "power": "50",
+     "finish": "Normal"
     },
     {
      "num": "C530",
@@ -5983,7 +6716,8 @@
      "nameJp": "ビビ",
      "type": "Government/Technique",
      "mark": "政 Ｌ",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C531",
@@ -5991,7 +6725,8 @@
      "nameJp": "エース",
      "type": "Devil Fruit/Pirate",
      "mark": "賊 Ｌ",
-     "power": "1350"
+     "power": "1350",
+     "finish": "Holo"
     },
     {
      "num": "C532",
@@ -5999,7 +6734,8 @@
      "nameJp": "ルフィ海賊団",
      "type": "Pirate",
      "mark": "政 Ｌ",
-     "power": "250"
+     "power": "250",
+     "finish": "Normal"
     },
     {
      "num": "C533",
@@ -6007,7 +6743,8 @@
      "nameJp": "ルフィ海賊団",
      "type": "Pirate",
      "mark": "Ｌ",
-     "power": "300"
+     "power": "300",
+     "finish": "Normal"
     },
     {
      "num": "C400",
@@ -6015,7 +6752,8 @@
      "nameJp": "ルフィ",
      "type": "Pirate/Cooking",
      "mark": "賊 料 Ｌ",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C402",
@@ -6023,7 +6761,8 @@
      "nameJp": "ゾロ",
      "type": "Swordsman",
      "mark": "剣 武 Ｌ",
-     "power": "150 &#8594; 250"
+     "power": "150 &#8594; 250",
+     "finish": "Normal"
     },
     {
      "num": "C403",
@@ -6031,7 +6770,8 @@
      "nameJp": "ナミ",
      "type": "Citizen/Wisdom",
      "mark": "知",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C405",
@@ -6039,7 +6779,8 @@
      "nameJp": "ウソップ",
      "type": "Pirate/Cooking",
      "mark": "賊 料",
-     "power": "500"
+     "power": "500",
+     "finish": "Normal"
     },
     {
      "num": "C407",
@@ -6047,7 +6788,8 @@
      "nameJp": "サンジ",
      "type": "Wisdom",
      "mark": "料 知",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C411",
@@ -6055,7 +6797,8 @@
      "nameJp": "ビビ",
      "type": "Government",
      "mark": "政 Ｌ",
-     "power": "0"
+     "power": "0",
+     "finish": "Normal"
     },
     {
      "num": "S127",
@@ -6063,7 +6806,8 @@
      "nameJp": "ルフィ海賊団",
      "type": "Special",
      "mark": "逆",
-     "power": "300"
+     "power": "300",
+     "finish": "Holo"
     },
     {
      "num": "S128",
@@ -6071,7 +6815,8 @@
      "nameJp": "ルフィ",
      "type": "Special",
      "mark": "逆",
-     "power": "600"
+     "power": "600",
+     "finish": "Normal"
     },
     {
      "num": "S129",
@@ -6079,7 +6824,8 @@
      "nameJp": "ナミ",
      "type": "Special",
      "mark": "逆",
-     "power": "300"
+     "power": "300",
+     "finish": "Normal"
     },
     {
      "num": "S130",
@@ -6087,7 +6833,8 @@
      "nameJp": "サンジ",
      "type": "Special",
      "mark": "逆",
-     "power": "350"
+     "power": "350",
+     "finish": "Normal"
     },
     {
      "num": "S131",
@@ -6095,7 +6842,8 @@
      "nameJp": "チョッパー",
      "type": "Special",
      "mark": "逆",
-     "power": "300"
+     "power": "300",
+     "finish": "Normal"
     },
     {
      "num": "H36",
@@ -6103,7 +6851,8 @@
      "nameJp": "最終決戦",
      "type": "Hyper",
      "mark": "",
-     "power": ""
+     "power": "",
+     "finish": "Normal"
     },
     {
      "num": "H37",
@@ -6111,7 +6860,8 @@
      "nameJp": "極限状態",
      "type": "Hyper",
      "mark": "",
-     "power": ""
+     "power": "",
+     "finish": "Normal"
     },
     {
      "num": "H38",
@@ -6119,7 +6869,8 @@
      "nameJp": "最後の希望",
      "type": "Hyper",
      "mark": "",
-     "power": ""
+     "power": "",
+     "finish": "Normal"
     },
     {
      "num": "FP43",
@@ -6127,7 +6878,8 @@
      "nameJp": "港町ナノハナ",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     },
     {
      "num": "FP44",
@@ -6135,7 +6887,8 @@
      "nameJp": "小さき大海賊の船",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     },
     {
      "num": "FP31",
@@ -6143,7 +6896,8 @@
      "nameJp": "嵐のローグタウン",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     },
     {
      "num": "C534",
@@ -6151,7 +6905,8 @@
      "nameJp": "クロコダイル",
      "type": "Devil Fruit/Organization",
      "mark": "罪",
-     "power": "1350"
+     "power": "1350",
+     "finish": "Holo"
     },
     {
      "num": "C535",
@@ -6159,7 +6914,8 @@
      "nameJp": "Ｍｒ．１",
      "type": "Devil Fruit/Swordsman",
      "mark": "罪 剣",
-     "power": "900"
+     "power": "900",
+     "finish": "Holo"
     },
     {
      "num": "C536",
@@ -6167,7 +6923,8 @@
      "nameJp": "Ｍｒ．２",
      "type": "Organization/Technique",
      "mark": "民 武",
-     "power": "200 &#8594; –"
+     "power": "200 &#8594; –",
+     "finish": "Normal"
     },
     {
      "num": "C537",
@@ -6175,7 +6932,8 @@
      "nameJp": "Ｍｒ．３",
      "type": "Devil Fruit/Organization",
      "mark": "罪 知",
-     "power": "500"
+     "power": "500",
+     "finish": "Normal"
     },
     {
      "num": "C538",
@@ -6183,7 +6941,8 @@
      "nameJp": "Ｍｒ．４",
      "type": "Technique/Organization",
      "mark": "獣 武",
-     "power": "550"
+     "power": "550",
+     "finish": "Normal"
     },
     {
      "num": "C539",
@@ -6191,7 +6950,8 @@
      "nameJp": "Ｍｒ．５",
      "type": "Devil Fruit/Technique",
      "mark": "罪 武",
-     "power": "500"
+     "power": "500",
+     "finish": "Normal"
     },
     {
      "num": "C540",
@@ -6199,7 +6959,8 @@
      "nameJp": "Ｍｒ．８",
      "type": "Technique",
      "mark": "罪 政 武",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C541",
@@ -6207,7 +6968,8 @@
      "nameJp": "ミス・オールサンデー",
      "type": "Devil Fruit/Organization",
      "mark": "罪",
-     "power": "50"
+     "power": "50",
+     "finish": "Normal"
     },
     {
      "num": "C542",
@@ -6215,7 +6977,8 @@
      "nameJp": "ミス・ダブルフィンガー",
      "type": "Devil Fruit/Wisdom",
      "mark": "罪 知",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C543",
@@ -6223,7 +6986,8 @@
      "nameJp": "ミス・ゴールデンウィーク",
      "type": "Organization/Wisdom",
      "mark": "民 知",
-     "power": "50"
+     "power": "50",
+     "finish": "Normal"
     },
     {
      "num": "C544",
@@ -6231,7 +6995,8 @@
      "nameJp": "ミス・メリークリスマス",
      "type": "Devil Fruit/Animal",
      "mark": "獣 武",
-     "power": "300"
+     "power": "300",
+     "finish": "Normal"
     },
     {
      "num": "C545",
@@ -6239,7 +7004,8 @@
      "nameJp": "ミス・ウェンズデー",
      "type": "Wisdom",
      "mark": "罪 政",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "C546",
@@ -6247,7 +7013,8 @@
      "nameJp": "バンチ",
      "type": "Animal",
      "mark": "罪 獣 知",
-     "power": "100"
+     "power": "100",
+     "finish": "Normal"
     },
     {
      "num": "C419",
@@ -6255,7 +7022,8 @@
      "nameJp": "Ｍｒ．３",
      "type": "Devil Fruit/Organization",
      "mark": "罪 武",
-     "power": "200 &#8594; 500"
+     "power": "200 &#8594; 500",
+     "finish": "Normal"
     },
     {
      "num": "C420",
@@ -6263,7 +7031,8 @@
      "nameJp": "Ｍｒ．８",
      "type": "Organization/Wisdom",
      "mark": "罪 政",
-     "power": "250"
+     "power": "250",
+     "finish": "Normal"
     },
     {
      "num": "C423",
@@ -6271,7 +7040,8 @@
      "nameJp": "ミス・ゴールデンウィーク",
      "type": "Citizen/Organization",
      "mark": "罪 知",
-     "power": "50"
+     "power": "50",
+     "finish": "Normal"
     },
     {
      "num": "C424",
@@ -6279,7 +7049,8 @@
      "nameJp": "ミス・バレンタイン",
      "type": "Devil Fruit/Organization",
      "mark": "罪 知",
-     "power": "200 &#8594; 600"
+     "power": "200 &#8594; 600",
+     "finish": "Normal"
     },
     {
      "num": "C425",
@@ -6287,7 +7058,8 @@
      "nameJp": "ミス・マンデー",
      "type": "Organization/Technique",
      "mark": "罪 武",
-     "power": "600"
+     "power": "600",
+     "finish": "Normal"
     },
     {
      "num": "C426",
@@ -6295,7 +7067,8 @@
      "nameJp": "Ｍｒ．９　＆　ミス・ウェンズデー",
      "type": "Organization/Technique",
      "mark": "罪 武",
-     "power": "400"
+     "power": "400",
+     "finish": "Normal"
     },
     {
      "num": "S132",
@@ -6303,7 +7076,8 @@
      "nameJp": "エージェントたち",
      "type": "Special",
      "mark": "逆",
-     "power": "300"
+     "power": "300",
+     "finish": "Holo"
     },
     {
      "num": "S133",
@@ -6311,7 +7085,8 @@
      "nameJp": "Ｍｒ．３",
      "type": "Special",
      "mark": "逆",
-     "power": "200 &#8594; 600"
+     "power": "200 &#8594; 600",
+     "finish": "Normal"
     },
     {
      "num": "S134",
@@ -6319,7 +7094,8 @@
      "nameJp": "ポーラ",
      "type": "Special",
      "mark": "逆",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "S135",
@@ -6327,7 +7103,8 @@
      "nameJp": "ミス・ゴールデンウィーク",
      "type": "Special",
      "mark": "逆",
-     "power": "150"
+     "power": "150",
+     "finish": "Normal"
     },
     {
      "num": "S136",
@@ -6335,7 +7112,8 @@
      "nameJp": "ミス・マンデー",
      "type": "Special",
      "mark": "逆",
-     "power": "600"
+     "power": "600",
+     "finish": "Normal"
     },
     {
      "num": "S137",
@@ -6343,7 +7121,8 @@
      "nameJp": "アンラッキーズ",
      "type": "Special",
      "mark": "逆",
-     "power": "250"
+     "power": "250",
+     "finish": "Normal"
     },
     {
      "num": "S94",
@@ -6351,7 +7130,8 @@
      "nameJp": "ルフィ海賊団",
      "type": "Special",
      "mark": "逆",
-     "power": "450 &#8594; 900"
+     "power": "450 &#8594; 900",
+     "finish": "Normal"
     },
     {
      "num": "S95",
@@ -6359,7 +7139,8 @@
      "nameJp": "エージェントたち",
      "type": "Special",
      "mark": "逆",
-     "power": "800"
+     "power": "800",
+     "finish": "Normal"
     },
     {
      "num": "H36",
@@ -6367,7 +7148,8 @@
      "nameJp": "最終決戦",
      "type": "Hyper",
      "mark": "",
-     "power": ""
+     "power": "",
+     "finish": "Normal"
     },
     {
      "num": "H39",
@@ -6375,7 +7157,8 @@
      "nameJp": "武力行使",
      "type": "Hyper",
      "mark": "",
-     "power": ""
+     "power": "",
+     "finish": "Normal"
     },
     {
      "num": "H40",
@@ -6383,7 +7166,8 @@
      "nameJp": "アジテーション",
      "type": "Hyper",
      "mark": "",
-     "power": ""
+     "power": "",
+     "finish": "Normal"
     },
     {
      "num": "H12",
@@ -6391,7 +7175,8 @@
      "nameJp": "先見の明",
      "type": "Hyper",
      "mark": "",
-     "power": ""
+     "power": "",
+     "finish": "Normal"
     },
     {
      "num": "H15",
@@ -6399,7 +7184,8 @@
      "nameJp": "組織力",
      "type": "Hyper",
      "mark": "",
-     "power": ""
+     "power": "",
+     "finish": "Normal"
     },
     {
      "num": "FP45",
@@ -6407,7 +7193,8 @@
      "nameJp": "スパイダーズカフェ",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     },
     {
      "num": "FP46",
@@ -6415,7 +7202,8 @@
      "nameJp": "ビリオンズの船団",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     },
     {
      "num": "FP36",
@@ -6423,7 +7211,8 @@
      "nameJp": "ウィスキーピーク",
      "type": "Field Point",
      "mark": "",
-     "power": "1"
+     "power": "1",
+     "finish": "Normal"
     }
    ]
   }

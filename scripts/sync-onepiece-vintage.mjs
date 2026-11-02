@@ -35,17 +35,27 @@ function toISO(dateText) {
   return mm ? `${m[2]}-${mm}` : m[2];
 }
 
+// ACABAMENTO da carta = o id da LINHA da tabela, que é o que pinta a cor da
+// legenda do wiki ("Holographic Card", "Gold Stamp Card"); greyHover é a
+// comum. Medido em 2026-11-01: 99 holo, 21 gold stamp, 1 secret rare (a S75)
+// e 881 comuns em 1.002 linhas. É a raridade do jogo — o Carddass não
+// imprime letra de raridade, a diferença é o brilho.
+const ACABAMENTO = { grey: "Normal", holo: "Holo", gold: "Gold Stamp", rare: "Secret Rare" };
+
 // Célula do nome capturada inteira e destrinchada depois: linhas SEM link <a>
 // ou SEM o <i> do nome JP também entram (o regex rígido antigo as pulava).
-function cardsIn(block) {
+export function cardsIn(block) {
   const out = [];
-  const re = /HBcardNum">([A-Z0-9]+)<\/td>\s*<td id="HBcardName">([\s\S]*?)<\/td>\s*<td id="HBcardType">([^<]*)<\/td>\s*<td id="HBcardMark">([^<]*)<\/td>\s*<td id="HBcardValue">([^<]*)<\/td>/g;
+  const re = /(?:<tr id="([a-z]+)Hover"[^>]*>\s*)?<td id="HBcardNum">([A-Z0-9]+)<\/td>\s*<td id="HBcardName">([\s\S]*?)<\/td>\s*<td id="HBcardType">([^<]*)<\/td>\s*<td id="HBcardMark">([^<]*)<\/td>\s*<td id="HBcardValue">([^<]*)<\/td>/g;
   let m;
   while ((m = re.exec(block))) {
-    const nameCell = m[2];
+    const nameCell = m[3];
     const nameJp = (nameCell.match(/「([^」]*)」/) || [])[1] || "";
     const nameEn = decode(nameCell.replace(/<i id="HBcardNameJP">[\s\S]*?<\/i>/, ""));
-    out.push({ num: m[1].trim(), nameEn, nameJp: nameJp.trim(), type: decode(m[3]), mark: decode(m[4]), power: decode(m[5]) });
+    // Linha com id que a tabela não conhece: acabamento vazio (fica sem
+    // raridade) em vez de chutar "Normal".
+    const finish = m[1] ? (ACABAMENTO[m[1]] || "") : "";
+    out.push({ num: m[2].trim(), nameEn, nameJp: nameJp.trim(), type: decode(m[4]), mark: decode(m[5]), power: decode(m[6]), finish });
   }
   return out;
 }
@@ -91,7 +101,10 @@ async function refreshSnapshot(existing) {
     console.log(`  ⚠ REGRESSÃO (${newCount} < ${oldCount}): parse suspeito — snapshot mantido.`);
     return existing;
   }
-  if (newCount !== oldCount || (existing && candidate.sets.length !== existing.sets.length)) {
+  // Snapshot sem o acabamento (anterior a 2026-11-01) também é reescrito: a
+  // contagem é a mesma, mas falta o campo que vira a raridade.
+  const semAcabamento = (snap) => (snap?.sets || []).some((s) => s.cards.some((c) => !("finish" in c)));
+  if (newCount !== oldCount || (existing && candidate.sets.length !== existing.sets.length) || semAcabamento(existing)) {
     await writeSnapshot(SNAP, candidate);
     console.log(`  snapshot atualizado: ${oldCount} -> ${newCount} cartas.`);
   } else {
@@ -139,11 +152,12 @@ async function run() {
         number: c.num,
         setTotal: s.official || s.cards.length,
         setReleaseDate: s.date,
-        // A coluna "Mark" do wiki (賊 武 Ｌ…) são as MARCAS de jogo da carta —
-        // afiliação/atributo —, não raridade. Até 2026-11-01 iam no `rarity` e
-        // viravam ~140 "raridades" de glifo no filtro e no chip do card; agora
-        // têm campo próprio (faceta "Marca" na página do set, facets.js).
-        rarity: "",
+        // Raridade = o acabamento (Normal/Holo/Gold Stamp/Secret Rare, ver
+        // ACABAMENTO). A coluna "Mark" do wiki (賊 武 Ｌ…) são as MARCAS de
+        // jogo da carta — afiliação/atributo —, não raridade: até 2026-11-01
+        // iam no `rarity` e viravam ~140 "raridades" de glifo no filtro e no
+        // chip do card; agora têm campo próprio (faceta "Marca", facets.js).
+        rarity: c.finish || "",
         mark: c.mark || null,
         artist: "",
         language: "ja", // produto japonês (1999–2002)
@@ -188,4 +202,5 @@ async function run() {
   console.log(`Gravado em ${fileURLToPath(OUT)} — ${merged.length} cartas totais (moderno + vintage).`);
 }
 
-await run();
+// Importável pelos testes sem rodar o sync (o parse do wiki é testado sem rede).
+if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) await run();

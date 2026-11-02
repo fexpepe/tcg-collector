@@ -43,10 +43,40 @@ function toISO(dateText) {
   return mm ? `${m[2]}-${mm}` : m[2];
 }
 
+// RARIDADE: a última coluna de algumas tabelas. Nos sets do começo ela se
+// chama "Holo:" e só existe na tabela de personagens (☆ = carta holo); de
+// Baroque Works Assault em diante chama "Rarity:" e vale pra todas as
+// tabelas, em estrelas (☆/☆☆/☆☆☆, como no wiki — a página não diz mais que
+// isso, então o rótulo fica a estrela). Vazio nas duas = a comum ("Normal").
+// Carta de tabela SEM a coluna (técnicas/eventos dos primeiros sets, promos)
+// fica sem raridade — não dá pra saber, e chutar "Normal" mentiria.
+// Medido em 2026-11-01: 1.105 linhas com a coluna, ~85% do catálogo.
+export function raridade2002(coluna, valor) {
+  // A estrela vem como entidade HEXA (&#x2606;), que o decodeEntities comum
+  // não converte.
+  const v = decode(String(valor || "").replace(/&#x([0-9a-f]+);/gi, (_, h) => String.fromCodePoint(parseInt(h, 16))))
+    .replace(/<[^>]+>/g, "").replace(/\s+/g, "");
+  if (coluna === "Holo") return /☆/.test(v) ? "Holo" : "Normal";
+  if (coluna === "Rarity") return /^☆+$/.test(v) ? v : "Normal";
+  return "";
+}
+function raridadesDaTabela(tabela, mapa) {
+  const coluna = (tabela.match(/id="OP02holoHead">\s*(Holo|Rarity):?\s*</) || [])[1];
+  if (!coluna) return;
+  for (const linha of tabela.split(/<tr\b/).slice(1)) {
+    const num = (linha.match(/id="HBcardNum">([A-Z0-9-]+)</) || [])[1];
+    if (!num) continue;
+    // A ÚLTIMA célula da linha: o cabeçalho tem uma coluna a menos que os
+    // dados (o nome ocupa duas células), então contar posição erra.
+    const celulas = [...linha.matchAll(/<td[^>]*>([\s\S]*?)<\/td>/g)];
+    if (celulas.length) mapa.set(num.trim(), raridade2002(coluna, celulas[celulas.length - 1][1]));
+  }
+}
+
 // Parser da página: 22 sets (split em OP02setName). Cada carta tem sempre um link
 // <a href="02cardgame/<num>.html">NOME EN</a> (robusto a todas as layouts de linha
 // — personagem/técnica/evento); o nome JP vem na célula OP02cardName seguinte.
-function parseOverview(html) {
+export function parseOverview(html) {
   const segs = html.split(/<td id="OP02setName">/).slice(1);
   const sets = [];
   for (const seg of segs) {
@@ -54,10 +84,13 @@ function parseOverview(html) {
     const date = toISO((seg.match(/id="OP02setDate">([^<]+)</) || [])[1] || "");
     const official = Number((seg.match(/id="OP02setCC">(\d+)</) || [])[1] || 0);
     const cards = [];
+    const raridades = new Map();
+    for (const tabela of seg.split(/<table class="HBcardList">/).slice(1)) raridadesDaTabela(tabela, raridades);
     const re = /id="HBcardNum">([A-Z0-9-]+)<\/td>[\s\S]*?href="02cardgame\/[^"]*">([^<]*)<\/a>(?:[\s\S]{0,80}?id="OP02cardName">([^<]*)<\/td>)?/g;
     let m;
     while ((m = re.exec(seg))) {
-      cards.push({ num: m[1].trim(), nameEn: decode(m[2]), nameJp: (m[3] || "").trim() });
+      const num = m[1].trim();
+      cards.push({ num, nameEn: decode(m[2]), nameJp: (m[3] || "").trim(), rarity: raridades.get(num) || "" });
     }
     if (cards.length) sets.push({ name, date, official, cards });
   }
@@ -82,7 +115,10 @@ async function refreshSnapshot(existing) {
   const oldCount = snapshotCardCount(existing);
   console.log(`  wiki: ${sets.length} sets, ${newCount} cartas.`);
   if (newCount < oldCount) { console.log(`  ⚠ REGRESSÃO (${newCount} < ${oldCount}) — snapshot mantido.`); return existing; }
-  if (newCount !== oldCount || (existing && sets.length !== existing.sets.length)) {
+  // Snapshot de antes de 2026-11-01 não tem a raridade: reescreve com a
+  // contagem igual.
+  const semRaridade = (existing?.sets || []).some((st) => st.cards.some((c) => !("rarity" in c)));
+  if (newCount !== oldCount || (existing && sets.length !== existing.sets.length) || semRaridade) {
     await writeSnapshot(SNAP, candidate);
     console.log(`  snapshot atualizado: ${oldCount} -> ${newCount} cartas.`);
   }
@@ -123,7 +159,7 @@ async function run() {
         number: c.num,
         setTotal: s.official || s.cards.length,
         setReleaseDate: s.date,
-        rarity: "",
+        rarity: c.rarity || "",
         artist: "",
         language: "ja",
         image: cardImage(c.num, s.name, scans),
@@ -163,4 +199,5 @@ async function run() {
   console.log(`Gravado em ${fileURLToPath(OUT)} — ${merged.length} cartas totais.`);
 }
 
-await run();
+// Importável pelos testes sem rodar o sync.
+if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) await run();

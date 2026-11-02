@@ -49,12 +49,17 @@ test("cada carta ganha a PRÓPRIA lista de versões (sem array compartilhado ent
 
 test("rarityRank: Super Rare acima de Rare; Normal/N no nível do comum; Starter logo acima", () => {
   const src = ler("src/shared.js");
-  const corpo = src.match(/function rarityRank\(rarity\) \{[\s\S]*?\n  \}\n/)[0];
+  const corpo = src.match(/const RARITY_SIGLA = \{[\s\S]*?\n  function rarityRank\(rarity\) \{[\s\S]*?\n  \}\n/)[0];
   const rarityRank = new Function(`${corpo}; return rarityRank;`)();
   assert.ok(rarityRank("Super Rare") > rarityRank("Rare"));
   assert.equal(rarityRank("Normal"), rarityRank("Common"));
   assert.equal(rarityRank("N"), rarityRank("Common"));
   assert.ok(rarityRank("Starter Deck") > rarityRank("Common") && rarityRank("Starter Deck") < rarityRank("Uncommon"));
+  // Vintage: estrelas do One Piece 2002 em escada; Gold Stamp acima da Holo;
+  // siglas do Miracle Battle no lugar certo.
+  assert.ok(rarityRank("☆") < rarityRank("☆☆") && rarityRank("☆☆") < rarityRank("☆☆☆"));
+  assert.ok(rarityRank("Gold Stamp") > rarityRank("Holo"));
+  assert.ok(rarityRank("U") > rarityRank("C") && rarityRank("超Ω") > rarityRank("Ω") && rarityRank("Ω") > rarityRank("SR"));
   // As que já valiam não mudam.
   assert.equal(rarityRank("C"), 10);
   assert.equal(rarityRank("Super_rare"), 50);

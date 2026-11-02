@@ -9778,21 +9778,24 @@
   // siglas da TCGCSV do One Piece (C/UC/R/SR/L/SEC/PR) e tiers do Lorcana
   // (Super_rare/Legendary/Enchanted...). Heurística por palavra-chave, do mais
   // específico pro mais genérico; raridade vazia/desconhecida (vintage) = 0.
+  // Siglas EXATAS: One Piece (C/UC/R/SR/L/SEC/PR/TR), Lorcana (Super_rare) e
+  // as dos vintage (2026-11-01) — N/Normal do Data Carddass e do Carddass, e o
+  // Miracle Battle (U, P, B = ブーストキラ, M = ミラクルキラ, Ω, 超Ω).
+  const RARITY_SIGLA = {
+    c: 10, n: 10, normal: 10, u: 20, uc: 20, r: 30, p: 35, pr: 35, tr: 35, promo: 35,
+    b: 45, sr: 50, super_rare: 50, l: 55, m: 55, "ω": 60, "超ω": 65, sec: 70
+  };
   function rarityRank(rarity) {
     const s = String(rarity || "").toLowerCase().trim();
     if (!s || s === "none") return 0;
-    // "N"/"Normal" (Data Carddass, HxH) = comum; starter (Naruto CCG) logo acima.
-    if (s === "c" || s === "n" || s === "normal") return 10;
-    if (/starter/.test(s)) return 12;
-    if (s === "uc") return 20;
-    if (s === "r") return 30;
-    if (s === "pr" || s === "tr" || s === "promo") return 35;
-    if (s === "sr" || s === "super_rare") return 50;
-    if (s === "l") return 55; // Leader (One Piece)
-    if (s === "sec") return 70;
+    if (RARITY_SIGLA[s]) return RARITY_SIGLA[s];
+    // Estrelas do One Piece 2002: ☆ = 30 (rara) até ☆☆☆ = 50.
+    if (/^☆+$/.test(s)) return 20 + 10 * s.length;
+    if (/starter/.test(s)) return 12; // Starter Deck (Naruto CCG): logo acima da comum
     if (/special illustration|ilustração rara especial|hyper|hiper|secret|secreta|enchanted|iconic/.test(s)) return 70;
     if (/illustration|ilustração|shiny|brilhante|full art|arte completa/.test(s)) return 60;
     if (/legendary|legend/.test(s)) return 55;
+    if (/gold/.test(s)) return 45; // Gold Stamp do Carddass: mais rara que a holo
     // "Super Rare" por extenso (Naruto CCG, Weiß) caía no /rare/ lá embaixo.
     if (/ultra|super/.test(s)) return 50;
     if (/epic/.test(s)) return 45;
