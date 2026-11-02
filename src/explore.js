@@ -233,7 +233,7 @@
     const uniq = (arr) => Array.from(new Set(arr.filter(Boolean)));
     preencheFiltro(elements.setFilter, uniq(lista.map((c) => c.set)).sort((a, b) => a.localeCompare(b)));
     preencheFiltro(elements.langFilter, uniq(lista.map((c) => shared.normalizeCardLanguage(c.language))), (v) => shared.cardLanguageLabel(v));
-    preencheFiltro(elements.rarityFilter, uniq(lista.map((c) => c.rarity)).sort((a, b) => a.localeCompare(b)));
+    preencheFiltro(elements.rarityFilter, shared.sortRarities(uniq(lista.map((c) => c.rarity))));
   }
 
   // Decididos pelo render ANTES de pintar (o pager chama o tileDe item a item,

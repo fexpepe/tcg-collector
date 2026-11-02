@@ -594,7 +594,7 @@
     fillFilter(elements.pokemonFilter, unique(myCards.map((card) => card.pokemonName || speciesName(card.name))));
     fillFilter(elements.setFilter, unique(myCards.map((card) => card.set)));
     fillFilter(elements.languageFilter, unique(myCards.map((card) => shared.normalizeCardLanguage(card.language))), (value) => langOptionLabel(value));
-    fillFilter(elements.rarityFilter, unique(myCards.map((card) => card.rarity).filter(Boolean)).sort());
+    fillFilter(elements.rarityFilter, shared.sortRarities(unique(myCards.map((card) => card.rarity).filter(Boolean))));
     aplicaSetDaUrl();
   }
 
@@ -2810,7 +2810,7 @@
       const species = uniq(pool.map(speciesOf)).sort((a, b) => a.localeCompare(b));
       const sets = uniq(pool.map((it) => it.s)).sort((a, b) => a.localeCompare(b));
       const langs = uniq(pool.map((it) => it.lang));
-      const rarities = uniq(pool.map((it) => it.r)).sort((a, b) => a.localeCompare(b));
+      const rarities = shared.sortRarities(uniq(pool.map((it) => it.r)));
       // Faixas de valor com o símbolo da moeda atual, como no hydrateFilters().
       const sym = shared.currencySymbol();
       const faixas = [["0-10", `≤ ${sym} 10`], ["10-50", `${sym} 10–50`], ["50-200", `${sym} 50–200`], ["200-", `${sym} 200+`]];

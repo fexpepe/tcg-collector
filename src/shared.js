@@ -9811,7 +9811,9 @@
   function rarityRank(rarity) {
     const s = String(rarity || "").toLowerCase().trim();
     if (!s || s === "none") return 0;
-    if (s === "c") return 10;
+    // "N"/"Normal" (Data Carddass, HxH) = comum; starter (Naruto CCG) logo acima.
+    if (s === "c" || s === "n" || s === "normal") return 10;
+    if (/starter/.test(s)) return 12;
     if (s === "uc") return 20;
     if (s === "r") return 30;
     if (s === "pr" || s === "tr" || s === "promo") return 35;
@@ -9821,13 +9823,19 @@
     if (/special illustration|ilustração rara especial|hyper|hiper|secret|secreta|enchanted|iconic/.test(s)) return 70;
     if (/illustration|ilustração|shiny|brilhante|full art|arte completa/.test(s)) return 60;
     if (/legendary|legend/.test(s)) return 55;
-    if (/ultra/.test(s)) return 50;
+    // "Super Rare" por extenso (Naruto CCG, Weiß) caía no /rare/ lá embaixo.
+    if (/ultra|super/.test(s)) return 50;
     if (/epic/.test(s)) return 45;
     if (/holo|double|dupla|radiant|radiante|amazing|incríveis|ace spec|prime|classic/.test(s)) return 40;
     if (/uncommon|incomum/.test(s)) return 20;
     if (/common|comum/.test(s)) return 10;
     if (/rare|rara/.test(s)) return 30;
-    return 5; // string exótica (atributos das linhas vintage): acima do vazio, abaixo do comum
+    return 5; // sigla desconhecida (NR, SP… do Data Carddass): acima do vazio, abaixo do comum
+  }
+  // Opções de um filtro de raridade na ordem da escada, não alfabética:
+  // "Common, Promo, Rare, Super Rare, Uncommon" separava o Incomum do Comum.
+  function sortRarities(lista) {
+    return lista.sort((a, b) => (rarityRank(a) - rarityRank(b)) || String(a).localeCompare(String(b)));
   }
 
   // "Set · número" (e "número · idioma"): junta com " · " pulando o que vier
@@ -10417,6 +10425,7 @@
     compareCardNumbers,
     dotJoin,
     rarityRank,
+    sortRarities,
     // A página de um set (detail.js) descobre a linha PELO set, não pela URL.
     GAME_LINES,
     lineScope,

@@ -141,7 +141,12 @@ async function run() {
         number: c.num,
         setTotal: s.official || s.cards.length,
         setReleaseDate: s.date,
-        rarity: c.mark || "",
+        // A coluna "Mark" do wiki (賊 武 Ｌ…) são as MARCAS de jogo da carta —
+        // afiliação/atributo —, não raridade. Até 2026-11-01 iam no `rarity` e
+        // viravam ~140 "raridades" de glifo no filtro e no chip do card; agora
+        // têm campo próprio (faceta "Marca" na página do set, facets.js).
+        rarity: "",
+        mark: c.mark || null,
         artist: "",
         language: "ja", // produto japonês (1999–2002)
         image: cardImage(c.num),

@@ -367,7 +367,7 @@
   let selectedOwned = "all";
   let selectedSort = "value-desc";
   let gridView = shared.gridViewValue(localStorage.getItem("tcg-detail-view"));
-  let selectedRarity = ""; // "" = todas; senão "base" | "special"
+  let selectedRarity = ""; // "" = todas; senão a raridade crua (ou "base" | "special" no Pokémon)
   // Fichário: motor compartilhado com a Minha Coleção (src/binder-view.js). A
   // chave guarda quantos bolsos por página (preferência global, como o modo de
   // visualização); o motor cuida das páginas, da navegação e do teclado.
@@ -392,14 +392,21 @@
   const RARITY_BUCKET_ORDER = ["base", "special"];
   const RARITY_BASE = new Set(["", "common", "uncommon", "rare", "none", "comum", "incomum", "rara"]);
 
-  // Jogos cujo filtro lista as raridades REAIS do catálogo em vez dos dois
-  // baldes. Os baldes existem por causa do Pokémon (~30 strings de raridade,
-  // listar tudo vira um select-quilômetro) — mas no Gundam são 11 valores
-  // limpos e o colecionador pensa "quero só as LR+", não "quero especiais".
-  // NÃO é global de propósito: o One Piece tem 147 strings (glifos vintage
-  // japoneses); entrar aqui é decisão por jogo, medida no catálogo.
-  // A ordem é a escada de raridade do jogo (o select sai nessa ordem; valor
-  // fora da lista vai pro fim, em ordem alfabética).
+  // O filtro lista as raridades REAIS do catálogo — só o que existe nesta
+  // página, na escada do jogo. Os dois baldes ("Comuns e raras"/"Especiais")
+  // ficaram só pro Pokémon, que é de onde vieram (~30 strings de raridade no
+  // jogo, listar tudo vira um select-quilômetro).
+  // Até 2026-11-01 era o contrário (lista só pra quem estava aqui embaixo, e
+  // balde pro resto), e o balde só sabia "common/uncommon/rare" por extenso:
+  // sigla (C/U/R do One Piece e do Naruto CCG), "Normal" (HxH) e as dos
+  // vintage caíam TODAS em "Especiais" — um balde só, e o filtro sumia. Era o
+  // que fazia os vintage parecerem "sem filtro de raridade". O motivo antigo
+  // pra não ser global (147 glifos no One Piece) era a MARCA do Carddass
+  // Hyper Battle gravada como raridade; saiu (sync-onepiece-vintage.mjs).
+  const RARITY_BUCKET_GAMES = new Set(["pokemon"]);
+  // A escada de raridade de cada jogo (o select sai nessa ordem). Valor fora
+  // da escada — ou jogo sem escada — vai depois, pela régua genérica do
+  // shared.rarityRank e então em ordem alfabética.
   const RARITY_LISTED_GAMES = {
     gundam: ["Common", "C+", "C++", "Uncommon", "U+", "Rare", "R+", "Legend Rare", "LR+", "LR++", "Promo"],
     // Star Wars: Unlimited: 5 raridades limpas no catálogo (30/09/2026).
@@ -430,9 +437,22 @@
     // uns 12; as raras temáticas de um set só ("Persona Rare", "Band Rare")
     // vão pro fim, em ordem alfabética.
     weiss: ["Common", "Uncommon", "Rare", "Double Rare", "Triple Rare", "Super Rare", "Special Rare",
-      "Super Special Rare", "Over-Frame Rare", "Secret Rare", "Climax Common", "Climax Rare", "Trial Deck", "Promo", "Reprint"]
+      "Super Special Rare", "Over-Frame Rare", "Secret Rare", "Climax Common", "Climax Rare", "Trial Deck", "Promo", "Reprint"],
+    // One Piece Card Game (TCGCSV): as siglas da carta, Líder primeiro como no
+    // jogo. As linhas vintage (2002 e Carddass) não têm raridade na fonte.
+    onepiece: ["L", "C", "UC", "R", "SR", "SEC", "SP", "TR", "PR"],
+    // Naruto: uma página de set é de UMA linha, então as escadas convivem.
+    // CCG americano (2006–2013): os nomes do verso (sync-naruto-ccg.mjs).
+    // Data Carddass (Formation/Cross): as siglas impressas, Normal → Rare →
+    // Super/Ultra, as especiais e as promos no fim (sync-naruto-dc-cross-
+    // formation.mjs). Promo do NARUTO CARD GAME novo é "Promo".
+    naruto: ["Common", "Uncommon", "Rare", "Super Rare", "Starter Deck",
+      "N", "NP", "R", "SR", "UR", "HR", "NR", "WNR", "SP", "Silver Holo", "Design Rare", "P", "Promo"],
+    // HxH Carddass Hyper Battle: Normal, a Holo do booster e a Secret Holo.
+    hxh: ["Normal", "Holo", "Secret Holo", "Promo"]
   };
-  const rarityListOrder = RARITY_LISTED_GAMES[(window.SLEEVU && window.SLEEVU.game) || ""] || null;
+  const jogoDaPagina = (window.SLEEVU && window.SLEEVU.game) || "";
+  const rarityListOrder = RARITY_BUCKET_GAMES.has(jogoDaPagina) ? null : (RARITY_LISTED_GAMES[jogoDaPagina] || []);
 
   // Facetas do jogo (Cor, Tipo, Seleção… — ver GAME_FACETS no shared.js) e a
   // seleção do usuário: { chaveDaFaceta: Set(valores) }. Dentro de uma faceta
@@ -1398,9 +1418,10 @@
   }
 
   // Raridade como lista suspensa. Dois modos:
-  //   - baldes (padrão): Todas / Comuns e raras / Especiais;
-  //   - lista real (jogos em RARITY_LISTED_GAMES): cada raridade do catálogo
-  //     vira uma opção, na escada do jogo. O rótulo é a string crua do catálogo
+  //   - baldes (só RARITY_BUCKET_GAMES, o Pokémon): Todas / Comuns e raras /
+  //     Especiais;
+  //   - lista real (todo o resto): cada raridade do catálogo vira uma opção,
+  //     na escada do jogo (RARITY_LISTED_GAMES). O rótulo é a string crua do catálogo
   //     (como a página Todas as cartas já faz) — é vocabulário do JOGO, não da
   //     interface, então não passa pelo i18n.
   // Nos dois modos: só o que está presente nesta página, e o filtro some com
@@ -1479,7 +1500,7 @@
     if (rarityListOrder) {
       const present = [...new Set(pageCards.map((card) => String(card.rarity || "")).filter((r) => r && r !== "None"))];
       const pos = (r) => { const i = rarityListOrder.indexOf(r); return i < 0 ? rarityListOrder.length : i; };
-      present.sort((a, b) => (pos(a) - pos(b)) || a.localeCompare(b));
+      present.sort((a, b) => (pos(a) - pos(b)) || (shared.rarityRank(a) - shared.rarityRank(b)) || a.localeCompare(b));
       if (present.length < 2) {
         elements.rarityField.hidden = true;
         selectedRarity = "";

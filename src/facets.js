@@ -104,7 +104,17 @@
     ],
     onepiece: [
       facetColor("opColor"),
-      facetType(["Leader", "Character", "Event", "Stage"])
+      facetType(["Leader", "Character", "Event", "Stage"]),
+      // Carddass Hyper Battle (1999–2002): as MARCAS de jogo da carta (賊, 剣,
+      // 武, Ｌ…), várias por carta ("賊 武 Ｌ"). Moravam no `rarity` até
+      // 2026-11-01; só existem nos sets do Carddass, então a faceta só aparece
+      // lá. Glifo cru de rótulo, como os nomes da fonte nos outros jogos.
+      {
+        key: "mark", labelKey: "facet.mark",
+        of: (c) => facetSplit(c.mark, /\s+/),
+        label: (v) => v,
+        order: []
+      }
     ],
     digimon: [
       facetColor("color"),
