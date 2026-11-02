@@ -9,7 +9,9 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { decideRota, listaDeSets, metaDoJogo, buildDaCasca } from "../functions/games/[[path]].js";
+import { decideRota, listaDeSets, metaDoJogo, buildDaCasca, cartaQueMudouDeSet, onRequestGet } from "../functions/games/[[path]].js";
+import { agrupaPorSet, paginasDoJogo } from "../scripts/lib/paginas-de-set.mjs";
+import { cartasQueMudaramDeSet, destinosDasMovidas } from "../scripts/lib/cartas-movidas.mjs";
 import { pecasDoSet } from "../functions/_lib/pagina-set.js";
 import { cabecaDaRota } from "../functions/_lib/decora-app.js";
 import { slugsDasCartas } from "../functions/_lib/slug-carta.js";
@@ -158,6 +160,100 @@ test("/card/<slug> antigo: a borda lê a fatia que o prerender escreveu", () => 
   const prerender = readFileSync(new URL("../scripts/prerender-catalog.mjs", import.meta.url), "utf8");
   assert.match(prerender, /fatiaDoLegado\(slug\)/, "o prerender fatia o mapa com a mesma régua");
   assert.match(prerender, /"legado-cartas", `\$\{f\}\.json`/, "e grava cada fatia em legado-cartas/<letra>.json");
+});
+
+// Carta que mudou de SET (2026-11-02): a PR #224 trocou 39 cartas do Data
+// Carddass entre o 第1弾 e o 第2弾 (mesmo id), e o endereço antigo dava 404 — o
+// cartaParecida só procura no set do endereço. O caminho inteiro: o registro
+// sai da comparação dos dois catálogos, o prerender resolve no mapa do jogo e
+// a borda responde 301 lendo SÓ o mapa.
+const DC1 = "Data Carddass — ナルティメットカードバトル 第１弾";
+const DC2 = "Data Carddass — ナルティメットカードバトル 第２弾";
+const dc = (id, name, number, set, setId) => ({ id, name, number, set, setId, language: "ja" });
+const DC_ANTES = [
+  dc("nrt-dc-dn-001", "Naruto Uzumaki", "DN-001", DC1, "nrt-dc-s01"),
+  dc("nrt-dc-dn-051", "Nine-Tails Naruto", "DN-051", DC1, "nrt-dc-s01"),
+  dc("nrt-dc-dn-101", "Sasuke Uchiha", "DN-101", DC2, "nrt-dc-s02")
+];
+const DC_DEPOIS = DC_ANTES.map((c) => (c.id === "nrt-dc-dn-051" ? { ...c, set: DC2, setId: "nrt-dc-s02" } : c));
+const ANTIGO = "/games/naruto-data-carddass/data-carddass-1/nine-tails-naruto-dn-051-jp";
+
+function bordaDoDataCarddass(mapa) {
+  const pedidos = [];
+  const chunks = {
+    "/data/naruto/sets/nrt-dc-s01.json": DC_DEPOIS.filter((c) => c.setId === "nrt-dc-s01"),
+    "/data/naruto/sets/nrt-dc-s02.json": DC_DEPOIS.filter((c) => c.setId === "nrt-dc-s02")
+  };
+  const env = {
+    ASSETS: {
+      fetch: async (req) => {
+        const url = new URL(req instanceof Request ? req.url : String(req));
+        pedidos.push(url.pathname);
+        if (url.pathname === "/data/game-pages/naruto-data-carddass.json") return Response.json(mapa);
+        if (chunks[url.pathname]) return Response.json(chunks[url.pathname]);
+        if (url.pathname === "/detail.html") return new Response('<html><head><meta name="sleevu-build" content="abc12345"></head><body>casca</body></html>', { headers: { "content-type": "text/html; charset=utf-8" } });
+        if (url.pathname === "/404.html") return new Response("não achou", { status: 404, headers: { "content-type": "text/html; charset=utf-8" } });
+        return new Response("", { status: 404 });
+      }
+    }
+  };
+  const pede = (caminho) => {
+    const request = new Request(`https://sleevu.app${caminho}`);
+    const path = new URL(request.url).pathname.split("/").slice(2);
+    return onRequestGet({ request, env, params: { path }, waitUntil() {}, next: async () => new Response("next") });
+  };
+  return { pedidos, pede };
+}
+
+test("carta que mudou de set: o endereço antigo leva 301 pro set de hoje, lendo só o mapa do jogo", async () => {
+  const registro = cartasQueMudaramDeSet("naruto", DC_ANTES, DC_DEPOIS);
+  assert.deepEqual(registro, { "naruto-data-carddass/data-carddass-1/nine-tails-naruto-dn-051-jp": "nrt-dc-dn-051" });
+  const movidas = destinosDasMovidas(registro, paginasDoJogo("naruto", agrupaPorSet(DC_DEPOIS)));
+  const mapa = {
+    g: "naruto",
+    s: {
+      "data-carddass-1": { n: DC1, f: ["data/naruto/sets/nrt-dc-s01.json"], c: 1, d: "" },
+      "data-carddass-2": { n: DC2, f: ["data/naruto/sets/nrt-dc-s02.json"], c: 2, d: "" }
+    },
+    m: movidas.get("naruto-data-carddass")
+  };
+  assert.deepEqual(mapa.m, { "data-carddass-1/nine-tails-naruto-dn-051-jp": "naruto-data-carddass/data-carddass-2/nine-tails-naruto-dn-051-jp" });
+
+  const { pedidos, pede } = bordaDoDataCarddass(mapa);
+  const r = await pede(`${ANTIGO}?utm_source=x`);
+  assert.equal(r.status, 301);
+  assert.equal(r.headers.get("location"), "https://sleevu.app/games/naruto-data-carddass/data-carddass-2/nine-tails-naruto-dn-051-jp?utm_source=x");
+  assert.deepEqual(pedidos, ["/data/game-pages/naruto-data-carddass.json"], "o 301 não lê chunk nem casca");
+});
+
+// O custo que a busca nos outros sets traria: robô pedindo carta inventada.
+// O 404 lê o que já lia (mapa, casca e o chunk do PRÓPRIO set), nada dos outros.
+test("carta inventada no set segue 404 sem ler os chunks dos outros sets", async () => {
+  const mapa = {
+    g: "naruto",
+    s: {
+      "data-carddass-1": { n: DC1, f: ["data/naruto/sets/nrt-dc-s01.json"], c: 1, d: "" },
+      "data-carddass-2": { n: DC2, f: ["data/naruto/sets/nrt-dc-s02.json"], c: 2, d: "" }
+    },
+    m: { "data-carddass-1/nine-tails-naruto-dn-051-jp": "naruto-data-carddass/data-carddass-2/nine-tails-naruto-dn-051-jp" }
+  };
+  const { pedidos, pede } = bordaDoDataCarddass(mapa);
+  const r = await pede("/games/naruto-data-carddass/data-carddass-1/inventada-dn-999-jp");
+  assert.equal(r.status, 404);
+  assert.ok(pedidos.includes("/data/naruto/sets/nrt-dc-s01.json"));
+  assert.ok(!pedidos.includes("/data/naruto/sets/nrt-dc-s02.json"), `leu o chunk de outro set: ${pedidos.join(", ")}`);
+  // A carta que FICOU no set não passa pelo registro (o 301 é só da que saiu).
+  assert.equal(cartaQueMudouDeSet(mapa, "data-carddass-1", "naruto-uzumaki-dn-001-jp"), null);
+});
+
+test("o registro do mapa: só chave própria e destino com cara de endereço", () => {
+  const mapa = { m: { "a-set/a-carta": "jogo/b-set/a-carta", "x/y": "../../admin", "z/w": "" } };
+  assert.equal(cartaQueMudouDeSet(mapa, "a-set", "a-carta"), "jogo/b-set/a-carta");
+  assert.equal(cartaQueMudouDeSet(mapa, "x", "y"), null);
+  assert.equal(cartaQueMudouDeSet(mapa, "z", "w"), null);
+  assert.equal(cartaQueMudouDeSet(mapa, "constructor", "x"), null);
+  assert.equal(cartaQueMudouDeSet({ s: {} }, "a-set", "a-carta"), null, "mapa sem registro (o de antes deste build)");
+  assert.equal(cartaQueMudouDeSet(null, "a-set", "a-carta"), null);
 });
 
 test("tela do jogo: sets mais novos primeiro, título no orçamento, índice com os links", () => {

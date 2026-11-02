@@ -23,8 +23,9 @@
 //   /games/<apelido>/…           -> 301 pro endereço oficial (/games/swu)
 //   set ou carta que mudou de    -> 301 pro endereço de hoje (o total do set
 //   endereço                        cresceu, o set ganhou ou perdeu prefixo no
-//                                   nome…; ver cartaParecida, setRenomeado e
-//                                   setDoDePara)
+//                                   nome, a carta foi pra outro set…; ver
+//                                   cartaParecida, setRenomeado, setDoDePara
+//                                   e cartaQueMudouDeSet)
 //   o resto                      -> 404 de verdade
 //
 // As páginas estáticas passarem por aqui custa uma execução de Function por
@@ -197,6 +198,20 @@ async function precoDaCarta(env, request, card, arquivo) {
   return precoDeReferencia(hasOwn(tabela, id) ? tabela[id] : tabela[basePricingId(id)]);
 }
 
+// Carta que mudou de SET (2026-11-02): o endereço de hoje ("<jogo>/<set>/
+// <carta>", sem o /games/), ou null. Vem pronto no mapa do jogo (campo "m",
+// escrito pelo prerender a partir do data/cartas-movidas.json): o
+// cartaParecida só procura no set do endereço, e procurar nos outros sets
+// leria um chunk a mais por set em cada 404. O prerender nunca põe ali um
+// endereço que hoje é de outra carta, então a consulta vem antes de tudo.
+export function cartaQueMudouDeSet(mapa, set, carta) {
+  const m = mapa && mapa.m;
+  const chave = `${set}/${carta}`;
+  if (!m || !hasOwn(m, chave)) return null;
+  const destino = String(m[chave] || "");
+  return /^[a-z0-9-]+\/[a-z0-9-]+\/[a-z0-9-]+$/.test(destino) ? destino : null;
+}
+
 // A tela do set do app no endereço do set; com `rota.carta`, a mesma casca com
 // a página da carta (o detail.js lê a rota do <meta> que vai no HTML).
 // Exceção na decoração (um chunk ou mapa fora do formato, um caso que as peças
@@ -215,6 +230,8 @@ async function telaDoSetDecorada(context, rota) {
   const mapa = await jsonDoSite(env, request, `/data/game-pages/${rota.jogo.url}.json`);
   const sets = (mapa && mapa.s) || {};
   const busca = new URL(request.url).search;
+  const movida = rota.carta ? cartaQueMudouDeSet(mapa, rota.set, rota.carta) : null;
+  if (movida) return redireciona(request, `/games/${movida}${busca}`, 301);
   if (!hasOwn(sets, rota.set)) {
     // A variante em inglês (<set>-en) é página estática do prerender.
     if (!rota.carta && /-en$/.test(rota.set) && hasOwn(sets, rota.set.slice(0, -3))) return context.next();
