@@ -7,7 +7,8 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { PAGES, estreias, estreiasForaDaFaixa } from "../scripts/lib/naruto-datacarddass.mjs";
+import { PAGES, estreias, estreiasForaDaFaixa, dataDoSet } from "../scripts/lib/naruto-datacarddass.mjs";
+import { CAPITULOS } from "../scripts/lib/naruto-dc-capitulos.mjs";
 import { readGlobalVar } from "../scripts/lib/sync-common.mjs";
 
 const snap = JSON.parse(readFileSync(new URL("../data/vintage/naruto-datacarddass.json", import.meta.url), "utf8"));
@@ -71,4 +72,31 @@ test("catálogo versionado: DN-001–050 no nrt-dc-s01 (第１弾) e DN-051–06
   }
   // Id de carta não muda com a correção: nrt-dc-<código>.
   for (const c of [...s01, ...s02]) assert.equal(c.id, `nrt-dc-${c.number.toLowerCase()}`);
+});
+
+// Data curada por página (02/11/2026): até aqui o sync gravava "" e a tela
+// dizia "Data de lançamento: N/A". Fonte: o 発売日 do cardcheckbox.
+test("datas: dia válido em toda página e crescentes na ordem do seq", () => {
+  let anterior = "";
+  for (const { name, data } of PAGES) {
+    assert.match(data, /^\d{4}-\d{2}-\d{2}$/, `${name}: data fora do AAAA-MM-DD`);
+    assert.equal(new Date(`${data}T00:00:00Z`).toISOString().slice(0, 10), data, `${name}: dia que não existe`);
+    assert.ok(data > anterior, `${name}: ${data} não vem depois de ${anterior}`);
+    anterior = data;
+  }
+  // Os dois primeiros títulos do arcade vêm antes do terceiro (Formation).
+  assert.ok(anterior < CAPITULOS.nf[0].data, "a Mission termina depois do 第1章 da Formation");
+  // As âncoras da régua: 下旬 = 25, 中旬 = 15, 上旬 = 5, e o dia do 確認 vence o 旬.
+  assert.equal(dataDoSet(1), "2005-10-25"); // 第1弾: 2005年10月下旬
+  assert.equal(dataDoSet(2), "2005-12-15"); // 第2弾: 2005年12月中旬
+  assert.equal(dataDoSet(8), "2006-08-05"); // 第6弾: 2006年8月上旬
+  assert.equal(dataDoSet(11), "2007-02-23"); // 第1章: 2007年2月下旬(…2月23日 確認)
+  assert.equal(dataDoSet(99), "");
+});
+
+test("catálogo versionado: toda carta do Card Battle e da Mission com a data do set", async () => {
+  const cards = await readGlobalVar(new URL("../data/naruto/cards.js", import.meta.url), "TCG_CARDS");
+  const dc = cards.filter((c) => /^nrt-dc-s\d+$/.test(c.setId));
+  assert.ok(dc.length > 400, "o Data Carddass sumiu do catálogo");
+  for (const c of dc) assert.equal(c.setReleaseDate, dataDoSet(Number(c.setId.slice(8))), `${c.id} (${c.setId})`);
 });

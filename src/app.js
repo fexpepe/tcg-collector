@@ -1844,7 +1844,8 @@
   // Card Battle e Mission dividem o nrt-dc- (mesma fonte). A checklist desses
   // dois é fechada e a Mission começa no set 11 (PAGES em
   // scripts/lib/naruto-datacarddass.mjs). Sem as seções, a ordem por data jogava
-  // Formation e Cross (com data) na frente de Card Battle e Mission (sem data).
+  // Formation e Cross (com data) na frente de Card Battle e Mission, que até
+  // 02/11/2026 não tinham data (hoje têm a do cardcheckbox, no PAGES).
   // O nome em inglês leva o título ("Narutimate Card Battle — Vol. 1", pra
   // Coleção e o popup saberem de qual dos quatro é); dentro da seção ele
   // repete o cabeçalho e o tile cortava justo o volume, então aqui ele sai,
