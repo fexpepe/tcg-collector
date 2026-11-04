@@ -233,8 +233,11 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
 - **Naruto moderno (2027)**: `sync-naruto.mjs` está dormente esperando a
   categoria no TCGCSV. Quando ela existir, decidir o dedupe com a promo curada
   (`nrt-ncg-cp-001`) — ids são pegajosos por design.
-- **Vintage ainda não importado**: Naruto CCG (Bandai USA, 2006–2013, 28 sets) e
-  o `nrts` do tcg-db (NARUTO 疾風伝 カードゲーム).
+- **NARUTO 疾風伝 カードゲーム (`nrt-scg`, 2026-11-10)**: entrou com as 573
+  cartas e só 13 imagens (as do tcg-db). Falta fonte de imagem que aceite
+  acesso automatizado (o Suruga-ya barra) e o logo recortado: o oficial está
+  no Wayback em `carddas.com/naruto/cardgame/image/top/naruto_logo.jpg`, com
+  200×140 e fundo azul.
 - **Carddass Masters (`cdm`)**: jogo próprio desde 2026-11-09, uma seção por
   IP. Entrou o HUNTER×HUNTER completo (Partes 1 e 2 pela カードリスト do verso,
   Premium Edition e o brinde VD3; 299 cartas, todas com scan da Hunterpedia)
