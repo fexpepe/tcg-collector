@@ -1751,10 +1751,16 @@
     box.innerHTML = `<div class="set-insights-rail">${resumoHtml}${raridadeHtml}${tipoHtml}</div>`;
     box.hidden = false;
   }
+  // Data só com ano e mês (as vintage: "2006-12") sai sem dia, como no
+  // formatReleaseDate do app.js — sem isto o cartão inventava um "1 de dez.
+  // de 2006" pras promos da Mission (04/11/2026).
   function formatInsightDate(value) {
     const d = new Date(value);
     if (Number.isNaN(d.getTime())) return String(value);
-    return d.toLocaleDateString(shared.getLocale(), { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
+    const soMes = /^\d{4}-\d{2}$/.test(String(value));
+    return d.toLocaleDateString(shared.getLocale(), soMes
+      ? { month: "short", year: "numeric", timeZone: "UTC" }
+      : { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
   }
   // Parte VIVA do 3º cartão: conjunto (N de T) e o anel. A contagem é a mesma
   // dos stats (respeita master set / qualquer idioma), então vem de lá.
