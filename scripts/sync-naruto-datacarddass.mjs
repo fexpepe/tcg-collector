@@ -26,7 +26,7 @@ import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { readGlobalVar, readSnapshot, writeSnapshot, snapshotCardCount, writeGameCatalog, sleep } from "./lib/sync-common.mjs";
-import { PAGES, estreias, estreiasForaDaFaixa, dataDoSet, PROMO_MISSION, parsePromoMission } from "./lib/naruto-datacarddass.mjs";
+import { PAGES, estreias, estreiasForaDaFaixa, dataDoSet, PROMO_MISSION, parsePromoMission, PROMO_CARD_BATTLE, CLEAR_MISSION } from "./lib/naruto-datacarddass.mjs";
 import { aplicaRaridade } from "./naruto-raridade-hinokunian.mjs";
 const SNAP_RARIDADE = new URL("../data/vintage/naruto-raridade.json", import.meta.url);
 
@@ -49,6 +49,9 @@ const BASE = "http://naruto.noihjp.com/Goods/DataCarddas/";
 const UA = { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Sleevu/1.0 (+sleevu.app)" };
 const NO_FETCH = process.argv.includes("--no-fetch");
 const SNAP_PROMOS = new URL("data/vintage/naruto-dc-promos.json", ROOT);
+// Listas oficiais da Bandai (scripts/naruto-dc-oficial-wayback.mjs): daqui saem
+// as promos do Card Battle e os 疾風クリアカード da Mission.
+const SNAP_OFICIAL = new URL("data/vintage/naruto-dc-oficial.json", ROOT);
 const RELE_PROMOS = process.argv.includes("--promos");
 
 // Logo do Card Battle (NARUTO ナルティメットカードバトル), recortado da capa do
@@ -210,7 +213,40 @@ async function run() {
     });
   }
   console.log(`  promos da Mission: ${cartasPromo.length} cartas (lista oficial no Wayback).`);
-  console.log(`  build: ${line.length} cartas em ${snap.sets.length + (cartasPromo.length ? 1 : 0)} sets.`);
+
+  // Promos do Card Battle e 疾風クリアカード da Mission, na ordem da lista
+  // oficial. As promos levam "P", como as da Mission; o clear card não tem
+  // raridade impressa na lista.
+  const oficial = JSON.parse(await readFile(SNAP_OFICIAL, "utf8").catch(() => "null")) || {};
+  const extras = [
+    { set: PROMO_CARD_BATTLE, cartas: oficial.cardBattlePromos || [], rarity: "P", setLogo: CARD_BATTLE_LOGO },
+    { set: CLEAR_MISSION, cartas: oficial.missionClear || [], rarity: "", setLogo: "" }
+  ];
+  for (const { set: s, cartas, rarity, setLogo } of extras) {
+    for (const c of cartas) {
+      const cardId = `nrt-dc-${c.num.toLowerCase()}`;
+      line.push({
+        id: cardId,
+        name: c.name,
+        set: s.name,
+        setId: `nrt-dc-s${s.seq}`,
+        number: c.num,
+        setTotal: cartas.length,
+        setReleaseDate: dataDoSet(s.seq),
+        rarity,
+        artist: "",
+        language: "ja",
+        image: curatedImg(cardId),
+        variants: ["Normal"],
+        setLogo,
+        vintage: true,
+        vintageLine: "dc"
+      });
+    }
+    console.log(`  ${s.name}: ${cartas.length} cartas (lista oficial no Wayback).`);
+  }
+  const setsExtras = extras.filter((e) => e.cartas.length).length;
+  console.log(`  build: ${line.length} cartas em ${snap.sets.length + (cartasPromo.length ? 1 : 0) + setsExtras} sets.`);
 
   const existing = (await readGlobalVar(new URL("cards.js", OUT), "TCG_CARDS")) || [];
   const kept = existing.filter((c) => c && !String(c.id).startsWith("nrt-dc-"));

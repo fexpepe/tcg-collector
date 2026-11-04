@@ -71,6 +71,8 @@ export const PAGES = [
 // hoje — a lista é fixa).
 export function dataDoSet(seq) {
   if (seq === PROMO_MISSION.seq) return PROMO_MISSION.data;
+  if (seq === PROMO_CARD_BATTLE.seq) return PROMO_CARD_BATTLE.data;
+  if (seq === CLEAR_MISSION.seq) return CLEAR_MISSION.data;
   const pagina = PAGES.find((p) => p.seq === seq);
   return pagina ? pagina.data : "";
 }
@@ -130,6 +132,33 @@ export const PROMO_MISSION = {
   data: "2006-12",
   url: "http://www.carddas.com/naruto/mission/cardlist/promocard.shtml",
   captura: "20110707175237"
+};
+
+// ── Promos do Card Battle e 疾風クリアカード da Mission (04/11/2026) ─────────
+// Os dois saem do snapshot das listas oficiais (data/vintage/naruto-dc-oficial.json,
+// ver scripts/lib/naruto-dc-oficial.mjs), não do noihjp, que não lista nenhum.
+//
+// Promos do Card Battle: DNP-001 a DNP-030, mais a DNP-030S e a DNP-030J (cartas
+// próprias, como a DMP-000J/S da Mission: cada uma tem o código impresso e a
+// página dela na lista oficial) e as NA-001 a NA-004 (campanha da Namco, na
+// mesma seção "プロモーションカード" da lista). `data`: a mais antiga é a
+// DNP-001, do 巻ノ十三 初回生産限定 do Card Game de 2002 — saiu com ele, antes da
+// máquina (a data é a do nrt-s13 no catálogo).
+export const PROMO_CARD_BATTLE = {
+  seq: 17,
+  name: "ナルティメットカードバトル プロモーションカード",
+  data: "2005-09-06"
+};
+
+// 疾風クリアカード da Mission: NC-001 a NC-032, de máquina de venda (自販機).
+// `data`: só o mês. A lista (cardlist_cc.php) foi capturada pela primeira vez em
+// 30/08/2007, e o site oficial a marcava como "NEW!!" nessa captura; o dia da
+// máquina não está em fonte achada. O "2" do nome do clear card da Formation
+// (疾風クリアカード2, 2008) é a continuação deste.
+export const CLEAR_MISSION = {
+  seq: 18,
+  name: "究極任務 ナルティメットミッション 疾風クリアカード",
+  data: "2007-08"
 };
 
 const decodifica = (s) => String(s || "")

@@ -129,11 +129,15 @@
     "nrt-dc-s14": "Narutimate Mission — Ch. 4: Fierce Battle! Dark Clouds Bearing Gloom",
     "nrt-dc-s15": "Narutimate Mission — Special Mission Chapter",
     "nrt-dc-s16": "Narutimate Mission — Promotional Cards",
+    "nrt-dc-s17": "Narutimate Card Battle — Promotional Cards",
+    "nrt-dc-s18": "Narutimate Mission — Shippuden Clear Cards",
     // ---- Naruto · Data Carddass Narutimate Formation
     // (o nrt-nf-s02, "Campaign Cards", era só a CAN-001 da Mission: virou
     // parte do nrt-dc-s16 em 04/11/2026)
     "nrt-nf-s01": "Narutimate Formation — Ch. 1",
-    "nrt-nf-s03": "Narutimate Formation",
+    // (o nrt-nf-s03 chamava só "Narutimate Formation" até 04/11/2026: era a
+    // NFF-008 e a NFC-016 sem série no Suruga-ya; ficou sendo o da folha)
+    "nrt-nf-s03": "Narutimate Formation — Sortie! Four-Man Cell Sheet",
     "nrt-nf-s04": "Narutimate Formation — Promotional Cards",
     "nrt-nf-s05": "Narutimate Formation — Top Secret Mission",
     "nrt-nf-s06": "Narutimate Formation — Ch. 2: Reunion! Two Bound by Destiny",
@@ -143,6 +147,8 @@
     "nrt-nf-s12": "V Jump Card Festa 2008",
     "nrt-nf-s13": "Narutimate Formation — Ch. 6: Gathering! The Heroes' Lament",
     "nrt-nf-s26": "Pocket File Dass — Narutimate Formation",
+    "nrt-nf-s27": "Narutimate Formation — Shippuden Clear Cards 2",
+    "nrt-nf-s28": "Narutimate Formation — Ch. 4: Assembly! Crimson Ambition Floating in the Jet Black",
     // ---- Naruto · Data Carddass Narutimate Cross
     "nrt-nx-s14": "Narutimate Cross — Ch. 2",
     "nrt-nx-s15": "Narutimate Cross — Ch. 3",

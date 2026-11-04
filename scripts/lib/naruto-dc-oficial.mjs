@@ -145,6 +145,14 @@ const texto = (s) => String(s || "")
   .replace(/\s+/g, " ")
   .trim();
 
+// Nome da carta como o catálogo escreve: a Formation e o Suruga-ya põem o
+// parêntese e o dígito em meia largura ("奈良シカマル(疾風伝)", "重吾(状態1)") e
+// a Cross em largura cheia ("重吾（状態１）"). Só isso vira meia largura — o
+// resto do texto (！, ・, aspas) fica como a fonte escreveu.
+export const nomeDaCarta = (s) => texto(s)
+  .replace(/[（）Ａ-Ｚａ-ｚ０-９]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 0xfee0))
+  .replace(/　/g, " ");
+
 // "NFP-002(DMP-019)" -> { num: "NFP-002", alias: "DMP-019" }; "NF-005再録" e
 // "NF-011【再録】" (relistagem) -> null.
 export function numeroDaCelula(bruto) {
@@ -169,8 +177,8 @@ export function parseFormation(html) {
     const n = numeroDaCelula(parte.slice(0, fim));
     if (!n) continue;
     const resto = parte.slice(fim + 5);
-    const name = texto((/<td[^>]*>([\s\S]*?)<\/td>/i.exec(resto) || [])[1]);
-    const missao = texto((/<td[^>]*colspan="2"[^>]*>([\s\S]*?)<\/td>/i.exec(resto) || [])[1]);
+    const name = nomeDaCarta((/<td[^>]*>([\s\S]*?)<\/td>/i.exec(resto) || [])[1]);
+    const missao = nomeDaCarta((/<td[^>]*colspan="2"[^>]*>([\s\S]*?)<\/td>/i.exec(resto) || [])[1]);
     if (name) out.push({ ...n, name, missao });
   }
   return out;
@@ -185,7 +193,7 @@ export function parseCross(html) {
   let m;
   while ((m = re.exec(String(html || "")))) {
     const n = numeroDaCelula(m[1]);
-    const name = texto(m[2]);
+    const name = nomeDaCarta(m[2]);
     if (n && name) out.push({ ...n, name });
   }
   return out;
@@ -208,7 +216,7 @@ export function parsePromosCardBattle(html) {
   if (i < 0) return [];
   return linhasSFontWb(h.slice(i)).map(({ num, parte }) => {
     const celulas = [...parte.matchAll(/<td[^>]*>([\s\S]*?)<\/td>/gi)].map((m) => texto(m[1]));
-    const name = texto((/<a\b[^>]*>([\s\S]*?)<\/a>/i.exec(parte) || [])[1]);
+    const name = nomeDaCarta((/<a\b[^>]*>([\s\S]*?)<\/a>/i.exec(parte) || [])[1]);
     return { num, name, origem: celulas[5] || "" };
   }).filter((c) => /^(DNP|NA)-/.test(c.num) && c.name);
 }
@@ -217,8 +225,8 @@ export function parsePromosCardBattle(html) {
 export function parseClearMission(html) {
   return linhasSFontWb(html).map(({ num, parte }) => ({
     num,
-    name: texto((/<a\b[^>]*>([\s\S]*?)<\/a>/i.exec(parte) || [])[1]),
-    missao: texto((/<td[^>]*colspan="2"[^>]*>([\s\S]*?)<\/td>/i.exec(parte) || [])[1])
+    name: nomeDaCarta((/<a\b[^>]*>([\s\S]*?)<\/a>/i.exec(parte) || [])[1]),
+    missao: nomeDaCarta((/<td[^>]*colspan="2"[^>]*>([\s\S]*?)<\/td>/i.exec(parte) || [])[1])
   })).filter((c) => /^NC-\d{3}$/.test(c.num) && c.name);
 }
 
@@ -254,10 +262,10 @@ export function montaSnapshot(paginas) {
       cross.push({ num: c.num, name: c.name, serie: promo ? serieDaPromoCross(c.num) : p.serie || "", captura: p.ts });
     }
   }
-  for (const [num, name, rarity] of CROSS_DO_PDF_5.cartas) {
+  for (const [num, nome, rarity] of CROSS_DO_PDF_5.cartas) {
     if (vistosX.has(num)) continue;
     vistosX.add(num);
-    cross.push({ num, name, serie: "", rarity, captura: CROSS_DO_PDF_5.fonte.ts });
+    cross.push({ num, name: nomeDaCarta(nome), serie: "", rarity, captura: CROSS_DO_PDF_5.fonte.ts });
   }
   const ordem = (a, b) => a.num.localeCompare(b.num, "en", { numeric: true });
   return {

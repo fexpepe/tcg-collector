@@ -679,11 +679,15 @@ jobs:
         if: env.RODA_SYNC != 'true'
         run: node scripts/sync-naruto-datacarddass.mjs --no-fetch || echo "sync-naruto-datacarddass --no-fetch falhou; segue com o catalogo do cache"
 
-      # Data Carddass NARUTO — Formation (2007-08) e Cross (2009-10): snapshot
-      # versionado do catalogo do Suruga-ya (re-coleta manual; anti-bot barra
+      # Data Carddass NARUTO — Formation (2007-08) e Cross (2009-10): as listas
+      # oficiais da Bandai no Wayback (data/vintage/naruto-dc-oficial.json) mais
+      # o snapshot do Suruga-ya (raridade; re-coleta manual, o anti-bot barra
       # fetch em CI). Anexa as duas linhas ao catalogo do Naruto.
+      # Roda nos DOIS modos (sem `if`): os dois snapshots sao versionados e o
+      # sync nao usa rede. Sem isso, as 412 cartas que a lista oficial trouxe
+      # (2026-11-04) so apareceriam na tela do set depois do cron, como as
+      # promos da Mission antes do passo --no-fetch do Data Carddass.
       - name: Anexa Data Carddass Formation + Cross
-        if: env.RODA_SYNC == 'true'
         run: node scripts/sync-naruto-dc-cross-formation.mjs || echo "sync formation/cross falhou; segue com o snapshot versionado"
 
       # Naruto CCG americano (Bandai USA 2006–2013): checklist + scans do
