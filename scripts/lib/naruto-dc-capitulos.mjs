@@ -67,7 +67,26 @@ export const DATAS_DE_SERIE = {
   // oficial dele; a explicação saiu no site em 04/06/2008).
   "nf:極秘任務": "2008-06-05",
   // Bandai: 2008年5月中旬 (o Suruga-ya não tem data).
-  "nf:ポケットファイルダス": "2008-05-15"
+  "nf:ポケットファイルダス": "2008-05-15",
+  // As duas séries de máquina de venda da Formation, pelo log de novidades do
+  // site oficial (formation/topics.html, captura 20090215175129). Só o mês:
+  // o log dá quando a página do produto entrou, não o dia da máquina.
+  //   "2008/01/18 関連商品に「突撃！フォーマンセルシート」を追加！" e a lista
+  //   em 22/01.
+  // (A chave é a da série em NFKC, como a chaveDoSet monta: "！" vira "!".)
+  "nf:出撃!フォーマンセルシート": "2008-01",
+  //   "2008/09/11 関連商品に「疾風クリアカード2」を追加！" e "2008/10/01 待望の
+  //   疾風クリアカード2カードリストを公開！".
+  "nf:疾風クリアカード2": "2008-10"
+};
+
+// Chave de set PUBLICADO que não sai do nome dele. O nrt-nf-s03 chamava só
+// "ナルティメットフォーメーション": o Suruga-ya anuncia a NFC-016 e a NFF-008 sem
+// a série. Pela lista oficial elas são do 疾風クリアカード2 e do 出撃！フォーマン
+// セルシート (04/11/2026); o set fica sendo o da folha (a NFF-008 não muda de
+// endereço) e a NFC-016 vai pro set novo do clear card.
+const CHAVE_PUBLICADA = {
+  "nrt-nf-s03": "nf:出撃!フォーマンセルシート"
 };
 
 // setIds que deixaram de existir quando o capítulo partido virou um só
@@ -144,8 +163,26 @@ export function dataDoSet(chave, datasDosItens) {
   return datas.find((d) => !/-01-01$/.test(d)) || datas[0] || "";
 }
 
+// Total do set (setTotal). Capítulo: a faixa oficial inteira, mais as cartas do
+// set fora dela (a NX-CAM004 do 第4章, as NX-SP do 第5章). Assim o progresso é
+// honesto mesmo onde a lista capturada tem buraco: o 第4章 da Cross mostra
+// 49/51, porque a NX-172 e a NX-191 não têm fonte. Fora de capítulo, as cartas
+// que o set tem.
+export function totalDoSet(chave, cartas) {
+  const cap = capituloDaChave(chave);
+  if (!cap) return (cartas || []).length;
+  const [de, ate] = cap.faixa;
+  const linha = chave.slice(0, 2);
+  const fora = (cartas || []).filter((c) => {
+    const m = nfkc(c.num).match(/^(N[FX])-(\d+)$/i);
+    return !(m && m[1].toLowerCase() === linha && Number(m[2]) >= de && Number(m[2]) <= ate);
+  }).length;
+  return ate - de + 1 + fora;
+}
+
 // Chave de um set JÁ publicado, pelo nome dele (o prefixo do setId diz a linha).
 export function chaveDoPublicado(setId, nome) {
+  if (CHAVE_PUBLICADA[setId]) return CHAVE_PUBLICADA[setId];
   const linha = String(setId).startsWith("nrt-nx-") ? "nx" : "nf";
   // O catálogo publicado antes de 2026-11-02 ainda traz o prefixo da linha.
   const serie = String(nome || "").replace(/^Data Carddass — /, "");

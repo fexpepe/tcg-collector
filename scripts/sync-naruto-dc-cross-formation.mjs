@@ -1,13 +1,19 @@
 // Data Carddass NARUTO — ナルティメットフォーメーション (2007–10) e
 // ナルティメットクロス (2009–10): as duas séries do arcade que faltavam.
 //
-// Fonte: catálogo estruturado do Suruga-ya (categoria 501080113), snapshot
-// versionado em data/vintage/naruto-dc-suruga.json. O anti-bot do site barra
-// fetch server-side, então NÃO há refresh automático: a re-coleta é manual
-// (Browser pane) e o snapshot nunca regride. Cobertura parcial por natureza
-// (é o acervo público da loja) — os sets crescem conforme a re-coleta.
+// Duas fontes, as duas em snapshot versionado (sem rede no build):
+//   1. As listas OFICIAIS da Bandai no Wayback (data/vintage/naruto-dc-oficial.json,
+//      ver scripts/lib/naruto-dc-oficial.mjs): dizem QUAIS cartas existem, o
+//      nome e a série. Desde 04/11/2026 são a fonte principal — a Formation
+//      passou de 91 para 344 cartas de capítulo, a Cross de 243 para 342.
+//   2. O catálogo do Suruga-ya (categoria 501080113, data/vintage/naruto-dc-suruga.json):
+//      a RARIDADE (as listas oficiais não dão, só o PDF de checklist da Cross)
+//      e as cartas que a lista oficial capturada não tem (NX-173–177 e 179, da
+//      2ª página do 第4章 que o Wayback guardou incompleta; NX-SP, NX-CAM004,
+//      NXP-009, VJCF-2008). O anti-bot do site barra fetch server-side: a
+//      re-coleta é manual (Browser pane) e o snapshot nunca regride.
 //
-// Formato do item: { t: "NX-003[NR]：うずまきナルト(...)", s: "<série/capítulo>", d: "2009/01/25" }
+// Formato do item do Suruga-ya: { t: "NX-003[NR]：うずまきナルト(...)", s: "<série/capítulo>", d: "2009/01/25" }
 // ANEXA ao catálogo do Naruto (ids nrt-nx-*/nrt-nf-*); roda DEPOIS dos outros
 // syncs do Naruto no CI. Imagens: placeholder (fotos de loja não são fonte
 // limpa); imagens curadas do dono entram por assets/cards/naruto/<id>.*.
@@ -20,11 +26,12 @@ import { readFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { readGlobalVar, writeGameCatalog } from "./lib/sync-common.mjs";
-import { capituloDaCarta, chaveDoSet, nomeDoSet, dataDoSet, atribuiSetIds, NAO_E_FORMATION } from "./lib/naruto-dc-capitulos.mjs";
+import { capituloDaCarta, chaveDoSet, nomeDoSet, dataDoSet, atribuiSetIds, totalDoSet, NAO_E_FORMATION } from "./lib/naruto-dc-capitulos.mjs";
 
 const ROOT = new URL("../", import.meta.url);
 const OUT = new URL("data/naruto/", ROOT);
 const SNAP = new URL("data/vintage/naruto-dc-suruga.json", ROOT);
+const OFICIAL = new URL("data/vintage/naruto-dc-oficial.json", ROOT);
 
 // Mesmo mecanismo de imagem curada do sync vintage (assets/cards/naruto/<id>.*).
 function curatedImg(id) {
@@ -71,8 +78,9 @@ const lineOf = (num, serie) => {
 };
 
 async function run() {
-  console.log("Data Carddass NARUTO — Formation + Cross (Suruga-ya snapshot)");
+  console.log("Data Carddass NARUTO — Formation + Cross (listas oficiais + Suruga-ya)");
   const snap = JSON.parse(await readFile(SNAP, "utf8"));
+  const oficial = JSON.parse(await readFile(OFICIAL, "utf8").catch(() => "null")) || {};
   const items = [...(snap.cross || []), ...(snap.formation || [])];
 
   // Ids pegajosos: número -> id já publicado (coleções referenciam ids).
@@ -93,6 +101,27 @@ async function run() {
     if (NAO_E_FORMATION.has(p.num)) continue;
     byNum.set(p.num, { ...p, serie: normalize(it.s), date: (it.d || "").replace(/\//g, "-") });
   }
+  const soDoSuruga = byNum.size;
+
+  // A lista oficial por cima: o nome e a série são os dela (o Suruga-ya
+  // escreve "ディダラ", tira o "(第一部)" e põe a NFC-016 e a NFF-008 num set
+  // "ナルティメットフォーメーション" sem série); a raridade fica a do
+  // Suruga-ya, que é quem tem (a do PDF de checklist só quando ele não tem).
+  // Carta de capítulo vai pelo número, então a série vazia dela não importa.
+  let daOficial = 0, casadas = 0;
+  for (const o of [...(oficial.formation || []), ...(oficial.cross || [])]) {
+    if (NAO_E_FORMATION.has(o.num)) continue;
+    const s = byNum.get(o.num);
+    if (s) casadas++; else daOficial++;
+    byNum.set(o.num, {
+      num: o.num,
+      name: o.name,
+      rarity: (s && s.rarity) || o.rarity || "",
+      serie: o.serie || (s && s.serie) || "",
+      date: (s && s.date) || ""
+    });
+  }
+  console.log(`  ${byNum.size} cartas: ${casadas} nas duas fontes, ${daOficial} só na lista oficial, ${soDoSuruga - casadas} só no Suruga-ya.`);
 
   // Sets: um por CAPÍTULO oficial e, fora deles, um por série do anúncio. O
   // capítulo sai da faixa de numeração do site oficial, não da série do
@@ -103,7 +132,7 @@ async function run() {
   for (const card of byNum.values()) {
     const line = lineOf(card.num, card.serie);
     const cap = capituloDaCarta(line, card.num, card.serie);
-    if (cap && cap !== capituloDaCarta(line, "", card.serie)) foraDaSerie++;
+    if (cap && card.serie && cap !== capituloDaCarta(line, "", card.serie)) foraDaSerie++;
     const chave = chaveDoSet(line, cap, card.serie);
     if (!setsOut.has(chave)) setsOut.set(chave, { line, name: nomeDoSet(chave, card.serie), dates: [], cards: [] });
     const s = setsOut.get(chave);
@@ -139,7 +168,7 @@ async function run() {
         set: s.name,
         setId,
         number: c.num,
-        setTotal: s.cards.length, // acervo conhecido (parcial por natureza)
+        setTotal: totalDoSet(chave, s.cards),
         setReleaseDate: s.date,
         rarity: c.rarity,
         artist: "",
