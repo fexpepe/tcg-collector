@@ -2049,7 +2049,13 @@ if (v === "b") { /* versão nova */ }</pre>
     pwa_install: "App instalado", export_done: "Exportações", import_done: "Importações", deck_created: "Decks criados", backup_done: "Backups"
   };
   function tabMedicao(h, e, ds) {
-    const alvos = (h.alvos || []).slice().sort((a, b) => (b.alerta - a.alerta) || (b.media_dia - a.media_dia));
+    // Desde a 20261104a o alarme conta PESSOAS (visitante × dia), não eventos:
+    // em 04/11 uma pessoa que cadastrou 109 vezes numa noite pôs "27,5
+    // esperados" no card_added e acendeu "parou" sem nada quebrado. Banco sem
+    // a migração não manda as colunas de pessoas, e a tabela fica a de antes.
+    const porPessoa = (h.alvos || []).some((a) => a.pessoas48h != null);
+    const ordem = (a) => Number(porPessoa ? a.pessoas_dia : a.media_dia) || 0;
+    const alvos = (h.alvos || []).slice().sort((a, b) => (b.alerta - a.alerta) || (ordem(b) - ordem(a)));
     const cs = (e && e.consentimento) || {};
     const medidos = cs.visitantes_total || 0, recusas = (cs.recusou_total || 0) - (cs.reativou_total || 0);
     const cobertura = medidos ? medidos / (medidos + Math.max(0, recusas)) : null;
@@ -2061,15 +2067,20 @@ if (v === "b") { /* versão nova */ }</pre>
     // manda a coluna, e ela sai "—".
     return `
       <div class="admin-stats">
-        ${stat("Alarmes", fmt(alvos.filter((a) => a.alerta).length), "zerou em 48h com 6+ esperados")}
+        ${stat("Alarmes", fmt(alvos.filter((a) => a.alerta).length), porPessoa ? "ninguém em 48h com 6+ pessoas esperadas" : "zerou em 48h com 6+ esperados")}
         ${stat("Cobertura estimada", cobertura == null ? "—" : pct(cobertura, 1), "dos navegadores com medição ligada")}
         ${stat("Desligaram a medição", fmt(cs.recusou_total), cs.desde ? `desde ${dataBR(cs.desde)} · ${fmt(cs.reativou_total)} religaram` : "sem registro ainda")}
         ${stat("Eventos guardados", fmt(h.eventos_total), h.eventos_mais_antigo ? `desde ${dataBR(h.eventos_mais_antigo)}` : "")}
         ${stat("Agendamento (pg_cron)", h.cron === "ligado" ? "ligado" : "desligado", h.cron === "ligado" ? "retrato, resumo e limpeza automáticos" : "o painel completa a série ao abrir")}
       </div>
-      ${section("Eventos: chegando ou parados?", paged("sentinela", [{ t: "Evento" }, { t: "Últimas 48h", num: true }, { t: "Esperado em 48h", num: true }, { t: "Média/dia (14 dias antes)", num: true }, { t: "Último" }, { t: "Status" }],
-        alvos.map((a) => `<tr><td>${esc(nome(a.alvo))}</td><td class="num">${esc(fmt(a.ultimas48h))}</td><td class="num">${esc(fmt(a.esperado48h))}</td><td class="num">${esc(fmt(a.media_dia))}</td><td><small>${esc(a.ultimo ? new Date(a.ultimo).toLocaleString("pt-BR") : "—")}</small></td><td>${a.alerta ? `<span class="adm-bad">parou</span>` : `<span class="adm-ok">ok</span>`}</td></tr>`), 12),
-        "Esperado = o que chegou nos 14 dias anteriores, ajustado pelas visitas de agora: se o tráfego caiu à metade, espera-se a metade (as próprias Visitas usam a média × 2). Alarme = chegava 3+ por dia, zerou nas últimas 48h e eram esperados 6 ou mais. Zero com esperado baixo é normal, não quebra. Quando dispara, quase sempre é medição quebrada (nome fora da whitelist, migração faltando, busca de uma loja que mudou), não falta de uso. O healthcheck diário do GitHub checa a mesma coisa e manda e-mail quando dispara.")}
+      ${section("Eventos: chegando ou parados?", porPessoa
+        ? paged("sentinela", [{ t: "Evento" }, { t: "Eventos em 48h", num: true }, { t: "Pessoas em 48h", num: true }, { t: "Pessoas esperadas", num: true }, { t: "Pessoas/dia (14 dias antes)", num: true }, { t: "Último" }, { t: "Status" }],
+          alvos.map((a) => `<tr><td>${esc(nome(a.alvo))}</td><td class="num">${esc(fmt(a.ultimas48h))}</td><td class="num">${esc(fmt(a.pessoas48h))}</td><td class="num">${esc(fmt(a.esperado_pessoas))}</td><td class="num">${esc(fmt(a.pessoas_dia))}</td><td><small>${esc(a.ultimo ? new Date(a.ultimo).toLocaleString("pt-BR") : "—")}</small></td><td>${a.alerta ? `<span class="adm-bad">parou</span>` : `<span class="adm-ok">ok</span>`}</td></tr>`), 12)
+        : paged("sentinela", [{ t: "Evento" }, { t: "Últimas 48h", num: true }, { t: "Esperado em 48h", num: true }, { t: "Média/dia (14 dias antes)", num: true }, { t: "Último" }, { t: "Status" }],
+          alvos.map((a) => `<tr><td>${esc(nome(a.alvo))}</td><td class="num">${esc(fmt(a.ultimas48h))}</td><td class="num">${esc(fmt(a.esperado48h))}</td><td class="num">${esc(fmt(a.media_dia))}</td><td><small>${esc(a.ultimo ? new Date(a.ultimo).toLocaleString("pt-BR") : "—")}</small></td><td>${a.alerta ? `<span class="adm-bad">parou</span>` : `<span class="adm-ok">ok</span>`}</td></tr>`), 12),
+        porPessoa
+          ? "Pessoa = um visitante num dia: quem cadastra 100 cartas numa noite conta 1, não 100. Esperado = pessoas que fizeram o evento nos 14 dias anteriores, ajustado pelas pessoas que visitaram agora: se o tráfego caiu à metade, espera-se a metade (as próprias Visitas usam a média × 2). Alarme = 3+ pessoas por dia faziam, ninguém fez nas últimas 48h e eram esperadas 6 ou mais. Zero com esperado baixo é normal, não quebra: com 1 ou 2 pessoas por dia, dois dias sem ninguém acontece. Quando dispara, quase sempre é medição quebrada (nome fora da whitelist, migração faltando, busca de uma loja que mudou), não falta de uso. O healthcheck diário do GitHub checa a mesma coisa e manda e-mail quando dispara."
+          : "Esperado = o que chegou nos 14 dias anteriores, ajustado pelas visitas de agora: se o tráfego caiu à metade, espera-se a metade (as próprias Visitas usam a média × 2). Alarme = chegava 3+ por dia, zerou nas últimas 48h e eram esperados 6 ou mais. Zero com esperado baixo é normal, não quebra. Quando dispara, quase sempre é medição quebrada (nome fora da whitelist, migração faltando, busca de uma loja que mudou), não falta de uso. O healthcheck diário do GitHub checa a mesma coisa e manda e-mail quando dispara.")}
       ${section("Consentimento", `<div class="admin-stats">
           ${stat("Desligaram no período", fmt(cs.recusou), `${fmt(cs.reativou)} religaram`)}
           ${stat("Visitantes medidos no período", fmt(cs.visitantes))}

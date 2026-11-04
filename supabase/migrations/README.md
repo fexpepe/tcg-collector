@@ -8,30 +8,44 @@ poucos.)
 
 ## Pendentes de aplicar
 
-- `20261017a` — alarme de medição parada sem estourar o tempo do anônimo
-  (`20261017a_sentinela_rapida.sql`). Em 2026-10-17 o healthcheck ficou
-  vermelho com "medição sem evento parado: HTTP 500": era o Postgres
-  cancelando a `analytics_sentinela` (57014, statement timeout) nos 3 s do
-  papel anon — a `_sentinela` lia 16 dias de `events` três vezes, linha por
-  linha na tabela, robôs e `props` inclusive. Medido de fora: 3,5 s e 500 com
-  o cache frio, 2,0 s e 0,4 s nas chamadas seguintes. Cria o índice parcial
-  `events_humano_ts_idx (ts, name) where not bot`, reescreve a `_sentinela`
-  com o mesmo retorno e a mesma regra em duas passadas (a grande só no
-  índice) e põe `statement_timeout = 15s` na `analytics_sentinela`. **Até
-  aplicar, o healthcheck pode ficar vermelho nos dias de cache frio.** Aditiva
-  e sem ordem com o JS; o `create index` segura os inserts no `events` por
-  alguns segundos. Ensaiada no PGlite em cima da 20261004a, aplicada duas
-  vezes: velha × nova na mesma transação dão a MESMA saída em 6 cenários
-  (vazio, tráfego normal com scan_open e loja zerados, tráfego caído, pageview
-  parado, sem pageview nenhum, 300 mil linhas), anon chama só a
-  `analytics_sentinela`, `admin_health` segue null pra não-admin e o plano
-  da passada por nome é Index Only Scan no índice novo.
+- `20261104a` — alarme de medição parada conta PESSOAS, não eventos
+  (`20261104a_sentinela_pessoas.sql`). Em 2026-11-04 a aba Medição e o
+  healthcheck acusaram "parou" em `card_added` (27,5 esperados) e
+  `store_click` (8,2) sem nada quebrado: o site manda os dois, o guard aceita,
+  `events_descartes` zerado, visitas logadas chegando. Em 31/10 UMA pessoa
+  cadastrou a coleção numa noite (109 rajadas) e puxou a média pra 13,6/dia;
+  um visitante fez 22 dos cliques em loja. As 4–5 contas que faziam esses
+  eventos não voltaram depois de 31/10. A unidade do alarme passa a ser
+  visitante × dia (a mesma pessoa conta uma vez por dia, faça 1 ou 100), com
+  a mesma regra e os mesmos limites (3+/dia, zero em 48h, 6+ esperados), e o
+  tráfego que escala o esperado também vira pessoas. A `_sentinela` ganha
+  `pessoas48h`, `pessoas_dia` e `esperado_pessoas` (drop + create) e o
+  `alerta` sai delas; as colunas em eventos ficam iguais, então o /admin de
+  antes segue certo. Troca o índice `events_humano_ts_idx` pelo
+  `events_humano_ts_anon_idx (ts, name, anon) where not bot` (a passada por
+  nome precisa do anon e segue só no índice) e recria a `admin_health` com o
+  `statement_timeout = 30s` da 20261031a. A `analytics_sentinela` não é
+  tocada (mantém os 15 s). Aditiva e sem ordem com o JS; o `create index`
+  segura os inserts no `events` por alguns segundos. Ensaiada no PGlite em
+  cima da 20261004a → 17a → 31a, aplicada duas vezes, velha × nova lado a
+  lado em 6 cenários: o caso de 04/11 sai do alarme (card_added 1,4
+  pessoa/dia, store_click 2,1); page_time e vitrine parando com tráfego
+  normal acendem nas duas; script fora do ar acende o pageview nas duas; fim
+  de campanha não acende em nenhuma; store_click de 6 pessoas/dia zerado
+  acende nas duas; banco vazio dá []. As colunas em eventos saem idênticas às
+  da velha em todos. Com 270 mil linhas em 16 dias (~8× o de hoje): 213 ms
+  (a velha, 79 ms), Index Only Scan no índice novo; anon segue sem acesso à
+  `_sentinela`, `admin_health` null pra não-admin.
 
   Conferir depois de aplicar:
   ```sql
-  select public.analytics_sentinela();   -- [] (e rápido)
-  select indexname from pg_indexes where indexname = 'events_humano_ts_idx';  -- 1 linha
-  select proconfig from pg_proc where proname = 'analytics_sentinela';  -- {statement_timeout=15s}
+  select public.analytics_sentinela();   -- [] (card_added e store_click saem)
+  select alvo, ultimas48h, pessoas48h, pessoas_dia, esperado_pessoas, alerta
+    from public._sentinela() order by pessoas_dia desc;
+  select indexname from pg_indexes
+   where indexname in ('events_humano_ts_anon_idx', 'events_humano_ts_idx');  -- só o _anon_
+  select proname, proconfig from pg_proc
+   where proname in ('analytics_sentinela', 'admin_health');  -- 15s e 30s
   ```
 
 - `20261006a` — blog em três idiomas (`20261006a_blog_traducoes.sql`;
@@ -178,6 +192,16 @@ poucos.)
   E, logado como admin, abrir `/admin`: as abas aparecem e o aviso amarelo some.
 
 ### Já aplicadas (verificado em produção)
+
+- `20261017a` — alarme de medição parada sem estourar o tempo do anônimo
+  (`20261017a_sentinela_rapida.sql`). **Aplicada em 2026-10-17** pelo
+  Fernando; de fora, a `analytics_sentinela` passou a responder 200 em
+  ~0,6 s, e o healthcheck voltou a ficar verde. O motivo: o healthcheck
+  ficava vermelho com "HTTP 500", que era o Postgres cancelando a consulta
+  (57014) nos 3 s do anon, com a `_sentinela` lendo 16 dias de `events` três
+  vezes na tabela. Criou o índice `events_humano_ts_idx` (que a `20261104a`
+  troca pelo `_anon_`), reescreveu a `_sentinela` em duas passadas e pôs
+  `statement_timeout = 15s` na `analytics_sentinela`.
 
 - `20261101a` — libera o slug `dbz` (Dragon Ball Z CCG da Score, 2000–2006)
   nas DUAS whitelists de jogo: `card_views`/`increment_card_view` e

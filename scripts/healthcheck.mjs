@@ -198,6 +198,8 @@ await checkJson("Supabase REST (anon)", `${SUPABASE_URL}/rest/v1/card_views?sele
 // falha de produção, só avisa. Desde a 20261004a o zero só alarma se o
 // TRÁFEGO das 48h fazia esperar 6+ eventos: o fim da campanha paga (04/10)
 // derrubou o scan_open junto com os visitantes e acendeu sem nada quebrado.
+// Desde a 20261104a a conta é em PESSOAS (visitante × dia), não eventos: em
+// 04/11 uma pessoa com 109 cadastros numa noite acendeu o card_added.
 log("\n[analytics]");
 await check("medição sem evento parado", async () => {
   const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/analytics_sentinela`, {
