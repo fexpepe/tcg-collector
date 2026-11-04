@@ -128,9 +128,11 @@
     "nrt-dc-s13": "Narutimate Mission — Ch. 3: Assault! Fangs of Red Despair",
     "nrt-dc-s14": "Narutimate Mission — Ch. 4: Fierce Battle! Dark Clouds Bearing Gloom",
     "nrt-dc-s15": "Narutimate Mission — Special Mission Chapter",
+    "nrt-dc-s16": "Narutimate Mission — Promotional Cards",
     // ---- Naruto · Data Carddass Narutimate Formation
+    // (o nrt-nf-s02, "Campaign Cards", era só a CAN-001 da Mission: virou
+    // parte do nrt-dc-s16 em 04/11/2026)
     "nrt-nf-s01": "Narutimate Formation — Ch. 1",
-    "nrt-nf-s02": "Narutimate Formation — Campaign Cards",
     "nrt-nf-s03": "Narutimate Formation",
     "nrt-nf-s04": "Narutimate Formation — Promotional Cards",
     "nrt-nf-s05": "Narutimate Formation — Top Secret Mission",

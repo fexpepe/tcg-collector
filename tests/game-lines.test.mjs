@@ -22,7 +22,7 @@ const { lineScope } = sharedCom();
 test("Data Carddass: a linha nrt-dc cobre os quatro títulos do arcade", () => {
   const dc = lineScope("naruto", "nrt-dc");
   assert.equal(dc.line, "nrt-dc");
-  for (const setId of ["nrt-dc-s01", "nrt-dc-s10", "nrt-dc-s11", "nrt-nf-s01", "nrt-nf-s26", "nrt-nx-s14", "nrt-nx-s25"]) {
+  for (const setId of ["nrt-dc-s01", "nrt-dc-s10", "nrt-dc-s11", "nrt-dc-s16", "nrt-nf-s01", "nrt-nf-s26", "nrt-nx-s14", "nrt-nx-s25"]) {
     assert.ok(dc.includes(setId), `${setId} devia estar na linha nrt-dc`);
   }
   for (const setId of ["nrt-s01", "nrt-promo", "nrt-ccg-s01", "nrt-ncg-promo"]) {
