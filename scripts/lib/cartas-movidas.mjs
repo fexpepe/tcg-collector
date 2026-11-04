@@ -21,32 +21,73 @@
 //   em todo pedido de carta. O 301 não custa leitura nenhuma a mais.
 // Guarda o id, e não o destino, de propósito: a carta pode mudar de novo (de
 // set, de total, de nome), e o destino sai do catálogo de cada build.
+//
+// O mesmo registro serve, desde 2026-11-04, pro endereço que mudou DENTRO do
+// set e que o cartaParecida resolveria errado: a borda olha o "m" antes de
+// procurar parecida, então registrar o antigo -> id basta (ver
+// enderecosARegistrar).
 import { agrupaPorSet, paginasDoJogo, enderecosDasCartas } from "./paginas-de-set.mjs";
 import { jogoDaUrl } from "../../functions/_lib/jogos.js";
+import { preparaParecida } from "../../functions/_lib/slug-carta.js";
 
 const SET_DO = (endereco) => endereco.slice(0, endereco.lastIndexOf("/"));
+const CARTA_DO = (endereco) => endereco.slice(endereco.lastIndexOf("/") + 1);
 
-// As cartas de UM jogo que mudaram de página de set entre dois catálogos:
-// { "<url>/<set>/<carta>" antigo: id }. Fica de fora:
-//   - carta que só mudou de endereço DENTRO do set: o cartaParecida resolve, e
-//     registrar cada troca de total (o Secret Lair muda 2.600 de uma vez)
-//     incharia o mapa;
+// Os endereços antigos de UM jogo que precisam do registro, entre dois
+// catálogos: { movidas, erradas }, cada um { "<url>/<set>/<carta>" antigo: id }.
+//   - movidas: a carta foi pra OUTRA página de set que segue existindo;
+//   - erradas (2026-11-04): a carta mudou de endereço DENTRO do set e o
+//     cartaParecida, que é o que a borda roda nesse caso, levaria o endereço
+//     antigo pra OUTRA carta, ou pra nenhuma (404). Acontece quando dois
+//     números viram o mesmo pedaço de endereço, porque o kanji some (PR忍-17
+//     e PR作-17 são "pr-17"; 忍-234 e 作-234, "234", no Naruto Card Game, PR
+//     #234), ou quando o total do endereço antigo é lido como desempate
+//     ("inevitable-betrayal-1935-2865" no Secret Lair). A conta é a da borda:
+//     as cartas de HOJE da página, o mesmo preparaParecida.
+// Fica de fora:
+//   - carta que mudou dentro do set e o cartaParecida acha: registrar cada
+//     troca de total (o Secret Lair muda 2.700 de uma vez) incharia o mapa;
+//   - endereço antigo que hoje é de outra carta: a carta de hoje vence (o
+//     destinosDasMovidas também tiraria);
 //   - carta de set que deixou de existir: é set renomeado (setRenomeado) ou
 //     incorporado (os ids aposentados do card-id-merges), não carta movida, e
 //     registraria o set inteiro.
-export function cartasQueMudaramDeSet(game, antes, depois) {
+export function enderecosARegistrar(game, antes, depois) {
   const paginasHoje = paginasDoJogo(game, agrupaPorSet(depois));
   const antigos = enderecosDasCartas(paginasDoJogo(game, agrupaPorSet(antes)));
   const hoje = enderecosDasCartas(paginasHoje);
-  const setsHoje = new Set(paginasHoje.map((p) => `${p.url}/${p.slug}`));
+  const vivos = new Set(hoje.values());
+  const paginaDe = new Map(paginasHoje.map((p) => [`${p.url}/${p.slug}`, p]));
+  // Uma preparação por página, só das páginas que têm carta mudada.
+  const resolvedores = new Map();
+  const resolve = (pagina, slug) => {
+    let r = resolvedores.get(pagina);
+    if (!r) {
+      const idDoSlug = new Map([...pagina.slugsCartas].map(([id, s]) => [s, id]));
+      const acha = preparaParecida(pagina.cards, pagina.slugsCartas);
+      r = (pedido) => { const s = acha(pedido); return s ? idDoSlug.get(s) || null : null; };
+      resolvedores.set(pagina, r);
+    }
+    return r(slug);
+  };
   const movidas = {};
+  const erradas = {};
   for (const [chave, antigo] of antigos) {
     const novo = hoje.get(chave);
-    if (!novo || novo === antigo || SET_DO(novo) === SET_DO(antigo)) continue;
-    if (!setsHoje.has(SET_DO(antigo))) continue;
-    movidas[antigo] = chave.slice(chave.indexOf("|") + 1);
+    if (!novo || novo === antigo) continue;
+    const pagina = paginaDe.get(SET_DO(antigo));
+    if (!pagina) continue;
+    const id = chave.slice(chave.indexOf("|") + 1);
+    if (SET_DO(novo) !== SET_DO(antigo)) { movidas[antigo] = id; continue; }
+    if (vivos.has(antigo)) continue;
+    if (resolve(pagina, CARTA_DO(antigo)) !== id) erradas[antigo] = id;
   }
-  return movidas;
+  return { movidas, erradas };
+}
+
+// Só as que mudaram de set (o nome de antes de 2026-11-04, que o teste usa).
+export function cartasQueMudaramDeSet(game, antes, depois) {
+  return enderecosARegistrar(game, antes, depois).movidas;
 }
 
 // Junta as movidas de agora no registro. Mesmo endereço antigo registrado de

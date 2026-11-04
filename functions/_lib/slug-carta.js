@@ -113,8 +113,19 @@ export function slugsDasCartas(cards) {
 // Devolve o nome de hoje, ou null. Os pedaços já saem do slugify ([a-z0-9-]),
 // então entram na regex sem escape.
 export function cartaParecida(cards, slugs, pedido) {
-  const p = String(pedido || "");
-  if (!p || !slugs) return null;
+  if (!String(pedido || "") || !slugs) return null;
+  return preparaParecida(cards, slugs)(pedido);
+}
+
+// O mesmo cartaParecida, preparado UMA vez pra um set e consultado várias
+// (2026-11-04). A borda resolve um endereço por pedido e usa o de cima; o
+// deploy (scripts/lib/cartas-movidas.mjs) confere o endereço antigo de TODA
+// carta que mudou dentro do set, e o Secret Lair muda ~2.700 de uma vez:
+// remontando as regex a cada consulta eram 9,4 s só nele. Cada regra monta as
+// regex das cartas na 1ª vez que é usada, então a consulta única custa o
+// mesmo que antes (a regra 3 só é montada se a 1 e a 2 não acharam nada).
+export function preparaParecida(cards, slugs) {
+  if (!slugs) return () => null;
   const porId = [...(cards || [])].filter((c) => c && c.id != null && slugs.has(String(c.id)))
     .sort((a, b) => (String(a.id) < String(b.id) ? -1 : String(a.id) > String(b.id) ? 1 : 0));
   const nomesDoSet = new Set(porId.map(nomeDoEndereco).filter(Boolean));
@@ -153,26 +164,34 @@ export function cartaParecida(cards, slugs, pedido) {
       aceita: (c, m) => !m.groups.nome || m.groups.nome === nomeDoEndereco(c) || !nomesDoSet.has(m.groups.nome)
     }
   ];
-  let reserva = null;
-  for (const regra of tentativas) {
-    const achadas = [];
-    let empate = 0;
-    for (const c of porId) {
-      const re = regra.re(c);
-      const m = re && re.exec(p);
-      if (!m || (regra.aceita && !regra.aceita(c, m))) continue;
-      achadas.push(c);
-      if (m.groups && m.groups.emp) empate = Number(m.groups.emp);
+  // [carta, regex] de cada regra, montado na 1ª consulta que chega nela. A
+  // regex não tem flag g: o exec não guarda estado entre uma consulta e outra.
+  const montadas = tentativas.map(() => null);
+  const regexDa = (k) => montadas[k] || (montadas[k] = porId.map((c) => [c, tentativas[k].re(c)]));
+  return (pedido) => {
+    const p = String(pedido || "");
+    if (!p) return null;
+    let reserva = null;
+    for (let k = 0; k < tentativas.length; k++) {
+      const regra = tentativas[k];
+      const achadas = [];
+      let empate = 0;
+      for (const [c, re] of regexDa(k)) {
+        const m = re && re.exec(p);
+        if (!m || (regra.aceita && !regra.aceita(c, m))) continue;
+        achadas.push(c);
+        if (m.groups && m.groups.emp) empate = Number(m.groups.emp);
+      }
+      if (!achadas.length) continue;
+      if (empate < 2 || achadas[empate - 1]) {
+        const s = slugs.get(String(achadas[empate >= 2 ? empate - 1 : 0].id));
+        if (s && s !== p) return s;
+      } else if (!reserva) {
+        reserva = slugs.get(String(achadas[0].id)) || null;
+      }
     }
-    if (!achadas.length) continue;
-    if (empate < 2 || achadas[empate - 1]) {
-      const s = slugs.get(String(achadas[empate >= 2 ? empate - 1 : 0].id));
-      if (s && s !== p) return s;
-    } else if (!reserva) {
-      reserva = slugs.get(String(achadas[0].id)) || null;
-    }
-  }
-  return reserva && reserva !== p ? reserva : null;
+    return reserva && reserva !== p ? reserva : null;
+  };
 }
 
 // As cartas que formam a página de um set: as do chunk com aquele NOME de set,

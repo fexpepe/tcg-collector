@@ -7,8 +7,9 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { agrupaPorSet, paginasDoJogo, enderecosDasCartas } from "../scripts/lib/paginas-de-set.mjs";
-import { cartasQueMudaramDeSet, juntaNoRegistro, destinosDasMovidas } from "../scripts/lib/cartas-movidas.mjs";
+import { cartasQueMudaramDeSet, enderecosARegistrar, juntaNoRegistro, destinosDasMovidas } from "../scripts/lib/cartas-movidas.mjs";
 import { jogoDaUrl } from "../functions/_lib/jogos.js";
+import { cartaParecida } from "../functions/_lib/slug-carta.js";
 
 const ler = (f) => readFileSync(new URL(`../${f}`, import.meta.url), "utf8").replace(/\r\n/g, "\n");
 const DC1 = "Data Carddass — ナルティメットカードバトル 第１弾";
@@ -44,6 +45,44 @@ test("entra só a carta que foi pra OUTRO set que segue existindo", () => {
   // É caso do setRenomeado; registrar carta por carta incharia o mapa.
   const renomeado = BASE.map((c) => (c.set === DC2 ? { ...c, set: "Data Carddass — Card Battle Vol. 2" } : c));
   assert.deepEqual(cartasQueMudaramDeSet("naruto", BASE, renomeado), {});
+});
+
+// Dentro do set, o que a borda faz com o endereço antigo é o cartaParecida.
+// Ele erra quando dois números viram o mesmo pedaço de endereço: o kanji some,
+// e PR忍-17 e PR作-17 são os dois "pr-17" (Naruto Card Game, PR #234: a promo
+// sem nome ganhou o nome oficial e entrou a PR忍-17 que faltava).
+test("dentro do set: entra o endereço que o cartaParecida levaria pra OUTRA carta", () => {
+  const antes = [...BASE, dc("nrt-PRS-017", "Name unconfirmed", "PR作-17", DC1, "nrt-dc-s01")];
+  const depois = [
+    ...BASE,
+    dc("nrt-PRS-017", "A New Enemy", "PR作-17", DC1, "nrt-dc-s01"),
+    dc("nrt-PRN-017", "Naruto Uzumaki & Sasuke Uchiha", "PR忍-17", DC1, "nrt-dc-s01")
+  ];
+  const { movidas, erradas } = enderecosARegistrar("naruto", antes, depois);
+  assert.deepEqual(movidas, {});
+  // Sem o registro, a regra do número casa as duas e a ordem do id leva pra PR忍-17.
+  const pagina = paginasDoJogo("naruto", agrupaPorSet(depois)).find((p) => p.slug === "data-carddass-1");
+  const naBorda = cartaParecida(pagina.cards, pagina.slugsCartas, "name-unconfirmed-pr-17-jp");
+  assert.equal(naBorda, pagina.slugsCartas.get("nrt-PRN-017"));
+  assert.deepEqual(erradas, { "naruto-data-carddass/data-carddass-1/name-unconfirmed-pr-17-jp": "nrt-PRS-017" });
+});
+
+test("dentro do set: o que a borda já resolve certo e o endereço que é de outra carta ficam de fora", () => {
+  // Nome mudou, número igual: a regra do número acha a mesma carta.
+  assert.deepEqual(enderecosARegistrar("naruto", BASE, troca(BASE, "nrt-dc-dn-051", { name: "Kyubi Naruto" })).erradas, {});
+  // O DN-051 passou pra outra carta e o antigo virou DN-052: o endereço
+  // "nine-tails-naruto-dn-051-jp" agora é da carta nova, que vence.
+  const trocou = [
+    ...troca(BASE, "nrt-dc-dn-051", { number: "DN-052" }),
+    dc("nrt-dc-dn-051b", "Nine-Tails Naruto", "DN-051", DC1, "nrt-dc-s01")
+  ];
+  assert.deepEqual(enderecosARegistrar("naruto", BASE, trocou).erradas, {});
+});
+
+test("dentro do set: entra o endereço que viraria 404 (nome e número mudaram)", () => {
+  const depois = troca(BASE, "nrt-dc-dn-051", { name: "Kyubi", number: "DN-099" });
+  assert.deepEqual(enderecosARegistrar("naruto", BASE, depois).erradas,
+    { "naruto-data-carddass/data-carddass-1/nine-tails-naruto-dn-051-jp": "nrt-dc-dn-051" });
 });
 
 test("o registro junta em ordem, e o mesmo endereço fica com a carta mais recente", () => {

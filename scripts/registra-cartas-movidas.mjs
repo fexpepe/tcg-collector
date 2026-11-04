@@ -1,6 +1,8 @@
 // Registra as cartas que mudaram de SET (mesmo id, outra página) entre o
 // catálogo publicado e o recém-gerado, pro endereço antigo levar 301 pro de
-// hoje. O porquê e o formato estão em scripts/lib/cartas-movidas.mjs.
+// hoje — e, desde 2026-11-04, as que mudaram de endereço DENTRO do set quando
+// o cartaParecida da borda levaria o antigo pra outra carta. O porquê e o
+// formato estão em scripts/lib/cartas-movidas.mjs (enderecosARegistrar).
 //
 //   node scripts/registra-cartas-movidas.mjs                # disco × HEAD
 //   node scripts/registra-cartas-movidas.mjs --antes origin/main   # disco × outra ref
@@ -17,7 +19,7 @@ import { readFileSync, writeFileSync, existsSync, readdirSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { JOGOS_URL } from "../functions/_lib/jogos.js";
-import { cartasQueMudaramDeSet, juntaNoRegistro } from "./lib/cartas-movidas.mjs";
+import { enderecosARegistrar, juntaNoRegistro } from "./lib/cartas-movidas.mjs";
 
 const ROOT = fileURLToPath(new URL("../", import.meta.url));
 const REGISTRO = "data/cartas-movidas.json";
@@ -91,17 +93,24 @@ let novas = {};
 for (const game of jogos) {
   const { antes, depois } = catalogos(game, alvos);
   if (!antes.length || !depois.length) continue;
-  const movidas = cartasQueMudaramDeSet(game, antes, depois);
+  const { movidas, erradas } = enderecosARegistrar(game, antes, depois);
   const n = Object.keys(movidas).length;
   if (n) {
     const exemplo = Object.keys(movidas)[0];
     console.log(`registra-cartas-movidas: ${game} — ${n} carta(s) mudaram de set (ex.: /games/${exemplo})`);
   }
-  novas = { ...novas, ...movidas };
+  // Mudou dentro do set e o cartaParecida da borda levaria pra outra carta
+  // (ou pra nenhuma): ver enderecosARegistrar.
+  const e = Object.keys(erradas).length;
+  if (e) {
+    const exemplo = Object.keys(erradas)[0];
+    console.log(`registra-cartas-movidas: ${game} — ${e} endereço(s) que o cartaParecida levaria pra carta errada (ex.: /games/${exemplo})`);
+  }
+  novas = { ...novas, ...movidas, ...erradas };
 }
 
 if (!Object.keys(novas).length) {
-  console.log(`registra-cartas-movidas: nenhuma carta mudou de set (${jogos.length} jogo(s) com catálogo mudado × ${REF}).`);
+  console.log(`registra-cartas-movidas: nada a registrar (${jogos.length} jogo(s) com catálogo mudado × ${REF}).`);
   process.exit(0);
 }
 let registro = {};
