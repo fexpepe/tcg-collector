@@ -1843,7 +1843,9 @@
   // Carddass. O título sai do setId: Formation é nrt-nf-*, Cross é nrt-nx-*, e
   // Card Battle e Mission dividem o nrt-dc- (mesma fonte). A checklist desses
   // dois é fechada e a Mission começa no set 11 (PAGES em
-  // scripts/lib/naruto-datacarddass.mjs). Sem as seções, a ordem por data jogava
+  // scripts/lib/naruto-datacarddass.mjs); depois do 特別任務の章 (s15) vêm os
+  // sets fora da checklist, e o único do Card Battle é o s17, das promos DNP/NA
+  // (PROMO_CARD_BATTLE, 04/11/2026). O s16 e o s18 são da Mission. Sem as seções, a ordem por data jogava
   // Formation e Cross (com data) na frente de Card Battle e Mission, que até
   // 02/11/2026 não tinham data (hoje têm a do cardcheckbox, no PAGES).
   // O nome em inglês leva o título ("Narutimate Card Battle — Vol. 1", pra
@@ -1853,7 +1855,7 @@
   function groupNarutoDataCarddass(setItems) {
     const idOf = (set) => String(set.setId || "").trim().toLowerCase();
     const TITLES = [
-      ["sets.category.dcnrCardBattle", (id) => /^nrt-dc-s(0[1-9]|10)$/.test(id), "Narutimate Card Battle — "],
+      ["sets.category.dcnrCardBattle", (id) => /^nrt-dc-s(0[1-9]|10|17)$/.test(id), "Narutimate Card Battle — "],
       ["sets.category.dcnrMission", (id) => id.startsWith("nrt-dc-"), "Narutimate Mission — "],
       ["sets.category.dcnrFormation", (id) => id.startsWith("nrt-nf-"), "Narutimate Formation — "],
       ["sets.category.dcnrCross", (id) => id.startsWith("nrt-nx-"), "Narutimate Cross — "]
