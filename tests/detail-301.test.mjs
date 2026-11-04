@@ -143,7 +143,7 @@ test("pedidoDeSet só aceita os parâmetros do link de set", () => {
 test("urlsDoJogo põe a linha do setId na frente e as outras da marca depois", () => {
   const naruto = urlsDoJogo("naruto", "nrt-dc-s01");
   assert.equal(naruto[0], "naruto-data-carddass");
-  assert.deepEqual([...naruto].sort(), ["naruto-card-game", "naruto-card-game-2002", "naruto-ccg", "naruto-data-carddass"]);
+  assert.deepEqual([...naruto].sort(), ["naruto-card-game", "naruto-card-game-2002", "naruto-ccg", "naruto-data-carddass", "naruto-shippuden-card-game"]);
   assert.deepEqual(urlsDoJogo("pokemon", "sv03.5"), ["pokemon"]);
   assert.deepEqual(urlsDoJogo("nao-existe", ""), []);
 });

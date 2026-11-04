@@ -681,11 +681,25 @@ jobs:
         if: env.RODA_SYNC == 'true'
         run: node scripts/sync-naruto-ccg.mjs || echo "sync-naruto-ccg falhou; segue com o snapshot versionado"
 
+      # NARUTO 疾風伝 カードゲーム (Bandai 2007–2008): listas oficiais do site
+      # da Bandai, guardadas no Wayback Machine. Só do snapshot versionado
+      # (--no-fetch): o jogo acabou em 2008 e a lista não muda, e o Wayback
+      # fora do ar faria cada página esperar os timeouts. Anexa a linha
+      # nrt-scg- (antes da tradução de nomes, que cobre ela também).
+      # Roda nos DOIS modos, como o dbz: sem rede leva ~1 s, e no build rápido
+      # o data/naruto/sets/ viria do cache do último build completo — a linha
+      # nova (ou uma correção no snapshot) só apareceria no cron seguinte, com
+      # o tile do hub já no ar. O cards.js que ele lê é o versionado, que o
+      # build completo regrava no "Versiona snapshot do catálogo".
+      - name: Anexa NARUTO 疾風伝 Card Game
+        run: node scripts/sync-naruto-shippuden.mjs --no-fetch || echo "sync-naruto-shippuden falhou; segue com o snapshot versionado"
+
       # Nomes das cartas de Naruto: japonês -> inglês. DEPOIS dos syncs
       # que alimentam esse catálogo (o mapa fica num lugar só em vez de repetido
-      # nos quatro). Idempotente e sem rede — ver o cabeçalho do script.
+      # nos quatro). Idempotente e sem rede — ver o cabeçalho do script. Nos
+      # dois modos desde 2026-11-04: o passo de cima regrava a linha nrt-scg
+      # com os nomes em japonês também no build rápido.
       - name: Traduz nomes das cartas de Naruto
-        if: env.RODA_SYNC == 'true'
         run: node scripts/translate-naruto-names.mjs || echo "translate-naruto-names falhou; catalogo segue com os nomes originais"
 
       # Só a linha nova do Naruto tem preço (TCGCSV); as vintage não têm. Fica
