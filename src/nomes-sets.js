@@ -153,6 +153,24 @@
     "nrt-nx-s23": "Narutimate Cross — Ch. 5: 10th Anniversary SP",
     "nrt-nx-s24": "Narutimate Cross — Ch. 6",
     "nrt-nx-s25": "Narutimate Cross — Ch. 7",
+    // ---- Naruto · 疾風伝 カードゲーム (2007–2008, sync-naruto-shippuden.mjs).
+    // Tradução nossa, no padrão do Card Game de 2002 ("幕" = ato). A promo leva
+    // "Shippuden" porque "Promotional Cards" já é a do jogo de 2002, e na
+    // Coleção os dois apareceriam iguais.
+    "nrt-scg-s01": "Act 1 — The Threat Closing In on the Sand",
+    "nrt-scg-st1": "Act 1 Starter Box",
+    "nrt-scg-s02": "Act 2 — Chase the Akatsuki! Rescue Gaara",
+    "nrt-scg-coin": "Coin Plus",
+    "nrt-scg-s03": "Act 3 — Fierce Ambition! Puppet Dance",
+    "nrt-scg-st3": "Act 3 Starter Box",
+    "nrt-scg-gaku": "Ninja Academy Rules",
+    "nrt-scg-s04": "Act 4 — Showdown at Heaven-Earth Bridge! The Man from Root",
+    "nrt-scg-s05": "Act 5 — Reunion, the Cursed Sharingan!",
+    "nrt-scg-s06": "Act 6 — Bonds with a Friend! Feelings That Can't Be Severed",
+    "nrt-scg-s07": "Act 7 — Bonds of the Crimson Gale",
+    "nrt-scg-st7": "Act 7 Starter Set",
+    "nrt-scg-s08": "Act 8 — New Jutsu Unleashed! Power Beyond Legend",
+    "nrt-scg-promo": "Shippuden Promotional Cards",
     // ---- Hunter × Hunter · Carddass Hyper Battle
     "hxh-hb-p1": "Part 1 — Hunter Exam",
     "hxh-hb-p2": "Part 2 — Finished! × Passed? × Hunter Exam",

@@ -36,9 +36,20 @@ test("jogo principal do Naruto exclui TODOS os prefixos das linhas", () => {
   for (const setId of ["nrt-s01", "nrt-s17", "nrt-promo", "nrt-extra"]) {
     assert.ok(principal.includes(setId), `${setId} é do Card Game 2002~2006`);
   }
-  for (const setId of ["nrt-dc-s01", "nrt-nf-s01", "nrt-nx-s14", "nrt-ccg-s01", "nrt-ncg-promo"]) {
+  for (const setId of ["nrt-dc-s01", "nrt-nf-s01", "nrt-nx-s14", "nrt-ccg-s01", "nrt-ncg-promo", "nrt-scg-s01", "nrt-scg-promo"]) {
     assert.ok(!principal.includes(setId), `${setId} tem página própria (?line=)`);
   }
+});
+
+// O 疾風伝 カードゲーム (2007–2008, 2026-11-04) é outro jogo, não um volume a
+// mais do de 2002: o setId nrt-scg-s01 começa com "nrt-s" como os volumes de
+// 2002 (nrt-s01), e o escopo não pode confundir os dois.
+test("linha nrt-scg: só o 疾風伝 Card Game, e os volumes de 2002 ficam fora", () => {
+  const scg = lineScope("naruto", "nrt-scg");
+  assert.equal(scg.line, "nrt-scg");
+  for (const setId of ["nrt-scg-s01", "nrt-scg-st1", "nrt-scg-gaku", "nrt-scg-promo"]) assert.ok(scg.includes(setId), setId);
+  for (const setId of ["nrt-s01", "nrt-promo", "nrt-ccg-s01", "nrt-dc-s11"]) assert.ok(!scg.includes(setId), setId);
+  assert.equal(sharedCom("?game=naruto&line=nrt-scg").lineParamOf(), "nrt-scg");
 });
 
 test("?line= antigo do Formation e do Cross abre a linha Data Carddass", () => {

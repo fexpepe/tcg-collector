@@ -368,8 +368,9 @@ async function run() {
   // aparecia porque eles rodam depois e se re-anexam). O nrt-ncg- roda ANTES
   // deste no CI e não se re-anexa — sem ele aqui, o deploy apagava a linha.
   // O Miracle Battle (nrt-mb-*) saiu daqui em 2026-10-01: virou o jogo mbc, e
-  // carta nrt-mb- que sobrar no catálogo do Naruto é resto a limpar.
-  const OTHER_LINES = /^nrt-(dc|nf|nx|ncg|ccg)-/;
+  // carta nrt-mb- que sobrar no catálogo do Naruto é resto a limpar. O
+  // 疾風伝 カードゲーム (nrt-scg-, 2007–2008) entrou em 2026-11-04.
+  const OTHER_LINES = /^nrt-(dc|nf|nx|ncg|ccg|scg)-/;
   const kept = existing.filter((c) => c && (!String(c.id).startsWith("nrt-") || OTHER_LINES.test(String(c.id))));
   const have = new Set(kept.map((c) => c.id));
   const merged = kept.concat(cardsNrt.filter((c) => !have.has(c.id)));

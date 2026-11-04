@@ -229,9 +229,15 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
 - **Naruto moderno (2027)**: `sync-naruto.mjs` está dormente esperando a
   categoria no TCGCSV. Quando ela existir, decidir o dedupe com a promo curada
   (`nrt-ncg-cp-001`) — ids são pegajosos por design.
-- **Vintage ainda não importado**: Naruto CCG (Bandai USA, 2006–2013, 28 sets) e
-  o `nrts` do tcg-db (NARUTO 疾風伝 カードゲーム). HxH Hyper Battle/Masters
-  seguem sem fonte com nome + imagem.
+- **Vintage ainda não importado**: HxH Hyper Battle/Masters seguem sem fonte
+  com nome + imagem. As promos DMP da Ultimate Mission (DMP-000 a DMP-018, lista
+  oficial no Wayback em `carddas.com/naruto/mission/cardlist/promocard.shtml`)
+  faltam na linha `nrt-dc`.
+- **NARUTO 疾風伝 カードゲーム (`nrt-scg`, 2026-11-04)**: entrou com as 573
+  cartas e só 13 imagens (as do tcg-db). Falta fonte de imagem que aceite
+  acesso automatizado (o Suruga-ya barra) e o logo recortado: o oficial está
+  no Wayback em `carddas.com/naruto/cardgame/image/top/naruto_logo.jpg`, com
+  200×140 e fundo azul.
 - **Dragon Ball Carddass (`dbc`)**: entrou só o Hondan 第1弾–第18弾, sem imagem.
   Faltam (1) o Hondan 第19弾–第31弾, que o sync pega sozinho quando o 80storage
   publicar; (2) Super Battle, Visual Adventure e Super Barcode Wars, sem fonte
