@@ -69,7 +69,8 @@
     ["dragon-ball-z-ccg", "dbz"],
     ["one-piece-card-game-2002", "onepiece", "op2002", "op2002-"],
     ["naruto-card-game-2002", "naruto"], ["naruto-data-carddass", "naruto", "nrt-dc", "nrt-dc-,nrt-nf-,nrt-nx-"],
-    ["naruto-ccg", "naruto", "nrt-ccg", "nrt-ccg-"], ["world-of-warcraft-tcg", "wow"], ["miracle-battle-carddass", "mbc"],
+    ["naruto-ccg", "naruto", "nrt-ccg", "nrt-ccg-"], ["world-of-warcraft-tcg", "wow"],
+    ["naruto-shippuden-card-game", "naruto", "nrt-scg", "nrt-scg-"], ["miracle-battle-carddass", "mbc"],
     ["carddass-masters", "cdm"]
   ];
   // Linha que virou seção de outra (o LINE_ALIASES do shared.js).

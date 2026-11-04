@@ -737,6 +737,19 @@ jobs:
         if: env.RODA_SYNC == 'true'
         run: node scripts/sync-naruto-ccg.mjs || echo "sync-naruto-ccg falhou; segue com o snapshot versionado"
 
+      # NARUTO 疾風伝 カードゲーム (Bandai 2007–2008): listas oficiais do site
+      # da Bandai, guardadas no Wayback Machine. Só do snapshot versionado
+      # (--no-fetch): o jogo acabou em 2008 e a lista não muda, e o Wayback
+      # fora do ar faria cada página esperar os timeouts. Anexa a linha
+      # nrt-scg- (antes da tradução de nomes, que cobre ela também).
+      # Roda nos DOIS modos, como o dbz: sem rede leva ~1 s, e no build rápido
+      # o data/naruto/sets/ viria do cache do último build completo — a linha
+      # nova (ou uma correção no snapshot) só apareceria no cron seguinte, com
+      # o tile do hub já no ar. O cards.js que ele lê é o versionado, que o
+      # build completo regrava no "Versiona snapshot do catálogo".
+      - name: Anexa NARUTO 疾風伝 Card Game
+        run: node scripts/sync-naruto-shippuden.mjs --no-fetch || echo "sync-naruto-shippuden falhou; segue com o snapshot versionado"
+
       # Nomes das cartas de Naruto: japonês -> inglês. DEPOIS dos syncs
       # que alimentam esse catálogo (o mapa fica num lugar só em vez de repetido
       # nos quatro). Idempotente e sem rede — ver o cabeçalho do script.
@@ -746,8 +759,8 @@ jobs:
       # do cache do último build completo — a carta que uma PR põe no cards.js
       # (as 423 da lista oficial da Bandai, 2026-11-04) só apareceria na tela
       # do set depois do cron, igual ao dbc e ao dbz antes do passo deles.
-      # O Data Carddass do build rápido (acima) também regrava a linha com os
-      # nomes em japonês, e este passo devolve os em inglês.
+      # O Data Carddass e o 疾風伝 do build rápido (acima) também regravam as
+      # linhas deles com os nomes em japonês, e este passo devolve os em inglês.
       - name: Traduz nomes das cartas de Naruto
         run: node scripts/translate-naruto-names.mjs || echo "translate-naruto-names falhou; catalogo segue com os nomes originais"
 
