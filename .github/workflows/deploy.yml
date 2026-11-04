@@ -668,6 +668,15 @@ jobs:
         if: env.RODA_SYNC == 'true'
         run: node scripts/sync-naruto-datacarddass.mjs || echo "sync-naruto-datacarddass falhou; segue com o snapshot versionado"
 
+      # O mesmo no build RAPIDO (push), sem rede, como o do dbc: sem ele o
+      # data/naruto/sets/ vem do cache do ultimo build completo, e uma correcao
+      # nos snapshots (as promos da Mission, 2026-11-04) so apareceria no cron.
+      # Monta do snapshot do noihjp + do das promos sobre o cards.js
+      # versionado; os nomes em ingles voltam no passo da traducao, abaixo.
+      - name: Anexa Data Carddass NARUTO (build rapido, sem rede)
+        if: env.RODA_SYNC != 'true'
+        run: node scripts/sync-naruto-datacarddass.mjs --no-fetch || echo "sync-naruto-datacarddass --no-fetch falhou; segue com o catalogo do cache"
+
       # Data Carddass NARUTO — Formation (2007-08) e Cross (2009-10): snapshot
       # versionado do catalogo do Suruga-ya (re-coleta manual; anti-bot barra
       # fetch em CI). Anexa as duas linhas ao catalogo do Naruto.
@@ -683,9 +692,10 @@ jobs:
 
       # Nomes das cartas de Naruto: japonês -> inglês. DEPOIS dos syncs
       # que alimentam esse catálogo (o mapa fica num lugar só em vez de repetido
-      # nos quatro). Idempotente e sem rede — ver o cabeçalho do script.
+      # nos quatro). Idempotente e sem rede — ver o cabeçalho do script. Nos
+      # dois modos desde 2026-11-04: o Data Carddass do build rápido (acima)
+      # regrava a linha com os nomes em japonês.
       - name: Traduz nomes das cartas de Naruto
-        if: env.RODA_SYNC == 'true'
         run: node scripts/translate-naruto-names.mjs || echo "translate-naruto-names falhou; catalogo segue com os nomes originais"
 
       # Só a linha nova do Naruto tem preço (TCGCSV); as vintage não têm. Fica

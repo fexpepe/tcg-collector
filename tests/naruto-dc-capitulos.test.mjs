@@ -9,7 +9,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import {
-  CAPITULOS, SETIDS_APOSENTADOS, capituloDaCarta, chaveDoSet, dataDoSet, atribuiSetIds, nomeDoSet
+  CAPITULOS, SETIDS_APOSENTADOS, NAO_E_FORMATION, capituloDaCarta, chaveDoSet, dataDoSet, atribuiSetIds, nomeDoSet
 } from "../scripts/lib/naruto-dc-capitulos.mjs";
 import { readGlobalVar } from "../scripts/lib/sync-common.mjs";
 
@@ -123,4 +123,19 @@ test("catálogo versionado: um set por capítulo, na data e com as cartas da fai
   for (const [chave, ids] of setsDoCap) assert.equal(ids.size, 1, `${chave} partido em ${[...ids].join(", ")}`);
   const vivos = new Set(dc.map((c) => c.setId));
   for (const id of Object.keys(SETIDS_APOSENTADOS)) assert.ok(!vivos.has(id), `${id} aposentado voltou`);
+});
+
+// A CAN-001 (04/11/2026): o Suruga-ya anuncia como "ナルティメットフォーメーション
+// キャンペーンカード", mas é a troca da campanha de estreia da Mission, na lista
+// oficial de promos dela. O sync daqui pula o número; quem monta é o do Data
+// Carddass (nrt-dc-can-001, set nrt-dc-s16).
+test("CAN-001 é da Mission: a Formation pula, e o set de uma carta só fica aposentado", async () => {
+  assert.ok(NAO_E_FORMATION.has("CAN-001"));
+  // O caso continua no snapshot da loja — é ele que a regra pula.
+  const snap = JSON.parse(readFileSync(new URL("../data/vintage/naruto-dc-suruga.json", import.meta.url), "utf8"));
+  assert.ok((snap.formation || []).some((it) => /^CAN-001\b/.test(String(it.t).normalize("NFKC"))));
+  assert.equal(SETIDS_APOSENTADOS["nrt-nf-s02"], "nrt-dc-s16");
+  const cards = await readGlobalVar(new URL("../data/naruto/cards.js", import.meta.url), "TCG_CARDS");
+  const nfnx = cards.filter((c) => /^nrt-(nf|nx)-/.test(c.id));
+  for (const num of NAO_E_FORMATION) assert.ok(!nfnx.some((c) => c.number === num), `${num} voltou pra Formation/Cross`);
 });

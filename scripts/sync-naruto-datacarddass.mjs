@@ -13,13 +13,20 @@
 // de data/vintage/naruto-datacarddass.json; o fetch só atualiza quando
 // responde e não regride. ANEXA ao catálogo do Naruto (ids nrt-dc-*).
 //
+// As promos da Mission (DMP-xxx e a CAN-001, set nrt-dc-s16) vêm de OUTRA
+// fonte: a lista oficial da Bandai no Wayback, snapshot em
+// data/vintage/naruto-dc-promos.json (ver PROMO_MISSION na lib). A captura é
+// fixa e a série acabou em 2008, então o build só lê o snapshot; --promos
+// relê a página (à mão, quando for preciso conferir).
+//
 //   node scripts/sync-naruto-datacarddass.mjs             # fetch + build
 //   node scripts/sync-naruto-datacarddass.mjs --no-fetch  # só build
+//   node scripts/sync-naruto-datacarddass.mjs --promos    # relê as promos no Wayback
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { readGlobalVar, readSnapshot, writeSnapshot, snapshotCardCount, writeGameCatalog, sleep } from "./lib/sync-common.mjs";
-import { PAGES, estreias, estreiasForaDaFaixa, dataDoSet } from "./lib/naruto-datacarddass.mjs";
+import { PAGES, estreias, estreiasForaDaFaixa, dataDoSet, PROMO_MISSION, parsePromoMission } from "./lib/naruto-datacarddass.mjs";
 import { aplicaRaridade } from "./naruto-raridade-hinokunian.mjs";
 const SNAP_RARIDADE = new URL("../data/vintage/naruto-raridade.json", import.meta.url);
 
@@ -41,6 +48,8 @@ const CACHE_DIR = new URL("data/.cache/", ROOT);
 const BASE = "http://naruto.noihjp.com/Goods/DataCarddas/";
 const UA = { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Sleevu/1.0 (+sleevu.app)" };
 const NO_FETCH = process.argv.includes("--no-fetch");
+const SNAP_PROMOS = new URL("data/vintage/naruto-dc-promos.json", ROOT);
+const RELE_PROMOS = process.argv.includes("--promos");
 
 // Logo do Card Battle (NARUTO ナルティメットカードバトル), recortado da capa do
 // guia oficial (2026-09-30, ver assets/games/README.md). É a marca SÓ do
@@ -118,11 +127,29 @@ async function refreshSnapshot(existing) {
   return (await readSnapshot(SNAP)) || candidate;
 }
 
+// Relê a lista oficial de promos da Mission no Wayback (só com --promos). Não
+// regride: lista menor que a do snapshot fica de fora, com aviso.
+async function refreshPromos() {
+  const existente = JSON.parse(await readFile(SNAP_PROMOS, "utf8").catch(() => "null"));
+  const html = await fetchSjis(`http://web.archive.org/web/${PROMO_MISSION.captura}id_/${PROMO_MISSION.url}`);
+  const cards = html ? parsePromoMission(html) : [];
+  const antes = (existente && existente.cards || []).length;
+  if (!cards.length || cards.length < antes) {
+    console.log(`  promos: Wayback ${html ? `deu ${cards.length} cartas (snapshot: ${antes})` : "inacessível"} — snapshot mantido.`);
+    return existente;
+  }
+  const novo = { source: PROMO_MISSION.url, captura: PROMO_MISSION.captura, updatedAt: new Date().toISOString().slice(0, 10), cards };
+  await writeFile(SNAP_PROMOS, JSON.stringify(novo, null, 1) + "\n", "utf8");
+  console.log(`  promos: ${cards.length} cartas gravadas em ${fileURLToPath(SNAP_PROMOS)}.`);
+  return novo;
+}
+
 async function run() {
   console.log("Data Carddass NARUTO (Bandai 2005–2008, arcade vintage)");
   let snap = await readSnapshot(SNAP);
   if (!NO_FETCH) snap = await refreshSnapshot(snap);
   if (!snap || !snapshotCardCount(snap)) { console.log("  snapshot vazio — nada a construir."); return; }
+  const promos = RELE_PROMOS ? await refreshPromos() : JSON.parse(await readFile(SNAP_PROMOS, "utf8").catch(() => "null"));
 
   // A carta pertence ao set em que ESTREOU (numeração global, relistagem não
   // vira carta nova) — a regra mora no estreias() da lib.
@@ -158,7 +185,32 @@ async function run() {
   // (DN-001–107) tem página lá; o resto do DN e a Mission ficam sem.
   const rar = aplicaRaridade(line, await readSnapshot(SNAP_RARIDADE), { nomeDe: (c) => c.name });
   console.log(`  raridade: ${rar.aplicadas} cartas (hinokunian); ${rar.nomeDiferente} com nome diferente ficaram sem.`);
-  console.log(`  build: ${line.length} cartas em ${snap.sets.length} sets.`);
+
+  // Promos da Mission, na ordem da lista oficial. Raridade "P", como as
+  // promos da Formation e do Cross ("プロモ" do Suruga-ya vira a sigla).
+  const cartasPromo = (promos && promos.cards) || [];
+  for (const c of cartasPromo) {
+    const cardId = `nrt-dc-${c.code.toLowerCase()}`;
+    line.push({
+      id: cardId,
+      name: c.name,
+      set: PROMO_MISSION.name,
+      setId: `nrt-dc-s${PROMO_MISSION.seq}`,
+      number: c.code,
+      setTotal: cartasPromo.length,
+      setReleaseDate: dataDoSet(PROMO_MISSION.seq),
+      rarity: "P",
+      artist: "",
+      language: "ja",
+      image: curatedImg(cardId),
+      variants: ["Normal"],
+      setLogo: "",
+      vintage: true,
+      vintageLine: "dc"
+    });
+  }
+  console.log(`  promos da Mission: ${cartasPromo.length} cartas (lista oficial no Wayback).`);
+  console.log(`  build: ${line.length} cartas em ${snap.sets.length + (cartasPromo.length ? 1 : 0)} sets.`);
 
   const existing = (await readGlobalVar(new URL("cards.js", OUT), "TCG_CARDS")) || [];
   const kept = existing.filter((c) => c && !String(c.id).startsWith("nrt-dc-"));

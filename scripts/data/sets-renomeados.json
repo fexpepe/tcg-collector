@@ -173,7 +173,7 @@
       "data-carddass-7": "nrt-dc-s09",
       "data-carddass-7-2": "nrt-nf-s08",
       "data-carddass-7-3": "nrt-nx-s25",
-      "data-carddass-8": "nrt-nf-s02",
+      "data-carddass-8": "nrt-dc-s16",
       "data-carddass-8-sp": "nrt-dc-s10",
       "data-carddass-9": "nrt-nf-s03",
       "data-carddass-10": "nrt-nf-s04",
@@ -183,7 +183,8 @@
       "data-carddass-14": "nrt-nx-s19",
       "data-carddass-15": "nrt-nf-s26",
       "data-carddass-v-2008": "nrt-nf-s12",
-      "data-carddass-v-2009": "nrt-nx-s22"
+      "data-carddass-v-2009": "nrt-nx-s22",
+      "nrt-nf-s02": "nrt-dc-s16"
     },
     "one-piece-card-game": {
       "one-piece-demo-deck-cards": "OP-DD",
