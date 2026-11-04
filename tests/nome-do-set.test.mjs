@@ -40,7 +40,9 @@ const NOMES_DO_JOGO = {
   // カードダス"; a série abre o nome sem ela ("本弾 第1弾", "外伝 第1弾「…」").
   // "機動武闘伝Gガンダム" é o título do anime, e não começa com a marca.
   gundam: { nomes: ["Gundam", "GUNDAM", "SD Gundam", "SDガンダム", "ガンダム", "Carddass", "カードダス"], sets: /^gcd-/ },
-  naruto: { nomes: ["Naruto", "NARUTO", "ナルト", "Data Carddass", "データカードダス"] },
+  // "疾風伝"/"Shippuden": a linha nrt-scg (2007–2008). Só a promo leva
+  // "（疾風伝）", no fim, pra não ter o mesmo nome do set de 2002.
+  naruto: { nomes: ["Naruto", "NARUTO", "ナルト", "Data Carddass", "データカードダス", "疾風伝", "Shippuden"] },
   onepiece: { nomes: ["One Piece", "ONE PIECE", "ワンピース", "Carddass", "カードダス", "OP 2002", "OP2002"], sets: /^(opcd|op2002)-/ },
   mbc: { nomes: ["Miracle Battle", "ミラクルバトル"] },
   // Carddass Masters: a IP abre o nome do set ("HUNTER×HUNTER パート1 …"), o
