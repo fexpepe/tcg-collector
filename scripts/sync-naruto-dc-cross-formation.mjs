@@ -20,7 +20,7 @@ import { readFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { readGlobalVar, writeGameCatalog } from "./lib/sync-common.mjs";
-import { capituloDaCarta, chaveDoSet, nomeDoSet, dataDoSet, atribuiSetIds } from "./lib/naruto-dc-capitulos.mjs";
+import { capituloDaCarta, chaveDoSet, nomeDoSet, dataDoSet, atribuiSetIds, NAO_E_FORMATION } from "./lib/naruto-dc-capitulos.mjs";
 
 const ROOT = new URL("../", import.meta.url);
 const OUT = new URL("data/naruto/", ROOT);
@@ -88,6 +88,9 @@ async function run() {
   for (const it of items) {
     const p = parseTitle(it.t);
     if (!p || byNum.has(p.num)) continue;
+    // Carta de outro título que a loja pôs numa série daqui (a CAN-001 é da
+    // Mission): quem monta é o sync do título dela.
+    if (NAO_E_FORMATION.has(p.num)) continue;
     byNum.set(p.num, { ...p, serie: normalize(it.s), date: (it.d || "").replace(/\//g, "-") });
   }
 

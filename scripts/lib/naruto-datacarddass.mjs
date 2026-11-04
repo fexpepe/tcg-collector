@@ -66,9 +66,11 @@ export const PAGES = [
   { seq: 15, page: "Shippuden/NarutimateMission/Tokunin.php", name: "究極任務 ナルティメットミッション 特別任務の章", estreia: ["NM-188", "NM-237"], data: "2007-10-11" }  // 2007年10月11日
 ];
 
-// Data de estreia do set (AAAA-MM-DD) pelo seq da página; "" = página fora da
-// lista (não acontece hoje — a lista é fixa).
+// Data de estreia do set (AAAA-MM-DD) pelo seq da página — ou a das promos da
+// Mission (só o mês, ver PROMO_MISSION); "" = seq fora das duas (não acontece
+// hoje — a lista é fixa).
 export function dataDoSet(seq) {
+  if (seq === PROMO_MISSION.seq) return PROMO_MISSION.data;
   const pagina = PAGES.find((p) => p.seq === seq);
   return pagina ? pagina.data : "";
 }
@@ -92,6 +94,72 @@ const partes = (code) => {
   const m = /^([A-Z]+)-(\d+)$/.exec(String(code || ""));
   return m ? [m[1], Number(m[2])] : [null, NaN];
 };
+
+// ── Promos da Mission (04/11/2026) ───────────────────────────────────────────
+// As cartas DMP (e a CAN-001 da campanha de estreia) não estão no noihjp: saem
+// da lista OFICIAL da Bandai, a promocard.shtml do site da Mission, que saiu do
+// ar e ficou no Wayback Machine (captura fixa abaixo, Shift-JIS). Foi o PSA do
+// Fernando ("2006 DCD NARUTO SHIPPUDEN #000 ... PR-TNMT PARTICIPATION") que
+// mostrou o buraco: é a DMP-000, prêmio de participação em torneio.
+//
+// Set à parte, como o Formation e o Cross já têm o deles. O nome é o título da
+// série + "プロモーションカード", sem "Data Carddass" na frente (contrato 7): o
+// nome é a chave do set no catálogo do Naruto e "プロモーションカード" sozinho
+// já é o do Card Game de 2002. `seq` 16 = nrt-dc-s16, depois do 特別任務の章.
+//
+// `data`: a promo mais antiga da lista é a DMP-000, da ジャンプフェスタ2007 —
+// que, como toda Jump Festa, foi em dezembro do ano anterior (a de 2008 foi em
+// 22–23/12/2007). Fica só o mês, porque o dia não foi conferido em fonte.
+//
+// A DMP-000J e a DMP-000S viram cartas PRÓPRIAS, não variante da DMP-000: cada
+// uma tem o código impresso dela e uma página dela no site oficial (mesmos
+// números de ataque, defesa e vida), e quem tem a J precisa marcar a J. O
+// "variants" do catálogo é acabamento (Normal/Foil), não carta com outro número.
+//
+// A CAN-001 já estava no catálogo, como `nrt-nf-can-001` num set de uma carta
+// só ("ナルティメットフォーメーション キャンペーンカード", nrt-nf-s02): o
+// Suruga-ya a anuncia como Formation. Mas é da Mission — a imagem curada dela
+// tem o 奥義 ナルト忍法帖 5700, o 全封じ e o 無限ジャンケン da lista oficial, e a
+// data do anúncio (2007/02/01) é anterior à Formation (dez/2007). O id novo é
+// nrt-dc-can-001 e o de-para mora no data/card-id-merges.json (o app migra a
+// conta de quem marcou); o sync da Formation pula o número (NAO_E_FORMATION em
+// naruto-dc-capitulos.mjs).
+export const PROMO_MISSION = {
+  seq: 16,
+  name: "究極任務 ナルティメットミッション プロモーションカード",
+  data: "2006-12",
+  url: "http://www.carddas.com/naruto/mission/cardlist/promocard.shtml",
+  captura: "20110707175237"
+};
+
+const decodifica = (s) => String(s || "")
+  .replace(/<br\s*\/?>/gi, "")
+  .replace(/<[^>]+>/g, "")
+  .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n)))
+  .replace(/&nbsp;/g, " ")
+  .replace(/&amp;/g, "&")
+  .replace(/\s+/g, " ")
+  .trim();
+
+// Lista da promocard.shtml: cada carta abre com a célula do código (fundo azul,
+// class s_font_wb) e traz, até a próxima, o nome (o primeiro link), o nível e o
+// nome da missão (a célula colspan="2") e o "入手方法" (a primeira s_font, vazia
+// nas variantes J e S). O verso (a carta da "Ｗ", com o próprio nome) fica de
+// fora: é a mesma carta física.
+export function parsePromoMission(html) {
+  const partes = String(html || "").split(/<td[^>]*class="s_font_wb"[^>]*>/i).slice(1);
+  const cartas = [];
+  for (const parte of partes) {
+    const code = (/^\s*([A-Z]{2,4}-\d{3}[A-Z]?)\s*<\/td>/.exec(parte) || [])[1];
+    if (!code) continue;
+    const name = decodifica((/<a\b[^>]*>([\s\S]*?)<\/a>/i.exec(parte) || [])[1]);
+    const nivel = decodifica((/>\s*(Lv\d)\s*</.exec(parte) || [])[1]);
+    const missao = decodifica((/<td[^>]*colspan="2"[^>]*>([\s\S]*?)<\/td>/i.exec(parte) || [])[1]);
+    const origem = decodifica((/<td[^>]*class="s_font"[^>]*>([\s\S]*?)<\/td>/i.exec(parte) || [])[1]);
+    if (name) cartas.push({ code, name, missao: [nivel, missao].filter(Boolean).join(" "), origem });
+  }
+  return cartas;
+}
 
 // Estreias fora da faixa oficial da página ([] = tudo certo). É o que pega
 // título trocado na fonte: com a 01.php como 第1弾, ele estreava DN-051–065.

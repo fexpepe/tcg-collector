@@ -76,8 +76,22 @@ export const DATAS_DE_SERIE = {
 export const SETIDS_APOSENTADOS = {
   "nrt-nf-s09": "nrt-nf-s06", // 第2章 再会！共鳴する宿命の二人編 -> 第2章
   "nrt-nf-s11": "nrt-nf-s07", // 第5章 激突！闇を穿つ火の意志編 -> 第5章
-  "nrt-nx-s20": "nrt-nx-s21"  // 第4章 ～1億枚突破記念弾～ (NX-CAM004) -> 第4章
+  "nrt-nx-s20": "nrt-nx-s21", // 第4章 ～1億枚突破記念弾～ (NX-CAM004) -> 第4章
+  // キャンペーンカード (só a CAN-001), que era da Mission: foi pras promos
+  // dela (04/11/2026, ver NAO_E_FORMATION).
+  "nrt-nf-s02": "nrt-dc-s16"
 };
+
+// Números que o Suruga-ya anuncia numa série da Formation/Cross mas são de
+// outro título do arcade — o sync daqui pula, e quem monta a carta é o dono
+// do título. A CAN-001 ("ナルティメットフォーメーション キャンペーンカード",
+// 2007/02/01 no anúncio) é a troca da campanha de estreia da Mission
+// (究極任務スタート！キャンペーン), na lista oficial de promos dela: a imagem
+// curada bate com a lista (奥義 ナルト忍法帖 5700, 全封じ, 無限ジャンケン) e a
+// data é de dez meses antes da Formation. Hoje é a nrt-dc-can-001, montada pelo
+// sync-naruto-datacarddass.mjs; o id velho (nrt-nf-can-001) tem de-para no
+// data/card-id-merges.json.
+export const NAO_E_FORMATION = new Set(["CAN-001"]);
 
 const TITULO = { nf: "ナルティメットフォーメーション", nx: "ナルティメットクロス" };
 

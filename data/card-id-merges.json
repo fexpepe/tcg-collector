@@ -1,5 +1,5 @@
 {
- "_": "De-para de cardId de set importado que a TCGdex publicou com OUTRO setId (scripts/retire-imported-sets.mjs). sets: histórico das aposentadorias. prefixes: troca só do prefixo do set, quando a numeração bateu inteira (cel30-001 -> 30th-001). cards: par a par, quando a numeração mudou (o Classic Collection é numerado em sequência pela TCGdex e pelo número original no TCGplayer). images: arte que só o chunk importado tinha, carimbada pelo merge-catalogs enquanto a TCGdex não publicar a dela. NADA sai daqui: o id é a única ponte entre a coleção de alguém e uma carta, e conta antiga volta meses depois. Os nrt-nf-*/nrt-nx-* (30/09/2026) são capítulo do Data Carddass NARUTO que estava partido em dois sets e voltou a ser um (scripts/lib/naruto-dc-capitulos.mjs): as cartas mantêm o id, e o de-para de set só leva o link velho ao capítulo.",
+ "_": "De-para de cardId de set importado que a TCGdex publicou com OUTRO setId (scripts/retire-imported-sets.mjs). sets: histórico das aposentadorias. prefixes: troca só do prefixo do set, quando a numeração bateu inteira (cel30-001 -> 30th-001). cards: par a par, quando a numeração mudou (o Classic Collection é numerado em sequência pela TCGdex e pelo número original no TCGplayer). images: arte que só o chunk importado tinha, carimbada pelo merge-catalogs enquanto a TCGdex não publicar a dela. NADA sai daqui: o id é a única ponte entre a coleção de alguém e uma carta, e conta antiga volta meses depois. Os nrt-nf-*/nrt-nx-* (30/09/2026) são capítulo do Data Carddass NARUTO que estava partido em dois sets e voltou a ser um (scripts/lib/naruto-dc-capitulos.mjs): as cartas mantêm o id, e o de-para de set só leva o link velho ao capítulo. A nrt-nf-can-001 (04/11/2026) é a CAN-001 da Mission, que o Suruga-ya anunciava como Formation: virou nrt-dc-can-001, nas promos da Mission (scripts/lib/naruto-datacarddass.mjs), e o set de uma carta só em que ela estava (nrt-nf-s02) leva ao novo.",
  "sets": [
   {
    "from": "cel30",
@@ -34,6 +34,13 @@
    "to": "nrt-nx-s21",
    "lang": "ja",
    "at": "2026-09-30",
+   "cards": 1
+  },
+  {
+   "from": "nrt-nf-s02",
+   "to": "nrt-dc-s16",
+   "lang": "ja",
+   "at": "2026-11-04",
    "cards": 1
   }
  ],
@@ -70,7 +77,8 @@
   "cel30cc-69": "30th-c-015",
   "cel30cc-85": "30th-c-016",
   "cel30cc-89": "30th-c-017",
-  "cel30cc-94": "30th-c-018"
+  "cel30cc-94": "30th-c-018",
+  "nrt-nf-can-001": "nrt-dc-can-001"
  },
  "images": {
   "30th-c-019": "https://tcgplayer-cdn.tcgplayer.com/product/716199_in_400x400.jpg",

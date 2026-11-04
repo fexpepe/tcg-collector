@@ -237,6 +237,13 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   publicar; (2) Super Battle, Visual Adventure e Super Barcode Wars, sem fonte
   carta a carta acessível; (3) scans — o dragonballcards.com tem, mas é só HTTP;
   (4) raridade (prisma × regular), que nenhuma fonte marca por carta.
+- **Data Carddass NARUTO (`nrt-dc`)**: as promos da Mission (CAN-001 e DMP-000
+  a DMP-018, set `nrt-dc-s16`) entraram em 2026-11-04 pela lista oficial no
+  Wayback, sem imagem (o Wayback não guardou os `.gif`). Faltam (1) os 32
+  疾風クリアカード da Mission (NC-001 a NC-032, de máquina de venda), que têm
+  lista oficial no Wayback (`mission/cardlist/cardlist_cc.php`); (2) as promos
+  DNP do Card Battle — o site antigo (`carddas.com/datacarddas/naruto/`) tem
+  páginas de campanha e uma por carta DN, mas lista de DNP não foi achada.
 - **Worker de preços BR** (LigaBRA/LigaPokémon) como complemento do MYP. MYP e
   MYP só: as ligas não têm API pública e o CORS impede fazer do navegador.
 - **Raridade em zh**: a TCGdex traz a maioria das cartas chinesas sem raridade.
