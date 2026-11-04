@@ -590,8 +590,10 @@ jobs:
           NARUTO_TCGCSV_CATEGORY: ${{ vars.NARUTO_TCGCSV_CATEGORY }}
 
       # Naruto VINTAGE: NARUTO カードゲーム (Bandai 2003–2006), checklist do
-      # tcg-db.nikita.jp (snapshot versionado, não regride). ANEXA ao catálogo do
-      # Naruto (roda DEPOIS do sync-naruto). Imagens via wsrv.nl. Sem preço.
+      # tcg-db.nikita.jp + TV Tokyo + lista oficial da Bandai (snapshots
+      # versionados, não regridem; a da Bandai é só local, do Wayback). ANEXA ao
+      # catálogo do Naruto (roda DEPOIS do sync-naruto). Imagens via wsrv.nl.
+      # Sem preço.
       - name: Anexa catálogo vintage do Naruto (Bandai 2003)
         if: env.RODA_SYNC == 'true'
         run: node scripts/sync-naruto-vintage.mjs || echo "sync-naruto-vintage falhou; segue com o snapshot versionado"
@@ -684,8 +686,13 @@ jobs:
       # Nomes das cartas de Naruto: japonês -> inglês. DEPOIS dos syncs
       # que alimentam esse catálogo (o mapa fica num lugar só em vez de repetido
       # nos quatro). Idempotente e sem rede — ver o cabeçalho do script.
+      # Roda nos DOIS modos (sem `if`): ele regrava o catálogo inteiro (chunks,
+      # manifest, índice de busca) a partir do data/naruto/cards.js versionado.
+      # No build rápido os syncs do Naruto não rodam e o data/naruto/sets/ viria
+      # do cache do último build completo — a carta que uma PR põe no cards.js
+      # (as 423 da lista oficial da Bandai, 2026-11-04) só apareceria na tela
+      # do set depois do cron, igual ao dbc e ao dbz antes do passo deles.
       - name: Traduz nomes das cartas de Naruto
-        if: env.RODA_SYNC == 'true'
         run: node scripts/translate-naruto-names.mjs || echo "translate-naruto-names falhou; catalogo segue com os nomes originais"
 
       # Só a linha nova do Naruto tem preço (TCGCSV); as vintage não têm. Fica
