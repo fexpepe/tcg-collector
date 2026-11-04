@@ -1,5 +1,5 @@
 // NARUTO カードゲーム (Bandai, 2002–2006): catálogo vintage do Naruto a partir
-// de TRÊS fontes que se completam (a numeração 忍-N/術-N/作-N/依-N é global e
+// de QUATRO fontes que se completam (a numeração 忍-N/術-N/作-N/依-N é global e
 // bate entre elas):
 //
 //   1. tcg-db.nikita.jp (DB de fã)  -> scans grandes + cartas dos vols. 14–16 e
@@ -9,6 +9,13 @@
 //   3. cardcheckbox.com -> datas de lançamento, totais oficiais e FAIXAS de
 //      numeração dos 17 volumes (transcritas em OFFICIAL_VOLUMES abaixo; são
 //      história encerrada em 2006, não mudam — por isso hardcoded, sem scraper).
+//   4. Lista oficial da BANDAI (site do jogo, carddas.com/naruto/cardlist/,
+//      pelo Wayback) -> TODOS os produtos: 17 boosters, starters, folhas,
+//      moedas e promos. Só COMPLETA: número que nenhuma das outras tem entra
+//      com o nome oficial e sem imagem. Snapshot versionado, montado à mão por
+//      scripts/naruto-lista-oficial-bandai.mjs (o CI não fala com o Wayback).
+//      Entrou em 2026-11-04: o catálogo tinha 793 dos 1.252 números oficiais
+//      (faltavam os vols. 14–17 quase inteiros e a Itachi 忍-203/365/367).
 //
 // Mesmo padrão-snapshot dos vintage do One Piece: o build SEMPRE parte dos
 // snapshots versionados (data/vintage/naruto-*.json); o fetch só atualiza o
@@ -26,7 +33,9 @@ import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { readGlobalVar, readSnapshot, writeSnapshot, snapshotCardCount, writeGameCatalog, sleep } from "./lib/sync-common.mjs";
 import { aplicaRaridade } from "./naruto-raridade-hinokunian.mjs";
+import { parseTvtCards } from "./lib/naruto-vintage-fontes.mjs";
 const SNAP_RARIDADE = new URL("../data/vintage/naruto-raridade.json", import.meta.url);
+const SNAP_BANDAI = new URL("../data/vintage/naruto-bandai-oficial.json", import.meta.url);
 
 const ROOT = new URL("../", import.meta.url);
 const OUT = new URL("data/naruto/", ROOT);
@@ -154,35 +163,8 @@ async function refreshDbSnapshot(existing) {
 }
 
 // ── Fonte 2: TV Tokyo (lista oficial dos vols. 1–13, Shift-JIS) ──────────────
-// Cada carta na página: [<img cardimg/xNNN.jpg>] ... >忍-1< ... <font
-// color="#666666">NOME</font>. Prefixos por extenso (作戦/依頼人) viram os
-// curtos do jogo (作/依). Nem toda carta tem thumbnail.
-const TVT_PREFIX = { "忍": "忍", "術": "術", "作戦": "作", "依頼人": "依", "騎": "騎" };
-
-function parseTvtCards(html) {
-  const numRe = />(忍|術|作戦|依頼人|騎)[-ー―−](\d+)</g;
-  const hits = [];
-  let m;
-  while ((m = numRe.exec(html))) hits.push({ at: m.index, prefix: TVT_PREFIX[m[1]], n: Number(m[2]), end: numRe.lastIndex });
-  const cards = [];
-  for (let i = 0; i < hits.length; i++) {
-    const h = hits[i];
-    // imagem: a última cardimg ENTRE a carta anterior e esta (cada bloco tem no
-    // máximo uma; carta sem thumb não acha nenhuma no seu trecho).
-    const from = i > 0 ? hits[i - 1].end : 0;
-    const seg = html.slice(from, h.at);
-    const imgs = seg.match(/cardimg\/([a-z]+\d+\.jpg)/g);
-    const img = imgs ? imgs[imgs.length - 1].replace("cardimg/", "") : "";
-    // nome: primeiro <font cinza> depois do número
-    const tail = html.slice(h.end, h.end + 500);
-    const nm = tail.match(/<font color="#666666">([^<]+)<\/font>/);
-    const name = nm ? nm[1].trim() : "";
-    if (!name) continue;
-    cards.push({ num: `${h.prefix}-${h.n}`, name, img });
-  }
-  return cards;
-}
-
+// O leitor (parseTvtCards) mora em scripts/lib/naruto-vintage-fontes.mjs, com
+// os formatos da página que ele precisa entender.
 async function refreshTvtSnapshot(existing) {
   const vols = [];
   let missed = 0;
@@ -238,14 +220,49 @@ const IMG_TVT = (file) => `https://wsrv.nl/?url=${encodeURIComponent(`www.tv-tok
 // pra um scan futuro cair no MESMO id (e o id pegajoso segurar de qualquer jeito).
 const NUM_SLUG = { "忍": "nin", "術": "jutsu", "作": "saku", "依": "irai", "騎": "ki" };
 const PR_SLUG = { "忍": "PRN", "術": "PRJ", "作": "PRS", "依": "PRI", "騎士": "PRK" };
+// Da lista oficial da Bandai (2026-11-04): 忍-1(PS) = reimpressão de brinde
+// do jogo de PS, com selo próprio -> nrt-PSN-001 (mesmo molde das promos);
+// COIN-1 (moedas COIN+) e CAN-1 (cartas do porta-cartas 木ノ葉絵巻) seguem o
+// K-7 do tcg-db: nrt-COIN-001, nrt-CAN-001.
+const PS_SLUG = { "忍": "PSN", "術": "PSJ", "作": "PSS", "依": "PSI" };
 function numId(num) {
   const pr = String(num).match(/^PR(忍|術|作|依|騎士)-(\d+)$/);
   if (pr) return `nrt-${PR_SLUG[pr[1]]}-${String(pr[2]).padStart(3, "0")}`;
   const op = String(num).match(/^OP忍-?(\d+)$/);
   if (op) return `nrt-OPN-${String(op[1]).padStart(3, "0")}`;
+  const ps = String(num).match(/^(忍|術|作|依)-(\d+)\(PS\)$/);
+  if (ps) return `nrt-${PS_SLUG[ps[1]]}-${String(ps[2]).padStart(3, "0")}`;
+  const sigla = String(num).match(/^([A-Z]+)-(\d+)$/);
+  if (sigla) return `nrt-${sigla[1]}-${String(sigla[2]).padStart(3, "0")}`;
   const m = String(num).match(/^(忍|術|作|依|騎)-(\d+)$/);
   return m ? `nrt-${NUM_SLUG[m[1]]}-${m[2]}` : `nrt-x-${encodeURIComponent(num)}`;
 }
+
+// O tcg-db numera as cartas de cavaleiro (騎) como "K-7"; a Bandai imprime e
+// lista "騎-7". É a MESMA carta (テムジン do vol. 13): sem juntar as duas
+// grafias, a lista oficial criaria uma segunda Temujin. O id fica o de
+// sempre (nrt-K-007, do código do scan).
+const numCanonico = (num) => String(num).replace(/^K-(\d+)$/, "騎-$1");
+
+// Nome que a fonte usa quando ainda não sabe o nome da carta. O "＆" é o
+// 忍-234 da TV Tokyo, que só escreve o "＆" da dupla (a Bandai: 奈良シカマル＆
+// 秋道チョウジ).
+const NOME_PROVISORIO = new Set(["名称確認中", "＆"]);
+
+// Erros de digitação da TV Tokyo, conferidos na lista oficial da Bandai.
+// 作戦-035 エミナ (vol. 13): a miniatura é ir035 (依頼人) e a Bandai lista
+// 依-35 エミナ; o 作-35 de verdade é 紅き四つ葉のクローバーを探せ, do vol. 2.
+// Até 2026-11-04 a エミナ estava no catálogo como 作-35, com o id
+// nrt-saku-35. O id FICA com ela (é a carta que as coleções marcaram); o
+// 作-35 do vol. 2 ganha id novo (ver o desempate de id no build).
+// 術-232 柔拳 (vol. 11): o 柔拳 é o 術-231 (Bandai, 巻ノ十一); o 術-232 é o
+// 木ノ葉大旋風 do vol. 12. Como o volume vem da 1ª aparição na TV Tokyo, o
+// erro punha o 木ノ葉大旋風 (nrt-J-232) no vol. 11.
+const TVT_ERRATA = [
+  { vol: 13, num: "作-35", name: "エミナ", para: "依-35" },
+  { vol: 11, num: "術-232", name: "柔拳", para: "術-231" }
+];
+const ID_DO_NUMERO = { "nrt-saku-35": "依-35" }; // id publicado -> número certo
 
 async function run() {
   console.log("NARUTO カードゲーム (Bandai 2002–2006, vintage)");
@@ -261,7 +278,8 @@ async function run() {
   // TV Tokyo completa o resto (nome oficial + thumb).
   const byNum = new Map(); // num -> { num, name, code (scan tcg-db), img (thumb tvt), dbSet, tvtVol }
   for (const s of (snapDb && snapDb.sets) || []) {
-    for (const c of s.cards || []) {
+    for (const c0 of s.cards || []) {
+      const c = { ...c0, num: numCanonico(c0.num) };
       const cur = byNum.get(c.num);
       // O tcg-db tem 2+ scans pro mesmo número (re-impressões: N-001 e N-001_2).
       // É a MESMA carta física: fica um registro só, com o scan de código base
@@ -271,15 +289,19 @@ async function run() {
     }
   }
   for (const s of (snapTvt && snapTvt.sets) || []) {
-    for (const c of s.cards || []) {
+    for (const c0 of s.cards || []) {
+      const errata = TVT_ERRATA.find((e) => e.vol === s.vol && e.num === c0.num && e.name === c0.name);
+      const c = errata ? { ...c0, num: errata.para } : c0;
       const cur = byNum.get(c.num);
       if (cur) { if (!cur.img && c.img) cur.img = c.img; if (cur.tvtVol == null) cur.tvtVol = s.vol; }
-      else byNum.set(c.num, { num: c.num, name: c.name, code: "", img: c.img, dbSet: "", tvtVol: s.vol });
+      else byNum.set(c.num, { num: c.num, name: c.name, code: "", img: c.img, dbSet: "", tvtVol: s.vol, nomeSolto: !!c.nomeSolto });
     }
   }
 
   // Promos curadas: só COMPLETAM (número que nenhuma fonte tem). Nunca tocam
-  // numa carta que já veio com scan — o snapshot/tcg-db sempre manda.
+  // numa carta que já veio com scan — o snapshot/tcg-db sempre manda. Vêm
+  // ANTES da lista da Bandai: o nome curado (ex.: うちはサスケ（金箔押し）) é
+  // escolha feita à mão e já tem tradução.
   try {
     const curated = JSON.parse(await readFile(CURATED_PROMOS, "utf8"));
     let added = 0;
@@ -292,13 +314,57 @@ async function run() {
     console.log(`  promos curadas: +${added} sem scan (de ${curated.cards.length} confirmadas).`);
   } catch (e) { console.log("  promos curadas: arquivo ausente/inválido — seguindo sem."); }
 
+  // Lista oficial da Bandai: COMPLETA o que as fontes de cima não têm (nome
+  // oficial, sem imagem) e corrige só dois casos de nome — o que a TV Tokyo
+  // deu montado de pedaços (nomeSolto, ver o leitor) e o provisório
+  // "名称確認中". Nome que já existe não muda: o mapa de tradução e a
+  // raridade casam pelo nome japonês. A mesma carta aparece em várias páginas
+  // (reimpressão em starter/folha); vale a 1ª, que é a de estreia (os boosters
+  // vêm antes no snapshot).
+  const snapBandai = await readSnapshot(SNAP_BANDAI);
+  let novasBandai = 0, nomesBandai = 0;
+  for (const p of (snapBandai && snapBandai.pages) || []) {
+    for (const c of p.cards || []) {
+      const cur = byNum.get(c.num);
+      if (cur) {
+        if (!cur.bandai) cur.bandai = p.page;
+        if ((cur.nomeSolto || NOME_PROVISORIO.has(cur.name)) && c.name && cur.name !== c.name) { cur.name = c.name; nomesBandai++; }
+        cur.nomeSolto = false;
+        continue;
+      }
+      byNum.set(c.num, { num: c.num, name: c.name, code: "", img: "", dbSet: p.page === "promo" ? PROMO_SET : "", bandai: p.page });
+      novasBandai++;
+    }
+  }
+  console.log(`  Bandai (lista oficial): +${novasBandai} cartas que nenhuma fonte tinha, ${nomesBandai} nomes corrigidos.`);
+
   // Ids pegajosos: número -> id já publicado no catálogo atual.
   const existing = (await readGlobalVar(new URL("cards.js", OUT), "TCG_CARDS")) || [];
   const idByNum = new Map();
   // Primeiro vence: no catálogo os sets oficiais vêm antes dos grupos de
   // sobras, então o id base (nrt-N-001) ganha do scan repetido (nrt-N-001_2).
   for (const c of existing) {
-    if (String(c.id).startsWith("nrt-") && c.number && !idByNum.has(c.number)) idByNum.set(c.number, c.id);
+    if (!String(c.id).startsWith("nrt-") || !c.number) continue;
+    // Só a linha desta carta passa pela grafia canônica (K-7 -> 騎-7): o
+    // número de outra linha (CCG americano, Data Carddass) fica como está.
+    const num = ID_DO_NUMERO[c.id] || (c.vintageLine === "nrtcg" ? numCanonico(c.number) : c.number);
+    if (!idByNum.has(num)) idByNum.set(num, c.id);
+  }
+  // Id de cada número em DUAS passadas: primeiro os que já têm id (publicado,
+  // curado ou do scan), depois os derivados do número. Derivado que cair num
+  // id já usado ganha sufixo (-2, -3…): o 作-35 do vol. 2 daria nrt-saku-35,
+  // que é o id da エミナ (ver TVT_ERRATA).
+  const idDe = new Map();
+  const usados = new Set();
+  for (const c of byNum.values()) {
+    const id = idByNum.get(c.num) || c.curatedId || (c.code ? `nrt-${c.code}` : "");
+    if (id) { idDe.set(c.num, id); usados.add(id); }
+  }
+  for (const c of byNum.values()) {
+    if (idDe.has(c.num)) continue;
+    let id = numId(c.num);
+    for (let n = 2; usados.has(id); n++) id = `${numId(c.num)}-${n}`;
+    idDe.set(c.num, id); usados.add(id);
   }
 
   // Set de cada carta: lista da TV Tokyo (oficial, vols. 1–13) > faixas de
@@ -311,7 +377,7 @@ async function run() {
     let setName, meta;
     if (vol) { setName = vol.name; meta = vol; }
     else if (card.dbSet === ATARI_SET) { setName = ATARI_SET; meta = null; }
-    else if (/^(PR|OP忍)/.test(card.num) || card.dbSet === PROMO_SET) { setName = PROMO_SET; meta = null; }
+    else if (/^(PR|OP忍|CAN-)|\(PS\)$/.test(card.num) || card.dbSet === PROMO_SET) { setName = PROMO_SET; meta = null; }
     else if (/^(忍|術|作|依|騎|K|COIN)/.test(card.num)) { setName = EXTRA_SET; meta = null; }
     else { setName = UNKNOWN_SET; meta = null; }
     if (!setsOut.has(setName)) setsOut.set(setName, { meta, cards: [] });
@@ -331,7 +397,7 @@ async function run() {
     const setId = meta ? `nrt-s${String(meta.vol).padStart(2, "0")}` : (setName === PROMO_SET ? "nrt-promo" : setName === EXTRA_SET ? "nrt-extra" : setName === ATARI_SET ? "nrt-atari" : `nrt-unk${i}`);
     const cmp = (a, b) => String(a.num).localeCompare(String(b.num), "ja", { numeric: true });
     for (const c of cards.sort(cmp)) {
-      const cardId = idByNum.get(c.num) || c.curatedId || (c.code ? `nrt-${c.code}` : numId(c.num));
+      const cardId = idDe.get(c.num);
       const curated = curatedImg(cardId);
       cardsNrt.push({
         id: cardId,
