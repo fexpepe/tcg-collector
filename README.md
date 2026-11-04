@@ -54,7 +54,7 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 | `digimon` | Digimon Card Game | TCGCSV cat. 63 | USD |
 | `riftbound` | Riftbound | TCGCSV cat. 89 (Riot) | USD |
 | `unionarena` | Union Arena | TCGCSV cat. 81 (Bandai; um anime por set) | USD |
-| `naruto` | Naruto Card Game | vintage Bandai 2002–2006 (tcg-db + TV Tokyo + cardcheckbox), Data Carddass (Card Battle, Mission, Formation e Cross) | sem preço |
+| `naruto` | Naruto Card Game | vintage Bandai 2002–2006 (tcg-db + TV Tokyo + cardcheckbox), Data Carddass (Card Battle, Mission, Formation e Cross), CCG americano (narutocards.ca) e o 疾風伝 Card Game 2007–2008 (listas oficiais da Bandai pelo Wayback, snapshot `data/vintage/naruto-shippuden.json`, quase sem imagem) | sem preço |
 | `hxh` | Hunter × Hunter | Carddass Hyper Battle 1999–2001 (Hunterpedia) | sem preço |
 | `dbc` | Dragon Ball Carddass | Carddass Bandai 1988–1997: Hondan carta a carta (80storage), sem imagem por enquanto | sem preço |
 | `wow` | World of Warcraft TCG | TCGCSV cat. 13 (Upper Deck 2006–2010, Cryptozoic 2010–2013; vintage, só os sets que o TCGplayer lista, sem número de coleção e com scan de ~200 px; setId, nome e data fixos por groupId) | USD |
@@ -67,7 +67,7 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 **Linhas** (`GAME_LINES` em [src/shared.js](src/shared.js)): um jogo pode ter
 sublinhas selecionadas por `?line=` — por exemplo `nrt-ncg` (o NARUTO CARD GAME
 novo, com lançamento mundial em 2027, hoje só com a promo da Gen Con 2026),
-`op2002`, `nrt-dc`, `nrt-ccg`. O escopo é por prefixo de `setId`: sem `?line=` a
+`op2002`, `nrt-dc`, `nrt-ccg`, `nrt-scg`. O escopo é por prefixo de `setId`: sem `?line=` a
 página mostra o jogo principal e **exclui** as linhas. Uma linha pode ter vários
 prefixos (`prefixes`): a `nrt-dc` junta os quatro títulos do arcade Data Carddass
 (`nrt-dc-`, `nrt-nf-`, `nrt-nx-`), um por seção na página de Sets. Linha que vira
