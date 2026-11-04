@@ -32,6 +32,9 @@ const ROOT = new URL("../", import.meta.url);
 const OUT = new URL("data/naruto/", ROOT);
 const SNAP = new URL("data/vintage/naruto-dc-suruga.json", ROOT);
 const OFICIAL = new URL("data/vintage/naruto-dc-oficial.json", ROOT);
+// Raridade lida nos PDFs de checklist oficiais (estrelas do 第5章–第7章 da
+// Cross); vale só onde o Suruga-ya não tem a carta. Ver o "_" do arquivo.
+const CHECKLISTS = new URL("data/vintage/naruto-dc-checklists.json", ROOT);
 
 // Mesmo mecanismo de imagem curada do sync vintage (assets/cards/naruto/<id>.*).
 function curatedImg(id) {
@@ -81,6 +84,7 @@ async function run() {
   console.log("Data Carddass NARUTO — Formation + Cross (listas oficiais + Suruga-ya)");
   const snap = JSON.parse(await readFile(SNAP, "utf8"));
   const oficial = JSON.parse(await readFile(OFICIAL, "utf8").catch(() => "null")) || {};
+  const doPdf = (JSON.parse(await readFile(CHECKLISTS, "utf8").catch(() => "null")) || {}).raridade || {};
   const items = [...(snap.cross || []), ...(snap.formation || [])];
 
   // Ids pegajosos: número -> id já publicado (coleções referenciam ids).
@@ -106,7 +110,9 @@ async function run() {
   // A lista oficial por cima: o nome e a série são os dela (o Suruga-ya
   // escreve "ディダラ", tira o "(第一部)" e põe a NFC-016 e a NFF-008 num set
   // "ナルティメットフォーメーション" sem série); a raridade fica a do
-  // Suruga-ya, que é quem tem (a do PDF de checklist só quando ele não tem).
+  // Suruga-ya, que é quem tem (a do PDF de checklist só quando ele não tem;
+  // o Suruga-ya às vezes registra a paralela, NP/SP, de uma carta que o PDF
+  // dá como N — a publicada fica).
   // Carta de capítulo vai pelo número, então a série vazia dela não importa.
   let daOficial = 0, casadas = 0;
   for (const o of [...(oficial.formation || []), ...(oficial.cross || [])]) {
@@ -116,7 +122,7 @@ async function run() {
     byNum.set(o.num, {
       num: o.num,
       name: o.name,
-      rarity: (s && s.rarity) || o.rarity || "",
+      rarity: (s && s.rarity) || o.rarity || doPdf[o.num] || "",
       serie: o.serie || (s && s.serie) || "",
       date: (s && s.date) || ""
     });
