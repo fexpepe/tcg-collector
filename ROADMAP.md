@@ -237,13 +237,18 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   publicar; (2) Super Battle, Visual Adventure e Super Barcode Wars, sem fonte
   carta a carta acessível; (3) scans — o dragonballcards.com tem, mas é só HTTP;
   (4) raridade (prisma × regular), que nenhuma fonte marca por carta.
-- **Data Carddass NARUTO (`nrt-dc`)**: as promos da Mission (CAN-001 e DMP-000
-  a DMP-018, set `nrt-dc-s16`) entraram em 2026-11-04 pela lista oficial no
-  Wayback, sem imagem (o Wayback não guardou os `.gif`). Faltam (1) os 32
-  疾風クリアカード da Mission (NC-001 a NC-032, de máquina de venda), que têm
-  lista oficial no Wayback (`mission/cardlist/cardlist_cc.php`); (2) as promos
-  DNP do Card Battle — o site antigo (`carddas.com/datacarddas/naruto/`) tem
-  páginas de campanha e uma por carta DN, mas lista de DNP não foi achada.
+- **Data Carddass NARUTO (`nrt-dc`)**: desde 2026-11-04 a linha sai das listas
+  OFICIAIS da Bandai no Wayback (`scripts/lib/naruto-dc-oficial.mjs`): a
+  Formation completa (344 NF), a Cross com 342 de 344, as promos da Mission
+  (`nrt-dc-s16`) e do Card Battle (`nrt-dc-s17`) e os 疾風クリアカード
+  (`nrt-dc-s18`), 1.367 cartas. Imagens: o Card Battle inteiro (GIFs do site
+  oficial), a Formation e o 第1・2・5・6・7章 da Cross (recortes dos PDFs de
+  checklist). Faltam: (1) a NX-172 e a NX-191, que nenhuma fonte achada lista
+  (a 2ª página do 第4章 foi capturada incompleta); (2) imagem da Mission, das
+  séries à parte da Formation/Cross e da Cross 第3・4章 — o Wayback não guardou
+  os `.gif` da Mission nem os PDFs desses dois capítulos; (3) raridade da
+  Formation e da Cross 第1–4章 onde o Suruga-ya não tem a carta (as listas
+  oficiais não dão).
 - **Worker de preços BR** (LigaBRA/LigaPokémon) como complemento do MYP. MYP e
   MYP só: as ligas não têm API pública e o CORS impede fazer do navegador.
 - **Raridade em zh**: a TCGdex traz a maioria das cartas chinesas sem raridade.

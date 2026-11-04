@@ -147,3 +147,16 @@ test("catálogo: toda carta da lista oficial está publicada, no título certo",
   assert.notEqual(porNumero.get("NFC-016").setId, "nrt-nf-s03");
   assert.equal(porNumero.get("NFC-016").setId, porNumero.get("NFC-001").setId);
 });
+
+test("Sets: a promo do Card Battle (s17) fica na seção do Card Battle, o s16 e o s18 na da Mission", async () => {
+  const { PROMO_CARD_BATTLE, PROMO_MISSION, CLEAR_MISSION, PAGES } = await import("../scripts/lib/naruto-datacarddass.mjs");
+  const app = readFileSync(new URL("../src/app.js", import.meta.url), "utf8").replace(/\r\n/g, "\n");
+  const m = /"sets\.category\.dcnrCardBattle", \(id\) => (\/.+?\/)\.test\(id\)/.exec(app);
+  assert.ok(m, "regra da seção Card Battle não achada no app.js");
+  const re = new Function(`return ${m[1]}`)();
+  const id = (seq) => `nrt-dc-s${String(seq).padStart(2, "0")}`;
+  const cardBattle = [...PAGES.filter((p) => /カードバトル/.test(p.name)).map((p) => p.seq), PROMO_CARD_BATTLE.seq];
+  const mission = [...PAGES.filter((p) => /ミッション/.test(p.name)).map((p) => p.seq), PROMO_MISSION.seq, CLEAR_MISSION.seq];
+  for (const seq of cardBattle) assert.ok(re.test(id(seq)), `${id(seq)} devia ser Card Battle`);
+  for (const seq of mission) assert.ok(!re.test(id(seq)), `${id(seq)} devia ser Mission`);
+});
