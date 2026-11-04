@@ -1,6 +1,6 @@
 {
  "source": "https://www.tv-tokyo.co.jp/anime/naruto2002/goods/card_01.html",
- "updatedAt": "2026-07-11",
+ "updatedAt": "2026-11-04",
  "sets": [
   {
    "name": "vol1",
@@ -270,6 +270,12 @@
      "num": "作-5",
      "name": "九尾の災厄",
      "img": "s05.jpg"
+    },
+    {
+     "num": "作-6",
+     "name": "迷子ペット“トラ”捕獲任務",
+     "img": "s06.jpg",
+     "nomeSolto": true
     },
     {
      "num": "作-7",
@@ -603,6 +609,12 @@
      "img": "s034.jpg"
     },
     {
+     "num": "作-35",
+     "name": "紅き四つ葉のクローバーを探せ",
+     "img": "s035.jpg",
+     "nomeSolto": true
+    },
+    {
      "num": "作-36",
      "name": "置いてけぼり",
      "img": "s036.jpg"
@@ -749,6 +761,12 @@
      "img": "j046.jpg"
     },
     {
+     "num": "術-47",
+     "name": "魔幻 此処非（ココニアラズ）の術",
+     "img": "j047.jpg",
+     "nomeSolto": true
+    },
+    {
      "num": "術-48",
      "name": "写輪眼",
      "img": "j048.jpg"
@@ -854,6 +872,12 @@
      "img": "s050.jpg"
     },
     {
+     "num": "作-51",
+     "name": "名乗れ！現れた強敵たち！！",
+     "img": "s051.jpg",
+     "nomeSolto": true
+    },
+    {
      "num": "作-52",
      "name": "鬼人の最期",
      "img": "s052.jpg"
@@ -943,6 +967,12 @@
      "num": "忍-70",
      "name": "山中いの",
      "img": "n070.jpg"
+    },
+    {
+     "num": "忍-71",
+     "name": "奈良シカマル",
+     "img": "n071.jpg",
+     "nomeSolto": true
     },
     {
      "num": "忍-72",
@@ -1090,6 +1120,12 @@
      "img": "j082.jpg"
     },
     {
+     "num": "術-83",
+     "name": "フォーメーションいのシカチョウ",
+     "img": "j083.jpg",
+     "nomeSolto": true
+    },
+    {
      "num": "術-84",
      "name": "呪印術",
      "img": "j084.jpg"
@@ -1153,6 +1189,12 @@
      "num": "作-78",
      "name": "ラッキー！",
      "img": "s078.jpg"
+    },
+    {
+     "num": "作-79",
+     "name": "最速の到達者",
+     "img": "s079.jpg",
+     "nomeSolto": true
     },
     {
      "num": "作-80",
@@ -1219,6 +1261,12 @@
      "num": "忍-88",
      "name": "山中いの",
      "img": "n088.jpg"
+    },
+    {
+     "num": "忍-89",
+     "name": "奈良シカマル",
+     "img": "n089.jpg",
+     "nomeSolto": true
     },
     {
      "num": "忍-90",
@@ -1456,6 +1504,12 @@
      "img": "s091.jpg"
     },
     {
+     "num": "作-92",
+     "name": "死闘の行方",
+     "img": "s092.jpg",
+     "nomeSolto": true
+    },
+    {
      "num": "作-93",
      "name": "捨てゴマ",
      "img": "s093.jpg"
@@ -1565,6 +1619,12 @@
      "num": "忍-121",
      "name": "エビス",
      "img": "n121.jpg"
+    },
+    {
+     "num": "忍-122",
+     "name": "月光ハヤテ",
+     "img": "n122.jpg",
+     "nomeSolto": true
     },
     {
      "num": "忍-123",
@@ -1853,6 +1913,12 @@
      "img": "n139.jpg"
     },
     {
+     "num": "忍-140",
+     "name": "日向ネジ",
+     "img": "n140.jpg",
+     "nomeSolto": true
+    },
+    {
      "num": "忍-141",
      "name": "日向ヒザシ",
      "img": "n141.jpg"
@@ -2139,6 +2205,12 @@
      "img": "n157.jpg"
     },
     {
+     "num": "忍-158",
+     "name": "猿飛アスマ",
+     "img": "n158.jpg",
+     "nomeSolto": true
+    },
+    {
      "num": "忍-159",
      "name": "油女ゲン",
      "img": "n159.jpg"
@@ -2192,6 +2264,24 @@
      "num": "忍-169",
      "name": "風影",
      "img": "n169.jpg"
+    },
+    {
+     "num": "忍-170",
+     "name": "カンクロウ",
+     "img": "n170.jpg",
+     "nomeSolto": true
+    },
+    {
+     "num": "忍-171",
+     "name": "カラス",
+     "img": "n171.jpg",
+     "nomeSolto": true
+    },
+    {
+     "num": "忍-172",
+     "name": "はたけカカシ ＆マイト・ガイ",
+     "img": "n172.jpg",
+     "nomeSolto": true
     },
     {
      "num": "術-145",
@@ -2410,6 +2500,12 @@
      "img": "n189.jpg"
     },
     {
+     "num": "忍-190",
+     "name": "聖シモン",
+     "img": "n190.jpg",
+     "nomeSolto": true
+    },
+    {
      "num": "忍-191",
      "name": "暗部",
      "img": "n191.jpg"
@@ -2463,6 +2559,24 @@
      "num": "忍-201",
      "name": "綱手姫",
      "img": "n201.jpg"
+    },
+    {
+     "num": "忍-202",
+     "name": "干柿鬼鮫",
+     "img": "n202.jpg",
+     "nomeSolto": true
+    },
+    {
+     "num": "忍-203",
+     "name": "うちはイタチ",
+     "img": "n203.jpg",
+     "nomeSolto": true
+    },
+    {
+     "num": "忍-204",
+     "name": "うずまきナルト＆自来也",
+     "img": "n204.jpg",
+     "nomeSolto": true
     },
     {
      "num": "術-173",
@@ -2701,6 +2815,12 @@
      "img": "n208.jpg"
     },
     {
+     "num": "忍-209",
+     "name": "縄樹",
+     "img": "n209.jpg",
+     "nomeSolto": true
+    },
+    {
      "num": "忍-210",
      "name": "ダン",
      "img": "n210.jpg"
@@ -2756,9 +2876,27 @@
      "img": "n220.jpg"
     },
     {
+     "num": "忍-221",
+     "name": "マンダ",
+     "img": "n221.jpg",
+     "nomeSolto": true
+    },
+    {
+     "num": "忍-222",
+     "name": "カツユ",
+     "img": "n222.jpg",
+     "nomeSolto": true
+    },
+    {
+     "num": "忍-223",
+     "name": "綱手姫＆シズネ",
+     "img": "n223.jpg",
+     "nomeSolto": true
+    },
+    {
      "num": "術-192",
      "name": "デコピン",
-     "img": "n223.jpg"
+     "img": ""
     },
     {
      "num": "術-192",
@@ -3027,6 +3165,12 @@
      "img": "n237.jpg"
     },
     {
+     "num": "忍-238",
+     "name": "奈良シカマル",
+     "img": "n238.jpg",
+     "nomeSolto": true
+    },
+    {
      "num": "忍-239",
      "name": "秋道チョウジ",
      "img": "n239.jpg"
@@ -3080,6 +3224,24 @@
      "num": "忍-249",
      "name": "緑青アオイ",
      "img": "n249.jpg"
+    },
+    {
+     "num": "忍-250",
+     "name": "鬼童丸",
+     "img": "n250.jpg",
+     "nomeSolto": true
+    },
+    {
+     "num": "忍-251",
+     "name": "次郎坊",
+     "img": "n251.jpg",
+     "nomeSolto": true
+    },
+    {
+     "num": "忍-252",
+     "name": "右近",
+     "img": "n252.jpg",
+     "nomeSolto": true
     },
     {
      "num": "忍-253",
@@ -3312,6 +3474,12 @@
      "img": ""
     },
     {
+     "num": "作-235",
+     "name": "最適なフォーメーション",
+     "img": "s235.jpg",
+     "nomeSolto": true
+    },
+    {
      "num": "依-30",
      "name": "次郎長親分",
      "img": "ir030.jpg"
@@ -3348,6 +3516,12 @@
      "img": "n258.jpg"
     },
     {
+     "num": "忍-259",
+     "name": "うちはイタチ",
+     "img": "n259.jpg",
+     "nomeSolto": true
+    },
+    {
      "num": "忍-260",
      "name": "うちはフガク",
      "img": "n260.jpg"
@@ -3356,6 +3530,18 @@
      "num": "忍-261",
      "name": "うちはミコト",
      "img": "n261.jpg"
+    },
+    {
+     "num": "忍-262",
+     "name": "ロック･リー＆マイト･ガイ",
+     "img": "n262.jpg",
+     "nomeSolto": true
+    },
+    {
+     "num": "忍-263",
+     "name": "うちはイタチ＆うちはサスケ",
+     "img": "n263.jpg",
+     "nomeSolto": true
     },
     {
      "num": "忍-264",
@@ -3677,6 +3863,12 @@
      "num": "忍-291",
      "name": "イルカ",
      "img": "n291.jpg"
+    },
+    {
+     "num": "忍-292",
+     "name": "シズネ",
+     "img": "n292.jpg",
+     "nomeSolto": true
     },
     {
      "num": "忍-293",
