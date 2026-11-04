@@ -36,7 +36,9 @@ const tabela = JSON.parse(readFileSync(new URL("../scripts/data/sets-renomeados.
 // `sets` limita aos setIds das linhas vintage quando o catálogo mistura
 // moderno.
 const NOMES_DO_JOGO = {
-  naruto: { nomes: ["Naruto", "NARUTO", "ナルト", "Data Carddass", "データカードダス"] },
+  // "疾風伝"/"Shippuden": a linha nrt-scg (2007–2008). Só a promo leva
+  // "（疾風伝）", no fim, pra não ter o mesmo nome do set de 2002.
+  naruto: { nomes: ["Naruto", "NARUTO", "ナルト", "Data Carddass", "データカードダス", "疾風伝", "Shippuden"] },
   onepiece: { nomes: ["One Piece", "ONE PIECE", "ワンピース", "Carddass", "カードダス", "OP 2002", "OP2002"], sets: /^(opcd|op2002)-/ },
   mbc: { nomes: ["Miracle Battle", "ミラクルバトル"] },
   hxh: { nomes: ["Hunter", "HUNTER", "ハンター", "Hyper Battle", "ハイパーバトル", "Carddass", "カードダス"] },
