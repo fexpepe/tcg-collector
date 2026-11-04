@@ -13,7 +13,7 @@ import assert from "node:assert/strict";
 import { readFileSync, existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
-import { slugify, baseDoSlug, slugsDasCartas, cartasDoSet, cartaParecida } from "../functions/_lib/slug-carta.js";
+import { slugify, baseDoSlug, slugsDasCartas, cartasDoSet, cartaParecida, preparaParecida } from "../functions/_lib/slug-carta.js";
 
 const raiz = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -119,6 +119,26 @@ test("carta parecida: renumerada pelo id, e o número que mudou de dono não lev
   assert.equal(acha("kakashi-hatake-anbu-n-886"), "kakashi-hatake-n-886");
   // Nome de outra carta do set + número de hoje de outra: nada, em vez da errada.
   assert.equal(acha("gaara-of-the-desert-n-883"), null);
+});
+
+// O deploy prepara uma vez por set e consulta várias (scripts/lib/
+// cartas-movidas.mjs). Tem de dar EXATAMENTE o que a borda dá com a consulta
+// única, inclusive consultando na ordem que for (a regex é reaproveitada).
+test("carta parecida preparada: várias consultas dão o mesmo que uma por vez", () => {
+  const cartas = [
+    { id: "sld-1", name: "Snow-Covered Plains", number: "1", setTotal: 2822, language: "en" },
+    { id: "op-1", name: "Luffy", number: "OP01-001" },
+    { id: "op-2", name: "Luffy", number: "OP01-001" },
+    { id: "nrt-ccg-n-880", name: "Neji Hyuga", number: "N-883" },
+    { id: "nrt-ccg-n-883", name: "Kakashi Hatake", number: "N-886" },
+    { id: "zh-91b", name: "ピカチュウ", number: "091", setTotal: 98, language: "zh-cn", nameEn: "Pikachu" }
+  ];
+  const slugs = slugsDasCartas(cartas);
+  const pedidos = ["snow-covered-plains-1-2821", "luffy-op01-001-3", "monkey-d-luffy-op01-001-2", "kakashi-hatake-n-883",
+    "gaara-of-the-desert-n-883", "091-098-zh", "", "snow-covered-plains-1-2821", "nada-999"];
+  const preparada = preparaParecida(cartas, slugs);
+  for (const p of pedidos) assert.equal(preparada(p), cartaParecida(cartas, slugs, p), p);
+  assert.equal(preparaParecida(cartas, null)("snow-covered-plains-1-2821"), null);
 });
 
 test("a página do set é a das cartas com aquele nome, fora as aposentadas", () => {
