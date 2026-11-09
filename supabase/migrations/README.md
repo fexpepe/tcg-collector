@@ -8,6 +8,16 @@ poucos.)
 
 ## Pendentes de aplicar
 
+- `20261109a` — libera o slug `cdm` (Carddass Masters, Bandai 1996–2009, a
+  linha de cartas de coleção de várias IPs; entra com o HUNTER×HUNTER) nas
+  DUAS whitelists de jogo: `card_views`/`increment_card_view` e
+  `contribute_price`. Cópia da `20261101a` (já aplicada) com o `cdm` a mais;
+  só a lista muda, conferido por diff. Aditiva e sem ordem com o JS: antes
+  dela, a view de carta do Carddass Masters é descartada em silêncio (as
+  funções só dão `return`) e o resto do jogo funciona. Conferir com os `curl`
+  do fim do arquivo: o de `cdm-hxh-p1-29` responde 204 **e cria a linha** em
+  `card_views`. **A próxima migração de jogo copia esta.**
+
 - `20261104a` — alarme de medição parada conta PESSOAS, não eventos
   (`20261104a_sentinela_pessoas.sql`). Em 2026-11-04 a aba Medição e o
   healthcheck acusaram "parou" em `card_added` (27,5 esperados) e
@@ -212,8 +222,7 @@ poucos.)
   (`{"card_id":"dbz-s1-1","views":1}`); o Miracle Battle, que estava pendente
   na `20261001e`, também passou a contar (`mb-db01-01` criou a dele); o jogo
   inventado dá 204 sem criar nada; a contribuição anônima segue **401**. Sem
-  prova direta, como nas anteriores: o `contribute_price` logado. **A próxima
-  migração de jogo copia esta.**
+  prova direta, como nas anteriores: o `contribute_price` logado.
 
 - `20261001e` (Miracle Battle) — **NÃO aplicar: a `20261101a` já cobre o
   `mbc`.** A lista dela é a da `20261101a` sem o `dbz`: rodada agora, tiraria

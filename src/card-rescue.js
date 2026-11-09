@@ -20,7 +20,7 @@
   const ID_PREFIX_GAME = {
     mtg: "magic", fab: "fab", gcg: "gundam", swu: "swu", cpk: "cyberpunk", sor: "sorcery", dbfw: "dbfw", ygo: "ygo",
     dgm: "digimon", rb: "riftbound", ua: "unionarena", nrt: "naruto",
-    hxh: "hxh", dbc: "dbc", wow: "wow", lotr: "lotr", dbz: "dbz", hp: "harrypotter", ws: "weiss", mb: "mbc", op: "onepiece", opcd: "onepiece", op2002: "onepiece", cp: "lorcana"
+    hxh: "hxh", dbc: "dbc", wow: "wow", lotr: "lotr", dbz: "dbz", cdm: "cdm", hp: "harrypotter", ws: "weiss", mb: "mbc", op: "onepiece", opcd: "onepiece", op2002: "onepiece", cp: "lorcana"
   };
   function cardIdProbeWaves(cardId) {
     const partes = String(cardId).split("-");

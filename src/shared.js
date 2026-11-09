@@ -3259,6 +3259,7 @@
     hxh: SUBNAV_MIN,
     dbc: SUBNAV_MIN,
     dbz: SUBNAV_MIN,
+    cdm: SUBNAV_MIN,
     lotr: SUBNAV_MIN,
     harrypotter: SUBNAV_ARTISTS
   };
@@ -7278,7 +7279,8 @@
   //   cmv      — o Cardmarket vende também a carta VINTAGE do jogo (o Pokémon
   //              antigo, o WoW TCG inteiro); sem ele a linha EU some da carta
   //              vintage (ver brMarketplaceLinks).
-  // naruto/hxh: Carddass japonês, nenhuma loja BR lista e o TCGplayer não tem.
+  // naruto/hxh/cdm: Carddass japonês, nenhuma loja BR lista e o TCGplayer não
+  // tem (cdm em 09/11/2026: o MYP recusa acesso automatizado, não conferido).
   const MARKETS = {
     pokemon:   { liga: ["LigaPokémon", "https://www.ligapokemon.com.br"], myp: "pokemon", ligabra: true, padded: true, tcgLine: "pokemon", usText: "pokemon", cm: "Pokemon", cmv: 1 },
     lorcana:   { liga: ["LigaLorcana", "https://www.ligalorcana.com.br"], myp: "lorcana", tcgLine: "lorcana", usText: "lorcana", cm: "Lorcana" },
@@ -7318,6 +7320,7 @@
     hxh:       { usText: "hunter x hunter carddass", noTcgplayer: true },
     dbc:       { usText: "dragon ball carddass", noTcgplayer: true },
     mbc:       { usText: "miracle battle carddass", noTcgplayer: true },
+    cdm:       { usText: "carddass masters", noTcgplayer: true },
     // World of Warcraft TCG (conferido em 30/09/2026): TCGplayer na linha
     // "wow" (a busca devolve a carta "in WoW") e Cardmarket em /en/WoW. Sem
     // loja BR: o MYP não tem seção do jogo e não existe Liga.
@@ -8935,7 +8938,8 @@
     { game: "lotr", dataDir: "data/lotr/" },
     { game: "harrypotter", dataDir: "data/harrypotter/" },
     { game: "weiss", dataDir: "data/weiss/" },
-    { game: "mbc", dataDir: "data/mbc/" }
+    { game: "mbc", dataDir: "data/mbc/" },
+    { game: "cdm", dataDir: "data/cdm/" }
   ];
   // Slugs e cor de cada jogo, num lugar só (adicionar um jogo = 1 entrada aqui
   // + 1 no game.js + labels no i18n; as páginas iteram em vez de hardcodear).
@@ -8973,7 +8977,8 @@
     lotr: "#4d7c0f"  ,      // verde-musgo (pedido do Fernando: "algum tom de verde"); 5.0:1 com branco, a 73 do verde do HxH
     weiss: "#ffffff",      // branco ("Weiß"; o preto é do Star Wars); 21:1 com preto, a 159 do prata do DBFW
     harrypotter: "#740001", // escarlate da Grifinória; 12:1 com branco, a 85 do Magic (o vizinho mais próximo)
-    mbc: "#fb923c"         // pêssego (o laranja-dourado do logo); 9.3:1 com preto, a 71 do One Piece e a 77 do Naruto
+    mbc: "#fb923c",        // pêssego (o laranja-dourado do logo); 9.3:1 com preto, a 71 do One Piece e a 77 do Naruto
+    cdm: "#a21caf"         // fúcsia; 6.3:1 com branco, a 79 do Yu-Gi-Oh! e a 81 do DBC (proposta, 2026-11-09)
   };
   // Preto ou branco sobre a cor do jogo — o que der MAIOR contraste de verdade
   // (fórmula WCAG), não um limiar de luminância chutado: com limiar fixo o
@@ -9013,7 +9018,7 @@
     ygo: "filter.gameYgo", digimon: "filter.gameDigimon", riftbound: "filter.gameRiftbound",
     unionarena: "filter.gameUnionArena", naruto: "filter.gameNaruto", hxh: "filter.gameHxh",
     dbc: "filter.gameDbc", dbz: "filter.gameDbz", wow: "filter.gameWow", lotr: "filter.gameLotr", weiss: "filter.gameWeiss", harrypotter: "filter.gameHarryPotter",
-    mbc: "filter.gameMbc"
+    mbc: "filter.gameMbc", cdm: "filter.gameCdm"
   };
   function gameLabel(g) { return t(GAME_LABEL_KEY[g] || GAME_LABEL_KEY.pokemon); }
   // Nomes em inglês dos sets vintage e japoneses (VINTAGE_SET_EN, JA_SET_EN e
@@ -9113,6 +9118,7 @@
     wow: ["wow-"],                            // WoW TCG 2006–2013: idem (e é o único vintage com preço)
     lotr: ["lotr-"],                          // Decipher 2001–2007: idem
     dbz: ["dbz-"],                            // Score 2000–2006: idem
+    cdm: ["cdm-"],                            // Bandai 1996–2009: idem
     harrypotter: ["hp-"],                     // Wizards 2001–2002: idem
     naruto: ["nrt-"]                          // Bandai 2003–2013 inteiro…
   };

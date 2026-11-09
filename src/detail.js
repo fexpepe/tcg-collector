@@ -459,7 +459,9 @@
     naruto: ["Common", "Uncommon", "Rare", "Super Rare", "Starter Deck",
       "N", "NP", "R", "SR", "UR", "Memorial", "HR", "NR", "WNR", "SP", "Silver Holo", "Design Rare", "P", "Promo"],
     // HxH Carddass Hyper Battle: Normal, a Holo do booster e a Secret Holo.
-    hxh: ["Normal", "Holo", "Secret Holo", "Promo"]
+    hxh: ["Normal", "Holo", "Secret Holo", "Promo"],
+    // Carddass Masters: a regular, as スペシャルカード (SP) e os brindes.
+    cdm: ["Normal", "Special", "Promo"]
   };
   const jogoDaPagina = (window.SLEEVU && window.SLEEVU.game) || "";
   const rarityListOrder = RARITY_BUCKET_GAMES.has(jogoDaPagina) ? null : (RARITY_LISTED_GAMES[jogoDaPagina] || []);

@@ -89,7 +89,8 @@ const GAMES = [
   { slug: "dbz", label: "Dragon Ball Z CCG" },
   { slug: "harrypotter", label: "Harry Potter Trading Card Game" },
   { slug: "weiss", label: "Weiß Schwarz" },
-  { slug: "mbc", label: "Miracle Battle Carddass" }
+  { slug: "mbc", label: "Miracle Battle Carddass" },
+  { slug: "cdm", label: "Carddass Masters" }
 ];
 
 // SEM piso de cartas por set, de propósito. Um piso (mesmo baixo, tipo 3)
@@ -665,7 +666,7 @@ const DECK_GAME_LABELS = {
   magic: "Magic: The Gathering", fab: "Flesh and Blood", gundam: "Gundam Card Game", swu: "Star Wars: Unlimited", cyberpunk: "Cyberpunk TCG", sorcery: "Sorcery: Contested Realm",
   dbfw: "Dragon Ball Fusion World", ygo: "Yu-Gi-Oh!", digimon: "Digimon Card Game",
   riftbound: "Riftbound", unionarena: "Union Arena", naruto: "Naruto Card Game",
-  hxh: "Hunter × Hunter", dbc: "Dragon Ball Carddass", dbz: "Dragon Ball Z CCG", wow: "World of Warcraft TCG", lotr: "The Lord of the Rings TCG", harrypotter: "Harry Potter TCG", weiss: "Weiß Schwarz", mbc: "Miracle Battle Carddass"
+  hxh: "Hunter × Hunter", dbc: "Dragon Ball Carddass", dbz: "Dragon Ball Z CCG", wow: "World of Warcraft TCG", lotr: "The Lord of the Rings TCG", harrypotter: "Harry Potter TCG", weiss: "Weiß Schwarz", mbc: "Miracle Battle Carddass", cdm: "Carddass Masters"
 };
 
 async function fetchPublicDecks() {
