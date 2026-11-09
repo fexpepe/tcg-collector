@@ -171,6 +171,14 @@
     "hxh-hb-gb": "Game Boy — Hunter's Genealogy bonus",
     "hxh-hb-jf00": "Jump Festa 2000 limited card",
     "hxh-hb-jf02": "Jump Festa 2002 Edition pack",
+    // ---- Carddass Masters (jogo cdm, sync-carddass-masters.mjs). Com a IP na
+    // frente: fora da página do jogo "Part 2" seria de várias séries; dentro
+    // da seção da IP o groupCdmSets tira o prefixo. Subtítulo da Parte 1 e
+    // "Premium Edition": Hunterpedia; o resto, tradução nossa.
+    "cdm-hxh-p1": "Hunter × Hunter Part 1 — Gon × Rival × Hunter Exam Begins!",
+    "cdm-hxh-pe": "Hunter × Hunter Premium Edition",
+    "cdm-hxh-p2": "Hunter × Hunter Part 2",
+    "cdm-hxh-vd": "Hunter × Hunter VHS purchase bonus card",
     // ---- Dragon Ball Carddass (sync-dbc-carddass.mjs): as 31 partes do Hondan,
     // inclusive as que o 80storage ainda não publicou (o sync pega sozinho quando
     // sair). Super Battle, Visual Adventure e Super Barcode Wars ficam de fora de

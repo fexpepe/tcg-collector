@@ -118,5 +118,10 @@
   "cards": 31209,
   "sets": 169,
   "imgPct": 100
+ },
+ "cdm": {
+  "cards": 299,
+  "sets": 4,
+  "imgPct": 100
  }
 }

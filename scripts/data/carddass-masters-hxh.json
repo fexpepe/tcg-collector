@@ -1,0 +1,1512 @@
+{
+ "_fonte": "カードリスト impressa no verso das cartas (Parte 1: cartas 1-3; Parte 2: cartas 7-9; VD3: o verso da própria carta), lida nos scans da Hunterpedia em 2026-11-09. Inglês: nome da página do personagem na Hunterpedia; títulos de episódio: japonês da Wikipédia japonesa ('HUNTER×HUNTER (1999年のアニメ)', 各話リスト), inglês da 'List of Episodes (1999 series)' da Hunterpedia; 'traducao: nossa' marca o que a gente traduziu.",
+ "p1": [
+  {
+   "n": "1",
+   "ja": "タイトルナインパズル 1of9",
+   "en": "Title Nine Puzzle 1/9",
+   "traducao": "nossa"
+  },
+  {
+   "n": "2",
+   "ja": "タイトルナインパズル 2of9",
+   "en": "Title Nine Puzzle 2/9",
+   "traducao": "nossa"
+  },
+  {
+   "n": "3",
+   "ja": "タイトルナインパズル 3of9",
+   "en": "Title Nine Puzzle 3/9",
+   "traducao": "nossa"
+  },
+  {
+   "n": "4",
+   "ja": "タイトルナインパズル 4of9",
+   "en": "Title Nine Puzzle 4/9",
+   "traducao": "nossa"
+  },
+  {
+   "n": "5",
+   "ja": "タイトルナインパズル 5of9",
+   "en": "Title Nine Puzzle 5/9",
+   "traducao": "nossa"
+  },
+  {
+   "n": "6",
+   "ja": "タイトルナインパズル 6of9",
+   "en": "Title Nine Puzzle 6/9",
+   "traducao": "nossa"
+  },
+  {
+   "n": "7",
+   "ja": "タイトルナインパズル 7of9",
+   "en": "Title Nine Puzzle 7/9",
+   "traducao": "nossa"
+  },
+  {
+   "n": "8",
+   "ja": "タイトルナインパズル 8of9",
+   "en": "Title Nine Puzzle 8/9",
+   "traducao": "nossa"
+  },
+  {
+   "n": "9",
+   "ja": "タイトルナインパズル 9of9",
+   "en": "Title Nine Puzzle 9/9",
+   "traducao": "nossa"
+  },
+  {
+   "n": "10",
+   "ja": "オープニング1",
+   "en": "Opening 1",
+   "traducao": "nossa"
+  },
+  {
+   "n": "11",
+   "ja": "オープニング2",
+   "en": "Opening 2",
+   "traducao": "nossa"
+  },
+  {
+   "n": "12",
+   "ja": "オープニング3",
+   "en": "Opening 3",
+   "traducao": "nossa"
+  },
+  {
+   "n": "13",
+   "ja": "オープニング4",
+   "en": "Opening 4",
+   "traducao": "nossa"
+  },
+  {
+   "n": "14",
+   "ja": "オープニング5",
+   "en": "Opening 5",
+   "traducao": "nossa"
+  },
+  {
+   "n": "15",
+   "ja": "オープニング6",
+   "en": "Opening 6",
+   "traducao": "nossa"
+  },
+  {
+   "n": "16",
+   "ja": "オープニング7",
+   "en": "Opening 7",
+   "traducao": "nossa"
+  },
+  {
+   "n": "17",
+   "ja": "オープニング8",
+   "en": "Opening 8",
+   "traducao": "nossa"
+  },
+  {
+   "n": "18",
+   "ja": "オープニング9",
+   "en": "Opening 9",
+   "traducao": "nossa"
+  },
+  {
+   "n": "19",
+   "ja": "ゴン",
+   "en": "Gon Freecss"
+  },
+  {
+   "n": "20",
+   "ja": "ゴン",
+   "en": "Gon Freecss"
+  },
+  {
+   "n": "21",
+   "ja": "ゴン",
+   "en": "Gon Freecss"
+  },
+  {
+   "n": "22",
+   "ja": "ゴン",
+   "en": "Gon Freecss"
+  },
+  {
+   "n": "23",
+   "ja": "ゴン",
+   "en": "Gon Freecss"
+  },
+  {
+   "n": "24",
+   "ja": "ゴン",
+   "en": "Gon Freecss"
+  },
+  {
+   "n": "25",
+   "ja": "ゴン",
+   "en": "Gon Freecss"
+  },
+  {
+   "n": "26",
+   "ja": "ゴン",
+   "en": "Gon Freecss"
+  },
+  {
+   "n": "27",
+   "ja": "ゴン",
+   "en": "Gon Freecss"
+  },
+  {
+   "n": "28",
+   "ja": "クラピカ",
+   "en": "Kurapika"
+  },
+  {
+   "n": "29",
+   "ja": "クラピカ",
+   "en": "Kurapika"
+  },
+  {
+   "n": "30",
+   "ja": "クラピカ",
+   "en": "Kurapika"
+  },
+  {
+   "n": "31",
+   "ja": "クラピカ",
+   "en": "Kurapika"
+  },
+  {
+   "n": "32",
+   "ja": "クラピカ",
+   "en": "Kurapika"
+  },
+  {
+   "n": "33",
+   "ja": "クラピカ",
+   "en": "Kurapika"
+  },
+  {
+   "n": "34",
+   "ja": "クラピカ",
+   "en": "Kurapika"
+  },
+  {
+   "n": "35",
+   "ja": "クラピカ",
+   "en": "Kurapika"
+  },
+  {
+   "n": "36",
+   "ja": "クラピカ",
+   "en": "Kurapika"
+  },
+  {
+   "n": "37",
+   "ja": "レオリオ",
+   "en": "Leorio Paradinight"
+  },
+  {
+   "n": "38",
+   "ja": "レオリオ",
+   "en": "Leorio Paradinight"
+  },
+  {
+   "n": "39",
+   "ja": "レオリオ",
+   "en": "Leorio Paradinight"
+  },
+  {
+   "n": "40",
+   "ja": "レオリオ",
+   "en": "Leorio Paradinight"
+  },
+  {
+   "n": "41",
+   "ja": "レオリオ",
+   "en": "Leorio Paradinight"
+  },
+  {
+   "n": "42",
+   "ja": "レオリオ",
+   "en": "Leorio Paradinight"
+  },
+  {
+   "n": "43",
+   "ja": "レオリオ",
+   "en": "Leorio Paradinight"
+  },
+  {
+   "n": "44",
+   "ja": "レオリオ",
+   "en": "Leorio Paradinight"
+  },
+  {
+   "n": "45",
+   "ja": "レオリオ",
+   "en": "Leorio Paradinight"
+  },
+  {
+   "n": "46",
+   "ja": "キルア",
+   "en": "Killua Zoldyck"
+  },
+  {
+   "n": "47",
+   "ja": "キルア",
+   "en": "Killua Zoldyck"
+  },
+  {
+   "n": "48",
+   "ja": "キルア",
+   "en": "Killua Zoldyck"
+  },
+  {
+   "n": "49",
+   "ja": "キルア",
+   "en": "Killua Zoldyck"
+  },
+  {
+   "n": "50",
+   "ja": "キルア",
+   "en": "Killua Zoldyck"
+  },
+  {
+   "n": "51",
+   "ja": "キルア",
+   "en": "Killua Zoldyck"
+  },
+  {
+   "n": "52",
+   "ja": "キルア",
+   "en": "Killua Zoldyck"
+  },
+  {
+   "n": "53",
+   "ja": "キルア",
+   "en": "Killua Zoldyck"
+  },
+  {
+   "n": "54",
+   "ja": "キルア",
+   "en": "Killua Zoldyck"
+  },
+  {
+   "n": "55",
+   "ja": "ネテロ会長",
+   "en": "Isaac Netero"
+  },
+  {
+   "n": "56",
+   "ja": "メンチ",
+   "en": "Menchi"
+  },
+  {
+   "n": "57",
+   "ja": "ブハラ",
+   "en": "Buhara"
+  },
+  {
+   "n": "58",
+   "ja": "サトツ",
+   "en": "Satotz"
+  },
+  {
+   "n": "59",
+   "ja": "キリコ",
+   "en": "Kiriko"
+  },
+  {
+   "n": "60",
+   "ja": "キリコ・娘",
+   "en": "Kiriko (Daughter)"
+  },
+  {
+   "n": "61",
+   "ja": "老婆",
+   "en": "Quizzing Lady"
+  },
+  {
+   "n": "62",
+   "ja": "船長",
+   "en": "Captain"
+  },
+  {
+   "n": "63",
+   "ja": "マーメン",
+   "en": "Mamen Beans"
+  },
+  {
+   "n": "64",
+   "ja": "ヒソカ",
+   "en": "Hisoka Morow"
+  },
+  {
+   "n": "65",
+   "ja": "ヒソカ",
+   "en": "Hisoka Morow"
+  },
+  {
+   "n": "66",
+   "ja": "ヒソカ",
+   "en": "Hisoka Morow"
+  },
+  {
+   "n": "67",
+   "ja": "ハンゾー",
+   "en": "Hanzo"
+  },
+  {
+   "n": "68",
+   "ja": "ポックル",
+   "en": "Pokkle"
+  },
+  {
+   "n": "69",
+   "ja": "トンパ",
+   "en": "Tonpa"
+  },
+  {
+   "n": "70",
+   "ja": "トードー",
+   "en": "Todo"
+  },
+  {
+   "n": "71",
+   "ja": "ニコル",
+   "en": "Nicholas"
+  },
+  {
+   "n": "72",
+   "ja": "マシュー",
+   "en": "Matthew"
+  },
+  {
+   "n": "73",
+   "ja": "カイト",
+   "en": "Kite"
+  },
+  {
+   "n": "74",
+   "ja": "ミト",
+   "en": "Mito Freecss"
+  },
+  {
+   "n": "75",
+   "ja": "アニタ",
+   "en": "Anita"
+  },
+  {
+   "n": "76",
+   "ja": "キツネグマ・子供(コン太)",
+   "en": "Kon (Foxbear Cub)"
+  },
+  {
+   "n": "77",
+   "ja": "トリケラサイ",
+   "en": "Torikerasai"
+  },
+  {
+   "n": "78",
+   "ja": "マチボッケ",
+   "en": "Frog-In-Waiting"
+  },
+  {
+   "n": "79",
+   "ja": "ゴン&キルア",
+   "en": "Gon Freecss & Killua Zoldyck"
+  },
+  {
+   "n": "80",
+   "ja": "クラピカ&レオリオ",
+   "en": "Kurapika & Leorio Paradinight"
+  },
+  {
+   "n": "81",
+   "ja": "ゴン&キルア",
+   "en": "Gon Freecss & Killua Zoldyck"
+  },
+  {
+   "n": "82",
+   "ja": "第1話「旅ゆく少年×風の音を残して」",
+   "en": "Episode 1 — A Boy Setting Out for a Journey × Leaving Behind the Sound of the Wind",
+   "ep": 1
+  },
+  {
+   "n": "83",
+   "ja": "第1話「旅ゆく少年×風の音を残して」",
+   "en": "Episode 1 — A Boy Setting Out for a Journey × Leaving Behind the Sound of the Wind",
+   "ep": 1
+  },
+  {
+   "n": "84",
+   "ja": "第2話「出会い×とまどい×出航」",
+   "en": "Episode 2 — Encounter × Hesitation × Departure",
+   "ep": 2
+  },
+  {
+   "n": "85",
+   "ja": "第2話「出会い×とまどい×出航」",
+   "en": "Episode 2 — Encounter × Hesitation × Departure",
+   "ep": 2
+  },
+  {
+   "n": "86",
+   "ja": "第3話「プライド×荒海×決闘」",
+   "en": "Episode 3 — Pride × Stormy Water × Duel",
+   "ep": 3
+  },
+  {
+   "n": "87",
+   "ja": "第3話「プライド×荒海×決闘」",
+   "en": "Episode 3 — Pride × Stormy Water × Duel",
+   "ep": 3
+  },
+  {
+   "n": "88",
+   "ja": "第3話「プライド×荒海×決闘」",
+   "en": "Episode 3 — Pride × Stormy Water × Duel",
+   "ep": 3
+  },
+  {
+   "n": "89",
+   "ja": "第4話「選択×近道×まわり道」",
+   "en": "Episode 4 — Decision × Shortcut × Detour",
+   "ep": 4
+  },
+  {
+   "n": "90",
+   "ja": "第4話「選択×近道×まわり道」",
+   "en": "Episode 4 — Decision × Shortcut × Detour",
+   "ep": 4
+  },
+  {
+   "n": "91",
+   "ja": "第5話「ウソ×ホント?×キリコ」",
+   "en": "Episode 5 — Lies × Truth? × Kiriko",
+   "ep": 5
+  },
+  {
+   "n": "92",
+   "ja": "第5話「ウソ×ホント?×キリコ」",
+   "en": "Episode 5 — Lies × Truth? × Kiriko",
+   "ep": 5
+  },
+  {
+   "n": "93",
+   "ja": "第6話「ステーキ×マラソン×試験開始」",
+   "en": "Episode 6 — Steak × Marathon × The Exam Starts",
+   "ep": 6
+  },
+  {
+   "n": "94",
+   "ja": "第6話「ステーキ×マラソン×試験開始」",
+   "en": "Episode 6 — Steak × Marathon × The Exam Starts",
+   "ep": 6
+  },
+  {
+   "n": "95",
+   "ja": "第7話「トラウマ×限界×甘いワナ」",
+   "en": "Episode 7 — Trauma × Limit × Sweet Trap",
+   "ep": 7
+  },
+  {
+   "n": "96",
+   "ja": "第7話「トラウマ×限界×甘いワナ」",
+   "en": "Episode 7 — Trauma × Limit × Sweet Trap",
+   "ep": 7
+  },
+  {
+   "n": "97",
+   "ja": "第8話「奇術師×ほほえみ×猛獣注意」",
+   "en": "Episode 8 — Conjurer × Smile × Beasts Beware",
+   "ep": 8
+  },
+  {
+   "n": "98",
+   "ja": "第8話「奇術師×ほほえみ×猛獣注意」",
+   "en": "Episode 8 — Conjurer × Smile × Beasts Beware",
+   "ep": 8
+  },
+  {
+   "n": "99",
+   "ja": "第9話「メンチ×マジギレ×二次試験?」",
+   "en": "Episode 9 — Menchi × Furious × Second Phase?",
+   "ep": 9
+  },
+  {
+   "n": "100",
+   "ja": "第9話「メンチ×マジギレ×二次試験?」",
+   "en": "Episode 9 — Menchi × Furious × Second Phase?",
+   "ep": 9
+  },
+  {
+   "n": "101",
+   "ja": "第10話「赤点×パニック×天の声」",
+   "en": "Episode 10 — Failing × Panic × Heavenly Voice",
+   "ep": 10
+  },
+  {
+   "n": "102",
+   "ja": "第10話「赤点×パニック×天の声」",
+   "en": "Episode 10 — Failing × Panic × Heavenly Voice",
+   "ep": 10
+  },
+  {
+   "n": "103",
+   "ja": "第11話「探検×スポ根×密航者」",
+   "en": "Episode 11 — Exploration × Guts × Stowaway",
+   "ep": 11
+  },
+  {
+   "n": "104",
+   "ja": "第11話「探検×スポ根×密航者」",
+   "en": "Episode 11 — Exploration × Guts × Stowaway",
+   "ep": 11
+  },
+  {
+   "n": "105",
+   "ja": "第11話「探検×スポ根×密航者」",
+   "en": "Episode 11 — Exploration × Guts × Stowaway",
+   "ep": 11
+  },
+  {
+   "n": "106",
+   "ja": "第12話「良い子?×悪い子?×キルア」",
+   "en": "Episode 12 — Good Boy? × Bad Boy? × Killua",
+   "ep": 12
+  },
+  {
+   "n": "107",
+   "ja": "第12話「良い子?×悪い子?×キルア」",
+   "en": "Episode 12 — Good Boy? × Bad Boy? × Killua",
+   "ep": 12
+  },
+  {
+   "n": "108",
+   "ja": "エンディング",
+   "en": "Ending",
+   "traducao": "nossa"
+  },
+  {
+   "n": "109",
+   "ja": "受験資格判定：ミト",
+   "en": "Qualification Check: Mito Freecss",
+   "traducao": "nossa"
+  },
+  {
+   "n": "110",
+   "ja": "試験官①：船長",
+   "en": "Examiner 1: Captain",
+   "traducao": "nossa"
+  },
+  {
+   "n": "111",
+   "ja": "試験官②：バス運転手",
+   "en": "Examiner 2: Bus Driver",
+   "traducao": "nossa"
+  },
+  {
+   "n": "112",
+   "ja": "試験官③：老婆",
+   "en": "Examiner 3: Quizzing Lady",
+   "traducao": "nossa"
+  },
+  {
+   "n": "113",
+   "ja": "試験官④：キリコ親子",
+   "en": "Examiner 4: Kiriko Family",
+   "traducao": "nossa"
+  },
+  {
+   "n": "114",
+   "ja": "試験官⑤：サトツ",
+   "en": "Examiner 5: Satotz",
+   "traducao": "nossa"
+  },
+  {
+   "n": "115",
+   "ja": "試験官⑥：ブハラ&メンチ",
+   "en": "Examiner 6: Buhara & Menchi",
+   "traducao": "nossa"
+  },
+  {
+   "n": "116",
+   "ja": "試験官⑦：メンチ",
+   "en": "Examiner 7: Menchi",
+   "traducao": "nossa"
+  },
+  {
+   "n": "117",
+   "ja": "試験官⑧：ネテロ会長",
+   "en": "Examiner 8: Isaac Netero",
+   "traducao": "nossa"
+  },
+  {
+   "n": "118",
+   "ja": "ゴン",
+   "en": "Gon Freecss"
+  },
+  {
+   "n": "119",
+   "ja": "レオリオ",
+   "en": "Leorio Paradinight"
+  },
+  {
+   "n": "120",
+   "ja": "クラピカ",
+   "en": "Kurapika"
+  },
+  {
+   "n": "121",
+   "ja": "老婆",
+   "en": "Quizzing Lady"
+  },
+  {
+   "n": "122",
+   "ja": "キリコ",
+   "en": "Kiriko"
+  },
+  {
+   "n": "123",
+   "ja": "キルア",
+   "en": "Killua Zoldyck"
+  },
+  {
+   "n": "124",
+   "ja": "ヒソカ",
+   "en": "Hisoka Morow"
+  },
+  {
+   "n": "125",
+   "ja": "メンチ&ブハラ",
+   "en": "Menchi & Buhara"
+  },
+  {
+   "n": "126",
+   "ja": "トードー",
+   "en": "Todo"
+  },
+  {
+   "n": "127",
+   "ja": "クラピカ",
+   "en": "Kurapika"
+  },
+  {
+   "n": "128",
+   "ja": "ゴン",
+   "en": "Gon Freecss"
+  },
+  {
+   "n": "129",
+   "ja": "キルア",
+   "en": "Killua Zoldyck"
+  },
+  {
+   "n": "130",
+   "ja": "クラピカ",
+   "en": "Kurapika"
+  },
+  {
+   "n": "131",
+   "ja": "ゴン",
+   "en": "Gon Freecss"
+  },
+  {
+   "n": "132",
+   "ja": "レオリオ",
+   "en": "Leorio Paradinight"
+  },
+  {
+   "n": "133",
+   "ja": "キルア",
+   "en": "Killua Zoldyck"
+  },
+  {
+   "n": "134",
+   "ja": "レオリオ",
+   "en": "Leorio Paradinight"
+  },
+  {
+   "n": "135",
+   "ja": "メンチ",
+   "en": "Menchi"
+  },
+  {
+   "n": "SP1",
+   "ja": "ゴン",
+   "en": "Gon Freecss"
+  },
+  {
+   "n": "SP2",
+   "ja": "レオリオ",
+   "en": "Leorio Paradinight"
+  },
+  {
+   "n": "SP3",
+   "ja": "クラピカ",
+   "en": "Kurapika"
+  },
+  {
+   "n": "SP4",
+   "ja": "キルア",
+   "en": "Killua Zoldyck"
+  }
+ ],
+ "p2": [
+  {
+   "n": "1",
+   "ja": "オープニング 1of6",
+   "en": "Opening 1/6",
+   "traducao": "nossa"
+  },
+  {
+   "n": "2",
+   "ja": "オープニング 2of6",
+   "en": "Opening 2/6",
+   "traducao": "nossa"
+  },
+  {
+   "n": "3",
+   "ja": "オープニング 3of6",
+   "en": "Opening 3/6",
+   "traducao": "nossa"
+  },
+  {
+   "n": "4",
+   "ja": "オープニング 4of6",
+   "en": "Opening 4/6",
+   "traducao": "nossa"
+  },
+  {
+   "n": "5",
+   "ja": "オープニング 5of6",
+   "en": "Opening 5/6",
+   "traducao": "nossa"
+  },
+  {
+   "n": "6",
+   "ja": "オープニング 6of6",
+   "en": "Opening 6/6",
+   "traducao": "nossa"
+  },
+  {
+   "n": "7",
+   "ja": "エンディング 1of3",
+   "en": "Ending 1/3",
+   "traducao": "nossa"
+  },
+  {
+   "n": "8",
+   "ja": "エンディング 2of3",
+   "en": "Ending 2/3",
+   "traducao": "nossa"
+  },
+  {
+   "n": "9",
+   "ja": "エンディング 3of3",
+   "en": "Ending 3/3",
+   "traducao": "nossa"
+  },
+  {
+   "n": "10",
+   "ja": "ゴン",
+   "en": "Gon Freecss"
+  },
+  {
+   "n": "11",
+   "ja": "ゴン",
+   "en": "Gon Freecss"
+  },
+  {
+   "n": "12",
+   "ja": "ゴン",
+   "en": "Gon Freecss"
+  },
+  {
+   "n": "13",
+   "ja": "ゴン",
+   "en": "Gon Freecss"
+  },
+  {
+   "n": "14",
+   "ja": "ゴン&キルア",
+   "en": "Gon Freecss & Killua Zoldyck"
+  },
+  {
+   "n": "15",
+   "ja": "キルア",
+   "en": "Killua Zoldyck"
+  },
+  {
+   "n": "16",
+   "ja": "キルア",
+   "en": "Killua Zoldyck"
+  },
+  {
+   "n": "17",
+   "ja": "キルア",
+   "en": "Killua Zoldyck"
+  },
+  {
+   "n": "18",
+   "ja": "キルア",
+   "en": "Killua Zoldyck"
+  },
+  {
+   "n": "19",
+   "ja": "クラピカ",
+   "en": "Kurapika"
+  },
+  {
+   "n": "20",
+   "ja": "クラピカ",
+   "en": "Kurapika"
+  },
+  {
+   "n": "21",
+   "ja": "クラピカ",
+   "en": "Kurapika"
+  },
+  {
+   "n": "22",
+   "ja": "クラピカ",
+   "en": "Kurapika"
+  },
+  {
+   "n": "23",
+   "ja": "クラピカ",
+   "en": "Kurapika"
+  },
+  {
+   "n": "24",
+   "ja": "クラピカ",
+   "en": "Kurapika"
+  },
+  {
+   "n": "25",
+   "ja": "クラピカ&レオリオ",
+   "en": "Kurapika & Leorio Paradinight"
+  },
+  {
+   "n": "26",
+   "ja": "レオリオ",
+   "en": "Leorio Paradinight"
+  },
+  {
+   "n": "27",
+   "ja": "レオリオ",
+   "en": "Leorio Paradinight"
+  },
+  {
+   "n": "28",
+   "ja": "ヒソカ",
+   "en": "Hisoka Morow"
+  },
+  {
+   "n": "29",
+   "ja": "ヒソカ",
+   "en": "Hisoka Morow"
+  },
+  {
+   "n": "30",
+   "ja": "ヒソカ",
+   "en": "Hisoka Morow"
+  },
+  {
+   "n": "31",
+   "ja": "クロロ／幻影旅団団員",
+   "en": "Chrollo Lucilfer / Phantom Troupe Members"
+  },
+  {
+   "n": "32",
+   "ja": "フェイタン／フランクリン",
+   "en": "Feitan Portor / Franklin Bordeau"
+  },
+  {
+   "n": "33",
+   "ja": "マチ",
+   "en": "Machi Komacine"
+  },
+  {
+   "n": "34",
+   "ja": "シズク",
+   "en": "Shizuku Murasaki"
+  },
+  {
+   "n": "35",
+   "ja": "ウボォーギン／ノブナガ",
+   "en": "Uvogin / Nobunaga Hazama"
+  },
+  {
+   "n": "36",
+   "ja": "シャルナーク／コルトピ／パクノダ／ボノレノフ／フィンクス",
+   "en": "Shalnark / Kortopi / Pakunoda / Bonolenov Ndongo / Phinks Magcub"
+  },
+  {
+   "n": "37",
+   "ja": "センリツ",
+   "en": "Melody"
+  },
+  {
+   "n": "38",
+   "ja": "ヴェーゼ／スクワラ&トチーノ",
+   "en": "Baise / Squala & Shachmono Tocino"
+  },
+  {
+   "n": "39",
+   "ja": "バショウ／トチーノ",
+   "en": "Basho / Shachmono Tocino"
+  },
+  {
+   "n": "40",
+   "ja": "ダルツォルネ",
+   "en": "Dalzollene"
+  },
+  {
+   "n": "41",
+   "ja": "ネオン",
+   "en": "Neon Nostrade"
+  },
+  {
+   "n": "42",
+   "ja": "陰獣",
+   "en": "Shadow Beasts"
+  },
+  {
+   "n": "43",
+   "ja": "クラピカの師匠",
+   "en": "Izunavi"
+  },
+  {
+   "n": "44",
+   "ja": "",
+   "en": "Sengi Guild Agent"
+  },
+  {
+   "n": "45",
+   "ja": "ジン",
+   "en": "Ging Freecss"
+  },
+  {
+   "n": "46",
+   "ja": "ミト",
+   "en": "Mito Freecss"
+  },
+  {
+   "n": "47",
+   "ja": "ウイング",
+   "en": "Wing"
+  },
+  {
+   "n": "48",
+   "ja": "ズシ",
+   "en": "Zushi"
+  },
+  {
+   "n": "49",
+   "ja": "カストロ",
+   "en": "Kastro"
+  },
+  {
+   "n": "50",
+   "ja": "サダソ／リールベルト&ギド",
+   "en": "Sadaso / Riehlvelt & Gido"
+  },
+  {
+   "n": "51",
+   "ja": "司会者／ガイド",
+   "en": "Announcer / Guide"
+  },
+  {
+   "n": "52",
+   "ja": "シルバ／ゼノ",
+   "en": "Silva Zoldyck / Zeno Zoldyck"
+  },
+  {
+   "n": "53",
+   "ja": "イルミ",
+   "en": "Illumi Zoldyck"
+  },
+  {
+   "n": "54",
+   "ja": "カルト／ミルキ",
+   "en": "Kalluto Zoldyck / Milluki Zoldyck"
+  },
+  {
+   "n": "55",
+   "ja": "カナリア",
+   "en": "Canary"
+  },
+  {
+   "n": "56",
+   "ja": "ミケ",
+   "en": "Mike"
+  },
+  {
+   "n": "57",
+   "ja": "ギタラクル／イルミ",
+   "en": "Gittarackur / Illumi Zoldyck"
+  },
+  {
+   "n": "58",
+   "ja": "ハンゾー",
+   "en": "Hanzo"
+  },
+  {
+   "n": "59",
+   "ja": "ポンズ",
+   "en": "Ponzu"
+  },
+  {
+   "n": "60",
+   "ja": "ボドロ／アモリ三兄弟",
+   "en": "Bodoro / Amori Brothers"
+  },
+  {
+   "n": "61",
+   "ja": "リッポー／ベンドット",
+   "en": "Lippo / Bendot"
+  },
+  {
+   "n": "62",
+   "ja": "セドカン／ジョネス",
+   "en": "Sedokan / Johness"
+  },
+  {
+   "n": "63",
+   "ja": "レルート",
+   "en": "Leroute"
+  },
+  {
+   "n": "64",
+   "ja": "第13話「賛成×反対×おとし穴」",
+   "en": "Episode 13 — Pro × Con × Trap",
+   "ep": 13
+  },
+  {
+   "n": "65",
+   "ja": "第14話「ローソク×ポリシー×なかま割れ」",
+   "en": "Episode 14 — Candles × Policy × Dispute",
+   "ep": 14
+  },
+  {
+   "n": "66",
+   "ja": "第15話「はかない×いのち×マジタニ」",
+   "en": "Episode 15 — Fleeting × Life × Majtani",
+   "ep": 15
+  },
+  {
+   "n": "67",
+   "ja": "第16話「グー?×チョキ?×ハート」",
+   "en": "Episode 16 — Rock × Scissors × Heart",
+   "ep": 16
+  },
+  {
+   "n": "68",
+   "ja": "第17話「3人?×5人?×最後の選択」",
+   "en": "Episode 17 — Three People? × Five People? × Last Choice",
+   "ep": 17
+  },
+  {
+   "n": "69",
+   "ja": "第18話「お宝×思い出×ホテルの小部屋」",
+   "en": "Episode 18 — Treasure × Memory × Cramped Hotel Room",
+   "ep": 18
+  },
+  {
+   "n": "70",
+   "ja": "第19話「バラバラ×日誌×水びたし」",
+   "en": "Episode 19 — Stranded × Log Book × Soaked",
+   "ep": 19
+  },
+  {
+   "n": "71",
+   "ja": "第20話「大波×大砲×大あわて」",
+   "en": "Episode 20 — Big Waves × Big Cannon × Huge Rush",
+   "ep": 20
+  },
+  {
+   "n": "72",
+   "ja": "第21話「第4次×44×死のナンバー」",
+   "en": "Episode 21 — Fourth Phase × Forty-Four × Number of Death",
+   "ep": 21
+  },
+  {
+   "n": "73",
+   "ja": "第22話「見つけた×かくれた×追いついた」",
+   "en": "Episode 22 — Found × Hide × Caught Up",
+   "ep": 22
+  },
+  {
+   "n": "74",
+   "ja": "第23話「ヒソカ×激突×ゴン」",
+   "en": "Episode 23 — Hisoka × Crash × Gon",
+   "ep": 23
+  },
+  {
+   "n": "75",
+   "ja": "第24話「ダメージ×再会×からげんき」",
+   "en": "Episode 24 — Damage × Reunion × Courage",
+   "ep": 24
+  },
+  {
+   "n": "76",
+   "ja": "第25話「ニョロ2×チク2×穴の中」",
+   "en": "Episode 25 — Slither × Stinger × In The Cave",
+   "ep": 25
+  },
+  {
+   "n": "77",
+   "ja": "第26話「会長×面接×ペーパーテスト」",
+   "en": "Episode 26 — Chairman × Interview × Written Exam",
+   "ep": 26
+  },
+  {
+   "n": "78",
+   "ja": "第27話「ヒソカ×クラピカ×蜘蛛の囁き」",
+   "en": "Episode 27 — Hisoka × Kurapika × Spider's Whisper",
+   "ep": 27
+  },
+  {
+   "n": "79",
+   "ja": "第28話「おしゃべり×ヘリクツ×根くらべ」",
+   "en": "Episode 28 — Chatting × Excuses × Endurance",
+   "ep": 28
+  },
+  {
+   "n": "80",
+   "ja": "第29話「合格!×失格?×試験終了」",
+   "en": "Episode 29 — Pass! × Fail? × Exam Over",
+   "ep": 29
+  },
+  {
+   "n": "81",
+   "ja": "第30話「キルア×リタイア×強制送還」",
+   "en": "Episode 30 — Killua × Disqualified × Forced Out",
+   "ep": 30
+  },
+  {
+   "n": "82",
+   "ja": "第31話「解散×パーティ×くされ縁」",
+   "en": "Episode 31 — Disband × Party × Unpleasant Ties",
+   "ep": 31
+  },
+  {
+   "n": "83",
+   "ja": "第32話「観光×名所×キルアんち」",
+   "en": "Episode 32 — Sightseeing × Landmark × Killua's House",
+   "ep": 32
+  },
+  {
+   "n": "84",
+   "ja": "第33話「特訓×猟犬×バタンキュー」",
+   "en": "Episode 33 — Training × Hound × Exhausted",
+   "ep": 33
+  },
+  {
+   "n": "85",
+   "ja": "第34話「スケボー×見習い×本当の気持ち」",
+   "en": "Episode 34 — Skateboard × Apprentice × Honesty",
+   "ep": 34
+  },
+  {
+   "n": "86",
+   "ja": "第35話「キルア×おしおき×家族会議」",
+   "en": "Episode 35 — Killua × Punishment × Family Meeting",
+   "ep": 35
+  },
+  {
+   "n": "87",
+   "ja": "第36話「コイン×再会×おめしかえ」",
+   "en": "Episode 36 — Coin Toss × Reunion × Change of Clothes",
+   "ep": 36
+  },
+  {
+   "n": "88",
+   "ja": "第37話「天空×ファイト×武者修業」",
+   "en": "Episode 37 — Heaven × Fight × Training",
+   "ep": 37
+  },
+  {
+   "n": "89",
+   "ja": "第38話「燃×念×ネン?」",
+   "en": "Episode 38 — Nen × Nen × Nen?",
+   "ep": 38
+  },
+  {
+   "n": "90",
+   "ja": "第39話「裏ワザ×登録×バトル開始」",
+   "en": "Episode 39 — Secret Trick × Registration × The Battle Begins",
+   "ep": 39
+  },
+  {
+   "n": "91",
+   "ja": "第40話「二ヶ月×お休み×念には念を」",
+   "en": "Episode 40 — Two Months × Break × Just In Case",
+   "ep": 40
+  },
+  {
+   "n": "92",
+   "ja": "第41話「バンジー×パンチ×一本勝負」",
+   "en": "Episode 41 — Bungee × Punch × One Round Battle",
+   "ep": 41
+  },
+  {
+   "n": "93",
+   "ja": "第42話「ヒソカの愛×決着×ゴンの本気」",
+   "en": "Episode 42 — Hisoka's Love × Showdown × Gon's Resolve",
+   "ep": 42
+  },
+  {
+   "n": "94",
+   "ja": "第43話「才能×苦悩×ころしの本能」",
+   "en": "Episode 43 — Talent × Agony × Killer Instinct",
+   "ep": 43
+  },
+  {
+   "n": "95",
+   "ja": "第44話「雑魚×おかたづけ×試験終了!?」",
+   "en": "Episode 44 — Small Fry × Clean Up × Exam Over!?",
+   "ep": 44
+  },
+  {
+   "n": "96",
+   "ja": "第45話「制約×誓約×戒めの鎖」",
+   "en": "Episode 45 — Limitation × Vow × Chain of Judgment",
+   "ep": 45
+  },
+  {
+   "n": "97",
+   "ja": "第45話「制約×誓約×戒めの鎖」",
+   "en": "Episode 45 — Limitation × Vow × Chain of Judgment",
+   "ep": 45
+  },
+  {
+   "n": "98",
+   "ja": "第46話「ただいま×お帰り×ぼくキルア」",
+   "en": "Episode 46 — I'm Home × Welcome Back × I'm Killua",
+   "ep": 46
+  },
+  {
+   "n": "99",
+   "ja": "第47話「父×㊙×告白」",
+   "en": "Episode 47 — Dad × Top Secret × Confession",
+   "ep": 47
+  },
+  {
+   "n": "100",
+   "ja": "第48話「クラピカ×黒い眼×最初の仕事」",
+   "en": "Episode 48 — Kurapika × Black Eyes × First Job",
+   "ep": 48
+  },
+  {
+   "n": "101",
+   "ja": "第49話「心音×クラピカ×ダウジング」",
+   "en": "Episode 49 — Heart Tone × Kurapika × Dowsing",
+   "ep": 49
+  },
+  {
+   "n": "102",
+   "ja": "第50話「キルア×一攫千金×狩人の酒場」",
+   "en": "Episode 50 — Killua × Big Fortune × Hunter's Tavern",
+   "ep": 50
+  },
+  {
+   "n": "103",
+   "ja": "第51話「クモ×ヨークシン×全員集合」",
+   "en": "Episode 51 — Spider × Yorknew × Assemble",
+   "ep": 51
+  },
+  {
+   "n": "104",
+   "ja": "第52話「地下競売×全滅×マシンガン」",
+   "en": "Episode 52 — Underground Auction × Annihilation × Machinegun",
+   "ep": 52
+  },
+  {
+   "n": "105",
+   "ja": "第53話「旅団×陰獣×コミュニティー」",
+   "en": "Episode 53 — Phantom Troupe × The Shadow Beasts × Community",
+   "ep": 53
+  },
+  {
+   "n": "106",
+   "ja": "第54話「ヒソカ×同盟×クモ退治」",
+   "en": "Episode 54 — Hisoka × Alliance × Spider Hunting",
+   "ep": 54
+  },
+  {
+   "n": "107",
+   "ja": "第55話「ウボォー×クラピカ×覚悟の旋律」",
+   "en": "Episode 55 — Uvo × Kurapika × Melody of Determination",
+   "ep": 55
+  },
+  {
+   "n": "108",
+   "ja": "EX「クラピカ×幻影旅団×ヨークシン」",
+   "en": "EX — Kurapika × Phantom Troupe × Yorknew",
+   "traducao": "nossa"
+  },
+  {
+   "n": "109",
+   "ja": "ゴン",
+   "en": "Gon Freecss"
+  },
+  {
+   "n": "110",
+   "ja": "レオリオ",
+   "en": "Leorio Paradinight"
+  },
+  {
+   "n": "111",
+   "ja": "クラピカ",
+   "en": "Kurapika"
+  },
+  {
+   "n": "112",
+   "ja": "キルア",
+   "en": "Killua Zoldyck"
+  },
+  {
+   "n": "113",
+   "ja": "ヒソカ",
+   "en": "Hisoka Morow"
+  },
+  {
+   "n": "114",
+   "ja": "キルア",
+   "en": "Killua Zoldyck"
+  },
+  {
+   "n": "115",
+   "ja": "クラピカ",
+   "en": "Kurapika"
+  },
+  {
+   "n": "116",
+   "ja": "レオリオ",
+   "en": "Leorio Paradinight"
+  },
+  {
+   "n": "117",
+   "ja": "ゴン",
+   "en": "Gon Freecss"
+  },
+  {
+   "n": "118",
+   "ja": "ゴン",
+   "en": "Gon Freecss"
+  },
+  {
+   "n": "119",
+   "ja": "キルア",
+   "en": "Killua Zoldyck"
+  },
+  {
+   "n": "120",
+   "ja": "ヒソカ",
+   "en": "Hisoka Morow"
+  },
+  {
+   "n": "121",
+   "ja": "クラピカ",
+   "en": "Kurapika"
+  },
+  {
+   "n": "122",
+   "ja": "レオリオ",
+   "en": "Leorio Paradinight"
+  },
+  {
+   "n": "123",
+   "ja": "ゴン",
+   "en": "Gon Freecss"
+  },
+  {
+   "n": "124",
+   "ja": "クラピカ",
+   "en": "Kurapika"
+  },
+  {
+   "n": "125",
+   "ja": "キルア",
+   "en": "Killua Zoldyck"
+  },
+  {
+   "n": "126",
+   "ja": "レオリオ",
+   "en": "Leorio Paradinight"
+  },
+  {
+   "n": "127",
+   "ja": "ゴン",
+   "en": "Gon Freecss"
+  },
+  {
+   "n": "128",
+   "ja": "キルア",
+   "en": "Killua Zoldyck"
+  },
+  {
+   "n": "129",
+   "ja": "クラピカ",
+   "en": "Kurapika"
+  },
+  {
+   "n": "130",
+   "ja": "レオリオ",
+   "en": "Leorio Paradinight"
+  },
+  {
+   "n": "131",
+   "ja": "ゴン、クラピカ、キルア、レオリオ、ヒソカ、イルミ",
+   "en": "Gon Freecss, Kurapika, Killua Zoldyck, Leorio Paradinight, Hisoka Morow & Illumi Zoldyck"
+  },
+  {
+   "n": "132",
+   "ja": "ゴン&クラピカ&キルア&レオリオ",
+   "en": "Gon Freecss & Kurapika & Killua Zoldyck & Leorio Paradinight"
+  },
+  {
+   "n": "133",
+   "ja": "クラピカ&キルア",
+   "en": "Kurapika & Killua Zoldyck"
+  },
+  {
+   "n": "134",
+   "ja": "ゴン&キルア",
+   "en": "Gon Freecss & Killua Zoldyck"
+  },
+  {
+   "n": "135",
+   "ja": "クラピカ&レオリオ",
+   "en": "Kurapika & Leorio Paradinight"
+  },
+  {
+   "n": "SP1",
+   "ja": "ゴン",
+   "en": "Gon Freecss"
+  },
+  {
+   "n": "SP2",
+   "ja": "キルア",
+   "en": "Killua Zoldyck"
+  },
+  {
+   "n": "SP3",
+   "ja": "クラピカ",
+   "en": "Kurapika"
+  },
+  {
+   "n": "SP4",
+   "ja": "クロロ",
+   "en": "Chrollo Lucilfer"
+  }
+ ],
+ "vd": [
+  {
+   "n": "VD3",
+   "ja": "メンチ／ゴン／クラピカ／レオリオ／キルア",
+   "en": "Menchi / Gon Freecss / Kurapika / Leorio Paradinight / Killua Zoldyck"
+  }
+ ]
+}

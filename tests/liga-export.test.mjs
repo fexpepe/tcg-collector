@@ -163,12 +163,17 @@ test("Classic Collection dos 30 anos: número da carta antiga com três dígitos
   assert.equal(linha30("30th-c-018-pt"), "1 Gengar (094/30) [QUALIDADE=NM] [IDIOMA=PT]");
 });
 
-test("Mew RGB dos 30 anos: só o nome, que já traz o código", () => {
-  // Ia "1 Mew - B/RGB (B/128)"; a Liga só tem "Mew - B/RGB".
+test("Mew RGB dos 30 anos: só o nome com o código, sem número", () => {
+  // Ia "1 Mew - B/RGB (B/128)"; a Liga só tem "Mew - B/RGB". Desde 08/11/2026
+  // a TCGdex grava o nome só como "Mew", e a linha virou "1 Mew": o código
+  // volta pelo ligaBonusName, com o nome que estiver no catálogo.
   assert.equal(linha30("30th-B"), "1 Mew - B/RGB [QUALIDADE=NM]");
   assert.equal(linha30("30th-G"), "1 Mew - G/RGB [QUALIDADE=NM]");
   assert.equal(linha30("30th-R"), "1 Mew - R/RGB [QUALIDADE=NM]");
   assert.equal(linha30("30th-B-pt"), "1 Mew - B/RGB [QUALIDADE=NM] [IDIOMA=PT]");
+  // Com o nome de antes de 08/11, que já trazia o código, sai igual.
+  const antigo = { ...CARTAS_30["30th-G"], name: "Mew - G/RGB" };
+  assert.equal(XS.paraLiga([{ id: antigo.id, v: "Normal", q: 1, c: "NM" }], { [antigo.id]: antigo }, "pokemon"), "1 Mew - G/RGB [QUALIDADE=NM]");
 });
 
 test("com o shared carregado, o resto segue a regra de sempre", () => {
@@ -178,8 +183,9 @@ test("com o shared carregado, o resto segue a regra de sempre", () => {
   const mewJp = { id: "M6a-B-ja", name: "Mew - B/RGB", pokemonName: "Mew", number: "B", setId: "M6a", setTotal: "", language: "ja" };
   assert.equal(XS.paraLiga([{ id: mewJp.id, v: "Normal", q: 1, c: "NM" }], { [mewJp.id]: mewJp }, "pokemon"),
     "1 Mew - B/RGB (B) [QUALIDADE=NM] [IDIOMA=JP]");
-  // Texto e CSV não passam pela regra da Liga.
-  assert.equal(XS.paraTexto([{ id: "30th-B", q: 1 }], CARTAS_30), "1 Mew - B/RGB");
+  // Texto e CSV não passam pela regra da Liga: vai o nome do catálogo como
+  // está ("Mew" desde 08/11/2026), sem o código que a Liga pede.
+  assert.equal(XS.paraTexto([{ id: "30th-B", q: 1 }], CARTAS_30), `1 ${CARTAS_30["30th-B"].name}`);
   assert.equal(XS.paraCsv([{ id: "30th-c-018", v: "Normal", q: 1, c: "NM" }], CARTAS_30, "pokemon").split("\n")[1],
     "1;Gengar;30th Classic Collection;018;Normal;NM");
 });

@@ -33,7 +33,7 @@ catálogo completo só existe no build de produção.
 
 ## Os jogos
 
-O registro central é o `GAMES` em [src/game.js](src/game.js): **22 slugs**, 21 com
+O registro central é o `GAMES` em [src/game.js](src/game.js): **25 slugs**, 24 com
 catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do Pokémon
 é a raiz `data/` por motivo histórico (não movemos nada).
 
@@ -62,6 +62,7 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 | `dbz` | Dragon Ball Z CCG | Score 2000–2006: o CCG das 11 sagas, o GT TCG e o relançamento de 2005, com subsets e promos; galerias do retrodbzccg.com, nomes faltantes do kizmt/dbz-ccg-data e lidos no scan (snapshot `data/vintage/dbz-retro.json`) | sem preço |
 | `harrypotter` | Harry Potter TCG | Wizards of the Coast 2001–2002: hpjson (GitHub) + imagens do accio.cards; premium, decks e promos = cartas próprias | sem preço |
 | `mbc` | Miracle Battle Carddass | Bandai 2009–2015, o crossover da Jump: sete séries (Dragon Ball Kai, One Piece, Toriko, Hunter × Hunter, Naruto Shippuden, Kuroko, J-Heroes), uma seção por série; tcg-db (snapshot `data/vintage/miracle-battle.json`). Até 2026-10-01 eram linhas do One Piece, do Naruto e do HxH (ids `op-mb-`/`nrt-mb-`/`hxh-mb-` mantidos; `src/migra-mbc.js` leva a coleção de quem marcou) | sem preço |
+| `cdm` | Carddass Masters | Bandai 1996–2009, a linha de cartas de coleção de várias IPs, uma seção por IP. Hoje só o HUNTER×HUNTER (2000–2001): número e nome pela lista impressa no verso das cartas (`scripts/data/carddass-masters-hxh.json`), scans da Hunterpedia (snapshot `data/vintage/carddass-masters-hxh.json`) | sem preço |
 | `jump` | JUMP | curadoria versionada em `data/jump/curated/` | — |
 
 **Linhas** (`GAME_LINES` em [src/shared.js](src/shared.js)): um jogo pode ter
@@ -154,6 +155,34 @@ com o DBZ TCG da Panini (2014–2019, a categoria 23 da TCGCSV). O CI só monta
   (procedência no README de lá). Nenhuma saga tem logo próprio, então todo set
   leva o logo do jogo, como no LOTR, no WoW e no Naruto (regra 3 do
   `docs/CATALOGO.md`).
+
+### Carddass Masters (`cdm`)
+
+A linha de cartas de coleção da Bandai (1996–2009), em
+[scripts/sync-carddass-masters.mjs](scripts/sync-carddass-masters.mjs). Foram
+dezenas de IPs (Gundam, Evangelion, Cowboy Bebop, Hunter × Hunter, One Piece,
+Inuyasha, Bleach…), então é jogo próprio, no molde do `mbc`, e não seção do
+jogo de cada marca (decisão de 2026-11-09): cada edição de uma IP é um set, e
+a página de Sets tem uma seção por IP (`groupCdmSets`), as IPs na ordem do
+primeiro lançamento. Hoje só o HUNTER×HUNTER tem fonte carta a carta.
+
+- **IP nova** entra como mais um bloco no `IPS` do sync (fonte e snapshot
+  próprios, `data/vintage/carddass-masters-<ip>.json`), uma chave
+  `sets.category.cdm<Ip>` e uma linha no `groupCdmSets`.
+- **Id = IP + set + número impresso**: `cdm-hxh-p1-29`, `cdm-hxh-p2-sp4`.
+- **Nome do set** abre com a IP ("HUNTER×HUNTER パート2"): dentro do jogo é ela
+  que separa as "Parte 2" de séries diferentes (contrato 7). O nome em inglês
+  (`src/nomes-sets.js`) também, e o `groupCdmSets` tira a IP dentro da seção.
+- **HxH, nome da carta**: a カードリスト que a Bandai imprimiu no verso das
+  cartas, transcrita em `scripts/data/carddass-masters-hxh.json` (japonês no
+  `nameJp`, inglês das páginas da Hunterpedia; títulos de episódio da Wikipédia
+  japonesa, com o inglês da Hunterpedia). A Premium Edition não tem lista: o
+  nome é o personagem, como no Hyper Battle do `hxh`.
+- **HxH, imagem**: o scan da Hunterpedia é frente e verso na mesma imagem. A
+  frente sai pelo `window-crop` da própria Fandom, no CAMINHO da URL: o espelho
+  do R2 guarda pela URL de origem sem a query do wsrv.nl, e um recorte por
+  parâmetro do wsrv sumiria lá. As cartas de episódio vêm deitadas no scan.
+- **Datas só com o ano** ("2000"): a tela mostra só o ano, sem mês inventado.
 
 ### Dragon Ball Carddass (`dbc`)
 
@@ -1114,7 +1143,7 @@ continua vendo só a casa e os parceiros.
 - **Sem período pago sem anúncio** (2026-11-09). O "apoiador sem anúncio"
   (R$ 10+ = 30 dias sem nenhum espaço, migração `20260928c`) saiu: o Sleevu é
   grátis pra todos e se paga só com anúncio, então a vitrine monta igual pra
-  qualquer conta e o `ads.js` não consulta o banco. A `20261109a` apaga a
+  qualquer conta e o `ads.js` não consulta o banco. A `20261109b` apaga a
   tabela `apoiadores` e as RPCs; o `adminRpc` do `shared.js` só aceita
   `admin_*` (e os dois `*_summary`). Pix e Ko-fi seguem como ajuda
   voluntária, sem nada em troca.

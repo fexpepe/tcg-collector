@@ -105,6 +105,9 @@ test("mapCsvGame: os 13 jogos, nas grafias do Collectr/TCGplayer", () => {
   assert.equal(api.mapCsvGame("Dragon Ball Z CCG"), "dbz");
   assert.equal(api.mapCsvGame("Dragon Ball GT TCG"), "dbz");
   assert.equal(api.mapCsvGame("Dragon Ball Super Fusion World"), "dbfw");
+  // Carddass Masters é de várias IPs: o jogo vence a marca.
+  assert.equal(api.mapCsvGame("Carddass Masters"), "cdm");
+  assert.equal(api.mapCsvGame("Hunter x Hunter Carddass Masters"), "cdm");
   // TCGplayer escreve "Weiss Schwarz"; quem digita o nome alemão, "Weiß Schwarz".
   assert.equal(api.mapCsvGame("Weiss Schwarz"), "weiss");
   assert.equal(api.mapCsvGame("Weiß Schwarz"), "weiss");

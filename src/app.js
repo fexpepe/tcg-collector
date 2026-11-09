@@ -17,7 +17,7 @@
     ygo: "game_ygo-v2.webp", digimon: "game_digimon-v2.webp", riftbound: "game_riftbound-v2.webp",
     unionarena: "game_unionarena.webp", naruto: "game_naruto.webp", hxh: "game_hxh.webp",
     dbc: "game_dbc.webp", wow: "game_wow.webp", lotr: "game_lotr.webp", dbz: "game_dbz.webp", weiss: "game_weiss.webp", harrypotter: "game_harrypotter.webp",
-    mbc: "game_mbc.webp"
+    mbc: "game_mbc.webp", cdm: ""
   };
   function gameLogoUrl(game) {
     const f = GAME_LOGO[game];
@@ -1536,6 +1536,7 @@
       dbz: groupDbzSets,
       weiss: groupWeissSets,
       mbc: groupMbcSets,
+      cdm: groupCdmSets,
       harrypotter: groupHarryPotterSets
     };
     return (porJogo[jogoAtual] || groupSetsByYear)(raizes);
@@ -2018,6 +2019,37 @@
     return items;
   }
 
+  // Carddass Masters (jogo cdm, desde 2026-11-09): a linha de cartas de coleção
+  // da Bandai teve dezenas de IPs, e cada edição de uma IP é um set. Uma seção
+  // por IP, as IPs na ordem do primeiro lançamento e, dentro, os sets em ordem
+  // de lançamento (data e, no empate de ano, o setId: p1 < pe < p2). A IP sai
+  // do setId (cdm-<ip>-<set>, fixado pelo sync-carddass-masters.mjs). O nome em
+  // inglês leva a IP ("Hunter × Hunter Part 2", pra Coleção e o popup não
+  // confundirem as "Part 2" de várias séries); dentro da seção ela sai, como
+  // no groupMbcSets.
+  function groupCdmSets(setItems) {
+    const IPS = { hxh: ["sets.category.cdmHxh", "Hunter × Hunter "] };
+    const ipDe = (set) => (String(set.setId || "").toLowerCase().match(/^cdm-([a-z0-9]+)-/) || [])[1] || "";
+    const semIp = (set) => {
+      const nome = String(set.displayName || ""), ip = (IPS[ipDe(set)] || [])[1] || "";
+      return ip && nome.indexOf(ip) === 0 ? Object.assign({}, set, { displayName: nome.slice(ip.length), nomeForaDaSecao: nome }) : set;
+    };
+    const porData = (a, b) => String(a.releaseDate || "9999").localeCompare(String(b.releaseDate || "9999")) || String(a.setId).localeCompare(String(b.setId), "en", { numeric: true });
+    const grupos = new Map();
+    setItems.slice().sort(porData).forEach((set) => {
+      const ip = IPS[ipDe(set)] ? ipDe(set) : "";
+      if (!grupos.has(ip)) grupos.set(ip, []);
+      grupos.get(ip).push(semIp(set));
+    });
+    const items = [];
+    grupos.forEach((list, ip) => {
+      // Rede de segurança: IP nova no sync sem seção aqui ainda aparece.
+      items.push(cabecalhoDeSecao(ip ? IPS[ip][0] : "sets.category.promos", list.length));
+      list.forEach((set) => items.push(set));
+    });
+    return items;
+  }
+
   function groupHarryPotterSets(setItems) {
     const principal = (set) => /^hp-(bs|qc|da|aah|cos)$/.test(String(set.setId || ""));
     const grupos = [
@@ -2207,6 +2239,9 @@
   // longo, o do destaque do topo, inventava um "1 de outubro de 2002".
   const formatosDeData = new Map();
   function formatReleaseDate(value, style) {
+    // Só o ano ("2000": vintage sem mês conhecido, como o Carddass Masters)
+    // sai só o ano; o Date leria 1º de janeiro e o cartão diria "jan. de 2000".
+    if (/^\d{4}$/.test(String(value))) return String(value);
     const date = new Date(value);
     if (Number.isNaN(date.getTime())) return value;
     const longo = style === "long" ? (/^\d{4}-\d{2}$/.test(String(value)) ? "m" : "l") : "c";

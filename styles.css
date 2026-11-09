@@ -441,6 +441,18 @@
   --accent: #9a3412; --accent-dark: #7c2d12; --accent-rgb: 154, 52, 18;
   --accent-soft: rgba(154, 52, 18, 0.1); --on-accent: #ffffff;
 }
+/* Carddass Masters: FÚCSIA, a cor do GAME_COLOR (a linha é de várias IPs, sem
+   cor de marca; 09/11/2026). Fúcsia claro com texto escuro no escuro (8.0:1);
+   o #a21caf com texto branco no claro (6.3:1). */
+[data-game-accent="cdm"] {
+  --accent: #e879f9; --accent-dark: #d946ef; --accent-rgb: 232, 121, 249;
+  --accent-soft: rgba(232, 121, 249, 0.16); --on-accent: #0a0c10;
+}
+[data-theme="light"][data-game-accent="cdm"],
+[data-theme="light"] [data-game-accent="cdm"] {
+  --accent: #a21caf; --accent-dark: #86198f; --accent-rgb: 162, 28, 175;
+  --accent-soft: rgba(162, 28, 175, 0.1); --on-accent: #ffffff;
+}
 /* Sorcery: Contested Realm: o PERGAMINHO da moldura das cartas (#c9a66b, o do
    GAME_COLOR) com texto escuro no escuro (8.5:1). No claro ele fica em 2.3:1
    com branco, então o accent escurece pro marrom de tinta #7d5f2c (5.9:1 com

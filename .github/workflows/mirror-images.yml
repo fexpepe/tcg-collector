@@ -79,6 +79,7 @@ jobs:
             data/weiss/sets
             data/harrypotter/sets
             data/mbc/sets
+            data/cdm/sets
             data/jump/sets
             data/magic/cards.js
             data/magic/indexes.js

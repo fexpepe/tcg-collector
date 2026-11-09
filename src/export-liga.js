@@ -66,6 +66,14 @@
     const shared = window.TCGShared;
     return shared && shared.ligaSpecialCode ? shared.ligaSpecialCode(card) : null;
   }
+  // Nome na Liga: o do catálogo, menos na carta bônus, que leva o código
+  // ("Mew - B/RGB"; ver ligaBonusName no shared.js — desde 08/11/2026 a
+  // TCGdex grava só "Mew").
+  function nomeLiga(card, game) {
+    const shared = window.TCGShared;
+    if (game === "pokemon" && card && shared && shared.ligaBonusName && codigoEspecialLiga(card) === "") return shared.ligaBonusName(card);
+    return nomeLimpo(card ? card.name : "");
+  }
   function numeroPokemon(card) {
     if (!card || !card.number) return "";
     const especial = codigoEspecialLiga(card);
@@ -115,7 +123,7 @@
   // Uma linha da Liga.
   function linhaLiga(entry, card, game) {
     const qtd = entry.q == null ? 1 : entry.q;
-    const nome = nomeLimpo(card ? card.name : entry.id);
+    const nome = card ? nomeLiga(card, game) : nomeLimpo(entry.id);
     const partes = [`${qtd} ${nome}`];
 
     if (game === "pokemon") {

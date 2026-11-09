@@ -432,7 +432,7 @@ anúncio** — não existe período pago sem anúncio, todo mundo vê a mesma
 vitrine. O que saiu: a consulta no `ads.js`, o selo e o texto em
 Configurações, a seção "Marcar apoio" da aba Vitrine do /admin, o prefixo
 `apoio_` na porta logada do `shared.js` e a promessa dos 30 dias na home, na
-faixa "apoie", no menu de conta, no FAQ e na política. A migração `20261109a`
+faixa "apoie", no menu de conta, no FAQ e na política. A migração `20261109b`
 apaga a tabela e as três RPCs. O Pix e o Ko-fi continuam como ajuda
 voluntária, sem nada em troca.
 
@@ -549,7 +549,7 @@ O que mudou no caminho, e por quê:
       `apoio_status` + marcação no /admin (migração `20260928c`, aplicada e
       verificada em 2026-09-29) + leitura no `ads.js` + selo em Configurações~~
       — saiu em 2026-11-09 (site 100% grátis, só com anúncio; migração
-      `20261109a` apaga a tabela)
+      `20261109b` apaga a tabela)
 - [ ] Aprovação do site no AdSense
 - [x] ~~Lançamento a 50% com grupo de controle~~ — o AdSense foi ligado pra
       todo mundo em 2026-09-28 (decisão do Fernando), sem grupo de controle.

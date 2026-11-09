@@ -330,7 +330,7 @@ test("migração 20260927a: RPC só de admin e os dois eventos na whitelist", ()
   assert.match(sql, /jsonb_typeof\(props->'v'\)\s+= 'array'/);
 });
 
-// ── Sem apoiador sem anúncio (20261109a desfaz a 20260928c) ─────────────────
+// ── Sem apoiador sem anúncio (20261109b desfaz a 20260928c) ─────────────────
 // Decisão de 2026-11-09: o Sleevu é grátis pra todos e se paga só com anúncio.
 // Ninguém compra período sem anúncio, então nada pode voltar a esconder a
 // vitrine por conta (nem consultar o banco antes de montar).
@@ -351,8 +351,8 @@ test("sem apoiador: todo mundo vê a mesma vitrine e a porta apoio_* fechou", ()
   }
 });
 
-test("migração 20261109a: apaga a tabela e as três RPCs do apoiador", () => {
-  const sql = ler("supabase/migrations/20261109a_sem_apoiador.sql");
+test("migração 20261109b: apaga a tabela e as três RPCs do apoiador", () => {
+  const sql = ler("supabase/migrations/20261109b_sem_apoiador.sql");
   assert.match(sql, /drop function if exists public\.apoio_status\(\);/);
   assert.match(sql, /drop function if exists public\.admin_apoiador\(text, int\);/, "assinatura igual à da 20260928c, senão o drop não acha");
   assert.match(sql, /drop function if exists public\.admin_apoiadores\(\);/);
