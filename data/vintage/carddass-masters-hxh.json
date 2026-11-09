@@ -1,0 +1,3356 @@
+{
+ "source": "https://hunterxhunter.fandom.com/wiki/Hunter_%C3%97_Hunter_Carddass_Collections",
+ "updatedAt": "2026-11-09",
+ "sets": [
+  {
+   "code": "p1",
+   "name": "パート1 ゴン×ライバル×ハンター試験開始!",
+   "cards": [
+    {
+     "set": "p1",
+     "num": "1",
+     "rarity": "Normal",
+     "chars": [
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 1 card 001 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/b/b2/Carddass_masters_part_1_card_001_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/720"
+    },
+    {
+     "set": "p1",
+     "num": "2",
+     "rarity": "Normal",
+     "chars": [
+      "Hisoka Morow",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 1 card 002 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/e/eb/Carddass_masters_part_1_card_002_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/720"
+    },
+    {
+     "set": "p1",
+     "num": "3",
+     "rarity": "Normal",
+     "chars": [
+      "Hisoka Morow"
+     ],
+     "file": "Carddass masters part 1 card 003 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/f/f2/Carddass_masters_part_1_card_003_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/720"
+    },
+    {
+     "set": "p1",
+     "num": "4",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Satotz",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 1 card 004 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/3/31/Carddass_masters_part_1_card_004_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/720"
+    },
+    {
+     "set": "p1",
+     "num": "5",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Hisoka Morow",
+      "Killua Zoldyck",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 1 card 005 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/0/06/Carddass_masters_part_1_card_005_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/720"
+    },
+    {
+     "set": "p1",
+     "num": "6",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Hisoka Morow",
+      "Killua Zoldyck",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 1 card 006 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/9/94/Carddass_masters_part_1_card_006_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/720"
+    },
+    {
+     "set": "p1",
+     "num": "7",
+     "rarity": "Normal",
+     "chars": [
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 1 card 007 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/6/6e/Carddass_masters_part_1_card_007_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/720"
+    },
+    {
+     "set": "p1",
+     "num": "8",
+     "rarity": "Normal",
+     "chars": [
+      "Menchi"
+     ],
+     "file": "Carddass masters part 1 card 008 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/a/ab/Carddass_masters_part_1_card_008_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/720"
+    },
+    {
+     "set": "p1",
+     "num": "9",
+     "rarity": "Normal",
+     "chars": [
+      "Isaac Netero"
+     ],
+     "file": "Carddass masters part 1 card 009 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/f/f0/Carddass_masters_part_1_card_009_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/720"
+    },
+    {
+     "set": "p1",
+     "num": "10",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 1 card 010 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/7/7c/Carddass_masters_part_1_card_010_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/720"
+    },
+    {
+     "set": "p1",
+     "num": "11",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 1 card 011 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/0/09/Carddass_masters_part_1_card_011_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/720"
+    },
+    {
+     "set": "p1",
+     "num": "12",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 1 card 012 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/1/12/Carddass_masters_part_1_card_012_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/720"
+    },
+    {
+     "set": "p1",
+     "num": "13",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Killua Zoldyck",
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 1 card 013 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/5/5e/Carddass_masters_part_1_card_013_front_and_back.png/revision/latest/window-crop/width/563/x-offset/0/y-offset/0/window-width/563/window-height/800"
+    },
+    {
+     "set": "p1",
+     "num": "14",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 1 card 014 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/b/b2/Carddass_masters_part_1_card_014_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/720"
+    },
+    {
+     "set": "p1",
+     "num": "15",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Killua Zoldyck",
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 1 card 015 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/3/32/Carddass_masters_part_1_card_015_front_and_back.png/revision/latest/window-crop/width/566/x-offset/0/y-offset/0/window-width/566/window-height/800"
+    },
+    {
+     "set": "p1",
+     "num": "16",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 1 card 016 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/2/2d/Carddass_masters_part_1_card_016_front_and_back.png/revision/latest/window-crop/width/563/x-offset/0/y-offset/0/window-width/563/window-height/800"
+    },
+    {
+     "set": "p1",
+     "num": "17",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 1 card 017 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/6/66/Carddass_masters_part_1_card_017_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/720"
+    },
+    {
+     "set": "p1",
+     "num": "18",
+     "rarity": "Normal",
+     "chars": [
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 1 card 018 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/a/a5/Carddass_masters_part_1_card_018_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/720"
+    },
+    {
+     "set": "p1",
+     "num": "19",
+     "rarity": "Normal",
+     "chars": [
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 1 card 019 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/7/7f/Carddass_masters_part_1_card_019_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/720"
+    },
+    {
+     "set": "p1",
+     "num": "20",
+     "rarity": "Normal",
+     "chars": [
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 1 card 020 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/7/76/Carddass_masters_part_1_card_020_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/720"
+    },
+    {
+     "set": "p1",
+     "num": "21",
+     "rarity": "Normal",
+     "chars": [
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 1 card 021 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/1/1f/Carddass_masters_part_1_card_021_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/720"
+    },
+    {
+     "set": "p1",
+     "num": "22",
+     "rarity": "Normal",
+     "chars": [
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 1 card 022 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/8/8d/Carddass_masters_part_1_card_022_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/720"
+    },
+    {
+     "set": "p1",
+     "num": "23",
+     "rarity": "Normal",
+     "chars": [
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 1 card 023 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/9/9c/Carddass_masters_part_1_card_023_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/720"
+    },
+    {
+     "set": "p1",
+     "num": "24",
+     "rarity": "Normal",
+     "chars": [
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 1 card 024 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/2/26/Carddass_masters_part_1_card_024_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "25",
+     "rarity": "Normal",
+     "chars": [
+      "Ging Freecss",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 1 card 025 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/1/1d/Carddass_masters_part_1_card_025_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p1",
+     "num": "26",
+     "rarity": "Normal",
+     "chars": [
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 1 card 026 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/b/bf/Carddass_masters_part_1_card_026_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p1",
+     "num": "27",
+     "rarity": "Normal",
+     "chars": [
+      "Kon",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 1 card 027 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/1/13/Carddass_masters_part_1_card_027_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p1",
+     "num": "28",
+     "rarity": "Normal",
+     "chars": [
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 1 card 028 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/7/73/Carddass_masters_part_1_card_028_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p1",
+     "num": "29",
+     "rarity": "Normal",
+     "chars": [
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 1 card 029.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/c/c6/Carddass_masters_part_1_card_029.png"
+    },
+    {
+     "set": "p1",
+     "num": "30",
+     "rarity": "Normal",
+     "chars": [
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 1 card 030 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/4/47/Carddass_masters_part_1_card_030_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p1",
+     "num": "31",
+     "rarity": "Normal",
+     "chars": [
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 1 card 031 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/d/d9/Carddass_masters_part_1_card_031_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p1",
+     "num": "32",
+     "rarity": "Normal",
+     "chars": [
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 1 card 032 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/a/a4/Carddass_masters_part_1_card_032_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p1",
+     "num": "33",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 1 card 033 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/6/6b/Carddass_masters_part_1_card_033_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p1",
+     "num": "34",
+     "rarity": "Normal",
+     "chars": [
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 1 card 034 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/d/d0/Carddass_masters_part_1_card_034_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p1",
+     "num": "35",
+     "rarity": "Normal",
+     "chars": [
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 1 card 035 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/9/9f/Carddass_masters_part_1_card_035_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p1",
+     "num": "36",
+     "rarity": "Normal",
+     "chars": [
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 1 card 036.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/f/f8/Carddass_masters_part_1_card_036.png"
+    },
+    {
+     "set": "p1",
+     "num": "37",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight"
+     ],
+     "file": "Carddass masters part 1 card 037.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/2/23/Carddass_masters_part_1_card_037.png"
+    },
+    {
+     "set": "p1",
+     "num": "38",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight"
+     ],
+     "file": "Carddass masters part 1 card 038 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/a/ab/Carddass_masters_part_1_card_038_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p1",
+     "num": "39",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight"
+     ],
+     "file": "Carddass masters part 1 card 039 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/3/3b/Carddass_masters_part_1_card_039_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p1",
+     "num": "40",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight"
+     ],
+     "file": "Carddass masters part 1 card 040 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/7/76/Carddass_masters_part_1_card_040_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p1",
+     "num": "41",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight"
+     ],
+     "file": "Carddass masters part 1 card 041 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/b/bd/Carddass_masters_part_1_card_041_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p1",
+     "num": "42",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight"
+     ],
+     "file": "Carddass masters part 1 card 042 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/8/85/Carddass_masters_part_1_card_042_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p1",
+     "num": "43",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight"
+     ],
+     "file": "Carddass masters part 1 card 043 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/4/42/Carddass_masters_part_1_card_043_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p1",
+     "num": "44",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight"
+     ],
+     "file": "Carddass masters part 1 card 044 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/a/a4/Carddass_masters_part_1_card_044_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p1",
+     "num": "45",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight"
+     ],
+     "file": "Carddass masters part 1 card 045 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/1/16/Carddass_masters_part_1_card_045_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p1",
+     "num": "46",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Carddass masters part 1 card 046 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/f/fe/Carddass_masters_part_1_card_046_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p1",
+     "num": "47",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Carddass masters part 1 card 047 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/3/3d/Carddass_masters_part_1_card_047_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p1",
+     "num": "48",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Carddass masters part 1 card 048 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/b/bc/Carddass_masters_part_1_card_048_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p1",
+     "num": "49",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Carddass masters part 1 card 049 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/c/c9/Carddass_masters_part_1_card_049_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p1",
+     "num": "50",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Carddass masters part 1 card 050 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/e/e8/Carddass_masters_part_1_card_050_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p1",
+     "num": "51",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Carddass masters part 1 card 051 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/b/bc/Carddass_masters_part_1_card_051_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p1",
+     "num": "52",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Carddass masters part 1 card 052.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/9/93/Carddass_masters_part_1_card_052.png"
+    },
+    {
+     "set": "p1",
+     "num": "53",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Carddass masters part 1 card 053 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/2/2a/Carddass_masters_part_1_card_053_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p1",
+     "num": "54",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Carddass masters part 1 card 054 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/4/46/Carddass_masters_part_1_card_054_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p1",
+     "num": "55",
+     "rarity": "Normal",
+     "chars": [
+      "Isaac Netero",
+      "Mamen Beans"
+     ],
+     "file": "Carddass masters part 1 card 055 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/f/f3/Carddass_masters_part_1_card_055_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p1",
+     "num": "56",
+     "rarity": "Normal",
+     "chars": [
+      "Menchi"
+     ],
+     "file": "Carddass masters part 1 card 056 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/b/b5/Carddass_masters_part_1_card_056_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "57",
+     "rarity": "Normal",
+     "chars": [
+      "Menchi",
+      "Buhara"
+     ],
+     "file": "Carddass masters part 1 card 057 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/1/1c/Carddass_masters_part_1_card_057_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "58",
+     "rarity": "Normal",
+     "chars": [
+      "Satotz"
+     ],
+     "file": "Carddass masters part 1 card 058 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/8/83/Carddass_masters_part_1_card_058_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "59",
+     "rarity": "Normal",
+     "chars": [
+      "Kiriko"
+     ],
+     "file": "Carddass masters part 1 card 059 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/5/53/Carddass_masters_part_1_card_059_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "60",
+     "rarity": "Normal",
+     "chars": [
+      "Kiriko",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 1 card 060 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/2/28/Carddass_masters_part_1_card_060_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "61",
+     "rarity": "Normal",
+     "chars": [
+      "Quizzing Lady",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 1 card 061 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/9/97/Carddass_masters_part_1_card_061_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "62",
+     "rarity": "Normal",
+     "chars": [
+      "Captain"
+     ],
+     "file": "Carddass masters part 1 card 062 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/0/0e/Carddass_masters_part_1_card_062_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "63",
+     "rarity": "Normal",
+     "chars": [
+      "Mamen Beans"
+     ],
+     "file": "Carddass masters part 1 card 063 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/2/25/Carddass_masters_part_1_card_063_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "64",
+     "rarity": "Normal",
+     "chars": [
+      "Hisoka Morow"
+     ],
+     "file": "Carddass masters part 1 card 064 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/7/7d/Carddass_masters_part_1_card_064_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "65",
+     "rarity": "Normal",
+     "chars": [
+      "Hisoka Morow"
+     ],
+     "file": "Carddass masters part 1 card 065 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/c/cd/Carddass_masters_part_1_card_065_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "66",
+     "rarity": "Normal",
+     "chars": [
+      "Hisoka Morow"
+     ],
+     "file": "Carddass masters part 1 card 066 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/8/89/Carddass_masters_part_1_card_066_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "67",
+     "rarity": "Normal",
+     "chars": [
+      "Hanzo"
+     ],
+     "file": "Carddass masters part 1 card 067 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/d/d2/Carddass_masters_part_1_card_067_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "68",
+     "rarity": "Normal",
+     "chars": [
+      "Pokkle"
+     ],
+     "file": "Carddass masters part 1 card 068 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/5/56/Carddass_masters_part_1_card_068_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "69",
+     "rarity": "Normal",
+     "chars": [
+      "Tonpa"
+     ],
+     "file": "Carddass masters part 1 card 069 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/6/66/Carddass_masters_part_1_card_069_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "70",
+     "rarity": "Normal",
+     "chars": [
+      "Todo"
+     ],
+     "file": "Carddass masters part 1 card 070 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/6/67/Carddass_masters_part_1_card_070_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "71",
+     "rarity": "Normal",
+     "chars": [
+      "Nicholas"
+     ],
+     "file": "Carddass masters part 1 card 071 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/3/38/Carddass_masters_part_1_card_071_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "72",
+     "rarity": "Normal",
+     "chars": [
+      "Matthew"
+     ],
+     "file": "Carddass masters part 1 card 072 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/e/e4/Carddass_masters_part_1_card_072_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "73",
+     "rarity": "Normal",
+     "chars": [
+      "Kite"
+     ],
+     "file": "Carddass masters part 1 card 073 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/1/17/Carddass_masters_part_1_card_073_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "74",
+     "rarity": "Normal",
+     "chars": [
+      "Mito Freecss",
+      "Ging and Mito's Grandmother"
+     ],
+     "file": "Carddass masters part 1 card 074 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/5/5c/Carddass_masters_part_1_card_074_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "75",
+     "rarity": "Normal",
+     "chars": [
+      "Anita"
+     ],
+     "file": "Carddass masters part 1 card 075 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/c/c0/Carddass_masters_part_1_card_075_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "76",
+     "rarity": "Normal",
+     "chars": [
+      "Kon"
+     ],
+     "file": "Carddass masters part 1 card 076 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/0/0b/Carddass_masters_part_1_card_076_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "77",
+     "rarity": "Normal",
+     "chars": [
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 1 card 077 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/f/f2/Carddass_masters_part_1_card_077_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "78",
+     "rarity": "Normal",
+     "chars": [
+      "Frog-In-Waiting",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 1 card 078 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/6/64/Carddass_masters_part_1_card_078_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "79",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 1 card 079 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/b/b4/Carddass_masters_part_1_card_079_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "80",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 1 card 080 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/2/26/Carddass_masters_part_1_card_080_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "81",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 1 card 081 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/3/37/Carddass_masters_part_1_card_081_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "82",
+     "rarity": "Normal",
+     "chars": [
+      "Kite",
+      "Hunter License",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 1 card 082 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/2/2a/Carddass_masters_part_1_card_082_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "83",
+     "rarity": "Normal",
+     "chars": [
+      "Master of the Swamp",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 1 card 083 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/0/07/Carddass_masters_part_1_card_083_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "84",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 1 card 084 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/c/c3/Carddass_masters_part_1_card_084_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "85",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Kon",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 1 card 085 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/d/dd/Carddass_masters_part_1_card_085_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "86",
+     "rarity": "Normal",
+     "chars": [
+      "Captain",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 1 card 086 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/7/7a/Carddass_masters_part_1_card_086_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "87",
+     "rarity": "Normal",
+     "chars": [
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 1 card 087 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/8/86/Carddass_masters_part_1_card_087_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "88",
+     "rarity": "Normal",
+     "chars": [
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 1 card 088.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/6/66/Carddass_masters_part_1_card_088.png"
+    },
+    {
+     "set": "p1",
+     "num": "89",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Matthew",
+      "Captain",
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 1 card 089 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/9/9a/Carddass_masters_part_1_card_089_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "90",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 1 card 090 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/6/6b/Carddass_masters_part_1_card_090_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "91",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Kiriko",
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 1 card 091.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/3/31/Carddass_masters_part_1_card_091.png"
+    },
+    {
+     "set": "p1",
+     "num": "92",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Kiriko",
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 1 card 092.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/8/8d/Carddass_masters_part_1_card_092.png"
+    },
+    {
+     "set": "p1",
+     "num": "93",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 1 card 093 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/5/5f/Carddass_masters_part_1_card_093_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "94",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Tonpa",
+      "Nicholas"
+     ],
+     "file": "Carddass masters part 1 card 094 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/e/ef/Carddass_masters_part_1_card_094_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "95",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Tonpa",
+      "Killua Zoldyck"
+     ],
+     "file": "Carddass masters part 1 card 095 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/d/d7/Carddass_masters_part_1_card_095_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "96",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Killua Zoldyck",
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 1 card 096 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/0/09/Carddass_masters_part_1_card_096_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "97",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Hisoka Morow",
+      "Hanzo"
+     ],
+     "file": "Carddass masters part 1 card 097 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/a/a2/Carddass_masters_part_1_card_097_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "98",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Hisoka Morow",
+      "Pokkle",
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 1 card 098 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/e/e2/Carddass_masters_part_1_card_098_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "99",
+     "rarity": "Normal",
+     "chars": [
+      "Menchi",
+      "Buhara",
+      "Killua Zoldyck",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 1 card 099 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/5/51/Carddass_masters_part_1_card_099_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "100",
+     "rarity": "Normal",
+     "chars": [
+      "Hanzo",
+      "Menchi"
+     ],
+     "file": "Carddass masters part 1 card 100 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/8/80/Carddass_masters_part_1_card_100_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "101",
+     "rarity": "Normal",
+     "chars": [
+      "Menchi",
+      "Killua Zoldyck",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 1 card 101 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/5/5c/Carddass_masters_part_1_card_101_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "102",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Isaac Netero",
+      "Satotz",
+      "Menchi",
+      "Killua Zoldyck",
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 1 card 102 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/7/7f/Carddass_masters_part_1_card_102_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "103",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Anita",
+      "Killua Zoldyck"
+     ],
+     "file": "Carddass masters part 1 card 103 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/4/47/Carddass_masters_part_1_card_103_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "104",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Isaac Netero",
+      "Anita",
+      "Killua Zoldyck",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 1 card 104 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/7/75/Carddass_masters_part_1_card_104_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "105",
+     "rarity": "Normal",
+     "chars": [
+      "Isaac Netero",
+      "Killua Zoldyck"
+     ],
+     "file": "Carddass masters part 1 card 105 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/5/5e/Carddass_masters_part_1_card_105_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "106",
+     "rarity": "Normal",
+     "chars": [
+      "Isaac Netero",
+      "Killua Zoldyck",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 1 card 106 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/1/17/Carddass_masters_part_1_card_106_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "107",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Anita",
+      "Killua Zoldyck",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 1 card 107 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/7/70/Carddass_masters_part_1_card_107_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "108",
+     "rarity": "Normal",
+     "chars": [
+      "Mito Freecss"
+     ],
+     "file": "Carddass masters part 1 card 108 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/c/c6/Carddass_masters_part_1_card_108_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "109",
+     "rarity": "Normal",
+     "chars": [
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 1 card 109 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/d/d9/Carddass_masters_part_1_card_109_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "110",
+     "rarity": "Normal",
+     "chars": [
+      "Isaac Netero",
+      "Captain",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 1 card 110 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/9/97/Carddass_masters_part_1_card_110_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "111",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight"
+     ],
+     "file": "Carddass masters part 1 card 111 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/9/9a/Carddass_masters_part_1_card_111_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "112",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Quizzing Lady",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 1 card 112.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/9/97/Carddass_masters_part_1_card_112.png"
+    },
+    {
+     "set": "p1",
+     "num": "113",
+     "rarity": "Normal",
+     "chars": [
+      "Buhara",
+      "Kiriko",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 1 card 113 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/a/ab/Carddass_masters_part_1_card_113_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "114",
+     "rarity": "Normal",
+     "chars": [
+      "Satotz"
+     ],
+     "file": "Carddass masters part 1 card 114 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/4/41/Carddass_masters_part_1_card_114_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "115",
+     "rarity": "Normal",
+     "chars": [
+      "Captain",
+      "Menchi",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 1 card 115 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/d/d7/Carddass_masters_part_1_card_115_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "116",
+     "rarity": "Normal",
+     "chars": [
+      "Menchi"
+     ],
+     "file": "Carddass masters part 1 card 116 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/7/7f/Carddass_masters_part_1_card_116_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "117",
+     "rarity": "Normal",
+     "chars": [
+      "Isaac Netero"
+     ],
+     "file": "Carddass masters part 1 card 117.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/5/54/Carddass_masters_part_1_card_117.png"
+    },
+    {
+     "set": "p1",
+     "num": "118",
+     "rarity": "Normal",
+     "chars": [
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 1 card 118 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/e/eb/Carddass_masters_part_1_card_118_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "119",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight"
+     ],
+     "file": "Carddass masters part 1 card 119 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/9/92/Carddass_masters_part_1_card_119_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "120",
+     "rarity": "Normal",
+     "chars": [
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 1 card 120 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/2/27/Carddass_masters_part_1_card_120_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "121",
+     "rarity": "Normal",
+     "chars": [
+      "Quizzing Lady"
+     ],
+     "file": "Carddass masters part 1 card 121 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/d/d6/Carddass_masters_part_1_card_121_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "122",
+     "rarity": "Normal",
+     "chars": [
+      "Kiriko"
+     ],
+     "file": "Carddass masters part 1 card 122 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/f/fb/Carddass_masters_part_1_card_122_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "123",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Carddass masters part 1 card 123 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/d/df/Carddass_masters_part_1_card_123_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "124",
+     "rarity": "Normal",
+     "chars": [
+      "Hisoka Morow"
+     ],
+     "file": "Carddass masters part 1 card 124 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/c/c5/Carddass_masters_part_1_card_124_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "125",
+     "rarity": "Normal",
+     "chars": [
+      "Menchi",
+      "Buhara"
+     ],
+     "file": "Carddass masters part 1 card 125 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/c/c4/Carddass_masters_part_1_card_125_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "126",
+     "rarity": "Normal",
+     "chars": [
+      "Todo"
+     ],
+     "file": "Carddass masters part 1 card 126 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/1/12/Carddass_masters_part_1_card_126_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "127",
+     "rarity": "Normal",
+     "chars": [
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 1 card 127 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/0/09/Carddass_masters_part_1_card_127_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "128",
+     "rarity": "Normal",
+     "chars": [
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 1 card 128 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/e/e2/Carddass_masters_part_1_card_128_front_and_back.png/revision/latest/window-crop/width/384/x-offset/0/y-offset/0/window-width/384/window-height/546"
+    },
+    {
+     "set": "p1",
+     "num": "129",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Carddass masters part 1 card 129 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/2/2b/Carddass_masters_part_1_card_129_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "130",
+     "rarity": "Normal",
+     "chars": [
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 1 card 130 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/9/9a/Carddass_masters_part_1_card_130_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p1",
+     "num": "131",
+     "rarity": "Normal",
+     "chars": [
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 1 card 131 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/b/b0/Carddass_masters_part_1_card_131_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p1",
+     "num": "132",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight"
+     ],
+     "file": "Carddass masters part 1 card 132 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/4/40/Carddass_masters_part_1_card_132_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "133",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Carddass masters part 1 card 133 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/f/f7/Carddass_masters_part_1_card_133_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "134",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight"
+     ],
+     "file": "Carddass masters part 1 card 134 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/4/4c/Carddass_masters_part_1_card_134_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "135",
+     "rarity": "Normal",
+     "chars": [
+      "Menchi"
+     ],
+     "file": "Carddass masters part 1 card 135 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/0/08/Carddass_masters_part_1_card_135_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "SP1",
+     "rarity": "Special",
+     "chars": [
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 1 card sp1 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/5/5a/Carddass_masters_part_1_card_sp1_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p1",
+     "num": "SP2",
+     "rarity": "Special",
+     "chars": [
+      "Leorio Paradinight"
+     ],
+     "file": "Carddass masters part 1 card sp2 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/9/98/Carddass_masters_part_1_card_sp2_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "SP3",
+     "rarity": "Special",
+     "chars": [
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 1 card sp3 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/c/cc/Carddass_masters_part_1_card_sp3_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p1",
+     "num": "SP4",
+     "rarity": "Special",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Carddass masters part 1 card sp4 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/f/fd/Carddass_masters_part_1_card_sp4_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/726"
+    }
+   ]
+  },
+  {
+   "code": "pe",
+   "name": "Premium Edition",
+   "cards": [
+    {
+     "set": "pe",
+     "num": "1",
+     "rarity": "Normal",
+     "chars": [
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters premium edition card 01 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/4/43/Carddass_masters_premium_edition_card_01_front_and_back.png/revision/latest/window-crop/width/266/x-offset/0/y-offset/0/window-width/266/window-height/378"
+    },
+    {
+     "set": "pe",
+     "num": "2",
+     "rarity": "Normal",
+     "chars": [
+      "Kurapika"
+     ],
+     "file": "Carddass masters premium edition card 02 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/7/7c/Carddass_masters_premium_edition_card_02_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/728"
+    },
+    {
+     "set": "pe",
+     "num": "3",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight"
+     ],
+     "file": "Carddass masters premium edition card 03 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/3/39/Carddass_masters_premium_edition_card_03_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/728"
+    },
+    {
+     "set": "pe",
+     "num": "4",
+     "rarity": "Normal",
+     "chars": [
+      "Kon",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters premium edition card 04 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/a/a9/Carddass_masters_premium_edition_card_04_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/728"
+    },
+    {
+     "set": "pe",
+     "num": "5",
+     "rarity": "Normal",
+     "chars": [
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters premium edition card 05 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/9/9f/Carddass_masters_premium_edition_card_05_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/728"
+    },
+    {
+     "set": "pe",
+     "num": "6",
+     "rarity": "Normal",
+     "chars": [
+      "Kite"
+     ],
+     "file": "Carddass masters premium edition card 06 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/0/07/Carddass_masters_premium_edition_card_06_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/728"
+    },
+    {
+     "set": "pe",
+     "num": "7",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Carddass masters premium edition card 07 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/0/06/Carddass_masters_premium_edition_card_07_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/728"
+    },
+    {
+     "set": "pe",
+     "num": "8",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Kurapika"
+     ],
+     "file": "Carddass masters premium edition card 08 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/7/78/Carddass_masters_premium_edition_card_08_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/728"
+    },
+    {
+     "set": "pe",
+     "num": "9",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Carddass masters premium edition card 09 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/7/76/Carddass_masters_premium_edition_card_09_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/728"
+    },
+    {
+     "set": "pe",
+     "num": "10",
+     "rarity": "Normal",
+     "chars": [
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Carddass masters premium edition card 10 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/9/95/Carddass_masters_premium_edition_card_10_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/728"
+    },
+    {
+     "set": "pe",
+     "num": "11",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Carddass masters premium edition card 11.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/7/76/Carddass_masters_premium_edition_card_11.png"
+    },
+    {
+     "set": "pe",
+     "num": "12",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Hisoka Morow"
+     ],
+     "file": "Carddass masters premium edition card 12 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/3/3e/Carddass_masters_premium_edition_card_12_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/728"
+    },
+    {
+     "set": "pe",
+     "num": "13",
+     "rarity": "Normal",
+     "chars": [
+      "Hisoka Morow",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters premium edition card 13 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/4/47/Carddass_masters_premium_edition_card_13_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/728"
+    },
+    {
+     "set": "pe",
+     "num": "14",
+     "rarity": "Normal",
+     "chars": [
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters premium edition card 14 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/d/d3/Carddass_masters_premium_edition_card_14_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/728"
+    },
+    {
+     "set": "pe",
+     "num": "15",
+     "rarity": "Normal",
+     "chars": [
+      "Mito Freecss"
+     ],
+     "file": "Carddass masters premium edition card 15 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/8/84/Carddass_masters_premium_edition_card_15_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/728"
+    },
+    {
+     "set": "pe",
+     "num": "16",
+     "rarity": "Normal",
+     "chars": [
+      "Kurapika"
+     ],
+     "file": "Carddass masters premium edition card 16 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/1/16/Carddass_masters_premium_edition_card_16_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/728"
+    },
+    {
+     "set": "pe",
+     "num": "17",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters premium edition card 17 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/4/4b/Carddass_masters_premium_edition_card_17_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/728"
+    },
+    {
+     "set": "pe",
+     "num": "18",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Killua Zoldyck",
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Carddass masters premium edition card 18 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/b/ba/Carddass_masters_premium_edition_card_18_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/726"
+    },
+    {
+     "set": "pe",
+     "num": "SP1",
+     "rarity": "Special",
+     "chars": [
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Carddass masters premium edition card sp1.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/1/17/Carddass_masters_premium_edition_card_sp1.png"
+    },
+    {
+     "set": "pe",
+     "num": "SP2",
+     "rarity": "Special",
+     "chars": [
+      "Killua Zoldyck",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters premium edition card sp2.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/c/cb/Carddass_masters_premium_edition_card_sp2.png"
+    }
+   ]
+  },
+  {
+   "code": "p2",
+   "name": "パート2",
+   "cards": [
+    {
+     "set": "p2",
+     "num": "1",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Kikyo Zoldyck",
+      "Chrollo Lucilfer",
+      "Kalluto Zoldyck",
+      "Shizuku Murasaki",
+      "Feitan Portor",
+      "Phinks Magcub",
+      "Franklin Bordeau",
+      "Canary",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 001 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/6/62/Carddass_masters_part_2_card_001_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p2",
+     "num": "2",
+     "rarity": "Normal",
+     "chars": [
+      "Hisoka Morow",
+      "Illumi Zoldyck",
+      "Machi Komacine",
+      "Chrollo Lucilfer",
+      "Nobunaga Hazama",
+      "Scarlet Eyes",
+      "Killua Zoldyck",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 002 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/0/09/Carddass_masters_part_2_card_002_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "3",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Uvogin",
+      "Pakunoda",
+      "Shalnark",
+      "Killua Zoldyck",
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 003 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/3/32/Carddass_masters_part_2_card_003_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "4",
+     "rarity": "Normal",
+     "chars": [
+      "Chrollo Lucilfer",
+      "Melody",
+      "Killua Zoldyck",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 2 card 004 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/8/83/Carddass_masters_part_2_card_004_front_and_back.png/revision/latest/window-crop/width/729/x-offset/0/y-offset/0/window-width/729/window-height/1004"
+    },
+    {
+     "set": "p2",
+     "num": "5",
+     "rarity": "Normal",
+     "chars": [
+      "Hisoka Morow",
+      "Illumi Zoldyck",
+      "Neon Nostrade",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 005 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/5/57/Carddass_masters_part_2_card_005_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "6",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Hisoka Morow",
+      "Zushi",
+      "Wing",
+      "Milluki Zoldyck",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 006 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/2/2d/Carddass_masters_part_2_card_006_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "7",
+     "rarity": "Normal",
+     "chars": [
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 007 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/3/33/Carddass_masters_part_2_card_007_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "8",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 2 card 008 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/8/81/Carddass_masters_part_2_card_008_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/720"
+    },
+    {
+     "set": "p2",
+     "num": "9",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Killua Zoldyck",
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 009 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/5/59/Carddass_masters_part_2_card_009_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "10",
+     "rarity": "Normal",
+     "chars": [
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 2 card 010 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/4/45/Carddass_masters_part_2_card_010_front_and_back.png/revision/latest/window-crop/width/541/x-offset/0/y-offset/0/window-width/541/window-height/384"
+    },
+    {
+     "set": "p2",
+     "num": "11",
+     "rarity": "Normal",
+     "chars": [
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 2 card 011.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/e/ea/Carddass_masters_part_2_card_011.png"
+    },
+    {
+     "set": "p2",
+     "num": "12",
+     "rarity": "Normal",
+     "chars": [
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 2 card 012.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/5/58/Carddass_masters_part_2_card_012.png"
+    },
+    {
+     "set": "p2",
+     "num": "13",
+     "rarity": "Normal",
+     "chars": [
+      "Hunter License",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 2 card 013 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/9/94/Carddass_masters_part_2_card_013_front_and_back.png/revision/latest/window-crop/width/541/x-offset/0/y-offset/0/window-width/541/window-height/384"
+    },
+    {
+     "set": "p2",
+     "num": "14",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 2 card 014 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/1/18/Carddass_masters_part_2_card_014_front_and_back.png/revision/latest/window-crop/width/541/x-offset/0/y-offset/0/window-width/541/window-height/384"
+    },
+    {
+     "set": "p2",
+     "num": "15",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Carddass masters part 2 card 015 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/5/57/Carddass_masters_part_2_card_015_front_and_back.png/revision/latest/window-crop/width/541/x-offset/0/y-offset/0/window-width/541/window-height/384"
+    },
+    {
+     "set": "p2",
+     "num": "16",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Carddass masters part 2 card 016.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/5/53/Carddass_masters_part_2_card_016.png"
+    },
+    {
+     "set": "p2",
+     "num": "17",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Carddass masters part 2 card 017 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/2/23/Carddass_masters_part_2_card_017_front_and_back.png/revision/latest/window-crop/width/541/x-offset/0/y-offset/0/window-width/541/window-height/384"
+    },
+    {
+     "set": "p2",
+     "num": "18",
+     "rarity": "Normal",
+     "chars": [
+      "Zushi",
+      "Killua Zoldyck"
+     ],
+     "file": "Carddass masters part 2 card 018 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/a/a3/Carddass_masters_part_2_card_018_front_and_back.png/revision/latest/window-crop/width/541/x-offset/0/y-offset/0/window-width/541/window-height/384"
+    },
+    {
+     "set": "p2",
+     "num": "19",
+     "rarity": "Normal",
+     "chars": [
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 019 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/d/d1/Carddass_masters_part_2_card_019_front_and_back.png/revision/latest/window-crop/width/541/x-offset/0/y-offset/0/window-width/541/window-height/384"
+    },
+    {
+     "set": "p2",
+     "num": "20",
+     "rarity": "Normal",
+     "chars": [
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 020 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/e/e0/Carddass_masters_part_2_card_020_front_and_back.png/revision/latest/window-crop/width/541/x-offset/0/y-offset/0/window-width/541/window-height/384"
+    },
+    {
+     "set": "p2",
+     "num": "21",
+     "rarity": "Normal",
+     "chars": [
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 021.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/3/35/Carddass_masters_part_2_card_021.png"
+    },
+    {
+     "set": "p2",
+     "num": "22",
+     "rarity": "Normal",
+     "chars": [
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 022 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/3/3d/Carddass_masters_part_2_card_022_front_and_back.png/revision/latest/window-crop/width/541/x-offset/0/y-offset/0/window-width/541/window-height/384"
+    },
+    {
+     "set": "p2",
+     "num": "23",
+     "rarity": "Normal",
+     "chars": [
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 023 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/f/f1/Carddass_masters_part_2_card_023_front_and_back.png/revision/latest/window-crop/width/541/x-offset/0/y-offset/0/window-width/541/window-height/384"
+    },
+    {
+     "set": "p2",
+     "num": "24",
+     "rarity": "Normal",
+     "chars": [
+      "Scarlet Eyes",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 024 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/6/67/Carddass_masters_part_2_card_024_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "25",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 025 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/a/a4/Carddass_masters_part_2_card_025_front_and_back.png/revision/latest/window-crop/width/540/x-offset/0/y-offset/0/window-width/540/window-height/384"
+    },
+    {
+     "set": "p2",
+     "num": "26",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight"
+     ],
+     "file": "Carddass masters part 2 card 026 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/d/db/Carddass_masters_part_2_card_026_front_and_back.png/revision/latest/window-crop/width/541/x-offset/0/y-offset/0/window-width/541/window-height/384"
+    },
+    {
+     "set": "p2",
+     "num": "27",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight"
+     ],
+     "file": "Carddass masters part 2 card 027 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/9/9f/Carddass_masters_part_2_card_027_front_and_back.png/revision/latest/window-crop/width/541/x-offset/0/y-offset/0/window-width/541/window-height/384"
+    },
+    {
+     "set": "p2",
+     "num": "28",
+     "rarity": "Normal",
+     "chars": [
+      "Hisoka Morow"
+     ],
+     "file": "Carddass masters part 2 card 028 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/d/d4/Carddass_masters_part_2_card_028_front_and_back.png/revision/latest/window-crop/width/541/x-offset/0/y-offset/0/window-width/541/window-height/384"
+    },
+    {
+     "set": "p2",
+     "num": "29",
+     "rarity": "Normal",
+     "chars": [
+      "Hisoka Morow"
+     ],
+     "file": "Carddass masters part 2 card 029 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/5/51/Carddass_masters_part_2_card_029_front_and_back.png/revision/latest/window-crop/width/541/x-offset/0/y-offset/0/window-width/541/window-height/384"
+    },
+    {
+     "set": "p2",
+     "num": "30",
+     "rarity": "Normal",
+     "chars": [
+      "Hisoka Morow"
+     ],
+     "file": "Carddass masters part 2 card 030 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/b/b2/Carddass_masters_part_2_card_030_front_and_back.png/revision/latest/window-crop/width/541/x-offset/0/y-offset/0/window-width/541/window-height/384"
+    },
+    {
+     "set": "p2",
+     "num": "31",
+     "rarity": "Normal",
+     "chars": [
+      "Chrollo Lucilfer",
+      "Uvogin",
+      "Nobunaga Hazama",
+      "Shalnark"
+     ],
+     "file": "Carddass masters part 2 card 031 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/9/90/Carddass_masters_part_2_card_031_front_and_back.png/revision/latest/window-crop/width/541/x-offset/0/y-offset/0/window-width/541/window-height/384"
+    },
+    {
+     "set": "p2",
+     "num": "32",
+     "rarity": "Normal",
+     "chars": [
+      "Feitan Portor",
+      "Franklin Bordeau"
+     ],
+     "file": "Carddass masters part 2 card 032 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/3/3b/Carddass_masters_part_2_card_032_front_and_back.png/revision/latest/window-crop/width/541/x-offset/0/y-offset/0/window-width/541/window-height/384"
+    },
+    {
+     "set": "p2",
+     "num": "33",
+     "rarity": "Normal",
+     "chars": [
+      "Machi Komacine"
+     ],
+     "file": "Carddass masters part 2 card 033 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/2/2d/Carddass_masters_part_2_card_033_front_and_back.png/revision/latest/window-crop/width/540/x-offset/0/y-offset/0/window-width/540/window-height/384"
+    },
+    {
+     "set": "p2",
+     "num": "34",
+     "rarity": "Normal",
+     "chars": [
+      "Shizuku Murasaki"
+     ],
+     "file": "Carddass masters part 2 card 034 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/d/d0/Carddass_masters_part_2_card_034_front_and_back.png/revision/latest/window-crop/width/541/x-offset/0/y-offset/0/window-width/541/window-height/384"
+    },
+    {
+     "set": "p2",
+     "num": "35",
+     "rarity": "Normal",
+     "chars": [
+      "Uvogin",
+      "Nobunaga Hazama"
+     ],
+     "file": "Carddass masters part 2 card 035 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/0/03/Carddass_masters_part_2_card_035_front_and_back.png/revision/latest/window-crop/width/541/x-offset/0/y-offset/0/window-width/541/window-height/384"
+    },
+    {
+     "set": "p2",
+     "num": "36",
+     "rarity": "Normal",
+     "chars": [
+      "Pakunoda",
+      "Shalnark",
+      "Bonolenov Ndongo",
+      "Phinks Magcub",
+      "Kortopi"
+     ],
+     "file": "Carddass masters part 2 card 036 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/e/ea/Carddass_masters_part_2_card_036_front_and_back.png/revision/latest/window-crop/width/541/x-offset/0/y-offset/0/window-width/541/window-height/384"
+    },
+    {
+     "set": "p2",
+     "num": "37",
+     "rarity": "Normal",
+     "chars": [
+      "Melody",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 037 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/4/40/Carddass_masters_part_2_card_037_front_and_back.png/revision/latest/window-crop/width/541/x-offset/0/y-offset/0/window-width/541/window-height/384"
+    },
+    {
+     "set": "p2",
+     "num": "38",
+     "rarity": "Normal",
+     "chars": [
+      "Baise",
+      "Shachmono Tocino",
+      "Squala"
+     ],
+     "file": "Carddass masters part 2 card 038 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/8/81/Carddass_masters_part_2_card_038_front_and_back.png/revision/latest/window-crop/width/541/x-offset/0/y-offset/0/window-width/541/window-height/384"
+    },
+    {
+     "set": "p2",
+     "num": "39",
+     "rarity": "Normal",
+     "chars": [
+      "Basho",
+      "Shachmono Tocino",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 039 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/2/25/Carddass_masters_part_2_card_039_front_and_back.png/revision/latest/window-crop/width/541/x-offset/0/y-offset/0/window-width/541/window-height/384"
+    },
+    {
+     "set": "p2",
+     "num": "40",
+     "rarity": "Normal",
+     "chars": [
+      "Eliza",
+      "Dalzollene"
+     ],
+     "file": "Carddass masters part 2 card 040 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/4/41/Carddass_masters_part_2_card_040_front_and_back.png/revision/latest/window-crop/width/541/x-offset/0/y-offset/0/window-width/541/window-height/384"
+    },
+    {
+     "set": "p2",
+     "num": "41",
+     "rarity": "Normal",
+     "chars": [
+      "Neon Nostrade"
+     ],
+     "file": "Carddass masters part 2 card 041 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/0/06/Carddass_masters_part_2_card_041_front_and_back.png/revision/latest/window-crop/width/376/x-offset/0/y-offset/0/window-width/376/window-height/267"
+    },
+    {
+     "set": "p2",
+     "num": "42",
+     "rarity": "Normal",
+     "chars": [
+      "Owl",
+      "Rabid Dog",
+      "Leech",
+      "Porcupine",
+      "Shadow Beasts"
+     ],
+     "file": "Carddass masters part 2 card 042 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/6/60/Carddass_masters_part_2_card_042_front_and_back.png/revision/latest/window-crop/width/541/x-offset/0/y-offset/0/window-width/541/window-height/384"
+    },
+    {
+     "set": "p2",
+     "num": "43",
+     "rarity": "Normal",
+     "chars": [
+      "Izunavi",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 043 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/4/4b/Carddass_masters_part_2_card_043_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "44",
+     "rarity": "Normal",
+     "chars": [
+      "Sengi Guild Agent",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 044 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/6/65/Carddass_masters_part_2_card_044_front_and_back.png/revision/latest/window-crop/width/541/x-offset/0/y-offset/0/window-width/541/window-height/384"
+    },
+    {
+     "set": "p2",
+     "num": "45",
+     "rarity": "Normal",
+     "chars": [
+      "Ging Freecss",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 2 card 045 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/2/29/Carddass_masters_part_2_card_045_front_and_back.png/revision/latest/window-crop/width/540/x-offset/0/y-offset/0/window-width/540/window-height/384"
+    },
+    {
+     "set": "p2",
+     "num": "46",
+     "rarity": "Normal",
+     "chars": [
+      "Mito Freecss",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 2 card 046 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/9/9e/Carddass_masters_part_2_card_046_front_and_back.png/revision/latest/window-crop/width/541/x-offset/0/y-offset/0/window-width/541/window-height/384"
+    },
+    {
+     "set": "p2",
+     "num": "47",
+     "rarity": "Normal",
+     "chars": [
+      "Wing",
+      "Killua Zoldyck"
+     ],
+     "file": "Carddass masters part 2 card 047 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/4/49/Carddass_masters_part_2_card_047_front_and_back.png/revision/latest/window-crop/width/541/x-offset/0/y-offset/0/window-width/541/window-height/384"
+    },
+    {
+     "set": "p2",
+     "num": "48",
+     "rarity": "Normal",
+     "chars": [
+      "Zushi",
+      "Wing",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 2 card 048 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/0/03/Carddass_masters_part_2_card_048_front_and_back.png/revision/latest/window-crop/width/541/x-offset/0/y-offset/0/window-width/541/window-height/384"
+    },
+    {
+     "set": "p2",
+     "num": "49",
+     "rarity": "Normal",
+     "chars": [
+      "Kastro"
+     ],
+     "file": "Carddass masters part 2 card 049 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/9/97/Carddass_masters_part_2_card_049_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "50",
+     "rarity": "Normal",
+     "chars": [
+      "Sadaso",
+      "Riehlvelt",
+      "Gido",
+      "Killua Zoldyck"
+     ],
+     "file": "Carddass masters part 2 card 050 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/0/0b/Carddass_masters_part_2_card_050_front_and_back.png/revision/latest/window-crop/width/541/x-offset/0/y-offset/0/window-width/541/window-height/384"
+    },
+    {
+     "set": "p2",
+     "num": "51",
+     "rarity": "Normal",
+     "chars": [
+      "Heavens Arena 200th Floor Clerk"
+     ],
+     "file": "Carddass masters part 2 card 051 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/f/fd/Carddass_masters_part_2_card_051_front_and_back.png/revision/latest/window-crop/width/541/x-offset/0/y-offset/0/window-width/541/window-height/384"
+    },
+    {
+     "set": "p2",
+     "num": "52",
+     "rarity": "Normal",
+     "chars": [
+      "Silva Zoldyck",
+      "Zeno Zoldyck"
+     ],
+     "file": "Carddass masters part 2 card 052 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/3/37/Carddass_masters_part_2_card_052_front_and_back.png/revision/latest/window-crop/width/541/x-offset/0/y-offset/0/window-width/541/window-height/384"
+    },
+    {
+     "set": "p2",
+     "num": "53",
+     "rarity": "Normal",
+     "chars": [
+      "Illumi Zoldyck"
+     ],
+     "file": "Carddass masters part 2 card 053 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/b/bb/Carddass_masters_part_2_card_053_front_and_back.png/revision/latest/window-crop/width/541/x-offset/0/y-offset/0/window-width/541/window-height/384"
+    },
+    {
+     "set": "p2",
+     "num": "54",
+     "rarity": "Normal",
+     "chars": [
+      "Kalluto Zoldyck",
+      "Milluki Zoldyck"
+     ],
+     "file": "Carddass masters part 2 card 054 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/8/87/Carddass_masters_part_2_card_054_front_and_back.png/revision/latest/window-crop/width/541/x-offset/0/y-offset/0/window-width/541/window-height/384"
+    },
+    {
+     "set": "p2",
+     "num": "55",
+     "rarity": "Normal",
+     "chars": [
+      "Canary"
+     ],
+     "file": "Carddass masters part 2 card 055 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/b/b7/Carddass_masters_part_2_card_055_front_and_back.png/revision/latest/window-crop/width/541/x-offset/0/y-offset/0/window-width/541/window-height/384"
+    },
+    {
+     "set": "p2",
+     "num": "56",
+     "rarity": "Normal",
+     "chars": [
+      "Mike",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 2 card 056 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/b/b5/Carddass_masters_part_2_card_056_front_and_back.png/revision/latest/window-crop/width/541/x-offset/0/y-offset/0/window-width/541/window-height/384"
+    },
+    {
+     "set": "p2",
+     "num": "57",
+     "rarity": "Normal",
+     "chars": [
+      "Illumi Zoldyck"
+     ],
+     "file": "Carddass masters part 2 card 057 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/e/ee/Carddass_masters_part_2_card_057_front_and_back.png/revision/latest/window-crop/width/541/x-offset/0/y-offset/0/window-width/541/window-height/384"
+    },
+    {
+     "set": "p2",
+     "num": "58",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Hanzo"
+     ],
+     "file": "Carddass masters part 2 card 058 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/f/f8/Carddass_masters_part_2_card_058_front_and_back.png/revision/latest/window-crop/width/541/x-offset/0/y-offset/0/window-width/541/window-height/384"
+    },
+    {
+     "set": "p2",
+     "num": "59",
+     "rarity": "Normal",
+     "chars": [
+      "Pokkle",
+      "Ponzu"
+     ],
+     "file": "Carddass masters part 2 card 059 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/c/c5/Carddass_masters_part_2_card_059_front_and_back.png/revision/latest/window-crop/width/541/x-offset/0/y-offset/0/window-width/541/window-height/384"
+    },
+    {
+     "set": "p2",
+     "num": "60",
+     "rarity": "Normal",
+     "chars": [
+      "Umori",
+      "Imori",
+      "Amori",
+      "Bodoro"
+     ],
+     "file": "Carddass masters part 2 card 060 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/e/e3/Carddass_masters_part_2_card_060_front_and_back.png/revision/latest/window-crop/width/541/x-offset/0/y-offset/0/window-width/541/window-height/384"
+    },
+    {
+     "set": "p2",
+     "num": "61",
+     "rarity": "Normal",
+     "chars": [
+      "Lippo",
+      "Bendot"
+     ],
+     "file": "Carddass masters part 2 card 061 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/2/21/Carddass_masters_part_2_card_061_front_and_back.png/revision/latest/window-crop/width/541/x-offset/0/y-offset/0/window-width/541/window-height/384"
+    },
+    {
+     "set": "p2",
+     "num": "62",
+     "rarity": "Normal",
+     "chars": [
+      "Johness",
+      "Sedokan"
+     ],
+     "file": "Carddass masters part 2 card 062 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/a/aa/Carddass_masters_part_2_card_062_front_and_back.png/revision/latest/window-crop/width/541/x-offset/0/y-offset/0/window-width/541/window-height/384"
+    },
+    {
+     "set": "p2",
+     "num": "63",
+     "rarity": "Normal",
+     "chars": [
+      "Leroute"
+     ],
+     "file": "Carddass masters part 2 card 063 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/4/4c/Carddass_masters_part_2_card_063_front_and_back.png/revision/latest/window-crop/width/541/x-offset/0/y-offset/0/window-width/541/window-height/384"
+    },
+    {
+     "set": "p2",
+     "num": "64",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Tonpa",
+      "Bendot",
+      "Killua Zoldyck",
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 064 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/8/83/Carddass_masters_part_2_card_064_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "65",
+     "rarity": "Normal",
+     "chars": [
+      "Majtani",
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 065 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/0/01/Carddass_masters_part_2_card_065_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "66",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Hisoka Morow",
+      "Bendot"
+     ],
+     "file": "Carddass masters part 2 card 066 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/c/cc/Carddass_masters_part_2_card_066_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "67",
+     "rarity": "Normal",
+     "chars": [
+      "Leroute",
+      "Killua Zoldyck"
+     ],
+     "file": "Carddass masters part 2 card 067 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/a/ad/Carddass_masters_part_2_card_067_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "68",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Tonpa",
+      "Killua Zoldyck",
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 068 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/9/96/Carddass_masters_part_2_card_068_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "69",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Hanzo",
+      "Killua Zoldyck",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 069 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/8/8a/Carddass_masters_part_2_card_069_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p2",
+     "num": "70",
+     "rarity": "Normal",
+     "chars": [
+      "Hanzo",
+      "Killua Zoldyck",
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 070 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/d/df/Carddass_masters_part_2_card_070_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "71",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 2 card 071 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/0/04/Carddass_masters_part_2_card_071_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "72",
+     "rarity": "Normal",
+     "chars": [
+      "Hisoka Morow",
+      "Hemotropic Butterfly",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 2 card 072 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/9/99/Carddass_masters_part_2_card_072_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "73",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Hemotropic Butterfly",
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 073 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/1/1f/Carddass_masters_part_2_card_073_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "74",
+     "rarity": "Normal",
+     "chars": [
+      "Hisoka Morow",
+      "Hemotropic Butterfly",
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 074 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/3/36/Carddass_masters_part_2_card_074_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "75",
+     "rarity": "Normal",
+     "chars": [
+      "Amori",
+      "Killua Zoldyck",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 2 card 075 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/d/d5/Carddass_masters_part_2_card_075_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "76",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Ponzu",
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 076 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/5/57/Carddass_masters_part_2_card_076_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "77",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Isaac Netero",
+      "Pokkle",
+      "Hanzo",
+      "Satotz"
+     ],
+     "file": "Carddass masters part 2 card 077 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/8/88/Carddass_masters_part_2_card_077_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "78",
+     "rarity": "Normal",
+     "chars": [
+      "Hisoka Morow",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 078 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/b/b0/Carddass_masters_part_2_card_078_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "79",
+     "rarity": "Normal",
+     "chars": [
+      "Hanzo",
+      "Satotz",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 2 card 079 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/e/ef/Carddass_masters_part_2_card_079_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "80",
+     "rarity": "Normal",
+     "chars": [
+      "Hisoka Morow",
+      "Bodoro",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 2 card 080 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/1/1b/Carddass_masters_part_2_card_080_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "81",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Illumi Zoldyck",
+      "Killua Zoldyck",
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 081 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/5/58/Carddass_masters_part_2_card_081_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "82",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Hisoka Morow",
+      "Illumi Zoldyck",
+      "Pokkle",
+      "Hanzo",
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 082 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/8/8c/Carddass_masters_part_2_card_082_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "83",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 083 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/d/dc/Carddass_masters_part_2_card_083_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "84",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Canary",
+      "Zebro",
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 084 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/1/1f/Carddass_masters_part_2_card_084_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "85",
+     "rarity": "Normal",
+     "chars": [
+      "Canary",
+      "Killua Zoldyck",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 2 card 085 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/1/17/Carddass_masters_part_2_card_085_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "86",
+     "rarity": "Normal",
+     "chars": [
+      "Milluki Zoldyck",
+      "Killua Zoldyck"
+     ],
+     "file": "Carddass masters part 2 card 086 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/c/ce/Carddass_masters_part_2_card_086_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "87",
+     "rarity": "Normal",
+     "chars": [
+      "Gotoh",
+      "Killua Zoldyck",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 2 card 087 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/b/b1/Carddass_masters_part_2_card_087_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "88",
+     "rarity": "Normal",
+     "chars": [
+      "Zushi",
+      "Wing",
+      "Killua Zoldyck",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 2 card 088 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/6/6f/Carddass_masters_part_2_card_088_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "89",
+     "rarity": "Normal",
+     "chars": [
+      "Wing",
+      "Killua Zoldyck",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 2 card 089 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/d/d3/Carddass_masters_part_2_card_089_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "90",
+     "rarity": "Normal",
+     "chars": [
+      "Wing",
+      "Killua Zoldyck",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 2 card 090 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/7/7d/Carddass_masters_part_2_card_090_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "91",
+     "rarity": "Normal",
+     "chars": [
+      "Kastro",
+      "Killua Zoldyck",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 2 card 091 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/8/82/Carddass_masters_part_2_card_091_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "92",
+     "rarity": "Normal",
+     "chars": [
+      "Machi Komacine",
+      "Zushi",
+      "Killua Zoldyck",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 2 card 092 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/3/38/Carddass_masters_part_2_card_092_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "93",
+     "rarity": "Normal",
+     "chars": [
+      "Hisoka Morow",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 2 card 093 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/a/af/Carddass_masters_part_2_card_093_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "94",
+     "rarity": "Normal",
+     "chars": [
+      "Wing",
+      "Sadaso",
+      "Killua Zoldyck"
+     ],
+     "file": "Carddass masters part 2 card 094 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/4/4a/Carddass_masters_part_2_card_094_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "95",
+     "rarity": "Normal",
+     "chars": [
+      "Zushi",
+      "Wing",
+      "Killua Zoldyck",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 2 card 095 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/8/80/Carddass_masters_part_2_card_095_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "96",
+     "rarity": "Normal",
+     "chars": [
+      "Scarlet Eyes",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 096 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/7/7c/Carddass_masters_part_2_card_096_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "97",
+     "rarity": "Normal",
+     "chars": [
+      "Izunavi",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 097 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/b/b8/Carddass_masters_part_2_card_097_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "98",
+     "rarity": "Normal",
+     "chars": [
+      "Mito Freecss",
+      "Killua Zoldyck",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 2 card 098 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/c/c8/Carddass_masters_part_2_card_098_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "99",
+     "rarity": "Normal",
+     "chars": [
+      "Ging Freecss",
+      "Mito Freecss"
+     ],
+     "file": "Carddass masters part 2 card 099 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/8/8c/Carddass_masters_part_2_card_099_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "100",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck",
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 100 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/d/d5/Carddass_masters_part_2_card_100_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "101",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck",
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 101 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/2/21/Carddass_masters_part_2_card_101_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "102",
+     "rarity": "Normal",
+     "chars": [
+      "Melody",
+      "Baise",
+      "Basho",
+      "Killua Zoldyck",
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 102 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/1/14/Carddass_masters_part_2_card_102_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "103",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Neon Nostrade",
+      "Killua Zoldyck",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 2 card 103 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/f/f2/Carddass_masters_part_2_card_103_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "104",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Baise",
+      "Killua Zoldyck",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 2 card 104 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/7/7c/Carddass_masters_part_2_card_104_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "105",
+     "rarity": "Normal",
+     "chars": [
+      "Uvogin",
+      "Basho",
+      "Squala",
+      "Leech",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 105 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/3/3d/Carddass_masters_part_2_card_105_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "106",
+     "rarity": "Normal",
+     "chars": [
+      "Hisoka Morow",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 106 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/5/59/Carddass_masters_part_2_card_106_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "107",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Killua Zoldyck",
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 107 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/6/64/Carddass_masters_part_2_card_107_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "108",
+     "rarity": "Normal",
+     "chars": [
+      "Yoshihiro Togashi"
+     ],
+     "file": "Carddass masters part 2 card 108.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/3/37/Carddass_masters_part_2_card_108.png"
+    },
+    {
+     "set": "p2",
+     "num": "109",
+     "rarity": "Normal",
+     "chars": [
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 2 card 109 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/5/50/Carddass_masters_part_2_card_109_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p2",
+     "num": "110",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Killua Zoldyck"
+     ],
+     "file": "Carddass masters part 2 card 110 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/8/8c/Carddass_masters_part_2_card_110_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p2",
+     "num": "111",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 111 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/2/2e/Carddass_masters_part_2_card_111_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "112",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Carddass masters part 2 card 112 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/e/ec/Carddass_masters_part_2_card_112_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p2",
+     "num": "113",
+     "rarity": "Normal",
+     "chars": [
+      "Hisoka Morow"
+     ],
+     "file": "Carddass masters part 2 card 113 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/f/f3/Carddass_masters_part_2_card_113_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p2",
+     "num": "114",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Carddass masters part 2 card 114 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/7/75/Carddass_masters_part_2_card_114_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p2",
+     "num": "115",
+     "rarity": "Normal",
+     "chars": [
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 115 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/7/7a/Carddass_masters_part_2_card_115_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p2",
+     "num": "116",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight"
+     ],
+     "file": "Carddass masters part 2 card 116 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/4/45/Carddass_masters_part_2_card_116_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/720"
+    },
+    {
+     "set": "p2",
+     "num": "117",
+     "rarity": "Normal",
+     "chars": [
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 2 card 117 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/e/e8/Carddass_masters_part_2_card_117_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/718"
+    },
+    {
+     "set": "p2",
+     "num": "118",
+     "rarity": "Normal",
+     "chars": [
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 2 card 118 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/d/d6/Carddass_masters_part_2_card_118_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "119",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 2 card 119 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/1/1d/Carddass_masters_part_2_card_119_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "120",
+     "rarity": "Normal",
+     "chars": [
+      "Hisoka Morow",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 2 card 120 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/4/49/Carddass_masters_part_2_card_120_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "121",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 121 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/2/21/Carddass_masters_part_2_card_121_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p2",
+     "num": "122",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight"
+     ],
+     "file": "Carddass masters part 2 card 122 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/6/65/Carddass_masters_part_2_card_122_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "123",
+     "rarity": "Normal",
+     "chars": [
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 2 card 123 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/9/94/Carddass_masters_part_2_card_123_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p2",
+     "num": "124",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 124 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/3/32/Carddass_masters_part_2_card_124_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p2",
+     "num": "125",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Carddass masters part 2 card 125 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/2/28/Carddass_masters_part_2_card_125_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p2",
+     "num": "126",
+     "rarity": "Normal",
+     "chars": [],
+     "file": "Carddass masters part 2 card 126 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/8/8b/Carddass_masters_part_2_card_126_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p2",
+     "num": "127",
+     "rarity": "Normal",
+     "chars": [
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 127 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/b/b0/Carddass_masters_part_2_card_127_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "128",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Carddass masters part 2 card 128 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/2/23/Carddass_masters_part_2_card_128_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p2",
+     "num": "129",
+     "rarity": "Normal",
+     "chars": [
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 129 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/5/51/Carddass_masters_part_2_card_129_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p2",
+     "num": "130",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight"
+     ],
+     "file": "Carddass masters part 2 card 130 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/b/b7/Carddass_masters_part_2_card_130_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p2",
+     "num": "131",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Hisoka Morow",
+      "Illumi Zoldyck",
+      "Killua Zoldyck",
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 131 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/5/50/Carddass_masters_part_2_card_131_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/722"
+    },
+    {
+     "set": "p2",
+     "num": "132",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Great Stamp",
+      "Killua Zoldyck",
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 132 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/8/84/Carddass_masters_part_2_card_132_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p2",
+     "num": "133",
+     "rarity": "Normal",
+     "chars": [
+      "Piko",
+      "Killua Zoldyck",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 133 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/7/7e/Carddass_masters_part_2_card_133_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p2",
+     "num": "134",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck",
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 2 card 134 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/f/f7/Carddass_masters_part_2_card_134_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p2",
+     "num": "135",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card 135 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/2/2a/Carddass_masters_part_2_card_135_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p2",
+     "num": "SP1",
+     "rarity": "Special",
+     "chars": [
+      "Gon Freecss"
+     ],
+     "file": "Carddass masters part 2 card sp1 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/5/53/Carddass_masters_part_2_card_sp1_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p2",
+     "num": "SP2",
+     "rarity": "Special",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Carddass masters part 2 card sp2 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/7/7d/Carddass_masters_part_2_card_sp2_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    },
+    {
+     "set": "p2",
+     "num": "SP3",
+     "rarity": "Special",
+     "chars": [
+      "Kurapika"
+     ],
+     "file": "Carddass masters part 2 card sp3.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/3/37/Carddass_masters_part_2_card_sp3.png"
+    },
+    {
+     "set": "p2",
+     "num": "SP4",
+     "rarity": "Special",
+     "chars": [
+      "Chrollo Lucilfer"
+     ],
+     "file": "Carddass masters part 2 card sp4 front and back.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/b/b9/Carddass_masters_part_2_card_sp4_front_and_back.png/revision/latest/window-crop/width/512/x-offset/0/y-offset/0/window-width/512/window-height/724"
+    }
+   ]
+  },
+  {
+   "code": "vd",
+   "name": "セルビデオ 購入特典カード",
+   "cards": [
+    {
+     "set": "vd",
+     "num": "VD3",
+     "rarity": "Promo",
+     "chars": [
+      "Leorio Paradinight",
+      "Menchi",
+      "Killua Zoldyck",
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "HxH CM Jacket Collection Bonus Card - Front.png",
+     "img": "static.wikia.nocookie.net/hunterxhunter/images/d/d3/HxH_CM_Jacket_Collection_Bonus_Card_-_Front.png"
+    }
+   ]
+  }
+ ]
+}
