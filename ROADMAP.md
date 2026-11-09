@@ -220,9 +220,10 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   (2026-09-28):** AdSense ligado pra todo mundo (sem o grupo de controle a
   50%; o efeito é lido antes × depois no /admin), conta
   `pub-0808280324005030` e os 3 blocos, CSP com nonce só nas páginas com
-  vitrine, UE/UK/CH sem rede de anúncio. Apoiador sem anúncio (R$ 10 = 30
-  dias, somando) no ar, com a migração `20260928c` aplicada e verificada em
-  2026-09-29. Falta ainda: aprovação do site no painel do AdSense e as
+  vitrine, UE/UK/CH sem rede de anúncio. O apoiador sem anúncio (R$ 10 = 30
+  dias, migração `20260928c`) ficou no ar de 2026-09-29 a 2026-11-09 e saiu:
+  o site é 100% grátis e se paga só com anúncio (migração `20261109a`
+  apaga a tabela). Falta ainda: aprovação do site no painel do AdSense e as
   páginas pré-renderizadas (`/card`, `/set`, `/deck`). Plano, números e fases em
   [docs/PLANO-ADS.md](docs/PLANO-ADS.md); arquitetura no README ("Vitrine").
 
@@ -292,8 +293,9 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   do mesmo eixo "ZH".
 - **Anúncio só onde se descobre, nunca onde se trabalha** (2026-09-27). Nada
   nas páginas pessoais nem em popup/modal; quem recusa o consentimento não
-  carrega script do Google (só vitrine da casa e parceiros); quem apoia (Pix/
-  Ko-fi) navega sem anúncio, sem trancar função; afiliado nos links de loja
+  carrega script do Google (só vitrine da casa e parceiros); todo mundo vê o
+  mesmo — não há período pago sem anúncio (decidido em 2026-11-09; Pix/Ko-fi
+  são só ajuda voluntária); afiliado nos links de loja
   com aviso, sem mudar ordem nem quais lojas aparecem. Detalhe em
   [docs/PLANO-ADS.md](docs/PLANO-ADS.md), seção 14.
 - **O dado é do usuário, sempre.** O `localStorage` é a fonte da verdade e o

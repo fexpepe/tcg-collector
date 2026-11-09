@@ -99,7 +99,7 @@ test("adminRpc: contrato de sempre (undefined = 404, null = sem acesso ou falha)
   ]);
   assert.equal(await S.adminRpc("admin_funnel", 7), undefined, "404 = migração pendente");
   assert.equal(await S.adminRpc("admin_funnel", 7), null, "200 com null = conta sem is_admin");
-  assert.deepEqual(plano(await S.adminRpc("apoio_status", 0, {})), { a: 1 });
+  assert.deepEqual(plano(await S.adminRpc("admin_health", 0, {})), { a: 1 });
   assert.equal(await S.adminRpc("admin_nota_delete", 0, { p_id: 1 }), null, "204 sem corpo");
   assert.equal(await S.adminRpc("admin_funnel", 7), null, "502 do gateway, corpo não-JSON");
   assert.equal(pedidos[0].body, JSON.stringify({ days: 7 }), "sem body vai { days }");
@@ -121,6 +121,9 @@ test("sem sessão, sem rede e nome fora do painel", async () => {
   const fora = porta([]);
   assert.equal((await fora.S.adminChamada("delete_account", {})).code, "nome");
   assert.equal(await fora.S.adminRpc("delete_account", 0, {}), null);
+  // apoio_status era da conta logada (apoiador sem anúncio, removido em
+  // 2026-11-09): a porta fechou junto.
+  assert.equal((await fora.S.adminChamada("apoio_status", {})).code, "nome");
   for (const nome of ["error_summary", "analytics_summary"]) {
     const p = porta([{ st: 200, corpo: [] }]);
     assert.equal((await p.S.adminChamada(nome, { days: 7 })).st, 200, `${nome} é do painel`);

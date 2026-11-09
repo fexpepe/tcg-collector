@@ -37,7 +37,7 @@ fica a cargo de duas peças.
 `assets/`, e muda o mínimo:
 - põe o `game.js` em modo manifest, com o `dataDir` de cada jogo apontando pro `sleevu.app`;
 - tira a vitrine (`src/ads.js`): AdSense em WebView viola a política do Google, e o
-  "apoie: R$10 = 30 dias sem anúncio" é desbloqueio pago fora da loja;
+  "apoie" (Pix/Ko-fi) da casa é pagamento fora da loja;
 - põe na frente de cada `env(safe-area-inset-*)` a medida que o Capacitor injeta
   (`--safe-area-inset-*`), porque a WebView do Android anterior à 140 erra o `env()`.
 

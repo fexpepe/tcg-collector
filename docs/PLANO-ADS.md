@@ -423,37 +423,18 @@ vitrine da casa, entrada do FAQ, textos legais.
 consentimento não carrega script do Google", e o site boota igual com
 `src/ads.js` bloqueado. `check.mjs` já pega chave faltando.
 
-**Apoiador sem anúncio** (decidido). Quem apoia pelo Pix ou pelo Ko-fi navega
-sem **nenhum** anúncio: nem AdSense, nem trilho, nem a oferta patrocinada do
-popup, nem a vitrine da casa pedindo apoio (não faz sentido pedir a quem já
-apoiou). Os links de loja continuam, porque não são anúncio: são o caminho
-pra comprar a carta. Nenhuma função do app fica trancada — não é plano pro.
-
-Como ficou (2026-09-28, migração `20260928c`; o desenho original previa uma
-coluna em `profiles` e um selo no menu de conta — ver "O que mudou no
-caminho" da fase 1):
-
-- **Quanto vale:** cada apoio a partir de R$ 10 (ou o mensal do Ko-fi) = 30
-  dias, somando quando a pessoa apoia de novo antes de vencer.
-- **Onde mora:** tabela `apoiadores` (`user_id`, `ate`), trancada: RLS sem
-  policy e nenhum privilégio pra anon/authenticated. Vale até o fim do dia
-  `ate` (fuso de São Paulo). Data, e não um sim/não, porque o Pix é avulso:
-  cada apoio compra um período. Apagar a conta leva a linha junto.
-- **Quem grava:** só o dono do site, pela aba Mercado › Vitrine do /admin
-  (`admin_apoiador(e-mail ou @, dias)`; 0 dias encerra). A marcação é à mão:
-  quem apoiou manda o @ ou o e-mail da conta pra hi@sleevu.app (no
-  Ko-fi, na mensagem). Webhook do Ko-fi numa Function é passo posterior.
-- **Como o app lê:** `apoio_status()` devolve a data da PRÓPRIA conta. O
-  `ads.js` pergunta em paralelo ao `ads.json` e guarda a resposta por conta
-  no aparelho (`sleevu-apoio-v1`): quem apoia decide sem rede a partir da 2ª
-  página (reconfere a cada 6 h); "não apoia" é reconferido a cada hora.
-  Deslogado não tem como ser apoiador.
-- **O que aparece pra quem apoia:** no lugar dos espaços, nada — a grade fica
-  exatamente como era, sem aviso de consentimento e sem `ad_view`. Em
-  Configurações → Privacidade, o selo "Você apoia o Sleevu: sem anúncios até
-  27 de outubro de 2026. Obrigado!"; pra quem não apoia, o texto de como
-  ganhar os 30 dias. A faixa "apoie", a caixa de apoio da página inicial
-  (`/#apoiar`), o FAQ e a política contam o mesmo.
+**Apoiador sem anúncio — saiu em 2026-11-09.** De 2026-09-29 a 2026-11-09,
+quem apoiava pelo Pix ou pelo Ko-fi (R$ 10+ ou o mensal do Ko-fi) ganhava 30
+dias sem nenhum espaço, marcados à mão no /admin numa tabela `apoiadores`
+(migração `20260928c`) e lidos pelo `ads.js` via `apoio_status()`. Decisão do
+Fernando em 2026-11-09: o Sleevu fica **100% grátis e se paga só com
+anúncio** — não existe período pago sem anúncio, todo mundo vê a mesma
+vitrine. O que saiu: a consulta no `ads.js`, o selo e o texto em
+Configurações, a seção "Marcar apoio" da aba Vitrine do /admin, o prefixo
+`apoio_` na porta logada do `shared.js` e a promessa dos 30 dias na home, na
+faixa "apoie", no menu de conta, no FAQ e na política. A migração `20261109a`
+apaga a tabela e as três RPCs. O Pix e o Ko-fi continuam como ajuda
+voluntária, sem nada em troca.
 
 **App instalado.** PWA rodando no navegador é site pra política do AdSense.
 Se um dia o Sleevu for pra Play Store embrulhado (TWA/WebView), aí vale a API
@@ -564,9 +545,11 @@ O que mudou no caminho, e por quê:
       (`wrangler pages dev` sobre o build de produção): 0 violação nas 9
       páginas, pt e en
 - [x] UE/UK/CH sem rede de anúncio (no lugar do CMP, seção 9)
-- [x] Apoiador sem anúncio (seção 10, 2026-09-28): tabela `apoiadores` +
+- [x] ~~Apoiador sem anúncio (seção 10, 2026-09-28): tabela `apoiadores` +
       `apoio_status` + marcação no /admin (migração `20260928c`, aplicada e
-      verificada em 2026-09-29) + leitura no `ads.js` + selo em Configurações
+      verificada em 2026-09-29) + leitura no `ads.js` + selo em Configurações~~
+      — saiu em 2026-11-09 (site 100% grátis, só com anúncio; migração
+      `20261109a` apaga a tabela)
 - [ ] Aprovação do site no AdSense
 - [x] ~~Lançamento a 50% com grupo de controle~~ — o AdSense foi ligado pra
       todo mundo em 2026-09-28 (decisão do Fernando), sem grupo de controle.
@@ -576,7 +559,8 @@ O que mudou no caminho, e por quê:
 
 O que mudou no caminho, e por quê:
 
-- **Apoiador numa tabela própria, não em `profiles`.** `profiles` só tem
+- **Apoiador numa tabela própria, não em `profiles`** (o apoiador saiu em
+  2026-11-09; fica o registro do porquê). `profiles` só tem
   linha pra conta que escolheu um @ (quem apoia sem @ não teria onde gravar),
   e a policy de UPDATE dela é "dono edita a própria linha" — cada coluna
   sensível ali pede um trigger de guarda. A tabela `apoiadores` nasce
@@ -667,9 +651,10 @@ O que mudou no caminho, e por quê:
    Não.** Recusou = vitrine da casa e parceiros diretos, e o script do Google
    nem carrega. Só volta à mesa com uma leitura jurídica da LGPD sobre os
    cookies de frequência/fraude do anúncio não personalizado.
-3. **Apoiador navega sem anúncio? Sim.** Pix ou Ko-fi compram um período sem
-   anúncio (`profiles.apoiador_ate`, seção 10), sem trancar função nenhuma.
-   Entra na fase 1, antes do lançamento a 100%.
+3. **Apoiador navega sem anúncio? ~~Sim~~ Não, desde 2026-11-09.** Foi
+   sim de 2026-09-29 a 2026-11-09 (Pix ou Ko-fi compravam 30 dias sem
+   anúncio, seção 10). Revista: o Sleevu é 100% grátis e se paga só com
+   anúncio, igual pra todo mundo; Pix e Ko-fi ficam como ajuda voluntária.
 4. **Afiliado nos links de loja? Sim**, com a linha de transparência embaixo
    dos chips e na política. Não muda preço, ordem nem quais lojas aparecem.
    Entra na fase 0.
@@ -678,11 +663,13 @@ O que mudou no caminho, e por quê:
 
 **Fechado depois:**
 
-- **Quanto vale o período de apoiador (2026-09-28):** cada apoio a partir de
-  R$ 10 (ou o mensal do Ko-fi) = 30 dias sem anúncio, somando quando a pessoa
-  apoia de novo antes de vencer.
+- **Quanto vale o período de apoiador (2026-09-28; saiu em 2026-11-09):**
+  cada apoio a partir de R$ 10 (ou o mensal do Ko-fi) = 30 dias sem anúncio,
+  somando quando a pessoa apoia de novo antes de vencer.
 - **Lançamento (2026-09-28):** AdSense ligado pra todo mundo de uma vez, sem
   a fase a 50% com grupo de controle.
+- **Fim do apoiador sem anúncio (2026-11-09):** sem período pago sem
+  anúncio. O site é 100% grátis, só com anúncio (decisão 3 revista).
 
 ---
 

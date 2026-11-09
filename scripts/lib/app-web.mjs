@@ -98,9 +98,10 @@ const RE_TURNSTILE = /[ \t]*<script\b[^>]*\bsrc="https:\/\/challenges\.cloudflar
 export const temTurnstile = (html) => new RegExp(RE_TURNSTILE.source).test(html);
 
 // 4. Sem vitrine (src/ads.js) no app. O AdSense dentro de WebView viola a
-//    política do Google (no app seria AdMob), e a "casa" da vitrine oferece o
-//    "apoie: R$10 = 30 dias sem anúncio" — desbloqueio digital pago fora da
-//    loja, que a Apple e o Google barram (tem que ser compra dentro do app).
+//    política do Google (no app seria AdMob), e a "casa" da vitrine pede
+//    apoio por Pix/Ko-fi — pagamento fora da loja, que a Apple e o Google
+//    restringem. (Até 2026-11-09 ele ainda tirava os anúncios por 30 dias,
+//    o que era desbloqueio digital pago; esse período saiu.)
 //    Sem o script a página fica como sempre ficou sem vitrine.
 const RE_VITRINE = /[ \t]*<script\b[^>]*\bsrc="\/?src\/ads\.js"[^>]*><\/script>[ \t]*\r?\n?/g;
 export const temVitrine = (html) => new RegExp(RE_VITRINE.source).test(html);
