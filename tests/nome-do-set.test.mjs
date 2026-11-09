@@ -39,6 +39,9 @@ const NOMES_DO_JOGO = {
   naruto: { nomes: ["Naruto", "NARUTO", "ナルト", "Data Carddass", "データカードダス"] },
   onepiece: { nomes: ["One Piece", "ONE PIECE", "ワンピース", "Carddass", "カードダス", "OP 2002", "OP2002"], sets: /^(opcd|op2002)-/ },
   mbc: { nomes: ["Miracle Battle", "ミラクルバトル"] },
+  // Carddass Masters: a IP abre o nome do set ("HUNTER×HUNTER パート1 …"), o
+  // jogo não.
+  cdm: { nomes: ["Carddass", "CARDDASS", "カードダス", "Masters", "MASTERS", "マスターズ"] },
   hxh: { nomes: ["Hunter", "HUNTER", "ハンター", "Hyper Battle", "ハイパーバトル", "Carddass", "カードダス"] },
   dbc: { nomes: ["Dragon Ball", "DRAGON BALL", "ドラゴンボール", "Carddass", "カードダス"] },
   dbz: { nomes: ["Dragon Ball", "DBZ"] },
