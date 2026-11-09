@@ -1,5 +1,6 @@
-// Um set que ENTROU POR IMPORT (pin `enImport` da TCGCSV, ou import JP inteiro)
-// e depois foi publicado pela TCGdex com OUTRO setId: a fonte canônica passa a
+// Um set que ENTROU POR IMPORT (pin `enImport` da TCGCSV, ou a janela de
+// lançamento do sync-tcgcsv — ver importedSetIds) e depois foi publicado pela
+// TCGdex com OUTRO setId: a fonte canônica passa a
 // ter o set, o nosso vira duplicata e as duas entradas aparecem na tela de Sets.
 //
 // Por que isto existe (18/09/2026): o "30th Celebration" entrou em 16/09 pelo
@@ -149,9 +150,34 @@ export function isPrefixSwap(cards, from, to) {
     && cards[velho] === `${to}-${velho.slice(from.length + 1)}`);
 }
 
+// Quem conta como set IMPORTADO (candidato à aposentadoria). Duas portas de
+// entrada, e as duas criam setId que a TCGdex não vai usar:
+//   • pin `enImport` (data/tcgcsv-set-map.json), escrito à mão;
+//   • janela de lançamento (autoImportGroups no sync-tcgcsv): set EN novo que
+//     entra SOZINHO, com o slug do nome do grupo ("delta-reign"), sem pin.
+// Até 09/11/2026 só a primeira contava. O "Delta Reign" entrou em 27/10 pela
+// janela como `delta-reign`, a TCGdex publicou em 08/11 como `me06`, e a tela de
+// Sets passou a mostrar dois "Delta Reign" lado a lado — a aposentadoria que o
+// import automático dizia ter como rede nunca olhou pra ele.
+// O sinal da segunda porta é o carimbo `prov: "tcgcsv"` em TODA carta do chunk
+// (o merge carimba cada carta sintetizada da TCGCSV): chunk da TCGdex tem carta
+// sem `prov`, e o add-on-miss só SOMA carta a um chunk que já existe. Só inglês:
+// o import JP inteiro usa o código impresso na embalagem, que é o mesmo id da
+// TCGdex — quando ela publica, cai no mesmo chunk e não há duplicata.
+//   chunks: [{ lang, setId, cards }]; pins: data/tcgcsv-set-map.json
+export function importedSetIds(chunks, pins) {
+  const ids = new Set((pins && Array.isArray(pins.enImport) ? pins.enImport : [])
+    .filter((e) => e && e.setId).map((e) => e.setId));
+  for (const ch of chunks || []) {
+    if (ch && ch.lang === "en" && Array.isArray(ch.cards) && ch.cards.length
+      && ch.cards.every((c) => c && c.prov === "tcgcsv")) ids.add(ch.setId);
+  }
+  return ids;
+}
+
 // Sets importados que a TCGdex já publicou com outro id.
 //   chunks: [{ lang, setId, cards }] (todos os idiomas)
-//   importedIds: Set dos setIds que entraram por import (pins `enImport`)
+//   importedIds: Set dos setIds que entraram por import (importedSetIds)
 //   minSimilarity: piso da semelhança em mão dupla (padrão 0,5)
 // Devolve [{ lang, from, to, similarity, ...pairCards }], só quando o vencedor
 // é ÚNICO: dois candidatos empatados no topo viram aviso de quem chama, não

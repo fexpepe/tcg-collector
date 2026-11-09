@@ -1,5 +1,6 @@
 // Passo do deploy: APOSENTA o set que entrou por import (pin `enImport` da
-// TCGCSV) depois que a TCGdex publicou o MESMO set com outro setId — e registra
+// TCGCSV, ou a janela de lançamento que importa set EN novo sozinho) depois que
+// a TCGdex publicou o MESMO set com outro setId — e registra
 // o de-para de id, pra ninguém perder a carta que marcou nesse meio-tempo.
 //
 // Por que existe (18/09/2026): o "30th Celebration" entrou em 16/09 como
@@ -37,10 +38,10 @@
 //      antes só o JSON voltava pro repo e o carimbo ficava atrás dele até
 //      alguém rodar este script à mão (o tests/id-merges.test.mjs quebrava).
 //
-// É só do Pokémon: `enImport` existe só lá, e é o único jogo com chunk por
+// É só do Pokémon: o import da TCGCSV existe só lá, e é o único jogo com chunk por
 // idioma (data/sets/<idioma>/<set>.json).
 import { readdir, readFile, writeFile, unlink, rename, access } from "node:fs/promises";
-import { findSupersededImports, isPrefixSwap, isRetiredChunk, ID_MERGES_MARCA, idMergesPayload, stampIdMerges } from "./lib/set-supersede.mjs";
+import { findSupersededImports, importedSetIds, isPrefixSwap, isRetiredChunk, ID_MERGES_MARCA, idMergesPayload, stampIdMerges } from "./lib/set-supersede.mjs";
 
 const RAIZ = new URL("../", import.meta.url);
 const SETS = new URL("data/sets/", RAIZ);
@@ -54,13 +55,6 @@ async function existe(url) {
   try { await access(url); return true; } catch { return false; }
 }
 
-// Só o import EN entra na conta. O import JP inteiro usa o CÓDIGO do set que a
-// TCGdex também usa ("M6a"), então quando ela publica o set cai no mesmo chunk
-// e não há duplicata — o id de lá não é chute, é o código impresso na embalagem.
-const pins = await leJson(new URL("data/tcgcsv-set-map.json", RAIZ), {});
-const importados = new Set((Array.isArray(pins.enImport) ? pins.enImport : [])
-  .filter((e) => e && e.setId).map((e) => e.setId));
-
 const chunks = [];
 for (const lang of await readdir(SETS)) {
   let arquivos;
@@ -70,6 +64,15 @@ for (const lang of await readdir(SETS)) {
     if (Array.isArray(cards) && cards.length) chunks.push({ lang, setId: f.replace(/\.json$/, ""), cards });
   }
 }
+
+// Só o import EN entra na conta — o pin `enImport` E o set que entrou sozinho
+// pela janela de lançamento (chunk EN inteiro carimbado `prov: "tcgcsv"`; ver
+// lib/set-supersede.mjs#importedSetIds, e o "Delta Reign" de 09/11/2026). O
+// import JP inteiro usa o CÓDIGO do set que a TCGdex também usa ("M6a"), então
+// quando ela publica o set cai no mesmo chunk e não há duplicata — o id de lá
+// não é chute, é o código impresso na embalagem.
+const pins = await leJson(new URL("data/tcgcsv-set-map.json", RAIZ), {});
+const importados = importedSetIds(chunks, pins);
 
 const merges = await leJson(MERGES, null) || {
   _: "De-para de cardId de set importado que a TCGdex publicou com OUTRO setId (scripts/retire-imported-sets.mjs). sets: histórico das aposentadorias. prefixes: troca só do prefixo do cardId, quando a numeração bateu inteira (cel30-001 -> 30th-001). cards: par a par, quando a numeração mudou (o Classic Collection é numerado em sequência pela TCGdex e pelo número original no TCGplayer). images: arte que só o chunk importado tinha, carimbada pelo merge-catalogs enquanto a TCGdex não publicar a dela. NADA sai daqui: o id é a única ponte entre a coleção de alguém e uma carta, e conta antiga volta meses depois.",
