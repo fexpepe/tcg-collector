@@ -156,6 +156,12 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
 - `game_naruto.svg` — FONTE vetorial do logo do Naruto (Inkscape). Se editar,
   re-exporte o webp: @resvg/resvg-js (ou qualquer rasterizador) em 512px e
   depois `ffmpeg -i logo.png -c:v libwebp -quality 90 game_naruto.webp`.
+- `cdm` (Carddass Masters, Bandai 1996–2009) — **sem logo ainda**: o tile do
+  hub mostra a marca tipográfica e os sets mostram o nome (`setLogo: ""`). O
+  logo "CARDDASS MASTERS" está impresso no verso das cartas (scans da
+  Hunterpedia) e na frente dos pacotes; quando entrar como
+  `game_cdm.webp`, vai no `GAME_LOGO` (app.js), no `KIT_LOGO` (admin.js), no
+  `logo` do `functions/_lib/jogos.js` e no tile do hub.
 
 ### Os `-v2` (2026-09-28)
 

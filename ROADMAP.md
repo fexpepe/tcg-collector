@@ -21,8 +21,8 @@ Detalhe técnico de cada item está no README; aqui é só o mapa.
 **Catálogo — 14 jogos + JUMP em preparação.** Pokémon (5 idiomas, via TCGdex),
 Lorcana, One Piece, Magic, Flesh and Blood, Gundam, Dragon Ball Fusion World,
 Yu-Gi-Oh!, Digimon, Riftbound, Union Arena, Naruto, Hunter × Hunter e Dragon Ball
-Carddass — do lançamento de ontem ao Carddass de 1988. Os vintage japoneses (Carddass Hyper Battle, Miracle
-Battle, Data Carddass, Formation/Cross) foram levantados carta a carta de fontes
+Carddass — do lançamento de ontem ao Carddass de 1988. Os vintage japoneses (Carddass Hyper Battle, Carddass
+Masters, Miracle Battle, Data Carddass, Formation/Cross) foram levantados carta a carta de fontes
 que não têm API, e ficam versionados como snapshot pra nunca regredir.
 
 **Coleção.** Por variante **e condição** (escala LigaPokémon: M/NM/SP/MP/HP/D),
@@ -230,8 +230,16 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   categoria no TCGCSV. Quando ela existir, decidir o dedupe com a promo curada
   (`nrt-ncg-cp-001`) — ids são pegajosos por design.
 - **Vintage ainda não importado**: Naruto CCG (Bandai USA, 2006–2013, 28 sets) e
-  o `nrts` do tcg-db (NARUTO 疾風伝 カードゲーム). HxH Hyper Battle/Masters
-  seguem sem fonte com nome + imagem.
+  o `nrts` do tcg-db (NARUTO 疾風伝 カードゲーム).
+- **Carddass Masters (`cdm`)**: jogo próprio desde 2026-11-09, uma seção por
+  IP. Entrou o HUNTER×HUNTER completo (Partes 1 e 2 pela カードリスト do verso,
+  Premium Edition e o brinde VD3; 299 cartas, todas com scan da Hunterpedia).
+  Faltam: (1) as outras ~45 edições (Gundam, Evangelion, Cowboy Bebop, One
+  Piece, Inuyasha, Bleach…, 1996–2009), sem fonte carta a carta achada; (2)
+  o logo do jogo; (3) no HxH, o último kanji do nome da Parte 2 nº 44
+  (千耳会斡旋…, ilegível nos scans: fica sem `nameJp`), os outros brindes de
+  VHS (VD1, VD2…), o mês dos três sets (só o ano) e as cartas de episódio,
+  que vêm deitadas no scan e aparecem giradas.
 - **Dragon Ball Carddass (`dbc`)**: entrou só o Hondan 第1弾–第18弾, sem imagem.
   Faltam (1) o Hondan 第19弾–第31弾, que o sync pega sozinho quando o 80storage
   publicar; (2) Super Battle, Visual Adventure e Super Barcode Wars, sem fonte
