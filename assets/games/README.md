@@ -156,12 +156,25 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
 - `game_naruto.svg` — FONTE vetorial do logo do Naruto (Inkscape). Se editar,
   re-exporte o webp: @resvg/resvg-js (ou qualquer rasterizador) em 512px e
   depois `ffmpeg -i logo.png -c:v libwebp -quality 90 game_naruto.webp`.
-- `cdm` (Carddass Masters, Bandai 1996–2009) — **sem logo ainda**: o tile do
-  hub mostra a marca tipográfica e os sets mostram o nome (`setLogo: ""`). O
-  logo "CARDDASS MASTERS" está impresso no verso das cartas (scans da
-  Hunterpedia) e na frente dos pacotes; quando entrar como
-  `game_cdm.webp`, vai no `GAME_LOGO` (app.js), no `KIT_LOGO` (admin.js), no
-  `logo` do `functions/_lib/jogos.js` e no tile do hub.
+- `game_cdm.webp` — Carddass Masters (Bandai, 1996–2009; tile vintage do
+  jogo `cdm` no hub, parede da landing, página /games e kit). Fonte: o tapete
+  do Final Fantasy VIII Triple Triad, um produto da própria linha, na Final
+  Fantasy Wiki (`File:Final Fantasy VIII Bandai Carddass Masters Triple Triad
+  Game Mat.jpg`, 3500×2603), onde o logo está a cores no canto: letras
+  grafite e o "A" vermelho, cada um com contorno branco. É o maior achado; no
+  verso das cartas (HxH na Hunterpedia, FF7/FF8 na mesma wiki) o logo tem de
+  120 a 170 px e sai sem o contorno. O fundo é marrom texturizado: saiu por
+  cor (matiz 12–48°, saturação > 0,28), com a máscara feita em 4× e reduzida
+  (borda macia), e os bolsões marrons dentro do contorno (miolo do D, do A,
+  entre letras) também viram transparentes. O contorno, bege na fonte, é o
+  papel no impresso: foi normalizado pra branco, e a borda externa leva a cor
+  dele (sem franja marrom). Ilhas soltas de ruído saíram. Recortado no
+  conteúdo (+2px), alfa abaixo de 12 zerado; **369×120, sem esticar** (como o
+  Union Arena e o Star Wars: bitmap pequeno não ganha detalhe). WebP com perda
+  q88 e alfa sem perda: 17 KB. Na cápsula branca do hub o contorno some e fica
+  o grafite com o "A" vermelho, como no verso das cartas. Os sets seguem com o
+  nome (`setLogo: ""`): pôr o logo do jogo em todo set é decisão por jogo
+  (regra 3 do docs/CATALOGO.md).
 
 ### Os `-v2` (2026-09-28)
 
