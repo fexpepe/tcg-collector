@@ -32,6 +32,13 @@ test("Mew RGB vai pra Liga só com o nome (o código já está nele)", () => {
   assert.equal(api.ligaPokemonQuery({ ...mewB, id: "30th-B-pt", language: "pt" }), "Mew - B/RGB");
 });
 
+test("Mew RGB com o nome que a TCGdex grava desde 08/11/2026 (só \"Mew\"): o código volta pra Liga", () => {
+  const mewR = { ...mewB, id: "30th-R", name: "Mew", number: "R" };
+  assert.equal(api.ligaPokemonQuery(mewR), "Mew - R/RGB");
+  assert.ok(links(mewR).liga.endsWith("card=Mew - R/RGB"), links(mewR).liga);
+  assert.equal(api.ligaPokemonQuery({ ...mewR, id: "30th-R-pt", language: "pt" }), "Mew - R/RGB");
+});
+
 test("Classic Collection: número da carta antiga + /30, sem zero no total", () => {
   assert.equal(api.ligaPokemonQuery(lugia), "Lugia (149/30)");
   assert.ok(links(lugia).liga.endsWith("card=Lugia (149/30)"), links(lugia).liga);
@@ -94,8 +101,11 @@ test("sets dos 30 anos: toda busca da Liga leva três dígitos antes da barra", 
     for (const lang of ["en", "pt"]) {
       for (const card of lerJson(`data/sets/${lang}/${setId}.json`)) {
         const q = api.ligaPokemonQuery(card);
-        if (/^30th-[BGR](-pt)?$/.test(card.id)) {
-          assert.equal(q, card.name, card.id);
+        // Mew RGB: o nome como a Liga cataloga, com o código, valha o nome que
+        // a TCGdex gravar ("Mew - B/RGB" até 07/11/2026, "Mew" desde 08/11).
+        const rgb = /^30th-([BGR])(-pt)?$/.exec(card.id);
+        if (rgb) {
+          assert.equal(q, `Mew - ${rgb[1]}/RGB`, card.id);
           continue;
         }
         assert.match(q, /\(\d{3}\/\d+\)$/, `${card.id}: ${q}`);

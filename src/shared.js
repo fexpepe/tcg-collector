@@ -7506,9 +7506,10 @@
 
   // Os dois casos que a LigaPokémon cataloga do jeito dela, fora do "Nome
   // (001/048)" de sempre (27/09/2026):
-  //  • carta BÔNUS (Mew RGB da 30th Celebration): o código já está no nome
-  //    ("Mew - B/RGB"), e é só isso que a Liga tem — "Mew - B/RGB (B/128)" não
-  //    acha nada. A JP (M6a) fica na regra de sempre: o nome em inglês + JP;
+  //  • carta BÔNUS (Mew RGB da 30th Celebration): vai só o nome com o código
+  //    ("Mew - B/RGB", ver ligaBonusName), que é só isso que a Liga tem —
+  //    "Mew - B/RGB (B/128)" não acha nada. A JP (M6a) fica na regra de
+  //    sempre: o nome em inglês + JP;
   //  • Classic Collection: número da carta antiga + total do set (ver acima).
   // Devolve o que vai entre parênteses ("094/30"), "" pra ir só o nome, ou null
   // quando vale a regra de sempre. Serve à busca (abaixo) e ao export "Compra
@@ -7520,10 +7521,20 @@
     return ligaClassicCode(card) || null;
   }
 
+  // Nome da carta BÔNUS na Liga: "Mew - B/RGB". Até 07/11/2026 a TCGdex
+  // gravava o nome assim; no snapshot de 08/11 ele virou só "Mew" (o código
+  // ficou no número), e o export mandava "1 Mew", que a Liga não acha. O
+  // código entra quando o nome não o traz, e o nome antigo segue igual.
+  function ligaBonusName(card) {
+    const nome = brSearchName(card);
+    const num = bonusNumberOf(card && card.id);
+    return !num || /\/RGB$/i.test(nome) ? nome : `${nome} - ${num}/RGB`;
+  }
+
   // Busca da LigaPokémon: "Nome (001/048)", tirando os dois casos acima.
   function ligaPokemonQuery(card) {
     const code = ligaSpecialCode(card);
-    if (code != null) return code ? `${brSearchName(card)} (${code})` : brSearchName(card);
+    if (code != null) return code ? `${brSearchName(card)} (${code})` : ligaBonusName(card);
     return paddedCardQuery(card, true, ligaNumberSuffix(card));
   }
 
@@ -10420,6 +10431,7 @@
     // Exceções da Liga no Pokémon (Mew RGB, Classic Collection): o export
     // "Compra por Lista" (src/export-liga.js) usa a mesma regra da busca.
     ligaSpecialCode,
+    ligaBonusName,
     createPager,
     debounce,
     addOptions,
