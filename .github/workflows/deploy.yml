@@ -119,6 +119,7 @@ jobs:
             data/weiss/sets
             data/harrypotter/sets
             data/mbc/sets
+            data/cdm/sets
             data/jump/sets
             data/magic/cards.js
             data/magic/indexes.js
@@ -144,8 +145,8 @@ jobs:
           fi
           faltando=""
           # data/dbc/, data/swu/, data/cyberpunk/, data/wow/, data/lotr/,
-          # data/sorcery/, data/harrypotter/, data/weiss/, data/mbc/ e data/dbz/:
-          # jogos novos (2026-09-24 a 2026-11-01). Enquanto o cache
+          # data/sorcery/, data/harrypotter/, data/weiss/, data/mbc/, data/dbz/ e
+          # data/cdm/: jogos novos (2026-09-24 a 2026-11-09). Enquanto o cache
           # for de antes deles, o build rápido publicaria o tile do hub sem
           # catálogo nenhum atrás.
           for f in data/manifest.generated.js data/pricing.generated.js \
@@ -157,7 +158,8 @@ jobs:
                    data/harrypotter/manifest.generated.js \
                    data/weiss/manifest.generated.js \
                    data/mbc/manifest.generated.js \
-                   data/dbz/manifest.generated.js; do
+                   data/dbz/manifest.generated.js \
+                   data/cdm/manifest.generated.js; do
             [ -s "$f" ] || faltando="$faltando $f"
           done
           if [ -n "$faltando" ]; then
@@ -615,6 +617,23 @@ jobs:
         if: env.RODA_SYNC == 'true'
         run: node scripts/sync-hxh-hyper-battle.mjs || echo "sync-hxh-hyper-battle falhou; segue com o snapshot versionado"
 
+      # Carddass Masters (Bandai 1996-2009): o jogo vintage cdm, uma secao por
+      # IP. Hoje so o HUNTER x HUNTER: numero e nome pela lista impressa no
+      # verso das cartas (scripts/data/carddass-masters-hxh.json), scans da
+      # Hunterpedia com a frente recortada pela propria Fandom (snapshot em
+      # data/vintage/carddass-masters-hxh.json, nao regride). Cria data/cdm/
+      # sozinho. Sem preco.
+      - name: Catalogo vintage Carddass Masters
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/sync-carddass-masters.mjs || echo "sync-carddass-masters falhou; segue com o snapshot versionado"
+
+      # O mesmo jogo no build RAPIDO (push), sem rede: correcao na lista do
+      # verso (scripts/data/carddass-masters-*.json) aparece no deploy do
+      # merge, e nao so no cron -- a licao do dbc (PR #215) e do dbz (PR #229).
+      - name: Catalogo vintage Carddass Masters (build rapido, sem rede)
+        if: env.RODA_SYNC != 'true'
+        run: node scripts/sync-carddass-masters.mjs --no-fetch || echo "sync-carddass-masters --no-fetch falhou; segue com o catalogo do cache"
+
       # Dragon Ball Carddass (Bandai 1988-1997): o jogo vintage dbc. Lista carta
       # a carta do Hondan pelo 80storage.com (snapshot versionado em
       # data/vintage/dbc-carddass.json, nao regride, ids fixos). Cria data/dbc/
@@ -851,6 +870,7 @@ jobs:
             data/weiss/sets
             data/harrypotter/sets
             data/mbc/sets
+            data/cdm/sets
             data/jump/sets
             data/magic/cards.js
             data/magic/indexes.js
