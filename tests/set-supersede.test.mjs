@@ -5,7 +5,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
-  cardNameKey, chunkSimilarity, pairCards, isPrefixSwap, findSupersededImports, isRetiredChunk
+  cardNameKey, chunkSimilarity, pairCards, isPrefixSwap, findSupersededImports, isRetiredChunk, importedSetIds
 } from "../scripts/lib/set-supersede.mjs";
 
 const c = (id, number, name, extra) => Object.assign({ id, number, name }, extra || {});
@@ -134,4 +134,33 @@ test("chunk congelado (sobra de aposentadoria) não é aposentado de novo nem se
     new Set(["cel30"])
   );
   assert.deepEqual(r.map((x) => x.to), ["30th"]);
+});
+
+// ── Janela de lançamento: set que entrou SEM pin também é importado (09/11/2026) ──
+// O "Delta Reign" entrou em 27/10 sozinho (autoImportGroups) como `delta-reign`,
+// a TCGdex publicou em 08/11 como `me06`, e como a régua só olhava o pin
+// `enImport`, os dois ficaram lado a lado na tela de Sets.
+const tcgcsv = (cards) => cards.map((x) => ({ ...x, prov: "tcgcsv" }));
+const DELTA = tcgcsv(TCGDEX30.map((x) => ({ ...x, id: `delta-reign-${x.number}` })));
+const ME06 = TCGDEX30.map((x) => ({ ...x, id: `me06-${x.number}` }));
+
+test("set da janela de lançamento (chunk EN todo `prov: tcgcsv`) conta como importado, sem pin", () => {
+  const chunks = [{ lang: "en", setId: "delta-reign", cards: DELTA }, { lang: "en", setId: "me06", cards: ME06 }];
+  const ids = importedSetIds(chunks, {});
+  assert.deepEqual([...ids], ["delta-reign"]);
+  const r = findSupersededImports(chunks, ids);
+  assert.deepEqual(r.map((x) => `${x.from}->${x.to}`), ["delta-reign->me06"]);
+  assert.equal(isPrefixSwap(r[0].cards, "delta-reign", "me06"), true);
+});
+
+test("importedSetIds: pin segue valendo; chunk da TCGdex com add-on-miss e import JP não entram", () => {
+  const pins = { enImport: [{ group: "ME: 30th Celebration", setId: "cel30" }, { group: "x" }] };
+  const chunks = [
+    { lang: "en", setId: "cel30", cards: CEL30 },                                   // pin, mesmo sem carimbo
+    { lang: "en", setId: "me06", cards: ME06.concat(tcgcsv([c("me06-150", "150", "Promo")])) }, // add-on-miss num chunk da TCGdex
+    { lang: "ja", setId: "M6a", cards: tcgcsv(TCGDEX30) },                          // import JP: código = id da TCGdex
+    { lang: "en", setId: "vazio", cards: [] }
+  ];
+  assert.deepEqual([...importedSetIds(chunks, pins)].sort(), ["cel30"]);
+  assert.deepEqual([...importedSetIds([], null)], []);
 });
