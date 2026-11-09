@@ -4453,16 +4453,16 @@
     s.setAttribute("data-cf-beacon", '{"token":"bbd254728c214168ab583464d013e2a7"}');
     document.head.appendChild(s);
   }
-  // RPC logada: as do /admin (admin_*, error_summary, analytics_summary) e as
-  // apoio_* da própria conta (ads.js, Configurações). Uma porta só desde
-  // 2026-10-31. Antes eram cinco funções que repetiam sessão + refresh, NÃO
+  // RPC logada: as do /admin (admin_*, error_summary, analytics_summary); as
+  // apoio_* saíram com o apoiador sem anúncio em 2026-11-09. Uma porta só
+  // desde 2026-10-31. Antes eram cinco funções que repetiam sessão + refresh, NÃO
   // renovavam o token recusado (401) como o resto deste arquivo e devolviam
   // null pra QUALQUER falha — e o /admin lia esse null como "não é admin": o
   // tempo esgotado do banco (57014, a 1ª consulta do dia pega o cache frio)
   // virava "Acesso restrito" e o dono precisava de vários F5 pra ver o painel.
   // Devolve { st, v } (status HTTP + JSON); na falha, { st, code, msg } com o
   // code/message do PostgREST. st 0 = sem sessão ("sessao") ou sem rede ("rede").
-  const RPC_LOGADA = /^(admin|apoio)_[a-z_]+$|^(error|analytics)_summary$/;
+  const RPC_LOGADA = /^admin_[a-z_]+$|^(error|analytics)_summary$/;
   async function adminChamada(nome, body) {
     if (!RPC_LOGADA.test(nome)) return { st: 0, code: "nome" };
     let s = getSession();

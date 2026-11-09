@@ -8,6 +8,24 @@ poucos.)
 
 ## Pendentes de aplicar
 
+- `20261109b` — fim do apoiador sem anúncio (`20261109b_sem_apoiador.sql`; o
+  `b` porque a `20261109a` do mesmo dia é a do Carddass Masters).
+  Decisão de 2026-11-09: o Sleevu fica 100% grátis e se paga só com anúncio,
+  sem período pago sem anúncio. Desfaz a `20260928c`: `drop` da
+  `apoio_status()`, da `admin_apoiador(text, int)`, da `admin_apoiadores()` e
+  da tabela `apoiadores`. **Destrutiva:** a lista de quem apoiou some — o
+  cabeçalho do arquivo tem o `select` pra guardar antes, se quiser. Sem ordem
+  com o JS: o front novo não chama mais nada disto, e o antigo (cache do SW)
+  recebe 404 na `apoio_status` e trata todo mundo como "não apoia", que é o
+  comportamento novo.
+
+  Conferir depois de aplicar:
+  ```sql
+  select to_regclass('public.apoiadores');                      -- null
+  select proname from pg_proc
+   where proname in ('apoio_status', 'admin_apoiador', 'admin_apoiadores');  -- 0 linhas
+  ```
+
 - `20261104a` — alarme de medição parada conta PESSOAS, não eventos
   (`20261104a_sentinela_pessoas.sql`). Em 2026-11-04 a aba Medição e o
   healthcheck acusaram "parou" em `card_added` (27,5 esperados) e
@@ -454,7 +472,8 @@ poucos.)
   apertados — `_robos_retro_candidatos(date '2026-09-15', 60, 300, 5)` — ou
   sem a régua de dev — `_robos_retro_candidatos(p_trava => date '2026-06-01')`.
 
-- `20260928c` — apoiador sem anúncio (`20260928c_apoiador.sql`): tabela
+- `20260928c` — apoiador sem anúncio (`20260928c_apoiador.sql`; **desfeita
+  pela `20261109b`**, o apoiador saiu em 2026-11-09): tabela
   `apoiadores` (user_id, ate) TRANCADA pra API (RLS sem policy, sem grant),
   `apoio_status()` (a data da própria conta, pro `ads.js` e as
   Configurações), `admin_apoiador(quem, dias)` e `admin_apoiadores()` (aba
