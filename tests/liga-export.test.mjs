@@ -169,6 +169,13 @@ test("Mew RGB dos 30 anos: só o nome, que já traz o código", () => {
   assert.equal(linha30("30th-G"), "1 Mew - G/RGB [QUALIDADE=NM]");
   assert.equal(linha30("30th-R"), "1 Mew - R/RGB [QUALIDADE=NM]");
   assert.equal(linha30("30th-B-pt"), "1 Mew - B/RGB [QUALIDADE=NM] [IDIOMA=PT]");
+  // O código sai do número, não do nome do catálogo: o do TCGplayer ("Mew -
+  // B/RGB") e o da TCGdex ("Mew", desde o snapshot de 08/11/2026) dão a
+  // mesma linha — foi a troca de um pelo outro que quebrou o export.
+  for (const name of ["Mew", "Mew - B/RGB"]) {
+    const card = { ...CARTAS_30["30th-B"], name };
+    assert.equal(XS.paraLiga([{ id: card.id, v: "Normal", q: 1, c: "NM" }], { [card.id]: card }, "pokemon"), "1 Mew - B/RGB [QUALIDADE=NM]", name);
+  }
 });
 
 test("com o shared carregado, o resto segue a regra de sempre", () => {
@@ -178,8 +185,8 @@ test("com o shared carregado, o resto segue a regra de sempre", () => {
   const mewJp = { id: "M6a-B-ja", name: "Mew - B/RGB", pokemonName: "Mew", number: "B", setId: "M6a", setTotal: "", language: "ja" };
   assert.equal(XS.paraLiga([{ id: mewJp.id, v: "Normal", q: 1, c: "NM" }], { [mewJp.id]: mewJp }, "pokemon"),
     "1 Mew - B/RGB (B) [QUALIDADE=NM] [IDIOMA=JP]");
-  // Texto e CSV não passam pela regra da Liga.
-  assert.equal(XS.paraTexto([{ id: "30th-B", q: 1 }], CARTAS_30), "1 Mew - B/RGB");
+  // Texto e CSV não passam pela regra da Liga: o nome é o do catálogo.
+  assert.equal(XS.paraTexto([{ id: "30th-B", q: 1 }], CARTAS_30), `1 ${CARTAS_30["30th-B"].name}`);
   assert.equal(XS.paraCsv([{ id: "30th-c-018", v: "Normal", q: 1, c: "NM" }], CARTAS_30, "pokemon").split("\n")[1],
     "1;Gengar;30th Classic Collection;018;Normal;NM");
 });

@@ -30,6 +30,13 @@ test("Mew RGB vai pra Liga só com o nome (o código já está nele)", () => {
   assert.ok(links(mewB).liga.endsWith("card=Mew - B/RGB"), links(mewB).liga);
   // A versão PT é a mesma carta na Liga.
   assert.equal(api.ligaPokemonQuery({ ...mewB, id: "30th-B-pt", language: "pt" }), "Mew - B/RGB");
+  // Com o nome da TCGdex (só "Mew", desde o snapshot de 08/11/2026) o código
+  // sai do número: a Liga continua recebendo "Mew - X/RGB".
+  for (const n of ["R", "G", "B"]) {
+    const mew = { ...mewB, id: `30th-${n}`, name: "Mew", number: n };
+    assert.equal(api.ligaPokemonQuery(mew), `Mew - ${n}/RGB`);
+    assert.ok(links(mew).liga.endsWith(`card=Mew - ${n}/RGB`), links(mew).liga);
+  }
 });
 
 test("Classic Collection: número da carta antiga + /30, sem zero no total", () => {
@@ -88,14 +95,15 @@ test("tabela da Classic Collection bate com o de-para do data/card-id-merges.jso
 });
 
 // A regra dos três dígitos vale pros dois sets dos 30 anos, EN e PT. Só as
-// bônus (Mew RGB) ficam sem código — vão pelo nome, que já o traz.
+// bônus (Mew RGB) ficam sem número — vão pelo nome com o código, seja qual
+// for o nome que o catálogo traga.
 test("sets dos 30 anos: toda busca da Liga leva três dígitos antes da barra", () => {
   for (const setId of ["30th", "30th-c"]) {
     for (const lang of ["en", "pt"]) {
       for (const card of lerJson(`data/sets/${lang}/${setId}.json`)) {
         const q = api.ligaPokemonQuery(card);
         if (/^30th-[BGR](-pt)?$/.test(card.id)) {
-          assert.equal(q, card.name, card.id);
+          assert.equal(q, `Mew - ${card.number}/RGB`, card.id);
           continue;
         }
         assert.match(q, /\(\d{3}\/\d+\)$/, `${card.id}: ${q}`);

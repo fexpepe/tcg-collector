@@ -7506,9 +7506,10 @@
 
   // Os dois casos que a LigaPokémon cataloga do jeito dela, fora do "Nome
   // (001/048)" de sempre (27/09/2026):
-  //  • carta BÔNUS (Mew RGB da 30th Celebration): o código já está no nome
-  //    ("Mew - B/RGB"), e é só isso que a Liga tem — "Mew - B/RGB (B/128)" não
-  //    acha nada. A JP (M6a) fica na regra de sempre: o nome em inglês + JP;
+  //  • carta BÔNUS (Mew RGB da 30th Celebration): vai só o nome com o código
+  //    ("Mew - B/RGB", ver ligaBonusName), que é como a Liga cataloga — "Mew -
+  //    B/RGB (B/128)" não acha nada. A JP (M6a) fica na regra de sempre: o
+  //    nome em inglês + JP;
   //  • Classic Collection: número da carta antiga + total do set (ver acima).
   // Devolve o que vai entre parênteses ("094/30"), "" pra ir só o nome, ou null
   // quando vale a regra de sempre. Serve à busca (abaixo) e ao export "Compra
@@ -7519,11 +7520,24 @@
     if (isBonusCard(card) && !isJapaneseCard(card)) return "";
     return ligaClassicCode(card) || null;
   }
+  // Nome da carta bônus na Liga: "Mew - B/RGB" (número + a lista do set, que
+  // no 30th é R, G, B). Montado aqui, e não lido do catálogo: o código vinha
+  // no nome que o TCGplayer dá, e quando a TCGdex publicou as três cartas
+  // (snapshot de 08/11/2026) o nome virou só "Mew" — a busca e o export
+  // mandavam "Mew" e a Liga não achava. null fora da regra (não é bônus, ou
+  // é JP). Serve à busca (abaixo) e ao export (src/export-liga.js).
+  function ligaBonusName(card) {
+    const num = card && !isJapaneseCard(card) ? bonusNumberOf(card.id) : "";
+    if (!num) return null;
+    const base = String(card.id).replace(BONUS_LANG_RE, "");
+    const nome = String(card.name || "").replace(/\s+-\s+[A-Za-z]+\/[A-Za-z]+$/, "");
+    return `${nome} - ${num}/${BONUS_CARDS[base.slice(0, base.lastIndexOf("-"))].join("")}`;
+  }
 
   // Busca da LigaPokémon: "Nome (001/048)", tirando os dois casos acima.
   function ligaPokemonQuery(card) {
     const code = ligaSpecialCode(card);
-    if (code != null) return code ? `${brSearchName(card)} (${code})` : brSearchName(card);
+    if (code != null) return code ? `${brSearchName(card)} (${code})` : (ligaBonusName(card) || brSearchName(card));
     return paddedCardQuery(card, true, ligaNumberSuffix(card));
   }
 
@@ -10420,6 +10434,7 @@
     // Exceções da Liga no Pokémon (Mew RGB, Classic Collection): o export
     // "Compra por Lista" (src/export-liga.js) usa a mesma regra da busca.
     ligaSpecialCode,
+    ligaBonusName,
     createPager,
     debounce,
     addOptions,
