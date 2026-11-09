@@ -1755,6 +1755,8 @@
   // formatReleaseDate do app.js — sem isto o cartão inventava um "1 de dez.
   // de 2006" pras promos da Mission (04/11/2026).
   function formatInsightDate(value) {
+    // Só o ano ("2000") sai só o ano, pelo mesmo motivo (09/11/2026).
+    if (/^\d{4}$/.test(String(value))) return String(value);
     const d = new Date(value);
     if (Number.isNaN(d.getTime())) return String(value);
     const soMes = /^\d{4}-\d{2}$/.test(String(value));

@@ -2207,6 +2207,9 @@
   // longo, o do destaque do topo, inventava um "1 de outubro de 2002".
   const formatosDeData = new Map();
   function formatReleaseDate(value, style) {
+    // Só o ano ("2000": vintage sem mês conhecido, como o Carddass Masters)
+    // sai só o ano; o Date leria 1º de janeiro e o cartão diria "jan. de 2000".
+    if (/^\d{4}$/.test(String(value))) return String(value);
     const date = new Date(value);
     if (Number.isNaN(date.getTime())) return value;
     const longo = style === "long" ? (/^\d{4}-\d{2}$/.test(String(value)) ? "m" : "l") : "c";
