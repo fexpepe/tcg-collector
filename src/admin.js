@@ -1198,7 +1198,7 @@
     ygo: "game_ygo-v2.webp", digimon: "game_digimon-v2.webp", riftbound: "game_riftbound-v2.webp",
     unionarena: "game_unionarena.webp", naruto: "game_naruto.webp", hxh: "game_hxh.webp",
     dbc: "game_dbc.webp", wow: "game_wow.webp", lotr: "game_lotr.webp", dbz: "game_dbz.webp", weiss: "game_weiss.webp", harrypotter: "game_harrypotter.webp",
-    mbc: "game_mbc.webp", cdm: ""
+    mbc: "game_mbc.webp", cdm: "game_cdm.webp"
   };
   // Contato público: o mesmo da página Sobre e do data/ads.json (`contato`).
   const KIT_CONTATO = { email: "hi@sleevu.app", instagram: "@sleevu.app", site: "sleevu.app" };

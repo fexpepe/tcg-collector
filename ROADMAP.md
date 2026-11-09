@@ -235,8 +235,9 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   IP. Entrou o HUNTER×HUNTER completo (Partes 1 e 2 pela カードリスト do verso,
   Premium Edition e o brinde VD3; 299 cartas, todas com scan da Hunterpedia).
   Faltam: (1) as outras ~45 edições (Gundam, Evangelion, Cowboy Bebop, One
-  Piece, Inuyasha, Bleach…, 1996–2009), sem fonte carta a carta achada; (2)
-  o logo do jogo; (3) no HxH, o último kanji do nome da Parte 2 nº 44
+  Piece, Inuyasha, Bleach…, 1996–2009), sem fonte carta a carta achada
+  (a Final Fantasy Wiki tem FF7 e FF8 com frente e verso, a próxima IP
+  candidata); (2) no HxH, o último kanji do nome da Parte 2 nº 44
   (千耳会斡旋…, ilegível nos scans: fica sem `nameJp`), os outros brindes de
   VHS (VD1, VD2…), o mês dos três sets (só o ano) e as cartas de episódio,
   que vêm deitadas no scan e aparecem giradas.
