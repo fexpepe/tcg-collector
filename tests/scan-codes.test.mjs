@@ -117,7 +117,8 @@ test("Pokémon: o rodapé impresso decide, mesmo com fração ambígua", () => {
   const d = detecta("ILLUS. MITSUHIRO ARITA 4/102 1999 NINTENDO CREATURES GAME FREAK", ["4/102"]);
   assert.equal(d.top, "pokemon");
   assert.equal(d.confiante, true);
-  assert.deepEqual(d.restritos, ["pokemon", "lorcana", "riftbound"]);
+  // Os cinco jogos que numeram em fração (SWU e Harry Potter entraram em 2026-11-10).
+  assert.deepEqual(d.restritos, ["pokemon", "harrypotter", "lorcana", "riftbound", "swu"]);
 });
 
 test("Magic e Lorcana pelo copyright; One Piece pelo autor", () => {
@@ -132,7 +133,7 @@ test("só o formato do código: restringe aos jogos possíveis sem cravar", () =
   assert.deepEqual(d.restritos, ["onepiece"]);
   const frac = detecta("4/102", ["4/102"]);
   assert.equal(frac.confiante, false);
-  assert.deepEqual(frac.restritos, ["lorcana", "pokemon", "riftbound"]);
+  assert.deepEqual(frac.restritos, ["harrypotter", "lorcana", "pokemon", "riftbound", "swu"]);
   assert.equal(detecta("LOB-EN001 1ST EDITION", ["LOB-EN001"]).top, "ygo");
   assert.equal(detecta("BT1-001 R", ["BT1-001"]).top, "digimon");
 });
@@ -251,7 +252,73 @@ test("onde o código foi lido é pista do jogo: topo é Gundam, rodapé não", (
   assert.equal(topo.confiante, true);
   const base = S.detectarJogo("", ["ST10-003"], "hub", { "ST10-003": "base" });
   assert.ok(!base.restritos.includes("gundam"));
-  assert.deepEqual(Array.from(base.restritos).sort(), ["digimon", "onepiece"]);
-  // Sem origem, como antes: os três.
-  assert.equal(S.detectarJogo("", ["ST01-001"], "hub").restritos.length, 3);
+  // O Story Booster do DBFW também é "ST01-001" (2026-11-10).
+  assert.deepEqual(Array.from(base.restritos).sort(), ["dbfw", "digimon", "onepiece"]);
+  // Sem origem: os quatro.
+  assert.equal(S.detectarJogo("", ["ST01-001"], "hub").restritos.length, 4);
+});
+
+// ── Formatos que o catálogo ganhou depois do scanner (2026-11-10) ───────────
+// Medido no catálogo: 89 % do Weiss e 48 % do Union Arena não viravam
+// candidato, e SWU/Harry Potter/DBFW Story Booster iam pra busca filtrados pro
+// jogo errado. tests/scan-cobertura.test.mjs trava a taxa por jogo; aqui ficam
+// os casos de borda de cada padrão.
+test("Weiss: título/lado-número, com a raridade paralela grudada", () => {
+  assert.deepEqual(codigos("SAO/S20-E001 RR"), ["SAO/S20-E001"]);
+  // "E001S" é OUTRA carta: sai como lido e, depois, sem o sufixo.
+  assert.deepEqual(codigos("MM/W17-E001S SR"), ["MM/W17-E001S", "MM/W17-E001"]);
+  assert.equal(codigos("FT/SE10-E46")[0], "FT/SE10-E46");
+  assert.equal(codigos("CCS/WX01-001")[0], "CCS/WX01-001");
+  assert.equal(codigos("DG/EN-S03-E001")[0], "DG/EN-S03-E001");
+  assert.equal(codigos("KLK/S27-TE19S")[0], "KLK/S27-TE19S");
+  // O/I/L no lugar de dígito; S continua letra.
+  assert.equal(codigos("SAO/SIOO-EOO4S")[0], "SAO/S100-E004S");
+  // O miolo não vira carta de Yu-Gi-Oh ("W91-TE001").
+  const d = S.detectarJogo("", codigos("HOL/W91-TE001"), "hub");
+  assert.deepEqual(Array.from(d.restritos), ["weiss"]);
+  assert.equal(d.confiante, true);
+});
+
+test("Union Arena: promo, extra, título com dígito, AP e paralela", () => {
+  assert.deepEqual(codigos("UEPR/AOT-1-023"), ["UEPR/AOT-1-023"]);
+  assert.deepEqual(codigos("UEX01BT/BLC-1-036 U"), ["UEX01BT/BLC-1-036"]);
+  assert.deepEqual(codigos("UE12BT/KJ8-1-001"), ["UE12BT/KJ8-1-001"]);
+  assert.deepEqual(codigos("UE01ST/BLC-1-AP01"), ["UE01ST/BLC-1-AP01"]);
+  assert.deepEqual(codigos("UEPR/AOT-AP01"), ["UEPR/AOT-AP01"]);
+  // O "-P-001" não vira a promo "P-001" do Digimon/One Piece.
+  assert.deepEqual(codigos("UE02BT/HTR-P-001"), ["UE02BT/HTR-P-001"]);
+  assert.deepEqual(Array.from(S.detectarJogo("", ["UE02BT/HTR-P-001"], "hub").restritos), ["unionarena"]);
+  // Dígito do set lido como letra.
+  assert.equal(codigos("UEO1BT/CGH-1-O82")[0], "UE01BT/CGH-1-082");
+});
+
+test("Star Wars Unlimited: o número vem DEPOIS de set e idioma", () => {
+  assert.equal(codigos("AARON DHANDA  LFL FFG  JTL EN C 760")[0], "JTL 760");
+  assert.equal(codigos("SOR EN 010/252")[0], "SOR 10");
+  const d = S.detectarJogo("LFL FFG JTL EN C 760", ["JTL 760"], "hub");
+  assert.equal(d.jogos[0], "swu");
+  assert.equal(d.confiante, true);
+  // O artista depois do set não vira número (LIZ -> 112), nem o ano.
+  assert.deepEqual(codigos("0042 R\nHOB EN LIZ DANFORTH"), ["HOB 42"]);
+  assert.ok(!codigos("MH3 EN TM 2024 WIZARDS").some((c) => /2024/.test(c)));
+  // Número na OUTRA linha não é o do set.
+  assert.ok(!codigos("MH3 EN\n77 ALGUMA COISA").includes("MH3 77"));
+});
+
+test("Riftbound: set, fração e idioma; arte alternativa com letra", () => {
+  const c = codigos("RAD 137/167 EN  JUNHUAN 2026RGI");
+  assert.equal(c[0], "RAD 137");
+  assert.ok(c.includes("137/167"));
+  assert.equal(S.detectarJogo("RAD 137/167 EN JUNHUAN 2026RGI", c, "hub").jogos[0], "riftbound");
+  assert.deepEqual(codigos("263A/298").slice(0, 2), ["263A/298", "263/298"]);
+});
+
+test("FAB History Pack, DBFW Story Booster e fração de SWU/Harry Potter", () => {
+  assert.equal(codigos("1HP001")[0], "1HP001");
+  assert.equal(S.detectarJogo("", ["1HP001"], "hub").jogos[0], "fab");
+  assert.ok(S.detectarJogo("", ["ST01-001"], "hub", { "ST01-001": "base" }).restritos.includes("dbfw"));
+  const fr = S.detectarJogo("", ["10/116"], "hub").restritos;
+  assert.ok(fr.includes("harrypotter") && fr.includes("swu"));
+  // "Wizards" está no Harry Potter de 2001; as duas pistas dele vencem.
+  assert.equal(S.detectarJogo("HARRY POTTER WARNER BROS 2001 WIZARDS", ["10/116"], "hub").jogos[0], "harrypotter");
 });

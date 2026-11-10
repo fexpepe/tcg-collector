@@ -145,16 +145,53 @@
       out.push({ codigo, peso, conf: c, ordem: out.length });
     };
     let m;
-    // Union Arena: UE21BT/RLY-1-082
-    const reUA = /\b(UE\d{2}[A-Z]{2})\/([A-Z]{2,4})-(\d)-(\d{3})\b/g;
-    while ((m = reUA.exec(up))) add(`${m[1]}/${m[2]}-${m[3]}-${m[4]}`, 3, m);
+    // Códigos com BARRA E HÍFEN (Union Arena, Weiss) saem primeiro, e o trecho
+    // deles some do texto que os padrões genéricos leem (`resto`, do mesmo
+    // comprimento). Sem isso o "-P-001" de um "UE02BT/HTR-P-001" virava a
+    // promo "P-001" do Digimon/One Piece, e o "W91-TE001" de um
+    // "HOL/W91-TE001" do Weiss virava carta de Yu-Gi-Oh (2026-11-10: medido
+    // no catálogo, ~450 cartas do Weiss iam pra busca como Yu-Gi-Oh).
+    let resto = up;
+    const tira = (x) => { resto = resto.slice(0, x.index) + " ".repeat(x[0].length) + resto.slice(x.index + x[0].length); };
+    // Union Arena: UE21BT/RLY-1-082. O padrão de antes (UE + 2 dígitos + 2
+    // letras, título só de letras, "-N-" obrigatório) deixava de fora 48 % do
+    // catálogo: a promo ("UEPR/AOT-1-023"), o extra ("UEX01BT/BLC-1-036"), o
+    // título com dígito ("UE12BT/KJ8-1-001"), a Action Point ("…-1-AP01",
+    // "UEPR/AOT-AP01") e a paralela ("UE02BT/HTR-P-001").
+    const reUA = /\b(U[EP][A-Z0-9]{2,5})\/([A-Z0-9]{2,4})-(?:([0-9P])-)?(AP)?([0-9OILSBZ]{2,3})\b/g;
+    while ((m = reUA.exec(up))) {
+      const s = /^(U[EP]X?)([0-9OILSBZ]{2})([A-Z]{2})$/.exec(m[1]);
+      const set = s ? s[1] + soDigitos(s[2]) + s[3] : m[1];
+      const d = soDigitos(m[5]);
+      if (!/^\d+$/.test(d)) continue;
+      add(`${set}/${m[2]}-${m[3] ? m[3] + "-" : ""}${m[4] || ""}${d}`, 3, m);
+      tira(m);
+    }
+    // Weiss Schwarz: TÍTULO/LADO-NÚMERO — "SAO/S20-E001", "MM/W17-E001S",
+    // "FT/SE10-E46", "CCS/WX01-001", "DG/EN-S03-E001", "HOL/W91-TE001". É o
+    // maior jogo do catálogo com código impresso (31,6 mil cartas) e nenhum
+    // padrão o lia: 89 % das cartas não viravam candidato. O lado é S ou W
+    // (Schwarz/Weiss) com até duas letras e 2-3 dígitos; o número leva E/TE/PE
+    // (inglês, trial, promo) e a raridade paralela GRUDADA (S, SP, R, SSP…),
+    // que é parte do código — "E001" e "E001S" são cartas diferentes. Por isso
+    // aqui S, B e Z são LETRA (sufixo), não dígito lido errado: só O/I/L
+    // passam pela correção. Sai o código como lido e, com sufixo, também sem
+    // ele (a raridade ao lado, "RR", pode ter grudado no OCR). As letras do
+    // lado (SE, WX, SC…) nunca são O, I ou L — que ali são dígito lido errado.
+    const reWeiss = /\b([A-Z0-9]{2,4})\/((?:EN-)?[SW][A-HJKMNP-Z]{0,2})([0-9OIL]{2,3})-([TP]?E|[TP])?([0-9OIL]{2,3})([A-Z]{0,4})\b/g;
+    while ((m = reWeiss.exec(resto))) {
+      const base = `${m[1]}/${m[2]}${soDigitos(m[3])}-${m[4] || ""}${soDigitos(m[5])}`;
+      if (m[6]) add(base + m[6], 3, m);
+      add(base, 3, m);
+      tira(m);
+    }
     // Código com hífen: OP01-001, EB01-001, BT1-001, ST01-001, EXB-001,
     // LOB-EN001, FB01-001, P-001, GD01-001. Prefixo com pelo menos uma letra;
     // sufixo com 2-4 dígitos (às vezes precedido do idioma, como no Yu-Gi-Oh)
     // e, colada, a raridade que o OCR às vezes não separa ("OP05-119SR",
     // "OP01-001L", "EB01-001C").
     const reHifen = /\b([A-Z][A-Z0-9]{0,5})-([A-Z]{0,2})([0-9OILSBZ]{2,6})([A-Z]{0,3})\b/g;
-    while ((m = reHifen.exec(up))) {
+    while ((m = reHifen.exec(resto))) {
       // Idioma no sufixo (Yu-Gi-Oh: LOB-EN001) é EXATAMENTE 2 letras + 3-4
       // dígitos, e letras que não se confundem com dígito. Qualquer outra
       // letra ali é o OCR confundindo (II9 -> 119) e entra no número.
@@ -200,10 +237,25 @@
     // lugar do texto (peso 1). Os dígitos passam pela correção de OCR
     // ("004Z" -> 0042): antes o padrão exigia dígito puro e uma letra no fim
     // deixava "HOB 4" — carta errada — em vez de "HOB 42".
-    const reSet = new RegExp(`\\b([A-Z][A-Z0-9]{2,3})\\s*[•·.\\-]?\\s*(?:${IDIOMAS})\\b`, "g");
+    // O código do set pode começar por dígito (Magic "2XM", "2X2", "40K"),
+    // desde que tenha letra: "123 EN" não é set.
+    const reSet = new RegExp(`\\b((?=[0-9]*[A-Z])[A-Z0-9]{3,4})\\s*[•·.\\-]?\\s*(?:${IDIOMAS})\\b`, "g");
     const NUM = "[0-9OILSBZ]";
     const reAntes = new RegExp(`\\b0*(${NUM}{1,4})(?:\\s*\\/\\s*0*(${NUM}{1,4}))?\\s*[A-Z]?\\s*$`);
+    const reDepois = new RegExp(`^ *(?:[A-Z]{1,2} +)?0*(${NUM}{1,4})(?: *\\/ *0*(${NUM}{1,4}))?(?![A-Z0-9])`);
     const numero = (raw) => { const d = soDigitos(raw); return /^\d+$/.test(d) && parseInt(d, 10) > 0 ? parseInt(d, 10) : 0; };
+    // `up` troca toda quebra de linha por espaço; a linha de verdade se
+    // confere no texto original, que tem o mesmo comprimento.
+    const bruto = String(texto || "");
+    const mesmaLinha = (a, b) => bruto.length !== up.length || bruto.slice(a, b).indexOf("\n") < 0;
+    // Riftbound: "RAD • 137/167 • EN" — set, fração e SÓ ENTÃO o idioma. A
+    // fração sozinha já sai abaixo, mas ela repete entre sets (e entre jogos)
+    // de mesmo total; com o set, a busca cai na carta.
+    const reSetFrac = new RegExp(`\\b([A-Z][A-Z0-9]{2,3})\\s*[•·.\\-]?\\s*0*(${NUM}{1,3})[A-Z*]?\\s*\\/\\s*0*(${NUM}{1,3})\\s*[•·.\\-]?\\s*(?:${IDIOMAS})\\b`, "g");
+    while ((m = reSetFrac.exec(up))) {
+      const k = numero(m[2]);
+      if (k && numero(m[3]) >= 10) add(`${m[1]} ${k}`, 2, m);
+    }
     while ((m = reSet.exec(up))) {
       const set = m[1];
       const antes = up.slice(Math.max(0, m.index - 24), m.index).match(reAntes);
@@ -211,6 +263,21 @@
       // número de carta: set do Magic tem 100+ cartas.
       const n = antes && !(antes[2] && numero(antes[2]) < 100) ? numero(antes[1]) : 0;
       if (n) { add(`${set} ${n}`, 2, { index: m.index - antes[0].length, 0: antes[0] + m[0] }); continue; }
+      // Número DEPOIS do set, na mesma linha (2026-11-10): o Star Wars
+      // Unlimited imprime "JTL • EN ◆ 760" — set, idioma, o símbolo da
+      // raridade e só então o número —, e o Pokémon Scarlet & Violet,
+      // "OBF EN 006/197". Antes só se olhava pra trás (Magic), e o SWU inteiro
+      // não virava candidato. Cabe um sinal curto no meio (o símbolo da
+      // raridade sai do OCR como uma letra ou duas). Exige um DÍGITO de
+      // verdade — "MH3 EN LIZ DANFORTH" não pode virar "MH3 112" — e descarta
+      // ano ("MH3 EN TM 2024 WIZARDS").
+      const fimSet = m.index + m[0].length;
+      const dep = up.slice(fimSet, fimSet + 16).match(reDepois);
+      if (dep && /\d/.test(dep[1]) && mesmaLinha(fimSet, fimSet + dep[0].length)) {
+        const k = numero(dep[1]);
+        const ano = !dep[2] && /^(19|20)\d\d$/.test(soDigitos(dep[1]));
+        if (k && !ano) { add(`${set} ${k}`, 2, { index: m.index, 0: m[0] + dep[0] }); continue; }
+      }
       let solto;
       const reSolto = new RegExp(`\\b0(${NUM}{2,3})\\b|\\b0*(${NUM}{1,4})\\s*\\/\\s*0*(${NUM}{3,4})\\b`, "g");
       while ((solto = reSolto.exec(up))) {
@@ -221,9 +288,10 @@
     // Lorcana: "12/204 · EN · 4"  ->  "4 12" (set 4, carta 12)
     const reLorcana = new RegExp(`\\b(\\d{1,3})\\s*\\/\\s*(\\d{3})\\s*[•·.\\-]?\\s*(?:${IDIOMAS})\\s*[•·.\\-]?\\s*(\\d{1,2})\\b`, "g");
     while ((m = reLorcana.exec(up))) add(`${m[3]} ${parseInt(m[1], 10)}`, 2, m);
-    // FAB: WTR001, IRA002 (3 letras + 3 dígitos colados)
-    const reFab = /\b([A-Z]{3})(\d{3})\b/g;
-    while ((m = reFab.exec(up))) add(m[1] + m[2], 2, m);
+    // FAB: WTR001, IRA002 (3 letras + 3 dígitos colados). Os History Pack são
+    // os únicos que começam por dígito ("1HP001", "1HB001": 750 cartas).
+    const reFab = /\b([A-Z]{3}|1H[A-Z])(\d{3})\b/g;
+    while ((m = reFab.exec(resto))) add(m[1] + m[2], 2, m);
     // Fração: 4/102, 009/094, 12/204 (Pokémon, Lorcana, Riftbound, Magic antigo).
     // COMO IMPRESSA primeiro, sem os zeros depois: o catálogo guarda o número
     // do jeito que a carta imprime ("009/094" no Pokémon moderno, "4/102" no
@@ -231,12 +299,21 @@
     // "009". Testado no celular: a Nymble 009/094 saía como 9/94 e não achava.
     // Total abaixo de 10 quase sempre é lixo (barras do texto em japonês).
     const reFrac = /\b([0-9OILSBZ]{1,3})\s*\/\s*([0-9OILSBZ]{1,3})\b/g;
-    while ((m = reFrac.exec(up))) {
+    while ((m = reFrac.exec(resto))) {
       const a = soDigitos(m[1]), b = soDigitos(m[2]);
       if (!/^\d+$/.test(a) || !/^\d+$/.test(b) || parseInt(b, 10) === 0) continue;
       const peso = parseInt(b, 10) >= 10 ? 2 : 0;
       add(`${a}/${b}`, peso, m);
       add(`${parseInt(a, 10)}/${parseInt(b, 10)}`, peso, m);
+    }
+    // Fração com LETRA depois do número: a arte alternativa do Riftbound
+    // ("263a/298", que o OCR devolve em maiúscula). A letra é o que separa a
+    // versão; sai como lida e, depois, sem ela (a letra pode ser lixo).
+    const reFracLetra = /\b(\d{1,3})([A-D])\s*\/\s*(\d{2,3})\b/g;
+    while ((m = reFracLetra.exec(resto))) {
+      if (parseInt(m[3], 10) < 10) continue;
+      add(`${m[1]}${m[2]}/${m[3]}`, 2, m);
+      add(`${m[1]}/${m[3]}`, 2, m);
     }
     out.sort((x, y) => y.peso - x.peso || y.conf - x.conf || x.ordem - y.ordem);
     return out.slice(0, 6);
@@ -287,14 +364,30 @@
     gundam: [/GUNDAM/, /SOTSU/, /SUNRISE/],
     ygo: [/KONAMI/, /TAKAHASHI/, /YU-?GI-?OH/],
     fab: [/LEGEND ?STORY/, /FLESH ?AND ?BLOOD/],
-    riftbound: [/RIOT ?GAMES/, /RIFTBOUND/, /LEAGUE ?OF ?LEGENDS/],
+    riftbound: [/RIOT ?GAMES/, /RIFTBOUND/, /LEAGUE ?OF ?LEGENDS/, /\d{4} ?RGI\b/],
     unionarena: [/UNION ?ARENA/],
     naruto: [/NARUTO/, /KISHIMOTO/],
-    hxh: [/HUNTER/, /TOGASHI/]
+    hxh: [/HUNTER/, /TOGASHI/],
+    // Jogos que entraram no catálogo depois do scanner e não tinham pista
+    // nenhuma (2026-11-10): 11 dos 24 jogos. Só o que a carta IMPRIME em
+    // letra latina e é só dela — o SWU assina "© LFL © FFG"; o Harry Potter
+    // (2001, da Wizards) traz "Wizards" E "Warner Bros."/"Harry Potter", e
+    // duas pistas vencem a única do Magic. O vintage japonês (Carddass,
+    // Miracle Battle) não tem texto que o modelo inglês leia: fica sem.
+    swu: [/\bLFL\b/, /\bFFG\b/, /LUCASFILM/, /STAR ?WARS/],
+    weiss: [/WEISS/, /SCHWARZ/, /BUSHIROAD/],
+    harrypotter: [/HARRY ?POTTER/, /WARNER ?BROS/],
+    lotr: [/DECIPHER/, /TOLKIEN/, /NEW ?LINE/],
+    wow: [/BLIZZARD/, /WARCRAFT/, /CRYPTOZOIC/],
+    sorcery: [/CURIOSA/, /SORCERY/],
+    cyberpunk: [/CYBERPUNK/, /CD ?PROJEKT/],
+    dbz: [/FUNIMATION/, /SCORE ?ENTERTAINMENT/]
   };
   const FORMATOS = [
     [/^(OP|EB|PRB)\d{2}-/, ["onepiece"]],
-    [/^ST\d{2}-\d{3}$/, ["onepiece", "gundam", "digimon"]],
+    // "ST01-001" é starter de três jogos e o Story Booster do DBFW (144
+    // cartas, que antes iam pra busca só como One Piece/Digimon).
+    [/^ST\d{2}-\d{3}$/, ["onepiece", "gundam", "digimon", "dbfw"]],
     [/^ST\d{1,2}-\d{2}$/, ["digimon"]],
     [/^(BT|EX|RB|LM)\d{1,2}-/, ["digimon"]],
     [/^P-\d{3}$/, ["digimon", "onepiece"]],
@@ -306,10 +399,17 @@
     // Dígitos exigidos: o Yu-Gi-Oh tem sets "SB" com letra (SBAD-EN001).
     [/^SB\d{2}-\d{3}$/, ["dbfw"]],
     [/^[A-Z0-9]{2,4}-[A-Z]{2}\d{3}/, ["ygo"]],
-    [/^UE\d{2}/, ["unionarena"]],
-    [/^[A-Z]{3}\d{3}$/, ["fab"]],
-    [/^\d+\/\d+$/, ["pokemon", "lorcana", "riftbound"]],
-    [/^[A-Z][A-Z0-9]{2,3} \d+$/, ["magic"]],
+    [/^U[EP][A-Z0-9]{2,5}\//, ["unionarena"]],
+    [/^[A-Z0-9]{2,4}\/(?:EN-)?[SW][A-Z]{0,2}\d{2,3}-/, ["weiss"]],
+    [/^(?:[A-Z]{3}|1H[A-Z])\d{3}$/, ["fab"]],
+    // Fração: os cinco jogos que numeram "N/T". SWU e Harry Potter não
+    // estavam aqui, e a fração deles era filtrada pros outros três — só
+    // achava se nenhum set de Pokémon/Lorcana/Riftbound tivesse o mesmo total.
+    [/^\d+[A-D]?\/\d+$/, ["pokemon", "lorcana", "riftbound", "swu", "harrypotter"]],
+    // "SET NÚMERO": Magic ("MH3 123"), SWU ("JTL 760") e Riftbound ("RAD
+    // 137"). Quem diz qual dos três é a pista impressa (Wizards, LFL/FFG,
+    // RGI) ou o índice de sets do catálogo (ver indiceDeSets).
+    [/^(?=[0-9]*[A-Z])[A-Z0-9]{3,4} \d+$/, ["magic", "swu", "riftbound"]],
     [/^\d{1,2} \d+$/, ["lorcana"]]
   ];
   //   4. ONDE o código foi lido (`origens`: código -> "topo" | "base"). O
@@ -408,7 +508,10 @@
   // não houver dígito.
   function numeroDe(s) {
     const t = String(s == null ? "" : s).trim();
-    const fr = /^(?:.*?[^\d])?(\d+)\s*\/\s*[A-Z]{0,3}\d+$/i.exec(t);
+    // Uma letra ou asterisco entre o número e a barra é a marca da versão
+    // (Riftbound "263a/298", "299*/298"): sem aceitá-la, o "número" dessas
+    // cartas saía 298 — o total —, e a trava de set as confundia todas.
+    const fr = /^(?:.*?[^\d])?(\d+)[A-Z*]?\s*\/\s*[A-Z]{0,3}\d+$/i.exec(t);
     if (fr) return parseInt(fr[1], 10);
     const m = /(\d+)\D*$/.exec(t);
     return m ? parseInt(m[1], 10) : NaN;
