@@ -168,7 +168,7 @@ test("plano das passadas: rodapé nos três tratamentos antes da carta inteira; 
   assert.deepEqual(nomes("gundam").slice(0, 2), ["canto-topo", "topo-claro"]);
   assert.equal(nomes("gundam").length, 8);
   // O laço: busca a cada passada com candidato novo, e para quando a foto confirma.
-  assert.match(scanSrc, /for \(const \[nome, fx, fy, fw, fh, largura, modo, origem\] of planoDasPassadas\(jogoSabido\(\)\)\) \{/);
+  assert.match(scanSrc, /for \(const \[nome, fx, fy, fw, fh, largura, modo, origem\] of \(r \? \[\] : planoDasPassadas\(jogoSabido\(\)\)\)\) \{/);
   assert.match(scanSrc, /if \(rr\.estado === "certo" \|\| rr\.estado === "semfoto"\) \{ r = rr; break; \}/);
   assert.match(scanSrc, /if \(performance\.now\(\) - t0 > TETO_PASSADAS\) break;/);
 });

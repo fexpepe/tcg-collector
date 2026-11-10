@@ -158,13 +158,13 @@ test("o scanner confere pela foto ANTES de mostrar e conta o que a pessoa corrig
   // de aparecer). Desde 2026-11-10 em TODA leitura, não só com mais de um
   // candidato: as assinaturas do quadro saem uma vez e a busca as usa em cada
   // tentativa (tests/scan-encaixe.test.mjs cobre a decisão).
-  assert.match(scanSrc, /const fotos = fotosDoQuadro\(fonte, rec, carta\);[\s\S]{0,2500}?procurarComFoto\(cands, orfaos\(\), fotos, deteccao, texto, \{ rapido: true, memo \}\)[\s\S]{0,2500}?if \(!r\) r = await procurarComFoto\(cands, orfaos\(\), fotos, deteccao, texto, \{ memo \}\);[\s\S]{0,600}?entregar\(r, auto\);/);
+  assert.match(scanSrc, /const fotos = fotosDoQuadro\(fonte, rec, carta\);[\s\S]{0,4000}?procurarComFoto\(cands, orfaos\(\), fotos, deteccao, texto, \{ rapido: true, memo \}\)[\s\S]{0,2500}?if \(!r\) r = await procurarComFoto\(cands, orfaos\(\), fotos, deteccao, texto, \{ memo \}\);[\s\S]{0,1000}?entregar\(r, auto\);/);
   assert.match(scanSrc, /async function tentar\(c, jogos, fotos, ate, memo\) \{[\s\S]{0,500}?conferirPelaFoto\(fotos, achados, ate\)/);
   // A galeria procura a carta num leque maior de posições.
   assert.match(scanSrc, /ler\(img, \{[^}]*galeria: true/);
   // O resumo da sessão leva a precisão, e os contadores são somados onde a
   // pessoa age: trocar o 1º (uma vez por leitura) e buscar digitando.
-  const m = /logEvento\("scan_done",\s*\{([\s\S]{0,480}?)\}\)/.exec(scanSrc);
+  const m = /logEvento\("scan_done",\s*\{([\s\S]{0,520}?)\}\)/.exec(scanSrc);
   assert.ok(m, "não achei o payload do scan_done");
   for (const campo of ["amb", "vis", "troca", "dig", "duv", "corr", "neg"]) assert.match(m[1], new RegExp(`\\b${campo}:`), `scan_done sem "${campo}"`);
   assert.match(scanSrc, /if \(i !== primario && trocaConta\) \{ funil\.troca \+= 1; trocaConta = false; \}/);

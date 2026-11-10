@@ -98,7 +98,7 @@ test("ordem dos códigos lidos vale; nada casa, null", () => {
 
 test("a trava é da sessão e muda a busca e a leitura", () => {
   // Estado dentro do abrir(): fechou o scanner, a trava some.
-  const abrir = /function abrir\(\) \{[\s\S]*\n  \}\n/.exec(scanSrc)[0];
+  const abrir = /function abrir\(opc\) \{[\s\S]*\n  \}\n/.exec(scanSrc)[0];
   assert.match(abrir, /let trava = null;/);
   // Travado, a busca vai pro set — a digitada e a da leitura (que, travada,
   // roda a cada passada: as palavras do texto valem como número do set).
