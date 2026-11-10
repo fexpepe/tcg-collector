@@ -416,7 +416,13 @@
   //      Gundam é o único que imprime o código no ALTO da carta; os outros,
   //      no rodapé. "ST01-005" é Gundam lido no topo e One Piece/Digimon lido
   //      embaixo — antes o ST10-003 do One Piece voltava como carta do Gundam.
-  function detectarJogo(texto, codigos, sessao, origens) {
+  //   5. o ÍNDICE DE SETS do catálogo (`indice`: chave do set -> jogos que o
+  //      têm; ver indiceDeSets). O formato diz "pode ser Magic, SWU ou
+  //      Riftbound"; o set diz qual: "JTL" só existe no SWU. Quando o formato
+  //      admite vários jogos e o set do código existe em só alguns deles,
+  //      ficam esses — e um só vale como palavra impressa. Sem índice (dev,
+  //      rede fora), tudo segue como antes.
+  function detectarJogo(texto, codigos, sessao, origens, indice) {
     const up = String(texto || "").toUpperCase();
     const pontos = {};
     const soma = (g, n) => { pontos[g] = (pontos[g] || 0) + n; };
@@ -425,9 +431,23 @@
     (codigos || []).slice(0, 2).forEach((c) => {
       const onde = origens && origens[c];
       if (onde === "topo" && /^[A-Z]+\d*-\d{3}$/.test(c)) { soma("gundam", 3); impresso = true; return; }
+      const doSet = indice && indice.size ? indice.get(chaveDoSet(c)) : null;
+      // Código que nenhum formato conhece, mas cujo set existe: os jogos do
+      // set ("LOB-032" é do Yu-Gi-Oh porque LOB é set dele).
+      if (doSet && c.indexOf("-") > 0 && !FORMATOS.some(([re]) => re.test(c))) {
+        if (doSet.length === 1) { soma(doSet[0], 3); impresso = true; } else doSet.forEach((g) => soma(g, 2));
+      }
       FORMATOS.forEach(([re, gs]) => {
         if (!re.test(c)) return;
-        const cabe = onde === "base" && gs.length > 1 ? gs.filter((g) => g !== "gundam") : gs;
+        let cabe = onde === "base" && gs.length > 1 ? gs.filter((g) => g !== "gundam") : gs;
+        if (doSet && /^\S+ \d+$/.test(c)) {
+          // "SET NÚMERO" é formato de qualquer jogo: quem tem o set é quem o
+          // índice diz ("DIS" é promo do Lorcana E set do Magic).
+          cabe = doSet;
+        } else if (doSet && cabe.length > 1) {
+          const comSet = cabe.filter((g) => doSet.includes(g));
+          if (comSet.length) cabe = comSet;
+        }
         if (cabe.length === 1) { soma(cabe[0], 3); impresso = true; } else cabe.forEach((g) => soma(g, 2));
       });
     });
@@ -439,11 +459,223 @@
     return { jogos, pontos, confiante, restritos: jogos.filter((g) => pontos[g] >= 2) };
   }
 
-  // ── Busca do candidato no catálogo ──────────────────────────────────────────
+  // ── ENCAIXE NO CATÁLOGO (funções PURAS; testadas em tests/scan-encaixe.test.mjs) ──
+  // O OCR devolve texto; o catálogo é um vocabulário FECHADO. Até 2026-11-10 a
+  // ponte entre os dois era só formato e busca: qualquer coisa com cara de
+  // código ia pra borda, que casa palavra por prefixo e por NOME, e o primeiro
+  // resultado virava "a carta". Na bancada (139 cartas reais, foto simulada)
+  // isso deu 38 certas e 26 ERRADAS, 13 delas sem aviso nenhum: "4/3" achava
+  // uma promo do Lorcana, "71/204" do Lorcana achava um Pokémon chinês de set
+  // com 204 cartas, "YOU 4" achava "If I Didn't Have You". Estas funções
+  // fecham a ponte: o resultado tem de CASAR com o código, o set tem de
+  // EXISTIR, e o que ficar em dúvida é resolvido pela foto (estadoDaFoto).
   const normKey = (s) => String(s || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+  // O resultado da busca CASA com o código lido? Em qualquer escrita da carta
+  // (`formas`, o cardCodeForms do shared); pelo começo do número guardado,
+  // quando o que sobra é só a raridade grudada ("BT1-003" de "BT1-003 R",
+  // "P-214" de "P - 214 P", "E001" de "E001S"); e "SET NÚMERO" pelo set E
+  // pelo número ("1 11" do Lorcana colado dava "111", a carta 111).
+  function casaCodigo(codigo, card, formas) {
+    const fs = formas ? formas(card) : [card.number];
+    const sn = /^(\S+) (\d+)$/.exec(String(codigo).trim());
+    if (sn) {
+      return normKey(card.setId) === normKey(sn[1])
+        && fs.some((f) => normKey(f) === sn[2] || (/^\d+$/.test(f) && parseInt(f, 10) === parseInt(sn[2], 10)));
+    }
+    const alvo = normKey(codigo);
+    if (!alvo) return false;
+    if (fs.some((f) => normKey(f) === alvo)) return true;
+    const num = normKey(card.number);
+    return /[a-z]/.test(alvo) && alvo.length >= 4 && num.indexOf(alvo) === 0 && /^[a-z]*$/.test(num.slice(alvo.length));
+  }
+  // Chave do SET de um código, pra consultar o índice de sets: o que vem antes
+  // do número. "MH3 123" -> mh3; "OP05-119" -> op05; "LOB-EN001" -> lob;
+  // "UE21BT/RLY-1-082" -> ue21bt; "SAO/S20-E001" -> saos20 (o set do Weiss é
+  // título + lado). Fração e código colado (FAB) não têm set: "".
+  function chaveDoSet(codigo) {
+    const c = String(codigo || "").trim();
+    const sn = /^(\S+) \d+$/.exec(c);
+    if (sn) return normKey(sn[1]);
+    if (/^U[EP][A-Z0-9]{2,5}\//.test(c)) return normKey(c.slice(0, c.indexOf("/")));
+    const i = c.lastIndexOf("-");
+    if (i < 1 || /^\d+[A-D]?\/\d+$/.test(c)) return "";
+    return normKey(c.slice(0, c.indexOf("/") >= 0 ? i : c.indexOf("-")));
+  }
+  // Candidatos que o catálogo desmente saem ANTES da busca. "SET NÚMERO" só
+  // vale se o set existe em algum jogo: o padrão do Magic casa qualquer
+  // palavra de 3-4 letras seguida de idioma ("YOU EN 4", "DAKK 1"), e o
+  // Pokémon Scarlet & Violet imprime um código de set que o catálogo não
+  // guarda ("OBF EN 006/197" — a fração dele segue na lista). E o contrário:
+  // código com hífen de prefixo "desconhecido" (peso 1) cujo prefixo É um set
+  // do catálogo ("LOB-032", o Yu-Gi-Oh antigo sem o "-EN") sobe pra peso 2 —
+  // quem diz que aquilo é código é o catálogo, não a lista de formatos. Sem
+  // índice, nada muda.
+  function filtrarPorIndice(cands, indice) {
+    if (!indice || !indice.size) return cands;
+    return cands.filter((x) => !/^\S+ \d+$/.test(x.codigo) || indice.has(chaveDoSet(x.codigo)))
+      .map((x) => (x.peso === 1 && x.codigo.indexOf("-") > 0 && indice.has(chaveDoSet(x.codigo)) ? Object.assign({}, x, { peso: 2 }) : x));
+  }
+  // Os "SET NÚMERO" que o filtro acima tirou: o set lido não existe, mas pode
+  // estar a UMA letra de um que existe ("OMU 257" é "DMU 257": o D virou O).
+  // Não vão pra busca; vão pros vizinhos do set (vizinhosDoSet).
+  function orfaosDoIndice(cands, indice) {
+    if (!indice || !indice.size) return [];
+    return cands.filter((x) => /^\S+ \d+$/.test(x.codigo) && x.peso >= 1 && !indice.has(chaveDoSet(x.codigo)));
+  }
+  // VIZINHOS de um código: o mesmo código com UM dígito do número trocado.
+  // É o erro que sobra do OCR sob desfoque ("OP05-119" lido "OP05-110",
+  // "LOB-032" lido "LOB-042", Lorcana "76" lido "16") — e ele cai numa carta
+  // que EXISTE, então a busca sozinha não tem como desconfiar. Quando a foto
+  // desmente o resultado, os vizinhos que existem vão pra foto decidir. Na
+  // frente, as trocas que o Tesseract mais faz em texto miúdo.
+  const CONFUNDE = { 0: "869", 1: "74", 2: "73", 3: "895", 4: "19", 5: "638", 6: "580", 7: "12", 8: "0369", 9: "0834" };
+  function vizinhosDoNumero(codigo) {
+    const c = String(codigo || "");
+    // O número: numa fração, o de antes da barra; fora dela, a última
+    // sequência de dígitos.
+    const fr = /^(\d+)([A-D]?\/\d+)$/.exec(c);
+    const m = fr ? { ini: 0, num: fr[1] } : (() => { const k = /(\d+)(\D*)$/.exec(c); return k ? { ini: k.index, num: k[1] } : null; })();
+    if (!m) return [];
+    const antes = c.slice(0, m.ini), depois = c.slice(m.ini + m.num.length);
+    const prov = [], resto = [];
+    for (let i = 0; i < m.num.length; i++) {
+      for (let d = 0; d <= 9; d++) {
+        if (String(d) === m.num[i]) continue;
+        const novo = antes + m.num.slice(0, i) + d + m.num.slice(i + 1) + depois;
+        ((CONFUNDE[m.num[i]] || "").indexOf(String(d)) >= 0 ? prov : resto).push(novo);
+      }
+    }
+    return prov.concat(resto);
+  }
+  // Vizinhos do SET: o set lido não é set de jogo nenhum, mas fica a um
+  // caractere de um que é — um trocado ("OP00-119" -> OP05, "OMU 257" -> DMU)
+  // ou o começo engolido ("B04-094" -> FB04, "P-063" -> RP, "AD-EN043" ->
+  // DUAD: até dois caracteres). `ids`: os ids de set (como o catálogo
+  // escreve) dos jogos possíveis. Pra código com hífen e pra "SET NÚMERO".
+  function vizinhosDoSet(codigo, ids) {
+    const c = String(codigo || "");
+    const m = /^([A-Z0-9]{1,6})(-(?:[A-Z]{2})?)(\d{2,4})$/.exec(c) || /^([A-Z0-9]{2,5})( )(\d{1,4})$/.exec(c);
+    if (!m) return [];
+    const p = m[1], out = [];
+    (ids || []).forEach((id) => {
+      const s = String(id).toUpperCase();
+      if (!/^[A-Z0-9]{2,6}$/.test(s) || s === p) return;
+      let perto = false;
+      if (s.length === p.length) {
+        let dif = 0;
+        for (let i = 0; i < s.length; i++) if (s[i] !== p[i]) dif++;
+        perto = dif === 1;
+      } else perto = s.length > p.length && s.length <= p.length + (p.length >= 2 ? 2 : 1) && s.slice(s.length - p.length) === p;
+      const v = `${s}${m[2]}${m[3]}`;
+      if (perto && out.indexOf(v) < 0) out.push(v);
+    });
+    return out;
+  }
+  // O que a FOTO diz de um resultado. `sim`: a maior semelhança entre a foto
+  // e as miniaturas dos achados (null = nenhuma imagem chegou). `forte`: o
+  // código tem formato plausível (peso >= 2) e o resultado CASA com ele;
+  // `peso`: o peso do candidato.
+  //   certo   — a foto confirma (>= FOTO_CONFIRMA);
+  //   duvida  — código forte que a foto não confirma: fica, marcado pra
+  //             conferir (foto com reflexo, imagem do catálogo diferente da
+  //             carta), enquanto nada melhor aparecer. Abaixo de FOTO_NEGA só
+  //             fica o formato de jogo (peso 3): fração e "SET NÚMERO" são o
+  //             que o lixo do OCR mais imita;
+  //   semfoto — código forte e nenhuma imagem pra comparar: vale a busca,
+  //             como sempre valeu;
+  //   negado  — o resto: resultado fraco que a foto não confirma.
+  // Calibrado na bancada de 2026-11-10 (139 cartas, 13 jogos): carta certa
+  // dá 0,96-0,99 com a imagem limpa e 0,65-0,98 com a foto simulada (borrão,
+  // reflexo, tom de lâmpada, carta torta); carta errada dá -0,07 a 0,32 e, na
+  // mesma moldura do mesmo jogo, até 0,53.
+  const FOTO_CONFIRMA = 0.6, FOTO_NEGA = 0.42;
+  function estadoDaFoto(sim, forte, peso) {
+    if (typeof sim !== "number") return forte ? "semfoto" : "negado";
+    if (sim >= FOTO_CONFIRMA) return "certo";
+    if (forte && (sim >= FOTO_NEGA || peso >= 3)) return "duvida";
+    return "negado";
+  }
+  // Com o SET TRAVADO, o vocabulário é o do set: qualquer palavra do texto
+  // lido que seja o NÚMERO de uma carta dele é candidata — é o que deixa ler
+  // o jogo que imprime só o número (Dragon Ball Z "60", LOTR "15", HxH
+  // "C01"), onde formato nenhum tem como dizer que aquilo é código. Devolve
+  // as cartas, das palavras mais específicas (com letra, mais longas) pras
+  // menos; quem chama confere pela foto, porque número solto tem em toda
+  // carta (ataque, custo, ano).
+  function cartasPelasPalavras(cartas, texto) {
+    const palavras = String(texto || "").toUpperCase().split(/[^A-Z0-9]+/).filter(Boolean);
+    const vistas = new Set(), out = [];
+    const chaves = Array.from(new Set(palavras.map((w) => (/^\d+$/.test(w) ? String(parseInt(w, 10)) : w.toLowerCase()))))
+      .sort((x, y) => (/[a-z]/.test(y) ? 1 : 0) - (/[a-z]/.test(x) ? 1 : 0) || y.length - x.length);
+    chaves.forEach((k) => {
+      (cartas || []).forEach((c) => {
+        const n = normKey(c.number);
+        if (!n || vistas.has(c.id)) return;
+        if (n === k || (/^\d+$/.test(n) && /^\d+$/.test(k) && parseInt(n, 10) === parseInt(k, 10))) { vistas.add(c.id); out.push(c); }
+      });
+    });
+    return out;
+  }
+
+  // ── ÍNDICE DE SETS do catálogo ──────────────────────────────────────────────
+  // O manifest de cada jogo (a lista de sets, ~120 KB gz os 24 juntos) já era
+  // baixado pela primeira busca por código; aqui ele desce em paralelo
+  // enquanto a pessoa enquadra e vira um índice: chave do set -> jogos que o
+  // têm (`ids`: os ids de set de cada jogo, pros vizinhos). O mesmo id existe
+  // em mais de um jogo ("OP05" é set do One Piece e um pacote de torneio do
+  // Yu-Gi-Oh), então o índice não decide sozinho: ele estreita o que o
+  // FORMATO já admite (detectarJogo). Em dev não há manifest: o índice sai
+  // vazio e tudo segue pelo formato, como antes.
+  const manifestos = {};
+  function manifestDe(g) {
+    if (!manifestos[g]) {
+      manifestos[g] = (async () => {
+        if (window.SLEEVU && window.SLEEVU.game === g && window.TCG_MANIFEST) return window.TCG_MANIFEST;
+        try {
+          const r = await fetch(shared.gameDataDir(g) + "manifest.generated.js");
+          if (!r.ok) return null;
+          const tx = await r.text();
+          return JSON.parse(tx.slice(tx.indexOf("{"), tx.lastIndexOf("}") + 1));
+        } catch (e) { return null; }
+      })();
+    }
+    return manifestos[g];
+  }
+  function montarIndice(pares) {
+    const mapa = new Map();
+    mapa.ids = {};
+    pares.forEach(([g, m]) => {
+      const sets = (m && m.sets) || [];
+      mapa.ids[g] = sets.map((x) => String(x.id));
+      sets.forEach((x) => {
+        const k = normKey(x.id);
+        if (!k) return;
+        const v = mapa.get(k) || [];
+        if (v.indexOf(g) < 0) v.push(g);
+        mapa.set(k, v);
+      });
+    });
+    return mapa;
+  }
+  let indicePromessa = null;
+  function indiceDeSets() {
+    if (!indicePromessa) {
+      indicePromessa = Promise.all((shared.GAME_SLUGS || []).map((g) => manifestDe(g).then((m) => [g, m])))
+        .then(montarIndice)
+        .catch(() => montarIndice([]));
+    }
+    return indicePromessa;
+  }
+
+  // ── Busca do candidato no catálogo ──────────────────────────────────────────
   // `jogos`: lista ORDENADA de jogos permitidos (vazia = todos). A borda é
   // consultada por jogo quando são poucos — resposta menor e mais precisa.
-  async function buscar(codigo, jogos) {
+  // `soLocal`: só o manifest e os chunks já baixados, sem ida à borda — é
+  // como os VIZINHOS de um código são procurados (até uma dúzia por leitura).
+  // Cada resultado sai com `exato`: se a carta CASA com o código (casaCodigo).
+  // Havendo algum exato, os outros saem — são o que a borda achou por prefixo
+  // ou pelo NOME; sem nenhum, ficam marcados, e só a foto os confirma.
+  async function buscar(codigo, jogos, soLocal, limite) {
     const permitidos = jogos && jogos.length ? jogos : null;
     const permite = (g) => !permitidos || permitidos.includes(g);
     const posicao = (g) => (permitidos ? permitidos.indexOf(g) : 0);
@@ -461,10 +693,10 @@
     // 2) Borda (D1): indexa as palavras do número, então acha "4/102" em
     //    qualquer set de 102 cartas e "BT1-001" mesmo quando o setId do
     //    catálogo é "BT-01". Hidrata só as cartas devolvidas.
-    if (out.length < 3) {
+    if (out.length < 3 && !soLocal) {
       let hits;
       if (permitidos && permitidos.length <= 3) {
-        const porG = await Promise.all(permitidos.map((g) => shared.searchApi(g, codigo, 8)));
+        const porG = await Promise.all(permitidos.map((g) => shared.searchApi(g, codigo, limite || 8)));
         hits = [].concat.apply([], porG.map((h, i) => (h || []).map((x) => Object.assign({ g: permitidos[i] }, x))));
       } else {
         hits = (await shared.searchApi("all", codigo, 12) || []).filter((h) => permite(h.g || "pokemon"));
@@ -483,16 +715,11 @@
     // de confiança dos jogos. "Exato" em qualquer escrita do código
     // (cardCodeForms): "009/094" lido na carta é exato pra carta guardada
     // como "9" + total 94.
-    const alvo = normKey(codigo);
-    const formas = (c) => (shared.cardCodeForms ? shared.cardCodeForms(c) : [c.number]);
-    // "SET NÚMERO" (Lorcana "1 11", Magic "MH3 123"): exato é o set E o
-    // número. Colado num texto só, "1 11" dava "111" — a forma da carta 111.
-    const sn = /^(\S+) (\d+)$/.exec(String(codigo).trim());
-    const exato = sn
-      ? (h) => (normKey(h.card.setId) === normKey(sn[1]) && formas(h.card).some((f) => normKey(f) === sn[2] || (/^\d+$/.test(f) && parseInt(f, 10) === parseInt(sn[2], 10))) ? 0 : 1)
-      : (h) => (formas(h.card).some((f) => normKey(f) === alvo) ? 0 : 1);
-    out.sort((a, b) => exato(a) - exato(b) || posicao(a.game) - posicao(b.game));
-    return out.slice(0, 12);
+    out.forEach((h) => { h.exato = casaCodigo(codigo, h.card, shared.cardCodeForms); });
+    const exatos = out.filter((h) => h.exato);
+    const lista = exatos.length ? exatos : out;
+    lista.sort((a, b) => posicao(a.game) - posicao(b.game));
+    return lista.slice(0, limite || 12);
   }
 
   // ── Trava de SET (funções PURAS; testadas em tests/scan-trava.test.mjs) ─────
@@ -698,12 +925,23 @@
   // wsrv.nl, pra fonte sem CORS (o Lorcast). Todas com "sx=1": a folha e a
   // grade já carregaram a MESMA URL sem crossOrigin, e o cache devolveria essa
   // cópia, que suja o canvas (o mesmo motivo do canvasCardHelpers do shared.js).
+  //
+  // SEM o `fallback` do cardImageSources fora do Pokémon (2026-11-10): ele é
+  // um palpite de URL no pokemontcg.io montado com set e número
+  // ("…/12/71.png"), que pra carta de outro jogo aponta — quando aponta — pra
+  // um POKÉMON qualquer, e o pokemontcg.io manda CORS aberto. Na grade isso é
+  // só uma imagem errada de último recurso; aqui virava a REFERÊNCIA: a
+  // miniatura do Lorcast não tem CORS, o palpite carregava, e a foto de uma
+  // carta do Lorcana lida certo era comparada com um Pokémon. Enquanto a foto
+  // só desempatava versões, ninguém via; como verificador, derrubava a
+  // leitura certa.
   const comSx = (u) => u + (u.indexOf("?") >= 0 ? "&" : "?") + "sx=1";
-  function urlsDaCarta(card) {
+  function urlsDaCarta(card, game) {
     const src = shared.cardImageSources(card);
     if (!src.url || !shared.cardImgChain) return [];
-    const c = shared.cardImgChain(src.url, { thumb: true, fallback: src.fallback });
-    const urls = [c.src].concat(c.chain || []).filter((u) => u && !/^data:/.test(u));
+    const pokemon = (game || card.game || "pokemon") === "pokemon";
+    const c = shared.cardImgChain(src.url, { thumb: true, fallback: pokemon ? src.fallback : "" });
+    const urls = [c.src].concat(c.chain || []).filter((u) => u && !/^data:/.test(u) && (pokemon || !/\/\/images\.pokemontcg\.io\//.test(u)));
     const origem = urls.find((u) => /^https:\/\//.test(u) && !/\/\/(img\.sleevu\.app|wsrv\.nl)\//.test(u));
     if (origem) urls.push(`https://wsrv.nl/?url=${encodeURIComponent(origem)}&w=300&output=webp`);
     return urls.map(comSx);
@@ -727,38 +965,66 @@
       tenta();
     });
   }
-  // Reordena `achados` (no lugar) pela semelhança com a foto e devolve
-  // { mudou, claro }: se o 1º mudou e se a foto decidiu com folga. O prazo é curto porque a pessoa está esperando o resultado: imagem
-  // que não chega a tempo só fica sem nota, e a ordem da busca vale pra ela.
-  // Nada da foto sai do aparelho — o que desce são as miniaturas do catálogo.
-  const PRAZO_FOTO = 2500;
-  async function conferirPelaFoto(fonte, rec, achados) {
-    const lista = achados.slice(0, 8);
-    let fotos = [];
-    try { fotos = assinaturasDoQuadro(pixelsDe(fonte, rec.sx, rec.sy, rec.sw, rec.sh, 128), rec.galeria ? RECORTES_GALERIA : RECORTES_CAMERA); }
-    catch (e) { return { mudou: false, claro: false }; } // sem canvas: fica a ordem da busca
-    if (!fotos.length) return { mudou: false, claro: false };
-    const ate = Date.now() + PRAZO_FOTO;
-    const porUrl = new Map(); // duas impressões com a MESMA imagem: um download só
-    const sims = await Promise.all(lista.map((h) => {
-      const urls = urlsDaCarta(h.card);
-      if (!urls.length) return null;
-      if (!porUrl.has(urls[0])) {
-        porUrl.set(urls[0], carregarImagem(urls, ate).then((im) => {
-          if (!im) return null;
-          try {
-            const ii = pixelsDe(im, 0, 0, im.naturalWidth || im.width, im.naturalHeight || im.height, 112);
-            const ref = assinatura(ii, 0, 0, ii.w, ii.h);
-            return ref ? Math.max.apply(null, fotos.map((f) => semelhanca(f, ref))) : null;
-          } catch (e) { return null; } // canvas sujo (sem CORS) ou imagem quebrada
-        }));
-      }
-      return porUrl.get(urls[0]);
+  // Assinaturas do QUADRO (os recortes onde a carta pode estar), uma vez por
+  // leitura: a mesma foto é comparada com os resultados de várias tentativas
+  // (candidatos, jogos, vizinhos). [] sem canvas.
+  function fotosDoQuadro(fonte, rec) {
+    try { return assinaturasDoQuadro(pixelsDe(fonte, rec.sx, rec.sy, rec.sw, rec.sh, 128), rec.galeria ? RECORTES_GALERIA : RECORTES_CAMERA); }
+    catch (e) { return []; }
+  }
+  // Assinatura da miniatura de uma carta, guardada pela sessão da página: quem
+  // abre booster lê o mesmo set a noite inteira, e os vizinhos de um código
+  // são quase sempre cartas que já passaram. 4 KB por carta, com teto. Uma
+  // miniatura que não chegou a tempo NÃO fica guardada como falha: a próxima
+  // leitura tenta de novo.
+  // PRAZO_FOTO: por comparação. ORCAMENTO_FOTO: por LEITURA — a busca agora
+  // compara em várias tentativas, e sem um teto no total uma rede que não
+  // entrega miniatura seguraria o resultado por um prazo inteiro a cada uma.
+  const PRAZO_FOTO = 2500, ORCAMENTO_FOTO = 4500;
+  const TETO_REFS = 800;
+  const refs = new Map(); // 1ª URL da carta -> Promise<Float32Array|null>
+  function assinaturaDaCarta(h, ate) {
+    const urls = urlsDaCarta(h.card, h.game);
+    if (!urls.length) return Promise.resolve(null);
+    const k = urls[0];
+    if (!refs.has(k)) {
+      if (refs.size >= TETO_REFS) refs.delete(refs.keys().next().value);
+      const pr = carregarImagem(urls, ate).then((im) => {
+        if (!im) { refs.delete(k); return null; }
+        try {
+          const ii = pixelsDe(im, 0, 0, im.naturalWidth || im.width, im.naturalHeight || im.height, 112);
+          return assinatura(ii, 0, 0, ii.w, ii.h);
+        } catch (e) { return null; } // canvas sujo (sem CORS) ou imagem quebrada
+      });
+      refs.set(k, pr);
+    }
+    // Quem pede com prazo não espera além dele o download que outro começou.
+    return Promise.race([refs.get(k), new Promise((ok) => setTimeout(() => ok(null), Math.max(0, ate - Date.now())))]);
+  }
+  // Semelhança de cada resultado ({ card, game }) com a foto (a melhor entre
+  // os recortes do quadro); null pra carta cuja miniatura não chegou.
+  async function semelhancas(fotos, hs, ate) {
+    return Promise.all(hs.map(async (h) => {
+      const ref = await assinaturaDaCarta(h, ate);
+      return ref ? Math.max.apply(null, fotos.map((f) => semelhanca(f, ref))) : null;
     }));
+  }
+  // Reordena `achados` (no lugar) pela semelhança com a foto e devolve
+  // { mudou, claro, melhor, notas }: se o 1º mudou, se a foto decidiu com
+  // folga, a maior semelhança (null sem imagem nenhuma) e a de cada um, na
+  // ordem nova. O prazo é curto porque a pessoa está esperando o resultado:
+  // imagem que não chega a tempo só fica sem nota, e a ordem da busca vale
+  // pra ela. Nada da foto sai do aparelho — o que desce são as miniaturas do
+  // catálogo. `fotos`: as assinaturas do quadro (fotosDoQuadro).
+  async function conferirPelaFoto(fotos, achados, ate) {
+    const lista = achados.slice(0, 8);
+    if (!fotos || !fotos.length || !lista.length) return { mudou: false, claro: false, melhor: null, notas: [] };
+    const sims = await semelhancas(fotos, lista, Math.min(ate || Infinity, Date.now() + PRAZO_FOTO));
     const { ordem, mudou, claro } = ordemPelaFoto(sims);
     achados.splice(0, lista.length, ...ordem.map((i) => lista[i]));
-    // `notas` na ordem nova: só o diagnóstico lê (a semelhança de cada um).
-    return { mudou, claro, notas: ordem.map((i) => sims[i]) };
+    const notas = ordem.map((i) => sims[i]);
+    const numeros = notas.filter((x) => typeof x === "number");
+    return { mudou, claro, melhor: numeros.length ? Math.max.apply(null, numeros) : null, notas };
   }
 
   // ── Leitura AUTOMÁTICA (funções PURAS; testadas em tests/scan-continuo.test.mjs) ──
@@ -882,7 +1148,8 @@
     const b = dg.busca;
     if (b) L.push(`achou ${b.codigo || "-"} -> ${b.n}${b.cartas && b.cartas.length ? ` · ${b.cartas.join(" | ")}` : ""}`);
     const f = dg.foto;
-    if (f) L.push(`foto ${f.mudou ? "mudou" : "manteve"}${f.claro ? " claro" : ""}${f.notas && f.notas.length ? ` · ${f.notas.map((x) => n(x, 2)).join(" ")}` : ""}`);
+    if (f) L.push(`foto ${f.mudou ? "mudou" : "manteve"}${f.claro ? " claro" : ""}${f.estado ? ` · ${f.estado}` : ""}${f.corrigido ? " corrigido" : ""}${f.negou ? " negou" : ""}${f.notas && f.notas.length ? ` · ${f.notas.map((x) => n(x, 2)).join(" ")}` : ""}`);
+    (dg.reparos || []).forEach((r) => L.push(`reparo ${r || "-"}`));
     if (dg.erro) L.push(`erro ${dg.erro}`);
     if (typeof dg.ms === "number") L.push(`total ${n(dg.ms)}ms`);
     return L.join("\n");
@@ -1222,6 +1489,9 @@
 .scan-res.is-boa { border-color: rgba(245,179,1,.8); box-shadow: 0 0 0 1px rgba(245,179,1,.55), 0 18px 45px rgba(0,0,0,.32); }
 .scan-res-wl { display: inline-flex; align-items: center; gap: 4px; margin-left: 8px; font-size: 11.5px; font-weight: 800; color: #ff8fa3; vertical-align: 1px; }
 .scan-res-wl svg { width: 12px; height: 12px; }
+/* Leitura em DÚVIDA (2026-11-10): a foto não confirmou a carta que o código achou. Âmbar, como o "Conferir" da lista. */
+.scan-res.is-duvida { border-color: rgba(245,179,1,.8); }
+.scan-res-duv { margin-left: 8px; padding: 1px 8px; border: 1px solid rgba(245,179,1,.6); border-radius: 999px; font-size: 11.5px; font-weight: 800; color: #f5c542; vertical-align: 1px; }
 /* Painel do som: liga/desliga, as duas faixas na moeda do site e um botão pra ouvir cada aviso. */
 .scan-som-liga { display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 4px; color: #f3f5f7; font-size: 15px; font-weight: 700; cursor: pointer; }
 .scan-som-liga input { width: 22px; height: 22px; margin: 0; flex: none; accent-color: var(--accent, #dc2626); }
@@ -1315,11 +1585,15 @@
     0: [[440, 0, 0.09]],
     1: [[523, 0, 0.08], [659, 0.1, 0.1]],
     2: [[659, 0, 0.08], [784, 0.09, 0.08], [1047, 0.18, 0.16]],
-    wl: [[784, 0, 0.08], [988, 0.09, 0.08], [1175, 0.18, 0.08], [1568, 0.27, 0.22]]
+    wl: [[784, 0, 0.08], [988, 0.09, 0.08], [1175, 0.18, 0.08], [1568, 0.27, 0.22]],
+    // Leitura que a foto não confirmou (2026-11-10): duas notas DESCENDO, o
+    // contrário de todos os avisos de preço — quem tria sem olhar a tela
+    // ouve que aquela carta é pra conferir.
+    duvida: [[392, 0, 0.1], [294, 0.11, 0.16]]
   };
   // Vibração (Android; o iPhone não vibra pela web e o shared.vibrar cai no
   // toque do switch): mais pulsos quanto melhor a carta.
-  const VIBRA = { "-1": 30, 0: 25, 1: [25, 60, 25], 2: [30, 60, 30, 60, 60], wl: [60, 40, 60, 40, 120] };
+  const VIBRA = { "-1": 30, 0: 25, 1: [25, 60, 25], 2: [30, 60, 30, 60, 60], wl: [60, 40, 60, 40, 120], duvida: [90, 50, 90] };
 
   // Motor de som (Web Audio, sem arquivo): criado/retomado num TOQUE da
   // pessoa — o Safari só libera áudio assim —, depois toca sozinho.
@@ -1389,7 +1663,12 @@
     // reflexo (o mesmo critério da dica ao vivo), e `luzOk` quantas dessas
     // acharam carta. Responde se o erro do scanner é da luz ou não: em campo
     // a suspeita era a luz, e nada no funil dizia.
-    const funil = { n: 0, lido: 0, achou: 0, t0: Date.now(), t1: 0, amb: 0, vis: 0, troca: 0, dig: 0, auto: 0, luz: 0, luzOk: 0 };
+    // `duv`, `corr`, `neg` (2026-11-10): a foto como VERIFICADOR de toda
+    // leitura — quantas ficaram em dúvida (a foto não confirmou a carta),
+    // quantas a foto corrigiu trocando o código por um vizinho, e em quantas
+    // ela derrubou um resultado que a busca tinha dado.
+    const funil = { n: 0, lido: 0, achou: 0, t0: Date.now(), t1: 0, amb: 0, vis: 0, troca: 0, dig: 0, auto: 0, luz: 0, luzOk: 0, duv: 0, corr: 0, neg: 0 };
+    let emDuvida = false; // o resultado na tela não foi confirmado pela foto
     let trocaConta = false; // a próxima troca de candidato ainda conta como erro desta leitura
     shared.logEvento("scan_open");
     // Toda carta que entrar daqui conta como cadastro por scanner (o store não
@@ -1568,13 +1847,7 @@
     async function cartasDoSet(tr) {
       const doSet = (x) => (tr.setId ? x.setId === tr.setId : x.set === tr.set) && (x.language || "") === tr.lang;
       if (sessao === tr.game && Array.isArray(window.TCG_CARDS) && window.TCG_CARDS.length) return window.TCG_CARDS.filter(doSet);
-      let manifest = sessao === tr.game ? window.TCG_MANIFEST : null;
-      if (!manifest) {
-        const r = await fetch(shared.gameDataDir(tr.game) + "manifest.generated.js");
-        if (!r.ok) return null;
-        const tx = await r.text();
-        manifest = JSON.parse(tx.slice(tx.indexOf("{"), tx.lastIndexOf("}") + 1));
-      }
+      const manifest = await manifestDe(tr.game);
       const sets = ((manifest && manifest.sets) || []).filter((s) => String(s.id) === (tr.setId || tr.set) && (!s.language || s.language === (tr.lang || s.language)));
       if (!sets.length) return null;
       const chunks = await Promise.all(sets.map((s) => fetch(s.file).then((r) => (r.ok ? r.json() : []))));
@@ -1687,8 +1960,11 @@
       return faixaDePreco(v ? v.value : 0, baixo, alto);
     }
     // Aviso de uma leitura: o som (se ligado) e a vibração da faixa.
-    function avisar(h) {
-      const sinal = sinalDe(h);
+    // Leitura em DÚVIDA (a foto não confirmou): o aviso próprio, no lugar do
+    // da faixa de preço — "carta boa!" pra uma carta que talvez nem seja ela
+    // é o pior aviso que o scanner pode dar.
+    function avisar(h, duvida) {
+      const sinal = duvida ? "duvida" : sinalDe(h);
       if (som.on) tocar(SONS[sinal]);
       shared.vibrar(VIBRA[sinal]);
     }
@@ -1753,8 +2029,8 @@
       }
       return it;
     }
-    function registrar(achados, foto) {
-      itemAtual = somarItem(achados[0], 1, achados.length > 1 && !(foto && foto.claro), achados);
+    function registrar(achados, foto, duvida) {
+      itemAtual = somarItem(achados[0], 1, !!duvida || (achados.length > 1 && !(foto && foto.claro)), achados);
       salvarLista();
       pintarBotaoLista();
     }
@@ -1786,7 +2062,7 @@
         const v = precoDe(it.card);
         const preco = v ? fmtPreco({ value: v.value * it.qtd, currency: v.currency }, 2) : "";
         const ok = it.adicionadas ? `<span class="scan-item-ok">${ICO.ok}${escapeHtml(t("scan.inCollection", { n: it.adicionadas }))}</span>` : "";
-        const conf = it.conferir && it.alternativas.length > 1 ? `<button type="button" class="scan-item-conf" data-scan-conferir="${i}">${escapeHtml(t("scan.check"))}</button>` : "";
+        const conf = it.conferir ? `<button type="button" class="scan-item-conf" data-scan-conferir="${i}">${escapeHtml(t("scan.check"))}</button>` : "";
         const variante = shared.variantDisplayLabel ? shared.variantDisplayLabel(it.card, it.variante) : it.variante;
         return `<div class="scan-item${it.conferir ? " is-conferir" : ""}">
             <span class="scan-item-thumb">${miniatura(it.card)}</span>
@@ -1954,9 +2230,13 @@
     function jogosDaBusca(codigos) {
       if (trava) return [trava.game];
       if (selJogo.value) return [selJogo.value];
-      const d = detectarJogo(ultimoTexto, codigos, sessao, ultimasOrigens);
+      const d = detectarJogo(ultimoTexto, codigos, sessao, ultimasOrigens, indice);
       return d.restritos.length ? d.jogos.filter((g) => d.pontos[g] >= 2) : [];
     }
+    // O índice de sets do catálogo (indiceDeSets), resolvido: null até os
+    // manifests chegarem — e a leitura espera por ele (ver ler).
+    let indice = null;
+    indiceDeSets().then((m) => { indice = m; });
     selJogo.addEventListener("change", () => {
       selJogo.classList.toggle("is-auto", !selJogo.value);
       if (codigoAtual && !ocupado) buscarManual(codigoAtual);
@@ -2151,7 +2431,8 @@
         n: funil.n, lido: funil.lido, achou: funil.achou, add: lote,
         ms: Math.max(0, Date.now() - funil.t0), t1: funil.t1 || 0,
         amb: funil.amb, vis: funil.vis, troca: funil.troca, dig: funil.dig, auto: funil.auto,
-        luz: funil.luz, luzOk: funil.luzOk
+        luz: funil.luz, luzOk: funil.luzOk,
+        duv: funil.duv, corr: funil.corr, neg: funil.neg
       });
       clearTimeout(tmAuto);
       clearTimeout(tmLimpar);
@@ -2253,8 +2534,12 @@
       const n = resultados.length;
       const jaTem = textoAdd(h);
       const sinal = sinalDe(h);
-      resCard.classList.toggle("is-boa", sinal === 2 || sinal === "wl");
-      const wl = sinal === "wl" ? `<span class="scan-res-wl">${ICO.heart}${escapeHtml(t("scan.inWishlist"))}</span>` : "";
+      // Em dúvida, o cartão não comemora (anel dourado) nem promete: ganha a
+      // borda âmbar e o selo "Conferir", o mesmo da lista.
+      resCard.classList.toggle("is-boa", !emDuvida && (sinal === 2 || sinal === "wl"));
+      resCard.classList.toggle("is-duvida", emDuvida);
+      const wl = emDuvida ? `<span class="scan-res-duv">${escapeHtml(t("scan.check"))}</span>`
+        : sinal === "wl" ? `<span class="scan-res-wl">${ICO.heart}${escapeHtml(t("scan.inWishlist"))}</span>` : "";
       resCard.innerHTML = `
         <button type="button" class="scan-res-open" data-scan-open>
           <span class="scan-res-thumb">${miniatura(h.card)}</span>
@@ -2332,13 +2617,20 @@
       editando = null;
       if (voltarPraLista) { voltarPraLista = false; abrirLista(); } else atualizarFundo();
     }
-    function entregar(codigo, achados, foto, auto) {
+    // `r`: o que a busca devolveu — { codigo, achados, foto, estado,
+    // corrigido, forte }. `estado` "duvida" = a foto não confirmou a carta.
+    function entregar(r, auto) {
+      const codigo = r.codigo, achados = r.achados || [], foto = r.foto || null;
+      const duvida = r.estado === "duvida";
       funil.n += 1;
       if (codigo) funil.lido += 1;              // o OCR extraiu um código
       if (achados.length) funil.achou += 1;     // e ele casou com o catálogo
       if (achados.length > 1) funil.amb += 1;   // com mais de uma carta
       if (foto && foto.mudou) funil.vis += 1;   // e a foto mudou qual vem primeiro
       if (auto) funil.auto += 1;                // leitura disparada sozinha
+      if (duvida) funil.duv += 1;               // a foto não confirmou: foi pra conferir
+      if (r.corrigido) funil.corr += 1;         // a foto trocou o código lido por um vizinho
+      if (r.negou) funil.neg += 1;              // a foto derrubou um resultado da busca
       if (captura && captura.ruim) {            // a foto escolhida tinha pouca luz ou reflexo
         funil.luz += 1;
         if (achados.length) funil.luzOk += 1;
@@ -2347,23 +2639,27 @@
       codigoAtual = codigo || "";
       resultados = achados;
       primario = 0;
+      emDuvida = duvida;
       // Três leituras seguidas com o 1º resultado no mesmo set: quem abre
       // booster ganha a sugestão de travar (a dica sob a moldura e um anel no
-      // cadeado). Leitura sem carta não quebra a sequência.
-      if (!trava && achados.length) {
+      // cadeado). Leitura sem carta não quebra a sequência; a em dúvida não
+      // conta (o set dela pode ser o errado).
+      if (!trava && achados.length && !duvida) {
         recentes = recentes.concat(chaveSet(achados[0])).slice(-3);
         const mesmo = recentes.length === 3 && recentes.every((k) => k === recentes[0]);
         sugestao = mesmo ? t("scan.lockSuggest", { set: nomeSet(achados[0].card) }) : "";
         btnTrava.classList.toggle("is-sugere", !!sugestao);
       }
-      if (achados.length) registrar(achados, foto); else itemAtual = null;
+      if (achados.length) registrar(achados, foto, duvida); else itemAtual = null;
       pintarResultado();
-      if (achados.length) { avisar(achados[0]); return; } // som e vibração da faixa de preço (ou da wishlist)
-      // Sem carta. Com código lido, a folha abre pra corrigir (é leitura
-      // errada, não carta ausente). Leitura AUTOMÁTICA sem código nenhum não
-      // abre nada — o laço pode ter pego a carta ainda chegando — e vira dica
-      // até a cena mudar.
-      if (auto && !codigo) { dicaFalha = t("scan.hint.retry"); return; }
+      if (achados.length) { avisar(achados[0], duvida); return; } // som e vibração da faixa de preço, da wishlist ou da dúvida
+      // Sem carta. Com código de formato de jogo lido, a folha abre pra
+      // corrigir (é leitura errada, não carta ausente). Leitura AUTOMÁTICA sem
+      // código — ou só com código fraco, que a foto derrubou — não abre nada:
+      // o laço pode ter pego a carta ainda chegando, e a folha no meio de um
+      // booster interrompe por causa de um "4/3" lido do texto da carta. Vira
+      // dica até a cena mudar.
+      if (auto && !(codigo && r.forte)) { dicaFalha = t("scan.hint.retry"); return; }
       abrirFolha();
     }
     function adicionar(tipo, i, btn) {
@@ -2431,6 +2727,223 @@
       return { codigo: codigos[0] || "", achados: [] };
     }
 
+    // ── A FOTO COMO VERIFICADOR DE TODA LEITURA (2026-11-10) ─────────────────
+    // Antes a foto só entrava quando o código casava com MAIS de uma carta, pra
+    // escolher a versão. Com uma carta só, nada conferia: um dígito trocado
+    // que cai numa carta que existe ("76" lido "16"), uma fração inventada do
+    // texto da carta ("4/3") ou um resultado que a borda achou pelo nome
+    // entravam na lista com som de carta boa — e, na leitura automática,
+    // ninguém está olhando. Agora toda tentativa passa pela foto
+    // (estadoDaFoto): a que a foto confirma vence na hora; a que ela não
+    // confirma fica de reserva enquanto a busca tenta os outros candidatos,
+    // os outros jogos e os VIZINHOS do código; se nada melhor aparece, entra
+    // marcada "Conferir", com aviso próprio.
+    //
+    // Uma TENTATIVA: o código nos jogos dados -> os resultados que casam com
+    // ele -> a foto. null se a busca não achou nada.
+    async function tentar(c, jogos, fotos, ate) {
+      const achados = await buscar(c.codigo, jogos);
+      if (!achados.length) return null;
+      let foto = null;
+      try { foto = await conferirPelaFoto(fotos, achados, ate); } catch (e) { foto = null; }
+      const sim = foto ? foto.melhor : null;
+      const forte = !!achados[0].exato && c.peso >= 1;
+      return { codigo: c.codigo, achados, foto, sim, peso: c.peso, forte, estado: estadoDaFoto(sim, forte, c.peso) };
+    }
+    // As cartas de `lista` ([{ card, game }]) contra a foto: a mais parecida,
+    // se a foto a CONFIRMA; senão null. É como entram os resultados que não
+    // vieram do código lido (vizinhos, número solto, palavras do set travado).
+    async function melhorPelaFoto(lista, fotos, ate) {
+      if (!lista.length || !fotos.length) return null;
+      const sims = await semelhancas(fotos, lista, Math.min(ate || Infinity, Date.now() + PRAZO_FOTO));
+      let i = -1;
+      sims.forEach((x, k) => { if (typeof x === "number" && (i < 0 || x > sims[i])) i = k; });
+      // Pro diagnóstico: o que a foto disse de cada carta que entrou por ela.
+      if (diagAtual && diagAtual.reparos) diagAtual.reparos.push(lista.map((h, k) => `${h.codigo || h.card.number || "?"}:${typeof sims[k] === "number" ? sims[k].toFixed(2) : "?"}`).join(" "));
+      if (i < 0 || sims[i] < FOTO_CONFIRMA) return null;
+      return { h: lista[i], sim: sims[i] };
+    }
+    // Um resultado que entrou pela FOTO (vizinho, número solto): todas as
+    // versões do código dele, na ordem que a foto dá.
+    async function entregaPelaFoto(v, codigo, hs, fotos, ate, negou) {
+      const achados = hs && hs.length ? hs.slice() : [v.h];
+      let foto = null;
+      try { foto = await conferirPelaFoto(fotos, achados, ate); } catch (e) { foto = null; }
+      const f = foto && typeof foto.melhor === "number" ? foto : { mudou: false, claro: achados.length === 1, melhor: v.sim, notas: [v.sim] };
+      return { codigo, achados, foto: Object.assign({}, f, { mudou: true }), sim: f.melhor, estado: "certo", forte: true, corrigido: true, negou };
+    }
+    // Vizinhos de `codigos` que EXISTEM em `jogos`, sem ida à borda: o set a um
+    // caractere do lido (só pra código cujo set esses jogos não têm) e, com
+    // `numero`, o número a um dígito. Um grupo por código vizinho, com todas
+    // as versões dele (a foto pode ser da arte alternativa), até 24 cartas.
+    async function vizinhosQueExistem(codigos, jogos, numero) {
+      const ids = indice && indice.ids ? [].concat.apply([], (jogos.length ? jogos : Object.keys(indice.ids)).map((g) => indice.ids[g] || [])) : [];
+      const temSet = (c) => {
+        const k = chaveDoSet(c);
+        return !k || !indice || !indice.size || (indice.get(k) || []).some((g) => !jogos.length || jogos.indexOf(g) >= 0);
+      };
+      const lista = [];
+      codigos.forEach((c) => { if (!temSet(c)) vizinhosDoSet(c, ids).slice(0, 4).forEach((v) => lista.push(v)); });
+      if (numero) codigos.slice(0, 1).forEach((c) => vizinhosDoNumero(c).forEach((v) => lista.push(v)));
+      const grupos = [];
+      let n = 0;
+      for (const v of lista) {
+        if (n >= 24) break;
+        let hs = [];
+        try { hs = (await buscar(v, jogos, true)).filter((h) => h.exato).slice(0, 4); } catch (e) { hs = []; }
+        hs.forEach((h) => { h.codigo = v; });
+        if (hs.length) { grupos.push({ codigo: v, hs }); n += hs.length; }
+      }
+      return grupos;
+    }
+    async function repararPelaFoto(codigos, jogos, numero, fotos, ate, negou) {
+      if (!codigos.length || !fotos.length || Date.now() >= ate) return null;
+      const grupos = await vizinhosQueExistem(codigos, jogos, numero);
+      let v = await melhorPelaFoto([].concat.apply([], grupos.map((g) => g.hs)), fotos, ate);
+      // A REIMPRESSÃO mora noutro set: o "OP05-019" de uma coleção premium tem
+      // o mesmo código e outra arte, e o que está na memória é só o set do
+      // prefixo. Pros vizinhos mais prováveis (as trocas que o OCR mais faz),
+      // a borda devolve todas as impressões do código.
+      if (!v && numero && Date.now() < ate) {
+        const vistos = new Set([].concat.apply([], grupos.map((g) => g.hs.map((h) => `${h.game}:${h.card.id}`))));
+        const provaveis = vizinhosDoNumero(codigos[0]).slice(0, 8);
+        const daBorda = await Promise.all(provaveis.map((c) => buscar(c, jogos, false).then((hs) => ({ codigo: c, hs: hs.filter((h) => h.exato && !vistos.has(`${h.game}:${h.card.id}`)).slice(0, 4) }), () => ({ codigo: c, hs: [] }))));
+        daBorda.forEach((g) => { g.hs.forEach((h) => { h.codigo = g.codigo; }); if (g.hs.length) grupos.push(g); });
+        v = await melhorPelaFoto([].concat.apply([], daBorda.map((g) => g.hs)), fotos, ate);
+      }
+      if (!v) return null;
+      // Todas as versões do código vencedor, juntando o que veio da memória e
+      // da borda.
+      const hs = [].concat.apply([], grupos.filter((x) => x.codigo === v.h.codigo).map((x) => x.hs));
+      return entregaPelaFoto(v, v.h.codigo, hs, fotos, ate, negou);
+    }
+    // O jogo é certo e do código só se salva o NÚMERO: a fração do Lorcana e
+    // do Magic traz o total IMPRESSO ("71/204"), que não é o do catálogo (216,
+    // com as cartas além da numeração). As cartas daquele número no jogo vão
+    // pra foto, e só entra a que ela confirmar.
+    async function pelaFotoDoNumero(lista, jogo, fotos, ate, negou) {
+      const fr = lista.map((c) => /^(\d+)[A-D]?\/\d+$/.exec(c.codigo)).find(Boolean);
+      if (!fr || !fotos.length || Date.now() >= ate) return null;
+      const n = parseInt(fr[1], 10);
+      let hs = [];
+      try { hs = (await buscar(String(n), [jogo], false, 24)).filter((h) => numeroDe(h.card.number) === n); } catch (e) { hs = []; }
+      const v = await melhorPelaFoto(hs, fotos, ate);
+      return v ? entregaPelaFoto(v, fr[0], [v.h], fotos, ate, negou) : null;
+    }
+    // Busca de uma LEITURA: `cands` ([{ codigo, peso }], do mais forte pro
+    // mais fraco, já filtrados pelo índice), `orfaos` (os "SET NÚMERO" de set
+    // que não existe), `fotos` (as assinaturas do quadro), `deteccao` (o
+    // jogo) e `texto` (tudo o que o OCR leu). Devolve o que o `entregar` espera.
+    async function procurarComFoto(cands, orfaos, fotos, deteccao, texto) {
+      if (trava) return procurarNoSetComFoto(cands, fotos, texto);
+      const ate = Date.now() + ORCAMENTO_FOTO;
+      const topo = cands[0] || orfaos[0] || null;
+      const nada = { codigo: topo ? topo.codigo : "", achados: [], estado: "nada", forte: !!(topo && topo.peso >= 3), negou: false };
+      // Camadas de jogos, da mais estreita pra mais larga: o jogo que a carta
+      // IMPRIME (antes, com a fração dando +2 a três jogos, o "71/204" de uma
+      // carta com "© Disney" achava um Pokémon chinês de set com 204 cartas),
+      // os jogos que o formato admite e, por fim, todos.
+      const camadas = [];
+      if (selJogo.value) camadas.push([selJogo.value]);
+      else {
+        if (deteccao.confiante) camadas.push([deteccao.jogos[0]]);
+        const restritos = deteccao.restritos.length ? deteccao.jogos.filter((g) => deteccao.pontos[g] >= 2) : [];
+        if (restritos.length && !(camadas.length && restritos.length === 1)) camadas.push(restritos);
+        camadas.push([]);
+      }
+      // Peso 0 (fração de total minúsculo, prefixo de uma letra) é o que o
+      // lixo do OCR mais produz: só entra se não houver nada melhor.
+      const bons = cands.filter((c) => c.peso >= 1);
+      const lista = bons.length ? bons : cands;
+      let reserva = null, negou = false;
+      // Com o jogo IMPRESSO na carta, um resultado de OUTRO jogo contradiz o
+      // que ela diz de si: só entra se a foto confirmar — nem "sem foto pra
+      // conferir" vale (era um Pokémon chinês sem miniatura entrando calado
+      // no lugar de uma carta com "© Disney").
+      const exigeFoto = (k) => k > 0 && deteccao.confiante && !selJogo.value;
+      for (let k = 0; k < camadas.length; k++) {
+        const jogos = camadas[k];
+        for (const c of lista) {
+          aviso(t("scan.status.searching", { q: c.codigo }));
+          const r = await tentar(c, jogos, fotos, ate);
+          if (!r) continue;
+          if (r.estado === "certo") return r;
+          if (r.estado === "negado" || exigeFoto(k)) { negou = true; continue; }
+          if (!reserva || (r.estado === "duvida" && reserva.estado === "duvida" && r.sim > reserva.sim)) reserva = r;
+        }
+        // O jogo é sabido e nele não há carta com o código lido. Antes de
+        // procurar noutros jogos: o SET a um caractere ("P-063" num Gundam é
+        // "RP-063"; "OMU 257" num Magic é "DMU 257") e, com o jogo impresso,
+        // o número sozinho.
+        if (k === 0 && jogos.length && !reserva) {
+          aviso(t("scan.status.comparing"));
+          let v = await repararPelaFoto(lista.slice(0, 1).concat(orfaos.slice(0, 2)).map((c) => c.codigo), jogos, false, fotos, ate, negou);
+          if (!v && deteccao.confiante && !selJogo.value) v = await pelaFotoDoNumero(lista, jogos[0], fotos, ate, negou);
+          if (v) return v;
+        }
+        // Sem imagem pra conferir, vale a busca, como sempre valeu. E uma
+        // dúvida no jogo certo não melhora procurando o código noutros jogos.
+        if (reserva) break;
+      }
+      if (reserva && reserva.estado === "semfoto") return reserva;
+      // VIZINHOS do código mais forte: a foto desmentiu (ou não confirmou) o
+      // que a busca achou, e o erro mais comum do OCR é um dígito.
+      const base = reserva || lista.find((c) => c.peso >= 2);
+      if (base) {
+        aviso(t("scan.status.comparing"));
+        const v = await repararPelaFoto([base.codigo], reserva ? [reserva.achados[0].game] : camadas[0], true, fotos, ate, negou);
+        if (v) return v;
+      }
+      // Os "SET NÚMERO" de set que não existe, agora em qualquer jogo.
+      if (!reserva && orfaos.length) {
+        const v = await repararPelaFoto(orfaos.slice(0, 2).map((c) => c.codigo), [], false, fotos, ate, negou);
+        if (v) return v;
+      }
+      if (reserva) return Object.assign(reserva, { negou });
+      return Object.assign(nada, { negou });
+    }
+    // Com o SET TRAVADO: o código inteiro ou o número, nas cartas do set
+    // (noSet); se a foto não confirmar, as PALAVRAS do texto que são número de
+    // carta do set (cartasPelasPalavras), que só entram confirmadas pela foto.
+    async function procurarNoSetComFoto(cands, fotos, texto) {
+      const tr = trava;
+      const cartas = await tr.cartas;
+      const codigos = cands.map((c) => c.codigo);
+      const nada = { codigo: codigos[0] || "", achados: [], estado: "nada", forte: !!(cands[0] && cands[0].peso >= 2), negou: false };
+      let reserva = null;
+      if (!cartas) {
+        // O set não baixou: a busca normal no jogo, filtrada pelo set.
+        const r0 = await procurarNoSet(codigos);
+        if (!r0.achados.length) return nada;
+        let foto = null;
+        try { foto = await conferirPelaFoto(fotos, r0.achados); } catch (e) { foto = null; }
+        const sim = foto ? foto.melhor : null;
+        return { codigo: r0.codigo, achados: r0.achados, foto, sim, forte: true, estado: estadoDaFoto(sim, true, 3) };
+      }
+      const r = noSet(cartas, codigos, shared.cardCodeForms);
+      if (r) {
+        const achados = r.cartas.slice(0, 12).map((card) => ({ card, game: tr.game, exato: true }));
+        let foto = null;
+        try { foto = await conferirPelaFoto(fotos, achados); } catch (e) { foto = null; }
+        const sim = foto ? foto.melhor : null;
+        reserva = { codigo: r.codigo, achados, foto, sim, forte: true, estado: estadoDaFoto(sim, true, 3) };
+        if (reserva.estado !== "duvida") return reserva;
+      }
+      if (fotos.length) {
+        const ja = new Set((reserva ? reserva.achados : []).map((h) => h.card.id));
+        const outras = cartasPelasPalavras(cartas, texto).filter((c) => !ja.has(c.id)).slice(0, 16).map((card) => ({ card, game: tr.game, exato: true }));
+        const ate = Date.now() + PRAZO_FOTO;
+        const v = await melhorPelaFoto(outras, fotos, ate);
+        if (v) {
+          // As outras versões do mesmo número vão junto, pra foto ordenar.
+          const n = numeroDe(v.h.card.number);
+          const versoes = [v.h].concat(outras.filter((h) => h !== v.h && numeroDe(h.card.number) === n));
+          return Object.assign(await entregaPelaFoto(v, v.h.card.number || "", versoes, fotos, ate, false), { corrigido: !!reserva });
+        }
+      }
+      return reserva || nada;
+    }
+
     // Pipeline de uma leitura, do recorte mais justo pro mais largo, cada um
     // direto da fonte em resolução nativa:
     //   1. RODAPÉ justo (18 % de baixo, ampliado): onde o código mora com a
@@ -2462,7 +2975,7 @@
         fonte: [fonte.videoWidth || fonte.width || 0, fonte.videoHeight || fonte.height || 0],
         rec: [rec.sw, rec.sh], poi: rec.galeria ? "" : poi,
         quadros: captura ? captura.quadros : null, escolhido: captura ? captura.escolhido : -1,
-        recorte: null, passos: []
+        recorte: null, passos: [], reparos: []
       } : null;
       if (dg) {
         try { dg.recorte = copiaDiag(fonte, rec.sx, rec.sy, rec.sw, rec.sh, 240); } catch (e) { /* sem miniatura */ }
@@ -2471,6 +2984,10 @@
       try {
         aviso(t("scan.status.loading"));
         const worker = await obterWorker(progresso);
+        // O índice de sets já vem descendo desde que o scanner abriu; aqui só
+        // se espera o que falta, com teto — rede ruim não trava a leitura
+        // (sem índice, vale o formato).
+        if (!indice) indice = await Promise.race([indiceDeSets(), new Promise((ok) => setTimeout(() => ok(null), 1500))]);
         aviso(t("scan.status.reading"));
         const leituras = [];
         let texto = "";
@@ -2490,13 +3007,15 @@
               img: copiaDiag(canvas, 0, 0, canvas.width, canvas.height, 600)
             });
           }
-          return juntar(leituras);
+          // Sai o que o catálogo desmente ("YOU 4": não há set YOU) — antes de
+          // o candidato contar como "forte" e encerrar os passes.
+          return filtrarPorIndice(juntar(leituras), indice);
         };
         let cands = await passo(recorte(fonte, rec, 0, 1 - RODAPE, 1, RODAPE, LARGURA_RODAPE), "base", "rodape");
         // "Forte" = candidato com formato de jogo. O Magic entra mesmo com
         // peso 1: o artista fica entre o número e o set no texto, e "MH3 123"
         // casado de longe é o caso comum, não lixo.
-        const forte = () => cands.length && (cands[0].peso >= 2 || (cands[0].peso === 1 && /^[A-Z][A-Z0-9]{2,3} \d+$/.test(cands[0].codigo)));
+        const forte = () => cands.length && (cands[0].peso >= 2 || (cands[0].peso === 1 && /^[A-Z0-9]{3,4} \d+$/.test(cands[0].codigo)));
         if (cands.length && cands[0].peso >= 2 && cands[0].conf < CONF_SEGURA) {
           cands = await passo(recorte(fonte, rec, 0, 1 - RODAPE, 1, RODAPE, LARGURA_RODAPE_2), "base", "rodape2");
         }
@@ -2519,17 +3038,17 @@
         if (!forte()) cands = await passo(recorte(fonte, rec, 0, 1 - FAIXA, 1, FAIXA, LARGURA_OCR), "base", "faixa");
         let codigos = cands.map((c) => c.codigo);
         const origens = () => cands.reduce((o, c) => { o[c.codigo] = c.origem; return o; }, {});
-        const deteccao = detectarJogo(texto, codigos, sessao, origens());
+        let deteccao = detectarJogo(texto, codigos, sessao, origens(), indice);
         // Com o set travado o jogo já é sabido: a carta inteira só se não houver código.
         if (!codigos.length || (!selJogo.value && !trava && !deteccao.confiante)) {
           cands = await passo(recorte(fonte, rec, 0, 0, 1, 1, LARGURA_OCR), "", "carta");
           codigos = cands.map((c) => c.codigo);
+          deteccao = detectarJogo(texto, codigos, sessao, origens(), indice);
         }
         ultimoTexto = texto;
         ultimasOrigens = origens();
         if (dg) {
-          const d = detectarJogo(texto, codigos, sessao, ultimasOrigens);
-          dg.jogo = { pontos: d.pontos, confiante: d.confiante, busca: jogosDaBusca(codigos), trava: trava ? trava.nome : "" };
+          dg.jogo = { pontos: deteccao.pontos, confiante: deteccao.confiante, busca: jogosDaBusca(codigos), trava: trava ? trava.nome : "" };
         }
         // O seletor de jogo é SÓ da pessoa (2026-09-10). Antes, uma detecção
         // confiante gravava o jogo no seletor — e o seletor preenchido vale
@@ -2539,19 +3058,22 @@
         // cada leitura detecta o jogo de novo pelas pistas da própria carta
         // (o cartão de resultado já diz qual foi); escolher um jogo no seletor
         // é a forma de FORÇAR um só, quando a detecção errar.
-        if (!codigos.length) { if (dg) dg.ms = performance.now() - t0; entregar("", [], null, auto); return; }
-        const { codigo, achados } = await procurar(codigos);
-        // Mesmo código, cartas diferentes (Alternate Art, Parallel, Manga…):
-        // a foto desempata ANTES de o resultado aparecer — trocar a carta
-        // depois de mostrada confundiria, e um "+ Coleção" rápido gravaria a
-        // errada. O quadro congelado ainda está vivo aqui.
-        let foto = null;
-        if (achados.length > 1) {
-          aviso(t("scan.status.comparing"));
-          try { foto = await conferirPelaFoto(fonte, rec, achados); } catch (e) { /* fica a ordem da busca */ }
+        // Sem código nenhum só há o que procurar com o set travado (as
+        // palavras do texto contra os números do set).
+        if (!cands.length && !trava && !orfaosDoIndice(juntar(leituras), indice).length) { if (dg) dg.ms = performance.now() - t0; entregar({ codigo: "", achados: [], estado: "nada" }, auto); return; }
+        // A foto confere TODA leitura, ANTES de o resultado aparecer — trocar
+        // a carta depois de mostrada confundiria, e um "+ Coleção" rápido
+        // gravaria a errada. O quadro congelado ainda está vivo aqui.
+        const fotos = fotosDoQuadro(fonte, rec);
+        const r = await procurarComFoto(cands, orfaosDoIndice(juntar(leituras), indice), fotos, deteccao, texto);
+        if (dg) {
+          Object.assign(dg, {
+            busca: { codigo: r.codigo, n: r.achados.length, cartas: r.achados.slice(0, 3).map((h) => h.card.name) },
+            foto: r.foto ? Object.assign({ estado: r.estado, corrigido: !!r.corrigido }, r.foto) : (r.achados.length || r.negou ? { estado: r.estado, negou: !!r.negou } : null),
+            ms: performance.now() - t0
+          });
         }
-        if (dg) Object.assign(dg, { busca: { codigo, n: achados.length, cartas: achados.slice(0, 3).map((h) => h.card.name) }, foto, ms: performance.now() - t0 });
-        entregar(codigo, achados, foto, auto);
+        entregar(r, auto);
       } catch (e) {
         falhou = true;
         if (dg) Object.assign(dg, { erro: String((e && e.message) || e), ms: performance.now() - t0 });
@@ -2577,6 +3099,7 @@
         codigoAtual = q;
         resultados = achados;
         primario = 0;
+        emDuvida = false;   // a pessoa digitou o código: não é mais leitura em dúvida
         trocaConta = false; // o 1º aqui é da busca digitada, não da leitura
         // A folha é "Corrigir leitura": o que foi achado digitando é a carta
         // da leitura mais recente (ou do item em conferência), não uma a mais.
@@ -2709,6 +3232,7 @@
         const it = lista[Number(conf.dataset.scanConferir)];
         if (!it) return;
         resultados = it.alternativas.slice();
+        emDuvida = false;
         primario = Math.max(0, resultados.findIndex((h) => h.card.id === it.card.id && h.game === it.game));
         codigoAtual = it.card.number || "";
         trocaConta = false;
@@ -2747,6 +3271,7 @@
         const i = Number(cand.dataset.scanCand);
         if (i !== primario && trocaConta) { funil.troca += 1; trocaConta = false; }
         primario = i;
+        emDuvida = false; // a pessoa escolheu a carta: a dúvida acabou
         // Escolher a certa corrige a lista: o item em conferência inteiro, ou
         // só a cópia da leitura mais recente.
         if (editando && resultados[i]) corrigirItem(editando, resultados[i], Infinity);
@@ -2782,6 +3307,7 @@
     abrir, extrair, extrairCodigos, juntar, soDigitos, detectarJogo,
     integral, assinatura, semelhanca, assinaturasDoQuadro, ordemPelaFoto,
     numeroDe, noSet,
+    casaCodigo, chaveDoSet, filtrarPorIndice, orfaosDoIndice, vizinhosDoNumero, vizinhosDoSet, estadoDaFoto, cartasPelasPalavras, montarIndice,
     faixaDePreco, configSom, SONS, VIBRA,
     medirQuadro, passoAuto, dicaDoQuadro, varianteDe, AUTO,
     cinzaDe, nitidez, relatorio

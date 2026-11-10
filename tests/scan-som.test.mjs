@@ -83,7 +83,13 @@ test("os avisos sobem com o valor, e a wishlist é o maior", () => {
 });
 
 test("o aviso sai da leitura, e o áudio é liberado no toque", () => {
-  assert.match(scanSrc, /if \(achados\.length\) \{ avisar\(achados\[0\]\); return; \}/);
+  assert.match(scanSrc, /if \(achados\.length\) \{ avisar\(achados\[0\], duvida\); return; \}/);
+  // Leitura em dúvida (a foto não confirmou) tem aviso próprio, DESCENDO —
+  // o contrário de todo aviso de preço —, no lugar do da faixa.
+  assert.match(scanSrc, /const sinal = duvida \? "duvida" : sinalDe\(h\);/);
+  const duv = S.SONS.duvida;
+  assert.ok(duv.length === 2 && duv[1][0] < duv[0][0], "o aviso de dúvida tem de descer");
+  assert.ok(S.VIBRA.duvida, "sem vibração da dúvida");
   // Safari: o AudioContext tem de nascer/voltar dentro de um gesto.
   assert.match(scanSrc, /btnLer\.addEventListener\("click", async \(\) => \{[\s\S]{0,160}?contextoAudio\(\)/);
   // Preferência do aparelho, com o storage protegido.
