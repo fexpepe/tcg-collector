@@ -63,7 +63,9 @@ guarda isso em `number` (e `setId`), então achar a carta é OCR + busca local.
    código no alto; com o jogo já sabido começa por ele); a **faixa** larga
    (24 %) só se ainda não houver código (carta menor que a moldura, torta); e
    a carta inteira só sem código ou sem saber o jogo. Ver "Medição de
-   2026-09-29" abaixo.
+   2026-09-29" abaixo. *(Esta ordem valeu até 2026-11-10; a de hoje — três
+   tratamentos do rodapé, topo, carta inteira e duas escalas maiores, com a
+   foto conferindo a cada passada — está na fase 1.8.)*
 3. **Extração de candidatos** (`extrairCodigos`, função pura com teste):
    códigos com hífen, Union Arena, FAB, fração `N/T`, Magic `SET NUM` e Lorcana
    `SET NUM`, com correção das confusões clássicas do OCR (O→0, I→1, S→5, B→8)
@@ -405,14 +407,181 @@ código do One Piece foi lido com ~50 px em setembro. Próximo passo: conferir
 com o diagnóstico em cartas reais e, se repetir, medir uma passada em escala
 menor no banco de `data/.cache/scan-test/`, com um cenário escuro.
 
+## Fase 1.8 — o catálogo como vocabulário e a foto como verificador (2026-11-10)
+
+Uma análise do scanner apontou sete frentes. Seis entraram aqui, cada uma
+medida; a sétima (OCR nativo no app) ficou de fora, com o motivo no fim.
+
+### A bancada
+
+Até aqui cada mudança era medida num ensaio próprio. Agora há uma bancada só,
+que roda a LEITURA INTEIRA (OCR, extração, busca, conferência) no Chromium,
+pelo caminho da galeria, com o catálogo de produção por trás:
+
+- **139 cartas reais de 13 jogos** (One Piece, Digimon, Gundam, DBFW, Union
+  Arena, Lorcana, FAB, Weiss, SWU, Riftbound, Pokémon, Magic, Yu-Gi-Oh),
+  sorteadas do catálogo com semente fixa, mais 47 de nove jogos sem código
+  (DBZ, LOTR, WoW, Sorcery, Cyberpunk, HxH, Carddass) pra bancada do set
+  travado. As imagens são as do catálogo (600–716 px de largura): equivalem a
+  um vídeo de 1080p, não ao 4K que a câmera pede — a bancada é pessimista.
+- **Três cenários de foto simulada**: *limpa* (a imagem, 86 % do quadro);
+  *foto* (80–92 % do quadro, ±2°, borrão de 0,6–1,4 px, contraste 0,8, ruído,
+  tom de lâmpada, reflexo em metade); *dura* (74–95 %, ±5°, borrão de 1,2–2,4
+  px, contraste 0,62, 60 % de luz, reflexo sempre).
+- **O que conta**: carta *certa* (o 1º resultado é a carta do banco), *errada*
+  (é outra) e errada *sem aviso* (outra, e sem a marca "Conferir"). Versão de
+  mesma arte (foil, reimpressão) conta como errada, marcada.
+
+Como as outras, a bancada e o banco ficam fora do repositório (imagens das
+editoras). Há também um **laboratório de OCR** (só passadas + extração, sem
+busca), que foi o que decidiu a ordem das passadas.
+
+| 139 cartas | certas | erradas | erradas sem aviso |
+|---|---|---|---|
+| limpa, antes | 40 | 38 | 13 |
+| limpa, depois | **72** | 9 | **0** |
+| foto, antes | 38 | 26 | 13 |
+| foto, depois | **65** | 10 | **0** |
+| dura, antes | 11 | 15 | 4 |
+| dura, depois | **18** | 2 | **0** |
+
+A linha de base mostrou que o problema do scanner não era só não ler: era
+**achar a carta errada**, e calado. O OCR quase nunca era o culpado.
+
+### 1. Os formatos que o catálogo ganhou (cobertura travada no CI)
+
+O scanner nasceu com 13 jogos e o catálogo foi a 24. Passando o número guardado
+de cada carta pelo `extrair` + `detectarJogo`, como se o OCR lesse perfeito:
+89 % do Weiss (31,6 mil cartas) e 48 % do Union Arena não viravam candidato;
+SWU e Harry Potter iam pra busca filtrados pra Pokémon/Lorcana/Riftbound; o
+Story Booster do DBFW ia pra One Piece/Digimon; 11 jogos não tinham pista.
+Entraram os padrões de Weiss (`SAO/S20-E001S`), Union Arena (promo, extra, AP),
+SWU (`JTL • EN ◆ 760`, o número DEPOIS do set), Riftbound (`RAD • 137/167 •
+EN`, `263a/298`), FAB History Pack, set de Magic começando por dígito, e as
+pistas de rodapé dos jogos novos. O `tests/scan-cobertura.test.mjs` passa o
+catálogo versionado de cada jogo pelo scanner e cobra uma taxa mínima — ou a
+declaração de que o jogo não tem código legível. **Jogo novo sem declaração
+quebra o CI** (item B18 do checklist 4.2 do [CATALOGO](CATALOGO.md)).
+
+### 2. Encaixe no catálogo
+
+O OCR devolve texto; o catálogo é um vocabulário fechado. A ponte era formato
++ busca, e a borda casa palavra por prefixo e pelo NOME: `4/3` achava uma
+promo do Lorcana, o `71/204` de uma carta com "© Disney" achava um Pokémon
+chinês de set com 204 cartas, `YOU 4` achava "If I Didn't Have You".
+
+- `casaCodigo`: o resultado tem de ser a carta do código lido. Havendo algum
+  que casa, o que a borda achou por nome sai.
+- **Índice de sets** (`indiceDeSets`), montado dos manifests que a primeira
+  busca já baixava (120 KB gz os 24 jogos; agora descem em paralelo enquanto a
+  pessoa enquadra): "SET NÚMERO" de set que não existe não vai pra busca;
+  código cujo prefixo é set do catálogo ganha peso (`LOB-032`, o Yu-Gi-Oh
+  antigo sem "-EN"); e o set diz de que jogo é (`JTL` só existe no SWU).
+- **Camadas de jogos**: primeiro o jogo que a carta IMPRIME. Resultado de
+  outro jogo só entra se a foto confirmar.
+
+### 3. A foto como verificador de toda leitura
+
+Antes a foto só entrava com mais de um candidato, pra escolher a versão. Com
+uma carta só, nada conferia. Agora toda tentativa passa pela foto
+(`estadoDaFoto`): confirma (semelhança ≥ 0,60) → entra; código forte que ela
+não confirma → entra **marcada "Conferir"**, com som próprio (descendo) e sem
+o anel de carta boa; resultado fraco que ela não confirma → não entra.
+Calibrado na bancada: carta certa dá 0,72–1,00 na foto simulada (com a carta
+endireitada, ver 5), errada 0,44, e até 0,53 na mesma moldura do mesmo jogo.
+
+Antes de aceitar a dúvida, os **vizinhos**, que só entram confirmados e com
+folga sobre a segunda colocada: o número a um dígito (`OP05-019` lido
+`OP05-010`), o set a uma letra (`OMU 257` é `DMU 257`; `P-063` num Gundam é
+`RP-063`) e, com o jogo impresso, o número sozinho (a fração do Lorcana traz o
+total impresso, 204, que não é o do catálogo).
+
+**Defeito antigo achado no caminho.** Fora do Pokémon, a miniatura de
+referência podia ser o palpite de URL do pokemontcg.io (`…/12/71.png`), que
+carrega com CORS aberto e é um Pokémon qualquer. A foto de uma carta do Lorcana
+lida certo era comparada com isso: 0 de 8 na bancada, 6 de 8 depois.
+
+### 4. Passadas do OCR: polaridade, escala, e a foto no laço
+
+O laboratório de OCR (139 cartas, foto simulada) mediu cada receita:
+
+- As seis passadas de antes eram do mesmo tratamento e liam, juntas, **60**
+  códigos. Metade dos jogos imprime o código CLARO em faixa escura (One Piece,
+  DBFW, Riftbound, o rodapé do Magic e do SWU), e o limiar do Tesseract fica
+  com a arte clara ao lado. Com o `realcarLocal` (o texto claro vira tinta
+  escura em fundo uniforme) e variando a escala, seis passadas leem **69** e
+  oito leem **73**. O plano é o `PASSADAS`.
+- **Lê, confere, continua**: a cada passada com candidato novo, a busca roda e
+  a foto responde. Confirmou, acabou; senão, vem a passada seguinte. Antes, um
+  `10/41` lido do texto da carta encerrava a leitura. Metade das cartas certas
+  sai na primeira passada (~2,1 s no computador, era 2,0 s); a que não lê
+  demora mais (4,3 s contra 2,8 s), com teto de 5 s de passadas.
+- **O que NÃO ajudou**: recortar o OCR relativo à carta (34 códigos contra 35
+  do recorte pela moldura). O limite é o motor em texto miúdo, não o lugar da
+  faixa. Não entrou.
+
+### 5. Achar a carta no quadro
+
+`acharCarta`: quatro retas, uma por lado, numa amostra de 150 px, sem
+biblioteca. A reta mais forte de um lado é quase sempre a moldura impressa, não
+a borda; quem separa é o sinal do degrau e a geometria (a maior combinação com
+proporção de carta). Nas fotos sintéticas de verdade conhecida, erro mediano de
+1,2 % da largura; nas 139 da bancada, acha 134. Serve ao que a medição
+confirmou: a carta **endireitada** entra nas assinaturas da foto (a semelhança
+da carta certa sobe de 0,59–0,98 pra 0,72–1,00, a da errada não mexe), e o
+**disparo automático** espera ~1,5 s em vez de 0,4 s quando não há carta no
+quadro (antes bastava contraste, e toalha estampada gastava uma leitura).
+
+### 6. Reconhecimento pela arte, no set travado
+
+A fase 2 no recorte que cabe no aparelho: o SET é o filtro, a assinatura
+decide. Travado o set, o scanner baixa as miniaturas dele uma vez (as mesmas da
+página do set; nada com a economia de dados ligada) e guarda a assinatura de
+cada carta. A leitura consulta a arte ANTES do OCR (`escolherPelaArte`):
+apontou uma carta com folga, acabou, sem passada nenhuma; apontou a arte mas
+não a versão, o OCR ainda roda pro código separar. Como o jogo sem código não
+tem "primeira carta lida", o cadeado sem resultado abre um **seletor de set**.
+
+Bancada com o set travado (foto simulada, 22 jogos, 4 cartas de cada): **72 de
+88 certas, 1 errada (marcada), 0 sem aviso**; 65 saíram só pela arte, todas
+certas, em ~0,1 s cada. Sem código, antes zero: Sorcery, Cyberpunk, HxH e
+Miracle Battle 4 de 4, DBZ 3 de 4. Aprender um set leva ~9 s (mediana). O que
+ficou baixo é set grande com imagem lenta (LOTR, 380 cartas por proxy) e
+casamento de set da própria bancada, não do scanner.
+
+### O que ficou de fora, e o que sobra
+
+- **OCR nativo no app** (ML Kit no Android, Vision no iOS). É o maior salto
+  provável de leitura — e lê japonês, o prefixo em kanji do Naruto vintage —,
+  mas não entrou: é plugin nativo, que não dá pra exercitar sem aparelho, só
+  chega em build de loja (live update não leva código nativo) e pede PR
+  própria. O terreno: há dois plugins pro Capacitor 8
+  (`@capacitor-mlkit/text-recognition` e `@capacitor-community/image-to-text`);
+  o ponto de troca no scanner é o `ocr(worker, canvas)`, que devolve `{ texto,
+  palavras }` — um motor nativo entra ali, com o Tesseract de reserva.
+- **Ler** continua sendo o teto: na foto simulada, Union Arena (fonte
+  vazada), Weiss, FAB e Yu-Gi-Oh (código miúdo, sob a arte) leem pouco. Sem o
+  set travado, é onde o OCR nativo mais renderia.
+- **Índice de arte do catálogo inteiro** (a fase 2 abaixo): reconhecer sem
+  travar o set pede um hash por carta gerado no build, das ~240 mil imagens.
+- **Código do set do Pokémon** (SVI, PAL, OBF): o catálogo não guarda a sigla
+  impressa; a TCGdex tem (`abbreviation`), falta trazer no sync.
+- **`/admin`**: `duv`, `corr`, `neg` e `arte` já saem no `scan_done`; somar no
+  Funil pede migração, como `luz`/`luzOk`.
+
 ## Fase 2 — hash perceptual da arte
+
+**Estado em 2026-11-10:** a metade "o set é o filtro" está feita (1.8, item 6):
+com o set travado, a carta é reconhecida pela arte. O que falta é o índice do
+catálogo inteiro, pra reconhecer SEM travar.
 
 Pra vintage e pra quando o código não sai: hash de 64–256 bits por carta,
 calculado num script de `scripts/` a partir das imagens que o sync já baixa;
 índice por jogo (~8 bytes por carta → ~1,2 MB pros 150 k) e distância de
-Hamming no cliente, limitada ao jogo ativo, devolvendo os 3 melhores pra
-confirmação. A fragilidade é foil/perspectiva; a moldura-guia da fase 1 já
-resolve o enquadramento. Fica condicionada ao que a fase 1.5 medir.
+Hamming no cliente, limitada ao jogo ativo, devolvendo os melhores pra
+assinatura 16×22 decidir (a mesma do set travado e da conferência). A
+fragilidade é foil/perspectiva; a carta endireitada (`acharCarta`) cuida do
+enquadramento.
 
 ## Fora do plano
 
@@ -423,9 +592,13 @@ resolve o enquadramento. Fica condicionada ao que a fase 1.5 medir.
 
 ## Validação
 
-- `node --test tests/*.test.mjs` (inclui `tests/scan-codes.test.mjs`),
-  `node scripts/check.mjs`, `node scripts/check-mobile.mjs`, orçamento de
-  peso (`scripts/check-size.mjs`).
+- `node --test tests/*.test.mjs` — do scanner: `scan-codes` (extração e
+  jogo), `scan-cobertura` (taxa por jogo, no catálogo versionado),
+  `scan-encaixe` (casar com o código, índice de sets, vizinhos, decisão pela
+  foto), `scan-foto`, `scan-carta` (achar a carta, com fotos sintéticas),
+  `scan-arte` (set travado e seletor), `scan-captura`, `scan-continuo`,
+  `scan-trava`, `scan-som` —, `node scripts/check.mjs`,
+  `node scripts/check-mobile.mjs`, orçamento de peso (`scripts/check-size.mjs`).
 - No celular (preview ou produção): One Piece, Pokémon SV, Magic moderno e
   Lorcana — carta na moldura, luz de ambiente, sem flash. Anotar o texto lido
   quando errar: é o insumo da fase 1.5.

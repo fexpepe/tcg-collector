@@ -103,7 +103,10 @@ busca, decks públicos, perfis e links `?s=` seguem abertos.
 
 **Scanner de carta.** Câmera + OCR no aparelho (Tesseract.js em WASM,
 auto-hospedado) lendo o código impresso e buscando no catálogo — fase 1 em
-2026-09-09; vintage por hash perceptual é a fase 2. Ver
+2026-09-09. Em 2026-11-10 (fase 1.8): a foto confere toda leitura, o código é
+encaixado no catálogo e, com o set travado, a carta é reconhecida pela arte
+(é o que cobre o vintage sem código). Falta o índice de arte do catálogo
+inteiro (fase 2) e o OCR nativo no app. Ver
 [docs/PLANO-SCANNER.md](docs/PLANO-SCANNER.md).
 
 **Infra.** PWA instalável e offline, API na borda com D1 (busca global e "só as
