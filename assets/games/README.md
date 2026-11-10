@@ -58,6 +58,11 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
   pré-multiplicado. WebP com perda q88 e alfa sem perda: 38 KB (o sem perda
   dava 95 KB, pelos gradientes prata). O contorno escuro do logo segura o
   branco das letras na cápsula branca do hub.
+- **Gundam Carddass (linha `gcd`, 2026-11-10): sem logo ainda.** O tile do hub
+  mostra a marca tipográfica ("Gundam"), o registro leva `logo: ""` e os sets
+  mostram o nome. Candidato: o logo "SDガンダムワールド" da embalagem/verso do
+  本弾 — a decidir com o Fernando (logo e se todo set leva o logo da linha,
+  regra 3 do `docs/CATALOGO.md`).
 - `game_naruto.webp` — logo NARUTO genérico (tile do jogo e `setLogo` do Data
   Carddass Cross Formation nrt-nx/nrt-nf)
 - `game_naruto_ccg-v2.webp` — Naruto Collectible Card Game americano 2006+

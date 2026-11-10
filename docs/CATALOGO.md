@@ -134,7 +134,7 @@ junto. Sem isso, o endereço antigo das cartas movidas dá 404.
 | TCGdex, com a TCGCSV no lançamento | Pokémon | pela TCGdex; no lançamento a TCGCSV antecipa (3.3) | o da TCGdex (o provisório é aposentado) | espelhado por `mirror-set-logos` (EN/PT) e `mirror-ja-set-logos` (JA, de-para curado, passo local) |
 | API própria | Lorcana (Lorcast), Magic (Scryfall) | sozinho no sync | código oficial | Lorcana: curado em `data/lorcana/set-logos/`; Magic: símbolo espelhado |
 | TCGCSV (espelho do TCGplayer) | One Piece, FAB, Gundam, DBFW, Yu-Gi-Oh!, Digimon, Riftbound, Union Arena, Star Wars | sozinho no sync (grupo novo da categoria) | abreviação do grupo; rename da fonte é re-fixado sozinho (`repinSetIdsRenomeados`) | vazio, salvo curadoria local (One Piece, FAB e Star Wars) |
-| Fã, com snapshot | Naruto, HxH, DBC, vintages do One Piece | quando a fonte publica e o snapshot não regride; set sem lista carta a carta não gera carta | fixo no script | curado ou vazio |
+| Fã, com snapshot | Naruto, HxH, DBC, vintages do One Piece, Gundam Carddass | quando a fonte publica e o snapshot não regride; set sem lista carta a carta não gera carta | fixo no script | curado ou vazio |
 | Curadoria | JUMP | à mão em `data/jump/curated/` | — | — |
 
 ### 3.2 O que conferir quando um set novo aparece
@@ -289,7 +289,9 @@ hub). A ficha preenchida vai na descrição da PR.
   Carddass do Naruto teve Card Battle, Mission, Formation e Cross, e é a linha
   `nrt-dc` com uma seção por título (PR #134, 2026-09-30). Cada título pode ter
   prefixo de id próprio: a linha lista todos em `prefixes` no `GAME_LINES`, e
-  um `group<…>` no `app.js` monta as seções (item B16). Se uma linha já
+  um `group<…>` no `app.js` monta as seções (item B16). O mesmo vale pras
+  séries de uma linha só: o Gundam Carddass (`gcd`, 2026-11-10) tem um prefixo
+  e uma seção por série (World, 外伝, 戦国伝…), tirada do código do set. Se uma linha já
   publicada virar seção de outra, o `?line=` antigo entra em `LINE_ALIASES`
   (shared.js), pra favoritos e links seguirem abrindo.
 - **slug**: minúsculo, `[a-z0-9]+`, curto (`unionarena`, `dbc`). Vai pra URL
@@ -383,7 +385,7 @@ valem só nesse caso.
 | B6 | `src/shared.js` (`MARKETS`) | lojas da ficha; `noTcgplayer` quando o TCGplayer não tem o jogo | links da carta vão pra LigaPokémon e pro TCGplayer do Pokémon | — |
 | B7 | `src/shared.js` (`EXPLORE_SUBNAV`) | só se o jogo tem artista | sem aba Artistas (o padrão é o mínimo seguro) | — |
 | B8 | `src/shared.js` (`VINTAGE_ID_PREFIX`), `src/explore.js` (`VINTAGE_GAMES`), `filter.vintageHint` | só vintage | cartas fora do filtro Vintage | — |
-| B9 | `src/shared.js` (`GAME_LINES`), `sets.category.*`, tile no hub | só linha | linha sem página própria | — |
+| B9 | `src/shared.js` (`GAME_LINES`), `sets.category.*`, tile no hub | só linha; `market` na linha quando as lojas do jogo não servem pra ela (o Gundam Carddass dentro do `gundam`) | linha sem página própria; carta da linha com link pra loja que não a vende | `games-url.test.mjs` e `game-lines.test.mjs` (endereço, prefixos e tile) |
 | B10 | `styles.css` (`[data-game-accent="<slug>"]`) | bloco do escuro e do claro; no claro, os dois seletores (no `<html>` e de descendente, que o tile do hub usa) | página e tile no vermelho do Pokémon, que é o accent base | — |
 | B11 | `src/app.js` (`GAME_LOGO`) e `src/admin.js` (`KIT_LOGO`) | arquivo do logo, ou `""` sem logo | sem logo no lugar do set e no kit | — |
 | B12 | `src/binders.js` (`PREFIXO_JOGO`) e `src/card-rescue.js` (`ID_PREFIX_GAME`) | o prefixo de id | carta do jogo no binder sem jogo atribuído ("Tenho" e preço manual olham a coleção errada); link de carta resolve em duas ondas | — |
