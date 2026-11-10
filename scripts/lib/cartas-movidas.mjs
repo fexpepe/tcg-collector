@@ -29,13 +29,21 @@
 import { agrupaPorSet, paginasDoJogo, enderecosDasCartas } from "./paginas-de-set.mjs";
 import { jogoDaUrl } from "../../functions/_lib/jogos.js";
 import { preparaParecida } from "../../functions/_lib/slug-carta.js";
+import { setsSemPagina, registroDosSets } from "./sets-renomeados.mjs";
 
 const SET_DO = (endereco) => endereco.slice(0, endereco.lastIndexOf("/"));
 const CARTA_DO = (endereco) => endereco.slice(endereco.lastIndexOf("/") + 1);
 
 // Os endereços antigos de UM jogo que precisam do registro, entre dois
-// catálogos: { movidas, erradas }, cada um { "<url>/<set>/<carta>" antigo: id }.
-//   - movidas: a carta foi pra OUTRA página de set que segue existindo;
+// catálogos: { movidas, erradas, sets }. movidas e erradas são
+// { "<url>/<set>/<carta>" antigo: id }; sets é o registro automático dos sets
+// que mudaram de endereço ({ "<url>/<set antigo>": [ids] }, ver
+// scripts/lib/sets-renomeados.mjs).
+//   - movidas: a carta foi pra OUTRA página de set que segue existindo — ou,
+//     desde 2026-11-10, o set dela deixou de ter página e ela NÃO foi junto
+//     com a maioria (o set se dividiu em dois, ou se espalhou sem maioria e
+//     não ganha de-para): o 301 do set a levaria pra página errada, ou não
+//     haveria 301 nenhum;
 //   - erradas (2026-11-04): a carta mudou de endereço DENTRO do set e o
 //     cartaParecida, que é o que a borda roda nesse caso, levaria o endereço
 //     antigo pra OUTRA carta, ou pra nenhuma (404). Acontece quando dois
@@ -49,12 +57,16 @@ const CARTA_DO = (endereco) => endereco.slice(endereco.lastIndexOf("/") + 1);
 //     troca de total (o Secret Lair muda 2.700 de uma vez) incharia o mapa;
 //   - endereço antigo que hoje é de outra carta: a carta de hoje vence (o
 //     destinosDasMovidas também tiraria);
-//   - carta de set que deixou de existir: é set renomeado (setRenomeado) ou
-//     incorporado (os ids aposentados do card-id-merges), não carta movida, e
-//     registraria o set inteiro.
-export function enderecosARegistrar(game, antes, depois) {
+//   - carta de set que deixou de ter página e foi com a maioria pro set de
+//     hoje: quem leva o endereço é o de-para do SET (`sets`), uma entrada pro
+//     set inteiro; registrar carta por carta incharia o mapa.
+// `idDeHoje(id)`: o id novo de carta aposentada (data/card-id-merges.json),
+// pro set importado que a fonte publicou com outro id e outro nome.
+export function enderecosARegistrar(game, antes, depois, idDeHoje) {
   const paginasHoje = paginasDoJogo(game, agrupaPorSet(depois));
-  const antigos = enderecosDasCartas(paginasDoJogo(game, agrupaPorSet(antes)));
+  const paginasAntes = paginasDoJogo(game, agrupaPorSet(antes));
+  const antigos = enderecosDasCartas(paginasAntes);
+  const semPagina = setsSemPagina(paginasAntes, paginasHoje, idDeHoje);
   const hoje = enderecosDasCartas(paginasHoje);
   const vivos = new Set(hoje.values());
   const paginaDe = new Map(paginasHoje.map((p) => [`${p.url}/${p.slug}`, p]));
@@ -76,13 +88,19 @@ export function enderecosARegistrar(game, antes, depois) {
     const novo = hoje.get(chave);
     if (!novo || novo === antigo) continue;
     const pagina = paginaDe.get(SET_DO(antigo));
-    if (!pagina) continue;
     const id = chave.slice(chave.indexOf("|") + 1);
+    if (!pagina) {
+      // O set do endereço não tem mais página. Se a carta está no destino do
+      // de-para do set, o 301 do set a leva; senão entra aqui, uma a uma.
+      const { destino } = semPagina.get(SET_DO(antigo)) || {};
+      if (!destino || SET_DO(novo) !== `${destino.url}/${destino.slug}`) movidas[antigo] = id;
+      continue;
+    }
     if (SET_DO(novo) !== SET_DO(antigo)) { movidas[antigo] = id; continue; }
     if (vivos.has(antigo)) continue;
     if (resolve(pagina, CARTA_DO(antigo)) !== id) erradas[antigo] = id;
   }
-  return { movidas, erradas };
+  return { movidas, erradas, sets: registroDosSets(semPagina) };
 }
 
 // Só as que mudaram de set (o nome de antes de 2026-11-04, que o teste usa).

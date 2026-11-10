@@ -798,6 +798,13 @@ jobs:
       # endereço antigo entra no data/cartas-movidas.json, que vai no commit
       # do snapshot logo abaixo e que o prerender transforma em 301 no mapa do
       # jogo. Falhar aqui só deixa a carta movida hoje sem 301.
+      #
+      # O mesmo passo registra o SET que mudou de endereço (2026-11-10): o nome
+      # que muda na fonte, no sync, troca o endereço do set e de todas as
+      # cartas dele sem passar por PR nenhuma (em 08/11/2026, três sets
+      # japoneses do Pokémon: 322 endereços em 404). Vai pro
+      # data/sets-renomeados-auto.json, no mesmo commit do snapshot, e o
+      # prerender põe no de-para do mapa do jogo (scripts/lib/sets-renomeados.mjs).
       - name: Registra cartas que mudaram de set (301 do endereço antigo)
         if: env.RODA_SYNC == 'true'
         run: node scripts/registra-cartas-movidas.mjs || echo "registra-cartas-movidas falhou; a carta que mudou de set hoje fica sem 301"
@@ -1114,10 +1121,11 @@ jobs:
       # disso é página, e ainda somaria uns 100 arquivos à conta do teto abaixo.
       #
       # data/cartas-movidas.json (2026-11-02): o registro das cartas que mudaram
-      # de set só serve ao prerender, que já o gravou nos mapas do jogo.
+      # de set só serve ao prerender, que já o gravou nos mapas do jogo. O
+      # data/sets-renomeados-auto.json (2026-11-10), o dos sets, idem.
       - name: Remove arquivos que não vão para o site
         run: |
-          rm -rf .git .github .claude data/.cache data/cards.generated.js data/magic/cards.js data/ygo/cards.js data/cartas-movidas.json scripts out README.md ROADMAP.md CLAUDE.md docs supabase tests .gitattributes .gitignore mobile codemagic.yaml
+          rm -rf .git .github .claude data/.cache data/cards.generated.js data/magic/cards.js data/ygo/cards.js data/cartas-movidas.json data/sets-renomeados-auto.json scripts out README.md ROADMAP.md CLAUDE.md docs supabase tests .gitattributes .gitignore mobile codemagic.yaml
           rm -f assets/brand/Flesh_and_Blood_TCG_Logo.png assets/brand/Magic-The-Gathering-logo.png assets/brand/digimon.webp assets/brand/logo_title_dbfwcardgame.webp assets/brand/riftbound.webp assets/brand/yugioh.jpg
           rm -f assets/games/README.md assets/shops/README.md
 

@@ -145,7 +145,16 @@ junto. Sem isso, o endereço antigo das cartas movidas dá 404.
 - **Set renomeado** (mudança de sync, ou a fonte trocou o nome): o slug de
   `/games/<jogo>/<set>` sai do nome, então o endereço do set e o das cartas
   mudam. O 301 cobre sozinho o nome que só GANHOU prefixo (`setRenomeado` em
-  [functions/_lib/borda.js](../functions/_lib/borda.js)). O resto entra em
+  [functions/_lib/borda.js](../functions/_lib/borda.js)) e, desde 2026-11-10,
+  o nome que mudou **na fonte**: o deploy compara o catálogo novo com o
+  publicado e grava o endereço antigo em `data/sets-renomeados-auto.json`
+  (vai no commit do snapshot; o porquê está em
+  [scripts/lib/sets-renomeados.mjs](../scripts/lib/sets-renomeados.mjs)).
+  Quando a renomeação vem **numa PR** (mudança de sync com o catálogo
+  regravado), o deploy já encontra o nome novo no HEAD: rodar
+  `node scripts/registra-cartas-movidas.mjs` antes de commitar o catálogo (ou
+  `--antes origin/main` depois) e commitar o registro junto, como na carta
+  que muda de set (seção 2). O que o registro automático não cobre entra à mão em
   [scripts/data/sets-renomeados.json](../scripts/data/sets-renomeados.json):
   rodar o prerender sem rede antes e depois da mudança, copiar pra `games`
   (`<endereço do jogo>: { <slug antigo>: <setId> }`) os slugs que sumiram de

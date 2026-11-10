@@ -188,6 +188,25 @@ página estática própria e o app seguia em `/detail?…`).
   de hoje e grava no mapa do jogo (campo `m`), que a borda já lê: o 301 não
   custa leitura a mais. Endereço antigo que voltou a ser de outra carta sai
   do mapa (a carta de hoje vence).
+- **Set que mudou de nome NA FONTE também leva 301** (2026-11-10). O endereço
+  do set sai do nome, e o nome muda no sync diário sem passar por PR: em
+  08/11 três sets japoneses do Pokémon trocaram de nome ("Rapid Strike
+  Master" virou "連撃マスター") e os 322 endereços deles (set, `-en` e cartas)
+  ficaram em 404. O de-para à mão (`scripts/data/sets-renomeados.json`) só
+  cobre a renomeação feita em PR, e o registro das cartas movidas pulava o
+  set que deixou de existir. Agora o mesmo passo do deploy
+  (`scripts/registra-cartas-movidas.mjs`) grava o endereço antigo em
+  `data/sets-renomeados-auto.json` (endereço antigo → até 3 ids de carta), e
+  o prerender leva pro set de hoje onde está a maioria desses ids (campo `r`
+  do mapa do jogo, o mesmo da tabela à mão). Guarda id de carta, e não o
+  `setId`, porque no Pokémon o mesmo `setId` serve a mais de uma edição (o
+  S5R japonês e o chinês são páginas diferentes). Set que se dividiu vai com
+  a maioria, e a carta que foi pra outro lugar entra no registro das cartas;
+  sem maioria, não há de-para de set e cada carta entra com o endereço dela.
+  O que continua sem solução: o endereço que **outro set tomou**. O desempate
+  de dois sets com o mesmo slug é por ordem (`-2`, `-3`; 66 sets e 7.036
+  cartas em 10/11), e quando a ordem muda a página antiga passa a mostrar o
+  outro set. As cartas ganham 301 (são "carta movida"), a página do set não.
 - **Offline e PWA**: o service worker guarda cada `/games/<jogo>` na entrada
   dela (com o título e o índice daquele jogo) e usa a do `sets.html`, que o
   install guarda, de reserva: a tela de um jogo nunca visitado abre offline.
@@ -330,6 +349,48 @@ do artista no app (uma URL por jogo).
 No painel, depois do deploy: "Validar correção" nas linhas do 404 e do
 noindex faz o Google voltar nessas URLs. Na do noindex a validação vai
 "falhar" pras telas de Pokémon e artista, que seguem noindex de propósito.
+
+## Relatório de Páginas (2026-11-10)
+
+Um mês depois. Medido ao vivo, como em outubro: amostra de 2.438 URLs do
+sitemap (347.638 no total), 37 telas renderizadas como o Googlebot celular
+com os 1.525 links delas que não estão no sitemap, e o sitemap de 13/10
+refeito do git (o catálogo de Magic e Yu-Gi-Oh! não é versionado inteiro, só
+os chunks: neles a conferência foi pelo nome dos sets).
+
+| Motivo | 12/10 | 10/11 | Leitura |
+|---|---|---|---|
+| Detectada, mas não indexada | 295.982 | 269.940 | a fila andando, uns 900 por dia. O servidor não é o freio: as 2.438 da amostra deram 200, sem `noindex`, canonical pra si mesmas, TTFB de 264 ms na mediana e 385 ms no p90 |
+| Rastreada, mas não indexada | 1.586 | 9.626 | página de carta com pouco texto próprio (abaixo) |
+| Excluída pela tag "noindex" | 5.427 | 5.707 | as telas sem endereço próprio: `/detail?type=pokemon`, `type=artist` e `type=trainer`. Só `/pokedex` expõe 416 links desses, `/trainers` 179, `/artists` 176 por jogo, e cada carta linka o artista dela |
+| Página com redirecionamento | 529 | 4.936 | a renomeação de 02/11 (214 sets e 12.315 cartas de endereço novo), os links do app pra `/detail?type=set&…` (301 desde 12/10: 652 em 37 telas) e o total de set que cresce |
+| Não encontrado (404) | 971 | 895 | resíduo de antes de 09/10, mais **322 novos**: os sets renomeados na fonte (abaixo). Corrigido |
+| Página alternativa com tag canônica adequada | — | 296 | `?game=`, `?serie=`, `/decks?s=` e o `www`, que segue respondendo 200 (item 3 de "Fora do repositório") |
+| Cópia, canônica diferente | — | 113 | cartas com o mesmo nome, número e idioma no mesmo set (`-2`, `-3`): 2.737 endereços, 1.189 no Pokémon. `jolteon-tg04` e `jolteon-tg04-2` têm o mesmo título e nenhuma palavra diferente |
+| Bloqueada pelo robots.txt | 6 | 12 | telas pessoais e conta: esperado |
+
+**O 404 novo.** Dos 14.479 endereços (fora Magic e Yu-Gi-Oh!) que estavam no
+sitemap de 13/10 e saíram, uma amostra de 4.000 deu 97,85% de 301 (13% em
+dois saltos: o set renomeado e depois a carta) e 2,15% de 404, todos em três
+sets japoneses do Pokémon que o sync de 08/11 renomeou. Varrendo os snapshots
+de 01/10 a 05/11 com a régua de hoje (que refaz os slugs de cada um sem
+divergência), são quatro sets sem página e sem de-para: esses três e o
+"Extra Booster: One Piece Heroine's Edition Vol. 2", que perdeu o apóstrofo
+em outubro. O registro automático e o porquê estão em "Endereços"; os quatro
+entraram nele, e a Function de `/games` rodada sobre os 371 endereços antigos
+(set, `-en` e cartas) leva todos pra página certa. Rodado contra o snapshot
+de 05/11, o script do deploy registra sozinho os três do Pokémon. Em Magic e
+Yu-Gi-Oh! nenhum set sumiu sem de-para no período.
+
+**Rastreada, mas não indexada.** É leitura do perfil das páginas, não dos
+exemplos do painel. A página de carta tem uns 1.800 caracteres de texto, e na
+mediana só 25% dele é próprio da carta (pedaços de 6 palavras que aparecem em
+no máximo 2 das 1.922 cartas da amostra): o resto é a frase-molde, a ficha e
+rótulos da interface. Pesam mais as 49 mil cartas japonesas e chinesas com o
+texto em português, 4.888 delas com endereço só de número.
+
+Ficou pra PRs à parte: os links do app direto pro endereço `/games/…`, o
+destino das telas de Pokémon, artista e treinador, e as cartas duplicadas.
 
 ## O que o código não resolve
 

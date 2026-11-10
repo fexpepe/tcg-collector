@@ -8,6 +8,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { agrupaPorSet, paginasDoJogo, enderecosDasCartas } from "../scripts/lib/paginas-de-set.mjs";
 import { cartasQueMudaramDeSet, enderecosARegistrar, juntaNoRegistro, destinosDasMovidas } from "../scripts/lib/cartas-movidas.mjs";
+import { setsARegistrar, enderecosRenomeados, textoDoRegistroDeSets } from "../scripts/lib/sets-renomeados.mjs";
 import { jogoDaUrl } from "../functions/_lib/jogos.js";
 import { cartaParecida } from "../functions/_lib/slug-carta.js";
 
@@ -42,9 +43,141 @@ test("entra só a carta que foi pra OUTRO set que segue existindo", () => {
   assert.deepEqual(cartasQueMudaramDeSet("naruto", BASE, [...BASE, dc("nrt-dc-dn-052", "Kakashi", "DN-052", DC1, "nrt-dc-s01")]), {});
   assert.deepEqual(cartasQueMudaramDeSet("naruto", BASE, BASE.slice(1)), {});
   // Set renomeado: TODAS as cartas mudam de set, e o antigo deixa de existir.
-  // É caso do setRenomeado; registrar carta por carta incharia o mapa.
+  // Quem leva o endereço é o de-para do SET (uma entrada, ver os testes do
+  // registro de sets abaixo); registrar carta por carta incharia o mapa.
   const renomeado = BASE.map((c) => (c.set === DC2 ? { ...c, set: "Data Carddass — Card Battle Vol. 2" } : c));
   assert.deepEqual(cartasQueMudaramDeSet("naruto", BASE, renomeado), {});
+});
+
+// ── Set que mudou de endereço sem PR (2026-11-10) ───────────────────────────
+// O caso que abriu o registro automático: no sync de 08/11/2026 o set japonês
+// "Rapid Strike Master" passou a se chamar "連撃マスター". O nome sem letra
+// latina vira o slug do setId ("s5r-s5r"), que era o endereço do set CHINÊS de
+// mesmo setId; o chinês foi pro "-2". O endereço antigo do japonês ficou sem
+// página e sem de-para: set, -en e 91 cartas em 404.
+const S5R_JA = "Rapid Strike Master", S5R_JA_HOJE = "連撃マスター", S5R_ZH = "連撃大師";
+const pk = (n, set, lang) => ({
+  id: `S5R-00${n}-${lang}`, name: lang === "ja" ? `Carta ${n}` : "卡片", number: `00${n}`, setTotal: 70,
+  set, setId: "S5R", language: lang
+});
+const S5R_ANTES = [...[1, 2, 3, 4].map((n) => pk(n, S5R_JA, "ja")), ...[1, 2].map((n) => pk(n, S5R_ZH, "zh-tw"))];
+const S5R_DEPOIS = [...[1, 2, 3, 4].map((n) => pk(n, S5R_JA_HOJE, "ja")), ...[1, 2].map((n) => pk(n, S5R_ZH, "zh-tw"))];
+
+test("set renomeado na fonte: entra UMA entrada no registro de sets, com ids de carta", () => {
+  const { movidas, sets } = enderecosARegistrar("pokemon", S5R_ANTES, S5R_DEPOIS);
+  // Primeiro, do meio e último id, em ordem: até 3 por set.
+  assert.deepEqual(sets, { "pokemon/rapid-strike-master": ["S5R-001-ja", "S5R-003-ja", "S5R-004-ja"] });
+  // As japonesas vão com o set (nenhuma entra carta a carta); as chinesas
+  // perderam o endereço pra OUTRO set que existe, e essas são carta movida.
+  assert.deepEqual(Object.keys(movidas), ["pokemon/s5r-s5r/001-070-zh", "pokemon/s5r-s5r/002-070-zh"]);
+  assert.equal(movidas["pokemon/s5r-s5r/001-070-zh"], "S5R-001-zh-tw");
+  assert.deepEqual(setsARegistrar("pokemon", S5R_ANTES, S5R_DEPOIS), sets, "o atalho da lib dá o mesmo registro");
+});
+
+test("registro de sets: o prerender acha a página de hoje pelos ids, não pelo setId", () => {
+  const { sets } = enderecosARegistrar("pokemon", S5R_ANTES, S5R_DEPOIS);
+  const paginas = paginasDoJogo("pokemon", agrupaPorSet(S5R_DEPOIS));
+  assert.deepEqual(paginas.map((p) => p.slug), ["s5r-s5r", "s5r-s5r-2"], "japonês e chinês: mesmo setId, duas páginas");
+  const { porUrl, avisos } = enderecosRenomeados(paginas, { games: {}, set: {} }, sets);
+  assert.deepEqual(porUrl.get("pokemon"), { "rapid-strike-master": "s5r-s5r" });
+  assert.deepEqual(avisos, []);
+  // A tabela à mão, que só sabe o setId, não distingue as duas edições: a
+  // primeira página com aquele setId leva (aqui acerta por acaso da ordem).
+  // Renomeado de novo, o mesmo registro segue achando a página.
+  const deNovo = S5R_DEPOIS.map((c) => (c.set === S5R_JA_HOJE ? { ...c, set: "Rengeki Master" } : c));
+  assert.deepEqual(enderecosRenomeados(paginasDoJogo("pokemon", agrupaPorSet(deNovo)), {}, sets).porUrl.get("pokemon"),
+    { "rapid-strike-master": "rengeki-master" });
+});
+
+test("set que se dividiu: o set vai com a maioria, e a carta que foi pra outro lugar entra uma a uma", () => {
+  const X = "Set X", Y = "Set Y";
+  const antes = [...BASE, dc("x-1", "Um", "X-1", X, "nrt-dc-sx"), dc("x-2", "Dois", "X-2", X, "nrt-dc-sx"), dc("x-3", "Três", "X-3", X, "nrt-dc-sx")];
+  const depois = [...BASE, dc("x-1", "Um", "X-1", Y, "nrt-dc-sx"), dc("x-2", "Dois", "X-2", Y, "nrt-dc-sx"), dc("x-3", "Três", "X-3", DC2, "nrt-dc-s02")];
+  const { movidas, sets } = enderecosARegistrar("naruto", antes, depois);
+  assert.deepEqual(sets, { "naruto-data-carddass/set-x": ["x-1", "x-2"] });
+  assert.deepEqual(movidas, { "naruto-data-carddass/set-x/tres-x-3-jp": "x-3" });
+});
+
+test("set que se espalhou sem maioria não ganha de-para: cada carta entra com o endereço dela", () => {
+  const X = "Set X";
+  const antes = [...BASE, dc("x-1", "Um", "X-1", X, "nrt-dc-sx"), dc("x-2", "Dois", "X-2", X, "nrt-dc-sx")];
+  const depois = [...BASE, dc("x-1", "Um", "X-1", DC1, "nrt-dc-s01"), dc("x-2", "Dois", "X-2", DC2, "nrt-dc-s02")];
+  const { movidas, sets } = enderecosARegistrar("naruto", antes, depois);
+  assert.deepEqual(sets, {}, "metade não é maioria: redirecionar o set diria que ele foi inteiro pra lá");
+  assert.deepEqual(movidas, { "naruto-data-carddass/set-x/um-x-1-jp": "x-1", "naruto-data-carddass/set-x/dois-x-2-jp": "x-2" });
+  // Set que saiu do catálogo: nada a registrar, o endereço segue 404.
+  assert.deepEqual(enderecosARegistrar("naruto", antes, BASE), { movidas: {}, erradas: {}, sets: {} });
+});
+
+test("set importado que a fonte publicou com outro nome E outro id: o de-para de id acha as cartas", () => {
+  const antes = [...BASE, dc("imp-1", "Um", "X-1", "Importado", "nrt-dc-imp"), dc("imp-2", "Dois", "X-2", "Importado", "nrt-dc-imp")];
+  const depois = [
+    ...BASE,
+    dc("imp-1", "Um", "X-1", "Importado", "nrt-dc-imp", { retired: true }), dc("imp-2", "Dois", "X-2", "Importado", "nrt-dc-imp", { retired: true }),
+    dc("of-1", "Um", "X-1", "Oficial", "nrt-dc-of"), dc("of-2", "Dois", "X-2", "Oficial", "nrt-dc-of")
+  ];
+  const idDeHoje = (id) => String(id).replace(/^imp-/, "of-");
+  assert.deepEqual(enderecosARegistrar("naruto", antes, depois).sets, {}, "sem o de-para, as cartas parecem ter sumido");
+  const { sets } = enderecosARegistrar("naruto", antes, depois, idDeHoje);
+  assert.deepEqual(sets, { "naruto-data-carddass/importado": ["of-1", "of-2"] });
+  // E o inverso no prerender: o registro guardou o id de ANTES da aposentadoria.
+  const paginas = paginasDoJogo("naruto", agrupaPorSet(depois));
+  assert.equal(enderecosRenomeados(paginas, {}, { "naruto-data-carddass/importado": ["imp-1", "imp-2"] }).porUrl.has("naruto-data-carddass"), false);
+  assert.deepEqual(enderecosRenomeados(paginas, {}, { "naruto-data-carddass/importado": ["imp-1", "imp-2"] }, idDeHoje).porUrl.get("naruto-data-carddass"),
+    { importado: "oficial" });
+});
+
+test("registro de sets no prerender: a tabela à mão e a página viva vencem; entrada sem carta vira aviso", () => {
+  const paginas = paginasDoJogo("naruto", agrupaPorSet(BASE));
+  const registro = {
+    // A tabela à mão já resolve este: fica com ela.
+    "naruto-data-carddass/velho-1": ["nrt-dc-dn-101"],
+    // Endereço que voltou a ser de um set de hoje: a página vence.
+    "naruto-data-carddass/data-carddass-2": ["nrt-dc-dn-001"],
+    // Maioria: duas no 第1弾, uma no 第2弾.
+    "naruto-data-carddass/velho-2": ["nrt-dc-dn-001", "nrt-dc-dn-051", "nrt-dc-dn-101"],
+    // Nenhuma carta no catálogo, jogo de outra entrada e entrada torta.
+    "naruto-data-carddass/velho-3": ["sumiu-1"],
+    "outro-jogo/velho": ["nrt-dc-dn-001"],
+    "sem-barra": ["nrt-dc-dn-001"],
+    "naruto-data-carddass/velho-4": "nrt-dc-dn-001"
+  };
+  const { porUrl, avisos } = enderecosRenomeados(paginas, { games: { "naruto-data-carddass": { "velho-1": "nrt-dc-s01" } } }, registro);
+  assert.deepEqual(porUrl.get("naruto-data-carddass"), { "velho-1": "data-carddass-1", "velho-2": "data-carddass-1" });
+  assert.equal(porUrl.has("outro-jogo"), false);
+  assert.equal(avisos.length, 4);
+});
+
+test("o arquivo do registro de sets: uma entrada por linha, em ordem", () => {
+  const texto = textoDoRegistroDeSets({ "b/y": ["2", "1"], "a/x": ["3"] });
+  assert.equal(texto, '{\n "a/x": ["3"],\n "b/y": ["2","1"]\n}\n');
+  assert.deepEqual(JSON.parse(texto), { "a/x": ["3"], "b/y": ["2", "1"] });
+  assert.equal(textoDoRegistroDeSets({}), "{\n\n}\n");
+  assert.deepEqual(JSON.parse(textoDoRegistroDeSets(null)), {});
+});
+
+// Os quatro sets que perderam o endereço antes de o deploy registrar sozinho
+// (achados comparando os snapshots de 01/10 a 05/11/2026 com o catálogo de
+// 10/11): os três japoneses do Pokémon e o "Heroine's" do One Piece, que
+// perdeu o apóstrofo. O arquivo cresce sozinho a cada deploy, então aqui só o
+// formato e essas quatro chaves são travados.
+test("o registro de sets versionado traz os quatro sets de outubro e novembro", () => {
+  const registro = JSON.parse(ler("data/sets-renomeados-auto.json"));
+  for (const chave of [
+    "pokemon/rapid-strike-master",
+    "pokemon/mega-expansion-30th-celebration",
+    "pokemon/30th-celebration-premium-deck-set-espeon-umbreon",
+    "one-piece-card-game/extra-booster-one-piece-heroine-s-edition-vol-2"
+  ]) assert.ok(Array.isArray(registro[chave]), chave);
+  for (const [chave, ids] of Object.entries(registro)) {
+    const partes = chave.split("/");
+    assert.equal(partes.length, 2, chave);
+    assert.ok(jogoDaUrl(partes[0]), `jogo desconhecido: ${chave}`);
+    assert.match(partes[1], /^[a-z0-9]+(-[a-z0-9]+)*$/, chave);
+    assert.ok(Array.isArray(ids) && ids.length >= 1 && ids.length <= 3 && ids.every((id) => typeof id === "string" && id), chave);
+  }
+  assert.deepEqual(Object.keys(registro), [...Object.keys(registro)].sort(), "em ordem (o diff do snapshot fica limpo)");
+  assert.equal(ler("data/sets-renomeados-auto.json"), textoDoRegistroDeSets(registro), "no formato que o deploy grava");
 });
 
 // Dentro do set, o que a borda faz com o endereço antigo é o cartaParecida.
@@ -146,4 +279,8 @@ test("o deploy registra entre o lint e o commit do snapshot, e não publica o re
   assert.match(deploy.slice(snapshot, prerender), /git add data /, "o snapshot leva data/ (e o registro junto)");
   const remove = /- name: Remove arquivos que não vão para o site[\s\S]*?\n\s*rm -rf ([^\n]+)/.exec(deploy);
   assert.ok(remove && remove[1].split(/\s+/).includes("data/cartas-movidas.json"));
+  // O registro dos sets sai do mesmo passo e também só serve ao prerender.
+  assert.ok(remove[1].split(/\s+/).includes("data/sets-renomeados-auto.json"));
+  assert.match(ler("scripts/registra-cartas-movidas.mjs"), /data\/sets-renomeados-auto\.json/);
+  assert.match(ler("scripts/prerender-catalog.mjs"), /sets-renomeados-auto\.json/);
 });
