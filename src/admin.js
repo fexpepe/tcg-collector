@@ -26,6 +26,14 @@
 // (sparkline), o mapa de calor hora × dia, a matriz de caminhos e as barras
 // empilhadas (com a chave número | %).
 //
+// v4 (2026-11-10, migração 20261110a): DE ONDE vêm os visitantes — o país de
+// cada pageview (carimbado pelo banco, do cabeçalho da borda) vira um
+// mapa-múndi no Resumo e na Audiência (o contorno vem do src/admin-mundo.js).
+// E a leitura do painel inteiro: dica própria em todo gráfico (o <title>
+// nativo demora um segundo no mouse e não existe no toque), cartões num
+// desenho só, barra segmentada no lugar da rosca, o botão de atualizar e a
+// troca de período sem a tela piscar.
+//
 // Texto em pt fixo — é uma página interna.
 (function () {
   "use strict";
@@ -101,27 +109,27 @@
     return `<div class="adm-treemap"><svg viewBox="0 0 ${o.w} ${o.h}" role="img" aria-label="${esc(o.aria || "Mosaico")}">${cells}</svg></div>`;
   }
 
-  // Rosca: items = [{label, value, color}]. Feita com stroke-dasharray num
-  // círculo só — sem trigonometria de arco (e sem o caso degenerado de 100%).
-  function donut(items, opts) {
-    const o = Object.assign({ size: 140, thick: 22, center: null }, opts || {});
-    const vals = items.map((it) => Number(it.value) || 0);
-    const total = vals.reduce((s, v) => s + v, 0);
+  // Um todo dividido em partes (2026-11-10, no lugar da rosca): uma barra fina
+  // segmentada em cima e a lista embaixo, com o nome INTEIRO, o número e a %.
+  // A rosca cortava o rótulo ("Toque (…", "Portug…") pra caber ao lado do
+  // círculo, e fatia de 2% contra fatia de 3% não se compara em arco. A lista
+  // é a legenda e a tabela ao mesmo tempo. items = [{label, value, color}].
+  function segmentos(items, opts) {
+    const o = Object.assign({ aria: "Proporção" }, opts || {});
+    const its = (items || []).map((it, i) => ({ label: it.label, v: Number(it.value) || 0, color: it.color || colorAt(i) })).filter((it) => it.v > 0);
+    const total = its.reduce((t, it) => t + it.v, 0);
     if (!(total > 0)) return `<p class="admin-empty">Sem dados no período.</p>`;
-    const R = (o.size - o.thick) / 2, C = 2 * Math.PI * R, c = o.size / 2;
-    let acc = 0;
-    const arcs = items.map((it, i) => {
-      const v = vals[i]; if (!(v > 0)) return "";
-      const len = (v / total) * C;
-      const s = `<circle cx="${c}" cy="${c}" r="${R}" fill="none" stroke="${esc(it.color || colorAt(i))}" stroke-width="${o.thick}" stroke-dasharray="${len.toFixed(2)} ${(C - len).toFixed(2)}" stroke-dashoffset="${(-acc).toFixed(2)}" transform="rotate(-90 ${c} ${c})"><title>${esc(it.label)}: ${esc(fmt(v))} (${esc(pct(v, total))})</title></circle>`;
-      acc += len;
-      return s;
-    }).join("");
-    const centro = o.center != null ? o.center : fmt(total);
-    const legend = items.map((it, i) => vals[i] > 0
-      ? `<li><span class="adm-swatch" style="background:${esc(it.color || colorAt(i))}"></span><span class="adm-legend-label">${esc(it.label)}</span><span class="adm-legend-val">${esc(fmt(vals[i]))}</span><span class="adm-legend-pct">${esc(pct(vals[i], total))}</span></li>`
-      : "").join("");
-    return `<div class="adm-donut"><svg viewBox="0 0 ${o.size} ${o.size}" role="img" aria-label="${esc(o.aria || "Proporção")}">${arcs}<text x="${c}" y="${c}" class="adm-donut-center" text-anchor="middle" dominant-baseline="central">${esc(centro)}</text></svg><ul class="adm-legend">${legend}</ul></div>`;
+    const barra = its.map((it) => `<span style="flex-grow:${it.v};background:${esc(it.color)}" title="${esc(`${it.label}: ${fmt(it.v)} (${pct(it.v, total)})`)}"></span>`).join("");
+    const lista = its.map((it) => `<li><span class="adm-swatch" style="background:${esc(it.color)}"></span><span class="adm-legend-label">${esc(it.label)}</span><span class="adm-legend-val">${esc(fmt(it.v))}</span><span class="adm-legend-pct">${esc(pct(it.v, total))}</span></li>`).join("");
+    return `<div class="adm-partes"><div class="adm-seg-bar" role="img" aria-label="${esc(o.aria)}">${barra}</div><ul class="adm-legend">${lista}</ul></div>`;
+  }
+  // Até 6 partes, a barra segmentada; acima disso as fatias viram lascas e o
+  // que se quer é comparar — aí é ranking em barras, da maior pra menor.
+  function partes(items, opts) {
+    const its = (items || []).filter((it) => Number(it.value) > 0);
+    if (its.length <= 6) return segmentos(its, opts);
+    const total = its.reduce((t, it) => t + Number(it.value), 0);
+    return hbars(its.slice().sort((x, y) => y.value - x.value).map((it, i) => ({ label: it.label, value: it.value, color: it.color || colorAt(i), sub: pct(it.value, total) })));
   }
 
   // Barras por dia, empilhadas: gente (accent) embaixo, robô (cinza) em cima.
@@ -202,7 +210,9 @@
     const bw = iw / n;
     const cols = items.map((it, i) => {
       const v = Number(it.value) || 0, hh = (v / max) * ih;
-      const x = P.l + i * bw + 1, w = Math.max(1, bw - 2);
+      // Teto de 24 na largura: com 7 colunas (dia da semana) cada barra
+      // enchia a faixa e o gráfico virava sete blocos pretos.
+      const w = Math.min(24, Math.max(1, bw - 2)), x = P.l + i * bw + (bw - w) / 2;
       const lab = (n <= 8 || i % 3 === 0) ? `<text x="${(x + w / 2).toFixed(1)}" y="${o.h - 5}" text-anchor="middle" class="adm-axis">${esc(it.label)}</text>` : "";
       return `<g><title>${esc(it.title || it.label)}: ${esc(fmt(v))}</title><rect x="${x.toFixed(1)}" y="${(P.t + ih - hh).toFixed(1)}" width="${w.toFixed(1)}" height="${hh.toFixed(1)}" rx="2" class="adm-bar-a"/>${lab}</g>`;
     }).join("");
@@ -496,7 +506,70 @@
     return `<div class="admin-chart adm-chart-tall"><svg viewBox="0 0 ${o.w} ${o.h}" role="img" aria-label="${esc(o.aria)}">${grade}${col}${eixo}</svg></div><ul class="adm-legend adm-legend-row">${leg}</ul>`;
   }
 
-  window.TCGAdminCharts = { squarify, treemap, donut, dailyBars, lines, columns, hbars, funnel, esc, fmt, pct, pageSlice, toCsv, monthly, niceMax, compacto, area,
+  // ── v4: de onde vêm os visitantes (2026-11-10, migração 20261110a) ───────
+  // Nome do país em português pela sigla ISO de 2 letras (a que o Cloudflare
+  // põe no cf-ipcountry). O Intl.DisplayNames já vem no navegador: nenhuma
+  // tabela de nomes no repo.
+  let nomesDePais = null;
+  function nomePais(co) {
+    const c = String(co || "").toUpperCase();
+    if (c === "(OUTROS)") return "Outros países";
+    if (!/^[A-Z]{2}$/.test(c)) return c || "—";
+    try {
+      nomesDePais = nomesDePais || new Intl.DisplayNames(["pt-BR"], { type: "region" });
+      const n = nomesDePais.of(c);
+      return n && n !== c ? n : c;
+    } catch (e) { return c; }
+  }
+  // Faixas de cor do mapa. Com o Brasil em 60% do tráfego, a escala linear
+  // pintava o Brasil e deixava o resto do mundo quase em branco — e o resto
+  // é justamente o que o mapa veio mostrar. As faixas são frações do MAIOR
+  // país (2%, 8%, 25%, 60%, 100%: cada degrau ~3× o anterior). Faixa que
+  // cairia no mesmo número inteiro some: com 5 visitantes no líder não
+  // existem 5 faixas. Devolve os tetos, do menor pro maior.
+  function faixasMapa(max) {
+    const m = Math.max(0, Math.round(Number(max) || 0));
+    const tetos = [];
+    if (!m) return tetos;
+    [0.02, 0.08, 0.25, 0.6, 1].forEach((f) => {
+      const t = Math.max(1, Math.round(m * f));
+      if (!tetos.length || t > tetos[tetos.length - 1]) tetos.push(t);
+    });
+    return tetos;
+  }
+  // Mapa-múndi: paises = [{co, value, hint}], geo = window.TCGMundo
+  // ({w, h, formas: {BR: "M…"}, pontos: {SG: [x, y]}}, gerado pelo
+  // scripts/build-mapa-mundo.mjs). Um tom só, mais forte = mais gente (a
+  // classe adm-geo-1…5; a cor é do CSS, que inverte o sentido no tema
+  // escuro). País pequeno demais pro contorno vira um círculo, só quando tem
+  // visitante. O número exato está na dica de cada país e na lista ao lado —
+  // o mapa mostra ONDE, a lista mostra QUANTO.
+  function mapaMundo(paises, geo, opts) {
+    const o = Object.assign({ unidade: "visitantes", aria: "Mapa-múndi por país", ponto: 11 }, opts || {});
+    if (!geo || !geo.formas) return `<p class="admin-empty">O contorno do mapa não carregou.</p>`;
+    const val = {};
+    let total = 0, max = 0;
+    (paises || []).forEach((p) => {
+      const v = Number(p.value) || 0;
+      if (!(v > 0) || !p.co) return;
+      val[p.co] = { v, hint: p.hint };
+      total += v;
+      max = Math.max(max, v);
+    });
+    const tetos = faixasMapa(max);
+    const degrau = (i) => 5 - (tetos.length - 1 - i);
+    const nivel = (v) => { const i = tetos.findIndex((t) => v <= t); return degrau(i < 0 ? tetos.length - 1 : i); };
+    const dica = (co) => (val[co]
+      ? `${nomePais(co)}: ${fmt(val[co].v)} ${o.unidade} (${pct(val[co].v, total)})${val[co].hint ? ` · ${val[co].hint}` : ""}`
+      : `${nomePais(co)}: nenhum no período`);
+    const formas = Object.keys(geo.formas).map((co) => `<path d="${esc(geo.formas[co])}" class="adm-geo${val[co] ? ` adm-geo-${nivel(val[co].v)}` : ""}" data-co="${esc(co)}"><title>${esc(dica(co))}</title></path>`).join("");
+    const pontos = Object.keys(geo.pontos || {}).filter((co) => val[co]).map((co) => `<circle cx="${Number(geo.pontos[co][0])}" cy="${Number(geo.pontos[co][1])}" r="${Number(o.ponto)}" class="adm-geo adm-geo-ponto adm-geo-${nivel(val[co].v)}" data-co="${esc(co)}"><title>${esc(dica(co))}</title></circle>`).join("");
+    const faixa = (i) => { const de = i ? tetos[i - 1] + 1 : 1; return de === tetos[i] ? fmt(de) : `${fmt(de)}–${fmt(tetos[i])}`; };
+    const escala = `<ul class="adm-mapa-escala" aria-label="${esc(`Escala de cor: ${o.unidade} por país`)}"><li><span class="adm-geo-cor"></span>nenhum</li>${tetos.map((t, i) => `<li><span class="adm-geo-cor adm-geo-${degrau(i)}"></span>${esc(faixa(i))}</li>`).join("")}</ul>`;
+    return `<div class="adm-mapa"><svg viewBox="0 0 ${Number(geo.w)} ${Number(geo.h)}" role="img" aria-label="${esc(o.aria)}">${formas}${pontos}</svg>${escala}</div>`;
+  }
+
+  window.TCGAdminCharts = { squarify, treemap, segmentos, partes, nomePais, faixasMapa, mapaMundo, dailyBars, lines, columns, hbars, funnel, esc, fmt, pct, pageSlice, toCsv, monthly, niceMax, compacto, area,
     variacao, mediaMovel, movimentos, diaCurto, sparkline, serieTempo, mapaCalor, matriz, barrasEmpilhadas, marcosSvg };
 
   // ── Página ────────────────────────────────────────────────────────────────
@@ -512,6 +585,8 @@
   const CW = () => (NARROW() ? { w: 360, h: 200 } : { w: 960, h: 220 });
   const CWS = () => (NARROW() ? { w: 360, h: 120 } : { w: 480, h: 120 });
   const CWT = () => (NARROW() ? { w: 360, h: 300 } : { w: 640, h: 320 });
+  // O contorno dos países (src/admin-mundo.js, carregado antes deste arquivo).
+  const MUNDO = window.TCGMundo || null;
   const GAME_COLOR = shared.GAME_COLOR || {};
   const gameColor = (g) => GAME_COLOR[g] || "#9aa3ae";
   const gameInk = (g) => { try { return shared.textOnColor ? shared.textOnColor(gameColor(g)) : "#fff"; } catch (e) { return "#fff"; } };
@@ -626,13 +701,13 @@
   // `funnel` = admin_funnel (20260919a, recriada na 20260923a); o resto é da
   // 20260923a. Cada uma é buscada só quando uma aba que a usa abre.
   const NEEDS = {
-    geral: ["dash", "pulso", "notas"], audiencia: ["dash", "pulso"], conteudo: ["dash"], produto: ["dash"], qualidade: ["dash", "erros"],
+    geral: ["dash", "pulso", "notas", "geo"], audiencia: ["dash", "pulso", "geo"], conteudo: ["dash"], produto: ["dash"], qualidade: ["dash", "erros"],
     crescimento: ["growth", "notas"], parceiros: ["dash", "retention", "stores", "demand", "growth", "engagement", "users", "anuncios"],
     canais: ["retention", "growth"], retencao: ["retention"], funil: ["funnel", "retention", "engagement"],
     lojas: ["stores"], demanda: ["demand"], anuncios: ["anuncios"],
     usuarios: ["users"], colecoes: ["users"], segmentos: ["users"], campanhas: ["campaigns", "anunciosutm"],
     tempo: ["engagement"], experimentos: ["experiments"], portal: ["partners", "stores"], sets: ["demand"],
-    medicao: ["health", "engagement", "descartes"],
+    medicao: ["health", "engagement", "descartes", "geo"],
     areas: ["paginas"], paginas: ["paginas"], caminhos: ["paginas"],
     plataformas: ["plataformas"], versoes: ["plataformas"], lojasapp: ["plataformas"],
     marcos: ["notas"]
@@ -642,7 +717,7 @@
     users: "admin_users", campaigns: "admin_campaigns", engagement: "admin_engagement", experiments: "admin_experiments",
     partners: "admin_partner_links", health: "admin_health", erros: "admin_erros",
     pulso: "admin_pulso", paginas: "admin_paginas", plataformas: "admin_plataformas", descartes: "admin_descartes",
-    notas: "admin_notas", anunciosutm: "admin_anuncios"
+    notas: "admin_notas", anunciosutm: "admin_anuncios", geo: "admin_geo"
   };
   // RPCs sem parâmetro: mandar { days } a elas faz o PostgREST procurar uma
   // assinatura que não existe (404) e o painel acharia que a migração falta.
@@ -658,8 +733,8 @@
   // Audiência, sem o mapa de calor; marcos e anúncios são enfeite.
   const OPCIONAIS = {
     parceiros: ["users", "anuncios"], qualidade: ["erros"],
-    geral: ["pulso", "notas"], audiencia: ["pulso"], crescimento: ["notas"], campanhas: ["anunciosutm"],
-    medicao: ["descartes"]
+    geral: ["pulso", "notas", "geo"], audiencia: ["pulso", "geo"], crescimento: ["notas"], campanhas: ["anunciosutm"],
+    medicao: ["descartes", "geo"]
   };
   const PERIODS = [7, 30, 90];
   // metrica = a série do gráfico principal do Resumo; pct = barras
@@ -678,6 +753,7 @@
     print: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6"/><rect x="6" y="14" width="12" height="7" rx="1"/><path d="M6 18H4a1 1 0 0 1-1-1v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6a1 1 0 0 1-1 1h-2"/></svg>`,
     sobe: `<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"/><path d="M6 11l6-6 6 6"/></svg>`,
     desce: `<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="M6 13l6 6 6-6"/></svg>`,
+    atualiza: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg>`,
     lixo: `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16"/><path d="M10 11v6M14 11v6"/><path d="M6 7l1 13h10l1-13"/><path d="M9 7V4h6v3"/></svg>`
   };
   // Ícone de cada grupo na barra lateral (traço, currentColor).
@@ -693,7 +769,10 @@
   };
   const iconeGrupo = (g) => `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${ICON_GRUPO[g] || ""}</svg>`;
 
-  const stat = (label, val, hint) => `<div class="admin-stat"><span class="admin-stat-val">${esc(val)}</span><span class="admin-stat-label">${esc(label)}</span>${hint ? `<span class="admin-stat-hint">${esc(hint)}</span>` : ""}</div>`;
+  // Um desenho só de cartão (2026-11-10): o rótulo em cima, o número, a nota.
+  // O Resumo já era assim (kpi/cartao) e as outras 20 abas punham o número em
+  // cima do rótulo — o mesmo painel lia de dois jeitos.
+  const stat = (label, val, hint) => cartao(label, val, hint);
   const section = (title, body, note) => `<section class="admin-section"><h2>${esc(title)}</h2>${body}${note ? `<p class="admin-note">${esc(note)}</p>` : ""}</section>`;
   const table = (heads, rows) => rows.length
     ? `<div class="adm-scroll"><table class="admin-table"><thead><tr>${heads.map((h) => `<th${h.num ? ' class="num"' : ""}>${esc(h.t)}</th>`).join("")}</tr></thead><tbody>${rows.join("")}</tbody></table></div>`
@@ -819,7 +898,7 @@
       </div>`;
   }
 
-  function tabAudiencia(d, pu) {
+  function tabAudiencia(d, pu, geo) {
     const a = d.audience || {}, r = d.retention || {};
     const hours = Array.from({ length: 24 }, (_, h) => ({ label: `${h}h`, title: `${h}h–${h + 1}h`, value: ((a.hours || []).find((x) => x.h === h) || {}).views || 0 }));
     const dows = DOW.map((n, i) => ({ label: n, value: ((a.weekdays || []).find((x) => x.dow === i) || {}).views || 0 }));
@@ -830,6 +909,8 @@
         ${stat("Voltaram em outro dia", pct(r.returning, r.visitors), `${fmt(r.returning)} visitantes`)}
         ${stat("Retenção 7 dias", pct(r.cohort_back7, r.cohort), `${fmt(r.cohort_back7)} de ${fmt(r.cohort)} voltaram 7+ dias depois`)}
       </div>
+      ${secaoMapa(geo, 12)}
+      ${secoesPaises(geo)}
       ${section("Funil: visitante → conta", funnel([
         { label: "visitantes (gente)", value: r.visitors, color: "var(--accent)" },
         { label: "engajados", value: r.engaged, color: "#d97706", hint: "2+ pageviews ou uma ação de produto" },
@@ -837,9 +918,9 @@
         { label: "contas novas", value: r.signups, color: "#16a34a", hint: "cadastros no período (Supabase)" }
       ]), "Retenção compara a primeira visita de cada uuid anônimo com as seguintes. Quem limpa o navegador vira visitante novo.")}
       <div class="adm-grid-3">
-        ${section("Dispositivo", donut((a.devices || []).map((x, i) => ({ label: DEVICE[x.k] || x.k, value: x.views, color: colorAt(i) })), { aria: "Pageviews por tipo de dispositivo" }))}
-        ${section("Idioma do navegador", donut((a.langs || []).map((x, i) => ({ label: LANG[x.k] || x.k, value: x.views, color: colorAt(i) })), { aria: "Pageviews por idioma" }))}
-        ${section("De onde vêm", hbars((a.referrers || []).map((x) => ({ label: x.k, value: x.views, sub: `${fmt(x.visitors)} visitantes` }))), "Só o domínio de origem quando vem de fora. Acesso direto, app instalado e buscas sem referrer não aparecem.")}
+        ${section("Dispositivo", partes((a.devices || []).map((x, i) => ({ label: DEVICE[x.k] || x.k, value: x.views, color: colorAt(i) })), { aria: "Pageviews por tipo de dispositivo" }))}
+        ${section("Idioma do navegador", partes((a.langs || []).map((x, i) => ({ label: LANG[x.k] || x.k, value: x.views, color: colorAt(i) })), { aria: "Pageviews por idioma" }))}
+        ${section("Sites de origem", hbars((a.referrers || []).map((x) => ({ label: x.k, value: x.views, sub: `${fmt(x.visitors)} visitantes` }))), "Só o domínio de origem quando vem de fora. Acesso direto, app instalado e buscas sem referrer não aparecem.")}
       </div>
       ${pu && pu.hora_semana ? section("Quando o site é usado (hora × dia da semana, Brasília)", mapaCalor(pu.hora_semana),
         "Cada quadrado é uma hora de um dia da semana; mais forte = mais páginas vistas. Os dois gráficos separados (hora, dia) escondem que o pico de sábado pode ser de manhã e o de terça à noite — é a grade pra marcar post, push e campanha.") : ""}
@@ -859,7 +940,7 @@
     return `
       <div class="adm-grid-2">
         ${section("Cópias cadastradas por jogo", treemap(col.map((x) => ({ label: gameName(x.game), value: x.copies, color: gameColor(x.game), text: gameInk(x.game), hint: `${fmt(x.users)} usuários · ${fmt(x.cards)} cartas distintas` })), Object.assign(CWT(), { aria: "Mosaico de cópias por jogo" })), "Lê o save sincronizado de cada conta (só quem tem conta entra).")}
-        ${section("Usuários por jogo", donut(col.map((x) => ({ label: gameName(x.game), value: x.users, color: gameColor(x.game) })), { aria: "Usuários com coleção por jogo" }))}
+        ${section("Usuários por jogo", partes(col.map((x) => ({ label: gameName(x.game), value: x.users, color: gameColor(x.game) })), { aria: "Usuários com coleção por jogo" }))}
       </div>
       ${section("Coleção por jogo", table(
         [{ t: "Jogo" }, { t: "Usuários", num: true }, { t: "Cartas distintas", num: true }, { t: "Cópias", num: true }, { t: "Na wishlist", num: true }],
@@ -1019,8 +1100,8 @@
           (dk.top || []).map((x) => `<tr><td><a href="decks?s=${esc(encodeURIComponent(x.id))}">${esc(x.title || "(sem título)")}</a><br><small>${esc(x.created_at ? new Date(x.created_at).toLocaleDateString("pt-BR") : "")}</small></td><td>${gameChip(x.game)}</td><td class="num">${esc(fmt(x.views))}</td></tr>`)
         ))}
         <div class="adm-col">
-          ${section("Decks publicados por jogo", donut((g.decks || []).map((x) => ({ label: gameName(x.game), value: x.decks, color: gameColor(x.game) })), { aria: "Decks por jogo" }))}
-          ${section("Links por tipo", donut((dk.by_kind || []).map((x, i) => ({ label: { collection: "Coleção", binder: "Fichário", deck: "Deck" }[x.kind] || x.kind, value: x.n, color: colorAt(i + 1) })), { aria: "Compartilhamentos por tipo" }))}
+          ${section("Decks publicados por jogo", partes((g.decks || []).map((x) => ({ label: gameName(x.game), value: x.decks, color: gameColor(x.game) })), { aria: "Decks por jogo" }))}
+          ${section("Links por tipo", partes((dk.by_kind || []).map((x, i) => ({ label: { collection: "Coleção", binder: "Fichário", deck: "Deck" }[x.kind] || x.kind, value: x.n, color: colorAt(i + 1) })), { aria: "Compartilhamentos por tipo" }))}
         </div>
       </div>`;
   }
@@ -1054,7 +1135,7 @@
     const o = d.overview || {}, daily = d.daily || [];
     const robos = `
       <div class="adm-grid-2">
-        ${section("Gente × robôs", donut([
+        ${section("Gente × robôs", partes([
           { label: "Gente", value: o.pageviews, color: "var(--accent)" },
           { label: "Robôs", value: o.pageviews_bot, color: "#9aa3ae" }
         ], { aria: "Proporção de pageviews de gente e de robôs" }), "Robô = user-agent de crawler/monitor, navegador sem user-agent ou navigator.webdriver ligado. Crawler que não executa JS nunca chega aqui — o Cloudflare (Security › Bots) é que vê esse.")}
@@ -1817,7 +1898,7 @@
           "Mostra se a coleção cresce com o tempo de casa — ou se quem chega já chega com tudo (importação).")}
       </div>
       <div class="adm-grid-3">
-        ${section("Jogos por conta", donut((u.jogos_n || []).map((x, i) => ({ label: x.k >= 4 ? "4+ jogos" : `${x.k} jogo${x.k > 1 ? "s" : ""}`, value: x.n, color: colorAt(i) })), { aria: "Contas por número de jogos" }),
+        ${section("Jogos por conta", partes((u.jogos_n || []).map((x, i) => ({ label: x.k >= 4 ? "4+ jogos" : `${x.k} jogo${x.k > 1 ? "s" : ""}`, value: x.n, color: colorAt(i) })), { aria: "Contas por número de jogos" }),
           (u.jogos_n || []).map((x) => `${x.k >= 4 ? "4+" : x.k}: ${brl(x.valor_medio)} em média`).join(" · "))}
         ${section("Jogos mais colecionados", hbars((u.por_jogo || []).map((x) => ({ label: gameName(x.game), value: x.usuarios, color: gameColor(x.game) }))))}
         ${section("Combinações mais comuns", hbars((u.combos || []).map((x) => ({ label: x.combo.split("+").map(gameName).join(" + "), value: x.n }))))}
@@ -2026,7 +2107,7 @@ if (v === "b") { /* versão nova */ }</pre>
     page_time: "Tempo de página", onboard_state: "Primeiros passos", exp_view: "Experimentos", ad_view: "Vitrine vista", ad_click: "Vitrine clicada",
     pwa_install: "App instalado", export_done: "Exportações", import_done: "Importações", deck_created: "Decks criados", backup_done: "Backups"
   };
-  function tabMedicao(h, e, ds) {
+  function tabMedicao(h, e, ds, geo) {
     // Desde a 20261104a o alarme conta PESSOAS (visitante × dia), não eventos:
     // em 04/11 uma pessoa que cadastrou 109 vezes numa noite pôs "27,5
     // esperados" no card_added e acendeu "parou" sem nada quebrado. Banco sem
@@ -2070,6 +2151,7 @@ if (v === "b") { /* versão nova */ }</pre>
           <li>Evento bruto mais antigo guardado: <strong>${esc(dataBR(h.eventos_mais_antigo))}</strong></li>
         </ul>`,
         "O evento bruto (com o id anônimo do navegador) fica 13 meses; depois sobra só o resumo por dia e a série de crescimento. A limpeza roda no dia 1 de cada mês pelo pg_cron. Efeito colateral: quem volta depois de 13+ meses sem visitar conta como visitante novo.")}
+      ${secaoPais(geo)}
       ${secaoDescartes(ds)}
       ${secaoEquipe()}`;
   }
@@ -2086,7 +2168,7 @@ if (v === "b") { /* versão nova */ }</pre>
     ["visitantes", "Visitantes"], ["visitas", "Visitas"], ["pageviews", "Páginas vistas"], ["ativacoes", "Ativações"],
     ["cartas", "Cartas cadastradas"], ["cliques_loja", "Cliques em loja"], ["contas", "Contas novas"], ["erros", "Erros de JS"]
   ];
-  function tabResumo(d, pu, notas) {
+  function tabResumo(d, pu, notas, geo) {
     // undefined = a 20261009a falta; null = a admin_pulso falhou (tempo
     // esgotado, rede) — até 2026-10-31 os dois pediam a migração.
     if (!pu) return (pu === undefined ? pedeV3("O Resumo com o período anterior") : naoVeio("pulso", "O Resumo com o período anterior")) + tabGeral(d);
@@ -2125,6 +2207,7 @@ if (v === "b") { /* versão nova */ }</pre>
         ${kpi("Cliques em loja", fmt(A.cliques_loja), A.cliques_loja, B.cliques_loja, sp("cliques_loja"))}
         ${kpi("Tempo por visita", dur(A.tempo_ms), A.tempo_ms, B.tempo_ms, { antes: `antes: ${dur(B.tempo_ms)}`, nota: "mediana, tempo com a aba à vista" })}
         ${kpi("Erros a cada mil páginas", fmtTaxa(porMil(A)), porMil(A), porMil(B), Object.assign(sp("erros"), { ruim: true, antes: `antes: ${fmtTaxa(porMil(B))}` }))}
+        ${kpiPaises(geo)}
       </div>
       ${section("O que mudou", oQueMudou(pu), `Contra os ${cmp}, cortados na mesma hora do dia (às 10h, hoje tem 10h de dado e o último dia de antes também). Só entra o que tem volume pra conclusão; a ordem é pelo tamanho da mudança, não pela porcentagem.`)}
       <section class="admin-section">
@@ -2134,12 +2217,116 @@ if (v === "b") { /* versão nova */ }</pre>
         ${serieTempo(atual.map((x) => ({ day: x.day, v: x[met[0]] })), Object.assign(CW(), { fantasma: colAnt(met[0]), marcos, rotulo: `${met[1]} (${n} dias)`, aria: `${met[1]} por dia, com a média de 7 dias e o período anterior` }))}
         <p class="admin-note">Barras = o período; linha cheia = média dos últimos 7 dias (tira o vaivém de dia útil × fim de semana); tracejada = os ${esc(cmp)}, dia a dia. Os números nos círculos são os marcos (Técnico › Marcos), e campanha nova entra sozinha.</p>
       </section>
+      ${secaoMapa(geo, 8)}
       <div class="adm-grid-2">
         ${section("Plataforma (visitantes)", barrasMov(plats, platNome, platCor), "Navegador, app da web instalado e os apps das lojas. Detalhe em App e plataformas.")}
         ${section("Canal de entrada (visitas)", barrasMov(canais, (k) => CANAL[k] || k, () => "var(--accent)"), "De onde veio a 1ª página de cada visita.")}
       </div>
       ${section("Páginas mais vistas", barrasMov(paginas, (k) => pageName(k), (k) => areaCor(areaDe(k))), "A cor é a área do site (Páginas › Áreas do site).")}`;
   }
+  // ── De onde vêm os visitantes (v4, admin_geo) ────────────────────────────
+  const pedeGeo = (oque) => `<p class="adm-banner">${esc(oque)} precisa da migração <code>supabase/migrations/20261110a_admin_geo.sql</code> — aplique no SQL Editor. O país começa a ser gravado quando ela entra: não há histórico, o mapa enche a partir daí.</p>`;
+  const comVisita = (geo) => ((geo && geo.paises) || []).filter((x) => x.visitantes > 0);
+  // O anterior só vale de régua se o país já era gravado desde o começo dele.
+  const geoCompara = (geo) => !!(geo && geo.cobertura && geo.cobertura.comparavel);
+  // Cartão "Países" do Resumo. Sem a migração (ou sem dado ainda) não entra:
+  // um cartão "0 países" no meio dos outros leria como queda.
+  function kpiPaises(geo) {
+    const ps = comVisita(geo);
+    if (!ps.length) return "";
+    const tot = ps.reduce((t, x) => t + x.visitantes, 0);
+    const nota = `${nomePais(ps[0].co)}: ${pct(ps[0].visitantes, tot)} dos visitantes`;
+    if (!geoCompara(geo)) return cartao("Países", fmt(ps.length), nota);
+    const antes = geo.paises.filter((x) => x.visitantes_ant > 0).length;
+    return kpi("Países", fmt(ps.length), ps.length, antes, { nota });
+  }
+  // Aviso de cobertura: enquanto o período pega dias de antes da migração,
+  // o mapa mostra só uma parte das visitas — e tem de dizer isso.
+  function notaCobertura(geo) {
+    const c = (geo && geo.cobertura) || {};
+    if (!c.pageviews || c.com_pais >= 0.95 * c.pageviews) return "";
+    return ` O país é gravado desde ${dataBR(c.desde)}: ${pct(c.com_pais, c.pageviews)} das páginas vistas deste período têm país, então os números daqui são uma parte do total.`;
+  }
+  // Mapa + ranking. `n` = quantos países na lista ao lado (o Resumo mostra os
+  // 8 primeiros e manda pra Audiência; a Audiência mostra 12 e a tabela).
+  function secaoMapa(geo, n) {
+    const titulo = "De onde vêm os visitantes";
+    if (geo === undefined) return section(titulo, pedeGeo("O mapa de onde vêm os visitantes"));
+    if (!geo) return section(titulo, naoVeio("geo", "O mapa"));
+    const ps = comVisita(geo);
+    const mapa = (lista) => mapaMundo(lista.map((x) => ({ co: x.co, value: x.visitantes, hint: geoCompara(geo) ? `antes ${fmt(x.visitantes_ant)}` : "" })), MUNDO,
+      { ponto: NARROW() ? 26 : 12, aria: "Mapa-múndi: visitantes por país" });
+    if (!ps.length) {
+      return section(titulo, `${mapa([])}<p class="adm-banner adm-banner-info">Nenhuma página vista deste período tem país ainda. O país começa a ser gravado quando a migração <code>20261110a</code> é aplicada, e o mapa enche a partir daí. Se ela já está no banco há mais de um dia, o cabeçalho do país não está chegando: veja Técnico › Medição › País do visitante.</p>`);
+    }
+    const tot = ps.reduce((t, x) => t + x.visitantes, 0), max = ps[0].visitantes;
+    const cmp = geoCompara(geo);
+    const linhas = ps.slice(0, n).map((x) => `<li><span class="adm-hbar-label"><span class="adm-co">${esc(x.co)}</span>${esc(nomePais(x.co))}<small>${esc(pct(x.visitantes, tot))} dos visitantes${cmp ? ` · antes: ${esc(fmt(x.visitantes_ant))}` : ""}</small></span><span class="adm-hbar-track"><span class="adm-hbar-fill" style="width:${((100 * x.visitantes) / max).toFixed(1)}%"></span></span><span class="adm-hbar-val">${esc(fmt(x.visitantes))}${cmp ? ` ${deltaChip(x.visitantes, x.visitantes_ant)}` : ""}</span></li>`).join("");
+    const resto = ps.length - Math.min(n, ps.length);
+    const mais = state.tab === "audiencia"
+      ? (resto ? `<p class="admin-note">Mais ${esc(fmt(resto))} ${resto === 1 ? "país" : "países"} na tabela abaixo.</p>` : "")
+      : `<div class="adm-actions"><button type="button" class="chip adm-mini" data-tab="audiencia">${resto ? `Ver os ${esc(fmt(ps.length))} países` : "Ver na Audiência"}</button></div>`;
+    return `<section class="admin-section">
+        <div class="adm-sec-head"><h2>${esc(titulo)}</h2><p class="adm-sec-sub">${esc(fmt(ps.length))} ${ps.length === 1 ? "país" : "países"} · ${esc(fmt(tot))} visitantes</p></div>
+        <div class="adm-mapa-grade">${mapa(ps)}<div class="adm-mapa-lista"><ul class="adm-hbars adm-hbars-delta adm-hbars-pais">${linhas}</ul>${mais}</div></div>
+        <p class="admin-note">Mais forte = mais visitantes; cada faixa de cor é ~3× a anterior, senão o Brasil apagaria o resto do mapa. O país vem da borda da rede (Cloudflare) na hora da visita — só a sigla é gravada, nunca o endereço IP — e o app das lojas não entra. Cada visitante conta em um país só: o das páginas dele no período.${esc(notaCobertura(geo))}</p>
+      </section>`;
+  }
+  // Cor de país nas barras empilhadas: segue o PAÍS, não a posição no
+  // ranking (se a Argentina passa Portugal, ninguém troca de cor). A sigla
+  // escolhe a casa na paleta e, se a casa já tem dono entre os 5 do período,
+  // pega a próxima livre — em ordem alfabética, pra dar sempre no mesmo.
+  const CORES_PAIS = ["#2563eb", "#d97706", "#16a34a", "#db2777", "#7c3aed", "#0891b2"];
+  function coresDePais(siglas) {
+    const livre = CORES_PAIS.slice(), out = {};
+    siglas.slice().sort().forEach((co) => {
+      const quer = CORES_PAIS[(co.charCodeAt(0) * 7 + co.charCodeAt(1)) % CORES_PAIS.length];
+      const i = livre.indexOf(quer) >= 0 ? livre.indexOf(quer) : 0;
+      out[co] = livre.splice(i, 1)[0] || "#9aa3ae";
+    });
+    return out;
+  }
+  // Audiência: os países no tempo e a tabela inteira.
+  function secoesPaises(geo) {
+    const ps = comVisita(geo);
+    if (!ps.length) return "";
+    const cmp = geoCompara(geo);
+    const tot = ps.reduce((t, x) => t + x.visitantes, 0);
+    const topo = (geo.topo || []).filter((co) => ps.some((x) => x.co === co));
+    const cores = coresDePais(topo);
+    const porDia = {};
+    (geo.serie || []).forEach((x) => { (porDia[x.day] = porDia[x.day] || {})[x.co] = x.visitantes; });
+    const pilha = diasJanela(geo.days || state.days).map((d) => Object.assign({ day: d }, porDia[d] || {}));
+    const series = topo.map((co) => ({ key: co, label: nomePais(co), color: cores[co] }));
+    if ((geo.serie || []).some((x) => x.co === "(outros)")) series.push({ key: "(outros)", label: "Outros países", color: "#9aa3ae" });
+    const linha = (x) => `<tr><td class="adm-pais"><span class="adm-co">${esc(x.co)}</span>${esc(nomePais(x.co))}</td><td class="num">${esc(fmt(x.visitantes))}${cmp ? ` ${deltaChip(x.visitantes, x.visitantes_ant)}` : ""}</td>${cmp ? `<td class="num"><small>${esc(fmt(x.visitantes_ant))}</small></td>` : ""}<td class="num">${esc(pct(x.visitantes, tot))}</td><td class="num">${esc(x.visitantes ? (x.pageviews / x.visitantes).toLocaleString("pt-BR", { maximumFractionDigits: 1 }) : "—")}</td><td class="num">${esc(taxaTxt(x.celular, x.pageviews))}</td><td class="num">${esc(fmt(x.logados))}</td><td class="num">${esc(taxaTxt(x.ativacoes, x.visitantes))}</td></tr>`;
+    const todos = cmp ? geo.paises : ps;
+    return `
+      <section class="admin-section">
+        <div class="adm-sec-head"><h2>Visitantes por dia, por país</h2>
+          <div class="adm-seg" role="group" aria-label="Escala"><button type="button" class="chip" data-pct="0" aria-pressed="${!state.pct}">Número</button><button type="button" class="chip" data-pct="1" aria-pressed="${state.pct}">Participação %</button></div></div>
+        ${barrasEmpilhadas(pilha, series, Object.assign(CW(), { pct: state.pct, aria: "Visitantes por dia, empilhados por país" }))}
+        <p class="admin-note">Os 5 países com mais visitantes no período e a soma dos outros. Em "Participação %" cada dia soma 100%: é onde aparece um país ganhando espaço (um post que pegou lá fora, uma campanha em outro idioma) mesmo num dia fraco.</p>
+      </section>
+      ${section(`Todos os países (${fmt(todos.length)})`, paged("paises",
+        [{ t: "País" }, { t: "Visitantes", num: true }].concat(cmp ? [{ t: "Antes", num: true }] : []).concat([{ t: "Do total", num: true }, { t: "Páginas por visitante", num: true }, { t: "No celular", num: true }, { t: "Logados", num: true }, { t: "Ativaram", num: true }]),
+        todos.map(linha), 12),
+        `Páginas por visitante diz se quem vem de lá fica (uma página só é quem bateu e saiu). Ativaram = puseram a 1ª carta na coleção no período, sobre os visitantes do país.${cmp ? " País com zero visitantes é quem aparecia no período anterior e sumiu." : " A variação contra o período anterior aparece quando ele inteiro já tiver país gravado."}`)}`;
+  }
+  // Técnico › Medição: o país está chegando?
+  function secaoPais(geo) {
+    if (geo === undefined) return section("País do visitante", pedeGeo("O país do visitante"));
+    if (!geo) return "";
+    const c = geo.cobertura || {};
+    const nada = !c.com_pais;
+    return section("País do visitante", `<div class="admin-stats">
+        ${stat("Páginas com país", c.pageviews ? pct(c.com_pais, c.pageviews) : "—", `${fmt(c.com_pais)} de ${fmt(c.pageviews)} no período`)}
+        ${stat("Visitantes com país", c.visitantes ? pct(c.visitantes_com_pais, c.visitantes) : "—", `${fmt(c.visitantes_com_pais)} de ${fmt(c.visitantes)}`)}
+        ${stat("Gravado desde", c.desde ? dataBR(c.desde) : "—", c.desde ? "o 1º dia com país nesta janela" : "nenhum pageview com país ainda")}
+      </div>${nada && c.pageviews ? `<p class="adm-banner">Nenhuma página do período chegou com país. Se a migração <code>20261110a</code> foi aplicada há mais de um dia, o cabeçalho <code>cf-ipcountry</code> não está chegando ao banco — a consulta de conferir está no cabeçalho do arquivo da migração.</p>` : ""}`,
+      "O banco carimba o país no pageview a partir do cabeçalho que a borda do Cloudflare põe na requisição (só a sigla; o IP não é guardado). Fica sem país: o app das lojas, de propósito (a declaração de dados das lojas diz \"sem localização\"), quem vem pelo Tor e o que a borda não reconhece. Perto de 100% é o normal; a conta não inclui o app.");
+  }
+
   // Frases do "O que mudou": os maiores movimentos de cada recorte, juntos.
   function oQueMudou(pu) {
     const mv = pu.movimento || {};
@@ -2432,11 +2619,11 @@ if (v === "b") { /* versão nova */ }</pre>
   }
 
   const RENDER = {
-    geral: (x) => tabResumo(x.dash, x.pulso, x.notas),
+    geral: (x) => tabResumo(x.dash, x.pulso, x.notas, x.geo),
     areas: (x) => tabAreas(x.paginas), paginas: (x) => tabTodasPaginas(x.paginas), caminhos: (x) => tabCaminhos(x.paginas),
     plataformas: (x) => tabPlataformas(x.plataformas), versoes: (x) => tabVersoes(x.plataformas), lojasapp: (x) => tabLojasApp(x.plataformas),
     marcos: (x) => tabMarcos(x.notas),
-    audiencia: (x) => tabAudiencia(x.dash, x.pulso), conteudo: (x) => tabConteudo(x.dash),
+    audiencia: (x) => tabAudiencia(x.dash, x.pulso, x.geo), conteudo: (x) => tabConteudo(x.dash),
     produto: (x) => tabProduto(x.dash), qualidade: (x) => tabQualidade(x.dash, x.erros),
     crescimento: (x) => tabCrescimento(x.growth, x.notas),
     parceiros: (x) => tabParceiros(x.dash, x.retention, x.stores, x.demand, x.growth, x.engagement, x.users, x.anuncios),
@@ -2446,7 +2633,7 @@ if (v === "b") { /* versão nova */ }</pre>
     usuarios: (x) => tabUsuarios(x.users), colecoes: (x) => tabColecoes(x.users), segmentos: (x) => tabSegmentos(x.users),
     campanhas: (x) => tabCampanhas(x.campaigns, x.anunciosutm), tempo: (x) => tabTempo(x.engagement),
     experimentos: (x) => tabExperimentos(x.experiments), portal: (x) => tabPortal(x.partners, x.stores),
-    sets: (x) => tabSets(x.demand), medicao: (x) => tabMedicao(x.health, x.engagement, x.descartes)
+    sets: (x) => tabSets(x.demand), medicao: (x) => tabMedicao(x.health, x.engagement, x.descartes, x.geo)
   };
 
   // ── Painel legado (enquanto a migração 20260914a não for aplicada) ───────
@@ -2545,7 +2732,8 @@ if (v === "b") { /* versão nova */ }</pre>
     experiments: "20260928a_analytics_2_1.sql", partners: "20260928a_analytics_2_1.sql", health: "20260928a_analytics_2_1.sql",
     erros: "20261003a_erros_v2.sql",
     pulso: "20261009a_admin_v3.sql", paginas: "20261009a_admin_v3.sql", plataformas: "20261009a_admin_v3.sql",
-    descartes: "20261009a_admin_v3.sql", notas: "20261009a_admin_v3.sql", anunciosutm: "20261009a_admin_v3.sql"
+    descartes: "20261009a_admin_v3.sql", notas: "20261009a_admin_v3.sql", anunciosutm: "20261009a_admin_v3.sql",
+    geo: "20261110a_admin_geo.sql"
   };
   function pendente(keys) {
     const arqs = Array.from(new Set(keys.map((k) => MIGRACAO[k])));
@@ -2570,7 +2758,7 @@ if (v === "b") { /* versão nova */ }</pre>
         <label class="adm-select-rot"><span class="sr-only">Painel</span><select class="adm-select" data-nav>${GROUPS.map(([id, label, abas]) => `<optgroup label="${esc(label)}">${abas.map(([t, l]) => `<option value="${t}"${state.tab === t ? " selected" : ""}>${esc(l)}</option>`).join("")}</optgroup>`).join("")}</select></label>
         <p class="adm-titulo"><span>${esc(grupo[1])}</span>${esc(TAB_NOME[state.tab] || "")}</p>
       </div>
-      <div class="adm-period" role="group" aria-label="Período">${PERIODS.map((p) => `<button type="button" class="chip" data-days="${p}" aria-pressed="${state.days === p}">${p} dias</button>`).join("")}</div>`;
+      <div class="adm-controles"><div class="adm-period" role="group" aria-label="Período">${PERIODS.map((p) => `<button type="button" class="chip" data-days="${p}" aria-pressed="${state.days === p}">${p} dias</button>`).join("")}</div><button type="button" class="chip adm-icone adm-atualiza" data-atualiza aria-label="Atualizar os números" title="Atualizar os números">${ICON.atualiza}</button></div>`;
   }
   // Barra lateral (desktop): todos os grupos e abas à vista.
   function lateral() {
@@ -2591,6 +2779,15 @@ if (v === "b") { /* versão nova */ }</pre>
     }
     if (t.hasAttribute("data-retry")) {
       (document.getElementById("admBody") || root).innerHTML = `<p class="empty-state">Carregando…</p>`;
+      render();
+      return;
+    }
+    if (t.hasAttribute("data-atualiza")) {
+      // Cada RPC fica em cache enquanto o painel está aberto; sem isto, ver o
+      // número de agora era recarregar a página (e perder a aba e o período).
+      state.cache = {};
+      state.falha = {};
+      state.errors = undefined;
       render();
       return;
     }
@@ -2749,7 +2946,14 @@ if (v === "b") { /* versão nova */ }</pre>
       lado.scrollTop = Math.max(0, aberta.offsetTop - lado.clientHeight / 3);
     }
     const body = document.getElementById("admBody");
-    if (!suave) body.innerHTML = `<p class="empty-state">Carregando…</p>`;
+    // Mesma aba, outros números (trocou o período, clicou em atualizar): o
+    // desenho de antes fica na tela, apagado, até o novo chegar — o
+    // "Carregando…" fazia a página encolher e pular a cada troca. Aba
+    // diferente limpa: conteúdo de uma aba sob o título de outra confunde.
+    if (!suave) {
+      if (body.dataset.aba === state.tab && body.firstElementChild) body.classList.add("is-recarregando");
+      else body.innerHTML = `<p class="empty-state">Carregando…</p>`;
+    }
     body.setAttribute("aria-busy", "true");
     paginaDoKit(state.tab === "parceiros");
 
@@ -2764,6 +2968,9 @@ if (v === "b") { /* versão nova */ }</pre>
     const [vals, saude] = await Promise.all([Promise.all(keys.map(need)), need("health"), state.tab === "parceiros" ? carregaMarca() : null]);
     if (my !== seq) return;           // trocou de aba/período no meio
     body.removeAttribute("aria-busy");
+    body.classList.remove("is-recarregando");
+    body.dataset.aba = state.tab;
+    escondeDica();
     const data = {};
     keys.forEach((k, i) => { data[k] = vals[i]; });
     const opcionais = OPCIONAIS[state.tab] || [];
@@ -2800,9 +3007,83 @@ if (v === "b") { /* versão nova */ }</pre>
     }
     const d = state.cache[`dash:${state.days}`];
     document.getElementById("admNote").textContent = d
-      ? `Atualizado em ${new Date(d.generated_at).toLocaleString("pt-BR")} · janela de ${d.days} dias desde ${new Date(d.since).toLocaleDateString("pt-BR")}. "Gente" = pageview com JS executado, user-agent de navegador e sem webdriver; visitantes contam uuid anônimo first-party (só com consentimento de medição), logados contam a conta pelo JWT. O Cloudflare Web Analytics mede o resto: país, navegador, Core Web Vitals e o tráfego que nem chega a rodar JS.${equipe() ? " Este navegador não conta nas estatísticas (Técnico › Medição)." : ""}`
+      ? `Atualizado em ${new Date(d.generated_at).toLocaleString("pt-BR")} · janela de ${d.days} dias desde ${new Date(d.since).toLocaleDateString("pt-BR")}. "Gente" = pageview com JS executado, user-agent de navegador e sem webdriver; visitantes contam uuid anônimo first-party (só com consentimento de medição), logados contam a conta pelo JWT. O Cloudflare Web Analytics mede o resto: navegador, Core Web Vitals e o tráfego que nem chega a rodar JS.${equipe() ? " Este navegador não conta nas estatísticas (Técnico › Medição)." : ""}`
       : "";
   }
+  // ── Dica dos gráficos (2026-11-10) ───────────────────────────────────────
+  // Todo gráfico já escrevia o número exato num <title> — que o navegador
+  // mostra depois de um segundo parado no mouse e NUNCA no toque: no
+  // celular, nenhum gráfico do painel dizia quanto valia uma barra. Aqui o
+  // mesmo texto vira uma dica própria, na hora, no mouse e no dedo. Um
+  // ouvinte só, delegado: gráfico novo ganha a dica sem mexer aqui. O texto
+  // entra por textContent (vem de dado: nome de campanha, origem, país).
+  const ONDE_DICA = ".admin-chart, .adm-treemap, .adm-mapa, .adm-calor, .adm-matriz, .adm-seg-bar, .adm-spark, .adm-kit-area";
+  let dicaEl = null, dicaAlvo = null;
+  function alvoDaDica(el) {
+    for (let x = el, i = 0; x && x !== root && i < 4; x = x.parentNode, i++) {
+      if (x.nodeType !== 1) continue;
+      if (x.hasAttribute("data-dica")) return x;
+      if (!x.closest(ONDE_DICA)) return null;
+      // O <title> (SVG) e o title (HTML) viram data-dica na 1ª passada: sem
+      // tirar, a dica do navegador apareceria por cima da nossa. O nome
+      // acessível fica no aria-label.
+      const t = x.namespaceURI === "http://www.w3.org/2000/svg" ? Array.prototype.find.call(x.children, (c) => c.tagName === "title") : null;
+      const txt = t ? t.textContent : x.getAttribute("title");
+      if (!txt) continue;
+      x.setAttribute("data-dica", txt);
+      if (!x.hasAttribute("aria-label")) x.setAttribute("aria-label", txt);
+      if (t) t.remove(); else x.removeAttribute("title");
+      return x;
+    }
+    return null;
+  }
+  function poeDica(e) {
+    if (!dicaEl || dicaEl.hidden) return;
+    const w = dicaEl.offsetWidth, h = dicaEl.offsetHeight;
+    const x = Math.max(8, Math.min(e.clientX + 14, window.innerWidth - w - 8));
+    const y = e.clientY + 18 + h > window.innerHeight - 8 ? e.clientY - h - 12 : e.clientY + 18;
+    dicaEl.style.left = `${x}px`;
+    dicaEl.style.top = `${Math.max(8, y)}px`;
+  }
+  function escondeDica() {
+    if (dicaAlvo) dicaAlvo.classList.remove("is-dica");
+    dicaAlvo = null;
+    if (dicaEl) dicaEl.hidden = true;
+  }
+  function mostraDica(e) {
+    const alvo = alvoDaDica(e.target);
+    if (alvo === dicaAlvo) return;
+    escondeDica();
+    if (!alvo) return;
+    if (!dicaEl) {
+      dicaEl = document.createElement("div");
+      dicaEl.className = "adm-dica";
+      dicaEl.setAttribute("role", "tooltip");
+      document.body.appendChild(dicaEl);
+    }
+    // "Brasil: 2.310 visitantes (62%) · antes 2.100" → a 1ª parte em
+    // destaque, o resto uma linha cada.
+    dicaEl.textContent = "";
+    alvo.getAttribute("data-dica").split(" · ").forEach((parte, i) => {
+      const linha = document.createElement(i ? "span" : "b");
+      linha.textContent = parte;
+      dicaEl.appendChild(linha);
+    });
+    dicaAlvo = alvo;
+    alvo.classList.add("is-dica");
+    dicaEl.hidden = false;
+    poeDica(e);
+  }
+  root.addEventListener("pointerover", mostraDica);
+  // No mouse a dica acompanha o ponteiro (e volta sozinha depois de uma
+  // rolagem). No toque o navegador avisa "saiu" assim que o dedo levanta:
+  // se a gente ouvisse, a dica piscava e sumia.
+  root.addEventListener("pointermove", (e) => { if (e.pointerType !== "mouse") return; mostraDica(e); poeDica(e); });
+  root.addEventListener("pointerleave", (e) => { if (e.pointerType === "mouse") escondeDica(); });
+  // No toque não há "sair de cima": a dica some ao rolar ou tocar fora.
+  window.addEventListener("scroll", escondeDica, { passive: true });
+  document.addEventListener("pointerdown", (e) => { if (dicaAlvo && !dicaAlvo.contains(e.target)) escondeDica(); });
+
   // Ouvintes desde o início (antes só depois do portão): o "Tentar de novo" e
   // o "entre" do barrado também são cliques no root.
   root.addEventListener("click", onClick);

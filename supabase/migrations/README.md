@@ -8,6 +8,53 @@ poucos.)
 
 ## Pendentes de aplicar
 
+- `20261110a` — /admin: de onde vêm os visitantes (`20261110a_admin_geo.sql`).
+  O painel não tinha país nenhum (só o Cloudflare via). O `events_guard`
+  (cópia fiel da 20261009a) passa a carimbar `props.co` no pageview com as 2
+  letras do cabeçalho `cf-ipcountry`: nunca o que o cliente manda, nada pra
+  `XX`/`T1`, e **nada no app das lojas** (a declaração de dados delas diz
+  "sem localização"). O IP continua sem ser guardado. RPC nova
+  `admin_geo(days)`: visitantes por país no período e no anterior (cada
+  visitante num país só), páginas, celular, logados, ativações, a série por
+  dia dos 5 maiores e a cobertura. Lê só a janela (2 × days) e nasce com
+  `statement_timeout = 30s`. **Sem histórico**: o mapa enche a partir do dia
+  em que a migração entra, e a régua contra o período anterior só aparece
+  quando ele inteiro tiver país. A política de privacidade (pt/en/es) ganhou
+  o país na lista do que o pageview leva. Aditiva e sem ordem com o JS: sem
+  ela, Resumo e Audiência mostram o aviso no lugar do mapa.
+
+  **Não conferido em produção:** que o `cf-ipcountry` chega ao PostgREST (é o
+  mesmo caminho do `cf-connecting-ip` que o `_client_ip` lê, mas o banco de
+  produção não é lido pelas sessões). A 3ª consulta abaixo responde; Técnico ›
+  Medição › País do visitante mostra a cobertura. Se não chegar, o plano B
+  está no cabeçalho do arquivo.
+
+  Ensaiada em 2026-11-10 no PGlite, em cima de TODAS as migrações do repo,
+  aplicada três vezes. Guard, pelo trigger e como `anon`: carimba e mantém o
+  resto do `props`; minúsculas viram maiúsculas; pageview sem `props` ganha
+  só o país; o cabeçalho vence o `co` do cliente e, sem cabeçalho, o `co` do
+  cliente some; `XX`, `T1`, vazio, 3 letras e lixo não carimbam; app Android
+  e iOS ficam sem país; outro evento não leva; `props` que não é objeto
+  (número, texto, lista) entra como antes, sem erro (o ensaio pegou isto: a
+  1ª versão recusava o insert); robô segue robô, WebView do Android não vira
+  robô, nome fora da lista segue descartado e contado, e o 61º evento do
+  minuto segue barrado. `admin_geo` com números conferidos à mão: viajante
+  (2 páginas em PT, 1 no BR) conta em PT com as 3 páginas; robô e app fora;
+  ativação de antes do período não conta; país que sumiu aparece com zero;
+  cobertura 8 de 9 páginas; período anterior sem país → `comparavel` falso;
+  banco sem país nenhum → listas vazias; não-admin e sem JWT recebem null e
+  o `anon` nem executa. Com 191 mil eventos em 200 dias: `admin_geo(30)`
+  0,26 s (a `admin_pulso(30)`, 1,1 s) no PGlite.
+
+  Conferir depois de aplicar:
+  ```sql
+  select pg_get_functiondef('public.events_guard()'::regprocedure) ~ 'cf-ipcountry' as carimba_pais;  -- true
+  select proname, proconfig from pg_proc where proname = 'admin_geo';   -- statement_timeout=30s
+  -- uns minutos depois, com uma visita de verdade no site:
+  select props->>'co' as pais, count(*) from events
+   where name = 'pageview' and ts > now() - interval '1 hour' group by 1 order by 2 desc;
+  ```
+
 - `20261109b` — fim do apoiador sem anúncio (`20261109b_sem_apoiador.sql`; o
   `b` porque a `20261109a` do mesmo dia é a do Carddass Masters).
   Decisão de 2026-11-09: o Sleevu fica 100% grátis e se paga só com anúncio,

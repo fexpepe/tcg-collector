@@ -35,7 +35,11 @@ const admin = ler("src/admin.js");
 
 const migracoes = readdirSync(join(raiz, "supabase", "migrations")).filter((f) => f.endsWith(".sql")).sort();
 const whitelist = (txt) => {
-  const b = /new\.name not in \(([\s\S]*?)\)\s*\n?\s*then return null/.exec(txt);
+  // Só a lista entre parênteses. Até 2026-11-10 a regex ia até o 1º
+  // "then return null" — e desde a 20261009a o guard faz "then perform
+  // _descarta" antes do return, então ela atravessava o arquivo e catava
+  // texto de outras funções ('outro', do tipo de marco) como se fosse evento.
+  const b = /new\.name not in \(([^)]*)\)/.exec(txt);
   return b ? new Set([...b[1].matchAll(/'([a-z_]+)'/g)].map((m) => m[1])) : null;
 };
 
