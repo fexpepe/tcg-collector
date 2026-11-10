@@ -48,15 +48,16 @@
   // lado). Ver recorteDaGuia: a carta encaixada NA moldura lia pior que a
   // carta um pouco menor que ela.
   const MARGEM_GUIA = 0.04;
-  const LARGURA_OCR = 1400;  // px: o Tesseract lê melhor com ~30-50 px de altura de glifo
-  const LARGURA_RODAPE = 1800;   // o rodapé justo vai mais ampliado: o código do One Piece tem ~1,8 mm
-  const LARGURA_RODAPE_2 = 1250; // segunda escala do rodapé, só quando a primeira sai insegura
-  const CONF_SEGURA = 85;        // confiança (0-100) do Tesseract a partir da qual não se relê
+  // As larguras de cada passada do OCR (1400-2400 px: o Tesseract lê melhor
+  // com ~30-50 px de altura de glifo, e cada carta sai numa escala) estão no
+  // plano das passadas (PASSADAS).
+  // Teto de tempo das passadas: aparelho lento não fica oito passadas preso
+  // numa carta que não vai ler.
+  const TETO_PASSADAS = 5000;
   // Canto DIREITO (fração da largura), lido à parte e ampliado quando o rodapé
   // inteiro não deu código: é onde o One Piece (embaixo) e o Gundam (em cima)
   // imprimem o código. Ver ler().
   const CANTO = 0.55;
-  const LARGURA_CANTO = 1400;
 
   // ── Extração de código (função PURA; testada em tests/scan-codes.test.mjs) ──
   // Confusões clássicas do OCR em texto que TEM de ser numérico. Só se aplica
@@ -581,16 +582,22 @@
   //             carta), enquanto nada melhor aparecer. Abaixo de FOTO_NEGA só
   //             fica o formato de jogo (peso 3): fração e "SET NÚMERO" são o
   //             que o lixo do OCR mais imita;
-  //   semfoto — código forte e nenhuma imagem pra comparar: vale a busca,
-  //             como sempre valeu;
+  //   semfoto — formato de jogo (peso 3) e nenhuma imagem pra comparar (a
+  //             carta não tem imagem, a rede não entregou): vale a busca,
+  //             como sempre valeu. Fração e "SET NÚMERO" sem imagem ficam em
+  //             DÚVIDA: na bancada, as duas últimas erradas sem aviso eram
+  //             "249/288" e "DIS 5" casando com carta sem miniatura;
   //   negado  — o resto: resultado fraco que a foto não confirma.
   // Calibrado na bancada de 2026-11-10 (139 cartas, 13 jogos): carta certa
   // dá 0,96-0,99 com a imagem limpa e 0,65-0,98 com a foto simulada (borrão,
   // reflexo, tom de lâmpada, carta torta); carta errada dá -0,07 a 0,32 e, na
   // mesma moldura do mesmo jogo, até 0,53.
   const FOTO_CONFIRMA = 0.6, FOTO_NEGA = 0.42;
+  // O que entra PELA FOTO (vizinho de código, número solto, palavra do set
+  // travado) passa por régua mais alta: ver melhorPelaFoto.
+  const FOLGA_REPARO = 0.06, MARGEM_REPARO = 0.08;
   function estadoDaFoto(sim, forte, peso) {
-    if (typeof sim !== "number") return forte ? "semfoto" : "negado";
+    if (typeof sim !== "number") return !forte ? "negado" : peso >= 3 ? "semfoto" : "duvida";
     if (sim >= FOTO_CONFIRMA) return "certo";
     if (forte && (sim >= FOTO_NEGA || peso >= 3)) return "duvida";
     return "negado";
@@ -968,9 +975,71 @@
   // Assinaturas do QUADRO (os recortes onde a carta pode estar), uma vez por
   // leitura: a mesma foto é comparada com os resultados de várias tentativas
   // (candidatos, jogos, vizinhos). [] sem canvas.
-  function fotosDoQuadro(fonte, rec) {
-    try { return assinaturasDoQuadro(pixelsDe(fonte, rec.sx, rec.sy, rec.sw, rec.sh, 128), rec.galeria ? RECORTES_GALERIA : RECORTES_CAMERA); }
-    catch (e) { return []; }
+  //
+  // Mais a carta ENDIREITADA, quando ela é achada no quadro (acharCarta): os
+  // recortes da grade são retângulos de pé, e a assinatura — uma grade 16×22
+  // — perde semelhança com a carta torta (a ±5° os cantos andam 8 % da
+  // largura). `carta`: os cantos em px da fonte, ou null.
+  function fotosDoQuadro(fonte, rec, carta) {
+    let fotos = [];
+    try { fotos = assinaturasDoQuadro(pixelsDe(fonte, rec.sx, rec.sy, rec.sw, rec.sh, 128), rec.galeria ? RECORTES_GALERIA : RECORTES_CAMERA); }
+    catch (e) { fotos = []; }
+    if (carta) {
+      try {
+        const c = endireitar(fonte, carta, 0, 0, 1, 1, 112);
+        const ii = integral(c.getContext("2d", { willReadFrequently: true }).getImageData(0, 0, c.width, c.height).data, c.width, c.height);
+        const a = assinatura(ii, 0, 0, ii.w, ii.h);
+        if (a) fotos.push(a);
+      } catch (e) { /* sem canvas: ficam os recortes da grade */ }
+    }
+    return fotos;
+  }
+  // A carta do quadro (acharCarta), em px da FONTE: [TL, TR, BR, BL] ou null.
+  // A amostra é o recorte da moldura reduzido a 150 px de largura, pela
+  // metade de cada vez (a redução de uma vez só pula pixels e cria borda
+  // falsa). Na galeria a foto é livre: a faixa de procura é maior.
+  function cartaNoQuadro(fonte, rec) {
+    try {
+      let src = fonte, x = rec.sx, y = rec.sy, w = rec.sw, h = rec.sh;
+      while (w > 300) {
+        const c = document.createElement("canvas");
+        c.width = Math.max(1, Math.round(w / 2));
+        c.height = Math.max(1, Math.round(h / 2));
+        c.getContext("2d").drawImage(src, x, y, w, h, 0, 0, c.width, c.height);
+        src = c; x = 0; y = 0; w = c.width; h = c.height;
+      }
+      const c = document.createElement("canvas");
+      c.width = 150;
+      c.height = Math.max(1, Math.round((150 * h) / w));
+      const ctx = c.getContext("2d", { willReadFrequently: true });
+      ctx.drawImage(src, x, y, w, h, 0, 0, c.width, c.height);
+      const r = acharCarta(cinzaDe(ctx.getImageData(0, 0, c.width, c.height).data), c.width, c.height, rec.galeria ? 0.3 : 0.22);
+      if (!r) return null;
+      const k = rec.sw / c.width;
+      return r.cantos.map((p) => [rec.sx + (p[0] + 0.5) * k, rec.sy + (p[1] + 0.5) * k]);
+    } catch (e) { return null; }
+  }
+  // Região da carta (frações u, v dos lados dela; 0-1 é a carta inteira)
+  // desenhada de pé num canvas com `largura` px: a transformação afim que
+  // leva TL, TR e BL aos cantos do canvas. Corrige giro, escala e deslocamento
+  // (a perspectiva de quem fotografa de cima é pequena e fica).
+  function endireitar(fonte, cantos, u0, v0, u1, v1, largura) {
+    const TL = cantos[0], TR = cantos[1], BL = cantos[3];
+    const ex = [TR[0] - TL[0], TR[1] - TL[1]], ey = [BL[0] - TL[0], BL[1] - TL[1]];
+    const W = Math.max(8, Math.round(largura));
+    const H = Math.max(8, Math.round((largura * (v1 - v0) * Math.hypot(ey[0], ey[1])) / ((u1 - u0) * Math.hypot(ex[0], ex[1]))));
+    // fonte = O + (X/W)·(u1−u0)·ex + (Y/H)·(v1−v0)·ey; o canvas quer a inversa.
+    const O = [TL[0] + u0 * ex[0] + v0 * ey[0], TL[1] + u0 * ex[1] + v0 * ey[1]];
+    const a = ((u1 - u0) * ex[0]) / W, b = ((u1 - u0) * ex[1]) / W, c2 = ((v1 - v0) * ey[0]) / H, d = ((v1 - v0) * ey[1]) / H;
+    const det = a * d - b * c2;
+    const c = document.createElement("canvas");
+    c.width = W;
+    c.height = H;
+    const ctx = c.getContext("2d", { willReadFrequently: true });
+    const ia = d / det, ib = -b / det, ic = -c2 / det, id = a / det;
+    ctx.setTransform(ia, ib, ic, id, -(ia * O[0] + ic * O[1]), -(ib * O[0] + id * O[1]));
+    ctx.drawImage(fonte, 0, 0);
+    return c;
   }
   // Assinatura da miniatura de uma carta, guardada pela sessão da página: quem
   // abre booster lê o mesmo set a noite inteira, e os vizinhos de um código
@@ -1065,7 +1134,14 @@
   // disso numa amostra tão pequena); MUDOU: acima de 14 (tirar ou trocar a
   // carta mexe metade do quadro). Conteúdo: contraste acima de 18 (mesa lisa,
   // tela preta e dedo na frente ficam abaixo). Luz: brilho acima de 40.
-  const AUTO = { quadros: 3, parada: 5, mudou: 14, contraste: 18, brilho: 40, intervalo: 120 };
+  // `semCarta` (2026-11-10): sem CARTA achada no quadro (acharCarta), o disparo
+  // espera esse tanto de amostras paradas em vez de três. O "tem conteúdo" de
+  // antes era só contraste, e toalha estampada, tapete de jogo e a mão
+  // parada passavam: o laço gastava uma leitura inteira (até oito passadas
+  // de OCR) pra dizer "afaste um pouco". Não vira proibição porque carta de
+  // borda escura em mesa escura às vezes não é achada, e ali a leitura ainda
+  // tem de sair sozinha — só demora ~1,5 s.
+  const AUTO = { quadros: 3, parada: 5, mudou: 14, contraste: 18, brilho: 40, intervalo: 120, semCarta: 12 };
   // Um passo da máquina de estados: `st` é { armado, parados }. Armado, conta
   // amostras paradas e boas; na terceira seguida, dispara e desarma. Desarmado
   // (acabou de ler), espera a cena mudar pra armar de novo.
@@ -1074,7 +1150,10 @@
     if (!st.armado) return { st: { armado: m.movimento > c.mudou, parados: 0 }, disparar: false };
     const boa = m.movimento < c.parada && m.contraste > c.contraste && m.brilho > c.brilho;
     const parados = boa ? st.parados + 1 : 0;
-    if (parados >= c.quadros) return { st: { armado: false, parados: 0 }, disparar: true };
+    // `m.carta`: false = procurou e não achou carta no quadro; sem o campo
+    // (quem chama não procura), vale a regra de sempre.
+    const precisa = m.carta === false ? Math.max(c.quadros, c.semCarta || c.quadros) : c.quadros;
+    if (parados >= precisa) return { st: { armado: false, parados: 0 }, disparar: true };
     return { st: { armado: true, parados }, disparar: false };
   }
   // Dica ao vivo pelo quadro, antes de ler: pouca luz ou reflexo (é o que
@@ -1093,6 +1172,135 @@
     if (pref === "reverse") return acha(/reverse/i) || vs[0];
     if (pref === "foil") return acha(/foil|holo|etched/i, /reverse/i) || vs[0];
     return vs[0];
+  }
+
+  // ── ACHAR A CARTA NO QUADRO (função PURA; testada em tests/scan-carta.test.mjs) ──
+  // Até 2026-11-10 o scanner nunca soube onde a carta estava: todo recorte era
+  // uma fração da MOLDURA ("os 18 % de baixo"), e a moldura dispensava detecção
+  // de contorno (o OpenCV.js pesa 8 MB). Mas a carta fica ENTRE as duas
+  // molduras, menor, deslocada e torta: no laboratório de OCR (139 cartas, foto
+  // simulada) a passada que mais lia código era a da carta INTEIRA (42), não a
+  // do rodapé (35) — porque o rodapé da moldura cortava o código da carta que
+  // estava 10 % menor, e 2° de inclinação já tiram a linha do eixo.
+  //
+  // Aqui a carta é achada por quatro RETAS, uma por lado, sem biblioteca: numa
+  // amostra pequena em cinza (~150 px de largura), cada lado procura, numa
+  // faixa da borda do quadro, as retas (posição + inclinação de até 8°) com
+  // resposta de borda. A resposta soma o gradiente por TRECHOS da reta e toma
+  // o módulo de cada trecho: borda de carta tem o mesmo sinal por um bom
+  // pedaço (carta clara, mesa escura), textura de mesa e de arte se cancela.
+  //
+  // A reta mais FORTE de um lado quase nunca é a borda da carta: é a moldura
+  // impressa dela (a borda preta contra o miolo claro contrasta mais que a
+  // borda preta contra a mesa). Quem separa as duas é a GEOMETRIA: de cada
+  // lado ficam até quatro picos, e vale a combinação de quatro retas com
+  // lados opostos paralelos, vizinhos perpendiculares e a proporção de uma
+  // carta (63×88) — a MAIOR delas, porque a borda está sempre por fora da
+  // moldura. Sem combinação válida devolve null e tudo segue pela moldura-
+  // guia, como antes.
+  //
+  // `g`: cinza 0-255 (w×h). `faixa`: fração de cada lado onde a borda pode
+  // estar (0,22 na câmera, onde a carta fica entre as molduras; maior na
+  // galeria, foto livre). Devolve { cantos: [TL, TR, BR, BL] em px da amostra,
+  // angulo (graus, horário), forca } ou null.
+  const CARTA = { angMax: 8, trechos: 8, corte: 0.3, forcaMin: 7, picos: 3, proporcao: 63 / 88, folga: 0.07 };
+  function acharCarta(g, w, h, faixa) {
+    if (!g || w < 24 || h < 32) return null;
+    const fx = Math.max(3, Math.round(w * (faixa || 0.22))), fy = Math.max(3, Math.round(h * (faixa || 0.22)));
+    const tans = [];
+    for (let a = -CARTA.angMax; a <= CARTA.angMax; a++) tans.push(Math.tan((a * Math.PI) / 180));
+    const cx = (w - 1) / 2, cy = (h - 1) / 2;
+    // Resposta de uma reta "em pé" (x = p0 + k·(y − cy)) ou "deitada"
+    // (y = p0 + k·(x − cx)), no miolo de 56 % do lado (os cantos são
+    // arredondados e pertencem a duas bordas). Sai em DUAS partes, pelo
+    // sinal do degrau: a borda da carta (mesa -> borda) e a moldura impressa
+    // (borda -> miolo) quase sempre têm sinais opostos, e a 150 px de amostra
+    // ficam a 3-5 px uma da outra — somadas em módulo viravam uma rampa só,
+    // sem pico na borda de fora.
+    const resposta = (emPe, p0, k) => {
+      const n = emPe ? h : w, ini = Math.round(n * 0.22), fim = Math.round(n * 0.78);
+      const passo = Math.max(1, Math.floor((fim - ini) / CARTA.trechos));
+      let mais = 0, menos = 0, cont = 0;
+      for (let t0 = ini; t0 < fim; t0 += passo) {
+        let s = 0, m = 0;
+        for (let t = t0; t < Math.min(fim, t0 + passo); t++) {
+          const q = Math.round(p0 + k * (t - (emPe ? cy : cx)));
+          if (emPe) { if (q < 1 || q > w - 2) continue; s += g[t * w + q + 1] - g[t * w + q - 1]; }
+          else { if (q < 1 || q > h - 2) continue; s += g[(q + 1) * w + t] - g[(q - 1) * w + t]; }
+          m++;
+        }
+        if (m) { if (s > 0) mais += s; else menos -= s; cont += m; }
+      }
+      return cont ? [mais / cont, menos / cont] : [0, 0];
+    };
+    // Os picos de um lado, da borda do quadro pra dentro (`deFora`), de cada
+    // sinal em separado.
+    const lado = (emPe, deFora) => {
+      const perfis = [[], []];
+      deFora.forEach((p0) => {
+        const melhor = [{ p0, k: 0, r: 0 }, { p0, k: 0, r: 0 }];
+        for (const k of tans) {
+          const v = resposta(emPe, p0, k);
+          for (let z = 0; z < 2; z++) if (v[z] > melhor[z].r) { melhor[z].r = v[z]; melhor[z].k = k; }
+        }
+        perfis[0].push(melhor[0]);
+        perfis[1].push(melhor[1]);
+      });
+      const max = Math.max(perfis[0].reduce((a, x) => Math.max(a, x.r), 0), perfis[1].reduce((a, x) => Math.max(a, x.r), 0));
+      const piso = Math.max(CARTA.forcaMin, CARTA.corte * max);
+      const picos = [];
+      // Pico = o maior a dois pixels de cada lado: uma reta um pouco torta
+      // que cruza a borda de verdade também responde, e viraria "outra reta"
+      // colada nela.
+      perfis.forEach((m) => {
+        let n = 0;
+        for (let i = 0; i < m.length && n < CARTA.picos; i++) {
+          if (m[i].r < piso) continue;
+          let topo = true;
+          for (let j = Math.max(0, i - 2); j <= Math.min(m.length - 1, i + 2); j++) {
+            if (j !== i && (m[j].r > m[i].r || (m[j].r === m[i].r && j < i))) { topo = false; break; }
+          }
+          if (topo) { picos.push(m[i]); n++; }
+        }
+      });
+      return picos;
+    };
+    const faixaDe = (ini, n, sentido) => Array.from({ length: n }, (_, i) => ini + sentido * i);
+    const Es = lado(true, faixaDe(1, fx, 1)), Ds = lado(true, faixaDe(w - 2, fx, -1));
+    const Ts = lado(false, faixaDe(1, fy, 1)), Bs = lado(false, faixaDe(h - 2, fy, -1));
+    // Interseção de uma reta em pé com uma deitada:
+    //   x = pe.p0 + pe.k (y − cy);  y = dt.p0 + dt.k (x − cx)
+    const cruza = (pe, dt) => {
+      const y = (dt.p0 + dt.k * (pe.p0 - pe.k * cy - cx)) / (1 - dt.k * pe.k);
+      return [pe.p0 + pe.k * (y - cy), y];
+    };
+    const dist = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1]);
+    // Lados opostos QUASE paralelos: o celular inclinado uns graus sobre a
+    // carta já faz os lados convergirem (perspectiva), e exigir paralelismo
+    // de régua recusava a carta de verdade.
+    const tolPar = Math.tan((6 * Math.PI) / 180), tol = Math.tan((4 * Math.PI) / 180);
+    let melhor = null;
+    for (const E of Es) for (const D of Ds) {
+      if (Math.abs(E.k - D.k) > tolPar) continue;
+      for (const T of Ts) for (const B of Bs) {
+        if (Math.abs(T.k - B.k) > tolPar) continue;
+        // Vizinhos perpendiculares: num retângulo girado, a inclinação das
+        // retas em pé é o OPOSTO da das deitadas.
+        const kDeit = (T.k + B.k) / 2;
+        if (Math.abs((E.k + D.k) / 2 + kDeit) > tol) continue;
+        const cantos = [cruza(E, T), cruza(D, T), cruza(D, B), cruza(E, B)];
+        // A carta inteira cabe no quadro (com 3 % de folga pro arredondamento).
+        if (cantos.some((p) => p[0] < -0.03 * w || p[0] > 1.03 * w || p[1] < -0.03 * h || p[1] > 1.03 * h)) continue;
+        const larg = (dist(cantos[0], cantos[1]) + dist(cantos[3], cantos[2])) / 2;
+        const alt = (dist(cantos[0], cantos[3]) + dist(cantos[1], cantos[2])) / 2;
+        if (!(larg > w * 0.45) || !(alt > 0)) continue;
+        const prop = larg / alt;
+        if (prop < CARTA.proporcao * (1 - CARTA.folga) || prop > CARTA.proporcao * (1 + CARTA.folga)) continue;
+        const area = larg * alt;
+        if (!melhor || area > melhor.area) melhor = { cantos, area, angulo: (Math.atan(kDeit) * 180) / Math.PI, forca: Math.min(E.r, D.r, T.r, B.r) };
+      }
+    }
+    return melhor ? { cantos: melhor.cantos, angulo: melhor.angulo, forca: melhor.forca } : null;
   }
 
   // ── Captura e diagnóstico (funções PURAS; testadas em tests/scan-captura.test.mjs) ──
@@ -1118,6 +1326,66 @@
     }
     return n ? s / n : 0;
   }
+  // REALCE LOCAL (2026-11-10): cada pixel contra a média da vizinhança, e não
+  // contra o recorte inteiro. O preparo de sempre estica o contraste do
+  // rodapé todo de uma vez — e metade dos jogos imprime o código CLARO numa
+  // faixa escura (One Piece, DBFW, Riftbound, o rodapé preto do Magic e do
+  // SWU), ao lado de arte e borda claras: o limiar global do Tesseract fica
+  // com a arte e perde a faixa. Com `claro`, o texto claro sai ESCURO sobre
+  // fundo claro e uniforme, que é como o motor lê melhor. No laboratório (139
+  // cartas reais, foto simulada), a passada do rodapé lia 35 códigos; a
+  // mesma com realce de texto claro lia outros 11 que ela não lia.
+  // `g`: cinza (w×h); devolve o cinza tratado. `raio`: meia janela da média.
+  function realcarLocal(g, w, h, raio, claro) {
+    const W1 = w + 1, I = new Float64Array(W1 * (h + 1));
+    for (let y = 0; y < h; y++) {
+      let s = 0;
+      for (let x = 0; x < w; x++) { s += g[y * w + x]; I[(y + 1) * W1 + x + 1] = I[y * W1 + x + 1] + s; }
+    }
+    const out = new Uint8ClampedArray(w * h), sinal = claro ? -1 : 1;
+    for (let y = 0; y < h; y++) {
+      const y0 = Math.max(0, y - raio), y1 = Math.min(h, y + raio + 1);
+      for (let x = 0; x < w; x++) {
+        const x0 = Math.max(0, x - raio), x1 = Math.min(w, x + raio + 1);
+        const media = (I[y1 * W1 + x1] - I[y0 * W1 + x1] - I[y1 * W1 + x0] + I[y0 * W1 + x0]) / ((x1 - x0) * (y1 - y0));
+        // Fundo em cinza-claro (200) e o desvio ampliado 4×: o que é mais
+        // escuro que a vizinhança (ou mais claro, com `claro`) vira tinta.
+        out[y * w + x] = 200 + sinal * (g[y * w + x] - media) * 4;
+      }
+    }
+    return out;
+  }
+  // PLANO DAS PASSADAS de uma leitura: que recorte, em que escala e com que
+  // tratamento, na ordem. Cada uma é [nome, fx, fy, fw, fh, largura, modo,
+  // origem] — frações da moldura; `modo` "" (contraste esticado), "claro" ou
+  // "escuro" (realce local); `origem` é a pista de onde o código foi lido.
+  //
+  // A ordem veio do laboratório: até 2026-11-10 eram seis passadas do mesmo
+  // tratamento (rodapé em duas escalas, dois cantos, faixa, carta inteira) e
+  // elas liam, juntas, 60 de 139 códigos. Trocar as redundantes por outra
+  // POLARIDADE e outra ESCALA lê 69 com as mesmas seis, 73 com oito — cada
+  // carta sai num par escala/tratamento diferente, porque o Tesseract é
+  // sensível ao tamanho do glifo e ao que o limiar dele escolhe como fundo.
+  // Na frente, os três tratamentos do rodapé (baratos: ~1/4 do tempo da carta
+  // inteira cada); a carta inteira vem no meio — sozinha é a passada que mais
+  // lê (42), só que custa quatro das outras. Na bancada, metade das cartas
+  // certas sai na primeira passada. O jogo que imprime o código no ALTO
+  // (Gundam) começa pelo topo quando já se sabe que é ele.
+  const PASSADAS = [
+    ["rodape", 0, 1 - RODAPE, 1, RODAPE, 1400, "", "base"],
+    ["rodape-claro", 0, 1 - RODAPE, 1, RODAPE, 1800, "claro", "base"],
+    ["rodape-escuro", 0, 1 - RODAPE, 1, RODAPE, 1400, "escuro", "base"],
+    ["canto-topo", 1 - CANTO, 0, CANTO, RODAPE, 1400, "", "topo"],
+    ["carta", 0, 0, 1, 1, 1400, "", ""],
+    ["rodape-2", 0, 1 - RODAPE, 1, RODAPE, 2400, "", "base"],
+    ["rodape-claro-2", 0, 1 - RODAPE, 1, RODAPE, 2400, "claro", "base"],
+    ["topo-claro", 0, 0, 1, RODAPE, 1400, "claro", "topo"]
+  ];
+  function planoDasPassadas(jogo) {
+    if (jogo !== "gundam") return PASSADAS;
+    const topo = PASSADAS.filter((p) => p[7] === "topo");
+    return topo.concat(PASSADAS.filter((p) => p[7] !== "topo"));
+  }
   // Relatório do DIAGNÓSTICO em texto — o que a pessoa copia e cola pra
   // contar um erro. Uma linha por etapa, com identificadores curtos do código
   // (é log, não frase de interface: título, botão e aviso passam pelo i18n).
@@ -1128,7 +1396,7 @@
     const dim = (a) => (a && a.length === 2 ? `${n(a[0])}x${n(a[1])}` : "?");
     const L = [];
     L.push(`sleevu scan · ${new Date(dg.t || 0).toISOString().slice(0, 19).replace("T", " ")} · ${dg.modo || "?"}`);
-    L.push(`fonte ${dim(dg.fonte)} · carta ${dim(dg.rec)} · foco ${dg.poi || "padrao"}`);
+    L.push(`fonte ${dim(dg.fonte)} · carta ${dim(dg.rec)}${dg.carta ? ` (${dg.carta})` : ""} · foco ${dg.poi || "padrao"}`);
     const q = dg.quadros || [];
     if (q.length) {
       const m = q[dg.escolhido] || q[0];
@@ -1246,7 +1514,10 @@
   // e o máximo: um pixel branco da borda e um preto da moldura já bastavam pra
   // "esticar" nada, e o código branco sobre a barra escura do One Piece ficava
   // no contraste em que veio.
-  function preparar(fonte, sx, sy, sw, sh, largura) {
+  // `modo`: "" estica o contraste (abaixo); "claro" e "escuro" passam pelo
+  // realce local (realcarLocal), pro texto claro em faixa escura e pro texto
+  // escuro em fundo desigual.
+  function preparar(fonte, sx, sy, sw, sh, largura, modo) {
     const f = largura / sw;
     const c = document.createElement("canvas");
     c.width = Math.max(1, Math.round(sw * f));
@@ -1261,6 +1532,13 @@
       const g = (d[i] * 299 + d[i + 1] * 587 + d[i + 2] * 114) / 1000;
       cinza[j] = g;
       hist[cinza[j]] += 1;
+    }
+    if (modo === "claro" || modo === "escuro") {
+      // Janela de ~1 glifo: a 1400-2400 px de largura o código tem 30-50 px.
+      const t = realcarLocal(cinza, c.width, c.height, 24, modo === "claro");
+      for (let i = 0, j = 0; i < d.length; i += 4, j++) d[i] = d[i + 1] = d[i + 2] = t[j];
+      ctx.putImageData(img, 0, 0);
+      return c;
     }
     const n = cinza.length;
     let lo = 0, hi = 255, acc = 0;
@@ -1281,8 +1559,8 @@
   // de 12 MP da galeria (ou no vídeo em 4K) jogava fora a maior parte dos
   // pixels antes do OCR e depois ampliava o borrão — o código do One Piece,
   // com ~1,8 mm de altura, sobrava com uns 20 px e trocava dígito.
-  function recorte(fonte, rec, fx, fy, fw, fh, largura) {
-    return preparar(fonte, rec.sx + rec.sw * fx, rec.sy + rec.sh * fy, rec.sw * fw, rec.sh * fh, largura);
+  function recorte(fonte, rec, fx, fy, fw, fh, largura, modo) {
+    return preparar(fonte, rec.sx + rec.sw * fx, rec.sy + rec.sh * fy, rec.sw * fw, rec.sh * fh, largura, modo);
   }
   // Moldura-guia -> coordenadas do vídeo. O vídeo preenche o palco em
   // object-fit: cover, então o que a tela mostra é um recorte centralizado do
@@ -2182,6 +2460,10 @@
     amostra.width = 48;
     amostra.height = 66;
     const ctxAmostra = amostra.getContext("2d", { willReadFrequently: true });
+    const amostraCarta = document.createElement("canvas");
+    amostraCarta.width = 96;
+    amostraCarta.height = 132;
+    const ctxCarta = amostraCarta.getContext("2d", { willReadFrequently: true });
     let estAuto = { armado: true, parados: 0 };
     let amostraAnt = null;
     let tmAuto = 0;
@@ -2208,6 +2490,12 @@
           const g = cinzaDe(ctxAmostra.getImageData(0, 0, 48, 66).data);
           const m = medirQuadro(g, 48, 66, amostraAnt);
           amostraAnt = g;
+          // Tem carta no quadro? Só enquanto o laço está armado (é quando a
+          // resposta muda o disparo), numa amostra maior que a das medidas.
+          if (autoLigado && estAuto.armado) {
+            ctxCarta.drawImage(video, rec.sx, rec.sy, rec.sw, rec.sh, 0, 0, 96, 132);
+            m.carta = !!acharCarta(cinzaDe(ctxCarta.getImageData(0, 0, 96, 132).data), 96, 132, 0.22);
+          }
           const chaveDica = dicaDoQuadro(m);
           const escuro = chaveDica === "scan.hint.dark";
           // Sem lanterna (iPhone pela web), a dica não manda acendê-la.
@@ -2741,14 +3029,29 @@
     //
     // Uma TENTATIVA: o código nos jogos dados -> os resultados que casam com
     // ele -> a foto. null se a busca não achou nada.
-    async function tentar(c, jogos, fotos, ate) {
-      const achados = await buscar(c.codigo, jogos);
-      if (!achados.length) return null;
-      let foto = null;
-      try { foto = await conferirPelaFoto(fotos, achados, ate); } catch (e) { foto = null; }
-      const sim = foto ? foto.melhor : null;
-      const forte = !!achados[0].exato && c.peso >= 1;
-      return { codigo: c.codigo, achados, foto, sim, peso: c.peso, forte, estado: estadoDaFoto(sim, forte, c.peso) };
+    // `memo`: as tentativas desta leitura (código + jogos) — a busca roda a
+    // cada passada do OCR, e o mesmo código não vai duas vezes à borda nem à
+    // foto.
+    async function tentar(c, jogos, fotos, ate, memo) {
+      const k = `${c.codigo}|${jogos.join(",")}`;
+      if (memo && memo.has(k)) return memo.get(k);
+      const pr = (async () => {
+        const achados = await buscar(c.codigo, jogos);
+        if (!achados.length) return null;
+        let foto = null;
+        try { foto = await conferirPelaFoto(fotos, achados, ate); } catch (e) { foto = null; }
+        const sim = foto ? foto.melhor : null;
+        const forte = !!achados[0].exato && c.peso >= 1;
+        return { codigo: c.codigo, achados, foto, sim, peso: c.peso, forte, estado: estadoDaFoto(sim, forte, c.peso) };
+      })();
+      if (memo) {
+        memo.set(k, pr);
+        // Tentativa que ficou sem foto (a miniatura não chegou a tempo) não
+        // fica guardada: a próxima passada tenta de novo, com a miniatura já
+        // no cache.
+        pr.then((r) => { if (r && typeof r.sim !== "number") memo.delete(k); }, () => memo.delete(k));
+      }
+      return pr;
     }
     // As cartas de `lista` ([{ card, game }]) contra a foto: a mais parecida,
     // se a foto a CONFIRMA; senão null. É como entram os resultados que não
@@ -2760,7 +3063,15 @@
       sims.forEach((x, k) => { if (typeof x === "number" && (i < 0 || x > sims[i])) i = k; });
       // Pro diagnóstico: o que a foto disse de cada carta que entrou por ela.
       if (diagAtual && diagAtual.reparos) diagAtual.reparos.push(lista.map((h, k) => `${h.codigo || h.card.number || "?"}:${typeof sims[k] === "number" ? sims[k].toFixed(2) : "?"}`).join(" "));
-      if (i < 0 || sims[i] < FOTO_CONFIRMA) return null;
+      if (i < 0 || sims[i] < FOTO_CONFIRMA + FOLGA_REPARO) return null;
+      // …e com FOLGA sobre a melhor carta de OUTRO código. Aqui a foto escolhe
+      // entre uma dúzia ou duas de cartas que ninguém leu, e com a foto ruim
+      // (escura, borrada) toda carta do mesmo jogo fica parecida: na bancada,
+      // as duas erradas sem aviso do cenário duro entraram assim, a 0,60 e
+      // 0,62, com a segunda colocada a 0,05 ou menos. As correções certas
+      // passam de 0,68, com 0,13 ou mais de distância.
+      const rival = sims.reduce((m, x, k) => (k !== i && typeof x === "number" && (lista[k].codigo || k) !== (lista[i].codigo || i) && x > m ? x : m), -1);
+      if (sims[i] - rival < MARGEM_REPARO) return null;
       return { h: lista[i], sim: sims[i] };
     }
     // Um resultado que entrou pela FOTO (vizinho, número solto): todas as
@@ -2834,8 +3145,15 @@
     // mais fraco, já filtrados pelo índice), `orfaos` (os "SET NÚMERO" de set
     // que não existe), `fotos` (as assinaturas do quadro), `deteccao` (o
     // jogo) e `texto` (tudo o que o OCR leu). Devolve o que o `entregar` espera.
-    async function procurarComFoto(cands, orfaos, fotos, deteccao, texto) {
+    // `opc.rapido`: a busca do meio das passadas — as camadas de jogos e o set
+    // a um caractere, sem os vizinhos de dígito nem os órfãos em todos os
+    // jogos, que ficam pra busca final. `opc.memo`: as tentativas já feitas
+    // nesta leitura. O prazo das comparações (ORCAMENTO_FOTO) é de cada
+    // busca: contado da leitura inteira, as passadas do OCR o gastavam antes
+    // de a foto ser consultada.
+    async function procurarComFoto(cands, orfaos, fotos, deteccao, texto, opc) {
       if (trava) return procurarNoSetComFoto(cands, fotos, texto);
+      const o = opc || {};
       const ate = Date.now() + ORCAMENTO_FOTO;
       const topo = cands[0] || orfaos[0] || null;
       const nada = { codigo: topo ? topo.codigo : "", achados: [], estado: "nada", forte: !!(topo && topo.peso >= 3), negou: false };
@@ -2865,7 +3183,7 @@
         const jogos = camadas[k];
         for (const c of lista) {
           aviso(t("scan.status.searching", { q: c.codigo }));
-          const r = await tentar(c, jogos, fotos, ate);
+          const r = await tentar(c, jogos, fotos, ate, o.memo);
           if (!r) continue;
           if (r.estado === "certo") return r;
           if (r.estado === "negado" || exigeFoto(k)) { negou = true; continue; }
@@ -2886,6 +3204,7 @@
         if (reserva) break;
       }
       if (reserva && reserva.estado === "semfoto") return reserva;
+      if (o.rapido) return reserva ? Object.assign({}, reserva, { negou }) : Object.assign(nada, { negou });
       // VIZINHOS do código mais forte: a foto desmentiu (ou não confirmou) o
       // que a busca achou, e o erro mais comum do OCR é um dígito.
       const base = reserva || lista.find((c) => c.peso >= 2);
@@ -2899,7 +3218,7 @@
         const v = await repararPelaFoto(orfaos.slice(0, 2).map((c) => c.codigo), [], false, fotos, ate, negou);
         if (v) return v;
       }
-      if (reserva) return Object.assign(reserva, { negou });
+      if (reserva) return Object.assign({}, reserva, { negou });
       return Object.assign(nada, { negou });
     }
     // Com o SET TRAVADO: o código inteiro ou o número, nas cartas do set
@@ -3011,40 +3330,38 @@
           // o candidato contar como "forte" e encerrar os passes.
           return filtrarPorIndice(juntar(leituras), indice);
         };
-        let cands = await passo(recorte(fonte, rec, 0, 1 - RODAPE, 1, RODAPE, LARGURA_RODAPE), "base", "rodape");
-        // "Forte" = candidato com formato de jogo. O Magic entra mesmo com
-        // peso 1: o artista fica entre o número e o set no texto, e "MH3 123"
-        // casado de longe é o caso comum, não lixo.
-        const forte = () => cands.length && (cands[0].peso >= 2 || (cands[0].peso === 1 && /^[A-Z0-9]{3,4} \d+$/.test(cands[0].codigo)));
-        if (cands.length && cands[0].peso >= 2 && cands[0].conf < CONF_SEGURA) {
-          cands = await passo(recorte(fonte, rec, 0, 1 - RODAPE, 1, RODAPE, LARGURA_RODAPE_2), "base", "rodape2");
-        }
-        // CANTOS DIREITOS ampliados (2026-09-29), só quando o rodapé inteiro
-        // não deu código com formato de jogo. Magic, Pokémon e Lorcana
-        // imprimem o código à esquerda, legível no rodapé inteiro; o One Piece
-        // imprime miúdo no canto de baixo à DIREITA, e o Gundam no canto de
-        // CIMA à direita — que nenhum passe lia de perto (só a carta inteira,
-        // em escala baixa, onde o "GD01-048" saía "00- 48"). Metade da largura
-        // na mesma escala = glifos com o dobro de pixels. Quem já sabe o jogo
-        // (trava, seletor, página) começa pelo canto certo.
-        if (!forte()) {
-          const jogo = trava ? trava.game : (selJogo.value || sessao);
-          const ordem = jogo === "gundam" ? ["topo", "base"] : ["base", "topo"];
-          for (const onde of ordem) {
-            cands = await passo(recorte(fonte, rec, 1 - CANTO, onde === "topo" ? 0 : 1 - RODAPE, CANTO, RODAPE, LARGURA_CANTO), onde, `canto-${onde}`);
-            if (forte()) break;
-          }
-        }
-        if (!forte()) cands = await passo(recorte(fonte, rec, 0, 1 - FAIXA, 1, FAIXA, LARGURA_OCR), "base", "faixa");
-        let codigos = cands.map((c) => c.codigo);
+        // LÊ, CONFERE, CONTINUA (2026-11-10). Antes as passadas paravam no
+        // primeiro candidato "forte" e só então vinha a busca: um "10/41"
+        // lido do texto da carta encerrava a leitura antes de o código de
+        // verdade aparecer. Agora, a cada passada que traz candidato novo, a
+        // busca roda e a FOTO responde: confirmou, acabou; não confirmou,
+        // vem a passada seguinte (outro tratamento, outra escala, o topo, a
+        // carta inteira). O que a foto não confirmar até o fim passa pela
+        // busca completa — vizinhos de dígito e de set — e, se sobrar, entra
+        // em dúvida. A carta fácil sai na primeira passada, como antes.
+        const carta = cartaNoQuadro(fonte, rec);
+        if (dg) dg.carta = carta ? "achada" : "nao";
+        const fotos = fotosDoQuadro(fonte, rec, carta);
+        const tentados = new Set();
+        const memo = new Map();
+        let cands = [], deteccao = detectarJogo("", [], sessao, {}, indice), r = null;
         const origens = () => cands.reduce((o, c) => { o[c.codigo] = c.origem; return o; }, {});
-        let deteccao = detectarJogo(texto, codigos, sessao, origens(), indice);
-        // Com o set travado o jogo já é sabido: a carta inteira só se não houver código.
-        if (!codigos.length || (!selJogo.value && !trava && !deteccao.confiante)) {
-          cands = await passo(recorte(fonte, rec, 0, 0, 1, 1, LARGURA_OCR), "", "carta");
-          codigos = cands.map((c) => c.codigo);
-          deteccao = detectarJogo(texto, codigos, sessao, origens(), indice);
+        const orfaos = () => orfaosDoIndice(juntar(leituras), indice);
+        for (const [nome, fx, fy, fw, fh, largura, modo, origem] of planoDasPassadas(jogoSabido())) {
+          cands = await passo(recorte(fonte, rec, fx, fy, fw, fh, largura, modo), origem, nome);
+          deteccao = detectarJogo(texto, cands.map((c) => c.codigo), sessao, origens(), indice);
+          // Só vale buscar de novo se a passada trouxe candidato que ainda
+          // não foi tentado (com o set travado, qualquer texto novo serve:
+          // as palavras dele são comparadas com os números do set).
+          const novos = cands.concat(orfaos()).filter((c) => c.peso >= 1 && !tentados.has(c.codigo));
+          if (novos.length || trava) {
+            novos.forEach((c) => tentados.add(c.codigo));
+            const rr = await procurarComFoto(cands, orfaos(), fotos, deteccao, texto, { rapido: true, memo });
+            if (rr.estado === "certo" || rr.estado === "semfoto") { r = rr; break; }
+          }
+          if (performance.now() - t0 > TETO_PASSADAS) break;
         }
+        const codigos = cands.map((c) => c.codigo);
         ultimoTexto = texto;
         ultimasOrigens = origens();
         if (dg) {
@@ -3060,12 +3377,12 @@
         // é a forma de FORÇAR um só, quando a detecção errar.
         // Sem código nenhum só há o que procurar com o set travado (as
         // palavras do texto contra os números do set).
-        if (!cands.length && !trava && !orfaosDoIndice(juntar(leituras), indice).length) { if (dg) dg.ms = performance.now() - t0; entregar({ codigo: "", achados: [], estado: "nada" }, auto); return; }
+        if (!r && !cands.length && !trava && !orfaos().length) { if (dg) dg.ms = performance.now() - t0; entregar({ codigo: "", achados: [], estado: "nada" }, auto); return; }
         // A foto confere TODA leitura, ANTES de o resultado aparecer — trocar
         // a carta depois de mostrada confundiria, e um "+ Coleção" rápido
-        // gravaria a errada. O quadro congelado ainda está vivo aqui.
-        const fotos = fotosDoQuadro(fonte, rec);
-        const r = await procurarComFoto(cands, orfaosDoIndice(juntar(leituras), indice), fotos, deteccao, texto);
+        // gravaria a errada. O quadro congelado ainda está vivo aqui. Nada
+        // confirmado nas passadas: a busca completa, com os vizinhos.
+        if (!r) r = await procurarComFoto(cands, orfaos(), fotos, deteccao, texto, { memo });
         if (dg) {
           Object.assign(dg, {
             busca: { codigo: r.codigo, n: r.achados.length, cartas: r.achados.slice(0, 3).map((h) => h.card.name) },
@@ -3310,6 +3627,7 @@
     casaCodigo, chaveDoSet, filtrarPorIndice, orfaosDoIndice, vizinhosDoNumero, vizinhosDoSet, estadoDaFoto, cartasPelasPalavras, montarIndice,
     faixaDePreco, configSom, SONS, VIBRA,
     medirQuadro, passoAuto, dicaDoQuadro, varianteDe, AUTO,
-    cinzaDe, nitidez, relatorio
+    cinzaDe, nitidez, relatorio,
+    acharCarta, realcarLocal, planoDasPassadas
   };
 })();

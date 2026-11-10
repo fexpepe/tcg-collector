@@ -178,8 +178,11 @@ test("estadoDaFoto: a foto confirma, deixa em dúvida ou derruba", () => {
   assert.equal(S.estadoDaFoto(0.2, true, 2), "negado");
   // Resultado fraco (não casa com o código, ou peso 0) só entra confirmado.
   assert.equal(S.estadoDaFoto(0.5, false, 2), "negado");
-  // Sem imagem nenhuma: o forte vale a busca, como sempre valeu.
-  assert.equal(S.estadoDaFoto(null, true, 2), "semfoto");
+  // Sem imagem nenhuma: o formato de jogo vale a busca, como sempre valeu;
+  // fração e "SET NÚMERO" ficam em dúvida ("249/288" casando com uma promo
+  // japonesa sem miniatura entrava calado).
+  assert.equal(S.estadoDaFoto(null, true, 3), "semfoto");
+  assert.equal(S.estadoDaFoto(null, true, 2), "duvida");
   assert.equal(S.estadoDaFoto(null, false, 2), "negado");
 });
 
@@ -208,7 +211,10 @@ test("a busca da leitura passa TODA tentativa pela foto, na ordem certa", () => 
   assert.match(scanSrc, /if \(r\.estado === "negado" \|\| exigeFoto\(k\)\) \{ negou = true; continue; \}/);
   // O que entra pela foto (vizinho, número solto, palavra do set) exige a
   // confirmação — nunca "em dúvida".
-  assert.match(scanSrc, /if \(i < 0 \|\| sims\[i\] < FOTO_CONFIRMA\) return null;/);
+  // — nunca "em dúvida" —, com régua mais alta e folga sobre a segunda
+  // colocada: a foto escolhe entre cartas que ninguém leu.
+  assert.match(scanSrc, /if \(i < 0 \|\| sims\[i\] < FOTO_CONFIRMA \+ FOLGA_REPARO\) return null;/);
+  assert.match(scanSrc, /if \(sims\[i\] - rival < MARGEM_REPARO\) return null;/);
   // Um teto de tempo pra todas as comparações de uma leitura.
   assert.match(scanSrc, /const ate = Date\.now\(\) \+ ORCAMENTO_FOTO;/);
   // A leitura em dúvida vai marcada pra lista e não conta pra sugestão de trava.
