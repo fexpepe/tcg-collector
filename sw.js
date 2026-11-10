@@ -477,8 +477,9 @@ async function assetCacheFirst(request) {
 // navegação seguinte entregava a VELHA, que pedia arquivos com hash já
 // apagados. Era o Portfólio "antigo e quebrado antes do novo".
 // "/" é a raiz (o install guarda "./"); /users/<handle> é reescrito pelo
-// Pages pra collection.html, então cai na mesma entrada (uma por perfil
-// visitado não faria sentido — o conteúdo é o mesmo shell).
+// Pages pra collection.html, então LÊ a mesma entrada (uma por perfil
+// visitado não faria sentido). Só lê: a resposta do perfil não é gravada
+// nela (ver ehPerfilPublico).
 // /games/<jogo> é a tela de Sets servida no endereço do jogo
 // (functions/games/) e tem entrada própria, como qualquer página: a borda põe
 // nela o título e o índice DAQUELE jogo, e uma entrada só pra todos entregaria,
@@ -492,6 +493,18 @@ function chaveDeNavegacao(url) {
   if (u.pathname.startsWith("/users/")) u.pathname = "/collection.html";
   else if (!/\.html$/.test(u.pathname)) u.pathname += ".html";
   return u.href;
+}
+
+// Perfil público (/users/<handle>[/…]). A borda (functions/users/) devolve a
+// collection.html com o título, o canonical e o Open Graph DAQUELA pessoa, e
+// sem o data-i18n do <title>. Gravada na entrada da collection.html, a
+// "Minha Coleção" aberta em seguida (cache na hora, dentro da sessão) vinha
+// com o nome do outro na aba e no histórico até a carga seguinte: nada no
+// cliente repõe o título fora do modo perfil. Mesma família do /games/<jogo>
+// com o título do jogo anterior (2026-09-30). O perfil segue abrindo na hora
+// pela cópia genérica, que o install e a própria /collection mantêm.
+function ehPerfilPublico(url) {
+  return new URL(url).pathname.startsWith("/users/");
 }
 
 // Cópia de reserva de uma navegação sem entrada própria (ou null). A tela de
@@ -659,7 +672,7 @@ async function navigationFast(event) {
     .then(({ response, build }) => {
       // Página de outra leva não entra neste cache (ver veioDoServidorAgora).
       if (response && response.ok && (build === null || build === BUILD_ID)) {
-        cache.put(chave, semRedirect(response.clone())).catch(() => { /* cota cheia: só não guarda */ });
+        if (!ehPerfilPublico(request.url)) cache.put(chave, semRedirect(response.clone())).catch(() => { /* cota cheia: só não guarda */ });
         marcaConfirmacao();
       }
       return response;
