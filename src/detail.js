@@ -96,6 +96,11 @@
     const main = document.querySelector("main");
     if (main) main.insertAdjacentHTML("afterbegin", '<div class="cs-esqueleto" aria-hidden="true"><span></span><span></span></div>');
   }
+  // O game.js carimba data-carta no <html> antes do primeiro paint, pra tela do
+  // set não pintar no lugar da carta enquanto este arquivo (defer) não roda.
+  // Daqui em diante quem manda é a classe do body: o carimbo sai nos dois
+  // casos, senão esconderia o set quando a rota não é de carta pra esta tela.
+  document.documentElement.removeAttribute("data-carta");
   function saiDaPaginaDaCarta() {
     document.body.classList.remove("carta-pagina");
     document.querySelectorAll(".cs-esqueleto").forEach((el) => el.remove());

@@ -3045,7 +3045,11 @@ input::placeholder {
    trilho guarda a altura mais comum dele (216 a 281 px, conforme o set). */
 html[data-detail="set"]:not([data-set-pronto]) .detail-summary,
 html[data-detail="set"]:not([data-set-pronto]) .set-indice { display: none; }
-html[data-detail="set"]:not([data-set-pronto]) #setInsights { display: block !important; height: 235px; margin-top: 0; border: 1px solid var(--line); border-radius: 14px; background: var(--panel); }
+/* Fora da rota de CARTA (2026-11-10): lá a tela do set fica escondida, e o
+   !important daqui furava o display:none dela. O lugar do trilho aparecia
+   vazio embaixo do esqueleto da carta e descia a tela inteira quando ele
+   entrava (CLS de 0,23 no celular, medido em produção). */
+html[data-detail="set"]:not([data-set-pronto]):not([data-carta]) body:not(.carta-pagina) #setInsights { display: block !important; height: 235px; margin-top: 0; border: 1px solid var(--line); border-radius: 14px; background: var(--panel); }
 .set-insights-rail {
   display: flex; gap: 12px; overflow-x: auto; overscroll-behavior-x: contain;
   scroll-snap-type: x mandatory; scrollbar-width: none; padding-bottom: 4px;
@@ -3948,7 +3952,9 @@ a.preview-print:hover .print-art,
 
 /* MODO PÁGINA (a rota /games/<jogo>/<set>/<carta>): a mesma tela no fluxo da
    página, sem folha, sem fundo escuro e sem X — a trilha no lugar dele. O
-   resto da tela do set some (body.carta-pagina, posto pelo detail.js). */
+   resto da tela do set some (body.carta-pagina, posto pelo detail.js; antes
+   de ele rodar, html[data-carta], que o game.js carimba no <head> pra tela
+   do set não chegar a pintar). */
 #cardPreviewModal.is-page { position: static; display: block; padding: 0; z-index: auto; }
 #cardPreviewModal.is-page .card-preview-panel {
   width: 100%;
@@ -3963,7 +3969,8 @@ a.preview-print:hover .print-art,
 }
 #cardPreviewModal.is-page .cs-bar { position: static; margin: 0 0 12px; padding: 0; min-height: 52px; background: none; border: 0; }
 #cardPreviewModal.is-page .cs-media { top: 96px; }
-body.carta-pagina main > :not(#cardPreviewModal):not(.cs-more):not(.cs-esqueleto) { display: none; }
+body.carta-pagina main > :not(#cardPreviewModal):not(.cs-more):not(.cs-esqueleto),
+html[data-carta] main > :not(#cardPreviewModal):not(.cs-more):not(.cs-esqueleto) { display: none; }
 .cs-more { margin: 0 0 48px; }
 .cs-more-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 16px; margin-bottom: 14px; padding-top: 20px; border-top: 1px solid var(--line); }
 .cs-more-head h2 { margin: 0; font-size: 20px; }
