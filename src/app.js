@@ -2028,7 +2028,7 @@
   // confundirem as "Part 2" de várias séries); dentro da seção ela sai, como
   // no groupMbcSets.
   function groupCdmSets(setItems) {
-    const IPS = { hxh: ["sets.category.cdmHxh", "Hunter × Hunter "] };
+    const IPS = { eva: ["sets.category.cdmEva", "Neon Genesis Evangelion "], hxh: ["sets.category.cdmHxh", "Hunter × Hunter "] };
     const ipDe = (set) => (String(set.setId || "").toLowerCase().match(/^cdm-([a-z0-9]+)-/) || [])[1] || "";
     const semIp = (set) => {
       const nome = String(set.displayName || ""), ip = (IPS[ipDe(set)] || [])[1] || "";

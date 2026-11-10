@@ -619,11 +619,12 @@ jobs:
         run: node scripts/sync-hxh-hyper-battle.mjs || echo "sync-hxh-hyper-battle falhou; segue com o snapshot versionado"
 
       # Carddass Masters (Bandai 1996-2009): o jogo vintage cdm, uma secao por
-      # IP. Hoje so o HUNTER x HUNTER: numero e nome pela lista impressa no
-      # verso das cartas (scripts/data/carddass-masters-hxh.json), scans da
-      # Hunterpedia com a frente recortada pela propria Fandom (snapshot em
-      # data/vintage/carddass-masters-hxh.json, nao regride). Cria data/cdm/
-      # sozinho. Sem preco.
+      # IP, cada uma com lista versionada (scripts/data/carddass-masters-<ip>.json)
+      # e snapshot de scans que nao regride (data/vintage/carddass-masters-<ip>.json).
+      # HUNTER x HUNTER: lista impressa no verso das cartas, scans da
+      # Hunterpedia com a frente recortada pela propria Fandom. Evangelion
+      # (1996-1997): listas de um colecionador de 1998, scans do
+      # animecollection.fr. Cria data/cdm/ sozinho. Sem preco.
       - name: Catalogo vintage Carddass Masters
         if: env.RODA_SYNC == 'true'
         run: node scripts/sync-carddass-masters.mjs || echo "sync-carddass-masters falhou; segue com o snapshot versionado"
