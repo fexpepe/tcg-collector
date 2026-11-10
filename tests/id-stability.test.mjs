@@ -67,6 +67,7 @@ test("a exceção só vale pro formato <prefixo>-<productId> do próprio jogo", 
   assert.equal(ehIdDeProduto("naruto", "nrt-ncg-512345"), true);
   assert.equal(ehIdDeProduto("naruto", "nrt-ccg-ss-001"), false);   // checklist narutocards.ca
   assert.equal(ehIdDeProduto("onepiece", "opcd-001-romance-dawn"), false);   // vintage
+  assert.equal(ehIdDeProduto("gundam", "gcd-wd01-1"), false);                 // Gundam Carddass: número impresso
   assert.equal(ehIdDeProduto("fab", "gcg-643280"), false);            // prefixo de outro jogo
 });
 
