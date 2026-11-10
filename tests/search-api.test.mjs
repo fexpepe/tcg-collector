@@ -63,6 +63,15 @@ async function chama(db, qs) {
   return { status: res.status, corpo: await res.json(), cache: res.headers.get("Cache-Control") };
 }
 
+// O `q` tem teto de 200 caracteres (2026-11-10): sem ele o texto inteiro
+// entrava na montagem da consulta, antes do cache, e um pedido gigante
+// custava centenas de ms de CPU por vez. O que passa do teto é ignorado.
+test("q além de 200 caracteres é cortado antes de montar a consulta", async () => {
+  const { status, corpo } = await chama(banco(), "game=all&full=1&q=" + encodeURIComponent("mew" + " ".repeat(200) + "zzzz"));
+  assert.equal(status, 200);
+  assert.equal(corpo.t, 4, "o termo depois do corte entrou na busca");
+});
+
 test("&full=1 devolve TODAS as cartas no formato do chunk, com jogo, relevância e total", async () => {
   const { status, corpo } = await chama(banco(), "game=all&q=mew&full=1");
   assert.equal(status, 200);

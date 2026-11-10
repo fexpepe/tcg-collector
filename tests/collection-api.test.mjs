@@ -287,6 +287,17 @@ test("prefixo de LIKE cabe nos 50 bytes do D1 (nome japonês longo derrubava a c
   assert.ok(q.params.includes(palavras(longo)[0]));
 });
 
+// O laço do prefixoLike era quadrático no tamanho do termo e o `q` da busca
+// não tinha teto: 15 mil letras custavam 700 ms de CPU na borda, antes do
+// cache (2026-11-10). O corte nos 49 primeiros caracteres dá o mesmo padrão.
+test("prefixo de LIKE não depende do tamanho do termo (q gigante custava 700 ms de CPU)", () => {
+  assert.equal(prefixoLike("a".repeat(15000)), "a".repeat(49) + "%");
+  assert.equal(prefixoLike("charizard"), "charizard%");
+  const t0 = performance.now();
+  for (let i = 0; i < 20; i++) buildSearch("all", "a".repeat(15000), 40, { completo: true });
+  assert.ok(performance.now() - t0 < 500, "montar a consulta de um termo longo voltou a custar caro");
+});
+
 test("preços em lote por json_each usam a PK (sem varredura)", () => {
   const db = banco();
   const q = buildPricesJson("pokemon", idsComBase(["base1-4-pt", "tfc-1"]));

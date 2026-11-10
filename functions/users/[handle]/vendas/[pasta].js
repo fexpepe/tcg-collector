@@ -12,6 +12,7 @@
 // Sem esta Function a rota caía no rewrite do _redirects (/users/* →
 // /collection) e continuava funcionando, só com a prévia genérica.
 import { normalizaHandle, buscaPerfil, notFound, setMeta, setText, setHref, remove, addNoindex, ogImagem } from "../../_perfil.js";
+import { headDoGet } from "../../../_lib/borda.js";
 
 function dinheiro(cur, v) {
   try { return new Intl.NumberFormat("pt-BR", { style: "currency", currency: cur || "BRL" }).format(v); }
@@ -89,3 +90,6 @@ export async function onRequestGet(context) {
   }
   return rw.transform(shell);
 }
+
+// HEAD = o GET sem o corpo: ver o comentário em ../../[handle].js.
+export const onRequestHead = headDoGet(onRequestGet);

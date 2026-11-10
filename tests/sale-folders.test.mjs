@@ -13,8 +13,8 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { loadShared, makeLocalStorage } from "./lib/shared-sandbox.mjs";
-import { metaDaPastaDeVenda, onRequestGet as rotaDaPasta } from "../functions/users/[handle]/vendas/[pasta].js";
-import { onRequestGet as rotaDoPerfil } from "../functions/users/[handle].js";
+import { metaDaPastaDeVenda, onRequestGet as rotaDaPasta, onRequestHead as headDaPasta } from "../functions/users/[handle]/vendas/[pasta].js";
+import { onRequestGet as rotaDoPerfil, onRequestHead as headDoPerfil } from "../functions/users/[handle].js";
 
 const SALES_KEY = "tcg-collector-collection-sales-v1";
 
@@ -193,6 +193,17 @@ test("rota da pasta: pasta que não existe mais serve a SPA com canonical da aba
   assert.equal(r.rw.valor('link[rel="canonical"]'), "https://sleevu.app/users/fexpepe/vendas");
   assert.match(r.rw.valor("head"), /noindex/);
   assert.equal(r.rw.valor("title"), undefined);
+});
+
+// HEAD responde o mesmo status do GET (2026-11-10): sem o onRequestHead o
+// pedido caía no rewrite do _redirects e perfil inexistente dava 200.
+test("HEAD do perfil e da pasta de venda: 404 pra quem não existe, sem corpo", async () => {
+  const perfil = await comFetch(ok([]), () => headDoPerfil(contexto({ handle: "ninguem" })));
+  assert.equal(perfil.status, 404);
+  assert.equal(await perfil.text(), "");
+  const pasta = await comFetch(ok([]), () => headDaPasta(contexto({ handle: "ninguem", pasta: "x" })));
+  assert.equal(pasta.status, 404);
+  assert.equal(await pasta.text(), "");
 });
 
 test("rota da pasta: handle inexistente é 404 de verdade; consulta que falha NÃO é 404", async () => {

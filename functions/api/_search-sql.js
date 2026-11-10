@@ -145,7 +145,11 @@ export const LIMITE_COMPLETO = 10000;
 const BYTES_LIKE = 49; // + o "%"
 const utf8 = new TextEncoder();
 export function prefixoLike(termo) {
-  const chars = Array.from(String(termo || ""));
+  // slice antes do laço (2026-11-10): cada caractere ocupa ao menos 1 byte,
+  // então nada além dos primeiros 49 cabe. Sem o corte, o laço tirava um
+  // caractere por volta e remontava a string inteira a cada uma: quadrático
+  // no tamanho do termo (710 ms de CPU pra um `q` de 15 mil letras).
+  const chars = Array.from(String(termo || "")).slice(0, BYTES_LIKE);
   while (chars.length > 1 && utf8.encode(chars.join("")).length > BYTES_LIKE) chars.pop();
   return chars.join("") + "%";
 }
