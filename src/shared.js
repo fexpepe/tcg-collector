@@ -9109,7 +9109,9 @@
       "nrt-ccg": { prefix: "nrt-ccg-", label: "Naruto CCG (2006–2013)", titleKey: "sets.category.nrtccg" },
       // O jogo de mesa japonês do Shippuden (2007–2008), sucessor do de 2002:
       // outro jogo (regras e numeração 忍伝/術伝/作伝 novas), então linha própria.
-      "nrt-scg": { prefix: "nrt-scg-", label: "Naruto Shippuden Card Game (2007–2008)", titleKey: "sets.category.nrtscg" },
+      // Rótulo sem os anos, como o do gcd: com eles o shared.js passava 2 bytes
+      // gz do teto (2026-11-10). Os anos seguem no título (sets.category.nrtscg).
+      "nrt-scg": { prefix: "nrt-scg-", label: "Naruto Shippuden Card Game", titleKey: "sets.category.nrtscg" },
       // O jogo NOVO (lançamento mundial 2027) como linha da marca: hoje só as
       // promos de evento (Gen Con 2026); tagKey troca a etiqueta "vintage" do
       // título por "Em breve" até o jogo sair.
