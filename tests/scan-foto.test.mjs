@@ -154,16 +154,19 @@ test("ordem: sem como julgar, a ordem da busca fica inteira", () => {
 });
 
 test("o scanner confere pela foto ANTES de mostrar e conta o que a pessoa corrige", () => {
-  // A conferência roda entre a busca e o entregar (a carta não troca depois
-  // de aparecer) e só com mais de um candidato.
-  assert.match(scanSrc, /achados\.length > 1\) \{[\s\S]{0,200}?conferirPelaFoto\(fonte, rec, achados\)[\s\S]{0,300}?entregar\(codigo, achados, foto/);
+  // A conferência roda entre a leitura e o entregar (a carta não troca depois
+  // de aparecer). Desde 2026-11-10 em TODA leitura, não só com mais de um
+  // candidato: as assinaturas do quadro saem uma vez e a busca as usa em cada
+  // tentativa (tests/scan-encaixe.test.mjs cobre a decisão).
+  assert.match(scanSrc, /const fotos = fotosDoQuadro\(fonte, rec\);\s*const r = await procurarComFoto\(cands, [^;]*?, fotos, deteccao, texto\);[\s\S]{0,600}?entregar\(r, auto\);/);
+  assert.match(scanSrc, /async function tentar\(c, jogos, fotos, ate\) \{[\s\S]{0,300}?conferirPelaFoto\(fotos, achados, ate\)/);
   // A galeria procura a carta num leque maior de posições.
   assert.match(scanSrc, /ler\(img, \{[^}]*galeria: true/);
   // O resumo da sessão leva a precisão, e os contadores são somados onde a
   // pessoa age: trocar o 1º (uma vez por leitura) e buscar digitando.
-  const m = /logEvento\("scan_done",\s*\{([\s\S]{0,360}?)\}\)/.exec(scanSrc);
+  const m = /logEvento\("scan_done",\s*\{([\s\S]{0,480}?)\}\)/.exec(scanSrc);
   assert.ok(m, "não achei o payload do scan_done");
-  for (const campo of ["amb", "vis", "troca", "dig"]) assert.match(m[1], new RegExp(`\\b${campo}:`), `scan_done sem "${campo}"`);
+  for (const campo of ["amb", "vis", "troca", "dig", "duv", "corr", "neg"]) assert.match(m[1], new RegExp(`\\b${campo}:`), `scan_done sem "${campo}"`);
   assert.match(scanSrc, /if \(i !== primario && trocaConta\) \{ funil\.troca \+= 1; trocaConta = false; \}/);
   assert.match(scanSrc, /preventDefault\(\);\s*funil\.dig \+= 1;/);
 });
