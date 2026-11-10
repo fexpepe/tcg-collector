@@ -8,8 +8,9 @@
 //
 // Cada IP tem fonte própria, então cada uma tem o seu bloco aqui (IPS, no
 // fim) e o seu snapshot (data/vintage/carddass-masters-<ip>.json, que só é
-// regravado quando não regride). Hoje só o HUNTER×HUNTER tem lista carta a
-// carta e scan; IP nova entra como mais um bloco.
+// regravado quando não regride). Têm lista carta a carta o HUNTER×HUNTER
+// (2000–2001) e o 新世紀エヴァンゲリオン (1996–1997); IP nova entra como mais
+// um bloco.
 //
 // IDs: cdm-<ip>-<set>-<número impresso> (cdm-hxh-p1-29, cdm-hxh-p2-sp4). O
 // número é o que a Bandai imprimiu; o id não depende da ordem da fonte.
@@ -218,13 +219,122 @@ export function cardsOfSet(ip, def, scans) {
   }));
 }
 
+// ── 新世紀エヴァンゲリオン (1996–1997) ──────────────────────────────────────
+// 第壱集 (172 cartas), 第弐集 (172) e os dois カードダスマスターズワイド dos
+// filmes (132 cada, carta larga 2:1). Foram as edições que abriram a linha.
+//
+// Fontes (levantamento de 2026-11-10):
+//   LISTA — scripts/data/carddass-masters-eva.json: número impresso e nome em
+//           japonês das listas de um colecionador de 1998 (fukumitu,
+//           www2.nsknet.or.jp/~fukumitu/card_eva_1.html, _2, _dar e _eoe).
+//           Página parada desde 1998, então é transcrição versionada, como a
+//           カードリスト do HxH, e não fetch. O cabeçalho do arquivo diz de
+//           onde sai o inglês e marca o que a gente traduziu.
+//   SCANS — animecollection.fr (colecionador francês), uma página por edição
+//           (cartes.php?idl=20&idc=<coleção>&ids=<série>): o número, a
+//           raridade e um scan da FRENTE por carta. Medido em 2026-11-10:
+//           172 + 132 + 132, e os 436 números batem um a um com a lista. A
+//           第弐集 não está lá: entra pela lista, sem imagem. Todo scan traz a
+//           marca d'água do site no canto (aceito pelo Fernando em 2026-11-10,
+//           até a gente ter imagem própria: assets/cards/cdm/<id>.webp vence o
+//           scan, ver curatedImg).
+//   FICHA — エヴァンゲリオンカードのすべて (www2.hp-ez.com/hp/evacard/page1 e
+//           /page7): mês de lançamento, total e subsets de cada edição.
+//
+// Ficam de fora, sem lista carta a carta achada: 第参集 (1998, 181), 第四集
+// (2003, 99) e as do 新劇場版 (序 2008, 破 2010). As de pachinko (CR, 2008–
+// 2010) e a 破 第2章 (2011) têm scan no animecollection.fr, mas não nome.
+//
+// O site só responde em http (o https devolve 301 pro http); o wsrv.nl busca a
+// origem sem esquema e serve em https, então a CSP não muda.
+export const LISTA_EVA = JSON.parse(readFileSync(new URL("scripts/data/carddass-masters-eva.json", ROOT), "utf8"));
+const ANIMECOLLECTION = "http://animecollection.fr";
+
+// `name` vai depois de "新世紀エヴァンゲリオン " (setPrefix). Os Wide são
+// "カードダスマスターズワイド 新世紀エヴァンゲリオン劇場版 <filme>": o
+// "カードダスマスターズワイド" é o jogo/formato e fica fora (contrato 7), o
+// filme é o que nomeia o set. `ac`: [coleção, série] no animecollection.fr.
+export const SETS_EVA = [
+  { code: "p1", name: "第壱集", date: "1996-08", lista: "p1", ac: [61, 561] },
+  { code: "p2", name: "第弐集", date: "1997-01", lista: "p2" },
+  { code: "w1", name: "劇場版 シト新生", date: "1997-08", lista: "w1", ac: [63, 149] },
+  { code: "w2", name: "劇場版 Air/まごころを、君に", date: "1997-12", lista: "w2", ac: [63, 151] }
+];
+
+// Rótulo do animecollection.fr -> número como está na lista: "CH - 23" ->
+// CH23, "SP-06" -> SP6, "DEATH-001" -> DEATH-1, "25-01" -> 25-01 (第25話 1).
+// No Air o número fica com dois dígitos de propósito: a tela ordena pelo
+// primeiro número e desempata por TEXTO (compareCardNumbers), e "26-7" cairia
+// depois de "26-10". "Puzzle", "Binder", "Booster" (montagens e embalagem) não
+// são carta: null.
+export function numAc(label) {
+  const s = String(label).replace(/\s+/g, "").toUpperCase();
+  let m = s.match(/^(DEATH|REBIRTH)-0*(\d+)$/);
+  if (m) return `${m[1]}-${m[2]}`;
+  m = s.match(/^(25|26)-0*(\d+)$/);
+  if (m) return `${m[1]}-${m[2].padStart(2, "0")}`;
+  m = s.match(/^([A-Z]{2})-0*(\d+)$/);
+  return m ? `${m[1]}${m[2]}` : null;
+}
+
+// Página de uma série -> [{ num, rarity, img }]. Cada carta é um bloco
+// "bc_cadre_numero" (title = raridade) com o rótulo e a miniatura
+// cartes/<coleção>/<série>/h100_<id>_carte.jpg; o mesmo id tem a versão maior,
+// h3000_ (713×1024 na carta normal, 1024×540 na Wide). Bloco sem miniatura de
+// carta (embalagem, puzzle montado) e número repetido caem fora.
+export function parseAc(html, idc, ids) {
+  const out = [];
+  const thumb = new RegExp(`cartes/${idc}/${ids}/h100_(\\d+)_carte\\.jpg`);
+  for (const b of String(html).split('class="bc_cadre_numero"').slice(1)) {
+    const rar = ((b.match(/^\s*title="([^"]*)"/) || [])[1] || "").trim();
+    const num = numAc((b.match(/class="bc_texte_numero">([^<]*)</) || [])[1] || "");
+    const id = (b.match(thumb) || [])[1];
+    if (!num || !id || out.some((c) => c.num === num)) continue;
+    out.push({ num, rarity: /^(SP|Super Rare)$/i.test(rar) ? "Special" : "Normal", img: `animecollection.fr/cartes/${idc}/${ids}/h3000_${id}_carte.jpg` });
+  }
+  return out;
+}
+
+// O site responde em ISO-8859-1; só o ASCII interessa, mas decodifica certo.
+async function paginaLatin1(url) {
+  for (let i = 0; i < 3; i++) {
+    try {
+      const r = await fetch(url, { headers: UA, signal: AbortSignal.timeout(30000) });
+      if (r.ok) return new TextDecoder("latin1").decode(await r.arrayBuffer());
+    } catch (e) { /* retry */ }
+    await sleep(1000 * (i + 1));
+  }
+  return null;
+}
+
+// Scans do animecollection.fr -> sets do snapshot, ou null se uma página não
+// respondeu (aí fica o snapshot versionado inteiro, e não meio catálogo).
+async function scansEva() {
+  const sets = [];
+  for (const def of SETS_EVA) {
+    if (!def.ac) continue;
+    const [idc, ids] = def.ac;
+    const html = await paginaLatin1(`${ANIMECOLLECTION}/cartes.php?idl=20&idc=${idc}&ids=${ids}`);
+    if (!html) return null;
+    const cards = parseAc(html, idc, ids).map((c) => ({ set: def.code, ...c }));
+    if (cards.length) sets.push({ code: def.code, name: def.name, cards });
+    await sleep(500);
+  }
+  return sets.length ? sets : null;
+}
+
 // ── Registro das IPs ────────────────────────────────────────────────────────
 // `setPrefix`: como a IP abre o nome de cada set dela (o logo da série). O
 // groupCdmSets tira o equivalente em inglês dentro da seção da IP.
 export const IPS = [
   { ip: "hxh", setPrefix: "HUNTER×HUNTER", sets: SETS_HXH, lista: LISTA_HXH, scans: scansHxh,
     snap: new URL("data/vintage/carddass-masters-hxh.json", ROOT),
-    source: "https://hunterxhunter.fandom.com/wiki/Hunter_%C3%97_Hunter_Carddass_Collections" }
+    source: "https://hunterxhunter.fandom.com/wiki/Hunter_%C3%97_Hunter_Carddass_Collections" },
+  // Depois do HxH no arquivo (a ordem aqui é só a do cards.js; na tela a seção
+  // de 1996 vem antes, o groupCdmSets ordena pela data).
+  { ip: "eva", setPrefix: "新世紀エヴァンゲリオン", sets: SETS_EVA, lista: LISTA_EVA, scans: scansEva,
+    snap: new URL("data/vintage/carddass-masters-eva.json", ROOT),
+    source: "http://animecollection.fr/cartes.php?idl=20" }
 ];
 
 export const cardId = (ip, setCode, num) => `${ID_PREFIX}${ip}-${setCode}-${String(num).toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
