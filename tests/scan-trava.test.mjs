@@ -100,9 +100,11 @@ test("a trava é da sessão e muda a busca e a leitura", () => {
   // Estado dentro do abrir(): fechou o scanner, a trava some.
   const abrir = /function abrir\(\) \{[\s\S]*\n  \}\n/.exec(scanSrc)[0];
   assert.match(abrir, /let trava = null;/);
-  // Travado, a busca vai pro set; a leitura pula a carta inteira (o jogo já é sabido).
+  // Travado, a busca vai pro set — a digitada e a da leitura (que, travada,
+  // roda a cada passada: as palavras do texto valem como número do set).
   assert.match(scanSrc, /async function procurar\(codigos\) \{\s*if \(trava\) return procurarNoSet\(codigos\);/);
-  assert.match(scanSrc, /!selJogo\.value && !trava && !deteccao\.confiante/);
+  assert.match(scanSrc, /async function procurarComFoto\(cands, orfaos, fotos, deteccao, texto, opc\) \{\s*if \(trava\) return procurarNoSetComFoto\(cands, fotos, texto\);/);
+  assert.match(scanSrc, /if \(novos\.length \|\| trava\) \{/);
   // A sugestão vem com três leituras seguidas no mesmo set.
   assert.match(scanSrc, /recentes\.length === 3 && recentes\.every\(\(k\) => k === recentes\[0\]\)/);
 });

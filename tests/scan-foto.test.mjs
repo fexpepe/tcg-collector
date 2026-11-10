@@ -158,8 +158,8 @@ test("o scanner confere pela foto ANTES de mostrar e conta o que a pessoa corrig
   // de aparecer). Desde 2026-11-10 em TODA leitura, não só com mais de um
   // candidato: as assinaturas do quadro saem uma vez e a busca as usa em cada
   // tentativa (tests/scan-encaixe.test.mjs cobre a decisão).
-  assert.match(scanSrc, /const fotos = fotosDoQuadro\(fonte, rec\);\s*const r = await procurarComFoto\(cands, [^;]*?, fotos, deteccao, texto\);[\s\S]{0,600}?entregar\(r, auto\);/);
-  assert.match(scanSrc, /async function tentar\(c, jogos, fotos, ate\) \{[\s\S]{0,300}?conferirPelaFoto\(fotos, achados, ate\)/);
+  assert.match(scanSrc, /const fotos = fotosDoQuadro\(fonte, rec, carta\);[\s\S]{0,2500}?procurarComFoto\(cands, orfaos\(\), fotos, deteccao, texto, \{ rapido: true, memo \}\)[\s\S]{0,2500}?if \(!r\) r = await procurarComFoto\(cands, orfaos\(\), fotos, deteccao, texto, \{ memo \}\);[\s\S]{0,600}?entregar\(r, auto\);/);
+  assert.match(scanSrc, /async function tentar\(c, jogos, fotos, ate, memo\) \{[\s\S]{0,500}?conferirPelaFoto\(fotos, achados, ate\)/);
   // A galeria procura a carta num leque maior de posições.
   assert.match(scanSrc, /ler\(img, \{[^}]*galeria: true/);
   // O resumo da sessão leva a precisão, e os contadores são somados onde a

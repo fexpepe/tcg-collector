@@ -133,3 +133,42 @@ test("diagnóstico: toque longo liga, fica só na memória, e o scan_done conta 
   assert.ok(m && /\bluz: funil\.luz, luzOk: funil\.luzOk/.test(m[1]), "scan_done sem luz/luzOk");
   assert.match(scanSrc, /if \(captura && captura\.ruim\) \{[^\n]*\n\s*funil\.luz \+= 1;\s*if \(achados\.length\) funil\.luzOk \+= 1;/);
 });
+
+// ── Passadas do OCR (2026-11-10) ─────────────────────────────────────────────
+// No laboratório (139 cartas reais, foto simulada, só OCR + extração), as seis
+// passadas de antes — todas do mesmo tratamento — liam 60 códigos. Trocar as
+// redundantes por outra POLARIDADE e outra ESCALA lê 69 com seis, 73 com oito.
+test("realcarLocal: texto claro em faixa escura vira tinta escura em fundo claro", () => {
+  // Uma faixa escura (40) com um traço claro (200) no meio, ao lado de um
+  // bloco claro (230) — o rodapé do One Piece ao lado da borda da carta.
+  const w = 60, h = 20, g = new Uint8Array(w * h);
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) g[y * w + x] = x < 30 ? (y >= 9 && y <= 10 && x >= 8 && x <= 22 ? 200 : 40) : 230;
+  const claro = S.realcarLocal(g, w, h, 6, true);
+  const traco = claro[9 * w + 15], faixa = claro[3 * w + 15], bloco = claro[3 * w + 50];
+  assert.ok(traco < 60, `o traço claro tem de sair escuro (saiu ${traco})`);
+  assert.ok(faixa > 170 && bloco > 170, `fundo escuro e fundo claro saem os dois claros (${faixa}, ${bloco})`);
+  // Sem `claro`, o contrário: realça o que é mais ESCURO que a vizinhança.
+  const escuro = S.realcarLocal(g, w, h, 6, false);
+  assert.ok(escuro[9 * w + 15] > 200, "no modo escuro o traço claro some no fundo");
+  // Imagem lisa não ganha textura.
+  const liso = S.realcarLocal(new Uint8Array(w * h).fill(120), w, h, 6, true);
+  assert.ok(liso.every((v) => v === 200));
+});
+
+test("plano das passadas: rodapé nos três tratamentos antes da carta inteira; Gundam começa pelo topo", () => {
+  const nomes = (jogo) => Array.from(S.planoDasPassadas(jogo), (p) => p[0]);
+  const padrao = nomes("");
+  assert.deepEqual(padrao.slice(0, 3), ["rodape", "rodape-claro", "rodape-escuro"]);
+  assert.ok(padrao.indexOf("carta") > padrao.indexOf("canto-topo"));
+  assert.equal(padrao.length, 8);
+  // Polaridade e escala variam: não há duas passadas iguais.
+  const chaves = Array.from(S.planoDasPassadas(""), (p) => p.slice(1).join("|"));
+  assert.equal(new Set(chaves).size, chaves.length);
+  // O Gundam imprime o código no ALTO: com o jogo sabido, o topo vem primeiro.
+  assert.deepEqual(nomes("gundam").slice(0, 2), ["canto-topo", "topo-claro"]);
+  assert.equal(nomes("gundam").length, 8);
+  // O laço: busca a cada passada com candidato novo, e para quando a foto confirma.
+  assert.match(scanSrc, /for \(const \[nome, fx, fy, fw, fh, largura, modo, origem\] of planoDasPassadas\(jogoSabido\(\)\)\) \{/);
+  assert.match(scanSrc, /if \(rr\.estado === "certo" \|\| rr\.estado === "semfoto"\) \{ r = rr; break; \}/);
+  assert.match(scanSrc, /if \(performance\.now\(\) - t0 > TETO_PASSADAS\) break;/);
+});
