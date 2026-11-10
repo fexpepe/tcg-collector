@@ -324,6 +324,23 @@
     // Endereço do set (ou da carta): é sempre a página de SET.
     document.documentElement.setAttribute("data-detail", "set");
   }
+  // Rota de CARTA (/games/<jogo>/<set>/<carta>, ou ?card= na tela do set),
+  // carimbada antes do primeiro paint (2026-11-10). Quem liga a página da
+  // carta é o detail.js (body.carta-pagina), que é defer: até ele rodar a
+  // tela pintava como SET, com o lugar reservado do trilho (235 px), e aí
+  // trocava pro esqueleto da carta, com o trilho descendo a tela inteira.
+  // Medido em produção: CLS de 0,23 no celular e 0,17 no desktop em toda
+  // página de carta, que é a maior parte dos endereços do site. Com o carimbo
+  // o CSS já esconde a tela do set (html[data-carta] no styles.css); o
+  // detail.js tira o atributo quando assume. É a mesma conta que ele faz
+  // (rotaDeCarta); se as duas divergirem, o pior caso é o de antes.
+  try {
+    var rotaSet = TELA_DO_SET.exec(location.pathname || "");
+    if ((rotaSet && rotaSet[1])
+      || ((rotaSet || document.documentElement.getAttribute("data-detail") === "set") && new URLSearchParams(location.search).get("card"))) {
+      document.documentElement.setAttribute("data-carta", "");
+    }
+  } catch (e) { /* URL estranha: o detail.js decide depois, como antes */ }
 
   // Modo manifest (produção): o deploy flipa esta flag pra true (sed em game.js).
   // No modo manifest, cards/indexes/pricing viram os arquivos .generated mesclados.

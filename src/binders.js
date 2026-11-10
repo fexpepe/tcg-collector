@@ -859,7 +859,12 @@
       : `<div class="binder-leaf is-blank">${editable
         ? `<button type="button" class="binder-leaf-add" data-page-add>${IC.plus}<span>${escapeHtml(t("binders.page.add"))}</span></button>`
         : ""}</div>`;
-    const colorStyle = binder.color ? `--binder-color:${escapeAttribute(binder.color)};` : "";
+    // safeColor (só #hex): no link compartilhado o binder é o jsonb de OUTRA
+    // pessoa, e o escapeAttribute sozinho deixava passar declaração de CSS
+    // ("x;position:fixed;inset:0;background:url(…)"). A cor de quem monta o
+    // binder vem de <input type="color">, sempre #rrggbb.
+    const cor = shared.safeColor(binder.color);
+    const colorStyle = cor ? `--binder-color:${cor};` : "";
     return `<div class="binder-spread${start + 1 < pages ? "" : " is-single"}" style="${colorStyle}--cols:${g.cols};--rows:${g.rows}">
       ${leafHtml(binder, start, cellHtml)}
       <div class="binder-spine" aria-hidden="true"><span></span><span></span><span></span></div>
@@ -2521,9 +2526,15 @@
   }
   // Mesmo fichário aberto do binder editável (folhas + lombada), um par
   // embaixo do outro — quem recebe o link rola o binder inteiro.
-  function sharedSpreadsHtml(binder) {
+  // Páginas do binder do LINK, com teto: o número vem do jsonb de outra pessoa,
+  // e `pages: 1e8` travava a aba de quem abrisse (um par de folhas por volta
+  // do laço). 400 é muito acima de qualquer binder de verdade.
+  function sharedPages(binder) {
     const per = slotCount(binder.grid);
-    const pages = Math.max(1, binder.pages || Math.ceil((binder.slots || []).length / per));
+    return Math.max(1, Math.min(Number(binder.pages) || Math.ceil((binder.slots || []).length / per) || 1, 400));
+  }
+  function sharedSpreadsHtml(binder) {
+    const pages = sharedPages(binder);
     const b = Object.assign({}, binder, { pages });
     let out = "";
     for (let p = 0; p < pages; p += 2) out += spreadHtml(b, p, (slot) => sharedSlotHtml(slot));
@@ -2550,7 +2561,8 @@
     const filled = binder.slots.filter((s) => s && !s.template).length;
     // Cabeçalho no molde do binder aberto (nome como título, faixa na cor) e o
     // convite pra criar o seu na ponta direita.
-    const lc = binder.color ? ` style="--lc:${escapeAttribute(binder.color)}"` : "";
+    const corDaFaixa = shared.safeColor(binder.color); // jsonb de outra pessoa: só #hex (ver spreadHtml)
+    const lc = corDaFaixa ? ` style="--lc:${corDaFaixa}"` : "";
     elements.list.innerHTML = `
       <div class="page-head dash-head lst-head binder-headbar binder-shared-head"${lc}>
         <div class="lst-head-text">
@@ -2561,8 +2573,7 @@
       </div>
       ${usaFichario() ? `<div class="card-grid is-binder binder-fichario" data-binder-fichario></div>` : sharedSpreadsHtml(binder)}`;
     if (usaFichario()) {
-      const per = slotCount(binder.grid);
-      mountFichario(Object.assign({}, binder, { pages: Math.max(1, binder.pages || Math.ceil(binder.slots.length / per)) }), (slot) => sharedSlotHtml(slot), 0);
+      mountFichario(Object.assign({}, binder, { pages: sharedPages(binder) }), (slot) => sharedSlotHtml(slot), 0);
     }
   }
 })();

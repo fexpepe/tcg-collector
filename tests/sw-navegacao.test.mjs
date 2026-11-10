@@ -180,6 +180,32 @@ test("troca de jogo na sessão ativa: nunca a cópia do jogo anterior", async ()
   assert.equal(await texto(await sw.nav(evento("/games/one-piece-carddass"))), "tela do one piece");
 });
 
+// O perfil público lê a entrada da collection.html, mas não grava nela
+// (2026-11-10): a borda devolve a casca com o <title> e o Open Graph da
+// pessoa, e a "Minha Coleção" aberta em seguida vinha com o nome do outro.
+test("perfil público: abre pela cópia da collection.html e NÃO a sobrescreve", async () => {
+  const sw = carrega({ hashed: true, build: "abc12345" });
+  const shell = await sw.sandbox.caches.open(sw.SHELL);
+  await shell.put("collection.html", html("minha coleção"));
+  sw.estado.fetch = async () => html("perfil da alice");
+  // Parado há tempo: a rede vem primeiro e responde o perfil, sem gravar.
+  const ev1 = evento("/users/alice");
+  assert.equal(await texto(await sw.nav(ev1)), "perfil da alice");
+  await Promise.all(ev1.pendentes);
+  assert.equal(await texto(await shell.match("collection.html")), "minha coleção");
+  // Sessão ativa: a cópia genérica na hora, e a rede por trás também não grava.
+  const ev2 = evento("/users/alice/vendas");
+  assert.equal(await texto(await sw.nav(ev2)), "minha coleção");
+  await Promise.all(ev2.pendentes);
+  assert.equal(await texto(await shell.match("collection.html")), "minha coleção");
+  // A coleção de quem navega segue sendo a dela, e segue se atualizando.
+  sw.estado.fetch = async () => html("minha coleção, nova");
+  const ev3 = evento("/collection");
+  assert.equal(await texto(await sw.nav(ev3)), "minha coleção");
+  await Promise.all(ev3.pendentes);
+  assert.equal(await texto(await shell.match("collection.html")), "minha coleção, nova");
+});
+
 test("precache (\"portfolio.html\") e navegação (/portfolio) caem na MESMA entrada", async () => {
   const sw = carrega({ hashed: true, build: "abc12345" });
   const shell = await sw.sandbox.caches.open(sw.SHELL);

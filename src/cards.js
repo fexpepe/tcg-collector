@@ -381,10 +381,21 @@
     });
   }
 
+  // Texto que conta como busca. UMA letra só não busca nada enquanto o catálogo
+  // inteiro não está em memória (2026-11-10): a borda só responde com 2+
+  // letras, então a letra sozinha caía no precisaDoCatalogo() e digitar "p" e
+  // parar 200 ms baixava o jogo INTEIRO, os 1.506 pedidos e 5,4 MB que a busca
+  // pela borda existe pra evitar (conferido em produção). É a régua do
+  // Explorar (2+ letras). Com o catálogo já em memória (dev, ou depois de um
+  // filtro de raridade), a letra filtra na hora, como sempre.
+  function textoDaBusca() {
+    const q = elements.search.value.trim();
+    return (q.length >= 2 || catalogPronto) ? q : "";
+  }
   // Só busca quando há texto na busca ou um filtro de set/raridade ativo. Sem
   // isso, a página fica "vazia" (placeholder do futuro "em alta").
   function isSearching() {
-    return !!(elements.search.value.trim() || elements.setFilter.value || elements.rarityFilter.value
+    return !!(textoDaBusca() || elements.setFilter.value || elements.rarityFilter.value
       || parsePrice(elements.priceMin) != null || parsePrice(elements.priceMax) != null);
   }
 

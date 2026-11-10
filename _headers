@@ -97,6 +97,49 @@
   Access-Control-Allow-Origin: *
   ! Link
 
+# Arquivos SOLTOS da raiz (2026-11-10): ícones, manifest, sw.js, robots e cia.
+# Ficaram de fora do `! Link` de 2026-10-08, que só cobriu /src, /styles,
+# /assets e /data, e seguiam levando o preload do CSS do bloco `/*`. O ícone
+# não muda de um deploy pro outro, então a borda só REVALIDA a cópia dela (304)
+# e segue servindo o header do deploy em que a guardou: medido em produção, o
+# /favicon.svg, o /icon.svg, o /icon-192.png e o /robots.txt apontavam, cada
+# um, pro núcleo de CSS de um build diferente, todos já fora do ar. O Chrome
+# segue `Link: preload` também na resposta de imagem (conferido), então quem
+# busca o favicon pede junto um CSS que responde 404, com prioridade de
+# folha de estilo, em toda página.
+# Um bloco por arquivo porque o _headers não casa "tudo que não é HTML". O
+# tests/headers-link.test.mjs barra arquivo novo na raiz sem o bloco dele.
+# A cópia que a borda JÁ guardou não se corrige com o deploy (o 304 não tira
+# header): precisa de uma purga do cache da zona, uma vez.
+/favicon.svg
+  ! Link
+/favicon.ico
+  ! Link
+/icon.svg
+  ! Link
+/icon-192.png
+  ! Link
+/icon-512.png
+  ! Link
+/apple-touch-icon.png
+  ! Link
+/og-image.png
+  ! Link
+/manifest.json
+  ! Link
+/sw.js
+  ! Link
+/robots.txt
+  ! Link
+/ads.txt
+  ! Link
+/93265e61594b47eb91a5e8ac8eea1175.txt
+  ! Link
+/sitemap*
+  ! Link
+/.well-known/*
+  ! Link
+
 # Catálogo (data/*): sem regra, caía no default do Pages (max-age=0,
 # must-revalidate) e toda revisita pagava uma requisição condicional por chunk —
 # 648 no Magic, 200 no Pokémon EN. 1h fresco + 1 dia servindo stale enquanto
@@ -122,6 +165,7 @@
 /lancamentos.ics
   Content-Type: text/calendar; charset=utf-8
   Cache-Control: public, max-age=3600
+  ! Link
 
 # IMAGENS espelhadas dentro de data/ (logos de set baixados pelos mirror-*.mjs
 # e os scans vintage). Vêm DEPOIS da regra /data/* de propósito: quando duas
@@ -163,3 +207,4 @@
 /speculation-rules.json
   Content-Type: application/speculationrules+json
   Cache-Control: public, max-age=3600
+  ! Link

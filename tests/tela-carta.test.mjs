@@ -23,7 +23,9 @@ test("o endereço da carta abre a carta como PÁGINA, sem o set por baixo", () =
   // A classe sai cedo (antes do catálogo) pra o set não piscar na tela...
   assert.ok(detail.includes('document.body.classList.add("carta-pagina");'));
   // ...e é ela que esconde o resto da tela do set.
-  assert.ok(css.includes("body.carta-pagina main > :not(#cardPreviewModal):not(.cs-more):not(.cs-esqueleto) { display: none; }"));
+  // (desde 2026-11-10 junto do html[data-carta], que o game.js carimba antes
+  // do primeiro paint: ver tests/cls-tela-set.test.mjs)
+  assert.ok(css.includes("body.carta-pagina main > :not(#cardPreviewModal):not(.cs-more):not(.cs-esqueleto),\nhtml[data-carta] main > :not(#cardPreviewModal):not(.cs-more):not(.cs-esqueleto) { display: none; }"));
   // Carta que não está no set, ou catálogo que não chegou: o set volta.
   assert.ok(detail.includes("saiDaPaginaDaCarta(); // a carta do endereço não está no set: mostra o set"));
   assert.ok(detail.includes("saiDaPaginaDaCarta(); // e o erro aparece no lugar do set"));

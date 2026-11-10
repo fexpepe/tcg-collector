@@ -26,11 +26,18 @@ import { buildSearch, buildPricesJson, idsComBase, LIMITE_COMPLETO } from "./_se
 const GAMES = new Set(["all", "pokemon", "lorcana", "onepiece", "magic", "fab", "gundam", "swu", "cyberpunk", "sorcery",
   "dbfw", "ygo", "digimon", "riftbound", "unionarena", "naruto", "hxh", "dbc", "dbz", "wow", "lotr", "harrypotter", "weiss", "mbc", "cdm", "jump"]);
 
+const Q_MAX = 200;
+
 export async function onRequestGet(context) {
   const { env, request, waitUntil } = context;
   const url = new URL(request.url);
   const game = String(url.searchParams.get("game") || "");
-  const q = String(url.searchParams.get("q") || "");
+  // Teto no texto (2026-11-10): o `q` entrava inteiro na montagem da consulta,
+  // que roda ANTES do cache de borda, e um pedido com 15 mil letras custava
+  // 700 ms de CPU, ia ao banco com um parâmetro desse tamanho e, voltando
+  // vazio, nunca era guardado: dava pra repetir à vontade. Nenhum nome de
+  // carta chega perto de 200 caracteres (o maior do Magic tem 141).
+  const q = String(url.searchParams.get("q") || "").slice(0, Q_MAX);
   const full = url.searchParams.get("full") === "1";
   const limit = Number(url.searchParams.get("limit")) || (full ? LIMITE_COMPLETO : 40);
   // &img=1 (lista de impressões do popup): acrescenta imagem (m) e data de

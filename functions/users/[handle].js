@@ -10,6 +10,7 @@
 // no _perfil.js desde 2026-09-27: o link de uma pasta de venda
 // ([handle]/vendas/[pasta].js) faz a MESMA leitura.
 import { normalizaHandle, buscaPerfil, notFound, setMeta, setText, setHref, remove, addNoindex, ogImagem } from "./_perfil.js";
+import { headDoGet } from "../_lib/borda.js";
 
 function moneyBR(v) {
   try { return "R$ " + Number(v).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
@@ -93,3 +94,10 @@ export async function onRequestGet(context) {
   }
   return rw.transform(shell);
 }
+
+// HEAD = o GET sem o corpo (2026-11-10). Sem isto o HEAD não chegava aqui e
+// caía no rewrite do _redirects (/users/* -> /collection, 200): perfil que
+// não existe respondia 200 no HEAD e 404 no GET (conferido em produção), e
+// verificador de link e robô que pergunta antes de baixar viam uma página
+// viva. Mesmo conserto do blog, do /set e do /card (headDoGet, _lib/borda.js).
+export const onRequestHead = headDoGet(onRequestGet);

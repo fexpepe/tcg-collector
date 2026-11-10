@@ -3102,9 +3102,10 @@
     }
     // Card de grupo (somente leitura): capa + nome + meta (+ estrelas/cor quando houver).
     function groupCard(gp, mode) {
-      const copies = gp.items.reduce((s, it) => s + (it.q || 1), 0);
-      const val = gp.items.reduce((s, it) => s + fromBRL(it.vbrl || 0) * (it.q || 1), 0);
-      const metaTxt = `${copies}${val > 0 ? `<span class="cm-val"> · ${escapeHtml(shared.formatMoney(shared.getCurrency(), val))}</span>` : ""}`;
+      // Number(): o item vem do perfil de OUTRA pessoa (ver sharedDashboardHtml).
+      const copies = gp.items.reduce((s, it) => s + (Number(it.q) || 1), 0);
+      const val = gp.items.reduce((s, it) => s + fromBRL(it.vbrl || 0) * (Number(it.q) || 1), 0);
+      const metaTxt = `${escapeHtml(String(copies))}${val > 0 ? `<span class="cm-val"> · ${escapeHtml(shared.formatMoney(shared.getCurrency(), val))}</span>` : ""}`;
       let cover = gp.cover ? gp.items.find((it) => it.id === gp.cover) : null;
       if (!cover) cover = gp.items.slice().sort((a, b) => (b.vbrl * b.q) - (a.vbrl * a.q))[0];
       const coverImg = cover ? shared.localizedImg(cover.img, { alt: "", fallback: cover.fb, loading: "lazy", thumb: true, sizes: shared.SIZES_CARD_TILE }) : `<span class="coll-card-empty">—</span>`;
@@ -3409,7 +3410,13 @@
   // PÚBLICO usa. O share anônimo (?s=) segue com os três cards antigos: lá não
   // há abas nem filtros, o resumo é a tela.
   function sharedDashboardHtml(items, total, profileNav, opts) {
-    const copies = items.reduce((s, it) => s + (it.q || 1), 0);
+    // Number() na quantidade (2026-11-10): estes itens são o jsonb livre que
+    // OUTRA pessoa gravou (shares.data / public_profiles.data, escritos direto
+    // pela API por qualquer conta). Com `q` texto, o `s + q` vira concatenação e
+    // o "total de cópias" saía como HTML dela no <dd> e nos cartões do resumo de
+    // quem abrisse o link ou o perfil. A CSP barra script, mas não a marcação
+    // (página falsa por cima, link pra fora). O valor também é escapado na saída.
+    const copies = items.reduce((s, it) => s + (Number(it.q) || 1), 0);
     const distinct = new Set(items.map((it) => it.id)).size;
     const sets = new Set(items.map((it) => it.s)).size;
 
@@ -3452,7 +3459,7 @@
       money: svg('<circle cx="12" cy="12" r="9"/><path d="M12 7.2v9.6M14.4 9.6c0-1-1.1-1.6-2.4-1.6s-2.4.6-2.4 1.6 1 1.5 2.4 1.9 2.5 1 2.5 2-1.1 1.7-2.5 1.7-2.5-.7-2.5-1.7"/>')
     };
     const stat = (icone, valor, rotulo, extra = "") =>
-      `<div${extra}><span class="dash-stat-ic">${icone}</span><span class="dash-stat-txt"><span class="dash-stat-val">${valor}</span><span class="dash-stat-label">${escapeHtml(rotulo)}</span></span></div>`;
+      `<div${extra}><span class="dash-stat-ic">${icone}</span><span class="dash-stat-txt"><span class="dash-stat-val">${escapeHtml(String(valor))}</span><span class="dash-stat-label">${escapeHtml(rotulo)}</span></span></div>`;
     // Monograma como avatar — mesmo padrão do .auth-avatar do header. Sem upload
     // de foto: não existe essa infraestrutura, e a inicial já identifica.
     const inicial = (profileNav && profileNav.name || "").trim().charAt(0).toUpperCase();
@@ -3473,7 +3480,7 @@
         </div>`
       : "";
     const o = opts || {};
-    const money = stat(IC.money, escapeHtml(total > 0 ? shared.formatMoney(shared.getCurrency(), total) : "—"), t("dash.value"), ' class="dash-stat-money"');
+    const money = stat(IC.money, total > 0 ? shared.formatMoney(shared.getCurrency(), total) : "—", t("dash.value"), ' class="dash-stat-money"'); // o stat() escapa
     // PERFIL PÚBLICO: o MESMO trilho de cartões do topo da Minha Coleção
     // (2026-09-20). Era um cartão-herói só, de ponta a ponta — o desenho que a
     // Coleção tinha ANTES de 2026-09-16, quando ela passou pro trilho
@@ -3485,7 +3492,7 @@
     // NÃO entram aqui: no trilho o cartão é estreito, e na Minha Coleção elas
     // moram na linha logo acima da grade — o perfil faz igual (ver swapHtml).
     if (o.hero) {
-      const conta = (rotulo, valor) => `<div><dt>${escapeHtml(rotulo)}</dt><dd>${valor}</dd></div>`;
+      const conta = (rotulo, valor) => `<div><dt>${escapeHtml(rotulo)}</dt><dd>${escapeHtml(String(valor))}</dd></div>`;
       return `<section class="collection-dashboard set-insights coll-insights" aria-label="${escapeAttribute(t("aria.sumCollection"))}">
         <div class="set-insights-rail">
           <article class="insight-card insight-hero coll-hero">
