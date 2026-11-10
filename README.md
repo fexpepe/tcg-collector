@@ -1133,6 +1133,17 @@ foto não sai do navegador; só o código lido vai pra busca. Plano, limites e a
 fases seguintes (hash perceptual pra vintage) em
 [docs/PLANO-SCANNER.md](docs/PLANO-SCANNER.md).
 
+Desde 2026-11-10 (fase 1.8 do plano): o resultado tem de **casar com o
+código** e o set tem de existir (índice de sets, montado dos manifests); a
+**foto confere toda leitura** — a que ela não confirma entra marcada
+"Conferir", e antes disso tenta os vizinhos do código (um dígito, uma letra do
+set); as passadas do OCR variam polaridade e escala e param quando a foto
+confirma; a carta é **achada no quadro** (`acharCarta`) e endireitada pra
+comparação; e, com o **set travado**, o scanner aprende as artes dele e
+reconhece a carta sem código nenhum (o cadeado sem carta lida abre um seletor
+de set). Jogo novo no catálogo tem de declarar o formato do código no
+`tests/scan-cobertura.test.mjs`, senão o CI quebra.
+
 Quando o código casa com mais de uma carta — o One Piece imprime o mesmo
 `EB01-006` na comum, na Alternate Art e na Manga; é assim em 30–54 % do
 catálogo de One Piece, Digimon, Gundam, DBFW, Union Arena e Yu-Gi-Oh —, a

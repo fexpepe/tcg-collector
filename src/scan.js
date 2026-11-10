@@ -1816,6 +1816,7 @@
 .scan-res-wl svg { width: 12px; height: 12px; }
 /* Leitura em DÚVIDA (2026-11-10): a foto não confirmou a carta que o código achou. Âmbar, como o "Conferir" da lista. */
 .scan-res.is-duvida { border-color: rgba(245,179,1,.8); }
+.scan-res-duv.is-so { margin-left: 0; }
 .scan-res-duv { margin-left: 8px; padding: 1px 8px; border: 1px solid rgba(245,179,1,.6); border-radius: 999px; font-size: 11.5px; font-weight: 800; color: #f5c542; vertical-align: 1px; }
 /* Painel do som: liga/desliga, as duas faixas na moeda do site e um botão pra ouvir cada aviso. */
 .scan-som-liga { display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 4px; color: #f3f5f7; font-size: 15px; font-weight: 700; cursor: pointer; }
@@ -2993,7 +2994,7 @@
       // borda âmbar e o selo "Conferir", o mesmo da lista.
       resCard.classList.toggle("is-boa", !emDuvida && (sinal === 2 || sinal === "wl"));
       resCard.classList.toggle("is-duvida", emDuvida);
-      const wl = emDuvida ? `<span class="scan-res-duv">${escapeHtml(t("scan.check"))}</span>`
+      const wl = emDuvida ? `<span class="scan-res-duv${preco ? "" : " is-so"}">${escapeHtml(t("scan.check"))}</span>`
         : sinal === "wl" ? `<span class="scan-res-wl">${ICO.heart}${escapeHtml(t("scan.inWishlist"))}</span>` : "";
       resCard.innerHTML = `
         <button type="button" class="scan-res-open" data-scan-open>
@@ -3803,7 +3804,10 @@
     // laço só atrapalharia a dica de "Preparando o leitor").
     obterWorker(progresso).then(() => {
       motorPronto = true;
-      if (stream && !ocupado) pronto();
+      // Sem câmera (só a galeria), o "Preparando o leitor…" ficava na tela pra
+      // sempre: quem tira a dica de progresso é o pronto(), que só rodava
+      // com câmera.
+      if (!ocupado) { if (stream) pronto(); else dizer(t("scan.status.nocam")); }
       if (!tmAuto) tickAuto();
     }).catch(() => dizer(t("scan.error")));
   }
