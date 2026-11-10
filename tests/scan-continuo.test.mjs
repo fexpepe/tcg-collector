@@ -124,14 +124,14 @@ test("variante da sessão: padrão, foil/holo e reverse, com volta pra padrão",
 });
 
 test("o laço pausa com folha aberta, e a leitura automática sem código não abre nada", () => {
-  assert.match(scanSrc, /!folha\.hidden \|\| !folhaSom\.hidden \|\| !folhaLista\.hidden \|\| document\.hidden/);
+  assert.match(scanSrc, /!folha\.hidden \|\| !folhaSom\.hidden \|\| !folhaLista\.hidden \|\| !folhaSets\.hidden \|\| document\.hidden/);
   // Qualquer leitura desarma (a do toque também).
   assert.match(scanSrc, /async function ler\(fonte, rec, auto\) \{[\s\S]{0,300}?estAuto = \{ armado: false, parados: 0 \};/);
   // Sem código — ou só com código fraco, que a foto derrubou (2026-11-10) —
   // a leitura automática vira dica, não folha.
   assert.match(scanSrc, /if \(auto && !\(codigo && r\.forte\)\) \{ dicaFalha = t\("scan\.hint\.retry"\); return; \}/);
   // O resumo conta as leituras automáticas.
-  const m = /logEvento\("scan_done",\s*\{([\s\S]{0,480}?)\}\)/.exec(scanSrc);
+  const m = /logEvento\("scan_done",\s*\{([\s\S]{0,520}?)\}\)/.exec(scanSrc);
   assert.ok(m && /\bauto: funil\.auto/.test(m[1]), "scan_done sem auto");
 });
 

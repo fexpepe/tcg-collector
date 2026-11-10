@@ -602,6 +602,51 @@
     if (forte && (sim >= FOTO_NEGA || peso >= 3)) return "duvida";
     return "negado";
   }
+  // RECONHECIMENTO PELA ARTE, no set travado (2026-11-10). Com o set travado
+  // o scanner baixa as miniaturas dele uma vez e guarda a assinatura de cada
+  // carta; daí em diante a foto é comparada com o SET INTEIRO, sem ler código
+  // nenhum. É a fase 2 do plano (docs/PLANO-SCANNER.md) no recorte que cabe
+  // no aparelho: o set é o filtro, a assinatura decide. Cobre o que o código
+  // não cobre — o jogo que imprime só o número (Dragon Ball Z, LOTR,
+  // Carddass, HxH) ou nem isso (WoW, Sorcery) — e, quando a arte é
+  // inconfundível, dispensa o OCR: a leitura cai de ~2 s pra menos de meio.
+  //
+  // `sims[i]`: a semelhança da foto com a carta i do set (null = sem
+  // assinatura). Vale a mais parecida se passar da régua (a mesma do que
+  // entra pela foto) e tiver FOLGA sobre a melhor das que não empatam com
+  // ela. As que empatam (EMPATE_ARTE) são a mesma arte em outra versão —
+  // foil, carimbo, reimpressão no mesmo set — e vão junto: `claro` diz se a
+  // arte apontou UMA carta. null = a arte não decide.
+  const EMPATE_ARTE = 0.03;
+  function escolherPelaArte(sims) {
+    let i = -1;
+    sims.forEach((x, k) => { if (typeof x === "number" && (i < 0 || x > sims[i])) i = k; });
+    if (i < 0 || sims[i] < FOTO_CONFIRMA + FOLGA_REPARO) return null;
+    const empates = [], resto = [];
+    sims.forEach((x, k) => { if (typeof x === "number") (x >= sims[i] - EMPATE_ARTE ? empates : resto).push(k); });
+    const rival = resto.reduce((m, k) => Math.max(m, sims[k]), -1);
+    if (sims[i] - rival < MARGEM_REPARO) return null;
+    empates.sort((a, b) => sims[b] - sims[a] || a - b);
+    return { i, sim: sims[i], empates, claro: empates.length === 1 };
+  }
+  // Sets que casam com o que a pessoa digitou no seletor da trava: todas as
+  // palavras no nome ou no id, sem acento nem caixa. `jogo`: só os dele, se
+  // dado. Os do jogo da sessão e os que COMEÇAM pelo texto vêm antes.
+  function filtrarSets(sets, texto, jogo, sessao) {
+    const limpa = (x) => String(x || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    const termos = limpa(texto).split(/\s+/).filter(Boolean);
+    const nota = (st) => {
+      const alvo = `${limpa(st.name)} ${limpa(st.id)}`;
+      if (!termos.every((w) => alvo.indexOf(w) >= 0)) return -1;
+      return (st.game === sessao ? 2 : 0) + (termos.length && limpa(st.name).indexOf(termos[0]) === 0 ? 1 : 0);
+    };
+    return (sets || []).filter((st) => !jogo || st.game === jogo)
+      .map((st, k) => ({ st, n: nota(st), k }))
+      .filter((x) => x.n >= 0)
+      .sort((a, b) => b.n - a.n || a.k - b.k)
+      .slice(0, 40)
+      .map((x) => x.st);
+  }
   // Com o SET TRAVADO, o vocabulário é o do set: qualquer palavra do texto
   // lido que seja o NÚMERO de uma carta dele é candidata — é o que deixa ler
   // o jogo que imprime só o número (Dragon Ball Z "60", LOTR "15", HxH
@@ -651,9 +696,11 @@
   function montarIndice(pares) {
     const mapa = new Map();
     mapa.ids = {};
+    mapa.sets = []; // todos os sets, pro seletor da trava: { game, id, name, lang, n }
     pares.forEach(([g, m]) => {
       const sets = (m && m.sets) || [];
       mapa.ids[g] = sets.map((x) => String(x.id));
+      sets.forEach((x) => mapa.sets.push({ game: g, id: String(x.id), name: String(x.name || x.id), lang: x.language || "en", n: Number(x.count) || 0 }));
       sets.forEach((x) => {
         const k = normKey(x.id);
         if (!k) return;
@@ -1050,7 +1097,7 @@
   // compara em várias tentativas, e sem um teto no total uma rede que não
   // entrega miniatura seguraria o resultado por um prazo inteiro a cada uma.
   const PRAZO_FOTO = 2500, ORCAMENTO_FOTO = 4500;
-  const TETO_REFS = 800;
+  const TETO_REFS = 1200;
   const refs = new Map(); // 1ª URL da carta -> Promise<Float32Array|null>
   function assinaturaDaCarta(h, ate) {
     const urls = urlsDaCarta(h.card, h.game);
@@ -1416,7 +1463,7 @@
     const b = dg.busca;
     if (b) L.push(`achou ${b.codigo || "-"} -> ${b.n}${b.cartas && b.cartas.length ? ` · ${b.cartas.join(" | ")}` : ""}`);
     const f = dg.foto;
-    if (f) L.push(`foto ${f.mudou ? "mudou" : "manteve"}${f.claro ? " claro" : ""}${f.estado ? ` · ${f.estado}` : ""}${f.corrigido ? " corrigido" : ""}${f.negou ? " negou" : ""}${f.notas && f.notas.length ? ` · ${f.notas.map((x) => n(x, 2)).join(" ")}` : ""}`);
+    if (f) L.push(`foto ${f.mudou ? "mudou" : "manteve"}${f.claro ? " claro" : ""}${f.estado ? ` · ${f.estado}` : ""}${f.corrigido ? " corrigido" : ""}${f.arte ? " pela-arte" : ""}${f.negou ? " negou" : ""}${f.notas && f.notas.length ? ` · ${f.notas.map((x) => n(x, 2)).join(" ")}` : ""}`);
     (dg.reparos || []).forEach((r) => L.push(`reparo ${r || "-"}`));
     if (dg.erro) L.push(`erro ${dg.erro}`);
     if (typeof dg.ms === "number") L.push(`total ${n(dg.ms)}ms`);
@@ -1778,6 +1825,14 @@
 .scan-som-faixas .scan-field.is-erro { border-color: #f87171; }
 .scan-som-testes { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
 .scan-som-testes button { min-height: 44px; min-width: 0; padding: 0 6px; border: 1px solid #2d333f; border-radius: 9px; background: #1d212b; color: #f3f5f7; font: inherit; font-size: 12.5px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; }
+/* Seletor de set da trava (2026-11-10): travar sem ter lido carta nenhuma — o caminho do jogo que não imprime código. O campo é nome de set, não código: sem a caixa alta do campo de código. */
+.scan-sets-campo { flex: none; }
+.scan-sets-campo input { text-transform: none; font-weight: 700; }
+.scan-sets { display: flex; flex-direction: column; gap: 6px; }
+.scan-sets:empty { display: none; }
+.scan-set-op { min-height: 48px; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 2px; padding: 6px 12px; border: 1px solid #2d333f; border-radius: 10px; background: #1d212b; color: #f3f5f7; font: inherit; text-align: left; cursor: pointer; }
+.scan-set-op strong { max-width: 100%; font-size: 14px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.scan-set-op span { font-size: 12px; color: #9ba4b3; }
 .scan-vazio { margin: 0; padding: 0 4px; font-size: 13px; color: #9ba4b3; line-height: 1.5; }
 .scan-vazio[hidden] { display: none; }
 .scan-vazio a { color: var(--accent-ink, #ef4444); font-weight: 700; }
@@ -1909,7 +1964,9 @@
     return shared.localizedImg(src.url, { alt: "", fallback: src.fallback, loading: "lazy", thumb: true });
   }
 
-  function abrir() {
+  // `opc.set` ({ game, setId, set, lang }): já abre travado nesse set — quem
+  // chama de dentro de um set sabe qual é.
+  function abrir(opc) {
     if (document.querySelector(".scan-modal")) return;
     if (!document.getElementById("scanStyle")) {
       const st = document.createElement("style");
@@ -1945,7 +2002,7 @@
     // leitura — quantas ficaram em dúvida (a foto não confirmou a carta),
     // quantas a foto corrigiu trocando o código por um vizinho, e em quantas
     // ela derrubou um resultado que a busca tinha dado.
-    const funil = { n: 0, lido: 0, achou: 0, t0: Date.now(), t1: 0, amb: 0, vis: 0, troca: 0, dig: 0, auto: 0, luz: 0, luzOk: 0, duv: 0, corr: 0, neg: 0 };
+    const funil = { n: 0, lido: 0, achou: 0, t0: Date.now(), t1: 0, amb: 0, vis: 0, troca: 0, dig: 0, auto: 0, luz: 0, luzOk: 0, duv: 0, corr: 0, neg: 0, arte: 0 };
     let emDuvida = false; // o resultado na tela não foi confirmado pela foto
     let trocaConta = false; // a próxima troca de candidato ainda conta como erro desta leitura
     shared.logEvento("scan_open");
@@ -2012,6 +2069,14 @@
           <p class="scan-priv">${escapeHtml(t("scan.diag.private"))}</p>
         </details>
         <p class="scan-priv">${escapeHtml(t("scan.privacy"))}</p>
+      </div>
+      <div class="scan-sheet" data-scan-sets hidden>
+        <div class="scan-sheet-handle"></div>
+        <div class="scan-sheet-head"><strong>${escapeHtml(t("scan.sets.title"))}</strong></div>
+        <label class="scan-field scan-sets-campo"><span>${escapeHtml(t("scan.sets.label"))}</span><input type="text" data-scan-sets-input autocomplete="off" spellcheck="false" placeholder="${escapeAttribute(t("scan.sets.search"))}"></label>
+        <div class="scan-sets" data-scan-sets-lista></div>
+        <p class="scan-vazio" data-scan-sets-vazio hidden>${escapeHtml(t("scan.sets.empty"))}</p>
+        <p class="scan-priv">${escapeHtml(t("scan.sets.hint"))}</p>
       </div>
       <div class="scan-sheet" data-scan-som-folha hidden>
         <div class="scan-sheet-handle"></div>
@@ -2089,7 +2154,8 @@
     let autoLigado = (() => { try { return localStorage.getItem(CHAVE_AUTO) !== "0"; } catch (e) { return true; } })();
     let dicaQuadro = "", dicaFalha = "";
     const dizer = (msg) => { status.textContent = msg; dica.hidden = !msg; };
-    const pronto = () => dizer(dicaQuadro || (jaLeu ? (dicaFalha || sugestao) : t(autoLigado ? "scan.status.readyAuto" : "scan.status.ready")));
+    let dicaArte = ""; // o set travado aprendendo as artes (progresso) ou pronto
+    const pronto = () => dizer(dicaQuadro || dicaArte || (jaLeu ? (dicaFalha || sugestao) : t(autoLigado ? "scan.status.readyAuto" : "scan.status.ready")));
     // Status de uma leitura em curso vai pro cartão "lendo" (miniatura da foto
     // + texto), que ocupa o lugar do resultado; o toast fica pra busca manual.
     let lendoTexto = null;
@@ -2117,13 +2183,13 @@
     let recentes = [];
     const btnTrava = $("[data-scan-trava]");
     const rotuloSet = $("[data-scan-set]");
-    const chaveSet = (h) => `${h.game}|${h.card.setId || h.card.set || ""}|${h.card.language || ""}`;
+    const chaveSet = (h) => `${h.game}|${h.card.setId || h.card.set || ""}|${h.card.language || "en"}`;
     const nomeSet = (card) => card.set || card.setId || "";
     // Cartas do set, direto do chunk dele (o mesmo que a paleta baixa pra
     // busca por código): o manifest do jogo diz o arquivo. Em dev (sem
     // manifest), o catálogo inteiro do jogo da sessão já está na memória.
     async function cartasDoSet(tr) {
-      const doSet = (x) => (tr.setId ? x.setId === tr.setId : x.set === tr.set) && (x.language || "") === tr.lang;
+      const doSet = (x) => (tr.setId ? x.setId === tr.setId : x.set === tr.set) && (x.language || "en") === (tr.lang || "en");
       if (sessao === tr.game && Array.isArray(window.TCG_CARDS) && window.TCG_CARDS.length) return window.TCG_CARDS.filter(doSet);
       const manifest = await manifestDe(tr.game);
       const sets = ((manifest && manifest.sets) || []).filter((s) => String(s.id) === (tr.setId || tr.set) && (!s.language || s.language === (tr.lang || s.language)));
@@ -2145,20 +2211,119 @@
       rotuloSet.textContent = on ? trava.nome : "";
       if (!folha.hidden) pintarFolha(); // o cadeado da folha espelha a trava
     }
-    function travar(h) {
-      const c = h.card;
-      const tr = { game: h.game, setId: c.setId || "", set: c.set || "", lang: c.language || "", nome: nomeSet(c), chave: chaveSet(h) };
+    // `def`: { game, setId, set, lang } — de uma carta lida (travar) ou do
+    // seletor de set (o jogo que não imprime código não tem "carta lida").
+    function travarEm(def) {
+      const tr = {
+        game: def.game, setId: def.setId || "", set: def.set || "", lang: def.lang || "en",
+        nome: def.set || def.setId || "", chave: `${def.game}|${def.setId || def.set || ""}|${def.lang || "en"}`
+      };
       tr.cartas = cartasDoSet(tr).catch(() => null);
       trava = tr;
       sugestao = "";
       pintarTrava();
-      if (jaLeu && !ocupado) pronto();
+      aprenderSet(tr);
+      if (!ocupado) pronto();
+    }
+    function travar(h) {
+      const c = h.card;
+      travarEm({ game: h.game, setId: c.setId || "", set: c.set || "", lang: c.language || "en" });
     }
     function destravar() {
       trava = null;
       recentes = [];
+      dicaArte = "";
+      clearTimeout(tmArte);
       pintarTrava();
+      if (!ocupado) pronto();
     }
+    // APRENDER AS ARTES do set travado: a assinatura da miniatura de cada
+    // carta, seis de cada vez, enquanto a pessoa já vai lendo pelo código. O
+    // que desce são as miniaturas que a página do set já mostraria (~20 KB
+    // cada); com a economia de dados do aparelho ligada, não desce nada e o
+    // set travado segue só pelo código. Para se a trava mudar ou o scanner
+    // fechar.
+    let tmArte = 0;
+    function pintarArte(tr, fim) {
+      if (trava !== tr) return;
+      clearTimeout(tmArte);
+      const a = tr.arte;
+      if (!fim) dicaArte = t("scan.art.learning", { set: tr.nome, n: a.prontas, total: a.total });
+      else if (a.sigs.length >= 2) {
+        dicaArte = t("scan.art.ready", { set: tr.nome });
+        tmArte = setTimeout(() => { dicaArte = ""; if (!ocupado) pronto(); }, 4000);
+      } else dicaArte = "";
+      if (!ocupado) pronto();
+    }
+    function aprenderSet(tr) {
+      tr.arte = { total: 0, prontas: 0, sigs: [], fim: false };
+      if (navigator.connection && navigator.connection.saveData) { tr.arte.fim = true; return; }
+      tr.cartas.then(async (cartas) => {
+        if (!cartas || trava !== tr) { tr.arte.fim = true; return; }
+        tr.arte.total = cartas.length;
+        let i = 0;
+        const fila = async () => {
+          while (i < cartas.length && trava === tr && wrap.isConnected) {
+            const card = cartas[i++];
+            let sig = null;
+            try { sig = await assinaturaDaCarta({ card, game: tr.game }, Date.now() + 20000); } catch (e) { sig = null; }
+            tr.arte.prontas += 1;
+            if (sig) tr.arte.sigs.push({ card, sig });
+            if (tr.arte.prontas % 6 === 0) pintarArte(tr, false);
+          }
+        };
+        await Promise.all([fila(), fila(), fila(), fila(), fila(), fila()]);
+        tr.arte.fim = true;
+        pintarArte(tr, true);
+      });
+    }
+    // A foto contra o SET INTEIRO (escolherPelaArte). Só com o set quase todo
+    // aprendido: com metade das cartas, a que falta pode ser a da foto, e a
+    // "mais parecida" seria outra. Devolve o que o `entregar` espera, ou null.
+    function pelaArteDoSet(tr, fotos) {
+      const a = tr && tr.arte;
+      if (!a || !fotos.length || a.sigs.length < 2 || a.prontas < a.total * 0.9) return null;
+      const sims = a.sigs.map((x) => {
+        let m = -1;
+        for (const f of fotos) { const v = semelhanca(f, x.sig); if (v > m) m = v; }
+        return m;
+      });
+      const e = escolherPelaArte(sims);
+      if (!e) return null;
+      const quais = e.empates.slice(0, 8);
+      const achados = quais.map((k) => ({ card: a.sigs[k].card, game: tr.game, exato: true }));
+      return {
+        codigo: achados[0].card.number || "", achados, sim: e.sim, estado: "certo", forte: true, arte: true, negou: false,
+        foto: { mudou: false, claro: e.claro, melhor: e.sim, notas: quais.map((k) => sims[k]) }
+      };
+    }
+    // ── Seletor de set da trava ──────────────────────────────────────────────
+    // O cadeado sem carta lida abre a lista de sets (do índice que a busca já
+    // baixou): é como se trava um set do jogo que não imprime código, onde
+    // não há "primeira carta lida" pra travar por ela.
+    const folhaSets = $("[data-scan-sets]");
+    const inSets = $("[data-scan-sets-input]");
+    let setsNaTela = [];
+    function pintarSets() {
+      setsNaTela = filtrarSets(indice ? indice.sets : [], inSets.value, selJogo.value, sessao);
+      $("[data-scan-sets-lista]").innerHTML = setsNaTela.map((st, i) => `<button type="button" class="scan-set-op" data-scan-set-op="${i}">
+          <strong>${escapeHtml(st.name)}</strong>
+          <span>${escapeHtml(shared.dotJoin(shared.gameLabel(st.game), st.lang && st.lang !== "en" ? st.lang.toUpperCase() : "", st.n ? String(st.n) : ""))}</span>
+        </button>`).join("");
+      $("[data-scan-sets-vazio]").hidden = setsNaTela.length > 0;
+    }
+    function abrirSets() {
+      folha.hidden = true;
+      folhaSom.hidden = true;
+      folhaLista.hidden = true;
+      inSets.value = "";
+      pintarSets();
+      folhaSets.hidden = false;
+      atualizarFundo();
+      try { inSets.focus(); } catch (e) { /* teclado não abriu */ }
+    }
+    function fecharSets() { folhaSets.hidden = true; atualizarFundo(); }
+    inSets.addEventListener("input", pintarSets);
     // ── Som por faixa de preço ───────────────────────────────────────────────
     // Configuração do APARELHO (localStorage, conveniência de quem usa; sem ela
     // vale o padrão): liga/desliga e as duas faixas, por moeda.
@@ -2190,6 +2355,7 @@
       $("[data-scan-som-titulo]").textContent = simbolo ? `${t("scan.sound")} · ${simbolo}` : t("scan.sound");
       folha.hidden = true;
       folhaLista.hidden = true;
+      folhaSets.hidden = true;
       folhaSom.hidden = false;
       atualizarFundo();
       contextoAudio(); // o toque que abriu o painel libera o áudio no Safari
@@ -2361,10 +2527,11 @@
       btnListaAdd.textContent = falta || !n ? t("scan.listAdd", { n: falta }) : t("scan.listAllAdded");
       desarmarLimpar();
     }
-    const atualizarFundo = () => { fundo.hidden = folha.hidden && folhaSom.hidden && folhaLista.hidden; };
+    const atualizarFundo = () => { fundo.hidden = folha.hidden && folhaSom.hidden && folhaLista.hidden && folhaSets.hidden; };
     function abrirLista() {
       folha.hidden = true;
       folhaSom.hidden = true;
+      folhaSets.hidden = true;
       pintarLista();
       $("[data-scan-lista-col]").hidden = !(lote > 0);
       folhaLista.hidden = false;
@@ -2482,7 +2649,7 @@
       tmAuto = 0;
       if (!wrap.isConnected) return;
       const pausado = !motorPronto || !stream || !video.videoWidth || ocupado || disparando
-        || !folha.hidden || !folhaSom.hidden || !folhaLista.hidden || document.hidden;
+        || !folha.hidden || !folhaSom.hidden || !folhaLista.hidden || !folhaSets.hidden || document.hidden;
       if (!pausado) {
         try {
           const rec = recorteDaGuia(video, wrap, guia);
@@ -2720,7 +2887,7 @@
         ms: Math.max(0, Date.now() - funil.t0), t1: funil.t1 || 0,
         amb: funil.amb, vis: funil.vis, troca: funil.troca, dig: funil.dig, auto: funil.auto,
         luz: funil.luz, luzOk: funil.luzOk,
-        duv: funil.duv, corr: funil.corr, neg: funil.neg
+        duv: funil.duv, corr: funil.corr, neg: funil.neg, arte: funil.arte
       });
       clearTimeout(tmAuto);
       clearTimeout(tmLimpar);
@@ -2736,7 +2903,7 @@
     }
     const tecla = (ev) => {
       if (ev.key !== "Escape") return;
-      if (!folhaLista.hidden) fecharLista(); else if (!folhaSom.hidden) fecharSom(); else if (!folha.hidden) fecharFolha(); else fechar();
+      if (!folhaSets.hidden) fecharSets(); else if (!folhaLista.hidden) fecharLista(); else if (!folhaSom.hidden) fecharSom(); else if (!folha.hidden) fecharFolha(); else fechar();
     };
     document.addEventListener("keydown", tecla);
 
@@ -2895,6 +3062,7 @@
       pintarFolha();
       folhaSom.hidden = true;
       folhaLista.hidden = true;
+      folhaSets.hidden = true;
       folha.hidden = false;
       atualizarFundo();
       if (!resultados.length && !semFoco) { try { input.focus(); } catch (e) { /* teclado não abriu */ } }
@@ -2919,6 +3087,7 @@
       if (duvida) funil.duv += 1;               // a foto não confirmou: foi pra conferir
       if (r.corrigido) funil.corr += 1;         // a foto trocou o código lido por um vizinho
       if (r.negou) funil.neg += 1;              // a foto derrubou um resultado da busca
+      if (r.arte) funil.arte += 1;              // achada pela arte do set travado, sem código
       if (captura && captura.ruim) {            // a foto escolhida tinha pouca luz ou reflexo
         funil.luz += 1;
         if (achados.length) funil.luzOk += 1;
@@ -3347,7 +3516,14 @@
         let cands = [], deteccao = detectarJogo("", [], sessao, {}, indice), r = null;
         const origens = () => cands.reduce((o, c) => { o[c.codigo] = c.origem; return o; }, {});
         const orfaos = () => orfaosDoIndice(juntar(leituras), indice);
-        for (const [nome, fx, fy, fw, fh, largura, modo, origem] of planoDasPassadas(jogoSabido())) {
+        // SET TRAVADO E APRENDIDO: a foto contra as artes do set, antes de
+        // qualquer OCR. Apontou UMA carta, acabou (é a leitura de meio
+        // segundo); apontou a arte mas não a versão (foil, reimpressão no
+        // mesmo set), o OCR ainda roda pra o código separar, e a arte fica de
+        // reserva; não apontou nada, segue pelo código, como antes.
+        const pelaArte = trava ? pelaArteDoSet(trava, fotos) : null;
+        if (pelaArte && pelaArte.foto.claro) r = pelaArte;
+        for (const [nome, fx, fy, fw, fh, largura, modo, origem] of (r ? [] : planoDasPassadas(jogoSabido()))) {
           cands = await passo(recorte(fonte, rec, fx, fy, fw, fh, largura, modo), origem, nome);
           deteccao = detectarJogo(texto, cands.map((c) => c.codigo), sessao, origens(), indice);
           // Só vale buscar de novo se a passada trouxe candidato que ainda
@@ -3383,10 +3559,13 @@
         // gravaria a errada. O quadro congelado ainda está vivo aqui. Nada
         // confirmado nas passadas: a busca completa, com os vizinhos.
         if (!r) r = await procurarComFoto(cands, orfaos(), fotos, deteccao, texto, { memo });
+        // O código não fechou e a arte tinha apontado a carta: vale a arte,
+        // com as versões pra conferir.
+        if (pelaArte && r.estado !== "certo") r = pelaArte;
         if (dg) {
           Object.assign(dg, {
             busca: { codigo: r.codigo, n: r.achados.length, cartas: r.achados.slice(0, 3).map((h) => h.card.name) },
-            foto: r.foto ? Object.assign({ estado: r.estado, corrigido: !!r.corrigido }, r.foto) : (r.achados.length || r.negou ? { estado: r.estado, negou: !!r.negou } : null),
+            foto: r.foto ? Object.assign({ estado: r.estado, corrigido: !!r.corrigido, arte: !!r.arte }, r.foto) : (r.achados.length || r.negou ? { estado: r.estado, negou: !!r.negou } : null),
             ms: performance.now() - t0
           });
         }
@@ -3526,7 +3705,7 @@
       const copiar = ev.target.closest("[data-scan-diag-copiar]");
       if (copiar) { copiarDiag(copiar); return; }
       if (ev.target.closest("[data-scan-backdrop]") || ev.target.closest(".scan-sheet-handle")) {
-        if (!folhaLista.hidden) fecharLista(); else if (!folhaSom.hidden) fecharSom(); else fecharFolha();
+        if (!folhaSets.hidden) fecharSets(); else if (!folhaLista.hidden) fecharLista(); else if (!folhaSom.hidden) fecharSom(); else fecharFolha();
         return;
       }
       const qtd = ev.target.closest("[data-scan-mais], [data-scan-menos]");
@@ -3568,7 +3747,15 @@
       if (ev.target.closest("[data-scan-trava]")) {
         if (trava) destravar();
         else if (resultados[primario]) travar(resultados[primario]);
-        else dizer(t("scan.lockHint"));
+        // Sem carta lida: a lista de sets. Sem índice (dev, rede fora), só a dica.
+        else indiceDeSets().then((m) => { indice = m; if (m.sets && m.sets.length) abrirSets(); else dizer(t("scan.lockHint")); });
+        return;
+      }
+      const op = ev.target.closest("[data-scan-set-op]");
+      if (op) {
+        const st = setsNaTela[Number(op.dataset.scanSetOp)];
+        fecharSets();
+        if (st) travarEm({ game: st.game, setId: st.id, set: st.name, lang: st.lang });
         return;
       }
       if (ev.target.closest("[data-scan-trava-folha]")) {
@@ -3609,6 +3796,7 @@
     pintarAuto();
     restaurarLista();
     abrirCamera();
+    if (opc && opc.set && opc.set.game) travarEm(opc.set);
     // Aquece o motor enquanto a pessoa enquadra: na primeira vez é o download
     // dos ~3,5 MB, que assim acontece ANTES do toque no disparador.
     // A leitura automática começa quando o motor está pronto (antes disso o
@@ -3624,7 +3812,7 @@
     abrir, extrair, extrairCodigos, juntar, soDigitos, detectarJogo,
     integral, assinatura, semelhanca, assinaturasDoQuadro, ordemPelaFoto,
     numeroDe, noSet,
-    casaCodigo, chaveDoSet, filtrarPorIndice, orfaosDoIndice, vizinhosDoNumero, vizinhosDoSet, estadoDaFoto, cartasPelasPalavras, montarIndice,
+    casaCodigo, chaveDoSet, filtrarPorIndice, orfaosDoIndice, escolherPelaArte, filtrarSets, vizinhosDoNumero, vizinhosDoSet, estadoDaFoto, cartasPelasPalavras, montarIndice,
     faixaDePreco, configSom, SONS, VIBRA,
     medirQuadro, passoAuto, dicaDoQuadro, varianteDe, AUTO,
     cinzaDe, nitidez, relatorio,
