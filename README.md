@@ -62,7 +62,7 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 | `dbz` | Dragon Ball Z CCG | Score 2000–2006: o CCG das 11 sagas, o GT TCG e o relançamento de 2005, com subsets e promos; galerias do retrodbzccg.com, nomes faltantes do kizmt/dbz-ccg-data e lidos no scan (snapshot `data/vintage/dbz-retro.json`) | sem preço |
 | `harrypotter` | Harry Potter TCG | Wizards of the Coast 2001–2002: hpjson (GitHub) + imagens do accio.cards; premium, decks e promos = cartas próprias | sem preço |
 | `mbc` | Miracle Battle Carddass | Bandai 2009–2015, o crossover da Jump: sete séries (Dragon Ball Kai, One Piece, Toriko, Hunter × Hunter, Naruto Shippuden, Kuroko, J-Heroes), uma seção por série; tcg-db (snapshot `data/vintage/miracle-battle.json`). Até 2026-10-01 eram linhas do One Piece, do Naruto e do HxH (ids `op-mb-`/`nrt-mb-`/`hxh-mb-` mantidos; `src/migra-mbc.js` leva a coleção de quem marcou) | sem preço |
-| `cdm` | Carddass Masters | Bandai 1996–2009, a linha de cartas de coleção de várias IPs, uma seção por IP. Hoje só o HUNTER×HUNTER (2000–2001): número e nome pela lista impressa no verso das cartas (`scripts/data/carddass-masters-hxh.json`), scans da Hunterpedia (snapshot `data/vintage/carddass-masters-hxh.json`) | sem preço |
+| `cdm` | Carddass Masters | Bandai 1996–2009, a linha de cartas de coleção de várias IPs, uma seção por IP. HUNTER×HUNTER (2000–2001): número e nome pela lista impressa no verso das cartas (`scripts/data/carddass-masters-hxh.json`), scans da Hunterpedia (snapshot `data/vintage/carddass-masters-hxh.json`). 新世紀エヴァンゲリオン (1996–1997): listas de um colecionador (`scripts/data/carddass-masters-eva.json`), scans do animecollection.fr (snapshot `data/vintage/carddass-masters-eva.json`) | sem preço |
 | `jump` | JUMP | curadoria versionada em `data/jump/curated/` | — |
 
 **Linhas** (`GAME_LINES` em [src/shared.js](src/shared.js)): um jogo pode ter
@@ -164,7 +164,8 @@ dezenas de IPs (Gundam, Evangelion, Cowboy Bebop, Hunter × Hunter, One Piece,
 Inuyasha, Bleach…), então é jogo próprio, no molde do `mbc`, e não seção do
 jogo de cada marca (decisão de 2026-11-09): cada edição de uma IP é um set, e
 a página de Sets tem uma seção por IP (`groupCdmSets`), as IPs na ordem do
-primeiro lançamento. Hoje só o HUNTER×HUNTER tem fonte carta a carta.
+primeiro lançamento. Têm fonte carta a carta o HUNTER×HUNTER e o
+新世紀エヴァンゲリオン.
 
 - **IP nova** entra como mais um bloco no `IPS` do sync (fonte e snapshot
   próprios, `data/vintage/carddass-masters-<ip>.json`), uma chave
@@ -183,6 +184,30 @@ primeiro lançamento. Hoje só o HUNTER×HUNTER tem fonte carta a carta.
   do R2 guarda pela URL de origem sem a query do wsrv.nl, e um recorte por
   parâmetro do wsrv sumiria lá. As cartas de episódio vêm deitadas no scan.
 - **Datas só com o ano** ("2000"): a tela mostra só o ano, sem mês inventado.
+- **Evangelion (1996–1997), o que entrou**: 第壱集 e 第弐集 (172 cada) e os
+  dois Wide dos filmes (シト新生 e Air/まごころを、君に, 132 cada, carta larga
+  2:1). Número e nome em japonês das listas de um colecionador de 1998
+  (fukumitu, `www2.nsknet.or.jp`), transcritas em
+  `scripts/data/carddass-masters-eva.json`; as 10 cartas do Air que ele não
+  tinha foram lidas no scan (`"fonte": "scan"`). Mês de lançamento e subsets:
+  エヴァンゲリオンカードのすべて (`www2.hp-ez.com/hp/evacard`).
+- **Evangelion, inglês**: personagem pelo nome corrente (wiki do EvaGeeks);
+  EVA, anjo e cena como a Bandai imprimiu na frente da carta ("EVA-01", "First
+  Angel Adam", "EVA-Series", "Black Moon"); episódio pelo título oficial em
+  inglês. O que é tradução nossa está marcado no arquivo.
+- **Evangelion, imagem**: scan da frente do animecollection.fr (436 cartas; a
+  第弐集 não está lá e entra sem imagem). O site só responde em http, e o
+  wsrv.nl busca e serve em https. **Todo scan traz a marca d'água do site**
+  (aceito em 2026-11-10 até termos imagem própria): `assets/cards/cdm/<id>.webp`
+  substitui o scan carta a carta, sem mexer no sync.
+- **Número do Wide** leva o bloco impresso: `DEATH-12`, `REBIRTH-7` e, no
+  Air, `26-07` (第26話 7, com dois dígitos: a tela desempata o número por
+  texto, e `26-7` cairia depois de `26-10`). Ids: `cdm-eva-w1-death-12`,
+  `cdm-eva-w2-26-07`.
+- **Ordem na tela**: a grade ordena pelo primeiro número e intercala os
+  blocos (CH1, ED1, EP1…), como nos sets do Naruto e do Hyper Battle. Agrupar
+  por bloco é mudança no `compareCardNumbers` (shared.js), que mexe em todos
+  os jogos: fora do escopo de uma IP nova.
 
 ### Dragon Ball Carddass (`dbc`)
 

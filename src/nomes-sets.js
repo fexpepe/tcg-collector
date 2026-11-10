@@ -179,6 +179,12 @@
     "cdm-hxh-pe": "Hunter × Hunter Premium Edition",
     "cdm-hxh-p2": "Hunter × Hunter Part 2",
     "cdm-hxh-vd": "Hunter × Hunter VHS purchase bonus card",
+    // Evangelion: "Vol." é tradução nossa de 第壱集/第弐集; os Wide levam o
+    // título em inglês de cada filme (Death & Rebirth, The End of Evangelion).
+    "cdm-eva-p1": "Neon Genesis Evangelion Vol. 1",
+    "cdm-eva-p2": "Neon Genesis Evangelion Vol. 2",
+    "cdm-eva-w1": "Neon Genesis Evangelion Wide — Death & Rebirth",
+    "cdm-eva-w2": "Neon Genesis Evangelion Wide — The End of Evangelion",
     // ---- Dragon Ball Carddass (sync-dbc-carddass.mjs): as 31 partes do Hondan,
     // inclusive as que o 80storage ainda não publicou (o sync pega sozinho quando
     // sair). Super Battle, Visual Adventure e Super Barcode Wars ficam de fora de

@@ -234,11 +234,21 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   o `nrts` do tcg-db (NARUTO 疾風伝 カードゲーム).
 - **Carddass Masters (`cdm`)**: jogo próprio desde 2026-11-09, uma seção por
   IP. Entrou o HUNTER×HUNTER completo (Partes 1 e 2 pela カードリスト do verso,
-  Premium Edition e o brinde VD3; 299 cartas, todas com scan da Hunterpedia).
-  Faltam: (1) as outras ~45 edições (Gundam, Evangelion, Cowboy Bebop, One
+  Premium Edition e o brinde VD3; 299 cartas, todas com scan da Hunterpedia)
+  e, em 2026-11-10, o Evangelion de 1996–1997 (第壱集, 第弐集 e os dois Wide
+  dos filmes; 608 cartas, 436 com scan do animecollection.fr, com a marca
+  d'água do site). Faltam: (1) as outras edições (Gundam, Cowboy Bebop, One
   Piece, Inuyasha, Bleach…, 1996–2009), sem fonte carta a carta achada
-  (a Final Fantasy Wiki tem FF7 e FF8 com frente e verso, a próxima IP
-  candidata); (2) no HxH, o último kanji do nome da Parte 2 nº 44
+  (a Final Fantasy Wiki tem FF7 e FF8 com frente e verso; o
+  animecollection.fr tem scan numerado, sem nome, de Fullmetal Alchemist,
+  Ghost in the Shell, Gunbuster, Lupin III, Nadia, Slam Dunk, Kochikame,
+  Nuku Nuku, Steamboy, Gundam Chronicle e Saint Seiya G Crusade, cobertura
+  não medida); (1b) no Evangelion: imagem da 第弐集, imagem própria no lugar
+  dos scans com marca d'água, a 第参集 (1998), a 第四集 (2003) e as do
+  新劇場版 (序, 破), sem lista carta a carta; as de pachinko (CR, 2008–2010)
+  e a 破 第2章 (2011) têm scan numerado no animecollection.fr, falta o nome
+  das cartas; o Carddass comum de 1996–97 (não é Masters) pede linha ou jogo
+  próprio; (2) no HxH, o último kanji do nome da Parte 2 nº 44
   (千耳会斡旋…, ilegível nos scans: fica sem `nameJp`), os outros brindes de
   VHS (VD1, VD2…), o mês dos três sets (só o ano) e as cartas de episódio,
   que vêm deitadas no scan e aparecem giradas.
