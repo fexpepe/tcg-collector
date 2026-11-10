@@ -63,6 +63,7 @@
     ["dragon-ball-fusion-world", "dbfw"], ["digimon-card-game", "digimon"], ["union-arena", "unionarena"],
     ["cyberpunk-tcg", "cyberpunk"], ["sorcery-contested-realm", "sorcery"], ["naruto-card-game", "naruto", "nrt-ncg", "nrt-ncg-"],
     ["weiss-schwarz", "weiss"],
+    ["gundam-carddass", "gundam", "gcd", "gcd-"],
     ["dragon-ball-carddass", "dbc"], ["hunter-x-hunter-carddass", "hxh"],
     ["one-piece-carddass", "onepiece", "opcd", "opcd-"], ["lord-of-the-rings-tcg", "lotr"], ["harry-potter-tcg", "harrypotter"],
     ["dragon-ball-z-ccg", "dbz"],

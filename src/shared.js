@@ -7347,7 +7347,9 @@
     // (ligaweiss.com.br nem resolve).
     weiss:     { myp: "weissschwarz", tcgLine: "weiss-schwarz", usText: "weiss schwarz", cm: "WeissSchwarz" }
   };
-  function marketOf(game) { return MARKETS[game] || MARKETS.pokemon; }
+  // `game`: o slug do jogo ou, numa linha com lojas próprias, a tabela dela
+  // (GAME_LINES…market, escolhida pelo lojasDaCarta).
+  function marketOf(game) { return game && game.usText ? game : (MARKETS[game] || MARKETS.pokemon); }
 
   function brMarketplaces(game) {
     const m = marketOf(game);
@@ -7841,15 +7843,16 @@
     // sessão só pra cartas sem tag (catálogos antigos). gradedTag (ex.: "PSA 9")
     // só vem quando a carta é graduada e entra na busca de eBay/PriceCharting.
     const game = card.game || currentGame();
-    const linhas = marketplaceRow("price.checkBr", brMarketplaces(game), card)
-      + marketplaceRow("price.checkUs", usMarketplaces(game, gradedTag), card)
+    const loja = lojasDaCarta(card, game);
+    const linhas = marketplaceRow("price.checkBr", brMarketplaces(loja), card)
+      + marketplaceRow("price.checkUs", usMarketplaces(loja, gradedTag), card)
       // Linha vintage (Carddass/OP 2002/Miracle Battle) não existe no Cardmarket:
       // a busca voltaria vazia, então a linha EU nem aparece. É isVintageCard, e
       // não a flag, porque a carta vinda da borda (Coleção/Explorar) chega sem
       // ela — mas só nos jogos sem `cmv`: no Pokémon "vintage" é só a data de
       // lançamento e o Base Set existe no Cardmarket; o WoW TCG é todo vintage
       // e está lá.
-      + marketplaceRow("price.checkEu", marketOf(game).cm && (marketOf(game).cmv || !isVintageCard(card)) ? [{ key: "cardmarket", label: "Cardmarket", url: cardmarketUrl }] : [], card);
+      + marketplaceRow("price.checkEu", marketOf(loja).cm && (marketOf(loja).cmv || !isVintageCard(card)) ? [{ key: "cardmarket", label: "Cardmarket", url: cardmarketUrl }] : [], card);
     // Transparência do afiliado: a nota aparece SÓ se algum link desta carta
     // for de afiliado — com os IDs vazios (ou numa carta sem TCGplayer/eBay)
     // ela diria algo que não é verdade.
@@ -9075,6 +9078,16 @@
   }
 
   const GAME_LINES = {
+    // Gundam Carddass (Bandai 1988–1997): a linha que inaugurou o Carddass.
+    // Uma linha só, com uma seção por série na página de Sets
+    // (groupGundamCarddassSets no app.js): World 本弾, 外伝, 戦国伝, 聖伝…
+    // `market`: as lojas DA LINHA, no formato do MARKETS (conferido em
+    // 10/11/2026). As do jogo só têm o Gundam Card Game de 2025: a LigaGundam,
+    // o MYP e o TCGplayer não listam Carddass, e "gundam card game" na busca do
+    // eBay zerava os anúncios de 1988 ("1988 Bandai SD Gundam Carddass…").
+    gundam: {
+      "gcd": { prefix: "gcd-", label: "Gundam Carddass", titleKey: "sets.category.gcd", market: { usText: "gundam carddass", noTcgplayer: true } }
+    },
     onepiece: {
       "opcd": { prefix: "opcd-", label: "Carddass Hyper Battle", titleKey: "sets.category.vintage" },
       "op2002": { prefix: "op2002-", label: "One Piece Card Game (2002)", titleKey: "sets.category.op2002" }
@@ -9111,6 +9124,7 @@
   const VINTAGE_COLOR = "#8b6b43"; // sépia de papel velho: não é a cor de marca nenhuma
   const VINTAGE_POKEMON_UNTIL = "2008-12-31";
   const VINTAGE_ID_PREFIX = {
+    gundam: ["gcd-"],                         // Carddass 1988–1997 (a linha; o Gundam Card Game é gcg-)
     onepiece: ["opcd-", "op2002-"],           // Carddass 1999–2002, OPCG 2002–05
     hxh: ["hxh-"],                            // Hyper Battle 1999–2001: tudo vintage
     dbc: ["dbc-"],                            // Carddass 1988–1997: o jogo inteiro é vintage
@@ -9147,6 +9161,12 @@
   // Linhas que viraram SEÇÃO de outra: o ?line= antigo (favorito, link
   // compartilhado) continua abrindo, já na linha nova.
   const LINE_ALIASES = { "nrt-nf": "nrt-dc", "nrt-nx": "nrt-dc" };
+  // Lojas de uma CARTA: as da linha dela quando a linha tem as suas (`market`
+  // no GAME_LINES, casada pelo prefixo do id), senão as do jogo.
+  function lojasDaCarta(card, game) {
+    const d = Object.values(GAME_LINES[game] || {}).find((l) => l.market && (l.prefixes || [l.prefix]).some((p) => !String(card.id).indexOf(p)));
+    return d ? d.market : game;
+  }
   function lineParamOf() {
     // A linha pode vir do endereço (/games/naruto-data-carddass): o game.js a
     // resolve no <head> e deixa em SLEEVU.line. Senão, o ?line= de sempre.

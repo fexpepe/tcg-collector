@@ -107,6 +107,19 @@ test("endereço do set: único sem desempate (não depende da ordem do catálogo
   assert.equal(slugs[SETS.findIndex((s) => s.code === "gd10")], "10-vs");
 });
 
+test("nome em inglês dos sets (src/nomes-sets.js) é o setNameEn do sync, e só das partes com carta", () => {
+  const fonte = ler("src/nomes-sets.js");
+  const noArquivo = Object.fromEntries([...fonte.matchAll(/^\s*"(gcd-[a-z0-9]+)": ("(?:[^"\\]|\\.)*"),$/gm)].map((m) => [m[1], JSON.parse(m[2])]));
+  const esperado = Object.fromEntries(SNAP.sets.map((s) => [setIdOf(s.code), setNameEn(SETS.find((d) => d.code === s.code))]));
+  assert.deepEqual(noArquivo, esperado);
+  // o agrupador da página de Sets tira o prefixo da série que o sync põe
+  const app = ler("src/app.js");
+  for (const [code, serie] of Object.entries(SERIES)) {
+    if (code === "gg") continue; // parte única: o nome É a série
+    assert.ok(app.includes(`"${serie.en} "`), `groupGundamCarddassSets sem o prefixo "${serie.en} "`);
+  }
+});
+
 test("imagem: o scan grande pelo wsrv, e o espelho do R2 guarda pela URL de origem", () => {
   const c = { src: 14649, dir: "167/351" };
   assert.equal(scanDe(c), "www.animecollection.fr/cartes/167/351/h3000_14649_carte.jpg");
