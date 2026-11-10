@@ -1,0 +1,10516 @@
+{
+ "source": "http://www.animecollection.fr/cartes.php?idl=6",
+ "updatedAt": "2026-11-10",
+ "sets": [
+  {
+   "code": "wd01",
+   "cards": [
+    {
+     "id": "gcd-wd01-1",
+     "src": 14649,
+     "num": "1",
+     "rar": "Prism",
+     "dir": "167/351"
+    },
+    {
+     "id": "gcd-wd01-2",
+     "src": 14650,
+     "num": "2",
+     "rar": "Prism",
+     "dir": "167/351"
+    },
+    {
+     "id": "gcd-wd01-3",
+     "src": 14651,
+     "num": "3",
+     "rar": "Normal",
+     "dir": "167/351"
+    },
+    {
+     "id": "gcd-wd01-4",
+     "src": 14652,
+     "num": "4",
+     "rar": "Prism",
+     "dir": "167/351"
+    },
+    {
+     "id": "gcd-wd01-5",
+     "src": 14653,
+     "num": "5",
+     "rar": "Prism",
+     "dir": "167/351"
+    },
+    {
+     "id": "gcd-wd01-6",
+     "src": 14654,
+     "num": "6",
+     "rar": "Prism",
+     "dir": "167/351"
+    },
+    {
+     "id": "gcd-wd01-7",
+     "src": 14655,
+     "num": "7",
+     "rar": "Normal",
+     "dir": "167/351"
+    },
+    {
+     "id": "gcd-wd01-8",
+     "src": 14656,
+     "num": "8",
+     "rar": "Normal",
+     "dir": "167/351"
+    },
+    {
+     "id": "gcd-wd01-9",
+     "src": 14657,
+     "num": "9",
+     "rar": "Normal",
+     "dir": "167/351"
+    },
+    {
+     "id": "gcd-wd01-10",
+     "src": 14658,
+     "num": "10",
+     "rar": "Normal",
+     "dir": "167/351"
+    },
+    {
+     "id": "gcd-wd01-11",
+     "src": 14659,
+     "num": "11",
+     "rar": "Normal",
+     "dir": "167/351"
+    },
+    {
+     "id": "gcd-wd01-12",
+     "src": 14660,
+     "num": "12",
+     "rar": "Normal",
+     "dir": "167/351"
+    },
+    {
+     "id": "gcd-wd01-13",
+     "src": 14661,
+     "num": "13",
+     "rar": "Normal",
+     "dir": "167/351"
+    },
+    {
+     "id": "gcd-wd01-14",
+     "src": 14662,
+     "num": "14",
+     "rar": "Normal",
+     "dir": "167/351"
+    },
+    {
+     "id": "gcd-wd01-15",
+     "src": 14663,
+     "num": "15",
+     "rar": "Normal",
+     "dir": "167/351"
+    },
+    {
+     "id": "gcd-wd01-16",
+     "src": 14664,
+     "num": "16",
+     "rar": "Normal",
+     "dir": "167/351"
+    },
+    {
+     "id": "gcd-wd01-17",
+     "src": 14665,
+     "num": "17",
+     "rar": "Normal",
+     "dir": "167/351"
+    },
+    {
+     "id": "gcd-wd01-18",
+     "src": 14666,
+     "num": "18",
+     "rar": "Normal",
+     "dir": "167/351"
+    },
+    {
+     "id": "gcd-wd01-19",
+     "src": 14667,
+     "num": "19",
+     "rar": "Normal",
+     "dir": "167/351"
+    },
+    {
+     "id": "gcd-wd01-20",
+     "src": 14668,
+     "num": "20",
+     "rar": "Normal",
+     "dir": "167/351"
+    },
+    {
+     "id": "gcd-wd01-21",
+     "src": 14669,
+     "num": "21",
+     "rar": "Normal",
+     "dir": "167/351"
+    },
+    {
+     "id": "gcd-wd01-22",
+     "src": 14670,
+     "num": "22",
+     "rar": "Normal",
+     "dir": "167/351"
+    },
+    {
+     "id": "gcd-wd01-23",
+     "src": 14671,
+     "num": "23",
+     "rar": "Normal",
+     "dir": "167/351"
+    },
+    {
+     "id": "gcd-wd01-24",
+     "src": 14672,
+     "num": "24",
+     "rar": "Normal",
+     "dir": "167/351"
+    },
+    {
+     "id": "gcd-wd01-25",
+     "src": 14673,
+     "num": "25",
+     "rar": "Normal",
+     "dir": "167/351"
+    },
+    {
+     "id": "gcd-wd01-26",
+     "src": 14674,
+     "num": "26",
+     "rar": "Normal",
+     "dir": "167/351"
+    },
+    {
+     "id": "gcd-wd01-27",
+     "src": 14675,
+     "num": "27",
+     "rar": "Normal",
+     "dir": "167/351"
+    },
+    {
+     "id": "gcd-wd01-28",
+     "src": 14676,
+     "num": "28",
+     "rar": "Normal",
+     "dir": "167/351"
+    },
+    {
+     "id": "gcd-wd01-29",
+     "src": 14677,
+     "num": "29",
+     "rar": "Normal",
+     "dir": "167/351"
+    },
+    {
+     "id": "gcd-wd01-30",
+     "src": 14678,
+     "num": "30",
+     "rar": "Normal",
+     "dir": "167/351"
+    },
+    {
+     "id": "gcd-wd01-31",
+     "src": 14679,
+     "num": "31",
+     "rar": "Normal",
+     "dir": "167/351"
+    },
+    {
+     "id": "gcd-wd01-32",
+     "src": 14680,
+     "num": "32",
+     "rar": "Normal",
+     "dir": "167/351"
+    },
+    {
+     "id": "gcd-wd01-33",
+     "src": 14681,
+     "num": "33",
+     "rar": "Normal",
+     "dir": "167/351"
+    },
+    {
+     "id": "gcd-wd01-34",
+     "src": 14682,
+     "num": "34",
+     "rar": "Normal",
+     "dir": "167/351"
+    },
+    {
+     "id": "gcd-wd01-35",
+     "src": 14683,
+     "num": "35",
+     "rar": "Normal",
+     "dir": "167/351"
+    },
+    {
+     "id": "gcd-wd01-36",
+     "src": 14684,
+     "num": "36",
+     "rar": "Normal",
+     "dir": "167/351"
+    },
+    {
+     "id": "gcd-wd01-37",
+     "src": 14685,
+     "num": "37",
+     "rar": "Normal",
+     "dir": "167/351"
+    },
+    {
+     "id": "gcd-wd01-38",
+     "src": 14686,
+     "num": "38",
+     "rar": "Normal",
+     "dir": "167/351"
+    },
+    {
+     "id": "gcd-wd01-39",
+     "src": 14687,
+     "num": "39",
+     "rar": "Normal",
+     "dir": "167/351"
+    },
+    {
+     "id": "gcd-wd01-40",
+     "src": 14688,
+     "num": "40",
+     "rar": "Normal",
+     "dir": "167/351"
+    },
+    {
+     "id": "gcd-wd01-41",
+     "src": 14689,
+     "num": "41",
+     "rar": "Normal",
+     "dir": "167/351"
+    }
+   ]
+  },
+  {
+   "code": "wd02",
+   "cards": [
+    {
+     "id": "gcd-wd02-42",
+     "src": 14690,
+     "num": "42",
+     "rar": "Normal",
+     "dir": "167/352"
+    },
+    {
+     "id": "gcd-wd02-43",
+     "src": 14691,
+     "num": "43",
+     "rar": "Prism",
+     "dir": "167/352"
+    },
+    {
+     "id": "gcd-wd02-44",
+     "src": 14692,
+     "num": "44",
+     "rar": "Normal",
+     "dir": "167/352"
+    },
+    {
+     "id": "gcd-wd02-45",
+     "src": 14693,
+     "num": "45",
+     "rar": "Normal",
+     "dir": "167/352"
+    },
+    {
+     "id": "gcd-wd02-46",
+     "src": 14694,
+     "num": "46",
+     "rar": "Normal",
+     "dir": "167/352"
+    },
+    {
+     "id": "gcd-wd02-47",
+     "src": 14695,
+     "num": "47",
+     "rar": "Prism",
+     "dir": "167/352"
+    },
+    {
+     "id": "gcd-wd02-48",
+     "src": 14696,
+     "num": "48",
+     "rar": "Normal",
+     "dir": "167/352"
+    },
+    {
+     "id": "gcd-wd02-49",
+     "src": 14697,
+     "num": "49",
+     "rar": "Prism",
+     "dir": "167/352"
+    },
+    {
+     "id": "gcd-wd02-50",
+     "src": 14698,
+     "num": "50",
+     "rar": "Normal",
+     "dir": "167/352"
+    },
+    {
+     "id": "gcd-wd02-51",
+     "src": 14699,
+     "num": "51",
+     "rar": "Prism",
+     "dir": "167/352"
+    },
+    {
+     "id": "gcd-wd02-52",
+     "src": 14700,
+     "num": "52",
+     "rar": "Normal",
+     "dir": "167/352"
+    },
+    {
+     "id": "gcd-wd02-53",
+     "src": 14701,
+     "num": "53",
+     "rar": "Normal",
+     "dir": "167/352"
+    },
+    {
+     "id": "gcd-wd02-54",
+     "src": 14702,
+     "num": "54",
+     "rar": "Normal",
+     "dir": "167/352"
+    },
+    {
+     "id": "gcd-wd02-55",
+     "src": 14703,
+     "num": "55",
+     "rar": "Normal",
+     "dir": "167/352"
+    },
+    {
+     "id": "gcd-wd02-56",
+     "src": 14704,
+     "num": "56",
+     "rar": "Normal",
+     "dir": "167/352"
+    },
+    {
+     "id": "gcd-wd02-57",
+     "src": 14705,
+     "num": "57",
+     "rar": "Normal",
+     "dir": "167/352"
+    },
+    {
+     "id": "gcd-wd02-58",
+     "src": 14706,
+     "num": "58",
+     "rar": "Normal",
+     "dir": "167/352"
+    },
+    {
+     "id": "gcd-wd02-59",
+     "src": 14707,
+     "num": "59",
+     "rar": "Normal",
+     "dir": "167/352"
+    },
+    {
+     "id": "gcd-wd02-60",
+     "src": 14708,
+     "num": "60",
+     "rar": "Normal",
+     "dir": "167/352"
+    },
+    {
+     "id": "gcd-wd02-61",
+     "src": 14709,
+     "num": "61",
+     "rar": "Normal",
+     "dir": "167/352"
+    },
+    {
+     "id": "gcd-wd02-62",
+     "src": 14710,
+     "num": "62",
+     "rar": "Normal",
+     "dir": "167/352"
+    },
+    {
+     "id": "gcd-wd02-63",
+     "src": 14711,
+     "num": "63",
+     "rar": "Normal",
+     "dir": "167/352"
+    },
+    {
+     "id": "gcd-wd02-64",
+     "src": 14712,
+     "num": "64",
+     "rar": "Normal",
+     "dir": "167/352"
+    },
+    {
+     "id": "gcd-wd02-65",
+     "src": 14713,
+     "num": "65",
+     "rar": "Normal",
+     "dir": "167/352"
+    },
+    {
+     "id": "gcd-wd02-66",
+     "src": 14714,
+     "num": "66",
+     "rar": "Normal",
+     "dir": "167/352"
+    },
+    {
+     "id": "gcd-wd02-67",
+     "src": 14715,
+     "num": "67",
+     "rar": "Normal",
+     "dir": "167/352"
+    },
+    {
+     "id": "gcd-wd02-68",
+     "src": 14716,
+     "num": "68",
+     "rar": "Normal",
+     "dir": "167/352"
+    },
+    {
+     "id": "gcd-wd02-69",
+     "src": 14717,
+     "num": "69",
+     "rar": "Normal",
+     "dir": "167/352"
+    },
+    {
+     "id": "gcd-wd02-70",
+     "src": 14718,
+     "num": "70",
+     "rar": "Normal",
+     "dir": "167/352"
+    },
+    {
+     "id": "gcd-wd02-71",
+     "src": 14719,
+     "num": "71",
+     "rar": "Normal",
+     "dir": "167/352"
+    },
+    {
+     "id": "gcd-wd02-72",
+     "src": 14720,
+     "num": "72",
+     "rar": "Normal",
+     "dir": "167/352"
+    },
+    {
+     "id": "gcd-wd02-73",
+     "src": 14721,
+     "num": "73",
+     "rar": "Normal",
+     "dir": "167/352"
+    },
+    {
+     "id": "gcd-wd02-74",
+     "src": 14722,
+     "num": "74",
+     "rar": "Normal",
+     "dir": "167/352"
+    },
+    {
+     "id": "gcd-wd02-75",
+     "src": 14723,
+     "num": "75",
+     "rar": "Normal",
+     "dir": "167/352"
+    },
+    {
+     "id": "gcd-wd02-76",
+     "src": 14724,
+     "num": "76",
+     "rar": "Normal",
+     "dir": "167/352"
+    },
+    {
+     "id": "gcd-wd02-77",
+     "src": 14725,
+     "num": "77",
+     "rar": "Normal",
+     "dir": "167/352"
+    },
+    {
+     "id": "gcd-wd02-78",
+     "src": 14726,
+     "num": "78",
+     "rar": "Normal",
+     "dir": "167/352"
+    },
+    {
+     "id": "gcd-wd02-79",
+     "src": 14727,
+     "num": "79",
+     "rar": "Prism",
+     "dir": "167/352"
+    },
+    {
+     "id": "gcd-wd02-80",
+     "src": 14728,
+     "num": "80",
+     "rar": "Normal",
+     "dir": "167/352"
+    },
+    {
+     "id": "gcd-wd02-81",
+     "src": 14729,
+     "num": "81",
+     "rar": "Normal",
+     "dir": "167/352"
+    },
+    {
+     "id": "gcd-wd02-82",
+     "src": 14730,
+     "num": "82",
+     "rar": "Normal",
+     "dir": "167/352"
+    }
+   ]
+  },
+  {
+   "code": "wd03",
+   "cards": [
+    {
+     "id": "gcd-wd03-83",
+     "src": 14731,
+     "num": "83",
+     "rar": "Prism",
+     "dir": "167/353"
+    },
+    {
+     "id": "gcd-wd03-84",
+     "src": 14732,
+     "num": "84",
+     "rar": "Prism",
+     "dir": "167/353"
+    },
+    {
+     "id": "gcd-wd03-85",
+     "src": 14733,
+     "num": "85",
+     "rar": "Normal",
+     "dir": "167/353"
+    },
+    {
+     "id": "gcd-wd03-86",
+     "src": 14734,
+     "num": "86",
+     "rar": "Prism",
+     "dir": "167/353"
+    },
+    {
+     "id": "gcd-wd03-87",
+     "src": 14735,
+     "num": "87",
+     "rar": "Prism",
+     "dir": "167/353"
+    },
+    {
+     "id": "gcd-wd03-88",
+     "src": 14736,
+     "num": "88",
+     "rar": "Normal",
+     "dir": "167/353"
+    },
+    {
+     "id": "gcd-wd03-89",
+     "src": 14737,
+     "num": "89",
+     "rar": "Normal",
+     "dir": "167/353"
+    },
+    {
+     "id": "gcd-wd03-90",
+     "src": 14738,
+     "num": "90",
+     "rar": "Normal",
+     "dir": "167/353"
+    },
+    {
+     "id": "gcd-wd03-91",
+     "src": 14739,
+     "num": "91",
+     "rar": "Normal",
+     "dir": "167/353"
+    },
+    {
+     "id": "gcd-wd03-92",
+     "src": 14740,
+     "num": "92",
+     "rar": "Normal",
+     "dir": "167/353"
+    },
+    {
+     "id": "gcd-wd03-93",
+     "src": 14741,
+     "num": "93",
+     "rar": "Normal",
+     "dir": "167/353"
+    },
+    {
+     "id": "gcd-wd03-94",
+     "src": 14742,
+     "num": "94",
+     "rar": "Normal",
+     "dir": "167/353"
+    },
+    {
+     "id": "gcd-wd03-95",
+     "src": 14743,
+     "num": "95",
+     "rar": "Normal",
+     "dir": "167/353"
+    },
+    {
+     "id": "gcd-wd03-96",
+     "src": 14744,
+     "num": "96",
+     "rar": "Normal",
+     "dir": "167/353"
+    },
+    {
+     "id": "gcd-wd03-97",
+     "src": 14745,
+     "num": "97",
+     "rar": "Normal",
+     "dir": "167/353"
+    },
+    {
+     "id": "gcd-wd03-98",
+     "src": 14746,
+     "num": "98",
+     "rar": "Normal",
+     "dir": "167/353"
+    },
+    {
+     "id": "gcd-wd03-99",
+     "src": 14747,
+     "num": "99",
+     "rar": "Normal",
+     "dir": "167/353"
+    },
+    {
+     "id": "gcd-wd03-100",
+     "src": 14748,
+     "num": "100",
+     "rar": "Prism",
+     "dir": "167/353"
+    },
+    {
+     "id": "gcd-wd03-101",
+     "src": 14749,
+     "num": "101",
+     "rar": "Normal",
+     "dir": "167/353"
+    },
+    {
+     "id": "gcd-wd03-102",
+     "src": 14750,
+     "num": "102",
+     "rar": "Normal",
+     "dir": "167/353"
+    },
+    {
+     "id": "gcd-wd03-103",
+     "src": 14751,
+     "num": "103",
+     "rar": "Normal",
+     "dir": "167/353"
+    },
+    {
+     "id": "gcd-wd03-104",
+     "src": 14752,
+     "num": "104",
+     "rar": "Normal",
+     "dir": "167/353"
+    },
+    {
+     "id": "gcd-wd03-105",
+     "src": 14753,
+     "num": "105",
+     "rar": "Normal",
+     "dir": "167/353"
+    },
+    {
+     "id": "gcd-wd03-106",
+     "src": 14754,
+     "num": "106",
+     "rar": "Normal",
+     "dir": "167/353"
+    },
+    {
+     "id": "gcd-wd03-107",
+     "src": 14755,
+     "num": "107",
+     "rar": "Normal",
+     "dir": "167/353"
+    },
+    {
+     "id": "gcd-wd03-108",
+     "src": 14756,
+     "num": "108",
+     "rar": "Normal",
+     "dir": "167/353"
+    },
+    {
+     "id": "gcd-wd03-109",
+     "src": 14757,
+     "num": "109",
+     "rar": "Normal",
+     "dir": "167/353"
+    },
+    {
+     "id": "gcd-wd03-110",
+     "src": 14758,
+     "num": "110",
+     "rar": "Normal",
+     "dir": "167/353"
+    },
+    {
+     "id": "gcd-wd03-111",
+     "src": 14759,
+     "num": "111",
+     "rar": "Normal",
+     "dir": "167/353"
+    },
+    {
+     "id": "gcd-wd03-112",
+     "src": 14760,
+     "num": "112",
+     "rar": "Normal",
+     "dir": "167/353"
+    },
+    {
+     "id": "gcd-wd03-113",
+     "src": 14761,
+     "num": "113",
+     "rar": "Normal",
+     "dir": "167/353"
+    },
+    {
+     "id": "gcd-wd03-114",
+     "src": 14762,
+     "num": "114",
+     "rar": "Normal",
+     "dir": "167/353"
+    },
+    {
+     "id": "gcd-wd03-115",
+     "src": 14763,
+     "num": "115",
+     "rar": "Normal",
+     "dir": "167/353"
+    },
+    {
+     "id": "gcd-wd03-116",
+     "src": 14764,
+     "num": "116",
+     "rar": "Normal",
+     "dir": "167/353"
+    },
+    {
+     "id": "gcd-wd03-117",
+     "src": 14765,
+     "num": "117",
+     "rar": "Normal",
+     "dir": "167/353"
+    },
+    {
+     "id": "gcd-wd03-118",
+     "src": 14766,
+     "num": "118",
+     "rar": "Normal",
+     "dir": "167/353"
+    },
+    {
+     "id": "gcd-wd03-119",
+     "src": 14767,
+     "num": "119",
+     "rar": "Normal",
+     "dir": "167/353"
+    },
+    {
+     "id": "gcd-wd03-120",
+     "src": 14768,
+     "num": "120",
+     "rar": "Normal",
+     "dir": "167/353"
+    },
+    {
+     "id": "gcd-wd03-121",
+     "src": 14769,
+     "num": "121",
+     "rar": "Normal",
+     "dir": "167/353"
+    },
+    {
+     "id": "gcd-wd03-122",
+     "src": 14770,
+     "num": "122",
+     "rar": "Normal",
+     "dir": "167/353"
+    },
+    {
+     "id": "gcd-wd03-123",
+     "src": 14771,
+     "num": "123",
+     "rar": "Normal",
+     "dir": "167/353"
+    }
+   ]
+  },
+  {
+   "code": "wd04",
+   "cards": [
+    {
+     "id": "gcd-wd04-125",
+     "src": 15895,
+     "num": "125",
+     "rar": "Normal",
+     "dir": "167/385"
+    },
+    {
+     "id": "gcd-wd04-126",
+     "src": 15896,
+     "num": "126",
+     "rar": "Prism",
+     "dir": "167/385"
+    },
+    {
+     "id": "gcd-wd04-127",
+     "src": 15897,
+     "num": "127",
+     "rar": "Prism",
+     "dir": "167/385"
+    },
+    {
+     "id": "gcd-wd04-128",
+     "src": 15899,
+     "num": "128",
+     "rar": "Prism",
+     "dir": "167/385"
+    },
+    {
+     "id": "gcd-wd04-129",
+     "src": 15900,
+     "num": "129",
+     "rar": "Prism",
+     "dir": "167/385"
+    },
+    {
+     "id": "gcd-wd04-130",
+     "src": 15901,
+     "num": "130",
+     "rar": "Normal",
+     "dir": "167/385"
+    },
+    {
+     "id": "gcd-wd04-131",
+     "src": 15902,
+     "num": "131",
+     "rar": "Prism",
+     "dir": "167/385"
+    },
+    {
+     "id": "gcd-wd04-132",
+     "src": 15903,
+     "num": "132",
+     "rar": "Normal",
+     "dir": "167/385"
+    },
+    {
+     "id": "gcd-wd04-133",
+     "src": 15904,
+     "num": "133",
+     "rar": "Normal",
+     "dir": "167/385"
+    },
+    {
+     "id": "gcd-wd04-134",
+     "src": 15905,
+     "num": "134",
+     "rar": "Normal",
+     "dir": "167/385"
+    },
+    {
+     "id": "gcd-wd04-135",
+     "src": 15906,
+     "num": "135",
+     "rar": "Normal",
+     "dir": "167/385"
+    },
+    {
+     "id": "gcd-wd04-136",
+     "src": 15907,
+     "num": "136",
+     "rar": "Normal",
+     "dir": "167/385"
+    },
+    {
+     "id": "gcd-wd04-137",
+     "src": 15908,
+     "num": "137",
+     "rar": "Normal",
+     "dir": "167/385"
+    },
+    {
+     "id": "gcd-wd04-138",
+     "src": 15909,
+     "num": "138",
+     "rar": "Normal",
+     "dir": "167/385"
+    },
+    {
+     "id": "gcd-wd04-139",
+     "src": 15910,
+     "num": "139",
+     "rar": "Normal",
+     "dir": "167/385"
+    },
+    {
+     "id": "gcd-wd04-140",
+     "src": 15911,
+     "num": "140",
+     "rar": "Normal",
+     "dir": "167/385"
+    },
+    {
+     "id": "gcd-wd04-141",
+     "src": 15912,
+     "num": "141",
+     "rar": "Normal",
+     "dir": "167/385"
+    },
+    {
+     "id": "gcd-wd04-142",
+     "src": 15913,
+     "num": "142",
+     "rar": "Normal",
+     "dir": "167/385"
+    },
+    {
+     "id": "gcd-wd04-143",
+     "src": 15914,
+     "num": "143",
+     "rar": "Normal",
+     "dir": "167/385"
+    },
+    {
+     "id": "gcd-wd04-144",
+     "src": 15915,
+     "num": "144",
+     "rar": "Normal",
+     "dir": "167/385"
+    },
+    {
+     "id": "gcd-wd04-145",
+     "src": 15916,
+     "num": "145",
+     "rar": "Normal",
+     "dir": "167/385"
+    },
+    {
+     "id": "gcd-wd04-146",
+     "src": 15917,
+     "num": "146",
+     "rar": "Normal",
+     "dir": "167/385"
+    },
+    {
+     "id": "gcd-wd04-147",
+     "src": 15918,
+     "num": "147",
+     "rar": "Normal",
+     "dir": "167/385"
+    },
+    {
+     "id": "gcd-wd04-148",
+     "src": 15919,
+     "num": "148",
+     "rar": "Normal",
+     "dir": "167/385"
+    },
+    {
+     "id": "gcd-wd04-149",
+     "src": 15920,
+     "num": "149",
+     "rar": "Normal",
+     "dir": "167/385"
+    },
+    {
+     "id": "gcd-wd04-150",
+     "src": 15921,
+     "num": "150",
+     "rar": "Normal",
+     "dir": "167/385"
+    },
+    {
+     "id": "gcd-wd04-151",
+     "src": 15922,
+     "num": "151",
+     "rar": "Normal",
+     "dir": "167/385"
+    },
+    {
+     "id": "gcd-wd04-152",
+     "src": 15923,
+     "num": "152",
+     "rar": "Normal",
+     "dir": "167/385"
+    },
+    {
+     "id": "gcd-wd04-153",
+     "src": 15924,
+     "num": "153",
+     "rar": "Normal",
+     "dir": "167/385"
+    },
+    {
+     "id": "gcd-wd04-154",
+     "src": 15925,
+     "num": "154",
+     "rar": "Normal",
+     "dir": "167/385"
+    },
+    {
+     "id": "gcd-wd04-155",
+     "src": 15926,
+     "num": "155",
+     "rar": "Normal",
+     "dir": "167/385"
+    },
+    {
+     "id": "gcd-wd04-156",
+     "src": 15927,
+     "num": "156",
+     "rar": "Normal",
+     "dir": "167/385"
+    },
+    {
+     "id": "gcd-wd04-157",
+     "src": 15928,
+     "num": "157",
+     "rar": "Normal",
+     "dir": "167/385"
+    },
+    {
+     "id": "gcd-wd04-158",
+     "src": 15929,
+     "num": "158",
+     "rar": "Normal",
+     "dir": "167/385"
+    },
+    {
+     "id": "gcd-wd04-159",
+     "src": 15930,
+     "num": "159",
+     "rar": "Normal",
+     "dir": "167/385"
+    },
+    {
+     "id": "gcd-wd04-160",
+     "src": 15931,
+     "num": "160",
+     "rar": "Normal",
+     "dir": "167/385"
+    },
+    {
+     "id": "gcd-wd04-161",
+     "src": 15932,
+     "num": "161",
+     "rar": "Normal",
+     "dir": "167/385"
+    },
+    {
+     "id": "gcd-wd04-162",
+     "src": 15933,
+     "num": "162",
+     "rar": "Normal",
+     "dir": "167/385"
+    },
+    {
+     "id": "gcd-wd04-163",
+     "src": 15934,
+     "num": "163",
+     "rar": "Normal",
+     "dir": "167/385"
+    },
+    {
+     "id": "gcd-wd04-164",
+     "src": 15935,
+     "num": "164",
+     "rar": "Normal",
+     "dir": "167/385"
+    },
+    {
+     "id": "gcd-wd04-165",
+     "src": 15936,
+     "num": "165",
+     "rar": "Normal",
+     "dir": "167/385"
+    }
+   ]
+  },
+  {
+   "code": "wd05",
+   "cards": [
+    {
+     "id": "gcd-wd05-166",
+     "src": 15937,
+     "num": "166",
+     "rar": "Prism",
+     "dir": "167/386"
+    },
+    {
+     "id": "gcd-wd05-167",
+     "src": 15938,
+     "num": "167",
+     "rar": "Normal",
+     "dir": "167/386"
+    },
+    {
+     "id": "gcd-wd05-168",
+     "src": 15939,
+     "num": "168",
+     "rar": "Prism",
+     "dir": "167/386"
+    },
+    {
+     "id": "gcd-wd05-169",
+     "src": 15940,
+     "num": "169",
+     "rar": "Normal",
+     "dir": "167/386"
+    },
+    {
+     "id": "gcd-wd05-170",
+     "src": 15941,
+     "num": "170",
+     "rar": "Normal",
+     "dir": "167/386"
+    },
+    {
+     "id": "gcd-wd05-171",
+     "src": 15942,
+     "num": "171",
+     "rar": "Prism",
+     "dir": "167/386"
+    },
+    {
+     "id": "gcd-wd05-172",
+     "src": 15943,
+     "num": "172",
+     "rar": "Normal",
+     "dir": "167/386"
+    },
+    {
+     "id": "gcd-wd05-173",
+     "src": 15944,
+     "num": "173",
+     "rar": "Prism",
+     "dir": "167/386"
+    },
+    {
+     "id": "gcd-wd05-174",
+     "src": 15945,
+     "num": "174",
+     "rar": "Normal",
+     "dir": "167/386"
+    },
+    {
+     "id": "gcd-wd05-175",
+     "src": 15946,
+     "num": "175",
+     "rar": "Normal",
+     "dir": "167/386"
+    },
+    {
+     "id": "gcd-wd05-176",
+     "src": 15947,
+     "num": "176",
+     "rar": "Normal",
+     "dir": "167/386"
+    },
+    {
+     "id": "gcd-wd05-177",
+     "src": 15948,
+     "num": "177",
+     "rar": "Normal",
+     "dir": "167/386"
+    },
+    {
+     "id": "gcd-wd05-178",
+     "src": 15949,
+     "num": "178",
+     "rar": "Normal",
+     "dir": "167/386"
+    },
+    {
+     "id": "gcd-wd05-179",
+     "src": 15950,
+     "num": "179",
+     "rar": "Normal",
+     "dir": "167/386"
+    },
+    {
+     "id": "gcd-wd05-180",
+     "src": 15951,
+     "num": "180",
+     "rar": "Normal",
+     "dir": "167/386"
+    },
+    {
+     "id": "gcd-wd05-181",
+     "src": 15952,
+     "num": "181",
+     "rar": "Normal",
+     "dir": "167/386"
+    },
+    {
+     "id": "gcd-wd05-182",
+     "src": 15953,
+     "num": "182",
+     "rar": "Normal",
+     "dir": "167/386"
+    },
+    {
+     "id": "gcd-wd05-183",
+     "src": 15954,
+     "num": "183",
+     "rar": "Normal",
+     "dir": "167/386"
+    },
+    {
+     "id": "gcd-wd05-184",
+     "src": 15955,
+     "num": "184",
+     "rar": "Normal",
+     "dir": "167/386"
+    },
+    {
+     "id": "gcd-wd05-185",
+     "src": 15956,
+     "num": "185",
+     "rar": "Normal",
+     "dir": "167/386"
+    },
+    {
+     "id": "gcd-wd05-186",
+     "src": 15957,
+     "num": "186",
+     "rar": "Normal",
+     "dir": "167/386"
+    },
+    {
+     "id": "gcd-wd05-187",
+     "src": 15958,
+     "num": "187",
+     "rar": "Normal",
+     "dir": "167/386"
+    },
+    {
+     "id": "gcd-wd05-188",
+     "src": 15959,
+     "num": "188",
+     "rar": "Normal",
+     "dir": "167/386"
+    },
+    {
+     "id": "gcd-wd05-189",
+     "src": 15960,
+     "num": "189",
+     "rar": "Normal",
+     "dir": "167/386"
+    },
+    {
+     "id": "gcd-wd05-190",
+     "src": 15961,
+     "num": "190",
+     "rar": "Normal",
+     "dir": "167/386"
+    },
+    {
+     "id": "gcd-wd05-191",
+     "src": 15962,
+     "num": "191",
+     "rar": "Normal",
+     "dir": "167/386"
+    },
+    {
+     "id": "gcd-wd05-192",
+     "src": 15963,
+     "num": "192",
+     "rar": "Normal",
+     "dir": "167/386"
+    },
+    {
+     "id": "gcd-wd05-193",
+     "src": 15964,
+     "num": "193",
+     "rar": "Normal",
+     "dir": "167/386"
+    },
+    {
+     "id": "gcd-wd05-194",
+     "src": 15965,
+     "num": "194",
+     "rar": "Normal",
+     "dir": "167/386"
+    },
+    {
+     "id": "gcd-wd05-195",
+     "src": 15966,
+     "num": "195",
+     "rar": "Normal",
+     "dir": "167/386"
+    },
+    {
+     "id": "gcd-wd05-196",
+     "src": 15967,
+     "num": "196",
+     "rar": "Normal",
+     "dir": "167/386"
+    },
+    {
+     "id": "gcd-wd05-197",
+     "src": 15968,
+     "num": "197",
+     "rar": "Normal",
+     "dir": "167/386"
+    },
+    {
+     "id": "gcd-wd05-198",
+     "src": 15969,
+     "num": "198",
+     "rar": "Normal",
+     "dir": "167/386"
+    },
+    {
+     "id": "gcd-wd05-199",
+     "src": 15970,
+     "num": "199",
+     "rar": "Normal",
+     "dir": "167/386"
+    },
+    {
+     "id": "gcd-wd05-200",
+     "src": 15971,
+     "num": "200",
+     "rar": "Prism",
+     "dir": "167/386"
+    },
+    {
+     "id": "gcd-wd05-201",
+     "src": 15972,
+     "num": "201",
+     "rar": "Normal",
+     "dir": "167/386"
+    },
+    {
+     "id": "gcd-wd05-202",
+     "src": 15973,
+     "num": "202",
+     "rar": "Normal",
+     "dir": "167/386"
+    },
+    {
+     "id": "gcd-wd05-203",
+     "src": 15974,
+     "num": "203",
+     "rar": "Normal",
+     "dir": "167/386"
+    },
+    {
+     "id": "gcd-wd05-204",
+     "src": 15975,
+     "num": "204",
+     "rar": "Normal",
+     "dir": "167/386"
+    },
+    {
+     "id": "gcd-wd05-205",
+     "src": 15976,
+     "num": "205",
+     "rar": "Normal",
+     "dir": "167/386"
+    },
+    {
+     "id": "gcd-wd05-206",
+     "src": 15977,
+     "num": "206",
+     "rar": "Normal",
+     "dir": "167/386"
+    }
+   ]
+  },
+  {
+   "code": "wd06",
+   "cards": [
+    {
+     "id": "gcd-wd06-207",
+     "src": 15978,
+     "num": "207",
+     "rar": "Normal",
+     "dir": "167/387"
+    },
+    {
+     "id": "gcd-wd06-208",
+     "src": 15979,
+     "num": "208",
+     "rar": "Prism",
+     "dir": "167/387"
+    },
+    {
+     "id": "gcd-wd06-209",
+     "src": 15980,
+     "num": "209",
+     "rar": "Prism",
+     "dir": "167/387"
+    },
+    {
+     "id": "gcd-wd06-210",
+     "src": 15981,
+     "num": "210",
+     "rar": "Prism",
+     "dir": "167/387"
+    },
+    {
+     "id": "gcd-wd06-211",
+     "src": 15982,
+     "num": "211",
+     "rar": "Normal",
+     "dir": "167/387"
+    },
+    {
+     "id": "gcd-wd06-212",
+     "src": 15984,
+     "num": "212",
+     "rar": "Prism",
+     "dir": "167/387"
+    },
+    {
+     "id": "gcd-wd06-213",
+     "src": 15985,
+     "num": "213",
+     "rar": "Prism",
+     "dir": "167/387"
+    },
+    {
+     "id": "gcd-wd06-214",
+     "src": 15986,
+     "num": "214",
+     "rar": "Normal",
+     "dir": "167/387"
+    },
+    {
+     "id": "gcd-wd06-215",
+     "src": 15987,
+     "num": "215",
+     "rar": "Normal",
+     "dir": "167/387"
+    },
+    {
+     "id": "gcd-wd06-216",
+     "src": 15988,
+     "num": "216",
+     "rar": "Normal",
+     "dir": "167/387"
+    },
+    {
+     "id": "gcd-wd06-217",
+     "src": 15989,
+     "num": "217",
+     "rar": "Normal",
+     "dir": "167/387"
+    },
+    {
+     "id": "gcd-wd06-218",
+     "src": 15990,
+     "num": "218",
+     "rar": "Normal",
+     "dir": "167/387"
+    },
+    {
+     "id": "gcd-wd06-219",
+     "src": 15991,
+     "num": "219",
+     "rar": "Normal",
+     "dir": "167/387"
+    },
+    {
+     "id": "gcd-wd06-220",
+     "src": 15992,
+     "num": "220",
+     "rar": "Normal",
+     "dir": "167/387"
+    },
+    {
+     "id": "gcd-wd06-221",
+     "src": 15993,
+     "num": "221",
+     "rar": "Normal",
+     "dir": "167/387"
+    },
+    {
+     "id": "gcd-wd06-222",
+     "src": 15994,
+     "num": "222",
+     "rar": "Normal",
+     "dir": "167/387"
+    },
+    {
+     "id": "gcd-wd06-223",
+     "src": 15995,
+     "num": "223",
+     "rar": "Normal",
+     "dir": "167/387"
+    },
+    {
+     "id": "gcd-wd06-224",
+     "src": 15996,
+     "num": "224",
+     "rar": "Normal",
+     "dir": "167/387"
+    },
+    {
+     "id": "gcd-wd06-225",
+     "src": 15997,
+     "num": "225",
+     "rar": "Normal",
+     "dir": "167/387"
+    },
+    {
+     "id": "gcd-wd06-226",
+     "src": 15998,
+     "num": "226",
+     "rar": "Normal",
+     "dir": "167/387"
+    },
+    {
+     "id": "gcd-wd06-227",
+     "src": 15999,
+     "num": "227",
+     "rar": "Normal",
+     "dir": "167/387"
+    },
+    {
+     "id": "gcd-wd06-228",
+     "src": 16000,
+     "num": "228",
+     "rar": "Normal",
+     "dir": "167/387"
+    },
+    {
+     "id": "gcd-wd06-229",
+     "src": 16001,
+     "num": "229",
+     "rar": "Normal",
+     "dir": "167/387"
+    },
+    {
+     "id": "gcd-wd06-230",
+     "src": 16002,
+     "num": "230",
+     "rar": "Normal",
+     "dir": "167/387"
+    },
+    {
+     "id": "gcd-wd06-231",
+     "src": 16003,
+     "num": "231",
+     "rar": "Normal",
+     "dir": "167/387"
+    },
+    {
+     "id": "gcd-wd06-232",
+     "src": 16004,
+     "num": "232",
+     "rar": "Normal",
+     "dir": "167/387"
+    },
+    {
+     "id": "gcd-wd06-233",
+     "src": 16005,
+     "num": "233",
+     "rar": "Normal",
+     "dir": "167/387"
+    },
+    {
+     "id": "gcd-wd06-234",
+     "src": 16006,
+     "num": "234",
+     "rar": "Normal",
+     "dir": "167/387"
+    },
+    {
+     "id": "gcd-wd06-235",
+     "src": 16007,
+     "num": "235",
+     "rar": "Normal",
+     "dir": "167/387"
+    },
+    {
+     "id": "gcd-wd06-236",
+     "src": 16008,
+     "num": "236",
+     "rar": "Normal",
+     "dir": "167/387"
+    },
+    {
+     "id": "gcd-wd06-237",
+     "src": 16009,
+     "num": "237",
+     "rar": "Normal",
+     "dir": "167/387"
+    },
+    {
+     "id": "gcd-wd06-238",
+     "src": 16010,
+     "num": "238",
+     "rar": "Normal",
+     "dir": "167/387"
+    },
+    {
+     "id": "gcd-wd06-239",
+     "src": 16011,
+     "num": "239",
+     "rar": "Normal",
+     "dir": "167/387"
+    },
+    {
+     "id": "gcd-wd06-240",
+     "src": 16012,
+     "num": "240",
+     "rar": "Normal",
+     "dir": "167/387"
+    },
+    {
+     "id": "gcd-wd06-241",
+     "src": 16013,
+     "num": "241",
+     "rar": "Normal",
+     "dir": "167/387"
+    },
+    {
+     "id": "gcd-wd06-242",
+     "src": 16014,
+     "num": "242",
+     "rar": "Normal",
+     "dir": "167/387"
+    },
+    {
+     "id": "gcd-wd06-243",
+     "src": 16015,
+     "num": "243",
+     "rar": "Normal",
+     "dir": "167/387"
+    },
+    {
+     "id": "gcd-wd06-244",
+     "src": 16016,
+     "num": "244",
+     "rar": "Normal",
+     "dir": "167/387"
+    },
+    {
+     "id": "gcd-wd06-245",
+     "src": 16017,
+     "num": "245",
+     "rar": "Normal",
+     "dir": "167/387"
+    },
+    {
+     "id": "gcd-wd06-246",
+     "src": 16018,
+     "num": "246",
+     "rar": "Normal",
+     "dir": "167/387"
+    },
+    {
+     "id": "gcd-wd06-247",
+     "src": 16019,
+     "num": "247",
+     "rar": "Normal",
+     "dir": "167/387"
+    }
+   ]
+  },
+  {
+   "code": "wd07",
+   "cards": [
+    {
+     "id": "gcd-wd07-248",
+     "src": 16020,
+     "num": "248",
+     "rar": "Prism",
+     "dir": "167/388"
+    },
+    {
+     "id": "gcd-wd07-249",
+     "src": 16021,
+     "num": "249",
+     "rar": "Prism",
+     "dir": "167/388"
+    },
+    {
+     "id": "gcd-wd07-250",
+     "src": 16022,
+     "num": "250",
+     "rar": "Normal",
+     "dir": "167/388"
+    },
+    {
+     "id": "gcd-wd07-251",
+     "src": 16023,
+     "num": "251",
+     "rar": "Prism",
+     "dir": "167/388"
+    },
+    {
+     "id": "gcd-wd07-252",
+     "src": 16024,
+     "num": "252",
+     "rar": "Prism",
+     "dir": "167/388"
+    },
+    {
+     "id": "gcd-wd07-253",
+     "src": 16025,
+     "num": "253",
+     "rar": "Prism",
+     "dir": "167/388"
+    },
+    {
+     "id": "gcd-wd07-254",
+     "src": 16026,
+     "num": "254",
+     "rar": "Normal",
+     "dir": "167/388"
+    },
+    {
+     "id": "gcd-wd07-255",
+     "src": 16027,
+     "num": "255",
+     "rar": "Normal",
+     "dir": "167/388"
+    },
+    {
+     "id": "gcd-wd07-256",
+     "src": 16028,
+     "num": "256",
+     "rar": "Normal",
+     "dir": "167/388"
+    },
+    {
+     "id": "gcd-wd07-257",
+     "src": 16029,
+     "num": "257",
+     "rar": "Normal",
+     "dir": "167/388"
+    },
+    {
+     "id": "gcd-wd07-258",
+     "src": 16030,
+     "num": "258",
+     "rar": "Normal",
+     "dir": "167/388"
+    },
+    {
+     "id": "gcd-wd07-259",
+     "src": 16031,
+     "num": "259",
+     "rar": "Normal",
+     "dir": "167/388"
+    },
+    {
+     "id": "gcd-wd07-260",
+     "src": 16032,
+     "num": "260",
+     "rar": "Normal",
+     "dir": "167/388"
+    },
+    {
+     "id": "gcd-wd07-261",
+     "src": 16033,
+     "num": "261",
+     "rar": "Normal",
+     "dir": "167/388"
+    },
+    {
+     "id": "gcd-wd07-262",
+     "src": 16034,
+     "num": "262",
+     "rar": "Normal",
+     "dir": "167/388"
+    },
+    {
+     "id": "gcd-wd07-263",
+     "src": 16035,
+     "num": "263",
+     "rar": "Normal",
+     "dir": "167/388"
+    },
+    {
+     "id": "gcd-wd07-264",
+     "src": 16036,
+     "num": "264",
+     "rar": "Normal",
+     "dir": "167/388"
+    },
+    {
+     "id": "gcd-wd07-265",
+     "src": 16037,
+     "num": "265",
+     "rar": "Normal",
+     "dir": "167/388"
+    },
+    {
+     "id": "gcd-wd07-266",
+     "src": 16038,
+     "num": "266",
+     "rar": "Normal",
+     "dir": "167/388"
+    },
+    {
+     "id": "gcd-wd07-267",
+     "src": 16039,
+     "num": "267",
+     "rar": "Normal",
+     "dir": "167/388"
+    },
+    {
+     "id": "gcd-wd07-268",
+     "src": 16040,
+     "num": "268",
+     "rar": "Normal",
+     "dir": "167/388"
+    },
+    {
+     "id": "gcd-wd07-269",
+     "src": 16041,
+     "num": "269",
+     "rar": "Normal",
+     "dir": "167/388"
+    },
+    {
+     "id": "gcd-wd07-270",
+     "src": 16042,
+     "num": "270",
+     "rar": "Normal",
+     "dir": "167/388"
+    },
+    {
+     "id": "gcd-wd07-271",
+     "src": 16043,
+     "num": "271",
+     "rar": "Normal",
+     "dir": "167/388"
+    },
+    {
+     "id": "gcd-wd07-272",
+     "src": 16044,
+     "num": "272",
+     "rar": "Normal",
+     "dir": "167/388"
+    },
+    {
+     "id": "gcd-wd07-273",
+     "src": 16045,
+     "num": "273",
+     "rar": "Normal",
+     "dir": "167/388"
+    },
+    {
+     "id": "gcd-wd07-274",
+     "src": 16046,
+     "num": "274",
+     "rar": "Normal",
+     "dir": "167/388"
+    },
+    {
+     "id": "gcd-wd07-275",
+     "src": 16047,
+     "num": "275",
+     "rar": "Normal",
+     "dir": "167/388"
+    },
+    {
+     "id": "gcd-wd07-276",
+     "src": 16048,
+     "num": "276",
+     "rar": "Normal",
+     "dir": "167/388"
+    },
+    {
+     "id": "gcd-wd07-277",
+     "src": 16049,
+     "num": "277",
+     "rar": "Normal",
+     "dir": "167/388"
+    },
+    {
+     "id": "gcd-wd07-278",
+     "src": 16050,
+     "num": "278",
+     "rar": "Normal",
+     "dir": "167/388"
+    },
+    {
+     "id": "gcd-wd07-279",
+     "src": 16051,
+     "num": "279",
+     "rar": "Normal",
+     "dir": "167/388"
+    },
+    {
+     "id": "gcd-wd07-280",
+     "src": 16052,
+     "num": "280",
+     "rar": "Normal",
+     "dir": "167/388"
+    },
+    {
+     "id": "gcd-wd07-281",
+     "src": 16053,
+     "num": "281",
+     "rar": "Normal",
+     "dir": "167/388"
+    },
+    {
+     "id": "gcd-wd07-282",
+     "src": 16054,
+     "num": "282",
+     "rar": "Normal",
+     "dir": "167/388"
+    },
+    {
+     "id": "gcd-wd07-283",
+     "src": 16055,
+     "num": "283",
+     "rar": "Normal",
+     "dir": "167/388"
+    },
+    {
+     "id": "gcd-wd07-284",
+     "src": 16056,
+     "num": "284",
+     "rar": "Normal",
+     "dir": "167/388"
+    },
+    {
+     "id": "gcd-wd07-285",
+     "src": 16057,
+     "num": "285",
+     "rar": "Normal",
+     "dir": "167/388"
+    },
+    {
+     "id": "gcd-wd07-286",
+     "src": 16058,
+     "num": "286",
+     "rar": "Normal",
+     "dir": "167/388"
+    },
+    {
+     "id": "gcd-wd07-287",
+     "src": 16059,
+     "num": "287",
+     "rar": "Normal",
+     "dir": "167/388"
+    },
+    {
+     "id": "gcd-wd07-288",
+     "src": 16060,
+     "num": "288",
+     "rar": "Normal",
+     "dir": "167/388"
+    }
+   ]
+  },
+  {
+   "code": "wd08",
+   "cards": [
+    {
+     "id": "gcd-wd08-289",
+     "src": 25969,
+     "num": "289",
+     "rar": "Prism",
+     "dir": "167/620"
+    },
+    {
+     "id": "gcd-wd08-290",
+     "src": 25970,
+     "num": "290",
+     "rar": "Prism",
+     "dir": "167/620"
+    },
+    {
+     "id": "gcd-wd08-291",
+     "src": 25971,
+     "num": "291",
+     "rar": "Normal",
+     "dir": "167/620"
+    },
+    {
+     "id": "gcd-wd08-292",
+     "src": 25972,
+     "num": "292",
+     "rar": "Prism",
+     "dir": "167/620"
+    },
+    {
+     "id": "gcd-wd08-293",
+     "src": 25973,
+     "num": "293",
+     "rar": "Normal",
+     "dir": "167/620"
+    },
+    {
+     "id": "gcd-wd08-294",
+     "src": 25974,
+     "num": "294",
+     "rar": "Prism",
+     "dir": "167/620"
+    },
+    {
+     "id": "gcd-wd08-295",
+     "src": 25975,
+     "num": "295",
+     "rar": "Normal",
+     "dir": "167/620"
+    },
+    {
+     "id": "gcd-wd08-296",
+     "src": 25976,
+     "num": "296",
+     "rar": "Normal",
+     "dir": "167/620"
+    },
+    {
+     "id": "gcd-wd08-297",
+     "src": 25977,
+     "num": "297",
+     "rar": "Normal",
+     "dir": "167/620"
+    },
+    {
+     "id": "gcd-wd08-298",
+     "src": 25978,
+     "num": "298",
+     "rar": "Normal",
+     "dir": "167/620"
+    },
+    {
+     "id": "gcd-wd08-299",
+     "src": 25979,
+     "num": "299",
+     "rar": "Normal",
+     "dir": "167/620"
+    },
+    {
+     "id": "gcd-wd08-300",
+     "src": 25980,
+     "num": "300",
+     "rar": "Prism",
+     "dir": "167/620"
+    },
+    {
+     "id": "gcd-wd08-301",
+     "src": 25981,
+     "num": "301",
+     "rar": "Normal",
+     "dir": "167/620"
+    },
+    {
+     "id": "gcd-wd08-302",
+     "src": 25982,
+     "num": "302",
+     "rar": "Normal",
+     "dir": "167/620"
+    },
+    {
+     "id": "gcd-wd08-303",
+     "src": 25983,
+     "num": "303",
+     "rar": "Normal",
+     "dir": "167/620"
+    },
+    {
+     "id": "gcd-wd08-304",
+     "src": 25984,
+     "num": "304",
+     "rar": "Normal",
+     "dir": "167/620"
+    },
+    {
+     "id": "gcd-wd08-305",
+     "src": 25985,
+     "num": "305",
+     "rar": "Normal",
+     "dir": "167/620"
+    },
+    {
+     "id": "gcd-wd08-306",
+     "src": 25986,
+     "num": "306",
+     "rar": "Normal",
+     "dir": "167/620"
+    },
+    {
+     "id": "gcd-wd08-307",
+     "src": 25987,
+     "num": "307",
+     "rar": "Normal",
+     "dir": "167/620"
+    },
+    {
+     "id": "gcd-wd08-308",
+     "src": 25988,
+     "num": "308",
+     "rar": "Normal",
+     "dir": "167/620"
+    },
+    {
+     "id": "gcd-wd08-309",
+     "src": 25989,
+     "num": "309",
+     "rar": "Normal",
+     "dir": "167/620"
+    },
+    {
+     "id": "gcd-wd08-310",
+     "src": 25990,
+     "num": "310",
+     "rar": "Normal",
+     "dir": "167/620"
+    },
+    {
+     "id": "gcd-wd08-311",
+     "src": 25991,
+     "num": "311",
+     "rar": "Normal",
+     "dir": "167/620"
+    },
+    {
+     "id": "gcd-wd08-312",
+     "src": 25992,
+     "num": "312",
+     "rar": "Normal",
+     "dir": "167/620"
+    },
+    {
+     "id": "gcd-wd08-313",
+     "src": 25993,
+     "num": "313",
+     "rar": "Normal",
+     "dir": "167/620"
+    },
+    {
+     "id": "gcd-wd08-314",
+     "src": 25994,
+     "num": "314",
+     "rar": "Normal",
+     "dir": "167/620"
+    },
+    {
+     "id": "gcd-wd08-315",
+     "src": 25995,
+     "num": "315",
+     "rar": "Normal",
+     "dir": "167/620"
+    },
+    {
+     "id": "gcd-wd08-316",
+     "src": 25996,
+     "num": "316",
+     "rar": "Normal",
+     "dir": "167/620"
+    },
+    {
+     "id": "gcd-wd08-317",
+     "src": 25997,
+     "num": "317",
+     "rar": "Normal",
+     "dir": "167/620"
+    },
+    {
+     "id": "gcd-wd08-318",
+     "src": 25998,
+     "num": "318",
+     "rar": "Normal",
+     "dir": "167/620"
+    },
+    {
+     "id": "gcd-wd08-319",
+     "src": 25999,
+     "num": "319",
+     "rar": "Normal",
+     "dir": "167/620"
+    },
+    {
+     "id": "gcd-wd08-320",
+     "src": 26000,
+     "num": "320",
+     "rar": "Normal",
+     "dir": "167/620"
+    },
+    {
+     "id": "gcd-wd08-321",
+     "src": 26001,
+     "num": "321",
+     "rar": "Normal",
+     "dir": "167/620"
+    },
+    {
+     "id": "gcd-wd08-322",
+     "src": 26002,
+     "num": "322",
+     "rar": "Normal",
+     "dir": "167/620"
+    },
+    {
+     "id": "gcd-wd08-323",
+     "src": 26003,
+     "num": "323",
+     "rar": "Normal",
+     "dir": "167/620"
+    },
+    {
+     "id": "gcd-wd08-324",
+     "src": 26004,
+     "num": "324",
+     "rar": "Normal",
+     "dir": "167/620"
+    },
+    {
+     "id": "gcd-wd08-325",
+     "src": 26005,
+     "num": "325",
+     "rar": "Normal",
+     "dir": "167/620"
+    },
+    {
+     "id": "gcd-wd08-326",
+     "src": 26006,
+     "num": "326",
+     "rar": "Normal",
+     "dir": "167/620"
+    },
+    {
+     "id": "gcd-wd08-327",
+     "src": 26007,
+     "num": "327",
+     "rar": "Normal",
+     "dir": "167/620"
+    },
+    {
+     "id": "gcd-wd08-328",
+     "src": 26008,
+     "num": "328",
+     "rar": "Normal",
+     "dir": "167/620"
+    },
+    {
+     "id": "gcd-wd08-329",
+     "src": 26009,
+     "num": "329",
+     "rar": "Normal",
+     "dir": "167/620"
+    }
+   ]
+  },
+  {
+   "code": "wd09",
+   "cards": [
+    {
+     "id": "gcd-wd09-330",
+     "src": 26010,
+     "num": "330",
+     "rar": "Prism",
+     "dir": "167/621"
+    },
+    {
+     "id": "gcd-wd09-331",
+     "src": 26011,
+     "num": "331",
+     "rar": "Prism",
+     "dir": "167/621"
+    },
+    {
+     "id": "gcd-wd09-332",
+     "src": 26012,
+     "num": "332",
+     "rar": "Prism",
+     "dir": "167/621"
+    },
+    {
+     "id": "gcd-wd09-333",
+     "src": 26013,
+     "num": "333",
+     "rar": "Normal",
+     "dir": "167/621"
+    },
+    {
+     "id": "gcd-wd09-334",
+     "src": 26014,
+     "num": "334",
+     "rar": "Normal",
+     "dir": "167/621"
+    },
+    {
+     "id": "gcd-wd09-335",
+     "src": 26015,
+     "num": "335",
+     "rar": "Normal",
+     "dir": "167/621"
+    },
+    {
+     "id": "gcd-wd09-336",
+     "src": 26016,
+     "num": "336",
+     "rar": "Normal",
+     "dir": "167/621"
+    },
+    {
+     "id": "gcd-wd09-337",
+     "src": 26017,
+     "num": "337",
+     "rar": "Normal",
+     "dir": "167/621"
+    },
+    {
+     "id": "gcd-wd09-338",
+     "src": 26018,
+     "num": "338",
+     "rar": "Normal",
+     "dir": "167/621"
+    },
+    {
+     "id": "gcd-wd09-339",
+     "src": 26019,
+     "num": "339",
+     "rar": "Normal",
+     "dir": "167/621"
+    },
+    {
+     "id": "gcd-wd09-340",
+     "src": 26020,
+     "num": "340",
+     "rar": "Normal",
+     "dir": "167/621"
+    },
+    {
+     "id": "gcd-wd09-341",
+     "src": 26021,
+     "num": "341",
+     "rar": "Normal",
+     "dir": "167/621"
+    },
+    {
+     "id": "gcd-wd09-342",
+     "src": 26022,
+     "num": "342",
+     "rar": "Normal",
+     "dir": "167/621"
+    },
+    {
+     "id": "gcd-wd09-343",
+     "src": 26023,
+     "num": "343",
+     "rar": "Normal",
+     "dir": "167/621"
+    },
+    {
+     "id": "gcd-wd09-344",
+     "src": 26024,
+     "num": "344",
+     "rar": "Normal",
+     "dir": "167/621"
+    },
+    {
+     "id": "gcd-wd09-345",
+     "src": 26025,
+     "num": "345",
+     "rar": "Normal",
+     "dir": "167/621"
+    },
+    {
+     "id": "gcd-wd09-346",
+     "src": 26026,
+     "num": "346",
+     "rar": "Normal",
+     "dir": "167/621"
+    },
+    {
+     "id": "gcd-wd09-347",
+     "src": 26027,
+     "num": "347",
+     "rar": "Normal",
+     "dir": "167/621"
+    },
+    {
+     "id": "gcd-wd09-348",
+     "src": 26028,
+     "num": "348",
+     "rar": "Normal",
+     "dir": "167/621"
+    },
+    {
+     "id": "gcd-wd09-349",
+     "src": 26029,
+     "num": "349",
+     "rar": "Normal",
+     "dir": "167/621"
+    },
+    {
+     "id": "gcd-wd09-350",
+     "src": 26030,
+     "num": "350",
+     "rar": "Normal",
+     "dir": "167/621"
+    },
+    {
+     "id": "gcd-wd09-351",
+     "src": 26031,
+     "num": "351",
+     "rar": "Normal",
+     "dir": "167/621"
+    },
+    {
+     "id": "gcd-wd09-352",
+     "src": 26032,
+     "num": "352",
+     "rar": "Normal",
+     "dir": "167/621"
+    },
+    {
+     "id": "gcd-wd09-353",
+     "src": 26033,
+     "num": "353",
+     "rar": "Normal",
+     "dir": "167/621"
+    },
+    {
+     "id": "gcd-wd09-354",
+     "src": 26034,
+     "num": "354",
+     "rar": "Normal",
+     "dir": "167/621"
+    },
+    {
+     "id": "gcd-wd09-355",
+     "src": 26035,
+     "num": "355",
+     "rar": "Normal",
+     "dir": "167/621"
+    },
+    {
+     "id": "gcd-wd09-356",
+     "src": 26036,
+     "num": "356",
+     "rar": "Normal",
+     "dir": "167/621"
+    },
+    {
+     "id": "gcd-wd09-357",
+     "src": 26037,
+     "num": "357",
+     "rar": "Normal",
+     "dir": "167/621"
+    },
+    {
+     "id": "gcd-wd09-358",
+     "src": 26038,
+     "num": "358",
+     "rar": "Normal",
+     "dir": "167/621"
+    },
+    {
+     "id": "gcd-wd09-359",
+     "src": 26039,
+     "num": "359",
+     "rar": "Normal",
+     "dir": "167/621"
+    },
+    {
+     "id": "gcd-wd09-360",
+     "src": 26040,
+     "num": "360",
+     "rar": "Normal",
+     "dir": "167/621"
+    },
+    {
+     "id": "gcd-wd09-361",
+     "src": 26041,
+     "num": "361",
+     "rar": "Normal",
+     "dir": "167/621"
+    },
+    {
+     "id": "gcd-wd09-362",
+     "src": 26042,
+     "num": "362",
+     "rar": "Normal",
+     "dir": "167/621"
+    },
+    {
+     "id": "gcd-wd09-363",
+     "src": 26043,
+     "num": "363",
+     "rar": "Normal",
+     "dir": "167/621"
+    },
+    {
+     "id": "gcd-wd09-364",
+     "src": 26044,
+     "num": "364",
+     "rar": "Normal",
+     "dir": "167/621"
+    },
+    {
+     "id": "gcd-wd09-365",
+     "src": 26045,
+     "num": "365",
+     "rar": "Normal",
+     "dir": "167/621"
+    },
+    {
+     "id": "gcd-wd09-366",
+     "src": 26046,
+     "num": "366",
+     "rar": "Normal",
+     "dir": "167/621"
+    },
+    {
+     "id": "gcd-wd09-367",
+     "src": 26047,
+     "num": "367",
+     "rar": "Normal",
+     "dir": "167/621"
+    },
+    {
+     "id": "gcd-wd09-368",
+     "src": 26048,
+     "num": "368",
+     "rar": "Normal",
+     "dir": "167/621"
+    },
+    {
+     "id": "gcd-wd09-369",
+     "src": 26049,
+     "num": "369",
+     "rar": "Prism",
+     "dir": "167/621"
+    },
+    {
+     "id": "gcd-wd09-370",
+     "src": 26050,
+     "num": "370",
+     "rar": "Prism",
+     "dir": "167/621"
+    }
+   ]
+  },
+  {
+   "code": "wd10",
+   "cards": [
+    {
+     "id": "gcd-wd10-371",
+     "src": 26051,
+     "num": "371",
+     "rar": "Prism",
+     "dir": "167/622"
+    },
+    {
+     "id": "gcd-wd10-372",
+     "src": 26052,
+     "num": "372",
+     "rar": "Prism",
+     "dir": "167/622"
+    },
+    {
+     "id": "gcd-wd10-373",
+     "src": 26053,
+     "num": "373",
+     "rar": "Prism",
+     "dir": "167/622"
+    },
+    {
+     "id": "gcd-wd10-374",
+     "src": 26054,
+     "num": "374",
+     "rar": "Prism",
+     "dir": "167/622"
+    },
+    {
+     "id": "gcd-wd10-375",
+     "src": 26055,
+     "num": "375",
+     "rar": "Normal",
+     "dir": "167/622"
+    },
+    {
+     "id": "gcd-wd10-376",
+     "src": 26056,
+     "num": "376",
+     "rar": "Normal",
+     "dir": "167/622"
+    },
+    {
+     "id": "gcd-wd10-377",
+     "src": 26057,
+     "num": "377",
+     "rar": "Normal",
+     "dir": "167/622"
+    },
+    {
+     "id": "gcd-wd10-378",
+     "src": 26058,
+     "num": "378",
+     "rar": "Normal",
+     "dir": "167/622"
+    },
+    {
+     "id": "gcd-wd10-379",
+     "src": 26059,
+     "num": "379",
+     "rar": "Normal",
+     "dir": "167/622"
+    },
+    {
+     "id": "gcd-wd10-380",
+     "src": 26060,
+     "num": "380",
+     "rar": "Normal",
+     "dir": "167/622"
+    },
+    {
+     "id": "gcd-wd10-381",
+     "src": 26061,
+     "num": "381",
+     "rar": "Normal",
+     "dir": "167/622"
+    },
+    {
+     "id": "gcd-wd10-382",
+     "src": 26062,
+     "num": "382",
+     "rar": "Normal",
+     "dir": "167/622"
+    },
+    {
+     "id": "gcd-wd10-383",
+     "src": 26063,
+     "num": "383",
+     "rar": "Normal",
+     "dir": "167/622"
+    },
+    {
+     "id": "gcd-wd10-384",
+     "src": 26064,
+     "num": "384",
+     "rar": "Normal",
+     "dir": "167/622"
+    },
+    {
+     "id": "gcd-wd10-385",
+     "src": 26065,
+     "num": "385",
+     "rar": "Normal",
+     "dir": "167/622"
+    },
+    {
+     "id": "gcd-wd10-386",
+     "src": 26066,
+     "num": "386",
+     "rar": "Normal",
+     "dir": "167/622"
+    },
+    {
+     "id": "gcd-wd10-387",
+     "src": 26067,
+     "num": "387",
+     "rar": "Normal",
+     "dir": "167/622"
+    },
+    {
+     "id": "gcd-wd10-388",
+     "src": 26068,
+     "num": "388",
+     "rar": "Normal",
+     "dir": "167/622"
+    },
+    {
+     "id": "gcd-wd10-389",
+     "src": 26069,
+     "num": "389",
+     "rar": "Normal",
+     "dir": "167/622"
+    },
+    {
+     "id": "gcd-wd10-390",
+     "src": 26070,
+     "num": "390",
+     "rar": "Normal",
+     "dir": "167/622"
+    },
+    {
+     "id": "gcd-wd10-391",
+     "src": 26071,
+     "num": "391",
+     "rar": "Normal",
+     "dir": "167/622"
+    },
+    {
+     "id": "gcd-wd10-392",
+     "src": 26072,
+     "num": "392",
+     "rar": "Normal",
+     "dir": "167/622"
+    },
+    {
+     "id": "gcd-wd10-393",
+     "src": 26073,
+     "num": "393",
+     "rar": "Normal",
+     "dir": "167/622"
+    },
+    {
+     "id": "gcd-wd10-394",
+     "src": 26074,
+     "num": "394",
+     "rar": "Normal",
+     "dir": "167/622"
+    },
+    {
+     "id": "gcd-wd10-395",
+     "src": 26075,
+     "num": "395",
+     "rar": "Normal",
+     "dir": "167/622"
+    },
+    {
+     "id": "gcd-wd10-396",
+     "src": 26076,
+     "num": "396",
+     "rar": "Normal",
+     "dir": "167/622"
+    },
+    {
+     "id": "gcd-wd10-397",
+     "src": 26077,
+     "num": "397",
+     "rar": "Normal",
+     "dir": "167/622"
+    },
+    {
+     "id": "gcd-wd10-398",
+     "src": 26078,
+     "num": "398",
+     "rar": "Normal",
+     "dir": "167/622"
+    },
+    {
+     "id": "gcd-wd10-399",
+     "src": 26079,
+     "num": "399",
+     "rar": "Normal",
+     "dir": "167/622"
+    },
+    {
+     "id": "gcd-wd10-400",
+     "src": 26080,
+     "num": "400",
+     "rar": "Prism",
+     "dir": "167/622"
+    },
+    {
+     "id": "gcd-wd10-401",
+     "src": 26081,
+     "num": "401",
+     "rar": "Normal",
+     "dir": "167/622"
+    },
+    {
+     "id": "gcd-wd10-402",
+     "src": 26082,
+     "num": "402",
+     "rar": "Normal",
+     "dir": "167/622"
+    },
+    {
+     "id": "gcd-wd10-403",
+     "src": 26083,
+     "num": "403",
+     "rar": "Normal",
+     "dir": "167/622"
+    },
+    {
+     "id": "gcd-wd10-404",
+     "src": 26084,
+     "num": "404",
+     "rar": "Normal",
+     "dir": "167/622"
+    },
+    {
+     "id": "gcd-wd10-405",
+     "src": 26085,
+     "num": "405",
+     "rar": "Normal",
+     "dir": "167/622"
+    },
+    {
+     "id": "gcd-wd10-406",
+     "src": 26086,
+     "num": "406",
+     "rar": "Normal",
+     "dir": "167/622"
+    },
+    {
+     "id": "gcd-wd10-407",
+     "src": 26087,
+     "num": "407",
+     "rar": "Normal",
+     "dir": "167/622"
+    },
+    {
+     "id": "gcd-wd10-408",
+     "src": 26088,
+     "num": "408",
+     "rar": "Normal",
+     "dir": "167/622"
+    },
+    {
+     "id": "gcd-wd10-409",
+     "src": 26089,
+     "num": "409",
+     "rar": "Normal",
+     "dir": "167/622"
+    },
+    {
+     "id": "gcd-wd10-410",
+     "src": 26090,
+     "num": "410",
+     "rar": "Normal",
+     "dir": "167/622"
+    },
+    {
+     "id": "gcd-wd10-411",
+     "src": 26091,
+     "num": "411",
+     "rar": "Normal",
+     "dir": "167/622"
+    }
+   ]
+  },
+  {
+   "code": "wd11",
+   "cards": [
+    {
+     "id": "gcd-wd11-412",
+     "src": 26092,
+     "num": "412",
+     "rar": "Prism",
+     "dir": "167/623"
+    },
+    {
+     "id": "gcd-wd11-413",
+     "src": 26093,
+     "num": "413",
+     "rar": "Normal",
+     "dir": "167/623"
+    },
+    {
+     "id": "gcd-wd11-414",
+     "src": 26094,
+     "num": "414",
+     "rar": "Prism",
+     "dir": "167/623"
+    },
+    {
+     "id": "gcd-wd11-415",
+     "src": 26095,
+     "num": "415",
+     "rar": "Normal",
+     "dir": "167/623"
+    },
+    {
+     "id": "gcd-wd11-416",
+     "src": 26096,
+     "num": "416",
+     "rar": "Prism",
+     "dir": "167/623"
+    },
+    {
+     "id": "gcd-wd11-417",
+     "src": 26097,
+     "num": "417",
+     "rar": "Normal",
+     "dir": "167/623"
+    },
+    {
+     "id": "gcd-wd11-418",
+     "src": 26098,
+     "num": "418",
+     "rar": "Prism",
+     "dir": "167/623"
+    },
+    {
+     "id": "gcd-wd11-419",
+     "src": 26099,
+     "num": "419",
+     "rar": "Prism",
+     "dir": "167/623"
+    },
+    {
+     "id": "gcd-wd11-420",
+     "src": 26100,
+     "num": "420",
+     "rar": "Prism",
+     "dir": "167/623"
+    },
+    {
+     "id": "gcd-wd11-421",
+     "src": 26101,
+     "num": "421",
+     "rar": "Normal",
+     "dir": "167/623"
+    },
+    {
+     "id": "gcd-wd11-422",
+     "src": 26102,
+     "num": "422",
+     "rar": "Normal",
+     "dir": "167/623"
+    },
+    {
+     "id": "gcd-wd11-423",
+     "src": 26103,
+     "num": "423",
+     "rar": "Normal",
+     "dir": "167/623"
+    },
+    {
+     "id": "gcd-wd11-424",
+     "src": 26104,
+     "num": "424",
+     "rar": "Normal",
+     "dir": "167/623"
+    },
+    {
+     "id": "gcd-wd11-425",
+     "src": 26105,
+     "num": "425",
+     "rar": "Normal",
+     "dir": "167/623"
+    },
+    {
+     "id": "gcd-wd11-426",
+     "src": 26106,
+     "num": "426",
+     "rar": "Normal",
+     "dir": "167/623"
+    },
+    {
+     "id": "gcd-wd11-427",
+     "src": 26107,
+     "num": "427",
+     "rar": "Normal",
+     "dir": "167/623"
+    },
+    {
+     "id": "gcd-wd11-428",
+     "src": 26108,
+     "num": "428",
+     "rar": "Normal",
+     "dir": "167/623"
+    },
+    {
+     "id": "gcd-wd11-429",
+     "src": 26109,
+     "num": "429",
+     "rar": "Normal",
+     "dir": "167/623"
+    },
+    {
+     "id": "gcd-wd11-430",
+     "src": 26110,
+     "num": "430",
+     "rar": "Normal",
+     "dir": "167/623"
+    },
+    {
+     "id": "gcd-wd11-431",
+     "src": 26111,
+     "num": "431",
+     "rar": "Normal",
+     "dir": "167/623"
+    },
+    {
+     "id": "gcd-wd11-432",
+     "src": 26112,
+     "num": "432",
+     "rar": "Normal",
+     "dir": "167/623"
+    },
+    {
+     "id": "gcd-wd11-433",
+     "src": 26113,
+     "num": "433",
+     "rar": "Normal",
+     "dir": "167/623"
+    },
+    {
+     "id": "gcd-wd11-434",
+     "src": 26114,
+     "num": "434",
+     "rar": "Normal",
+     "dir": "167/623"
+    },
+    {
+     "id": "gcd-wd11-435",
+     "src": 26115,
+     "num": "435",
+     "rar": "Normal",
+     "dir": "167/623"
+    },
+    {
+     "id": "gcd-wd11-436",
+     "src": 26116,
+     "num": "436",
+     "rar": "Normal",
+     "dir": "167/623"
+    },
+    {
+     "id": "gcd-wd11-437",
+     "src": 26117,
+     "num": "437",
+     "rar": "Normal",
+     "dir": "167/623"
+    },
+    {
+     "id": "gcd-wd11-438",
+     "src": 26118,
+     "num": "438",
+     "rar": "Normal",
+     "dir": "167/623"
+    },
+    {
+     "id": "gcd-wd11-439",
+     "src": 26119,
+     "num": "439",
+     "rar": "Normal",
+     "dir": "167/623"
+    },
+    {
+     "id": "gcd-wd11-440",
+     "src": 26120,
+     "num": "440",
+     "rar": "Normal",
+     "dir": "167/623"
+    },
+    {
+     "id": "gcd-wd11-441",
+     "src": 26121,
+     "num": "441",
+     "rar": "Normal",
+     "dir": "167/623"
+    },
+    {
+     "id": "gcd-wd11-442",
+     "src": 26122,
+     "num": "442",
+     "rar": "Normal",
+     "dir": "167/623"
+    },
+    {
+     "id": "gcd-wd11-443",
+     "src": 26123,
+     "num": "443",
+     "rar": "Normal",
+     "dir": "167/623"
+    },
+    {
+     "id": "gcd-wd11-444",
+     "src": 26124,
+     "num": "444",
+     "rar": "Normal",
+     "dir": "167/623"
+    },
+    {
+     "id": "gcd-wd11-445",
+     "src": 26125,
+     "num": "445",
+     "rar": "Normal",
+     "dir": "167/623"
+    },
+    {
+     "id": "gcd-wd11-446",
+     "src": 26126,
+     "num": "446",
+     "rar": "Normal",
+     "dir": "167/623"
+    },
+    {
+     "id": "gcd-wd11-447",
+     "src": 26127,
+     "num": "447",
+     "rar": "Normal",
+     "dir": "167/623"
+    },
+    {
+     "id": "gcd-wd11-448",
+     "src": 26128,
+     "num": "448",
+     "rar": "Normal",
+     "dir": "167/623"
+    },
+    {
+     "id": "gcd-wd11-449",
+     "src": 26129,
+     "num": "449",
+     "rar": "Normal",
+     "dir": "167/623"
+    },
+    {
+     "id": "gcd-wd11-450",
+     "src": 26130,
+     "num": "450",
+     "rar": "Normal",
+     "dir": "167/623"
+    },
+    {
+     "id": "gcd-wd11-451",
+     "src": 26131,
+     "num": "451",
+     "rar": "Normal",
+     "dir": "167/623"
+    },
+    {
+     "id": "gcd-wd11-452",
+     "src": 26132,
+     "num": "452",
+     "rar": "Normal",
+     "dir": "167/623"
+    },
+    {
+     "id": "gcd-wd11-453",
+     "src": 26133,
+     "num": "453",
+     "rar": "Normal",
+     "dir": "167/623"
+    }
+   ]
+  },
+  {
+   "code": "wd12",
+   "cards": [
+    {
+     "id": "gcd-wd12-454",
+     "src": 26134,
+     "num": "454",
+     "rar": "Prism",
+     "dir": "167/624"
+    },
+    {
+     "id": "gcd-wd12-455",
+     "src": 26135,
+     "num": "455",
+     "rar": "Normal",
+     "dir": "167/624"
+    },
+    {
+     "id": "gcd-wd12-456",
+     "src": 26136,
+     "num": "456",
+     "rar": "Prism",
+     "dir": "167/624"
+    },
+    {
+     "id": "gcd-wd12-457",
+     "src": 26137,
+     "num": "457",
+     "rar": "Prism",
+     "dir": "167/624"
+    },
+    {
+     "id": "gcd-wd12-458",
+     "src": 26138,
+     "num": "458",
+     "rar": "Prism",
+     "dir": "167/624"
+    },
+    {
+     "id": "gcd-wd12-459",
+     "src": 26139,
+     "num": "459",
+     "rar": "Normal",
+     "dir": "167/624"
+    },
+    {
+     "id": "gcd-wd12-460",
+     "src": 26140,
+     "num": "460",
+     "rar": "Prism",
+     "dir": "167/624"
+    },
+    {
+     "id": "gcd-wd12-461",
+     "src": 26141,
+     "num": "461",
+     "rar": "Prism",
+     "dir": "167/624"
+    },
+    {
+     "id": "gcd-wd12-462",
+     "src": 26142,
+     "num": "462",
+     "rar": "Normal",
+     "dir": "167/624"
+    },
+    {
+     "id": "gcd-wd12-463",
+     "src": 26143,
+     "num": "463",
+     "rar": "Normal",
+     "dir": "167/624"
+    },
+    {
+     "id": "gcd-wd12-464",
+     "src": 26144,
+     "num": "464",
+     "rar": "Normal",
+     "dir": "167/624"
+    },
+    {
+     "id": "gcd-wd12-465",
+     "src": 26145,
+     "num": "465",
+     "rar": "Normal",
+     "dir": "167/624"
+    },
+    {
+     "id": "gcd-wd12-466",
+     "src": 26146,
+     "num": "466",
+     "rar": "Normal",
+     "dir": "167/624"
+    },
+    {
+     "id": "gcd-wd12-467",
+     "src": 26147,
+     "num": "467",
+     "rar": "Normal",
+     "dir": "167/624"
+    },
+    {
+     "id": "gcd-wd12-468",
+     "src": 26148,
+     "num": "468",
+     "rar": "Normal",
+     "dir": "167/624"
+    },
+    {
+     "id": "gcd-wd12-469",
+     "src": 26149,
+     "num": "469",
+     "rar": "Normal",
+     "dir": "167/624"
+    },
+    {
+     "id": "gcd-wd12-470",
+     "src": 26150,
+     "num": "470",
+     "rar": "Normal",
+     "dir": "167/624"
+    },
+    {
+     "id": "gcd-wd12-471",
+     "src": 26151,
+     "num": "471",
+     "rar": "Normal",
+     "dir": "167/624"
+    },
+    {
+     "id": "gcd-wd12-472",
+     "src": 26152,
+     "num": "472",
+     "rar": "Normal",
+     "dir": "167/624"
+    },
+    {
+     "id": "gcd-wd12-473",
+     "src": 26153,
+     "num": "473",
+     "rar": "Normal",
+     "dir": "167/624"
+    },
+    {
+     "id": "gcd-wd12-474",
+     "src": 26154,
+     "num": "474",
+     "rar": "Normal",
+     "dir": "167/624"
+    },
+    {
+     "id": "gcd-wd12-475",
+     "src": 26155,
+     "num": "475",
+     "rar": "Normal",
+     "dir": "167/624"
+    },
+    {
+     "id": "gcd-wd12-476",
+     "src": 26156,
+     "num": "476",
+     "rar": "Normal",
+     "dir": "167/624"
+    },
+    {
+     "id": "gcd-wd12-477",
+     "src": 26157,
+     "num": "477",
+     "rar": "Normal",
+     "dir": "167/624"
+    },
+    {
+     "id": "gcd-wd12-478",
+     "src": 26158,
+     "num": "478",
+     "rar": "Normal",
+     "dir": "167/624"
+    },
+    {
+     "id": "gcd-wd12-479",
+     "src": 26159,
+     "num": "479",
+     "rar": "Normal",
+     "dir": "167/624"
+    },
+    {
+     "id": "gcd-wd12-480",
+     "src": 26160,
+     "num": "480",
+     "rar": "Normal",
+     "dir": "167/624"
+    },
+    {
+     "id": "gcd-wd12-481",
+     "src": 26161,
+     "num": "481",
+     "rar": "Normal",
+     "dir": "167/624"
+    },
+    {
+     "id": "gcd-wd12-482",
+     "src": 26162,
+     "num": "482",
+     "rar": "Normal",
+     "dir": "167/624"
+    },
+    {
+     "id": "gcd-wd12-483",
+     "src": 26163,
+     "num": "483",
+     "rar": "Normal",
+     "dir": "167/624"
+    },
+    {
+     "id": "gcd-wd12-484",
+     "src": 26164,
+     "num": "484",
+     "rar": "Normal",
+     "dir": "167/624"
+    },
+    {
+     "id": "gcd-wd12-485",
+     "src": 26165,
+     "num": "485",
+     "rar": "Normal",
+     "dir": "167/624"
+    },
+    {
+     "id": "gcd-wd12-486",
+     "src": 26166,
+     "num": "486",
+     "rar": "Normal",
+     "dir": "167/624"
+    },
+    {
+     "id": "gcd-wd12-487",
+     "src": 26167,
+     "num": "487",
+     "rar": "Normal",
+     "dir": "167/624"
+    },
+    {
+     "id": "gcd-wd12-488",
+     "src": 26168,
+     "num": "488",
+     "rar": "Normal",
+     "dir": "167/624"
+    },
+    {
+     "id": "gcd-wd12-489",
+     "src": 26169,
+     "num": "489",
+     "rar": "Normal",
+     "dir": "167/624"
+    },
+    {
+     "id": "gcd-wd12-490",
+     "src": 26170,
+     "num": "490",
+     "rar": "Normal",
+     "dir": "167/624"
+    },
+    {
+     "id": "gcd-wd12-491",
+     "src": 26171,
+     "num": "491",
+     "rar": "Normal",
+     "dir": "167/624"
+    },
+    {
+     "id": "gcd-wd12-492",
+     "src": 26172,
+     "num": "492",
+     "rar": "Normal",
+     "dir": "167/624"
+    },
+    {
+     "id": "gcd-wd12-493",
+     "src": 26173,
+     "num": "493",
+     "rar": "Normal",
+     "dir": "167/624"
+    },
+    {
+     "id": "gcd-wd12-494",
+     "src": 26174,
+     "num": "494",
+     "rar": "Normal",
+     "dir": "167/624"
+    },
+    {
+     "id": "gcd-wd12-495",
+     "src": 26175,
+     "num": "495",
+     "rar": "Normal",
+     "dir": "167/624"
+    }
+   ]
+  },
+  {
+   "code": "wd13",
+   "cards": [
+    {
+     "id": "gcd-wd13-496",
+     "src": 26176,
+     "num": "496",
+     "rar": "Prism",
+     "dir": "167/625"
+    },
+    {
+     "id": "gcd-wd13-497",
+     "src": 26177,
+     "num": "497",
+     "rar": "Normal",
+     "dir": "167/625"
+    },
+    {
+     "id": "gcd-wd13-498",
+     "src": 26178,
+     "num": "498",
+     "rar": "Prism",
+     "dir": "167/625"
+    },
+    {
+     "id": "gcd-wd13-499",
+     "src": 26179,
+     "num": "499",
+     "rar": "Prism",
+     "dir": "167/625"
+    },
+    {
+     "id": "gcd-wd13-500",
+     "src": 26180,
+     "num": "500",
+     "rar": "Double Prism",
+     "dir": "167/625"
+    },
+    {
+     "id": "gcd-wd13-500b",
+     "src": 26181,
+     "num": "500",
+     "rar": "Prism",
+     "dir": "167/625"
+    },
+    {
+     "id": "gcd-wd13-501",
+     "src": 26182,
+     "num": "501",
+     "rar": "Prism",
+     "dir": "167/625"
+    },
+    {
+     "id": "gcd-wd13-502",
+     "src": 26183,
+     "num": "502",
+     "rar": "Normal",
+     "dir": "167/625"
+    },
+    {
+     "id": "gcd-wd13-503",
+     "src": 26184,
+     "num": "503",
+     "rar": "Normal",
+     "dir": "167/625"
+    },
+    {
+     "id": "gcd-wd13-504",
+     "src": 26185,
+     "num": "504",
+     "rar": "Normal",
+     "dir": "167/625"
+    },
+    {
+     "id": "gcd-wd13-505",
+     "src": 26186,
+     "num": "505",
+     "rar": "Normal",
+     "dir": "167/625"
+    },
+    {
+     "id": "gcd-wd13-506",
+     "src": 26187,
+     "num": "506",
+     "rar": "Normal",
+     "dir": "167/625"
+    },
+    {
+     "id": "gcd-wd13-507",
+     "src": 26188,
+     "num": "507",
+     "rar": "Normal",
+     "dir": "167/625"
+    },
+    {
+     "id": "gcd-wd13-508",
+     "src": 26189,
+     "num": "508",
+     "rar": "Normal",
+     "dir": "167/625"
+    },
+    {
+     "id": "gcd-wd13-509",
+     "src": 26190,
+     "num": "509",
+     "rar": "Normal",
+     "dir": "167/625"
+    },
+    {
+     "id": "gcd-wd13-510",
+     "src": 26191,
+     "num": "510",
+     "rar": "Normal",
+     "dir": "167/625"
+    },
+    {
+     "id": "gcd-wd13-511",
+     "src": 26192,
+     "num": "511",
+     "rar": "Normal",
+     "dir": "167/625"
+    },
+    {
+     "id": "gcd-wd13-512",
+     "src": 26193,
+     "num": "512",
+     "rar": "Normal",
+     "dir": "167/625"
+    },
+    {
+     "id": "gcd-wd13-513",
+     "src": 26194,
+     "num": "513",
+     "rar": "Normal",
+     "dir": "167/625"
+    },
+    {
+     "id": "gcd-wd13-514",
+     "src": 26195,
+     "num": "514",
+     "rar": "Normal",
+     "dir": "167/625"
+    },
+    {
+     "id": "gcd-wd13-515",
+     "src": 26196,
+     "num": "515",
+     "rar": "Normal",
+     "dir": "167/625"
+    },
+    {
+     "id": "gcd-wd13-516",
+     "src": 26197,
+     "num": "516",
+     "rar": "Normal",
+     "dir": "167/625"
+    },
+    {
+     "id": "gcd-wd13-517",
+     "src": 26198,
+     "num": "517",
+     "rar": "Normal",
+     "dir": "167/625"
+    },
+    {
+     "id": "gcd-wd13-518",
+     "src": 26199,
+     "num": "518",
+     "rar": "Normal",
+     "dir": "167/625"
+    },
+    {
+     "id": "gcd-wd13-519",
+     "src": 26200,
+     "num": "519",
+     "rar": "Normal",
+     "dir": "167/625"
+    },
+    {
+     "id": "gcd-wd13-520",
+     "src": 26201,
+     "num": "520",
+     "rar": "Normal",
+     "dir": "167/625"
+    },
+    {
+     "id": "gcd-wd13-521",
+     "src": 26202,
+     "num": "521",
+     "rar": "Normal",
+     "dir": "167/625"
+    },
+    {
+     "id": "gcd-wd13-522",
+     "src": 26203,
+     "num": "522",
+     "rar": "Normal",
+     "dir": "167/625"
+    },
+    {
+     "id": "gcd-wd13-523",
+     "src": 26204,
+     "num": "523",
+     "rar": "Normal",
+     "dir": "167/625"
+    },
+    {
+     "id": "gcd-wd13-524",
+     "src": 26205,
+     "num": "524",
+     "rar": "Normal",
+     "dir": "167/625"
+    },
+    {
+     "id": "gcd-wd13-525",
+     "src": 26206,
+     "num": "525",
+     "rar": "Normal",
+     "dir": "167/625"
+    },
+    {
+     "id": "gcd-wd13-526",
+     "src": 26207,
+     "num": "526",
+     "rar": "Normal",
+     "dir": "167/625"
+    },
+    {
+     "id": "gcd-wd13-527",
+     "src": 26208,
+     "num": "527",
+     "rar": "Normal",
+     "dir": "167/625"
+    },
+    {
+     "id": "gcd-wd13-528",
+     "src": 26209,
+     "num": "528",
+     "rar": "Normal",
+     "dir": "167/625"
+    },
+    {
+     "id": "gcd-wd13-529",
+     "src": 26210,
+     "num": "529",
+     "rar": "Normal",
+     "dir": "167/625"
+    },
+    {
+     "id": "gcd-wd13-530",
+     "src": 26211,
+     "num": "530",
+     "rar": "Normal",
+     "dir": "167/625"
+    },
+    {
+     "id": "gcd-wd13-531",
+     "src": 26212,
+     "num": "531",
+     "rar": "Normal",
+     "dir": "167/625"
+    },
+    {
+     "id": "gcd-wd13-532",
+     "src": 26213,
+     "num": "532",
+     "rar": "Normal",
+     "dir": "167/625"
+    },
+    {
+     "id": "gcd-wd13-533",
+     "src": 26214,
+     "num": "533",
+     "rar": "Normal",
+     "dir": "167/625"
+    },
+    {
+     "id": "gcd-wd13-534",
+     "src": 26215,
+     "num": "534",
+     "rar": "Normal",
+     "dir": "167/625"
+    },
+    {
+     "id": "gcd-wd13-535",
+     "src": 26216,
+     "num": "535",
+     "rar": "Normal",
+     "dir": "167/625"
+    },
+    {
+     "id": "gcd-wd13-536",
+     "src": 26217,
+     "num": "536",
+     "rar": "Normal",
+     "dir": "167/625"
+    },
+    {
+     "id": "gcd-wd13-537",
+     "src": 26218,
+     "num": "537",
+     "rar": "Normal",
+     "dir": "167/625"
+    }
+   ]
+  },
+  {
+   "code": "gd01",
+   "cards": [
+    {
+     "id": "gcd-gd01-1",
+     "src": 16061,
+     "num": "1",
+     "rar": "Prism",
+     "dir": "7/50"
+    },
+    {
+     "id": "gcd-gd01-2",
+     "src": 2159,
+     "num": "2",
+     "rar": "Normal",
+     "dir": "7/50"
+    },
+    {
+     "id": "gcd-gd01-3",
+     "src": 2160,
+     "num": "3",
+     "rar": "Normal",
+     "dir": "7/50"
+    },
+    {
+     "id": "gcd-gd01-4",
+     "src": 16062,
+     "num": "4",
+     "rar": "Normal",
+     "dir": "7/50"
+    },
+    {
+     "id": "gcd-gd01-5",
+     "src": 16063,
+     "num": "5",
+     "rar": "Normal",
+     "dir": "7/50"
+    },
+    {
+     "id": "gcd-gd01-6",
+     "src": 16064,
+     "num": "6",
+     "rar": "Normal",
+     "dir": "7/50"
+    },
+    {
+     "id": "gcd-gd01-7",
+     "src": 16065,
+     "num": "7",
+     "rar": "Prism",
+     "dir": "7/50"
+    },
+    {
+     "id": "gcd-gd01-8",
+     "src": 2165,
+     "num": "8",
+     "rar": "Normal",
+     "dir": "7/50"
+    },
+    {
+     "id": "gcd-gd01-9",
+     "src": 16066,
+     "num": "9",
+     "rar": "Normal",
+     "dir": "7/50"
+    },
+    {
+     "id": "gcd-gd01-10",
+     "src": 16067,
+     "num": "10",
+     "rar": "Normal",
+     "dir": "7/50"
+    },
+    {
+     "id": "gcd-gd01-11",
+     "src": 16068,
+     "num": "11",
+     "rar": "Normal",
+     "dir": "7/50"
+    },
+    {
+     "id": "gcd-gd01-12",
+     "src": 16069,
+     "num": "12",
+     "rar": "Normal",
+     "dir": "7/50"
+    },
+    {
+     "id": "gcd-gd01-13",
+     "src": 2170,
+     "num": "13",
+     "rar": "Normal",
+     "dir": "7/50"
+    },
+    {
+     "id": "gcd-gd01-14",
+     "src": 16070,
+     "num": "14",
+     "rar": "Normal",
+     "dir": "7/50"
+    },
+    {
+     "id": "gcd-gd01-15",
+     "src": 16071,
+     "num": "15",
+     "rar": "Normal",
+     "dir": "7/50"
+    },
+    {
+     "id": "gcd-gd01-16",
+     "src": 2173,
+     "num": "16",
+     "rar": "Normal",
+     "dir": "7/50"
+    },
+    {
+     "id": "gcd-gd01-17",
+     "src": 16072,
+     "num": "17",
+     "rar": "Normal",
+     "dir": "7/50"
+    },
+    {
+     "id": "gcd-gd01-18",
+     "src": 16073,
+     "num": "18",
+     "rar": "Normal",
+     "dir": "7/50"
+    },
+    {
+     "id": "gcd-gd01-19",
+     "src": 16074,
+     "num": "19",
+     "rar": "Normal",
+     "dir": "7/50"
+    },
+    {
+     "id": "gcd-gd01-20",
+     "src": 2177,
+     "num": "20",
+     "rar": "Normal",
+     "dir": "7/50"
+    },
+    {
+     "id": "gcd-gd01-21",
+     "src": 16075,
+     "num": "21",
+     "rar": "Normal",
+     "dir": "7/50"
+    },
+    {
+     "id": "gcd-gd01-22",
+     "src": 2179,
+     "num": "22",
+     "rar": "Normal",
+     "dir": "7/50"
+    },
+    {
+     "id": "gcd-gd01-23",
+     "src": 2180,
+     "num": "23",
+     "rar": "Normal",
+     "dir": "7/50"
+    },
+    {
+     "id": "gcd-gd01-24",
+     "src": 2181,
+     "num": "24",
+     "rar": "Normal",
+     "dir": "7/50"
+    },
+    {
+     "id": "gcd-gd01-25",
+     "src": 2182,
+     "num": "25",
+     "rar": "Normal",
+     "dir": "7/50"
+    },
+    {
+     "id": "gcd-gd01-26",
+     "src": 2183,
+     "num": "26",
+     "rar": "Normal",
+     "dir": "7/50"
+    },
+    {
+     "id": "gcd-gd01-27",
+     "src": 2184,
+     "num": "27",
+     "rar": "Normal",
+     "dir": "7/50"
+    },
+    {
+     "id": "gcd-gd01-28",
+     "src": 2185,
+     "num": "28",
+     "rar": "Normal",
+     "dir": "7/50"
+    },
+    {
+     "id": "gcd-gd01-29",
+     "src": 16076,
+     "num": "29",
+     "rar": "Prism",
+     "dir": "7/50"
+    },
+    {
+     "id": "gcd-gd01-30",
+     "src": 16077,
+     "num": "30",
+     "rar": "Prism",
+     "dir": "7/50"
+    },
+    {
+     "id": "gcd-gd01-31",
+     "src": 16078,
+     "num": "31",
+     "rar": "Prism",
+     "dir": "7/50"
+    },
+    {
+     "id": "gcd-gd01-32",
+     "src": 16079,
+     "num": "32",
+     "rar": "Normal",
+     "dir": "7/50"
+    },
+    {
+     "id": "gcd-gd01-33",
+     "src": 2190,
+     "num": "33",
+     "rar": "Normal",
+     "dir": "7/50"
+    },
+    {
+     "id": "gcd-gd01-34",
+     "src": 2191,
+     "num": "34",
+     "rar": "Normal",
+     "dir": "7/50"
+    },
+    {
+     "id": "gcd-gd01-35",
+     "src": 2192,
+     "num": "35",
+     "rar": "Prism",
+     "dir": "7/50"
+    },
+    {
+     "id": "gcd-gd01-36",
+     "src": 16080,
+     "num": "36",
+     "rar": "Normal",
+     "dir": "7/50"
+    },
+    {
+     "id": "gcd-gd01-37",
+     "src": 16081,
+     "num": "37",
+     "rar": "Normal",
+     "dir": "7/50"
+    },
+    {
+     "id": "gcd-gd01-38",
+     "src": 2195,
+     "num": "38",
+     "rar": "Normal",
+     "dir": "7/50"
+    },
+    {
+     "id": "gcd-gd01-39",
+     "src": 16082,
+     "num": "39",
+     "rar": "Normal",
+     "dir": "7/50"
+    },
+    {
+     "id": "gcd-gd01-40",
+     "src": 2197,
+     "num": "40",
+     "rar": "Normal",
+     "dir": "7/50"
+    },
+    {
+     "id": "gcd-gd01-41",
+     "src": 2198,
+     "num": "41",
+     "rar": "Normal",
+     "dir": "7/50"
+    },
+    {
+     "id": "gcd-gd01-42",
+     "src": 2199,
+     "num": "42",
+     "rar": "Normal",
+     "dir": "7/50"
+    }
+   ]
+  },
+  {
+   "code": "gd02",
+   "cards": [
+    {
+     "id": "gcd-gd02-43",
+     "src": 16083,
+     "num": "43",
+     "rar": "Prism",
+     "dir": "7/51"
+    },
+    {
+     "id": "gcd-gd02-44",
+     "src": 2201,
+     "num": "44",
+     "rar": "Normal",
+     "dir": "7/51"
+    },
+    {
+     "id": "gcd-gd02-45",
+     "src": 16084,
+     "num": "45",
+     "rar": "Normal",
+     "dir": "7/51"
+    },
+    {
+     "id": "gcd-gd02-46",
+     "src": 2203,
+     "num": "46",
+     "rar": "Normal",
+     "dir": "7/51"
+    },
+    {
+     "id": "gcd-gd02-47",
+     "src": 16085,
+     "num": "47",
+     "rar": "Normal",
+     "dir": "7/51"
+    },
+    {
+     "id": "gcd-gd02-48",
+     "src": 2205,
+     "num": "48",
+     "rar": "Normal",
+     "dir": "7/51"
+    },
+    {
+     "id": "gcd-gd02-49",
+     "src": 16086,
+     "num": "49",
+     "rar": "Prism",
+     "dir": "7/51"
+    },
+    {
+     "id": "gcd-gd02-50",
+     "src": 2207,
+     "num": "50",
+     "rar": "Normal",
+     "dir": "7/51"
+    },
+    {
+     "id": "gcd-gd02-51",
+     "src": 16087,
+     "num": "51",
+     "rar": "Normal",
+     "dir": "7/51"
+    },
+    {
+     "id": "gcd-gd02-52",
+     "src": 16088,
+     "num": "52",
+     "rar": "Normal",
+     "dir": "7/51"
+    },
+    {
+     "id": "gcd-gd02-53",
+     "src": 2210,
+     "num": "53",
+     "rar": "Normal",
+     "dir": "7/51"
+    },
+    {
+     "id": "gcd-gd02-54",
+     "src": 2211,
+     "num": "54",
+     "rar": "Normal",
+     "dir": "7/51"
+    },
+    {
+     "id": "gcd-gd02-55",
+     "src": 16089,
+     "num": "55",
+     "rar": "Normal",
+     "dir": "7/51"
+    },
+    {
+     "id": "gcd-gd02-56",
+     "src": 16090,
+     "num": "56",
+     "rar": "Normal",
+     "dir": "7/51"
+    },
+    {
+     "id": "gcd-gd02-57",
+     "src": 16091,
+     "num": "57",
+     "rar": "Normal",
+     "dir": "7/51"
+    },
+    {
+     "id": "gcd-gd02-58",
+     "src": 2215,
+     "num": "58",
+     "rar": "Normal",
+     "dir": "7/51"
+    },
+    {
+     "id": "gcd-gd02-59",
+     "src": 16092,
+     "num": "59",
+     "rar": "Normal",
+     "dir": "7/51"
+    },
+    {
+     "id": "gcd-gd02-60",
+     "src": 16093,
+     "num": "60",
+     "rar": "Normal",
+     "dir": "7/51"
+    },
+    {
+     "id": "gcd-gd02-61",
+     "src": 2218,
+     "num": "61",
+     "rar": "Normal",
+     "dir": "7/51"
+    },
+    {
+     "id": "gcd-gd02-62",
+     "src": 16094,
+     "num": "62",
+     "rar": "Normal",
+     "dir": "7/51"
+    },
+    {
+     "id": "gcd-gd02-63",
+     "src": 2220,
+     "num": "63",
+     "rar": "Normal",
+     "dir": "7/51"
+    },
+    {
+     "id": "gcd-gd02-64",
+     "src": 2221,
+     "num": "64",
+     "rar": "Normal",
+     "dir": "7/51"
+    },
+    {
+     "id": "gcd-gd02-65",
+     "src": 2222,
+     "num": "65",
+     "rar": "Normal",
+     "dir": "7/51"
+    },
+    {
+     "id": "gcd-gd02-66",
+     "src": 2223,
+     "num": "66",
+     "rar": "Normal",
+     "dir": "7/51"
+    },
+    {
+     "id": "gcd-gd02-67",
+     "src": 2224,
+     "num": "67",
+     "rar": "Normal",
+     "dir": "7/51"
+    },
+    {
+     "id": "gcd-gd02-68",
+     "src": 2225,
+     "num": "68",
+     "rar": "Normal",
+     "dir": "7/51"
+    },
+    {
+     "id": "gcd-gd02-69",
+     "src": 2226,
+     "num": "69",
+     "rar": "Normal",
+     "dir": "7/51"
+    },
+    {
+     "id": "gcd-gd02-70",
+     "src": 2227,
+     "num": "70",
+     "rar": "Normal",
+     "dir": "7/51"
+    },
+    {
+     "id": "gcd-gd02-71",
+     "src": 16095,
+     "num": "71",
+     "rar": "Prism",
+     "dir": "7/51"
+    },
+    {
+     "id": "gcd-gd02-72",
+     "src": 16096,
+     "num": "72",
+     "rar": "Prism",
+     "dir": "7/51"
+    },
+    {
+     "id": "gcd-gd02-73",
+     "src": 2230,
+     "num": "73",
+     "rar": "Prism",
+     "dir": "7/51"
+    },
+    {
+     "id": "gcd-gd02-74",
+     "src": 2231,
+     "num": "74",
+     "rar": "Prism",
+     "dir": "7/51"
+    },
+    {
+     "id": "gcd-gd02-75",
+     "src": 16097,
+     "num": "75",
+     "rar": "Normal",
+     "dir": "7/51"
+    },
+    {
+     "id": "gcd-gd02-76",
+     "src": 16098,
+     "num": "76",
+     "rar": "Normal",
+     "dir": "7/51"
+    },
+    {
+     "id": "gcd-gd02-77",
+     "src": 16099,
+     "num": "77",
+     "rar": "Normal",
+     "dir": "7/51"
+    },
+    {
+     "id": "gcd-gd02-78",
+     "src": 2235,
+     "num": "78",
+     "rar": "Normal",
+     "dir": "7/51"
+    },
+    {
+     "id": "gcd-gd02-79",
+     "src": 16101,
+     "num": "79",
+     "rar": "Normal",
+     "dir": "7/51"
+    },
+    {
+     "id": "gcd-gd02-80",
+     "src": 16100,
+     "num": "80",
+     "rar": "Normal",
+     "dir": "7/51"
+    },
+    {
+     "id": "gcd-gd02-81",
+     "src": 2238,
+     "num": "81",
+     "rar": "Normal",
+     "dir": "7/51"
+    },
+    {
+     "id": "gcd-gd02-82",
+     "src": 16102,
+     "num": "82",
+     "rar": "Normal",
+     "dir": "7/51"
+    },
+    {
+     "id": "gcd-gd02-83",
+     "src": 2240,
+     "num": "83",
+     "rar": "Normal",
+     "dir": "7/51"
+    },
+    {
+     "id": "gcd-gd02-84",
+     "src": 2241,
+     "num": "84",
+     "rar": "Normal",
+     "dir": "7/51"
+    }
+   ]
+  },
+  {
+   "code": "gd03",
+   "cards": [
+    {
+     "id": "gcd-gd03-85",
+     "src": 26768,
+     "num": "85",
+     "rar": "Prism",
+     "dir": "7/637"
+    },
+    {
+     "id": "gcd-gd03-86",
+     "src": 26769,
+     "num": "86",
+     "rar": "Prism",
+     "dir": "7/637"
+    },
+    {
+     "id": "gcd-gd03-87",
+     "src": 26770,
+     "num": "87",
+     "rar": "Normal",
+     "dir": "7/637"
+    },
+    {
+     "id": "gcd-gd03-88",
+     "src": 26771,
+     "num": "88",
+     "rar": "Normal",
+     "dir": "7/637"
+    },
+    {
+     "id": "gcd-gd03-89",
+     "src": 26772,
+     "num": "89",
+     "rar": "Normal",
+     "dir": "7/637"
+    },
+    {
+     "id": "gcd-gd03-90",
+     "src": 26773,
+     "num": "90",
+     "rar": "Prism",
+     "dir": "7/637"
+    },
+    {
+     "id": "gcd-gd03-91",
+     "src": 26774,
+     "num": "91",
+     "rar": "Normal",
+     "dir": "7/637"
+    },
+    {
+     "id": "gcd-gd03-92",
+     "src": 26775,
+     "num": "92",
+     "rar": "Normal",
+     "dir": "7/637"
+    },
+    {
+     "id": "gcd-gd03-93",
+     "src": 26776,
+     "num": "93",
+     "rar": "Normal",
+     "dir": "7/637"
+    },
+    {
+     "id": "gcd-gd03-94",
+     "src": 26777,
+     "num": "94",
+     "rar": "Prism",
+     "dir": "7/637"
+    },
+    {
+     "id": "gcd-gd03-95",
+     "src": 26778,
+     "num": "95",
+     "rar": "Normal",
+     "dir": "7/637"
+    },
+    {
+     "id": "gcd-gd03-96",
+     "src": 26779,
+     "num": "96",
+     "rar": "Normal",
+     "dir": "7/637"
+    },
+    {
+     "id": "gcd-gd03-97",
+     "src": 26780,
+     "num": "97",
+     "rar": "Normal",
+     "dir": "7/637"
+    },
+    {
+     "id": "gcd-gd03-98",
+     "src": 26781,
+     "num": "98",
+     "rar": "Normal",
+     "dir": "7/637"
+    },
+    {
+     "id": "gcd-gd03-99",
+     "src": 26782,
+     "num": "99",
+     "rar": "Normal",
+     "dir": "7/637"
+    },
+    {
+     "id": "gcd-gd03-100",
+     "src": 26783,
+     "num": "100",
+     "rar": "Normal",
+     "dir": "7/637"
+    },
+    {
+     "id": "gcd-gd03-101",
+     "src": 26784,
+     "num": "101",
+     "rar": "Normal",
+     "dir": "7/637"
+    },
+    {
+     "id": "gcd-gd03-102",
+     "src": 26785,
+     "num": "102",
+     "rar": "Normal",
+     "dir": "7/637"
+    },
+    {
+     "id": "gcd-gd03-103",
+     "src": 26786,
+     "num": "103",
+     "rar": "Normal",
+     "dir": "7/637"
+    },
+    {
+     "id": "gcd-gd03-104",
+     "src": 26787,
+     "num": "104",
+     "rar": "Normal",
+     "dir": "7/637"
+    },
+    {
+     "id": "gcd-gd03-105",
+     "src": 26788,
+     "num": "105",
+     "rar": "Normal",
+     "dir": "7/637"
+    },
+    {
+     "id": "gcd-gd03-106",
+     "src": 26789,
+     "num": "106",
+     "rar": "Normal",
+     "dir": "7/637"
+    },
+    {
+     "id": "gcd-gd03-107",
+     "src": 26790,
+     "num": "107",
+     "rar": "Normal",
+     "dir": "7/637"
+    },
+    {
+     "id": "gcd-gd03-108",
+     "src": 26791,
+     "num": "108",
+     "rar": "Normal",
+     "dir": "7/637"
+    },
+    {
+     "id": "gcd-gd03-109",
+     "src": 26792,
+     "num": "109",
+     "rar": "Normal",
+     "dir": "7/637"
+    },
+    {
+     "id": "gcd-gd03-110",
+     "src": 26793,
+     "num": "110",
+     "rar": "Normal",
+     "dir": "7/637"
+    },
+    {
+     "id": "gcd-gd03-111",
+     "src": 26794,
+     "num": "111",
+     "rar": "Prism",
+     "dir": "7/637"
+    },
+    {
+     "id": "gcd-gd03-112",
+     "src": 26795,
+     "num": "112",
+     "rar": "Normal",
+     "dir": "7/637"
+    },
+    {
+     "id": "gcd-gd03-113",
+     "src": 26796,
+     "num": "113",
+     "rar": "Prism",
+     "dir": "7/637"
+    },
+    {
+     "id": "gcd-gd03-114",
+     "src": 26797,
+     "num": "114",
+     "rar": "Normal",
+     "dir": "7/637"
+    },
+    {
+     "id": "gcd-gd03-115",
+     "src": 26798,
+     "num": "115",
+     "rar": "Normal",
+     "dir": "7/637"
+    },
+    {
+     "id": "gcd-gd03-116",
+     "src": 26799,
+     "num": "116",
+     "rar": "Prism",
+     "dir": "7/637"
+    },
+    {
+     "id": "gcd-gd03-117",
+     "src": 26800,
+     "num": "117",
+     "rar": "Normal",
+     "dir": "7/637"
+    },
+    {
+     "id": "gcd-gd03-118",
+     "src": 26801,
+     "num": "118",
+     "rar": "Normal",
+     "dir": "7/637"
+    },
+    {
+     "id": "gcd-gd03-119",
+     "src": 26802,
+     "num": "119",
+     "rar": "Prism",
+     "dir": "7/637"
+    },
+    {
+     "id": "gcd-gd03-120",
+     "src": 26803,
+     "num": "120",
+     "rar": "Normal",
+     "dir": "7/637"
+    },
+    {
+     "id": "gcd-gd03-121",
+     "src": 26804,
+     "num": "121",
+     "rar": "Normal",
+     "dir": "7/637"
+    },
+    {
+     "id": "gcd-gd03-122",
+     "src": 26805,
+     "num": "122",
+     "rar": "Normal",
+     "dir": "7/637"
+    },
+    {
+     "id": "gcd-gd03-123",
+     "src": 26806,
+     "num": "123",
+     "rar": "Normal",
+     "dir": "7/637"
+    },
+    {
+     "id": "gcd-gd03-124",
+     "src": 26807,
+     "num": "124",
+     "rar": "Normal",
+     "dir": "7/637"
+    },
+    {
+     "id": "gcd-gd03-125",
+     "src": 26808,
+     "num": "125",
+     "rar": "Normal",
+     "dir": "7/637"
+    },
+    {
+     "id": "gcd-gd03-126",
+     "src": 26809,
+     "num": "126",
+     "rar": "Normal",
+     "dir": "7/637"
+    },
+    {
+     "id": "gcd-gd03-127",
+     "src": 26810,
+     "num": "127",
+     "rar": "Normal",
+     "dir": "7/637"
+    },
+    {
+     "id": "gcd-gd03-128",
+     "src": 26811,
+     "num": "128",
+     "rar": "Normal",
+     "dir": "7/637"
+    }
+   ]
+  },
+  {
+   "code": "gd04",
+   "cards": [
+    {
+     "id": "gcd-gd04-129",
+     "src": 26812,
+     "num": "129",
+     "rar": "Prism",
+     "dir": "7/638"
+    },
+    {
+     "id": "gcd-gd04-130",
+     "src": 26813,
+     "num": "130",
+     "rar": "Normal",
+     "dir": "7/638"
+    },
+    {
+     "id": "gcd-gd04-131",
+     "src": 26814,
+     "num": "131",
+     "rar": "Normal",
+     "dir": "7/638"
+    },
+    {
+     "id": "gcd-gd04-132",
+     "src": 26815,
+     "num": "132",
+     "rar": "Prism",
+     "dir": "7/638"
+    },
+    {
+     "id": "gcd-gd04-133",
+     "src": 26816,
+     "num": "133",
+     "rar": "Prism",
+     "dir": "7/638"
+    },
+    {
+     "id": "gcd-gd04-134",
+     "src": 26817,
+     "num": "134",
+     "rar": "Normal",
+     "dir": "7/638"
+    },
+    {
+     "id": "gcd-gd04-135",
+     "src": 26818,
+     "num": "135",
+     "rar": "Normal",
+     "dir": "7/638"
+    },
+    {
+     "id": "gcd-gd04-136",
+     "src": 26819,
+     "num": "136",
+     "rar": "Normal",
+     "dir": "7/638"
+    },
+    {
+     "id": "gcd-gd04-137",
+     "src": 26820,
+     "num": "137",
+     "rar": "Normal",
+     "dir": "7/638"
+    },
+    {
+     "id": "gcd-gd04-138",
+     "src": 26821,
+     "num": "138",
+     "rar": "Normal",
+     "dir": "7/638"
+    },
+    {
+     "id": "gcd-gd04-139",
+     "src": 26822,
+     "num": "139",
+     "rar": "Normal",
+     "dir": "7/638"
+    },
+    {
+     "id": "gcd-gd04-140",
+     "src": 26823,
+     "num": "140",
+     "rar": "Normal",
+     "dir": "7/638"
+    },
+    {
+     "id": "gcd-gd04-141",
+     "src": 26824,
+     "num": "141",
+     "rar": "Normal",
+     "dir": "7/638"
+    },
+    {
+     "id": "gcd-gd04-142",
+     "src": 26825,
+     "num": "142",
+     "rar": "Normal",
+     "dir": "7/638"
+    },
+    {
+     "id": "gcd-gd04-143",
+     "src": 26826,
+     "num": "143",
+     "rar": "Normal",
+     "dir": "7/638"
+    },
+    {
+     "id": "gcd-gd04-144",
+     "src": 26827,
+     "num": "144",
+     "rar": "Normal",
+     "dir": "7/638"
+    },
+    {
+     "id": "gcd-gd04-145",
+     "src": 26828,
+     "num": "145",
+     "rar": "Normal",
+     "dir": "7/638"
+    },
+    {
+     "id": "gcd-gd04-146",
+     "src": 26829,
+     "num": "146",
+     "rar": "Normal",
+     "dir": "7/638"
+    },
+    {
+     "id": "gcd-gd04-147",
+     "src": 26830,
+     "num": "147",
+     "rar": "Normal",
+     "dir": "7/638"
+    },
+    {
+     "id": "gcd-gd04-148",
+     "src": 26831,
+     "num": "148",
+     "rar": "Normal",
+     "dir": "7/638"
+    },
+    {
+     "id": "gcd-gd04-149",
+     "src": 26832,
+     "num": "149",
+     "rar": "Normal",
+     "dir": "7/638"
+    },
+    {
+     "id": "gcd-gd04-150",
+     "src": 26833,
+     "num": "150",
+     "rar": "Normal",
+     "dir": "7/638"
+    },
+    {
+     "id": "gcd-gd04-151",
+     "src": 26834,
+     "num": "151",
+     "rar": "Normal",
+     "dir": "7/638"
+    },
+    {
+     "id": "gcd-gd04-152",
+     "src": 26835,
+     "num": "152",
+     "rar": "Normal",
+     "dir": "7/638"
+    },
+    {
+     "id": "gcd-gd04-153",
+     "src": 26836,
+     "num": "153",
+     "rar": "Normal",
+     "dir": "7/638"
+    },
+    {
+     "id": "gcd-gd04-154",
+     "src": 26837,
+     "num": "154",
+     "rar": "Normal",
+     "dir": "7/638"
+    },
+    {
+     "id": "gcd-gd04-155",
+     "src": 26838,
+     "num": "155",
+     "rar": "Normal",
+     "dir": "7/638"
+    },
+    {
+     "id": "gcd-gd04-156",
+     "src": 26839,
+     "num": "156",
+     "rar": "Normal",
+     "dir": "7/638"
+    },
+    {
+     "id": "gcd-gd04-157",
+     "src": 26840,
+     "num": "157",
+     "rar": "Normal",
+     "dir": "7/638"
+    },
+    {
+     "id": "gcd-gd04-158",
+     "src": 26841,
+     "num": "158",
+     "rar": "Normal",
+     "dir": "7/638"
+    },
+    {
+     "id": "gcd-gd04-159",
+     "src": 26842,
+     "num": "159",
+     "rar": "Normal",
+     "dir": "7/638"
+    },
+    {
+     "id": "gcd-gd04-160",
+     "src": 26843,
+     "num": "160",
+     "rar": "Normal",
+     "dir": "7/638"
+    },
+    {
+     "id": "gcd-gd04-161",
+     "src": 26844,
+     "num": "161",
+     "rar": "Normal",
+     "dir": "7/638"
+    },
+    {
+     "id": "gcd-gd04-162",
+     "src": 26845,
+     "num": "162",
+     "rar": "Normal",
+     "dir": "7/638"
+    },
+    {
+     "id": "gcd-gd04-163",
+     "src": 26846,
+     "num": "163",
+     "rar": "Normal",
+     "dir": "7/638"
+    },
+    {
+     "id": "gcd-gd04-164",
+     "src": 26848,
+     "num": "164",
+     "rar": "Normal",
+     "dir": "7/638"
+    },
+    {
+     "id": "gcd-gd04-165",
+     "src": 26849,
+     "num": "165",
+     "rar": "Normal",
+     "dir": "7/638"
+    },
+    {
+     "id": "gcd-gd04-166",
+     "src": 26850,
+     "num": "166",
+     "rar": "Prism",
+     "dir": "7/638"
+    },
+    {
+     "id": "gcd-gd04-167",
+     "src": 26851,
+     "num": "167",
+     "rar": "Prism",
+     "dir": "7/638"
+    },
+    {
+     "id": "gcd-gd04-168",
+     "src": 26852,
+     "num": "168",
+     "rar": "Prism",
+     "dir": "7/638"
+    },
+    {
+     "id": "gcd-gd04-169",
+     "src": 26853,
+     "num": "169",
+     "rar": "Prism",
+     "dir": "7/638"
+    },
+    {
+     "id": "gcd-gd04-170",
+     "src": 26854,
+     "num": "170",
+     "rar": "Prism",
+     "dir": "7/638"
+    },
+    {
+     "id": "gcd-gd04-171",
+     "src": 26855,
+     "num": "171",
+     "rar": "Normal",
+     "dir": "7/638"
+    },
+    {
+     "id": "gcd-gd04-172",
+     "src": 26856,
+     "num": "172",
+     "rar": "Normal",
+     "dir": "7/638"
+    }
+   ]
+  },
+  {
+   "code": "gd05",
+   "cards": [
+    {
+     "id": "gcd-gd05-173",
+     "src": 26857,
+     "num": "173",
+     "rar": "Prism",
+     "dir": "7/639"
+    },
+    {
+     "id": "gcd-gd05-174",
+     "src": 26858,
+     "num": "174",
+     "rar": "Prism",
+     "dir": "7/639"
+    },
+    {
+     "id": "gcd-gd05-175",
+     "src": 26859,
+     "num": "175",
+     "rar": "Prism",
+     "dir": "7/639"
+    },
+    {
+     "id": "gcd-gd05-176",
+     "src": 26860,
+     "num": "176",
+     "rar": "Prism",
+     "dir": "7/639"
+    },
+    {
+     "id": "gcd-gd05-177",
+     "src": 26861,
+     "num": "177",
+     "rar": "Normal",
+     "dir": "7/639"
+    },
+    {
+     "id": "gcd-gd05-178",
+     "src": 26862,
+     "num": "178",
+     "rar": "Normal",
+     "dir": "7/639"
+    },
+    {
+     "id": "gcd-gd05-179",
+     "src": 26863,
+     "num": "179",
+     "rar": "Normal",
+     "dir": "7/639"
+    },
+    {
+     "id": "gcd-gd05-180",
+     "src": 26864,
+     "num": "180",
+     "rar": "Normal",
+     "dir": "7/639"
+    },
+    {
+     "id": "gcd-gd05-181",
+     "src": 26865,
+     "num": "181",
+     "rar": "Normal",
+     "dir": "7/639"
+    },
+    {
+     "id": "gcd-gd05-182",
+     "src": 26866,
+     "num": "182",
+     "rar": "Normal",
+     "dir": "7/639"
+    },
+    {
+     "id": "gcd-gd05-183",
+     "src": 26867,
+     "num": "183",
+     "rar": "Normal",
+     "dir": "7/639"
+    },
+    {
+     "id": "gcd-gd05-184",
+     "src": 26868,
+     "num": "184",
+     "rar": "Normal",
+     "dir": "7/639"
+    },
+    {
+     "id": "gcd-gd05-185",
+     "src": 26869,
+     "num": "185",
+     "rar": "Normal",
+     "dir": "7/639"
+    },
+    {
+     "id": "gcd-gd05-186",
+     "src": 26870,
+     "num": "186",
+     "rar": "Normal",
+     "dir": "7/639"
+    },
+    {
+     "id": "gcd-gd05-187",
+     "src": 26871,
+     "num": "187",
+     "rar": "Normal",
+     "dir": "7/639"
+    },
+    {
+     "id": "gcd-gd05-188",
+     "src": 26872,
+     "num": "188",
+     "rar": "Normal",
+     "dir": "7/639"
+    },
+    {
+     "id": "gcd-gd05-189",
+     "src": 26873,
+     "num": "189",
+     "rar": "Normal",
+     "dir": "7/639"
+    },
+    {
+     "id": "gcd-gd05-190",
+     "src": 26874,
+     "num": "190",
+     "rar": "Normal",
+     "dir": "7/639"
+    },
+    {
+     "id": "gcd-gd05-191",
+     "src": 26875,
+     "num": "191",
+     "rar": "Normal",
+     "dir": "7/639"
+    },
+    {
+     "id": "gcd-gd05-192",
+     "src": 26876,
+     "num": "192",
+     "rar": "Normal",
+     "dir": "7/639"
+    },
+    {
+     "id": "gcd-gd05-193",
+     "src": 26877,
+     "num": "193",
+     "rar": "Normal",
+     "dir": "7/639"
+    },
+    {
+     "id": "gcd-gd05-194",
+     "src": 26878,
+     "num": "194",
+     "rar": "Normal",
+     "dir": "7/639"
+    },
+    {
+     "id": "gcd-gd05-195",
+     "src": 26879,
+     "num": "195",
+     "rar": "Normal",
+     "dir": "7/639"
+    },
+    {
+     "id": "gcd-gd05-196",
+     "src": 26880,
+     "num": "196",
+     "rar": "Normal",
+     "dir": "7/639"
+    },
+    {
+     "id": "gcd-gd05-197",
+     "src": 26881,
+     "num": "197",
+     "rar": "Normal",
+     "dir": "7/639"
+    },
+    {
+     "id": "gcd-gd05-198",
+     "src": 26882,
+     "num": "198",
+     "rar": "Normal",
+     "dir": "7/639"
+    },
+    {
+     "id": "gcd-gd05-199",
+     "src": 26883,
+     "num": "199",
+     "rar": "Normal",
+     "dir": "7/639"
+    },
+    {
+     "id": "gcd-gd05-200",
+     "src": 26884,
+     "num": "200",
+     "rar": "Prism",
+     "dir": "7/639"
+    },
+    {
+     "id": "gcd-gd05-201",
+     "src": 26885,
+     "num": "201",
+     "rar": "Normal",
+     "dir": "7/639"
+    },
+    {
+     "id": "gcd-gd05-202",
+     "src": 26886,
+     "num": "202",
+     "rar": "Normal",
+     "dir": "7/639"
+    },
+    {
+     "id": "gcd-gd05-203",
+     "src": 26887,
+     "num": "203",
+     "rar": "Prism",
+     "dir": "7/639"
+    },
+    {
+     "id": "gcd-gd05-204",
+     "src": 26888,
+     "num": "204",
+     "rar": "Prism",
+     "dir": "7/639"
+    },
+    {
+     "id": "gcd-gd05-205",
+     "src": 26889,
+     "num": "205",
+     "rar": "Prism",
+     "dir": "7/639"
+    },
+    {
+     "id": "gcd-gd05-206",
+     "src": 26890,
+     "num": "206",
+     "rar": "Normal",
+     "dir": "7/639"
+    },
+    {
+     "id": "gcd-gd05-207",
+     "src": 26891,
+     "num": "207",
+     "rar": "Normal",
+     "dir": "7/639"
+    },
+    {
+     "id": "gcd-gd05-208",
+     "src": 26892,
+     "num": "208",
+     "rar": "Normal",
+     "dir": "7/639"
+    },
+    {
+     "id": "gcd-gd05-209",
+     "src": 26893,
+     "num": "209",
+     "rar": "Normal",
+     "dir": "7/639"
+    },
+    {
+     "id": "gcd-gd05-210",
+     "src": 26894,
+     "num": "210",
+     "rar": "Normal",
+     "dir": "7/639"
+    },
+    {
+     "id": "gcd-gd05-211",
+     "src": 26895,
+     "num": "211",
+     "rar": "Normal",
+     "dir": "7/639"
+    },
+    {
+     "id": "gcd-gd05-212",
+     "src": 26896,
+     "num": "212",
+     "rar": "Normal",
+     "dir": "7/639"
+    },
+    {
+     "id": "gcd-gd05-213",
+     "src": 26897,
+     "num": "213",
+     "rar": "Normal",
+     "dir": "7/639"
+    },
+    {
+     "id": "gcd-gd05-214",
+     "src": 26898,
+     "num": "214",
+     "rar": "Normal",
+     "dir": "7/639"
+    },
+    {
+     "id": "gcd-gd05-215",
+     "src": 26899,
+     "num": "215",
+     "rar": "Normal",
+     "dir": "7/639"
+    },
+    {
+     "id": "gcd-gd05-216",
+     "src": 26900,
+     "num": "216",
+     "rar": "Normal",
+     "dir": "7/639"
+    }
+   ]
+  },
+  {
+   "code": "gd06",
+   "cards": [
+    {
+     "id": "gcd-gd06-217",
+     "src": 26901,
+     "num": "217",
+     "rar": "Prism",
+     "dir": "7/640"
+    },
+    {
+     "id": "gcd-gd06-218",
+     "src": 26902,
+     "num": "218",
+     "rar": "Prism",
+     "dir": "7/640"
+    },
+    {
+     "id": "gcd-gd06-219",
+     "src": 26903,
+     "num": "219",
+     "rar": "Prism",
+     "dir": "7/640"
+    },
+    {
+     "id": "gcd-gd06-220",
+     "src": 26904,
+     "num": "220",
+     "rar": "Prism",
+     "dir": "7/640"
+    },
+    {
+     "id": "gcd-gd06-221",
+     "src": 26905,
+     "num": "221",
+     "rar": "Normal",
+     "dir": "7/640"
+    },
+    {
+     "id": "gcd-gd06-222",
+     "src": 26906,
+     "num": "222",
+     "rar": "Normal",
+     "dir": "7/640"
+    },
+    {
+     "id": "gcd-gd06-223",
+     "src": 26907,
+     "num": "223",
+     "rar": "Normal",
+     "dir": "7/640"
+    },
+    {
+     "id": "gcd-gd06-224",
+     "src": 26908,
+     "num": "224",
+     "rar": "Normal",
+     "dir": "7/640"
+    },
+    {
+     "id": "gcd-gd06-225",
+     "src": 26909,
+     "num": "225",
+     "rar": "Normal",
+     "dir": "7/640"
+    },
+    {
+     "id": "gcd-gd06-226",
+     "src": 26910,
+     "num": "226",
+     "rar": "Normal",
+     "dir": "7/640"
+    },
+    {
+     "id": "gcd-gd06-227",
+     "src": 26911,
+     "num": "227",
+     "rar": "Normal",
+     "dir": "7/640"
+    },
+    {
+     "id": "gcd-gd06-228",
+     "src": 26912,
+     "num": "228",
+     "rar": "Normal",
+     "dir": "7/640"
+    },
+    {
+     "id": "gcd-gd06-229",
+     "src": 26913,
+     "num": "229",
+     "rar": "Normal",
+     "dir": "7/640"
+    },
+    {
+     "id": "gcd-gd06-230",
+     "src": 26914,
+     "num": "230",
+     "rar": "Normal",
+     "dir": "7/640"
+    },
+    {
+     "id": "gcd-gd06-231",
+     "src": 26915,
+     "num": "231",
+     "rar": "Normal",
+     "dir": "7/640"
+    },
+    {
+     "id": "gcd-gd06-232",
+     "src": 26916,
+     "num": "232",
+     "rar": "Normal",
+     "dir": "7/640"
+    },
+    {
+     "id": "gcd-gd06-233",
+     "src": 26917,
+     "num": "233",
+     "rar": "Normal",
+     "dir": "7/640"
+    },
+    {
+     "id": "gcd-gd06-234",
+     "src": 26918,
+     "num": "234",
+     "rar": "Normal",
+     "dir": "7/640"
+    },
+    {
+     "id": "gcd-gd06-235",
+     "src": 26919,
+     "num": "235",
+     "rar": "Normal",
+     "dir": "7/640"
+    },
+    {
+     "id": "gcd-gd06-236",
+     "src": 26920,
+     "num": "236",
+     "rar": "Normal",
+     "dir": "7/640"
+    },
+    {
+     "id": "gcd-gd06-237",
+     "src": 26921,
+     "num": "237",
+     "rar": "Normal",
+     "dir": "7/640"
+    },
+    {
+     "id": "gcd-gd06-238",
+     "src": 26922,
+     "num": "238",
+     "rar": "Normal",
+     "dir": "7/640"
+    },
+    {
+     "id": "gcd-gd06-239",
+     "src": 26923,
+     "num": "239",
+     "rar": "Normal",
+     "dir": "7/640"
+    },
+    {
+     "id": "gcd-gd06-240",
+     "src": 26924,
+     "num": "240",
+     "rar": "Normal",
+     "dir": "7/640"
+    },
+    {
+     "id": "gcd-gd06-241",
+     "src": 26925,
+     "num": "241",
+     "rar": "Normal",
+     "dir": "7/640"
+    },
+    {
+     "id": "gcd-gd06-242",
+     "src": 26926,
+     "num": "242",
+     "rar": "Normal",
+     "dir": "7/640"
+    },
+    {
+     "id": "gcd-gd06-243",
+     "src": 26927,
+     "num": "243",
+     "rar": "Prism",
+     "dir": "7/640"
+    },
+    {
+     "id": "gcd-gd06-244",
+     "src": 26928,
+     "num": "244",
+     "rar": "Normal",
+     "dir": "7/640"
+    },
+    {
+     "id": "gcd-gd06-245",
+     "src": 26929,
+     "num": "245",
+     "rar": "Prism",
+     "dir": "7/640"
+    },
+    {
+     "id": "gcd-gd06-246",
+     "src": 26930,
+     "num": "246",
+     "rar": "Normal",
+     "dir": "7/640"
+    },
+    {
+     "id": "gcd-gd06-247",
+     "src": 26931,
+     "num": "247",
+     "rar": "Normal",
+     "dir": "7/640"
+    },
+    {
+     "id": "gcd-gd06-248",
+     "src": 26932,
+     "num": "248",
+     "rar": "Normal",
+     "dir": "7/640"
+    },
+    {
+     "id": "gcd-gd06-249",
+     "src": 26933,
+     "num": "249",
+     "rar": "Prism",
+     "dir": "7/640"
+    },
+    {
+     "id": "gcd-gd06-250",
+     "src": 26934,
+     "num": "250",
+     "rar": "Normal",
+     "dir": "7/640"
+    },
+    {
+     "id": "gcd-gd06-251",
+     "src": 26935,
+     "num": "251",
+     "rar": "Normal",
+     "dir": "7/640"
+    },
+    {
+     "id": "gcd-gd06-252",
+     "src": 26936,
+     "num": "252",
+     "rar": "Normal",
+     "dir": "7/640"
+    },
+    {
+     "id": "gcd-gd06-253",
+     "src": 26937,
+     "num": "253",
+     "rar": "Normal",
+     "dir": "7/640"
+    },
+    {
+     "id": "gcd-gd06-254",
+     "src": 26938,
+     "num": "254",
+     "rar": "Normal",
+     "dir": "7/640"
+    },
+    {
+     "id": "gcd-gd06-255",
+     "src": 26939,
+     "num": "255",
+     "rar": "Normal",
+     "dir": "7/640"
+    },
+    {
+     "id": "gcd-gd06-256",
+     "src": 26940,
+     "num": "256",
+     "rar": "Prism",
+     "dir": "7/640"
+    },
+    {
+     "id": "gcd-gd06-257",
+     "src": 26941,
+     "num": "257",
+     "rar": "Normal",
+     "dir": "7/640"
+    },
+    {
+     "id": "gcd-gd06-258",
+     "src": 26942,
+     "num": "258",
+     "rar": "Normal",
+     "dir": "7/640"
+    },
+    {
+     "id": "gcd-gd06-259",
+     "src": 26943,
+     "num": "259",
+     "rar": "Normal",
+     "dir": "7/640"
+    },
+    {
+     "id": "gcd-gd06-260",
+     "src": 26944,
+     "num": "260",
+     "rar": "Normal",
+     "dir": "7/640"
+    }
+   ]
+  },
+  {
+   "code": "gd07",
+   "cards": [
+    {
+     "id": "gcd-gd07-261",
+     "src": 26945,
+     "num": "261",
+     "rar": "Prism",
+     "dir": "7/641"
+    },
+    {
+     "id": "gcd-gd07-262",
+     "src": 26946,
+     "num": "262",
+     "rar": "Prism",
+     "dir": "7/641"
+    },
+    {
+     "id": "gcd-gd07-263",
+     "src": 26947,
+     "num": "263",
+     "rar": "Prism",
+     "dir": "7/641"
+    },
+    {
+     "id": "gcd-gd07-264",
+     "src": 26948,
+     "num": "264",
+     "rar": "Prism",
+     "dir": "7/641"
+    },
+    {
+     "id": "gcd-gd07-265",
+     "src": 26949,
+     "num": "265",
+     "rar": "Normal",
+     "dir": "7/641"
+    },
+    {
+     "id": "gcd-gd07-266",
+     "src": 26950,
+     "num": "266",
+     "rar": "Normal",
+     "dir": "7/641"
+    },
+    {
+     "id": "gcd-gd07-267",
+     "src": 26951,
+     "num": "267",
+     "rar": "Normal",
+     "dir": "7/641"
+    },
+    {
+     "id": "gcd-gd07-268",
+     "src": 26952,
+     "num": "268",
+     "rar": "Normal",
+     "dir": "7/641"
+    },
+    {
+     "id": "gcd-gd07-269",
+     "src": 26953,
+     "num": "269",
+     "rar": "Normal",
+     "dir": "7/641"
+    },
+    {
+     "id": "gcd-gd07-270",
+     "src": 26954,
+     "num": "270",
+     "rar": "Normal",
+     "dir": "7/641"
+    },
+    {
+     "id": "gcd-gd07-271",
+     "src": 26955,
+     "num": "271",
+     "rar": "Normal",
+     "dir": "7/641"
+    },
+    {
+     "id": "gcd-gd07-272",
+     "src": 26956,
+     "num": "272",
+     "rar": "Normal",
+     "dir": "7/641"
+    },
+    {
+     "id": "gcd-gd07-273",
+     "src": 26957,
+     "num": "273",
+     "rar": "Normal",
+     "dir": "7/641"
+    },
+    {
+     "id": "gcd-gd07-274",
+     "src": 26958,
+     "num": "274",
+     "rar": "Normal",
+     "dir": "7/641"
+    },
+    {
+     "id": "gcd-gd07-275",
+     "src": 26959,
+     "num": "275",
+     "rar": "Normal",
+     "dir": "7/641"
+    },
+    {
+     "id": "gcd-gd07-276",
+     "src": 26960,
+     "num": "276",
+     "rar": "Normal",
+     "dir": "7/641"
+    },
+    {
+     "id": "gcd-gd07-277",
+     "src": 26961,
+     "num": "277",
+     "rar": "Normal",
+     "dir": "7/641"
+    },
+    {
+     "id": "gcd-gd07-278",
+     "src": 26962,
+     "num": "278",
+     "rar": "Normal",
+     "dir": "7/641"
+    },
+    {
+     "id": "gcd-gd07-279",
+     "src": 26963,
+     "num": "279",
+     "rar": "Normal",
+     "dir": "7/641"
+    },
+    {
+     "id": "gcd-gd07-280",
+     "src": 26964,
+     "num": "280",
+     "rar": "Normal",
+     "dir": "7/641"
+    },
+    {
+     "id": "gcd-gd07-281",
+     "src": 26965,
+     "num": "281",
+     "rar": "Normal",
+     "dir": "7/641"
+    },
+    {
+     "id": "gcd-gd07-282",
+     "src": 26966,
+     "num": "282",
+     "rar": "Normal",
+     "dir": "7/641"
+    },
+    {
+     "id": "gcd-gd07-283",
+     "src": 26967,
+     "num": "283",
+     "rar": "Normal",
+     "dir": "7/641"
+    },
+    {
+     "id": "gcd-gd07-284",
+     "src": 26968,
+     "num": "284",
+     "rar": "Normal",
+     "dir": "7/641"
+    },
+    {
+     "id": "gcd-gd07-285",
+     "src": 26969,
+     "num": "285",
+     "rar": "Normal",
+     "dir": "7/641"
+    },
+    {
+     "id": "gcd-gd07-286",
+     "src": 26970,
+     "num": "286",
+     "rar": "Normal",
+     "dir": "7/641"
+    },
+    {
+     "id": "gcd-gd07-287",
+     "src": 26971,
+     "num": "287",
+     "rar": "Normal",
+     "dir": "7/641"
+    },
+    {
+     "id": "gcd-gd07-288",
+     "src": 26972,
+     "num": "288",
+     "rar": "Normal",
+     "dir": "7/641"
+    },
+    {
+     "id": "gcd-gd07-289",
+     "src": 26973,
+     "num": "289",
+     "rar": "Prism",
+     "dir": "7/641"
+    },
+    {
+     "id": "gcd-gd07-290",
+     "src": 26974,
+     "num": "290",
+     "rar": "Normal",
+     "dir": "7/641"
+    },
+    {
+     "id": "gcd-gd07-291",
+     "src": 26975,
+     "num": "291",
+     "rar": "Normal",
+     "dir": "7/641"
+    },
+    {
+     "id": "gcd-gd07-292",
+     "src": 26976,
+     "num": "292",
+     "rar": "Normal",
+     "dir": "7/641"
+    },
+    {
+     "id": "gcd-gd07-293",
+     "src": 26977,
+     "num": "293",
+     "rar": "Prism",
+     "dir": "7/641"
+    },
+    {
+     "id": "gcd-gd07-294",
+     "src": 26978,
+     "num": "294",
+     "rar": "Prism",
+     "dir": "7/641"
+    },
+    {
+     "id": "gcd-gd07-295",
+     "src": 26979,
+     "num": "295",
+     "rar": "Normal",
+     "dir": "7/641"
+    },
+    {
+     "id": "gcd-gd07-296",
+     "src": 26980,
+     "num": "296",
+     "rar": "Normal",
+     "dir": "7/641"
+    },
+    {
+     "id": "gcd-gd07-297",
+     "src": 26981,
+     "num": "297",
+     "rar": "Normal",
+     "dir": "7/641"
+    },
+    {
+     "id": "gcd-gd07-298",
+     "src": 26982,
+     "num": "298",
+     "rar": "Normal",
+     "dir": "7/641"
+    },
+    {
+     "id": "gcd-gd07-299",
+     "src": 26983,
+     "num": "299",
+     "rar": "Normal",
+     "dir": "7/641"
+    },
+    {
+     "id": "gcd-gd07-300",
+     "src": 26984,
+     "num": "300",
+     "rar": "Prism",
+     "dir": "7/641"
+    },
+    {
+     "id": "gcd-gd07-301",
+     "src": 26985,
+     "num": "301",
+     "rar": "Normal",
+     "dir": "7/641"
+    },
+    {
+     "id": "gcd-gd07-302",
+     "src": 26986,
+     "num": "302",
+     "rar": "Normal",
+     "dir": "7/641"
+    },
+    {
+     "id": "gcd-gd07-303",
+     "src": 26987,
+     "num": "303",
+     "rar": "Normal",
+     "dir": "7/641"
+    },
+    {
+     "id": "gcd-gd07-304",
+     "src": 26988,
+     "num": "304",
+     "rar": "Normal",
+     "dir": "7/641"
+    }
+   ]
+  },
+  {
+   "code": "gd08",
+   "cards": [
+    {
+     "id": "gcd-gd08-305",
+     "src": 26989,
+     "num": "305",
+     "rar": "Prism",
+     "dir": "7/642"
+    },
+    {
+     "id": "gcd-gd08-306",
+     "src": 26990,
+     "num": "306",
+     "rar": "Prism",
+     "dir": "7/642"
+    },
+    {
+     "id": "gcd-gd08-307",
+     "src": 26991,
+     "num": "307",
+     "rar": "Prism",
+     "dir": "7/642"
+    },
+    {
+     "id": "gcd-gd08-308",
+     "src": 26992,
+     "num": "308",
+     "rar": "Prism",
+     "dir": "7/642"
+    },
+    {
+     "id": "gcd-gd08-309",
+     "src": 26993,
+     "num": "309",
+     "rar": "Prism",
+     "dir": "7/642"
+    },
+    {
+     "id": "gcd-gd08-310",
+     "src": 26994,
+     "num": "310",
+     "rar": "Prism",
+     "dir": "7/642"
+    },
+    {
+     "id": "gcd-gd08-311",
+     "src": 26995,
+     "num": "311",
+     "rar": "Normal",
+     "dir": "7/642"
+    },
+    {
+     "id": "gcd-gd08-312",
+     "src": 26996,
+     "num": "312",
+     "rar": "Normal",
+     "dir": "7/642"
+    },
+    {
+     "id": "gcd-gd08-313",
+     "src": 26997,
+     "num": "313",
+     "rar": "Normal",
+     "dir": "7/642"
+    },
+    {
+     "id": "gcd-gd08-314",
+     "src": 26998,
+     "num": "314",
+     "rar": "Normal",
+     "dir": "7/642"
+    },
+    {
+     "id": "gcd-gd08-315",
+     "src": 26999,
+     "num": "315",
+     "rar": "Normal",
+     "dir": "7/642"
+    },
+    {
+     "id": "gcd-gd08-316",
+     "src": 27000,
+     "num": "316",
+     "rar": "Normal",
+     "dir": "7/642"
+    },
+    {
+     "id": "gcd-gd08-317",
+     "src": 27001,
+     "num": "317",
+     "rar": "Normal",
+     "dir": "7/642"
+    },
+    {
+     "id": "gcd-gd08-318",
+     "src": 27002,
+     "num": "318",
+     "rar": "Normal",
+     "dir": "7/642"
+    },
+    {
+     "id": "gcd-gd08-319",
+     "src": 27003,
+     "num": "319",
+     "rar": "Normal",
+     "dir": "7/642"
+    },
+    {
+     "id": "gcd-gd08-320",
+     "src": 27004,
+     "num": "320",
+     "rar": "Normal",
+     "dir": "7/642"
+    },
+    {
+     "id": "gcd-gd08-321",
+     "src": 27005,
+     "num": "321",
+     "rar": "Normal",
+     "dir": "7/642"
+    },
+    {
+     "id": "gcd-gd08-322",
+     "src": 27006,
+     "num": "322",
+     "rar": "Normal",
+     "dir": "7/642"
+    },
+    {
+     "id": "gcd-gd08-323",
+     "src": 27007,
+     "num": "323",
+     "rar": "Normal",
+     "dir": "7/642"
+    },
+    {
+     "id": "gcd-gd08-324",
+     "src": 27008,
+     "num": "324",
+     "rar": "Normal",
+     "dir": "7/642"
+    },
+    {
+     "id": "gcd-gd08-325",
+     "src": 27009,
+     "num": "325",
+     "rar": "Normal",
+     "dir": "7/642"
+    },
+    {
+     "id": "gcd-gd08-326",
+     "src": 27010,
+     "num": "326",
+     "rar": "Normal",
+     "dir": "7/642"
+    },
+    {
+     "id": "gcd-gd08-327",
+     "src": 27011,
+     "num": "327",
+     "rar": "Normal",
+     "dir": "7/642"
+    },
+    {
+     "id": "gcd-gd08-328",
+     "src": 27012,
+     "num": "328",
+     "rar": "Normal",
+     "dir": "7/642"
+    },
+    {
+     "id": "gcd-gd08-329",
+     "src": 27013,
+     "num": "329",
+     "rar": "Normal",
+     "dir": "7/642"
+    },
+    {
+     "id": "gcd-gd08-330",
+     "src": 27014,
+     "num": "330",
+     "rar": "Normal",
+     "dir": "7/642"
+    },
+    {
+     "id": "gcd-gd08-331",
+     "src": 27015,
+     "num": "331",
+     "rar": "Normal",
+     "dir": "7/642"
+    },
+    {
+     "id": "gcd-gd08-332",
+     "src": 27016,
+     "num": "332",
+     "rar": "Normal",
+     "dir": "7/642"
+    },
+    {
+     "id": "gcd-gd08-333",
+     "src": 27017,
+     "num": "333",
+     "rar": "Normal",
+     "dir": "7/642"
+    },
+    {
+     "id": "gcd-gd08-334",
+     "src": 27018,
+     "num": "334",
+     "rar": "Normal",
+     "dir": "7/642"
+    },
+    {
+     "id": "gcd-gd08-335",
+     "src": 27019,
+     "num": "335",
+     "rar": "Normal",
+     "dir": "7/642"
+    },
+    {
+     "id": "gcd-gd08-336",
+     "src": 27020,
+     "num": "336",
+     "rar": "Normal",
+     "dir": "7/642"
+    },
+    {
+     "id": "gcd-gd08-337",
+     "src": 27021,
+     "num": "337",
+     "rar": "Normal",
+     "dir": "7/642"
+    },
+    {
+     "id": "gcd-gd08-338",
+     "src": 27022,
+     "num": "338",
+     "rar": "Normal",
+     "dir": "7/642"
+    },
+    {
+     "id": "gcd-gd08-339",
+     "src": 27023,
+     "num": "339",
+     "rar": "Normal",
+     "dir": "7/642"
+    },
+    {
+     "id": "gcd-gd08-340",
+     "src": 27024,
+     "num": "340",
+     "rar": "Normal",
+     "dir": "7/642"
+    },
+    {
+     "id": "gcd-gd08-341",
+     "src": 27025,
+     "num": "341",
+     "rar": "Normal",
+     "dir": "7/642"
+    },
+    {
+     "id": "gcd-gd08-342",
+     "src": 27026,
+     "num": "342",
+     "rar": "Normal",
+     "dir": "7/642"
+    },
+    {
+     "id": "gcd-gd08-343",
+     "src": 27027,
+     "num": "343",
+     "rar": "Normal",
+     "dir": "7/642"
+    },
+    {
+     "id": "gcd-gd08-344",
+     "src": 27028,
+     "num": "344",
+     "rar": "Normal",
+     "dir": "7/642"
+    },
+    {
+     "id": "gcd-gd08-345",
+     "src": 27029,
+     "num": "345",
+     "rar": "Prism Pixel",
+     "dir": "7/642"
+    },
+    {
+     "id": "gcd-gd08-345b",
+     "src": 27030,
+     "num": "345",
+     "rar": "Prism Pixel",
+     "dir": "7/642"
+    },
+    {
+     "id": "gcd-gd08-346",
+     "src": 27031,
+     "num": "346",
+     "rar": "Prism",
+     "dir": "7/642"
+    },
+    {
+     "id": "gcd-gd08-347",
+     "src": 27032,
+     "num": "347",
+     "rar": "Prism Pixel",
+     "dir": "7/642"
+    },
+    {
+     "id": "gcd-gd08-347b",
+     "src": 27763,
+     "num": "347",
+     "rar": "Prism Pixel",
+     "dir": "7/642"
+    },
+    {
+     "id": "gcd-gd08-348",
+     "src": 27033,
+     "num": "348",
+     "rar": "Normal",
+     "dir": "7/642"
+    },
+    {
+     "id": "gcd-gd08-349",
+     "src": 27034,
+     "num": "349",
+     "rar": "Prism",
+     "dir": "7/642"
+    },
+    {
+     "id": "gcd-gd08-350",
+     "src": 27035,
+     "num": "350",
+     "rar": "Normal",
+     "dir": "7/642"
+    }
+   ]
+  },
+  {
+   "code": "gd09",
+   "cards": [
+    {
+     "id": "gcd-gd09-351",
+     "src": 27036,
+     "num": "351",
+     "rar": "Normal",
+     "dir": "7/643"
+    },
+    {
+     "id": "gcd-gd09-352",
+     "src": 27037,
+     "num": "352",
+     "rar": "Prism",
+     "dir": "7/643"
+    },
+    {
+     "id": "gcd-gd09-353",
+     "src": 27038,
+     "num": "353",
+     "rar": "Prism",
+     "dir": "7/643"
+    },
+    {
+     "id": "gcd-gd09-354",
+     "src": 27039,
+     "num": "354",
+     "rar": "Prism",
+     "dir": "7/643"
+    },
+    {
+     "id": "gcd-gd09-355",
+     "src": 27040,
+     "num": "355",
+     "rar": "Prism",
+     "dir": "7/643"
+    },
+    {
+     "id": "gcd-gd09-356",
+     "src": 27041,
+     "num": "356",
+     "rar": "Normal",
+     "dir": "7/643"
+    },
+    {
+     "id": "gcd-gd09-357",
+     "src": 27042,
+     "num": "357",
+     "rar": "Normal",
+     "dir": "7/643"
+    },
+    {
+     "id": "gcd-gd09-358",
+     "src": 27043,
+     "num": "358",
+     "rar": "Normal",
+     "dir": "7/643"
+    },
+    {
+     "id": "gcd-gd09-359",
+     "src": 27044,
+     "num": "359",
+     "rar": "Normal",
+     "dir": "7/643"
+    },
+    {
+     "id": "gcd-gd09-360",
+     "src": 27045,
+     "num": "360",
+     "rar": "Normal",
+     "dir": "7/643"
+    },
+    {
+     "id": "gcd-gd09-361",
+     "src": 27046,
+     "num": "361",
+     "rar": "Normal",
+     "dir": "7/643"
+    },
+    {
+     "id": "gcd-gd09-362",
+     "src": 27047,
+     "num": "362",
+     "rar": "Normal",
+     "dir": "7/643"
+    },
+    {
+     "id": "gcd-gd09-363",
+     "src": 27048,
+     "num": "363",
+     "rar": "Normal",
+     "dir": "7/643"
+    },
+    {
+     "id": "gcd-gd09-364",
+     "src": 27049,
+     "num": "364",
+     "rar": "Normal",
+     "dir": "7/643"
+    },
+    {
+     "id": "gcd-gd09-365",
+     "src": 27050,
+     "num": "365",
+     "rar": "Normal",
+     "dir": "7/643"
+    },
+    {
+     "id": "gcd-gd09-366",
+     "src": 27051,
+     "num": "366",
+     "rar": "Normal",
+     "dir": "7/643"
+    },
+    {
+     "id": "gcd-gd09-367",
+     "src": 27052,
+     "num": "367",
+     "rar": "Normal",
+     "dir": "7/643"
+    },
+    {
+     "id": "gcd-gd09-368",
+     "src": 27053,
+     "num": "368",
+     "rar": "Normal",
+     "dir": "7/643"
+    },
+    {
+     "id": "gcd-gd09-369",
+     "src": 27054,
+     "num": "369",
+     "rar": "Normal",
+     "dir": "7/643"
+    },
+    {
+     "id": "gcd-gd09-370",
+     "src": 27055,
+     "num": "370",
+     "rar": "Normal",
+     "dir": "7/643"
+    },
+    {
+     "id": "gcd-gd09-371",
+     "src": 27056,
+     "num": "371",
+     "rar": "Normal",
+     "dir": "7/643"
+    },
+    {
+     "id": "gcd-gd09-372",
+     "src": 27057,
+     "num": "372",
+     "rar": "Normal",
+     "dir": "7/643"
+    },
+    {
+     "id": "gcd-gd09-373",
+     "src": 27058,
+     "num": "373",
+     "rar": "Normal",
+     "dir": "7/643"
+    },
+    {
+     "id": "gcd-gd09-374",
+     "src": 27059,
+     "num": "374",
+     "rar": "Normal",
+     "dir": "7/643"
+    },
+    {
+     "id": "gcd-gd09-375",
+     "src": 27060,
+     "num": "375",
+     "rar": "Normal",
+     "dir": "7/643"
+    },
+    {
+     "id": "gcd-gd09-376",
+     "src": 27061,
+     "num": "376",
+     "rar": "Normal",
+     "dir": "7/643"
+    },
+    {
+     "id": "gcd-gd09-377",
+     "src": 27062,
+     "num": "377",
+     "rar": "Normal",
+     "dir": "7/643"
+    },
+    {
+     "id": "gcd-gd09-378",
+     "src": 27063,
+     "num": "378",
+     "rar": "Normal",
+     "dir": "7/643"
+    },
+    {
+     "id": "gcd-gd09-379",
+     "src": 27064,
+     "num": "379",
+     "rar": "Normal",
+     "dir": "7/643"
+    },
+    {
+     "id": "gcd-gd09-380",
+     "src": 27065,
+     "num": "380",
+     "rar": "Normal",
+     "dir": "7/643"
+    },
+    {
+     "id": "gcd-gd09-381",
+     "src": 27066,
+     "num": "381",
+     "rar": "Normal",
+     "dir": "7/643"
+    },
+    {
+     "id": "gcd-gd09-382",
+     "src": 27067,
+     "num": "382",
+     "rar": "Normal",
+     "dir": "7/643"
+    },
+    {
+     "id": "gcd-gd09-383",
+     "src": 27068,
+     "num": "383",
+     "rar": "Prism",
+     "dir": "7/643"
+    },
+    {
+     "id": "gcd-gd09-384",
+     "src": 27069,
+     "num": "384",
+     "rar": "Prism",
+     "dir": "7/643"
+    },
+    {
+     "id": "gcd-gd09-385",
+     "src": 27070,
+     "num": "385",
+     "rar": "Prism",
+     "dir": "7/643"
+    },
+    {
+     "id": "gcd-gd09-386",
+     "src": 27071,
+     "num": "386",
+     "rar": "Prism",
+     "dir": "7/643"
+    },
+    {
+     "id": "gcd-gd09-387",
+     "src": 27072,
+     "num": "387",
+     "rar": "Normal",
+     "dir": "7/643"
+    },
+    {
+     "id": "gcd-gd09-388",
+     "src": 27073,
+     "num": "388",
+     "rar": "Normal",
+     "dir": "7/643"
+    },
+    {
+     "id": "gcd-gd09-389",
+     "src": 27074,
+     "num": "389",
+     "rar": "Normal",
+     "dir": "7/643"
+    },
+    {
+     "id": "gcd-gd09-390",
+     "src": 27075,
+     "num": "390",
+     "rar": "Normal",
+     "dir": "7/643"
+    },
+    {
+     "id": "gcd-gd09-391",
+     "src": 27076,
+     "num": "391",
+     "rar": "Normal",
+     "dir": "7/643"
+    },
+    {
+     "id": "gcd-gd09-392",
+     "src": 27077,
+     "num": "392",
+     "rar": "Normal",
+     "dir": "7/643"
+    },
+    {
+     "id": "gcd-gd09-393",
+     "src": 27078,
+     "num": "393",
+     "rar": "Normal",
+     "dir": "7/643"
+    },
+    {
+     "id": "gcd-gd09-394",
+     "src": 27079,
+     "num": "394",
+     "rar": "Normal",
+     "dir": "7/643"
+    }
+   ]
+  },
+  {
+   "code": "gd10",
+   "cards": [
+    {
+     "id": "gcd-gd10-395",
+     "src": 27080,
+     "num": "395",
+     "rar": "Prism",
+     "dir": "7/644"
+    },
+    {
+     "id": "gcd-gd10-396",
+     "src": 27081,
+     "num": "396",
+     "rar": "Prism",
+     "dir": "7/644"
+    },
+    {
+     "id": "gcd-gd10-397",
+     "src": 27082,
+     "num": "397",
+     "rar": "Prism",
+     "dir": "7/644"
+    },
+    {
+     "id": "gcd-gd10-398",
+     "src": 27083,
+     "num": "398",
+     "rar": "Prism",
+     "dir": "7/644"
+    },
+    {
+     "id": "gcd-gd10-399",
+     "src": 27084,
+     "num": "399",
+     "rar": "Prism",
+     "dir": "7/644"
+    },
+    {
+     "id": "gcd-gd10-400",
+     "src": 27085,
+     "num": "400",
+     "rar": "Prism",
+     "dir": "7/644"
+    },
+    {
+     "id": "gcd-gd10-401",
+     "src": 27086,
+     "num": "401",
+     "rar": "Normal",
+     "dir": "7/644"
+    },
+    {
+     "id": "gcd-gd10-402",
+     "src": 27087,
+     "num": "402",
+     "rar": "Normal",
+     "dir": "7/644"
+    },
+    {
+     "id": "gcd-gd10-403",
+     "src": 27088,
+     "num": "403",
+     "rar": "Normal",
+     "dir": "7/644"
+    },
+    {
+     "id": "gcd-gd10-404",
+     "src": 27089,
+     "num": "404",
+     "rar": "Normal",
+     "dir": "7/644"
+    },
+    {
+     "id": "gcd-gd10-405",
+     "src": 27090,
+     "num": "405",
+     "rar": "Normal",
+     "dir": "7/644"
+    },
+    {
+     "id": "gcd-gd10-406",
+     "src": 27091,
+     "num": "406",
+     "rar": "Normal",
+     "dir": "7/644"
+    },
+    {
+     "id": "gcd-gd10-407",
+     "src": 27092,
+     "num": "407",
+     "rar": "Normal",
+     "dir": "7/644"
+    },
+    {
+     "id": "gcd-gd10-408",
+     "src": 27093,
+     "num": "408",
+     "rar": "Normal",
+     "dir": "7/644"
+    },
+    {
+     "id": "gcd-gd10-409",
+     "src": 27094,
+     "num": "409",
+     "rar": "Normal",
+     "dir": "7/644"
+    },
+    {
+     "id": "gcd-gd10-410",
+     "src": 27095,
+     "num": "410",
+     "rar": "Normal",
+     "dir": "7/644"
+    },
+    {
+     "id": "gcd-gd10-411",
+     "src": 27096,
+     "num": "411",
+     "rar": "Normal",
+     "dir": "7/644"
+    },
+    {
+     "id": "gcd-gd10-412",
+     "src": 27098,
+     "num": "412",
+     "rar": "Normal",
+     "dir": "7/644"
+    },
+    {
+     "id": "gcd-gd10-413",
+     "src": 27099,
+     "num": "413",
+     "rar": "Normal",
+     "dir": "7/644"
+    },
+    {
+     "id": "gcd-gd10-414",
+     "src": 27100,
+     "num": "414",
+     "rar": "Normal",
+     "dir": "7/644"
+    },
+    {
+     "id": "gcd-gd10-415",
+     "src": 27101,
+     "num": "415",
+     "rar": "Normal",
+     "dir": "7/644"
+    },
+    {
+     "id": "gcd-gd10-416",
+     "src": 27103,
+     "num": "416",
+     "rar": "Normal",
+     "dir": "7/644"
+    },
+    {
+     "id": "gcd-gd10-417",
+     "src": 27104,
+     "num": "417",
+     "rar": "Normal",
+     "dir": "7/644"
+    },
+    {
+     "id": "gcd-gd10-418",
+     "src": 27105,
+     "num": "418",
+     "rar": "Normal",
+     "dir": "7/644"
+    },
+    {
+     "id": "gcd-gd10-419",
+     "src": 27106,
+     "num": "419",
+     "rar": "Normal",
+     "dir": "7/644"
+    },
+    {
+     "id": "gcd-gd10-420",
+     "src": 27107,
+     "num": "420",
+     "rar": "Normal",
+     "dir": "7/644"
+    },
+    {
+     "id": "gcd-gd10-421",
+     "src": 27108,
+     "num": "421",
+     "rar": "Normal",
+     "dir": "7/644"
+    },
+    {
+     "id": "gcd-gd10-422",
+     "src": 27109,
+     "num": "422",
+     "rar": "Normal",
+     "dir": "7/644"
+    },
+    {
+     "id": "gcd-gd10-423",
+     "src": 27110,
+     "num": "423",
+     "rar": "Normal",
+     "dir": "7/644"
+    },
+    {
+     "id": "gcd-gd10-424",
+     "src": 27111,
+     "num": "424",
+     "rar": "Normal",
+     "dir": "7/644"
+    },
+    {
+     "id": "gcd-gd10-425",
+     "src": 27112,
+     "num": "425",
+     "rar": "Normal",
+     "dir": "7/644"
+    },
+    {
+     "id": "gcd-gd10-426",
+     "src": 27113,
+     "num": "426",
+     "rar": "Normal",
+     "dir": "7/644"
+    },
+    {
+     "id": "gcd-gd10-427",
+     "src": 27114,
+     "num": "427",
+     "rar": "Normal",
+     "dir": "7/644"
+    },
+    {
+     "id": "gcd-gd10-428",
+     "src": 27115,
+     "num": "428",
+     "rar": "Prism",
+     "dir": "7/644"
+    },
+    {
+     "id": "gcd-gd10-429",
+     "src": 27116,
+     "num": "429",
+     "rar": "Normal",
+     "dir": "7/644"
+    },
+    {
+     "id": "gcd-gd10-430",
+     "src": 27117,
+     "num": "430",
+     "rar": "Prism",
+     "dir": "7/644"
+    },
+    {
+     "id": "gcd-gd10-431",
+     "src": 27118,
+     "num": "431",
+     "rar": "Normal",
+     "dir": "7/644"
+    },
+    {
+     "id": "gcd-gd10-432",
+     "src": 27119,
+     "num": "432",
+     "rar": "Normal",
+     "dir": "7/644"
+    },
+    {
+     "id": "gcd-gd10-433",
+     "src": 27120,
+     "num": "433",
+     "rar": "Normal",
+     "dir": "7/644"
+    },
+    {
+     "id": "gcd-gd10-434",
+     "src": 27121,
+     "num": "434",
+     "rar": "Normal",
+     "dir": "7/644"
+    },
+    {
+     "id": "gcd-gd10-435",
+     "src": 27122,
+     "num": "435",
+     "rar": "Normal",
+     "dir": "7/644"
+    },
+    {
+     "id": "gcd-gd10-436",
+     "src": 27123,
+     "num": "436",
+     "rar": "Normal",
+     "dir": "7/644"
+    },
+    {
+     "id": "gcd-gd10-437",
+     "src": 27124,
+     "num": "437",
+     "rar": "Normal",
+     "dir": "7/644"
+    },
+    {
+     "id": "gcd-gd10-438",
+     "src": 27125,
+     "num": "438",
+     "rar": "Normal",
+     "dir": "7/644"
+    }
+   ]
+  },
+  {
+   "code": "gd11",
+   "cards": [
+    {
+     "id": "gcd-gd11-439",
+     "src": 27126,
+     "num": "439",
+     "rar": "Normal",
+     "dir": "7/645"
+    },
+    {
+     "id": "gcd-gd11-440",
+     "src": 27127,
+     "num": "440",
+     "rar": "Normal",
+     "dir": "7/645"
+    },
+    {
+     "id": "gcd-gd11-441",
+     "src": 27128,
+     "num": "441",
+     "rar": "Normal",
+     "dir": "7/645"
+    },
+    {
+     "id": "gcd-gd11-442",
+     "src": 27129,
+     "num": "442",
+     "rar": "Prism",
+     "dir": "7/645"
+    },
+    {
+     "id": "gcd-gd11-443",
+     "src": 27130,
+     "num": "443",
+     "rar": "Prism",
+     "dir": "7/645"
+    },
+    {
+     "id": "gcd-gd11-444",
+     "src": 27131,
+     "num": "444",
+     "rar": "Prism",
+     "dir": "7/645"
+    },
+    {
+     "id": "gcd-gd11-445",
+     "src": 27132,
+     "num": "445",
+     "rar": "Prism",
+     "dir": "7/645"
+    },
+    {
+     "id": "gcd-gd11-446",
+     "src": 27133,
+     "num": "446",
+     "rar": "Normal",
+     "dir": "7/645"
+    },
+    {
+     "id": "gcd-gd11-447",
+     "src": 27134,
+     "num": "447",
+     "rar": "Normal",
+     "dir": "7/645"
+    },
+    {
+     "id": "gcd-gd11-448",
+     "src": 27135,
+     "num": "448",
+     "rar": "Prism",
+     "dir": "7/645"
+    },
+    {
+     "id": "gcd-gd11-449",
+     "src": 27136,
+     "num": "449",
+     "rar": "Normal",
+     "dir": "7/645"
+    },
+    {
+     "id": "gcd-gd11-450",
+     "src": 27137,
+     "num": "450",
+     "rar": "Normal",
+     "dir": "7/645"
+    },
+    {
+     "id": "gcd-gd11-451",
+     "src": 27138,
+     "num": "451",
+     "rar": "Normal",
+     "dir": "7/645"
+    },
+    {
+     "id": "gcd-gd11-452",
+     "src": 27139,
+     "num": "452",
+     "rar": "Normal",
+     "dir": "7/645"
+    },
+    {
+     "id": "gcd-gd11-453",
+     "src": 27140,
+     "num": "453",
+     "rar": "Normal",
+     "dir": "7/645"
+    },
+    {
+     "id": "gcd-gd11-454",
+     "src": 27141,
+     "num": "454",
+     "rar": "Normal",
+     "dir": "7/645"
+    },
+    {
+     "id": "gcd-gd11-455",
+     "src": 27142,
+     "num": "455",
+     "rar": "Normal",
+     "dir": "7/645"
+    },
+    {
+     "id": "gcd-gd11-456",
+     "src": 27143,
+     "num": "456",
+     "rar": "Normal",
+     "dir": "7/645"
+    },
+    {
+     "id": "gcd-gd11-457",
+     "src": 27144,
+     "num": "457",
+     "rar": "Normal",
+     "dir": "7/645"
+    },
+    {
+     "id": "gcd-gd11-458",
+     "src": 27145,
+     "num": "458",
+     "rar": "Normal",
+     "dir": "7/645"
+    },
+    {
+     "id": "gcd-gd11-459",
+     "src": 27146,
+     "num": "459",
+     "rar": "Normal",
+     "dir": "7/645"
+    },
+    {
+     "id": "gcd-gd11-460",
+     "src": 27147,
+     "num": "460",
+     "rar": "Normal",
+     "dir": "7/645"
+    },
+    {
+     "id": "gcd-gd11-461",
+     "src": 27148,
+     "num": "461",
+     "rar": "Normal",
+     "dir": "7/645"
+    },
+    {
+     "id": "gcd-gd11-462",
+     "src": 27149,
+     "num": "462",
+     "rar": "Normal",
+     "dir": "7/645"
+    },
+    {
+     "id": "gcd-gd11-463",
+     "src": 27150,
+     "num": "463",
+     "rar": "Normal",
+     "dir": "7/645"
+    },
+    {
+     "id": "gcd-gd11-464",
+     "src": 27151,
+     "num": "464",
+     "rar": "Normal",
+     "dir": "7/645"
+    },
+    {
+     "id": "gcd-gd11-465",
+     "src": 27152,
+     "num": "465",
+     "rar": "Normal",
+     "dir": "7/645"
+    },
+    {
+     "id": "gcd-gd11-466",
+     "src": 27153,
+     "num": "466",
+     "rar": "Normal",
+     "dir": "7/645"
+    },
+    {
+     "id": "gcd-gd11-467",
+     "src": 27154,
+     "num": "467",
+     "rar": "Normal",
+     "dir": "7/645"
+    },
+    {
+     "id": "gcd-gd11-468",
+     "src": 27155,
+     "num": "468",
+     "rar": "Normal",
+     "dir": "7/645"
+    },
+    {
+     "id": "gcd-gd11-469",
+     "src": 27156,
+     "num": "469",
+     "rar": "Normal",
+     "dir": "7/645"
+    },
+    {
+     "id": "gcd-gd11-470",
+     "src": 27157,
+     "num": "470",
+     "rar": "Normal",
+     "dir": "7/645"
+    },
+    {
+     "id": "gcd-gd11-471",
+     "src": 27158,
+     "num": "471",
+     "rar": "Normal",
+     "dir": "7/645"
+    },
+    {
+     "id": "gcd-gd11-472",
+     "src": 27159,
+     "num": "472",
+     "rar": "Normal",
+     "dir": "7/645"
+    },
+    {
+     "id": "gcd-gd11-473",
+     "src": 27160,
+     "num": "473",
+     "rar": "Normal",
+     "dir": "7/645"
+    },
+    {
+     "id": "gcd-gd11-474",
+     "src": 27161,
+     "num": "474",
+     "rar": "Normal",
+     "dir": "7/645"
+    },
+    {
+     "id": "gcd-gd11-475",
+     "src": 27162,
+     "num": "475",
+     "rar": "Normal",
+     "dir": "7/645"
+    },
+    {
+     "id": "gcd-gd11-476",
+     "src": 27163,
+     "num": "476",
+     "rar": "Normal",
+     "dir": "7/645"
+    },
+    {
+     "id": "gcd-gd11-477",
+     "src": 27164,
+     "num": "477",
+     "rar": "Prism",
+     "dir": "7/645"
+    },
+    {
+     "id": "gcd-gd11-478",
+     "src": 27165,
+     "num": "478",
+     "rar": "Normal",
+     "dir": "7/645"
+    },
+    {
+     "id": "gcd-gd11-479",
+     "src": 27166,
+     "num": "479",
+     "rar": "Prism",
+     "dir": "7/645"
+    },
+    {
+     "id": "gcd-gd11-480",
+     "src": 27167,
+     "num": "480",
+     "rar": "Prism",
+     "dir": "7/645"
+    },
+    {
+     "id": "gcd-gd11-481",
+     "src": 27168,
+     "num": "481",
+     "rar": "Normal",
+     "dir": "7/645"
+    },
+    {
+     "id": "gcd-gd11-482",
+     "src": 27169,
+     "num": "482",
+     "rar": "Normal",
+     "dir": "7/645"
+    }
+   ]
+  },
+  {
+   "code": "gd12",
+   "cards": [
+    {
+     "id": "gcd-gd12-483",
+     "src": 27170,
+     "num": "483",
+     "rar": "Normal",
+     "dir": "7/646"
+    },
+    {
+     "id": "gcd-gd12-484",
+     "src": 27171,
+     "num": "484",
+     "rar": "Normal",
+     "dir": "7/646"
+    },
+    {
+     "id": "gcd-gd12-485",
+     "src": 27172,
+     "num": "485",
+     "rar": "Normal",
+     "dir": "7/646"
+    },
+    {
+     "id": "gcd-gd12-486",
+     "src": 27173,
+     "num": "486",
+     "rar": "Prism",
+     "dir": "7/646"
+    },
+    {
+     "id": "gcd-gd12-487",
+     "src": 27174,
+     "num": "487",
+     "rar": "Prism",
+     "dir": "7/646"
+    },
+    {
+     "id": "gcd-gd12-488",
+     "src": 27175,
+     "num": "488",
+     "rar": "Prism",
+     "dir": "7/646"
+    },
+    {
+     "id": "gcd-gd12-489",
+     "src": 27176,
+     "num": "489",
+     "rar": "Prism",
+     "dir": "7/646"
+    },
+    {
+     "id": "gcd-gd12-490",
+     "src": 27177,
+     "num": "490",
+     "rar": "Prism",
+     "dir": "7/646"
+    },
+    {
+     "id": "gcd-gd12-491",
+     "src": 27178,
+     "num": "491",
+     "rar": "Prism",
+     "dir": "7/646"
+    },
+    {
+     "id": "gcd-gd12-492",
+     "src": 27179,
+     "num": "492",
+     "rar": "Normal",
+     "dir": "7/646"
+    },
+    {
+     "id": "gcd-gd12-493",
+     "src": 27180,
+     "num": "493",
+     "rar": "Normal",
+     "dir": "7/646"
+    },
+    {
+     "id": "gcd-gd12-494",
+     "src": 27181,
+     "num": "494",
+     "rar": "Normal",
+     "dir": "7/646"
+    },
+    {
+     "id": "gcd-gd12-495",
+     "src": 27182,
+     "num": "495",
+     "rar": "Normal",
+     "dir": "7/646"
+    },
+    {
+     "id": "gcd-gd12-496",
+     "src": 27183,
+     "num": "496",
+     "rar": "Normal",
+     "dir": "7/646"
+    },
+    {
+     "id": "gcd-gd12-497",
+     "src": 27184,
+     "num": "497",
+     "rar": "Normal",
+     "dir": "7/646"
+    },
+    {
+     "id": "gcd-gd12-498",
+     "src": 27185,
+     "num": "498",
+     "rar": "Normal",
+     "dir": "7/646"
+    },
+    {
+     "id": "gcd-gd12-499",
+     "src": 27186,
+     "num": "499",
+     "rar": "Normal",
+     "dir": "7/646"
+    },
+    {
+     "id": "gcd-gd12-500",
+     "src": 27187,
+     "num": "500",
+     "rar": "Prism Pixel",
+     "dir": "7/646"
+    },
+    {
+     "id": "gcd-gd12-501",
+     "src": 27188,
+     "num": "501",
+     "rar": "Normal",
+     "dir": "7/646"
+    },
+    {
+     "id": "gcd-gd12-502",
+     "src": 27189,
+     "num": "502",
+     "rar": "Normal",
+     "dir": "7/646"
+    },
+    {
+     "id": "gcd-gd12-503",
+     "src": 27190,
+     "num": "503",
+     "rar": "Normal",
+     "dir": "7/646"
+    },
+    {
+     "id": "gcd-gd12-504",
+     "src": 27191,
+     "num": "504",
+     "rar": "Normal",
+     "dir": "7/646"
+    },
+    {
+     "id": "gcd-gd12-505",
+     "src": 27192,
+     "num": "505",
+     "rar": "Normal",
+     "dir": "7/646"
+    },
+    {
+     "id": "gcd-gd12-506",
+     "src": 27193,
+     "num": "506",
+     "rar": "Normal",
+     "dir": "7/646"
+    },
+    {
+     "id": "gcd-gd12-507",
+     "src": 27194,
+     "num": "507",
+     "rar": "Normal",
+     "dir": "7/646"
+    },
+    {
+     "id": "gcd-gd12-508",
+     "src": 27195,
+     "num": "508",
+     "rar": "Normal",
+     "dir": "7/646"
+    },
+    {
+     "id": "gcd-gd12-509",
+     "src": 27196,
+     "num": "509",
+     "rar": "Normal",
+     "dir": "7/646"
+    },
+    {
+     "id": "gcd-gd12-510",
+     "src": 27197,
+     "num": "510",
+     "rar": "Normal",
+     "dir": "7/646"
+    },
+    {
+     "id": "gcd-gd12-511",
+     "src": 27198,
+     "num": "511",
+     "rar": "Normal",
+     "dir": "7/646"
+    },
+    {
+     "id": "gcd-gd12-512",
+     "src": 27199,
+     "num": "512",
+     "rar": "Normal",
+     "dir": "7/646"
+    },
+    {
+     "id": "gcd-gd12-513",
+     "src": 27200,
+     "num": "513",
+     "rar": "Normal",
+     "dir": "7/646"
+    },
+    {
+     "id": "gcd-gd12-514",
+     "src": 27201,
+     "num": "514",
+     "rar": "Normal",
+     "dir": "7/646"
+    },
+    {
+     "id": "gcd-gd12-515",
+     "src": 27202,
+     "num": "515",
+     "rar": "Normal",
+     "dir": "7/646"
+    },
+    {
+     "id": "gcd-gd12-516",
+     "src": 27203,
+     "num": "516",
+     "rar": "Normal",
+     "dir": "7/646"
+    },
+    {
+     "id": "gcd-gd12-517",
+     "src": 27204,
+     "num": "517",
+     "rar": "Normal",
+     "dir": "7/646"
+    },
+    {
+     "id": "gcd-gd12-518",
+     "src": 27205,
+     "num": "518",
+     "rar": "Normal",
+     "dir": "7/646"
+    },
+    {
+     "id": "gcd-gd12-519",
+     "src": 27206,
+     "num": "519",
+     "rar": "Normal",
+     "dir": "7/646"
+    },
+    {
+     "id": "gcd-gd12-520",
+     "src": 27207,
+     "num": "520",
+     "rar": "Normal",
+     "dir": "7/646"
+    },
+    {
+     "id": "gcd-gd12-521",
+     "src": 27208,
+     "num": "521",
+     "rar": "Normal",
+     "dir": "7/646"
+    },
+    {
+     "id": "gcd-gd12-522",
+     "src": 27209,
+     "num": "522",
+     "rar": "Normal",
+     "dir": "7/646"
+    },
+    {
+     "id": "gcd-gd12-523",
+     "src": 27210,
+     "num": "523",
+     "rar": "Normal",
+     "dir": "7/646"
+    },
+    {
+     "id": "gcd-gd12-524",
+     "src": 27211,
+     "num": "524",
+     "rar": "Prism",
+     "dir": "7/646"
+    },
+    {
+     "id": "gcd-gd12-525",
+     "src": 27212,
+     "num": "525",
+     "rar": "Normal",
+     "dir": "7/646"
+    },
+    {
+     "id": "gcd-gd12-526",
+     "src": 27213,
+     "num": "526",
+     "rar": "Normal",
+     "dir": "7/646"
+    },
+    {
+     "id": "gcd-gd12-527",
+     "src": 27214,
+     "num": "527",
+     "rar": "Prism",
+     "dir": "7/646"
+    },
+    {
+     "id": "gcd-gd12-528",
+     "src": 27215,
+     "num": "528",
+     "rar": "Prism Pixel",
+     "dir": "7/646"
+    }
+   ]
+  },
+  {
+   "code": "gd13",
+   "cards": [
+    {
+     "id": "gcd-gd13-529",
+     "src": 27216,
+     "num": "529",
+     "rar": "Normal",
+     "dir": "7/647"
+    },
+    {
+     "id": "gcd-gd13-530",
+     "src": 27217,
+     "num": "530",
+     "rar": "Normal",
+     "dir": "7/647"
+    },
+    {
+     "id": "gcd-gd13-531",
+     "src": 27218,
+     "num": "531",
+     "rar": "Normal",
+     "dir": "7/647"
+    },
+    {
+     "id": "gcd-gd13-532",
+     "src": 27219,
+     "num": "532",
+     "rar": "Prism",
+     "dir": "7/647"
+    },
+    {
+     "id": "gcd-gd13-533",
+     "src": 27220,
+     "num": "533",
+     "rar": "Prism",
+     "dir": "7/647"
+    },
+    {
+     "id": "gcd-gd13-534",
+     "src": 27221,
+     "num": "534",
+     "rar": "Prism",
+     "dir": "7/647"
+    },
+    {
+     "id": "gcd-gd13-535",
+     "src": 27222,
+     "num": "535",
+     "rar": "Normal",
+     "dir": "7/647"
+    },
+    {
+     "id": "gcd-gd13-536",
+     "src": 27223,
+     "num": "536",
+     "rar": "Normal",
+     "dir": "7/647"
+    },
+    {
+     "id": "gcd-gd13-537",
+     "src": 27224,
+     "num": "537",
+     "rar": "Normal",
+     "dir": "7/647"
+    },
+    {
+     "id": "gcd-gd13-538",
+     "src": 27225,
+     "num": "538",
+     "rar": "Normal",
+     "dir": "7/647"
+    },
+    {
+     "id": "gcd-gd13-539",
+     "src": 27226,
+     "num": "539",
+     "rar": "Normal",
+     "dir": "7/647"
+    },
+    {
+     "id": "gcd-gd13-540",
+     "src": 27227,
+     "num": "540",
+     "rar": "Normal",
+     "dir": "7/647"
+    },
+    {
+     "id": "gcd-gd13-541",
+     "src": 27228,
+     "num": "541",
+     "rar": "Normal",
+     "dir": "7/647"
+    },
+    {
+     "id": "gcd-gd13-542",
+     "src": 27229,
+     "num": "542",
+     "rar": "Normal",
+     "dir": "7/647"
+    },
+    {
+     "id": "gcd-gd13-543",
+     "src": 27230,
+     "num": "543",
+     "rar": "Normal",
+     "dir": "7/647"
+    },
+    {
+     "id": "gcd-gd13-544",
+     "src": 27231,
+     "num": "544",
+     "rar": "Normal",
+     "dir": "7/647"
+    },
+    {
+     "id": "gcd-gd13-545",
+     "src": 27232,
+     "num": "545",
+     "rar": "Normal",
+     "dir": "7/647"
+    },
+    {
+     "id": "gcd-gd13-546",
+     "src": 27233,
+     "num": "546",
+     "rar": "Normal",
+     "dir": "7/647"
+    },
+    {
+     "id": "gcd-gd13-547",
+     "src": 27234,
+     "num": "547",
+     "rar": "Normal",
+     "dir": "7/647"
+    },
+    {
+     "id": "gcd-gd13-548",
+     "src": 27235,
+     "num": "548",
+     "rar": "Normal",
+     "dir": "7/647"
+    },
+    {
+     "id": "gcd-gd13-549",
+     "src": 27236,
+     "num": "549",
+     "rar": "Prism",
+     "dir": "7/647"
+    },
+    {
+     "id": "gcd-gd13-550",
+     "src": 27237,
+     "num": "550",
+     "rar": "Prism",
+     "dir": "7/647"
+    },
+    {
+     "id": "gcd-gd13-551",
+     "src": 27238,
+     "num": "551",
+     "rar": "Prism",
+     "dir": "7/647"
+    },
+    {
+     "id": "gcd-gd13-552",
+     "src": 27239,
+     "num": "552",
+     "rar": "Normal",
+     "dir": "7/647"
+    },
+    {
+     "id": "gcd-gd13-553",
+     "src": 27240,
+     "num": "553",
+     "rar": "Normal",
+     "dir": "7/647"
+    },
+    {
+     "id": "gcd-gd13-554",
+     "src": 27241,
+     "num": "554",
+     "rar": "Normal",
+     "dir": "7/647"
+    },
+    {
+     "id": "gcd-gd13-555",
+     "src": 27242,
+     "num": "555",
+     "rar": "Normal",
+     "dir": "7/647"
+    },
+    {
+     "id": "gcd-gd13-556",
+     "src": 27243,
+     "num": "556",
+     "rar": "Normal",
+     "dir": "7/647"
+    },
+    {
+     "id": "gcd-gd13-557",
+     "src": 27244,
+     "num": "557",
+     "rar": "Normal",
+     "dir": "7/647"
+    },
+    {
+     "id": "gcd-gd13-558",
+     "src": 27245,
+     "num": "558",
+     "rar": "Normal",
+     "dir": "7/647"
+    },
+    {
+     "id": "gcd-gd13-559",
+     "src": 27246,
+     "num": "559",
+     "rar": "Normal",
+     "dir": "7/647"
+    },
+    {
+     "id": "gcd-gd13-560",
+     "src": 27247,
+     "num": "560",
+     "rar": "Normal",
+     "dir": "7/647"
+    },
+    {
+     "id": "gcd-gd13-561",
+     "src": 27248,
+     "num": "561",
+     "rar": "Normal",
+     "dir": "7/647"
+    },
+    {
+     "id": "gcd-gd13-562",
+     "src": 27249,
+     "num": "562",
+     "rar": "Normal",
+     "dir": "7/647"
+    },
+    {
+     "id": "gcd-gd13-563",
+     "src": 27250,
+     "num": "563",
+     "rar": "Normal",
+     "dir": "7/647"
+    },
+    {
+     "id": "gcd-gd13-564",
+     "src": 27251,
+     "num": "564",
+     "rar": "Normal",
+     "dir": "7/647"
+    },
+    {
+     "id": "gcd-gd13-565",
+     "src": 27252,
+     "num": "565",
+     "rar": "Normal",
+     "dir": "7/647"
+    },
+    {
+     "id": "gcd-gd13-566",
+     "src": 27253,
+     "num": "566",
+     "rar": "Normal",
+     "dir": "7/647"
+    },
+    {
+     "id": "gcd-gd13-567",
+     "src": 27254,
+     "num": "567",
+     "rar": "Normal",
+     "dir": "7/647"
+    },
+    {
+     "id": "gcd-gd13-568",
+     "src": 27255,
+     "num": "568",
+     "rar": "Normal",
+     "dir": "7/647"
+    },
+    {
+     "id": "gcd-gd13-569",
+     "src": 27256,
+     "num": "569",
+     "rar": "Normal",
+     "dir": "7/647"
+    },
+    {
+     "id": "gcd-gd13-570",
+     "src": 27257,
+     "num": "570",
+     "rar": "Normal",
+     "dir": "7/647"
+    },
+    {
+     "id": "gcd-gd13-571",
+     "src": 27258,
+     "num": "571",
+     "rar": "Prism",
+     "dir": "7/647"
+    },
+    {
+     "id": "gcd-gd13-572",
+     "src": 27259,
+     "num": "572",
+     "rar": "Prism",
+     "dir": "7/647"
+    }
+   ]
+  },
+  {
+   "code": "gd14",
+   "cards": [
+    {
+     "id": "gcd-gd14-573",
+     "src": 27260,
+     "num": "573",
+     "rar": "Normal",
+     "dir": "7/648"
+    },
+    {
+     "id": "gcd-gd14-574",
+     "src": 27261,
+     "num": "574",
+     "rar": "Normal",
+     "dir": "7/648"
+    },
+    {
+     "id": "gcd-gd14-575",
+     "src": 27262,
+     "num": "575",
+     "rar": "Normal",
+     "dir": "7/648"
+    },
+    {
+     "id": "gcd-gd14-576",
+     "src": 27263,
+     "num": "576",
+     "rar": "Prism",
+     "dir": "7/648"
+    },
+    {
+     "id": "gcd-gd14-577",
+     "src": 27264,
+     "num": "577",
+     "rar": "Prism",
+     "dir": "7/648"
+    },
+    {
+     "id": "gcd-gd14-578",
+     "src": 27265,
+     "num": "578",
+     "rar": "Normal",
+     "dir": "7/648"
+    },
+    {
+     "id": "gcd-gd14-579",
+     "src": 27267,
+     "num": "579",
+     "rar": "Normal",
+     "dir": "7/648"
+    },
+    {
+     "id": "gcd-gd14-580",
+     "src": 27268,
+     "num": "580",
+     "rar": "Normal",
+     "dir": "7/648"
+    },
+    {
+     "id": "gcd-gd14-581",
+     "src": 27269,
+     "num": "581",
+     "rar": "Normal",
+     "dir": "7/648"
+    },
+    {
+     "id": "gcd-gd14-582",
+     "src": 27270,
+     "num": "582",
+     "rar": "Normal",
+     "dir": "7/648"
+    },
+    {
+     "id": "gcd-gd14-583",
+     "src": 27271,
+     "num": "583",
+     "rar": "Normal",
+     "dir": "7/648"
+    },
+    {
+     "id": "gcd-gd14-584",
+     "src": 27272,
+     "num": "584",
+     "rar": "Normal",
+     "dir": "7/648"
+    },
+    {
+     "id": "gcd-gd14-585",
+     "src": 27273,
+     "num": "585",
+     "rar": "Normal",
+     "dir": "7/648"
+    },
+    {
+     "id": "gcd-gd14-586",
+     "src": 27274,
+     "num": "586",
+     "rar": "Normal",
+     "dir": "7/648"
+    },
+    {
+     "id": "gcd-gd14-587",
+     "src": 27275,
+     "num": "587",
+     "rar": "Normal",
+     "dir": "7/648"
+    },
+    {
+     "id": "gcd-gd14-588",
+     "src": 27276,
+     "num": "588",
+     "rar": "Normal",
+     "dir": "7/648"
+    },
+    {
+     "id": "gcd-gd14-589",
+     "src": 27277,
+     "num": "589",
+     "rar": "Prism",
+     "dir": "7/648"
+    },
+    {
+     "id": "gcd-gd14-590",
+     "src": 27278,
+     "num": "590",
+     "rar": "Prism",
+     "dir": "7/648"
+    },
+    {
+     "id": "gcd-gd14-591",
+     "src": 27279,
+     "num": "591",
+     "rar": "Normal",
+     "dir": "7/648"
+    },
+    {
+     "id": "gcd-gd14-592",
+     "src": 27280,
+     "num": "592",
+     "rar": "Normal",
+     "dir": "7/648"
+    },
+    {
+     "id": "gcd-gd14-593",
+     "src": 27281,
+     "num": "593",
+     "rar": "Prism",
+     "dir": "7/648"
+    },
+    {
+     "id": "gcd-gd14-594",
+     "src": 27282,
+     "num": "594",
+     "rar": "Normal",
+     "dir": "7/648"
+    },
+    {
+     "id": "gcd-gd14-595",
+     "src": 27283,
+     "num": "595",
+     "rar": "Normal",
+     "dir": "7/648"
+    },
+    {
+     "id": "gcd-gd14-596",
+     "src": 27284,
+     "num": "596",
+     "rar": "Normal",
+     "dir": "7/648"
+    },
+    {
+     "id": "gcd-gd14-597",
+     "src": 27285,
+     "num": "597",
+     "rar": "Normal",
+     "dir": "7/648"
+    },
+    {
+     "id": "gcd-gd14-598",
+     "src": 27286,
+     "num": "598",
+     "rar": "Normal",
+     "dir": "7/648"
+    },
+    {
+     "id": "gcd-gd14-599",
+     "src": 27287,
+     "num": "599",
+     "rar": "Normal",
+     "dir": "7/648"
+    },
+    {
+     "id": "gcd-gd14-600",
+     "src": 27288,
+     "num": "600",
+     "rar": "Prism",
+     "dir": "7/648"
+    },
+    {
+     "id": "gcd-gd14-601",
+     "src": 27289,
+     "num": "601",
+     "rar": "Normal",
+     "dir": "7/648"
+    },
+    {
+     "id": "gcd-gd14-602",
+     "src": 27291,
+     "num": "602",
+     "rar": "Normal",
+     "dir": "7/648"
+    },
+    {
+     "id": "gcd-gd14-603",
+     "src": 27292,
+     "num": "603",
+     "rar": "Normal",
+     "dir": "7/648"
+    },
+    {
+     "id": "gcd-gd14-604",
+     "src": 27293,
+     "num": "604",
+     "rar": "Normal",
+     "dir": "7/648"
+    },
+    {
+     "id": "gcd-gd14-605",
+     "src": 27294,
+     "num": "605",
+     "rar": "Normal",
+     "dir": "7/648"
+    },
+    {
+     "id": "gcd-gd14-606",
+     "src": 27295,
+     "num": "606",
+     "rar": "Normal",
+     "dir": "7/648"
+    },
+    {
+     "id": "gcd-gd14-607",
+     "src": 27296,
+     "num": "607",
+     "rar": "Normal",
+     "dir": "7/648"
+    },
+    {
+     "id": "gcd-gd14-608",
+     "src": 27297,
+     "num": "608",
+     "rar": "Normal",
+     "dir": "7/648"
+    },
+    {
+     "id": "gcd-gd14-609",
+     "src": 27298,
+     "num": "609",
+     "rar": "Normal",
+     "dir": "7/648"
+    },
+    {
+     "id": "gcd-gd14-610",
+     "src": 27299,
+     "num": "610",
+     "rar": "Normal",
+     "dir": "7/648"
+    },
+    {
+     "id": "gcd-gd14-611",
+     "src": 27300,
+     "num": "611",
+     "rar": "Normal",
+     "dir": "7/648"
+    },
+    {
+     "id": "gcd-gd14-612",
+     "src": 27301,
+     "num": "612",
+     "rar": "Normal",
+     "dir": "7/648"
+    },
+    {
+     "id": "gcd-gd14-613",
+     "src": 27302,
+     "num": "613",
+     "rar": "Prism",
+     "dir": "7/648"
+    },
+    {
+     "id": "gcd-gd14-614",
+     "src": 27303,
+     "num": "614",
+     "rar": "Prism",
+     "dir": "7/648"
+    },
+    {
+     "id": "gcd-gd14-615",
+     "src": 27304,
+     "num": "615",
+     "rar": "Normal",
+     "dir": "7/648"
+    },
+    {
+     "id": "gcd-gd14-616",
+     "src": 27305,
+     "num": "616",
+     "rar": "Normal",
+     "dir": "7/648"
+    }
+   ]
+  },
+  {
+   "code": "gd15",
+   "cards": [
+    {
+     "id": "gcd-gd15-617",
+     "src": 27306,
+     "num": "617",
+     "rar": "Normal",
+     "dir": "7/649"
+    },
+    {
+     "id": "gcd-gd15-618",
+     "src": 27307,
+     "num": "618",
+     "rar": "Normal",
+     "dir": "7/649"
+    },
+    {
+     "id": "gcd-gd15-619",
+     "src": 27308,
+     "num": "619",
+     "rar": "Normal",
+     "dir": "7/649"
+    },
+    {
+     "id": "gcd-gd15-620",
+     "src": 27309,
+     "num": "620",
+     "rar": "Prism",
+     "dir": "7/649"
+    },
+    {
+     "id": "gcd-gd15-621",
+     "src": 27310,
+     "num": "621",
+     "rar": "Prism",
+     "dir": "7/649"
+    },
+    {
+     "id": "gcd-gd15-622",
+     "src": 27311,
+     "num": "622",
+     "rar": "Prism",
+     "dir": "7/649"
+    },
+    {
+     "id": "gcd-gd15-623",
+     "src": 27312,
+     "num": "623",
+     "rar": "Normal",
+     "dir": "7/649"
+    },
+    {
+     "id": "gcd-gd15-624",
+     "src": 27313,
+     "num": "624",
+     "rar": "Normal",
+     "dir": "7/649"
+    },
+    {
+     "id": "gcd-gd15-625",
+     "src": 27314,
+     "num": "625",
+     "rar": "Normal",
+     "dir": "7/649"
+    },
+    {
+     "id": "gcd-gd15-626",
+     "src": 27315,
+     "num": "626",
+     "rar": "Prism",
+     "dir": "7/649"
+    },
+    {
+     "id": "gcd-gd15-627",
+     "src": 27316,
+     "num": "627",
+     "rar": "Prism",
+     "dir": "7/649"
+    },
+    {
+     "id": "gcd-gd15-628",
+     "src": 27317,
+     "num": "628",
+     "rar": "Normal",
+     "dir": "7/649"
+    },
+    {
+     "id": "gcd-gd15-629",
+     "src": 27318,
+     "num": "629",
+     "rar": "Normal",
+     "dir": "7/649"
+    },
+    {
+     "id": "gcd-gd15-630",
+     "src": 27319,
+     "num": "630",
+     "rar": "Normal",
+     "dir": "7/649"
+    },
+    {
+     "id": "gcd-gd15-631",
+     "src": 27320,
+     "num": "631",
+     "rar": "Normal",
+     "dir": "7/649"
+    },
+    {
+     "id": "gcd-gd15-632",
+     "src": 27321,
+     "num": "632",
+     "rar": "Normal",
+     "dir": "7/649"
+    },
+    {
+     "id": "gcd-gd15-633",
+     "src": 27322,
+     "num": "633",
+     "rar": "Normal",
+     "dir": "7/649"
+    },
+    {
+     "id": "gcd-gd15-634",
+     "src": 27323,
+     "num": "634",
+     "rar": "Normal",
+     "dir": "7/649"
+    },
+    {
+     "id": "gcd-gd15-635",
+     "src": 27324,
+     "num": "635",
+     "rar": "Normal",
+     "dir": "7/649"
+    },
+    {
+     "id": "gcd-gd15-636",
+     "src": 27325,
+     "num": "636",
+     "rar": "Normal",
+     "dir": "7/649"
+    },
+    {
+     "id": "gcd-gd15-637",
+     "src": 27326,
+     "num": "637",
+     "rar": "Normal",
+     "dir": "7/649"
+    },
+    {
+     "id": "gcd-gd15-638",
+     "src": 27327,
+     "num": "638",
+     "rar": "Normal",
+     "dir": "7/649"
+    },
+    {
+     "id": "gcd-gd15-639",
+     "src": 27328,
+     "num": "639",
+     "rar": "Normal",
+     "dir": "7/649"
+    },
+    {
+     "id": "gcd-gd15-640",
+     "src": 27329,
+     "num": "640",
+     "rar": "Normal",
+     "dir": "7/649"
+    },
+    {
+     "id": "gcd-gd15-641",
+     "src": 27330,
+     "num": "641",
+     "rar": "Normal",
+     "dir": "7/649"
+    },
+    {
+     "id": "gcd-gd15-642",
+     "src": 27331,
+     "num": "642",
+     "rar": "Normal",
+     "dir": "7/649"
+    },
+    {
+     "id": "gcd-gd15-643",
+     "src": 27332,
+     "num": "643",
+     "rar": "Normal",
+     "dir": "7/649"
+    },
+    {
+     "id": "gcd-gd15-644",
+     "src": 27333,
+     "num": "644",
+     "rar": "Normal",
+     "dir": "7/649"
+    },
+    {
+     "id": "gcd-gd15-645",
+     "src": 27334,
+     "num": "645",
+     "rar": "Normal",
+     "dir": "7/649"
+    },
+    {
+     "id": "gcd-gd15-646",
+     "src": 27335,
+     "num": "646",
+     "rar": "Normal",
+     "dir": "7/649"
+    },
+    {
+     "id": "gcd-gd15-647",
+     "src": 27336,
+     "num": "647",
+     "rar": "Normal",
+     "dir": "7/649"
+    },
+    {
+     "id": "gcd-gd15-648",
+     "src": 27337,
+     "num": "648",
+     "rar": "Normal",
+     "dir": "7/649"
+    },
+    {
+     "id": "gcd-gd15-649",
+     "src": 27338,
+     "num": "649",
+     "rar": "Normal",
+     "dir": "7/649"
+    },
+    {
+     "id": "gcd-gd15-650",
+     "src": 27339,
+     "num": "650",
+     "rar": "Normal",
+     "dir": "7/649"
+    },
+    {
+     "id": "gcd-gd15-651",
+     "src": 27340,
+     "num": "651",
+     "rar": "Normal",
+     "dir": "7/649"
+    },
+    {
+     "id": "gcd-gd15-652",
+     "src": 27341,
+     "num": "652",
+     "rar": "Normal",
+     "dir": "7/649"
+    },
+    {
+     "id": "gcd-gd15-653",
+     "src": 27342,
+     "num": "653",
+     "rar": "Normal",
+     "dir": "7/649"
+    },
+    {
+     "id": "gcd-gd15-654",
+     "src": 27343,
+     "num": "654",
+     "rar": "Normal",
+     "dir": "7/649"
+    },
+    {
+     "id": "gcd-gd15-655",
+     "src": 27344,
+     "num": "655",
+     "rar": "Normal",
+     "dir": "7/649"
+    },
+    {
+     "id": "gcd-gd15-656",
+     "src": 27345,
+     "num": "656",
+     "rar": "Normal",
+     "dir": "7/649"
+    },
+    {
+     "id": "gcd-gd15-657",
+     "src": 27346,
+     "num": "657",
+     "rar": "Normal",
+     "dir": "7/649"
+    },
+    {
+     "id": "gcd-gd15-658",
+     "src": 27347,
+     "num": "658",
+     "rar": "Prism",
+     "dir": "7/649"
+    },
+    {
+     "id": "gcd-gd15-659",
+     "src": 27348,
+     "num": "659",
+     "rar": "Prism",
+     "dir": "7/649"
+    },
+    {
+     "id": "gcd-gd15-660",
+     "src": 27349,
+     "num": "660",
+     "rar": "Prism",
+     "dir": "7/649"
+    }
+   ]
+  },
+  {
+   "code": "gd16",
+   "cards": [
+    {
+     "id": "gcd-gd16-661",
+     "src": 27350,
+     "num": "661",
+     "rar": "Normal",
+     "dir": "7/650"
+    },
+    {
+     "id": "gcd-gd16-662",
+     "src": 27351,
+     "num": "662",
+     "rar": "Normal",
+     "dir": "7/650"
+    },
+    {
+     "id": "gcd-gd16-663",
+     "src": 27352,
+     "num": "663",
+     "rar": "Normal",
+     "dir": "7/650"
+    },
+    {
+     "id": "gcd-gd16-664",
+     "src": 27353,
+     "num": "664",
+     "rar": "Normal",
+     "dir": "7/650"
+    },
+    {
+     "id": "gcd-gd16-665",
+     "src": 27354,
+     "num": "665",
+     "rar": "Prism",
+     "dir": "7/650"
+    },
+    {
+     "id": "gcd-gd16-666",
+     "src": 27355,
+     "num": "666",
+     "rar": "Prism",
+     "dir": "7/650"
+    },
+    {
+     "id": "gcd-gd16-667",
+     "src": 27356,
+     "num": "667",
+     "rar": "Prism",
+     "dir": "7/650"
+    },
+    {
+     "id": "gcd-gd16-668",
+     "src": 27357,
+     "num": "668",
+     "rar": "Prism",
+     "dir": "7/650"
+    },
+    {
+     "id": "gcd-gd16-669",
+     "src": 27358,
+     "num": "669",
+     "rar": "Normal",
+     "dir": "7/650"
+    },
+    {
+     "id": "gcd-gd16-670",
+     "src": 27359,
+     "num": "670",
+     "rar": "Normal",
+     "dir": "7/650"
+    },
+    {
+     "id": "gcd-gd16-671",
+     "src": 27360,
+     "num": "671",
+     "rar": "Normal",
+     "dir": "7/650"
+    },
+    {
+     "id": "gcd-gd16-672",
+     "src": 27361,
+     "num": "672",
+     "rar": "Normal",
+     "dir": "7/650"
+    },
+    {
+     "id": "gcd-gd16-673",
+     "src": 27362,
+     "num": "673",
+     "rar": "Normal",
+     "dir": "7/650"
+    },
+    {
+     "id": "gcd-gd16-674",
+     "src": 27363,
+     "num": "674",
+     "rar": "Normal",
+     "dir": "7/650"
+    },
+    {
+     "id": "gcd-gd16-675",
+     "src": 27364,
+     "num": "675",
+     "rar": "Normal",
+     "dir": "7/650"
+    },
+    {
+     "id": "gcd-gd16-676",
+     "src": 27365,
+     "num": "676",
+     "rar": "Normal",
+     "dir": "7/650"
+    },
+    {
+     "id": "gcd-gd16-677",
+     "src": 27366,
+     "num": "677",
+     "rar": "Normal",
+     "dir": "7/650"
+    },
+    {
+     "id": "gcd-gd16-678",
+     "src": 27367,
+     "num": "678",
+     "rar": "Normal",
+     "dir": "7/650"
+    },
+    {
+     "id": "gcd-gd16-679",
+     "src": 27368,
+     "num": "679",
+     "rar": "Normal",
+     "dir": "7/650"
+    },
+    {
+     "id": "gcd-gd16-680",
+     "src": 27369,
+     "num": "680",
+     "rar": "Normal",
+     "dir": "7/650"
+    },
+    {
+     "id": "gcd-gd16-681",
+     "src": 27370,
+     "num": "681",
+     "rar": "Normal",
+     "dir": "7/650"
+    },
+    {
+     "id": "gcd-gd16-682",
+     "src": 27371,
+     "num": "682",
+     "rar": "Normal",
+     "dir": "7/650"
+    },
+    {
+     "id": "gcd-gd16-683",
+     "src": 27372,
+     "num": "683",
+     "rar": "Normal",
+     "dir": "7/650"
+    },
+    {
+     "id": "gcd-gd16-684",
+     "src": 27373,
+     "num": "684",
+     "rar": "Normal",
+     "dir": "7/650"
+    },
+    {
+     "id": "gcd-gd16-685",
+     "src": 27374,
+     "num": "685",
+     "rar": "Normal",
+     "dir": "7/650"
+    },
+    {
+     "id": "gcd-gd16-686",
+     "src": 27375,
+     "num": "686",
+     "rar": "Normal",
+     "dir": "7/650"
+    },
+    {
+     "id": "gcd-gd16-687",
+     "src": 27376,
+     "num": "687",
+     "rar": "Normal",
+     "dir": "7/650"
+    },
+    {
+     "id": "gcd-gd16-688",
+     "src": 27377,
+     "num": "688",
+     "rar": "Normal",
+     "dir": "7/650"
+    },
+    {
+     "id": "gcd-gd16-689",
+     "src": 27378,
+     "num": "689",
+     "rar": "Normal",
+     "dir": "7/650"
+    },
+    {
+     "id": "gcd-gd16-690",
+     "src": 27379,
+     "num": "690",
+     "rar": "Normal",
+     "dir": "7/650"
+    },
+    {
+     "id": "gcd-gd16-691",
+     "src": 27380,
+     "num": "691",
+     "rar": "Normal",
+     "dir": "7/650"
+    },
+    {
+     "id": "gcd-gd16-692",
+     "src": 27381,
+     "num": "692",
+     "rar": "Normal",
+     "dir": "7/650"
+    },
+    {
+     "id": "gcd-gd16-693",
+     "src": 27382,
+     "num": "693",
+     "rar": "Normal",
+     "dir": "7/650"
+    },
+    {
+     "id": "gcd-gd16-694",
+     "src": 27383,
+     "num": "694",
+     "rar": "Normal",
+     "dir": "7/650"
+    },
+    {
+     "id": "gcd-gd16-695",
+     "src": 27384,
+     "num": "695",
+     "rar": "Normal",
+     "dir": "7/650"
+    },
+    {
+     "id": "gcd-gd16-696",
+     "src": 27385,
+     "num": "696",
+     "rar": "Normal",
+     "dir": "7/650"
+    },
+    {
+     "id": "gcd-gd16-697",
+     "src": 27386,
+     "num": "697",
+     "rar": "Normal",
+     "dir": "7/650"
+    },
+    {
+     "id": "gcd-gd16-698",
+     "src": 27387,
+     "num": "698",
+     "rar": "Normal",
+     "dir": "7/650"
+    },
+    {
+     "id": "gcd-gd16-699",
+     "src": 27388,
+     "num": "699",
+     "rar": "Normal",
+     "dir": "7/650"
+    },
+    {
+     "id": "gcd-gd16-700",
+     "src": 27389,
+     "num": "700",
+     "rar": "Prism",
+     "dir": "7/650"
+    },
+    {
+     "id": "gcd-gd16-701",
+     "src": 27390,
+     "num": "701",
+     "rar": "Prism",
+     "dir": "7/650"
+    },
+    {
+     "id": "gcd-gd16-702",
+     "src": 27391,
+     "num": "702",
+     "rar": "Prism",
+     "dir": "7/650"
+    },
+    {
+     "id": "gcd-gd16-703",
+     "src": 27392,
+     "num": "703",
+     "rar": "Normal",
+     "dir": "7/650"
+    },
+    {
+     "id": "gcd-gd16-704",
+     "src": 27393,
+     "num": "704",
+     "rar": "Prism",
+     "dir": "7/650"
+    }
+   ]
+  },
+  {
+   "code": "sg01",
+   "cards": [
+    {
+     "id": "gcd-sg01-1",
+     "src": 29633,
+     "num": "1",
+     "rar": "Prism",
+     "dir": "340/720"
+    },
+    {
+     "id": "gcd-sg01-2",
+     "src": 29634,
+     "num": "2",
+     "rar": "Prism",
+     "dir": "340/720"
+    },
+    {
+     "id": "gcd-sg01-3",
+     "src": 29635,
+     "num": "3",
+     "rar": "Normal",
+     "dir": "340/720"
+    },
+    {
+     "id": "gcd-sg01-4",
+     "src": 29636,
+     "num": "4",
+     "rar": "Normal",
+     "dir": "340/720"
+    },
+    {
+     "id": "gcd-sg01-5",
+     "src": 29637,
+     "num": "5",
+     "rar": "Normal",
+     "dir": "340/720"
+    },
+    {
+     "id": "gcd-sg01-6",
+     "src": 29638,
+     "num": "6",
+     "rar": "Normal",
+     "dir": "340/720"
+    },
+    {
+     "id": "gcd-sg01-7",
+     "src": 29639,
+     "num": "7",
+     "rar": "Normal",
+     "dir": "340/720"
+    },
+    {
+     "id": "gcd-sg01-8",
+     "src": 29640,
+     "num": "8",
+     "rar": "Normal",
+     "dir": "340/720"
+    },
+    {
+     "id": "gcd-sg01-9",
+     "src": 29641,
+     "num": "9",
+     "rar": "Normal",
+     "dir": "340/720"
+    },
+    {
+     "id": "gcd-sg01-10",
+     "src": 29642,
+     "num": "10",
+     "rar": "Prism",
+     "dir": "340/720"
+    },
+    {
+     "id": "gcd-sg01-11",
+     "src": 29643,
+     "num": "11",
+     "rar": "Normal",
+     "dir": "340/720"
+    },
+    {
+     "id": "gcd-sg01-12",
+     "src": 29644,
+     "num": "12",
+     "rar": "Normal",
+     "dir": "340/720"
+    },
+    {
+     "id": "gcd-sg01-13",
+     "src": 29645,
+     "num": "13",
+     "rar": "Normal",
+     "dir": "340/720"
+    },
+    {
+     "id": "gcd-sg01-14",
+     "src": 29646,
+     "num": "14",
+     "rar": "Normal",
+     "dir": "340/720"
+    },
+    {
+     "id": "gcd-sg01-15",
+     "src": 29647,
+     "num": "15",
+     "rar": "Normal",
+     "dir": "340/720"
+    },
+    {
+     "id": "gcd-sg01-16",
+     "src": 29648,
+     "num": "16",
+     "rar": "Normal",
+     "dir": "340/720"
+    },
+    {
+     "id": "gcd-sg01-17",
+     "src": 29649,
+     "num": "17",
+     "rar": "Normal",
+     "dir": "340/720"
+    },
+    {
+     "id": "gcd-sg01-18",
+     "src": 29650,
+     "num": "18",
+     "rar": "Normal",
+     "dir": "340/720"
+    },
+    {
+     "id": "gcd-sg01-19",
+     "src": 29651,
+     "num": "19",
+     "rar": "Normal",
+     "dir": "340/720"
+    },
+    {
+     "id": "gcd-sg01-20",
+     "src": 29652,
+     "num": "20",
+     "rar": "Normal",
+     "dir": "340/720"
+    },
+    {
+     "id": "gcd-sg01-21",
+     "src": 29653,
+     "num": "21",
+     "rar": "Normal",
+     "dir": "340/720"
+    }
+   ]
+  },
+  {
+   "code": "sg02",
+   "cards": [
+    {
+     "id": "gcd-sg02-22",
+     "src": 29654,
+     "num": "22",
+     "rar": "Prism",
+     "dir": "340/721"
+    },
+    {
+     "id": "gcd-sg02-23",
+     "src": 29655,
+     "num": "23",
+     "rar": "Prism",
+     "dir": "340/721"
+    },
+    {
+     "id": "gcd-sg02-24",
+     "src": 29656,
+     "num": "24",
+     "rar": "Normal",
+     "dir": "340/721"
+    },
+    {
+     "id": "gcd-sg02-25",
+     "src": 29657,
+     "num": "25",
+     "rar": "Normal",
+     "dir": "340/721"
+    },
+    {
+     "id": "gcd-sg02-26",
+     "src": 29658,
+     "num": "26",
+     "rar": "Normal",
+     "dir": "340/721"
+    },
+    {
+     "id": "gcd-sg02-27",
+     "src": 29659,
+     "num": "27",
+     "rar": "Normal",
+     "dir": "340/721"
+    },
+    {
+     "id": "gcd-sg02-28",
+     "src": 29660,
+     "num": "28",
+     "rar": "Normal",
+     "dir": "340/721"
+    },
+    {
+     "id": "gcd-sg02-29",
+     "src": 29661,
+     "num": "29",
+     "rar": "Normal",
+     "dir": "340/721"
+    },
+    {
+     "id": "gcd-sg02-30",
+     "src": 29662,
+     "num": "30",
+     "rar": "Normal",
+     "dir": "340/721"
+    },
+    {
+     "id": "gcd-sg02-31",
+     "src": 29663,
+     "num": "31",
+     "rar": "Normal",
+     "dir": "340/721"
+    },
+    {
+     "id": "gcd-sg02-32",
+     "src": 29664,
+     "num": "32",
+     "rar": "Normal",
+     "dir": "340/721"
+    },
+    {
+     "id": "gcd-sg02-33",
+     "src": 29665,
+     "num": "33",
+     "rar": "Normal",
+     "dir": "340/721"
+    },
+    {
+     "id": "gcd-sg02-34",
+     "src": 29666,
+     "num": "34",
+     "rar": "Normal",
+     "dir": "340/721"
+    },
+    {
+     "id": "gcd-sg02-35",
+     "src": 29667,
+     "num": "35",
+     "rar": "Normal",
+     "dir": "340/721"
+    },
+    {
+     "id": "gcd-sg02-36",
+     "src": 29668,
+     "num": "36",
+     "rar": "Normal",
+     "dir": "340/721"
+    },
+    {
+     "id": "gcd-sg02-37",
+     "src": 29669,
+     "num": "37",
+     "rar": "Normal",
+     "dir": "340/721"
+    },
+    {
+     "id": "gcd-sg02-38",
+     "src": 29670,
+     "num": "38",
+     "rar": "Normal",
+     "dir": "340/721"
+    },
+    {
+     "id": "gcd-sg02-39",
+     "src": 29671,
+     "num": "39",
+     "rar": "Normal",
+     "dir": "340/721"
+    },
+    {
+     "id": "gcd-sg02-40",
+     "src": 29672,
+     "num": "40",
+     "rar": "Normal",
+     "dir": "340/721"
+    },
+    {
+     "id": "gcd-sg02-41",
+     "src": 29673,
+     "num": "41",
+     "rar": "Normal",
+     "dir": "340/721"
+    },
+    {
+     "id": "gcd-sg02-42",
+     "src": 29674,
+     "num": "42",
+     "rar": "Prism",
+     "dir": "340/721"
+    }
+   ]
+  },
+  {
+   "code": "sg03",
+   "cards": [
+    {
+     "id": "gcd-sg03-43",
+     "src": 29675,
+     "num": "43",
+     "rar": "Prism",
+     "dir": "340/722"
+    },
+    {
+     "id": "gcd-sg03-44",
+     "src": 29676,
+     "num": "44",
+     "rar": "Prism",
+     "dir": "340/722"
+    },
+    {
+     "id": "gcd-sg03-45",
+     "src": 29678,
+     "num": "45",
+     "rar": "Prism",
+     "dir": "340/722"
+    },
+    {
+     "id": "gcd-sg03-46",
+     "src": 29679,
+     "num": "46",
+     "rar": "Normal",
+     "dir": "340/722"
+    },
+    {
+     "id": "gcd-sg03-47",
+     "src": 29680,
+     "num": "47",
+     "rar": "Normal",
+     "dir": "340/722"
+    },
+    {
+     "id": "gcd-sg03-48",
+     "src": 29681,
+     "num": "48",
+     "rar": "Normal",
+     "dir": "340/722"
+    },
+    {
+     "id": "gcd-sg03-49",
+     "src": 29682,
+     "num": "49",
+     "rar": "Normal",
+     "dir": "340/722"
+    },
+    {
+     "id": "gcd-sg03-50",
+     "src": 29683,
+     "num": "50",
+     "rar": "Normal",
+     "dir": "340/722"
+    },
+    {
+     "id": "gcd-sg03-51",
+     "src": 29684,
+     "num": "51",
+     "rar": "Normal",
+     "dir": "340/722"
+    },
+    {
+     "id": "gcd-sg03-52",
+     "src": 29685,
+     "num": "52",
+     "rar": "Normal",
+     "dir": "340/722"
+    },
+    {
+     "id": "gcd-sg03-53",
+     "src": 29686,
+     "num": "53",
+     "rar": "Normal",
+     "dir": "340/722"
+    },
+    {
+     "id": "gcd-sg03-54",
+     "src": 29687,
+     "num": "54",
+     "rar": "Normal",
+     "dir": "340/722"
+    },
+    {
+     "id": "gcd-sg03-55",
+     "src": 29688,
+     "num": "55",
+     "rar": "Normal",
+     "dir": "340/722"
+    },
+    {
+     "id": "gcd-sg03-56",
+     "src": 29689,
+     "num": "56",
+     "rar": "Normal",
+     "dir": "340/722"
+    },
+    {
+     "id": "gcd-sg03-57",
+     "src": 29690,
+     "num": "57",
+     "rar": "Normal",
+     "dir": "340/722"
+    },
+    {
+     "id": "gcd-sg03-58",
+     "src": 29691,
+     "num": "58",
+     "rar": "Normal",
+     "dir": "340/722"
+    },
+    {
+     "id": "gcd-sg03-59",
+     "src": 29692,
+     "num": "59",
+     "rar": "Normal",
+     "dir": "340/722"
+    },
+    {
+     "id": "gcd-sg03-61",
+     "src": 29694,
+     "num": "61",
+     "rar": "Normal",
+     "dir": "340/722"
+    },
+    {
+     "id": "gcd-sg03-62",
+     "src": 29695,
+     "num": "62",
+     "rar": "Normal",
+     "dir": "340/722"
+    },
+    {
+     "id": "gcd-sg03-63",
+     "src": 29696,
+     "num": "63",
+     "rar": "Normal",
+     "dir": "340/722"
+    }
+   ]
+  },
+  {
+   "code": "sg04",
+   "cards": [
+    {
+     "id": "gcd-sg04-64",
+     "src": 29697,
+     "num": "64",
+     "rar": "Prism",
+     "dir": "340/723"
+    },
+    {
+     "id": "gcd-sg04-65",
+     "src": 29698,
+     "num": "65",
+     "rar": "Prism",
+     "dir": "340/723"
+    },
+    {
+     "id": "gcd-sg04-66",
+     "src": 29699,
+     "num": "66",
+     "rar": "Prism",
+     "dir": "340/723"
+    },
+    {
+     "id": "gcd-sg04-67",
+     "src": 29700,
+     "num": "67",
+     "rar": "Normal",
+     "dir": "340/723"
+    },
+    {
+     "id": "gcd-sg04-68",
+     "src": 29701,
+     "num": "68",
+     "rar": "Normal",
+     "dir": "340/723"
+    },
+    {
+     "id": "gcd-sg04-69",
+     "src": 29702,
+     "num": "69",
+     "rar": "Normal",
+     "dir": "340/723"
+    },
+    {
+     "id": "gcd-sg04-70",
+     "src": 29703,
+     "num": "70",
+     "rar": "Normal",
+     "dir": "340/723"
+    },
+    {
+     "id": "gcd-sg04-71",
+     "src": 29704,
+     "num": "71",
+     "rar": "Normal",
+     "dir": "340/723"
+    },
+    {
+     "id": "gcd-sg04-72",
+     "src": 29705,
+     "num": "72",
+     "rar": "Normal",
+     "dir": "340/723"
+    },
+    {
+     "id": "gcd-sg04-73",
+     "src": 29706,
+     "num": "73",
+     "rar": "Normal",
+     "dir": "340/723"
+    },
+    {
+     "id": "gcd-sg04-74",
+     "src": 29707,
+     "num": "74",
+     "rar": "Normal",
+     "dir": "340/723"
+    },
+    {
+     "id": "gcd-sg04-75",
+     "src": 29708,
+     "num": "75",
+     "rar": "Normal",
+     "dir": "340/723"
+    },
+    {
+     "id": "gcd-sg04-76",
+     "src": 29709,
+     "num": "76",
+     "rar": "Normal",
+     "dir": "340/723"
+    },
+    {
+     "id": "gcd-sg04-77",
+     "src": 29710,
+     "num": "77",
+     "rar": "Normal",
+     "dir": "340/723"
+    },
+    {
+     "id": "gcd-sg04-78",
+     "src": 29711,
+     "num": "78",
+     "rar": "Normal",
+     "dir": "340/723"
+    },
+    {
+     "id": "gcd-sg04-79",
+     "src": 29712,
+     "num": "79",
+     "rar": "Normal",
+     "dir": "340/723"
+    },
+    {
+     "id": "gcd-sg04-80",
+     "src": 29713,
+     "num": "80",
+     "rar": "Normal",
+     "dir": "340/723"
+    },
+    {
+     "id": "gcd-sg04-81",
+     "src": 29714,
+     "num": "81",
+     "rar": "Normal",
+     "dir": "340/723"
+    },
+    {
+     "id": "gcd-sg04-82",
+     "src": 29715,
+     "num": "82",
+     "rar": "Normal",
+     "dir": "340/723"
+    },
+    {
+     "id": "gcd-sg04-83",
+     "src": 29716,
+     "num": "83",
+     "rar": "Normal",
+     "dir": "340/723"
+    },
+    {
+     "id": "gcd-sg04-84",
+     "src": 29717,
+     "num": "84",
+     "rar": "Normal",
+     "dir": "340/723"
+    }
+   ]
+  },
+  {
+   "code": "ns01",
+   "cards": [
+    {
+     "id": "gcd-ns01-1",
+     "src": 30011,
+     "num": "1",
+     "rar": "Prism",
+     "dir": "345/730"
+    },
+    {
+     "id": "gcd-ns01-2",
+     "src": 30012,
+     "num": "2",
+     "rar": "Normal",
+     "dir": "345/730"
+    },
+    {
+     "id": "gcd-ns01-3",
+     "src": 30013,
+     "num": "3",
+     "rar": "Prism",
+     "dir": "345/730"
+    },
+    {
+     "id": "gcd-ns01-4",
+     "src": 30014,
+     "num": "4",
+     "rar": "Prism",
+     "dir": "345/730"
+    },
+    {
+     "id": "gcd-ns01-5",
+     "src": 30015,
+     "num": "5",
+     "rar": "Normal",
+     "dir": "345/730"
+    },
+    {
+     "id": "gcd-ns01-6",
+     "src": 30016,
+     "num": "6",
+     "rar": "Normal",
+     "dir": "345/730"
+    },
+    {
+     "id": "gcd-ns01-7",
+     "src": 30017,
+     "num": "7",
+     "rar": "Normal",
+     "dir": "345/730"
+    },
+    {
+     "id": "gcd-ns01-8",
+     "src": 30018,
+     "num": "8",
+     "rar": "Normal",
+     "dir": "345/730"
+    },
+    {
+     "id": "gcd-ns01-9",
+     "src": 30019,
+     "num": "9",
+     "rar": "Normal",
+     "dir": "345/730"
+    },
+    {
+     "id": "gcd-ns01-10",
+     "src": 30020,
+     "num": "10",
+     "rar": "Normal",
+     "dir": "345/730"
+    },
+    {
+     "id": "gcd-ns01-11",
+     "src": 30021,
+     "num": "11",
+     "rar": "Normal",
+     "dir": "345/730"
+    },
+    {
+     "id": "gcd-ns01-12",
+     "src": 30022,
+     "num": "12",
+     "rar": "Normal",
+     "dir": "345/730"
+    },
+    {
+     "id": "gcd-ns01-13",
+     "src": 30023,
+     "num": "13",
+     "rar": "Normal",
+     "dir": "345/730"
+    },
+    {
+     "id": "gcd-ns01-14",
+     "src": 30024,
+     "num": "14",
+     "rar": "Normal",
+     "dir": "345/730"
+    },
+    {
+     "id": "gcd-ns01-15",
+     "src": 30025,
+     "num": "15",
+     "rar": "Normal",
+     "dir": "345/730"
+    },
+    {
+     "id": "gcd-ns01-16",
+     "src": 30026,
+     "num": "16",
+     "rar": "Normal",
+     "dir": "345/730"
+    },
+    {
+     "id": "gcd-ns01-17",
+     "src": 30027,
+     "num": "17",
+     "rar": "Normal",
+     "dir": "345/730"
+    },
+    {
+     "id": "gcd-ns01-18",
+     "src": 30028,
+     "num": "18",
+     "rar": "Normal",
+     "dir": "345/730"
+    },
+    {
+     "id": "gcd-ns01-20",
+     "src": 30030,
+     "num": "20",
+     "rar": "Normal",
+     "dir": "345/730"
+    },
+    {
+     "id": "gcd-ns01-21",
+     "src": 30031,
+     "num": "21",
+     "rar": "Normal",
+     "dir": "345/730"
+    }
+   ]
+  },
+  {
+   "code": "sd01",
+   "cards": [
+    {
+     "id": "gcd-sd01-1",
+     "src": 27584,
+     "num": "1",
+     "rar": "Prism",
+     "dir": "307/656"
+    },
+    {
+     "id": "gcd-sd01-2",
+     "src": 27585,
+     "num": "2",
+     "rar": "Prism",
+     "dir": "307/656"
+    },
+    {
+     "id": "gcd-sd01-3",
+     "src": 27586,
+     "num": "3",
+     "rar": "Normal",
+     "dir": "307/656"
+    },
+    {
+     "id": "gcd-sd01-4",
+     "src": 27587,
+     "num": "4",
+     "rar": "Normal",
+     "dir": "307/656"
+    },
+    {
+     "id": "gcd-sd01-5",
+     "src": 27588,
+     "num": "5",
+     "rar": "Normal",
+     "dir": "307/656"
+    },
+    {
+     "id": "gcd-sd01-6",
+     "src": 27589,
+     "num": "6",
+     "rar": "Normal",
+     "dir": "307/656"
+    },
+    {
+     "id": "gcd-sd01-7",
+     "src": 27590,
+     "num": "7",
+     "rar": "Normal",
+     "dir": "307/656"
+    },
+    {
+     "id": "gcd-sd01-8",
+     "src": 27591,
+     "num": "8",
+     "rar": "Normal",
+     "dir": "307/656"
+    },
+    {
+     "id": "gcd-sd01-9",
+     "src": 27592,
+     "num": "9",
+     "rar": "Prism",
+     "dir": "307/656"
+    },
+    {
+     "id": "gcd-sd01-10",
+     "src": 27593,
+     "num": "10",
+     "rar": "Normal",
+     "dir": "307/656"
+    },
+    {
+     "id": "gcd-sd01-11",
+     "src": 27594,
+     "num": "11",
+     "rar": "Normal",
+     "dir": "307/656"
+    },
+    {
+     "id": "gcd-sd01-12",
+     "src": 27595,
+     "num": "12",
+     "rar": "Normal",
+     "dir": "307/656"
+    },
+    {
+     "id": "gcd-sd01-13",
+     "src": 27596,
+     "num": "13",
+     "rar": "Normal",
+     "dir": "307/656"
+    },
+    {
+     "id": "gcd-sd01-14",
+     "src": 27597,
+     "num": "14",
+     "rar": "Prism",
+     "dir": "307/656"
+    },
+    {
+     "id": "gcd-sd01-15",
+     "src": 27598,
+     "num": "15",
+     "rar": "Prism",
+     "dir": "307/656"
+    },
+    {
+     "id": "gcd-sd01-16",
+     "src": 27599,
+     "num": "16",
+     "rar": "Normal",
+     "dir": "307/656"
+    },
+    {
+     "id": "gcd-sd01-17",
+     "src": 27600,
+     "num": "17",
+     "rar": "Normal",
+     "dir": "307/656"
+    },
+    {
+     "id": "gcd-sd01-18",
+     "src": 27601,
+     "num": "18",
+     "rar": "Normal",
+     "dir": "307/656"
+    },
+    {
+     "id": "gcd-sd01-19",
+     "src": 27602,
+     "num": "19",
+     "rar": "Normal",
+     "dir": "307/656"
+    },
+    {
+     "id": "gcd-sd01-20",
+     "src": 27603,
+     "num": "20",
+     "rar": "Normal",
+     "dir": "307/656"
+    },
+    {
+     "id": "gcd-sd01-21",
+     "src": 27604,
+     "num": "21",
+     "rar": "Normal",
+     "dir": "307/656"
+    },
+    {
+     "id": "gcd-sd01-22",
+     "src": 27605,
+     "num": "22",
+     "rar": "Normal",
+     "dir": "307/656"
+    },
+    {
+     "id": "gcd-sd01-23",
+     "src": 27606,
+     "num": "23",
+     "rar": "Normal",
+     "dir": "307/656"
+    },
+    {
+     "id": "gcd-sd01-24",
+     "src": 27607,
+     "num": "24",
+     "rar": "Normal",
+     "dir": "307/656"
+    },
+    {
+     "id": "gcd-sd01-25",
+     "src": 27627,
+     "num": "25",
+     "rar": "Normal",
+     "dir": "307/656"
+    },
+    {
+     "id": "gcd-sd01-26",
+     "src": 27608,
+     "num": "26",
+     "rar": "Normal",
+     "dir": "307/656"
+    },
+    {
+     "id": "gcd-sd01-27",
+     "src": 27609,
+     "num": "27",
+     "rar": "Normal",
+     "dir": "307/656"
+    },
+    {
+     "id": "gcd-sd01-28",
+     "src": 27610,
+     "num": "28",
+     "rar": "Normal",
+     "dir": "307/656"
+    },
+    {
+     "id": "gcd-sd01-29",
+     "src": 27611,
+     "num": "29",
+     "rar": "Normal",
+     "dir": "307/656"
+    },
+    {
+     "id": "gcd-sd01-30",
+     "src": 27612,
+     "num": "30",
+     "rar": "Normal",
+     "dir": "307/656"
+    },
+    {
+     "id": "gcd-sd01-31",
+     "src": 27613,
+     "num": "31",
+     "rar": "Normal",
+     "dir": "307/656"
+    },
+    {
+     "id": "gcd-sd01-32",
+     "src": 27614,
+     "num": "32",
+     "rar": "Normal",
+     "dir": "307/656"
+    },
+    {
+     "id": "gcd-sd01-33",
+     "src": 27615,
+     "num": "33",
+     "rar": "Normal",
+     "dir": "307/656"
+    },
+    {
+     "id": "gcd-sd01-34",
+     "src": 27616,
+     "num": "34",
+     "rar": "Normal",
+     "dir": "307/656"
+    },
+    {
+     "id": "gcd-sd01-35",
+     "src": 27617,
+     "num": "35",
+     "rar": "Normal",
+     "dir": "307/656"
+    },
+    {
+     "id": "gcd-sd01-36",
+     "src": 27618,
+     "num": "36",
+     "rar": "Prism",
+     "dir": "307/656"
+    },
+    {
+     "id": "gcd-sd01-37",
+     "src": 27619,
+     "num": "37",
+     "rar": "Normal",
+     "dir": "307/656"
+    },
+    {
+     "id": "gcd-sd01-38",
+     "src": 27620,
+     "num": "38",
+     "rar": "Normal",
+     "dir": "307/656"
+    },
+    {
+     "id": "gcd-sd01-39",
+     "src": 27621,
+     "num": "39",
+     "rar": "Normal",
+     "dir": "307/656"
+    },
+    {
+     "id": "gcd-sd01-40",
+     "src": 27622,
+     "num": "40",
+     "rar": "Prism",
+     "dir": "307/656"
+    },
+    {
+     "id": "gcd-sd01-41",
+     "src": 27623,
+     "num": "41",
+     "rar": "Prism",
+     "dir": "307/656"
+    },
+    {
+     "id": "gcd-sd01-42",
+     "src": 27624,
+     "num": "42",
+     "rar": "Normal",
+     "dir": "307/656"
+    },
+    {
+     "id": "gcd-sd01-43",
+     "src": 27625,
+     "num": "43",
+     "rar": "Normal",
+     "dir": "307/656"
+    },
+    {
+     "id": "gcd-sd01-44",
+     "src": 27626,
+     "num": "44",
+     "rar": "Normal",
+     "dir": "307/656"
+    }
+   ]
+  },
+  {
+   "code": "sd02",
+   "cards": [
+    {
+     "id": "gcd-sd02-1",
+     "src": 27628,
+     "num": "1",
+     "rar": "Prism",
+     "dir": "307/657"
+    },
+    {
+     "id": "gcd-sd02-2",
+     "src": 27629,
+     "num": "2",
+     "rar": "Prism",
+     "dir": "307/657"
+    },
+    {
+     "id": "gcd-sd02-3",
+     "src": 27630,
+     "num": "3",
+     "rar": "Normal",
+     "dir": "307/657"
+    },
+    {
+     "id": "gcd-sd02-4",
+     "src": 27631,
+     "num": "4",
+     "rar": "Normal",
+     "dir": "307/657"
+    },
+    {
+     "id": "gcd-sd02-5",
+     "src": 27632,
+     "num": "5",
+     "rar": "Prism",
+     "dir": "307/657"
+    },
+    {
+     "id": "gcd-sd02-6",
+     "src": 27633,
+     "num": "6",
+     "rar": "Prism",
+     "dir": "307/657"
+    },
+    {
+     "id": "gcd-sd02-7",
+     "src": 27634,
+     "num": "7",
+     "rar": "Normal",
+     "dir": "307/657"
+    },
+    {
+     "id": "gcd-sd02-8",
+     "src": 27635,
+     "num": "8",
+     "rar": "Prism",
+     "dir": "307/657"
+    },
+    {
+     "id": "gcd-sd02-9",
+     "src": 27636,
+     "num": "9",
+     "rar": "Normal",
+     "dir": "307/657"
+    },
+    {
+     "id": "gcd-sd02-10",
+     "src": 27637,
+     "num": "10",
+     "rar": "Normal",
+     "dir": "307/657"
+    },
+    {
+     "id": "gcd-sd02-11",
+     "src": 27638,
+     "num": "11",
+     "rar": "Normal",
+     "dir": "307/657"
+    },
+    {
+     "id": "gcd-sd02-12",
+     "src": 27639,
+     "num": "12",
+     "rar": "Normal",
+     "dir": "307/657"
+    },
+    {
+     "id": "gcd-sd02-13",
+     "src": 27640,
+     "num": "13",
+     "rar": "Normal",
+     "dir": "307/657"
+    },
+    {
+     "id": "gcd-sd02-14",
+     "src": 27641,
+     "num": "14",
+     "rar": "Normal",
+     "dir": "307/657"
+    },
+    {
+     "id": "gcd-sd02-15",
+     "src": 27642,
+     "num": "15",
+     "rar": "Normal",
+     "dir": "307/657"
+    },
+    {
+     "id": "gcd-sd02-16",
+     "src": 27643,
+     "num": "16",
+     "rar": "Normal",
+     "dir": "307/657"
+    },
+    {
+     "id": "gcd-sd02-17",
+     "src": 27644,
+     "num": "17",
+     "rar": "Normal",
+     "dir": "307/657"
+    },
+    {
+     "id": "gcd-sd02-18",
+     "src": 27645,
+     "num": "18",
+     "rar": "Normal",
+     "dir": "307/657"
+    },
+    {
+     "id": "gcd-sd02-19",
+     "src": 27646,
+     "num": "19",
+     "rar": "Normal",
+     "dir": "307/657"
+    },
+    {
+     "id": "gcd-sd02-20",
+     "src": 27647,
+     "num": "20",
+     "rar": "Normal",
+     "dir": "307/657"
+    },
+    {
+     "id": "gcd-sd02-21",
+     "src": 27648,
+     "num": "21",
+     "rar": "Normal",
+     "dir": "307/657"
+    },
+    {
+     "id": "gcd-sd02-22",
+     "src": 27649,
+     "num": "22",
+     "rar": "Normal",
+     "dir": "307/657"
+    },
+    {
+     "id": "gcd-sd02-23",
+     "src": 27650,
+     "num": "23",
+     "rar": "Normal",
+     "dir": "307/657"
+    },
+    {
+     "id": "gcd-sd02-24",
+     "src": 27651,
+     "num": "24",
+     "rar": "Normal",
+     "dir": "307/657"
+    },
+    {
+     "id": "gcd-sd02-25",
+     "src": 27652,
+     "num": "25",
+     "rar": "Normal",
+     "dir": "307/657"
+    },
+    {
+     "id": "gcd-sd02-26",
+     "src": 27653,
+     "num": "26",
+     "rar": "Normal",
+     "dir": "307/657"
+    },
+    {
+     "id": "gcd-sd02-27",
+     "src": 27654,
+     "num": "27",
+     "rar": "Normal",
+     "dir": "307/657"
+    },
+    {
+     "id": "gcd-sd02-28",
+     "src": 27655,
+     "num": "28",
+     "rar": "Normal",
+     "dir": "307/657"
+    },
+    {
+     "id": "gcd-sd02-29",
+     "src": 27656,
+     "num": "29",
+     "rar": "Normal",
+     "dir": "307/657"
+    },
+    {
+     "id": "gcd-sd02-30",
+     "src": 27657,
+     "num": "30",
+     "rar": "Normal",
+     "dir": "307/657"
+    },
+    {
+     "id": "gcd-sd02-31",
+     "src": 27658,
+     "num": "31",
+     "rar": "Normal",
+     "dir": "307/657"
+    },
+    {
+     "id": "gcd-sd02-32",
+     "src": 27659,
+     "num": "32",
+     "rar": "Normal",
+     "dir": "307/657"
+    },
+    {
+     "id": "gcd-sd02-33",
+     "src": 27660,
+     "num": "33",
+     "rar": "Normal",
+     "dir": "307/657"
+    },
+    {
+     "id": "gcd-sd02-34",
+     "src": 27661,
+     "num": "34",
+     "rar": "Normal",
+     "dir": "307/657"
+    },
+    {
+     "id": "gcd-sd02-35",
+     "src": 27662,
+     "num": "35",
+     "rar": "Normal",
+     "dir": "307/657"
+    },
+    {
+     "id": "gcd-sd02-36",
+     "src": 27663,
+     "num": "36",
+     "rar": "Normal",
+     "dir": "307/657"
+    },
+    {
+     "id": "gcd-sd02-37",
+     "src": 27664,
+     "num": "37",
+     "rar": "Prism",
+     "dir": "307/657"
+    },
+    {
+     "id": "gcd-sd02-38",
+     "src": 27665,
+     "num": "38",
+     "rar": "Prism",
+     "dir": "307/657"
+    },
+    {
+     "id": "gcd-sd02-39",
+     "src": 27666,
+     "num": "39",
+     "rar": "Normal",
+     "dir": "307/657"
+    },
+    {
+     "id": "gcd-sd02-40",
+     "src": 27667,
+     "num": "40",
+     "rar": "Normal",
+     "dir": "307/657"
+    },
+    {
+     "id": "gcd-sd02-41",
+     "src": 27668,
+     "num": "41",
+     "rar": "Normal",
+     "dir": "307/657"
+    },
+    {
+     "id": "gcd-sd02-42",
+     "src": 27669,
+     "num": "42",
+     "rar": "Normal",
+     "dir": "307/657"
+    },
+    {
+     "id": "gcd-sd02-43",
+     "src": 27670,
+     "num": "43",
+     "rar": "Normal",
+     "dir": "307/657"
+    },
+    {
+     "id": "gcd-sd02-44",
+     "src": 27671,
+     "num": "44",
+     "rar": "Prism",
+     "dir": "307/657"
+    }
+   ]
+  },
+  {
+   "code": "gg01",
+   "cards": [
+    {
+     "id": "gcd-gg01-1",
+     "src": 29760,
+     "num": "1",
+     "rar": "Prism",
+     "dir": "342/725"
+    },
+    {
+     "id": "gcd-gg01-2",
+     "src": 29761,
+     "num": "2",
+     "rar": "Prism",
+     "dir": "342/725"
+    },
+    {
+     "id": "gcd-gg01-3",
+     "src": 29762,
+     "num": "3",
+     "rar": "Normal",
+     "dir": "342/725"
+    },
+    {
+     "id": "gcd-gg01-4",
+     "src": 29763,
+     "num": "4",
+     "rar": "Prism",
+     "dir": "342/725"
+    },
+    {
+     "id": "gcd-gg01-5",
+     "src": 29764,
+     "num": "5",
+     "rar": "Normal",
+     "dir": "342/725"
+    },
+    {
+     "id": "gcd-gg01-6",
+     "src": 29765,
+     "num": "6",
+     "rar": "Prism",
+     "dir": "342/725"
+    },
+    {
+     "id": "gcd-gg01-7",
+     "src": 29766,
+     "num": "7",
+     "rar": "Normal",
+     "dir": "342/725"
+    },
+    {
+     "id": "gcd-gg01-8",
+     "src": 29767,
+     "num": "8",
+     "rar": "Prism",
+     "dir": "342/725"
+    },
+    {
+     "id": "gcd-gg01-9",
+     "src": 29768,
+     "num": "9",
+     "rar": "Normal",
+     "dir": "342/725"
+    },
+    {
+     "id": "gcd-gg01-10",
+     "src": 29769,
+     "num": "10",
+     "rar": "Prism",
+     "dir": "342/725"
+    },
+    {
+     "id": "gcd-gg01-11",
+     "src": 29770,
+     "num": "11",
+     "rar": "Normal",
+     "dir": "342/725"
+    },
+    {
+     "id": "gcd-gg01-12",
+     "src": 29771,
+     "num": "12",
+     "rar": "Normal",
+     "dir": "342/725"
+    },
+    {
+     "id": "gcd-gg01-13",
+     "src": 29772,
+     "num": "13",
+     "rar": "Normal",
+     "dir": "342/725"
+    },
+    {
+     "id": "gcd-gg01-14",
+     "src": 29773,
+     "num": "14",
+     "rar": "Normal",
+     "dir": "342/725"
+    },
+    {
+     "id": "gcd-gg01-15",
+     "src": 29774,
+     "num": "15",
+     "rar": "Normal",
+     "dir": "342/725"
+    },
+    {
+     "id": "gcd-gg01-16",
+     "src": 29775,
+     "num": "16",
+     "rar": "Normal",
+     "dir": "342/725"
+    },
+    {
+     "id": "gcd-gg01-17",
+     "src": 29776,
+     "num": "17",
+     "rar": "Normal",
+     "dir": "342/725"
+    },
+    {
+     "id": "gcd-gg01-18",
+     "src": 29777,
+     "num": "18",
+     "rar": "Normal",
+     "dir": "342/725"
+    },
+    {
+     "id": "gcd-gg01-19",
+     "src": 29778,
+     "num": "19",
+     "rar": "Normal",
+     "dir": "342/725"
+    },
+    {
+     "id": "gcd-gg01-20",
+     "src": 29779,
+     "num": "20",
+     "rar": "Normal",
+     "dir": "342/725"
+    },
+    {
+     "id": "gcd-gg01-21",
+     "src": 29780,
+     "num": "21",
+     "rar": "Normal",
+     "dir": "342/725"
+    },
+    {
+     "id": "gcd-gg01-22",
+     "src": 29781,
+     "num": "22",
+     "rar": "Normal",
+     "dir": "342/725"
+    },
+    {
+     "id": "gcd-gg01-23",
+     "src": 29782,
+     "num": "23",
+     "rar": "Normal",
+     "dir": "342/725"
+    },
+    {
+     "id": "gcd-gg01-24",
+     "src": 29783,
+     "num": "24",
+     "rar": "Normal",
+     "dir": "342/725"
+    },
+    {
+     "id": "gcd-gg01-25",
+     "src": 29784,
+     "num": "25",
+     "rar": "Normal",
+     "dir": "342/725"
+    },
+    {
+     "id": "gcd-gg01-26",
+     "src": 29785,
+     "num": "26",
+     "rar": "Normal",
+     "dir": "342/725"
+    },
+    {
+     "id": "gcd-gg01-27",
+     "src": 29786,
+     "num": "27",
+     "rar": "Normal",
+     "dir": "342/725"
+    },
+    {
+     "id": "gcd-gg01-28",
+     "src": 29787,
+     "num": "28",
+     "rar": "Normal",
+     "dir": "342/725"
+    },
+    {
+     "id": "gcd-gg01-29",
+     "src": 29788,
+     "num": "29",
+     "rar": "Normal",
+     "dir": "342/725"
+    },
+    {
+     "id": "gcd-gg01-30",
+     "src": 29789,
+     "num": "30",
+     "rar": "Normal",
+     "dir": "342/725"
+    },
+    {
+     "id": "gcd-gg01-32",
+     "src": 29790,
+     "num": "32",
+     "rar": "Normal",
+     "dir": "342/725"
+    },
+    {
+     "id": "gcd-gg01-33",
+     "src": 29791,
+     "num": "33",
+     "rar": "Normal",
+     "dir": "342/725"
+    },
+    {
+     "id": "gcd-gg01-34",
+     "src": 29792,
+     "num": "34",
+     "rar": "Normal",
+     "dir": "342/725"
+    },
+    {
+     "id": "gcd-gg01-35",
+     "src": 29793,
+     "num": "35",
+     "rar": "Normal",
+     "dir": "342/725"
+    },
+    {
+     "id": "gcd-gg01-36",
+     "src": 29794,
+     "num": "36",
+     "rar": "Normal",
+     "dir": "342/725"
+    },
+    {
+     "id": "gcd-gg01-37",
+     "src": 29796,
+     "num": "37",
+     "rar": "Normal",
+     "dir": "342/725"
+    },
+    {
+     "id": "gcd-gg01-38",
+     "src": 29797,
+     "num": "38",
+     "rar": "Normal",
+     "dir": "342/725"
+    },
+    {
+     "id": "gcd-gg01-39",
+     "src": 29798,
+     "num": "39",
+     "rar": "Normal",
+     "dir": "342/725"
+    },
+    {
+     "id": "gcd-gg01-40",
+     "src": 29799,
+     "num": "40",
+     "rar": "Normal",
+     "dir": "342/725"
+    },
+    {
+     "id": "gcd-gg01-41",
+     "src": 29800,
+     "num": "41",
+     "rar": "Normal",
+     "dir": "342/725"
+    },
+    {
+     "id": "gcd-gg01-42",
+     "src": 29801,
+     "num": "42",
+     "rar": "Normal",
+     "dir": "342/725"
+    }
+   ]
+  }
+ ]
+}
