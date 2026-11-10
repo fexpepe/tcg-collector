@@ -68,15 +68,17 @@ test("acha a carta de frente, com os cantos no lugar e o giro certo", () => {
 });
 
 test("carta menor, deslocada, torta e com a câmera inclinada: acha quase sempre, e perto", () => {
-  // O que o scanner vê de verdade: a carta ENTRE as duas molduras. 40 fotos
+  // O que o scanner vê de verdade: a carta ENTRE as duas molduras. 20 fotos
   // sorteadas (semente fixa). A régua é a que os usos toleram: a assinatura
   // compara também com a grade de recortes, e 5 % de erro é a moldura
   // impressa no lugar da borda — o erro típico quando a borda da carta quase
-  // não contrasta com a mesa.
+  // não contrasta com a mesa. (20 fotos, e não mais: gerar foto sintética é
+  // caro, os arquivos de teste rodam em paralelo, e o teste de TEMPO do
+  // Centering falhava no CI com a máquina ocupada por este.)
   const R = rng(7), U = (a, b) => a + (b - a) * R();
   const erros = [];
   let nulos = 0;
-  for (let i = 0; i < 40; i++) {
+  for (let i = 0; i < 20; i++) {
     const x = erro({
       ocupa: U(0.76, 0.93), roll: U(-6, 6), pitch: U(-4, 4), yaw: U(-4, 4), tx: U(-2, 2), ty: U(-2, 2),
       sigma: U(0.4, 1.2), ruido: U(1, 5), seed: 100 + i, borda: BORDAS[i % 4]
@@ -84,9 +86,9 @@ test("carta menor, deslocada, torta e com a câmera inclinada: acha quase sempre
     if (x) erros.push(x.e); else nulos++;
   }
   erros.sort((a, b) => a - b);
-  assert.ok(nulos <= 2, `${nulos} de 40 sem carta achada`);
+  assert.ok(nulos <= 1, `${nulos} de 20 sem carta achada`);
   assert.ok(erros[erros.length >> 1] < 0.03, `mediana de ${(erros[erros.length >> 1] * 100).toFixed(1)} %`);
-  assert.ok(erros.filter((e) => e <= 0.07).length >= 36, `só ${erros.filter((e) => e <= 0.07).length} de 40 a até 7 %`);
+  assert.ok(erros.filter((e) => e <= 0.07).length >= 18, `só ${erros.filter((e) => e <= 0.07).length} de 20 a até 7 %`);
 });
 
 test("sem carta, não inventa uma: mesa vazia, quadro liso, retângulo de outra proporção", () => {
