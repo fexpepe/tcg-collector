@@ -48,12 +48,19 @@ const S = load();
 // `semCodigo`: jogo cujo código impresso não identifica a carta sem saber o
 // set (número solto) ou que nem tem número no catálogo. Esses dependem da
 // trava de set e do reconhecimento pela arte.
+// `linhaSemCodigo`: o mesmo, pra uma LINHA dentro de um jogo que tem código
+// (o vintage que divide o jogo com o moderno): { prefixo do id, motivo }. As
+// cartas dela saem da taxa do jogo e entram na guarda dos sem código. Linha
+// nova num jogo derruba a taxa dele — e o teste pede a declaração.
 const pad = (n, w) => String(n).padStart(w, "0");
 const JOGOS = {
   onepiece: { min: 0.76, nota: "o resto é o Carddass de 2002 (BA-C01, C111), que entra em semCodigo na prática" },
   // A promo do Digimon está guardada como "P - 196"; a carta imprime "P-196".
   digimon: { min: 0.97, impresso: (c) => String(c.number).replace(/\s*-\s*/, "-") },
-  gundam: { min: 0.98, origem: "topo" },
+  // O Gundam Carddass (1988–1997, ids "gcd-") é uma LINHA dentro do jogo: carta
+  // vintage de número solto. Entrou na main em 10/11/2026, no mesmo dia deste
+  // teste — e foi ele que acusou (a taxa do jogo caiu de 100 % pra 60 %).
+  gundam: { min: 0.98, origem: "topo", linhaSemCodigo: { prefixo: "gcd-", motivo: "Gundam Carddass: número solto, sem set impresso" } },
   dbfw: { min: 0.98 },
   unionarena: { min: 0.98 },
   weiss: { min: 0.96 },
@@ -117,7 +124,8 @@ function casa(cand, card) {
   return !!fr && S.numeroDe(card.number) === Number(fr[1]);
 }
 function medir(jogo, cfg) {
-  const cartas = catalogo(jogo).filter((c) => c && c.number && (!cfg.filtro || cfg.filtro(c)));
+  const daLinha = (c) => !!cfg.linhaSemCodigo && String(c.id).indexOf(cfg.linhaSemCodigo.prefixo) === 0;
+  const cartas = catalogo(jogo).filter((c) => c && c.number && !daLinha(c) && (!cfg.filtro || cfg.filtro(c)));
   let ok = 0;
   const falhas = [];
   for (const c of cartas) {
@@ -166,8 +174,10 @@ test("jogo sem código legível: nenhum formato de OUTRO jogo o captura", () => 
   // O número solto não pode virar candidato forte de outro jogo — senão a
   // carta de Dragon Ball Z "acha" uma de Pokémon.
   for (const [jogo, cfg] of Object.entries(JOGOS)) {
-    if (!cfg.semCodigo) continue;
-    const cartas = catalogo(jogo).filter((c) => c && c.number);
+    if (!cfg.semCodigo && !cfg.linhaSemCodigo) continue;
+    const cartas = catalogo(jogo).filter((c) => c && c.number && (cfg.semCodigo || String(c.id).indexOf(cfg.linhaSemCodigo.prefixo) === 0));
+    // (WoW e Sorcery nem têm número no catálogo: ali não há o que capturar.)
+    if (cfg.linhaSemCodigo) assert.ok(cartas.length > 0, `${jogo}: nenhuma carta da linha "${cfg.linhaSemCodigo.prefixo}" no catálogo (a declaração ficou velha?)`);
     const fortes = cartas.filter((c) => S.extrair(String(c.number)).some((x) => x.peso >= 2));
     assert.ok(fortes.length <= cartas.length * 0.02,
       `${jogo}: ${fortes.length} de ${cartas.length} números viram candidato forte (ex.: ${fortes.slice(0, 3).map((c) => c.number).join(", ")})`);
