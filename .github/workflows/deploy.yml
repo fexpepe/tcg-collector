@@ -636,6 +636,26 @@ jobs:
         if: env.RODA_SYNC != 'true'
         run: node scripts/sync-carddass-masters.mjs --no-fetch || echo "sync-carddass-masters --no-fetch falhou; segue com o catalogo do cache"
 
+      # Gundam Carddass (Bandai 1988-1997): a LINHA vintage gcd do jogo gundam
+      # (SD Gundam World, Gaiden, Sengokuden, Seiden e G Gundam). Numero,
+      # raridade e scan pelo animecollection.fr (snapshot versionado em
+      # data/vintage/gundam-carddass.json, nao regride, ids fixos); o nome da
+      # carta foi transcrito dos scans (scripts/data/gundam-carddass-nomes.json).
+      # ANEXA ao catalogo do Gundam Card Game, por isso roda DEPOIS do
+      # sync-gundam (TCGCSV), la em cima. Sem preco.
+      - name: Anexa Gundam Carddass (linha vintage do Gundam)
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/sync-gundam-carddass.mjs || echo "sync-gundam-carddass falhou; segue com o snapshot versionado"
+
+      # A mesma linha no build RAPIDO (push), sem rede: correcao de nome
+      # (scripts/data/gundam-carddass-nomes*.json) ou de snapshot aparece no
+      # deploy do merge, e nao so no cron -- a licao do dbc (PR #215). Regrava
+      # data/gundam/ inteiro a partir do cards.js e do pricing.js versionados,
+      # que sao os do ultimo build completo (o snapshot automatico os commita).
+      - name: Anexa Gundam Carddass (build rapido, sem rede)
+        if: env.RODA_SYNC != 'true'
+        run: node scripts/sync-gundam-carddass.mjs --no-fetch || echo "sync-gundam-carddass --no-fetch falhou; segue com o catalogo do cache"
+
       # Dragon Ball Carddass (Bandai 1988-1997): o jogo vintage dbc. Lista carta
       # a carta do Hondan pelo 80storage.com (snapshot versionado em
       # data/vintage/dbc-carddass.json, nao regride, ids fixos). Cria data/dbc/

@@ -1517,6 +1517,8 @@
     // Linha vintage (?line=): do mais antigo pro mais novo, como checklist. O
     // Data Carddass do Naruto junta os quatro títulos do arcade, um por seção.
     if (lineScope.line === "nrt-dc") return groupNarutoDataCarddass(raizes);
+    // O Gundam Carddass junta as séries da linha (World, 外伝, 戦国伝…), uma por seção.
+    if (lineScope.line === "gcd") return groupGundamCarddassSets(raizes);
     if (lineDef) return raizes.sort(sortByReleaseAsc);
     if (isPokemonGame()) return groupSetsBySeries(raizes);
     const porJogo = {
@@ -1877,6 +1879,43 @@
     // Rede de segurança: prefixo novo na linha (GAME_LINES) sem título aqui
     // ainda aparece, em vez de sumir da página.
     section(setItems.filter((s) => titleOf(s) < 0), "sets.category.promos");
+    return items;
+  }
+
+  // Gundam Carddass (linha gcd do jogo gundam, 1988–1997): uma seção por SÉRIE,
+  // na ordem do SERIES do sync (o 本弾 primeiro, depois as séries de história
+  // na ordem em que começaram), e as partes em ordem dentro dela. A série sai
+  // do código do set (gcd-wd01 = World 第1弾). As datas só têm o ano, e vários
+  // 弾 dividem o mesmo: a ordem é a do código, não a da data. O nome em inglês
+  // leva a série ("SD Gundam Gaiden Part 1 — …", pra Coleção e o popup saberem
+  // de qual das séries é o "Part 1"); dentro da seção ela repete o cabeçalho e
+  // o tile cortava justo o subtítulo, então aqui ela sai (contrato 7 do
+  // docs/CATALOGO.md, como no groupDbcSets).
+  function groupGundamCarddassSets(setItems) {
+    const idOf = (set) => String(set.setId || "").trim().toLowerCase();
+    const SERIES = [
+      ["wd", "sets.category.gcdWorld", "SD Gundam World "], ["gd", "sets.category.gcdGaiden", "SD Gundam Gaiden "],
+      ["sg", "sets.category.gcdSengoku", "SD Sengokuden "], ["ns", "sets.category.gcdShinSengoku", "Shin SD Sengokuden "],
+      ["sd", "sets.category.gcdSeiden", "SD Gundam Seiden "], ["gg", "sets.category.gcdGGundam", ""]
+    ];
+    const serieOf = (set) => (idOf(set).match(/^gcd-([a-z]+)\d+$/) || [])[1] || "";
+    const semSerie = (set, serie) => {
+      const nome = String(set.displayName || "");
+      return serie && nome.indexOf(serie) === 0 ? Object.assign({}, set, { displayName: nome.slice(serie.length), nomeForaDaSecao: nome }) : set;
+    };
+    const items = [];
+    for (const [code, key, serie] of SERIES) {
+      const list = setItems.filter((s) => serieOf(s) === code).map((s) => semSerie(s, serie)).sort((a, b) => idOf(a).localeCompare(idOf(b), "en", { numeric: true }));
+      if (!list.length) continue;
+      items.push(cabecalhoDeSecao(key, list.length));
+      list.forEach((set) => items.push(set));
+    }
+    // Rede de segurança: série nova no sync sem seção aqui ainda aparece.
+    const rest = setItems.filter((s) => !SERIES.some(([code]) => serieOf(s) === code)).sort(sortByReleaseAsc);
+    if (rest.length) {
+      items.push(cabecalhoDeSecao("sets.category.promos", rest.length));
+      rest.forEach((set) => items.push(set));
+    }
     return items;
   }
 
