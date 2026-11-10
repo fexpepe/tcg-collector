@@ -43,3 +43,14 @@ test("o resultado da borda não é refiltrado pelo texto no cliente", () => {
   assert.ok(cards.includes("const textoJaCasado = !catalogPronto && parcialValida() && parcial.daBorda;"));
   assert.ok(cards.includes("if (!textoJaCasado && !shared.matchesCardQuery(card, elements.search.value)) return false;"));
 });
+
+// Uma letra só (2026-11-10). A borda só responde com 2+ letras, e a letra
+// sozinha caía no precisaDoCatalogo(): digitar "p" e parar 200 ms baixava o
+// jogo inteiro. Conferido contra produção trocando só o cards.js: "p" passou
+// de dezenas de pedidos de chunk (e subindo) pra zero; "pikachu" segue em 1
+// pedido à borda. Com o catálogo em memória a letra continua filtrando.
+test("uma letra só não conta como busca enquanto o catálogo não está em memória", () => {
+  assert.ok(cards.includes('return (q.length >= 2 || catalogPronto) ? q : "";'));
+  assert.ok(cards.includes("return !!(textoDaBusca() || elements.setFilter.value || elements.rarityFilter.value"));
+  assert.ok(!/return !!\(elements\.search\.value\.trim\(\) \|\|/.test(cards), "o texto cru voltou a decidir se há busca");
+});
