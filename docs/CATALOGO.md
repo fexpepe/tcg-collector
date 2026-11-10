@@ -19,7 +19,7 @@ que ordem e como saber que terminou**.
 |---|---|---|---|
 | Carta nova num set que já existe | tudo: o build completo (diário 06:20 UTC, e sexta 21:00) roda os syncs | nada | `lint-catalog`: id publicado que some ou passa a apontar pra outra carta barra o deploy |
 | Set novo | quase tudo: entra pelo sync, com filtros e página de SEO | conferir a tela (3.2); logo e nome em inglês quando existirem; no Pokémon, pin quando a janela automática não pega (3.3) | `lint-catalog` e os relatórios de cobertura |
-| Linha ou jogo novo | nada | a ficha (4.1) e o checklist (4.2) inteiros | só 4 dos 38 pontos têm trava automática (4.2) |
+| Linha ou jogo novo | nada | a ficha (4.1) e o checklist (4.2) inteiros | só 5 dos 40 pontos têm trava automática (4.2) |
 
 ## 1. Contratos que valem pra toda adição
 
@@ -392,8 +392,9 @@ valem só nesse caso.
 | B13 | `src/backup-import.js` (`mapCsvGame`) e `tests/csv-import.test.mjs` | o nome do jogo como Collectr e TCGplayer escrevem | import de CSV tenta todos os jogos (mais lento; pode casar carta homônima de outro jogo) | — |
 | B14 | `src/portfolio.js` (`CSV_GAME_NAMES`) | nome no CSV do Portfólio, até a F6 | CSV sai com o slug (hoje já sai assim em 9 jogos, 5.2) | — |
 | B15 | `hub.html` | tile: grade moderna ou Vintage (anos e bandeira), com a posição da ficha; `href="/games/<endereço>"` e `data-game="<slug>"` (desde 2026-09-30) | jogo sem porta de entrada | `games-url.test.mjs` (todo endereço tem tile e todo tile aponta pro registro) |
-| B16 | opcionais: `src/facets.js`, `src/detail.js` (`RARITY_LISTED_GAMES`), `src/app.js` (`group<Jogo>Sets`, registrado no `agrupaSetsDoJogo` — padrão da página de Sets em 3.4), `src/scan.js`, `src/deck-rules.js` | filtros, agrupamento, scanner e regras de deck próprios | tudo genérico (funciona) | `tests/sets-padrao.test.mjs` (agrupador fora do padrão) |
+| B16 | opcionais: `src/facets.js`, `src/detail.js` (`RARITY_LISTED_GAMES`), `src/app.js` (`group<Jogo>Sets`, registrado no `agrupaSetsDoJogo` — padrão da página de Sets em 3.4), `src/deck-rules.js` | filtros, agrupamento e regras de deck próprios | tudo genérico (funciona) | `tests/sets-padrao.test.mjs` (agrupador fora do padrão) |
 | B17 | `src/game.js` (`URL_DOS_JOGOS`) | a cópia do C17: `[endereço, slug, linha, prefixos]` | a tela do jogo em `/games/<endereço>` não sabe qual jogo abrir e cai no da sessão | `games-url.test.mjs` (a cópia bate com o C17) |
+| B18 | `src/scan.js` (`extrair`, `FORMATOS`, `PISTAS`) e `tests/scan-cobertura.test.mjs` (`JOGOS`) | o formato do código que a carta imprime e a pista do rodapé (o © que só ela tem); no teste, a taxa mínima — ou `semCodigo` com o motivo, quando a carta não imprime um código que a identifique | o scanner não acha a carta do jogo, ou acha a de outro jogo (em 10/11/2026: 89 % do Weiss sem candidato, e SWU e Harry Potter filtrados pra Pokémon) | `tests/scan-cobertura.test.mjs` (jogo do `DATA_GAMES` sem declaração quebra; taxa abaixo do mínimo quebra) |
 
 **C. Borda, build e deploy** (commit 2)
 
@@ -435,10 +436,11 @@ valem só nesse caso.
 | E6 | `src/i18n-docs.js` (`vs.s.table`, linha "Jogos" da página /comparar, em pt, en e es) | número de jogos com catálogo | o CI falha | `tests/comparar-veracidade.test.mjs` (compara com o `catalog-baseline.json`, então depende do A4) |
 
 Contagem: um jogo TCGCSV com preço, sem host novo e sem opcionais, passa por
-**39 itens** (A1, A3–A7; B1, B3–B6, B10–B15; C1–C15; D1; E1–E6). Só 4 têm
-alguma trava automática: A3 (pela guarda C15), A5 (pelo lint, que derruba o
-deploy agendado), B5 (pelo `check.mjs`, por acaso) e E6 (pelo teste do
-/comparar). Os outros 35 dependem de alguém lembrar. Parte aparece na tela quando se testa (tile, cor, página do
+**40 itens** (A1, A3–A7; B1, B3–B6, B10–B15, B18; C1–C15; D1; E1–E6). Só 5
+têm alguma trava automática: A3 (pela guarda C15), A5 (pelo lint, que derruba o
+deploy agendado), B5 (pelo `check.mjs`, por acaso), B18 (pelo teste de
+cobertura do scanner) e E6 (pelo teste do /comparar). Os outros 35 dependem de
+alguém lembrar. Parte aparece na tela quando se testa (tile, cor, página do
 jogo), mas os da borda, do build, do banco e os mapas que caem no Pokémon vão
 calados pro ar.
 
