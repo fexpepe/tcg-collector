@@ -44,7 +44,7 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 | `onepiece` | One Piece | TCGCSV cat. 68 + vintage (Carddass Hyper Battle, OP Card Game 2002) | USD (moderno); vintage sem preço |
 | `magic` | Magic: The Gathering | Scryfall (catálogo EN; pt-BR é fase 2) | USD/EUR |
 | `fab` | Flesh and Blood | TCGCSV cat. 62 | USD |
-| `gundam` | Gundam Card Game | TCGCSV cat. 86 | USD |
+| `gundam` | Gundam Card Game | TCGCSV cat. 86 + vintage (Gundam Carddass 1988–1997, a linha `gcd`: animecollection.fr + 80storage, nome transcrito dos scans) | USD (moderno); vintage sem preço |
 | `swu` | Star Wars: Unlimited | TCGCSV cat. 79 (FFG; Hyperspace/Showcase = cartas próprias) + logos de set do site oficial (`mirror-swu-set-logos.mjs`) | USD |
 | `cyberpunk` | Cyberpunk TCG | TCGCSV cat. 92 (Weird Co.; edições Beta e Retail = sets próprios, setId fixo por groupId) + logo do Welcome to Night City curado do site oficial | USD |
 | `weiss` | Weiß Schwarz | TCGCSV cat. 20 (Bushiroad; só a edição inglesa, 2013+; paralelas SP/SSP/OFR = cartas próprias; setId fixo por groupId com o código impresso, `DDD-S118`; sem logo de set publicado) | USD |
@@ -68,13 +68,17 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 **Linhas** (`GAME_LINES` em [src/shared.js](src/shared.js)): um jogo pode ter
 sublinhas selecionadas por `?line=` — por exemplo `nrt-ncg` (o NARUTO CARD GAME
 novo, com lançamento mundial em 2027, hoje só com a promo da Gen Con 2026),
-`op2002`, `nrt-dc`, `nrt-ccg`. O escopo é por prefixo de `setId`: sem `?line=` a
+`op2002`, `nrt-dc`, `nrt-ccg`, `gcd` (o Gundam Carddass). O escopo é por prefixo de `setId`: sem `?line=` a
 página mostra o jogo principal e **exclui** as linhas. Uma linha pode ter vários
 prefixos (`prefixes`): a `nrt-dc` junta os quatro títulos do arcade Data Carddass
 (`nrt-dc-`, `nrt-nf-`, `nrt-nx-`), um por seção na página de Sets. Linha que vira
 seção de outra ganha um apelido em `LINE_ALIASES`, pro `?line=` antigo seguir abrindo;
 linha que vira jogo próprio (o Miracle Battle, que virou o `mbc`) entra em
 `LINHAS_VIRARAM_JOGO` (functions/_lib/jogos.js) e `LINHA_VIROU_JOGO` (src/game.js).
+Linha cujas lojas não são as do jogo leva as suas em `market`, no formato do
+`MARKETS` (o `lojasDaCarta` escolhe pelo prefixo do id): o Gundam Carddass busca
+"gundam carddass" no eBay e não mostra LigaGundam, MYP nem TCGplayer, que só
+têm o Gundam Card Game de 2025.
 
 ### Sorcery: Contested Realm (`sorcery`)
 
@@ -155,6 +159,63 @@ com o DBZ TCG da Panini (2014–2019, a categoria 23 da TCGCSV). O CI só monta
   (procedência no README de lá). Nenhuma saga tem logo próprio, então todo set
   leva o logo do jogo, como no LOTR, no WoW e no Naruto (regra 3 do
   `docs/CATALOGO.md`).
+
+### Gundam Carddass (linha `gcd` do `gundam`)
+
+A linha que inaugurou o Carddass: o SDガンダムワールド 第1弾 saiu em julho de
+1988 na "Carddass 20", quatro meses antes do Dragon Ball. É **linha** do jogo
+`gundam`, e não jogo próprio (decisão de 2026-11-10): o slug da marca já
+existia, como no Carddass do One Piece. Em
+[scripts/sync-gundam-carddass.mjs](scripts/sync-gundam-carddass.mjs), que
+**anexa** a linha ao catálogo do Gundam Card Game (roda depois do
+`sync-gundam.mjs`, e no build rápido com `--no-fetch`).
+
+| Série | Código | Partes | Anos | No catálogo |
+|---|---|---|---|---|
+| SDガンダムワールド (本弾) | `wd` | 第1弾–第13弾, No.1–537 | 1988–1992 | as 13 (537 cartas; falta o No.124) |
+| SDガンダム外伝 | `gd` | 第1弾–第16弾, No.1–704 | 1989–1993 | as 16 (706 cartas) |
+| SD戦国伝 | `sg` | 第1弾–第4弾, 一–八十四 | 1990–1991 | as 4 (83 cartas; falta o 六十) |
+| 新SD戦国伝 | `ns` | 第1弾–第4弾 | 1992–1996 | só o 第1弾 (20 cartas; falta o 十九) |
+| SDガンダム聖伝 | `sd` | クエストワン e ツー | 1996–1997 | as 2 (88 cartas) |
+| 機動武闘伝Gガンダム | `gg` | parte única | 1994 | 41 cartas (falta o No.031) |
+| 新SDガンダム外伝, ネオバトル, SDコマンド戦記, ガンドランダー, スーパーバトル, バトル・オブ・ナイツ | — | 39 partes | 1990–1996 | — (sem fonte carta a carta) |
+
+- **Sets** (série, 弾, ano, subtítulo): a tabela do
+  [80storage](https://80storage.com/archive/sd-gundam-carddass-series/), a mesma
+  fonte do `dbc`. Só o ano: a tela mostra só o ano, sem mês inventado.
+- **Cartas**: o [animecollection.fr](http://www.animecollection.fr/cartes.php?idl=6)
+  (catálogo de um colecionador francês) dá, por parte, o número impresso, a
+  raridade (Prism/Regular) e o scan de cada carta, ~1000 px, com a marca
+  d'água do site no canto. Snapshot em `data/vintage/gundam-carddass.json`
+  (nunca regride). O site só responde em HTTP; a imagem sai pelo `wsrv.nl`.
+- **Id = série + parte + número impresso**: `gcd-wd01-1`, `gcd-gd08-345`. O id
+  fica gravado no snapshot junto do id da carta na fonte (`src`), e o refresh
+  o reaproveita. Número com duas versões na mesma parte ganha sufixo:
+  `gcd-wd13-500` e `-500b` (o No.500 saiu em prisma e em prisma duplo),
+  `gcd-gd08-345`/`-345b` e `-347`/`-347b` (dois hologramas do mesmo prisma).
+- **Erros da fonte** (`CORRECOES` no sync, achados lendo o número impresso em
+  cada scan): em três partes a página repete o scan de uma carta no lugar da
+  seguinte — a repetida sai, e a carta de verdade fica faltando (戦国伝 六十,
+  新戦国伝 十九, Gガンダム No.031); e o Gガンダム numerava "31" a carta que
+  imprime No.032. O set mostra o total oficial (20/21, 41/42).
+- **Nome da carta**: nenhuma fonte acessível lista (o Suruga-ya barra robô).
+  Foi **transcrito dos scans**, do japonês impresso na frente, em
+  `scripts/data/gundam-carddass-nomes.json` (o cabeçalho de lá diz como foi
+  lido e conferido). Correção de nome é uma linha nesse arquivo. Inglês só
+  onde há nome oficial consagrado (`gundam-carddass-nomes-en.json`); o resto
+  fica em japonês — meia tradução confunde mais que ajuda.
+- **Nome do set** no padrão do `dbc`: `本弾 第1弾`, `外伝 第8弾「円卓の騎士」`, sem o
+  "SDガンダム" da frente (é a marca da linha). Tem motivo de endereço também:
+  do japonês só sobra no slug o que é latim, e "SDガンダムワールド 第1弾",
+  "SDガンダム外伝 第1弾" e "SD戦国伝 第1弾" davam os três `sd-1`. O nome em
+  inglês (`src/nomes-sets.js`) leva a série ("SD Gundam Gaiden Part 1 — …"), e
+  o `groupGundamCarddassSets` a tira dentro da seção.
+- **SD戦国伝**: a carta numera em kanji (一 a 八十四); o catálogo guarda em
+  arábico, pra ordenar e buscar.
+- **Cartas deitadas**: quase todas. O popup troca a moldura (`is-landscape`); o
+  tile corta as pontas, como nas Climax do Weiß.
+- **Lojas**: só eBay e PriceCharting, com "gundam carddass" na busca (`market`
+  no `GAME_LINES`).
 
 ### Carddass Masters (`cdm`)
 
