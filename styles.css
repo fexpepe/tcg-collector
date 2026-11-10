@@ -5850,10 +5850,13 @@ a.setting-open {
 .adm-legend-val { font-variant-numeric: tabular-nums; font-weight: 700; }
 .adm-legend-pct { color: var(--muted); min-width: 44px; text-align: right; font-variant-numeric: tabular-nums; }
 .adm-legend-row { flex-direction: row; flex-wrap: wrap; gap: 6px 16px; margin-top: 10px; color: var(--muted); font-size: 12px; }
-.adm-donut { display: flex; gap: 16px; align-items: center; }
-.adm-donut svg { width: 140px; height: 140px; flex: none; }
-.adm-donut .adm-legend { flex: 1; min-width: 0; margin: 0; }
-.adm-donut-center { fill: var(--text); font-size: 20px; font-weight: 800; }
+/* Um todo em partes (2026-11-10, no lugar da rosca): barra fina segmentada
+   e a lista embaixo, com o nome inteiro. O vão de 2px é o que separa as
+   partes (não borda); parte de menos de 1% ainda aparece (min-width). */
+.adm-seg-bar { display: flex; gap: 2px; height: 12px; border-radius: 999px; overflow: hidden; }
+.adm-seg-bar span { flex: 0 1 0; min-width: 3px; }
+.adm-partes .adm-legend { margin-top: 12px; gap: 6px; }
+.adm-partes .adm-legend-label { white-space: normal; overflow: visible; }
 .adm-treemap svg { width: 100%; height: auto; display: block; }
 .adm-tm-label { font-size: 13px; font-weight: 700; }
 .adm-tm-val { font-size: 11px; opacity: 0.85; }
@@ -5881,8 +5884,6 @@ a.setting-open {
 .adm-banner { border: 1px solid var(--gold); background: color-mix(in srgb, var(--gold) 14%, transparent); border-radius: 12px; padding: 12px 14px; font-size: 13px; line-height: 1.5; }
 .adm-banner code { font-size: 12px; }
 @media (max-width: 700px) {
-  .adm-donut { flex-direction: column; align-items: stretch; }
-  .adm-donut svg { align-self: center; }
   .adm-hbars li { grid-template-columns: minmax(70px, 110px) 1fr auto; }
 }
 
@@ -6116,6 +6117,65 @@ a.setting-open {
   .adm-plat-soma { grid-column: 1 / -1; }
   .adm-plat-n { font-size: 22px; }
   .adm-plat dl { font-size: 12px; gap: 3px 6px; }
+}
+
+/* ── Admin v4 (2026-11-10): mapa-múndi, dica dos gráficos, atualizar ─────
+   Mapa: UM tom, mais forte = mais visitantes. No claro o tom escurece sobre
+   a terra clara; no escuro ele CLAREIA sobre a terra escura (a mesma regra
+   do mapa de calor: o destaque é o que se afasta da superfície). A terra
+   sem visitante é um cinza um passo fora do cartão, e a divisa entre países
+   é da cor do cartão — um vão, não um traço. */
+.adm-mapa { --adm-geo: #1d4ed8; --adm-terra: color-mix(in srgb, var(--subtle) 18%, var(--panel)); min-width: 0; }
+:root[data-theme="dark"] .adm-mapa { --adm-geo: #93c5fd; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .adm-mapa { --adm-geo: #93c5fd; } }
+.adm-mapa svg { width: 100%; height: auto; display: block; }
+.adm-geo, .adm-geo-cor { --c: var(--adm-terra); }
+.adm-geo-1 { --c: color-mix(in srgb, var(--adm-geo) 24%, var(--adm-terra)); }
+.adm-geo-2 { --c: color-mix(in srgb, var(--adm-geo) 43%, var(--adm-terra)); }
+.adm-geo-3 { --c: color-mix(in srgb, var(--adm-geo) 62%, var(--adm-terra)); }
+.adm-geo-4 { --c: color-mix(in srgb, var(--adm-geo) 81%, var(--adm-terra)); }
+.adm-geo-5 { --c: var(--adm-geo); }
+.adm-geo { fill: var(--c); stroke: var(--panel); stroke-width: 0.75; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
+.adm-geo-ponto { stroke-width: 2; }
+.adm-geo.is-dica { stroke: var(--text); stroke-width: 1.5; }
+.adm-mapa-escala { list-style: none; margin: 10px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.adm-mapa-escala li { display: inline-flex; align-items: center; gap: 6px; }
+.adm-geo-cor { width: 14px; height: 10px; border-radius: 3px; background: var(--c); flex: none; }
+/* Mapa à esquerda, ranking à direita; abaixo de 900px de cartão, empilha. */
+.adm-mapa-grade { display: grid; grid-template-columns: minmax(0, 1.75fr) minmax(250px, 1fr); gap: 20px 28px; align-items: center; }
+.adm-mapa-lista { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.adm-hbars-pais li { grid-template-columns: minmax(110px, 1.3fr) minmax(40px, 1fr) auto; }
+.adm-hbars-pais .adm-hbar-fill { background: var(--adm-geo, #1d4ed8); }
+.adm-mapa-lista { --adm-geo: #1d4ed8; }
+:root[data-theme="dark"] .adm-mapa-lista { --adm-geo: #93c5fd; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .adm-mapa-lista { --adm-geo: #93c5fd; } }
+/* Sigla do país antes do nome: é o que desempata "Guiana" de "Guiana Francesa"
+   e o que casa com o CSV do Cloudflare. Bandeira em emoji não: no Windows
+   ela vira duas letras soltas. */
+.adm-co { display: inline-block; min-width: 26px; margin-right: 8px; padding: 1px 5px; border-radius: 5px; background: var(--panel-strong); color: var(--muted); font-size: 10.5px; font-weight: 800; letter-spacing: 0.03em; text-align: center; vertical-align: 1px; }
+.admin-table .adm-pais { white-space: nowrap; }
+.adm-sec-sub { margin: 0; font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+@media (max-width: 900px) {
+  .adm-mapa-grade { grid-template-columns: minmax(0, 1fr); }
+}
+/* Dica dos gráficos: uma só pro painel inteiro, presa ao ponteiro (ou ao
+   dedo). Tinta invertida pra destacar de qualquer cartão nos dois temas. */
+.adm-dica { position: fixed; z-index: 1000; left: 0; top: 0; max-width: min(280px, calc(100vw - 16px)); padding: 8px 11px; border-radius: 10px; background: var(--text); color: var(--bg); font-size: 12.5px; line-height: 1.4; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28); pointer-events: none; display: flex; flex-direction: column; gap: 1px; font-variant-numeric: tabular-nums; }
+.adm-dica[hidden] { display: none; }
+.adm-dica b { font-size: 13px; font-weight: 700; }
+.adm-dica span { opacity: 0.82; }
+/* A marca sob a dica responde: um pouco mais clara (ou o contorno, no mapa). */
+.admin-chart .is-dica, .adm-treemap .is-dica, .adm-seg-bar .is-dica { filter: brightness(1.18); }
+.adm-calor .is-dica, .adm-matriz .is-dica { outline: 2px solid var(--text); outline-offset: -1px; }
+/* Período + atualizar, um do lado do outro. */
+.adm-controles { display: flex; align-items: center; gap: 8px; }
+.adm-atualiza { min-height: 40px; min-width: 40px; }
+/* O desenho de antes fica na tela, apagado, enquanto os números novos chegam. */
+.adm-body.is-recarregando { opacity: 0.45; pointer-events: none; transition: opacity 0.15s; }
+@media (prefers-reduced-motion: reduce) { .adm-body.is-recarregando { transition: none; } }
+@media (max-width: 700px) {
+  .adm-controles .adm-period { flex: 1; }
+  .adm-atualiza { min-height: 44px; min-width: 44px; }
 }
 
 /* ── Kit para parceiros (Visão geral › Para parceiros) ───────────────────

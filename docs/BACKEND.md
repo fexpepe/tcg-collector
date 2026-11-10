@@ -328,6 +328,17 @@ no contrato:
   da conta apagada, e falha ali nunca segura o delete. Com "Contar minhas
   visitas" desligado: sem `anon`, sem pageview nem evento de produto, o erro
   de JS sai sem o token (logo sem `uid`) e o beacon do Cloudflare não carrega.
+- **País do visitante (`20261110a`, /admin v4).** O `events_guard` carimba
+  `props.co` no pageview com as 2 letras do cabeçalho `cf-ipcountry` (a borda
+  do Cloudflare na frente do Supabase). Nunca vem do cliente (um `co` no
+  corpo é jogado fora), `XX`/`T1` não são país e o **app das lojas fica sem
+  país** (a declaração das lojas diz "sem localização"). O IP segue sem ser
+  guardado. `admin_geo(days)` devolve visitantes por país no período e no
+  anterior, páginas, logados, ativações, a série por dia dos 5 maiores e a
+  cobertura (quantas páginas têm país, desde quando); lida no Resumo, na
+  Audiência (mapa-múndi do `src/admin-mundo.js`, gerado pelo
+  `scripts/build-mapa-mundo.mjs`) e em Técnico › Medição. Sem histórico: o
+  país existe a partir do dia em que a migração entra.
 - **Plataforma de uma pessoa.** Por pageview, onde a página foi vista; por
   navegador, a de maior prioridade usada no período (ios > android > pwa >
   web). A ponte entre web e app é a conta (`uid`): a mesma conta nos dois

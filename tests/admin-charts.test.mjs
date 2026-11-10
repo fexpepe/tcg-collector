@@ -63,16 +63,22 @@ test("squarify: razão de aspecto fica razoável (é o que 'squarified' promete)
   assert.ok(pior < 4, `pior razão de aspecto ${pior.toFixed(2)} — um mosaico de tiras`);
 });
 
-test("donut: soma dos arcos fecha o círculo e 100% num item só não degenera", () => {
-  const html = C.donut([{ label: "A", value: 3 }, { label: "B", value: 1 }]);
-  const dashes = [...html.matchAll(/stroke-dasharray="([\d.]+) ([\d.]+)"/g)].map((m) => Number(m[1]));
-  const C0 = Number(dashes[0]) + Number(/stroke-dasharray="[\d.]+ ([\d.]+)"/.exec(html)[1]);
-  assert.ok(Math.abs(dashes.reduce((a, b) => a + b, 0) - C0) < 0.05, "os arcos não somam a circunferência");
-  assert.ok(html.includes("75%") && html.includes("25%"), "legenda sem as porcentagens");
-  const solo = C.donut([{ label: "Só", value: 5 }, { label: "Zero", value: 0 }]);
-  assert.equal((solo.match(/<circle /g) || []).length, 1, "item zerado não deveria virar arco");
-  assert.ok(!solo.includes("Zero"), "item zerado não deveria aparecer na legenda");
-  assert.ok(C.donut([]).includes("Sem dados"), "vazio precisa dizer que está vazio");
+test("barra segmentada: parte proporcional, nome inteiro na lista e zero fora", () => {
+  const html = C.segmentos([{ label: "Toque (celular/tablet)", value: 3 }, { label: "Ponteiro <desktop>", value: 1 }, { label: "Zero", value: 0 }]);
+  assert.equal((html.match(/flex-grow:/g) || []).length, 2, "parte zerada não desenha");
+  assert.match(html, /flex-grow:3;/);
+  assert.match(html, /Toque \(celular\/tablet\)<\/span>/, "o rótulo vai inteiro, sem corte");
+  assert.match(html, /75%/);
+  assert.doesNotMatch(html, /<desktop>/, "rótulo é escapado");
+  assert.ok(C.segmentos([]).includes("Sem dados"), "vazio precisa dizer que está vazio");
+});
+
+test("partes: até 6 é barra segmentada; acima disso vira ranking, do maior pro menor", () => {
+  const sete = Array.from({ length: 7 }, (_, i) => ({ label: `L${i}`, value: i + 1 }));
+  assert.match(C.partes(sete.slice(0, 6)), /adm-seg-bar/);
+  const rk = C.partes(sete);
+  assert.match(rk, /adm-hbars/);
+  assert.ok(rk.indexOf("L6") < rk.indexOf("L0"), "ordenado pelo valor");
 });
 
 test("dailyBars: empilha gente e robô, e escapa o que vem do banco", () => {

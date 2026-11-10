@@ -78,6 +78,7 @@ O pageview leva um contexto agregável em `props`:
 | `u` / `c` / `a` | utm source / campaign / content |
 | `k` | nome do parâmetro de clique pago |
 | `pl` / `av` | **v3**: plataforma e versão do app nativo |
+| `co` | **v4** (2026-11-10, `20261110a`): país, 2 letras. Único campo que o BANCO põe (do cabeçalho `cf-ipcountry`); o cliente não manda, e o app das lojas fica sem (ver 4.6) |
 
 Os 24 nomes aceitos estão no `events_guard`. O que cada um carrega está no
 `docs/BACKEND.md` e no `ENVIADOS` do `src/admin.js`, que é a lista que a aba
@@ -304,6 +305,11 @@ mudou de forma, e o 6 segue pra depois.
 
 O que o app coleta, pra Data safety (Play) e App Privacy (Apple):
 
+- **País só no site, não no app** (2026-11-10): o mapa do /admin usa o país
+  do pageview, carimbado pelo banco. O guard pula o app (`pl` = android |
+  ios) justamente pra a linha de baixo continuar verdadeira. Medir país no
+  app = tirar essa condição do guard E declarar "localização aproximada" no
+  Play e "Coarse Location" na App Store, nessa ordem.
 - **Interações com o app e diagnóstico (erros)**: sem localização, sem
   contatos, sem identificador de publicidade, sem rastreio entre apps.
   Então **não pede ATT** no iOS.
