@@ -64,6 +64,7 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 | `mbc` | Miracle Battle Carddass | Bandai 2009–2015, o crossover da Jump: sete séries (Dragon Ball Kai, One Piece, Toriko, Hunter × Hunter, Naruto Shippuden, Kuroko, J-Heroes), uma seção por série; tcg-db (snapshot `data/vintage/miracle-battle.json`). Até 2026-10-01 eram linhas do One Piece, do Naruto e do HxH (ids `op-mb-`/`nrt-mb-`/`hxh-mb-` mantidos; `src/migra-mbc.js` leva a coleção de quem marcou) | sem preço |
 | `cdm` | Carddass Masters | Bandai 1996–2009, a linha de cartas de coleção de várias IPs, uma seção por IP. HUNTER×HUNTER (2000–2001): número e nome pela lista impressa no verso das cartas (`scripts/data/carddass-masters-hxh.json`), scans da Hunterpedia (snapshot `data/vintage/carddass-masters-hxh.json`). 新世紀エヴァンゲリオン (1996–1997): listas de um colecionador (`scripts/data/carddass-masters-eva.json`), scans do animecollection.fr (snapshot `data/vintage/carddass-masters-eva.json`) | sem preço |
 | `gcd` | Gundam Carddass | Bandai 1988–1997: SD Gundam World, Gaiden, Sengokuden, Seiden e G Gundam, uma seção por série; número, raridade e scan do animecollection.fr, sets do 80storage, nome transcrito dos scans (snapshot `data/vintage/gundam-carddass.json`). Foi linha do `gundam` por um dia (2026-11-10); `src/migra-mbc.js` leva a coleção de quem marcou | sem preço |
+| `gw` | Gundam War | Bandai 1999–2011, o TCG japonês do Gundam (vendido sob a marca Carddass Masters): número, nome, cor, tipo e raridade pelas listas do site oficial da Bandai, ainda no ar (snapshot `data/vintage/gundam-war.json`); sem imagem | sem preço |
 | `jump` | JUMP | curadoria versionada em `data/jump/curated/` | — |
 
 **Linhas** (`GAME_LINES` em [src/shared.js](src/shared.js)): um jogo pode ter
@@ -214,6 +215,44 @@ mesmos ids e o mesmo endereço; quem marcou carta nesse intervalo é levado pro
   tile corta as pontas, como nas Climax do Weiß.
 - **Lojas**: só eBay e PriceCharting, com "gundam carddass" na busca. LigaGundam,
   MYP e TCGplayer só têm o Gundam Card Game.
+
+### Gundam War (`gw`)
+
+ガンダムウォー, o card game japonês do Gundam da Bandai (fev/1999–mai/2011), em
+[scripts/sync-gundam-war.mjs](scripts/sync-gundam-war.mjs). Foi vendido sob a
+marca Carddass Masters (o pacote de loja), mas é um JOGO, com cores, regras e
+decks, e não cartas de coleção de uma IP: por isso é jogo próprio, e não
+seção do `cdm`, nem linha do `gundam` ou do `gcd` (regra 4.1 do
+`docs/CATALOGO.md`, 2026-11-11). Só a versão japonesa: a inglesa de 2005,
+o Gundam M.S. War americano e o NEX-A (2012) ficam de fora.
+
+- **Fonte**: o site oficial (`carddass.com/cdmasters/gundamwar/`), que segue
+  no ar. A lista ANTIGA (`/outdated/products/card.php?team=<facção>`, uma
+  página por facção) cobre do 第1弾 ao 第23弾 e os produtos à parte até a
+  EXTENSION BOOSTER3 (2009); a ATUAL (`/cardlist/`, por categoria), o 第26弾
+  ao 第28弾 e as reedições de 2010–2011. Datas (mês) da Wikipédia japonesa.
+  Snapshot em `data/vintage/gundam-war.json` (nunca regride).
+- **Cor**: na lista antiga é o fundo da linha da carta (dois tons por cor), a
+  régua do próprio site; o cruzamento com as reedições da lista atual, que
+  dizem a cor por extenso, bateu em 159 de 162 cartas (as 3 restantes são
+  outra carta com o mesmo número em outro produto).
+- **Id = set + cor + número impresso**: `gw-s01-b-u-1` (第1弾, azul, U-1). Cada
+  cor numera do 1, então a cor entra no id (`b`, `g`, `k`, `r`, `n`, `w`, `p`;
+  `d` pras duais, que têm numeração própria; `x` pras 7 promos sem cor na
+  fonte).
+- **Reimpressão** mantém o número. A lista antiga mostra cada número uma vez,
+  no produto em que estreou: os produtos de 1999–2009 que misturam reedição
+  (ベースドブースター, EXTENSION BOOSTER) mostram só as cartas novas, e por isso
+  nenhum set grava `setTotal`.
+- **Raridade**: a da fonte (C, U, R, AR, GR, SR, IR). A lista antiga deixa
+  vazia a carta sem marca, e ela fica vazia (sem chute de "comum").
+- **Sem imagem**: as miniaturas do site (100–129 px) não passam da largura
+  útil de 440 px. Scan curado entra por `assets/cards/gw/<id>.webp`.
+- **Faltam** (sem lista carta a carta no site): o 第24弾 e o 第25弾 (2010), a
+  セレクテッドブースター「赤い彗星 シャア編」, o 入門用スターター, o
+  乱世に生きる漢たち, a コラボレーションブースター2, a DXウイナーズスターター e
+  o 拡張シート do 覇王の紋章.
+- **Lojas**: só eBay e PriceCharting, com "gundam war" na busca.
 
 ### Carddass Masters (`cdm`)
 
