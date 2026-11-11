@@ -399,6 +399,36 @@ no máximo 2 das 1.922 cartas da amostra): o resto é a frase-molde, a ficha e
 rótulos da interface. Pesam mais as 49 mil cartas japonesas e chinesas com o
 texto em português, 4.888 delas com endereço só de número.
 
+**O texto da carta desde 2026-11-11** (`functions/_lib/pagina-carta.js`,
+`tests/pagina-carta-texto.test.mjs`). A página da japonesa ou da chinesa não
+dizia em lugar nenhum que a carta é japonesa ou chinesa (só a ficha, em
+"Idioma"), e a ficha saía com "Tipo: Pokemon", "Estágio: Basic" e "Série:
+剣と盾" no meio do português. Agora o parágrafo, nas três línguas, diz:
+
+- a edição (japonesa, em chinês simplificado ou tradicional, em português),
+  também na descrição;
+- o nome em inglês junto do japonês ou chinês ("ゼルネアス (Xerneas)");
+- no Pokémon, o que a carta é no jogo (estágio, tipo e nº da Pokédex; o tipo
+  do treinador; energia básica ou especial) e, quando o número passa do
+  total do set, que ela é secreta;
+- o mercado dela, no lugar da frase-molde do preço: o valor, a posição no set
+  entre as cartas da mesma edição (a impressão em português herda o preço da
+  inglesa e contaria duas vezes), o preço por acabamento e as vendas PSA. Sai
+  do chunk de preço que a borda já lia.
+
+A ficha passou pro português e perdeu a nota-molde do preço. Numa amostra
+fixa de 2.050 cartas do Pokémon com os preços de produção, a parte própria
+do parágrafo, pela mesma régua de 6 palavras, foi de 18% pra 23% nas
+japonesas e de 17% pra 27% nas inglesas. Nas chinesas ficou em 21%: só 22%
+delas têm preço, e o resto do texto novo (edição, tipo, Pokédex) se repete
+de carta pra carta.
+
+O endereço só de número (as cartas de treinador e energia com o nome só em
+japonês ou chinês) continua: o próprio catálogo dá o nome em inglês de só
+822 delas (pelos pares japonês→inglês da Bulbapedia e das cartas que têm os
+dois), e o resto, quase todo em chinês, precisa de outra fonte. Dar nome
+muda o endereço (o `cartaParecida` leva o antigo pro novo com 301).
+
 Ficou pra PRs à parte: os links do app direto pro endereço `/games/…`, o
 destino das telas de Pokémon, artista e treinador, e as cartas duplicadas.
 
