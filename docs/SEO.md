@@ -346,6 +346,16 @@ Ficam em `/detail?…` (noindex de propósito, sem endereço próprio): as telas
 Pokémon, artista e treinador. A página estática `/artist/<slug>` linka a tela
 do artista no app (uma URL por jogo).
 
+Desde 2026-11-10 os links do app pra essas três telas levam `rel="nofollow"`
+(`tests/telas-sem-endereco.test.mjs` trava). A linha do noindex não caiu com o
+301 de 12/10 porque sobraram elas: em 10/11 eram 5.707, e só a `/pokedex`
+expõe ~400 links desses por jogo. Não foi pelo `robots.txt` porque o
+Twitterbot o respeita, e a tela do Pikachu ou de um artista compartilhada no X
+perderia a prévia. Os artistas seguem achados pelas páginas `/artist/<slug>`
+(índice de `/artists` e `sitemap-artists.xml`). Dar endereço próprio à
+Pokédex e aos treinadores é outra decisão: são páginas novas, com texto
+próprio, e não só a casca com outro endereço.
+
 No painel, depois do deploy: "Validar correção" nas linhas do 404 e do
 noindex faz o Google voltar nessas URLs. Na do noindex a validação vai
 "falhar" pras telas de Pokémon e artista, que seguem noindex de propósito.

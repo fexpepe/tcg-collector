@@ -274,6 +274,7 @@
     const completo = item.totalCount > 0 && item.ownedCount >= item.totalCount;
     el.className = `ent-row${completo ? " is-complete" : ""}`;
     el.href = detailUrl(ctx && ctx.view === "trainers" ? "trainer" : "artist", item.name);
+    el.rel = "nofollow"; // tela noindex, fora do rastreio (ver createGroupCard no app.js)
     el.dataset.entK = k;
     const o = obra(item);
     const meta = [];
@@ -533,7 +534,7 @@
       const s = ultimo.semNome;
       rodape.hidden = !s;
       if (s) {
-        rodape.innerHTML = `${escapeHtml(tn("ent.unknown", s.totalCount, { n: fmt(s.totalCount) }))} <a href="${escapeAttribute(detailUrl("artist", s.name))}">${escapeHtml(t("ent.unknownSee"))}</a>`;
+        rodape.innerHTML = `${escapeHtml(tn("ent.unknown", s.totalCount, { n: fmt(s.totalCount) }))} <a href="${escapeAttribute(detailUrl("artist", s.name))}" rel="nofollow">${escapeHtml(t("ent.unknownSee"))}</a>`;
       }
     }
   }

@@ -6863,7 +6863,7 @@
                 ${activeCard.rarity ? `<span>${escapeHtml(activeCard.rarity)}</span>` : ""}
                 ${tratamentos.map((x) => `<span>${escapeHtml(x)}</span>`).join("")}
                 ${activeCard.artist ? (jogo === "pokemon"
-                  ? `<a href="${escapeAttribute(detailUrl("artist", activeCard.artist, "", jogo))}">${escapeHtml(t("cs.byArtist", { name: activeCard.artist }))}</a>`
+                  ? `<a href="${escapeAttribute(detailUrl("artist", activeCard.artist, "", jogo))}" rel="nofollow">${escapeHtml(t("cs.byArtist", { name: activeCard.artist }))}</a>`
                   : `<span>${escapeHtml(t("cs.byArtist", { name: activeCard.artist }))}</span>`) : ""}
               </p>` : ""}
             </div>

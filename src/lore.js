@@ -242,7 +242,7 @@
       ${selo}`;
     const classe = `lore-card${no.dex ? "" : " is-conceito"}${nivel === 0 ? " is-raiz" : ""}${href ? "" : " is-mudo"}`;
     return href
-      ? `<a class="${classe}" href="${escapeAttribute(href)}">${miolo}</a>`
+      ? `<a class="${classe}" href="${escapeAttribute(href)}" rel="nofollow">${miolo}</a>`
       : `<div class="${classe}">${miolo}</div>`;
   }
 
