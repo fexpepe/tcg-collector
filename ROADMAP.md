@@ -230,9 +230,14 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   páginas pré-renderizadas (`/card`, `/set`, `/deck`). Plano, números e fases em
   [docs/PLANO-ADS.md](docs/PLANO-ADS.md); arquitetura no README ("Vitrine").
 
-- **Naruto moderno (2027)**: `sync-naruto.mjs` está dormente esperando a
-  categoria no TCGCSV. Quando ela existir, decidir o dedupe com a promo curada
-  (`nrt-ncg-cp-001`) — ids são pegajosos por design.
+- **Naruto Card Game (2027), jogo `narutocg` desde 2026-11-11** (era a linha
+  `nrt-ncg` do `naruto`): a TCGCSV tem a categoria 93 desde 16/09/2026, e o
+  dedupe com a promo curada já é o `PRODUTO_CURADO` do `sync-naruto.mjs`. O
+  deploy só a lê com a variável do repositório `NARUTO_TCGCSV_CATEGORY=93`
+  ligada; sem ela o catálogo fica nas 2 cartas publicadas (em 11/11/2026 a
+  TCGCSV já listava a terceira, a Chakra Card da NYCC 2026). Quando sair o
+  primeiro booster, conferir o código do set contra o `SECOES_BANDAI`
+  (src/app.js), que hoje supõe BT/ST.
 - **NARUTO 疾風伝 カードゲーム (`nrt-scg`, 2026-11-10)**: entrou com as 573
   cartas e só 13 imagens (as do tcg-db). Falta fonte de imagem que aceite
   acesso automatizado (o Suruga-ya barra) e o logo recortado: o oficial está

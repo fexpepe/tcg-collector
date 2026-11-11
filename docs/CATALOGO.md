@@ -170,8 +170,8 @@ junto. Sem isso, o endereço antigo das cartas movidas dá 404.
   vintage e 16 grupos do TCGplayer).
 - O set caiu na **categoria certa**. Lorcana, Naruto, HxH e DBC agrupam pelo
   `setId` (`group<Jogo>Sets` em [src/app.js](../src/app.js)); os modernos da
-  Bandai (One Piece, Gundam, Fusion World, Digimon, Union Arena e a linha
-  `nrt-ncg`), pelas regras de código do `SECOES_BANDAI`, no mesmo arquivo
+  Bandai (One Piece, Gundam, Fusion World, Digimon, Union Arena e o
+  `narutocg`), pelas regras de código do `SECOES_BANDAI`, no mesmo arquivo
   (Principais, Boosters extras, Decks, Promos). Um formato de código inédito
   cai em "outros" ("Promos e eventos", nos da Bandai): booster ou deck com
   código novo entra na regra do jogo, com o caso no
@@ -312,7 +312,12 @@ hub). A ficha preenchida vai na descrição da PR.
   séries de uma linha só: o Gundam Carddass (`gcd`, 2026-11-10) tem um prefixo
   e uma seção por série (World, 外伝, 戦国伝…), tirada do código do set. Ele
   entrou como linha do `gundam` e virou jogo no mesmo dia (`gcd`), pelo mesmo
-  caminho do `mbc` (`src/migra-mbc.js`, `MUDOU_DE_JOGO`, `LINHAS_VIRARAM_JOGO`). Se uma linha já
+  caminho do `mbc` (`src/migra-mbc.js`, `MUDOU_DE_JOGO`, `LINHAS_VIRARAM_JOGO`). O
+  NARUTO CARD GAME de 2027 (`narutocg`, 2026-11-11) fez o mesmo caminho saindo
+  de uma linha COM preço: o sync novo herda as cartas e o preço do catálogo
+  antigo na 1ª rodada e as tira de lá, e o histórico de preço herda as séries
+  do acervo antigo (`HERDA` em `scripts/lib/price-history-retention.mjs`), em
+  vez de zerar o gráfico. Se uma linha já
   publicada virar seção de outra, o `?line=` antigo entra em `LINE_ALIASES`
   (shared.js), pra favoritos e links seguirem abrindo.
 - **slug**: minúsculo, `[a-z0-9]+`, curto (`unionarena`, `dbc`). Vai pra URL
