@@ -16,7 +16,7 @@
     magic: "game_magic-v2.webp", fab: "game_fab.webp", gundam: "game_gundam-v2.webp", swu: "game_swu.webp", cyberpunk: "game_cyberpunk.webp", sorcery: "game_sorcery.webp", dbfw: "game_dbfw-v2.webp",
     ygo: "game_ygo-v2.webp", digimon: "game_digimon-v2.webp", riftbound: "game_riftbound-v2.webp",
     unionarena: "game_unionarena.webp", narutocg: "game_naruto_2027.webp", naruto: "game_naruto.webp", hxh: "game_hxh.webp",
-    dbc: "game_dbc.webp", wow: "game_wow.webp", lotr: "game_lotr.webp", dbz: "game_dbz.webp", weiss: "game_weiss.webp", harrypotter: "game_harrypotter.webp",
+    dbc: "game_dbc.webp", wow: "game_wow.webp", lotr: "game_lotr.webp", dbz: "game_dbz.webp", weiss: "game_weiss.webp", godzilla: "game_godzilla.webp", harrypotter: "game_harrypotter.webp",
     mbc: "game_mbc.webp", cdm: "game_cdm.webp", gcd: "", gw: "game_gw.webp"
   };
   function gameLogoUrl(game) {
@@ -1546,8 +1546,9 @@
 
   // As seções de cada jogo (2026-10-09: um lugar só, antes eram 15 `return`
   // no getViewItems). Recebe as RAÍZES do aninhaPorNome. Jogo sem agrupamento
-  // próprio vai por ano (Yu-Gi-Oh!, FAB, Riftbound…); os modernos da Bandai,
-  // pelas seções do One Piece (SECOES_BANDAI).
+  // próprio vai por ano (Yu-Gi-Oh!, FAB, Riftbound…); os modernos da Bandai
+  // (e o Godzilla, da Bushiroad, que tem a mesma forma), pelas seções do One
+  // Piece (SECOES_BANDAI).
   function agrupaSetsDoJogo(raizes) {
     // Linha vintage (?line=): do mais antigo pro mais novo, como checklist. O
     // Data Carddass do Naruto junta os quatro títulos do arcade, um por seção.
@@ -1865,7 +1866,13 @@
     // NARUTO CARD GAME de 2027 (até 11/11/2026, a linha nrt-ncg do naruto):
     // hoje só as promos de evento. O sync dá "nrt-ncg-<abreviação>"; booster e
     // starter seguem o padrão da Bandai (BT, ST) até o primeiro set confirmar.
-    narutocg: { main: /^NRT-NCG-BT\d+$/, extra: /^NRT-NCG-(EB|EX)\d+$/, deck: /^NRT-NCG-ST\d+$/ }
+    narutocg: { main: /^NRT-NCG-BT\d+$/, extra: /^NRT-NCG-(EB|EX)\d+$/, deck: /^NRT-NCG-ST\d+$/ },
+    // Godzilla Card Game (Bushiroad, 11/11/2026): não é Bandai, mas tem a
+    // mesma forma — boosters numerados (EBP), starters (ESD) e promos (EPR).
+    // O Sleeve & Card Set (ESC01) vai pras promos: é produto de coleção, e
+    // como booster extra roubava o destaque do Booster Set mais novo. Booster
+    // extra ainda não existe; o EB é aposta no código do One Piece/Gundam.
+    godzilla: { main: /^EBP\d+$/, extra: /^EEB\d+$/, deck: /^E?SDS?\d+$/ }
   };
   function groupBandaiSets(setItems, regras) {
     const secaoDe = (set) => {

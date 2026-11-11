@@ -151,11 +151,17 @@
     if (flat.includes("lordoftherings") || flat === "lotr") return "lotr";
     // "Weiss Schwarz" no TCGplayer; "Weiß" vira "wei" no achatamento (o ß não é a-z).
     if (flat.includes("schwarz") || flat === "ws" || flat === "weiss") return "weiss";
+    // "Godzilla Card Game" no TCGplayer e no Collectr.
+    if (flat.includes("godzilla")) return "godzilla";
     if (flat.includes("harrypotter")) return "harrypotter";
     if (flat.includes("pok")) return "pokemon";
     return ""; // desconhecido: tenta todos
   }
   const csvNorm = (s) => normalize(String(s || "")).replace(/[^a-z0-9]/g, "");
+  // O "+" no FIM do número é a paralela (Godzilla "EBP01-001+" é outra carta
+  // que a "EBP01-001", e a "++" outra ainda; Weiß "…SSP+"), e o csvNorm o
+  // apaga: sem comparar à parte, a paralela importada virava a carta base.
+  const csvMais = (s) => (String(s || "").split("/")[0].trim().match(/\++$/) || [""])[0];
   // Nome de set dos exports vem com prefixo de código ("SV08.5: Prismatic
   // Evolutions", "SWSH09: ..."): compara também sem o prefixo.
   function csvSetKeys(name) {
@@ -676,10 +682,12 @@
           }
           // Número manda (zero-padding tolerado); sem número, nome exato.
           const num = csvNorm(String(it.number).split("/")[0]);
+          const mais = csvMais(it.number);
           const nameKey = csvNorm(it.name);
           hit = pool.find((c) => {
             const cNum = csvNorm(String(c.number || "").split("/")[0]);
             if (num) {
+              if (csvMais(c.number) !== mais) return false;
               return cNum === num
                 || (/^\d+$/.test(num) && /^\d+$/.test(cNum) && parseInt(num, 10) === parseInt(cNum, 10));
             }

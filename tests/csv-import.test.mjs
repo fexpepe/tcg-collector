@@ -5,7 +5,7 @@ import assert from "node:assert/strict";
 import { loadBackupImport } from "./lib/shared-sandbox.mjs";
 
 const sb = loadBackupImport(
-  "window.__test = { parseCsvText, mapCsvHeader, mapCsvVariant, mapCsvCondition, mapCsvLanguage, mapCsvGame, csvSetKeys };"
+  "window.__test = { parseCsvText, mapCsvHeader, mapCsvVariant, mapCsvCondition, mapCsvLanguage, mapCsvGame, csvSetKeys, csvMais };"
 );
 const api = sb.window.__test;
 
@@ -118,6 +118,7 @@ test("mapCsvGame: os 13 jogos, nas grafias do Collectr/TCGplayer", () => {
   // TCGplayer escreve "Weiss Schwarz"; quem digita o nome alemão, "Weiß Schwarz".
   assert.equal(api.mapCsvGame("Weiss Schwarz"), "weiss");
   assert.equal(api.mapCsvGame("Weiß Schwarz"), "weiss");
+  assert.equal(api.mapCsvGame("Godzilla Card Game"), "godzilla");
   assert.equal(api.mapCsvGame("Magic: The Gathering"), "magic");
 });
 
@@ -217,4 +218,15 @@ test("CSV sem preâmbulo continua igual (a heurística não foi mexida)", () => 
   assert.deepEqual(Array.from(rows[1]), ["Mewtwo", "2"]);
   const tab = api.parseCsvText("Name\tQty\nMewtwo\t2");
   assert.deepEqual(Array.from(tab[1]), ["Mewtwo", "2"]);
+});
+
+test("csvMais: o '+' do fim do número separa a paralela da carta base", () => {
+  // Godzilla: "EBP01-001+" (SP) e "EBP01-001++" (SSP) são cartas próprias.
+  assert.equal(api.csvMais("EBP01-001"), "");
+  assert.equal(api.csvMais("EBP01-001+"), "+");
+  assert.equal(api.csvMais("EBP01-001++"), "++");
+  assert.equal(api.csvMais(" Rage-EGZ01+ "), "+");
+  // Só o FIM conta, e só antes da barra do total.
+  assert.equal(api.csvMais("4/102"), "");
+  assert.equal(api.csvMais(""), "");
 });

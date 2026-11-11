@@ -7356,7 +7356,12 @@
     // edição inglesa), TCGplayer na linha "weiss-schwarz" e Cardmarket em
     // /en/WeissSchwarz (pela busca: a página dá anti-robô). Sem Liga
     // (ligaweiss.com.br nem resolve).
-    weiss:     { myp: "weissschwarz", tcgLine: "weiss-schwarz", usText: "weiss schwarz", cm: "WeissSchwarz" }
+    weiss:     { myp: "weissschwarz", tcgLine: "weiss-schwarz", usText: "weiss schwarz", cm: "WeissSchwarz" },
+    // Godzilla Card Game (conferido em 11/11/2026): TCGplayer na linha
+    // "godzilla-card-game" (a busca abre). Sem Liga (ligagodzilla.com.br nem
+    // resolve); MYP e Cardmarket recusam acesso automatizado e a busca na web
+    // não achou o jogo em nenhum dos dois — entram quando alguém conferir à mão.
+    godzilla:  { tcgLine: "godzilla-card-game", usText: "godzilla card game" }
   };
   function marketOf(game) { return MARKETS[game] || MARKETS.pokemon; }
 
@@ -8954,6 +8959,7 @@
     "lotr",
     "harrypotter",
     "weiss",
+    "godzilla",
     "mbc",
     "cdm",
     "gcd",
@@ -8995,6 +9001,7 @@
     wow: "#00aeff",        // azul da Blizzard; 8.5:1 com preto, a 83 do Union Arena (os azuis estão cheios)
     lotr: "#4d7c0f"  ,      // verde-musgo (pedido do Fernando: "algum tom de verde"); 5.0:1 com branco, a 73 do verde do HxH
     weiss: "#ffffff",      // branco ("Weiß"; o preto é do Star Wars); 21:1 com preto, a 159 do prata do DBFW
+    godzilla: "#5e7c68",   // verde-chumbo, a pele do Godzilla (o vermelho #e60012 do logo fica a 57 do Pokémon); 4.6:1 com branco, a 84 do Magic (proposta, 2026-11-11)
     harrypotter: "#740001", // escarlate da Grifinória; 12:1 com branco, a 85 do Magic (o vizinho mais próximo)
     mbc: "#fb923c",        // pêssego (o laranja-dourado do logo); 9.3:1 com preto, a 71 do One Piece e a 77 do Naruto
     cdm: "#a21caf",        // fúcsia; 6.3:1 com branco, a 79 do Yu-Gi-Oh! e a 81 do DBC (proposta, 2026-11-09)
@@ -9038,7 +9045,7 @@
     fab: "filter.gameFab", gundam: "filter.gameGundam", swu: "filter.gameSwu", cyberpunk: "filter.gameCyberpunk", sorcery: "filter.gameSorcery", dbfw: "filter.gameDbfw",
     ygo: "filter.gameYgo", digimon: "filter.gameDigimon", riftbound: "filter.gameRiftbound",
     unionarena: "filter.gameUnionArena", naruto: "filter.gameNaruto", narutocg: "filter.gameNarutocg", hxh: "filter.gameHxh",
-    dbc: "filter.gameDbc", dbz: "filter.gameDbz", wow: "filter.gameWow", lotr: "filter.gameLotr", weiss: "filter.gameWeiss", harrypotter: "filter.gameHarryPotter",
+    dbc: "filter.gameDbc", dbz: "filter.gameDbz", wow: "filter.gameWow", lotr: "filter.gameLotr", weiss: "filter.gameWeiss", godzilla: "filter.gameGodzilla", harrypotter: "filter.gameHarryPotter",
     mbc: "filter.gameMbc", cdm: "filter.gameCdm", gcd: "filter.gameGcd", gw: "filter.gameGw"
   };
   function gameLabel(g) { return t(GAME_LABEL_KEY[g] || GAME_LABEL_KEY.pokemon); }

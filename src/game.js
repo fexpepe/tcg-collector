@@ -40,6 +40,7 @@
     dbz: { slug: "dbz", name: "Dragon Ball Z CCG", dataDir: "data/dbz/" }, // vintage Score 2000–2006: DBZ CCG, GT TCG e o DBZ TCG de 2005 (galerias do retrodbzccg)
     harrypotter: { slug: "harrypotter", name: "Harry Potter TCG", dataDir: "data/harrypotter/" }, // vintage Wizards of the Coast 2001–2002 (hpjson; premium = cartas próprias)
     weiss: { slug: "weiss", name: "Weiß Schwarz", dataDir: "data/weiss/" }, // TCGCSV cat. 20 (Bushiroad, só a edição EN, 2013+; paralelas = cartas próprias)
+    godzilla: { slug: "godzilla", name: "Godzilla Card Game", dataDir: "data/godzilla/" }, // TCGCSV cat. 88 (Bushiroad/Yuhodo 2025, só a edição EN; paralelas = cartas próprias)
     mbc: { slug: "mbc", name: "Miracle Battle Carddass", dataDir: "data/mbc/" }, // vintage Bandai 2009–2015, crossover da Jump (7 séries; tcg-db)
     cdm: { slug: "cdm", name: "Carddass Masters", dataDir: "data/cdm/" }, // vintage Bandai 1996–2009, uma seção por IP (Evangelion e HxH; fontes no sync-carddass-masters.mjs)
     gcd: { slug: "gcd", name: "Gundam Carddass", dataDir: "data/gcd/" }, // vintage Bandai 1988–1997, uma seção por série (animecollection.fr + 80storage; nome transcrito dos scans)
@@ -65,7 +66,7 @@
     ["gundam-card-game", "gundam"], ["flesh-and-blood", "fab"], ["yu-gi-oh", "ygo"],
     ["dragon-ball-fusion-world", "dbfw"], ["digimon-card-game", "digimon"], ["union-arena", "unionarena"],
     ["cyberpunk-tcg", "cyberpunk"], ["sorcery-contested-realm", "sorcery"], ["naruto-card-game", "narutocg"],
-    ["weiss-schwarz", "weiss"],
+    ["weiss-schwarz", "weiss"], ["godzilla-card-game", "godzilla"],
     ["gundam-carddass", "gcd"],
     ["gundam-war", "gw"],
     ["dragon-ball-carddass", "dbc"], ["hunter-x-hunter-carddass", "hxh"],

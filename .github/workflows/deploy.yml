@@ -123,6 +123,7 @@ jobs:
             data/gcd/sets
             data/gw/sets
             data/narutocg/sets
+            data/godzilla/sets
             data/jump/sets
             data/magic/cards.js
             data/magic/indexes.js
@@ -149,7 +150,7 @@ jobs:
           faltando=""
           # data/dbc/, data/swu/, data/cyberpunk/, data/wow/, data/lotr/,
           # data/sorcery/, data/harrypotter/, data/weiss/, data/mbc/, data/dbz/ e
-          # data/cdm/, data/gcd/, data/gw/ e data/narutocg/: jogos novos (2026-09-24 a 2026-11-11). Enquanto o cache
+          # data/cdm/, data/gcd/, data/gw/, data/narutocg/ e data/godzilla/: jogos novos (2026-09-24 a 2026-11-11). Enquanto o cache
           # for de antes deles, o build rápido publicaria o tile do hub sem
           # catálogo nenhum atrás.
           for f in data/manifest.generated.js data/pricing.generated.js \
@@ -165,7 +166,8 @@ jobs:
                    data/cdm/manifest.generated.js \
                    data/gcd/manifest.generated.js \
                    data/gw/manifest.generated.js \
-                   data/narutocg/manifest.generated.js; do
+                   data/narutocg/manifest.generated.js \
+                   data/godzilla/manifest.generated.js; do
             [ -s "$f" ] || faltando="$faltando $f"
           done
           if [ -n "$faltando" ]; then
@@ -568,6 +570,17 @@ jobs:
         if: env.RODA_SYNC == 'true'
         run: node scripts/sync-price-history.mjs data/weiss
 
+      # Godzilla Card Game (TCGCSV cat. 88, Bushiroad/Yuhodo 2025; so a edicao
+      # inglesa). Padrao Cyberpunk: setId fixo por grupo (o codigo impresso) no
+      # proprio sync; paralelas sao cartas proprias; sem logo de set.
+      - name: Sincroniza catálogo do Godzilla Card Game (TCGCSV)
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/sync-godzilla.mjs || echo "sync-godzilla falhou; mantém o catalogo versionado"
+
+      - name: Snapshot de preços (histórico Godzilla Card Game)
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/sync-price-history.mjs data/godzilla
+
       # World of Warcraft TCG (TCGCSV cat. 13; Upper Deck 2006-2010, Cryptozoic
       # 2010-2013). Jogo vintage, mas com preco do TCGplayer. setId, nome e data
       # fixos por grupo no proprio sync; sem logo de set.
@@ -943,6 +956,7 @@ jobs:
             data/gcd/sets
             data/gw/sets
             data/narutocg/sets
+            data/godzilla/sets
             data/jump/sets
             data/magic/cards.js
             data/magic/indexes.js

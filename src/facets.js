@@ -153,6 +153,13 @@
       facetLevel,
       facetType(["Character", "Event", "Climax"])
     ],
+    // Godzilla Card Game: 4 cores (a multicor "Red;Blue" conta nas duas) e
+    // 4 tipos (11/11/2026). O Rank fica de fora: mistura I–IV dos monstros
+    // com 1–8 das cartas de batalha, e não é custo.
+    godzilla: [
+      facetColor("color"),
+      facetType(["Monster", "Battle", "Strategy", "Rage"])
+    ],
     // Cyberpunk TCG: 4 cores (Red/Blue/Green/Yellow) e 4 tipos (30/09/2026).
     cyberpunk: [
       facetColor("color"),

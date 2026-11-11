@@ -146,7 +146,8 @@ test("o topo da Vitrine não conta como resultado", () => {
 });
 
 // Bandai moderno (2026-11-11): One Piece, Gundam, Fusion World, Digimon, Union
-// Arena e o NARUTO CARD GAME de 2027 (narutocg) no formato do One Piece. Os códigos são os do
+// Arena e o NARUTO CARD GAME de 2027 (narutocg) no formato do One Piece, e o
+// Godzilla (Bushiroad), que tem a mesma forma. Os códigos são os do
 // catálogo daquele dia; o que importa é cada um cair na seção certa, e o
 // "ST01" do Fusion World (Story Booster) não virar starter.
 function secoesBandai(jogo, setIds) {
@@ -184,6 +185,10 @@ test("Bandai moderno: coleção numerada, boosters extras, decks e promos, pelo 
   });
   assert.deepEqual(secoesBandai("narutocg", ["nrt-ncg-promo", "nrt-ncg-bt01", "nrt-ncg-st01"]), {
     main: ["nrt-ncg-bt01"], decks: ["nrt-ncg-st01"], promos: ["nrt-ncg-promo"]
+  });
+  // Godzilla (Bushiroad, no mesmo formato): o Sleeve & Card Set fica nas promos.
+  assert.deepEqual(secoesBandai("godzilla", ["EBP01", "EBP05", "ESD01", "ESD05", "EPR", "ESC01"]), {
+    main: ["EBP01", "EBP05"], decks: ["ESD01", "ESD05"], promos: ["EPR", "ESC01"]
   });
 });
 

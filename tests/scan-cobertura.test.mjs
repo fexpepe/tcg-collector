@@ -86,6 +86,10 @@ const JOGOS = {
   },
   // NARUTO CARD GAME de 2027 (2026-11-11): 100 % das 2 promos (CP-001).
   narutocg: { min: 0.98 },
+  // Godzilla Card Game (2026-11-11): o código do set (EBP01-001, ESD01-,
+  // ESC01-, EPR-) e as Rage EGZ07. O TCGplayer grava as Rage do Booster Set 1
+  // com o tipo na frente ("Rage-EGZ01"), que a carta não imprime.
+  godzilla: { min: 0.91, impresso: (c) => String(c.number).replace(/^Rage-/, ""), nota: "sobram as Rage de número curto (E06) e os tokens (EBP02-T01)" },
   wow: { semCodigo: "o catálogo não guarda o número da carta" },
   sorcery: { semCodigo: "o catálogo não guarda o número da carta" },
   dbz: { semCodigo: "número solto (60), repetido em todo set" },

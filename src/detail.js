@@ -446,6 +446,11 @@
     // vão pro fim, em ordem alfabética.
     weiss: ["Common", "Uncommon", "Rare", "Double Rare", "Triple Rare", "Super Rare", "Special Rare",
       "Super Special Rare", "Over-Frame Rare", "Secret Rare", "Climax Common", "Climax Rare", "Trial Deck", "Promo", "Reprint"],
+    // Godzilla Card Game (11/11/2026): a escada do booster, as paralelas (P é o
+    // "+" das C/UC/R; SP, SSP e SSSP as das SR e acima), os tokens (T), o
+    // starter (SD), as Rage (RP/PP são as paralelas; CGP a do campeonato) e as
+    // promos (PR e as paralelas PRP/PRSP/PRSSP). ACSP e SSPT são de uma carta só.
+    godzilla: ["C", "UC", "R", "SR", "P", "SP", "SSP", "SSSP", "ACSP", "T", "SSPT", "SD", "RP", "PP", "CGP", "PR", "PRP", "PRSP", "PRSSP"],
     // One Piece Card Game (TCGCSV): as siglas da carta, Líder primeiro como no
     // jogo. Depois as vintage: o acabamento do Carddass Hyper Battle
     // (sync-onepiece-vintage.mjs) e as estrelas do Card Game 2002

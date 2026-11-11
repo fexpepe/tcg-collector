@@ -153,6 +153,7 @@ await checkCatalog("cards Riftbound", "/data/riftbound/cards.js", "TCG_CARDS", 6
 await checkCatalog("cards Union Arena", "/data/unionarena/cards.js", "TCG_CARDS", 3000);
 await checkCatalog("cards World of Warcraft", "/data/wow/cards.js", "TCG_CARDS", 4000);
 await checkCatalog("cards Weiß Schwarz", "/data/weiss/cards.js", "TCG_CARDS", 25000);
+await checkCatalog("cards Godzilla", "/data/godzilla/cards.js", "TCG_CARDS", 700);
 await checkCatalog("cards Miracle Battle Carddass", "/data/mbc/cards.js", "TCG_CARDS", 900);
 await checkCatalog("cards Carddass Masters", "/data/cdm/cards.js", "TCG_CARDS", 250);
 await checkCatalog("cards Gundam Carddass", "/data/gcd/cards.js", "TCG_CARDS", 1200);
@@ -181,7 +182,8 @@ await checkCatalog("pricing Union Arena", "/data/unionarena/pricing.generated.js
 await checkCatalog("pricing World of Warcraft", "/data/wow/pricing.generated.js", "TCG_PRICING", 3500);
 await checkCatalog("pricing Weiß Schwarz", "/data/weiss/pricing.generated.js", "TCG_PRICING", 24000);
 await checkCatalog("pricing Naruto Card Game", "/data/narutocg/pricing.generated.js", "TCG_PRICING", 1);
-for (const [label, dir] of [["Pokémon", "/data/"], ["Lorcana", "/data/lorcana/"], ["One Piece", "/data/onepiece/"], ["Magic", "/data/magic/"], ["FAB", "/data/fab/"], ["Gundam", "/data/gundam/"], ["Star Wars Unlimited", "/data/swu/"], ["Cyberpunk", "/data/cyberpunk/"], ["Sorcery", "/data/sorcery/"], ["Dragon Ball Fusion", "/data/dbfw/"], ["Yu-Gi-Oh", "/data/ygo/"], ["Digimon", "/data/digimon/"], ["Riftbound", "/data/riftbound/"], ["Union Arena", "/data/unionarena/"], ["World of Warcraft", "/data/wow/"], ["Weiß Schwarz", "/data/weiss/"], ["Naruto Card Game", "/data/narutocg/"]]) {
+await checkCatalog("pricing Godzilla", "/data/godzilla/pricing.generated.js", "TCG_PRICING", 650);
+for (const [label, dir] of [["Pokémon", "/data/"], ["Lorcana", "/data/lorcana/"], ["One Piece", "/data/onepiece/"], ["Magic", "/data/magic/"], ["FAB", "/data/fab/"], ["Gundam", "/data/gundam/"], ["Star Wars Unlimited", "/data/swu/"], ["Cyberpunk", "/data/cyberpunk/"], ["Sorcery", "/data/sorcery/"], ["Dragon Ball Fusion", "/data/dbfw/"], ["Yu-Gi-Oh", "/data/ygo/"], ["Digimon", "/data/digimon/"], ["Riftbound", "/data/riftbound/"], ["Union Arena", "/data/unionarena/"], ["World of Warcraft", "/data/wow/"], ["Weiß Schwarz", "/data/weiss/"], ["Naruto Card Game", "/data/narutocg/"], ["Godzilla", "/data/godzilla/"]]) {
   await checkJson(`deltas ${label}`, `${dir}price-deltas.generated.json`,
     (j) => j && typeof j === "object" && "c" in j ? null : "sem campo c");
   // Janela de 7 dias: é a que o aviso de queda da wishlist lê. Sem ela o push

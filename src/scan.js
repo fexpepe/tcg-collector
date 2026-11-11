@@ -293,6 +293,14 @@
     // os únicos que começam por dígito ("1HP001", "1HB001": 750 cartas).
     const reFab = /\b([A-Z]{3}|1H[A-Z])(\d{3})\b/g;
     while ((m = reFab.exec(resto))) add(m[1] + m[2], 2, m);
+    // Godzilla Card Game: a carta de Rage numera fora do set e sem hífen
+    // ("EGZ07"), e o reHifen não a vê (2026-11-11). As Rage "E06" ficam de
+    // fora: E + dois dígitos é genérico demais pra virar candidato forte.
+    const reRage = /\bEGZ([0-9OILSBZ]{2})\b/g;
+    while ((m = reRage.exec(resto))) {
+      const d = soDigitos(m[1]);
+      if (/^\d{2}$/.test(d)) add("EGZ" + d, 3, m);
+    }
     // Fração: 4/102, 009/094, 12/204 (Pokémon, Lorcana, Riftbound, Magic antigo).
     // COMO IMPRESSA primeiro, sem os zeros depois: o catálogo guarda o número
     // do jeito que a carta imprime ("009/094" no Pokémon moderno, "4/102" no
@@ -385,7 +393,10 @@
     wow: [/BLIZZARD/, /WARCRAFT/, /CRYPTOZOIC/],
     sorcery: [/CURIOSA/, /SORCERY/],
     cyberpunk: [/CYBERPUNK/, /CD ?PROJEKT/],
-    dbz: [/FUNIMATION/, /SCORE ?ENTERTAINMENT/]
+    dbz: [/FUNIMATION/, /SCORE ?ENTERTAINMENT/],
+    // Godzilla Card Game: "TM & © TOHO" no rodapé. O nome "Godzilla" não
+    // entra: ele está na arte e no nome de carta do Magic (Ikoria) também.
+    godzilla: [/\bTOHO\b/]
   };
   const FORMATOS = [
     [/^(OP|EB|PRB)\d{2}-/, ["onepiece"]],
@@ -406,6 +417,10 @@
     [/^U[EP][A-Z0-9]{2,5}\//, ["unionarena"]],
     [/^[A-Z0-9]{2,4}\/(?:EN-)?[SW][A-Z]{0,2}\d{2,3}-/, ["weiss"]],
     [/^(?:[A-Z]{3}|1H[A-Z])\d{3}$/, ["fab"]],
+    // Godzilla Card Game: EBP01-001 (booster), ESD01- (starter), ESC01-
+    // (Sleeve & Card Set), EPR-015 (promo) e as Rage EGZ07 (2026-11-11).
+    [/^(?:E(?:BP|SD|SC)\d{2}|EPR)-/, ["godzilla"]],
+    [/^EGZ\d{2}$/, ["godzilla"]],
     // Fração: os cinco jogos que numeram "N/T". SWU e Harry Potter não
     // estavam aqui, e a fração deles era filtrada pros outros três — só
     // achava se nenhum set de Pokémon/Lorcana/Riftbound tivesse o mesmo total.

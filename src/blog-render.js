@@ -82,6 +82,7 @@
     dbz: ["DBZ CCG", "#9f1239"],
     harrypotter: ["Harry Potter", "#740001"],
     weiss: ["Weiß Schwarz", "#ffffff"],
+    godzilla: ["Godzilla", "#5e7c68"],
     mbc: ["Miracle Battle", "#fb923c"],
     cdm: ["Carddass Masters", "#a21caf"],
     gcd: ["Gundam Carddass", "#a3e635"],

@@ -444,6 +444,19 @@
   --accent: #2e3a8c; --accent-dark: #242e70; --accent-rgb: 46, 58, 140;
   --accent-soft: rgba(46, 58, 140, 0.1); --on-accent: #ffffff;
 }
+/* Godzilla Card Game: VERDE-CHUMBO, a pele do Godzilla (11/11/2026; o
+   vermelho do logo ficaria a 57 do Pokémon na etiqueta). Sálvia clara com
+   texto escuro no escuro (9.2:1); verde fechado com texto branco no claro
+   (6.3:1). */
+[data-game-accent="godzilla"] {
+  --accent: #8fbc9f; --accent-dark: #7da88a; --accent-rgb: 143, 188, 159;
+  --accent-soft: rgba(143, 188, 159, 0.16); --on-accent: #0a0c10;
+}
+[data-theme="light"][data-game-accent="godzilla"],
+[data-theme="light"] [data-game-accent="godzilla"] {
+  --accent: #4a6654; --accent-dark: #3f5a49; --accent-rgb: 74, 102, 84;
+  --accent-soft: rgba(74, 102, 84, 0.1); --on-accent: #ffffff;
+}
 /* Miracle Battle Carddass: o laranja-dourado do logo, num tom PÊSSEGO pra não
    repetir o Naruto, que tem carta dentro dele (01/10/2026). Pêssego claro com
    texto escuro no escuro (11:1); tijolo com texto branco no claro (7.8:1). */
