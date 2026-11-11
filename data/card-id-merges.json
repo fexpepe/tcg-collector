@@ -49,10 +49,70 @@
    "lang": "en",
    "at": "2026-11-10",
    "cards": 141
+  },
+  {
+   "from": "swsh9.5tg",
+   "to": "swsh9tg",
+   "lang": "en",
+   "at": "2026-11-11",
+   "cards": 30
+  },
+  {
+   "from": "swsh9.5tg",
+   "to": "swsh9tg",
+   "lang": "pt",
+   "at": "2026-11-11",
+   "cards": 30
+  },
+  {
+   "from": "swsh10.5tg",
+   "to": "swsh10tg",
+   "lang": "en",
+   "at": "2026-11-11",
+   "cards": 30
+  },
+  {
+   "from": "swsh10.5tg",
+   "to": "swsh10tg",
+   "lang": "pt",
+   "at": "2026-11-11",
+   "cards": 30
+  },
+  {
+   "from": "swsh11.5tg",
+   "to": "swsh11tg",
+   "lang": "en",
+   "at": "2026-11-11",
+   "cards": 30
+  },
+  {
+   "from": "swsh11.5tg",
+   "to": "swsh11tg",
+   "lang": "pt",
+   "at": "2026-11-11",
+   "cards": 30
+  },
+  {
+   "from": "swsh12.5tg",
+   "to": "swsh12tg",
+   "lang": "en",
+   "at": "2026-11-11",
+   "cards": 30
+  },
+  {
+   "from": "swsh12.5tg",
+   "to": "swsh12tg",
+   "lang": "pt",
+   "at": "2026-11-11",
+   "cards": 30
   }
  ],
  "prefixes": {
-  "cel30": "30th"
+  "cel30": "30th",
+  "swsh9.5tg": "swsh9tg",
+  "swsh10.5tg": "swsh10tg",
+  "swsh11.5tg": "swsh11tg",
+  "swsh12.5tg": "swsh12tg"
  },
  "cards": {
   "cel30cc-99": "30th-c-019",
