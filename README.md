@@ -49,7 +49,7 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 | `cyberpunk` | Cyberpunk TCG | TCGCSV cat. 92 (Weird Co.; edições Beta e Retail = sets próprios, setId fixo por groupId) + logo do Welcome to Night City curado do site oficial | USD |
 | `weiss` | Weiß Schwarz | TCGCSV cat. 20 (Bushiroad; só a edição inglesa, 2013+; paralelas SP/SSP/OFR = cartas próprias; setId fixo por groupId com o código impresso, `DDD-S118`; sem logo de set publicado) | USD |
 | `godzilla` | Godzilla Card Game | TCGCSV cat. 88 (Bushiroad/Yuhodo 2025; só a edição inglesa; paralelas +/++/+++ = cartas próprias; setId fixo por groupId com o código impresso, `EBP01`; sem logo de set publicado) | USD |
-| `palworld` | Palworld Official Card Game | TCGCSV cat. 91 (Bushiroad com a Pocketpair, 2026; paralelas SR/OSR/SP/SSP = cartas próprias, com a raridade no número impresso, `EBP01-001OSR`; a 2ª edição do BP01, que o TCGplayer cadastra no grupo da 1ª, vira o set `BP01-2E`; setId fixo por groupId; sem logo de set publicado) | USD |
+| `palworld` | Palworld Official Card Game | TCGCSV cat. 91 (Bushiroad com a Pocketpair, 2026; paralelas SR/OSR/SP/SSP = cartas próprias, com a raridade no número impresso, `EBP01-001OSR`; a 2ª edição do BP01, que o TCGplayer cadastra no grupo da 1ª, vira o set `EBP01-2E`; setId do código impresso, fixo por groupId; sem logo de set publicado) | USD |
 | `sorcery` | Sorcery: Contested Realm | TCGCSV cat. 77 (Erik's Curiosa 2023; foil é outro produto no TCGplayer e o sync junta o par, sem número de coleção, setId fixo por groupId) | USD |
 | `dbfw` | Dragon Ball Fusion World | TCGCSV cat. 80 (≠ Masters) | USD |
 | `ygo` | Yu-Gi-Oh! | TCGCSV cat. 2 (~46k impressões — o maior) | USD |
@@ -108,14 +108,22 @@ da Bandai de 2019 (Chrono Clash), que é outro jogo.
 ### Palworld Official Card Game (`palworld`)
 
 [scripts/sync-palworld.mjs](scripts/sync-palworld.mjs), TCGCSV categoria 91, no
-padrão do Cyberpunk (setId fixo por groupId). O Palworld OFFICIAL CARD GAME da
+padrão do Cyberpunk. O Palworld OFFICIAL CARD GAME da
 Bushiroad com a Pocketpair, lançado no mundo todo em 30/07/2026; só a edição
 inglesa está na TCGCSV. O que é só dele:
+
+- **setId é o código impresso** (EBP01, ETD01, ESS01, EPR), como no Godzilla,
+  fixo por groupId. A fonte abrevia sem o "E" (BP01), mas o Godzilla imprime o
+  MESMO "EBP01-001" e o scanner procura o código lido no índice de sets: com o
+  setId sem o E, a carta do Palworld ia só pro Godzilla. Os dois jogos dividem
+  o formato `EBP`/`EPR` no scanner, e quem decide é a pista impressa
+  (©PALWORLD × TOHO). Grupo novo sem pin cai no código que a maioria das
+  cartas imprime.
 
 - **A 2ª edição do Dawn of Palpagos é um set à parte.** A reimpressão do BP01
   (a que leva um "II" ao lado do ©PALWORLD) foi cadastrada pelo TCGplayer
   dentro do grupo da 1ª, com "(2nd Edition)" no nome e o mesmo número. O sync
-  a separa no set `BP01-2E`, "BP01: Dawn of Palpagos (2nd Edition)", que a
+  a separa no set `EBP01-2E`, "BP01: Dawn of Palpagos (2nd Edition)", que a
   página de Sets mostra como chip no cartão do BP01. Enquanto a 2ª não tem
   preço, a carta herda o acabamento (Normal ou Foil) da de mesmo número da 1ª.
 - **A raridade paralela é parte do número.** A carta imprime

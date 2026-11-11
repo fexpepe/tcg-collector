@@ -8,7 +8,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
-  setIdOf, ABREV_FIXA, isCard, isSegundaEdicao, cleanName, cardOf, edicoesDoGrupo, acabamentosDoGrupo, chaveNoGrupo
+  setIdOf, codigoDominante, ABREV_FIXA, isCard, isSegundaEdicao, cleanName, cardOf, edicoesDoGrupo, acabamentosDoGrupo, chaveNoGrupo
 } from "../scripts/sync-palworld.mjs";
 
 const ed = (pares) => Object.entries(pares).map(([name, value]) => ({ name, displayName: name, value }));
@@ -22,14 +22,26 @@ const SOUL_2E = { productId: 725736, name: "Soul (SSS) (2nd Edition)", extendedD
 const BOX = { productId: 713786, name: "Dawn of Palpagos Booster Box", extendedData: [] };
 const BOX_2E = { productId: 725648, name: "Dawn of Palpagos Booster Box (2nd Edition)", extendedData: [] };
 
-test("setId: pin por groupId vale mais que a abreviação da fonte", () => {
-  assert.equal(setIdOf(GRUPO), "BP01");
-  assert.equal(setIdOf({ groupId: 24842, abbreviation: "BP-01" }), "BP01");
+test("setId: o código impresso, pinado por groupId, vale mais que a abreviação da fonte", () => {
+  // A fonte abrevia "BP01"; a carta imprime "EBP01-001" (o mesmo código do
+  // Godzilla), e é ele que o scanner procura no índice de sets.
+  assert.equal(setIdOf(GRUPO), "EBP01");
+  assert.equal(setIdOf({ groupId: 24842, abbreviation: "BP-01" }), "EBP01");
+  assert.equal(setIdOf({ groupId: 24843, abbreviation: "TD01" }), "ETD01");
+  assert.equal(setIdOf({ groupId: 24851, abbreviation: "PR" }), "EPR");
   // "PW_PC": o sublinhado não entra no setId dos pins.
   assert.equal(setIdOf({ groupId: 24876, abbreviation: "PW_PC" }), "PC");
 });
 
-test("setId: grupo novo sem pin cai na abreviação (limpa), ou no groupId se vier vazia", () => {
+test("setId: grupo novo sem pin cai no código que a maioria das cartas imprime", () => {
+  assert.equal(setIdOf({ groupId: 9, abbreviation: "BP04" }, null, ["EBP04-001", "EBP04-001OSR", "ESOUL-020", ""]), "EBP04");
+  assert.equal(setIdOf({ groupId: 9, abbreviation: "TD05" }, null, ["ETD05-001", "ETD05-002TSR", "ESOUL-021"]), "ETD05");
+  // Promo mistura reimpressões: sem maioria, vale a abreviação.
+  assert.equal(setIdOf({ groupId: 9, abbreviation: "PR2" }, null, ["EBP01-001", "EBP02-003", "ETD01-004"]), "PR2");
+  assert.equal(codigoDominante(["ESOUL-001", "ESOUL-002"]), "");
+});
+
+test("setId: grupo novo sem pin nem código cai na abreviação (limpa), ou no groupId se vier vazia", () => {
   assert.equal(setIdOf({ groupId: 1, abbreviation: "BP04" }, new Map([["BP04", 1]])), "BP04");
   assert.equal(setIdOf({ groupId: 2, abbreviation: "PW_XX" }), "PW-XX");
   assert.equal(setIdOf({ groupId: 3, abbreviation: " " }), "G3");
@@ -51,20 +63,20 @@ test("carta x selado: campo de carta presente, mesmo com Rarity \"None\"", () =>
 });
 
 test("2ª edição: set próprio com o nome do grupo + (2nd Edition), sem o selado", () => {
-  const eds = edicoesDoGrupo(GRUPO, [BOX, SUZAKU, SUZAKU_OSR, SOUL, BOX_2E, SUZAKU_2E, SOUL_2E], "BP01");
+  const eds = edicoesDoGrupo(GRUPO, [BOX, SUZAKU, SUZAKU_OSR, SOUL, BOX_2E, SUZAKU_2E, SOUL_2E], "EBP01");
   assert.deepEqual(eds.map((e) => [e.setId, e.set, e.produtos.map((p) => p.productId)]), [
-    ["BP01", "BP01: Dawn of Palpagos", [713882, 713883, 714040]],
-    ["BP01-2E", "BP01: Dawn of Palpagos (2nd Edition)", [725686, 725736]]
+    ["EBP01", "BP01: Dawn of Palpagos", [713882, 713883, 714040]],
+    ["EBP01-2E", "BP01: Dawn of Palpagos (2nd Edition)", [725686, 725736]]
   ]);
   assert.equal(isSegundaEdicao(SUZAKU_2E), true);
   assert.equal(isSegundaEdicao(SUZAKU_OSR), false);
   // Grupo sem 2ª edição não ganha set vazio; grupo só de selado não gera set.
-  assert.equal(edicoesDoGrupo(GRUPO, [SUZAKU], "BP01").length, 1);
-  assert.equal(edicoesDoGrupo(GRUPO, [BOX], "BP01").length, 0);
+  assert.equal(edicoesDoGrupo(GRUPO, [SUZAKU], "EBP01").length, 1);
+  assert.equal(edicoesDoGrupo(GRUPO, [BOX], "EBP01").length, 0);
 });
 
 test("nome: o set leva o jogo fora (contrato 7) e a carta perde só o (2nd Edition)", () => {
-  const promos = edicoesDoGrupo({ groupId: 24851, name: "Palworld Promo Cards" }, [SUZAKU], "PR");
+  const promos = edicoesDoGrupo({ groupId: 24851, name: "Palworld Promo Cards" }, [SUZAKU], "EPR");
   assert.equal(promos[0].set, "Promo Cards");
   assert.equal(cleanName("Jormuntide Ignis - Savage Lava Dragon (OSR) (2nd Edition)"), "Jormuntide Ignis - Savage Lava Dragon (OSR)");
   // O código da promo fica: separa a comum da full art ("S") no mesmo set.
@@ -76,16 +88,16 @@ test("acabamento: a 2ª edição sem preço herda o da 1ª, pelo número ou pelo
   const acab = acabamentosDoGrupo([SUZAKU, SOUL, SUZAKU_2E, SOUL_2E], priceBy);
   assert.equal(chaveNoGrupo(SUZAKU_2E), "EBP01-002");
   assert.equal(chaveNoGrupo(SOUL_2E), "nome:Soul (SSS)");
-  const { card, price } = cardOf(SUZAKU_2E, GRUPO, "BP01: Dawn of Palpagos (2nd Edition)", "BP01-2E", 162, new Map(), acab.get(chaveNoGrupo(SUZAKU_2E)));
+  const { card, price } = cardOf(SUZAKU_2E, GRUPO, "BP01: Dawn of Palpagos (2nd Edition)", "EBP01-2E", 162, new Map(), acab.get(chaveNoGrupo(SUZAKU_2E)));
   assert.deepEqual(card.variants, ["Foil"]);
   assert.equal(price, null);
-  assert.deepEqual(cardOf(SOUL_2E, GRUPO, "x", "BP01-2E", 162, new Map(), acab.get(chaveNoGrupo(SOUL_2E))).card.variants, ["Foil"]);
+  assert.deepEqual(cardOf(SOUL_2E, GRUPO, "x", "EBP01-2E", 162, new Map(), acab.get(chaveNoGrupo(SOUL_2E))).card.variants, ["Foil"]);
   // Sem preço e sem par: Normal, como nos outros syncs.
-  assert.deepEqual(cardOf(SUZAKU, GRUPO, "x", "BP01", 162).card.variants, ["Normal"]);
+  assert.deepEqual(cardOf(SUZAKU, GRUPO, "x", "EBP01", 162).card.variants, ["Normal"]);
 });
 
 test("carta: id do productId, campos do jogo e imagem grande do CDN", () => {
-  const { card, price } = cardOf(SUZAKU_OSR, GRUPO, "BP01: Dawn of Palpagos", "BP01", 162, new Map([["Foil", 8.49]]));
+  const { card, price } = cardOf(SUZAKU_OSR, GRUPO, "BP01: Dawn of Palpagos", "EBP01", 162, new Map([["Foil", 8.49]]));
   assert.equal(card.id, "pal-713883");
   assert.equal(card.name, "Suzaku - Hellfire Wings (OSR)");
   assert.equal(card.number, "EBP01-002OSR"); // a raridade paralela é parte do número impresso

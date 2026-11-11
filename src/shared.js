@@ -9048,16 +9048,19 @@
   // Rótulo curto do jogo (chips, filtros, resumos). UM lugar só: as telas chamam
   // shared.gameLabel em vez de repetir o mesmo ternário em cada página — assim
   // um jogo novo aparece rotulado em todas elas de uma vez.
-  const GAME_LABEL_KEY = {
-    pokemon: "filter.gamePokemon", lorcana: "filter.gameLorcana",
-    onepiece: "filter.gameOnePiece", magic: "filter.gameMagic",
-    fab: "filter.gameFab", gundam: "filter.gameGundam", swu: "filter.gameSwu", cyberpunk: "filter.gameCyberpunk", sorcery: "filter.gameSorcery", dbfw: "filter.gameDbfw",
-    ygo: "filter.gameYgo", digimon: "filter.gameDigimon", riftbound: "filter.gameRiftbound",
-    unionarena: "filter.gameUnionArena", naruto: "filter.gameNaruto", narutocg: "filter.gameNarutocg", hxh: "filter.gameHxh",
-    dbc: "filter.gameDbc", dbz: "filter.gameDbz", wow: "filter.gameWow", lotr: "filter.gameLotr", weiss: "filter.gameWeiss", godzilla: "filter.gameGodzilla", palworld: "filter.gamePalworld", harrypotter: "filter.gameHarryPotter",
-    mbc: "filter.gameMbc", cdm: "filter.gameCdm", gcd: "filter.gameGcd", gw: "filter.gameGw"
-  };
-  function gameLabel(g) { return t(GAME_LABEL_KEY[g] || GAME_LABEL_KEY.pokemon); }
+  // A chave i18n é "filter.game" + o slug com a inicial maiúscula
+  // (filter.gameLorcana, filter.gamePalworld); só os três de nome composto
+  // fogem da regra. Até 2026-11-11 era um mapa com as 28 chaves escritas por
+  // extenso, e o Palworld não cabia no teto do núcleo (scripts/check-size.mjs)
+  // depois do Godzilla: derivar tirou ~150 B gz e um ponto do registro de
+  // jogo. Jogo fora do registro (o hub) segue caindo no rótulo do Pokémon; o
+  // registro é olhado PRIMEIRO, senão "toString" achava a função do protótipo
+  // do mapa (o mapa antigo tinha esse furo). tests/rotulo-jogo.test.mjs trava
+  // a chave de todo jogo nos três idiomas.
+  const GAME_LABEL_KEY = { onepiece: "filter.gameOnePiece", unionarena: "filter.gameUnionArena", harrypotter: "filter.gameHarryPotter" };
+  function gameLabel(g) {
+    return t(GAME_SLUGS.includes(g) ? GAME_LABEL_KEY[g] || "filter.game" + g[0].toUpperCase() + g.slice(1) : "filter.gamePokemon");
+  }
   // Nomes em inglês dos sets vintage e japoneses (VINTAGE_SET_EN, JA_SET_EN e
   // JA_SERIE_EN): moram em src/nomes-sets.js desde 2026-10-08, carregado só
   // pelas telas que mostram nome de set traduzido. Lidos na hora da chamada;

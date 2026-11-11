@@ -350,7 +350,10 @@ test("Supabase do blog = o do shared.js (endereço e chave publicável)", () => 
 test("GAMES = GAME_COLOR do shared.js com os rótulos do i18n", () => {
   const shared = ler("src/shared.js");
   const cores = vm.runInNewContext("(" + /const GAME_COLOR = (\{[\s\S]*?\});/.exec(shared)[1] + ")");
-  const chaves = vm.runInNewContext("(" + /const GAME_LABEL_KEY = (\{[\s\S]*?\});/.exec(shared)[1] + ")");
+  // O rótulo sai do slug ("filter.game" + inicial maiúscula) desde 2026-11-11;
+  // o GAME_LABEL_KEY guarda só os de nome composto (shared.gameLabel).
+  const compostas = vm.runInNewContext("(" + /const GAME_LABEL_KEY = (\{[\s\S]*?\});/.exec(shared)[1] + ")");
+  const chaves = new Proxy({}, { get: (_, g) => compostas[g] || "filter.game" + g[0].toUpperCase() + g.slice(1) });
   const sandbox = { window: {} };
   vm.runInNewContext(ler("src/i18n.js"), sandbox);
   const pt = sandbox.window.TCG_MESSAGES.pt;

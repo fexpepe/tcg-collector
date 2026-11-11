@@ -408,7 +408,7 @@ valem só nesse caso.
 | B2 | `src/game.js` (`IMG_HOST`) | só se o host de imagem não tem preconnect no HTML | imagem começa mais tarde (LCP) | — |
 | B3 | `src/shared.js` (`DATA_GAMES`) | o slug (o dataDir sai dele, `data/<slug>/`, desde 2026-11-11) | `normalizeGame` devolve "pokemon" e `gameDataDir` devolve `data/`: as páginas pessoais não carregam o jogo | — |
 | B4 | `src/shared.js` (`GAME_COLOR`) | a cor (ficha) | etiqueta na cor do Pokémon | — |
-| B5 | `src/shared.js` (`GAME_LABEL_KEY`) e `src/i18n.js` (`filter.game<X>` em pt, en e es) | rótulo curto | rótulo "Pokémon" (sem entrada no mapa) ou a chave crua (sem tradução) | `check.mjs`, só por causa da `<option>` do explore.html (4.3) |
+| B5 | `src/i18n.js` (`filter.game<Slug>` em pt, en e es: o slug com a inicial maiúscula, `filter.gamePalworld`) e, só se o nome é composto, `src/shared.js` (`GAME_LABEL_KEY`, como `filter.gameOnePiece`) | rótulo curto; desde 2026-11-11 o `gameLabel` deriva a chave do slug | a chave crua no lugar do rótulo | `tests/rotulo-jogo.test.mjs` (todo jogo do `DATA_GAMES` com a chave nos três idiomas) |
 | B6 | `src/shared.js` (`MARKETS`) | lojas da ficha; `noTcgplayer` quando o TCGplayer não tem o jogo | links da carta vão pra LigaPokémon e pro TCGplayer do Pokémon | — |
 | B7 | `src/shared.js` (`EXPLORE_SUBNAV`) | só se o jogo tem artista | sem aba Artistas (o padrão é o mínimo seguro) | — |
 | B8 | `src/shared.js` (`VINTAGE_ID_PREFIX`), `src/explore.js` (`VINTAGE_GAMES`), `filter.vintageHint` | só vintage | cartas fora do filtro Vintage | — |

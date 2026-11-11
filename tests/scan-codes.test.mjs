@@ -288,9 +288,26 @@ test("Palworld: E + set, número e a raridade paralela grudada (2026-11-11)", ()
   assert.deepEqual(codigos("<PR> ESOUL-011"), ["ESOUL-011"]);
   // O/I no lugar de dígito; o sufixo continua letra.
   assert.equal(codigos("EBPO1-0O1SSP")[0], "EBP01-001SSP");
-  const d = S.detectarJogo("<RR> EBP01-002 ©PALWORLD", ["EBP01-002"], "hub");
-  assert.deepEqual(Array.from(d.restritos), ["palworld"]);
-  assert.equal(d.confiante, true);
+  // ETD/ESS/ESOUL só existem no Palworld.
+  assert.deepEqual(Array.from(S.detectarJogo("", ["ETD01-023TSR"], "hub").restritos), ["palworld"]);
+  assert.deepEqual(Array.from(S.detectarJogo("", ["ESOUL-011"], "hub").restritos), ["palworld"]);
+});
+
+test("Palworld e Godzilla imprimem o mesmo EBP01-001: a pista impressa decide", () => {
+  // Sem pista, os dois (como o ST01-001 dos quatro jogos da Bandai).
+  const sem = S.detectarJogo("EBP01-002", ["EBP01-002"], "hub");
+  assert.deepEqual(Array.from(sem.restritos).sort(), ["godzilla", "palworld"]);
+  assert.equal(sem.confiante, false);
+  const pal = S.detectarJogo("<RR> EBP01-002 ©PALWORLD", ["EBP01-002"], "hub");
+  assert.equal(pal.jogos[0], "palworld");
+  assert.equal(pal.confiante, true);
+  const gzc = S.detectarJogo("TM & © TOHO EBP01-002", ["EBP01-002"], "hub");
+  assert.equal(gzc.jogos[0], "godzilla");
+  assert.equal(gzc.confiante, true);
+  // O índice de sets tem EBP01 nos dois (o setId do Palworld é o código
+  // impresso): nenhum dos dois é cortado por ele.
+  const indice = new Map([["ebp01", ["godzilla", "palworld"]]]);
+  assert.deepEqual(Array.from(S.detectarJogo("EBP01-002", ["EBP01-002"], "hub", {}, indice).restritos).sort(), ["godzilla", "palworld"]);
 });
 
 test("Union Arena: promo, extra, título com dígito, AP e paralela", () => {

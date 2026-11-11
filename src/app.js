@@ -1874,11 +1874,12 @@
     // extra ainda não existe; o EB é aposta no código do One Piece/Gundam.
     godzilla: { main: /^EBP\d+$/, extra: /^EEB\d+$/, deck: /^E?SDS?\d+$/ },
     // Palworld OFFICIAL CARD GAME (Bushiroad, 11/11/2026): o mesmo formato do
-    // Godzilla — BP é o booster numerado (e o BP01-2E, a 2ª edição do BP01,
-    // que normalmente vira chip no cartão dele), TD o trial deck. O Sleeve
-    // and Card Set (ESS) vai pras promos, pelo mesmo motivo do ESC do
-    // Godzilla; protótipos (PC) idem. Booster extra ainda não existe.
-    palworld: { main: /^BP\d+(-2E)?$/, extra: /^$/, deck: /^TD\d+$/ }
+    // Godzilla, setId do código impresso — EBP é o booster numerado (e o
+    // EBP01-2E, a 2ª edição do BP01, que normalmente vira chip no cartão
+    // dele), ETD o trial deck. O Sleeve and Card Set (ESS) vai pras promos,
+    // pelo mesmo motivo do ESC do Godzilla; protótipos (PC) idem. Booster
+    // extra ainda não existe.
+    palworld: { main: /^EBP\d+(-2E)?$/, extra: /^$/, deck: /^ETD\d+$/ }
   };
   function groupBandaiSets(setItems, regras) {
     const secaoDe = (set) => {

@@ -22,10 +22,11 @@
 // ©PALWORLD (conferido no scan do TCGplayer, 11/11/2026). O TCGplayer a
 // cadastrou DENTRO do grupo do BP01 (24842), produto a produto, com
 // "(2nd Edition)" no nome e o MESMO número da 1ª. Aqui ela vira um set à
-// parte, "<set> (2nd Edition)" com setId "<set>-2E", como as edições do
+// parte, "<set> (2nd Edition)" com setId "<setId>-2E", como as edições do
 // Cyberpunk (Beta/Retail): é outra impressão, com preço próprio, e misturada
-// a 1ª o X/Y do BP01 contaria em dobro. Na tela de Sets ela vira o chip
-// "2nd Edition" dentro do cartão do BP01 (aninhaPorNome). A data é a do grupo
+// a 1ª o X/Y do BP01 contaria em dobro (setId "EBP01-2E"). Na tela de Sets
+// ela vira o chip "2nd Edition" dentro do cartão do BP01 (aninhaPorNome). A
+// data é a do grupo
 // (a única que a fonte dá; a Bushiroad não anunciou data da reimpressão), e o
 // nome da carta perde o "(2nd Edition)", que o set já diz.
 //
@@ -40,11 +41,18 @@
 // caixa, pack de promo) não tem nenhum. Sem número a ordem é pelo nome (o
 // `dotJoin` das telas pula o número vazio, como no Sorcery).
 //
-// setId: fixo por groupId (ABREV_FIXA), antes da primeira publicação, como no
-// Cyberpunk — setId publicado não muda nunca (URL, logo, régua do lint), e a
-// abreviação da fonte pode mudar. "PW_PC" (Prototype Cards) vira "PC": o
-// sublinhado não entra no padrão de setId dos pins. Grupo novo sem pin cai
-// na abreviação (o log avisa: pinar ANTES do primeiro deploy que o publica).
+// setId: o CÓDIGO IMPRESSO do set (EBP01, ETD01, ESS01, EPR), como no
+// Godzilla, fixo por groupId (ABREV_FIXA) antes da primeira publicação —
+// setId publicado não muda nunca (URL, logo, régua do lint), e a abreviação
+// da fonte pode mudar. A fonte abrevia sem o "E" da edição inglesa (BP01),
+// mas é o código impresso que o scanner lê ("EBP01-001") e procura no índice
+// de sets; o Godzilla, também da Bushiroad, imprime o MESMO "EBP01-001", e
+// com o setId sem o E o índice mandava a carta do Palworld só pro Godzilla.
+// As Prototype Cards não imprimem código: "PC" (a fonte diz "PW_PC", e o
+// sublinhado não entra no padrão dos pins). Grupo novo sem pin cai no
+// código que a maioria das cartas dele imprime ("EBP04-001" -> EBP04), o
+// mesmo que o pin daria; sem código dominante, na abreviação (o log avisa:
+// pinar ANTES do primeiro deploy que o publica).
 //
 // Logo de set: nenhum publicado (as páginas de produto do site oficial,
 // en.palworld-official-cardgame.com/products/bp01…, só têm arte; auditado em
@@ -67,14 +75,14 @@ const UA = "Sleevu (sleevu.app) catalog sync";
 // groupId -> setId (ver cabeçalho). Os grupos ainda sem carta (BP03, TD03 e
 // TD04, em pré-venda em 11/11/2026) já ficam pinados.
 export const ABREV_FIXA = {
-  24842: "BP01",   // BP01: Dawn of Palpagos (e a 2ª edição, BP01-2E)
-  24850: "BP02",   // BP02: Legends Awaken
-  24912: "BP03",   // BP03: Eternal Ascent (29/01/2027)
-  24843: "TD01",   // TD01: Dawn of Palpagos Red•Blue
-  24844: "TD02",   // TD02: Dawn of Palpagos Green•Purple
-  24852: "TD03",   // TD03: Eternal Ascent Red•Green (18/12/2026)
-  24853: "TD04",   // TD04: Eternal Ascent Blue•Purple (18/12/2026)
-  24851: "PR",     // Palworld Promo Cards
+  24842: "EBP01",  // BP01: Dawn of Palpagos (e a 2ª edição, EBP01-2E)
+  24850: "EBP02",  // BP02: Legends Awaken
+  24912: "EBP03",  // BP03: Eternal Ascent (29/01/2027)
+  24843: "ETD01",  // TD01: Dawn of Palpagos Red•Blue
+  24844: "ETD02",  // TD02: Dawn of Palpagos Green•Purple
+  24852: "ETD03",  // TD03: Eternal Ascent Red•Green (18/12/2026)
+  24853: "ETD04",  // TD04: Eternal Ascent Blue•Purple (18/12/2026)
+  24851: "EPR",    // Palworld Promo Cards
   24876: "PC",     // Palworld Prototype Cards (abreviação da fonte: PW_PC)
   24908: "ESS01"   // Sleeve and Card Set Vol. 1
 };
@@ -111,8 +119,27 @@ export const cleanName = (name) => String(name || "").replace(SEGUNDA_EDICAO, ""
 // ele (o "Soul (SSS)"), o nome sem o "(2nd Edition)".
 export const chaveNoGrupo = (p) => ext(p, "Number") || `nome:${cleanName(p.name)}`;
 
-export function setIdOf(g, abbrCount) {
+// Código do set que a MAIORIA das cartas numeradas do grupo imprime
+// ("EBP04-001OSR" -> EBP04). As Soul ("ESOUL-011") não têm código de set e só
+// contam no total. Abaixo de metade, não há código dominante.
+export function codigoDominante(numeros) {
+  const conta = new Map();
+  let total = 0;
+  for (const n of numeros) {
+    const s = String(n || "").trim();
+    if (!s) continue;
+    total++;
+    const m = /^(E(?:BP|TD|SS|PR)\d{0,2})-\d/.exec(s);
+    if (m) conta.set(m[1], (conta.get(m[1]) || 0) + 1);
+  }
+  const [codigo, n] = [...conta].sort((a, b) => b[1] - a[1])[0] || [];
+  return codigo && n * 2 > total ? codigo : "";
+}
+
+export function setIdOf(g, abbrCount, numeros = []) {
   if (ABREV_FIXA[g.groupId]) return ABREV_FIXA[g.groupId];
+  const dominante = codigoDominante(numeros);
+  if (dominante) return dominante;
   const a = String(g.abbreviation || "").trim().replace(/[^A-Za-z0-9-]+/g, "-");
   if (!a) return `G${g.groupId}`;
   return abbrCount && abbrCount.get(a) > 1 ? `${a}-${g.groupId}` : a;
@@ -217,7 +244,7 @@ async function run() {
       priceBy.get(p.productId).set(p.subTypeName, r2(v));
     }
 
-    const setId = setIdOf(g, abbrCount);
+    const setId = setIdOf(g, abbrCount, products.map((p) => ext(p, "Number")));
     const edicoes = edicoesDoGrupo(g, products, setId);
     if (!edicoes.length) { console.log(`  ${setId} ${g.name}: 0 cartas (só selados)`); continue; }
     if (!ABREV_FIXA[g.groupId]) console.warn(`  AVISO: grupo novo sem pin (${g.groupId} ${g.name}) -> setId "${setId}". Pinar em ABREV_FIXA antes de publicar.`);

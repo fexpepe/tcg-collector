@@ -191,8 +191,8 @@ test("Bandai moderno: coleção numerada, boosters extras, decks e promos, pelo 
     main: ["EBP01", "EBP05"], decks: ["ESD01", "ESD05"], promos: ["EPR", "ESC01"]
   });
   // Palworld (Bushiroad, idem): a 2ª edição é principal, o Sleeve Set é promo.
-  assert.deepEqual(secoesBandai("palworld", ["BP01", "BP01-2E", "BP02", "ESS01", "TD01", "TD02", "PR", "PC"]), {
-    main: ["BP01", "BP01-2E", "BP02"], decks: ["TD01", "TD02"], promos: ["ESS01", "PC", "PR"]
+  assert.deepEqual(secoesBandai("palworld", ["EBP01", "EBP01-2E", "EBP02", "ESS01", "ETD01", "ETD02", "EPR", "PC"]), {
+    main: ["EBP01", "EBP01-2E", "EBP02"], decks: ["ETD01", "ETD02"], promos: ["EPR", "ESS01", "PC"]
   });
 });
 
