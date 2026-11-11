@@ -8,16 +8,6 @@ poucos.)
 
 ## Pendentes de aplicar
 
-- `20261111d` — libera o slug `godzilla` (Godzilla Card Game, Bushiroad,
-  edição inglesa desde 2025) nas duas whitelists de jogo
-  (`card_views`/`increment_card_view` e `contribute_price`;
-  `20261111d_add_godzilla.sql`). Cópia da `20261111c` com o `godzilla` a
-  mais; só a lista muda. Sem ela, a view de carta e o Preço da Comunidade do
-  jogo novo são descartados em silêncio. Conferir com o par de `curl` do fim
-  do arquivo: a view de `gzc-645821` tem de **criar a linha** no
-  `card_views` (o 204 sozinho não prova nada). **A próxima migração de jogo
-  copia esta.**
-
 - `20261110a` — /admin: de onde vêm os visitantes (`20261110a_admin_geo.sql`).
   O painel não tinha país nenhum (só o Cloudflare via). O `events_guard`
   (cópia fiel da 20261009a) passa a carimbar `props.co` no pageview com as 2
@@ -267,6 +257,16 @@ poucos.)
   E, logado como admin, abrir `/admin`: as abas aparecem e o aviso amarelo some.
 
 ### Já aplicadas (verificado em produção)
+
+- `20261111d` — libera o slug `godzilla` (Godzilla Card Game, Bushiroad,
+  edição inglesa desde 2025) nas duas whitelists de jogo
+  (`card_views`/`increment_card_view` e `contribute_price`;
+  `20261111d_add_godzilla.sql`). Cópia da `20261111c` com o `godzilla` a
+  mais; só a lista muda. **Aplicada em 2026-11-11** pelo Fernando e
+  verificada por curl no mesmo dia: `increment_card_view` com `godzilla` e
+  `gzc-645821` respondeu 204 e criou a linha no `card_views` (game
+  `godzilla`, 1 view); `contribute_price` anônimo segue 401. **A próxima
+  migração de jogo copia esta.**
 
 - `20261111c` — libera o slug `narutocg` (NARUTO CARD GAME, Bandai, 2027;
   até 2026-11-11 a linha `nrt-ncg` do `naruto`) nas duas whitelists de jogo
