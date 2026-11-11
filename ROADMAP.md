@@ -238,6 +238,14 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   TCGCSV já listava a terceira, a Chakra Card da NYCC 2026). Quando sair o
   primeiro booster, conferir o código do set contra o `SECOES_BANDAI`
   (src/app.js), que hoje supõe BT/ST.
+- **Godzilla Card Game (`godzilla`, 2026-11-11)**: entrou com as 940 cartas
+  da edição inglesa (TCGCSV cat. 88). Pendências: o Booster Set #5
+  ("Overlord Zero", 18/12/2026) e os starters ESD03–05 (04/12/2026) entram
+  sozinhos com o setId do código impresso, mas o pin no `ABREV_FIXA` do
+  `sync-godzilla.mjs` tem de entrar antes do deploy que os publica (o log
+  avisa); a cor (`#5e7c68`, proposta) e a 17ª posição no hub e na landing,
+  que deixa fileira incompleta nas duas grades, são decisão do Fernando; MYP
+  e Cardmarket ficaram sem link porque não deu pra conferir (anti-robô).
 - **NARUTO 疾風伝 カードゲーム (`nrt-scg`, 2026-11-10)**: entrou com as 573
   cartas e só 13 imagens (as do tcg-db). Falta fonte de imagem que aceite
   acesso automatizado (o Suruga-ya barra) e o logo recortado: o oficial está

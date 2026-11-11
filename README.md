@@ -33,7 +33,7 @@ catálogo completo só existe no build de produção.
 
 ## Os jogos
 
-O registro central é o `GAMES` em [src/game.js](src/game.js): **28 slugs**, 27 com
+O registro central é o `GAMES` em [src/game.js](src/game.js): **29 slugs**, 28 com
 catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do Pokémon
 é a raiz `data/` por motivo histórico (não movemos nada).
 
@@ -48,6 +48,7 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 | `swu` | Star Wars: Unlimited | TCGCSV cat. 79 (FFG; Hyperspace/Showcase = cartas próprias) + logos de set do site oficial (`mirror-swu-set-logos.mjs`) | USD |
 | `cyberpunk` | Cyberpunk TCG | TCGCSV cat. 92 (Weird Co.; edições Beta e Retail = sets próprios, setId fixo por groupId) + logo do Welcome to Night City curado do site oficial | USD |
 | `weiss` | Weiß Schwarz | TCGCSV cat. 20 (Bushiroad; só a edição inglesa, 2013+; paralelas SP/SSP/OFR = cartas próprias; setId fixo por groupId com o código impresso, `DDD-S118`; sem logo de set publicado) | USD |
+| `godzilla` | Godzilla Card Game | TCGCSV cat. 88 (Bushiroad/Yuhodo 2025; só a edição inglesa; paralelas +/++/+++ = cartas próprias; setId fixo por groupId com o código impresso, `EBP01`; sem logo de set publicado) | USD |
 | `sorcery` | Sorcery: Contested Realm | TCGCSV cat. 77 (Erik's Curiosa 2023; foil é outro produto no TCGplayer e o sync junta o par, sem número de coleção, setId fixo por groupId) | USD |
 | `dbfw` | Dragon Ball Fusion World | TCGCSV cat. 80 (≠ Masters) | USD |
 | `ygo` | Yu-Gi-Oh! | TCGCSV cat. 2 (~46k impressões — o maior) | USD |
@@ -78,6 +79,30 @@ seção de outra ganha um apelido em `LINE_ALIASES`, pro `?line=` antigo seguir 
 linha que vira jogo próprio (o Miracle Battle, que virou o `mbc`; o Gundam
 Carddass, `gcd`; o NARUTO CARD GAME de 2027, `narutocg`) entra em
 `LINHAS_VIRARAM_JOGO` (functions/_lib/jogos.js) e `LINHA_VIROU_JOGO` (src/game.js).
+
+### Godzilla Card Game (`godzilla`)
+
+[scripts/sync-godzilla.mjs](scripts/sync-godzilla.mjs), TCGCSV categoria 88,
+no padrão do Cyberpunk. O GODZILLA CARD GAME da Bushiroad (desenvolvido pela
+Yuhodo), edição inglesa desde 05/07/2025; a japonesa não tem categoria na
+TCGCSV e fica fora, como nos modernos da Bandai. Não é o "Godzilla Card Game"
+da Bandai de 2019 (Chrono Clash), que é outro jogo.
+
+- **setId é o código impresso** (EBP01–04, ESD01/02, ESC01, EPR), fixo por
+  groupId: a fonte deixou a abreviação vazia em dois grupos e chama as promos
+  de "PR". Grupo novo sem pin cai no código que a maioria das cartas dele
+  imprime (o Booster Set #5, "Overlord Zero", e os starters ESD03–05 saem em
+  dezembro de 2026); o log avisa pra pinar.
+- **Paralelas** (o "+", "++" e "+++" depois do número, SP/SSP/SSSP) são
+  produtos próprios no TCGplayer e viram cartas próprias. O import de CSV
+  compara o "+" à parte, senão a paralela virava a carta base.
+- **Nome sem o número**: o TCGplayer repete o número entre parênteses no fim
+  ("Godzilla (1954) (EBP01-001+)"); o ano do filme e o produto ficam.
+- **Rage**: as cartas de Rage numeram fora do set (EGZ07, E09) e se repetem
+  entre boosters. No Booster Set 1 o TCGplayer grava o número com o tipo na
+  frente ("Rage-EGZ01+"), e ele fica assim (é por ele que o CSV casa).
+- Sets no formato dos modernos da Bandai (`SECOES_BANDAI`): boosters,
+  starters e promos; o Sleeve & Card Set (ESC01) vai pras promos.
 
 ### Sorcery: Contested Realm (`sorcery`)
 

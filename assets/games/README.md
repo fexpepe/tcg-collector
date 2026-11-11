@@ -82,6 +82,14 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
   mostram o nome. Candidato: o logo "SDガンダムワールド" da embalagem/verso do
   本弾 — a decidir com o Fernando (logo e se todo set leva o logo da linha,
   regra 3 do `docs/CATALOGO.md`).
+- `game_godzilla.webp` — Godzilla Card Game (17º tile da grade moderna do
+  hub, 2026-11-11). Fonte: o logo vermelho oficial do site da edição inglesa
+  (`en.godzilla-cardgame.com/wordpress/wp-content/themes/godzilla_tcg-e/assets/img/common/logo_red.svg`,
+  o do cabeçalho; vetor 335×141, uma cor só, #e60012). Renderizado em 2048 px
+  no Chromium, recortado no conteúdo com 2 px de margem, alfa ≤12 zerado e
+  reduzido pra 512×218 com o Pillow em alfa pré-multiplicado. WebP sem perda:
+  16 KB (com perda q88 dava o mesmo tamanho, num logo chapado de uma cor).
+  O vermelho lê bem na cápsula branca do hub.
 - `game_gw.webp` — Gundam War (Bandai, 1999–2011). Fonte enviada pelo
   Fernando em 2026-11-11: WebP de 360×125 com alfa, o logo dourado "GUNDAM
   WAR / MOBILE SUIT GUNDAM THE CARD GAME". Recortado no conteúdo (+2px), com
