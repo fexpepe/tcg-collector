@@ -246,6 +246,14 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   avisa); a cor (`#5e7c68`, proposta) e a 17ª posição no hub e na landing,
   que deixa fileira incompleta nas duas grades, são decisão do Fernando; MYP
   e Cardmarket ficaram sem link porque não deu pra conferir (anti-robô).
+- **Palworld Official Card Game (`palworld`, 2026-11-11)**: TCGCSV cat. 91,
+  647 cartas em 8 sets. Pendências: aplicar a migração `20261111e`; confirmar
+  a cor (verde do site oficial, proposta) e a posição do tile no hub e na
+  landing (18º, depois do Godzilla); conferir à mão Liga, MYP e Cardmarket
+  (os três barram acesso automatizado), que ainda não estão no `MARKETS`. O
+  BP03 (29/01/2027) e os TD03/TD04 (18/12/2026) já estão pinados e entram
+  sozinhos quando o TCGplayer listar as cartas; a 2ª edição do BP01 ganha
+  preço no build seguinte ao das primeiras vendas.
 - **NARUTO 疾風伝 カードゲーム (`nrt-scg`, 2026-11-10)**: entrou com as 573
   cartas e só 13 imagens (as do tcg-db). Falta fonte de imagem que aceite
   acesso automatizado (o Suruga-ya barra) e o logo recortado: o oficial está

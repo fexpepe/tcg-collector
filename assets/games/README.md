@@ -97,6 +97,15 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
   reduzido pra 512×218 com o Pillow em alfa pré-multiplicado. WebP sem perda:
   16 KB (com perda q88 dava o mesmo tamanho, num logo chapado de uma cor).
   O vermelho lê bem na cápsula branca do hub.
+- `game_palworld.webp` — Palworld OFFICIAL CARD GAME (18º tile da grade
+  moderna do hub, 2026-11-11). Fonte: o `logo_black.svg` do site oficial da
+  Bushiroad (en.palworld-official-cardgame.com, cabeçalho, 11/11/2026). Das
+  duas versões publicadas é a que lê na cápsula branca (a outra é o ouro
+  `#ceaf73`, que some no branco, como o amarelo do Cyberpunk). O SVG embute
+  bitmap, então foi renderizado no Chromium a 2400×848 com fundo
+  transparente, recortado no conteúdo (+2px), alfa ≤12 zerado e reduzido pra
+  512×182 com o Pillow em alfa pré-multiplicado. WebP com perda q88 e alfa
+  sem perda: 34 KB.
 - `game_gw.webp` — Gundam War (Bandai, 1999–2011). Fonte enviada pelo
   Fernando em 2026-11-11: WebP de 360×125 com alfa, o logo dourado "GUNDAM
   WAR / MOBILE SUIT GUNDAM THE CARD GAME". Recortado no conteúdo (+2px), com
