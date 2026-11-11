@@ -55,15 +55,6 @@ poucos.)
    where name = 'pageview' and ts > now() - interval '1 hour' group by 1 order by 2 desc;
   ```
 
-- `20261111b` — libera os slugs `gcd` (Gundam Carddass, Bandai 1988–1997) E
-  `gw` (Gundam War, Bandai 1999–2011) em `card_views`/`increment_card_view` e
-  `contribute_price` (`20261111b_add_gw.sql`). Cópia da `20261111a` com `gw`
-  na lista. Sem ela, as views de carta dos dois jogos são descartadas em
-  silêncio; a coleção funciona sem ela. Conferir com o par de `curl` do fim
-  do arquivo. **Não aplicar a `20261111a`** (`gcd`): esta já a cobre, e
-  aplicada depois ela tiraria o `gw` das duas whitelists (cada migração de
-  jogo reescreve a lista inteira; 4.5 do `docs/CATALOGO.md`). Se a `20261111a`
-  já tiver sido aplicada, esta entra por cima sem problema.
 - `20261109b` — fim do apoiador sem anúncio (`20261109b_sem_apoiador.sql`; o
   `b` porque a `20261109a` do mesmo dia é a do Carddass Masters).
   Decisão de 2026-11-09: o Sleevu fica 100% grátis e se paga só com anúncio,
@@ -267,6 +258,15 @@ poucos.)
 
 ### Já aplicadas (verificado em produção)
 
+- `20261111b` — libera os slugs `gcd` (Gundam Carddass) E `gw` (Gundam War)
+  nas duas whitelists de jogo (`card_views`/`increment_card_view` e
+  `contribute_price`; `20261111b_add_gw.sql`). Cópia da `20261111a` com o `gw`
+  a mais. **Aplicada em 2026-11-11** pelo Fernando. Verificação por curl
+  ainda não registrada: o par do fim do arquivo (view de `gw-s01-b-u-1` cria a
+  linha; contribuição anônima segue 401). **Não aplicar a `20261111a`**: esta
+  já a cobre, e aplicada depois ela tiraria o `gw` das whitelists. **A próxima
+  migração de jogo copia esta.**
+
 - `20261109a` — libera o slug `cdm` (Carddass Masters, Bandai 1996–2009, a
   linha de cartas de coleção de várias IPs; entrou com o HUNTER×HUNTER) nas
   DUAS whitelists de jogo: `card_views`/`increment_card_view` e
@@ -277,7 +277,7 @@ poucos.)
   inventado dá 204 sem criar nada; a contribuição anônima segue **401**; e a
   lista inteira continua valendo (as views de `dbz-s1-1` e `mb-db01-01`
   subiram de 1 pra 2). Sem prova direta, como nas anteriores: o
-  `contribute_price` logado. **A próxima migração de jogo copia esta.**
+  `contribute_price` logado.
 
 - `20261017a` — alarme de medição parada sem estourar o tempo do anônimo
   (`20261017a_sentinela_rapida.sql`). **Aplicada em 2026-10-17** pelo
