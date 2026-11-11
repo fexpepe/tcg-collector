@@ -17,7 +17,7 @@
     ygo: "game_ygo-v2.webp", digimon: "game_digimon-v2.webp", riftbound: "game_riftbound-v2.webp",
     unionarena: "game_unionarena.webp", naruto: "game_naruto.webp", hxh: "game_hxh.webp",
     dbc: "game_dbc.webp", wow: "game_wow.webp", lotr: "game_lotr.webp", dbz: "game_dbz.webp", weiss: "game_weiss.webp", harrypotter: "game_harrypotter.webp",
-    mbc: "game_mbc.webp", cdm: "game_cdm.webp", gcd: "", gw: ""
+    mbc: "game_mbc.webp", cdm: "game_cdm.webp", gcd: "", gw: "game_gw.webp"
   };
   function gameLogoUrl(game) {
     const f = GAME_LOGO[game];
@@ -1571,6 +1571,7 @@
       mbc: groupMbcSets,
       cdm: groupCdmSets,
       gcd: groupGundamCarddassSets,
+      gw: groupGwSets,
       harrypotter: groupHarryPotterSets
     };
     return (porJogo[jogoAtual] || groupSetsByYear)(raizes);
@@ -2018,6 +2019,32 @@
     SECOES.forEach(([key, re]) => secao(key, setItems.filter((s) => re.test(codigo(s)))));
     // Rede de segurança: set novo no sync sem seção aqui ainda aparece.
     secao("sets.category.promos", setItems.filter((s) => !usados.has(s)));
+    return items;
+  }
+
+  // Gundam War (jogo gw, 1999–2011): como os outros vintages, do mais antigo
+  // pro mais novo (o jogo acabou em 2011; a ordem de checklist é a que o
+  // colecionador segue). Seções pelo TIPO de produto, que o código do set
+  // (sync-gundam-war.mjs) diz: os 弾 numerados (gw-s01…), os boosters à parte
+  // (Dramatic, Based, Extension, Collaboration, 戦場の女神, Winners e os
+  // 拡張シート), os starters (setKind "deck") e as promos.
+  function groupGwSets(setItems) {
+    const codigo = (set) => String(set.setId || "").toLowerCase().replace(/^gw-/, "");
+    const isMain = (set) => /^s\d+$/.test(codigo(set));
+    const isDeck = (set) => set.kind === "deck";
+    const isPromo = (set) => /^(promo|prize)$/.test(codigo(set));
+    const grupos = [
+      ["sets.category.main", setItems.filter(isMain)],
+      ["sets.category.gwBoosters", setItems.filter((s) => !isMain(s) && !isDeck(s) && !isPromo(s))],
+      ["sets.category.decks", setItems.filter(isDeck)],
+      ["sets.category.promos", setItems.filter(isPromo)]
+    ];
+    const items = [];
+    for (const [key, sets] of grupos) {
+      if (!sets.length) continue;
+      items.push(cabecalhoDeSecao(key, sets.length));
+      sets.sort(sortByReleaseAsc).forEach((set) => items.push(set));
+    }
     return items;
   }
 

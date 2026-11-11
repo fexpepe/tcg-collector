@@ -123,3 +123,19 @@ test("catálogo: data/gw/ bate com o snapshot, todo id com o prefixo, vintage e 
   // O mesmo build a partir do snapshot devolve as mesmas cartas (sem rede).
   assert.deepEqual(cartasDoJogo(snap).map((c) => c.id), cartas.map((c) => c.id));
 });
+
+test("nome em inglês dos sets: um por set, igual no sync e no src/nomes-sets.js, sem o jogo na frente", async () => {
+  const { setNameEn } = await import("../scripts/sync-gundam-war.mjs");
+  const fonte = readFileSync(join(RAIZ, "src/nomes-sets.js"), "utf8");
+  const noArquivo = Object.fromEntries([...fonte.matchAll(/^\s*"(gw-[a-z0-9]+)": ("(?:[^"\\]|\\.)*"),$/gm)].map((m) => [m[1], JSON.parse(m[2])]));
+  assert.equal(Object.keys(noArquivo).length, SETS.length);
+  const vistos = new Set();
+  for (const s of SETS) {
+    const en = setNameEn(s.code);
+    assert.ok(en, `${s.code} sem nome em inglês`);
+    assert.equal(noArquivo[`gw-${s.code}`], en, `gw-${s.code}: o nomes-sets.js difere do sync`);
+    assert.doesNotMatch(en, /Gundam War/i, en);
+    assert.ok(!vistos.has(en), `nome em inglês repetido: ${en}`);
+    vistos.add(en);
+  }
+});
