@@ -143,7 +143,9 @@ test("pedidoDeSet só aceita os parâmetros do link de set", () => {
 test("urlsDoJogo põe a linha do setId na frente e as outras da marca depois", () => {
   const naruto = urlsDoJogo("naruto", "nrt-dc-s01");
   assert.equal(naruto[0], "naruto-data-carddass");
-  assert.deepEqual([...naruto].sort(), ["naruto-card-game", "naruto-card-game-2002", "naruto-ccg", "naruto-data-carddass", "naruto-shippuden-card-game"]);
+  assert.deepEqual([...naruto].sort(), ["naruto-card-game-2002", "naruto-ccg", "naruto-data-carddass", "naruto-shippuden-card-game"]);
+  // O NARUTO CARD GAME de 2027 é o jogo narutocg desde 11/11/2026, não uma linha do naruto.
+  assert.deepEqual(urlsDoJogo("narutocg", "nrt-ncg-promo"), ["naruto-card-game"]);
   assert.deepEqual(urlsDoJogo("pokemon", "sv03.5"), ["pokemon"]);
   assert.deepEqual(urlsDoJogo("nao-existe", ""), []);
 });

@@ -84,6 +84,8 @@ const JOGOS = {
     min: 0.79, nota: "o vintage japonês usa kanji no prefixo (作-100), que o modelo inglês não lê",
     linhaSemCodigo: { prefixo: "nrt-scg-", motivo: "疾風伝 Card Game: tipo só em kanji (術伝-025), que o OCR inglês não lê" }
   },
+  // NARUTO CARD GAME de 2027 (2026-11-11): 100 % das 2 promos (CP-001).
+  narutocg: { min: 0.98 },
   wow: { semCodigo: "o catálogo não guarda o número da carta" },
   sorcery: { semCodigo: "o catálogo não guarda o número da carta" },
   dbz: { semCodigo: "número solto (60), repetido em todo set" },

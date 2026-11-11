@@ -31,7 +31,8 @@
     digimon: { slug: "digimon", name: "Digimon Card Game", dataDir: "data/digimon/" }, // TCGCSV cat. 63 (Bandai 2020+, EN)
     riftbound: { slug: "riftbound", name: "Riftbound", dataDir: "data/riftbound/" }, // TCGCSV cat. 89 (Riot — League of Legends, EN)
     unionarena: { slug: "unionarena", name: "Union Arena", dataDir: "data/unionarena/" }, // TCGCSV cat. 81 (Bandai, EN; um set por anime)
-    naruto: { slug: "naruto", name: "Naruto Card Game", dataDir: "data/naruto/" },   // vintage Bandai 2003–2006 (+ moderno TCGCSV no futuro)
+    narutocg: { slug: "narutocg", name: "Naruto Card Game", dataDir: "data/narutocg/" }, // TCGCSV cat. 93 (Bandai, lançamento mundial 2027; até 11/11/2026, a linha nrt-ncg do naruto)
+    naruto: { slug: "naruto", name: "Naruto Card Game", dataDir: "data/naruto/" },   // vintage Bandai 2003–2006 e as linhas dele (Data Carddass, CCG, 疾風伝)
     hxh: { slug: "hxh", name: "Hunter × Hunter", dataDir: "data/hxh/" },             // vintage Bandai: Miracle Battle (2011–12); Hyper Battle 1999–2001 em curadoria
     dbc: { slug: "dbc", name: "Dragon Ball Carddass", dataDir: "data/dbc/" },       // vintage Bandai 1988–1997 (Hondan; cartas sem scan ainda)
     wow: { slug: "wow", name: "World of Warcraft TCG", dataDir: "data/wow/" },     // vintage Upper Deck/Cryptozoic 2006–2013, TCGCSV cat. 13 (EN, com preço)
@@ -63,7 +64,7 @@
     ["one-piece-card-game", "onepiece"], ["riftbound", "riftbound"], ["star-wars-unlimited", "swu"],
     ["gundam-card-game", "gundam"], ["flesh-and-blood", "fab"], ["yu-gi-oh", "ygo"],
     ["dragon-ball-fusion-world", "dbfw"], ["digimon-card-game", "digimon"], ["union-arena", "unionarena"],
-    ["cyberpunk-tcg", "cyberpunk"], ["sorcery-contested-realm", "sorcery"], ["naruto-card-game", "naruto", "nrt-ncg", "nrt-ncg-"],
+    ["cyberpunk-tcg", "cyberpunk"], ["sorcery-contested-realm", "sorcery"], ["naruto-card-game", "narutocg"],
     ["weiss-schwarz", "weiss"],
     ["gundam-carddass", "gcd"],
     ["gundam-war", "gw"],
@@ -79,8 +80,10 @@
   // Linha que virou seção de outra (o LINE_ALIASES do shared.js).
   var LINHA_APELIDO = { "nrt-nf": "nrt-dc", "nrt-nx": "nrt-dc" };
   // Linha que virou JOGO (o LINHAS_VIRARAM_JOGO do functions/_lib/jogos.js): o
-  // Miracle Battle era linha do One Piece, do Naruto e do HxH até 2026-10-01.
-  var LINHA_VIROU_JOGO = { "op-mb": "mbc", "nrt-mb": "mbc", "hxh-mb": "mbc", "gcd": "gcd" }; // gcd: linha do gundam por um dia (10/11/2026)
+  // Miracle Battle era linha do One Piece, do Naruto e do HxH até 2026-10-01; o
+  // gcd, do gundam por um dia (10/11/2026); o narutocg (NARUTO CARD GAME de
+  // 2027), a linha nrt-ncg do naruto até 11/11/2026.
+  var LINHA_VIROU_JOGO = { "op-mb": "mbc", "nrt-mb": "mbc", "hxh-mb": "mbc", "gcd": "gcd", "nrt-ncg": "narutocg" };
   // /games/<url>, /games/<url>/<set> e /games/<url>/<set>/<carta>. O "_id" do
   // link de compartilhar não casa (tem "_"): ele é sempre um 301 da borda.
   var CAMINHO_DO_JOGO = /^\/games\/([a-z0-9-]+)(\/[a-z0-9-]+){0,2}\/?$/;

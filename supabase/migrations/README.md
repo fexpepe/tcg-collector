@@ -8,6 +8,14 @@ poucos.)
 
 ## Pendentes de aplicar
 
+- `20261111c` — libera o slug `narutocg` (NARUTO CARD GAME, Bandai, 2027;
+  até 2026-11-11 a linha `nrt-ncg` do `naruto`) nas duas whitelists de jogo
+  (`card_views`/`increment_card_view` e `contribute_price`;
+  `20261111c_add_narutocg.sql`). Cópia da `20261111b` com o `narutocg` a mais;
+  só a lista muda. Conferir com o par do fim do arquivo (view de
+  `nrt-ncg-cp-001` cria a linha com game `narutocg`; contribuição anônima
+  segue 401). **A próxima migração de jogo copia esta.**
+
 - `20261110a` — /admin: de onde vêm os visitantes (`20261110a_admin_geo.sql`).
   O painel não tinha país nenhum (só o Cloudflare via). O `events_guard`
   (cópia fiel da 20261009a) passa a carimbar `props.co` no pageview com as 2
@@ -264,8 +272,7 @@ poucos.)
   a mais. **Aplicada em 2026-11-11** pelo Fernando. Verificação por curl
   ainda não registrada: o par do fim do arquivo (view de `gw-s01-b-u-1` cria a
   linha; contribuição anônima segue 401). **Não aplicar a `20261111a`**: esta
-  já a cobre, e aplicada depois ela tiraria o `gw` das whitelists. **A próxima
-  migração de jogo copia esta.**
+  já a cobre, e aplicada depois ela tiraria o `gw` das whitelists.
 
 - `20261109a` — libera o slug `cdm` (Carddass Masters, Bandai 1996–2009, a
   linha de cartas de coleção de várias IPs; entrou com o HUNTER×HUNTER) nas

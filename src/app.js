@@ -15,7 +15,7 @@
     pokemon: "game_pokemon.webp", lorcana: "game_lorcana-v2.webp", onepiece: "game_onepiece.webp",
     magic: "game_magic-v2.webp", fab: "game_fab.webp", gundam: "game_gundam-v2.webp", swu: "game_swu.webp", cyberpunk: "game_cyberpunk.webp", sorcery: "game_sorcery.webp", dbfw: "game_dbfw-v2.webp",
     ygo: "game_ygo-v2.webp", digimon: "game_digimon-v2.webp", riftbound: "game_riftbound-v2.webp",
-    unionarena: "game_unionarena.webp", naruto: "game_naruto.webp", hxh: "game_hxh.webp",
+    unionarena: "game_unionarena.webp", narutocg: "game_naruto_2027.webp", naruto: "game_naruto.webp", hxh: "game_hxh.webp",
     dbc: "game_dbc.webp", wow: "game_wow.webp", lotr: "game_lotr.webp", dbz: "game_dbz.webp", weiss: "game_weiss.webp", harrypotter: "game_harrypotter.webp",
     mbc: "game_mbc.webp", cdm: "game_cdm.webp", gcd: "", gw: "game_gw.webp"
   };
@@ -290,7 +290,8 @@
 
   // Atalho de linha (?line=): título com a etiqueta da linha + link de volta ao
   // jogo. A etiqueta padrão é VINTAGE (todas as linhas clássicas); uma linha
-  // pode trocar via tagKey — ex.: o NARUTO CARD GAME novo usa "Em breve".
+  // pode trocar via tagKey (o NARUTO CARD GAME de 2027 usava "Em breve"
+  // enquanto foi linha do naruto, até 11/11/2026).
   function applyLineTitle() {
     const head = document.querySelector(".page-head");
     const h1 = head && head.querySelector("h1");
@@ -1551,9 +1552,6 @@
     // Linha vintage (?line=): do mais antigo pro mais novo, como checklist. O
     // Data Carddass do Naruto junta os quatro títulos do arcade, um por seção.
     if (lineScope.line === "nrt-dc") return groupNarutoDataCarddass(raizes);
-    // O NARUTO CARD GAME de 2027 é linha do naruto, mas é jogo moderno da
-    // Bandai: vai no formato do One Piece, do mais novo pro mais antigo.
-    if (lineScope.line === "nrt-ncg") return groupBandaiSets(raizes, SECOES_BANDAI["nrt-ncg"]);
     if (lineDef) return raizes.sort(sortByReleaseAsc);
     if (isPokemonGame()) return groupSetsBySeries(raizes);
     if (SECOES_BANDAI[jogoAtual]) return groupBandaiSets(raizes, SECOES_BANDAI[jogoAtual]);
@@ -1832,9 +1830,9 @@
   }
 
   // Bandai moderno (One Piece, Gundam, Dragon Ball Fusion World, Digimon,
-  // Union Arena e o NARUTO CARD GAME de 2027): o mesmo formato em todos, o do
-  // One Piece — a coleção numerada primeiro, depois os boosters fora da
-  // numeração, os decks e por fim promos e eventos (pedido do Fernando,
+  // Union Arena e o NARUTO CARD GAME de 2027, o narutocg): o mesmo formato em
+  // todos, o do One Piece — a coleção numerada primeiro, depois os boosters
+  // fora da numeração, os decks e por fim promos e eventos (pedido do Fernando,
   // 11/11/2026: até aqui só o One Piece tinha seções, e os outros quatro iam
   // por ano, com starter deck, booster e caixa de promo misturados).
   // A seção sai do CÓDIGO do set (o setId que a TCGCSV dá), não do nome: o
@@ -1864,10 +1862,10 @@
     dbfw: { main: /^FB\d+$/, extra: /^(SB|ST)\d+$/, deck: /^FS\d+$/ },
     digimon: { main: /^BT(-?\d+|\d+-\d+[AB]?)$/, extra: /^(EX|RB|AD|LM)-\d+/, deck: /^(ST|BD)-?\d+/ },
     unionarena: { main: /^UE\d+BT$/, extra: /^(UEX\d+BT|UP\d+BT|UE\d+NC)$/, deck: /^UE\d+(ST|DC)/ },
-    // Linha nrt-ncg do naruto: hoje só a promo da Gen Con. O sync dá
-    // "nrt-ncg-<abreviação>"; booster e starter seguem o padrão da Bandai (BT,
-    // ST) até o primeiro set confirmar.
-    "nrt-ncg": { main: /^NRT-NCG-BT\d+$/, extra: /^NRT-NCG-(EB|EX)\d+$/, deck: /^NRT-NCG-ST\d+$/ }
+    // NARUTO CARD GAME de 2027 (até 11/11/2026, a linha nrt-ncg do naruto):
+    // hoje só as promos de evento. O sync dá "nrt-ncg-<abreviação>"; booster e
+    // starter seguem o padrão da Bandai (BT, ST) até o primeiro set confirmar.
+    narutocg: { main: /^NRT-NCG-BT\d+$/, extra: /^NRT-NCG-(EB|EX)\d+$/, deck: /^NRT-NCG-ST\d+$/ }
   };
   function groupBandaiSets(setItems, regras) {
     const secaoDe = (set) => {

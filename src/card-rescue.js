@@ -24,8 +24,9 @@
   };
   function cardIdProbeWaves(cardId) {
     const partes = String(cardId).split("-");
-    // op-mb-/nrt-mb-/hxh-mb-: o Miracle Battle de antes de virar o jogo mbc.
-    const certo = partes[1] === "mb" ? "mbc" : ID_PREFIX_GAME[partes[0]];
+    // op-mb-/nrt-mb-/hxh-mb-: o Miracle Battle de antes de virar o jogo mbc;
+    // nrt-ncg-: o NARUTO CARD GAME de 2027 (narutocg), que não é o naruto.
+    const certo = partes[1] === "mb" ? "mbc" : partes[1] === "ncg" ? "narutocg" : ID_PREFIX_GAME[partes[0]];
     const primeiros = certo ? [certo] : ["pokemon", "lorcana"];
     const onda1 = primeiros.filter((g) => GAME_SLUGS.includes(g));
     return [onda1, GAME_SLUGS.filter((g) => !onda1.includes(g))];

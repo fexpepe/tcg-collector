@@ -596,7 +596,8 @@
   const PREFIXO_JOGO = [
     // Miracle Battle ANTES de op-/nrt-/hxh-: os ids de antes de virar o jogo
     // mbc (2026-10-01) levam o prefixo da marca, e o primeiro que casa vence.
-    ["op-mb-", "mbc"], ["nrt-mb-", "mbc"], ["hxh-mb-", "mbc"], ["mb-", "mbc"],
+    // Pelo mesmo motivo o nrt-ncg- (narutocg, 2027) vem antes do nrt- (naruto).
+    ["op-mb-", "mbc"], ["nrt-mb-", "mbc"], ["hxh-mb-", "mbc"], ["mb-", "mbc"], ["nrt-ncg-", "narutocg"],
     ["mtg-", "magic"], ["ygo-", "ygo"], ["op-", "onepiece"], ["opcd-", "onepiece"], ["op2002-", "onepiece"],
     ["fab-", "fab"], ["gcg-", "gundam"], ["gcd-", "gcd"], ["gw-", "gw"], ["swu-", "swu"], ["cpk-", "cyberpunk"], ["sor-", "sorcery"], ["dbfw-", "dbfw"], ["dgm-", "digimon"], ["rb-", "riftbound"],
     ["ua-", "unionarena"], ["nrt-", "naruto"], ["hxh-", "hxh"], ["dbc-", "dbc"], ["wow-", "wow"], ["lotr-", "lotr"], ["dbz-", "dbz"], ["ws-", "weiss"], ["hp-", "harrypotter"], ["cdm-", "cdm"]

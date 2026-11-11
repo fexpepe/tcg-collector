@@ -122,6 +122,7 @@ jobs:
             data/cdm/sets
             data/gcd/sets
             data/gw/sets
+            data/narutocg/sets
             data/jump/sets
             data/magic/cards.js
             data/magic/indexes.js
@@ -148,7 +149,7 @@ jobs:
           faltando=""
           # data/dbc/, data/swu/, data/cyberpunk/, data/wow/, data/lotr/,
           # data/sorcery/, data/harrypotter/, data/weiss/, data/mbc/, data/dbz/ e
-          # data/cdm/, data/gcd/ e data/gw/: jogos novos (2026-09-24 a 2026-11-11). Enquanto o cache
+          # data/cdm/, data/gcd/, data/gw/ e data/narutocg/: jogos novos (2026-09-24 a 2026-11-11). Enquanto o cache
           # for de antes deles, o build rápido publicaria o tile do hub sem
           # catálogo nenhum atrás.
           for f in data/manifest.generated.js data/pricing.generated.js \
@@ -163,7 +164,8 @@ jobs:
                    data/dbz/manifest.generated.js \
                    data/cdm/manifest.generated.js \
                    data/gcd/manifest.generated.js \
-                   data/gw/manifest.generated.js; do
+                   data/gw/manifest.generated.js \
+                   data/narutocg/manifest.generated.js; do
             [ -s "$f" ] || faltando="$faltando $f"
           done
           if [ -n "$faltando" ]; then
@@ -586,15 +588,24 @@ jobs:
         if: env.RODA_SYNC == 'true'
         run: node scripts/sync-price-history.mjs data/unionarena
 
-      # NARUTO CARD GAME novo (linha nrt-ncg-): curadoria + TCGCSV categoria 93
+      # NARUTO CARD GAME novo (o jogo narutocg, em data/narutocg/; até
+      # 11/11/2026 a linha nrt-ncg- do Naruto): curadoria + TCGCSV categoria 93
       # (existe desde 16/09/2026) quando a variável do repositório
       # NARUTO_TCGCSV_CATEGORY está ligada. Sem ela, regrava só a curadoria e
-      # mantém congelado o que já foi publicado, com o preço versionado.
-      - name: Sincroniza catálogo do Naruto (TCGCSV, se configurado)
+      # mantém congelado o que já foi publicado, com o preço versionado. TIRA
+      # do catálogo do Naruto as cartas nrt-ncg- que moravam lá -- por isso
+      # roda ANTES dos syncs do Naruto, que não as preservam mais.
+      - name: Sincroniza catálogo do Naruto Card Game (TCGCSV, se configurado)
         if: env.RODA_SYNC == 'true'
         run: node scripts/sync-naruto.mjs || echo "sync-naruto falhou; mantém o catalogo versionado"
         env:
           NARUTO_TCGCSV_CATEGORY: ${{ vars.NARUTO_TCGCSV_CATEGORY }}
+
+      # Na 1ª rodada, sem acervo próprio, herda do acervo do Naruto a série das
+      # Chakra Card (HERDA em scripts/lib/price-history-retention.mjs).
+      - name: Snapshot de preços (histórico Naruto Card Game)
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/sync-price-history.mjs data/narutocg
 
       # Naruto VINTAGE: NARUTO カードゲーム (Bandai 2003–2006), checklist do
       # tcg-db.nikita.jp + TV Tokyo + lista oficial da Bandai (snapshots
@@ -782,12 +793,10 @@ jobs:
       - name: Traduz nomes das cartas de Naruto
         run: node scripts/translate-naruto-names.mjs || echo "translate-naruto-names falhou; catalogo segue com os nomes originais"
 
-      # Só a linha nova do Naruto tem preço (TCGCSV); as vintage não têm. Fica
-      # DEPOIS de todos os syncs do Naruto, que reescrevem o pricing.js (mesmo
-      # preservando o conteúdo), pra fotografar o catálogo já fechado.
-      - name: Snapshot de preços (histórico Naruto)
-        if: env.RODA_SYNC == 'true'
-        run: node scripts/sync-price-history.mjs data/naruto
+      # Sem "Snapshot de preços (histórico Naruto)" desde 11/11/2026: o único
+      # preço do Naruto era a linha nrt-ncg-, que virou o jogo narutocg (o passo
+      # dele fica logo depois do sync-naruto). O acervo antigo segue no R2
+      # (_history/data-naruto/), de onde o narutocg herda as séries.
 
       # JUMP: compila os sets curados versionados (data/jump/curated/*.json).
       - name: Compila catálogo JUMP (curadoria)
@@ -933,6 +942,7 @@ jobs:
             data/cdm/sets
             data/gcd/sets
             data/gw/sets
+            data/narutocg/sets
             data/jump/sets
             data/magic/cards.js
             data/magic/indexes.js

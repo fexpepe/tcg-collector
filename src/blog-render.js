@@ -73,6 +73,7 @@
     digimon: ["Digimon", "#123f6d"],
     riftbound: ["Riftbound", "#a67c00"],
     unionarena: ["Union Arena", "#0891b2"],
+    narutocg: ["Naruto Card Game", "#22c55e"],
     naruto: ["Naruto", "#ea580c"],
     hxh: ["Hunter × Hunter", "#15803d"],
     dbc: ["Dragon Ball Carddass", "#db2777"],

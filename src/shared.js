@@ -3256,6 +3256,7 @@
     gundam: SUBNAV_MIN,
     dbfw: SUBNAV_MIN,
     naruto: SUBNAV_MIN,
+    narutocg: SUBNAV_MIN,
     hxh: SUBNAV_MIN,
     dbc: SUBNAV_MIN,
     dbz: SUBNAV_MIN,
@@ -7319,6 +7320,12 @@
     // nada de liga/myp aqui, só o mercado internacional.
     unionarena: { tcgLine: "union-arena", usText: "union arena" },
     naruto:    { usText: "naruto card game", noTcgplayer: true },
+    // NARUTO CARD GAME de 2027 (conferido em 11/11/2026): o TCGplayer tem a
+    // linha "naruto-card-game" (a busca filtrada devolve as três Chakra Card).
+    // Sem loja BR: liganaruto.com.br não resolve e o MYP recusa acesso
+    // automatizado; o Cardmarket idem (verificação anti-robô) — entram quando
+    // forem conferidos à mão.
+    narutocg:  { tcgLine: "naruto-card-game", usText: "naruto card game" },
     hxh:       { usText: "hunter x hunter carddass", noTcgplayer: true },
     dbc:       { usText: "dragon ball carddass", noTcgplayer: true },
     mbc:       { usText: "miracle battle carddass", noTcgplayer: true },
@@ -8938,6 +8945,7 @@
     "digimon",
     "riftbound",
     "unionarena",
+    "narutocg",
     "naruto",
     "hxh",
     "dbc",
@@ -8980,6 +8988,7 @@
     riftbound: "#a67c00",  // ouro
     unionarena: "#0891b2", // ciano
     naruto: "#ea580c",     // laranja
+    narutocg: "#22c55e",   // verde da Folha (o laranja do logo é do naruto); 9.2:1 com preto, a 78 do HxH e a 102 do Union Arena (proposta, 2026-11-11)
     hxh: "#15803d",        // verde
     dbc: "#db2777",        // rosa (a 70 do FaB, o vizinho mais próximo; 4.6:1 com preto)
     dbz: "#9f1239",        // carmim (o fundo do anúncio de 2000); 8.0:1 com branco, a 67 do FaB e a 71 do DBC
@@ -9028,7 +9037,7 @@
     onepiece: "filter.gameOnePiece", magic: "filter.gameMagic",
     fab: "filter.gameFab", gundam: "filter.gameGundam", swu: "filter.gameSwu", cyberpunk: "filter.gameCyberpunk", sorcery: "filter.gameSorcery", dbfw: "filter.gameDbfw",
     ygo: "filter.gameYgo", digimon: "filter.gameDigimon", riftbound: "filter.gameRiftbound",
-    unionarena: "filter.gameUnionArena", naruto: "filter.gameNaruto", hxh: "filter.gameHxh",
+    unionarena: "filter.gameUnionArena", naruto: "filter.gameNaruto", narutocg: "filter.gameNarutocg", hxh: "filter.gameHxh",
     dbc: "filter.gameDbc", dbz: "filter.gameDbz", wow: "filter.gameWow", lotr: "filter.gameLotr", weiss: "filter.gameWeiss", harrypotter: "filter.gameHarryPotter",
     mbc: "filter.gameMbc", cdm: "filter.gameCdm", gcd: "filter.gameGcd", gw: "filter.gameGw"
   };
@@ -9110,11 +9119,9 @@
       // outro jogo (regras e numeração 忍伝/術伝/作伝 novas), então linha própria.
       // Rótulo sem os anos, como o do gcd: com eles o shared.js passava 2 bytes
       // gz do teto (2026-11-10). Os anos seguem no título (sets.category.nrtscg).
-      "nrt-scg": { prefix: "nrt-scg-", label: "Naruto Shippuden Card Game", titleKey: "sets.category.nrtscg" },
-      // O jogo NOVO (lançamento mundial 2027) como linha da marca: hoje só as
-      // promos de evento (Gen Con 2026); tagKey troca a etiqueta "vintage" do
-      // título por "Em breve" até o jogo sair.
-      "nrt-ncg": { prefix: "nrt-ncg-", label: "NARUTO CARD GAME (2027)", titleKey: "sets.category.nrtncg", tagKey: "home.games.soon" }
+      "nrt-scg": { prefix: "nrt-scg-", label: "Naruto Shippuden Card Game", titleKey: "sets.category.nrtscg" }
+      // O NARUTO CARD GAME de 2027 foi a linha nrt-ncg daqui até 2026-11-11 e
+      // virou o jogo narutocg.
     }
   };
   // ── Vintage: filtro AGNÓSTICO de jogo ──────────────────────────────────────
@@ -9139,9 +9146,8 @@
     gcd: ["gcd-"],                            // Bandai 1988–1997: idem
     gw: ["gw-"],                              // Bandai 1999–2011: idem
     harrypotter: ["hp-"],                     // Wizards 2001–2002: idem
-    naruto: ["nrt-"]                          // Bandai 2003–2013 inteiro…
+    naruto: ["nrt-"]                          // Bandai 2003–2013: idem (o NARUTO CARD GAME de 2027, nrt-ncg-, é o jogo narutocg)
   };
-  const VINTAGE_ID_EXCEPT = { naruto: ["nrt-ncg-"] }; // …menos o jogo NOVO (2027)
   function isVintageCard(card) {
     if (!card) return false;
     if (card.vintage === true) return true;
@@ -9152,8 +9158,7 @@
     }
     const id = String(card.id || "");
     const pre = VINTAGE_ID_PREFIX[game];
-    if (!pre || !pre.some((p) => id.indexOf(p) === 0)) return false;
-    return !(VINTAGE_ID_EXCEPT[game] || []).some((p) => id.indexOf(p) === 0);
+    return !!pre && pre.some((p) => id.indexOf(p) === 0);
   }
   // Filtro de jogo que também entende "all" e "vintage". Coleção, Hub e
   // Explorar filtram por aqui pra não divergirem sobre o que é vintage.
@@ -11258,12 +11263,12 @@
   }
   // O Miracle Battle virou o jogo mbc em 2026-10-01: carta op-mb-/nrt-mb-/
   // hxh-mb- que ainda está na coleção ou nos desejos do jogo da marca muda de
-  // gaveta. O como fica em src/migra-mbc.js, que só desce pra quem tem o que
+  // gaveta (e a gcd- do gundam, a nrt-ncg- do naruto: o gcd e o narutocg). O como fica em src/migra-mbc.js, que só desce pra quem tem o que
   // mover. Roda DEPOIS do merge com a nuvem, e os jogos que mudaram entram em
   // `subir`, pro push que vem logo em seguida.
   async function moveMiracleBattle(subir) {
     try {
-      if (!["onepiece", "naruto", "hxh", "gundam"].some((g) => /"((op|nrt|hxh)-mb|gcd)-/.test(localStorage.getItem(gameKey("collection-v3", g)) + localStorage.getItem(gameKey("wishlist-v1", g))))) return false;
+      if (!["onepiece", "naruto", "hxh", "gundam"].some((g) => /"((op|nrt|hxh)-mb|gcd|nrt-ncg)-/.test(localStorage.getItem(gameKey("collection-v3", g)) + localStorage.getItem(gameKey("wishlist-v1", g))))) return false;
     } catch (e) { return false; }
     const jogos = (await injectScript("/src/migra-mbc.js")) && window.TCGMigraMbc ? window.TCGMigraMbc() : [];
     jogos.forEach((g) => { subir[g] = localSnapshot(g); });

@@ -115,6 +115,24 @@ test("Gundam Carddass: carta gcd- marcada no gundam vai pro jogo gcd, e a do Gun
   assert.deepEqual(Object.keys(ler(k("collection-v3", "mbc"))), ["op-mb-op01-23"]);
 });
 
+test("NARUTO CARD GAME: a Chakra Card (nrt-ncg-) marcada no naruto vai pro narutocg, e o vintage fica", () => {
+  const { jogos, ler } = roda({
+    [k("collection-v3", "naruto")]: { "nrt-ncg-cp-001": { Normal: { NM: 1 } }, "nrt-s01-1": { Normal: { LP: 2 } } },
+    [k("collection-meta-v1", "naruto")]: { mod: { "nrt-ncg-cp-001": 1000, "nrt-s01-1": 2000 }, del: {} },
+    [k("wishlist-v1", "naruto")]: { "nrt-ncg-717838": ["Normal"] },
+    [k("prices-v1", "naruto")]: { "nrt-ncg-cp-001": { Normal: { prices: { NM: 5000 }, at: { NM: "2026-10-01T10:00:00Z" }, source: "manual", updatedAt: "2026-10-01" } } }
+  });
+  assert.deepEqual([...jogos].sort(), ["naruto", "narutocg"]);
+  assert.deepEqual(ler(k("collection-v3", "narutocg")), { "nrt-ncg-cp-001": { Normal: { NM: 1 } } });
+  assert.equal(ler(k("collection-meta-v1", "narutocg")).mod["nrt-ncg-cp-001"], 1000);
+  assert.deepEqual(ler(k("collection-v3", "naruto")), { "nrt-s01-1": { Normal: { LP: 2 } } });
+  assert.ok(ler(k("collection-meta-v1", "naruto")).del["nrt-ncg-cp-001"] > 1000, "sem tombstone a cópia da nuvem voltava pro naruto");
+  assert.ok(ler(k("wishlist-v1", "narutocg"))["nrt-ncg-717838"]);
+  assert.ok(ler(k("prices-v1", "narutocg"))["nrt-ncg-cp-001"]);
+  assert.deepEqual(ler(k("prices-v1", "naruto")), {});
+  assert.equal(ler(k("collection-v3", "mbc")), null);
+});
+
 test("nada a mover: não escreve nada", () => {
   const { jogos, ler } = roda({ [k("collection-v3", "onepiece")]: { "op-123": { Normal: { NM: 1 } } } });
   assert.equal(jogos.length, 0); // array do sandbox (outro realm): compara o tamanho
@@ -123,6 +141,12 @@ test("nada a mover: não escreve nada", () => {
 
 test("o detector do shared.js só baixa a migração quando há id Miracle Battle no jogo da marca", () => {
   const src = readFileSync(new URL("../src/shared.js", import.meta.url), "utf8");
+  // O detector olha os ids que mudam de jogo: Miracle Battle, gcd- e nrt-ncg-.
+  const det = /\.some\(\(g\) => (\/.+?\/)\.test\(/.exec(src.slice(src.indexOf("async function moveMiracleBattle")));
+  assert.ok(det, "o teste do detector mudou de forma");
+  const re = new Function(`return ${det[1]}`)();
+  for (const id of ["op-mb-op01-23", "nrt-mb-nr01-7", "hxh-mb-hh01-3", "gcd-wd01-1", "nrt-ncg-cp-001"]) assert.ok(re.test(`{"${id}":1}`), id);
+  for (const id of ["nrt-s01-1", "op-123", "gcg-616678"]) assert.ok(!re.test(`{"${id}":1}`), id);
   assert.match(src, /async function moveMiracleBattle\(subir\)/);
   assert.match(src, /injectScript\("\/src\/migra-mbc\.js"\)/);
   // Os três ganchos: login, abertura com sessão e "Forçar sincronização".

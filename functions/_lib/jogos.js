@@ -38,7 +38,7 @@ export const JOGOS_URL = [
   { url: "union-arena", game: "unionarena", nome: "Union Arena", logo: "assets/games/game_unionarena.webp" },
   { url: "cyberpunk-tcg", game: "cyberpunk", nome: "Cyberpunk TCG", logo: "assets/games/game_cyberpunk.webp" },
   { url: "sorcery-contested-realm", game: "sorcery", nome: "Sorcery: Contested Realm", logo: "assets/games/game_sorcery.webp" },
-  { url: "naruto-card-game", game: "naruto", linha: "nrt-ncg", prefixos: ["nrt-ncg-"], nome: "Naruto Card Game (2027)", logo: "assets/games/game_naruto_2027.webp" },
+  { url: "naruto-card-game", game: "narutocg", nome: "Naruto Card Game (2027)", logo: "assets/games/game_naruto_2027.webp" },
   { url: "weiss-schwarz", game: "weiss", nome: "Weiß Schwarz", logo: "assets/games/game_weiss.webp" },
   { url: "gundam-carddass", game: "gcd", nome: "Gundam Carddass", logo: "", vintage: "1988–1997" },
   { url: "dragon-ball-carddass", game: "dbc", nome: "Dragon Ball Carddass", logo: "assets/games/game_dbc.webp", vintage: "1988–1997" },
@@ -67,8 +67,9 @@ export const LINHAS_APELIDO = { "nrt-nf": "nrt-dc", "nrt-nx": "nrt-dc" };
 // ?line= e o /games/<endereço> antigos levam pro jogo novo; o set e a carta
 // abaixo do endereço seguem com o mesmo slug (o nome do set não mudou).
 // O Gundam Carddass foi linha do gundam por um dia (10/11/2026): o ?line=gcd
-// de quem guardou o link abre o jogo gcd.
-export const LINHAS_VIRARAM_JOGO = { "op-mb": "mbc", "nrt-mb": "mbc", "hxh-mb": "mbc", "gcd": "gcd" };
+// de quem guardou o link abre o jogo gcd. O NARUTO CARD GAME de 2027 foi a
+// linha nrt-ncg do naruto até 11/11/2026 e virou o jogo narutocg.
+export const LINHAS_VIRARAM_JOGO = { "op-mb": "mbc", "nrt-mb": "mbc", "hxh-mb": "mbc", "gcd": "gcd", "nrt-ncg": "narutocg" };
 const ENDERECOS_ANTIGOS = {
   "one-piece-miracle-battle": "miracle-battle-carddass",
   "naruto-miracle-battle": "miracle-battle-carddass",

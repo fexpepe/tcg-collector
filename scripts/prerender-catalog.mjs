@@ -82,6 +82,7 @@ const GAMES = [
   { slug: "cyberpunk", label: "Cyberpunk TCG" },
   { slug: "sorcery", label: "Sorcery: Contested Realm" },
   { slug: "riftbound", label: "Riftbound" },
+  { slug: "narutocg", label: "Naruto Card Game (2027)" },
   { slug: "naruto", label: "Naruto Card Game (2002~2006)" },
   { slug: "hxh", label: "Hunter × Hunter Carddass" },
   { slug: "dbc", label: "Dragon Ball Carddass" },
@@ -668,7 +669,7 @@ const DECK_GAME_LABELS = {
   pokemon: "Pokémon TCG", lorcana: "Disney Lorcana", onepiece: "One Piece Card Game",
   magic: "Magic: The Gathering", fab: "Flesh and Blood", gundam: "Gundam Card Game", swu: "Star Wars: Unlimited", cyberpunk: "Cyberpunk TCG", sorcery: "Sorcery: Contested Realm",
   dbfw: "Dragon Ball Fusion World", ygo: "Yu-Gi-Oh!", digimon: "Digimon Card Game",
-  riftbound: "Riftbound", unionarena: "Union Arena", naruto: "Naruto Card Game",
+  riftbound: "Riftbound", unionarena: "Union Arena", narutocg: "Naruto Card Game (2027)", naruto: "Naruto Card Game (2002~2006)",
   hxh: "Hunter × Hunter", dbc: "Dragon Ball Carddass", dbz: "Dragon Ball Z CCG", wow: "World of Warcraft TCG", lotr: "The Lord of the Rings TCG", harrypotter: "Harry Potter TCG", weiss: "Weiß Schwarz", mbc: "Miracle Battle Carddass", cdm: "Carddass Masters", gcd: "Gundam Carddass", gw: "Gundam War"
 };
 

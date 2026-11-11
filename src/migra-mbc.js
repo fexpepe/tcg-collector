@@ -28,6 +28,10 @@
 // gcd. As cartas gcd- entraram como linha do Gundam e viraram jogo próprio no
 // mesmo dia; quem marcou uma nesse intervalo a tem na coleção do gundam. O
 // destino sai do id (destinoDe), e todo o resto é igual.
+//
+// NARUTO CARD GAME de 2027 (2026-11-11): a linha nrt-ncg- do naruto vira o
+// jogo narutocg. Quem marcou uma Chakra Card a tem na coleção do naruto; ela
+// muda de gaveta do mesmo jeito.
 (function () {
   const S = window.TCGShared;
   if (!S || !S._nucleo) return;
@@ -35,7 +39,10 @@
 
   const DE = ["onepiece", "naruto", "hxh", "gundam"];
   // Jogo novo da carta, pelo id; null = fica onde está.
-  const destinoDe = (id) => (/^(op|nrt|hxh)-mb-/.test(String(id || "")) ? "mbc" : /^gcd-/.test(String(id || "")) ? "gcd" : null);
+  const destinoDe = (id) => {
+    const s = String(id || "");
+    return /^(op|nrt|hxh)-mb-/.test(s) ? "mbc" : /^gcd-/.test(s) ? "gcd" : /^nrt-ncg-/.test(s) ? "narutocg" : null;
+  };
   const chave = (base, game) => `tcg-collector-${game}-${base}`;
 
   // Entradas por id de um objeto: as que mudam de jogo (por destino) e o resto.

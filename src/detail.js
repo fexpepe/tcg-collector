@@ -460,7 +460,7 @@
     // Card Game japonês (2002–06) e Data Carddass: as siglas — N → R → SR →
     // UR (e a Memorial do 巻ノ十三) do hinokunian (naruto-raridade-
     // hinokunian.mjs); as especiais e as promos do Formation/Cross no fim
-    // (sync-naruto-dc-cross-formation.mjs). Promo do NARUTO CARD GAME novo é "Promo".
+    // (sync-naruto-dc-cross-formation.mjs).
     naruto: ["Common", "Uncommon", "Rare", "Super Rare", "Starter Deck",
       "N", "NP", "R", "SR", "UR", "Memorial", "HR", "NR", "WNR", "SP", "Silver Holo", "Design Rare", "P", "Promo"],
     // HxH Carddass Hyper Battle: Normal, a Holo do booster e a Secret Holo.

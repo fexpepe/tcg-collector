@@ -139,6 +139,10 @@
     if (flat.includes("dragonball") || flat.includes("fusionworld") || flat === "dbfw") return "dbfw";
     if (flat.includes("riftbound") || flat.includes("leagueoflegends")) return "riftbound";
     if (flat.includes("unionarena")) return "unionarena";
+    // "Naruto Card Game" é a linha do TCGplayer do jogo de 2027 (narutocg): o
+    // vintage de 2002 não está no TCGplayer. O resto ("Naruto Kayou"…) fica no
+    // naruto, como antes.
+    if (flat === "narutocardgame" || flat === "narutocg") return "narutocg";
     if (flat.includes("naruto")) return "naruto";
     if (flat.includes("hunter") || flat === "hxh") return "hxh";
     // "WoW" é como o TCGplayer chama a categoria do World of Warcraft TCG.

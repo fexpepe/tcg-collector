@@ -36,9 +36,19 @@ test("jogo principal do Naruto exclui TODOS os prefixos das linhas", () => {
   for (const setId of ["nrt-s01", "nrt-s17", "nrt-promo", "nrt-extra"]) {
     assert.ok(principal.includes(setId), `${setId} é do Card Game 2002~2006`);
   }
-  for (const setId of ["nrt-dc-s01", "nrt-nf-s01", "nrt-nx-s14", "nrt-ccg-s01", "nrt-ncg-promo", "nrt-scg-s01", "nrt-scg-promo"]) {
+  for (const setId of ["nrt-dc-s01", "nrt-nf-s01", "nrt-nx-s14", "nrt-ccg-s01", "nrt-scg-s01", "nrt-scg-promo"]) {
     assert.ok(!principal.includes(setId), `${setId} tem página própria (?line=)`);
   }
+});
+
+// O NARUTO CARD GAME de 2027 foi a linha nrt-ncg até 11/11/2026 e virou o jogo
+// narutocg: o ?line= antigo não é mais linha do naruto, e o game.js o leva pro
+// jogo novo (LINHA_VIROU_JOGO).
+test("nrt-ncg não é mais linha do naruto: virou o jogo narutocg", () => {
+  assert.equal(lineScope("naruto", "nrt-ncg").line, null);
+  const gameJs = readFileSync(new URL("../src/game.js", import.meta.url), "utf8");
+  assert.match(gameJs, /var LINHA_VIROU_JOGO = \{[^}]*"nrt-ncg": "narutocg"/);
+  assert.match(gameJs, /\["naruto-card-game", "narutocg"\]/);
 });
 
 // O 疾風伝 カードゲーム (2007–2008, 2026-11-04) é outro jogo, não um volume a

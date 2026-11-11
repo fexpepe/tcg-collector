@@ -146,7 +146,7 @@ test("o topo da Vitrine não conta como resultado", () => {
 });
 
 // Bandai moderno (2026-11-11): One Piece, Gundam, Fusion World, Digimon, Union
-// Arena e a linha nrt-ncg no formato do One Piece. Os códigos são os do
+// Arena e o NARUTO CARD GAME de 2027 (narutocg) no formato do One Piece. Os códigos são os do
 // catálogo daquele dia; o que importa é cada um cair na seção certa, e o
 // "ST01" do Fusion World (Story Booster) não virar starter.
 function secoesBandai(jogo, setIds) {
@@ -182,7 +182,7 @@ test("Bandai moderno: coleção numerada, boosters extras, decks e promos, pelo 
   assert.deepEqual(secoesBandai("unionarena", ["UE01BT", "UE24BT", "UEX08BT", "UP01BT", "UE01NC", "UE01ST", "UE01ST_PRE", "UE10DC", "UEPR"]), {
     main: ["UE01BT", "UE24BT"], extraBoosters: ["UE01NC", "UEX08BT", "UP01BT"], decks: ["UE01ST", "UE01ST_PRE", "UE10DC"], promos: ["UEPR"]
   });
-  assert.deepEqual(secoesBandai("nrt-ncg", ["nrt-ncg-promo", "nrt-ncg-bt01", "nrt-ncg-st01"]), {
+  assert.deepEqual(secoesBandai("narutocg", ["nrt-ncg-promo", "nrt-ncg-bt01", "nrt-ncg-st01"]), {
     main: ["nrt-ncg-bt01"], decks: ["nrt-ncg-st01"], promos: ["nrt-ncg-promo"]
   });
 });
@@ -195,5 +195,5 @@ test("Bandai moderno: as seções saem na ordem do One Piece e decks/promos fica
   assert.ok(!fora.includes("extraBoosters"), "booster extra é lançamento e disputa o destaque");
   const agrupa = corpo("agrupaSetsDoJogo");
   assert.ok(agrupa.includes("SECOES_BANDAI[jogoAtual]"));
-  assert.ok(agrupa.indexOf('lineScope.line === "nrt-ncg"') < agrupa.indexOf("if (lineDef)"), "a linha do NARUTO CARD GAME passa antes da regra das linhas vintage");
+  assert.ok(agrupa.indexOf("if (lineDef)") < agrupa.indexOf("SECOES_BANDAI[jogoAtual]"), "linha vintage de jogo da Bandai (One Piece 2002) segue em ordem de lançamento");
 });

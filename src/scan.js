@@ -368,6 +368,9 @@
     riftbound: [/RIOT ?GAMES/, /RIFTBOUND/, /LEAGUE ?OF ?LEGENDS/, /\d{4} ?RGI\b/],
     unionarena: [/UNION ?ARENA/],
     naruto: [/NARUTO/, /KISHIMOTO/],
+    // O de 2027 imprime a mesma marca que o vintage: os dois empatam e a busca
+    // vai nos dois (sem a pista, a carta nova era filtrada pro vintage).
+    narutocg: [/NARUTO/, /KISHIMOTO/],
     hxh: [/HUNTER/, /TOGASHI/],
     // Jogos que entraram no catálogo depois do scanner e não tinham pista
     // nenhuma (2026-11-10): 11 dos 24 jogos. Só o que a carta IMPRIME em
