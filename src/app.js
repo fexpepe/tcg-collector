@@ -1085,7 +1085,31 @@
     ambiguousSetIds = ambiguos(byId);
   }
 
+  // Endereço próprio de cada set (/games/<jogo>/<set>), lido do índice que a
+  // borda põe na tela do jogo (functions/games/, .jogo-indice): nome do set ->
+  // endereço. É o mapa do build, já na página, sem pedido a mais. Sem índice
+  // (a casca crua do /sets, o app, a cópia de reserva offline) fica vazio, e o
+  // link segue pelo /detail?type=set&… de sempre.
+  let enderecosDoIndice = null;
+  function enderecoDoSet(nome) {
+    if (window.SLEEVU_APP) return "";
+    if (!enderecosDoIndice) {
+      enderecosDoIndice = new Map();
+      document.querySelectorAll(".jogo-indice a[href]").forEach((a) => enderecosDoIndice.set(a.textContent, a.getAttribute("href")));
+    }
+    return enderecosDoIndice.get(nome) || "";
+  }
+
   function setDetailUrl(item) {
+    // O endereço do set, direto (2026-11-10). O /detail?type=set&… abaixo
+    // responde 301 pra ele desde 12/10, mas o link continuava saindo assim: no
+    // relatório de Páginas de 10/11 cada tile era uma "página com
+    // redirecionamento" a mais, e o robô gastava dois pedidos por set.
+    // A página é o NOME do set: quando duas edições dividem o nome ("Pokémon
+    // GO" é swsh10.5 e S10b), o endereço junta as duas e quem separa é o
+    // setId/região do link antigo, que fica.
+    const proprio = !ambiguousSetNames.has(item.name) && enderecoDoSet(item.name);
+    if (proprio) return proprio;
     // O setId vai SEMPRE que existe: é o que deixa o detailUrl trocar o nome
     // não-ASCII pelo id na URL. Set de nome único não muda de comportamento
     // (uma edição só, o id não filtra nada); só o ambíguo carrega a região.

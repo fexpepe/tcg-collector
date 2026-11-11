@@ -518,7 +518,7 @@
     listaDaTela: () => pageCards.slice()
       .sort((a, b) => shared.compareCardNumbers(a.number, b.number))
       .map((c) => ({ id: c.id, v: "" })),
-    aoAbrir: maisDoSet,
+    aoAbrir: (card, pagina) => { linkDoSetNoEndereco(card); maisDoSet(card, pagina); },
     // Desktop: o clique numa carta da grade vira a PÁGINA dela aqui mesmo,
     // sem recarregar (2026-10-14). Só no endereço limpo do set, com o nome da
     // carta já conhecido; antes disso (ou em artista/Pokémon) o shared.js
@@ -532,6 +532,18 @@
       return true;
     }
   });
+
+  // O set da carta, na tela dela (trilha, linha de cima do nome e ficha): o
+  // shared.js monta os três com /detail?type=set&…, que a borda responde 301.
+  // Aqui a tela sabe o endereço do próprio set, então o link sai direto
+  // (2026-11-10: toda página de carta levava o robô a um redirecionamento pro
+  // set dela). Só a carta DESTE set, no endereço limpo e fora do app; a de
+  // outro set (tela de artista, Pokémon) segue pelo link antigo.
+  function linkDoSetNoEndereco(card) {
+    if (!card || window.SLEEVU_APP || detailType !== "set" || card.set !== detailName) return;
+    if (!enderecoDoSet || location.pathname.indexOf("/games/") !== 0) return;
+    document.querySelectorAll("#cardPreviewModal a.preview-set-link").forEach((a) => a.setAttribute("href", enderecoDoSet));
+  }
 
   // Ida e volta entre a grade e a página da carta, no mesmo documento: a
   // grade continua montada por baixo (só escondida), então voltar a devolve
