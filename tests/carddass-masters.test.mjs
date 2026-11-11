@@ -7,7 +7,7 @@
 // Roda com: node --test tests/
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { parseFile, frontCrop, frontUrl, IMG, rarityOf, cardsOfSet, cardId, setIdOf, setNameOf, IPS, SETS_HXH, LISTA_HXH, numAc, parseAc, SETS_EVA, LISTA_EVA } from "../scripts/sync-carddass-masters.mjs";
+import { parseFile, frontCrop, frontUrl, IMG, rarityOf, cardsOfSet, cardId, setIdOf, setNameOf, IPS, SETS_HXH, LISTA_HXH, numAc, parseAc, rarityAc, SETS_EVA, LISTA_EVA } from "../scripts/sync-carddass-masters.mjs";
 
 const HXH = IPS.find((ip) => ip.ip === "hxh");
 const EVA = IPS.find((ip) => ip.ip === "eva");
@@ -106,6 +106,9 @@ test("eva, rótulo do animecollection.fr: vira o número da lista; embalagem e p
   assert.equal(numAc("25-01"), "25-01");
   assert.equal(numAc("26-7"), "26-07");
   assert.equal(numAc("26-84"), "26-84");
+  // 破 第2章: número puro, como o site rotula
+  assert.equal(numAc("101"), "101");
+  assert.equal(numAc("173"), "173");
   for (const fora of ["Puzzle", "Binder", "Booster Box", "Booster Dos", "Pub", ""]) assert.equal(numAc(fora), null, fora);
 });
 
@@ -130,6 +133,8 @@ test("eva, página da série: número, raridade e o scan grande; repetido fica o
   // "Super Rare" é como o site chama as SP dos Wide
   const wide = '<div class="bc_cadre_numero" title="Super Rare" style="x"><div class="bc_texte_numero">SP-06</div></div><img src="cartes/63/151/h100_5770_carte.jpg" />';
   assert.deepEqual(parseAc(wide, 63, 151), [{ num: "SP6", rarity: "Special", img: "animecollection.fr/cartes/63/151/h3000_5770_carte.jpg" }]);
+  // 破 第2章: SSP e SSSP ficam com o nome da Bandai; a キービジュアル é Promo
+  assert.deepEqual(["SP", "SSP", "SSSP", "Promo", "Regular", "Rare"].map(rarityAc), ["Special", "SSP", "SSSP", "Promo", "Normal", "Normal"]);
   // miniatura de outra série não vale
   assert.deepEqual(parseAc(wide, 63, 149), []);
   // o site é http: a origem vai pro wsrv sem esquema e sai em https
@@ -137,12 +142,13 @@ test("eva, página da série: número, raridade e o scan grande; repetido fica o
 });
 
 test("eva, lista: total oficial de cada edição, número único, inglês sempre, SP no fim", () => {
-  const total = { p1: 172, p2: 172, w1: 132, w2: 132 }, sp = { p1: 4, p2: 9, w1: 6, w2: 6 };
+  const total = { p1: 172, p2: 172, w1: 132, w2: 132, ha2: 73 }, sp = { p1: 4, p2: 9, w1: 6, w2: 6 };
   for (const def of SETS_EVA) {
     const l = LISTA_EVA[def.lista];
     assert.equal(l.length, total[def.code], def.code);
     assert.equal(new Set(l.map((c) => c.n)).size, l.length, def.code);
     for (const c of l) assert.ok(c.en && /^[A-Z0-9-]+$/.test(c.n), `${def.code} ${c.n}`);
+    if (!sp[def.code]) continue;
     assert.deepEqual(l.slice(-sp[def.code]).map((c) => c.n), Array.from({ length: sp[def.code] }, (_, i) => `SP${i + 1}`), def.code);
     // id é o contrato: número nenhum da edição colide depois de virar id
     assert.equal(new Set(l.map((c) => cardId("eva", def.code, c.n))).size, l.length, def.code);
@@ -154,6 +160,10 @@ test("eva, lista: total oficial de cada edição, número único, inglês sempre
   assert.deepEqual(LISTA_EVA.w2.find((c) => c.n === "26-01"), { n: "26-01", en: "The End of Evangelion", fonte: "scan" });
   // Air: dois dígitos, pra tela (que desempata por texto) não pôr 26-10 antes de 26-07
   assert.ok(LISTA_EVA.w2.filter((c) => !/^SP/.test(c.n)).every((c) => /^2[56]-\d\d$/.test(c.n)));
+  // 破 第2章: lida na frente das cartas, 101 a 173 sem buraco (o 第1章 vai até 100)
+  assert.deepEqual(LISTA_EVA.ha2.map((c) => c.n), Array.from({ length: 73 }, (_, i) => String(101 + i)));
+  assert.deepEqual(LISTA_EVA.ha2.find((c) => c.n === "130"), { n: "130", ja: "式波・アスカ・ラングレー", en: "Asuka Shikinami Langley" });
+  assert.equal(LISTA_EVA.ha2.find((c) => c.n === "137").en, "Story Scene Select 01");
 });
 
 test("eva, cartas: a lista manda; a 第弐集 entra sem scan, com a raridade pelo número", () => {
@@ -175,7 +185,8 @@ test("eva, cartas: a lista manda; a 第弐集 entra sem scan, com a raridade pel
 
 test("eva, set: a IP abre o nome, o jogo e o formato (ワイド) não", () => {
   const nomes = EVA.sets.map((def) => setNameOf(EVA, def));
-  assert.deepEqual(nomes, ["新世紀エヴァンゲリオン 第壱集", "新世紀エヴァンゲリオン 第弐集", "新世紀エヴァンゲリオン 劇場版 シト新生", "新世紀エヴァンゲリオン 劇場版 Air/まごころを、君に"]);
+  // o 新劇場版 tem título próprio no lugar do da série de TV (`prefix`)
+  assert.deepEqual(nomes, ["新世紀エヴァンゲリオン 第壱集", "新世紀エヴァンゲリオン 第弐集", "新世紀エヴァンゲリオン 劇場版 シト新生", "新世紀エヴァンゲリオン 劇場版 Air/まごころを、君に", "ヱヴァンゲリヲン新劇場版:破 第2章"]);
   for (const a of nomes) for (const b of nomes) assert.ok(a === b || !b.startsWith(a + " "), `${a} engoliria ${b}`);
   // ids de set e de carta de uma IP nunca caem nos de outra
   const todos = IPS.flatMap((ip) => ip.sets.map((def) => setIdOf(ip.ip, def.code)));

@@ -1,6 +1,6 @@
 {
  "source": "http://animecollection.fr/cartes.php?idl=20",
- "updatedAt": "2026-11-10",
+ "updatedAt": "2026-11-11",
  "sets": [
   {
    "code": "p1",
@@ -2633,6 +2633,450 @@
      "num": "SP6",
      "rarity": "Special",
      "img": "animecollection.fr/cartes/63/151/h3000_5638_carte.jpg"
+    }
+   ]
+  },
+  {
+   "code": "ha2",
+   "name": "第2章",
+   "cards": [
+    {
+     "set": "ha2",
+     "num": "101",
+     "rarity": "SSP",
+     "img": "animecollection.fr/cartes/64/454/h3000_19098_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "102",
+     "rarity": "SSP",
+     "img": "animecollection.fr/cartes/64/454/h3000_19099_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "103",
+     "rarity": "SSP",
+     "img": "animecollection.fr/cartes/64/454/h3000_19100_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "104",
+     "rarity": "Special",
+     "img": "animecollection.fr/cartes/64/454/h3000_19101_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "105",
+     "rarity": "SSSP",
+     "img": "animecollection.fr/cartes/64/454/h3000_19102_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "106",
+     "rarity": "Special",
+     "img": "animecollection.fr/cartes/64/454/h3000_19103_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "107",
+     "rarity": "Special",
+     "img": "animecollection.fr/cartes/64/454/h3000_19104_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "108",
+     "rarity": "Special",
+     "img": "animecollection.fr/cartes/64/454/h3000_19105_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "109",
+     "rarity": "Special",
+     "img": "animecollection.fr/cartes/64/454/h3000_19106_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "110",
+     "rarity": "SSP",
+     "img": "animecollection.fr/cartes/64/454/h3000_19107_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "111",
+     "rarity": "SSP",
+     "img": "animecollection.fr/cartes/64/454/h3000_19108_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "112",
+     "rarity": "SSP",
+     "img": "animecollection.fr/cartes/64/454/h3000_19109_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "113",
+     "rarity": "Special",
+     "img": "animecollection.fr/cartes/64/454/h3000_19110_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "114",
+     "rarity": "SSSP",
+     "img": "animecollection.fr/cartes/64/454/h3000_19111_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "115",
+     "rarity": "Special",
+     "img": "animecollection.fr/cartes/64/454/h3000_19112_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "116",
+     "rarity": "Special",
+     "img": "animecollection.fr/cartes/64/454/h3000_19113_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "117",
+     "rarity": "Special",
+     "img": "animecollection.fr/cartes/64/454/h3000_19114_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "118",
+     "rarity": "Special",
+     "img": "animecollection.fr/cartes/64/454/h3000_19115_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "119",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19116_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "120",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19117_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "121",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19118_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "122",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19119_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "123",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19120_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "124",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19121_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "125",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19122_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "126",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19123_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "127",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19124_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "128",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19125_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "129",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19126_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "130",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19127_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "131",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19128_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "132",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19129_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "133",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19130_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "134",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19131_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "135",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19132_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "136",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19133_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "137",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19134_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "138",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19135_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "139",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19136_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "140",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19137_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "141",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19138_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "142",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19139_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "143",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19140_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "144",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19141_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "145",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19142_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "146",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19143_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "147",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19144_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "148",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19145_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "149",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19146_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "150",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19147_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "151",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19148_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "152",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19149_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "153",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19150_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "154",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19151_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "155",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19152_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "156",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19153_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "157",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19154_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "158",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19155_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "159",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19156_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "160",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19157_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "161",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19158_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "162",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19159_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "163",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19160_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "164",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19161_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "165",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19162_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "166",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19163_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "167",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19164_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "168",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19165_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "169",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19166_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "170",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19167_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "171",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19168_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "172",
+     "rarity": "Normal",
+     "img": "animecollection.fr/cartes/64/454/h3000_19169_carte.jpg"
+    },
+    {
+     "set": "ha2",
+     "num": "173",
+     "rarity": "Promo",
+     "img": "animecollection.fr/cartes/64/454/h3000_19170_carte.jpg"
     }
    ]
   }

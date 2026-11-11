@@ -219,9 +219,10 @@ export function cardsOfSet(ip, def, scans) {
   }));
 }
 
-// ── 新世紀エヴァンゲリオン (1996–1997) ──────────────────────────────────────
+// ── 新世紀エヴァンゲリオン (1996–2011) ──────────────────────────────────────
 // 第壱集 (172 cartas), 第弐集 (172) e os dois カードダスマスターズワイド dos
-// filmes (132 cada, carta larga 2:1). Foram as edições que abriram a linha.
+// filmes (132 cada, carta larga 2:1), as edições que abriram a linha; e, desde
+// 2026-11-11, a ヱヴァンゲリヲン新劇場版:破 第2章 (2011, 72+1).
 //
 // Fontes (levantamento de 2026-11-10):
 //   LISTA — scripts/data/carddass-masters-eva.json: número impresso e nome em
@@ -241,9 +242,18 @@ export function cardsOfSet(ip, def, scans) {
 //   FICHA — エヴァンゲリオンカードのすべて (www2.hp-ez.com/hp/evacard/page1 e
 //           /page7): mês de lançamento, total e subsets de cada edição.
 //
+// A 破 第2章 não tem lista de colecionador: a lista (ha2 no mesmo arquivo) foi
+// lida na FRENTE das 73 cartas, nos scans do animecollection.fr (2026-11-11).
+// A carta imprime o nome (romaji nas SP, japonês e romaji nas de personagem),
+// a fala nas de cena e o lugar nas de paisagem; o que a frente não diz e a
+// gente completou está marcado "traducao": "nossa". O número é o rótulo do
+// site (101–173: o 第1章 vai até 100), e a divisão bate com a ficha (SSSP 2,
+// SSP 6, SP 10, normais 54 e a キービジュアル).
+//
 // Ficam de fora, sem lista carta a carta achada: 第参集 (1998, 181), 第四集
-// (2003, 99) e as do 新劇場版 (序 2008, 破 2010). As de pachinko (CR, 2008–
-// 2010) e a 破 第2章 (2011) têm scan no animecollection.fr, mas não nome.
+// (2003, 99) e as do 新劇場版 (序 2008, 破 第1章 2010). As de pachinko (CR
+// ～使徒、再び～, ～最後のシ者～ e ～始まりの福音～, 2008–2010, 55 cada) têm
+// scan no animecollection.fr, mas a frente é arte da máquina, sem nome.
 //
 // O site só responde em http (o https devolve 301 pro http); o wsrv.nl busca a
 // origem sem esquema e serve em https, então a CSP não muda.
@@ -254,19 +264,23 @@ const ANIMECOLLECTION = "http://animecollection.fr";
 // "カードダスマスターズワイド 新世紀エヴァンゲリオン劇場版 <filme>": o
 // "カードダスマスターズワイド" é o jogo/formato e fica fora (contrato 7), o
 // filme é o que nomeia o set. `ac`: [coleção, série] no animecollection.fr.
+// `prefix` troca o setPrefix da IP no set que não é 新世紀エヴァンゲリオン: o
+// 新劇場版 tem título próprio ("ヱヴァンゲリヲン新劇場版:破"), e com o prefixo
+// da IP o nome ficaria com dois títulos.
 export const SETS_EVA = [
   { code: "p1", name: "第壱集", date: "1996-08", lista: "p1", ac: [61, 561] },
   { code: "p2", name: "第弐集", date: "1997-01", lista: "p2" },
   { code: "w1", name: "劇場版 シト新生", date: "1997-08", lista: "w1", ac: [63, 149] },
-  { code: "w2", name: "劇場版 Air/まごころを、君に", date: "1997-12", lista: "w2", ac: [63, 151] }
+  { code: "w2", name: "劇場版 Air/まごころを、君に", date: "1997-12", lista: "w2", ac: [63, 151] },
+  { code: "ha2", prefix: "ヱヴァンゲリヲン新劇場版:破", name: "第2章", date: "2011-03", lista: "ha2", ac: [64, 454] }
 ];
 
 // Rótulo do animecollection.fr -> número como está na lista: "CH - 23" ->
 // CH23, "SP-06" -> SP6, "DEATH-001" -> DEATH-1, "25-01" -> 25-01 (第25話 1).
 // No Air o número fica com dois dígitos de propósito: a tela ordena pelo
 // primeiro número e desempata por TEXTO (compareCardNumbers), e "26-7" cairia
-// depois de "26-10". "Puzzle", "Binder", "Booster" (montagens e embalagem) não
-// são carta: null.
+// depois de "26-10". Número puro (o 破 第2章, "101") fica como está.
+// "Puzzle", "Binder", "Booster" (montagens e embalagem) não são carta: null.
 export function numAc(label) {
   const s = String(label).replace(/\s+/g, "").toUpperCase();
   let m = s.match(/^(DEATH|REBIRTH)-0*(\d+)$/);
@@ -274,14 +288,22 @@ export function numAc(label) {
   m = s.match(/^(25|26)-0*(\d+)$/);
   if (m) return `${m[1]}-${m[2].padStart(2, "0")}`;
   m = s.match(/^([A-Z]{2})-0*(\d+)$/);
-  return m ? `${m[1]}${m[2]}` : null;
+  if (m) return `${m[1]}${m[2]}`;
+  return /^\d+$/.test(s) ? s : null;
 }
 
 // Página de uma série -> [{ num, rarity, img }]. Cada carta é um bloco
 // "bc_cadre_numero" (title = raridade) com o rótulo e a miniatura
 // cartes/<coleção>/<série>/h100_<id>_carte.jpg; o mesmo id tem a versão maior,
 // h3000_ (713×1024 na carta normal, 1024×540 na Wide). Bloco sem miniatura de
-// carta (embalagem, puzzle montado) e número repetido caem fora.
+// carta (embalagem, puzzle montado) e número repetido caem fora. Raridade: SP
+// é a "Special" dos Wide; o 破 第2章 tem ainda SSP e SSSP (ficam com o nome
+// da Bandai) e a キービジュアル, que o site marca "Promo".
+export function rarityAc(rar) {
+  if (/^(SP|Super Rare)$/i.test(rar)) return "Special";
+  if (/^S{2,3}P$/i.test(rar)) return rar.toUpperCase();
+  return /^Promo$/i.test(rar) ? "Promo" : "Normal";
+}
 export function parseAc(html, idc, ids) {
   const out = [];
   const thumb = new RegExp(`cartes/${idc}/${ids}/h100_(\\d+)_carte\\.jpg`);
@@ -290,7 +312,7 @@ export function parseAc(html, idc, ids) {
     const num = numAc((b.match(/class="bc_texte_numero">([^<]*)</) || [])[1] || "");
     const id = (b.match(thumb) || [])[1];
     if (!num || !id || out.some((c) => c.num === num)) continue;
-    out.push({ num, rarity: /^(SP|Super Rare)$/i.test(rar) ? "Special" : "Normal", img: `animecollection.fr/cartes/${idc}/${ids}/h3000_${id}_carte.jpg` });
+    out.push({ num, rarity: rarityAc(rar), img: `animecollection.fr/cartes/${idc}/${ids}/h3000_${id}_carte.jpg` });
   }
   return out;
 }
@@ -346,7 +368,7 @@ export const IPS = [
 
 export const cardId = (ip, setCode, num) => `${ID_PREFIX}${ip}-${setCode}-${String(num).toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
 export const setIdOf = (ip, setCode) => `${ID_PREFIX}${ip}-${setCode}`;
-export const setNameOf = (ip, def) => `${ip.setPrefix} ${def.name}`;
+export const setNameOf = (ip, def) => `${def.prefix || ip.setPrefix} ${def.name}`;
 
 async function refreshSnapshot(ip, existing) {
   const sets = await ip.scans();
