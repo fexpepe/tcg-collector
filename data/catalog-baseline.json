@@ -138,5 +138,10 @@
   "cards": 2,
   "sets": 1,
   "imgPct": 100
+ },
+ "godzilla": {
+  "cards": 940,
+  "sets": 8,
+  "imgPct": 100
  }
 }

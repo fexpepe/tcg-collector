@@ -112,6 +112,10 @@ test("nomeDoSet: tira a marca dos grupos genéricos do TCGplayer, não do títul
   assert.equal(nomeDoSet("onepiece", "Extra Booster: One Piece Heroines Edition"), "Extra Booster: One Piece Heroines Edition");
   assert.equal(nomeDoSet("onepiece", "One Piece"), "One Piece");
   assert.equal(nomeDoSet("magic", "Magic 2015"), "Magic 2015");
+  // Godzilla: só o nome inteiro do jogo sai; o monstro que abre o set fica.
+  assert.equal(nomeDoSet("godzilla", "Godzilla Card Game Promo Cards"), "Promo Cards");
+  assert.equal(nomeDoSet("godzilla", "Booster Set 1: Godzilla VS. Godzilla"), "Booster Set 1: Godzilla VS. Godzilla");
+  assert.equal(nomeDoSet("godzilla", "Godzilla Minus One"), "Godzilla Minus One");
 });
 
 test("catálogo da família TCGCSV já está com o nome que o sync grava hoje", () => {
