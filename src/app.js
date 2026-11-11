@@ -1345,9 +1345,11 @@
     // agora moram dentro do cartão do set: um chip por produto. À vista vão 4
     // no desktop e 2 no celular (CSS); o "+N" abre o resto — o N de cada
     // largura vem pronto em dois <span>, e o CSS mostra o certo.
-    // Um chip por NOME: o catálogo tem Trainer Gallery em dobro (swsh10tg e
+    // Um chip por NOME: o catálogo tinha Trainer Gallery em dobro (swsh10tg e
     // swsh10.5tg, mesmo nome, data e 30 cartas; idem 9, 11 e 12 — visto em
     // 08/10/2026), e "Trainer Gallery | Trainer Gallery" no cartão só confundia.
+    // Os .5tg foram aposentados em 2026-11-11 (data/card-id-merges.json); a
+    // guarda fica pra próxima duplicata de nome.
     const vistos = new Set();
     const filhos = (item.filhos || []).filter((f) => !vistos.has(f.displayName) && vistos.add(f.displayName));
     const maisKids =filhos.length > 2

@@ -72,7 +72,9 @@ const JOGOS = {
     min: 0.9, filtro: (c) => String(c.setReleaseDate || "") >= "2014-07-01" && /^\d+$/.test(String(c.number)),
     impresso: (c) => `${pad(c.number, 4)}/${pad(c.setTotal || 280, 4)} R\n${String(c.setId).toUpperCase()} EN ARTISTA`
   },
-  pokemon: { min: 0.87, impresso: (c) => (String(c.number).indexOf("/") >= 0 ? String(c.number) : `${c.number}/${c.setTotal || 100}`), nota: "sobram as subcoleções (RC1, TG05)" },
+  // 0.93 desde 2026-11-11: a amostra passou a ser sorteada pelo nome do
+  // arquivo (ver catalogo) e mediu 94,8 %; o catálogo inteiro mede 91,3 %.
+  pokemon: { min: 0.93, impresso: (c) => (String(c.number).indexOf("/") >= 0 ? String(c.number) : `${c.number}/${c.setTotal || 100}`), nota: "sobram as subcoleções (RC1, TG05)" },
   harrypotter: { min: 0.96 },
   // O 疾風伝 Card Game (2007–2008, ids "nrt-scg-") imprime o tipo só em kanji
   // (忍伝-037, 術伝-025, 作伝-011): nenhum dos 573 números vira candidato, e a
@@ -108,8 +110,14 @@ function catalogo(jogo) {
   const dir = jogo === "pokemon" ? join(raiz, "data", "sets", "en") : join(raiz, "data", jogo, "sets");
   if (!existsSync(dir)) return [];
   const out = [];
-  readdirSync(dir).filter((f) => f.endsWith(".json")).forEach((f, i) => {
-    if (i % 6) return; // um set em cada seis: são 200-650 arquivos
+  readdirSync(dir).filter((f) => f.endsWith(".json")).forEach((f) => {
+    // Um set em cada seis (são 200-650 arquivos), sorteado pelo NOME do
+    // arquivo e não pela posição na pasta (2026-11-11): com a posição, apagar
+    // ou criar um chunk qualquer deslizava a janela e trocava a amostra
+    // inteira. A aposentadoria das quatro Trainer Galleries em dobro do
+    // Pokémon (swsh9.5tg…) derrubou a taxa de 89,4 % pra 86,0 % assim, com o
+    // catálogo inteiro SUBINDO de 90,8 % pra 91,3 %.
+    if ([...f].reduce((h, ch) => (h * 31 + ch.charCodeAt(0)) >>> 0, 7) % 6) return;
     const j = JSON.parse(readFileSync(join(dir, f), "utf8"));
     (Array.isArray(j) ? j : j.cards || []).forEach((c) => out.push(c));
   });
