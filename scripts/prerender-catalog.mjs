@@ -92,7 +92,8 @@ const GAMES = [
   { slug: "weiss", label: "Weiß Schwarz" },
   { slug: "mbc", label: "Miracle Battle Carddass" },
   { slug: "cdm", label: "Carddass Masters" },
-  { slug: "gcd", label: "Gundam Carddass" }
+  { slug: "gcd", label: "Gundam Carddass" },
+  { slug: "gw", label: "Gundam War" }
 ];
 
 // SEM piso de cartas por set, de propósito. Um piso (mesmo baixo, tipo 3)
@@ -668,7 +669,7 @@ const DECK_GAME_LABELS = {
   magic: "Magic: The Gathering", fab: "Flesh and Blood", gundam: "Gundam Card Game", swu: "Star Wars: Unlimited", cyberpunk: "Cyberpunk TCG", sorcery: "Sorcery: Contested Realm",
   dbfw: "Dragon Ball Fusion World", ygo: "Yu-Gi-Oh!", digimon: "Digimon Card Game",
   riftbound: "Riftbound", unionarena: "Union Arena", naruto: "Naruto Card Game",
-  hxh: "Hunter × Hunter", dbc: "Dragon Ball Carddass", dbz: "Dragon Ball Z CCG", wow: "World of Warcraft TCG", lotr: "The Lord of the Rings TCG", harrypotter: "Harry Potter TCG", weiss: "Weiß Schwarz", mbc: "Miracle Battle Carddass", cdm: "Carddass Masters", gcd: "Gundam Carddass"
+  hxh: "Hunter × Hunter", dbc: "Dragon Ball Carddass", dbz: "Dragon Ball Z CCG", wow: "World of Warcraft TCG", lotr: "The Lord of the Rings TCG", harrypotter: "Harry Potter TCG", weiss: "Weiß Schwarz", mbc: "Miracle Battle Carddass", cdm: "Carddass Masters", gcd: "Gundam Carddass", gw: "Gundam War"
 };
 
 async function fetchPublicDecks() {

@@ -55,12 +55,15 @@ poucos.)
    where name = 'pageview' and ts > now() - interval '1 hour' group by 1 order by 2 desc;
   ```
 
-- `20261111a` — libera o slug `gcd` (Gundam Carddass, Bandai 1988–1997) em
-  `card_views`/`increment_card_view` e `contribute_price`
-  (`20261111a_add_gcd.sql`). Cópia da `20261109a` (já aplicada) com `gcd` na
-  lista. Sem ela, as views de carta do jogo são descartadas em silêncio; a
-  coleção funciona sem ela. Conferir com o par de `curl` do cabeçalho do
-  arquivo.
+- `20261111b` — libera os slugs `gcd` (Gundam Carddass, Bandai 1988–1997) E
+  `gw` (Gundam War, Bandai 1999–2011) em `card_views`/`increment_card_view` e
+  `contribute_price` (`20261111b_add_gw.sql`). Cópia da `20261111a` com `gw`
+  na lista. Sem ela, as views de carta dos dois jogos são descartadas em
+  silêncio; a coleção funciona sem ela. Conferir com o par de `curl` do fim
+  do arquivo. **Não aplicar a `20261111a`** (`gcd`): esta já a cobre, e
+  aplicada depois ela tiraria o `gw` das duas whitelists (cada migração de
+  jogo reescreve a lista inteira; 4.5 do `docs/CATALOGO.md`). Se a `20261111a`
+  já tiver sido aplicada, esta entra por cima sem problema.
 - `20261109b` — fim do apoiador sem anúncio (`20261109b_sem_apoiador.sql`; o
   `b` porque a `20261109a` do mesmo dia é a do Carddass Masters).
   Decisão de 2026-11-09: o Sleevu fica 100% grátis e se paga só com anúncio,

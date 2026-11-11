@@ -118,6 +118,8 @@
     if (flat.includes("carddassmasters") || flat === "cdm") return "cdm";
     // Gundam Carddass ANTES do "gundam" genérico, que é o Gundam Card Game.
     if (flat.includes("gundamcarddass") || flat === "gcd") return "gcd";
+    // E o Gundam War (1999–2011), pelo mesmo motivo.
+    if (flat.includes("gundamwar") || flat === "gw") return "gw";
     if (flat.includes("onepiece")) return "onepiece";
     if (flat.includes("magic") || flat === "mtg") return "magic";
     if (flat.includes("yugioh") || flat === "ygo") return "ygo";

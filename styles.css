@@ -465,6 +465,19 @@
   --accent: #4d7c0f; --accent-dark: #3f6212; --accent-rgb: 77, 124, 15;
   --accent-soft: rgba(77, 124, 15, 0.1); --on-accent: #ffffff;
 }
+/* Gundam War: TURQUESA, a cor do GAME_COLOR (11/11/2026; o jogo não tem cor de
+   marca, o azul é do Gundam Card Game e a lima do Gundam Carddass). Turquesa
+   com texto escuro no escuro (14.2:1); o #0f766e com texto branco no claro
+   (5.5:1). */
+[data-game-accent="gw"] {
+  --accent: #5eead4; --accent-dark: #2dd4bf; --accent-rgb: 94, 234, 212;
+  --accent-soft: rgba(94, 234, 212, 0.16); --on-accent: #0a0c10;
+}
+[data-theme="light"][data-game-accent="gw"],
+[data-theme="light"] [data-game-accent="gw"] {
+  --accent: #0f766e; --accent-dark: #115e59; --accent-rgb: 15, 118, 110;
+  --accent-soft: rgba(15, 118, 110, 0.1); --on-accent: #ffffff;
+}
 /* Sorcery: Contested Realm: o PERGAMINHO da moldura das cartas (#c9a66b, o do
    GAME_COLOR) com texto escuro no escuro (8.5:1). No claro ele fica em 2.3:1
    com branco, então o accent escurece pro marrom de tinta #7d5f2c (5.9:1 com

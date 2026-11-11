@@ -89,6 +89,7 @@ const JOGOS = {
   dbc: { semCodigo: "Carddass: número solto, sem set impresso" },
   cdm: { semCodigo: "Carddass Masters: número solto, sem set impresso" },
   gcd: { semCodigo: "Gundam Carddass: número solto, sem set impresso" },
+  gw: { semCodigo: "Gundam War: número por cor (cada cor tem seu U-1), sem set impresso" },
   mbc: { semCodigo: "Miracle Battle Carddass: número solto" },
   hxh: { semCodigo: "número curto (C01), repetido entre os sets" },
   cyberpunk: { semCodigo: "número solto (001), repetido em todo set" }
@@ -152,8 +153,10 @@ function jogosDoSite() {
   const tx = readFileSync(join(raiz, "src", "shared.js"), "utf8");
   const ini = tx.indexOf("const DATA_GAMES");
   assert.ok(ini > 0, "DATA_GAMES não achado no shared.js");
-  const bloco = tx.slice(ini, tx.indexOf("];", ini));
-  return Array.from(bloco.matchAll(/game:\s*"([a-z0-9]+)"/g), (m) => m[1]);
+  // Desde 2026-11-11 é uma lista de slugs (o dataDir sai do slug): o bloco
+  // vai até o "]" que fecha a lista.
+  const bloco = tx.slice(ini, tx.indexOf("]", ini));
+  return Array.from(bloco.matchAll(/"([a-z0-9]+)"/g), (m) => m[1]);
 }
 
 test("todo jogo do site está declarado: lê o código, ou diz por que não", () => {
