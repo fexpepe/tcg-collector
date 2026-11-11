@@ -63,11 +63,14 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
   mostram o nome. Candidato: o logo "SDガンダムワールド" da embalagem/verso do
   本弾 — a decidir com o Fernando (logo e se todo set leva o logo da linha,
   regra 3 do `docs/CATALOGO.md`).
-- **Gundam War (`gw`, 2026-11-11): sem logo ainda.** Mesmo caso do Gundam
-  Carddass: o tile mostra a marca tipográfica, o registro leva `logo: ""` e
-  os sets mostram o nome. Candidato: o logo do site oficial
-  (`carddass.com/cdmasters/gundamwar/images/common/logo_gw.jpg`, ainda no
-  ar), a recortar.
+- `game_gw.webp` — Gundam War (Bandai, 1999–2011). Fonte enviada pelo
+  Fernando em 2026-11-11: WebP de 360×125 com alfa, o logo dourado "GUNDAM
+  WAR / MOBILE SUIT GUNDAM THE CARD GAME". Recortado no conteúdo (+2px), com
+  o alfa ≤12 zerado: 354×87. Como o Star Wars, **não** foi esticado pra 512
+  (bitmap pequeno). WebP q88 com alfa sem perda, 12 KB. Fica fora da fileira
+  Vintage da landing por enquanto: com ele seriam 13 logos, e 13 não fecha
+  linha em 12, 6 nem 4 colunas. Entra junto com o logo do Gundam Carddass
+  (14 = 7 + 7).
 - `game_naruto.webp` — logo NARUTO genérico (tile do jogo e `setLogo` do Data
   Carddass Cross Formation nrt-nx/nrt-nf)
 - `game_naruto_ccg-v2.webp` — Naruto Collectible Card Game americano 2006+
