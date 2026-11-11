@@ -184,6 +184,9 @@
   // `let`: a página de SET aceita URL só com ?setId= (sem ?name=) — o nome é
   // resolvido do catálogo em resolveSetNameFromId(), assim que ele chega.
   let detailName = setIdAposentado ? "" : (params.get("name") || "");
+  // O nome veio do CATÁLOGO (resolveSetNameFromId), não da URL: quando o
+  // manifest é lido de novo (ver manifestFresco), ele é resolvido de novo.
+  let nomePeloId = false;
   // Desambiguação da página de SET (ver scopeToEdition): o nome sozinho pode
   // casar com mais de uma edição. A lista de Sets carrega estes dois no link
   // quando precisa; ausentes, valem os padrões.
@@ -897,10 +900,10 @@
     const manifest = window.TCG_MANIFEST;
     const entries = manifest && Array.isArray(manifest.sets) ? manifest.sets.filter((set) => set.id === detailSetId) : [];
     const entry = entries.find((set) => daRegiao(set.language)) || entries[0];
-    if (entry) { detailName = entry.name; pintaTituloDoSet(); return; }
+    if (entry) { detailName = entry.name; nomePeloId = true; pintaTituloDoSet(); return; }
     const doSet = Array.isArray(window.TCG_CARDS) ? window.TCG_CARDS.filter((c) => c.setId === detailSetId) : [];
     const card = doSet.find((c) => daRegiao(c.language)) || doSet[0];
-    if (card) { detailName = card.set; pintaTituloDoSet(); }
+    if (card) { detailName = card.set; nomePeloId = true; pintaTituloDoSet(); }
   }
   // O título é pintado no começo da página, quando `detailName` ainda pode estar
   // VAZIO: a URL só com ?setId= resolve o nome depois de o catálogo chegar. Sem
@@ -1106,6 +1109,76 @@
     return manifestRecarregado;
   }
 
+  // <cartas-do-set>
+  // As entradas do manifest que são o set desta página.
+  function entradasDoSet(m) {
+    if (!m || !Array.isArray(m.sets)) return [];
+    // Chunk congelado de set aposentado (`retired`) só quando o link pede o
+    // id dele — e mesmo esse link já foi mandado pro set novo (mergedSetId).
+    let entries = m.sets.filter((set) => set.name === detailName && (!set.retired || set.id === detailSetId));
+    // O link da lista já diz QUAL edição abrir (?setId=/?region=): baixa só o
+    // chunk dela. Sem isso, um nome que existe em duas línguas puxava os dois
+    // chunks pra usar um. Link solto (sem os parâmetros) segue trazendo os
+    // candidatos — é o pickSetEdition que escolhe, e ele precisa vê-los.
+    if (entries.length > 1 && (detailSetId || detailRegion)) {
+      const daEdicao = entries.filter((set) => (!detailSetId || set.id === detailSetId)
+        && (!detailRegion || shared.cardLanguageRegion(set.language) === detailRegion));
+      if (daEdicao.length) entries = daEdicao;
+    }
+    return entries;
+  }
+
+  // O manifest de novo, furando os caches (recarregaManifest), e o nome do
+  // set resolvido outra vez quando saiu do catálogo e não da URL: o link só
+  // com ?setId= (os sets de nome japonês, os PT acentuados) pega o nome do
+  // manifest, e é justamente o nome que muda quando o set é renomeado.
+  async function manifestFresco() {
+    const fresco = await recarregaManifest();
+    if (!fresco) return null;
+    const antes = detailName;
+    if (nomePeloId) detailName = "";
+    resolveSetNameFromId();
+    if (!detailName) detailName = antes; // o manifest novo não tem o id: fica o que havia
+    return fresco;
+  }
+
+  // As cartas do set, com três saídas pra tela vazia que o F5 consertava
+  // (2026-11-11). O service worker serve o manifest e os chunks do cache e
+  // revalida por trás (stale-while-revalidate), e cada um é revalidado só
+  // quando é pedido: o manifest a cada visita ao jogo, o chunk só quando o
+  // set é aberto. Os dois saem de levas diferentes, e a tela cruza os dois
+  // pelo NOME do set. Em todas as três a tela dizia "Nenhuma carta
+  // encontrada nessa página", sem erro e sem saída, e o F5 resolvia porque a
+  // revalidação de trás já tinha trocado o arquivo no cache:
+  //   1. o manifest não chegou (o <script> falhou): sem ele não há set;
+  //   2. o manifest guardado não conhece o set. Pro link com o nome o
+  //      recarregaManifest já existia (o set do dia de lançamento,
+  //      2026-10-08); pro link só com ?setId= ele nem era tentado, porque
+  //      sem o set no manifest o nome nunca resolvia;
+  //   3. o chunk guardado é de antes de o set ser RENOMEADO: o manifest diz o
+  //      nome novo, as cartas dizem o velho, e o filtro por nome dá zero.
+  //      Visto em produção no Dragon Ball Carddass ("カードダス本弾 第1弾…"
+  //      virou "本弾 第1弾…" em 02/11) e vale pra todo set renomeado.
+  // Nos três, lê de novo furando os caches (query nova = outra chave no SW e
+  // no cache HTTP), uma vez por página. A cópia canônica do cache já é
+  // trocada pela revalidação de trás; a da query fica até a poda do SW.
+  async function cartasDoSet() {
+    let entries = entradasDoSet(window.TCG_MANIFEST);
+    if (!entries.length && (detailName || detailSetId) && await manifestFresco()) {
+      entries = entradasDoSet(window.TCG_MANIFEST);
+    }
+    if (!entries.length) return [];
+    const cartas = await shared.fetchSetChunks(entries);
+    if (!detailName || cartas.some((card) => card.set === detailName)) return cartas;
+    if (await manifestFresco()) {
+      const novas = entradasDoSet(window.TCG_MANIFEST);
+      if (novas.length) entries = novas;
+    }
+    const v = Date.now();
+    return shared.fetchSetChunks(entries.map((set) => Object.assign({}, set, { file: `${set.file}?v=${v}` })));
+  }
+  // </cartas-do-set>
+
   async function resolveCards() {
     if (rotaPendente) await rotaPendente;
     await shared.awaitCatalog();
@@ -1114,37 +1187,11 @@
       return window.TCG_CARDS;
     }
 
+    if (detailType === "set") return cartasDoSet();
+
     const manifest = window.TCG_MANIFEST;
     if (!manifest || !Array.isArray(manifest.sets)) {
       return [];
-    }
-
-    if (detailType === "set") {
-      // Chunk congelado de set aposentado (`retired`) só quando o link pede o
-      // id dele — e mesmo esse link já foi mandado pro set novo (mergedSetId).
-      const doSet = (m) => m.sets.filter((set) => set.name === detailName && (!set.retired || set.id === detailSetId));
-      let entries = doSet(manifest);
-      // Set que o manifest guardado NÃO conhece (2026-10-08): no dia do
-      // lançamento, quem já usa o app tem o manifest de ontem no service worker
-      // (stale-while-revalidate) e no cache HTTP (1 h + 1 dia de stale), e a
-      // tela dizia "Nenhuma carta encontrada" pro set novo — reproduzido em
-      // produção. Antes de concluir, busca o manifest de novo furando os dois
-      // caches (a query nova é outra chave nos dois) e procura outra vez. Uma
-      // vez por página: nome que não existe mesmo paga só esse pedido.
-      if (!entries.length && detailName) {
-        const fresco = await recarregaManifest();
-        if (fresco) entries = doSet(fresco);
-      }
-      // O link da lista já diz QUAL edição abrir (?setId=/?region=): baixa só o
-      // chunk dela. Sem isso, um nome que existe em duas línguas puxava os dois
-      // chunks pra usar um. Link solto (sem os parâmetros) segue trazendo os
-      // candidatos — é o pickSetEdition que escolhe, e ele precisa vê-los.
-      if (entries.length > 1 && (detailSetId || detailRegion)) {
-        const daEdicao = entries.filter((set) => (!detailSetId || set.id === detailSetId)
-          && (!detailRegion || shared.cardLanguageRegion(set.language) === detailRegion));
-        if (daEdicao.length) entries = daEdicao;
-      }
-      return entries.length ? shared.fetchSetChunks(entries) : [];
     }
 
     const indexes = window.TCG_INDEXES;

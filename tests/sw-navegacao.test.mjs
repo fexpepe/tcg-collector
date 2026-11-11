@@ -513,7 +513,10 @@ test("catálogo: o índice revalida sem o cache HTTP, o chunk com ele, e a respo
 test("tela do set novo: o detail.js busca o manifest de novo (query nova) antes de declarar o set vazio", () => {
   const detail = readFileSync(join(raiz, "src/detail.js"), "utf8");
   assert.ok(detail.includes("manifest.generated.js?v=${Date.now()}"), "sem o recarregaManifest com query nova");
-  assert.ok(/if \(!entries\.length && detailName\) \{\s*const fresco = await recarregaManifest\(\);/.test(detail), "o resolveCards tem de tentar o manifest fresco antes de devolver []");
+  // Desde 2026-11-11 vale também pro link só com ?setId= e pro chunk de outra
+  // leva; o comportamento está em tests/tela-set-cache-velho.test.mjs.
+  assert.ok(/async function manifestFresco\(\) \{\s*const fresco = await recarregaManifest\(\);/.test(detail), "sem o manifestFresco lendo o recarregaManifest");
+  assert.ok(/if \(!entries\.length && \(detailName \|\| detailSetId\) && await manifestFresco\(\)\)/.test(detail), "o cartasDoSet tem de tentar o manifest fresco antes de devolver []");
 });
 
 // ── Deploy novo sem competir com a página aberta (2026-10-08) ──────────────
