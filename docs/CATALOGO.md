@@ -168,9 +168,14 @@ junto. Sem isso, o endereço antigo das cartas movidas dá 404.
   no set, na variante `-en`, nas cartas e no link de compartilhar com o nome
   antigo. Foi assim com os 213 sets que perderam o prefixo em 2026-11-02 (197
   vintage e 16 grupos do TCGplayer).
-- O set caiu na **categoria certa**. Lorcana, One Piece, Naruto, HxH e DBC
-  agrupam pelo `setId` (`group<Jogo>Sets` em [src/app.js](../src/app.js)), e
-  um formato de código inédito pode cair em "outros".
+- O set caiu na **categoria certa**. Lorcana, Naruto, HxH e DBC agrupam pelo
+  `setId` (`group<Jogo>Sets` em [src/app.js](../src/app.js)); os modernos da
+  Bandai (One Piece, Gundam, Fusion World, Digimon, Union Arena e a linha
+  `nrt-ncg`), pelas regras de código do `SECOES_BANDAI`, no mesmo arquivo
+  (Principais, Boosters extras, Decks, Promos). Um formato de código inédito
+  cai em "outros" ("Promos e eventos", nos da Bandai): booster ou deck com
+  código novo entra na regra do jogo, com o caso no
+  `tests/sets-padrao.test.mjs`.
 - O set **entrou no cartão certo** (3.4): produto do lançamento ("<Set>
   Pre-Release Cards", "<Set> Promos") vira chip dentro do cartão do set; set
   novo da série ("<Set> Vol. 2") ganha cartão próprio.
@@ -244,6 +249,9 @@ há o que ligar. São três peças, todas no
    - Pokémon por série;
    - Magic por ano, mais a seção de eventos e coleções especiais;
    - jogo com `group<Jogo>Sets` próprio pelas seções dele;
+   - os modernos da Bandai (`SECOES_BANDAI`) no formato do One Piece:
+     Principais (a coleção numerada), Boosters extras e especiais, Decks
+     iniciais e Promos e eventos, pelo código do set (2026-11-11);
    - linha vintage em ordem de lançamento;
    - o resto por ano.
 
@@ -252,7 +260,9 @@ há o que ligar. São três peças, todas no
    `getViewItems`: o `tests/sets-padrao.test.mjs` barra os dois casos.
 3. **Topo da Vitrine** (`vitrineDoTopo`), só na lista inteira (sem busca):
    - o **destaque** é o set principal mais novo já lançado. Não disputam as
-     seções de promo, deck, raid e eventos (`SECOES_FORA_DO_DESTAQUE`), nem o
+     seções de promo, deck, raid e eventos (`SECOES_FORA_DO_DESTAQUE`); a de
+     boosters extras disputa, porque é lançamento (o Extra Booster do One
+     Piece, o EX do Digimon). Também não disputa o
      nome que não é lançamento (`NAO_DESTAQUE`: promo, energia, kit, deck
      inicial, pré-release, evento, caixa);
    - **ao lado**, até dois "Em breve" (lançamento no futuro) e, se faltar,

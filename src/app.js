@@ -1545,19 +1545,22 @@
 
   // As seções de cada jogo (2026-10-09: um lugar só, antes eram 15 `return`
   // no getViewItems). Recebe as RAÍZES do aninhaPorNome. Jogo sem agrupamento
-  // próprio vai por ano (Yu-Gi-Oh!, Digimon, FAB, Gundam…).
+  // próprio vai por ano (Yu-Gi-Oh!, FAB, Riftbound…); os modernos da Bandai,
+  // pelas seções do One Piece (SECOES_BANDAI).
   function agrupaSetsDoJogo(raizes) {
     // Linha vintage (?line=): do mais antigo pro mais novo, como checklist. O
     // Data Carddass do Naruto junta os quatro títulos do arcade, um por seção.
     if (lineScope.line === "nrt-dc") return groupNarutoDataCarddass(raizes);
+    // O NARUTO CARD GAME de 2027 é linha do naruto, mas é jogo moderno da
+    // Bandai: vai no formato do One Piece, do mais novo pro mais antigo.
+    if (lineScope.line === "nrt-ncg") return groupBandaiSets(raizes, SECOES_BANDAI["nrt-ncg"]);
     if (lineDef) return raizes.sort(sortByReleaseAsc);
     if (isPokemonGame()) return groupSetsBySeries(raizes);
+    if (SECOES_BANDAI[jogoAtual]) return groupBandaiSets(raizes, SECOES_BANDAI[jogoAtual]);
     const porJogo = {
       magic: groupMagicSets,
       // Lorcana não tem séries: Principais + Promos.
       lorcana: groupLorcanaSets,
-      // One Piece: Boosters (OP01…) + Starter Decks (ST-…) + o resto.
-      onepiece: groupOnePieceSets,
       naruto: groupNarutoSets,
       hxh: groupHxhSets,
       dbc: groupDbcSets,
@@ -1602,9 +1605,9 @@
   // vale em todo jogo (2026-10-09), os produtos de evento que ficam sem o set
   // pai no catálogo (o Digimon destacava "Revision Pack Cards" e punha um
   // "Release Event Cards" ao lado; o Yu-Gi-Oh!, "World Championship JPP Cards")
-  // e o deck inicial e a caixa dos jogos sem seção de decks (Union Arena,
-  // Digimon, "Deck Build Box" do Gundam, "Worlds Champion Bundles" do
-  // Riftbound).
+  // e o deck inicial e a caixa dos jogos sem seção de decks ("Worlds Champion
+  // Bundles" do Riftbound; o Union Arena, o Digimon e o "Deck Build Box" do
+  // Gundam também, até ganharem as seções da Bandai em 11/11/2026).
   const NAO_DESTAQUE = /promo|mcdonald|energy|trainer kit|black star|pre-?release|event cards|tournament|championship|revision pack|starter deck|deck build box|bundle/i;
   function vitrineDoTopo(grupos) {
     const hoje = new Date().toISOString().slice(0, 10);
@@ -1828,29 +1831,61 @@
     return items;
   }
 
-  // One Piece: boosters principais têm setId "OP<nn>"; starter decks "ST-…"; o
-  // resto (pre-release, demo, promos) vai numa categoria final.
-  function groupOnePieceSets(setItems) {
-    // Linhas vintage NÃO aparecem aqui: cada uma tem página própria (?line=,
-    // tiles no hub) — o escopo em getViewItems já as filtrou.
-    const isMain = (set) => /^OP\d+$/i.test(String(set.setId || "").trim());
-    const isDeck = (set) => /^ST/i.test(String(set.setId || "").trim());
-    const rest = setItems;
-    const main = rest.filter(isMain).sort(sortByReleaseDesc);
-    const decks = rest.filter((s) => !isMain(s) && isDeck(s)).sort(sortByReleaseDesc);
-    const promos = rest.filter((s) => !isMain(s) && !isDeck(s)).sort(sortByReleaseDesc);
+  // Bandai moderno (One Piece, Gundam, Dragon Ball Fusion World, Digimon,
+  // Union Arena e o NARUTO CARD GAME de 2027): o mesmo formato em todos, o do
+  // One Piece — a coleção numerada primeiro, depois os boosters fora da
+  // numeração, os decks e por fim promos e eventos (pedido do Fernando,
+  // 11/11/2026: até aqui só o One Piece tinha seções, e os outros quatro iam
+  // por ano, com starter deck, booster e caixa de promo misturados).
+  // A seção sai do CÓDIGO do set (o setId que a TCGCSV dá), não do nome: o
+  // Story Booster do Fusion World tem setId "ST01", que no Gundam e no One
+  // Piece é starter. O que não casa com nenhuma regra (promo, demo, revision
+  // pack, token) vai pra "Promos e eventos", como no One Piece de antes —
+  // formato de código inédito cai lá até entrar aqui (CATALOGO 3.2).
+  // Pre-release e release event cards nem chegam aqui: viram chip no cartão
+  // do set (aninhaPorNome).
+  //   main  — a coleção numerada: OP01…, GD01…, FB01…, BT-01…, UE01BT…;
+  //           o "OP15-EB04" é o OP-15 (153 das 203 cartas são OP15-), que
+  //           antes caía em promos; no Digimon, os Release Special Booster
+  //           (BT01-03A/B, BT18-19, BT19-20) são como o inglês lançou os
+  //           BT-01 a 03 e 18 a 20 (as cartas são BT1-…, BT18-…);
+  //   extra — boosters fora da numeração: Extra/Premium Booster (One Piece),
+  //           EB e a Edition Beta (Gundam), Manga e Story Booster (Fusion
+  //           World), EX, Resurgence, Advanced e Limited Card Pack (Digimon),
+  //           os volumes UEX, o Precious Booster UP e o New Card Selection NC
+  //           (Union Arena);
+  //   deck  — starter e os outros decks e caixas de montar: ST (no Fusion
+  //           World é FS), Learn Together e Set Sail (One Piece, LT/SD), Deck
+  //           Build Box (Gundam, SC), Starter Deck 26 do Digimon (BD02),
+  //           Advanced Deck do Union Arena (DC).
+  const SECOES_BANDAI = {
+    onepiece: { main: /^OP\d+(-EB\d+)?$/, extra: /^(EB|PRB)-\d+$/, deck: /^(ST|LT|SD)-?\d+/ },
+    gundam: { main: /^GD\d+$/, extra: /^(EB\d+|GD\d+_B)$/, deck: /^(ST|SC)\d+$/ },
+    dbfw: { main: /^FB\d+$/, extra: /^(SB|ST)\d+$/, deck: /^FS\d+$/ },
+    digimon: { main: /^BT(-?\d+|\d+-\d+[AB]?)$/, extra: /^(EX|RB|AD|LM)-\d+/, deck: /^(ST|BD)-?\d+/ },
+    unionarena: { main: /^UE\d+BT$/, extra: /^(UEX\d+BT|UP\d+BT|UE\d+NC)$/, deck: /^UE\d+(ST|DC)/ },
+    // Linha nrt-ncg do naruto: hoje só a promo da Gen Con. O sync dá
+    // "nrt-ncg-<abreviação>"; booster e starter seguem o padrão da Bandai (BT,
+    // ST) até o primeiro set confirmar.
+    "nrt-ncg": { main: /^NRT-NCG-BT\d+$/, extra: /^NRT-NCG-(EB|EX)\d+$/, deck: /^NRT-NCG-ST\d+$/ }
+  };
+  function groupBandaiSets(setItems, regras) {
+    const secaoDe = (set) => {
+      const id = String(set.setId || "").trim().toUpperCase();
+      return regras.main.test(id) ? "main" : regras.extra.test(id) ? "extra" : regras.deck.test(id) ? "deck" : "promo";
+    };
+    const grupos = [
+      ["sets.category.main", "main"],
+      ["sets.category.extraBoosters", "extra"],
+      ["sets.category.decks", "deck"],
+      ["sets.category.promos", "promo"]
+    ];
     const items = [];
-    if (main.length) {
-      items.push(cabecalhoDeSecao("sets.category.main", main.length));
-      main.forEach((set) => items.push(set));
-    }
-    if (decks.length) {
-      items.push(cabecalhoDeSecao("sets.category.decks", decks.length));
-      decks.forEach((set) => items.push(set));
-    }
-    if (promos.length) {
-      items.push(cabecalhoDeSecao("sets.category.promos", promos.length));
-      promos.forEach((set) => items.push(set));
+    for (const [key, secao] of grupos) {
+      const sets = setItems.filter((set) => secaoDe(set) === secao);
+      if (!sets.length) continue;
+      items.push(cabecalhoDeSecao(key, sets.length));
+      sets.sort(sortByReleaseDesc).forEach((set) => items.push(set));
     }
     return items;
   }
@@ -2236,7 +2271,7 @@
   }
 
   // Seções por ANO de lançamento, do mais novo pro mais antigo: o Magic e os
-  // jogos sem série nem agrupamento próprio (Yu-Gi-Oh, Digimon, FAB, Gundam…),
+  // jogos sem série nem agrupamento próprio (Yu-Gi-Oh, FAB, Riftbound…),
   // que antes caíam num "Outros" único. Set sem data vai pro fim.
   function groupSetsByYear(setItems) {
     const porAno = new Map();

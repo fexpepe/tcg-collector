@@ -144,3 +144,56 @@ test("data só com ano e mês não ganha dia inventado no estilo longo", () => {
 test("o topo da Vitrine não conta como resultado", () => {
   assert.ok(corpo("render").includes("sx-hero|sx-continue"));
 });
+
+// Bandai moderno (2026-11-11): One Piece, Gundam, Fusion World, Digimon, Union
+// Arena e a linha nrt-ncg no formato do One Piece. Os códigos são os do
+// catálogo daquele dia; o que importa é cada um cair na seção certa, e o
+// "ST01" do Fusion World (Story Booster) não virar starter.
+function secoesBandai(jogo, setIds) {
+  const i = app.indexOf("  const SECOES_BANDAI = {");
+  assert.ok(i >= 0, "SECOES_BANDAI existe");
+  const regras = app.slice(i, app.indexOf("\n  };\n", i) + 5);
+  const fn = new Function("sortByReleaseDesc", "cabecalhoDeSecao",
+    `${regras}\n${corpo("groupBandaiSets")}\nreturn (jogo, sets) => groupBandaiSets(sets, SECOES_BANDAI[jogo]);`)(
+    sortByReleaseDesc, (key, count) => ({ type: "category-head", key, count }));
+  const secoes = {};
+  let atual = null;
+  for (const item of fn(jogo, setIds.map((setId) => set(setId, "2026-01-01", { setId })))) {
+    if (item.type === "category-head") secoes[atual = item.key.replace("sets.category.", "")] = [];
+    else secoes[atual].push(item.setId);
+  }
+  for (const lista of Object.values(secoes)) lista.sort();
+  return secoes;
+}
+
+test("Bandai moderno: coleção numerada, boosters extras, decks e promos, pelo código do set", () => {
+  assert.deepEqual(secoesBandai("onepiece", ["OP01", "OP15-EB04", "EB-05", "PRB-02", "ST-01", "ST-31", "LT-01", "SD01", "OP-PR", "OP-DD", "OP-RP", "OP17 RE"]), {
+    main: ["OP01", "OP15-EB04"], extraBoosters: ["EB-05", "PRB-02"], decks: ["LT-01", "SD01", "ST-01", "ST-31"], promos: ["OP-DD", "OP-PR", "OP-RP", "OP17 RE"]
+  });
+  assert.deepEqual(secoesBandai("gundam", ["GD01", "GD06", "EB01", "GD01_b", "ST01", "ST14", "SC01", "GCG-PR", "EXBP", "RP"]), {
+    main: ["GD01", "GD06"], extraBoosters: ["EB01", "GD01_b"], decks: ["SC01", "ST01", "ST14"], promos: ["EXBP", "GCG-PR", "RP"]
+  });
+  assert.deepEqual(secoesBandai("dbfw", ["FB01", "FB11", "SB01", "ST01", "FS01", "FS12", "FB02_AR", "DBSFW_PR", "DBSFW_EM"]), {
+    main: ["FB01", "FB11"], extraBoosters: ["SB01", "ST01"], decks: ["FS01", "FS12"], promos: ["DBSFW_EM", "DBSFW_PR", "FB02_AR"]
+  });
+  assert.deepEqual(secoesBandai("digimon", ["BT-01", "BT-26", "BT27", "EX-13", "RB-01", "AD-01", "LM-08", "LM-01-05", "BT01-03A", "BT19-20", "ST-1", "ST-25", "BD02", "D-PR", "DEMO", "RPC"]), {
+    main: ["BT-01", "BT-26", "BT01-03A", "BT19-20", "BT27"], extraBoosters: ["AD-01", "EX-13", "LM-01-05", "LM-08", "RB-01"], decks: ["BD02", "ST-1", "ST-25"], promos: ["D-PR", "DEMO", "RPC"]
+  });
+  assert.deepEqual(secoesBandai("unionarena", ["UE01BT", "UE24BT", "UEX08BT", "UP01BT", "UE01NC", "UE01ST", "UE01ST_PRE", "UE10DC", "UEPR"]), {
+    main: ["UE01BT", "UE24BT"], extraBoosters: ["UE01NC", "UEX08BT", "UP01BT"], decks: ["UE01ST", "UE01ST_PRE", "UE10DC"], promos: ["UEPR"]
+  });
+  assert.deepEqual(secoesBandai("nrt-ncg", ["nrt-ncg-promo", "nrt-ncg-bt01", "nrt-ncg-st01"]), {
+    main: ["nrt-ncg-bt01"], decks: ["nrt-ncg-st01"], promos: ["nrt-ncg-promo"]
+  });
+});
+
+test("Bandai moderno: as seções saem na ordem do One Piece e decks/promos ficam fora do destaque", () => {
+  const ordem = [...corpo("groupBandaiSets").matchAll(/"(sets\.category\.\w+)"/g)].map((m) => m[1]);
+  assert.deepEqual(ordem, ["sets.category.main", "sets.category.extraBoosters", "sets.category.decks", "sets.category.promos"]);
+  const fora = constante("SECOES_FORA_DO_DESTAQUE");
+  assert.ok(fora.includes('"sets.category.decks"') && fora.includes('"sets.category.promos"'));
+  assert.ok(!fora.includes("extraBoosters"), "booster extra é lançamento e disputa o destaque");
+  const agrupa = corpo("agrupaSetsDoJogo");
+  assert.ok(agrupa.includes("SECOES_BANDAI[jogoAtual]"));
+  assert.ok(agrupa.indexOf('lineScope.line === "nrt-ncg"') < agrupa.indexOf("if (lineDef)"), "a linha do NARUTO CARD GAME passa antes da regra das linhas vintage");
+});
