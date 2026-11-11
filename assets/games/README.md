@@ -20,6 +20,25 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
 - `game_riftbound-v2.webp` — Riftbound / League of Legends (fonte: `../brand/riftbound.webp`,
   1908×1908 com padding — cortado pro bbox do conteúdo antes de escalar)
 - `game_onepiece_carddass.webp` — Carddass Hyper Battle (tile vintage do OP)
+- `game_onepiece_2002.webp` — One Piece Card Game de 2002–2005 (linha
+  `op2002`: tile vintage do hub, parede da landing e página /games). É a placa
+  "From TV animation / ONE PIECE (ワンピース)" do verso de madeira das cartas.
+  Fonte: foto do verso enviada pelo Fernando em 2026-11-11 (1200×1599; a placa
+  com ~620 px). Antes dela só havia cópias de ~185–220 px (embalagem do 1º set
+  e banner no Grand Line Wiki) e um scan de pacote com retícula forte e arte
+  encostando no logo. O "CARD GAME" do verso é entalhado na madeira, separado
+  da placa, e ficou de fora. Na carta, a placa é aro amarelo com uma sombra
+  marrom-escura em volta, irregular e grudada nas faixas escuras da madeira: o
+  recorte foi pelo aro (máscara pelo brilho, buracos fechados, abertura de 3 px
+  pra soltar as faixas) e a sombra foi REFEITA como contorno uniforme de 5 px
+  na cor medida dela (≈ #3e2008, mediana 62,37,17), em 4× e reduzido (borda
+  sem serrilhado). Sem ele, o aro amarelo some na cápsula branca do hub.
+  Recortado no conteúdo (+2px), reduzido pra 512×243 em alfa pré-multiplicado,
+  alfa abaixo de 12 zerado; WebP com perda q88 e alfa sem perda (56 KB — a
+  textura da impressão e da foto pesa, como no Naruto vintage). Os sets seguem
+  com o nome (`setLogo` vazio): pôr o logo do jogo em todo set é decisão por
+  jogo (regra 3 do `docs/CATALOGO.md`), e cada set tem logo próprio impresso
+  (o Grand Line Wiki publica, a ~250 px).
 - `game_unionarena.webp` — Union Arena (fonte enviada pelo Fernando em
   2026-08-30, 384×384 com fundo branco e muito padding). **Único que NÃO tem 512
   de largura**: o recorte do conteúdo dá 285×123, e esticar bitmap não inventa
