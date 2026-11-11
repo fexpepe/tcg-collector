@@ -58,14 +58,20 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
   pré-multiplicado. WebP com perda q88 e alfa sem perda: 38 KB (o sem perda
   dava 95 KB, pelos gradientes prata). O contorno escuro do logo segura o
   branco das letras na cápsula branca do hub.
-- **Gundam Carddass (`gcd`, 2026-11-10): sem logo ainda.** O tile do hub
-  mostra a marca tipográfica ("Gundam"), o registro leva `logo: ""` e os sets
-  mostram o nome. Candidato: o logo "SDガンダムワールド" da embalagem/verso do
-  本弾 — a decidir com o Fernando (logo e se todo set leva o logo da linha,
-  regra 3 do `docs/CATALOGO.md`).
-- **Gundam War (`gw`, 2026-11-11): sem logo ainda.** Mesmo caso do Gundam
-  Carddass: o tile mostra a marca tipográfica, o registro leva `logo: ""` e
-  os sets mostram o nome. Candidato: o logo do site oficial
+- `game_gcd.webp` — Gundam Carddass (Bandai, 1988–1997; tile vintage do
+  jogo `gcd` no hub, parede da landing, página /games e kit). Logo "Carddass
+  GUNDAM SELECTION / カードダス ガンダム セレクション" enviado pelo Fernando em
+  2026-11-11 (JPG 894×409, fundo branco). O fundo saiu por flood fill a partir
+  das bordas (pixels com o menor canal > 150 ligados à borda), então o branco
+  de dentro das letras fica; na faixa de antisserrilhado o alfa sai da
+  escuridão do pixel e a cor vira o preto do contorno (sem franja branca no
+  tema escuro). Reduzido pra 512×234 com o Pillow em alfa pré-multiplicado,
+  alfa abaixo de 12 zerado. WebP com perda q88 e alfa sem perda: 28 KB. O
+  contorno preto grosso segura o logo na cápsula branca do hub. Os sets
+  seguem com o nome (`setLogo: ""`): logo do jogo em todo set é decisão por
+  jogo (regra 3 do docs/CATALOGO.md).
+- **Gundam War (`gw`, 2026-11-11): sem logo ainda.** O tile mostra a marca
+  tipográfica, o registro leva `logo: ""` e os sets mostram o nome. Candidato: o logo do site oficial
   (`carddass.com/cdmasters/gundamwar/images/common/logo_gw.jpg`, ainda no
   ar), a recortar.
 - `game_naruto.webp` — logo NARUTO genérico (tile do jogo e `setLogo` do Data

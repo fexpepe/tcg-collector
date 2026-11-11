@@ -269,8 +269,7 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   章), ネオバトル (10), SDコマンド戦記 (5), ガンドランダー (3), スーパーバトル
   (3), バトル・オブ・ナイツ (7) e a 新SD戦国伝 do 第2弾 em diante; (3) nome em
   inglês das séries de história (外伝, 戦国伝, 聖伝), hoje só em japonês; (4)
-  logo da linha (o tile do hub mostra a marca tipográfica); (5) o mês de cada
-  弾 (o 80storage só dá o ano); (6) conferir o subtítulo do 外伝 第7弾
+  o mês de cada 弾 (o 80storage só dá o ano); (5) conferir o subtítulo do 外伝 第7弾
   ("キングガンダム" no 80storage) numa segunda fonte.
 - **Gundam War (`gw`)**: jogo próprio desde 2026-11-11, só a versão japonesa.
   Entraram 6.534 cartas de 67 produtos pelas listas do site oficial da Bandai

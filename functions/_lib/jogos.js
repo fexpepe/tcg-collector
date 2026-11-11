@@ -40,7 +40,7 @@ export const JOGOS_URL = [
   { url: "sorcery-contested-realm", game: "sorcery", nome: "Sorcery: Contested Realm", logo: "assets/games/game_sorcery.webp" },
   { url: "naruto-card-game", game: "naruto", linha: "nrt-ncg", prefixos: ["nrt-ncg-"], nome: "Naruto Card Game (2027)", logo: "assets/games/game_naruto_2027.webp" },
   { url: "weiss-schwarz", game: "weiss", nome: "Weiß Schwarz", logo: "assets/games/game_weiss.webp" },
-  { url: "gundam-carddass", game: "gcd", nome: "Gundam Carddass", logo: "", vintage: "1988–1997" },
+  { url: "gundam-carddass", game: "gcd", nome: "Gundam Carddass", logo: "assets/games/game_gcd.webp", vintage: "1988–1997" },
   { url: "dragon-ball-carddass", game: "dbc", nome: "Dragon Ball Carddass", logo: "assets/games/game_dbc.webp", vintage: "1988–1997" },
   { url: "gundam-war", game: "gw", nome: "Gundam War", logo: "", vintage: "1999–2011" },
   { url: "hunter-x-hunter-carddass", game: "hxh", nome: "Hunter × Hunter Carddass Hyper Battle", logo: "assets/games/game_hxh.webp", vintage: "1999–2001" },
