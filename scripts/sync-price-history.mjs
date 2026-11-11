@@ -37,7 +37,7 @@
 // Sem pricing local (dev), busca o de produção. Sai com sucesso se nada existir.
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { existsSync } from "node:fs";
-import { podarHistorico, podarGraded, caberEmBytes, migrarIdsDoHistorico, serieMaisAdiantada, DIAS_DIARIO, DIAS_SEMANAL, MAX_BYTES } from "./lib/price-history-retention.mjs";
+import { podarHistorico, podarGraded, caberEmBytes, migrarIdsDoHistorico, serieMaisAdiantada, HERDA, herdaSeries, DIAS_DIARIO, DIAS_SEMANAL, MAX_BYTES } from "./lib/price-history-retention.mjs";
 import { clienteR2 } from "./lib/r2.mjs";
 
 const PROD = "https://tcg-collector.pages.dev";
@@ -72,11 +72,11 @@ const cacheFile = new URL(`price-history-${slug}.json`, cacheDir);
 // imagens (R2_ACCESS_KEY_ID / R2_SECRET_ACCESS_KEY / CLOUDFLARE_ACCOUNT_ID —
 // o deploy passa os três). null sem credencial: leitura e gravação viram no-op.
 const bucketR2 = clienteR2();
-const chaveR2 = (nome) => `_history/${slug}/${nome}`;
-async function leSerieR2(nome) {
+const chaveR2 = (nome, s = slug) => `_history/${s}/${nome}`;
+async function leSerieR2(nome, s = slug) {
   if (!bucketR2) return null;
   try {
-    const r = await bucketR2.get(chaveR2(nome));
+    const r = await bucketR2.get(chaveR2(nome, s));
     if (r.ok) { const j = await r.json(); if (j && Array.isArray(j.d) && j.c) return j; }
     else if (r.status !== 404) console.warn(`[price-history] ${dir}: R2 respondeu HTTP ${r.status} ao ler ${nome}`);
   } catch (e) { console.warn(`[price-history] ${dir}: R2 inacessível ao ler ${nome} (${e.message})`); }
@@ -131,22 +131,32 @@ async function leSerieCache(url) {
   try { const j = JSON.parse(await readFile(url, "utf8")); if (j && Array.isArray(j.d) && j.c) return j; } catch { /* primeira vez */ }
   return null;
 }
-async function loadAcervo({ nomeR2, nomeLongo, cache, nomeJanela }) {
-  const copias = [await leSerieR2(nomeR2), await leJsonSerie(`${PROD}/${dir}/${nomeLongo}`), await leSerieCache(cache)];
+async function loadAcervo({ nomeR2, nomeLongo, cache, nomeJanela, d = dir, s = slug }) {
+  const copias = [await leSerieR2(nomeR2, s), await leJsonSerie(`${PROD}/${d}/${nomeLongo}`), await leSerieCache(cache)];
   const origem = ["R2", "produção", "cache do runner"];
   const melhor = serieMaisAdiantada(copias);
   if (melhor) {
     const de = origem.filter((_, i) => copias[i] === melhor).join("+");
     const outras = copias.map((c, i) => c && c !== melhor ? `${origem[i]} ${c.d.length}p até ${c.d[c.d.length - 1]}` : "").filter(Boolean);
-    console.log(`[price-history] ${dir}: acervo ${nomeLongo} lido de ${de} (${melhor.d.length}p até ${melhor.d[melhor.d.length - 1]})${outras.length ? `; atrás: ${outras.join(", ")}` : ""}`);
+    console.log(`[price-history] ${d}: acervo ${nomeLongo} lido de ${de} (${melhor.d.length}p até ${melhor.d[melhor.d.length - 1]})${outras.length ? `; atrás: ${outras.join(", ")}` : ""}`);
     return melhor;
   }
-  const janela = await leJsonSerie(`${PROD}/${dir}/${nomeJanela}`);
+  const janela = await leJsonSerie(`${PROD}/${d}/${nomeJanela}`);
   if (janela) return janela;
   return { v: 1, d: [], c: {} };
 }
-function loadPrevious() {
-  return loadAcervo({ nomeR2: "price-history-long.json", nomeLongo: "price-history-long.generated.json", cache: cacheFile, nomeJanela: "price-history.generated.json" });
+// Jogo que nasceu de uma linha de outro: sem acervo próprio, herda a série das
+// cartas dele (HERDA, no price-history-retention.mjs).
+async function loadPrevious() {
+  const hist = await loadAcervo({ nomeR2: "price-history-long.json", nomeLongo: "price-history-long.generated.json", cache: cacheFile, nomeJanela: "price-history.generated.json" });
+  const h = HERDA[dir];
+  if (!h || hist.d.length) return hist;
+  const s = h.de.replace(/[\\/]/g, "-");
+  const origem = await loadAcervo({ nomeR2: "price-history-long.json", nomeLongo: "price-history-long.generated.json", cache: new URL(`price-history-${s}.json`, cacheDir), nomeJanela: "price-history.generated.json", d: h.de, s });
+  const herdado = herdaSeries(origem, h.prefixo);
+  if (!herdado) return hist;
+  console.log(`[price-history] ${dir}: acervo novo herdou ${Object.keys(herdado.c).length} série(s) de ${h.de} (${herdado.d.length}p até ${herdado.d[herdado.d.length - 1]})`);
+  return herdado;
 }
 
 // Referência: [fonte, valor] na prioridade do front (BR mediana > USD > EUR).

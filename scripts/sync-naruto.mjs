@@ -1,6 +1,9 @@
-// NARUTO CARD GAME (Bandai, lançamento mundial 2027) — o jogo NOVO, que vive na
-// LINHA nrt-ncg- do catálogo do Naruto (o principal, sem prefixo, é o CCG
-// vintage 2002–2006 do sync-naruto-vintage.mjs). Duas fontes:
+// NARUTO CARD GAME (Bandai, lançamento mundial 2027) — o jogo NOVO, `narutocg`,
+// em data/narutocg/. Até 11/11/2026 foi a LINHA nrt-ncg- do catálogo do
+// Naruto (o `naruto`, que é o vintage de 2002–2006 e as linhas dele); virou
+// jogo próprio porque é outro jogo, moderno, com preço e set novo pela frente,
+// e somava na coleção do vintage. Os ids (nrt-ncg-) e o endereço
+// (/games/naruto-card-game) não mudaram. Duas fontes:
 //
 //   1. CURADORIA manual (abaixo): promos de evento com scan próprio — ex.: a
 //      Chakra Card da Gen Con 2026, a PRIMEIRA carta do jogo. Imagens locais
@@ -21,20 +24,26 @@
 //   node scripts/sync-naruto.mjs --discover         # lista categorias com "naruto"
 //   node scripts/sync-naruto.mjs --category 93      # sincroniza a categoria
 //
-// ANEXA ao catálogo (mantém o vintage e as demais linhas): regrava só o que é
-// nrt-ncg-. Carta da TCGCSV que a fonte tirar fica CONGELADA, sem preço (id
-// publicado nunca some — docs/CATALOGO.md, contrato 2). Isso vale também
-// enquanto a variável não está ligada no GitHub: o build segue com o que está
-// versionado em vez de apagar a linha.
+// O catálogo é só deste sync. Carta da TCGCSV que a fonte tirar fica
+// CONGELADA, sem preço (id publicado nunca some — docs/CATALOGO.md, contrato
+// 2). Isso vale também enquanto a variável não está ligada no GitHub: o build
+// segue com o que está versionado em vez de apagar a carta.
+//
+// As cartas que moravam no catálogo do Naruto (a linha, até 11/11/2026) entram
+// como "anteriores", com o preço que tinham, e saem de lá (tiraDoNaruto) — no
+// CI este sync roda antes dos do Naruto, e o sync-naruto-vintage não as
+// preserva mais.
 import { fetchJsonRetry, mapLimit, readGlobalVar, writeGameCatalog, preserveMissingCards, slug } from "./lib/sync-common.mjs";
 import { fileURLToPath } from "node:url";
 import { nomeDoSet } from "./lib/nome-do-set.mjs";
 
 const ROOT = new URL("../", import.meta.url);
-const OUT = new URL("data/naruto/", ROOT);
+const GAME = "narutocg";
+const OUT = new URL(`data/${GAME}/`, ROOT);
+const NARUTO = new URL("data/naruto/", ROOT);
 const BASE = "https://tcgcsv.com/tcgplayer";
 const HEADERS = { "User-Agent": "Sleevu (sleevu.app) catalog sync", Accept: "application/json" };
-const DESTA_LINHA = /^nrt-ncg-/;
+const DESTE_JOGO = /^nrt-ncg-/;
 
 // ── Curadoria: promos com scan próprio ───────────────────────────────────────
 // CP-001 "Chakra Card -Gen Con 2026 Ver.-" — a primeira carta do jogo, dada nas
@@ -133,7 +142,7 @@ export function cardOf(p, g, setId, by = new Map()) {
     name: NOME_OFICIAL[p.productId] || p.name,
     // Nome do grupo do TCGplayer sem o jogo na frente (2026-11-02):
     // contrato 7 do docs/CATALOGO.md, regra em scripts/lib/nome-do-set.mjs.
-    set: nomeDoSet("naruto", g.name),
+    set: nomeDoSet(GAME, g.name),
     setId,
     number: ext(p, "Number"),
     setTotal: 0, // contado por set em uniformizaSets
@@ -221,7 +230,7 @@ export function montaLinha(grupos, { curated = CURATED, anteriores = [] } = {}) 
     }
   }
   const novas = [...porId.values()].concat(daFonte);
-  const congeladas = preserveMissingCards(anteriores.filter((c) => c && DESTA_LINHA.test(String(c.id))), novas);
+  const congeladas = preserveMissingCards(anteriores.filter((c) => c && DESTE_JOGO.test(String(c.id))), novas);
   return { cards: ordena(uniformizaSets(novas.concat(congeladas))), pricing, congeladas: congeladas.length };
 }
 
@@ -235,16 +244,42 @@ async function discover() {
   hits.forEach((c) => console.log(`  ${c.categoryId} - ${c.name}`));
 }
 
+// As cartas nrt-ncg- moraram no catálogo do Naruto enquanto isto foi linha
+// dele (até 11/11/2026). Tira de lá, com o preço: o sync-naruto-vintage também
+// as descarta, e no build rápido o translate-naruto-names regrava o Naruto a
+// partir do cards.js versionado, que já vem sem elas. Sem carta nrt-ncg- lá,
+// não faz nada.
+async function tiraDoNaruto() {
+  const cards = (await readGlobalVar(new URL("cards.js", NARUTO), "TCG_CARDS")) || [];
+  const resto = cards.filter((c) => c && !DESTE_JOGO.test(String(c.id)));
+  if (!cards.length || resto.length === cards.length) return 0;
+  const precos = (await readGlobalVar(new URL("pricing.js", NARUTO), "TCG_PRICING")) || {};
+  const pricing = {};
+  for (const [id, v] of Object.entries(precos)) if (!DESTE_JOGO.test(id)) pricing[id] = v;
+  await writeGameCatalog(NARUTO, { cards: resto, pricing, webDir: "data/naruto/" });
+  return cards.length - resto.length;
+}
+
 async function run() {
   const CATEGORY = argAt("--category") || process.env.NARUTO_TCGCSV_CATEGORY;
-  const existing = (await readGlobalVar(new URL("cards.js", OUT), "TCG_CARDS")) || [];
-  const pricingOld = (await readGlobalVar(new URL("pricing.js", OUT), "TCG_PRICING")) || {};
+  const proprias = (await readGlobalVar(new URL("cards.js", OUT), "TCG_CARDS")) || [];
+  const precosProprios = (await readGlobalVar(new URL("pricing.js", OUT), "TCG_PRICING")) || {};
+  // O que ainda está no catálogo do Naruto (a 1ª rodada depois da separação)
+  // conta como publicado: sem isto, a carta da TCGCSV que só existe lá
+  // sumiria enquanto a categoria não está ligada.
+  const doNaruto = ((await readGlobalVar(new URL("cards.js", NARUTO), "TCG_CARDS")) || []).filter((c) => c && DESTE_JOGO.test(String(c.id)));
+  const precosDoNaruto = (await readGlobalVar(new URL("pricing.js", NARUTO), "TCG_PRICING")) || {};
+  const temAqui = new Set(proprias.map((c) => c && c.id));
+  const existing = proprias.concat(doNaruto.filter((c) => !temAqui.has(c.id)));
+  const pricingOld = {};
+  for (const [id, v] of Object.entries(precosDoNaruto)) if (DESTE_JOGO.test(id)) pricingOld[id] = v;
+  Object.assign(pricingOld, precosProprios);
 
   const grupos = [];
   if (!CATEGORY) {
-    console.log(`Naruto (novo): sem categoria TCGCSV — curadoria (${CURATED.length}) + o que já foi publicado.`);
+    console.log(`Naruto Card Game (${GAME}): sem categoria TCGCSV — curadoria (${CURATED.length}) + o que já foi publicado.`);
   } else {
-    console.log(`Naruto (novo): sincronizando TCGCSV categoria ${CATEGORY}…`);
+    console.log(`Naruto Card Game (${GAME}): sincronizando TCGCSV categoria ${CATEGORY}…`);
     const groups = (await json(`${BASE}/${CATEGORY}/groups`)).results || [];
     console.log(`  ${groups.length} grupo(s).`);
     await mapLimit(groups, 4, async (g) => {
@@ -257,31 +292,25 @@ async function run() {
     grupos.sort((a, b) => a.g.groupId - b.g.groupId);
   }
 
-  const { cards: line, pricing: pricingNew, congeladas } = montaLinha(grupos, { anteriores: existing });
-  for (const s of new Set(line.map((c) => c.setId))) {
-    const cs = line.filter((c) => c.setId === s);
+  const { cards, pricing: pricingNew, congeladas } = montaLinha(grupos, { anteriores: existing });
+  for (const s of new Set(cards.map((c) => c.setId))) {
+    const cs = cards.filter((c) => c.setId === s);
     console.log(`  ${s} ${cs[0].set}: ${cs.length} carta(s)`);
   }
   if (congeladas) console.log(CATEGORY
     ? `  ${congeladas} carta(s) que a fonte não lista mais ficaram congeladas.`
     : `  ${congeladas} carta(s) mantidas como estão no catálogo publicado (fonte não consultada).`);
 
-  // A linha nova vai NA FRENTE: é onde ela termina no CI (os syncs seguintes
-  // re-anexam as linhas deles no fim), então rodar este sync sozinho não
-  // reordena o resto do catálogo.
-  const kept = existing.filter((c) => c && !DESTA_LINHA.test(String(c.id)));
-  const merged = line.concat(kept);
-  // Preço: com a categoria, os desta linha são refeitos (carta congelada fica
-  // sem preço, preço que a fonte tirou não fica velho pra sempre). Sem ela,
-  // fica o que está versionado.
+  // Preço: com a categoria, é refeito (carta congelada fica sem preço, preço
+  // que a fonte tirou não fica velho pra sempre). Sem ela, fica o publicado.
+  const ids = new Set(cards.map((c) => c.id));
   const pricing = {};
-  for (const [id, v] of Object.entries(pricingOld)) {
-    if (!CATEGORY || !DESTA_LINHA.test(id)) pricing[id] = v;
-  }
+  if (!CATEGORY) for (const [id, v] of Object.entries(pricingOld)) if (ids.has(id)) pricing[id] = v;
   Object.assign(pricing, pricingNew);
 
-  await writeGameCatalog(OUT, { cards: merged, pricing, webDir: "data/naruto/" });
-  console.log(`Gravado em ${fileURLToPath(OUT)} — ${merged.length} cartas totais (${line.length} na linha nova), ${Object.keys(pricing).length} com preço.`);
+  await writeGameCatalog(OUT, { cards, pricing, webDir: `data/${GAME}/` });
+  const tiradas = await tiraDoNaruto();
+  console.log(`Gravado em ${fileURLToPath(OUT)} — ${cards.length} cartas, ${Object.keys(pricing).length} com preço${tiradas ? `; ${tiradas} saíram do catálogo do Naruto` : ""}.`);
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {

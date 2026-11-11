@@ -30,7 +30,7 @@ import { classificaMudanca, assinatura, idiomaDe, numDe } from "./lib/id-stabili
 
 const ROOT = new URL("../", import.meta.url);
 const BASELINE = new URL("data/catalog-baseline.json", ROOT);
-const GAMES = { pokemon: "data/", lorcana: "data/lorcana/", onepiece: "data/onepiece/", magic: "data/magic/", fab: "data/fab/", gundam: "data/gundam/", swu: "data/swu/", cyberpunk: "data/cyberpunk/", sorcery: "data/sorcery/", dbfw: "data/dbfw/", ygo: "data/ygo/", digimon: "data/digimon/", riftbound: "data/riftbound/", unionarena: "data/unionarena/", naruto: "data/naruto/", hxh: "data/hxh/", dbc: "data/dbc/", dbz: "data/dbz/", wow: "data/wow/", lotr: "data/lotr/", harrypotter: "data/harrypotter/", weiss: "data/weiss/", mbc: "data/mbc/", cdm: "data/cdm/", gcd: "data/gcd/", gw: "data/gw/", jump: "data/jump/" };
+const GAMES = { pokemon: "data/", lorcana: "data/lorcana/", onepiece: "data/onepiece/", magic: "data/magic/", fab: "data/fab/", gundam: "data/gundam/", swu: "data/swu/", cyberpunk: "data/cyberpunk/", sorcery: "data/sorcery/", dbfw: "data/dbfw/", ygo: "data/ygo/", digimon: "data/digimon/", riftbound: "data/riftbound/", unionarena: "data/unionarena/", naruto: "data/naruto/", hxh: "data/hxh/", dbc: "data/dbc/", dbz: "data/dbz/", wow: "data/wow/", lotr: "data/lotr/", harrypotter: "data/harrypotter/", weiss: "data/weiss/", mbc: "data/mbc/", cdm: "data/cdm/", gcd: "data/gcd/", gw: "data/gw/", narutocg: "data/narutocg/", jump: "data/jump/" };
 const UPDATE = process.argv.includes("--update-baseline");
 const ACEITA_ID = process.argv.includes("--aceitar-mudanca-de-id");
 
@@ -168,7 +168,9 @@ async function checarEstabilidadeDeId() {
   // perda.
   // O Gundam Carddass foi linha do gundam por algumas horas (10/11/2026) e
   // virou o jogo gcd, com os mesmos ids.
-  const MUDOU_DE_JOGO = { "op-mb-": "mbc", "nrt-mb-": "mbc", "hxh-mb-": "mbc", "gcd-": "gcd" };
+  // O NARUTO CARD GAME de 2027 foi a linha nrt-ncg- do naruto até 11/11/2026 e
+  // virou o jogo narutocg, com os mesmos ids.
+  const MUDOU_DE_JOGO = { "op-mb-": "mbc", "nrt-mb-": "mbc", "hxh-mb-": "mbc", "gcd-": "gcd", "nrt-ncg-": "narutocg" };
   const destinoDe = async (id) => {
     const pre = Object.keys(MUDOU_DE_JOGO).find((p) => id.startsWith(p));
     if (!pre) return null;

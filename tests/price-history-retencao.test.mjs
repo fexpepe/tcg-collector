@@ -318,3 +318,17 @@ test("entre cópias do acervo (R2, produção, cache) vence a mais adiantada", (
   assert.equal(serieMaisAdiantada([null, undefined, { d: "x" }, ontem]), ontem);
   assert.equal(serieMaisAdiantada([null, {}]), null);
 });
+
+// 2026-11-11: o narutocg nasceu da linha nrt-ncg- do naruto e herda a série
+// das cartas dela na 1ª rodada, em vez de zerar o gráfico das Chakra Card.
+test("herdaSeries: o jogo novo leva só as séries do prefixo, com as datas", async () => {
+  const { herdaSeries, HERDA } = await import("../scripts/lib/price-history-retention.mjs");
+  assert.deepEqual(HERDA["data/narutocg"], { de: "data/naruto", prefixo: "nrt-ncg-" });
+  const naruto = { v: 1, d: ["2026-09-20", "2026-09-21"], c: { "nrt-ncg-cp-001": { s: "u", p: [999.59, 980] }, "nrt-s01-1": { s: "u", p: [1, 1] } } };
+  const h = herdaSeries(naruto, "nrt-ncg-");
+  assert.deepEqual(h, { v: 1, d: ["2026-09-20", "2026-09-21"], c: { "nrt-ncg-cp-001": { s: "u", p: [999.59, 980] } } });
+  h.d.push("2026-11-12");
+  assert.equal(naruto.d.length, 2, "não mexe nas datas do acervo de origem");
+  assert.equal(herdaSeries(naruto, "gcd-"), null);
+  assert.equal(herdaSeries({ v: 1, d: [], c: {} }, "nrt-ncg-"), null);
+});

@@ -119,17 +119,34 @@ test("produto selado (sem Number) não vira carta", () => {
 
 // O sync vintage roda DEPOIS deste no CI e regrava o catálogo inteiro do
 // Naruto: linha que não estiver no OTHER_LINES dele some no deploy (já
-// aconteceu duas vezes, com a ncg e com a ccg).
-test("o sync vintage preserva as outras linhas do Naruto, a nova inclusive", async () => {
+// aconteceu duas vezes, com a ncg e com a ccg). Desde 11/11/2026 o NARUTO CARD
+// GAME de 2027 é o jogo narutocg, em data/narutocg/: carta nrt-ncg- que sobrar
+// no catálogo do Naruto é resto, e o vintage não a preserva.
+test("o sync vintage preserva as outras linhas do Naruto, e não o jogo novo", async () => {
   const { readFile } = await import("node:fs/promises");
   const src = (await readFile(new URL("../scripts/sync-naruto-vintage.mjs", import.meta.url), "utf8")).replace(/\r\n/g, "\n");
   const m = /const OTHER_LINES = (\/.+\/);/.exec(src);
   assert.ok(m, "OTHER_LINES sumiu do sync-naruto-vintage.mjs");
   const re = new Function(`return ${m[1]}`)();
-  for (const id of ["nrt-ncg-cp-001", "nrt-ncg-717838", "nrt-ccg-J-001", "nrt-dc-dn-001", "nrt-nf-001", "nrt-nx-001", "nrt-scg-jutsu-025"]) {
+  for (const id of ["nrt-ccg-J-001", "nrt-dc-dn-001", "nrt-nf-001", "nrt-nx-001", "nrt-scg-jutsu-025"]) {
     assert.ok(re.test(id), id);
   }
+  assert.ok(!re.test("nrt-ncg-cp-001"), "nrt-ncg- é do jogo narutocg");
   assert.ok(!re.test("nrt-S-001"), "a linha do próprio vintage não é 'outra'");
   // O Miracle Battle virou o jogo mbc (2026-10-01): não mora mais no Naruto.
   assert.ok(!re.test("nrt-mb-nr01-001"), "nrt-mb- é do jogo mbc");
+});
+
+// A separação (11/11/2026): o catálogo do jogo é data/narutocg/, e as cartas
+// que moravam no Naruto saem de lá pelo próprio sync, que roda antes dos do
+// Naruto no CI.
+test("narutocg: o sync grava em data/narutocg/ e tira as nrt-ncg- do catálogo do Naruto", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const src = (await readFile(new URL("../scripts/sync-naruto.mjs", import.meta.url), "utf8")).replace(/\r\n/g, "\n");
+  assert.ok(src.includes('const GAME = "narutocg";'));
+  assert.ok(src.includes("const OUT = new URL(`data/${GAME}/`, ROOT);"));
+  assert.ok(/await writeGameCatalog\(OUT, [^\n]+\n\s+const tiradas = await tiraDoNaruto\(\);/.test(src), "tiraDoNaruto depois de gravar o jogo novo");
+  const ler = async (arq) => { const t = await readFile(new URL(`../data/${arq}`, import.meta.url), "utf8"); return JSON.parse(t.slice(t.indexOf("["), t.lastIndexOf("]") + 1)); };
+  assert.ok((await ler("narutocg/cards.js")).every((c) => /^nrt-ncg-/.test(c.id)));
+  assert.ok(!(await ler("naruto/cards.js")).some((c) => /^nrt-ncg-/.test(c.id)), "carta do jogo novo ficou no catálogo do Naruto");
 });

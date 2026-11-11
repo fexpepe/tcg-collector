@@ -74,6 +74,20 @@ function preencherNulos(alvo, fonte) {
   }
 }
 
+// Jogo que nasceu de uma LINHA de outro herda, na primeira rodada, a série das
+// cartas que eram dele, em vez de começar do zero (o sync-price-history lê o
+// acervo de `de` quando o do jogo vem vazio). O NARUTO CARD GAME de 2027 foi a
+// linha nrt-ncg- do naruto até 11/11/2026, e o acervo das Chakra Card, com
+// preço desde setembro, está no _history/data-naruto/ do R2. Da 2ª rodada em
+// diante o jogo tem acervo próprio e isto não faz nada.
+export const HERDA = { "data/narutocg": { de: "data/naruto", prefixo: "nrt-ncg-" } };
+// A série inteira (datas e as cartas do prefixo), ou null se não há o que herdar.
+export function herdaSeries(origem, prefixo) {
+  const c = {};
+  for (const [id, serie] of Object.entries((origem && origem.c) || {})) if (id.startsWith(prefixo)) c[id] = serie;
+  return Object.keys(c).length ? Object.assign({}, origem, { d: origem.d.slice(), c }) : null;
+}
+
 // Entre várias cópias do MESMO acervo (R2, produção, cache do runner), a mais
 // ADIANTADA: última data maior; empate, mais pontos. Existe porque as cópias
 // podem divergir por um dia (uma gravação que falhou) e escolher a errada

@@ -28,7 +28,8 @@ export const NOMES_DO_JOGO = {
   cyberpunk: ["Cyberpunk TCG", "Cyberpunk"],
   weiss: ["Weiss Schwarz", "Weiß Schwarz"],
   wow: ["World of Warcraft TCG", "World of Warcraft"],
-  naruto: ["Naruto Card Game", "Naruto"]
+  // NARUTO CARD GAME de 2027 (jogo narutocg; até 11/11/2026, linha do naruto).
+  narutocg: ["Naruto Card Game", "Naruto"]
 };
 
 // Títulos de outra obra que começam com a marca: ficam inteiros. No Yu-Gi-Oh!
