@@ -90,6 +90,7 @@
     const tem = capturado(item);
     el.className = `pdx-cel${tem ? " is-tenho" : ""}${!tem && algumCapturado ? " is-falta" : ""}`;
     el.href = detailUrl("pokemon", item.name);
+    el.rel = "nofollow"; // tela noindex, fora do rastreio (ver createGroupCard no app.js)
     el.dataset.dex = String(item.dexId);
     el.dataset.cartas = String(item.ownedCount || 0);
     el.setAttribute("aria-label", `${num(item.dexId)} ${item.name}${tem ? `, ${t("dex.haveActive")}` : ""}`);

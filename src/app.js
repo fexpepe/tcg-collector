@@ -1217,7 +1217,7 @@
     // Pokémon, então a barra vivia quase vazia e o "0%" só desanimava. O
     // número tenho/total é o que a pessoa lê de verdade.
     article.innerHTML = `
-      <a class="pokedex-link" href="${escapeAttribute(detailUrl("pokemon", item.name))}">
+      <a class="pokedex-link" href="${escapeAttribute(detailUrl("pokemon", item.name))}" rel="nofollow">
         <div class="pokedex-number">#${String(item.dexId || "?").padStart(4, "0")}</div>
         <div class="pokedex-image">${image}</div>
         <div class="pokedex-info">
@@ -1248,6 +1248,13 @@
     link.className = `group-card${item.totalCount > 0 && item.ownedCount >= item.totalCount ? " complete" : ""}`;
     const type = view === "artists" ? "artist" : view === "trainers" ? "trainer" : view;
     link.href = detailUrl(type, item.name);
+    // Artista, treinador e Pokémon não têm endereço próprio: a tela é a casca
+    // /detail?…, noindex. rel="nofollow" (2026-11-10) tira o link do caminho
+    // do buscador, que rastreava milhares delas só pra ler o noindex (5.707
+    // no relatório de Páginas de 10/11), com 270 mil cartas na fila. Não é o
+    // robots.txt de propósito: o Twitterbot o respeita, e a tela do Pikachu
+    // compartilhada no X perderia a prévia (functions/detail.js).
+    if (type === "artist" || type === "trainer" || type === "pokemon") link.rel = "nofollow";
     const progress = item.totalCount ? Math.round((item.ownedCount / item.totalCount) * 100) : 0;
 
     // Sem imagem de carta na cápsula (deixaria a lista pesada): só a inicial.
