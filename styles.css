@@ -246,19 +246,20 @@
   --accent: #c2410c; --accent-dark: #9a3412; --accent-rgb: 194, 65, 12;
   --accent-soft: rgba(194, 65, 12, 0.1); --on-accent: #ffffff;
 }
-/* NARUTO CARD GAME de 2027 (narutocg, jogo próprio desde 11/11/2026): VERDE
-   da Folha, a cor do GAME_COLOR — o laranja do logo é do naruto (a 17 do tom
-   dele) e do mbc. No escuro, o #22c55e com texto escuro (8.6:1), um degrau
-   abaixo do verde-claro do HxH; no claro fecha pro esmeralda #047857, que
-   segura texto branco (5.5:1) e não é o verde do HxH (#15803d). */
+/* NARUTO CARD GAME de 2027 (narutocg, jogo próprio desde 11/11/2026): o
+   LARANJA do vintage, um tico mais saturado (pedido do Fernando, 11/11/2026;
+   até então era um verde proposto). Mesmo matiz do naruto, com saturação
+   100 %: no escuro o #ff7e29 com texto escuro (7.7:1), mais vivo que o
+   #fb923c do vintage; no claro o #cc3d00, que segura texto branco (5.0:1),
+   ao lado do #c2410c do vintage. */
 [data-game-accent="narutocg"] {
-  --accent: #22c55e; --accent-dark: #16a34a; --accent-rgb: 34, 197, 94;
-  --accent-soft: rgba(34, 197, 94, 0.16); --on-accent: #0a0c10;
+  --accent: #ff7e29; --accent-dark: #ff6600; --accent-rgb: 255, 126, 41;
+  --accent-soft: rgba(255, 126, 41, 0.16); --on-accent: #0a0c10;
 }
 [data-theme="light"][data-game-accent="narutocg"],
 [data-theme="light"] [data-game-accent="narutocg"] {
-  --accent: #047857; --accent-dark: #065f46; --accent-rgb: 4, 120, 87;
-  --accent-soft: rgba(4, 120, 87, 0.1); --on-accent: #ffffff;
+  --accent: #cc3d00; --accent-dark: #a83200; --accent-rgb: 204, 61, 0;
+  --accent-soft: rgba(204, 61, 0, 0.1); --on-accent: #ffffff;
 }
 /* Hunter × Hunter: verde (o verde do Gon / da licença de Hunter). Verde claro
    com texto escuro no tema escuro; verde fechado com texto branco no claro. */

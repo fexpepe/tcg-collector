@@ -8988,7 +8988,7 @@
     riftbound: "#a67c00",  // ouro
     unionarena: "#0891b2", // ciano
     naruto: "#ea580c",     // laranja
-    narutocg: "#22c55e",   // verde da Folha (o laranja do logo é do naruto); 9.2:1 com preto, a 78 do HxH e a 102 do Union Arena (proposta, 2026-11-11)
+    narutocg: "#f65400",   // o laranja do naruto mais saturado (pedido do Fernando, 2026-11-11): 6.2:1 com preto; a 17 do naruto, abaixo da régua de 65 DE PROPÓSITO (é a mesma marca)
     hxh: "#15803d",        // verde
     dbc: "#db2777",        // rosa (a 70 do FaB, o vizinho mais próximo; 4.6:1 com preto)
     dbz: "#9f1239",        // carmim (o fundo do anúncio de 2000); 8.0:1 com branco, a 67 do FaB e a 71 do DBC
