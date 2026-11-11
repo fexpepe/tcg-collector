@@ -3261,6 +3261,7 @@
     dbz: SUBNAV_MIN,
     cdm: SUBNAV_MIN,
     gcd: SUBNAV_MIN,
+    gw: SUBNAV_ARTISTS,
     lotr: SUBNAV_MIN,
     harrypotter: SUBNAV_ARTISTS
   };
@@ -7323,6 +7324,7 @@
     mbc:       { usText: "miracle battle carddass", noTcgplayer: true },
     cdm:       { usText: "carddass masters", noTcgplayer: true },
     gcd:       { usText: "gundam carddass", noTcgplayer: true },
+    gw:        { usText: "gundam war", noTcgplayer: true },
     // World of Warcraft TCG (conferido em 30/09/2026): TCGplayer na linha
     // "wow" (a busca devolve a carta "in WoW") e Cardmarket em /en/WoW. Sem
     // loja BR: o MYP não tem seção do jogo e não existe Liga.
@@ -8917,33 +8919,38 @@
   // window.TCG_*. Pra ver os dois jogos numa página só, carregamos o catálogo de
   // CADA jogo (das cartas que você tem), marcando card.game, e unimos as tabelas
   // de preço de referência (os cardIds não colidem entre jogos).
+  // Um slug por jogo, na ordem das páginas multi-jogo. O catálogo mora em
+  // data/<slug>/ (o Pokémon, o primeiro, direto em data/): derivar o dataDir
+  // em vez de repeti-lo economiza bytes do núcleo, que está no teto
+  // (2026-11-11, pra caber o gw).
   const DATA_GAMES = [
-    { game: "pokemon", dataDir: "data/" },
-    { game: "lorcana", dataDir: "data/lorcana/" },
-    { game: "onepiece", dataDir: "data/onepiece/" },
-    { game: "magic", dataDir: "data/magic/" },
-    { game: "fab", dataDir: "data/fab/" },
-    { game: "gundam", dataDir: "data/gundam/" },
-    { game: "swu", dataDir: "data/swu/" },
-    { game: "cyberpunk", dataDir: "data/cyberpunk/" },
-    { game: "sorcery", dataDir: "data/sorcery/" },
-    { game: "dbfw", dataDir: "data/dbfw/" },
-    { game: "ygo", dataDir: "data/ygo/" },
-    { game: "digimon", dataDir: "data/digimon/" },
-    { game: "riftbound", dataDir: "data/riftbound/" },
-    { game: "unionarena", dataDir: "data/unionarena/" },
-    { game: "naruto", dataDir: "data/naruto/" },
-    { game: "hxh", dataDir: "data/hxh/" },
-    { game: "dbc", dataDir: "data/dbc/" },
-    { game: "dbz", dataDir: "data/dbz/" },
-    { game: "wow", dataDir: "data/wow/" },
-    { game: "lotr", dataDir: "data/lotr/" },
-    { game: "harrypotter", dataDir: "data/harrypotter/" },
-    { game: "weiss", dataDir: "data/weiss/" },
-    { game: "mbc", dataDir: "data/mbc/" },
-    { game: "cdm", dataDir: "data/cdm/" },
-    { game: "gcd", dataDir: "data/gcd/" }
-  ];
+    "pokemon",
+    "lorcana",
+    "onepiece",
+    "magic",
+    "fab",
+    "gundam",
+    "swu",
+    "cyberpunk",
+    "sorcery",
+    "dbfw",
+    "ygo",
+    "digimon",
+    "riftbound",
+    "unionarena",
+    "naruto",
+    "hxh",
+    "dbc",
+    "dbz",
+    "wow",
+    "lotr",
+    "harrypotter",
+    "weiss",
+    "mbc",
+    "cdm",
+    "gcd",
+    "gw"
+  ].map((game) => ({ game, dataDir: game === "pokemon" ? "data/" : `data/${game}/` }));
   // Slugs e cor de cada jogo, num lugar só (adicionar um jogo = 1 entrada aqui
   // + 1 no game.js + labels no i18n; as páginas iteram em vez de hardcodear).
   const GAME_SLUGS = DATA_GAMES.map((d) => d.game);
@@ -8982,7 +8989,8 @@
     harrypotter: "#740001", // escarlate da Grifinória; 12:1 com branco, a 85 do Magic (o vizinho mais próximo)
     mbc: "#fb923c",        // pêssego (o laranja-dourado do logo); 9.3:1 com preto, a 71 do One Piece e a 77 do Naruto
     cdm: "#a21caf",        // fúcsia; 6.3:1 com branco, a 79 do Yu-Gi-Oh! e a 81 do DBC (proposta, 2026-11-09)
-    gcd: "#a3e635"         // lima; 13.9:1 com preto, a 92 do Sorcery e a 99 do Cyberpunk (proposta, 2026-11-10)
+    gcd: "#a3e635",        // lima; 13.9:1 com preto, a 92 do Sorcery e a 99 do Cyberpunk (proposta, 2026-11-10)
+    gw: "#5eead4"          // turquesa; 14.2:1 com preto, a 100 do DBFW (proposta, 2026-11-11)
   };
   // Preto ou branco sobre a cor do jogo — o que der MAIOR contraste de verdade
   // (fórmula WCAG), não um limiar de luminância chutado: com limiar fixo o
@@ -9022,7 +9030,7 @@
     ygo: "filter.gameYgo", digimon: "filter.gameDigimon", riftbound: "filter.gameRiftbound",
     unionarena: "filter.gameUnionArena", naruto: "filter.gameNaruto", hxh: "filter.gameHxh",
     dbc: "filter.gameDbc", dbz: "filter.gameDbz", wow: "filter.gameWow", lotr: "filter.gameLotr", weiss: "filter.gameWeiss", harrypotter: "filter.gameHarryPotter",
-    mbc: "filter.gameMbc", cdm: "filter.gameCdm", gcd: "filter.gameGcd"
+    mbc: "filter.gameMbc", cdm: "filter.gameCdm", gcd: "filter.gameGcd", gw: "filter.gameGw"
   };
   function gameLabel(g) { return t(GAME_LABEL_KEY[g] || GAME_LABEL_KEY.pokemon); }
   // Nomes em inglês dos sets vintage e japoneses (VINTAGE_SET_EN, JA_SET_EN e
@@ -9129,6 +9137,7 @@
     dbz: ["dbz-"],                            // Score 2000–2006: idem
     cdm: ["cdm-"],                            // Bandai 1996–2009: idem
     gcd: ["gcd-"],                            // Bandai 1988–1997: idem
+    gw: ["gw-"],                              // Bandai 1999–2011: idem
     harrypotter: ["hp-"],                     // Wizards 2001–2002: idem
     naruto: ["nrt-"]                          // Bandai 2003–2013 inteiro…
   };

@@ -134,7 +134,7 @@ junto. Sem isso, o endereço antigo das cartas movidas dá 404.
 | TCGdex, com a TCGCSV no lançamento | Pokémon | pela TCGdex; no lançamento a TCGCSV antecipa (3.3) | o da TCGdex (o provisório é aposentado) | espelhado por `mirror-set-logos` (EN/PT) e `mirror-ja-set-logos` (JA, de-para curado, passo local) |
 | API própria | Lorcana (Lorcast), Magic (Scryfall) | sozinho no sync | código oficial | Lorcana: curado em `data/lorcana/set-logos/`; Magic: símbolo espelhado |
 | TCGCSV (espelho do TCGplayer) | One Piece, FAB, Gundam, DBFW, Yu-Gi-Oh!, Digimon, Riftbound, Union Arena, Star Wars | sozinho no sync (grupo novo da categoria) | abreviação do grupo; rename da fonte é re-fixado sozinho (`repinSetIdsRenomeados`) | vazio, salvo curadoria local (One Piece, FAB e Star Wars) |
-| Fã, com snapshot | Naruto, HxH, DBC, vintages do One Piece, Gundam Carddass | quando a fonte publica e o snapshot não regride; set sem lista carta a carta não gera carta | fixo no script | curado ou vazio |
+| Fã (ou site oficial antigo), com snapshot | Naruto, HxH, DBC, vintages do One Piece, Gundam Carddass, Gundam War | quando a fonte publica e o snapshot não regride; set sem lista carta a carta não gera carta | fixo no script | curado ou vazio |
 | Curadoria | JUMP | à mão em `data/jump/curated/` | — | — |
 
 ### 3.2 O que conferir quando um set novo aparece
@@ -390,7 +390,7 @@ valem só nesse caso.
 |---|---|---|---|---|
 | B1 | `src/game.js` (`GAMES`) | slug, nome completo, dataDir | `?game=<slug>` rejeitado, a página cai no Pokémon | — |
 | B2 | `src/game.js` (`IMG_HOST`) | só se o host de imagem não tem preconnect no HTML | imagem começa mais tarde (LCP) | — |
-| B3 | `src/shared.js` (`DATA_GAMES`) | slug e dataDir | `normalizeGame` devolve "pokemon" e `gameDataDir` devolve `data/`: as páginas pessoais não carregam o jogo | — |
+| B3 | `src/shared.js` (`DATA_GAMES`) | o slug (o dataDir sai dele, `data/<slug>/`, desde 2026-11-11) | `normalizeGame` devolve "pokemon" e `gameDataDir` devolve `data/`: as páginas pessoais não carregam o jogo | — |
 | B4 | `src/shared.js` (`GAME_COLOR`) | a cor (ficha) | etiqueta na cor do Pokémon | — |
 | B5 | `src/shared.js` (`GAME_LABEL_KEY`) e `src/i18n.js` (`filter.game<X>` em pt, en e es) | rótulo curto | rótulo "Pokémon" (sem entrada no mapa) ou a chave crua (sem tradução) | `check.mjs`, só por causa da `<option>` do explore.html (4.3) |
 | B6 | `src/shared.js` (`MARKETS`) | lojas da ficha; `noTcgplayer` quando o TCGplayer não tem o jogo | links da carta vão pra LigaPokémon e pro TCGplayer do Pokémon | — |

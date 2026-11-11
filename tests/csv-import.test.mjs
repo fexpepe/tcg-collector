@@ -111,6 +111,9 @@ test("mapCsvGame: os 13 jogos, nas grafias do Collectr/TCGplayer", () => {
   // Gundam Carddass é o jogo vintage; "Gundam" sozinho segue sendo o Card Game.
   assert.equal(api.mapCsvGame("Gundam Carddass"), "gcd");
   assert.equal(api.mapCsvGame("SD Gundam Carddass"), "gcd");
+  // Gundam War (1999–2011) também vem antes do "gundam" genérico.
+  assert.equal(api.mapCsvGame("Gundam War"), "gw");
+  assert.equal(api.mapCsvGame("Gundam Card Game"), "gundam");
   // TCGplayer escreve "Weiss Schwarz"; quem digita o nome alemão, "Weiß Schwarz".
   assert.equal(api.mapCsvGame("Weiss Schwarz"), "weiss");
   assert.equal(api.mapCsvGame("Weiß Schwarz"), "weiss");

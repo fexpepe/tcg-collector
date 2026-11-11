@@ -81,6 +81,7 @@ jobs:
             data/mbc/sets
             data/cdm/sets
             data/gcd/sets
+            data/gw/sets
             data/jump/sets
             data/magic/cards.js
             data/magic/indexes.js

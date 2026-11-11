@@ -272,6 +272,18 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   logo da linha (o tile do hub mostra a marca tipográfica); (5) o mês de cada
   弾 (o 80storage só dá o ano); (6) conferir o subtítulo do 外伝 第7弾
   ("キングガンダム" no 80storage) numa segunda fonte.
+- **Gundam War (`gw`)**: jogo próprio desde 2026-11-11, só a versão japonesa.
+  Entraram 6.534 cartas de 67 produtos pelas listas do site oficial da Bandai
+  (do 第1弾 ao 第23弾, do 第26弾 ao 第28弾, boosters especiais, starters,
+  promos e as reedições de 2010–2011). Faltam: (1) o 第24弾 e o 第25弾 (2010) e
+  os produtos que o site não lista (シャア編, 入門用スターター, 乱世に生きる漢たち,
+  コラボ2, DXウイナーズスターター, o 拡張シート do 覇王の紋章) — o Wayback pode
+  ter a lista da época (`/cardlist/?category=1124`/`1125`), não conferido
+  (estava inacessível daqui em 2026-11-11); (2) imagem: as miniaturas do site
+  têm 100–129 px; (3) as reimpressões dentro dos produtos de 1999–2009, que a
+  lista antiga não mostra; (4) raridade "comum" da lista antiga, que vem em
+  branco; (5) logo do jogo (o do site oficial, a recortar); (6) o NEX-A
+  (2012–2015) e a versão inglesa de 2005, se forem entrar.
 - **Dragon Ball Carddass (`dbc`)**: entrou só o Hondan 第1弾–第18弾, sem imagem.
   Faltam (1) o Hondan 第19弾–第31弾, que o sync pega sozinho quando o 80storage
   publicar; (2) Super Battle, Visual Adventure e Super Barcode Wars, sem fonte

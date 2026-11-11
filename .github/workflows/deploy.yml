@@ -121,6 +121,7 @@ jobs:
             data/mbc/sets
             data/cdm/sets
             data/gcd/sets
+            data/gw/sets
             data/jump/sets
             data/magic/cards.js
             data/magic/indexes.js
@@ -147,7 +148,7 @@ jobs:
           faltando=""
           # data/dbc/, data/swu/, data/cyberpunk/, data/wow/, data/lotr/,
           # data/sorcery/, data/harrypotter/, data/weiss/, data/mbc/, data/dbz/ e
-          # data/cdm/ e data/gcd/: jogos novos (2026-09-24 a 2026-11-10). Enquanto o cache
+          # data/cdm/, data/gcd/ e data/gw/: jogos novos (2026-09-24 a 2026-11-11). Enquanto o cache
           # for de antes deles, o build rápido publicaria o tile do hub sem
           # catálogo nenhum atrás.
           for f in data/manifest.generated.js data/pricing.generated.js \
@@ -161,7 +162,8 @@ jobs:
                    data/mbc/manifest.generated.js \
                    data/dbz/manifest.generated.js \
                    data/cdm/manifest.generated.js \
-                   data/gcd/manifest.generated.js; do
+                   data/gcd/manifest.generated.js \
+                   data/gw/manifest.generated.js; do
             [ -s "$f" ] || faltando="$faltando $f"
           done
           if [ -n "$faltando" ]; then
@@ -657,6 +659,21 @@ jobs:
         if: env.RODA_SYNC != 'true'
         run: node scripts/sync-gundam-carddass.mjs --no-fetch || echo "sync-gundam-carddass --no-fetch falhou; segue com o catalogo do cache"
 
+      # Gundam War (Bandai 1999-2011): o jogo vintage gw, o TCG japones. Numero,
+      # nome, cor, tipo e raridade pelas listas do site OFICIAL
+      # (carddass.com/cdmasters/gundamwar; snapshot versionado em
+      # data/vintage/gundam-war.json, nao regride, ids fixos). Sem imagem e
+      # sem preco.
+      - name: Catalogo vintage Gundam War
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/sync-gundam-war.mjs || echo "sync-gundam-war falhou; segue com o snapshot versionado"
+
+      # O mesmo jogo no build RAPIDO (push), sem rede: correcao de snapshot
+      # aparece no deploy do merge, e nao so no cron (a licao do dbc, PR #215).
+      - name: Catalogo vintage Gundam War (build rapido, sem rede)
+        if: env.RODA_SYNC != 'true'
+        run: node scripts/sync-gundam-war.mjs --no-fetch || echo "sync-gundam-war --no-fetch falhou; segue com o catalogo do cache"
+
       # Dragon Ball Carddass (Bandai 1988-1997): o jogo vintage dbc. Lista carta
       # a carta do Hondan pelo 80storage.com (snapshot versionado em
       # data/vintage/dbc-carddass.json, nao regride, ids fixos). Cria data/dbc/
@@ -915,6 +932,7 @@ jobs:
             data/mbc/sets
             data/cdm/sets
             data/gcd/sets
+            data/gw/sets
             data/jump/sets
             data/magic/cards.js
             data/magic/indexes.js

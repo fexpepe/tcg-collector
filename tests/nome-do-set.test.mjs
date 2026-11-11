@@ -40,6 +40,9 @@ const NOMES_DO_JOGO = {
   // abre o nome sem ela ("本弾 第1弾", "外伝 第1弾「…」"). "機動武闘伝Gガンダム" é
   // o título do anime, e não começa com a marca.
   gcd: { nomes: ["Gundam", "GUNDAM", "SD Gundam", "SDガンダム", "ガンダム", "Carddass", "カードダス"] },
+  // Gundam War: o set é o produto (第1弾, ドラマチックブースター「…」), sem o
+  // "ガンダムウォー" da frente.
+  gw: { nomes: ["Gundam War", "GUNDAM WAR", "GUNDAMWAR", "ガンダムウォー", "Carddass Masters", "カードダスマスターズ"] },
   // "疾風伝"/"Shippuden": a linha nrt-scg (2007–2008). Só a promo leva
   // "（疾風伝）", no fim, pra não ter o mesmo nome do set de 2002.
   naruto: { nomes: ["Naruto", "NARUTO", "ナルト", "Data Carddass", "データカードダス", "疾風伝", "Shippuden"] },

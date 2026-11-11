@@ -63,6 +63,11 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
   mostram o nome. Candidato: o logo "SDガンダムワールド" da embalagem/verso do
   本弾 — a decidir com o Fernando (logo e se todo set leva o logo da linha,
   regra 3 do `docs/CATALOGO.md`).
+- **Gundam War (`gw`, 2026-11-11): sem logo ainda.** Mesmo caso do Gundam
+  Carddass: o tile mostra a marca tipográfica, o registro leva `logo: ""` e
+  os sets mostram o nome. Candidato: o logo do site oficial
+  (`carddass.com/cdmasters/gundamwar/images/common/logo_gw.jpg`, ainda no
+  ar), a recortar.
 - `game_naruto.webp` — logo NARUTO genérico (tile do jogo e `setLogo` do Data
   Carddass Cross Formation nrt-nx/nrt-nf)
 - `game_naruto_ccg-v2.webp` — Naruto Collectible Card Game americano 2006+

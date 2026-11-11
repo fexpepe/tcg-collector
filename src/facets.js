@@ -121,6 +121,17 @@
       facetLevel,
       facetType(["Digi-Egg", "Digimon", "Tamer", "Option"])
     ],
+    // Gundam War (1999–2011): as sete cores do jogo (a dual conta na cor
+    // principal, a do fundo da linha na lista oficial) e os seis tipos.
+    gw: [
+      {
+        key: "color", labelKey: "facet.color",
+        of: (c) => facetSplit(c.color, ";"),
+        label: (v) => v,
+        order: ["Blue", "Green", "Black", "Red", "Brown", "White", "Purple"]
+      },
+      facetType(["Unit", "Character", "Command", "Operation", "G", "ACE"])
+    ],
     gundam: [
       facetColor("color"),
       facetLevel,
