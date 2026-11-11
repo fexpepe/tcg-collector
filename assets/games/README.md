@@ -77,11 +77,18 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
   pré-multiplicado. WebP com perda q88 e alfa sem perda: 38 KB (o sem perda
   dava 95 KB, pelos gradientes prata). O contorno escuro do logo segura o
   branco das letras na cápsula branca do hub.
-- **Gundam Carddass (`gcd`, 2026-11-10): sem logo ainda.** O tile do hub
-  mostra a marca tipográfica ("Gundam"), o registro leva `logo: ""` e os sets
-  mostram o nome. Candidato: o logo "SDガンダムワールド" da embalagem/verso do
-  本弾 — a decidir com o Fernando (logo e se todo set leva o logo da linha,
-  regra 3 do `docs/CATALOGO.md`).
+- `game_gcd.webp` — Gundam Carddass (Bandai, 1988–1997; tile vintage do
+  jogo `gcd` no hub, parede da landing, página /games e kit). Logo "Carddass
+  GUNDAM SELECTION / カードダス ガンダム セレクション" enviado pelo Fernando em
+  2026-11-11 (JPG 894×409, fundo branco). O fundo saiu por flood fill a partir
+  das bordas (pixels com o menor canal > 150 ligados à borda), então o branco
+  de dentro das letras fica; na faixa de antisserrilhado o alfa sai da
+  escuridão do pixel e a cor vira o preto do contorno (sem franja branca no
+  tema escuro). Reduzido pra 512×234 com o Pillow em alfa pré-multiplicado,
+  alfa abaixo de 12 zerado. WebP com perda q88 e alfa sem perda: 28 KB. O
+  contorno preto grosso segura o logo na cápsula branca do hub. Os sets
+  seguem com o nome (`setLogo: ""`): logo do jogo em todo set é decisão por
+  jogo (regra 3 do docs/CATALOGO.md).
 - `game_godzilla.webp` — Godzilla Card Game (17º tile da grade moderna do
   hub, 2026-11-11). Fonte: o logo vermelho oficial do site da edição inglesa
   (`en.godzilla-cardgame.com/wordpress/wp-content/themes/godzilla_tcg-e/assets/img/common/logo_red.svg`,
@@ -95,9 +102,9 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
   WAR / MOBILE SUIT GUNDAM THE CARD GAME". Recortado no conteúdo (+2px), com
   o alfa ≤12 zerado: 354×87. Como o Star Wars, **não** foi esticado pra 512
   (bitmap pequeno). WebP q88 com alfa sem perda, 12 KB. Fica fora da fileira
-  Vintage da landing por enquanto: com ele seriam 13 logos, e 13 não fecha
-  linha em 12, 6 nem 4 colunas. Entra junto com o logo do Gundam Carddass
-  (14 = 7 + 7).
+  Vintage da landing por enquanto: o One Piece Card Game de 2002 e o Gundam
+  Carddass (2026-11-11) já levaram a fileira a 14 (7 + 7 no tablet); com ele
+  seriam 15, e a grade se decide junto.
 - `game_naruto.webp` — logo NARUTO genérico (tile do jogo e `setLogo` do Data
   Carddass Cross Formation nrt-nx/nrt-nf)
 - `game_naruto_ccg-v2.webp` — Naruto Collectible Card Game americano 2006+

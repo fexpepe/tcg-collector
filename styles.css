@@ -11985,12 +11985,13 @@ select,
 .lp-stat span { display: block; margin-top: 4px; font-size: 13px; color: var(--subtle); }
 
 /* --- Jogos: parede de logos ----------------------------------------------- */
-/* 8 por linha no desktop: os 16 modernos fecham 2 linhas. O vintage (13
-   linhas desde o logo do One Piece Card Game de 2002, 2026-11-11) é uma
-   fileira só de cápsulas menores, com o ano embaixo; no tablet, 7 + 6; no
-   celular, 5 + 5 + 3 (com 4 por linha sobrava um logo sozinho na última; com
-   5 a cápsula fica em ~55 px a 360 px de tela e o ano ainda cabe numa linha —
-   com 6 caía pra ~52 px e o ano quebrava). */
+/* 8 por linha no desktop: os 16 modernos fecham 2 linhas. O vintage (14
+   linhas desde os logos do One Piece Card Game de 2002 e do Gundam Carddass,
+   2026-11-11) é uma fileira só de cápsulas menores,
+   com o ano embaixo; no tablet, 7 + 7; no celular, 5 + 5 + 4 (com 4 por linha
+   sobrava um logo sozinho na última; com 5 a cápsula fica em ~55 px a 360 px
+   de tela e o ano ainda cabe numa linha — com 6 caía pra ~52 px e o ano
+   quebrava). */
 .lp-logos { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 10px; }
 .lp-logos > li { min-width: 0; }
 .lp-logos a {
@@ -12004,7 +12005,7 @@ select,
 .lp-logos a:hover, .lp-logos a:focus-visible { box-shadow: inset 0 -3px 0 var(--accent); }
 .lp-logos img { display: block; max-width: 100%; max-height: 100%; object-fit: contain; }
 .lp-logos-rotulo { margin: 26px 0 12px; font-size: 12px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--subtle); }
-.lp-logos-vintage { grid-template-columns: repeat(13, minmax(0, 1fr)); }
+.lp-logos-vintage { grid-template-columns: repeat(14, minmax(0, 1fr)); }
 .lp-logos-vintage a { padding: 8px 10px; }
 .lp-logo-ano { display: block; margin-top: 6px; font-size: 11.5px; color: var(--subtle); font-variant-numeric: tabular-nums; }
 .lp-jogos-foot { margin: 22px 0 0; font-size: 13px; color: var(--subtle); }
