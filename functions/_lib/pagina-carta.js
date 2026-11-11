@@ -14,6 +14,7 @@
 // tests/pagina-carta.test.mjs testa daqui sem precisar da borda.
 import { cardCode, alternateCodes } from "./card-code.js";
 import { jsonLdSeguro } from "./json-ld.js";
+import { rotuloDoDesempate } from "./desempate-carta.js";
 
 export const ORIGEM = "https://sleevu.app";
 // Mesmo orçamento de título das páginas de set (ver o prerender): o Google
@@ -280,7 +281,11 @@ export function pecasDaCarta({ card, jogo, set, cartas, slugs, preco, moeda = "U
   const caminho = `${baseDoSet}/${slugs.get(String(card.id))}`;
   const canonical = `${ORIGEM}${caminho}`;
   const code = cardCode(card);
-  const codeBit = code ? ` ${code}` : "";
+  // Carta com o mesmo nome e número de outra do set (edição chinesa,
+  // raridade): o que a separa vai junto do número, no título, no h1, na
+  // descrição e no Product (ver desempate-carta.js).
+  const desempate = rotuloDoDesempate(card, cartas);
+  const codeBit = `${code ? ` ${code}` : ""}${desempate ? ` (${desempate})` : ""}`;
   const altCodes = alternateCodes(card);
   const altBit = altCodes.length ? ` (${altCodes.join(", ")})` : "";
   // Nome japonês/chinês ganha o nome em inglês entre parênteses (a busca em
@@ -288,7 +293,7 @@ export function pecasDaCarta({ card, jogo, set, cartas, slugs, preco, moeda = "U
   const nomeEn = card.nameEn || card.pokemonName;
   const enBit = nomeEn && !/^[\x00-\x7F]/.test(card.name) ? ` (${nomeEn})` : "";
   const sCode = codigoDoSet(card);
-  const titulo = tituloDaCarta(`${card.name}${enBit}`, code, sCode, set.nome);
+  const titulo = tituloDaCarta(`${card.name}${enBit}`, code, [sCode, desempate && `(${desempate})`].filter(Boolean).join(" "), set.nome);
   const valor = Number(preco) || 0;
   const moedaOk = SIMBOLO[moeda] ? moeda : "USD";
   const precoTxt = valor > 0 ? precoPtBr(valor, moedaOk) : "";
