@@ -32,18 +32,107 @@
 // antes e depois, acrescentar em `games` os slugs que sumiram e, em `set`, as
 // chaves do legado-sets.json que passaram a levar a outro set
 // (docs/CATALOGO.md, 3.2).
+//
+// ── Registro automático (2026-11-10) ────────────────────────────────────────
+// A tabela acima é escrita à mão, na PR que renomeia o set. O nome que muda NA
+// FONTE, no sync diário, não passa por PR nenhuma: em 08/11/2026 três sets
+// japoneses do Pokémon trocaram de nome ("Rapid Strike Master" virou
+// "連撃マスター", "MEGA Expansion 30th Celebration" virou "30th CELEBRATION"…) e
+// os 322 endereços deles (set, -en e cartas) passaram a responder 404. O
+// registro das cartas movidas pulava o set que deixou de existir, contando com
+// um de-para que ninguém escreveu (relatório de Páginas de 10/11, docs/SEO.md).
+// Agora o deploy registra sozinho, no mesmo passo e com a mesma comparação
+// (scripts/registra-cartas-movidas.mjs, disco × HEAD), em
+// data/sets-renomeados-auto.json:
+//   { "<url do jogo>/<slug antigo>": ["<id de carta>", …] }
+// O destino são IDS DE CARTA, e não o setId da tabela à mão, porque no Pokémon
+// o setId não diz qual página é: o mesmo id serve a mais de uma edição (o S5R
+// japonês e o chinês são páginas diferentes) e a página é o NOME do set, que
+// junta chunks de setId diferente. O id da carta é o que não muda. O prerender
+// leva o endereço antigo pra página de hoje onde está a maioria dos ids
+// guardados (até 3, pra uma carta que troque de set depois não levar o
+// endereço do set inteiro com ela).
+import { agrupaPorSet, paginasDoJogo } from "./paginas-de-set.mjs";
+
+// Ids guardados por endereço: o primeiro, o do meio e o último, em ordem.
+const AMOSTRA = 3;
+function amostraDeIds(ids) {
+  const ordem = [...new Set(ids.map(String))].sort();
+  if (ordem.length <= AMOSTRA) return ordem;
+  return [ordem[0], ordem[ordem.length >> 1], ordem[ordem.length - 1]];
+}
+
+// Página de set que existia e hoje não tem mais aquele endereço, e pra onde as
+// cartas dela foram: Map "<url>/<slug antigo>" -> { destino, ids }.
+//   destino: a página de hoje, no MESMO /games/<jogo> (o de-para da borda é
+//     por jogo), com mais da metade das cartas da antiga; null quando o set
+//     saiu do catálogo ou se espalhou sem maioria (redirecionar o set pra onde
+//     foi uma carta só diria que ele ainda existe);
+//   ids: as cartas da antiga que estão no destino, com o id de hoje.
+// `idDeHoje(id)` traduz o id aposentado (set importado que a fonte publicou
+// com outro id, data/card-id-merges.json): sem ele a carta parece ter sumido.
+export function setsSemPagina(paginasAntes, paginasHoje, idDeHoje) {
+  const vivos = new Set((paginasHoje || []).map((p) => `${p.url}/${p.slug}`));
+  const paginaDoId = new Map();
+  for (const p of paginasHoje || []) for (const id of p.slugsCartas.keys()) if (!paginaDoId.has(id)) paginaDoId.set(id, p);
+  const semPagina = new Map();
+  for (const p of paginasAntes || []) {
+    const chave = `${p.url}/${p.slug}`;
+    if (vivos.has(chave) || semPagina.has(chave)) continue;
+    const total = p.slugsCartas.size;
+    const porPagina = new Map();
+    for (const antigo of p.slugsCartas.keys()) {
+      const id = paginaDoId.has(antigo) ? antigo : String((idDeHoje && idDeHoje(antigo)) || "");
+      const pagina = id && paginaDoId.get(id);
+      if (!pagina || pagina.url !== p.url) continue;
+      if (!porPagina.has(pagina)) porPagina.set(pagina, []);
+      porPagina.get(pagina).push(id);
+    }
+    let destino = null, ids = [];
+    for (const [pagina, lista] of porPagina) if (lista.length > ids.length) { destino = pagina; ids = lista; }
+    if (ids.length * 2 <= total) { destino = null; ids = []; }
+    semPagina.set(chave, { destino, ids });
+  }
+  return semPagina;
+}
+
+// O que entra no registro automático entre dois catálogos de UM jogo:
+// { "<url>/<slug antigo>": [ids] }, só dos sets que têm destino.
+export function setsARegistrar(game, antes, depois, idDeHoje) {
+  const semPagina = setsSemPagina(paginasDoJogo(game, agrupaPorSet(antes)), paginasDoJogo(game, agrupaPorSet(depois)), idDeHoje);
+  return registroDosSets(semPagina);
+}
+export function registroDosSets(semPagina) {
+  const novos = {};
+  for (const [chave, { destino, ids }] of semPagina) if (destino) novos[chave] = amostraDeIds(ids);
+  return novos;
+}
+
+// O arquivo do registro: chaves em ordem (o diff do snapshot mostra só o que
+// entrou) e uma entrada por linha.
+export function textoDoRegistroDeSets(registro) {
+  const chaves = Object.keys(registro || {}).sort();
+  return "{\n" + chaves.map((k) => ` ${JSON.stringify(k)}: ${JSON.stringify(registro[k])}`).join(",\n") + "\n}\n";
+}
 
 // pages: as páginas de set do prerender ({ url, slug, cards }).
+// registro: o automático ({ "<url>/<slug antigo>": [ids] }), opcional.
+// idDeHoje(id): o id novo de carta aposentada (data/card-id-merges.json),
+//   opcional — o id guardado no registro pode ser aposentado depois, quando a
+//   fonte publica o set importado com outro id, e o 301 não pode cair junto.
 // Devolve { porUrl: Map(url -> { <slug antigo>: <slug de hoje> }),
 //           legado: { <slug do /set/>: "<url>/<slug de hoje>" }, avisos }.
-export function enderecosRenomeados(pages, tabela) {
+export function enderecosRenomeados(pages, tabela, registro, idDeHoje) {
   const slugDoSetId = new Map();
+  const slugDoId = new Map();
   const vivos = new Set();
   for (const p of pages || []) {
     vivos.add(`${p.url}\t${p.slug}`);
     for (const c of p.cards || []) {
       const k = `${p.url}\t${c.setId}`;
       if (c.setId && !slugDoSetId.has(k)) slugDoSetId.set(k, p.slug);
+      const ki = `${p.url}\t${c.id}`;
+      if (c.id != null && !slugDoId.has(ki)) slugDoId.set(ki, p.slug);
     }
   }
   const porUrl = new Map();
@@ -60,6 +149,27 @@ export function enderecosRenomeados(pages, tabela) {
       r[antigo] = hoje;
     }
     if (Object.keys(r).length) porUrl.set(url, r);
+  }
+  // O registro automático, depois da tabela: endereço que a tabela já resolve
+  // fica com ela (foi escrito por quem sabia o destino). Vale a página onde
+  // está a MAIORIA dos ids guardados; id que saiu do catálogo não vota.
+  for (const [chave, ids] of Object.entries(registro || {})) {
+    const corte = chave.indexOf("/");
+    const url = chave.slice(0, corte), antigo = chave.slice(corte + 1);
+    if (corte < 1 || !antigo || antigo.includes("/") || !Array.isArray(ids)) { avisos.push(`${chave}: entrada torta no registro automático`); continue; }
+    if (vivos.has(`${url}\t${antigo}`)) continue;
+    const r = porUrl.get(url) || {};
+    if (Object.prototype.hasOwnProperty.call(r, antigo)) continue;
+    const votos = new Map();
+    for (const id of ids) {
+      const slug = slugDoId.get(`${url}\t${id}`) || slugDoId.get(`${url}\t${(idDeHoje && idDeHoje(id)) || ""}`);
+      if (slug) votos.set(slug, (votos.get(slug) || 0) + 1);
+    }
+    let hoje = null, n = 0;
+    for (const [slug, v] of votos) if (v > n) { hoje = slug; n = v; }
+    if (!hoje) { avisos.push(`${url}/${antigo}: nenhuma carta do registro automático está mais em /games/${url}`); continue; }
+    r[antigo] = hoje;
+    porUrl.set(url, r);
   }
   for (const [antigo, destino] of Object.entries((tabela && tabela.set) || {})) {
     const corte = String(destino).indexOf("/");

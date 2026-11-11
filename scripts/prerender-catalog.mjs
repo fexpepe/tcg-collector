@@ -36,6 +36,7 @@ import { slugify } from "../functions/_lib/slug-carta.js";
 import { fatiaDoLegado } from "../functions/_lib/borda.js";
 // De-para dos sets renomeados (endereço antigo -> setId), ver o módulo.
 import { enderecosRenomeados } from "./lib/sets-renomeados.mjs";
+import { resolveMergedId } from "./lib/set-supersede.mjs";
 // Página de set de cada jogo e o endereço de cada carta (a régua saiu daqui
 // pra lib), e o registro das cartas que mudaram de set.
 import { paginasDoJogo } from "./lib/paginas-de-set.mjs";
@@ -1021,7 +1022,15 @@ function escreveMapasDosJogos(pages, legadoCartas) {
   // As chaves fixadas do legado ganham de qualquer outra: seguram o destino
   // que o nome novo de outro set tomaria (ver scripts/lib/sets-renomeados.mjs).
   const tabela = JSON.parse(readFileSync(new URL("./data/sets-renomeados.json", import.meta.url), "utf8"));
-  const { porUrl: renomeados, legado: fixados, avisos } = enderecosRenomeados(pages, tabela);
+  // Mais o registro automático do deploy: o set cujo nome mudou na fonte, sem
+  // PR (data/sets-renomeados-auto.json, ver scripts/lib/sets-renomeados.mjs).
+  let automatico = {};
+  try { automatico = JSON.parse(readFileSync(join("data", "sets-renomeados-auto.json"), "utf8")); } catch { /* nenhum set mudou de nome sozinho */ }
+  // Id guardado no registro que foi aposentado depois (o set importado que a
+  // fonte publicou com outro id): o de-para de id acha a carta de hoje.
+  let merges = {};
+  try { merges = JSON.parse(readFileSync(join("data", "card-id-merges.json"), "utf8")); } catch { /* sem aposentadoria nenhuma */ }
+  const { porUrl: renomeados, legado: fixados, avisos } = enderecosRenomeados(pages, tabela, automatico, (id) => resolveMergedId(id, merges));
   for (const aviso of avisos) console.warn(`prerender-catalog: set renomeado sem destino — ${aviso}`);
   let deParas = 0;
   for (const [url, r] of renomeados) {

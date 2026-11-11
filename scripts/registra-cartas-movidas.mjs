@@ -4,6 +4,10 @@
 // o cartaParecida da borda levaria o antigo pra outra carta. O porquê e o
 // formato estão em scripts/lib/cartas-movidas.mjs (enderecosARegistrar).
 //
+// E, desde 2026-11-10, os SETS que mudaram de endereço (o nome mudou na
+// fonte): data/sets-renomeados-auto.json, o registro automático do
+// scripts/lib/sets-renomeados.mjs. Sai da mesma comparação, no mesmo passo.
+//
 //   node scripts/registra-cartas-movidas.mjs                # disco × HEAD
 //   node scripts/registra-cartas-movidas.mjs --antes origin/main   # disco × outra ref
 //
@@ -20,9 +24,12 @@ import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { JOGOS_URL } from "../functions/_lib/jogos.js";
 import { enderecosARegistrar, juntaNoRegistro } from "./lib/cartas-movidas.mjs";
+import { resolveMergedId } from "./lib/set-supersede.mjs";
+import { textoDoRegistroDeSets } from "./lib/sets-renomeados.mjs";
 
 const ROOT = fileURLToPath(new URL("../", import.meta.url));
 const REGISTRO = "data/cartas-movidas.json";
+const REGISTRO_DE_SETS = "data/sets-renomeados-auto.json";
 const i = process.argv.indexOf("--antes");
 const REF = i > 0 && process.argv[i + 1] ? process.argv[i + 1] : "HEAD";
 
@@ -89,11 +96,21 @@ const jogoDe = (f) => (f.startsWith("data/sets/") ? "pokemon" : f.split("/")[1])
 const alvos = new Set(mudados.filter(ehCatalogo));
 const jogos = [...new Set([...alvos].map(jogoDe))].filter((g) => JOGOS_URL.some((j) => j.game === g));
 
+// Carta de set importado que a fonte publicou com outro id: o de-para do
+// disco (o retire-imported-sets roda antes, no mesmo build).
+let merges = {};
+try { merges = JSON.parse(readFileSync(ROOT + "data/card-id-merges.json", "utf8")); } catch { /* sem de-para: nenhuma aposentadoria */ }
+const idDeHoje = (id) => resolveMergedId(id, merges);
+
 let novas = {};
+let setsNovos = {};
 for (const game of jogos) {
   const { antes, depois } = catalogos(game, alvos);
   if (!antes.length || !depois.length) continue;
-  const { movidas, erradas } = enderecosARegistrar(game, antes, depois);
+  const { movidas, erradas, sets } = enderecosARegistrar(game, antes, depois, idDeHoje);
+  const s = Object.keys(sets).length;
+  if (s) console.log(`registra-cartas-movidas: ${game} — ${s} set(s) mudaram de endereço (ex.: /games/${Object.keys(sets)[0]})`);
+  setsNovos = { ...setsNovos, ...sets };
   const n = Object.keys(movidas).length;
   if (n) {
     const exemplo = Object.keys(movidas)[0];
@@ -109,12 +126,19 @@ for (const game of jogos) {
   novas = { ...novas, ...movidas, ...erradas };
 }
 
-if (!Object.keys(novas).length) {
+if (!Object.keys(novas).length && !Object.keys(setsNovos).length) {
   console.log(`registra-cartas-movidas: nada a registrar (${jogos.length} jogo(s) com catálogo mudado × ${REF}).`);
   process.exit(0);
 }
-let registro = {};
-if (existsSync(ROOT + REGISTRO)) registro = JSON.parse(readFileSync(ROOT + REGISTRO, "utf8"));
-const final = juntaNoRegistro(registro, novas);
-writeFileSync(ROOT + REGISTRO, JSON.stringify(final, null, 1) + "\n", "utf8");
-console.log(`registra-cartas-movidas: ${REGISTRO} com ${Object.keys(final).length} endereço(s) (${Object.keys(novas).length} de agora).`);
+// Junta as entradas de agora no arquivo. O dos sets vai um por linha: o valor
+// é uma lista curta de ids, e o JSON indentado abriria um id por linha.
+function grava(arquivo, novos, texto) {
+  if (!Object.keys(novos).length) return;
+  let registro = {};
+  if (existsSync(ROOT + arquivo)) registro = JSON.parse(readFileSync(ROOT + arquivo, "utf8"));
+  const final = juntaNoRegistro(registro, novos);
+  writeFileSync(ROOT + arquivo, texto(final), "utf8");
+  console.log(`registra-cartas-movidas: ${arquivo} com ${Object.keys(final).length} endereço(s) (${Object.keys(novos).length} de agora).`);
+}
+grava(REGISTRO, novas, (r) => JSON.stringify(r, null, 1) + "\n");
+grava(REGISTRO_DE_SETS, setsNovos, textoDoRegistroDeSets);
