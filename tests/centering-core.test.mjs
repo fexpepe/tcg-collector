@@ -470,14 +470,25 @@ test("determinismo e tempo: mesma foto dá o mesmo número bit a bit; 1200×1600
   for (let i = 0; i < 3; i++) { const t0 = performance.now(); mede(S, c0); ts.push(performance.now() - t0); }
   ts.sort((x, y) => x - y);
   assert.ok(ts[1] < 50, `mediana ${ts[1].toFixed(1)} ms`);
-  const ti = [];
-  for (let i = 0; i < 5; i++) {
+  // Ímã: o PLANO-CENTERING-V2 (tabela de tempos) dá < 3 ms no node desktop e
+  // < 10 ms em máquina lenta (celular médio). O runner do GitHub (2 núcleos
+  // compartilhados, com o node --test rodando os arquivos em paralelo) NÃO é
+  // desktop: com o teto de 3 ms este teste caía em ~1 de cada 5 runs do CI
+  // (3,24–4,34 ms, 10–11/11/2026), com o código parado e o mesmo commit
+  // passando no push e falhando na PR. Aqui o mesmo ímã leva ~0,7 ms. Então:
+  // 3 ms fora do CI, 10 ms no CI (o GitHub põe CI=true), que ainda pega uma
+  // regressão de 3×. Vale o MELHOR de 9 rodadas, depois de uma de aquecimento
+  // (sem medir o JIT): o mínimo mede o código, não a disputa de CPU.
+  const ima = () => C.ima(S.img, a.rc.cantos, { lado: "l", tipo: "int", c: 0.05, k: 0 }, { janela: 0.01, ref: 0 });
+  ima();
+  let melhor = Infinity;
+  for (let i = 0; i < 9; i++) {
     const t0 = performance.now();
-    C.ima(S.img, a.rc.cantos, { lado: "l", tipo: "int", c: 0.05, k: 0 }, { janela: 0.01, ref: 0 });
-    ti.push(performance.now() - t0);
+    ima();
+    melhor = Math.min(melhor, performance.now() - t0);
   }
-  ti.sort((x, y) => x - y);
-  assert.ok(ti[2] < 3, `ímã ${ti[2].toFixed(2)} ms`);
+  const teto = process.env.CI ? 10 : 3;
+  assert.ok(melhor < teto, `ímã ${melhor.toFixed(2)} ms (melhor de 9; teto ${teto} ms)`);
 });
 
 // ---------------------------------------------------------------------------
