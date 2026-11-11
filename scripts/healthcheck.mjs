@@ -153,6 +153,7 @@ await checkCatalog("cards World of Warcraft", "/data/wow/cards.js", "TCG_CARDS",
 await checkCatalog("cards Weiß Schwarz", "/data/weiss/cards.js", "TCG_CARDS", 25000);
 await checkCatalog("cards Miracle Battle Carddass", "/data/mbc/cards.js", "TCG_CARDS", 900);
 await checkCatalog("cards Carddass Masters", "/data/cdm/cards.js", "TCG_CARDS", 250);
+await checkCatalog("cards Gundam Carddass", "/data/gcd/cards.js", "TCG_CARDS", 1200);
 // Yu-Gi-Oh! não tem cards.js em produção (chunk-only, padrão Magic) — só o pricing.
 await checkJson("chunk Pokémon (base1)", "/data/sets/en/base1.json",
   (j) => Array.isArray(j) && j.length >= 100 ? null : "chunk vazio/curto");

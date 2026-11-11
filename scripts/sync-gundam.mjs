@@ -116,7 +116,9 @@ async function run() {
 
   // União preservadora: carta que sumiu do espelho fica (do cards.js anterior).
   const prev = (await readGlobalVar(new URL("cards.js", OUT), "TCG_CARDS")) || [];
-  const merged = cards.concat(preserveMissingCards(prev, cards));
+  // Menos as gcd-: o Gundam Carddass morou aqui como linha por algumas horas
+  // (10/11/2026) e virou o jogo gcd; preservá-las devolveria os 37 sets.
+  const merged = cards.concat(preserveMissingCards(prev, cards).filter((c) => !String(c.id).startsWith("gcd-")));
 
   merged.sort((a, b) =>
     String(a.setReleaseDate).localeCompare(String(b.setReleaseDate))

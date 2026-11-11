@@ -1,6 +1,8 @@
-// ガンダム カードダス (Gundam Carddass, Bandai 1988–1997): a linha vintage
-// `gcd` do jogo gundam (decisão do Fernando, 2026-11-10: linha da marca, como
-// o Carddass do One Piece, e não jogo próprio). É a linha que INAUGUROU o
+// ガンダム カードダス (Gundam Carddass, Bandai 1988–1997): o jogo vintage
+// `gcd`, em data/gcd/. Entrou em 10/11/2026 como LINHA do jogo gundam e, no
+// mesmo dia, virou jogo próprio (decisão do Fernando), como os outros
+// vintages: chip, cor e contagem dele, sem misturar com o Gundam Card Game de
+// 2025 na Coleção. Os ids (gcd-) e o endereço não mudaram. É a linha que INAUGUROU o
 // Carddass: o SDガンダムワールド 第1弾 saiu em julho de 1988 na "Carddass 20",
 // quatro meses antes do Dragon Ball. Em paralelo ao 本弾 a Bandai lançou as
 // séries de história (外伝, 戦国伝, コマンド戦記, ガンドランダー…), todas
@@ -47,13 +49,14 @@ import { fileURLToPath } from "node:url";
 import { readGlobalVar, readSnapshot, writeSnapshot, snapshotCardCount, writeGameCatalog, decodeEntities, sleep } from "./lib/sync-common.mjs";
 
 const ROOT = new URL("../", import.meta.url);
-const OUT = new URL("data/gundam/", ROOT);
+const GAME = "gcd";
+const OUT = new URL(`data/${GAME}/`, ROOT);
+const GUNDAM = new URL("data/gundam/", ROOT);
 const SNAP = new URL("data/vintage/gundam-carddass.json", ROOT);
 const NOMES = JSON.parse(readFileSync(new URL("scripts/data/gundam-carddass-nomes.json", ROOT), "utf8"));
 const NOMES_EN = JSON.parse(readFileSync(new URL("scripts/data/gundam-carddass-nomes-en.json", ROOT), "utf8"));
 const UA = { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Sleevu/1.0 (+sleevu.app)" };
 const NO_FETCH = process.argv.includes("--no-fetch");
-export const LINE = "gcd";
 export const ID_PREFIX = "gcd-";
 const FONTE = "www.animecollection.fr"; // sem esquema: o wsrv busca em HTTP, que é o que o site serve
 
@@ -302,12 +305,12 @@ export const IMG = (src) => `https://wsrv.nl/?url=${encodeURIComponent(src)}&w=4
 // Imagem CURADA do dono substitui o scan (mesmo mecanismo dos outros vintages).
 function curatedImg(id) {
   for (const ext of ["webp", "jpg", "png"]) {
-    if (existsSync(fileURLToPath(new URL(`assets/cards/gundam/${id}.${ext}`, ROOT)))) return `/assets/cards/gundam/${id}.${ext}`;
+    if (existsSync(fileURLToPath(new URL(`assets/cards/${GAME}/${id}.${ext}`, ROOT)))) return `/assets/cards/${GAME}/${id}.${ext}`;
   }
   return "";
 }
 
-// Cartas da linha a partir do snapshot. `nomes`: id -> nome impresso (ja).
+// Cartas do jogo a partir do snapshot. `nomes`: id -> nome impresso (ja).
 export function cartasDaLinha(snapshot, nomes = NOMES.nomes, nomesEn = NOMES_EN) {
   const line = [];
   for (const s of (snapshot && snapshot.sets) || []) {
@@ -339,41 +342,44 @@ export function cartasDaLinha(snapshot, nomes = NOMES.nomes, nomesEn = NOMES_EN)
         // nome (contrato 3 do docs/CATALOGO.md).
         setLogo: "",
         vintage: true,
-        vintageLine: LINE
+        vintageLine: def.series
       });
     }
   }
   return line;
 }
 
-// A mesma ordem do sync-gundam.mjs (data, set, número, id): os dois regravam o
-// mesmo cards.js, e com ordens diferentes o arquivo trocaria inteiro a cada
-// rodada de um ou de outro.
-const ordem = (a, b) =>
-  String(a.setReleaseDate).localeCompare(String(b.setReleaseDate))
-  || String(a.setId).localeCompare(String(b.setId))
-  || String(a.number).localeCompare(String(b.number), undefined, { numeric: true })
-  || String(a.id).localeCompare(String(b.id));
-
-async function build(snapshot) {
-  const line = cartasDaLinha(snapshot);
-  // ANEXA ao catálogo do Gundam Card Game (TCGCSV): tudo que não é da linha
-  // fica como está; a linha é regravada. Carta da linha que saiu do snapshot
-  // (não deveria: ele nunca regride) também fica — carta publicada não some.
-  const existing = (await readGlobalVar(new URL("cards.js", OUT), "TCG_CARDS")) || [];
-  const have = new Set(line.map((c) => c.id));
-  const merged = existing.filter((c) => c && c.id && !have.has(c.id)).concat(line).sort(ordem);
+// As cartas gcd- moraram no catálogo do Gundam Card Game enquanto isto foi
+// linha dele. Tira de lá (cards, índices, chunks e manifest): o sync-gundam
+// também as descarta, mas ele não roda no build rápido, e o data/gundam/sets
+// que vem do cache ainda teria os 37 sets. Sem carta gcd- lá, não faz nada.
+async function tiraDoGundam() {
+  const cards = (await readGlobalVar(new URL("cards.js", GUNDAM), "TCG_CARDS")) || [];
+  const resto = cards.filter((c) => c && !String(c.id).startsWith(ID_PREFIX));
+  if (!cards.length || resto.length === cards.length) return 0;
   const bySet = new Map();
-  for (const c of merged) { if (!bySet.has(c.set)) bySet.set(c.set, []); bySet.get(c.set).push(c.id); }
+  for (const c of resto) { if (!bySet.has(c.set)) bySet.set(c.set, []); bySet.get(c.set).push(c.id); }
   const indexes = {
     sets: [...bySet.entries()].map(([name, cardIds]) => ({ name, cardIds })).sort((a, b) => a.name.localeCompare(b.name)),
     artists: []
   };
-  const pricing = (await readGlobalVar(new URL("pricing.js", OUT), "TCG_PRICING")) || {}; // a linha não tem preço
-  await writeGameCatalog(OUT, { cards: merged, indexes, pricing, webDir: "data/gundam/" });
+  const pricing = (await readGlobalVar(new URL("pricing.js", GUNDAM), "TCG_PRICING")) || {};
+  await writeGameCatalog(GUNDAM, { cards: resto, indexes, pricing, webDir: "data/gundam/" });
+  return cards.length - resto.length;
+}
+
+async function build(snapshot) {
+  const line = cartasDaLinha(snapshot);
+  const existing = (await readGlobalVar(new URL("cards.js", OUT), "TCG_CARDS")) || [];
+  // O catálogo é só deste sync; mas carta publicada nunca some.
+  const have = new Set(line.map((c) => c.id));
+  const merged = line.concat(existing.filter((c) => c && c.id && !have.has(c.id)));
+  const pricing = (await readGlobalVar(new URL("pricing.js", OUT), "TCG_PRICING")) || {}; // sem preço
+  await writeGameCatalog(OUT, { cards: merged, pricing, webDir: `data/${GAME}/` });
+  const tiradas = await tiraDoGundam();
   const semNome = line.filter((c) => /^No\. /.test(c.name)).length;
   const comEn = line.filter((c) => c.nameJp).length;
-  console.log(`  ${LINE}: ${line.length} cartas em ${(snapshot.sets || []).length} partes (${comEn} com nome EN, ${semNome} sem nome) -> ${merged.length} no catálogo do Gundam`);
+  console.log(`  ${GAME}: ${line.length} cartas em ${(snapshot.sets || []).length} partes (${comEn} com nome EN, ${semNome} sem nome) -> ${merged.length} totais${tiradas ? `; ${tiradas} saíram do catálogo do Gundam` : ""}`);
 }
 
 async function run() {

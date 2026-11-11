@@ -3260,6 +3260,7 @@
     dbc: SUBNAV_MIN,
     dbz: SUBNAV_MIN,
     cdm: SUBNAV_MIN,
+    gcd: SUBNAV_MIN,
     lotr: SUBNAV_MIN,
     harrypotter: SUBNAV_ARTISTS
   };
@@ -7321,6 +7322,7 @@
     dbc:       { usText: "dragon ball carddass", noTcgplayer: true },
     mbc:       { usText: "miracle battle carddass", noTcgplayer: true },
     cdm:       { usText: "carddass masters", noTcgplayer: true },
+    gcd:       { usText: "gundam carddass", noTcgplayer: true },
     // World of Warcraft TCG (conferido em 30/09/2026): TCGplayer na linha
     // "wow" (a busca devolve a carta "in WoW") e Cardmarket em /en/WoW. Sem
     // loja BR: o MYP não tem seção do jogo e não existe Liga.
@@ -7347,9 +7349,7 @@
     // (ligaweiss.com.br nem resolve).
     weiss:     { myp: "weissschwarz", tcgLine: "weiss-schwarz", usText: "weiss schwarz", cm: "WeissSchwarz" }
   };
-  // `game`: o slug do jogo ou, numa linha com lojas próprias, a tabela dela
-  // (GAME_LINES…market, escolhida pelo lojasDaCarta).
-  function marketOf(game) { return game && game.usText ? game : (MARKETS[game] || MARKETS.pokemon); }
+  function marketOf(game) { return MARKETS[game] || MARKETS.pokemon; }
 
   function brMarketplaces(game) {
     const m = marketOf(game);
@@ -7843,16 +7843,15 @@
     // sessão só pra cartas sem tag (catálogos antigos). gradedTag (ex.: "PSA 9")
     // só vem quando a carta é graduada e entra na busca de eBay/PriceCharting.
     const game = card.game || currentGame();
-    const loja = lojasDaCarta(card, game);
-    const linhas = marketplaceRow("price.checkBr", brMarketplaces(loja), card)
-      + marketplaceRow("price.checkUs", usMarketplaces(loja, gradedTag), card)
+    const linhas = marketplaceRow("price.checkBr", brMarketplaces(game), card)
+      + marketplaceRow("price.checkUs", usMarketplaces(game, gradedTag), card)
       // Linha vintage (Carddass/OP 2002/Miracle Battle) não existe no Cardmarket:
       // a busca voltaria vazia, então a linha EU nem aparece. É isVintageCard, e
       // não a flag, porque a carta vinda da borda (Coleção/Explorar) chega sem
       // ela — mas só nos jogos sem `cmv`: no Pokémon "vintage" é só a data de
       // lançamento e o Base Set existe no Cardmarket; o WoW TCG é todo vintage
       // e está lá.
-      + marketplaceRow("price.checkEu", marketOf(loja).cm && (marketOf(loja).cmv || !isVintageCard(card)) ? [{ key: "cardmarket", label: "Cardmarket", url: cardmarketUrl }] : [], card);
+      + marketplaceRow("price.checkEu", marketOf(game).cm && (marketOf(game).cmv || !isVintageCard(card)) ? [{ key: "cardmarket", label: "Cardmarket", url: cardmarketUrl }] : [], card);
     // Transparência do afiliado: a nota aparece SÓ se algum link desta carta
     // for de afiliado — com os IDs vazios (ou numa carta sem TCGplayer/eBay)
     // ela diria algo que não é verdade.
@@ -8942,7 +8941,8 @@
     { game: "harrypotter", dataDir: "data/harrypotter/" },
     { game: "weiss", dataDir: "data/weiss/" },
     { game: "mbc", dataDir: "data/mbc/" },
-    { game: "cdm", dataDir: "data/cdm/" }
+    { game: "cdm", dataDir: "data/cdm/" },
+    { game: "gcd", dataDir: "data/gcd/" }
   ];
   // Slugs e cor de cada jogo, num lugar só (adicionar um jogo = 1 entrada aqui
   // + 1 no game.js + labels no i18n; as páginas iteram em vez de hardcodear).
@@ -8981,7 +8981,8 @@
     weiss: "#ffffff",      // branco ("Weiß"; o preto é do Star Wars); 21:1 com preto, a 159 do prata do DBFW
     harrypotter: "#740001", // escarlate da Grifinória; 12:1 com branco, a 85 do Magic (o vizinho mais próximo)
     mbc: "#fb923c",        // pêssego (o laranja-dourado do logo); 9.3:1 com preto, a 71 do One Piece e a 77 do Naruto
-    cdm: "#a21caf"         // fúcsia; 6.3:1 com branco, a 79 do Yu-Gi-Oh! e a 81 do DBC (proposta, 2026-11-09)
+    cdm: "#a21caf",        // fúcsia; 6.3:1 com branco, a 79 do Yu-Gi-Oh! e a 81 do DBC (proposta, 2026-11-09)
+    gcd: "#a3e635"         // lima; 13.9:1 com preto, a 92 do Sorcery e a 99 do Cyberpunk (proposta, 2026-11-10)
   };
   // Preto ou branco sobre a cor do jogo — o que der MAIOR contraste de verdade
   // (fórmula WCAG), não um limiar de luminância chutado: com limiar fixo o
@@ -9021,7 +9022,7 @@
     ygo: "filter.gameYgo", digimon: "filter.gameDigimon", riftbound: "filter.gameRiftbound",
     unionarena: "filter.gameUnionArena", naruto: "filter.gameNaruto", hxh: "filter.gameHxh",
     dbc: "filter.gameDbc", dbz: "filter.gameDbz", wow: "filter.gameWow", lotr: "filter.gameLotr", weiss: "filter.gameWeiss", harrypotter: "filter.gameHarryPotter",
-    mbc: "filter.gameMbc", cdm: "filter.gameCdm"
+    mbc: "filter.gameMbc", cdm: "filter.gameCdm", gcd: "filter.gameGcd"
   };
   function gameLabel(g) { return t(GAME_LABEL_KEY[g] || GAME_LABEL_KEY.pokemon); }
   // Nomes em inglês dos sets vintage e japoneses (VINTAGE_SET_EN, JA_SET_EN e
@@ -9078,16 +9079,6 @@
   }
 
   const GAME_LINES = {
-    // Gundam Carddass (Bandai 1988–1997): a linha que inaugurou o Carddass.
-    // Uma linha só, com uma seção por série na página de Sets
-    // (groupGundamCarddassSets no app.js): World 本弾, 外伝, 戦国伝, 聖伝…
-    // `market`: as lojas DA LINHA, no formato do MARKETS (conferido em
-    // 10/11/2026). As do jogo só têm o Gundam Card Game de 2025: a LigaGundam,
-    // o MYP e o TCGplayer não listam Carddass, e "gundam card game" na busca do
-    // eBay zerava os anúncios de 1988 ("1988 Bandai SD Gundam Carddass…").
-    gundam: {
-      "gcd": { prefix: "gcd-", label: "Gundam Carddass", titleKey: "sets.category.gcd", market: { usText: "gundam carddass", noTcgplayer: true } }
-    },
     onepiece: {
       "opcd": { prefix: "opcd-", label: "Carddass Hyper Battle", titleKey: "sets.category.vintage" },
       "op2002": { prefix: "op2002-", label: "One Piece Card Game (2002)", titleKey: "sets.category.op2002" }
@@ -9129,7 +9120,6 @@
   const VINTAGE_COLOR = "#8b6b43"; // sépia de papel velho: não é a cor de marca nenhuma
   const VINTAGE_POKEMON_UNTIL = "2008-12-31";
   const VINTAGE_ID_PREFIX = {
-    gundam: ["gcd-"],                         // Carddass 1988–1997 (a linha; o Gundam Card Game é gcg-)
     onepiece: ["opcd-", "op2002-"],           // Carddass 1999–2002, OPCG 2002–05
     hxh: ["hxh-"],                            // Hyper Battle 1999–2001: tudo vintage
     dbc: ["dbc-"],                            // Carddass 1988–1997: o jogo inteiro é vintage
@@ -9138,6 +9128,7 @@
     lotr: ["lotr-"],                          // Decipher 2001–2007: idem
     dbz: ["dbz-"],                            // Score 2000–2006: idem
     cdm: ["cdm-"],                            // Bandai 1996–2009: idem
+    gcd: ["gcd-"],                            // Bandai 1988–1997: idem
     harrypotter: ["hp-"],                     // Wizards 2001–2002: idem
     naruto: ["nrt-"]                          // Bandai 2003–2013 inteiro…
   };
@@ -9166,12 +9157,6 @@
   // Linhas que viraram SEÇÃO de outra: o ?line= antigo (favorito, link
   // compartilhado) continua abrindo, já na linha nova.
   const LINE_ALIASES = { "nrt-nf": "nrt-dc", "nrt-nx": "nrt-dc" };
-  // Lojas de uma CARTA: as da linha dela quando a linha tem as suas (`market`
-  // no GAME_LINES, casada pelo prefixo do id), senão as do jogo.
-  function lojasDaCarta(card, game) {
-    const d = Object.values(GAME_LINES[game] || {}).find((l) => l.market && (l.prefixes || [l.prefix]).some((p) => !String(card.id).indexOf(p)));
-    return d ? d.market : game;
-  }
   function lineParamOf() {
     // A linha pode vir do endereço (/games/naruto-data-carddass): o game.js a
     // resolve no <head> e deixa em SLEEVU.line. Senão, o ?line= de sempre.
@@ -11269,7 +11254,7 @@
   // `subir`, pro push que vem logo em seguida.
   async function moveMiracleBattle(subir) {
     try {
-      if (!["onepiece", "naruto", "hxh"].some((g) => /"(op|nrt|hxh)-mb-/.test(localStorage.getItem(gameKey("collection-v3", g)) + localStorage.getItem(gameKey("wishlist-v1", g))))) return false;
+      if (!["onepiece", "naruto", "hxh", "gundam"].some((g) => /"((op|nrt|hxh)-mb|gcd)-/.test(localStorage.getItem(gameKey("collection-v3", g)) + localStorage.getItem(gameKey("wishlist-v1", g))))) return false;
     } catch (e) { return false; }
     const jogos = (await injectScript("/src/migra-mbc.js")) && window.TCGMigraMbc ? window.TCGMigraMbc() : [];
     jogos.forEach((g) => { subir[g] = localSnapshot(g); });

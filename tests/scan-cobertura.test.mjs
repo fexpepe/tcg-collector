@@ -57,10 +57,7 @@ const JOGOS = {
   onepiece: { min: 0.76, nota: "o resto é o Carddass de 2002 (BA-C01, C111), que entra em semCodigo na prática" },
   // A promo do Digimon está guardada como "P - 196"; a carta imprime "P-196".
   digimon: { min: 0.97, impresso: (c) => String(c.number).replace(/\s*-\s*/, "-") },
-  // O Gundam Carddass (1988–1997, ids "gcd-") é uma LINHA dentro do jogo: carta
-  // vintage de número solto. Entrou na main em 10/11/2026, no mesmo dia deste
-  // teste — e foi ele que acusou (a taxa do jogo caiu de 100 % pra 60 %).
-  gundam: { min: 0.98, origem: "topo", linhaSemCodigo: { prefixo: "gcd-", motivo: "Gundam Carddass: número solto, sem set impresso" } },
+  gundam: { min: 0.98, origem: "topo" },
   dbfw: { min: 0.98 },
   unionarena: { min: 0.98 },
   weiss: { min: 0.96 },
@@ -91,6 +88,7 @@ const JOGOS = {
   lotr: { semCodigo: "número solto (15), repetido em todo set" },
   dbc: { semCodigo: "Carddass: número solto, sem set impresso" },
   cdm: { semCodigo: "Carddass Masters: número solto, sem set impresso" },
+  gcd: { semCodigo: "Gundam Carddass: número solto, sem set impresso" },
   mbc: { semCodigo: "Miracle Battle Carddass: número solto" },
   hxh: { semCodigo: "número curto (C01), repetido entre os sets" },
   cyberpunk: { semCodigo: "número solto (001), repetido em todo set" }

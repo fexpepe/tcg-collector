@@ -23,21 +23,29 @@
 //     pro jogo da marca e é trazida pra cá de novo na próxima abertura;
 //   - preço manual vai pelo merge de preços; lista e venda realizada guardam o
 //     jogo, e a de Miracle Battle passa a dizer mbc.
+//
+// Gundam Carddass (2026-11-10): a mesma mudança de gaveta, do gundam pro jogo
+// gcd. As cartas gcd- entraram como linha do Gundam e viraram jogo próprio no
+// mesmo dia; quem marcou uma nesse intervalo a tem na coleção do gundam. O
+// destino sai do id (destinoDe), e todo o resto é igual.
 (function () {
   const S = window.TCGShared;
   if (!S || !S._nucleo) return;
   const { SYNC_KEYS, mergeCollection, mergeWishlist, mergePrices, normalizeMeta, readObject, freezeWritesUntilReload } = S._nucleo;
 
-  const DE = ["onepiece", "naruto", "hxh"];
-  const PARA = "mbc";
-  const ehMb = (id) => /^(op|nrt|hxh)-mb-/.test(String(id || ""));
+  const DE = ["onepiece", "naruto", "hxh", "gundam"];
+  // Jogo novo da carta, pelo id; null = fica onde está.
+  const destinoDe = (id) => (/^(op|nrt|hxh)-mb-/.test(String(id || "")) ? "mbc" : /^gcd-/.test(String(id || "")) ? "gcd" : null);
   const chave = (base, game) => `tcg-collector-${game}-${base}`;
 
-  // Entradas por id de um objeto: as do Miracle Battle e o resto.
+  // Entradas por id de um objeto: as que mudam de jogo (por destino) e o resto.
   function separa(obj) {
-    const mb = {}, resto = {};
-    Object.keys(obj || {}).forEach((id) => { (ehMb(id) ? mb : resto)[id] = obj[id]; });
-    return { mb, resto };
+    const vai = {}, resto = {};
+    Object.keys(obj || {}).forEach((id) => {
+      const para = destinoDe(id);
+      if (para) (vai[para] = vai[para] || {})[id] = obj[id]; else resto[id] = obj[id];
+    });
+    return { vai, resto };
   }
 
   function migra() {
@@ -50,19 +58,21 @@
     [["collection-v3", "collection-meta-v1", mergeCollection, "collection"],
       ["wishlist-v1", "wishlist-meta-v1", mergeWishlist, "wishlist"]].forEach(([base, baseMeta, merge, campo]) => {
       DE.forEach((g) => {
-        const { mb, resto } = separa(ler(chave(base, g)));
-        const ids = Object.keys(mb);
-        if (!ids.length) return;
+        const { vai, resto } = separa(ler(chave(base, g)));
+        if (!Object.keys(vai).length) return;
         const meta = normalizeMeta(ler(chave(baseMeta, g)));
-        const metaMb = { mod: {}, del: {} };
-        ids.forEach((id) => {
-          if (meta.mod[id]) metaMb.mod[id] = meta.mod[id];
-          delete meta.mod[id];
-          meta.del[id] = agora;
+        Object.keys(vai).forEach((para) => {
+          const metaVai = { mod: {}, del: {} };
+          Object.keys(vai[para]).forEach((id) => {
+            if (meta.mod[id]) metaVai.mod[id] = meta.mod[id];
+            delete meta.mod[id];
+            meta.del[id] = agora;
+          });
+          const r = merge(ler(chave(base, para)) || {}, normalizeMeta(ler(chave(baseMeta, para))), vai[para], metaVai);
+          escritas[chave(base, para)] = r[campo];
+          escritas[chave(baseMeta, para)] = r.meta;
+          tocados.add(para);
         });
-        const r = merge(ler(chave(base, PARA)) || {}, normalizeMeta(ler(chave(baseMeta, PARA))), mb, metaMb);
-        escritas[chave(base, PARA)] = r[campo];
-        escritas[chave(baseMeta, PARA)] = r.meta;
         escritas[chave(base, g)] = resto;
         escritas[chave(baseMeta, g)] = meta;
         tocados.add(g);
@@ -72,9 +82,12 @@
     // Preço manual (por carta × variante × condição): sem tombstone por carta;
     // o push logo depois deixa a linha da nuvem igual à daqui.
     DE.forEach((g) => {
-      const { mb, resto } = separa(ler(chave("prices-v1", g)));
-      if (!Object.keys(mb).length) return;
-      escritas[chave("prices-v1", PARA)] = mergePrices(ler(chave("prices-v1", PARA)) || {}, mb);
+      const { vai, resto } = separa(ler(chave("prices-v1", g)));
+      if (!Object.keys(vai).length) return;
+      Object.keys(vai).forEach((para) => {
+        escritas[chave("prices-v1", para)] = mergePrices(ler(chave("prices-v1", para)) || {}, vai[para]);
+        tocados.add(para);
+      });
       escritas[chave("prices-v1", g)] = resto;
       tocados.add(g);
     });
@@ -86,9 +99,9 @@
       let mexeu = false;
       listas.lists.forEach((l) => {
         if (!l || !DE.includes(l.game) || !Array.isArray(l.entries)) return;
-        const mb = l.entries.filter((e) => e && ehMb(e.id)).length;
-        if (!mb) return;
-        l.game = mb === l.entries.length ? PARA : null;
+        const destinos = l.entries.map((e) => (e ? destinoDe(e.id) : null));
+        if (!destinos.some(Boolean)) return;
+        l.game = destinos.every((d) => d && d === destinos[0]) ? destinos[0] : null;
         l.updatedAt = agora;
         mexeu = true;
       });
@@ -101,7 +114,7 @@
       let mexeu = false;
       Object.keys(vendidas.items).forEach((sid) => {
         const v = vendidas.items[sid];
-        if (v && ehMb(v.cardId) && DE.includes(v.game)) { v.game = PARA; mexeu = true; }
+        if (v && destinoDe(v.cardId) && DE.includes(v.game)) { v.game = destinoDe(v.cardId); mexeu = true; }
       });
       if (mexeu) { vendidas.updatedAt = agora; escritas[SYNC_KEYS.sold] = vendidas; }
     }
@@ -122,7 +135,7 @@
     // As stores em memória ainda têm a carta no jogo da marca: nada delas pode
     // gravar por cima até o reload que o shared.js faz em seguida.
     freezeWritesUntilReload();
-    return Array.from(tocados).concat(PARA);
+    return Array.from(tocados);
   }
 
   window.TCGMigraMbc = migra;

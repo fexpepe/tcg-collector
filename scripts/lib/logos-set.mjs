@@ -150,6 +150,7 @@ export const FORA = {
   lotr: "vintage sem logo de set publicado",
   dbz: "vintage sem logo de set publicado",
   cdm: "vintage sem logo de set publicado",
+  gcd: "vintage sem logo de set publicado",
   naruto: "logo de linha/título vem do sync; os capítulos sem logo não têm um publicado"
 };
 

@@ -258,7 +258,8 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   (千耳会斡旋…, ilegível nos scans: fica sem `nameJp`), os outros brindes de
   VHS (VD1, VD2…), o mês dos três sets (só o ano) e as cartas de episódio,
   que vêm deitadas no scan e aparecem giradas.
-- **Gundam Carddass (linha `gcd` do `gundam`)**: entrou em 2026-11-10 o que o
+- **Gundam Carddass (`gcd`)**: jogo próprio desde 2026-11-10 (no mesmo dia foi
+  linha do `gundam`). Entrou o que o
   animecollection.fr cobre — SD Gundam World 本弾 (13弾), 外伝 (16弾), 戦国伝
   (4弾), 新戦国伝 第1弾, 聖伝 (2) e o Gガンダム, 1.475 cartas com scan e nome
   transcrito. Faltam: (1) quatro cartas que a fonte não tem — o No.124 do 本弾

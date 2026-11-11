@@ -41,6 +41,7 @@
     weiss: { slug: "weiss", name: "Weiß Schwarz", dataDir: "data/weiss/" }, // TCGCSV cat. 20 (Bushiroad, só a edição EN, 2013+; paralelas = cartas próprias)
     mbc: { slug: "mbc", name: "Miracle Battle Carddass", dataDir: "data/mbc/" }, // vintage Bandai 2009–2015, crossover da Jump (7 séries; tcg-db)
     cdm: { slug: "cdm", name: "Carddass Masters", dataDir: "data/cdm/" }, // vintage Bandai 1996–2009, uma seção por IP (Evangelion e HxH; fontes no sync-carddass-masters.mjs)
+    gcd: { slug: "gcd", name: "Gundam Carddass", dataDir: "data/gcd/" }, // vintage Bandai 1988–1997, uma seção por série (animecollection.fr + 80storage; nome transcrito dos scans)
     // Em preparação (catálogo ainda vazio; tile "Em breve" no hub):
     jump: { slug: "jump", name: "JUMP", dataDir: "data/jump/" }            // promos curadas (Jump Festa, V-Jump…)
   };
@@ -63,7 +64,7 @@
     ["dragon-ball-fusion-world", "dbfw"], ["digimon-card-game", "digimon"], ["union-arena", "unionarena"],
     ["cyberpunk-tcg", "cyberpunk"], ["sorcery-contested-realm", "sorcery"], ["naruto-card-game", "naruto", "nrt-ncg", "nrt-ncg-"],
     ["weiss-schwarz", "weiss"],
-    ["gundam-carddass", "gundam", "gcd", "gcd-"],
+    ["gundam-carddass", "gcd"],
     ["dragon-ball-carddass", "dbc"], ["hunter-x-hunter-carddass", "hxh"],
     ["one-piece-carddass", "onepiece", "opcd", "opcd-"], ["lord-of-the-rings-tcg", "lotr"], ["harry-potter-tcg", "harrypotter"],
     ["dragon-ball-z-ccg", "dbz"],
@@ -77,7 +78,7 @@
   var LINHA_APELIDO = { "nrt-nf": "nrt-dc", "nrt-nx": "nrt-dc" };
   // Linha que virou JOGO (o LINHAS_VIRARAM_JOGO do functions/_lib/jogos.js): o
   // Miracle Battle era linha do One Piece, do Naruto e do HxH até 2026-10-01.
-  var LINHA_VIROU_JOGO = { "op-mb": "mbc", "nrt-mb": "mbc", "hxh-mb": "mbc" };
+  var LINHA_VIROU_JOGO = { "op-mb": "mbc", "nrt-mb": "mbc", "hxh-mb": "mbc", "gcd": "gcd" }; // gcd: linha do gundam por um dia (10/11/2026)
   // /games/<url>, /games/<url>/<set> e /games/<url>/<set>/<carta>. O "_id" do
   // link de compartilhar não casa (tem "_"): ele é sempre um 301 da borda.
   var CAMINHO_DO_JOGO = /^\/games\/([a-z0-9-]+)(\/[a-z0-9-]+){0,2}\/?$/;
@@ -261,6 +262,7 @@
     lotr: ["https://wsrv.nl"],
     dbz: ["https://wsrv.nl"],
     cdm: ["https://wsrv.nl"],
+    gcd: ["https://wsrv.nl"],
     harrypotter: ["https://wsrv.nl"]
   };
   // SEM crossorigin, igual às tags que já existem no HTML: na PRIMEIRA visita —

@@ -44,7 +44,7 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 | `onepiece` | One Piece | TCGCSV cat. 68 + vintage (Carddass Hyper Battle, OP Card Game 2002) | USD (moderno); vintage sem preço |
 | `magic` | Magic: The Gathering | Scryfall (catálogo EN; pt-BR é fase 2) | USD/EUR |
 | `fab` | Flesh and Blood | TCGCSV cat. 62 | USD |
-| `gundam` | Gundam Card Game | TCGCSV cat. 86 + vintage (Gundam Carddass 1988–1997, a linha `gcd`: animecollection.fr + 80storage, nome transcrito dos scans) | USD (moderno); vintage sem preço |
+| `gundam` | Gundam Card Game | TCGCSV cat. 86 | USD |
 | `swu` | Star Wars: Unlimited | TCGCSV cat. 79 (FFG; Hyperspace/Showcase = cartas próprias) + logos de set do site oficial (`mirror-swu-set-logos.mjs`) | USD |
 | `cyberpunk` | Cyberpunk TCG | TCGCSV cat. 92 (Weird Co.; edições Beta e Retail = sets próprios, setId fixo por groupId) + logo do Welcome to Night City curado do site oficial | USD |
 | `weiss` | Weiß Schwarz | TCGCSV cat. 20 (Bushiroad; só a edição inglesa, 2013+; paralelas SP/SSP/OFR = cartas próprias; setId fixo por groupId com o código impresso, `DDD-S118`; sem logo de set publicado) | USD |
@@ -63,22 +63,19 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 | `harrypotter` | Harry Potter TCG | Wizards of the Coast 2001–2002: hpjson (GitHub) + imagens do accio.cards; premium, decks e promos = cartas próprias | sem preço |
 | `mbc` | Miracle Battle Carddass | Bandai 2009–2015, o crossover da Jump: sete séries (Dragon Ball Kai, One Piece, Toriko, Hunter × Hunter, Naruto Shippuden, Kuroko, J-Heroes), uma seção por série; tcg-db (snapshot `data/vintage/miracle-battle.json`). Até 2026-10-01 eram linhas do One Piece, do Naruto e do HxH (ids `op-mb-`/`nrt-mb-`/`hxh-mb-` mantidos; `src/migra-mbc.js` leva a coleção de quem marcou) | sem preço |
 | `cdm` | Carddass Masters | Bandai 1996–2009, a linha de cartas de coleção de várias IPs, uma seção por IP. HUNTER×HUNTER (2000–2001): número e nome pela lista impressa no verso das cartas (`scripts/data/carddass-masters-hxh.json`), scans da Hunterpedia (snapshot `data/vintage/carddass-masters-hxh.json`). 新世紀エヴァンゲリオン (1996–1997): listas de um colecionador (`scripts/data/carddass-masters-eva.json`), scans do animecollection.fr (snapshot `data/vintage/carddass-masters-eva.json`) | sem preço |
+| `gcd` | Gundam Carddass | Bandai 1988–1997: SD Gundam World, Gaiden, Sengokuden, Seiden e G Gundam, uma seção por série; número, raridade e scan do animecollection.fr, sets do 80storage, nome transcrito dos scans (snapshot `data/vintage/gundam-carddass.json`). Foi linha do `gundam` por um dia (2026-11-10); `src/migra-mbc.js` leva a coleção de quem marcou | sem preço |
 | `jump` | JUMP | curadoria versionada em `data/jump/curated/` | — |
 
 **Linhas** (`GAME_LINES` em [src/shared.js](src/shared.js)): um jogo pode ter
 sublinhas selecionadas por `?line=` — por exemplo `nrt-ncg` (o NARUTO CARD GAME
 novo, com lançamento mundial em 2027, hoje só com a promo da Gen Con 2026),
-`op2002`, `nrt-dc`, `nrt-ccg`, `nrt-scg`, `gcd` (o Gundam Carddass). O escopo é por prefixo de `setId`: sem `?line=` a
+`op2002`, `nrt-dc`, `nrt-ccg`, `nrt-scg`. O escopo é por prefixo de `setId`: sem `?line=` a
 página mostra o jogo principal e **exclui** as linhas. Uma linha pode ter vários
 prefixos (`prefixes`): a `nrt-dc` junta os quatro títulos do arcade Data Carddass
 (`nrt-dc-`, `nrt-nf-`, `nrt-nx-`), um por seção na página de Sets. Linha que vira
 seção de outra ganha um apelido em `LINE_ALIASES`, pro `?line=` antigo seguir abrindo;
 linha que vira jogo próprio (o Miracle Battle, que virou o `mbc`) entra em
 `LINHAS_VIRARAM_JOGO` (functions/_lib/jogos.js) e `LINHA_VIROU_JOGO` (src/game.js).
-Linha cujas lojas não são as do jogo leva as suas em `market`, no formato do
-`MARKETS` (o `lojasDaCarta` escolhe pelo prefixo do id): o Gundam Carddass busca
-"gundam carddass" no eBay e não mostra LigaGundam, MYP nem TCGplayer, que só
-têm o Gundam Card Game de 2025.
 
 ### Sorcery: Contested Realm (`sorcery`)
 
@@ -160,15 +157,16 @@ com o DBZ TCG da Panini (2014–2019, a categoria 23 da TCGCSV). O CI só monta
   leva o logo do jogo, como no LOTR, no WoW e no Naruto (regra 3 do
   `docs/CATALOGO.md`).
 
-### Gundam Carddass (linha `gcd` do `gundam`)
+### Gundam Carddass (`gcd`)
 
 A linha que inaugurou o Carddass: o SDガンダムワールド 第1弾 saiu em julho de
-1988 na "Carddass 20", quatro meses antes do Dragon Ball. É **linha** do jogo
-`gundam`, e não jogo próprio (decisão de 2026-11-10): o slug da marca já
-existia, como no Carddass do One Piece. Em
-[scripts/sync-gundam-carddass.mjs](scripts/sync-gundam-carddass.mjs), que
-**anexa** a linha ao catálogo do Gundam Card Game (roda depois do
-`sync-gundam.mjs`, e no build rápido com `--no-fetch`).
+1988 na "Carddass 20", quatro meses antes do Dragon Ball. É **jogo próprio**
+(`gcd`, em `data/gcd/`), como os outros vintages: chip, cor e contagem dele, sem
+misturar com o Gundam Card Game de 2025 na Coleção. Entrou em 2026-11-10 como
+linha do `gundam` e virou jogo no mesmo dia (decisão do Fernando), com os
+mesmos ids e o mesmo endereço; quem marcou carta nesse intervalo é levado pro
+`gcd` pelo `src/migra-mbc.js`, e o `sync-gundam.mjs` não preserva mais as
+`gcd-`. Em [scripts/sync-gundam-carddass.mjs](scripts/sync-gundam-carddass.mjs).
 
 | Série | Código | Partes | Anos | No catálogo |
 |---|---|---|---|---|
@@ -214,8 +212,8 @@ existia, como no Carddass do One Piece. Em
   arábico, pra ordenar e buscar.
 - **Cartas deitadas**: quase todas. O popup troca a moldura (`is-landscape`); o
   tile corta as pontas, como nas Climax do Weiß.
-- **Lojas**: só eBay e PriceCharting, com "gundam carddass" na busca (`market`
-  no `GAME_LINES`).
+- **Lojas**: só eBay e PriceCharting, com "gundam carddass" na busca. LigaGundam,
+  MYP e TCGplayer só têm o Gundam Card Game.
 
 ### Carddass Masters (`cdm`)
 

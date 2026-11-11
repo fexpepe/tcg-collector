@@ -36,10 +36,10 @@ const tabela = JSON.parse(readFileSync(new URL("../scripts/data/sets-renomeados.
 // `sets` limita aos setIds das linhas vintage quando o catálogo mistura
 // moderno.
 const NOMES_DO_JOGO = {
-  // Gundam Carddass (linha gcd): a marca da linha no Japão é "SDガンダム
-  // カードダス"; a série abre o nome sem ela ("本弾 第1弾", "外伝 第1弾「…」").
-  // "機動武闘伝Gガンダム" é o título do anime, e não começa com a marca.
-  gundam: { nomes: ["Gundam", "GUNDAM", "SD Gundam", "SDガンダム", "ガンダム", "Carddass", "カードダス"], sets: /^gcd-/ },
+  // Gundam Carddass: a marca do jogo no Japão é "SDガンダム カードダス"; a série
+  // abre o nome sem ela ("本弾 第1弾", "外伝 第1弾「…」"). "機動武闘伝Gガンダム" é
+  // o título do anime, e não começa com a marca.
+  gcd: { nomes: ["Gundam", "GUNDAM", "SD Gundam", "SDガンダム", "ガンダム", "Carddass", "カードダス"] },
   // "疾風伝"/"Shippuden": a linha nrt-scg (2007–2008). Só a promo leva
   // "（疾風伝）", no fim, pra não ter o mesmo nome do set de 2002.
   naruto: { nomes: ["Naruto", "NARUTO", "ナルト", "Data Carddass", "データカードダス", "疾風伝", "Shippuden"] },

@@ -98,6 +98,23 @@ test("lista só de Miracle Battle vira mbc; misturada fica sem jogo; venda reali
   assert.ok(vendidas.updatedAt > 1);
 });
 
+test("Gundam Carddass: carta gcd- marcada no gundam vai pro jogo gcd, e a do Gundam Card Game fica", () => {
+  const { jogos, ler } = roda({
+    [k("collection-v3", "gundam")]: { "gcd-wd01-1": { Normal: { NM: 1 } }, "gcg-616678": { Normal: { NM: 3 } } },
+    [k("collection-meta-v1", "gundam")]: { mod: { "gcd-wd01-1": 1000, "gcg-616678": 2000 }, del: {} },
+    [k("wishlist-v1", "gundam")]: { "gcd-gd01-1": ["Normal"] },
+    [k("collection-v3", "onepiece")]: { "op-mb-op01-23": { Normal: { NM: 2 } } }
+  });
+  assert.deepEqual([...jogos].sort(), ["gcd", "gundam", "mbc", "onepiece"]);
+  assert.deepEqual(ler(k("collection-v3", "gcd")), { "gcd-wd01-1": { Normal: { NM: 1 } } });
+  assert.equal(ler(k("collection-meta-v1", "gcd")).mod["gcd-wd01-1"], 1000);
+  assert.deepEqual(ler(k("collection-v3", "gundam")), { "gcg-616678": { Normal: { NM: 3 } } });
+  assert.ok(ler(k("collection-meta-v1", "gundam")).del["gcd-wd01-1"] > 1000);
+  assert.ok(ler(k("wishlist-v1", "gcd"))["gcd-gd01-1"]);
+  // cada destino recebe só o seu
+  assert.deepEqual(Object.keys(ler(k("collection-v3", "mbc"))), ["op-mb-op01-23"]);
+});
+
 test("nada a mover: não escreve nada", () => {
   const { jogos, ler } = roda({ [k("collection-v3", "onepiece")]: { "op-123": { Normal: { NM: 1 } } } });
   assert.equal(jogos.length, 0); // array do sandbox (outro realm): compara o tamanho
