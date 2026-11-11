@@ -8,14 +8,6 @@ poucos.)
 
 ## Pendentes de aplicar
 
-- `20261111c` — libera o slug `narutocg` (NARUTO CARD GAME, Bandai, 2027;
-  até 2026-11-11 a linha `nrt-ncg` do `naruto`) nas duas whitelists de jogo
-  (`card_views`/`increment_card_view` e `contribute_price`;
-  `20261111c_add_narutocg.sql`). Cópia da `20261111b` com o `narutocg` a mais;
-  só a lista muda. Conferir com o par do fim do arquivo (view de
-  `nrt-ncg-cp-001` cria a linha com game `narutocg`; contribuição anônima
-  segue 401). **A próxima migração de jogo copia esta.**
-
 - `20261110a` — /admin: de onde vêm os visitantes (`20261110a_admin_geo.sql`).
   O painel não tinha país nenhum (só o Cloudflare via). O `events_guard`
   (cópia fiel da 20261009a) passa a carimbar `props.co` no pageview com as 2
@@ -265,6 +257,16 @@ poucos.)
   E, logado como admin, abrir `/admin`: as abas aparecem e o aviso amarelo some.
 
 ### Já aplicadas (verificado em produção)
+
+- `20261111c` — libera o slug `narutocg` (NARUTO CARD GAME, Bandai, 2027;
+  até 2026-11-11 a linha `nrt-ncg` do `naruto`) nas duas whitelists de jogo
+  (`card_views`/`increment_card_view` e `contribute_price`;
+  `20261111c_add_narutocg.sql`). Cópia da `20261111b` com o `narutocg` a mais;
+  só a lista muda. **Aplicada em 2026-11-11** pelo Fernando e verificada por
+  curl no mesmo dia: `increment_card_view` com `narutocg` e `nrt-ncg-cp-001`
+  respondeu 204 e criou a linha no `card_views` (game `narutocg`, 1 view);
+  `contribute_price` anônimo segue 401. **A próxima migração de jogo copia
+  esta.**
 
 - `20261111b` — libera os slugs `gcd` (Gundam Carddass) E `gw` (Gundam War)
   nas duas whitelists de jogo (`card_views`/`increment_card_view` e
