@@ -438,6 +438,10 @@
     // Unique) e Promo, que o TCGplayer dá às impressões de loja e de evento. O
     // Avatar e os tokens não têm raridade.
     sorcery: ["Ordinary", "Exceptional", "Elite", "Unique", "Promo"],
+    // Palworld OFFICIAL CARD GAME (11/11/2026): a escada do booster (C a RR),
+    // as paralelas (SR, OSR, SP, SSP) e a Soul SSS; depois as do trial deck
+    // (TD, TDR e as paralelas TSR/TSP) e a promo.
+    palworld: ["C", "U", "R", "RR", "SR", "OSR", "SP", "SSP", "SSS", "TD", "TDR", "TSR", "TSP", "PR"],
     // Harry Potter TCG: os símbolos do jogo, mais as duas premium (30/09/2026).
     harrypotter: ["Common", "Uncommon", "Rare", "Lesson", "Foil Premium", "Holo Portrait Premium", "Promo"],
     // Weiß Schwarz (01/10/2026): a escada do booster, as paralelas (SP/SSP/

@@ -519,6 +519,19 @@
   --accent: #7d5f2c; --accent-dark: #6e5224; --accent-rgb: 125, 95, 44;
   --accent-soft: rgba(125, 95, 44, 0.1); --on-accent: #ffffff;
 }
+/* Palworld OFFICIAL CARD GAME: o VERDE do site oficial (#81ad4c, o do
+   GAME_COLOR; proposta de 11/11/2026 — o ouro do logo ficava colado no
+   pergaminho do Sorcery). No escuro, com texto escuro (7.5:1); no claro ele
+   dá 2.6:1 com branco, então o accent fecha pro #4a7322 (5.6:1). */
+[data-game-accent="palworld"] {
+  --accent: #81ad4c; --accent-dark: #729c40; --accent-rgb: 129, 173, 76;
+  --accent-soft: rgba(129, 173, 76, 0.16); --on-accent: #0a0c10;
+}
+[data-theme="light"][data-game-accent="palworld"],
+[data-theme="light"] [data-game-accent="palworld"] {
+  --accent: #4a7322; --accent-dark: #3d6620; --accent-rgb: 74, 115, 34;
+  --accent-soft: rgba(74, 115, 34, 0.1); --on-accent: #ffffff;
+}
 [data-game-accent="all"] {
   --accent: #e3e7ee; --accent-dark: #c3c9d4; --accent-rgb: 227, 231, 238;
   --accent-soft: rgba(227, 231, 238, 0.12); --on-accent: #0a0c10;

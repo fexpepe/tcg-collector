@@ -186,6 +186,21 @@
       add(base, 3, m);
       tira(m);
     }
+    // Palworld OFFICIAL CARD GAME (2026-11-11): "<OSR> EBP01-001OSR". O E da
+    // frente é a edição inglesa; o set é BP (booster), TD (trial deck), SS
+    // (sleeve set), PR (promo) ou SOUL; e a raridade PARALELA vem grudada no
+    // número e é parte do código — "EBP01-001" e "EBP01-001OSR" são cartas
+    // diferentes, como no Weiss. Sai como lido e, com sufixo, também sem ele.
+    // Sem isto o "001OSR" virava lixo (O e S lidos como dígito) e a carta não
+    // saía do peso 1. O "EBP01-001" do Godzilla passa por aqui também e sai
+    // igual ao que o reHifen daria (o "+" da paralela dele fica fora do \b).
+    const rePal = /\bE(BP|TD|SS|PR|SOUL)([0-9OIL]{0,2})-([0-9OIL]{3})(OSR|SSP|SSS|TSR|TSP|SR|SP|S)?\b/g;
+    while ((m = rePal.exec(resto))) {
+      const base = `E${m[1]}${soDigitos(m[2])}-${soDigitos(m[3])}`;
+      if (m[4]) add(base + m[4], 3, m);
+      add(base, 3, m);
+      tira(m);
+    }
     // Código com hífen: OP01-001, EB01-001, BT1-001, ST01-001, EXB-001,
     // LOB-EN001, FB01-001, P-001, GD01-001. Prefixo com pelo menos uma letra;
     // sufixo com 2-4 dígitos (às vezes precedido do idioma, como no Yu-Gi-Oh)
@@ -396,7 +411,9 @@
     dbz: [/FUNIMATION/, /SCORE ?ENTERTAINMENT/],
     // Godzilla Card Game: "TM & © TOHO" no rodapé. O nome "Godzilla" não
     // entra: ele está na arte e no nome de carta do Magic (Ikoria) também.
-    godzilla: [/\bTOHO\b/]
+    godzilla: [/\bTOHO\b/],
+    // "©PALWORLD" no canto da carta (a 2ª edição do BP01 leva um "II" antes).
+    palworld: [/PALWORLD/, /POCKETPAIR/]
   };
   const FORMATOS = [
     [/^(OP|EB|PRB)\d{2}-/, ["onepiece"]],
@@ -419,7 +436,12 @@
     [/^(?:[A-Z]{3}|1H[A-Z])\d{3}$/, ["fab"]],
     // Godzilla Card Game: EBP01-001 (booster), ESD01- (starter), ESC01-
     // (Sleeve & Card Set), EPR-015 (promo) e as Rage EGZ07 (2026-11-11).
-    [/^(?:E(?:BP|SD|SC)\d{2}|EPR)-/, ["godzilla"]],
+    // O Palworld (Bushiroad também) imprime o MESMO "EBP01-001" e "EPR-001":
+    // esses dois são dos dois jogos, e quem decide é a pista impressa (TOHO ×
+    // ©PALWORLD) e o índice de sets. ETD, ESS e ESOUL só existem no Palworld.
+    [/^(?:EBP\d{2}|EPR)-/, ["godzilla", "palworld"]],
+    [/^E(?:SD|SC)\d{2}-/, ["godzilla"]],
+    [/^E(?:TD|SS)\d{2}-\d{3}|^ESOUL-\d{3}/, ["palworld"]],
     [/^EGZ\d{2}$/, ["godzilla"]],
     // Fração: os cinco jogos que numeram "N/T". SWU e Harry Potter não
     // estavam aqui, e a fração deles era filtrada pros outros três — só

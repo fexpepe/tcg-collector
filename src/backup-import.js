@@ -139,6 +139,8 @@
     if (flat.includes("dragonball") || flat.includes("fusionworld") || flat === "dbfw") return "dbfw";
     if (flat.includes("riftbound") || flat.includes("leagueoflegends")) return "riftbound";
     if (flat.includes("unionarena")) return "unionarena";
+    // "Palworld OFFICIAL CARD GAME" (a linha do TCGplayer) ou só "Palworld".
+    if (flat.includes("palworld")) return "palworld";
     // "Naruto Card Game" é a linha do TCGplayer do jogo de 2027 (narutocg): o
     // vintage de 2002 não está no TCGplayer. O resto ("Naruto Kayou"…) fica no
     // naruto, como antes.

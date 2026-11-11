@@ -74,6 +74,7 @@
     riftbound: ["Riftbound", "#a67c00"],
     unionarena: ["Union Arena", "#0891b2"],
     narutocg: ["Naruto Card Game", "#f65400"],
+    palworld: ["Palworld", "#81ad4c"],
     naruto: ["Naruto", "#ea580c"],
     hxh: ["Hunter × Hunter", "#15803d"],
     dbc: ["Dragon Ball Carddass", "#db2777"],

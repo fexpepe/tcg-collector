@@ -279,6 +279,20 @@ test("Weiss: título/lado-número, com a raridade paralela grudada", () => {
   assert.equal(d.confiante, true);
 });
 
+test("Palworld: E + set, número e a raridade paralela grudada (2026-11-11)", () => {
+  assert.deepEqual(codigos("<RR> EBP01-002  II ©PALWORLD"), ["EBP01-002"]);
+  // "EBP01-001OSR" é OUTRA carta: sai como lido e, depois, sem o sufixo.
+  assert.deepEqual(codigos("<OSR> EBP01-001OSR"), ["EBP01-001OSR", "EBP01-001"]);
+  assert.deepEqual(codigos("<TSR> ETD01-023TSR"), ["ETD01-023TSR", "ETD01-023"]);
+  assert.deepEqual(codigos("<PR> EPR-002S"), ["EPR-002S", "EPR-002"]);
+  assert.deepEqual(codigos("<PR> ESOUL-011"), ["ESOUL-011"]);
+  // O/I no lugar de dígito; o sufixo continua letra.
+  assert.equal(codigos("EBPO1-0O1SSP")[0], "EBP01-001SSP");
+  const d = S.detectarJogo("<RR> EBP01-002 ©PALWORLD", ["EBP01-002"], "hub");
+  assert.deepEqual(Array.from(d.restritos), ["palworld"]);
+  assert.equal(d.confiante, true);
+});
+
 test("Union Arena: promo, extra, título com dígito, AP e paralela", () => {
   assert.deepEqual(codigos("UEPR/AOT-1-023"), ["UEPR/AOT-1-023"]);
   assert.deepEqual(codigos("UEX01BT/BLC-1-036 U"), ["UEX01BT/BLC-1-036"]);

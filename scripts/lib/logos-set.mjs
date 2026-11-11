@@ -154,7 +154,8 @@ export const FORA = {
   gcd: "vintage sem logo de set publicado",
   gw: "vintage sem logo de set publicado",
   naruto: "logo de linha/título vem do sync; os capítulos sem logo não têm um publicado",
-  narutocg: "o set de promos usa o logo do jogo (curadoria do sync); sem set de booster ainda"
+  narutocg: "o set de promos usa o logo do jogo (curadoria do sync); sem set de booster ainda",
+  palworld: "sem logo de set publicado (páginas de produto do site oficial auditadas em 2026-11-11: só arte)"
 };
 
 // Produto que não é set: o tile mostra o nome e está certo assim.

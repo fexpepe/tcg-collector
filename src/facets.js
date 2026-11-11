@@ -165,6 +165,19 @@
       facetColor("color"),
       facetType(["Legend", "Unit", "Program", "Gear"])
     ],
+    // Palworld OFFICIAL CARD GAME (11/11/2026): a cor da carta (as 4 mais a
+    // Colorless, que vai pro fim), o ELEMENTO do Pal — os 9 do videogame, na
+    // ordem dele; o Pal de dois ("Dragon;Fire") conta nos dois — e o tipo.
+    palworld: [
+      facetColor("color"),
+      {
+        key: "element", labelKey: "facet.element",
+        of: (c) => facetSplit(c.element, ";"),
+        label: (v) => v,
+        order: ["Neutral", "Fire", "Water", "Grass", "Electric", "Ice", "Ground", "Dark", "Dragon"]
+      },
+      facetType(["Pal", "Structure", "Gear", "Event", "Soul"])
+    ],
     // Sorcery: Contested Realm: o "color" do catálogo é o ELEMENTO (sync-sorcery.mjs);
     // a carta de dois elementos ("Air;Earth") conta nos dois. Tipos de 01/10/2026.
     sorcery: [

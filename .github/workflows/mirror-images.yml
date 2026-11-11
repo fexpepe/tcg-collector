@@ -84,6 +84,7 @@ jobs:
             data/gw/sets
             data/narutocg/sets
             data/godzilla/sets
+            data/palworld/sets
             data/jump/sets
             data/magic/cards.js
             data/magic/indexes.js

@@ -7361,7 +7361,14 @@
     // "godzilla-card-game" (a busca abre). Sem Liga (ligagodzilla.com.br nem
     // resolve); MYP e Cardmarket recusam acesso automatizado e a busca na web
     // não achou o jogo em nenhum dos dois — entram quando alguém conferir à mão.
-    godzilla:  { tcgLine: "godzilla-card-game", usText: "godzilla card game" }
+    godzilla:  { tcgLine: "godzilla-card-game", usText: "godzilla card game" },
+    // Palworld OFFICIAL CARD GAME (conferido em 11/11/2026): o TCGplayer tem a
+    // linha "palworld-official-card-game" (a busca filtrada respondeu). Sem
+    // loja BR confirmada: ligapalworld.com.br e o MYP recusam acesso
+    // automatizado (Cloudflare), e nenhuma busca pública mostra a Liga com o
+    // jogo; o Cardmarket idem (verificação anti-robô). Entram quando forem
+    // conferidos à mão, como no narutocg e no godzilla.
+    palworld:  { tcgLine: "palworld-official-card-game", usText: "palworld" }
   };
   function marketOf(game) { return MARKETS[game] || MARKETS.pokemon; }
 
@@ -8960,6 +8967,7 @@
     "harrypotter",
     "weiss",
     "godzilla",
+    "palworld",
     "mbc",
     "cdm",
     "gcd",
@@ -9001,6 +9009,7 @@
     wow: "#00aeff",        // azul da Blizzard; 8.5:1 com preto, a 83 do Union Arena (os azuis estão cheios)
     lotr: "#4d7c0f"  ,      // verde-musgo (pedido do Fernando: "algum tom de verde"); 5.0:1 com branco, a 73 do verde do HxH
     weiss: "#ffffff",      // branco ("Weiß"; o preto é do Star Wars); 21:1 com preto, a 159 do prata do DBFW
+    palworld: "#81ad4c",   // verde do site oficial (en.palworld-official-cardgame.com); 8.0:1 com preto, a 66 do Godzilla, a 70 do gcd e a 79 do Sorcery. O ouro do logo (#ceaf73) ficava a 13 do Sorcery (proposta, 2026-11-11)
     godzilla: "#5e7c68",   // verde-chumbo, a pele do Godzilla (o vermelho #e60012 do logo fica a 57 do Pokémon); 4.6:1 com branco, a 84 do Magic (proposta, 2026-11-11)
     harrypotter: "#740001", // escarlate da Grifinória; 12:1 com branco, a 85 do Magic (o vizinho mais próximo)
     mbc: "#fb923c",        // pêssego (o laranja-dourado do logo); 9.3:1 com preto, a 71 do One Piece e a 77 do Naruto
@@ -9045,7 +9054,7 @@
     fab: "filter.gameFab", gundam: "filter.gameGundam", swu: "filter.gameSwu", cyberpunk: "filter.gameCyberpunk", sorcery: "filter.gameSorcery", dbfw: "filter.gameDbfw",
     ygo: "filter.gameYgo", digimon: "filter.gameDigimon", riftbound: "filter.gameRiftbound",
     unionarena: "filter.gameUnionArena", naruto: "filter.gameNaruto", narutocg: "filter.gameNarutocg", hxh: "filter.gameHxh",
-    dbc: "filter.gameDbc", dbz: "filter.gameDbz", wow: "filter.gameWow", lotr: "filter.gameLotr", weiss: "filter.gameWeiss", godzilla: "filter.gameGodzilla", harrypotter: "filter.gameHarryPotter",
+    dbc: "filter.gameDbc", dbz: "filter.gameDbz", wow: "filter.gameWow", lotr: "filter.gameLotr", weiss: "filter.gameWeiss", godzilla: "filter.gameGodzilla", palworld: "filter.gamePalworld", harrypotter: "filter.gameHarryPotter",
     mbc: "filter.gameMbc", cdm: "filter.gameCdm", gcd: "filter.gameGcd", gw: "filter.gameGw"
   };
   function gameLabel(g) { return t(GAME_LABEL_KEY[g] || GAME_LABEL_KEY.pokemon); }

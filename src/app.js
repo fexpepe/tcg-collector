@@ -16,7 +16,7 @@
     magic: "game_magic-v2.webp", fab: "game_fab.webp", gundam: "game_gundam-v2.webp", swu: "game_swu.webp", cyberpunk: "game_cyberpunk.webp", sorcery: "game_sorcery.webp", dbfw: "game_dbfw-v2.webp",
     ygo: "game_ygo-v2.webp", digimon: "game_digimon-v2.webp", riftbound: "game_riftbound-v2.webp",
     unionarena: "game_unionarena.webp", narutocg: "game_naruto_2027.webp", naruto: "game_naruto.webp", hxh: "game_hxh.webp",
-    dbc: "game_dbc.webp", wow: "game_wow.webp", lotr: "game_lotr.webp", dbz: "game_dbz.webp", weiss: "game_weiss.webp", godzilla: "game_godzilla.webp", harrypotter: "game_harrypotter.webp",
+    dbc: "game_dbc.webp", wow: "game_wow.webp", lotr: "game_lotr.webp", dbz: "game_dbz.webp", weiss: "game_weiss.webp", godzilla: "game_godzilla.webp", palworld: "game_palworld.webp", harrypotter: "game_harrypotter.webp",
     mbc: "game_mbc.webp", cdm: "game_cdm.webp", gcd: "game_gcd.webp", gw: "game_gw.webp"
   };
   function gameLogoUrl(game) {
@@ -1872,7 +1872,13 @@
     // O Sleeve & Card Set (ESC01) vai pras promos: é produto de coleção, e
     // como booster extra roubava o destaque do Booster Set mais novo. Booster
     // extra ainda não existe; o EB é aposta no código do One Piece/Gundam.
-    godzilla: { main: /^EBP\d+$/, extra: /^EEB\d+$/, deck: /^E?SDS?\d+$/ }
+    godzilla: { main: /^EBP\d+$/, extra: /^EEB\d+$/, deck: /^E?SDS?\d+$/ },
+    // Palworld OFFICIAL CARD GAME (Bushiroad, 11/11/2026): o mesmo formato do
+    // Godzilla — BP é o booster numerado (e o BP01-2E, a 2ª edição do BP01,
+    // que normalmente vira chip no cartão dele), TD o trial deck. O Sleeve
+    // and Card Set (ESS) vai pras promos, pelo mesmo motivo do ESC do
+    // Godzilla; protótipos (PC) idem. Booster extra ainda não existe.
+    palworld: { main: /^BP\d+(-2E)?$/, extra: /^$/, deck: /^TD\d+$/ }
   };
   function groupBandaiSets(setItems, regras) {
     const secaoDe = (set) => {

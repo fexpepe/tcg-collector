@@ -90,6 +90,9 @@ const JOGOS = {
   // ESC01-, EPR-) e as Rage EGZ07. O TCGplayer grava as Rage do Booster Set 1
   // com o tipo na frente ("Rage-EGZ01"), que a carta não imprime.
   godzilla: { min: 0.91, impresso: (c) => String(c.number).replace(/^Rage-/, ""), nota: "sobram as Rage de número curto (E06) e os tokens (EBP02-T01)" },
+  // Palworld (2026-11-11): o rodapé é "<OSR> EBP01-001OSR" e "©PALWORLD". As
+  // Prototype Cards e o Soul SSS não têm número (ficam fora da conta).
+  palworld: { min: 0.98, impresso: (c) => `<${c.rarity || "PR"}> ${c.number}  ©PALWORLD` },
   wow: { semCodigo: "o catálogo não guarda o número da carta" },
   sorcery: { semCodigo: "o catálogo não guarda o número da carta" },
   dbz: { semCodigo: "número solto (60), repetido em todo set" },
