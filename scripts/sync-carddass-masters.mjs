@@ -326,13 +326,20 @@ async function scansEva() {
 // ── Registro das IPs ────────────────────────────────────────────────────────
 // `setPrefix`: como a IP abre o nome de cada set dela (o logo da série). O
 // groupCdmSets tira o equivalente em inglês dentro da seção da IP.
+// `logo`: o setLogo de TODOS os sets da IP — o logo da série com o do Carddass
+// Masters pequeno no canto superior esquerdo, numa imagem só (pedido do
+// Fernando, 2026-11-11: o jogo junta dezenas de IPs, e o tile só com o nome do
+// set não dizia de qual série nem de qual jogo era). IP sem arquivo fica com
+// "" e o tile mostra o nome. Montagem dos arquivos: assets/games/README.md.
 export const IPS = [
   { ip: "hxh", setPrefix: "HUNTER×HUNTER", sets: SETS_HXH, lista: LISTA_HXH, scans: scansHxh,
+    logo: "/assets/games/set_cdm_hxh.webp",
     snap: new URL("data/vintage/carddass-masters-hxh.json", ROOT),
     source: "https://hunterxhunter.fandom.com/wiki/Hunter_%C3%97_Hunter_Carddass_Collections" },
   // Depois do HxH no arquivo (a ordem aqui é só a do cards.js; na tela a seção
   // de 1996 vem antes, o groupCdmSets ordena pela data).
   { ip: "eva", setPrefix: "新世紀エヴァンゲリオン", sets: SETS_EVA, lista: LISTA_EVA, scans: scansEva,
+    logo: "/assets/games/set_cdm_eva.webp",
     snap: new URL("data/vintage/carddass-masters-eva.json", ROOT),
     source: "http://animecollection.fr/cartes.php?idl=20" }
 ];
@@ -382,9 +389,8 @@ function cartasDaIp(ip, snapshot) {
         language: "ja",
         image: curatedImg(c.id) || (c.img ? IMG(c.img) : ""),
         variants: ["Normal"],
-        // Sem logo: nem a IP nem o jogo têm arquivo de logo, e o cartão do set
-        // mostra o nome (contrato 3 do docs/CATALOGO.md).
-        setLogo: "",
+        // Logo da IP com o selo do jogo (ver `logo` no registro das IPs).
+        setLogo: ip.logo || "",
         vintage: true,
         vintageLine: ip.ip
       });

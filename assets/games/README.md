@@ -177,9 +177,25 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
   conteúdo (+2px), alfa abaixo de 12 zerado; **369×120, sem esticar** (como o
   Union Arena e o Star Wars: bitmap pequeno não ganha detalhe). WebP com perda
   q88 e alfa sem perda: 17 KB. Na cápsula branca do hub o contorno some e fica
-  o grafite com o "A" vermelho, como no verso das cartas. Os sets seguem com o
-  nome (`setLogo: ""`): pôr o logo do jogo em todo set é decisão por jogo
-  (regra 3 do docs/CATALOGO.md).
+  o grafite com o "A" vermelho, como no verso das cartas. Nos sets ele entra
+  pequeno, dentro dos `set_cdm_<ip>.webp` (abaixo).
+- `set_cdm_eva.webp` e `set_cdm_hxh.webp` — `setLogo` de todos os sets de cada
+  IP do Carddass Masters (registro `IPS` do sync-carddass-masters.mjs). Pedido
+  do Fernando em 2026-11-11: o jogo junta dezenas de IPs, e o tile com só o
+  nome do set não dizia de que série nem de que jogo era. Uma imagem só, pra
+  valer em todo lugar que mostra o logo do set (grade, lista, página do set):
+  o logo da IP grande e o `game_cdm.webp` pequeno no canto superior esquerdo
+  (150px de largura, encostando no topo do logo da IP). Montados com o Pillow
+  (LANCZOS, recorte no conteúdo +2px), WebP q88 com alfa sem perda.
+  - HxH: o `game_hxh.webp` a 420px de largura, 40px pra direita do selo
+    (455×228, 27 KB).
+  - Evangelion: o SVG transparente (新世紀 EVANGELION エヴァンゲリオン,
+    versão pra fundo claro: EVANGELION preto e o 新世紀 vazado com contorno)
+    enviado pelo Fernando em 2026-11-11. Rasterizado no Chromium a 1600px,
+    recortado e reduzido pra 440px, 30px pra direita do selo; o traço laranja
+    da esquerda sobe até a altura do MASTERS sem encostar nele (470×200, 42 KB:
+    os degradês do laranja pesam mais que o HxH).
+  IP nova: mesma montagem, e o `logo` no bloco dela no sync.
 
 ### Os `-v2` (2026-09-28)
 
