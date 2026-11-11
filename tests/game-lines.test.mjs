@@ -72,14 +72,10 @@ test("chave de protótipo no ?line= não vira linha", () => {
   }
 });
 
-test("Gundam Carddass é linha do gundam; o Gundam Card Game fica sem ela", () => {
-  const gcd = lineScope("gundam", "gcd");
-  assert.equal(gcd.line, "gcd");
-  for (const setId of ["gcd-wd01", "gcd-gd16", "gcd-sg04", "gcd-gg01"]) assert.ok(gcd.includes(setId), setId);
-  assert.ok(!gcd.includes("GD01"), "set do Gundam Card Game na linha vintage");
-  const principal = lineScope("gundam", "");
-  assert.ok(principal.includes("GD01") && principal.includes("ST01"));
-  assert.ok(!principal.includes("gcd-wd01"), "o Carddass de 1988 vazou pra página do Gundam Card Game");
+test("Gundam Carddass é jogo (gcd), não linha: o gundam não tem linhas", () => {
+  assert.equal(lineScope("gundam", "gcd").line, null);
+  assert.ok(lineScope("gundam", "").includes("GD01"));
+  assert.ok(lineScope("gcd", "").includes("gcd-wd01"));
 });
 
 test("linhas de prefixo único e jogos sem linha seguem iguais", () => {

@@ -17,7 +17,7 @@
     ygo: "game_ygo-v2.webp", digimon: "game_digimon-v2.webp", riftbound: "game_riftbound-v2.webp",
     unionarena: "game_unionarena.webp", naruto: "game_naruto.webp", hxh: "game_hxh.webp",
     dbc: "game_dbc.webp", wow: "game_wow.webp", lotr: "game_lotr.webp", dbz: "game_dbz.webp", weiss: "game_weiss.webp", harrypotter: "game_harrypotter.webp",
-    mbc: "game_mbc.webp", cdm: "game_cdm.webp"
+    mbc: "game_mbc.webp", cdm: "game_cdm.webp", gcd: ""
   };
   function gameLogoUrl(game) {
     const f = GAME_LOGO[game];
@@ -1517,8 +1517,6 @@
     // Linha vintage (?line=): do mais antigo pro mais novo, como checklist. O
     // Data Carddass do Naruto junta os quatro títulos do arcade, um por seção.
     if (lineScope.line === "nrt-dc") return groupNarutoDataCarddass(raizes);
-    // O Gundam Carddass junta as séries da linha (World, 外伝, 戦国伝…), uma por seção.
-    if (lineScope.line === "gcd") return groupGundamCarddassSets(raizes);
     if (lineDef) return raizes.sort(sortByReleaseAsc);
     if (isPokemonGame()) return groupSetsBySeries(raizes);
     const porJogo = {
@@ -1539,6 +1537,7 @@
       weiss: groupWeissSets,
       mbc: groupMbcSets,
       cdm: groupCdmSets,
+      gcd: groupGundamCarddassSets,
       harrypotter: groupHarryPotterSets
     };
     return (porJogo[jogoAtual] || groupSetsByYear)(raizes);
@@ -1882,7 +1881,7 @@
     return items;
   }
 
-  // Gundam Carddass (linha gcd do jogo gundam, 1988–1997): uma seção por SÉRIE,
+  // Gundam Carddass (jogo gcd, 1988–1997): uma seção por SÉRIE,
   // na ordem do SERIES do sync (o 本弾 primeiro, depois as séries de história
   // na ordem em que começaram), e as partes em ordem dentro dela. A série sai
   // do código do set (gcd-wd01 = World 第1弾). As datas só têm o ano, e vários

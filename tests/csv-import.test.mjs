@@ -108,6 +108,9 @@ test("mapCsvGame: os 13 jogos, nas grafias do Collectr/TCGplayer", () => {
   // Carddass Masters é de várias IPs: o jogo vence a marca.
   assert.equal(api.mapCsvGame("Carddass Masters"), "cdm");
   assert.equal(api.mapCsvGame("Hunter x Hunter Carddass Masters"), "cdm");
+  // Gundam Carddass é o jogo vintage; "Gundam" sozinho segue sendo o Card Game.
+  assert.equal(api.mapCsvGame("Gundam Carddass"), "gcd");
+  assert.equal(api.mapCsvGame("SD Gundam Carddass"), "gcd");
   // TCGplayer escreve "Weiss Schwarz"; quem digita o nome alemão, "Weiß Schwarz".
   assert.equal(api.mapCsvGame("Weiss Schwarz"), "weiss");
   assert.equal(api.mapCsvGame("Weiß Schwarz"), "weiss");

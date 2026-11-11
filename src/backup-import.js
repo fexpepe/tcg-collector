@@ -116,6 +116,8 @@
     if (flat.includes("miraclebattle") || flat === "mbc") return "mbc";
     // Idem o Carddass Masters, que é de várias IPs: "Carddass Masters Gundam".
     if (flat.includes("carddassmasters") || flat === "cdm") return "cdm";
+    // Gundam Carddass ANTES do "gundam" genérico, que é o Gundam Card Game.
+    if (flat.includes("gundamcarddass") || flat === "gcd") return "gcd";
     if (flat.includes("onepiece")) return "onepiece";
     if (flat.includes("magic") || flat === "mtg") return "magic";
     if (flat.includes("yugioh") || flat === "ygo") return "ygo";

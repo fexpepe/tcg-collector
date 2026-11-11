@@ -9,7 +9,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { loadShared } from "./lib/shared-sandbox.mjs";
 
-const api = loadShared("window.__test = { usSearchText, usMarketplaces, vintageSearchYear, lojasDaCarta, brMarketplaces, brMarketplaceLinks };").window.__test;
+const api = loadShared("window.__test = { usSearchText, usMarketplaces, vintageSearchYear, brMarketplaces, brMarketplaceLinks };").window.__test;
 
 const gon = { id: "hxh-hb-p1-c01", name: "Gon Freecss", number: "C01", setTotal: 42, setReleaseDate: "1999-12-01", vintage: true, game: "hxh" };
 
@@ -40,26 +40,19 @@ test("os links do eBay/PriceCharting levam o ano (e o tag graded vem depois dele
   assert.equal(links.tcgplayer, undefined); // Carddass JP não existe no TCGplayer
 });
 
-// Linha com lojas próprias (GAME_LINES…market, 10/11/2026): o Gundam Carddass
-// mora no jogo gundam, cujas lojas (LigaGundam, MYP, TCGplayer) só têm o
-// Gundam Card Game de 2025 — e "gundam card game" no eBay zerava a busca.
-test("Gundam Carddass: busca do eBay da LINHA, sem TCGplayer nem loja BR; o Gundam Card Game segue igual", () => {
-  const nu = { id: "gcd-wd01-1", name: "ν Gundam", number: "1", setTotal: 41, setReleaseDate: "1988", vintage: true, game: "gundam" };
-  const loja = api.lojasDaCarta(nu, "gundam");
-  assert.equal(api.usSearchText(nu, loja), "gundam carddass ν Gundam 1 1988");
-  const links = Object.fromEntries(api.usMarketplaces(loja, "").map((m) => [m.key, m.url(nu)]));
-  assert.ok(links.ebay.endsWith(`_nkw=${encodeURIComponent("gundam carddass ν Gundam 1 1988")}`), links.ebay);
+// Gundam Carddass (jogo gcd, 10/11/2026): só eBay e PriceCharting. As lojas do
+// Gundam Card Game (LigaGundam, MYP, TCGplayer) não listam Carddass, e "gundam
+// card game" na busca do eBay zerava os anúncios de 1988.
+test("Gundam Carddass: busca do eBay do jogo, sem TCGplayer nem loja BR; o Gundam Card Game segue igual", () => {
+  const nu = { id: "gcd-wd01-1", name: "Nu Gundam", number: "1", setTotal: 41, setReleaseDate: "1988", vintage: true, game: "gcd" };
+  assert.equal(api.usSearchText(nu, "gcd"), "gundam carddass Nu Gundam 1 1988");
+  const links = Object.fromEntries(api.usMarketplaces("gcd", "").map((m) => [m.key, m.url(nu)]));
+  assert.ok(links.ebay.endsWith(`_nkw=${encodeURIComponent("gundam carddass Nu Gundam 1 1988")}`), links.ebay);
   assert.equal(links.tcgplayer, undefined);
-  assert.equal(api.brMarketplaces(loja).length, 0);
+  assert.equal(api.brMarketplaces("gcd").length, 0);
   const html = api.brMarketplaceLinks(nu, "", 0);
   assert.ok(!/ligagundam|mypcards|tcgplayer\.com|cardmarket/.test(html), html);
-  assert.ok(html.includes('data-mkt-game="gundam"')); // o clique segue contado no jogo
-  // carta do Gundam Card Game: as lojas do jogo, como sempre
   const gcg = { id: "gcg-616678", name: "Gundam", number: "GD01-001", setReleaseDate: "2025-07-11", game: "gundam" };
-  assert.equal(api.lojasDaCarta(gcg, "gundam"), "gundam");
   assert.equal(api.usSearchText(gcg, "gundam"), "gundam card game Gundam GD01-001");
   assert.ok(api.brMarketplaceLinks(gcg, "", 0).includes("ligagundam.com.br"));
-  // jogo sem linha, e linha sem lojas próprias: as do jogo
-  assert.equal(api.lojasDaCarta({ id: "opcd-001" }, "onepiece"), "onepiece");
-  assert.equal(api.lojasDaCarta({ id: "base1-4" }, "pokemon"), "pokemon");
 });

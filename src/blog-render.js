@@ -82,7 +82,8 @@
     harrypotter: ["Harry Potter", "#740001"],
     weiss: ["Weiß Schwarz", "#ffffff"],
     mbc: ["Miracle Battle", "#fb923c"],
-    cdm: ["Carddass Masters", "#a21caf"]
+    cdm: ["Carddass Masters", "#a21caf"],
+    gcd: ["Gundam Carddass", "#a3e635"]
   };
 
   // Categorias do blog. O banco só confere o formato (a lista mora aqui), então

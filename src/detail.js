@@ -466,7 +466,9 @@
     // HxH Carddass Hyper Battle: Normal, a Holo do booster e a Secret Holo.
     hxh: ["Normal", "Holo", "Secret Holo", "Promo"],
     // Carddass Masters: a regular, as スペシャルカード (SP) e os brindes.
-    cdm: ["Normal", "Special", "Promo"]
+    cdm: ["Normal", "Special", "Promo"],
+    // Gundam Carddass: a comum e os prismas (duplo e o de mosaico são raros).
+    gcd: ["Normal", "Prism", "Prism Pixel", "Double Prism"]
   };
   const jogoDaPagina = (window.SLEEVU && window.SLEEVU.game) || "";
   const rarityListOrder = RARITY_BUCKET_GAMES.has(jogoDaPagina) ? null : (RARITY_LISTED_GAMES[jogoDaPagina] || []);

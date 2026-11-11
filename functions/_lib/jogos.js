@@ -40,7 +40,7 @@ export const JOGOS_URL = [
   { url: "sorcery-contested-realm", game: "sorcery", nome: "Sorcery: Contested Realm", logo: "assets/games/game_sorcery.webp" },
   { url: "naruto-card-game", game: "naruto", linha: "nrt-ncg", prefixos: ["nrt-ncg-"], nome: "Naruto Card Game (2027)", logo: "assets/games/game_naruto_2027.webp" },
   { url: "weiss-schwarz", game: "weiss", nome: "Weiß Schwarz", logo: "assets/games/game_weiss.webp" },
-  { url: "gundam-carddass", game: "gundam", linha: "gcd", prefixos: ["gcd-"], nome: "Gundam Carddass", logo: "", vintage: "1988–1997" },
+  { url: "gundam-carddass", game: "gcd", nome: "Gundam Carddass", logo: "", vintage: "1988–1997" },
   { url: "dragon-ball-carddass", game: "dbc", nome: "Dragon Ball Carddass", logo: "assets/games/game_dbc.webp", vintage: "1988–1997" },
   { url: "hunter-x-hunter-carddass", game: "hxh", nome: "Hunter × Hunter Carddass Hyper Battle", logo: "assets/games/game_hxh.webp", vintage: "1999–2001" },
   { url: "one-piece-carddass", game: "onepiece", linha: "opcd", prefixos: ["opcd-"], nome: "One Piece Carddass Hyper Battle", logo: "assets/games/game_onepiece_carddass.webp", vintage: "1999–2002" },
@@ -65,7 +65,9 @@ export const LINHAS_APELIDO = { "nrt-nf": "nrt-dc", "nrt-nx": "nrt-dc" };
 // Battle era uma linha em cada marca até 2026-10-01 e virou o jogo mbc. O
 // ?line= e o /games/<endereço> antigos levam pro jogo novo; o set e a carta
 // abaixo do endereço seguem com o mesmo slug (o nome do set não mudou).
-export const LINHAS_VIRARAM_JOGO = { "op-mb": "mbc", "nrt-mb": "mbc", "hxh-mb": "mbc" };
+// O Gundam Carddass foi linha do gundam por um dia (10/11/2026): o ?line=gcd
+// de quem guardou o link abre o jogo gcd.
+export const LINHAS_VIRARAM_JOGO = { "op-mb": "mbc", "nrt-mb": "mbc", "hxh-mb": "mbc", "gcd": "gcd" };
 const ENDERECOS_ANTIGOS = {
   "one-piece-miracle-battle": "miracle-battle-carddass",
   "naruto-miracle-battle": "miracle-battle-carddass",

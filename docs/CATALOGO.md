@@ -291,7 +291,9 @@ hub). A ficha preenchida vai na descrição da PR.
   prefixo de id próprio: a linha lista todos em `prefixes` no `GAME_LINES`, e
   um `group<…>` no `app.js` monta as seções (item B16). O mesmo vale pras
   séries de uma linha só: o Gundam Carddass (`gcd`, 2026-11-10) tem um prefixo
-  e uma seção por série (World, 外伝, 戦国伝…), tirada do código do set. Se uma linha já
+  e uma seção por série (World, 外伝, 戦国伝…), tirada do código do set. Ele
+  entrou como linha do `gundam` e virou jogo no mesmo dia (`gcd`), pelo mesmo
+  caminho do `mbc` (`src/migra-mbc.js`, `MUDOU_DE_JOGO`, `LINHAS_VIRARAM_JOGO`). Se uma linha já
   publicada virar seção de outra, o `?line=` antigo entra em `LINE_ALIASES`
   (shared.js), pra favoritos e links seguirem abrindo.
 - **slug**: minúsculo, `[a-z0-9]+`, curto (`unionarena`, `dbc`). Vai pra URL
@@ -385,7 +387,7 @@ valem só nesse caso.
 | B6 | `src/shared.js` (`MARKETS`) | lojas da ficha; `noTcgplayer` quando o TCGplayer não tem o jogo | links da carta vão pra LigaPokémon e pro TCGplayer do Pokémon | — |
 | B7 | `src/shared.js` (`EXPLORE_SUBNAV`) | só se o jogo tem artista | sem aba Artistas (o padrão é o mínimo seguro) | — |
 | B8 | `src/shared.js` (`VINTAGE_ID_PREFIX`), `src/explore.js` (`VINTAGE_GAMES`), `filter.vintageHint` | só vintage | cartas fora do filtro Vintage | — |
-| B9 | `src/shared.js` (`GAME_LINES`), `sets.category.*`, tile no hub | só linha; `market` na linha quando as lojas do jogo não servem pra ela (o Gundam Carddass dentro do `gundam`) | linha sem página própria; carta da linha com link pra loja que não a vende | `games-url.test.mjs` e `game-lines.test.mjs` (endereço, prefixos e tile) |
+| B9 | `src/shared.js` (`GAME_LINES`), `sets.category.*`, tile no hub | só linha | linha sem página própria | — |
 | B10 | `styles.css` (`[data-game-accent="<slug>"]`) | bloco do escuro e do claro; no claro, os dois seletores (no `<html>` e de descendente, que o tile do hub usa) | página e tile no vermelho do Pokémon, que é o accent base | — |
 | B11 | `src/app.js` (`GAME_LOGO`) e `src/admin.js` (`KIT_LOGO`) | arquivo do logo, ou `""` sem logo | sem logo no lugar do set e no kit | — |
 | B12 | `src/binders.js` (`PREFIXO_JOGO`) e `src/card-rescue.js` (`ID_PREFIX_GAME`) | o prefixo de id | carta do jogo no binder sem jogo atribuído ("Tenho" e preço manual olham a coleção errada); link de carta resolve em duas ondas | — |

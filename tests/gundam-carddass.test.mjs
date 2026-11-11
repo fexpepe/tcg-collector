@@ -1,5 +1,5 @@
-// Testes do sync do Gundam Carddass (scripts/sync-gundam-carddass.mjs, a linha
-// vintage gcd do jogo gundam): o parse da página do animecollection, o id
+// Testes do sync do Gundam Carddass (scripts/sync-gundam-carddass.mjs, o jogo
+// vintage gcd): o parse da página do animecollection, o id
 // pegajoso pelo id da carta na fonte, o número em kanji da 戦国伝, o nome do
 // set (e o endereço que sai dele) e os nomes transcritos dos scans.
 // Roda com: node --test tests/
@@ -7,7 +7,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import {
-  SETS, SERIES, LINE, ID_PREFIX, parseAnimeCollection, assignIds, numeroArabico, nameEn,
+  SETS, SERIES, ID_PREFIX, parseAnimeCollection, assignIds, numeroArabico, nameEn,
   setName, setNameEn, setIdOf, scanDe, IMG, cartasDaLinha, corrige, CORRECOES
 } from "../scripts/sync-gundam-carddass.mjs";
 import { slugify } from "../functions/_lib/slug-carta.js";
@@ -138,7 +138,7 @@ test("nome EN: inteiro ou composto; meia tradução não sai", () => {
   assert.equal(nameEn("", g), "");
 });
 
-test("cartas: nome transcrito (EN quando o glossário cobre), número, raridade e a linha", () => {
+test("cartas: nome transcrito (EN quando o glossário cobre), número, raridade e a série", () => {
   const snap = { sets: [{ code: "wd13", cards: [
     { id: "gcd-wd13-500", src: 26180, num: "500", rar: "Double Prism", dir: "167/625" },
     { id: "gcd-wd13-500b", src: 26181, num: "500", rar: "Prism", dir: "167/625" },
@@ -162,7 +162,7 @@ test("cartas: nome transcrito (EN quando o glossário cobre), número, raridade 
   assert.equal(c.language, "ja");
   assert.equal(c.setLogo, "");
   assert.equal(c.vintage, true);
-  assert.equal(c.vintageLine, LINE);
+  assert.equal(c.vintageLine, "wd"); // a série, como no dbc
 });
 
 test("total oficial vale onde a fonte tem buraco (o No.124 do 本弾 第3弾)", () => {
@@ -211,4 +211,14 @@ test("glossário EN: só nome que existe nas cartas, sem valor vazio", () => {
     assert.ok(usados.has(ja), `phrases["${ja}"] não é nome de carta nenhuma`);
   }
   for (const [ja, en] of Object.entries(NOMES_EN.atoms)) assert.ok(en && en.trim() === en, `atoms["${ja}"] vazio`);
+});
+
+test("jogo próprio: o catálogo mora em data/gcd/ e nenhuma carta gcd- fica no do Gundam Card Game", () => {
+  const cartas = (jogo) => { const t = ler(`data/${jogo}/cards.js`); return JSON.parse(t.slice(t.indexOf("["), t.lastIndexOf("]") + 1)); };
+  const gcd = cartas("gcd");
+  assert.equal(gcd.length, SNAP.sets.reduce((n, s) => n + s.cards.length, 0));
+  assert.ok(gcd.every((c) => c.id.startsWith(ID_PREFIX) && c.vintage === true));
+  assert.equal(cartas("gundam").filter((c) => String(c.id).startsWith(ID_PREFIX)).length, 0);
+  // e o sync do TCGCSV não as preserva de volta
+  assert.match(ler("scripts/sync-gundam.mjs"), /startsWith\("gcd-"\)/);
 });

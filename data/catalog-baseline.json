@@ -45,8 +45,8 @@
   "imgPct": 0
  },
  "gundam": {
-  "cards": 3673,
-  "sets": 64,
+  "cards": 1833,
+  "sets": 22,
   "imgPct": 100
  },
  "swu": {
@@ -123,5 +123,10 @@
   "cards": 907,
   "sets": 8,
   "imgPct": 81
+ },
+ "gcd": {
+  "cards": 1475,
+  "sets": 37,
+  "imgPct": 100
  }
 }

@@ -120,6 +120,7 @@ jobs:
             data/harrypotter/sets
             data/mbc/sets
             data/cdm/sets
+            data/gcd/sets
             data/jump/sets
             data/magic/cards.js
             data/magic/indexes.js
@@ -146,7 +147,7 @@ jobs:
           faltando=""
           # data/dbc/, data/swu/, data/cyberpunk/, data/wow/, data/lotr/,
           # data/sorcery/, data/harrypotter/, data/weiss/, data/mbc/, data/dbz/ e
-          # data/cdm/: jogos novos (2026-09-24 a 2026-11-09). Enquanto o cache
+          # data/cdm/ e data/gcd/: jogos novos (2026-09-24 a 2026-11-10). Enquanto o cache
           # for de antes deles, o build rápido publicaria o tile do hub sem
           # catálogo nenhum atrás.
           for f in data/manifest.generated.js data/pricing.generated.js \
@@ -159,7 +160,8 @@ jobs:
                    data/weiss/manifest.generated.js \
                    data/mbc/manifest.generated.js \
                    data/dbz/manifest.generated.js \
-                   data/cdm/manifest.generated.js; do
+                   data/cdm/manifest.generated.js \
+                   data/gcd/manifest.generated.js; do
             [ -s "$f" ] || faltando="$faltando $f"
           done
           if [ -n "$faltando" ]; then
@@ -636,23 +638,22 @@ jobs:
         if: env.RODA_SYNC != 'true'
         run: node scripts/sync-carddass-masters.mjs --no-fetch || echo "sync-carddass-masters --no-fetch falhou; segue com o catalogo do cache"
 
-      # Gundam Carddass (Bandai 1988-1997): a LINHA vintage gcd do jogo gundam
-      # (SD Gundam World, Gaiden, Sengokuden, Seiden e G Gundam). Numero,
-      # raridade e scan pelo animecollection.fr (snapshot versionado em
+      # Gundam Carddass (Bandai 1988-1997): o jogo vintage gcd (SD Gundam World,
+      # Gaiden, Sengokuden, Seiden e G Gundam). Numero, raridade e scan pelo
+      # animecollection.fr (snapshot versionado em
       # data/vintage/gundam-carddass.json, nao regride, ids fixos); o nome da
       # carta foi transcrito dos scans (scripts/data/gundam-carddass-nomes.json).
-      # ANEXA ao catalogo do Gundam Card Game, por isso roda DEPOIS do
-      # sync-gundam (TCGCSV), la em cima. Sem preco.
-      - name: Anexa Gundam Carddass (linha vintage do Gundam)
+      # Cria data/gcd/ sozinho e TIRA do catalogo do Gundam as cartas gcd- que
+      # moraram la enquanto isto foi linha dele (10/11/2026) -- por isso roda
+      # DEPOIS do sync-gundam. Sem preco.
+      - name: Catalogo vintage Gundam Carddass
         if: env.RODA_SYNC == 'true'
         run: node scripts/sync-gundam-carddass.mjs || echo "sync-gundam-carddass falhou; segue com o snapshot versionado"
 
-      # A mesma linha no build RAPIDO (push), sem rede: correcao de nome
+      # O mesmo jogo no build RAPIDO (push), sem rede: correcao de nome
       # (scripts/data/gundam-carddass-nomes*.json) ou de snapshot aparece no
-      # deploy do merge, e nao so no cron -- a licao do dbc (PR #215). Regrava
-      # data/gundam/ inteiro a partir do cards.js e do pricing.js versionados,
-      # que sao os do ultimo build completo (o snapshot automatico os commita).
-      - name: Anexa Gundam Carddass (build rapido, sem rede)
+      # deploy do merge, e nao so no cron -- a licao do dbc (PR #215).
+      - name: Catalogo vintage Gundam Carddass (build rapido, sem rede)
         if: env.RODA_SYNC != 'true'
         run: node scripts/sync-gundam-carddass.mjs --no-fetch || echo "sync-gundam-carddass --no-fetch falhou; segue com o catalogo do cache"
 
@@ -906,6 +907,7 @@ jobs:
             data/harrypotter/sets
             data/mbc/sets
             data/cdm/sets
+            data/gcd/sets
             data/jump/sets
             data/magic/cards.js
             data/magic/indexes.js
