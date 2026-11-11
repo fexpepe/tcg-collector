@@ -470,14 +470,22 @@ test("determinismo e tempo: mesma foto dá o mesmo número bit a bit; 1200×1600
   for (let i = 0; i < 3; i++) { const t0 = performance.now(); mede(S, c0); ts.push(performance.now() - t0); }
   ts.sort((x, y) => x - y);
   assert.ok(ts[1] < 50, `mediana ${ts[1].toFixed(1)} ms`);
-  const ti = [];
-  for (let i = 0; i < 5; i++) {
+  // Ímã: orçamento de 3 ms no node desktop (PLANO-CENTERING-V2 §tempos). Vale
+  // o MELHOR de 9 rodadas, não a mediana. Com a mediana de 5 este teste caía
+  // em ~1 de cada 5 runs do CI (3,25–4,34 ms, 10–11/11/2026): o runner tem 2
+  // núcleos e o node --test roda todos os arquivos em paralelo, e a mesma
+  // máquina mede de 0,7 a 2,9 ms só pela disputa de CPU. O mínimo mede o
+  // código, não o vizinho; regressão de verdade (ímã 2× mais lento) ainda
+  // estoura. Uma chamada de aquecimento antes, pra não medir o JIT.
+  const ima = () => C.ima(S.img, a.rc.cantos, { lado: "l", tipo: "int", c: 0.05, k: 0 }, { janela: 0.01, ref: 0 });
+  ima();
+  let melhor = Infinity;
+  for (let i = 0; i < 9; i++) {
     const t0 = performance.now();
-    C.ima(S.img, a.rc.cantos, { lado: "l", tipo: "int", c: 0.05, k: 0 }, { janela: 0.01, ref: 0 });
-    ti.push(performance.now() - t0);
+    ima();
+    melhor = Math.min(melhor, performance.now() - t0);
   }
-  ti.sort((x, y) => x - y);
-  assert.ok(ti[2] < 3, `ímã ${ti[2].toFixed(2)} ms`);
+  assert.ok(melhor < 3, `ímã ${melhor.toFixed(2)} ms (melhor de 9)`);
 });
 
 // ---------------------------------------------------------------------------
