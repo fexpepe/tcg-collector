@@ -128,5 +128,10 @@
   "cards": 1475,
   "sets": 37,
   "imgPct": 100
+ },
+ "gw": {
+  "cards": 6534,
+  "sets": 67,
+  "imgPct": 0
  }
 }
