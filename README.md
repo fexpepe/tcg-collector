@@ -63,7 +63,7 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 | `dbz` | Dragon Ball Z CCG | Score 2000–2006: o CCG das 11 sagas, o GT TCG e o relançamento de 2005, com subsets e promos; galerias do retrodbzccg.com, nomes faltantes do kizmt/dbz-ccg-data e lidos no scan (snapshot `data/vintage/dbz-retro.json`) | sem preço |
 | `harrypotter` | Harry Potter TCG | Wizards of the Coast 2001–2002: hpjson (GitHub) + imagens do accio.cards; premium, decks e promos = cartas próprias | sem preço |
 | `mbc` | Miracle Battle Carddass | Bandai 2009–2015, o crossover da Jump: sete séries (Dragon Ball Kai, One Piece, Toriko, Hunter × Hunter, Naruto Shippuden, Kuroko, J-Heroes), uma seção por série; tcg-db (snapshot `data/vintage/miracle-battle.json`). Até 2026-10-01 eram linhas do One Piece, do Naruto e do HxH (ids `op-mb-`/`nrt-mb-`/`hxh-mb-` mantidos; `src/migra-mbc.js` leva a coleção de quem marcou) | sem preço |
-| `cdm` | Carddass Masters | Bandai 1996–2009, a linha de cartas de coleção de várias IPs, uma seção por IP. HUNTER×HUNTER (2000–2001): número e nome pela lista impressa no verso das cartas (`scripts/data/carddass-masters-hxh.json`), scans da Hunterpedia (snapshot `data/vintage/carddass-masters-hxh.json`). 新世紀エヴァンゲリオン (1996–1997) e ヱヴァンゲリヲン新劇場版:破 第2章 (2011): listas de um colecionador e, no 破, a frente das cartas lida nos scans (`scripts/data/carddass-masters-eva.json`), scans do animecollection.fr (snapshot `data/vintage/carddass-masters-eva.json`) | sem preço |
+| `cdm` | Carddass Masters | Bandai 1996–2009, a linha de cartas de coleção de várias IPs, uma seção por IP. HUNTER×HUNTER (2000–2001): número e nome pela lista impressa no verso das cartas (`scripts/data/carddass-masters-hxh.json`), scans da Hunterpedia (snapshot `data/vintage/carddass-masters-hxh.json`). 新世紀エヴァンゲリオン (1996–1997), as três CR de pachinko (2008–2010) e ヱヴァンゲリヲン新劇場版:破 第2章 (2011): listas de um colecionador e, nas CR e no 破, a frente das cartas lida nos scans (`scripts/data/carddass-masters-eva.json`), scans do animecollection.fr (snapshot `data/vintage/carddass-masters-eva.json`) | sem preço |
 | `gcd` | Gundam Carddass | Bandai 1988–1997: SD Gundam World, Gaiden, Sengokuden, Seiden e G Gundam, uma seção por série; número, raridade e scan do animecollection.fr, sets do 80storage, nome transcrito dos scans (snapshot `data/vintage/gundam-carddass.json`). Foi linha do `gundam` por um dia (2026-11-10); `src/migra-mbc.js` leva a coleção de quem marcou | sem preço |
 | `gw` | Gundam War | Bandai 1999–2011, o TCG japonês do Gundam (vendido sob a marca Carddass Masters): número, nome, cor, tipo e raridade pelas listas do site oficial da Bandai, ainda no ar (snapshot `data/vintage/gundam-war.json`); sem imagem | sem preço |
 | `jump` | JUMP | curadoria versionada em `data/jump/curated/` | — |
@@ -297,11 +297,19 @@ primeiro lançamento. Têm fonte carta a carta o HUNTER×HUNTER e o
   das cenas, o lugar das paisagens); o resto marcado `"traducao": "nossa"`.
   O set leva o título do filme no lugar do da série (`prefix` no SETS_EVA) e
   tem SSP e SSSP como raridade, acima da SP ("Special").
+- **Evangelion, CR (pachinko, 2008–2010, 55 cada)**: ～使徒、再び～,
+  ～最後のシ者～ e ～始まりの福音～, brinde de troca nas casas de pachinko.
+  Também lidas nos scans (`cr1`–`cr3`), mas a frente é arte da máquina e
+  quase nunca imprime nome: vale o impresso (nome do personagem, fala,
+  legenda); sem ele, quem aparece ou o subset da ficha do hp-ez e a posição
+  ("Premium Reach 3"), marcado `"traducao": "nossa"` (critério da Premium
+  Edition do HxH, pedido do Fernando em 2026-11-11). 01–09 são a
+  タイトルナインパズル; as SP o site marca "Rare".
 - **Evangelion, inglês**: personagem pelo nome corrente (wiki do EvaGeeks);
   EVA, anjo e cena como a Bandai imprimiu na frente da carta ("EVA-01", "First
   Angel Adam", "EVA-Series", "Black Moon"); episódio pelo título oficial em
   inglês. O que é tradução nossa está marcado no arquivo.
-- **Evangelion, imagem**: scan da frente do animecollection.fr (509 cartas; a
+- **Evangelion, imagem**: scan da frente do animecollection.fr (674 cartas; a
   第弐集 não está lá e entra sem imagem). O site só responde em http, e o
   wsrv.nl busca e serve em https. **Todo scan traz a marca d'água do site**
   (aceito em 2026-11-10 até termos imagem própria): `assets/cards/cdm/<id>.webp`

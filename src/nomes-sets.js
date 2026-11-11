@@ -203,6 +203,10 @@
     "cdm-eva-p2": "Neon Genesis Evangelion Vol. 2",
     "cdm-eva-w1": "Neon Genesis Evangelion Wide — Death & Rebirth",
     "cdm-eva-w2": "Neon Genesis Evangelion Wide — The End of Evangelion",
+    // CR (pachinko): o subtítulo em inglês que a própria carta imprime.
+    "cdm-eva-cr1": "CR Neon Genesis Evangelion — The Angels Are Back Again",
+    "cdm-eva-cr2": "CR Neon Genesis Evangelion — The Beginning and the End",
+    "cdm-eva-cr3": "CR Evangelion — Evangelical of the Beginnings",
     // 新劇場版: o título em inglês do filme (2.0); "Chapter 2" é nosso (第2章).
     "cdm-eva-ha2": "Evangelion: 2.0 You Can (Not) Advance Chapter 2",
     // ---- Gundam War (jogo gw, sync-gundam-war.mjs). Tradução nossa (o SET_EN

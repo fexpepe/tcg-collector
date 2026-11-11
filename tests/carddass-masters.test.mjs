@@ -109,6 +109,7 @@ test("eva, rótulo do animecollection.fr: vira o número da lista; embalagem e p
   // 破 第2章: número puro, como o site rotula
   assert.equal(numAc("101"), "101");
   assert.equal(numAc("173"), "173");
+  assert.equal(numAc("01"), "01");
   for (const fora of ["Puzzle", "Binder", "Booster Box", "Booster Dos", "Pub", ""]) assert.equal(numAc(fora), null, fora);
 });
 
@@ -134,7 +135,8 @@ test("eva, página da série: número, raridade e o scan grande; repetido fica o
   const wide = '<div class="bc_cadre_numero" title="Super Rare" style="x"><div class="bc_texte_numero">SP-06</div></div><img src="cartes/63/151/h100_5770_carte.jpg" />';
   assert.deepEqual(parseAc(wide, 63, 151), [{ num: "SP6", rarity: "Special", img: "animecollection.fr/cartes/63/151/h3000_5770_carte.jpg" }]);
   // 破 第2章: SSP e SSSP ficam com o nome da Bandai; a キービジュアル é Promo
-  assert.deepEqual(["SP", "SSP", "SSSP", "Promo", "Regular", "Rare"].map(rarityAc), ["Special", "SSP", "SSSP", "Promo", "Normal", "Normal"]);
+  // e "Rare" é como o site marca as SP das CR
+  assert.deepEqual(["SP", "SSP", "SSSP", "Promo", "Regular", "Rare"].map(rarityAc), ["Special", "SSP", "SSSP", "Promo", "Normal", "Special"]);
   // miniatura de outra série não vale
   assert.deepEqual(parseAc(wide, 63, 149), []);
   // o site é http: a origem vai pro wsrv sem esquema e sai em https
@@ -142,7 +144,7 @@ test("eva, página da série: número, raridade e o scan grande; repetido fica o
 });
 
 test("eva, lista: total oficial de cada edição, número único, inglês sempre, SP no fim", () => {
-  const total = { p1: 172, p2: 172, w1: 132, w2: 132, ha2: 73 }, sp = { p1: 4, p2: 9, w1: 6, w2: 6 };
+  const total = { p1: 172, p2: 172, w1: 132, w2: 132, ha2: 73, cr1: 55, cr2: 55, cr3: 55 }, sp = { p1: 4, p2: 9, w1: 6, w2: 6 };
   for (const def of SETS_EVA) {
     const l = LISTA_EVA[def.lista];
     assert.equal(l.length, total[def.code], def.code);
@@ -164,6 +166,15 @@ test("eva, lista: total oficial de cada edição, número único, inglês sempre
   assert.deepEqual(LISTA_EVA.ha2.map((c) => c.n), Array.from({ length: 73 }, (_, i) => String(101 + i)));
   assert.deepEqual(LISTA_EVA.ha2.find((c) => c.n === "130"), { n: "130", ja: "式波・アスカ・ラングレー", en: "Asuka Shikinami Langley" });
   assert.equal(LISTA_EVA.ha2.find((c) => c.n === "137").en, "Story Scene Select 01");
+  // CR: 01 a 55 sem buraco, 01–09 a タイトルナインパズル; nome que não está
+  // impresso na carta vem marcado
+  for (const code of ["cr1", "cr2", "cr3"]) {
+    const l = LISTA_EVA[code];
+    assert.deepEqual(l.map((c) => c.n), Array.from({ length: 55 }, (_, i) => String(i + 1).padStart(2, "0")), code);
+    assert.ok(l.slice(0, 9).every((c) => /^タイトルナインパズル\d$/.test(c.ja) && c.traducao === "nossa"), code);
+  }
+  assert.deepEqual(LISTA_EVA.cr2.find((c) => c.n === "15"), { n: "15", ja: "渚カヲル", en: "Kaworu Nagisa" });
+  assert.equal(LISTA_EVA.cr1.find((c) => c.n === "10").traducao, "nossa");
 });
 
 test("eva, cartas: a lista manda; a 第弐集 entra sem scan, com a raridade pelo número", () => {
@@ -185,8 +196,8 @@ test("eva, cartas: a lista manda; a 第弐集 entra sem scan, com a raridade pel
 
 test("eva, set: a IP abre o nome, o jogo e o formato (ワイド) não", () => {
   const nomes = EVA.sets.map((def) => setNameOf(EVA, def));
-  // o 新劇場版 tem título próprio no lugar do da série de TV (`prefix`)
-  assert.deepEqual(nomes, ["新世紀エヴァンゲリオン 第壱集", "新世紀エヴァンゲリオン 第弐集", "新世紀エヴァンゲリオン 劇場版 シト新生", "新世紀エヴァンゲリオン 劇場版 Air/まごころを、君に", "ヱヴァンゲリヲン新劇場版:破 第2章"]);
+  // o 新劇場版 e as CR têm título próprio no lugar do da série de TV (`prefix`)
+  assert.deepEqual(nomes, ["新世紀エヴァンゲリオン 第壱集", "新世紀エヴァンゲリオン 第弐集", "新世紀エヴァンゲリオン 劇場版 シト新生", "新世紀エヴァンゲリオン 劇場版 Air/まごころを、君に", "CR新世紀エヴァンゲリオン ～使徒、再び～", "CR新世紀エヴァンゲリオン ～最後のシ者～", "CRヱヴァンゲリヲン ～始まりの福音～", "ヱヴァンゲリヲン新劇場版:破 第2章"]);
   for (const a of nomes) for (const b of nomes) assert.ok(a === b || !b.startsWith(a + " "), `${a} engoliria ${b}`);
   // ids de set e de carta de uma IP nunca caem nos de outra
   const todos = IPS.flatMap((ip) => ip.sets.map((def) => setIdOf(ip.ip, def.code)));
