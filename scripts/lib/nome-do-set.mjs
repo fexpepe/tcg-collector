@@ -33,7 +33,9 @@ export const NOMES_DO_JOGO = {
   // Godzilla Card Game: só o nome inteiro do jogo. "Godzilla" sozinho NÃO
   // entra: é o começo de nome de set de verdade ("Godzilla VS. Godzilla",
   // "Godzilla Minus One"), que perderia o monstro.
-  godzilla: ["Godzilla Card Game"]
+  godzilla: ["Godzilla Card Game"],
+  // Palworld OFFICIAL CARD GAME (Bushiroad, 2026): "Palworld Promo Cards".
+  palworld: ["Palworld OFFICIAL CARD GAME", "Palworld Official Card Game", "Palworld"]
 };
 
 // Títulos de outra obra que começam com a marca: ficam inteiros. No Yu-Gi-Oh!

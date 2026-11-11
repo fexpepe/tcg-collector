@@ -51,7 +51,8 @@ export const ID_DE_PRODUTO = {
   wow: /^wow-\d+$/,
   weiss: /^ws-\d+$/,
   narutocg: /^nrt-ncg-\d+$/, // até 11/11/2026, linha do naruto
-  godzilla: /^gzc-\d+$/
+  godzilla: /^gzc-\d+$/,
+  palworld: /^pal-\d+$/
 };
 
 export const idiomaDe = (c) => c.language || "en";
