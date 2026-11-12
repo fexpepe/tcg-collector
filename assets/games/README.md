@@ -219,7 +219,7 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
 - `game_naruto.svg` — FONTE vetorial do logo do Naruto (Inkscape). Se editar,
   re-exporte o webp: @resvg/resvg-js (ou qualquer rasterizador) em 512px e
   depois `ffmpeg -i logo.png -c:v libwebp -quality 90 game_naruto.webp`.
-- `game_cdm.webp` — Carddass Masters (Bandai, 1996–2009; tile vintage do
+- `game_cdm.webp` — Carddass Masters (Bandai, 1996–2011; tile vintage do
   jogo `cdm` no hub, parede da landing, página /games e kit). Fonte: o tapete
   do Final Fantasy VIII Triple Triad, um produto da própria linha, na Final
   Fantasy Wiki (`File:Final Fantasy VIII Bandai Carddass Masters Triple Triad

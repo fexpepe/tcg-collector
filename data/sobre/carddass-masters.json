@@ -1,0 +1,226 @@
+{
+  "url": "carddass-masters",
+  "nome": "Carddass Masters",
+  "nomeOriginal": {
+    "texto": "カードダスマスターズ",
+    "lang": "ja",
+    "romaji": "Kādodasu Masutāzu"
+  },
+  "logo": "assets/games/game_cdm.webp",
+  "logoLargura": 369,
+  "logoAltura": 120,
+  "periodo": {
+    "inicio": "1996-08",
+    "fim": "2011"
+  },
+  "etiquetas": [
+    "Vintage",
+    {
+      "pt": "Japão",
+      "en": "Japan",
+      "es": "Japón"
+    },
+    "Carddass"
+  ],
+  "resumo": {
+    "pt": "Linha de cartas de coleção da Bandai para um público mais velho, lançada no Japão em 1996 com Evangelion, em pacotes de 10 cartas.",
+    "en": "Bandai's collectible card line for an older audience, launched in Japan in 1996 with Evangelion, in 10-card packs.",
+    "es": "Línea de cartas coleccionables de Bandai para un público mayor, lanzada en Japón en 1996 con Evangelion, en sobres de 10 cartas."
+  },
+  "fatos": [
+    {
+      "chave": "lancamento",
+      "valor": "1996-08"
+    },
+    {
+      "chave": "encerramento",
+      "valor": {
+        "pt": "Sem data oficial",
+        "en": "No official end date",
+        "es": "Sin fecha oficial"
+      }
+    },
+    {
+      "chave": "fabricante",
+      "valor": "Bandai"
+    },
+    {
+      "chave": "origem",
+      "valor": {
+        "pt": "Japão",
+        "en": "Japan",
+        "es": "Japón"
+      }
+    },
+    {
+      "chave": "formato",
+      "valor": {
+        "pt": "Cartas de coleção, uma coleção por série",
+        "en": "Collectible cards, one set per series",
+        "es": "Cartas coleccionables, una colección por serie"
+      }
+    },
+    {
+      "chave": "preco",
+      "valor": {
+        "pt": "¥300 o pacote de 10 (Evangelion, 1996)",
+        "en": "¥300 for a 10-card pack (Evangelion, 1996)",
+        "es": "¥300 el sobre de 10 (Evangelion, 1996)"
+      }
+    }
+  ],
+  "historia": {
+    "pt": [
+      "Carddass Masters é a linha “de alto padrão” da Bandai, voltada a um público mais velho: uma das três categorias da marca Carddass, ao lado das cartas de máquina e das Jumbo. Nasceu em 1996, ano em que, segundo a Bandai, a série Evangelion foi um sucesso. Segundo um colecionador, a primeira coleção foi a de Evangelion, em agosto de 1996: 172 cartas, em pacotes de 10 a ¥300, com uma carta especial a cada 15 pacotes.",
+      "Evangelion rendeu ainda o Vol. 2 (1997), duas coleções Wide, de cartas largas como a tela dos filmes de 1997, em pacotes de 7, e os Vol. 3 (1998) e 4 (2003). Outras séries ganharam a sua coleção, como Hunter × Hunter, em 2000 e 2001, com 139 cartas por parte e caixas de 15 pacotes de 10.",
+      "O selo também vestiu jogos de cartas: o Gundam War saiu como Carddass Masters em 1999, e em 2011 o site da Bandai ainda apresentava a linha com ele e o Crusade. Evangelion voltou com os filmes novos, de 2008 a 2011, já em pacotes de 5 cartas no 2.0, e com três coleções da máquina de pachinko CR Evangelion (2008–2010), que não iam às lojas: eram prêmio de troca nas casas de pachinko."
+    ],
+    "en": [
+      "Carddass Masters is Bandai's “high-grade” line, aimed at an older audience: one of the three categories of the Carddass brand, alongside the vending-machine cards and the Jumbo cards. It was born in 1996, the year in which, according to Bandai, the Evangelion series was a hit. According to a collector, the first set was Evangelion, in August 1996: 172 cards, in 10-card packs at ¥300, with one special card every 15 packs.",
+      "Evangelion went on to get Vol. 2 (1997), two Wide sets, with cards as wide as the screen of the 1997 films, in 7-card packs, and Vols. 3 (1998) and 4 (2003). Other series got their own sets, such as Hunter × Hunter, in 2000 and 2001, with 139 cards per part and boxes of 15 ten-card packs.",
+      "The label also covered card games: Gundam War launched as Carddass Masters in 1999, and in 2011 Bandai's site still presented the line with it and Crusade. Evangelion returned with the new films, from 2008 to 2011, in 5-card packs by 2.0, and with three sets for the CR Evangelion pachinko machine (2008–2010), which never reached stores: they were prizes exchanged at pachinko parlors."
+    ],
+    "es": [
+      "Carddass Masters es la línea “de alta gama” de Bandai, dirigida a un público mayor: una de las tres categorías de la marca Carddass, junto a las cartas de máquina y las Jumbo. Nació en 1996, año en que, según Bandai, la serie Evangelion fue un éxito. Según un coleccionista, la primera colección fue la de Evangelion, en agosto de 1996: 172 cartas, en sobres de 10 a ¥300, con una carta especial cada 15 sobres.",
+      "Evangelion tuvo además el Vol. 2 (1997), dos colecciones Wide, con cartas anchas como la pantalla de las películas de 1997, en sobres de 7, y los Vol. 3 (1998) y 4 (2003). Otras series tuvieron su colección, como Hunter × Hunter, en 2000 y 2001, con 139 cartas por parte y cajas de 15 sobres de 10.",
+      "El sello también cubrió juegos de cartas: Gundam War salió como Carddass Masters en 1999, y en 2011 el sitio de Bandai aún presentaba la línea con él y con Crusade. Evangelion volvió con las nuevas películas, de 2008 a 2011, ya en sobres de 5 cartas en la 2.0, y con tres colecciones de la máquina de pachinko CR Evangelion (2008–2010), que no llegaban a las tiendas: eran premios de canje en los salones de pachinko."
+    ]
+  },
+  "linhaDoTempo": [
+    {
+      "data": "1996-08",
+      "set": "cdm-eva-p1",
+      "texto": {
+        "pt": "Evangelion Vol. 1, a primeira coleção: 172 cartas, ¥300 o pacote de 10.",
+        "en": "Evangelion Vol. 1, the first set: 172 cards, ¥300 for a pack of 10.",
+        "es": "Evangelion Vol. 1, la primera colección: 172 cartas, ¥300 el sobre de 10."
+      }
+    },
+    {
+      "data": "1997-01",
+      "set": "cdm-eva-p2",
+      "texto": {
+        "pt": "Evangelion Vol. 2, com mais 172 cartas.",
+        "en": "Evangelion Vol. 2, with 172 more cards.",
+        "es": "Evangelion Vol. 2, con 172 cartas más."
+      }
+    },
+    {
+      "data": "1997-08",
+      "set": "cdm-eva-w1",
+      "texto": {
+        "pt": "Wide “Death & Rebirth”: cartas largas, como a tela do cinema.",
+        "en": "Wide “Death & Rebirth”: wide cards, like the cinema screen.",
+        "es": "Wide “Death & Rebirth”: cartas anchas, como la pantalla del cine."
+      }
+    },
+    {
+      "data": "1997-12",
+      "set": "cdm-eva-w2",
+      "texto": {
+        "pt": "Wide “The End of Evangelion”, a segunda e última Wide.",
+        "en": "Wide “The End of Evangelion”, the second and last Wide set.",
+        "es": "Wide “The End of Evangelion”, la segunda y última Wide."
+      }
+    },
+    {
+      "data": "1999",
+      "texto": {
+        "pt": "Gundam War, o jogo de cartas do Gundam, sai com o selo Carddass Masters.",
+        "en": "Gundam War, the Gundam card game, launches under the Carddass Masters label.",
+        "es": "Gundam War, el juego de cartas de Gundam, sale con el sello Carddass Masters."
+      }
+    },
+    {
+      "data": "2000",
+      "set": "cdm-hxh-p1",
+      "texto": {
+        "pt": "Hunter × Hunter Parte 1: 139 cartas, caixas de 15 pacotes de 10.",
+        "en": "Hunter × Hunter Part 1: 139 cards, boxes of 15 ten-card packs.",
+        "es": "Hunter × Hunter Parte 1: 139 cartas, cajas de 15 sobres de 10."
+      }
+    },
+    {
+      "data": "2001",
+      "set": "cdm-hxh-p2",
+      "texto": {
+        "pt": "Hunter × Hunter Parte 2, com mais 139 cartas.",
+        "en": "Hunter × Hunter Part 2, with 139 more cards.",
+        "es": "Hunter × Hunter Parte 2, con 139 cartas más."
+      }
+    },
+    {
+      "data": "2008-08",
+      "set": "cdm-eva-cr1",
+      "texto": {
+        "pt": "CR Evangelion: cartas de prêmio das casas de pachinko.",
+        "en": "CR Evangelion: prize cards from pachinko parlors.",
+        "es": "CR Evangelion: cartas de premio de los salones de pachinko."
+      }
+    },
+    {
+      "data": "2010-07",
+      "set": "cdm-eva-cr3",
+      "texto": {
+        "pt": "Terceira coleção CR, “Evangelical of the Beginnings”.",
+        "en": "Third CR set, “Evangelical of the Beginnings”.",
+        "es": "Tercera colección CR, “Evangelical of the Beginnings”."
+      }
+    },
+    {
+      "data": "2011-03",
+      "set": "cdm-eva-ha2",
+      "texto": {
+        "pt": "Evangelion 2.0 Capítulo 2, em pacotes de 5 cartas a ¥200.",
+        "en": "Evangelion 2.0 Chapter 2, in 5-card packs at ¥200.",
+        "es": "Evangelion 2.0 Capítulo 2, en sobres de 5 cartas a ¥200."
+      }
+    }
+  ],
+  "fontes": [
+    {
+      "nome": {
+        "pt": "Bandai, comunicado à imprensa (2007)",
+        "en": "Bandai press release (2007)",
+        "es": "Bandai, comunicado de prensa (2007)"
+      },
+      "url": "https://www.bandai.co.jp/releases/images/3/41036.pdf"
+    },
+    {
+      "nome": {
+        "pt": "Bandai, “O que é Carddass?” (2011)",
+        "en": "Bandai, “What is Carddass?” (2011)",
+        "es": "Bandai, “¿Qué es Carddass?” (2011)"
+      },
+      "url": "https://web.archive.org/web/20110913034551/http://www.carddas.com/about/carddass.html"
+    },
+    {
+      "nome": {
+        "pt": "Evangelion Card no Subete: Carddass Masters (fã)",
+        "en": "Evangelion Card no Subete: Carddass Masters (fan site)",
+        "es": "Evangelion Card no Subete: Carddass Masters (sitio de fan)"
+      },
+      "url": "https://web.archive.org/web/20220311144017/http://www2.hp-ez.com/hp/evacard/page1"
+    },
+    {
+      "nome": {
+        "pt": "Evangelion Card no Subete: Wide (fã)",
+        "en": "Evangelion Card no Subete: Wide (fan site)",
+        "es": "Evangelion Card no Subete: Wide (sitio de fan)"
+      },
+      "url": "https://web.archive.org/web/20091214065240/http://www2.hp-ez.com/hp/evacard/page7"
+    },
+    {
+      "nome": {
+        "pt": "Evangelion Card no Subete: CR (fã)",
+        "en": "Evangelion Card no Subete: CR (fan site)",
+        "es": "Evangelion Card no Subete: CR (sitio de fan)"
+      },
+      "url": "https://web.archive.org/web/20220311144039/http://www2.hp-ez.com/hp/evacard/page2"
+    },
+    {
+      "nome": "Hunterpedia",
+      "url": "https://hunterxhunter.fandom.com/wiki/Hunter_%C3%97_Hunter_Carddass_Collections"
+    }
+  ]
+}

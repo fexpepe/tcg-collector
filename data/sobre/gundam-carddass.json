@@ -1,0 +1,233 @@
+{
+  "url": "gundam-carddass",
+  "nome": "Gundam Carddass",
+  "nomeOriginal": {
+    "texto": "SDガンダム カードダス",
+    "lang": "ja",
+    "romaji": "Esu Dī Gandamu Kādodasu"
+  },
+  "logo": "assets/games/game_gcd.webp",
+  "logoLargura": 512,
+  "logoAltura": 234,
+  "periodo": {
+    "inicio": "1988",
+    "fim": "1997"
+  },
+  "etiquetas": [
+    "Vintage",
+    {
+      "pt": "Japão",
+      "en": "Japan",
+      "es": "Japón"
+    },
+    "Carddass"
+  ],
+  "resumo": {
+    "pt": "Cartas de máquina da Bandai com SD Gundam, lançadas no Japão em 1988 a ¥20 cada. Uma das primeiras séries do Carddass, durou até 1997.",
+    "en": "Bandai's SD Gundam vending-machine cards, launched in Japan in 1988 at ¥20 each. One of the first Carddass series, it ran until 1997.",
+    "es": "Cartas de máquina de Bandai con SD Gundam, lanzadas en Japón en 1988 a ¥20 cada una. Una de las primeras series Carddass, duró hasta 1997."
+  },
+  "fatos": [
+    {
+      "chave": "lancamento",
+      "valor": "1988"
+    },
+    {
+      "chave": "encerramento",
+      "valor": "1997"
+    },
+    {
+      "chave": "fabricante",
+      "valor": "Bandai"
+    },
+    {
+      "chave": "licenca",
+      "valor": {
+        "pt": "Sotsu e Sunrise",
+        "en": "Sotsu and Sunrise",
+        "es": "Sotsu y Sunrise"
+      }
+    },
+    {
+      "chave": "origem",
+      "valor": {
+        "pt": "Japão",
+        "en": "Japan",
+        "es": "Japón"
+      }
+    },
+    {
+      "chave": "distribuicao",
+      "valor": {
+        "pt": "Máquinas Carddass 20, ¥20 a carta",
+        "en": "Carddass 20 vending machines, ¥20 a card",
+        "es": "Máquinas Carddass 20, ¥20 la carta"
+      }
+    }
+  ],
+  "historia": {
+    "pt": [
+      "Gundam Carddass são as cartas de SD Gundam que a Bandai vendeu nas máquinas Carddass, a ¥20 cada. O sistema estreou em 1988, e SD Gundam estava na primeira leva, ao lado de Ultra Kaiju e Saint Seiya. O estilo SD, com os personagens em cerca de duas cabeças de altura, vinha dos bonecos de Gashapon de 1985, desenhados por Koji Yokoi, que também fez a arte das cartas.",
+      "A linha principal, o SD Gundam World, foi da Parte 1, em 1988, à Parte 13, em 1992, segundo a Bandai, com 41 ou 42 cartas e 5 ou 6 prismas por parte. A parceria com a revista Comic BomBom ajudou no sucesso. Em 1989 veio o SD Gundam Gaiden: o Cavaleiro Gundam num mundo de RPG de fantasia, a Sd Doaka World, que é “Carddass” lido de trás pra frente em japonês. Foi um grande sucesso e durou até 1996.",
+      "Em paralelo vieram séries de outros mundos SD: SD Sengokuden (1990–1991), com os samurais Musha Gundam, Shin SD Sengokuden, SD Command Senki e Gundlander, entre outras. No começo dos anos 1990, SD Gundam e Dragon Ball eram o centro das vendas do Carddass. A última série, SD Gundam Seiden, teve duas partes, em 1996 e 1997.",
+      "Depois, as cartas voltaram em reedições oficiais. Em novembro de 2007, nos 20 anos da SD Gundam Carddass, a Bandai lançou a Complete Box Vol.1 do World e do Gaiden, com as Partes 1 e 2 de cada e uma carta nova de Yokoi; em 2010, as caixas chegaram ao Shin SD Gundam Gaiden. Em 2015 veio a Knight Gundam Carddass Quest, que reedita o Gaiden com um jogo no celular e no PC."
+    ],
+    "en": [
+      "Gundam Carddass are the SD Gundam cards Bandai sold through its Carddass vending machines at ¥20 each. The system debuted in 1988, and SD Gundam was in the first wave, alongside Ultra Kaiju and Saint Seiya. The SD style, with characters about two heads tall, came from the 1985 Gashapon figures designed by Koji Yokoi, who also drew the cards.",
+      "The main line, SD Gundam World, ran from Part 1 in 1988 to Part 13 in 1992, according to Bandai, with 41 or 42 cards and 5 or 6 prisms per part. A tie-in with Comic BomBom magazine helped it succeed. In 1989 came SD Gundam Gaiden: Knight Gundam in a fantasy RPG world, Sd Doaka World, which is “Carddass” read backwards in Japanese. It was a big hit and lasted until 1996.",
+      "Alongside it came series from other SD worlds: SD Sengokuden (1990–1991), with the samurai Musha Gundam, Shin SD Sengokuden, SD Command Senki and Gundlander, among others. In the early 1990s, SD Gundam and Dragon Ball were the core of Carddass sales. The last series, SD Gundam Seiden, had two parts, in 1996 and 1997.",
+      "Later the cards returned in official reissues. In November 2007, for SD Gundam Carddass's 20th anniversary, Bandai released Complete Box Vol.1 for World and Gaiden, each with Parts 1 and 2 and a new card by Yokoi; by 2010 the boxes had reached Shin SD Gundam Gaiden. In 2015 came Knight Gundam Carddass Quest, which reissues Gaiden with a smartphone and PC game."
+    ],
+    "es": [
+      "Gundam Carddass son las cartas de SD Gundam que Bandai vendió en las máquinas Carddass, a ¥20 cada una. El sistema se estrenó en 1988, y SD Gundam estaba en la primera tanda, junto a Ultra Kaiju y Saint Seiya. El estilo SD, con los personajes de unas dos cabezas de alto, venía de las figuras Gashapon de 1985, diseñadas por Koji Yokoi, que también dibujó las cartas.",
+      "La línea principal, SD Gundam World, fue de la Parte 1, en 1988, a la Parte 13, en 1992, según Bandai, con 41 o 42 cartas y 5 o 6 prismas por parte. La alianza con la revista Comic BomBom ayudó a su éxito. En 1989 llegó SD Gundam Gaiden: el Caballero Gundam en un mundo de RPG de fantasía, Sd Doaka World, que es “Carddass” leído al revés en japonés. Fue un gran éxito y duró hasta 1996.",
+      "En paralelo llegaron series de otros mundos SD: SD Sengokuden (1990–1991), con los samuráis Musha Gundam, Shin SD Sengokuden, SD Command Senki y Gundlander, entre otras. A comienzos de los años noventa, SD Gundam y Dragon Ball eran el centro de las ventas de Carddass. La última serie, SD Gundam Seiden, tuvo dos partes, en 1996 y 1997.",
+      "Después, las cartas volvieron en reediciones oficiales. En noviembre de 2007, por los 20 años de SD Gundam Carddass, Bandai lanzó la Complete Box Vol.1 de World y de Gaiden, con las Partes 1 y 2 de cada una y una carta nueva de Yokoi; en 2010, las cajas llegaron a Shin SD Gundam Gaiden. En 2015 llegó Knight Gundam Carddass Quest, que reedita Gaiden con un juego para móvil y PC."
+    ]
+  },
+  "linhaDoTempo": [
+    {
+      "data": "1988",
+      "set": "gcd-wd01",
+      "texto": {
+        "pt": "SD Gundam World Parte 1 chega às máquinas Carddass, a ¥20 a carta.",
+        "en": "SD Gundam World Part 1 hits the Carddass machines at ¥20 a card.",
+        "es": "SD Gundam World Parte 1 llega a las máquinas Carddass, a ¥20 la carta."
+      }
+    },
+    {
+      "data": "1988",
+      "set": "gcd-wd03",
+      "texto": {
+        "pt": "Parte 3: o Musha Gundam aparece pela primeira vez nas cartas.",
+        "en": "Part 3: Musha Gundam appears on the cards for the first time.",
+        "es": "Parte 3: Musha Gundam aparece por primera vez en las cartas."
+      }
+    },
+    {
+      "data": "1989",
+      "set": "gcd-gd01",
+      "texto": {
+        "pt": "Começa o SD Gundam Gaiden, com a Parte 1, “O Herói de Lacroa”.",
+        "en": "SD Gundam Gaiden begins with Part 1, “The Hero of Lacroa”.",
+        "es": "Empieza SD Gundam Gaiden con la Parte 1, “El Héroe de Lacroa”."
+      }
+    },
+    {
+      "data": "1990",
+      "set": "gcd-sg01",
+      "texto": {
+        "pt": "SD Sengokuden ganha série própria, com o arco Fūrinkazan.",
+        "en": "SD Sengokuden gets its own series, with the Fūrinkazan arc.",
+        "es": "SD Sengokuden tiene serie propia, con el arco Fūrinkazan."
+      }
+    },
+    {
+      "data": "1991",
+      "set": "gcd-wd10",
+      "texto": {
+        "pt": "World Parte 10: estreia de Gundam F91 e do holograma no canto.",
+        "en": "World Part 10: Gundam F91 debuts, along with the corner hologram.",
+        "es": "World Parte 10: debuta Gundam F91 y el holograma en la esquina."
+      }
+    },
+    {
+      "data": "1992",
+      "set": "gcd-wd13",
+      "texto": {
+        "pt": "World Parte 13, a última, com a carta No.500.",
+        "en": "World Part 13, the last one, with card No.500.",
+        "es": "World Parte 13, la última, con la carta No.500."
+      }
+    },
+    {
+      "data": "1993",
+      "set": "gcd-gd16",
+      "texto": {
+        "pt": "Gaiden Parte 16 fecha a saga Kikōshin Densetsu.",
+        "en": "Gaiden Part 16 closes the Kikōshin Densetsu saga.",
+        "es": "Gaiden Parte 16 cierra la saga Kikōshin Densetsu."
+      }
+    },
+    {
+      "data": "1996",
+      "set": "gcd-sd01",
+      "texto": {
+        "pt": "Começa o SD Gundam Seiden, com a Quest One.",
+        "en": "SD Gundam Seiden begins with Quest One.",
+        "es": "Empieza SD Gundam Seiden con la Quest One."
+      }
+    },
+    {
+      "data": "1997",
+      "set": "gcd-sd02",
+      "texto": {
+        "pt": "Quest Two, a última parte da linha.",
+        "en": "Quest Two, the last part of the line.",
+        "es": "Quest Two, la última parte de la línea."
+      }
+    },
+    {
+      "data": "2007-11",
+      "texto": {
+        "pt": "Complete Box Vol.1 reedita o World e o Gaiden, nos 20 anos.",
+        "en": "Complete Box Vol.1 reissues World and Gaiden for the 20th anniversary.",
+        "es": "La Complete Box Vol.1 reedita World y Gaiden, a los 20 años."
+      }
+    },
+    {
+      "data": "2015-09",
+      "texto": {
+        "pt": "Knight Gundam Carddass Quest traz o Gaiden de volta, com jogo online.",
+        "en": "Knight Gundam Carddass Quest brings Gaiden back, with an online game.",
+        "es": "Knight Gundam Carddass Quest trae de vuelta Gaiden, con juego en línea."
+      }
+    }
+  ],
+  "fontes": [
+    {
+      "nome": {
+        "pt": "Bandai, comunicado à imprensa (2007)",
+        "en": "Bandai press release (2007)",
+        "es": "Bandai, comunicado de prensa (2007)"
+      },
+      "url": "https://www.bandai.co.jp/releases/images/3/41036.pdf"
+    },
+    {
+      "nome": {
+        "pt": "Bandai, site dos 20 anos da SD Gundam Carddass",
+        "en": "Bandai, SD Gundam Carddass 20th anniversary site",
+        "es": "Bandai, sitio de los 20 años de SD Gundam Carddass"
+      },
+      "url": "https://www.carddass.com/sd20th/document.html"
+    },
+    {
+      "nome": {
+        "pt": "Bandai, comunicado à imprensa (2015)",
+        "en": "Bandai press release (2015)",
+        "es": "Bandai, comunicado de prensa (2015)"
+      },
+      "url": "https://www.bandainamco.co.jp/files/100000383435521.pdf"
+    },
+    {
+      "nome": {
+        "pt": "Wikipédia em japonês: Carddass",
+        "en": "Japanese Wikipedia: Carddass",
+        "es": "Wikipedia en japonés: Carddass"
+      },
+      "url": "https://ja.wikipedia.org/wiki/%E3%82%AB%E3%83%BC%E3%83%89%E3%83%80%E3%82%B9"
+    },
+    {
+      "nome": {
+        "pt": "Wikipédia em japonês: Cavaleiro Gundam",
+        "en": "Japanese Wikipedia: Knight Gundam",
+        "es": "Wikipedia en japonés: Caballero Gundam"
+      },
+      "url": "https://ja.wikipedia.org/wiki/%E9%A8%8E%E5%A3%AB%E3%82%AC%E3%83%B3%E3%83%80%E3%83%A0"
+    },
+    {
+      "nome": "80storage",
+      "url": "https://80storage.com/archive/sd-gundam-carddass-series/"
+    }
+  ]
+}
