@@ -14,12 +14,16 @@
 //
 // Imagens: CDN do TCGplayer (tcgplayer-cdn.tcgplayer.com, já liberado na CSP
 // e no SW por causa das cartas JP da PPT). _in_1000x1000 = alta resolução.
+// Produto sem foto no TCGplayer (imageCount 0) usa a da carta-irmã: aqui só a
+// Release Event/Pre-Release com a carta do mesmo set, porque o One Piece
+// repete o número na arte alternativa e nas promos (scripts/lib/imagem-da-irma.mjs).
 //
 //   node scripts/sync-onepiece.mjs
 import { writeFile, mkdir, access } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { writeGameCatalog } from "./lib/sync-common.mjs";
 import { nomeDoSet } from "./lib/nome-do-set.mjs";
+import { fotosDasIrmas, REGRAS_BANDAI } from "./lib/imagem-da-irma.mjs";
 
 const ROOT = new URL("../", import.meta.url);
 const OUT = new URL("data/onepiece/", ROOT);
@@ -27,6 +31,7 @@ const API = "https://tcgcsv.com/tcgplayer/68";
 const UA = "Sleevu (sleevu.app) catalog sync";
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const imagemDoProduto = (productId) => `https://tcgplayer-cdn.tcgplayer.com/product/${productId}_in_1000x1000.jpg`;
 
 // ── Logos de set (sites oficiais da Bandai) ────────────────────────────────
 // O TCGplayer não tem logo de set. As páginas de produto da Bandai têm o LOGO
@@ -159,6 +164,8 @@ async function run() {
 
   const cards = [];
   const pricing = {}; // { id: { u, uf } } — USD market do TCGplayer
+  // Produtos de TODOS os grupos: a irmã da Release Event está no set base.
+  const irmas = fotosDasIrmas(REGRAS_BANDAI);
 
   for (const g of groups) {
     await sleep(120); // educado com o espelho comunitário
@@ -194,7 +201,7 @@ async function run() {
       if (!pr.u && pr.uf) pr.u = pr.uf; // só-foil: foil vira a referência
       if (Object.keys(pr).length) pricing[id] = pr;
 
-      cards.push({
+      const card = {
         id,
         name: cleanName(p.name),
         // Nome do grupo do TCGplayer sem o jogo na frente (2026-11-02):
@@ -207,17 +214,20 @@ async function run() {
         rarity: ext(p, "Rarity"),
         artist: "", // o TCGplayer não expõe ilustrador do One Piece
         language: "en",
-        image: `https://tcgplayer-cdn.tcgplayer.com/product/${p.productId}_in_1000x1000.jpg`,
+        image: imagemDoProduto(p.productId),
         variants: foil && normal ? ["Normal", "Foil"] : (foil && !normal ? ["Foil"] : ["Normal"]),
         // extras do One Piece (detalhe/busca futura; pequenos):
         opColor: ext(p, "Color") || null,
         cardType: ext(p, "CardType") || null,
         cost: ext(p, "Cost") || null,
         power: ext(p, "Power") || null
-      });
+      };
+      cards.push(card);
+      irmas.anota(p, g, ext(p, "Number"), card);
     }
     console.log(`  ${setId} ${g.name}: ${setCards.length} cartas`);
   }
+  console.log((await irmas.aplica(imagemDoProduto)).resumo);
 
   // Ordena por set e número oficial (OP16-001 < OP16-002 < ... < OP16-118).
   cards.sort((a, b) => a.setId.localeCompare(b.setId) || a.number.localeCompare(b.number, undefined, { numeric: true }) || a.id.localeCompare(b.id));

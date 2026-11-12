@@ -4,7 +4,7 @@
 // Roda com: node --test tests/
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { irmasComFoto, nomeBase, numeroBase, qualificadores, temLetraDeVariante } from "../scripts/lib/imagem-da-irma.mjs";
+import { irmasComFoto, nomeBase, numeroBase, qualificadores, temLetraDeVariante, qualificadoresDeArte, setSemCarimbo, fotosDasIrmas, REGRAS_BANDAI } from "../scripts/lib/imagem-da-irma.mjs";
 
 const T1 = 24861, RAD = 24819, VEN = 24698, SFD = 24519, OGN = 24344, OPP = 24528;
 const p = (productId, groupId, name, number, imageCount) => ({ productId, groupId, name, number, imageCount });
@@ -69,4 +69,93 @@ test("sem irmã, sem imageCount ou com foto própria: nada muda", () => {
     p(2, VEN, "Carta", "001/166", 1)
   ]);
   assert.equal(irmas.size, 0, "nome diferente no mesmo número não é irmã; imageCount ausente conta como foto");
+});
+
+// Regras por jogo (2026-11-12). Produtos da TCGCSV como estavam no dia; quando
+// a carta tinha foto, o imageCount 0 é fingido pra montar o caso.
+const g = (groupId, grupo) => ({ groupId, grupo });
+const q = (productId, grp, name, number, imageCount) => ({ productId, ...grp, name, number, imageCount });
+
+test("Yu-Gi-Oh: a (Version N) só pega a mesma versão", () => {
+  const LCKC = g(2195, "Legendary Collection Kaiba"), R2020 = g(24506, "Legendary Collection Kaiba (2020 Date Reprint)");
+  const regras = { arte: /\bart\b|^version\b|^[a-z]$|arkana/i };
+  const produtos = [
+    q(161927, LCKC, "Blue-Eyes White Dragon (Version 1)", "LCKC-EN001", 1),
+    q(162088, LCKC, "Blue-Eyes White Dragon (Version 3)", "LCKC-EN001", 1),
+    q(658908, R2020, "Blue-Eyes White Dragon (Version 2)", "LCKC-EN001", 0),
+    q(658909, R2020, "Blue-Eyes White Dragon (Version 3)", "LCKC-EN001", 0)
+  ];
+  assert.deepEqual([...irmasComFoto(produtos, regras)], [[658909, 162088]], "a Version 2 sem irmã da mesma versão fica sem foto");
+  assert.equal(irmasComFoto(produtos).get(658908), 161927, "sem a regra, pegaria a Version 1 (outra arte)");
+});
+
+test("Weiß: a (Alternate Art) não pega a comum", () => {
+  const SAO = g(1608, "Sword Art Online II");
+  const irmas = irmasComFoto([
+    q(200173, SAO, "Winning Combination, Sinon & Kirito", "SAO/SE23-PE03 PR", 1),
+    q(200174, SAO, "Winning Combination, Sinon & Kirito (Alternate Art)", "SAO/SE23-PE03 PR", 0)
+  ], { arte: /\bart\b|^[a-z]$/i });
+  assert.equal(irmas.size, 0);
+});
+
+test("Bandai: a Release Event pega a carta do mesmo set, e só ela", () => {
+  const OP16 = g(24664, "The Time of Battle"), OP16RE = g(24677, "The Time of Battle Release Event Cards");
+  const irmas = irmasComFoto([
+    q(695988, OP16, "Curiel", "OP16-004", 1),
+    q(696713, OP16RE, "Curiel", "OP16-004", 0)
+  ], REGRAS_BANDAI);
+  assert.equal(irmas.get(696713), 695988);
+  assert.equal(setSemCarimbo("Carrying On His Will: 3rd Anniversary Tournament Cards", REGRAS_BANDAI.carimbo), "carrying on his will");
+});
+
+test("Bandai: mesmo número em outro set ou com qualificador não é a mesma arte", () => {
+  const OP01 = g(3188, "Romance Dawn"), ST31 = g(24749, "ST-31: Starter Deck 31 RED Monkey.D.Luffy");
+  const ST01 = g(3189, "ST-01: Starter Deck 1 Straw Hat Crew"), ST01PRE = g(17659, "ST-01: Starter Deck 1 Straw Hat Crew (Super Pre-Release Edition)");
+  const FB06 = g(24247, "Rivals Clash"), SB02 = g(24288, "Manga Booster 02"), FB11 = g(24716, "Brightness of Hope");
+  const produtos = [
+    q(454534, OP01, "Nami", "OP01-016", 1),
+    q(706310, ST31, "Nami", "OP01-016", 0),
+    q(288228, ST01, "Monkey.D.Luffy (001)", "ST01-001", 1),
+    q(412113, ST01PRE, "Monkey.D.Luffy (001)", "ST01-001", 0),
+    q(635474, FB06, "World King", "FB06-096", 1),
+    q(657507, SB02, "World King", "FB06-096", 0),
+    q(713339, FB11, "Son Gohan : Future - FB11-032 (Alternate Art)", "FB11-032", 1),
+    q(709978, FB11, "Son Gohan : Future - FB11-032", "FB11-032", 0)
+  ];
+  assert.equal(irmasComFoto(produtos).size, 4, "a regra do Riftbound casaria os quatro");
+  assert.equal(irmasComFoto(produtos, REGRAS_BANDAI).size, 0, "deck inicial com arte nova, líder do Super Pre-Release, Manga Booster e alt-art: nenhum vale");
+  assert.equal(qualificadoresDeArte("Saint Gunko (060) (Alternate Art)", REGRAS_BANDAI), "alternate art", "o (060) é código");
+  assert.equal(qualificadoresDeArte("Carta (AP1*)", REGRAS_BANDAI), "ap1*", "com estrela é a paralela do Union Arena");
+});
+
+test("fotosDasIrmas troca a imagem da carta, menos a que já tem foto no CDN", async () => {
+  const irmas = fotosDasIrmas();
+  const grupo = { groupId: RAD, name: "Radiance" };
+  const ekko = { image: "x/724600" }, assinada = { image: "x/724638" }, jarvan = { image: "x/724641" };
+  irmas.anota({ productId: 724600, name: "Ekko, Boy Who Shattered Time (Overnumbered)", imageCount: 1 }, grupo, "168/167", ekko);
+  irmas.anota({ productId: 724638, name: "Ekko, Boy Who Shattered Time (Signature)", imageCount: 0 }, grupo, "168*/167", assinada);
+  irmas.anota({ productId: 724699, name: "Jarvan IV (Overnumbered)", imageCount: 1 }, grupo, "179/167", { image: "x/724699" });
+  irmas.anota({ productId: 724641, name: "Jarvan IV (Signature)", imageCount: 0 }, grupo, "179*/167", jarvan);
+  // o imageCount atrasou: a do Jarvan já está no CDN
+  const consultadas = [];
+  const r = await irmas.aplica((id) => `x/${id}`, { temFoto: async (url) => { consultadas.push(url); return url === "x/724641"; } });
+  assert.equal(assinada.image, "x/724600");
+  assert.equal(ekko.image, "x/724600");
+  assert.equal(jarvan.image, "x/724641", "foto própria no CDN vence a da irmã");
+  assert.deepEqual(consultadas.sort(), ["x/724638", "x/724641"], "só consulta quem a regra trocaria");
+  assert.deepEqual([r.semFoto, r.comIrma, r.jaTinha], [2, 1, 1]);
+  assert.match(r.resumo, /1 com a foto da irmã \(1 já tinham a própria no CDN\)/);
+});
+
+test("carta sem número só pega irmã do mesmo set (Palworld)", () => {
+  const BP01 = g(24346, "Booster Pack 01"), PC = g(24345, "Prototype Cards");
+  const irmas = irmasComFoto([
+    q(1, PC, "Soul", "", 1),
+    q(2, BP01, "Soul (SSS)", "", 0),
+    q(3, BP01, "Soul (SSS) (2nd Edition)", "", 0),
+    q(4, BP01, "Soul (SSS)", "", 1)
+  ]);
+  assert.equal(irmas.get(3), 4, "a 2ª edição pega a 1ª do mesmo set");
+  assert.equal(irmas.get(2), 4);
+  assert.equal(irmasComFoto([q(1, PC, "Soul", "", 1), q(2, BP01, "Soul (SSS)", "", 0)]).size, 0, "o Soul das Prototype Cards é outra arte");
 });

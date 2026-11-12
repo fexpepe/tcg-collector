@@ -14,6 +14,10 @@
 // Enix (fftcg.cdn.sewest.net/images/cards/full/<número>_eg.jpg) tem o MESMO
 // tamanho, então não há fonte melhor (conferido em 11/11/2026). Acabamentos:
 // Normal / Foil (u/uf).
+// Produto sem foto no TCGplayer (imageCount 0) usa a da carta-irmã do mesmo
+// número: a "(Full Art)" e a "(Prerelease Promo)" têm a mesma ilustração da
+// comum; a "(Noir Promo)", em preto e branco, só pega outra Noir
+// (scripts/lib/imagem-da-irma.mjs).
 //
 // FULL ART é produto próprio no TCGplayer, com o MESMO número da carta comum
 // ("Tifa (Full Art)", 20-077L): vira carta própria, como o Hyperspace do Star
@@ -48,11 +52,13 @@
 import { fileURLToPath } from "node:url";
 import { writeGameCatalog, readGlobalVar, preserveMissingCards, fetchJsonRetry, sleep } from "./lib/sync-common.mjs";
 import { nomeDoSet } from "./lib/nome-do-set.mjs";
+import { fotosDasIrmas } from "./lib/imagem-da-irma.mjs";
 
 const ROOT = new URL("../", import.meta.url);
 const OUT = new URL("data/fftcg/", ROOT);
 const API = "https://tcgcsv.com/tcgplayer/24";
 const UA = "Sleevu (sleevu.app) catalog sync";
+const imagemDoProduto = (productId) => `https://tcgplayer-cdn.tcgplayer.com/product/${productId}_in_1000x1000.jpg`;
 
 // groupId -> setId (ver cabeçalho). Abreviação da fonte entre parênteses
 // quando ela diverge.
@@ -198,7 +204,7 @@ export function cardOf(p, g, setId, setTotal, by = new Map(), subtipos = new Set
     rarity: raridade === "None" ? "" : raridade,
     artist: "", // a TCGCSV não publica o ilustrador
     language: "en",
-    image: `https://tcgplayer-cdn.tcgplayer.com/product/${p.productId}_in_1000x1000.jpg`,
+    image: imagemDoProduto(p.productId),
     variants: variants.length ? variants : ["Normal"],
     // Forward / Backup / Summon / Monster.
     cardType: ext(p, "CardType") || null,
@@ -222,6 +228,8 @@ async function run() {
   const usados = new Set(Object.values(ABREV_FIXA));
   const cards = [];
   const pricing = {}; // { id: { u, uf } } — USD market do TCGplayer
+  // Produtos de TODOS os grupos: a irmã com foto pode estar em outro set.
+  const irmas = fotosDasIrmas({ arte: /noir/i });
 
   for (const g of groups) {
     await sleep(120); // educado com o espelho comunitário
@@ -256,10 +264,12 @@ async function run() {
     for (const p of setCards) {
       const { card, price } = cardOf(p, g, setId, setCards.length, priceBy.get(p.productId), subtiposDe.get(p.productId));
       cards.push(card);
+      irmas.anota(p, g, ext(p, "Number"), card);
       if (price) pricing[card.id] = price;
     }
     console.log(`  ${setId} ${g.name}: ${setCards.length} cartas`);
   }
+  console.log((await irmas.aplica(imagemDoProduto)).resumo);
 
   // União preservadora: carta que sumiu do espelho fica (do cards.js anterior).
   const prev = (await readGlobalVar(new URL("cards.js", OUT), "TCG_CARDS")) || [];

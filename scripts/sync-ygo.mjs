@@ -7,6 +7,9 @@
 //
 // Identidade: id = "ygo-<productId>" (estável e único; o "Number" tipo CORI-EN001
 // repete entre edições/reprints). Imagens: CDN do TCGplayer (_in_1000x1000).
+// Produto sem foto no TCGplayer (imageCount 0) usa a da carta-irmã do mesmo
+// número: a reimpressão (2020 Date Reprint, 25th Anniversary) e a outra raridade
+// são a mesma arte (scripts/lib/imagem-da-irma.mjs).
 //
 // EDIÇÕES: o Yu-Gi-Oh não tem "foil" no schema de preço — tem EDIÇÃO (1st
 // Edition / Unlimited / Limited / Normal). O slot `u` recebe o preço da edição
@@ -18,6 +21,7 @@
 import { fileURLToPath } from "node:url";
 import { writeGameCatalog, readGlobalVar, preserveMissingCards } from "./lib/sync-common.mjs";
 import { nomeDoSet } from "./lib/nome-do-set.mjs";
+import { fotosDasIrmas } from "./lib/imagem-da-irma.mjs";
 
 const ROOT = new URL("../", import.meta.url);
 const OUT = new URL("data/ygo/", ROOT);
@@ -25,6 +29,7 @@ const API = "https://tcgcsv.com/tcgplayer/2";
 const UA = "Sleevu (sleevu.app) catalog sync";
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const imagemDoProduto = (productId) => `https://tcgplayer-cdn.tcgplayer.com/product/${productId}_in_1000x1000.jpg`;
 
 async function api(path) {
   for (let attempt = 0; attempt < 4; attempt++) {
@@ -43,6 +48,12 @@ const ext = (p, key) => {
   return d ? String(d.value) : "";
 };
 
+// Foto da irmã (2026-11-12): no Yu-Gi-Oh o número identifica a arte, menos
+// quando o nome diz outra: "(Version 2)" da LCKC-EN001, "(Alternate Art)",
+// "(25th Art)", a letra do deck "(B)" do YGLD, "(Arkana)". Esses têm que
+// bater dos dois lados; raridade, edição e cor do Duelist League, não.
+const REGRAS_YGO = { arte: /\bart\b|^version\b|^[a-z]$|arkana/i };
+
 const EDITION_ORDER = ["1st Edition", "Unlimited", "Limited", "Normal"];
 const pick = (map, names) => { for (const n of names) { if (map.get(n) > 0) return map.get(n); } return 0; };
 
@@ -53,6 +64,8 @@ async function run() {
 
   const cards = [];
   const pricing = {}; // { id: { u } } — USD market do TCGplayer (edição canônica)
+  // Produtos de TODOS os grupos: a irmã com foto pode estar em outro set.
+  const irmas = fotosDasIrmas(REGRAS_YGO);
 
   let done = 0;
   for (const g of groups) {
@@ -86,7 +99,7 @@ async function run() {
 
       const present = new Set(by.keys());
       const variants = EDITION_ORDER.filter((v) => present.has(v));
-      cards.push({
+      const card = {
         id,
         name: p.name,
         // Nome do grupo do TCGplayer sem o jogo na frente (2026-11-02):
@@ -99,17 +112,20 @@ async function run() {
         rarity: ext(p, "Rarity"),
         artist: "", // o TCGplayer não expõe ilustrador do Yu-Gi-Oh
         language: "en", // TCGplayer cataloga a linha EN (o OCG japonês é jogo à parte)
-        image: `https://tcgplayer-cdn.tcgplayer.com/product/${p.productId}_in_1000x1000.jpg`,
+        image: imagemDoProduto(p.productId),
         variants: variants.length ? variants : ["Normal"],
         cardType: ext(p, "Card Type") || null,
         attribute: ext(p, "Attribute") || null,
         monsterType: ext(p, "MonsterType") || null,
         atk: ext(p, "Attack") || null,
         def: ext(p, "Defense") || null
-      });
+      };
+      cards.push(card);
+      irmas.anota(p, g, ext(p, "Number"), card);
     }
     if (++done % 50 === 0) console.log(`  …${done}/${groups.length} sets · ${cards.length} cartas até agora`);
   }
+  console.log((await irmas.aplica(imagemDoProduto)).resumo);
   console.log(`  ${done} sets processados.`);
 
   // União preservadora: carta que sumiu do espelho fica (do cards.js anterior).
