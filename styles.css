@@ -6203,6 +6203,16 @@ a.setting-open {
 .adm-form-largo { flex: 2 1 260px; }
 .adm-banner-info { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, transparent); }
 @media (max-width: 700px) {
+  /* Listas com régua (Resumo: Plataforma, Canal, Páginas, Jogos) e de rótulo
+     longo (Caminhos): no celular, rótulo e número na 1ª linha e a barra
+     embaixo, na largura toda (2026-11-12). Com os três numa linha só, o
+     rótulo (até 200/360 px — essas regras vêm depois da que o encolhe no
+     celular) e o número com o selo comiam o cartão, e a barra ficava com
+     0 px. O ranking de países tem grade própria e fica como está. */
+  .adm-hbars-delta:not(.adm-hbars-pais) li, .adm-hbars-largo li { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "rot val" "barra barra"; row-gap: 6px; }
+  .adm-hbars-delta:not(.adm-hbars-pais) .adm-hbar-label, .adm-hbars-largo .adm-hbar-label { grid-area: rot; }
+  .adm-hbars-delta:not(.adm-hbars-pais) .adm-hbar-val, .adm-hbars-largo .adm-hbar-val { grid-area: val; }
+  .adm-hbars-delta:not(.adm-hbars-pais) .adm-hbar-track, .adm-hbars-largo .adm-hbar-track { grid-area: barra; }
   .adm-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
   .adm-kpi { padding: 12px; }
   .adm-mov { grid-template-columns: 22px minmax(0, 1fr) auto; }
