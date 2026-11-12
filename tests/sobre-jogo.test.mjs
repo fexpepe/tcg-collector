@@ -122,6 +122,28 @@ test("renderizador: os três idiomas, ficha na ordem, data por extenso e sem lin
   assert.equal(S.dataLonga("1997", "pt"), "1997");
 });
 
+// "Saber mais" (2026-11-12): história e linha do tempo nascem fechadas — o
+// texto continua no HTML (o robô lê) — e o redesenho do app mantém aberto
+// quem abriu.
+test("renderizador: história e linha do tempo nascem fechadas atrás do \"Saber mais\"", () => {
+  const d = dadosDe(S.COM_SOBRE[0]);
+  const fechado = S.html(d, "pt");
+  assert.match(fechado, /<div class="sx-sobre-corpo" id="sx-sobre-corpo" hidden>/);
+  assert.match(fechado, /class="sx-sobre-abre" aria-controls="sx-sobre-corpo" aria-expanded="false"/);
+  assert.match(fechado, /<span>Saber mais<\/span>/);
+  assert.ok(fechado.includes(S.tx(d.historia, "pt")[0]), "o texto da história está no HTML mesmo fechado");
+  // O botão mora no cartão de cima, antes do corpo.
+  assert.ok(fechado.indexOf("sx-sobre-abre") < fechado.indexOf("sx-sobre-corpo\""));
+  const aberto = S.html(d, "en", { aberto: true });
+  assert.match(aberto, /<div class="sx-sobre-corpo" id="sx-sobre-corpo">/);
+  assert.match(aberto, /aria-expanded="true"/);
+  assert.match(aberto, /<span>Show less<\/span>/);
+  assert.match(S.html(d, "es"), /<span>Saber más<\/span>/);
+  // Sem história nem linha do tempo, não há o que abrir: nem botão nem corpo.
+  const so = S.html(Object.assign({}, d, { historia: null, linhaDoTempo: [] }), "pt", { aberto: true });
+  assert.doesNotMatch(so, /sx-sobre-abre|sx-sobre-corpo/);
+});
+
 test("renderizador: texto nenhum vira HTML", () => {
   const mau = "<img src=x onerror=alert(1)>";
   const d = {
