@@ -12,15 +12,18 @@
 // carta, com outro preço.
 //
 // Aqui sai o rótulo que a página põe ao lado do número ("português",
-// "chinês tradicional", "Ultra Rare"). O endereço não muda: o Google já tem
-// esses endereços.
+// "chinês tradicional", "Ultra Rare", "verde"). O endereço não muda: o Google
+// já tem esses endereços.
 //
 // Medido em 11/11 com todos os jogos (350 mil cartas): 3.112 cartas dividiam
-// o título com outra da mesma página de set; com o rótulo, 122. Essas 122 são
+// o título com outra da mesma página de set; com o rótulo, 92. Dessas, 82 são
 // a mesma carta guardada duas vezes no catálogo (as promos chinesas S-PC e
 // SM-PC, que a lista da Bulbapedia traz em dobro; repetidas da The List do
-// Magic; Gundam War, Carddass e WoW em que só a imagem muda): sem um fato que
-// as separe, ficam como estão, sem rótulo inventado.
+// Magic; um H36 do One Piece Carddass), e o conserto é juntar os ids. As
+// outras 10 são cartas diferentes que o catálogo não separa (os dois No.215
+// do Dragon Ball Carddass, o prisma e o prisma duplo do Gundam Carddass, o
+// "Channeler 4" e o "Channeler 5" do WoW, sem número). Sem um fato que as
+// separe, ficam sem rótulo: nada inventado.
 import { cardCode } from "./card-code.js";
 
 // Edição no rótulo, em português (o texto da página é em português). Os
@@ -46,9 +49,18 @@ function raridade(card) {
 function acabamentos(card) {
   return Array.isArray(card && card.variants) ? card.variants.filter(Boolean).join(", ") : "";
 }
+// Cor: o Gundam War imprime a mesma carta de Operação ou Comando nas seis
+// cores, com o mesmo nome e o mesmo número ("名も無き兵士 VO-1" em azul,
+// verde, preto…), e cada cor é uma carta. Em português, como o resto da
+// página; cor que a tabela não conhece sai como veio.
+const CORES = { Blue: "azul", Green: "verde", Black: "preto", Red: "vermelho", Brown: "marrom", White: "branco", Purple: "roxo", Yellow: "amarelo" };
+function cor(card) {
+  const c = String((card && (card.color || card.colorId || card.ink || card.opColor)) || "").trim();
+  return CORES[c] || c;
+}
 
 // Dentro da mesma edição, o que pode separar, na ordem em que o colecionador diz.
-const FATOS = [raridade, acabamentos];
+const FATOS = [raridade, cor, acabamentos];
 
 // O rótulo desta carta, ou "" quando ela já tem título próprio ou quando
 // nada no catálogo a separa das outras. "Iguais" são as cartas do set com o
@@ -57,7 +69,7 @@ const FATOS = [raridade, acabamentos];
 // set inglês, com "-pt" no endereço e o mesmo título).
 // Primeiro a edição: separa das iguais de outro idioma. A inglesa é a padrão
 // do catálogo e não ganha rótulo; as outras ganham ("português", "chinês
-// tradicional"). Dentro da mesma edição, a raridade ou o acabamento; numa
+// tradicional"). Dentro da mesma edição, a raridade, a cor ou o acabamento; numa
 // edição que não é a inglesa e que divide o título com outra edição, os
 // dois juntos ("português, Double Rare"), senão a portuguesa e a inglesa de
 // mesma raridade sairiam iguais de novo.

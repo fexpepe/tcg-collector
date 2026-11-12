@@ -48,6 +48,12 @@ test("o rótulo é o fato que separa a carta das iguais do set", () => {
   const a = { id: "f1", name: "X", number: "1", variants: ["Normal"] };
   const b = { id: "f2", name: "X", number: "1", variants: ["Rainbow Foil"] };
   assert.equal(rotuloDoDesempate(b, [a, b]), "Rainbow Foil");
+  // Cor (Gundam War: a mesma Operação nas seis cores, cada cor uma carta), em português.
+  const azul = { id: "gw-s26-b-vo-1", name: "名も無き兵士", number: "VO-1", language: "ja", rarity: "C", color: "Blue" };
+  const verde = { ...azul, id: "gw-s26-g-vo-1", color: "Green" };
+  const marrom = { ...azul, id: "gw-s26-n-vo-1", color: "Brown" };
+  assert.equal(rotuloDoDesempate(verde, [azul, verde, marrom]), "verde");
+  assert.equal(rotuloDoDesempate(marrom, [azul, verde, marrom]), "marrom");
 });
 
 test("sem igual, ou com igual que nada separa, a carta fica sem rótulo", () => {
