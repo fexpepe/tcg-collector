@@ -3185,6 +3185,27 @@ html[data-detail="set"]:not([data-set-pronto]):not([data-carta]) body:not(.carta
 .insight-summary dl > div + div { margin-top: 12px; }
 .insight-summary dt { font-size: 16px; font-weight: 800; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .insight-summary dd { margin: 2px 0 0; font-size: 15px; color: var(--muted); }
+/* Seletor "Edição" no título do Visão geral (2026-11-12): set impresso em
+   mais de uma edição (2nd Edition do Palworld, Worldwide English do
+   Yu-Gi-Oh!) troca de edição aqui, em vez de um chip no cartão da lista de
+   Sets. Título à esquerda, seletor à direita, na linha do título. <select>
+   nativo (o trilho dos cartões rola de lado e cortaria uma lista nossa), com
+   a mesma cetinha dos selects das barras. Área "detalhe" do split-css. */
+.edicao-head { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: 10px; min-width: 0; margin: 0 0 12px; }
+.edicao-head h3 { margin: 0; min-width: 0; }
+.edicao-sel { display: inline-flex; align-items: center; gap: 8px; flex: none; margin: 0; font-size: 13px; font-weight: 700; color: var(--muted); }
+.edicao-sel select {
+  width: auto; max-width: 160px; height: 32px; padding: 0 30px 0 10px;
+  font-size: 13px; font-weight: 700; color: var(--text); cursor: pointer;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  -webkit-appearance: none; appearance: none;
+  background: var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238a93a3' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 10px center / 12px 12px;
+}
+.edicao-sel select:hover { border-color: var(--muted); }
+/* Toque: alvo de 44px (a fonte de 16px já vem da regra geral dos campos). */
+@media (pointer: coarse), (max-width: 700px) {
+  .edicao-sel select { height: 44px; }
+}
 .insight-ring { width: 96px; height: 96px; }
 .insight-ring circle { fill: none; stroke-width: 12; }
 .insight-ring-track { stroke: var(--line); }

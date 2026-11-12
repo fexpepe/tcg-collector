@@ -25,10 +25,16 @@ function constante(nome) {
   return m[0];
 }
 
+// A régua de EDIÇÃO (2nd Edition, Worldwide English…) mora no
+// src/nomes-sets.js, que a lista de Sets e a página do set carregam.
+const fakeWindow = {};
+new Function("window", readFileSync(join(raiz, "src/nomes-sets.js"), "utf8"))(fakeWindow);
+const edicaoDoSet = fakeWindow.SLEEVU_NOMES_SETS.edicaoDoSet;
+
 const sortByReleaseDesc = (a, b) => (b.releaseDate || "").localeCompare(a.releaseDate || "") || a.name.localeCompare(b.name);
 const sortByReleaseAsc = (a, b) => -sortByReleaseDesc(a, b);
-const aninhaPorNome = new Function("sortByReleaseDesc",
-  `${constante("VOLUME_SEGUINTE")}\n${corpo("aninhaPorNome")}\nreturn aninhaPorNome;`)(sortByReleaseDesc);
+const aninhaPorNome = new Function("sortByReleaseDesc", "edicaoDoSet",
+  `${constante("VOLUME_SEGUINTE")}\n${corpo("aninhaPorNome")}\nreturn aninhaPorNome;`)(sortByReleaseDesc, edicaoDoSet);
 const set = (name, releaseDate, extra = {}) => Object.assign({ type: "set", name, displayName: name, releaseDate }, extra);
 
 test("a página de Sets tem UM caminho: aninha, agrupa pelo jogo e põe a Vitrine", () => {
@@ -80,7 +86,9 @@ test("aninhaPorNome: produto do lançamento entra no cartão; volume seguinte, d
   }
   assert.deepEqual(filhos("Compendium of Rathe"), ["Antiquity Pack"]);
   assert.deepEqual(filhos("Accel World"), ["-Infinite Burst-"]);
-  assert.deepEqual(filhos("Dark Crisis"), ["Worldwide English"]);
+  // Até 2026-11-12 a Worldwide English era chip; agora é EDIÇÃO (seletor da página do set).
+  assert.deepEqual(filhos("Dark Crisis"), []);
+  assert.deepEqual(raizes.find((r) => r.name === "Dark Crisis").edicoes.map((e) => e.rotulo), ["Worldwide English"]);
 });
 
 test("aninhaPorNome: o chip sai do nome de exibição quando ele traz o do pai (vintage japonês)", () => {
@@ -90,6 +98,89 @@ test("aninhaPorNome: o chip sai do nome de exibição quando ele traz o do pai (
   ]);
   assert.equal(raizes.length, 1);
   assert.deepEqual(raizes[0].filhos.map((f) => f.rotulo), ["Top Secret Mission"]);
+});
+
+// Edição do set (2026-11-12): o MESMO set impresso de novo não vira chip nem
+// cartão — vai pro seletor "Edição" da página do set. Regra do site.
+test("edicaoDoSet: só reimpressão do set é edição", () => {
+  assert.deepEqual(edicaoDoSet("BP01: Dawn of Palpagos (2nd Edition)"), { base: "BP01: Dawn of Palpagos", rotulo: "2nd Edition" });
+  assert.deepEqual(edicaoDoSet("Metal Raiders (Worldwide English)"), { base: "Metal Raiders", rotulo: "Worldwide English" });
+  assert.deepEqual(edicaoDoSet("The Dark Side of Dimensions Movie Pack: Gold Edition"), { base: "The Dark Side of Dimensions Movie Pack", rotulo: "Gold Edition" });
+  assert.deepEqual(edicaoDoSet("Base Set - 1st Edition"), { base: "Base Set", rotulo: "1st Edition" });
+  // Caixa de promos, produto de evento e os sets que SE CHAMAM edição (Magic).
+  for (const nao of ["Tactical Evolution: Special Edition", "Duelist Alliance: Deluxe Edition", "Crossed Souls: Advanced Edition",
+    "ST-01: Starter Deck 1 Straw Hat Crew (Super Pre-Release Edition)", "Unlimited Edition", "Revised Edition", "Limited Edition Alpha", "初階牌組100 特別版"]) {
+    assert.equal(edicaoDoSet(nao), null, nao);
+  }
+});
+
+test("aninhaPorNome: edição vai pro `edicoes` do original, sem chip e sem janela de 400 dias", () => {
+  const raizes = aninhaPorNome([
+    set("BP01: Dawn of Palpagos", "2026-07-30"),
+    set("BP01: Dawn of Palpagos (2nd Edition)", "2026-07-30"),
+    set("Metal Raiders", "2002-06-26"),
+    set("Metal Raiders (Worldwide English)", "2004-12-01"),
+    set("Tactical Evolution", "2007-08-15"),
+    set("Tactical Evolution: Special Edition", "2007-09-12"),
+    // Edição cujo original não está no catálogo: cartão próprio, como sempre.
+    set("Legend of Blue Eyes White Dragon (Worldwide English)", "2004-12-01")
+  ]);
+  const raiz = (nome) => raizes.find((r) => r.name === nome);
+  assert.equal(raizes.length, 4);
+  assert.deepEqual(raiz("BP01: Dawn of Palpagos").edicoes.map((e) => e.rotulo), ["2nd Edition"]);
+  assert.deepEqual(raiz("BP01: Dawn of Palpagos").filhos, []);
+  assert.deepEqual(raiz("Metal Raiders").edicoes.map((e) => e.rotulo), ["Worldwide English"]);
+  assert.deepEqual(raiz("Tactical Evolution").filhos.map((f) => f.rotulo), ["Special Edition"], "caixa de promos segue chip");
+  assert.ok(raiz("Legend of Blue Eyes White Dragon (Worldwide English)"));
+  // O cartão desenha só os `filhos`; as edições só entram no Continue completando.
+  assert.ok(!corpo("createSetCard").includes("edicoes"));
+  assert.ok(corpo("vitrineDoTopo").includes("item.edicoes"));
+});
+
+// A página do set (detail.js): o seletor lista o original e as edições, na
+// mesma região de idioma, e aparece igual no original e em cada edição.
+const detail = readFileSync(join(raiz, "src/detail.js"), "utf8").replace(/\r\n/g, "\n");
+function corpoDetail(nome) {
+  const i = detail.search(new RegExp(`^ {2}(?:async )?function ${nome}\\s*\\(`, "m"));
+  assert.ok(i >= 0, `${nome} existe no detail.js`);
+  return detail.slice(i, detail.indexOf("\n  }\n", i) + 4);
+}
+function edicoesNaPagina(detailName, sets, lang = "en") {
+  const ordinal = detail.match(/^ {2}const EDICAO_ORDINAL =.*$/m)[0];
+  const i18n = { "set.editionNth": "{n}ª", "set.editionOriginal": "Original" };
+  const t = (k, v) => Object.entries(v || {}).reduce((s, [n, x]) => s.split(`{${n}}`).join(x), i18n[k] || k);
+  const shared = { cardLanguageRegion: (l) => (l === "ja" ? "japanese" : "english") };
+  const win = { SLEEVU_NOMES_SETS: fakeWindow.SLEEVU_NOMES_SETS, TCG_MANIFEST: { sets } };
+  return new Function("window", "detailType", "pageCards", "detailName", "shared", "t",
+    `${ordinal}\n${corpoDetail("edicoesDoSet")}\nreturn edicoesDoSet();`)(win, "set", [{ language: lang }], detailName, shared, t);
+}
+
+test("página do set: o seletor de edição sai no original e nas edições", () => {
+  const sets = [
+    { id: "EBP01", name: "BP01: Dawn of Palpagos", language: "en" },
+    { id: "EBP01-2E", name: "BP01: Dawn of Palpagos (2nd Edition)", language: "en" },
+    { id: "ETD01", name: "TD01: Dawn of Palpagos Red•Blue", language: "en" }
+  ];
+  const doOriginal = edicoesNaPagina("BP01: Dawn of Palpagos", sets);
+  assert.deepEqual(doOriginal.map((e) => [e.setId, e.rotulo, e.atual]), [["EBP01", "1ª", true], ["EBP01-2E", "2ª", false]]);
+  const daEdicao = edicoesNaPagina("BP01: Dawn of Palpagos (2nd Edition)", sets);
+  assert.deepEqual(daEdicao.map((e) => [e.setId, e.atual]), [["EBP01", false], ["EBP01-2E", true]]);
+  assert.deepEqual(edicoesNaPagina("TD01: Dawn of Palpagos Red•Blue", sets), [], "set sem edição: sem seletor");
+  // Edição sem número: o original é "Original"; as outras, pela data.
+  const mvp = edicoesNaPagina("The Dark Side of Dimensions Movie Pack", [
+    { id: "MVP1-ENS", name: "The Dark Side of Dimensions Movie Pack: Secret Edition", language: "en", release: "2020-01-24" },
+    { id: "MVP1", name: "The Dark Side of Dimensions Movie Pack", language: "en", release: "2016-07-22" },
+    { id: "MVP1-ENG", name: "The Dark Side of Dimensions Movie Pack: Gold Edition", language: "en", release: "2017-01-13" },
+    { id: "MVP1-SE", name: "The Dark Side of Dimensions Movie Pack: Special Edition", language: "en", release: "2018-09-07" }
+  ]);
+  assert.deepEqual(mvp.map((e) => e.rotulo), ["Original", "Gold Edition", "Secret Edition"]);
+  // Outra região de idioma não entra.
+  assert.deepEqual(edicoesNaPagina("Metal Raiders", [
+    { id: "MRD", name: "Metal Raiders", language: "en" },
+    { id: "MRD-JA", name: "Metal Raiders (2nd Edition)", language: "ja" }
+  ]), []);
+  // E o seletor é desenhado no cartão Visão geral.
+  assert.ok(corpoDetail("renderInsights").includes("edicoesDoSet()"));
 });
 
 function vitrine(grupos, hoje, { comSobre = false, colecao = 0 } = {}) {
@@ -161,13 +252,16 @@ test("o topo da Vitrine não conta como resultado", () => {
 // Godzilla (Bushiroad), que tem a mesma forma. Os códigos são os do
 // catálogo daquele dia; o que importa é cada um cair na seção certa, e o
 // "ST01" do Fusion World (Story Booster) não virar starter.
-function secoesBandai(jogo, setIds) {
+function bandai() {
   const i = app.indexOf("  const SECOES_BANDAI = {");
   assert.ok(i >= 0, "SECOES_BANDAI existe");
   const regras = app.slice(i, app.indexOf("\n  };\n", i) + 5);
-  const fn = new Function("sortByReleaseDesc", "cabecalhoDeSecao",
-    `${regras}\n${corpo("groupBandaiSets")}\nreturn (jogo, sets) => groupBandaiSets(sets, SECOES_BANDAI[jogo]);`)(
+  return new Function("sortByReleaseDesc", "cabecalhoDeSecao",
+    `${regras}\n${constante("EVENTO_BANDAI")}\n${corpo("groupBandaiSets")}\nreturn (jogo, sets) => groupBandaiSets(sets, SECOES_BANDAI[jogo]);`)(
     sortByReleaseDesc, (key, count) => ({ type: "category-head", key, count }));
+}
+function secoesBandai(jogo, setIds) {
+  const fn = bandai();
   const secoes = {};
   let atual = null;
   for (const item of fn(jogo, setIds.map((setId) => set(setId, "2026-01-01", { setId })))) {
@@ -212,11 +306,56 @@ test("Bandai moderno: coleção numerada, boosters extras, decks e promos, pelo 
   });
 });
 
-test("Bandai moderno: as seções saem na ordem do One Piece e decks/promos ficam fora do destaque", () => {
+// Cartão sem chip na Bandai (2026-11-12): pre-release, release event e torneio
+// de aniversário viram set próprio na seção "Cartas de evento", pelo NOME (o
+// setId não segue padrão, e o release event do Digimon BT-26 tem o mesmo
+// "BT-26" do booster); o resto que estava no cartão vai pela regra do código.
+test("Bandai moderno: cartas de evento saem do cartão e vão pra seção própria", () => {
+  const raizes = aninhaPorNome([
+    set("The Time of Battle", "2026-06-12", { setId: "OP16" }),
+    set("The Time of Battle Release Event Cards", "2026-06-05", { setId: "OP16 RE" }),
+    set("Carrying On His Will", "2025-11-07", { setId: "OP13" }),
+    set("Carrying On His Will: 3rd Anniversary Tournament Cards", "2025-10-31", { setId: "OP13 ANN" }),
+    set("ST-01: Starter Deck 1 Straw Hat Crew", "2022-12-02", { setId: "ST-01" }),
+    set("ST-01: Starter Deck 1 Straw Hat Crew (Super Pre-Release Edition)", "2022-09-30", { setId: "ST-01 PRE" }),
+    set("Promotion Cards", "2022-12-02", { setId: "OP-PR" })
+  ]);
+  assert.ok(raizes.some((r) => r.filhos.length), "o aninhaPorNome segue pondo o evento no cartão (os outros jogos usam)");
+  const itens = bandai()("onepiece", raizes);
+  const secoes = {};
+  let atual = null;
+  for (const item of itens) {
+    if (item.type === "category-head") secoes[atual = item.key.replace("sets.category.", "")] = [];
+    else { secoes[atual].push(item.setId); assert.deepEqual(item.filhos, [], `${item.setId} ficou com chip`); }
+  }
+  assert.deepEqual(secoes, { main: ["OP16", "OP13"], decks: ["ST-01"], events: ["OP16 RE", "OP13 ANN", "ST-01 PRE"], promos: ["OP-PR"] });
+  // Digimon: o release event do BT-26 tem o setId do booster e ainda assim é evento.
+  const dg = bandai()("digimon", aninhaPorNome([
+    set("Timeless Bonds", "2026-09-04", { setId: "BT-26" }),
+    set("Timeless Bonds Release Event Cards", "2026-08-28", { setId: "BT-26" })
+  ]));
+  assert.deepEqual(dg.map((x) => x.key || x.name), ["sets.category.main", "Timeless Bonds", "sets.category.events", "Timeless Bonds Release Event Cards"]);
+  // Fusion World: os Alternate Art Reprints saem do cartão e vão pelo código (promos).
+  const fw = bandai()("dbfw", aninhaPorNome([
+    set("Awakened Pulse", "2024-02-23", { setId: "FB01" }),
+    set("Awakened Pulse Alternate Art Reprints", "2024-05-10", { setId: "FB01_AR" }),
+    set("Tournament and Championship Promos", "2024-02-16", { setId: "DBSFW_TPR" })
+  ]));
+  assert.deepEqual(fw.map((x) => x.key || x.setId), ["sets.category.main", "FB01", "sets.category.promos", "FB01_AR", "DBSFW_TPR"]);
+  // Edição (2nd Edition do Palworld) segue no `edicoes` do set, pro seletor da página dele.
+  const pw = bandai()("palworld", aninhaPorNome([
+    set("BP01: Dawn of Palpagos", "2026-07-30", { setId: "EBP01" }),
+    set("BP01: Dawn of Palpagos (2nd Edition)", "2026-07-30", { setId: "EBP01-2E" })
+  ]));
+  assert.deepEqual(pw.map((x) => x.key || x.setId), ["sets.category.main", "EBP01"]);
+  assert.deepEqual(pw[1].edicoes.map((e) => e.setId), ["EBP01-2E"]);
+});
+
+test("Bandai moderno: as seções saem na ordem do One Piece e decks/eventos/promos ficam fora do destaque", () => {
   const ordem = [...corpo("groupBandaiSets").matchAll(/"(sets\.category\.\w+)"/g)].map((m) => m[1]);
-  assert.deepEqual(ordem, ["sets.category.main", "sets.category.extraBoosters", "sets.category.decks", "sets.category.promos"]);
+  assert.deepEqual(ordem, ["sets.category.main", "sets.category.extraBoosters", "sets.category.decks", "sets.category.events", "sets.category.promos"]);
   const fora = constante("SECOES_FORA_DO_DESTAQUE");
-  assert.ok(fora.includes('"sets.category.decks"') && fora.includes('"sets.category.promos"'));
+  assert.ok(fora.includes('"sets.category.decks"') && fora.includes('"sets.category.promos"') && fora.includes('"sets.category.events"'));
   assert.ok(!fora.includes("extraBoosters"), "booster extra é lançamento e disputa o destaque");
   const agrupa = corpo("agrupaSetsDoJogo");
   assert.ok(agrupa.includes("SECOES_BANDAI[jogoAtual]"));
