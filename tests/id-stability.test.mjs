@@ -80,3 +80,14 @@ test("número diferente no mesmo set é aviso; nada mudou é ok", () => {
   // idioma ausente conta como "en" dos dois lados (catálogo antigo sem o campo)
   assert.equal(classificaMudanca("fab", "fab-1", { setId: "IAR", number: "1", name: "X" }, c("IAR", "1", "X")), "ok");
 });
+
+test("qualificador que só repete o número ou o nome do set não troca a carta (runas do Vendetta, 11/11/2026)", () => {
+  const c = (setId, set, number, name) => ({ setId, set, number, name, language: "en" });
+  assert.equal(classificaMudanca("riftbound", "rb-709748",
+    c("OPP", "Organized Play Promotional Cards", "R01b", "Fury Rune (Vendetta)"), c("VEN", "Vendetta", "R01b", "Fury Rune (R01b)")), "movido");
+  // Número diferente continua outra carta, e qualificador de verdade também.
+  assert.equal(classificaMudanca("riftbound", "rb-709748",
+    c("OPP", "Organized Play Promotional Cards", "R01b", "Fury Rune (Vendetta)"), c("VEN", "Vendetta", "R02b", "Fury Rune (R02b)")), "repontado");
+  assert.equal(classificaMudanca("riftbound", "rb-709748",
+    c("OPP", "Organized Play Promotional Cards", "R01b", "Fury Rune (Vendetta)"), c("VEN", "Vendetta", "R01b", "Fury Rune (Oversized)")), "repontado");
+});

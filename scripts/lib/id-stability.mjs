@@ -86,6 +86,18 @@ export function soMudouQualificador(a, b) {
 //                  perdeu qualificador): mesma carta (aviso)
 //   "repontado"  — idioma ou set mudou e não dá pra afirmar que é a mesma
 //                  carta (erro duro)
+// Qualificador que só repete o NÚMERO da carta ou o NOME de um dos dois sets
+// não diz que coisa física ela é: é o TCGplayer separando homônimos dentro do
+// grupo. Caso real (11/11/2026): as seis runas do Vendetta saíram do grupo de
+// promos (OPP), onde eram "Fury Rune (Vendetta)", pro grupo do Vendetta, onde
+// viraram "Fury Rune (R01b)" — mesmo produto, mesmo número, e o lint derrubou
+// o build achando que era outra carta. Sai antes de comparar; "(Oversized)"
+// no lugar de "(Alternate Art)" continua erro duro.
+const escRe = (s) => String(s).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+function semRuido(nome, ruido) {
+  return ruido.filter(Boolean).reduce((n, r) => n.replace(new RegExp(`\\s*\\(${escRe(r)}\\)`, "gi"), ""), String(nome || ""));
+}
+
 export function classificaMudanca(jogo, id, antiga, nova) {
   if (idiomaDe(antiga) !== idiomaDe(nova)) return "repontado";
   if (setDe(antiga) !== setDe(nova)) {
@@ -93,7 +105,14 @@ export function classificaMudanca(jogo, id, antiga, nova) {
     const nome = String(antiga.name || "").trim();
     const mesmoNome = !!nome && nome === String(nova.name || "").trim();
     const mesmoNumero = !!numDe(antiga) && numDe(antiga) === numDe(nova);
-    return mesmoNome || (mesmoNumero && soMudouQualificador(antiga.name, nova.name)) ? "movido" : "repontado";
+    if (mesmoNome) return "movido";
+    if (!mesmoNumero) return "repontado";
+    if (soMudouQualificador(antiga.name, nova.name)) return "movido";
+    // Sem o ruído, os nomes têm de ficar IGUAIS: "(Vendetta)" -> "(Oversized)"
+    // não pode virar um "ganhou qualificador".
+    const ruido = [numDe(nova), antiga.set, nova.set];
+    const a = nomeNorm(semRuido(antiga.name, ruido)), b = nomeNorm(semRuido(nova.name, ruido));
+    return a && a === b ? "movido" : "repontado";
   }
   if (numDe(antiga) !== numDe(nova)) return "renumerado";
   return "ok";

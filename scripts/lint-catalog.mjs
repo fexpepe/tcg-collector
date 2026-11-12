@@ -153,7 +153,9 @@ async function checarEstabilidadeDeId() {
   // IDENTIDADE = idioma + set (número é só aviso) — com a exceção do id que é
   // productId do TCGplayer, que a fonte muda de set sem virar outra carta. A
   // régua inteira mora em scripts/lib/id-stability.mjs (testada).
-  const resumo = (c) => ({ language: idiomaDe(c), setId: c.setId || "", number: numDe(c), name: c.name || "" });
+  // O nome do set vai junto: o classificaMudanca descarta o qualificador que só
+  // repete o nome de um dos dois sets ("Fury Rune (Vendetta)", 12/11/2026).
+  const resumo = (c) => ({ language: idiomaDe(c), setId: c.setId || "", set: c.set || "", number: numDe(c), name: c.name || "" });
   // De-para de id (data/card-id-merges.json, escrito pelo retire-imported-sets):
   // set que entrou por import e que a TCGdex publicou com outro setId tem os ids
   // APOSENTADOS de propósito, e o app migra a conta de quem marcou (ID_MERGES no
