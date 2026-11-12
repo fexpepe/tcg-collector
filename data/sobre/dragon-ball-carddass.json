@@ -2,7 +2,7 @@
   "url": "dragon-ball-carddass",
   "nome": "Dragon Ball Carddass",
   "nomeOriginal": { "texto": "ドラゴンボールカードダス", "lang": "ja", "romaji": "Doragon Bōru Kādodasu" },
-  "logo": "assets/games/game_dbc.webp",
+  "logo": "assets/games/game_dbc-v2.webp",
   "logoLargura": 373,
   "logoAltura": 82,
   "periodo": { "inicio": "1988-11", "fim": "1997-09" },
