@@ -58,7 +58,7 @@ export const JOGOS_URL = [
   { url: "world-of-warcraft-tcg", game: "wow", nome: "World of Warcraft TCG", logo: "assets/games/game_wow.webp", vintage: "2006–2013" },
   // Sem logo recortado ainda: vale o genérico do Naruto, o mesmo dos sets da linha.
   { url: "naruto-shippuden-card-game", game: "naruto", linha: "nrt-scg", prefixos: ["nrt-scg-"], nome: "Naruto Shippuden Card Game", logo: "assets/games/game_naruto.webp", vintage: "2007–2008" },
-  { url: "miracle-battle-carddass", game: "mbc", nome: "Miracle Battle Carddass", logo: "assets/games/game_mbc.webp", vintage: "2009–2015" },
+  { url: "miracle-battle-carddass", game: "mbc", nome: "Miracle Battle Carddass", logo: "assets/games/game_mbc.webp", vintage: "2009–2014" },
   { url: "carddass-masters", game: "cdm", nome: "Carddass Masters", logo: "assets/games/game_cdm.webp", vintage: "1996–2011" }
 ];
 

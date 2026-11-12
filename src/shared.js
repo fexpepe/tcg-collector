@@ -9177,7 +9177,7 @@
     onepiece: ["opcd-", "op2002-"],           // Carddass 1999–2002, OPCG 2002–05
     hxh: ["hxh-"],                            // Hyper Battle 1999–2001: tudo vintage
     dbc: ["dbc-"],                            // Carddass 1988–1997: o jogo inteiro é vintage
-    mbc: ["mb-", "op-mb-", "nrt-mb-", "hxh-mb-"], // Miracle Battle 2009–2015: idem (os 3 últimos são os ids de antes de virar jogo)
+    mbc: ["mb-", "op-mb-", "nrt-mb-", "hxh-mb-"], // Miracle Battle 2009–2014: idem (os 3 últimos são os ids de antes de virar jogo)
     wow: ["wow-"],                            // WoW TCG 2006–2013: idem (e é o único vintage com preço)
     lotr: ["lotr-"],                          // Decipher 2001–2007: idem
     dbz: ["dbz-"],                            // Score 2000–2006: idem

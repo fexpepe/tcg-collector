@@ -1,0 +1,110 @@
+{
+  "url": "hunter-x-hunter-carddass",
+  "nome": "Hunter × Hunter Carddass Hyper Battle",
+  "nomeOriginal": { "texto": "ハイパーバトル ハンター×ハンター", "lang": "ja", "romaji": "Haipā Batoru Hantā × Hantā" },
+  "logo": "assets/games/game_hxh.webp",
+  "logoLargura": 512,
+  "logoAltura": 228,
+  "periodo": { "inicio": "1999-12", "fim": "2001-12" },
+  "etiquetas": [
+    "Vintage",
+    { "pt": "Japão", "en": "Japan", "es": "Japón" },
+    "Carddass"
+  ],
+  "resumo": {
+    "pt": "Jogo de cartas da Bandai com Hunter × Hunter, vendido nas máquinas Carddass a ¥100 o pacote. Teve seis partes, de dezembro de 1999 a agosto de 2001.",
+    "en": "Bandai's Hunter × Hunter card game, sold in Carddass vending machines at ¥100 a pack. It ran six parts, from December 1999 to August 2001.",
+    "es": "Juego de cartas de Bandai con Hunter × Hunter, vendido en las máquinas Carddass a ¥100 el sobre. Tuvo seis partes, de diciembre de 1999 a agosto de 2001."
+  },
+  "fatos": [
+    { "chave": "lancamento", "valor": "1999-12" },
+    { "chave": "encerramento", "valor": "2001-12" },
+    { "chave": "fabricante", "valor": "Bandai" },
+    { "chave": "licenca", "valor": {
+      "pt": "Y. Togashi/Shueisha, Fuji TV e Nippon Animation",
+      "en": "Y. Togashi/Shueisha, Fuji TV and Nippon Animation",
+      "es": "Y. Togashi/Shueisha, Fuji TV y Nippon Animation"
+    } },
+    { "chave": "origem", "valor": { "pt": "Japão", "en": "Japan", "es": "Japón" } },
+    { "chave": "distribuicao", "valor": {
+      "pt": "Máquinas Carddass, ¥100 o pacote",
+      "en": "Carddass vending machines, ¥100 a pack",
+      "es": "Máquinas Carddass, ¥100 el sobre"
+    } }
+  ],
+  "historia": {
+    "pt": [
+      "Carddass Hyper Battle (カードダスハイパーバトル) era o jogo de cartas que a Bandai vendia nas máquinas Carddass, a ¥100 o pacote. Estreou em outubro de 1999 com Senkaiden Hoshin Engi e foi recebendo outros animes da Shonen Jump, todos com as mesmas regras. Hunter × Hunter entrou em dezembro de 1999, dois meses depois da estreia do anime da Nippon Animation na Fuji TV, com a Parte 1, do Exame Hunter.",
+      "Os dois jogadores baixavam cartas alternadamente e comparavam a soma do poder; quem perdia a batalha perdia um de cinco pontos. Além das cartas de personagem (C), havia as de Hunter (S), as de evento (E) e, a partir da Parte 3, as de Nen (N), com uma regra própria que reproduzia o Nen do mangá. As cartas vinham em três acabamentos: comum, holo e holo secreta.",
+      "A Parte 4, de janeiro de 2001, trouxe a Trupe Fantasma inteira e estreou na Hyper Battle a holo escondida, que aparece ao descolar a frente da carta. A Parte 6, de agosto de 2001, foi a última: toda com arte nova, trazia trechos do mangá que o anime ainda não tinha mostrado. Houve também cartas da Jump Festa e seis que vinham com o jogo Hunter's Genealogy, de Game Boy Color.",
+      "Na mesma época, Hunter × Hunter também saiu na Carddass Masters (2000–2001), outra linha de cartas da Bandai. O último pacote da Hyper Battle de Hunter × Hunter foi o da Jump Festa 2002, em dezembro de 2001. Em março de 2012, com o anime de 2011, Hunter × Hunter entrou no Miracle Battle Carddass."
+    ],
+    "en": [
+      "Carddass Hyper Battle (カードダスハイパーバトル) was the card game Bandai sold in its Carddass vending machines, at ¥100 a pack. It debuted in October 1999 with Senkaiden Hoshin Engi and kept adding other Shonen Jump anime, all under the same rules. Hunter × Hunter joined in December 1999, two months after Nippon Animation's anime premiered on Fuji TV, with Part 1, the Hunter Exam.",
+      "The two players laid down cards in turn and compared their total power; whoever lost the battle lost one of five points. Besides character cards (C), there were Hunter (S) and event (E) cards and, from Part 3, Nen (N) cards, with a rule of their own that recreated the manga's Nen. Cards came in three finishes: regular, holo and secret holo.",
+      "Part 4, from January 2001, brought the whole Phantom Troupe and introduced the hidden holo to Hyper Battle: a holographic card revealed by peeling off the card's front. Part 6, from August 2001, was the last: all new artwork, it carried story from the manga the anime had not yet shown. There were also Jump Festa cards and six that came with the Game Boy Color game Hunter's Genealogy.",
+      "In the same period, Hunter × Hunter also appeared in Carddass Masters (2000–2001), another Bandai card line. The last Hunter × Hunter Hyper Battle pack was the Jump Festa 2002 one, in December 2001. In March 2012, with the 2011 anime, Hunter × Hunter joined Miracle Battle Carddass."
+    ],
+    "es": [
+      "Carddass Hyper Battle (カードダスハイパーバトル) era el juego de cartas que Bandai vendía en las máquinas Carddass, a ¥100 el sobre. Se estrenó en octubre de 1999 con Senkaiden Hoshin Engi y fue sumando otros animes de la Shonen Jump, todos con las mismas reglas. Hunter × Hunter entró en diciembre de 1999, dos meses después del estreno del anime de Nippon Animation en Fuji TV, con la Parte 1, del Examen Hunter.",
+      "Los dos jugadores bajaban cartas por turnos y comparaban la suma del poder; quien perdía la batalla perdía uno de cinco puntos. Además de las cartas de personaje (C), había cartas de Hunter (S), de evento (E) y, desde la Parte 3, de Nen (N), con una regla propia que reproducía el Nen del manga. Las cartas venían en tres acabados: común, holo y holo secreta.",
+      "La Parte 4, de enero de 2001, trajo a la Brigada Fantasma completa y estrenó en Hyper Battle la holo oculta, que aparece al despegar el frente de la carta. La Parte 6, de agosto de 2001, fue la última: toda con arte nuevo, incluía tramos del manga que el anime aún no había mostrado. Hubo también cartas de la Jump Festa y seis que venían con el juego Hunter's Genealogy, de Game Boy Color.",
+      "En la misma época, Hunter × Hunter salió también en Carddass Masters (2000–2001), otra línea de cartas de Bandai. El último sobre de Hyper Battle de Hunter × Hunter fue el de la Jump Festa 2002, en diciembre de 2001. En marzo de 2012, con el anime de 2011, Hunter × Hunter entró en Miracle Battle Carddass."
+    ]
+  },
+  "linhaDoTempo": [
+    { "data": "1999-10", "texto": {
+      "pt": "A Hyper Battle estreia com Senkaiden Hoshin Engi.",
+      "en": "Hyper Battle debuts with Senkaiden Hoshin Engi.",
+      "es": "Hyper Battle se estrena con Senkaiden Hoshin Engi." } },
+    { "data": "1999-12", "set": "hxh-hb-p1", "texto": {
+      "pt": "Parte 1, do Exame Hunter: Hunter × Hunter entra na Hyper Battle.",
+      "en": "Part 1, the Hunter Exam: Hunter × Hunter joins Hyper Battle.",
+      "es": "Parte 1, del Examen Hunter: Hunter × Hunter entra en Hyper Battle." } },
+    { "data": "1999-12", "set": "hxh-hb-jf00", "texto": {
+      "pt": "Jump Festa 2000: carta promocional do Gon.",
+      "en": "Jump Festa 2000: a promotional Gon card.",
+      "es": "Jump Festa 2000: carta promocional de Gon." } },
+    { "data": "2000-03", "set": "hxh-hb-p2", "texto": {
+      "pt": "Parte 2 fecha o Exame Hunter.",
+      "en": "Part 2 wraps up the Hunter Exam.",
+      "es": "La Parte 2 cierra el Examen Hunter." } },
+    { "data": "2000-06", "set": "hxh-hb-gb", "texto": {
+      "pt": "Seis cartas vêm com o jogo Hunter's Genealogy, de Game Boy Color.",
+      "en": "Six cards come with the Game Boy Color game Hunter's Genealogy.",
+      "es": "Seis cartas vienen con el juego Hunter's Genealogy, de Game Boy Color." } },
+    { "data": "2000-07", "set": "hxh-hb-p3", "texto": {
+      "pt": "Parte 3 estreia as cartas de Nen.",
+      "en": "Part 3 introduces Nen cards.",
+      "es": "La Parte 3 estrena las cartas de Nen." } },
+    { "data": "2001-01", "set": "hxh-hb-p4", "texto": {
+      "pt": "Parte 4: a Trupe Fantasma e a primeira holo escondida.",
+      "en": "Part 4: the Phantom Troupe and the first hidden holo.",
+      "es": "Parte 4: la Brigada Fantasma y la primera holo oculta." } },
+    { "data": "2001-05", "set": "hxh-hb-p5", "texto": {
+      "pt": "Parte 5, da saga de Yorknew.",
+      "en": "Part 5, from the Yorknew arc.",
+      "es": "Parte 5, de la saga de Yorknew." } },
+    { "data": "2001-08", "set": "hxh-hb-p6", "texto": {
+      "pt": "Parte 6, a última, com arte toda nova.",
+      "en": "Part 6, the last one, with all-new artwork.",
+      "es": "Parte 6, la última, con arte todo nuevo." } },
+    { "data": "2001-12", "set": "hxh-hb-jf02", "texto": {
+      "pt": "Jump Festa 2002: o último pacote da linha.",
+      "en": "Jump Festa 2002: the line's last pack.",
+      "es": "Jump Festa 2002: el último sobre de la línea." } }
+  ],
+  "fontes": [
+    { "nome": { "pt": "Bandai, Carddass Club: Parte 4 (2001)", "en": "Bandai, Carddass Club: Part 4 (2001)", "es": "Bandai, Carddass Club: Parte 4 (2001)" },
+      "url": "https://sec.carddass.com/club/products/detail/4902425786315000" },
+    { "nome": { "pt": "Bandai, Carddass Club: Parte 6 (2001)", "en": "Bandai, Carddass Club: Part 6 (2001)", "es": "Bandai, Carddass Club: Parte 6 (2001)" },
+      "url": "https://sec.carddass.com/club/products/detail/4543112034304000" },
+    { "nome": "Hunterpedia", "url": "https://hunterxhunter.fandom.com/wiki/Hunter_%C3%97_Hunter_Carddass_Collections" },
+    { "nome": { "pt": "Juggernauts, catálogo de TCG (2002)", "en": "Juggernauts TCG catalog (2002)", "es": "Juggernauts, catálogo de TCG (2002)" },
+      "url": "https://card.g1.xrea.com/t2/tbc08hou.html" },
+    { "nome": { "pt": "Wikipédia em inglês: o anime de 1999", "en": "English Wikipedia: the 1999 anime", "es": "Wikipedia en inglés: el anime de 1999" },
+      "url": "https://en.wikipedia.org/wiki/Hunter_%C3%97_Hunter_(1999_TV_series)" },
+    { "nome": { "pt": "Wikipédia em japonês: Jump Festa", "en": "Japanese Wikipedia: Jump Festa", "es": "Wikipedia en japonés: Jump Festa" },
+      "url": "https://ja.wikipedia.org/wiki/%E3%82%B8%E3%83%A3%E3%83%B3%E3%83%97%E3%83%95%E3%82%A7%E3%82%B9%E3%82%BF" }
+  ]
+}

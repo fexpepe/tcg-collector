@@ -51,6 +51,13 @@ test("COM_SOBRE e data/sobre/ andam juntos, e só jogo vintage tem o bloco", () 
   assert.equal(S.tem(""), false);
 });
 
+// Desde 2026-11-12 TODO vintage tem o "Sobre" (o princípio do ROADMAP):
+// jogo ou linha vintage nova entra no registro já com o dela.
+test("todo jogo vintage do registro tem \"Sobre\"", () => {
+  const faltam = JOGOS_URL.filter((j) => j.vintage && !S.tem(j.url)).map((j) => j.url);
+  assert.deepEqual(faltam, [], `vintage sem "Sobre" (data/sobre/<url>.json + COM_SOBRE): ${faltam.join(", ")}`);
+});
+
 for (const url of S.COM_SOBRE) {
   test(`${url}: campos nos três idiomas, datas e fontes`, () => {
     const d = dadosDe(url);

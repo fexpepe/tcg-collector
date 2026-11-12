@@ -1,0 +1,110 @@
+{
+  "url": "one-piece-card-game-2002",
+  "nome": "One Piece Card Game (2002)",
+  "nomeOriginal": { "texto": "ワンピースカードゲーム", "lang": "ja", "romaji": "Wan Pīsu Kādo Gēmu" },
+  "logo": "assets/games/game_onepiece_2002.webp",
+  "logoLargura": 512,
+  "logoAltura": 243,
+  "periodo": { "inicio": "2002-02", "fim": "2005-09" },
+  "etiquetas": [
+    "Vintage",
+    { "pt": "Japão", "en": "Japan", "es": "Japón" },
+    "Carddass"
+  ],
+  "resumo": {
+    "pt": "O jogo de cartas próprio de One Piece da Bandai, de 2002 a 2005: cada jogador monta seu bando pirata. Saiu nas máquinas Carddass e em lojas.",
+    "en": "Bandai's own One Piece card game, from 2002 to 2005: each player builds a pirate crew. It was sold in Carddass vending machines and in stores.",
+    "es": "El juego de cartas propio de One Piece de Bandai, de 2002 a 2005: cada jugador arma su banda pirata. Se vendió en máquinas Carddass y tiendas."
+  },
+  "fatos": [
+    { "chave": "lancamento", "valor": "2002-02" },
+    { "chave": "encerramento", "valor": "2005-09" },
+    { "chave": "fabricante", "valor": "Bandai" },
+    { "chave": "licenca", "valor": {
+      "pt": "E. Oda/Shueisha, Fuji TV e Toei Animation",
+      "en": "E. Oda/Shueisha, Fuji TV and Toei Animation",
+      "es": "E. Oda/Shueisha, Fuji TV y Toei Animation"
+    } },
+    { "chave": "origem", "valor": { "pt": "Japão", "en": "Japan", "es": "Japón" } },
+    { "chave": "distribuicao", "valor": {
+      "pt": "Máquinas Carddass, boosters e decks em lojas",
+      "en": "Carddass machines, store boosters and decks",
+      "es": "Máquinas Carddass, sobres y mazos en tiendas"
+    } }
+  ],
+  "historia": {
+    "pt": [
+      "From TV animation One Piece Card Game (ワンピースカードゲーム) foi o jogo de cartas de One Piece que a Bandai lançou em 2002. Até então, One Piece era uma das séries do Carddass Hyper Battle; agora tinha um jogo só seu, com regras mais elaboradas e mais arte original. A primeira coleção, Road to the Pirate King, saiu em fevereiro de 2002 nas máquinas Carddass, a ¥100 o pacote de 4 cartas.",
+      "Cada jogador montava o próprio bando pirata com personagens do anime. A regra do East Blue, a mais simples, era um duelo de 1 contra 1; a da Grand Line punha 3 contra 3, um capitão e dois tripulantes de cada lado, que lutavam com reforços e golpes vindos da mão. O objetivo era derrubar o capitão adversário. Além das máquinas, havia boosters e decks iniciais vendidos em lojas.",
+      "Até 2005 saíram 21 coleções, que acompanharam a história de Arabasta a Skypiea e Water 7. Heroes' Shadows, de fevereiro de 2005, trouxe as cartas de navio. A última foi Hidden Treasures of Water 7, de setembro de 2005, em pacotes de 12 cartas com uma holo garantida. A última notícia do site oficial, em dezembro de 2005, foi o relato do torneio da Jump Festa 2006.",
+      "Em agosto de 2005 saiu uma edição em inglês, de vida curta. Depois, One Piece entrou no Miracle Battle Carddass, de dezembro de 2009, ao lado de Dragon Ball Kai e outras séries da Shonen Jump, e ganhou em 2022 o atual One Piece Card Game."
+    ],
+    "en": [
+      "From TV animation One Piece Card Game (ワンピースカードゲーム) was the One Piece card game Bandai launched in 2002. Until then, One Piece had been one of the series in Carddass Hyper Battle; now it had a game of its own, with more elaborate rules and more original art. The first set, Road to the Pirate King, came out in February 2002 in Carddass vending machines, at ¥100 for a pack of 4 cards.",
+      "Each player built a pirate crew from the anime's characters. The East Blue rule, the simpler one, was a 1-on-1 duel; the Grand Line rule set 3 against 3, a captain and two crewmates per side, who fought with reinforcements and techniques played from the hand. The goal was to take down the rival captain. Besides the machines, there were boosters and starter decks sold in stores.",
+      "By 2005 there were 21 sets, following the story from Arabasta to Skypiea and Water 7. Heroes' Shadows, from February 2005, brought in ship cards. The last was Hidden Treasures of Water 7, from September 2005, in 12-card packs with a guaranteed holo. The official site's last news, in December 2005, was the report on the Jump Festa 2006 tournament.",
+      "An English edition came out in August 2005 and was short-lived. Later, One Piece joined Miracle Battle Carddass, from December 2009, alongside Dragon Ball Kai and other Shonen Jump series, and in 2022 it got the current One Piece Card Game."
+    ],
+    "es": [
+      "From TV animation One Piece Card Game (ワンピースカードゲーム) fue el juego de cartas de One Piece que Bandai lanzó en 2002. Hasta entonces, One Piece era una de las series de Carddass Hyper Battle; ahora tenía un juego propio, con reglas más elaboradas y más arte original. La primera colección, Road to the Pirate King, salió en febrero de 2002 en las máquinas Carddass, a ¥100 el sobre de 4 cartas.",
+      "Cada jugador armaba su propia banda pirata con personajes del anime. La regla del East Blue, la más simple, era un duelo de 1 contra 1; la de la Grand Line ponía 3 contra 3, un capitán y dos tripulantes por lado, que luchaban con refuerzos y técnicas jugados desde la mano. El objetivo era derribar al capitán rival. Además de las máquinas, había sobres y mazos de inicio vendidos en tiendas.",
+      "Hasta 2005 salieron 21 colecciones, que siguieron la historia de Arabasta a Skypiea y Water 7. Heroes' Shadows, de febrero de 2005, trajo las cartas de barco. La última fue Hidden Treasures of Water 7, de septiembre de 2005, en sobres de 12 cartas con una holo asegurada. La última noticia del sitio oficial, en diciembre de 2005, fue la crónica del torneo de la Jump Festa 2006.",
+      "En agosto de 2005 salió una edición en inglés, de vida corta. Después, One Piece entró en Miracle Battle Carddass, de diciembre de 2009, junto a Dragon Ball Kai y otras series de la Shonen Jump, y en 2022 estrenó el actual One Piece Card Game."
+    ]
+  },
+  "linhaDoTempo": [
+    { "data": "2002-02", "set": "op2002-road-to-the-pirate-king", "texto": {
+      "pt": "Road to the Pirate King abre o jogo nas máquinas Carddass.",
+      "en": "Road to the Pirate King opens the game in Carddass machines.",
+      "es": "Road to the Pirate King abre el juego en las máquinas Carddass." } },
+    { "data": "2002-03", "set": "op2002-champion-of-the-east-blue", "texto": {
+      "pt": "Champion of the East Blue, o primeiro booster, de 8 cartas.",
+      "en": "Champion of the East Blue, the first booster, with 8 cards.",
+      "es": "Champion of the East Blue, el primer booster, de 8 cartas." } },
+    { "data": "2002-06", "set": "op2002-powerhouses-of-the-sea", "texto": {
+      "pt": "Powerhouses of the Sea: os bandos de Krieg e Arlong, e Mihawk.",
+      "en": "Powerhouses of the Sea: the Krieg and Arlong crews, and Mihawk.",
+      "es": "Powerhouses of the Sea: las bandas de Krieg y Arlong, y Mihawk." } },
+    { "data": "2003-03", "set": "op2002-straw-hat-pirate-flag", "texto": {
+      "pt": "Straw Hat Pirate Flag, com deck inicial e booster.",
+      "en": "Straw Hat Pirate Flag, with a starter deck and a booster.",
+      "es": "Straw Hat Pirate Flag, con mazo de inicio y sobre." } },
+    { "data": "2003-08", "set": "op2002-treasure-sheet", "texto": {
+      "pt": "Treasure Sheet sai no formato Jumbo Carddass.",
+      "en": "Treasure Sheet comes out in the Jumbo Carddass format.",
+      "es": "Treasure Sheet sale en el formato Jumbo Carddass." } },
+    { "data": "2003-09", "set": "op2002-the-holy-war-for-skypeia", "texto": {
+      "pt": "The Holy War for Skypeia leva o jogo a Skypiea.",
+      "en": "The Holy War for Skypeia takes the game to Skypiea.",
+      "es": "The Holy War for Skypeia lleva el juego a Skypiea." } },
+    { "data": "2005-02", "set": "op2002-heroes-shadows", "texto": {
+      "pt": "Heroes' Shadows estreia as cartas de navio.",
+      "en": "Heroes' Shadows introduces ship cards.",
+      "es": "Heroes' Shadows estrena las cartas de barco." } },
+    { "data": "2005-08", "texto": {
+      "pt": "Sai uma edição em inglês, de vida curta.",
+      "en": "A short-lived English edition comes out.",
+      "es": "Sale una edición en inglés, de vida corta." } },
+    { "data": "2005-09", "set": "op2002-hidden-treasures-of-water-7", "texto": {
+      "pt": "Hidden Treasures of Water 7, a última: 12 cartas e uma holo por pacote.",
+      "en": "Hidden Treasures of Water 7, the last: 12 cards and a holo per pack.",
+      "es": "Hidden Treasures of Water 7, la última: 12 cartas y una holo por sobre." } },
+    { "data": "2005-12", "texto": {
+      "pt": "Torneio na Jump Festa 2006: a última notícia do site oficial.",
+      "en": "Jump Festa 2006 tournament: the official site's last news.",
+      "es": "Torneo en la Jump Festa 2006: la última noticia del sitio oficial." } }
+  ],
+  "fontes": [
+    { "nome": { "pt": "Bandai, site oficial do jogo (2005)", "en": "Bandai, official game site (2005)", "es": "Bandai, sitio oficial del juego (2005)" },
+      "url": "https://web.archive.org/web/20060626123050/http://www.carddas.com/onepiece/" },
+    { "nome": { "pt": "Bandai, regras no site oficial (2003)", "en": "Bandai, rules on the official site (2003)", "es": "Bandai, reglas en el sitio oficial (2003)" },
+      "url": "https://web.archive.org/web/20030205115318/http://www.carddas.com/onepiece/rule.html" },
+    { "nome": { "pt": "Bandai, Carddass Club: Straw Hat Pirate Flag (2003)", "en": "Bandai, Carddass Club: Straw Hat Pirate Flag (2003)", "es": "Bandai, Carddass Club: Straw Hat Pirate Flag (2003)" },
+      "url": "https://sec.carddass.com/club/products/detail/4543112164780000" },
+    { "nome": { "pt": "Bandai, Carddass Club: Miracle Battle Carddass (2009)", "en": "Bandai, Carddass Club: Miracle Battle Carddass (2009)", "es": "Bandai, Carddass Club: Miracle Battle Carddass (2009)" },
+      "url": "https://sec.carddass.com/club/products/detail/4543112599643000" },
+    { "nome": { "pt": "Juggernauts, catálogo de TCG", "en": "Juggernauts TCG catalog", "es": "Juggernauts, catálogo de TCG" },
+      "url": "https://card.g1.xrea.com/t2/tbc21op2.html" },
+    { "nome": "One Piece Wiki", "url": "https://onepiece.fandom.com/wiki/One_Piece_CCG" }
+  ]
+}

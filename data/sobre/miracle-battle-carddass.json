@@ -1,0 +1,98 @@
+{
+  "url": "miracle-battle-carddass",
+  "nome": "Miracle Battle Carddass",
+  "nomeOriginal": { "texto": "ミラクルバトルカードダス", "lang": "ja", "romaji": "Mirakuru Batoru Kādodasu" },
+  "logo": "assets/games/game_mbc.webp",
+  "logoLargura": 512,
+  "logoAltura": 280,
+  "periodo": { "inicio": "2009-12", "fim": "2014-08" },
+  "etiquetas": [
+    "Vintage",
+    { "pt": "Japão", "en": "Japan", "es": "Japón" },
+    "Shonen Jump"
+  ],
+  "resumo": {
+    "pt": "Jogo de cartas da Bandai que pôs heróis da Shonen Jump nas mesmas regras: Goku, Luffy, Gon, Naruto e outros, de dezembro de 2009 a 2014.",
+    "en": "Bandai's card game that put Shonen Jump heroes under the same rules: Goku, Luffy, Gon, Naruto and more, from December 2009 to 2014.",
+    "es": "Juego de cartas de Bandai que puso a héroes de la Shonen Jump con las mismas reglas: Goku, Luffy, Gon, Naruto y otros, de diciembre de 2009 a 2014."
+  },
+  "fatos": [
+    { "chave": "lancamento", "valor": "2009-12" },
+    { "chave": "encerramento", "valor": "2014-08" },
+    { "chave": "fabricante", "valor": "Bandai" },
+    { "chave": "licenca", "valor": {
+      "pt": "Shueisha e os estúdios de cada anime",
+      "en": "Shueisha and each anime's studios",
+      "es": "Shueisha y los estudios de cada anime"
+    } },
+    { "chave": "origem", "valor": { "pt": "Japão", "en": "Japan", "es": "Japón" } },
+    { "chave": "distribuicao", "valor": {
+      "pt": "Máquinas Carddass (¥100) e boosters em lojas",
+      "en": "Carddass machines (¥100) and store boosters",
+      "es": "Máquinas Carddass (¥100) y sobres en tiendas"
+    } }
+  ],
+  "historia": {
+    "pt": [
+      "Miracle Battle Carddass (ミラクルバトルカードダス), ou Mirabato, foi um jogo de cartas da Bandai em que personagens de séries diferentes da Shonen Jump lutavam com as mesmas regras e o mesmo verso de carta. Estreou em 19 de dezembro de 2009 com Dragon Ball Kai e One Piece: pacotes de 4 cartas por ¥100 nas máquinas Carddass, boosters de 8 cartas e decks prontos. O público principal, segundo a Bandai, eram meninos de 10 a 12 anos que viam os animes.",
+      "Cada jogador usava um baralho de 40 cartas ou mais. Os personagens subiam de nível com a Jump Power, peças tridimensionais colocadas sobre a carta; as cartas de Ação davam golpes e efeitos, e as Dramáticas recriavam cenas famosas. A Miracle Counter permitia viradas, e vencia quem causasse 5 de dano ao adversário. Cada série usava a Jump Power do seu jeito: em One Piece, ela permitia equipar Akuma no Mi; em Hunter × Hunter, subia o nível do Nen.",
+      "O jogo cresceu com novas séries: Toriko em março de 2011, Hunter × Hunter em março de 2012 e Naruto Shippuden em abril de 2012. Em dezembro de 2013, a J-Heroes Booster juntou personagens de todas elas e trouxe Bleach e Gintama; Kuroko's Basketball chegou em junho de 2014. O último lançamento na lista de produtos da Bandai é um booster de Dragon Ball Kai, de agosto de 2014."
+    ],
+    "en": [
+      "Miracle Battle Carddass (ミラクルバトルカードダス), or Mirabato, was a Bandai card game in which characters from different Shonen Jump series fought under the same rules and with the same card back. It debuted on December 19, 2009, with Dragon Ball Kai and One Piece: 4-card packs for ¥100 in Carddass vending machines, 8-card boosters and ready-made decks. Its main audience, according to Bandai, was boys aged 10 to 12 who watched the anime.",
+      "Each player used a deck of 40 cards or more. Characters leveled up with Jump Power, three-dimensional pieces placed on the card; Action cards delivered attacks and effects, and Dramatic cards recreated famous scenes. The Miracle Counter allowed comebacks, and the winner was whoever dealt 5 damage to the opponent. Each series used Jump Power its own way: in One Piece it let you equip Devil Fruits; in Hunter × Hunter it raised the Nen level.",
+      "The game grew with new series: Toriko in March 2011, Hunter × Hunter in March 2012 and Naruto Shippuden in April 2012. In December 2013, the J-Heroes Booster brought characters from all of them together and added Bleach and Gintama; Kuroko's Basketball arrived in June 2014. The last release in Bandai's product list is a Dragon Ball Kai booster, from August 2014."
+    ],
+    "es": [
+      "Miracle Battle Carddass (ミラクルバトルカードダス), o Mirabato, fue un juego de cartas de Bandai en el que personajes de distintas series de la Shonen Jump luchaban con las mismas reglas y el mismo reverso de carta. Se estrenó el 19 de diciembre de 2009 con Dragon Ball Kai y One Piece: sobres de 4 cartas por ¥100 en las máquinas Carddass, sobres de 8 cartas y mazos listos. Su público principal, según Bandai, eran niños de 10 a 12 años que veían los animes.",
+      "Cada jugador usaba un mazo de 40 cartas o más. Los personajes subían de nivel con la Jump Power, piezas tridimensionales colocadas sobre la carta; las cartas de Acción daban golpes y efectos, y las Dramáticas recreaban escenas famosas. El Miracle Counter permitía remontadas, y ganaba quien causara 5 de daño al rival. Cada serie usaba la Jump Power a su manera: en One Piece permitía equipar Akuma no Mi; en Hunter × Hunter subía el nivel del Nen.",
+      "El juego creció con nuevas series: Toriko en marzo de 2011, Hunter × Hunter en marzo de 2012 y Naruto Shippuden en abril de 2012. En diciembre de 2013, el J-Heroes Booster reunió personajes de todas ellas y sumó Bleach y Gintama; Kuroko's Basketball llegó en junio de 2014. El último lanzamiento en la lista de productos de Bandai es un sobre de Dragon Ball Kai, de agosto de 2014."
+    ]
+  },
+  "linhaDoTempo": [
+    { "data": "2009-12", "set": "op-mb-op01", "texto": {
+      "pt": "Estreia com Dragon Ball Kai e One Piece, nas mesmas regras.",
+      "en": "Debut with Dragon Ball Kai and One Piece, under the same rules.",
+      "es": "Estreno con Dragon Ball Kai y One Piece, con las mismas reglas." } },
+    { "data": "2010-12", "set": "op-mb-op05", "texto": {
+      "pt": "No primeiro aniversário, começa a fase Super Fierce Battle.",
+      "en": "On its first anniversary, the Super Fierce Battle phase begins.",
+      "es": "En su primer aniversario, empieza la etapa Super Fierce Battle." } },
+    { "data": "2011-03", "set": "mb-tr01", "texto": {
+      "pt": "Toriko entra no jogo.",
+      "en": "Toriko joins the game.",
+      "es": "Toriko entra en el juego." } },
+    { "data": "2012-03", "set": "hxh-mb-hh01", "texto": {
+      "pt": "Hunter × Hunter entra no jogo.",
+      "en": "Hunter × Hunter joins the game.",
+      "es": "Hunter × Hunter entra en el juego." } },
+    { "data": "2012-04", "set": "nrt-mb-nr01", "texto": {
+      "pt": "Naruto Shippuden entra no jogo.",
+      "en": "Naruto Shippuden joins the game.",
+      "es": "Naruto Shippuden entra en el juego." } },
+    { "data": "2013-12", "set": "mb-as01", "texto": {
+      "pt": "J-Heroes Booster 1 junta as séries e traz Bleach e Gintama.",
+      "en": "J-Heroes Booster 1 unites the series and adds Bleach and Gintama.",
+      "es": "J-Heroes Booster 1 reúne las series y suma Bleach y Gintama." } },
+    { "data": "2014-06", "set": "mb-kb01", "texto": {
+      "pt": "Kuroko's Basketball entra no jogo.",
+      "en": "Kuroko's Basketball joins the game.",
+      "es": "Kuroko's Basketball entra en el juego." } },
+    { "data": "2014-08", "set": "mb-db17", "texto": {
+      "pt": "Último lançamento: Dragon Ball Kai, The Ultimate Golden Warrior.",
+      "en": "Last release: Dragon Ball Kai, The Ultimate Golden Warrior.",
+      "es": "Último lanzamiento: Dragon Ball Kai, The Ultimate Golden Warrior." } }
+  ],
+  "fontes": [
+    { "nome": { "pt": "Bandai, Carddass Club: Super Fierce Battle (2010)", "en": "Bandai, Carddass Club: Super Fierce Battle (2010)", "es": "Bandai, Carddass Club: Super Fierce Battle (2010)" },
+      "url": "https://sec.carddass.com/club/products/detail/4543112635204000" },
+    { "nome": { "pt": "Bandai, Carddass Club: J-Heroes Booster 1 (2013)", "en": "Bandai, Carddass Club: J-Heroes Booster 1 (2013)", "es": "Bandai, Carddass Club: J-Heroes Booster 1 (2013)" },
+      "url": "https://sec.carddass.com/club/products/detail/4543112843050000" },
+    { "nome": { "pt": "Bandai, Carddass Club: último booster (2014)", "en": "Bandai, Carddass Club: last booster (2014)", "es": "Bandai, Carddass Club: último sobre (2014)" },
+      "url": "https://sec.carddass.com/club/products/detail/4543112905345000" },
+    { "nome": "Inside Games (2009)", "url": "https://www.inside-games.jp/article/2009/12/07/39240.html" },
+    { "nome": "Anime! Anime! (2009)", "url": "https://animeanime.jp/article/2009/12/08/5738.html" },
+    { "nome": { "pt": "Wikipédia em japonês", "en": "Japanese Wikipedia", "es": "Wikipedia en japonés" },
+      "url": "https://ja.wikipedia.org/wiki/%E3%83%9F%E3%83%A9%E3%82%AF%E3%83%AB%E3%83%90%E3%83%88%E3%83%AB%E3%82%AB%E3%83%BC%E3%83%89%E3%83%80%E3%82%B9" }
+  ]
+}
