@@ -2252,7 +2252,7 @@ if (v === "b") { /* versão nova */ }</pre>
     const J = (jg && jg.atual) || null, JB = (jg && jg.anterior) || {};
     return `
       <p class="adm-agora"><span>Agora</span> <b>${esc(fmt(o.dau))}</b> visitantes hoje · <b>${esc(fmt(o.wau))}</b> em 7 dias · <b>${esc(fmt(o.mau))}</b> em 30 dias · <b>${esc(fmt(o.dau_users))}</b> logados hoje</p>
-      <div class="admin-stats adm-kpis">
+      <div class="adm-kpis-caixa"><div class="admin-stats adm-kpis adm-kpis-resumo">
         ${kpi("Visitantes", fmt(A.visitantes), A.visitantes, B.visitantes, sp("visitantes"))}
         ${kpi("Visitas", fmt(A.visitas), A.visitas, B.visitas, Object.assign(sp("visitas"), { nota: A.visitantes ? `${(A.visitas / A.visitantes).toLocaleString("pt-BR", { maximumFractionDigits: 1 })} por visitante` : "" }))}
         ${kpi("Páginas vistas", fmt(A.pageviews), A.pageviews, B.pageviews, sp("pageviews"))}
@@ -2265,7 +2265,7 @@ if (v === "b") { /* versão nova */ }</pre>
         ${kpi("Cliques em loja", fmt(A.cliques_loja), A.cliques_loja, B.cliques_loja, sp("cliques_loja"))}
         ${kpi("Tempo por visita", dur(A.tempo_ms), A.tempo_ms, B.tempo_ms, { antes: `antes: ${dur(B.tempo_ms)}`, nota: "mediana, tempo com a aba à vista" })}
         ${kpi("Erros a cada mil páginas", fmtTaxa(porMil(A)), porMil(A), porMil(B), Object.assign(sp("erros"), { ruim: true, antes: `antes: ${fmtTaxa(porMil(B))}` }))}
-      </div>
+      </div></div>
       ${section("O que mudou", oQueMudou(pu, jg), `Contra os ${cmp}, cortados na mesma hora do dia (às 10h, hoje tem 10h de dado e o último dia de antes também). Só entra o que tem volume pra conclusão; a ordem é pelo tamanho da mudança, não pela porcentagem.`)}
       <section class="admin-section">
         <div class="adm-sec-head"><h2>${esc(met[1])} por dia</h2>
