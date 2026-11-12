@@ -1,14 +1,16 @@
 // ドラゴンボール カードダス (Dragon Ball Carddass, Bandai 1988–1997): o jogo
 // vintage `dbc`. A linha principal é o 本弾 (Hondan, "série principal"), que
-// começou em nov/1988 com o 第1弾 e foi até o 第31弾 (1997, já no GT). Em
-// paralelo a Bandai lançou Super Battle (20 partes), Visual Adventure (8) e
-// Super Barcode Wars (4) — todas levantadas em SETS abaixo com data e total.
+// começou em nov/1988 com o 第1弾 e teve 30 partes, a última em jun/1997 (já no
+// GT). Em set/1997 a Bandai fechou a linha com o 特別弾 (Parte Especial), que
+// juntou Hondan e Super Battle na mesma carta. Em paralelo vieram Super Battle
+// (20 partes), Visual Adventure (8) e Super Barcode Wars (4) — todas
+// levantadas em SETS abaixo com data e total.
 //
 // Fontes (levantamento de 2026-09-24):
 //   80storage.com   — lista CARTA A CARTA do Hondan (número, nome, BP/DP e os
 //                     símbolos do verso), uma página por parte. Hoje cobre o
 //                     第1弾 ao 第18弾 e o site publica ~1 parte por mês: o sync
-//                     tenta todas as 31 e pega as novas sozinho.
+//                     tenta as 30 partes e o 特別弾 e pega as novas sozinho.
 //   retroballz.net  — ano e composição (regulares/prismas) de TODAS as séries.
 //                     Só tem uma foto por parte (os prismas, em ângulo), não
 //                     scan por carta — por isso os totais em SETS vêm de lá,
@@ -82,6 +84,10 @@ const SETS = [
   H(15, "勝利！金色の戦士誕生！！", "Victory! Birth of the Golden Warrior!!", "1993-06"),
   H(16, "決起！！新Z戦士たち", "Rise Up!! The New Z Fighters", "1993-09"),
   H(17, "始動！新章悟飯編", "Launch! The New Gohan Chapter", "1993-12"),
+  // 魔人, não 魔神 (conferido em 2026-11-12): só o título do post do 80storage
+  // diz 魔神; o cabeçalho e o texto da mesma página, o índice dele, a
+  // cronologia da vintcollect, a tabela de compra da Mandarake e a lista da
+  // gametaruru dizem 魔人 — e o 弾 é o do 魔人ブウ.
   H(18, "復活！伝説の魔人", "Revival! The Legendary Majin", "1994-03"),
   H(19, "乱戦！破壊王あらわる", "Melee! The King of Destruction Appears", "1994"),
   H(20, "震撼！究極パワー発動", "Tremor! Ultimate Power Unleashed", "1994"),
@@ -90,19 +96,32 @@ const SETS = [
   H(23, "究極合体！超ベジット参上", "Ultimate Merge! Super Vegito Arrives", "1995"),
   H(24, "そして遥かなる戦いへ（前編）", "And On to a Distant Battle (Part 1)", "1995"),
   H(25, "そして遥かなる戦いへ（後編）", "And On to a Distant Battle (Part 2)", "1995"),
-  // 26–31: fase GT. Subtítulo JP sem fonte confiável ainda — fica só o número.
+  // 26–30: fase GT. Subtítulo JP sem fonte confiável ainda — fica só o número.
   H(26, "", "", "1996"), H(27, "", "", "1996"), H(28, "", "", "1996"),
-  H(29, "", "", "1997"), H(30, "", "", "1997"), H(31, "", "", "1997", 83),
+  H(29, "", "", "1997"), H(30, "", "", "1997"),
+  // 特別弾 (set/1997): a Bandai conta 30 partes e fecha o Hondan com esta
+  // Parte Especial, que juntou Hondan e Super Battle (verso com a numeração
+  // própria 1–81 e as duas totais). Não existe "第31弾" de 1997: o 31弾
+  // oficial é a caixa de Dragon Ball Super de 2015/16 (Complete Box 31弾・32弾).
+  // O código h31 fica — é o setId gravado; o set ainda não tem cartas, então
+  // nenhum endereço muda. 83 = 72 regulares + 8 prismas + 1 laser + as 2
+  // limitadas da campanha (a No.82 e a carta grande do sorteio), pelo
+  // RetroballZ. `s80` 31 é aposta: o 80storage ainda não publicou o 特別弾.
+  { ...H(31, "", "", "1997-09", 83), ja: "特別弾", en: "Special Part" },
   // Super Battle: 44 por parte (38 regulares + prismas, 2 escondidos por baixo).
   P("sb", 1, "1991", 44), P("sb", 2, "1992", 44), P("sb", 3, "1992", 44), P("sb", 4, "1992", 44),
   P("sb", 5, "1993", 44), P("sb", 6, "1993", 44), P("sb", 7, "1993", 44), P("sb", 8, "1994", 44),
   P("sb", 9, "1994", 44), P("sb", 10, "1994", 44), P("sb", 11, "1995", 44), P("sb", 12, "1995", 44),
   P("sb", 13, "1995", 44), P("sb", 14, "1995", 44), P("sb", 15, "1995", 44), P("sb", 16, "1996", 44),
   P("sb", 17, "1996", 44), P("sb", 18, "1996", 44), P("sb", 19, "1996", 44), P("sb", 20, "1997", 46),
-  // Visual Adventure: arte original do Toriyama, 36 regulares + 6 holo.
+  // Visual Adventure: arte do próprio mangá (os originais coloridos do
+  // Toriyama, ou os em P&B colorizados sob supervisão dele), sem números de
+  // jogo; 36 regulares + 6 holo.
   P("va", 1, "1991", 42), P("va", 2, "1991", 42), P("va", 3, "1991", 42), P("va", 4, "1992", 42),
   P("va", 5, "1992", 42), P("va", 6, "1993", 42, "SP"), P("va", 7, "1995", 42, "'95"), P("va", 8, "1995", 42, "EX"),
-  // Super Barcode Wars: carta com código de barras (Super Barcode Multi Scanning System).
+  // Super Barcode Wars: carta com código de barras no verso, lida pelo
+  // スーパーバーコードウォーズ, o portátil da Bandai de 1992 (マルチスキャニング
+  // システム é só o nome do leitor dele).
   P("bw", 1, "1992", 42), P("bw", 2, "1993", 42), P("bw", 3, "1993", 42), P("bw", 4, "1993", 42)
 ];
 const SET_BY_CODE = new Map(SETS.map((s) => [s.code, s]));

@@ -417,7 +417,7 @@ refresh reaproveita o da carta já conhecida). Levantamento de 2026-09-24:
 
 | Série | Partes | Anos | Por parte | No catálogo |
 |---|---|---|---|---|
-| 本弾 Hondan | 第1弾–第31弾 | nov/1988–1997 | 42 (o 第31弾, 83) | 第1弾–第18弾 (758 cartas, 80storage) |
+| 本弾 Hondan | 第1弾–第30弾 + 特別弾 | nov/1988–set/1997 | 42 (o 特別弾, 83) | 第1弾–第18弾 (758 cartas, 80storage) |
 | Super Battle | 1–20 | 1991–1997 | 44 (o 20, 46) | — |
 | Visual Adventure | 1–5, SP, '95, EX | 1991–1995 | 42 | — |
 | Super Barcode Wars | 1–4 | 1992–1993 | 42 | — |

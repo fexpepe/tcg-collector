@@ -321,7 +321,8 @@
     "gcd-sd01": "SD Gundam Seiden Quest One — The Swordsman of Rion",
     "gcd-sd02": "SD Gundam Seiden Quest Two — The Strongest Fighter",
     "gcd-gg01": "Mobile Fighter G Gundam",
-    // ---- Dragon Ball Carddass (sync-dbc-carddass.mjs): as 31 partes do Hondan,
+    // ---- Dragon Ball Carddass (sync-dbc-carddass.mjs): as 30 partes do Hondan
+    // e o 特別弾 que fechou a linha (dbc-h31, set/1997 — não há "Part 31"),
     // inclusive as que o 80storage ainda não publicou (o sync pega sozinho quando
     // sair). Super Battle, Visual Adventure e Super Barcode Wars ficam de fora de
     // propósito: nenhuma fonte acessível lista essas séries carta a carta, então
@@ -358,7 +359,7 @@
     "dbc-h28": "Hondan Part 28",
     "dbc-h29": "Hondan Part 29",
     "dbc-h30": "Hondan Part 30",
-    "dbc-h31": "Hondan Part 31"
+    "dbc-h31": "Hondan Special Part"
   };
 
   // Sets JAPONESES do Pokémon: mesma regra dos vintages acima, mas aqui o mapa

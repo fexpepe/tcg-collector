@@ -325,7 +325,7 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   branco; (5) logo do jogo (o do site oficial, a recortar); (6) o NEX-A
   (2012–2015) e a versão inglesa de 2005, se forem entrar.
 - **Dragon Ball Carddass (`dbc`)**: entrou só o Hondan 第1弾–第18弾, sem imagem.
-  Faltam (1) o Hondan 第19弾–第31弾, que o sync pega sozinho quando o 80storage
+  Faltam (1) o Hondan 第19弾–第30弾 e o 特別弾, que o sync pega sozinho quando o 80storage
   publicar; (2) Super Battle, Visual Adventure e Super Barcode Wars, sem fonte
   carta a carta acessível; (3) scans — o dragonballcards.com tem, mas é só HTTP;
   (4) raridade (prisma × regular), que nenhuma fonte marca por carta.
