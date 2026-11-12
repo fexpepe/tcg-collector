@@ -51,6 +51,12 @@
   //    tempo todo e tem cadeia de reserva própria.
   //  - CSP: script inline barrado é o da detecção de robô do Cloudflare, que
   //    a política recusa de propósito (functions/_vitrine-csp.js) — fica fora.
+  //    E só conta BLOQUEIO de verdade (disposition "enforce"). O monitor de
+  //    scripts do Cloudflare (Page Shield) põe numa amostra das respostas um
+  //    Content-Security-Policy-Report-Only com `connect-src 'none'`, que acusa
+  //    até o script do próprio site e a conexão com o Supabase sem barrar
+  //    nada. Cada página dessas mandava até 8 jserror: foi o que levou o
+  //    "erros a cada mil páginas" a 413,7 em 12/11/2026 (antes 96,7).
   try {
     var fila = window.__sleevuErros = [];
     var poe = window.__sleevuErroPoe = function (x) {
@@ -74,7 +80,7 @@
       poe({ k: "promise", m: r && r.message ? r.message : String(r), p: r && r.stack });
     });
     document.addEventListener("securitypolicyviolation", function (e) {
-      if (e.blockedURI === "inline" || e.blockedURI === "eval") return;
+      if (e.disposition === "report" || e.blockedURI === "inline" || e.blockedURI === "eval") return;
       poe({ k: "csp", m: e.effectiveDirective + " " + String(e.blockedURI).replace(/^(https?:\/\/[^/]+).*$/, "$1"), s: e.sourceFile || "" });
     });
   } catch (e) { /* sem ouvinte: o site segue igual, só sem rastreio */ }
