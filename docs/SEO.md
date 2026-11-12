@@ -379,6 +379,34 @@ os chunks: neles a conferência foi pelo nome dos sets).
 | Cópia, canônica diferente | — | 113 | cartas com o mesmo nome, número e idioma no mesmo set (`-2`, `-3`): 2.737 endereços, 1.189 no Pokémon. `jolteon-tg04` e `jolteon-tg04-2` têm o mesmo título e nenhuma palavra diferente |
 | Bloqueada pelo robots.txt | 6 | 12 | telas pessoais e conta: esperado |
 
+**Cópia, canônica diferente (2026-11-11).** O `jolteon-tg04-2` era das
+Trainer Galleries em dobro, que a #256 aposentou. Medido de novo com o
+catálogo de produção de todos os jogos, o que repetia o título não era só o
+`-2`. **3.112 cartas dividiam o título com outra da mesma página de set:**
+- a impressão em português na página do set inglês, com endereço próprio
+  (`-pt`) e o mesmo título;
+- a chinesa simplificada e a tradicional, que dividem a página do set e o
+  endereço (`-zh`, `-zh-2`);
+- a Common e a Ultra Rare do Yu-Gi-Oh!;
+- a mesma Operação do Gundam War nas seis cores (cada cor é uma carta).
+
+Agora o que separa a carta vai ao lado do número, no título, no h1, na
+descrição e no Product: "Charizard ex 006/165 (português)", "(chinês
+tradicional)", "(Ultra Rare)", "(verde)". A inglesa, a edição padrão, não
+ganha rótulo, e o endereço não muda (`functions/_lib/desempate-carta.js`).
+Sobram **92**, conferidas uma a uma:
+- **66 são as promos chinesas S-PC e SM-PC em normal e em reverse holo**:
+  a lista da Bulbapedia anota "[non-holofoil]" e "[reverse holofoil]", e o
+  sync jogava a anotação fora. Com o acabamento no catálogo, o rótulo as
+  separa ("(Reverse Holo)").
+- **16 são a mesma carta guardada duas vezes** no catálogo: 7 da The List do
+  Magic (o mesmo card do Scryfall) e um H36 do One Piece Carddass. O conserto
+  é juntar os ids, que podem estar na coleção de alguém.
+- **10 são cartas diferentes que o catálogo não separa**: os dois No.215 do
+  Dragon Ball Carddass, o prisma e o prisma duplo do Gundam Carddass, e o
+  "Channeler 4" e o "Channeler 5" do WoW, guardados sem número. Sem um fato
+  que as separe, ficam sem rótulo.
+
 **O 404 novo.** Dos 14.479 endereços (fora Magic e Yu-Gi-Oh!) que estavam no
 sitemap de 13/10 e saíram, uma amostra de 4.000 deu 97,85% de 301 (13% em
 dois saltos: o set renomeado e depois a carta) e 2,15% de 404, todos em três
