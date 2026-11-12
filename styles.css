@@ -6165,6 +6165,17 @@ a.setting-open {
 .adm-agora b { color: var(--text); font-variant-numeric: tabular-nums; }
 /* Cartão com régua: número, selo da variação, o "antes" e a forma da série. */
 .adm-kpis { grid-template-columns: repeat(auto-fill, minmax(176px, 1fr)); }
+/* Grade do Resumo (12 cartões) sem linha capenga (2026-11-12): o auto-fill
+   dava 5 colunas com o painel entre 928 e 1115 px (notebook de 1280–1366 e
+   tablet deitado) e sobravam 2 cartões embaixo. Aqui pula de 4 direto pra 6,
+   pela largura da CAIXA (o menu lateral come largura só no desktop, então a
+   da tela não serve). Os limites mantêm o cartão com 176 px no mínimo, como
+   o auto-fill: 4×176 + 3×12 = 740 e 6×176 + 5×12 = 1116. Abaixo de 740 o
+   auto-fill dá 3 ou 2 colunas, e as duas fecham 12; no celular vale a regra
+   de 2 colunas lá embaixo. Sem @container, fica o auto-fill de sempre. */
+.adm-kpis-caixa { container-type: inline-size; }
+@container (min-width: 740px) { .adm-kpis-resumo { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@container (min-width: 1116px) { .adm-kpis-resumo { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
 .adm-kpi { gap: 6px; }
 .adm-kpi .admin-stat-label { margin: 0; font-weight: 700; }
 .adm-kpi-cmp { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 8px; font-size: 12px; color: var(--subtle); }
