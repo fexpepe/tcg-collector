@@ -93,9 +93,9 @@ test("caminho de cada jogo no Cardmarket", () => {
 
 test("linha EU só onde o Cardmarket vende, e nunca no vintage", () => {
   // Gundam (seção ainda não aberta), Union Arena (não vendido), Star Wars
-  // Unlimited, Sorcery e Godzilla (caminho ainda não conferido — anti-robô) e
-  // os Carddass
-  for (const game of ["gundam", "unionarena", "swu", "sorcery", "godzilla", "naruto", "hxh"]) {
+  // Unlimited, Sorcery, Godzilla e Final Fantasy (caminho ainda não conferido
+  // — anti-robô) e os Carddass
+  for (const game of ["gundam", "unionarena", "swu", "sorcery", "godzilla", "fftcg", "naruto", "hxh"]) {
     const html = api.brMarketplaceLinks({ id: `${game}-1`, name: "X", number: "1", game });
     assert.doesNotMatch(html, /cardmarket|price\.checkEu|Marketplace EU/, game);
   }

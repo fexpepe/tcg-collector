@@ -16,7 +16,7 @@
     magic: "game_magic-v2.webp", fab: "game_fab.webp", gundam: "game_gundam-v2.webp", swu: "game_swu.webp", cyberpunk: "game_cyberpunk.webp", sorcery: "game_sorcery.webp", dbfw: "game_dbfw-v2.webp",
     ygo: "game_ygo-v2.webp", digimon: "game_digimon-v2.webp", riftbound: "game_riftbound-v2.webp",
     unionarena: "game_unionarena.webp", narutocg: "game_naruto_2027.webp", naruto: "game_naruto.webp", hxh: "game_hxh.webp",
-    dbc: "game_dbc.webp", wow: "game_wow.webp", lotr: "game_lotr.webp", dbz: "game_dbz.webp", weiss: "game_weiss.webp", godzilla: "game_godzilla.webp", palworld: "game_palworld.webp", harrypotter: "game_harrypotter.webp",
+    dbc: "game_dbc.webp", wow: "game_wow.webp", lotr: "game_lotr.webp", dbz: "game_dbz.webp", weiss: "game_weiss.webp", godzilla: "game_godzilla.webp", palworld: "game_palworld.webp", fftcg: "game_fftcg.webp", harrypotter: "game_harrypotter.webp",
     mbc: "game_mbc.webp", cdm: "game_cdm.webp", gcd: "game_gcd.webp", gw: "game_gw.webp"
   };
   function gameLogoUrl(game) {
@@ -1879,7 +1879,12 @@
     // dele), ETD o trial deck. O Sleeve and Card Set (ESS) vai pras promos,
     // pelo mesmo motivo do ESC do Godzilla; protótipos (PC) idem. Booster
     // extra ainda não existe.
-    palworld: { main: /^EBP\d+(-2E)?$/, extra: /^$/, deck: /^ETD\d+$/ }
+    palworld: { main: /^EBP\d+(-2E)?$/, extra: /^$/, deck: /^ETD\d+$/ },
+    // Final Fantasy TCG (Square Enix, 11/11/2026): também cabe na forma — os
+    // Opus numerados (OP1…OP30), o Legacy Collection (RE, reimpressão em
+    // booster) como extra, Starter Sets e Boss Decks como decks, e o resto
+    // (promos, World Champion Decks, cartas de deck) nas promos.
+    fftcg: { main: /^OP\d+$/, extra: /^RE$/, deck: /^(ST\d+|BD[A-Z0-9]+|CS\d+)$/ }
   };
   function groupBandaiSets(setItems, regras) {
     const secaoDe = (set) => {

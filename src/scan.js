@@ -201,6 +201,16 @@
       add(base, 3, m);
       tira(m);
     }
+    // Final Fantasy TCG: número DUPLO das séries fora do Opus — a promo, o
+    // Legacy Collection e o World Champion Decks imprimem o próprio número e o
+    // da carta original ("PR-004/1-027H", "RE-001H/12-002H", "W24-005/23-104H").
+    // Sai inteiro e antes do reHifen, que só leria a primeira parte, e da
+    // fração, que leria "004/1" (2026-11-11).
+    const reFFDuplo = /\b(PR|RE|B|W\d{2})-([0-9OILSBZ]{3})([CRHLS]?)\s*\/\s*(\d{1,2})-([0-9OILSBZ]{3})([CRHLS])\b/g;
+    while ((m = reFFDuplo.exec(resto))) {
+      const a = soDigitos(m[2]), b = soDigitos(m[5]);
+      if (/^\d{3}$/.test(a) && /^\d{3}$/.test(b)) add(`${m[1]}-${a}${m[3]}/${parseInt(m[4], 10)}-${b}${m[6]}`, 3, m);
+    }
     // Código com hífen: OP01-001, EB01-001, BT1-001, ST01-001, EXB-001,
     // LOB-EN001, FB01-001, P-001, GD01-001. Prefixo com pelo menos uma letra;
     // sufixo com 2-4 dígitos (às vezes precedido do idioma, como no Yu-Gi-Oh)
@@ -316,6 +326,14 @@
       const d = soDigitos(m[1]);
       if (/^\d{2}$/.test(d)) add("EGZ" + d, 3, m);
     }
+    // Final Fantasy TCG: "1-001H", "27-120L" — o número do Opus, hífen, três
+    // dígitos e a raridade colada (C, R, H, L, S). Começa por DÍGITO, e o
+    // reHifen só lê prefixo com letra (2026-11-11).
+    const reFF = /\b(\d{1,2})-([0-9OILSBZ]{3})([CRHLS])\b/g;
+    while ((m = reFF.exec(resto))) {
+      const d = soDigitos(m[2]);
+      if (/^\d{3}$/.test(d)) add(`${parseInt(m[1], 10)}-${d}${m[3]}`, 3, m);
+    }
     // Fração: 4/102, 009/094, 12/204 (Pokémon, Lorcana, Riftbound, Magic antigo).
     // COMO IMPRESSA primeiro, sem os zeros depois: o catálogo guarda o número
     // do jeito que a carta imprime ("009/094" no Pokémon moderno, "4/102" no
@@ -413,7 +431,10 @@
     // entra: ele está na arte e no nome de carta do Magic (Ikoria) também.
     godzilla: [/\bTOHO\b/],
     // "©PALWORLD" no canto da carta (a 2ª edição do BP01 leva um "II" antes).
-    palworld: [/PALWORLD/, /POCKETPAIR/]
+    palworld: [/PALWORLD/, /POCKETPAIR/],
+    // Final Fantasy TCG: "© SQUARE ENIX" no rodapé. O "Final Fantasy" não
+    // entra: é nome de set do Magic (Universes Beyond) também.
+    fftcg: [/SQUARE ?ENIX/]
   };
   const FORMATOS = [
     [/^(OP|EB|PRB)\d{2}-/, ["onepiece"]],
@@ -443,6 +464,12 @@
     [/^E(?:SD|SC)\d{2}-/, ["godzilla"]],
     [/^E(?:TD|SS)\d{2}-\d{3}|^ESOUL-\d{3}/, ["palworld"]],
     [/^EGZ\d{2}$/, ["godzilla"]],
+    // Final Fantasy TCG: 1-001H (Opus e starters) e as séries fora do Opus,
+    // PR-001 (promo), B-001 (Boss Deck), Re-001H (Legacy Collection) e
+    // W24-001 (World Champion Decks), sozinhas ou no número duplo (2026-11-11).
+    [/^\d{1,2}-\d{3}[CRHLS]$/, ["fftcg"]],
+    [/^(?:PR|RE|B|W\d{2})-\d{3}$/, ["fftcg"]],
+    [/^(?:PR|RE|B|W\d{2})-\d{3}[CRHLS]?\/\d{1,2}-\d{3}[CRHLS]$/, ["fftcg"]],
     // Fração: os cinco jogos que numeram "N/T". SWU e Harry Potter não
     // estavam aqui, e a fração deles era filtrada pros outros três — só
     // achava se nenhum set de Pokémon/Lorcana/Riftbound tivesse o mesmo total.

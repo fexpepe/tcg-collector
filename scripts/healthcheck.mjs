@@ -156,6 +156,7 @@ await checkCatalog("cards Weiß Schwarz", "/data/weiss/cards.js", "TCG_CARDS", 2
 await checkCatalog("cards Godzilla", "/data/godzilla/cards.js", "TCG_CARDS", 700);
 // Palworld: 647 cartas no lançamento do catálogo (11/11/2026).
 await checkCatalog("cards Palworld", "/data/palworld/cards.js", "TCG_CARDS", 500);
+await checkCatalog("cards Final Fantasy", "/data/fftcg/cards.js", "TCG_CARDS", 4500);
 await checkCatalog("cards Miracle Battle Carddass", "/data/mbc/cards.js", "TCG_CARDS", 900);
 await checkCatalog("cards Carddass Masters", "/data/cdm/cards.js", "TCG_CARDS", 250);
 await checkCatalog("cards Gundam Carddass", "/data/gcd/cards.js", "TCG_CARDS", 1200);
@@ -186,7 +187,8 @@ await checkCatalog("pricing Weiß Schwarz", "/data/weiss/pricing.generated.js", 
 await checkCatalog("pricing Naruto Card Game", "/data/narutocg/pricing.generated.js", "TCG_PRICING", 1);
 await checkCatalog("pricing Godzilla", "/data/godzilla/pricing.generated.js", "TCG_PRICING", 650);
 await checkCatalog("pricing Palworld", "/data/palworld/pricing.generated.js", "TCG_PRICING", 350);
-for (const [label, dir] of [["Pokémon", "/data/"], ["Lorcana", "/data/lorcana/"], ["One Piece", "/data/onepiece/"], ["Magic", "/data/magic/"], ["FAB", "/data/fab/"], ["Gundam", "/data/gundam/"], ["Star Wars Unlimited", "/data/swu/"], ["Cyberpunk", "/data/cyberpunk/"], ["Sorcery", "/data/sorcery/"], ["Dragon Ball Fusion", "/data/dbfw/"], ["Yu-Gi-Oh", "/data/ygo/"], ["Digimon", "/data/digimon/"], ["Riftbound", "/data/riftbound/"], ["Union Arena", "/data/unionarena/"], ["World of Warcraft", "/data/wow/"], ["Weiß Schwarz", "/data/weiss/"], ["Naruto Card Game", "/data/narutocg/"], ["Godzilla", "/data/godzilla/"], ["Palworld", "/data/palworld/"]]) {
+await checkCatalog("pricing Final Fantasy", "/data/fftcg/pricing.generated.js", "TCG_PRICING", 4500);
+for (const [label, dir] of [["Pokémon", "/data/"], ["Lorcana", "/data/lorcana/"], ["One Piece", "/data/onepiece/"], ["Magic", "/data/magic/"], ["FAB", "/data/fab/"], ["Gundam", "/data/gundam/"], ["Star Wars Unlimited", "/data/swu/"], ["Cyberpunk", "/data/cyberpunk/"], ["Sorcery", "/data/sorcery/"], ["Dragon Ball Fusion", "/data/dbfw/"], ["Yu-Gi-Oh", "/data/ygo/"], ["Digimon", "/data/digimon/"], ["Riftbound", "/data/riftbound/"], ["Union Arena", "/data/unionarena/"], ["World of Warcraft", "/data/wow/"], ["Weiß Schwarz", "/data/weiss/"], ["Naruto Card Game", "/data/narutocg/"], ["Godzilla", "/data/godzilla/"], ["Palworld", "/data/palworld/"], ["Final Fantasy", "/data/fftcg/"]]) {
   await checkJson(`deltas ${label}`, `${dir}price-deltas.generated.json`,
     (j) => j && typeof j === "object" && "c" in j ? null : "sem campo c");
   // Janela de 7 dias: é a que o aviso de queda da wishlist lê. Sem ela o push

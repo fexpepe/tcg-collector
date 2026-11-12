@@ -155,6 +155,9 @@
     if (flat.includes("schwarz") || flat === "ws" || flat === "weiss") return "weiss";
     // "Godzilla Card Game" no TCGplayer e no Collectr.
     if (flat.includes("godzilla")) return "godzilla";
+    // "Final Fantasy TCG" no TCGplayer e no Collectr. Só o nome do JOGO: o set
+    // "Final Fantasy" do Magic chega com a coluna de jogo "Magic".
+    if (flat.includes("finalfantasy") || flat === "fftcg") return "fftcg";
     if (flat.includes("harrypotter")) return "harrypotter";
     if (flat.includes("pok")) return "pokemon";
     return ""; // desconhecido: tenta todos

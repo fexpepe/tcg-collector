@@ -160,6 +160,26 @@
       facetColor("color"),
       facetType(["Monster", "Battle", "Strategy", "Rage"])
     ],
+    // Final Fantasy TCG: o "color" do catálogo é o ELEMENTO (sync-fftcg.mjs),
+    // na ordem do cristal do jogo; a carta de dois elementos conta nos dois.
+    // A SÉRIE é de qual Final Fantasy a carta vem (VII, XIV, Type-0, MOBIUS…;
+    // "VI;DFF" conta nos dois): os numerados em ordem, o resto alfabético
+    // (11/11/2026).
+    fftcg: [
+      {
+        key: "element", labelKey: "facet.element",
+        of: (c) => facetSplit(c.color, ";"),
+        label: (v) => v,
+        order: ["Fire", "Ice", "Wind", "Earth", "Lightning", "Water", "Light", "Dark"]
+      },
+      facetType(["Forward", "Backup", "Summon", "Monster"]),
+      {
+        key: "series", labelKey: "facet.series",
+        of: (c) => facetSplit(c.series, ";"),
+        label: (v) => v,
+        order: ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII", "XIII", "XIV", "XV", "XVI"]
+      }
+    ],
     // Cyberpunk TCG: 4 cores (Red/Blue/Green/Yellow) e 4 tipos (30/09/2026).
     cyberpunk: [
       facetColor("color"),

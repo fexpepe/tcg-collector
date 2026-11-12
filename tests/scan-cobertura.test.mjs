@@ -93,6 +93,9 @@ const JOGOS = {
   // Palworld (2026-11-11): o rodapé é "<OSR> EBP01-001OSR" e "©PALWORLD". As
   // Prototype Cards e o Soul SSS não têm número (ficam fora da conta).
   palworld: { min: 0.98, impresso: (c) => `<${c.rarity || "PR"}> ${c.number}  ©PALWORLD` },
+  // Final Fantasy TCG (2026-11-11): 1-001H dos Opus e o número duplo das
+  // séries fora do Opus (PR-004/1-027H, Re-001H/12-002H). Mediu 99,2 %.
+  fftcg: { min: 0.97, nota: "sobram os números que a fonte grava torto (PR--161/16-058R, PR071/007H)" },
   wow: { semCodigo: "o catálogo não guarda o número da carta" },
   sorcery: { semCodigo: "o catálogo não guarda o número da carta" },
   dbz: { semCodigo: "número solto (60), repetido em todo set" },

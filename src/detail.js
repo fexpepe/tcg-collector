@@ -455,6 +455,10 @@
     // starter (SD), as Rage (RP/PP são as paralelas; CGP a do campeonato) e as
     // promos (PR e as paralelas PRP/PRSP/PRSSP). ACSP e SSPT são de uma carta só.
     godzilla: ["C", "UC", "R", "SR", "P", "SP", "SSP", "SSSP", "ACSP", "T", "SSPT", "SD", "RP", "PP", "CGP", "PR", "PRP", "PRSP", "PRSSP"],
+    // Final Fantasy TCG (11/11/2026): a escada do booster (C, R, H, L — a letra
+    // no fim do número), o starter (S) e as promos. As cartas dos Boss Decks
+    // vêm sem raridade.
+    fftcg: ["Common", "Rare", "Hero", "Legend", "Starter", "Promo"],
     // One Piece Card Game (TCGCSV): as siglas da carta, Líder primeiro como no
     // jogo. Depois as vintage: o acabamento do Carddass Hyper Battle
     // (sync-onepiece-vintage.mjs) e as estrelas do Card Game 2002

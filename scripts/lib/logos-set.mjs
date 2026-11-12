@@ -139,6 +139,7 @@ export const FORA = {
   gundam: "sem logo de set publicado (os 3 sites oficiais auditados em 2026-07-27)",
   weiss: "sem logo de set publicado (media kit auditado em 2026-10-01)",
   godzilla: "sem logo de set publicado (o site oficial só tem a foto da caixa; auditado em 2026-11-11)",
+  fftcg: "sem logo de set publicado (o site oficial só tem arte de capa, caixa e pacote; auditado em 2026-11-11)",
   harrypotter: "logos recortados à mão do Wayback; o resto não tem logo publicado",
   cyberpunk: "logo curado à mão; sem fonte automática",
   ygo: "sem fonte de logo de set (o sync grava vazio)",

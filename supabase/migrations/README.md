@@ -8,6 +8,17 @@ poucos.)
 
 ## Pendentes de aplicar
 
+- `20261111f` — libera o slug `fftcg` (Final Fantasy Trading Card Game,
+  Square Enix, os Opus desde 2016) nas duas whitelists de jogo
+  (`card_views`/`increment_card_view` e `contribute_price`;
+  `20261111f_add_fftcg.sql`). Cópia da `20261111e` (palworld) com o `fftcg`
+  a mais; só a lista muda. Sem ela, a view de carta e o Preço da Comunidade
+  do jogo novo são descartados em silêncio. Conferir com o par de `curl` do
+  fim do arquivo: a view de `fftcg-132375` tem de **criar a linha** no
+  `card_views` (o 204 sozinho não prova nada). Depois dela, a `20261111e`
+  não pode rodar de novo (tiraria o `fftcg`). **A próxima migração de jogo
+  copia esta.**
+
 - `20261110a` — /admin: de onde vêm os visitantes (`20261110a_admin_geo.sql`).
   O painel não tinha país nenhum (só o Cloudflare via). O `events_guard`
   (cópia fiel da 20261009a) passa a carimbar `props.co` no pageview com as 2
@@ -267,7 +278,7 @@ poucos.)
   `palworld` e `pal-713882` respondeu 204 e criou a linha no `card_views`
   (game `palworld`, 1 view); `contribute_price` anônimo segue 401; um jogo
   inventado não cria linha. Depois dela, a `20261111d` não pode rodar de novo
-  (tiraria o `palworld`). **A próxima migração de jogo copia esta.**
+  (tiraria o `palworld`).
 
 - `20261111d` — libera o slug `godzilla` (Godzilla Card Game, Bushiroad,
   edição inglesa desde 2025) nas duas whitelists de jogo

@@ -194,6 +194,11 @@ test("Bandai moderno: coleção numerada, boosters extras, decks e promos, pelo 
   assert.deepEqual(secoesBandai("palworld", ["EBP01", "EBP01-2E", "EBP02", "ESS01", "ETD01", "ETD02", "EPR", "PC"]), {
     main: ["EBP01", "EBP01-2E", "EBP02"], decks: ["ETD01", "ETD02"], promos: ["EPR", "ESS01", "PC"]
   });
+  // Final Fantasy (Square Enix, na mesma forma): os Opus, o Legacy Collection
+  // como extra, starters e Boss Decks nos decks, o resto nas promos.
+  assert.deepEqual(secoesBandai("fftcg", ["OP1", "OP30", "RE", "ST27", "BDC", "BD7", "PR", "W24", "DEC"]), {
+    main: ["OP1", "OP30"], extraBoosters: ["RE"], decks: ["BD7", "BDC", "ST27"], promos: ["DEC", "PR", "W24"]
+  });
 });
 
 test("Bandai moderno: as seções saem na ordem do One Piece e decks/promos ficam fora do destaque", () => {
