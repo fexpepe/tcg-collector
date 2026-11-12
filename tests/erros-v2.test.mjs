@@ -106,6 +106,10 @@ test("monta: contexto completo, terceiro marcado, extensão e ResizeObserver de 
   assert.equal(E.monta({ k: "recurso", m: "script não carregou", s: "https://sleevu.app/src/scan.12345678.js" }, ctx).s, "https://sleevu.app/src/scan.12345678.js");
   // promise sem pilha nenhuma: "promise", como antes
   assert.equal(E.monta({ k: "promise", m: "undefined" }, ctx).s, "promise");
+  // CSP que chega aqui é bloqueio de verdade (o theme.js larga o só-relatório):
+  // a marca cb separa no banco do que entrou antes de 2026-11-12
+  assert.equal(E.monta({ k: "csp", m: "img-src https://novo-host.com", s: "" }, ctx).cb, 1);
+  assert.equal(E.monta({ k: "js", m: "y", s: "" }, ctx).cb, undefined);
 });
 
 test("despeja: manda com o contexto do aparelho, uma vez por erro, com .catch e teto por sessão", async () => {
@@ -182,8 +186,12 @@ test("theme.js enfileira o que importa desde o 1º script, e avisa o shared.js",
   erro({ target: { tagName: "IMG", src: "https://sleevu.app/x.webp" } });               // imagem: tem cadeia própria
   erro({ target: { tagName: "SCRIPT", src: "https://static.cloudflareinsights.com/beacon.min.js" } }); // de fora
   ouvintes["window:unhandledrejection"].fn({ reason: { message: "Load failed", stack: "No@https://sleevu.app/src/shared.js:1:1" } });
-  ouvintes["document:securitypolicyviolation"].fn({ blockedURI: "inline", effectiveDirective: "script-src-elem" });       // Cloudflare
-  ouvintes["document:securitypolicyviolation"].fn({ blockedURI: "https://novo-host.com/a.png?x=1", effectiveDirective: "img-src", sourceFile: "" });
+  ouvintes["document:securitypolicyviolation"].fn({ blockedURI: "inline", effectiveDirective: "script-src-elem", disposition: "enforce" }); // Cloudflare
+  // Report-Only do monitor de scripts do Cloudflare (Page Shield): acusa o
+  // próprio site e o Supabase sem barrar nada — 413,7 erros/mil em 12/11/2026.
+  ouvintes["document:securitypolicyviolation"].fn({ blockedURI: "https://sleevu.app/src/shared.bf0672e8.js", effectiveDirective: "script-src-elem", disposition: "report" });
+  ouvintes["document:securitypolicyviolation"].fn({ blockedURI: "https://dlnalopazitfdgnmdguu.supabase.co/rest/v1/events", effectiveDirective: "connect-src", disposition: "report" });
+  ouvintes["document:securitypolicyviolation"].fn({ blockedURI: "https://novo-host.com/a.png?x=1", effectiveDirective: "img-src", sourceFile: "", disposition: "enforce" });
   assert.deepEqual(j(window.__sleevuErros.map((x) => [x.k, x.m])), [
     ["js", "x is undefined"],
     ["recurso", "script não carregou"],

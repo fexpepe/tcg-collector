@@ -3,9 +3,23 @@
 -- embaixo.
 --
 -- POR QUE: em 2026-11-12 o Resumo marcou 413,7 erros a cada mil páginas
--- (antes: 96,7). A conta da admin_pulso dividia TODO jserror que não fosse
--- robô pelo user-agent pelas páginas de gente, e três públicos entravam só
--- no numerador:
+-- (antes: 96,7). Duas coisas infladas, nenhuma era o site quebrando (96
+-- páginas de produção abertas no desktop e 48 no celular: zero erro de JS):
+--
+-- 1) CSP SÓ-RELATÓRIO DO CLOUDFLARE. O monitor de scripts (Page Shield) põe
+--    numa amostra das respostas um Content-Security-Policy-Report-Only com
+--    `script-src 'unsafe-inline' 'unsafe-eval'; connect-src 'none'`. Ele
+--    acusa o script do próprio site, a conexão com o Supabase, o worker…
+--    e não barra nada. O ouvinte do theme.js não olhava a `disposition`:
+--    cada página sorteada virava até 8 jserror k=csp (uma /hub reproduzida
+--    deu 24 violações). Desde esta data o theme.js larga o só-relatório e o
+--    erros.js marca o bloqueio de verdade com `cb`; aqui, CSP sem a marca
+--    (todo o histórico) sai da conta. A aba Erros segue mostrando o
+--    histórico, na classe csp.
+--
+-- 2) PÚBLICO DIFERENTE EM CIMA E EMBAIXO. A conta dividia TODO jserror que
+--    não fosse robô pelo user-agent pelas páginas de gente, e três públicos
+--    entravam só no numerador:
 --   - o navegador automatizado com user-agent comum: o pageview dele leva
 --     `wd` e o events_guard o grava como bot (fica fora das páginas), mas o
 --     jserror não levava a marca e entrava como gente. É o pior caso, porque
@@ -19,10 +33,10 @@
 --
 -- O QUE MUDA: só o `erros` da admin_pulso (atual, anterior e a série por
 -- dia). Conta o jserror cujo navegador (anon) tem página de gente na janela
--- — o mesmo público do denominador. Tudo o mais sai idêntico (ensaiado).
--- Retroativo: o número velho do painel se corrige sozinho, sem mexer em
--- dado. O src/erros.js passa a mandar `wd` no jserror (o guard já grava bot
--- por ele), o que limpa também o dado cru daqui pra frente.
+-- — o mesmo público do denominador — e, de CSP, só o marcado `cb`. Tudo o
+-- mais sai idêntico (ensaiado). Retroativo: o número do painel se corrige
+-- sozinho, sem mexer em dado. O src/erros.js passa a mandar `wd` no jserror
+-- (o guard já grava bot por ele), o que limpa o dado cru daqui pra frente.
 --
 -- Nasce com `statement_timeout = 30s` (o create or replace troca a config
 -- que a 20261031a tinha posto). ADITIVA e sem ordem com o JS: o admin.js
@@ -71,7 +85,13 @@ begin
   -- precisa ter página de gente na janela. Sem isto entravam no numerador o
   -- robô com webdriver (a página dele é bot, o erro não era), o navegador da
   -- equipe (não manda página) e quem desligou a medição (erro sem anon).
-  er as (select * from ev where name = 'jserror' and anon in (select anon from pv where anon is not null)),
+  -- CSP só com a marca cb (bloqueio de verdade): sem ela é de antes de
+  -- 12/11, quase tudo o Report-Only do monitor de scripts do Cloudflare.
+  er as (
+    select * from ev
+    where name = 'jserror' and anon in (select anon from pv where anon is not null)
+      and not (props->>'k' = 'csp' and coalesce(props->>'cb', '') <> '1')
+  ),
   -- Visitas: páginas do mesmo navegador sem pausa de 30 minutos (a mesma
   -- régua da admin_engagement). A 1ª página da visita carrega a origem.
   marcas as (

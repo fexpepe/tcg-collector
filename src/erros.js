@@ -27,6 +27,10 @@
 //       pageview: o events_guard o grava como robô. Sem ela (até 2026-11-12)
 //       a página do robô saía do denominador do "erros a cada mil páginas" e
 //       os erros dele entravam no numerador
+//   cb  no k=csp: bloqueio de verdade. Desde 2026-11-12 o theme.js larga a
+//       violação só-relatório (a do monitor de scripts do Cloudflare); o que
+//       está no banco sem esta marca é de antes, e quase todo dela. O Resumo
+//       do /admin (20261112a) conta CSP só com a marca
 // Sem user-agent cru, sem query, sem IP: o mesmo grão agregável do pageview.
 (function () {
   "use strict";
@@ -100,6 +104,7 @@
     const deFora = (q) => q && /^https?:\/\//.test(q) && (!ctx.origem || q.indexOf(ctx.origem + "/") !== 0);
     if ((k === "js" || k === "promise") && (/^Script error\.?$/i.test(m) || (pilha.f.length && pilha.f.every(deFora)))) k = "terceiro";
     const props = { m, s: (pilha.cru || fonte || (k === "promise" ? "promise" : "")).slice(0, 200), k };
+    if (k === "csp") props.cb = 1;
     if (pilha.f.length) props.f = pilha.f;
     Object.assign(props, ctx.aparelho);
     if (ctx.v) props.v = ctx.v;
