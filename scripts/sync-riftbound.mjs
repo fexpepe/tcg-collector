@@ -5,11 +5,16 @@
 //
 // Identidade: id = "rb-<productId>". Imagens: CDN do TCGplayer (_in_1000x1000),
 // host já liberado na CSP e no SW. Acabamentos: Normal / Foil (u/uf).
+// Produto que o TCGplayer cadastrou sem foto (imageCount 0) usa a foto da
+// carta-irmã com a mesma arte (scripts/lib/imagem-da-irma.mjs).
 //
 //   node scripts/sync-riftbound.mjs
 import { fileURLToPath } from "node:url";
 import { writeGameCatalog, readGlobalVar, preserveMissingCards } from "./lib/sync-common.mjs";
 import { nomeDoSet } from "./lib/nome-do-set.mjs";
+import { irmasComFoto } from "./lib/imagem-da-irma.mjs";
+
+const imagemDoProduto = (productId) => `https://tcgplayer-cdn.tcgplayer.com/product/${productId}_in_1000x1000.jpg`;
 
 const ROOT = new URL("../", import.meta.url);
 const OUT = new URL("data/riftbound/", ROOT);
@@ -45,6 +50,10 @@ async function run() {
 
   const cards = [];
   const pricing = {}; // { id: { u, uf } } — USD market do TCGplayer
+  // Produtos de TODOS os grupos, pra achar a irmã com foto depois do laço: a
+  // da promo de evento (OPP) está no set de origem.
+  const produtos = [];
+  const cartaDoProduto = new Map();
 
   for (const g of groups) {
     await sleep(120);
@@ -82,7 +91,7 @@ async function run() {
 
       const present = new Set(by.keys());
       const variants = VARIANT_ORDER.filter((v) => present.has(v));
-      cards.push({
+      const card = {
         id,
         name: p.name,
         // Nome do grupo do TCGplayer sem o jogo na frente (2026-11-02):
@@ -95,15 +104,23 @@ async function run() {
         rarity: ext(p, "Rarity"),
         artist: "",
         language: "en",
-        image: `https://tcgplayer-cdn.tcgplayer.com/product/${p.productId}_in_1000x1000.jpg`,
+        image: imagemDoProduto(p.productId),
         variants: variants.length ? variants : ["Normal"],
         cardType: ext(p, "Card Type") || null,
         domain: ext(p, "Domain") || null,
         tag: ext(p, "Tag") || null
-      });
+      };
+      cards.push(card);
+      produtos.push({ productId: p.productId, groupId: g.groupId, name: p.name, number: card.number, imageCount: p.imageCount });
+      cartaDoProduto.set(p.productId, card);
     }
     console.log(`  ${setId} ${g.name}: ${setCards.length} cartas`);
   }
+
+  const irmas = irmasComFoto(produtos);
+  for (const [productId, irma] of irmas) cartaDoProduto.get(productId).image = imagemDoProduto(irma);
+  const semFoto = produtos.filter((p) => p.imageCount === 0).length;
+  console.log(`Sem foto no TCGplayer: ${semFoto} cartas, ${irmas.size} com a foto da irmã.`);
 
   const prev = (await readGlobalVar(new URL("cards.js", OUT), "TCG_CARDS")) || [];
   const merged = cards.concat(preserveMissingCards(prev, cards));
