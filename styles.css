@@ -3945,15 +3945,19 @@ html[data-detail="set"]:not([data-set-pronto]):not([data-carta]) body:not(.carta
 .preview-want.active { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
 .preview-owned { min-height: 48px; min-width: 0; padding: 0 12px; border-radius: 999px; font-size: 15px; }
 
-/* Gráfico do histórico logo abaixo das ações, mais alto que o sparkline de
-   antes, com os períodos à direita do título. */
+/* Gráfico do histórico logo abaixo das ações. Revisão de 2026-11-12, no molde
+   do Collectr: um PAINEL como o do preço (cantos retos, como o resto da
+   tela), título com ícone e os períodos à direita, valores à esquerda e datas
+   embaixo. O desenho é do src/grafico-preco.js; o texto dos eixos é HTML
+   posicionado por %, porque o svg estica e deformaria letra. */
 .cs-chart:empty { display: none; }
-#cardPreviewModal .cs-chart .price-history-plot { height: 168px; }
-.ph-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px; margin-bottom: 10px; }
-.ph-head .market-finish-label { margin: 0; }
-.ph-ranges { display: inline-flex; gap: 2px; padding: 3px; border: 1px solid var(--line); background: var(--panel); }
+.price-history { padding: 16px 18px 14px; border: 1px solid var(--line); background: var(--panel); }
+.ph-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 12px; margin-bottom: 18px; }
+.ph-tit { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 16px; font-weight: 800; }
+.ph-tit svg { flex: none; width: 18px; height: 18px; color: var(--muted); }
+.ph-ranges { display: inline-flex; gap: 2px; padding: 3px; border: 1px solid var(--line); background: var(--surface); }
 .ph-range {
-  min-width: 42px;
+  min-width: 44px;
   min-height: 30px;
   padding: 0 10px;
   border: 0;
@@ -3964,6 +3968,35 @@ html[data-detail="set"]:not([data-set-pronto]):not([data-carta]) body:not(.carta
   cursor: pointer;
 }
 .ph-range.is-on { background: var(--panel-strong); color: var(--text); }
+/* Período mais longo que o histórico: fica no lugar, apagado (o title diz
+   desde quando há série) e acende sozinho quando a coleta alcançar. */
+.ph-range[aria-disabled="true"] { opacity: 0.4; cursor: default; }
+/* Valores | gráfico, e as datas embaixo do gráfico. A coluna dos valores
+   sobra 7px (meia linha) pra cima e pra baixo: com space-between, o MEIO de
+   cada número cai em cima da linha de grade dele. */
+.ph-grafico { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 10px; }
+.ph-y {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: space-between;
+  margin: -7px 0;
+  color: var(--subtle);
+  font-size: 11px;
+  line-height: 14px;
+  text-align: right;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.ph-plot { position: relative; height: 180px; }
+.ph-plot svg { display: block; width: 100%; height: 100%; overflow: visible; touch-action: pan-y; cursor: crosshair; }
+.ph-grade line { stroke: var(--line); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.ph-x { grid-column: 2; position: relative; height: 16px; margin-top: 8px; color: var(--subtle); font-size: 11px; line-height: 16px; white-space: nowrap; }
+/* Datas centradas na marca; as das pontas encostam pra dentro do gráfico. */
+.ph-x span { position: absolute; top: 0; transform: translateX(-50%); }
+.ph-x span:first-child { transform: none; }
+.ph-x span:last-child { transform: translateX(-100%); }
+/* O ponto de hoje, na ponta da linha (anel da cor do painel). */
+.ph-fim { position: absolute; width: 10px; height: 10px; border: 2px solid var(--panel); border-radius: 50%; transform: translate(-50%, -50%); pointer-events: none; }
 
 /* SEÇÕES embaixo (gaveta da coleção, mercados, comunidade, graduadas, lojas,
    ficha, impressões): sem caixa, separadas por um traço, título de 17px. */
@@ -4556,7 +4589,12 @@ html[data-carta] main > :not(#cardPreviewModal):not(.cs-more):not(.cs-esqueleto)
   .cs-price { padding: 14px 16px; }
   .cs-price-val { font-size: 30px; }
   .cs-variant { flex: 1 1 calc(50% - 4px); min-height: 52px; }
-  .ph-range { min-height: 36px; }
+  /* Os períodos ganham a linha deles embaixo do título, com o alvo de toque
+     de 44px. */
+  .price-history { padding: 14px 14px 12px; }
+  .ph-ranges { flex: 1 1 100%; }
+  .ph-range { flex: 1; min-height: 44px; }
+  .ph-plot { height: 150px; }
   /* A BARRA DE AÇÃO presa no pé (último filho da coluna, por order). O piso
      do max() garante a folga do gesto de home no PWA do iOS (env() zero). */
   #cardPreviewModal .preview-content > .preview-actions {
@@ -13340,10 +13378,12 @@ select,
 .price-history-chart svg { touch-action: pan-y; cursor: crosshair; }
 /* 100% = a altura do plot (só o svg). Era calc(100% - 22px) pra descontar a
    linha de datas, que ficava dentro da caixa de posicionamento. */
-.ph-cross { position: absolute; top: 0; height: 100%; width: 0; border-left: 1px dashed var(--subtle); pointer-events: none; }
+.ph-cross { position: absolute; top: 0; height: 100%; width: 0; border-left: 1px solid var(--subtle); pointer-events: none; }
 .ph-dot { position: absolute; width: 9px; height: 9px; border-radius: 50%; background: var(--text); border: 2px solid var(--bg); transform: translate(-50%, -50%); pointer-events: none; }
+/* Na BASE do gráfico: com o eixo no zero (2026-11-12) a linha mora no alto,
+   e o tooltip lá em cima tampava justamente o trecho que se está lendo. */
 .ph-tip {
-  position: absolute; top: 4px; transform: translateX(8px);
+  position: absolute; bottom: 8px; transform: translateX(8px);
   background: var(--surface); border: 1px solid var(--line); color: var(--text);
   font-size: 12px; font-weight: 700; padding: 3px 8px; border-radius: 6px;
   white-space: nowrap; pointer-events: none; box-shadow: var(--shadow-pop);
