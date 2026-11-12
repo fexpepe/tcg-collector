@@ -505,7 +505,9 @@ carimba.
 
 ## Páginas
 
-Catálogo e navegação: `index` (landing), `hub` (grade de jogos), `sets`,
+Catálogo e navegação: `index` (landing), `hub` (grade dos jogos em atividade),
+`vintage` (o acervo dos jogos que saíram de linha, em linha do tempo e por
+marca), `sets`,
 `detail` (set/artista/Pokémon), `cards`, `explore` (busca global em todos os
 jogos), `pokedex`, `artists`, `trainers`. Só no celular (abertas pela tabbar):
 `search` (a tela da paleta Ctrl+K como página, sem popup) e `account` (Perfil:

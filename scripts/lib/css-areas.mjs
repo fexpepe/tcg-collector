@@ -32,7 +32,13 @@ export const AREAS = [
   { nome: "badges",    prefixos: ["bdg-"],                         paginas: ["badges.html"] },
   // hub- só existe no hub.html/hub.js. (O "hub-vs-jogo" que aparece no
   // shared.js é texto de comentário, não classe — conferido.)
-  { nome: "hub",       prefixos: ["hub-"],                         paginas: ["hub.html"] },
+  // vintage.html entrou em 2026-11-12: a faixa "Em atividade | Vintage" do
+  // topo (.hub-switch) é a mesma nas duas páginas.
+  { nome: "hub",       prefixos: ["hub-"],                         paginas: ["hub.html", "vintage.html"] },
+  // vt- (2026-11-12) é a página Vintage: a linha do tempo dos jogos que
+  // saíram de linha, o filtro por marca e a grade. Só o src/vintage.js e o
+  // vintage.html desenham.
+  { nome: "vintage",   prefixos: ["vt-"],                          paginas: ["vintage.html"] },
   // hb- (2026-10-08) é o Hub PESSOAL (dashboard.html/dashboard.js), não o
   // hub.html de cima. O .dash- antigo segue no núcleo porque vendas, desejos,
   // badges e backup também desenham .dash-head/.dash-stat-*; o redesenho do

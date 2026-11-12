@@ -103,10 +103,12 @@ test("linhas de prefixo único e jogos sem linha seguem iguais", () => {
 
 // Desde 2026-09-30 o tile leva pro endereço do jogo (/games/<url>), e a linha
 // sai do registro de endereços (functions/_lib/jogos.js).
-test("todo tile de linha do hub aponta pra uma linha registrada (e não pra um apelido)", async () => {
+// Desde 2026-11-12 as linhas vintage moram no vintage.html (uma .vt-linha por
+// jogo); o hub.html ficou com os jogos em atividade.
+test("todo tile de linha (hub e Vintage) aponta pra uma linha registrada (e não pra um apelido)", async () => {
   const { jogoDaUrl } = await import("../functions/_lib/jogos.js");
-  const hub = readFileSync(new URL("../hub.html", import.meta.url), "utf8");
-  const tiles = [...hub.matchAll(/<a class="hub-tile" href="\/games\/([a-z0-9-]+)" data-game="([a-z]+)">/g)];
+  const hub = readFileSync(new URL("../hub.html", import.meta.url), "utf8") + readFileSync(new URL("../vintage.html", import.meta.url), "utf8");
+  const tiles = [...hub.matchAll(/<a class="(?:hub-tile|vt-linha)" href="\/games\/([a-z0-9-]+)" data-game="([a-z]+)">/g)];
   const linhas = tiles.map(([, url, game]) => ({ url, game, jogo: jogoDaUrl(url) })).filter((t) => t.jogo && t.jogo.linha);
   assert.ok(linhas.length >= 5, `achei só ${linhas.length} tiles de linha no hub — o regex quebrou?`);
   for (const { url, game, jogo } of linhas) {

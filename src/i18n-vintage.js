@@ -1,0 +1,105 @@
+// Textos da página Vintage (vintage.html, 2026-11-12). Pacote SEPARADO do
+// i18n.js pelo mesmo motivo das Ferramentas e dos decks: só essa página usa,
+// e o monólito viaja em todo o site. O que o menu e o hub mostram ("Vintage",
+// "Em atividade", a porta do hub) fica no i18n.js, que é o que eles carregam.
+//
+// Nome de jogo e de marca (Dragon Ball, Naruto…) não passa por aqui: é nome
+// próprio, igual nos três idiomas, como no resto do site.
+// Merge por IDIOMA (não na raiz), então a ordem de carga entre os pacotes não
+// importa.
+(function () {
+  const M = (window.TCG_MESSAGES = window.TCG_MESSAGES || {});
+
+  M.pt = Object.assign(M.pt || {}, {
+    "title.vintage": "Jogos de cartas vintage: o acervo dos TCGs que saíram de linha · Sleevu",
+    "vt.sub": "Jogos de cartas que saíram de linha, na ordem em que a história aconteceu. Escolha uma marca pra ver a história dela em cartas.",
+    "vt.brands": "Marcas",
+    "vt.all": "Todas",
+    "vt.sort": "Ordenar",
+    "vt.sort.launch": "Mais antigos",
+    "vt.sort.launchDesc": "Mais recentes",
+    "vt.sort.end": "Encerramento",
+    "vt.sort.span": "Mais longevos",
+    "vt.sort.name": "Nome (A–Z)",
+    "vt.view.timeline": "Linha do tempo",
+    "vt.view.brands": "Por marca",
+    "vt.multi": "Várias marcas",
+    "vt.brandEyebrow": "A história em cartas",
+    "vt.brandTitle": "{marca}: os jogos de cartas vintage · Sleevu",
+    "vt.today": "Continua hoje",
+    "vt.empty": "Nenhum jogo vintage dessa marca ainda.",
+    "vt.more": "Mais jogos vintage a caminho.",
+    "vt.n.games.one": "{n} jogo",
+    "vt.n.games.other": "{n} jogos",
+    "vt.n.cross.one": "{n} com várias marcas",
+    "vt.n.cross.other": "{n} com várias marcas",
+    "vt.n.brands.one": "{n} marca",
+    "vt.n.brands.other": "{n} marcas",
+    "vt.n.sets.one": "{n} set",
+    "vt.n.sets.other": "{n} sets",
+    "vt.n.cards.one": "{n} carta",
+    "vt.n.cards.other": "{n} cartas"
+  });
+
+  M.en = Object.assign(M.en || {}, {
+    "title.vintage": "Vintage card games: the archive of discontinued TCGs · Sleevu",
+    "vt.sub": "Card games that went out of print, in the order history happened. Pick a franchise to see its story in cards.",
+    "vt.brands": "Franchises",
+    "vt.all": "All",
+    "vt.sort": "Sort",
+    "vt.sort.launch": "Oldest",
+    "vt.sort.launchDesc": "Newest",
+    "vt.sort.end": "End date",
+    "vt.sort.span": "Longest-running",
+    "vt.sort.name": "Name (A–Z)",
+    "vt.view.timeline": "Timeline",
+    "vt.view.brands": "By franchise",
+    "vt.multi": "Multi-franchise",
+    "vt.brandEyebrow": "The story in cards",
+    "vt.brandTitle": "{marca}: the vintage card games · Sleevu",
+    "vt.today": "Continues today",
+    "vt.empty": "No vintage games from this franchise yet.",
+    "vt.more": "More vintage games on the way.",
+    "vt.n.games.one": "{n} game",
+    "vt.n.games.other": "{n} games",
+    "vt.n.cross.one": "{n} multi-franchise",
+    "vt.n.cross.other": "{n} multi-franchise",
+    "vt.n.brands.one": "{n} franchise",
+    "vt.n.brands.other": "{n} franchises",
+    "vt.n.sets.one": "{n} set",
+    "vt.n.sets.other": "{n} sets",
+    "vt.n.cards.one": "{n} card",
+    "vt.n.cards.other": "{n} cards"
+  });
+
+  M.es = Object.assign(M.es || {}, {
+    "title.vintage": "Juegos de cartas vintage: el archivo de los TCG descatalogados · Sleevu",
+    "vt.sub": "Juegos de cartas que dejaron de publicarse, en el orden en que ocurrió la historia. Elige una marca para ver su historia en cartas.",
+    "vt.brands": "Marcas",
+    "vt.all": "Todas",
+    "vt.sort": "Ordenar",
+    "vt.sort.launch": "Más antiguos",
+    "vt.sort.launchDesc": "Más recientes",
+    "vt.sort.end": "Cierre",
+    "vt.sort.span": "Más longevos",
+    "vt.sort.name": "Nombre (A–Z)",
+    "vt.view.timeline": "Cronología",
+    "vt.view.brands": "Por marca",
+    "vt.multi": "Varias marcas",
+    "vt.brandEyebrow": "La historia en cartas",
+    "vt.brandTitle": "{marca}: los juegos de cartas vintage · Sleevu",
+    "vt.today": "Continúa hoy",
+    "vt.empty": "Todavía no hay juegos vintage de esta marca.",
+    "vt.more": "Más juegos vintage en camino.",
+    "vt.n.games.one": "{n} juego",
+    "vt.n.games.other": "{n} juegos",
+    "vt.n.cross.one": "{n} con varias marcas",
+    "vt.n.cross.other": "{n} con varias marcas",
+    "vt.n.brands.one": "{n} marca",
+    "vt.n.brands.other": "{n} marcas",
+    "vt.n.sets.one": "{n} set",
+    "vt.n.sets.other": "{n} sets",
+    "vt.n.cards.one": "{n} carta",
+    "vt.n.cards.other": "{n} cartas"
+  });
+})();

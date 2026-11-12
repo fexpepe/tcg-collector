@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title data-i18n="title.vintage">Jogos de cartas vintage: o acervo dos TCGs que saíram de linha · Sleevu</title>
+    <meta name="description" content="O acervo vintage do Sleevu: Carddass, TCGs e CCGs que saíram de linha (Dragon Ball, Naruto, One Piece, Gundam e mais), em linha do tempo e por marca, com todos os sets e cartas.">
+    <link rel="canonical" href="https://sleevu.app/vintage">
+    <meta property="og:site_name" content="Sleevu">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sleevu.app/vintage">
+    <meta property="og:title" content="Jogos de cartas vintage: o acervo dos TCGs que saíram de linha · Sleevu">
+    <meta property="og:description" content="O acervo vintage do Sleevu: Carddass, TCGs e CCGs que saíram de linha (Dragon Ball, Naruto, One Piece, Gundam e mais), em linha do tempo e por marca, com todos os sets e cartas.">
+    <meta property="og:image" content="https://sleevu.app/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Jogos de cartas vintage: o acervo dos TCGs que saíram de linha · Sleevu">
+    <meta name="twitter:description" content="O acervo vintage do Sleevu: Carddass, TCGs e CCGs que saíram de linha (Dragon Ball, Naruto, One Piece, Gundam e mais), em linha do tempo e por marca, com todos os sets e cartas.">
+    <meta name="twitter:image" content="https://sleevu.app/og-image.png">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <!-- Duas tags com media: o primeiro paint ja acerta a barra do navegador
+         pelo tema do SISTEMA. Quando a pessoa ESCOLHE um tema, o applyTheme
+         (shared.js) troca por uma tag unica sem media, que vence as duas. -->
+    <meta name="theme-color" content="#e8ecf1" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#101218" media="(prefers-color-scheme: dark)">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Sleevu">
+    <script src="src/theme.js"></script>
+    <script src="src/game.js" data-catalog=""></script>
+    <!-- A fonte só seria descoberta depois de baixar e parsear o styles.css
+         (o @font-face mora lá). O preload a coloca na fila junto com o CSS.
+         crossorigin é OBRIGATORIO mesmo sendo mesma origem: fonte é sempre
+         buscada em modo CORS, e sem o atributo o preload nao casa com a
+         requisicao do CSS e o arquivo desce DUAS vezes.
+         Só o latin: pt-BR e en cabem inteiros em U+0000-00FF; o latin-ext
+         (14 KB) fica sob demanda, como o unicode-range ja define. -->
+    <link rel="preload" href="assets/fonts/outfit-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <!-- Saída de emergência: só aparece se o app não subir (ver .falha-boot no styles.css). -->
+    <div class="falha-boot" hidden>
+      <p data-i18n="boot.stuck">Esta tela não terminou de carregar.</p>
+      <a class="primary" href="" data-i18n="boot.retry">Tentar de novo</a>
+      <a class="secondary" href="/" data-i18n="boot.home">Ir para o início</a>
+    </div>
+    <header class="app-header">
+      <div class="app-header-inner">
+        <a class="brand" href="/">Sleevu</a>
+        <nav class="page-nav" data-i18n-aria="aria.pages" aria-label="Páginas" data-active-page="vintage"></nav>
+        <div class="header-actions">
+          <select id="languageSwitcher" class="lang-select"></select>
+        </div>
+      </div>
+    </header>
+
+    <main class="vt-pagina">
+      <!-- Os dois catálogos de jogos, lado a lado: no celular a tabbar só tem
+           "Jogos", então é por aqui que se chega ao Vintage (e se volta). No
+           desktop o menu de cima já tem os dois itens e a faixa some (CSS). -->
+      <nav class="hub-switch" data-i18n-aria="nav.games" aria-label="Jogos">
+        <a href="hub" data-i18n="hub.switchActive">Em atividade</a>
+        <a href="vintage" aria-current="page" data-i18n="hub.vintage">Vintage</a>
+      </nav>
+
+      <div class="page-head vt-cab">
+        <h1 data-i18n="hub.vintage">Vintage</h1>
+        <p class="page-head-sub" data-i18n="vt.sub">Jogos de cartas que saíram de linha, na ordem em que a história aconteceu. Escolha uma marca pra ver a história dela em cartas.</p>
+        <!-- Números do acervo: o vintage.js conta as linhas da lista abaixo (e
+             soma as cartas quando o build publicou a contagem). -->
+        <p class="vt-numeros" id="vtNumeros" hidden></p>
+      </div>
+
+      <!-- Bandeiras UMA vez (a dos EUA tem 2 KB): cada linha só aponta pro
+           símbolo. Cores oficiais, como eram no hub. -->
+      <svg class="vt-simbolos" width="0" height="0" aria-hidden="true" focusable="false">
+        <symbol id="vt-jp" viewBox="0 0 30 20"><rect width="30" height="20" fill="#fff"/><circle cx="15" cy="10" r="6" fill="#bc002d"/></symbol>
+        <symbol id="vt-us" viewBox="0 0 30 20"><rect width="30" height="20" fill="#fff"/><rect y="0.00" width="30" height="1.54" fill="#b22234"/><rect y="3.08" width="30" height="1.54" fill="#b22234"/><rect y="6.15" width="30" height="1.54" fill="#b22234"/><rect y="9.23" width="30" height="1.54" fill="#b22234"/><rect y="12.31" width="30" height="1.54" fill="#b22234"/><rect y="15.38" width="30" height="1.54" fill="#b22234"/><rect y="18.46" width="30" height="1.54" fill="#b22234"/><rect width="12" height="10.77" fill="#3c3b6e"/><g fill="#fff"><circle cx="1.4" cy="1.20" r=".45"/><circle cx="3.6" cy="1.20" r=".45"/><circle cx="5.8" cy="1.20" r=".45"/><circle cx="8.0" cy="1.20" r=".45"/><circle cx="10.2" cy="1.20" r=".45"/><circle cx="2.5" cy="2.95" r=".45"/><circle cx="4.7" cy="2.95" r=".45"/><circle cx="6.9" cy="2.95" r=".45"/><circle cx="9.1" cy="2.95" r=".45"/><circle cx="1.4" cy="4.70" r=".45"/><circle cx="3.6" cy="4.70" r=".45"/><circle cx="5.8" cy="4.70" r=".45"/><circle cx="8.0" cy="4.70" r=".45"/><circle cx="10.2" cy="4.70" r=".45"/><circle cx="2.5" cy="6.45" r=".45"/><circle cx="4.7" cy="6.45" r=".45"/><circle cx="6.9" cy="6.45" r=".45"/><circle cx="9.1" cy="6.45" r=".45"/><circle cx="1.4" cy="8.20" r=".45"/><circle cx="3.6" cy="8.20" r=".45"/><circle cx="5.8" cy="8.20" r=".45"/><circle cx="8.0" cy="8.20" r=".45"/><circle cx="10.2" cy="8.20" r=".45"/><circle cx="2.5" cy="9.95" r=".45"/><circle cx="4.7" cy="9.95" r=".45"/><circle cx="6.9" cy="9.95" r=".45"/><circle cx="9.1" cy="9.95" r=".45"/></g></symbol>
+      </svg>
+
+      <!-- Filtros: só aparecem com o vintage.js no ar (sem ele a lista abaixo
+           segue inteira, em ordem de lançamento, e cada linha é um link). -->
+      <div class="vt-filtros" id="vtFiltros" hidden>
+        <div class="vt-marcas chip-filter" id="vtMarcas" role="group" data-i18n-aria="vt.brands" aria-label="Marcas"></div>
+        <div class="vt-controles">
+          <label class="vt-ordem">
+            <span data-i18n="vt.sort">Ordenar</span>
+            <select id="vtOrdem" data-i18n-aria="vt.sort" aria-label="Ordenar">
+              <option value="inicio" data-i18n="vt.sort.launch">Mais antigos</option>
+              <option value="recente" data-i18n="vt.sort.launchDesc">Mais recentes</option>
+              <option value="fim" data-i18n="vt.sort.end">Encerramento</option>
+              <option value="duracao" data-i18n="vt.sort.span">Mais longevos</option>
+              <option value="nome" data-i18n="vt.sort.name">Nome (A–Z)</option>
+            </select>
+          </label>
+          <div class="view-toggle vt-visao" id="vtVisao" role="group" data-i18n-aria="toolbar.view" aria-label="Visualização">
+            <button type="button" class="view-toggle-btn" data-visao="tempo" aria-pressed="true" data-i18n-aria="vt.view.timeline" data-i18n-title="vt.view.timeline" aria-label="Linha do tempo" title="Linha do tempo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h9"/><path d="M8 12h10"/><path d="M12 18h9"/></svg></button>
+            <button type="button" class="view-toggle-btn" data-visao="marcas" aria-pressed="false" data-i18n-aria="vt.view.brands" data-i18n-title="vt.view.brands" aria-label="Por marca" title="Por marca"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h7"/><path d="M6 9h12"/><path d="M3 15h7"/><path d="M6 19h9"/></svg></button>
+            <button type="button" class="view-toggle-btn" data-visao="grade" aria-pressed="false" data-i18n-aria="aria.viewGrid" data-i18n-title="aria.viewGrid" aria-label="Grade" title="Grade"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.5"/></svg></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- A marca escolhida: o nome, o período e o jogo que continua hoje. O
+           vintage.js preenche (e as linhas da marca ganham o resumo do jogo). -->
+      <section class="vt-marca" id="vtMarca" hidden></section>
+
+      <section class="vt-acervo" id="vtAcervo">
+        <!-- Régua dos anos, alinhada com as barras das linhas (vintage.js). -->
+        <div class="vt-eixo" id="vtEixo" aria-hidden="true" hidden><div class="vt-eixo-anos"></div></div>
+        <!-- UMA linha por jogo vintage do registro (functions/_lib/jogos.js), em
+             ordem de lançamento (mês quando a fonte dá; empate desempata pelo
+             fim). É HTML de propósito, como o hub: o link não depende do JS, e
+             o buscador lê a lista inteira. O tests/vintage.test.mjs confere
+             cada linha contra o registro e contra o "Sobre" do jogo
+             (data/sobre/<endereço>.json: data-inicio e data-fim são o
+             `periodo` de lá). Jogo novo: a linha aqui, na posição da data.
+             data-marcas: a franquia (ou as franquias, num crossover) — o
+             slug tem de estar em MARCAS no src/vintage.js.
+             data-game: o jogo do app, que dá a cor da barra (linha vintage
+             herda a do jogo-pai, como no hub). -->
+        <ul class="vt-lista" id="vtLista">
+          <li class="vt-jogo" data-inicio="1988" data-fim="1997" data-pais="jp" data-marcas="gundam">
+            <a class="vt-linha" href="/games/gundam-carddass" data-game="gcd">
+              <span class="vt-logo-box"><img class="vt-logo" src="assets/games/game_gcd.webp" alt="" decoding="async"></span>
+              <span class="vt-texto">
+                <span class="vt-nome">Gundam Carddass</span>
+                <span class="vt-meta"><span class="vt-flag" role="img" data-i18n-aria="hub.flagJP" data-i18n-title="hub.flagJP" aria-label="Edição japonesa" title="Edição japonesa"><svg viewBox="0 0 30 20" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#vt-jp"/></svg></span><span class="vt-editora">Bandai · Carddass</span></span>
+              </span>
+              <span class="game-badge vintage vt-anos">1988–1997</span>
+              <span class="vt-faixa" aria-hidden="true"><span class="vt-barra"></span></span>
+            </a>
+          </li>
+          <li class="vt-jogo" data-inicio="1988-11" data-fim="1997-09" data-pais="jp" data-marcas="dragon-ball">
+            <a class="vt-linha" href="/games/dragon-ball-carddass" data-game="dbc">
+              <span class="vt-logo-box"><img class="vt-logo" src="assets/games/game_dbc-v2.webp" alt="" decoding="async"></span>
+              <span class="vt-texto">
+                <span class="vt-nome">Dragon Ball Carddass</span>
+                <span class="vt-meta"><span class="vt-flag" role="img" data-i18n-aria="hub.flagJP" data-i18n-title="hub.flagJP" aria-label="Edição japonesa" title="Edição japonesa"><svg viewBox="0 0 30 20" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#vt-jp"/></svg></span><span class="vt-editora">Bandai · Carddass</span></span>
+              </span>
+              <span class="game-badge vintage vt-anos">1988–1997</span>
+              <span class="vt-faixa" aria-hidden="true"><span class="vt-barra"></span></span>
+            </a>
+          </li>
+          <li class="vt-jogo" data-inicio="1996-08" data-fim="2011" data-pais="jp" data-marcas="evangelion hunter-x-hunter">
+            <a class="vt-linha" href="/games/carddass-masters" data-game="cdm">
+              <span class="vt-logo-box"><img class="vt-logo" src="assets/games/game_cdm.webp" alt="" decoding="async"></span>
+              <span class="vt-texto">
+                <span class="vt-nome">Carddass Masters</span>
+                <span class="vt-meta"><span class="vt-flag" role="img" data-i18n-aria="hub.flagJP" data-i18n-title="hub.flagJP" aria-label="Edição japonesa" title="Edição japonesa"><svg viewBox="0 0 30 20" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#vt-jp"/></svg></span><span class="vt-editora">Bandai · Carddass</span><span class="vt-tag" data-i18n="vt.multi">Várias marcas</span></span>
+              </span>
+              <span class="game-badge vintage vt-anos">1996–2011</span>
+              <span class="vt-faixa" aria-hidden="true"><span class="vt-barra"></span></span>
+            </a>
+          </li>
+          <li class="vt-jogo" data-inicio="1999-02" data-fim="2011-05" data-pais="jp" data-marcas="gundam">
+            <a class="vt-linha" href="/games/gundam-war" data-game="gw">
+              <span class="vt-logo-box"><img class="vt-logo" src="assets/games/game_gw.webp" alt="" decoding="async"></span>
+              <span class="vt-texto">
+                <span class="vt-nome">Gundam War</span>
+                <span class="vt-meta"><span class="vt-flag" role="img" data-i18n-aria="hub.flagJP" data-i18n-title="hub.flagJP" aria-label="Edição japonesa" title="Edição japonesa"><svg viewBox="0 0 30 20" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#vt-jp"/></svg></span><span class="vt-editora">Bandai · TCG</span></span>
+              </span>
+              <span class="game-badge vintage vt-anos">1999–2011</span>
+              <span class="vt-faixa" aria-hidden="true"><span class="vt-barra"></span></span>
+            </a>
+          </li>
+          <li class="vt-jogo" data-inicio="1999-11" data-fim="2002-01" data-pais="jp" data-marcas="one-piece">
+            <a class="vt-linha" href="/games/one-piece-carddass" data-game="onepiece">
+              <span class="vt-logo-box"><img class="vt-logo" src="assets/games/game_onepiece_carddass.webp" alt="" loading="lazy" decoding="async"></span>
+              <span class="vt-texto">
+                <span class="vt-nome">One Piece Carddass Hyper Battle</span>
+                <span class="vt-meta"><span class="vt-flag" role="img" data-i18n-aria="hub.flagJP" data-i18n-title="hub.flagJP" aria-label="Edição japonesa" title="Edição japonesa"><svg viewBox="0 0 30 20" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#vt-jp"/></svg></span><span class="vt-editora">Bandai · Carddass</span></span>
+              </span>
+              <span class="game-badge vintage vt-anos">1999–2002</span>
+              <span class="vt-faixa" aria-hidden="true"><span class="vt-barra"></span></span>
+            </a>
+          </li>
+          <li class="vt-jogo" data-inicio="1999-12" data-fim="2001-12" data-pais="jp" data-marcas="hunter-x-hunter">
+            <a class="vt-linha" href="/games/hunter-x-hunter-carddass" data-game="hxh">
+              <span class="vt-logo-box"><img class="vt-logo" src="assets/games/game_hxh.webp" alt="" loading="lazy" decoding="async"></span>
+              <span class="vt-texto">
+                <span class="vt-nome">Hunter × Hunter Carddass Hyper Battle</span>
+                <span class="vt-meta"><span class="vt-flag" role="img" data-i18n-aria="hub.flagJP" data-i18n-title="hub.flagJP" aria-label="Edição japonesa" title="Edição japonesa"><svg viewBox="0 0 30 20" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#vt-jp"/></svg></span><span class="vt-editora">Bandai · Carddass</span></span>
+              </span>
+              <span class="game-badge vintage vt-anos">1999–2001</span>
+              <span class="vt-faixa" aria-hidden="true"><span class="vt-barra"></span></span>
+            </a>
+          </li>
+          <li class="vt-jogo" data-inicio="2000" data-fim="2006" data-pais="us" data-marcas="dragon-ball">
+            <a class="vt-linha" href="/games/dragon-ball-z-ccg" data-game="dbz">
+              <span class="vt-logo-box"><img class="vt-logo" src="assets/games/game_dbz.webp" alt="" loading="lazy" decoding="async"></span>
+              <span class="vt-texto">
+                <span class="vt-nome">Dragon Ball Z CCG</span>
+                <span class="vt-meta"><span class="vt-flag" role="img" data-i18n-aria="hub.flagUS" data-i18n-title="hub.flagUS" aria-label="Edição americana" title="Edição americana"><svg viewBox="0 0 30 20" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#vt-us"/></svg></span><span class="vt-editora">Score Entertainment · CCG</span></span>
+              </span>
+              <span class="game-badge vintage vt-anos">2000–2006</span>
+              <span class="vt-faixa" aria-hidden="true"><span class="vt-barra"></span></span>
+            </a>
+          </li>
+          <li class="vt-jogo" data-inicio="2001-08" data-fim="2002-10" data-pais="us" data-marcas="harry-potter">
+            <a class="vt-linha" href="/games/harry-potter-tcg" data-game="harrypotter">
+              <span class="vt-logo-box"><img class="vt-logo" src="assets/games/game_harrypotter.webp" alt="" loading="lazy" decoding="async"></span>
+              <span class="vt-texto">
+                <span class="vt-nome">Harry Potter Trading Card Game</span>
+                <span class="vt-meta"><span class="vt-flag" role="img" data-i18n-aria="hub.flagUS" data-i18n-title="hub.flagUS" aria-label="Edição americana" title="Edição americana"><svg viewBox="0 0 30 20" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#vt-us"/></svg></span><span class="vt-editora">Wizards of the Coast · TCG</span></span>
+              </span>
+              <span class="game-badge vintage vt-anos">2001–2002</span>
+              <span class="vt-faixa" aria-hidden="true"><span class="vt-barra"></span></span>
+            </a>
+          </li>
+          <li class="vt-jogo" data-inicio="2001-11" data-fim="2007-06" data-pais="us" data-marcas="lord-of-the-rings">
+            <a class="vt-linha" href="/games/lord-of-the-rings-tcg" data-game="lotr">
+              <span class="vt-logo-box"><img class="vt-logo" src="assets/games/game_lotr.webp" alt="" loading="lazy" decoding="async"></span>
+              <span class="vt-texto">
+                <span class="vt-nome">The Lord of the Rings TCG</span>
+                <span class="vt-meta"><span class="vt-flag" role="img" data-i18n-aria="hub.flagUS" data-i18n-title="hub.flagUS" aria-label="Edição americana" title="Edição americana"><svg viewBox="0 0 30 20" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#vt-us"/></svg></span><span class="vt-editora">Decipher · TCG</span></span>
+              </span>
+              <span class="game-badge vintage vt-anos">2001–2007</span>
+              <span class="vt-faixa" aria-hidden="true"><span class="vt-barra"></span></span>
+            </a>
+          </li>
+          <li class="vt-jogo" data-inicio="2002-02" data-fim="2005-09" data-pais="jp" data-marcas="one-piece">
+            <a class="vt-linha" href="/games/one-piece-card-game-2002" data-game="onepiece">
+              <span class="vt-logo-box"><img class="vt-logo" src="assets/games/game_onepiece_2002.webp" alt="" loading="lazy" decoding="async"></span>
+              <span class="vt-texto">
+                <span class="vt-nome">One Piece Card Game (2002)</span>
+                <span class="vt-meta"><span class="vt-flag" role="img" data-i18n-aria="hub.flagJP" data-i18n-title="hub.flagJP" aria-label="Edição japonesa" title="Edição japonesa"><svg viewBox="0 0 30 20" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#vt-jp"/></svg></span><span class="vt-editora">Bandai · Carddass</span></span>
+              </span>
+              <span class="game-badge vintage vt-anos">2002–2005</span>
+              <span class="vt-faixa" aria-hidden="true"><span class="vt-barra"></span></span>
+            </a>
+          </li>
+          <li class="vt-jogo" data-inicio="2002-12" data-fim="2006-09" data-pais="jp" data-marcas="naruto">
+            <a class="vt-linha" href="/games/naruto-card-game-2002" data-game="naruto">
+              <span class="vt-logo-box"><img class="vt-logo" src="assets/games/game_naruto_vintage.webp" alt="" loading="lazy" decoding="async"></span>
+              <span class="vt-texto">
+                <span class="vt-nome">Naruto Card Game (2002~2006)</span>
+                <span class="vt-meta"><span class="vt-flag" role="img" data-i18n-aria="hub.flagJP" data-i18n-title="hub.flagJP" aria-label="Edição japonesa" title="Edição japonesa"><svg viewBox="0 0 30 20" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#vt-jp"/></svg></span><span class="vt-editora">Bandai · TCG</span></span>
+              </span>
+              <span class="game-badge vintage vt-anos">2002~2006</span>
+              <span class="vt-faixa" aria-hidden="true"><span class="vt-barra"></span></span>
+            </a>
+          </li>
+          <li class="vt-jogo" data-inicio="2005-10" data-fim="2010-01" data-pais="jp" data-marcas="naruto">
+            <a class="vt-linha" href="/games/naruto-data-carddass" data-game="naruto">
+              <span class="vt-logo-box"><img class="vt-logo" src="assets/games/game_naruto_datacarddass.webp" alt="" loading="lazy" decoding="async"></span>
+              <span class="vt-texto">
+                <span class="vt-nome">Naruto Data Carddass</span>
+                <span class="vt-meta"><span class="vt-flag" role="img" data-i18n-aria="hub.flagJP" data-i18n-title="hub.flagJP" aria-label="Edição japonesa" title="Edição japonesa"><svg viewBox="0 0 30 20" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#vt-jp"/></svg></span><span class="vt-editora">Bandai · Arcade</span></span>
+              </span>
+              <span class="game-badge vintage vt-anos">2005–2010</span>
+              <span class="vt-faixa" aria-hidden="true"><span class="vt-barra"></span></span>
+            </a>
+          </li>
+          <li class="vt-jogo" data-inicio="2006-04" data-fim="2013-05" data-pais="us" data-marcas="naruto">
+            <a class="vt-linha" href="/games/naruto-ccg" data-game="naruto">
+              <span class="vt-logo-box"><img class="vt-logo" src="assets/games/game_naruto_ccg-v2.webp" alt="" loading="lazy" decoding="async"></span>
+              <span class="vt-texto">
+                <span class="vt-nome">Naruto Collectible Card Game</span>
+                <span class="vt-meta"><span class="vt-flag" role="img" data-i18n-aria="hub.flagUS" data-i18n-title="hub.flagUS" aria-label="Edição americana" title="Edição americana"><svg viewBox="0 0 30 20" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#vt-us"/></svg></span><span class="vt-editora">Bandai America · CCG</span></span>
+              </span>
+              <span class="game-badge vintage vt-anos">2006–2013</span>
+              <span class="vt-faixa" aria-hidden="true"><span class="vt-barra"></span></span>
+            </a>
+          </li>
+          <li class="vt-jogo" data-inicio="2006-10" data-fim="2013-08" data-pais="us" data-marcas="warcraft">
+            <a class="vt-linha" href="/games/world-of-warcraft-tcg" data-game="wow">
+              <span class="vt-logo-box"><img class="vt-logo" src="assets/games/game_wow.webp" alt="" loading="lazy" decoding="async"></span>
+              <span class="vt-texto">
+                <span class="vt-nome">World of Warcraft TCG</span>
+                <span class="vt-meta"><span class="vt-flag" role="img" data-i18n-aria="hub.flagUS" data-i18n-title="hub.flagUS" aria-label="Edição americana" title="Edição americana"><svg viewBox="0 0 30 20" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#vt-us"/></svg></span><span class="vt-editora">Upper Deck, Cryptozoic · TCG</span></span>
+              </span>
+              <span class="game-badge vintage vt-anos">2006–2013</span>
+              <span class="vt-faixa" aria-hidden="true"><span class="vt-barra"></span></span>
+            </a>
+          </li>
+          <li class="vt-jogo" data-inicio="2007-02" data-fim="2008-11" data-pais="jp" data-marcas="naruto">
+            <a class="vt-linha" href="/games/naruto-shippuden-card-game" data-game="naruto">
+              <span class="vt-logo-box"><img class="vt-logo" src="assets/games/game_naruto.webp" alt="" loading="lazy" decoding="async"></span>
+              <span class="vt-texto">
+                <span class="vt-nome">Naruto Shippuden Card Game</span>
+                <span class="vt-meta"><span class="vt-flag" role="img" data-i18n-aria="hub.flagJP" data-i18n-title="hub.flagJP" aria-label="Edição japonesa" title="Edição japonesa"><svg viewBox="0 0 30 20" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#vt-jp"/></svg></span><span class="vt-editora">Bandai · TCG</span></span>
+              </span>
+              <span class="game-badge vintage vt-anos">2007–2008</span>
+              <span class="vt-faixa" aria-hidden="true"><span class="vt-barra"></span></span>
+            </a>
+          </li>
+          <li class="vt-jogo" data-inicio="2009-12" data-fim="2014-08" data-pais="jp" data-marcas="dragon-ball one-piece toriko hunter-x-hunter naruto kuroko-no-basket">
+            <a class="vt-linha" href="/games/miracle-battle-carddass" data-game="mbc">
+              <span class="vt-logo-box"><img class="vt-logo" src="assets/games/game_mbc.webp" alt="" loading="lazy" decoding="async"></span>
+              <span class="vt-texto">
+                <span class="vt-nome">Miracle Battle Carddass</span>
+                <span class="vt-meta"><span class="vt-flag" role="img" data-i18n-aria="hub.flagJP" data-i18n-title="hub.flagJP" aria-label="Edição japonesa" title="Edição japonesa"><svg viewBox="0 0 30 20" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#vt-jp"/></svg></span><span class="vt-editora">Bandai · Carddass</span><span class="vt-tag" data-i18n="vt.multi">Várias marcas</span></span>
+              </span>
+              <span class="game-badge vintage vt-anos">2009–2014</span>
+              <span class="vt-faixa" aria-hidden="true"><span class="vt-barra"></span></span>
+            </a>
+          </li>
+        </ul>
+        <p class="vt-vazio" id="vtVazio" data-i18n="vt.empty" hidden>Nenhum jogo vintage dessa marca ainda.</p>
+      </section>
+      <p class="hub-more" data-i18n="vt.more">Mais jogos vintage a caminho.</p>
+    </main>
+
+    <script defer src="src/i18n.js"></script>
+    <script defer src="src/i18n-vintage.js"></script>
+    <script defer src="src/shared.js"></script>
+    <script defer src="src/vintage.js"></script>
+  </body>
+</html>

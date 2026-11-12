@@ -69,6 +69,8 @@
     ["dragon-ball-fusion-world", "dbfw"], ["digimon-card-game", "digimon"], ["union-arena", "unionarena"],
     ["cyberpunk-tcg", "cyberpunk"], ["sorcery-contested-realm", "sorcery"], ["naruto-card-game", "narutocg"],
     ["weiss-schwarz", "weiss"], ["godzilla-card-game", "godzilla"], ["palworld-official-card-game", "palworld"], ["final-fantasy-tcg", "fftcg"],
+    // Daqui em diante, os VINTAGE (o `vintage` do registro): o PRIMEIRO_VINTAGE
+    // abaixo é a posição desta linha, e o teste confere um por um.
     ["gundam-carddass", "gcd"],
     ["gundam-war", "gw"],
     ["dragon-ball-carddass", "dbc"], ["hunter-x-hunter-carddass", "hxh"],
@@ -80,6 +82,10 @@
     ["naruto-shippuden-card-game", "naruto", "nrt-scg", "nrt-scg-"], ["miracle-battle-carddass", "mbc"],
     ["carddass-masters", "cdm"]
   ];
+  // Quantos jogos em atividade vêm antes do primeiro vintage na lista acima.
+  // É por ele que o menu sabe acender "Vintage", e não "Jogos", na tela de um
+  // jogo que saiu de linha (SLEEVU.vintage, lido pelo shared.js).
+  var PRIMEIRO_VINTAGE = 19;
   // Linha que virou seção de outra (o LINE_ALIASES do shared.js).
   var LINHA_APELIDO = { "nrt-nf": "nrt-dc", "nrt-nx": "nrt-dc" };
   // Linha que virou JOGO (o LINHAS_VIRARAM_JOGO do functions/_lib/jogos.js): o
@@ -119,11 +125,12 @@
     var m = CAMINHO_DO_JOGO.exec(location.pathname || "");
     if (!m) return null;
     for (var i = 0; i < URL_DOS_JOGOS.length; i++) {
-      if (URL_DOS_JOGOS[i][0] === m[1]) return [URL_DOS_JOGOS[i][1], URL_DOS_JOGOS[i][2] || ""];
+      if (URL_DOS_JOGOS[i][0] === m[1]) return [URL_DOS_JOGOS[i][1], URL_DOS_JOGOS[i][2] || "", i >= PRIMEIRO_VINTAGE];
     }
     return null;
   }
   var linhaDaUrl = ""; // linha vinda de /games/<url> (o shared.js lê via SLEEVU.line)
+  var vintageDaUrl = false; // /games/<url> de um jogo vintage (SLEEVU.vintage)
 
   var GAME_KEY = "tcg-collector-game-v1"; // sessão: jogo escolhido por último
   function readSession() {
@@ -146,7 +153,7 @@
   // e o /condition público saía com ?game= no link que a pessoa copia.
   function isNeutralPage() {
     var p = (location.pathname || "").replace(/\/+$/, "");
-    return p === "" || /\/(index|hub|explore|search|account|dashboard|badges|backup|decks|my-decks|collection|portfolio|sales|binders|wishlist|graded|troca|tools|condition|centering|sleeves)(\.html)?$/i.test(p);
+    return p === "" || /\/(index|hub|vintage|explore|search|account|dashboard|badges|backup|decks|my-decks|collection|portfolio|sales|binders|wishlist|graded|troca|tools|condition|centering|sleeves)(\.html)?$/i.test(p);
   }
   // Porta de entrada (Início/HUB): a única neutra onde ?game= grava a sessão.
   function isEntryPage() {
@@ -160,6 +167,7 @@
     var doCaminho = jogoDoCaminho();
     if (doCaminho) {
       linhaDaUrl = doCaminho[1];
+      vintageDaUrl = doCaminho[2];
       writeSession(doCaminho[0]);
       // ?game= e ?line= não valem aqui (o jogo e a linha são os do endereço).
       // Sobra de link velho sai da barra; senão um ?line= solto trocaria a
@@ -511,6 +519,9 @@
     // Linha vinda do endereço (/games/naruto-data-carddass): o lineParamOf do
     // shared.js lê daqui antes do ?line=.
     line: linhaDaUrl,
+    // O endereço aberto é de um jogo vintage (/games/dragon-ball-carddass e os
+    // níveis de baixo): o menu acende "Vintage" no lugar de "Jogos".
+    vintage: vintageDaUrl,
     // Endereço da tela de Sets de um jogo (e linha), e o de um set: os links
     // da tela de Sets, do hub e do "compartilhar" saem daqui.
     urlDoJogo: urlDoJogo,

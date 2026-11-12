@@ -136,7 +136,7 @@ const HASHED_ASSETS = false; /* SLEEVU_HASHED */
 // novo 5 a 6 vezes por dia em todo aparelho com o app. Visitadas uma vez, a
 // navegação guarda a cópia delas como guarda qualquer outra (navigationFast).
 const SHELL_ASSETS = [
-  "./", "index.html", "hub.html", "pokedex.html", "lore.html", "sets.html", "artists.html",
+  "./", "index.html", "hub.html", "vintage.html", "pokedex.html", "lore.html", "sets.html", "artists.html",
   "trainers.html", "collection.html", "wishlist.html", "portfolio.html", "explore.html", "dashboard.html", "badges.html",
   "backup.html", "detail.html", "binders.html", "cards.html", "sales.html", "about.html", "novidades.html", "blog.html", "lancamentos.html", "comparar.html", "help.html", "login.html", "settings.html", "profile.html",
   "decks.html", "my-decks.html", "pastas.html", "troca.html", "tools.html", "condition.html", "centering.html", "sleeves.html", "search.html", "account.html",
@@ -144,9 +144,9 @@ const SHELL_ASSETS = [
   // Fonte da marca (auto-hospedada): precisa estar no shell pra o app abrir
   // offline com a tipografia certa, sem "trocar de fonte" ao reconectar.
   "assets/fonts/outfit-latin.woff2", "assets/fonts/outfit-latin-ext.woff2",
-  "src/theme.js", "src/game.js", "src/login-boot.js", "src/i18n.js", "src/i18n-docs.js", "src/i18n-decks.js", "src/i18n-binders.js", "src/i18n-pastas.js", "src/i18n-vendas.js", "src/i18n-lore.js", "src/i18n-entidades.js", "src/i18n-perfil.js", "src/i18n-blog.js", "src/i18n-ferramentas.js", "src/i18n-centering.js", "src/shared.js", "src/app.js", "src/collection.js", "src/detail.js", "src/explore.js", "src/dashboard.js", "src/primeiros-passos.js", "src/badges.js", "src/lancamentos.js", "src/goldfish.js",
+  "src/theme.js", "src/game.js", "src/login-boot.js", "src/i18n.js", "src/i18n-docs.js", "src/i18n-decks.js", "src/i18n-binders.js", "src/i18n-pastas.js", "src/i18n-vendas.js", "src/i18n-lore.js", "src/i18n-entidades.js", "src/i18n-perfil.js", "src/i18n-blog.js", "src/i18n-ferramentas.js", "src/i18n-centering.js", "src/i18n-vintage.js", "src/shared.js", "src/app.js", "src/collection.js", "src/detail.js", "src/explore.js", "src/dashboard.js", "src/primeiros-passos.js", "src/badges.js", "src/lancamentos.js", "src/goldfish.js",
   "src/home.js", "src/news.js", "src/wishlist.js", "src/portfolio.js", "src/binders.js",
-  "src/backup.js", "src/graded-ui.js", "src/cards.js", "src/sales.js", "src/login.js", "src/hub.js", "src/settings.js", "src/profile.js",
+  "src/backup.js", "src/graded-ui.js", "src/cards.js", "src/sales.js", "src/login.js", "src/hub.js", "src/vintage.js", "src/settings.js", "src/profile.js",
   // Mercado do jogo: a tela de Sets carrega (sets.html) e ele não estava aqui —
   // offline a tela pedia um arquivo que o cache não tinha.
   "src/mercado.js",

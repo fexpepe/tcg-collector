@@ -121,7 +121,7 @@ const GAMES = [
 // sem jogo abre no jogo da sessão e leva noindex (functions/sets.js); cada
 // jogo tem a sua, em /games/<jogo> (sitemap-games.xml).
 const STATIC_URLS = [
-  "/", "/hub", "/explore", "/search", "/cards", "/pokedex", "/lore", "/games", "/artists", "/trainers",
+  "/", "/hub", "/vintage", "/explore", "/search", "/cards", "/pokedex", "/lore", "/games", "/artists", "/trainers",
   "/decks", "/blog",
   // Ferramentas (2026-10-01): o índice, o Guia de condição e o Centering Tool,
   // que são públicos, nos endereços em inglês (/ferramentas e /condicao são
@@ -1119,7 +1119,8 @@ async function mapaDasCartasAntigas(pages) {
 function milhar(n) {
   return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
-function paginaDosJogos(pages) {
+// Sets e cartas de cada /games/<jogo> (o endereço é a chave).
+function setsECartasPorJogo(pages) {
   const porUrl = new Map();
   for (const p of pages) {
     const e = porUrl.get(p.url) || { sets: 0, cartas: 0 };
@@ -1127,6 +1128,15 @@ function paginaDosJogos(pages) {
     e.cartas += cardsForLang(p.cards, "pt").length;
     porUrl.set(p.url, e);
   }
+  return porUrl;
+}
+function contagemPorJogo(pages) {
+  const saida = {};
+  for (const [url, e] of setsECartasPorJogo(pages)) saida[url] = [e.sets, e.cartas];
+  return saida;
+}
+function paginaDosJogos(pages) {
+  const porUrl = setsECartasPorJogo(pages);
   const jogos = JOGOS_URL.filter((j) => porUrl.has(j.url));
   const canonical = `${ORIGIN}/games`;
   const title = "Jogos de cartas colecionáveis: sets e cartas | Sleevu";
@@ -1267,6 +1277,11 @@ async function main() {
 
   escreveMapaDeSets(pages);
   escreveMapasDosJogos(pages, await mapaDasCartasAntigas(pages));
+  // Sets e cartas de cada /games/<jogo>, pra página Vintage (src/vintage.js)
+  // mostrar os números de cada linha sem baixar o índice de 16 jogos: os
+  // mesmos que a página /games escreve. { "<endereço>": [sets, cartas] }.
+  // DEPOIS do escreveMapasDosJogos, que apaga e recria a pasta dos mapas.
+  writeFileSync(join(MAPAS_DIR, "contagem.json"), JSON.stringify(contagemPorJogo(pages)), "utf8");
 
   // ── Artistas ──────────────────────────────────────────────────────────────
   // Agrupa pelo NOME do ilustrador, cruzando os jogos: o mesmo artista pode

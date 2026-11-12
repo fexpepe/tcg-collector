@@ -25,7 +25,7 @@ const BASE = `http://localhost:${PORTA}/`;
 // As URLs com parâmetro são as que mais escapam: elas mudam o caminho de código
 // do título e do agrupamento, e nenhuma delas é a página que se abre por hábito.
 const PAGINAS = [
-  "index.html", "hub.html", "sets.html?game=pokemon", "sets.html?game=pokemon&serie=sv",
+  "index.html", "hub.html", "vintage.html", "vintage.html?marca=naruto", "sets.html?game=pokemon", "sets.html?game=pokemon&serie=sv",
   "sets.html?game=onepiece&line=opcd", "sets.html?game=gundam&line=gcd", "sets.html?game=mbc",
   "cards.html?game=pokemon", "detail.html?type=set&name=Base+Set&game=pokemon",
   "explore.html", "search.html", "account.html", "collection.html", "portfolio.html", "wishlist.html", "binders.html",

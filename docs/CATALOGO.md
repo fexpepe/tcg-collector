@@ -359,6 +359,44 @@ teste barra vintage sem ele.
   título (no celular, no pé, na largura toda); a história e a linha do tempo
   nascem fechadas e, abertas, têm a mesma altura.
 
+### 3.6 A página Vintage
+
+Jogo que saiu de linha não entra na grade "Jogos" (`hub.html`, só os que
+estão em atividade): entra na **página Vintage** (`/vintage`, `vintage.html`
++ `src/vintage.js`, desde 2026-11-12), que tem item próprio no menu. O
+acervo cresce rápido e cada jogo tem começo e fim, então a página é uma
+**linha do tempo**: uma linha por jogo, com a barra do lançamento ao
+encerramento numa régua de anos comum. Em cima, o filtro por **marca**
+(Dragon Ball, Naruto…): aberto, vira a história da marca em cartas, com o
+resumo de cada jogo (o do "Sobre") e o jogo que continua hoje. Há também a
+visão agrupada por marca e a grade de logos. Em todas, a linha inteira é o
+link do jogo: Vintage > jogo, os mesmos dois cliques de Jogos > jogo.
+
+- **A lista é HTML**, como no hub (o link não depende do JS e o buscador lê
+  tudo). **Jogo vintage novo: uma linha no `vintage.html`, na posição da
+  data de lançamento**, com:
+  - `data-inicio` e `data-fim`: o `periodo` do "Sobre" do jogo (3.5), que é
+    a data com fonte. Mês quando a fonte dá (`1999-11`), senão só o ano;
+  - `data-pais`: `jp` ou `us` (a bandeira; país novo pede o símbolo no
+    `<svg class="vt-simbolos">`);
+  - `data-marcas`: a franquia, ou as franquias separadas por espaço quando
+    o jogo junta várias (leva a etiqueta "Várias marcas"). O slug tem de
+    estar em `MARCAS` no `src/vintage.js`; marca nova entra lá com o nome e,
+    se o Sleevu tem o jogo dela em atividade, o `hoje`;
+  - o nome, o logo e os anos iguais aos do registro (`functions/_lib/jogos.js`).
+- **Jogo em atividade novo** sobe o `PRIMEIRO_VINTAGE` do `src/game.js` (é
+  por ele que o menu acende "Vintage" na tela de um jogo que saiu de
+  linha).
+- **No celular** não há aba Vintage (a barra logada já tem seis): a faixa
+  "Em atividade | Vintage" no topo das duas páginas faz a troca, e as duas
+  acendem a aba Jogos.
+- **Sets e cartas de cada jogo** vêm de `data/game-pages/contagem.json`, que
+  o `prerender-catalog.mjs` escreve no deploy. Em desenvolvimento o arquivo
+  não existe e a página fica sem esses números.
+- Quem trava: `tests/vintage.test.mjs` (cada linha contra o registro e o
+  "Sobre", a ordem, as marcas, a régua) e `tests/games-url.test.mjs` (todo
+  endereço tem porta em uma das duas páginas, e na certa).
+
 ## 4. Linha ou jogo novo
 
 ### 4.1 A ficha: decidir antes de escrever código
@@ -430,7 +468,8 @@ hub). A ficha preenchida vai na descrição da PR.
   Fernando, em fileiras de 4 (a de 11/11/2026, com 19 jogos, está no comentário
   da grade no `hub.html`): a posição do jogo novo se pergunta, não vai pro fim
   por padrão. As duas primeiras fileiras carregam o logo sem `loading="lazy"`.
-  A seção Vintage segue ordem cronológica.
+  Jogo vintage não entra no hub: entra na página Vintage (3.6), na posição
+  da data de lançamento.
 - **Orçamento** (5.3 e 5.4): arquivos no deploy e bytes no `shared.js` e no
   CSS. Se não cabe, o jogo espera a fase que abre espaço. O teto não sobe por
   reflexo (cabeçalho do [scripts/check-size.mjs](../scripts/check-size.mjs)).
@@ -492,7 +531,7 @@ valem só nesse caso.
 | B12 | `src/binders.js` (`PREFIXO_JOGO`) e `src/card-rescue.js` (`ID_PREFIX_GAME`) | o prefixo de id | carta do jogo no binder sem jogo atribuído ("Tenho" e preço manual olham a coleção errada); link de carta resolve em duas ondas | — |
 | B13 | `src/backup-import.js` (`mapCsvGame`) e `tests/csv-import.test.mjs` | o nome do jogo como Collectr e TCGplayer escrevem | import de CSV tenta todos os jogos (mais lento; pode casar carta homônima de outro jogo) | — |
 | B14 | `src/portfolio.js` (`CSV_GAME_NAMES`) | nome no CSV do Portfólio, até a F6 | CSV sai com o slug (hoje já sai assim em 9 jogos, 5.2) | — |
-| B15 | `hub.html` | tile: grade moderna ou Vintage (anos e bandeira), com a posição da ficha; `href="/games/<endereço>"` e `data-game="<slug>"` (desde 2026-09-30) | jogo sem porta de entrada | `games-url.test.mjs` (todo endereço tem tile e todo tile aponta pro registro) |
+| B15 | `hub.html` (em atividade) ou `vintage.html` (vintage, 3.6) | em atividade: tile na grade, com a posição da ficha; vintage: a linha, com período, país e marcas; nos dois, `href="/games/<endereço>"` e `data-game="<slug>"` (desde 2026-09-30) | jogo sem porta de entrada | `games-url.test.mjs` (todo endereço tem porta, na página certa) e `vintage.test.mjs` |
 | B16 | opcionais: `src/facets.js`, `src/detail.js` (`RARITY_LISTED_GAMES`), `src/app.js` (`group<Jogo>Sets`, registrado no `agrupaSetsDoJogo` — padrão da página de Sets em 3.4), `src/deck-rules.js` | filtros, agrupamento e regras de deck próprios | tudo genérico (funciona) | `tests/sets-padrao.test.mjs` (agrupador fora do padrão) |
 | B17 | `src/game.js` (`URL_DOS_JOGOS`) | a cópia do C17: `[endereço, slug, linha, prefixos]` | a tela do jogo em `/games/<endereço>` não sabe qual jogo abrir e cai no da sessão | `games-url.test.mjs` (a cópia bate com o C17) |
 | B18 | `src/scan.js` (`extrair`, `FORMATOS`, `PISTAS`) e `tests/scan-cobertura.test.mjs` (`JOGOS`) | o formato do código que a carta imprime e a pista do rodapé (o © que só ela tem); no teste, a taxa mínima — ou `semCodigo` com o motivo, quando a carta não imprime um código que a identifique (`linhaSemCodigo`, pra linha vintage dentro de um jogo que tem código) | o scanner não acha a carta do jogo, ou acha a de outro jogo (em 10/11/2026: 89 % do Weiss sem candidato, e SWU e Harry Potter filtrados pra Pokémon) | `tests/scan-cobertura.test.mjs` (jogo do `DATA_GAMES` sem declaração quebra; taxa abaixo do mínimo quebra) |

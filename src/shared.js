@@ -3105,7 +3105,11 @@
         active = type === "set" ? "sets" : type === "artist" ? "artists" : type === "trainer" ? "trainers" : "pokedex";
       }
     }
-    const exploreActive = ["pokedex", "lore", "trainers", "sets", "artists", "cards", "hub"].includes(active);
+    // Vintage (2026-11-12) tem item próprio: a página do acervo (vintage.html)
+    // e as telas de um jogo que saiu de linha (/games/<vintage>…, que o
+    // game.js marca em SLEEVU.vintage) acendem ele, e não "Jogos".
+    const vintageActive = active === "vintage" || !!(window.SLEEVU && window.SLEEVU.vintage);
+    const exploreActive = !vintageActive && ["pokedex", "lore", "trainers", "sets", "artists", "cards", "hub"].includes(active);
     // "Meus Decks" é página PESSOAL (entra pelo Dashboard), então acende a
     // Coleção — diferente de "Decks", que é a galeria PÚBLICA e tem item próprio.
     const collectionActive = ["dashboard", "collection", "wishlist", "binders", "sales", "mydecks", "pastas"].includes(active);
@@ -3128,8 +3132,9 @@
     const brand = document.querySelector(".brand");
     if (brand) brand.setAttribute("href", apexUrl);
 
-    // "Jogos" = grade de jogos (hub); "Explorar" = busca GLOBAL multi-jogo.
-    const exploreMega = `<a href="hub"${exploreActive ? ' class="active"' : ""}>${escapeHtml(t("nav.games"))}</a><a href="explore"${active === "explore" ? ' class="active"' : ""}>${escapeHtml(t("nav.explore"))}</a>`;
+    // "Jogos" = grade dos jogos em atividade (hub); "Vintage" = o acervo dos
+    // que saíram de linha; "Explorar" = busca GLOBAL multi-jogo.
+    const exploreMega = `<a href="hub"${exploreActive ? ' class="active"' : ""}>${escapeHtml(t("nav.games"))}</a><a href="vintage"${vintageActive ? ' class="active"' : ""}>${escapeHtml(t("hub.vintage"))}</a><a href="explore"${active === "explore" ? ' class="active"' : ""}>${escapeHtml(t("nav.explore"))}</a>`;
 
     // Toda Coleção e Portfólio são páginas PESSOAIS: só existem no menu com
     // login (deslogado, o "Entrar" do header é o caminho — sem atalhos mortos).
@@ -3229,7 +3234,9 @@
       if (event.key === "Escape") closeAll();
     });
 
-    buildMobileTabbar(active, exploreActive, collectionActive);
+    // O Vintage não tem aba (a barra logada já tem seis): acende Jogos, que é
+    // por onde se chega a ele no celular (a faixa no topo do hub).
+    buildMobileTabbar(active, exploreActive || vintageActive, collectionActive);
     initHeaderProfileButton(active);
     buildExploreSubnav(active);
   }
