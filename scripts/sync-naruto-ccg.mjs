@@ -102,7 +102,10 @@ const SETS = [
   { key: "s25",   slug: "bandai-ccg-25",    name: "Kage Summit",               date: "2012-05-01" },
   { key: "s26",   slug: "bandai-ccg-26",    name: "Avenger's Wrath",           date: "2012-09-01" },
   { key: "s27",   slug: "bandai-ccg-27",    name: "Hero's Ascension",          date: "2012-12-01" },
-  { key: "s28",   slug: "bandai-ccg-28",    name: "Ultimate Ninja Storm 3",    date: "2013-03-01" },
+  // s28: "Hobby Street Date: March 8th, 2013" no post da própria Bandai America
+  // (web.archive.org/web/20130309033404/http://www.bandai.com/naruto/naruto-ccg-series-28-ultimate-ninja-storm-3/);
+  // até 2026-11-12 era 2013-03-01, estimativa pela cadência.
+  { key: "s28",   slug: "bandai-ccg-28",    name: "Ultimate Ninja Storm 3",    date: "2013-03-08" },
   { key: "s29",   slug: "bandai-ccg-29",    name: "Shinobi's Dream",           date: "", skip: true },
   { key: "tp1",   slug: "bandai-ccg-tp1",   name: "Tournament Pack 1",         date: "2010-07-07" },
   { key: "tp2",   slug: "bandai-ccg-tp2",   name: "Tournament Pack 2",         date: "2011-01-05" },
