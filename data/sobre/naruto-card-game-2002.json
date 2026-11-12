@@ -1,0 +1,217 @@
+{
+  "url": "naruto-card-game-2002",
+  "nome": "Naruto Card Game (2002~2006)",
+  "nomeOriginal": {
+    "texto": "NARUTO-ナルト- カードゲーム",
+    "lang": "ja",
+    "romaji": "Naruto Kādo Gēmu"
+  },
+  "logo": "assets/games/game_naruto_vintage.webp",
+  "logoLargura": 512,
+  "logoAltura": 278,
+  "periodo": {
+    "inicio": "2002-12",
+    "fim": "2006-09"
+  },
+  "etiquetas": [
+    "Vintage",
+    {
+      "pt": "Japão",
+      "en": "Japan",
+      "es": "Japón"
+    },
+    "TCG"
+  ],
+  "resumo": {
+    "pt": "Jogo de cartas do Naruto da Bandai, lançado no Japão em dezembro de 2002. Teve 17 volumes até 2006 e ganhou uma versão americana.",
+    "en": "Bandai's Naruto card game, launched in Japan in December 2002. It ran for 17 volumes until 2006 and got an American version.",
+    "es": "Juego de cartas de Naruto de Bandai, lanzado en Japón en diciembre de 2002. Tuvo 17 volúmenes hasta 2006 y una versión estadounidense."
+  },
+  "fatos": [
+    {
+      "chave": "lancamento",
+      "valor": "2002-12"
+    },
+    {
+      "chave": "encerramento",
+      "valor": "2006-09"
+    },
+    {
+      "chave": "fabricante",
+      "valor": "Bandai"
+    },
+    {
+      "chave": "licenca",
+      "valor": {
+        "pt": "Masashi Kishimoto/Shueisha, TV Tokyo e Pierrot",
+        "en": "Masashi Kishimoto/Shueisha, TV Tokyo and Pierrot",
+        "es": "Masashi Kishimoto/Shueisha, TV Tokyo y Pierrot"
+      }
+    },
+    {
+      "chave": "origem",
+      "valor": {
+        "pt": "Japão",
+        "en": "Japan",
+        "es": "Japón"
+      }
+    },
+    {
+      "chave": "distribuicao",
+      "valor": {
+        "pt": "Máquinas Carddass, pacotes e decks prontos",
+        "en": "Carddass machines, packs and starter decks",
+        "es": "Máquinas Carddass, sobres y mazos de inicio"
+      }
+    }
+  ],
+  "historia": {
+    "pt": [
+      "Foi o jogo de cartas do Naruto da Bandai no Japão. Estreou em 13 de dezembro de 2002 com o Vol. 1, de 70 cartas, vendido em boosters de máquina Carddass, pacotes e decks prontos. Duas pessoas jogavam: os ninjas formavam equipes para atacar e defender, jutsus e cartas de estratégia mudavam cada luta, e vencia quem juntasse 10 cartas de recompensa de batalha (戦果) ou deixasse o outro sem cartas no deck.",
+      "Havia quatro tipos de carta — ninja (忍), jutsu (術), estratégia (作) e cliente (依) —, numerados em sequência no jogo inteiro, e as folhas do segundo filme, em 2005, trouxeram um quinto, o cavaleiro (騎). A raridade ia de Normal a Ultra Rara. A partir de 2005 o jogo conversou com o arcade: o Vol. 13 e os decks prontos traziam cartas para o Narutimate Card Battle, da Data Carddass.",
+      "Foram 17 volumes em quase quatro anos, além de decks prontos, folhas de expansão e moedas. No Vol. 16, de junho de 2006, o jogo passou de 1.000 cartas diferentes e ganhou cartas comemorativas. No mesmo ano ele chegou aos EUA: o primeiro set americano, The Path to Hokage, era para a Bandai a “versão americana” do jogo.",
+      "O Vol. 17, de setembro de 2006, foi o último. Em fevereiro de 2007 veio o sucessor, o Naruto Shippuden Card Game, e as cartas antigas continuaram valendo nele por uma tabela de conversão."
+    ],
+    "en": [
+      "This was Bandai's Naruto card game in Japan. It debuted on December 13, 2002 with Vol. 1, 70 cards sold in Carddass machine boosters, packs and starter decks. Two people played: ninjas formed teams to attack and defend, jutsu and strategy cards swung each fight, and the winner was whoever collected 10 battle reward cards (戦果) or left the other player with no cards in the deck.",
+      "There were four card types — ninja (忍), jutsu (術), strategy (作) and client (依) — numbered in sequence across the whole game, and the sheets for the second movie, in 2005, added a fifth, the knight (騎). Rarity ran from Normal to Ultra Rare. From 2005 the game linked up with the arcade: Vol. 13 and the starter decks included cards for Narutimate Card Battle, on Data Carddass.",
+      "There were 17 volumes in almost four years, plus starter decks, expansion sheets and coins. With Vol. 16, in June 2006, the game passed 1,000 different cards and got commemorative cards. That same year it reached the US: the first American set, The Path to Hokage, was to Bandai the “American version” of the game.",
+      "Vol. 17, from September 2006, was the last. The successor, Naruto Shippuden Card Game, arrived in February 2007, and the old cards stayed legal in it through a conversion table."
+    ],
+    "es": [
+      "Fue el juego de cartas de Naruto de Bandai en Japón. Debutó el 13 de diciembre de 2002 con el Vol. 1, de 70 cartas, vendido en sobres de máquina Carddass, paquetes y mazos de inicio. Jugaban dos personas: los ninjas formaban equipos para atacar y defender, los jutsus y las cartas de estrategia cambiaban cada pelea, y ganaba quien juntara 10 cartas de recompensa de batalla (戦果) o dejara al otro sin cartas en el mazo.",
+      "Había cuatro tipos de carta — ninja (忍), jutsu (術), estrategia (作) y cliente (依) —, numerados en secuencia en todo el juego, y las hojas de la segunda película, en 2005, sumaron un quinto, el caballero (騎). La rareza iba de Normal a Ultra Rara. Desde 2005 el juego se conectó con el arcade: el Vol. 13 y los mazos de inicio traían cartas para Narutimate Card Battle, de Data Carddass.",
+      "Fueron 17 volúmenes en casi cuatro años, además de mazos de inicio, hojas de expansión y monedas. Con el Vol. 16, de junio de 2006, el juego superó las 1.000 cartas distintas y sumó cartas conmemorativas. Ese mismo año llegó a EE. UU.: el primer set estadounidense, The Path to Hokage, era para Bandai la “versión americana” del juego.",
+      "El Vol. 17, de septiembre de 2006, fue el último. En febrero de 2007 llegó el sucesor, Naruto Shippuden Card Game, y las cartas viejas siguieron valiendo en él con una tabla de conversión."
+    ]
+  },
+  "linhaDoTempo": [
+    {
+      "data": "2002-12",
+      "set": "nrt-s01",
+      "texto": {
+        "pt": "O Vol. 1 sai em 13 de dezembro, com 70 cartas.",
+        "en": "Vol. 1 comes out on December 13, with 70 cards.",
+        "es": "El Vol. 1 sale el 13 de diciembre, con 70 cartas."
+      }
+    },
+    {
+      "data": "2003-07",
+      "texto": {
+        "pt": "Saem juntos os decks prontos Naruto & Iruka e Sasuke & Kakashi.",
+        "en": "The Naruto & Iruka and Sasuke & Kakashi starter decks come out together.",
+        "es": "Salen juntos los mazos de inicio Naruto & Iruka y Sasuke & Kakashi."
+      }
+    },
+    {
+      "data": "2005-08",
+      "texto": {
+        "pt": "Folhas do 2º filme estreiam um quinto tipo de carta, o cavaleiro (騎).",
+        "en": "Sheets for the 2nd movie debut a fifth card type, the knight (騎).",
+        "es": "Hojas de la 2.ª película estrenan un quinto tipo de carta, el caballero (騎)."
+      }
+    },
+    {
+      "data": "2005-09",
+      "set": "nrt-s13",
+      "texto": {
+        "pt": "Vol. 13 traz, no 1º lote, promos do arcade Narutimate Card Battle.",
+        "en": "Vol. 13's first run includes promos for the Narutimate Card Battle arcade.",
+        "es": "El Vol. 13 trae, en el 1.er lote, promos del arcade Narutimate Card Battle."
+      }
+    },
+    {
+      "data": "2006",
+      "texto": {
+        "pt": "A versão americana chega aos EUA com The Path to Hokage.",
+        "en": "The American version reaches the US with The Path to Hokage.",
+        "es": "La versión estadounidense llega a EE. UU. con The Path to Hokage."
+      }
+    },
+    {
+      "data": "2006-03",
+      "set": "nrt-s15",
+      "texto": {
+        "pt": "Vol. 15 e um deck pronto com as regras novas, a Ver. 5.0.",
+        "en": "Vol. 15 and a starter deck with the new rules, Ver. 5.0.",
+        "es": "Vol. 15 y un mazo de inicio con las reglas nuevas, la Ver. 5.0."
+      }
+    },
+    {
+      "data": "2006-06",
+      "set": "nrt-s16",
+      "texto": {
+        "pt": "Vol. 16: o jogo passa de 1.000 cartas e ganha cartas comemorativas.",
+        "en": "Vol. 16: the game passes 1,000 cards and gets commemorative cards.",
+        "es": "Vol. 16: el juego supera las 1.000 cartas y suma cartas conmemorativas."
+      }
+    },
+    {
+      "data": "2006-09",
+      "set": "nrt-s17",
+      "texto": {
+        "pt": "Vol. 17, com os personagens dos filmes, é o último volume.",
+        "en": "Vol. 17, with the movie characters, is the last volume.",
+        "es": "El Vol. 17, con los personajes de las películas, es el último volumen."
+      }
+    },
+    {
+      "data": "2007-02",
+      "texto": {
+        "pt": "Chega o Naruto Shippuden Card Game; as cartas antigas seguem valendo.",
+        "en": "Naruto Shippuden Card Game arrives; the old cards stay legal.",
+        "es": "Llega Naruto Shippuden Card Game; las cartas viejas siguen valiendo."
+      }
+    }
+  ],
+  "fontes": [
+    {
+      "nome": {
+        "pt": "Bandai, página do Vol. 1 (2002)",
+        "en": "Bandai, Vol. 1 product page (2002)",
+        "es": "Bandai, página del Vol. 1 (2002)"
+      },
+      "url": "https://web.archive.org/web/20021215134330/http://www.carddas.com/naruto/product/index.shtml"
+    },
+    {
+      "nome": {
+        "pt": "Bandai, lista de produtos (2007)",
+        "en": "Bandai, product list (2007)",
+        "es": "Bandai, lista de productos (2007)"
+      },
+      "url": "https://web.archive.org/web/20070103022221/http://www.carddas.com/naruto/product/"
+    },
+    {
+      "nome": {
+        "pt": "Bandai, regras oficiais (2004)",
+        "en": "Bandai, official rules (2004)",
+        "es": "Bandai, reglas oficiales (2004)"
+      },
+      "url": "https://web.archive.org/web/20040607030419/http://www.carddas.com/naruto/rule/nagare.shtml"
+    },
+    {
+      "nome": {
+        "pt": "Bandai, a versão americana (2006)",
+        "en": "Bandai, the American version (2006)",
+        "es": "Bandai, la versión estadounidense (2006)"
+      },
+      "url": "https://web.archive.org/web/20061102143600/http://www.carddas.com/datacarddas/naruto/room/usa.html"
+    },
+    {
+      "nome": {
+        "pt": "Bandai, site oficial (fevereiro de 2007)",
+        "en": "Bandai, official site (February 2007)",
+        "es": "Bandai, sitio oficial (febrero de 2007)"
+      },
+      "url": "https://web.archive.org/web/20070203052841/http://www.carddas.com/naruto/"
+    },
+    {
+      "nome": {
+        "pt": "Bandai, manual do Shippuden Card Game (2007)",
+        "en": "Bandai, Shippuden Card Game rulebook (2007)",
+        "es": "Bandai, manual del Shippuden Card Game (2007)"
+      },
+      "url": "https://web.archive.org/web/20070226100827/http://www.carddas.com/naruto/cardgame/rule/naruto_rulebook.pdf"
+    }
+  ]
+}
