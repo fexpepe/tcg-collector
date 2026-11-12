@@ -1,9 +1,10 @@
 // Carta que estava DUAS vezes no catálogo (2026-11-11): a mesma carta, com o
 // mesmo número e a mesma imagem, com dois ids no mesmo set. A página das duas
-// saía com o mesmo título, e o Google conta isso como cópia. As 22 que havia
-// (21 do Magic, o H36 do One Piece Carddass) foram juntadas pelo de-para do
-// data/card-id-merges.json, que migra a coleção de quem marcou a cópia. O que
-// se trava aqui:
+// saía com o mesmo título, e o Google conta isso como cópia. As 41 que havia
+// (21 do Magic, o H36 do One Piece Carddass, 19 promos MEP do Pokémon) foram
+// juntadas pelo de-para do data/card-id-merges.json, que migra a coleção de
+// quem marcou a cópia. A MEP não volta pelo build porque o merge-catalogs já
+// pula id com de-para (jaMigrado). O que se trava aqui:
 //   - os dois syncs não criam a cópia de novo (sync-magic.mjs primeiraVez,
 //     sync-onepiece-vintage.mjs semRepetidasNoSet);
 //   - id juntado em outro não volta pelo cache nem pelos chunks
@@ -57,6 +58,8 @@ test("no app, quem marcou a cópia passa a ter a carta que ficou", () => {
   const { __test: t } = loadShared("window.__test = { mergedCardId, remapIdsDeep };");
   assert.equal(t.mergedCardId("mtg-sld-2766-2"), "mtg-sld-2766");
   assert.equal(t.mergedCardId("opcd-H36-grand-box-dx"), "opcd-H36");
+  assert.equal(t.mergedCardId("mep-89"), "mep-089");
+  assert.equal(t.mergedCardId("mep-89-pt"), "", "a edição portuguesa não tem cópia");
   assert.equal(t.mergedCardId("mtg-sld-2766"), "", "a carta que ficou não muda");
   // Marcou as duas: na coleção as cópias somam (a regra do id-merges.test.mjs).
   const r = t.remapIdsDeep({ "mtg-trk-221": { Normal: { NM: 1 } }, "mtg-trk-221-2": { Foil: { NM: 1 } } }, { somar: true });
@@ -64,8 +67,11 @@ test("no app, quem marcou a cópia passa a ter a carta que ficou", () => {
 });
 
 test("as cópias juntadas não estão no catálogo, e a carta que ficou está", () => {
-  const pares = Object.entries(merges.cards).filter(([de]) => /^(mtg|opcd)-/.test(de));
-  assert.ok(pares.length >= 22, "os 22 pares de 11/11 estão no de-para");
+  const pares = Object.entries(merges.cards).filter(([de]) => /^(mtg|opcd)-|^mep-\d{2}$/.test(de));
+  assert.ok(pares.length >= 41, "os 41 pares de 11/11 estão no de-para");
+  const mep = new Set(JSON.parse(readFileSync(new URL("data/sets/en/mep.json", RAIZ), "utf8")).map((c) => c.id));
+  // O mep-92 fica: é outro produto (normal; a mep-092 é holo).
+  assert.ok(mep.has("mep-92") && !merges.cards["mep-92"]);
   const opcd = (() => { const w = {}; new Function("window", readFileSync(new URL("data/onepiece/cards.js", RAIZ), "utf8"))(w); return new Set(w.TCG_CARDS.map((c) => c.id)); })();
   const magic = new Map();
   const doMagic = (set) => {
@@ -73,7 +79,7 @@ test("as cópias juntadas não estão no catálogo, e a carta que ficou está", 
     return magic.get(set);
   };
   for (const [de, para] of pares) {
-    const ids = de.startsWith("opcd-") ? opcd : doMagic(de.split("-")[1]);
+    const ids = de.startsWith("opcd-") ? opcd : de.startsWith("mep-") ? mep : doMagic(de.split("-")[1]);
     assert.ok(!ids.has(de), `${de} voltou pro catálogo`);
     assert.ok(ids.has(para), `${para} (pra onde ${de} foi) não está no catálogo`);
   }
