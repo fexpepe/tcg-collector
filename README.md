@@ -33,7 +33,7 @@ catálogo completo só existe no build de produção.
 
 ## Os jogos
 
-O registro central é o `GAMES` em [src/game.js](src/game.js): **30 slugs**, 29 com
+O registro central é o `GAMES` em [src/game.js](src/game.js): **31 slugs**, 30 com
 catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do Pokémon
 é a raiz `data/` por motivo histórico (não movemos nada).
 
@@ -48,6 +48,7 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 | `swu` | Star Wars: Unlimited | TCGCSV cat. 79 (FFG; Hyperspace/Showcase = cartas próprias) + logos de set do site oficial (`mirror-swu-set-logos.mjs`) | USD |
 | `cyberpunk` | Cyberpunk TCG | TCGCSV cat. 92 (Weird Co.; edições Beta e Retail = sets próprios, setId fixo por groupId) + logo do Welcome to Night City curado do site oficial | USD |
 | `weiss` | Weiß Schwarz | TCGCSV cat. 20 (Bushiroad; só a edição inglesa, 2013+; paralelas SP/SSP/OFR = cartas próprias; setId fixo por groupId com o código impresso, `DDD-S118`; sem logo de set publicado) | USD |
+| `fftcg` | Final Fantasy TCG | TCGCSV cat. 24 (Square Enix 2016+, os Opus; Full Art = carta própria; setId fixo por groupId, `OP27`, porque a abreviação da fonte erra e repete; sem logo de set publicado) | USD |
 | `godzilla` | Godzilla Card Game | TCGCSV cat. 88 (Bushiroad/Yuhodo 2025; só a edição inglesa; paralelas +/++/+++ = cartas próprias; setId fixo por groupId com o código impresso, `EBP01`; sem logo de set publicado) | USD |
 | `palworld` | Palworld Official Card Game | TCGCSV cat. 91 (Bushiroad com a Pocketpair, 2026; paralelas SR/OSR/SP/SSP = cartas próprias, com a raridade no número impresso, `EBP01-001OSR`; a 2ª edição do BP01, que o TCGplayer cadastra no grupo da 1ª, vira o set `EBP01-2E`; setId do código impresso, fixo por groupId; sem logo de set publicado) | USD |
 | `sorcery` | Sorcery: Contested Realm | TCGCSV cat. 77 (Erik's Curiosa 2023; foil é outro produto no TCGplayer e o sync junta o par, sem número de coleção, setId fixo por groupId) | USD |
@@ -136,6 +137,31 @@ inglesa está na TCGCSV. O que é só dele:
   art, e sem o código as duas teriam o mesmo nome.
 - Sets no formato dos modernos da Bandai (`SECOES_BANDAI`), como o Godzilla:
   boosters, trial decks e promos; o Sleeve and Card Set vai pras promos.
+
+### Final Fantasy TCG (`fftcg`)
+
+[scripts/sync-fftcg.mjs](scripts/sync-fftcg.mjs), TCGCSV categoria 24, no
+padrão do Godzilla. O FINAL FANTASY TRADING CARD GAME da Square Enix, os Opus
+da edição ocidental desde 2016. Não é o set "Final Fantasy" do Magic
+(Universes Beyond), que mora no catálogo do Magic.
+
+- **setId fixo por groupId**: a abreviação da TCGCSV erra (o Journey of
+  Discovery vem "28" e imprime 27-xxx) e repete (dois "28", dois "30"). Os
+  boosters são `OP<n>`, o número que a carta imprime antes do hífen; starters
+  `ST<n>`, Boss Decks `BDC`/`BD7`, Legacy Collection `RE`. Grupo novo sem pin
+  cai no número que a maioria das cartas imprime; o log avisa pra pinar.
+- **Full Art** é produto próprio com o MESMO número da carta comum e vira
+  carta própria, como o Hyperspace do Star Wars.
+- **Nome sem o número**: o TCGplayer enfia o número no nome de quatro jeitos
+  ("- 1-010C", "(2-033C)", "(PR-171)(JP)", só uma parte do número duplo da
+  promo); o sync tira quando é o desta carta. Qualificador fica ("(Full
+  Art)", "(Hero)", "(JP)").
+- **Imagem 429×600** na maioria dos sets, abaixo dos 440 px da ficha: o CDN
+  oficial da Square Enix tem o mesmo tamanho, então não há fonte melhor.
+- Elemento no `color`, custo no `cost` e a série (de qual Final Fantasy é a
+  carta) no `series`, que vira faceta da página do set.
+- Sets no formato dos modernos da Bandai (`SECOES_BANDAI`): os Opus,
+  o Legacy Collection como booster extra, starters e Boss Decks, promos.
 
 ### Sorcery: Contested Realm (`sorcery`)
 

@@ -106,6 +106,13 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
   transparente, recortado no conteúdo (+2px), alfa ≤12 zerado e reduzido pra
   512×182 com o Pillow em alfa pré-multiplicado. WebP com perda q88 e alfa
   sem perda: 34 KB.
+- `game_fftcg.webp` — Final Fantasy TCG (19º tile da grade moderna do hub,
+  depois do Palworld, 2026-11-11). Fonte: o logo do cabeçalho do site
+  oficial (`fftcg.square-enix-games.com/theme/fftcg/images/large-fftcg-logo.png`,
+  321×230, PNG com alfa: "FINAL FANTASY", o katakana e "TRADING CARD GAME"
+  em cinza sobre o contorno de uma carta). Recortado no conteúdo (+2px) e
+  alfa ≤12 zerado; como o Star Wars, **não** foi esticado pra 512 (bitmap
+  pequeno). WebP sem perda, 17 KB. O cinza escuro lê bem na cápsula branca.
 - `game_gw.webp` — Gundam War (Bandai, 1999–2011). Fonte enviada pelo
   Fernando em 2026-11-11: WebP de 360×125 com alfa, o logo dourado "GUNDAM
   WAR / MOBILE SUIT GUNDAM THE CARD GAME". Recortado no conteúdo (+2px), com
