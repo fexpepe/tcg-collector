@@ -39,19 +39,26 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
   com o nome (`setLogo` vazio): pôr o logo do jogo em todo set é decisão por
   jogo (regra 3 do `docs/CATALOGO.md`), e cada set tem logo próprio impresso
   (o Grand Line Wiki publica, a ~250 px).
-- `game_unionarena.webp` — Union Arena (fonte enviada pelo Fernando em
-  2026-08-30, 384×384 com fundo branco e muito padding). **Único que NÃO tem 512
-  de largura**: o recorte do conteúdo dá 285×123, e esticar bitmap não inventa
-  detalhe — só infla o arquivo, já que o navegador ia reamostrar do mesmo jeito
-  numa tela 2×. Se um dia aparecer uma fonte maior, é só refazer com 512. O
-  fundo branco fica: a cápsula do hub é branca nos dois temas, e o branco aqui é
-  o PREENCHIMENTO das letras (que têm contorno preto) — transformá-lo em alfa
-  esvaziaria o logo.
-- `game_swu.webp` — Star Wars: Unlimited (fonte enviada pelo Fernando em
-  2026-09-30: 316×226, PNG com alfa, tinta preta). Já vinha justo no conteúdo
-  (o recorte +2px não tirou nada) e sem véu; só o alfa abaixo de 12 foi zerado.
-  Como o Union Arena, **não** foi esticado pra 512 (bitmap pequeno). Preto
-  puro funciona nos dois temas porque a cápsula do hub é branca.
+- `game_unionarena-v2.webp` — Union Arena (12/11/2026; o v1 era a fonte
+  enviada pelo Fernando em 2026-08-30, 384×384 com fundo branco: recortado dava
+  285×123, mole na prateleira em tela 2×, com contorno preto e o "E" vermelho).
+  Fonte nova: a capa do manual oficial (`unionarena-tcg.com/na/pdf/rule_manual.pdf`,
+  Ver1.1), renderizada a 300 dpi com o PyMuPDF — o logo atual da marca, BRANCO
+  sobre o fundo escuro da capa, com "TRADING CARD GAME" e "ユニオンアリーナ",
+  1554×715. Virou tinta preta com o alfa saído da luminância (fundo ~9, letra
+  ~255; só na vizinhança das letras, pra não pegar cisco das faixas da capa),
+  recortado no conteúdo (+2px), reduzido pra 512×237 em alfa pré-multiplicado,
+  alfa ≤12 zerado. WebP sem perda, 11 KB (uma cor só). Sai o "E" vermelho do
+  v1, que a versão do manual não tem.
+- `game_swu-v2.webp` — Star Wars: Unlimited (12/11/2026; o v1 era a fonte
+  enviada pelo Fernando em 2026-09-30, 316×226, PNG com alfa, tinta preta —
+  pequena pra tela 2×). Fonte nova: a capa das Comprehensive Rules v8.0
+  (`cdn.starwarsunlimited.com//SWH_Comp_Rules_v8_0_e26603c6e1.pdf`), onde o
+  logo é BRANCO num painel preto liso (fundo ~1, letra ~250), renderizada na
+  resolução da imagem da capa (309 dpi): 971×696. Mesmo tratamento do Union
+  Arena: tinta preta com alfa pela luminância, recorte +2px, 512×367 em alfa
+  pré-multiplicado, alfa ≤12 zerado, WebP sem perda (13 KB). Preto puro
+  funciona nos dois temas porque a cápsula do hub é branca.
 - `game_cyberpunk.webp` — Cyberpunk TCG. Fonte: "Cyberpunk TCG Logo Yellow With
   Black Stroke", PNG oficial 3310×850 com alfa da página
   cyberpunktcg.com/marketing-materials (seção "Logo", 30/09/2026). Das quatro
@@ -65,11 +72,19 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
   reduzido pra 512 de largura com o Pillow em alfa pré-multiplicado (sem
   franja escura na borda). WebP com perda q88 e alfa sem perda: 52 KB; o sem
   perda dava 190 KB, por causa dos gradientes do logo.
-- `game_sorcery.webp` — Sorcery: Contested Realm. Fonte: o logo enviado pelo
-  Fernando em 2026-10-01 (907×365, PNG de paleta com alfa; o brilho branco em
-  volta é semitransparente e some na cápsula branca do hub). Recortado no
-  conteúdo (+2px), alfa ≤12 zerado e reduzido pra 512 de largura com o Pillow
-  em alfa pré-multiplicado. WebP com perda q88 e alfa sem perda: 43 KB.
+- `game_sorcery-v2.webp` — Sorcery: Contested Realm (12/11/2026). O v1 saiu
+  do logo enviado pelo Fernando em 2026-10-01: 907×365, PNG de PALETA (256
+  cores) com alfa, e a sombra em volta das letras era escura e
+  semitransparente (luminância ~32) — na cápsula branca virava uma mancha
+  cinza borrada. Fonte nova: o logo embutido no rulebook oficial (out/2026,
+  Google Drive linkado em sorcerytcg.com/how-to-play), página 2, imagem
+  884×341 em CMYK com máscara de alfa própria — cor cheia, com a placa de
+  pedra e o degradê das bordas como a Erik's Curiosa desenhou. Extraído com o
+  PyMuPDF (CMYK → RGB, máscara como alfa), recortado no conteúdo (+2px), alfa
+  ≤12 zerado, 512×194 com o Pillow em alfa pré-multiplicado. WebP com perda
+  q88 e alfa sem perda: 35 KB. (O site oficial hoje só mostra o "gotlogo",
+  versão temática da expansão Gothic, com estalactites — não serve de logo
+  do jogo.)
 - `game_weiss.webp` — Weiß Schwarz (16º tile da grade moderna do hub). Fonte: o
   logo oficial (Weiß Schwarz com ヴァイスシュヴァルツ) enviado pelo Fernando em
   2026-10-01 (1312×644, com alfa). Mesmo tratamento do WoW: recortado no
@@ -111,12 +126,12 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
   oficial (`fftcg.square-enix-games.com/theme/fftcg/images/large-fftcg-logo.png`,
   321×230, PNG com alfa: "FINAL FANTASY", o katakana e "TRADING CARD GAME"
   em cinza sobre o contorno de uma carta). Recortado no conteúdo (+2px) e
-  alfa ≤12 zerado; como o Star Wars, **não** foi esticado pra 512 (bitmap
+  alfa ≤12 zerado; como o Star Wars v1, **não** foi esticado pra 512 (bitmap
   pequeno). WebP sem perda, 17 KB. O cinza escuro lê bem na cápsula branca.
 - `game_gw.webp` — Gundam War (Bandai, 1999–2011). Fonte enviada pelo
   Fernando em 2026-11-11: WebP de 360×125 com alfa, o logo dourado "GUNDAM
   WAR / MOBILE SUIT GUNDAM THE CARD GAME". Recortado no conteúdo (+2px), com
-  o alfa ≤12 zerado: 354×87. Como o Star Wars, **não** foi esticado pra 512
+  o alfa ≤12 zerado: 354×87. Como o Star Wars v1, **não** foi esticado pra 512
   (bitmap pequeno). WebP q88 com alfa sem perda, 12 KB. Fica fora da fileira
   Vintage da landing por enquanto: o One Piece Card Game de 2002 e o Gundam
   Carddass (2026-11-11) já levaram a fileira a 14 (7 + 7 no tablet); com ele
@@ -176,7 +191,7 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
   jogo `dbc` e `setLogo` de todos os sets dele, via sync-dbc-carddass.mjs).
   Fonte enviada pelo Fernando em 2026-09-24: 414×260 com fundo branco e muita
   margem. Recortado no conteúdo + 2px, a regra dos -v2 (abaixo) = 373×82, e
-  **não** foi esticado pra 512 (bitmap pequeno, como o Union Arena). É o logo
+  **não** foi esticado pra 512 (bitmap pequeno, como o Union Arena v1). É o logo
   mais largo (~4.5:1), mas não precisa de scale no CSS: o equilíbrio óptico do
   `.hub-logo` já dá a largura pela proporção.
   Até 2026-11-12 era o `game_dbc.webp`, opaco com o fundo branco. Na cápsula
@@ -208,7 +223,7 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
   (observada ÷ alfa), senão o contorno ficava encardido na cápsula branca. O
   brilho de baixo ficou fora do recorte (as letras acabam na linha ~199 da
   fonte). Recortado no conteúdo +2px = 200×172, alfa abaixo de 12 zerado, sem
-  esticar (bitmap pequeno, como o Union Arena).
+  esticar (bitmap pequeno, como o Union Arena v1).
 - `game_harrypotter.webp` — Harry Potter Trading Card Game (Wizards of the
   Coast, 2001–2002; tile vintage do jogo `harrypotter`). Fontes enviadas pelo
   Fernando em 2026-09-30: um scan 1587×1256 sobre fundo PRETO e uma versão
