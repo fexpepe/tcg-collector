@@ -353,11 +353,11 @@ hub). A ficha preenchida vai na descrição da PR.
   o ouro do Riftbound fixou).
 - **Logo do jogo e posição no hub**: logo em `assets/games/game_<slug>.webp`,
   pela especificação de [assets/games/README.md](../assets/games/README.md).
-  Sem logo, o tile mostra o nome. A grade moderna do hub foi desenhada pra **12
-  tiles**, que fecham retângulo em 4, 3 e 2 colunas. Com o Star Wars ela tem 13,
-  e 13 deixa fileira incompleta em qualquer número de colunas: a posição do
-  próximo jogo e o formato da grade se decidem juntos. A seção Vintage segue
-  ordem cronológica.
+  Sem logo, o tile mostra o nome. A ordem da grade moderna do hub é escolha do
+  Fernando, em fileiras de 4 (a de 11/11/2026, com 19 jogos, está no comentário
+  da grade no `hub.html`): a posição do jogo novo se pergunta, não vai pro fim
+  por padrão. As duas primeiras fileiras carregam o logo sem `loading="lazy"`.
+  A seção Vintage segue ordem cronológica.
 - **Orçamento** (5.3 e 5.4): arquivos no deploy e bytes no `shared.js` e no
   CSS. Se não cabe, o jogo espera a fase que abre espaço. O teto não sobe por
   reflexo (cabeçalho do [scripts/check-size.mjs](../scripts/check-size.mjs)).
