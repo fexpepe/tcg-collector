@@ -239,9 +239,9 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   primeiro booster, conferir o código do set contra o `SECOES_BANDAI`
   (src/app.js), que hoje supõe BT/ST.
 - **Final Fantasy TCG (`fftcg`, 2026-11-11)**: entrou com as 5.700 cartas
-  dos 38 sets da TCGCSV (cat. 24), Opus I ao Memories of Life. Pendências: a
-  migração `20261111f` (aplicar no SQL Editor e conferir com o par de
-  `curl`); o próximo Opus entra sozinho como `OP31`, mas o pin no
+  dos 38 sets da TCGCSV (cat. 24), Opus I ao Memories of Life; a migração
+  `20261111f` foi aplicada e conferida em 2026-11-12. Pendências: o próximo
+  Opus entra sozinho como `OP31`, mas o pin no
   `ABREV_FIXA` do `sync-fftcg.mjs` tem de entrar antes do deploy que o
   publica (o log avisa); a cor (`#93c5fd`, proposta) e a 19ª posição no hub;
   Cardmarket sem link porque não deu pra conferir (anti-robô).
