@@ -74,10 +74,10 @@ test("admin_jogos: o clique em loja leva o jogo da carta; o resto, o da página"
   assert.ok(f.includes("least(_int(props->>'n'), 100000)"), "o n do card_added tem o mesmo teto da admin_pulso");
 });
 
-test("README das migrações lista a 20261111g pra aplicar", () => {
+test("README das migrações registra a 20261111g como aplicada", () => {
   const readme = ler("supabase/migrations/README.md");
-  const pend = readme.slice(readme.indexOf("## Pendentes de aplicar"), readme.indexOf("### Já aplicadas"));
-  assert.ok(pend.includes("`20261111g`"), "a 20261111g está em Pendentes");
+  const aplicadas = readme.slice(readme.indexOf("### Já aplicadas"));
+  assert.ok(aplicadas.includes("`20261111g`"), "a 20261111g está em Já aplicadas (2026-11-12)");
 });
 
 // ── Kit para parceiros ───────────────────────────────────────────────────────
