@@ -3263,6 +3263,7 @@
     cdm: SUBNAV_MIN,
     gcd: SUBNAV_MIN,
     gw: SUBNAV_ARTISTS,
+    seiya: SUBNAV_MIN,
     lotr: SUBNAV_MIN,
     harrypotter: SUBNAV_ARTISTS
   };
@@ -7282,6 +7283,9 @@
     cdm:       { usText: "carddass masters", noTcgplayer: true },
     gcd:       { usText: "gundam carddass", noTcgplayer: true },
     gw:        { usText: "gundam war", noTcgplayer: true },
+    // Saint Seiya (conferido em 12/11/2026): sem loja BR (nem Liga nem MYP
+    // têm seção) e sem TCGplayer; só a busca do eBay e do PriceCharting.
+    seiya:     { usText: "saint seiya", noTcgplayer: true },
     // World of Warcraft TCG (conferido em 30/09/2026): TCGplayer na linha
     // "wow" (a busca devolve a carta "in WoW") e Cardmarket em /en/WoW. Sem
     // loja BR: o MYP não tem seção do jogo e não existe Liga.
@@ -8928,7 +8932,8 @@
     "mbc",
     "cdm",
     "gcd",
-    "gw"
+    "gw",
+    "seiya"
   ].map((game) => ({ game, dataDir: game === "pokemon" ? "data/" : `data/${game}/` }));
   // Slugs e cor de cada jogo, num lugar só (adicionar um jogo = 1 entrada aqui
   // + 1 no game.js + labels no i18n; as páginas iteram em vez de hardcodear).
@@ -8973,7 +8978,8 @@
     mbc: "#fb923c",        // pêssego (o laranja-dourado do logo); 9.3:1 com preto, a 71 do One Piece e a 77 do Naruto
     cdm: "#a21caf",        // fúcsia; 6.3:1 com branco, a 79 do Yu-Gi-Oh! e a 81 do DBC (proposta, 2026-11-09)
     gcd: "#a3e635",        // lima; 13.9:1 com preto, a 92 do Sorcery e a 99 do Cyberpunk (proposta, 2026-11-10)
-    gw: "#5eead4"          // turquesa; 14.2:1 com preto, a 100 do DBFW (proposta, 2026-11-11)
+    gw: "#5eead4",         // turquesa; 14.2:1 com preto, a 100 do DBFW (proposta, 2026-11-11)
+    seiya: "#d8b4fe"       // lilás (o cabelo e o cosmo de Athena); 11.9:1 com preto, a 71 do Final Fantasy e a 85 do Weiß (proposta, 2026-11-12)
   };
   // Preto ou branco sobre a cor do jogo — o que der MAIOR contraste de verdade
   // (fórmula WCAG), não um limiar de luminância chutado: com limiar fixo o
@@ -9122,6 +9128,7 @@
     cdm: ["cdm-"],                            // Bandai 1996–2009: idem
     gcd: ["gcd-"],                            // Bandai 1988–1997: idem
     gw: ["gw-"],                              // Bandai 1999–2011: idem
+    seiya: ["ss-"],                           // Bandai e Amada 1988–2023: idem
     harrypotter: ["hp-"],                     // Wizards 2001–2002: idem
     naruto: ["nrt-"]                          // Bandai 2003–2013: idem (o NARUTO CARD GAME de 2027, nrt-ncg-, é o jogo narutocg)
   };

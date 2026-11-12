@@ -132,6 +132,17 @@
       },
       facetType(["Unit", "Character", "Command", "Operation", "G", "ACE"])
     ],
+    // Saint Seiya: a cor e o tipo só existem no G Crusade (o TCG de 2012–2014,
+    // da família do Gundam War); nas outras famílias os filtros somem sozinhos.
+    seiya: [
+      {
+        key: "color", labelKey: "facet.color",
+        of: (c) => facetSplit(c.color, ";"),
+        label: (v) => v,
+        order: ["Blue", "Black", "Green", "Red", "Purple", "White", "Yellow"]
+      },
+      facetType(["Unit", "Character", "Command"])
+    ],
     gundam: [
       facetColor("color"),
       facetLevel,

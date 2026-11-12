@@ -117,6 +117,10 @@ test("mapCsvGame: os 13 jogos, nas grafias do Collectr/TCGplayer", () => {
   assert.equal(api.mapCsvGame("SD Gundam Carddass"), "gcd");
   // Gundam War (1999–2011) também vem antes do "gundam" genérico.
   assert.equal(api.mapCsvGame("Gundam War"), "gw");
+  // Saint Seiya pelos três nomes: o japonês, o do Brasil e o dos EUA.
+  assert.equal(api.mapCsvGame("Saint Seiya"), "seiya");
+  assert.equal(api.mapCsvGame("Cavaleiros do Zodíaco"), "seiya");
+  assert.equal(api.mapCsvGame("Knights of the Zodiac"), "seiya");
   assert.equal(api.mapCsvGame("Gundam Card Game"), "gundam");
   // TCGplayer escreve "Weiss Schwarz"; quem digita o nome alemão, "Weiß Schwarz".
   assert.equal(api.mapCsvGame("Weiss Schwarz"), "weiss");

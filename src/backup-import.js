@@ -120,6 +120,9 @@
     if (flat.includes("gundamcarddass") || flat === "gcd") return "gcd";
     // E o Gundam War (1999–2011), pelo mesmo motivo.
     if (flat.includes("gundamwar") || flat === "gw") return "gw";
+    // Saint Seiya (Os Cavaleiros do Zodíaco; Knights of the Zodiac nos EUA). O
+    // "í" sai no flat, por isso o "zod" sem o resto.
+    if (flat.includes("saintseiya") || flat.includes("cavaleirosdozod") || flat.includes("knightsofthezodiac") || flat === "seiya") return "seiya";
     if (flat.includes("onepiece")) return "onepiece";
     if (flat.includes("magic") || flat === "mtg") return "magic";
     if (flat.includes("yugioh") || flat === "ygo") return "ygo";

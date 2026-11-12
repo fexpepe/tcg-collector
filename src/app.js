@@ -17,7 +17,7 @@
     ygo: "game_ygo-v2.webp", digimon: "game_digimon-v2.webp", riftbound: "game_riftbound-v2.webp",
     unionarena: "game_unionarena-v2.webp", narutocg: "game_naruto_2027.webp", naruto: "game_naruto.webp", hxh: "game_hxh.webp",
     dbc: "game_dbc-v2.webp", wow: "game_wow.webp", lotr: "game_lotr.webp", dbz: "game_dbz.webp", weiss: "game_weiss.webp", godzilla: "game_godzilla.webp", palworld: "game_palworld.webp", fftcg: "game_fftcg.webp", harrypotter: "game_harrypotter.webp",
-    mbc: "game_mbc.webp", cdm: "game_cdm.webp", gcd: "game_gcd.webp", gw: "game_gw.webp"
+    mbc: "game_mbc.webp", cdm: "game_cdm.webp", gcd: "game_gcd.webp", gw: "game_gw.webp", seiya: "game_seiya.webp"
   };
   function gameLogoUrl(game) {
     const f = GAME_LOGO[game];

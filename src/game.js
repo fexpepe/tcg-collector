@@ -47,6 +47,7 @@
     cdm: { slug: "cdm", name: "Carddass Masters", dataDir: "data/cdm/" }, // vintage Bandai 1996–2009, uma seção por IP (Evangelion e HxH; fontes no sync-carddass-masters.mjs)
     gcd: { slug: "gcd", name: "Gundam Carddass", dataDir: "data/gcd/" }, // vintage Bandai 1988–1997, uma seção por série (animecollection.fr + 80storage; nome transcrito dos scans)
     gw: { slug: "gw", name: "Gundam War", dataDir: "data/gw/" }, // vintage Bandai 1999–2011, o TCG japonês (listas do site oficial; sem imagem)
+    seiya: { slug: "seiya", name: "Saint Seiya", dataDir: "data/seiya/" }, // vintage Bandai e Amada 1988–2023, uma seção por família (animecollection.fr; nome transcrito dos scans)
     // Em preparação (catálogo ainda vazio; tile "Em breve" no hub):
     jump: { slug: "jump", name: "JUMP", dataDir: "data/jump/" }            // promos curadas (Jump Festa, V-Jump…)
   };
@@ -69,7 +70,7 @@
     ["dragon-ball-fusion-world", "dbfw"], ["digimon-card-game", "digimon"], ["union-arena", "unionarena"],
     ["cyberpunk-tcg", "cyberpunk"], ["sorcery-contested-realm", "sorcery"], ["naruto-card-game", "narutocg"],
     ["weiss-schwarz", "weiss"], ["godzilla-card-game", "godzilla"], ["palworld-official-card-game", "palworld"], ["final-fantasy-tcg", "fftcg"],
-    ["gundam-carddass", "gcd"],
+    ["gundam-carddass", "gcd"], ["saint-seiya", "seiya"],
     ["gundam-war", "gw"],
     ["dragon-ball-carddass", "dbc"], ["hunter-x-hunter-carddass", "hxh"],
     ["one-piece-carddass", "onepiece", "opcd", "opcd-"], ["lord-of-the-rings-tcg", "lotr"], ["harry-potter-tcg", "harrypotter"],

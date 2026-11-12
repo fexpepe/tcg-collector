@@ -104,6 +104,7 @@ const JOGOS = {
   cdm: { semCodigo: "Carddass Masters: número solto, sem set impresso" },
   gcd: { semCodigo: "Gundam Carddass: número solto, sem set impresso" },
   gw: { semCodigo: "Gundam War: número por cor (cada cor tem seu U-1), sem set impresso" },
+  seiya: { semCodigo: "Saint Seiya: número solto (Carddass, Trading) ou por cor (G Crusade), sem set impresso" },
   mbc: { semCodigo: "Miracle Battle Carddass: número solto" },
   hxh: { semCodigo: "número curto (C01), repetido entre os sets" },
   cyberpunk: { semCodigo: "número solto (001), repetido em todo set" }

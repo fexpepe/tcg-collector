@@ -518,6 +518,19 @@
   --accent: #0f766e; --accent-dark: #115e59; --accent-rgb: 15, 118, 110;
   --accent-soft: rgba(15, 118, 110, 0.1); --on-accent: #ffffff;
 }
+/* Saint Seiya: LILÁS, a cor do GAME_COLOR (12/11/2026; o cabelo e o cosmo de
+   Athena — os dourados e os azuis já são de outros jogos). Lilás com texto
+   escuro no escuro (11.9:1); o roxo #7e22ce com texto branco no claro
+   (7.0:1). */
+[data-game-accent="seiya"] {
+  --accent: #d8b4fe; --accent-dark: #c084fc; --accent-rgb: 216, 180, 254;
+  --accent-soft: rgba(216, 180, 254, 0.16); --on-accent: #0a0c10;
+}
+[data-theme="light"][data-game-accent="seiya"],
+[data-theme="light"] [data-game-accent="seiya"] {
+  --accent: #7e22ce; --accent-dark: #6b21a8; --accent-rgb: 126, 34, 206;
+  --accent-soft: rgba(126, 34, 206, 0.1); --on-accent: #ffffff;
+}
 /* Sorcery: Contested Realm: o PERGAMINHO da moldura das cartas (#c9a66b, o do
    GAME_COLOR) com texto escuro no escuro (8.5:1). No claro ele fica em 2.3:1
    com branco, então o accent escurece pro marrom de tinta #7d5f2c (5.9:1 com

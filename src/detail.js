@@ -459,6 +459,10 @@
     // no fim do número), o starter (S) e as promos. As cartas dos Boss Decks
     // vêm sem raridade.
     fftcg: ["Common", "Rare", "Hero", "Legend", "Starter", "Promo"],
+    // Saint Seiya (12/11/2026): o brilho do Carddass (Normal e Prism), a escada
+    // do G Crusade (Common até Cosmo Rare) e as especiais das Trading
+    // Collection da Amada (Holographic, Special, SP) e as promos.
+    seiya: ["Normal", "Prism", "Common", "Uncommon", "Rare", "Metal Rare", "Cosmo Rare", "Holographic", "Special", "SP", "Promo"],
     // One Piece Card Game (TCGCSV): as siglas da carta, Líder primeiro como no
     // jogo. Depois as vintage: o acabamento do Carddass Hyper Battle
     // (sync-onepiece-vintage.mjs) e as estrelas do Card Game 2002

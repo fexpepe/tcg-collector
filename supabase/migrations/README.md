@@ -8,6 +8,18 @@ poucos.)
 
 ## Pendentes de aplicar
 
+- `20261112c` — libera o slug `seiya` (Saint Seiya: as cartas da Bandai e da
+  Amada de 1988 a 2023, o jogo vintage) nas duas whitelists de jogo
+  (`card_views`/`increment_card_view` e `contribute_price`;
+  `20261112c_add_seiya.sql`). Cópia da `20261111f` (fftcg, aplicada) com o
+  `seiya` a mais; só a lista muda. Sem ela, a view de carta e o Preço da
+  Comunidade do jogo são descartados em silêncio (a coleção não depende
+  dela). Depois dela, nem a `20261111f` nem as anteriores podem rodar de novo
+  (tirariam o `seiya`). Conferir com o par de `curl` do fim do arquivo: a view
+  de `ss-cd02-1` cria a linha no `card_views`, um jogo inventado não cria, e
+  o `contribute_price` anônimo segue 401. **A próxima migração de jogo copia
+  esta.**
+
 - `20261112b` — /admin: as LINHAS de cada jogo (`20261112b_admin_jogos_linhas.sql`;
   o `b` porque a 20261112a do mesmo dia é a dos erros). O jogo `naruto` junta
   o Card Game 2002~2006, o Data Carddass, o CCG e o Shippuden (o `onepiece`, o
@@ -368,7 +380,7 @@ poucos.)
   `fftcg`, 1 view); um jogo inventado (`fftcgx`) respondeu 204 e não criou
   linha; `contribute_price` anônimo segue 401. Depois dela, nem a
   `20261111e` nem as anteriores podem rodar de novo (tirariam o `fftcg`).
-  **A próxima migração de jogo copia esta.**
+  A `20261112c` (seiya) copia esta.
 
 - `20261111e` — libera o slug `palworld` (Palworld OFFICIAL CARD GAME,
   Bushiroad/Pocketpair, 2026) nas duas whitelists de jogo

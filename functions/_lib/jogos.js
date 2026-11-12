@@ -44,6 +44,7 @@ export const JOGOS_URL = [
   { url: "palworld-official-card-game", game: "palworld", nome: "Palworld Official Card Game", logo: "assets/games/game_palworld.webp" },
   { url: "final-fantasy-tcg", game: "fftcg", nome: "Final Fantasy TCG", logo: "assets/games/game_fftcg.webp" },
   { url: "gundam-carddass", game: "gcd", nome: "Gundam Carddass", logo: "assets/games/game_gcd.webp", vintage: "1988–1997" },
+  { url: "saint-seiya", game: "seiya", nome: "Saint Seiya", logo: "assets/games/game_seiya.webp", vintage: "1988–2023" },
   { url: "dragon-ball-carddass", game: "dbc", nome: "Dragon Ball Carddass", logo: "assets/games/game_dbc-v2.webp", vintage: "1988–1997" },
   { url: "gundam-war", game: "gw", nome: "Gundam War", logo: "assets/games/game_gw.webp", vintage: "1999–2011" },
   { url: "hunter-x-hunter-carddass", game: "hxh", nome: "Hunter × Hunter Carddass Hyper Battle", logo: "assets/games/game_hxh.webp", vintage: "1999–2001" },
