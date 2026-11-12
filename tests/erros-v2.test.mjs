@@ -34,7 +34,7 @@ const UA = {
 };
 
 // ── src/erros.js num navegador de mentira ──────────────────────────────────
-function carregaErros({ ua = UA.chromeAndroid, toque = true, fila = [], sessao = new Map(), fetchFalha = false } = {}) {
+function carregaErros({ ua = UA.chromeAndroid, toque = true, fila = [], sessao = new Map(), fetchFalha = false, webdriver = false } = {}) {
   const enviados = [];
   const window = {
     __sleevuErros: fila,
@@ -44,7 +44,7 @@ function carregaErros({ ua = UA.chromeAndroid, toque = true, fila = [], sessao =
   const sandbox = {
     window,
     matchMedia: window.matchMedia,
-    navigator: { userAgent: ua, maxTouchPoints: toque ? 5 : 0 },
+    navigator: { userAgent: ua, maxTouchPoints: toque ? 5 : 0, webdriver },
     document: { querySelector: (s) => (s === 'meta[name="sleevu-build"]' ? { getAttribute: () => "cfcdd120" } : null) },
     location: { origin: "https://sleevu.app" },
     sessionStorage: { getItem: (k) => (sessao.has(k) ? sessao.get(k) : null), setItem: (k, v) => sessao.set(k, String(v)) },
@@ -131,6 +131,14 @@ test("despeja: manda com o contexto do aparelho, uma vez por erro, com .catch e 
   assert.equal(primeiro.corpo.props.lg, 1);
   assert.deepEqual(segundo.corpo.props.f, ["src/shared.js:93:2765"]);
   assert.equal(sessao.get("sleevu-jserror-n"), "2");
+  assert.equal(primeiro.corpo.props.wd, undefined, "navegador comum não leva a marca de robô");
+
+  // Navegador automatizado: o erro leva a mesma marca do pageview (wd), que o
+  // events_guard grava como robô. Sem ela (até 2026-11-12) a página do robô
+  // saía do denominador do "erros a cada mil páginas" e o erro entrava.
+  const robo = carregaErros({ fila: [{ k: "js", m: "r", s: "" }], webdriver: true });
+  robo.E.despeja(ENVIO);
+  assert.equal(robo.enviados[0].corpo.props.wd, 1);
 
   // sessão que já mandou 15 não manda mais
   const cheio = carregaErros({ fila: [{ k: "js", m: "z", s: "" }], sessao: new Map([["sleevu-jserror-n", "15"]]) });

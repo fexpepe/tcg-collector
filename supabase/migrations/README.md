@@ -8,6 +8,24 @@ poucos.)
 
 ## Pendentes de aplicar
 
+- `20261112a` — /admin: "Erros a cada mil páginas" com a mesma régua
+  (`20261112a_erros_mesma_regua.sql`). Em 12/11 o Resumo marcou 413,7 (antes
+  96,7). A `admin_pulso` dividia todo `jserror` não-robô pelas páginas de
+  gente, e três públicos entravam só no numerador: o navegador automatizado
+  com user-agent comum (a página dele vira bot pelo `wd`, o erro não levava a
+  marca), o navegador da equipe (não manda página, manda erro) e quem
+  desligou a medição (erro sem `anon`). Agora o `erros` (atual, anterior e
+  série) conta só o erro de navegador com página de gente na janela — o
+  mesmo público do denominador; retroativo, sem mexer em dado. O
+  `src/erros.js` passa a mandar `wd` no erro (o guard já grava bot por ele).
+  Nasce com `statement_timeout = 30s`. Aditiva e sem ordem com o JS.
+
+  Ensaiada em 2026-11-12 no PGlite: a velha (20261009a) × a nova nos mesmos
+  dados (gente, robô com e sem a marca, equipe, sem `anon`, período
+  anterior), aplicada três vezes. Tudo idêntico menos `erros`; no cenário,
+  283,3 → 50,0 por mil; `proconfig` com os 30 s e execução só pra
+  `authenticated`.
+
 - `20261110a` — /admin: de onde vêm os visitantes (`20261110a_admin_geo.sql`).
   O painel não tinha país nenhum (só o Cloudflare via). O `events_guard`
   (cópia fiel da 20261009a) passa a carimbar `props.co` no pageview com as 2
