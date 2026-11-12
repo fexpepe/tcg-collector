@@ -78,6 +78,7 @@
     ["naruto-card-game-2002", "naruto"], ["naruto-data-carddass", "naruto", "nrt-dc", "nrt-dc-,nrt-nf-,nrt-nx-"],
     ["naruto-ccg", "naruto", "nrt-ccg", "nrt-ccg-"], ["world-of-warcraft-tcg", "wow"],
     ["naruto-shippuden-card-game", "naruto", "nrt-scg", "nrt-scg-"], ["miracle-battle-carddass", "mbc"],
+    ["naruto-boruto-card-game", "naruto", "nrt-nb", "nrt-nb-"],
     ["carddass-masters", "cdm"]
   ];
   // Linha que virou seção de outra (o LINE_ALIASES do shared.js).

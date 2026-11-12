@@ -1,0 +1,156 @@
+{
+  "url": "naruto-boruto-card-game",
+  "nome": "Naruto Boruto Card Game",
+  "logo": "assets/games/game_naruto_boruto.webp",
+  "logoLargura": 512,
+  "logoAltura": 309,
+  "periodo": {
+    "inicio": "2019-06",
+    "fim": "2020-02"
+  },
+  "etiquetas": [
+    "Vintage",
+    "Chrono Clash"
+  ],
+  "resumo": {
+    "pt": "Jogo de cartas do Naruto e do Boruto da Bandai, o primeiro do Chrono Clash System, lançado em inglês em junho de 2019 em caixas de conteúdo fixo.",
+    "en": "Bandai's Naruto and Boruto card game, the first on the Chrono Clash System, launched in English in June 2019 as fixed-content box sets.",
+    "es": "Juego de cartas de Naruto y Boruto de Bandai, el primero del Chrono Clash System, lanzado en inglés en junio de 2019 en cajas de contenido fijo."
+  },
+  "fatos": [
+    {
+      "chave": "lancamento",
+      "valor": "2019-06"
+    },
+    {
+      "chave": "encerramento",
+      "valor": "2020-02"
+    },
+    {
+      "chave": "fabricante",
+      "valor": "Bandai"
+    },
+    {
+      "chave": "licenca",
+      "valor": "© 2002 Masashi Kishimoto / 2017 Boruto"
+    },
+    {
+      "chave": "formato",
+      "valor": {
+        "pt": "Caixas de conteúdo fixo, sem booster",
+        "en": "Fixed-content box sets, no boosters",
+        "es": "Cajas de contenido fijo, sin sobres"
+      }
+    },
+    {
+      "chave": "preco",
+      "valor": {
+        "pt": "US$ 34,99 por caixa",
+        "en": "US$34.99 per set",
+        "es": "US$ 34,99 por caja"
+      }
+    }
+  ],
+  "historia": {
+    "pt": [
+      "Foi o primeiro jogo do Chrono Clash System, o sistema de turno e de recursos que a Bandai lançou em junho de 2019, com as cartas em inglês. Anunciado em fevereiro daquele ano como um jogo de montar deck expansível, com design de Ryan Miller, juntava Naruto, Naruto Shippuden e Boruto na mesma mesa. Já no anúncio a Bandai dizia que o sistema receberia outras marcas, e o site oficial ganhou depois o Godzilla e o Evangelion.",
+      "Não havia booster. As duas caixas de estreia, Naruto & Naruto Shippuden Set e Naruto Shippuden & Boruto Set, traziam 108 cartas cada (dois decks de 50 e uma reserva de 8), 12 cartas de tamanho duplo e o manual em seis idiomas, entre eles o português do Brasil, por US$ 34,99. Em novembro de 2019 saíram dois Themed Deck Sets de 54 cartas, o Hokage Set e o Master and Pupil Set.",
+      "As cartas avulsas do jogo são as dos Tournament Packs: pacotes de 2 cartas foil, marcadas “NOT FOR SALE”, que vinham na primeira edição das caixas (dois por caixa) e eram o prêmio dos torneios de loja. São as cartas das caixas, com o mesmo número. O último período de torneios que o site oficial listou foi fevereiro de 2020; não achamos anúncio de encerramento."
+    ],
+    "en": [
+      "This was the first game on the Chrono Clash System, the turn and resource system Bandai launched in June 2019, with cards in English. Announced in February of that year as an expandable deck-building game designed by Ryan Miller, it put Naruto, Naruto Shippuden and Boruto at the same table. In the announcement Bandai already said the system would take other brands, and the official site later added Godzilla and Evangelion.",
+      "There were no boosters. The two launch sets, Naruto & Naruto Shippuden Set and Naruto Shippuden & Boruto Set, each had 108 cards (two 50-card decks and an 8-card sideboard), 12 double-sized cards and a manual in six languages, Brazilian Portuguese among them, for US$34.99. In November 2019 came two 54-card Themed Deck Sets, the Hokage Set and the Master and Pupil Set.",
+      "The game's single cards are the ones from Tournament Packs: packs of 2 foil cards, marked “NOT FOR SALE”, that came with first-edition sets (two per set) and were the prize at store tournaments. They are the cards from the sets, with the same number. The last tournament period the official site listed was February 2020; we found no closure announcement."
+    ],
+    "es": [
+      "Fue el primer juego del Chrono Clash System, el sistema de turnos y recursos que Bandai lanzó en junio de 2019, con las cartas en inglés. Anunciado en febrero de ese año como un juego de construcción de mazos expandible, con diseño de Ryan Miller, reunía Naruto, Naruto Shippuden y Boruto en la misma mesa. Ya en el anuncio Bandai decía que el sistema recibiría otras marcas, y el sitio oficial sumó después Godzilla y Evangelion.",
+      "No había sobres. Las dos cajas de estreno, Naruto & Naruto Shippuden Set y Naruto Shippuden & Boruto Set, traían 108 cartas cada una (dos mazos de 50 y una reserva de 8), 12 cartas de tamaño doble y el manual en seis idiomas, entre ellos el portugués de Brasil, por US$ 34,99. En noviembre de 2019 salieron dos Themed Deck Sets de 54 cartas, el Hokage Set y el Master and Pupil Set.",
+      "Las cartas sueltas del juego son las de los Tournament Packs: sobres de 2 cartas foil, marcadas “NOT FOR SALE”, que venían en la primera edición de las cajas (dos por caja) y eran el premio de los torneos de tienda. Son las cartas de las cajas, con el mismo número. El último período de torneos que el sitio oficial listó fue febrero de 2020; no encontramos anuncio de cierre."
+    ]
+  },
+  "linhaDoTempo": [
+    {
+      "data": "2019-02",
+      "texto": {
+        "pt": "A Bandai anuncia o jogo e o sistema Chrono Clash.",
+        "en": "Bandai announces the game and the Chrono Clash system.",
+        "es": "Bandai anuncia el juego y el sistema Chrono Clash."
+      }
+    },
+    {
+      "data": "2019-06",
+      "set": "nrt-nb-tpc",
+      "texto": {
+        "pt": "Saem as duas caixas de estreia, com Tournament Packs na primeira edição.",
+        "en": "The two launch sets arrive, with Tournament Packs in the first edition.",
+        "es": "Salen las dos cajas de estreno, con Tournament Packs en la primera edición."
+      }
+    },
+    {
+      "data": "2019-11",
+      "texto": {
+        "pt": "Themed Deck Sets: Hokage Set e Master and Pupil Set.",
+        "en": "Themed Deck Sets: Hokage Set and Master and Pupil Set.",
+        "es": "Themed Deck Sets: Hokage Set y Master and Pupil Set."
+      }
+    },
+    {
+      "data": "2020-01",
+      "texto": {
+        "pt": "Torneios de loja de janeiro, com Tournament Pack de prêmio.",
+        "en": "January store tournaments, with Tournament Packs as prizes.",
+        "es": "Torneos de tienda de enero, con Tournament Pack de premio."
+      }
+    },
+    {
+      "data": "2020-02",
+      "texto": {
+        "pt": "Último período de torneios de loja listado no site oficial.",
+        "en": "Last store tournament period listed on the official site.",
+        "es": "Último período de torneos de tienda listado en el sitio oficial."
+      }
+    }
+  ],
+  "fontes": [
+    {
+      "nome": {
+        "pt": "ICv2, anúncio do jogo (fevereiro de 2019)",
+        "en": "ICv2, game announcement (February 2019)",
+        "es": "ICv2, anuncio del juego (febrero de 2019)"
+      },
+      "url": "https://icv2.com/articles/news/view/42545"
+    },
+    {
+      "nome": {
+        "pt": "Bandai, página do Naruto & Naruto Shippuden Set (2019)",
+        "en": "Bandai, Naruto & Naruto Shippuden Set page (2019)",
+        "es": "Bandai, página del Naruto & Naruto Shippuden Set (2019)"
+      },
+      "url": "https://web.archive.org/web/20190825115501/https://chronoclashsystem.com/product/naruto/01/en/product.php"
+    },
+    {
+      "nome": {
+        "pt": "Bandai, página do Hokage Set (2019)",
+        "en": "Bandai, Hokage Set page (2019)",
+        "es": "Bandai, página del Hokage Set (2019)"
+      },
+      "url": "https://web.archive.org/web/20191015140745/https://chronoclashsystem.com/product/naruto/03/en/product.php"
+    },
+    {
+      "nome": {
+        "pt": "Bandai, torneios do jogo (2020)",
+        "en": "Bandai, the game's tournaments (2020)",
+        "es": "Bandai, torneos del juego (2020)"
+      },
+      "url": "https://web.archive.org/web/20200812233217/https://chronoclashsystem.com/product/naruto/event/en/"
+    },
+    {
+      "nome": {
+        "pt": "TCGplayer, NB Tournament Pack Cards",
+        "en": "TCGplayer, NB Tournament Pack Cards",
+        "es": "TCGplayer, NB Tournament Pack Cards"
+      },
+      "url": "https://www.tcgplayer.com/categories/trading-and-collectible-card-games/chrono-clash-system/price-guides/nb-tournament-pack-cards"
+    }
+  ]
+}
