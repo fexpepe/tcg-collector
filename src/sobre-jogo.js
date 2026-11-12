@@ -130,7 +130,10 @@
     const fatos = FATOS.map((chave) => (dados.fatos || []).find((f) => f && f.chave === chave)).filter((f) => f && tx(f.valor, lang));
     const historia = tx(dados.historia, lang) || [];
     const linha = (dados.linhaDoTempo || []).filter((e) => e && tx(e.texto, lang));
-    const fontes = (dados.fontes || []).filter((f) => f && /^https:\/\//.test(String(f.url || "")));
+    // Fonte com link por idioma ({ pt, en }) quando ela tem versão traduzida
+    // (a entrevista do site oficial de Dragon Ball tem a página em inglês).
+    const fontes = (dados.fontes || []).map((f) => f && { nome: tx(f.nome, lang), url: String(tx(f.url, lang) || "") })
+      .filter((f) => f && /^https:\/\//.test(f.url));
 
     const fichaHtml = fatos.length ? `<dl class="sx-sobre-fatos">${fatos.map((f) =>
       `<div><dt>${esc(R.fatos[f.chave])}</dt><dd>${esc(valorDoFato(f, lang))}</dd></div>`).join("")}</dl>` : "";
@@ -151,7 +154,7 @@
         <div class="sx-sobre-texto is-recolhido" id="sx-sobre-texto">${historia.map((p) => `<p>${esc(p)}</p>`).join("")}</div>
         <button type="button" class="sx-sobre-mais" aria-controls="sx-sobre-texto" aria-expanded="false" data-mais="${esc(R.mais)}" data-menos="${esc(R.menos)}">${esc(R.mais)}</button>
         ${fontes.length ? `<p class="sx-sobre-fontes"><span>${esc(R.fontes)}:</span> ${fontes.map((f) =>
-          `<a href="${esc(f.url)}" target="_blank" rel="nofollow noopener noreferrer">${esc(tx(f.nome, lang))}</a>`).join(" · ")}</p>` : ""}
+          `<a href="${esc(f.url)}" target="_blank" rel="nofollow noopener noreferrer">${esc(f.nome)}</a>`).join(" · ")}</p>` : ""}
       </section>` : "";
 
     return `<section class="sx-sobre" id="sobre" data-sobre-jogo="${esc(dados.url)}" data-idioma="${lang}" aria-label="${esc(R.secao)}">

@@ -1,0 +1,115 @@
+{
+  "url": "dragon-ball-carddass",
+  "nome": "Dragon Ball Carddass",
+  "nomeOriginal": { "texto": "ドラゴンボールカードダス", "lang": "ja", "romaji": "Doragon Bōru Kādodasu" },
+  "logo": "assets/games/game_dbc.webp",
+  "logoLargura": 373,
+  "logoAltura": 82,
+  "periodo": { "inicio": "1988-11", "fim": "1997-09" },
+  "etiquetas": [
+    "Vintage",
+    { "pt": "Japão", "en": "Japan", "es": "Japón" },
+    "Carddass"
+  ],
+  "resumo": {
+    "pt": "Cartas de máquina da Bandai com Dragon Ball, lançadas no Japão em novembro de 1988 a ¥20 cada. Venderam cerca de 2 bilhões em dez anos, até 1997.",
+    "en": "Bandai's Dragon Ball vending-machine cards, launched in Japan in November 1988 at ¥20 each. About 2 billion sold in ten years, until 1997.",
+    "es": "Cartas de máquina de Bandai con Dragon Ball, lanzadas en Japón en noviembre de 1988 a ¥20 cada una. Vendieron unos 2.000 millones en diez años."
+  },
+  "fatos": [
+    { "chave": "lancamento", "valor": "1988-11" },
+    { "chave": "encerramento", "valor": "1997-09" },
+    { "chave": "fabricante", "valor": "Bandai" },
+    { "chave": "licenca", "valor": {
+      "pt": "Bird Studio/Shueisha, Fuji TV e Toei Animation",
+      "en": "Bird Studio/Shueisha, Fuji TV and Toei Animation",
+      "es": "Bird Studio/Shueisha, Fuji TV y Toei Animation"
+    } },
+    { "chave": "origem", "valor": { "pt": "Japão", "en": "Japan", "es": "Japón" } },
+    { "chave": "distribuicao", "valor": {
+      "pt": "Máquinas Carddass, ¥20 a carta",
+      "en": "Carddass vending machines, ¥20 a card",
+      "es": "Máquinas Carddass, ¥20 la carta"
+    } }
+  ],
+  "historia": {
+    "pt": [
+      "Carddass é a máquina de cartas da Bandai e também o nome das cartas que ela vende. O sistema nasceu em 1988 da ideia de vender sozinho, por ¥20, o adesivo que acompanhava as cápsulas Gashapon. O nome veio do AMeDAS, a rede japonesa de estações meteorológicas: a máquina seria a central de informação dos personagens. Dragon Ball chegou em novembro de 1988, meses depois da estreia do sistema, com as 42 cartas da Parte 1.",
+      "A linha principal, que os colecionadores chamam de Hondan (本弾), seguia a história parte a parte. A Bandai levava os rascunhos de Akira Toriyama à Toei Animation, que desenhava e coloria as cartas antes de o anime definir as cores — por isso algumas têm cores diferentes das da TV. Cada carta trazia valores para o jogo de batalha, e a Parte 12, de 1992, estreou o prisma escondido: uma carta holográfica que aparece ao descolar a de cima.",
+      "Em paralelo vieram a Visual Adventure (1991–1995), com a arte do próprio mangá; o Super Battle (1991–1997), com um jogo de níveis de poder; e o Super Barcode Wars (1992–1993), cartas com código de barras para um aparelho portátil da Bandai. No verão de 1995, segundo a Bandai, Dragon Ball já somava cerca de 1,5 bilhão de cartas, mais de sete vezes a segunda série mais vendida, Yu Yu Hakusho.",
+      "A série regular foi até a Parte 30, em 1997, já na fase GT. Em setembro daquele ano, uma Parte Especial (特別弾) juntou o Hondan e o Super Battle, e a Bandai encerrou a linha de propósito, ainda em alta, depois de cerca de 2 bilhões de cartas em dez anos. Depois vieram o Dragon Ball Card Game (2003), o Data Carddass Dragon Ball Z (2005) e o Dragon Ball Heroes (2010), e as cartas originais voltaram em reedições oficiais, como a Complete Box de 2008, com as Partes 1 a 4."
+    ],
+    "en": [
+      "Carddass is Bandai's card vending machine and also the name of the cards it sells. The system was born in 1988 from the idea of selling, on its own and for ¥20, the sticker that came with Gashapon capsules. The name comes from AMeDAS, Japan's network of weather stations: the machine would be a hub of character information. Dragon Ball arrived in November 1988, months after the system's debut, with the 42 cards of Part 1.",
+      "The main line, which collectors call Hondan (本弾), followed the story part by part. Bandai took Akira Toriyama's rough drafts to Toei Animation, which drew and colored the cards before the anime had settled its colors — which is why some cards don't match the TV palette. Each card carried values for the battle game, and Part 12, from 1992, introduced the hidden prism: a holographic card revealed by peeling off the one on top.",
+      "Alongside it came Visual Adventure (1991–1995), using the manga's own artwork; Super Battle (1991–1997), with a power-level game; and Super Barcode Wars (1992–1993), cards with barcodes for a Bandai handheld device. By summer 1995, according to Bandai, Dragon Ball had sold about 1.5 billion cards, more than seven times the runner-up series, Yu Yu Hakusho.",
+      "The regular series ran to Part 30 in 1997, already in the GT era. That September a Special Part (特別弾) merged Hondan and Super Battle, and Bandai deliberately ended the line while it was still strong, after about 2 billion cards in ten years. Dragon Ball Card Game (2003), Data Carddass Dragon Ball Z (2005) and Dragon Ball Heroes (2010) followed, and the original cards came back in official reissues such as the 2008 Complete Box, with Parts 1 to 4."
+    ],
+    "es": [
+      "Carddass es la máquina de cartas de Bandai y también el nombre de las cartas que vende. El sistema nació en 1988 de la idea de vender por separado, a ¥20, la pegatina que acompañaba a las cápsulas Gashapon. El nombre viene de AMeDAS, la red japonesa de estaciones meteorológicas: la máquina sería la central de información de los personajes. Dragon Ball llegó en noviembre de 1988, meses después del estreno del sistema, con las 42 cartas de la Parte 1.",
+      "La línea principal, que los coleccionistas llaman Hondan (本弾), siguió la historia parte a parte. Bandai llevaba los bocetos de Akira Toriyama a Toei Animation, que dibujaba y coloreaba las cartas antes de que el anime fijara sus colores; por eso algunas tienen colores distintos a los de la TV. Cada carta traía valores para el juego de batalla, y la Parte 12, de 1992, estrenó el prisma oculto: una carta holográfica que aparece al despegar la de encima.",
+      "En paralelo llegaron Visual Adventure (1991–1995), con el arte del propio manga; Super Battle (1991–1997), con un juego de niveles de poder; y Super Barcode Wars (1992–1993), cartas con código de barras para un aparato portátil de Bandai. En el verano de 1995, según Bandai, Dragon Ball ya sumaba unos 1.500 millones de cartas, más de siete veces la segunda serie más vendida, Yu Yu Hakusho.",
+      "La serie regular llegó hasta la Parte 30, en 1997, ya en la etapa GT. En septiembre de ese año, una Parte Especial (特別弾) unió Hondan y Super Battle, y Bandai cerró la línea a propósito, todavía en lo alto, tras unos 2.000 millones de cartas en diez años. Después vinieron Dragon Ball Card Game (2003), Data Carddass Dragon Ball Z (2005) y Dragon Ball Heroes (2010), y las cartas originales volvieron en reediciones oficiales, como la Complete Box de 2008, con las Partes 1 a 4."
+    ]
+  },
+  "linhaDoTempo": [
+    { "data": "1988-11", "set": "dbc-h01", "texto": {
+      "pt": "Parte 1 chega às máquinas Carddass, a ¥20 a carta.",
+      "en": "Part 1 hits the Carddass machines at ¥20 a card.",
+      "es": "La Parte 1 llega a las máquinas Carddass, a ¥20 la carta." } },
+    { "data": "1990-07", "set": "dbc-h05", "texto": {
+      "pt": "Parte 5 estreia o campo do scouter, com valores escondidos.",
+      "en": "Part 5 debuts the scouter field, with hidden values.",
+      "es": "La Parte 5 estrena el campo del scouter, con valores ocultos." } },
+    { "data": "1991-06", "texto": {
+      "pt": "Começa a Visual Adventure, com a arte do mangá.",
+      "en": "Visual Adventure begins, using the manga's artwork.",
+      "es": "Empieza Visual Adventure, con el arte del manga." } },
+    { "data": "1991-08", "set": "dbc-h08", "texto": {
+      "pt": "Parte 8: as primeiras cartas de Super Saiyajin.",
+      "en": "Part 8: the first Super Saiyan cards.",
+      "es": "Parte 8: las primeras cartas de Super Saiyajin." } },
+    { "data": "1991-11", "texto": {
+      "pt": "Começa o Super Battle, com o jogo de níveis de poder.",
+      "en": "Super Battle begins, with its power-level game.",
+      "es": "Empieza Super Battle, con su juego de niveles de poder." } },
+    { "data": "1992-08", "set": "dbc-h12", "texto": {
+      "pt": "Parte 12: a carta No.500 e o primeiro prisma escondido.",
+      "en": "Part 12: card No.500 and the first hidden prism.",
+      "es": "Parte 12: la carta No.500 y el primer prisma oculto." } },
+    { "data": "1992-12", "texto": {
+      "pt": "Super Barcode Wars: cartas com código de barras.",
+      "en": "Super Barcode Wars: cards with barcodes.",
+      "es": "Super Barcode Wars: cartas con código de barras." } },
+    { "data": "1994", "set": "dbc-h20", "texto": {
+      "pt": "Parte 20: o Hondan passa de 1 bilhão de cartas.",
+      "en": "Part 20: Hondan passes 1 billion cards.",
+      "es": "Parte 20: el Hondan supera los 1.000 millones de cartas." } },
+    { "data": "1995", "texto": {
+      "pt": "Dragon Ball soma cerca de 1,5 bilhão de cartas, segundo a Bandai.",
+      "en": "Dragon Ball reaches about 1.5 billion cards, per Bandai.",
+      "es": "Dragon Ball suma unos 1.500 millones de cartas, según Bandai." } },
+    { "data": "1996", "texto": {
+      "pt": "Parte 26: a primeira de Dragon Ball GT.",
+      "en": "Part 26: the first Dragon Ball GT part.",
+      "es": "Parte 26: la primera de Dragon Ball GT." } },
+    { "data": "1997-09", "texto": {
+      "pt": "A Parte Especial junta Hondan e Super Battle; a Bandai encerra a linha.",
+      "en": "A Special Part merges Hondan and Super Battle; Bandai ends the line.",
+      "es": "Una Parte Especial une Hondan y Super Battle; Bandai cierra la línea." } },
+    { "data": "2008-12", "texto": {
+      "pt": "Complete Box vol.1 reedita as Partes 1 a 4, nos 20 anos.",
+      "en": "Complete Box vol.1 reissues Parts 1–4 for the 20th anniversary.",
+      "es": "La Complete Box vol.1 reedita las Partes 1 a 4, a los 20 años." } }
+  ],
+  "fontes": [
+    { "nome": { "pt": "Entrevista com a Bandai, site oficial de Dragon Ball (2021)", "en": "Interview with Bandai, official Dragon Ball site (2021)", "es": "Entrevista con Bandai, sitio oficial de Dragon Ball (2021)" },
+      "url": { "pt": "https://www.dragon-ball-official.com/news/01_644.html", "en": "https://en.dragon-ball-official.com/news/01_644.html", "es": "https://en.dragon-ball-official.com/news/01_644.html" } },
+    { "nome": { "pt": "Bandai, anúncio da Complete Box (2008)", "en": "Bandai, Complete Box announcement (2008)", "es": "Bandai, anuncio de la Complete Box (2008)" },
+      "url": "https://web.archive.org/web/20081212004432/http://www.bandai.co.jp/releases/J2008120801.html" },
+    { "nome": { "pt": "Wikipédia em japonês", "en": "Japanese Wikipedia", "es": "Wikipedia en japonés" },
+      "url": "https://ja.wikipedia.org/wiki/%E3%82%AB%E3%83%BC%E3%83%89%E3%83%80%E3%82%B9_%E3%83%89%E3%83%A9%E3%82%B4%E3%83%B3%E3%83%9C%E3%83%BC%E3%83%AB%E3%82%B7%E3%83%AA%E3%83%BC%E3%82%BA" },
+    { "nome": "80storage", "url": "https://80storage.com/work/dragonball/" },
+    { "nome": "RetroballZ", "url": "https://retroballz.net/en/" }
+  ]
+}
