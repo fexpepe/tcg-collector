@@ -117,8 +117,9 @@ test("Pokémon: o rodapé impresso decide, mesmo com fração ambígua", () => {
   const d = detecta("ILLUS. MITSUHIRO ARITA 4/102 1999 NINTENDO CREATURES GAME FREAK", ["4/102"]);
   assert.equal(d.top, "pokemon");
   assert.equal(d.confiante, true);
-  // Os cinco jogos que numeram em fração (SWU e Harry Potter entraram em 2026-11-10).
-  assert.deepEqual(d.restritos, ["pokemon", "harrypotter", "lorcana", "riftbound", "swu"]);
+  // Os seis jogos que numeram em fração (SWU e Harry Potter entraram em
+  // 2026-11-10; o Naruto Mythos TCG, em 2026-11-12).
+  assert.deepEqual(d.restritos, ["pokemon", "harrypotter", "lorcana", "narutomythos", "riftbound", "swu"]);
 });
 
 test("Magic e Lorcana pelo copyright; One Piece pelo autor", () => {
@@ -133,7 +134,7 @@ test("só o formato do código: restringe aos jogos possíveis sem cravar", () =
   assert.deepEqual(d.restritos, ["onepiece"]);
   const frac = detecta("4/102", ["4/102"]);
   assert.equal(frac.confiante, false);
-  assert.deepEqual(frac.restritos, ["harrypotter", "lorcana", "pokemon", "riftbound", "swu"]);
+  assert.deepEqual(frac.restritos, ["harrypotter", "lorcana", "narutomythos", "pokemon", "riftbound", "swu"]);
   assert.equal(detecta("LOB-EN001 1ST EDITION", ["LOB-EN001"]).top, "ygo");
   assert.equal(detecta("BT1-001 R", ["BT1-001"]).top, "digimon");
 });
@@ -308,6 +309,38 @@ test("Palworld e Godzilla imprimem o mesmo EBP01-001: a pista impressa decide", 
   // impresso): nenhum dos dois é cortado por ele.
   const indice = new Map([["ebp01", ["godzilla", "palworld"]]]);
   assert.deepEqual(Array.from(S.detectarJogo("EBP01-002", ["EBP01-002"], "hub", {}, indice).restritos).sort(), ["godzilla", "palworld"]);
+});
+
+test("Naruto Kayou: o código inteiro, de três trechos, e só dele (2026-11-12)", () => {
+  assert.deepEqual(codigos("NRSA01-SE-001L5"), ["NRSA01-SE-001L5"]);
+  assert.deepEqual(codigos("KAYOU  NREA02-UR-001L3"), ["NREA02-UR-001L3"]);
+  // Série com hífen e a caixa de colecionador, que não imprime o nível.
+  assert.deepEqual(codigos("NRSA-01-UR-003L4"), ["NRSA-01-UR-003L4"]);
+  assert.deepEqual(codigos("NRCCNA-SP-011"), ["NRCCNA-SP-011"]);
+  // Sem o padrão, o "SE-001L5" do fim ia pro reHifen e a carta virava
+  // candidata de outro jogo.
+  assert.deepEqual(Array.from(S.detectarJogo("", ["NRSA01-SE-001L5"], "hub").restritos), ["narutokayou"]);
+  assert.equal(S.detectarJogo("NRSA01-SE-001L5", ["NRSA01-SE-001L5"], "hub").confiante, true);
+  // "NR" sozinho não é a Kayou: precisa da série, da sigla e do número.
+  assert.deepEqual(Array.from(S.detectarJogo("", ["NR-001"], "hub").restritos).includes("narutokayou"), false);
+});
+
+test("Naruto Mythos TCG: a fração é de seis jogos, e o rodapé diz qual (2026-11-12)", () => {
+  assert.deepEqual(codigos("C 3/130  1° EDITION NARUTO MYTHOS TCG"), ["3/130"]);
+  // Só a fração: os jogos que numeram "N/T", o Mythos entre eles.
+  const sem = S.detectarJogo("3/130", ["3/130"], "hub");
+  assert.ok(sem.restritos.includes("narutomythos"));
+  assert.ok(sem.restritos.includes("pokemon"));
+  assert.equal(sem.confiante, false);
+  // Com o rodapé, o Mythos passa na frente do vintage e do jogo de 2027, que
+  // também têm "NARUTO" de pista.
+  const com = S.detectarJogo("C 3/130  1° EDITION NARUTO MYTHOS TCG", ["3/130"], "hub");
+  assert.equal(com.jogos[0], "narutomythos");
+  assert.equal(com.confiante, true);
+  // A Legendary abrevia: "0001/2000  1° ED. N. M. TCG".
+  assert.equal(S.detectarJogo("Legendary 0001/2000 1° ED. N. M. TCG", ["0001/2000"], "hub").jogos[0], "narutomythos");
+  // Uma carta do vintage ou do jogo de 2027 não vira Mythos.
+  assert.equal(S.detectarJogo("©2002 MASASHI KISHIMOTO NARUTO CP-001", ["CP-001"], "hub").restritos.includes("narutomythos"), false);
 });
 
 test("Union Arena: promo, extra, título com dígito, AP e paralela", () => {

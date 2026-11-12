@@ -126,6 +126,8 @@ jobs:
             data/godzilla/sets
             data/palworld/sets
             data/fftcg/sets
+            data/narutomythos/sets
+            data/narutokayou/sets
             data/jump/sets
             data/magic/cards.js
             data/magic/indexes.js
@@ -152,7 +154,7 @@ jobs:
           faltando=""
           # data/dbc/, data/swu/, data/cyberpunk/, data/wow/, data/lotr/,
           # data/sorcery/, data/harrypotter/, data/weiss/, data/mbc/, data/dbz/ e
-          # data/cdm/, data/gcd/, data/gw/, data/narutocg/, data/godzilla/, data/palworld/ e data/fftcg/: jogos novos (2026-09-24 a 2026-11-11). Enquanto o cache
+          # data/cdm/, data/gcd/, data/gw/, data/narutocg/, data/godzilla/, data/palworld/, data/fftcg/, data/narutomythos/ e data/narutokayou/: jogos novos (2026-09-24 a 2026-11-12). Enquanto o cache
           # for de antes deles, o build rápido publicaria o tile do hub sem
           # catálogo nenhum atrás.
           for f in data/manifest.generated.js data/pricing.generated.js \
@@ -171,7 +173,7 @@ jobs:
                    data/narutocg/manifest.generated.js \
                    data/godzilla/manifest.generated.js \
                    data/palworld/manifest.generated.js \
-                   data/fftcg/manifest.generated.js; do
+                   data/fftcg/manifest.generated.js \n                   data/narutomythos/manifest.generated.js \n                   data/narutokayou/manifest.generated.js; do
             [ -s "$f" ] || faltando="$faltando $f"
           done
           if [ -n "$faltando" ]; then
@@ -608,6 +610,21 @@ jobs:
         if: env.RODA_SYNC == 'true'
         run: node scripts/sync-price-history.mjs data/fftcg
 
+      # NARUTO Mythos TCG (Cicaboom, 2026+): a galeria oficial do jogo, um JSON
+      # publico que o site dela le. Id pelo SKU oficial; a 2a edicao do Set 1
+      # vira set a parte e as cartas de torneio, "<set> Promos". Sem preco: o
+      # TCGplayer nao tem o jogo, entao nao ha passo de historico.
+      - name: Sincroniza catálogo do Naruto Mythos TCG (galeria oficial)
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/sync-narutomythos.mjs || echo "sync-narutomythos falhou; mantém o catalogo versionado"
+
+      # NARUTO da Kayou, edicao em ingles (2025+): as paginas de serie do site
+      # oficial (kayouofficial.com), lidas do payload do proprio HTML. Series
+      # pinadas no sync; serie nova aparece como aviso no log. Sem preco.
+      - name: Sincroniza catálogo do Naruto Kayou (site oficial)
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/sync-narutokayou.mjs || echo "sync-narutokayou falhou; mantém o catalogo versionado"
+
       # World of Warcraft TCG (TCGCSV cat. 13; Upper Deck 2006-2010, Cryptozoic
       # 2010-2013). Jogo vintage, mas com preco do TCGplayer. setId, nome e data
       # fixos por grupo no proprio sync; sem logo de set.
@@ -986,6 +1003,8 @@ jobs:
             data/godzilla/sets
             data/palworld/sets
             data/fftcg/sets
+            data/narutomythos/sets
+            data/narutokayou/sets
             data/jump/sets
             data/magic/cards.js
             data/magic/indexes.js

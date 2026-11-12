@@ -157,6 +157,10 @@ await checkCatalog("cards Godzilla", "/data/godzilla/cards.js", "TCG_CARDS", 700
 // Palworld: 647 cartas no lançamento do catálogo (11/11/2026).
 await checkCatalog("cards Palworld", "/data/palworld/cards.js", "TCG_CARDS", 500);
 await checkCatalog("cards Final Fantasy", "/data/fftcg/cards.js", "TCG_CARDS", 4500);
+// Naruto Mythos TCG: 646 cartas no lançamento do catálogo (12/11/2026); sem preço.
+await checkCatalog("cards Naruto Mythos", "/data/narutomythos/cards.js", "TCG_CARDS", 550);
+// Naruto Kayou (edição em inglês): 1.188 cartas no lançamento do catálogo (12/11/2026); sem preço.
+await checkCatalog("cards Naruto Kayou", "/data/narutokayou/cards.js", "TCG_CARDS", 1000);
 await checkCatalog("cards Miracle Battle Carddass", "/data/mbc/cards.js", "TCG_CARDS", 900);
 await checkCatalog("cards Carddass Masters", "/data/cdm/cards.js", "TCG_CARDS", 250);
 await checkCatalog("cards Gundam Carddass", "/data/gcd/cards.js", "TCG_CARDS", 1200);

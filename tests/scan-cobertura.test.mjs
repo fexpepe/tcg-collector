@@ -96,6 +96,12 @@ const JOGOS = {
   // Final Fantasy TCG (2026-11-11): 1-001H dos Opus e o número duplo das
   // séries fora do Opus (PR-004/1-027H, Re-001H/12-002H). Mediu 99,2 %.
   fftcg: { min: 0.97, nota: "sobram os números que a fonte grava torto (PR--161/16-058R, PR071/007H)" },
+  // Naruto Mythos TCG (2026-11-12): o rodapé é "C 3/130  1° EDITION NARUTO
+  // MYTHOS TCG", com o número sem os zeros da frente.
+  narutomythos: { min: 0.93, impresso: (c) => `${String(c.number).replace(/^0+(?=\d)/, "")}  1° EDITION NARUTO MYTHOS TCG`, nota: "sobram as Mission (MSS 05), que não numeram em fração" },
+  // Naruto Kayou (2026-11-12): o código inteiro no canto ("NRSA01-SE-001L5").
+  // O losango da paralela não é lido: o texto vai sem ele.
+  narutokayou: { min: 0.98, impresso: (c) => String(c.number).replace(/◇/g, "") },
   wow: { semCodigo: "o catálogo não guarda o número da carta" },
   sorcery: { semCodigo: "o catálogo não guarda o número da carta" },
   dbz: { semCodigo: "número solto (60), repetido em todo set" },

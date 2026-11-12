@@ -42,6 +42,8 @@
     weiss: { slug: "weiss", name: "Weiß Schwarz", dataDir: "data/weiss/" }, // TCGCSV cat. 20 (Bushiroad, só a edição EN, 2013+; paralelas = cartas próprias)
     godzilla: { slug: "godzilla", name: "Godzilla Card Game", dataDir: "data/godzilla/" }, // TCGCSV cat. 88 (Bushiroad/Yuhodo 2025, só a edição EN; paralelas = cartas próprias)
     fftcg: { slug: "fftcg", name: "Final Fantasy TCG", dataDir: "data/fftcg/" }, // TCGCSV cat. 24 (Square Enix 2016+, os Opus; Full Art = carta própria)
+    narutomythos: { slug: "narutomythos", name: "Naruto Mythos TCG", dataDir: "data/narutomythos/" }, // galeria oficial (Cicaboom 2026+, EN; a 2ª edição do Set 1 = set próprio; sem preço)
+    narutokayou: { slug: "narutokayou", name: "Naruto Kayou", dataDir: "data/narutokayou/" }, // kayouofficial.com (Kayou, só a edição em inglês, 2025+; coleção, não jogo de mesa; sem preço)
     palworld: { slug: "palworld", name: "Palworld Official Card Game", dataDir: "data/palworld/" }, // TCGCSV cat. 91 (Bushiroad/Pocketpair 2026, EN; a 2ª edição do BP01 = set próprio)
     mbc: { slug: "mbc", name: "Miracle Battle Carddass", dataDir: "data/mbc/" }, // vintage Bandai 2009–2014, crossover da Jump (7 séries; tcg-db)
     cdm: { slug: "cdm", name: "Carddass Masters", dataDir: "data/cdm/" }, // vintage Bandai 1996–2009, uma seção por IP (Evangelion e HxH; fontes no sync-carddass-masters.mjs)
@@ -69,6 +71,7 @@
     ["dragon-ball-fusion-world", "dbfw"], ["digimon-card-game", "digimon"], ["union-arena", "unionarena"],
     ["cyberpunk-tcg", "cyberpunk"], ["sorcery-contested-realm", "sorcery"], ["naruto-card-game", "narutocg"],
     ["weiss-schwarz", "weiss"], ["godzilla-card-game", "godzilla"], ["palworld-official-card-game", "palworld"], ["final-fantasy-tcg", "fftcg"],
+    ["naruto-mythos-tcg", "narutomythos"], ["naruto-kayou", "narutokayou"],
     // Daqui em diante, os VINTAGE (o `vintage` do registro): o PRIMEIRO_VINTAGE
     // abaixo é a posição desta linha, e o teste confere um por um.
     ["gundam-carddass", "gcd"],
@@ -85,7 +88,7 @@
   // Quantos jogos em atividade vêm antes do primeiro vintage na lista acima.
   // É por ele que o menu sabe acender "Vintage", e não "Jogos", na tela de um
   // jogo que saiu de linha (SLEEVU.vintage, lido pelo shared.js).
-  var PRIMEIRO_VINTAGE = 19;
+  var PRIMEIRO_VINTAGE = 21;
   // Linha que virou seção de outra (o LINE_ALIASES do shared.js).
   var LINHA_APELIDO = { "nrt-nf": "nrt-dc", "nrt-nx": "nrt-dc" };
   // Linha que virou JOGO (o LINHAS_VIRARAM_JOGO do functions/_lib/jogos.js): o

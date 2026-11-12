@@ -141,9 +141,12 @@
     if (flat.includes("unionarena")) return "unionarena";
     // "Palworld OFFICIAL CARD GAME" (a linha do TCGplayer) ou só "Palworld".
     if (flat.includes("palworld")) return "palworld";
+    // "Naruto Kayou" (como o Collectr chama) e "Naruto Mythos TCG": jogos
+    // próprios desde 2026-11-12, antes da regra geral do Naruto.
+    if (flat.includes("kayou")) return "narutokayou";
+    if (flat.includes("mythos")) return "narutomythos";
     // "Naruto Card Game" é a linha do TCGplayer do jogo de 2027 (narutocg): o
-    // vintage de 2002 não está no TCGplayer. O resto ("Naruto Kayou"…) fica no
-    // naruto, como antes.
+    // vintage de 2002 não está no TCGplayer. O resto fica no naruto, como antes.
     if (flat === "narutocardgame" || flat === "narutocg") return "narutocg";
     if (flat.includes("naruto")) return "naruto";
     if (flat.includes("hunter") || flat === "hxh") return "hxh";

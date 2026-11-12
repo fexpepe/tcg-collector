@@ -8,6 +8,20 @@ poucos.)
 
 ## Pendentes de aplicar
 
+- `20261112c` — libera os slugs `narutomythos` (NARUTO Mythos TCG, Cicaboom,
+  2026) e `narutokayou` (as cartas do Naruto da Kayou, edição em inglês) nas
+  duas whitelists de jogo (`card_views`/`increment_card_view` e
+  `contribute_price`; `20261112c_add_narutomythos_narutokayou.sql`). Cópia da
+  `20261111f` (fftcg, já aplicada) com os dois slugs a mais; só a lista muda.
+  Os dois jogos vão na MESMA migração porque entraram na mesma PR e cada
+  migração de jogo reescreve a lista inteira. Sem ela, view de carta e Preço
+  da Comunidade dos dois jogos são descartados em silêncio. Depois dela, a
+  `20261111f` não pode rodar de novo (tiraria os dois). Conferir com os
+  `curl` do fim do arquivo: a view de `nmy-s1e1-l133v1` e a de
+  `nky-hs1-nrsa01-se-001l5` têm de **criar** a linha em `card_views`, cada
+  uma com o seu game; o 204 sozinho não prova nada. **A próxima migração de
+  jogo copia esta.**
+
 - `20261112b` — /admin: as LINHAS de cada jogo (`20261112b_admin_jogos_linhas.sql`;
   o `b` porque a 20261112a do mesmo dia é a dos erros). O jogo `naruto` junta
   o Card Game 2002~2006, o Data Carddass, o CCG e o Shippuden (o `onepiece`, o
@@ -368,7 +382,7 @@ poucos.)
   `fftcg`, 1 view); um jogo inventado (`fftcgx`) respondeu 204 e não criou
   linha; `contribute_price` anônimo segue 401. Depois dela, nem a
   `20261111e` nem as anteriores podem rodar de novo (tirariam o `fftcg`).
-  **A próxima migração de jogo copia esta.**
+  Copiada pela `20261112c` (narutomythos e narutokayou).
 
 - `20261111e` — libera o slug `palworld` (Palworld OFFICIAL CARD GAME,
   Bushiroad/Pocketpair, 2026) nas duas whitelists de jogo
