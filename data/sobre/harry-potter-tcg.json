@@ -4,10 +4,17 @@
   "logo": "assets/games/game_harrypotter.webp",
   "logoLargura": 512,
   "logoAltura": 393,
-  "periodo": { "inicio": "2001-08", "fim": "2002-10" },
+  "periodo": {
+    "inicio": "2001-08",
+    "fim": "2002-10"
+  },
   "etiquetas": [
     "Vintage",
-    { "pt": "EUA", "en": "USA", "es": "EE. UU." },
+    {
+      "pt": "EUA",
+      "en": "USA",
+      "es": "EE. UU."
+    },
     "TCG"
   ],
   "resumo": {
@@ -16,16 +23,38 @@
     "es": "Juego de cartas de Wizards of the Coast con Harry Potter, lanzado en agosto de 2001. Tuvo cinco colecciones hasta octubre de 2002 y dejó de editarse en 2003."
   },
   "fatos": [
-    { "chave": "lancamento", "valor": "2001-08" },
-    { "chave": "encerramento", "valor": "2003" },
-    { "chave": "fabricante", "valor": "Wizards of the Coast" },
-    { "chave": "licenca", "valor": "Warner Bros." },
-    { "chave": "origem", "valor": { "pt": "Estados Unidos", "en": "United States", "es": "Estados Unidos" } },
-    { "chave": "distribuicao", "valor": {
-      "pt": "Boosters de 11 cartas e starters para 2",
-      "en": "11-card boosters and 2-player starters",
-      "es": "Sobres de 11 cartas y mazos para 2"
-    } }
+    {
+      "chave": "lancamento",
+      "valor": "2001-08"
+    },
+    {
+      "chave": "encerramento",
+      "valor": "2003"
+    },
+    {
+      "chave": "fabricante",
+      "valor": "Wizards of the Coast"
+    },
+    {
+      "chave": "licenca",
+      "valor": "Warner Bros."
+    },
+    {
+      "chave": "origem",
+      "valor": {
+        "pt": "Estados Unidos",
+        "en": "United States",
+        "es": "Estados Unidos"
+      }
+    },
+    {
+      "chave": "distribuicao",
+      "valor": {
+        "pt": "Starters para dois e boosters de 11 cartas",
+        "en": "Two-player starters and 11-card boosters",
+        "es": "Starters para dos y sobres de 11 cartas"
+      }
+    }
   ],
   "historia": {
     "pt": [
@@ -48,54 +77,124 @@
     ]
   },
   "linhaDoTempo": [
-    { "data": "2001-08", "set": "hp-bs", "texto": {
-      "pt": "Base Set chega às lojas, com 116 cartas.",
-      "en": "Base Set reaches stores with 116 cards.",
-      "es": "El Base Set llega a las tiendas, con 116 cartas." } },
-    { "data": "2001-11", "set": "hp-qc", "texto": {
-      "pt": "Quidditch Cup estreia a lição de Quidditch.",
-      "en": "Quidditch Cup debuts the Quidditch lesson.",
-      "es": "Quidditch Cup estrena la lección de Quidditch." } },
-    { "data": "2001-12", "texto": {
-      "pt": "É o 2º jogo mais vendido dos EUA, segundo o San Francisco Chronicle.",
-      "en": "It's the No. 2 game in US sales, per the San Francisco Chronicle.",
-      "es": "Es el 2.º juego más vendido de EE. UU., según el San Francisco Chronicle." } },
-    { "data": "2002-03", "set": "hp-da", "texto": {
-      "pt": "Diagon Alley traz as cartas de Local.",
-      "en": "Diagon Alley adds Location cards.",
-      "es": "Diagon Alley trae las cartas de Lugar." } },
-    { "data": "2002-06", "set": "hp-aah", "texto": {
-      "pt": "Adventures at Hogwarts, a terceira expansão.",
-      "en": "Adventures at Hogwarts, the third expansion.",
-      "es": "Adventures at Hogwarts, la tercera expansión." } },
-    { "data": "2002-10", "set": "hp-cos", "texto": {
-      "pt": "Chamber of Secrets, o último set, segue o segundo livro.",
-      "en": "Chamber of Secrets, the last set, follows the second book.",
-      "es": "Chamber of Secrets, el último set, sigue el segundo libro." } },
-    { "data": "2003", "texto": {
-      "pt": "A Wizards para de produzir o jogo.",
-      "en": "Wizards stops making the game.",
-      "es": "Wizards deja de producir el juego." } },
-    { "data": "2015-08", "texto": {
-      "pt": "1º campeonato da Revival, de fãs, na Gen Con.",
-      "en": "First fan-run Revival championship at Gen Con.",
-      "es": "Primer campeonato de la Revival, de fans, en la Gen Con." } },
-    { "data": "2020-07", "texto": {
-      "pt": "Heir of Slytherin, o 1º set de fãs da Revival, não oficial.",
-      "en": "Heir of Slytherin, the Revival's first unofficial fan set.",
-      "es": "Heir of Slytherin, el primer set de fans de la Revival, no oficial." } }
+    {
+      "data": "2001-08",
+      "set": "hp-bs",
+      "texto": {
+        "pt": "Base Set chega às lojas, com 116 cartas.",
+        "en": "Base Set reaches stores with 116 cards.",
+        "es": "El Base Set llega a las tiendas, con 116 cartas."
+      }
+    },
+    {
+      "data": "2001-11",
+      "set": "hp-qc",
+      "texto": {
+        "pt": "Quidditch Cup estreia a lição de Quidditch.",
+        "en": "Quidditch Cup debuts the Quidditch lesson.",
+        "es": "Quidditch Cup estrena la lección de Quidditch."
+      }
+    },
+    {
+      "data": "2001-12",
+      "texto": {
+        "pt": "É o 2º jogo mais vendido dos EUA, segundo o San Francisco Chronicle.",
+        "en": "It's the No. 2 game in US sales, per the San Francisco Chronicle.",
+        "es": "Es el 2.º juego más vendido de EE. UU., según el San Francisco Chronicle."
+      }
+    },
+    {
+      "data": "2002-03",
+      "set": "hp-da",
+      "texto": {
+        "pt": "Diagon Alley traz as cartas de Local.",
+        "en": "Diagon Alley adds Location cards.",
+        "es": "Diagon Alley trae las cartas de Lugar."
+      }
+    },
+    {
+      "data": "2002-06",
+      "set": "hp-aah",
+      "texto": {
+        "pt": "Adventures at Hogwarts, a terceira expansão.",
+        "en": "Adventures at Hogwarts, the third expansion.",
+        "es": "Adventures at Hogwarts, la tercera expansión."
+      }
+    },
+    {
+      "data": "2002-10",
+      "set": "hp-cos",
+      "texto": {
+        "pt": "Chamber of Secrets, o último set, segue o segundo livro.",
+        "en": "Chamber of Secrets, the last set, follows the second book.",
+        "es": "Chamber of Secrets, el último set, sigue el segundo libro."
+      }
+    },
+    {
+      "data": "2003",
+      "texto": {
+        "pt": "A Wizards para de produzir o jogo.",
+        "en": "Wizards stops making the game.",
+        "es": "Wizards deja de producir el juego."
+      }
+    },
+    {
+      "data": "2015-08",
+      "texto": {
+        "pt": "1º campeonato da Revival, de fãs, na Gen Con.",
+        "en": "First fan-run Revival championship at Gen Con.",
+        "es": "Primer campeonato de la Revival, de fans, en la Gen Con."
+      }
+    },
+    {
+      "data": "2020-07",
+      "texto": {
+        "pt": "Heir of Slytherin, o 1º set de fãs da Revival, não oficial.",
+        "en": "Heir of Slytherin, the Revival's first unofficial fan set.",
+        "es": "Heir of Slytherin, el primer set de fans de la Revival, no oficial."
+      }
+    }
   ],
   "fontes": [
-    { "nome": { "pt": "Wizards of the Coast, regras básicas (2001)", "en": "Wizards of the Coast, basic rules (2001)", "es": "Wizards of the Coast, reglas básicas (2001)" },
-      "url": "https://web.archive.org/web/20010816192619/http://harrypotter.warnerbros.com/wotc/basic_rules.html" },
-    { "nome": { "pt": "Wizards of the Coast, perguntas frequentes", "en": "Wizards of the Coast, FAQ", "es": "Wizards of the Coast, preguntas frecuentes" },
-      "url": "https://web.archive.org/web/20030314153420/http://www.wizards.com/default.asp?x=harrypotter/faq/productsfaq,,en" },
-    { "nome": "San Francisco Chronicle (2001)",
-      "url": "https://web.archive.org/web/20121022085307/http://www.sfgate.com/entertainment/article/HARRY-GRABS-GOLD-RING-Tolkien-toys-taking-2836948.php" },
-    { "nome": { "pt": "Wikipédia em inglês", "en": "English Wikipedia", "es": "Wikipedia en inglés" },
-      "url": "https://en.wikipedia.org/wiki/Harry_Potter_Trading_Card_Game" },
-    { "nome": "HPTCG Revival", "url": "https://harrypottertcg.com/about.html" },
-    { "nome": { "pt": "HPTCG Revival, linha do tempo", "en": "HPTCG Revival, timeline", "es": "HPTCG Revival, cronología" },
-      "url": "https://docs.google.com/document/d/1XE2e8CnGcXS1-xZwlvCKGdoAcLl6uC7FtbATbJ8a5ms/edit" }
+    {
+      "nome": {
+        "pt": "Wizards of the Coast, regras básicas (2001)",
+        "en": "Wizards of the Coast, basic rules (2001)",
+        "es": "Wizards of the Coast, reglas básicas (2001)"
+      },
+      "url": "https://web.archive.org/web/20010816192619/http://harrypotter.warnerbros.com/wotc/basic_rules.html"
+    },
+    {
+      "nome": {
+        "pt": "Wizards of the Coast, perguntas frequentes",
+        "en": "Wizards of the Coast, FAQ",
+        "es": "Wizards of the Coast, preguntas frecuentes"
+      },
+      "url": "https://web.archive.org/web/20030314153420/http://www.wizards.com/default.asp?x=harrypotter/faq/productsfaq,,en"
+    },
+    {
+      "nome": "San Francisco Chronicle (2001)",
+      "url": "https://web.archive.org/web/20121022085307/http://www.sfgate.com/entertainment/article/HARRY-GRABS-GOLD-RING-Tolkien-toys-taking-2836948.php"
+    },
+    {
+      "nome": {
+        "pt": "Wikipédia em inglês",
+        "en": "English Wikipedia",
+        "es": "Wikipedia en inglés"
+      },
+      "url": "https://en.wikipedia.org/wiki/Harry_Potter_Trading_Card_Game"
+    },
+    {
+      "nome": "HPTCG Revival",
+      "url": "https://harrypottertcg.com/about.html"
+    },
+    {
+      "nome": {
+        "pt": "HPTCG Revival, linha do tempo",
+        "en": "HPTCG Revival, timeline",
+        "es": "HPTCG Revival, cronología"
+      },
+      "url": "https://docs.google.com/document/d/1XE2e8CnGcXS1-xZwlvCKGdoAcLl6uC7FtbATbJ8a5ms/edit"
+    }
   ]
 }
