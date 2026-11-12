@@ -6,7 +6,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { parse80storage, assignIds, nameEn, SETS } from "../scripts/sync-dbc-carddass.mjs";
+import { parse80storage, assignIds, nameEn, SETS, setName, setNameEn } from "../scripts/sync-dbc-carddass.mjs";
 
 const TABELA = `<figure><table><thead>
 <tr><th>カードNo</th><th>名前</th><th>BP</th><th>スカウター</th><th>箔</th></tr></thead><tbody>
@@ -60,12 +60,23 @@ test("nome EN: personagem, composição por separador e fallback pro japonês", 
   assert.equal(nameEn("ライチとザークロ"), "");                       // meia tradução não: fica o japonês
 });
 
-test("SETS: códigos únicos, Hondan 1–31 e o 第1弾 em nov/1988", () => {
+test("SETS: códigos únicos, Hondan h01–h31 (30 partes + 特別弾) e o 第1弾 em nov/1988", () => {
   const codes = SETS.map((s) => s.code);
   assert.equal(new Set(codes).size, codes.length);
   assert.equal(SETS.filter((s) => s.series === "h").length, 31);
   assert.equal(SETS[0].code, "h01");
   assert.equal(SETS[0].date, "1988-11");
+});
+
+test("SETS: o h31 é o 特別弾 de set/1997, não um 第31弾", () => {
+  // A Bandai conta 30 partes; o 第31弾 oficial é uma caixa de 2015/16. O
+  // código h31 é o setId gravado e não muda.
+  const h31 = SETS.find((s) => s.code === "h31");
+  assert.equal(setName(h31), "本弾 特別弾");
+  assert.equal(setNameEn(h31), "Hondan Special Part");
+  assert.equal(h31.date, "1997-09");
+  assert.equal(h31.total, 83);
+  assert.ok(!SETS.some((s) => /第31弾|Part 31/.test(`${s.ja} ${s.en}`)));
 });
 
 test("snapshot versionado: ids únicos, no formato e só de sets conhecidos", () => {
