@@ -27,7 +27,10 @@
 
   // Jogos com o bloco (o `url` do functions/_lib/jogos.js). A borda só busca o
   // JSON de quem está aqui; o app.js tira o destaque do "Último set" deles.
-  const COM_SOBRE = ["dragon-ball-carddass"];
+  const COM_SOBRE = [
+    "dragon-ball-carddass",
+    "harry-potter-tcg", "lord-of-the-rings-tcg", "dragon-ball-z-ccg", "world-of-warcraft-tcg"
+  ];
 
   const IDIOMAS = ["pt", "en", "es"];
 
