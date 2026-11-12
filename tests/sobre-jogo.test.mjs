@@ -30,6 +30,13 @@ const S = globalThis.SleevuSobre;
 const DIR = "data/sobre";
 const arquivos = existsSync(join(RAIZ, DIR)) ? readdirSync(join(RAIZ, DIR)).filter((f) => f.endsWith(".json")) : [];
 const dadosDe = (url) => JSON.parse(ler(`${DIR}/${url}.json`));
+// Tetos do molde (ver o teste "cabe no molde"). Resumo: 70–160 no teste dos
+// campos (é a descrição do Google).
+const MOLDE = {
+  nome: 40, original: 24, romaji: 32, etiquetas: 3, etiqueta: 12,
+  fatos: 6, fato: 50, paragrafos: 4, paragrafo: 520, historia: 1900,
+  marcos: 12, marco: 80, fontes: 6
+};
 
 test("COM_SOBRE e data/sobre/ andam juntos, e só jogo vintage tem o bloco", () => {
   assert.ok(S.COM_SOBRE.length > 0);
@@ -81,6 +88,34 @@ for (const url of S.COM_SOBRE) {
     // Fonte: https e ao menos uma (o link pode mudar por idioma).
     assert.ok(Array.isArray(d.fontes) && d.fontes.length >= 1);
     for (const lang of S.IDIOMAS) d.fontes.forEach((f) => { assert.match(S.tx(f.url, lang), /^https:\/\//); assert.ok(S.tx(f.nome, lang)); });
+  });
+
+  // O MOLDE (2026-11-12): o "Sobre" do Dragon Ball Carddass é o template dos
+  // vintage, e nenhum outro pode ficar muito maior que ele — a cápsula de
+  // cima tem de caber na mesma altura, e o corpo aberto não pode virar um
+  // artigo. Os tetos são o pior caso do DBC nos três idiomas com uma folga
+  // pequena (medido: resumo 145, parágrafo 477, história 1.776, ficha 48,
+  // marco 71, nome vintage mais longo do registro 37). Subir um teto é
+  // decisão do Fernando, não ajuste de texto. Regra em docs/CATALOGO.md 3.5.
+  test(`${url}: cabe no molde do Dragon Ball Carddass`, () => {
+    const d = dadosDe(url);
+    const M = MOLDE;
+    const cabe = (texto, teto, onde) => assert.ok(String(texto).length <= teto, `${onde}: ${String(texto).length} caracteres (teto ${teto})`);
+    cabe(S.tx(d.nome, "pt"), M.nome, "nome");
+    if (d.nomeOriginal) { cabe(d.nomeOriginal.texto || "", M.original, "nome original"); cabe(d.nomeOriginal.romaji || "", M.romaji, "romaji"); }
+    assert.ok((d.etiquetas || []).length <= M.etiquetas, `etiquetas: ${(d.etiquetas || []).length} (teto ${M.etiquetas})`);
+    assert.ok(d.fatos.length <= M.fatos, `ficha com ${d.fatos.length} fatos (teto ${M.fatos}: duas linhas de três no desktop)`);
+    assert.ok(d.linhaDoTempo.length <= M.marcos, `linha do tempo com ${d.linhaDoTempo.length} marcos (teto ${M.marcos})`);
+    assert.ok(d.historia.pt.length <= M.paragrafos, `história com ${d.historia.pt.length} parágrafos (teto ${M.paragrafos})`);
+    assert.ok(d.fontes.length <= M.fontes, `${d.fontes.length} fontes (teto ${M.fontes})`);
+    for (const lang of S.IDIOMAS) {
+      (d.etiquetas || []).forEach((e) => cabe(S.tx(e, lang), M.etiqueta, `etiqueta em ${lang}`));
+      d.fatos.forEach((f) => cabe(S.tx(f.valor, lang), M.fato, `ficha "${f.chave}" em ${lang}`));
+      d.linhaDoTempo.forEach((e) => cabe(e.texto[lang], M.marco, `marco ${e.data} em ${lang}`));
+      const hist = d.historia[lang];
+      hist.forEach((p, i) => cabe(p, M.paragrafo, `parágrafo ${i + 1} em ${lang}`));
+      cabe(hist.join(""), M.historia, `história inteira em ${lang}`);
+    }
   });
 
   test(`${url}: a linha do tempo só aponta set que existe no catálogo`, () => {

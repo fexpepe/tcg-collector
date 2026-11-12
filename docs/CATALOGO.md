@@ -312,6 +312,25 @@ um.
   `src/sobre-jogo.js`. O `tests/sobre-jogo.test.mjs` confere a lista contra os
   arquivos, os campos obrigatórios nos três idiomas, o tamanho do resumo (é a
   descrição do Google) e que todo `set` da linha do tempo existe no catálogo.
+- **O molde é o Dragon Ball Carddass.** A cápsula de cima tem de caber na
+  altura dela, e o corpo aberto não vira artigo. Tetos (por idioma, travados
+  no mesmo teste; é o pior caso do DBC com folga pequena):
+
+  | Campo | Teto |
+  |---|---|
+  | Resumo | 70 a 160 caracteres |
+  | Nome / nome original / romaji | 40 / 24 / 32 |
+  | Etiquetas | até 3, com até 12 cada |
+  | Ficha | até 6 fatos (duas linhas de três), valor com até 50 |
+  | História | 2 a 4 parágrafos, até 520 cada e 1.900 no total |
+  | Linha do tempo | 5 a 12 marcos, até 80 cada |
+  | Fontes | 1 a 6 |
+
+  Texto que não cabe se corta, não se espreme: o que sobra é assunto pra um
+  post do blog, não pro "Sobre". Subir um teto é decisão do Fernando.
+- **Layout:** o "Saber mais" fica no canto de cima do cartão, na altura do
+  título (no celular, no pé, na largura toda); a história e a linha do tempo
+  nascem fechadas e, abertas, têm a mesma altura.
 
 ## 4. Linha ou jogo novo
 

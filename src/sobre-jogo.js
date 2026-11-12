@@ -158,7 +158,9 @@
 
     // História + linha do tempo nascem FECHADAS atrás do "Saber mais" do
     // cartão de cima (pedido de 2026-11-12: abertas, empurravam os sets uma
-    // tela pra baixo). O texto está no HTML mesmo fechado: é o que o robô lê.
+    // tela pra baixo). O botão mora no canto de cima, na altura do título
+    // (no celular desce pro pé do cartão, ver .sx-sobre-id no styles.css).
+    // O texto está no HTML mesmo fechado: é o que o robô lê.
     // `opcoes.aberto` mantém aberto quem já abriu, quando o app redesenha.
     const temCorpo = !!(historiaHtml || linhaHtml);
     const aberto = temCorpo && !!op.aberto;
@@ -171,12 +173,14 @@
       <div class="sx-sobre-topo">
         ${dados.logo ? `<div class="sx-sobre-arte"><img class="sx-sobre-logo" src="${esc(raiz + String(dados.logo).replace(/^\//, ""))}" alt="${esc(R.logo)}: ${esc(nome)}" decoding="async"${dados.logoLargura && dados.logoAltura ? ` width="${Number(dados.logoLargura)}" height="${Number(dados.logoAltura)}"` : ""}></div>` : ""}
         <div class="sx-sobre-id">
-          ${eyebrow.length ? `<p class="sx-eyebrow">${eyebrow.map(esc).join(" · ")}</p>` : ""}
-          <h2 class="sx-sobre-nome">${esc(nome)}</h2>
-          ${orig && orig.texto ? `<p class="sx-sobre-original"><span lang="${esc(orig.lang || "ja")}">${esc(orig.texto)}</span>${orig.romaji ? ` <small>${esc(orig.romaji)}</small>` : ""}</p>` : ""}
+          <div class="sx-sobre-cab">
+            ${eyebrow.length ? `<p class="sx-eyebrow">${eyebrow.map(esc).join(" · ")}</p>` : ""}
+            <h2 class="sx-sobre-nome">${esc(nome)}</h2>
+            ${orig && orig.texto ? `<p class="sx-sobre-original"><span lang="${esc(orig.lang || "ja")}">${esc(orig.texto)}</span>${orig.romaji ? ` <small>${esc(orig.romaji)}</small>` : ""}</p>` : ""}
+          </div>
+          ${botaoHtml}
           ${dados.resumo ? `<p class="sx-sobre-resumo">${esc(tx(dados.resumo, lang))}</p>` : ""}
           ${fichaHtml}
-          ${botaoHtml}
         </div>
       </div>
       ${temCorpo ? `<div class="sx-sobre-corpo" id="sx-sobre-corpo"${aberto ? "" : " hidden"}>${historiaHtml}${linhaHtml}</div>` : ""}
