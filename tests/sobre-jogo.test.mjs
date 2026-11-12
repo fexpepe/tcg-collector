@@ -78,9 +78,9 @@ for (const url of S.COM_SOBRE) {
     datas.forEach((x) => assert.match(x, /^\d{4}(-\d{2})?$/));
     assert.deepEqual([...datas].sort(), datas, "linha do tempo fora de ordem");
     assert.ok(d.linhaDoTempo.length >= 5);
-    // Fonte: https e ao menos uma.
+    // Fonte: https e ao menos uma (o link pode mudar por idioma).
     assert.ok(Array.isArray(d.fontes) && d.fontes.length >= 1);
-    d.fontes.forEach((f) => assert.match(f.url, /^https:\/\//));
+    for (const lang of S.IDIOMAS) d.fontes.forEach((f) => { assert.match(S.tx(f.url, lang), /^https:\/\//); assert.ok(S.tx(f.nome, lang)); });
   });
 
   test(`${url}: a linha do tempo só aponta set que existe no catálogo`, () => {
