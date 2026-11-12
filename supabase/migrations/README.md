@@ -8,6 +8,44 @@ poucos.)
 
 ## Pendentes de aplicar
 
+- `20261111g` — /admin: o conteúdo por jogo (`20261111g_admin_jogos.sql`).
+  O painel não dizia quais jogos são mais acessados, onde as pessoas mais
+  interagem nem quantas cartas entram nas coleções de cada jogo: o que havia
+  era o mosaico de páginas por jogo e o ESTOQUE das coleções salvas. RPC nova
+  `admin_jogos(days)`, na janela da `admin_pulso` (período × anterior do
+  mesmo tamanho, cortado na mesma hora do dia): por jogo, visitantes,
+  páginas, logados, cartas cadastradas e quem cadastrou, ativações, quem
+  interagiu (visitante do jogo que fez alguma ação de produto), scanner,
+  cliques em loja, decks, importações, links, o tempo mediano por visitante
+  e as cartas abertas (`card_views_daily`); por onde as cartas entraram
+  (manual, scanner, planilha, lista); e as séries por dia dos 6 jogos com
+  mais visitantes e dos 6 com mais cartas. **Retroativa**: só lê o que já
+  chega (todo evento leva o jogo da página; o `card_added` existe desde a
+  20260919a), então o histórico aparece inteiro quando ela entrar. O jogo é
+  o da PÁGINA em que a pessoa estava; o clique em loja leva o da carta
+  (`props.g`), como na `admin_demand`. Lê só a janela (2 × days) e nasce
+  com `statement_timeout = 30s`. Aditiva e sem ordem com o JS: sem ela, a
+  aba Conteúdo › Jogos mostra o aviso, o Resumo cai no recorte antigo
+  (páginas por jogo) e o kit Para parceiros sai sem as cartas cadastradas.
+
+  Ensaiada em 2026-11-11 no PGlite, em cima de TODAS as migrações do repo
+  (só as duas do blog falham ali, por falta do `storage`), aplicada duas
+  vezes. 20 conferências com números feitos à mão: visitante, páginas,
+  logado, cartas (com `n` lixo virando 0 e via desconhecida virando
+  manual), quem cadastrou, quem interagiu (ação sem página do jogo não
+  entra), o clique em loja indo pro jogo da carta, o teto de 30 min no
+  tempo, o vão entre o corte do período anterior e o começo do atual, robô
+  e evento de antes da janela fora, cartas abertas por dia inteiro, jogo só
+  com cartas abertas, totais sem somar jogo (quem viu dois jogos é um
+  visitante), séries e topos; não-admin e sem JWT recebem null, o `anon`
+  nem executa, e o banco vazio devolve listas vazias. Com 52 mil eventos em
+  120 dias: `admin_jogos(30)` 1,5 s (a `admin_pulso(30)`, 19 s) no PGlite.
+
+  Conferir depois de aplicar:
+  ```sql
+  select proname, proconfig from pg_proc where proname = 'admin_jogos';   -- statement_timeout=30s
+  ```
+
 - `20261110a` — /admin: de onde vêm os visitantes (`20261110a_admin_geo.sql`).
   O painel não tinha país nenhum (só o Cloudflare via). O `events_guard`
   (cópia fiel da 20261009a) passa a carimbar `props.co` no pageview com as 2

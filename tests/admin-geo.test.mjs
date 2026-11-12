@@ -84,8 +84,9 @@ test("admin.html carrega o contorno antes do painel", () => {
 });
 
 test("painel: o mapa é opcional no Resumo e na Audiência, e aponta a migração certa", () => {
-  assert.match(admin, /geral: \["dash", "pulso", "notas", "geo"\]/);
-  assert.match(admin, /geral: \["pulso", "notas", "geo"\], audiencia: \["pulso", "geo"\]/, "sem a migração, o resto da aba pinta");
+  // (o Resumo ganhou depois a admin_jogos, 20261111g: outra RPC opcional no fim da lista)
+  assert.match(admin, /geral: \["dash", "pulso", "notas", "geo"(, "\w+")*\]/);
+  assert.match(admin, /geral: \["pulso", "notas", "geo"(, "\w+")*\], audiencia: \["pulso", "geo"\]/, "sem a migração, o resto da aba pinta");
   assert.match(admin, /geo: "admin_geo"/);
   assert.match(admin, /geo: "20261110a_admin_geo\.sql"/);
 });

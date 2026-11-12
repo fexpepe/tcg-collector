@@ -689,9 +689,14 @@
     ["visao", "Visão geral", [["geral", "Resumo"], ["crescimento", "Crescimento"], ["parceiros", "Para parceiros"]]],
     ["aquisicao", "Aquisição", [["audiencia", "Audiência"], ["canais", "Canais"], ["campanhas", "Campanhas"]]],
     ["paginas", "Páginas", [["areas", "Áreas do site"], ["paginas", "Todas as páginas"], ["caminhos", "Caminhos"]]],
+    // v5 (2026-11-11): o que se faz com CADA JOGO ganhou grupo próprio. Coleções
+    // (a antiga aba Conteúdo), Demanda e Sets moravam em Mercado — e quem
+    // procurava "qual jogo é mais acessado" não achava. Os ids das abas ficam
+    // os mesmos: link salvo (#conteudo, #demanda, #sets) segue abrindo.
+    ["conteudo", "Conteúdo", [["jogos", "Jogos"], ["conteudo", "Coleções"], ["demanda", "Demanda"], ["sets", "Sets"]]],
     ["engajamento", "Engajamento", [["retencao", "Retenção"], ["funil", "Funil"], ["tempo", "Tempo de uso"], ["produto", "Produto"], ["experimentos", "Experimentos"]]],
     ["usuarios", "Usuários", [["usuarios", "Perfil"], ["colecoes", "Maiores coleções"], ["segmentos", "Segmentos"]]],
-    ["mercado", "Mercado", [["lojas", "Lojas"], ["portal", "Portal da loja"], ["demanda", "Demanda"], ["sets", "Sets"], ["anuncios", "Vitrine"], ["conteudo", "Conteúdo"]]],
+    ["mercado", "Mercado", [["lojas", "Lojas"], ["portal", "Portal da loja"], ["anuncios", "Vitrine"]]],
     ["app", "App e plataformas", [["plataformas", "Web × app"], ["versoes", "Versões do app"], ["lojasapp", "Lojas de apps"]]],
     ["tecnico", "Técnico", [["qualidade", "Qualidade"], ["medicao", "Medição"], ["marcos", "Marcos"]]]
   ];
@@ -701,8 +706,9 @@
   // `funnel` = admin_funnel (20260919a, recriada na 20260923a); o resto é da
   // 20260923a. Cada uma é buscada só quando uma aba que a usa abre.
   const NEEDS = {
-    geral: ["dash", "pulso", "notas", "geo"], audiencia: ["dash", "pulso", "geo"], conteudo: ["dash"], produto: ["dash"], qualidade: ["dash", "erros"],
-    crescimento: ["growth", "notas"], parceiros: ["dash", "retention", "stores", "demand", "growth", "engagement", "users", "anuncios"],
+    geral: ["dash", "pulso", "notas", "geo", "jogos"], audiencia: ["dash", "pulso", "geo"], conteudo: ["dash"], produto: ["dash"], qualidade: ["dash", "erros"],
+    jogos: ["jogos"],
+    crescimento: ["growth", "notas"], parceiros: ["dash", "retention", "stores", "demand", "growth", "engagement", "users", "anuncios", "pulso", "geo", "jogos"],
     canais: ["retention", "growth"], retencao: ["retention"], funil: ["funnel", "retention", "engagement"],
     lojas: ["stores"], demanda: ["demand"], anuncios: ["anuncios"],
     usuarios: ["users"], colecoes: ["users"], segmentos: ["users"], campanhas: ["campaigns", "anunciosutm"],
@@ -717,7 +723,7 @@
     users: "admin_users", campaigns: "admin_campaigns", engagement: "admin_engagement", experiments: "admin_experiments",
     partners: "admin_partner_links", health: "admin_health", erros: "admin_erros",
     pulso: "admin_pulso", paginas: "admin_paginas", plataformas: "admin_plataformas", descartes: "admin_descartes",
-    notas: "admin_notas", anunciosutm: "admin_anuncios", geo: "admin_geo"
+    notas: "admin_notas", anunciosutm: "admin_anuncios", geo: "admin_geo", jogos: "admin_jogos"
   };
   // RPCs sem parâmetro: mandar { days } a elas faz o PostgREST procurar uma
   // assinatura que não existe (404) e o painel acharia que a migração falta.
@@ -731,9 +737,11 @@
   // Na Qualidade, sem a 20261003a a aba cai na tabela antiga dos erros.
   // v3: no Resumo, sem a 20261009a a aba cai no Resumo antigo com o aviso; na
   // Audiência, sem o mapa de calor; marcos e anúncios são enfeite.
+  // v5: os jogos (20261111g) são enfeite no Resumo e no kit (sem eles, o
+  // recorte antigo e a tabela sem a coluna de cadastros); em Jogos, são a aba.
   const OPCIONAIS = {
-    parceiros: ["users", "anuncios"], qualidade: ["erros"],
-    geral: ["pulso", "notas", "geo"], audiencia: ["pulso", "geo"], crescimento: ["notas"], campanhas: ["anunciosutm"],
+    parceiros: ["users", "anuncios", "pulso", "geo", "jogos"], qualidade: ["erros"],
+    geral: ["pulso", "notas", "geo", "jogos"], audiencia: ["pulso", "geo"], crescimento: ["notas"], campanhas: ["anunciosutm"],
     medicao: ["descartes", "geo"]
   };
   const PERIODS = [7, 30, 90];
@@ -763,6 +771,7 @@
     paginas: `<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>`,
     engajamento: `<path d="M17 2l4 4-4 4"/><path d="M3 11V9a3 3 0 0 1 3-3h15"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a3 3 0 0 1-3 3H3"/>`,
     usuarios: `<circle cx="9" cy="8" r="4"/><path d="M2 21a7 7 0 0 1 14 0"/><path d="M16 4a4 4 0 0 1 0 8M22 21a7 7 0 0 0-4-6.3"/>`,
+    conteudo: `<rect x="3" y="7" width="12" height="15" rx="2"/><path d="M8 7V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2h-4"/>`,
     mercado: `<path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.5L21 8H6"/><circle cx="10" cy="20" r="1.5"/><circle cx="17" cy="20" r="1.5"/>`,
     app: `<rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/>`,
     tecnico: `<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>`
@@ -1339,8 +1348,19 @@
   }
   const kitCard = (titulo, corpo) => `<div class="adm-kit-card"><h3>${esc(titulo)}</h3>${corpo}</div>`;
 
-  function tabParceiros(dash, ret, st, dm, gr, eg, us, vt) {
+  // v5 (2026-11-11): o kit passa a ler o painel novo — a régua do período
+  // anterior (admin_pulso), o país (admin_geo) e o movimento por jogo
+  // (admin_jogos). Os três são opcionais: sem a migração de cada um, o kit
+  // sai como antes naquele pedaço.
+  function tabParceiros(dash, ret, st, dm, gr, eg, us, vt, pu, geo, jg) {
     const o = dash.overview || {}, tx = ret.taxas || {}, stk = ret.stickiness || {};
+    const PA = (pu && pu.atual) || null, PB = (pu && pu.anterior) || {};
+    const JA = (jg && jg.atual) || null, JB = (jg && jg.anterior) || {};
+    // Selo só com a régua inteira: sem o anterior, "+100%" seria invenção.
+    const varK = (a, b) => (a != null && b > 0 ? (a - b) / b : null);
+    const paises = comVisita(geo);
+    const paisesTot = paises.reduce((n, x) => n + x.visitantes, 0);
+    const jogosJg = jg && Array.isArray(jg.jogos) ? jg.jogos.filter((x) => x.game !== "hub" && x.visitantes > 0) : null;
     const ct = ((ret.contas || {}).taxas) || {};
     const tempo = (eg && eg.tempo) || {};
     const serie = gr.serie || [];
@@ -1369,10 +1389,18 @@
     const janela = comDado.filter((d) => d.day >= cheia).slice(-120);
     const g0 = janela[0], g1 = janela[janela.length - 1];
     const cresc = g0 && g1 && g0.mau ? (g1.mau - g0.mau) / g0.mau : null;
+    // 112 px (era 150): com os logos em 3 fileiras e os 8 números, é o que
+    // sobra na capa sem o gráfico ir pra baixo do rodapé.
     const grafico = janela.length >= 14
-      ? kitCard("Crescimento da audiência", area(janela.map((d) => ({ day: d.day, v: d.mau })), { h: 150, aria: "Visitantes únicos em janela móvel de 30 dias" })
+      ? kitCard("Crescimento da audiência", area(janela.map((d) => ({ day: d.day, v: d.mau })), { h: 112, aria: "Visitantes únicos em janela móvel de 30 dias" })
         + `<p class="adm-kit-nota">Visitantes únicos nos 30 dias até cada dia: de ${esc(fmt(g0.mau))} para ${esc(fmt(g1.mau))} em ${esc(String(janela.length))} dias${cresc == null ? "" : ` (${esc(sinal(cresc))})`}.</p>`)
       : "";
+    // A página é A4 de altura FIXA e o que passa some (overflow hidden). Com
+    // 7 colunas, os 30 jogos de 2026-11-11 davam 5 fileiras de logo, e o
+    // gráfico de crescimento ia parar embaixo do rodapé — sem erro nenhum na
+    // tela. Agora são no máximo 3 fileiras: jogo novo estreita a coluna em vez
+    // de empurrar a página.
+    const colunasLogo = Math.max(7, Math.ceil(Object.keys(KIT_LOGO).length / 3));
     const logos = Object.keys(KIT_LOGO).map((g) => `<li><img src="assets/games/${esc(KIT_LOGO[g])}" alt="${esc(gameName(g))}" loading="eager" decoding="async"></li>`).join("");
     const p1 = `<section class="adm-kit-page">
       <header class="adm-kit-hero">
@@ -1389,17 +1417,21 @@
       </header>
       <div class="adm-kit-corpo">
         <p class="adm-kit-pitch">Catálogo por variante e condição, scanner pela câmera, valor da coleção no tempo, decks, fichários, wishlist com alerta de preço e vendas com link público — sem plano pago e sem limite de cartas.</p>
-        <ul class="adm-kit-logos">${logos}</ul>
+        <ul class="adm-kit-logos" style="--kit-cols:${colunasLogo}">${logos}</ul>
         <h2 class="adm-kit-h2">Destaques do período</h2>
         <div class="adm-kit-nums">
           ${kitNum(fmt(o.mau), "Visitantes únicos", "nos últimos 30 dias", cresc30)}
-          ${kitNum(fmt(o.pageviews), "Páginas vistas", `em ${dias} dias, sem robôs`)}
-          ${kitNum(fmt(o.total_users), "Contas", o.new_users ? `+${fmt(o.new_users)} no período` : "")}
-          ${kitNum(fmt(colecionadores != null ? colecionadores : o.collections_users), "Colecionadores", "com a coleção na nuvem")}
-          ${kitNum(compacto(lastDef(serie, "copias")), "Cartas catalogadas", "cópias somadas nas coleções")}
-          ${kitNum(compacto(lastDef(serie, "valor_catalogado"), true), "Valor em coleções", "a preço de mercado")}
+          ${PA ? kitNum(fmt(PA.pageviews), "Páginas vistas", `em ${dias} dias, sem robôs`, varK(PA.pageviews, PB.pageviews)) : kitNum(fmt(o.pageviews), "Páginas vistas", `em ${dias} dias, sem robôs`)}
+          ${paises.length
+            ? kitNum(fmt(paises.length), "Países", paises[0].co === "BR" ? `${pctK(paises[0].visitantes, paisesTot)} no Brasil` : `${nomePais(paises[0].co)}: ${pctK(paises[0].visitantes, paisesTot)}`)
+            : kitNum(fmt(o.total_users), "Contas", o.new_users ? `+${fmt(o.new_users)} no período` : "")}
+          ${JA ? kitNum(pctK(JA.interagiram, JA.visitantes), "Interagem", "fazem mais que olhar") : kitNum(dur(tempo.mediana_ms), "Tempo por visita", "mediana")}
+          ${kitNum(fmt(colecionadores != null ? colecionadores : o.collections_users), "Colecionadores", o.total_users ? `de ${fmt(o.total_users)} contas` : "com a coleção na nuvem")}
+          ${kitNum(compacto(lastDef(serie, "copias")), "Cartas catalogadas", lastDef(serie, "valor_catalogado") ? `${compacto(lastDef(serie, "valor_catalogado"), true)} em valor` : "cópias somadas nas coleções")}
+          ${JA || PA
+            ? kitNum(fmt(JA ? JA.cartas : PA.cartas), "Cartas cadastradas", `em ${dias} dias`, JA ? varK(JA.cartas, JB.cartas) : varK(PA.cartas, PB.cartas))
+            : kitNum(compacto(lastDef(serie, "valor_catalogado"), true), "Valor em coleções", "a preço de mercado")}
           ${kitNum(fmt(st.total), "Cliques para lojas", st.valor ? `${compacto(st.valor, true)} em cartas` : "")}
-          ${kitNum(dur(tempo.mediana_ms), "Tempo por visita", "mediana")}
         </div>
         ${grafico}
       </div>
@@ -1433,6 +1465,20 @@
       ? kitCard("Perfil de quem tem conta", kitBarras(perfis.map((x) => ({ label: PERFIL_KIT[x.k][0], sub: PERFIL_KIT[x.k][1], v: x.n, valor: pctK(x.n, r.contas), cor: KIT_CORES.vermelho })))
         + `<p class="adm-kit-nota">% das ${esc(fmt(r.contas))} contas com coleção; uma conta pode ter vários perfis.${r.valor_mediano ? ` Coleção mediana: ${esc(brl(r.valor_mediano))} e ${esc(fmt(r.copias_mediana))} cartas.` : ""}</p>`)
       : kitCard("Onde estão as coleções", kitBarras(((dash.games && dash.games.collection) || []).slice(0, 8).map((x) => ({ label: gameName(x.game), v: x.users, valor: `${fmt(x.users)} contas`, cor: gameColor(x.game) }))));
+    // País (v4): toma o lugar do idioma na grade — o idioma segue na frase de
+    // abertura da página, e pra loja o que pesa é onde a pessoa está.
+    const corPais = [KIT_CORES.vermelho, KIT_CORES.escuro, KIT_CORES.cinza];
+    const paisesResto = paises.slice(3).reduce((n, x) => n + x.visitantes, 0);
+    const cardPaises = paises.length
+      ? kitCard("De onde vêm", `<p class="adm-kit-destaque"><strong>${esc(pctK(paises[0].visitantes, paisesTot))}</strong> ${paises[0].co === "BR" ? "no Brasil" : esc(nomePais(paises[0].co))}</p>${kitFatias(paises.slice(0, 3).map((x, i) => ({ label: nomePais(x.co), v: x.visitantes, cor: corPais[i] })).concat(paisesResto ? [{ label: "Outros", v: paisesResto, cor: KIT_CORES.claro }] : []))}`)
+      : "";
+    // Jogos (v5): a fatia de cada jogo nos visitantes do período, e as
+    // cartas que entraram nas coleções dele.
+    const cardJogos = jogosJg && jogosJg.length
+      ? kitCard("Jogos mais acessados", kitBarras(jogosJg.slice(0, 8).map((x) => ({ label: gameName(x.game), sub: x.cartas ? `${fmt(x.cartas)} cartas cadastradas` : "", v: x.visitantes, valor: pctK(x.visitantes, JA.visitantes), cor: gameColor(x.game) })))
+        + `<p class="adm-kit-nota">Fatia dos ${esc(fmt(JA.visitantes))} visitantes do período que abriram páginas de cada jogo (quem visita dois jogos conta nos dois), e as cartas que entraram nas coleções dele.</p>`)
+      : kitCard("Jogos mais acessados", kitBarras(jogos.slice(0, 8).map((x) => ({ label: gameName(x.game), v: x.visitors, valor: pctK(x.visitors, totJogos), cor: gameColor(x.game) })))
+        + `<p class="adm-kit-nota">Fatia de cada jogo nos visitantes de páginas de jogo (quem visita dois jogos conta nos dois).</p>`);
     const ledeP2 = devTot && langTot
       ? `${pctK(dev.m || 0, devTot)} das visitas vêm do celular e ${pctK(pt, langTot)} do público navega em português.`
       : "Quem visita, de onde chega e o que coleciona.";
@@ -1442,19 +1488,18 @@
       <div class="adm-kit-corpo">
         <div class="adm-kit-grade3">
           ${kitCard("Aparelho", devTot ? `<p class="adm-kit-destaque"><strong>${esc(pctK(dev.m || 0, devTot))}</strong> no celular</p>${kitFatias([{ label: "Celular e tablet", v: dev.m || 0, cor: KIT_CORES.vermelho }, { label: "Computador", v: dev.d || 0, cor: KIT_CORES.escuro }])}` : `<p class="adm-kit-vazio">Sem dados no período.</p>`)}
-          ${kitCard("Idioma do navegador", langTot ? `<p class="adm-kit-destaque"><strong>${esc(pctK(pt, langTot))}</strong> em português</p>${kitFatias(langTop.map((x) => ({ label: LANG_KIT[x.k], v: x.visitors || 0, cor: corLang[x.k] })).concat(langOutros ? [{ label: "Outros", v: langOutros, cor: KIT_CORES.claro }] : []))}` : `<p class="adm-kit-vazio">Sem dados no período.</p>`)}
+          ${paises.length ? cardPaises : kitCard("Idioma do navegador", langTot ? `<p class="adm-kit-destaque"><strong>${esc(pctK(pt, langTot))}</strong> em português</p>${kitFatias(langTop.map((x) => ({ label: LANG_KIT[x.k], v: x.visitors || 0, cor: corLang[x.k] })).concat(langOutros ? [{ label: "Outros", v: langOutros, cor: KIT_CORES.claro }] : []))}` : `<p class="adm-kit-vazio">Sem dados no período.</p>`)}
           ${kitCard("Como chegam", kitBarras(canais.slice(0, 5).map((x) => ({ label: CANAL[x.k] || x.k, v: x.n, valor: pctK(x.n, totCanais), cor: KIT_CORES.escuro }))))}
         </div>
         <div class="adm-kit-grade2">
-          ${kitCard("Jogos mais acessados", kitBarras(jogos.slice(0, 8).map((x) => ({ label: gameName(x.game), v: x.visitors, valor: pctK(x.visitors, totJogos), cor: gameColor(x.game) })))
-            + `<p class="adm-kit-nota">Fatia de cada jogo nos visitantes de páginas de jogo (quem visita dois jogos conta nos dois).</p>`)}
+          ${cardJogos}
           ${cardPerfil}
         </div>
         <h2 class="adm-kit-h2">Engajamento</h2>
         <div class="adm-kit-nums">
           ${kitNum(pctK(tx.d7, tx.el7), "Voltam na 2ª semana", "visitantes, retenção D7")}
           ${kitNum(pctK(ct.d30, ct.el30), "Contas ativas no 2º mês", "retenção D30 por conta")}
-          ${kitNum(tempo.paginas_visita == null ? "—" : String(tempo.paginas_visita).replace(".", ","), "Páginas por visita", "média")}
+          ${JA ? kitNum(dur(tempo.mediana_ms), "Tempo por visita", "mediana") : kitNum(tempo.paginas_visita == null ? "—" : String(tempo.paginas_visita).replace(".", ","), "Páginas por visita", "média")}
           ${kitNum(stk.mau ? pctK(stk.dau_medio, stk.mau) : "—", "Hábito (DAU/MAU)", "do público do mês num dia comum")}
         </div>
         <h2 class="adm-kit-h2">Comunidade</h2>
@@ -1505,9 +1550,15 @@
     // (visitas e páginas) e o que a loja quer saber (clique e wishlist).
     const demJogo = {};
     (dm.jogos || []).forEach((x) => { demJogo[x.game] = x; });
-    const porJogo = jogos.slice(0, 6).map((x) => {
+    // v5: com a admin_jogos, o mesmo período do resto do kit e as cartas
+    // cadastradas em cada jogo (o que a loja quer saber: onde se coleciona).
+    const baseJogos = jogosJg && jogosJg.length
+      ? jogosJg.map((x) => ({ game: x.game, visitors: x.visitantes, views: x.pageviews, cartas: x.cartas }))
+      : jogos.map((x) => ({ game: x.game, visitors: x.visitors, views: x.views, cartas: null }));
+    const comCartas = !!(jogosJg && jogosJg.length);
+    const porJogo = baseJogos.slice(0, 6).map((x) => {
       const d = demJogo[x.game] || {};
-      return `<tr><td>${gameChip(x.game)}</td><td class="num">${esc(fmt(x.visitors))}</td><td class="num">${esc(fmt(x.views))}</td><td class="num">${esc(fmt(d.cliques || 0))}</td><td class="num">${esc(fmt(d.desejos || 0))}</td></tr>`;
+      return `<tr><td>${gameChip(x.game)}</td><td class="num">${esc(fmt(x.visitors))}</td><td class="num">${esc(fmt(x.views))}</td>${comCartas ? `<td class="num">${esc(fmt(x.cartas || 0))}</td>` : ""}<td class="num">${esc(fmt(d.cliques || 0))}</td><td class="num">${esc(fmt(d.desejos || 0))}</td></tr>`;
     }).join("");
     const p4 = `<section class="adm-kit-page adm-kit-fim">
       ${topo(4)}
@@ -1521,13 +1572,15 @@
           ${oferta("Portal privado da loja", "Um link só-leitura com o que o Sleevu mandou pra sua loja: cliques, pessoas, valor das cartas, jogos e as cartas mais procuradas. Atualiza sozinho e pode ser revogado.", "")}
           ${oferta("Relatórios de demanda", "Quais cartas, sets e buscas estão em alta em cada jogo, cruzando visitas, cliques em loja e wishlists — em planilha, sob medida.", "")}
         </div>
-        ${porJogo ? kitCard("Audiência por jogo, pra segmentar", `<table class="adm-kit-tab"><thead><tr><th>Jogo</th><th class="num">Visitantes</th><th class="num">Páginas vistas</th><th class="num">Cliques em loja</th><th class="num">Na wishlist</th></tr></thead><tbody>${porJogo}</tbody></table>`) : ""}
+        ${porJogo ? kitCard("Audiência por jogo, pra segmentar", `<table class="adm-kit-tab"><thead><tr><th>Jogo</th><th class="num">Visitantes</th><th class="num">Páginas vistas</th>${comCartas ? `<th class="num">Cartas cadastradas</th>` : ""}<th class="num">Cliques em loja</th><th class="num">Na wishlist</th></tr></thead><tbody>${porJogo}</tbody></table>`) : ""}
         <h2 class="adm-kit-h2">Como medimos</h2>
         <ul class="adm-kit-metodo">
           <li><strong>Medição própria, anônima e agregada.</strong> Os números vêm do próprio Sleevu, não de ferramenta de terceiros, e nenhum deles identifica uma pessoa.</li>
           <li><strong>Visitante é um navegador</strong> (identificador anônimo). Robôs e monitores ficam de fora; a mesma pessoa em dois aparelhos conta duas vezes.</li>
           <li><strong>Visitas e cliques são um piso.</strong> A medição vem ligada e dá pra desligar em Configurações: quem desliga não entra nessa conta.</li>
           <li><strong>Clique para loja</strong> é a saída da página da carta direto pra busca daquela carta na loja.</li>
+          ${JA ? `<li><strong>Carta cadastrada</strong> é carta nova numa coleção (a 2ª cópia não conta), no jogo da página em que a pessoa estava.</li>` : ""}
+          ${paises.length ? `<li><strong>País</strong> vem da rede na hora da visita (Cloudflare): só a sigla é gravada, nunca o endereço IP.</li>` : ""}
           <li><strong>Retenção:</strong> D7 = voltou entre o 7º e o 13º dia depois da 1ª visita; D30 = entre o 30º e o 59º.</li>
           <li><strong>Valor em R$:</strong> o preço de mercado da carta (TCGplayer e Cardmarket) convertido pelo câmbio do dia, ou o preço que a pessoa anotou.</li>
         </ul>
@@ -2168,7 +2221,14 @@ if (v === "b") { /* versão nova */ }</pre>
     ["visitantes", "Visitantes"], ["visitas", "Visitas"], ["pageviews", "Páginas vistas"], ["ativacoes", "Ativações"],
     ["cartas", "Cartas cadastradas"], ["cliques_loja", "Cliques em loja"], ["contas", "Contas novas"], ["erros", "Erros de JS"]
   ];
-  function tabResumo(d, pu, notas, geo) {
+  // Barras com o selo da variação do lado (o hbars não tem a régua). lista =
+  // [{k, a, b}]; o rótulo e a cor saem de `nome(k)` e `cor(k)`.
+  function barrasMov(lista, nome, cor) {
+    if (!lista.length) return `<p class="admin-empty">Sem dados no período.</p>`;
+    const max = Math.max(1, ...lista.map((x) => x.a));
+    return `<ul class="adm-hbars adm-hbars-delta">${lista.map((x) => `<li><span class="adm-hbar-label">${esc(nome(x.k))}<small>antes: ${esc(fmt(x.b))}</small></span><span class="adm-hbar-track"><span class="adm-hbar-fill" style="width:${((100 * x.a) / max).toFixed(1)}%;background:${esc(cor(x.k))}"></span></span><span class="adm-hbar-val">${esc(fmt(x.a))} ${deltaChip(x.a, x.b)}</span></li>`).join("")}</ul>`;
+  }
+  function tabResumo(d, pu, notas, geo, jg) {
     // undefined = a 20261009a falta; null = a admin_pulso falhou (tempo
     // esgotado, rede) — até 2026-10-31 os dois pediam a migração.
     if (!pu) return (pu === undefined ? pedeV3("O Resumo com o período anterior") : naoVeio("pulso", "O Resumo com o período anterior")) + tabGeral(d);
@@ -2187,12 +2247,9 @@ if (v === "b") { /* versão nova */ }</pre>
     const plats = porA((pu.movimento && pu.movimento.plataformas) || []);
     const canais = porA((pu.movimento && pu.movimento.canais) || []);
     const paginas = porA((pu.movimento && pu.movimento.paginas) || []).slice(0, 10);
-    // Barras com o selo da variação do lado (o hbars não tem a régua).
-    const barrasMov = (lista, nome, cor) => {
-      if (!lista.length) return `<p class="admin-empty">Sem dados no período.</p>`;
-      const max = Math.max(1, ...lista.map((x) => x.a));
-      return `<ul class="adm-hbars adm-hbars-delta">${lista.map((x) => `<li><span class="adm-hbar-label">${esc(nome(x.k))}<small>antes: ${esc(fmt(x.b))}</small></span><span class="adm-hbar-track"><span class="adm-hbar-fill" style="width:${((100 * x.a) / max).toFixed(1)}%;background:${esc(cor(x.k))}"></span></span><span class="adm-hbar-val">${esc(fmt(x.a))} ${deltaChip(x.a, x.b)}</span></li>`).join("")}</ul>`;
-    };
+    // Quem interagiu (v5, admin_jogos): o "mais interações" do pedido, no
+    // mesmo desenho dos outros cartões. Sem a 20261111g o cartão não entra.
+    const J = (jg && jg.atual) || null, JB = (jg && jg.anterior) || {};
     return `
       <p class="adm-agora"><span>Agora</span> <b>${esc(fmt(o.dau))}</b> visitantes hoje · <b>${esc(fmt(o.wau))}</b> em 7 dias · <b>${esc(fmt(o.mau))}</b> em 30 dias · <b>${esc(fmt(o.dau_users))}</b> logados hoje</p>
       <div class="admin-stats adm-kpis">
@@ -2204,12 +2261,13 @@ if (v === "b") { /* versão nova */ }</pre>
         ${kpi("Contas novas", fmt(A.contas), A.contas, B.contas, sp("contas"))}
         ${kpi("Ativações", fmt(A.ativacoes), A.ativacoes, B.ativacoes, Object.assign(sp("ativacoes"), { nota: `${pct(A.ativacoes, A.novos)} dos novos · 1ª carta da vida` }))}
         ${kpi("Cartas cadastradas", fmt(A.cartas), A.cartas, B.cartas, sp("cartas"))}
+        ${J ? kpi("Interagiram", fmt(J.interagiram), J.interagiram, JB.interagiram, { nota: `${pct(J.interagiram, J.visitantes)} dos visitantes fizeram algo além de olhar` }) : ""}
         ${kpi("Cliques em loja", fmt(A.cliques_loja), A.cliques_loja, B.cliques_loja, sp("cliques_loja"))}
         ${kpi("Tempo por visita", dur(A.tempo_ms), A.tempo_ms, B.tempo_ms, { antes: `antes: ${dur(B.tempo_ms)}`, nota: "mediana, tempo com a aba à vista" })}
         ${kpi("Erros a cada mil páginas", fmtTaxa(porMil(A)), porMil(A), porMil(B), Object.assign(sp("erros"), { ruim: true, antes: `antes: ${fmtTaxa(porMil(B))}` }))}
         ${kpiPaises(geo)}
       </div>
-      ${section("O que mudou", oQueMudou(pu), `Contra os ${cmp}, cortados na mesma hora do dia (às 10h, hoje tem 10h de dado e o último dia de antes também). Só entra o que tem volume pra conclusão; a ordem é pelo tamanho da mudança, não pela porcentagem.`)}
+      ${section("O que mudou", oQueMudou(pu, jg), `Contra os ${cmp}, cortados na mesma hora do dia (às 10h, hoje tem 10h de dado e o último dia de antes também). Só entra o que tem volume pra conclusão; a ordem é pelo tamanho da mudança, não pela porcentagem.`)}
       <section class="admin-section">
         <div class="adm-sec-head"><h2>${esc(met[1])} por dia</h2>
           <div class="adm-seg adm-seg-metrica" role="group" aria-label="Métrica do gráfico">${METRICAS.map(([k, l]) => `<button type="button" class="chip" data-metrica="${k}" aria-pressed="${met[0] === k}">${esc(l)}</button>`).join("")}</div>
@@ -2217,6 +2275,7 @@ if (v === "b") { /* versão nova */ }</pre>
         ${serieTempo(atual.map((x) => ({ day: x.day, v: x[met[0]] })), Object.assign(CW(), { fantasma: colAnt(met[0]), marcos, rotulo: `${met[1]} (${n} dias)`, aria: `${met[1]} por dia, com a média de 7 dias e o período anterior` }))}
         <p class="admin-note">Barras = o período; linha cheia = média dos últimos 7 dias (tira o vaivém de dia útil × fim de semana); tracejada = os ${esc(cmp)}, dia a dia. Os números nos círculos são os marcos (Técnico › Marcos), e campanha nova entra sozinha.</p>
       </section>
+      ${secaoJogosResumo(jg, pu)}
       ${secaoMapa(geo, 8)}
       <div class="adm-grid-2">
         ${section("Plataforma (visitantes)", barrasMov(plats, platNome, platCor), "Navegador, app da web instalado e os apps das lojas. Detalhe em App e plataformas.")}
@@ -2328,11 +2387,16 @@ if (v === "b") { /* versão nova */ }</pre>
   }
 
   // Frases do "O que mudou": os maiores movimentos de cada recorte, juntos.
-  function oQueMudou(pu) {
+  function oQueMudou(pu, jg) {
     const mv = pu.movimento || {};
+    // v5: o jogo em que mais (ou menos) gente cadastrou carta. PESSOAS, não
+    // cartas: uma planilha de 2 mil cartas de uma pessoa só passaria na
+    // frente de tudo, porque a ordem aqui é pelo tamanho da mudança.
+    const cadastros = ((jg && jg.jogos) || []).map((x) => ({ k: x.game, a: x.cadastraram, b: x.cadastraram_ant }));
     const RECORTES = [
       ["página", mv.paginas, pageName, "páginas vistas", 15],
       ["jogo", mv.jogos, gameName, "páginas vistas", 15],
+      ["cadastros", cadastros, jogoNome, "pessoas cadastraram", 5],
       ["canal", mv.canais, (k) => CANAL[k] || k, "visitas", 5],
       ["origem", mv.origens, (k) => k, "visitas", 5],
       ["plataforma", mv.plataformas, platNome, "visitantes", 5]
@@ -2347,6 +2411,118 @@ if (v === "b") { /* versão nova */ }</pre>
     if (!sobe.length && !desce.length) return `<p class="admin-empty">Nada mudou o bastante pra virar notícia — com pouco tráfego, o recorte pequeno não entra.</p>`;
     const li = (x) => `<li class="adm-mov ${x.d > 0 ? "adm-mov-sobe" : "adm-mov-desce"}"><span class="adm-mov-ico">${x.d > 0 ? ICON.sobe : ICON.desce}</span><span class="adm-mov-txt"><b>${esc(x.nome)}</b> <small>${esc(x.tipo)}</small></span><span class="adm-mov-num">${esc(fmt(x.a))} <small>${esc(x.unidade)} · antes ${esc(fmt(x.b))}</small></span>${deltaChip(x.a, x.b)}</li>`;
     return `<div class="adm-grid-2 adm-mov-cols"><div><h3 class="adm-mov-h">Subiu</h3>${sobe.length ? `<ul class="adm-movs">${sobe.map(li).join("")}</ul>` : `<p class="admin-empty">Nada subiu com volume.</p>`}</div><div><h3 class="adm-mov-h">Caiu</h3>${desce.length ? `<ul class="adm-movs">${desce.map(li).join("")}</ul>` : `<p class="admin-empty">Nada caiu com volume.</p>`}</div></div>`;
+  }
+
+  // ══ v5 (2026-11-11): Conteúdo › Jogos ═════════════════════════════════════
+  // O pedido: "quais jogos estão sendo mais acessados, mais interações, mais
+  // adições nas coleções". A admin_jogos (20261111g) lê por jogo o que já
+  // chegava — todo evento leva o jogo da página aberta: quem olhou, quem fez
+  // alguma coisa e quantas cartas entraram, no período e no anterior. A aba
+  // Coleções (a antiga Conteúdo) segue sendo o ESTOQUE do que está guardado;
+  // esta é o MOVIMENTO.
+  const pedeJogos = (oque) => `<p class="adm-banner">${esc(oque)} precisa da migração <code>supabase/migrations/20261111g_admin_jogos.sql</code> — aplique no SQL Editor. Nada se perde enquanto isso: ela lê os eventos que já chegam, e o histórico aparece inteiro quando ela entrar.</p>`;
+  // "hub" é o evento numa página sem jogo (início, a coleção com todos os
+  // jogos): não é um jogo, então ganha nome e cor neutros.
+  const JOGO_NEUTRO = { hub: ["Sem jogo (hub)", "#64748b"], "(outros)": ["Outros jogos", "#9aa3ae"] };
+  const jogoNome = (g) => (JOGO_NEUTRO[g] ? JOGO_NEUTRO[g][0] : gameName(g));
+  const jogoCor = (g) => (JOGO_NEUTRO[g] ? JOGO_NEUTRO[g][1] : gameColor(g));
+  const jogoChip = (g) => `<span class="adm-game" style="--g:${esc(jogoCor(g))}">${esc(jogoNome(g))}</span>`;
+  const VIAS = [["ui", "Manual"], ["scan", "Scanner"], ["csv", "Planilha"], ["lista", "Lista"]];
+  const escalaPct = () => `<div class="adm-seg" role="group" aria-label="Escala"><button type="button" class="chip" data-pct="0" aria-pressed="${!state.pct}">Número</button><button type="button" class="chip" data-pct="1" aria-pressed="${state.pct}">Participação %</button></div>`;
+  // Série [{day, game, n}] → barras empilhadas, com os dias sem dado no eixo.
+  function pilhaJogos(serie, topo, dias) {
+    const porDia = {};
+    (serie || []).forEach((x) => { (porDia[x.day] = porDia[x.day] || {})[x.game] = x.n; });
+    const linhas = diasJanela(dias).map((d) => Object.assign({ day: d }, porDia[d] || {}));
+    const series = (topo || []).map((g) => ({ key: g, label: jogoNome(g), color: jogoCor(g) }));
+    if ((serie || []).some((x) => x.game === "(outros)")) series.push({ key: "(outros)", label: jogoNome("(outros)"), color: jogoCor("(outros)") });
+    return { linhas, series };
+  }
+  function tabJogos(jg) {
+    const n = jg.days || state.days;
+    const A = jg.atual || {}, B = jg.anterior || {};
+    const todos = jg.jogos || [];
+    const reais = todos.filter((x) => x.game !== "hub");
+    const porVis = reais.filter((x) => x.visitantes > 0).slice().sort((p, q) => q.visitantes - p.visitantes);
+    const porCartas = reais.filter((x) => x.cartas > 0).slice().sort((p, q) => q.cartas - p.cartas);
+    const antes = reais.filter((x) => x.visitantes_ant > 0).length;
+    const alta = movimentos(reais.map((x) => ({ k: x.game, a: x.visitantes, b: x.visitantes_ant })), { min: 10, n: 1 }).sobe[0];
+    const tv = porVis[0], tc = porCartas[0];
+    const linha = (x) => `<tr><td>${jogoChip(x.game)}</td>
+      <td class="num">${esc(fmt(x.visitantes))} ${deltaChip(x.visitantes, x.visitantes_ant)}</td>
+      <td class="num">${esc(fmt(x.pageviews))}</td>
+      <td class="num">${esc(fmt(x.abertas))} ${deltaChip(x.abertas, x.abertas_ant)}</td>
+      <td class="num">${esc(fmt(x.cartas))} ${deltaChip(x.cartas, x.cartas_ant)}</td>
+      <td class="num">${esc(fmt(x.cadastraram))}</td>
+      <td class="num">${esc(taxaTxt(x.interagiram, x.visitantes))} <small>${esc(fmt(x.interagiram))}</small></td>
+      <td class="num">${esc(fmt(x.cliques_loja))}</td>
+      <td class="num">${esc(x.tempo_ms == null ? "—" : dur(x.tempo_ms))}</td></tr>`;
+    // Por onde as cartas entraram, por jogo (só o período atual).
+    const vias = {};
+    (jg.vias || []).forEach((v) => {
+      const o = vias[v.game] || (vias[v.game] = { game: v.game, tot: 0 });
+      o[v.via] = (o[v.via] || 0) + (Number(v.cartas) || 0);
+      o.tot += Number(v.cartas) || 0;
+    });
+    const viasLista = Object.keys(vias).map((k) => vias[k]).filter((o) => o.tot > 0).sort((p, q) => q.tot - p.tot);
+    const ACOES = [["scans", "Scanner aberto"], ["decks", "Decks criados"], ["importacoes", "Importações"], ["links", "Links criados"], ["ativacoes", "Ativações"]];
+    const somaAcoes = (x) => ACOES.reduce((s, [k]) => s + (Number(x[k]) || 0), 0);
+    const acoes = todos.filter((x) => somaAcoes(x) > 0).slice().sort((p, q) => somaAcoes(q) - somaAcoes(p));
+    const pv = pilhaJogos(jg.serie_visitantes, jg.topo_visitantes, n);
+    const pc = pilhaJogos(jg.serie_cartas, jg.topo_cartas, n);
+    return `
+      <div class="admin-stats adm-kpis">
+        ${cartao("Mais acessado", tv ? jogoNome(tv.game) : "—", tv ? `${pct(tv.visitantes, A.visitantes)} dos visitantes · ${fmt(tv.visitantes)}` : "nenhuma visita no período", true)}
+        ${cartao("Mais cadastrado", tc ? jogoNome(tc.game) : "—", tc ? `${fmt(tc.cartas)} cartas · ${pct(tc.cartas, A.cartas)} do total` : "nenhuma carta no período", true)}
+        ${cartao("Em alta", alta ? jogoNome(alta.k) : "—", alta ? `${fmt(alta.a)} visitantes · antes ${fmt(alta.b)}` : "nenhum jogo cresceu com volume", true)}
+        ${kpi("Jogos com visita", fmt(porVis.length), porVis.length, antes, { nota: "1 visitante ou mais no período" })}
+        ${kpi("Cartas cadastradas", fmt(A.cartas), A.cartas, B.cartas, { nota: `${fmt(A.cadastraram)} pessoas cadastraram` })}
+        ${kpi("Interagiram", fmt(A.interagiram), A.interagiram, B.interagiram, { nota: `${pct(A.interagiram, A.visitantes)} dos visitantes fizeram algo além de olhar` })}
+      </div>
+      <p class="admin-note">Aqui é o MOVIMENTO do período, contra os ${esc(String(n))} dias anteriores (cortados na mesma hora do dia). O que já está guardado nas coleções, desde sempre, fica em <button type="button" class="chip adm-mini" data-tab="conteudo">Coleções</button></p>
+      ${section("Por jogo", paged("jogos", [{ t: "Jogo" }, { t: "Visitantes", num: true }, { t: "Páginas vistas", num: true }, { t: "Cartas abertas", num: true }, { t: "Cartas cadastradas", num: true }, { t: "Cadastraram", num: true }, { t: "Interagiram", num: true }, { t: "Cliques em loja", num: true }, { t: "Tempo por visitante", num: true }],
+        todos.map(linha), 12),
+        "O jogo de cada número é o da página em que a pessoa estava (o clique em loja leva o da carta). \"Sem jogo (hub)\" são as páginas gerais: o início e a coleção com todos os jogos. Visitantes = navegadores que abriram páginas do jogo; quem viu dois jogos conta nos dois. Cartas abertas = o contador por dia (dias inteiros; conta também quem desligou a medição). Cartas cadastradas = cartas NOVAS na coleção (a 2ª cópia não conta). Interagiram = % dos visitantes do jogo que cadastraram carta, abriram o scanner, clicaram em loja, montaram deck, importaram, exportaram ou criaram link. Tempo = mediana, entre os visitantes, do tempo com a aba à vista nas páginas do jogo.")}
+      <section class="admin-section">
+        <div class="adm-sec-head"><h2>Visitantes por dia, por jogo</h2>${escalaPct()}</div>
+        ${barrasEmpilhadas(pv.linhas, pv.series, Object.assign(CW(), { pct: state.pct, aria: "Visitantes por dia, empilhados por jogo" }))}
+        <p class="admin-note">Os 6 jogos com mais visitantes no período e a soma dos outros. Em "Participação %" cada dia soma 100%: é onde aparece um jogo ganhando espaço (um lançamento, uma campanha) mesmo num dia fraco.</p>
+      </section>
+      <section class="admin-section">
+        <div class="adm-sec-head"><h2>Cartas cadastradas por dia, por jogo</h2>${escalaPct()}</div>
+        ${barrasEmpilhadas(pc.linhas, pc.series, Object.assign(CW(), { pct: state.pct, aria: "Cartas cadastradas por dia, empilhadas por jogo" }))}
+        <p class="admin-note">Os 6 jogos com mais cartas cadastradas no período e a soma dos outros. Um pico de um dia só costuma ser uma pessoa importando a coleção por planilha — o quadro de baixo mostra o caminho.</p>
+      </section>
+      <div class="adm-grid-2">
+        ${section("Por onde as cartas entram", table([{ t: "Jogo" }].concat(VIAS.map(([, l]) => ({ t: l, num: true }))),
+          viasLista.map((o) => `<tr><td>${jogoChip(o.game)}</td>${VIAS.map(([k]) => `<td class="num">${o[k] ? `${esc(fmt(o[k]))} <small>${esc(pct(o[k], o.tot))}</small>` : "—"}</td>`).join("")}</tr>`)),
+          "Manual = o + do catálogo, da carta e do set; Scanner = a câmera; Planilha = importação de CSV; Lista = a partir de uma lista.")}
+        ${section("Ações por jogo", table([{ t: "Jogo" }].concat(ACOES.map(([, l]) => ({ t: l, num: true }))),
+          acoes.map((x) => `<tr><td>${jogoChip(x.game)}</td>${ACOES.map(([k]) => `<td class="num">${x[k] ? esc(fmt(x[k])) : "—"}</td>`).join("")}</tr>`)),
+          "Contagem de vezes no período. Ativação = a 1ª carta da vida daquele navegador.")}
+      </div>`;
+  }
+  // Resumo: os jogos do período lado a lado — quem olha e o que entra na
+  // coleção. Sem a 20261111g, o recorte antigo (páginas vistas por jogo, da
+  // admin_pulso) e o aviso no lugar dos cadastros.
+  function secaoJogosResumo(jg, pu) {
+    const ver = `<div class="adm-actions"><button type="button" class="chip adm-mini" data-tab="jogos">Ver tudo em Conteúdo › Jogos</button></div>`;
+    if (jg && jg.jogos) {
+      const reais = jg.jogos.filter((x) => x.game !== "hub");
+      const vis = reais.filter((x) => x.visitantes || x.visitantes_ant).slice().sort((p, q) => q.visitantes - p.visitantes).slice(0, 8)
+        .map((x) => ({ k: x.game, a: x.visitantes, b: x.visitantes_ant }));
+      const cad = jg.jogos.filter((x) => x.cartas || x.cartas_ant).slice().sort((p, q) => q.cartas - p.cartas).slice(0, 8)
+        .map((x) => ({ k: x.game, a: x.cartas, b: x.cartas_ant }));
+      return `<div class="adm-grid-2">
+        ${section("Jogos mais acessados (visitantes)", barrasMov(vis, jogoNome, jogoCor) + ver, "Navegadores que abriram páginas do jogo; quem viu dois jogos conta nos dois.")}
+        ${section("Cartas cadastradas por jogo", barrasMov(cad, jogoNome, jogoCor), "Cartas novas que entraram nas coleções, pelo jogo da página em que a pessoa estava.")}
+      </div>`;
+    }
+    const pag = ((pu.movimento && pu.movimento.jogos) || []).filter((x) => x.k !== "hub").slice().sort((p, q) => q.a - p.a).slice(0, 8);
+    return `<div class="adm-grid-2">
+      ${section("Jogos mais acessados (páginas vistas)", barrasMov(pag, jogoNome, jogoCor))}
+      ${section("Cartas cadastradas por jogo", jg === undefined ? pedeJogos("As cartas cadastradas por jogo") : naoVeio("jogos", "As cartas cadastradas por jogo"))}
+    </div>`;
   }
 
   // ── Páginas › Áreas do site ───────────────────────────────────────────────
@@ -2619,14 +2795,15 @@ if (v === "b") { /* versão nova */ }</pre>
   }
 
   const RENDER = {
-    geral: (x) => tabResumo(x.dash, x.pulso, x.notas, x.geo),
+    geral: (x) => tabResumo(x.dash, x.pulso, x.notas, x.geo, x.jogos),
+    jogos: (x) => tabJogos(x.jogos),
     areas: (x) => tabAreas(x.paginas), paginas: (x) => tabTodasPaginas(x.paginas), caminhos: (x) => tabCaminhos(x.paginas),
     plataformas: (x) => tabPlataformas(x.plataformas), versoes: (x) => tabVersoes(x.plataformas), lojasapp: (x) => tabLojasApp(x.plataformas),
     marcos: (x) => tabMarcos(x.notas),
     audiencia: (x) => tabAudiencia(x.dash, x.pulso, x.geo), conteudo: (x) => tabConteudo(x.dash),
     produto: (x) => tabProduto(x.dash), qualidade: (x) => tabQualidade(x.dash, x.erros),
     crescimento: (x) => tabCrescimento(x.growth, x.notas),
-    parceiros: (x) => tabParceiros(x.dash, x.retention, x.stores, x.demand, x.growth, x.engagement, x.users, x.anuncios),
+    parceiros: (x) => tabParceiros(x.dash, x.retention, x.stores, x.demand, x.growth, x.engagement, x.users, x.anuncios, x.pulso, x.geo, x.jogos),
     canais: (x) => tabCanais(x.retention, x.growth), retencao: (x) => tabRetencao(x.retention),
     funil: (x) => tabFunil(x.funnel, x.retention, x.engagement), lojas: (x) => tabLojas(x.stores), demanda: (x) => tabDemanda(x.demand),
     anuncios: (x) => tabVitrine(x.anuncios),
@@ -2733,9 +2910,10 @@ if (v === "b") { /* versão nova */ }</pre>
     erros: "20261003a_erros_v2.sql",
     pulso: "20261009a_admin_v3.sql", paginas: "20261009a_admin_v3.sql", plataformas: "20261009a_admin_v3.sql",
     descartes: "20261009a_admin_v3.sql", notas: "20261009a_admin_v3.sql", anunciosutm: "20261009a_admin_v3.sql",
-    geo: "20261110a_admin_geo.sql"
+    geo: "20261110a_admin_geo.sql", jogos: "20261111g_admin_jogos.sql"
   };
   function pendente(keys) {
+    if (keys.every((k) => k === "jogos")) return pedeJogos("Esta tela");
     const arqs = Array.from(new Set(keys.map((k) => MIGRACAO[k])));
     const rpcs = keys.map(rpcDe);
     const v21 = keys.some((k) => MIGRACAO[k] === "20260928a_analytics_2_1.sql");
