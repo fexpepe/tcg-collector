@@ -16,14 +16,19 @@
 // já tem esses endereços.
 //
 // Medido em 11/11 com todos os jogos (350 mil cartas): 3.112 cartas dividiam
-// o título com outra da mesma página de set; com o rótulo, 92. Dessas, 82 são
-// a mesma carta guardada duas vezes no catálogo (as promos chinesas S-PC e
-// SM-PC, que a lista da Bulbapedia traz em dobro; repetidas da The List do
-// Magic; um H36 do One Piece Carddass), e o conserto é juntar os ids. As
-// outras 10 são cartas diferentes que o catálogo não separa (os dois No.215
-// do Dragon Ball Carddass, o prisma e o prisma duplo do Gundam Carddass, o
-// "Channeler 4" e o "Channeler 5" do WoW, sem número). Sem um fato que as
-// separe, ficam sem rótulo: nada inventado.
+// o título com outra da mesma página de set; com o rótulo, 92, conferidas uma
+// a uma:
+//   - 66 são as promos chinesas S-PC e SM-PC em normal e em reverse holo, que
+//     o catálogo guardava com o mesmo acabamento (a lista da Bulbapedia anota
+//     "[reverse holofoil]" e o sync jogava fora). Com o acabamento no
+//     catálogo, o rótulo as separa ("(Reverse Holo)").
+//   - 16 são a mesma carta duas vezes no catálogo (7 da The List do Magic, o
+//     mesmo card do Scryfall; um H36 do One Piece Carddass): o conserto é
+//     juntar os ids.
+//   - 10 são cartas diferentes que o catálogo não separa (os dois No.215 do
+//     Dragon Ball Carddass, o prisma e o prisma duplo do Gundam Carddass, o
+//     "Channeler 4" e o "Channeler 5" do WoW, guardados sem número).
+// Sem um fato que as separe, ficam sem rótulo: nada inventado.
 import { cardCode } from "./card-code.js";
 
 // Edição no rótulo, em português (o texto da página é em português). Os
@@ -46,8 +51,12 @@ function raridade(card) {
   const r = String((card && card.rarity) || "").trim();
   return r && r !== "None" ? r : "";
 }
+// Acabamento no rótulo como o colecionador diz: o catálogo guarda "Reverse" e
+// "1st Edition" (as promos chinesas em normal e em reverse holo, a mesma
+// carta do FAB em Normal e em Rainbow Foil).
+const ACABAMENTO = { Reverse: "Reverse Holo", "1st Edition": "1ª Edição" };
 function acabamentos(card) {
-  return Array.isArray(card && card.variants) ? card.variants.filter(Boolean).join(", ") : "";
+  return Array.isArray(card && card.variants) ? card.variants.filter(Boolean).map((v) => ACABAMENTO[v] || v).join(", ") : "";
 }
 // Cor: o Gundam War imprime a mesma carta de Operação ou Comando nas seis
 // cores, com o mesmo nome e o mesmo número ("名も無き兵士 VO-1" em azul,

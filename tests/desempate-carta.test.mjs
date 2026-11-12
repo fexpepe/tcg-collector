@@ -48,6 +48,11 @@ test("o rótulo é o fato que separa a carta das iguais do set", () => {
   const a = { id: "f1", name: "X", number: "1", variants: ["Normal"] };
   const b = { id: "f2", name: "X", number: "1", variants: ["Rainbow Foil"] };
   assert.equal(rotuloDoDesempate(b, [a, b]), "Rainbow Foil");
+  // As promos chinesas em normal e em reverse holo (o catálogo guarda "Reverse").
+  const promo = { id: "S-PC-028-zh-cn", name: "Pikachu", number: "028", language: "zh-cn", variants: ["Normal"] };
+  const promoRev = { ...promo, id: "S-PC-028-2-zh-cn", variants: ["Reverse"] };
+  assert.equal(rotuloDoDesempate(promo, [promo, promoRev]), "Normal");
+  assert.equal(rotuloDoDesempate(promoRev, [promo, promoRev]), "Reverse Holo");
   // Cor (Gundam War: a mesma Operação nas seis cores, cada cor uma carta), em português.
   const azul = { id: "gw-s26-b-vo-1", name: "名も無き兵士", number: "VO-1", language: "ja", rarity: "C", color: "Blue" };
   const verde = { ...azul, id: "gw-s26-g-vo-1", color: "Green" };

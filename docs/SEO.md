@@ -394,12 +394,14 @@ Agora o que separa a carta vai ao lado do número, no título, no h1, na
 descrição e no Product: "Charizard ex 006/165 (português)", "(chinês
 tradicional)", "(Ultra Rare)", "(verde)". A inglesa, a edição padrão, não
 ganha rótulo, e o endereço não muda (`functions/_lib/desempate-carta.js`).
-Sobram **92**:
-- **82 são a mesma carta guardada duas vezes** no catálogo: as promos
-  chinesas S-PC e SM-PC, que a lista da Bulbapedia traz em dobro (a mesma
-  página de carta duas vezes), as repetidas da The List do Magic (a mesma
-  carta do Scryfall) e um H36 do One Piece Carddass. O conserto é juntar os
-  ids, que podem estar na coleção de alguém.
+Sobram **92**, conferidas uma a uma:
+- **66 são as promos chinesas S-PC e SM-PC em normal e em reverse holo**:
+  a lista da Bulbapedia anota "[non-holofoil]" e "[reverse holofoil]", e o
+  sync jogava a anotação fora. Com o acabamento no catálogo, o rótulo as
+  separa ("(Reverse Holo)").
+- **16 são a mesma carta guardada duas vezes** no catálogo: 7 da The List do
+  Magic (o mesmo card do Scryfall) e um H36 do One Piece Carddass. O conserto
+  é juntar os ids, que podem estar na coleção de alguém.
 - **10 são cartas diferentes que o catálogo não separa**: os dois No.215 do
   Dragon Ball Carddass, o prisma e o prisma duplo do Gundam Carddass, e o
   "Channeler 4" e o "Channeler 5" do WoW, guardados sem número. Sem um fato
