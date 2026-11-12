@@ -51,16 +51,22 @@ const UA = { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Sleevu/1.0
 const NO_FETCH = process.argv.includes("--no-fetch");
 
 // ── Tabela oficial dos 17 volumes (cardcheckbox.com, checada em 2026-07) ─────
-// date: vols. 2 e 3 não têm mês na fonte ("2003年00月") — mês ESTIMADO entre as
-// âncoras vizinhas (12/2002 e 08/2003), só pra ordenação; "下旬" (fim do mês)
-// vira dia 25. total: o "構成" oficial (inclui cartas que as fontes ainda não
+// date: conferida em 2026-11-12 contra a lista de produtos da BANDAI
+// (web.archive.org/web/20070103022221/http://www.carddas.com/naruto/product/,
+// cada volume casado pela faixa 忍-N) e a página do Vol. 1 de dez/2002
+// (web.archive.org/web/20021215134330/http://www.carddas.com/naruto/product/index.shtml,
+// "2002年12月13日発売"). A Bandai vence o cardcheckbox: os vols. 2 e 3, que
+// ali eram "2003年00月" e tinham mês estimado (03 e 06), são 2003年2月 e 5月;
+// os vols. 11, 12 e 14 são "上旬" (início do mês), não dias 13/15/16. Mês sem
+// dia, ou "上旬", vira dia 01; "下旬" (fim do mês) vira dia 25; os demais
+// volumes batem com a Bandai. total: o "構成" oficial (inclui cartas que as fontes ainda não
 // listam — o progresso x/total fica honesto). ranges: faixas de numeração
 // novas de cada volume; buracos entre faixas são produtos especiais (starters,
 // folhas de expansão) e caem no set "拡張・スペシャル".
 const OFFICIAL_VOLUMES = [
-  { vol: 1,  name: "巻ノ壱",                        date: "2002-12-01", total: 70, ranges: { "忍": [1, 24],    "術": [1, 24],    "作": [1, 22] } },
-  { vol: 2,  name: "巻ノ弐 鬼人！再不斬編",         date: "2003-03-01", total: 57, ranges: { "忍": [25, 43],   "術": [25, 42],   "作": [23, 42] } },
-  { vol: 3,  name: "巻ノ参 挑戦者集結！編",         date: "2003-06-01", total: 57, ranges: { "忍": [44, 60],   "術": [43, 60],   "作": [43, 60],   "依": [1, 4] } },
+  { vol: 1,  name: "巻ノ壱",                        date: "2002-12-13", total: 70, ranges: { "忍": [1, 24],    "術": [1, 24],    "作": [1, 22] } },
+  { vol: 2,  name: "巻ノ弐 鬼人！再不斬編",         date: "2003-02-01", total: 57, ranges: { "忍": [25, 43],   "術": [25, 42],   "作": [23, 42] } },
+  { vol: 3,  name: "巻ノ参 挑戦者集結！編",         date: "2003-05-01", total: 57, ranges: { "忍": [44, 60],   "術": [43, 60],   "作": [43, 60],   "依": [1, 4] } },
   { vol: 4,  name: "巻ノ四 死の森の試験！編",       date: "2003-08-08", total: 57, ranges: { "忍": [67, 84],   "術": [67, 84],   "作": [67, 84],   "依": [5, 7] } },
   { vol: 5,  name: "巻ノ五 実力伯仲！予選死闘編",   date: "2003-10-24", total: 78, ranges: { "忍": [85, 114],  "術": [85, 105],  "作": [85, 107],  "依": [8, 11] } },
   { vol: 6,  name: "巻ノ六 それぞれの試験！編",     date: "2004-01-25", total: 57, ranges: { "忍": [118, 135], "術": [109, 126], "作": [115, 132], "依": [12, 14] } },
@@ -68,10 +74,10 @@ const OFFICIAL_VOLUMES = [
   { vol: 8,  name: "巻ノ八 強襲！木ノ葉崩し編",     date: "2004-07-09", total: 71, ranges: { "忍": [154, 180], "術": [145, 168], "作": [151, 168], "依": [18, 19] } },
   { vol: 9,  name: "巻ノ九 暁の凶星編",             date: "2004-09-25", total: 57, ranges: { "忍": [186, 204], "術": [173, 191], "作": [174, 190], "依": [25, 26] } },
   { vol: 10, name: "巻ノ十 受け継ぎ託すもの編",     date: "2004-12-07", total: 80, ranges: { "忍": [205, 233], "術": [192, 211], "作": [191, 213], "依": [27, 29] } },
-  { vol: 11, name: "巻ノ十一 結成！木ノ葉小隊編",   date: "2005-04-13", total: 57, ranges: { "忍": [234, 254], "術": [214, 231], "作": [220, 235], "依": [30, 31] } },
-  { vol: 12, name: "巻ノ十二 戦慄の刻印編",         date: "2005-07-15", total: 73, ranges: { "忍": [255, 283], "術": [232, 254], "作": [236, 254], "依": [32, 33] } },
+  { vol: 11, name: "巻ノ十一 結成！木ノ葉小隊編",   date: "2005-04-01", total: 57, ranges: { "忍": [234, 254], "術": [214, 231], "作": [220, 235], "依": [30, 31] } },
+  { vol: 12, name: "巻ノ十二 戦慄の刻印編",         date: "2005-07-01", total: 73, ranges: { "忍": [255, 283], "術": [232, 254], "作": [236, 254], "依": [32, 33] } },
   { vol: 13, name: "巻ノ十三 両雄激突！終末の谷編", date: "2005-09-06", total: 58, ranges: { "忍": [288, 306], "術": [255, 275], "作": [255, 267], "依": [34, 36], "騎": [7, 8] } },
-  { vol: 14, name: "巻ノ十四 豪華絢爛！忍大結集編", date: "2005-12-16", total: 57, ranges: { "忍": [325, 342], "術": [276, 295], "作": [268, 285], "依": [37, 37] } },
+  { vol: 14, name: "巻ノ十四 豪華絢爛！忍大結集編", date: "2005-12-01", total: 57, ranges: { "忍": [325, 342], "術": [276, 295], "作": [268, 285], "依": [37, 37] } },
   { vol: 15, name: "巻ノ十五 若き日の伝説編",       date: "2006-03-17", total: 64, ranges: { "忍": [344, 367], "術": [305, 323], "作": [286, 304], "依": [38, 39] } },
   { vol: 16, name: "巻ノ十六 火の継承者 編",        date: "2006-06-09", total: 66, ranges: { "忍": [368, 392], "術": [324, 343], "作": [305, 322], "依": [40, 42] } },
   { vol: 17, name: "巻ノ十七 雄き獣の島編",         date: "2006-09-08", total: 57, ranges: { "忍": [397, 417], "術": [344, 361], "作": [323, 337], "依": [44, 46] } }
