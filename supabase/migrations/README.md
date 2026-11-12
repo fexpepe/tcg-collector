@@ -8,29 +8,6 @@ poucos.)
 
 ## Pendentes de aplicar
 
-- `20261112a` — /admin: "Erros a cada mil páginas" com a mesma régua
-  (`20261112a_erros_mesma_regua.sql`). Em 12/11 o Resumo marcou 413,7 (antes
-  96,7), sem o site quebrar (144 páginas de produção abertas: zero erro de
-  JS). Causa principal: o monitor de scripts do Cloudflare (Page Shield) põe
-  numa amostra das respostas um CSP **Report-Only** com `connect-src 'none'`,
-  que acusa o próprio site e o Supabase sem barrar nada, e o `theme.js`
-  mandava cada acusação como `jserror` k=csp (até 8 por página). O cliente
-  agora larga o só-relatório e marca o bloqueio de verdade com `cb`; a
-  `admin_pulso` conta CSP só com a marca. Causa secundária: a conta dividia
-  todo `jserror` não-robô pelas páginas de gente, e três públicos entravam só
-  no numerador: o navegador automatizado com user-agent comum (a página vira
-  bot pelo `wd`, o erro não levava a marca — agora leva), o navegador da
-  equipe (não manda página) e quem desligou a medição (erro sem `anon`).
-  Agora o `erros` (atual, anterior e série) conta só o erro de navegador com
-  página de gente na janela. Retroativo, sem mexer em dado. Nasce com
-  `statement_timeout = 30s`. Aditiva e sem ordem com o JS.
-
-  Ensaiada em 2026-11-12 no PGlite: a velha (20261009a) × a nova nos mesmos
-  dados (gente, robô com e sem a marca, equipe, sem `anon`, CSP com e sem
-  `cb`, período anterior), aplicada três vezes. Tudo idêntico menos `erros`;
-  no cenário, 400,0 → 66,7 por mil; `proconfig` com os 30 s e execução só
-  pra `authenticated`.
-
 - `20261110a` — /admin: de onde vêm os visitantes (`20261110a_admin_geo.sql`).
   O painel não tinha país nenhum (só o Cloudflare via). O `events_guard`
   (cópia fiel da 20261009a) passa a carimbar `props.co` no pageview com as 2
@@ -280,6 +257,33 @@ poucos.)
   E, logado como admin, abrir `/admin`: as abas aparecem e o aviso amarelo some.
 
 ### Já aplicadas (verificado em produção)
+
+- `20261112a` — /admin: "Erros a cada mil páginas" com a mesma régua
+  (`20261112a_erros_mesma_regua.sql`). Em 12/11 o Resumo marcou 413,7 (antes
+  96,7), sem o site quebrar (144 páginas de produção abertas: zero erro de
+  JS). Causa principal: o monitor de scripts do Cloudflare (Page Shield) põe
+  numa amostra das respostas um CSP **Report-Only** com `connect-src 'none'`,
+  que acusa o próprio site e o Supabase sem barrar nada, e o `theme.js`
+  mandava cada acusação como `jserror` k=csp (até 8 por página). O cliente
+  agora larga o só-relatório e marca o bloqueio de verdade com `cb`; a
+  `admin_pulso` conta CSP só com a marca. Causa secundária: a conta dividia
+  todo `jserror` não-robô pelas páginas de gente, e três públicos entravam só
+  no numerador: o navegador automatizado com user-agent comum (a página vira
+  bot pelo `wd`, o erro não levava a marca — agora leva), o navegador da
+  equipe (não manda página) e quem desligou a medição (erro sem `anon`).
+  Agora o `erros` (atual, anterior e série) conta só o erro de navegador com
+  página de gente na janela. Retroativo, sem mexer em dado. Nasce com
+  `statement_timeout = 30s`. Aditiva e sem ordem com o JS.
+
+  Ensaiada em 2026-11-12 no PGlite: a velha (20261009a) × a nova nos mesmos
+  dados (gente, robô com e sem a marca, equipe, sem `anon`, CSP com e sem
+  `cb`, período anterior), aplicada três vezes. Tudo idêntico menos `erros`;
+  no cenário, 400,0 → 66,7 por mil; `proconfig` com os 30 s e execução só
+  pra `authenticated`.
+
+  Aplicada pelo Fernando em 2026-11-12, conferida no SQL Editor:
+  `pg_get_functiondef('public.admin_pulso(int)'::regprocedure) ~ 'er_dia'`
+  deu `true`.
 
 - `20261111g` — /admin: o conteúdo por jogo (`20261111g_admin_jogos.sql`).
   O painel não dizia quais jogos são mais acessados, onde as pessoas mais
