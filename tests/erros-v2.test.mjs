@@ -221,3 +221,11 @@ test("shared.js: nenhum fetch de medição sem .catch, e os ouvintes saíram del
   assert.match(src, /injectScript\("src\/erros\.js"\)/);
   assert.match(ler("sw.js"), /"src\/erros\.js"/, "o módulo de erros tem de estar no shell do SW (offline)");
 });
+
+test("README das migrações registra a 20261112a como aplicada", () => {
+  const readme = ler("supabase/migrations/README.md");
+  const pend = readme.slice(readme.indexOf("## Pendentes de aplicar"), readme.indexOf("### Já aplicadas"));
+  const aplicadas = readme.slice(readme.indexOf("### Já aplicadas"));
+  assert.ok(!pend.includes("`20261112a`"), "a 20261112a saiu de Pendentes");
+  assert.ok(aplicadas.includes("`20261112a`"), "a 20261112a está em Já aplicadas (2026-11-12)");
+});
