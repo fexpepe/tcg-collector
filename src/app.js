@@ -887,6 +887,10 @@
       displayName: shared.setDisplayName(entry.id, entry.name, entry.language),
       symbol: entry.symbol || "",
       releaseDate: entry.release || "",
+      // Código oficial do set (OP17, GD05, MEW…), na grafia da PSA. Vem pronto
+      // do build (scripts/lib/codigo-do-set.mjs); vazio no set que não tem
+      // código de verdade (promo, vintage).
+      code: entry.code || "",
       // Tendência agregada do set (scripts/build-set-trends.mjs). Ausente
       // quando o set tem poucas cartas com cotação ou a variação é ruído.
       dv7: entry.dv7, dv30: entry.dv30, dvn: entry.dvn,
@@ -907,9 +911,16 @@
   // Busca da tela de Sets filtra SETS (nome, sigla do id e série) — procurar
   // CARTA é papel do Buscar/Explorar. Antes ela varria as cartas do jogo
   // inteiro, o que só era possível porque a página baixava tudo.
+  // O CÓDIGO do set (2026-11-12, o pedido veio de gente que sabe o OP17 mas
+  // não o nome do set) casa sem pontuação dos dois lados: "op17", "op-17" e
+  // "op 17" acham o OP17 (a caixa da Bandai escreve OP-17), "uma w119" acha o
+  // UMA/W119.
+  const semPontuacao = (s) => s.replace(/[^a-z0-9]/g, "");
   function entryMatchesQuery(entry, query) {
     if (!query) return true;
-    return normalize(`${entry.name} ${shared.setDisplayName(entry.id, entry.name, entry.language)} ${entry.id} ${entry.serieName || ""}`).includes(query);
+    if (normalize(`${entry.name} ${shared.setDisplayName(entry.id, entry.name, entry.language)} ${entry.id} ${entry.serieName || ""}`).includes(query)) return true;
+    const q = semPontuacao(query);
+    return q.length >= 2 && semPontuacao(normalize(entry.code)).includes(q);
   }
 
   function manifestSetItems() {
@@ -1317,6 +1328,11 @@
     const releaseBadge = item.releaseDate
       ? `<span class="set-release" title="${escapeAttribute(formatReleaseDate(item.releaseDate, "long"))}">${escapeHtml(formatReleaseDate(item.releaseDate))}</span>`
       : "";
+    // Código do set (OP17, GD05, MEW…) GRUDADO no selo da data, num tom
+    // diferente (pedido de 2026-11-12): é o que vem no booster, e muita gente
+    // conhece o set pelo código e não pelo nome.
+    const codeBadge = item.code ? codigoDoSetHtml(item.code) : "";
+    const badges = codeBadge || releaseBadge ? `<span class="sx-badges">${codeBadge}${releaseBadge}</span>` : "";
 
     // Tendência do set: prefere a semana (é a leitura que interessa a quem
     // acompanha) e cai pro mês quando o histórico ainda não tem 7 dias. Some
@@ -1366,7 +1382,7 @@
     article.innerHTML = `
       <a class="set-art-link" href="${escapeAttribute(setDetailUrl(item))}" aria-label="${escapeAttribute(item.displayName)}">
         <div class="set-art">
-          ${releaseBadge}
+          ${badges}
           ${logo}
           ${symbol}
         </div>
@@ -1386,6 +1402,7 @@
           ${altHtml}
           ${trendChip}
           ${valueHtml}
+          ${item.code ? `<span class="sx-code-list">${escapeHtml(item.code)}</span>` : ""}
           ${item.releaseDate ? `<span class="set-date-list" title="${escapeAttribute(formatReleaseDate(item.releaseDate, "long"))}">${escapeHtml(formatReleaseDate(item.releaseDate))}</span>` : ""}
         </div>
         ${kidsHtml}
@@ -1647,6 +1664,10 @@
       ? localizedImg(set.logo, { alt: set.displayName, className, loading: "lazy", fallback: gameLogoUrl(jogoAtual) })
       : `<span class="sx-nologo">${escapeHtml(set.displayName)}</span>`;
   }
+  // Selo do código do set: o mesmo na grade (grudado na data) e no destaque.
+  function codigoDoSetHtml(code) {
+    return `<span class="sx-code" title="${escapeAttribute(t("set.codeHint", { code }))}">${escapeHtml(code)}</span>`;
+  }
   // Barra + "n/total" do set (com as cartas em outra língua somando, como no
   // cartão da grade).
   function progressoDoSet(set) {
@@ -1666,10 +1687,10 @@
       : "";
     const mini = (s) => `<a class="sx-mini" href="${escapeAttribute(setDetailUrl(s))}">
         <span class="sx-mini-art">${arteDoSet(s, "sx-mini-logo")}</span>
-        <span class="sx-mini-info"><strong>${escapeHtml(s.displayName)}</strong><span>${escapeHtml(s.releaseDate > item.hoje ? t("sets.sx.releases", { date: formatReleaseDate(s.releaseDate, "long") }) : formatReleaseDate(s.releaseDate, "long"))}</span></span></a>`;
+        <span class="sx-mini-info"><strong>${escapeHtml(s.displayName)}</strong><span>${s.code ? `<b class="sx-mini-code">${escapeHtml(s.code)}</b> · ` : ""}${escapeHtml(s.releaseDate > item.hoje ? t("sets.sx.releases", { date: formatReleaseDate(s.releaseDate, "long") }) : formatReleaseDate(s.releaseDate, "long"))}</span></span></a>`;
     node.innerHTML = `
       <a class="sx-hero-main" href="${escapeAttribute(setDetailUrl(set))}">
-        <span class="sx-hero-art">${arteDoSet(set, "sx-hero-logo")}</span>
+        <span class="sx-hero-art">${set.code ? `<span class="sx-badges">${codigoDoSetHtml(set.code)}</span>` : ""}${arteDoSet(set, "sx-hero-logo")}</span>
         <span class="sx-hero-info">
           <span class="sx-eyebrow">${escapeHtml(t(item.parado ? "sets.sx.last" : "sets.sx.latest"))} · ${escapeHtml(formatReleaseDate(set.releaseDate, "long"))}</span>
           <strong class="sx-hero-name">${escapeHtml(set.displayName)}</strong>

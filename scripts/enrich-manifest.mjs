@@ -29,6 +29,7 @@
 // Uso: node scripts/enrich-manifest.mjs
 import { readFile, writeFile } from "node:fs/promises";
 import { setManifestMeta } from "./lib/sync-common.mjs";
+import { codigoDoSet, jogoDoDiretorio } from "./lib/codigo-do-set.mjs";
 
 const RAIZ = new URL("../", import.meta.url);
 
@@ -65,6 +66,8 @@ for (const dir of DIRS) {
   try { pricing = await leGlobal(`${dir}pricing.generated.js`, "TCG_PRICING") || {}; } catch { /* sem preço: só metadados */ }
 
   let enriquecidas = 0;
+  let comCodigo = 0;
+  const jogo = jogoDoDiretorio(dir);
   const semChunk = [];
   const orfas = [];   // chunk AUSENTE: set que saiu do catálogo (ver item 2 do topo)
   const vivas = [];
@@ -85,6 +88,12 @@ for (const dir of DIRS) {
     try { cartas = JSON.parse(cru); } catch { semChunk.push(entrada.id); vivas.push(entrada); continue; }
     if (!Array.isArray(cartas) || !cartas.length) { semChunk.push(entrada.id); vivas.push(entrada); continue; }
     Object.assign(entrada, setManifestMeta(cartas, pricing));
+    // Código oficial do set (OP-17, GD05, MEW…) pro selo da tela de Sets. Aqui
+    // e não no sync: este passo roda em todo build e vê as cartas, e o código
+    // de vários jogos sai do número impresso. Sem código, sem campo — e o de
+    // um build anterior não sobra se a regra mudar.
+    const codigo = codigoDoSet(jogo, entrada, cartas);
+    if (codigo) { entrada.code = codigo; comCodigo++; } else delete entrada.code;
     vivas.push(entrada);
     enriquecidas++;
   }
@@ -101,7 +110,7 @@ for (const dir of DIRS) {
   if (orfas.length) console.log(`  ${dir}: ${orfas.length} entrada(s) órfã(s) fora do manifest — chunk não existe mais (${orfas.slice(0, 4).join(", ")})`);
 
   await writeFile(new URL(`${dir}manifest.generated.js`, RAIZ), `window.TCG_MANIFEST = ${JSON.stringify(manifest)};\n`, "utf8");
-  console.log(`enrich-manifest: ${dir} — ${enriquecidas}/${manifest.sets.length} entradas com metadado`);
+  console.log(`enrich-manifest: ${dir} — ${enriquecidas}/${manifest.sets.length} entradas com metadado, ${comCodigo} com código de set`);
   jogosOk++;
 }
 
