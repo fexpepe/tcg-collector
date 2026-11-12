@@ -726,10 +726,11 @@ jobs:
         run: node scripts/sync-gundam-war.mjs --no-fetch || echo "sync-gundam-war --no-fetch falhou; segue com o catalogo do cache"
 
       # Dragon Ball Carddass (Bandai 1988-1997): o jogo vintage dbc. Lista carta
-      # a carta do Hondan pelo 80storage.com (snapshot versionado em
-      # data/vintage/dbc-carddass.json, nao regride, ids fixos). Cria data/dbc/
-      # sozinho, sem depender de outro sync. Imagem so a curada em
-      # assets/cards/dbc/ (Hondan 1-15, do Wayback); sem preco.
+      # a carta de todas as series pelo dbzcollection.fr (numero, raridade e
+      # scan, snapshot em data/vintage/dbc-dbzcollection.json) e o nome do
+      # Hondan pelo 80storage.com (data/vintage/dbc-carddass.json); os dois nao
+      # regridem e os ids ficam. Cria data/dbc/ sozinho. Imagem pelo wsrv.nl
+      # (a curada em assets/cards/dbc/ passa na frente); sem preco.
       - name: Catalogo vintage Dragon Ball Carddass
         if: env.RODA_SYNC == 'true'
         run: node scripts/sync-dbc-carddass.mjs || echo "sync-dbc-carddass falhou; segue com o snapshot versionado"

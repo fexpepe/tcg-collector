@@ -9,16 +9,25 @@ import { cardsIn } from "../scripts/sync-onepiece-vintage.mjs";
 import { parseCards, raridadeMb, buildCards } from "../scripts/sync-miracle-battle.mjs";
 import { parseOverview, raridade2002 } from "../scripts/sync-onepiece-2002.mjs";
 import { parseHinokunian, aplicaRaridade } from "../scripts/naruto-raridade-hinokunian.mjs";
-import { raridadeDbc, PRISMA_HONDAN } from "../scripts/sync-dbc-carddass.mjs";
+import { readFileSync } from "node:fs";
+import { raridadeDbc } from "../scripts/sync-dbc-carddass.mjs";
 
-test("Dragon Ball Carddass: prisma só onde há lista (弾 1–4); fora dela a raridade fica vazia", () => {
-  assert.equal(raridadeDbc("h01", "6"), "Prism");
-  assert.equal(raridadeDbc("h01", "7"), "Normal");
-  assert.equal(raridadeDbc("h04", "131"), "Normal"); // no 第4弾 as prismas não são seguidas
-  assert.equal(raridadeDbc("h04", "132"), "Prism");
-  assert.equal(raridadeDbc("h05", "170"), "");
-  // 6 prismas por parte, como o 80storage conta.
-  for (const [parte, nums] of Object.entries(PRISMA_HONDAN)) assert.equal(nums.length, 6, parte);
+// Até 2026-11-12 a prisma do dbc só existia nos 弾 1–4, por uma lista curada do
+// hinichijyou.com (PRISMA_HONDAN). O dbzcollection trouxe a raridade de todas
+// as partes; a lista antiga fica aqui como conferência da fonte nova.
+test("Dragon Ball Carddass: as prismas do dbzcollection batem com a lista antiga dos 弾 1–4", () => {
+  const antiga = {
+    h01: [1, 2, 3, 4, 5, 6],
+    h02: [43, 44, 45, 46, 47, 48],
+    h03: [85, 86, 87, 88, 89, 90],
+    h04: [128, 129, 130, 132, 148, 150] // no 第4弾 as prismas não são seguidas
+  };
+  const dz = JSON.parse(readFileSync(new URL("../data/vintage/dbc-dbzcollection.json", import.meta.url), "utf8"));
+  for (const [parte, nums] of Object.entries(antiga)) {
+    const cartas = dz.sets.find((s) => s.code === parte).cards;
+    const prismas = cartas.filter((c) => raridadeDbc(parte, c) === "Prism").map((c) => Number(c.num));
+    assert.deepEqual(prismas.sort((a, b) => a - b), nums, parte);
+  }
 });
 
 // Linha do hinokunian: 1ª célula a raridade, 2ª o número, 3ª o nome.
