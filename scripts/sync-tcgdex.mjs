@@ -397,6 +397,13 @@ function toAppCard(card, fallbackLanguage, fullSet) {
     setReleaseDate: card.set?.releaseDate || fullSet?.releaseDate || "",
     setSerieId: card.set?.serie?.id || fullSet?.serie?.id || "",
     setSerieName: card.set?.serie?.name || fullSet?.serie?.name || "",
+    // Código oficial do set, o impresso na carta desde o SV (MEW, PFL, SVI…;
+    // ptcgoCode nos antigos: BS, EVO). Só o detalhe do set traz — o resumo
+    // embutido na carta não —, e o cache guarda o detalhe inteiro, então vale
+    // também pro set que veio do cache. Vira o selo da tela de Sets
+    // (scripts/lib/codigo-do-set.mjs). O japonês não tem: lá o setId já é o
+    // código (SV2a, M1L).
+    ...(fullSet?.abbreviation?.official ? { setCode: fullSet.abbreviation.official } : {}),
     artist: card.illustrator || "",
     rarity: card.rarity || "",
     language: fallbackLanguage,
