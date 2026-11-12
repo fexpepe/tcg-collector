@@ -6341,8 +6341,11 @@ a.setting-open {
 .adm-kit-h2 { display: flex; align-items: center; gap: 12px; margin-bottom: -6px; font-size: 12px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; }
 .adm-kit-h2::after { content: ""; flex: 1; height: 1px; background: var(--line); }
 .adm-kit-pitch { font-size: 13.5px; line-height: 1.6; color: var(--muted); }
-.adm-kit-logos { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; }
-.adm-kit-logos li { height: 42px; padding: 6px 8px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--line); background: #fff; }
+/* Até 3 fileiras de logo: o admin.js põe --kit-cols = jogos ÷ 3 (mínimo 7).
+   A página é A4 fixa; com 7 colunas fixas, 30 jogos davam 5 fileiras e
+   empurravam o gráfico de crescimento pra baixo do rodapé (2026-11-11). */
+.adm-kit-logos { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(var(--kit-cols, 7), minmax(0, 1fr)); gap: 6px; }
+.adm-kit-logos li { height: 34px; padding: 4px 6px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--line); background: #fff; }
 .adm-kit-logos img { max-width: 100%; max-height: 100%; object-fit: contain; }
 .adm-kit-fatos { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .adm-kit-fatos div { padding: 12px 0 12px 16px; border-left: 1px solid var(--line); }
