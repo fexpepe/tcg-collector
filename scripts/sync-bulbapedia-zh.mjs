@@ -136,7 +136,9 @@ let comImpressao = 0, semPagina = 0, total = 0;
 for (const s of sets) {
   const cards = [];
   for (const e of s.entries) {
-    const card = { number: e.number, name: e.name, page: e.page, type: e.type, subtype: e.subtype, rarity: e.rarity, mark: e.mark };
+    // acabamento: o da anotação da lista (só quando há), que separa a mesma
+    // promo em normal e reverse holo (lib/bulbapedia-zh.mjs#acabamentoDaEntrada).
+    const card = { number: e.number, name: e.name, page: e.page, type: e.type, subtype: e.subtype, rarity: e.rarity, mark: e.mark, ...(e.acabamento ? { acabamento: e.acabamento } : {}) };
     const velho = anteriores.get(e.page);
     const lida = e.page ? paginasCarta[e.page] : undefined;
     if (lida) {

@@ -12,7 +12,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
   splitParams, templates, plain, releasePages, dataDe, codigoDoSimbolo, nomeDoSet, numeroDe,
-  nomeDaEntrada, parseSetPage, juntarSets, completarDatas, parseCardPage, desambiguacao,
+  nomeDaEntrada, acabamentoDaEntrada, parseSetPage, juntarSets, completarDatas, parseCardPage, desambiguacao,
   escolherImpressao, compactarImpressoes, expandirImpressoes, raridadeRegular, categoriaDe, variantesDe, dexDe, normSet, numKey, indiceArte, arteDe, montarCarta, tipoDoSet
 } from "../scripts/lib/bulbapedia-zh.mjs";
 
@@ -362,4 +362,45 @@ test("tipoDoSet: deck, kit e caixa viram \"deck\"; expansão, subset, Gem Pack e
   const c = montarCarta({ number: "001", name: "Rowlet", type: "Grass" }, { id: "CSVH4C", kind: "deck" });
   assert.equal(c.setKind, "deck");
   assert.equal(montarCarta({ number: "001", name: "Rowlet", type: "Grass" }, { id: "CSV7C" }).setKind, undefined);
+});
+
+// 2026-11-11: as listas de promo chinesas trazem a mesma carta duas vezes,
+// "[non-holofoil]" (o evento promocional) e "[reverse holofoil]" (o Gift Box
+// de 2.000 unidades), com a mesma página de carta. Sem o acabamento as duas
+// saíam idênticas no catálogo (66 cartas nos S-P e SM-P). Linhas da página
+// "S-P Promotional cards (SCTCG)" de 11/11/2026, sem a coluna de onde saiu.
+const VW = `{{TCGPromoInfobox|period=July 1, 2023 - Present}}
+{{Setlist/header|title=S-P Promotional cards|image=SetSymbol SWSHPromo.png}}
+{{Setlist/entry|028/S-P|A|{{TCG ID|S-P Promo|Pikachu|28}} <small>'''[non-holofoil]'''</small>|Lightning}}
+{{Setlist/entry|028/S-P|A|{{TCG ID|S-P Promo|Pikachu|28}} <small>'''[reverse holofoil]'''</small>|Lightning}}
+{{Setlist/entry|029/S-P|C|[[Raichu-GX (S-P Promo 29)|Raichu]]{{GX}} <small>'''[non-holofoil]'''</small>|Lightning}}
+{{Setlist/entry|029/S-P|C|[[Raichu-GX (S-P Promo 29)|Raichu]]{{GX}} <small>'''[holofoil]'''</small>|Lightning}}
+{{Setlist/entry|132/S-P|A|{{TCG ID|S-P Promo|Olivia|132}}|Supporter}}`;
+
+test("acabamentoDaEntrada: a anotação de acabamento, no nome do catálogo; carimbo não conta", () => {
+  assert.equal(acabamentoDaEntrada("{{TCG ID|S-P Promo|Pikachu|28}} <small>'''[non-holofoil]'''</small>"), "Normal");
+  assert.equal(acabamentoDaEntrada("{{TCG ID|S-P Promo|Pikachu|28}} <small>'''[reverse holofoil]'''</small>"), "Reverse");
+  assert.equal(acabamentoDaEntrada("[[Raichu-GX (S-P Promo 29)|Raichu]]{{GX}} <small>'''[holofoil]'''</small>"), "Holo");
+  assert.equal(acabamentoDaEntrada("{{TCG ID|S-P|Rare Candy|Promo}} <small>'''[Masters 2023 Beijing Champion]'''</small>"), "");
+  assert.equal(acabamentoDaEntrada("{{TCG ID|Happy Set Happy Pack|Professor's Research|48}} <small>'''[Professor Juniper]'''</small>"), "");
+  assert.equal(acabamentoDaEntrada("{{TCG ID|Collection 151|Mew ex|191|Mew}}{{ex}}"), "");
+});
+
+test("a mesma promo em normal e em reverse holo vira duas cartas com acabamentos diferentes", () => {
+  const [s] = parseSetPage(VW, "S-P Promotional cards (SCTCG)").listas;
+  assert.deepEqual(s.entries.map((e) => [e.number, e.acabamento || ""]), [["028", "Normal"], ["028", "Reverse"], ["029", "Normal"], ["029", "Holo"], ["132", ""]]);
+  // Juntar com outra página que traz a mesma promo não colapsa as duas.
+  const outra = parseSetPage(`{{TCGPromoInfobox|date=July 1, 2023}}
+{{Setlist/header|title=Gift Box|image=SetSymbol SWSHPromo.png}}
+{{Setlist/entry|028/S-P|A|{{TCG ID|S-P Promo|Pikachu|28}} <small>'''[reverse holofoil]'''</small>|Lightning}}`, "Volkswagen Gift Box (SCTCG)").listas;
+  const [j] = juntarSets([...outra, s]);
+  assert.deepEqual(j.entries.filter((e) => e.number === "028").map((e) => e.acabamento), ["Normal", "Reverse"]);
+  // No catálogo: o acabamento anotado vence a regra pela raridade; a ordem da
+  // lista dá os ids de sempre (a normal sem sufixo, a reverse com -2).
+  const set = { id: "S-PC", name: "S-P Promotional Cards" };
+  const normal = montarCarta({ number: "028", name: "Pikachu", type: "Lightning", rarity: "", acabamento: "Normal" }, set, { revNames: {} });
+  const reverse = montarCarta({ number: "028", name: "Pikachu", type: "Lightning", rarity: "", acabamento: "Reverse" }, set, { revNames: {}, sufixo: "2" });
+  assert.deepEqual([normal.id, normal.variants], ["S-PC-028-zh-cn", ["Normal"]]);
+  assert.deepEqual([reverse.id, reverse.variants], ["S-PC-028-2-zh-cn", ["Reverse"]]);
+  assert.deepEqual(montarCarta({ number: "1", name: "X", rarity: "R" }, set, { revNames: {} }).variants, ["Holo"], "sem anotação, a regra pela raridade");
 });
