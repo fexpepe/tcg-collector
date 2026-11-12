@@ -5209,10 +5209,24 @@
   // #salesGrid (2/3/4/6 colunas em 460/680/1000px) — entao ela e
   // aproximada de proposito, e o erro so aparece em tela 1x: pra mais custa
   // bytes, pra menos custa ate 1,2x de escala. Hoje o erro e 3,8x em DPR 3.
-  const SIZES_CARD_TILE = "(max-width: 460px) 46vw, (max-width: 720px) 31vw, (max-width: 1000px) 24vw, 240px";
+  //
+  // Margem de nitidez (12/11/2026): os valores abaixo são a largura REAL da
+  // imagem vezes 1,3, de propósito. O Fernando comparou com o Collectr e a
+  // grade estava mais mole em todos os jogos; medido, a fonte era a mesma (o
+  // Collectr serve o arquivo do TCGplayer byte a byte) e a diferença era a
+  // escolha da candidata. No desktop a imagem ocupa 212–249 px CSS; com
+  // "240px" uma tela a 125% (a do Fernando, e a da maioria dos notebooks com
+  // Windows) pede 300 px reais e recebia a de 300 — WebP q80 desenhado 1:1,
+  // sem folga, o texto da carta borrava. O Collectr manda 400 pra um quadro
+  // de 236 (1,36x) e o navegador reduz. Com a margem, tela 1x segue na de 300
+  // (1,2–1,4x) e qualquer tela acima de 1x pega a de 600. Celular não muda:
+  // em DPR 2/3 ele já pegava a de 600. Custo: ~3x bytes na grade do desktop
+  // com zoom/escala acima de 100%.
+  const SIZES_CARD_TILE = "(max-width: 460px) 60vw, (max-width: 720px) 40vw, (max-width: 1000px) 34vw, 300px";
   // Binder: ate 700px a pagina empilha e ocupa a largura toda (3 colunas, o
-  // padrao do --cols); no desktop a pagina para em cols*230px.
-  const SIZES_BINDER_SLOT = "(max-width: 700px) 31vw, 210px";
+  // padrao do --cols); no desktop a pagina para em cols*230px (slot de ~210).
+  // Mesma margem de 1,3x da grade (ver acima).
+  const SIZES_BINDER_SLOT = "(max-width: 700px) 40vw, 275px";
 
 
   // ── Entrada de texto e cópia manual, SEM window.prompt ────────────────────
