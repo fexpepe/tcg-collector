@@ -60,7 +60,7 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 | `narutocg` | Naruto Card Game (2027) | o NARUTO CARD GAME da Bandai, lançamento mundial em 2027: curadoria das promos de evento (a Chakra Card da Gen Con 2026, scan próprio) + TCGCSV cat. 93 quando a variável `NARUTO_TCGCSV_CATEGORY` está ligada. Foi a linha `nrt-ncg` do `naruto` até 2026-11-11; ids `nrt-ncg-` mantidos, `src/migra-mbc.js` leva a coleção de quem marcou e o histórico de preço é herdado do acervo do Naruto | USD |
 | `naruto` | Naruto Card Game | vintage Bandai 2002–2006 (tcg-db + TV Tokyo + cardcheckbox), Data Carddass (Card Battle, Mission, Formation e Cross), CCG americano (narutocards.ca) e o 疾風伝 Card Game 2007–2008 (listas oficiais da Bandai pelo Wayback, snapshot `data/vintage/naruto-shippuden.json`, quase sem imagem) | sem preço |
 | `hxh` | Hunter × Hunter | Carddass Hyper Battle 1999–2001 (Hunterpedia) | sem preço |
-| `dbc` | Dragon Ball Carddass | Carddass Bandai 1988–1997: Hondan carta a carta (80storage), sem imagem por enquanto | sem preço |
+| `dbc` | Dragon Ball Carddass | Carddass Bandai 1988–1997: Hondan, 特別弾, Super Battle, Visual Adventure e Super Barcode Wars, uma seção por série; número, raridade e scan do dbzcollection.fr (snapshot `data/vintage/dbc-dbzcollection.json`), nome do Hondan pelo 80storage (`data/vintage/dbc-carddass.json`) e, onde ele não chega, transcrito dos scans | sem preço |
 | `wow` | World of Warcraft TCG | TCGCSV cat. 13 (Upper Deck 2006–2010, Cryptozoic 2010–2013; vintage, só os sets que o TCGplayer lista, sem número de coleção e com scan de ~200 px; setId, nome e data fixos por groupId) | USD |
 | `lotr` | The Lord of the Rings TCG | Decipher 2001–2007: banco e scans originais do Player's Council (snapshot `data/vintage/lotr-pc.json`) | sem preço |
 | `dbz` | Dragon Ball Z CCG | Score 2000–2006: o CCG das 11 sagas, o GT TCG e o relançamento de 2005, com subsets e promos; galerias do retrodbzccg.com, nomes faltantes do kizmt/dbz-ccg-data e lidos no scan (snapshot `data/vintage/dbz-retro.json`) | sem preço |
@@ -411,27 +411,36 @@ primeiro lançamento. Têm fonte carta a carta o HUNTER×HUNTER e o
 
 ### Dragon Ball Carddass (`dbc`)
 
-[scripts/sync-dbc-carddass.mjs](scripts/sync-dbc-carddass.mjs), snapshot em
-`data/vintage/dbc-carddass.json` (nunca regride; o id fica gravado no snapshot e o
-refresh reaproveita o da carta já conhecida). Levantamento de 2026-09-24:
+[scripts/sync-dbc-carddass.mjs](scripts/sync-dbc-carddass.mjs), dois snapshots
+que nunca regridem e gravam o id: `data/vintage/dbc-dbzcollection.json` (todas as
+séries) e `data/vintage/dbc-carddass.json` (o Hondan do 80storage). Levantamento
+de 2026-11-12:
 
-| Série | Partes | Anos | Por parte | No catálogo |
+| Série | Partes | Lançamento | Por parte | No catálogo |
 |---|---|---|---|---|
-| 本弾 Hondan | 第1弾–第30弾 + 特別弾 | nov/1988–set/1997 | 42 (o 特別弾, 83) | 第1弾–第18弾 (758 cartas, 80storage) |
-| Super Battle | 1–20 | 1991–1997 | 44 (o 20, 46) | — |
-| Visual Adventure | 1–5, SP, '95, EX | 1991–1995 | 42 | — |
-| Super Barcode Wars | 1–4 | 1992–1993 | 42 | — |
+| 本弾 Hondan | 第1弾–第30弾 + 特別弾 | nov/1988–set/1997 | 42 (o 特別弾, 81 + 2 de campanha) | todas (1.343 cartas; nome do 80storage até o 第20弾) |
+| Super Battle | 1–20 | nov/1991–mai/1997 | 44 (o 19 e o 20, 46) | todas (884) |
+| Visual Adventure | 第1集–第5集, Especial, '95, '95EX | jun/1991–out/1995 | 42 (a Especial, 48 com as laser) | todas (342) |
+| Super Barcode Wars | パート1–4 | dez/1992–nov/1993 | 42 | todas (168) |
 
-- **Cartas**: o 80storage publica a lista de cada parte do Hondan (número, nome
-  JP, BP/DP e símbolos do verso), ~1 parte por mês. O sync tenta as 31 e as novas
-  entram sozinhas. Nome em inglês pelo dicionário `scripts/data/dbc-names-en.json`;
-  sem tradução segura, fica o japonês.
-- **Totais e anos** de todas as séries: RetroballZ (uma foto por parte, sem scan
-  carta a carta). Série sem lista carta a carta **não gera carta**: a numeração tem
-  pegadinhas (dois No.215 no 第6弾, o No.216 escondido no 第7弾, E-1..9 no 第16弾,
-  numeração que recomeça no 第17弾) e inventar números criaria ids a trocar depois.
-- **Imagens**: nenhuma fonte acessível tem scan por carta (o dragonballcards.com
-  tem, mas só serve HTTP). Scan curado entra por `assets/cards/dbc/<id>.webp`.
+- **Cartas**: o dbzcollection.fr tem uma página por parte de cada série, com o
+  número impresso, a raridade e o scan de cada carta, mas não o nome. O nome do
+  Hondan vem do 80storage (número, nome JP, BP/DP e símbolos do verso), que
+  publica ~1 parte por mês: o sync tenta as 31 e a parte nova herda o id que a
+  carta já tem. Onde ele não chega (Hondan 21–30, 特別弾 e as outras séries), o
+  nome foi lido no scan (`scripts/data/dbc-nomes-lidos.json`). Nome em inglês
+  pelo dicionário `scripts/data/dbc-names-en.json`; sem tradução segura, fica o
+  japonês.
+- **Carta de duas camadas** (隠れプリズム, Wプリズム, リバース/両面プリズム):
+  a Bandai conta uma, e o dbzcollection lista as duas faces com o mesmo número.
+  Viram uma carta só, com a raridade pelo tipo (Hidden, Double, Metal Hidden,
+  Reverse Prism). Exceção: as duas faces do No.500 do 第12弾 e do No.646/No.0 do
+  第16弾 já eram cartas no 80storage e seguem assim.
+- **Datas**: o mês de cada parte pela cronologia da vintcollect.com (EUC-JP),
+  que bate com a do dbzcollection; os subtítulos do 26–30, conferidos no display.
+- **Imagens**: o scan do dbzcollection pelo wsrv.nl (o site só serve HTTP), com
+  a marca d'água dele. Scan curado entra por `assets/cards/dbc/<id>.webp` e passa
+  na frente.
 
 ### Harry Potter TCG (`harrypotter`)
 
