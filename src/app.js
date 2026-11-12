@@ -1676,7 +1676,7 @@
   // ficam FORA do destaque do topo (vitrineDoTopo): o lançamento em destaque
   // é sempre um set principal — sem isto, o starter deck ou a caixa de promo
   // mais nova do One Piece/Cyberpunk/WoW roubava o lugar do booster.
-  const SECOES_FORA_DO_DESTAQUE = ["sets.category.promos", "sets.category.decks", "sets.category.decksBoxes", "sets.category.wowRaids", "sets.category.mtgSpecial"];
+  const SECOES_FORA_DO_DESTAQUE = ["sets.category.promos", "sets.category.events", "sets.category.decks", "sets.category.decksBoxes", "sets.category.wowRaids", "sets.category.mtgSpecial"];
   function cabecalhoDeSecao(key, count) {
     return { type: "category-head", name: t(key), count, foraDoDestaque: SECOES_FORA_DO_DESTAQUE.includes(key) };
   }
@@ -1728,7 +1728,9 @@
     }
     if (colecaoTem()) {
       const todos = [];
-      grupos.forEach((item) => { if (item.type === "set") { todos.push(foraDaSecao(item)); (item.filhos || []).forEach((f) => todos.push(f)); } });
+      // As edições (2nd Edition…) também: não têm cartão, mas quem começou uma
+      // acha ela aqui.
+      grupos.forEach((item) => { if (item.type === "set") { todos.push(foraDaSecao(item)); (item.filhos || []).concat(item.edicoes || []).forEach((f) => todos.push(f)); } });
       const andamento = todos.filter((set) => set.totalCount > 0 && set.ownedCount > 0 && set.ownedCount < set.totalCount)
         .sort((a, b) => b.ownedCount / b.totalCount - a.ownedCount / a.totalCount || sortByReleaseDesc(a, b)).slice(0, 6);
       if (andamento.length) items.push({ type: "sx-continue", sets: andamento });
@@ -1941,8 +1943,13 @@
   // Piece é starter. O que não casa com nenhuma regra (promo, demo, revision
   // pack, token) vai pra "Promos e eventos", como no One Piece de antes —
   // formato de código inédito cai lá até entrar aqui (CATALOGO 3.2).
-  // Pre-release e release event cards nem chegam aqui: viram chip no cartão
-  // do set (aninhaPorNome).
+  // Cartão SEM chip (pedido de 2026-11-12): o pre-release, o release event e
+  // o torneio de aniversário de cada booster eram um chip "Release Event
+  // Cards" em quase todo cartão de set principal. Agora são set próprio, na
+  // seção "Cartas de evento" (pelo NOME, EVENTO_BANDAI: o setId deles não
+  // segue padrão — "OP16 RE", "FB11_PR", "UE24BT_RE", e o do Digimon BT-26 é
+  // o mesmo "BT-26" do booster). O que mais estava no cartão (os Alternate
+  // Art Reprints do Fusion World) vai pela regra do código, como qualquer set.
   //   main  — a coleção numerada: OP01…, GD01…, FB01…, BT-01…, UE01BT…;
   //           o "OP15-EB04" é o OP-15 (153 das 203 cartas são OP15-), que
   //           antes caía em promos; no Digimon, os Release Special Booster
@@ -1986,8 +1993,22 @@
     // (promos, World Champion Decks, cartas de deck) nas promos.
     fftcg: { main: /^OP\d+$/, extra: /^RE$/, deck: /^(ST\d+|BD[A-Z0-9]+|CS\d+)$/ }
   };
-  function groupBandaiSets(setItems, regras) {
+  // Produto de evento: pré-release (inclusive o starter vendido nele, o
+  // "Super Pre-Release Edition/Starter Deck"), release event, celebration
+  // event e torneio de aniversário. "Tournament and Championship Promos"
+  // (Fusion World) é caixa de promo: fica nas promos.
+  const EVENTO_BANDAI = /pre-?release|release event|event cards|tournament cards/i;
+  // Recebe as raízes do aninhaPorNome. As edições (2nd Edition do Palworld)
+  // seguem no `edicoes` do set: moram no seletor da página dele.
+  function groupBandaiSets(raizes, regras) {
+    const setItems = [];
+    raizes.forEach((set) => {
+      setItems.push(set);
+      (set.filhos || []).forEach((filho) => { delete filho.rotulo; setItems.push(Object.assign(filho, { filhos: [], edicoes: [] })); });
+      set.filhos = [];
+    });
     const secaoDe = (set) => {
+      if (EVENTO_BANDAI.test(set.name)) return "event";
       const id = String(set.setId || "").trim().toUpperCase();
       return regras.main.test(id) ? "main" : regras.extra.test(id) ? "extra" : regras.deck.test(id) ? "deck" : "promo";
     };
@@ -1995,6 +2016,7 @@
       ["sets.category.main", "main"],
       ["sets.category.extraBoosters", "extra"],
       ["sets.category.decks", "deck"],
+      ["sets.category.events", "event"],
       ["sets.category.promos", "promo"]
     ];
     const items = [];
@@ -2336,6 +2358,8 @@
   // os Weekly Play Promos do Star Wars, o Treasure dos raids do WoW. Medido
   // com os catálogos de 09/10/2026: Union Arena 77 → 48 cartões, Digimon
   // 99 → 69, One Piece 85 → 65, DBFW 49 → 29, Yu-Gi-Oh! 594 → 571.
+  // Desde 2026-11-12 os jogos da Bandai tiram esses chips de volta pra fora
+  // (groupBandaiSets): o evento virou seção própria, "Cartas de evento".
   // Das raízes do Magic, as de evento/premiação/coleção avulsa (MagicFest,
   // Wizards Play Network, Secret Lair, The List…) vão pra seção de especiais,
   // pelo nome.
@@ -2347,13 +2371,28 @@
   // Arsenal 2 e 3 dentro do 1, e os capítulos do Narutimate Formation dentro de
   // um cartão só.
   const VOLUME_SEGUINTE = /^(?:(?:vol(?:ume)?\.?|round)\s*)?(?:\d+|[ivx]+)$|^第.+章/i;
-  // Devolve as RAÍZES (cada uma com `filhos`); os filhos ganham `rotulo`.
-  // Deck/caixa (`kind: "deck"`) fica de fora dos dois lados: tem seção
-  // própria (Pokémon chinês, Harry Potter).
+  // A régua de edição é do src/nomes-sets.js (a página do set usa a mesma);
+  // sem o arquivo, nenhum set é edição e o cartão fica como era.
+  const edicaoDoSet = (nome) => (window.SLEEVU_NOMES_SETS && window.SLEEVU_NOMES_SETS.edicaoDoSet ? window.SLEEVU_NOMES_SETS.edicaoDoSet(nome) : null);
+  // Devolve as RAÍZES (cada uma com `filhos` e `edicoes`); os filhos ganham
+  // `rotulo`. Deck/caixa (`kind: "deck"`) fica de fora dos dois lados: tem
+  // seção própria (Pokémon chinês, Harry Potter).
+  // EDIÇÃO do set (2nd Edition, Worldwide English, Gold Edition — a regra
+  // mora no src/nomes-sets.js, edicaoDoSet) não vira chip nem cartão: vai pra
+  // `edicoes` do set original, sem a janela de 400 dias (a Worldwide English
+  // do Yu-Gi-Oh! saiu dois anos depois da americana), e aparece no seletor
+  // "Edição" da página do set (detail.js). Pedido de 2026-11-12, regra do site.
   function aninhaPorNome(setItems) {
     const DIA = 86400000;
     const dias = (a, b) => Math.abs(Date.parse(a.releaseDate || "1970-01-01") - Date.parse(b.releaseDate || "1970-01-01")) / DIA;
-    const candidatos = setItems.filter((set) => set.kind !== "deck");
+    const porNome = new Map(setItems.map((set) => [set.name, set]));
+    const edicaoDe = new Map();
+    setItems.forEach((set) => {
+      const ed = edicaoDoSet(set.name);
+      const original = ed && porNome.get(ed.base);
+      if (original && original !== set) edicaoDe.set(set, { original, rotulo: ed.rotulo });
+    });
+    const candidatos = setItems.filter((set) => set.kind !== "deck" && !edicaoDe.has(set));
     const porTamanho = candidatos.slice().sort((a, b) => a.name.length - b.name.length);
     const pai = new Map();
     candidatos.forEach((set) => {
@@ -2369,7 +2408,14 @@
       if (melhor) pai.set(set, melhor);
     });
     const raizDe = (set) => { let r = set; while (pai.has(r)) r = pai.get(r); return r; };
-    const raizes = setItems.filter((set) => !pai.has(set)).map((set) => Object.assign(set, { filhos: [] }));
+    const raizes = setItems.filter((set) => !pai.has(set) && !edicaoDe.has(set)).map((set) => Object.assign(set, { filhos: [], edicoes: [] }));
+    edicaoDe.forEach(({ original, rotulo }, set) => {
+      set.rotulo = rotulo;
+      // Edição de edição sobe pro original (o nome encurta a cada passo: não há ciclo).
+      let o = original;
+      while (edicaoDe.has(o)) o = edicaoDe.get(o).original;
+      raizDe(o).edicoes.push(set);
+    });
     pai.forEach((_, set) => {
       const r = raizDe(set);
       // O rótulo do produto é o que sobra do nome ("Commander", "Stellar

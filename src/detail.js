@@ -1814,9 +1814,18 @@
     // updateBonusStat, junto com o selo do hero.
     const temBonus = pageCards.some((card) => shared.isBonusCard(card));
     const lanc = pageCards[0].setReleaseDate ? formatInsightDate(pageCards[0].setReleaseDate) : t("insights.na");
+    // Set impresso em mais de uma edição: o seletor "Edição" no lado direito
+    // do título (ver edicoesDoSet).
+    const edicoes = edicoesDoSet();
+    const tituloHtml = edicoes.length > 1
+      ? `<div class="edicao-head"><h3>${escapeHtml(t("insights.overview"))}</h3>
+          <label class="edicao-sel" title="${escapeAttribute(t("set.editionHint"))}"><span>${escapeHtml(t("set.edition"))}</span>
+            <select data-edicao>${edicoes.map((e, i) => `<option value="${i}"${e.atual ? " selected" : ""}>${escapeHtml(e.rotulo)}</option>`).join("")}</select>
+          </label></div>`
+      : `<h3>${escapeHtml(t("insights.overview"))}</h3>`;
     const resumoHtml = `
       <article class="insight-card insight-summary">
-        <h3>${escapeHtml(t("insights.overview"))}</h3>
+        ${tituloHtml}
         <dl>
           <div><dt>${escapeHtml(t("insights.complete"))}</dt><dd data-insight-complete>—</dd></div>
           <div><dt>${escapeHtml(t("insights.release"))}</dt><dd>${escapeHtml(lanc)}</dd></div>
@@ -1832,6 +1841,82 @@
       </article>`;
     box.innerHTML = `<div class="set-insights-rail">${resumoHtml}${raridadeHtml}${tipoHtml}</div>`;
     box.hidden = false;
+    const seletor = box.querySelector("[data-edicao]");
+    if (seletor) {
+      seletor.addEventListener("change", async () => {
+        const alvo = edicoes[Number(seletor.value)];
+        if (alvo && !alvo.atual) location.assign(await enderecoDaEdicao(alvo));
+      });
+      // Voltar do navegador (página restaurada do bfcache): o seletor ainda
+      // mostrava a edição que se abriu, não a desta página.
+      window.addEventListener("pageshow", () => { seletor.value = String(edicoes.findIndex((e) => e.atual)); });
+    }
+  }
+
+  // ── Edições do set (2026-11-12) ─────────────────────────────────────────
+  // O mesmo set impresso de novo (a 2ª edição do BP01 do Palworld, a Worldwide
+  // English e o Gold Edition do Yu-Gi-Oh!) não tem cartão na lista de Sets:
+  // mora aqui, num seletor no "Visão geral" do original E de cada edição — dá
+  // pra ir e voltar. A régua de quem é edição é a do src/nomes-sets.js
+  // (edicaoDoSet), a mesma da lista. Um <select> nativo de propósito: o
+  // cartão fica num trilho que rola de lado (overflow), e uma lista nossa
+  // aberta ali seria cortada; a nativa abre por cima de tudo, e no celular é
+  // o seletor do sistema.
+  // Devolve [{ name, setId, rotulo, atual }] com o original primeiro, ou [].
+  const EDICAO_ORDINAL = /^(\d+)(st|nd|rd|th)\s+edition$/i;
+  function edicoesDoSet() {
+    const nomes = window.SLEEVU_NOMES_SETS;
+    const edicaoDe = nomes && nomes.edicaoDoSet;
+    if (!edicaoDe || detailType !== "set" || !pageCards.length || !detailName) return [];
+    // Os sets do jogo NA MESMA REGIÃO de idioma desta página: o manifest em
+    // produção, o cards.js em dev.
+    const regiao = shared.cardLanguageRegion(pageCards[0].language);
+    const manifest = window.TCG_MANIFEST;
+    const fonte = manifest && Array.isArray(manifest.sets)
+      ? manifest.sets.filter((s) => !s.retired).map((s) => ({ name: s.name, setId: s.id, language: s.language, release: s.release || "" }))
+      : (Array.isArray(window.TCG_CARDS) ? window.TCG_CARDS : []).map((c) => ({ name: c.set, setId: c.setId, language: c.language, release: c.setReleaseDate || "" }));
+    const porNome = new Map();
+    fonte.forEach((s) => { if (s.name && !porNome.has(s.name) && shared.cardLanguageRegion(s.language) === regiao) porNome.set(s.name, s); });
+    const desta = edicaoDe(detailName);
+    const base = desta && porNome.has(desta.base) ? desta.base : detailName;
+    const original = porNome.get(base);
+    if (!original) return [];
+    const outras = [];
+    porNome.forEach((s) => {
+      const ed = edicaoDe(s.name);
+      if (ed && ed.base === base) outras.push(Object.assign({ rotuloFonte: ed.rotulo }, s));
+    });
+    if (!outras.length) return [];
+    const ordinal = (r) => EDICAO_ORDINAL.exec(r);
+    outras.sort((a, b) => {
+      const oa = ordinal(a.rotuloFonte), ob = ordinal(b.rotuloFonte);
+      if (oa && ob) return Number(oa[1]) - Number(ob[1]);
+      return (a.release || "").localeCompare(b.release || "") || a.name.localeCompare(b.name);
+    });
+    // "2nd Edition" vira "2ª"/"2nd"/"2.ª" (o rótulo "Edição" já está ao lado);
+    // o original, "1ª" quando as outras são numeradas, senão "Original".
+    const rotulo = (r) => { const m = ordinal(r); return m ? t("set.editionNth", { n: m[1], o: m[1] + m[2] }) : r; };
+    const todasNumeradas = outras.every((s) => ordinal(s.rotuloFonte));
+    const itens = [{ name: original.name, setId: original.setId, rotulo: todasNumeradas ? t("set.editionNth", { n: 1, o: "1st" }) : t("set.editionOriginal") }]
+      .concat(outras.map((s) => ({ name: s.name, setId: s.setId, rotulo: rotulo(s.rotuloFonte) })));
+    itens.forEach((e) => { e.atual = e.name === detailName; });
+    return itens;
+  }
+  // Endereço da outra edição: o /games/<jogo>/<set> do mapa do jogo (o mesmo
+  // que a borda serve); sem o mapa, no app (Capacitor) ou na versão "dentro da
+  // sua coleção", o /detail?type=set&…, que a página resolve igual.
+  async function enderecoDaEdicao(alvo) {
+    const extra = { setId: alvo.setId };
+    if (idComVariasEdicoes(alvo.setId)) extra.region = shared.cardLanguageRegion(pageCards[0].language);
+    const reserva = `/${shared.detailUrl("set", alvo.name, collectionScope ? "collection" : "", paginaGame(), extra)}`;
+    if (collectionScope || window.SLEEVU_APP) return reserva;
+    const urlDoSet = window.SLEEVU && window.SLEEVU.urlDoSet;
+    const baseDoJogo = caminhoLimpo ? `/games/${caminhoLimpo[1]}` : ((urlDoSet && urlDoSet(paginaGame(), alvo.setId)) || "");
+    if (!baseDoJogo) return reserva;
+    const mapa = await carregaMapa(baseDoJogo.slice("/games/".length));
+    const sets = (mapa && mapa.s) || {};
+    const slug = Object.keys(sets).find((k) => sets[k].n === alvo.name);
+    return slug ? `${baseDoJogo}/${slug}` : reserva;
   }
   // Data só com ano e mês (as vintage: "2006-12") sai sem dia, como no
   // formatReleaseDate do app.js — sem isto o cartão inventava um "1 de dez.

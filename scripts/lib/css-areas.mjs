@@ -74,7 +74,9 @@ export const AREAS = [
   // página própria e só ela carrega o centering.js, então a fatia vai só pra
   // lá. Coleção, HUB e /tools levam só um link pra /centering.
   { nome: "medidor",   prefixos: ["ctr-"],                          paginas: ["centering.html"] },
-  { nome: "detalhe",   prefixos: ["favorite-", "segmented-"],      paginas: ["detail.html"] },
+  // edicao- (2026-11-12) é o seletor "Edição" do cartão Visão geral do set
+  // (2nd Edition, Worldwide English…) — só o detail.js desenha.
+  { nome: "detalhe",   prefixos: ["favorite-", "segmented-", "edicao-"], paginas: ["detail.html"] },
   { nome: "404",       prefixos: ["notfound-"],                    paginas: ["404.html"] },
   { nome: "set",       prefixos: ["facet-", "mkt-"],               paginas: ["detail.html", "sets.html", "decks.html", "my-decks.html"] },
   // sx- (2026-10-08) é o redesenho da tela de Sets de cada jogo (/games/<jogo>,
