@@ -35,6 +35,16 @@ const OVERVIEW = "https://grandlinewiki.net/tcg/opcardgame2002.html";
 const UA = { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Sleevu/1.0 (+sleevu.app)" };
 const NO_FETCH = process.argv.includes("--no-fetch");
 
+// DATA DA BANDAI vence a do wiki, set por set (2026-11-12). O Grand Line Wiki
+// data o 麦わらの海賊旗 (Straw Hat Pirate Flag, 81 cartas) em mar/2002, mas a
+// ficha oficial no Carddass Club diz "2003年03月上旬" (starter, booster e
+// pacote; sec.carddass.com/club/products/detail/4543112164780000) e o
+// catálogo Juggernauts (card.g1.xrea.com/t2/tbc21op2.html) concorda. Só entra
+// aqui data com fonte da Bandai; o setId (endereço) não muda.
+export const DATA_BANDAI = {
+  "Straw Hat Pirate Flag": "2003-03"
+};
+
 const MONTHS = { jan: "01", feb: "02", mar: "03", apr: "04", may: "05", jun: "06", jul: "07", aug: "08", sep: "09", oct: "10", nov: "11", dec: "12", january: "01", february: "02", march: "03", april: "04", june: "06", july: "07", august: "08", september: "09", october: "10", november: "11", december: "12" };
 function toISO(dateText) {
   const m = /([A-Za-z]+)\.?[,\s]*(?:\d{1,2},?\s*)?(\d{4})/.exec(dateText || "");
@@ -160,7 +170,7 @@ async function run() {
         setId,
         number: c.num,
         setTotal: s.official || s.cards.length,
-        setReleaseDate: s.date,
+        setReleaseDate: DATA_BANDAI[s.name] || s.date,
         rarity: c.rarity || "",
         artist: "",
         language: "ja",
