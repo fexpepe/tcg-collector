@@ -645,7 +645,9 @@ test("job do espelho: regravação e host mutável sobem com 7 dias, e as regrav
   // `mesma`: regravação na MESMA chave. A carta de geração anterior vai pra
   // chave nova (.g<n>), que nasce imutável e não precisa de purga.
   assert.ok(job.includes("const mesma = !!tem && geracaoDe(tem) === GERACAO;"));
-  assert.ok(job.includes("const cacheControl = mesma || f.mutavel ? CACHE_MUTAVEL : undefined;"));
+  // "t": carta EN que ficou na TCGdex pode trocar pela pokemontcg.io na mesma
+  // chave (ver scripts/lib/mesma-carta.mjs) — também sobe com 7 dias.
+  assert.ok(job.includes('const cacheControl = mesma || f.mutavel || fonte === "t" ? CACHE_MUTAVEL : undefined;'));
   assert.ok(job.includes("if (mesma) LARGURAS.forEach((w) => regravadas.push("));
   assert.ok(job.includes("if (!SECO) await purgaBorda();"));
   const wf = readFileSync(join(raiz, ".github/workflows/mirror-images.yml"), "utf8");

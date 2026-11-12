@@ -35,8 +35,21 @@
 // cada geração tem chave própria (<…>@<largura>.g2.webp) e o site só troca
 // de geração num host quando ela está COMPLETA no bucket (ver statusDoEspelho).
 // A geração 1 (sem sufixo) fica no bucket: é o que o site usa até a troca.
+//
+// Geração 3, SÓ na TCGdex (12/11/2026): comparando com o Collectr, o Pokémon
+// era o único jogo em que a FONTE deles era melhor que a nossa. O high.png da
+// TCGdex é sempre uma paleta de 256 cores (até no Base Set: granulado de
+// dithering na arte), e o high.webp é cor cheia mas mais mole — a medição da
+// geração 2 usou o próprio png como referência, então não tinha como ver
+// isso. O Collectr usa a imagem oficial em cor cheia, 733×1024, que é a que a
+// pokemontcg.io publica como _hires. Pras cartas EN o job agora baixa essa
+// como matriz (ver `alternativa` e scripts/lib/mesma-carta.mjs); PT, JA e ZH
+// não têm fonte melhor e seguem no png. A geração passou a ser POR HOST
+// (`geracao` em FONTES): subir a global regeraria Scryfall e TCGplayer
+// (~250 mil cartas) sem mudar um pixel neles.
 export const ESPELHO = "https://img.sleevu.app/";
 export const ESQUEMA_ESPELHO = 2;
+// Geração padrão de um host; quem regerou de novo declara a sua em FONTES.
 export const GERACAO = 2;
 export const LARGURAS = [300, 600, 1000];
 export const QUALIDADE_WEBP = 80;
@@ -75,8 +88,12 @@ export const FONTES = {
   // high.png (600×825, sem perdas). Até a geração 1 era o high.webp, a mesma
   // resolução com 1/3 do peso — mas já comprimido pela TCGdex, e o job
   // comprimia por cima (ver Geração 2 no topo). O download maior é só do job.
+  // Geração 3: carta EN com `alternativa` (a _hires da pokemontcg.io, montada
+  // pelo job a partir do set-id-map) usa a alternativa como matriz quando ela
+  // é a MESMA carta e não é menor; o png fica de reserva e de referência.
+  // Concorrência 4: na regeração cada carta EN baixa das DUAS fontes.
   "assets.tcgdex.net": {
-    concorrencia: 6, intervaloMs: 50,
+    concorrencia: 4, intervaloMs: 50, geracao: 3,
     matriz: (u) => u.replace(RE_TCGDEX, "/high.png")
   },
   // large = 672×936 (o png de 745×1040 pesa 1 MB por carta e não muda nada
@@ -113,6 +130,9 @@ export const FONTES = {
 // fallback, e o "exportar imagem" depende de proxy de CORS pra eles), Scryfall
 // por último (o maior, e a CDN mais confiável).
 export const ORDEM = Object.keys(FONTES);
+// Geração ATUAL de um host: a que o job gera e que o site passa a usar quando
+// ela fecha no bucket (ver Geração 3 no topo).
+export const geracaoDoHost = (host) => (FONTES[host] && FONTES[host].geracao) || GERACAO;
 
 export function hostDe(u) { try { return new URL(u).host; } catch { return ""; } }
 // Base da chave: host + caminho, SEM query. No wsrv.nl a URL é toda query e a
