@@ -116,6 +116,11 @@ test("nomeDoSet: tira a marca dos grupos genéricos do TCGplayer, não do títul
   assert.equal(nomeDoSet("godzilla", "Godzilla Card Game Promo Cards"), "Promo Cards");
   assert.equal(nomeDoSet("godzilla", "Booster Set 1: Godzilla VS. Godzilla"), "Booster Set 1: Godzilla VS. Godzilla");
   assert.equal(nomeDoSet("godzilla", "Godzilla Minus One"), "Godzilla Minus One");
+  // Final Fantasy TCG: o "FF:" das promos sai; o FF que é tema do set fica.
+  assert.equal(nomeDoSet("fftcg", "FF: Promo Cards"), "Promo Cards");
+  assert.equal(nomeDoSet("fftcg", "Boss Deck: Final Fantasy VII"), "Boss Deck: Final Fantasy VII");
+  assert.equal(nomeDoSet("fftcg", "Final Fantasy VII Collection"), "Final Fantasy VII Collection");
+  assert.equal(nomeDoSet("fftcg", "FFXIV Starter"), "FFXIV Starter");
 });
 
 test("catálogo da família TCGCSV já está com o nome que o sync grava hoje", () => {

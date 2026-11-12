@@ -35,7 +35,11 @@ export const NOMES_DO_JOGO = {
   // "Godzilla Minus One"), que perderia o monstro.
   godzilla: ["Godzilla Card Game"],
   // Palworld OFFICIAL CARD GAME (Bushiroad, 2026): "Palworld Promo Cards".
-  palworld: ["Palworld OFFICIAL CARD GAME", "Palworld Official Card Game", "Palworld"]
+  palworld: ["Palworld OFFICIAL CARD GAME", "Palworld Official Card Game", "Palworld"],
+  // Final Fantasy TCG: o TCGplayer abrevia "FF: Promo Cards". "Final Fantasy"
+  // sozinho NÃO entra: é o título do videogame, e set que começasse por ele
+  // ("Final Fantasy VII …") perderia de qual FF é.
+  fftcg: ["Final Fantasy Trading Card Game", "Final Fantasy TCG", "FF"]
 };
 
 // Títulos de outra obra que começam com a marca: ficam inteiros. No Yu-Gi-Oh!

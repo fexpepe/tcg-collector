@@ -148,5 +148,10 @@
   "cards": 647,
   "sets": 8,
   "imgPct": 100
+ },
+ "fftcg": {
+  "cards": 5700,
+  "sets": 38,
+  "imgPct": 100
  }
 }

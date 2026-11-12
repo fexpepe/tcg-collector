@@ -66,6 +66,8 @@ test("a exceção só vale pro formato <prefixo>-<productId> do próprio jogo", 
   assert.equal(ehIdDeProduto("gundam", "gcg-643280"), true);
   assert.equal(ehIdDeProduto("godzilla", "gzc-645821"), true);
   assert.equal(ehIdDeProduto("gundam", "gzc-645821"), false);        // Godzilla Card Game, não Gundam
+  assert.equal(ehIdDeProduto("fftcg", "fftcg-132375"), true);
+  assert.equal(ehIdDeProduto("fftcg", "ff-132375"), false);
   assert.equal(ehIdDeProduto("narutocg", "nrt-ncg-512345"), true); // jogo próprio desde 11/11/2026
   assert.equal(ehIdDeProduto("naruto", "nrt-ncg-512345"), false);
   assert.equal(ehIdDeProduto("naruto", "nrt-ccg-ss-001"), false);   // checklist narutocards.ca
