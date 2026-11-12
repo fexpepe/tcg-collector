@@ -1,7 +1,7 @@
 // CÓDIGO OFICIAL do set — o que vem no booster/caixa e, em vários jogos, no
 // número da carta: OP17, GD05, BT27, FB11, UE24BT, MEW, LOB…
 // (pedido de 2026-11-12: "tem gente que não sabe o nome do set OP17 de One
-// Piece, mas sabe que é o OP17"). Vira o selo grudado na data, no cartão do
+// Piece, mas sabe que é o OP17"). Vira o selo na linha da data, no cartão do
 // set na tela de Sets (src/app.js), e entra na busca dela.
 //
 // Roda no enrich-manifest, que passa em TODO build (rápido ou completo) e

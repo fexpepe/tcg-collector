@@ -8605,30 +8605,34 @@ html:not([lang^="pt"]) .sx-sobre[data-idioma="pt"] { visibility: hidden; }
 .sx-mini { border-radius: 10px; }
 .sx-hero-main { overflow: hidden; }
 .sx-mini-art { border-radius: 6px; }
-/* Selos no canto da arte: o CÓDIGO do set (OP17, GD05, MEW…) GRUDADO na data
-   de lançamento, sem vão — dois retângulos que leem como um selo só. O código
-   vai em tom diferente (fundo do painel e texto cheio; a data fica no painel
-   forte e texto apagado) pra separar sem brigar com o logo. É o que vem
-   impresso no booster: muita gente conhece o set pelo código e não pelo nome.
-   max-width + ellipsis: código comprido (UEX08BT, UMA/W119) nunca empurra o
-   selo pra fora do cartão de 2 colunas do celular. */
+/* Selos no topo da arte: o CÓDIGO do set (OP17, GD05, MEW…) no canto
+   ESQUERDO e a data de lançamento no DIREITO, na mesma linha e do mesmo
+   tamanho. Até 12/11 os dois iam grudados no canto direito; o Fernando pediu
+   pra separar e levar o código pra esquerda (código lê primeiro, data fecha a
+   linha). O contêiner ocupa a largura da arte (left + right) e o
+   space-between separa os dois; a data tem margin-left: auto pra continuar
+   na direita quando o set não tem código. O código vai em tom diferente
+   (fundo do painel e texto cheio; a data fica no painel forte e texto
+   apagado). É o que vem impresso no booster: muita gente conhece o set pelo
+   código e não pelo nome. min-width: 0 + ellipsis: código comprido
+   (UEX08BT, UMA/W119) nunca empurra a data pra fora do cartão de 2 colunas
+   do celular. */
 .sx-badges {
-  position: absolute; top: 6px; right: 6px; z-index: 1;
-  display: flex; max-width: calc(100% - 12px);
-  border-radius: 4px; overflow: hidden;
+  position: absolute; top: 6px; left: 6px; right: 6px; z-index: 1;
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 6px;
 }
 .sx-code {
   min-width: 0; padding: 2px 7px;
-  border: 1px solid var(--line); border-right: 0;
+  border: 1px solid var(--line); border-radius: 4px;
   background: var(--panel); color: var(--text);
   font-size: 10px; font-weight: 800; letter-spacing: 0.3px; line-height: normal;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.sx-code:only-child { border-right: 1px solid var(--line); }
-.sx-badges .set-release { flex: none; }
-/* Destaque do topo: só o código (a data já está no sobrescrito), maior. */
+.sx-badges .set-release { flex: none; margin-left: auto; border-radius: 4px; }
+/* Destaque do topo: só o código (a data já está no sobrescrito), maior, no
+   mesmo canto esquerdo dos cartões. */
 .sx-hero-art { position: relative; }
-.sx-hero-art .sx-badges { top: 12px; right: 12px; }
+.sx-hero-art .sx-badges { top: 12px; left: 12px; right: 12px; }
 .sx-hero-art .sx-code { padding: 3px 9px; font-size: 12px; }
 /* "Em breve"/"Também recentes": o código abre a linha da data. */
 .sx-mini-code { color: var(--text); font-weight: 800; }
@@ -8701,6 +8705,15 @@ html:not([lang^="pt"]) .sx-sobre[data-idioma="pt"] { visibility: hidden; }
   .sx-kids.is-open > .sx-kid-more { display: none; }
   .sx-n-cel { display: inline; }
   .sx-n-desk { display: none; }
+}
+/* Android de 360px (cartão de 155px): o código mais longo ("RWBY/WX03",
+   "Opus XXVIII") + "SET. DE 2026" + o vão passavam até 13px. Fonte de 9px e
+   respiro menor nos dois selos devolvem o espaço; acima de 380px fica como
+   está. */
+@media (max-width: 380px) {
+  .sx-grid .sx-badges { gap: 4px; }
+  .sx-grid .sx-code,
+  .sx-grid .sx-badges .set-release { padding-inline: 4px; font-size: 9px; }
 }
 
 /* Badges (gamification): placar, torre de cartas e grade de medalhas. */

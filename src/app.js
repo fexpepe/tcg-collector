@@ -1403,9 +1403,10 @@
     const releaseBadge = item.releaseDate
       ? `<span class="set-release" title="${escapeAttribute(formatReleaseDate(item.releaseDate, "long"))}">${escapeHtml(formatReleaseDate(item.releaseDate))}</span>`
       : "";
-    // Código do set (OP17, GD05, MEW…) GRUDADO no selo da data, num tom
-    // diferente (pedido de 2026-11-12): é o que vem no booster, e muita gente
-    // conhece o set pelo código e não pelo nome.
+    // Código do set (OP17, GD05, MEW…) na mesma linha do selo da data, num
+    // tom diferente (pedido de 2026-11-12): é o que vem no booster, e muita
+    // gente conhece o set pelo código e não pelo nome. Código no canto
+    // esquerdo, data no direito (o .sx-badges separa; ver styles.css).
     const codeBadge = item.code ? codigoDoSetHtml(item.code) : "";
     const badges = codeBadge || releaseBadge ? `<span class="sx-badges">${codeBadge}${releaseBadge}</span>` : "";
 
@@ -1742,7 +1743,7 @@
       ? localizedImg(set.logo, { alt: set.displayName, className, loading: "lazy", fallback: gameLogoUrl(jogoAtual) })
       : `<span class="sx-nologo">${escapeHtml(set.displayName)}</span>`;
   }
-  // Selo do código do set: o mesmo na grade (grudado na data) e no destaque.
+  // Selo do código do set: o mesmo na grade (na linha da data) e no destaque.
   function codigoDoSetHtml(code) {
     return `<span class="sx-code" title="${escapeAttribute(t("set.codeHint", { code }))}">${escapeHtml(code)}</span>`;
   }

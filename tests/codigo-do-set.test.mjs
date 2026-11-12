@@ -1,4 +1,4 @@
-// Código oficial do set (scripts/lib/codigo-do-set.mjs): o selo grudado na
+// Código oficial do set (scripts/lib/codigo-do-set.mjs): o selo na linha da
 // data no cartão da tela de Sets (pedido de 2026-11-12). Trava a GRAFIA — a
 // da PSA, sem hífen, mesmo onde a caixa da Bandai usa (OP-01 na caixa, OP01
 // na PSA e no número da carta) — e a regra de ouro: grupo de promo, vintage e
@@ -147,13 +147,14 @@ test("jogo do diretório segue o registro do game.js (Pokémon é a raiz)", () =
   assert.equal(jogoDoDiretorio("data/ygo/"), "ygo");
 });
 
-test("o enrich-manifest grava o código e o cartão desenha o selo grudado na data", () => {
+test("o enrich-manifest grava o código e o cartão desenha o selo na linha da data", () => {
   const enrich = readFileSync(new URL("../scripts/enrich-manifest.mjs", import.meta.url), "utf8");
   assert.match(enrich, /codigoDoSet\(jogo, entrada, cartas\)/);
   assert.match(enrich, /else delete entrada\.code/);
   const app = readFileSync(new URL("../src/app.js", import.meta.url), "utf8").replace(/\r\n/g, "\n");
   assert.match(app, /code: entry\.code \|\| ""/);
-  // Código ANTES da data, no mesmo contêiner (grudados).
+  // Código ANTES da data, no mesmo contêiner: o CSS põe o primeiro na
+  // esquerda e o segundo na direita (space-between).
   assert.match(app, /<span class="sx-badges">\$\{codeBadge\}\$\{releaseBadge\}<\/span>/);
   // A busca compara o código sem pontuação: "op-17" acha o OP17.
   assert.match(app, /semPontuacao\(normalize\(entry\.code\)\)\.includes\(q\)/);
