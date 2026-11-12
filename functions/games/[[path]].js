@@ -189,13 +189,21 @@ async function cartasDaPagina(env, request, entrada) {
   return { cartas: cartasDoSet(todas, entrada.n), arquivo };
 }
 
-// { valor, moeda } ou null (ver precoDeReferencia).
-async function precoDaCarta(env, request, card, arquivo) {
-  if (!arquivo) return null;
-  const tabela = await jsonDoSite(env, request, "/" + arquivo.replace("/sets/", "/pricing-chunks/"));
-  if (!tabela) return null;
-  const id = String(card.id);
-  return precoDeReferencia(hasOwn(tabela, id) ? tabela[id] : tabela[basePricingId(id)]);
+// Os preços da página: carta -> entrada do chunk de preço irmão ({ u, e, v, g })
+// ou null. Desde 2026-11-11 a página da carta usa os preços das OUTRAS cartas
+// do set também (a posição dela no set, ver mercadoDaCarta), então lê o chunk
+// de preço de cada arquivo da página, e não só o da carta. Quase todo set é
+// um arquivo só: é a mesma leitura de antes.
+async function precosDaPagina(env, request, arquivo) {
+  const arquivos = [...new Set(arquivo.values())];
+  const tabelas = new Map(await Promise.all(arquivos.map(async (f) =>
+    [f, await jsonDoSite(env, request, "/" + f.replace("/sets/", "/pricing-chunks/"))])));
+  return (card) => {
+    const tabela = tabelas.get(arquivo.get(card));
+    if (!tabela || !card) return null;
+    const id = String(card.id);
+    return (hasOwn(tabela, id) ? tabela[id] : tabela[basePricingId(id)]) || null;
+  };
 }
 
 // Carta que mudou de SET (2026-11-02): o endereço de hoje ("<jogo>/<set>/
@@ -269,9 +277,10 @@ async function telaDoSetDecorada(context, rota) {
         ? redireciona(request, `/games/${rota.jogo.url}/${rota.set}/${hoje}${busca}`, 301)
         : naoAchou(env, request);
     }
-    const preco = await precoDaCarta(env, request, card, arquivo.get(card));
+    const precoDe = await precosDaPagina(env, request, arquivo);
+    const preco = precoDeReferencia(precoDe(card));
     pecas = pecasDaCarta({ card, jogo: rota.jogo, set: { slug: rota.set, nome: entrada.n }, cartas, slugs,
-      preco: preco ? preco.valor : 0, moeda: preco ? preco.moeda : "USD" });
+      preco: preco ? preco.valor : 0, moeda: preco ? preco.moeda : "USD", precoDe });
   } else {
     pecas = pecasDoSet({ jogo: rota.jogo, slug: rota.set, nome: entrada.n, cartas, slugs });
   }
