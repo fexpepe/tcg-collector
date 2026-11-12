@@ -89,6 +89,62 @@
       if (`/games/${el.getAttribute("data-indice-jogo")}` !== telaDoJogo) el.remove();
     });
   }
+  // "Sobre" do jogo vintage (src/sobre-jogo.js, 2026-11-12): o bloco com a
+  // história no topo da tela, no lugar do destaque do "Último set". A borda já
+  // manda o bloco em pt no HTML (robô e primeiro paint); aqui ele é redesenhado
+  // no idioma da pessoa e, com os sets em mãos, com os links da linha do tempo.
+  // Fora da borda (app nativo, /sets?game=dbc, a reserva do service worker) é
+  // daqui que ele nasce. A página de uma série (?serie=) não tem o bloco.
+  const sobreApi = window.SleevuSobre || null;
+  const urlDaTela = String(telaDoJogo).replace(/^\/games\//, "");
+  const comSobre = view === "sets" && !serieParam && !!sobreApi && sobreApi.tem(urlDaTela);
+  if (view === "sets") {
+    document.querySelectorAll(".sx-sobre").forEach((el) => {
+      if (!comSobre || serieParam || el.getAttribute("data-sobre-jogo") !== urlDaTela) el.remove();
+    });
+  }
+  // Sets do jogo por id, pros links da linha do tempo (preenchido na lista sem
+  // busca, em getViewItems).
+  let setsPorId = null;
+  const sobrePromise = comSobre
+    ? fetch(`data/sobre/${urlDaTela}.json`).then((r) => (r.ok ? r.json() : null)).catch(() => null)
+    : Promise.resolve(null);
+  function desenhaSobre(dados) {
+    const antes = document.querySelector(".sx-sobre");
+    // Sem o JSON (offline sem cópia): o bloco da borda, mesmo em pt, aparece —
+    // sem o data-idioma o CSS deixa de guardá-lo escondido.
+    if (!dados) { if (antes) antes.removeAttribute("data-idioma"); return; }
+    const lang = shared.getLanguage();
+    // Bloco da borda já no idioma e sem os sets ainda: fica como está.
+    if (antes && !setsPorId && antes.getAttribute("data-idioma") === sobreApi.idioma(lang)) return;
+    const caixa = document.createElement("div");
+    caixa.innerHTML = sobreApi.html(dados, lang, {
+      hrefDoSet: (id) => (setsPorId && setsPorId.has(id) ? setDetailUrl(setsPorId.get(id)) : "")
+    });
+    const novo = caixa.firstElementChild;
+    if (!novo) return;
+    novo.hidden = !!normalize(elements.search.value);
+    if (antes) antes.replaceWith(novo);
+    else {
+      const ancora = document.querySelector(".results-header");
+      if (ancora) ancora.before(novo);
+    }
+  }
+  if (comSobre) {
+    sobrePromise.then(desenhaSobre);
+    // "Ler mais" da história (no celular o texto nasce recolhido; ver
+    // .sx-sobre-texto no styles.css). Delegado: o bloco é trocado inteiro.
+    document.addEventListener("click", (event) => {
+      const botao = event.target.closest && event.target.closest(".sx-sobre-mais");
+      if (!botao) return;
+      const texto = document.getElementById(botao.getAttribute("aria-controls"));
+      if (!texto) return;
+      const abre = texto.classList.contains("is-recolhido");
+      texto.classList.toggle("is-recolhido", !abre);
+      botao.setAttribute("aria-expanded", String(abre));
+      botao.textContent = botao.getAttribute(abre ? "data-menos" : "data-mais");
+    });
+  }
   const pager = shared.createPager({
     grid: elements.grid,
     pageSize: 60,
@@ -584,6 +640,12 @@
       : getViewItems(manifestMode() ? [] : filterCards());
     pager.render(items, createViewItem, { resetCount }); // onAppend reaplica o recolhido
     if (view === "sets") { applyCollapsed(); refineVisibleSets(); }
+    // Buscando, o "Sobre" sai da frente: a pessoa quer o set, e a resposta
+    // ficaria abaixo de uma dobra inteira de história.
+    if (comSobre) {
+      const sobreEl = document.querySelector(".sx-sobre");
+      if (sobreEl) sobreEl.hidden = !!normalize(elements.search.value);
+    }
     if (ent) ent.pintou(elements.grid);
 
     // Cabeçalhos de série não contam como resultado, nem o topo da Vitrine
@@ -661,7 +723,15 @@
       // lançamento em destaque e, pra quem tem coleção, os sets em andamento
       // (vitrineDoTopo). Regra escrita em docs/CATALOGO.md, 3.4.
       const grupos = agrupaSetsDoJogo(aninhaPorNome(setItems));
-      return normalize(elements.search.value) ? grupos : vitrineDoTopo(grupos).concat(grupos);
+      if (normalize(elements.search.value)) return grupos;
+      // Lista inteira em mãos: é dela que a linha do tempo do "Sobre" tira os
+      // links (a 1ª vez redesenha o bloco com eles).
+      if (comSobre) {
+        const primeira = !setsPorId;
+        setsPorId = new Map(setItems.map((set) => [set.setId, set]));
+        if (primeira) sobrePromise.then(desenhaSobre);
+      }
+      return vitrineDoTopo(grupos).concat(grupos);
     }
 
     // Sem as cartas em mãos (abertura da página — ver soIndices), as cápsulas
@@ -1623,7 +1693,10 @@
     const lancados = sets.filter((set) => set.releaseDate <= hoje).sort(sortByReleaseDesc);
     const futuros = sets.filter((set) => set.releaseDate > hoje).sort(sortByReleaseAsc);
     const items = [];
-    if (lancados.length) {
+    // Jogo com "Sobre" (vintage): o topo é a história do jogo, não o último
+    // set — num jogo que acabou em 1997, o "Último set" só repetia o fim da
+    // lista logo abaixo. O "Continue completando" fica.
+    if (lancados.length && !comSobre) {
       const lado = futuros.slice(0, 2);
       const emBreve = lado.length > 0;
       lancados.slice(1).forEach((set) => { if (lado.length < 2) lado.push(set); });

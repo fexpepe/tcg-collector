@@ -150,6 +150,9 @@ const SHELL_ASSETS = [
   // Mercado do jogo: a tela de Sets carrega (sets.html) e ele não estava aqui —
   // offline a tela pedia um arquivo que o cache não tinha.
   "src/mercado.js",
+  // "Sobre" dos jogos vintage (2026-11-12): a tela de Sets carrega; offline,
+  // a tela sem ele perderia o bloco da história.
+  "src/sobre-jogo.js",
   "src/deck-rules.js", "src/decks.js", "src/pastas.js", "src/lore.js", "src/export-liga.js", "src/export-ui.js", "src/troca.js",
   // Artistas e Treinadores (2026-10-17): o desenho das duas telas.
   "src/entidades.js",

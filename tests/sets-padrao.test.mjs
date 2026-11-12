@@ -92,13 +92,24 @@ test("aninhaPorNome: o chip sai do nome de exibição quando ele traz o do pai (
   assert.deepEqual(raizes[0].filhos.map((f) => f.rotulo), ["Top Secret Mission"]);
 });
 
-function vitrine(grupos, hoje) {
-  const fn = new Function("sortByReleaseDesc", "sortByReleaseAsc", "colecaoTem", "Date",
+function vitrine(grupos, hoje, { comSobre = false, colecao = 0 } = {}) {
+  const fn = new Function("sortByReleaseDesc", "sortByReleaseAsc", "colecaoTem", "Date", "comSobre",
     `${constante("NAO_DESTAQUE")}\n${corpo("vitrineDoTopo")}\nreturn vitrineDoTopo;`);
   const RealDate = Date;
   class Fixa extends RealDate { constructor(...a) { super(...(a.length ? a : [hoje])); } static parse(s) { return RealDate.parse(s); } }
-  return fn(sortByReleaseDesc, sortByReleaseAsc, () => 0, Fixa)(grupos);
+  return fn(sortByReleaseDesc, sortByReleaseAsc, () => colecao, Fixa, comSobre)(grupos);
 }
+
+// Jogo vintage com "Sobre" (src/sobre-jogo.js, 2026-11-12): o topo é a
+// história, sem o "Último set"; o "Continue completando" fica.
+test("jogo com \"Sobre\": sem destaque no topo, mas o Continue completando fica", () => {
+  const meio = Object.assign(set("Part 2", "1989-07"), { totalCount: 42, ownedCount: 10 });
+  const grupos = [set("Part 1", "1988-11"), meio];
+  assert.equal(vitrine(grupos, "2026-11-12T12:00:00Z")[0].type, "sx-hero", "sem o Sobre, o destaque de sempre");
+  assert.deepEqual(vitrine(grupos, "2026-11-12T12:00:00Z", { comSobre: true }), []);
+  const comColecao = vitrine(grupos, "2026-11-12T12:00:00Z", { comSobre: true, colecao: 10 });
+  assert.deepEqual(comColecao.map((i) => i.type), ["sx-continue"]);
+});
 
 test("o destaque é sempre um set principal: seção de promo/deck/raid não disputa", () => {
   const promos = { type: "category-head", name: "Promos", foraDoDestaque: true };
