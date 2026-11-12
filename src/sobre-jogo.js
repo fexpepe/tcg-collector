@@ -135,7 +135,7 @@
     const fichaHtml = fatos.length ? `<dl class="sx-sobre-fatos">${fatos.map((f) =>
       `<div><dt>${esc(R.fatos[f.chave])}</dt><dd>${esc(valorDoFato(f, lang))}</dd></div>`).join("")}</dl>` : "";
 
-    const linhaHtml = linha.length ? `<section class="sx-sobre-cartao sx-sobre-tempo" aria-labelledby="sx-sobre-linha">
+    const linhaHtml = linha.length ? `<section class="sx-sobre-cartao" aria-labelledby="sx-sobre-linha">
         <h3 id="sx-sobre-linha" class="sx-sobre-h3">${esc(R.linha)}</h3>
         <ol class="sx-linha">${linha.map((e) => {
           const href = e.set ? hrefDoSet(e.set) : "";
@@ -146,7 +146,7 @@
         }).join("")}</ol>
       </section>` : "";
 
-    const historiaHtml = historia.length ? `<section class="sx-sobre-cartao sx-sobre-hist" aria-labelledby="sx-sobre-historia">
+    const historiaHtml = historia.length ? `<section class="sx-sobre-cartao" aria-labelledby="sx-sobre-historia">
         <h3 id="sx-sobre-historia" class="sx-sobre-h3">${esc(R.historia)}</h3>
         <div class="sx-sobre-texto is-recolhido" id="sx-sobre-texto">${historia.map((p) => `<p>${esc(p)}</p>`).join("")}</div>
         <button type="button" class="sx-sobre-mais" aria-controls="sx-sobre-texto" aria-expanded="false" data-mais="${esc(R.mais)}" data-menos="${esc(R.menos)}">${esc(R.mais)}</button>

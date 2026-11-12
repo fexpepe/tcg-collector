@@ -136,7 +136,7 @@ test("renderizador: texto nenhum vira HTML", () => {
   assert.doesNotMatch(h, /<script>/);
   assert.doesNotMatch(h, /onerror="alert/);
   assert.doesNotMatch(h, /javascript:/, "fonte que não é https não vira link");
-  assert.doesNotMatch(h, /"><b>/, "a data não fecha o atributo datetime");
+  assert.match(h, /datetime="1990&quot;&gt;&lt;b&gt;"/, "a data não fecha o atributo datetime");
 });
 
 test("a borda: bloco em pt, JSON-LD do jogo, título com a história e o resumo como descrição", () => {
