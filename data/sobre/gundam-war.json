@@ -1,0 +1,237 @@
+{
+  "url": "gundam-war",
+  "nome": "Gundam War",
+  "nomeOriginal": {
+    "texto": "ガンダムウォー",
+    "lang": "ja",
+    "romaji": "Gandamu Wō"
+  },
+  "logo": "assets/games/game_gw.webp",
+  "logoLargura": 354,
+  "logoAltura": 87,
+  "periodo": {
+    "inicio": "1999-02",
+    "fim": "2011-05"
+  },
+  "etiquetas": [
+    "Vintage",
+    {
+      "pt": "Japão",
+      "en": "Japan",
+      "es": "Japón"
+    },
+    "TCG"
+  ],
+  "resumo": {
+    "pt": "O jogo de cartas japonês do Gundam, da Bandai, de 1999 a 2011: decks de 50 cartas com mobile suits e personagens de toda a saga. Deu lugar ao NEX-A.",
+    "en": "Bandai's Japanese Gundam card game, from 1999 to 2011: 50-card decks with mobile suits and characters from the whole saga. Succeeded by NEX-A.",
+    "es": "El juego de cartas japonés de Gundam, de Bandai, de 1999 a 2011: mazos de 50 cartas con mobile suits y personajes de toda la saga. Le siguió NEX-A."
+  },
+  "fatos": [
+    {
+      "chave": "lancamento",
+      "valor": "1999-02"
+    },
+    {
+      "chave": "encerramento",
+      "valor": "2011-05"
+    },
+    {
+      "chave": "fabricante",
+      "valor": "Bandai"
+    },
+    {
+      "chave": "licenca",
+      "valor": {
+        "pt": "Sotsu e Sunrise",
+        "en": "Sotsu and Sunrise",
+        "es": "Sotsu y Sunrise"
+      }
+    },
+    {
+      "chave": "origem",
+      "valor": {
+        "pt": "Japão",
+        "en": "Japan",
+        "es": "Japón"
+      }
+    },
+    {
+      "chave": "distribuicao",
+      "valor": {
+        "pt": "Starter (50 cartas) e booster (10, ¥330)",
+        "en": "Starter (50 cards) and booster (10, ¥330)",
+        "es": "Starter (50 cartas) y sobre (10, ¥330)"
+      }
+    }
+  ],
+  "historia": {
+    "pt": [
+      "Gundam War é o jogo de cartas de Gundam que a Bandai lançou no Japão em fevereiro de 1999, com o selo Carddass Masters. É um jogo para dois: cada um monta um deck de 50 cartas, que representa o seu país, e perde quem fica sem cartas nele. As unidades são os mobile suits e as naves; os personagens, colocados nelas, aumentam a força; comandos e operações recriam episódios das séries.",
+      "O primeiro set vinha em starters de 50 cartas, a ¥1.200, e boosters de 10, a ¥330, com Gundam, Z e ZZ divididos em quatro facções: Federação, Zeon, Titãs e Neo Zeon. As facções viraram cores, e as séries novas entraram nelas: a Parte 2 (1999) trouxe 08th MS Team e Turn A, que abriu a cor marrom; a Parte 4 (2000), Gundam Wing, que abriu a branca. Um mesmo deck pode misturar obras de toda a franquia.",
+      "Saíam duas expansões grandes por ano, além de starters prontos e boosters temáticos. Gundam SEED entrou em 2002, G Gundam em 2006, depois de uma votação no site oficial, e Gundam 00 em 2007. Em 2008, no 10º ano do jogo, a Parte 20 adotou o desenho de carta do Crusade, outro jogo da Bandai. A última expansão, a Parte 28, saiu em maio de 2011.",
+      "Em outubro de 2011, o Gundam War foi substituído pelo Gundam War NEX-A, com regras novas; na prática, as cartas antigas ficaram fora dos torneios. O NEX-A teve suporte oficial até janeiro de 2017."
+    ],
+    "en": [
+      "Gundam War is the Gundam card game Bandai launched in Japan in February 1999, under the Carddass Masters label. It is a two-player game: each player builds a 50-card deck that stands for their home country, and whoever runs out of cards in it loses. Units are the mobile suits and ships; characters placed on them make them stronger; commands and operations recreate episodes from the series.",
+      "The first set came in 50-card starters at ¥1,200 and 10-card boosters at ¥330, with Gundam, Z and ZZ split into four factions: the Federation, Zeon, the Titans and Neo Zeon. The factions became colors, and new series joined them: Part 2 (1999) brought 08th MS Team and Turn A, which opened the brown color; Part 4 (2000) brought Gundam Wing, which opened white. A single deck can mix works from the whole franchise.",
+      "Two large expansions came out each year, plus ready-made starters and themed boosters. Gundam SEED joined in 2002, G Gundam in 2006, after a vote on the official site, and Gundam 00 in 2007. In 2008, the game's 10th year, Part 20 adopted the card design of Crusade, another Bandai game. The last expansion, Part 28, came out in May 2011.",
+      "In October 2011, Gundam War was replaced by Gundam War NEX-A, with new rules; in practice, the old cards were left out of tournaments. NEX-A had official support until January 2017."
+    ],
+    "es": [
+      "Gundam War es el juego de cartas de Gundam que Bandai lanzó en Japón en febrero de 1999, con el sello Carddass Masters. Es un juego para dos: cada uno arma un mazo de 50 cartas, que representa su país, y pierde quien se queda sin cartas en él. Las unidades son los mobile suits y las naves; los personajes, colocados en ellas, aumentan su fuerza; comandos y operaciones recrean episodios de las series.",
+      "El primer set venía en starters de 50 cartas, a ¥1.200, y sobres de 10, a ¥330, con Gundam, Z y ZZ divididos en cuatro facciones: Federación, Zeon, Titanes y Neo Zeon. Las facciones se volvieron colores, y las series nuevas entraron en ellas: la Parte 2 (1999) trajo 08th MS Team y Turn A, que abrió el color marrón; la Parte 4 (2000), Gundam Wing, que abrió el blanco. Un mismo mazo puede mezclar obras de toda la franquicia.",
+      "Salían dos expansiones grandes por año, además de starters listos y sobres temáticos. Gundam SEED entró en 2002, G Gundam en 2006, tras una votación en el sitio oficial, y Gundam 00 en 2007. En 2008, el 10.º año del juego, la Parte 20 adoptó el diseño de carta de Crusade, otro juego de Bandai. La última expansión, la Parte 28, salió en mayo de 2011.",
+      "En octubre de 2011, Gundam War fue reemplazado por Gundam War NEX-A, con reglas nuevas; en la práctica, las cartas antiguas quedaron fuera de los torneos. NEX-A tuvo soporte oficial hasta enero de 2017."
+    ]
+  },
+  "linhaDoTempo": [
+    {
+      "data": "1999-02",
+      "set": "gw-s01",
+      "texto": {
+        "pt": "Parte 1: starters de 50 cartas e boosters de 10, com Gundam, Z e ZZ.",
+        "en": "Part 1: 50-card starters and 10-card boosters, with Gundam, Z and ZZ.",
+        "es": "Parte 1: starters de 50 cartas y sobres de 10, con Gundam, Z y ZZ."
+      }
+    },
+    {
+      "data": "1999-06",
+      "set": "gw-s02",
+      "texto": {
+        "pt": "Parte 2: 08th MS Team e Turn A; nasce a cor marrom.",
+        "en": "Part 2: 08th MS Team and Turn A; the brown color is born.",
+        "es": "Parte 2: 08th MS Team y Turn A; nace el color marrón."
+      }
+    },
+    {
+      "data": "1999-09",
+      "set": "gw-ds1a",
+      "texto": {
+        "pt": "Dramatic Starters: decks prontos que recriam o filme Gundam III.",
+        "en": "Dramatic Starters: ready-made decks recreating the Gundam III film.",
+        "es": "Dramatic Starters: mazos listos que recrean la película Gundam III."
+      }
+    },
+    {
+      "data": "2000-02",
+      "set": "gw-s04",
+      "texto": {
+        "pt": "Parte 4: Gundam Wing estreia a cor branca.",
+        "en": "Part 4: Gundam Wing debuts the white color.",
+        "es": "Parte 4: Gundam Wing estrena el color blanco."
+      }
+    },
+    {
+      "data": "2002-08",
+      "set": "gw-s09",
+      "texto": {
+        "pt": "Parte 9: estreia de Gundam SEED.",
+        "en": "Part 9: Gundam SEED debuts.",
+        "es": "Parte 9: debuta Gundam SEED."
+      }
+    },
+    {
+      "data": "2006-02",
+      "set": "gw-s16",
+      "texto": {
+        "pt": "Parte 16: G Gundam entra e a carta muda de desenho pela 1ª vez.",
+        "en": "Part 16: G Gundam joins and the card design changes for the first time.",
+        "es": "Parte 16: entra G Gundam y la carta cambia de diseño por primera vez."
+      }
+    },
+    {
+      "data": "2007-08",
+      "set": "gw-s19",
+      "texto": {
+        "pt": "Parte 19: estreia de Gundam 00.",
+        "en": "Part 19: Gundam 00 debuts.",
+        "es": "Parte 19: debuta Gundam 00."
+      }
+    },
+    {
+      "data": "2008-02",
+      "set": "gw-s20",
+      "texto": {
+        "pt": "Parte 20: carta no padrão do Crusade e raras dos 10 anos.",
+        "en": "Part 20: Crusade-style card design and 10th-anniversary rares.",
+        "es": "Parte 20: carta al estilo Crusade y raras de los 10 años."
+      }
+    },
+    {
+      "data": "2010-02",
+      "texto": {
+        "pt": "Parte 24 cria as cartas ACE, unidade e piloto numa carta só.",
+        "en": "Part 24 introduces ACE cards, unit and pilot in a single card.",
+        "es": "La Parte 24 crea las cartas ACE, unidad y piloto en una sola carta."
+      }
+    },
+    {
+      "data": "2011-05",
+      "set": "gw-s28",
+      "texto": {
+        "pt": "Parte 28, a última expansão do Gundam War.",
+        "en": "Part 28, Gundam War's last expansion.",
+        "es": "Parte 28, la última expansión de Gundam War."
+      }
+    },
+    {
+      "data": "2011-10",
+      "texto": {
+        "pt": "O Gundam War NEX-A substitui o jogo, com regras novas.",
+        "en": "Gundam War NEX-A replaces the game, with new rules.",
+        "es": "Gundam War NEX-A reemplaza el juego, con reglas nuevas."
+      }
+    }
+  ],
+  "fontes": [
+    {
+      "nome": {
+        "pt": "Site oficial do Gundam War (2001)",
+        "en": "Official Gundam War site (2001)",
+        "es": "Sitio oficial de Gundam War (2001)"
+      },
+      "url": "https://web.archive.org/web/20010124050500/http://www.carddas.com:80/cdmasters/gundamwar/intro1.htm"
+    },
+    {
+      "nome": {
+        "pt": "Site oficial do Gundam War: Parte 28 (2011)",
+        "en": "Official Gundam War site: Part 28 (2011)",
+        "es": "Sitio oficial de Gundam War: Parte 28 (2011)"
+      },
+      "url": "https://web.archive.org/web/20110826104046/http://www.carddas.com:80/cdmasters/gundamwar/outdated/products/pickup/28.html"
+    },
+    {
+      "nome": {
+        "pt": "Bandai, comunicado à imprensa (2007)",
+        "en": "Bandai press release (2007)",
+        "es": "Bandai, comunicado de prensa (2007)"
+      },
+      "url": "https://www.bandai.co.jp/releases/images/3/41036.pdf"
+    },
+    {
+      "nome": {
+        "pt": "Site oficial do Gundam War NEX-A",
+        "en": "Official Gundam War NEX-A site",
+        "es": "Sitio oficial de Gundam War NEX-A"
+      },
+      "url": "https://www.carddass.com/cdmasters/nexa/"
+    },
+    {
+      "nome": {
+        "pt": "Wikipédia em japonês: Gundam War",
+        "en": "Japanese Wikipedia: Gundam War",
+        "es": "Wikipedia en japonés: Gundam War"
+      },
+      "url": "https://ja.wikipedia.org/wiki/%E3%82%AC%E3%83%B3%E3%83%80%E3%83%A0%E3%82%A6%E3%82%A9%E3%83%BC"
+    },
+    {
+      "nome": {
+        "pt": "Wikipédia em japonês: Gundam War NEX-A",
+        "en": "Japanese Wikipedia: Gundam War NEX-A",
+        "es": "Wikipedia en japonés: Gundam War NEX-A"
+      },
+      "url": "https://ja.wikipedia.org/wiki/%E3%82%AC%E3%83%B3%E3%83%80%E3%83%A0%E3%82%A6%E3%82%A9%E3%83%BC%E3%83%8D%E3%82%B0%E3%82%B6"
+    }
+  ]
+}
