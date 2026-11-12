@@ -1,0 +1,193 @@
+{
+  "url": "naruto-shippuden-card-game",
+  "nome": "Naruto Shippuden Card Game",
+  "nomeOriginal": {
+    "texto": "NARUTO -ナルト- 疾風伝 カードゲーム",
+    "lang": "ja",
+    "romaji": "Naruto Shippūden Kādo Gēmu"
+  },
+  "logo": "assets/games/game_naruto.webp",
+  "logoLargura": 512,
+  "logoAltura": 218,
+  "periodo": {
+    "inicio": "2007-02",
+    "fim": "2008-11"
+  },
+  "etiquetas": [
+    "Vintage",
+    {
+      "pt": "Japão",
+      "en": "Japan",
+      "es": "Japón"
+    },
+    "TCG"
+  ],
+  "resumo": {
+    "pt": "Jogo de cartas do Naruto da Bandai para a fase Shippuden, lançado no Japão em fevereiro de 2007. Teve oito atos até novembro de 2008.",
+    "en": "Bandai's Naruto card game for the Shippuden era, launched in Japan in February 2007. It had eight acts until November 2008.",
+    "es": "Juego de cartas de Naruto de Bandai para la etapa Shippuden, lanzado en Japón en febrero de 2007. Tuvo ocho actos hasta noviembre de 2008."
+  },
+  "fatos": [
+    {
+      "chave": "lancamento",
+      "valor": "2007-02"
+    },
+    {
+      "chave": "encerramento",
+      "valor": "2008-11"
+    },
+    {
+      "chave": "fabricante",
+      "valor": "Bandai"
+    },
+    {
+      "chave": "licenca",
+      "valor": {
+        "pt": "Masashi Kishimoto/Shueisha, TV Tokyo e Pierrot",
+        "en": "Masashi Kishimoto/Shueisha, TV Tokyo and Pierrot",
+        "es": "Masashi Kishimoto/Shueisha, TV Tokyo y Pierrot"
+      }
+    },
+    {
+      "chave": "origem",
+      "valor": {
+        "pt": "Japão",
+        "en": "Japan",
+        "es": "Japón"
+      }
+    },
+    {
+      "chave": "distribuicao",
+      "valor": {
+        "pt": "Máquinas de venda (¥100), pacotes e decks prontos",
+        "en": "Vending machines (¥100), packs and starter decks",
+        "es": "Expendedoras (¥100), sobres y mazos de inicio"
+      }
+    }
+  ],
+  "historia": {
+    "pt": [
+      "Foi o jogo de cartas do Naruto da Bandai para a fase Shippuden do anime. Estreou em 15 de fevereiro de 2007 com o Ato 1 e um deck pronto cuja Ultra Rara era o Gaara já Kazekage. Sucedeu o Naruto Card Game de 2002, com regras novas e todas as ilustrações inéditas, e as cartas do jogo antigo continuaram valendo por uma tabela de conversão do manual.",
+      "Cada jogador usava um deck de 40 cartas. Os ninjas lutavam em equipes, e os jutsus custavam chakra, feito com cartas da mão. A numeração recomeçou com três tipos: ninja (忍伝), jutsu (術伝) e estratégia (作伝). O design do jogo era do estúdio 2D6G, segundo o manual.",
+      "Em quase dois anos saíram oito atos, três decks prontos, a Coin Plus e o Ninja Academy Rules, versão de regras simples jogada com 10 cartas. Os boosters de máquina custavam ¥100 por 4 cartas, e o primeiro lote do Ato 1 trazia uma carta para o arcade Narutimate Mission.",
+      "O Ato 8, de novembro de 2008, que a Bandai apresentou como o coroamento da série, foi o último, e o site oficial parou de dar novidades em janeiro de 2009. Depois, o Naruto entrou no Miracle Battle Carddass, da Bandai, em 2012."
+    ],
+    "en": [
+      "This was Bandai's Naruto card game for the Shippuden era of the anime. It debuted on February 15, 2007 with Act 1 and a starter deck whose Ultra Rare was Gaara as Kazekage. It succeeded the 2002 Naruto Card Game, with new rules and all-new artwork, and the old game's cards stayed legal through a conversion table in the rulebook.",
+      "Each player used a 40-card deck. Ninjas fought in teams, and jutsu cost chakra, made from cards in hand. Numbering restarted with three types: ninja (忍伝), jutsu (術伝) and strategy (作伝). The game was designed by the studio 2D6G, according to the rulebook.",
+      "In almost two years came eight acts, three starter decks, Coin Plus and Ninja Academy Rules, a simple-rules version played with 10 cards. Vending boosters cost ¥100 for 4 cards, and the first run of Act 1 included a card for the Narutimate Mission arcade.",
+      "Act 8, from November 2008, which Bandai billed as the culmination of the series, was the last, and the official site stopped posting news in January 2009. Naruto later joined Bandai's Miracle Battle Carddass, in 2012."
+    ],
+    "es": [
+      "Fue el juego de cartas de Naruto de Bandai para la etapa Shippuden del anime. Debutó el 15 de febrero de 2007 con el Acto 1 y un mazo de inicio cuya Ultra Rara era Gaara ya como Kazekage. Sucedió al Naruto Card Game de 2002, con reglas nuevas y todas las ilustraciones inéditas, y las cartas del juego anterior siguieron valiendo con una tabla de conversión del manual.",
+      "Cada jugador usaba un mazo de 40 cartas. Los ninjas peleaban en equipos, y los jutsus costaban chakra, hecho con cartas de la mano. La numeración volvió a empezar con tres tipos: ninja (忍伝), jutsu (術伝) y estrategia (作伝). El diseño del juego era del estudio 2D6G, según el manual.",
+      "En casi dos años salieron ocho actos, tres mazos de inicio, Coin Plus y Ninja Academy Rules, una versión de reglas simples que se jugaba con 10 cartas. Los sobres de máquina costaban ¥100 por 4 cartas, y el primer lote del Acto 1 traía una carta para el arcade Narutimate Mission.",
+      "El Acto 8, de noviembre de 2008, que Bandai presentó como la culminación de la serie, fue el último, y el sitio oficial dejó de publicar novedades en enero de 2009. Después, Naruto entró en Miracle Battle Carddass, de Bandai, en 2012."
+    ]
+  },
+  "linhaDoTempo": [
+    {
+      "data": "2007-02",
+      "set": "nrt-scg-s01",
+      "texto": {
+        "pt": "Ato 1 e o primeiro deck pronto, com o Gaara Kazekage como Ultra Rara.",
+        "en": "Act 1 and the first starter deck, with Kazekage Gaara as Ultra Rare.",
+        "es": "Acto 1 y el primer mazo de inicio, con Gaara Kazekage como Ultra Rara."
+      }
+    },
+    {
+      "data": "2007-07",
+      "set": "nrt-scg-s03",
+      "texto": {
+        "pt": "Ato 3 e o segundo deck pronto.",
+        "en": "Act 3 and the second starter deck.",
+        "es": "Acto 3 y el segundo mazo de inicio."
+      }
+    },
+    {
+      "data": "2007-09",
+      "set": "nrt-scg-gaku",
+      "texto": {
+        "pt": "O Ninja Academy Rules ganha lista de cartas própria.",
+        "en": "Ninja Academy Rules gets its own card list.",
+        "es": "Ninja Academy Rules recibe su propia lista de cartas."
+      }
+    },
+    {
+      "data": "2008-07",
+      "set": "nrt-scg-st7",
+      "texto": {
+        "pt": "Ato 7 e o terceiro deck pronto, o Starter Set.",
+        "en": "Act 7 and the third starter deck, the Starter Set.",
+        "es": "Acto 7 y el tercer mazo de inicio, el Starter Set."
+      }
+    },
+    {
+      "data": "2008-11",
+      "set": "nrt-scg-s08",
+      "texto": {
+        "pt": "Ato 8, o último: as Super Raras da Akatsuki formam uma arte de 5 cartas.",
+        "en": "Act 8, the last: the Akatsuki Super Rares form a 5-card artwork.",
+        "es": "Acto 8, el último: las Súper Raras de Akatsuki forman un arte de 5 cartas."
+      }
+    },
+    {
+      "data": "2009-01",
+      "texto": {
+        "pt": "Última novidade do site oficial, sobre torneios.",
+        "en": "Last news post on the official site, about tournaments.",
+        "es": "Última novedad del sitio oficial, sobre torneos."
+      }
+    }
+  ],
+  "fontes": [
+    {
+      "nome": {
+        "pt": "Bandai, site oficial (fevereiro de 2007)",
+        "en": "Bandai, official site (February 2007)",
+        "es": "Bandai, sitio oficial (febrero de 2007)"
+      },
+      "url": "https://web.archive.org/web/20070203052841/http://www.carddas.com/naruto/"
+    },
+    {
+      "nome": {
+        "pt": "Bandai, página do Ato 1 (2007)",
+        "en": "Bandai, Act 1 product page (2007)",
+        "es": "Bandai, página del Acto 1 (2007)"
+      },
+      "url": "https://web.archive.org/web/20070216012408/http://www.carddas.com/naruto/cardgame/product/1st.shtml"
+    },
+    {
+      "nome": {
+        "pt": "Bandai, manual do jogo (2007)",
+        "en": "Bandai, rulebook (2007)",
+        "es": "Bandai, manual del juego (2007)"
+      },
+      "url": "https://web.archive.org/web/20070226100827/http://www.carddas.com/naruto/cardgame/rule/naruto_rulebook.pdf"
+    },
+    {
+      "nome": {
+        "pt": "Bandai, página do Ato 8 (2008)",
+        "en": "Bandai, Act 8 product page (2008)",
+        "es": "Bandai, página del Acto 8 (2008)"
+      },
+      "url": "https://web.archive.org/web/20081108103532/http://www.carddas.com/naruto/cardgame/product/8th.shtml"
+    },
+    {
+      "nome": {
+        "pt": "Bandai, novidades do site (2007–2009)",
+        "en": "Bandai, site news log (2007–2009)",
+        "es": "Bandai, novedades del sitio (2007–2009)"
+      },
+      "url": "https://web.archive.org/web/20100309152601/http://www.carddas.com/naruto/cardgame/topics.html"
+    },
+    {
+      "nome": {
+        "pt": "Wikipédia em japonês (jogos do Naruto)",
+        "en": "Japanese Wikipedia (Naruto games)",
+        "es": "Wikipedia en japonés (juegos de Naruto)"
+      },
+      "url": "https://ja.wikipedia.org/wiki/NARUTO_-%E3%83%8A%E3%83%AB%E3%83%88-_(%E3%82%B2%E3%83%BC%E3%83%A0)"
+    }
+  ]
+}

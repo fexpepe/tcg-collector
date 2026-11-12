@@ -1,0 +1,173 @@
+{
+  "url": "naruto-ccg",
+  "nome": "Naruto Collectible Card Game",
+  "logo": "assets/games/game_naruto_ccg-v2.webp",
+  "logoLargura": 512,
+  "logoAltura": 262,
+  "periodo": {
+    "inicio": "2006-04",
+    "fim": "2013-05"
+  },
+  "etiquetas": [
+    "Vintage",
+    {
+      "pt": "EUA",
+      "en": "USA",
+      "es": "EE. UU."
+    },
+    "CCG"
+  ],
+  "resumo": {
+    "pt": "Versão americana do jogo de cartas japonês do Naruto, feita pela Bandai America. Saiu em abril de 2006 e teve 28 sets de booster até 2013.",
+    "en": "The American version of the Japanese Naruto card game, by Bandai America. Launched in April 2006, it had 28 booster sets until 2013.",
+    "es": "Versión estadounidense del juego de cartas japonés de Naruto, de Bandai America. Salió en abril de 2006 y tuvo 28 sets de sobres hasta 2013."
+  },
+  "fatos": [
+    {
+      "chave": "lancamento",
+      "valor": "2006-04"
+    },
+    {
+      "chave": "encerramento",
+      "valor": "2013-05"
+    },
+    {
+      "chave": "fabricante",
+      "valor": "Bandai America"
+    },
+    {
+      "chave": "licenca",
+      "valor": "VIZ Media"
+    },
+    {
+      "chave": "origem",
+      "valor": {
+        "pt": "EUA",
+        "en": "USA",
+        "es": "EE. UU."
+      }
+    }
+  ],
+  "historia": {
+    "pt": [
+      "Foi a versão americana do jogo de cartas japonês do Naruto, feita pela Bandai America. Em junho de 2005 a VIZ Media, editora do mangá nos EUA, licenciou o jogo de cartas na América do Norte para a Bandai America, e o primeiro set, The Path to Hokage, chegou às lojas em 28 de abril de 2006. Os pedidos passaram muito do esperado: a Bandai só atendeu cerca de metade, e o set esgotou na maioria dos distribuidores.",
+      "As regras eram as do jogo japonês, cujo design original o manual credita ao estúdio 2D6G: duas pessoas, decks de 40 cartas no lançamento e quatro tipos de carta — Ninja, Jutsu, Mission e Client. Os ninjas formavam equipes, e vencia quem juntasse 10 Battle Rewards ou deixasse o outro sem deck. A Bandai do Japão chegou a apresentá-lo no próprio site como a “versão americana” do seu jogo.",
+      "Nos últimos anos, o jogo era vendido como Naruto Shippuden CCG. Em 2010 a Bandai America o chamava de seu jogo de cartas mais vendido, com centenas de torneios por semana nos EUA, e lançou com a VIZ Media o Shonen Jump Championship, com final nacional marcada para a Gen Con Indy.",
+      "Em 1º de maio de 2013 a Bandai America anunciou o fim, depois de 7 anos e mais de 28 sets: Ultimate Ninja Storm 3 seria o último. Como despedida, prometeu às lojas participantes uma última promo em ouro, Never Ending Love, carta criada por um jogador."
+    ],
+    "en": [
+      "This was the American version of the Japanese Naruto card game, made by Bandai America. In June 2005 VIZ Media, the manga's US publisher, licensed the card game in North America to Bandai America, and the first set, The Path to Hokage, hit stores on April 28, 2006. Orders far exceeded expectations: Bandai could fill only about half, and the set sold out at most distributors.",
+      "The rules were those of the Japanese game, whose original design the rulebook credits to the studio 2D6G: two players, 40-card decks at launch and four card types — Ninja, Jutsu, Mission and Client. Ninjas formed teams, and the winner was whoever collected 10 Battle Rewards or left the other player without a deck. Bandai in Japan even featured it on its own site as the “American version” of its game.",
+      "In its later years the game was sold as Naruto Shippuden CCG. In 2010 Bandai America called it its top-selling card game, with hundreds of tournaments a week in the US, and launched the Shonen Jump Championship with VIZ Media, with the national finals set for Gen Con Indy.",
+      "On May 1, 2013 Bandai America announced the end, after 7 years and over 28 sets: Ultimate Ninja Storm 3 would be the last. As a farewell, it promised participating stores one last gold promo, Never Ending Love, a card created by a player."
+    ],
+    "es": [
+      "Fue la versión estadounidense del juego de cartas japonés de Naruto, hecha por Bandai America. En junio de 2005, VIZ Media, editora del manga en EE. UU., licenció el juego de cartas en Norteamérica a Bandai America, y el primer set, The Path to Hokage, llegó a las tiendas el 28 de abril de 2006. Los pedidos superaron por mucho lo esperado: Bandai solo pudo cubrir cerca de la mitad, y el set se agotó en la mayoría de los distribuidores.",
+      "Las reglas eran las del juego japonés, cuyo diseño original el manual atribuye al estudio 2D6G: dos personas, mazos de 40 cartas en el lanzamiento y cuatro tipos de carta — Ninja, Jutsu, Mission y Client. Los ninjas formaban equipos, y ganaba quien juntara 10 Battle Rewards o dejara al otro sin mazo. Bandai de Japón llegó a presentarlo en su propio sitio como la “versión americana” de su juego.",
+      "En sus últimos años, el juego se vendía como Naruto Shippuden CCG. En 2010 Bandai America lo llamaba su juego de cartas más vendido, con cientos de torneos por semana en EE. UU., y lanzó con VIZ Media el Shonen Jump Championship, con la final nacional prevista en la Gen Con Indy.",
+      "El 1 de mayo de 2013 Bandai America anunció el final, tras 7 años y más de 28 sets: Ultimate Ninja Storm 3 sería el último. Como despedida, prometió a las tiendas participantes una última promo dorada, Never Ending Love, una carta creada por un jugador."
+    ]
+  },
+  "linhaDoTempo": [
+    {
+      "data": "2005-06",
+      "texto": {
+        "pt": "A VIZ Media licencia o jogo de cartas do Naruto para a Bandai America.",
+        "en": "VIZ Media licenses the Naruto card game to Bandai America.",
+        "es": "VIZ Media licencia el juego de cartas de Naruto a Bandai America."
+      }
+    },
+    {
+      "data": "2006-04",
+      "set": "nrt-ccg-s01",
+      "texto": {
+        "pt": "The Path to Hokage chega às lojas e esgota nos distribuidores.",
+        "en": "The Path to Hokage hits stores and sells out at distributors.",
+        "es": "The Path to Hokage llega a las tiendas y se agota en los distribuidores."
+      }
+    },
+    {
+      "data": "2010-03",
+      "texto": {
+        "pt": "Bandai America e VIZ Media anunciam o Shonen Jump Championship.",
+        "en": "Bandai America and VIZ Media announce the Shonen Jump Championship.",
+        "es": "Bandai America y VIZ Media anuncian el Shonen Jump Championship."
+      }
+    },
+    {
+      "data": "2010-08",
+      "texto": {
+        "pt": "Final nacional do Shonen Jump Championship marcada para a Gen Con Indy.",
+        "en": "Shonen Jump Championship national finals scheduled at Gen Con Indy.",
+        "es": "Final nacional del Shonen Jump Championship prevista en la Gen Con Indy."
+      }
+    },
+    {
+      "data": "2013-05",
+      "set": "nrt-ccg-s28",
+      "texto": {
+        "pt": "A Bandai America anuncia o fim: Ultimate Ninja Storm 3 é o último set.",
+        "en": "Bandai America announces the end: Ultimate Ninja Storm 3 is the last set.",
+        "es": "Bandai America anuncia el final: Ultimate Ninja Storm 3 es el último set."
+      }
+    },
+    {
+      "data": "2013-05",
+      "texto": {
+        "pt": "Última promo, Never Ending Love, carta criada por um jogador.",
+        "en": "One last promo, Never Ending Love, a card created by a player.",
+        "es": "Última promo, Never Ending Love, una carta creada por un jugador."
+      }
+    }
+  ],
+  "fontes": [
+    {
+      "nome": {
+        "pt": "ICv2, licença da Bandai America (2005)",
+        "en": "ICv2, Bandai America license (2005)",
+        "es": "ICv2, licencia de Bandai America (2005)"
+      },
+      "url": "https://icv2.com/articles/comics/view/7076/bandai-gets-naruto-tcg-license"
+    },
+    {
+      "nome": {
+        "pt": "ICv2, o primeiro set esgota (2006)",
+        "en": "ICv2, the first set sells out (2006)",
+        "es": "ICv2, el primer set se agota (2006)"
+      },
+      "url": "https://icv2.com/articles/comics/view/8601/naruto-ccg-sells-out-wholesale"
+    },
+    {
+      "nome": {
+        "pt": "Bandai America, livro de regras (2006)",
+        "en": "Bandai America, rulebook (2006)",
+        "es": "Bandai America, reglamento (2006)"
+      },
+      "url": "https://web.archive.org/web/20060410074157/http://www.bandaicg.com/naruto/NarutoRuleBook.pdf"
+    },
+    {
+      "nome": {
+        "pt": "Bandai (Japão), a versão americana (2006)",
+        "en": "Bandai (Japan), the American version (2006)",
+        "es": "Bandai (Japón), la versión estadounidense (2006)"
+      },
+      "url": "https://web.archive.org/web/20061102143600/http://www.carddas.com/datacarddas/naruto/room/usa.html"
+    },
+    {
+      "nome": {
+        "pt": "Bandai America e VIZ Media, comunicado (2010)",
+        "en": "Bandai America and VIZ Media, press release (2010)",
+        "es": "Bandai America y VIZ Media, comunicado (2010)"
+      },
+      "url": "https://web.archive.org/web/20100310200114/http://www.bandaicg.com/naruto/sjcpressrelease.html"
+    },
+    {
+      "nome": {
+        "pt": "Bandai America, anúncio do fim (2013)",
+        "en": "Bandai America, end announcement (2013)",
+        "es": "Bandai America, anuncio del final (2013)"
+      },
+      "url": "https://web.archive.org/web/20130504071856/http://www.bandai.com/naruto/naruto-announcement/"
+    }
+  ]
+}
