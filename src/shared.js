@@ -5788,106 +5788,20 @@
     if (!h || !h.c || !section.isConnected) return;
     const entry = h.c[card.id] || h.c[basePricingId(card.id)];
     if (!entry || !Array.isArray(entry.p)) return;
+    const cv = HISTORY_CUR[entry.s] || "USD";
     const pts = [];
-    (h.d || []).forEach((date, i) => { const v = entry.p[i]; if (v != null && v > 0) pts.push([date, v]); });
+    (h.d || []).forEach((date, i) => { const v = entry.p[i]; if (v != null && v > 0) pts.push([date, toChosenCurrency(v, cv, fx) || v]); });
     if (pts.length < 3) return; // série curta demais (o acumulador cresce 1 ponto/dia)
-    const cur = getCurrency();
-    const conv = (v) => { const r = toChosenCurrency(v, HISTORY_CUR[entry.s] || "USD", fx); return r == null ? v : r; };
-    const W = 560, H = 120, P = 6;
-    // PERÍODOS (1M, 3M, 6M, 1A, Tudo), no molde do Collectr e do TCGplayer
-    // (2026-10-13). Só os que cortam a série de verdade: com 58 dias de
-    // histórico aparecem "1M" e "Tudo"; o acervo longo ganha os outros sozinho.
-    const DIA = 864e5;
-    const fim = Date.parse(pts[pts.length - 1][0]);
-    const faixas = [30, 90, 180, 365].filter((d) => (fim - Date.parse(pts[0][0])) / DIA > d * 1.2);
-    let faixa = 0; // 0 = a série inteira
-    const FAIXA_ROT = { 30: "cs.r30", 90: "cs.r90", 180: "cs.r180", 365: "cs.r365", 0: "cs.rAll" };
-    const fmtDay = (s) => { const m = /^\d{4}-(\d{2})-(\d{2})/.exec(s); return m ? `${m[2]}/${m[1]}` : s; };
     // Onde o gráfico mora: embaixo do VALOR, na tela da carta (é o par que a
     // pessoa lê junto); sem ela, no fim da cotação, como antes.
     const alvo = document.querySelector("#cardPreviewModal [data-cs-chart]") || section;
-    if (!section.isConnected || alvo.querySelector(".price-history")) return;
-    alvo.insertAdjacentHTML("beforeend", '<div class="market-finish price-history"></div>');
-    const bloco = alvo.querySelector(".price-history");
-    function desenha() {
-      const sel = faixa ? pts.filter((p) => fim - Date.parse(p[0]) <= faixa * DIA) : pts;
-      const vals = sel.map((p) => conv(p[1]));
-      let mn = Math.min.apply(null, vals), mx = Math.max.apply(null, vals);
-      if (mn === mx) { mn *= 0.95; mx = mx * 1.05 || 1; }
-      const { X, pontoEmX } = eixoTemporal(sel.map((p) => p[0]), W, P);
-      const Y = (v) => H - P - ((v - mn) / (mx - mn)) * (H - 2 * P);
-      const line = vals.map((v, i) => `${X(i).toFixed(1)},${Y(v).toFixed(1)}`).join(" ");
-      const first = vals[0], last = vals[vals.length - 1];
-      const color = last >= first ? "#34d399" : "#f0883e";
-      const rotulo = escapeHtml(t("market.history", { n: sel.length }));
-      const abas = faixas.length
-        ? `<span class="ph-ranges" role="group">${faixas.concat(0).map((d) => `<button type="button" class="ph-range${d === faixa ? " is-on" : ""}" data-ph-range="${d}" aria-pressed="${d === faixa}">${escapeHtml(t(FAIXA_ROT[d]))}</button>`).join("")}</span>`
-        : "";
-      bloco.innerHTML = `<div class="ph-head"><span class="market-finish-label">${rotulo}</span>${abas}</div>
-        <div class="price-history-chart">
-          <div class="price-history-plot">
-            <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="${rotulo}">
-              <defs><linearGradient id="phg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${color}" stop-opacity="0.25"/><stop offset="100%" stop-color="${color}" stop-opacity="0"/></linearGradient></defs>
-              <polygon points="${X(0).toFixed(1)},${(H - P).toFixed(1)} ${line} ${X(vals.length - 1).toFixed(1)},${(H - P).toFixed(1)}" fill="url(#phg)"/>
-              <polyline points="${line}" fill="none" stroke="${color}" stroke-width="2" vector-effect="non-scaling-stroke"/>
-            </svg>
-          </div>
-          <div class="price-history-meta"><span>${escapeHtml(`${fmtDay(sel[0][0])} · ${fmtMoney(cur, first)}`)}</span><span>${escapeHtml(`${fmtDay(sel[sel.length - 1][0])} · ${fmtMoney(cur, last)}`)}</span></div>
-        </div>`;
-      // Leitura ponto a ponto: mouse no desktop, dedo no celular. Os dados
-      // ficam no próprio elemento (o modal é descartado ao fechar).
-      attachPriceHistoryPointer(bloco.querySelector(".price-history-chart"), { pts: sel, vals, cur, W, H, X, Y, fmtDay, pontoEmX });
-    }
-    bloco.addEventListener("click", (e) => {
-      const b = e.target.closest("[data-ph-range]");
-      if (b) { faixa = Number(b.dataset.phRange); desenha(); }
-    });
-    desenha();
-  }
-
-  // Crosshair + tooltip do sparkline. Overlay em HTML (não dentro do SVG): o
-  // viewBox estica com preserveAspectRatio=none e distorceria o raio do ponto;
-  // posições em % ficam corretas em qualquer largura.
-  // O overlay mora no .price-history-plot, que envolve SÓ o svg — não no
-  // .price-history-chart, que também contém a linha de datas embaixo. Antes ia
-  // no chart: o `top` em % era fração da altura do svg (viewBox 120) mas caía
-  // sobre uma caixa ~22px mais alta, então a bolinha ficava abaixo da linha,
-  // errando mais quanto mais baixo o ponto.
-  function attachPriceHistoryPointer(chart, data) {
-    const { pts, vals, cur, W, H, X, Y, fmtDay, pontoEmX } = data;
-    const plot = chart.querySelector(".price-history-plot") || chart;
-    plot.insertAdjacentHTML("beforeend",
-      `<div class="ph-cross" hidden></div><div class="ph-dot" hidden></div><div class="ph-tip" hidden></div>`);
-    const cross = plot.querySelector(".ph-cross");
-    const dot = plot.querySelector(".ph-dot");
-    const tip = plot.querySelector(".ph-tip");
-    const svg = plot.querySelector("svg");
-
-    function show(clientX) {
-      const r = svg.getBoundingClientRect();
-      if (!r.width) return;
-      const frac = Math.max(0, Math.min(1, (clientX - r.left) / r.width));
-      const i = pontoEmX(frac * W);
-      const leftPct = (X(i) / W) * 100;
-      const topPct = (Y(vals[i]) / H) * 100;
-      cross.style.left = leftPct + "%";
-      dot.style.left = leftPct + "%";
-      dot.style.top = topPct + "%";
-      tip.textContent = `${fmtDay(pts[i][0])} · ${fmtMoney(cur, vals[i])}`;
-      // O tooltip troca de lado no meio pra nunca sair do gráfico.
-      tip.style.left = leftPct + "%";
-      tip.classList.toggle("is-flip", leftPct > 55);
-      cross.hidden = dot.hidden = tip.hidden = false;
-    }
-    function hide() { cross.hidden = dot.hidden = tip.hidden = true; }
-
-    // Pointer Events cobrem mouse E toque. touch-action: pan-y (no CSS) deixa o
-    // arraste HORIZONTAL ler o gráfico sem sequestrar a rolagem vertical do modal.
-    svg.addEventListener("pointerdown", (e) => { svg.setPointerCapture(e.pointerId); show(e.clientX); });
-    svg.addEventListener("pointermove", (e) => { if (e.pointerType === "mouse" || e.pressure > 0) show(e.clientX); });
-    svg.addEventListener("pointerup", hide);
-    svg.addEventListener("pointercancel", hide);
-    svg.addEventListener("pointerleave", (e) => { if (e.pointerType === "mouse") hide(); });
+    // O DESENHO (eixos, períodos, crosshair) mora em src/grafico-preco.js e
+    // desce na primeira carta com série (2026-11-12): o núcleo não tinha
+    // espaço pra revisão no molde do Collectr. Sem o arquivo, sem gráfico.
+    if (!window.TCGGraficoPreco) await injectScript("/src/grafico-preco.js");
+    if (!window.TCGGraficoPreco || !section.isConnected || alvo.querySelector(".price-history")) return;
+    alvo.insertAdjacentHTML("beforeend", '<div class="price-history"></div>');
+    window.TCGGraficoPreco(alvo.lastChild, pts, getCurrency());
   }
 
   // ── Preço da Comunidade no card (F3 de docs/COMMUNITY-PRICES.md) ───────────
@@ -12934,10 +12848,11 @@
   }
 
   // Internos que os módulos sob demanda precisam (src/backup-import.js,
-  // src/card-rescue.js). NÃO é API pública: é o que aqueles arquivos usavam
-  // quando ainda viviam neste closure. Montado aqui, antes do boot, porque
-  // SYNC_KEYS e afins são `const` declaradas acima (TDZ se fosse no export).
-  window.TCGShared._nucleo = { SYNC_KEYS, currentGame, currentGameSlug, fetchCollectionApi, flushWrites, freezeWritesUntilReload, isUnsafeKey, mergeBinders, mergeCollection, mergeCosts, mergeDecks, mergeFolders, mergeGraded, mergeLists, mergeManual, mergePrices, mergeSales, mergeSold, mergeTags, mergeWishTargets, mergeWishlist, normalizeMeta, readObject };
+  // src/card-rescue.js, src/grafico-preco.js). NÃO é API pública: é o que
+  // aqueles arquivos usavam quando ainda viviam neste closure. Montado aqui,
+  // antes do boot, porque SYNC_KEYS e afins são `const` declaradas acima (TDZ
+  // se fosse no export).
+  window.TCGShared._nucleo = { SYNC_KEYS, currentGame, currentGameSlug, eixoTemporal, fetchCollectionApi, flushWrites, freezeWritesUntilReload, isUnsafeKey, mergeBinders, mergeCollection, mergeCosts, mergeDecks, mergeFolders, mergeGraded, mergeLists, mergeManual, mergePrices, mergeSales, mergeSold, mergeTags, mergeWishTargets, mergeWishlist, normalizeMeta, readObject };
 
   // Link de carta com id APOSENTADO (?card=cel30-001, compartilhado ou salvo
   // nos dias em que o set tinha o id velho): reescreve pro id novo ANTES de

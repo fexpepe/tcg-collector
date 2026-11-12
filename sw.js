@@ -171,6 +171,9 @@ const SHELL_ASSETS = [
   "src/backup-import.js", "src/card-rescue.js", "src/facets.js",
   // Envio dos erros de JS (2026-10-03): sob demanda, no primeiro erro da página.
   "src/erros.js",
+  // Gráfico do histórico de preço (2026-11-12): sob demanda, na primeira carta
+  // com série. Offline a tela da carta segue desenhando o gráfico.
+  "src/grafico-preco.js",
   // Ordenar (2026-09-30): o menu e os critérios de toda grade de cartas.
   "src/ordenar.js",
   // Nomes em inglês dos sets vintage/japoneses (2026-10-08, saíram do shared.js):
