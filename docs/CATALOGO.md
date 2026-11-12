@@ -366,8 +366,10 @@ estão em atividade): entra na **página Vintage** (`/vintage`, `vintage.html`
 + `src/vintage.js`, desde 2026-11-12), que tem item próprio no menu. O
 acervo cresce rápido e cada jogo tem começo e fim, então a página é uma
 **linha do tempo**: uma linha por jogo, com a barra do lançamento ao
-encerramento numa régua de anos comum. Em cima, o filtro por **marca**
-(Dragon Ball, Naruto…): aberto, vira a história da marca em cartas, com o
+encerramento numa régua de anos comum. Em cima, na linha dos filtros, o
+seletor de **marca** (Dragon Ball, Naruto…; um campo que abre um painel, e
+não uma fileira de chips, pra ocupar o mesmo espaço com 11 marcas ou com
+50): escolhida uma, a página vira a história da marca em cartas, com o
 resumo de cada jogo (o do "Sobre") e o jogo que continua hoje. Há também a
 visão agrupada por marca e a grade de logos. Em todas, a linha inteira é o
 link do jogo: Vintage > jogo, os mesmos dois cliques de Jogos > jogo.

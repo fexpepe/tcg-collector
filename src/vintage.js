@@ -9,7 +9,7 @@
 // de uma marca quer ver só os jogos dela, na ordem em que saíram. Então:
 //   - linha do tempo: cada jogo é uma barra do lançamento ao encerramento,
 //     numa régua de anos comum;
-//   - marca: um filtro por franquia (Dragon Ball, Naruto…) que vira a
+//   - marca: um seletor por franquia (Dragon Ball, Naruto…) que vira a
 //     "história da marca em cartas" — só os jogos dela, com o resumo de cada
 //     um (o do "Sobre", data/sobre/<endereço>.json) e o jogo que continua hoje;
 //   - por marca: a mesma régua, agrupada por franquia;
@@ -161,6 +161,12 @@
 
   var elFiltros = document.getElementById("vtFiltros");
   var elMarcas = document.getElementById("vtMarcas");
+  var elSeletor = document.getElementById("vtSeletor");
+  var elBotao = document.getElementById("vtMarcaBotao");
+  var elValor = document.getElementById("vtMarcaValor");
+  var elPainel = document.getElementById("vtMarcaPainel");
+  var elBusca = document.getElementById("vtMarcaBusca");
+  var elSemMarca = document.getElementById("vtMarcaVazio");
   var elOrdem = document.getElementById("vtOrdem");
   var elVisao = document.getElementById("vtVisao");
   var elMarca = document.getElementById("vtMarca");
@@ -191,21 +197,58 @@
     try { history[empilha ? "pushState" : "replaceState"](null, "", destino); } catch (e) { /* file:// e afins: segue sem endereço */ }
   }
 
-  // ── Chips de marca ────────────────────────────────────────────────────────
-  // "Todas" e depois as marcas pelo número de jogos (as com mais história
-  // primeiro); empate pelo nome.
+  // ── Seletor de marca ──────────────────────────────────────────────────────
+  // Um campo na linha dos filtros que abre um painel com todas as marcas, em
+  // ordem alfabética (é como se procura um nome numa lista), cada uma com o
+  // número de jogos. Eram chips; com 11 marcas já tomavam duas fileiras.
   var contagemPorMarca = {};
   jogos.forEach(function (j) { j.marcas.forEach(function (m) { contagemPorMarca[m] = (contagemPorMarca[m] || 0) + 1; }); });
   var marcasNaPagina = Object.keys(contagemPorMarca).filter(function (m) { return MARCAS[m]; }).sort(function (a, b) {
-    return contagemPorMarca[b] - contagemPorMarca[a] || MARCAS[a].nome.localeCompare(MARCAS[b].nome);
+    return MARCAS[a].nome.localeCompare(MARCAS[b].nome, undefined, { sensitivity: "base" });
   });
-  function desenhaChips() {
-    var chip = function (slug, rotulo, n) {
-      return '<button type="button" class="chip" data-marca="' + esc(slug) + '" aria-pressed="' + (estado.marca === slug) + '">'
-        + esc(rotulo) + '<span class="chip-count">' + n + "</span></button>";
+  // A partir de quantas marcas o painel ganha o campo de busca.
+  var BUSCA_A_PARTIR_DE = 13;
+  function desenhaOpcoes() {
+    var opcao = function (slug, rotulo, n, extra) {
+      return '<button type="button" class="vt-opcao' + (extra || "") + '" data-marca="' + esc(slug) + '" aria-pressed="' + (estado.marca === slug) + '">'
+        + '<span class="vt-opcao-nome">' + esc(rotulo) + '</span><span class="vt-opcao-n">' + n + "</span></button>";
     };
-    elMarcas.innerHTML = chip("", t("vt.all"), jogos.length)
-      + marcasNaPagina.map(function (m) { return chip(m, MARCAS[m].nome, contagemPorMarca[m]); }).join("");
+    elMarcas.innerHTML = opcao("", t("vt.allBrands"), jogos.length, " vt-opcao--todas")
+      + marcasNaPagina.map(function (m) { return opcao(m, MARCAS[m].nome, contagemPorMarca[m]); }).join("");
+    elBusca.hidden = marcasNaPagina.length < BUSCA_A_PARTIR_DE;
+  }
+  // Sem acento e em minúsculas: "pokemon" acha "Pokémon".
+  function semAcento(s) {
+    return String(s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  }
+  function filtraOpcoes() {
+    var termo = semAcento(elBusca.value).trim();
+    var achou = 0;
+    Array.prototype.forEach.call(elMarcas.querySelectorAll(".vt-opcao"), function (b) {
+      var slug = b.getAttribute("data-marca") || "";
+      // "Todas as marcas" some enquanto se digita: a busca é por um nome.
+      var mostra = slug ? semAcento(MARCAS[slug].nome).indexOf(termo) >= 0 : !termo;
+      b.hidden = !mostra;
+      if (mostra && slug) achou++;
+    });
+    elSemMarca.hidden = achou > 0;
+  }
+  function painelAberto() { return !elPainel.hidden; }
+  function abrePainel() {
+    elPainel.hidden = false;
+    elBotao.setAttribute("aria-expanded", "true");
+    elBusca.value = "";
+    filtraOpcoes();
+    // O foco entra no painel: na busca quando ela existe, senão na opção
+    // marcada (o teclado segue dali com as setas).
+    var alvo = elBusca.hidden ? elMarcas.querySelector('.vt-opcao[aria-pressed="true"]') : elBusca;
+    if (alvo && alvo.focus) alvo.focus({ preventScroll: true });
+  }
+  function fechaPainel(devolveFoco) {
+    if (!painelAberto()) return;
+    elPainel.hidden = true;
+    elBotao.setAttribute("aria-expanded", "false");
+    if (devolveFoco) elBotao.focus({ preventScroll: true });
   }
 
   // ── Contagem de sets e cartas (publicada pelo build, quando existe) ───────
@@ -379,9 +422,13 @@
     if (estado.marca) buscaResumos(visiveis);
     elVazio.hidden = visiveis.length > 0;
 
-    Array.prototype.forEach.call(elMarcas.querySelectorAll(".chip"), function (b) {
+    Array.prototype.forEach.call(elMarcas.querySelectorAll(".vt-opcao"), function (b) {
       b.setAttribute("aria-pressed", String((b.getAttribute("data-marca") || "") === estado.marca));
     });
+    // O campo mostra a marca escolhida (ou "Todas") e fica contornado com o
+    // filtro ligado.
+    elValor.textContent = estado.marca ? MARCAS[estado.marca].nome : t("vt.all");
+    if (estado.marca) elBotao.setAttribute("data-ativa", ""); else elBotao.removeAttribute("data-ativa");
     Array.prototype.forEach.call(elVisao.querySelectorAll("[data-visao]"), function (b) {
       b.setAttribute("aria-pressed", String(b.getAttribute("data-visao") === estado.visao));
     });
@@ -398,14 +445,39 @@
 
   // ── Liga tudo ─────────────────────────────────────────────────────────────
   leEstado();
-  desenhaChips();
+  desenhaOpcoes();
   elFiltros.hidden = false;
   elAcervo.classList.add("vt-acervo--pronto");
   desenha();
 
+  elBotao.addEventListener("click", function () { if (painelAberto()) fechaPainel(false); else abrePainel(); });
   elMarcas.addEventListener("click", function (ev) {
-    var b = ev.target.closest ? ev.target.closest(".chip") : null;
-    if (b) escolheMarca(b.getAttribute("data-marca") || "");
+    var b = ev.target.closest ? ev.target.closest(".vt-opcao") : null;
+    if (!b) return;
+    escolheMarca(b.getAttribute("data-marca") || "");
+    fechaPainel(true);
+  });
+  elBusca.addEventListener("input", filtraOpcoes);
+  // Fecha ao clicar fora e no Esc; as setas andam pelas opções à vista, e o
+  // Enter na busca escolhe a primeira que sobrou.
+  document.addEventListener("pointerdown", function (ev) {
+    if (painelAberto() && !elSeletor.contains(ev.target)) fechaPainel(false);
+  });
+  elSeletor.addEventListener("keydown", function (ev) {
+    if (ev.key === "Escape" && painelAberto()) { ev.stopPropagation(); fechaPainel(true); return; }
+    if (!painelAberto()) return;
+    var opcoes = Array.prototype.filter.call(elMarcas.querySelectorAll(".vt-opcao"), function (b) { return !b.hidden; });
+    if (!opcoes.length) return;
+    if (ev.key === "Enter" && ev.target === elBusca) { ev.preventDefault(); opcoes[0].click(); return; }
+    if (ev.key !== "ArrowDown" && ev.key !== "ArrowUp") return;
+    ev.preventDefault();
+    var i = opcoes.indexOf(document.activeElement);
+    var prox = ev.key === "ArrowDown" ? (i + 1) % opcoes.length : (i <= 0 ? opcoes.length - 1 : i - 1);
+    opcoes[prox].focus();
+  });
+  // O foco saiu do seletor pelo Tab: o painel não fica aberto pra trás.
+  elSeletor.addEventListener("focusout", function (ev) {
+    if (painelAberto() && ev.relatedTarget && !elSeletor.contains(ev.relatedTarget)) fechaPainel(false);
   });
   lista.addEventListener("click", function (ev) {
     var b = ev.target.closest ? ev.target.closest("button.vt-grupo-btn") : null;
