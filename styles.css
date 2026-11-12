@@ -2434,6 +2434,13 @@ input::placeholder {
   border: 1px solid rgba(255, 255, 255, 0.08);
   color: rgba(255, 255, 255, 0.88);
   overflow: hidden;
+  container-type: inline-size;
+}
+
+/* Verso estreito (modo lista da grade, ~74px): o aviso quebrava em 3 linhas
+   por cima do logo. Ali fica só o logo; o aria-label do verso segue avisando. */
+@container (max-width: 90px) {
+  .card-back-label { display: none; }
 }
 
 [data-theme="light"] .card-back {
@@ -2448,6 +2455,7 @@ input::placeholder {
    fundo é currentColor. O arquivo já está em cache (o header o usa em toda
    página), então o verso não custa pedido nenhum. */
 .card-back-art {
+  display: block;
   width: 58%;
   max-width: 140px;
   aspect-ratio: 667 / 178;
@@ -4031,8 +4039,10 @@ html[data-detail="set"]:not([data-set-pronto]):not([data-carta]) body:not(.carta
   scroll-snap-align: start;
 }
 .print-art { display: block; aspect-ratio: 63 / 88; border-radius: 4.8% / 3.4%; overflow: hidden; background: var(--panel); }
-.print-art img,
-.print-art .card-back { display: block; width: 100%; height: 100%; object-fit: cover; }
+.print-art img { display: block; width: 100%; height: 100%; object-fit: cover; }
+/* O verso continua grid (centraliza o logo): com display block o span do
+   wordmark, que não tem conteúdo, ficava inline e com tamanho zero. */
+.print-art .card-back { width: 100%; height: 100%; }
 a.preview-print:hover .print-art,
 .cs-more-card:hover .print-art { outline: 2px solid var(--line); outline-offset: 2px; }
 .preview-print.is-current .print-art { outline: 2px solid var(--accent); outline-offset: 2px; }
