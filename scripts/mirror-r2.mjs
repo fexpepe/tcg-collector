@@ -11,7 +11,8 @@
 // carta (a melhor imagem da fonte, scripts/lib/img-mirror.mjs), gera WebP nas
 // três larguras (300/600/1000, nunca ampliando) com o sharp e sobe as três no
 // bucket. O índice fica no próprio bucket (_index/<host>.json: base da chave
-// -> [tamanho da matriz, versão, dia]) e o job só faz o que falta ou mudou,
+// -> [tamanho da matriz, versão, dia, geração, fonte da matriz quando há
+// alternativa]) e o job só faz o que falta ou mudou,
 // dentro de um tempo de trabalho; grava o índice a cada 200 cartas e no fim —
 // a rodada seguinte continua de onde parou. No fim publica _index/status.json,
 // que o deploy consulta (scripts/apply-img-mirror.mjs): só host COMPLETO no
@@ -33,6 +34,15 @@
 // cartas de geração antiga, host a host. O status publica, por host, a
 // geração que está completa: o site segue na antiga até a nova fechar.
 //
+// Geração por host e matriz alternativa (12/11/2026): cada host tem a SUA
+// geração (geracaoDoHost) — a 3 é só da TCGdex. Nela, carta EN baixa também a
+// _hires da pokemontcg.io e, se for a mesma carta e não for menor
+// (scripts/lib/mesma-carta.mjs), gera as larguras a partir dela. O índice
+// ganha um 5º campo nessas cartas: "p" (saiu da pokemontcg.io) ou "t" (ficou
+// na TCGdex: sem _hires ainda, menor ou outra carta). As "t" tentam de novo a
+// cada 30 dias — set novo costuma chegar antes na TCGdex — e por isso sobem
+// com o cache de 7 dias, não o imutável: a arte pode melhorar na mesma chave.
+//
 //   node scripts/mirror-r2.mjs [--host <host>] [--limit N] [--minutes M] [--dry]
 // Env: R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, CLOUDFLARE_ACCOUNT_ID
 // (R2_BUCKET opcional, padrão sleevu-img), SHARP_DIR (pasta do pacote sharp
@@ -41,8 +51,10 @@
 // fontes nem o bucket — aqui só o --dry (conta o que faria, sem rede).
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
-import { lerCatalogo } from "./lib/d1-catalogo.mjs";
-import { ESQUEMA_ESPELHO, FONTES, GERACAO, LARGURAS, ORDEM, chaveBase, chaveDe, hostDe, matrizDe, versaoDe, webpDe } from "./lib/img-mirror.mjs";
+import { RAIZ, lerCatalogo } from "./lib/d1-catalogo.mjs";
+import { ESQUEMA_ESPELHO, FONTES, LARGURAS, ORDEM, chaveBase, chaveDe, geracaoDoHost, hostDe, matrizDe, versaoDe, webpDe } from "./lib/img-mirror.mjs";
+import { alternativaDe, comparaAlternativa } from "./lib/mesma-carta.mjs";
+import { lerSetIdMap } from "./lib/pokemontcg-image.mjs";
 import { clienteR2 } from "./lib/r2.mjs";
 import { mapLimit, sleep } from "./lib/sync-common.mjs";
 
@@ -75,8 +87,10 @@ if (!SECO) {
 // ── 1. O que DEVE existir no bucket, por host: base da chave -> carta ───────
 const alvos = new Map(ORDEM.map((h) => [h, new Map()]));
 const limiteRecente = diasAtras(RECENTE_DIAS);
+// De-para TCGdex -> pokemontcg.io, pra matriz alternativa das cartas EN.
+const setIdMap = await lerSetIdMap(RAIZ);
 for await (const { game, cards } of lerCatalogo()) {
-  let n = 0;
+  let n = 0, comAlt = 0;
   for (const c of cards) {
     // `reserva`: a pokemontcg.io das cartas EN/PT sem scan na TCGdex (ver
     // lerCatalogo) — é a imagem principal delas no site, então se espelha.
@@ -85,10 +99,13 @@ for await (const { game, cards } of lerCatalogo()) {
     if (!mapa) continue;
     const base = chaveBase(u);
     if (!base || mapa.has(base)) continue;
-    mapa.set(base, { url: u, matriz: matrizDe(u), versao: versaoDe(u), recente: String(c.linha.released || "") >= limiteRecente });
+    // `alt`: a _hires da pokemontcg.io, só pra carta EN da TCGdex (ver o topo).
+    const alt = game === "pokemon" ? alternativaDe(c.linha, u, setIdMap) : "";
+    if (alt) comAlt++;
+    mapa.set(base, { url: u, matriz: matrizDe(u), alt, versao: versaoDe(u), recente: String(c.linha.released || "") >= limiteRecente });
     n++;
   }
-  console.log(`  ${game}: ${n} cartas a manter no espelho`);
+  console.log(`  ${game}: ${n} cartas a manter no espelho${comAlt ? ` (${comAlt} com matriz alternativa da pokemontcg.io)` : ""}`);
 }
 
 // ── 2. Índice e status guardados no bucket ──────────────────────────────────
@@ -150,6 +167,7 @@ for (const host of ORDEM) {
   const alvo = alvos.get(host);
   if (!alvo.size) continue;
   const f = FONTES[host];
+  const GERACAO = geracaoDoHost(host);
   // Índice de esquema anterior (v1 copiava variantes da origem, chaves sem
   // @largura): começa do zero — os objetos velhos ficam no bucket sem uso.
   let idx = await leJson(`_index/${host}.json`, null);
@@ -161,15 +179,41 @@ for (const host of ORDEM) {
     if (!tem) { if (!faltouHaPouco(base)) manutencao.push([base, o, null]); continue; }
     if (tem[1] !== o.versao) { manutencao.push([base, o, tem]); continue; }
     if (geracaoDe(tem) < GERACAO) { if (!faltouHaPouco(base)) regeracao.push([base, o, tem]); continue; }
-    if (f.mutavel && o.recente && tem[2] < diasAtras(RECONFERE_DIAS)) manutencao.push([base, o, tem]);
+    if (f.mutavel && o.recente && tem[2] < diasAtras(RECONFERE_DIAS)) { manutencao.push([base, o, tem]); continue; }
+    // Ficou na TCGdex com alternativa possível: tenta de novo a pokemontcg.io.
+    if (o.alt && tem[4] === "t" && tem[2] < diasAtras(FALTANDO_DIAS)) manutencao.push([base, o, tem]);
   }
   console.log(`mirror-r2: ${host} — ${alvo.size} cartas no alvo, ${manutencao.length} de manutenção, ${regeracao.length} a regerar pra geração ${GERACAO}.`);
-  hostsDaRodada.push({ host, f, alvo, idx, manutencao, regeracao, n: { geradas: 0, conferidas: 0, sumidas: 0, erros: 0 } });
+  hostsDaRodada.push({ host, f, GERACAO, alvo, idx, manutencao, regeracao, n: { geradas: 0, conferidas: 0, sumidas: 0, erros: 0, alternativas: 0, recusadas: {} } });
 }
 
 // ── 4. Gera e sobe um lote de um host ───────────────────────────────────────
+// Matriz alternativa (a _hires da pokemontcg.io) de uma carta EN da TCGdex:
+// o buffer dela quando é a MESMA carta da `base` (o png da TCGdex) e não é
+// menor; null quando não serve (o motivo vai pra contagem da rodada); "calma"
+// num 429 — aí a carta fica pra próxima rodada, em vez de cair na TCGdex e só
+// tentar de novo em 30 dias. Sem retry aqui: erro de rede vira "t" e volta.
+async function baixaAlternativa(o, base, n, nome) {
+  const recusa = (motivo, extra) => {
+    n.recusadas[motivo] = (n.recusadas[motivo] || 0) + 1;
+    // As primeiras "outra carta" no log: é o sinal de um de-para errado no
+    // set-id-map (scripts/build-set-id-map.mjs, MANUAL_OVERRIDES).
+    if (motivo === "outra carta" && n.recusadas[motivo] <= 5) console.log(`  pokemontcg.io recusada (outra carta, ${extra}): ${nome} x ${o.alt}`);
+    return null;
+  };
+  let r;
+  try { r = await fetch(o.alt, { headers: { "user-agent": UA, accept: "image/*,*/*;q=0.8" }, signal: AbortSignal.timeout(45000) }); }
+  catch { return recusa("erro de rede"); }
+  if (r.status === 429) return "calma";
+  if (!r.ok) return recusa(r.status === 404 ? "sem _hires" : `HTTP ${r.status}`);
+  const buf = Buffer.from(await r.arrayBuffer());
+  if (!buf.length) return recusa("vazia");
+  const c = await comparaAlternativa(sharp, base, buf);
+  return c.ok ? buf : recusa(c.motivo, `correlação ${c.corr.toFixed(3)}`);
+}
+
 async function processa(h, lista, etapa) {
-  const { host, f, idx, n } = h;
+  const { host, f, GERACAO, idx, n } = h;
   if (SECO || !lista.length) return;   // --dry: só a contagem, sem tocar na rede
   if (acabouTempo() || feitosNoTotal >= LIMITE) { console.log(`mirror-r2: ${host} (${etapa}) fica pra próxima rodada (tempo/teto).`); return; }
   const lote = lista.slice(0, Math.max(0, LIMITE - feitosNoTotal));
@@ -192,24 +236,39 @@ async function processa(h, lista, etapa) {
       if (!r.ok) { n.erros++; return; }
       const matriz = Buffer.from(await r.arrayBuffer());
       if (!matriz.length) { n.erros++; return; }
+      // Carta EN da TCGdex: a pokemontcg.io no lugar, se servir (ver o topo).
+      // `fonte` vai pro índice: "p" saiu da alternativa, "t" ficou na TCGdex.
+      let gera = matriz, fonte = "";
+      if (o.alt) {
+        const alt = await baixaAlternativa(o, matriz, n, base);
+        if (alt === "calma") { parar = true; console.log(`mirror-r2: pokemontcg.io pediu calma (429) — ${host} encerra por hoje.`); return; }
+        if (alt) { gera = alt; fonte = "p"; n.alternativas++; } else fonte = "t";
+        // Nova tentativa de uma carta que já estava na TCGdex e continua: nada
+        // mudou na imagem — só carimba o dia (próxima tentativa em 30 dias).
+        if (mesma && tem[4] === "t" && fonte === "t") { tem[2] = HOJE; n.conferidas++; feitosNoTotal++; return; }
+      }
       // Três larguras a partir da mesma decodificação; sem ampliar. A 1000
       // (popup) sai com mais qualidade que a grade (webpDe).
       const saidas = await Promise.all(LARGURAS.map((w) =>
-        sharp(matriz).resize({ width: w, withoutEnlargement: true }).webp(webpDe(w)).toBuffer()));
+        sharp(gera).resize({ width: w, withoutEnlargement: true }).webp(webpDe(w)).toBuffer()));
       // Arte que PODE mudar na mesma chave (2026-10-08): a de host mutável
       // (TCGplayer troca o arquivo na mesma URL) e toda REGRAVAÇÃO (o Scryfall
       // mudou a versão, o TCGplayer mudou o tamanho). Com o immutable de um ano
       // padrão, navegador e borda seguiam com a arte velha por um ano; com 7
       // dias (o ritmo da reconferência), a nova chega na semana. O resto —
       // inclusive a chave nova de uma geração nova — segue imutável por URL.
-      const cacheControl = mesma || f.mutavel ? CACHE_MUTAVEL : undefined;
+      // Carta que ficou na TCGdex com alternativa possível ("t") também: ela
+      // pode trocar pela pokemontcg.io na mesma chave daqui a 30 dias.
+      const cacheControl = mesma || f.mutavel || fonte === "t" ? CACHE_MUTAVEL : undefined;
       const subidas = await Promise.all(LARGURAS.map((w, i) => r2.put(chaveDe(o.url, w, GERACAO), saidas[i], { contentType: "image/webp", cacheControl })));
       if (subidas.some((p) => !p.ok)) { n.erros++; return; }
       // Regravação: a borda da Cloudflare ainda guarda a arte velha (e ignora a
       // query na chave dela). Entra na purga do fim da rodada (purgaBorda).
       // A URL como o cliente a pede (mirrorImg no shared.js: a do wsrv.nl vai codificada).
       if (mesma) LARGURAS.forEach((w) => regravadas.push(`https://img.sleevu.app/${host === "wsrv.nl" ? encodeURI(chaveDe(o.url, w, GERACAO)) : chaveDe(o.url, w, GERACAO)}`));
-      idx.objetos[base] = [matriz.length, o.versao, HOJE, GERACAO];
+      // [0] é o tamanho da matriz da FONTE (a TCGdex), mesmo quando a imagem
+      // saiu da alternativa: é o que a reconferência por HEAD compara.
+      idx.objetos[base] = fonte ? [matriz.length, o.versao, HOJE, GERACAO, fonte] : [matriz.length, o.versao, HOJE, GERACAO];
       delete idx.faltando[base];
       n.geradas++; feitosNoTotal++;
       if (++desdeSalvo >= SALVA_A_CADA) { desdeSalvo = 0; await salva(); }
@@ -233,11 +292,11 @@ const PRIMEIRO_NA_REGERACAO = ["assets.tcgdex.net", "images.pokemontcg.io", "car
 const ordemRegeracao = [...new Set([...PRIMEIRO_NA_REGERACAO, ...ORDEM])];
 for (const host of ordemRegeracao) {
   const h = hostsDaRodada.find((x) => x.host === host);
-  if (h) await processa(h, h.regeracao, `regeração ${GERACAO}`);
+  if (h) await processa(h, h.regeracao, `regeração ${h.GERACAO}`);
 }
 
 // ── 6. Status por host ──────────────────────────────────────────────────────
-for (const { host, alvo, idx, n } of hostsDaRodada) {
+for (const { host, GERACAO, alvo, idx, n } of hostsDaRodada) {
   let ok = 0, faltando = 0;
   for (const [base, o] of alvo) {
     const tem = idx.objetos[base];
@@ -256,6 +315,10 @@ for (const { host, alvo, idx, n } of hostsDaRodada) {
   console.log(`mirror-r2: ${host} — ${n.geradas} cartas geradas (${n.geradas * LARGURAS.length} objetos), ${n.conferidas} conferidas, ${n.sumidas} sumidas na origem, ${n.erros} erros; `
     + `na geração ${GERACAO}: ${ok} de ${alvo.size}${faltando ? ` (${faltando} não existem na origem)` : ""}; ${restam ? `${restam} ainda por fazer` : "COMPLETO"}`
     + `${servida && servida !== GERACAO ? ` — o site segue na geração ${servida}` : ""}.`);
+  const recusas = Object.entries(n.recusadas);
+  if (n.alternativas || recusas.length) {
+    console.log(`  matriz da pokemontcg.io: ${n.alternativas} usada(s)${recusas.length ? `; ficaram na TCGdex: ${recusas.map(([m, q]) => `${q} ${m}`).join(", ")}` : ""}.`);
+  }
 }
 
 status.atualizadoEm = new Date().toISOString();

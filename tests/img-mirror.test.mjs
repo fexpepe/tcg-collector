@@ -9,7 +9,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { loadShared } from "./lib/shared-sandbox.mjs";
-import { ESPELHO, GERACAO, LARGURAS, ORDEM, chaveBase, chaveDe, injetaEspelho, matrizDe, statusDoEspelho, urlEspelho, versaoDe, webpDe } from "../scripts/lib/img-mirror.mjs";
+import { ESPELHO, GERACAO, LARGURAS, ORDEM, chaveBase, chaveDe, geracaoDoHost, injetaEspelho, matrizDe, statusDoEspelho, urlEspelho, versaoDe, webpDe } from "../scripts/lib/img-mirror.mjs";
 import { readFileSync } from "node:fs";
 
 const sb = loadShared("window.__test = { mirrorImg };");
@@ -110,6 +110,25 @@ test("geração: chave com sufixo, igual no build e no cliente; host sem geraç�
   const html = localizedImg(TCGDEX, { thumb: true, sizes: "100px" });
   assert.equal(srcset(html), `${ESPELHO}assets.tcgdex.net/en/base/base1/4/high.png@300.g2.webp 300w, ${ESPELHO}assets.tcgdex.net/en/base/base1/4/high.png@600.g2.webp 600w`);
   delete sb.SLEEVU;
+});
+
+// Geração por host (12/11/2026): a 3 é só da TCGdex (matriz da pokemontcg.io
+// nas cartas EN). Subir a geração de um host não pode regerar os outros —
+// Scryfall e TCGplayer são ~250 mil cartas sem um pixel de diferença.
+test("geração por host: a TCGdex na 3, o resto na padrão, e o site monta .g3 quando o status diz", () => {
+  assert.equal(geracaoDoHost("assets.tcgdex.net"), 3);
+  for (const h of ORDEM.filter((x) => x !== "assets.tcgdex.net")) assert.equal(geracaoDoHost(h), GERACAO, h);
+  assert.equal(geracaoDoHost("host.desconhecido"), GERACAO);
+  assert.equal(chaveDe(TCGDEX, 1000, 3), "assets.tcgdex.net/en/base/base1/4/high.png@1000.g3.webp");
+  const geracoes = { "assets.tcgdex.net": 3, "cards.scryfall.io": 2 };
+  assert.equal(urlEspelho(TCGDEX, ORDEM, 600, geracoes), `${ESPELHO}assets.tcgdex.net/en/base/base1/4/high.png@600.g3.webp`);
+  sb.SLEEVU = { imgMirrorHosts: ORDEM, imgMirrorGen: geracoes };
+  assert.equal(mirrorImg(TCGDEX, 600), `${ESPELHO}assets.tcgdex.net/en/base/base1/4/high.png@600.g3.webp`);
+  assert.equal(mirrorImg(SCRY, 600), `${ESPELHO}cards.scryfall.io/normal/front/7/a/7a5cd03c.jpg@600.g2.webp`);
+  delete sb.SLEEVU;
+  // Enquanto a 3 não fecha, o status segue dizendo 2 e o site, na 2.
+  const st = { hosts: { "assets.tcgdex.net": { esquema: 2, completo: true, geracao: 2 } } };
+  assert.deepEqual(statusDoEspelho(st).geracoes, { "assets.tcgdex.net": 2 });
 });
 
 test("status do job → o que o site usa: só host completo no esquema atual, e a geração completa dele", () => {
