@@ -1,0 +1,115 @@
+{
+  "url": "lord-of-the-rings-tcg",
+  "nome": "The Lord of the Rings TCG",
+  "logo": "assets/games/game_lotr.webp",
+  "logoLargura": 200,
+  "logoAltura": 172,
+  "periodo": { "inicio": "2001-11", "fim": "2007-06" },
+  "etiquetas": [
+    "Vintage",
+    { "pt": "EUA", "en": "USA", "es": "EE. UU." },
+    "TCG"
+  ],
+  "resumo": {
+    "pt": "Jogo de cartas da Decipher com imagens dos filmes de Peter Jackson. Saiu em novembro de 2001, teve 19 sets e acabou em 2007, quando venceu a licença.",
+    "en": "Decipher's card game built on stills from Peter Jackson's films. Launched in November 2001, it had 19 sets and ended in 2007, when the license ran out.",
+    "es": "Juego de cartas de Decipher con imágenes de las películas de Peter Jackson. Salió en noviembre de 2001, tuvo 19 sets y terminó en 2007, al vencer la licencia."
+  },
+  "fatos": [
+    { "chave": "lancamento", "valor": "2001-11" },
+    { "chave": "encerramento", "valor": "2007-06" },
+    { "chave": "fabricante", "valor": "Decipher" },
+    { "chave": "licenca", "valor": {
+      "pt": "New Line Cinema e The Saul Zaentz Company",
+      "en": "New Line Cinema and The Saul Zaentz Company",
+      "es": "New Line Cinema y The Saul Zaentz Company"
+    } },
+    { "chave": "origem", "valor": { "pt": "Estados Unidos", "en": "United States", "es": "Estados Unidos" } },
+    { "chave": "distribuicao", "valor": {
+      "pt": "Boosters de 11 cartas e starter decks",
+      "en": "11-card boosters and starter decks",
+      "es": "Sobres de 11 cartas y mazos de inicio"
+    } }
+  ],
+  "historia": {
+    "pt": [
+      "O The Lord of the Rings Trading Card Game foi o jogo de cartas da Decipher, empresa americana que já fazia os de Star Wars e Star Trek. Saiu em novembro de 2001, semanas antes do primeiro filme de Peter Jackson, com licença da New Line Cinema e da The Saul Zaentz Company, dona dos direitos de Tolkien para cinema e produtos. As cartas usavam imagens dos filmes. Em 2002, ganhou o Origins Award de melhor jogo de cartas colecionáveis de 2001.",
+      "Cada jogador monta um baralho com metade de cartas dos Povos Livres e metade da Sombra. No seu turno, você leva a Sociedade por nove locais rumo à Montanha da Perdição; os adversários usam a Sombra para matar ou corromper o Portador do Anel. A reserva do crepúsculo amarra os dois lados: o que você paga para jogar os Povos Livres vai para ela, e o adversário gasta esse crepúsculo para jogar os lacaios dele.",
+      "Nos três primeiros anos, cada novembro trouxe um set-base do filme da vez, seguido de duas expansões. Reflections (2004) trouxe arte da Weta Workshop para personagens dos livros que não aparecem nos filmes. Sem filmes novos, Shadows (novembro de 2004) mudou boa parte das regras e dividiu os jogadores. The Hunters atrasou sete meses e saiu em junho de 2006, com a Decipher em dificuldades financeiras.",
+      "Em 22 de maio de 2007, a Decipher, a New Line e a Saul Zaentz anunciaram o fim: Treachery & Deceit seria a última expansão, e Age's End, com 40 cartas em foil, fecharia o jogo. A versão online ficou no ar até 2010. Em 2020, fãs fundaram o Player's Council, que mantém o banco de cartas, a wiki e o GEMP, onde se joga online, publica erratas e cartas novas, não oficiais, e em 2023 fez o primeiro Mundial em 13 anos."
+    ],
+    "en": [
+      "The Lord of the Rings Trading Card Game was the card game from Decipher, the American company already behind the Star Wars and Star Trek card games. It came out in November 2001, weeks before Peter Jackson's first film, under license from New Line Cinema and The Saul Zaentz Company, which holds the film and merchandising rights to Tolkien. The cards used stills from the films. In 2002 it won the Origins Award for best trading card game of 2001.",
+      "Each player builds a deck that is half Free Peoples cards and half Shadow cards. On your turn you lead the Fellowship across nine sites toward Mount Doom; your opponents use the Shadow to kill or corrupt the Ring-bearer. The twilight pool ties both sides together: what you pay to play Free Peoples cards goes into it, and your opponent spends that twilight to play minions.",
+      "In the first three years, each November brought a base set for that year's film, followed by two expansions. Reflections (2004) added Weta Workshop art for characters from the books who never appear in the films. With no new films, Shadows (November 2004) changed much of the rules and split the player base. The Hunters ran seven months late and came out in June 2006, with Decipher in financial trouble.",
+      "On May 22, 2007, Decipher, New Line and Saul Zaentz announced the end: Treachery & Deceit would be the last expansion, and Age's End, with 40 foil cards, would close the game. The online version stayed up until 2010. In 2020 fans founded the Player's Council, which runs the card database, the wiki and GEMP, where the game is played online, publishes errata and new unofficial cards, and in 2023 held the first World Championship in 13 years."
+    ],
+    "es": [
+      "The Lord of the Rings Trading Card Game fue el juego de cartas de Decipher, la empresa estadounidense que ya hacía los de Star Wars y Star Trek. Salió en noviembre de 2001, semanas antes de la primera película de Peter Jackson, con licencia de New Line Cinema y The Saul Zaentz Company, titular de los derechos de Tolkien para cine y productos. Las cartas usaban imágenes de las películas. En 2002 ganó el premio Origins al mejor juego de cartas coleccionables de 2001.",
+      "Cada jugador arma un mazo con mitad de cartas de los Pueblos Libres y mitad de la Sombra. En tu turno llevas a la Comunidad por nueve lugares rumbo al Monte del Destino; los rivales usan la Sombra para matar o corromper al Portador del Anillo. La reserva del crepúsculo une los dos lados: lo que pagas para jugar los Pueblos Libres va a ella, y el rival gasta ese crepúsculo para jugar sus esbirros.",
+      "En los tres primeros años, cada noviembre trajo un set base de la película del año, seguido de dos expansiones. Reflections (2004) sumó arte de Weta Workshop para personajes de los libros que no aparecen en las películas. Sin películas nuevas, Shadows (noviembre de 2004) cambió buena parte de las reglas y dividió a los jugadores. The Hunters se retrasó siete meses y salió en junio de 2006, con Decipher en problemas financieros.",
+      "El 22 de mayo de 2007, Decipher, New Line y Saul Zaentz anunciaron el final: Treachery & Deceit sería la última expansión, y Age's End, con 40 cartas en foil, cerraría el juego. La versión online siguió activa hasta 2010. En 2020, fans fundaron el Player's Council, que mantiene la base de cartas, la wiki y GEMP, donde se juega online, publica erratas y cartas nuevas, no oficiales, y en 2023 organizó el primer Mundial en 13 años."
+    ]
+  },
+  "linhaDoTempo": [
+    { "data": "2001-11", "set": "lotr-01", "texto": {
+      "pt": "The Fellowship of the Ring abre o jogo.",
+      "en": "The Fellowship of the Ring launches the game.",
+      "es": "The Fellowship of the Ring abre el juego." } },
+    { "data": "2002", "texto": {
+      "pt": "Origins Award de melhor jogo de cartas colecionáveis de 2001.",
+      "en": "Origins Award for best trading card game of 2001.",
+      "es": "Premio Origins al mejor juego de cartas coleccionables de 2001." } },
+    { "data": "2002-11", "set": "lotr-04", "texto": {
+      "pt": "The Two Towers, o set-base do segundo filme.",
+      "en": "The Two Towers, the base set for the second film.",
+      "es": "The Two Towers, el set base de la segunda película." } },
+    { "data": "2003-11", "set": "lotr-07", "texto": {
+      "pt": "The Return of the King, o set-base do último filme.",
+      "en": "The Return of the King, the base set for the last film.",
+      "es": "The Return of the King, el set base de la última película." } },
+    { "data": "2004-05", "set": "lotr-09", "texto": {
+      "pt": "Reflections: todo em foil, com arte da Weta Workshop.",
+      "en": "Reflections: all foil, with Weta Workshop art.",
+      "es": "Reflections: todo en foil, con arte de Weta Workshop." } },
+    { "data": "2004-11", "set": "lotr-11", "texto": {
+      "pt": "Shadows muda as regras, já sem filmes novos.",
+      "en": "Shadows overhauls the rules, with no new films left.",
+      "es": "Shadows cambia las reglas, ya sin películas nuevas." } },
+    { "data": "2006-06", "set": "lotr-15", "texto": {
+      "pt": "The Hunters sai após sete meses de atraso.",
+      "en": "The Hunters arrives after a seven-month delay.",
+      "es": "The Hunters sale tras siete meses de retraso." } },
+    { "data": "2007-05", "set": "lotr-18", "texto": {
+      "pt": "Fim anunciado; Treachery & Deceit é a última expansão.",
+      "en": "End announced; Treachery & Deceit is the last expansion.",
+      "es": "Fin anunciado; Treachery & Deceit es la última expansión." } },
+    { "data": "2007-06", "set": "lotr-19", "texto": {
+      "pt": "Age's End, 40 cartas em foil, fecha o jogo.",
+      "en": "Age's End, 40 foil cards, closes the game.",
+      "es": "Age's End, 40 cartas en foil, cierra el juego." } },
+    { "data": "2010-06", "texto": {
+      "pt": "A versão online da Decipher sai do ar.",
+      "en": "Decipher's online version shuts down.",
+      "es": "La versión online de Decipher deja de funcionar." } },
+    { "data": "2020", "texto": {
+      "pt": "Fãs fundam o Player's Council, que mantém o jogo.",
+      "en": "Fans found the Player's Council to keep the game going.",
+      "es": "Fans fundan el Player's Council, que mantiene el juego." } },
+    { "data": "2023-10", "texto": {
+      "pt": "1º Mundial em 13 anos, jogado online no GEMP.",
+      "en": "First World Championship in 13 years, played online on GEMP.",
+      "es": "Primer Mundial en 13 años, jugado online en GEMP." } }
+  ],
+  "fontes": [
+    { "nome": { "pt": "Decipher, anúncio do fim do jogo (2007)", "en": "Decipher, end-of-game announcement (2007)", "es": "Decipher, anuncio del fin del juego (2007)" },
+      "url": "https://web.archive.org/web/20080219053433/http://decipher.fanhq.com/Articles/Article.aspx?ID=1263" },
+    { "nome": { "pt": "Origins Awards de 2001", "en": "2001 Origins Awards", "es": "Premios Origins de 2001" },
+      "url": "https://web.archive.org/web/20080202042430/http://www.originsgamefair.com/awards/2001/list-of-winners" },
+    { "nome": "Player's Council", "url": "https://lotrtcgpc.net/about.html" },
+    { "nome": { "pt": "Wiki do Player's Council", "en": "Player's Council wiki", "es": "Wiki del Player's Council" },
+      "url": "https://wiki.lotrtcgpc.net/wiki/Worlds_2023" },
+    { "nome": { "pt": "Wikipédia em inglês", "en": "English Wikipedia", "es": "Wikipedia en inglés" },
+      "url": "https://en.wikipedia.org/wiki/The_Lord_of_the_Rings_Trading_Card_Game" }
+  ]
+}

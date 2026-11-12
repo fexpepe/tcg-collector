@@ -1,0 +1,102 @@
+{
+  "url": "dragon-ball-z-ccg",
+  "nome": "Dragon Ball Z CCG",
+  "logo": "assets/games/game_dbz.webp",
+  "logoLargura": 512,
+  "logoAltura": 179,
+  "periodo": { "inicio": "2000", "fim": "2006" },
+  "etiquetas": [
+    "Vintage",
+    { "pt": "EUA", "en": "USA", "es": "EE. UU." },
+    "CCG"
+  ],
+  "resumo": {
+    "pt": "Jogo de cartas da Score Entertainment com cenas do anime Dragon Ball Z. Saiu em 2000, virou Dragon Ball GT em 2004 e teve o último set impresso em 2006.",
+    "en": "Score Entertainment's card game with scenes from the Dragon Ball Z anime. Launched in 2000, it became Dragon Ball GT in 2004; its last printed set came in 2006.",
+    "es": "Juego de cartas de Score Entertainment con escenas del anime Dragon Ball Z. Salió en 2000, pasó a Dragon Ball GT en 2004 y su último set impreso llegó en 2006."
+  },
+  "fatos": [
+    { "chave": "lancamento", "valor": "2000" },
+    { "chave": "encerramento", "valor": "2006" },
+    { "chave": "fabricante", "valor": "Score Entertainment" },
+    { "chave": "licenca", "valor": {
+      "pt": "Toei Animation, via FUNimation",
+      "en": "Toei Animation, via FUNimation",
+      "es": "Toei Animation, vía FUNimation"
+    } },
+    { "chave": "origem", "valor": { "pt": "Estados Unidos", "en": "United States", "es": "Estados Unidos" } },
+    { "chave": "distribuicao", "valor": {
+      "pt": "Boosters e starter decks",
+      "en": "Boosters and starter decks",
+      "es": "Sobres y mazos de inicio"
+    } }
+  ],
+  "historia": {
+    "pt": [
+      "O Dragon Ball Z Collectible Card Game foi o jogo de cartas da Score Entertainment, empresa de cartas do Texas, com licença da FUNimation sobre o Dragon Ball Z da Toei Animation. As cartas usavam quadros do anime, e as regras foram criadas por Jim Ward. A Saiyan Saga saiu em 2000, em starters e boosters. Em outubro veio a Frieza Saga, cuja primeira tiragem, a Limited, esgotou antes de chegar às lojas.",
+      "Cada jogador escolhe um Personagem Principal, com níveis de poder, e luta com ataques físicos e de energia. O dano sai do topo do baralho, que funciona como a vida. Há três jeitos de vencer: esvaziar o baralho do adversário, levar o seu personagem ao nível mais alto ou juntar as sete Esferas do Dragão.",
+      "A linha seguiu o anime saga a saga: foram 11, da Saiyan à Kid Buu. Em fevereiro de 2004, o jogo virou Dragon Ball GT Trading Card Game, com quatro sagas de GT. Em julho de 2005, a Score relançou tudo como Dragon Ball Z Trading Card Game, com um motor de regras redesenhado, e parou de produzir o GT. Vieram Arrival, Showdown e Transformation, que teve pré-estreia em março de 2006 e foi o último set impresso.",
+      "O último set planejado, Revelation, saiu só em PDF, para imprimir e jogar no Grand Kai Invitational de 2006. Foi o fim do jogo da Score. Os fãs mantiveram o jogo vivo, e em julho de 2014 a Panini America anunciou na Comic-Con de San Diego a volta dele, com o mesmo sistema de regras de Jim Ward e cartas novas. A própria Panini creditou a volta à campanha dos fãs nas redes sociais."
+    ],
+    "en": [
+      "The Dragon Ball Z Collectible Card Game was the card game from Score Entertainment, a Texas card company, licensed by FUNimation for Toei Animation's Dragon Ball Z. The cards used frames from the anime, and the rules were created by Jim Ward. Saiyan Saga came out in 2000, in starters and boosters. Frieza Saga followed in October, and its first print run, the Limited, sold out before it reached stores.",
+      "Each player picks a Main Personality with power levels and fights with physical and energy attacks. Damage comes off the top of the deck, which works as your life. There are three ways to win: empty your opponent's deck, take your personality to the highest level, or gather all seven Dragon Balls.",
+      "The line followed the anime saga by saga: 11 of them, from Saiyan to Kid Buu. In February 2004 the game became the Dragon Ball GT Trading Card Game, with four GT sagas. In July 2005 Score relaunched it all as the Dragon Ball Z Trading Card Game, with a redesigned rules engine, and stopped producing GT. Arrival, Showdown and Transformation followed; Transformation had its prerelease in March 2006 and was the last printed set.",
+      "The last planned set, Revelation, came out only as PDFs, to print and play at the 2006 Grand Kai Invitational. That was the end of Score's game. Fans kept it alive, and in July 2014 Panini America announced its return at San Diego Comic-Con, with Jim Ward's same rules system and new cards. Panini itself credited the comeback to the fans' social media campaign."
+    ],
+    "es": [
+      "Dragon Ball Z Collectible Card Game fue el juego de cartas de Score Entertainment, una empresa de cartas de Texas, con licencia de FUNimation sobre el Dragon Ball Z de Toei Animation. Las cartas usaban fotogramas del anime, y las reglas las creó Jim Ward. Saiyan Saga salió en 2000, en mazos de inicio y sobres. En octubre llegó Frieza Saga, cuya primera tirada, la Limited, se agotó antes de llegar a las tiendas.",
+      "Cada jugador elige un Personaje Principal, con niveles de poder, y lucha con ataques físicos y de energía. El daño sale de la parte superior del mazo, que funciona como la vida. Hay tres formas de ganar: vaciar el mazo del rival, llevar a tu personaje al nivel más alto o reunir las siete Esferas del Dragón.",
+      "La línea siguió el anime saga a saga: fueron 11, de Saiyan a Kid Buu. En febrero de 2004 el juego pasó a ser Dragon Ball GT Trading Card Game, con cuatro sagas de GT. En julio de 2005, Score lo relanzó todo como Dragon Ball Z Trading Card Game, con un motor de reglas rediseñado, y dejó de producir GT. Llegaron Arrival, Showdown y Transformation, que tuvo su preestreno en marzo de 2006 y fue el último set impreso.",
+      "El último set previsto, Revelation, salió solo en PDF, para imprimir y jugar en el Grand Kai Invitational de 2006. Fue el fin del juego de Score. Los fans lo mantuvieron vivo, y en julio de 2014 Panini America anunció en la Comic-Con de San Diego su regreso, con el mismo sistema de reglas de Jim Ward y cartas nuevas. La propia Panini atribuyó el regreso a la campaña de los fans en las redes sociales."
+    ]
+  },
+  "linhaDoTempo": [
+    { "data": "2000", "set": "dbz-s1", "texto": {
+      "pt": "Saiyan Saga abre o jogo, em starters e boosters.",
+      "en": "Saiyan Saga launches the game in starters and boosters.",
+      "es": "Saiyan Saga abre el juego, en mazos de inicio y sobres." } },
+    { "data": "2000-10", "set": "dbz-s2", "texto": {
+      "pt": "Frieza Saga: a tiragem Limited esgota antes de chegar às lojas.",
+      "en": "Frieza Saga: the Limited print run sells out before shipping.",
+      "es": "Frieza Saga: la tirada Limited se agota antes de llegar a las tiendas." } },
+    { "data": "2001-12", "set": "dbz-s5", "texto": {
+      "pt": "Cell Saga, com os primeiros personagens de Nível 5.",
+      "en": "Cell Saga, with the first Level 5 personalities.",
+      "es": "Cell Saga, con los primeros personajes de Nivel 5." } },
+    { "data": "2004-02", "set": "dbz-g1", "texto": {
+      "pt": "Baby Saga: o jogo vira Dragon Ball GT Trading Card Game.",
+      "en": "Baby Saga: the game becomes the Dragon Ball GT Trading Card Game.",
+      "es": "Baby Saga: el juego pasa a ser Dragon Ball GT Trading Card Game." } },
+    { "data": "2005-07", "set": "dbz-t1", "texto": {
+      "pt": "Relançamento como Dragon Ball Z TCG, com regras novas: Arrival.",
+      "en": "Relaunch as the Dragon Ball Z TCG, with new rules: Arrival.",
+      "es": "Relanzamiento como Dragon Ball Z TCG, con reglas nuevas: Arrival." } },
+    { "data": "2006-03", "set": "dbz-t3", "texto": {
+      "pt": "Pré-estreia de Transformation, o último set impresso.",
+      "en": "Prerelease of Transformation, the last printed set.",
+      "es": "Preestreno de Transformation, el último set impreso." } },
+    { "data": "2006-10", "texto": {
+      "pt": "Revelation sai só em PDF, para o Grand Kai Invitational.",
+      "en": "Revelation comes out only as PDFs, for the Grand Kai Invitational.",
+      "es": "Revelation sale solo en PDF, para el Grand Kai Invitational." } },
+    { "data": "2014-07", "texto": {
+      "pt": "Panini America anuncia a volta do jogo, puxada pelos fãs.",
+      "en": "Panini America announces the game's return, driven by fans.",
+      "es": "Panini America anuncia el regreso del juego, impulsado por los fans." } }
+  ],
+  "fontes": [
+    { "nome": { "pt": "Score Entertainment, notícias da Frieza Saga (2000)", "en": "Score Entertainment, Frieza Saga news (2000)", "es": "Score Entertainment, noticias de Frieza Saga (2000)" },
+      "url": "https://web.archive.org/web/20001017124539/http://www.dbzcardgame.com/html/news.cfm?" },
+    { "nome": { "pt": "Score Entertainment, anúncio do relançamento (2005)", "en": "Score Entertainment, relaunch announcement (2005)", "es": "Score Entertainment, anuncio del relanzamiento (2005)" },
+      "url": "https://web.archive.org/web/20060317235513/http://www.dbzcardgame.com/dspNewsDetail.cfm?nid=6818" },
+    { "nome": { "pt": "Site oficial do jogo (2006)", "en": "Official game site (2006)", "es": "Sitio oficial del juego (2006)" },
+      "url": "https://web.archive.org/web/20061104002948/http://www.dbzcardgame.com/" },
+    { "nome": { "pt": "RetroDBZ, história do jogo", "en": "RetroDBZ, history of the game", "es": "RetroDBZ, historia del juego" },
+      "url": "https://retrodbzccg.com/history/" },
+    { "nome": { "pt": "Panini America, via Anime News Network (2014)", "en": "Panini America, via Anime News Network (2014)", "es": "Panini America, vía Anime News Network (2014)" },
+      "url": "https://www.animenewsnetwork.com/press-release/2014-07-24/original-dragon-ball-z-collectible-card-game-returns-after-ten-years/.76994" },
+    { "nome": { "pt": "Wikipédia em inglês", "en": "English Wikipedia", "es": "Wikipedia en inglés" },
+      "url": "https://en.wikipedia.org/wiki/Dragon_Ball_Z_Collectible_Card_Game" }
+  ]
+}
