@@ -128,7 +128,7 @@ test("o sync vintage preserva as outras linhas do Naruto, e não o jogo novo", a
   const m = /const OTHER_LINES = (\/.+\/);/.exec(src);
   assert.ok(m, "OTHER_LINES sumiu do sync-naruto-vintage.mjs");
   const re = new Function(`return ${m[1]}`)();
-  for (const id of ["nrt-ccg-J-001", "nrt-dc-dn-001", "nrt-nf-001", "nrt-nx-001", "nrt-scg-jutsu-025"]) {
+  for (const id of ["nrt-ccg-J-001", "nrt-dc-dn-001", "nrt-nf-001", "nrt-nx-001", "nrt-scg-jutsu-025", "nrt-nb-193308"]) {
     assert.ok(re.test(id), id);
   }
   assert.ok(!re.test("nrt-ncg-cp-001"), "nrt-ncg- é do jogo narutocg");
