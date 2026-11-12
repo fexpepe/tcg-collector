@@ -1,0 +1,110 @@
+{
+  "url": "world-of-warcraft-tcg",
+  "nome": "World of Warcraft TCG",
+  "logo": "assets/games/game_wow.webp",
+  "logoLargura": 512,
+  "logoAltura": 246,
+  "periodo": { "inicio": "2006-10", "fim": "2013-08" },
+  "etiquetas": [
+    "Vintage",
+    { "pt": "EUA", "en": "USA", "es": "EE. UU." },
+    "TCG"
+  ],
+  "resumo": {
+    "pt": "Jogo de cartas do World of Warcraft, lançado pela Upper Deck em outubro de 2006 e continuado pela Cryptozoic. A Blizzard o encerrou em agosto de 2013.",
+    "en": "Card game based on World of Warcraft, launched by Upper Deck in October 2006 and continued by Cryptozoic. Blizzard ended it in August 2013.",
+    "es": "Juego de cartas de World of Warcraft, lanzado por Upper Deck en octubre de 2006 y continuado por Cryptozoic. Blizzard lo cerró en agosto de 2013."
+  },
+  "fatos": [
+    { "chave": "lancamento", "valor": "2006-10" },
+    { "chave": "encerramento", "valor": "2013-08" },
+    { "chave": "fabricante", "valor": {
+      "pt": "Upper Deck, depois Cryptozoic",
+      "en": "Upper Deck, then Cryptozoic",
+      "es": "Upper Deck, luego Cryptozoic"
+    } },
+    { "chave": "licenca", "valor": "Blizzard Entertainment" },
+    { "chave": "origem", "valor": { "pt": "Estados Unidos", "en": "United States", "es": "Estados Unidos" } },
+    { "chave": "distribuicao", "valor": {
+      "pt": "Boosters de 15 cartas, starters e Raid Decks",
+      "en": "15-card boosters, starters and Raid Decks",
+      "es": "Sobres de 15 cartas, mazos y Raid Decks"
+    } }
+  ],
+  "historia": {
+    "pt": [
+      "O World of Warcraft Trading Card Game levou para a mesa o jogo online da Blizzard. A Upper Deck Entertainment, divisão de jogos da Upper Deck, anunciou o projeto em agosto de 2005 e lançou o primeiro set, Heroes of Azeroth, em outubro de 2006. O booster trazia 15 cartas, e algumas eram Loot: com um código de raspar, davam um item cosmético exclusivo para o personagem no jogo online.",
+      "Cada jogador é um herói, com facção, raça e classe, e monta o baralho com aliados, habilidades, armas, armaduras e missões. Uma vez por turno, qualquer carta da mão pode virar recurso, e vence quem zerar a vida do herói adversário. Os Raid Decks trouxeram as raides do MMORPG: em Onyxia's Lair (novembro de 2006), um jogador controla a dragoa e enfrenta até cinco heróis.",
+      "O Mundial de 2007, em San Diego, pagou US$ 100 mil ao campeão, o maior prêmio de um jogo de cartas, segundo o Guinness. Em 2010, a Upper Deck International anunciou que não renovaria a licença, citando a queda das vendas e a crise econômica. Em março daquele ano, a Cryptozoic assinou com a Blizzard e manteve o jogo, começando por Wrathgate, em maio.",
+      "Em agosto de 2013, a Blizzard anunciou que o set 21, Timewalkers: Reign of Fire, seria o último e que não esperava renovar a licença, depois de quase sete anos de jogo. Os códigos das cartas Loot continuaram valendo. Em 2014, a Blizzard lançou o Hearthstone, jogo de cartas digital com muitos dos mesmos personagens e artes."
+    ],
+    "en": [
+      "The World of Warcraft Trading Card Game brought Blizzard's online game to the tabletop. Upper Deck Entertainment, Upper Deck's games division, announced it in August 2005 and released the first set, Heroes of Azeroth, in October 2006. Boosters had 15 cards, and some were Loot cards: a scratch-off code unlocked an exclusive cosmetic item for your character in the online game.",
+      "Each player is a hero with a faction, race and class, and builds a deck of allies, abilities, weapons, armor and quests. Once per turn, any card in hand can be played as a resource, and you win by bringing the opposing hero's health to zero. Raid Decks brought the MMORPG's raids to the table: in Onyxia's Lair (November 2006), one player runs the dragon and takes on up to five heroes.",
+      "The 2007 World Championship in San Diego paid its winner $100,000, the largest prize for a card game, according to Guinness. In 2010, Upper Deck International announced it would not renew the license, citing falling sales and the economic downturn. That March, Cryptozoic signed with Blizzard and kept the game going, starting with Wrathgate in May.",
+      "In August 2013, Blizzard announced that set 21, Timewalkers: Reign of Fire, would be the last and that it did not expect to renew the license, after close to seven years of play. Loot card codes stayed redeemable. In 2014, Blizzard released Hearthstone, a digital card game with many of the same characters and artwork."
+    ],
+    "es": [
+      "World of Warcraft Trading Card Game llevó a la mesa el juego online de Blizzard. Upper Deck Entertainment, la división de juegos de Upper Deck, lo anunció en agosto de 2005 y lanzó el primer set, Heroes of Azeroth, en octubre de 2006. El sobre traía 15 cartas, y algunas eran Loot: con un código para raspar, daban un objeto cosmético exclusivo para el personaje en el juego online.",
+      "Cada jugador es un héroe, con facción, raza y clase, y arma el mazo con aliados, habilidades, armas, armaduras y misiones. Una vez por turno, cualquier carta de la mano puede usarse como recurso, y gana quien deja en cero la vida del héroe rival. Los Raid Decks trajeron las bandas del MMORPG: en Onyxia's Lair (noviembre de 2006), un jugador controla a la dragona y se enfrenta a hasta cinco héroes.",
+      "El Mundial de 2007, en San Diego, pagó US$ 100.000 al campeón, el mayor premio de un juego de cartas, según Guinness. En 2010, Upper Deck International anunció que no renovaría la licencia, por la caída de las ventas y la crisis económica. En marzo de ese año, Cryptozoic firmó con Blizzard y mantuvo el juego, empezando por Wrathgate, en mayo.",
+      "En agosto de 2013, Blizzard anunció que el set 21, Timewalkers: Reign of Fire, sería el último y que no esperaba renovar la licencia, tras casi siete años de juego. Los códigos de las cartas Loot siguieron siendo canjeables. En 2014, Blizzard lanzó Hearthstone, un juego de cartas digital con muchos de los mismos personajes y artes."
+    ]
+  },
+  "linhaDoTempo": [
+    { "data": "2005-08", "texto": {
+      "pt": "Upper Deck anuncia o jogo, em parceria com a Blizzard.",
+      "en": "Upper Deck announces the game with Blizzard.",
+      "es": "Upper Deck anuncia el juego junto a Blizzard." } },
+    { "data": "2006-10", "set": "HOA", "texto": {
+      "pt": "Heroes of Azeroth abre o jogo.",
+      "en": "Heroes of Azeroth launches the game.",
+      "es": "Heroes of Azeroth abre el juego." } },
+    { "data": "2006-11", "set": "ONY", "texto": {
+      "pt": "Onyxia's Lair, o 1º Raid Deck: um jogador vira o chefe.",
+      "en": "Onyxia's Lair, the first Raid Deck: one player is the boss.",
+      "es": "Onyxia's Lair, el primer Raid Deck: un jugador es el jefe." } },
+    { "data": "2007-12", "texto": {
+      "pt": "Mundial em San Diego paga US$ 100 mil, recorde segundo o Guinness.",
+      "en": "San Diego Worlds pays $100,000, a record per Guinness.",
+      "es": "El Mundial de San Diego paga US$ 100.000, récord según Guinness." } },
+    { "data": "2010-03", "texto": {
+      "pt": "Upper Deck sai; a Cryptozoic assume a licença.",
+      "en": "Upper Deck exits; Cryptozoic takes over the license.",
+      "es": "Upper Deck sale; Cryptozoic asume la licencia." } },
+    { "data": "2010-05", "set": "WG", "texto": {
+      "pt": "Wrathgate, o primeiro set da Cryptozoic.",
+      "en": "Wrathgate, Cryptozoic's first set.",
+      "es": "Wrathgate, el primer set de Cryptozoic." } },
+    { "data": "2012-10", "set": "TWK", "texto": {
+      "pt": "Começa a série Timewalkers, com War of the Ancients.",
+      "en": "The Timewalkers series begins with War of the Ancients.",
+      "es": "Empieza la serie Timewalkers, con War of the Ancients." } },
+    { "data": "2013-07", "texto": {
+      "pt": "Reign of Fire, o set 21, é o último.",
+      "en": "Reign of Fire, set 21, is the last.",
+      "es": "Reign of Fire, el set 21, es el último." } },
+    { "data": "2013-08", "texto": {
+      "pt": "A Blizzard anuncia o fim e não espera renovar a licença.",
+      "en": "Blizzard announces the end and doesn't expect to renew the license.",
+      "es": "Blizzard anuncia el fin y no espera renovar la licencia." } },
+    { "data": "2014-03", "texto": {
+      "pt": "A Blizzard lança o Hearthstone, jogo de cartas digital.",
+      "en": "Blizzard releases Hearthstone, a digital card game.",
+      "es": "Blizzard lanza Hearthstone, un juego de cartas digital." } }
+  ],
+  "fontes": [
+    { "nome": { "pt": "Upper Deck, lançamento de Onyxia's Lair (2006)", "en": "Upper Deck, Onyxia's Lair release (2006)", "es": "Upper Deck, lanzamiento de Onyxia's Lair (2006)" },
+      "url": "https://web.archive.org/web/20061219021524/http://entertainment.upperdeck.com/wow/en/news/article.aspx?aid=1847" },
+    { "nome": { "pt": "Upper Deck International, aviso de 2010", "en": "Upper Deck International, 2010 notice", "es": "Upper Deck International, aviso de 2010" },
+      "url": "https://web.archive.org/web/20100221025901/http://www.upperdeck-international.com/tabid/56/language/en-US/Default.aspx?AnnouncementID=20" },
+    { "nome": { "pt": "Cryptozoic, anúncio da licença (2010)", "en": "Cryptozoic, license announcement (2010)", "es": "Cryptozoic, anuncio de la licencia (2010)" },
+      "url": "https://web.archive.org/web/20100330132227/http://cryptozoic.posterous.com/press-725" },
+    { "nome": { "pt": "Blizzard, fim do jogo (2013)", "en": "Blizzard, end of the game (2013)", "es": "Blizzard, fin del juego (2013)" },
+      "url": { "pt": "https://worldofwarcraft.blizzard.com/en-us/news/10734217", "en": "https://worldofwarcraft.blizzard.com/en-us/news/10734217", "es": "https://worldofwarcraft.blizzard.com/es-mx/news/10734217" } },
+    { "nome": "Guinness World Records",
+      "url": "https://www.guinnessworldrecords.com/world-records/greatest-cash-prize-for-a-tcg" },
+    { "nome": { "pt": "Wikipédia em inglês", "en": "English Wikipedia", "es": "Wikipedia en inglés" },
+      "url": "https://en.wikipedia.org/wiki/World_of_Warcraft_Trading_Card_Game" }
+  ]
+}

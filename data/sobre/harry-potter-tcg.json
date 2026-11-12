@@ -1,0 +1,101 @@
+{
+  "url": "harry-potter-tcg",
+  "nome": "Harry Potter Trading Card Game",
+  "logo": "assets/games/game_harrypotter.webp",
+  "logoLargura": 512,
+  "logoAltura": 393,
+  "periodo": { "inicio": "2001-08", "fim": "2002-10" },
+  "etiquetas": [
+    "Vintage",
+    { "pt": "EUA", "en": "USA", "es": "EE. UU." },
+    "TCG"
+  ],
+  "resumo": {
+    "pt": "Jogo de cartas da Wizards of the Coast com Harry Potter, lançado em agosto de 2001. Teve cinco coleções até outubro de 2002 e saiu de linha em 2003.",
+    "en": "Wizards of the Coast's Harry Potter card game, launched in August 2001. It had five sets through October 2002 and went out of print in 2003.",
+    "es": "Juego de cartas de Wizards of the Coast con Harry Potter, lanzado en agosto de 2001. Tuvo cinco colecciones hasta octubre de 2002 y dejó de editarse en 2003."
+  },
+  "fatos": [
+    { "chave": "lancamento", "valor": "2001-08" },
+    { "chave": "encerramento", "valor": "2003" },
+    { "chave": "fabricante", "valor": "Wizards of the Coast" },
+    { "chave": "licenca", "valor": "Warner Bros." },
+    { "chave": "origem", "valor": { "pt": "Estados Unidos", "en": "United States", "es": "Estados Unidos" } },
+    { "chave": "distribuicao", "valor": {
+      "pt": "Boosters de 11 cartas e starters para 2",
+      "en": "11-card boosters and 2-player starters",
+      "es": "Sobres de 11 cartas y mazos para 2"
+    } }
+  ],
+  "historia": {
+    "pt": [
+      "O Harry Potter Trading Card Game foi o jogo de cartas da Wizards of the Coast, a empresa do Magic, que pertence à Hasbro. Chegou às lojas em agosto de 2001, baseado no primeiro livro de J. K. Rowling, Harry Potter e a Pedra Filosofal. O projeto foi de Skaff Elias, Mike Elliott e Paul Peterson, e as regras saíram também numa seção do site oficial de Harry Potter da Warner Bros.",
+      "Os dois jogadores são bruxos duelando em Hogwarts. Cada um começa com um bruxo ou uma bruxa na mesa e tem duas ações por turno. As Lições dão o poder para jogar Criaturas, Feitiços e Itens. Dano, aqui, é descartar cartas do baralho, e vence quem esvaziar o baralho do adversário. O Starter Set trazia dois baralhos de 40 cartas e um tapete com as regras; o booster, 11 cartas.",
+      "Vieram quatro expansões em pouco mais de um ano: Quidditch Cup (novembro de 2001), com a lição de Quidditch; Diagon Alley (março de 2002), com as cartas de Local; Adventures at Hogwarts (junho de 2002); e Chamber of Secrets (outubro de 2002), a única baseada no segundo livro. Em dezembro de 2001, segundo o San Francisco Chronicle, era o segundo jogo mais vendido dos Estados Unidos. A Wizards parou de produzir o jogo em 2003.",
+      "Depois, os fãs assumiram. A HPTCG Revival, comunidade sem ligação com a Warner Bros. ou a Wizards, faz um campeonato anual na Gen Con desde 2015 e, desde 2020, lança sets próprios, distribuídos de graça para imprimir em casa, como Heir of Slytherin e Prisoner of Azkaban. São cartas de fãs, não oficiais."
+    ],
+    "en": [
+      "The Harry Potter Trading Card Game was the card game from Wizards of the Coast, the Magic company owned by Hasbro. It reached stores in August 2001, based on J. K. Rowling's first book, Harry Potter and the Sorcerer's Stone. It was designed by Skaff Elias, Mike Elliott and Paul Peterson, and the rules were also published in a section of Warner Bros.' official Harry Potter website.",
+      "Both players are wizards duelling at Hogwarts. Each starts with a witch or wizard on the table and gets two actions per turn. Lessons provide the power to play Creatures, Spells and Items. Damage here means discarding cards from your deck, and you win when your opponent's deck runs out. The Starter Set had two 40-card decks and a playmat with the rules; a booster had 11 cards.",
+      "Four expansions followed in just over a year: Quidditch Cup (November 2001), with the Quidditch lesson; Diagon Alley (March 2002), with Location cards; Adventures at Hogwarts (June 2002); and Chamber of Secrets (October 2002), the only one based on the second book. In December 2001, according to the San Francisco Chronicle, it was the second best-selling game in the United States. Wizards stopped making the game in 2003.",
+      "Then the fans took over. The HPTCG Revival, a community with no ties to Warner Bros. or Wizards, has held a yearly championship at Gen Con since 2015 and, since 2020, has released its own sets, given away free as print-and-play, such as Heir of Slytherin and Prisoner of Azkaban. They are fan-made, unofficial cards."
+    ],
+    "es": [
+      "Harry Potter Trading Card Game fue el juego de cartas de Wizards of the Coast, la empresa de Magic, propiedad de Hasbro. Llegó a las tiendas en agosto de 2001, basado en el primer libro de J. K. Rowling, Harry Potter y la piedra filosofal. Lo diseñaron Skaff Elias, Mike Elliott y Paul Peterson, y las reglas se publicaron también en una sección del sitio oficial de Harry Potter de Warner Bros.",
+      "Los dos jugadores son magos que se baten en duelo en Hogwarts. Cada uno empieza con un mago o una bruja en la mesa y tiene dos acciones por turno. Las Lecciones dan el poder para jugar Criaturas, Hechizos y Objetos. El daño, aquí, es descartar cartas del mazo, y gana quien vacía el mazo del rival. El Starter Set traía dos mazos de 40 cartas y un tapete con las reglas; el sobre, 11 cartas.",
+      "Llegaron cuatro expansiones en poco más de un año: Quidditch Cup (noviembre de 2001), con la lección de Quidditch; Diagon Alley (marzo de 2002), con las cartas de Lugar; Adventures at Hogwarts (junio de 2002); y Chamber of Secrets (octubre de 2002), la única basada en el segundo libro. En diciembre de 2001, según el San Francisco Chronicle, era el segundo juego más vendido de Estados Unidos. Wizards dejó de producir el juego en 2003.",
+      "Después, los fans tomaron el relevo. La HPTCG Revival, una comunidad sin vínculo con Warner Bros. ni con Wizards, organiza un campeonato anual en la Gen Con desde 2015 y, desde 2020, publica sets propios, gratuitos para imprimir en casa, como Heir of Slytherin y Prisoner of Azkaban. Son cartas de fans, no oficiales."
+    ]
+  },
+  "linhaDoTempo": [
+    { "data": "2001-08", "set": "hp-bs", "texto": {
+      "pt": "Base Set chega às lojas, com 116 cartas.",
+      "en": "Base Set reaches stores with 116 cards.",
+      "es": "El Base Set llega a las tiendas, con 116 cartas." } },
+    { "data": "2001-11", "set": "hp-qc", "texto": {
+      "pt": "Quidditch Cup estreia a lição de Quidditch.",
+      "en": "Quidditch Cup debuts the Quidditch lesson.",
+      "es": "Quidditch Cup estrena la lección de Quidditch." } },
+    { "data": "2001-12", "texto": {
+      "pt": "É o 2º jogo mais vendido dos EUA, segundo o San Francisco Chronicle.",
+      "en": "It's the No. 2 game in US sales, per the San Francisco Chronicle.",
+      "es": "Es el 2.º juego más vendido de EE. UU., según el San Francisco Chronicle." } },
+    { "data": "2002-03", "set": "hp-da", "texto": {
+      "pt": "Diagon Alley traz as cartas de Local.",
+      "en": "Diagon Alley adds Location cards.",
+      "es": "Diagon Alley trae las cartas de Lugar." } },
+    { "data": "2002-06", "set": "hp-aah", "texto": {
+      "pt": "Adventures at Hogwarts, a terceira expansão.",
+      "en": "Adventures at Hogwarts, the third expansion.",
+      "es": "Adventures at Hogwarts, la tercera expansión." } },
+    { "data": "2002-10", "set": "hp-cos", "texto": {
+      "pt": "Chamber of Secrets, o último set, segue o segundo livro.",
+      "en": "Chamber of Secrets, the last set, follows the second book.",
+      "es": "Chamber of Secrets, el último set, sigue el segundo libro." } },
+    { "data": "2003", "texto": {
+      "pt": "A Wizards para de produzir o jogo.",
+      "en": "Wizards stops making the game.",
+      "es": "Wizards deja de producir el juego." } },
+    { "data": "2015-08", "texto": {
+      "pt": "1º campeonato da Revival, de fãs, na Gen Con.",
+      "en": "First fan-run Revival championship at Gen Con.",
+      "es": "Primer campeonato de la Revival, de fans, en la Gen Con." } },
+    { "data": "2020-07", "texto": {
+      "pt": "Heir of Slytherin, o 1º set de fãs da Revival, não oficial.",
+      "en": "Heir of Slytherin, the Revival's first unofficial fan set.",
+      "es": "Heir of Slytherin, el primer set de fans de la Revival, no oficial." } }
+  ],
+  "fontes": [
+    { "nome": { "pt": "Wizards of the Coast, regras básicas (2001)", "en": "Wizards of the Coast, basic rules (2001)", "es": "Wizards of the Coast, reglas básicas (2001)" },
+      "url": "https://web.archive.org/web/20010816192619/http://harrypotter.warnerbros.com/wotc/basic_rules.html" },
+    { "nome": { "pt": "Wizards of the Coast, perguntas frequentes", "en": "Wizards of the Coast, FAQ", "es": "Wizards of the Coast, preguntas frecuentes" },
+      "url": "https://web.archive.org/web/20030314153420/http://www.wizards.com/default.asp?x=harrypotter/faq/productsfaq,,en" },
+    { "nome": "San Francisco Chronicle (2001)",
+      "url": "https://web.archive.org/web/20121022085307/http://www.sfgate.com/entertainment/article/HARRY-GRABS-GOLD-RING-Tolkien-toys-taking-2836948.php" },
+    { "nome": { "pt": "Wikipédia em inglês", "en": "English Wikipedia", "es": "Wikipedia en inglés" },
+      "url": "https://en.wikipedia.org/wiki/Harry_Potter_Trading_Card_Game" },
+    { "nome": "HPTCG Revival", "url": "https://harrypottertcg.com/about.html" },
+    { "nome": { "pt": "HPTCG Revival, linha do tempo", "en": "HPTCG Revival, timeline", "es": "HPTCG Revival, cronología" },
+      "url": "https://docs.google.com/document/d/1XE2e8CnGcXS1-xZwlvCKGdoAcLl6uC7FtbATbJ8a5ms/edit" }
+  ]
+}
