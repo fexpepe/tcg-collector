@@ -65,8 +65,8 @@ test("sem igual, ou com igual que nada separa, a carta fica sem rótulo", () => 
   assert.equal(rotuloDoDesempate(en, [en]), "");
   assert.equal(rotuloDoDesempate(en, [en, { ...en, id: "x", number: "007" }]), "", "outro número, outro título");
   assert.equal(rotuloDoDesempate(en, [en, { ...en, id: "x", name: "Charizard" }]), "", "outro nome, outro título");
-  // A mesma carta duas vezes no catálogo (as promos chinesas S-PC que a
-  // lista da Bulbapedia traz em dobro): nenhum fato as separa.
+  // A mesma carta duas vezes no catálogo (como estavam as cópias que a PR
+  // #273 juntou): nenhum fato as separa.
   const dup = { ...cn, id: "S-PC-028-2-zh-cn" };
   assert.equal(rotuloDoDesempate(cn, [cn, dup]), "");
   assert.equal(rotuloDoDesempate(null, [en]), "");
@@ -80,7 +80,16 @@ test("o rótulo vai pro título, h1, descrição e Product; o endereço não mud
   const p = pecasDaCarta({ card: pt, jogo, set, cartas, slugs, preco: 12 });
   assert.equal(p.titulo, "Charizard ex 006/165 (português) · 151 | Sleevu");
   assert.equal(p.h1, "Charizard ex 006/165 (português)");
-  assert.match(p.desc, /^Charizard ex 006\/165 \(português\) /);
+  // A descrição já diz a edição ("da edição em português"): o rótulo não
+  // repete; quando ele traz outro fato, o fato fica.
+  assert.match(p.desc, /^Charizard ex 006\/165 \(6\/165\) da edição em português do set 151 /);
+  assert.doesNotMatch(p.desc, /\(português\)/);
+  const pt2 = { ...pt, id: "sv03.5-006-b-pt", rarity: "Special Illustration Rare" };
+  const en2 = { ...en, id: "sv03.5-006-b", rarity: "Special Illustration Rare" };
+  const quatro = [en, pt, en2, pt2];
+  const d4 = pecasDaCarta({ card: pt, jogo, set, cartas: quatro, slugs: slugsDasCartas(quatro), preco: 12 });
+  assert.equal(d4.h1, "Charizard ex 006/165 (português, Double Rare)");
+  assert.match(d4.desc, /^Charizard ex 006\/165 \(Double Rare\) \(6\/165\) da edição em português /);
   assert.equal(p.canonical, "https://sleevu.app/games/pokemon/sv03-5-151/charizard-ex-006-165-pt");
   const [produto] = [...cabecaDaRota(p, { caminho: "/x" }).matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map((m) => JSON.parse(m[1]));
   assert.equal(produto.name, "Charizard ex 006/165 (português) — 151");

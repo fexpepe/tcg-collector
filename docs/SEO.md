@@ -400,8 +400,14 @@ Sobram **92**, conferidas uma a uma:
   sync jogava a anotação fora. Com o acabamento no catálogo, o rótulo as
   separa ("(Reverse Holo)").
 - **16 são a mesma carta guardada duas vezes** no catálogo: 7 da The List do
-  Magic (o mesmo card do Scryfall) e um H36 do One Piece Carddass. O conserto
-  é juntar os ids, que podem estar na coleção de alguém.
+  Magic (o mesmo card do Scryfall) e um H36 do One Piece Carddass. Os ids
+  foram juntados no `data/card-id-merges.json` (PR #273), que migra a coleção
+  de quem marcou a cópia. A varredura por set, nome, número e imagem achou
+  mais 33 pares do mesmo tipo, juntados na mesma PR: 6 do Secret Lair e 8 do
+  Star Trek (a busca paginada do Scryfall repete a carta entre páginas, e o
+  sync não cria mais a cópia) e 19 promos MEP do Pokémon (`mep-89` ao lado
+  de `mep-089`, a aposta de id da fonte de preço e a oficial da TCGdex). O
+  endereço velho da cópia leva, pelo `cartaParecida`, à carta que ficou.
 - **10 são cartas diferentes que o catálogo não separa**: os dois No.215 do
   Dragon Ball Carddass, o prisma e o prisma duplo do Gundam Carddass, e o
   "Channeler 4" e o "Channeler 5" do WoW, guardados sem número. Sem um fato

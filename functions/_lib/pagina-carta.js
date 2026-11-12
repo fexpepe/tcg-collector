@@ -658,7 +658,11 @@ export function pecasDaCarta({ card, jogo, set, cartas, slugs, preco, moeda = "U
   // é a japonesa.
   const edicao = edicaoDaCarta(card);
   const edicaoBit = edicao ? ` da edição ${EDICAO[edicao].pt}` : "";
-  const desc = `${card.name}${enBit}${codeBit}${altBit}${codeBitDesc}${edicaoBit} do set ${set.nome} de ${jogo.nome}.${priceBit} Veja a imagem, acompanhe o preço e marque na sua coleção grátis no Sleevu.`;
+  // Com a edição dita aqui, o rótulo do desempate entra sem ela: senão saía
+  // "Charizard ex 006/165 (português) … da edição em português".
+  const desempateDesc = edicao ? rotuloDoDesempate(card, cartas, { semEdicao: true }) : desempate;
+  const codeBitDescricao = `${code ? ` ${code}` : ""}${desempateDesc ? ` (${desempateDesc})` : ""}`;
+  const desc = `${card.name}${enBit}${codeBitDescricao}${altBit}${codeBitDesc}${edicaoBit} do set ${set.nome} de ${jogo.nome}.${priceBit} Veja a imagem, acompanhe o preço e marque na sua coleção grátis no Sleevu.`;
   const img = absUrl(card.image) || "";
   const { impressoes, irmas } = vizinhas(card, cartas, slugs, baseDoSet);
 

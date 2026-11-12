@@ -23,8 +23,9 @@
 //     "[reverse holofoil]" e o sync jogava fora). Com o acabamento no
 //     catálogo, o rótulo as separa ("(Reverse Holo)").
 //   - 16 são a mesma carta duas vezes no catálogo (7 da The List do Magic, o
-//     mesmo card do Scryfall; um H36 do One Piece Carddass): o conserto é
-//     juntar os ids.
+//     mesmo card do Scryfall; um H36 do One Piece Carddass). Os ids foram
+//     juntados no data/card-id-merges.json (PR #273, que achou mais 33 pares
+//     do mesmo tipo no Secret Lair, no Star Trek e nas promos MEP).
 //   - 10 são cartas diferentes que o catálogo não separa (os dois No.215 do
 //     Dragon Ball Carddass, o prisma e o prisma duplo do Gundam Carddass, o
 //     "Channeler 4" e o "Channeler 5" do WoW, guardados sem número).
@@ -82,7 +83,10 @@ const FATOS = [raridade, cor, acabamentos];
 // edição que não é a inglesa e que divide o título com outra edição, os
 // dois juntos ("português, Double Rare"), senão a portuguesa e a inglesa de
 // mesma raridade sairiam iguais de novo.
-export function rotuloDoDesempate(card, cartas) {
+// semEdicao: o rótulo sem a parte da edição, pra quem já diz a edição em
+// outro lugar (a descrição da página fala "da edição em português"; com o
+// rótulo inteiro saía "(português) … da edição em português").
+export function rotuloDoDesempate(card, cartas, { semEdicao = false } = {}) {
   if (!card) return "";
   const nome = String(card.name || "");
   const codigo = cardCode(card);
@@ -91,7 +95,7 @@ export function rotuloDoDesempate(card, cartas) {
   if (!iguais.length) return "";
   const minha = edicao(card);
   const mesmaEdicao = iguais.filter((c) => edicao(c) === minha);
-  const rotuloDaEdicao = minha === EDICAO.en ? "" : minha;
+  const rotuloDaEdicao = minha === EDICAO.en || semEdicao ? "" : minha;
   if (!mesmaEdicao.length) return rotuloDaEdicao;
   for (const fato of FATOS) {
     const meu = fato(card);
