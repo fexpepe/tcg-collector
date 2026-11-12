@@ -1667,6 +1667,7 @@
       cdm: groupCdmSets,
       gcd: groupGundamCarddassSets,
       gw: groupGwSets,
+      seiya: groupSeiyaSets,
       harrypotter: groupHarryPotterSets
     };
     return (porJogo[jogoAtual] || groupSetsByYear)(raizes);
@@ -2218,6 +2219,42 @@
       if (!sets.length) continue;
       items.push(cabecalhoDeSecao(key, sets.length));
       sets.sort(sortByReleaseAsc).forEach((set) => items.push(set));
+    }
+    return items;
+  }
+
+  // Saint Seiya (jogo seiya, desde 2026-11-12): uma seção por FAMÍLIA de
+  // produto, na ordem em que cada uma estreou (Carddass de 1988 até o Reborn
+  // de 2022), e dentro dela as partes em ordem de lançamento (data e, no
+  // empate do ano, o setId). A família sai do setId (ss-cd02 = Carddass, Part
+  // 2; o código é fixado pelo sync-saint-seiya.mjs). O nome em inglês leva a
+  // família ("Saint Paradise Act 1 — …", pra Coleção e o popup não
+  // confundirem as "Part 1" de cada uma); dentro da seção ela sai, como no
+  // groupCdmSets.
+  function groupSeiyaSets(setItems) {
+    const FAMILIAS = [
+      ["cd", "sets.category.seiyaCarddass", "Carddass "], ["sp", "sets.category.seiyaSaintParadise", "Saint Paradise "],
+      ["tc", "sets.category.seiyaTrading", "Trading Collection "], ["gc", "sets.category.seiyaGCrusade", "G Crusade "],
+      ["go", "sets.category.seiyaGCrusadeOmega", "G Crusade Ω "], ["rb", "sets.category.seiyaReborn", "Reborn Saint Paradise "]
+    ];
+    const familiaDe = (set) => (String(set.setId || "").toLowerCase().match(/^ss-([a-z]{2})/) || [])[1] || "";
+    const semFamilia = (set, prefixo) => {
+      const nome = String(set.displayName || "");
+      return nome.indexOf(prefixo) === 0 ? Object.assign({}, set, { displayName: nome.slice(prefixo.length).replace(/^— /, ""), nomeForaDaSecao: nome }) : set;
+    };
+    const porData = (a, b) => String(a.releaseDate || "9999").localeCompare(String(b.releaseDate || "9999")) || String(a.setId).localeCompare(String(b.setId), "en", { numeric: true });
+    const items = [];
+    for (const [code, key, prefixo] of FAMILIAS) {
+      const list = setItems.filter((s) => familiaDe(s) === code).map((s) => semFamilia(s, prefixo)).sort(porData);
+      if (!list.length) continue;
+      items.push(cabecalhoDeSecao(key, list.length));
+      list.forEach((set) => items.push(set));
+    }
+    // Rede de segurança: família nova no sync sem seção aqui ainda aparece.
+    const rest = setItems.filter((s) => !FAMILIAS.some(([code]) => familiaDe(s) === code)).sort(porData);
+    if (rest.length) {
+      items.push(cabecalhoDeSecao("sets.category.promos", rest.length));
+      rest.forEach((set) => items.push(set));
     }
     return items;
   }

@@ -278,6 +278,39 @@
     "gw-abs": "Always Beginning Set",
     "gw-promo": "Promotional Cards",
     "gw-prize": "Prize Cards",
+    // ---- Saint Seiya (jogo seiya, sync-saint-seiya.mjs). Com a FAMÍLIA na frente
+    // ("Saint Paradise Act 1", "G Crusade Part 1"): fora da página do jogo "Part 1"
+    // seria de quatro famílias; dentro da seção dela o groupSeiyaSets tira o
+    // prefixo. É o setNameEn do sync, travado no tests/saint-seiya.test.mjs; os
+    // subtítulos japoneses em inglês são tradução nossa, salvo os do Reborn, que
+    // o animecollection dá em inglês.
+    "ss-cd01": "Carddass Part 1",
+    "ss-cd02": "Carddass Part 2 — Battle Memorial",
+    "ss-cd03": "Carddass Part 3 — The Sea Emperor's Ambition",
+    "ss-sp01": "Saint Paradise Act 1",
+    "ss-sp02": "Saint Paradise Act 2",
+    "ss-sp03": "Saint Paradise Act 3",
+    "ss-spx": "Saint Paradise Jumbo Carddass",
+    "ss-tcsa": "Trading Collection",
+    "ss-tcsap": "Trading Collection Promo",
+    "ss-tcm1": "Trading Collection The Movie Part 1",
+    "ss-tcm1p": "Trading Collection The Movie Part 1 Promo",
+    "ss-tcm3": "Trading Collection The Movie Part 2",
+    "ss-tctv": "Trading Collection TV Series & The Hades Chapter Sanctuary",
+    "ss-tctvp": "Trading Collection TV Series & The Hades Chapter Sanctuary Box Cards",
+    "ss-tchd": "Trading Collection The Hades Chapter Sanctuary Complete Edition",
+    "ss-tchdp": "Trading Collection The Hades Chapter Sanctuary Complete Edition Promo",
+    "ss-gc01": "G Crusade Part 1",
+    "ss-gc02": "G Crusade Part 2",
+    "ss-gc03": "G Crusade Part 3",
+    "ss-gcpr": "G Crusade Promotion Cards",
+    "ss-go01": "G Crusade Ω Part 1",
+    "ss-go02": "G Crusade Ω Part 2",
+    "ss-go03": "G Crusade Ω Part 3",
+    "ss-go04": "G Crusade Ω Part 4",
+    "ss-rb01": "Reborn Saint Paradise — A Heroic Legend Revived!",
+    "ss-rb02": "Reborn Saint Paradise — Clash! The Proud Assassins",
+    "ss-rb03": "Reborn Saint Paradise — Assemble! Gold Saints",
     // ---- Gundam Carddass (linha gcd do jogo gundam, sync-gundam-carddass.mjs).
     // Com a SÉRIE na frente ("SD Gundam Gaiden Part 1"): fora da página da linha
     // "Part 1" seria de cinco séries; dentro da seção da série o

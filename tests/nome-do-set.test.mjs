@@ -43,6 +43,10 @@ const NOMES_DO_JOGO = {
   // Gundam War: o set é o produto (第1弾, ドラマチックブースター「…」), sem o
   // "ガンダムウォー" da frente.
   gw: { nomes: ["Gundam War", "GUNDAM WAR", "GUNDAMWAR", "ガンダムウォー", "Carddass Masters", "カードダスマスターズ"] },
+  // Saint Seiya: o jogo é a MARCA, e a família de produto abre o nome do set
+  // ("カードダス パート2", "Gクルセイド 第1弾"), como a IP no cdm. O
+  // "聖闘士星矢" da frente é que não entra.
+  seiya: { nomes: ["Saint Seiya", "SAINT SEIYA", "聖闘士星矢", "星矢"] },
   // "疾風伝"/"Shippuden": a linha nrt-scg (2007–2008). Só a promo leva
   // "（疾風伝）", no fim, pra não ter o mesmo nome do set de 2002.
   naruto: { nomes: ["Naruto", "NARUTO", "ナルト", "Data Carddass", "データカードダス", "疾風伝", "Shippuden"] },

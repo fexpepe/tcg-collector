@@ -91,7 +91,65 @@ export const TIPOS = { U: "Unit", CH: "Character", C: "Command" };
 // `total`: só onde o total oficial difere da contagem da fonte. `promo`: set
 // de promo (seção à parte dentro da família e fora do destaque).
 export const SETS = [
-  // ---- PREENCHIDO A PARTIR DA PESQUISA (ver o cabeçalho) ----
+  // カードダス (1988–1989): 42 cartas por parte (36 + 6 prismas). A Part 1
+  // (jun/1988, o arco de Asgard) NÃO imprime número e não está no
+  // animecollection: vem do saint-seiya.it (`ssit`, ver CARDDASS_P1), com o
+  // rótulo do site no lugar do número (S1–S7 as prismas, 1–36 as normais;
+  // o site tem uma 7ª prisma que a Mandarake não lista). A Part 2 e a Part 3
+  // numeram de 1 a 42 cada.
+  { code: "cd01", series: "cd", date: "1988-06", ssit: true, ja: "パート1", en: "Part 1" },
+  { code: "cd02", series: "cd", date: "1988-09", ac: [118, 271], ja: "パート2「バトルメモリアル」", en: "Part 2 — Battle Memorial" },
+  { code: "cd03", series: "cd", date: "1989-02", ac: [118, 617], ja: "パート3「海皇の野望」", en: "Part 3 — The Sea Emperor's Ambition" },
+  // セイントパラダイス (Carddass 20, 1991–1992): 36 + 6 prismas por ACT, e a
+  // numeração corre pelas três (1–42, 43–84, 85–126). Só o ano (o verso diz
+  // "BANDAI 1991/1992"); o "6月下旬発売予定" da jumbo é anúncio, não data. A
+  // jumbo "新生青銅聖闘士5人" (o hors-série do animecollection) foi brinde do
+  // Tokyo Toy Show de 1991 e traz no verso a lista da ACT.1.
+  { code: "sp01", series: "sp", date: "1991", ac: [273, 572], ja: "ACT.1", en: "Act 1" },
+  { code: "sp02", series: "sp", date: "1991", ac: [273, 578], ja: "ACT.2", en: "Act 2" },
+  { code: "sp03", series: "sp", date: "1992", ac: [273, 581], ja: "ACT.3", en: "Act 3" },
+  { code: "spx", series: "sp", date: "1991", ac: [273, 658], ja: "ジャンボカードダス", en: "Jumbo Carddass", promo: true },
+  // トレーディングコレクション da Amada (2000–2003): frames do anime e dos
+  // filmes, 10 cartas por pacote. O nome é o do produto como a Amada o
+  // publicou (sem o 聖闘士星矢), e por isso explícito (`name`); a promo de cada
+  // coleção leva o nome dela + "プロモ" e vira chip no cartão da coleção. A
+  // primeira, de 2000, não tem subtítulo. Datas: o site oficial no Wayback
+  // (amadagogo.com e amada-printing.co.jp) onde ele diz o mês; senão o
+  // saint-seiya.it.
+  { code: "tcsa", series: "tc", date: "2000-03", ac: [126, 287], name: "トレーディングコレクション", nameEn: "Trading Collection" },
+  { code: "tcsap", series: "tc", date: "2000-03", ac: [126, 288], name: "トレーディングコレクション プロモ", nameEn: "Trading Collection Promo", promo: true },
+  { code: "tcm1", series: "tc", date: "2002-01", ac: [166, 349], name: "劇場版 トレーディングコレクション 第1弾", nameEn: "Trading Collection The Movie Part 1" },
+  { code: "tcm1p", series: "tc", date: "2002-01", ac: [166, 350], name: "劇場版 トレーディングコレクション 第1弾 プロモ", nameEn: "Trading Collection The Movie Part 1 Promo", promo: true },
+  { code: "tcm3", series: "tc", date: "2002-06", ac: [190, 414], name: "劇場版 トレーディングコレクション 第2弾", nameEn: "Trading Collection The Movie Part 2" },
+  { code: "tctv", series: "tc", date: "2003-02", ac: [157, 336], name: "トレーディングコレクション TVシリーズ＆冥王ハーデス十二宮編", nameEn: "Trading Collection TV Series & The Hades Chapter Sanctuary" },
+  { code: "tctvp", series: "tc", date: "2003-02", ac: [157, 337], name: "トレーディングコレクション TVシリーズ＆冥王ハーデス十二宮編 ボックスカード", nameEn: "Trading Collection TV Series & The Hades Chapter Sanctuary Box Cards", promo: true },
+  { code: "tchd", series: "tc", date: "2003-12", ac: [134, 302], name: "トレーディングコレクション 冥王ハーデス十二宮編［完全版］", nameEn: "Trading Collection The Hades Chapter Sanctuary Complete Edition" },
+  { code: "tchdp", series: "tc", date: "2003-12", ac: [134, 303], name: "トレーディングコレクション 冥王ハーデス十二宮編［完全版］ プロモ", nameEn: "Trading Collection The Hades Chapter Sanctuary Complete Edition Promo", promo: true },
+  // Gクルセイド (2012–2013) e Gクルセイド Ω (2012–2014).
+  { code: "gc01", series: "gc", date: "2012-01", ac: [115, 267], ja: "第1弾", en: "Part 1" },
+  { code: "gc02", series: "gc", date: "2012-11", ac: [115, 270], ja: "第2弾", en: "Part 2" },
+  { code: "gc03", series: "gc", date: "2013-06", ac: [115, 274], ja: "第3弾", en: "Part 3" },
+  { code: "gcpr", series: "gc", date: "2012", ac: [115, 363], ja: "プロモーションカード", en: "Promotion Cards", promo: true },
+  { code: "go01", series: "go", date: "2012", ac: [173, 368], ja: "第1弾", en: "Part 1" },
+  { code: "go02", series: "go", date: "2013", ac: [173, 433], ja: "第2弾", en: "Part 2" },
+  { code: "go03", series: "go", date: "2013", ac: [173, 457], ja: "第3弾", en: "Part 3" },
+  { code: "go04", series: "go", date: "2014", ac: [173, 695], ja: "第4弾", en: "Part 4" },
+  // 新生セイントパラダイス (2022–2023): 36 regulares na sequência 1–126 e 7
+  // prismas EX por parte.
+  { code: "rb01", series: "rb", date: "2022-03", ac: [305, 653], ja: "～よみがえれ！英雄伝説～", en: "— A Heroic Legend Revived!" },
+  { code: "rb02", series: "rb", date: "2022-08", ac: [305, 711], ja: "～激突！誇り高き刺客～", en: "— Clash! The Proud Assassins" },
+  { code: "rb03", series: "rb", date: "2023-05", ac: [305, 712], ja: "～集結！黄金聖闘士～", en: "— Assemble! Gold Saints" }
+];
+// Carddass Part 1 (1988): a checklist do saint-seiya.it (fã-site italiano,
+// sem robots.txt), página https://www.saint-seiya.it/sito4/power/power.html,
+// conferida em 2026-11-12: [rótulo do site, arquivo do scan, raridade]. As
+// prismas batem com a lista de compra da Mandarake (card_seiya.php). Scan de
+// 350×510 com a marca d'água do site — o maior que existe acessível (o
+// animecollection não tem a parte).
+const SSIT = "www.saint-seiya.it/sito4/";
+export const CARDDASS_P1 = [
+  ...[1, 2, 3, 4, 5, 6, 7].map((n) => [`S${n}`, `power/spasg${n}.jpg`, "Prism"]),
+  ...Array.from({ length: 36 }, (_, i) => [String(i + 1), `power/asg${String(i + 1).padStart(2, "0")}.jpg`, "Normal"])
 ];
 const SET_BY_CODE = new Map(SETS.map((s) => [s.code, s]));
 const SET_ORDER = new Map(SETS.map((s, i) => [s.code, i]));
@@ -119,6 +177,18 @@ const RARIDADE = { "Hors-série": "Special", Holographics: "Holographic", "Metal
 export const raridade = (r) => RARIDADE[r] ?? r;
 
 const numKey = (num) => String(num).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+// Promos: a fonte rotula por extenso o que a carta não numera ("Promo",
+// "Promo 01", "Box card 1"). No catálogo vira a sigla, curta e no padrão dos
+// outros números (PR, PR-01, BOX-1); o resto passa como veio.
+export function numeroDaFonte(num) {
+  const t = String(num || "").trim();
+  if (/^promo$/i.test(t)) return "PR";
+  let m = t.match(/^promo\s*0*(\d+)$/i);
+  if (m) return `PR-${m[1].padStart(2, "0")}`;
+  m = t.match(/^box\s*card\s*(\d+)$/i);
+  if (m) return `BOX-${m[1]}`;
+  return t;
+}
 export const corDe = (src) => CORES_SRC.cores[String(src)] || "";
 
 // Casa as cartas da página com as do snapshot pelo id DA FONTE (`src`) pra
@@ -129,7 +199,8 @@ export function assignIds(setCode, fresh, known = [], cor = corDe) {
   const used = new Set(known.map((c) => c.id));
   const visto = new Set();
   const out = [];
-  for (const c of fresh) {
+  for (const bruta of fresh) {
+    const c = { ...bruta, num: numeroDaFonte(bruta.num) };
     if (visto.has(c.src)) continue; // a mesma carta duas vezes na página
     visto.add(c.src);
     const antiga = porSrc.get(c.src);
@@ -163,6 +234,17 @@ async function refreshSnapshot(existing) {
     await sleep(1200); // site pequeno, de fã: uma página por segundo
   }
   if (!reached) { console.log("  animecollection inacessível — segue com o snapshot versionado."); return existing; }
+  // Partes do saint-seiya.it: a lista está no próprio sync (CARDDASS_P1). A
+  // carta já conhecida fica como está; o id sai do rótulo do site e GRUDA no
+  // arquivo do scan (`src`), como o id do animecollection gruda no dele.
+  for (const def of SETS.filter((s) => s.ssit)) {
+    const known = knownSets.get(def.code) || [];
+    const fresh = CARDDASS_P1.map(([num, arq, rar]) => ({ src: arq, num, rar, img: `${SSIT}${arq}` }));
+    const porSrc = new Map(known.map((c) => [c.src, c]));
+    const cards = fresh.map((c) => porSrc.get(c.src) || { id: `${ID_PREFIX}${def.code}-${numKey(c.num)}`, ...c });
+    for (const k of known) if (!cards.some((c) => c.src === k.src)) cards.push(k);
+    sets.push({ code: def.code, cards });
+  }
   for (const [code, cards] of knownSets) if (!sets.some((s) => s.code === code) && cards.length) sets.push({ code, cards });
   sets.sort((a, b) => (SET_ORDER.get(a.code) ?? 999) - (SET_ORDER.get(b.code) ?? 999));
   const candidate = { source: `http://${FONTE}/cartes.php?idl=${LICENCA}`, updatedAt: new Date().toISOString().slice(0, 10), sets };
@@ -211,7 +293,9 @@ function curatedImg(id) {
 }
 
 // Cartas do jogo a partir do snapshot. `nomes`: id -> nome impresso.
-export function cartasDoJogo(snapshot, nomes = NOMES.nomes, nomesEn = NOMES_EN, cor = corDe) {
+// `descricoes`: id -> descrição em inglês, NOSSA, da carta que não imprime nome
+// nem título (as cenas das Trading Collection): vira o nome, sem nameJp.
+export function cartasDoJogo(snapshot, nomes = NOMES.nomes, nomesEn = NOMES_EN, cor = corDe, descricoes = NOMES.descricoes || {}) {
   const out = [];
   for (const s of (snapshot && snapshot.sets) || []) {
     const def = SET_BY_CODE.get(s.code);
@@ -221,7 +305,7 @@ export function cartasDoJogo(snapshot, nomes = NOMES.nomes, nomesEn = NOMES_EN, 
     const total = def.total || s.cards.length;
     for (const c of s.cards) {
       const ja = nomes[c.id] || "";
-      const en = nameEn(ja, nomesEn);
+      const en = nameEn(ja, nomesEn) || (!ja && descricoes[c.id]) || "";
       const k = cor(c.src);
       const tipo = (String(c.num).match(/^(CH|U|C)-/) || [])[1];
       out.push({
@@ -229,7 +313,7 @@ export function cartasDoJogo(snapshot, nomes = NOMES.nomes, nomesEn = NOMES_EN, 
         // Sem nome transcrito (carta nova na fonte): o número, que é o que a
         // carta tem de certo. Não se inventa nome.
         name: en || ja || `No. ${c.num}`,
-        ...(en && en !== ja ? { nameJp: ja } : {}),
+        ...(en && ja && en !== ja ? { nameJp: ja } : {}),
         set: setName(def),
         setId: setIdOf(s.code),
         number: c.num,
@@ -240,7 +324,7 @@ export function cartasDoJogo(snapshot, nomes = NOMES.nomes, nomesEn = NOMES_EN, 
         ...(CORES[k] ? { color: CORES[k].en } : {}),
         artist: "",
         language: "ja",
-        image: curatedImg(c.id) || IMG(scanDe(c)),
+        image: curatedImg(c.id) || IMG(c.img || scanDe(c)),
         variants: ["Normal"],
         // Sem logo de set: nenhuma parte tem logo próprio no catálogo, e o
         // cartão do set mostra o nome (contrato 3 do docs/CATALOGO.md).
