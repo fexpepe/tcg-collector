@@ -4992,19 +4992,94 @@ a.hub-tile:active::after { opacity: 1; }
   font-variant-numeric: tabular-nums;
 }
 
-/* Filtros: as marcas à esquerda (quebram em quantas linhas precisarem), a
-   ordem e a visualização à direita. */
+/* Filtros numa linha só: marca e ordem à esquerda, a visualização no canto
+   direito. Os dois campos têm a mesma cara (rótulo fora, caixa de 44px). */
 .vt-filtros {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 14px 24px;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px 20px;
   margin: 0 0 18px;
 }
-.vt-marcas { flex: 1 1 auto; min-width: 0; }
-.vt-controles { display: flex; align-items: center; gap: 10px; flex: none; }
-.vt-ordem { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 13.5px; font-weight: 700; }
-.vt-ordem select { width: auto; min-width: 0; height: 44px; }
+.vt-campo { display: flex; align-items: center; gap: 8px; min-width: 0; color: var(--muted); font-size: 13.5px; font-weight: 700; }
+.vt-campo select { width: auto; min-width: 0; height: 44px; }
+.vt-visao { margin-left: auto; }
+
+/* Seletor de marca: um botão com a cara do <select> ao lado, que abre um
+   painel com todas as marcas em colunas (nome + quantos jogos). Era uma
+   fileira de chips; com 11 marcas ela já tomava duas fileiras, e fechado o
+   seletor ocupa o mesmo espaço com 11 ou com 50. O painel flutua por cima
+   da lista (não empurra nada) e rola por dentro quando passa da altura. */
+.vt-seletor { position: relative; min-width: 0; }
+.vt-seletor-botao {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-width: 150px;
+  max-width: 100%;
+  height: 44px;
+  padding: 0 10px 0 12px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.vt-seletor-valor { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.vt-seletor-botao svg { flex: none; width: 16px; height: 16px; color: var(--muted); }
+.vt-seletor-botao[aria-expanded="true"] svg { transform: rotate(180deg); }
+/* Com uma marca escolhida a caixa fica contornada na cor de destaque: é o
+   filtro ligado, visível mesmo com o painel fechado. */
+.vt-seletor-botao[data-ativa] { border-color: var(--accent); }
+@media (hover: hover) {
+  .vt-seletor-botao:hover { border-color: var(--accent-dark); }
+}
+.vt-seletor-painel {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 20;
+  width: min(600px, calc(100vw - 40px));
+  max-height: min(62vh, 460px);
+  overflow-y: auto;
+  padding: 8px;
+  box-sizing: border-box;
+  border: 1px solid var(--line);
+  background: var(--panel-strong);
+  box-shadow: var(--shadow-pop);
+}
+.vt-seletor-busca { width: 100%; height: 40px; margin: 0 0 8px; box-sizing: border-box; }
+/* Colunas de largura igual, quantas couberem: 3 no desktop, 2 no celular. */
+.vt-seletor-lista { display: grid; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: 2px; }
+.vt-opcao {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-width: 0;
+  min-height: 40px;
+  padding: 0 10px;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+.vt-opcao-nome { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.vt-opcao-n { flex: none; color: var(--subtle); font-size: 12px; font-variant-numeric: tabular-nums; }
+@media (hover: hover) {
+  .vt-opcao:hover { background: var(--panel); color: var(--text); }
+}
+.vt-opcao[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); }
+.vt-opcao[aria-pressed="true"] .vt-opcao-n { color: inherit; }
+/* "Todas as marcas" abre a lista, na largura inteira, com uma linha abaixo. */
+.vt-opcao--todas { grid-column: 1 / -1; margin-bottom: 6px; box-shadow: 0 7px 0 -6px var(--line); }
+.vt-seletor-vazio { margin: 10px; color: var(--muted); font-size: 13.5px; }
 
 /* A marca aberta: o nome grande, o período e, à direita, o jogo da marca que
    continua hoje. É o que transforma o filtro numa "história da marca". */
@@ -5215,8 +5290,6 @@ a.vt-marca-hoje:active { box-shadow: 0 0 0 2px var(--accent); }
    vira logo + nome + anos, com a barra embaixo, de ponta a ponta. A régua dos
    anos continua em cima, agora na largura inteira, alinhada com as barras. */
 @media (max-width: 900px) {
-  .vt-filtros { flex-direction: column; align-items: stretch; }
-  .vt-controles { justify-content: space-between; }
   .vt-acervo { --vt-logo: 104px; --vt-colunas: minmax(0, 1fr); }
   .vt-eixo { padding: 6px 12px 4px 8px; }
   .vt-eixo-anos { grid-column: 1; }
@@ -5238,17 +5311,27 @@ a.vt-marca-hoje:active { box-shadow: 0 0 0 2px var(--accent); }
   .vt-marca-nome { font-size: 24px; }
 }
 @media (max-width: 700px) {
-  /* Marcas numa fileira só, que rola de lado: com 11 chips (e mais a cada
-     jogo novo) elas tomariam três fileiras antes do primeiro jogo. */
-  .vt-marcas { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
-  .vt-marcas::-webkit-scrollbar { display: none; }
-  .vt-marcas .chip { flex: none; min-height: 44px; white-space: nowrap; }
-  .vt-ordem { flex: 1 1 auto; min-width: 0; }
+  /* Celular: a marca ocupa a primeira linha inteira (é o filtro principal);
+     ordem e visualização dividem a segunda. O painel abre na largura da
+     página, em duas colunas, com 44px por opção. */
+  .vt-filtros { gap: 10px; }
+  .vt-campo--marca { position: relative; flex: 1 1 100%; }
+  /* O painel se ancora no campo inteiro (rótulo + caixa), não só na caixa:
+     ganha a largura da página e os nomes compridos cabem. */
+  .vt-campo--marca .vt-seletor { position: static; flex: 1 1 auto; }
+  /* 16px, como o <select> ao lado (o piso dos campos em tela de toque). */
+  .vt-seletor-botao { width: 100%; font-size: 16px; }
+  .vt-seletor-painel { right: 0; width: auto; max-height: 58vh; }
+  .vt-opcao-nome { white-space: normal; line-height: 1.2; }
+  .vt-seletor-lista { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .vt-opcao { min-height: 44px; }
+  .vt-seletor-busca { height: 44px; }
+  .vt-campo--ordem { flex: 1 1 auto; }
   /* Régua com mais de sete anos marcados: uma sim, uma não (a grade de fundo
      das barras segue com todas as linhas). */
   .vt-eixo--denso .vt-eixo-ano:nth-child(even) { display: none; }
-  .vt-ordem > span { display: none; }
-  .vt-ordem select { width: 100%; }
+  .vt-campo--ordem > span { display: none; }
+  .vt-campo--ordem select { width: 100%; }
   .vt-marca-hoje { width: 100%; box-sizing: border-box; }
 }
 @media (max-width: 600px) {
