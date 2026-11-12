@@ -26,6 +26,10 @@
 // cartas, 30/09/2026; o site oficial EN dá 346 px, então não há fonte melhor —
 // aceito pelo Fernando). As Climax são HORIZONTAIS: o popup já trata carta
 // deitada (.is-landscape).
+// Produto sem foto no TCGplayer (imageCount 0) usa a da carta-irmã do mesmo
+// número, mas só quando a diferença é a cor do carimbo: a "(SP) (Silver
+// Stamp)" é a "(SP) (Gold Stamp)" com o selo prateado (REGRAS_WEISS e
+// scripts/lib/imagem-da-irma.mjs).
 //
 // setId: a TCGCSV deixou a abreviação vazia em 4 grupos e repetida em 5 (HOL
 // ×3, LRC, OSK, JJ, FT/), e em dois ela aponta pro set errado (o grupo do
@@ -57,11 +61,18 @@ import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { writeGameCatalog, readGlobalVar, preserveMissingCards, winSafeName, fetchJsonRetry, sleep } from "./lib/sync-common.mjs";
 import { nomeDoSet } from "./lib/nome-do-set.mjs";
+import { fotosDasIrmas } from "./lib/imagem-da-irma.mjs";
 
 const ROOT = new URL("../", import.meta.url);
 const OUT = new URL("data/weiss/", ROOT);
 const API = "https://tcgcsv.com/tcgplayer/20";
 const UA = "Sleevu (sleevu.app) catalog sync";
+const imagemDoProduto = (productId) => `https://tcgplayer-cdn.tcgplayer.com/product/${productId}_in_1000x1000.jpg`;
+// Foto da irmã (2026-11-12): todo qualificador conta como arte, menos a cor do
+// carimbo/assinatura. A "(Parallel Foil)" parecia acabamento, mas no Nisekoi
+// Extra Booster (NK/WE22) ela é OUTRA ilustração com o mesmo número; e a
+// "(Alternate Art)" do SAO/SE23-PE03 também.
+const REGRAS_WEISS = { arte: /^(?!(?:silver|gold) (?:stamp|signature)$)/i };
 
 // groupId -> setId (ver cabeçalho), por ano de lançamento.
 export const ABREV_FIXA = {
@@ -188,7 +199,7 @@ export function cardOf(p, g, setId, setTotal, by = new Map()) {
     rarity: ext(p, "Rarity"),
     artist: "",
     language: "en",
-    image: `https://tcgplayer-cdn.tcgplayer.com/product/${p.productId}_in_1000x1000.jpg`,
+    image: imagemDoProduto(p.productId),
     variants: variants.length ? variants : ["Normal"],
     cardType: ext(p, "CardType") || null,   // Character / Event / Climax
     // Cor (Yellow/Green/Red/Blue): `color` é o nome que o índice de busca e o
@@ -211,6 +222,8 @@ async function run() {
 
   const cards = [];
   const pricing = {}; // { id: { u } } — USD market do TCGplayer
+  // Produtos de TODOS os grupos: a irmã com foto pode estar em outro set.
+  const irmas = fotosDasIrmas(REGRAS_WEISS);
 
   for (const g of groups) {
     await sleep(120);
@@ -239,10 +252,12 @@ async function run() {
     for (const p of setCards) {
       const { card, price } = cardOf(p, g, setId, setCards.length, priceBy.get(p.productId));
       cards.push(card);
+      irmas.anota(p, g, ext(p, "Number"), card);
       if (price) pricing[card.id] = price;
     }
     console.log(`  ${setId} ${g.name}: ${setCards.length} cartas`);
   }
+  console.log((await irmas.aplica(imagemDoProduto)).resumo);
 
   const prev = (await readGlobalVar(new URL("cards.js", OUT), "TCG_CARDS")) || [];
   const merged = cards.concat(preserveMissingCards(prev, cards));

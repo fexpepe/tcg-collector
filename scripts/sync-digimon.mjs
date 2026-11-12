@@ -5,11 +5,15 @@
 //
 // Identidade: id = "dgm-<productId>". Imagens: CDN do TCGplayer (_in_1000x1000).
 // Acabamentos: Normal / Foil (u/uf).
+// Produto sem foto no TCGplayer (imageCount 0) usa a da carta-irmã: só a
+// Release Event/Pre-Release com a carta do mesmo set, porque o número se repete
+// na alt-art e nas promos (scripts/lib/imagem-da-irma.mjs).
 //
 //   node scripts/sync-digimon.mjs
 import { fileURLToPath } from "node:url";
 import { writeGameCatalog, readGlobalVar, preserveMissingCards } from "./lib/sync-common.mjs";
 import { nomeDoSet } from "./lib/nome-do-set.mjs";
+import { fotosDasIrmas, REGRAS_BANDAI } from "./lib/imagem-da-irma.mjs";
 
 const ROOT = new URL("../", import.meta.url);
 const OUT = new URL("data/digimon/", ROOT);
@@ -17,6 +21,7 @@ const API = "https://tcgcsv.com/tcgplayer/63";
 const UA = "Sleevu (sleevu.app) catalog sync";
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const imagemDoProduto = (productId) => `https://tcgplayer-cdn.tcgplayer.com/product/${productId}_in_1000x1000.jpg`;
 
 async function api(path) {
   for (let attempt = 0; attempt < 4; attempt++) {
@@ -45,6 +50,8 @@ async function run() {
 
   const cards = [];
   const pricing = {};
+  // Produtos de TODOS os grupos: a irmã com foto pode estar em outro set.
+  const irmas = fotosDasIrmas(REGRAS_BANDAI);
 
   for (const g of groups) {
     await sleep(120);
@@ -82,7 +89,7 @@ async function run() {
 
       const present = new Set(by.keys());
       const variants = VARIANT_ORDER.filter((v) => present.has(v));
-      cards.push({
+      const card = {
         id,
         name: p.name,
         // Nome do grupo do TCGplayer sem o jogo na frente (2026-11-02):
@@ -95,16 +102,19 @@ async function run() {
         rarity: ext(p, "Rarity"),
         artist: "",
         language: "en", // TCGplayer cataloga a linha EN (existe JP, fora do TCGCSV)
-        image: `https://tcgplayer-cdn.tcgplayer.com/product/${p.productId}_in_1000x1000.jpg`,
+        image: imagemDoProduto(p.productId),
         variants: variants.length ? variants : ["Normal"],
         cardType: ext(p, "CardType") || null,
         color: ext(p, "Color") || null,
         level: ext(p, "LevelLv") || null,
         cost: ext(p, "PlayCost") || null
-      });
+      };
+      cards.push(card);
+      irmas.anota(p, g, ext(p, "Number"), card);
     }
     console.log(`  ${setId} ${g.name}: ${setCards.length} cartas`);
   }
+  console.log((await irmas.aplica(imagemDoProduto)).resumo);
 
   const prev = (await readGlobalVar(new URL("cards.js", OUT), "TCG_CARDS")) || [];
   const merged = cards.concat(preserveMissingCards(prev, cards));

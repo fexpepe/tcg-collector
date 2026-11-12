@@ -12,7 +12,7 @@
 import { fileURLToPath } from "node:url";
 import { writeGameCatalog, readGlobalVar, preserveMissingCards } from "./lib/sync-common.mjs";
 import { nomeDoSet } from "./lib/nome-do-set.mjs";
-import { irmasComFoto } from "./lib/imagem-da-irma.mjs";
+import { fotosDasIrmas } from "./lib/imagem-da-irma.mjs";
 
 const imagemDoProduto = (productId) => `https://tcgplayer-cdn.tcgplayer.com/product/${productId}_in_1000x1000.jpg`;
 
@@ -52,8 +52,7 @@ async function run() {
   const pricing = {}; // { id: { u, uf } } — USD market do TCGplayer
   // Produtos de TODOS os grupos, pra achar a irmã com foto depois do laço: a
   // da promo de evento (OPP) está no set de origem.
-  const produtos = [];
-  const cartaDoProduto = new Map();
+  const irmas = fotosDasIrmas();
 
   for (const g of groups) {
     await sleep(120);
@@ -111,16 +110,12 @@ async function run() {
         tag: ext(p, "Tag") || null
       };
       cards.push(card);
-      produtos.push({ productId: p.productId, groupId: g.groupId, name: p.name, number: card.number, imageCount: p.imageCount });
-      cartaDoProduto.set(p.productId, card);
+      irmas.anota(p, g, card.number, card);
     }
     console.log(`  ${setId} ${g.name}: ${setCards.length} cartas`);
   }
 
-  const irmas = irmasComFoto(produtos);
-  for (const [productId, irma] of irmas) cartaDoProduto.get(productId).image = imagemDoProduto(irma);
-  const semFoto = produtos.filter((p) => p.imageCount === 0).length;
-  console.log(`Sem foto no TCGplayer: ${semFoto} cartas, ${irmas.size} com a foto da irmã.`);
+  console.log((await irmas.aplica(imagemDoProduto)).resumo);
 
   const prev = (await readGlobalVar(new URL("cards.js", OUT), "TCG_CARDS")) || [];
   const merged = cards.concat(preserveMissingCards(prev, cards));

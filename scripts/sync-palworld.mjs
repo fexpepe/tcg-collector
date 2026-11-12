@@ -11,6 +11,8 @@
 // pelo espelho R2. Acabamentos: Normal / Foil (u/uf) — no Palworld o
 // acabamento sai da raridade (C/U/TD são Normal, o resto Foil), e cada
 // produto do TCGplayer tem UM preço só.
+// Produto sem foto no TCGplayer (imageCount 0) usa a da carta-irmã: a 2ª
+// edição pega a foto da 1ª, que é a mesma carta (scripts/lib/imagem-da-irma.mjs).
 //
 // Paralelas (SR, OSR, SP, SSP, as TSR/TSP dos trial decks, as "S" das promos)
 // são produtos próprios e viram cartas separadas, como as alt-arts do One
@@ -66,11 +68,13 @@
 import { fileURLToPath } from "node:url";
 import { writeGameCatalog, readGlobalVar, preserveMissingCards, fetchJsonRetry, sleep } from "./lib/sync-common.mjs";
 import { nomeDoSet } from "./lib/nome-do-set.mjs";
+import { fotosDasIrmas } from "./lib/imagem-da-irma.mjs";
 
 const ROOT = new URL("../", import.meta.url);
 const OUT = new URL("data/palworld/", ROOT);
 const API = "https://tcgcsv.com/tcgplayer/91";
 const UA = "Sleevu (sleevu.app) catalog sync";
+const imagemDoProduto = (productId) => `https://tcgplayer-cdn.tcgplayer.com/product/${productId}_in_1000x1000.jpg`;
 
 // groupId -> setId (ver cabeçalho). Os grupos ainda sem carta (BP03, TD03 e
 // TD04, em pré-venda em 11/11/2026) já ficam pinados.
@@ -173,7 +177,7 @@ export function cardOf(p, g, set, setId, setTotal, by = new Map(), variantes = n
     rarity: ext(p, "Rarity"),
     artist: "",
     language: "en",
-    image: `https://tcgplayer-cdn.tcgplayer.com/product/${p.productId}_in_1000x1000.jpg`,
+    image: imagemDoProduto(p.productId),
     variants,
     // Pal, Structure, Gear, Event, Soul.
     cardType: ext(p, "CardType") || null,
@@ -225,6 +229,8 @@ async function run() {
 
   const cards = [];
   const pricing = {}; // { id: { u, uf } } — USD market do TCGplayer
+  // Produtos de TODOS os grupos: a irmã com foto pode estar em outro set.
+  const irmas = fotosDasIrmas();
 
   for (const g of groups) {
     await sleep(120);
@@ -254,11 +260,13 @@ async function run() {
       for (const p of ed.produtos) {
         const { card, price } = cardOf(p, g, ed.set, ed.setId, ed.produtos.length, priceBy.get(p.productId), acabamento.get(chaveNoGrupo(p)));
         cards.push(card);
+        irmas.anota(p, g, ext(p, "Number"), card);
         if (price) pricing[card.id] = price;
       }
       console.log(`  ${ed.setId} ${ed.set}: ${ed.produtos.length} cartas`);
     }
   }
+  console.log((await irmas.aplica(imagemDoProduto)).resumo);
 
   const prev = (await readGlobalVar(new URL("cards.js", OUT), "TCG_CARDS")) || [];
   const merged = cards.concat(preserveMissingCards(prev, cards));
