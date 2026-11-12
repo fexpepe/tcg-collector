@@ -6038,7 +6038,7 @@ a.setting-open {
 .adm-mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12.5px; }
 .adm-scroll { overflow-x: auto; }
 .adm-banner { border: 1px solid var(--gold); background: color-mix(in srgb, var(--gold) 14%, transparent); border-radius: 12px; padding: 12px 14px; font-size: 13px; line-height: 1.5; }
-.adm-banner code { font-size: 12px; }
+.adm-banner code { font-size: 12px; overflow-wrap: anywhere; } /* o caminho da migração vazava do aviso a 390px */
 @media (max-width: 700px) {
   .adm-hbars li { grid-template-columns: minmax(70px, 110px) 1fr auto; }
 }
@@ -6081,7 +6081,7 @@ a.setting-open {
    como outro jogo. O grupo só tem borda embaixo da última; "Sem linha
    registrada" (o resto do jogo) vem esmaecida. */
 .admin-table tr.adm-com-sub td, .admin-table tr.adm-sub td { border-bottom-color: transparent; }
-.admin-table tr.adm-sub td { padding-top: 4px; padding-bottom: 4px; font-size: 13px; }
+.admin-table tr.adm-sub td { padding-top: 4px; padding-bottom: 4px; font-size: 13px; white-space: nowrap; }
 .admin-table tr.adm-sub td:first-child { padding-left: 18px; }
 .admin-table tr.adm-sub.adm-sub-fim td { border-bottom-color: var(--line); padding-bottom: 8px; }
 .adm-sub-nome { display: block; padding-left: 10px; border-left: 2px solid var(--line); color: var(--muted); white-space: nowrap; }
