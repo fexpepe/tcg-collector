@@ -2265,7 +2265,6 @@ if (v === "b") { /* versão nova */ }</pre>
         ${kpi("Cliques em loja", fmt(A.cliques_loja), A.cliques_loja, B.cliques_loja, sp("cliques_loja"))}
         ${kpi("Tempo por visita", dur(A.tempo_ms), A.tempo_ms, B.tempo_ms, { antes: `antes: ${dur(B.tempo_ms)}`, nota: "mediana, tempo com a aba à vista" })}
         ${kpi("Erros a cada mil páginas", fmtTaxa(porMil(A)), porMil(A), porMil(B), Object.assign(sp("erros"), { ruim: true, antes: `antes: ${fmtTaxa(porMil(B))}` }))}
-        ${kpiPaises(geo)}
       </div>
       ${section("O que mudou", oQueMudou(pu, jg), `Contra os ${cmp}, cortados na mesma hora do dia (às 10h, hoje tem 10h de dado e o último dia de antes também). Só entra o que tem volume pra conclusão; a ordem é pelo tamanho da mudança, não pela porcentagem.`)}
       <section class="admin-section">
@@ -2288,17 +2287,9 @@ if (v === "b") { /* versão nova */ }</pre>
   const comVisita = (geo) => ((geo && geo.paises) || []).filter((x) => x.visitantes > 0);
   // O anterior só vale de régua se o país já era gravado desde o começo dele.
   const geoCompara = (geo) => !!(geo && geo.cobertura && geo.cobertura.comparavel);
-  // Cartão "Países" do Resumo. Sem a migração (ou sem dado ainda) não entra:
-  // um cartão "0 países" no meio dos outros leria como queda.
-  function kpiPaises(geo) {
-    const ps = comVisita(geo);
-    if (!ps.length) return "";
-    const tot = ps.reduce((t, x) => t + x.visitantes, 0);
-    const nota = `${nomePais(ps[0].co)}: ${pct(ps[0].visitantes, tot)} dos visitantes`;
-    if (!geoCompara(geo)) return cartao("Países", fmt(ps.length), nota);
-    const antes = geo.paises.filter((x) => x.visitantes_ant > 0).length;
-    return kpi("Países", fmt(ps.length), ps.length, antes, { nota });
-  }
+  // Sem cartão "Países" na grade do Resumo (tirado em 2026-11-12): era o 13º
+  // cartão e sobrava sozinho numa linha, desalinhando a grade; e repetia o
+  // que a seção do mapa logo abaixo já diz ("N países" + a % de cada um).
   // Aviso de cobertura: enquanto o período pega dias de antes da migração,
   // o mapa mostra só uma parte das visitas — e tem de dizer isso.
   function notaCobertura(geo) {
