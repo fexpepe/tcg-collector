@@ -23,6 +23,10 @@
 //   iab app que embutiu o navegador (instagram, facebook, tiktok…) — é onde o
 //       anúncio pago abre, e onde o login do Google é recusado
 //   lg  logado; pwa  app instalado; vw  largura da janela (de 10 em 10)
+//   wd  navegador automatizado (navigator.webdriver), a mesma marca do
+//       pageview: o events_guard o grava como robô. Sem ela (até 2026-11-12)
+//       a página do robô saía do denominador do "erros a cada mil páginas" e
+//       os erros dele entravam no numerador
 // Sem user-agent cru, sem query, sem IP: o mesmo grão agregável do pageview.
 (function () {
   "use strict";
@@ -102,6 +106,7 @@
     if (ctx.lg) props.lg = 1;
     if (ctx.pwa) props.pwa = 1;
     if (ctx.vw) props.vw = ctx.vw;
+    if (ctx.wd) props.wd = 1;
     return props;
   }
 
@@ -114,7 +119,8 @@
       origem: location.origin,
       aparelho: Object.assign({ d }, familia(navigator.userAgent, toqueNoMac)),
       v: (meta && meta.getAttribute("content")) || "",
-      vw: Math.round((window.innerWidth || 0) / 10) * 10
+      vw: Math.round((window.innerWidth || 0) / 10) * 10,
+      wd: !!navigator.webdriver
     };
   }
 
