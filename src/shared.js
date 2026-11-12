@@ -4974,8 +4974,19 @@
   // falhou em hosts diferentes é falta de imagem, não soluço — até 2026-10-08
   // ela era refeita inteira 4 vezes: 15 pedidos por carta sem imagem, em toda
   // visita (set recém-lançado: 404 do espelho e 403 do TCGplayer, 150 pedidos
-  // falhos em 10 cartas). Para no fim com o placeholder cinza.
+  // falhos em 10 cartas). Para no fim com o verso de carta (semImagem).
   const IMG_MAX_RETRIES = 1;
+  // Desistiu de vez: na carta da grade (.image-open) e na miniatura das
+  // impressões (.print-art), onde o verso já é o "sem imagem" de quem não tem
+  // URL, a imagem que falhou vira o MESMO verso. Até 2026-11-12 ficava só a
+  // caixa cinza do carregamento, sem aviso, igual a uma carta ainda chegando.
+  // Fora desses dois lugares (hover, popup, listas) o elemento fica como está.
+  function semImagem(img) {
+    const pai = img.parentNode;
+    if (pai && pai.classList && (pai.classList.contains("image-open") || pai.classList.contains("print-art"))) {
+      img.outerHTML = cardBackPlaceholder();
+    }
+  }
   const TCGImg = {
     fallback(img) {
       // Guarda o estado original na 1ª falha, p/ reiniciar a cadeia no retry.
@@ -5004,9 +5015,9 @@
       img.removeAttribute("data-img-fallbacks");
       const tries = +img.getAttribute("data-img-retries") || 0;
       const orig = img.getAttribute("data-img-orig") || "";
-      if (tries >= IMG_MAX_RETRIES || !orig) return; // desiste: fica o placeholder cinza
+      if (tries >= IMG_MAX_RETRIES || !orig) return semImagem(img);
       const host = (u) => { try { return new URL(u, location.href).host; } catch (e) { return u; } };
-      if ((img.getAttribute("data-img-orig-fb") || "").split("|").some((u) => u && host(u) !== host(orig))) return;
+      if ((img.getAttribute("data-img-orig-fb") || "").split("|").some((u) => u && host(u) !== host(orig))) return semImagem(img);
       img.setAttribute("data-img-retries", String(tries + 1));
       setTimeout(() => {
         if (!img.isConnected || img.classList.contains("is-loaded")) return; // já apareceu/saiu da tela
@@ -5102,14 +5113,15 @@
 
   // Verso de carta para quando NENHUMA API tem imagem (ex.: promos, McDonald's,
   // sets novos). Mantém a estrutura/tamanho de uma carta e avisa "Imagem não
-  // Encontrada" no topo. Motivo pokébola próprio do app (o verso oficial é
-  // protegido). Essas cartas ficam por último na grade (cardHasImage = false).
-  const CARD_BACK_BALL = '<svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="#e6e9ee"/><path d="M5 50a45 45 0 0 1 90 0z" fill="#d23b3b"/><rect x="5" y="46" width="90" height="8" fill="#10203f"/><circle cx="50" cy="50" r="15" fill="#10203f"/><circle cx="50" cy="50" r="8.5" fill="#fff"/><circle cx="50" cy="50" r="4" fill="#10203f"/></svg>';
-
+  // Encontrada" no topo. Essas cartas ficam por último na grade
+  // (cardHasImage = false). Desde 2026-11-12 o verso é da Sleevu, igual em todo
+  // jogo: fundo cinza e o wordmark no meio, pintado pelo CSS (mask, como o
+  // .brand do header). Antes era azul com uma pokébola, que não fazia sentido
+  // numa carta de One Piece ou de Magic.
   function cardBackPlaceholder() {
     return `<div class="card-back" role="img" aria-label="${escapeAttribute(t("card.noImageFound"))}">`
       + `<span class="card-back-label">${escapeHtml(t("card.noImageFound"))}</span>`
-      + `<span class="card-back-art">${CARD_BACK_BALL}</span>`
+      + `<span class="card-back-art"></span>`
       + `</div>`;
   }
 
@@ -10446,6 +10458,7 @@
     SIZES_BINDER_SLOT,
     cardImageSources,
     cardHasImage,
+    cardBackPlaceholder,
     cardCode,
     cardCodeForms,
     numberSearchForms,

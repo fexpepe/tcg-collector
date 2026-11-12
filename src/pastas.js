@@ -536,7 +536,7 @@
     const img = (card && shared.cardImageSources(card)) || {};
     const image = img.url
       ? shared.localizedImg(img.url, { alt: name, fallback: img.fallback || "", loading: "lazy", thumb: true, sizes: shared.SIZES_CARD_TILE })
-      : "";
+      : shared.cardBackPlaceholder();
     const varLabel = card ? shared.variantDisplayLabel(card, variant) : variant;
     const preco = unit ? esc(shared.formatMoney(shared.getCurrency(), unit)) : "";
     const abre = `data-entry="${escA(entry.id)}" data-entry-variant="${escA(entry.v || "")}"`;

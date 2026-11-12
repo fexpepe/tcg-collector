@@ -1367,7 +1367,7 @@
     }
     const [bg, fg] = GRADED_COLORS[it.company] || GRADED_COLORS.psa;
     const src = shared.cardImageSources(card);
-    const img = shared.localizedImg(src.url, { alt: card.name, fallback: src.fallback, loading: "lazy", thumb: true, sizes: shared.SIZES_CARD_TILE });
+    const img = shared.localizedImg(src.url, { alt: card.name, fallback: src.fallback, loading: "lazy", thumb: true, sizes: shared.SIZES_CARD_TILE }) || shared.cardBackPlaceholder();
     const val = it.value > 0 ? it.value : (shared.gradedValue(card, it.company, it.grade).value || 0);
     const priceHtml = val > 0 ? `<p class="tile-price sale-price-tag">${escapeHtml(shared.formatMoney(shared.getCurrency(), val))}</p>` : "";
     const badge = `<span class="graded-badge" style="--slab-bg:${bg};--slab-fg:${fg}">${escapeHtml((it.company || "").toUpperCase())} ${escapeHtml(shared.gradedGradeText(it.grade, it.pristine))}</span>`;
@@ -2310,7 +2310,7 @@
     // sizes: é a mesma .card-grid da página do set. Sem ele o <img> não ganha
     // srcset e fica preso na variante de 300 px — num celular DPR 3 o tile
     // pede ~420 px e a carta aparecia esticada 1,4x (medido em 13/10/2026).
-    const img = shared.localizedImg(it.img, { alt: it.n, fallback: it.fb, loading: "lazy", thumb: true, sizes: shared.SIZES_CARD_TILE });
+    const img = shared.localizedImg(it.img, { alt: it.n, fallback: it.fb, loading: "lazy", thumb: true, sizes: shared.SIZES_CARD_TILE }) || shared.cardBackPlaceholder();
     const flag = shared.cardFlag(it.lang);
     // Graded: mostra o valor graded (gv). Venda: o PREÇO DE VENDA (sp). Senão, mercado.
     let priceHtml = "";
@@ -3167,7 +3167,7 @@
     function setSlotTile(card, ownedItems) {
       const owned = ownedItems.length > 0;
       const src = shared.cardImageSources(card);
-      const img = shared.localizedImg(src.url, { alt: card.name, fallback: src.fallback || "", loading: "lazy", thumb: true, sizes: shared.SIZES_CARD_TILE });
+      const img = shared.localizedImg(src.url, { alt: card.name, fallback: src.fallback || "", loading: "lazy", thumb: true, sizes: shared.SIZES_CARD_TILE }) || shared.cardBackPlaceholder();
       const flag = shared.cardFlag(card.language);
       const variant = owned ? ownedItems[0].v : shared.defaultVariant(card);
       let priceHtml = "";

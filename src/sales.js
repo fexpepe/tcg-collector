@@ -687,7 +687,7 @@
   // remover. idx = índice da cópia (várias cópias da mesma carta podem estar à venda).
   function saleTileHtml(card, it, sym) {
     const src = shared.cardImageSources(card);
-    const img = shared.localizedImg(src.url, { alt: card.name, fallback: src.fallback, loading: "lazy", thumb: true, sizes: shared.SIZES_CARD_TILE });
+    const img = shared.localizedImg(src.url, { alt: card.name, fallback: src.fallback, loading: "lazy", thumb: true, sizes: shared.SIZES_CARD_TILE }) || shared.cardBackPlaceholder();
     const price = it.price;
     const priceStr = price > 0 ? String(price).replace(".", ",") : "";
     const current = it.cond || "NM";

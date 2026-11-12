@@ -2416,8 +2416,11 @@ input::placeholder {
   font-weight: 800;
 }
 
-/* Verso de carta para quando nenhuma API tem a imagem. Mantém a proporção de
-   carta (não quebra o layout) e avisa no topo. */
+/* Verso de carta para quando nenhuma API tem a imagem (ou ela falhou de vez).
+   Mantém a proporção de carta (não quebra o layout) e avisa no topo. Desde
+   2026-11-12 é o verso da Sleevu em todo jogo: cinza neutro (era azul) e o
+   wordmark no meio no lugar da pokébola. A cor do texto e do logo vem do
+   `color` do .card-back, então o tema claro só troca o fundo e essa cor. */
 .card-back {
   position: relative;
   width: 100%;
@@ -2426,22 +2429,32 @@ input::placeholder {
   place-items: center;
   border-radius: 4.8% / 3.4%;
   background:
-    radial-gradient(circle at 50% 60%, rgba(255, 255, 255, 0.06), transparent 55%),
-    linear-gradient(160deg, #2a3a6b, #16213f 55%, #0e1730);
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.07), transparent 60%),
+    linear-gradient(160deg, #3d3f44, #292a2e 55%, #1b1c1f);
   border: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.88);
   overflow: hidden;
 }
 
-.card-back-art {
-  width: 46%;
-  max-width: 110px;
-  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.4));
+[data-theme="light"] .card-back {
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.55), transparent 60%),
+    linear-gradient(160deg, #e6e7e9, #d3d5d8 55%, #c2c4c8);
+  border-color: rgba(0, 0, 0, 0.08);
+  color: #44464b;
 }
 
-.card-back-art svg {
-  width: 100%;
-  height: auto;
-  display: block;
+/* Wordmark pela MESMA técnica do .brand do header: o SVG vira máscara e o
+   fundo é currentColor. O arquivo já está em cache (o header o usa em toda
+   página), então o verso não custa pedido nenhum. */
+.card-back-art {
+  width: 58%;
+  max-width: 140px;
+  aspect-ratio: 667 / 178;
+  background: currentColor;
+  opacity: 0.85;
+  -webkit-mask: url("assets/brand/sleevu-wordmark.svg") no-repeat center / contain;
+  mask: url("assets/brand/sleevu-wordmark.svg") no-repeat center / contain;
 }
 
 .card-back-label {
@@ -2454,8 +2467,6 @@ input::placeholder {
   font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.03em;
-  color: rgba(255, 255, 255, 0.9);
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 

@@ -616,7 +616,7 @@
       const v = shared.cardValue(c, shared.defaultVariant(c), prices);
       const href = caminhoDaCarta(c.id) || shared.cardShareUrl(c);
       return `<a class="cs-more-card" href="${escapeAttribute(href)}" data-cs-ir="${escapeAttribute(c.id)}">`
-        + `<span class="print-art">${img.url ? localizedImg(img.url, { alt: "", loading: "lazy", thumb: true, fallback: img.fallback }) : ""}</span>`
+        + `<span class="print-art">${img.url ? localizedImg(img.url, { alt: "", loading: "lazy", thumb: true, fallback: img.fallback }) : shared.cardBackPlaceholder()}</span>`
         + `<span class="print-set">${escapeHtml(c.name)}</span>`
         + `<span class="print-meta">${escapeHtml([shared.cardCode(c), v.value > 0 ? shared.formatMoney(v.currency, v.value) : ""].filter(Boolean).join(" · "))}</span></a>`;
     }).join("");

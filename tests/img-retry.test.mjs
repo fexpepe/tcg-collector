@@ -67,3 +67,37 @@ test("imagem que carregou ou saiu da tela antes do retry não é pedida de novo"
   sandbox.__flushTimers();
   assert.equal(img.pedidos.length, 1);
 });
+
+// Carta cuja imagem falhou de vez vira o verso da Sleevu (2026-11-12), igual à
+// carta sem URL nenhuma — só na grade (.image-open) e nas impressões
+// (.print-art). Antes ficava a caixa cinza do carregamento, sem aviso.
+function comPai(img, classe) {
+  img.parentNode = { classList: { contains: (c) => c === classe } };
+  img.outerHTML = null;
+  return img;
+}
+
+test("cadeia esgotada na grade: a <img> vira o verso de carta", () => {
+  const sandbox = loadShared();
+  const img = comPai(imgFalso("https://img.sleevu.app/op/OP18-022.webp", ["https://tcgplayer-cdn.tcgplayer.com/product/718691_in_400x400.jpg"]), "image-open");
+  falhaTudo(sandbox, img);
+  assert.match(String(img.outerHTML), /class="card-back"/);
+  assert.match(String(img.outerHTML), /class="card-back-art"/);
+});
+
+test("cadeia de um host só: o verso só entra depois da nova tentativa", () => {
+  const sandbox = loadShared();
+  const img = comPai(imgFalso("https://assets.tcgdex.net/en/sv/sv1/3/low.webp", []), "print-art");
+  sandbox.TCGImg.fallback(img); // agenda o retry: ainda não desistiu
+  assert.equal(img.outerHTML, null);
+  sandbox.__flushTimers();
+  sandbox.TCGImg.fallback(img); // o retry falhou também
+  assert.match(String(img.outerHTML), /class="card-back"/);
+});
+
+test("fora da grade e das impressões a <img> que falhou fica como está", () => {
+  const sandbox = loadShared();
+  const img = comPai(imgFalso("https://img.sleevu.app/op/OP18-023.webp", ["https://tcgplayer-cdn.tcgplayer.com/product/1_in_400x400.jpg"]), "preview-image-stack");
+  falhaTudo(sandbox, img);
+  assert.equal(img.outerHTML, null);
+});
