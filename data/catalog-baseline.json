@@ -153,5 +153,15 @@
   "cards": 5700,
   "sets": 38,
   "imgPct": 100
+ },
+ "narutomythos": {
+  "cards": 646,
+  "sets": 5,
+  "imgPct": 100
+ },
+ "narutokayou": {
+  "cards": 1188,
+  "sets": 8,
+  "imgPct": 100
  }
 }
