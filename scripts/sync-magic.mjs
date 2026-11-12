@@ -26,7 +26,9 @@
 // se colecionam no fichário. Promos/Secret Lair/Un-sets FICAM (colecionáveis).
 import { readdir, readFile, writeFile, mkdir } from "node:fs/promises";
 import { existsSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 import { fetchRetry, mapLimit, sleep, writeGameCatalog, preserveMissingCards, winSafeName } from "./lib/sync-common.mjs";
+import { semIdsJuntados } from "./lib/set-supersede.mjs";
 
 const API = "https://api.scryfall.com";
 const HEADERS = { "User-Agent": "Sleevu/1.0 (https://sleevu.app)", Accept: "application/json" };
@@ -105,6 +107,21 @@ function numSlug(collectorNumber) {
   return String(collectorNumber || "").toLowerCase()
     .replace(/★/g, "s").replace(/†/g, "d").replace(/Φ/g, "p")
     .replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") || "x";
+}
+
+// A mesma carta do Scryfall (mesmo id deles) entra uma vez só por set
+// (2026-11-11). A busca paginada de set grande ou em mudança às vezes entrega
+// a carta em duas páginas, e o usedIds abaixo dava "-2" pra segunda: a The
+// List (5.741 cartas), o Secret Lair e o Star Trek em pré-venda saíram com
+// "mtg-plst-mm2-48" e "mtg-plst-mm2-48-2", mesma carta e mesma imagem, e a
+// cópia ficava pra sempre (a união preservadora não deixa carta sumir). As 21
+// que existiam foram juntadas no data/card-id-merges.json.
+export function primeiraVez(raw, vistas) {
+  const id = raw && raw.id;
+  if (!id) return true; // sem o id do Scryfall não dá pra saber: entra
+  if (vistas.has(id)) return false;
+  vistas.add(id);
+  return true;
 }
 
 function makeCard(c, set, usedIds, pricing) {
@@ -237,10 +254,12 @@ async function fetchSetCards(set, pricing, usedIds) {
   let url = `/cards/search?q=${q}&unique=prints&order=set`;
   const localPricing = {};
   const cards = [];
+  const vistas = new Set();
   try {
     while (url) {
       const page = await api(url);
       for (const raw of page.data || []) {
+        if (!primeiraVez(raw, vistas)) continue;
         const card = makeCard(raw, set, usedIds, localPricing);
         if (card) cards.push(card);
       }
@@ -257,7 +276,12 @@ async function fetchSetCards(set, pricing, usedIds) {
 }
 
 async function run() {
-  const prev = await readChunkCards();
+  // Id juntado em outro (data/card-id-merges.json) não volta, nem pelo cache
+  // por set (data/.cache/magic guarda a carta já montada, com o id que ela
+  // tinha) nem pelos chunks versionados.
+  let merges = {};
+  try { merges = JSON.parse(await readFile(new URL("data/card-id-merges.json", ROOT), "utf8")); } catch { /* sem de-para */ }
+  const prev = semIdsJuntados(await readChunkCards(), merges);
   console.log(`Magic: ${prev.length} cartas nos chunks versionados (base).`);
 
   if (NO_FETCH) {
@@ -294,7 +318,7 @@ async function run() {
 
   // União preservadora: quem sumiu da API fica (carta indexada nunca some).
   // Com --sets, os sets não sincronizados continuam inteiros pela mesma via.
-  const merged = cards.concat(preserveMissingCards(prev, cards));
+  const merged = semIdsJuntados(cards, merges).concat(preserveMissingCards(prev, cards));
   // Ordena por data de lançamento (asc), set e número (numérico quando dá).
   const numVal = (x) => { const m = String(x.number).match(/\d+/); return m ? Number(m[0]) : 1e9; };
   merged.sort((a, b) =>
@@ -308,4 +332,5 @@ async function run() {
   console.log(`Magic: catálogo com ${merged.length} cartas em ${setCount} sets.`);
 }
 
-run().catch((e) => { console.error(e); process.exit(1); });
+// Importável pelos testes sem rodar o sync (primeiraVez é testada sem rede).
+if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) run().catch((e) => { console.error(e); process.exit(1); });

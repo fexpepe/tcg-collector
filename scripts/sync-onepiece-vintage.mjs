@@ -122,6 +122,22 @@ function cardImage(num) {
   return `https://wsrv.nl/?url=${IMG_BASE}/${file}.png&w=440&output=webp`;
 }
 
+// A mesma carta duas vezes na lista do set sai uma vez só (2026-11-11). O
+// Grand Box DX junta dois decks e o Grand Line Wiki lista o H36 "Final Battle"
+// nos dois: o set saía com 66 cartas pra 65 oficiais, e a segunda virava
+// "opcd-H36-grand-box-dx", a mesma carta com outro id (juntada no
+// data/card-id-merges.json). Mesmo número com OUTRO nome é outra carta e
+// fica: o S75 do 7th Stage é a "A Journey to The Legend" e a "Luffy Pirates".
+export function semRepetidasNoSet(cards) {
+  const vistas = new Set();
+  return (cards || []).filter((c) => {
+    const chave = `${c.num}|${c.nameEn || ""}|${c.nameJp || ""}`;
+    if (vistas.has(chave)) return false;
+    vistas.add(chave);
+    return true;
+  });
+}
+
 async function run() {
   console.log("One Piece Vintage (Carddass Hyper Battle)");
   let snap = await readSnapshot(SNAP);
@@ -143,7 +159,7 @@ async function run() {
   };
   for (const s of snap.sets) {
     const setId = "opcd-" + slug(s.name);
-    for (const c of s.cards) {
+    for (const c of semRepetidasNoSet(s.cards)) {
       vintage.push({
         id: uniqueId(c.num, s.name),
         name: c.nameEn || c.num,
