@@ -297,8 +297,9 @@ com as fontes. É o princípio do Sleevu de trazer de volta à vida os TCGs
 mortos e esquecidos (ver o [ROADMAP.md](../ROADMAP.md)): quem chega pelo
 Google ou por uma IA precisa saber o que o jogo foi antes de ver a lista de
 cartas. Os modernos não têm o bloco: estão vivos, e o lançamento diz mais.
-Começou pelo Dragon Ball Carddass (2026-11-12); os outros vintage entram um a
-um.
+Começou pelo Dragon Ball Carddass e, no mesmo dia (2026-11-12), chegou aos 16
+vintage. **Jogo ou linha vintage nova entra no registro já com o "Sobre"**: o
+teste barra vintage sem ele.
 
 - **Texto:** `data/sobre/<url do jogo>.json`, os três idiomas no mesmo
   arquivo. Todo campo de texto é string (vale pros três) ou `{ pt, en, es }`.

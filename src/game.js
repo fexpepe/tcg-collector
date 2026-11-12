@@ -43,7 +43,7 @@
     godzilla: { slug: "godzilla", name: "Godzilla Card Game", dataDir: "data/godzilla/" }, // TCGCSV cat. 88 (Bushiroad/Yuhodo 2025, só a edição EN; paralelas = cartas próprias)
     fftcg: { slug: "fftcg", name: "Final Fantasy TCG", dataDir: "data/fftcg/" }, // TCGCSV cat. 24 (Square Enix 2016+, os Opus; Full Art = carta própria)
     palworld: { slug: "palworld", name: "Palworld Official Card Game", dataDir: "data/palworld/" }, // TCGCSV cat. 91 (Bushiroad/Pocketpair 2026, EN; a 2ª edição do BP01 = set próprio)
-    mbc: { slug: "mbc", name: "Miracle Battle Carddass", dataDir: "data/mbc/" }, // vintage Bandai 2009–2015, crossover da Jump (7 séries; tcg-db)
+    mbc: { slug: "mbc", name: "Miracle Battle Carddass", dataDir: "data/mbc/" }, // vintage Bandai 2009–2014, crossover da Jump (7 séries; tcg-db)
     cdm: { slug: "cdm", name: "Carddass Masters", dataDir: "data/cdm/" }, // vintage Bandai 1996–2009, uma seção por IP (Evangelion e HxH; fontes no sync-carddass-masters.mjs)
     gcd: { slug: "gcd", name: "Gundam Carddass", dataDir: "data/gcd/" }, // vintage Bandai 1988–1997, uma seção por série (animecollection.fr + 80storage; nome transcrito dos scans)
     gw: { slug: "gw", name: "Gundam War", dataDir: "data/gw/" }, // vintage Bandai 1999–2011, o TCG japonês (listas do site oficial; sem imagem)

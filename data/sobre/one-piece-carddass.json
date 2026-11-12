@@ -1,0 +1,102 @@
+{
+  "url": "one-piece-carddass",
+  "nome": "One Piece Carddass Hyper Battle",
+  "nomeOriginal": { "texto": "カードダスハイパーバトル ワンピース", "lang": "ja", "romaji": "Kādodasu Haipā Batoru Wan Pīsu" },
+  "logo": "assets/games/game_onepiece_carddass.webp",
+  "logoLargura": 512,
+  "logoAltura": 187,
+  "periodo": { "inicio": "1999-11", "fim": "2002-01" },
+  "etiquetas": [
+    "Vintage",
+    { "pt": "Japão", "en": "Japan", "es": "Japón" },
+    "Carddass"
+  ],
+  "resumo": {
+    "pt": "As primeiras cartas de One Piece: jogo da Bandai vendido nas máquinas Carddass, 4 cartas por ¥100, de novembro de 1999 a janeiro de 2002.",
+    "en": "The first One Piece cards: a Bandai game sold in Carddass vending machines, 4 cards for ¥100, from November 1999 to January 2002.",
+    "es": "Las primeras cartas de One Piece: juego de Bandai vendido en las máquinas Carddass, 4 cartas por ¥100, de noviembre de 1999 a enero de 2002."
+  },
+  "fatos": [
+    { "chave": "lancamento", "valor": "1999-11" },
+    { "chave": "encerramento", "valor": "2002-01" },
+    { "chave": "fabricante", "valor": "Bandai" },
+    { "chave": "licenca", "valor": {
+      "pt": "E. Oda/Shueisha, Fuji TV e Toei Animation",
+      "en": "E. Oda/Shueisha, Fuji TV and Toei Animation",
+      "es": "E. Oda/Shueisha, Fuji TV y Toei Animation"
+    } },
+    { "chave": "origem", "valor": { "pt": "Japão", "en": "Japan", "es": "Japón" } },
+    { "chave": "distribuicao", "valor": {
+      "pt": "Máquinas Carddass, 4 cartas por ¥100",
+      "en": "Carddass vending machines, 4 cards for ¥100",
+      "es": "Máquinas Carddass, 4 cartas por ¥100"
+    } }
+  ],
+  "historia": {
+    "pt": [
+      "Carddass Hyper Battle (カードダスハイパーバトル) foi um jogo de cartas da Bandai vendido nas máquinas Carddass, a ¥100 o pacote de 4 cartas. Começou em outubro de 1999 com Senkaiden Hoshin Engi e logo recebeu One Piece: a First Stage saiu em novembro, pouco depois da estreia do anime da Toei Animation, e foram as primeiras cartas da série. As ilustrações vinham quase todas de cenas e desenhos de produção do anime. Hunter × Hunter entrou na mesma linha em dezembro.",
+      "Os dois jogadores baixavam cartas e comparavam a soma do poder; quem perdia a batalha perdia um de cinco pontos. Havia três regras, da mais simples à mais completa: a Start, a EX, com baralho de 30 cartas, e a Grand Rule, só de One Piece, com cartas de campo que marcam os pontos e lados separados de ataque e defesa. As primeiras Stages tinham 42 cartas cada, 6 delas holo; os Grand Box eram caixas iniciais, vendidas em lojas.",
+      "As Stages seguiam o anime: a 5th Stage, de agosto de 2000, reuniu os usuários de Akuma no Mi, e a 6th, de novembro, a batalha de Loguetown. Em junho de 2001 começou a fase da Grand Line, que na Grand Line Compilation 3 chegou a Arabasta. Quase todo videogame e filme da época ganhou carta promocional. Em dezembro de 2001 veio o Grand Box DX, com dois decks prontos: o bando do Luffy contra a Baroque Works.",
+      "A última novidade foi a Treasure Pack Vol.2, de janeiro de 2002: 84 cartas escolhidas das últimas Stages e Grand Boxes, que a Bandai apresentou como o coroamento da Hyper Battle. Ainda em 2002, One Piece ganhou um jogo só seu, o One Piece Card Game, com regras mais elaboradas e mais arte original."
+    ],
+    "en": [
+      "Carddass Hyper Battle (カードダスハイパーバトル) was a Bandai card game sold in Carddass vending machines, at ¥100 for a pack of 4 cards. It began in October 1999 with Senkaiden Hoshin Engi and soon took on One Piece: the First Stage came out in November, shortly after Toei Animation's anime premiered, and these were the series' first cards. The art came mostly from anime screenshots and production drawings. Hunter × Hunter joined the same line in December.",
+      "The two players laid down cards and compared their total power; whoever lost the battle lost one of five points. There were three rule sets, from simplest to fullest: Start, EX, with 30-card decks, and the Grand Rule, unique to One Piece, with field cards that track points and separate attack and defense sides. The early Stages had 42 cards each, 6 of them holo; the Grand Boxes were starter boxes sold in stores.",
+      "The Stages followed the anime: the 5th Stage, from August 2000, gathered the Devil Fruit users, and the 6th, from November, the battle of Loguetown. In June 2001 the Grand Line phase began, reaching Arabasta in Grand Line Compilation 3. Nearly every video game and film of the time got a promotional card. December 2001 brought the Grand Box DX, with two ready-made decks: Luffy's crew against Baroque Works.",
+      "The last release was Treasure Pack Vol.2, from January 2002: 84 cards picked from the latest Stages and Grand Boxes, which Bandai billed as the culmination of Hyper Battle. Later in 2002, One Piece got a game of its own, the One Piece Card Game, with more elaborate rules and more original art."
+    ],
+    "es": [
+      "Carddass Hyper Battle (カードダスハイパーバトル) fue un juego de cartas de Bandai vendido en las máquinas Carddass, a ¥100 el sobre de 4 cartas. Empezó en octubre de 1999 con Senkaiden Hoshin Engi y pronto sumó One Piece: la First Stage salió en noviembre, poco después del estreno del anime de Toei Animation, y fueron las primeras cartas de la serie. Las ilustraciones venían casi todas de escenas y dibujos de producción del anime. Hunter × Hunter entró en la misma línea en diciembre.",
+      "Los dos jugadores bajaban cartas y comparaban la suma del poder; quien perdía la batalla perdía uno de cinco puntos. Había tres reglas, de la más simple a la más completa: la Start, la EX, con mazo de 30 cartas, y la Grand Rule, solo de One Piece, con cartas de campo que marcan los puntos y lados separados de ataque y defensa. Las primeras Stages tenían 42 cartas cada una, 6 de ellas holo; los Grand Box eran cajas de inicio, vendidas en tiendas.",
+      "Las Stages seguían el anime: la 5th Stage, de agosto de 2000, reunió a los usuarios de Akuma no Mi, y la 6th, de noviembre, la batalla de Loguetown. En junio de 2001 empezó la etapa de la Grand Line, que en la Grand Line Compilation 3 llegó a Arabasta. Casi todo videojuego y película de la época tuvo carta promocional. En diciembre de 2001 llegó el Grand Box DX, con dos mazos listos: la banda de Luffy contra la Baroque Works.",
+      "La última novedad fue la Treasure Pack Vol.2, de enero de 2002: 84 cartas elegidas de las últimas Stages y Grand Boxes, que Bandai presentó como la culminación de Hyper Battle. Ese mismo 2002, One Piece estrenó un juego propio, el One Piece Card Game, con reglas más elaboradas y más arte original."
+    ]
+  },
+  "linhaDoTempo": [
+    { "data": "1999-10", "texto": {
+      "pt": "A Hyper Battle estreia com Senkaiden Hoshin Engi.",
+      "en": "Hyper Battle debuts with Senkaiden Hoshin Engi.",
+      "es": "Hyper Battle se estrena con Senkaiden Hoshin Engi." } },
+    { "data": "1999-11", "set": "opcd-first-stage", "texto": {
+      "pt": "First Stage: as primeiras cartas de One Piece.",
+      "en": "First Stage: the first One Piece cards.",
+      "es": "First Stage: las primeras cartas de One Piece." } },
+    { "data": "2000-08", "set": "opcd-5th-stage", "texto": {
+      "pt": "5th Stage reúne os usuários de Akuma no Mi.",
+      "en": "5th Stage gathers the Devil Fruit users.",
+      "es": "La 5th Stage reúne a los usuarios de Akuma no Mi." } },
+    { "data": "2000-11", "set": "opcd-6th-stage", "texto": {
+      "pt": "6th Stage: a batalha de Loguetown.",
+      "en": "6th Stage: the battle of Loguetown.",
+      "es": "6th Stage: la batalla de Loguetown." } },
+    { "data": "2001-06", "set": "opcd-grand-line-compilation-1", "texto": {
+      "pt": "Grand Line Compilation 1 abre a fase da Grand Line.",
+      "en": "Grand Line Compilation 1 opens the Grand Line phase.",
+      "es": "Grand Line Compilation 1 abre la etapa de la Grand Line." } },
+    { "data": "2001-09", "texto": {
+      "pt": "Treasure Pack Vol.1, booster vendido em lojas.",
+      "en": "Treasure Pack Vol.1, a booster sold in stores.",
+      "es": "Treasure Pack Vol.1, sobre vendido en tiendas." } },
+    { "data": "2001-12", "set": "opcd-grand-box-dx", "texto": {
+      "pt": "Grand Box DX: dois decks prontos, Luffy contra Baroque Works.",
+      "en": "Grand Box DX: two ready-made decks, Luffy vs. Baroque Works.",
+      "es": "Grand Box DX: dos mazos listos, Luffy contra Baroque Works." } },
+    { "data": "2002-01", "texto": {
+      "pt": "Treasure Pack Vol.2, com 84 cartas escolhidas, fecha a linha.",
+      "en": "Treasure Pack Vol.2, with 84 hand-picked cards, closes the line.",
+      "es": "La Treasure Pack Vol.2, con 84 cartas elegidas, cierra la línea." } }
+  ],
+  "fontes": [
+    { "nome": { "pt": "Bandai, carddass.com (2001)", "en": "Bandai, carddass.com (2001)", "es": "Bandai, carddass.com (2001)" },
+      "url": "https://web.archive.org/web/20010127061900/http://www.carddas.com/onepiece/main.html" },
+    { "nome": { "pt": "Bandai, carddass.com (2002)", "en": "Bandai, carddass.com (2002)", "es": "Bandai, carddass.com (2002)" },
+      "url": "https://web.archive.org/web/20020212034455/http://www.carddas.com/onepiece/main.shtml" },
+    { "nome": { "pt": "Bandai, Carddass Club: 5th Stage (2000)", "en": "Bandai, Carddass Club: 5th Stage (2000)", "es": "Bandai, Carddass Club: 5th Stage (2000)" },
+      "url": "https://sec.carddass.com/club/products/detail/4902425772875000" },
+    { "nome": { "pt": "Bandai, Carddass Club: Treasure Pack Vol.2 (2002)", "en": "Bandai, Carddass Club: Treasure Pack Vol.2 (2002)", "es": "Bandai, Carddass Club: Treasure Pack Vol.2 (2002)" },
+      "url": "https://sec.carddass.com/club/products/detail/4543112069511000" },
+    { "nome": "One Piece Wiki", "url": "https://onepiece.fandom.com/wiki/Carddass_Hyper_Battle" },
+    { "nome": { "pt": "Juggernauts, catálogo de TCG (2002)", "en": "Juggernauts TCG catalog (2002)", "es": "Juggernauts, catálogo de TCG (2002)" },
+      "url": "https://card.g1.xrea.com/t2/tbc08hou.html" }
+  ]
+}
