@@ -248,6 +248,23 @@ export function nomeDaEntrada(campo) {
   return { name: plain(s), page: "" };
 }
 
+// Acabamento anotado na entrada, no nome dos variants do catálogo
+// (2026-11-11). As listas de promo chinesas trazem a MESMA carta duas vezes,
+// uma "<small>'''[non-holofoil]'''</small>" (o evento promocional) e outra
+// "[reverse holofoil]" (o Gift Box de 2.000 unidades), com a mesma página de
+// carta. O nomeDaEntrada joga a anotação fora e as duas saíam idênticas no
+// catálogo (66 cartas nos S-P e SM-P), com o mesmo título e o mesmo
+// acabamento. Só o acabamento vira dado: as outras anotações (o carimbo de
+// torneio, "Masters 2023 Beijing Champion") ficam de fora.
+const ACABAMENTOS = { "non-holofoil": "Normal", holofoil: "Holo", "reverse holofoil": "Reverse" };
+export function acabamentoDaEntrada(campo) {
+  for (const m of String(campo || "").matchAll(/<small>([\s\S]*?)<\/small>/gi)) {
+    const nota = plain(m[1]).replace(/^\[|\]$/g, "").trim().toLowerCase();
+    if (ACABAMENTOS[nota]) return ACABAMENTOS[nota];
+  }
+  return "";
+}
+
 // A página (TCG) é de um produto japonês; só entra a lista marcada como
 // chinesa (título "(Simplified Chinese)" ou símbolo "… SC.png"). Nas páginas
 // (ATCG)/(SCTCG) todas as listas são chinesas.
@@ -258,7 +275,7 @@ export function listaChinesa(title, header) {
 }
 
 // Página de set -> { base, release, logo, listas: [{ code, setId, name, total,
-// entries: [{ number, name, page, type, subtype, rarity, mark }] }] }.
+// entries: [{ number, name, page, type, subtype, rarity, mark, acabamento? }] }] }.
 // Lista sem código (sem símbolo e fora de CODIGOS_FIXOS) volta com code "" —
 // quem chama registra e pula. Entrada de PROMO ("001/SV-P") vai pra lista do
 // set de promo daquele código, qualquer que seja a página.
@@ -309,7 +326,8 @@ export function parseSetPage(wikitext, title) {
     const { number, total, promo } = numeroDe(numero);
     const { name, page } = nomeDaEntrada(nomeCampo);
     if (!name) continue;
-    atual.entries.push({ number, total, promo, name, page, type: plain(type), subtype: plain(subtype), rarity: plain(rarity).replace(/^—$|^-$/, ""), mark: plain(mark).replace(/^—$|^-$/, "") });
+    const acabamento = acabamentoDaEntrada(nomeCampo);
+    atual.entries.push({ number, total, promo, name, page, type: plain(type), subtype: plain(subtype), rarity: plain(rarity).replace(/^—$|^-$/, ""), mark: plain(mark).replace(/^—$|^-$/, ""), ...(acabamento ? { acabamento } : {}) });
   }
   // Monta os sets: entradas de promo saem pro set da promo; o resto fica na
   // lista. Nome e total por lista.
@@ -356,8 +374,15 @@ export function juntarSets(sets) {
     if (!cur) { out.set(s.setId, { ...s, entries: [...s.entries] }); continue; }
     const base = s.oficial && !cur.oficial ? s : cur;
     const outro = base === s ? cur : s;
-    const porNum = new Map(outro.entries.map((e) => [e.number, e]));
-    for (const e of base.entries) porNum.set(e.number, e);
+    // Número + acabamento: a mesma promo em normal e em reverse holo são duas
+    // entradas (acabamentoDaEntrada), e só o número juntaria as duas numa.
+    // As da página oficial entram primeiro e vencem; da outra, só o que falta.
+    // A ordem importa: entre duas entradas do mesmo número, a ordem da lista
+    // oficial dá o sufixo do id no import-zh (a normal sem sufixo, a reverse
+    // com -2), e a outra página na frente trocaria os ids.
+    const chave = (e) => `${e.number}|${e.acabamento || ""}`;
+    const porNum = new Map(base.entries.map((e) => [chave(e), e]));
+    for (const e of outro.entries) if (!porNum.has(chave(e))) porNum.set(chave(e), e);
     out.set(s.setId, {
       ...base,
       oficial: !!(base.oficial || outro.oficial),
@@ -618,7 +643,9 @@ export function montarCarta(raw, set, { arte, revNames, sufixo } = {}) {
     rarity: raw.rarity || "",
     language: LANG,
     image: (arte && arte.image) || "",
-    variants: variantesDe(raw.rarity)
+    // O acabamento que a lista anota (acabamentoDaEntrada) vence a regra pela
+    // raridade: é o que separa as duas impressões da mesma promo.
+    variants: raw.acabamento ? [raw.acabamento] : variantesDe(raw.rarity)
   };
   if (cat.types) card.types = cat.types;
   if (cat.trainerType) card.trainerType = cat.trainerType;
