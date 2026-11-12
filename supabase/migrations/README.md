@@ -8,17 +8,6 @@ poucos.)
 
 ## Pendentes de aplicar
 
-- `20261111e` — libera o slug `palworld` (Palworld OFFICIAL CARD GAME,
-  Bushiroad/Pocketpair, 2026) nas duas whitelists de jogo
-  (`card_views`/`increment_card_view` e `contribute_price`;
-  `20261111e_add_palworld.sql`). Cópia da `20261111d` (godzilla, já aplicada)
-  com o `palworld` a mais; só a lista muda. Sem ela, view de carta e Preço da
-  Comunidade do Palworld são descartados em silêncio. Depois dela, a
-  `20261111d` não pode rodar de novo (tiraria o `palworld`). Conferir com o
-  par de `curl` do fim do arquivo: a view de `pal-713882` tem de **criar** a
-  linha em `card_views` (game `palworld`); o 204 sozinho não prova nada.
-  **A próxima migração de jogo copia esta.**
-
 - `20261110a` — /admin: de onde vêm os visitantes (`20261110a_admin_geo.sql`).
   O painel não tinha país nenhum (só o Cloudflare via). O `events_guard`
   (cópia fiel da 20261009a) passa a carimbar `props.co` no pageview com as 2
@@ -268,6 +257,17 @@ poucos.)
   E, logado como admin, abrir `/admin`: as abas aparecem e o aviso amarelo some.
 
 ### Já aplicadas (verificado em produção)
+
+- `20261111e` — libera o slug `palworld` (Palworld OFFICIAL CARD GAME,
+  Bushiroad/Pocketpair, 2026) nas duas whitelists de jogo
+  (`card_views`/`increment_card_view` e `contribute_price`;
+  `20261111e_add_palworld.sql`). Cópia da `20261111d` (godzilla) com o
+  `palworld` a mais; só a lista muda. **Aplicada em 2026-11-12** pelo
+  Fernando e verificada por curl no mesmo dia: `increment_card_view` com
+  `palworld` e `pal-713882` respondeu 204 e criou a linha no `card_views`
+  (game `palworld`, 1 view); `contribute_price` anônimo segue 401; um jogo
+  inventado não cria linha. Depois dela, a `20261111d` não pode rodar de novo
+  (tiraria o `palworld`). **A próxima migração de jogo copia esta.**
 
 - `20261111d` — libera o slug `godzilla` (Godzilla Card Game, Bushiroad,
   edição inglesa desde 2025) nas duas whitelists de jogo
