@@ -2418,6 +2418,37 @@ if (v === "b") { /* versão nova */ }</pre>
   const jogoNome = (g) => (JOGO_NEUTRO[g] ? JOGO_NEUTRO[g][0] : gameName(g));
   const jogoCor = (g) => (JOGO_NEUTRO[g] ? JOGO_NEUTRO[g][1] : gameColor(g));
   const jogoChip = (g) => `<span class="adm-game" style="--g:${esc(jogoCor(g))}">${esc(jogoNome(g))}</span>`;
+  // ── LINHAS de um jogo (2026-11-12, migração 20261112b) ──────────────────
+  // O `naruto` junta o Card Game 2002~2006 (o principal), o Data Carddass, o
+  // CCG e o Shippuden; o `onepiece`, o jogo de hoje, o Carddass e o Card Game
+  // 2002. Desde o deploy desta mudança cada evento numa página /games/<url>
+  // leva a linha dela (props.ln; "" = o principal), e a admin_jogos devolve
+  // o recorte em `linhas`. O que chega sem linha (antes do deploy, JS velho
+  // em cache, scanner e outras telas do jogo) vem como "?".
+  // Os nomes são os da página de cada linha (o `nome` do
+  // functions/_lib/jogos.js: o tile do hub e o título de /games/<url>);
+  // tests/admin-jogos-linhas.test.mjs trava as duas listas iguais.
+  const NOME_LINHA = {
+    naruto: { "": "Naruto Card Game (2002~2006)", "nrt-dc": "Naruto Data Carddass", "nrt-ccg": "Naruto Collectible Card Game", "nrt-scg": "Naruto Shippuden Card Game" },
+    onepiece: { "": "One Piece Card Game", opcd: "One Piece Carddass Hyper Battle", op2002: "One Piece Card Game (2002)" }
+  };
+  // Chave PRÓPRIA (o ln vem do cliente: "constructor" acharia a função do
+  // protótipo). Linha nova que ainda não entrou aqui cai no rótulo do
+  // GAME_LINES do shared.js, e só depois na chave crua.
+  const proprio = (o, k) => (o && Object.prototype.hasOwnProperty.call(o, k) ? o[k] : null);
+  const linhaNome = (g, l) => (l === "?" ? "Sem linha registrada"
+    : proprio(NOME_LINHA[g], l) || (proprio(proprio(shared.GAME_LINES, g), l) || {}).label || `Linha ${l || "principal"}`);
+  // "2026-11-12 18:40" (Brasília, do banco) → "12/11/2026 às 18:40".
+  const desdeTxt = (s) => { const [dia, hora] = String(s || "").split(" "); return dia ? `${dataBR(dia)}${hora ? ` às ${hora}` : ""}` : "—"; };
+  // As linhas de cada jogo, na ordem do banco (mais visitantes primeiro), com
+  // a "sem linha" sempre no fim: é o resto, não uma linha.
+  function linhasPorJogo(jg) {
+    const m = {};
+    ((jg && jg.linhas) || []).forEach((x) => (m[x.game] = m[x.game] || []).push(x));
+    Object.keys(m).forEach((g) => m[g].sort((p, q) => (p.linha === "?") - (q.linha === "?")));
+    return m;
+  }
+  const pedeLinhas = `<p class="adm-banner adm-linhas-aviso">As linhas de cada jogo (no Naruto: Card Game 2002~2006, Data Carddass, CCG e Shippuden; no One Piece: Carddass e Card Game 2002) precisam da migração <code>supabase/migrations/20261112b_admin_jogos_linhas.sql</code> — aplique no SQL Editor. O site já grava a linha da página desde o deploy desta mudança; aplicada a migração, aparece tudo desde então. Antes disso não há como separar: o evento só guardava o jogo.</p>`;
   const VIAS = [["ui", "Manual"], ["scan", "Scanner"], ["csv", "Planilha"], ["lista", "Lista"]];
   const escalaPct = () => `<div class="adm-seg" role="group" aria-label="Escala"><button type="button" class="chip" data-pct="0" aria-pressed="${!state.pct}">Número</button><button type="button" class="chip" data-pct="1" aria-pressed="${state.pct}">Participação %</button></div>`;
   // Série [{day, game, n}] → barras empilhadas, com os dias sem dado no eixo.
@@ -2439,7 +2470,26 @@ if (v === "b") { /* versão nova */ }</pre>
     const antes = reais.filter((x) => x.visitantes_ant > 0).length;
     const alta = movimentos(reais.map((x) => ({ k: x.game, a: x.visitantes, b: x.visitantes_ant })), { min: 10, n: 1 }).sobe[0];
     const tv = porVis[0], tc = porCartas[0];
-    const linha = (x) => `<tr><td>${jogoChip(x.game)}</td>
+    // Linhas do jogo logo abaixo dele, como sub-linhas da tabela (20261112b).
+    // Vão na MESMA entrada da paginação que o jogo, pra não ficarem numa
+    // página e o jogo na outra. A régua contra o período anterior só aparece
+    // quando o anterior inteiro já tinha linha (linhas_comparavel); antes
+    // disso o "antes" seria zero e tudo sairia "novo". Cartas abertas são
+    // contador por jogo (card_views_daily): sem recorte por linha.
+    const temLinhas = Array.isArray(jg.linhas);
+    const sub = linhasPorJogo(jg);
+    const cmpL = !!jg.linhas_comparavel;
+    const dL = (a, b) => (cmpL ? ` ${deltaChip(a, b)}` : "");
+    const subLinha = (g, l, fim) => `<tr class="adm-sub${l.linha === "?" ? " adm-sub-resto" : ""}${fim ? " adm-sub-fim" : ""}"><td><span class="adm-sub-nome">${esc(linhaNome(g, l.linha))}</span></td>
+      <td class="num">${esc(fmt(l.visitantes))}${dL(l.visitantes, l.visitantes_ant)}</td>
+      <td class="num">${esc(fmt(l.pageviews))}</td>
+      <td class="num">—</td>
+      <td class="num">${esc(fmt(l.cartas))}${dL(l.cartas, l.cartas_ant)}</td>
+      <td class="num">${esc(fmt(l.cadastraram))}</td>
+      <td class="num">${esc(taxaTxt(l.interagiram, l.visitantes))} <small>${esc(fmt(l.interagiram))}</small></td>
+      <td class="num">${esc(fmt(l.cliques_loja))}</td>
+      <td class="num">${esc(l.tempo_ms == null ? "—" : dur(l.tempo_ms))}</td></tr>`;
+    const linha = (x) => `<tr${sub[x.game] ? ' class="adm-com-sub"' : ""}><td>${jogoChip(x.game)}</td>
       <td class="num">${esc(fmt(x.visitantes))} ${deltaChip(x.visitantes, x.visitantes_ant)}</td>
       <td class="num">${esc(fmt(x.pageviews))}</td>
       <td class="num">${esc(fmt(x.abertas))} ${deltaChip(x.abertas, x.abertas_ant)}</td>
@@ -2447,7 +2497,16 @@ if (v === "b") { /* versão nova */ }</pre>
       <td class="num">${esc(fmt(x.cadastraram))}</td>
       <td class="num">${esc(taxaTxt(x.interagiram, x.visitantes))} <small>${esc(fmt(x.interagiram))}</small></td>
       <td class="num">${esc(fmt(x.cliques_loja))}</td>
-      <td class="num">${esc(x.tempo_ms == null ? "—" : dur(x.tempo_ms))}</td></tr>`;
+      <td class="num">${esc(x.tempo_ms == null ? "—" : dur(x.tempo_ms))}</td></tr>${(sub[x.game] || []).map((l, i, ls) => subLinha(x.game, l, i === ls.length - 1)).join("")}`;
+    // O aviso curto vai EM CIMA da tabela (é o que muda a leitura dos números
+    // do Naruto e do One Piece); o detalhe, na nota de baixo.
+    const avisoLinhas = !temLinhas ? pedeLinhas
+      : `<p class="adm-banner adm-banner-info adm-linhas-aviso">${jg.linhas.length
+        ? `Naruto e One Piece abrem por linha (as sub-linhas) desde <strong>${esc(desdeTxt(jg.linhas_desde))}</strong>. Não há histórico de antes: o evento só guardava o jogo.`
+        : "Naruto e One Piece passam a abrir por linha (Card Game 2002~2006, Data Carddass, CCG…) com o deploy desta mudança: ainda não chegou nenhum evento com linha no período. Não há histórico de antes — o evento só guardava o jogo."}</p>`;
+    const notaLinhas = temLinhas && jg.linhas.length
+      ? ` Linhas: cada uma conta a página /games/<linha> que a pessoa abriu. "Sem linha registrada" é o resto do jogo — o que veio antes da gravação, de quem ainda roda a versão antiga do site em cache, e as telas do jogo que não são de linha nenhuma (scanner, lançamentos). As linhas não somam o jogo: quem viu duas conta nas duas.${cmpL ? "" : " A comparação com o período anterior aparece quando ele inteiro já tiver linha."}`
+      : "";
     // Por onde as cartas entraram, por jogo (só o período atual).
     const vias = {};
     (jg.vias || []).forEach((v) => {
@@ -2471,9 +2530,9 @@ if (v === "b") { /* versão nova */ }</pre>
         ${kpi("Interagiram", fmt(A.interagiram), A.interagiram, B.interagiram, { nota: `${pct(A.interagiram, A.visitantes)} dos visitantes fizeram algo além de olhar` })}
       </div>
       <p class="admin-note">Aqui é o MOVIMENTO do período, contra os ${esc(String(n))} dias anteriores (cortados na mesma hora do dia). O que já está guardado nas coleções, desde sempre, fica em <button type="button" class="chip adm-mini" data-tab="conteudo">Coleções</button></p>
-      ${section("Por jogo", paged("jogos", [{ t: "Jogo" }, { t: "Visitantes", num: true }, { t: "Páginas vistas", num: true }, { t: "Cartas abertas", num: true }, { t: "Cartas cadastradas", num: true }, { t: "Cadastraram", num: true }, { t: "Interagiram", num: true }, { t: "Cliques em loja", num: true }, { t: "Tempo por visitante", num: true }],
+      ${section("Por jogo", avisoLinhas + paged("jogos", [{ t: "Jogo" }, { t: "Visitantes", num: true }, { t: "Páginas vistas", num: true }, { t: "Cartas abertas", num: true }, { t: "Cartas cadastradas", num: true }, { t: "Cadastraram", num: true }, { t: "Interagiram", num: true }, { t: "Cliques em loja", num: true }, { t: "Tempo por visitante", num: true }],
         todos.map(linha), 12),
-        "O jogo de cada número é o da página em que a pessoa estava (o clique em loja leva o da carta). \"Sem jogo (hub)\" são as páginas gerais: o início e a coleção com todos os jogos. Visitantes = navegadores que abriram páginas do jogo; quem viu dois jogos conta nos dois. Cartas abertas = o contador por dia (dias inteiros; conta também quem desligou a medição). Cartas cadastradas = cartas NOVAS na coleção (a 2ª cópia não conta). Interagiram = % dos visitantes do jogo que cadastraram carta, abriram o scanner, clicaram em loja, montaram deck, importaram, exportaram ou criaram link. Tempo = mediana, entre os visitantes, do tempo com a aba à vista nas páginas do jogo.")}
+        "O jogo de cada número é o da página em que a pessoa estava (o clique em loja leva o da carta). \"Sem jogo (hub)\" são as páginas gerais: o início e a coleção com todos os jogos. Visitantes = navegadores que abriram páginas do jogo; quem viu dois jogos conta nos dois. Cartas abertas = o contador por dia (dias inteiros; conta também quem desligou a medição). Cartas cadastradas = cartas NOVAS na coleção (a 2ª cópia não conta). Interagiram = % dos visitantes do jogo que cadastraram carta, abriram o scanner, clicaram em loja, montaram deck, importaram, exportaram ou criaram link. Tempo = mediana, entre os visitantes, do tempo com a aba à vista nas páginas do jogo." + notaLinhas)}
       <section class="admin-section">
         <div class="adm-sec-head"><h2>Visitantes por dia, por jogo</h2>${escalaPct()}</div>
         ${barrasEmpilhadas(pv.linhas, pv.series, Object.assign(CW(), { pct: state.pct, aria: "Visitantes por dia, empilhados por jogo" }))}
@@ -2504,9 +2563,19 @@ if (v === "b") { /* versão nova */ }</pre>
         .map((x) => ({ k: x.game, a: x.visitantes, b: x.visitantes_ant }));
       const cad = jg.jogos.filter((x) => x.cartas || x.cartas_ant).slice().sort((p, q) => q.cartas - p.cartas).slice(0, 8)
         .map((x) => ({ k: x.game, a: x.cartas, b: x.cartas_ant }));
+      // Linhas (20261112b): dos jogos da lista que abrem por linha, o mesmo
+      // número de cada uma, numa nota embaixo das barras. O "sem linha" fica
+      // de fora (é o resto, e a aba Jogos o mostra).
+      const sub = linhasPorJogo(jg);
+      const porLinha = (lista, k) => {
+        const blocos = lista.map((x) => [x.k, (sub[x.k] || []).filter((l) => l.linha !== "?" && l[k] > 0)]).filter(([, ls]) => ls.length);
+        return blocos.length
+          ? `<p class="admin-note adm-linhas-resumo">Por linha, desde ${esc(desdeTxt(jg.linhas_desde))}:${blocos.map(([g, ls]) => `<br><strong>${esc(jogoNome(g))}</strong> — ${ls.slice().sort((p, q) => q[k] - p[k]).map((l) => `${esc(linhaNome(g, l.linha))} ${esc(fmt(l[k]))}`).join(" · ")}`).join("")}</p>`
+          : "";
+      };
       return `<div class="adm-grid-2">
-        ${section("Jogos mais acessados (visitantes)", barrasMov(vis, jogoNome, jogoCor) + ver, "Navegadores que abriram páginas do jogo; quem viu dois jogos conta nos dois.")}
-        ${section("Cartas cadastradas por jogo", barrasMov(cad, jogoNome, jogoCor), "Cartas novas que entraram nas coleções, pelo jogo da página em que a pessoa estava.")}
+        ${section("Jogos mais acessados (visitantes)", barrasMov(vis, jogoNome, jogoCor) + porLinha(vis, "visitantes") + ver, "Navegadores que abriram páginas do jogo; quem viu dois jogos conta nos dois.")}
+        ${section("Cartas cadastradas por jogo", barrasMov(cad, jogoNome, jogoCor) + porLinha(cad, "cartas"), "Cartas novas que entraram nas coleções, pelo jogo da página em que a pessoa estava.")}
       </div>`;
     }
     const pag = ((pu.movimento && pu.movimento.jogos) || []).filter((x) => x.k !== "hub").slice().sort((p, q) => q.a - p.a).slice(0, 8);

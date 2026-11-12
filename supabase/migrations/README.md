@@ -8,6 +8,41 @@ poucos.)
 
 ## Pendentes de aplicar
 
+- `20261112b` — /admin: as LINHAS de cada jogo (`20261112b_admin_jogos_linhas.sql`;
+  o `b` porque a 20261112a do mesmo dia é a dos erros). O jogo `naruto` junta
+  o Card Game 2002~2006, o Data Carddass, o CCG e o Shippuden (o `onepiece`, o
+  jogo de hoje, o Carddass e o Card Game 2002), e o evento só guardava o jogo:
+  a aba Jogos dava tudo como "Naruto". Desde o deploy da mesma PR o cliente
+  manda `props.ln` em todo evento de página `/games/<url>` de jogo com linhas
+  (a chave da linha, ou `""` no principal). Esta refaz a `admin_jogos(days)`
+  **igual** à 20261111g e soma `linhas` (jogo × linha nos dois períodos:
+  visitantes, páginas, cartas, quem cadastrou, quem interagiu, cliques em loja,
+  tempo; `"?"` = o evento sem `ln`), `linhas_desde` e `linhas_comparavel`. O
+  guard não muda (não filtra chave de `props`, só o tamanho). **Sem
+  histórico**: só existe linha a partir do deploy. Aditiva e sem ordem com o
+  JS: sem ela, a aba Jogos mostra o aviso amarelo no lugar das sub-linhas, e o
+  `ln` que chegar até lá aparece quando ela entrar (dentro do período).
+
+  Ensaiada em 2026-11-12 no PGlite, em cima de TODAS as migrações do repo,
+  aplicada três vezes: com os dados do ensaio da 20261111g, a nova devolve o
+  MESMO que a velha (com 1, 7, 30 e 365 dias) fora as chaves novas, e
+  `linhas` vazio. Com eventos do Naruto, 24 conferências à mão: principal
+  (`ln` vazio), Data Carddass com o período anterior, CCG com clique em loja,
+  "sem linha" (JS velho e scanner), clique de carta do One Piece numa página
+  do Naruto indo pro `onepiece` sem puxar linha, `ln` comprido cortado em 16,
+  robô fora, `props` número/lista sem erro, `linhas_comparavel` falso e
+  verdadeiro, não-admin/sem JWT/`anon` barrados e os 30 s no `proconfig`. Com
+  190 mil eventos, `admin_jogos(30)` levou o mesmo que a velha no PGlite.
+
+  Conferir depois de aplicar:
+  ```sql
+  select pg_get_functiondef('public.admin_jogos(int)'::regprocedure) ~ '20261112b' as tem_linhas;  -- true
+  select proname, proconfig from pg_proc where proname = 'admin_jogos';  -- statement_timeout=30s
+  -- uns minutos depois de abrir /games/naruto-ccg no site:
+  select props->>'ln' as linha, count(*) from events
+   where game = 'naruto' and ts > now() - interval '1 hour' group by 1 order by 2 desc;
+  ```
+
 - `20261110a` — /admin: de onde vêm os visitantes (`20261110a_admin_geo.sql`).
   O painel não tinha país nenhum (só o Cloudflare via). O `events_guard`
   (cópia fiel da 20261009a) passa a carimbar `props.co` no pageview com as 2

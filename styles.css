@@ -6076,6 +6076,17 @@ a.setting-open {
 .adm-pager .chip:disabled { opacity: 0.4; cursor: default; }
 .adm-pager-info { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
 .admin-table td small { color: var(--subtle); font-size: 11px; }
+/* Linhas de um jogo (Conteúdo › Jogos, 2026-11-12): sub-linhas logo abaixo do
+   jogo, recuadas e com um fio à esquerda, pra lerem como parte dele e não
+   como outro jogo. O grupo só tem borda embaixo da última; "Sem linha
+   registrada" (o resto do jogo) vem esmaecida. */
+.admin-table tr.adm-com-sub td, .admin-table tr.adm-sub td { border-bottom-color: transparent; }
+.admin-table tr.adm-sub td { padding-top: 4px; padding-bottom: 4px; font-size: 13px; }
+.admin-table tr.adm-sub td:first-child { padding-left: 18px; }
+.admin-table tr.adm-sub.adm-sub-fim td { border-bottom-color: var(--line); padding-bottom: 8px; }
+.adm-sub-nome { display: block; padding-left: 10px; border-left: 2px solid var(--line); color: var(--muted); white-space: nowrap; }
+.admin-table tr.adm-sub-resto td, .adm-sub-resto .adm-sub-nome { color: var(--subtle); }
+.adm-linhas-aviso { margin: 0 0 12px; }
 /* Botões com ícone (CSV, imprimir). */
 .adm-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 .adm-actions .chip, .adm-kit-head .chip { display: inline-flex; align-items: center; gap: 8px; }
