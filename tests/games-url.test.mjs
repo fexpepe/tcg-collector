@@ -46,6 +46,7 @@ test("endereço oficial: minúsculo, com hífen, único e fora das rotas reserva
     assert.ok(!vistos.has(j.url), `endereço repetido: ${j.url}`);
     vistos.add(j.url);
     assert.notEqual(j.url, "_id");
+    assert.notEqual(j.url, "contagem", "contagem.json é o mapa de sets e cartas em data/game-pages/");
     assert.ok(!/^legado-/.test(j.url), "legado-* é nome de mapa em data/game-pages/");
     assert.ok(!Object.prototype.hasOwnProperty.call(APELIDOS, j.url), `${j.url} é oficial e apelido ao mesmo tempo`);
   }
@@ -105,18 +106,42 @@ test("todo jogo do app tem endereço", () => {
   for (const g of GAME_SLUGS) assert.ok(urlDoJogo(g, ""), `${g} sem /games/<url>`);
 });
 
-test("os tiles do hub apontam pro registro, e todo endereço tem tile", () => {
+// Desde 2026-11-12 são duas páginas: o hub.html tem os jogos em atividade e o
+// vintage.html, os que saíram de linha (uma linha por jogo). Juntas cobrem o
+// registro inteiro, cada jogo na página certa e em uma só.
+test("os tiles do hub e as linhas do Vintage apontam pro registro, e todo endereço tem a sua porta", () => {
   const hub = ler("hub.html");
+  const vintage = ler("vintage.html");
   const tiles = [...hub.matchAll(/<a class="hub-tile" href="([^"]+)" data-game="([a-z]+)">/g)];
-  assert.equal(tiles.length, JOGOS_URL.length, "tile sem endereço ou endereço sem tile");
-  for (const [, href, game] of tiles) {
-    const m = /^\/games\/([a-z0-9-]+)$/.exec(href);
-    assert.ok(m, `tile com link fora de /games: ${href}`);
-    const j = jogoDaUrl(m[1]);
-    assert.ok(j, `tile pra endereço desconhecido: ${href}`);
-    assert.equal(j.game, game, `${href}: data-game ${game}, registro ${j.game}`);
+  const linhas = [...vintage.matchAll(/<a class="vt-linha" href="([^"]+)" data-game="([a-z]+)">/g)];
+  assert.equal(tiles.length + linhas.length, JOGOS_URL.length, "porta sem endereço ou endereço sem porta");
+  const confere = (lista, ehVintage, pagina) => {
+    for (const [, href, game] of lista) {
+      const m = /^\/games\/([a-z0-9-]+)$/.exec(href);
+      assert.ok(m, `${pagina}: link fora de /games: ${href}`);
+      const j = jogoDaUrl(m[1]);
+      assert.ok(j, `${pagina}: endereço desconhecido: ${href}`);
+      assert.equal(j.game, game, `${href}: data-game ${game}, registro ${j.game}`);
+      assert.equal(!!j.vintage, ehVintage, `${href} está na página errada (${pagina})`);
+    }
+  };
+  confere(tiles, false, "hub.html");
+  confere(linhas, true, "vintage.html");
+  const todos = [...tiles, ...linhas].map(([, href]) => href);
+  assert.equal(new Set(todos).size, todos.length, "jogo com duas portas");
+  assert.doesNotMatch(hub + vintage, /href="sets\?game=/, "sobrou tile no endereço antigo");
+});
+
+// O menu acende "Vintage" (e não "Jogos") na tela de um jogo que saiu de
+// linha: o game.js marca SLEEVU.vintage pelo endereço, com a posição do
+// primeiro vintage na cópia dele da lista (PRIMEIRO_VINTAGE).
+test("o game.js sabe quais endereços são de jogo vintage", () => {
+  for (const j of JOGOS_URL) {
+    assert.equal(gameJs(`/games/${j.url}`).vintage, !!j.vintage, j.url);
   }
-  assert.doesNotMatch(hub, /href="sets\?game=/, "sobrou tile no endereço antigo");
+  assert.equal(gameJs("/games/dragon-ball-carddass/part-1").vintage, true, "vale também na tela do set");
+  assert.equal(gameJs("/hub").vintage, false);
+  assert.equal(gameJs("/vintage").vintage, false, "a página Vintage acende pelo data-active-page");
 });
 
 test("apelido leva pro endereço oficial; desconhecido não leva a nada", () => {

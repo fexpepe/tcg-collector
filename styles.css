@@ -809,26 +809,6 @@ main {
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
 }
 
-/* Selo "beta" no título da seção Vintage do Hub (linhas ainda em evolução).
-   O menu também usava (Decks e Portfólio), mas os dois saíram do beta em
-   2026-10 e o seletor do .page-nav foi junto. O título é inline-flex, então o
-   sobrescrito sai por align-self (vertical-align não vale em item de flex).
-   Neutro por tokens de tema, e não pelo accent — o accent muda por jogo. */
-.hub-section-head .nav-beta {
-  align-self: flex-start;
-  margin: 3px 0 0 4px;
-  padding: 1px 4px;
-  border: 1px solid var(--line);
-  /* sem raio: FLAT GLOBAL (ver a lista de cantos zerados no fim do arquivo) */
-  font-size: 8.5px;
-  font-weight: 800;
-  line-height: 1.4;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  background: var(--panel-strong);
-  color: var(--muted);
-}
-
 /* Contorno no hover. Os outros controles do header (moeda, idioma de carta,
    tema) nascem com a borda desenhada; os itens do menu eram os únicos sem
    nenhum retorno de "isto é clicável". Usa a MESMA cor de borda deles
@@ -4740,26 +4720,6 @@ html[data-carta] main > :not(#cardPreviewModal):not(.cs-more):not(.cs-esqueleto)
 }
 [data-theme="light"] .game-badge.vintage { color: #806336; }
 
-/* Seção VINTAGE do hub: cabeçalho + subtítulo acima da grade das linhas clássicas. */
-/* Respiro maior entre os jogos principais e a seção VINTAGE (separação clara
-   de categoria), reforçado por uma linha divisória sutil. */
-/* 56px (eram 72) desde 2026-09-28: a nota "Mais jogos em breve" passou a
-   morar entre a grade e a divisória e já soma ~30px ao respiro. */
-.hub.hub-vintage {
-  margin-top: 56px;
-  padding-top: 40px;
-  border-top: 1px solid var(--line);
-}
-.hub-section-head {
-  margin: 0; font-size: 15px; font-weight: 800; letter-spacing: 0.6px;
-  text-transform: uppercase; color: #a67c46;
-  display: inline-flex; align-items: center; gap: 8px;
-}
-.hub-section-head::before {
-  content: "◆"; font-size: 11px; opacity: 0.7;
-}
-.hub-section-sub { max-width: 640px; margin: 6px 0 0; color: var(--muted); font-size: 13.5px; }
-.hub-vintage .hub-grid { margin-top: 16px; }
 /* Tag "Vintage" ao lado do título na visão de uma linha (?line=). */
 .line-tag {
   font-size: 12px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase;
@@ -4773,11 +4733,9 @@ html[data-carta] main > :not(#cardPreviewModal):not(.cs-more):not(.cs-esqueleto)
    numa coluna de 1140px centrada enquanto o título seguia na borda do `main`,
    e os dois ficavam ~120px desalinhados em qualquer desktop largo. */
 .page-head-sub { max-width: 680px; margin: 6px 0 0; color: var(--muted); }
-/* COLUNAS FIXAS por faixa, não auto-fill: os 12 jogos fecham retângulo em 4, 3
-   e 2 colunas (4×3, 3×4, 2×6), sem fileira manca. O Vintage (linhas
-   secundárias) tem tiles menores, 6 por fileira no desktop largo — a
-   hierarquia da página aparece no tamanho: jogo principal grande, linha
-   clássica compacta. */
+/* COLUNAS FIXAS por faixa, não auto-fill: os jogos fecham retângulo em 4, 3
+   e 2 colunas, sem fileira manca. (O Vintage, que tinha tiles menores numa
+   seção abaixo, virou página própria em 2026-11-12: ver .vt- mais abaixo.) */
 .hub-grid {
   --hub-cols: 4;
   list-style: none;
@@ -4787,13 +4745,8 @@ html[data-carta] main > :not(#cardPreviewModal):not(.cs-more):not(.cs-esqueleto)
   grid-template-columns: repeat(var(--hub-cols), minmax(0, 1fr));
   gap: 16px;
 }
-.hub-vintage .hub-grid { --hub-cols: 6; }
-@media (max-width: 1279px) {
-  .hub-vintage .hub-grid { --hub-cols: 4; }
-}
 @media (max-width: 900px) {
-  .hub-grid,
-  .hub-vintage .hub-grid { --hub-cols: 3; }
+  .hub-grid { --hub-cols: 3; }
 }
 /* 2026-09-20: o tile virou a PRÓPRIA caixa branca. Antes era painel com
    borda + 16px de padding + caixa branca com borda própria dentro — dois
@@ -4840,12 +4793,9 @@ html[data-carta] main > :not(#cardPreviewModal):not(.cs-more):not(.cs-esqueleto)
    logo cobre o tile inteiro. Por isso ele mora num ::after absoluto por cima
    de tudo (último na ordem do DOM, fora do flex/grid), com o raio herdado e
    sem pegar clique.
-   Mais tarde no mesmo dia, só nos JOGOS PRINCIPAIS: 3px por fora + 3px por
-   dentro (6px). O Vintage fica nos 2+2 — tile menor, linha secundária, e a
-   hierarquia da página continua aparecendo também no anel. A espessura mora
-   em --hub-ring na grade, como o --hub-cols. */
+   Mais tarde no mesmo dia: 3px por fora + 3px por dentro (6px). A espessura
+   mora em --hub-ring na grade, como o --hub-cols. */
 .hub-grid { --hub-ring: 3px; }
-.hub-vintage .hub-grid { --hub-ring: 2px; }
 .hub-grid .hub-tile::after {
   content: "";
   position: absolute;
@@ -4865,10 +4815,6 @@ html[data-carta] main > :not(#cardPreviewModal):not(.cs-more):not(.cs-esqueleto)
 }
 a.hub-tile:active { box-shadow: 0 0 0 var(--hub-ring, 2px) var(--accent); }
 a.hub-tile:active::after { opacity: 1; }
-/* Nos tiles VINTAGE (logo + nome + rodapé) só a caixa do logo encosta nas
-   bordas; o texto abaixo mantém o respiro dos 16px de antes. */
-.hub-tile > :not(.hub-logo-box) { margin-inline: 16px; }
-.hub-tile > :last-child:not(.hub-logo-box) { margin-bottom: 16px; }
 .hub-logo-box {
   position: relative;
   display: flex;
@@ -4910,7 +4856,7 @@ a.hub-tile:active::after { opacity: 1; }
    faixas menores; os limites da caixa seguem valendo (1º e 2º termos do min).
    165px (era 140) desde o mesmo dia, a pedido do Fernando: +18%, o maior que
    ainda deixa ~24px de respiro em cima e embaixo do logo mais alto (DBFW) —
-   com 170 ele já quase encosta. O Vintage subiu na mesma proporção.
+   com 170 ele já quase encosta.
    cqw/cqh medem a caixa de CONTEÚDO do .hub-logo-box, já sem o padding — o
    mesmo espaço que o calc(100% - 40px) de cima mede pela caixa de padding.
    Por isso o arquivo precisa vir recortado no conteúdo (ver o README de
@@ -4925,132 +4871,393 @@ a.hub-tile:active::after { opacity: 1; }
     width: min(100cqw, 100cqh * var(--r), var(--k) * pow(var(--r), 0.4));
     height: min(100cqw / var(--r), 100cqh, var(--k) * pow(var(--r), -0.6));
   }
-  /* Vintage: caixa mais baixa e logo proporcionalmente menor. */
-  .hub-vintage .hub-logo-box { height: 124px; padding: 16px; }
-  .hub-vintage .hub-logo {
-    --k: min(115px, 58cqw);
-    max-width: calc(100% - 32px);
-    max-height: calc(100% - 32px);
-  }
 }
-/* Origem da linha vintage: bandeirinha do país (Japão nas japonesas, EUA no
-   Naruto CCG americano) no rodapé, ANTES dos anos. Era um selo "JP"/"EN" no
-   canto da caixa do logo; o Fernando pediu a bandeira (2026-09-30) — lê mais
-   rápido que a sigla e não disputa espaço com o logo. A ALTURA é a do selo de
-   anos, pelo align-self: stretch na linha do rodapé — número fixo não serve:
-   o selo tem line-height normal e dá 22px no desktop e 20,4 no celular. A
-   largura é fixa (aspect-ratio não pega a altura esticada no Chromium; a
-   bandeira saía com 0px) e o SVG usa `slice`, então a diferença de altura
-   corta um fio da borda em vez de achatar a bandeira. SVG com as cores
-   oficiais; o
-   contorno é do tema pra bandeira branca do Japão não sumir no painel claro. */
-.hub-flag {
-  position: relative;
-  display: inline-flex;
-  flex: none;
-  align-self: stretch;
-  width: 32px;
-  border-radius: 3px;
-  overflow: hidden;
-  box-shadow: 0 0 0 1px var(--line);
-}
-/* Absoluto: o SVG não pode dar tamanho próprio à caixa (sem isso ele entrava
-   com 300×150 e empurrava os anos pra duas linhas). */
-.hub-flag svg { position: absolute; inset: 0; width: 100%; height: 100%; }
 .hub-logo-text { font-size: 19px; font-weight: 800; color: #4b4b4b; text-align: center; }
-/* MARCA TIPOGRÁFICA dos vintage ainda sem logo (2026-09-28). A caixa mostrava
-   o nome da linha e o nome vinha de novo logo abaixo — o mesmo texto duas
-   vezes por tile, e o de cima só em português ("Card Game (clássico)") em
-   qualquer idioma. Agora a caixa leva só a FRANQUIA, em caixa-alta espaçada no
-   sépia do selo vintage, e o nome completo fica embaixo, uma vez. Quando o
-   arquivo do logo entrar, o hub.js esconde a marca no load, como sempre fez
-   com o texto. Cor fixa: a caixa é branca nos dois temas. */
-.hub-logo-text.hub-logo-mark { font-size: 20px; letter-spacing: 0.16em; text-transform: uppercase; color: #806336; }
-/* Nome do jogo (em inglês) entre o logo e o ano dos tiles VINTAGE: o logo
-   sozinho pode não dizer nada pra quem não conhece a linha. No máximo duas
-   linhas (clamp) e altura RESERVADA de duas mesmo quando o nome cabe numa —
-   é o que mantém os anos alinhados entre os tiles da grade. */
-.hub-tile-name {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  min-height: 2.6em;
-  font-size: 13.5px;
-  font-weight: 700;
-  line-height: 1.3;
-  color: var(--text);
-}
-
-/* Rodapé dos vintage: só o selo com os anos. O "Ver sets →" saiu pelo mesmo
-   motivo que já tinha tirado o rodapé dos jogos principais (2026-08-01): o
-   tile inteiro é o link, e a seta repetida 11 vezes só somava ruído. */
-.hub-tile-foot {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
 /* "Mais jogos em breve": era um tile tracejado sozinho na última fileira (o
    13º item de uma grade de 4), um retângulo vazio de 162px pra dizer uma
    frase. Virou nota discreta embaixo da grade — o recado fica, o buraco sai. */
 .hub-more { margin: 14px 0 0; color: var(--subtle); font-size: 13.5px; }
 /* CELULAR: a grade de auto-fill (220px) cabia UMA coluna em 350px úteis, e a
-   escolha de jogo virava uma lista de 13 tiles gigantes + 11 vintage (~5.600px
-   de rolagem). Duas colunas, como as cápsulas da home, mantêm a estrutura do
-   desktop (grade) na largura do celular. */
+   escolha de jogo virava uma lista de 13 tiles gigantes (~5.600px de rolagem
+   com os vintage, que hoje têm página própria). Duas colunas, como as
+   cápsulas da home, mantêm a estrutura do desktop (grade) na largura do
+   celular. */
 @media (max-width: 600px) {
-  .hub-grid,
-  .hub-vintage .hub-grid { --hub-cols: 2; }
+  .hub-grid { --hub-cols: 2; }
   .hub-grid { gap: 10px; margin-top: 18px; }
   /* Mesma altura externa do tile de antes (84 + 2×10 + 2 = 106px). */
   .hub-grid .hub-tile { gap: 8px; border-radius: 12px; }
-  .hub-tile > :not(.hub-logo-box) { margin-inline: 10px; }
-  .hub-tile > :last-child:not(.hub-logo-box) { margin-bottom: 10px; }
   .hub-logo-box { height: 106px; padding: 12px; }
   .hub-logo { max-width: calc(100% - 20px); max-height: calc(100% - 20px); }
   .hub-logo-text { font-size: 13px; }
-  .hub-logo-text.hub-logo-mark { font-size: 14px; letter-spacing: 0.12em; }
-  .hub-tile-name { font-size: 12.5px; }
-  .hub-tile-foot { flex-wrap: wrap; gap: 4px 8px; }
   .hub-more { font-size: 13px; }
+}
 
-  /* VINTAGE vira LISTA no celular (2026-09-28). Em 2 colunas eram 11 cards de
-     ~185px (caixa de 106 + nome + selo) — ~1.160px de rolagem pra seção
-     secundária, com o mesmo logo do Miracle Battle três vezes e quatro
-     "NARUTO" ocupando o card inteiro. Em linha, o logo vira miniatura (104×60)
-     e o NOME passa a ser quem identifica a linha, com os anos embaixo: a
-     ordem cronológica se lê de cima pra baixo, e a seção encolhe ~25%.
-     Só CSS, o HTML é o mesmo do desktop. */
-  .hub.hub-vintage { margin-top: 36px; padding-top: 28px; }
-  .hub-vintage .hub-grid { --hub-cols: 1; gap: 8px; margin-top: 14px; }
-  .hub-vintage .hub-grid .hub-tile {
-    position: relative;
+/* ── JOGOS EM ATIVIDADE × VINTAGE (2026-11-12) ──────────────────────────────
+   O Vintage saiu do pé do hub e ganhou página (vintage.html). Sobraram no hub
+   duas peças que levam pra lá, as duas com o prefixo hub- (as duas páginas
+   carregam esta folha): a faixa do topo e a porta do rodapé. */
+
+/* Faixa "Em atividade | Vintage": só no celular, onde a tabbar tem uma aba
+   "Jogos" pras duas páginas (a barra logada já tem seis abas; uma sétima não
+   cabe). Acima de 700px o menu de cima tem os dois itens lado a lado e a
+   faixa seria o mesmo link duas vezes. Reta, como as abas da tabbar e o
+   alternador de visualização; 44px de alvo. */
+.hub-switch { display: none; }
+@media (max-width: 700px) {
+  .hub-switch {
     display: grid;
-    grid-template-columns: 104px minmax(0, 1fr);
-    grid-template-rows: auto auto;
+    grid-template-columns: 1fr 1fr;
+    margin: 0 0 18px;
+    border: 1px solid var(--line);
+    background: var(--panel);
+  }
+  .hub-switch a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    color: var(--muted);
+    font-size: 14.5px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .hub-switch a[aria-current="page"] { background: var(--accent-soft); color: var(--accent); }
+}
+
+/* Sépia do vintage (o mesmo do selo de anos, .game-badge.vintage, medido em
+   AA nos dois temas) numa variável: a porta do hub e a página Vintage usam.
+   Declarada DUAS vezes, uma por prefixo, e não num seletor só: o split-css
+   reparte as regras por prefixo de classe, e cada página carrega a folha
+   dela (a porta é da folha do hub; a página, da folha vintage). */
+.hub-porta { --sepia: #c7995c; }
+[data-theme="light"] .hub-porta { --sepia: #806336; }
+.vt-pagina { --sepia: #c7995c; }
+[data-theme="light"] .vt-pagina { --sepia: #806336; }
+
+/* Porta do Vintage no pé do hub: um cartão no lugar dos 16 tiles. Mesma
+   divisória e mesmo respiro que a seção tinha (a categoria continua separada
+   dos jogos de cima), 14px de raio como os tiles. */
+.hub-porta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 24px;
+  margin-top: 40px;
+  padding: 22px 24px;
+  border: 1px solid rgba(159, 122, 66, 0.3);
+  border-radius: 14px;
+  background: rgba(159, 122, 66, 0.1);
+  color: var(--text);
+  text-decoration: none;
+}
+@media (hover: hover) {
+  .hub-porta:hover { border-color: var(--sepia); }
+}
+.hub-porta-texto { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.hub-porta-titulo { font-size: 15px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; color: var(--sepia); }
+.hub-porta-sub { max-width: 640px; color: var(--muted); font-size: 14px; }
+.hub-porta-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+  min-height: 44px;
+  color: var(--sepia);
+  font-size: 14px;
+  font-weight: 700;
+}
+.hub-porta-cta svg { width: 18px; height: 18px; }
+@media (max-width: 600px) {
+  .hub-porta { flex-direction: column; align-items: flex-start; margin-top: 28px; padding: 16px; }
+  .hub-porta-cta { min-height: 0; }
+}
+
+/* ── PÁGINA VINTAGE (vintage.html + src/vintage.js, 2026-11-12) ─────────────
+   O acervo dos jogos que saíram de linha. Cada jogo é UMA linha (um <li> do
+   HTML) que o CSS desenha de dois jeitos: na linha do tempo, logo + nome +
+   anos + uma barra do lançamento ao encerramento, numa régua comum; na grade,
+   um tile de logo como os do hub. O vintage.js só troca a classe do
+   .vt-acervo e grava em --vt-i/--vt-f (de 0 a 1) onde a barra começa e
+   termina; sem ele a lista fica em ordem de lançamento, sem barra.
+   As colunas moram em variáveis no .vt-acervo porque a régua dos anos
+   (.vt-eixo) é irmã da lista e precisa da MESMA grade pra cair em cima das
+   barras. */
+.vt-simbolos { position: absolute; width: 0; height: 0; overflow: hidden; }
+.vt-numeros {
+  margin: 10px 0 0;
+  color: var(--sepia);
+  font-size: 14px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Filtros: as marcas à esquerda (quebram em quantas linhas precisarem), a
+   ordem e a visualização à direita. */
+.vt-filtros {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px 24px;
+  margin: 0 0 18px;
+}
+.vt-marcas { flex: 1 1 auto; min-width: 0; }
+.vt-controles { display: flex; align-items: center; gap: 10px; flex: none; }
+.vt-ordem { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 13.5px; font-weight: 700; }
+.vt-ordem select { width: auto; min-width: 0; height: 44px; }
+
+/* A marca aberta: o nome grande, o período e, à direita, o jogo da marca que
+   continua hoje. É o que transforma o filtro numa "história da marca". */
+.vt-marca {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px 24px;
+  margin: 0 0 18px;
+  padding: 20px 24px;
+  border-left: 4px solid var(--sepia);
+  border-radius: 14px;
+  background: var(--panel);
+}
+.vt-marca-eyebrow { margin: 0; color: var(--sepia); font-size: 12px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; }
+.vt-marca-nome { margin: 2px 0 4px; font-size: 28px; line-height: 1.1; letter-spacing: -0.4px; }
+.vt-marca-fatos { margin: 0; color: var(--muted); font-size: 14px; font-variant-numeric: tabular-nums; }
+.vt-marca-hoje {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  padding: 8px 12px 8px 8px;
+  border-radius: 12px;
+  background: var(--panel-strong);
+  color: var(--text);
+  text-decoration: none;
+}
+.vt-marca-hoje .vt-logo-box { width: 112px; height: 52px; }
+.vt-marca-hoje-texto { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.vt-marca-hoje-texto small { color: var(--muted); font-size: 12px; font-weight: 700; }
+.vt-marca-hoje-texto b { font-size: 14.5px; }
+.vt-marca-hoje > svg { flex: none; width: 18px; height: 18px; color: var(--muted); }
+
+.vt-acervo {
+  --vt-logo: 132px;
+  --vt-texto: 300px;
+  --vt-anos: 96px;
+  --vt-colunas: var(--vt-logo) var(--vt-texto) var(--vt-anos) minmax(0, 1fr);
+}
+/* Na história de uma marca cada linha leva o resumo do jogo: a coluna do
+   texto alarga pra ele não virar uma tira de seis linhas. */
+.vt-acervo--marca { --vt-texto: 420px; }
+@media (max-width: 1279px) {
+  .vt-acervo { --vt-logo: 112px; --vt-texto: 250px; }
+  .vt-acervo--marca { --vt-texto: 340px; }
+}
+
+/* Régua dos anos: mesma grade e mesmo padding lateral das linhas, com os anos
+   na coluna das barras. Gruda embaixo do cabeçalho do site ao rolar: com 16
+   linhas (e são pra ser 50) a régua some da tela na terceira. */
+.vt-eixo {
+  position: sticky;
+  top: var(--header-h, 56px);
+  z-index: 2;
+  display: grid;
+  grid-template-columns: var(--vt-colunas);
+  column-gap: 16px;
+  padding: 6px 20px 4px 8px;
+  background: var(--bg);
+}
+.vt-eixo-anos { grid-column: 4; position: relative; height: 18px; }
+.vt-eixo-ano {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  color: var(--subtle);
+  font-size: 12px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 18px;
+}
+
+.vt-lista { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+/* O <li> é flex pra o link encher a célula inteira (na grade, todos os tiles
+   da fileira ficam com a altura do mais alto). */
+.vt-jogo { display: flex; min-width: 0; }
+.vt-linha {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: var(--vt-colunas);
+  align-items: center;
+  column-gap: 16px;
+  min-height: 76px;
+  padding: 8px 20px 8px 8px;
+  box-sizing: border-box;
+  border-radius: 14px;
+  background: var(--panel);
+  color: var(--text);
+  text-decoration: none;
+  transition: box-shadow 120ms ease;
+}
+/* Anel na cor do jogo, como no hub (o vintage.js carimba data-game-accent na
+   linha). Só com hover de verdade; no dedo sai no :active. */
+@media (hover: hover) {
+  a.vt-linha:hover,
+  a.vt-marca-hoje:hover { box-shadow: 0 0 0 2px var(--accent); }
+}
+a.vt-linha:active,
+a.vt-marca-hoje:active { box-shadow: 0 0 0 2px var(--accent); }
+/* Caixa branca atrás do logo nos dois temas, como no hub: vários logos são
+   escuros e sumiriam no painel escuro. */
+.vt-logo-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60px;
+  padding: 8px 10px;
+  box-sizing: border-box;
+  border-radius: 8px;
+  background: #fff;
+  flex: none;
+}
+.vt-logo { max-width: 100%; max-height: 100%; object-fit: contain; }
+.vt-texto { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.vt-nome { font-size: 15px; font-weight: 700; line-height: 1.25; }
+.vt-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 8px; color: var(--muted); font-size: 12.5px; }
+/* Bandeira do país de origem (Japão ou EUA), antes da editora. O SVG é
+   absoluto pra não dar tamanho próprio à caixa; contorno do tema pra a
+   bandeira branca do Japão não sumir no painel claro. */
+.vt-flag {
+  position: relative;
+  flex: none;
+  width: 22px;
+  height: 15px;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px var(--line);
+}
+.vt-flag svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.vt-tag { padding: 1px 6px; border: 1px solid var(--line); color: var(--subtle); font-size: 11px; font-weight: 700; }
+.vt-conta { color: var(--subtle); font-size: 12px; font-variant-numeric: tabular-nums; }
+.vt-resumo { display: none; color: var(--muted); font-size: 13px; line-height: 1.45; }
+.vt-acervo--marca .vt-resumo { display: block; }
+.vt-anos { justify-self: start; white-space: nowrap; }
+
+/* A barra do jogo na régua. O fundo da faixa é a grade dos anos: uma linha a
+   cada passo da régua (--vt-divs divisões), a última na borda direita. */
+.vt-faixa { display: none; }
+.vt-acervo--pronto .vt-faixa {
+  display: block;
+  position: relative;
+  height: 32px;
+  border-right: 1px solid var(--line);
+  background-image: linear-gradient(to right, var(--line) 1px, transparent 1px);
+  background-size: calc(100% / var(--vt-divs, 5)) 100%;
+}
+.vt-barra {
+  position: absolute;
+  top: 9px;
+  bottom: 9px;
+  left: calc(var(--vt-i, 0) * 100%);
+  width: max(6px, calc((var(--vt-f, 0) - var(--vt-i, 0)) * 100%));
+  border-radius: 4px;
+  background: var(--accent);
+}
+
+/* Cabeçalho de cada marca na visão "por marca": o nome é o botão que abre a
+   história dela. */
+.vt-grupo { margin-top: 14px; }
+.vt-grupo:first-child { margin-top: 0; }
+.vt-grupo-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 4px;
+  border: 0;
+  background: none;
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.vt-grupo-btn--fixo { cursor: default; }
+.vt-grupo-nome { font-size: 17px; font-weight: 800; }
+.vt-grupo-fatos { color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; }
+.vt-grupo-btn svg { flex: none; width: 16px; height: 16px; color: var(--muted); }
+@media (hover: hover) {
+  button.vt-grupo-btn:hover .vt-grupo-nome { color: var(--accent); }
+}
+.vt-vazio { margin: 24px 0; color: var(--muted); }
+
+/* GRADE: a mesma lista como tiles de logo, nas colunas que a seção Vintage
+   tinha no hub (6, 4, 3 e 2). A caixa branca encosta nas bordas do tile. */
+.vt-acervo--grade .vt-lista { grid-template-columns: repeat(var(--vt-cols, 6), minmax(0, 1fr)); gap: 16px; }
+.vt-acervo--grade .vt-grupo { grid-column: 1 / -1; margin-top: 6px; }
+.vt-acervo--grade .vt-linha {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  min-height: 0;
+  padding: 0 0 14px;
+  overflow: hidden;
+}
+.vt-acervo--grade .vt-logo-box { height: 124px; padding: 16px; border-radius: 0; }
+.vt-acervo--grade .vt-texto { flex: 1 1 auto; margin-inline: 14px; }
+.vt-acervo--grade .vt-anos { align-self: flex-start; margin-inline: 14px; }
+.vt-acervo--grade .vt-faixa { display: none; }
+@media (max-width: 1279px) {
+  .vt-acervo--grade { --vt-cols: 4; }
+}
+
+/* Até 900px a régua lado a lado não cabe (sobrariam ~150px de barra): a linha
+   vira logo + nome + anos, com a barra embaixo, de ponta a ponta. A régua dos
+   anos continua em cima, agora na largura inteira, alinhada com as barras. */
+@media (max-width: 900px) {
+  .vt-filtros { flex-direction: column; align-items: stretch; }
+  .vt-controles { justify-content: space-between; }
+  .vt-acervo { --vt-logo: 104px; --vt-colunas: minmax(0, 1fr); }
+  .vt-eixo { padding: 6px 12px 4px 8px; }
+  .vt-eixo-anos { grid-column: 1; }
+  .vt-linha {
+    grid-template-columns: var(--vt-logo) minmax(0, 1fr);
+    grid-template-areas: "logo texto" "logo anos" "faixa faixa";
     column-gap: 12px;
-    row-gap: 4px;
-    padding: 8px 12px 8px 8px;
+    row-gap: 6px;
+    padding: 8px 12px 10px 8px;
   }
-  /* A caixa deixa de ser contêiner e de ser posicionada: o logo entra no fluxo
-     (centrado pelo flex dela). */
-  .hub-vintage .hub-logo-box {
-    grid-row: 1 / span 2;
-    align-self: center;
-    height: 60px;
-    padding: 8px;
-    border-radius: 8px;
-    position: static;
-    container-type: normal;
-  }
-  .hub-vintage .hub-logo { position: static; max-width: 100%; max-height: 100%; }
-  .hub-vintage .hub-tile > :not(.hub-logo-box) { margin: 0; }
-  /* 14px e as duas linhas RESERVADAS do nome (min-height da regra base): toda
-     linha tem a mesma altura e a bandeira + selo de anos caem sempre no
-     mesmo lugar. */
-  .hub-vintage .hub-tile-name { font-size: 14px; }
-  .hub-vintage .hub-tile-foot { align-self: end; }
-  .hub-vintage .hub-logo-text.hub-logo-mark { font-size: 11px; letter-spacing: 0.1em; }
+  .vt-linha > .vt-logo-box { grid-area: logo; align-self: center; }
+  .vt-linha > .vt-texto { grid-area: texto; align-self: end; }
+  .vt-linha > .vt-anos { grid-area: anos; align-self: start; }
+  .vt-linha > .vt-faixa { grid-area: faixa; }
+  .vt-acervo--pronto .vt-faixa { height: 12px; margin-top: 2px; }
+  .vt-barra { top: 2px; bottom: 2px; }
+  .vt-acervo--grade { --vt-cols: 3; }
+  .vt-marca { padding: 16px; }
+  .vt-marca-nome { font-size: 24px; }
+}
+@media (max-width: 700px) {
+  /* Marcas numa fileira só, que rola de lado: com 11 chips (e mais a cada
+     jogo novo) elas tomariam três fileiras antes do primeiro jogo. */
+  .vt-marcas { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
+  .vt-marcas::-webkit-scrollbar { display: none; }
+  .vt-marcas .chip { flex: none; min-height: 44px; white-space: nowrap; }
+  .vt-ordem { flex: 1 1 auto; min-width: 0; }
+  /* Régua com mais de sete anos marcados: uma sim, uma não (a grade de fundo
+     das barras segue com todas as linhas). */
+  .vt-eixo--denso .vt-eixo-ano:nth-child(even) { display: none; }
+  .vt-ordem > span { display: none; }
+  .vt-ordem select { width: 100%; }
+  .vt-marca-hoje { width: 100%; box-sizing: border-box; }
+}
+@media (max-width: 600px) {
+  .vt-acervo--grade { --vt-cols: 2; }
+  .vt-acervo--grade .vt-lista { gap: 10px; }
+  .vt-acervo--grade .vt-logo-box { height: 96px; padding: 12px; }
+  .vt-acervo--grade .vt-texto,
+  .vt-acervo--grade .vt-anos { margin-inline: 10px; }
+  .vt-nome { font-size: 14px; }
 }
 
 #pixButton.copied {

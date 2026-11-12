@@ -319,7 +319,7 @@ for (const bundle of I18N_EXTRAS) {
     "collection.html", "portfolio.html", "wishlist.html", "binders.html", "pastas.html", "listas.html",
     "sales.html", "troca.html", "tools.html", "condition.html", "centering.html", "sleeves.html", "my-decks.html", "dashboard.html", "badges.html", "profile.html",
     // conta, ferramentas e conversão
-    "index.html", "hub.html", "login.html", "account.html", "settings.html", "backup.html", "admin.html", "parceiro.html", "search.html",
+    "index.html", "hub.html", "vintage.html", "login.html", "account.html", "settings.html", "backup.html", "admin.html", "parceiro.html", "search.html",
     // institucionais (o revisor do AdSense e quem lê a política não podem ver anúncio aqui)
     "about.html", "help.html", "faq.html", "privacy.html", "terms.html", "novidades.html", "404.html"
   ];
