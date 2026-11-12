@@ -10,6 +10,16 @@ Collectr — é a alternativa livre: sem cartão, sem plano "pro", sem limite de
 cartas, com export a qualquer momento. A sincronização na nuvem, que noutro
 produto seria o extra pago, aqui é grátis.
 
+**Princípio: trazer de volta à vida os TCGs mortos e esquecidos** (2026-11-12).
+O vintage é o diferencial do Sleevu: jogos que acabaram há décadas, sem loja,
+sem API e muitas vezes sem site, levantados carta a carta e guardados pra não
+sumir. Cada um ganha a sua história no site, não só a lista de cartas: o
+"Sobre" no topo da página do jogo (ver docs/CATALOGO.md, 3.5) diz o que o jogo
+foi, quem fez, quando nasceu e quando parou, com fonte. É o que dá contexto a
+quem coleciona, a quem chega pelo Google e às IAs que leem o site. Nenhuma
+carta vintage sai do índice (veto de 2026-10-10), e o que se escreve sobre
+elas é só o que se pode provar.
+
 Última revisão: 2026-09-14.
 
 ---

@@ -37,7 +37,13 @@ import { pecasDaCarta, precoDeReferencia, escapeHtml, escapeAttr, ORIGEM } from 
 import { pecasDoSet } from "../_lib/pagina-set.js";
 import { decoraApp } from "../_lib/decora-app.js";
 import { naoAchou, redireciona, jsonDoSite, daBorda, guardaNaBorda, hasOwn, setRenomeado, setDoDePara } from "../_lib/borda.js";
+import { jsonLdSeguro } from "../_lib/json-ld.js";
 import { basePricingId } from "../api/_search-sql.js";
+// O "Sobre" dos jogos vintage: o MESMO renderizador que o navegador usa (ver o
+// cabeçalho do src/sobre-jogo.js). Script clássico: pendura globalThis.SleevuSobre.
+import "../../src/sobre-jogo.js";
+
+const SOBRE = globalThis.SleevuSobre;
 
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const ID = /^[A-Za-z0-9][A-Za-z0-9._-]{0,99}$/;
@@ -98,24 +104,37 @@ export function listaDeSets(mapa) {
 // data-game e vê o índice como sempre. data-indice-jogo deixa o app.js
 // tirar o índice se uma cópia guardada chegar pra OUTRO jogo (o service
 // worker guarda cada /games/<jogo> na entrada dele; é só uma garantia).
-export function metaDoJogo(jogo, sets) {
+//
+// Jogo vintage com "Sobre" (data/sobre/<url>.json, `sobre` aqui): o bloco vai
+// pro HTML em pt (sobreHtml, antes da contagem de sets), com o JSON-LD do jogo
+// (jsonLd), e o título e a descrição passam a falar da história. A descrição
+// é o resumo do bloco: é o texto que diz o que o jogo FOI, e o Google mostra.
+export function metaDoJogo(jogo, sets, sobre) {
   const n = sets.length;
   const titulo = (() => {
-    const t = `${jogo.nome} — sets e cartas | Sleevu`;
-    return t.length <= 65 ? t : `${jogo.nome} | Sleevu`;
+    const t = sobre ? `${jogo.nome} — história, sets e cartas | Sleevu` : `${jogo.nome} — sets e cartas | Sleevu`;
+    if (t.length <= 65) return t;
+    const curto = `${jogo.nome} — sets e cartas | Sleevu`;
+    return curto.length <= 65 ? curto : `${jogo.nome} | Sleevu`;
   })();
   const anos = sets.map((s) => String(s.data).slice(0, 4)).filter((a) => /^\d{4}$/.test(a)).sort();
   const periodo = anos.length > 1 && anos[0] !== anos[anos.length - 1] ? `, de ${anos[0]} a ${anos[anos.length - 1]}` : "";
-  const desc = n
+  const resumo = sobre ? String(SOBRE.tx(sobre.resumo, "pt") || "").trim() : "";
+  const desc = resumo
+    ? resumo
+    : n
     ? `Todos os ${n} sets de ${jogo.nome}${periodo}, com a lista de cartas de cada um. Acompanhe preços e o progresso da sua coleção no Sleevu, grátis.`
     : `Sets e cartas de ${jogo.nome} no Sleevu: acompanhe preços e o progresso da sua coleção, grátis.`;
+  const canonical = `${ORIGEM}/games/${jogo.url}`;
+  const sobreHtml = sobre ? SOBRE.html(sobre, "pt") : "";
+  const jsonLd = sobre ? `<script type="application/ld+json">${jsonLdSeguro(SOBRE.jsonLd(sobre, canonical, "pt"))}</script>` : "";
   const indiceHtml = n ? `<section class="jogo-indice" data-indice-jogo="${escapeAttr(jogo.url)}">
         <style>html[data-game] #cardGrid:empty~.jogo-indice{display:none}.jogo-indice{margin:40px 0 8px}.jogo-indice h2{font-size:1.05rem;margin:0 0 8px}.jogo-indice summary{cursor:pointer;color:var(--muted,#9aa0aa)}.jogo-indice ul{list-style:none;padding:0;margin:12px 0 0;columns:3 220px;column-gap:24px}.jogo-indice li{margin:0 0 6px;break-inside:avoid}.jogo-indice a{color:var(--accent,#e63946);text-decoration:none}.jogo-indice small{color:var(--muted,#9aa0aa)}</style>
         <h2>Todos os sets de ${escapeHtml(jogo.nome)}</h2>
         <details><summary>Ver a lista (${n})</summary><ul>${sets.map((s) =>
           `<li><a href="/games/${escapeAttr(jogo.url)}/${escapeAttr(s.slug)}">${escapeHtml(s.nome)}</a>${s.cartas ? ` <small>${s.cartas} cartas</small>` : ""}</li>`).join("")}</ul></details>
       </section>` : "";
-  return { titulo, desc, canonical: `${ORIGEM}/games/${jogo.url}`, ogTitulo: `${jogo.nome} — Sleevu`, indiceHtml };
+  return { titulo, desc, canonical, ogTitulo: `${jogo.nome} — Sleevu`, indiceHtml, sobreHtml, jsonLd };
 }
 
 const atributo = (nome, valor) => ({ element(el) { el.setAttribute(nome, valor); } });
@@ -127,11 +146,14 @@ const texto = (valor) => ({ element(el) { el.removeAttribute("data-i18n"); el.se
 async function telaDoJogo(context, jogo) {
   const { env, request } = context;
   try {
-    const [casca, mapa] = await Promise.all([
+    // O "Sobre" só de quem tem (SOBRE.tem): os outros jogos não pagam o pedido.
+    // Sem o arquivo (null), a tela sai como a dos modernos.
+    const [casca, mapa, sobre] = await Promise.all([
       buscaPagina(env, request, "/sets.html"),
-      jsonDoSite(env, request, `/data/game-pages/${jogo.url}.json`)
+      jsonDoSite(env, request, `/data/game-pages/${jogo.url}.json`),
+      SOBRE.tem(jogo.url) ? jsonDoSite(env, request, `/data/sobre/${jogo.url}.json`) : null
     ]);
-    const meta = metaDoJogo(jogo, listaDeSets(mapa));
+    const meta = metaDoJogo(jogo, listaDeSets(mapa), sobre);
     const rw = new HTMLRewriter()
       .on("title", texto(meta.titulo))
       .on('meta[name="description"]', atributo("content", meta.desc))
@@ -144,6 +166,10 @@ async function telaDoJogo(context, jogo) {
       // O nome do jogo no H1 já no HTML (o CSS o desenha antes de "Sets"): sem
       // esperar o JS, a tela não pisca de "Sets" pra "Star Wars: Unlimited Sets".
       .on(".page-head h1", atributo("data-game", jogo.nome))
+      // O "Sobre" entra logo acima da contagem de sets: é o topo da tela, no
+      // lugar do destaque do "Último set" (que o app.js não desenha nesses jogos).
+      .on("section.results-header", { element(el) { if (meta.sobreHtml) el.before(meta.sobreHtml, { html: true }); } })
+      .on("head", { element(el) { if (meta.jsonLd) el.append(meta.jsonLd, { html: true }); } })
       .on("main", { element(el) { if (meta.indiceHtml) el.append(meta.indiceHtml, { html: true }); } });
     return comVitrine(rw.transform(casca), request);
   } catch (e) {

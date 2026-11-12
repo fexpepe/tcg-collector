@@ -272,6 +272,8 @@ há o que ligar. São três peças, todas no
    - jogo parado há mais de um ano (vintage) mostra "Último set" e
      "Anteriores", com a data na precisão que o catálogo tem ("outubro de
      2002", sem dia inventado);
+   - jogo vintage **com "Sobre"** (3.5) não tem destaque: o topo é a
+     história do jogo;
    - pra quem tem carta no jogo, **"Continue completando"**;
    - sem nenhum set com data (Miracle Battle), não há destaque.
 
@@ -285,6 +287,31 @@ Yu-Gi-Oh! e "BanG Dream! Girls Band Party!" no Weiß, uns 6 casos em ~1.400
 sets fora do Magic e do Pokémon (medido em 2026-10-09). O chip continua
 levando ao set. Apertar a janela mudaria o Pokémon e o Magic, que são a
 referência.
+
+### 3.5 O "Sobre" do jogo vintage
+
+Jogo que morreu ganha, no topo da página dele, o **"Sobre"**: logo, nome
+oficial e o original, um resumo, a ficha (lançamento, encerramento,
+fabricante, licença, origem, distribuição…), a história e a linha do tempo,
+com as fontes. É o princípio do Sleevu de trazer de volta à vida os TCGs
+mortos e esquecidos (ver o [ROADMAP.md](../ROADMAP.md)): quem chega pelo
+Google ou por uma IA precisa saber o que o jogo foi antes de ver a lista de
+cartas. Os modernos não têm o bloco: estão vivos, e o lançamento diz mais.
+Começou pelo Dragon Ball Carddass (2026-11-12); os outros vintage entram um a
+um.
+
+- **Texto:** `data/sobre/<url do jogo>.json`, os três idiomas no mesmo
+  arquivo. Todo campo de texto é string (vale pros três) ou `{ pt, en, es }`.
+  Só fato com fonte: a fonte vai em `fontes` e aparece no pé da história. O
+  que as fontes não confirmam fica de fora (não se arredonda data nem número).
+- **Desenho:** um arquivo só, `src/sobre-jogo.js`, usado pela borda
+  (`functions/games/[[path]].js` põe o bloco em pt no HTML, mais o JSON-LD
+  `Game` e o resumo como descrição) e pelo navegador (o `app.js` redesenha no
+  idioma da pessoa, com a linha do tempo linkando os sets pelo `setId`).
+- **Jogo novo no "Sobre":** o JSON + o endereço em `COM_SOBRE` no
+  `src/sobre-jogo.js`. O `tests/sobre-jogo.test.mjs` confere a lista contra os
+  arquivos, os campos obrigatórios nos três idiomas, o tamanho do resumo (é a
+  descrição do Google) e que todo `set` da linha do tempo existe no catálogo.
 
 ## 4. Linha ou jogo novo
 

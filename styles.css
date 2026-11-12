@@ -8456,6 +8456,107 @@ html[data-collector-mode] .hb-worth .collector-badge { font-size: 28px; font-wei
 .sx-cont-title { margin: 0 0 10px; font-size: 17px; }
 .sx-cont-rail { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
 
+/* ── "Sobre" do jogo vintage (src/sobre-jogo.js, 2026-11-12) ──────────────
+   No topo da tela de um jogo que acabou, no lugar do destaque do "Último
+   set": logo no mesmo chip claro do destaque, nome oficial e o original, o
+   resumo e a ficha; embaixo, a história (à esquerda) e a linha do tempo. A
+   borda desenha o bloco em pt no HTML; o app.js o redesenha no idioma da
+   pessoa. Até lá, quem lê em outro idioma não vê o pt piscar (o espaço fica
+   guardado, sem pulo). */
+.sx-sobre { display: grid; gap: 12px; margin: 2px 0 18px; }
+.sx-sobre[hidden] { display: none; }
+html:not([lang^="pt"]) .sx-sobre[data-idioma="pt"] { visibility: hidden; }
+.sx-sobre-topo {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.7fr);
+  min-height: 236px; background: var(--panel); border: 1px solid var(--line);
+}
+.sx-sobre-arte {
+  display: grid; place-items: center; padding: 26px;
+  background: radial-gradient(circle at 50% 0%, #ffffff, #eef0f3 78%);
+}
+.sx-sobre-logo { max-width: 88%; max-height: 156px; height: auto; object-fit: contain; }
+.sx-sobre-id { display: flex; flex-direction: column; justify-content: center; gap: 8px; padding: 24px 28px; min-width: 0; }
+.sx-sobre-nome { margin: 0; font-size: clamp(26px, 1.2rem + 1.1vw, 36px); font-weight: 800; line-height: 1.08; letter-spacing: -0.01em; }
+.sx-sobre-original { margin: 0; font-size: 15px; color: var(--muted); }
+.sx-sobre-original small { font-size: 13px; margin-left: 6px; }
+.sx-sobre-resumo { margin: 4px 0 0; max-width: 72ch; font-size: 15.5px; line-height: 1.55; }
+/* Ficha: rótulo pequeno em cima, valor forte embaixo; 3 colunas no desktop. */
+.sx-sobre-fatos {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px 24px;
+  margin: 10px 0 0; padding-top: 16px; border-top: 1px solid var(--line);
+}
+.sx-sobre-fatos dt { font-size: 12px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
+.sx-sobre-fatos dd { margin: 3px 0 0; font-size: 15px; font-weight: 700; overflow-wrap: anywhere; }
+.sx-sobre-corpo { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); gap: 12px; align-items: start; }
+.sx-sobre-cartao { padding: 20px 24px; background: var(--panel); border: 1px solid var(--line); min-width: 0; }
+/* Título de cartão no mesmo tom do "Anteriores" do destaque (.sx-eyebrow). */
+.sx-sobre-h3 {
+  margin: 0 0 12px; font-size: 12px; font-weight: 800; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--muted);
+}
+.sx-sobre-texto p { margin: 0 0 12px; max-width: 75ch; font-size: 15px; line-height: 1.65; }
+.sx-sobre-texto p:last-child { margin-bottom: 0; }
+/* "Ler mais" só existe no celular (o texto recolhido mora no @media abaixo). */
+.sx-sobre-mais {
+  display: none; align-items: center; min-height: 44px; margin-top: 4px; padding: 0;
+  background: none; border: 0; color: var(--accent); font: inherit; font-weight: 800; cursor: pointer;
+}
+.sx-sobre-fontes { margin: 16px 0 0; font-size: 12.5px; line-height: 1.6; color: var(--muted); }
+.sx-sobre-fontes span { font-weight: 700; }
+.sx-sobre-fontes a { color: var(--muted); text-decoration: underline; text-underline-offset: 2px; }
+.sx-sobre-fontes a:hover { color: var(--accent); }
+/* Linha do tempo: ano à esquerda, o fio com o ponto no meio, o fato à direita. */
+.sx-linha { position: relative; margin: 0; padding: 0; list-style: none; }
+.sx-linha-item { position: relative; display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 0 22px; padding-bottom: 14px; }
+.sx-linha-item::before { content: ""; position: absolute; left: 74px; top: 8px; bottom: -8px; width: 2px; background: var(--line); }
+.sx-linha-item:last-child { padding-bottom: 0; }
+.sx-linha-item:last-child::before { display: none; }
+.sx-linha-item::after { content: ""; position: absolute; left: 70px; top: 5px; width: 10px; height: 10px; background: var(--accent); }
+.sx-linha-quando { text-align: right; font-variant-numeric: tabular-nums; line-height: 1.25; }
+.sx-linha-quando b { display: block; font-size: 15px; font-weight: 800; }
+.sx-linha-quando span { font-size: 12px; color: var(--muted); }
+.sx-linha-texto { margin: 0; font-size: 14px; line-height: 1.5; }
+.sx-linha-texto a { color: var(--text); text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; }
+.sx-linha-texto a:hover { color: var(--accent); text-decoration-color: currentColor; }
+
+@media (max-width: 960px) {
+  .sx-sobre-corpo { grid-template-columns: minmax(0, 1fr); }
+  .sx-sobre-fatos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 700px) {
+  /* Empilhado como o destaque: logo em cima, dados embaixo. */
+  .sx-sobre-topo { grid-template-columns: minmax(0, 1fr); min-height: 0; }
+  .sx-sobre-arte { padding: 18px; min-height: 112px; }
+  .sx-sobre-logo { max-height: 84px; }
+  .sx-sobre-id { padding: 16px 18px 18px; gap: 6px; }
+  .sx-sobre-resumo { font-size: 15px; }
+  .sx-sobre-fatos { gap: 12px 16px; padding-top: 14px; }
+  .sx-sobre-cartao { padding: 16px 18px; }
+  /* A história nasce em 6 linhas com um fade; "Ler mais" abre o resto. O
+     texto inteiro está no HTML (é o que o robô lê); só a altura é cortada. */
+  .sx-sobre-texto.is-recolhido {
+    max-height: calc(15px * 1.65 * 6); overflow: hidden;
+    -webkit-mask-image: linear-gradient(#000 55%, transparent);
+    mask-image: linear-gradient(#000 55%, transparent);
+  }
+  .sx-sobre-mais { display: inline-flex; }
+  /* Linha do tempo: trilho que rola de lado (como o Continue completando),
+     pra não empurrar os sets duas telas pra baixo. */
+  .sx-linha {
+    display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
+    margin-inline: -18px; padding: 0 18px 4px; scroll-padding-inline: 18px;
+  }
+  .sx-linha::-webkit-scrollbar { display: none; }
+  .sx-linha-item {
+    flex: 0 0 72%; display: flex; flex-direction: column; gap: 6px; padding: 12px 14px;
+    background: var(--panel-strong); border-top: 3px solid var(--accent); scroll-snap-align: start;
+  }
+  .sx-linha-item:last-child { padding-bottom: 12px; }
+  .sx-linha-item::before, .sx-linha-item::after { display: none; }
+  .sx-linha-quando { text-align: left; }
+  .sx-linha-quando b { display: inline; margin-right: 4px; }
+}
+
 /* ── Cartão de set ─────────────────────────────────────────────────────── */
 /* Logo maior: o cartão é o rosto do set (a vitrine é visual). */
 .sx-grid .set-art { min-height: 116px; }
