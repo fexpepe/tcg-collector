@@ -43,7 +43,7 @@ const UA = { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKi
 const NO_FETCH = process.argv.includes("--no-fetch");
 const GAME = "dbc";
 const ID_PREFIX = "dbc-";
-const LOGO = "/assets/games/game_dbc.webp";
+const LOGO = "/assets/games/game_dbc-v2.webp";
 
 // Séries: `code` é o prefixo do setId (dbc-h06, dbc-sb01…); `ja` vai no nome
 // do set. A ordem aqui é a ordem das seções na página de Sets. O Hondan era

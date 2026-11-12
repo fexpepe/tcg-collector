@@ -172,14 +172,34 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
   eram três arquivos, `game_onepiece_miracle`, `game_naruto_miracle` e
   `game_hxh_miracle`, um por linha, com o MESMO conteúdo (md5 igual): o logo
   oficial do jogo, que não muda de franquia pra franquia.
-- `game_dbc.webp` — Dragon Ball Carddass (Bandai, 1988→; tile vintage do jogo
-  `dbc`). Fonte enviada pelo Fernando em 2026-09-24: 414×260 com fundo branco e
-  muita margem. Recortado no conteúdo + 2px, a regra dos -v2 (abaixo) = 373×82
-  (em 2026-09-24 tinha saído com 6px de margem; refeito em 2026-09-30, quando o
-  jogo entrou). Como o Union Arena, **não** foi esticado pra 512 e o fundo
-  branco fica: é opaco, então não tem véu de alfa, e a cápsula do hub é branca
-  nos dois temas. É o logo mais largo (~4.5:1), mas não precisa de scale no CSS:
-  o equilíbrio óptico do `.hub-logo` já dá a largura pela proporção.
+- `game_dbc-v2.webp` — Dragon Ball Carddass (Bandai, 1988→; tile vintage do
+  jogo `dbc` e `setLogo` de todos os sets dele, via sync-dbc-carddass.mjs).
+  Fonte enviada pelo Fernando em 2026-09-24: 414×260 com fundo branco e muita
+  margem. Recortado no conteúdo + 2px, a regra dos -v2 (abaixo) = 373×82, e
+  **não** foi esticado pra 512 (bitmap pequeno, como o Union Arena). É o logo
+  mais largo (~4.5:1), mas não precisa de scale no CSS: o equilíbrio óptico do
+  `.hub-logo` já dá a largura pela proporção.
+  Até 2026-11-12 era o `game_dbc.webp`, opaco com o fundo branco. Na cápsula
+  branca do hub não aparecia, mas fora dela (página do jogo, cinza claro) dava
+  pra ver o retângulo. O fundo saiu do próprio arquivo de 373×82 (a fonte
+  original não está no repo), com o Pillow + scipy:
+  - **Tinta** = pixel com o menor canal abaixo de 120: o contorno, a sombra, o
+    vermelho e o amarelo das letras e o vermelho dos círculos.
+  - O que fica **opaco** é a tinta com os buracos fechados dela preenchidos. É
+    assim que o creme do katakana, dentro dos 12 círculos, continua opaco: com
+    esse limiar cada círculo fecha sozinho, ~268 px cada.
+  - As duas fendas claras de dentro dos "S" são exceção: são o fundo visto por
+    dentro do contorno (buracos com miolo ≥ 180; o amarelo de dentro das letras
+    não passa de 139), e ficaram transparentes.
+  - **Alfa:** o resto, mais a beira da tinta (até 2 px do fundo, que no JPEG já
+    vinha misturada com o branco), tem o alfa desmisturado do branco. A conta é
+    a = (255 − min(C)) / (255 − min(F)), com F = a tinta mais escura num raio
+    de 2 px. Na base das letras o contorno tem 1 px, e a tinta mais PRÓXIMA ali
+    era o amarelo, que deixava uma linha clara no tema escuro. A cor também é
+    desmisturada; com alfa abaixo de 0,35 vale a de F.
+  - Sobre branco reproduz a fonte (diferença média de 2,8 níveis, a da
+    compressão); no escuro não sobra franja clara.
+  - Alfa abaixo de 12 zerado. WebP q88 com alfa sem perda: 16 KB.
 - `game_lotr.webp` — The Lord of the Rings Trading Card Game (Decipher,
   2001–2007; tile vintage do jogo `lotr`). Fonte enviada pelo Fernando em
   2026-10-01: 481×243, letras douradas sobre PRETO com um brilho laranja
