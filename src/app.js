@@ -106,6 +106,9 @@
   // Sets do jogo por id, pros links da linha do tempo (preenchido na lista sem
   // busca, em getViewItems).
   let setsPorId = null;
+  // "Saber mais" aberto (o corpo nasce fechado): o redesenho do bloco — no
+  // idioma da pessoa, ou com os links quando os sets chegam — não o fecha.
+  let sobreAberto = false;
   const sobrePromise = comSobre
     ? fetch(`data/sobre/${urlDaTela}.json`).then((r) => (r.ok ? r.json() : null)).catch(() => null)
     : Promise.resolve(null);
@@ -119,7 +122,8 @@
     if (antes && !setsPorId && antes.getAttribute("data-idioma") === sobreApi.idioma(lang)) return;
     const caixa = document.createElement("div");
     caixa.innerHTML = sobreApi.html(dados, lang, {
-      hrefDoSet: (id) => (setsPorId && setsPorId.has(id) ? setDetailUrl(setsPorId.get(id)) : "")
+      hrefDoSet: (id) => (setsPorId && setsPorId.has(id) ? setDetailUrl(setsPorId.get(id)) : ""),
+      aberto: sobreAberto
     });
     const novo = caixa.firstElementChild;
     if (!novo) return;
@@ -132,17 +136,18 @@
   }
   if (comSobre) {
     sobrePromise.then(desenhaSobre);
-    // "Ler mais" da história (no celular o texto nasce recolhido; ver
-    // .sx-sobre-texto no styles.css). Delegado: o bloco é trocado inteiro.
+    // "Saber mais": abre e fecha a história e a linha do tempo. Delegado,
+    // porque o bloco é trocado inteiro no redesenho.
     document.addEventListener("click", (event) => {
-      const botao = event.target.closest && event.target.closest(".sx-sobre-mais");
+      const botao = event.target.closest && event.target.closest(".sx-sobre-abre");
       if (!botao) return;
-      const texto = document.getElementById(botao.getAttribute("aria-controls"));
-      if (!texto) return;
-      const abre = texto.classList.contains("is-recolhido");
-      texto.classList.toggle("is-recolhido", !abre);
-      botao.setAttribute("aria-expanded", String(abre));
-      botao.textContent = botao.getAttribute(abre ? "data-menos" : "data-mais");
+      const corpo = document.getElementById(botao.getAttribute("aria-controls"));
+      if (!corpo) return;
+      sobreAberto = corpo.hidden;
+      corpo.hidden = !sobreAberto;
+      botao.setAttribute("aria-expanded", String(sobreAberto));
+      const rotulo = botao.querySelector("span");
+      if (rotulo) rotulo.textContent = botao.getAttribute(sobreAberto ? "data-menos" : "data-mais");
     });
   }
   const pager = shared.createPager({

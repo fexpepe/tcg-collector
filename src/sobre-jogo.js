@@ -36,7 +36,7 @@
   const ROTULOS = {
     pt: {
       secao: "Sobre o jogo", historia: "História", linha: "Linha do tempo", fontes: "Fontes",
-      mais: "Ler mais", menos: "Ler menos", logo: "Logo do jogo", verSet: "Ver o set",
+      mais: "Saber mais", menos: "Mostrar menos", logo: "Logo do jogo", verSet: "Ver o set",
       fatos: {
         lancamento: "Lançamento", encerramento: "Encerramento", fabricante: "Fabricante",
         licenca: "Licença", origem: "Origem", distribuicao: "Distribuição", formato: "Formato", preco: "Preço original"
@@ -46,7 +46,7 @@
     },
     en: {
       secao: "About the game", historia: "History", linha: "Timeline", fontes: "Sources",
-      mais: "Read more", menos: "Read less", logo: "Game logo", verSet: "See the set",
+      mais: "Learn more", menos: "Show less", logo: "Game logo", verSet: "See the set",
       fatos: {
         lancamento: "Released", encerramento: "Ended", fabricante: "Publisher",
         licenca: "License", origem: "Origin", distribuicao: "Distribution", formato: "Format", preco: "Original price"
@@ -56,7 +56,7 @@
     },
     es: {
       secao: "Sobre el juego", historia: "Historia", linha: "Cronología", fontes: "Fuentes",
-      mais: "Leer más", menos: "Leer menos", logo: "Logo del juego", verSet: "Ver el set",
+      mais: "Saber más", menos: "Mostrar menos", logo: "Logo del juego", verSet: "Ver el set",
       fatos: {
         lancamento: "Lanzamiento", encerramento: "Fin", fabricante: "Fabricante",
         licenca: "Licencia", origem: "Origen", distribuicao: "Distribución", formato: "Formato", preco: "Precio original"
@@ -151,11 +151,21 @@
 
     const historiaHtml = historia.length ? `<section class="sx-sobre-cartao" aria-labelledby="sx-sobre-historia">
         <h3 id="sx-sobre-historia" class="sx-sobre-h3">${esc(R.historia)}</h3>
-        <div class="sx-sobre-texto is-recolhido" id="sx-sobre-texto">${historia.map((p) => `<p>${esc(p)}</p>`).join("")}</div>
-        <button type="button" class="sx-sobre-mais" aria-controls="sx-sobre-texto" aria-expanded="false" data-mais="${esc(R.mais)}" data-menos="${esc(R.menos)}">${esc(R.mais)}</button>
+        <div class="sx-sobre-texto">${historia.map((p) => `<p>${esc(p)}</p>`).join("")}</div>
         ${fontes.length ? `<p class="sx-sobre-fontes"><span>${esc(R.fontes)}:</span> ${fontes.map((f) =>
           `<a href="${esc(f.url)}" target="_blank" rel="nofollow noopener noreferrer">${esc(f.nome)}</a>`).join(" · ")}</p>` : ""}
       </section>` : "";
+
+    // História + linha do tempo nascem FECHADAS atrás do "Saber mais" do
+    // cartão de cima (pedido de 2026-11-12: abertas, empurravam os sets uma
+    // tela pra baixo). O texto está no HTML mesmo fechado: é o que o robô lê.
+    // `opcoes.aberto` mantém aberto quem já abriu, quando o app redesenha.
+    const temCorpo = !!(historiaHtml || linhaHtml);
+    const aberto = temCorpo && !!op.aberto;
+    const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>`;
+    const botaoHtml = temCorpo
+      ? `<button type="button" class="sx-sobre-abre" aria-controls="sx-sobre-corpo" aria-expanded="${aberto}" data-mais="${esc(R.mais)}" data-menos="${esc(R.menos)}"><span>${esc(aberto ? R.menos : R.mais)}</span>${chevron}</button>`
+      : "";
 
     return `<section class="sx-sobre" id="sobre" data-sobre-jogo="${esc(dados.url)}" data-idioma="${lang}" aria-label="${esc(R.secao)}">
       <div class="sx-sobre-topo">
@@ -166,9 +176,10 @@
           ${orig && orig.texto ? `<p class="sx-sobre-original"><span lang="${esc(orig.lang || "ja")}">${esc(orig.texto)}</span>${orig.romaji ? ` <small>${esc(orig.romaji)}</small>` : ""}</p>` : ""}
           ${dados.resumo ? `<p class="sx-sobre-resumo">${esc(tx(dados.resumo, lang))}</p>` : ""}
           ${fichaHtml}
+          ${botaoHtml}
         </div>
       </div>
-      ${historiaHtml || linhaHtml ? `<div class="sx-sobre-corpo">${historiaHtml}${linhaHtml}</div>` : ""}
+      ${temCorpo ? `<div class="sx-sobre-corpo" id="sx-sobre-corpo"${aberto ? "" : " hidden"}>${historiaHtml}${linhaHtml}</div>` : ""}
     </section>`;
   }
 

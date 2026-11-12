@@ -8487,8 +8487,22 @@ html:not([lang^="pt"]) .sx-sobre[data-idioma="pt"] { visibility: hidden; }
 }
 .sx-sobre-fatos dt { font-size: 12px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
 .sx-sobre-fatos dd { margin: 3px 0 0; font-size: 15px; font-weight: 700; overflow-wrap: anywhere; }
-.sx-sobre-corpo { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); gap: 12px; align-items: start; }
-.sx-sobre-cartao { padding: 20px 24px; background: var(--panel); border: 1px solid var(--line); min-width: 0; }
+/* "Saber mais": abre a história e a linha do tempo, que nascem fechadas
+   (abertas, empurravam os sets uma tela pra baixo). A seta vira quando abre. */
+.sx-sobre-abre {
+  display: inline-flex; align-items: center; gap: 8px; align-self: flex-start; margin-top: 8px;
+  min-height: 44px; padding: 0 16px; background: var(--panel-strong); border: 1px solid var(--line);
+  color: var(--text); font: inherit; font-size: 14px; font-weight: 800; cursor: pointer;
+  transition: border-color .15s ease, color .15s ease;
+}
+.sx-sobre-abre:hover { border-color: var(--accent); color: var(--accent); }
+.sx-sobre-abre svg { width: 18px; height: 18px; transition: transform .2s ease; }
+.sx-sobre-abre[aria-expanded="true"] svg { transform: rotate(180deg); }
+/* Os dois cartões com a MESMA altura (a do maior: o grid estica por
+   padrão), pra fecharem alinhados embaixo; as fontes descem pro pé da
+   história. */
+.sx-sobre-corpo { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); gap: 12px; }
+.sx-sobre-cartao { display: flex; flex-direction: column; padding: 20px 24px; background: var(--panel); border: 1px solid var(--line); min-width: 0; }
 /* Título de cartão no mesmo tom do "Anteriores" do destaque (.sx-eyebrow). */
 .sx-sobre-h3 {
   margin: 0 0 12px; font-size: 12px; font-weight: 800; letter-spacing: .06em;
@@ -8496,12 +8510,7 @@ html:not([lang^="pt"]) .sx-sobre[data-idioma="pt"] { visibility: hidden; }
 }
 .sx-sobre-texto p { margin: 0 0 12px; max-width: 75ch; font-size: 15px; line-height: 1.65; }
 .sx-sobre-texto p:last-child { margin-bottom: 0; }
-/* "Ler mais" só existe no celular (o texto recolhido mora no @media abaixo). */
-.sx-sobre-mais {
-  display: none; align-items: center; min-height: 44px; margin-top: 4px; padding: 0;
-  background: none; border: 0; color: var(--accent); font: inherit; font-weight: 800; cursor: pointer;
-}
-.sx-sobre-fontes { margin: 16px 0 0; font-size: 12.5px; line-height: 1.6; color: var(--muted); }
+.sx-sobre-fontes { margin: auto 0 0; padding-top: 16px; font-size: 12.5px; line-height: 1.6; color: var(--muted); }
 .sx-sobre-fontes span { font-weight: 700; }
 .sx-sobre-fontes a { color: var(--muted); text-decoration: underline; text-underline-offset: 2px; }
 .sx-sobre-fontes a:hover { color: var(--accent); }
@@ -8534,14 +8543,8 @@ html:not([lang^="pt"]) .sx-sobre[data-idioma="pt"] { visibility: hidden; }
   .sx-sobre-resumo { font-size: 15px; }
   .sx-sobre-fatos { gap: 12px 16px; padding-top: 14px; }
   .sx-sobre-cartao { padding: 16px 18px; }
-  /* A história nasce em 6 linhas com um fade; "Ler mais" abre o resto. O
-     texto inteiro está no HTML (é o que o robô lê); só a altura é cortada. */
-  .sx-sobre-texto.is-recolhido {
-    max-height: calc(15px * 1.65 * 6); overflow: hidden;
-    -webkit-mask-image: linear-gradient(#000 55%, transparent);
-    mask-image: linear-gradient(#000 55%, transparent);
-  }
-  .sx-sobre-mais { display: inline-flex; }
+  /* Botão na largura toda: alvo grande, logo abaixo da ficha. */
+  .sx-sobre-abre { align-self: stretch; justify-content: center; }
   /* Linha do tempo: trilho que rola de lado (como o Continue completando),
      pra não empurrar os sets duas telas pra baixo. */
   .sx-linha {
