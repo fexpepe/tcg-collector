@@ -4,7 +4,9 @@
 // (21 do Magic, o H36 do One Piece Carddass, 19 promos MEP do Pokémon) foram
 // juntadas pelo de-para do data/card-id-merges.json, que migra a coleção de
 // quem marcou a cópia. A MEP não volta pelo build porque o merge-catalogs já
-// pula id com de-para (jaMigrado). O que se trava aqui:
+// pula id com de-para (jaMigrado). Em 12/11 entraram mais 11 do Magic que o
+// Scryfall RENUMEROU (mesma carta deles, número novo), com o endereço antigo
+// no data/cartas-movidas.json. O que se trava aqui:
 //   - os dois syncs não criam a cópia de novo (sync-magic.mjs primeiraVez,
 //     sync-onepiece-vintage.mjs semRepetidasNoSet);
 //   - id juntado em outro não volta pelo cache nem pelos chunks
@@ -59,6 +61,10 @@ test("no app, quem marcou a cópia passa a ter a carta que ficou", () => {
   assert.equal(t.mergedCardId("mtg-sld-2766-2"), "mtg-sld-2766");
   assert.equal(t.mergedCardId("opcd-H36-grand-box-dx"), "opcd-H36");
   assert.equal(t.mergedCardId("mep-89"), "mep-089");
+  // Renumerada pelo Scryfall (2026-11-12): a direção é a do Scryfall de
+  // hoje, não a da data. Nas Media Promos o número que vale é o 2024-9.
+  assert.equal(t.mergedCardId("mtg-pmei-2025-1"), "mtg-pmei-2024-9");
+  assert.equal(t.mergedCardId("mtg-sld-2343"), "mtg-sld-2433");
   assert.equal(t.mergedCardId("mep-89-pt"), "", "a edição portuguesa não tem cópia");
   assert.equal(t.mergedCardId("mtg-sld-2766"), "", "a carta que ficou não muda");
   // Marcou as duas: na coleção as cópias somam (a regra do id-merges.test.mjs).
@@ -68,7 +74,12 @@ test("no app, quem marcou a cópia passa a ter a carta que ficou", () => {
 
 test("as cópias juntadas não estão no catálogo, e a carta que ficou está", () => {
   const pares = Object.entries(merges.cards).filter(([de]) => /^(mtg|opcd)-|^mep-\d{2}$/.test(de));
-  assert.ok(pares.length >= 41, "os 41 pares de 11/11 estão no de-para");
+  assert.ok(pares.length >= 52, "os 41 pares de 11/11 e os 11 renumerados de 12/11 estão no de-para");
+  // A renumerada muda de endereço: o antigo está no registro, apontando pra
+  // carta que ficou (o cartaParecida não acha pelo número velho).
+  const registro = JSON.parse(readFileSync(new URL("data/cartas-movidas.json", RAIZ), "utf8"));
+  assert.equal(registro["magic-the-gathering/media-and-collaboration-promos/shock-2025-1"], "mtg-pmei-2024-9");
+  assert.equal(registro["magic-the-gathering/the-list/scars-of-the-veteran-all-16"], "mtg-plst-cst-16");
   const mep = new Set(JSON.parse(readFileSync(new URL("data/sets/en/mep.json", RAIZ), "utf8")).map((c) => c.id));
   // O mep-92 fica: é outro produto (normal; a mep-092 é holo).
   assert.ok(mep.has("mep-92") && !merges.cards["mep-92"]);

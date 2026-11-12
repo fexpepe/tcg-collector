@@ -85,10 +85,19 @@ export function enderecosARegistrar(game, antes, depois, idDeHoje) {
   const movidas = {};
   const erradas = {};
   for (const [chave, antigo] of antigos) {
-    const novo = hoje.get(chave);
+    let novo = hoje.get(chave);
+    let id = chave.slice(chave.indexOf("|") + 1);
+    // Carta juntada em outra (data/card-id-merges.json, 2026-11-12): o id saiu
+    // do catálogo, e o endereço antigo é o da carta que ficou. A cópia com o
+    // mesmo número o cartaParecida já acha; a carta que o Scryfall RENUMEROU
+    // ("shock-2025-1" virou "shock-2024-9") daria 404 sem o registro.
+    if (!novo && idDeHoje) {
+      const ficou = idDeHoje(id);
+      const destino = ficou && hoje.get(`${chave.slice(0, chave.indexOf("|"))}|${ficou}`);
+      if (destino) { novo = destino; id = ficou; }
+    }
     if (!novo || novo === antigo) continue;
     const pagina = paginaDe.get(SET_DO(antigo));
-    const id = chave.slice(chave.indexOf("|") + 1);
     if (!pagina) {
       // O set do endereço não tem mais página. Se a carta está no destino do
       // de-para do set, o 301 do set a leva; senão entra aqui, uma a uma.

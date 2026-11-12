@@ -1,5 +1,5 @@
 {
- "_": "De-para de cardId de set importado que a TCGdex publicou com OUTRO setId (scripts/retire-imported-sets.mjs). sets: histórico das aposentadorias. prefixes: troca só do prefixo do set, quando a numeração bateu inteira (cel30-001 -> 30th-001). cards: par a par, quando a numeração mudou (o Classic Collection é numerado em sequência pela TCGdex e pelo número original no TCGplayer). images: arte que só o chunk importado tinha, carimbada pelo merge-catalogs enquanto a TCGdex não publicar a dela. NADA sai daqui: o id é a única ponte entre a coleção de alguém e uma carta, e conta antiga volta meses depois. Os nrt-nf-*/nrt-nx-* (30/09/2026) são capítulo do Data Carddass NARUTO que estava partido em dois sets e voltou a ser um (scripts/lib/naruto-dc-capitulos.mjs): as cartas mantêm o id, e o de-para de set só leva o link velho ao capítulo. A nrt-nf-can-001 (04/11/2026) é a CAN-001 da Mission, que o Suruga-ya anunciava como Formation: virou nrt-dc-can-001, nas promos da Mission (scripts/lib/naruto-datacarddass.mjs), e o set de uma carta só em que ela estava (nrt-nf-s02) leva ao novo. Os mtg-*-2 e o opcd-H36-grand-box-dx (11/11/2026) são a MESMA carta duas vezes no set, criada pelo sync: a busca paginada do Scryfall entregava a carta em duas páginas (The List, Secret Lair, Star Trek) e o Grand Line Wiki lista o H36 nos dois decks do Grand Box DX. O -2 junta no id sem sufixo, e os dois syncs não criam mais a cópia (sync-magic.mjs primeiraVez, sync-onepiece-vintage.mjs semRepetidasNoSet). Os mep-55…mep-99 sem o zero (11/11/2026) são promos MEP que entraram pela fonte de preço (TCGplayer, agosto de 2026) antes de a TCGdex publicar a carta, com a aposta de id sem o zero; a TCGdex publicou com três dígitos (mep-089) em 08/11 e a de dois dígitos ficou ao lado, mesma carta e mesma imagem. O mep-92 não entrou: é outro produto no TCGplayer (normal, e a mep-092 é holo).",
+ "_": "De-para de cardId de set importado que a TCGdex publicou com OUTRO setId (scripts/retire-imported-sets.mjs). sets: histórico das aposentadorias. prefixes: troca só do prefixo do set, quando a numeração bateu inteira (cel30-001 -> 30th-001). cards: par a par, quando a numeração mudou (o Classic Collection é numerado em sequência pela TCGdex e pelo número original no TCGplayer). images: arte que só o chunk importado tinha, carimbada pelo merge-catalogs enquanto a TCGdex não publicar a dela. NADA sai daqui: o id é a única ponte entre a coleção de alguém e uma carta, e conta antiga volta meses depois. Os nrt-nf-*/nrt-nx-* (30/09/2026) são capítulo do Data Carddass NARUTO que estava partido em dois sets e voltou a ser um (scripts/lib/naruto-dc-capitulos.mjs): as cartas mantêm o id, e o de-para de set só leva o link velho ao capítulo. A nrt-nf-can-001 (04/11/2026) é a CAN-001 da Mission, que o Suruga-ya anunciava como Formation: virou nrt-dc-can-001, nas promos da Mission (scripts/lib/naruto-datacarddass.mjs), e o set de uma carta só em que ela estava (nrt-nf-s02) leva ao novo. Os mtg-*-2 e o opcd-H36-grand-box-dx (11/11/2026) são a MESMA carta duas vezes no set, criada pelo sync: a busca paginada do Scryfall entregava a carta em duas páginas (The List, Secret Lair, Star Trek) e o Grand Line Wiki lista o H36 nos dois decks do Grand Box DX. O -2 junta no id sem sufixo, e os dois syncs não criam mais a cópia (sync-magic.mjs primeiraVez, sync-onepiece-vintage.mjs semRepetidasNoSet). Os mep-55…mep-99 sem o zero (11/11/2026) são promos MEP que entraram pela fonte de preço (TCGplayer, agosto de 2026) antes de a TCGdex publicar a carta, com a aposta de id sem o zero; a TCGdex publicou com três dígitos (mep-089) em 08/11 e a de dois dígitos ficou ao lado, mesma carta e mesma imagem. O mep-92 não entrou: é outro produto no TCGplayer (normal, e a mep-092 é holo). Os 11 mtg-plst/pmei/pwcs/sld de 12/11/2026 são carta que o Scryfall RENUMEROU (mesmo id de carta deles, outro collector_number): a união preservadora mantinha a do número velho ao lado da do novo. A direção vem do Scryfall de hoje, não da data: nas Media Promos o número que vale é o 2024-9 e o velho é o 2025-1.",
  "sets": [
   {
    "from": "cel30",
@@ -327,7 +327,18 @@
   "mep-96": "mep-096",
   "mep-97": "mep-097",
   "mep-98": "mep-098",
-  "mep-99": "mep-099"
+  "mep-99": "mep-099",
+  "mtg-plst-all-16": "mtg-plst-cst-16",
+  "mtg-plst-drk-21": "mtg-plst-2xm-40",
+  "mtg-plst-dmc-175": "mtg-plst-c20-18",
+  "mtg-pmei-2025-1": "mtg-pmei-2024-9",
+  "mtg-pmei-2025-4": "mtg-pmei-2024-11",
+  "mtg-pmei-2025-7": "mtg-pmei-2024-10",
+  "mtg-pmei-2026-08": "mtg-pmei-2026-8",
+  "mtg-pmei-2026-09": "mtg-pmei-2026-9",
+  "mtg-pwcs-2026-05": "mtg-pwcs-2026-5",
+  "mtg-sld-2343": "mtg-sld-2433",
+  "mtg-sld-2344": "mtg-sld-2434"
  },
  "images": {
   "30th-c-019": "https://tcgplayer-cdn.tcgplayer.com/product/716199_in_400x400.jpg",

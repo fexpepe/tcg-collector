@@ -218,6 +218,28 @@ test("dentro do set: entra o endereço que viraria 404 (nome e número mudaram)"
     { "naruto-data-carddass/data-carddass-1/nine-tails-naruto-dn-051-jp": "nrt-dc-dn-051" });
 });
 
+test("carta juntada em outra: a renumerada entra com o id que ficou; a cópia de mesmo número, não", () => {
+  // 2026-11-12: o id juntado (data/card-id-merges.json) sai do catálogo. A
+  // cópia "-2" com o mesmo número o cartaParecida já leva pra carta que
+  // ficou; a que mudou de número (o Scryfall renumerou "Shock 2025-1" pra
+  // "2024-9") daria 404 sem o registro.
+  const antes = [
+    ...BASE,
+    dc("nrt-dc-dn-051-2", "Nine-Tails Naruto", "DN-051", DC1, "nrt-dc-s01"),
+    dc("nrt-dc-dn-060", "Kakashi Hatake", "DN-060", DC1, "nrt-dc-s01"),
+    dc("nrt-dc-dn-061", "Kakashi Hatake", "DN-061", DC1, "nrt-dc-s01")
+  ];
+  const depois = antes.filter((c) => c.id !== "nrt-dc-dn-051-2" && c.id !== "nrt-dc-dn-060");
+  const juntadas = { "nrt-dc-dn-051-2": "nrt-dc-dn-051", "nrt-dc-dn-060": "nrt-dc-dn-061" };
+  const idDeHoje = (id) => juntadas[id] || "";
+  const velho = enderecosDasCartas(paginasDoJogo("naruto", agrupaPorSet(antes))).get("naruto|nrt-dc-dn-060");
+  const { movidas, erradas } = enderecosARegistrar("naruto", antes, depois, idDeHoje);
+  assert.deepEqual(movidas, {});
+  assert.deepEqual(erradas, { [velho]: "nrt-dc-dn-061" });
+  // Sem o de-para, a carta que sumiu não entra (era o comportamento de antes).
+  assert.deepEqual(enderecosARegistrar("naruto", antes, depois).erradas, {});
+});
+
 test("o registro junta em ordem, e o mesmo endereço fica com a carta mais recente", () => {
   const r = juntaNoRegistro({ "j/b/x": "id-1", "j/a/y": "id-2" }, { "j/b/x": "id-3", "j/0/z": "id-4" });
   assert.deepEqual(Object.keys(r), ["j/0/z", "j/a/y", "j/b/x"]);

@@ -161,6 +161,9 @@ import { join } from "node:path";
 // apagar a cópia largaria essa carta da coleção. Antes de subir, procurei
 // espaço: a troca de prefixo não serve (o resolvedor corta o id no primeiro
 // "-") e o `retired` por carta não some da grade. Ficam 74 B livres.
+// 2026-11-12: mais 11 pares no mesmo teto (+108 B gz), as cartas do Magic que
+// o Scryfall renumerou. A main tinha baixado pra 86.152 com o verso da carta
+// sem imagem; ficam 12 B. O próximo par no ID_MERGES já pede teto novo.
 const TETOS = [
   { arquivo: "shared.js", teto: 86272, nota: "núcleo JS de toda página" },
   { arquivo: "styles.min.css", teto: 35840, nota: "núcleo do CSS, depois do split por área" },
