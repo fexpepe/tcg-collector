@@ -174,13 +174,17 @@ junto. Sem isso, o endereço antigo das cartas movidas dá 404.
   `narutocg`), o Godzilla e o Palworld (Bushiroad) e o Final Fantasy
   (Square Enix), na mesma forma, pelas regras de código
   do `SECOES_BANDAI`, no mesmo arquivo
-  (Principais, Boosters extras, Decks, Promos). Um formato de código inédito
-  cai em "outros" ("Promos e eventos", nos da Bandai): booster ou deck com
-  código novo entra na regra do jogo, com o caso no
-  `tests/sets-padrao.test.mjs`.
+  (Principais, Boosters extras, Decks, Cartas de evento, Promos). Um formato
+  de código inédito cai em "outros" ("Promos e eventos", nos da Bandai):
+  booster ou deck com código novo entra na regra do jogo, com o caso no
+  `tests/sets-padrao.test.mjs`. Nos da Bandai, pre-release, release event e
+  torneio de aniversário vão pra "Cartas de evento" pelo NOME
+  (`EVENTO_BANDAI`), não pelo código.
 - O set **entrou no cartão certo** (3.4): produto do lançamento ("<Set>
-  Pre-Release Cards", "<Set> Promos") vira chip dentro do cartão do set; set
-  novo da série ("<Set> Vol. 2") ganha cartão próprio.
+  Promos", "<Set> Trainer Gallery") vira chip dentro do cartão do set; set
+  novo da série ("<Set> Vol. 2") ganha cartão próprio; **edição** do set
+  ("<Set> (2nd Edition)") não ganha cartão nem chip, vai pro seletor
+  "Edição" da página do set.
 - **Filtros**: nada a fazer. As facetas (`GAME_FACETS` em
   [src/facets.js](../src/facets.js)) saem dos campos que o sync grava, e um
   valor inédito aparece sozinho no fim da lista.
@@ -242,10 +246,31 @@ há o que ligar. São três peças, todas no
    War. Não viram chip:
    - o **volume seguinte**: o que sobra do nome é só número ("Vol. 2", "2",
      "II", "2019", "第1章");
-   - **deck/caixa** (`setKind: "deck"`), que tem seção própria.
+   - **deck/caixa** (`setKind: "deck"`), que tem seção própria;
+   - a **edição** do set (abaixo);
+   - nos **jogos da Bandai** (`SECOES_BANDAI`), nada: o cartão do set não
+     leva chip (2026-11-12). Pre-release, release event e torneio de
+     aniversário viram set próprio na seção "Cartas de evento"; o resto
+     (Alternate Art Reprints do Fusion World) vai pela regra do código.
 
    O chip sai do nome de exibição (o inglês dos vintages japoneses), sem o
    separador e sem os parênteses.
+
+   **Edição do set** (2026-11-12, regra de todo jogo): o MESMO set impresso
+   de novo — "BP01: Dawn of Palpagos (2nd Edition)" no Palworld, "Metal
+   Raiders (Worldwide English)" e "…Movie Pack: Gold Edition" no Yu-Gi-Oh!.
+   Não vira chip nem cartão: vai pro `edicoes` do set original (sem a janela
+   de 400 dias) e aparece num seletor **"Edição"** no título do cartão
+   "Visão geral" da página do set (`edicoesDoSet` no
+   [src/detail.js](../src/detail.js)), no original e em cada edição, pra ir
+   e voltar. A régua é uma só, `edicaoDoSet` no
+   [src/nomes-sets.js](../src/nomes-sets.js): nome "<original><separador>
+   <edição>" com edição numerada (1st…), Unlimited, Revised, Gold, Secret ou
+   Worldwide English, e o original existindo no catálogo na mesma língua.
+   "Special/Deluxe/Advanced Edition" (caixas de promo do Yu-Gi-Oh!) e "Super
+   Pre-Release Edition" (evento) não são edição. Jogo novo com edição já
+   nasce assim; grafia de edição inédita entra na régua, com o caso no
+   `tests/sets-padrao.test.mjs`.
 2. **Seções do jogo** (`agrupaSetsDoJogo`). É o único lugar que escolhe o
    agrupamento:
    - Pokémon por série;
@@ -253,7 +278,8 @@ há o que ligar. São três peças, todas no
    - jogo com `group<Jogo>Sets` próprio pelas seções dele;
    - os modernos da Bandai, o Godzilla, o Palworld e o Final Fantasy (`SECOES_BANDAI`) no formato do One Piece:
      Principais (a coleção numerada), Boosters extras e especiais, Decks
-     iniciais e Promos e eventos, pelo código do set (2026-11-11);
+     iniciais, Cartas de evento (2026-11-12, pelo nome) e Promos e eventos,
+     pelo código do set (2026-11-11);
    - linha vintage em ordem de lançamento;
    - o resto por ano.
 

@@ -137,6 +137,8 @@ inglesa está na TCGCSV. O que é só dele:
   art, e sem o código as duas teriam o mesmo nome.
 - Sets no formato dos modernos da Bandai (`SECOES_BANDAI`), como o Godzilla:
   boosters, trial decks e promos; o Sleeve and Card Set vai pras promos.
+- A 2ª edição do BP01 (EBP01-2E) é **edição** do set (docs/CATALOGO.md, 3.4):
+  sem cartão na lista de Sets, aparece no seletor "Edição" da página do BP01.
 
 ### Final Fantasy TCG (`fftcg`)
 

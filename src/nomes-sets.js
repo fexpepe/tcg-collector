@@ -518,5 +518,24 @@
     "ポケモンカードゲーム MEGA": "MEGA"
   };
 
-  window.SLEEVU_NOMES_SETS = { vintage: VINTAGE_SET_EN, ja: JA_SET_EN, serieJa: JA_SERIE_EN };
+  // ── Edição do set (2026-11-12) ────────────────────────────────────────────
+  // Edição = o MESMO set impresso de novo: a 2ª edição do BP01 do Palworld, a
+  // Worldwide English do Yu-Gi-Oh!, o Gold Edition do Movie Pack. Ela não
+  // ganha cartão nem chip na lista de Sets (app.js, aninhaPorNome): mora num
+  // seletor "Edição" no cartão "Visão geral" da página do set (detail.js).
+  // Pedido do Fernando: o chip "2nd Edition" gastava o cartão, e jogo com
+  // várias edições viraria uma fileira de chips. Regra do site (CATALOGO
+  // 3.4): vale pra todo jogo, inclusive os que ainda vão entrar.
+  // Só o que é reimpressão do set: "Special/Deluxe/Advanced Edition" do
+  // Yu-Gi-Oh! são caixas com 2 a 7 promos (seguem chip), e o "Super
+  // Pre-Release Edition" do One Piece é produto de evento. O nome tem de ser
+  // "<original><separador><edição>", com ou sem parênteses.
+  // Devolve { base, rotulo } (base = nome do set original) ou null.
+  const EDICAO = /^(.+?)(?:\s*[:\-–—]\s*|\s+)\(?((?:\d+(?:st|nd|rd|th)|first|second|third|unlimited|revised|gold|secret)\s+edition|unlimited|worldwide english|第\d+版)\)?$/i;
+  function edicaoDoSet(nome) {
+    const m = EDICAO.exec(String(nome || "").trim());
+    return m ? { base: m[1], rotulo: m[2] } : null;
+  }
+
+  window.SLEEVU_NOMES_SETS = { vintage: VINTAGE_SET_EN, ja: JA_SET_EN, serieJa: JA_SERIE_EN, edicaoDoSet };
 })();
