@@ -339,6 +339,18 @@ no contrato:
   Audiência (mapa-múndi do `src/admin-mundo.js`, gerado pelo
   `scripts/build-mapa-mundo.mjs`) e em Técnico › Medição. Sem histórico: o
   país existe a partir do dia em que a migração entra.
+- **Linha da página (`20261112b`).** O `game` de um evento junta as linhas
+  da marca (o `naruto` é o Card Game 2002~2006, o Data Carddass, o CCG e o
+  Shippuden; o `onepiece`, o jogo de hoje, o Carddass e o Card Game 2002).
+  Desde 2026-11-12 o `mandaEvento` põe `props.ln` em todo evento numa página
+  `/games/<url>` de jogo com linhas (`GAME_LINES`): a chave da linha
+  (`nrt-dc`, `op2002`…) ou `""` no jogo principal. Fora de `/games/` (scanner,
+  lançamentos) e nos jogos sem linhas, nada. O guard não muda (não filtra
+  chave de `props`). A `admin_jogos` devolve `linhas` (jogo × linha, com
+  `"?"` = evento sem `ln`), `linhas_desde` e `linhas_comparavel`; o /admin
+  mostra as linhas como sub-linhas na tabela Por jogo e numa nota no Resumo.
+  Sem histórico: o evento antigo não guardava a linha (o `path` é só
+  "sets"/"detail").
 - **Plataforma de uma pessoa.** Por pageview, onde a página foi vista; por
   navegador, a de maior prioridade usada no período (ios > android > pwa >
   web). A ponte entre web e app é a conta (`uid`): a mesma conta nos dois

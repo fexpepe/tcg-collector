@@ -3999,7 +3999,17 @@
     // o dono navegando e testando era uma fatia visível do tráfego.
     try { if (localStorage.getItem("sleevu-equipe-v1") === "1") return; } catch (e) { /* sem storage, mede */ }
     try {
-      const corpo = { name: nome, path: analyticsPath(), anon: anonId(), game: currentGame() };
+      const game = currentGame(), corpo = { name: nome, path: analyticsPath(), anon: anonId(), game };
+      // LINHA da página (2026-11-12). O `game` junta as linhas de uma marca —
+      // o naruto é o Card Game 2002~2006, o Data Carddass, o CCG e o
+      // Shippuden — e o /admin dava tudo como "Naruto", sem dizer qual delas
+      // a pessoa abriu. Vai em props.ln só onde o ENDEREÇO diz a linha
+      // (/games/<url>, game.js): a chave dela, ou "" no jogo principal. Fora
+      // dali (scanner, lançamentos) a página não é de linha nenhuma, e sem a
+      // chave o admin_jogos (20261112b) a conta como "sem linha" — o mesmo
+      // balde dos eventos de antes deste deploy, que não têm como ser
+      // separados.
+      if (GAME_LINES[game] && /^\/games\//.test(location.pathname)) (props = props || {}).ln = lineParamOf();
       if (props) corpo.props = props;
       fetch(`${SUPABASE_URL}/rest/v1/events`, {
         method: "POST",
