@@ -9103,7 +9103,10 @@
       // outro jogo (regras e numeração 忍伝/術伝/作伝 novas), então linha própria.
       // Rótulo sem os anos, como o do gcd: com eles o shared.js passava 2 bytes
       // gz do teto (2026-11-10). Os anos seguem no título (sets.category.nrtscg).
-      "nrt-scg": { prefix: "nrt-scg-", label: "Naruto Shippuden Card Game", titleKey: "sets.category.nrtscg" }
+      "nrt-scg": { prefix: "nrt-scg-", label: "Naruto Shippuden Card Game", titleKey: "sets.category.nrtscg" },
+      // O jogo do Chrono Clash System (Bandai, 2019–2020), em inglês: por ora
+      // só as Tournament Pack Cards (sync-naruto-boruto.mjs diz por quê).
+      "nrt-nb": { prefix: "nrt-nb-", label: "Naruto Boruto Card Game", titleKey: "sets.category.nrtnb" }
       // O NARUTO CARD GAME de 2027 foi a linha nrt-ncg daqui até 2026-11-11 e
       // virou o jogo narutocg.
     }

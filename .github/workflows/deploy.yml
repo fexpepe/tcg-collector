@@ -819,6 +819,14 @@ jobs:
       - name: Anexa NARUTO 疾風伝 Card Game
         run: node scripts/sync-naruto-shippuden.mjs --no-fetch || echo "sync-naruto-shippuden falhou; segue com o snapshot versionado"
 
+      # Naruto Boruto Card Game (Bandai 2019–2020, Chrono Clash System): as
+      # Tournament Pack Cards, da TCGCSV (categoria 60). Só do snapshot
+      # versionado (--no-fetch) e nos DOIS modos, pelos mesmos motivos do
+      # 疾風伝 acima: o jogo acabou, a lista não muda, e sem o passo no build
+      # rápido a linha nrt-nb- só apareceria no cron seguinte.
+      - name: Anexa Naruto Boruto Card Game
+        run: node scripts/sync-naruto-boruto.mjs --no-fetch || echo "sync-naruto-boruto falhou; segue com o snapshot versionado"
+
       # Nomes das cartas de Naruto: japonês -> inglês. DEPOIS dos syncs
       # que alimentam esse catálogo (o mapa fica num lugar só em vez de repetido
       # nos quatro). Idempotente e sem rede — ver o cabeçalho do script.
