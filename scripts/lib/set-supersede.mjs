@@ -223,6 +223,15 @@ export function resolveMergedId(id, merges) {
   return "";
 }
 
+// Tira do catálogo a carta cujo id já foi juntado em outro (2026-11-11). O
+// de-para migra a coleção de quem marcou o id velho; se a carta voltasse pelo
+// cache do sync ou pelos chunks versionados (a união preservadora não deixa
+// carta sumir), o set ficaria com a cópia de novo. O merge-catalogs faz o
+// mesmo no Pokémon (jaMigrado); aqui é pros syncs dos outros jogos.
+export function semIdsJuntados(cards, merges) {
+  return (cards || []).filter((c) => !(c && resolveMergedId(c.id, merges)));
+}
+
 // Carimbo do de-para no src/shared.js (marcador SLEEVU_ID_MERGES). Recebe o
 // TEXTO do núcleo e devolve o texto novo — sem fs, pra dois passos do build
 // usarem a mesma régua: o retire-imported-sets (set inteiro aposentado) e o

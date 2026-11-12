@@ -147,8 +147,22 @@ import { join } from "node:path";
 // e o detector da migração da coleção +~150 B (a migração em si é o
 // src/migra-mbc.js, sob demanda). A saída de verdade é a F3 do
 // docs/CATALOGO.md: os nomes de set vintage fora do núcleo.
+//
+// 2026-11-11: teto do shared.js sobe de 86.016 pra 86.272 (+256 B), com o
+// aval do Fernando, em dois passos de 128 B. São 41 cartas que estavam DUAS
+// vezes no catálogo (a mesma carta, com o mesmo número e a mesma imagem, e
+// com o mesmo título na página, o que o Google conta como cópia):
+//   - 21 do Magic, que a busca paginada do Scryfall entregava em duas
+//     páginas, e o H36 do Grand Box DX do One Piece Carddass (+198 B gz);
+//   - 19 promos MEP do Pokémon, "mep-89" ao lado de "mep-089": a aposta de
+//     id da fonte de preço, sem o zero, e a oficial da TCGdex (+117 B gz).
+// Juntar o id de cada cópia no outro vai no ID_MERGES, que migra a coleção de
+// quem marcou a cópia; a main estava a 133 B do teto (85.883). Sem o de-para,
+// apagar a cópia largaria essa carta da coleção. Antes de subir, procurei
+// espaço: a troca de prefixo não serve (o resolvedor corta o id no primeiro
+// "-") e o `retired` por carta não some da grade. Ficam 74 B livres.
 const TETOS = [
-  { arquivo: "shared.js", teto: 86016, nota: "núcleo JS de toda página" },
+  { arquivo: "shared.js", teto: 86272, nota: "núcleo JS de toda página" },
   { arquivo: "styles.min.css", teto: 35840, nota: "núcleo do CSS, depois do split por área" },
 ];
 
