@@ -8640,10 +8640,15 @@ html:not([lang^="pt"]) .sx-sobre[data-idioma="pt"] { visibility: hidden; }
    "3rd Anniversary Tournament Cards" do One Piece saía cortado seco na borda
    (2026-10-09, quando os chips passaram a valer em todo jogo). */
 .sx-kids { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+/* O line-height vem DEPOIS do `font: inherit`: o atalho `font` também zera o
+   line-height, e com ele antes o chip ficava com line-height normal — no
+   desktop o texto colava no topo do chip de 30px (2026-11-12, "Release Event
+   Cards" do DBFW). No celular escapava porque a media query redefine depois. */
 .sx-kid {
-  display: inline-block; min-height: 30px; line-height: 28px; padding: 0 9px;
+  display: inline-block; min-height: 30px; padding: 0 9px;
   border: 1px solid var(--line); background: var(--panel-strong); color: var(--muted);
-  font: inherit; font-size: 12px; font-weight: 700; text-decoration: none; white-space: nowrap; cursor: pointer;
+  font: inherit; font-size: 12px; font-weight: 700; line-height: 28px;
+  text-decoration: none; white-space: nowrap; cursor: pointer;
   max-width: 100%; overflow: hidden; text-overflow: ellipsis;
 }
 .sx-kid:hover { color: var(--accent); border-color: var(--accent); }
