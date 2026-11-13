@@ -310,6 +310,19 @@ test("Palworld e Godzilla imprimem o mesmo EBP01-001: a pista impressa decide", 
   assert.deepEqual(Array.from(S.detectarJogo("EBP01-002", ["EBP01-002"], "hub", {}, indice).restritos).sort(), ["godzilla", "palworld"]);
 });
 
+test("Naruto Boruto Card Game: o NB02-48 e o BORUTO do rodapé tiram a carta do Naruto vintage (2026-11-13)", () => {
+  assert.deepEqual(codigos("NB02-48-EB"), ["NB02-48"]);
+  // Só o código: o formato é de um jogo só.
+  assert.deepEqual(Array.from(S.detectarJogo("", ["NB02-48"], "hub").restritos), ["narutoboruto"]);
+  // Com o rodapé inteiro, o KISHIMOTO bate no vintage e no jogo de 2027, mas
+  // o jogo certo passa na frente.
+  const d = S.detectarJogo("©2002 MASASHI KISHIMOTO / 2017 BORUTO All Rights Reserved. NOT FOR SALE NB02-48-EB", ["NB02-48"], "hub");
+  assert.equal(d.jogos[0], "narutoboruto");
+  assert.equal(d.confiante, true);
+  // A carta do vintage e a do jogo de 2027 não viram Naruto Boruto.
+  assert.equal(S.detectarJogo("©2002 MASASHI KISHIMOTO NARUTO CP-001", ["CP-001"], "hub").restritos.includes("narutoboruto"), false);
+});
+
 test("Union Arena: promo, extra, título com dígito, AP e paralela", () => {
   assert.deepEqual(codigos("UEPR/AOT-1-023"), ["UEPR/AOT-1-023"]);
   assert.deepEqual(codigos("UEX01BT/BLC-1-036 U"), ["UEX01BT/BLC-1-036"]);

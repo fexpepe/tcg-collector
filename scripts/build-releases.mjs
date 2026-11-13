@@ -31,7 +31,7 @@ const JOGOS = [
   ["swu", "data/swu/"], ["cyberpunk", "data/cyberpunk/"], ["sorcery", "data/sorcery/"],
   ["dbfw", "data/dbfw/"], ["ygo", "data/ygo/"], ["digimon", "data/digimon/"],
   ["riftbound", "data/riftbound/"], ["unionarena", "data/unionarena/"],
-  ["narutocg", "data/narutocg/"], ["naruto", "data/naruto/"], ["hxh", "data/hxh/"], ["dbc", "data/dbc/"], ["dbz", "data/dbz/"], ["wow", "data/wow/"], ["lotr", "data/lotr/"], ["weiss", "data/weiss/"], ["godzilla", "data/godzilla/"], ["palworld", "data/palworld/"], ["fftcg", "data/fftcg/"], ["vanguard", "data/vanguard/"], ["harrypotter", "data/harrypotter/"], ["mbc", "data/mbc/"], ["cdm", "data/cdm/"], ["gcd", "data/gcd/"], ["gw", "data/gw/"], ["jump", "data/jump/"]
+  ["narutocg", "data/narutocg/"], ["naruto", "data/naruto/"], ["hxh", "data/hxh/"], ["dbc", "data/dbc/"], ["dbz", "data/dbz/"], ["wow", "data/wow/"], ["lotr", "data/lotr/"], ["weiss", "data/weiss/"], ["godzilla", "data/godzilla/"], ["palworld", "data/palworld/"], ["fftcg", "data/fftcg/"], ["vanguard", "data/vanguard/"], ["harrypotter", "data/harrypotter/"], ["mbc", "data/mbc/"], ["cdm", "data/cdm/"], ["gcd", "data/gcd/"], ["gw", "data/gw/"], ["narutoboruto", "data/narutoboruto/"], ["jump", "data/jump/"]
 ];
 
 // Janela: 45 dias pra trás (o "acabou de sair" ainda é notícia) e 400 pra
@@ -139,7 +139,7 @@ const ROTULOS = {
   pokemon: "Pokémon", lorcana: "Lorcana", onepiece: "One Piece", magic: "Magic",
   fab: "Flesh and Blood", gundam: "Gundam", swu: "Star Wars: Unlimited", cyberpunk: "Cyberpunk TCG", sorcery: "Sorcery: Contested Realm", dbfw: "Dragon Ball Fusion World",
   ygo: "Yu-Gi-Oh!", digimon: "Digimon", riftbound: "Riftbound",
-  unionarena: "Union Arena", narutocg: "Naruto Card Game", naruto: "Naruto", hxh: "Hunter x Hunter", dbc: "Dragon Ball Carddass", dbz: "Dragon Ball Z CCG", wow: "World of Warcraft TCG", lotr: "The Lord of the Rings TCG", harrypotter: "Harry Potter TCG", weiss: "Weiß Schwarz", godzilla: "Godzilla Card Game", palworld: "Palworld", fftcg: "Final Fantasy TCG", vanguard: "Cardfight!! Vanguard", mbc: "Miracle Battle Carddass", cdm: "Carddass Masters", gcd: "Gundam Carddass", gw: "Gundam War", jump: "Jump"
+  unionarena: "Union Arena", narutocg: "Naruto Card Game", naruto: "Naruto", hxh: "Hunter x Hunter", dbc: "Dragon Ball Carddass", dbz: "Dragon Ball Z CCG", wow: "World of Warcraft TCG", lotr: "The Lord of the Rings TCG", harrypotter: "Harry Potter TCG", weiss: "Weiß Schwarz", godzilla: "Godzilla Card Game", palworld: "Palworld", fftcg: "Final Fantasy TCG", vanguard: "Cardfight!! Vanguard", mbc: "Miracle Battle Carddass", cdm: "Carddass Masters", gcd: "Gundam Carddass", gw: "Gundam War", narutoboruto: "Naruto Boruto Card Game", jump: "Jump"
 };
 
 const linhas = [

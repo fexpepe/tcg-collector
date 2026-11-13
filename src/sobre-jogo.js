@@ -30,7 +30,7 @@
   const COM_SOBRE = [
     "dragon-ball-carddass",
     "gundam-carddass", "gundam-war", "carddass-masters",
-    "naruto-card-game-2002", "naruto-data-carddass", "naruto-ccg", "naruto-shippuden-card-game", "naruto-trading-cards",
+    "naruto-card-game-2002", "naruto-data-carddass", "naruto-ccg", "naruto-shippuden-card-game", "naruto-trading-cards", "naruto-boruto-card-game",
     "hunter-x-hunter-carddass", "one-piece-carddass", "one-piece-card-game-2002", "miracle-battle-carddass",
     "harry-potter-tcg", "lord-of-the-rings-tcg", "dragon-ball-z-ccg", "world-of-warcraft-tcg"
   ];

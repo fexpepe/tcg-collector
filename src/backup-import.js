@@ -144,6 +144,9 @@
     // "Naruto Card Game" é a linha do TCGplayer do jogo de 2027 (narutocg): o
     // vintage de 2002 não está no TCGplayer. O resto ("Naruto Kayou"…) fica no
     // naruto, como antes.
+    // "Naruto Boruto Card Game" (o jogo do Chrono Clash System, 2019–2020): jogo
+    // próprio desde 2026-11-13, antes da regra geral do Naruto.
+    if (flat.includes("narutoboruto") || flat.includes("chronoclash")) return "narutoboruto";
     if (flat === "narutocardgame" || flat === "narutocg") return "narutocg";
     if (flat.includes("naruto")) return "naruto";
     if (flat.includes("hunter") || flat === "hxh") return "hxh";

@@ -63,6 +63,8 @@ export const JOGOS_URL = [
   // Cartas de coleção da Amada e da Ensky (2026-11-13): não é jogo, e nenhum produto tem logo recortado; vale o do Naruto.
   // O período é o da família (2003–2006); o catálogo tem os quatro produtos com lista carta a carta (2004–2005).
   { url: "naruto-trading-cards", game: "naruto", linha: "nrt-tc", prefixos: ["nrt-tc-"], nome: "Naruto Trading Cards", logo: "assets/games/game_naruto.webp", vintage: "2003–2006" },
+  // Chrono Clash System (2026-11-13): jogo próprio, só com as Tournament Pack Cards, o que o TCGplayer lista carta a carta.
+  { url: "naruto-boruto-card-game", game: "narutoboruto", nome: "Naruto Boruto Card Game", logo: "assets/games/game_naruto_boruto.webp", vintage: "2019–2020" },
   { url: "carddass-masters", game: "cdm", nome: "Carddass Masters", logo: "assets/games/game_cdm.webp", vintage: "1996–2011" }
 ];
 
