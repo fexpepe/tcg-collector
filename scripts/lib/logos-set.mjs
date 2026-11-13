@@ -156,6 +156,7 @@ export const FORA = {
   cdm: "vintage sem logo de set publicado",
   gcd: "vintage sem logo de set publicado",
   gw: "vintage sem logo de set publicado",
+  narutoboruto: "o set usa o logo do jogo (o oficial do site do Chrono Clash System)",
   naruto: "logo de linha/título vem do sync; os capítulos sem logo não têm um publicado",
   narutocg: "o set de promos usa o logo do jogo (curadoria do sync); sem set de booster ainda",
   palworld: "sem logo de set publicado (páginas de produto do site oficial auditadas em 2026-11-11: só arte)"

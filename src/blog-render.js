@@ -90,7 +90,8 @@
     mbc: ["Miracle Battle", "#fb923c"],
     cdm: ["Carddass Masters", "#a21caf"],
     gcd: ["Gundam Carddass", "#a3e635"],
-    gw: ["Gundam War", "#5eead4"]
+    gw: ["Gundam War", "#5eead4"],
+    narutoboruto: ["Naruto Boruto", "#f9a8d4"]
   };
 
   // Categorias do blog. O banco só confere o formato (a lista mora aqui), então

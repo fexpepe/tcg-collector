@@ -55,7 +55,8 @@ export const ID_DE_PRODUTO = {
   palworld: /^pal-\d+$/,
   fftcg: /^fftcg-\d+$/,
   vanguard: /^vg-\d+$/,
-  grandarchive: /^ga-\d+$/
+  grandarchive: /^ga-\d+$/,
+  narutoboruto: /^nb-\d+$/ // Chrono Clash System, TCGCSV cat. 60 (2026-11-13)
 };
 
 export const idiomaDe = (c) => c.language || "en";

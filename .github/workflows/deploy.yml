@@ -122,6 +122,7 @@ jobs:
             data/cdm/sets
             data/gcd/sets
             data/gw/sets
+            data/narutoboruto/sets
             data/narutocg/sets
             data/godzilla/sets
             data/palworld/sets
@@ -170,6 +171,7 @@ jobs:
                    data/cdm/manifest.generated.js \
                    data/gcd/manifest.generated.js \
                    data/gw/manifest.generated.js \
+                   data/narutoboruto/manifest.generated.js \
                    data/narutocg/manifest.generated.js \
                    data/godzilla/manifest.generated.js \
                    data/palworld/manifest.generated.js \
@@ -847,6 +849,15 @@ jobs:
       - name: Anexa NARUTO 疾風伝 Card Game
         run: node scripts/sync-naruto-shippuden.mjs --no-fetch || echo "sync-naruto-shippuden falhou; segue com o snapshot versionado"
 
+      # Naruto Boruto Card Game (Bandai 2019–2020, Chrono Clash System): o jogo
+      # vintage narutoboruto. As Tournament Pack Cards, da TCGCSV (categoria
+      # 60). Só do snapshot versionado (--no-fetch) e nos DOIS modos, como o
+      # 疾風伝 acima: o jogo acabou, a lista não muda, e sem o passo no build
+      # rápido o data/narutoboruto/sets/ viria do cache e o jogo só apareceria
+      # no cron seguinte, com a entrada da página Vintage já no ar.
+      - name: Monta o catálogo do Naruto Boruto Card Game
+        run: node scripts/sync-naruto-boruto.mjs --no-fetch || echo "sync-naruto-boruto falhou; segue com o catálogo versionado"
+
       # Nomes das cartas de Naruto: japonês -> inglês. DEPOIS dos syncs
       # que alimentam esse catálogo (o mapa fica num lugar só em vez de repetido
       # nos quatro). Idempotente e sem rede — ver o cabeçalho do script.
@@ -1010,6 +1021,7 @@ jobs:
             data/cdm/sets
             data/gcd/sets
             data/gw/sets
+            data/narutoboruto/sets
             data/narutocg/sets
             data/godzilla/sets
             data/palworld/sets

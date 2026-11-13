@@ -31,7 +31,7 @@ const JOGOS = [
   ["swu", "data/swu/"], ["cyberpunk", "data/cyberpunk/"], ["sorcery", "data/sorcery/"],
   ["dbfw", "data/dbfw/"], ["ygo", "data/ygo/"], ["digimon", "data/digimon/"],
   ["riftbound", "data/riftbound/"], ["unionarena", "data/unionarena/"],
-  ["narutocg", "data/narutocg/"], ["naruto", "data/naruto/"], ["hxh", "data/hxh/"], ["dbc", "data/dbc/"], ["dbz", "data/dbz/"], ["wow", "data/wow/"], ["lotr", "data/lotr/"], ["weiss", "data/weiss/"], ["godzilla", "data/godzilla/"], ["palworld", "data/palworld/"], ["fftcg", "data/fftcg/"], ["grandarchive", "data/grandarchive/"], ["vanguard", "data/vanguard/"], ["harrypotter", "data/harrypotter/"], ["mbc", "data/mbc/"], ["cdm", "data/cdm/"], ["gcd", "data/gcd/"], ["gw", "data/gw/"]
+  ["narutocg", "data/narutocg/"], ["naruto", "data/naruto/"], ["hxh", "data/hxh/"], ["dbc", "data/dbc/"], ["dbz", "data/dbz/"], ["wow", "data/wow/"], ["lotr", "data/lotr/"], ["weiss", "data/weiss/"], ["godzilla", "data/godzilla/"], ["palworld", "data/palworld/"], ["fftcg", "data/fftcg/"], ["grandarchive", "data/grandarchive/"], ["vanguard", "data/vanguard/"], ["harrypotter", "data/harrypotter/"], ["mbc", "data/mbc/"], ["cdm", "data/cdm/"], ["gcd", "data/gcd/"], ["gw", "data/gw/"], ["narutoboruto", "data/narutoboruto/"]
 ];
 
 // 6 de cada lado: o trilho é uma fileira que rola, não uma tabela. Mais que isso
