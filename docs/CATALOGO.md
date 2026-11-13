@@ -406,7 +406,16 @@ link do jogo: Vintage > jogo, os mesmos dois cliques de Jogos > jogo.
 Parte destas decisões é do Fernando (linha ou jogo, cor, logo, posição no
 hub). A ficha preenchida vai na descrição da PR.
 
-- **Linha ou jogo?** Pelos precedentes, vira **linha** (`GAME_LINES`,
+- **Linha ou jogo? Regra do Fernando desde 2026-11-13: cada jogo é um jogo.**
+  Jogo antigo de uma marca que já tem slug entra como **slug próprio**, como
+  os outros jogos do site, com chip, cor e contagem dele. Fica no mesmo jogo
+  só o que é **parte do mesmo jogo**: os quatro títulos do arcade Data
+  Carddass, uma IP nova dentro do Carddass Masters. O primeiro a seguir a
+  regra foi o Naruto Boruto Card Game (`narutoboruto`), que na primeira
+  versão da PR era a linha `nrt-nb` do `naruto`. As linhas publicadas antes
+  disso (as do `naruto` e as do `onepiece`) seguem como estão até ele dizer
+  quais viram jogo; o parágrafo abaixo descreve esses precedentes.
+- **Como era (precedentes até 2026-11-12):** virava **linha** (`GAME_LINES`,
   `?line=`) quando já existe um slug que é a **marca**: as vintages do One
   Piece e do Naruto são linhas de `onepiece` e `naruto`. Vira **slug próprio**
   quando o slug existente é um **jogo específico** (o `dbc`, Carddass de Dragon

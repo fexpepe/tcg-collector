@@ -8,6 +8,18 @@ poucos.)
 
 ## Pendentes de aplicar
 
+- `20261113a` — libera TRÊS slugs do Naruto nas duas whitelists de jogo
+  (`card_views`/`increment_card_view` e `contribute_price`;
+  `20261113a_add_narutoboruto_mythos_kayou.sql`): `narutoboruto` (Naruto
+  Boruto Card Game, PR #296), `narutomythos` e `narutokayou` (PR #298). Cópia
+  da `20261111f` (fftcg, já aplicada) com os três a mais; só a lista muda. As
+  duas PRs estão abertas ao mesmo tempo e cada migração reescreve a lista
+  inteira: esta **cobre a `20261112c` da #298**, que não precisa mais ser
+  aplicada (e não pode rodar DEPOIS desta: tiraria o `narutoboruto`).
+  Conferir com os `curl` do fim do arquivo: a view de `nb-193308` tem de
+  **criar** a linha em `card_views` (game `narutoboruto`); o 204 sozinho não
+  prova nada. **A próxima migração de jogo copia esta.**
+
 - `20261112b` — /admin: as LINHAS de cada jogo (`20261112b_admin_jogos_linhas.sql`;
   o `b` porque a 20261112a do mesmo dia é a dos erros). O jogo `naruto` junta
   o Card Game 2002~2006, o Data Carddass, o CCG e o Shippuden (o `onepiece`, o
@@ -368,7 +380,7 @@ poucos.)
   `fftcg`, 1 view); um jogo inventado (`fftcgx`) respondeu 204 e não criou
   linha; `contribute_price` anônimo segue 401. Depois dela, nem a
   `20261111e` nem as anteriores podem rodar de novo (tirariam o `fftcg`).
-  **A próxima migração de jogo copia esta.**
+  Copiada pela `20261113a` (os três slugs novos do Naruto).
 
 - `20261111e` — libera o slug `palworld` (Palworld OFFICIAL CARD GAME,
   Bushiroad/Pocketpair, 2026) nas duas whitelists de jogo

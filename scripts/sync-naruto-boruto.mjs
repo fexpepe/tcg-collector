@@ -6,6 +6,11 @@
 // and Student Set (NB04) em novembro de 2019. Entrou a pedido do Fernando em
 // 2026-11-12, na linha do tempo das cartas do Naruto ("2019 — Chrono Clash").
 //
+// JOGO PRÓPRIO (`narutoboruto`, em data/narutoboruto/), e não linha do
+// `naruto`: o Fernando definiu em 2026-11-13 que cada jogo antigo do Naruto é
+// um jogo, como os outros do site (só fica junto o que é o mesmo jogo). Na
+// primeira versão desta PR era a linha nrt-nb; nada foi publicado com ela.
+//
 // O QUE ENTRA: as Tournament Pack Cards, as versões foil das cartas do NB01 e
 // do NB02 que vinham nos Tournament Packs (dois por caixa da primeira edição,
 // segundo a página do produto, e nos torneios de loja). É o único produto do
@@ -18,28 +23,28 @@
 // FONTE: TCGCSV (espelho público do TCGplayer), categoria 60 "Chrono Clash
 // System", grupo 2478 "NB Tournament Pack Cards". Conferido em 2026-11-12: 97
 // produtos, 28 com foto (imageCount > 0) e 7 com preço. O id é
-// "nrt-nb-<productId>": o número impresso é o MESMO da carta da caixa (o
+// "nb-<productId>": o número impresso é o MESMO da carta da caixa (o
 // NB01-40-B foil e o não foil são cartas diferentes pra quem coleciona), então
 // número não serve de chave se as caixas entrarem um dia.
 //
-// SEM PREÇO: o catálogo do Naruto é o vintage, sem preço (jogo encerrado, 7
-// preços em 97 cartas). O link do TCGplayer não entra no popup pelo mesmo
-// motivo das outras linhas (MARKETS do naruto).
+// SEM PREÇO, como os outros vintage: o jogo acabou e o TCGplayer tem preço de
+// 7 das 97 cartas. Ligar o preço é decisão à parte (viraria o padrão do wow,
+// o único vintage com preço).
 //
-// Padrão-snapshot, como as outras linhas do Naruto: o build parte de
-// data/vintage/naruto-boruto.json; o fetch só regrava quando responde e não
-// regride. O jogo acabou e a lista não muda, então o deploy roda com
-// --no-fetch. ANEXA ao catálogo do Naruto (ids nrt-nb-*), e o
-// sync-naruto-vintage.mjs preserva a linha (OTHER_LINES).
+// Padrão-snapshot: o build parte de data/vintage/naruto-boruto.json; o fetch
+// só regrava quando responde e não regride. O jogo acabou e a lista não muda,
+// então o deploy roda com --no-fetch. O catálogo é só deste sync; carta que
+// sair do snapshot fica congelada (id publicado nunca some).
 //
 //   node scripts/sync-naruto-boruto.mjs             # fetch + build
 //   node scripts/sync-naruto-boruto.mjs --no-fetch  # só build (o do deploy)
 import { fileURLToPath } from "node:url";
 import { existsSync } from "node:fs";
-import { fetchJsonRetry, readGlobalVar, readSnapshot, writeSnapshot, snapshotCardCount, writeGameCatalog } from "./lib/sync-common.mjs";
+import { fetchJsonRetry, readGlobalVar, readSnapshot, writeSnapshot, snapshotCardCount, writeGameCatalog, preserveMissingCards } from "./lib/sync-common.mjs";
 
 const ROOT = new URL("../", import.meta.url);
-const OUT = new URL("data/naruto/", ROOT);
+const GAME = "narutoboruto";
+const OUT = new URL(`data/${GAME}/`, ROOT);
 const SNAP = new URL("data/vintage/naruto-boruto.json", ROOT);
 const BASE = "https://tcgcsv.com/tcgplayer";
 const CATEGORIA = 60;
@@ -99,11 +104,11 @@ export function ordena(cards) {
   });
 }
 
-// Imagem CURADA do dono: assets/cards/naruto/<id>.* substitui a foto da fonte
-// (mesmo mecanismo dos outros syncs do Naruto).
+// Imagem CURADA do dono: assets/cards/narutoboruto/<id>.* substitui a foto da
+// fonte (mesmo mecanismo dos syncs do Naruto).
 function curatedImg(id) {
   for (const e of ["webp", "jpg", "png"]) {
-    if (existsSync(fileURLToPath(new URL(`assets/cards/naruto/${id}.${e}`, ROOT)))) return `/assets/cards/naruto/${id}.${e}`;
+    if (existsSync(fileURLToPath(new URL(`assets/cards/${GAME}/${id}.${e}`, ROOT)))) return `/assets/cards/${GAME}/${id}.${e}`;
   }
   return "";
 }
@@ -115,12 +120,12 @@ export function montaLinha(snap, { imagemCurada = () => "" } = {}) {
   for (const def of SETS) {
     const cartas = ordena((porKey.get(def.key) || {}).cards || []);
     for (const c of cartas) {
-      const id = `nrt-nb-${c.productId}`;
+      const id = `nb-${c.productId}`;
       line.push({
         id,
         name: c.name,
         set: def.nome,
-        setId: `nrt-nb-${def.key}`,
+        setId: `nb-${def.key}`,
         number: c.num,
         setTotal: cartas.length,
         setReleaseDate: def.data,
@@ -133,8 +138,7 @@ export function montaLinha(snap, { imagemCurada = () => "" } = {}) {
         variants: ["Foil"],
         setLogo: LOGO,
         cardType: c.tipo || null,
-        vintage: true,
-        vintageLine: "nrt-nb"
+        vintage: true
       });
     }
   }
@@ -176,12 +180,10 @@ async function run() {
   const comImg = line.filter((c) => c.image).length;
   console.log(`  build: ${line.length} cartas em ${new Set(line.map((c) => c.setId)).size} set(s) (${comImg} com imagem).`);
 
-  const existing = (await readGlobalVar(new URL("cards.js", OUT), "TCG_CARDS")) || [];
-  const kept = existing.filter((c) => c && !/^nrt-nb-/.test(String(c.id)));
-  const merged = kept.concat(line);
-  const pricing = (await readGlobalVar(new URL("pricing.js", OUT), "TCG_PRICING")) || {}; // vintage sem preço
-  await writeGameCatalog(OUT, { cards: merged, pricing, webDir: "data/naruto/" });
-  console.log(`Gravado em ${fileURLToPath(OUT)} — ${merged.length} cartas totais.`);
+  const prev = (await readGlobalVar(new URL("cards.js", OUT), "TCG_CARDS")) || [];
+  const merged = line.concat(preserveMissingCards(prev, line));
+  await writeGameCatalog(OUT, { cards: merged, pricing: {}, webDir: `data/${GAME}/` });
+  console.log(`Gravado em ${fileURLToPath(OUT)} — ${merged.length} cartas.`);
 }
 
 // Importável pelos testes sem rodar o sync (ver tests/naruto-boruto-sync.test.mjs).

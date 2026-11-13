@@ -53,7 +53,8 @@ export const ID_DE_PRODUTO = {
   narutocg: /^nrt-ncg-\d+$/, // até 11/11/2026, linha do naruto
   godzilla: /^gzc-\d+$/,
   palworld: /^pal-\d+$/,
-  fftcg: /^fftcg-\d+$/
+  fftcg: /^fftcg-\d+$/,
+  narutoboruto: /^nb-\d+$/ // Chrono Clash System, TCGCSV cat. 60 (2026-11-13)
 };
 
 export const idiomaDe = (c) => c.language || "en";

@@ -505,6 +505,18 @@
   --accent: #4d7c0f; --accent-dark: #3f6212; --accent-rgb: 77, 124, 15;
   --accent-soft: rgba(77, 124, 15, 0.1); --on-accent: #ffffff;
 }
+/* Naruto Boruto Card Game: ROSA, o "BORUTO" do logo (proposta de 13/11/2026).
+   No escuro, com texto escuro (11.6:1); no claro o rosa some no branco, então
+   o accent fecha pro #9d174d (8.4:1 com branco). */
+[data-game-accent="narutoboruto"] {
+  --accent: #f9a8d4; --accent-dark: #f472b6; --accent-rgb: 249, 168, 212;
+  --accent-soft: rgba(249, 168, 212, 0.16); --on-accent: #0a0c10;
+}
+[data-theme="light"][data-game-accent="narutoboruto"],
+[data-theme="light"] [data-game-accent="narutoboruto"] {
+  --accent: #9d174d; --accent-dark: #831843; --accent-rgb: 157, 23, 77;
+  --accent-soft: rgba(157, 23, 77, 0.1); --on-accent: #ffffff;
+}
 /* Gundam War: TURQUESA, a cor do GAME_COLOR (11/11/2026; o jogo não tem cor de
    marca, o azul é do Gundam Card Game e a lima do Gundam Carddass). Turquesa
    com texto escuro no escuro (14.2:1); o #0f766e com texto branco no claro

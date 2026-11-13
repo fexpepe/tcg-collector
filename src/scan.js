@@ -412,6 +412,11 @@
     // O de 2027 imprime a mesma marca que o vintage: os dois empatam e a busca
     // vai nos dois (sem a pista, a carta nova era filtrada pro vintage).
     narutocg: [/NARUTO/, /KISHIMOTO/],
+    // Naruto Boruto Card Game (Chrono Clash System, 2019–2020): o rodapé é
+    // "©2002 MASASHI KISHIMOTO / 2017 BORUTO". O KISHIMOTO bate nos outros
+    // dois; o BORUTO e o formato do código (NB02-48) desempatam. Sem a pista,
+    // a carta era filtrada pro vintage e pro jogo de 2027 e não era achada.
+    narutoboruto: [/BORUTO/],
     hxh: [/HUNTER/, /TOGASHI/],
     // Jogos que entraram no catálogo depois do scanner e não tinham pista
     // nenhuma (2026-11-10): 11 dos 24 jogos. Só o que a carta IMPRIME em
@@ -451,6 +456,10 @@
     // "©B.S./S., T.A", e o OCR não lê) e toda leitura ia até a carta inteira.
     // Dígitos exigidos: o Yu-Gi-Oh tem sets "SB" com letra (SBAD-EN001).
     [/^SB\d{2}-\d{3}$/, ["dbfw"]],
+    // Naruto Boruto Card Game: "NB02-48-EB" (set, número de dois dígitos e o
+    // tipo: B, A ou EB). O extrair devolve "NB02-48"; nenhum outro jogo usa
+    // dois dígitos depois de "NB0x-".
+    [/^NB\d{2}-\d{2}$/, ["narutoboruto"]],
     [/^[A-Z0-9]{2,4}-[A-Z]{2}\d{3}/, ["ygo"]],
     [/^U[EP][A-Z0-9]{2,5}\//, ["unionarena"]],
     [/^[A-Z0-9]{2,4}\/(?:EN-)?[SW][A-Z]{0,2}\d{2,3}-/, ["weiss"]],

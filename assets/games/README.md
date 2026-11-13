@@ -20,7 +20,7 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
 - `game_riftbound-v2.webp` — Riftbound / League of Legends (fonte: `../brand/riftbound.webp`,
   1908×1908 com padding — cortado pro bbox do conteúdo antes de escalar)
 - `game_onepiece_carddass.webp` — Carddass Hyper Battle (tile vintage do OP)
-- `game_naruto_boruto.webp` — Naruto Boruto Card Game (linha `nrt-nb`, 12/11/2026):
+- `game_naruto_boruto.webp` — Naruto Boruto Card Game (jogo `narutoboruto`, 13/11/2026):
   o logo do site oficial do Chrono Clash System, no Wayback
   (`chronoclashsystem.com/images/product/naruto/common/img_logo.png`, captura
   20220223125309), PNG de 506×305 já com fundo transparente (Naruto, Boruto e

@@ -43,6 +43,9 @@ const NOMES_DO_JOGO = {
   // Gundam War: o set é o produto (第1弾, ドラマチックブースター「…」), sem o
   // "ガンダムウォー" da frente.
   gw: { nomes: ["Gundam War", "GUNDAM WAR", "GUNDAMWAR", "ガンダムウォー", "Carddass Masters", "カードダスマスターズ"] },
+  // Naruto Boruto Card Game: o grupo do TCGplayer é "NB Tournament Pack
+  // Cards"; o set fica sem a sigla do jogo na frente.
+  narutoboruto: { nomes: ["Naruto Boruto", "NARUTO BORUTO", "Chrono Clash", "NB "] },
   // "疾風伝"/"Shippuden": a linha nrt-scg (2007–2008). Só a promo leva
   // "（疾風伝）", no fim, pra não ter o mesmo nome do set de 2002.
   naruto: { nomes: ["Naruto", "NARUTO", "ナルト", "Data Carddass", "データカードダス", "疾風伝", "Shippuden"] },

@@ -7289,6 +7289,9 @@
     cdm:       { usText: "carddass masters", noTcgplayer: true },
     gcd:       { usText: "gundam carddass", noTcgplayer: true },
     gw:        { usText: "gundam war", noTcgplayer: true },
+    // Naruto Boruto Card Game (conferido em 13/11/2026): no TCGplayer é a linha
+    // "chrono-clash-system", que tem as Tournament Pack Cards. Sem loja BR.
+    narutoboruto: { tcgLine: "chrono-clash-system", usText: "naruto boruto card game" },
     // World of Warcraft TCG (conferido em 30/09/2026): TCGplayer na linha
     // "wow" (a busca devolve a carta "in WoW") e Cardmarket em /en/WoW. Sem
     // loja BR: o MYP não tem seção do jogo e não existe Liga.
@@ -8935,7 +8938,8 @@
     "mbc",
     "cdm",
     "gcd",
-    "gw"
+    "gw",
+    "narutoboruto"
   ].map((game) => ({ game, dataDir: game === "pokemon" ? "data/" : `data/${game}/` }));
   // Slugs e cor de cada jogo, num lugar só (adicionar um jogo = 1 entrada aqui
   // + 1 no game.js + labels no i18n; as páginas iteram em vez de hardcodear).
@@ -8980,6 +8984,7 @@
     mbc: "#fb923c",        // pêssego (o laranja-dourado do logo); 9.3:1 com preto, a 71 do One Piece e a 77 do Naruto
     cdm: "#a21caf",        // fúcsia; 6.3:1 com branco, a 79 do Yu-Gi-Oh! e a 81 do DBC (proposta, 2026-11-09)
     gcd: "#a3e635",        // lima; 13.9:1 com preto, a 92 do Sorcery e a 99 do Cyberpunk (proposta, 2026-11-10)
+    narutoboruto: "#f9a8d4", // rosa (o "BORUTO" do logo); 11.6:1 com preto, a 97 do Weiß e a 102 do prata do DBFW (proposta, 2026-11-13)
     gw: "#5eead4"          // turquesa; 14.2:1 com preto, a 100 do DBFW (proposta, 2026-11-11)
   };
   // Preto ou branco sobre a cor do jogo — o que der MAIOR contraste de verdade
@@ -9103,10 +9108,7 @@
       // outro jogo (regras e numeração 忍伝/術伝/作伝 novas), então linha própria.
       // Rótulo sem os anos, como o do gcd: com eles o shared.js passava 2 bytes
       // gz do teto (2026-11-10). Os anos seguem no título (sets.category.nrtscg).
-      "nrt-scg": { prefix: "nrt-scg-", label: "Naruto Shippuden Card Game", titleKey: "sets.category.nrtscg" },
-      // O jogo do Chrono Clash System (Bandai, 2019–2020), em inglês: por ora
-      // só as Tournament Pack Cards (sync-naruto-boruto.mjs diz por quê).
-      "nrt-nb": { prefix: "nrt-nb-", label: "Naruto Boruto Card Game", titleKey: "sets.category.nrtnb" }
+      "nrt-scg": { prefix: "nrt-scg-", label: "Naruto Shippuden Card Game", titleKey: "sets.category.nrtscg" }
       // O NARUTO CARD GAME de 2027 foi a linha nrt-ncg daqui até 2026-11-11 e
       // virou o jogo narutocg.
     }
@@ -9131,6 +9133,7 @@
     dbz: ["dbz-"],                            // Score 2000–2006: idem
     cdm: ["cdm-"],                            // Bandai 1996–2009: idem
     gcd: ["gcd-"],                            // Bandai 1988–1997: idem
+    narutoboruto: ["nb-"],                    // Bandai 2019–2020 (Chrono Clash System): idem
     gw: ["gw-"],                              // Bandai 1999–2011: idem
     harrypotter: ["hp-"],                     // Wizards 2001–2002: idem
     naruto: ["nrt-"]                          // Bandai 2003–2013: idem (o NARUTO CARD GAME de 2027, nrt-ncg-, é o jogo narutocg)

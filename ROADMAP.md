@@ -276,13 +276,19 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   acesso automatizado (o Suruga-ya barra) e o logo recortado: o oficial está
   no Wayback em `carddas.com/naruto/cardgame/image/top/naruto_logo.jpg`, com
   200×140 e fundo azul.
-- **Naruto Boruto Card Game (`nrt-nb`, 2026-11-12)**: entrou com as 97
-  Tournament Pack Cards da TCGCSV (categoria 60), 28 com foto. Faltam as
-  cartas das quatro caixas (NB01 a NB04): o site oficial
+- **Naruto Boruto Card Game (`narutoboruto`, 2026-11-13)**: jogo vintage
+  próprio (o Fernando definiu que cada jogo antigo do Naruto é um jogo).
+  Entrou com as 97 Tournament Pack Cards da TCGCSV (categoria 60), 28 com
+  foto. Faltam as cartas das quatro caixas (NB01 a NB04): o site oficial
   (chronoclashsystem.com, no Wayback) só tem a página de cada produto, sem
   lista carta a carta, e o TCGplayer só vende as caixas lacradas. Falta
   também foto das outras 69 cartas de torneio. O TCGplayer tem preço de 7
-  delas, que não entrou (o catálogo do Naruto vintage é sem preço).
+  delas, que não entrou. A cor (rosa, #f9a8d4) é proposta, a confirmar.
+- **Linhas do Naruto que são jogos distintos** (Data Carddass, CCG americano
+  e Shippuden Card Game): pela mesma regra viram jogos próprios. É o caminho
+  que o `narutocg` e o `mbc` fizeram (ids mantidos, migração da coleção no
+  cliente, 301 dos endereços de linha). Espera o Fernando dizer quais e em
+  que ordem.
 - **Carddass Masters (`cdm`)**: jogo próprio desde 2026-11-09, uma seção por
   IP. Entrou o HUNTER×HUNTER completo (Partes 1 e 2 pela カードリスト do verso,
   Premium Edition e o brinde VD3; 299 cartas, todas com scan da Hunterpedia)

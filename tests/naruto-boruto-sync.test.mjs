@@ -1,4 +1,4 @@
-// NARUTO BORUTO CARD GAME (linha nrt-nb, 2026-11-12): o produto da TCGCSV que
+// NARUTO BORUTO CARD GAME (jogo narutoboruto, 2026-11-13): o produto da TCGCSV que
 // vira carta, o id pelo productId, a ordem do set e o snapshot versionado
 // contra a numeração do jogo. Sem rede: fixtures e o snapshot do repositório.
 // Roda com: node --test tests/
@@ -8,8 +8,8 @@ import { readFileSync } from "node:fs";
 import { SETS, ext, nomeLimpo, linhaDoProduto, ordena, montaLinha } from "../scripts/sync-naruto-boruto.mjs";
 
 const snapshot = JSON.parse(readFileSync(new URL("../data/vintage/naruto-boruto.json", import.meta.url), "utf8"));
-const catalogoNaruto = () => {
-  const s = readFileSync(new URL("../data/naruto/cards.js", import.meta.url), "utf8");
+const catalogo = () => {
+  const s = readFileSync(new URL("../data/narutoboruto/cards.js", import.meta.url), "utf8");
   return JSON.parse(s.slice(s.indexOf("["), s.lastIndexOf("]") + 1));
 };
 
@@ -55,20 +55,21 @@ test("montaLinha: id pelo productId, foil, sem imagem quando o TCGplayer não te
     { productId: 193552, num: "NB01-03-B", name: "Tenten", tipo: "Battler", cor: "Green", foto: false }
   ] }] };
   const line = montaLinha(snap);
-  assert.deepEqual(line.map((c) => c.id), ["nrt-nb-193552", "nrt-nb-193308"]);
+  assert.deepEqual(line.map((c) => c.id), ["nb-193552", "nb-193308"]);
   const tobi = line[1];
   assert.equal(tobi.set, "Tournament Pack Cards");
-  assert.equal(tobi.setId, "nrt-nb-tpc");
+  assert.equal(tobi.setId, "nb-tpc");
   assert.equal(tobi.number, "NB01-40-B");
   assert.equal(tobi.setTotal, 2);
   assert.equal(tobi.setReleaseDate, "2019-06");
   assert.deepEqual(tobi.variants, ["Foil"]);
   assert.equal(tobi.language, "en");
-  assert.equal(tobi.vintageLine, "nrt-nb");
+  assert.equal(tobi.vintage, true);
+  assert.equal(tobi.vintageLine, undefined, "jogo próprio, não linha do naruto");
   assert.equal(tobi.image, "https://tcgplayer-cdn.tcgplayer.com/product/193308_in_1000x1000.jpg");
   assert.equal(line[0].image, "", "carta sem foto no TCGplayer não aponta pro verso genérico do CDN");
   // Imagem curada do dono vence a da fonte.
-  assert.equal(montaLinha(snap, { imagemCurada: (id) => `/assets/cards/naruto/${id}.webp` })[0].image, "/assets/cards/naruto/nrt-nb-193552.webp");
+  assert.equal(montaLinha(snap, { imagemCurada: (id) => `/assets/cards/narutoboruto/${id}.webp` })[0].image, "/assets/cards/narutoboruto/nb-193552.webp");
 });
 
 test("snapshot versionado: NB01 e NB02 de 01 a 48 sem buraco, productId único", () => {
@@ -84,14 +85,14 @@ test("snapshot versionado: NB01 e NB02 de 01 a 48 sem buraco, productId único",
   assert.equal(cards.filter((c) => !c.num).length, 1, "só a Inoichi Yamanaka vem sem número");
 });
 
-test("catálogo do Naruto: a linha está lá, com os ids do snapshot e sem roubar id de outra linha", () => {
-  const daLinha = catalogoNaruto().filter((c) => /^nrt-nb-/.test(c.id));
+test("catálogo versionado: as cartas do snapshot, com id de produto e marca de vintage", () => {
+  const daLinha = catalogo();
   const esperado = montaLinha(snapshot);
   assert.equal(daLinha.length, esperado.length);
   assert.deepEqual(new Set(daLinha.map((c) => c.id)), new Set(esperado.map((c) => c.id)));
-  assert.deepEqual([...new Set(daLinha.map((c) => c.setId))], SETS.map((s) => `nrt-nb-${s.key}`));
+  assert.deepEqual([...new Set(daLinha.map((c) => c.setId))], SETS.map((s) => `nb-${s.key}`));
   for (const c of daLinha) {
     assert.equal(c.vintage, true);
-    assert.equal(c.vintageLine, "nrt-nb");
+    assert.match(c.id, /^nb-\d+$/, c.id);
   }
 });

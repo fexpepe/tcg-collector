@@ -442,9 +442,8 @@ async function run() {
   // Naruto é resto a limpar. O 疾風伝 カードゲーム (nrt-scg-, 2007–2008) entrou em
   // 2026-11-04. O NARUTO CARD GAME de 2027 (nrt-ncg-) saiu em 2026-11-11: virou
   // o jogo narutocg (sync-naruto.mjs, que roda antes e já o tira daqui), e
-  // carta nrt-ncg- que sobrar aqui também é resto. O Naruto Boruto Card Game
-  // (nrt-nb-, Chrono Clash System, 2019–2020) entrou em 2026-11-12.
-  const OTHER_LINES = /^nrt-(dc|nf|nx|ccg|scg|nb)-/;
+  // carta nrt-ncg- que sobrar aqui também é resto.
+  const OTHER_LINES = /^nrt-(dc|nf|nx|ccg|scg)-/;
   const kept = existing.filter((c) => c && (!String(c.id).startsWith("nrt-") || OTHER_LINES.test(String(c.id))));
   const have = new Set(kept.map((c) => c.id));
   const merged = kept.concat(cardsNrt.filter((c) => !have.has(c.id)));
