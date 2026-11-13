@@ -138,7 +138,11 @@ await checkCatalog("cards Naruto", "/data/naruto/cards.js", "TCG_CARDS", 400);
 // NARUTO CARD GAME de 2027: hoje só as promos de evento (2 cartas).
 await checkCatalog("cards Naruto Card Game", "/data/narutocg/cards.js", "TCG_CARDS", 1);
 await checkCatalog("cards Hunter x Hunter", "/data/hxh/cards.js", "TCG_CARDS", 30);
-await checkCatalog("cards Dragon Ball Carddass", "/data/dbc/cards.js", "TCG_CARDS", 700);
+await checkCatalog("cards Dragon Ball Carddass", "/data/dbc/cards.js", "TCG_CARDS", 1200);
+// As três séries do Carddass que viraram jogo (2026-11-13): 884, 342 e 168 cartas.
+await checkCatalog("cards DB Super Battle", "/data/dbsb/cards.js", "TCG_CARDS", 800);
+await checkCatalog("cards DB Visual Adventure", "/data/dbva/cards.js", "TCG_CARDS", 300);
+await checkCatalog("cards DB Super Barcode Wars", "/data/dbbw/cards.js", "TCG_CARDS", 150);
 await checkCatalog("cards LOTR", "/data/lotr/cards.js", "TCG_CARDS", 3000);
 await checkCatalog("cards Dragon Ball Z CCG", "/data/dbz/cards.js", "TCG_CARDS", 3500);
 await checkCatalog("cards Harry Potter", "/data/harrypotter/cards.js", "TCG_CARDS", 600);

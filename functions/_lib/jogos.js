@@ -45,6 +45,11 @@ export const JOGOS_URL = [
   { url: "final-fantasy-tcg", game: "fftcg", nome: "Final Fantasy TCG", logo: "assets/games/game_fftcg.webp" },
   { url: "gundam-carddass", game: "gcd", nome: "Gundam Carddass", logo: "assets/games/game_gcd.webp", vintage: "1988–1997" },
   { url: "dragon-ball-carddass", game: "dbc", nome: "Dragon Ball Carddass", logo: "assets/games/game_dbc-v2.webp", vintage: "1988–1997" },
+  // As três séries paralelas do Carddass de Dragon Ball, jogos próprios desde
+  // 2026-11-13 (séries do dbc por um dia). Ainda sem logo: o tile mostra o nome.
+  { url: "dragon-ball-visual-adventure", game: "dbva", nome: "Dragon Ball Visual Adventure", logo: "", vintage: "1991–1995" },
+  { url: "dragon-ball-super-battle", game: "dbsb", nome: "Dragon Ball Super Battle", logo: "", vintage: "1991–1997" },
+  { url: "dragon-ball-super-barcode-wars", game: "dbbw", nome: "Dragon Ball Super Barcode Wars", logo: "", vintage: "1992–1993" },
   { url: "gundam-war", game: "gw", nome: "Gundam War", logo: "assets/games/game_gw.webp", vintage: "1999–2011" },
   { url: "hunter-x-hunter-carddass", game: "hxh", nome: "Hunter × Hunter Carddass Hyper Battle", logo: "assets/games/game_hxh.webp", vintage: "1999–2001" },
   { url: "one-piece-carddass", game: "onepiece", linha: "opcd", prefixos: ["opcd-"], nome: "One Piece Carddass Hyper Battle", logo: "assets/games/game_onepiece_carddass.webp", vintage: "1999–2002" },
@@ -73,6 +78,24 @@ export const LINHAS_APELIDO = { "nrt-nf": "nrt-dc", "nrt-nx": "nrt-dc" };
 // de quem guardou o link abre o jogo gcd. O NARUTO CARD GAME de 2027 foi a
 // linha nrt-ncg do naruto até 11/11/2026 e virou o jogo narutocg.
 export const LINHAS_VIRARAM_JOGO = { "op-mb": "mbc", "nrt-mb": "mbc", "hxh-mb": "mbc", "gcd": "gcd", "nrt-ncg": "narutocg" };
+// Set que mudou de JOGO (2026-11-13): Super Battle, Visual Adventure e Super
+// Barcode Wars foram séries do dbc por um dia (PR #299) e viraram os jogos
+// dbsb, dbva e dbbw. O set e a carta seguem com o MESMO slug (o do set sai do
+// setId, que não mudou: dbc-sb01-1); só o jogo do endereço muda, e a borda
+// responde 301 (functions/games/[[path]].js). Endereço antigo do jogo ->
+// [começo do slug do set, endereço novo]. O "95ex" é o '95EX da Visual
+// Adventure, o único set cujo slug não sai do setId.
+export const SETS_MUDARAM_DE_JOGO = {
+  "dragon-ball-carddass": [["dbc-sb", "dragon-ball-super-battle"], ["dbc-va", "dragon-ball-visual-adventure"],
+    ["95ex", "dragon-ball-visual-adventure"], ["dbc-bw", "dragon-ball-super-barcode-wars"]]
+};
+// Endereço de hoje do jogo de um set que saiu de `url`, ou null.
+export function jogoNovoDoSet(url, set) {
+  const regras = SETS_MUDARAM_DE_JOGO[String(url || "")];
+  const s = String(set || "");
+  const r = regras && regras.find(([inicio]) => s.startsWith(inicio));
+  return r ? r[1] : null;
+}
 const ENDERECOS_ANTIGOS = {
   "one-piece-miracle-battle": "miracle-battle-carddass",
   "naruto-miracle-battle": "miracle-battle-carddass",

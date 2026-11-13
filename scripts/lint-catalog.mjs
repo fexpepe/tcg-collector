@@ -30,7 +30,7 @@ import { classificaMudanca, assinatura, idiomaDe, numDe } from "./lib/id-stabili
 
 const ROOT = new URL("../", import.meta.url);
 const BASELINE = new URL("data/catalog-baseline.json", ROOT);
-const GAMES = { pokemon: "data/", lorcana: "data/lorcana/", onepiece: "data/onepiece/", magic: "data/magic/", fab: "data/fab/", gundam: "data/gundam/", swu: "data/swu/", cyberpunk: "data/cyberpunk/", sorcery: "data/sorcery/", dbfw: "data/dbfw/", ygo: "data/ygo/", digimon: "data/digimon/", riftbound: "data/riftbound/", unionarena: "data/unionarena/", naruto: "data/naruto/", hxh: "data/hxh/", dbc: "data/dbc/", dbz: "data/dbz/", wow: "data/wow/", lotr: "data/lotr/", harrypotter: "data/harrypotter/", weiss: "data/weiss/", mbc: "data/mbc/", cdm: "data/cdm/", gcd: "data/gcd/", gw: "data/gw/", narutocg: "data/narutocg/", godzilla: "data/godzilla/", fftcg: "data/fftcg/", palworld: "data/palworld/", jump: "data/jump/" };
+const GAMES = { pokemon: "data/", lorcana: "data/lorcana/", onepiece: "data/onepiece/", magic: "data/magic/", fab: "data/fab/", gundam: "data/gundam/", swu: "data/swu/", cyberpunk: "data/cyberpunk/", sorcery: "data/sorcery/", dbfw: "data/dbfw/", ygo: "data/ygo/", digimon: "data/digimon/", riftbound: "data/riftbound/", unionarena: "data/unionarena/", naruto: "data/naruto/", hxh: "data/hxh/", dbc: "data/dbc/", dbsb: "data/dbsb/", dbva: "data/dbva/", dbbw: "data/dbbw/", dbz: "data/dbz/", wow: "data/wow/", lotr: "data/lotr/", harrypotter: "data/harrypotter/", weiss: "data/weiss/", mbc: "data/mbc/", cdm: "data/cdm/", gcd: "data/gcd/", gw: "data/gw/", narutocg: "data/narutocg/", godzilla: "data/godzilla/", fftcg: "data/fftcg/", palworld: "data/palworld/", jump: "data/jump/" };
 const UPDATE = process.argv.includes("--update-baseline");
 const ACEITA_ID = process.argv.includes("--aceitar-mudanca-de-id");
 
@@ -172,7 +172,10 @@ async function checarEstabilidadeDeId() {
   // virou o jogo gcd, com os mesmos ids.
   // O NARUTO CARD GAME de 2027 foi a linha nrt-ncg- do naruto até 11/11/2026 e
   // virou o jogo narutocg, com os mesmos ids.
-  const MUDOU_DE_JOGO = { "op-mb-": "mbc", "nrt-mb-": "mbc", "hxh-mb-": "mbc", "gcd-": "gcd", "nrt-ncg-": "narutocg" };
+  // Super Battle, Visual Adventure e Super Barcode Wars foram séries do dbc
+  // (12/11/2026, PR #299) e viraram os jogos dbsb, dbva e dbbw no dia
+  // seguinte, com os mesmos ids (dbc-sb01-1…).
+  const MUDOU_DE_JOGO = { "op-mb-": "mbc", "nrt-mb-": "mbc", "hxh-mb-": "mbc", "gcd-": "gcd", "nrt-ncg-": "narutocg", "dbc-sb": "dbsb", "dbc-va": "dbva", "dbc-bw": "dbbw" };
   const destinoDe = async (id) => {
     const pre = Object.keys(MUDOU_DE_JOGO).find((p) => id.startsWith(p));
     if (!pre) return null;

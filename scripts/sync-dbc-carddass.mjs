@@ -4,7 +4,9 @@
 // GT). Em set/1997 a Bandai fechou a linha com o 特別弾 (Parte Especial), que
 // juntou Hondan e Super Battle na mesma carta. Em paralelo vieram Super Battle
 // (20 partes), Visual Adventure (8) e Super Barcode Wars (4) — todas
-// levantadas em SETS abaixo com data e total.
+// levantadas em SETS abaixo com data e total. Desde 2026-11-13 cada uma dessas
+// três é um jogo vintage próprio (dbsb, dbva, dbbw; ver JOGO_DA_SERIE), e este
+// sync grava os quatro catálogos.
 //
 // Fontes (levantamento de 2026-09-24, refeito em 2026-11-12):
 //   80storage.com    — lista CARTA A CARTA do Hondan (número, nome, BP/DP e os
@@ -62,9 +64,18 @@ const LIDOS = JSON.parse(readFileSync(new URL("scripts/data/dbc-nomes-lidos.json
 const DZ = "www.dbzcollection.fr/2v2"; // sem esquema: o wsrv busca em HTTP, que é o que o site serve
 const UA = { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36 Sleevu/1.0 (+sleevu.app)" };
 const NO_FETCH = process.argv.includes("--no-fetch");
-const GAME = "dbc";
 const ID_PREFIX = "dbc-";
-const LOGO = "/assets/games/game_dbc-v2.webp";
+// Cada série é um JOGO desde 2026-11-13 (pedido do Fernando: os jogos antigos
+// de Dragon Ball, um por linha de produto, como na página Vintage). O dbc ficou
+// com o 本弾 e o 特別弾; Super Battle, Visual Adventure e Super Barcode Wars
+// viraram dbsb, dbva e dbbw com os MESMOS ids e setIds (dbc-sb01-1…), o
+// caminho do Miracle Battle e do Gundam Carddass (src/migra-mbc.js leva a
+// coleção de quem marcou; MUDOU_DE_JOGO no lint). O sync segue um só, porque
+// as fontes são as mesmas, e grava os quatro catálogos.
+export const JOGO_DA_SERIE = { h: "dbc", sb: "dbsb", va: "dbva", bw: "dbbw" };
+// Os três novos ainda sem logo (decisão de 2026-11-13): o cartão do set mostra
+// o nome, como no Gundam Carddass.
+const LOGO = { dbc: "/assets/games/game_dbc-v2.webp" };
 
 // Séries: `code` é o prefixo do setId (dbc-h06, dbc-sb01…); `ja` vai no nome
 // do set. A ordem aqui é a ordem das seções na página de Sets. O Hondan era
@@ -459,15 +470,21 @@ export function nameEn(ja) {
   return "";
 }
 
+// A pasta de imagem curada é uma só pros quatro jogos (o id já diz a série).
 function curatedImg(id) {
   for (const ext of ["webp", "jpg", "png"]) {
-    if (existsSync(fileURLToPath(new URL(`assets/cards/${GAME}/${id}.${ext}`, ROOT)))) return `/assets/cards/${GAME}/${id}.${ext}`;
+    if (existsSync(fileURLToPath(new URL(`assets/cards/dbc/${id}.${ext}`, ROOT)))) return `/assets/cards/dbc/${id}.${ext}`;
   }
   return "";
 }
 
-export function setName(def) { return `${SERIES[def.series].ja} ${def.ja}`; }
-export function setNameEn(def) { return `${SERIES[def.series].en} ${def.en}`; }
+// Nome do set: no dbc o 本弾 abre o nome ("本弾 第1弾「…」"), como sempre foi;
+// nos jogos de série única a série É o jogo e não abre o nome (contrato 7 do
+// docs/CATALOGO.md): "第1弾", "Part 1". O endereço não muda: nome curto ou só
+// em japonês vira slug pelo setId (dbc-sb01-1), o mesmo de antes.
+export function setName(def) { return def.series === "h" ? `${SERIES.h.ja} ${def.ja}` : def.ja; }
+export function setNameEn(def) { return def.series === "h" ? `${SERIES.h.en} ${def.en}` : def.en; }
+export function jogoDoSet(def) { return JOGO_DA_SERIE[def.series]; }
 
 // Cartas do jogo a partir dos dois snapshots, na ordem de SETS. Em cada parte:
 // as do 80storage (na ordem dele) e depois as que só o dbzcollection tem.
@@ -504,7 +521,7 @@ export function cartasDoJogo(snap80, dz, lidos = LIDOS) {
         language: "ja",
         image: curatedImg(id) || (f ? IMG(scanDe(f)) : ""),
         variants: ["Normal"],
-        setLogo: LOGO,
+        setLogo: LOGO[jogoDoSet(def)] || "",
         vintage: true,
         vintageLine: def.series
       });
@@ -513,21 +530,34 @@ export function cartasDoJogo(snap80, dz, lidos = LIDOS) {
   return line;
 }
 
+// Jogo de uma carta pelo setId (dbc-sb01 -> dbsb). Carta guardada de um
+// catálogo antigo sem série conhecida fica no dbc.
+export function jogoDaCarta(c) {
+  const m = /^dbc-([a-z]+)\d/.exec(String((c && c.setId) || ""));
+  return (m && JOGO_DA_SERIE[m[1]]) || "dbc";
+}
+
 async function build(snapshot, dz) {
-  const outDir = new URL(`data/${GAME}/`, ROOT);
   const line = cartasDoJogo(snapshot, dz);
-  const named = line.filter((c) => c.nameJp).length;
-  const semNome = line.filter((c) => /^No\. /.test(c.name)).length;
-  const semImagem = line.filter((c) => !c.image).length;
-  const existing = (await readGlobalVar(new URL("cards.js", outDir), "TCG_CARDS")) || [];
-  // O catálogo é só deste sync; mas carta publicada nunca some (usuário pode tê-la).
-  const have = new Set(line.map((c) => c.id));
-  const kept = existing.filter((c) => c && c.id && !have.has(c.id));
-  const merged = line.concat(kept);
-  const pricing = (await readGlobalVar(new URL("pricing.js", outDir), "TCG_PRICING")) || {};
-  await writeGameCatalog(outDir, { cards: merged, pricing, webDir: `data/${GAME}/` });
-  const partes = new Set(line.map((c) => c.setId)).size;
-  console.log(`  ${GAME}: ${line.length} cartas em ${partes} partes (${named} com nome EN, ${semNome} sem nome, ${semImagem} sem imagem) -> ${merged.length} totais`);
+  for (const jogo of Object.values(JOGO_DA_SERIE)) {
+    const outDir = new URL(`data/${jogo}/`, ROOT);
+    const doJogo = line.filter((c) => jogoDaCarta(c) === jogo);
+    const named = doJogo.filter((c) => c.nameJp).length;
+    const semNome = doJogo.filter((c) => /^No\. /.test(c.name)).length;
+    const semImagem = doJogo.filter((c) => !c.image).length;
+    const existing = (await readGlobalVar(new URL("cards.js", outDir), "TCG_CARDS")) || [];
+    // O catálogo é só deste sync; mas carta publicada nunca some (usuário pode
+    // tê-la) — MENOS a que mudou de jogo: a dbc-sb… que o catálogo do dbc ainda
+    // guarda de antes da separação vai pro dbsb e sai daqui.
+    const have = new Set(doJogo.map((c) => c.id));
+    const kept = existing.filter((c) => c && c.id && !have.has(c.id) && jogoDaCarta(c) === jogo);
+    const merged = doJogo.concat(kept);
+    const pricing = (await readGlobalVar(new URL("pricing.js", outDir), "TCG_PRICING")) || {};
+    await writeGameCatalog(outDir, { cards: merged, pricing, webDir: `data/${jogo}/` });
+    const partes = new Set(doJogo.map((c) => c.setId)).size;
+    const saiu = existing.filter((c) => c && c.id && jogoDaCarta(c) !== jogo).length;
+    console.log(`  ${jogo}: ${doJogo.length} cartas em ${partes} partes (${named} com nome EN, ${semNome} sem nome, ${semImagem} sem imagem) -> ${merged.length} totais${saiu ? `; ${saiu} mudaram de jogo` : ""}`);
+  }
 }
 
 async function run() {

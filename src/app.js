@@ -1656,6 +1656,9 @@
       naruto: groupNarutoSets,
       hxh: groupHxhSets,
       dbc: groupDbcSets,
+      dbsb: groupSerieCarddassDb,
+      dbva: groupSerieCarddassDb,
+      dbbw: groupSerieCarddassDb,
       swu: groupSwuSets,
       cyberpunk: groupCyberpunkSets,
       sorcery: groupSorcerySets,
@@ -2222,9 +2225,18 @@
     return items;
   }
 
+  // Super Battle, Visual Adventure e Super Barcode Wars: jogos dbsb, dbva e
+  // dbbw desde 2026-11-13 (séries do dbc até ali). Uma série cada, lida como
+  // checklist, da 1ª parte à última — o setId (dbc-sb01…) já diz a ordem.
+  function groupSerieCarddassDb(setItems) {
+    const idOf = (set) => String(set.setId || "").trim().toLowerCase();
+    const list = setItems.slice().sort((a, b) => idOf(a).localeCompare(idOf(b), "en", { numeric: true }));
+    return list.length ? [cabecalhoDeSecao("sets.category.main", list.length)].concat(list) : [];
+  }
+
   function groupDbcSets(setItems) {
     const idOf = (set) => String(set.setId || "").trim().toLowerCase();
-    const SERIES = [["h", "sets.category.dbcHondan", "Hondan "], ["sb", "sets.category.dbcSuperBattle", "Super Battle "], ["va", "sets.category.dbcVisualAdventure", "Visual Adventure "], ["bw", "sets.category.dbcBarcodeWars", "Super Barcode Wars "]];
+    const SERIES = [["h", "sets.category.dbcHondan", "Hondan "]];
     const serieOf = (set) => (idOf(set).match(/^dbc-([a-z]+)\d+$/) || [])[1] || "";
     const semSerie = (set, serie) => {
       const nome = String(set.displayName || "");

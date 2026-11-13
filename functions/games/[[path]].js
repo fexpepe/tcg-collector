@@ -31,7 +31,7 @@
 // As páginas estáticas passarem por aqui custa uma execução de Function por
 // visita (a conta é Workers Paid desde 10/09/2026).
 import { buscaPagina, comVitrine } from "../_vitrine-csp.js";
-import { jogoDaUrl, urlOficial } from "../_lib/jogos.js";
+import { jogoDaUrl, urlOficial, jogoNovoDoSet } from "../_lib/jogos.js";
 import { slugify, slugsDasCartas, cartasDoSet, cartaParecida } from "../_lib/slug-carta.js";
 import { pecasDaCarta, precoDeReferencia, escapeHtml, escapeAttr, ORIGEM } from "../_lib/pagina-carta.js";
 import { pecasDoSet } from "../_lib/pagina-set.js";
@@ -267,6 +267,10 @@ async function telaDoSetDecorada(context, rota) {
   const movida = rota.carta ? cartaQueMudouDeSet(mapa, rota.set, rota.carta) : null;
   if (movida) return redireciona(request, `/games/${movida}${busca}`, 301);
   if (!hasOwn(sets, rota.set)) {
+    // Set que mudou de JOGO (as séries do dbc que viraram jogo, 2026-11-13):
+    // mesmo slug de set e de carta, outro /games/<jogo>. Vale pro -en também.
+    const outroJogo = jogoNovoDoSet(rota.jogo.url, rota.set);
+    if (outroJogo) return redireciona(request, `/games/${outroJogo}/${rota.set}${rota.carta ? `/${rota.carta}` : ""}${busca}`, 301);
     // A variante em inglês (<set>-en) é página estática do prerender.
     if (!rota.carta && /-en$/.test(rota.set) && hasOwn(sets, rota.set.slice(0, -3))) return context.next();
     // Set renomeado: 301 pro nome de hoje, com a carta junto (se o nome dela
