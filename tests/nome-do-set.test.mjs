@@ -124,6 +124,9 @@ test("nomeDoSet: tira a marca dos grupos genéricos do TCGplayer, não do títul
   assert.equal(nomeDoSet("fftcg", "Boss Deck: Final Fantasy VII"), "Boss Deck: Final Fantasy VII");
   assert.equal(nomeDoSet("fftcg", "Final Fantasy VII Collection"), "Final Fantasy VII Collection");
   assert.equal(nomeDoSet("fftcg", "FFXIV Starter"), "FFXIV Starter");
+  // Vanguard: o "Vanguard" que é parte do título fica.
+  assert.equal(nomeDoSet("vanguard", "Cardfight Vanguard Promo Cards"), "Promo Cards");
+  assert.equal(nomeDoSet("vanguard", "Vanguard & Deletor"), "Vanguard & Deletor");
 });
 
 test("catálogo da família TCGCSV já está com o nome que o sync grava hoje", () => {

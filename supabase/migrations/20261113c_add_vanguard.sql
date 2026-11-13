@@ -1,32 +1,29 @@
 -- ============================================================================
--- Migração aditiva: libera TRÊS slugs novos do Naruto nas whitelists de jogo
--- do banco. Aplicar no SQL Editor do Supabase (projeto dlnalopazitfdgnmdguu).
+-- Migração aditiva: libera o slug `vanguard` (Cardfight!! Vanguard, Bushiroad,
+-- edição inglesa desde 2011) nas whitelists de jogo do banco. Aplicar no SQL
+-- Editor do Supabase (projeto dlnalopazitfdgnmdguu).
 --
---   narutoboruto — Naruto Boruto Card Game (Bandai, 2019–2020, Chrono Clash
---                  System), jogo vintage desta PR (#296)
---   narutomythos — NARUTO Mythos TCG (Cicaboom, 2026), da PR #298
---   narutokayou  — as cartas do Naruto da Kayou, edição em inglês, da PR #298
---
--- Cópia da 20261111f (fftcg, já aplicada e conferida) com os três slugs na
--- lista — só a lista muda. Os três vão na MESMA migração de propósito: cada
--- migração de jogo reescreve a lista INTEIRA, e a #296 e a #298 estão abertas
--- ao mesmo tempo. Esta COBRE a 20261112c da #298 (que só tem os dois de lá):
--- quem aplicar esta não aplica a 20261112c, e se a 20261112c já foi aplicada,
--- esta por cima está certo. O contrário não: a 20261112c depois desta tiraria
--- o `narutoboruto`.
---
--- As mesmas DUAS famílias de whitelist:
+-- Cópia da 20261111f (fftcg, já aplicada e conferida) — só a lista muda. As
+-- mesmas DUAS famílias de whitelist:
 --   1. card_views + increment_card_view  (corpo da 20260923a, com a linha do
 --      card_views_daily)
 --   2. contribute_price                  (corpo da 20260807c)
--- Sem isto, nos jogos novos a view de carta e o Preço da Comunidade são
--- rejeitados EM SILÊNCIO (as funções só dão `return`). Slug liberado antes de
--- o jogo estar no ar não faz mal nenhum.
+-- Sem isto, no jogo novo a view de carta e o Preço da Comunidade são
+-- rejeitados EM SILÊNCIO (as funções só dão `return`).
+--
+-- A LISTA É A UNIÃO do dia: além do `vanguard`, leva os slugs das migrações
+-- das PRs abertas em 13/11/2026 — `narutomythos`, `narutokayou` e
+-- `narutoboruto` (20261113a) e `dbsb`, `dbva` e `dbbw` (20261113b). Slug
+-- liberado antes do jogo entrar não faz mal (ninguém manda evento dele), e
+-- assim a ordem em que as três forem aplicadas deixa de importar PRA ESTA:
+-- ela cobre as outras duas. O contrário não vale — cada migração de jogo
+-- reescreve a lista INTEIRA, então a 20261113a ou a 20261113b aplicadas
+-- DEPOIS desta tirariam o `vanguard`. Aplicar esta por último, ou só esta.
 --
 -- A coleção NÃO depende desta migração: a tabela `collections` não tem
 -- whitelist de jogo.
 --
--- Conferir depois de aplicar: os `curl` no fim deste arquivo.
+-- Conferir depois de aplicar: o par de `curl` no fim deste arquivo.
 --
 -- Sem cifrão dentro dos corpos de função (lição da 20260923a): o editor do
 -- Supabase se perde com `$` solto num corpo `$$…$$`. As âncoras de fim das
@@ -47,14 +44,14 @@ begin
   end loop;
 end $$;
 alter table public.card_views add constraint card_views_game_check
-  check (game = any (array['pokemon','lorcana','onepiece','magic','fab','gundam','swu','cyberpunk','sorcery','dbfw','ygo','digimon','riftbound','unionarena','naruto','hxh','dbc','wow','lotr','harrypotter','weiss','mbc','dbz','cdm','gcd','gw','narutocg','godzilla','palworld','fftcg','narutomythos','narutokayou','narutoboruto','jump']));
+  check (game = any (array['pokemon','lorcana','onepiece','magic','fab','gundam','swu','cyberpunk','sorcery','dbfw','ygo','digimon','riftbound','unionarena','naruto','hxh','dbc','wow','lotr','harrypotter','weiss','mbc','dbz','cdm','gcd','gw','narutocg','godzilla','palworld','fftcg','narutomythos','narutokayou','narutoboruto','dbsb','dbva','dbbw','vanguard','jump']));
 
--- increment_card_view: corpo IDÊNTICO ao da 20261111f (e das anteriores) — só a lista de jogos muda.
+-- increment_card_view: corpo IDÊNTICO ao da 20261111d (e das anteriores) — só a lista de jogos muda.
 create or replace function public.increment_card_view(p_game text, p_card_id text)
 returns void language plpgsql security definer set search_path = public as $$
 begin
   if p_game is null or p_card_id is null then return; end if;
-  if not (p_game = any (array['pokemon','lorcana','onepiece','magic','fab','gundam','swu','cyberpunk','sorcery','dbfw','ygo','digimon','riftbound','unionarena','naruto','hxh','dbc','wow','lotr','harrypotter','weiss','mbc','dbz','cdm','gcd','gw','narutocg','godzilla','palworld','fftcg','narutomythos','narutokayou','narutoboruto','jump'])) then return; end if;
+  if not (p_game = any (array['pokemon','lorcana','onepiece','magic','fab','gundam','swu','cyberpunk','sorcery','dbfw','ygo','digimon','riftbound','unionarena','naruto','hxh','dbc','wow','lotr','harrypotter','weiss','mbc','dbz','cdm','gcd','gw','narutocg','godzilla','palworld','fftcg','narutomythos','narutokayou','narutoboruto','dbsb','dbva','dbbw','vanguard','jump'])) then return; end if;
   if p_card_id !~ '^[A-Za-z0-9][A-Za-z0-9._-]{0,79}\Z' then return; end if;
   if not _rate_ok('cardview', 120) then return; end if;
   insert into card_views (game, card_id, views) values (p_game, p_card_id, 1)
@@ -74,7 +71,7 @@ create or replace function public.contribute_price(
 declare v numeric;
 begin
   if auth.uid() is null then return; end if;
-  if not (p_game = any (array['pokemon','lorcana','onepiece','magic','fab','gundam','swu','cyberpunk','sorcery','dbfw','ygo','digimon','riftbound','unionarena','naruto','hxh','dbc','wow','lotr','harrypotter','weiss','mbc','dbz','cdm','gcd','gw','narutocg','godzilla','palworld','fftcg','narutomythos','narutokayou','narutoboruto','jump'])) then return; end if;
+  if not (p_game = any (array['pokemon','lorcana','onepiece','magic','fab','gundam','swu','cyberpunk','sorcery','dbfw','ygo','digimon','riftbound','unionarena','naruto','hxh','dbc','wow','lotr','harrypotter','weiss','mbc','dbz','cdm','gcd','gw','narutocg','godzilla','palworld','fftcg','narutomythos','narutokayou','narutoboruto','dbsb','dbva','dbbw','vanguard','jump'])) then return; end if;
   if p_card_id is null or p_card_id !~ '^[A-Za-z0-9][A-Za-z0-9._-]{0,79}\Z' then return; end if;
   if p_variant is null or length(p_variant) < 1 or length(p_variant) > 40 then return; end if;
   if p_cond is null or p_cond !~ '^[A-Za-z0-9 +-]{1,12}\Z' then return; end if;
@@ -100,24 +97,20 @@ notify pgrst, 'reload schema';
 -- ============================================================================
 -- Verificação (depois de aplicar):
 --
---   # 1) view de carta do Naruto Boruto Card Game (nb-193308, o Tobi
---   #    NB01-40-B): 204 E a linha aparece em card_views com game
---   #    narutoboruto (204 sozinho não prova nada: jogo inválido também
---   #    devolve 204).
+--   # 1) view de carta do Cardfight!! Vanguard (vg-727149, a Lisciafael
+--   #    DZ-BT16/001EN): 204 E a linha aparece em card_views com game vanguard (204
+--   #    sozinho não prova nada: jogo inválido também devolve 204).
 --   curl -s -o /dev/null -w "%{http_code}\n" -X POST \
 --     "https://dlnalopazitfdgnmdguu.supabase.co/rest/v1/rpc/increment_card_view" \
 --     -H "apikey: sb_publishable_0Qlei5ZvRcEsr18QRdWfGg_N3aR1zyL" -H "Content-Type: application/json" \
---     -d '{"p_game":"narutoboruto","p_card_id":"nb-193308"}'
+--     -d '{"p_game":"vanguard","p_card_id":"vg-727149"}'
 --
---   curl -s "https://dlnalopazitfdgnmdguu.supabase.co/rest/v1/card_views?game=eq.narutoboruto&select=game,card_id,views" \
+--   curl -s "https://dlnalopazitfdgnmdguu.supabase.co/rest/v1/card_views?game=eq.vanguard&select=card_id,views" \
 --     -H "apikey: sb_publishable_0Qlei5ZvRcEsr18QRdWfGg_N3aR1zyL"
 --
---   # 2) os dois da #298, quando ela estiver no ar: nmy-s1e1-l133v1
---   #    (narutomythos) e nky-hs1-nrsa01-se-001l5 (narutokayou), do mesmo jeito.
---
---   # 3) contribuição anônima segue 401 (o fechamento da 20260807b continua de pé)
+--   # 2) contribuição anônima segue 401 (o fechamento da 20260807b continua de pé)
 --   curl -s -o /dev/null -w "%{http_code}\n" -X POST \
 --     "https://dlnalopazitfdgnmdguu.supabase.co/rest/v1/rpc/contribute_price" \
 --     -H "apikey: sb_publishable_0Qlei5ZvRcEsr18QRdWfGg_N3aR1zyL" -H "Content-Type: application/json" \
---     -d '{"p_game":"narutoboruto","p_card_id":"nb-193308","p_variant":"Foil","p_cond":"NM","p_kind":"listed","p_company":"","p_grade":"","p_value_brl":10}'
+--     -d '{"p_game":"vanguard","p_card_id":"vg-727149","p_variant":"Normal","p_cond":"NM","p_kind":"listed","p_company":"","p_grade":"","p_value_brl":10}'
 -- ============================================================================

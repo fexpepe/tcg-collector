@@ -30,7 +30,7 @@ const RAIZ = new URL("../", import.meta.url);
 const DIRS = [
   "data/", "data/lorcana/", "data/onepiece/", "data/magic/", "data/fab/",
   "data/gundam/", "data/swu/", "data/cyberpunk/", "data/sorcery/", "data/dbfw/", "data/ygo/", "data/digimon/", "data/riftbound/",
-  "data/unionarena/", "data/narutocg/", "data/naruto/", "data/hxh/", "data/dbc/", "data/dbz/", "data/wow/", "data/lotr/", "data/weiss/", "data/godzilla/", "data/palworld/", "data/fftcg/", "data/harrypotter/", "data/mbc/", "data/cdm/", "data/gcd/", "data/gw/", "data/narutoboruto/"
+  "data/unionarena/", "data/narutocg/", "data/naruto/", "data/hxh/", "data/dbc/", "data/dbz/", "data/wow/", "data/lotr/", "data/weiss/", "data/godzilla/", "data/palworld/", "data/fftcg/", "data/vanguard/", "data/harrypotter/", "data/mbc/", "data/cdm/", "data/gcd/", "data/gw/", "data/narutoboruto/"
 ];
 
 const JANELAS = [7, 30];

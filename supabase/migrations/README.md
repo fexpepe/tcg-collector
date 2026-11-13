@@ -8,17 +8,26 @@ poucos.)
 
 ## Pendentes de aplicar
 
-- `20261113a` — libera TRÊS slugs do Naruto nas duas whitelists de jogo
+- `20261113c` — libera o slug `vanguard` (Cardfight!! Vanguard, Bushiroad,
+  edição inglesa desde 2011) nas duas whitelists de jogo
   (`card_views`/`increment_card_view` e `contribute_price`;
-  `20261113a_add_narutoboruto_mythos_kayou.sql`): `narutoboruto` (Naruto
-  Boruto Card Game, PR #296), `narutomythos` e `narutokayou` (PR #298). Cópia
-  da `20261111f` (fftcg, já aplicada) com os três a mais; só a lista muda. As
-  duas PRs estão abertas ao mesmo tempo e cada migração reescreve a lista
-  inteira: esta **cobre a `20261112c` da #298**, que não precisa mais ser
-  aplicada (e não pode rodar DEPOIS desta: tiraria o `narutoboruto`).
-  Conferir com os `curl` do fim do arquivo: a view de `nb-193308` tem de
-  **criar** a linha em `card_views` (game `narutoboruto`); o 204 sozinho não
-  prova nada. **A próxima migração de jogo copia esta.**
+  `20261113c_add_vanguard.sql`). Cópia da `20261111f` (fftcg); só a lista
+  muda. A lista é a **união do dia**: leva também `narutomythos`,
+  `narutokayou` e `narutoboruto` (a 20261113a) e `dbsb`, `dbva` e `dbbw`
+  (a 20261113b), das PRs abertas em 13/11 — ela cobre as duas. O contrário
+  não vale: a 20261113a ou a 20261113b aplicadas **depois** desta tirariam o
+  `vanguard`. Aplicar esta por último, ou só esta. Sem ela, a view de carta
+  e o Preço da Comunidade do jogo novo são descartados em silêncio. Conferir
+  com o par de `curl` do fim do arquivo: a view de `vg-727149` tem de
+  **criar a linha** no `card_views` (o 204 sozinho não prova nada). **A
+  próxima migração de jogo copia esta.**
+
+  **Aplicada em 2026-11-13** pelo Fernando e verificada por curl anônimo no
+  mesmo dia: a view de `vg-727149` respondeu 204 e criou a linha no
+  `card_views` (game `vanguard`, 1 view); um jogo inventado respondeu 204 e
+  não criou linha; `contribute_price` anônimo segue 401. Depois dela, nem a
+  `20261113a` nem a `20261113b` podem rodar (tirariam o `vanguard`): os
+  slugs das duas já estão na lista desta.
 
 - `20261112b` — /admin: as LINHAS de cada jogo (`20261112b_admin_jogos_linhas.sql`;
   o `b` porque a 20261112a do mesmo dia é a dos erros). O jogo `naruto` junta
@@ -380,7 +389,6 @@ poucos.)
   `fftcg`, 1 view); um jogo inventado (`fftcgx`) respondeu 204 e não criou
   linha; `contribute_price` anônimo segue 401. Depois dela, nem a
   `20261111e` nem as anteriores podem rodar de novo (tirariam o `fftcg`).
-  Copiada pela `20261113a` (os três slugs novos do Naruto).
 
 - `20261111e` — libera o slug `palworld` (Palworld OFFICIAL CARD GAME,
   Bushiroad/Pocketpair, 2026) nas duas whitelists de jogo

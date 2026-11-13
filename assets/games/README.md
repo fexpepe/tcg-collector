@@ -128,6 +128,12 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
   transparente, recortado no conteúdo (+2px), alfa ≤12 zerado e reduzido pra
   512×182 com o Pillow em alfa pré-multiplicado. WebP com perda q88 e alfa
   sem perda: 34 KB.
+- `game_vanguard.webp` — Cardfight!! Vanguard (tile da grade moderna do hub,
+  depois do Final Fantasy, 2026-11-13). Fonte enviada pelo Fernando no mesmo
+  dia: PNG de 600×269 com alfa, o logo "CARDFIGHT!! Vanguard overDress"
+  (vermelho com contorno prateado). Trocou o do cabeçalho do site oficial
+  (`vg_logo_en.png`, 474×211), menor e sem o prateado. Sem recorte nem
+  redimensionamento; WebP sem perda pelo ffmpeg, 56 KB.
 - `game_fftcg.webp` — Final Fantasy TCG (19º tile da grade moderna do hub,
   depois do Palworld, 2026-11-11). Fonte: o logo do cabeçalho do site
   oficial (`fftcg.square-enix-games.com/theme/fftcg/images/large-fftcg-logo.png`,

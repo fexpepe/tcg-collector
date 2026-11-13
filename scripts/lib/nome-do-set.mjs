@@ -39,7 +39,10 @@ export const NOMES_DO_JOGO = {
   // Final Fantasy TCG: o TCGplayer abrevia "FF: Promo Cards". "Final Fantasy"
   // sozinho NÃO entra: é o título do videogame, e set que começasse por ele
   // ("Final Fantasy VII …") perderia de qual FF é.
-  fftcg: ["Final Fantasy Trading Card Game", "Final Fantasy TCG", "FF"]
+  fftcg: ["Final Fantasy Trading Card Game", "Final Fantasy TCG", "FF"],
+  // Cardfight!! Vanguard: nenhum grupo traz o jogo na frente hoje (13/11/2026);
+  // fica pra quando o TCGplayer criar um "Cardfight Vanguard Promo Cards".
+  vanguard: ["Cardfight!! Vanguard", "Cardfight Vanguard"]
 };
 
 // Títulos de outra obra que começam com a marca: ficam inteiros. No Yu-Gi-Oh!

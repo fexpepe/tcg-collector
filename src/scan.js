@@ -186,6 +186,19 @@
       add(base, 3, m);
       tira(m);
     }
+    // Cardfight!! Vanguard (2026-11-13): SET/NÚMERO + "EN" — "BT01/046EN",
+    // "DZ-BT16/001EN", "D-PR/184EN". A paralela leva a raridade ANTES do
+    // número e é parte do código ("V-BT02/SP01EN", "DZ-TBP01/GBPR+01EN",
+    // "V-TB01/048fEN"): cada uma é carta própria no catálogo. Sai inteiro e
+    // antes do reHifen, que leria só o "DZ-BT16" e o daria pro Digimon. O
+    // "EN" do fim é o que separa do Weiss (TÍTULO/LADO-NÚMERO, lido acima).
+    const reVG = /\b([A-Z0-9]+(?:-[A-Z0-9]+)?)\/([A-Z0-9+]*?)([0-9OIL]{2,4})([A-Z]?)EN\b/g;
+    while ((m = reVG.exec(resto))) {
+      const d = soDigitos(m[3]);
+      if (!/^\d+$/.test(d) || !/[A-Z]/.test(m[1])) continue;
+      add(`${m[1]}/${m[2]}${d}${m[4]}EN`, 3, m);
+      tira(m);
+    }
     // Palworld OFFICIAL CARD GAME (2026-11-11): "<OSR> EBP01-001OSR". O E da
     // frente é a edição inglesa; o set é BP (booster), TD (trial deck), SS
     // (sleeve set), PR (promo) ou SOUL; e a raridade PARALELA vem grudada no
@@ -439,7 +452,10 @@
     palworld: [/PALWORLD/, /POCKETPAIR/],
     // Final Fantasy TCG: "© SQUARE ENIX" no rodapé. O "Final Fantasy" não
     // entra: é nome de set do Magic (Universes Beyond) também.
-    fftcg: [/SQUARE ?ENIX/]
+    fftcg: [/SQUARE ?ENIX/],
+    // Cardfight!! Vanguard: o nome do jogo no verso e no rodapé. "BUSHIROAD"
+    // sozinho é do Weiss (a mesma editora); o formato do código desempata.
+    vanguard: [/VANGUARD/, /CARDFIGHT/]
   };
   const FORMATOS = [
     [/^(OP|EB|PRB)\d{2}-/, ["onepiece"]],
@@ -479,6 +495,8 @@
     [/^\d{1,2}-\d{3}[CRHLS]$/, ["fftcg"]],
     [/^(?:PR|RE|B|W\d{2})-\d{3}$/, ["fftcg"]],
     [/^(?:PR|RE|B|W\d{2})-\d{3}[CRHLS]?\/\d{1,2}-\d{3}[CRHLS]$/, ["fftcg"]],
+    // Cardfight!! Vanguard: SET/NÚMERO com o "EN" no fim (2026-11-13).
+    [/^[A-Z0-9]+(?:-[A-Z0-9]+)?\/[A-Z0-9+]*\d{2,4}[A-Z]?EN$/, ["vanguard"]],
     // Fração: os cinco jogos que numeram "N/T". SWU e Harry Potter não
     // estavam aqui, e a fração deles era filtrada pros outros três — só
     // achava se nenhum set de Pokémon/Lorcana/Riftbound tivesse o mesmo total.

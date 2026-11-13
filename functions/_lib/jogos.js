@@ -43,6 +43,7 @@ export const JOGOS_URL = [
   { url: "godzilla-card-game", game: "godzilla", nome: "Godzilla Card Game", logo: "assets/games/game_godzilla.webp" },
   { url: "palworld-official-card-game", game: "palworld", nome: "Palworld Official Card Game", logo: "assets/games/game_palworld.webp" },
   { url: "final-fantasy-tcg", game: "fftcg", nome: "Final Fantasy TCG", logo: "assets/games/game_fftcg.webp" },
+  { url: "cardfight-vanguard", game: "vanguard", nome: "Cardfight!! Vanguard", logo: "assets/games/game_vanguard.webp" },
   { url: "gundam-carddass", game: "gcd", nome: "Gundam Carddass", logo: "assets/games/game_gcd.webp", vintage: "1988–1997" },
   { url: "dragon-ball-carddass", game: "dbc", nome: "Dragon Ball Carddass", logo: "assets/games/game_dbc-v2.webp", vintage: "1988–1997" },
   { url: "gundam-war", game: "gw", nome: "Gundam War", logo: "assets/games/game_gw.webp", vintage: "1999–2011" },

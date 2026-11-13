@@ -57,7 +57,12 @@ const FAMILIAS = {
   // japonês é BP01. O catálogo é o inglês, então o selo bate com a carta.
   // Promos (EPR) e protótipos (PC) sem.
   godzilla: { re: /^(E(?:BP|SD|SC|TD)\d{2})$/, inteiro: true },
-  palworld: { re: /^(E(?:BP|SD|SC|TD|SS)\d{2})(?:$|-)/, inteiro: true }
+  palworld: { re: /^(E(?:BP|SD|SC|TD|SS)\d{2})(?:$|-)/, inteiro: true },
+  // CARDFIGHT!! VANGUARD: o código é o que a carta imprime antes da barra
+  // ("DZ-BT16/001EN", "BT01/046EN"), com o hífen da era (G-, V-, D-, DZ-;
+  // a série original não tem). Boosters, extras e decks; as promos (PR, VPR,
+  // D-PR), os marcadores (V-GM), os eventos e o "KA1-2" ficam sem.
+  vanguard: { re: /^((?:(?:DZ|D|V|G)-)?(?:BT|EB|LBT|TBP?|SS|CB|CMB|CHB|TCB|MB|VS|PV|RC|FC|TD|MT|SD|LD|LTD|TTD|PS|CS)\d{2})$/, inteiro: true }
 };
 
 // Prefixo de número que aparece em pelo menos `minimo` das cartas do set.

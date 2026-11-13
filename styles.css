@@ -469,6 +469,18 @@
   --accent: #3a5ba0; --accent-dark: #314d88; --accent-rgb: 58, 91, 160;
   --accent-soft: rgba(58, 91, 160, 0.1); --on-accent: #ffffff;
 }
+/* Cardfight!! Vanguard: CORAL, o vermelho do logo clareado pra não colar no
+   Pokémon (13/11/2026). Coral com texto escuro no escuro (7.0:1); um carmim
+   fechado com texto branco no claro (5.9:1). */
+[data-game-accent="vanguard"] {
+  --accent: #ff5a7a; --accent-dark: #f04468; --accent-rgb: 255, 90, 122;
+  --accent-soft: rgba(255, 90, 122, 0.16); --on-accent: #0a0c10;
+}
+[data-theme="light"][data-game-accent="vanguard"],
+[data-theme="light"] [data-game-accent="vanguard"] {
+  --accent: #c2264b; --accent-dark: #a81f40; --accent-rgb: 194, 38, 75;
+  --accent-soft: rgba(194, 38, 75, 0.1); --on-accent: #ffffff;
+}
 /* Miracle Battle Carddass: o laranja-dourado do logo, num tom PÊSSEGO pra não
    repetir o Naruto, que tem carta dentro dele (01/10/2026). Pêssego claro com
    texto escuro no escuro (11:1); tijolo com texto branco no claro (7.8:1). */

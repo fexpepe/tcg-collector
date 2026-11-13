@@ -6,6 +6,17 @@
 //   - ナルティメットカードバトル 第一〜四弾 (cardbattle1–4.html), DN-001T–107T.
 // Os 巻ノ十六/十七, o resto do Card Battle e a Mission não têm página.
 //
+// Desde 2026-11-13 lê também os 14 produtos FORA dos boosters (starters,
+// 拡張シート, 忍兵法札絵巻/大全), que é onde estreou toda carta que os volumes
+// não têm: as do set "拡張・スペシャル" e as de starter numeradas dentro da
+// faixa de um volume. Cuidado que custou medir: nessas páginas a raridade é a
+// do PRODUTO, e quase tudo ali é reimpressão — a mesma carta é R no booster e
+// N no starter (148 casos). Então dessas páginas só vale a linha da ESTREIA
+// da carta (ver estreiasForaDosBoosters): número que nenhum booster tem, no
+// produto mais antigo em que aparece. A conta fecha com o catálogo: o starter
+// 雷鳴の書・風雲の書 saiu no dia do 巻ノ五, o 蝦蟇・守鶴 na véspera do 巻ノ八, e
+// as cartas de cada um caem na faixa de número desses volumes.
+//
 // Vocabulário do site → o que vai pro catálogo (a sigla, como o tcg-db e o
 // Suruga-ya escrevem): vazio = ノーマル "N", R = レア "R", SR = スーパーレア
 // "SR", U = ウルトラレア "UR", M = "Memorial". Os totais por raridade batem com
@@ -32,6 +43,26 @@ const PAGINAS = [
   ...Array.from({ length: 15 }, (_, i) => `cardgamemakino${i + 1}.html`),
   ...Array.from({ length: 4 }, (_, i) => `cardbattle${i + 1}.html`)
 ];
+// Produtos fora dos boosters, na ORDEM de lançamento (a 発売日 de cada página;
+// a do 迅雷・烈火 vem digitada "2004312.10" e é 2004-12-10). A ordem é o que
+// decide a estreia, então produto novo entra na posição da data dele. Ficam
+// de fora o COIN＋ e o カードスタンド, que a página lista sem raridade.
+export const EXTRAS = [
+  ["cardgamestarter.html", "2003-07"], // 秘技伝授スターター ナルトの書・サスケの書
+  ["cardgamestarterraimeifuuun.html", "2003-10-24"], // 雷鳴の書・風雲の書
+  ["cardgamestartergokui.html", "2003-12"], // 拡張シート 極意忍法帖
+  ["cardshinobihyouhou1.html", "2004-03-18"], // 忍兵法札絵巻
+  ["cardgamestaetergamashukaku.html", "2004-07-08"], // 蝦蟇の書・守鶴の書 ("staeter" é do site)
+  ["cardgameyukihime.html", "2004-08"], // 拡張シート 雪姫忍法帖
+  ["cardgamestarterjinrairekka.html", "2004-12-10"], // 迅雷の書・烈火の書
+  ["cardgamehyouhouemaki2.html", "2005-02-12"], // 忍兵法札絵巻・弐
+  ["cardgamekakuchouemaki.html", "2005-02-12"], // 拡張シート 忍兵法札絵巻
+  ["cardgamestarterkonohajuin.html", "2005-07-15"], // 木ノ葉の書・呪印の書
+  ["cardgamekakuchoufail1.html", "2005-08-27"], // 拡張ファイリングシート１
+  ["cardgameshinobitaizen.html", "2005-11"], // 忍兵法札大全
+  ["cardgameanyaku.html", "2006-03-17"], // 暗躍の書
+  ["cardgamekakuchoufail2.html", "2006-03-17"] // 拡張ファイリングシート２
+];
 const UA = { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Sleevu/1.0 (+sleevu.app)" };
 
 const RARIDADE = { "": "N", R: "R", SR: "SR", U: "UR", M: "Memorial" };
@@ -41,8 +72,15 @@ const limpa = (s) => s.replace(/<[^>]+>/g, "").replace(/&nbsp;/g, " ").replace(/
   .replace(/[\s　]+/g, " ").trim();
 
 // Uma página → [[número, raridade, nome]]. Linha de carta = 1ª célula a
-// raridade, 2ª o número, 3ª o nome.
-export function parseHinokunian(html) {
+// raridade, 2ª o número, 3ª o nome. `extra` = página de produto fora dos
+// boosters: ali a seção vem rotulada certo e a numeração NÃO é crescente (são
+// dois baralhos na mesma tabela), então a troca de seção pela queda do
+// número, que conserta o 巻ノ七, fica desligada; e aparecem as OP忍 da folha de
+// expansão, com o número escrito como no catálogo. As duas PR忍 do 忍兵法札
+// 絵巻・弐 (PR忍-5 初代火影 e PR忍-6 二代目火影, "U" no site) NÃO entram: a
+// raridade delas é curadoria do dono (naruto-promos-curated.json, "R"), e
+// curadoria feita à mão vence fonte.
+export function parseHinokunian(html, { extra = false } = {}) {
   const out = [];
   let secao = 0;
   let anterior = -1;
@@ -50,12 +88,14 @@ export function parseHinokunian(html) {
     const tds = tr.split(/<TD[^>]*>/i).slice(1).map(limpa);
     if (tds.length < 3) continue;
     const bruto = tds[1].normalize("NFKC").replace(/[－‐–]/g, "-");
-    const m = bruto.match(/^(忍|術|作|依|騎|DN|DT)-(\d+)T?$/);
+    const m = extra
+      ? bruto.replace(/ /g, "").match(/^((?:OP)?(?:忍|術|作|依|騎))-(\d+)$/)
+      : bruto.match(/^(忍|術|作|依|騎|DN|DT)-(\d+)T?$/);
     if (!m || !Object.prototype.hasOwnProperty.call(RARIDADE, tds[0])) continue;
     let [, prefixo, n] = m;
     const num = Number(n);
     if (prefixo === "DT") prefixo = "DN";
-    if (SECOES.includes(prefixo)) {
+    if (!extra && SECOES.includes(prefixo)) {
       // Rótulo explícito de outra seção manda; "忍" com o número caindo é a
       // seção seguinte rotulada errado (巻ノ七).
       if (prefixo !== "忍") secao = SECOES.indexOf(prefixo);
@@ -69,6 +109,29 @@ export function parseHinokunian(html) {
     out.push([numero, RARIDADE[tds[0]], tds[2]]);
   }
   return out;
+}
+
+// Das páginas fora dos boosters, só a linha em que a carta ESTREOU. Entra
+// `paginas` = [{ data, linhas }] já na ordem de lançamento, e os números que
+// os boosters têm. Sai o que sobra depois de três cortes:
+//   - número que algum booster tem: ali é reimpressão, com a raridade do
+//     starter (e se o nome do booster não bater com o do catálogo, a carta
+//     fica sem raridade, não com a da reimpressão);
+//   - número que um produto mais antigo já trouxe: reimpressão também;
+//   - dois produtos do MESMO dia com raridades diferentes: não dá pra saber
+//     qual é a estreia, a carta sai.
+export function estreiasForaDosBoosters(paginas, nosBoosters) {
+  const estreia = new Map(); // número → { data, linha, empate }
+  for (const { data, linhas } of paginas) {
+    for (const linha of linhas) {
+      const [num, rar] = linha;
+      if (nosBoosters.has(num)) continue;
+      const antes = estreia.get(num);
+      if (!antes) estreia.set(num, { data, linha, empate: false });
+      else if (antes.data === data && antes.linha[1] !== rar) antes.empate = true;
+    }
+  }
+  return [...estreia.values()].filter((e) => !e.empate).map((e) => e.linha);
 }
 
 // Nome comparável: largura (NFKC), espaço, aspas e pontuação de enfeite fora.
@@ -119,27 +182,45 @@ export function aplicaRaridade(cards, snap, { nomeDe = (c) => c.nameJp || c.name
   return { aplicadas, nomeDiferente };
 }
 
+async function baixa(pagina) {
+  for (let i = 0; i < 3; i++) {
+    try {
+      const r = await fetch(BASE + pagina, { headers: UA, signal: AbortSignal.timeout(25000) });
+      if (r.ok) return new TextDecoder("shift_jis").decode(await r.arrayBuffer());
+    } catch (e) { /* tenta de novo */ }
+    await sleep(1000 * (i + 1));
+  }
+  return null;
+}
+
 async function run() {
   const cards = [];
   for (const pagina of PAGINAS) {
-    let html = null;
-    for (let i = 0; i < 3 && !html; i++) {
-      try {
-        const r = await fetch(BASE + pagina, { headers: UA, signal: AbortSignal.timeout(25000) });
-        if (r.ok) html = new TextDecoder("shift_jis").decode(await r.arrayBuffer());
-      } catch (e) { /* tenta de novo */ }
-      if (!html) await sleep(1000 * (i + 1));
-    }
+    const html = await baixa(pagina);
     if (!html) { console.log(`  ${pagina}: inacessível — snapshot NÃO gravado (tudo ou nada).`); process.exitCode = 1; return; }
     const linhas = parseHinokunian(html);
     console.log(`  ${pagina}: ${linhas.length} linhas`);
     cards.push(...linhas);
     await sleep(400); // gentileza com o site de fã
   }
+  // Fora dos boosters: lê as 14 páginas e fica só com a estreia de cada carta.
+  const nosBoosters = new Set(cards.map(([num]) => num));
+  const extras = [];
+  for (const [pagina, data] of EXTRAS) {
+    const html = await baixa(pagina);
+    if (!html) { console.log(`  ${pagina}: inacessível — snapshot NÃO gravado (tudo ou nada).`); process.exitCode = 1; return; }
+    const linhas = parseHinokunian(html, { extra: true });
+    console.log(`  ${pagina} (${data}): ${linhas.length} linhas`);
+    extras.push({ data, linhas });
+    await sleep(400);
+  }
+  const estreias = estreiasForaDosBoosters(extras, nosBoosters);
+  console.log(`  fora dos boosters: ${estreias.length} cartas na estreia (de ${extras.reduce((n, p) => n + p.linhas.length, 0)} linhas; o resto é reimpressão).`);
+  cards.push(...estreias);
   const snap = {
-    source: `${BASE} (cardgamemakino1–15, cardbattle1–4)`,
+    source: `${BASE} (cardgamemakino1–15, cardbattle1–4 e os ${EXTRAS.length} produtos fora dos boosters)`,
     updatedAt: new Date().toISOString().slice(0, 10),
-    note: "Raridade por número (N/R/SR/UR/Memorial) do Naruto Card Game e do Card Battle (DN). Gerado por scripts/naruto-raridade-hinokunian.mjs; o build só aplica quando número E nome batem.",
+    note: "Raridade por número (N/R/SR/UR/Memorial) do Naruto Card Game e do Card Battle (DN). Dos starters, 拡張シート e coletâneas só entra a linha da ESTREIA da carta: a raridade ali é a do produto, e a reimpressão muda. Gerado por scripts/naruto-raridade-hinokunian.mjs; o build só aplica quando número E nome batem.",
     cards
   };
   await writeFile(SNAP, JSON.stringify(snap, null, 1) + "\n", "utf8");
