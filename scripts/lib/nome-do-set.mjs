@@ -42,7 +42,10 @@ export const NOMES_DO_JOGO = {
   fftcg: ["Final Fantasy Trading Card Game", "Final Fantasy TCG", "FF"],
   // Cardfight!! Vanguard: nenhum grupo traz o jogo na frente hoje (13/11/2026);
   // fica pra quando o TCGplayer criar um "Cardfight Vanguard Promo Cards".
-  vanguard: ["Cardfight!! Vanguard", "Cardfight Vanguard"]
+  vanguard: ["Cardfight!! Vanguard", "Cardfight Vanguard"],
+  // Grand Archive TCG: nenhum grupo traz o jogo no nome hoje; fica a regra
+  // pro dia em que vier um "Grand Archive Promo Cards".
+  grandarchive: ["Grand Archive Trading Card Game", "Grand Archive TCG", "Grand Archive"]
 };
 
 // Títulos de outra obra que começam com a marca: ficam inteiros. No Yu-Gi-Oh!

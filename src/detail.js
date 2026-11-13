@@ -465,6 +465,10 @@
     // no fim do número), o starter (S) e as promos. As cartas dos Boss Decks
     // vêm sem raridade.
     fftcg: ["Common", "Rare", "Hero", "Legend", "Starter", "Promo"],
+    // Grand Archive TCG (13/11/2026): a escada do booster, a promo e por fim
+    // as de colecionador (CSR, CUR, CPR), na ordem em que o Index oficial as
+    // numera.
+    grandarchive: ["Common", "Uncommon", "Rare", "Super Rare", "Ultra Rare", "Promo", "Collector Super Rare", "Collector Ultra Rare", "Collector Promo"],
     // Naruto Mythos TCG (12/11/2026): a escada do guia de coleção oficial, da
     // base ao ouro; as Mission são tipo de carta, e as Mythos, fora de coleção.
     narutomythos: ["Common", "Uncommon", "Rare", "Rare Art", "Special", "Chibi", "Shinobi", "POP", "Secret", "Secret Variant", "Legendary", "Mission", "Mythos"],

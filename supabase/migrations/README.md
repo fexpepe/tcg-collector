@@ -22,6 +22,34 @@ poucos.)
   `ntc-ecc1-1` tem de **criar a linha** no `card_views` (o 204 sozinho não
   prova nada). **A próxima migração de jogo copia esta.**
 
+  **Aplicada em 2026-11-13** pelo Fernando e verificada por curl anônimo no
+  mesmo dia: a view de `ntc-ecc1-1` respondeu 204 e criou a linha no
+  `card_views` (game `narutotc`, 1 view); um jogo inventado (`narutotcx`)
+  respondeu 204 e não criou linha; `contribute_price` anônimo segue 401; as
+  linhas do `vanguard` e do `grandarchive` continuam lá. Com ela ficam
+  liberados os quatro jogos do Naruto de 13/11 (`narutoboruto`,
+  `narutomythos`, `narutokayou` e `narutotc`). Depois dela, nenhuma das
+  anteriores pode rodar de novo.
+
+- `20261113d` — libera o slug `grandarchive` (Grand Archive TCG, Weebs of
+  the Shore, 2023+) nas duas whitelists de jogo
+  (`card_views`/`increment_card_view` e `contribute_price`;
+  `20261113d_add_grandarchive.sql`). Cópia da `20261113c` (vanguard, já
+  aplicada) com o `grandarchive` a mais; só a lista muda, e ela continua
+  sendo a **união do dia** (leva os slugs da 20261113a e da 20261113b, das
+  PRs abertas). Leva também o `duelmasters`, da 20261113e que está sendo
+  preparada: com o slug nas duas, a ordem entre elas não importa. A 20261113a, a 20261113b ou a 20261113c aplicadas **depois**
+  desta tirariam o `grandarchive`. Sem ela, a view de carta e o Preço da
+  Comunidade do jogo novo são descartados em silêncio. Conferir com o par de
+  `curl` do fim do arquivo: a view de `ga-494129` tem de **criar a linha**
+  no `card_views` (o 204 sozinho não prova nada).
+
+  **Aplicada em 2026-11-13** pelo Fernando e verificada por curl anônimo no
+  mesmo dia: a view de `ga-494129` respondeu 204 e criou a linha no
+  `card_views` (game `grandarchive`, 1 view); um jogo inventado
+  (`grandarchivex`) respondeu 204 e não criou linha; `contribute_price`
+  anônimo segue 401; as linhas do `vanguard` continuam lá.
+
 - `20261113c` — libera o slug `vanguard` (Cardfight!! Vanguard, Bushiroad,
   edição inglesa desde 2011) nas duas whitelists de jogo
   (`card_views`/`increment_card_view` e `contribute_price`;

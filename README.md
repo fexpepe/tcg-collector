@@ -33,7 +33,7 @@ catálogo completo só existe no build de produção.
 
 ## Os jogos
 
-O registro central é o `GAMES` em [src/game.js](src/game.js): **35 slugs**, 34 com
+O registro central é o `GAMES` em [src/game.js](src/game.js): **37 slugs**, 36 com
 catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do Pokémon
 é a raiz `data/` por motivo histórico (não movemos nada).
 
@@ -50,6 +50,7 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 | `weiss` | Weiß Schwarz | TCGCSV cat. 20 (Bushiroad; só a edição inglesa, 2013+; paralelas SP/SSP/OFR = cartas próprias; setId fixo por groupId com o código impresso, `DDD-S118`; sem logo de set publicado) | USD |
 | `vanguard` | Cardfight!! Vanguard | TCGCSV cat. 16 (Bushiroad 2011+; as cinco eras, só a edição inglesa; paralelas SP/FR/SEC = cartas próprias; setId do código impresso que abre o nome do grupo, `DZ-BT16`; sem logo de set) | USD |
 | `fftcg` | Final Fantasy TCG | TCGCSV cat. 24 (Square Enix 2016+, os Opus; Full Art = carta própria; setId fixo por groupId, `OP27`, porque a abreviação da fonte erra e repete; sem logo de set publicado) | USD |
+| `grandarchive` | Grand Archive TCG | TCGCSV cat. 74 (Weebs of the Shore 2023+; Normal/Foil no mesmo produto; id do productId porque o número repete dentro do set; sem logo de set) | USD |
 | `godzilla` | Godzilla Card Game | TCGCSV cat. 88 (Bushiroad/Yuhodo 2025; só a edição inglesa; paralelas +/++/+++ = cartas próprias; setId fixo por groupId com o código impresso, `EBP01`; sem logo de set publicado) | USD |
 | `narutomythos` | Naruto Mythos TCG | a galeria oficial do jogo (narutotcgmythos.com, JSON público; Cicaboom, 2026+, EN). Id pelo SKU oficial (`nmy-s1e1-c003fav1`); a 2ª edição do Set 1 vira o set "Konoha Shidō (2nd Edition)" e as cartas de torneio, "<set> Promos"; raridade por extenso; sem logo de set | sem preço |
 | `narutokayou` | Naruto Kayou | as páginas de série do site oficial da Kayou (kayouofficial.com/en-US), lidas do payload do HTML; só a edição em inglês (2025+), 8 séries pinadas no sync. Id com a série e o código impresso (`nky-hs1-nrsa01-se-001l5`; a paralela ◇ vira `-par`); raridade pela sigla; imagem com a marca KAYOU da fabricante. A linha chinesa de 2021 fica de fora (só tem lista de fã, ofuscada) | sem preço |
@@ -200,6 +201,33 @@ da edição ocidental desde 2016. Não é o set "Final Fantasy" do Magic
   carta) no `series`, que vira faceta da página do set.
 - Sets no formato dos modernos da Bandai (`SECOES_BANDAI`): os Opus,
   o Legacy Collection como booster extra, starters e Boss Decks, promos.
+
+### Grand Archive TCG (`grandarchive`)
+
+[scripts/sync-grandarchive.mjs](scripts/sync-grandarchive.mjs), TCGCSV
+categoria 74, no padrão do Riftbound. O jogo da Weebs of the Shore, desde o
+Dawn of Ashes (2023).
+
+- **id = `ga-<productId>`**, nunca o número: dentro do mesmo set a versão de
+  colecionador repete o número da comum ("Lorraine, Blademaster" e a "(CUR)"
+  são as duas 005), a "(Curio Foil)" também, e o grupo "Promotional Cards"
+  junta as promos de todos os anos (149 números repetidos). Cada produto é
+  uma carta, e o qualificador do nome fica.
+- **Normal e Foil no mesmo produto** (`u`/`uf`), como o Riftbound.
+- **setId** = a abreviação do TCGplayer em maiúscula, com hífen no lugar de
+  espaço e pontuação (`DOA-1ST`, `ALC-ALTER`, `REC-MSD`).
+- **Imagem 500×700** em quase tudo; o Index oficial (api.gatcg.com) tem o
+  mesmo tamanho. A regra da foto da carta-irmã fica desligada: as poucas sem
+  foto são Alter Edition e CSR, de arte própria.
+- Elemento no `color`, classe no `cardClass`, custo (reserva ou memória) no
+  `cost`; elemento, tipo e classe viram facetas da página do set.
+- Sets no formato dos modernos da Bandai (`SECOES_BANDAI`): os boosters, a
+  Alter Edition e os packs avulsos como extra, Starter Decks e Re:Collection,
+  promos.
+- **Sem ilustrador**: a TCGCSV não publica. O Index oficial tem, mas os
+  códigos de set dele não batem um a um com os do TCGplayer.
+- **Scanner**: o número é solto ("069") e repete; o jogo fica sem leitura de
+  código, como o Sorcery.
 
 ### Sorcery: Contested Realm (`sorcery`)
 

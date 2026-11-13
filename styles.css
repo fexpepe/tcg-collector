@@ -469,6 +469,18 @@
   --accent: #3a5ba0; --accent-dark: #314d88; --accent-rgb: 58, 91, 160;
   --accent-soft: rgba(58, 91, 160, 0.1); --on-accent: #ffffff;
 }
+/* Grand Archive TCG: LILÁS (13/11/2026, proposta: o logo oficial é
+   branco e não dá cor). Lilás claro com texto escuro no escuro (11.9:1); um
+   roxo-orquídea fechado com texto branco no claro (5.5:1). */
+[data-game-accent="grandarchive"] {
+  --accent: #f0abfc; --accent-dark: #e596f5; --accent-rgb: 240, 171, 252;
+  --accent-soft: rgba(240, 171, 252, 0.16); --on-accent: #0a0c10;
+}
+[data-theme="light"][data-game-accent="grandarchive"],
+[data-theme="light"] [data-game-accent="grandarchive"] {
+  --accent: #9d3fb8; --accent-dark: #86349e; --accent-rgb: 157, 63, 184;
+  --accent-soft: rgba(157, 63, 184, 0.1); --on-accent: #ffffff;
+}
 /* Cardfight!! Vanguard: CORAL, o vermelho do logo clareado pra não colar no
    Pokémon (13/11/2026). Coral com texto escuro no escuro (7.0:1); um carmim
    fechado com texto branco no claro (5.9:1). */

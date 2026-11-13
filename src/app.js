@@ -16,7 +16,7 @@
     magic: "game_magic-v2.webp", fab: "game_fab.webp", gundam: "game_gundam-v2.webp", swu: "game_swu-v2.webp", cyberpunk: "game_cyberpunk.webp", sorcery: "game_sorcery-v2.webp", dbfw: "game_dbfw-v2.webp",
     ygo: "game_ygo-v2.webp", digimon: "game_digimon-v2.webp", riftbound: "game_riftbound-v2.webp",
     unionarena: "game_unionarena-v2.webp", narutocg: "game_naruto_2027.webp", naruto: "game_naruto.webp", hxh: "game_hxh.webp",
-    dbc: "game_dbc-v2.webp", dbsb: "", dbva: "", dbbw: "", wow: "game_wow.webp", lotr: "game_lotr.webp", dbz: "game_dbz.webp", weiss: "game_weiss.webp", godzilla: "game_godzilla.webp", palworld: "game_palworld.webp", fftcg: "game_fftcg.webp", vanguard: "game_vanguard.webp", narutomythos: "game_narutomythos.webp", narutokayou: "game_naruto.webp", harrypotter: "game_harrypotter.webp",
+    dbc: "game_dbc-v2.webp", dbsb: "", dbva: "", dbbw: "", wow: "game_wow.webp", lotr: "game_lotr.webp", dbz: "game_dbz.webp", weiss: "game_weiss.webp", godzilla: "game_godzilla.webp", palworld: "game_palworld.webp", fftcg: "game_fftcg.webp", grandarchive: "game_grandarchive.webp", vanguard: "game_vanguard.webp", narutomythos: "game_narutomythos.webp", narutokayou: "game_naruto.webp", harrypotter: "game_harrypotter.webp",
     mbc: "game_mbc.webp", cdm: "game_cdm.webp", gcd: "game_gcd.webp", gw: "game_gw.webp", narutoboruto: "game_naruto_boruto.webp", narutotc: "game_naruto.webp"
   };
   function gameLogoUrl(game) {
@@ -2008,6 +2008,22 @@
       main: /^((DZ|D|V|G)-)?BT\d+$/,
       extra: /^((DZ|D|V|G)-)?(EB|LBT|TBP?|SS|CB|CMB|CHB|TCB|MB|VS|PV|RC|FC)\d+$/,
       deck: /^((DZ|D|V|G)-)?(TD|MT|SD|LD|LTD|TTD|PS|CS)\d+$/
+    },
+    // Grand Archive TCG (Weebs of the Shore, 13/11/2026): cabe na mesma forma.
+    // O setId é a abreviação do TCGplayer (sync-grandarchive.mjs):
+    //   main  — o set de booster: três letras, com "1E" ou "-1ST" quando o
+    //           TCGplayer marca a 1ª edição (DOA-1ST, FTC, ALC, AMB1E, PRD…).
+    //           Seis siglas de três letras NÃO são booster e ficam de fora:
+    //           EVP, KSP, GSC e SLC (promos) e SLM e SHD (Re:Collection);
+    //   extra — a Alter Edition (reimpressão com arte alternativa), o Draft
+    //           Pack, o Pantheon, o Grimoire e o Prelude do Kickstarter;
+    //   deck  — Starter Decks (…SD), Re:Collection (as siglas próprias, as
+    //           Lite e o "REC-" que o TCGplayer passou a usar) e Demo Decks.
+    // Event Pack, Supporter Pack e promos caem em "Promos e eventos".
+    grandarchive: {
+      main: /^(?!EVP|KSP|GSC|SLC|SLM|SHD)[A-Z]{3}(1E|-1ST)?$/,
+      extra: /-ALTER$|^[A-Z]{3}(AE|DP|PD|P|G)$/,
+      deck: /SD$|LTE$|^REC-|^(SLM|SHD|IDLCRS|HVNFV|BRLVST|AURR)$|^DEMO\d+$/
     }
   };
   // Produto de evento: pré-release (inclusive o starter vendido nele, o

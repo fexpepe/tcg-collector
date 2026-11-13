@@ -131,6 +131,7 @@ jobs:
             data/godzilla/sets
             data/palworld/sets
             data/fftcg/sets
+            data/grandarchive/sets
             data/vanguard/sets
             data/narutomythos/sets
             data/narutokayou/sets
@@ -160,7 +161,7 @@ jobs:
           faltando=""
           # data/dbc/, data/swu/, data/cyberpunk/, data/wow/, data/lotr/,
           # data/sorcery/, data/harrypotter/, data/weiss/, data/mbc/, data/dbz/ e
-          # data/cdm/, data/gcd/, data/gw/, data/narutocg/, data/godzilla/, data/palworld/, data/fftcg/ e data/vanguard/: jogos novos (2026-09-24 a 2026-11-13);
+          # data/cdm/, data/gcd/, data/gw/, data/narutocg/, data/godzilla/, data/palworld/, data/fftcg/, data/vanguard/ e data/grandarchive/: jogos novos (2026-09-24 a 2026-11-13);
           # data/dbsb/, data/dbva/ e data/dbbw/ (2026-11-13), as séries do dbc que viraram jogo. Enquanto o cache
           # for de antes deles, o build rápido publicaria o tile do hub sem
           # catálogo nenhum atrás.
@@ -186,7 +187,8 @@ jobs:
                    data/fftcg/manifest.generated.js \
                    data/vanguard/manifest.generated.js \
                    data/narutomythos/manifest.generated.js \
-                   data/narutokayou/manifest.generated.js; do
+                   data/narutokayou/manifest.generated.js \
+                   data/grandarchive/manifest.generated.js; do
             [ -s "$f" ] || faltando="$faltando $f"
           done
           if [ -n "$faltando" ]; then
@@ -623,6 +625,18 @@ jobs:
         if: env.RODA_SYNC == 'true'
         run: node scripts/sync-price-history.mjs data/fftcg
 
+      # Grand Archive TCG (TCGCSV cat. 74, Weebs of the Shore 2023+). Padrao
+      # Riftbound: Normal/Foil no mesmo produto. O id sai do productId, porque
+      # o numero repete dentro do set (versao de colecionador, promos de varios
+      # anos no mesmo grupo); sem logo de set.
+      - name: Sincroniza catálogo do Grand Archive (TCGCSV)
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/sync-grandarchive.mjs || echo "sync-grandarchive falhou; mantém o catalogo versionado"
+
+      - name: Snapshot de preços (histórico Grand Archive)
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/sync-price-history.mjs data/grandarchive
+
       # Cardfight!! Vanguard (TCGCSV cat. 16, Bushiroad 2011+; as cinco eras,
       # so a edicao inglesa). Padrao Weiss: paralela = carta propria, setId do
       # codigo impresso que abre o nome do grupo; sem logo de set.
@@ -1055,6 +1069,7 @@ jobs:
             data/godzilla/sets
             data/palworld/sets
             data/fftcg/sets
+            data/grandarchive/sets
             data/vanguard/sets
             data/narutomythos/sets
             data/narutokayou/sets
