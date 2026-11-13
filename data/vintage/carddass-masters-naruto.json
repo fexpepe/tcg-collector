@@ -1,0 +1,516 @@
+{
+ "source": "https://hinokunian.konohashigure.com/carddassmasters.html",
+ "updatedAt": "2026-11-13",
+ "sets": [
+  {
+   "code": "m2",
+   "name": "大激突!幻の地底遺跡だってばよ",
+   "cards": [
+    {
+     "set": "m2",
+     "num": "001",
+     "rarity": "Normal",
+     "ja": "パズルA",
+     "grupo": "劇場版９パズルカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "002",
+     "rarity": "Normal",
+     "ja": "パズルB",
+     "grupo": "劇場版９パズルカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "003",
+     "rarity": "Normal",
+     "ja": "パズルC",
+     "grupo": "劇場版９パズルカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "004",
+     "rarity": "Normal",
+     "ja": "パズルD",
+     "grupo": "劇場版９パズルカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "005",
+     "rarity": "Normal",
+     "ja": "パズルE",
+     "grupo": "劇場版９パズルカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "006",
+     "rarity": "Normal",
+     "ja": "パズルF",
+     "grupo": "劇場版９パズルカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "007",
+     "rarity": "Normal",
+     "ja": "パズルG",
+     "grupo": "劇場版９パズルカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "008",
+     "rarity": "Normal",
+     "ja": "パズルH",
+     "grupo": "劇場版９パズルカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "009",
+     "rarity": "Normal",
+     "ja": "パズルI",
+     "grupo": "劇場版９パズルカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "010",
+     "rarity": "Normal",
+     "ja": "うずまきナルト",
+     "grupo": "劇場版キャラクターカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "011",
+     "rarity": "Normal",
+     "ja": "春野サクラ",
+     "grupo": "劇場版キャラクターカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "012",
+     "rarity": "Normal",
+     "ja": "奈良シカマル",
+     "grupo": "劇場版キャラクターカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "013",
+     "rarity": "Normal",
+     "ja": "我愛羅",
+     "grupo": "劇場版キャラクターカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "014",
+     "rarity": "Normal",
+     "ja": "テムジン",
+     "grupo": "劇場版キャラクターカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "015",
+     "rarity": "Normal",
+     "ja": "ハイド",
+     "grupo": "劇場版キャラクターカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "016",
+     "rarity": "Normal",
+     "ja": "フガイ",
+     "grupo": "劇場版キャラクターカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "017",
+     "rarity": "Normal",
+     "ja": "カミラ",
+     "grupo": "劇場版キャラクターカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "018",
+     "rarity": "Normal",
+     "ja": "ランケ",
+     "grupo": "劇場版キャラクターカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "019",
+     "rarity": "Normal",
+     "ja": "ストーリーファイル０１",
+     "grupo": "劇場版ストーリーカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "020",
+     "rarity": "Normal",
+     "ja": "ストーリーファイル０２",
+     "grupo": "劇場版ストーリーカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "021",
+     "rarity": "Normal",
+     "ja": "ストーリーファイル０３",
+     "grupo": "劇場版ストーリーカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "022",
+     "rarity": "Normal",
+     "ja": "ストーリーファイル０４",
+     "grupo": "劇場版ストーリーカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "023",
+     "rarity": "Normal",
+     "ja": "ストーリーファイル０５",
+     "grupo": "劇場版ストーリーカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "024",
+     "rarity": "Normal",
+     "ja": "ストーリーファイル０６",
+     "grupo": "劇場版ストーリーカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "025",
+     "rarity": "Normal",
+     "ja": "ストーリーファイル０７",
+     "grupo": "劇場版ストーリーカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "026",
+     "rarity": "Normal",
+     "ja": "ストーリーファイル０８",
+     "grupo": "劇場版ストーリーカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "027",
+     "rarity": "Normal",
+     "ja": "ストーリーファイル０９",
+     "grupo": "劇場版ストーリーカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "028",
+     "rarity": "Normal",
+     "ja": "ストーリーファイル１０",
+     "grupo": "劇場版ストーリーカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "029",
+     "rarity": "Normal",
+     "ja": "ストーリーファイル１１",
+     "grupo": "劇場版ストーリーカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "030",
+     "rarity": "Normal",
+     "ja": "ストーリーファイル１２",
+     "grupo": "劇場版ストーリーカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "031",
+     "rarity": "Normal",
+     "ja": "ストーリーファイル１３",
+     "grupo": "劇場版ストーリーカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "032",
+     "rarity": "Normal",
+     "ja": "ストーリーファイル１４",
+     "grupo": "劇場版ストーリーカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "033",
+     "rarity": "Normal",
+     "ja": "ストーリーファイル１５",
+     "grupo": "劇場版ストーリーカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "034",
+     "rarity": "Normal",
+     "ja": "ストーリーファイル１６",
+     "grupo": "劇場版ストーリーカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "035",
+     "rarity": "Normal",
+     "ja": "ストーリーファイル１７",
+     "grupo": "劇場版ストーリーカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "036",
+     "rarity": "Normal",
+     "ja": "ストーリーファイル１８",
+     "grupo": "劇場版ストーリーカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "037",
+     "rarity": "Normal",
+     "ja": "うずまきナルト",
+     "grupo": "DVDジャケットカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "038",
+     "rarity": "Normal",
+     "ja": "うちはサスケ",
+     "grupo": "DVDジャケットカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "039",
+     "rarity": "Normal",
+     "ja": "春野サクラ",
+     "grupo": "DVDジャケットカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "040",
+     "rarity": "Normal",
+     "ja": "ロック・リー",
+     "grupo": "DVDジャケットカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "041",
+     "rarity": "Normal",
+     "ja": "自来也",
+     "grupo": "DVDジャケットカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "042",
+     "rarity": "Normal",
+     "ja": "うみのイルカ",
+     "grupo": "DVDジャケットカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "043",
+     "rarity": "Normal",
+     "ja": "はたけカカシ",
+     "grupo": "DVDジャケットカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "044",
+     "rarity": "Normal",
+     "ja": "奈良シカマル",
+     "grupo": "DVDジャケットカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "045",
+     "rarity": "Normal",
+     "ja": "うちはイタチ",
+     "grupo": "DVDジャケットカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "046",
+     "rarity": "Normal",
+     "ja": "うずまきナルト＆我愛羅＆はたけカカシ",
+     "grupo": "DJCDジャケットカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "047",
+     "rarity": "Normal",
+     "ja": "うずまきナルト＆大蛇丸＆奈良シカマル",
+     "grupo": "DJCDジャケットカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "048",
+     "rarity": "Normal",
+     "ja": "うずまきナルト＆うみのイルカ＆薬師カブト",
+     "grupo": "DJCDジャケットカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "049",
+     "rarity": "Normal",
+     "ja": "うずまきナルト＆うちはサスケ＆春野サクラ",
+     "grupo": "DJCDジャケットカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "050",
+     "rarity": "Normal",
+     "ja": "うずまきナルト＆赤丸＆犬塚キバ＆秋道チョウジ",
+     "grupo": "DJCDジャケットカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "051",
+     "rarity": "Normal",
+     "ja": "うずまきナルト＆富士風雪絵＆はたけカカシ",
+     "grupo": "DJCDジャケットカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "052",
+     "rarity": "Normal",
+     "ja": "うずまきナルト＆日向ネジ＆日向ヒナタ",
+     "grupo": "DJCDジャケットカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "053",
+     "rarity": "Normal",
+     "ja": "うずまきナルト＆木ノ葉丸＆猿飛アスマ",
+     "grupo": "DJCDジャケットカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "054",
+     "rarity": "Normal",
+     "ja": "うずまきナルト＆マイト・ガイ＆ロック・リー",
+     "grupo": "DJCDジャケットカード",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "SP1",
+     "rarity": "Special",
+     "ja": "うずまきナルト",
+     "grupo": "",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "SP2",
+     "rarity": "Special",
+     "ja": "うちはサスケ",
+     "grupo": "",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "SP3",
+     "rarity": "Special",
+     "ja": "春野サクラ",
+     "grupo": "",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "SP4",
+     "rarity": "Special",
+     "ja": "我愛羅",
+     "grupo": "",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "SP5",
+     "rarity": "Special",
+     "ja": "テマリ",
+     "grupo": "",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "SP6",
+     "rarity": "Special",
+     "ja": "奈良シカマル",
+     "grupo": "",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "SP7",
+     "rarity": "Special",
+     "ja": "はたけカカシ",
+     "grupo": "",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "SP8",
+     "rarity": "Special",
+     "ja": "うちはイタチ",
+     "grupo": "",
+     "img": ""
+    },
+    {
+     "set": "m2",
+     "num": "SP9",
+     "rarity": "Special",
+     "ja": "綱手",
+     "grupo": "",
+     "img": ""
+    }
+   ]
+  }
+ ]
+}

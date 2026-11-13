@@ -51,7 +51,8 @@ const S = load();
 // `linhaSemCodigo`: o mesmo, pra uma LINHA dentro de um jogo que tem código
 // (o vintage que divide o jogo com o moderno): { prefixo do id, motivo }. As
 // cartas dela saem da taxa do jogo e entram na guarda dos sem código. Linha
-// nova num jogo derruba a taxa dele — e o teste pede a declaração.
+// nova num jogo derruba a taxa dele — e o teste pede a declaração. Jogo com
+// mais de uma linha assim declara uma lista.
 const pad = (n, w) => String(n).padStart(w, "0");
 const JOGOS = {
   onepiece: { min: 0.76, nota: "o resto é o Carddass de 2002 (BA-C01, C111), que entra em semCodigo na prática" },
@@ -82,7 +83,13 @@ const JOGOS = {
   // carta seria achável se o OCR lesse kanji; até lá, depende da arte.
   naruto: {
     min: 0.79, nota: "o vintage japonês usa kanji no prefixo (作-100), que o modelo inglês não lê",
-    linhaSemCodigo: { prefixo: "nrt-scg-", motivo: "疾風伝 Card Game: tipo só em kanji (術伝-025), que o OCR inglês não lê" }
+    // As cartas de coleção da Amada e da Ensky (2004–2005, ids "nrt-tc-")
+    // só têm o número dentro do produto ("No.46", "SP.01"), que se repete
+    // entre a 忍術大全 e os Etching: sem saber o set, não identifica a carta.
+    linhaSemCodigo: [
+      { prefixo: "nrt-scg-", motivo: "疾風伝 Card Game: tipo só em kanji (術伝-025), que o OCR inglês não lê" },
+      { prefixo: "nrt-tc-", motivo: "cartas de coleção Amada/Ensky: número solto dentro do produto (No.46, SP.01)" }
+    ]
   },
   // NARUTO CARD GAME de 2027 (2026-11-11): 100 % das 2 promos (CP-001).
   narutocg: { min: 0.98 },
@@ -149,8 +156,11 @@ function casa(cand, card) {
   const fr = /^(\d+)[A-D]?\/(\d+)$/.exec(cand);
   return !!fr && S.numeroDe(card.number) === Number(fr[1]);
 }
+// As linhas sem código de um jogo, sempre em lista (a declaração aceita uma só).
+const linhasSemCodigo = (cfg) => [].concat(cfg.linhaSemCodigo || []);
+const daLinhaSemCodigo = (cfg, c) => linhasSemCodigo(cfg).some((l) => String(c.id).indexOf(l.prefixo) === 0);
 function medir(jogo, cfg) {
-  const daLinha = (c) => !!cfg.linhaSemCodigo && String(c.id).indexOf(cfg.linhaSemCodigo.prefixo) === 0;
+  const daLinha = (c) => daLinhaSemCodigo(cfg, c);
   const cartas = catalogo(jogo).filter((c) => c && c.number && !daLinha(c) && (!cfg.filtro || cfg.filtro(c)));
   let ok = 0;
   const falhas = [];
@@ -203,9 +213,11 @@ test("jogo sem código legível: nenhum formato de OUTRO jogo o captura", () => 
   // carta de Dragon Ball Z "acha" uma de Pokémon.
   for (const [jogo, cfg] of Object.entries(JOGOS)) {
     if (!cfg.semCodigo && !cfg.linhaSemCodigo) continue;
-    const cartas = catalogo(jogo).filter((c) => c && c.number && (cfg.semCodigo || String(c.id).indexOf(cfg.linhaSemCodigo.prefixo) === 0));
+    const cartas = catalogo(jogo).filter((c) => c && c.number && (cfg.semCodigo || daLinhaSemCodigo(cfg, c)));
     // (WoW e Sorcery nem têm número no catálogo: ali não há o que capturar.)
-    if (cfg.linhaSemCodigo) assert.ok(cartas.length > 0, `${jogo}: nenhuma carta da linha "${cfg.linhaSemCodigo.prefixo}" no catálogo (a declaração ficou velha?)`);
+    for (const l of linhasSemCodigo(cfg)) {
+      assert.ok(cartas.some((c) => String(c.id).indexOf(l.prefixo) === 0), `${jogo}: nenhuma carta da linha "${l.prefixo}" no catálogo (a declaração ficou velha?)`);
+    }
     const fortes = cartas.filter((c) => S.extrair(String(c.number)).some((x) => x.peso >= 2));
     assert.ok(fortes.length <= cartas.length * 0.02,
       `${jogo}: ${fortes.length} de ${cartas.length} números viram candidato forte (ex.: ${fortes.slice(0, 3).map((c) => c.number).join(", ")})`);

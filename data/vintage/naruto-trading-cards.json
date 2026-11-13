@@ -1,0 +1,1375 @@
+{
+ "source": "https://hinokunian.konohashigure.com/cardseal.html",
+ "updatedAt": "2026-11-13",
+ "sets": [
+  {
+   "key": "ecc1",
+   "pagina": "cardetting1",
+   "dataNaFonte": "2004",
+   "cards": [
+    {
+     "prefixo": "No",
+     "num": "1",
+     "nome": "うずまきナルト"
+    },
+    {
+     "prefixo": "No",
+     "num": "2",
+     "nome": "うちはサスケ"
+    },
+    {
+     "prefixo": "No",
+     "num": "3",
+     "nome": "春野サクラ"
+    },
+    {
+     "prefixo": "No",
+     "num": "4",
+     "nome": "はたけカカシ"
+    },
+    {
+     "prefixo": "No",
+     "num": "5",
+     "nome": "忍犬"
+    },
+    {
+     "prefixo": "No",
+     "num": "6",
+     "nome": "うみのイルカ"
+    },
+    {
+     "prefixo": "No",
+     "num": "7",
+     "nome": "テンテン"
+    },
+    {
+     "prefixo": "No",
+     "num": "8",
+     "nome": "日向ネジ"
+    },
+    {
+     "prefixo": "No",
+     "num": "9",
+     "nome": "ロック・リー"
+    },
+    {
+     "prefixo": "No",
+     "num": "10",
+     "nome": "猿飛アスマ"
+    },
+    {
+     "prefixo": "No",
+     "num": "11",
+     "nome": "マイト・ガイ"
+    },
+    {
+     "prefixo": "No",
+     "num": "12",
+     "nome": "夕日紅"
+    },
+    {
+     "prefixo": "No",
+     "num": "13",
+     "nome": "桃地再不斬"
+    },
+    {
+     "prefixo": "No",
+     "num": "14",
+     "nome": "カカシ・イルカ・サスケ・ナルト・サクラ"
+    },
+    {
+     "prefixo": "No",
+     "num": "15",
+     "nome": "白"
+    },
+    {
+     "prefixo": "No",
+     "num": "16",
+     "nome": "カンクロウ"
+    },
+    {
+     "prefixo": "No",
+     "num": "17",
+     "nome": "我愛羅"
+    },
+    {
+     "prefixo": "No",
+     "num": "18",
+     "nome": "テンテン"
+    },
+    {
+     "prefixo": "No",
+     "num": "19",
+     "nome": "カカシ・イルカ・サスケ・ナルト・サクラ"
+    },
+    {
+     "prefixo": "No",
+     "num": "20",
+     "nome": "カカシ・イルカ・サスケ・ナルト・サクラ"
+    },
+    {
+     "prefixo": "No",
+     "num": "21",
+     "nome": "カカシ・イルカ・サスケ・ナルト・サクラ"
+    },
+    {
+     "prefixo": "No",
+     "num": "22",
+     "nome": "うずまきナルト"
+    },
+    {
+     "prefixo": "No",
+     "num": "23",
+     "nome": "うちはサスケ"
+    },
+    {
+     "prefixo": "No",
+     "num": "24",
+     "nome": "春野サクラ"
+    },
+    {
+     "prefixo": "No",
+     "num": "25",
+     "nome": "はたけカカシ"
+    },
+    {
+     "prefixo": "No",
+     "num": "26",
+     "nome": "我愛羅"
+    },
+    {
+     "prefixo": "No",
+     "num": "27",
+     "nome": "白"
+    },
+    {
+     "prefixo": "No",
+     "num": "28",
+     "nome": "うずまきナルト＆うみのイルカ"
+    },
+    {
+     "prefixo": "No",
+     "num": "29",
+     "nome": "カカシ・イルカ・サスケ・ナルト・サクラ"
+    },
+    {
+     "prefixo": "No",
+     "num": "30",
+     "nome": "はたけカカシ＆うちはサスケ"
+    },
+    {
+     "prefixo": "No",
+     "num": "31",
+     "nome": "我愛羅＆カンクロウ"
+    },
+    {
+     "prefixo": "No",
+     "num": "32",
+     "nome": "春野サクラ＆うちはサスケ"
+    },
+    {
+     "prefixo": "No",
+     "num": "33",
+     "nome": "マイト・ガイ＆はたけカカシ"
+    },
+    {
+     "prefixo": "No",
+     "num": "34",
+     "nome": "うちはサスケ＆うずまきナルト"
+    },
+    {
+     "prefixo": "No",
+     "num": "35",
+     "nome": "カカシ・イルカ・サスケ・ナルト・サクラ"
+    },
+    {
+     "prefixo": "No",
+     "num": "36",
+     "nome": "白＆桃地再不斬"
+    },
+    {
+     "prefixo": "No",
+     "num": "37",
+     "nome": "大蛇丸＆薬師カブト"
+    },
+    {
+     "prefixo": "No",
+     "num": "38",
+     "nome": "うちはサスケ＆うちはイタチ"
+    },
+    {
+     "prefixo": "No",
+     "num": "39",
+     "nome": "うずまきナルト＆自来也"
+    },
+    {
+     "prefixo": "No",
+     "num": "40",
+     "nome": "うずまきナルト"
+    },
+    {
+     "prefixo": "No",
+     "num": "41",
+     "nome": "うちはサスケ"
+    },
+    {
+     "prefixo": "No",
+     "num": "42",
+     "nome": "ロック・リー"
+    },
+    {
+     "prefixo": "No",
+     "num": "43",
+     "nome": "我愛羅"
+    },
+    {
+     "prefixo": "No",
+     "num": "44",
+     "nome": "白"
+    },
+    {
+     "prefixo": "No",
+     "num": "45",
+     "nome": "日向ネジ"
+    }
+   ]
+  },
+  {
+   "key": "ecc2",
+   "pagina": "cardetting2",
+   "dataNaFonte": "2005.1.31",
+   "cards": [
+    {
+     "prefixo": "No",
+     "num": "46",
+     "nome": "KONOHA"
+    },
+    {
+     "prefixo": "No",
+     "num": "47",
+     "nome": "NARUTO KABUTO"
+    },
+    {
+     "prefixo": "No",
+     "num": "48",
+     "nome": "ITACHI KAKASHI"
+    },
+    {
+     "prefixo": "No",
+     "num": "49",
+     "nome": "KAKASHI NARUTO SASUKE SAKURA"
+    },
+    {
+     "prefixo": "No",
+     "num": "50",
+     "nome": "NARUTO"
+    },
+    {
+     "prefixo": "No",
+     "num": "51",
+     "nome": "SASUKE"
+    },
+    {
+     "prefixo": "No",
+     "num": "52",
+     "nome": "SAKURA"
+    },
+    {
+     "prefixo": "No",
+     "num": "53",
+     "nome": "TSUNADE"
+    },
+    {
+     "prefixo": "No",
+     "num": "54",
+     "nome": "ITACHI SASUKE"
+    },
+    {
+     "prefixo": "No",
+     "num": "55",
+     "nome": "PAKKUN"
+    },
+    {
+     "prefixo": "No",
+     "num": "56",
+     "nome": "TENTEN"
+    },
+    {
+     "prefixo": "No",
+     "num": "57",
+     "nome": "INO"
+    },
+    {
+     "prefixo": "No",
+     "num": "58",
+     "nome": "HINATA"
+    },
+    {
+     "prefixo": "No",
+     "num": "59",
+     "nome": "SAKURA"
+    },
+    {
+     "prefixo": "No",
+     "num": "60",
+     "nome": "HOKAGE"
+    },
+    {
+     "prefixo": "No",
+     "num": "61",
+     "nome": "KONOHA"
+    },
+    {
+     "prefixo": "No",
+     "num": "62",
+     "nome": "ROOKIES"
+    },
+    {
+     "prefixo": "No",
+     "num": "63",
+     "nome": "SHINOBI"
+    },
+    {
+     "prefixo": "No",
+     "num": "64",
+     "nome": "NARUTO"
+    },
+    {
+     "prefixo": "No",
+     "num": "65",
+     "nome": "SASUKE"
+    },
+    {
+     "prefixo": "No",
+     "num": "66",
+     "nome": "ITACHI"
+    },
+    {
+     "prefixo": "No",
+     "num": "67",
+     "nome": "SHINO HINATA KIBA"
+    },
+    {
+     "prefixo": "No",
+     "num": "68",
+     "nome": "TEMARI GAARA KANKURO"
+    },
+    {
+     "prefixo": "No",
+     "num": "69",
+     "nome": "JIRAIYA"
+    },
+    {
+     "prefixo": "No",
+     "num": "70",
+     "nome": "INO SHIKAMARU CHOJI"
+    },
+    {
+     "prefixo": "No",
+     "num": "71",
+     "nome": "TSUNADE"
+    },
+    {
+     "prefixo": "No",
+     "num": "72",
+     "nome": "KAKASHI"
+    },
+    {
+     "prefixo": "No",
+     "num": "73",
+     "nome": "NARUTO"
+    },
+    {
+     "prefixo": "No",
+     "num": "74",
+     "nome": "SASUKE SAKURA"
+    },
+    {
+     "prefixo": "No",
+     "num": "75",
+     "nome": "IRUKA KAKASHI"
+    },
+    {
+     "prefixo": "No",
+     "num": "76",
+     "nome": "NARUTO JIRAIYA"
+    },
+    {
+     "prefixo": "No",
+     "num": "77",
+     "nome": "KAKASHI SASUKE"
+    },
+    {
+     "prefixo": "No",
+     "num": "78",
+     "nome": "OROCHIMARU"
+    },
+    {
+     "prefixo": "No",
+     "num": "79",
+     "nome": "GAI ASUMA KURENAI KAKASHI"
+    },
+    {
+     "prefixo": "No",
+     "num": "80",
+     "nome": "GARA NARUTO SASUKE"
+    },
+    {
+     "prefixo": "No",
+     "num": "81",
+     "nome": "ROOKIES"
+    },
+    {
+     "prefixo": "No",
+     "num": "82",
+     "nome": "NARUTO"
+    },
+    {
+     "prefixo": "No",
+     "num": "83",
+     "nome": "SASUKE"
+    },
+    {
+     "prefixo": "No",
+     "num": "84",
+     "nome": "SAKURA"
+    },
+    {
+     "prefixo": "No",
+     "num": "85",
+     "nome": "KAKASHI"
+    },
+    {
+     "prefixo": "No",
+     "num": "86",
+     "nome": "JIRAIYA"
+    },
+    {
+     "prefixo": "No",
+     "num": "87",
+     "nome": "ITACHI"
+    },
+    {
+     "prefixo": "No",
+     "num": "88",
+     "nome": "TSUNADE"
+    },
+    {
+     "prefixo": "No",
+     "num": "89",
+     "nome": "SHIKAMARU"
+    },
+    {
+     "prefixo": "No",
+     "num": "90",
+     "nome": "GARA"
+    },
+    {
+     "prefixo": "Pa",
+     "num": "01",
+     "nome": "NARUTO"
+    },
+    {
+     "prefixo": "Pa",
+     "num": "02",
+     "nome": "SASUKE SAKURA"
+    },
+    {
+     "prefixo": "Pa",
+     "num": "03",
+     "nome": "IRUKA KAKASHI"
+    },
+    {
+     "prefixo": "Pa",
+     "num": "04",
+     "nome": "NARUTO JIRAIYA"
+    },
+    {
+     "prefixo": "Pa",
+     "num": "05",
+     "nome": "KAKASHI SASUKE"
+    },
+    {
+     "prefixo": "Pa",
+     "num": "06",
+     "nome": "OROCHIMARU"
+    },
+    {
+     "prefixo": "Pa",
+     "num": "07",
+     "nome": "GAI ASUMA KURENAI KAKASHI"
+    },
+    {
+     "prefixo": "Pa",
+     "num": "08",
+     "nome": "GARA NARUTO SASUKE"
+    },
+    {
+     "prefixo": "Pa",
+     "num": "09",
+     "nome": "ROOKIES"
+    },
+    {
+     "prefixo": "Pa",
+     "num": "10",
+     "nome": "NARUTO"
+    },
+    {
+     "prefixo": "Pa",
+     "num": "11",
+     "nome": "SASUKE"
+    },
+    {
+     "prefixo": "Pa",
+     "num": "12",
+     "nome": "SAKURA"
+    },
+    {
+     "prefixo": "Pa",
+     "num": "13",
+     "nome": "KAKASHI"
+    },
+    {
+     "prefixo": "Pa",
+     "num": "14",
+     "nome": "JIRAIYA"
+    },
+    {
+     "prefixo": "Pa",
+     "num": "15",
+     "nome": "ITACHI"
+    },
+    {
+     "prefixo": "Pa",
+     "num": "16",
+     "nome": "TSUNADE"
+    },
+    {
+     "prefixo": "Pa",
+     "num": "17",
+     "nome": "SHIKAMARU"
+    },
+    {
+     "prefixo": "Pa",
+     "num": "18",
+     "nome": "GARA"
+    },
+    {
+     "prefixo": "SP",
+     "num": "01",
+     "nome": "NARUTO"
+    },
+    {
+     "prefixo": "SP",
+     "num": "02",
+     "nome": "SASUKE"
+    },
+    {
+     "prefixo": "SP",
+     "num": "03",
+     "nome": "KAKASHI"
+    },
+    {
+     "prefixo": "SP",
+     "num": "04",
+     "nome": "TSUNADE"
+    },
+    {
+     "prefixo": "SP",
+     "num": "05",
+     "nome": "JIRAIYA"
+    },
+    {
+     "prefixo": "SP",
+     "num": "06",
+     "nome": "SHIZUNE"
+    },
+    {
+     "prefixo": "SP",
+     "num": "07",
+     "nome": "GARA"
+    },
+    {
+     "prefixo": "SP",
+     "num": "08",
+     "nome": "ITACHI"
+    },
+    {
+     "prefixo": "SP",
+     "num": "09",
+     "nome": "YONDAIME"
+    }
+   ]
+  },
+  {
+   "key": "ecc3",
+   "pagina": "cardetting3",
+   "dataNaFonte": "2005.6",
+   "cards": [
+    {
+     "prefixo": "No",
+     "num": "91",
+     "nome": "NARUTO"
+    },
+    {
+     "prefixo": "No",
+     "num": "92",
+     "nome": "NARUTO"
+    },
+    {
+     "prefixo": "No",
+     "num": "93",
+     "nome": "NARUTO"
+    },
+    {
+     "prefixo": "No",
+     "num": "94",
+     "nome": "NARUTO"
+    },
+    {
+     "prefixo": "No",
+     "num": "95",
+     "nome": "NARUTO"
+    },
+    {
+     "prefixo": "No",
+     "num": "96",
+     "nome": "NARUTO"
+    },
+    {
+     "prefixo": "No",
+     "num": "97",
+     "nome": "SASUKE"
+    },
+    {
+     "prefixo": "No",
+     "num": "98",
+     "nome": "SASUKE"
+    },
+    {
+     "prefixo": "No",
+     "num": "99",
+     "nome": "SASUKE"
+    },
+    {
+     "prefixo": "No",
+     "num": "100",
+     "nome": "SASUKE"
+    },
+    {
+     "prefixo": "No",
+     "num": "101",
+     "nome": "SASUKE"
+    },
+    {
+     "prefixo": "No",
+     "num": "102",
+     "nome": "SASUKE"
+    },
+    {
+     "prefixo": "No",
+     "num": "103",
+     "nome": "SASUKE"
+    },
+    {
+     "prefixo": "No",
+     "num": "104",
+     "nome": "SASUKE NARUTO SAKURA"
+    },
+    {
+     "prefixo": "No",
+     "num": "105",
+     "nome": "NARUTO SAKURA SASUKE"
+    },
+    {
+     "prefixo": "No",
+     "num": "106",
+     "nome": "KAKASHI"
+    },
+    {
+     "prefixo": "No",
+     "num": "107",
+     "nome": "KAKASHI"
+    },
+    {
+     "prefixo": "No",
+     "num": "108",
+     "nome": "KAKASHI"
+    },
+    {
+     "prefixo": "No",
+     "num": "109",
+     "nome": "KAKASHI"
+    },
+    {
+     "prefixo": "No",
+     "num": "110",
+     "nome": "ITACHI KAKASHI"
+    },
+    {
+     "prefixo": "No",
+     "num": "111",
+     "nome": "ITACHI"
+    },
+    {
+     "prefixo": "No",
+     "num": "112",
+     "nome": "ITACHI"
+    },
+    {
+     "prefixo": "No",
+     "num": "113",
+     "nome": "ITACHI"
+    },
+    {
+     "prefixo": "No",
+     "num": "114",
+     "nome": "ITACHI"
+    },
+    {
+     "prefixo": "No",
+     "num": "115",
+     "nome": "NEJI"
+    },
+    {
+     "prefixo": "No",
+     "num": "116",
+     "nome": "SHIKAMARU"
+    },
+    {
+     "prefixo": "No",
+     "num": "117",
+     "nome": "SHINO"
+    },
+    {
+     "prefixo": "No",
+     "num": "118",
+     "nome": "HINATA"
+    },
+    {
+     "prefixo": "No",
+     "num": "119",
+     "nome": "CHOJI"
+    },
+    {
+     "prefixo": "No",
+     "num": "120",
+     "nome": "IBIKI"
+    },
+    {
+     "prefixo": "No",
+     "num": "121",
+     "nome": "GARA"
+    },
+    {
+     "prefixo": "No",
+     "num": "122",
+     "nome": "KANKURO"
+    },
+    {
+     "prefixo": "No",
+     "num": "123",
+     "nome": "TEMARI"
+    },
+    {
+     "prefixo": "No",
+     "num": "124",
+     "nome": "BAKI"
+    },
+    {
+     "prefixo": "No",
+     "num": "125",
+     "nome": "JIRAIYA"
+    },
+    {
+     "prefixo": "No",
+     "num": "126",
+     "nome": "OROCHIMARU"
+    },
+    {
+     "prefixo": "No",
+     "num": "127",
+     "nome": "KABUTO"
+    },
+    {
+     "prefixo": "No",
+     "num": "128",
+     "nome": "ROOKIES"
+    },
+    {
+     "prefixo": "No",
+     "num": "129",
+     "nome": "ASUMA KURENAI"
+    },
+    {
+     "prefixo": "No",
+     "num": "130",
+     "nome": "GAI GENMA"
+    },
+    {
+     "prefixo": "No",
+     "num": "131",
+     "nome": "NARUTO JIRAIYA"
+    },
+    {
+     "prefixo": "No",
+     "num": "132",
+     "nome": "JIRAIYA KAKASHI"
+    },
+    {
+     "prefixo": "No",
+     "num": "133",
+     "nome": "TSUNADE JIRAIYA"
+    },
+    {
+     "prefixo": "No",
+     "num": "134",
+     "nome": "SASUKE ITACHI"
+    },
+    {
+     "prefixo": "No",
+     "num": "135",
+     "nome": "SHODAI HOKAGE"
+    },
+    {
+     "prefixo": "V",
+     "num": "01",
+     "nome": "JIRAIYA NARUTO"
+    },
+    {
+     "prefixo": "V",
+     "num": "02",
+     "nome": "NARUTO KYUBINOYOUKO"
+    },
+    {
+     "prefixo": "V",
+     "num": "03",
+     "nome": "KAKASHI SASUKE"
+    },
+    {
+     "prefixo": "V",
+     "num": "04",
+     "nome": "HINATA NEJI"
+    },
+    {
+     "prefixo": "V",
+     "num": "05",
+     "nome": "LEE GARA"
+    },
+    {
+     "prefixo": "V",
+     "num": "06",
+     "nome": "JIRAIYA OROCHIMARU"
+    },
+    {
+     "prefixo": "V",
+     "num": "07",
+     "nome": "SASUKE ITACHI"
+    },
+    {
+     "prefixo": "V",
+     "num": "08",
+     "nome": "SASUKE"
+    },
+    {
+     "prefixo": "V",
+     "num": "09",
+     "nome": "YONDAIME NARUTO"
+    },
+    {
+     "prefixo": "V",
+     "num": "10",
+     "nome": "SAKURA"
+    },
+    {
+     "prefixo": "V",
+     "num": "11",
+     "nome": "SHIKAMARU"
+    },
+    {
+     "prefixo": "V",
+     "num": "12",
+     "nome": "KIBA AKAMARU"
+    },
+    {
+     "prefixo": "V",
+     "num": "13",
+     "nome": "HAKU ZABUZA"
+    },
+    {
+     "prefixo": "V",
+     "num": "14",
+     "nome": "NARUTO"
+    },
+    {
+     "prefixo": "V",
+     "num": "15",
+     "nome": "GARA"
+    },
+    {
+     "prefixo": "V",
+     "num": "16",
+     "nome": "KAKASHI"
+    },
+    {
+     "prefixo": "V",
+     "num": "17",
+     "nome": "KAKASHI"
+    },
+    {
+     "prefixo": "V",
+     "num": "18",
+     "nome": "KAKASHI"
+    },
+    {
+     "prefixo": "SP",
+     "num": "10",
+     "nome": "NARUTO"
+    },
+    {
+     "prefixo": "SP",
+     "num": "12",
+     "nome": "SASUKE"
+    },
+    {
+     "prefixo": "SP",
+     "num": "13",
+     "nome": "SAKURA"
+    },
+    {
+     "prefixo": "SP",
+     "num": "14",
+     "nome": "IRUKA"
+    },
+    {
+     "prefixo": "SP",
+     "num": "15",
+     "nome": "SHIKAMARU"
+    },
+    {
+     "prefixo": "SP",
+     "num": "16",
+     "nome": "TEMARI"
+    },
+    {
+     "prefixo": "SP",
+     "num": "17",
+     "nome": "KAKASHU"
+    },
+    {
+     "prefixo": "SP",
+     "num": "18",
+     "nome": "ITACHI"
+    },
+    {
+     "prefixo": "SP",
+     "num": "19",
+     "nome": "YONDAIME"
+    }
+   ]
+  },
+  {
+   "key": "ntz1",
+   "pagina": "cardninjutsutaizen",
+   "dataNaFonte": "2005.8",
+   "cards": [
+    {
+     "prefixo": "No",
+     "num": "01",
+     "nome": "うずまきナルト連弾",
+     "extra": "うずまきナルト"
+    },
+    {
+     "prefixo": "No",
+     "num": "02",
+     "nome": "裏蓮華",
+     "extra": "ロック・リー"
+    },
+    {
+     "prefixo": "No",
+     "num": "03",
+     "nome": "お色気の術",
+     "extra": "うずまきナルト"
+    },
+    {
+     "prefixo": "No",
+     "num": "04",
+     "nome": "隠れ蓑の術",
+     "extra": "木ノ葉丸"
+    },
+    {
+     "prefixo": "No",
+     "num": "05",
+     "nome": "影首縛りの術",
+     "extra": "奈良シカマル"
+    },
+    {
+     "prefixo": "No",
+     "num": "06",
+     "nome": "影手裏剣の術",
+     "extra": "うちはサスケ"
+    },
+    {
+     "prefixo": "No",
+     "num": "07",
+     "nome": "影真似の術",
+     "extra": "奈良シカマル"
+    },
+    {
+     "prefixo": "No",
+     "num": "08",
+     "nome": "牙通牙",
+     "extra": "犬塚キバ"
+    },
+    {
+     "prefixo": "No",
+     "num": "09",
+     "nome": "火遁・ガマ油炎弾",
+     "extra": "自来也"
+    },
+    {
+     "prefixo": "No",
+     "num": "10",
+     "nome": "火遁・豪火球の術",
+     "extra": "うちはサスケ"
+    },
+    {
+     "prefixo": "No",
+     "num": "11",
+     "nome": "火遁・鳳仙火の術",
+     "extra": "うちはサスケ"
+    },
+    {
+     "prefixo": "No",
+     "num": "12",
+     "nome": "火遁・龍火の術",
+     "extra": "うちはサスケ"
+    },
+    {
+     "prefixo": "No",
+     "num": "13",
+     "nome": "カマイタチの術",
+     "extra": "テマリ"
+    },
+    {
+     "prefixo": "No",
+     "num": "14",
+     "nome": "寄壊蟲の術",
+     "extra": "油女シノ"
+    },
+    {
+     "prefixo": "No",
+     "num": "15",
+     "nome": "霧隠れの術",
+     "extra": "桃地再不斬"
+    },
+    {
+     "prefixo": "No",
+     "num": "16",
+     "nome": "傀儡の術",
+     "extra": "カンクロウ"
+    },
+    {
+     "prefixo": "No",
+     "num": "17",
+     "nome": "口寄せ・穢土転生",
+     "extra": "大蛇丸"
+    },
+    {
+     "prefixo": "No",
+     "num": "18",
+     "nome": "口寄せ・斬り斬り舞",
+     "extra": "テマリ"
+    },
+    {
+     "prefixo": "No",
+     "num": "19",
+     "nome": "口寄せ・土遁・追牙の術",
+     "extra": "はたけカカシ"
+    },
+    {
+     "prefixo": "No",
+     "num": "20",
+     "nome": "口寄せの術",
+     "extra": "自来也"
+    },
+    {
+     "prefixo": "No",
+     "num": "21",
+     "nome": "口寄せの術",
+     "extra": "うずまきナルト"
+    },
+    {
+     "prefixo": "No",
+     "num": "22",
+     "nome": "幻術返し",
+     "extra": "春野サクラ"
+    },
+    {
+     "prefixo": "No",
+     "num": "23",
+     "nome": "木ノ葉剛力旋風",
+     "extra": "マイト・ガイ"
+    },
+    {
+     "prefixo": "No",
+     "num": "24",
+     "nome": "木ノ葉旋風",
+     "extra": "ロック・リー"
+    },
+    {
+     "prefixo": "No",
+     "num": "25",
+     "nome": "砂瀑柩",
+     "extra": "我愛羅"
+    },
+    {
+     "prefixo": "No",
+     "num": "26",
+     "nome": "砂瀑送葬",
+     "extra": "我愛羅"
+    },
+    {
+     "prefixo": "No",
+     "num": "27",
+     "nome": "死魂の術",
+     "extra": "薬師カブト"
+    },
+    {
+     "prefixo": "No",
+     "num": "28",
+     "nome": "写輪眼",
+     "extra": "うちはイタチ"
+    },
+    {
+     "prefixo": "No",
+     "num": "29",
+     "nome": "写輪眼",
+     "extra": "はたけカカシ"
+    },
+    {
+     "prefixo": "No",
+     "num": "30",
+     "nome": "写輪眼",
+     "extra": "うちはサスケ"
+    },
+    {
+     "prefixo": "No",
+     "num": "31",
+     "nome": "獣人分身",
+     "extra": "犬塚キバ・赤丸"
+    },
+    {
+     "prefixo": "No",
+     "num": "32",
+     "nome": "瞬身の術",
+     "extra": "はたけカカシ"
+    },
+    {
+     "prefixo": "No",
+     "num": "33",
+     "nome": "瞬身の術",
+     "extra": "我愛羅"
+    },
+    {
+     "prefixo": "No",
+     "num": "34",
+     "nome": "消写顔の術",
+     "extra": "大蛇丸"
+    },
+    {
+     "prefixo": "No",
+     "num": "35",
+     "nome": "掌仙術",
+     "extra": "薬師カブト"
+    },
+    {
+     "prefixo": "No",
+     "num": "36",
+     "nome": "心転身の術",
+     "extra": "山中いの"
+    },
+    {
+     "prefixo": "No",
+     "num": "37",
+     "nome": "水遁・水鮫弾の術",
+     "extra": "干柿鬼鮫"
+    },
+    {
+     "prefixo": "No",
+     "num": "38",
+     "nome": "水牢の術",
+     "extra": "桃地再不斬"
+    },
+    {
+     "prefixo": "No",
+     "num": "39",
+     "nome": "砂分身",
+     "extra": "我愛羅"
+    },
+    {
+     "prefixo": "No",
+     "num": "40",
+     "nome": "潜影蛇手",
+     "extra": "みたらしアンコ"
+    },
+    {
+     "prefixo": "No",
+     "num": "41",
+     "nome": "千年殺し",
+     "extra": "はたけカカシ"
+    },
+    {
+     "prefixo": "No",
+     "num": "42",
+     "nome": "多重影分身の術",
+     "extra": "うずまきナルト"
+    },
+    {
+     "prefixo": "No",
+     "num": "43",
+     "nome": "月読",
+     "extra": "うちはイタチ"
+    },
+    {
+     "prefixo": "No",
+     "num": "44",
+     "nome": "鉄線花の舞・花",
+     "extra": "君麻呂"
+    },
+    {
+     "prefixo": "No",
+     "num": "45",
+     "nome": "土遁・心中斬首の術",
+     "extra": "はたけカカシ"
+    },
+    {
+     "prefixo": "No",
+     "num": "46",
+     "nome": "縄抜けの術",
+     "extra": "うちはイタチ"
+    },
+    {
+     "prefixo": "No",
+     "num": "47",
+     "nome": "忍法・創造再生",
+     "extra": "綱手"
+    },
+    {
+     "prefixo": "No",
+     "num": "48",
+     "nome": "忍法・毒霧",
+     "extra": "シズネ"
+    },
+    {
+     "prefixo": "No",
+     "num": "49",
+     "nome": "ハーレムの術",
+     "extra": "うずまきナルト"
+    },
+    {
+     "prefixo": "No",
+     "num": "50",
+     "nome": "八卦掌回天",
+     "extra": "日向ネジ"
+    },
+    {
+     "prefixo": "No",
+     "num": "51",
+     "nome": "八卦六十四掌",
+     "extra": "日向ネジ"
+    },
+    {
+     "prefixo": "No",
+     "num": "52",
+     "nome": "白眼",
+     "extra": "日向ヒナタ"
+    },
+    {
+     "prefixo": "No",
+     "num": "53",
+     "nome": "部分倍化の術",
+     "extra": "秋道チョウジ"
+    },
+    {
+     "prefixo": "No",
+     "num": "54",
+     "nome": "分身の術",
+     "extra": "うずまきナルト"
+    },
+    {
+     "prefixo": "No",
+     "num": "55",
+     "nome": "変化の術",
+     "extra": "うみのイルカ"
+    },
+    {
+     "prefixo": "No",
+     "num": "56",
+     "nome": "魔鏡氷晶",
+     "extra": "白"
+    },
+    {
+     "prefixo": "SP",
+     "num": "01",
+     "nome": "口寄せの術",
+     "extra": "四代目"
+    },
+    {
+     "prefixo": "SP",
+     "num": "02",
+     "nome": "砂瀑送葬",
+     "extra": "我愛羅"
+    },
+    {
+     "prefixo": "SP",
+     "num": "03",
+     "nome": "水遁・水龍弾の術",
+     "extra": "二代目"
+    },
+    {
+     "prefixo": "SP",
+     "num": "04",
+     "nome": "千鳥",
+     "extra": "うちはサスケ"
+    },
+    {
+     "prefixo": "SP",
+     "num": "05",
+     "nome": "封印術・屍鬼封尽",
+     "extra": "三代目"
+    },
+    {
+     "prefixo": "SP",
+     "num": "06",
+     "nome": "万華鏡写輪眼",
+     "extra": "うちはイタチ"
+    },
+    {
+     "prefixo": "SP",
+     "num": "07",
+     "nome": "木遁秘術・樹海降誕",
+     "extra": "初代"
+    },
+    {
+     "prefixo": "SP",
+     "num": "08",
+     "nome": "雷切",
+     "extra": "はたけカカシ"
+    },
+    {
+     "prefixo": "SP",
+     "num": "09",
+     "nome": "螺旋丸",
+     "extra": "うずまきナルト"
+    },
+    {
+     "prefixo": "SP",
+     "num": "10",
+     "nome": "八卦の封印式",
+     "extra": "四代目"
+    }
+   ]
+  }
+ ]
+}
