@@ -80,6 +80,7 @@
     ["naruto-card-game-2002", "naruto"], ["naruto-data-carddass", "naruto", "nrt-dc", "nrt-dc-,nrt-nf-,nrt-nx-"],
     ["naruto-ccg", "naruto", "nrt-ccg", "nrt-ccg-"], ["world-of-warcraft-tcg", "wow"],
     ["naruto-shippuden-card-game", "naruto", "nrt-scg", "nrt-scg-"], ["miracle-battle-carddass", "mbc"],
+    ["naruto-trading-cards", "naruto", "nrt-tc", "nrt-tc-"],
     ["carddass-masters", "cdm"]
   ];
   // Quantos jogos em atividade vêm antes do primeiro vintage na lista acima.

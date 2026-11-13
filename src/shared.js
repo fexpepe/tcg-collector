@@ -9103,7 +9103,11 @@
       // outro jogo (regras e numeração 忍伝/術伝/作伝 novas), então linha própria.
       // Rótulo sem os anos, como o do gcd: com eles o shared.js passava 2 bytes
       // gz do teto (2026-11-10). Os anos seguem no título (sets.category.nrtscg).
-      "nrt-scg": { prefix: "nrt-scg-", label: "Naruto Shippuden Card Game", titleKey: "sets.category.nrtscg" }
+      "nrt-scg": { prefix: "nrt-scg-", label: "Naruto Shippuden Card Game", titleKey: "sets.category.nrtscg" },
+      // Cartas de coleção (não é jogo) da Amada e da Ensky, 2003–2006: entram
+      // os Etching Card Collection 1–3 e a 忍術大全. Uma linha, uma seção por produto
+      // (groupNarutoTradingSets no app.js); sync-naruto-trading-cards.mjs.
+      "nrt-tc": { prefix: "nrt-tc-", label: "Naruto Trading Cards", titleKey: "sets.category.nrttc" }
       // O NARUTO CARD GAME de 2027 foi a linha nrt-ncg daqui até 2026-11-11 e
       // virou o jogo narutocg.
     }

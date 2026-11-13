@@ -36,7 +36,7 @@ test("jogo principal do Naruto exclui TODOS os prefixos das linhas", () => {
   for (const setId of ["nrt-s01", "nrt-s17", "nrt-promo", "nrt-extra"]) {
     assert.ok(principal.includes(setId), `${setId} é do Card Game 2002~2006`);
   }
-  for (const setId of ["nrt-dc-s01", "nrt-nf-s01", "nrt-nx-s14", "nrt-ccg-s01", "nrt-scg-s01", "nrt-scg-promo"]) {
+  for (const setId of ["nrt-dc-s01", "nrt-nf-s01", "nrt-nx-s14", "nrt-ccg-s01", "nrt-scg-s01", "nrt-scg-promo", "nrt-tc-ecc1", "nrt-tc-ntz1"]) {
     assert.ok(!principal.includes(setId), `${setId} tem página própria (?line=)`);
   }
 });

@@ -2429,7 +2429,7 @@ if (v === "b") { /* versão nova */ }</pre>
   // functions/_lib/jogos.js: o tile do hub e o título de /games/<url>);
   // tests/admin-jogos-linhas.test.mjs trava as duas listas iguais.
   const NOME_LINHA = {
-    naruto: { "": "Naruto Card Game (2002~2006)", "nrt-dc": "Naruto Data Carddass", "nrt-ccg": "Naruto Collectible Card Game", "nrt-scg": "Naruto Shippuden Card Game" },
+    naruto: { "": "Naruto Card Game (2002~2006)", "nrt-dc": "Naruto Data Carddass", "nrt-ccg": "Naruto Collectible Card Game", "nrt-scg": "Naruto Shippuden Card Game", "nrt-tc": "Naruto Trading Cards" },
     onepiece: { "": "One Piece Card Game", opcd: "One Piece Carddass Hyper Battle", op2002: "One Piece Card Game (2002)" }
   };
   // Chave PRÓPRIA (o ln vem do cliente: "constructor" acharia a função do

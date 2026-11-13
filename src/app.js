@@ -1646,6 +1646,8 @@
     // Linha vintage (?line=): do mais antigo pro mais novo, como checklist. O
     // Data Carddass do Naruto junta os quatro títulos do arcade, um por seção.
     if (lineScope.line === "nrt-dc") return groupNarutoDataCarddass(raizes);
+    // As cartas de coleção da Amada e da Ensky, uma seção por produto.
+    if (lineScope.line === "nrt-tc") return groupNarutoTradingSets(raizes);
     if (lineDef) return raizes.sort(sortByReleaseAsc);
     if (isPokemonGame()) return groupSetsBySeries(raizes);
     if (SECOES_BANDAI[jogoAtual]) return groupBandaiSets(raizes, SECOES_BANDAI[jogoAtual]);
@@ -2089,6 +2091,34 @@
     return items;
   }
 
+  // Cartas de coleção do Naruto (linha nrt-tc, 2026-11-13): não é jogo, são
+  // os produtos de pacote da Amada e da Ensky (a mesma empresa, que trocou de
+  // nome em 2005). Uma seção por PRODUTO, na ordem do primeiro lançamento, e
+  // dentro dela os volumes em ordem. O produto sai do setId (nrt-tc-ecc1 é o
+  // Etching Card Collection, nrt-tc-ntz1 a 忍術大全), fixado pelo
+  // sync-naruto-trading-cards.mjs. O nome em inglês da 忍術大全 leva o produto
+  // ("Trading Collection — Ninjutsu Taizen"); dentro da seção ele repete o
+  // cabeçalho e o tile cortava justo o "Ninjutsu Taizen", então aqui ele sai,
+  // como no groupNarutoDataCarddass.
+  function groupNarutoTradingSets(setItems) {
+    const PRODUTOS = [["sets.category.nrttcEtching", /^nrt-tc-ecc\d/, ""], ["sets.category.nrttcTrading", /^nrt-tc-ntz\d/, "Trading Collection — "]];
+    const produtoDe = (set) => PRODUTOS.findIndex(([, re]) => re.test(String(set.setId || "").trim().toLowerCase()));
+    const semProduto = (set, i) => {
+      const nome = String(set.displayName || ""), produto = PRODUTOS[i][2];
+      return produto && nome.indexOf(produto) === 0 ? Object.assign({}, set, { displayName: nome.slice(produto.length), nomeForaDaSecao: nome }) : set;
+    };
+    const items = [];
+    const section = (list, key) => {
+      if (!list.length) return;
+      items.push(cabecalhoDeSecao(key, list.length));
+      list.sort(sortByReleaseAsc).forEach((set) => items.push(set));
+    };
+    PRODUTOS.forEach(([key], i) => section(setItems.filter((s) => produtoDe(s) === i).map((s) => semProduto(s, i)), key));
+    // Rede de segurança: produto novo no sync sem seção aqui ainda aparece.
+    section(setItems.filter((s) => produtoDe(s) < 0), "sets.category.promos");
+    return items;
+  }
+
   // Gundam Carddass (jogo gcd, 1988–1997): uma seção por SÉRIE,
   // na ordem do SERIES do sync (o 本弾 primeiro, depois as séries de história
   // na ordem em que começaram), e as partes em ordem dentro dela. A série sai
@@ -2300,7 +2330,9 @@
   // confundirem as "Part 2" de várias séries); dentro da seção ela sai, como
   // no groupMbcSets.
   function groupCdmSets(setItems) {
-    const IPS = { eva: ["sets.category.cdmEva", "Neon Genesis Evangelion "], hxh: ["sets.category.cdmHxh", "Hunter × Hunter "] };
+    // Naruto sem prefixo a tirar: a coleção é a do filme, e "Naruto the Movie
+    // 2: …" é o título dele, não a IP na frente do nome do set.
+    const IPS = { eva: ["sets.category.cdmEva", "Neon Genesis Evangelion "], hxh: ["sets.category.cdmHxh", "Hunter × Hunter "], naruto: ["sets.category.cdmNaruto", ""] };
     const ipDe = (set) => (String(set.setId || "").toLowerCase().match(/^cdm-([a-z0-9]+)-/) || [])[1] || "";
     const semIp = (set) => {
       const nome = String(set.displayName || ""), ip = (IPS[ipDe(set)] || [])[1] || "";
