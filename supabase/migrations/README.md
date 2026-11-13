@@ -14,7 +14,8 @@ poucos.)
   `20261113d_add_grandarchive.sql`). Cópia da `20261113c` (vanguard, já
   aplicada) com o `grandarchive` a mais; só a lista muda, e ela continua
   sendo a **união do dia** (leva os slugs da 20261113a e da 20261113b, das
-  PRs abertas). A 20261113a, a 20261113b ou a 20261113c aplicadas **depois**
+  PRs abertas). Leva também o `duelmasters`, da 20261113e que está sendo
+  preparada: com o slug nas duas, a ordem entre elas não importa. A 20261113a, a 20261113b ou a 20261113c aplicadas **depois**
   desta tirariam o `grandarchive`. Sem ela, a view de carta e o Preço da
   Comunidade do jogo novo são descartados em silêncio. Conferir com o par de
   `curl` do fim do arquivo: a view de `ga-494129` tem de **criar a linha**
