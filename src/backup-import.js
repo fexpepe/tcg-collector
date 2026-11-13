@@ -147,6 +147,9 @@
     // "Naruto Boruto Card Game" (o jogo do Chrono Clash System, 2019–2020): jogo
     // próprio desde 2026-11-13, antes da regra geral do Naruto.
     if (flat.includes("narutoboruto") || flat.includes("chronoclash")) return "narutoboruto";
+    // "Naruto Trading Cards" (as cartas de coleção da Amada e da Ensky,
+    // 2004–2005): jogo próprio, também antes da regra geral do Naruto.
+    if (flat.includes("narutotradingcard") || flat.includes("narutotc")) return "narutotc";
     // "Naruto Kayou" (como o Collectr chama) e "Naruto Mythos TCG": jogos
     // próprios desde 2026-11-12, antes da regra geral do Naruto.
     if (flat.includes("kayou")) return "narutokayou";

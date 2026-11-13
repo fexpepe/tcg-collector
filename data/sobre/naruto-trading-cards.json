@@ -1,0 +1,200 @@
+{
+  "url": "naruto-trading-cards",
+  "nome": "Naruto Trading Cards",
+  "logo": "assets/games/game_naruto.webp",
+  "logoLargura": 512,
+  "logoAltura": 218,
+  "periodo": {
+    "inicio": "2003-03",
+    "fim": "2006-07"
+  },
+  "etiquetas": [
+    "Vintage",
+    {
+      "pt": "Japão",
+      "en": "Japan",
+      "es": "Japón"
+    },
+    {
+      "pt": "Coleção",
+      "en": "Collectible",
+      "es": "Colección"
+    }
+  ],
+  "resumo": {
+    "pt": "Cartas de coleção do Naruto da Amada, depois Ensky, vendidas em pacotes no Japão de 2003 a 2006. Não é jogo: são cenas, personagens e jutsus do anime.",
+    "en": "Naruto collectible cards by Amada, later Ensky, sold in packs in Japan from 2003 to 2006. Not a game: scenes, characters and jutsu from the anime.",
+    "es": "Cartas coleccionables de Naruto de Amada, luego Ensky, vendidas en sobres en Japón de 2003 a 2006. No es un juego: escenas, personajes y jutsus del anime."
+  },
+  "fatos": [
+    {
+      "chave": "lancamento",
+      "valor": "2003-03"
+    },
+    {
+      "chave": "encerramento",
+      "valor": "2006-07"
+    },
+    {
+      "chave": "fabricante",
+      "valor": {
+        "pt": "Amada Printing, depois Ensky",
+        "en": "Amada Printing, later Ensky",
+        "es": "Amada Printing, luego Ensky"
+      }
+    },
+    {
+      "chave": "origem",
+      "valor": {
+        "pt": "Japão",
+        "en": "Japan",
+        "es": "Japón"
+      }
+    },
+    {
+      "chave": "formato",
+      "valor": {
+        "pt": "Cartas de coleção, em pacotes de 4, 5 ou 10",
+        "en": "Collectible cards, in packs of 4, 5 or 10",
+        "es": "Cartas coleccionables, en sobres de 4, 5 o 10"
+      }
+    },
+    {
+      "chave": "preco",
+      "valor": {
+        "pt": "¥315 o pacote de 5 (Etching 3, 2005)",
+        "en": "¥315 for a 5-card pack (Etching 3, 2005)",
+        "es": "¥315 el sobre de 5 (Etching 3, 2005)"
+      }
+    }
+  ],
+  "historia": {
+    "pt": [
+      "Além dos jogos de cartas da Bandai, o Naruto teve no Japão cartas só de coleção: sem regras, vendidas em pacotes, com cenas e personagens do anime. As da primeira série saíram pela Amada Printing (天田印刷加工), que em agosto de 2005 já assinava como Ensky: a página oficial da 忍術大全 diz “Ensky (ex-Amada Printing)”. A primeira coleção foi a Trading Collection, de março de 2003, com 108 cartas em pacotes de 10.",
+      "A Etching Card Collection, de 2004, vinha em pacotes de 5 “etching cards” e tinha 45 cartas. A segunda edição, de janeiro de 2005, e a terceira, de junho, têm 72 cada: 45 normais, 18 paralelas (chamadas “variety” na terceira) e 9 especiais. A numeração das normais continua de uma edição para a outra, de 1 a 135, e o pacote da terceira custava ¥315.",
+      "A 忍術大全 (Ninjutsu Taizen), de agosto de 2005, é uma coleção de jutsus: 66 cartas, a ¥210 o pacote de 4. Das 56 normais, 35 tinham ilustração inédita, e as 10 especiais, todas. Em 2006, já como Ensky, saíram a Etching Card Collection 4, em abril, e a segunda 忍術大全, em julho."
+    ],
+    "en": [
+      "Besides Bandai's card games, Naruto had collect-only cards in Japan: no rules, sold in packs, with scenes and characters from the anime. Those of the first series came from Amada Printing (天田印刷加工), which by August 2005 was signing as Ensky: the official 忍術大全 page reads “Ensky (formerly Amada Printing)”. The first set was the Trading Collection, in March 2003, with 108 cards in 10-card packs.",
+      "The Etching Card Collection, from 2004, came in packs of 5 “etching cards” and had 45 cards. The second edition, in January 2005, and the third, in June, have 72 each: 45 regular, 18 parallel (called “variety” in the third) and 9 special. Regular numbering runs on from one edition to the next, from 1 to 135, and a pack of the third cost ¥315.",
+      "忍術大全 (Ninjutsu Taizen), from August 2005, is a set of jutsu: 66 cards, at ¥210 for a pack of 4. Of the 56 regular cards, 35 had new artwork, as did all 10 specials. In 2006, now as Ensky, came Etching Card Collection 4, in April, and the second 忍術大全, in July."
+    ],
+    "es": [
+      "Además de los juegos de cartas de Bandai, Naruto tuvo en Japón cartas solo de colección: sin reglas, vendidas en sobres, con escenas y personajes del anime. Las de la primera serie salieron por Amada Printing (天田印刷加工), que en agosto de 2005 ya firmaba como Ensky: la página oficial de la 忍術大全 dice “Ensky (antes Amada Printing)”. La primera colección fue la Trading Collection, de marzo de 2003, con 108 cartas en sobres de 10.",
+      "La Etching Card Collection, de 2004, venía en sobres de 5 “etching cards” y tenía 45 cartas. La segunda edición, de enero de 2005, y la tercera, de junio, tienen 72 cada una: 45 normales, 18 paralelas (llamadas “variety” en la tercera) y 9 especiales. La numeración de las normales sigue de una edición a la otra, del 1 al 135, y el sobre de la tercera costaba ¥315.",
+      "La 忍術大全 (Ninjutsu Taizen), de agosto de 2005, es una colección de jutsus: 66 cartas, a ¥210 el sobre de 4. De las 56 normales, 35 tenían ilustración inédita, y las 10 especiales, todas. En 2006, ya como Ensky, salieron la Etching Card Collection 4, en abril, y la segunda 忍術大全, en julio."
+    ]
+  },
+  "linhaDoTempo": [
+    {
+      "data": "2003-03",
+      "texto": {
+        "pt": "Trading Collection, a primeira: 108 cartas em pacotes de 10.",
+        "en": "Trading Collection, the first: 108 cards in 10-card packs.",
+        "es": "Trading Collection, la primera: 108 cartas en sobres de 10."
+      }
+    },
+    {
+      "data": "2004",
+      "set": "ntc-ecc1",
+      "texto": {
+        "pt": "Etching Card Collection: 45 cartas, em pacotes de 5.",
+        "en": "Etching Card Collection: 45 cards, in 5-card packs.",
+        "es": "Etching Card Collection: 45 cartas, en sobres de 5."
+      }
+    },
+    {
+      "data": "2005-01",
+      "set": "ntc-ecc2",
+      "texto": {
+        "pt": "Etching Card Collection 2: 72 cartas, com paralelas e especiais.",
+        "en": "Etching Card Collection 2: 72 cards, with parallels and specials.",
+        "es": "Etching Card Collection 2: 72 cartas, con paralelas y especiales."
+      }
+    },
+    {
+      "data": "2005-06",
+      "set": "ntc-ecc3",
+      "texto": {
+        "pt": "Etching Card Collection 3: 72 cartas, com as 18 “variety”.",
+        "en": "Etching Card Collection 3: 72 cards, with the 18 “variety” cards.",
+        "es": "Etching Card Collection 3: 72 cartas, con las 18 “variety”."
+      }
+    },
+    {
+      "data": "2005-08",
+      "set": "ntc-ntz1",
+      "texto": {
+        "pt": "忍術大全: 66 cartas de jutsu, já com o nome Ensky.",
+        "en": "忍術大全: 66 jutsu cards, now under the Ensky name.",
+        "es": "忍術大全: 66 cartas de jutsu, ya con el nombre Ensky."
+      }
+    },
+    {
+      "data": "2006-04",
+      "texto": {
+        "pt": "Etching Card Collection 4, da Ensky.",
+        "en": "Etching Card Collection 4, by Ensky.",
+        "es": "Etching Card Collection 4, de Ensky."
+      }
+    },
+    {
+      "data": "2006-07",
+      "texto": {
+        "pt": "A segunda 忍術大全 (弐号), com mais 56 cartas normais.",
+        "en": "The second 忍術大全 (弐号), with 56 more regular cards.",
+        "es": "La segunda 忍術大全 (弐号), con 56 cartas normales más."
+      }
+    }
+  ],
+  "fontes": [
+    {
+      "nome": {
+        "pt": "TV Tokyo, página da 忍術大全 (2005)",
+        "en": "TV Tokyo, 忍術大全 product page (2005)",
+        "es": "TV Tokyo, página de la 忍術大全 (2005)"
+      },
+      "url": "https://web.archive.org/web/20070331203209/http://www.tv-tokyo.co.jp/anime/naruto2002/goods/amd_ntz.html"
+    },
+    {
+      "nome": {
+        "pt": "TV Tokyo, página da Etching Card Collection 3 (2005)",
+        "en": "TV Tokyo, Etching Card Collection 3 product page (2005)",
+        "es": "TV Tokyo, página de la Etching Card Collection 3 (2005)"
+      },
+      "url": "https://web.archive.org/web/20080719032039/http://www.tv-tokyo.co.jp/anime/naruto2002/goods/amd_echg3.html"
+    },
+    {
+      "nome": {
+        "pt": "Card Check Box, Etching Card Collection (Amada)",
+        "en": "Card Check Box, Etching Card Collection (Amada)",
+        "es": "Card Check Box, Etching Card Collection (Amada)"
+      },
+      "url": "https://cardcheckbox.com/a01a-amada-3/ecc-naruto.html"
+    },
+    {
+      "nome": {
+        "pt": "Card Check Box, Etching Card Collection (Ensky)",
+        "en": "Card Check Box, Etching Card Collection (Ensky)",
+        "es": "Card Check Box, Etching Card Collection (Ensky)"
+      },
+      "url": "https://cardcheckbox.com/a01d-ensky/ecc-naruto.html"
+    },
+    {
+      "nome": {
+        "pt": "Card Check Box, Trading Collection (Amada, 2003)",
+        "en": "Card Check Box, Trading Collection (Amada, 2003)",
+        "es": "Card Check Box, Trading Collection (Amada, 2003)"
+      },
+      "url": "https://cardcheckbox.com/a01a-amada-3/trc-naruto.html"
+    },
+    {
+      "nome": {
+        "pt": "Card Check Box, 忍術大全 (Ensky)",
+        "en": "Card Check Box, 忍術大全 (Ensky)",
+        "es": "Card Check Box, 忍術大全 (Ensky)"
+      },
+      "url": "https://cardcheckbox.com/a01d-ensky/trc-naruto-nt.html"
+    }
+  ]
+}

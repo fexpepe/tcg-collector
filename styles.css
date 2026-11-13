@@ -566,6 +566,18 @@
   --accent: #9d174d; --accent-dark: #831843; --accent-rgb: 157, 23, 77;
   --accent-soft: rgba(157, 23, 77, 0.1); --on-accent: #ffffff;
 }
+/* Naruto Trading Cards: VERDE-FOLHA, a Vila da Folha (proposta de 13/11/2026).
+   No escuro, com texto escuro (12.1:1); no claro o verde some no branco, então
+   o accent fecha pro #166534 (7.1:1 com branco). */
+[data-game-accent="narutotc"] {
+  --accent: #4ade80; --accent-dark: #22c55e; --accent-rgb: 74, 222, 128;
+  --accent-soft: rgba(74, 222, 128, 0.16); --on-accent: #0a0c10;
+}
+[data-theme="light"][data-game-accent="narutotc"],
+[data-theme="light"] [data-game-accent="narutotc"] {
+  --accent: #166534; --accent-dark: #14532d; --accent-rgb: 22, 101, 52;
+  --accent-soft: rgba(22, 101, 52, 0.1); --on-accent: #ffffff;
+}
 /* Gundam War: TURQUESA, a cor do GAME_COLOR (11/11/2026; o jogo não tem cor de
    marca, o azul é do Gundam Card Game e a lima do Gundam Carddass). Turquesa
    com texto escuro no escuro (14.2:1); o #0f766e com texto branco no claro

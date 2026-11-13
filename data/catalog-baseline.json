@@ -120,8 +120,8 @@
   "imgPct": 100
  },
  "cdm": {
-  "cards": 907,
-  "sets": 8,
+  "cards": 1208,
+  "sets": 13,
   "imgPct": 81
  },
  "gcd": {
@@ -178,5 +178,10 @@
   "cards": 1188,
   "sets": 8,
   "imgPct": 100
+ },
+ "narutotc": {
+  "cards": 255,
+  "sets": 4,
+  "imgPct": 0
  }
 }

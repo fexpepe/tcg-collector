@@ -8,6 +8,20 @@ poucos.)
 
 ## Pendentes de aplicar
 
+- `20261113f` — libera o slug `narutotc` (Naruto Trading Cards, as cartas de
+  coleção japonesas da Amada e da Ensky, 2004–2005) nas duas whitelists de
+  jogo (`card_views`/`increment_card_view` e `contribute_price`;
+  `20261113f_add_narutotc.sql`). Cópia da `20261113d` (grandarchive, a
+  última aplicada; o arquivo dela está na PR #306) com o `narutotc` a mais:
+  **ela cobre a 20261113d** e, por ela, a 13a, a 13b e a 13c. Só a lista
+  muda. Qualquer uma das anteriores rodada **depois** desta tiraria o
+  `narutotc`; e a `20261113e` (Duel Masters, em preparação; por isso a letra
+  aqui é "f") precisa levar o `narutotc` se for aplicada depois. Sem ela, a
+  view de carta e o Preço da Comunidade do jogo novo são descartados em
+  silêncio. Conferir com o par de `curl` do fim do arquivo: a view de
+  `ntc-ecc1-1` tem de **criar a linha** no `card_views` (o 204 sozinho não
+  prova nada). **A próxima migração de jogo copia esta.**
+
 - `20261113d` — libera o slug `grandarchive` (Grand Archive TCG, Weebs of
   the Shore, 2023+) nas duas whitelists de jogo
   (`card_views`/`increment_card_view` e `contribute_price`;
@@ -19,8 +33,13 @@ poucos.)
   desta tirariam o `grandarchive`. Sem ela, a view de carta e o Preço da
   Comunidade do jogo novo são descartados em silêncio. Conferir com o par de
   `curl` do fim do arquivo: a view de `ga-494129` tem de **criar a linha**
-  no `card_views` (o 204 sozinho não prova nada). **A próxima migração de
-  jogo copia esta.**
+  no `card_views` (o 204 sozinho não prova nada).
+
+  **Aplicada em 2026-11-13** pelo Fernando e verificada por curl anônimo no
+  mesmo dia: a view de `ga-494129` respondeu 204 e criou a linha no
+  `card_views` (game `grandarchive`, 1 view); um jogo inventado
+  (`grandarchivex`) respondeu 204 e não criou linha; `contribute_price`
+  anônimo segue 401; as linhas do `vanguard` continuam lá.
 
 - `20261113c` — libera o slug `vanguard` (Cardfight!! Vanguard, Bushiroad,
   edição inglesa desde 2011) nas duas whitelists de jogo
@@ -33,7 +52,8 @@ poucos.)
   `vanguard`. Aplicar esta por último, ou só esta. Sem ela, a view de carta
   e o Preço da Comunidade do jogo novo são descartados em silêncio. Conferir
   com o par de `curl` do fim do arquivo: a view de `vg-727149` tem de
-  **criar a linha** no `card_views` (o 204 sozinho não prova nada).
+  **criar a linha** no `card_views` (o 204 sozinho não prova nada). **A
+  próxima migração de jogo copia esta.**
 
   **Aplicada em 2026-11-13** pelo Fernando e verificada por curl anônimo no
   mesmo dia: a view de `vg-727149` respondeu 204 e criou a linha no

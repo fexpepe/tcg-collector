@@ -112,6 +112,9 @@ const JOGOS = {
   lotr: { semCodigo: "número solto (15), repetido em todo set" },
   dbc: { semCodigo: "Carddass: número solto, sem set impresso" },
   cdm: { semCodigo: "Carddass Masters: número solto, sem set impresso" },
+  // Naruto Trading Cards (Amada/Ensky, 2004–2005): o número ("No.46", "SP.01")
+  // vale dentro do produto e se repete entre a 忍術大全 e os Etching.
+  narutotc: { semCodigo: "cartas de coleção: número solto dentro do produto, sem set impresso" },
   gcd: { semCodigo: "Gundam Carddass: número solto, sem set impresso" },
   gw: { semCodigo: "Gundam War: número por cor (cada cor tem seu U-1), sem set impresso" },
   // Naruto Boruto Card Game (2026-11-13): o código impresso é "NB02-48-EB"

@@ -51,7 +51,7 @@ const setText = (content) => ({
 // Só slug de jogo do registro (o nome do arquivo vem daqui: nada de "../").
 const JOGOS = [
   "pokemon", "lorcana", "onepiece", "magic", "fab", "gundam", "swu", "cyberpunk", "sorcery", "dbfw", "ygo",
-  "digimon", "riftbound", "unionarena", "narutocg", "naruto", "hxh", "dbc", "dbz", "wow", "lotr", "harrypotter", "weiss", "godzilla", "palworld", "fftcg", "grandarchive", "vanguard", "narutomythos", "narutokayou", "mbc", "cdm", "gcd", "gw", "narutoboruto", "jump"
+  "digimon", "riftbound", "unionarena", "narutocg", "naruto", "hxh", "dbc", "dbz", "wow", "lotr", "harrypotter", "weiss", "godzilla", "palworld", "fftcg", "grandarchive", "vanguard", "narutomythos", "narutokayou", "mbc", "cdm", "gcd", "gw", "narutoboruto", "narutotc", "jump"
 ];
 
 function dataBR(iso) {

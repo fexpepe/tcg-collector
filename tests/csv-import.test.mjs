@@ -123,6 +123,7 @@ test("mapCsvGame: os 13 jogos, nas grafias do Collectr/TCGplayer", () => {
   // Jogo próprio desde 2026-11-13 (antes cairia no Naruto vintage).
   assert.equal(api.mapCsvGame("Naruto Boruto Card Game"), "narutoboruto");
   assert.equal(api.mapCsvGame("Chrono Clash System"), "narutoboruto");
+  assert.equal(api.mapCsvGame("Naruto Trading Cards"), "narutotc");
   assert.equal(api.mapCsvGame("Gundam Card Game"), "gundam");
   // TCGplayer escreve "Weiss Schwarz"; quem digita o nome alemão, "Weiß Schwarz".
   assert.equal(api.mapCsvGame("Weiss Schwarz"), "weiss");
