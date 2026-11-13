@@ -89,10 +89,13 @@
     godzilla: ["Godzilla", "#5e7c68"],
     fftcg: ["Final Fantasy", "#93c5fd"],
     vanguard: ["Vanguard", "#ff5a7a"],
+    narutomythos: ["Naruto Mythos", "#fde68a"],
+    narutokayou: ["Naruto Kayou", "#d946ef"],
     mbc: ["Miracle Battle", "#fb923c"],
     cdm: ["Carddass Masters", "#a21caf"],
     gcd: ["Gundam Carddass", "#a3e635"],
-    gw: ["Gundam War", "#5eead4"]
+    gw: ["Gundam War", "#5eead4"],
+    narutoboruto: ["Naruto Boruto", "#f9a8d4"]
   };
 
   // Categorias do blog. O banco só confere o formato (a lista mora aqui), então

@@ -158,8 +158,11 @@ export const FORA = {
   dbva: "vintage sem logo de set publicado",
   dbbw: "vintage sem logo de set publicado",
   gw: "vintage sem logo de set publicado",
+  narutoboruto: "o set usa o logo do jogo (o oficial do site do Chrono Clash System)",
   naruto: "logo de linha/título vem do sync; os capítulos sem logo não têm um publicado",
   narutocg: "o set de promos usa o logo do jogo (curadoria do sync); sem set de booster ainda",
+  narutomythos: "sem logo de set publicado (o site oficial só tem a arte de capa de cada set; auditado em 2026-11-12)",
+  narutokayou: "o site oficial usa o logo do Naruto em toda série; nenhuma série tem logo próprio publicado (auditado em 2026-11-12)",
   palworld: "sem logo de set publicado (páginas de produto do site oficial auditadas em 2026-11-11: só arte)"
 };
 

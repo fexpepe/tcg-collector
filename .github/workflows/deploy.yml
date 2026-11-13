@@ -125,11 +125,14 @@ jobs:
             data/cdm/sets
             data/gcd/sets
             data/gw/sets
+            data/narutoboruto/sets
             data/narutocg/sets
             data/godzilla/sets
             data/palworld/sets
             data/fftcg/sets
             data/vanguard/sets
+            data/narutomythos/sets
+            data/narutokayou/sets
             data/jump/sets
             data/magic/cards.js
             data/magic/indexes.js
@@ -175,11 +178,14 @@ jobs:
                    data/cdm/manifest.generated.js \
                    data/gcd/manifest.generated.js \
                    data/gw/manifest.generated.js \
+                   data/narutoboruto/manifest.generated.js \
                    data/narutocg/manifest.generated.js \
                    data/godzilla/manifest.generated.js \
                    data/palworld/manifest.generated.js \
                    data/fftcg/manifest.generated.js \
-                   data/vanguard/manifest.generated.js; do
+                   data/vanguard/manifest.generated.js \
+                   data/narutomythos/manifest.generated.js \
+                   data/narutokayou/manifest.generated.js; do
             [ -s "$f" ] || faltando="$faltando $f"
           done
           if [ -n "$faltando" ]; then
@@ -627,6 +633,21 @@ jobs:
         if: env.RODA_SYNC == 'true'
         run: node scripts/sync-price-history.mjs data/vanguard
 
+      # NARUTO Mythos TCG (Cicaboom, 2026+): a galeria oficial do jogo, um JSON
+      # publico que o site dela le. Id pelo SKU oficial; a 2a edicao do Set 1
+      # vira set a parte e as cartas de torneio, "<set> Promos". Sem preco: o
+      # TCGplayer nao tem o jogo, entao nao ha passo de historico.
+      - name: Sincroniza catálogo do Naruto Mythos TCG (galeria oficial)
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/sync-narutomythos.mjs || echo "sync-narutomythos falhou; mantém o catalogo versionado"
+
+      # NARUTO da Kayou, edicao em ingles (2025+): as paginas de serie do site
+      # oficial (kayouofficial.com), lidas do payload do proprio HTML. Series
+      # pinadas no sync; serie nova aparece como aviso no log. Sem preco.
+      - name: Sincroniza catálogo do Naruto Kayou (site oficial)
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/sync-narutokayou.mjs || echo "sync-narutokayou falhou; mantém o catalogo versionado"
+
       # World of Warcraft TCG (TCGCSV cat. 13; Upper Deck 2006-2010, Cryptozoic
       # 2010-2013). Jogo vintage, mas com preco do TCGplayer. setId, nome e data
       # fixos por grupo no proprio sync; sem logo de set.
@@ -841,6 +862,15 @@ jobs:
       - name: Anexa NARUTO 疾風伝 Card Game
         run: node scripts/sync-naruto-shippuden.mjs --no-fetch || echo "sync-naruto-shippuden falhou; segue com o snapshot versionado"
 
+      # Naruto Boruto Card Game (Bandai 2019–2020, Chrono Clash System): o jogo
+      # vintage narutoboruto. As Tournament Pack Cards, da TCGCSV (categoria
+      # 60). Só do snapshot versionado (--no-fetch) e nos DOIS modos, como o
+      # 疾風伝 acima: o jogo acabou, a lista não muda, e sem o passo no build
+      # rápido o data/narutoboruto/sets/ viria do cache e o jogo só apareceria
+      # no cron seguinte, com a entrada da página Vintage já no ar.
+      - name: Monta o catálogo do Naruto Boruto Card Game
+        run: node scripts/sync-naruto-boruto.mjs --no-fetch || echo "sync-naruto-boruto falhou; segue com o catálogo versionado"
+
       # Nomes das cartas de Naruto: japonês -> inglês. DEPOIS dos syncs
       # que alimentam esse catálogo (o mapa fica num lugar só em vez de repetido
       # nos quatro). Idempotente e sem rede — ver o cabeçalho do script.
@@ -1007,11 +1037,14 @@ jobs:
             data/cdm/sets
             data/gcd/sets
             data/gw/sets
+            data/narutoboruto/sets
             data/narutocg/sets
             data/godzilla/sets
             data/palworld/sets
             data/fftcg/sets
             data/vanguard/sets
+            data/narutomythos/sets
+            data/narutokayou/sets
             data/jump/sets
             data/magic/cards.js
             data/magic/indexes.js

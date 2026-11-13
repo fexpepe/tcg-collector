@@ -481,6 +481,31 @@
   --accent: #c2264b; --accent-dark: #a81f40; --accent-rgb: 194, 38, 75;
   --accent-soft: rgba(194, 38, 75, 0.1); --on-accent: #ffffff;
 }
+/* Naruto Mythos TCG: OURO CLARO, a folha de ouro 22K da Legendary (confirmada
+   pelo Fernando em 12/11/2026). No escuro, com texto escuro (16:1); no claro
+   o ouro some no branco, então o accent fecha pro âmbar-terra #92400e (7.1:1
+   com branco). */
+[data-game-accent="narutomythos"] {
+  --accent: #fde68a; --accent-dark: #fcd34d; --accent-rgb: 253, 230, 138;
+  --accent-soft: rgba(253, 230, 138, 0.16); --on-accent: #0a0c10;
+}
+[data-theme="light"][data-game-accent="narutomythos"],
+[data-theme="light"] [data-game-accent="narutomythos"] {
+  --accent: #92400e; --accent-dark: #78350f; --accent-rgb: 146, 64, 14;
+  --accent-soft: rgba(146, 64, 14, 0.1); --on-accent: #ffffff;
+}
+/* Naruto Kayou: MAGENTA (proposta de 13/11/2026). O coral confirmado em 12/11
+   ficou colado no do Vanguard, que entrou no dia seguinte. No escuro, com
+   texto escuro (6.1:1); no claro fecha pro #86198f (9.1:1 com branco). */
+[data-game-accent="narutokayou"] {
+  --accent: #d946ef; --accent-dark: #c026d3; --accent-rgb: 217, 70, 239;
+  --accent-soft: rgba(217, 70, 239, 0.16); --on-accent: #0a0c10;
+}
+[data-theme="light"][data-game-accent="narutokayou"],
+[data-theme="light"] [data-game-accent="narutokayou"] {
+  --accent: #86198f; --accent-dark: #701a75; --accent-rgb: 134, 25, 143;
+  --accent-soft: rgba(134, 25, 143, 0.1); --on-accent: #ffffff;
+}
 /* Miracle Battle Carddass: o laranja-dourado do logo, num tom PÊSSEGO pra não
    repetir o Naruto, que tem carta dentro dele (01/10/2026). Pêssego claro com
    texto escuro no escuro (11:1); tijolo com texto branco no claro (7.8:1). */
@@ -527,6 +552,18 @@
 [data-theme="light"][data-game-accent="dbva"], [data-theme="light"] [data-game-accent="dbva"] { --accent: #0b7a55; --accent-dark: #08603f; --accent-rgb: 11, 122, 85; --accent-soft: rgba(11, 122, 85, 0.1); --on-accent: #ffffff; }
 [data-game-accent="dbbw"] { --accent: #5b8def; --accent-dark: #0546b4; --accent-rgb: 91, 141, 239; --accent-soft: rgba(91, 141, 239, 0.16); --on-accent: #0a0c10; }
 [data-theme="light"][data-game-accent="dbbw"], [data-theme="light"] [data-game-accent="dbbw"] { --accent: #0546b4; --accent-dark: #043a96; --accent-rgb: 5, 70, 180; --accent-soft: rgba(5, 70, 180, 0.1); --on-accent: #ffffff; }
+/* Naruto Boruto Card Game: ROSA, o "BORUTO" do logo (proposta de 13/11/2026).
+   No escuro, com texto escuro (11.6:1); no claro o rosa some no branco, então
+   o accent fecha pro #9d174d (8.4:1 com branco). */
+[data-game-accent="narutoboruto"] {
+  --accent: #f9a8d4; --accent-dark: #f472b6; --accent-rgb: 249, 168, 212;
+  --accent-soft: rgba(249, 168, 212, 0.16); --on-accent: #0a0c10;
+}
+[data-theme="light"][data-game-accent="narutoboruto"],
+[data-theme="light"] [data-game-accent="narutoboruto"] {
+  --accent: #9d174d; --accent-dark: #831843; --accent-rgb: 157, 23, 77;
+  --accent-soft: rgba(157, 23, 77, 0.1); --on-accent: #ffffff;
+}
 /* Gundam War: TURQUESA, a cor do GAME_COLOR (11/11/2026; o jogo não tem cor de
    marca, o azul é do Gundam Card Game e a lima do Gundam Carddass). Turquesa
    com texto escuro no escuro (14.2:1); o #0f766e com texto branco no claro

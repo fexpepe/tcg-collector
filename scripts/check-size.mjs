@@ -165,11 +165,21 @@ import { join } from "node:path";
 // o Scryfall renumerou. A main tinha baixado pra 86.152 com o verso da carta
 // sem imagem; ficam 12 B. O próximo par no ID_MERGES já pede teto novo.
 //
-// 2026-11-13: teto do CSS sobe de 35.840 pra 40.960 bytes (40 KB), pedido do
+// 2026-11-13: teto do CSS núcleo sobe de 35.840 pra 36.096 (+256 B), com o
+// aval do Fernando ("Sim, subir o teto"). Três jogos do Naruto entram em
+// duas PRs abertas ao mesmo tempo: o Naruto Boruto Card Game (#296) e o
+// Naruto Mythos TCG e o Naruto Kayou (#298), cada um com o seu bloco de
+// accent (~60 B gz). A #296 sozinha fica em 35.775, a 65 B do teto antigo, e
+// as duas juntas passam dele. A mudança vai IGUAL nas duas PRs, pra nenhuma
+// depender da ordem de merge. Da folga de ~1,8 KB de 01/10 sobraram 65 B em
+// seis semanas e uns 25 jogos e linhas: a saída de verdade continua sendo a
+// regra genérica de accent, que tira o bloco por jogo do núcleo.
+//
+// 2026-11-13: teto do CSS sobe de 36.096 pra 40.960 bytes (40 KB), pedido do
 // Fernando ("subir pra 40, pra ter um teto mais largo pros outros tcgs").
 // Super Battle, Visual Adventure e Super Barcode Wars viraram jogos (dbsb,
 // dbva, dbbw), e as cores de destaque deles (escuro e claro, ~12 B gz cada
-// bloco) passaram 36 B do teto antigo (35.876). Cada jogo novo traz os dois
+// bloco) passaram 36 B do teto de 35.840 (35.876). Cada jogo novo traz os dois
 // blocos do [data-game-accent]: com a folga larga, não precisa de uma decisão
 // a cada jogo, e o teto segue barrando um salto de verdade.
 const TETOS = [

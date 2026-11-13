@@ -7292,6 +7292,9 @@
     cdm:       { usText: "carddass masters", noTcgplayer: true },
     gcd:       { usText: "gundam carddass", noTcgplayer: true },
     gw:        { usText: "gundam war", noTcgplayer: true },
+    // Naruto Boruto Card Game (conferido em 13/11/2026): no TCGplayer é a linha
+    // "chrono-clash-system", que tem as Tournament Pack Cards. Sem loja BR.
+    narutoboruto: { tcgLine: "chrono-clash-system", usText: "naruto boruto card game" },
     // World of Warcraft TCG (conferido em 30/09/2026): TCGplayer na linha
     // "wow" (a busca devolve a carta "in WoW") e Cardmarket em /en/WoW. Sem
     // loja BR: o MYP não tem seção do jogo e não existe Liga.
@@ -7339,7 +7342,13 @@
     // "cardfight-vanguard" (o prefixo do slug do produto na TCGCSV). Loja BR
     // e Cardmarket ficam de fora: ligavanguard.com.br e a seção do MYP
     // responderam 403 (anti-robô) e nada foi conferido à mão.
-    vanguard:  { tcgLine: "cardfight-vanguard", usText: "cardfight vanguard" }
+    vanguard:  { tcgLine: "cardfight-vanguard", usText: "cardfight vanguard" },
+    // Naruto Mythos TCG e Naruto Kayou (conferido em 12/11/2026): o TCGplayer
+    // não tem nenhum dos dois (TCGCSV, 94 categorias). Sem loja BR conferida;
+    // o Mythos é europeu e deve estar no Cardmarket, que recusa acesso
+    // automatizado: entra quando alguém conferir o caminho à mão.
+    narutomythos: { usText: "naruto mythos tcg", noTcgplayer: true },
+    narutokayou: { usText: "naruto kayou", noTcgplayer: true }
   };
   function marketOf(game) { return MARKETS[game] || MARKETS.pokemon; }
 
@@ -8944,10 +8953,13 @@
     "palworld",
     "fftcg",
     "vanguard",
+    "narutomythos",
+    "narutokayou",
     "mbc",
     "cdm",
     "gcd",
-    "gw"
+    "gw",
+    "narutoboruto"
   ].map((game) => ({ game, dataDir: game === "pokemon" ? "data/" : `data/${game}/` }));
   // Slugs e cor de cada jogo, num lugar só (adicionar um jogo = 1 entrada aqui
   // + 1 no game.js + labels no i18n; as páginas iteram em vez de hardcodear).
@@ -8990,12 +9002,15 @@
     weiss: "#ffffff",      // branco ("Weiß"; o preto é do Star Wars); 21:1 com preto, a 159 do prata do DBFW
     palworld: "#81ad4c",   // verde do site oficial (en.palworld-official-cardgame.com); 8.0:1 com preto, a 66 do Godzilla, a 70 do gcd e a 79 do Sorcery. O ouro do logo (#ceaf73) ficava a 13 do Sorcery (proposta, 2026-11-11)
     fftcg: "#93c5fd",      // azul-cristal (os cristais do Final Fantasy); 11.6:1 com preto, a 77 do Gundam War e a 86 do prata do DBFW (proposta, 2026-11-11)
+    narutomythos: "#fde68a", // ouro claro (a Legendary de folha de ouro 22K é a carta-símbolo); 16.9:1 com preto, a 88 do Sorcery (confirmada pelo Fernando, 2026-11-12)
+    narutokayou: "#d946ef", // magenta; 6.1:1 com preto, a 94 do Yu-Gi-Oh! e do Carddass Masters. O coral #fb7185 que o Fernando confirmou em 12/11 ficou a 26 do Vanguard, que entrou no dia 13 com #ff5a7a (proposta, 2026-11-13)
     vanguard: "#ff5a7a",   // coral: o vermelho do logo, clareado pra não colar no Pokémon (#e23030); 7.0:1 com preto, a 62 do DBC e a 84 do Miracle Battle (proposta, 2026-11-13)
     godzilla: "#5e7c68",   // verde-chumbo, a pele do Godzilla (o vermelho #e60012 do logo fica a 57 do Pokémon); 4.6:1 com branco, a 84 do Magic (proposta, 2026-11-11)
     harrypotter: "#740001", // escarlate da Grifinória; 12:1 com branco, a 85 do Magic (o vizinho mais próximo)
     mbc: "#fb923c",        // pêssego (o laranja-dourado do logo); 9.3:1 com preto, a 71 do One Piece e a 77 do Naruto
     cdm: "#a21caf",        // fúcsia; 6.3:1 com branco, a 79 do Yu-Gi-Oh! e a 81 do DBC (proposta, 2026-11-09)
     gcd: "#a3e635",        // lima; 13.9:1 com preto, a 92 do Sorcery e a 99 do Cyberpunk (proposta, 2026-11-10)
+    narutoboruto: "#f9a8d4", // rosa (o "BORUTO" do logo); 11.6:1 com preto, a 97 do Weiß e a 102 do prata do DBFW (proposta, 2026-11-13)
     gw: "#5eead4"          // turquesa; 14.2:1 com preto, a 100 do DBFW (proposta, 2026-11-11)
   };
   // Preto ou branco sobre a cor do jogo — o que der MAIOR contraste de verdade
@@ -9145,6 +9160,7 @@
     dbz: ["dbz-"],                            // Score 2000–2006: idem
     cdm: ["cdm-"],                            // Bandai 1996–2009: idem
     gcd: ["gcd-"],                            // Bandai 1988–1997: idem
+    narutoboruto: ["nb-"],                    // Bandai 2019–2020 (Chrono Clash System): idem
     gw: ["gw-"],                              // Bandai 1999–2011: idem
     harrypotter: ["hp-"],                     // Wizards 2001–2002: idem
     naruto: ["nrt-"]                          // Bandai 2003–2013: idem (o NARUTO CARD GAME de 2027, nrt-ncg-, é o jogo narutocg)
