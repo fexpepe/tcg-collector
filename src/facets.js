@@ -147,6 +147,27 @@
       },
       facetType(["Leader", "Base", "Unit", "Event", "Upgrade", "Token"])
     ],
+    // Cardfight!! Vanguard (13/11/2026): o "color" do catálogo é a NAÇÃO
+    // (sync-vanguard.mjs) — as seis de hoje primeiro, depois as das eras
+    // antigas e os títulos das colaborações em ordem alfabética. O GRAU (0–4;
+    // 5, 10 e 11 em poucas cartas) é o que o jogo usa como curva. O clã fica
+    // de fora: só as eras original, G e V imprimem.
+    vanguard: [
+      {
+        key: "nation", labelKey: "facet.nation",
+        of: (c) => (c.color ? [String(c.color)] : []),
+        label: (v) => v,
+        order: ["Dragon Empire", "Dark States", "Brandt Gate", "Keter Sanctuary", "Stoicheia", "Lyrical Monasterio",
+          "United Sanctuary", "Dark Zone", "Star Gate", "Magallanica", "Zoo"]
+      },
+      {
+        key: "grade", labelKey: "facet.grade",
+        of: (c) => (Number.isFinite(c.grade) ? [String(c.grade)] : []),
+        label: (v) => v,
+        order: ["0", "1", "2", "3", "4", "5", "10", "11"]
+      },
+      facetType(["Normal Unit", "Trigger Unit", "G Unit", "G Guardian", "Normal Order", "Blitz Order", "Set Order", "Trigger Order"])
+    ],
     // Weiß Schwarz: 4 cores, nível 0–3 e 3 tipos (01/10/2026).
     weiss: [
       facetColor("color"),

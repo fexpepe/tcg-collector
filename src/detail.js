@@ -450,6 +450,12 @@
     // vão pro fim, em ordem alfabética.
     weiss: ["Common", "Uncommon", "Rare", "Double Rare", "Triple Rare", "Super Rare", "Special Rare",
       "Super Special Rare", "Over-Frame Rare", "Secret Rare", "Climax Common", "Climax Rare", "Trial Deck", "Promo", "Reprint"],
+    // Cardfight!! Vanguard (13/11/2026): a escada do booster (C, R, RR, RRR e
+    // as de cima de cada era: VR/SVR na V, GR/SGR na G, ORR/OR…), o trial deck
+    // (TD, TDR, SD), as paralelas (H, FR, FFR, SR, SP, SSP, SEC e o resto das
+    // ~80 siglas do jogo, que vão pro fim em ordem alfabética) e as promos.
+    vanguard: ["C", "R", "RR", "RRR", "VR", "SVR", "GR", "SGR", "ORR", "OR", "TD", "TDR", "SD",
+      "H", "FR", "FFR", "TRR", "SR", "SP", "SSP", "SEC", "PR"],
     // Godzilla Card Game (11/11/2026): a escada do booster, as paralelas (P é o
     // "+" das C/UC/R; SP, SSP e SSSP as das SR e acima), os tokens (T), o
     // starter (SD), as Rage (RP/PP são as paralelas; CGP a do campeonato) e as

@@ -25,9 +25,9 @@
   "imgPct": 100
  },
  "naruto": {
-  "cards": 7432,
+  "cards": 7530,
   "sets": 112,
-  "imgPct": 80
+  "imgPct": 81
  },
  "hxh": {
   "cards": 283,
@@ -167,6 +167,11 @@
  "dbbw": {
   "cards": 168,
   "sets": 4,
+  "imgPct": 100
+ },
+ "vanguard": {
+  "cards": 26438,
+  "sets": 268,
   "imgPct": 100
  }
 }

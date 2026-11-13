@@ -29,6 +29,14 @@
 // troca só o `number` e a imagem; o id continua o código do narutocards, que
 // é o que está publicado.
 //
+// PROMOS (2026-11-13): o set de promos do narutocards tem 14 cartas, quase só
+// missão. As outras 98 da série (PR-001–100, PR-US, EX, PS e as 作 621–623)
+// vêm de data/vintage/naruto-ccg-promos.json, tiradas do grupo "Promo Cards"
+// do N-CCG-DB por scripts/naruto-ccg-promos.mjs, e entram no set de promos
+// pelo mesmo caminho do complemento. Quatro delas repetem o número impresso
+// de outra carta do set (a PR-018 é uma missão e também um ninja): o campo
+// `numero` do snapshot traz o impresso e o `code`, com B, só dá o id.
+//
 //   node scripts/sync-naruto-ccg.mjs             # fetch + build
 //   node scripts/sync-naruto-ccg.mjs --no-fetch  # só build
 import { readFile, writeFile, mkdir } from "node:fs/promises";
@@ -42,6 +50,7 @@ const OUT = new URL("data/naruto/", ROOT);
 const SNAP = new URL("data/vintage/naruto-ccg.json", ROOT);
 const COMPLEMENTO = new URL("data/vintage/naruto-ccg-complemento.json", ROOT);
 const NUMERO_IMPRESSO = new URL("data/vintage/naruto-ccg-numero-impresso.json", ROOT);
+const PROMOS = new URL("data/vintage/naruto-ccg-promos.json", ROOT);
 const CACHE_DIR = new URL("data/.cache/", ROOT);
 const BASE = "https://www.narutocards.ca/sets/bandai-ccg/";
 const CDN = "cdn.narutocards.ca/bandai-ccg/";
@@ -191,7 +200,9 @@ export function cartasDoSet(set, def, comp, impresso) {
   const tem = new Set(doNc.map((c) => codigoCanonico(c.numero)));
   const extra = comp.cards.filter((c) => !tem.has(codigoCanonico(c.code))).map((c) => ({
     code: c.code,
-    numero: c.code,
+    // `numero` só vem quando o impresso não é o código (promos: PR-018B é a
+    // segunda carta impressa "PR 018").
+    numero: c.numero || c.code,
     name: c.name,
     rarity: c.rarity,
     scan: c.img ? scanDoFan(c.img) : "",
@@ -278,9 +289,11 @@ async function refreshSnapshot(existing) {
 // CARTA NO SET ERRADO (de-para com `set`): sai do set do narutocards e entra
 // no de destino com o mesmo id (o N-099 Raido do Quest for Power é do Curse of
 // the Sand).
-export function montaLinha(snap, complemento, impresso) {
+export function montaLinha(snap, complemento, impresso, promos) {
   const defByKey = new Map(SETS.map((d) => [d.key, d]));
   const compByKey = new Map(((complemento && complemento.sets) || []).map((s) => [s.key, s]));
+  // As promos que o narutocards não tem são o "complemento" do set de promos.
+  if (promos && promos.cards && promos.cards.length) compByKey.set("promo", { key: "promo", cards: promos.cards });
   const impressoDe = (impresso && impresso.sets) || {};
   const vemDeOutro = new Map(); // set de destino -> { cards, impresso }
   for (const s of snap.sets) {
@@ -340,10 +353,11 @@ async function run() {
 
   const complemento = await readSnapshot(COMPLEMENTO);
   const impresso = await readSnapshot(NUMERO_IMPRESSO);
-  const { line, doComplemento } = montaLinha(snap, complemento, impresso);
+  const promos = await readSnapshot(PROMOS);
+  const { line, doComplemento } = montaLinha(snap, complemento, impresso, promos);
   const semImg = line.filter((c) => !c.image).length;
   const renumeradas = line.filter((c) => !c.id.endsWith(`-${c.number.toLowerCase()}`)).length;
-  console.log(`  build: ${line.length} cartas em ${snap.sets.length} sets (${semImg} sem scan; ${doComplemento} do complemento; ${renumeradas} com o número impresso do de-para).`);
+  console.log(`  build: ${line.length} cartas em ${snap.sets.length} sets (${semImg} sem scan; ${doComplemento} do complemento e das promos; ${renumeradas} com o número impresso do de-para).`);
 
   const existing = (await readGlobalVar(new URL("cards.js", OUT), "TCG_CARDS")) || [];
   const kept = existing.filter((c) => c && !/^nrt-ccg-/.test(String(c.id)));
