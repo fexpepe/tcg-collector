@@ -248,6 +248,16 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   TCGCSV já listava a terceira, a Chakra Card da NYCC 2026). Quando sair o
   primeiro booster, conferir o código do set contra o `SECOES_BANDAI`
   (src/app.js), que hoje supõe BT/ST.
+- **Cardfight!! Vanguard (`vanguard`, 2026-11-13)**: entrou com as 26.438
+  cartas dos 268 sets da TCGCSV (cat. 16), as cinco eras. A migração
+  `20261113c` foi aplicada e conferida no mesmo dia (ela cobre a 20261113a e
+  a 20261113b das PRs abertas: essas duas não rodam mais). Pendências:
+  imagem melhor pras eras original e G (200 px no TCGplayer; medir a do site
+  oficial, que carrega por JavaScript); loja BR e Cardmarket sem link
+  (ligavanguard.com.br e o MYP responderam 403 ao robô, nada conferido à
+  mão); a cor (`#ff5a7a`, proposta) e a posição no hub (depois do Final
+  Fantasy); a tela de Sets junta as cinco eras nas mesmas quatro seções —
+  separar por era é melhoria, se o Fernando quiser; sem regra de deck.
 - **Final Fantasy TCG (`fftcg`, 2026-11-11)**: entrou com as 5.700 cartas
   dos 38 sets da TCGCSV (cat. 24), Opus I ao Memories of Life; a migração
   `20261111f` foi aplicada e conferida em 2026-11-12. Pendências: o próximo

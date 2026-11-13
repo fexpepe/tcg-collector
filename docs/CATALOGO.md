@@ -171,7 +171,7 @@ junto. Sem isso, o endereço antigo das cartas movidas dá 404.
 - O set caiu na **categoria certa**. Lorcana, Naruto, HxH e DBC agrupam pelo
   `setId` (`group<Jogo>Sets` em [src/app.js](../src/app.js)); os modernos da
   Bandai (One Piece, Gundam, Fusion World, Digimon, Union Arena e o
-  `narutocg`), o Godzilla e o Palworld (Bushiroad) e o Final Fantasy
+  `narutocg`), o Godzilla, o Palworld e o Vanguard (Bushiroad) e o Final Fantasy
   (Square Enix), na mesma forma, pelas regras de código
   do `SECOES_BANDAI`, no mesmo arquivo
   (Principais, Boosters extras, Decks, Cartas de evento, Promos). Um formato
@@ -276,7 +276,7 @@ há o que ligar. São três peças, todas no
    - Pokémon por série;
    - Magic por ano, mais a seção de eventos e coleções especiais;
    - jogo com `group<Jogo>Sets` próprio pelas seções dele;
-   - os modernos da Bandai, o Godzilla, o Palworld e o Final Fantasy (`SECOES_BANDAI`) no formato do One Piece:
+   - os modernos da Bandai, o Godzilla, o Palworld, o Final Fantasy e o Vanguard (`SECOES_BANDAI`) no formato do One Piece:
      Principais (a coleção numerada), Boosters extras e especiais, Decks
      iniciais, Cartas de evento (2026-11-12, pelo nome) e Promos e eventos,
      pelo código do set (2026-11-11);

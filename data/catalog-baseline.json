@@ -153,5 +153,10 @@
   "cards": 5700,
   "sets": 38,
   "imgPct": 100
+ },
+ "vanguard": {
+  "cards": 26438,
+  "sets": 268,
+  "imgPct": 100
  }
 }
