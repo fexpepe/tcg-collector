@@ -314,6 +314,27 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   que o `narutocg` e o `mbc` fizeram (ids mantidos, migração da coleção no
   cliente, 301 dos endereços de linha). Espera o Fernando dizer quais e em
   que ordem.
+- **Naruto Trading Cards (`narutotc`, 2026-11-13)**: jogo vintage próprio
+  (pela regra de que cada jogo antigo do Naruto é um jogo). As cartas de
+  coleção da Amada e da Ensky entraram com os quatro produtos que têm lista
+  carta a carta no 火の国庵: Etching Card Collection 1, 2 e 3 (45 + 72 + 72) e a
+  忍術大全 (66), 255 cartas, todas sem imagem. Faltam: (1) imagem (TCDB,
+  Mandarake, Suruga-ya, Coleka e eBay barram acesso automatizado); (2) os
+  produtos sem lista: o トレーディングコレクション da Amada (03/2003, 108
+  cartas, mais o pacote J-SP de 9 da Jump Festa 2003), o Etching 4 (Ensky,
+  04/2006; a página do 火の国庵 só tem a numeração NO-136 em diante, sem
+  nomes) e a 忍術大全 弐号 (Ensky, 07/2006, NO.57–112); (3) o nome em
+  japonês dos Etching 2 e 3, que a fonte só dá em romaji; (4) conferir numa
+  carta real a numeração das especiais do Etching 3 (a fonte pula o SP.11) e
+  o mês do Etching 1 (agosto ou setembro de 2004); (5) logo próprio (hoje
+  vale o do Naruto) e confirmar a cor (verde-folha, #4ade80, proposta). As
+  coleções da fase Shippuden da Ensky (2007 em diante) não foram levantadas.
+- **WJカードセット da Jump Festa (candidato ao `jump`)**: o set de 24 cartas
+  que a Shueisha vendia na Jump Festa (2001 a 2005, segundo o Card Check Box)
+  é multi-título, com uma carta do Naruto por ano. Não é jogo do Naruto: é
+  crossover da revista, o caso do jogo `jump`. Sem lista carta a carta nem
+  imagem em fonte aberta; só a ficha do produto
+  (`cardcheckbox.com/a03b-shueisha/wjcardset.html`).
 - **Carddass Masters (`cdm`)**: jogo próprio desde 2026-11-09, uma seção por
   IP. Entrou o HUNTER×HUNTER completo (Partes 1 e 2 pela カードリスト do verso,
   Premium Edition e o brinde VD3; 299 cartas, todas com scan da Hunterpedia)
@@ -321,7 +342,8 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   dos filmes; 608 cartas, 436 com scan do animecollection.fr, com a marca
   d'água do site); em 2026-11-11, a 新劇場版:破 第2章 (73 cartas) e as três
   CR de pachinko (55 cada), listas lidas na frente das cartas, todas com
-  scan (nas CR, a maioria dos nomes é descrição nossa: a carta não imprime). Faltam: (1) as outras edições (Gundam, Cowboy Bebop, One
+  scan (nas CR, a maioria dos nomes é descrição nossa: a carta não imprime); em 2026-11-13, a coleção do
+  filme de 2005 do Naruto (63 cartas pela lista do 火の国庵, sem imagem e só com o ano). Faltam: (1) as outras edições (Gundam, Cowboy Bebop, One
   Piece, Inuyasha, Bleach…, 1996–2009), sem fonte carta a carta achada
   (a Final Fantasy Wiki tem FF7 e FF8 com frente e verso; o
   animecollection.fr tem scan numerado, sem nome, de Fullmetal Alchemist,

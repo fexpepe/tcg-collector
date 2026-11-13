@@ -95,7 +95,8 @@
     cdm: ["Carddass Masters", "#a21caf"],
     gcd: ["Gundam Carddass", "#a3e635"],
     gw: ["Gundam War", "#5eead4"],
-    narutoboruto: ["Naruto Boruto", "#f9a8d4"]
+    narutoboruto: ["Naruto Boruto", "#f9a8d4"],
+    narutotc: ["Naruto Trading Cards", "#4ade80"]
   };
 
   // Categorias do blog. O banco só confere o formato (a lista mora aqui), então

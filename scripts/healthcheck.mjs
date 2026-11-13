@@ -173,6 +173,8 @@ await checkCatalog("cards Gundam Carddass", "/data/gcd/cards.js", "TCG_CARDS", 1
 await checkCatalog("cards Gundam War", "/data/gw/cards.js", "TCG_CARDS", 6000);
 // Naruto Boruto Card Game: 97 cartas (as Tournament Pack Cards), 13/11/2026; história encerrada.
 await checkCatalog("cards Naruto Boruto", "/data/narutoboruto/cards.js", "TCG_CARDS", 90);
+// Naruto Trading Cards: 255 cartas (Etching Card Collection 1–3 e 忍術大全), 13/11/2026; história encerrada.
+await checkCatalog("cards Naruto Trading Cards", "/data/narutotc/cards.js", "TCG_CARDS", 240);
 // Yu-Gi-Oh! não tem cards.js em produção (chunk-only, padrão Magic) — só o pricing.
 await checkJson("chunk Pokémon (base1)", "/data/sets/en/base1.json",
   (j) => Array.isArray(j) && j.length >= 100 ? null : "chunk vazio/curto");

@@ -179,6 +179,14 @@
     "nrt-scg-st7": "Act 7 Starter Set",
     "nrt-scg-s08": "Act 8 — New Jutsu Unleashed! Power Beyond Legend",
     "nrt-scg-promo": "Shippuden Promotional Cards",
+    // ---- Naruto Trading Cards · cartas de coleção da Amada e da Ensky (jogo
+    // narutotc, sync-naruto-trading-cards.mjs). "Etching Card Collection" e "Trading
+    // Collection" são o katakana do próprio produto; "Ninjutsu Taizen" é a
+    // leitura de 忍術大全, sem tradução.
+    "ntc-ecc1": "Etching Card Collection",
+    "ntc-ecc2": "Etching Card Collection 2",
+    "ntc-ecc3": "Etching Card Collection 3",
+    "ntc-ntz1": "Trading Collection — Ninjutsu Taizen",
     // ---- Hunter × Hunter · Carddass Hyper Battle
     "hxh-hb-p1": "Part 1 — Hunter Exam",
     "hxh-hb-p2": "Part 2 — Finished! × Passed? × Hunter Exam",
@@ -197,6 +205,8 @@
     "cdm-hxh-pe": "Hunter × Hunter Premium Edition",
     "cdm-hxh-p2": "Hunter × Hunter Part 2",
     "cdm-hxh-vd": "Hunter × Hunter VHS purchase bonus card",
+    // Naruto: o título em inglês do filme (Viz, "Naruto the Movie 2").
+    "cdm-naruto-m2": "Naruto the Movie 2: Legend of the Stone of Gelel",
     // Evangelion: "Vol." é tradução nossa de 第壱集/第弐集; os Wide levam o
     // título em inglês de cada filme (Death & Rebirth, The End of Evangelion).
     "cdm-eva-p1": "Neon Genesis Evangelion Vol. 1",

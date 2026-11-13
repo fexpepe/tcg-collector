@@ -24,7 +24,7 @@ import { buildSearch, buildPricesJson, idsComBase, LIMITE_COMPLETO } from "./_se
 // Jogos válidos (espelho do registro do game.js). Barra consulta arbitrária.
 // "all" = busca global (o Explorar): todos os jogos numa consulta só.
 const GAMES = new Set(["all", "pokemon", "lorcana", "onepiece", "magic", "fab", "gundam", "swu", "cyberpunk", "sorcery",
-  "dbfw", "ygo", "digimon", "riftbound", "unionarena", "narutocg", "naruto", "hxh", "dbc", "dbsb", "dbva", "dbbw", "dbz", "wow", "lotr", "harrypotter", "weiss", "godzilla", "palworld", "fftcg", "vanguard", "narutomythos", "narutokayou", "mbc", "cdm", "gcd", "gw", "narutoboruto", "jump"]);
+  "dbfw", "ygo", "digimon", "riftbound", "unionarena", "narutocg", "naruto", "hxh", "dbc", "dbsb", "dbva", "dbbw", "dbz", "wow", "lotr", "harrypotter", "weiss", "godzilla", "palworld", "fftcg", "vanguard", "narutomythos", "narutokayou", "mbc", "cdm", "gcd", "gw", "narutoboruto", "narutotc", "jump"]);
 
 const Q_MAX = 200;
 

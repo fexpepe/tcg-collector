@@ -2,15 +2,18 @@
 // cdm). Do HUNTER×HUNTER: o nome de arquivo da Hunterpedia vira set + número, o
 // recorte da FRENTE (o scan é frente e verso juntos) e a lista impressa no
 // verso das cartas. Do 新世紀エヴァンゲリオン: a página do animecollection.fr
-// vira número + scan, e a lista do colecionador. E o id e o nome de set de
-// todo o jogo.
+// vira número + scan, e a lista do colecionador. Do filme de 2005 do NARUTO:
+// a linha da lista do 火の国庵 vira carta, com o nome nos dois idiomas. E o id
+// e o nome de set de todo o jogo.
 // Roda com: node --test tests/
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { parseFile, frontCrop, frontUrl, IMG, rarityOf, cardsOfSet, cardId, setIdOf, setNameOf, IPS, SETS_HXH, LISTA_HXH, numAc, parseAc, rarityAc, SETS_EVA, LISTA_EVA } from "../scripts/sync-carddass-masters.mjs";
+import { readFileSync } from "node:fs";
+import { parseFile, frontCrop, frontUrl, IMG, rarityOf, cardsOfSet, cardId, setIdOf, setNameOf, IPS, SETS_HXH, LISTA_HXH, numAc, parseAc, rarityAc, SETS_EVA, LISTA_EVA, SETS_NARUTO, cartaNaruto, nomeNaruto } from "../scripts/sync-carddass-masters.mjs";
 
 const HXH = IPS.find((ip) => ip.ip === "hxh");
 const EVA = IPS.find((ip) => ip.ip === "eva");
+const NARUTO = IPS.find((ip) => ip.ip === "naruto");
 
 test("arquivo: parte, número impresso (sem zero à esquerda) e se tem o verso junto", () => {
   assert.deepEqual(parseFile("File:Carddass masters part 1 card 029.png"), { setCode: "p1", num: "29", fb: false });
@@ -202,4 +205,62 @@ test("eva, set: a IP abre o nome, o jogo e o formato (ワイド) não", () => {
   // ids de set e de carta de uma IP nunca caem nos de outra
   const todos = IPS.flatMap((ip) => ip.sets.map((def) => setIdOf(ip.ip, def.code)));
   assert.equal(new Set(todos).size, todos.length);
+});
+
+// ── 劇場版 NARUTO-ナルト- (2005) ─────────────────────────────────────────────
+
+test("naruto, linha da lista: número com três dígitos, SP na grafia do jogo e o grupo só nas normais", () => {
+  assert.deepEqual(cartaNaruto("m2", { prefixo: "No", num: "010", nome: "うずまきナルト", extra: "", grupo: "劇場版キャラクターカード" }),
+    { set: "m2", num: "010", rarity: "Normal", ja: "うずまきナルト", grupo: "劇場版キャラクターカード", img: "" });
+  // a fonte escreve "SP.1"; no jogo cdm a especial é SP1
+  assert.deepEqual(cartaNaruto("m2", { prefixo: "SP", num: "1", nome: "うずまきナルト", extra: "", grupo: "スペシャルカード" }),
+    { set: "m2", num: "SP1", rarity: "Special", ja: "うずまきナルト", grupo: "", img: "" });
+});
+
+test("naruto, nome: personagem pelo mapa do Naruto, trio dividido no ＆, puzzle e story file transliterados", () => {
+  assert.deepEqual(nomeNaruto({ ja: "テムジン" }), { en: "Temujin", ja: "テムジン" });
+  assert.deepEqual(nomeNaruto({ ja: "うずまきナルト＆富士風雪絵＆はたけカカシ" }), { en: "Naruto Uzumaki & Yukie Fujikaze & Kakashi Hatake", ja: "うずまきナルト＆富士風雪絵＆はたけカカシ" });
+  assert.equal(nomeNaruto({ ja: "パズルA" }).en, "Puzzle A");
+  // algarismo de largura cheia na fonte
+  assert.equal(nomeNaruto({ ja: "ストーリーファイル０９" }).en, "Story File 09");
+  // sem tradução: fica o japonês (e a carta não ganha nameJp repetido)
+  assert.deepEqual(nomeNaruto({ ja: "未知の人物" }), { en: "未知の人物", ja: "未知の人物" });
+});
+
+test("naruto, snapshot: as 63 cartas, 001–054 e SP1–SP9 sem buraco, todas com nome em inglês e sem imagem", () => {
+  const snap = JSON.parse(readFileSync(new URL("../data/vintage/carddass-masters-naruto.json", import.meta.url), "utf8"));
+  const def = SETS_NARUTO[0];
+  const cards = cardsOfSet(NARUTO, def, snap.sets.find((s) => s.code === def.code).cards);
+  assert.equal(cards.length, 63);
+  assert.deepEqual(cards.map((c) => c.number), [
+    ...Array.from({ length: 54 }, (_, i) => String(i + 1).padStart(3, "0")),
+    ...Array.from({ length: 9 }, (_, i) => `SP${i + 1}`)
+  ]);
+  assert.equal(new Set(cards.map((c) => c.id)).size, 63);
+  assert.deepEqual(cards[0], { id: "cdm-naruto-m2-001", name: "Puzzle A", nameJp: "パズルA", number: "001", rarity: "Normal", img: "" });
+  assert.deepEqual(cards[62], { id: "cdm-naruto-m2-sp9", name: "Tsunade", nameJp: "綱手", number: "SP9", rarity: "Special", img: "" });
+  assert.equal(cards.filter((c) => c.rarity === "Special").length, 9);
+  for (const c of cards) {
+    assert.ok(!/[぀-ヿ一-鿿]/.test(c.name), `${c.number} sem nome em inglês: ${c.name}`);
+    assert.ok(c.nameJp, c.number);
+    assert.equal(c.img, "");
+  }
+  // os cinco grupos da lista: 9 + 9 + 18 + 9 + 9
+  const grupos = snap.sets[0].cards.reduce((m, c) => m.set(c.grupo, (m.get(c.grupo) || 0) + 1), new Map());
+  assert.deepEqual([...grupos.values()], [9, 9, 18, 9, 9, 9]);
+});
+
+test("naruto, set: o título do filme (劇場版 na frente da marca), só o ano e o nome em inglês registrado", () => {
+  const def = SETS_NARUTO[0];
+  assert.equal(setNameOf(NARUTO, def), "劇場版 NARUTO-ナルト- 大激突!幻の地底遺跡だってばよ");
+  assert.equal(setIdOf("naruto", def.code), "cdm-naruto-m2");
+  // as duas fontes não concordam no mês (02/09 × fim de agosto): sem mês
+  assert.equal(def.date, "2005");
+  const nomesEn = readFileSync(new URL("../src/nomes-sets.js", import.meta.url), "utf8");
+  assert.ok(nomesEn.includes('"cdm-naruto-m2": "Naruto the Movie 2: Legend of the Stone of Gelel"'));
+  // a seção da IP existe na página de Sets, nos três idiomas
+  const app = readFileSync(new URL("../src/app.js", import.meta.url), "utf8");
+  assert.ok(app.includes('naruto: ["sets.category.cdmNaruto", ""]'));
+  const i18n = readFileSync(new URL("../src/i18n.js", import.meta.url), "utf8");
+  assert.equal(i18n.split('"sets.category.cdmNaruto":').length - 1, 3);
 });
