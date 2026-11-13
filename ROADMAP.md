@@ -272,9 +272,9 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   sozinhos quando o TCGplayer listar as cartas; a 2ª edição do BP01 ganha
   preço no build seguinte ao das primeiras vendas.
 - **Naruto Mythos TCG (`narutomythos`) e Naruto Kayou (`narutokayou`),
-  2026-11-12**: jogos próprios, pelas fontes oficiais. A confirmar com o
-  Fernando: as cores (ouro claro e coral, propostas) e a posição dos tiles no
-  hub e na landing (entraram no fim da grade). Pendências: preço (nenhum dos
+  2026-11-12**: jogos próprios, pelas fontes oficiais. As cores (ouro claro e
+  coral) e a posição dos tiles (fim da grade do hub e da landing) foram
+  confirmadas pelo Fernando no mesmo dia. Pendências: preço (nenhum dos
   dois está no TCGplayer; o Mythos deve estar no Cardmarket, que barra acesso
   automatizado); lojas do `MARKETS` conferidas à mão; no Mythos, as três
   versões das Common e Uncommon (standard, full art e holográfica), que a

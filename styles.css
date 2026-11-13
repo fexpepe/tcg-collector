@@ -469,8 +469,8 @@
   --accent: #3a5ba0; --accent-dark: #314d88; --accent-rgb: 58, 91, 160;
   --accent-soft: rgba(58, 91, 160, 0.1); --on-accent: #ffffff;
 }
-/* Naruto Mythos TCG: OURO CLARO, a folha de ouro 22K da Legendary (proposta de
-   12/11/2026). No escuro, com texto escuro (16:1); no claro o ouro some no
+/* Naruto Mythos TCG: OURO CLARO, a folha de ouro 22K da Legendary (confirmada
+   pelo Fernando em 12/11/2026). No escuro, com texto escuro (16:1); no claro o ouro some no
    branco, então o accent fecha pro âmbar-terra #92400e (7.1:1 com branco). */
 [data-game-accent="narutomythos"] {
   --accent: #fde68a; --accent-dark: #fcd34d; --accent-rgb: 253, 230, 138;
@@ -482,7 +482,8 @@
   --accent-soft: rgba(146, 64, 14, 0.1); --on-accent: #ffffff;
 }
 /* Naruto Kayou: CORAL, o vermelho da marca aberto pra não encostar no Pokémon
-   (proposta de 12/11/2026). No escuro, com texto escuro (7.8:1); no claro
+   (confirmada pelo Fernando em 12/11/2026). No escuro, com texto escuro
+   (7.8:1); no claro
    fecha pro #be123c (6.3:1 com branco). */
 [data-game-accent="narutokayou"] {
   --accent: #fb7185; --accent-dark: #f43f5e; --accent-rgb: 251, 113, 133;
