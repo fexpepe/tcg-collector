@@ -249,9 +249,9 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   primeiro booster, conferir o código do set contra o `SECOES_BANDAI`
   (src/app.js), que hoje supõe BT/ST.
 - **Cardfight!! Vanguard (`vanguard`, 2026-11-13)**: entrou com as 26.438
-  cartas dos 268 sets da TCGCSV (cat. 16), as cinco eras. Pendências: a
-  migração `20261113c` (aplicar no SQL Editor e conferir com o par de
-  `curl`; ela cobre a 20261113a e a 20261113b das PRs abertas no mesmo dia);
+  cartas dos 268 sets da TCGCSV (cat. 16), as cinco eras. A migração
+  `20261113c` foi aplicada e conferida no mesmo dia (ela cobre a 20261113a e
+  a 20261113b das PRs abertas: essas duas não rodam mais). Pendências:
   imagem melhor pras eras original e G (200 px no TCGplayer; medir a do site
   oficial, que carrega por JavaScript); loja BR e Cardmarket sem link
   (ligavanguard.com.br e o MYP responderam 403 ao robô, nada conferido à

@@ -22,6 +22,13 @@ poucos.)
   **criar a linha** no `card_views` (o 204 sozinho não prova nada). **A
   próxima migração de jogo copia esta.**
 
+  **Aplicada em 2026-11-13** pelo Fernando e verificada por curl anônimo no
+  mesmo dia: a view de `vg-727149` respondeu 204 e criou a linha no
+  `card_views` (game `vanguard`, 1 view); um jogo inventado respondeu 204 e
+  não criou linha; `contribute_price` anônimo segue 401. Depois dela, nem a
+  `20261113a` nem a `20261113b` podem rodar (tirariam o `vanguard`): os
+  slugs das duas já estão na lista desta.
+
 - `20261112b` — /admin: as LINHAS de cada jogo (`20261112b_admin_jogos_linhas.sql`;
   o `b` porque a 20261112a do mesmo dia é a dos erros). O jogo `naruto` junta
   o Card Game 2002~2006, o Data Carddass, o CCG e o Shippuden (o `onepiece`, o
