@@ -17,6 +17,7 @@ const json = (arq) => JSON.parse(readFileSync(new URL(`../${arq}`, import.meta.u
 const snap = json("data/vintage/naruto-ccg.json");
 const comp = json("data/vintage/naruto-ccg-complemento.json");
 const dp = json("data/vintage/naruto-ccg-numero-impresso.json");
+const promos = json("data/vintage/naruto-ccg-promos.json");
 const catalogo = (() => {
   const g = { window: {} };
   new Function("window", readFileSync(new URL("../data/naruto/cards.js", import.meta.url), "utf8"))(g.window);
@@ -177,7 +178,8 @@ test("carta no set errado: o N-099 Raido vai pro Curse of the Sand, Starter Deck
 });
 
 test("catálogo versionado: regerado com o de-para (mesmos ids, mesmo set, número impresso)", () => {
-  const linha = montaLinha(snap, comp, dp).line;
+  // Com as promos do N-CCG-DB (2026-11-13), que o sync anexa ao set de promos.
+  const linha = montaLinha(snap, comp, dp, promos).line;
   assert.equal(catalogo.length, linha.length);
   const doCatalogo = new Map(catalogo.map((c) => [c.id, c]));
   for (const c of linha) {
