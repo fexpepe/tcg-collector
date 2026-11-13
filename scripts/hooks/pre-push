@@ -1,0 +1,112 @@
+#!/bin/sh
+# sleevu-trava-push v1
+#
+# Trava de push: deste repositório só sobe o que é da conta `fexpepe` do
+# GitHub. Pedido do Fernando em 13/11/2026 — a máquina tem também a conta e o
+# e-mail do trabalho no git global, e em 09/10 a main já precisou ser reescrita
+# porque commits saíram com o e-mail errado. Depois que sobe não tem volta
+# limpa, então a conferência é ANTES do push e na máquina, não no CI.
+#
+# Recusa o push quando:
+#   1. o remoto não é um repositório de github.com/fexpepe;
+#   2. a credencial que o git vai usar nesse remoto é de outra conta;
+#   3. algum commit NOVO (que o remoto ainda não tem) foi assinado por outra
+#      identidade — committer fora da lista, ou autor fora da lista.
+#
+# Só o Fernando libera, e por push:  SLEEVU_PUSH_LIBERADO=1 git push ...
+# (o Claude só usa isso com autorização explícita dele — ver CLAUDE.md).
+#
+# Mora em scripts/hooks/ e é copiado pra .git/hooks/ pelo
+# `node scripts/instala-hooks.mjs`: hook não vem no clone, e o diretório comum
+# do git vale pra todos os worktrees, inclusive os de branch antiga que ainda
+# não têm este arquivo.
+
+DONO="fexpepe"
+# Identidades da conta: o e-mail pessoal e o noreply que o GitHub dá pra ela.
+EMAILS_DA_CONTA="fernandopepe.pereira@gmail.com 50333617+fexpepe@users.noreply.github.com"
+# Autor (nunca committer) também pode ser o Claude das sessões na nuvem: esses
+# commits chegam por rebase/cherry-pick e quem os sobe continua sendo a conta.
+AUTORES_A_MAIS="noreply@anthropic.com"
+
+remoto="$1"
+url="$2"
+
+if [ "${SLEEVU_PUSH_LIBERADO:-}" = "1" ]; then
+  echo "trava de push: LIBERADA por SLEEVU_PUSH_LIBERADO=1 — nada foi conferido." >&2
+  exit 0
+fi
+
+minusc() { printf '%s' "$1" | tr '[:upper:]' '[:lower:]'; }
+na_lista() { # $1 = e-mail, $2 = lista separada por espaço
+  alvo=$(minusc "$1")
+  for item in $2; do
+    [ "$alvo" = "$item" ] && return 0
+  done
+  return 1
+}
+
+problemas=""
+anota() { problemas="${problemas}  - $1
+"; }
+
+# 1. Dono do remoto ----------------------------------------------------------
+url_min=$(minusc "$url")
+eh_https=0
+case "$url_min" in
+  https://github.com/"$DONO"/*|https://*@github.com/"$DONO"/*) eh_https=1 ;;
+  git@github.com:"$DONO"/*|ssh://git@github.com/"$DONO"/*) ;;
+  *) anota "o remoto \"$remoto\" ($url) não é um repositório de github.com/$DONO" ;;
+esac
+
+# 2. Conta da credencial ------------------------------------------------------
+# Só em HTTPS (em SSH quem decide é a chave, que o git não sabe nomear). Sem
+# credencial guardada não há o que comparar: o git vai pedir login na hora.
+if [ "$eh_https" = "1" ]; then
+  usuario=$(printf 'url=%s\n\n' "$url" \
+    | GIT_TERMINAL_PROMPT=0 GCM_INTERACTIVE=never GIT_ASKPASS= SSH_ASKPASS= \
+      git -c core.askPass= credential fill 2>/dev/null \
+    | sed -n 's/^username=//p' | head -n 1)
+  if [ -n "$usuario" ] && [ "$(minusc "$usuario")" != "$DONO" ]; then
+    anota "a credencial do git pra este remoto é da conta \"$usuario\", não \"$DONO\""
+  fi
+fi
+
+# 3. Identidade dos commits novos --------------------------------------------
+# "Novo" = o que nenhum ref remoto conhecido tem. Assim o que já está no
+# GitHub (snapshot do catálogo pelo github-actions, merge feito no site) não
+# entra na conta quando a branch foi rebaseada por cima da main.
+while read -r _ref_local sha_local _ref_remoto sha_remoto; do
+  case "$sha_local" in *[!0]*) ;; *) continue ;; esac   # apagar branch: nada sobe
+  fora="--remotes"
+  case "$sha_remoto" in
+    *[!0]*) git cat-file -e "$sha_remoto^{commit}" 2>/dev/null && fora="$fora $sha_remoto" ;;
+  esac
+  # shellcheck disable=SC2086
+  lista=$(git log --format='%h %ae %ce' "$sha_local" --not $fora 2>/dev/null)
+  [ -z "$lista" ] && continue
+  while read -r curto autor committer; do
+    [ -z "$curto" ] && continue
+    if ! na_lista "$committer" "$EMAILS_DA_CONTA"; then
+      anota "commit $curto: committer $committer"
+    elif ! na_lista "$autor" "$EMAILS_DA_CONTA $AUTORES_A_MAIS"; then
+      anota "commit $curto: autor $autor"
+    fi
+  done <<EOF
+$lista
+EOF
+done
+
+if [ -n "$problemas" ]; then
+  {
+    echo ""
+    echo "PUSH RECUSADO — só sobe o que é da conta $DONO:"
+    printf '%s' "$problemas"
+    echo ""
+    echo "Conserte a identidade (git config user.email, credencial, remoto) e"
+    echo "refaça os commits. Se o Fernando autorizou este push assim mesmo:"
+    echo "  SLEEVU_PUSH_LIBERADO=1 git push ..."
+    echo ""
+  } >&2
+  exit 1
+fi
+exit 0

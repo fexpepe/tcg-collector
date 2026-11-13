@@ -9,3 +9,7 @@ data/*/set-logos/*.webp -text binary
 # eol=lf mantém LF em todo checkout (o .bat é o par do Windows).
 mobile/android/gradlew text eol=lf
 mobile/android/gradlew.bat text eol=crlf
+
+# Hooks de git versionados: o sh morre no CR, então LF em todo checkout (o
+# instala-hooks.mjs também normaliza, mas quem rodar o arquivo direto não).
+scripts/hooks/* text eol=lf
