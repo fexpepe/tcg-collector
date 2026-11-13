@@ -22,6 +22,15 @@ poucos.)
   `ntc-ecc1-1` tem de **criar a linha** no `card_views` (o 204 sozinho não
   prova nada). **A próxima migração de jogo copia esta.**
 
+  **Aplicada em 2026-11-13** pelo Fernando e verificada por curl anônimo no
+  mesmo dia: a view de `ntc-ecc1-1` respondeu 204 e criou a linha no
+  `card_views` (game `narutotc`, 1 view); um jogo inventado (`narutotcx`)
+  respondeu 204 e não criou linha; `contribute_price` anônimo segue 401; as
+  linhas do `vanguard` e do `grandarchive` continuam lá. Com ela ficam
+  liberados os quatro jogos do Naruto de 13/11 (`narutoboruto`,
+  `narutomythos`, `narutokayou` e `narutotc`). Depois dela, nenhuma das
+  anteriores pode rodar de novo.
+
 - `20261113d` — libera o slug `grandarchive` (Grand Archive TCG, Weebs of
   the Shore, 2023+) nas duas whitelists de jogo
   (`card_views`/`increment_card_view` e `contribute_price`;
