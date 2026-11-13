@@ -19,8 +19,11 @@ poucos.)
   `20261111f` não pode rodar de novo (tiraria os dois). Conferir com os
   `curl` do fim do arquivo: a view de `nmy-s1e1-l133v1` e a de
   `nky-hs1-nrsa01-se-001l5` têm de **criar** a linha em `card_views`, cada
-  uma com o seu game; o 204 sozinho não prova nada. **A próxima migração de
-  jogo copia esta.**
+  uma com o seu game; o 204 sozinho não prova nada. **Coberta pela
+  `20261113a` da PR #296** (os mesmos dois slugs mais o `narutoboruto`): se a
+  `20261113a` for aplicada, esta não precisa rodar, e NÃO pode rodar depois
+  dela (tiraria o `narutoboruto`). Sozinha, só vale enquanto a #296 não
+  entrar.
 
 - `20261112b` — /admin: as LINHAS de cada jogo (`20261112b_admin_jogos_linhas.sql`;
   o `b` porque a 20261112a do mesmo dia é a dos erros). O jogo `naruto` junta

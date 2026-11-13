@@ -19,6 +19,10 @@
 -- A coleção NÃO depende desta migração: a tabela `collections` não tem
 -- whitelist de jogo.
 --
+-- ATENÇÃO (2026-11-13): a 20261113a da PR #296 tem estes dois slugs MAIS o
+-- `narutoboruto`. Se ela for aplicada, esta não precisa rodar, e NÃO pode rodar
+-- depois dela (tiraria o `narutoboruto` das duas listas).
+--
 -- Conferir depois de aplicar: os `curl` no fim deste arquivo.
 --
 -- Sem cifrão dentro dos corpos de função (lição da 20260923a): o editor do
