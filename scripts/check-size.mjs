@@ -164,9 +164,19 @@ import { join } from "node:path";
 // 2026-11-12: mais 11 pares no mesmo teto (+108 B gz), as cartas do Magic que
 // o Scryfall renumerou. A main tinha baixado pra 86.152 com o verso da carta
 // sem imagem; ficam 12 B. O próximo par no ID_MERGES já pede teto novo.
+//
+// 2026-11-13: teto do CSS núcleo sobe de 35.840 pra 36.096 (+256 B), com o
+// aval do Fernando ("Sim, subir o teto"). Três jogos do Naruto entram em
+// duas PRs abertas ao mesmo tempo: o Naruto Boruto Card Game (#296) e o
+// Naruto Mythos TCG e o Naruto Kayou (#298), cada um com o seu bloco de
+// accent (~60 B gz). A #296 sozinha fica em 35.775, a 65 B do teto antigo, e
+// as duas juntas passam dele. A mudança vai IGUAL nas duas PRs, pra nenhuma
+// depender da ordem de merge. Da folga de ~1,8 KB de 01/10 sobraram 65 B em
+// seis semanas e uns 25 jogos e linhas: a saída de verdade continua sendo a
+// regra genérica de accent, que tira o bloco por jogo do núcleo.
 const TETOS = [
   { arquivo: "shared.js", teto: 86272, nota: "núcleo JS de toda página" },
-  { arquivo: "styles.min.css", teto: 35840, nota: "núcleo do CSS, depois do split por área" },
+  { arquivo: "styles.min.css", teto: 36096, nota: "núcleo do CSS, depois do split por área" },
 ];
 
 const dir = process.argv[2] || "/tmp/ci-min";
