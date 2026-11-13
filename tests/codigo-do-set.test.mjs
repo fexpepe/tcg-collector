@@ -119,6 +119,13 @@ test("Magic, Star Wars e Riftbound: setId de 3 letras, sem os grupos de promo", 
   assert.equal(cod("riftbound", "PR", "Promotional Cards"), "");
 });
 
+test("Vanguard: o código impresso antes da barra, com o hífen da era", () => {
+  for (const id of ["BT01", "EB12", "TD17", "G-BT14", "G-CHB03", "V-EB15", "V-SS10", "D-LBT04", "D-TTD03", "DZ-BT16", "DZ-TBP01", "DZ-PS03"]) {
+    assert.equal(cod("vanguard", id), id, id);
+  }
+  for (const id of ["PR", "VPR", "D-PR", "V-GM", "EVENT", "CLN", "KA1-2"]) assert.equal(cod("vanguard", id), "", id);
+});
+
 test("Final Fantasy vira Opus (grafia da PSA), Lorcana vira Set N", () => {
   assert.equal(cod("fftcg", "OP1"), "Opus I");
   assert.equal(cod("fftcg", "OP14"), "Opus XIV");

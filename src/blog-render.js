@@ -85,6 +85,7 @@
     weiss: ["Weiß Schwarz", "#ffffff"],
     godzilla: ["Godzilla", "#5e7c68"],
     fftcg: ["Final Fantasy", "#93c5fd"],
+    vanguard: ["Vanguard", "#ff5a7a"],
     mbc: ["Miracle Battle", "#fb923c"],
     cdm: ["Carddass Masters", "#a21caf"],
     gcd: ["Gundam Carddass", "#a3e635"],
