@@ -124,6 +124,8 @@ test("mapCsvGame: os 13 jogos, nas grafias do Collectr/TCGplayer", () => {
   assert.equal(api.mapCsvGame("Godzilla Card Game"), "godzilla");
   assert.equal(api.mapCsvGame("Final Fantasy TCG"), "fftcg");
   assert.equal(api.mapCsvGame("Final Fantasy Trading Card Game"), "fftcg");
+  assert.equal(api.mapCsvGame("Grand Archive TCG"), "grandarchive");
+  assert.equal(api.mapCsvGame("Grand Archive"), "grandarchive");
   assert.equal(api.mapCsvGame("Cardfight Vanguard"), "vanguard");
   assert.equal(api.mapCsvGame("Cardfight!! Vanguard"), "vanguard");
   assert.equal(api.mapCsvGame("Magic: The Gathering"), "magic");

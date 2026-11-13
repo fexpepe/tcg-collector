@@ -304,6 +304,16 @@ test("Bandai moderno: coleção numerada, boosters extras, decks e promos, pelo 
   assert.deepEqual(secoesBandai("fftcg", ["OP1", "OP30", "RE", "ST27", "BDC", "BD7", "PR", "W24", "DEC"]), {
     main: ["OP1", "OP30"], extraBoosters: ["RE"], decks: ["BD7", "BDC", "ST27"], promos: ["DEC", "PR", "W24"]
   });
+  // Grand Archive (Weebs of the Shore, na mesma forma): o booster de três
+  // letras, a Alter Edition e os packs avulsos como extra, Starter Decks e
+  // Re:Collection nos decks, Event/Supporter Pack e promos no resto.
+  assert.deepEqual(secoesBandai("grandarchive", ["DOA-1ST", "FTC", "AMB1E", "PRD", "DOA-ALTER", "DTRAE", "AMBDP", "RDOPD", "PRDP", "PRDG", "DOAP",
+    "DOASD", "SLM", "SLMLTE", "AURR", "REC-MSD", "DEMO23", "EVP", "EVP2", "RDOEVP", "PHME", "SP1", "PRXY", "KSP", "GSC", "SLC", "P"]), {
+    main: ["AMB1E", "DOA-1ST", "FTC", "PRD"],
+    extraBoosters: ["AMBDP", "DOA-ALTER", "DOAP", "DTRAE", "PRDG", "PRDP", "RDOPD"],
+    decks: ["AURR", "DEMO23", "DOASD", "REC-MSD", "SLM", "SLMLTE"],
+    promos: ["EVP", "EVP2", "GSC", "KSP", "P", "PHME", "PRXY", "RDOEVP", "SLC", "SP1"]
+  });
   // Cardfight!! Vanguard (Bushiroad, cinco eras): os Booster Sets de todas
   // elas são os principais; extras, decks e promos pelo código, com ou sem o
   // prefixo da era.

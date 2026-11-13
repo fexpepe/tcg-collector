@@ -33,7 +33,7 @@ catálogo completo só existe no build de produção.
 
 ## Os jogos
 
-O registro central é o `GAMES` em [src/game.js](src/game.js): **32 slugs**, 31 com
+O registro central é o `GAMES` em [src/game.js](src/game.js): **33 slugs**, 32 com
 catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do Pokémon
 é a raiz `data/` por motivo histórico (não movemos nada).
 
@@ -50,6 +50,7 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 | `weiss` | Weiß Schwarz | TCGCSV cat. 20 (Bushiroad; só a edição inglesa, 2013+; paralelas SP/SSP/OFR = cartas próprias; setId fixo por groupId com o código impresso, `DDD-S118`; sem logo de set publicado) | USD |
 | `vanguard` | Cardfight!! Vanguard | TCGCSV cat. 16 (Bushiroad 2011+; as cinco eras, só a edição inglesa; paralelas SP/FR/SEC = cartas próprias; setId do código impresso que abre o nome do grupo, `DZ-BT16`; sem logo de set) | USD |
 | `fftcg` | Final Fantasy TCG | TCGCSV cat. 24 (Square Enix 2016+, os Opus; Full Art = carta própria; setId fixo por groupId, `OP27`, porque a abreviação da fonte erra e repete; sem logo de set publicado) | USD |
+| `grandarchive` | Grand Archive TCG | TCGCSV cat. 74 (Weebs of the Shore 2023+; Normal/Foil no mesmo produto; id do productId porque o número repete dentro do set; sem logo de set) | USD |
 | `godzilla` | Godzilla Card Game | TCGCSV cat. 88 (Bushiroad/Yuhodo 2025; só a edição inglesa; paralelas +/++/+++ = cartas próprias; setId fixo por groupId com o código impresso, `EBP01`; sem logo de set publicado) | USD |
 | `palworld` | Palworld Official Card Game | TCGCSV cat. 91 (Bushiroad com a Pocketpair, 2026; paralelas SR/OSR/SP/SSP = cartas próprias, com a raridade no número impresso, `EBP01-001OSR`; a 2ª edição do BP01, que o TCGplayer cadastra no grupo da 1ª, vira o set `EBP01-2E`; setId do código impresso, fixo por groupId; sem logo de set publicado) | USD |
 | `sorcery` | Sorcery: Contested Realm | TCGCSV cat. 77 (Erik's Curiosa 2023; foil é outro produto no TCGplayer e o sync junta o par, sem número de coleção, setId fixo por groupId) | USD |
@@ -193,6 +194,33 @@ da edição ocidental desde 2016. Não é o set "Final Fantasy" do Magic
   carta) no `series`, que vira faceta da página do set.
 - Sets no formato dos modernos da Bandai (`SECOES_BANDAI`): os Opus,
   o Legacy Collection como booster extra, starters e Boss Decks, promos.
+
+### Grand Archive TCG (`grandarchive`)
+
+[scripts/sync-grandarchive.mjs](scripts/sync-grandarchive.mjs), TCGCSV
+categoria 74, no padrão do Riftbound. O jogo da Weebs of the Shore, desde o
+Dawn of Ashes (2023).
+
+- **id = `ga-<productId>`**, nunca o número: dentro do mesmo set a versão de
+  colecionador repete o número da comum ("Lorraine, Blademaster" e a "(CUR)"
+  são as duas 005), a "(Curio Foil)" também, e o grupo "Promotional Cards"
+  junta as promos de todos os anos (149 números repetidos). Cada produto é
+  uma carta, e o qualificador do nome fica.
+- **Normal e Foil no mesmo produto** (`u`/`uf`), como o Riftbound.
+- **setId** = a abreviação do TCGplayer em maiúscula, com hífen no lugar de
+  espaço e pontuação (`DOA-1ST`, `ALC-ALTER`, `REC-MSD`).
+- **Imagem 500×700** em quase tudo; o Index oficial (api.gatcg.com) tem o
+  mesmo tamanho. A regra da foto da carta-irmã fica desligada: as poucas sem
+  foto são Alter Edition e CSR, de arte própria.
+- Elemento no `color`, classe no `cardClass`, custo (reserva ou memória) no
+  `cost`; elemento, tipo e classe viram facetas da página do set.
+- Sets no formato dos modernos da Bandai (`SECOES_BANDAI`): os boosters, a
+  Alter Edition e os packs avulsos como extra, Starter Decks e Re:Collection,
+  promos.
+- **Sem ilustrador**: a TCGCSV não publica. O Index oficial tem, mas os
+  códigos de set dele não batem um a um com os do TCGplayer.
+- **Scanner**: o número é solto ("069") e repete; o jogo fica sem leitura de
+  código, como o Sorcery.
 
 ### Sorcery: Contested Realm (`sorcery`)
 

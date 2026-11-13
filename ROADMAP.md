@@ -265,6 +265,14 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   `ABREV_FIXA` do `sync-fftcg.mjs` tem de entrar antes do deploy que o
   publica (o log avisa); a cor (`#93c5fd`, proposta) e a 19ª posição no hub;
   Cardmarket sem link porque não deu pra conferir (anti-robô).
+- **Grand Archive TCG (`grandarchive`, 2026-11-13)**: entrou com as 5.356
+  cartas dos 52 sets da TCGCSV (cat. 74), do Dawn of Ashes ao
+  .asphodel/paradise. Pendências: aplicar a migração `20261113d` (cópia da
+  `20261113c` do Vanguard, a união do dia, com o `grandarchive` a mais);
+  o ilustrador, que só o Index oficial (api.gatcg.com) tem — falta o
+  de-para dos códigos de set; loja BR e Cardmarket não conferidos; a cor
+  (`#f0abfc`, proposta), o logo (o branco oficial pintado de escuro pra ler
+  na cápsula) e a 21ª posição no hub; o scanner não lê o jogo (número solto).
 - **Godzilla Card Game (`godzilla`, 2026-11-11)**: entrou com as 940 cartas
   da edição inglesa (TCGCSV cat. 88). Pendências: o Booster Set #5
   ("Overlord Zero", 18/12/2026) e os starters ESD03–05 (04/12/2026) entram

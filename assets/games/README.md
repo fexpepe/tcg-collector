@@ -134,6 +134,15 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
   em cinza sobre o contorno de uma carta). Recortado no conteúdo (+2px) e
   alfa ≤12 zerado; como o Star Wars v1, **não** foi esticado pra 512 (bitmap
   pequeno). WebP sem perda, 17 KB. O cinza escuro lê bem na cápsula branca.
+- `game_grandarchive.webp` — Grand Archive TCG (21º tile da grade moderna
+  do hub, 2026-11-13). Fonte: o logo do cabeçalho do site oficial
+  (`www.gatcg.com/_nuxt/img/logo_navbar_stacked.63a3a6a.png`, 300×116, PNG
+  com alfa: "GRAND ARCHIVE" em duas linhas, BRANCO chapado — o site é
+  escuro). É a única versão publicada, e branco some na cápsula branca do
+  hub: o alfa foi mantido e a cor trocada por `#14161c` (o logo é de uma
+  cor só, então nada do desenho muda). Alfa ≤12 zerado; não foi esticado
+  (bitmap pequeno). WebP sem perda, 5 KB. **Decisão a confirmar pelo
+  Fernando**: se a marca publicar uma versão escura, ela entra no lugar.
 - `game_gw.webp` — Gundam War (Bandai, 1999–2011). Fonte enviada pelo
   Fernando em 2026-11-11: WebP de 360×125 com alfa, o logo dourado "GUNDAM
   WAR / MOBILE SUIT GUNDAM THE CARD GAME". Recortado no conteúdo (+2px), com

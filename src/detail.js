@@ -465,6 +465,10 @@
     // no fim do número), o starter (S) e as promos. As cartas dos Boss Decks
     // vêm sem raridade.
     fftcg: ["Common", "Rare", "Hero", "Legend", "Starter", "Promo"],
+    // Grand Archive TCG (13/11/2026): a escada do booster, a promo e por fim
+    // as de colecionador (CSR, CUR, CPR), na ordem em que o Index oficial as
+    // numera.
+    grandarchive: ["Common", "Uncommon", "Rare", "Super Rare", "Ultra Rare", "Promo", "Collector Super Rare", "Collector Ultra Rare", "Collector Promo"],
     // One Piece Card Game (TCGCSV): as siglas da carta, Líder primeiro como no
     // jogo. Depois as vintage: o acabamento do Carddass Hyper Battle
     // (sync-onepiece-vintage.mjs) e as estrelas do Card Game 2002

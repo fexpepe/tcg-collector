@@ -96,6 +96,7 @@ const JOGOS = {
   // Final Fantasy TCG (2026-11-11): 1-001H dos Opus e o número duplo das
   // séries fora do Opus (PR-004/1-027H, Re-001H/12-002H). Mediu 99,2 %.
   fftcg: { min: 0.97, nota: "sobram os números que a fonte grava torto (PR--161/16-058R, PR071/007H)" },
+  grandarchive: { semCodigo: "número solto de três dígitos (069), repetido em todo set e até dentro do set" },
   // Cardfight!! Vanguard (2026-11-13): SET/NÚMERO + EN, com a raridade da
   // paralela antes do número (DZ-BT16/001EN, V-BT02/SP01EN).
   vanguard: { min: 0.95, nota: "sobram os números sem o EN no fim ou com ano (VG-2020/TOYOU, V-PR/0209EN 2022)" },

@@ -86,6 +86,7 @@ jobs:
             data/godzilla/sets
             data/palworld/sets
             data/fftcg/sets
+            data/grandarchive/sets
             data/vanguard/sets
             data/jump/sets
             data/magic/cards.js

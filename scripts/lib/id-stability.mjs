@@ -54,7 +54,8 @@ export const ID_DE_PRODUTO = {
   godzilla: /^gzc-\d+$/,
   palworld: /^pal-\d+$/,
   fftcg: /^fftcg-\d+$/,
-  vanguard: /^vg-\d+$/
+  vanguard: /^vg-\d+$/,
+  grandarchive: /^ga-\d+$/
 };
 
 export const idiomaDe = (c) => c.language || "en";
