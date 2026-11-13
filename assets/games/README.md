@@ -27,9 +27,12 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
   no conteúdo, reduzido pra 512×257 em alfa pré-multiplicado, alfa ≤12 zerado,
   WebP sem perda (72 KB). O "MYTHOS TCG" é preto: lê bem na cápsula branca do
   hub e some em fundo escuro, então o logo só vai onde há cápsula.
-- Naruto Kayou (`narutokayou`) **não tem arquivo próprio**: o site oficial da
-  Kayou usa o logo do Naruto em toda série (o SVG de cada página de série é só
-  ele), então o jogo aponta pro `game_naruto.webp`, e o nome vai em texto.
+- `game_narutokayou.webp` — Naruto Kayou (13/11/2026): até aqui o jogo usava o
+  `game_naruto.webp` (o site oficial da Kayou só mostra o logo do Naruto); o
+  Fernando mandou a arte com o "KAYOU" amarelo em cima do Naruto, PNG 1280×1280
+  com fundo transparente. Recortado no conteúdo, reduzido pra 512×341 em alfa
+  pré-multiplicado, alfa ≤12 zerado, WebP q90 com alfa sem perda (40 KB). O
+  amarelo pede a cápsula branca, como o Mythos.
 - `game_naruto_boruto.webp` — Naruto Boruto Card Game (jogo `narutoboruto`, 13/11/2026):
   o logo do site oficial do Chrono Clash System, no Wayback
   (`chronoclashsystem.com/images/product/naruto/common/img_logo.png`, captura
