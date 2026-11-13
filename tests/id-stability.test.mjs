@@ -83,6 +83,25 @@ test("número diferente no mesmo set é aviso; nada mudou é ok", () => {
   assert.equal(classificaMudanca("fab", "fab-1", { setId: "IAR", number: "1", name: "X" }, c("IAR", "1", "X")), "ok");
 });
 
+test("espaço entre dois qualificadores não troca a carta (Runechant Marvel do FAB, 12/11/2026)", () => {
+  const c = (setId, set, number, name) => ({ setId, set, number, name, language: "en" });
+  const omn = (nome) => c("OMN", "Omens of the Third Age", "IAR156-MV", nome);
+  const iar = (numero, nome) => c("IAR", "Usurp the Shadow Throne", numero, nome);
+  // O TCGplayer mudou de grupo e pôs o espaço que faltava: mesmo produto.
+  assert.equal(classificaMudanca("fab", "fab-696177",
+    omn("Runechant of Sloth (Yellow)(Marvel)"), iar("IAR156-MV", "Runechant of Sloth (Yellow) (Marvel)")), "movido");
+  // Vale nos dois sentidos, e com mais de um espaço.
+  assert.equal(soMudouQualificador("Runechant of Sloth (Yellow)  (Marvel)", "Runechant of Sloth (Yellow)(Marvel)"), true);
+  // O que está DENTRO do parêntese continua valendo: outro qualificador, outro
+  // número ou outra carta seguem erro duro.
+  assert.equal(classificaMudanca("fab", "fab-696177",
+    omn("Runechant of Sloth (Yellow)(Marvel)"), iar("IAR156-MV", "Runechant of Sloth (Yellow) (Rainbow Foil)")), "repontado");
+  assert.equal(classificaMudanca("fab", "fab-696177",
+    omn("Runechant of Sloth (Yellow)(Marvel)"), iar("IAR157-MV", "Runechant of Sloth (Yellow) (Marvel)")), "repontado");
+  assert.equal(classificaMudanca("fab", "fab-696177",
+    omn("Runechant of Sloth (Yellow)(Marvel)"), iar("IAR156-MV", "Runechant of Wrath (Yellow) (Marvel)")), "repontado");
+});
+
 test("qualificador que só repete o número ou o nome do set não troca a carta (runas do Vendetta, 11/11/2026)", () => {
   const c = (setId, set, number, name) => ({ setId, set, number, name, language: "en" });
   assert.equal(classificaMudanca("riftbound", "rb-709748",
