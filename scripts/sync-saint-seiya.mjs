@@ -11,8 +11,11 @@
 //       numeradas em sequência, 1 a 126.
 //   tc  トレーディングコレクション (Amada, 2000–2003): as coleções de cenas do
 //       anime e dos filmes, em pacote.
-//   gc  Gクルセイド (Bandai, 2012–2013): o TCG de mesa, de cores e Gシンボル.
-//   go  Gクルセイド Ω (Bandai, 2012–2014): a mesma regra, com o Saint Seiya Ω.
+//   cr  クルセイド (Bandai, 2012–2014): o TCG de mesa do sistema Crusade
+//       (クルセイドシステムカードシリーズ), de cores e Gシンボル: os boosters do
+//       anime clássico e os do 聖闘士星矢Ω, numa seção só, por data. O
+//       "Carddass Masters G Crusade" do animecollection é o selo da caixa
+//       (CARDDASS MASTERS G) somado ao nome da linha, não o nome oficial.
 //   rb  新生セイントパラダイス (Bandai Carddass, 2022–2023): a volta da Saint
 //       Paradise, em caixa com fichário.
 //
@@ -28,15 +31,15 @@
 //                        diz como). Inglês por glossário
 //                        (scripts/data/saint-seiya-nomes-en.json); sem tradução
 //                        segura, fica o japonês.
-//   cor do G Crusade   — o número impresso (U-001, C-001…) REPETE em cada uma
+//   cor do Crusade     — o número impresso (U-001, C-001…) REPETE em cada uma
 //                        das quatro cores da parte: a cor é parte da
 //                        identidade da carta, e vem de
 //                        scripts/data/saint-seiya-cores.json (lida na moldura
 //                        do scan e conferida a olho).
 //
 // IDs: ss-<família><parte>-<número impresso> (ss-cd02-1, ss-sp03-126,
-// ss-rb01-ex05); no G Crusade, com a letra da cor antes do número
-// (ss-gc01-b-u-001 = Part 1, azul, U-001). Número repetido sem cor que o
+// ss-rb01-ex05); no Crusade, com a letra da cor antes do número
+// (ss-cr01-b-u-001 = 黄金十二宮編, azul, U-001). Número repetido sem cor que o
 // separe ganha sufixo pela ordem da fonte (b, c…). O id fica GRAVADO no
 // snapshot junto do id da carta na fonte (`src`), e o refresh reaproveita o id
 // da carta já conhecida: reordenar a página não troca id, e carta que some da
@@ -70,18 +73,19 @@ export const SERIES = {
   cd: { ja: "カードダス", en: "Carddass" },
   sp: { ja: "セイントパラダイス", en: "Saint Paradise" },
   tc: { ja: "トレーディングコレクション", en: "Trading Collection" },
-  gc: { ja: "Gクルセイド", en: "G Crusade" },
-  go: { ja: "Gクルセイド Ω", en: "G Crusade Ω" },
+  cr: { ja: "クルセイド", en: "Crusade" },
   rb: { ja: "新生セイントパラダイス", en: "Reborn Saint Paradise" }
 };
 
-// Cores do G Crusade -> rótulo da faceta (em inglês, como o color do gw) e
+// Cores do Crusade (as do site oficial: blue, black, green, red e o purple
+// de Athena, das neutras e da 小宇宙レア) -> rótulo da faceta (em inglês, como o color do gw) e
 // letra do id.
 export const CORES = {
   "青": { en: "Blue", id: "b" }, "黒": { en: "Black", id: "k" }, "緑": { en: "Green", id: "g" },
   "赤": { en: "Red", id: "r" }, "紫": { en: "Purple", id: "p" }, "白": { en: "White", id: "w" }, "黄": { en: "Yellow", id: "y" }
 };
-// Tipo pelo prefixo do número do G Crusade (U-001, CH-001, C-001).
+// Tipo pelo prefixo do número do Crusade (U-001, CH-001, C-001), impresso no
+// topo da carta (UNIT, CHARACTER, COMMAND).
 export const TIPOS = { U: "Unit", CH: "Character", C: "Command" };
 
 // Todas as partes, na ordem de lançamento dentro da família. `ac`: [coleção,
@@ -103,7 +107,7 @@ export const SETS = [
   // セイントパラダイス (Carddass 20, 1991–1992): 36 + 6 prismas por ACT, e a
   // numeração corre pelas três (1–42, 43–84, 85–126). Só o ano (o verso diz
   // "BANDAI 1991/1992"); o "6月下旬発売予定" da jumbo é anúncio, não data. A
-  // jumbo "新生青銅聖闘士5人" (o hors-série do animecollection) foi brinde do
+  // jumbo dos cinco de bronze (a Mandarake a chama de 新生青銅聖闘士5人) foi brinde do
   // Tokyo Toy Show de 1991 e traz no verso a lista da ACT.1.
   { code: "sp01", series: "sp", date: "1991", ac: [273, 572], ja: "ACT.1", en: "Act 1" },
   { code: "sp02", series: "sp", date: "1991", ac: [273, 578], ja: "ACT.2", en: "Act 2" },
@@ -125,15 +129,23 @@ export const SETS = [
   { code: "tctvp", series: "tc", date: "2003-02", ac: [157, 337], name: "トレーディングコレクション TVシリーズ＆冥王ハーデス十二宮編 ボックスカード", nameEn: "Trading Collection TV Series & The Hades Chapter Sanctuary Box Cards", promo: true },
   { code: "tchd", series: "tc", date: "2003-12", ac: [134, 302], name: "トレーディングコレクション 冥王ハーデス十二宮編［完全版］", nameEn: "Trading Collection The Hades Chapter Sanctuary Complete Edition" },
   { code: "tchdp", series: "tc", date: "2003-12", ac: [134, 303], name: "トレーディングコレクション 冥王ハーデス十二宮編［完全版］ プロモ", nameEn: "Trading Collection The Hades Chapter Sanctuary Complete Edition Promo", promo: true },
-  // Gクルセイド (2012–2013) e Gクルセイド Ω (2012–2014).
-  { code: "gc01", series: "gc", date: "2012-01", ac: [115, 267], ja: "第1弾", en: "Part 1" },
-  { code: "gc02", series: "gc", date: "2012-11", ac: [115, 270], ja: "第2弾", en: "Part 2" },
-  { code: "gc03", series: "gc", date: "2013-06", ac: [115, 274], ja: "第3弾", en: "Part 3" },
-  { code: "gcpr", series: "gc", date: "2012", ac: [115, 363], ja: "プロモーションカード", en: "Promotion Cards", promo: true },
-  { code: "go01", series: "go", date: "2012", ac: [173, 368], ja: "第1弾", en: "Part 1" },
-  { code: "go02", series: "go", date: "2013", ac: [173, 433], ja: "第2弾", en: "Part 2" },
-  { code: "go03", series: "go", date: "2013", ac: [173, 457], ja: "第3弾", en: "Part 3" },
-  { code: "go04", series: "go", date: "2014", ac: [173, 695], ja: "第4弾", en: "Part 4" },
+  // クルセイド (Bandai, 2012–2014): booster de 10 cartas + 1 índice, caixa de 15.
+  // O nome oficial é 【クルセイド】聖闘士星矢～…編～ (sem o 聖闘士星矢, que é a
+  // marca; o 聖闘士星矢Ω fica, porque é o título do anime). Datas e composição:
+  // as páginas de produto do site oficial no Wayback
+  // (carddas.com/crusade/item/…) e o Carddass Club; a 1ª saiu em janeiro de
+  // 2012 (a Bandai diz 中旬, o site Crusade 下旬: só o mês). A numeração é por
+  // cor e por série (a clássica e a Ω contam separado), e o 聖闘士星矢Ω～黄金十二宮編～,
+  // de preto e vermelho, recomeça no U-001. O de 2014 tem 91 cartas oficiais;
+  // a fonte tem 46.
+  { code: "cr01", series: "cr", date: "2012-01", ac: [115, 267], ja: "～黄金十二宮編～", en: "— The Twelve Temples Arc" },
+  { code: "cr02", series: "cr", date: "2012-06-22", ac: [173, 368], ja: "聖闘士星矢Ω", en: "— Saint Seiya Omega" },
+  { code: "cr03", series: "cr", date: "2012-11-16", ac: [115, 270], ja: "～アスガルド・海皇ポセイドン編～", en: "— Asgard & Sea Emperor Poseidon Arc" },
+  { code: "cr04", series: "cr", date: "2013-03-15", ac: [173, 433], ja: "聖闘士星矢Ω～黄金十二宮編～", en: "— Omega: The Twelve Temples Arc" },
+  { code: "cr05", series: "cr", date: "2013-06-21", ac: [115, 274], ja: "～冥王ハーデス編～", en: "— Hades Arc" },
+  { code: "cr06", series: "cr", date: "2013-08-23", ac: [173, 457], ja: "聖闘士星矢Ω～新生聖衣編～", en: "— Omega: New Cloth Arc" },
+  { code: "cr07", series: "cr", date: "2014-07-04", ac: [173, 695], ja: "～LEGEND of SANCTUARY／聖闘士星矢Ω～", en: "— Legend of Sanctuary / Omega", total: 91 },
+  { code: "crpr", series: "cr", date: "2012", ac: [115, 363], ja: "プロモーションカード", en: "Promotion Cards", promo: true },
   // 新生セイントパラダイス (2022–2023): 36 regulares na sequência 1–126 e 7
   // prismas EX por parte.
   { code: "rb01", series: "rb", date: "2022-03", ac: [305, 653], ja: "～よみがえれ！英雄伝説～", en: "— A Heroic Legend Revived!" },
@@ -189,6 +201,20 @@ export function numeroDaFonte(num) {
   if (m) return `BOX-${m[1]}`;
   return t;
 }
+// Número IMPRESSO onde a fonte numera diferente (lido em cada scan,
+// 2026-11-12). 劇場版 トレーディングコレクション 第2弾: o filme IV numera à parte
+// (IV-001 a IV-036), e a fonte o lista como 145–180, continuação do III — com
+// dois blocos de três trocados (os scans "154–156" são o IV-016–018 e os
+// "160–162", o IV-010–012). E a jumbo da Saint Paradise imprime SPECIAL. A chave é o id da carta na fonte.
+export const NUMERO_IMPRESSO = {
+  27672: "SPECIAL",
+  17229: "IV-001", 17228: "IV-002", 17230: "IV-003", 17231: "IV-004", 17232: "IV-005", 17233: "IV-006",
+  17234: "IV-007", 17235: "IV-008", 17236: "IV-009", 17243: "IV-010", 17244: "IV-011", 17245: "IV-012",
+  17240: "IV-013", 17241: "IV-014", 17242: "IV-015", 17237: "IV-016", 17238: "IV-017", 17239: "IV-018",
+  17246: "IV-019", 17247: "IV-020", 17248: "IV-021", 17249: "IV-022", 17250: "IV-023", 17251: "IV-024",
+  17252: "IV-025", 17253: "IV-026", 17254: "IV-027", 17255: "IV-028", 17256: "IV-029", 17257: "IV-030",
+  17258: "IV-031", 17259: "IV-032", 17260: "IV-033", 17261: "IV-034", 17262: "IV-035", 17263: "IV-036"
+};
 export const corDe = (src) => CORES_SRC.cores[String(src)] || "";
 
 // Casa as cartas da página com as do snapshot pelo id DA FONTE (`src`) pra
@@ -200,7 +226,7 @@ export function assignIds(setCode, fresh, known = [], cor = corDe) {
   const visto = new Set();
   const out = [];
   for (const bruta of fresh) {
-    const c = { ...bruta, num: numeroDaFonte(bruta.num) };
+    const c = { ...bruta, num: NUMERO_IMPRESSO[bruta.src] || numeroDaFonte(bruta.num) };
     if (visto.has(c.src)) continue; // a mesma carta duas vezes na página
     visto.add(c.src);
     const antiga = porSrc.get(c.src);
@@ -257,15 +283,32 @@ async function refreshSnapshot(existing) {
   return (await readSnapshot(SNAP)) || candidate;
 }
 
-// Nome EN: o nome inteiro conhecido > composição por separador (＆ = "&";
-// ／ = "/"; espaço entre constelação e nome = "<nome> de <constelação>" no
-// glossário). Se QUALQUER pedaço não tiver tradução, fica o japonês inteiro —
-// meia tradução confunde mais que ajuda (a regra do dbc e do gcd).
+// Nome EN: o nome inteiro conhecido > composição. A armadura vem antes do
+// nome, como em inglês: 天馬星座（ペガサス）の星矢 (a grafia da lista oficial do
+// Crusade, a furigana entre parênteses), ペルセウス座のアルゴル e o rótulo da
+// Saint Paradise "天馬星座 星矢" viram "Pegasus Seiya" — com furigana, vale a
+// leitura (鷲座（アクィラ） = Aquila no Ω; 鷲星座 = Eagle no clássico). E ＆ =
+// "&", ／ = "/". Se QUALQUER pedaço não tiver tradução, fica o japonês inteiro
+// — meia tradução confunde mais que ajuda (a regra do dbc e do gcd).
+const LEITURA = /[（(]([^）)]+)[）)]/;
 export function nameEn(ja, nomes = NOMES_EN) {
   const s = String(ja || "").trim();
   if (!s) return "";
   if (nomes.phrases[s]) return nomes.phrases[s];
   if (nomes.atoms[s]) return nomes.atoms[s];
+  const constelacao = (x) => {
+    const m = x.match(LEITURA);
+    return (m && nomes.constelacoes[m[1]]) || nomes.constelacoes[x.replace(LEITURA, "")] || "";
+  };
+  // armadura + nome: "Xの Y" (com ou sem a leitura) ou "X Y" (rótulo da SP)
+  const arm = s.match(/^(.+?(?:[（(][^）)]+[）)])?)(?:の|\s+)(.+)$/);
+  if (arm && constelacao(arm[1])) {
+    const nome = nameEn(arm[2], nomes);
+    return nome ? `${constelacao(arm[1])} ${nome}` : "";
+  }
+  // golpe/coisa com a leitura entre parênteses: 聖剣（エクスカリバー）
+  const semLeitura = s.replace(new RegExp(LEITURA.source, "g"), "");
+  if (semLeitura !== s && (nomes.phrases[semLeitura] || nomes.atoms[semLeitura])) return nomes.phrases[semLeitura] || nomes.atoms[semLeitura];
   const and = s.split(/\s*[＆&]\s*/);
   if (and.length > 1) {
     const parts = and.map((p) => nameEn(p, nomes));
@@ -283,6 +326,15 @@ export function nameEn(ja, nomes = NOMES_EN) {
 // "h3000" é o nome que a fonte dá à versão HD (na prática ~1000 px).
 export const scanDe = (c) => `${FONTE}/cartes/${c.dir}/h3000_${c.src}_carte.jpg`;
 export const IMG = (src) => `https://wsrv.nl/?url=${encodeURIComponent(src)}&w=440&output=webp`;
+
+// Erros DA FONTE, achados lendo cada scan (2026-11-12): carta cuja página
+// mostra o scan de OUTRA carta. A carta existe (número, cor e raridade batem
+// com a lista da loja BIGWEB, api.bigweb.co.jp, e com a composição oficial),
+// então fica no catálogo, mas sem a imagem errada. A chave é o id da carta na
+// fonte.
+export const SCAN_ERRADO = {
+  10726: "Crusade ～アスガルド・海皇ポセイドン編～ C-012 verde: a fonte repete o scan do U-012 verde (10691, シャイナ); o nome, マハローシニー, é o da BIGWEB"
+};
 
 // Imagem CURADA do dono substitui o scan (mesmo mecanismo dos outros vintages).
 function curatedImg(id) {
@@ -320,11 +372,11 @@ export function cartasDoJogo(snapshot, nomes = NOMES.nomes, nomesEn = NOMES_EN, 
         setTotal: total,
         setReleaseDate: def.date,
         rarity: c.rar || "",
-        ...(def.series === "gc" || def.series === "go" ? { cardType: TIPOS[tipo] || "" } : {}),
+        ...(def.series === "cr" ? { cardType: TIPOS[tipo] || "" } : {}),
         ...(CORES[k] ? { color: CORES[k].en } : {}),
         artist: "",
         language: "ja",
-        image: curatedImg(c.id) || IMG(c.img || scanDe(c)),
+        image: curatedImg(c.id) || (SCAN_ERRADO[c.src] ? "" : IMG(c.img || scanDe(c))),
         variants: ["Normal"],
         // Sem logo de set: nenhuma parte tem logo próprio no catálogo, e o
         // cartão do set mostra o nome (contrato 3 do docs/CATALOGO.md).

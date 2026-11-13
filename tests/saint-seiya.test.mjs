@@ -8,7 +8,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import {
   SETS, SERIES, CORES, ID_PREFIX, assignIds, raridade, nameEn, numeroDaFonte,
-  setName, setNameEn, setIdOf, scanDe, IMG, cartasDoJogo
+  setName, setNameEn, setIdOf, scanDe, IMG, cartasDoJogo, NUMERO_IMPRESSO, SCAN_ERRADO
 } from "../scripts/sync-saint-seiya.mjs";
 import { slugify } from "../functions/_lib/slug-carta.js";
 import { chaveBase } from "../scripts/lib/img-mirror.mjs";
@@ -31,14 +31,13 @@ test("id: família + parte + número impresso; repetido ganha sufixo e o id GRUD
   assert.deepEqual(some.map((c) => c.id), ["ss-cd02-1", "ss-cd02-2b", "ss-cd02-1b", "ss-cd02-2"]);
 });
 
-test("G Crusade: o número repete em cada cor, e a cor entra no id e na carta", () => {
+test("Crusade: o número repete em cada cor, e a cor entra no id e na carta", () => {
   const cor = (src) => ({ 10: "青", 11: "黒", 12: "緑", 13: "赤" })[src] || "";
   const pagina = [10, 11, 12, 13].map((src) => ({ src, num: "U-001", rar: "Rare", dir: "115/267" }));
-  assert.deepEqual(assignIds("gc01", pagina, [], cor).map((c) => c.id), ["ss-gc01-b-u-001", "ss-gc01-k-u-001", "ss-gc01-g-u-001", "ss-gc01-r-u-001"]);
-  // toda carta do G Crusade no snapshot tem cor conhecida, e o id leva a letra dela
-  for (const s of SNAP.sets.filter((x) => /^g[co]/.test(x.code))) {
+  assert.deepEqual(assignIds("cr01", pagina, [], cor).map((c) => c.id), ["ss-cr01-b-u-001", "ss-cr01-k-u-001", "ss-cr01-g-u-001", "ss-cr01-r-u-001"]);
+  // toda carta do Crusade no snapshot tem cor conhecida, e o id leva a letra dela
+  for (const s of SNAP.sets.filter((x) => /^cr/.test(x.code))) {
     for (const c of s.cards) {
-      if (/^(PR|P)\b|-P\d/.test(c.num)) continue; // promos: sem cor impressa garantida
       const k = CORES_SRC.cores[String(c.src)];
       assert.ok(CORES[k], `${c.id}: sem cor (${k})`);
       assert.ok(c.id.startsWith(`${ID_PREFIX}${s.code}-${CORES[k].id}-`), `${c.id} não leva a cor ${k}`);
@@ -137,22 +136,47 @@ test("imagem: o scan grande pelo wsrv, e o espelho do R2 guarda pela URL de orig
   assert.equal(chaveBase(IMG(scanDe(c))), "wsrv.nl/www.animecollection.fr/cartes/118/271/h3000_10740_carte.jpg");
 });
 
-test("nome EN: inteiro ou composto; meia tradução não sai", () => {
-  const g = { phrases: { "燃えろ！オレの小宇宙よ!!": "Burn, My Cosmo!!" }, atoms: { "星矢": "Seiya", "紫龍": "Shiryu", "瞬": "Shun" } };
+test("nome EN: inteiro ou composto; a armadura antes do nome; meia tradução não sai", () => {
+  const g = {
+    phrases: { "燃えろ！オレの小宇宙よ!!": "Burn, My Cosmo!!", "聖剣": "Excalibur" },
+    atoms: { "星矢": "Seiya", "紫龍": "Shiryu", "瞬": "Shun", "ユナ": "Yuna", "魔鈴": "Marin" },
+    constelacoes: { "天馬星座": "Pegasus", "ペガサス": "Pegasus", "鷲星座": "Eagle", "アクィラ": "Aquila", "ペルセウス座": "Perseus" }
+  };
   assert.equal(nameEn("星矢", g), "Seiya");
   assert.equal(nameEn("星矢＆紫龍", g), "Seiya & Shiryu");
   assert.equal(nameEn("燃えろ！オレの小宇宙よ!!", g), "Burn, My Cosmo!!");
+  // a grafia da lista oficial do Crusade (furigana entre parênteses, já em NFKC)
+  assert.equal(nameEn("天馬星座(ペガサス)の星矢", g), "Pegasus Seiya");
+  // com furigana vale a leitura: o 鷲座 do Ω é Aquila; o 鷲星座 do clássico, Eagle
+  assert.equal(nameEn("鷲座(アクィラ)のユナ", g), "Aquila Yuna");
+  assert.equal(nameEn("鷲星座の魔鈴", g), "Eagle Marin");
+  // o rótulo da Saint Paradise: constelação, espaço, nome
+  assert.equal(nameEn("天馬星座 星矢", g), "Pegasus Seiya");
+  assert.equal(nameEn("聖剣(エクスカリバー)", g), "Excalibur");
+  assert.equal(nameEn("黄金聖衣装着 天馬星座 星矢", g), "");
+  assert.equal(nameEn("ペルセウス座のアルゴル", g), "");
   assert.equal(nameEn("星矢＆一輝", g), "");
   assert.equal(nameEn("", g), "");
 });
 
-test("catálogo: toda carta com nome (transcrito ou o número), set, família e imagem", () => {
+test("número impresso: o filme IV numera à parte, e a fonte troca dois blocos", () => {
+  assert.equal(Object.keys(NUMERO_IMPRESSO).length, 36);
+  assert.deepEqual(Object.values(NUMERO_IMPRESSO).sort(), Array.from({ length: 36 }, (_, i) => `IV-${String(i + 1).padStart(3, "0")}`));
+  const tcm3 = SNAP.sets.find((s) => s.code === "tcm3").cards;
+  assert.equal(tcm3.find((c) => c.src === 17237).id, "ss-tcm3-iv-016");
+  assert.equal(tcm3.find((c) => c.src === 17243).id, "ss-tcm3-iv-010");
+  assert.ok(!tcm3.some((c) => /^1[4-8]\d$/.test(c.num)), "sobrou número 145–180 da fonte");
+});
+
+test("catálogo: toda carta com nome (transcrito ou descrição nossa), set, família e imagem", () => {
   const cartas = cartasDoJogo(SNAP);
   assert.equal(cartas.length, SNAP.sets.reduce((n, s) => n + s.cards.length, 0));
   const semNome = cartas.filter((c) => /^No\. /.test(c.name));
   assert.equal(semNome.length, 0, `sem nome transcrito: ${semNome.slice(0, 5).map((c) => c.id).join(", ")}`);
+  const srcDe = new Map(SNAP.sets.flatMap((s) => s.cards.map((c) => [c.id, c.src])));
   for (const c of cartas) {
-    assert.ok(c.set && c.setId && c.image && c.vintage === true, c.id);
+    // a carta de scan errado na fonte fica sem imagem (SCAN_ERRADO)
+    assert.ok(c.set && c.setId && (c.image || SCAN_ERRADO[srcDe.get(c.id)]) && c.vintage === true, c.id);
     assert.ok(SERIES[c.vintageLine], `${c.id}: família ${c.vintageLine}`);
     if (c.nameJp) assert.ok(NOMES.nomes[c.id] === c.nameJp, c.id);
   }

@@ -1,0 +1,251 @@
+{
+  "url": "saint-seiya",
+  "nome": "Saint Seiya",
+  "nomeOriginal": {
+    "texto": "聖闘士星矢",
+    "lang": "ja",
+    "romaji": "Seinto Seiya"
+  },
+  "logo": "assets/games/game_seiya.webp",
+  "logoLargura": 249,
+  "logoAltura": 106,
+  "periodo": {
+    "inicio": "1988-06",
+    "fim": "2023-05"
+  },
+  "etiquetas": [
+    "Vintage",
+    {
+      "pt": "Japão",
+      "en": "Japan",
+      "es": "Japón"
+    },
+    "Carddass"
+  ],
+  "resumo": {
+    "pt": "As cartas japonesas de Os Cavaleiros do Zodíaco: o Carddass da Bandai desde 1988, as coleções da Amada, o TCG Crusade e o Reborn de 2022.",
+    "en": "Japan's Saint Seiya cards: Bandai's Carddass from 1988, Amada's trading collections, the Crusade card game and the 2022 Reborn boxes.",
+    "es": "Las cartas japonesas de Los Caballeros del Zodiaco: el Carddass de Bandai desde 1988, las colecciones de Amada, el TCG Crusade y el Reborn de 2022."
+  },
+  "fatos": [
+    {
+      "chave": "lancamento",
+      "valor": {
+        "pt": "Junho de 1988",
+        "en": "June 1988",
+        "es": "Junio de 1988"
+      }
+    },
+    {
+      "chave": "encerramento",
+      "valor": {
+        "pt": "Maio de 2023",
+        "en": "May 2023",
+        "es": "Mayo de 2023"
+      }
+    },
+    {
+      "chave": "fabricante",
+      "valor": {
+        "pt": "Bandai e Amada",
+        "en": "Bandai and Amada",
+        "es": "Bandai y Amada"
+      }
+    },
+    {
+      "chave": "licenca",
+      "valor": {
+        "pt": "Masami Kurumada, Shueisha e Toei Animation",
+        "en": "Masami Kurumada, Shueisha and Toei Animation",
+        "es": "Masami Kurumada, Shueisha y Toei Animation"
+      }
+    },
+    {
+      "chave": "origem",
+      "valor": {
+        "pt": "Japão",
+        "en": "Japan",
+        "es": "Japón"
+      }
+    },
+    {
+      "chave": "formato",
+      "valor": {
+        "pt": "Carddass, cartas em pacote e card game",
+        "en": "Carddass, trading packs and a card game",
+        "es": "Carddass, cartas en sobres y juego de cartas"
+      }
+    }
+  ],
+  "historia": {
+    "pt": [
+      "Saint Seiya, o Os Cavaleiros do Zodíaco de Masami Kurumada, ganhou cartas no Japão no começo do Carddass, as máquinas de cartas da Bandai: o sistema estreou em junho de 1988, a ¥20 a carta, e Saint Seiya estava na primeira leva, ao lado de SD Gundam e Ultra Kaiju. Foram três partes de 42 cartas, 6 delas prismas: a Part 1, do arco de Asgard, que não imprime número; a Part 2, Battle Memorial, ainda em 1988; e a Part 3, A Ambição do Imperador dos Mares, com Poseidon, em 1989.",
+      "Em 1991 e 1992 veio a Saint Paradise, outra série do Carddass, com os cavaleiros em estilo SD: três ACTs de 42 cartas, numeradas de 1 a 126. Em 2000 a Amada lançou a Trading Collection, com cenas do anime, 10 cartas por pacote; vieram depois as coleções dos filmes, em 2002, e a da série de TV com a saga de Hades, em 2003.",
+      "Em 2012 a Bandai levou Saint Seiya ao Crusade, um card game de mesa de cores e decks, vendido em boosters de 10 cartas. Foram sete boosters até julho de 2014, três deles do Saint Seiya Ω e o último com o filme Legend of Sanctuary; o número da carta se repete em cada uma das cores.",
+      "A Saint Paradise voltou em 2022 pela Premium Bandai, no Reborn: três caixas com fichário, de março de 2022 a maio de 2023, cada uma com 42 cartas e 7 prismas novas."
+    ],
+    "en": [
+      "Saint Seiya, Masami Kurumada's Knights of the Zodiac, got cards in Japan at the very start of Carddass, Bandai's card vending machines: the system debuted in June 1988 at ¥20 a card, and Saint Seiya was in the first wave, alongside SD Gundam and Ultra Kaiju. There were three parts of 42 cards, 6 of them prisms: Part 1, from the Asgard arc, which prints no card number; Part 2, Battle Memorial, also in 1988; and Part 3, The Sea Emperor's Ambition, with Poseidon, in 1989.",
+      "In 1991 and 1992 came Saint Paradise, another Carddass series, with the Saints in SD style: three ACTs of 42 cards, numbered 1 to 126. In 2000 Amada launched the Trading Collection, with scenes from the anime, 10 cards a pack; the movie collections followed in 2002, and the TV series and Hades saga collection in 2003.",
+      "In 2012 Bandai brought Saint Seiya to Crusade, a tabletop card game of colors and decks sold in 10-card boosters. There were seven boosters through July 2014, three of them from Saint Seiya Omega and the last with the Legend of Sanctuary movie; the card number repeats in each of the colors.",
+      "Saint Paradise came back in 2022 through Premium Bandai as Reborn: three boxes with a binder, from March 2022 to May 2023, each with 42 cards and 7 new prisms."
+    ],
+    "es": [
+      "Saint Seiya, Los Caballeros del Zodiaco de Masami Kurumada, tuvo cartas en Japón desde el comienzo de Carddass, las máquinas de cartas de Bandai: el sistema se estrenó en junio de 1988, a ¥20 la carta, y Saint Seiya estaba en la primera tanda, junto a SD Gundam y Ultra Kaiju. Fueron tres partes de 42 cartas, 6 de ellas prismas: la Part 1, del arco de Asgard, que no imprime número; la Part 2, Battle Memorial, también en 1988; y la Part 3, La Ambición del Emperador de los Mares, con Poseidón, en 1989.",
+      "En 1991 y 1992 llegó Saint Paradise, otra serie de Carddass, con los caballeros en estilo SD: tres ACT de 42 cartas, numeradas del 1 al 126. En 2000 Amada lanzó la Trading Collection, con escenas del anime, 10 cartas por sobre; después vinieron las colecciones de las películas, en 2002, y la de la serie de TV con la saga de Hades, en 2003.",
+      "En 2012 Bandai llevó Saint Seiya a Crusade, un juego de cartas de mesa de colores y mazos, vendido en sobres de 10 cartas. Fueron siete sobres hasta julio de 2014, tres de ellos de Saint Seiya Omega y el último con la película Legend of Sanctuary; el número de la carta se repite en cada uno de los colores.",
+      "Saint Paradise volvió en 2022 por Premium Bandai, como Reborn: tres cajas con carpeta, de marzo de 2022 a mayo de 2023, cada una con 42 cartas y 7 prismas nuevas."
+    ]
+  },
+  "linhaDoTempo": [
+    {
+      "data": "1988-06",
+      "set": "ss-cd01",
+      "texto": {
+        "pt": "Carddass Part 1, do arco de Asgard, na primeira leva das máquinas.",
+        "en": "Carddass Part 1, from the Asgard arc, in the machines' first wave.",
+        "es": "Carddass Part 1, del arco de Asgard, en la primera tanda de máquinas."
+      }
+    },
+    {
+      "data": "1988-09",
+      "set": "ss-cd02",
+      "texto": {
+        "pt": "Part 2, Battle Memorial: 42 cartas, 6 delas prismas.",
+        "en": "Part 2, Battle Memorial: 42 cards, 6 of them prisms.",
+        "es": "Part 2, Battle Memorial: 42 cartas, 6 de ellas prismas."
+      }
+    },
+    {
+      "data": "1989-02",
+      "set": "ss-cd03",
+      "texto": {
+        "pt": "Part 3, A Ambição do Imperador dos Mares, com Poseidon.",
+        "en": "Part 3, The Sea Emperor's Ambition, with Poseidon.",
+        "es": "Part 3, La Ambición del Emperador de los Mares, con Poseidón."
+      }
+    },
+    {
+      "data": "1991",
+      "set": "ss-sp01",
+      "texto": {
+        "pt": "Saint Paradise ACT.1 abre a série em estilo SD.",
+        "en": "Saint Paradise ACT.1 opens the SD-style series.",
+        "es": "Saint Paradise ACT.1 abre la serie en estilo SD."
+      }
+    },
+    {
+      "data": "2000-03",
+      "set": "ss-tcsa",
+      "texto": {
+        "pt": "A Amada lança a Trading Collection, com cenas do anime.",
+        "en": "Amada launches the Trading Collection, with scenes from the anime.",
+        "es": "Amada lanza la Trading Collection, con escenas del anime."
+      }
+    },
+    {
+      "data": "2002-01",
+      "set": "ss-tcm1",
+      "texto": {
+        "pt": "Trading Collection dos filmes 1 e 2.",
+        "en": "Trading Collection of movies 1 and 2.",
+        "es": "Trading Collection de las películas 1 y 2."
+      }
+    },
+    {
+      "data": "2003-02",
+      "set": "ss-tctv",
+      "texto": {
+        "pt": "Trading Collection da série de TV e da saga de Hades.",
+        "en": "Trading Collection of the TV series and the Hades saga.",
+        "es": "Trading Collection de la serie de TV y la saga de Hades."
+      }
+    },
+    {
+      "data": "2012-01",
+      "set": "ss-cr01",
+      "texto": {
+        "pt": "Crusade: o primeiro booster, do arco das Doze Casas.",
+        "en": "Crusade: the first booster, from the Twelve Temples arc.",
+        "es": "Crusade: el primer sobre, del arco de las Doce Casas."
+      }
+    },
+    {
+      "data": "2014-07",
+      "set": "ss-cr07",
+      "texto": {
+        "pt": "Último booster do Crusade, com Legend of Sanctuary e o Ω.",
+        "en": "The last Crusade booster, with Legend of Sanctuary and Omega.",
+        "es": "Último sobre de Crusade, con Legend of Sanctuary y Omega."
+      }
+    },
+    {
+      "data": "2022-03",
+      "set": "ss-rb01",
+      "texto": {
+        "pt": "Reborn traz a Saint Paradise de volta, em caixa com fichário.",
+        "en": "Reborn brings Saint Paradise back, in a box with a binder.",
+        "es": "Reborn trae de vuelta Saint Paradise, en caja con carpeta."
+      }
+    },
+    {
+      "data": "2023-05",
+      "set": "ss-rb03",
+      "texto": {
+        "pt": "A terceira caixa do Reborn, com os Cavaleiros de Ouro, fecha a volta.",
+        "en": "The third Reborn box, with the Gold Saints, closes the revival.",
+        "es": "La tercera caja de Reborn, con los Caballeros de Oro, cierra el regreso."
+      }
+    }
+  ],
+  "fontes": [
+    {
+      "nome": {
+        "pt": "Wikipédia em japonês: Carddass",
+        "en": "Japanese Wikipedia: Carddass",
+        "es": "Wikipedia en japonés: Carddass"
+      },
+      "url": "https://ja.wikipedia.org/wiki/%E3%82%AB%E3%83%BC%E3%83%89%E3%83%80%E3%82%B9"
+    },
+    {
+      "nome": {
+        "pt": "Mandarake, lista de compra das cartas de Saint Seiya",
+        "en": "Mandarake, Saint Seiya cards buying list",
+        "es": "Mandarake, lista de compra de cartas de Saint Seiya"
+      },
+      "url": "https://www.mandarake.co.jp/kaitori/cat/card/card_seiya.php"
+    },
+    {
+      "nome": {
+        "pt": "saint-seiya.it, catálogo das cartas japonesas",
+        "en": "saint-seiya.it, Japanese card catalog",
+        "es": "saint-seiya.it, catálogo de las cartas japonesas"
+      },
+      "url": "https://www.saint-seiya.it/sito4/index.html"
+    },
+    {
+      "nome": {
+        "pt": "Amada, Trading Collection dos filmes (2002, Wayback)",
+        "en": "Amada, movie Trading Collection (2002, Wayback)",
+        "es": "Amada, Trading Collection de las películas (2002, Wayback)"
+      },
+      "url": "https://web.archive.org/web/20020203190531/http://www.amadagogo.com:80/products/trc/datafile/seiya_movie/index_1221.html"
+    },
+    {
+      "nome": {
+        "pt": "Bandai, Crusade: o booster de 2014 (Wayback)",
+        "en": "Bandai, Crusade: the 2014 booster (Wayback)",
+        "es": "Bandai, Crusade: el sobre de 2014 (Wayback)"
+      },
+      "url": "https://web.archive.org/web/20140515002510/http://www.carddass.com/crusade/item/seiya4th.html"
+    },
+    {
+      "nome": {
+        "pt": "Premium Bandai, Reborn Saint Paradise (Wayback)",
+        "en": "Premium Bandai, Reborn Saint Paradise (Wayback)",
+        "es": "Premium Bandai, Reborn Saint Paradise (Wayback)"
+      },
+      "url": "https://web.archive.org/web/2024/https://p-bandai.jp/item/item-1000165935/"
+    }
+  ]
+}

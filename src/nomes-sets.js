@@ -279,11 +279,12 @@
     "gw-promo": "Promotional Cards",
     "gw-prize": "Prize Cards",
     // ---- Saint Seiya (jogo seiya, sync-saint-seiya.mjs). Com a FAMÍLIA na frente
-    // ("Saint Paradise Act 1", "G Crusade Part 1"): fora da página do jogo "Part 1"
-    // seria de quatro famílias; dentro da seção dela o groupSeiyaSets tira o
-    // prefixo. É o setNameEn do sync, travado no tests/saint-seiya.test.mjs; os
-    // subtítulos japoneses em inglês são tradução nossa, salvo os do Reborn, que
-    // o animecollection dá em inglês.
+    // ("Saint Paradise Act 1", "Crusade — Hades Arc"): fora da página do jogo,
+    // "Promo" ou "Act 1" não diriam de qual família; dentro da seção dela o
+    // groupSeiyaSets tira o prefixo (e o travessão que vem depois dele). É o
+    // setNameEn do sync, travado no tests/saint-seiya.test.mjs; os subtítulos
+    // japoneses em inglês são tradução nossa, salvo os do Reborn, que o
+    // animecollection dá em inglês.
     "ss-cd01": "Carddass Part 1",
     "ss-cd02": "Carddass Part 2 — Battle Memorial",
     "ss-cd03": "Carddass Part 3 — The Sea Emperor's Ambition",
@@ -300,14 +301,14 @@
     "ss-tctvp": "Trading Collection TV Series & The Hades Chapter Sanctuary Box Cards",
     "ss-tchd": "Trading Collection The Hades Chapter Sanctuary Complete Edition",
     "ss-tchdp": "Trading Collection The Hades Chapter Sanctuary Complete Edition Promo",
-    "ss-gc01": "G Crusade Part 1",
-    "ss-gc02": "G Crusade Part 2",
-    "ss-gc03": "G Crusade Part 3",
-    "ss-gcpr": "G Crusade Promotion Cards",
-    "ss-go01": "G Crusade Ω Part 1",
-    "ss-go02": "G Crusade Ω Part 2",
-    "ss-go03": "G Crusade Ω Part 3",
-    "ss-go04": "G Crusade Ω Part 4",
+    "ss-cr01": "Crusade — The Twelve Temples Arc",
+    "ss-cr02": "Crusade — Saint Seiya Omega",
+    "ss-cr03": "Crusade — Asgard & Sea Emperor Poseidon Arc",
+    "ss-cr04": "Crusade — Omega: The Twelve Temples Arc",
+    "ss-cr05": "Crusade — Hades Arc",
+    "ss-cr06": "Crusade — Omega: New Cloth Arc",
+    "ss-cr07": "Crusade — Legend of Sanctuary / Omega",
+    "ss-crpr": "Crusade Promotion Cards",
     "ss-rb01": "Reborn Saint Paradise — A Heroic Legend Revived!",
     "ss-rb02": "Reborn Saint Paradise — Clash! The Proud Assassins",
     "ss-rb03": "Reborn Saint Paradise — Assemble! Gold Saints",

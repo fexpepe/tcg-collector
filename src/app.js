@@ -2234,8 +2234,8 @@
   function groupSeiyaSets(setItems) {
     const FAMILIAS = [
       ["cd", "sets.category.seiyaCarddass", "Carddass "], ["sp", "sets.category.seiyaSaintParadise", "Saint Paradise "],
-      ["tc", "sets.category.seiyaTrading", "Trading Collection "], ["gc", "sets.category.seiyaGCrusade", "G Crusade "],
-      ["go", "sets.category.seiyaGCrusadeOmega", "G Crusade Ω "], ["rb", "sets.category.seiyaReborn", "Reborn Saint Paradise "]
+      ["tc", "sets.category.seiyaTrading", "Trading Collection "], ["cr", "sets.category.seiyaCrusade", "Crusade "],
+      ["rb", "sets.category.seiyaReborn", "Reborn Saint Paradise "]
     ];
     const familiaDe = (set) => (String(set.setId || "").toLowerCase().match(/^ss-([a-z]{2})/) || [])[1] || "";
     const semFamilia = (set, prefixo) => {
