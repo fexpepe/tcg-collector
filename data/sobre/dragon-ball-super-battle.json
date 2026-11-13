@@ -1,0 +1,94 @@
+{
+  "url": "dragon-ball-super-battle",
+  "nome": "Dragon Ball Super Battle",
+  "nomeOriginal": { "texto": "ドラゴンボール スーパーバトル", "lang": "ja", "romaji": "Doragon Bōru Sūpā Batoru" },
+  "logo": "",
+  "periodo": { "inicio": "1991-11", "fim": "1997-05" },
+  "etiquetas": [
+    "Vintage",
+    { "pt": "Japão", "en": "Japan", "es": "Japón" },
+    "Carddass"
+  ],
+  "resumo": {
+    "pt": "Série de Carddass da Bandai com Dragon Ball, de 1991 a 1997: 20 partes com o jogo do Power Level e as prismas escondidas sob a carta.",
+    "en": "Bandai's Dragon Ball Carddass series from 1991 to 1997: 20 parts with the Power Level game and prisms hidden under the card.",
+    "es": "Serie de Carddass de Bandai con Dragon Ball, de 1991 a 1997: 20 partes con el juego del Power Level y prismas ocultos bajo la carta."
+  },
+  "fatos": [
+    { "chave": "lancamento", "valor": "1991-11" },
+    { "chave": "encerramento", "valor": "1997-05" },
+    { "chave": "fabricante", "valor": "Bandai" },
+    { "chave": "licenca", "valor": {
+      "pt": "Bird Studio/Shueisha, Fuji TV e Toei Animation",
+      "en": "Bird Studio/Shueisha, Fuji TV and Toei Animation",
+      "es": "Bird Studio/Shueisha, Fuji TV y Toei Animation"
+    } },
+    { "chave": "origem", "valor": { "pt": "Japão", "en": "Japan", "es": "Japón" } },
+    { "chave": "distribuicao", "valor": {
+      "pt": "Máquinas Carddass",
+      "en": "Carddass vending machines",
+      "es": "Máquinas Carddass"
+    } }
+  ],
+  "historia": {
+    "pt": [
+      "Super Battle foi a terceira série de Carddass de Dragon Ball, depois do Hondan e da Visual Adventure. A Parte 1 chegou às máquinas em novembro de 1991, e até maio de 1997 saíram 20 partes, da saga de Freeza ao Dragon Ball GT, com 44 cartas cada (46 nas duas últimas).",
+      "O jogo é o Power Level: cada carta traz um nível de força numa escala de 13 degraus. Os jogadores viram as cartas uma a uma, e a de nível maior vence; a carta MAX ganha de qualquer outra.",
+      "A marca da série são as cartas de duas camadas: o adesivo de cima descola e revela outra prisma por baixo. Desde a Parte 1 havia a prisma escondida sob uma carta comum; a Parte 3, de 1992, trouxe a W prisma, duas prismas sobrepostas; e as Partes 19 e 20 tiveram as prismas metálicas, as \"silver\".",
+      "As Partes 1 e 2 ganharam reedição em 1996. Em setembro de 1997, o 特別弾 juntou o desenho do Hondan e o da Super Battle numa carta só e fechou o Carddass de Dragon Ball."
+    ],
+    "en": [
+      "Super Battle was the third Dragon Ball Carddass series, after the Hondan and Visual Adventure. Part 1 reached the machines in November 1991, and 20 parts followed until May 1997, from the Frieza saga to Dragon Ball GT, with 44 cards each (46 in the last two).",
+      "The game is Power Level: each card has a power level on a 13-step scale. Players flip their cards one by one and the higher level wins; the MAX card beats any other.",
+      "The series' trademark is its two-layer cards: the top sticker peels off to reveal another prism underneath. Part 1 already had the hidden prism under a regular card; Part 3, in 1992, brought the W prism, two stacked prisms; and Parts 19 and 20 had the metal prisms, the \"silver\" cards.",
+      "Parts 1 and 2 were reissued in 1996. In September 1997 the Special Part (特別弾) merged the Hondan and Super Battle designs into one card and closed the Dragon Ball Carddass."
+    ],
+    "es": [
+      "Super Battle fue la tercera serie de Carddass de Dragon Ball, después del Hondan y de Visual Adventure. La Parte 1 llegó a las máquinas en noviembre de 1991, y hasta mayo de 1997 salieron 20 partes, de la saga de Freezer a Dragon Ball GT, con 44 cartas cada una (46 en las dos últimas).",
+      "El juego es el Power Level: cada carta tiene un nivel de poder en una escala de 13 escalones. Los jugadores voltean las cartas una a una y gana la de nivel mayor; la carta MAX le gana a cualquier otra.",
+      "La seña de la serie son las cartas de dos capas: el adhesivo de arriba se despega y deja ver otro prisma debajo. Desde la Parte 1 había el prisma oculto bajo una carta común; la Parte 3, de 1992, trajo el prisma W, dos prismas superpuestos; y las Partes 19 y 20 tuvieron los prismas metálicos, los \"silver\".",
+      "Las Partes 1 y 2 se reeditaron en 1996. En septiembre de 1997, la Parte Especial (特別弾) unió el diseño del Hondan y el de Super Battle en una sola carta y cerró el Carddass de Dragon Ball."
+    ]
+  },
+  "linhaDoTempo": [
+    { "data": "1991-11", "set": "dbc-sb01", "texto": {
+      "pt": "Parte 1, já com a prisma escondida sob uma carta comum.",
+      "en": "Part 1, already with the prism hidden under a regular card.",
+      "es": "Parte 1, ya con el prisma oculto bajo una carta común."
+    } },
+    { "data": "1992-07", "set": "dbc-sb03", "texto": {
+      "pt": "Parte 3 estreia a W prisma, duas prismas sobrepostas.",
+      "en": "Part 3 debuts the W prism, two stacked prisms.",
+      "es": "La Parte 3 estrena el prisma W, dos prismas superpuestos."
+    } },
+    { "data": "1994-02", "set": "dbc-sb08", "texto": {
+      "pt": "Parte 8 traz a primeira carta panorâmica da série.",
+      "en": "Part 8 brings the series' first panorama card.",
+      "es": "La Parte 8 trae la primera carta panorámica de la serie."
+    } },
+    { "data": "1995-02", "set": "dbc-sb12", "texto": {
+      "pt": "Parte 12 passa da carta No.500.",
+      "en": "Part 12 goes past card No.500.",
+      "es": "La Parte 12 pasa de la carta No.500."
+    } },
+    { "data": "1996-05", "set": "dbc-sb17", "texto": {
+      "pt": "Parte 17, a primeira do Dragon Ball GT.",
+      "en": "Part 17, the first from Dragon Ball GT.",
+      "es": "Parte 17, la primera de Dragon Ball GT."
+    } },
+    { "data": "1996-12", "set": "dbc-sb19", "texto": {
+      "pt": "Parte 19 estreia as prismas metálicas, as \"silver\".",
+      "en": "Part 19 debuts the metal prisms, the \"silver\" cards.",
+      "es": "La Parte 19 estrena los prismas metálicos, los \"silver\"."
+    } },
+    { "data": "1997-05", "set": "dbc-sb20", "texto": {
+      "pt": "Parte 20, a última da série.",
+      "en": "Part 20, the last of the series.",
+      "es": "Parte 20, la última de la serie."
+    } }
+  ],
+  "fontes": [
+    { "nome": { "pt": "vintcollect, cronologia do Carddass de Dragon Ball", "en": "vintcollect, Dragon Ball Carddass chronology", "es": "vintcollect, cronología del Carddass de Dragon Ball" }, "url": "https://vintcollect.com/?mode=f9" },
+    { "nome": { "pt": "Wikipédia em japonês", "en": "Japanese Wikipedia", "es": "Wikipedia en japonés" }, "url": "https://ja.wikipedia.org/wiki/%E3%82%AB%E3%83%BC%E3%83%89%E3%83%80%E3%82%B9_%E3%83%89%E3%83%A9%E3%82%B4%E3%83%B3%E3%83%9C%E3%83%BC%E3%83%AB%E3%82%B7%E3%83%AA%E3%83%BC%E3%82%BA" }
+  ]
+}

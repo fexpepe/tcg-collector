@@ -365,6 +365,14 @@ véu.
 
 ## Notas
 
+- **Jogos ainda sem logo (pendência, 2026-11-13):** Dragon Ball Super Battle
+  (`dbsb`), Dragon Ball Visual Adventure (`dbva`) e Dragon Ball Super Barcode
+  Wars (`dbbw`), as séries do Carddass que viraram jogo. Decisão do Fernando:
+  entram sem logo; o registro (`functions/_lib/jogos.js`) leva `logo: ""`, a
+  página Vintage mostra o nome no quadro (`.vt-logo-texto`), o "Sobre" vem sem
+  arte e o cartão do set mostra o nome. Logo novo entra por aqui (`game_<slug>.webp`)
+  e troca o `""` no registro, no `GAME_LOGO`/`KIT_LOGO`, no `vintage.html`, no
+  "Sobre" e no `LOGO` do `scripts/sync-dbc-carddass.mjs`.
 - **Contraste:** o CSS põe um chip branco atrás do logo, então logos escuros
   ficam legíveis nos dois temas.
 - **Proporção:** paisagem; o CSS usa `object-fit: contain` — não precisa de

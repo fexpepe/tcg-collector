@@ -111,6 +111,9 @@ const JOGOS = {
   dbz: { semCodigo: "número solto (60), repetido em todo set" },
   lotr: { semCodigo: "número solto (15), repetido em todo set" },
   dbc: { semCodigo: "Carddass: número solto, sem set impresso" },
+  dbsb: { semCodigo: "Carddass Super Battle: número solto, sem set impresso" },
+  dbva: { semCodigo: "Carddass Visual Adventure: número solto, sem set impresso" },
+  dbbw: { semCodigo: "Super Barcode Wars: número solto, sem set impresso" },
   cdm: { semCodigo: "Carddass Masters: número solto, sem set impresso" },
   // Naruto Trading Cards (Amada/Ensky, 2004–2005): o número ("No.46", "SP.01")
   // vale dentro do produto e se repete entre a 忍術大全 e os Etching.

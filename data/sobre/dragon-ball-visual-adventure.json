@@ -1,0 +1,81 @@
+{
+  "url": "dragon-ball-visual-adventure",
+  "nome": "Dragon Ball Visual Adventure",
+  "nomeOriginal": { "texto": "ドラゴンボール ビジュアルアドベンチャー", "lang": "ja", "romaji": "Doragon Bōru Bijuaru Adobenchā" },
+  "logo": "",
+  "periodo": { "inicio": "1991-06", "fim": "1995-10" },
+  "etiquetas": [
+    "Vintage",
+    { "pt": "Japão", "en": "Japan", "es": "Japón" },
+    "Carddass"
+  ],
+  "resumo": {
+    "pt": "Série de Carddass da Bandai de 1991 a 1995 com a arte do mangá de Akira Toriyama: oito coleções e 336 cartas, sem jogo de batalha.",
+    "en": "Bandai's Carddass series from 1991 to 1995 with Akira Toriyama's manga artwork: eight collections and 336 cards, with no battle game.",
+    "es": "Serie de Carddass de Bandai de 1991 a 1995 con el arte del manga de Akira Toriyama: ocho colecciones y 336 cartas, sin juego de batalla."
+  },
+  "fatos": [
+    { "chave": "lancamento", "valor": "1991-06" },
+    { "chave": "encerramento", "valor": "1995-10" },
+    { "chave": "fabricante", "valor": "Bandai" },
+    { "chave": "licenca", "valor": {
+      "pt": "Bird Studio/Shueisha, Fuji TV e Toei Animation",
+      "en": "Bird Studio/Shueisha, Fuji TV and Toei Animation",
+      "es": "Bird Studio/Shueisha, Fuji TV y Toei Animation"
+    } },
+    { "chave": "origem", "valor": { "pt": "Japão", "en": "Japan", "es": "Japón" } },
+    { "chave": "formato", "valor": {
+      "pt": "Cartas de coleção, sem valores de jogo",
+      "en": "Collector cards, with no game values",
+      "es": "Cartas de colección, sin valores de juego"
+    } }
+  ],
+  "historia": {
+    "pt": [
+      "Visual Adventure foi a segunda série de Carddass de Dragon Ball. O 1º volume chegou às máquinas em junho de 1991, com 42 cartas: 36 comuns e 6 prismas. A proposta era a imagem: cartas sem valores de jogo, feitas para colecionar.",
+      "A arte vinha dos originais coloridos de Akira Toriyama ou de desenhos em preto e branco colorizados sob a supervisão dele, reproduzidos no estilo da cel de animação. Foram cinco volumes até setembro de 1992.",
+      "Em junho de 1993 a Especial, vendida como Carddass W em pacotes de 4 cartas, juntou uma seleção dos cinco volumes e cartas novas. A série voltou em abril de 1995 com a '95 e terminou com a '95EX em outubro, sem chegar ao GT: 336 cartas ao todo."
+    ],
+    "en": [
+      "Visual Adventure was the second Dragon Ball Carddass series. Volume 1 reached the machines in June 1991 with 42 cards: 36 regulars and 6 prisms. The point was the picture: cards with no game values, made to be collected.",
+      "The art came from Akira Toriyama's color originals, or from black-and-white drawings colored under his supervision, reproduced in the style of animation cels. Five volumes came out until September 1992.",
+      "In June 1993 the Special, sold as Carddass W in packs of 4 cards, gathered a selection of the five volumes plus new cards. The series returned in April 1995 with '95 and ended with '95EX in October, without reaching GT: 336 cards in all."
+    ],
+    "es": [
+      "Visual Adventure fue la segunda serie de Carddass de Dragon Ball. El 1.er volumen llegó a las máquinas en junio de 1991, con 42 cartas: 36 comunes y 6 prismas. La idea era la imagen: cartas sin valores de juego, hechas para coleccionar.",
+      "El arte venía de los originales en color de Akira Toriyama o de dibujos en blanco y negro coloreados bajo su supervisión, reproducidos al estilo del cel de animación. Salieron cinco volúmenes hasta septiembre de 1992.",
+      "En junio de 1993 la Especial, vendida como Carddass W en paquetes de 4 cartas, reunió una selección de los cinco volúmenes y cartas nuevas. La serie volvió en abril de 1995 con la '95 y terminó con la '95EX en octubre, sin llegar a GT: 336 cartas en total."
+    ]
+  },
+  "linhaDoTempo": [
+    { "data": "1991-06", "set": "dbc-va01", "texto": {
+      "pt": "1º volume, com a arte do mangá de Akira Toriyama.",
+      "en": "Volume 1, with Akira Toriyama's manga artwork.",
+      "es": "1.er volumen, con el arte del manga de Akira Toriyama."
+    } },
+    { "data": "1992-09", "set": "dbc-va05", "texto": {
+      "pt": "5º volume, o último antes da pausa.",
+      "en": "Volume 5, the last before the break.",
+      "es": "5.º volumen, el último antes de la pausa."
+    } },
+    { "data": "1993-06", "set": "dbc-va06", "texto": {
+      "pt": "Especial: seleção dos cinco volumes, em pacotes de 4.",
+      "en": "Special: a selection of the five volumes, in packs of 4.",
+      "es": "Especial: selección de los cinco volúmenes, en paquetes de 4."
+    } },
+    { "data": "1995-04", "set": "dbc-va07", "texto": {
+      "pt": "A série volta com a '95.",
+      "en": "The series returns with '95.",
+      "es": "La serie vuelve con la '95."
+    } },
+    { "data": "1995-10", "set": "dbc-va08", "texto": {
+      "pt": "'95EX, a última coleção.",
+      "en": "'95EX, the last collection.",
+      "es": "'95EX, la última colección."
+    } }
+  ],
+  "fontes": [
+    { "nome": { "pt": "vintcollect, cronologia do Carddass de Dragon Ball", "en": "vintcollect, Dragon Ball Carddass chronology", "es": "vintcollect, cronología del Carddass de Dragon Ball" }, "url": "https://vintcollect.com/?mode=f9" },
+    { "nome": { "pt": "Wikipédia em japonês", "en": "Japanese Wikipedia", "es": "Wikipedia en japonés" }, "url": "https://ja.wikipedia.org/wiki/%E3%82%AB%E3%83%BC%E3%83%89%E3%83%80%E3%82%B9_%E3%83%89%E3%83%A9%E3%82%B4%E3%83%B3%E3%83%9C%E3%83%BC%E3%83%AB%E3%82%B7%E3%83%AA%E3%83%BC%E3%82%BA" }
+  ]
+}

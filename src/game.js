@@ -34,7 +34,12 @@
     narutocg: { slug: "narutocg", name: "Naruto Card Game", dataDir: "data/narutocg/" }, // TCGCSV cat. 93 (Bandai, lançamento mundial 2027; até 11/11/2026, a linha nrt-ncg do naruto)
     naruto: { slug: "naruto", name: "Naruto Card Game", dataDir: "data/naruto/" },   // vintage Bandai 2003–2006 e as linhas dele (Data Carddass, CCG, 疾風伝)
     hxh: { slug: "hxh", name: "Hunter × Hunter", dataDir: "data/hxh/" },             // vintage Bandai: Miracle Battle (2011–12); Hyper Battle 1999–2001 em curadoria
-    dbc: { slug: "dbc", name: "Dragon Ball Carddass", dataDir: "data/dbc/" },       // vintage Bandai 1988–1997 (Hondan; cartas sem scan ainda)
+    dbc: { slug: "dbc", name: "Dragon Ball Carddass", dataDir: "data/dbc/" },       // vintage Bandai 1988–1997 (本弾 e 特別弾)
+    // As três séries paralelas do Carddass, jogos próprios desde 2026-11-13
+    // (até ali, séries do dbc; os ids dbc-sb…/dbc-va…/dbc-bw… ficaram).
+    dbsb: { slug: "dbsb", name: "Dragon Ball Super Battle", dataDir: "data/dbsb/" },       // vintage Bandai 1991–1997
+    dbva: { slug: "dbva", name: "Dragon Ball Visual Adventure", dataDir: "data/dbva/" },   // vintage Bandai 1991–1995
+    dbbw: { slug: "dbbw", name: "Dragon Ball Super Barcode Wars", dataDir: "data/dbbw/" }, // vintage Bandai 1992–1993
     wow: { slug: "wow", name: "World of Warcraft TCG", dataDir: "data/wow/" },     // vintage Upper Deck/Cryptozoic 2006–2013, TCGCSV cat. 13 (EN, com preço)
     lotr: { slug: "lotr", name: "The Lord of the Rings TCG", dataDir: "data/lotr/" }, // vintage Decipher 2001–2007 (banco do Player's Council)
     dbz: { slug: "dbz", name: "Dragon Ball Z CCG", dataDir: "data/dbz/" }, // vintage Score 2000–2006: DBZ CCG, GT TCG e o DBZ TCG de 2005 (galerias do retrodbzccg)
@@ -80,7 +85,8 @@
     // abaixo é a posição desta linha, e o teste confere um por um.
     ["gundam-carddass", "gcd"],
     ["gundam-war", "gw"],
-    ["dragon-ball-carddass", "dbc"], ["hunter-x-hunter-carddass", "hxh"],
+    ["dragon-ball-carddass", "dbc"], ["dragon-ball-visual-adventure", "dbva"], ["dragon-ball-super-battle", "dbsb"],
+    ["dragon-ball-super-barcode-wars", "dbbw"], ["hunter-x-hunter-carddass", "hxh"],
     ["one-piece-carddass", "onepiece", "opcd", "opcd-"], ["lord-of-the-rings-tcg", "lotr"], ["harry-potter-tcg", "harrypotter"],
     ["dragon-ball-z-ccg", "dbz"],
     ["one-piece-card-game-2002", "onepiece", "op2002", "op2002-"],
@@ -197,6 +203,10 @@
       q = busca.get("game");
       // ?game=onepiece&line=op-mb (link de antes de 2026-10-01): o jogo agora é o mbc.
       if (LINHA_VIROU_JOGO.hasOwnProperty(busca.get("line"))) q = LINHA_VIROU_JOGO[busca.get("line")];
+      // ?game=dbc&setId=dbc-sb01 (link de 12/11/2026, quando Super Battle,
+      // Visual Adventure e Barcode Wars eram séries do dbc): o jogo do set.
+      var serie = q === "dbc" && /^dbc-(sb|va|bw)\d/.exec(busca.get("setId") || "");
+      if (serie) q = { sb: "dbsb", va: "dbva", bw: "dbbw" }[serie[1]];
     } catch (e) { /* ignora */ }
     if (isNeutralPage()) {
       // Na porta de entrada, ?game= é intenção ("vim de um link daquele jogo"):
@@ -288,6 +298,10 @@
     dbz: ["https://wsrv.nl"],
     cdm: ["https://wsrv.nl"],
     gcd: ["https://wsrv.nl"],
+    dbc: ["https://wsrv.nl"],
+    dbsb: ["https://wsrv.nl"],
+    dbva: ["https://wsrv.nl"],
+    dbbw: ["https://wsrv.nl"],
     harrypotter: ["https://wsrv.nl"]
   };
   // SEM crossorigin, igual às tags que já existem no HTML: na PRIMEIRA visita —

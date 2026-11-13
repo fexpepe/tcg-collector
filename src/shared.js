@@ -7285,6 +7285,9 @@
     narutocg:  { tcgLine: "naruto-card-game", usText: "naruto card game" },
     hxh:       { usText: "hunter x hunter carddass", noTcgplayer: true },
     dbc:       { usText: "dragon ball carddass", noTcgplayer: true },
+    dbsb:      { usText: "dragon ball carddass super battle", noTcgplayer: true },
+    dbva:      { usText: "dragon ball carddass visual adventure", noTcgplayer: true },
+    dbbw:      { usText: "dragon ball super barcode wars", noTcgplayer: true },
     mbc:       { usText: "miracle battle carddass", noTcgplayer: true },
     cdm:       { usText: "carddass masters", noTcgplayer: true },
     gcd:       { usText: "gundam carddass", noTcgplayer: true },
@@ -8945,6 +8948,9 @@
     "naruto",
     "hxh",
     "dbc",
+    "dbsb",
+    "dbva",
+    "dbbw",
     "dbz",
     "wow",
     "lotr",
@@ -8996,6 +9002,9 @@
     narutocg: "#f65400",   // o laranja do naruto mais saturado (pedido do Fernando, 2026-11-11): 6.2:1 com preto; a 17 do naruto, abaixo da régua de 65 DE PROPÓSITO (é a mesma marca)
     hxh: "#15803d",        // verde
     dbc: "#db2777",        // rosa (a 70 do FaB, o vizinho mais próximo; 4.6:1 com preto)
+    dbsb: "#af3700",       // ferrugem, a faixa do título da Super Battle; 6.2:1 com branco, a 69 do Naruto (2026-11-13)
+    dbva: "#0fa573",       // esmeralda, o logo DRAGON BALL da Visual Adventure; 6.6:1 com preto, a 66 do HxH e do Union Arena (2026-11-13)
+    dbbw: "#0546b4",       // azul-royal (Super Barcode Wars); 8.3:1 com branco, a 66 do Lorcana (2026-11-13)
     dbz: "#9f1239",        // carmim (o fundo do anúncio de 2000); 8.0:1 com branco, a 67 do FaB e a 71 do DBC
     wow: "#00aeff",        // azul da Blizzard; 8.5:1 com preto, a 83 do Union Arena (os azuis estão cheios)
     lotr: "#4d7c0f"  ,      // verde-musgo (pedido do Fernando: "algum tom de verde"); 5.0:1 com branco, a 73 do verde do HxH
@@ -9155,6 +9164,7 @@
     onepiece: ["opcd-", "op2002-"],           // Carddass 1999–2002, OPCG 2002–05
     hxh: ["hxh-"],                            // Hyper Battle 1999–2001: tudo vintage
     dbc: ["dbc-"],                            // Carddass 1988–1997: o jogo inteiro é vintage
+    dbsb: ["dbc-sb"], dbva: ["dbc-va"], dbbw: ["dbc-bw"], // séries do dbc até 2026-11-13: os ids ficaram
     mbc: ["mb-", "op-mb-", "nrt-mb-", "hxh-mb-"], // Miracle Battle 2009–2014: idem (os 3 últimos são os ids de antes de virar jogo)
     wow: ["wow-"],                            // WoW TCG 2006–2013: idem (e é o único vintage com preço)
     lotr: ["lotr-"],                          // Decipher 2001–2007: idem
@@ -11283,12 +11293,13 @@
   }
   // O Miracle Battle virou o jogo mbc em 2026-10-01: carta op-mb-/nrt-mb-/
   // hxh-mb- que ainda está na coleção ou nos desejos do jogo da marca muda de
-  // gaveta (e a gcd- do gundam, a nrt-ncg- do naruto: o gcd e o narutocg). O como fica em src/migra-mbc.js, que só desce pra quem tem o que
+  // gaveta (e a gcd- do gundam, a nrt-ncg- do naruto: o gcd e o narutocg; e a
+  // dbc-sb/va/bw do dbc: dbsb, dbva e dbbw). O como fica em src/migra-mbc.js, que só desce pra quem tem o que
   // mover. Roda DEPOIS do merge com a nuvem, e os jogos que mudaram entram em
   // `subir`, pro push que vem logo em seguida.
   async function moveMiracleBattle(subir) {
     try {
-      if (!["onepiece", "naruto", "hxh", "gundam"].some((g) => /"((op|nrt|hxh)-mb|gcd|nrt-ncg)-/.test(localStorage.getItem(gameKey("collection-v3", g)) + localStorage.getItem(gameKey("wishlist-v1", g))))) return false;
+      if (!["onepiece", "naruto", "hxh", "gundam", "dbc"].some((g) => /"((op|nrt|hxh)-mb|gcd|nrt-ncg|dbc-(sb|va|bw)\d+)-/.test(localStorage.getItem(gameKey("collection-v3", g)) + localStorage.getItem(gameKey("wishlist-v1", g))))) return false;
     } catch (e) { return false; }
     const jogos = (await injectScript("/src/migra-mbc.js")) && window.TCGMigraMbc ? window.TCGMigraMbc() : [];
     jogos.forEach((g) => { subir[g] = localSnapshot(g); });

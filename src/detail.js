@@ -485,11 +485,15 @@
     // Miracle Battle Carddass (sync-miracle-battle.mjs): a marca impressa — C
     // (sem marca), U, R, SR, as kira (B = ブースト, M = ミラクル), Ω, 超Ω e P.
     mbc: ["C", "U", "R", "SR", "B", "M", "Ω", "超Ω", "P"],
-    // Dragon Ball Carddass (sync-dbc-carddass.mjs, a do dbzcollection): a
-    // comum, a prisma (キラ), as de duas camadas (隠れ = escondida sob a comum,
-    // W = duas prismas, a メタル隠れ "silver" da Super Battle 19–20, a
-    // リバース/両面 do Hondan) e as impressões especiais.
-    dbc: ["Normal", "Prism", "Hidden Prism", "Double Prism", "Metal Hidden Prism", "Reverse Prism", "Laser", "Gold"],
+    // Dragon Ball Carddass e as três séries que viraram jogo (sync-dbc-carddass.mjs,
+    // a raridade do dbzcollection): a comum, a prisma (キラ), as de duas
+    // camadas (W = duas prismas, リバース/両面 no Hondan; 隠れ = escondida
+    // sob a comum e a メタル隠れ "silver" da Super Battle 19–20) e as
+    // impressões especiais (o ouro do Hondan, a laser da VA Especial).
+    dbc: ["Normal", "Prism", "Double Prism", "Reverse Prism", "Gold"],
+    dbsb: ["Normal", "Prism", "Hidden Prism", "Double Prism", "Metal Hidden Prism"],
+    dbva: ["Normal", "Prism", "Laser"],
+    dbbw: ["Normal", "Prism"],
     // Naruto: uma página de set é de UMA linha, então as escadas convivem.
     // CCG americano (2006–2013): os nomes do verso (sync-naruto-ccg.mjs).
     // Card Game japonês (2002–06) e Data Carddass: as siglas — N → R → SR →

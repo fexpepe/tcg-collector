@@ -1,0 +1,81 @@
+{
+  "url": "dragon-ball-super-barcode-wars",
+  "nome": "Dragon Ball Super Barcode Wars",
+  "nomeOriginal": { "texto": "スーパーバーコードウォーズ", "lang": "ja", "romaji": "Sūpā Bākōdo Wōzu" },
+  "logo": "",
+  "periodo": { "inicio": "1992-12", "fim": "1993-11" },
+  "etiquetas": [
+    "Vintage",
+    { "pt": "Japão", "en": "Japan", "es": "Japón" },
+    "Carddass"
+  ],
+  "resumo": {
+    "pt": "Carddass da Bandai de 1992 e 1993 com código de barras no verso, para ler no aparelho Super Barcode Wars: quatro partes e 168 cartas.",
+    "en": "Bandai Carddass from 1992 and 1993 with barcodes on the back, read by the Super Barcode Wars device: four parts and 168 cards.",
+    "es": "Carddass de Bandai de 1992 y 1993 con código de barras en el reverso, para leer en el aparato Super Barcode Wars: cuatro partes y 168 cartas."
+  },
+  "fatos": [
+    { "chave": "lancamento", "valor": "1992-12" },
+    { "chave": "encerramento", "valor": "1993-11" },
+    { "chave": "fabricante", "valor": "Bandai" },
+    { "chave": "licenca", "valor": {
+      "pt": "Bird Studio/Shueisha, Fuji TV e Toei Animation",
+      "en": "Bird Studio/Shueisha, Fuji TV and Toei Animation",
+      "es": "Bird Studio/Shueisha, Fuji TV y Toei Animation"
+    } },
+    { "chave": "origem", "valor": { "pt": "Japão", "en": "Japan", "es": "Japón" } },
+    { "chave": "distribuicao", "valor": {
+      "pt": "Máquinas Carddass, 5 cartas por ¥100",
+      "en": "Carddass vending machines, 5 cards for ¥100",
+      "es": "Máquinas Carddass, 5 cartas por ¥100"
+    } }
+  ],
+  "historia": {
+    "pt": [
+      "A Super Barcode Wars ligou o Carddass a um aparelho eletrônico da Bandai de mesmo nome, que lê códigos de barras. Cada carta traz um personagem na frente e dois códigos de barras no verso; lida pelo aparelho, ela entra no jogo.",
+      "A Parte 1 saiu em dezembro de 1992, em máquinas que vendiam 5 cartas por ¥100. Foram quatro partes até novembro de 1993, com 168 cartas, e mais 62 que vinham com o próprio aparelho.",
+      "Em abril de 1994 a Characters Collection seguiu o mesmo formato, mas trocou o código de barras por uma escala de nível, para jogar sem o aparelho. Teve duas partes, até agosto de 1994."
+    ],
+    "en": [
+      "Super Barcode Wars linked the Carddass to a Bandai electronic device of the same name that reads barcodes. Each card shows a character on the front and two barcodes on the back; scanned by the device, it joins the game.",
+      "Part 1 came out in December 1992, in machines that sold 5 cards for ¥100. Four parts followed until November 1993, with 168 cards, plus 62 more that came with the device itself.",
+      "In April 1994 the Characters Collection kept the format but swapped the barcode for a level gauge, so it could be played without the device. It had two parts, until August 1994."
+    ],
+    "es": [
+      "Super Barcode Wars unió el Carddass a un aparato electrónico de Bandai del mismo nombre, que lee códigos de barras. Cada carta trae un personaje al frente y dos códigos de barras en el reverso; leída por el aparato, entra en el juego.",
+      "La Parte 1 salió en diciembre de 1992, en máquinas que vendían 5 cartas por ¥100. Salieron cuatro partes hasta noviembre de 1993, con 168 cartas, y otras 62 que venían con el propio aparato.",
+      "En abril de 1994 la Characters Collection siguió el mismo formato, pero cambió el código de barras por una escala de nivel, para jugar sin el aparato. Tuvo dos partes, hasta agosto de 1994."
+    ]
+  },
+  "linhaDoTempo": [
+    { "data": "1992-12", "set": "dbc-bw01", "texto": {
+      "pt": "Parte 1, em máquinas de 5 cartas por ¥100.",
+      "en": "Part 1, in machines selling 5 cards for ¥100.",
+      "es": "Parte 1, en máquinas de 5 cartas por ¥100."
+    } },
+    { "data": "1993-04", "set": "dbc-bw02", "texto": {
+      "pt": "Parte 2, com mais 42 cartas.",
+      "en": "Part 2, with 42 more cards.",
+      "es": "Parte 2, con otras 42 cartas."
+    } },
+    { "data": "1993-07", "set": "dbc-bw03", "texto": {
+      "pt": "Parte 3.",
+      "en": "Part 3.",
+      "es": "Parte 3."
+    } },
+    { "data": "1993-11", "set": "dbc-bw04", "texto": {
+      "pt": "Parte 4, a última da série.",
+      "en": "Part 4, the last of the series.",
+      "es": "Parte 4, la última de la serie."
+    } },
+    { "data": "1994-04", "texto": {
+      "pt": "A Characters Collection segue sem o código de barras.",
+      "en": "The Characters Collection carries on without the barcode.",
+      "es": "La Characters Collection sigue sin el código de barras."
+    } }
+  ],
+  "fontes": [
+    { "nome": { "pt": "vintcollect, cronologia do Carddass de Dragon Ball", "en": "vintcollect, Dragon Ball Carddass chronology", "es": "vintcollect, cronología del Carddass de Dragon Ball" }, "url": "https://vintcollect.com/?mode=f9" },
+    { "nome": { "pt": "Wikipédia em japonês", "en": "Japanese Wikipedia", "es": "Wikipedia en japonés" }, "url": "https://ja.wikipedia.org/wiki/%E3%82%AB%E3%83%BC%E3%83%89%E3%83%80%E3%82%B9_%E3%83%89%E3%83%A9%E3%82%B4%E3%83%B3%E3%83%9C%E3%83%BC%E3%83%AB%E3%82%B7%E3%83%AA%E3%83%BC%E3%82%BA" }
+  ]
+}

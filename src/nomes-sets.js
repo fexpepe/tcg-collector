@@ -336,8 +336,11 @@
     // Super Battle, a Visual Adventure e a Super Barcode Wars. As três séries
     // entraram em 2026-11-12, com a fonte carta a carta (dbzcollection.fr); até
     // ali não geravam set e ficavam fora daqui. É o setNameEn do sync, travado
-    // no tests/dbc-carddass.test.mjs. Com a série na frente: a página de Sets
-    // tira o prefixo dentro da seção (groupDbcSets).
+    // no tests/dbc-carddass.test.mjs. O Hondan com a série na frente (a página
+    // de Sets tira o prefixo dentro da seção, groupDbcSets); as outras três são
+    // jogos próprios desde 2026-11-13 (dbsb, dbva, dbbw) e o nome não repete o
+    // jogo (contrato 7): "Part 1", "Special", "'95EX" (sem espaço: com ele o
+    // aninhaPorNome faria do '95EX um chip "EX" no cartão do '95).
     "dbc-h01": "Hondan Part 1 — Great Martial Arts Showdown",
     "dbc-h02": "Hondan Part 2 — World Martial Arts Tournament",
     "dbc-h03": "Hondan Part 3 — Fierce Battle! The Saiyans",
@@ -369,38 +372,38 @@
     "dbc-h29": "Hondan Part 29 — Super Saiyan 4 Unleashed!!",
     "dbc-h30": "Hondan Part 30 — Emergence! The Ultimate Enemy, the Dragon Balls!?",
     "dbc-h31": "Hondan Special Part",
-    "dbc-sb01": "Super Battle Part 1",
-    "dbc-sb02": "Super Battle Part 2",
-    "dbc-sb03": "Super Battle Part 3",
-    "dbc-sb04": "Super Battle Part 4",
-    "dbc-sb05": "Super Battle Part 5",
-    "dbc-sb06": "Super Battle Part 6",
-    "dbc-sb07": "Super Battle Part 7",
-    "dbc-sb08": "Super Battle Part 8",
-    "dbc-sb09": "Super Battle Part 9",
-    "dbc-sb10": "Super Battle Part 10",
-    "dbc-sb11": "Super Battle Part 11",
-    "dbc-sb12": "Super Battle Part 12",
-    "dbc-sb13": "Super Battle Part 13",
-    "dbc-sb14": "Super Battle Part 14",
-    "dbc-sb15": "Super Battle Part 15",
-    "dbc-sb16": "Super Battle Part 16",
-    "dbc-sb17": "Super Battle Part 17",
-    "dbc-sb18": "Super Battle Part 18",
-    "dbc-sb19": "Super Battle Part 19",
-    "dbc-sb20": "Super Battle Part 20",
-    "dbc-va01": "Visual Adventure Part 1",
-    "dbc-va02": "Visual Adventure Part 2",
-    "dbc-va03": "Visual Adventure Part 3",
-    "dbc-va04": "Visual Adventure Part 4",
-    "dbc-va05": "Visual Adventure Part 5",
-    "dbc-va06": "Visual Adventure Special",
-    "dbc-va07": "Visual Adventure '95",
-    "dbc-va08": "Visual Adventure '95 EX",
-    "dbc-bw01": "Super Barcode Wars Part 1",
-    "dbc-bw02": "Super Barcode Wars Part 2",
-    "dbc-bw03": "Super Barcode Wars Part 3",
-    "dbc-bw04": "Super Barcode Wars Part 4"
+    "dbc-sb01": "Part 1",
+    "dbc-sb02": "Part 2",
+    "dbc-sb03": "Part 3",
+    "dbc-sb04": "Part 4",
+    "dbc-sb05": "Part 5",
+    "dbc-sb06": "Part 6",
+    "dbc-sb07": "Part 7",
+    "dbc-sb08": "Part 8",
+    "dbc-sb09": "Part 9",
+    "dbc-sb10": "Part 10",
+    "dbc-sb11": "Part 11",
+    "dbc-sb12": "Part 12",
+    "dbc-sb13": "Part 13",
+    "dbc-sb14": "Part 14",
+    "dbc-sb15": "Part 15",
+    "dbc-sb16": "Part 16",
+    "dbc-sb17": "Part 17",
+    "dbc-sb18": "Part 18",
+    "dbc-sb19": "Part 19",
+    "dbc-sb20": "Part 20",
+    "dbc-va01": "Part 1",
+    "dbc-va02": "Part 2",
+    "dbc-va03": "Part 3",
+    "dbc-va04": "Part 4",
+    "dbc-va05": "Part 5",
+    "dbc-va06": "Special",
+    "dbc-va07": "'95",
+    "dbc-va08": "'95EX",
+    "dbc-bw01": "Part 1",
+    "dbc-bw02": "Part 2",
+    "dbc-bw03": "Part 3",
+    "dbc-bw04": "Part 4"
   };
 
   // Sets JAPONESES do Pokémon: mesma regra dos vintages acima, mas aqui o mapa
