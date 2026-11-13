@@ -68,7 +68,14 @@ export function ehIdDeProduto(jogo, id) {
   return !!re && re.test(String(id));
 }
 
-const nomeNorm = (s) => String(s || "").trim().replace(/\s+/g, " ").toLowerCase();
+// O espaço ENTRE dois qualificadores não é parte do nome: "(Yellow)(Marvel)" e
+// "(Yellow) (Marvel)" são o mesmo. Caso real (12/11/2026): o TCGplayer tirou as
+// duas Runechant Marvel do Flesh and Blood (fab-696177 e fab-696178, IAR156-MV
+// e IAR157-MV) do grupo do Omens of the Third Age pro do Usurp the Shadow
+// Throne, o set do número delas, e no caminho pôs o espaço que faltava no nome.
+// Mesmo produto, mesmo número, e o lint derrubou o build completo achando que
+// era outra carta. Trocar o que está DENTRO dos parênteses continua erro duro.
+const nomeNorm = (s) => String(s || "").trim().replace(/\s+/g, " ").replace(/\)\s*\(/g, ") (").toLowerCase();
 
 // Um nome é o outro mais qualificador(es) "(…)" no fim — ou os dois são o mesmo
 // a menos de caixa/espaço. Parêntese no MEIO do nome não é qualificador
