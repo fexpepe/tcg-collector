@@ -20,6 +20,16 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
 - `game_riftbound-v2.webp` — Riftbound / League of Legends (fonte: `../brand/riftbound.webp`,
   1908×1908 com padding — cortado pro bbox do conteúdo antes de escalar)
 - `game_onepiece_carddass.webp` — Carddass Hyper Battle (tile vintage do OP)
+- `game_narutomythos.webp` — Naruto Mythos TCG (12/11/2026): o logo do site
+  oficial (`irp.cdn-website.com/99e556bf/dms3rep/multi/Logo+Naruto+Mythos+TCG.png`,
+  o mesmo do cabeçalho de narutotcgmythos.com), PNG de 933×472 já com fundo
+  transparente: o "NARUTO" laranja com o "MYTHOS TCG" preto em cima. Recortado
+  no conteúdo, reduzido pra 512×257 em alfa pré-multiplicado, alfa ≤12 zerado,
+  WebP sem perda (72 KB). O "MYTHOS TCG" é preto: lê bem na cápsula branca do
+  hub e some em fundo escuro, então o logo só vai onde há cápsula.
+- Naruto Kayou (`narutokayou`) **não tem arquivo próprio**: o site oficial da
+  Kayou usa o logo do Naruto em toda série (o SVG de cada página de série é só
+  ele), então o jogo aponta pro `game_naruto.webp`, e o nome vai em texto.
 - `game_naruto_boruto.webp` — Naruto Boruto Card Game (jogo `narutoboruto`, 13/11/2026):
   o logo do site oficial do Chrono Clash System, no Wayback
   (`chronoclashsystem.com/images/product/naruto/common/img_logo.png`, captura

@@ -214,6 +214,15 @@
       add(base, 3, m);
       tira(m);
     }
+    // Naruto Kayou, edição em inglês (2026-11-12): "NRSA01-SE-001L5", no canto
+    // de baixo da carta — série (NRSA01, NREA02, NRI01, NRCCNA; às vezes com
+    // hífen, "NRSA-01"), sigla da raridade, número e, quase sempre, o nível
+    // (L1 a L5). São três trechos com hífen: o reHifen leria só "SE-001L5" e
+    // o daria ao Yu-Gi-Oh. Sai inteiro, como lido. A paralela imprime um
+    // losango antes da sigla, que o OCR não lê: ela e a comum saem com o
+    // mesmo código, e quem separa as duas é a arte.
+    const reKayou = /\bNR[A-Z]{1,6}-?\d{0,2}-[A-Z]{1,4}-\d{3}(?:L\d)?\b/g;
+    while ((m = reKayou.exec(resto))) { add(m[0], 3, m); tira(m); }
     // Final Fantasy TCG: número DUPLO das séries fora do Opus — a promo, o
     // Legacy Collection e o World Champion Decks imprimem o próprio número e o
     // da carta original ("PR-004/1-027H", "RE-001H/12-002H", "W24-005/23-104H").
@@ -455,7 +464,13 @@
     fftcg: [/SQUARE ?ENIX/],
     // Cardfight!! Vanguard: o nome do jogo no verso e no rodapé. "BUSHIROAD"
     // sozinho é do Weiss (a mesma editora); o formato do código desempata.
-    vanguard: [/VANGUARD/, /CARDFIGHT/]
+    vanguard: [/VANGUARD/, /CARDFIGHT/],
+    // Naruto Mythos TCG: o rodapé é "C 3/130  1° EDITION NARUTO MYTHOS TCG"
+    // (nas Legendary, "N. M. TCG"). O "NARUTO" bate no vintage e no de 2027
+    // também; o "MYTHOS" e a fração desempatam.
+    narutomythos: [/MYTHOS ?TCG/, /\bN\. ?M\. ?TCG\b/],
+    // Naruto Kayou: a marca vai impressa no verso e em mosaico na frente.
+    narutokayou: [/KAYOU/]
   };
   const FORMATOS = [
     [/^(OP|EB|PRB)\d{2}-/, ["onepiece"]],
@@ -497,10 +512,13 @@
     [/^(?:PR|RE|B|W\d{2})-\d{3}[CRHLS]?\/\d{1,2}-\d{3}[CRHLS]$/, ["fftcg"]],
     // Cardfight!! Vanguard: SET/NÚMERO com o "EN" no fim (2026-11-13).
     [/^[A-Z0-9]+(?:-[A-Z0-9]+)?\/[A-Z0-9+]*\d{2,4}[A-Z]?EN$/, ["vanguard"]],
-    // Fração: os cinco jogos que numeram "N/T". SWU e Harry Potter não
+    // Naruto Kayou: série, sigla da raridade e número (ver reKayou).
+    [/^NR[A-Z]{1,6}-?\d{0,2}-[A-Z]{1,4}-\d{3}/, ["narutokayou"]],
+    // Fração: os jogos que numeram "N/T" (o Naruto Mythos TCG entrou em
+    // 2026-11-12, "3/130"). SWU e Harry Potter não
     // estavam aqui, e a fração deles era filtrada pros outros três — só
     // achava se nenhum set de Pokémon/Lorcana/Riftbound tivesse o mesmo total.
-    [/^\d+[A-D]?\/\d+$/, ["pokemon", "lorcana", "riftbound", "swu", "harrypotter"]],
+    [/^\d+[A-D]?\/\d+$/, ["pokemon", "lorcana", "riftbound", "swu", "harrypotter", "narutomythos"]],
     // "SET NÚMERO": Magic ("MH3 123"), SWU ("JTL 760") e Riftbound ("RAD
     // 137"). Quem diz qual dos três é a pista impressa (Wizards, LFL/FFG,
     // RGI) ou o índice de sets do catálogo (ver indiceDeSets).

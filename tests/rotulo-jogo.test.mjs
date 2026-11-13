@@ -34,6 +34,8 @@ test("a chave sai do slug; as compostas vêm do mapa; jogo fora do registro cai 
   assert.equal(gameLabel("lorcana"), "filter.gameLorcana");
   assert.equal(gameLabel("narutocg"), "filter.gameNarutocg");
   assert.equal(gameLabel("narutoboruto"), "filter.gameNarutoboruto");
+  assert.equal(gameLabel("narutomythos"), "filter.gameNarutomythos");
+  assert.equal(gameLabel("narutokayou"), "filter.gameNarutokayou");
   assert.equal(gameLabel("palworld"), "filter.gamePalworld");
   assert.equal(gameLabel("onepiece"), "filter.gameOnePiece");
   assert.equal(gameLabel("harrypotter"), "filter.gameHarryPotter");
