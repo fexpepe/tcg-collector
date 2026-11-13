@@ -46,6 +46,9 @@ const NOMES_DO_JOGO = {
   // Naruto Boruto Card Game: o grupo do TCGplayer é "NB Tournament Pack
   // Cards"; o set fica sem a sigla do jogo na frente.
   narutoboruto: { nomes: ["Naruto Boruto", "NARUTO BORUTO", "Chrono Clash", "NB "] },
+  // Naruto Trading Cards: o set é o produto ("エッチングカードコレクション2",
+  // "トレーディングコレクション 忍術大全"), sem o "NARUTO-ナルト-" da frente.
+  narutotc: { nomes: ["Naruto", "NARUTO", "ナルト", "Trading Cards"] },
   // "疾風伝"/"Shippuden": a linha nrt-scg (2007–2008). Só a promo leva
   // "（疾風伝）", no fim, pra não ter o mesmo nome do set de 2002.
   naruto: { nomes: ["Naruto", "NARUTO", "ナルト", "Data Carddass", "データカードダス", "疾風伝", "Shippuden"] },

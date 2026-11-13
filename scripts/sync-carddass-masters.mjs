@@ -9,8 +9,8 @@
 // Cada IP tem fonte própria, então cada uma tem o seu bloco aqui (IPS, no
 // fim) e o seu snapshot (data/vintage/carddass-masters-<ip>.json, que só é
 // regravado quando não regride). Têm lista carta a carta o HUNTER×HUNTER
-// (2000–2001) e o 新世紀エヴァンゲリオン (1996–1997); IP nova entra como mais
-// um bloco.
+// (2000–2001), o 新世紀エヴァンゲリオン (1996–2011) e o filme de 2005 do
+// NARUTO; IP nova entra como mais um bloco.
 //
 // IDs: cdm-<ip>-<set>-<número impresso> (cdm-hxh-p1-29, cdm-hxh-p2-sp4). O
 // número é o que a Bandai imprimiu; o id não depende da ordem da fonte.
@@ -20,6 +20,8 @@
 import { readFileSync, existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { readGlobalVar, readSnapshot, writeSnapshot, snapshotCardCount, writeGameCatalog, sleep } from "./lib/sync-common.mjs";
+import { baixaLista, HINOKUNIAN } from "./lib/hinokunian-lista.mjs";
+import { nomeEn } from "./lib/naruto-nomes.mjs";
 
 const ROOT = new URL("../", import.meta.url);
 const UA = { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Sleevu/1.0 (+sleevu.app)" };
@@ -203,12 +205,16 @@ async function scansHxh() {
 }
 
 // Cartas de um set: da LISTA quando o set tem lista (o scan só põe imagem e
-// raridade), senão dos scans (Premium Edition, nome pelo personagem).
+// raridade); do snapshot com o nome que a fonte dá quando a IP tem `nomes` (o
+// filme do NARUTO: a fonte é uma lista, sem scan); senão dos scans (Premium
+// Edition, nome pelo personagem).
 export function cardsOfSet(ip, def, scans) {
   const porNum = new Map((scans || []).map((c) => [c.num, c]));
   const base = def.lista
     ? ip.lista[def.lista].map((l) => ({ num: l.n, en: l.en, ja: l.ja, scan: porNum.get(l.n) }))
-    : (scans || []).map((c) => ({ num: c.num, en: c.chars.length ? c.chars.slice(0, 2).join(" & ") : `Card ${c.num}`, ja: "", scan: c }));
+    : ip.nomes
+      ? (scans || []).map((c) => ({ num: c.num, ...ip.nomes(c), scan: c }))
+      : (scans || []).map((c) => ({ num: c.num, en: c.chars.length ? c.chars.slice(0, 2).join(" & ") : `Card ${c.num}`, ja: "", scan: c }));
   return base.map((c) => ({
     id: cardId(ip.ip, def.code, c.num),
     name: c.en,
@@ -359,6 +365,83 @@ async function scansEva() {
   return sets.length ? sets : null;
 }
 
+// ── 劇場版 NARUTO-ナルト- (2005) ────────────────────────────────────────────
+// CARDDASS MASTERS 劇場版 NARUTO 大激突!幻の地底遺跡だってばよ: a coleção do
+// segundo filme (estreia em 06/08/2005), a única do Naruto na linha que a
+// gente achou. 63 cartas: 54 normais (001–054) e 9 especiais (SP.1–SP.9), em
+// pacote de 10. Entrou em 2026-11-13, a pedido do Fernando (a linha do tempo
+// das cartas do Naruto).
+//
+// Fontes (conferidas em 2026-11-13):
+//   LISTA — 火の国庵, hinokunian.konohashigure.com/carddassmasters.html (site
+//           de fã, parado desde 2006; scripts/lib/hinokunian-lista.mjs diz o
+//           formato). Dá o número, o nome em japonês e o grupo de cada carta:
+//           001–009 o puzzle de nove cartas, 010–018 personagens do filme,
+//           019–036 os "story files", 037–045 as capas dos DVDs da série e
+//           046–054 as dos DJCDs. O resumo da página ("スペシャル ９種類,
+//           ノーマル ５４種類") bate com o parse, e o sync só aceita a página
+//           quando bate.
+//   FICHA — Card Check Box, cardcheckbox.com/a06a-bandai-3/
+//           cdm-naruto-movie-2005.html: Bandai, pacote de 10, "54種類＋α",
+//           numeração 001〜054.
+//   Não há página oficial arquivada (o carddas.com/cdmasters do Wayback só
+//   tem Gundam War, Chaos Gear e Baoh) nem imagem por carta em fonte aberta:
+//   TCDB, Mandarake, Suruga-ya, Coleka e eBay barram acesso automatizado
+//   (contrato 4 do docs/CATALOGO.md). Todas entram sem imagem.
+//
+// DATA: só o ano. O 火の国庵 diz "2005.9.2" e o Card Check Box "2005年8月
+// 下旬": as duas fontes não concordam nem no mês, e não há terceira. Fica
+// "2005", sem mês escolhido por nós.
+//
+// NOME: o japonês é o da fonte, como ela escreve. O inglês dos personagens sai
+// do mapa do Naruto (scripts/data/naruto-names-en.json, o mesmo das linhas do
+// jogo `naruto`); "Puzzle A" e "Story File 01" são transliteração nossa do
+// katakana (パズルA, ストーリーファイル０１).
+//
+// `prefix`: o título do filme é "劇場版 NARUTO-ナルト- 大激突!幻の地底遺跡
+// だってばよ", com o "劇場版" na frente da marca.
+export const SETS_NARUTO = [
+  { code: "m2", prefix: "劇場版 NARUTO-ナルト-", name: "大激突!幻の地底遺跡だってばよ", date: "2005", pagina: "carddassmasters" }
+];
+
+// Linha da página -> carta do snapshot. Número como a Bandai numerou a lista:
+// "001"…"054" (a fonte e o Card Check Box escrevem com três dígitos) e
+// "SP1"…"SP9" (a grafia das especiais em todo o jogo cdm; a fonte escreve
+// "SP.1").
+export function cartaNaruto(setCode, c) {
+  const sp = c.prefixo === "SP";
+  return {
+    set: setCode,
+    num: sp ? `SP${Number(c.num)}` : c.num,
+    rarity: sp ? "Special" : "Normal",
+    ja: c.nome,
+    grupo: sp ? "" : c.grupo,
+    img: ""
+  };
+}
+
+// Nome da carta nos dois idiomas, a partir do japonês da fonte.
+export function nomeNaruto(c) {
+  const ja = String(c.ja || "");
+  let m = ja.match(/^パズル([A-I])$/);
+  if (m) return { en: `Puzzle ${m[1]}`, ja };
+  m = ja.normalize("NFKC").match(/^ストーリーファイル(\d+)$/);
+  if (m) return { en: `Story File ${m[1]}`, ja };
+  return { en: nomeEn(ja) || ja, ja };
+}
+
+// Lista do 火の国庵 -> sets do snapshot, ou null se a página não respondeu ou
+// não confere com o próprio resumo (aí fica o snapshot versionado).
+async function listaNaruto() {
+  const sets = [];
+  for (const def of SETS_NARUTO) {
+    const lista = await baixaLista(def.pagina);
+    if (!lista) return null;
+    sets.push({ code: def.code, name: def.name, cards: lista.cartas.map((c) => cartaNaruto(def.code, c)) });
+  }
+  return sets;
+}
+
 // ── Registro das IPs ────────────────────────────────────────────────────────
 // `setPrefix`: como a IP abre o nome de cada set dela (o logo da série). O
 // groupCdmSets tira o equivalente em inglês dentro da seção da IP.
@@ -377,7 +460,13 @@ export const IPS = [
   { ip: "eva", setPrefix: "新世紀エヴァンゲリオン", sets: SETS_EVA, lista: LISTA_EVA, scans: scansEva,
     logo: "/assets/games/set_cdm_eva.webp",
     snap: new URL("data/vintage/carddass-masters-eva.json", ROOT),
-    source: "http://animecollection.fr/cartes.php?idl=20" }
+    source: "http://animecollection.fr/cartes.php?idl=20" },
+  // `nomes`: a fonte é uma lista com o nome (não scan nem transcrição nossa),
+  // então o nome sai do snapshot (cardsOfSet).
+  { ip: "naruto", setPrefix: "NARUTO-ナルト-", sets: SETS_NARUTO, scans: listaNaruto, nomes: nomeNaruto,
+    logo: "/assets/games/set_cdm_naruto.webp",
+    snap: new URL("data/vintage/carddass-masters-naruto.json", ROOT),
+    source: `${HINOKUNIAN}carddassmasters.html` }
 ];
 
 export const cardId = (ip, setCode, num) => `${ID_PREFIX}${ip}-${setCode}-${String(num).toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;

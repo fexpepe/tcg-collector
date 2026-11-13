@@ -101,7 +101,8 @@ const GAMES = [
   { slug: "cdm", label: "Carddass Masters" },
   { slug: "gcd", label: "Gundam Carddass" },
   { slug: "gw", label: "Gundam War" },
-  { slug: "narutoboruto", label: "Naruto Boruto Card Game" }
+  { slug: "narutoboruto", label: "Naruto Boruto Card Game" },
+  { slug: "narutotc", label: "Naruto Trading Cards" }
 ];
 
 // SEM piso de cartas por set, de propósito. Um piso (mesmo baixo, tipo 3)
@@ -677,7 +678,7 @@ const DECK_GAME_LABELS = {
   magic: "Magic: The Gathering", fab: "Flesh and Blood", gundam: "Gundam Card Game", swu: "Star Wars: Unlimited", cyberpunk: "Cyberpunk TCG", sorcery: "Sorcery: Contested Realm",
   dbfw: "Dragon Ball Fusion World", ygo: "Yu-Gi-Oh!", digimon: "Digimon Card Game",
   riftbound: "Riftbound", unionarena: "Union Arena", narutocg: "Naruto Card Game (2027)", naruto: "Naruto Card Game (2002~2006)",
-  hxh: "Hunter × Hunter", dbc: "Dragon Ball Carddass", dbz: "Dragon Ball Z CCG", wow: "World of Warcraft TCG", lotr: "The Lord of the Rings TCG", harrypotter: "Harry Potter TCG", weiss: "Weiß Schwarz", godzilla: "Godzilla Card Game", palworld: "Palworld Official Card Game", fftcg: "Final Fantasy TCG", vanguard: "Cardfight!! Vanguard", narutomythos: "Naruto Mythos TCG", narutokayou: "Naruto Kayou", mbc: "Miracle Battle Carddass", cdm: "Carddass Masters", gcd: "Gundam Carddass", gw: "Gundam War", narutoboruto: "Naruto Boruto Card Game"
+  hxh: "Hunter × Hunter", dbc: "Dragon Ball Carddass", dbz: "Dragon Ball Z CCG", wow: "World of Warcraft TCG", lotr: "The Lord of the Rings TCG", harrypotter: "Harry Potter TCG", weiss: "Weiß Schwarz", godzilla: "Godzilla Card Game", palworld: "Palworld Official Card Game", fftcg: "Final Fantasy TCG", vanguard: "Cardfight!! Vanguard", narutomythos: "Naruto Mythos TCG", narutokayou: "Naruto Kayou", mbc: "Miracle Battle Carddass", cdm: "Carddass Masters", gcd: "Gundam Carddass", gw: "Gundam War", narutoboruto: "Naruto Boruto Card Game", narutotc: "Naruto Trading Cards"
 };
 
 async function fetchPublicDecks() {

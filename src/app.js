@@ -17,7 +17,7 @@
     ygo: "game_ygo-v2.webp", digimon: "game_digimon-v2.webp", riftbound: "game_riftbound-v2.webp",
     unionarena: "game_unionarena-v2.webp", narutocg: "game_naruto_2027.webp", naruto: "game_naruto.webp", hxh: "game_hxh.webp",
     dbc: "game_dbc-v2.webp", wow: "game_wow.webp", lotr: "game_lotr.webp", dbz: "game_dbz.webp", weiss: "game_weiss.webp", godzilla: "game_godzilla.webp", palworld: "game_palworld.webp", fftcg: "game_fftcg.webp", vanguard: "game_vanguard.webp", narutomythos: "game_narutomythos.webp", narutokayou: "game_naruto.webp", harrypotter: "game_harrypotter.webp",
-    mbc: "game_mbc.webp", cdm: "game_cdm.webp", gcd: "game_gcd.webp", gw: "game_gw.webp", narutoboruto: "game_naruto_boruto.webp"
+    mbc: "game_mbc.webp", cdm: "game_cdm.webp", gcd: "game_gcd.webp", gw: "game_gw.webp", narutoboruto: "game_naruto_boruto.webp", narutotc: "game_naruto.webp"
   };
   function gameLogoUrl(game) {
     const f = GAME_LOGO[game];
@@ -1667,6 +1667,7 @@
       cdm: groupCdmSets,
       gcd: groupGundamCarddassSets,
       gw: groupGwSets,
+      narutotc: groupNarutoTradingSets,
       harrypotter: groupHarryPotterSets
     };
     return (porJogo[jogoAtual] || groupSetsByYear)(raizes);
@@ -2102,6 +2103,34 @@
     return items;
   }
 
+  // Naruto Trading Cards (jogo narutotc, 2026-11-13): não é jogo de mesa, são
+  // os produtos de pacote da Amada e da Ensky (a mesma empresa, que trocou de
+  // nome em 2005). Uma seção por PRODUTO, na ordem do primeiro lançamento, e
+  // dentro dela os volumes em ordem. O produto sai do setId (ntc-ecc1 é o
+  // Etching Card Collection, ntc-ntz1 a 忍術大全), fixado pelo
+  // sync-naruto-trading-cards.mjs. O nome em inglês da 忍術大全 leva o produto
+  // ("Trading Collection — Ninjutsu Taizen"); dentro da seção ele repete o
+  // cabeçalho e o tile cortava justo o "Ninjutsu Taizen", então aqui ele sai,
+  // como no groupNarutoDataCarddass.
+  function groupNarutoTradingSets(setItems) {
+    const PRODUTOS = [["sets.category.ntcEtching", /^ntc-ecc\d/, ""], ["sets.category.ntcTrading", /^ntc-ntz\d/, "Trading Collection — "]];
+    const produtoDe = (set) => PRODUTOS.findIndex(([, re]) => re.test(String(set.setId || "").trim().toLowerCase()));
+    const semProduto = (set, i) => {
+      const nome = String(set.displayName || ""), produto = PRODUTOS[i][2];
+      return produto && nome.indexOf(produto) === 0 ? Object.assign({}, set, { displayName: nome.slice(produto.length), nomeForaDaSecao: nome }) : set;
+    };
+    const items = [];
+    const section = (list, key) => {
+      if (!list.length) return;
+      items.push(cabecalhoDeSecao(key, list.length));
+      list.sort(sortByReleaseAsc).forEach((set) => items.push(set));
+    };
+    PRODUTOS.forEach(([key], i) => section(setItems.filter((s) => produtoDe(s) === i).map((s) => semProduto(s, i)), key));
+    // Rede de segurança: produto novo no sync sem seção aqui ainda aparece.
+    section(setItems.filter((s) => produtoDe(s) < 0), "sets.category.promos");
+    return items;
+  }
+
   // Gundam Carddass (jogo gcd, 1988–1997): uma seção por SÉRIE,
   // na ordem do SERIES do sync (o 本弾 primeiro, depois as séries de história
   // na ordem em que começaram), e as partes em ordem dentro dela. A série sai
@@ -2313,7 +2342,9 @@
   // confundirem as "Part 2" de várias séries); dentro da seção ela sai, como
   // no groupMbcSets.
   function groupCdmSets(setItems) {
-    const IPS = { eva: ["sets.category.cdmEva", "Neon Genesis Evangelion "], hxh: ["sets.category.cdmHxh", "Hunter × Hunter "] };
+    // Naruto sem prefixo a tirar: a coleção é a do filme, e "Naruto the Movie
+    // 2: …" é o título dele, não a IP na frente do nome do set.
+    const IPS = { eva: ["sets.category.cdmEva", "Neon Genesis Evangelion "], hxh: ["sets.category.cdmHxh", "Hunter × Hunter "], naruto: ["sets.category.cdmNaruto", ""] };
     const ipDe = (set) => (String(set.setId || "").toLowerCase().match(/^cdm-([a-z0-9]+)-/) || [])[1] || "";
     const semIp = (set) => {
       const nome = String(set.displayName || ""), ip = (IPS[ipDe(set)] || [])[1] || "";

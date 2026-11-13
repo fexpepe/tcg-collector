@@ -123,6 +123,7 @@ jobs:
             data/gcd/sets
             data/gw/sets
             data/narutoboruto/sets
+            data/narutotc/sets
             data/narutocg/sets
             data/godzilla/sets
             data/palworld/sets
@@ -172,7 +173,7 @@ jobs:
                    data/cdm/manifest.generated.js \
                    data/gcd/manifest.generated.js \
                    data/gw/manifest.generated.js \
-                   data/narutoboruto/manifest.generated.js \
+                   data/narutoboruto/manifest.generated.js                    data/narutotc/manifest.generated.js \
                    data/narutocg/manifest.generated.js \
                    data/godzilla/manifest.generated.js \
                    data/palworld/manifest.generated.js \
@@ -713,7 +714,8 @@ jobs:
       # HUNTER x HUNTER: lista impressa no verso das cartas, scans da
       # Hunterpedia com a frente recortada pela propria Fandom. Evangelion
       # (1996-1997): listas de um colecionador de 1998, scans do
-      # animecollection.fr. Cria data/cdm/ sozinho. Sem preco.
+      # animecollection.fr. NARUTO (filme de 2005): lista do hinokunian, sem
+      # imagem. Cria data/cdm/ sozinho. Sem preco.
       - name: Catalogo vintage Carddass Masters
         if: env.RODA_SYNC == 'true'
         run: node scripts/sync-carddass-masters.mjs || echo "sync-carddass-masters falhou; segue com o snapshot versionado"
@@ -862,6 +864,16 @@ jobs:
       # no cron seguinte, com a entrada da página Vintage já no ar.
       - name: Monta o catálogo do Naruto Boruto Card Game
         run: node scripts/sync-naruto-boruto.mjs --no-fetch || echo "sync-naruto-boruto falhou; segue com o catálogo versionado"
+
+      # Naruto Trading Cards (Amada/Ensky 2004–2005): o jogo vintage narutotc,
+      # as cartas de coleção japonesas (Etching Card Collection 1–3 e a
+      # 忍術大全), pela lista do 火の国庵 (site de fã parado desde 2006). Só do
+      # snapshot versionado (--no-fetch) e nos DOIS modos, como o Naruto Boruto
+      # acima: a lista é história encerrada, e sem o passo no build rápido o
+      # data/narutotc/sets/ viria do cache e o jogo só apareceria no cron
+      # seguinte, com a entrada da página Vintage já no ar.
+      - name: Monta o catálogo do Naruto Trading Cards
+        run: node scripts/sync-naruto-trading-cards.mjs --no-fetch || echo "sync-naruto-trading-cards falhou; segue com o catálogo versionado"
 
       # Nomes das cartas de Naruto: japonês -> inglês. DEPOIS dos syncs
       # que alimentam esse catálogo (o mapa fica num lugar só em vez de repetido
@@ -1027,6 +1039,7 @@ jobs:
             data/gcd/sets
             data/gw/sets
             data/narutoboruto/sets
+            data/narutotc/sets
             data/narutocg/sets
             data/godzilla/sets
             data/palworld/sets
