@@ -60,7 +60,10 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 | `narutocg` | Naruto Card Game (2027) | o NARUTO CARD GAME da Bandai, lançamento mundial em 2027: curadoria das promos de evento (a Chakra Card da Gen Con 2026, scan próprio) + TCGCSV cat. 93 quando a variável `NARUTO_TCGCSV_CATEGORY` está ligada. Foi a linha `nrt-ncg` do `naruto` até 2026-11-11; ids `nrt-ncg-` mantidos, `src/migra-mbc.js` leva a coleção de quem marcou e o histórico de preço é herdado do acervo do Naruto | USD |
 | `naruto` | Naruto Card Game | vintage Bandai 2002–2006 (tcg-db + TV Tokyo + cardcheckbox), Data Carddass (Card Battle, Mission, Formation e Cross), CCG americano (narutocards.ca) e o 疾風伝 Card Game 2007–2008 (listas oficiais da Bandai pelo Wayback, snapshot `data/vintage/naruto-shippuden.json`, quase sem imagem) | sem preço |
 | `hxh` | Hunter × Hunter | Carddass Hyper Battle 1999–2001 (Hunterpedia) | sem preço |
-| `dbc` | Dragon Ball Carddass | Carddass Bandai 1988–1997: Hondan, 特別弾, Super Battle, Visual Adventure e Super Barcode Wars, uma seção por série; número, raridade e scan do dbzcollection.fr (snapshot `data/vintage/dbc-dbzcollection.json`), nome do Hondan pelo 80storage (`data/vintage/dbc-carddass.json`) e, onde ele não chega, transcrito dos scans | sem preço |
+| `dbc` | Dragon Ball Carddass | Carddass Bandai 1988–1997: o 本弾 (Hondan) e o 特別弾; número, raridade e scan do dbzcollection.fr (snapshot `data/vintage/dbc-dbzcollection.json`), nome pelo 80storage (`data/vintage/dbc-carddass.json`) e, onde ele não chega, transcrito dos scans | sem preço |
+| `dbsb` | Dragon Ball Super Battle | Carddass Super Battle, Bandai 1991–1997, 20 partes. Mesmo sync e mesmas fontes do `dbc` (foi série dele até 2026-11-13; ids `dbc-sb…` mantidos, `src/migra-mbc.js` leva a coleção de quem marcou) | sem preço |
+| `dbva` | Dragon Ball Visual Adventure | Carddass Visual Adventure, Bandai 1991–1995, 8 coleções; idem (`dbc-va…`) | sem preço |
+| `dbbw` | Dragon Ball Super Barcode Wars | Carddass Super Barcode Wars, Bandai 1992–1993, 4 partes; idem (`dbc-bw…`) | sem preço |
 | `wow` | World of Warcraft TCG | TCGCSV cat. 13 (Upper Deck 2006–2010, Cryptozoic 2010–2013; vintage, só os sets que o TCGplayer lista, sem número de coleção e com scan de ~200 px; setId, nome e data fixos por groupId) | USD |
 | `lotr` | The Lord of the Rings TCG | Decipher 2001–2007: banco e scans originais do Player's Council (snapshot `data/vintage/lotr-pc.json`) | sem preço |
 | `dbz` | Dragon Ball Z CCG | Score 2000–2006: o CCG das 11 sagas, o GT TCG e o relançamento de 2005, com subsets e promos; galerias do retrodbzccg.com, nomes faltantes do kizmt/dbz-ccg-data e lidos no scan (snapshot `data/vintage/dbz-retro.json`) | sem preço |
@@ -414,7 +417,11 @@ primeiro lançamento. Têm fonte carta a carta o HUNTER×HUNTER e o
 [scripts/sync-dbc-carddass.mjs](scripts/sync-dbc-carddass.mjs), dois snapshots
 que nunca regridem e gravam o id: `data/vintage/dbc-dbzcollection.json` (todas as
 séries) e `data/vintage/dbc-carddass.json` (o Hondan do 80storage). Levantamento
-de 2026-11-12:
+de 2026-11-12. Desde 2026-11-13 cada série paralela é um jogo próprio — Super
+Battle (`dbsb`), Visual Adventure (`dbva`) e Super Barcode Wars (`dbbw`) —, com
+os mesmos ids e setIds; o sync é um só e grava os quatro catálogos, e os
+endereços de set que estiveram no ar sob `/games/dragon-ball-carddass` respondem
+301 pro jogo novo (`SETS_MUDARAM_DE_JOGO` em `functions/_lib/jogos.js`):
 
 | Série | Partes | Lançamento | Por parte | No catálogo |
 |---|---|---|---|---|
