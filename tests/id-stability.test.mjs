@@ -68,6 +68,8 @@ test("a exceção só vale pro formato <prefixo>-<productId> do próprio jogo", 
   assert.equal(ehIdDeProduto("gundam", "gzc-645821"), false);        // Godzilla Card Game, não Gundam
   assert.equal(ehIdDeProduto("fftcg", "fftcg-132375"), true);
   assert.equal(ehIdDeProduto("fftcg", "ff-132375"), false);
+  assert.equal(ehIdDeProduto("vanguard", "vg-727149"), true);
+  assert.equal(ehIdDeProduto("vanguard", "vanguard-727149"), false);
   assert.equal(ehIdDeProduto("narutocg", "nrt-ncg-512345"), true); // jogo próprio desde 11/11/2026
   assert.equal(ehIdDeProduto("naruto", "nrt-ncg-512345"), false);
   assert.equal(ehIdDeProduto("naruto", "nrt-ccg-ss-001"), false);   // checklist narutocards.ca
@@ -81,6 +83,25 @@ test("número diferente no mesmo set é aviso; nada mudou é ok", () => {
   assert.equal(classificaMudanca("fab", "fab-1", c("IAR", "1", "X"), c("IAR", "1", "X")), "ok");
   // idioma ausente conta como "en" dos dois lados (catálogo antigo sem o campo)
   assert.equal(classificaMudanca("fab", "fab-1", { setId: "IAR", number: "1", name: "X" }, c("IAR", "1", "X")), "ok");
+});
+
+test("espaço entre dois qualificadores não troca a carta (Runechant Marvel do FAB, 12/11/2026)", () => {
+  const c = (setId, set, number, name) => ({ setId, set, number, name, language: "en" });
+  const omn = (nome) => c("OMN", "Omens of the Third Age", "IAR156-MV", nome);
+  const iar = (numero, nome) => c("IAR", "Usurp the Shadow Throne", numero, nome);
+  // O TCGplayer mudou de grupo e pôs o espaço que faltava: mesmo produto.
+  assert.equal(classificaMudanca("fab", "fab-696177",
+    omn("Runechant of Sloth (Yellow)(Marvel)"), iar("IAR156-MV", "Runechant of Sloth (Yellow) (Marvel)")), "movido");
+  // Vale nos dois sentidos, e com mais de um espaço.
+  assert.equal(soMudouQualificador("Runechant of Sloth (Yellow)  (Marvel)", "Runechant of Sloth (Yellow)(Marvel)"), true);
+  // O que está DENTRO do parêntese continua valendo: outro qualificador, outro
+  // número ou outra carta seguem erro duro.
+  assert.equal(classificaMudanca("fab", "fab-696177",
+    omn("Runechant of Sloth (Yellow)(Marvel)"), iar("IAR156-MV", "Runechant of Sloth (Yellow) (Rainbow Foil)")), "repontado");
+  assert.equal(classificaMudanca("fab", "fab-696177",
+    omn("Runechant of Sloth (Yellow)(Marvel)"), iar("IAR157-MV", "Runechant of Sloth (Yellow) (Marvel)")), "repontado");
+  assert.equal(classificaMudanca("fab", "fab-696177",
+    omn("Runechant of Sloth (Yellow)(Marvel)"), iar("IAR156-MV", "Runechant of Wrath (Yellow) (Marvel)")), "repontado");
 });
 
 test("qualificador que só repete o número ou o nome do set não troca a carta (runas do Vendetta, 11/11/2026)", () => {

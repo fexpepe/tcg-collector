@@ -120,6 +120,9 @@ test("mapCsvGame: os 13 jogos, nas grafias do Collectr/TCGplayer", () => {
   assert.equal(api.mapCsvGame("SD Gundam Carddass"), "gcd");
   // Gundam War (1999–2011) também vem antes do "gundam" genérico.
   assert.equal(api.mapCsvGame("Gundam War"), "gw");
+  // Jogo próprio desde 2026-11-13 (antes cairia no Naruto vintage).
+  assert.equal(api.mapCsvGame("Naruto Boruto Card Game"), "narutoboruto");
+  assert.equal(api.mapCsvGame("Chrono Clash System"), "narutoboruto");
   assert.equal(api.mapCsvGame("Gundam Card Game"), "gundam");
   // TCGplayer escreve "Weiss Schwarz"; quem digita o nome alemão, "Weiß Schwarz".
   assert.equal(api.mapCsvGame("Weiss Schwarz"), "weiss");
@@ -127,6 +130,8 @@ test("mapCsvGame: os 13 jogos, nas grafias do Collectr/TCGplayer", () => {
   assert.equal(api.mapCsvGame("Godzilla Card Game"), "godzilla");
   assert.equal(api.mapCsvGame("Final Fantasy TCG"), "fftcg");
   assert.equal(api.mapCsvGame("Final Fantasy Trading Card Game"), "fftcg");
+  assert.equal(api.mapCsvGame("Cardfight Vanguard"), "vanguard");
+  assert.equal(api.mapCsvGame("Cardfight!! Vanguard"), "vanguard");
   assert.equal(api.mapCsvGame("Magic: The Gathering"), "magic");
 });
 

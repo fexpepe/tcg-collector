@@ -25,9 +25,9 @@
   "imgPct": 100
  },
  "naruto": {
-  "cards": 7432,
+  "cards": 7530,
   "sets": 112,
-  "imgPct": 80
+  "imgPct": 81
  },
  "hxh": {
   "cards": 283,
@@ -153,6 +153,16 @@
   "cards": 5700,
   "sets": 38,
   "imgPct": 100
+ },
+ "vanguard": {
+  "cards": 26438,
+  "sets": 268,
+  "imgPct": 100
+ },
+ "narutoboruto": {
+  "cards": 97,
+  "sets": 1,
+  "imgPct": 29
  },
  "narutomythos": {
   "cards": 646,

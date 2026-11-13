@@ -30,6 +30,13 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
 - Naruto Kayou (`narutokayou`) **não tem arquivo próprio**: o site oficial da
   Kayou usa o logo do Naruto em toda série (o SVG de cada página de série é só
   ele), então o jogo aponta pro `game_naruto.webp`, e o nome vai em texto.
+- `game_naruto_boruto.webp` — Naruto Boruto Card Game (jogo `narutoboruto`, 13/11/2026):
+  o logo do site oficial do Chrono Clash System, no Wayback
+  (`chronoclashsystem.com/images/product/naruto/common/img_logo.png`, captura
+  20220223125309), PNG de 506×305 já com fundo transparente (Naruto, Boruto e
+  Naruto adulto em cima do letreiro). Sem recorte: só ampliado pra 512×309 em
+  alfa pré-multiplicado, alfa ≤12 zerado, WebP q90 com alfa sem perda (62 KB).
+  Vai na página Vintage, no "Sobre" e no `setLogo` do set da linha.
 - `game_onepiece_2002.webp` — One Piece Card Game de 2002–2005 (linha
   `op2002`: tile vintage do hub, parede da landing e página /games). É a placa
   "From TV animation / ONE PIECE (ワンピース)" do verso de madeira das cartas.
@@ -131,6 +138,12 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
   transparente, recortado no conteúdo (+2px), alfa ≤12 zerado e reduzido pra
   512×182 com o Pillow em alfa pré-multiplicado. WebP com perda q88 e alfa
   sem perda: 34 KB.
+- `game_vanguard.webp` — Cardfight!! Vanguard (tile da grade moderna do hub,
+  depois do Final Fantasy, 2026-11-13). Fonte enviada pelo Fernando no mesmo
+  dia: PNG de 600×269 com alfa, o logo "CARDFIGHT!! Vanguard overDress"
+  (vermelho com contorno prateado). Trocou o do cabeçalho do site oficial
+  (`vg_logo_en.png`, 474×211), menor e sem o prateado. Sem recorte nem
+  redimensionamento; WebP sem perda pelo ffmpeg, 56 KB.
 - `game_fftcg.webp` — Final Fantasy TCG (19º tile da grade moderna do hub,
   depois do Palworld, 2026-11-11). Fonte: o logo do cabeçalho do site
   oficial (`fftcg.square-enix-games.com/theme/fftcg/images/large-fftcg-logo.png`,

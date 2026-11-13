@@ -322,13 +322,12 @@
     "gcd-sd02": "SD Gundam Seiden Quest Two — The Strongest Fighter",
     "gcd-gg01": "Mobile Fighter G Gundam",
     // ---- Dragon Ball Carddass (sync-dbc-carddass.mjs): as 30 partes do Hondan
-    // e o 特別弾 que fechou a linha (dbc-h31, set/1997 — não há "Part 31"),
-    // inclusive as que o 80storage ainda não publicou (o sync pega sozinho quando
-    // sair). Super Battle, Visual Adventure e Super Barcode Wars ficam de fora de
-    // propósito: nenhuma fonte acessível lista essas séries carta a carta, então
-    // elas não geram set nenhum, e 32 nomes mortos aqui estouravam o teto do
-    // check-size (2026-09-30). Os nomes delas continuam no SETS do sync
-    // (setNameEn); entram aqui junto com a fonte, se um dia houver.
+    // e o 特別弾 que fechou a linha (dbc-h31, set/1997 — não há "Part 31"), a
+    // Super Battle, a Visual Adventure e a Super Barcode Wars. As três séries
+    // entraram em 2026-11-12, com a fonte carta a carta (dbzcollection.fr); até
+    // ali não geravam set e ficavam fora daqui. É o setNameEn do sync, travado
+    // no tests/dbc-carddass.test.mjs. Com a série na frente: a página de Sets
+    // tira o prefixo dentro da seção (groupDbcSets).
     "dbc-h01": "Hondan Part 1 — Great Martial Arts Showdown",
     "dbc-h02": "Hondan Part 2 — World Martial Arts Tournament",
     "dbc-h03": "Hondan Part 3 — Fierce Battle! The Saiyans",
@@ -354,12 +353,44 @@
     "dbc-h23": "Hondan Part 23 — Ultimate Merge! Super Vegito Arrives",
     "dbc-h24": "Hondan Part 24 — And On to a Distant Battle (Part 1)",
     "dbc-h25": "Hondan Part 25 — And On to a Distant Battle (Part 2)",
-    "dbc-h26": "Hondan Part 26",
-    "dbc-h27": "Hondan Part 27",
-    "dbc-h28": "Hondan Part 28",
-    "dbc-h29": "Hondan Part 29",
-    "dbc-h30": "Hondan Part 30",
-    "dbc-h31": "Hondan Special Part"
+    "dbc-h26": "Hondan Part 26 — Departure! On a New Adventure",
+    "dbc-h27": "Hondan Part 27 — Explosion! Super Saiyan!!",
+    "dbc-h28": "Hondan Part 28 — Invasion! The Super Life-Form",
+    "dbc-h29": "Hondan Part 29 — Super Saiyan 4 Unleashed!!",
+    "dbc-h30": "Hondan Part 30 — Emergence! The Ultimate Enemy, the Dragon Balls!?",
+    "dbc-h31": "Hondan Special Part",
+    "dbc-sb01": "Super Battle Part 1",
+    "dbc-sb02": "Super Battle Part 2",
+    "dbc-sb03": "Super Battle Part 3",
+    "dbc-sb04": "Super Battle Part 4",
+    "dbc-sb05": "Super Battle Part 5",
+    "dbc-sb06": "Super Battle Part 6",
+    "dbc-sb07": "Super Battle Part 7",
+    "dbc-sb08": "Super Battle Part 8",
+    "dbc-sb09": "Super Battle Part 9",
+    "dbc-sb10": "Super Battle Part 10",
+    "dbc-sb11": "Super Battle Part 11",
+    "dbc-sb12": "Super Battle Part 12",
+    "dbc-sb13": "Super Battle Part 13",
+    "dbc-sb14": "Super Battle Part 14",
+    "dbc-sb15": "Super Battle Part 15",
+    "dbc-sb16": "Super Battle Part 16",
+    "dbc-sb17": "Super Battle Part 17",
+    "dbc-sb18": "Super Battle Part 18",
+    "dbc-sb19": "Super Battle Part 19",
+    "dbc-sb20": "Super Battle Part 20",
+    "dbc-va01": "Visual Adventure Part 1",
+    "dbc-va02": "Visual Adventure Part 2",
+    "dbc-va03": "Visual Adventure Part 3",
+    "dbc-va04": "Visual Adventure Part 4",
+    "dbc-va05": "Visual Adventure Part 5",
+    "dbc-va06": "Visual Adventure Special",
+    "dbc-va07": "Visual Adventure '95",
+    "dbc-va08": "Visual Adventure '95 EX",
+    "dbc-bw01": "Super Barcode Wars Part 1",
+    "dbc-bw02": "Super Barcode Wars Part 2",
+    "dbc-bw03": "Super Barcode Wars Part 3",
+    "dbc-bw04": "Super Barcode Wars Part 4"
   };
 
   // Sets JAPONESES do Pokémon: mesma regra dos vintages acima, mas aqui o mapa

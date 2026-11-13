@@ -304,6 +304,13 @@ test("Bandai moderno: coleção numerada, boosters extras, decks e promos, pelo 
   assert.deepEqual(secoesBandai("fftcg", ["OP1", "OP30", "RE", "ST27", "BDC", "BD7", "PR", "W24", "DEC"]), {
     main: ["OP1", "OP30"], extraBoosters: ["RE"], decks: ["BD7", "BDC", "ST27"], promos: ["DEC", "PR", "W24"]
   });
+  // Cardfight!! Vanguard (Bushiroad, cinco eras): os Booster Sets de todas
+  // elas são os principais; extras, decks e promos pelo código, com ou sem o
+  // prefixo da era.
+  assert.deepEqual(secoesBandai("vanguard", ["BT01", "G-BT14", "DZ-BT16", "EB12", "V-SS10", "DZ-TBP01", "D-VS06", "TD17", "G-LD03", "D-TTD03", "DZ-PS03", "PR", "D-PR", "V-GM", "EVENT", "KA1-2"]), {
+    main: ["BT01", "DZ-BT16", "G-BT14"], extraBoosters: ["D-VS06", "DZ-TBP01", "EB12", "V-SS10"],
+    decks: ["D-TTD03", "DZ-PS03", "G-LD03", "TD17"], promos: ["D-PR", "EVENT", "KA1-2", "PR", "V-GM"]
+  });
 });
 
 // Cartão sem chip na Bandai (2026-11-12): pre-release, release event e torneio

@@ -157,6 +157,8 @@ await checkCatalog("cards Godzilla", "/data/godzilla/cards.js", "TCG_CARDS", 700
 // Palworld: 647 cartas no lançamento do catálogo (11/11/2026).
 await checkCatalog("cards Palworld", "/data/palworld/cards.js", "TCG_CARDS", 500);
 await checkCatalog("cards Final Fantasy", "/data/fftcg/cards.js", "TCG_CARDS", 4500);
+// Vanguard: 26.438 cartas no lançamento do catálogo (13/11/2026).
+await checkCatalog("cards Vanguard", "/data/vanguard/cards.js", "TCG_CARDS", 22000);
 // Naruto Mythos TCG: 646 cartas no lançamento do catálogo (12/11/2026); sem preço.
 await checkCatalog("cards Naruto Mythos", "/data/narutomythos/cards.js", "TCG_CARDS", 550);
 // Naruto Kayou (edição em inglês): 1.188 cartas no lançamento do catálogo (12/11/2026); sem preço.
@@ -165,6 +167,8 @@ await checkCatalog("cards Miracle Battle Carddass", "/data/mbc/cards.js", "TCG_C
 await checkCatalog("cards Carddass Masters", "/data/cdm/cards.js", "TCG_CARDS", 250);
 await checkCatalog("cards Gundam Carddass", "/data/gcd/cards.js", "TCG_CARDS", 1200);
 await checkCatalog("cards Gundam War", "/data/gw/cards.js", "TCG_CARDS", 6000);
+// Naruto Boruto Card Game: 97 cartas (as Tournament Pack Cards), 13/11/2026; história encerrada.
+await checkCatalog("cards Naruto Boruto", "/data/narutoboruto/cards.js", "TCG_CARDS", 90);
 // Yu-Gi-Oh! não tem cards.js em produção (chunk-only, padrão Magic) — só o pricing.
 await checkJson("chunk Pokémon (base1)", "/data/sets/en/base1.json",
   (j) => Array.isArray(j) && j.length >= 100 ? null : "chunk vazio/curto");
@@ -192,7 +196,8 @@ await checkCatalog("pricing Naruto Card Game", "/data/narutocg/pricing.generated
 await checkCatalog("pricing Godzilla", "/data/godzilla/pricing.generated.js", "TCG_PRICING", 650);
 await checkCatalog("pricing Palworld", "/data/palworld/pricing.generated.js", "TCG_PRICING", 350);
 await checkCatalog("pricing Final Fantasy", "/data/fftcg/pricing.generated.js", "TCG_PRICING", 4500);
-for (const [label, dir] of [["Pokémon", "/data/"], ["Lorcana", "/data/lorcana/"], ["One Piece", "/data/onepiece/"], ["Magic", "/data/magic/"], ["FAB", "/data/fab/"], ["Gundam", "/data/gundam/"], ["Star Wars Unlimited", "/data/swu/"], ["Cyberpunk", "/data/cyberpunk/"], ["Sorcery", "/data/sorcery/"], ["Dragon Ball Fusion", "/data/dbfw/"], ["Yu-Gi-Oh", "/data/ygo/"], ["Digimon", "/data/digimon/"], ["Riftbound", "/data/riftbound/"], ["Union Arena", "/data/unionarena/"], ["World of Warcraft", "/data/wow/"], ["Weiß Schwarz", "/data/weiss/"], ["Naruto Card Game", "/data/narutocg/"], ["Godzilla", "/data/godzilla/"], ["Palworld", "/data/palworld/"], ["Final Fantasy", "/data/fftcg/"]]) {
+await checkCatalog("pricing Vanguard", "/data/vanguard/pricing.generated.js", "TCG_PRICING", 20000);
+for (const [label, dir] of [["Pokémon", "/data/"], ["Lorcana", "/data/lorcana/"], ["One Piece", "/data/onepiece/"], ["Magic", "/data/magic/"], ["FAB", "/data/fab/"], ["Gundam", "/data/gundam/"], ["Star Wars Unlimited", "/data/swu/"], ["Cyberpunk", "/data/cyberpunk/"], ["Sorcery", "/data/sorcery/"], ["Dragon Ball Fusion", "/data/dbfw/"], ["Yu-Gi-Oh", "/data/ygo/"], ["Digimon", "/data/digimon/"], ["Riftbound", "/data/riftbound/"], ["Union Arena", "/data/unionarena/"], ["World of Warcraft", "/data/wow/"], ["Weiß Schwarz", "/data/weiss/"], ["Naruto Card Game", "/data/narutocg/"], ["Godzilla", "/data/godzilla/"], ["Palworld", "/data/palworld/"], ["Final Fantasy", "/data/fftcg/"], ["Vanguard", "/data/vanguard/"]]) {
   await checkJson(`deltas ${label}`, `${dir}price-deltas.generated.json`,
     (j) => j && typeof j === "object" && "c" in j ? null : "sem campo c");
   // Janela de 7 dias: é a que o aviso de queda da wishlist lê. Sem ela o push

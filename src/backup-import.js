@@ -141,12 +141,16 @@
     if (flat.includes("unionarena")) return "unionarena";
     // "Palworld OFFICIAL CARD GAME" (a linha do TCGplayer) ou só "Palworld".
     if (flat.includes("palworld")) return "palworld";
+    // "Naruto Card Game" é a linha do TCGplayer do jogo de 2027 (narutocg): o
+    // vintage de 2002 não está no TCGplayer. O resto fica no
+    // naruto, como antes.
+    // "Naruto Boruto Card Game" (o jogo do Chrono Clash System, 2019–2020): jogo
+    // próprio desde 2026-11-13, antes da regra geral do Naruto.
+    if (flat.includes("narutoboruto") || flat.includes("chronoclash")) return "narutoboruto";
     // "Naruto Kayou" (como o Collectr chama) e "Naruto Mythos TCG": jogos
     // próprios desde 2026-11-12, antes da regra geral do Naruto.
     if (flat.includes("kayou")) return "narutokayou";
     if (flat.includes("mythos")) return "narutomythos";
-    // "Naruto Card Game" é a linha do TCGplayer do jogo de 2027 (narutocg): o
-    // vintage de 2002 não está no TCGplayer. O resto fica no naruto, como antes.
     if (flat === "narutocardgame" || flat === "narutocg") return "narutocg";
     if (flat.includes("naruto")) return "naruto";
     if (flat.includes("hunter") || flat === "hxh") return "hxh";
@@ -161,6 +165,8 @@
     // "Final Fantasy TCG" no TCGplayer e no Collectr. Só o nome do JOGO: o set
     // "Final Fantasy" do Magic chega com a coluna de jogo "Magic".
     if (flat.includes("finalfantasy") || flat === "fftcg") return "fftcg";
+    // "Cardfight Vanguard" no TCGplayer e "Cardfight!! Vanguard" no Collectr.
+    if (flat.includes("vanguard")) return "vanguard";
     if (flat.includes("harrypotter")) return "harrypotter";
     if (flat.includes("pok")) return "pokemon";
     return ""; // desconhecido: tenta todos

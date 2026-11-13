@@ -186,6 +186,19 @@
       add(base, 3, m);
       tira(m);
     }
+    // Cardfight!! Vanguard (2026-11-13): SET/NÚMERO + "EN" — "BT01/046EN",
+    // "DZ-BT16/001EN", "D-PR/184EN". A paralela leva a raridade ANTES do
+    // número e é parte do código ("V-BT02/SP01EN", "DZ-TBP01/GBPR+01EN",
+    // "V-TB01/048fEN"): cada uma é carta própria no catálogo. Sai inteiro e
+    // antes do reHifen, que leria só o "DZ-BT16" e o daria pro Digimon. O
+    // "EN" do fim é o que separa do Weiss (TÍTULO/LADO-NÚMERO, lido acima).
+    const reVG = /\b([A-Z0-9]+(?:-[A-Z0-9]+)?)\/([A-Z0-9+]*?)([0-9OIL]{2,4})([A-Z]?)EN\b/g;
+    while ((m = reVG.exec(resto))) {
+      const d = soDigitos(m[3]);
+      if (!/^\d+$/.test(d) || !/[A-Z]/.test(m[1])) continue;
+      add(`${m[1]}/${m[2]}${d}${m[4]}EN`, 3, m);
+      tira(m);
+    }
     // Palworld OFFICIAL CARD GAME (2026-11-11): "<OSR> EBP01-001OSR". O E da
     // frente é a edição inglesa; o set é BP (booster), TD (trial deck), SS
     // (sleeve set), PR (promo) ou SOUL; e a raridade PARALELA vem grudada no
@@ -421,6 +434,11 @@
     // O de 2027 imprime a mesma marca que o vintage: os dois empatam e a busca
     // vai nos dois (sem a pista, a carta nova era filtrada pro vintage).
     narutocg: [/NARUTO/, /KISHIMOTO/],
+    // Naruto Boruto Card Game (Chrono Clash System, 2019–2020): o rodapé é
+    // "©2002 MASASHI KISHIMOTO / 2017 BORUTO". O KISHIMOTO bate nos outros
+    // dois; o BORUTO e o formato do código (NB02-48) desempatam. Sem a pista,
+    // a carta era filtrada pro vintage e pro jogo de 2027 e não era achada.
+    narutoboruto: [/BORUTO/],
     hxh: [/HUNTER/, /TOGASHI/],
     // Jogos que entraram no catálogo depois do scanner e não tinham pista
     // nenhuma (2026-11-10): 11 dos 24 jogos. Só o que a carta IMPRIME em
@@ -444,6 +462,9 @@
     // Final Fantasy TCG: "© SQUARE ENIX" no rodapé. O "Final Fantasy" não
     // entra: é nome de set do Magic (Universes Beyond) também.
     fftcg: [/SQUARE ?ENIX/],
+    // Cardfight!! Vanguard: o nome do jogo no verso e no rodapé. "BUSHIROAD"
+    // sozinho é do Weiss (a mesma editora); o formato do código desempata.
+    vanguard: [/VANGUARD/, /CARDFIGHT/],
     // Naruto Mythos TCG: o rodapé é "C 3/130  1° EDITION NARUTO MYTHOS TCG"
     // (nas Legendary, "N. M. TCG"). O "NARUTO" bate no vintage e no de 2027
     // também; o "MYTHOS" e a fração desempatam.
@@ -466,6 +487,10 @@
     // "©B.S./S., T.A", e o OCR não lê) e toda leitura ia até a carta inteira.
     // Dígitos exigidos: o Yu-Gi-Oh tem sets "SB" com letra (SBAD-EN001).
     [/^SB\d{2}-\d{3}$/, ["dbfw"]],
+    // Naruto Boruto Card Game: "NB02-48-EB" (set, número de dois dígitos e o
+    // tipo: B, A ou EB). O extrair devolve "NB02-48"; nenhum outro jogo usa
+    // dois dígitos depois de "NB0x-".
+    [/^NB\d{2}-\d{2}$/, ["narutoboruto"]],
     [/^[A-Z0-9]{2,4}-[A-Z]{2}\d{3}/, ["ygo"]],
     [/^U[EP][A-Z0-9]{2,5}\//, ["unionarena"]],
     [/^[A-Z0-9]{2,4}\/(?:EN-)?[SW][A-Z]{0,2}\d{2,3}-/, ["weiss"]],
@@ -485,12 +510,14 @@
     [/^\d{1,2}-\d{3}[CRHLS]$/, ["fftcg"]],
     [/^(?:PR|RE|B|W\d{2})-\d{3}$/, ["fftcg"]],
     [/^(?:PR|RE|B|W\d{2})-\d{3}[CRHLS]?\/\d{1,2}-\d{3}[CRHLS]$/, ["fftcg"]],
+    // Cardfight!! Vanguard: SET/NÚMERO com o "EN" no fim (2026-11-13).
+    [/^[A-Z0-9]+(?:-[A-Z0-9]+)?\/[A-Z0-9+]*\d{2,4}[A-Z]?EN$/, ["vanguard"]],
     // Naruto Kayou: série, sigla da raridade e número (ver reKayou).
     [/^NR[A-Z]{1,6}-?\d{0,2}-[A-Z]{1,4}-\d{3}/, ["narutokayou"]],
-    // Fração: os jogos que numeram "N/T". SWU e Harry Potter não
+    // Fração: os jogos que numeram "N/T" (o Naruto Mythos TCG entrou em
+    // 2026-11-12, "3/130"). SWU e Harry Potter não
     // estavam aqui, e a fração deles era filtrada pros outros três — só
     // achava se nenhum set de Pokémon/Lorcana/Riftbound tivesse o mesmo total.
-    // O Naruto Mythos TCG entrou em 2026-11-12 ("3/130").
     [/^\d+[A-D]?\/\d+$/, ["pokemon", "lorcana", "riftbound", "swu", "harrypotter", "narutomythos"]],
     // "SET NÚMERO": Magic ("MH3 123"), SWU ("JTL 760") e Riftbound ("RAD
     // 137"). Quem diz qual dos três é a pista impressa (Wizards, LFL/FFG,

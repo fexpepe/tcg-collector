@@ -96,6 +96,9 @@ const JOGOS = {
   // Final Fantasy TCG (2026-11-11): 1-001H dos Opus e o número duplo das
   // séries fora do Opus (PR-004/1-027H, Re-001H/12-002H). Mediu 99,2 %.
   fftcg: { min: 0.97, nota: "sobram os números que a fonte grava torto (PR--161/16-058R, PR071/007H)" },
+  // Cardfight!! Vanguard (2026-11-13): SET/NÚMERO + EN, com a raridade da
+  // paralela antes do número (DZ-BT16/001EN, V-BT02/SP01EN).
+  vanguard: { min: 0.95, nota: "sobram os números sem o EN no fim ou com ano (VG-2020/TOYOU, V-PR/0209EN 2022)" },
   // Naruto Mythos TCG (2026-11-12): o rodapé é "C 3/130  1° EDITION NARUTO
   // MYTHOS TCG", com o número sem os zeros da frente.
   narutomythos: { min: 0.93, impresso: (c) => `${String(c.number).replace(/^0+(?=\d)/, "")}  1° EDITION NARUTO MYTHOS TCG`, nota: "sobram as Mission (MSS 05), que não numeram em fração" },
@@ -110,6 +113,9 @@ const JOGOS = {
   cdm: { semCodigo: "Carddass Masters: número solto, sem set impresso" },
   gcd: { semCodigo: "Gundam Carddass: número solto, sem set impresso" },
   gw: { semCodigo: "Gundam War: número por cor (cada cor tem seu U-1), sem set impresso" },
+  // Naruto Boruto Card Game (2026-11-13): o código impresso é "NB02-48-EB"
+  // (set, número e tipo). A carta de torneio e a da caixa imprimem o MESMO.
+  narutoboruto: { min: 0.98, impresso: (c) => `©2002 MASASHI KISHIMOTO / 2017 BORUTO All Rights Reserved. ©BANDAI NOT FOR SALE ${c.number}` },
   mbc: { semCodigo: "Miracle Battle Carddass: número solto" },
   hxh: { semCodigo: "número curto (C01), repetido entre os sets" },
   cyberpunk: { semCodigo: "número solto (001), repetido em todo set" }

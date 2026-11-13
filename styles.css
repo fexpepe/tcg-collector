@@ -469,9 +469,22 @@
   --accent: #3a5ba0; --accent-dark: #314d88; --accent-rgb: 58, 91, 160;
   --accent-soft: rgba(58, 91, 160, 0.1); --on-accent: #ffffff;
 }
+/* Cardfight!! Vanguard: CORAL, o vermelho do logo clareado pra não colar no
+   Pokémon (13/11/2026). Coral com texto escuro no escuro (7.0:1); um carmim
+   fechado com texto branco no claro (5.9:1). */
+[data-game-accent="vanguard"] {
+  --accent: #ff5a7a; --accent-dark: #f04468; --accent-rgb: 255, 90, 122;
+  --accent-soft: rgba(255, 90, 122, 0.16); --on-accent: #0a0c10;
+}
+[data-theme="light"][data-game-accent="vanguard"],
+[data-theme="light"] [data-game-accent="vanguard"] {
+  --accent: #c2264b; --accent-dark: #a81f40; --accent-rgb: 194, 38, 75;
+  --accent-soft: rgba(194, 38, 75, 0.1); --on-accent: #ffffff;
+}
 /* Naruto Mythos TCG: OURO CLARO, a folha de ouro 22K da Legendary (confirmada
-   pelo Fernando em 12/11/2026). No escuro, com texto escuro (16:1); no claro o ouro some no
-   branco, então o accent fecha pro âmbar-terra #92400e (7.1:1 com branco). */
+   pelo Fernando em 12/11/2026). No escuro, com texto escuro (16:1); no claro
+   o ouro some no branco, então o accent fecha pro âmbar-terra #92400e (7.1:1
+   com branco). */
 [data-game-accent="narutomythos"] {
   --accent: #fde68a; --accent-dark: #fcd34d; --accent-rgb: 253, 230, 138;
   --accent-soft: rgba(253, 230, 138, 0.16); --on-accent: #0a0c10;
@@ -481,18 +494,17 @@
   --accent: #92400e; --accent-dark: #78350f; --accent-rgb: 146, 64, 14;
   --accent-soft: rgba(146, 64, 14, 0.1); --on-accent: #ffffff;
 }
-/* Naruto Kayou: CORAL, o vermelho da marca aberto pra não encostar no Pokémon
-   (confirmada pelo Fernando em 12/11/2026). No escuro, com texto escuro
-   (7.8:1); no claro
-   fecha pro #be123c (6.3:1 com branco). */
+/* Naruto Kayou: MAGENTA (proposta de 13/11/2026). O coral confirmado em 12/11
+   ficou colado no do Vanguard, que entrou no dia seguinte. No escuro, com
+   texto escuro (6.1:1); no claro fecha pro #86198f (9.1:1 com branco). */
 [data-game-accent="narutokayou"] {
-  --accent: #fb7185; --accent-dark: #f43f5e; --accent-rgb: 251, 113, 133;
-  --accent-soft: rgba(251, 113, 133, 0.16); --on-accent: #0a0c10;
+  --accent: #d946ef; --accent-dark: #c026d3; --accent-rgb: 217, 70, 239;
+  --accent-soft: rgba(217, 70, 239, 0.16); --on-accent: #0a0c10;
 }
 [data-theme="light"][data-game-accent="narutokayou"],
 [data-theme="light"] [data-game-accent="narutokayou"] {
-  --accent: #be123c; --accent-dark: #9f1239; --accent-rgb: 190, 18, 60;
-  --accent-soft: rgba(190, 18, 60, 0.1); --on-accent: #ffffff;
+  --accent: #86198f; --accent-dark: #701a75; --accent-rgb: 134, 25, 143;
+  --accent-soft: rgba(134, 25, 143, 0.1); --on-accent: #ffffff;
 }
 /* Miracle Battle Carddass: o laranja-dourado do logo, num tom PÊSSEGO pra não
    repetir o Naruto, que tem carta dentro dele (01/10/2026). Pêssego claro com
@@ -529,6 +541,18 @@
 [data-theme="light"] [data-game-accent="gcd"] {
   --accent: #4d7c0f; --accent-dark: #3f6212; --accent-rgb: 77, 124, 15;
   --accent-soft: rgba(77, 124, 15, 0.1); --on-accent: #ffffff;
+}
+/* Naruto Boruto Card Game: ROSA, o "BORUTO" do logo (proposta de 13/11/2026).
+   No escuro, com texto escuro (11.6:1); no claro o rosa some no branco, então
+   o accent fecha pro #9d174d (8.4:1 com branco). */
+[data-game-accent="narutoboruto"] {
+  --accent: #f9a8d4; --accent-dark: #f472b6; --accent-rgb: 249, 168, 212;
+  --accent-soft: rgba(249, 168, 212, 0.16); --on-accent: #0a0c10;
+}
+[data-theme="light"][data-game-accent="narutoboruto"],
+[data-theme="light"] [data-game-accent="narutoboruto"] {
+  --accent: #9d174d; --accent-dark: #831843; --accent-rgb: 157, 23, 77;
+  --accent-soft: rgba(157, 23, 77, 0.1); --on-accent: #ffffff;
 }
 /* Gundam War: TURQUESA, a cor do GAME_COLOR (11/11/2026; o jogo não tem cor de
    marca, o azul é do Gundam Card Game e a lima do Gundam Carddass). Turquesa
@@ -855,6 +879,30 @@ main {
 /* O item-toggle do grupo-hover (Coleção) é um LINK igual aos vizinhos; o gap é
    só pro caret ▾ não colar no rótulo. */
 .page-nav .nav-group > a { gap: 7px; }
+
+/* MENU NUMA LINHA SÓ (2026-11-12). Com o item "Vintage" o menu passou a
+   quebrar em duas linhas (cabeçalho de 59px virava 101px) abaixo de ~1050px
+   deslogado e de ~1270px logado, que tem Coleção e Portfólio a mais: notebook
+   de 1280px e iPad deitado incluídos. Em vez de tirar item, o respiro encolhe
+   com a janela: padding de 16px a 7px, letra de 16px a 14,5px e o vão entre
+   marca, menu e controles de 18px a 10px, tudo em clamp() (sem degrau). De
+   ~1500px pra cima as medidas são as de antes. Até 1180px saem ainda a sigla
+   da moeda (o símbolo fica) e 6px de cada vão dos controles. Medido em pt e
+   en: deslogado cabe até os 861px onde o hambúrguer assume; logado, até
+   ~1010px com o botão "Entrar" no canto (o avatar de quem entrou é 44px mais
+   estreito). Abaixo disso o logado ainda quebra, como já quebrava. Só o item
+   de cima (`>`), não os links dos painéis; e só acima de 860px: no drawer as
+   medidas são outras. */
+@media (min-width: 861px) {
+  .app-header-inner { gap: clamp(10px, 1.2vw, 18px); }
+  .page-nav > a,
+  .page-nav .nav-group > a { padding: 0 clamp(7px, 2.2vw - 16px, 16px); font-size: clamp(14.5px, 1.2vw, 16px); }
+}
+@media (min-width: 861px) and (max-width: 1180px) {
+  .page-nav { gap: 2px; }
+  .app-header-inner .header-actions { gap: 4px; }
+  .lang-dd-toggle-sigla { display: none; }
+}
 
 .header-actions,
 .toolbar {

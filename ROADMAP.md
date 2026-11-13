@@ -248,6 +248,16 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   TCGCSV já listava a terceira, a Chakra Card da NYCC 2026). Quando sair o
   primeiro booster, conferir o código do set contra o `SECOES_BANDAI`
   (src/app.js), que hoje supõe BT/ST.
+- **Cardfight!! Vanguard (`vanguard`, 2026-11-13)**: entrou com as 26.438
+  cartas dos 268 sets da TCGCSV (cat. 16), as cinco eras. A migração
+  `20261113c` foi aplicada e conferida no mesmo dia (ela cobre a 20261113a e
+  a 20261113b das PRs abertas: essas duas não rodam mais). Pendências:
+  imagem melhor pras eras original e G (200 px no TCGplayer; medir a do site
+  oficial, que carrega por JavaScript); loja BR e Cardmarket sem link
+  (ligavanguard.com.br e o MYP responderam 403 ao robô, nada conferido à
+  mão); a cor (`#ff5a7a`, proposta) e a posição no hub (depois do Final
+  Fantasy); a tela de Sets junta as cinco eras nas mesmas quatro seções —
+  separar por era é melhoria, se o Fernando quiser; sem regra de deck.
 - **Final Fantasy TCG (`fftcg`, 2026-11-11)**: entrou com as 5.700 cartas
   dos 38 sets da TCGCSV (cat. 24), Opus I ao Memories of Life; a migração
   `20261111f` foi aplicada e conferida em 2026-11-12. Pendências: o próximo
@@ -272,9 +282,11 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   sozinhos quando o TCGplayer listar as cartas; a 2ª edição do BP01 ganha
   preço no build seguinte ao das primeiras vendas.
 - **Naruto Mythos TCG (`narutomythos`) e Naruto Kayou (`narutokayou`),
-  2026-11-12**: jogos próprios, pelas fontes oficiais. As cores (ouro claro e
-  coral) e a posição dos tiles (fim da grade do hub e da landing) foram
-  confirmadas pelo Fernando no mesmo dia. Pendências: preço (nenhum dos
+  2026-11-12**: jogos próprios, pelas fontes oficiais. O ouro claro do Mythos
+  e a posição dos tiles (fim da grade do hub e da landing) foram confirmados
+  pelo Fernando no mesmo dia. A cor da Kayou mudou no merge: o coral que ele
+  tinha confirmado ficou a 26 do coral do Vanguard, que entrou em 13/11, e
+  virou magenta (#d946ef), a confirmar. Pendências: preço (nenhum dos
   dois está no TCGplayer; o Mythos deve estar no Cardmarket, que barra acesso
   automatizado); lojas do `MARKETS` conferidas à mão; no Mythos, as três
   versões das Common e Uncommon (standard, full art e holográfica), que a
@@ -289,6 +301,19 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   acesso automatizado (o Suruga-ya barra) e o logo recortado: o oficial está
   no Wayback em `carddas.com/naruto/cardgame/image/top/naruto_logo.jpg`, com
   200×140 e fundo azul.
+- **Naruto Boruto Card Game (`narutoboruto`, 2026-11-13)**: jogo vintage
+  próprio (o Fernando definiu que cada jogo antigo do Naruto é um jogo).
+  Entrou com as 97 Tournament Pack Cards da TCGCSV (categoria 60), 28 com
+  foto. Faltam as cartas das quatro caixas (NB01 a NB04): o site oficial
+  (chronoclashsystem.com, no Wayback) só tem a página de cada produto, sem
+  lista carta a carta, e o TCGplayer só vende as caixas lacradas. Falta
+  também foto das outras 69 cartas de torneio. O TCGplayer tem preço de 7
+  delas, que não entrou. A cor (rosa, #f9a8d4) é proposta, a confirmar.
+- **Linhas do Naruto que são jogos distintos** (Data Carddass, CCG americano
+  e Shippuden Card Game): pela mesma regra viram jogos próprios. É o caminho
+  que o `narutocg` e o `mbc` fizeram (ids mantidos, migração da coleção no
+  cliente, 301 dos endereços de linha). Espera o Fernando dizer quais e em
+  que ordem.
 - **Carddass Masters (`cdm`)**: jogo próprio desde 2026-11-09, uma seção por
   IP. Entrou o HUNTER×HUNTER completo (Partes 1 e 2 pela カードリスト do verso,
   Premium Edition e o brinde VD3; 299 cartas, todas com scan da Hunterpedia)

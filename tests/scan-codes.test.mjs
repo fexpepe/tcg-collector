@@ -117,8 +117,7 @@ test("Pokémon: o rodapé impresso decide, mesmo com fração ambígua", () => {
   const d = detecta("ILLUS. MITSUHIRO ARITA 4/102 1999 NINTENDO CREATURES GAME FREAK", ["4/102"]);
   assert.equal(d.top, "pokemon");
   assert.equal(d.confiante, true);
-  // Os seis jogos que numeram em fração (SWU e Harry Potter entraram em
-  // 2026-11-10; o Naruto Mythos TCG, em 2026-11-12).
+  // Os cinco jogos que numeram em fração (SWU e Harry Potter entraram em 2026-11-10).
   assert.deepEqual(d.restritos, ["pokemon", "harrypotter", "lorcana", "narutomythos", "riftbound", "swu"]);
 });
 
@@ -317,17 +316,14 @@ test("Naruto Kayou: o código inteiro, de três trechos, e só dele (2026-11-12)
   // Série com hífen e a caixa de colecionador, que não imprime o nível.
   assert.deepEqual(codigos("NRSA-01-UR-003L4"), ["NRSA-01-UR-003L4"]);
   assert.deepEqual(codigos("NRCCNA-SP-011"), ["NRCCNA-SP-011"]);
-  // Sem o padrão, o "SE-001L5" do fim ia pro reHifen e a carta virava
-  // candidata de outro jogo.
   assert.deepEqual(Array.from(S.detectarJogo("", ["NRSA01-SE-001L5"], "hub").restritos), ["narutokayou"]);
   assert.equal(S.detectarJogo("NRSA01-SE-001L5", ["NRSA01-SE-001L5"], "hub").confiante, true);
   // "NR" sozinho não é a Kayou: precisa da série, da sigla e do número.
-  assert.deepEqual(Array.from(S.detectarJogo("", ["NR-001"], "hub").restritos).includes("narutokayou"), false);
+  assert.equal(Array.from(S.detectarJogo("", ["NR-001"], "hub").restritos).includes("narutokayou"), false);
 });
 
 test("Naruto Mythos TCG: a fração é de seis jogos, e o rodapé diz qual (2026-11-12)", () => {
   assert.deepEqual(codigos("C 3/130  1° EDITION NARUTO MYTHOS TCG"), ["3/130"]);
-  // Só a fração: os jogos que numeram "N/T", o Mythos entre eles.
   const sem = S.detectarJogo("3/130", ["3/130"], "hub");
   assert.ok(sem.restritos.includes("narutomythos"));
   assert.ok(sem.restritos.includes("pokemon"));
@@ -341,6 +337,19 @@ test("Naruto Mythos TCG: a fração é de seis jogos, e o rodapé diz qual (2026
   assert.equal(S.detectarJogo("Legendary 0001/2000 1° ED. N. M. TCG", ["0001/2000"], "hub").jogos[0], "narutomythos");
   // Uma carta do vintage ou do jogo de 2027 não vira Mythos.
   assert.equal(S.detectarJogo("©2002 MASASHI KISHIMOTO NARUTO CP-001", ["CP-001"], "hub").restritos.includes("narutomythos"), false);
+});
+
+test("Naruto Boruto Card Game: o NB02-48 e o BORUTO do rodapé tiram a carta do Naruto vintage (2026-11-13)", () => {
+  assert.deepEqual(codigos("NB02-48-EB"), ["NB02-48"]);
+  // Só o código: o formato é de um jogo só.
+  assert.deepEqual(Array.from(S.detectarJogo("", ["NB02-48"], "hub").restritos), ["narutoboruto"]);
+  // Com o rodapé inteiro, o KISHIMOTO bate no vintage e no jogo de 2027, mas
+  // o jogo certo passa na frente.
+  const d = S.detectarJogo("©2002 MASASHI KISHIMOTO / 2017 BORUTO All Rights Reserved. NOT FOR SALE NB02-48-EB", ["NB02-48"], "hub");
+  assert.equal(d.jogos[0], "narutoboruto");
+  assert.equal(d.confiante, true);
+  // A carta do vintage e a do jogo de 2027 não viram Naruto Boruto.
+  assert.equal(S.detectarJogo("©2002 MASASHI KISHIMOTO NARUTO CP-001", ["CP-001"], "hub").restritos.includes("narutoboruto"), false);
 });
 
 test("Union Arena: promo, extra, título com dígito, AP e paralela", () => {

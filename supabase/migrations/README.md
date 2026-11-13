@@ -8,22 +8,26 @@ poucos.)
 
 ## Pendentes de aplicar
 
-- `20261112c` — libera os slugs `narutomythos` (NARUTO Mythos TCG, Cicaboom,
-  2026) e `narutokayou` (as cartas do Naruto da Kayou, edição em inglês) nas
-  duas whitelists de jogo (`card_views`/`increment_card_view` e
-  `contribute_price`; `20261112c_add_narutomythos_narutokayou.sql`). Cópia da
-  `20261111f` (fftcg, já aplicada) com os dois slugs a mais; só a lista muda.
-  Os dois jogos vão na MESMA migração porque entraram na mesma PR e cada
-  migração de jogo reescreve a lista inteira. Sem ela, view de carta e Preço
-  da Comunidade dos dois jogos são descartados em silêncio. Depois dela, a
-  `20261111f` não pode rodar de novo (tiraria os dois). Conferir com os
-  `curl` do fim do arquivo: a view de `nmy-s1e1-l133v1` e a de
-  `nky-hs1-nrsa01-se-001l5` têm de **criar** a linha em `card_views`, cada
-  uma com o seu game; o 204 sozinho não prova nada. **Coberta pela
-  `20261113a` da PR #296** (os mesmos dois slugs mais o `narutoboruto`): se a
-  `20261113a` for aplicada, esta não precisa rodar, e NÃO pode rodar depois
-  dela (tiraria o `narutoboruto`). Sozinha, só vale enquanto a #296 não
-  entrar.
+- `20261113c` — libera o slug `vanguard` (Cardfight!! Vanguard, Bushiroad,
+  edição inglesa desde 2011) nas duas whitelists de jogo
+  (`card_views`/`increment_card_view` e `contribute_price`;
+  `20261113c_add_vanguard.sql`). Cópia da `20261111f` (fftcg); só a lista
+  muda. A lista é a **união do dia**: leva também `narutomythos`,
+  `narutokayou` e `narutoboruto` (a 20261113a) e `dbsb`, `dbva` e `dbbw`
+  (a 20261113b), das PRs abertas em 13/11 — ela cobre as duas. O contrário
+  não vale: a 20261113a ou a 20261113b aplicadas **depois** desta tirariam o
+  `vanguard`. Aplicar esta por último, ou só esta. Sem ela, a view de carta
+  e o Preço da Comunidade do jogo novo são descartados em silêncio. Conferir
+  com o par de `curl` do fim do arquivo: a view de `vg-727149` tem de
+  **criar a linha** no `card_views` (o 204 sozinho não prova nada). **A
+  próxima migração de jogo copia esta.**
+
+  **Aplicada em 2026-11-13** pelo Fernando e verificada por curl anônimo no
+  mesmo dia: a view de `vg-727149` respondeu 204 e criou a linha no
+  `card_views` (game `vanguard`, 1 view); um jogo inventado respondeu 204 e
+  não criou linha; `contribute_price` anônimo segue 401. Depois dela, nem a
+  `20261113a` nem a `20261113b` podem rodar (tirariam o `vanguard`): os
+  slugs das duas já estão na lista desta.
 
 - `20261112b` — /admin: as LINHAS de cada jogo (`20261112b_admin_jogos_linhas.sql`;
   o `b` porque a 20261112a do mesmo dia é a dos erros). O jogo `naruto` junta
@@ -385,7 +389,6 @@ poucos.)
   `fftcg`, 1 view); um jogo inventado (`fftcgx`) respondeu 204 e não criou
   linha; `contribute_price` anônimo segue 401. Depois dela, nem a
   `20261111e` nem as anteriores podem rodar de novo (tirariam o `fftcg`).
-  Copiada pela `20261112c` (narutomythos e narutokayou).
 
 - `20261111e` — libera o slug `palworld` (Palworld OFFICIAL CARD GAME,
   Bushiroad/Pocketpair, 2026) nas duas whitelists de jogo

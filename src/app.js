@@ -16,8 +16,8 @@
     magic: "game_magic-v2.webp", fab: "game_fab.webp", gundam: "game_gundam-v2.webp", swu: "game_swu-v2.webp", cyberpunk: "game_cyberpunk.webp", sorcery: "game_sorcery-v2.webp", dbfw: "game_dbfw-v2.webp",
     ygo: "game_ygo-v2.webp", digimon: "game_digimon-v2.webp", riftbound: "game_riftbound-v2.webp",
     unionarena: "game_unionarena-v2.webp", narutocg: "game_naruto_2027.webp", naruto: "game_naruto.webp", hxh: "game_hxh.webp",
-    dbc: "game_dbc-v2.webp", wow: "game_wow.webp", lotr: "game_lotr.webp", dbz: "game_dbz.webp", weiss: "game_weiss.webp", godzilla: "game_godzilla.webp", palworld: "game_palworld.webp", fftcg: "game_fftcg.webp", narutomythos: "game_narutomythos.webp", narutokayou: "game_naruto.webp", harrypotter: "game_harrypotter.webp",
-    mbc: "game_mbc.webp", cdm: "game_cdm.webp", gcd: "game_gcd.webp", gw: "game_gw.webp"
+    dbc: "game_dbc-v2.webp", wow: "game_wow.webp", lotr: "game_lotr.webp", dbz: "game_dbz.webp", weiss: "game_weiss.webp", godzilla: "game_godzilla.webp", palworld: "game_palworld.webp", fftcg: "game_fftcg.webp", vanguard: "game_vanguard.webp", narutomythos: "game_narutomythos.webp", narutokayou: "game_naruto.webp", harrypotter: "game_harrypotter.webp",
+    mbc: "game_mbc.webp", cdm: "game_cdm.webp", gcd: "game_gcd.webp", gw: "game_gw.webp", narutoboruto: "game_naruto_boruto.webp"
   };
   function gameLogoUrl(game) {
     const f = GAME_LOGO[game];
@@ -1991,7 +1991,20 @@
     // Opus numerados (OP1…OP30), o Legacy Collection (RE, reimpressão em
     // booster) como extra, Starter Sets e Boss Decks como decks, e o resto
     // (promos, World Champion Decks, cartas de deck) nas promos.
-    fftcg: { main: /^OP\d+$/, extra: /^RE$/, deck: /^(ST\d+|BD[A-Z0-9]+|CS\d+)$/ }
+    fftcg: { main: /^OP\d+$/, extra: /^RE$/, deck: /^(ST\d+|BD[A-Z0-9]+|CS\d+)$/ },
+    // Cardfight!! Vanguard (Bushiroad, 13/11/2026): cinco eras, e o prefixo
+    // diz qual (nenhum = a série original; G-, V-, D-, DZ-). Principais = os
+    // Booster Sets numerados (BT) de todas elas. Extras = Extra Booster (EB),
+    // Lyrical (LBT), Title Booster das colaborações (TB, TBP), Special Series
+    // (SS), Clan/Character/Technical Booster (CB, CMB, CHB, TCB), Mini
+    // Booster (MB), V Clan Collection (VS), History/Revival Collection (PV,
+    // RC) e Fighter's Collection (FC). Decks = Trial/Start/Legend Deck (TD,
+    // MT, SD, LD, LTD, TTD), Premium Deckset (PS) e Collector's Set (CS).
+    vanguard: {
+      main: /^((DZ|D|V|G)-)?BT\d+$/,
+      extra: /^((DZ|D|V|G)-)?(EB|LBT|TBP?|SS|CB|CMB|CHB|TCB|MB|VS|PV|RC|FC)\d+$/,
+      deck: /^((DZ|D|V|G)-)?(TD|MT|SD|LD|LTD|TTD|PS|CS)\d+$/
+    }
   };
   // Produto de evento: pré-release (inclusive o starter vendido nele, o
   // "Super Pre-Release Edition/Starter Deck"), release event, celebration

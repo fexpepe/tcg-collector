@@ -33,6 +33,7 @@ test("todo jogo do site tem rótulo nos três idiomas", () => {
 test("a chave sai do slug; as compostas vêm do mapa; jogo fora do registro cai no Pokémon", () => {
   assert.equal(gameLabel("lorcana"), "filter.gameLorcana");
   assert.equal(gameLabel("narutocg"), "filter.gameNarutocg");
+  assert.equal(gameLabel("narutoboruto"), "filter.gameNarutoboruto");
   assert.equal(gameLabel("narutomythos"), "filter.gameNarutomythos");
   assert.equal(gameLabel("narutokayou"), "filter.gameNarutokayou");
   assert.equal(gameLabel("palworld"), "filter.gamePalworld");

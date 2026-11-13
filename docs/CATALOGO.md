@@ -115,7 +115,7 @@ aparecer no passo "Lint dos catálogos" do deploy:
 |---|---|---|
 | `N id(s) PUBLICADO(S) sumiram do catálogo` | erro, deploy barrado | a fonte tirou ou re-identificou cartas. Achar o motivo antes de tudo. O `--aceitar-mudanca-de-id` só entra com a lista de quem perde carta na mão |
 | `N id(s) passaram a apontar pra OUTRA carta` | erro, deploy barrado | o mesmo: é o caso que troca a carta da pessoa por outra |
-| `N id(s) o TCGplayer mudou de set` | aviso | nada: é o mesmo produto (exceção `ID_DE_PRODUTO`, item A5). Vale com o nome igual, ou com o mesmo número e o nome só ganhando/perdendo qualificador no fim (`… (Alternate Art)`) ou trocando um qualificador que só repete o número ou o nome de um dos sets (`Fury Rune (Vendetta)` → `Fury Rune (R01b)`, 2026-11-12); o item da lista mostra o nome antigo e o novo. O passo seguinte do deploy grava o endereço antigo em `data/cartas-movidas.json` (301 pro set novo, ver `docs/SEO.md`) |
+| `N id(s) o TCGplayer mudou de set` | aviso | nada: é o mesmo produto (exceção `ID_DE_PRODUTO`, item A5). Vale com o nome igual, ou com o mesmo número e o nome só ganhando/perdendo qualificador no fim (`… (Alternate Art)`) ou trocando um qualificador que só repete o número ou o nome de um dos sets (`Fury Rune (Vendetta)` → `Fury Rune (R01b)`, 2026-11-12); o espaço entre dois qualificadores não conta (`(Yellow)(Marvel)` → `(Yellow) (Marvel)`, 2026-11-13); o item da lista mostra o nome antigo e o novo. O passo seguinte do deploy grava o endereço antigo em `data/cartas-movidas.json` (301 pro set novo, ver `docs/SEO.md`) |
 | `N id(s) mudaram de número` | aviso | conferir se é só formatação da fonte (`4/102` → `4`) |
 | `N cartas < régua` ou `imagens X% (régua Y%)` | aviso | regressão da fonte? Conferir antes de rodar `--update-baseline` |
 
@@ -171,7 +171,7 @@ junto. Sem isso, o endereço antigo das cartas movidas dá 404.
 - O set caiu na **categoria certa**. Lorcana, Naruto, HxH e DBC agrupam pelo
   `setId` (`group<Jogo>Sets` em [src/app.js](../src/app.js)); os modernos da
   Bandai (One Piece, Gundam, Fusion World, Digimon, Union Arena e o
-  `narutocg`), o Godzilla e o Palworld (Bushiroad) e o Final Fantasy
+  `narutocg`), o Godzilla, o Palworld e o Vanguard (Bushiroad) e o Final Fantasy
   (Square Enix), na mesma forma, pelas regras de código
   do `SECOES_BANDAI`, no mesmo arquivo
   (Principais, Boosters extras, Decks, Cartas de evento, Promos). Um formato
@@ -276,7 +276,7 @@ há o que ligar. São três peças, todas no
    - Pokémon por série;
    - Magic por ano, mais a seção de eventos e coleções especiais;
    - jogo com `group<Jogo>Sets` próprio pelas seções dele;
-   - os modernos da Bandai, o Godzilla, o Palworld e o Final Fantasy (`SECOES_BANDAI`) no formato do One Piece:
+   - os modernos da Bandai, o Godzilla, o Palworld, o Final Fantasy e o Vanguard (`SECOES_BANDAI`) no formato do One Piece:
      Principais (a coleção numerada), Boosters extras e especiais, Decks
      iniciais, Cartas de evento (2026-11-12, pelo nome) e Promos e eventos,
      pelo código do set (2026-11-11);
@@ -406,7 +406,16 @@ link do jogo: Vintage > jogo, os mesmos dois cliques de Jogos > jogo.
 Parte destas decisões é do Fernando (linha ou jogo, cor, logo, posição no
 hub). A ficha preenchida vai na descrição da PR.
 
-- **Linha ou jogo?** Pelos precedentes, vira **linha** (`GAME_LINES`,
+- **Linha ou jogo? Regra do Fernando desde 2026-11-13: cada jogo é um jogo.**
+  Jogo antigo de uma marca que já tem slug entra como **slug próprio**, como
+  os outros jogos do site, com chip, cor e contagem dele. Fica no mesmo jogo
+  só o que é **parte do mesmo jogo**: os quatro títulos do arcade Data
+  Carddass, uma IP nova dentro do Carddass Masters. O primeiro a seguir a
+  regra foi o Naruto Boruto Card Game (`narutoboruto`), que na primeira
+  versão da PR era a linha `nrt-nb` do `naruto`. As linhas publicadas antes
+  disso (as do `naruto` e as do `onepiece`) seguem como estão até ele dizer
+  quais viram jogo; o parágrafo abaixo descreve esses precedentes.
+- **Como era (precedentes até 2026-11-12):** virava **linha** (`GAME_LINES`,
   `?line=`) quando já existe um slug que é a **marca**: as vintages do One
   Piece e do Naruto são linhas de `onepiece` e `naruto`. Vira **slug próprio**
   quando o slug existente é um **jogo específico** (o `dbc`, Carddass de Dragon

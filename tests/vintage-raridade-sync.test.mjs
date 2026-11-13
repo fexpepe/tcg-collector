@@ -8,17 +8,26 @@ import assert from "node:assert/strict";
 import { cardsIn } from "../scripts/sync-onepiece-vintage.mjs";
 import { parseCards, raridadeMb, buildCards } from "../scripts/sync-miracle-battle.mjs";
 import { parseOverview, raridade2002 } from "../scripts/sync-onepiece-2002.mjs";
-import { parseHinokunian, aplicaRaridade } from "../scripts/naruto-raridade-hinokunian.mjs";
-import { raridadeDbc, PRISMA_HONDAN } from "../scripts/sync-dbc-carddass.mjs";
+import { parseHinokunian, aplicaRaridade, estreiasForaDosBoosters } from "../scripts/naruto-raridade-hinokunian.mjs";
+import { readFileSync } from "node:fs";
+import { raridadeDbc } from "../scripts/sync-dbc-carddass.mjs";
 
-test("Dragon Ball Carddass: prisma só onde há lista (弾 1–4); fora dela a raridade fica vazia", () => {
-  assert.equal(raridadeDbc("h01", "6"), "Prism");
-  assert.equal(raridadeDbc("h01", "7"), "Normal");
-  assert.equal(raridadeDbc("h04", "131"), "Normal"); // no 第4弾 as prismas não são seguidas
-  assert.equal(raridadeDbc("h04", "132"), "Prism");
-  assert.equal(raridadeDbc("h05", "170"), "");
-  // 6 prismas por parte, como o 80storage conta.
-  for (const [parte, nums] of Object.entries(PRISMA_HONDAN)) assert.equal(nums.length, 6, parte);
+// Até 2026-11-12 a prisma do dbc só existia nos 弾 1–4, por uma lista curada do
+// hinichijyou.com (PRISMA_HONDAN). O dbzcollection trouxe a raridade de todas
+// as partes; a lista antiga fica aqui como conferência da fonte nova.
+test("Dragon Ball Carddass: as prismas do dbzcollection batem com a lista antiga dos 弾 1–4", () => {
+  const antiga = {
+    h01: [1, 2, 3, 4, 5, 6],
+    h02: [43, 44, 45, 46, 47, 48],
+    h03: [85, 86, 87, 88, 89, 90],
+    h04: [128, 129, 130, 132, 148, 150] // no 第4弾 as prismas não são seguidas
+  };
+  const dz = JSON.parse(readFileSync(new URL("../data/vintage/dbc-dbzcollection.json", import.meta.url), "utf8"));
+  for (const [parte, nums] of Object.entries(antiga)) {
+    const cartas = dz.sets.find((s) => s.code === parte).cards;
+    const prismas = cartas.filter((c) => raridadeDbc(parte, c) === "Prism").map((c) => Number(c.num));
+    assert.deepEqual(prismas.sort((a, b) => a - b), nums, parte);
+  }
 });
 
 // Linha do hinokunian: 1ª célula a raridade, 2ª o número, 3ª o nome.
@@ -55,6 +64,50 @@ test("hinokunian: raridade só entra com número E nome batendo (um kanji trocad
   ];
   assert.deepEqual(aplicaRaridade(cards, snap, { nomeDe: (c) => c.name }), { aplicadas: 2, nomeDiferente: 1 });
   assert.deepEqual(cards.map((c) => c.rarity), ["R", "", "N", ""]);
+});
+
+// Starters, 拡張シート e coletâneas (2026-11-13): duas tabelas de baralho na
+// mesma página, então o número cai no meio dos 忍 sem que a seção mude.
+test("hinokunian, produto fora dos boosters: número caindo NÃO troca a seção; OP忍 entra, PR忍 não", () => {
+  const html = linhaHino("SR", "忍-64", "はたけカカシ") + linhaHino("", "忍-4", "山中いの")
+    + linhaHino("R", "術-61", "影分身の術") + linhaHino("R", "OP忍－1", "うずまきナルト")
+    + linhaHino("U", "PR忍-5", "初代火影") + linhaHino("", "騎-3", "ゲン");
+  assert.deepEqual(parseHinokunian(html, { extra: true }), [
+    ["忍-64", "SR", "はたけカカシ"], ["忍-4", "N", "山中いの"], ["術-61", "R", "影分身の術"],
+    ["OP忍-1", "R", "うずまきナルト"], ["騎-3", "N", "ゲン"]
+  ]);
+  // A mesma página lida como booster trocaria o 忍-4 de seção: é o conserto do 巻ノ七.
+  assert.equal(parseHinokunian(html)[1][0], "術-4");
+});
+
+// Nessas páginas a raridade é a do PRODUTO: a 忍-64 é SR no starter em que
+// estreou e N na folha que a reimprimiu dois anos depois. Só a estreia vale.
+test("hinokunian: de um produto fora dos boosters só entra a ESTREIA da carta", () => {
+  const paginas = [
+    { data: "2003-07", linhas: [["忍-64", "SR", "はたけカカシ"], ["忍-4", "N", "山中いの"], ["作-61", "N", "木ノ葉丸軍団参上！"]] },
+    { data: "2005-02-12", linhas: [["忍-64", "N", "はたけカカシ"], ["作-61", "R", "木ノ葉丸軍団参上！"], ["忍-240", "R", "自来也"], ["術-200", "N", "口寄せの術"]] },
+    { data: "2005-02-12", linhas: [["忍-240", "N", "自来也"], ["術-200", "N", "口寄せの術"]] }
+  ];
+  const estreias = estreiasForaDosBoosters(paginas, new Set(["忍-4"]));
+  assert.deepEqual(estreias, [
+    ["忍-64", "SR", "はたけカカシ"], // a reimpressão de 2005 (N) não desfaz a estreia
+    ["作-61", "N", "木ノ葉丸軍団参上！"],
+    // 忍-4 é de booster: aqui é reimpressão, sai. 忍-240 tem duas raridades no
+    // mesmo dia: não dá pra saber a estreia, sai. 術-200 repete igual: fica.
+    ["術-200", "N", "口寄せの術"]
+  ]);
+});
+
+test("hinokunian: o snapshot versionado traz os boosters primeiro e nenhuma estreia repete número de booster", () => {
+  const snap = JSON.parse(readFileSync(new URL("../data/vintage/naruto-raridade.json", import.meta.url), "utf8"));
+  const numeros = snap.cards.map(([num]) => num);
+  // 1.056 linhas dos 15 volumes e do Card Battle; depois vêm as estreias.
+  const estreias = numeros.slice(1056);
+  assert.ok(estreias.length > 100, "sem as estreias fora dos boosters");
+  const dosBoosters = new Set(numeros.slice(0, 1056));
+  assert.deepEqual(estreias.filter((n) => dosBoosters.has(n)), []);
+  assert.equal(new Set(estreias).size, estreias.length, "estreia repetida");
+  assert.deepEqual(estreias.filter((n) => /^PR/.test(n)), [], "PR é curadoria, não entra da fonte");
 });
 
 const linhaHB = (cor, num) => `<tr id="${cor}Hover">

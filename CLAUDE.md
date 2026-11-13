@@ -39,6 +39,28 @@ a PR.
 Se a feature ficou pela metade (bloqueio, dúvida que muda o resultado), não
 abre PR: commita na branch, sobe a branch e diz o que falta.
 
+## Só sobe o que é da conta `fexpepe`
+
+Nada sai desta máquina pro GitHub com outra identidade — a conta e o e-mail do
+trabalho moram no git global dela, e em 09/10/2026 a `main` já teve de ser
+reescrita por causa disso. Vale pra push, PR, comentário e qualquer `gh`:
+
+- Remoto: só `github.com/fexpepe/...`. Não adicionar outro remoto nem empurrar
+  pra fork ou organização.
+- Commit: autor e committer com o e-mail pessoal fixado no `.git/config` do
+  repositório (ou o noreply da conta). Nunca mexer em `user.name`/`user.email`,
+  nem passar `--author`, `-c user.email=...` ou `GIT_AUTHOR_*`/`GIT_COMMITTER_*`.
+- Conta: antes do primeiro push ou `gh` da sessão, `gh auth status` tem de
+  mostrar `fexpepe` como conta ativa. Se for outra, para e avisa — não troca de
+  conta sozinho.
+
+Quem garante é o hook `scripts/hooks/pre-push` (instalado em `.git/hooks` por
+`node scripts/instala-hooks.mjs`; em clone novo, rodar uma vez). Se ele recusar
+um push, o certo é **consertar a identidade**, não contornar:
+`SLEEVU_PUSH_LIBERADO=1`, `--no-verify` e apagar o hook só com autorização
+explícita do Fernando **para aquele push** — autorização antiga ou genérica
+não vale, e o Claude não se autoriza.
+
 ## Live update do app: só com pedido explícito
 
 O live update (Capgo) troca o HTML/JS/CSS de **todo app instalado**, sem loja

@@ -43,6 +43,9 @@ const NOMES_DO_JOGO = {
   // Gundam War: o set é o produto (第1弾, ドラマチックブースター「…」), sem o
   // "ガンダムウォー" da frente.
   gw: { nomes: ["Gundam War", "GUNDAM WAR", "GUNDAMWAR", "ガンダムウォー", "Carddass Masters", "カードダスマスターズ"] },
+  // Naruto Boruto Card Game: o grupo do TCGplayer é "NB Tournament Pack
+  // Cards"; o set fica sem a sigla do jogo na frente.
+  narutoboruto: { nomes: ["Naruto Boruto", "NARUTO BORUTO", "Chrono Clash", "NB "] },
   // "疾風伝"/"Shippuden": a linha nrt-scg (2007–2008). Só a promo leva
   // "（疾風伝）", no fim, pra não ter o mesmo nome do set de 2002.
   naruto: { nomes: ["Naruto", "NARUTO", "ナルト", "Data Carddass", "データカードダス", "疾風伝", "Shippuden"] },
@@ -121,6 +124,9 @@ test("nomeDoSet: tira a marca dos grupos genéricos do TCGplayer, não do títul
   assert.equal(nomeDoSet("fftcg", "Boss Deck: Final Fantasy VII"), "Boss Deck: Final Fantasy VII");
   assert.equal(nomeDoSet("fftcg", "Final Fantasy VII Collection"), "Final Fantasy VII Collection");
   assert.equal(nomeDoSet("fftcg", "FFXIV Starter"), "FFXIV Starter");
+  // Vanguard: o "Vanguard" que é parte do título fica.
+  assert.equal(nomeDoSet("vanguard", "Cardfight Vanguard Promo Cards"), "Promo Cards");
+  assert.equal(nomeDoSet("vanguard", "Vanguard & Deletor"), "Vanguard & Deletor");
 });
 
 test("catálogo da família TCGCSV já está com o nome que o sync grava hoje", () => {

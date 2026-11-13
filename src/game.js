@@ -44,10 +44,12 @@
     fftcg: { slug: "fftcg", name: "Final Fantasy TCG", dataDir: "data/fftcg/" }, // TCGCSV cat. 24 (Square Enix 2016+, os Opus; Full Art = carta própria)
     narutomythos: { slug: "narutomythos", name: "Naruto Mythos TCG", dataDir: "data/narutomythos/" }, // galeria oficial (Cicaboom 2026+, EN; a 2ª edição do Set 1 = set próprio; sem preço)
     narutokayou: { slug: "narutokayou", name: "Naruto Kayou", dataDir: "data/narutokayou/" }, // kayouofficial.com (Kayou, só a edição em inglês, 2025+; coleção, não jogo de mesa; sem preço)
+    vanguard: { slug: "vanguard", name: "Cardfight!! Vanguard", dataDir: "data/vanguard/" }, // TCGCSV cat. 16 (Bushiroad 2011+, as cinco eras, só a edição EN; paralelas = cartas próprias)
     palworld: { slug: "palworld", name: "Palworld Official Card Game", dataDir: "data/palworld/" }, // TCGCSV cat. 91 (Bushiroad/Pocketpair 2026, EN; a 2ª edição do BP01 = set próprio)
     mbc: { slug: "mbc", name: "Miracle Battle Carddass", dataDir: "data/mbc/" }, // vintage Bandai 2009–2014, crossover da Jump (7 séries; tcg-db)
     cdm: { slug: "cdm", name: "Carddass Masters", dataDir: "data/cdm/" }, // vintage Bandai 1996–2009, uma seção por IP (Evangelion e HxH; fontes no sync-carddass-masters.mjs)
     gcd: { slug: "gcd", name: "Gundam Carddass", dataDir: "data/gcd/" }, // vintage Bandai 1988–1997, uma seção por série (animecollection.fr + 80storage; nome transcrito dos scans)
+    narutoboruto: { slug: "narutoboruto", name: "Naruto Boruto Card Game", dataDir: "data/narutoboruto/" }, // vintage Bandai 2019–2020, Chrono Clash System (TCGCSV cat. 60: só as Tournament Pack Cards; sem preço)
     gw: { slug: "gw", name: "Gundam War", dataDir: "data/gw/" }, // vintage Bandai 1999–2011, o TCG japonês (listas do site oficial; sem imagem)
     // Em preparação (catálogo ainda vazio; tile "Em breve" no hub):
     jump: { slug: "jump", name: "JUMP", dataDir: "data/jump/" }            // promos curadas (Jump Festa, V-Jump…)
@@ -70,7 +72,7 @@
     ["gundam-card-game", "gundam"], ["flesh-and-blood", "fab"], ["yu-gi-oh", "ygo"],
     ["dragon-ball-fusion-world", "dbfw"], ["digimon-card-game", "digimon"], ["union-arena", "unionarena"],
     ["cyberpunk-tcg", "cyberpunk"], ["sorcery-contested-realm", "sorcery"], ["naruto-card-game", "narutocg"],
-    ["weiss-schwarz", "weiss"], ["godzilla-card-game", "godzilla"], ["palworld-official-card-game", "palworld"], ["final-fantasy-tcg", "fftcg"],
+    ["weiss-schwarz", "weiss"], ["godzilla-card-game", "godzilla"], ["palworld-official-card-game", "palworld"], ["final-fantasy-tcg", "fftcg"], ["cardfight-vanguard", "vanguard"],
     ["naruto-mythos-tcg", "narutomythos"], ["naruto-kayou", "narutokayou"],
     // Daqui em diante, os VINTAGE (o `vintage` do registro): o PRIMEIRO_VINTAGE
     // abaixo é a posição desta linha, e o teste confere um por um.
@@ -83,12 +85,13 @@
     ["naruto-card-game-2002", "naruto"], ["naruto-data-carddass", "naruto", "nrt-dc", "nrt-dc-,nrt-nf-,nrt-nx-"],
     ["naruto-ccg", "naruto", "nrt-ccg", "nrt-ccg-"], ["world-of-warcraft-tcg", "wow"],
     ["naruto-shippuden-card-game", "naruto", "nrt-scg", "nrt-scg-"], ["miracle-battle-carddass", "mbc"],
+    ["naruto-boruto-card-game", "narutoboruto"],
     ["carddass-masters", "cdm"]
   ];
   // Quantos jogos em atividade vêm antes do primeiro vintage na lista acima.
   // É por ele que o menu sabe acender "Vintage", e não "Jogos", na tela de um
   // jogo que saiu de linha (SLEEVU.vintage, lido pelo shared.js).
-  var PRIMEIRO_VINTAGE = 21;
+  var PRIMEIRO_VINTAGE = 22;
   // Linha que virou seção de outra (o LINE_ALIASES do shared.js).
   var LINHA_APELIDO = { "nrt-nf": "nrt-dc", "nrt-nx": "nrt-dc" };
   // Linha que virou JOGO (o LINHAS_VIRARAM_JOGO do functions/_lib/jogos.js): o

@@ -33,7 +33,7 @@ catálogo completo só existe no build de produção.
 
 ## Os jogos
 
-O registro central é o `GAMES` em [src/game.js](src/game.js): **33 slugs**, 32 com
+O registro central é o `GAMES` em [src/game.js](src/game.js): **35 slugs**, 34 com
 catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do Pokémon
 é a raiz `data/` por motivo histórico (não movemos nada).
 
@@ -48,6 +48,7 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 | `swu` | Star Wars: Unlimited | TCGCSV cat. 79 (FFG; Hyperspace/Showcase = cartas próprias) + logos de set do site oficial (`mirror-swu-set-logos.mjs`) | USD |
 | `cyberpunk` | Cyberpunk TCG | TCGCSV cat. 92 (Weird Co.; edições Beta e Retail = sets próprios, setId fixo por groupId) + logo do Welcome to Night City curado do site oficial | USD |
 | `weiss` | Weiß Schwarz | TCGCSV cat. 20 (Bushiroad; só a edição inglesa, 2013+; paralelas SP/SSP/OFR = cartas próprias; setId fixo por groupId com o código impresso, `DDD-S118`; sem logo de set publicado) | USD |
+| `vanguard` | Cardfight!! Vanguard | TCGCSV cat. 16 (Bushiroad 2011+; as cinco eras, só a edição inglesa; paralelas SP/FR/SEC = cartas próprias; setId do código impresso que abre o nome do grupo, `DZ-BT16`; sem logo de set) | USD |
 | `fftcg` | Final Fantasy TCG | TCGCSV cat. 24 (Square Enix 2016+, os Opus; Full Art = carta própria; setId fixo por groupId, `OP27`, porque a abreviação da fonte erra e repete; sem logo de set publicado) | USD |
 | `godzilla` | Godzilla Card Game | TCGCSV cat. 88 (Bushiroad/Yuhodo 2025; só a edição inglesa; paralelas +/++/+++ = cartas próprias; setId fixo por groupId com o código impresso, `EBP01`; sem logo de set publicado) | USD |
 | `narutomythos` | Naruto Mythos TCG | a galeria oficial do jogo (narutotcgmythos.com, JSON público; Cicaboom, 2026+, EN). Id pelo SKU oficial (`nmy-s1e1-c003fav1`); a 2ª edição do Set 1 vira o set "Konoha Shidō (2nd Edition)" e as cartas de torneio, "<set> Promos"; raridade por extenso; sem logo de set | sem preço |
@@ -60,9 +61,10 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 | `riftbound` | Riftbound | TCGCSV cat. 89 (Riot) | USD |
 | `unionarena` | Union Arena | TCGCSV cat. 81 (Bandai; um anime por set) | USD |
 | `narutocg` | Naruto Card Game (2027) | o NARUTO CARD GAME da Bandai, lançamento mundial em 2027: curadoria das promos de evento (a Chakra Card da Gen Con 2026, scan próprio) + TCGCSV cat. 93 quando a variável `NARUTO_TCGCSV_CATEGORY` está ligada. Foi a linha `nrt-ncg` do `naruto` até 2026-11-11; ids `nrt-ncg-` mantidos, `src/migra-mbc.js` leva a coleção de quem marcou e o histórico de preço é herdado do acervo do Naruto | USD |
-| `naruto` | Naruto Card Game | vintage Bandai 2002–2006 (tcg-db + TV Tokyo + cardcheckbox), Data Carddass (Card Battle, Mission, Formation e Cross), CCG americano (narutocards.ca) e o 疾風伝 Card Game 2007–2008 (listas oficiais da Bandai pelo Wayback, snapshot `data/vintage/naruto-shippuden.json`, quase sem imagem) | sem preço |
+| `narutoboruto` | Naruto Boruto Card Game | vintage Bandai 2019–2020, o primeiro jogo do Chrono Clash System: as Tournament Pack Cards (as versões foil de torneio), da TCGCSV cat. 60, snapshot `data/vintage/naruto-boruto.json`; id `nb-<productId>`; as caixas NB01–NB04 não têm lista carta a carta | sem preço |
+| `naruto` | Naruto Card Game | vintage Bandai 2002–2006 (tcg-db + TV Tokyo + cardcheckbox), Data Carddass (Card Battle, Mission, Formation e Cross), CCG americano (narutocards.ca, com o complemento e as promos do N-CCG-DB) e o 疾風伝 Card Game 2007–2008 (listas oficiais da Bandai pelo Wayback, snapshot `data/vintage/naruto-shippuden.json`, quase sem imagem) | sem preço |
 | `hxh` | Hunter × Hunter | Carddass Hyper Battle 1999–2001 (Hunterpedia) | sem preço |
-| `dbc` | Dragon Ball Carddass | Carddass Bandai 1988–1997: Hondan carta a carta (80storage), sem imagem por enquanto | sem preço |
+| `dbc` | Dragon Ball Carddass | Carddass Bandai 1988–1997: Hondan, 特別弾, Super Battle, Visual Adventure e Super Barcode Wars, uma seção por série; número, raridade e scan do dbzcollection.fr (snapshot `data/vintage/dbc-dbzcollection.json`), nome do Hondan pelo 80storage (`data/vintage/dbc-carddass.json`) e, onde ele não chega, transcrito dos scans | sem preço |
 | `wow` | World of Warcraft TCG | TCGCSV cat. 13 (Upper Deck 2006–2010, Cryptozoic 2010–2013; vintage, só os sets que o TCGplayer lista, sem número de coleção e com scan de ~200 px; setId, nome e data fixos por groupId) | USD |
 | `lotr` | The Lord of the Rings TCG | Decipher 2001–2007: banco e scans originais do Player's Council (snapshot `data/vintage/lotr-pc.json`) | sem preço |
 | `dbz` | Dragon Ball Z CCG | Score 2000–2006: o CCG das 11 sagas, o GT TCG e o relançamento de 2005, com subsets e promos; galerias do retrodbzccg.com, nomes faltantes do kizmt/dbz-ccg-data e lidos no scan (snapshot `data/vintage/dbz-retro.json`) | sem preço |
@@ -141,6 +143,34 @@ inglesa está na TCGCSV. O que é só dele:
   boosters, trial decks e promos; o Sleeve and Card Set vai pras promos.
 - A 2ª edição do BP01 (EBP01-2E) é **edição** do set (docs/CATALOGO.md, 3.4):
   sem cartão na lista de Sets, aparece no seletor "Edição" da página do BP01.
+
+### Cardfight!! Vanguard (`vanguard`)
+
+[scripts/sync-vanguard.mjs](scripts/sync-vanguard.mjs), TCGCSV categoria 16, no
+padrão do Weiß Schwarz. O jogo da Bushiroad na edição inglesa, com as cinco
+eras: a série original (2011–2014), G, V, D e DZ. São 268 sets e 26,4 mil
+cartas (13/11/2026), o segundo maior catálogo da família TCGCSV.
+
+- **setId = o código impresso**, que abre o nome do grupo (`DZ-BT16: Parallactic
+  Dawn` → `DZ-BT16`) e vale mais que a abreviação da fonte, que perde o
+  prefixo da era em 6 grupos. Grupo sem código no nome (promos, trial decks
+  antigos) fica com a abreviação.
+- **Nome do set sem o código**, menos onde o título repete (o booster e o
+  trial deck de uma colaboração, os dois Revival Collection): esses guardam o
+  nome inteiro da fonte, porque o nome é chave no índice.
+- **Paralela = carta própria**: cada SP/FR/FFR/SEC é um produto do TCGplayer
+  com número e preço próprios. O preço só tem o subtipo Normal.
+- **Campos limpos no sync**: a fonte grafa o tipo de mais de 90 jeitos
+  ("Nornal", "Set Order/Research") e o gatilho de 38; ficam o tipo e o
+  gatilho que a carta imprime. Nação no `color`, clã no `clan` (só as eras
+  antigas), grau no `grade`.
+- **Imagem pequena nas eras antigas**: 200 px de largura em muita carta da
+  série original e da G (o que o TCGplayer tem). A busca de cartas do site
+  oficial carrega por JavaScript e o tamanho da imagem de lá não foi medido.
+- **Fora do catálogo**: 45 produtos com raridade e sem número (Energy,
+  Fighter's Counter, marcadores).
+- Sets no formato dos modernos da Bandai (`SECOES_BANDAI`): os Booster Sets
+  de todas as eras, os extras, os decks e as promos, pelo código.
 
 ### Final Fantasy TCG (`fftcg`)
 
@@ -413,27 +443,36 @@ primeiro lançamento. Têm fonte carta a carta o HUNTER×HUNTER e o
 
 ### Dragon Ball Carddass (`dbc`)
 
-[scripts/sync-dbc-carddass.mjs](scripts/sync-dbc-carddass.mjs), snapshot em
-`data/vintage/dbc-carddass.json` (nunca regride; o id fica gravado no snapshot e o
-refresh reaproveita o da carta já conhecida). Levantamento de 2026-09-24:
+[scripts/sync-dbc-carddass.mjs](scripts/sync-dbc-carddass.mjs), dois snapshots
+que nunca regridem e gravam o id: `data/vintage/dbc-dbzcollection.json` (todas as
+séries) e `data/vintage/dbc-carddass.json` (o Hondan do 80storage). Levantamento
+de 2026-11-12:
 
-| Série | Partes | Anos | Por parte | No catálogo |
+| Série | Partes | Lançamento | Por parte | No catálogo |
 |---|---|---|---|---|
-| 本弾 Hondan | 第1弾–第30弾 + 特別弾 | nov/1988–set/1997 | 42 (o 特別弾, 83) | 第1弾–第18弾 (758 cartas, 80storage) |
-| Super Battle | 1–20 | 1991–1997 | 44 (o 20, 46) | — |
-| Visual Adventure | 1–5, SP, '95, EX | 1991–1995 | 42 | — |
-| Super Barcode Wars | 1–4 | 1992–1993 | 42 | — |
+| 本弾 Hondan | 第1弾–第30弾 + 特別弾 | nov/1988–set/1997 | 42 (o 特別弾, 81 + 2 de campanha) | todas (1.343 cartas; nome do 80storage até o 第20弾) |
+| Super Battle | 1–20 | nov/1991–mai/1997 | 44 (o 19 e o 20, 46) | todas (884) |
+| Visual Adventure | 第1集–第5集, Especial, '95, '95EX | jun/1991–out/1995 | 42 (a Especial, 48 com as laser) | todas (342) |
+| Super Barcode Wars | パート1–4 | dez/1992–nov/1993 | 42 | todas (168) |
 
-- **Cartas**: o 80storage publica a lista de cada parte do Hondan (número, nome
-  JP, BP/DP e símbolos do verso), ~1 parte por mês. O sync tenta as 31 e as novas
-  entram sozinhas. Nome em inglês pelo dicionário `scripts/data/dbc-names-en.json`;
-  sem tradução segura, fica o japonês.
-- **Totais e anos** de todas as séries: RetroballZ (uma foto por parte, sem scan
-  carta a carta). Série sem lista carta a carta **não gera carta**: a numeração tem
-  pegadinhas (dois No.215 no 第6弾, o No.216 escondido no 第7弾, E-1..9 no 第16弾,
-  numeração que recomeça no 第17弾) e inventar números criaria ids a trocar depois.
-- **Imagens**: nenhuma fonte acessível tem scan por carta (o dragonballcards.com
-  tem, mas só serve HTTP). Scan curado entra por `assets/cards/dbc/<id>.webp`.
+- **Cartas**: o dbzcollection.fr tem uma página por parte de cada série, com o
+  número impresso, a raridade e o scan de cada carta, mas não o nome. O nome do
+  Hondan vem do 80storage (número, nome JP, BP/DP e símbolos do verso), que
+  publica ~1 parte por mês: o sync tenta as 31 e a parte nova herda o id que a
+  carta já tem. Onde ele não chega (Hondan 21–30, 特別弾 e as outras séries), o
+  nome foi lido no scan (`scripts/data/dbc-nomes-lidos.json`). Nome em inglês
+  pelo dicionário `scripts/data/dbc-names-en.json`; sem tradução segura, fica o
+  japonês.
+- **Carta de duas camadas** (隠れプリズム, Wプリズム, リバース/両面プリズム):
+  a Bandai conta uma, e o dbzcollection lista as duas faces com o mesmo número.
+  Viram uma carta só, com a raridade pelo tipo (Hidden, Double, Metal Hidden,
+  Reverse Prism). Exceção: as duas faces do No.500 do 第12弾 e do No.646/No.0 do
+  第16弾 já eram cartas no 80storage e seguem assim.
+- **Datas**: o mês de cada parte pela cronologia da vintcollect.com (EUC-JP),
+  que bate com a do dbzcollection; os subtítulos do 26–30, conferidos no display.
+- **Imagens**: o scan do dbzcollection pelo wsrv.nl (o site só serve HTTP), com
+  a marca d'água dele. Scan curado entra por `assets/cards/dbc/<id>.webp` e passa
+  na frente.
 
 ### Harry Potter TCG (`harrypotter`)
 

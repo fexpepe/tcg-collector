@@ -122,10 +122,12 @@ jobs:
             data/cdm/sets
             data/gcd/sets
             data/gw/sets
+            data/narutoboruto/sets
             data/narutocg/sets
             data/godzilla/sets
             data/palworld/sets
             data/fftcg/sets
+            data/vanguard/sets
             data/narutomythos/sets
             data/narutokayou/sets
             data/jump/sets
@@ -154,7 +156,7 @@ jobs:
           faltando=""
           # data/dbc/, data/swu/, data/cyberpunk/, data/wow/, data/lotr/,
           # data/sorcery/, data/harrypotter/, data/weiss/, data/mbc/, data/dbz/ e
-          # data/cdm/, data/gcd/, data/gw/, data/narutocg/, data/godzilla/, data/palworld/, data/fftcg/, data/narutomythos/ e data/narutokayou/: jogos novos (2026-09-24 a 2026-11-12). Enquanto o cache
+          # data/cdm/, data/gcd/, data/gw/, data/narutocg/, data/godzilla/, data/palworld/, data/fftcg/ e data/vanguard/: jogos novos (2026-09-24 a 2026-11-13). Enquanto o cache
           # for de antes deles, o build rápido publicaria o tile do hub sem
           # catálogo nenhum atrás.
           for f in data/manifest.generated.js data/pricing.generated.js \
@@ -170,10 +172,14 @@ jobs:
                    data/cdm/manifest.generated.js \
                    data/gcd/manifest.generated.js \
                    data/gw/manifest.generated.js \
+                   data/narutoboruto/manifest.generated.js \
                    data/narutocg/manifest.generated.js \
                    data/godzilla/manifest.generated.js \
                    data/palworld/manifest.generated.js \
-                   data/fftcg/manifest.generated.js \n                   data/narutomythos/manifest.generated.js \n                   data/narutokayou/manifest.generated.js; do
+                   data/fftcg/manifest.generated.js \
+                   data/vanguard/manifest.generated.js \
+                   data/narutomythos/manifest.generated.js \
+                   data/narutokayou/manifest.generated.js; do
             [ -s "$f" ] || faltando="$faltando $f"
           done
           if [ -n "$faltando" ]; then
@@ -610,6 +616,17 @@ jobs:
         if: env.RODA_SYNC == 'true'
         run: node scripts/sync-price-history.mjs data/fftcg
 
+      # Cardfight!! Vanguard (TCGCSV cat. 16, Bushiroad 2011+; as cinco eras,
+      # so a edicao inglesa). Padrao Weiss: paralela = carta propria, setId do
+      # codigo impresso que abre o nome do grupo; sem logo de set.
+      - name: Sincroniza catálogo do Cardfight!! Vanguard (TCGCSV)
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/sync-vanguard.mjs || echo "sync-vanguard falhou; mantém o catalogo versionado"
+
+      - name: Snapshot de preços (histórico Cardfight!! Vanguard)
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/sync-price-history.mjs data/vanguard
+
       # NARUTO Mythos TCG (Cicaboom, 2026+): a galeria oficial do jogo, um JSON
       # publico que o site dela le. Id pelo SKU oficial; a 2a edicao do Set 1
       # vira set a parte e as cartas de torneio, "<set> Promos". Sem preco: o
@@ -743,10 +760,11 @@ jobs:
         run: node scripts/sync-gundam-war.mjs --no-fetch || echo "sync-gundam-war --no-fetch falhou; segue com o catalogo do cache"
 
       # Dragon Ball Carddass (Bandai 1988-1997): o jogo vintage dbc. Lista carta
-      # a carta do Hondan pelo 80storage.com (snapshot versionado em
-      # data/vintage/dbc-carddass.json, nao regride, ids fixos). Cria data/dbc/
-      # sozinho, sem depender de outro sync. Imagem so a curada em
-      # assets/cards/dbc/ (Hondan 1-15, do Wayback); sem preco.
+      # a carta de todas as series pelo dbzcollection.fr (numero, raridade e
+      # scan, snapshot em data/vintage/dbc-dbzcollection.json) e o nome do
+      # Hondan pelo 80storage.com (data/vintage/dbc-carddass.json); os dois nao
+      # regridem e os ids ficam. Cria data/dbc/ sozinho. Imagem pelo wsrv.nl
+      # (a curada em assets/cards/dbc/ passa na frente); sem preco.
       - name: Catalogo vintage Dragon Ball Carddass
         if: env.RODA_SYNC == 'true'
         run: node scripts/sync-dbc-carddass.mjs || echo "sync-dbc-carddass falhou; segue com o snapshot versionado"
@@ -835,6 +853,15 @@ jobs:
       # build completo regrava no "Versiona snapshot do catálogo".
       - name: Anexa NARUTO 疾風伝 Card Game
         run: node scripts/sync-naruto-shippuden.mjs --no-fetch || echo "sync-naruto-shippuden falhou; segue com o snapshot versionado"
+
+      # Naruto Boruto Card Game (Bandai 2019–2020, Chrono Clash System): o jogo
+      # vintage narutoboruto. As Tournament Pack Cards, da TCGCSV (categoria
+      # 60). Só do snapshot versionado (--no-fetch) e nos DOIS modos, como o
+      # 疾風伝 acima: o jogo acabou, a lista não muda, e sem o passo no build
+      # rápido o data/narutoboruto/sets/ viria do cache e o jogo só apareceria
+      # no cron seguinte, com a entrada da página Vintage já no ar.
+      - name: Monta o catálogo do Naruto Boruto Card Game
+        run: node scripts/sync-naruto-boruto.mjs --no-fetch || echo "sync-naruto-boruto falhou; segue com o catálogo versionado"
 
       # Nomes das cartas de Naruto: japonês -> inglês. DEPOIS dos syncs
       # que alimentam esse catálogo (o mapa fica num lugar só em vez de repetido
@@ -999,10 +1026,12 @@ jobs:
             data/cdm/sets
             data/gcd/sets
             data/gw/sets
+            data/narutoboruto/sets
             data/narutocg/sets
             data/godzilla/sets
             data/palworld/sets
             data/fftcg/sets
+            data/vanguard/sets
             data/narutomythos/sets
             data/narutokayou/sets
             data/jump/sets

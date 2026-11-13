@@ -82,10 +82,12 @@ jobs:
             data/cdm/sets
             data/gcd/sets
             data/gw/sets
+            data/narutoboruto/sets
             data/narutocg/sets
             data/godzilla/sets
             data/palworld/sets
             data/fftcg/sets
+            data/vanguard/sets
             data/narutomythos/sets
             data/narutokayou/sets
             data/jump/sets
