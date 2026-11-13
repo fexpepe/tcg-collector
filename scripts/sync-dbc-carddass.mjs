@@ -163,7 +163,7 @@ const SETS = [
   // com as 6 prismas também em laser (o dbzcollection tem as duas).
   P("va", 1, "1991-06", 42, "第1集"), P("va", 2, "1991-09", 42, "第2集"), P("va", 3, "1991-12", 42, "第3集"),
   P("va", 4, "1992-05", 42, "第4集"), P("va", 5, "1992-09", 42, "第5集"), P("va", 6, "1993-06", 42, "スペシャル", "Special"),
-  P("va", 7, "1995-04", 42, "'95", "'95"), P("va", 8, "1995-10", 42, "'95EX", "'95 EX"),
+  P("va", 7, "1995-04", 42, "'95", "'95"), P("va", 8, "1995-10", 42, "'95EX", "'95EX"),
   // Super Barcode Wars: carta com código de barras no verso, lida pelo
   // スーパーバーコードウォーズ, o portátil da Bandai de 1992 (マルチスキャニング
   // システム é só o nome do leitor dele).

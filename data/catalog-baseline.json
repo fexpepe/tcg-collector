@@ -153,5 +153,20 @@
   "cards": 5700,
   "sets": 38,
   "imgPct": 100
+ },
+ "dbsb": {
+  "cards": 884,
+  "sets": 20,
+  "imgPct": 100
+ },
+ "dbva": {
+  "cards": 342,
+  "sets": 8,
+  "imgPct": 100
+ },
+ "dbbw": {
+  "cards": 168,
+  "sets": 4,
+  "imgPct": 100
  }
 }

@@ -113,6 +113,9 @@ jobs:
             data/naruto/sets
             data/hxh/sets
             data/dbc/sets
+            data/dbsb/sets
+            data/dbva/sets
+            data/dbbw/sets
             data/wow/sets
             data/lotr/sets
             data/dbz/sets
@@ -152,13 +155,16 @@ jobs:
           faltando=""
           # data/dbc/, data/swu/, data/cyberpunk/, data/wow/, data/lotr/,
           # data/sorcery/, data/harrypotter/, data/weiss/, data/mbc/, data/dbz/ e
-          # data/cdm/, data/gcd/, data/gw/, data/narutocg/, data/godzilla/, data/palworld/ e data/fftcg/: jogos novos (2026-09-24 a 2026-11-11). Enquanto o cache
+          # data/cdm/, data/gcd/, data/gw/, data/narutocg/, data/godzilla/, data/palworld/ e data/fftcg/: jogos novos (2026-09-24 a 2026-11-11);
+          # data/dbsb/, data/dbva/ e data/dbbw/ (2026-11-13), as séries do dbc que viraram jogo. Enquanto o cache
           # for de antes deles, o build rápido publicaria o tile do hub sem
           # catálogo nenhum atrás.
           for f in data/manifest.generated.js data/pricing.generated.js \
                    data/onepiece/pricing.generated.js data/lorcana/pricing.generated.js \
                    data/magic/pricing.generated.js data/ygo/pricing.generated.js \
                    data/dbc/manifest.generated.js data/swu/manifest.generated.js \
+                   data/dbsb/manifest.generated.js data/dbva/manifest.generated.js \
+                   data/dbbw/manifest.generated.js \
                    data/cyberpunk/manifest.generated.js data/wow/manifest.generated.js \
                    data/lotr/manifest.generated.js data/sorcery/manifest.generated.js \
                    data/harrypotter/manifest.generated.js \
@@ -729,7 +735,9 @@ jobs:
       # a carta de todas as series pelo dbzcollection.fr (numero, raridade e
       # scan, snapshot em data/vintage/dbc-dbzcollection.json) e o nome do
       # Hondan pelo 80storage.com (data/vintage/dbc-carddass.json); os dois nao
-      # regridem e os ids ficam. Cria data/dbc/ sozinho. Imagem pelo wsrv.nl
+      # regridem e os ids ficam. Cria data/dbc/ sozinho, e tambem data/dbsb/,
+      # data/dbva/ e data/dbbw/ (Super Battle, Visual Adventure e Super Barcode
+      # Wars: series do dbc que viraram jogo em 2026-11-13). Imagem pelo wsrv.nl
       # (a curada em assets/cards/dbc/ passa na frente); sem preco.
       - name: Catalogo vintage Dragon Ball Carddass
         if: env.RODA_SYNC == 'true'
@@ -974,6 +982,9 @@ jobs:
             data/naruto/sets
             data/hxh/sets
             data/dbc/sets
+            data/dbsb/sets
+            data/dbva/sets
+            data/dbbw/sets
             data/wow/sets
             data/lotr/sets
             data/dbz/sets

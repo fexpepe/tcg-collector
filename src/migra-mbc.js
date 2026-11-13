@@ -32,16 +32,22 @@
 // NARUTO CARD GAME de 2027 (2026-11-11): a linha nrt-ncg- do naruto vira o
 // jogo narutocg. Quem marcou uma Chakra Card a tem na coleção do naruto; ela
 // muda de gaveta do mesmo jeito.
+//
+// Dragon Ball Carddass (2026-11-13): Super Battle, Visual Adventure e Super
+// Barcode Wars foram séries do dbc por um dia (dbc-sb…, dbc-va…, dbc-bw…) e
+// viraram os jogos dbsb, dbva e dbbw, com os mesmos ids.
 (function () {
   const S = window.TCGShared;
   if (!S || !S._nucleo) return;
   const { SYNC_KEYS, mergeCollection, mergeWishlist, mergePrices, normalizeMeta, readObject, freezeWritesUntilReload } = S._nucleo;
 
-  const DE = ["onepiece", "naruto", "hxh", "gundam"];
+  const DE = ["onepiece", "naruto", "hxh", "gundam", "dbc"];
   // Jogo novo da carta, pelo id; null = fica onde está.
   const destinoDe = (id) => {
     const s = String(id || "");
-    return /^(op|nrt|hxh)-mb-/.test(s) ? "mbc" : /^gcd-/.test(s) ? "gcd" : /^nrt-ncg-/.test(s) ? "narutocg" : null;
+    const dbc = /^dbc-(sb|va|bw)\d/.exec(s);
+    return /^(op|nrt|hxh)-mb-/.test(s) ? "mbc" : /^gcd-/.test(s) ? "gcd" : /^nrt-ncg-/.test(s) ? "narutocg"
+      : dbc ? { sb: "dbsb", va: "dbva", bw: "dbbw" }[dbc[1]] : null;
   };
   const chave = (base, game) => `tcg-collector-${game}-${base}`;
 

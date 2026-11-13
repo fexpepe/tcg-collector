@@ -133,6 +133,21 @@ test("NARUTO CARD GAME: a Chakra Card (nrt-ncg-) marcada no naruto vai pro narut
   assert.equal(ler(k("collection-v3", "mbc")), null);
 });
 
+test("Dragon Ball Carddass: Super Battle, VA e Barcode Wars marcadas no dbc vão pros jogos delas, e o Hondan fica", () => {
+  const { jogos, ler } = roda({
+    [k("collection-v3", "dbc")]: { "dbc-sb01-6": { Normal: { NM: 1 } }, "dbc-h01-1": { Normal: { NM: 2 } }, "dbc-bw01-4": { Normal: { LP: 1 } } },
+    [k("collection-meta-v1", "dbc")]: { mod: { "dbc-sb01-6": 1000, "dbc-h01-1": 2000, "dbc-bw01-4": 1500 }, del: {} },
+    [k("wishlist-v1", "dbc")]: { "dbc-va06-37b": ["Normal"] }
+  });
+  assert.deepEqual([...jogos].sort(), ["dbbw", "dbc", "dbsb", "dbva"]);
+  assert.deepEqual(ler(k("collection-v3", "dbsb")), { "dbc-sb01-6": { Normal: { NM: 1 } } });
+  assert.deepEqual(ler(k("collection-v3", "dbbw")), { "dbc-bw01-4": { Normal: { LP: 1 } } });
+  assert.equal(ler(k("collection-meta-v1", "dbsb")).mod["dbc-sb01-6"], 1000);
+  assert.ok(ler(k("wishlist-v1", "dbva"))["dbc-va06-37b"]);
+  assert.deepEqual(ler(k("collection-v3", "dbc")), { "dbc-h01-1": { Normal: { NM: 2 } } });
+  assert.ok(ler(k("collection-meta-v1", "dbc")).del["dbc-sb01-6"] > 1000, "sem tombstone a cópia da nuvem voltava pro dbc");
+});
+
 test("nada a mover: não escreve nada", () => {
   const { jogos, ler } = roda({ [k("collection-v3", "onepiece")]: { "op-123": { Normal: { NM: 1 } } } });
   assert.equal(jogos.length, 0); // array do sandbox (outro realm): compara o tamanho
@@ -145,8 +160,8 @@ test("o detector do shared.js só baixa a migração quando há id Miracle Battl
   const det = /\.some\(\(g\) => (\/.+?\/)\.test\(/.exec(src.slice(src.indexOf("async function moveMiracleBattle")));
   assert.ok(det, "o teste do detector mudou de forma");
   const re = new Function(`return ${det[1]}`)();
-  for (const id of ["op-mb-op01-23", "nrt-mb-nr01-7", "hxh-mb-hh01-3", "gcd-wd01-1", "nrt-ncg-cp-001"]) assert.ok(re.test(`{"${id}":1}`), id);
-  for (const id of ["nrt-s01-1", "op-123", "gcg-616678"]) assert.ok(!re.test(`{"${id}":1}`), id);
+  for (const id of ["op-mb-op01-23", "nrt-mb-nr01-7", "hxh-mb-hh01-3", "gcd-wd01-1", "nrt-ncg-cp-001", "dbc-sb01-6", "dbc-va06-37b", "dbc-bw04-168"]) assert.ok(re.test(`{"${id}":1}`), id);
+  for (const id of ["nrt-s01-1", "op-123", "gcg-616678", "dbc-h01-1", "dbc-h24-c1a"]) assert.ok(!re.test(`{"${id}":1}`), id);
   assert.match(src, /async function moveMiracleBattle\(subir\)/);
   assert.match(src, /injectScript\("\/src\/migra-mbc\.js"\)/);
   // Os três ganchos: login, abertura com sessão e "Forçar sincronização".

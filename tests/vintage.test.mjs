@@ -42,6 +42,7 @@ const linhas = html.split('<li class="vt-jogo"').slice(1).map((trecho) => {
     url: (/<a class="vt-linha" href="\/games\/([a-z0-9-]+)" data-game="[a-z]+">/.exec(bloco) || [])[1],
     game: (/data-game="([a-z]+)"/.exec(bloco) || [])[1],
     logo: (/<img class="vt-logo" src="([^"]+)"/.exec(bloco) || [])[1],
+    logoTexto: (/<span class="vt-logo-texto">([^<]+)<\/span>/.exec(bloco) || [])[1],
     nome: (/<span class="vt-nome">([^<]+)<\/span>/.exec(bloco) || [])[1],
     anos: (/<span class="game-badge vintage vt-anos">([^<]+)<\/span>/.exec(bloco) || [])[1],
     varias: bloco.includes('data-i18n="vt.multi"')
@@ -56,8 +57,14 @@ test("cada linha da página é um jogo vintage do registro, com o nome, o logo e
     const j = jogoDaUrl(l.url);
     assert.equal(l.game, j.game, `${l.url}: data-game`);
     assert.equal(l.nome, j.nome, `${l.url}: nome`);
-    assert.equal(l.logo, j.logo, `${l.url}: logo`);
-    assert.ok(existsSync(join(RAIZ, l.logo)), `${l.url}: o logo ${l.logo} não existe`);
+    if (j.logo) {
+      assert.equal(l.logo, j.logo, `${l.url}: logo`);
+      assert.ok(existsSync(join(RAIZ, l.logo)), `${l.url}: o logo ${l.logo} não existe`);
+    } else {
+      // Jogo ainda sem logo no registro: o quadro leva o nome em texto, e só ele.
+      assert.equal(l.logo, undefined, `${l.url}: imagem de logo em jogo sem logo no registro`);
+      assert.ok(l.logoTexto, `${l.url}: sem logo e sem o nome no quadro (vt-logo-texto)`);
+    }
     assert.equal(l.anos, j.vintage, `${l.url}: os anos do selo são o \`vintage\` do registro`);
     assert.ok(["jp", "us"].includes(l.pais), `${l.url}: data-pais ${l.pais} (a página só tem os símbolos vt-jp e vt-us)`);
   }

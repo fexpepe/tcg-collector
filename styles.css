@@ -505,6 +505,16 @@
   --accent: #4d7c0f; --accent-dark: #3f6212; --accent-rgb: 77, 124, 15;
   --accent-soft: rgba(77, 124, 15, 0.1); --on-accent: #ffffff;
 }
+/* As três séries do Carddass de Dragon Ball que viraram jogo (2026-11-13):
+   Super Battle ferrugem, Visual Adventure esmeralda, Super Barcode Wars azul.
+   No escuro o tom claro com texto escuro; no claro o tom da marca com branco
+   (todos acima de 5:1). */
+[data-game-accent="dbsb"] { --accent: #e0601e; --accent-dark: #af3700; --accent-rgb: 224, 96, 30; --accent-soft: rgba(224, 96, 30, 0.16); --on-accent: #0a0c10; }
+[data-theme="light"][data-game-accent="dbsb"], [data-theme="light"] [data-game-accent="dbsb"] { --accent: #af3700; --accent-dark: #8a2b00; --accent-rgb: 175, 55, 0; --accent-soft: rgba(175, 55, 0, 0.1); --on-accent: #ffffff; }
+[data-game-accent="dbva"] { --accent: #0fa573; --accent-dark: #0b7a55; --accent-rgb: 15, 165, 115; --accent-soft: rgba(15, 165, 115, 0.16); --on-accent: #0a0c10; }
+[data-theme="light"][data-game-accent="dbva"], [data-theme="light"] [data-game-accent="dbva"] { --accent: #0b7a55; --accent-dark: #08603f; --accent-rgb: 11, 122, 85; --accent-soft: rgba(11, 122, 85, 0.1); --on-accent: #ffffff; }
+[data-game-accent="dbbw"] { --accent: #5b8def; --accent-dark: #0546b4; --accent-rgb: 91, 141, 239; --accent-soft: rgba(91, 141, 239, 0.16); --on-accent: #0a0c10; }
+[data-theme="light"][data-game-accent="dbbw"], [data-theme="light"] [data-game-accent="dbbw"] { --accent: #0546b4; --accent-dark: #043a96; --accent-rgb: 5, 70, 180; --accent-soft: rgba(5, 70, 180, 0.1); --on-accent: #ffffff; }
 /* Gundam War: TURQUESA, a cor do GAME_COLOR (11/11/2026; o jogo não tem cor de
    marca, o azul é do Gundam Card Game e a lima do Gundam Carddass). Turquesa
    com texto escuro no escuro (14.2:1); o #0f766e com texto branco no claro
@@ -5220,6 +5230,18 @@ a.vt-marca-hoje:active { box-shadow: 0 0 0 2px var(--accent); }
   background: #fff;
   flex: none;
 }
+/* Jogo ainda sem logo (o `logo: ""` do functions/_lib/jogos.js; as séries do
+   Carddass de Dragon Ball que viraram jogo em 2026-11-13): o nome curto, em
+   caixa alta, no mesmo quadro branco. */
+.vt-logo-texto {
+  color: #12141a;
+  font-weight: 800;
+  font-size: 13px;
+  line-height: 1.15;
+  letter-spacing: 0.02em;
+  text-align: center;
+  text-transform: uppercase;
+}
 .vt-logo { max-width: 100%; max-height: 100%; object-fit: contain; }
 .vt-texto { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
 .vt-nome { font-size: 15px; font-weight: 700; line-height: 1.25; }
@@ -8873,6 +8895,9 @@ html:not([lang^="pt"]) .sx-sobre[data-idioma="pt"] { visibility: hidden; }
   display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.7fr);
   min-height: 236px; background: var(--panel); border: 1px solid var(--line);
 }
+/* Jogo ainda sem logo (o `logo: ""` do registro, 2026-11-13): os dados
+   ocupam a cápsula inteira em vez de deixar vazia a coluna da arte. */
+.sx-sobre-topo--sem-arte { grid-template-columns: minmax(0, 1fr); min-height: 0; }
 .sx-sobre-arte {
   display: grid; place-items: center; padding: 26px;
   background: radial-gradient(circle at 50% 0%, #ffffff, #eef0f3 78%);

@@ -26,7 +26,9 @@
     const partes = String(cardId).split("-");
     // op-mb-/nrt-mb-/hxh-mb-: o Miracle Battle de antes de virar o jogo mbc;
     // nrt-ncg-: o NARUTO CARD GAME de 2027 (narutocg), que não é o naruto.
-    const certo = partes[1] === "mb" ? "mbc" : partes[1] === "ncg" ? "narutocg" : ID_PREFIX_GAME[partes[0]];
+    // dbc-sb/dbc-va/dbc-bw: as séries do dbc que viraram jogo (2026-11-13).
+    const serieDbc = partes[0] === "dbc" && { sb: "dbsb", va: "dbva", bw: "dbbw" }[String(partes[1] || "").slice(0, 2)];
+    const certo = partes[1] === "mb" ? "mbc" : partes[1] === "ncg" ? "narutocg" : serieDbc || ID_PREFIX_GAME[partes[0]];
     const primeiros = certo ? [certo] : ["pokemon", "lorcana"];
     const onda1 = primeiros.filter((g) => GAME_SLUGS.includes(g));
     return [onda1, GAME_SLUGS.filter((g) => !onda1.includes(g))];

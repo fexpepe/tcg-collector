@@ -130,6 +130,11 @@
     if (flat.includes("starwarsunlimited") || flat === "swu") return "swu";
     if (flat.includes("cyberpunk")) return "cyberpunk";
     if (flat.includes("sorcery")) return "sorcery";
+    // As séries do Carddass que viraram jogo (2026-11-13), ANTES do dbc: "Dragon
+    // Ball Carddass Super Battle" também contém "carddass".
+    if (flat === "dbsb" || (flat.includes("dragonball") && flat.includes("superbattle"))) return "dbsb";
+    if (flat === "dbva" || (flat.includes("dragonball") && flat.includes("visualadventure"))) return "dbva";
+    if (flat === "dbbw" || (flat.includes("dragonball") && flat.includes("barcodewars"))) return "dbbw";
     // Carddass vintage ANTES do Fusion World: "Dragon Ball Carddass" também contém "dragonball".
     if (flat === "dbc" || (flat.includes("dragonball") && flat.includes("carddass"))) return "dbc";
     // O CCG da Score (2000–2006) também antes do Fusion World. O "Dragon Ball Z

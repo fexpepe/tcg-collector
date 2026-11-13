@@ -28,7 +28,7 @@
   // Jogos com o bloco (o `url` do functions/_lib/jogos.js). A borda só busca o
   // JSON de quem está aqui; o app.js tira o destaque do "Último set" deles.
   const COM_SOBRE = [
-    "dragon-ball-carddass",
+    "dragon-ball-carddass", "dragon-ball-visual-adventure", "dragon-ball-super-battle", "dragon-ball-super-barcode-wars",
     "gundam-carddass", "gundam-war", "carddass-masters",
     "naruto-card-game-2002", "naruto-data-carddass", "naruto-ccg", "naruto-shippuden-card-game",
     "hunter-x-hunter-carddass", "one-piece-carddass", "one-piece-card-game-2002", "miracle-battle-carddass",
@@ -176,7 +176,7 @@
       : "";
 
     return `<section class="sx-sobre" id="sobre" data-sobre-jogo="${esc(dados.url)}" data-idioma="${lang}" aria-label="${esc(R.secao)}">
-      <div class="sx-sobre-topo">
+      <div class="sx-sobre-topo${dados.logo ? "" : " sx-sobre-topo--sem-arte"}">
         ${dados.logo ? `<div class="sx-sobre-arte"><img class="sx-sobre-logo" src="${esc(raiz + String(dados.logo).replace(/^\//, ""))}" alt="${esc(R.logo)}: ${esc(nome)}" decoding="async"${dados.logoLargura && dados.logoAltura ? ` width="${Number(dados.logoLargura)}" height="${Number(dados.logoAltura)}"` : ""}></div>` : ""}
         <div class="sx-sobre-id">
           <div class="sx-sobre-cab">

@@ -64,7 +64,11 @@ for (const url of S.COM_SOBRE) {
     const jogo = jogoDaUrl(url);
     assert.equal(d.url, url);
     assert.ok(S.tx(d.nome, "pt"), "nome");
-    assert.ok(existsSync(join(RAIZ, String(d.logo || "").replace(/^\//, ""))), `logo inexistente: ${d.logo}`);
+    // Jogo ainda sem logo no registro (`logo: ""`, as séries do Carddass de
+    // Dragon Ball em 2026-11-13): o bloco também vem sem, e a cápsula mostra só
+    // o texto (o renderizador pula a arte).
+    if (jogo.logo) assert.ok(existsSync(join(RAIZ, String(d.logo || "").replace(/^\//, ""))), `logo inexistente: ${d.logo}`);
+    else assert.ok(!d.logo, "logo no \"Sobre\" de jogo que não tem logo no registro");
     assert.match(String(d.periodo && d.periodo.inicio), /^\d{4}(-\d{2})?$/);
     assert.match(String(d.periodo && d.periodo.fim), /^\d{4}(-\d{2})?$/);
     // O período do registro (o "1988–1997" do hub) e o do bloco contam o mesmo.

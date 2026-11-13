@@ -8,9 +8,10 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import {
   parse80storage, assignIds, nameEn, SETS, SERIES, setName, setNameEn,
-  parseDbzCollection, assignIdsDz, raridadeDbc, scanDe, IMG, cartasDoJogo, FACE_DE
+  parseDbzCollection, assignIdsDz, raridadeDbc, scanDe, IMG, cartasDoJogo, FACE_DE, JOGO_DA_SERIE, jogoDaCarta
 } from "../scripts/sync-dbc-carddass.mjs";
 import { chaveBase } from "../scripts/lib/img-mirror.mjs";
+import { jogoNovoDoSet, jogoDaUrl } from "../functions/_lib/jogos.js";
 
 const ler = (p) => readFileSync(new URL(`../${p}`, import.meta.url), "utf8");
 const SNAP80 = JSON.parse(ler("data/vintage/dbc-carddass.json"));
@@ -191,7 +192,7 @@ test("SETS: toda parte tem página no dbzcollection e mês de lançamento", () =
   // subtítulos do 26–30 (display da Bandai) e o 第11弾 de maio
   assert.equal(setName(SETS.find((s) => s.code === "h29")), "本弾 第29弾「超サイヤ人4発動！！」");
   assert.equal(SETS.find((s) => s.code === "h11").date, "1992-05");
-  assert.equal(setName(SETS.find((s) => s.code === "va06")), "ビジュアルアドベンチャー スペシャル");
+  assert.equal(setName(SETS.find((s) => s.code === "va06")), "スペシャル");
 });
 
 test("snapshot do dbzcollection: ids no formato, de sets conhecidos, e cada parte com o total da Bandai", () => {
@@ -268,5 +269,49 @@ test("nome em inglês dos sets (src/nomes-sets.js) é o setNameEn do sync, e o a
   const esperado = Object.fromEntries(SETS.map((s) => [`dbc-${s.code}`, setNameEn(s)]));
   assert.deepEqual(noArquivo, esperado);
   const app = ler("src/app.js");
-  for (const serie of Object.values(SERIES)) assert.ok(app.includes(`"${serie.en} "`), `groupDbcSets sem o prefixo "${serie.en} "`);
+  assert.ok(app.includes(`"${SERIES.h.en} "`), `groupDbcSets sem o prefixo "${SERIES.h.en} "`);
+});
+
+// ---- Um jogo por série (2026-11-13) ----------------------------------------
+
+test("cada série é um jogo: o dbc fica com o Hondan e o 特別弾, e as outras três vão pra dbsb, dbva e dbbw", () => {
+  assert.deepEqual(JOGO_DA_SERIE, { h: "dbc", sb: "dbsb", va: "dbva", bw: "dbbw" });
+  assert.equal(jogoDaCarta({ setId: "dbc-h31" }), "dbc");
+  assert.equal(jogoDaCarta({ setId: "dbc-sb19" }), "dbsb");
+  assert.equal(jogoDaCarta({ setId: "dbc-va06" }), "dbva");
+  assert.equal(jogoDaCarta({ setId: "dbc-bw04" }), "dbbw");
+  // O nome do set não repete o jogo (contrato 7); o do dbc segue com o 本弾.
+  assert.equal(setName(SETS.find((s) => s.code === "sb01")), "第1弾");
+  assert.equal(setNameEn(SETS.find((s) => s.code === "bw04")), "Part 4");
+  assert.equal(setName(SETS.find((s) => s.code === "h01")), "本弾 第1弾「格闘技大決戦」");
+});
+
+test("os quatro catálogos versionados: cada carta no jogo da série dela, e nenhuma em dois", () => {
+  const ids = new Map();
+  for (const jogo of Object.values(JOGO_DA_SERIE)) {
+    const texto = ler(`data/${jogo}/cards.js`);
+    const cartas = JSON.parse(texto.slice(texto.indexOf("["), texto.lastIndexOf("]") + 1));
+    assert.ok(cartas.length > 100, `${jogo}: ${cartas.length} cartas`);
+    for (const c of cartas) {
+      assert.equal(jogoDaCarta(c), jogo, `${c.id} no catálogo do ${jogo}`);
+      assert.ok(!ids.has(c.id), `${c.id} em ${ids.get(c.id)} e em ${jogo}`);
+      ids.set(c.id, jogo);
+      // Só o dbc tem logo; os três novos mostram o nome no cartão do set.
+      assert.equal(Boolean(c.setLogo), jogo === "dbc", `${c.id}: setLogo`);
+    }
+  }
+  assert.equal(ids.size, 2737);
+});
+
+test("endereço de set publicado no dbc (12/11) leva pro jogo novo, com o mesmo slug; os do Hondan ficam", () => {
+  // Os slugs que estavam no ar no mapa do dbc (data/game-pages, 2026-11-13).
+  const casos = { "dbc-sb10-10": "dragon-ball-super-battle", "dbc-sb01-1-en": "dragon-ball-super-battle",
+    "dbc-va06": "dragon-ball-visual-adventure", "dbc-va07-95": "dragon-ball-visual-adventure", "95ex": "dragon-ball-visual-adventure",
+    "dbc-bw04-4": "dragon-ball-super-barcode-wars" };
+  for (const [slug, url] of Object.entries(casos)) {
+    assert.equal(jogoNovoDoSet("dragon-ball-carddass", slug), url, slug);
+    assert.ok(jogoDaUrl(url), `${url} fora do registro`);
+  }
+  for (const slug of ["dbc-h01-1", "12-3", "16-z", "dbc-h31", "30-db"]) assert.equal(jogoNovoDoSet("dragon-ball-carddass", slug), null, slug);
+  assert.equal(jogoNovoDoSet("gundam-carddass", "dbc-sb01-1"), null);
 });

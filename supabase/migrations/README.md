@@ -8,6 +8,13 @@ poucos.)
 
 ## Pendentes de aplicar
 
+- `20261113b` — libera `dbsb`, `dbva` e `dbbw` (Super Battle, Visual Adventure
+  e Super Barcode Wars, as séries do Carddass de Dragon Ball que viraram jogo
+  em 2026-11-13) nas duas whitelists (`card_views`/`increment_card_view` e
+  `contribute_price`). Cópia da `20261111f` com a lista inteira, que JÁ inclui
+  os três slugs do Naruto da `20261113a` (PRs #296/#298): aplicar esta por
+  último, ou só ela. Conferir com o par de `curl` do fim do arquivo.
+
 - `20261112b` — /admin: as LINHAS de cada jogo (`20261112b_admin_jogos_linhas.sql`;
   o `b` porque a 20261112a do mesmo dia é a dos erros). O jogo `naruto` junta
   o Card Game 2002~2006, o Data Carddass, o CCG e o Shippuden (o `onepiece`, o
