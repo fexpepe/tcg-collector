@@ -1,14 +1,17 @@
-// NARUTO-ナルト- · cartas de coleção da Amada e da Ensky (2004–2005): a linha
-// vintage `nrt-tc` do Naruto. NÃO é jogo: são trading cards de pacote, pra
-// colecionar, da 天田印刷加工 (Amada), que em 2005 passou a se chamar エンスカイ
-// (Ensky; a página oficial da 忍術大全 assina "発売：エンスカイ（旧天田印刷
-// 加工）"). Entrou em 2026-11-13, a pedido do Fernando (a linha do tempo das
-// cartas do Naruto).
+// NARUTO-ナルト- · cartas de coleção da Amada e da Ensky (2004–2005): o jogo
+// vintage `narutotc` ("Naruto Trading Cards"), em data/narutotc/. NÃO é jogo
+// de mesa: são trading cards de pacote, pra colecionar, da 天田印刷加工
+// (Amada), que em 2005 passou a se chamar エンスカイ (Ensky; a página oficial
+// da 忍術大全 assina "発売：エンスカイ（旧天田印刷加工）"). Entrou em
+// 2026-11-13, a pedido do Fernando (a linha do tempo das cartas do Naruto).
 //
-// UMA LINHA, UMA SEÇÃO POR PRODUTO (docs/CATALOGO.md 4.1): o `naruto` é a
-// marca, então é linha e não jogo; e são produtos em sequência do MESMO
-// fabricante e do mesmo formato (pacote de cartas de coleção), como os títulos
-// do arcade na nrt-dc. O agrupador é o groupNarutoTradingSets do app.js.
+// JOGO PRÓPRIO, e não linha do `naruto`: o Fernando definiu em 2026-11-13 que
+// cada jogo antigo do Naruto é um jogo, como os outros do site, e que no mesmo
+// jogo fica só o que é parte dele (docs/CATALOGO.md 4.1). Na primeira versão
+// desta PR era a linha nrt-tc; nada foi publicado com ela, então o id trocou
+// de prefixo sem de-para. É UM jogo com uma seção por produto: é o mesmo
+// fabricante e o mesmo formato (pacote de cartas de coleção), como os títulos
+// do arcade no Data Carddass. O agrupador é o groupNarutoTradingSets do app.js.
 //
 // O QUE ENTRA (255 cartas, 4 sets):
 //   エッチングカードコレクション (2004)   45 normais, No.1–45
@@ -38,7 +41,7 @@
 //           a01d-ensky/trc-naruto-nt.html), que dá data e numeração.
 //   Não há imagem por carta em fonte aberta: TCDB, Mandarake, Suruga-ya,
 //   Coleka e eBay barram acesso automatizado (contrato 4 do CATALOGO.md).
-//   Todas entram sem imagem; assets/cards/naruto/<id>.* vence, se um dia
+//   Todas entram sem imagem; assets/cards/narutotc/<id>.* vence, se um dia
 //   houver scan nosso.
 //
 // DATAS: o dia quando uma fonte dá e nenhuma contradiz; só o ano quando as
@@ -52,38 +55,41 @@
 //              diz "8月中旬").
 //
 // NOMES: o do Etching 1 e o da 忍術大全 vêm em japonês, e o inglês sai do
-// mapa do Naruto (scripts/data/naruto-names-en.json). Na 忍術大全 a carta é
-// um JUTSU, e a fonte diz quem o usa: o nome é "jutsu (quem usa)", porque o
-// mesmo jutsu aparece em mais de uma carta (写輪眼 três vezes, 口寄せの術
-// três). Os do Etching 2 e 3 a fonte dá em ROMAJI, em maiúsculas ("ITACHI
-// KAKASHI", "SHODAI HOKAGE"): ficam como estão, sem separar personagens (o
-// espaço separa nomes e também palavras do mesmo nome) e sem o japonês, que a
-// fonte não tem.
+// mapa do Naruto (scripts/data/naruto-names-en.json), aqui mesmo: o jogo fica
+// fora do catálogo do `naruto`, que é o que o translate-naruto-names.mjs
+// traduz. Na 忍術大全 a carta é um JUTSU, e a fonte diz quem o usa: o nome é
+// "jutsu (quem usa)", porque o mesmo jutsu aparece em mais de uma carta
+// (写輪眼 três vezes, 口寄せの術 três). Os do Etching 2 e 3 a fonte dá em
+// ROMAJI, em maiúsculas ("ITACHI KAKASHI", "SHODAI HOKAGE"): ficam como estão,
+// sem separar personagens (o espaço separa nomes e também palavras do mesmo
+// nome) e sem o japonês, que a fonte não tem.
 //
 // FICA DE FORA, sem lista carta a carta achada: o Etching 4 (Ensky, 04/2006;
 // a página do 火の国庵 só tem a numeração, sem nomes), a 忍術大全 弐号 (Ensky,
 // 07/2006) e o トレーディングコレクション da Amada (03/2003).
 //
-// Padrão-snapshot, como as outras linhas do Naruto: o build parte de
-// data/vintage/naruto-trading-cards.json; o fetch só regrava quando responde,
-// confere e não regride. ANEXA ao catálogo do Naruto (ids nrt-tc-*), e o
-// sync-naruto-vintage.mjs preserva a linha (OTHER_LINES). O deploy roda com
-// --no-fetch: a lista é história encerrada.
+// SEM PREÇO, como os outros vintage.
+//
+// Padrão-snapshot: o build parte de data/vintage/naruto-trading-cards.json; o
+// fetch só regrava quando responde, confere e não regride. A lista é história
+// encerrada, então o deploy roda com --no-fetch. O catálogo é só deste sync;
+// carta que sair do snapshot fica congelada (id publicado nunca some).
 //
 //   node scripts/sync-naruto-trading-cards.mjs             # fetch + build
 //   node scripts/sync-naruto-trading-cards.mjs --no-fetch  # só build (o do deploy)
 import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-import { readGlobalVar, readSnapshot, writeSnapshot, snapshotCardCount, writeGameCatalog, sleep } from "./lib/sync-common.mjs";
+import { readGlobalVar, readSnapshot, writeSnapshot, snapshotCardCount, writeGameCatalog, preserveMissingCards, sleep } from "./lib/sync-common.mjs";
 import { baixaLista, HINOKUNIAN } from "./lib/hinokunian-lista.mjs";
 import { nomeEn } from "./lib/naruto-nomes.mjs";
 
 const ROOT = new URL("../", import.meta.url);
-const OUT = new URL("data/naruto/", ROOT);
+const GAME = "narutotc";
+const OUT = new URL(`data/${GAME}/`, ROOT);
 const SNAP = new URL("data/vintage/naruto-trading-cards.json", ROOT);
 const NO_FETCH = process.argv.includes("--no-fetch");
-// Nenhum dos produtos tem logo próprio recortado: vale o do Naruto, como nas
-// outras linhas sem logo (política de logo dos vintage, contrato 3).
+// Nenhum dos produtos tem logo próprio recortado: vale o do Naruto, a marca
+// impressa em todos (a exceção dos vintage na política de logo, contrato 3).
 const LOGO = "/assets/games/game_naruto.webp";
 
 // Os produtos, na ordem de lançamento. Nome sem "NARUTO-ナルト-" na frente
@@ -107,9 +113,9 @@ export const numeroDaCarta = (c) => (c.prefixo === "No" ? c.num : `${c.prefixo}.
 
 // Id estável: o número vira inteiro (o 火の国庵 escreve "No.1" e o Card Check
 // Box "No.01" pra mesma carta; o id não depende de quantos zeros a fonte põe).
-//   No.46 do Etching 2 -> nrt-tc-ecc2-46     Pa.01 -> nrt-tc-ecc2-pa1
-//   V.01 do Etching 3  -> nrt-tc-ecc3-v1     SP.10 -> nrt-tc-ecc3-sp10
-export const idDaCarta = (key, c) => `nrt-tc-${key}-${c.prefixo === "No" ? "" : c.prefixo.toLowerCase()}${Number(c.num)}`;
+//   No.46 do Etching 2 -> ntc-ecc2-46     Pa.01 -> ntc-ecc2-pa1
+//   V.01 do Etching 3  -> ntc-ecc3-v1     SP.10 -> ntc-ecc3-sp10
+export const idDaCarta = (key, c) => `ntc-${key}-${c.prefixo === "No" ? "" : c.prefixo.toLowerCase()}${Number(c.num)}`;
 
 // Nome que a fonte digitou errado, por "<set>:<número>". O SP.17 do Etching 3
 // está como "KAKASHU" na página: não existe esse personagem, e a mesma página
@@ -132,28 +138,28 @@ export function nomeDaCarta(def, c) {
   return jutsu && quem ? { name: `${jutsu} (${quem})`, nameJp } : { name: nameJp };
 }
 
-// Imagem CURADA do dono: assets/cards/naruto/<id>.* (mesmo mecanismo dos
-// outros syncs do Naruto).
+// Imagem CURADA do dono: assets/cards/narutotc/<id>.* (mesmo mecanismo dos
+// outros syncs vintage).
 function curatedImg(id) {
   for (const e of ["webp", "jpg", "png"]) {
-    if (existsSync(fileURLToPath(new URL(`assets/cards/naruto/${id}.${e}`, ROOT)))) return `/assets/cards/naruto/${id}.${e}`;
+    if (existsSync(fileURLToPath(new URL(`assets/cards/${GAME}/${id}.${e}`, ROOT)))) return `/assets/cards/${GAME}/${id}.${e}`;
   }
   return "";
 }
 
-// O catálogo da linha, sem disco (os testes chamam com fixture).
-export function montaLinha(snap, { imagemCurada = () => "" } = {}) {
+// O catálogo do jogo, sem disco (os testes chamam com fixture).
+export function montaCatalogo(snap, { imagemCurada = () => "" } = {}) {
   const porKey = new Map(((snap && snap.sets) || []).map((s) => [s.key, s]));
-  const line = [];
+  const cards = [];
   for (const def of PRODUTOS) {
     const cartas = (porKey.get(def.key) || {}).cards || [];
     for (const c of cartas) {
       const id = idDaCarta(def.key, c);
-      line.push({
+      cards.push({
         id,
         ...nomeDaCarta(def, c),
         set: def.nome,
-        setId: `nrt-tc-${def.key}`,
+        setId: `ntc-${def.key}`,
         number: numeroDaCarta(c),
         setTotal: cartas.length,
         setReleaseDate: def.data,
@@ -163,12 +169,11 @@ export function montaLinha(snap, { imagemCurada = () => "" } = {}) {
         image: imagemCurada(id),
         variants: ["Normal"],
         setLogo: LOGO,
-        vintage: true,
-        vintageLine: "nrt-tc"
+        vintage: true
       });
     }
   }
-  return line;
+  return cards;
 }
 
 async function refreshSnapshot(existing) {
@@ -198,21 +203,19 @@ async function refreshSnapshot(existing) {
 }
 
 async function run() {
-  console.log("NARUTO · cartas de coleção Amada/Ensky (2004–2005, vintage)");
+  console.log("NARUTO TRADING CARDS (Amada/Ensky 2004–2005, vintage)");
   let snap = await readSnapshot(SNAP);
   if (!NO_FETCH) snap = await refreshSnapshot(snap);
   if (!snap || !snapshotCardCount(snap)) { console.log("  snapshot vazio — nada a construir."); return; }
 
-  const line = montaLinha(snap, { imagemCurada: curatedImg });
-  const semIngles = line.filter((c) => /[぀-ヿ一-鿿]/.test(c.name)).length;
-  console.log(`  build: ${line.length} cartas em ${new Set(line.map((c) => c.setId)).size} sets (${line.filter((c) => c.image).length} com imagem; ${semIngles} sem nome em inglês).`);
+  const cards = montaCatalogo(snap, { imagemCurada: curatedImg });
+  const semIngles = cards.filter((c) => /[぀-ヿ一-鿿]/.test(c.name)).length;
+  console.log(`  build: ${cards.length} cartas em ${new Set(cards.map((c) => c.setId)).size} sets (${cards.filter((c) => c.image).length} com imagem; ${semIngles} sem nome em inglês).`);
 
-  const existing = (await readGlobalVar(new URL("cards.js", OUT), "TCG_CARDS")) || [];
-  const kept = existing.filter((c) => c && !/^nrt-tc-/.test(String(c.id)));
-  const merged = kept.concat(line);
-  const pricing = (await readGlobalVar(new URL("pricing.js", OUT), "TCG_PRICING")) || {}; // vintage sem preço
-  await writeGameCatalog(OUT, { cards: merged, pricing, webDir: "data/naruto/" });
-  console.log(`Gravado em ${fileURLToPath(OUT)} — ${merged.length} cartas totais.`);
+  const prev = (await readGlobalVar(new URL("cards.js", OUT), "TCG_CARDS")) || [];
+  const merged = cards.concat(preserveMissingCards(prev, cards));
+  await writeGameCatalog(OUT, { cards: merged, pricing: {}, webDir: `data/${GAME}/` });
+  console.log(`Gravado em ${fileURLToPath(OUT)} — ${merged.length} cartas.`);
 }
 
 // Importável pelos testes sem rodar o sync (ver tests/naruto-trading-cards-sync.test.mjs).

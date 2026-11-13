@@ -53,14 +53,7 @@ for (const c of cards) {
   const jp = c.nameJp || c.name;
   if (!temCjk(jp)) continue;
   const en = mapa[jp];
-  if (!en) {
-    // Carta que já veio bilíngue do próprio sync não é pendência: a 忍術大全
-    // (linha nrt-tc) monta "jutsu (quem usa)" com duas entradas do mapa, e o
-    // nome inteiro não é chave dele.
-    if (c.nameJp && !temCjk(c.name)) continue;
-    semTraducao.add(jp);
-    continue;
-  }
+  if (!en) { semTraducao.add(jp); continue; }
   c.nameJp = jp;
   c.name = en;
   traduzidas++;

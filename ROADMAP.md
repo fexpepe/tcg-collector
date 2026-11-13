@@ -314,9 +314,10 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   que o `narutocg` e o `mbc` fizeram (ids mantidos, migração da coleção no
   cliente, 301 dos endereços de linha). Espera o Fernando dizer quais e em
   que ordem.
-- **Naruto Trading Cards (`nrt-tc`, 2026-11-13)**: as cartas de coleção da
-  Amada e da Ensky entraram com os quatro produtos que têm lista carta a
-  carta no 火の国庵: Etching Card Collection 1, 2 e 3 (45 + 72 + 72) e a
+- **Naruto Trading Cards (`narutotc`, 2026-11-13)**: jogo vintage próprio
+  (pela regra de que cada jogo antigo do Naruto é um jogo). As cartas de
+  coleção da Amada e da Ensky entraram com os quatro produtos que têm lista
+  carta a carta no 火の国庵: Etching Card Collection 1, 2 e 3 (45 + 72 + 72) e a
   忍術大全 (66), 255 cartas, todas sem imagem. Faltam: (1) imagem (TCDB,
   Mandarake, Suruga-ya, Coleka e eBay barram acesso automatizado); (2) os
   produtos sem lista: o トレーディングコレクション da Amada (03/2003, 108
@@ -325,11 +326,12 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   nomes) e a 忍術大全 弐号 (Ensky, 07/2006, NO.57–112); (3) o nome em
   japonês dos Etching 2 e 3, que a fonte só dá em romaji; (4) conferir numa
   carta real a numeração das especiais do Etching 3 (a fonte pula o SP.11) e
-  o mês do Etching 1 (agosto ou setembro de 2004). As coleções da fase
-  Shippuden da Ensky (2007 em diante) não foram levantadas.
+  o mês do Etching 1 (agosto ou setembro de 2004); (5) logo próprio (hoje
+  vale o do Naruto) e confirmar a cor (verde-folha, #4ade80, proposta). As
+  coleções da fase Shippuden da Ensky (2007 em diante) não foram levantadas.
 - **WJカードセット da Jump Festa (candidato ao `jump`)**: o set de 24 cartas
   que a Shueisha vendia na Jump Festa (2001 a 2005, segundo o Card Check Box)
-  é multi-título, com uma carta do Naruto por ano. Não é linha do `naruto`: é
+  é multi-título, com uma carta do Naruto por ano. Não é jogo do Naruto: é
   crossover da revista, o caso do jogo `jump`. Sem lista carta a carta nem
   imagem em fonte aberta; só a ficha do produto
   (`cardcheckbox.com/a03b-shueisha/wjcardset.html`).

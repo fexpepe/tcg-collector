@@ -62,7 +62,8 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 | `unionarena` | Union Arena | TCGCSV cat. 81 (Bandai; um anime por set) | USD |
 | `narutocg` | Naruto Card Game (2027) | o NARUTO CARD GAME da Bandai, lançamento mundial em 2027: curadoria das promos de evento (a Chakra Card da Gen Con 2026, scan próprio) + TCGCSV cat. 93 quando a variável `NARUTO_TCGCSV_CATEGORY` está ligada. Foi a linha `nrt-ncg` do `naruto` até 2026-11-11; ids `nrt-ncg-` mantidos, `src/migra-mbc.js` leva a coleção de quem marcou e o histórico de preço é herdado do acervo do Naruto | USD |
 | `narutoboruto` | Naruto Boruto Card Game | vintage Bandai 2019–2020, o primeiro jogo do Chrono Clash System: as Tournament Pack Cards (as versões foil de torneio), da TCGCSV cat. 60, snapshot `data/vintage/naruto-boruto.json`; id `nb-<productId>`; as caixas NB01–NB04 não têm lista carta a carta | sem preço |
-| `naruto` | Naruto Card Game | vintage Bandai 2002–2006 (tcg-db + TV Tokyo + cardcheckbox), Data Carddass (Card Battle, Mission, Formation e Cross), CCG americano (narutocards.ca, com o complemento e as promos do N-CCG-DB), o 疾風伝 Card Game 2007–2008 (listas oficiais da Bandai pelo Wayback, snapshot `data/vintage/naruto-shippuden.json`, quase sem imagem) e as cartas de coleção da Amada e da Ensky 2004–2005 (Etching Card Collection 1–3 e 忍術大全, lista do 火の国庵, snapshot `data/vintage/naruto-trading-cards.json`, sem imagem) | sem preço |
+| `narutotc` | Naruto Trading Cards | vintage Amada/Ensky 2004–2005, as cartas de coleção japonesas (não é jogo de mesa): Etching Card Collection 1–3 e 忍術大全, uma seção por produto; número, nome e raridade pela lista do 火の国庵 (site de fã), snapshot `data/vintage/naruto-trading-cards.json`; id `ntc-<produto>-<número>`; sem imagem em fonte aberta | sem preço |
+| `naruto` | Naruto Card Game | vintage Bandai 2002–2006 (tcg-db + TV Tokyo + cardcheckbox), Data Carddass (Card Battle, Mission, Formation e Cross), CCG americano (narutocards.ca, com o complemento e as promos do N-CCG-DB) e o 疾風伝 Card Game 2007–2008 (listas oficiais da Bandai pelo Wayback, snapshot `data/vintage/naruto-shippuden.json`, quase sem imagem) | sem preço |
 | `hxh` | Hunter × Hunter | Carddass Hyper Battle 1999–2001 (Hunterpedia) | sem preço |
 | `dbc` | Dragon Ball Carddass | Carddass Bandai 1988–1997: Hondan, 特別弾, Super Battle, Visual Adventure e Super Barcode Wars, uma seção por série; número, raridade e scan do dbzcollection.fr (snapshot `data/vintage/dbc-dbzcollection.json`), nome do Hondan pelo 80storage (`data/vintage/dbc-carddass.json`) e, onde ele não chega, transcrito dos scans | sem preço |
 | `wow` | World of Warcraft TCG | TCGCSV cat. 13 (Upper Deck 2006–2010, Cryptozoic 2010–2013; vintage, só os sets que o TCGplayer lista, sem número de coleção e com scan de ~200 px; setId, nome e data fixos por groupId) | USD |
@@ -76,8 +77,8 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 | `jump` | JUMP | curadoria versionada em `data/jump/curated/` | — |
 
 **Linhas** (`GAME_LINES` em [src/shared.js](src/shared.js)): um jogo pode ter
-sublinhas selecionadas por `?line=` — hoje `opcd`, `op2002`, `nrt-dc`, `nrt-ccg`,
-`nrt-scg` e `nrt-tc`, todas vintage. O escopo é por prefixo de `setId`: sem `?line=` a
+sublinhas selecionadas por `?line=` — hoje `opcd`, `op2002`, `nrt-dc`, `nrt-ccg` e
+`nrt-scg`, todas vintage. O escopo é por prefixo de `setId`: sem `?line=` a
 página mostra o jogo principal e **exclui** as linhas. Uma linha pode ter vários
 prefixos (`prefixes`): a `nrt-dc` junta os quatro títulos do arcade Data Carddass
 (`nrt-dc-`, `nrt-nf-`, `nrt-nx-`), um por seção na página de Sets. Linha que vira

@@ -123,6 +123,7 @@ jobs:
             data/gcd/sets
             data/gw/sets
             data/narutoboruto/sets
+            data/narutotc/sets
             data/narutocg/sets
             data/godzilla/sets
             data/palworld/sets
@@ -172,7 +173,7 @@ jobs:
                    data/cdm/manifest.generated.js \
                    data/gcd/manifest.generated.js \
                    data/gw/manifest.generated.js \
-                   data/narutoboruto/manifest.generated.js \
+                   data/narutoboruto/manifest.generated.js                    data/narutotc/manifest.generated.js \
                    data/narutocg/manifest.generated.js \
                    data/godzilla/manifest.generated.js \
                    data/palworld/manifest.generated.js \
@@ -855,16 +856,6 @@ jobs:
       - name: Anexa NARUTO 疾風伝 Card Game
         run: node scripts/sync-naruto-shippuden.mjs --no-fetch || echo "sync-naruto-shippuden falhou; segue com o snapshot versionado"
 
-      # Cartas de coleção do Naruto da Amada e da Ensky (2004–2005): os
-      # Etching Card Collection 1–3 e a 忍術大全, pela lista do 火の国庵 (site
-      # de fã parado desde 2006). Só do snapshot versionado (--no-fetch) e nos
-      # DOIS modos, pelos mesmos motivos do 疾風伝 acima: a lista é história
-      # encerrada, e sem o passo no build rápido a linha nrt-tc- só apareceria
-      # no cron seguinte. Antes da tradução de nomes (as cartas já saem
-      # bilíngues do sync, e o passo de tradução as deixa como estão).
-      - name: Anexa Naruto Trading Cards (Amada/Ensky)
-        run: node scripts/sync-naruto-trading-cards.mjs --no-fetch || echo "sync-naruto-trading-cards falhou; segue com o snapshot versionado"
-
       # Naruto Boruto Card Game (Bandai 2019–2020, Chrono Clash System): o jogo
       # vintage narutoboruto. As Tournament Pack Cards, da TCGCSV (categoria
       # 60). Só do snapshot versionado (--no-fetch) e nos DOIS modos, como o
@@ -873,6 +864,16 @@ jobs:
       # no cron seguinte, com a entrada da página Vintage já no ar.
       - name: Monta o catálogo do Naruto Boruto Card Game
         run: node scripts/sync-naruto-boruto.mjs --no-fetch || echo "sync-naruto-boruto falhou; segue com o catálogo versionado"
+
+      # Naruto Trading Cards (Amada/Ensky 2004–2005): o jogo vintage narutotc,
+      # as cartas de coleção japonesas (Etching Card Collection 1–3 e a
+      # 忍術大全), pela lista do 火の国庵 (site de fã parado desde 2006). Só do
+      # snapshot versionado (--no-fetch) e nos DOIS modos, como o Naruto Boruto
+      # acima: a lista é história encerrada, e sem o passo no build rápido o
+      # data/narutotc/sets/ viria do cache e o jogo só apareceria no cron
+      # seguinte, com a entrada da página Vintage já no ar.
+      - name: Monta o catálogo do Naruto Trading Cards
+        run: node scripts/sync-naruto-trading-cards.mjs --no-fetch || echo "sync-naruto-trading-cards falhou; segue com o catálogo versionado"
 
       # Nomes das cartas de Naruto: japonês -> inglês. DEPOIS dos syncs
       # que alimentam esse catálogo (o mapa fica num lugar só em vez de repetido
@@ -1038,6 +1039,7 @@ jobs:
             data/gcd/sets
             data/gw/sets
             data/narutoboruto/sets
+            data/narutotc/sets
             data/narutocg/sets
             data/godzilla/sets
             data/palworld/sets

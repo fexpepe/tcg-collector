@@ -17,7 +17,7 @@
     ygo: "game_ygo-v2.webp", digimon: "game_digimon-v2.webp", riftbound: "game_riftbound-v2.webp",
     unionarena: "game_unionarena-v2.webp", narutocg: "game_naruto_2027.webp", naruto: "game_naruto.webp", hxh: "game_hxh.webp",
     dbc: "game_dbc-v2.webp", wow: "game_wow.webp", lotr: "game_lotr.webp", dbz: "game_dbz.webp", weiss: "game_weiss.webp", godzilla: "game_godzilla.webp", palworld: "game_palworld.webp", fftcg: "game_fftcg.webp", vanguard: "game_vanguard.webp", narutomythos: "game_narutomythos.webp", narutokayou: "game_naruto.webp", harrypotter: "game_harrypotter.webp",
-    mbc: "game_mbc.webp", cdm: "game_cdm.webp", gcd: "game_gcd.webp", gw: "game_gw.webp", narutoboruto: "game_naruto_boruto.webp"
+    mbc: "game_mbc.webp", cdm: "game_cdm.webp", gcd: "game_gcd.webp", gw: "game_gw.webp", narutoboruto: "game_naruto_boruto.webp", narutotc: "game_naruto.webp"
   };
   function gameLogoUrl(game) {
     const f = GAME_LOGO[game];
@@ -1646,8 +1646,6 @@
     // Linha vintage (?line=): do mais antigo pro mais novo, como checklist. O
     // Data Carddass do Naruto junta os quatro títulos do arcade, um por seção.
     if (lineScope.line === "nrt-dc") return groupNarutoDataCarddass(raizes);
-    // As cartas de coleção da Amada e da Ensky, uma seção por produto.
-    if (lineScope.line === "nrt-tc") return groupNarutoTradingSets(raizes);
     if (lineDef) return raizes.sort(sortByReleaseAsc);
     if (isPokemonGame()) return groupSetsBySeries(raizes);
     if (SECOES_BANDAI[jogoAtual]) return groupBandaiSets(raizes, SECOES_BANDAI[jogoAtual]);
@@ -1669,6 +1667,7 @@
       cdm: groupCdmSets,
       gcd: groupGundamCarddassSets,
       gw: groupGwSets,
+      narutotc: groupNarutoTradingSets,
       harrypotter: groupHarryPotterSets
     };
     return (porJogo[jogoAtual] || groupSetsByYear)(raizes);
@@ -2104,17 +2103,17 @@
     return items;
   }
 
-  // Cartas de coleção do Naruto (linha nrt-tc, 2026-11-13): não é jogo, são
+  // Naruto Trading Cards (jogo narutotc, 2026-11-13): não é jogo de mesa, são
   // os produtos de pacote da Amada e da Ensky (a mesma empresa, que trocou de
   // nome em 2005). Uma seção por PRODUTO, na ordem do primeiro lançamento, e
-  // dentro dela os volumes em ordem. O produto sai do setId (nrt-tc-ecc1 é o
-  // Etching Card Collection, nrt-tc-ntz1 a 忍術大全), fixado pelo
+  // dentro dela os volumes em ordem. O produto sai do setId (ntc-ecc1 é o
+  // Etching Card Collection, ntc-ntz1 a 忍術大全), fixado pelo
   // sync-naruto-trading-cards.mjs. O nome em inglês da 忍術大全 leva o produto
   // ("Trading Collection — Ninjutsu Taizen"); dentro da seção ele repete o
   // cabeçalho e o tile cortava justo o "Ninjutsu Taizen", então aqui ele sai,
   // como no groupNarutoDataCarddass.
   function groupNarutoTradingSets(setItems) {
-    const PRODUTOS = [["sets.category.nrttcEtching", /^nrt-tc-ecc\d/, ""], ["sets.category.nrttcTrading", /^nrt-tc-ntz\d/, "Trading Collection — "]];
+    const PRODUTOS = [["sets.category.ntcEtching", /^ntc-ecc\d/, ""], ["sets.category.ntcTrading", /^ntc-ntz\d/, "Trading Collection — "]];
     const produtoDe = (set) => PRODUTOS.findIndex(([, re]) => re.test(String(set.setId || "").trim().toLowerCase()));
     const semProduto = (set, i) => {
       const nome = String(set.displayName || ""), produto = PRODUTOS[i][2];

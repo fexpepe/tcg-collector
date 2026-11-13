@@ -161,6 +161,10 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
   seriam 15, e a grade se decide junto.
 - `game_naruto.webp` — logo NARUTO genérico (tile do jogo e `setLogo` do Data
   Carddass Cross Formation nrt-nx/nrt-nf)
+  Vale também como logo do jogo `narutotc` (Naruto Trading Cards, as cartas de
+  coleção da Amada e da Ensky, 13/11/2026) e de todos os sets dele: nenhum
+  produto tem logo recortado em fonte aberta, e o NARUTO é a marca impressa
+  em todos. Pendência: logo próprio do Etching Card Collection e da 忍術大全.
 - `game_naruto_ccg-v2.webp` — Naruto Collectible Card Game americano 2006+
   (tile vintage EN do hub, parede de logos do index e `setLogo` da linha
   `nrt-ccg`, via sync-naruto-ccg.mjs). Logo SOLTO, recortado como os outros

@@ -96,7 +96,7 @@
     },
     {
       "data": "2004",
-      "set": "nrt-tc-ecc1",
+      "set": "ntc-ecc1",
       "texto": {
         "pt": "Etching Card Collection: 45 cartas, em pacotes de 5.",
         "en": "Etching Card Collection: 45 cards, in 5-card packs.",
@@ -105,7 +105,7 @@
     },
     {
       "data": "2005-01",
-      "set": "nrt-tc-ecc2",
+      "set": "ntc-ecc2",
       "texto": {
         "pt": "Etching Card Collection 2: 72 cartas, com paralelas e especiais.",
         "en": "Etching Card Collection 2: 72 cards, with parallels and specials.",
@@ -114,7 +114,7 @@
     },
     {
       "data": "2005-06",
-      "set": "nrt-tc-ecc3",
+      "set": "ntc-ecc3",
       "texto": {
         "pt": "Etching Card Collection 3: 72 cartas, com as 18 “variety”.",
         "en": "Etching Card Collection 3: 72 cards, with the 18 “variety” cards.",
@@ -123,7 +123,7 @@
     },
     {
       "data": "2005-08",
-      "set": "nrt-tc-ntz1",
+      "set": "ntc-ntz1",
       "texto": {
         "pt": "忍術大全: 66 cartas de jutsu, já com o nome Ensky.",
         "en": "忍術大全: 66 jutsu cards, now under the Ensky name.",

@@ -25,9 +25,9 @@
   "imgPct": 100
  },
  "naruto": {
-  "cards": 7785,
-  "sets": 116,
-  "imgPct": 79
+  "cards": 7530,
+  "sets": 112,
+  "imgPct": 81
  },
  "hxh": {
   "cards": 283,
@@ -173,5 +173,10 @@
   "cards": 1188,
   "sets": 8,
   "imgPct": 100
+ },
+ "narutotc": {
+  "cards": 255,
+  "sets": 4,
+  "imgPct": 0
  }
 }

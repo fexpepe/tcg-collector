@@ -1,6 +1,6 @@
 // Parse das listas de carta do 火の国庵 (scripts/lib/hinokunian-lista.mjs), a
 // fonte do Carddass Masters do filme do Naruto (jogo cdm) e das cartas de
-// coleção da Amada e da Ensky (linha nrt-tc). O fixture é um recorte fiel do
+// coleção da Amada e da Ensky (jogo narutotc). O fixture é um recorte fiel do
 // HTML das páginas (tabelas de 2005, uma linha por carta), sem rede.
 // Roda com: node --test tests/
 import { test } from "node:test";

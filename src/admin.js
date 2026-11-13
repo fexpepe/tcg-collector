@@ -1288,7 +1288,7 @@
     ygo: "game_ygo-v2.webp", digimon: "game_digimon-v2.webp", riftbound: "game_riftbound-v2.webp",
     unionarena: "game_unionarena-v2.webp", narutocg: "game_naruto_2027.webp", naruto: "game_naruto.webp", hxh: "game_hxh.webp",
     dbc: "game_dbc-v2.webp", wow: "game_wow.webp", lotr: "game_lotr.webp", dbz: "game_dbz.webp", weiss: "game_weiss.webp", godzilla: "game_godzilla.webp", palworld: "game_palworld.webp", fftcg: "game_fftcg.webp", vanguard: "game_vanguard.webp", narutomythos: "game_narutomythos.webp", narutokayou: "game_naruto.webp", harrypotter: "game_harrypotter.webp",
-    mbc: "game_mbc.webp", cdm: "game_cdm.webp", gcd: "game_gcd.webp", gw: "game_gw.webp", narutoboruto: "game_naruto_boruto.webp"
+    mbc: "game_mbc.webp", cdm: "game_cdm.webp", gcd: "game_gcd.webp", gw: "game_gw.webp", narutoboruto: "game_naruto_boruto.webp", narutotc: "game_naruto.webp"
   };
   // Contato público: o mesmo da página Sobre e do data/ads.json (`contato`).
   const KIT_CONTATO = { email: "hi@sleevu.app", instagram: "@sleevu.app", site: "sleevu.app" };
@@ -2429,7 +2429,7 @@ if (v === "b") { /* versão nova */ }</pre>
   // functions/_lib/jogos.js: o tile do hub e o título de /games/<url>);
   // tests/admin-jogos-linhas.test.mjs trava as duas listas iguais.
   const NOME_LINHA = {
-    naruto: { "": "Naruto Card Game (2002~2006)", "nrt-dc": "Naruto Data Carddass", "nrt-ccg": "Naruto Collectible Card Game", "nrt-scg": "Naruto Shippuden Card Game", "nrt-tc": "Naruto Trading Cards" },
+    naruto: { "": "Naruto Card Game (2002~2006)", "nrt-dc": "Naruto Data Carddass", "nrt-ccg": "Naruto Collectible Card Game", "nrt-scg": "Naruto Shippuden Card Game" },
     onepiece: { "": "One Piece Card Game", opcd: "One Piece Carddass Hyper Battle", op2002: "One Piece Card Game (2002)" }
   };
   // Chave PRÓPRIA (o ln vem do cliente: "constructor" acharia a função do

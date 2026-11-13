@@ -179,14 +179,14 @@
     "nrt-scg-st7": "Act 7 Starter Set",
     "nrt-scg-s08": "Act 8 — New Jutsu Unleashed! Power Beyond Legend",
     "nrt-scg-promo": "Shippuden Promotional Cards",
-    // ---- Naruto · cartas de coleção da Amada e da Ensky (linha nrt-tc,
-    // sync-naruto-trading-cards.mjs). "Etching Card Collection" e "Trading
+    // ---- Naruto Trading Cards · cartas de coleção da Amada e da Ensky (jogo
+    // narutotc, sync-naruto-trading-cards.mjs). "Etching Card Collection" e "Trading
     // Collection" são o katakana do próprio produto; "Ninjutsu Taizen" é a
     // leitura de 忍術大全, sem tradução.
-    "nrt-tc-ecc1": "Etching Card Collection",
-    "nrt-tc-ecc2": "Etching Card Collection 2",
-    "nrt-tc-ecc3": "Etching Card Collection 3",
-    "nrt-tc-ntz1": "Trading Collection — Ninjutsu Taizen",
+    "ntc-ecc1": "Etching Card Collection",
+    "ntc-ecc2": "Etching Card Collection 2",
+    "ntc-ecc3": "Etching Card Collection 3",
+    "ntc-ntz1": "Trading Collection — Ninjutsu Taizen",
     // ---- Hunter × Hunter · Carddass Hyper Battle
     "hxh-hb-p1": "Part 1 — Hunter Exam",
     "hxh-hb-p2": "Part 2 — Finished! × Passed? × Hunter Exam",
