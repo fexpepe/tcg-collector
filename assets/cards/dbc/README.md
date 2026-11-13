@@ -1,29 +1,28 @@
 # Imagens curadas de cartas — Dragon Ball Carddass (vintage)
 
 Um arquivo `<id-da-carta>.(webp|jpg|png)` nesta pasta vira a imagem da carta no
-build do catálogo (`scripts/sync-dbc-carddass.mjs`). Sem arquivo, a carta fica
-sem imagem (o 80storage, fonte da lista, não tem scan).
+build do catálogo (`scripts/sync-dbc-carddass.mjs`) e passa na frente do scan
+da fonte. Sem arquivo, vale o scan do dbzcollection.fr pelo wsrv.nl.
 
-## De onde vieram as 631 do 第1弾 ao 第15弾 (2026-10-27)
+## De onde vem a imagem hoje (2026-11-12)
 
-Do **dragonballcards.com**, pelo Wayback Machine. O site saiu do ar (a Cloudflare
-responde 1001), e o Wayback guardou as páginas `carddass-part-1..15.html` com
-os arquivos das imagens. Do 第16弾 em diante as páginas de lá existem, mas as
-imagens delas são cópias de molde do Weebly (nome com `_` na frente) que o dono
-nunca trocou. A parte 17, por exemplo, mostra as cartas da parte 1. Nenhuma
-dessas cópias foi arquivada, então essas partes seguem sem imagem.
+Do **dbzcollection.fr**, fã-site francês que tem o scan de todas as cartas do
+Hondan, do 特別弾, da Super Battle, da Visual Adventure e da Super Barcode
+Wars (a versão `h3000`, ~490 px de largura). O site só responde em HTTP, então
+a imagem sai pelo wsrv.nl, como nos outros vintages de fã, e o espelho do R2
+copia de lá. Tem a marca d'água do site; nos scans mais antigos ela atravessa a
+carta na diagonal. O Fernando aprovou assim (2026-11-12).
 
-- Tamanho nativo do site: 225×155 (carta deitada) ou 155×225 (em pé). O
-  `_orig` do Weebly é o mesmo arquivo. Fica abaixo dos ~440 px do contrato do
-  README da raiz. Não há versão maior em lugar nenhum. Webp q88 sem metadado.
-- Têm a marca d'água "www.dragonballcards.com". O Fernando aceitou assim.
-- A página põe 6 cartas por linha, na ordem do número, que é a ordem do
-  catálogo. São duas exceções, conferidas carta a carta numa folha de contato:
-  - 第7弾: a página abre com a No.216 escondida (Ginyu), e o catálogo a põe no
-    fim (`dbc-h07-216`).
-  - 第12弾: a página traz o prisma 三大超サイヤ人 (`dbc-h12-500b`) antes do THE
-    MEMORIAL CARDDASS (`dbc-h12-500`).
+## O que morava aqui antes
 
-Scan melhor de uma carta substitui o arquivo dela aqui, com o mesmo nome. Depois
-de salvar, rode `node scripts/sync-dbc-carddass.mjs --no-fetch`; o CI também
-aplica isso em todo deploy.
+Até 2026-11-12 esta pasta tinha os 631 webp do 第1弾 ao 第15弾, tirados do
+**dragonballcards.com** pelo Wayback Machine (2026-10-27, PR #215): 225×155 ou
+155×225, com a marca d'água "www.dragonballcards.com". Saíram quando o scan do
+dbzcollection, com o dobro da largura, cobriu as mesmas cartas. Estão no
+histórico do git, se um dia fizerem falta.
+
+## Scan melhor de uma carta
+
+Salve aqui com o id da carta no nome (`dbc-h06-215b.webp`). Depois rode
+`node scripts/sync-dbc-carddass.mjs --no-fetch`; o CI também aplica isso em
+todo deploy, inclusive no build rápido do push.

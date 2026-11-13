@@ -9858,7 +9858,7 @@
     // "Super Rare" por extenso (Naruto CCG, Weiß) caía no /rare/ lá embaixo.
     if (/ultra|super/.test(s)) return 50;
     if (/epic/.test(s)) return 45;
-    if (/holo|double|dupla|radiant|radiante|amazing|incríveis|ace spec|prime|classic/.test(s)) return 40;
+    if (/holo|prism|laser|double|dupla|radiant|radiante|amazing|incríveis|ace spec|prime|classic/.test(s)) return 40; // prism: as do Carddass (Hidden/Reverse/Pixel)
     if (/uncommon|incomum/.test(s)) return 20;
     if (/common|comum/.test(s)) return 10;
     if (/rare|rara/.test(s)) return 30;
