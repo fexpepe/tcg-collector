@@ -88,6 +88,8 @@ jobs:
             data/palworld/sets
             data/fftcg/sets
             data/vanguard/sets
+            data/narutomythos/sets
+            data/narutokayou/sets
             data/jump/sets
             data/magic/cards.js
             data/magic/indexes.js

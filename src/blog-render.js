@@ -86,6 +86,8 @@
     godzilla: ["Godzilla", "#5e7c68"],
     fftcg: ["Final Fantasy", "#93c5fd"],
     vanguard: ["Vanguard", "#ff5a7a"],
+    narutomythos: ["Naruto Mythos", "#fde68a"],
+    narutokayou: ["Naruto Kayou", "#d946ef"],
     mbc: ["Miracle Battle", "#fb923c"],
     cdm: ["Carddass Masters", "#a21caf"],
     gcd: ["Gundam Carddass", "#a3e635"],

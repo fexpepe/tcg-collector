@@ -128,6 +128,8 @@ jobs:
             data/palworld/sets
             data/fftcg/sets
             data/vanguard/sets
+            data/narutomythos/sets
+            data/narutokayou/sets
             data/jump/sets
             data/magic/cards.js
             data/magic/indexes.js
@@ -175,7 +177,9 @@ jobs:
                    data/godzilla/manifest.generated.js \
                    data/palworld/manifest.generated.js \
                    data/fftcg/manifest.generated.js \
-                   data/vanguard/manifest.generated.js; do
+                   data/vanguard/manifest.generated.js \
+                   data/narutomythos/manifest.generated.js \
+                   data/narutokayou/manifest.generated.js; do
             [ -s "$f" ] || faltando="$faltando $f"
           done
           if [ -n "$faltando" ]; then
@@ -623,6 +627,21 @@ jobs:
         if: env.RODA_SYNC == 'true'
         run: node scripts/sync-price-history.mjs data/vanguard
 
+      # NARUTO Mythos TCG (Cicaboom, 2026+): a galeria oficial do jogo, um JSON
+      # publico que o site dela le. Id pelo SKU oficial; a 2a edicao do Set 1
+      # vira set a parte e as cartas de torneio, "<set> Promos". Sem preco: o
+      # TCGplayer nao tem o jogo, entao nao ha passo de historico.
+      - name: Sincroniza catálogo do Naruto Mythos TCG (galeria oficial)
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/sync-narutomythos.mjs || echo "sync-narutomythos falhou; mantém o catalogo versionado"
+
+      # NARUTO da Kayou, edicao em ingles (2025+): as paginas de serie do site
+      # oficial (kayouofficial.com), lidas do payload do proprio HTML. Series
+      # pinadas no sync; serie nova aparece como aviso no log. Sem preco.
+      - name: Sincroniza catálogo do Naruto Kayou (site oficial)
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/sync-narutokayou.mjs || echo "sync-narutokayou falhou; mantém o catalogo versionado"
+
       # World of Warcraft TCG (TCGCSV cat. 13; Upper Deck 2006-2010, Cryptozoic
       # 2010-2013). Jogo vintage, mas com preco do TCGplayer. setId, nome e data
       # fixos por grupo no proprio sync; sem logo de set.
@@ -1024,6 +1043,8 @@ jobs:
             data/palworld/sets
             data/fftcg/sets
             data/vanguard/sets
+            data/narutomythos/sets
+            data/narutokayou/sets
             data/jump/sets
             data/magic/cards.js
             data/magic/indexes.js
