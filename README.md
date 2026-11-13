@@ -58,7 +58,7 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 | `riftbound` | Riftbound | TCGCSV cat. 89 (Riot) | USD |
 | `unionarena` | Union Arena | TCGCSV cat. 81 (Bandai; um anime por set) | USD |
 | `narutocg` | Naruto Card Game (2027) | o NARUTO CARD GAME da Bandai, lançamento mundial em 2027: curadoria das promos de evento (a Chakra Card da Gen Con 2026, scan próprio) + TCGCSV cat. 93 quando a variável `NARUTO_TCGCSV_CATEGORY` está ligada. Foi a linha `nrt-ncg` do `naruto` até 2026-11-11; ids `nrt-ncg-` mantidos, `src/migra-mbc.js` leva a coleção de quem marcou e o histórico de preço é herdado do acervo do Naruto | USD |
-| `naruto` | Naruto Card Game | vintage Bandai 2002–2006 (tcg-db + TV Tokyo + cardcheckbox), Data Carddass (Card Battle, Mission, Formation e Cross), CCG americano (narutocards.ca) e o 疾風伝 Card Game 2007–2008 (listas oficiais da Bandai pelo Wayback, snapshot `data/vintage/naruto-shippuden.json`, quase sem imagem) | sem preço |
+| `naruto` | Naruto Card Game | vintage Bandai 2002–2006 (tcg-db + TV Tokyo + cardcheckbox), Data Carddass (Card Battle, Mission, Formation e Cross), CCG americano (narutocards.ca) o 疾風伝 Card Game 2007–2008 (listas oficiais da Bandai pelo Wayback, snapshot `data/vintage/naruto-shippuden.json`, quase sem imagem) e as cartas de coleção da Amada e da Ensky 2004–2005 (Etching Card Collection 1–3 e 忍術大全, lista do 火の国庵, snapshot `data/vintage/naruto-trading-cards.json`, sem imagem) | sem preço |
 | `hxh` | Hunter × Hunter | Carddass Hyper Battle 1999–2001 (Hunterpedia) | sem preço |
 | `dbc` | Dragon Ball Carddass | Carddass Bandai 1988–1997: Hondan, 特別弾, Super Battle, Visual Adventure e Super Barcode Wars, uma seção por série; número, raridade e scan do dbzcollection.fr (snapshot `data/vintage/dbc-dbzcollection.json`), nome do Hondan pelo 80storage (`data/vintage/dbc-carddass.json`) e, onde ele não chega, transcrito dos scans | sem preço |
 | `wow` | World of Warcraft TCG | TCGCSV cat. 13 (Upper Deck 2006–2010, Cryptozoic 2010–2013; vintage, só os sets que o TCGplayer lista, sem número de coleção e com scan de ~200 px; setId, nome e data fixos por groupId) | USD |
@@ -66,14 +66,14 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 | `dbz` | Dragon Ball Z CCG | Score 2000–2006: o CCG das 11 sagas, o GT TCG e o relançamento de 2005, com subsets e promos; galerias do retrodbzccg.com, nomes faltantes do kizmt/dbz-ccg-data e lidos no scan (snapshot `data/vintage/dbz-retro.json`) | sem preço |
 | `harrypotter` | Harry Potter TCG | Wizards of the Coast 2001–2002: hpjson (GitHub) + imagens do accio.cards; premium, decks e promos = cartas próprias | sem preço |
 | `mbc` | Miracle Battle Carddass | Bandai 2009–2014, o crossover da Jump: sete séries (Dragon Ball Kai, One Piece, Toriko, Hunter × Hunter, Naruto Shippuden, Kuroko, J-Heroes), uma seção por série; tcg-db (snapshot `data/vintage/miracle-battle.json`). Até 2026-10-01 eram linhas do One Piece, do Naruto e do HxH (ids `op-mb-`/`nrt-mb-`/`hxh-mb-` mantidos; `src/migra-mbc.js` leva a coleção de quem marcou) | sem preço |
-| `cdm` | Carddass Masters | Bandai 1996–2011, a linha de cartas de coleção de várias IPs, uma seção por IP. HUNTER×HUNTER (2000–2001): número e nome pela lista impressa no verso das cartas (`scripts/data/carddass-masters-hxh.json`), scans da Hunterpedia (snapshot `data/vintage/carddass-masters-hxh.json`). 新世紀エヴァンゲリオン (1996–1997), as três CR de pachinko (2008–2010) e ヱヴァンゲリヲン新劇場版:破 第2章 (2011): listas de um colecionador e, nas CR e no 破, a frente das cartas lida nos scans (`scripts/data/carddass-masters-eva.json`), scans do animecollection.fr (snapshot `data/vintage/carddass-masters-eva.json`) | sem preço |
+| `cdm` | Carddass Masters | Bandai 1996–2011, a linha de cartas de coleção de várias IPs, uma seção por IP. HUNTER×HUNTER (2000–2001): número e nome pela lista impressa no verso das cartas (`scripts/data/carddass-masters-hxh.json`), scans da Hunterpedia (snapshot `data/vintage/carddass-masters-hxh.json`). 新世紀エヴァンゲリオン (1996–1997), as três CR de pachinko (2008–2010) e ヱヴァンゲリヲン新劇場版:破 第2章 (2011): listas de um colecionador e, nas CR e no 破, a frente das cartas lida nos scans (`scripts/data/carddass-masters-eva.json`), scans do animecollection.fr (snapshot `data/vintage/carddass-masters-eva.json`). NARUTO, a coleção do filme de 2005: lista do 火の国庵 (snapshot `data/vintage/carddass-masters-naruto.json`), sem imagem | sem preço |
 | `gcd` | Gundam Carddass | Bandai 1988–1997: SD Gundam World, Gaiden, Sengokuden, Seiden e G Gundam, uma seção por série; número, raridade e scan do animecollection.fr, sets do 80storage, nome transcrito dos scans (snapshot `data/vintage/gundam-carddass.json`). Foi linha do `gundam` por um dia (2026-11-10); `src/migra-mbc.js` leva a coleção de quem marcou | sem preço |
 | `gw` | Gundam War | Bandai 1999–2011, o TCG japonês do Gundam (vendido sob a marca Carddass Masters): número, nome, cor, tipo e raridade pelas listas do site oficial da Bandai, ainda no ar (snapshot `data/vintage/gundam-war.json`); sem imagem | sem preço |
 | `jump` | JUMP | curadoria versionada em `data/jump/curated/` | — |
 
 **Linhas** (`GAME_LINES` em [src/shared.js](src/shared.js)): um jogo pode ter
-sublinhas selecionadas por `?line=` — hoje `opcd`, `op2002`, `nrt-dc`, `nrt-ccg` e
-`nrt-scg`, todas vintage. O escopo é por prefixo de `setId`: sem `?line=` a
+sublinhas selecionadas por `?line=` — hoje `opcd`, `op2002`, `nrt-dc`, `nrt-ccg`,
+`nrt-scg` e `nrt-tc`, todas vintage. O escopo é por prefixo de `setId`: sem `?line=` a
 página mostra o jogo principal e **exclui** as linhas. Uma linha pode ter vários
 prefixos (`prefixes`): a `nrt-dc` junta os quatro títulos do arcade Data Carddass
 (`nrt-dc-`, `nrt-nf-`, `nrt-nx-`), um por seção na página de Sets. Linha que vira
@@ -349,8 +349,8 @@ dezenas de IPs (Gundam, Evangelion, Cowboy Bebop, Hunter × Hunter, One Piece,
 Inuyasha, Bleach…), então é jogo próprio, no molde do `mbc`, e não seção do
 jogo de cada marca (decisão de 2026-11-09): cada edição de uma IP é um set, e
 a página de Sets tem uma seção por IP (`groupCdmSets`), as IPs na ordem do
-primeiro lançamento. Têm fonte carta a carta o HUNTER×HUNTER e o
-新世紀エヴァンゲリオン.
+primeiro lançamento. Têm fonte carta a carta o HUNTER×HUNTER, o
+新世紀エヴァンゲリオン e a coleção do filme de 2005 do NARUTO.
 
 - **IP nova** entra como mais um bloco no `IPS` do sync (fonte e snapshot
   próprios, `data/vintage/carddass-masters-<ip>.json`), uma chave
@@ -404,6 +404,15 @@ primeiro lançamento. Têm fonte carta a carta o HUNTER×HUNTER e o
   Air, `26-07` (第26話 7, com dois dígitos: a tela desempata o número por
   texto, e `26-7` cairia depois de `26-10`). Ids: `cdm-eva-w1-death-12`,
   `cdm-eva-w2-26-07`.
+- **Naruto** (2026-11-13): a coleção do segundo filme (劇場版 NARUTO 大激突!
+  幻の地底遺跡だってばよ, 2005), 63 cartas: 001–054 e SP1–SP9. A fonte é uma
+  LISTA, e não scan nem transcrição nossa: o 火の国庵 (site de fã, parado
+  desde 2006), lido pelo `scripts/lib/hinokunian-lista.mjs`, que só aceita a
+  página quando a contagem por raridade bate com o resumo que ela mesma traz.
+  O nome sai do snapshot (`nomes` no bloco da IP); o inglês dos personagens
+  vem do mapa do Naruto (`scripts/data/naruto-names-en.json`). Data: só o ano,
+  porque as duas fontes divergem no mês (02/09 no 火の国庵, fim de agosto no
+  Card Check Box). Sem imagem em fonte aberta.
 - **Ordem na tela**: a grade ordena pelo primeiro número e intercala os
   blocos (CH1, ED1, EP1…), como nos sets do Naruto e do Hyper Battle. Agrupar
   por bloco é mudança no `compareCardNumbers` (shared.js), que mexe em todos
