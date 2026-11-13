@@ -1,0 +1,605 @@
+{
+ "fontes": {
+  "cartas": "https://github.com/N-CCG-DB/naruto-ccg-deckbuilder/blob/778f6376296dd2a4a810dfb5e76b1dc28cea1cba/narutoccgdatabase.json (grupo \"Promo Cards\")",
+  "scans": "https://n-ccg-db.github.io/naruto-ccg-deckbuilder/cards_database/"
+ },
+ "updatedAt": "2026-11-13",
+ "nota": "Promos do Naruto CCG cujo número impresso o catálogo não tinha. `code` é o do N-CCG-DB (de onde sai o id); `numero` só aparece quando o impresso é outro (o B de PR-018B não está na carta). Gerado por scripts/naruto-ccg-promos.mjs; o sync anexa ao set de promos.",
+ "cards": [
+  {
+   "code": "PR-001",
+   "name": "Naruto Uzumaki",
+   "rarity": "Promo",
+   "img": "promos/pr001.webp"
+  },
+  {
+   "code": "PR-002",
+   "name": "Sasuke Uchiha",
+   "rarity": "Promo",
+   "img": "promos/pr002.webp"
+  },
+  {
+   "code": "PR-003",
+   "name": "Sakura Haruno",
+   "rarity": "Promo",
+   "img": "promos/pr003.webp"
+  },
+  {
+   "code": "PR-004",
+   "name": "Naruto Uzumaki",
+   "rarity": "Promo",
+   "img": "promos/pr004.webp"
+  },
+  {
+   "code": "PR-005",
+   "name": "Naruto Uzumaki",
+   "rarity": "Promo",
+   "img": "promos/pr005.webp"
+  },
+  {
+   "code": "PR-005R",
+   "name": "Naruto Uzumaki",
+   "rarity": "Promo",
+   "img": "promos/pr005rae.webp"
+  },
+  {
+   "code": "PR-006",
+   "name": "Sasuke Uchiha",
+   "rarity": "Promo",
+   "img": "promos/pr006.webp"
+  },
+  {
+   "code": "PR-006R",
+   "name": "Sasuke Uchiha",
+   "rarity": "Promo",
+   "img": "promos/pr006ra.webp"
+  },
+  {
+   "code": "PR-007",
+   "name": "Sakura Haruno",
+   "rarity": "Promo",
+   "img": "promos/pr007.webp"
+  },
+  {
+   "code": "PR-007R",
+   "name": "Sakura Haruno",
+   "rarity": "Promo",
+   "img": "promos/pr007ra.webp"
+  },
+  {
+   "code": "PR-008",
+   "name": "Iruka Umino",
+   "rarity": "Promo",
+   "img": "promos/pr008.webp"
+  },
+  {
+   "code": "PR-008R",
+   "name": "Iruka Umino",
+   "rarity": "Promo",
+   "img": "promos/pr008ra.webp"
+  },
+  {
+   "code": "PR-009",
+   "name": "Kakashi Hatake",
+   "rarity": "Promo",
+   "img": "promos/pr009e.webp"
+  },
+  {
+   "code": "PR-014",
+   "name": "Naruto Uzumaki",
+   "rarity": "Promo",
+   "img": "promos/pr014.webp"
+  },
+  {
+   "code": "PR-015",
+   "name": "Naruto Uzumaki",
+   "rarity": "Promo",
+   "img": "promos/pr015.webp"
+  },
+  {
+   "code": "PR-018B",
+   "numero": "PR-018",
+   "name": "The First Hokage",
+   "rarity": "Promo",
+   "img": "promos/pr018b.webp"
+  },
+  {
+   "code": "PR-019",
+   "name": "The Second Hokage",
+   "rarity": "Promo",
+   "img": "promos/pr019.webp"
+  },
+  {
+   "code": "PR-020",
+   "name": "Rasengan",
+   "rarity": "Promo",
+   "img": "promos/pr020.webp"
+  },
+  {
+   "code": "PR-024B",
+   "numero": "PR-024",
+   "name": "Rock Lee & Might Guy",
+   "rarity": "Promo",
+   "img": "promos/pr024b.webp"
+  },
+  {
+   "code": "PR-025B",
+   "numero": "PR-025",
+   "name": "Sasuke Uchiha & Kakashi Hatake",
+   "rarity": "Promo",
+   "img": "promos/pr025b.webp"
+  },
+  {
+   "code": "PR-026B",
+   "numero": "PR-026",
+   "name": "Naruto Uzumaki & Jiraiya",
+   "rarity": "Promo",
+   "img": "promos/pr026b.webp"
+  },
+  {
+   "code": "PR-027",
+   "name": "Sasuke Uchiha",
+   "rarity": "Promo",
+   "img": "promos/pr027.webp"
+  },
+  {
+   "code": "PR-028",
+   "name": "Kimimaro",
+   "rarity": "Promo",
+   "img": "promos/pr028.webp"
+  },
+  {
+   "code": "PR-029",
+   "name": "Battle Between the Sannin",
+   "rarity": "Promo",
+   "img": "promos/pr029.webp"
+  },
+  {
+   "code": "PR-030",
+   "name": "A New Enemy",
+   "rarity": "Promo",
+   "img": "promos/pr030.webp"
+  },
+  {
+   "code": "PR-031",
+   "name": "For the Title of Hokage",
+   "rarity": "Promo",
+   "img": "promos/pr031.webp"
+  },
+  {
+   "code": "PR-032",
+   "name": "In Awe of the Legends",
+   "rarity": "Promo",
+   "img": "promos/pr032.webp"
+  },
+  {
+   "code": "PR-033",
+   "name": "Lineage of the Legends",
+   "rarity": "Promo",
+   "img": "promos/pr033.webp"
+  },
+  {
+   "code": "PR-034",
+   "name": "Naruto Uzumaki",
+   "rarity": "Promo",
+   "img": "promos/pr034.webp"
+  },
+  {
+   "code": "PR-035",
+   "name": "Sasuke Uchiha",
+   "rarity": "Promo",
+   "img": "promos/pr035.webp"
+  },
+  {
+   "code": "PR-036",
+   "name": "Itachi Uchiha",
+   "rarity": "Promo",
+   "img": "promos/pr036.webp"
+  },
+  {
+   "code": "PR-037",
+   "name": "Amaterasu",
+   "rarity": "Promo",
+   "img": "promos/pr037.webp"
+  },
+  {
+   "code": "PR-038",
+   "name": "Naruto Uzumaki",
+   "rarity": "Promo",
+   "img": "promos/pr038.webp"
+  },
+  {
+   "code": "PR-039",
+   "name": "Might Guy",
+   "rarity": "Promo",
+   "img": "promos/pr039.webp"
+  },
+  {
+   "code": "PR-040",
+   "name": "Sakura Haruno",
+   "rarity": "Promo",
+   "img": "promos/pr040.webp"
+  },
+  {
+   "code": "PR-041",
+   "name": "Naruto Uzumaki & Hinata Hyuga",
+   "rarity": "Promo",
+   "img": "promos/pr041e.webp"
+  },
+  {
+   "code": "PR-042",
+   "name": "Kakashi Hatake",
+   "rarity": "Promo",
+   "img": "promos/pr042.webp"
+  },
+  {
+   "code": "PR-043",
+   "name": "Multi Shadow Clone Jutsu",
+   "rarity": "Promo",
+   "img": "promos/pr043.webp"
+  },
+  {
+   "code": "PR-044",
+   "name": "Lightning Blade",
+   "rarity": "Promo",
+   "img": "promos/pr044.webp"
+  },
+  {
+   "code": "PR-045",
+   "name": "Chidori Stream",
+   "rarity": "Promo",
+   "img": "promos/pr045.webp"
+  },
+  {
+   "code": "PR-046",
+   "name": "Yamato",
+   "rarity": "Promo",
+   "img": "promos/pr046.webp"
+  },
+  {
+   "code": "PR-047",
+   "name": "Sasuke Uchiha",
+   "rarity": "Promo",
+   "img": "promos/pr047.webp"
+  },
+  {
+   "code": "PR-048",
+   "name": "Popularity",
+   "rarity": "Promo",
+   "img": "promos/pr048.webp"
+  },
+  {
+   "code": "PR-049",
+   "name": "Will of the Youth",
+   "rarity": "Promo",
+   "img": "promos/pr049.webp"
+  },
+  {
+   "code": "PR-050",
+   "name": "Rock Lee & Gaara of the Desert",
+   "rarity": "Promo",
+   "img": "promos/pr050.webp"
+  },
+  {
+   "code": "PR-051",
+   "name": "Sakura Haruno",
+   "rarity": "Promo",
+   "img": "promos/pr051.webp"
+  },
+  {
+   "code": "PR-052",
+   "name": "Kakashi Hatake",
+   "rarity": "Promo",
+   "img": "promos/pr052.webp"
+  },
+  {
+   "code": "PR-053",
+   "name": "Naruto Uzumaki",
+   "rarity": "Promo",
+   "img": "promos/pr053.webp"
+  },
+  {
+   "code": "PR-054",
+   "name": "Naruto Uzumaki (Clone)",
+   "rarity": "Promo",
+   "img": "promos/pr054.webp"
+  },
+  {
+   "code": "PR-055",
+   "name": "Sasuke Uchiha",
+   "rarity": "Promo",
+   "img": "promos/pr055.webp"
+  },
+  {
+   "code": "PR-056",
+   "name": "Kakashi Hatake",
+   "rarity": "Promo",
+   "img": "promos/pr056.webp"
+  },
+  {
+   "code": "PR-057",
+   "name": "Sakura Haruno",
+   "rarity": "Promo",
+   "img": "promos/pr057.webp"
+  },
+  {
+   "code": "PR-058",
+   "name": "Itachi Uchiha",
+   "rarity": "Promo",
+   "img": "promos/pr058.webp"
+  },
+  {
+   "code": "PR-059",
+   "name": "Jiraiya",
+   "rarity": "Promo",
+   "img": "promos/pr059.webp"
+  },
+  {
+   "code": "PR-060",
+   "name": "Clash",
+   "rarity": "Promo",
+   "img": "promos/pr060.webp"
+  },
+  {
+   "code": "PR-061",
+   "name": "Naruto Uzumaki",
+   "rarity": "Promo",
+   "img": "promos/pr061.webp"
+  },
+  {
+   "code": "PR-062",
+   "name": "Sasuke Uchiha",
+   "rarity": "Promo",
+   "img": "promos/pr062.webp"
+  },
+  {
+   "code": "PR-066",
+   "name": "Naruto Uzumaki & Killer Bee",
+   "rarity": "Promo",
+   "img": "promos/pr066.webp"
+  },
+  {
+   "code": "PR-067",
+   "name": "Sasuke Uchiha",
+   "rarity": "Promo",
+   "img": "promos/pr067.webp"
+  },
+  {
+   "code": "PR-068",
+   "name": "Killer Bee",
+   "rarity": "Promo",
+   "img": "promos/pr068.webp"
+  },
+  {
+   "code": "PR-075",
+   "name": "Zabuza Momochi & Haku",
+   "rarity": "Promo",
+   "img": "promos/pr075.webp"
+  },
+  {
+   "code": "PR-076",
+   "name": "Sasuke Uchiha & Kakashi Hatake",
+   "rarity": "Promo",
+   "img": "promos/pr076.webp"
+  },
+  {
+   "code": "PR-083",
+   "name": "Naruto Uzumaki",
+   "rarity": "Promo",
+   "img": "promos/pr083.webp"
+  },
+  {
+   "code": "PR-084",
+   "name": "Sasuke Uchiha",
+   "rarity": "Promo",
+   "img": "promos/pr084.webp"
+  },
+  {
+   "code": "PR-085",
+   "name": "Pain (Deva Path)",
+   "rarity": "Promo",
+   "img": "promos/pr085.webp"
+  },
+  {
+   "code": "PR-086",
+   "name": "Kakashi Hatake",
+   "rarity": "Promo",
+   "img": "promos/pr086.webp"
+  },
+  {
+   "code": "PR-087",
+   "name": "Naruto Uzumaki (Sage Mode)",
+   "rarity": "Promo",
+   "img": "promos/pr087.webp"
+  },
+  {
+   "code": "PR-088",
+   "name": "Sasuke Uchiha",
+   "rarity": "Promo",
+   "img": "promos/pr088.webp"
+  },
+  {
+   "code": "PR-089",
+   "name": "Sakura Haruno",
+   "rarity": "Promo",
+   "img": "promos/pr089.webp"
+  },
+  {
+   "code": "PR-090",
+   "name": "Hinata Hyuga",
+   "rarity": "Promo",
+   "img": "promos/pr090.webp"
+  },
+  {
+   "code": "PR-091",
+   "name": "Kakuzu",
+   "rarity": "Promo",
+   "img": "promos/pr091.webp"
+  },
+  {
+   "code": "PR-092",
+   "name": "Never Ending Love",
+   "rarity": "Promo",
+   "img": "promos/pr092.webp"
+  },
+  {
+   "code": "PR-093",
+   "name": "Lightning Blade: Twin Lightning Shiver",
+   "rarity": "Promo",
+   "img": "promos/pr093.webp"
+  },
+  {
+   "code": "PR-095",
+   "name": "Naruto Uzumaki",
+   "rarity": "Promo",
+   "img": "promos/pr095.webp"
+  },
+  {
+   "code": "PR-096",
+   "name": "The 4th Hokage",
+   "rarity": "Promo",
+   "img": "promos/pr096.webp"
+  },
+  {
+   "code": "PR-100",
+   "name": "Naruto Uzumaki",
+   "rarity": "Promo",
+   "img": "promos/pr100.webp"
+  },
+  {
+   "code": "PR-US001",
+   "name": "Naruto Uzumaki",
+   "rarity": "Promo",
+   "img": "promos/prus001.webp"
+  },
+  {
+   "code": "PR-US002",
+   "name": "Sasuke Uchiha",
+   "rarity": "Promo",
+   "img": "promos/prus002.webp"
+  },
+  {
+   "code": "PR-US003",
+   "name": "Shikamaru Nara",
+   "rarity": "Promo",
+   "img": "promos/prus003.webp"
+  },
+  {
+   "code": "PR-US004",
+   "name": "Sharingan Eye",
+   "rarity": "Promo",
+   "img": "promos/prus004.webp"
+  },
+  {
+   "code": "PR-US005",
+   "name": "Naruto Uzumaki",
+   "rarity": "Promo",
+   "img": "promos/prus005.webp"
+  },
+  {
+   "code": "PR-US007",
+   "name": "Naruto Uzumaki",
+   "rarity": "Promo",
+   "img": "promos/prus007.webp"
+  },
+  {
+   "code": "PR-US008",
+   "name": "Gaara of the Desert",
+   "rarity": "Promo",
+   "img": "promos/prus008.webp"
+  },
+  {
+   "code": "PR-US009",
+   "name": "Neji Hyuga",
+   "rarity": "Promo",
+   "img": "promos/prus009.webp"
+  },
+  {
+   "code": "PR-US011",
+   "name": "Naruto Uzumaki",
+   "rarity": "Promo",
+   "img": "promos/prus011.webp"
+  },
+  {
+   "code": "PR-US012",
+   "name": "Sasuke Uchiha",
+   "rarity": "Promo",
+   "img": "promos/prus012.webp"
+  },
+  {
+   "code": "PR-US013",
+   "name": "Itachi Uchiha",
+   "rarity": "Promo",
+   "img": "promos/prus013.webp"
+  },
+  {
+   "code": "PR-US014",
+   "name": "Multi Shadow Clone Jutsu",
+   "rarity": "Promo",
+   "img": "promos/prus014e.webp"
+  },
+  {
+   "code": "PR-US015",
+   "name": "The Third Hokage",
+   "rarity": "Promo",
+   "img": "promos/prus015.webp"
+  },
+  {
+   "code": "EX-001",
+   "name": "Naruto Uzumaki",
+   "rarity": "Promo",
+   "img": "promos/ex001.webp"
+  },
+  {
+   "code": "EX-002",
+   "name": "Sasuke Uchiha",
+   "rarity": "Promo",
+   "img": "promos/ex002.webp"
+  },
+  {
+   "code": "PS-001",
+   "name": "Naruto Uzumaki",
+   "rarity": "Promo",
+   "img": "promos/ps001.webp"
+  },
+  {
+   "code": "PS-002",
+   "name": "Sasuke Uchiha",
+   "rarity": "Promo",
+   "img": "promos/ps002.webp"
+  },
+  {
+   "code": "PS-003",
+   "name": "Sakura Haruno",
+   "rarity": "Promo",
+   "img": "promos/ps003.webp"
+  },
+  {
+   "code": "PS-004",
+   "name": "Kakashi Hatake",
+   "rarity": "Promo",
+   "img": "promos/ps004.webp"
+  },
+  {
+   "code": "M-621",
+   "name": "Fierce Ambition",
+   "rarity": "Promo",
+   "img": "promos/m621.webp",
+   "id": "nrt-ccg-promo-m-621"
+  },
+  {
+   "code": "M-622",
+   "name": "Rescue The Fifth Kazekage!",
+   "rarity": "Promo",
+   "img": "promos/m622.webp",
+   "id": "nrt-ccg-promo-m-622"
+  },
+  {
+   "code": "M-623",
+   "name": "Cursed Eyes",
+   "rarity": "Promo",
+   "img": "promos/m623.webp",
+   "id": "nrt-ccg-promo-m-623"
+  }
+ ]
+}
