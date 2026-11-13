@@ -4989,6 +4989,43 @@ a.hub-tile:active::after { opacity: 1; }
   .hub-logo-text { font-size: 13px; }
   .hub-more { font-size: 13px; }
 }
+/* OUTROS TCGs (2026-11-13): jogos em atividade de menor porte, numa seção
+   abaixo da grade principal, com os tiles no tamanho que os vintage tinham
+   quando moravam no hub (6 por fileira no desktop largo, caixa de 124px,
+   logo com K de 115px). A hierarquia aparece no tamanho: jogo principal
+   grande, os outros compactos. Título discreto, em caixa alta e cinza: é
+   uma prateleira de baixo, não uma página nova. */
+.hub.hub-outros {
+  margin-top: 40px;
+  padding-top: 28px;
+  border-top: 1px solid var(--line);
+}
+.hub-section-head {
+  margin: 0; font-size: 15px; font-weight: 800; letter-spacing: 0.6px;
+  text-transform: uppercase; color: var(--muted);
+}
+.hub-outros .hub-grid { --hub-cols: 6; --hub-ring: 2px; margin-top: 16px; }
+@media (max-width: 1279px) {
+  .hub-outros .hub-grid { --hub-cols: 4; }
+}
+@media (max-width: 900px) {
+  .hub-outros .hub-grid { --hub-cols: 3; }
+}
+@media (min-width: 601px) {
+  .hub-outros .hub-logo-box { height: 124px; padding: 16px; }
+  .hub-outros .hub-logo {
+    --k: min(115px, 58cqw);
+    max-width: calc(100% - 32px);
+    max-height: calc(100% - 32px);
+  }
+}
+/* Celular: 3 por fileira (a principal tem 2) e caixa de 84px. */
+@media (max-width: 600px) {
+  .hub.hub-outros { margin-top: 28px; padding-top: 20px; }
+  .hub-section-head { font-size: 13px; }
+  .hub-outros .hub-grid { --hub-cols: 3; gap: 8px; margin-top: 12px; }
+  .hub-outros .hub-logo-box { height: 84px; padding: 10px; }
+}
 
 /* ── JOGOS EM ATIVIDADE × VINTAGE (2026-11-12) ──────────────────────────────
    O Vintage saiu do pé do hub e ganhou página (vintage.html). Sobraram no hub
