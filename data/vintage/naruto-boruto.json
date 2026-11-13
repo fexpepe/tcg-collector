@@ -1,0 +1,788 @@
+{
+ "source": "https://tcgcsv.com/tcgplayer/60",
+ "updatedAt": "2026-11-12",
+ "sets": [
+  {
+   "key": "tpc",
+   "groupId": 2478,
+   "cards": [
+    {
+     "productId": 193441,
+     "num": "NB01-01-B",
+     "name": "Haku",
+     "tipo": "Battler",
+     "cor": "Green",
+     "foto": true
+    },
+    {
+     "productId": 193427,
+     "num": "NB01-02-B",
+     "name": "Hinata Hyuga",
+     "tipo": "Battler",
+     "cor": "Green",
+     "foto": true
+    },
+    {
+     "productId": 193552,
+     "num": "NB01-03-B",
+     "name": "Tenten",
+     "tipo": "Battler",
+     "cor": "Green",
+     "foto": false
+    },
+    {
+     "productId": 193551,
+     "num": "NB01-04-B",
+     "name": "Gaara",
+     "tipo": "Battler",
+     "cor": "Green",
+     "foto": false
+    },
+    {
+     "productId": 193426,
+     "num": "NB01-05-B",
+     "name": "Naruto Uzumaki",
+     "tipo": "Battler",
+     "cor": "Green",
+     "foto": true
+    },
+    {
+     "productId": 193434,
+     "num": "NB01-06-B",
+     "name": "Zabuza Momochi",
+     "tipo": "Battler",
+     "cor": "Green",
+     "foto": true
+    },
+    {
+     "productId": 193550,
+     "num": "NB01-07-B",
+     "name": "Neji Hyuga",
+     "tipo": "Battler",
+     "cor": "Green",
+     "foto": false
+    },
+    {
+     "productId": 193549,
+     "num": "NB01-08-B",
+     "name": "Shikamaru Nara",
+     "tipo": "Battler",
+     "cor": "Green",
+     "foto": false
+    },
+    {
+     "productId": 193548,
+     "num": "NB01-09-B",
+     "name": "Kakashi Hatake",
+     "tipo": "Battler",
+     "cor": "Green",
+     "foto": false
+    },
+    {
+     "productId": 193312,
+     "num": "NB01-10-B",
+     "name": "Sakura Haruno",
+     "tipo": "Battler",
+     "cor": "Blue",
+     "foto": true
+    },
+    {
+     "productId": 193547,
+     "num": "NB01-11-B",
+     "name": "Kina Inuzuka",
+     "tipo": "Battler",
+     "cor": "Blue",
+     "foto": false
+    },
+    {
+     "productId": 193546,
+     "num": "NB01-12-B",
+     "name": "Temari",
+     "tipo": "Battler",
+     "cor": "Blue",
+     "foto": false
+    },
+    {
+     "productId": 193545,
+     "num": "NB01-13-B",
+     "name": "Ino Yamanaka",
+     "tipo": "Battler",
+     "cor": "Blue",
+     "foto": false
+    },
+    {
+     "productId": 193544,
+     "num": "NB01-14-B",
+     "name": "Shino Aburame",
+     "tipo": "Battler",
+     "cor": "Blue",
+     "foto": false
+    },
+    {
+     "productId": 193449,
+     "num": "NB01-15-B",
+     "name": "Choji Akimichi",
+     "tipo": "Battler",
+     "cor": "Blue",
+     "foto": true
+    },
+    {
+     "productId": 193543,
+     "num": "NB01-16-B",
+     "name": "Rock Lee",
+     "tipo": "Battler",
+     "cor": "Blue",
+     "foto": false
+    },
+    {
+     "productId": 193542,
+     "num": "NB01-17-B",
+     "name": "Kankuro",
+     "tipo": "Battler",
+     "cor": "Blue",
+     "foto": false
+    },
+    {
+     "productId": 193541,
+     "num": "NB01-18-B",
+     "name": "Sasuke Uchiha",
+     "tipo": "Battler",
+     "cor": "Blue",
+     "foto": false
+    },
+    {
+     "productId": 193311,
+     "num": "NB01-19-EB",
+     "name": "Gaara",
+     "tipo": "Extra Deck Battler",
+     "cor": "Green",
+     "foto": true
+    },
+    {
+     "productId": 193539,
+     "num": "NB01-20-EB",
+     "name": "Naruto Uzumaki",
+     "tipo": "Extra Deck Battler",
+     "cor": "Green",
+     "foto": false
+    },
+    {
+     "productId": 193538,
+     "num": "NB01-21-EB",
+     "name": "The Nine-Tailed Fox Spirit",
+     "tipo": "Extra Deck Battler",
+     "cor": "Green",
+     "foto": false
+    },
+    {
+     "productId": 193537,
+     "num": "NB01-22-EB",
+     "name": "Gamabunta",
+     "tipo": "Extra Deck Battler",
+     "cor": "Blue",
+     "foto": false
+    },
+    {
+     "productId": 193536,
+     "num": "NB01-23-EB",
+     "name": "Shukaku",
+     "tipo": "Extra Deck Battler",
+     "cor": "Blue",
+     "foto": false
+    },
+    {
+     "productId": 193535,
+     "num": "NB01-24-EB",
+     "name": "Sasuke Uchiha",
+     "tipo": "Extra Deck Battler",
+     "cor": "Blue",
+     "foto": false
+    },
+    {
+     "productId": 193563,
+     "num": "NB01-25-B",
+     "name": "Tsunade",
+     "tipo": "Battler",
+     "cor": "Red",
+     "foto": false
+    },
+    {
+     "productId": 193341,
+     "num": "NB01-26-B",
+     "name": "Orochimaru",
+     "tipo": "Battler",
+     "cor": "Purple",
+     "foto": true
+    },
+    {
+     "productId": 193562,
+     "num": "NB01-27-B",
+     "name": "Sai",
+     "tipo": "Battler",
+     "cor": "Red",
+     "foto": false
+    },
+    {
+     "productId": 193561,
+     "num": "NB01-28-B",
+     "name": "Gaara",
+     "tipo": "Battler",
+     "cor": "Red",
+     "foto": false
+    },
+    {
+     "productId": 193333,
+     "num": "NB01-29-B",
+     "name": "Naruto Uzumaki",
+     "tipo": "Battler",
+     "cor": "Red",
+     "foto": true
+    },
+    {
+     "productId": 193565,
+     "num": "NB01-30-B",
+     "name": "Sasuke Uchiha",
+     "tipo": "Battler",
+     "cor": "Red",
+     "foto": false
+    },
+    {
+     "productId": 193559,
+     "num": "NB01-31-B",
+     "name": "Might Guy",
+     "tipo": "Battler",
+     "cor": "Red",
+     "foto": false
+    },
+    {
+     "productId": 193558,
+     "num": "NB01-32-A",
+     "name": "Sakura Haruno",
+     "tipo": "Action",
+     "cor": "Red",
+     "foto": false
+    },
+    {
+     "productId": 193446,
+     "num": "NB01-33-A",
+     "name": "Yamato",
+     "tipo": "Action",
+     "cor": "Red",
+     "foto": true
+    },
+    {
+     "productId": 193557,
+     "num": "NB01-34-B",
+     "name": "Kabuto Yakushi",
+     "tipo": "Battler",
+     "cor": "Purple",
+     "foto": false
+    },
+    {
+     "productId": 193556,
+     "num": "NB01-35-B",
+     "name": "Granny Chiyo",
+     "tipo": "Battler",
+     "cor": "Purple",
+     "foto": false
+    },
+    {
+     "productId": 193560,
+     "num": "NB01-36-B",
+     "name": "Kisame Hoshigaki",
+     "tipo": "Battler",
+     "cor": "Purple",
+     "foto": false
+    },
+    {
+     "productId": 193555,
+     "num": "NB01-37-B",
+     "name": "Kakuzu",
+     "tipo": "Battler",
+     "cor": "Purple",
+     "foto": false
+    },
+    {
+     "productId": 193513,
+     "num": "NB01-38-B",
+     "name": "Hidan",
+     "tipo": "Battler",
+     "cor": "Purple",
+     "foto": true
+    },
+    {
+     "productId": 193554,
+     "num": "NB01-39-B",
+     "name": "Zetsu",
+     "tipo": "Battler",
+     "cor": "Purple",
+     "foto": false
+    },
+    {
+     "productId": 193308,
+     "num": "NB01-40-B",
+     "name": "Tobi",
+     "tipo": "Battler",
+     "cor": "Purple",
+     "foto": true
+    },
+    {
+     "productId": 193564,
+     "num": "NB01-41-B",
+     "name": "Deidara",
+     "tipo": "Battler",
+     "cor": "Purple",
+     "foto": false
+    },
+    {
+     "productId": 193553,
+     "num": "NB01-42-B",
+     "name": "Hiruko",
+     "tipo": "Battler",
+     "cor": "Purple",
+     "foto": false
+    },
+    {
+     "productId": 193475,
+     "num": "NB01-43-EB",
+     "name": "Nine-Tail's Cloak (Forth Tail)",
+     "tipo": "Extra Deck Battler",
+     "cor": "Red",
+     "foto": true
+    },
+    {
+     "productId": 193566,
+     "num": "NB01-44-B",
+     "name": "Garuda",
+     "tipo": "Battler",
+     "cor": "Red",
+     "foto": false
+    },
+    {
+     "productId": 193568,
+     "num": "NB01-45-EB",
+     "name": "Katsuyu",
+     "tipo": "Extra Deck Battler",
+     "cor": "Purple",
+     "foto": false
+    },
+    {
+     "productId": 193567,
+     "num": "NB01-46-EB",
+     "name": "Sasori",
+     "tipo": "Extra Deck Battler",
+     "cor": "Purple",
+     "foto": false
+    },
+    {
+     "productId": 193495,
+     "num": "NB01-47-EB",
+     "name": "Deidara",
+     "tipo": "Extra Deck Battler",
+     "cor": "Purple",
+     "foto": true
+    },
+    {
+     "productId": 193484,
+     "num": "NB01-48-EB",
+     "name": "Manda",
+     "tipo": "Extra Deck Battler",
+     "cor": "Purple",
+     "foto": true
+    },
+    {
+     "productId": 193574,
+     "num": "NB02-01-B",
+     "name": "Suigetsu Hozuki",
+     "tipo": "Battler",
+     "cor": "Blue",
+     "foto": false
+    },
+    {
+     "productId": 193575,
+     "num": "NB02-02-B",
+     "name": "Shino Aburame",
+     "tipo": "Battler",
+     "cor": "Blue",
+     "foto": false
+    },
+    {
+     "productId": 193576,
+     "num": "NB02-03-B",
+     "name": "Jugo",
+     "tipo": "Battler",
+     "cor": "Blue",
+     "foto": false
+    },
+    {
+     "productId": 193577,
+     "num": "NB02-04-B",
+     "name": "Ino Yamanaka",
+     "tipo": "Battler",
+     "cor": "Blue",
+     "foto": false
+    },
+    {
+     "productId": 193324,
+     "num": "NB02-05-B",
+     "name": "Kiba Inuzuka",
+     "tipo": "Battler",
+     "cor": "Blue",
+     "foto": true
+    },
+    {
+     "productId": 193321,
+     "num": "NB02-06-B",
+     "name": "Sasuke Uchiha",
+     "tipo": "Battler",
+     "cor": "Blue",
+     "foto": true
+    },
+    {
+     "productId": 193578,
+     "num": "NB02-07-A",
+     "name": "Shikamaru Nara",
+     "tipo": "Battler",
+     "cor": "Blue",
+     "foto": false
+    },
+    {
+     "productId": 193579,
+     "num": "NB02-08-A",
+     "name": "Karin",
+     "tipo": "Action",
+     "cor": "Blue",
+     "foto": false
+    },
+    {
+     "productId": 193586,
+     "num": "NB02-09-A",
+     "name": "Hinata Hyuga",
+     "tipo": "Action",
+     "cor": "Blue",
+     "foto": false
+    },
+    {
+     "productId": 193309,
+     "num": "NB02-10-B",
+     "name": "Rock Lee",
+     "tipo": "Battler",
+     "cor": "Purple",
+     "foto": true
+    },
+    {
+     "productId": 193461,
+     "num": "NB02-11-B",
+     "name": "Konan",
+     "tipo": "Battler",
+     "cor": "Purple",
+     "foto": true
+    },
+    {
+     "productId": 193581,
+     "num": "NB02-12-B",
+     "name": "Tenten",
+     "tipo": "Battler",
+     "cor": "Purple",
+     "foto": false
+    },
+    {
+     "productId": 193582,
+     "num": "NB02-13-B",
+     "name": "Sakura Haruno",
+     "tipo": "Battler",
+     "cor": "Purple",
+     "foto": false
+    },
+    {
+     "productId": 193583,
+     "num": "NB02-14-B",
+     "name": "Jiraiya",
+     "tipo": "Battler",
+     "cor": "Purple",
+     "foto": false
+    },
+    {
+     "productId": 193310,
+     "num": "NB02-15-B",
+     "name": "Naruto Uzumaki",
+     "tipo": "Battler",
+     "cor": "Purple",
+     "foto": true
+    },
+    {
+     "productId": 193584,
+     "num": "NB02-16-B",
+     "name": "Pain",
+     "tipo": "Battler",
+     "cor": "Purple",
+     "foto": false
+    },
+    {
+     "productId": 193585,
+     "num": "NB02-17-B",
+     "name": "Itachi Uchiha",
+     "tipo": "Battler",
+     "cor": "Purple",
+     "foto": false
+    },
+    {
+     "productId": 193580,
+     "num": "NB02-18-A",
+     "name": "Neji Hyuga",
+     "tipo": "Action",
+     "cor": "Purple",
+     "foto": false
+    },
+    {
+     "productId": 193569,
+     "num": "NB02-19-EB",
+     "name": "Choji Akimichi",
+     "tipo": "Extra Deck Battler",
+     "cor": "Blue",
+     "foto": false
+    },
+    {
+     "productId": 193570,
+     "num": "NB02-20-EB",
+     "name": "Gamakichi",
+     "tipo": "Extra Deck Battler",
+     "cor": "Blue",
+     "foto": false
+    },
+    {
+     "productId": 193571,
+     "num": "NB02-21-EB",
+     "name": "Sasuke's Susano'o",
+     "tipo": "Extra Deck Battler",
+     "cor": "Blue",
+     "foto": false
+    },
+    {
+     "productId": 193573,
+     "num": "NB02-22-EB",
+     "name": "Itachi's Susano'o",
+     "tipo": "Extra Deck Battler",
+     "cor": "Purple",
+     "foto": false
+    },
+    {
+     "productId": 193502,
+     "num": "NB02-23-EB",
+     "name": "Eight Branches Jutsu",
+     "tipo": "Extra Deck Battler",
+     "cor": "Purple",
+     "foto": true
+    },
+    {
+     "productId": 193572,
+     "num": "NB02-24-EB",
+     "name": "Gedo Statue",
+     "tipo": "Extra Deck Battler",
+     "cor": "Purple",
+     "foto": false
+    },
+    {
+     "productId": 193521,
+     "num": "NB02-25-B",
+     "name": "Cho-Cho Akimichi",
+     "tipo": "Battler",
+     "cor": "Red",
+     "foto": false
+    },
+    {
+     "productId": 193442,
+     "num": "NB02-26-B",
+     "name": "Sai Yamanaka",
+     "tipo": "Battler",
+     "cor": "Red",
+     "foto": true
+    },
+    {
+     "productId": 193522,
+     "num": "NB02-27-B",
+     "name": "Inojin Yamanaka",
+     "tipo": "Battler",
+     "cor": "Red",
+     "foto": false
+    },
+    {
+     "productId": 193523,
+     "num": "NB02-28-B",
+     "name": "Mitsuki",
+     "tipo": "Battler",
+     "cor": "Red",
+     "foto": false
+    },
+    {
+     "productId": 193435,
+     "num": "NB02-29-B",
+     "name": "Sarada Uchiha",
+     "tipo": "Battler",
+     "cor": "Red",
+     "foto": true
+    },
+    {
+     "productId": 193524,
+     "num": "NB02-30-B",
+     "name": "Konohamaru Sarutobi",
+     "tipo": "Battler",
+     "cor": "Red",
+     "foto": false
+    },
+    {
+     "productId": 193525,
+     "num": "NB02-31-B",
+     "name": "Sasuke Uchiha",
+     "tipo": "Battler",
+     "cor": "Red",
+     "foto": false
+    },
+    {
+     "productId": 193526,
+     "num": "NB02-32-B",
+     "name": "Sakura Uchiha",
+     "tipo": "Battler",
+     "cor": "Red",
+     "foto": false
+    },
+    {
+     "productId": 193527,
+     "num": "NB02-33-B",
+     "name": "Kakashi Hatake",
+     "tipo": "Battler",
+     "cor": "Red",
+     "foto": false
+    },
+    {
+     "productId": 193534,
+     "num": "NB02-34-B",
+     "name": "Shikadai Nara",
+     "tipo": "Battler",
+     "cor": "Green",
+     "foto": false
+    },
+    {
+     "productId": 193533,
+     "num": "NB02-35-B",
+     "name": "Kinshiki Otsutsuki",
+     "tipo": "Battler",
+     "cor": "Green",
+     "foto": false
+    },
+    {
+     "productId": 193532,
+     "num": "NB02-36-B",
+     "name": "Shikamaru Nara",
+     "tipo": "Battler",
+     "cor": "Green",
+     "foto": false
+    },
+    {
+     "productId": 193531,
+     "num": "NB02-37-B",
+     "name": "Naruto Uzumaki",
+     "tipo": "Battler",
+     "cor": "Green",
+     "foto": false
+    },
+    {
+     "productId": 193433,
+     "num": "NB02-38-B",
+     "name": "Shino Aburame",
+     "tipo": "Battler",
+     "cor": "Green",
+     "foto": true
+    },
+    {
+     "productId": 193530,
+     "num": "NB02-39-B",
+     "name": "Momoshiki Otsutsuki",
+     "tipo": "Battler",
+     "cor": "Green",
+     "foto": false
+    },
+    {
+     "productId": 193529,
+     "num": "NB02-40-B",
+     "name": "Boruto Uzumaki",
+     "tipo": "Battler",
+     "cor": "Green",
+     "foto": false
+    },
+    {
+     "productId": 193425,
+     "num": "NB02-41-A",
+     "name": "Team 7",
+     "tipo": "Action",
+     "cor": "Green",
+     "foto": true
+    },
+    {
+     "productId": 193528,
+     "num": "NB02-42-A",
+     "name": "Sakura and Sarada",
+     "tipo": "Action",
+     "cor": "Green",
+     "foto": false
+    },
+    {
+     "productId": 193519,
+     "num": "NB02-43-EB",
+     "name": "Gamagoro",
+     "tipo": "Extra Deck Battler",
+     "cor": "Red",
+     "foto": false
+    },
+    {
+     "productId": 193518,
+     "num": "NB02-44-EB",
+     "name": "Garaga",
+     "tipo": "Extra Deck Battler",
+     "cor": "Red",
+     "foto": false
+    },
+    {
+     "productId": 193520,
+     "num": "NB02-45-EB",
+     "name": "Sasuke's Susano'o",
+     "tipo": "Extra Deck Battler",
+     "cor": "Red",
+     "foto": false
+    },
+    {
+     "productId": 193307,
+     "num": "NB02-46-EB",
+     "name": "Kurama (Kurama Link Mode)",
+     "tipo": "Extra Deck Battler",
+     "cor": "Green",
+     "foto": true
+    },
+    {
+     "productId": 193468,
+     "num": "NB02-47-EB",
+     "name": "Momoshiki's Monster",
+     "tipo": "Extra Deck Battler",
+     "cor": "Green",
+     "foto": true
+    },
+    {
+     "productId": 193306,
+     "num": "NB02-48-EB",
+     "name": "Majestic Attire: Susano'o",
+     "tipo": "Extra Deck Battler",
+     "cor": "Green",
+     "foto": true
+    },
+    {
+     "productId": 264262,
+     "num": "",
+     "name": "Inoichi Yamanaka",
+     "tipo": "",
+     "cor": "Blue",
+     "foto": false
+    }
+   ]
+  }
+ ]
+}

@@ -107,6 +107,9 @@ const JOGOS = {
   cdm: { semCodigo: "Carddass Masters: número solto, sem set impresso" },
   gcd: { semCodigo: "Gundam Carddass: número solto, sem set impresso" },
   gw: { semCodigo: "Gundam War: número por cor (cada cor tem seu U-1), sem set impresso" },
+  // Naruto Boruto Card Game (2026-11-13): o código impresso é "NB02-48-EB"
+  // (set, número e tipo). A carta de torneio e a da caixa imprimem o MESMO.
+  narutoboruto: { min: 0.98, impresso: (c) => `©2002 MASASHI KISHIMOTO / 2017 BORUTO All Rights Reserved. ©BANDAI NOT FOR SALE ${c.number}` },
   mbc: { semCodigo: "Miracle Battle Carddass: número solto" },
   hxh: { semCodigo: "número curto (C01), repetido entre os sets" },
   cyberpunk: { semCodigo: "número solto (001), repetido em todo set" }
