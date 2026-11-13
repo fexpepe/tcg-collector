@@ -201,6 +201,31 @@
         order: ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII", "XIII", "XIV", "XV", "XVI"]
       }
     ],
+    // Grand Archive TCG (13/11/2026): o "color" do catálogo é o ELEMENTO
+    // (sync-grandarchive.mjs) — Norm, os três básicos e depois os avançados,
+    // na ordem em que o jogo os lançou. O TIPO vem multi e em ordem solta
+    // ("Item;Regalia" e "Regalia;Item"): conta em cada parte. A CLASSE é a do
+    // campeão que joga a carta; a de duas classes conta nas duas.
+    grandarchive: [
+      {
+        key: "element", labelKey: "facet.element",
+        of: (c) => facetSplit(c.color, ";"),
+        label: (v) => v,
+        order: ["Norm", "Fire", "Water", "Wind", "Arcane", "Astra", "Crux", "Tera", "Luxem", "Umbra", "Exalted", "Exia", "Neos"]
+      },
+      {
+        key: "type", labelKey: "facet.cardType",
+        of: (c) => facetSplit(c.cardType, ";"),
+        label: (v) => v,
+        order: ["Champion", "Ally", "Action", "Attack", "Item", "Weapon", "Regalia", "Domain", "Phantasia", "Unique", "Token"]
+      },
+      {
+        key: "class", labelKey: "facet.class",
+        of: (c) => facetSplit(c.cardClass, ";"),
+        label: (v) => v,
+        order: ["Warrior", "Guardian", "Cleric", "Mage", "Assassin", "Ranger", "Tamer", "Spirit", "Anomaly"]
+      }
+    ],
     // Cyberpunk TCG: 4 cores (Red/Blue/Green/Yellow) e 4 tipos (30/09/2026).
     cyberpunk: [
       facetColor("color"),

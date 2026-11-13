@@ -43,6 +43,7 @@ export const JOGOS_URL = [
   { url: "godzilla-card-game", game: "godzilla", nome: "Godzilla Card Game", logo: "assets/games/game_godzilla.webp" },
   { url: "palworld-official-card-game", game: "palworld", nome: "Palworld Official Card Game", logo: "assets/games/game_palworld.webp" },
   { url: "final-fantasy-tcg", game: "fftcg", nome: "Final Fantasy TCG", logo: "assets/games/game_fftcg.webp" },
+  { url: "grand-archive", game: "grandarchive", nome: "Grand Archive TCG", logo: "assets/games/game_grandarchive.webp" },
   { url: "cardfight-vanguard", game: "vanguard", nome: "Cardfight!! Vanguard", logo: "assets/games/game_vanguard.webp" },
   // Os dois jogos vivos do Naruto que não são da Bandai (2026-11-12): o TCG europeu da Cicaboom e as
   // cartas de coleção da Kayou, na edição em inglês. A Kayou usa o logo do Naruto, como o site oficial dela.
