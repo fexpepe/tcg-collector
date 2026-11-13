@@ -100,6 +100,12 @@ const JOGOS = {
   // Cardfight!! Vanguard (2026-11-13): SET/NÚMERO + EN, com a raridade da
   // paralela antes do número (DZ-BT16/001EN, V-BT02/SP01EN).
   vanguard: { min: 0.95, nota: "sobram os números sem o EN no fim ou com ano (VG-2020/TOYOU, V-PR/0209EN 2022)" },
+  // Naruto Mythos TCG (2026-11-12): o rodapé é "C 3/130  1° EDITION NARUTO
+  // MYTHOS TCG", com o número sem os zeros da frente.
+  narutomythos: { min: 0.93, impresso: (c) => `${String(c.number).replace(/^0+(?=\d)/, "")}  1° EDITION NARUTO MYTHOS TCG`, nota: "sobram as Mission (MSS 05), que não numeram em fração" },
+  // Naruto Kayou (2026-11-12): o código inteiro no canto ("NRSA01-SE-001L5").
+  // O losango da paralela não é lido: o texto vai sem ele.
+  narutokayou: { min: 0.98, impresso: (c) => String(c.number).replace(/◇/g, "") },
   wow: { semCodigo: "o catálogo não guarda o número da carta" },
   sorcery: { semCodigo: "o catálogo não guarda o número da carta" },
   dbz: { semCodigo: "número solto (60), repetido em todo set" },

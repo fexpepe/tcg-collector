@@ -289,6 +289,21 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   BP03 (29/01/2027) e os TD03/TD04 (18/12/2026) já estão pinados e entram
   sozinhos quando o TCGplayer listar as cartas; a 2ª edição do BP01 ganha
   preço no build seguinte ao das primeiras vendas.
+- **Naruto Mythos TCG (`narutomythos`) e Naruto Kayou (`narutokayou`),
+  2026-11-12**: jogos próprios, pelas fontes oficiais. O ouro claro do Mythos
+  e a posição dos tiles (fim da grade do hub e da landing) foram confirmados
+  pelo Fernando no mesmo dia. A cor da Kayou mudou no merge: o coral que ele
+  tinha confirmado ficou a 26 do coral do Vanguard, que entrou em 13/11, e
+  virou magenta (#d946ef), a confirmar. Pendências: preço (nenhum dos
+  dois está no TCGplayer; o Mythos deve estar no Cardmarket, que barra acesso
+  automatizado); lojas do `MARKETS` conferidas à mão; no Mythos, as três
+  versões das Common e Uncommon (standard, full art e holográfica), que a
+  galeria oficial lista como uma carta só; na Kayou, a linha chinesa de 2021
+  (só existe lista de fã, e a que achei esconde os dados de propósito), as
+  cartas deitadas (as peças de cena vêm em paisagem) e o código das 4
+  Creative Rare do Earth Scroll 3, que o site oficial repete do Earth Scroll
+  1. O Mythos promete edição em português pro Brasil a partir do Set 3
+  (Akatsuki, 2027).
 - **NARUTO 疾風伝 カードゲーム (`nrt-scg`, 2026-11-10)**: entrou com as 573
   cartas e só 13 imagens (as do tcg-db). Falta fonte de imagem que aceite
   acesso automatizado (o Suruga-ya barra) e o logo recortado: o oficial está

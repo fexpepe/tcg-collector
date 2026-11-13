@@ -45,6 +45,10 @@ export const JOGOS_URL = [
   { url: "final-fantasy-tcg", game: "fftcg", nome: "Final Fantasy TCG", logo: "assets/games/game_fftcg.webp" },
   { url: "grand-archive", game: "grandarchive", nome: "Grand Archive TCG", logo: "assets/games/game_grandarchive.webp" },
   { url: "cardfight-vanguard", game: "vanguard", nome: "Cardfight!! Vanguard", logo: "assets/games/game_vanguard.webp" },
+  // Os dois jogos vivos do Naruto que não são da Bandai (2026-11-12): o TCG europeu da Cicaboom e as
+  // cartas de coleção da Kayou, na edição em inglês. A Kayou usa o logo do Naruto, como o site oficial dela.
+  { url: "naruto-mythos-tcg", game: "narutomythos", nome: "Naruto Mythos TCG", logo: "assets/games/game_narutomythos.webp" },
+  { url: "naruto-kayou", game: "narutokayou", nome: "Naruto Kayou", logo: "assets/games/game_naruto.webp" },
   { url: "gundam-carddass", game: "gcd", nome: "Gundam Carddass", logo: "assets/games/game_gcd.webp", vintage: "1988–1997" },
   { url: "dragon-ball-carddass", game: "dbc", nome: "Dragon Ball Carddass", logo: "assets/games/game_dbc-v2.webp", vintage: "1988–1997" },
   { url: "gundam-war", game: "gw", nome: "Gundam War", logo: "assets/games/game_gw.webp", vintage: "1999–2011" },

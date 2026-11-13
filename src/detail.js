@@ -469,6 +469,13 @@
     // as de colecionador (CSR, CUR, CPR), na ordem em que o Index oficial as
     // numera.
     grandarchive: ["Common", "Uncommon", "Rare", "Super Rare", "Ultra Rare", "Promo", "Collector Super Rare", "Collector Ultra Rare", "Collector Promo"],
+    // Naruto Mythos TCG (12/11/2026): a escada do guia de coleção oficial, da
+    // base ao ouro; as Mission são tipo de carta, e as Mythos, fora de coleção.
+    narutomythos: ["Common", "Uncommon", "Rare", "Rare Art", "Special", "Chibi", "Shinobi", "POP", "Secret", "Secret Variant", "Legendary", "Mission", "Mythos"],
+    // Naruto Kayou, edição em inglês (12/11/2026): as siglas impressas, na
+    // ordem das tabelas de raridade do site oficial lidas de baixo pra cima; a
+    // paralela (◇) logo depois da comum dela.
+    narutokayou: ["R", "SR", "SSR", "UR", "◇UR", "PTR", "HR", "PU", "QR", "◇QR", "XR", "◇XR", "MR", "◇MR", "BP", "AR", "CR", "ASP", "◇ASP", "SP", "◇SP", "SE"],
     // One Piece Card Game (TCGCSV): as siglas da carta, Líder primeiro como no
     // jogo. Depois as vintage: o acabamento do Carddass Hyper Battle
     // (sync-onepiece-vintage.mjs) e as estrelas do Card Game 2002
