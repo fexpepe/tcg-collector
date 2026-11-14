@@ -383,11 +383,28 @@ jobs:
         if: env.RODA_SYNC == 'true'
         run: node scripts/report-catalog-coverage.mjs || echo "relatório de catálogo falhou (só informativo)"
 
+      # sharp pros espelhos de logo de set (Pokémon aqui embaixo, FAB e Star
+      # Wars mais adiante): logo novo entra já no padrão dos logos
+      # (docs/LOGOS.md: recortado, sem véu, no teto), pelo
+      # scripts/lib/logo-espelho.mjs. O build completo commita o que eles trazem
+      # com [skip ci], então o check-logos do CI nunca veria um logo fora do
+      # padrão: a regra mora no espelho. Fora do repo, como no CI e no
+      # mirror-images.yml; uma instalação só, pelo SHARP_DIR no ambiente dos
+      # passos seguintes. Se falhar, os espelhos só carimbam o que já existe
+      # (set novo mostra o nome até o próximo build).
+      - name: Instala o sharp (logos de set no padrão)
+        if: env.RODA_SYNC == 'true'
+        run: |
+          ( mkdir -p "$RUNNER_TEMP/sharp" && cd "$RUNNER_TEMP/sharp" && npm init -y >/dev/null && npm install --no-audit --no-fund sharp@0.33.5 >/dev/null ) \
+            && echo "SHARP_DIR=$RUNNER_TEMP/sharp/node_modules/sharp" >> "$GITHUB_ENV" \
+            || echo "::warning::sharp não instalou: os espelhos de logo de set só carimbam o que já existe"
+
       # Espelha logos/símbolos de SET do Pokémon localmente (independência da
       # TCGdex; as CARTAS seguem remotas). Roda DEPOIS do merge (que reescreve os
       # chunks) e reescreve setLogo/setSymbol pros caminhos em data/set-logos/.
       # Idempotente: baixa só o que falta (versionado) e re-localiza as URLs que
       # o sync trouxe de volta remotas. Não derruba o build se o CDN estiver fora.
+      # Logo novo passa pelo normalizador (precisa do SHARP_DIR do passo acima).
       - name: Espelha logos de set (Pokémon)
         if: env.RODA_SYNC == 'true'
         run: node scripts/mirror-set-logos.mjs || echo "mirror-set-logos falhou; segue com as URLs da TCGdex"
@@ -478,9 +495,10 @@ jobs:
         if: env.RODA_SYNC == 'true'
         run: node scripts/mirror-magic-set-logos.mjs || echo "mirror-magic-set-logos falhou; segue com o ícone remoto"
 
-      # Logos de set do FAB (the-fab-cube -> PNG oficial da LSS, redimensionado
-      # via wsrv.nl). ANTES do sync pra ele já apontar setLogo pro webp local.
-      # ~41 sets principais; o resto cai na arte da carta. Idempotente.
+      # Logos de set do FAB (the-fab-cube -> PNG oficial da LSS, gravado no
+      # padrão dos logos pelo normalizador, com o SHARP_DIR do passo do sharp).
+      # ANTES do sync pra ele já apontar setLogo pro webp local. ~41 sets
+      # principais; o resto mostra o nome do set. Idempotente.
       - name: Espelha logos de set (FAB)
         if: env.RODA_SYNC == 'true'
         run: node scripts/mirror-fab-set-logos.mjs || echo "mirror-fab-set-logos falhou; segue com a arte da carta"
@@ -559,15 +577,12 @@ jobs:
       # Star Wars: Unlimited (TCGCSV cat. 79, FFG 2024). Padrao Union Arena.
       # Logos de set ANTES do sync (pra ele já apontar setLogo pro webp local):
       # vêm do site oficial e precisam do sharp (recorte + contorno dos logos
-      # claros — ver o cabeçalho do mirror-swu-set-logos.mjs), instalado fora do
-      # repo como no mirror-images.yml. Skip-if-exists: só set NOVO baixa, e o
+      # claros — ver o cabeçalho do mirror-swu-set-logos.mjs), o do passo
+      # "Instala o sharp" (SHARP_DIR no ambiente). Skip-if-exists: só set NOVO baixa, e o
       # "Versiona" commita o arquivo junto com o resto de data/.
       - name: Espelha logos de set (Star Wars Unlimited)
         if: env.RODA_SYNC == 'true'
-        run: |
-          ( mkdir -p "$RUNNER_TEMP/sharp" && cd "$RUNNER_TEMP/sharp" && npm init -y >/dev/null && npm install --no-audit --no-fund sharp@0.33.5 >/dev/null ) \
-            && SHARP_DIR="$RUNNER_TEMP/sharp/node_modules/sharp" node scripts/mirror-swu-set-logos.mjs \
-            || echo "mirror-swu-set-logos falhou; sets novos seguem com o nome no lugar do logo"
+        run: node scripts/mirror-swu-set-logos.mjs || echo "mirror-swu-set-logos falhou; sets novos seguem com o nome no lugar do logo"
 
       - name: Sincroniza catálogo do Star Wars Unlimited (TCGCSV)
         if: env.RODA_SYNC == 'true'

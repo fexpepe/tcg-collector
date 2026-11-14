@@ -60,7 +60,7 @@ const SITE = "http://www.carddas.com/naruto/cardgame/product/";
 const TCGDB = "https://tcg-db.nikita.jp/cardlist/nrts/";
 const UA = { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Sleevu/1.0 (+sleevu.app)" };
 const NO_FETCH = process.argv.includes("--no-fetch");
-const LOGO = "/assets/games/game_naruto.webp";
+const LOGO = "/assets/games/game_naruto-v2.webp";
 
 // Os produtos, na ORDEM DE LANÇAMENTO: é ela que decide o set de estreia de
 // uma carta repetida. `captura` é o timestamp do Wayback da lista oficial.

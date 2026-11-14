@@ -1,7 +1,7 @@
 {
   "url": "dragon-ball-z-ccg",
   "nome": "Dragon Ball Z CCG",
-  "logo": "assets/games/game_dbz.webp",
+  "logo": "assets/games/game_dbz-v2.webp",
   "logoLargura": 512,
   "logoAltura": 179,
   "periodo": { "inicio": "2000", "fim": "2006" },

@@ -1,1 +1,188 @@
-{}
+{
+  "assets/games/game_ygo-v2.webp": {
+    "regras": [
+      "alfa"
+    ],
+    "motivo": "Decisão de arte registrada no assets/games/README.md e no docs/LOGOS.md: a fonte (assets/brand/yugioh.jpg) é o JPG oficial de fundo branco, que se funde na cápsula branca do hub e no chip do set; o arquivo fica sem canal alfa."
+  },
+  "assets/games/set_cdm_eva.webp": {
+    "regras": [
+      "nitidez"
+    ],
+    "motivo": "Montagem (assets/games/README.md): o logo do Evangelion com o selo do Carddass Masters pequeno no canto, a 470×200. Pra 2× na vitrine do topo precisa de ~1,5× isso, remontado das fontes: o selo já tem fonte grande (game_cdm-v2, 890×302, da PR #318); o SVG do Evangelion enviado pelo Fernando em 2026-11-11 não está no repositório. A montagem é à mão e fica à parte, como o README já registra. Pendente desde 2026-11-14."
+  },
+  "assets/games/set_cdm_hxh.webp": {
+    "regras": [
+      "nitidez"
+    ],
+    "motivo": "Montagem (assets/games/README.md): o logo do HUNTER×HUNTER (o vermelho, da série) com o selo do Carddass Masters pequeno no canto, a 455×228. Pra 2× na vitrine do topo precisa de ~1,5× isso, remontado das fontes: o selo já tem fonte grande (game_cdm-v2, 890×302, da PR #318); o game_hxh-v2 de hoje é outra arte (o logo do produto), então refazer é também decidir qual HxH vai. A montagem é à mão e fica à parte, como o README já registra. Pendente desde 2026-11-14."
+  },
+  "assets/games/set_cdm_naruto.webp": {
+    "regras": [
+      "nitidez"
+    ],
+    "motivo": "Montagem (assets/games/README.md): o logo do Naruto com o selo do Carddass Masters pequeno no canto, a 460×214. Pra 2× na vitrine do topo precisa de ~1,5× isso, remontado das fontes: o selo já tem fonte grande (game_cdm-v2, 890×302, da PR #318), e o Naruto também (game_naruto-v2, 751×320, do vetor). A montagem é à mão e fica à parte, como o README já registra. Pendente desde 2026-11-14."
+  },
+  "data/fab/set-logos/1HB.webp": {
+    "regras": [
+      "nitidez"
+    ],
+    "motivo": "Fonte: o set_logo do the-fab-cube (PNG oficial da LSS no CloudFront dhhim4ltzu1pj.cloudfront.net), que em 2026-11-14 não resolve mais (sem registro DNS; o wsrv.nl devolve 404 pra ele). O arquivo espelhado antes, a 600 px de largura com margem, é o maior que sobrou; recortado na tinta, 543×104."
+  },
+  "data/fab/set-logos/1HD.webp": {
+    "regras": [
+      "nitidez"
+    ],
+    "motivo": "Fonte: o set_logo do the-fab-cube (PNG oficial da LSS no CloudFront dhhim4ltzu1pj.cloudfront.net), que em 2026-11-14 não resolve mais (sem registro DNS; o wsrv.nl devolve 404 pra ele). O arquivo espelhado antes, a 600 px de largura com margem, é o maior que sobrou; recortado na tinta, 543×104."
+  },
+  "data/fab/set-logos/1HK.webp": {
+    "regras": [
+      "nitidez"
+    ],
+    "motivo": "Fonte: o set_logo do the-fab-cube (PNG oficial da LSS no CloudFront dhhim4ltzu1pj.cloudfront.net), que em 2026-11-14 não resolve mais (sem registro DNS; o wsrv.nl devolve 404 pra ele). O arquivo espelhado antes, a 600 px de largura com margem, é o maior que sobrou; recortado na tinta, 543×104."
+  },
+  "data/fab/set-logos/1HR.webp": {
+    "regras": [
+      "nitidez"
+    ],
+    "motivo": "Fonte: o set_logo do the-fab-cube (PNG oficial da LSS no CloudFront dhhim4ltzu1pj.cloudfront.net), que em 2026-11-14 não resolve mais (sem registro DNS; o wsrv.nl devolve 404 pra ele). O arquivo espelhado antes, a 600 px de largura com margem, é o maior que sobrou; recortado na tinta, 543×104."
+  },
+  "data/fab/set-logos/1HT.webp": {
+    "regras": [
+      "nitidez"
+    ],
+    "motivo": "Fonte: o set_logo do the-fab-cube (PNG oficial da LSS no CloudFront dhhim4ltzu1pj.cloudfront.net), que em 2026-11-14 não resolve mais (sem registro DNS; o wsrv.nl devolve 404 pra ele). O arquivo espelhado antes, a 600 px de largura com margem, é o maior que sobrou; recortado na tinta, 543×104."
+  },
+  "data/fab/set-logos/1HV.webp": {
+    "regras": [
+      "nitidez"
+    ],
+    "motivo": "Fonte: o set_logo do the-fab-cube (PNG oficial da LSS no CloudFront dhhim4ltzu1pj.cloudfront.net), que em 2026-11-14 não resolve mais (sem registro DNS; o wsrv.nl devolve 404 pra ele). O arquivo espelhado antes, a 600 px de largura com margem, é o maior que sobrou; recortado na tinta, 543×104."
+  },
+  "data/fab/set-logos/24315.webp": {
+    "regras": [
+      "nitidez"
+    ],
+    "motivo": "Fonte: o set_logo do the-fab-cube (PNG oficial da LSS no CloudFront dhhim4ltzu1pj.cloudfront.net), que em 2026-11-14 não resolve mais (sem registro DNS; o wsrv.nl devolve 404 pra ele). O arquivo espelhado antes, a 600 px de largura com margem, é o maior que sobrou; recortado na tinta, 543×234."
+  },
+  "data/fab/set-logos/ASR.webp": {
+    "regras": [
+      "nitidez"
+    ],
+    "motivo": "Fonte: o set_logo do the-fab-cube (PNG oficial da LSS no CloudFront dhhim4ltzu1pj.cloudfront.net), que em 2026-11-14 não resolve mais (sem registro DNS; o wsrv.nl devolve 404 pra ele). O arquivo espelhado antes, a 600 px de largura com margem, é o maior que sobrou; recortado na tinta, 543×234."
+  },
+  "data/fab/set-logos/EVO.webp": {
+    "regras": [
+      "alfa"
+    ],
+    "motivo": "Não é fundo opaco: o brilho de neon do logo oficial (Bright Lights) tem alfa baixo, mas não zero, em quase todo o quadro, e só 4,9% dele fica totalmente transparente, abaixo dos 5% que o check usa pra reconhecer fundo. Conferido no chip branco e no fundo escuro em 2026-11-14."
+  },
+  "data/fab/set-logos/WTR.webp": {
+    "regras": [
+      "nitidez"
+    ],
+    "motivo": "Fonte: o set_logo do the-fab-cube (PNG oficial da LSS no CloudFront dhhim4ltzu1pj.cloudfront.net), que em 2026-11-14 não resolve mais (sem registro DNS; o wsrv.nl devolve 404 pra ele). O arquivo espelhado antes, a 600 px de largura com margem, é o maior que sobrou; recortado na tinta, 464×161."
+  },
+  "data/harrypotter/set-logos/aah.webp": {
+    "regras": [
+      "nitidez"
+    ],
+    "motivo": "Únicos publicados (busca de 2026-10-01, commit 1a99f827): o site oficial da época, só no Wayback (harrypotter.warnerbros.com/wotc e wizards.com/harrypotter). Adventures at Hogwarts: hogwarts_logo.jpg, 204×59 sobre branco, recortado. Não reprocurado em 2026-11-14."
+  },
+  "data/harrypotter/set-logos/cos.webp": {
+    "regras": [
+      "nitidez"
+    ],
+    "motivo": "Únicos publicados (busca de 2026-10-01, commit 1a99f827): o site oficial da época, só no Wayback (harrypotter.warnerbros.com/wotc e wizards.com/harrypotter). Chamber of Secrets: o letreiro no alto da foto dos displays (chamber_displays.jpg, 397×81). Não reprocurado em 2026-11-14."
+  },
+  "data/harrypotter/set-logos/qc.webp": {
+    "regras": [
+      "nitidez"
+    ],
+    "motivo": "Únicos publicados (busca de 2026-10-01, commit 1a99f827): o site oficial da época, só no Wayback (harrypotter.warnerbros.com/wotc e wizards.com/harrypotter). Quidditch Cup: QC-logo-black.jpg, 250×75 sobre preto, recortado. Não reprocurado em 2026-11-14."
+  },
+  "data/onepiece/set-logos/eb05.webp": {
+    "regras": [
+      "nitidez"
+    ],
+    "motivo": "Única versão publicada: o logo da página do produto no site oficial (en.onepiece-cardgame.com/renewal/images/products/boosters/eb05/logo.webp, o mesmo no site JP) é um quadro de 672×141 com margem; recortado na tinta sobra 401×134. Conferido em 2026-11-14."
+  },
+  "data/onepiece/set-logos/op14.webp": {
+    "regras": [
+      "nitidez"
+    ],
+    "motivo": "Única versão publicada: o logo da página do produto no site oficial (en.onepiece-cardgame.com/renewal/images/products/boosters/op14/logo.webp, o mesmo no site JP) é um quadro de 672×141 com margem; recortado na tinta sobra 538×134. Conferido em 2026-11-14."
+  },
+  "data/onepiece/set-logos/prb02.webp": {
+    "regras": [
+      "nitidez"
+    ],
+    "motivo": "Única versão publicada: o logo da página do produto no site oficial (en.onepiece-cardgame.com/renewal/images/products/boosters/prb02/logo.webp, o mesmo no site JP) é um quadro de 672×141 com margem; recortado na tinta sobra 457×123. Conferido em 2026-11-14."
+  },
+  "data/onepiece/set-logos/st23.webp": {
+    "regras": [
+      "nitidez"
+    ],
+    "motivo": "Única versão publicada: o logo da página do produto no site oficial (en.onepiece-cardgame.com/renewal/images/products/decks/st23/logo.webp, o mesmo no site JP) é um quadro de 672×141 com margem; recortado na tinta sobra 320×129. Conferido em 2026-11-14."
+  },
+  "data/onepiece/set-logos/st24.webp": {
+    "regras": [
+      "nitidez"
+    ],
+    "motivo": "Única versão publicada: o logo da página do produto no site oficial (en.onepiece-cardgame.com/renewal/images/products/decks/st24/logo.webp, o mesmo no site JP) é um quadro de 672×141 com margem; recortado na tinta sobra 574×130. Conferido em 2026-11-14."
+  },
+  "data/onepiece/set-logos/st25.webp": {
+    "regras": [
+      "nitidez"
+    ],
+    "motivo": "Única versão publicada: o logo da página do produto no site oficial (en.onepiece-cardgame.com/renewal/images/products/decks/st25/logo.webp, o mesmo no site JP) é um quadro de 672×141 com margem; recortado na tinta sobra 321×130. Conferido em 2026-11-14."
+  },
+  "data/onepiece/set-logos/st26.webp": {
+    "regras": [
+      "nitidez"
+    ],
+    "motivo": "Única versão publicada: o logo da página do produto no site oficial (en.onepiece-cardgame.com/renewal/images/products/decks/st26/logo.webp, o mesmo no site JP) é um quadro de 672×141 com margem; recortado na tinta sobra 542×131. Conferido em 2026-11-14."
+  },
+  "data/onepiece/set-logos/st28.webp": {
+    "regras": [
+      "nitidez"
+    ],
+    "motivo": "Única versão publicada: o logo da página do produto no site oficial (en.onepiece-cardgame.com/renewal/images/products/decks/st28/logo.webp, o mesmo no site JP) é um quadro de 672×141 com margem; recortado na tinta sobra 321×131. Conferido em 2026-11-14."
+  },
+  "data/onepiece/set-logos/st29.webp": {
+    "regras": [
+      "nitidez"
+    ],
+    "motivo": "Única versão publicada: o logo da página do produto no site oficial (en.onepiece-cardgame.com/renewal/images/products/decks/st29/logo.webp, o mesmo no site JP) é um quadro de 672×141 com margem; recortado na tinta sobra 304×141. Conferido em 2026-11-14."
+  },
+  "data/onepiece/set-logos/st30.webp": {
+    "regras": [
+      "nitidez"
+    ],
+    "motivo": "Única versão publicada: o logo da página do produto no site oficial (en.onepiece-cardgame.com/renewal/images/products/decks/st30/logo.webp, o mesmo no site JP) é um quadro de 672×141 com margem; recortado na tinta sobra 342×141. Conferido em 2026-11-14."
+  },
+  "data/onepiece/set-logos/st31.webp": {
+    "regras": [
+      "nitidez"
+    ],
+    "motivo": "Única versão publicada: o logo da página do produto no site oficial (en.onepiece-cardgame.com/renewal/images/products/decks/st31/logo.webp, o mesmo no site JP) é um quadro de 672×141 com margem; recortado na tinta sobra 541×127. Conferido em 2026-11-14."
+  },
+  "data/onepiece/set-logos/st32.webp": {
+    "regras": [
+      "nitidez"
+    ],
+    "motivo": "Única versão publicada: o logo da página do produto no site oficial (en.onepiece-cardgame.com/renewal/images/products/decks/st32/logo.webp, o mesmo no site JP) é um quadro de 672×141 com margem; recortado na tinta sobra 501×127. Conferido em 2026-11-14."
+  },
+  "data/onepiece/set-logos/st33.webp": {
+    "regras": [
+      "nitidez"
+    ],
+    "motivo": "Única versão publicada: o logo da página do produto no site oficial (en.onepiece-cardgame.com/renewal/images/products/decks/st33/logo.webp, o mesmo no site JP) é um quadro de 672×141 com margem; recortado na tinta sobra 313×127. Conferido em 2026-11-14."
+  },
+  "data/onepiece/set-logos/st35.webp": {
+    "regras": [
+      "nitidez"
+    ],
+    "motivo": "Única versão publicada: o logo da página do produto no site oficial (en.onepiece-cardgame.com/renewal/images/products/decks/st35/logo.webp, o mesmo no site JP) é um quadro de 672×141 com margem; recortado na tinta sobra 318×129. Conferido em 2026-11-14."
+  }
+}

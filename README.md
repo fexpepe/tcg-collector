@@ -405,7 +405,7 @@ com o DBZ TCG da Panini (2014–2019, a categoria 23 da TCGCSV). O CI só monta
   quais cartas saíram em quais; só a Silver dos 7 promos de revista do Saiyan.
 - **Imagens**: os scans do retrodbzccg via wsrv.nl — 400×550 nas sagas do
   DBZ, 312×440 no GT, 250×350 no TCG de 2005.
-- **Logo**: `assets/games/game_dbz.webp`, recortado do sell sheet de 2000
+- **Logo**: `assets/games/game_dbz-v2.webp`, recortado do sell sheet de 2000
   (procedência no README de lá). Nenhuma saga tem logo próprio, então todo set
   leva o logo do jogo, como no LOTR, no WoW e no Naruto (regra 3 do
   `docs/CATALOGO.md`).

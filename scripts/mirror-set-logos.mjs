@@ -17,13 +17,20 @@
 // Logo CURADO: arquivo posto à mão em data/set-logos/<idioma>/<setId>.webp
 // também é carimbado, pra set que a TCGdex não tem (ver LOGO CURADO abaixo).
 //
+// Grava no padrão dos logos (docs/LOGOS.md, desde 2026-11-14): o arquivo da
+// TCGdex vem do tamanho que a fonte tem (de 160 a 2.500 px, com margem) e passa
+// pelo normalizador (recorte na tinta, teto 960×320 do logo e 128×128 do
+// símbolo, sem véu, menor peso). Precisa do sharp (SHARP_DIR); sem ele não
+// baixa nada novo, só carimba.
+//
 // Rodar LOCAL (rede aberta) e COMMITAR os arquivos novos.
-//   node scripts/mirror-set-logos.mjs [--force] [--no-fetch]
+//   SHARP_DIR=<…>/node_modules/sharp node scripts/mirror-set-logos.mjs [--force] [--no-fetch]
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { readdir } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { mapLimit, sleep } from "./lib/sync-common.mjs";
+import { sharpDoAmbiente, logoNoPadrao } from "./lib/logo-espelho.mjs";
 
 const ROOT = new URL("../", import.meta.url);
 const SETS_DIR = new URL("data/sets/", ROOT);
@@ -46,7 +53,7 @@ function parse(url) {
     ? `data/set-logos/symbol/${setId}.webp`
     : `data/set-logos/${lang}/${setId}.webp`;
   const downloadUrl = url.replace(/\.(png|webp)(\?.*)?$/, ".webp");
-  return { webPath, downloadUrl };
+  return { webPath, downloadUrl, tipo: kind === "symbol" ? "simbolo" : "set" };
 }
 
 async function listChunks() {
@@ -70,8 +77,10 @@ async function download(descriptor) {
     const buf = Buffer.from(await r.arrayBuffer());
     // Guarda contra páginas de erro: arte de set é webp de verdade (RIFF/WEBP).
     if (buf.length < 200 || buf.slice(0, 4).toString("ascii") !== "RIFF") return "fail";
+    const final = await logoNoPadrao(buf, descriptor.tipo);
+    if (!final) return "fail";
     await mkdir(new URL(".", dest), { recursive: true });
-    await writeFile(dest, buf);
+    await writeFile(dest, final);
     await sleep(80); // educado com o CDN
     return "ok";
   } catch { return "fail"; }
@@ -100,6 +109,8 @@ await mkdir(OUT, { recursive: true });
 let ok = 0, skip = 0, fail = 0;
 if (NO_FETCH) {
   console.log("  --no-fetch: sem baixar nada; só carimbando o que já está em data/set-logos/.");
+} else if (!(await sharpDoAmbiente())) {
+  console.log("  sem SHARP_DIR: logo novo não entra fora do padrão (docs/LOGOS.md); só carimbando o que já existe.");
 } else {
   await mapLimit([...byUrl.values()], 6, async (d) => {
     const r = await download(d);
