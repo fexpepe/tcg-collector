@@ -109,7 +109,7 @@ export const JOGOS = {
     sync: "sync-lorcana.mjs",
     guarda: ["hasLocal(", "data/lorcana/set-logos/"],
     doSync: () => true,
-    arquivo: (setId) => (SETID_SIMPLES.test(setId) ? `${setId}.png` : null),
+    arquivo: (setId) => (SETID_SIMPLES.test(setId) ? `${setId}.webp` : null), // WebP do padrão (docs/LOGOS.md); os curados antigos são .png
     fontes: "página do produto (disneylorcana.com) + wiki da Fandom"
   },
   onepiece: {

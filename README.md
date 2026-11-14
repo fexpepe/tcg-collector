@@ -1337,8 +1337,8 @@ Secrets: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, `PPT_API_TOKEN`,
 dependem de secret são no-op sem ele — o build sai igual, só sem aquela fonte.
 
 Outros workflows: `ci.yml` (portão rápido em todo push/PR — testes, smoke de
-i18n e ordem de scripts, guardas de mobile, sintaxe dos scripts, minificação
-compila), `healthcheck.yml`, `uptime.yml` (probe de 30 em 30 min),
+i18n e ordem de scripts, guardas de mobile, sintaxe dos scripts, padrão dos
+logos que mudaram (`docs/LOGOS.md`), minificação compila), `healthcheck.yml`, `uptime.yml` (probe de 30 em 30 min),
 `push-wishlist.yml` (notificação de queda de preço, segunda 09:00 UTC),
 `cacar-logos-set.yml` (segunda 10:40 UTC: acha logo de set que falta e
 **propõe numa PR** a branch `bot/logos-de-set`, nunca publica; ver
@@ -1585,4 +1585,5 @@ comissão aparece embaixo dos chips. Loja BR segue só com o `utm_source`.
 node --test tests/*.test.mjs
 node scripts/check.mjs          # smoke estático: sintaxe, i18n pt/en/es, ordem de scripts
 node scripts/check-mobile.mjs   # guardas de layout mobile
+node scripts/check-logos.mjs --base origin/main   # logos que mudaram no padrão (docs/LOGOS.md)
 ```
