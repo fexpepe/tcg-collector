@@ -20,6 +20,11 @@ poucos.)
   `card_views` (o 204 sozinho não prova nada). **A próxima migração de jogo
   copia esta.**
 
+  **Aplicada em 2026-11-14** pelo Fernando e verificada por curl anônimo no
+  mesmo dia: a view de `dbs-650759` respondeu 204 e criou a linha no
+  `card_views` (game `dbs`, 1 view); `contribute_price` anônimo segue 401;
+  o `shadowverse` continua na lista.
+
 - `20261113g` — libera o slug `hololive` (hololive OFFICIAL CARD GAME,
   Bushiroad/COVER, edição em inglês, 2025+) nas duas whitelists de jogo
   (`card_views`/`increment_card_view` e `contribute_price`;

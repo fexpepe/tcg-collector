@@ -55,7 +55,7 @@ const DIRS_POR_JOGO = {
   magic: "data/magic/", fab: "data/fab/", gundam: "data/gundam/", swu: "data/swu/", cyberpunk: "data/cyberpunk/", sorcery: "data/sorcery/",
   dbfw: "data/dbfw/", dbs: "data/dbs/", ygo: "data/ygo/", digimon: "data/digimon/",
   riftbound: "data/riftbound/", unionarena: "data/unionarena/", wow: "data/wow/", weiss: "data/weiss/", narutocg: "data/narutocg/", godzilla: "data/godzilla/",
-  palworld: "data/palworld/", fftcg: "data/fftcg/", grandarchive: "data/grandarchive/", hololive: "data/hololive/", shadowverse: "data/shadowverse/", vanguard: "data/vanguard/", duelmasters: "data/duelmasters/"
+  palworld: "data/palworld/", fftcg: "data/fftcg/", grandarchive: "data/grandarchive/", hololive: "data/hololive/", shadowverse: "data/shadowverse/", vanguard: "data/vanguard/"
 };
 const jogos = Object.keys(DIRS_POR_JOGO);
 const baixados = await Promise.all(jogos.map((g) => loadDeltas(DIRS_POR_JOGO[g])));
