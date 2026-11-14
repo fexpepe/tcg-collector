@@ -476,9 +476,10 @@ hub). A ficha preenchida vai na descrição da PR.
 - **Logo do jogo e posição no hub**: logo em `assets/games/game_<slug>.webp`,
   pela especificação de [assets/games/README.md](../assets/games/README.md).
   Sem logo, o tile mostra o nome. A ordem da grade moderna do hub é escolha do
-  Fernando, em fileiras de 4 (a de 11/11/2026, com 19 jogos, está no comentário
-  da grade no `hub.html`): a posição do jogo novo se pergunta, não vai pro fim
-  por padrão. As duas primeiras fileiras carregam o logo sem `loading="lazy"`.
+  Fernando, em fileiras de 4 (a de 14/11/2026, com 20 jogos, está no comentário
+  da grade no `hub.html`); abaixo dela fica a seção "Outros TCGs", em tiles
+  menores, pros jogos de menor porte. A posição do jogo novo (grade ou Outros,
+  e onde) se pergunta, não vai pro fim por padrão. As duas primeiras fileiras carregam o logo sem `loading="lazy"`.
   Jogo vintage não entra no hub: entra na página Vintage (3.6), na posição
   da data de lançamento.
 - **Orçamento** (5.3 e 5.4): arquivos no deploy e bytes no `shared.js` e no
