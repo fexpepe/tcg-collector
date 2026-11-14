@@ -42,5 +42,33 @@
 /assets/games/game_onepiece_carddass.webp   /assets/games/game_onepiece_carddass-v2.webp   301
 /assets/games/game_onepiece_2002.webp       /assets/games/game_onepiece_2002-v2.webp       301
 /assets/games/game_naruto_ccg-v2.webp       /assets/games/game_naruto_ccg-v3.webp       301
+
 # Shadowverse (2026-11-14): o de 456×394 passava do teto do padrão de logo.
 /assets/games/game_shadowverse.webp         /assets/games/game_shadowverse-v2.webp         301
+
+# Logos trocados pelo padrão dos logos (docs/LOGOS.md) em 2026-11-14, mesma
+# razão do bloco de cima: o build rápido reaproveita o catálogo dos sets do
+# último build completo, com o caminho antigo, e o arquivo antigo saiu. Os
+# logos de set do Lorcana e o OP-05 viraram WebP (o cards.js já aponta pro
+# novo; o data/<jogo>/sets/ do cache, até o próximo build completo, não).
+/assets/games/game_lotr.webp               /assets/games/game_lotr-v2.webp             301
+/assets/games/game_mbc.webp                /assets/games/game_mbc-v2.webp              301
+/assets/games/game_naruto.webp             /assets/games/game_naruto-v2.webp           301
+/assets/games/game_dbz.webp                /assets/games/game_dbz-v2.webp              301
+/assets/games/game_grandarchive.webp       /assets/games/game_grandarchive-v2.webp     301
+/assets/games/game_duelmasters.webp        /assets/games/game_duelmasters-v2.webp      301
+/data/onepiece/set-logos/op05.png          /data/onepiece/set-logos/op05.webp          301
+/data/lorcana/set-logos/1.png              /data/lorcana/set-logos/1.webp              301
+/data/lorcana/set-logos/2.png              /data/lorcana/set-logos/2.webp              301
+/data/lorcana/set-logos/3.png              /data/lorcana/set-logos/3.webp              301
+/data/lorcana/set-logos/4.png              /data/lorcana/set-logos/4.webp              301
+/data/lorcana/set-logos/5.png              /data/lorcana/set-logos/5.webp              301
+/data/lorcana/set-logos/6.png              /data/lorcana/set-logos/6.webp              301
+/data/lorcana/set-logos/7.png              /data/lorcana/set-logos/7.webp              301
+/data/lorcana/set-logos/8.png              /data/lorcana/set-logos/8.webp              301
+/data/lorcana/set-logos/9.png              /data/lorcana/set-logos/9.webp              301
+/data/lorcana/set-logos/10.png             /data/lorcana/set-logos/10.webp             301
+/data/lorcana/set-logos/11.png             /data/lorcana/set-logos/11.webp             301
+/data/lorcana/set-logos/12.png             /data/lorcana/set-logos/12.webp             301
+/data/lorcana/set-logos/13.png             /data/lorcana/set-logos/13.webp             301
+/data/lorcana/set-logos/14.png             /data/lorcana/set-logos/14.webp             301

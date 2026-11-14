@@ -173,32 +173,59 @@ teste exige pelo menos uma frase).
 Exceção que deixou de ser necessária (a regra passou) também é erro: a lista
 é o registro do que está fora do padrão e por quê.
 
-## Situação em 2026-11-14
+## Situação
 
 `check-logos --todos`, com os pixels. **Nítido** = no padrão; **macio** = só
-o aviso; **fora** = algum erro.
+o aviso; **exceção** = fora, com o motivo no `logos-excecoes.json`; **fora**
+= algum erro sem exceção.
 
-| Pasta | Logos | Nítido | Macio | Fora | Erros mais comuns |
-|---|---|---|---|---|---|
-| `assets/games` | 46 | 7 | 13 | 26 | nitidez 13, teto 8, peso 3 |
-| `data/lorcana/set-logos` | 15 | 0 | 0 | 15 | PNG 1000×500 com margem: formato, teto, peso, recorte |
-| `data/onepiece/set-logos` | 26 | 0 | 1 | 25 | recorte 21 (margem lateral de até 138 px) |
-| `data/fab/set-logos` | 53 | 0 | 24 | 29 | teto 17, recorte 12, véu 6 |
-| `data/swu/set-logos` | 12 | 0 | 12 | 0 | — (600 px: macio só na vitrine) |
-| `data/set-logos/en` | 141 | 0 | 48 | 93 | nitidez 61, teto 27, recorte 17 |
-| `data/set-logos/pt` | 39 | 0 | 6 | 33 | nitidez 19, recorte 15, teto 8 |
-| `data/set-logos/ja` | 43 | 0 | 1 | 42 | nitidez 40 |
-| `data/set-logos/zh-cn` | 29 | 0 | 0 | 29 | nitidez 23, alfa 7 |
-| `data/set-logos/symbol` | 162 | 14 | 2 | 146 | teto 90 (500×500 nativos), nitidez 55 |
-| `data/magic/set-logos` (SVG) | 1.068 | 1.068 | 0 | 0 | — |
-| `data/cyberpunk`, `data/harrypotter` | 4 | 0 | 0 | 4 | teto 1, nitidez 3 |
+Quando o padrão entrou (2026-11-14), 442 logos estavam fora. Depois das
+trocas do mesmo dia (os vintage com as fontes do Fernando na PR #318; o resto
+com fonte nova onde havia, regravação onde a arte já servia e exceção onde
+não há fonte maior):
 
-Os borrados que mais aparecem são os logos de jogo vintage no "Sobre"
-(Gundam War 0,92×, Carddass Masters 0,96×, Dragon Ball Carddass 0,97×, LOTR
-1,1×) e os logos de set do Pokémon na vitrine do topo. Pôr os arquivos
-existentes no padrão é trabalho à parte, com fonte nova onde a atual é
-pequena. Este documento e o check só travam o que entra daqui pra frente.
+| Pasta | Logos | Nítido | Macio | Exceção | Fora | Erros de quem está fora |
+|---|---|---|---|---|---|---|
+| `assets/games` | 50 | 34 | 12 | 4 | 0 | — |
+| `data/lorcana/set-logos` | 14 | 14 | 0 | 0 | 0 | — |
+| `data/onepiece/set-logos` | 25 | 1 | 10 | 14 | 0 | — |
+| `data/fab/set-logos` | 53 | 14 | 29 | 10 | 0 | — |
+| `data/swu/set-logos` | 12 | 12 | 0 | 0 | 0 | — |
+| `data/set-logos/en` | 141 | 25 | 55 | 0 | 61 | nitidez 61, recorte 7 |
+| `data/set-logos/pt` | 39 | 8 | 10 | 0 | 21 | nitidez 19, recorte 6 |
+| `data/set-logos/ja` | 43 | 2 | 1 | 0 | 40 | nitidez 40, recorte 5 |
+| `data/set-logos/zh-cn` | 29 | 3 | 0 | 0 | 26 | nitidez 23, alfa 7 |
+| `data/set-logos/symbol` | 162 | 103 | 2 | 0 | 57 | nitidez 55, recorte 20 |
+| `data/magic/set-logos` (SVG) | 1.068 | 1.068 | 0 | 0 | 0 | — |
+| `data/cyberpunk`, `data/harrypotter` | 4 | 1 | 0 | 3 | 0 | — |
 
-Os espelhos automáticos (`mirror-set-logos`, `mirror-ja-set-logos`,
-`mirror-fab-set-logos`, `mirror-swu-set-logos`) ainda gravam no formato
-deles. O caçador de logos de set já normaliza pelo padrão.
+Os 205 que sobram são todos do Pokémon e precisam de fonte maior que a da
+TCGdex e do Bulbagarden (que hoje recusa o `fetch` do script): regravar não
+muda a nitidez, e o CI barraria o arquivo mexido sem exceção. Os que só
+tinham teto, peso, recorte ou véu já foram regravados.
+
+**Arquivo trocado de nome.** O build rápido traz o `data/<jogo>/sets/` do
+cache do último build completo, com o caminho antigo do logo. O arquivo
+antigo sai do repositório mesmo assim, e o nome dele ganha um 301 pro novo
+no `_redirects` (os PNG do Lorcana e o `op05.png` pro WebP, os `game_*`
+pro `-v2`/`-v3`). Não sobra PNG de logo no repositório.
+
+## Os espelhos automáticos
+
+Desde 2026-11-14 todo script que baixa logo de set grava pelo mesmo
+normalizador (`scripts/lib/logo-espelho.mjs`, que chama o `normaliza()` do
+padrão): `mirror-set-logos` (Pokémon EN/PT e símbolos, TCGdex),
+`mirror-ja-set-logos` (Bulbagarden, agora pedindo o arquivo de até 1400 px
+em vez do thumb de 520), `mirror-fab-set-logos` (o PNG original, não mais o
+wsrv a 600 px), `mirror-swu-set-logos` (sombra e contorno na escala do teto),
+`sync-bulbapedia-zh --logos` e o caçador de logos de set. Sem o sharp
+(`SHARP_DIR`), eles não gravam logo novo: o set fica com o nome até a próxima
+rodada com sharp, em vez de entrar um arquivo fora do padrão. No deploy, o
+passo "Instala o sharp (logos de set no padrão)" põe o `SHARP_DIR` no
+ambiente antes dos espelhos.
+
+Duas fontes pararam de responder ao script em 2026-11-14 e ficam no
+registro: o `set_logo` do the-fab-cube aponta pra um CloudFront que não
+resolve mais (sem DNS), e a Cloudflare do Bulbagarden recusa o `fetch` do
+Node (403; a API responde, a imagem não). Os arquivos que já estavam no
+repositório seguem valendo.

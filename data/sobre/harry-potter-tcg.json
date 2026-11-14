@@ -2,8 +2,8 @@
   "url": "harry-potter-tcg",
   "nome": "Harry Potter Trading Card Game",
   "logo": "assets/games/game_harrypotter.webp",
-  "logoLargura": 512,
-  "logoAltura": 393,
+  "logoLargura": 417,
+  "logoAltura": 320,
   "periodo": {
     "inicio": "2001-08",
     "fim": "2002-10"
