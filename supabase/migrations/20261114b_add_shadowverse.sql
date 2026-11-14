@@ -1,5 +1,6 @@
 -- ============================================================================
--- Migração aditiva: libera o slug `shadowverse` (Shadowverse: Evolve, o jogo
+-- 20261114b (era 20261114a; aplicada em 2026-11-14). Migração aditiva:
+-- libera o slug `shadowverse` (Shadowverse: Evolve, o jogo
 -- da Bushiroad com a Cygames, edição em inglês) nas whitelists de jogo do
 -- banco. Aplicar no SQL Editor do Supabase (projeto dlnalopazitfdgnmdguu).
 --
