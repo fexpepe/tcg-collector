@@ -1390,7 +1390,16 @@ input::placeholder {
    dos botões dela no mouse (38px). No celular é o select-ícone das outras
    grades (regras do .results-actions .results-sort no @media ≤700px), com os
    44px de toque da Visualização daqui. */
-.results-header-sets .results-sort select { height: 38px; }
+.results-header-sets .results-sort select { height: 38px; max-width: 300px; }
+/* Tablet e desktop estreito (medido 2026-11-14 no Pokémon): contador + os 4
+   chips de origem + o Ordenar + a Visualização só cabem numa linha a partir de
+   ~1024px; abaixo disso os chips quebravam em duas fileiras e a Visualização
+   saía cortada. Aqui a origem vira o <select> do celular. */
+@media (min-width: 701px) and (max-width: 1023px) {
+  .results-header-sets .set-region-chips { display: none; }
+  .results-header-sets .set-region-select { display: block; }
+  .results-header-sets .set-region-select select { width: auto; height: 38px; font-weight: 700; }
+}
 /* Explorar — resultados POR JOGO (2026-09-28): um chip por jogo com a
    contagem, no vão que sobrava entre o contador e os botões. Mesmo idioma do
    .dash-game-chip do painel (cor chapada do jogo, canto reto, contagem num
@@ -1502,7 +1511,15 @@ input::placeholder {
   .results-header-sets .set-region-chips { display: none; }
   .results-header-sets .set-region-select { display: block; }
   .results-header-sets .set-region-select select { width: auto; height: 44px; font-weight: 700; }
+  /* Ordenar dos Sets: o contador não quebra ("86 / resultados") e a
+     Visualização não encolhe — quem cede é o select-ícone. Com a origem
+     visível (Pokémon) os quatro não cabem em 390px: Ordenar e Visualização
+     descem pra uma 2ª linha, à direita. */
   .results-header-sets .results-sort select { height: 44px; }
+  .results-header-sets > p { white-space: nowrap; }
+  .results-header-sets .view-toggle { flex: none; }
+  .results-header-sets:has(> .set-region:not([hidden])) { flex-wrap: wrap; row-gap: 10px; }
+  .results-header-sets:has(> .set-region:not([hidden])) .results-sort { margin-left: auto; }
 }
 /* Tela bem estreita: o "Filtros" vira só o ícone pra caber ao lado de "Novo
    showcase" + a Visualização numa linha (mesmo recurso dos botões de pasta ≤560px). */
