@@ -280,9 +280,10 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   Cardmarket sem link porque não deu pra conferir (anti-robô).
 - **Grand Archive TCG (`grandarchive`, 2026-11-13)**: entrou com as 5.356
   cartas dos 52 sets da TCGCSV (cat. 74), do Dawn of Ashes ao
-  .asphodel/paradise. Pendências: aplicar a migração `20261113d` (cópia da
-  `20261113c` do Vanguard, a união do dia, com o `grandarchive` a mais);
-  o ilustrador, que só o Index oficial (api.gatcg.com) tem — falta o
+  .asphodel/paradise. A migração `20261113d` não precisa mais rodar: a
+  `20261113g` (hololive), aplicada e conferida em 13/11, é cópia dela com o
+  `hololive` a mais, e o `grandarchive` segue na lista até a `20261114c`.
+  Pendências: o ilustrador, que só o Index oficial (api.gatcg.com) tem — falta o
   de-para dos códigos de set; loja BR e Cardmarket não conferidos; a cor
   (`#f0abfc`, proposta), o logo (o branco oficial pintado de escuro pra ler
   na cápsula) e a 21ª posição no hub; o scanner não lê o jogo (número solto).

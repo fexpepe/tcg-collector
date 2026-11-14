@@ -542,6 +542,12 @@ bloqueio no celular passa de 400 ms nas telas de set e carta).
   `shop_tcgplayer.webp` e `shop_pricecharting.webp` não existem em
   `assets/shops/` (o HTML já prevê o texto no lugar). São três 404 em toda
   visita à home. Subir os arquivos ou tirar os `<img>` até eles existirem.
+  **Feito em 2026-11-14:** saíram os três `<img>` (a cápsula fica com o nome
+  em texto, que é o que já aparecia depois do 404) e o
+  `tests/html-assets.test.mjs` quebra o CI se uma página da raiz voltar a
+  pedir arquivo de `assets/` que não existe. Logo novo agora é arquivo +
+  `<img>` no mesmo commit (`assets/shops/README.md`, com o porquê de cada um
+  que falta).
 - **S10. Imagem de carta sem nenhuma fonte na busca** — confirmado: em
   `/explore?q=pikachu` e `?q=charizard`, espelho e origem dão 404 pra promos do
   Pokémon (`mcd14/15/17/18`, `2023sv`, `2024sv`, `tk-hs-r`, `ex5.5`) e pra
