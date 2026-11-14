@@ -142,6 +142,13 @@ test("mapCsvGame: os 13 jogos, nas grafias do Collectr/TCGplayer", () => {
   assert.equal(api.mapCsvGame("Grand Archive"), "grandarchive");
   assert.equal(api.mapCsvGame("hololive OFFICIAL CARD GAME"), "hololive");
   assert.equal(api.mapCsvGame("Hololive Official Card Game"), "hololive");
+  // Dragon Ball Super Masters: o nome do TCGplayer e o do Collectr; o Fusion
+  // World segue no dbfw.
+  assert.equal(api.mapCsvGame("Dragon Ball Super CCG"), "dbs");
+  assert.equal(api.mapCsvGame("Dragon Ball Super Card Game"), "dbs");
+  assert.equal(api.mapCsvGame("Dragon Ball Super: Masters"), "dbs");
+  assert.equal(api.mapCsvGame("Dragon Ball Super Fusion World"), "dbfw");
+  assert.equal(api.mapCsvGame("Dragon Ball Super Card Game Fusion World"), "dbfw");
   assert.equal(api.mapCsvGame("Shadowverse: Evolve"), "shadowverse");
   assert.equal(api.mapCsvGame("Shadowverse Evolve"), "shadowverse");
   assert.equal(api.mapCsvGame("Cardfight Vanguard"), "vanguard");

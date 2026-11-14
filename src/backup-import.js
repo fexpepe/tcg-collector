@@ -147,6 +147,10 @@
     // TCG" do TCGplayer é o relançamento da Panini, que não está no catálogo:
     // segue pro dbfw como antes.
     if (flat === "dbz" || flat.includes("dbzccg") || flat.includes("dragonballzccg") || flat.includes("dragonballgt")) return "dbz";
+    // Dragon Ball Super Card Game Masters: "Dragon Ball Super CCG" no TCGplayer,
+    // "Dragon Ball Super Card Game" no Collectr. Antes do Fusion World, que
+    // também começa com "Dragon Ball Super" e fica com o resto.
+    if (flat === "dbs" || (!flat.includes("fusionworld") && (flat.includes("dragonballsuperccg") || flat.includes("dragonballsupercardgame") || flat.includes("dragonballsupermasters") || flat.includes("dbsmasters")))) return "dbs";
     if (flat.includes("dragonball") || flat.includes("fusionworld") || flat === "dbfw") return "dbfw";
     if (flat.includes("riftbound") || flat.includes("leagueoflegends")) return "riftbound";
     if (flat.includes("unionarena")) return "unionarena";

@@ -23,6 +23,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          # 2 commits: na PR o HEAD é o merge de teste e o HEAD^1 é a base, que
+          # o "Padrão dos logos" usa pra saber quais logos a PR mudou.
+          fetch-depth: 2
       - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
         with:
           node-version: 22
@@ -71,6 +75,31 @@ jobs:
 
       - name: Sintaxe dos scripts de build
         run: for f in scripts/*.mjs scripts/lib/*.mjs; do node --check "$f"; done
+
+      # Logo de jogo e de set no padrão (docs/LOGOS.md): nítido em tela retina
+      # e leve. Só os logos que MUDARAM nesta PR/push: o build completo
+      # espelha logo de set sozinho e commita com [skip ci], e conferir todos
+      # culparia a PR errada (o relatório geral é o --todos). O sharp, que
+      # confere os pixels (recorte e véu), só é instalado quando algum logo
+      # mudou — no resto das PRs o passo leva um segundo.
+      - name: Padrão dos logos (os que mudaram)
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            BASE=$(git rev-parse HEAD^1)
+          else
+            BASE="${{ github.event.before }}"
+            if [ -z "$BASE" ] || [ "$BASE" = "0000000000000000000000000000000000000000" ]; then
+              echo "Branch nova: a PR confere os logos."; exit 0
+            fi
+            git fetch --no-tags --depth=1 origin "$BASE" >/dev/null 2>&1 \
+              || { echo "Não deu pra buscar $BASE; a PR confere os logos."; exit 0; }
+          fi
+          if git diff --name-only --diff-filter=AMR "$BASE" HEAD | grep -qE '^(assets/games/|data/(.+/)?set-logos/)'; then
+            mkdir -p "$RUNNER_TEMP/sharp"
+            (cd "$RUNNER_TEMP/sharp" && npm init -y >/dev/null && npm install --no-audit --no-fund sharp@0.33.5 >/dev/null)
+            export SHARP_DIR="$RUNNER_TEMP/sharp/node_modules/sharp"
+          fi
+          node scripts/check-logos.mjs --base "$BASE"
 
       # Reparte o CSS por área como o deploy faz (styles.css vira só o NÚCLEO;
       # o resto vai pra styles-<área>.css). Aqui é o ÚLTIMO bloco de propósito:

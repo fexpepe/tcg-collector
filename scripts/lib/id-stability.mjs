@@ -44,6 +44,7 @@ export const ID_DE_PRODUTO = {
   cyberpunk: /^cpk-\d+$/,
   sorcery: /^sor-\d+$/,
   dbfw: /^dbfw-\d+$/,
+  dbs: /^dbs-\d+$/,
   ygo: /^ygo-\d+$/,
   digimon: /^dgm-\d+$/,
   riftbound: /^rb-\d+$/,

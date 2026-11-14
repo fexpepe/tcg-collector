@@ -139,6 +139,7 @@ jobs:
             data/shadowverse/sets
             data/vanguard/sets
             data/duelmasters/sets
+            data/dbs/sets
             data/narutomythos/sets
             data/narutokayou/sets
             data/jump/sets
@@ -167,7 +168,7 @@ jobs:
           faltando=""
           # data/dbc/, data/swu/, data/cyberpunk/, data/wow/, data/lotr/,
           # data/sorcery/, data/harrypotter/, data/weiss/, data/mbc/, data/dbz/ e
-          # data/cdm/, data/gcd/, data/gw/, data/narutocg/, data/godzilla/, data/palworld/, data/fftcg/, data/vanguard/, data/grandarchive/, data/hololive/, data/duelmasters/, data/shadowverse/, data/seiya/, data/seiyatc/ e data/seiyacr/: jogos novos (2026-09-24 a 2026-11-13);
+          # data/cdm/, data/gcd/, data/gw/, data/narutocg/, data/godzilla/, data/palworld/, data/fftcg/, data/vanguard/, data/grandarchive/, data/hololive/, data/duelmasters/, data/shadowverse/, data/dbs/, data/seiya/, data/seiyatc/ e data/seiyacr/: jogos novos (2026-09-24 a 2026-11-14);
           # data/dbsb/, data/dbva/ e data/dbbw/ (2026-11-13), as séries do dbc que viraram jogo. Enquanto o cache
           # for de antes deles, o build rápido publicaria o tile do hub sem
           # catálogo nenhum atrás.
@@ -200,7 +201,8 @@ jobs:
                    data/grandarchive/manifest.generated.js \
                    data/hololive/manifest.generated.js \
                    data/duelmasters/manifest.generated.js \
-                   data/shadowverse/manifest.generated.js; do
+                   data/shadowverse/manifest.generated.js \
+                   data/dbs/manifest.generated.js; do
             [ -s "$f" ] || faltando="$faltando $f"
           done
           if [ -n "$faltando" ]; then
@@ -519,6 +521,18 @@ jobs:
         if: env.RODA_SYNC == 'true'
         run: node scripts/sync-price-history.mjs data/dbfw
 
+      # Dragon Ball Super Card Game MASTERS (TCGCSV cat. 27, Bandai 2017+), o
+      # classico que o Fusion World nao substituiu. Padrao do Fusion World: id
+      # pelo productId, Normal/Foil, foto da carta-irma pras Pre-Release,
+      # Release Event e 2nd Edition sem foto; sem logo de set.
+      - name: Sincroniza catálogo do Dragon Ball Super Masters (TCGCSV)
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/sync-dbs.mjs || echo "sync-dbs falhou; mantém o catalogo versionado"
+
+      - name: Snapshot de preços (histórico Dragon Ball Super Masters)
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/sync-price-history.mjs data/dbs
+
       # Yu-Gi-Oh! (TCGCSV cat. 2, Konami): o MAIOR catalogo (~46k impressoes).
       # Padrao MAGIC: chunks versionados, monolito cards.js fora do deploy (ver
       # gitignore e o passo "Remove arquivos"). Nao derruba o build se cair.
@@ -707,9 +721,9 @@ jobs:
         if: env.RODA_SYNC != 'true'
         run: node scripts/sync-duelmasters.mjs --no-fetch || echo "sync-duelmasters --no-fetch falhou; segue com o catalogo do cache"
 
-      - name: Snapshot de preços (histórico Duel Masters)
-        if: env.RODA_SYNC == 'true'
-        run: node scripts/sync-price-history.mjs data/duelmasters
+      # Sem o passo de histórico de preços: o preço do Duel Masters está
+      # DESLIGADO desde 14/11/2026 (PRECO_LIGADO no sync; os termos da Yuyu-tei
+      # proíbem republicar sem autorização). Volta junto quando religar.
 
       # NARUTO Mythos TCG (Cicaboom, 2026+): a galeria oficial do jogo, um JSON
       # publico que o site dela le. Id pelo SKU oficial; a 2a edicao do Set 1
@@ -1158,6 +1172,7 @@ jobs:
             data/shadowverse/sets
             data/vanguard/sets
             data/duelmasters/sets
+            data/dbs/sets
             data/narutomythos/sets
             data/narutokayou/sets
             data/jump/sets
@@ -1170,6 +1185,46 @@ jobs:
             data/ygo/pricing.js
             data/ygo/indexes-*.json
           key: catalogo-build-${{ github.run_id }}
+
+      # O MESMO catálogo, num pacote de caminho FIXO, pro espelho de imagens
+      # (mirror-images.yml). O espelho restaurava o cache acima, e o
+      # actions/cache identifica a entrada pela LISTA de caminhos: cada jogo
+      # novo muda a lista, e até o próximo build completo salvar um cache com
+      # ela o job das 14h não achava nada ("Cache not found") e saía verde sem
+      # espelhar nenhum jogo. Foi o que aconteceu em 13/11/2026 (o narutoboruto
+      # entrou na lista e o último cache era de antes dele) e se repetiria a
+      # cada jogo novo. Um arquivo só, sempre no mesmo caminho, não tem esse
+      # problema; e os padrões abaixo são genéricos (data/*/sets), então jogo
+      # novo entra no pacote sem ninguém mexer aqui. As sets/ do Magic e do
+      # Yu-Gi-Oh são versionadas (o checkout do espelho já as tem) e ficam fora,
+      # como no cache acima. Só a main: o espelho roda na main, e cache salvo em
+      # branch não é visível pra ela. Nunca derruba o deploy: sem pacote, quem
+      # fica vermelho é o job do espelho, que avisa.
+      - name: Empacota o catálogo pro espelho de imagens
+        if: env.RODA_SYNC == 'true' && github.ref == 'refs/heads/main'
+        continue-on-error: true
+        run: |
+          shopt -s nullglob
+          # Só o que existe: o tar sai com erro em caminho literal ausente
+          # (ex.: data/search-index.json num build que não o gerou).
+          lista=()
+          for f in data/*.generated.js data/*.generated.json data/search-index.json \
+                   data/*/*.generated.js data/*/*.generated.json data/*/search-index.json \
+                   data/*/sets \
+                   data/magic/cards.js data/magic/indexes.js data/magic/pricing.js data/magic/indexes-*.json \
+                   data/ygo/cards.js data/ygo/indexes.js data/ygo/pricing.js data/ygo/indexes-*.json; do
+            [ -e "$f" ] && lista+=("$f")
+          done
+          tar -cf "$RUNNER_TEMP/catalogo-espelho.tar" --exclude=data/magic/sets --exclude=data/ygo/sets "${lista[@]}"
+          ls -l "$RUNNER_TEMP/catalogo-espelho.tar"
+
+      - name: Salva o pacote do catálogo (espelho de imagens)
+        if: env.RODA_SYNC == 'true' && github.ref == 'refs/heads/main'
+        continue-on-error: true
+        uses: actions/cache/save@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+        with:
+          path: ${{ runner.temp }}/catalogo-espelho.tar
+          key: catalogo-espelho-${{ github.run_id }}
 
       # Rede de segurança das FATIAS de índice (indexes-sets.js etc.), que é o
       # que as páginas carregam de verdade. Os syncs já as geram, mas cada sync
@@ -1344,6 +1399,20 @@ jobs:
       - name: Versiona o app shell pelo hash (cache imutável)
         run: node scripts/hash-assets.mjs
 
+      # Poda (2026-11-14): a main chegou a 18.903 arquivos com o Shadowverse,
+      # e uns 750 deles subiam sem ninguém pedir. Sai da árvore do runner (o
+      # repo e o cache do build rápido, salvo lá atrás, ficam inteiros):
+      #   - os crus do modo dev de cada jogo (cards.js, indexes.js, pricing.js,
+      #     indexes-<chave>.json): produção e app só ligam os .generated, e o
+      #     cru só sai quando o par gerado está do lado;
+      #   - os logos de set que nenhum arquivo de texto da árvore cita: o
+      #     mirror-magic-set-logos baixa os 1.068 símbolos do Scryfall e o
+      #     catálogo usa 654.
+      # O porquê de cada regra está em scripts/lib/poda-deploy.mjs. DEPOIS de
+      # tudo que lê data/ e ANTES do "Remove arquivos", que apaga scripts/.
+      - name: Poda o que o site não pede (crus do modo dev, logos sem uso)
+        run: node scripts/poda-deploy.mjs
+
       # data/magic/cards.js: o monolito do Magic (~37 MiB no build completo)
       # estoura o teto de 25 MiB/arquivo do Cloudflare Pages. Em produção NADA o
       # usa — o modo manifest carrega manifest.generated.js + chunks por set; o
@@ -1368,9 +1437,17 @@ jobs:
       # data/cartas-movidas.json (2026-11-02): o registro das cartas que mudaram
       # de set só serve ao prerender, que já o gravou nos mapas do jogo. O
       # data/sets-renomeados-auto.json (2026-11-10), o dos sets, idem.
+      #
+      # data/ja-enrich, data/zh-import, data/vintage, data/catalog-baseline.json
+      # e data/tcgcsv-set-map.json (2026-11-14): matéria-prima dos syncs (o
+      # cache da Bulbapedia do japonês e do chinês, os snapshots das fontes
+      # vintage, a régua do relatório de cobertura e o de-para da TCGCSV).
+      # Nenhuma página, Function, o sw.js ou o app pede; eram 339 arquivos na
+      # conta do teto abaixo.
       - name: Remove arquivos que não vão para o site
         run: |
           rm -rf .git .github .claude data/.cache data/cards.generated.js data/magic/cards.js data/ygo/cards.js data/cartas-movidas.json data/sets-renomeados-auto.json scripts out README.md ROADMAP.md CLAUDE.md docs supabase tests .gitattributes .gitignore mobile codemagic.yaml
+          rm -rf data/ja-enrich data/zh-import data/vintage data/catalog-baseline.json data/tcgcsv-set-map.json
           rm -f assets/brand/Flesh_and_Blood_TCG_Logo.png assets/brand/Magic-The-Gathering-logo.png assets/brand/digimon.webp assets/brand/logo_title_dbfwcardgame.webp assets/brand/riftbound.webp assets/brand/yugioh.jpg
           rm -f assets/games/README.md assets/shops/README.md
 
@@ -1387,6 +1464,11 @@ jobs:
       # 18.093: todo jogo novo daqui pra frente batia aqui. Sobra 1.000 de
       # margem até o teto real; cortar arquivos (chunks de preço → R2, por
       # exemplo) fica pra antes do próximo jogo grande.
+      #
+      # Mesmo dia, os primeiros cortes: o split-pricing parou de gravar chunk
+      # de preço pra jogo sem preço (#314) e o Duel Masters ficou sem preço
+      # (18.903 → 18.032); a poda e as pastas só do build lá em cima tiram
+      # mais 1.117 que subiam sem uso (build da branch: 16.915).
       - name: Conta arquivos (teto de 20.000 do Pages)
         run: |
           total=$(find . -type f | wc -l)

@@ -68,6 +68,18 @@ test("Godzilla e Palworld: código da edição inglesa, sem promo", () => {
   assert.equal(cod("palworld", "PC"), "");
 });
 
+test("DBS Masters: o código impresso na carta, sem as promos", () => {
+  assert.equal(cod("dbs", "DBS-B10", "", cartas("BT10-001", "BT10-002", "BT10-003")), "BT10");
+  assert.equal(cod("dbs", "DBS-B01", "", cartas("BT1-001", "BT1-002")), "BT1");
+  assert.equal(cod("dbs", "DBS-TB01", "", cartas("TB1-001", "TB1-002")), "TB1");
+  assert.equal(cod("dbs", "DB1", "", cartas("DB1-001", "DB1-002")), "DB1");
+  // Pre-Release: o código do set pai.
+  assert.equal(cod("dbs", "DBS-B12PRE", "", cartas("BT12-001", "BT12-002")), "BT12");
+  // Expansion Set e promos ficam sem.
+  assert.equal(cod("dbs", "DBS-BE21", "", cartas("EX21-01", "EX21-02")), "");
+  assert.equal(cod("dbs", "PR", "", cartas("P-001", "P-002")), "");
+});
+
 test("shadowverse: o código impresso do produto, sem promos nem eventos", () => {
   assert.equal(cod("shadowverse", "BP01"), "BP01");
   assert.equal(cod("shadowverse", "ECP02"), "ECP02");

@@ -109,7 +109,7 @@ export const JOGOS = {
     sync: "sync-lorcana.mjs",
     guarda: ["hasLocal(", "data/lorcana/set-logos/"],
     doSync: () => true,
-    arquivo: (setId) => (SETID_SIMPLES.test(setId) ? `${setId}.png` : null),
+    arquivo: (setId) => (SETID_SIMPLES.test(setId) ? `${setId}.webp` : null), // WebP do padrão (docs/LOGOS.md); os curados antigos são .png
     fontes: "página do produto (disneylorcana.com) + wiki da Fandom"
   },
   onepiece: {
@@ -150,6 +150,7 @@ export const FORA = {
   ygo: "sem fonte de logo de set (o sync grava vazio)",
   digimon: "sem fonte de logo de set (o sync grava vazio)",
   dbfw: "sem fonte de logo de set (o sync grava vazio)",
+  dbs: "sem fonte de logo de set conferida (o sync grava vazio; 2026-11-14)",
   riftbound: "sem fonte de logo de set (o sync grava vazio)",
   unionarena: "sem fonte de logo de set (o sync grava vazio)",
   sorcery: "sem fonte de logo de set (o sync grava vazio)",

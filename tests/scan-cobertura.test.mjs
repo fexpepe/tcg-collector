@@ -100,6 +100,11 @@ const JOGOS = {
   // código identifica o holomem; a reimpressão e a arte alternativa imprimem o
   // mesmo, e quem separa é a arte.
   hololive: { min: 0.98 },
+  // Dragon Ball Super Card Game Masters (2026-11-14): "BT10-001", "TB1-001",
+  // "P-123"… — 99,0 % medido. O que falha é o Battle Evolution ("EB1-07"),
+  // que o extrair normaliza pro formato do One Piece (EB01-007). O TCGplayer
+  // guarda as promos de evento com sufixo ("BT31-001_PR"); a carta não imprime.
+  dbs: { min: 0.97, impresso: (c) => String(c.number).replace(/[_ ]S?PR$/i, "") },
   // Shadowverse: Evolve (2026-11-13): "BP01-001EN", único no jogo inteiro.
   // Mediu 99,1 %.
   shadowverse: { min: 0.97, nota: "sobram os números que a fonte grava sem o EN ou com ano (CP01-LD01, PR-245N, BSF2024-001EN 2024)" },

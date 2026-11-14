@@ -189,9 +189,11 @@ junto. Sem isso, o endereço antigo das cartas movidas dá 404.
   [src/facets.js](../src/facets.js)) saem dos campos que o sync grava, e um
   valor inédito aparece sozinho no fim da lista.
 - **Logo**: vazio é o certo quando o set não tem logo próprio. Quando tem, o
-  arquivo vai em `data/<jogo>/set-logos/<setId>.<ext>`. Nos jogos com logo
-  local (Lorcana, One Piece, FAB e Star Wars), o sync usa o arquivo que existe
-  e não baixa por cima.
+  arquivo vai em `data/<jogo>/set-logos/<setId>.webp`, no padrão dos logos
+  ([LOGOS.md](LOGOS.md): recortado, sem véu, cabe em 960×320, até 60 KB,
+  nítido em tela retina), gerado pelo `scripts/normaliza-logo.mjs`; o CI
+  confere. Nos jogos com logo local (Lorcana, One Piece, FAB e Star Wars), o
+  sync usa o arquivo que existe e não baixa por cima.
   - **Caçador semanal** (`scripts/cacar-logos-set.mjs`, workflow "Caça logos
     de set", segunda 10:40 UTC e Run workflow): procura logo pros sets sem logo
     do Lorcana (página do produto + Fandom), One Piece (Bandai, identidade pelo
@@ -235,9 +237,10 @@ v1"):
 A página de Sets (`/games/<jogo>`) tem **um visual só**, o do Pokémon e do
 Magic. Ele vale em todo jogo e em toda linha desde 2026-10-09 (antes, 13 jogos
 e as linhas vintage ficavam sem ele). Jogo ou linha nova já nasce assim; não
-há o que ligar. São três peças, todas no
+há o que ligar. São quatro peças, todas no
 [src/app.js](../src/app.js), num caminho só
-(`getViewItems` → `aninhaPorNome` → `agrupaSetsDoJogo` → `vitrineDoTopo`):
+(`getViewItems` → `aninhaPorNome` → `agrupaSetsDoJogo` → `vitrineDoTopo` →
+`ordenaSets`):
 
 1. **Produtos do lançamento dentro do cartão do set** (`aninhaPorNome`). O
    pai de um set é o set de nome mais longo que é prefixo do nome dele
@@ -286,7 +289,11 @@ há o que ligar. São três peças, todas no
    Agrupador novo entra no mapa `porJogo` e monta os cabeçalhos com
    `cabecalhoDeSecao(chave, n)`. Nunca é um `return` direto no
    `getViewItems`: o `tests/sets-padrao.test.mjs` barra os dois casos.
-3. **Topo da Vitrine** (`vitrineDoTopo`), só na lista inteira (sem busca):
+3. **Topo da Vitrine** (`vitrineDoTopo`), só na lista inteira (sem busca). Mora
+   fora da grade, na caixa `#setsTopo`, **acima** da linha do contador, do
+   Ordenar e da Visualização (`pintaTopo`, 2026-11-14) — o mesmo lugar do
+   "Sobre" dos vintage (3.5). Nos dois, a linha de filtros fica embaixo do
+   topo:
    - o **destaque** é o set principal mais novo já lançado. Não disputam as
      seções de promo, deck, raid e eventos (`SECOES_FORA_DO_DESTAQUE`); a de
      boosters extras disputa, porque é lançamento (o Extra Booster do One
@@ -300,8 +307,18 @@ há o que ligar. São três peças, todas no
      2002", sem dia inventado);
    - jogo vintage **com "Sobre"** (3.5) não tem destaque: o topo é a
      história do jogo;
-   - pra quem tem carta no jogo, **"Continue completando"**;
    - sem nenhum set com data (Miracle Battle), não há destaque.
+
+   O "Continue completando" (sets começados, abaixo do destaque) saiu em
+   2026-11-14, a pedido: era informação a mais. O lugar dele é o Ordenar.
+4. **Ordenar** (`ordenaSets`, 2026-11-14), ao lado da Visualização, guardado
+   em `tcg-sets-ordem` (vale em todo jogo). O **padrão** é a lista nas seções
+   do jogo (item 2). As outras ordens tiram as seções e põem os sets numa
+   lista só: **Progresso: mais completos primeiro** (o progresso do cartão,
+   com as cartas em outra língua somando; sem carta no fim), Lançamento (mais
+   recentes ou mais antigos), Nome e Valor. "Progresso" some do menu sem
+   carta no jogo e "Valor" no modo colecionador (`ordemDosSets`). O menu é o
+   do `src/ordenar.js`; as opções são de set e moram no `sets.html`.
 
 O cartão do set é o mesmo em todos (`createSetCard`): logo, ou o nome do set
 quando não há logo (política de logo); data; "N cartas" pra quem não tem
@@ -474,11 +491,13 @@ hub). A ficha preenchida vai na descrição da PR.
   melhor) e pelo menos 65 de distância RGB do vizinho mais próximo (a régua que
   o ouro do Riftbound fixou).
 - **Logo do jogo e posição no hub**: logo em `assets/games/game_<slug>.webp`,
-  pela especificação de [assets/games/README.md](../assets/games/README.md).
+  no padrão dos logos ([LOGOS.md](LOGOS.md)), com a procedência no
+  [assets/games/README.md](../assets/games/README.md).
   Sem logo, o tile mostra o nome. A ordem da grade moderna do hub é escolha do
-  Fernando, em fileiras de 4 (a de 11/11/2026, com 19 jogos, está no comentário
-  da grade no `hub.html`): a posição do jogo novo se pergunta, não vai pro fim
-  por padrão. As duas primeiras fileiras carregam o logo sem `loading="lazy"`.
+  Fernando, em fileiras de 4 (a de 14/11/2026, com 20 jogos, está no comentário
+  da grade no `hub.html`); abaixo dela fica a seção "Outros TCGs", em tiles
+  menores, pros jogos de menor porte. A posição do jogo novo (grade ou Outros,
+  e onde) se pergunta, não vai pro fim por padrão. As duas primeiras fileiras carregam o logo sem `loading="lazy"`.
   Jogo vintage não entra no hub: entra na página Vintage (3.6), na posição
   da data de lançamento.
 - **Orçamento** (5.3 e 5.4): arquivos no deploy e bytes no `shared.js` e no
@@ -562,9 +581,9 @@ valem só nesse caso.
 | C9 | `scripts/build-market.mjs` (`JOGOS`) | slug e dataDir | sem trilho de altas e quedas | — |
 | C10 | `scripts/build-set-trends.mjs` (`DIRS`) | dataDir | sem o chip de variação por set | — |
 | C11 | `scripts/send-wishlist-push.mjs` | só com preço | sem aviso de queda de preço | — |
-| C12 | `scripts/healthcheck.mjs` | cartas; preço e deltas se tem preço | queda do catálogo em produção não alerta | — |
+| C12 | `scripts/healthcheck.mjs` | cartas (`checkManifest` no `manifest.generated.js`: o `cards.js` cru não sobe desde 2026-11-14); preço e deltas se tem preço | queda do catálogo em produção não alerta | — |
 | C13 | `.github/workflows/deploy.yml` | passo do sync (com `\|\| echo`); passo `sync-price-history.mjs data/<slug>` se tem preço | catálogo não atualiza e fica sem histórico | — |
-| C14 | `deploy.yml` (restore e save) e `mirror-images.yml` (restore) | `data/<slug>/sets` (padrão FAB) ou os monólitos (padrão Magic) nas **três** listas de cache, idênticas e na mesma ordem | listas diferentes: o job de imagens deixa de achar o cache e o espelhamento para em **todos** os jogos (5.5) | — |
+| C14 | `deploy.yml` (restore e save do cache do build rápido) | `data/<slug>/sets` (padrão FAB) ou os monólitos (padrão Magic) nas **duas** listas de cache, idênticas e na mesma ordem | listas diferentes: o build rápido não acha o cache e todo push vira build completo (5.5). O espelho de imagens não tem lista: lê o pacote genérico (`data/*/sets`) | — |
 | C15 | `deploy.yml` ("Decide o modo do build") | `data/<slug>/manifest.generated.js` na guarda | build rápido publica o tile sem catálogo atrás | — |
 | C16 | `_headers`, `sw.js`, `scripts/lib/img-mirror.mjs` | só com host de imagem novo: `img-src` **e** `connect-src` (o SW baixa por `fetch`), `IMAGE_HOSTS` (e `MUTABLE_IMAGE_HOSTS` se a arte muda na mesma URL), `FONTES` do espelho | imagens bloqueadas pela CSP somem do site | — |
 | C17 | `functions/_lib/jogos.js` (`JOGOS_URL`) | endereço oficial em inglês e por extenso (`star-wars-unlimited`, o nome que o TCGplayer usa), nome, logo, e pra linha o `linha` e os `prefixos`; apelido novo em `APELIDOS` | sem `/games/<endereço>` (404), sem páginas de set e de carta, fora dos sitemaps e da página /games | `games-url.test.mjs` (todo jogo do app tem endereço; endereço único e fora das rotas reservadas) |
@@ -580,7 +599,7 @@ valem só nesse caso.
 | # | Onde | O que entra | Se faltar | Trava hoje |
 |---|---|---|---|---|
 | E1 | `README.md` ("Os jogos") | linha da tabela; seção própria só se o jogo tem peculiaridade | — | — |
-| E2 | `assets/games/game_<slug>.webp` e `assets/games/README.md` | logo e procedência (ou a pendência anotada) | tile em texto | — |
+| E2 | `assets/games/game_<slug>.webp` e `assets/games/README.md` | logo no padrão de [LOGOS.md](LOGOS.md) (`normaliza-logo.mjs`) e procedência (ou a pendência anotada) | tile em texto | `check-logos.mjs` no CI (só o que mudou) |
 | E3 | `index.html` (`.lp-stat`) e `src/i18n.js` (`home.lp.*`) | número de jogos; "de <ano>" se o jogo é mais antigo que o atual | landing desatualizada | — |
 | E4 | `src/i18n-docs.js` (`about.s.games` e `faq.a.games`, em pt, en e es) | número e lista de nomes | Sobre e FAQ desatualizados | — |
 | E5 | `scripts/og/og-image.html` e `og-image.png` | número de jogos e o "e mais N jogos"; PNG regerado com `node scripts/build-og-image.mjs` (Chrome local, fora do CI). Se cartas e sets mudarem de patamar ("240 mil+", "2.200+"), também o `KIT_CATALOGO` do `src/admin.js` e a landing | imagem de compartilhamento desatualizada | — |
@@ -698,6 +717,15 @@ lugares; o prefixo de id, em 3 mapas (`binders.js`, `card-rescue.js`,
   o que abriu espaço pro Dragon Ball Super Masters (F2). Jogo COM preço segue
   gravando o `{}` dos sets sem preço, porque o `pc` promete o irmão de todo
   chunk de carta.
+- **Poda do deploy, também em 2026-11-14.** A main chegou a 18.903 (a guarda
+  passou a falhar acima de 19.000 no mesmo dia, com o aval do Fernando). O
+  segundo corte, sem tirar nada do ar: a poda do deploy
+  (`scripts/poda-deploy.mjs`) tira os crus do modo dev de cada jogo
+  (`cards.js`, `indexes.js`, `pricing.js`, `indexes-<chave>.json`, ~8 por
+  jogo) e os logos de set que nenhum arquivo cita (o Magic espelha 1.068
+  símbolos pra 654 sets); o "Remove arquivos" tira a matéria-prima dos syncs
+  (`data/ja-enrich`, `data/zh-import`, `data/vintage`). Jogo novo não precisa
+  fazer nada: a poda acha os crus dele sozinha.
 
 ### 5.4 Orçamento de peso do núcleo
 
@@ -732,11 +760,17 @@ quando ele é tirado (método em 7.1).
   "Pendentes de aplicar" no [README das migrações](../supabase/migrations/README.md).
   Aplicada depois, ela tiraria o `swu` das duas whitelists. Saiu da lista no
   mesmo dia, e o README a registra como "não aplicar".
-- **Listas de cache**: as três listas de `path` do cache de catálogo
-  (restore e save no `deploy.yml`, restore no `mirror-images.yml`) precisam
-  ser idênticas e na mesma ordem, porque o `actions/cache` deriva a versão da
-  entrada dessa lista. Com listas diferentes, o cache não é encontrado. No job
-  de imagens, isso para o espelhamento de todos os jogos, sem erro.
+- **Listas de cache**: as duas listas de `path` do cache do build rápido
+  (restore e save no `deploy.yml`) precisam ser idênticas e na mesma ordem,
+  porque o `actions/cache` deriva a versão da entrada dessa lista. Com listas
+  diferentes, o cache não é encontrado e o push cai no build completo. Pelo
+  mesmo motivo, um jogo novo sempre "perde" o cache salvo antes dele, até o
+  próximo build completo. O `mirror-images.yml` restaurava esse mesmo cache
+  com uma terceira cópia da lista e, a cada jogo novo, saía verde sem espelhar
+  nada (13–14/11/2026). Desde então ele lê o pacote `catalogo-espelho.tar`,
+  que o build completo da `main` salva num caminho fixo com padrões genéricos
+  (`data/*/sets`): jogo novo entra sozinho, e pacote faltando deixa o job
+  vermelho.
 
 ### 5.6 Textos com contagem
 

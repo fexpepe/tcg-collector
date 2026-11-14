@@ -50,7 +50,7 @@ const setText = (content) => ({
 
 // Só slug de jogo do registro (o nome do arquivo vem daqui: nada de "../").
 const JOGOS = [
-  "pokemon", "lorcana", "onepiece", "magic", "fab", "gundam", "swu", "cyberpunk", "sorcery", "dbfw", "ygo",
+  "pokemon", "lorcana", "onepiece", "magic", "fab", "gundam", "swu", "cyberpunk", "sorcery", "dbfw", "dbs", "ygo",
   "digimon", "riftbound", "unionarena", "narutocg", "naruto", "hxh", "dbc", "dbsb", "dbva", "dbbw", "dbz", "wow", "lotr", "harrypotter", "weiss", "godzilla", "palworld", "fftcg", "grandarchive", "hololive", "shadowverse", "vanguard", "duelmasters", "narutomythos", "narutokayou", "mbc", "cdm", "gcd", "gw", "seiya", "seiyatc", "seiyacr", "narutoboruto", "narutotc", "jump"
 ];
 

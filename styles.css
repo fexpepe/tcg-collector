@@ -356,6 +356,18 @@
   --accent: #55606e; --accent-dark: #434c58; --accent-rgb: 85, 96, 110;
   --accent-soft: rgba(85, 96, 110, 0.1); --on-accent: #ffffff;
 }
+/* Dragon Ball Super Card Game Masters: AZUL ELÉTRICO (14/11/2026; o laranja
+   da marca não cabe ao lado do Naruto e do One Piece). No escuro um azul
+   claro com texto escuro (6.4:1); no claro o #1a0dff com branco (8.2:1). */
+[data-game-accent="dbs"] {
+  --accent: #7d88ff; --accent-dark: #5b6bff; --accent-rgb: 125, 136, 255;
+  --accent-soft: rgba(125, 136, 255, 0.16); --on-accent: #0a0c10;
+}
+[data-theme="light"][data-game-accent="dbs"],
+[data-theme="light"] [data-game-accent="dbs"] {
+  --accent: #1a0dff; --accent-dark: #1407cc; --accent-rgb: 26, 13, 255;
+  --accent-soft: rgba(26, 13, 255, 0.1); --on-accent: #ffffff;
+}
 /* Yu-Gi-Oh!: ROXO VIVO — um degrau mais magenta que o violeta do Lorcana
    (#a78bfa), pros dois roxos não se confundirem lado a lado. */
 [data-game-accent="ygo"] {
@@ -1402,6 +1414,20 @@ input::placeholder {
 @media (min-width: 701px) {
   .results-header-sets .view-toggle-btn { min-width: 38px; min-height: 38px; }
 }
+/* Ordenar dos Sets (2026-11-14): entre a origem e a Visualização, na altura
+   dos botões dela no mouse (38px). No celular é o select-ícone das outras
+   grades (regras do .results-actions .results-sort no @media ≤700px), com os
+   44px de toque da Visualização daqui. */
+.results-header-sets .results-sort select { height: 38px; max-width: 300px; }
+/* Tablet e desktop estreito (medido 2026-11-14 no Pokémon): contador + os 4
+   chips de origem + o Ordenar + a Visualização só cabem numa linha a partir de
+   ~1024px; abaixo disso os chips quebravam em duas fileiras e a Visualização
+   saía cortada. Aqui a origem vira o <select> do celular. */
+@media (min-width: 701px) and (max-width: 1023px) {
+  .results-header-sets .set-region-chips { display: none; }
+  .results-header-sets .set-region-select { display: block; }
+  .results-header-sets .set-region-select select { width: auto; height: 38px; font-weight: 700; }
+}
 /* Explorar — resultados POR JOGO (2026-09-28): um chip por jogo com a
    contagem, no vão que sobrava entre o contador e os botões. Mesmo idioma do
    .dash-game-chip do painel (cor chapada do jogo, canto reto, contagem num
@@ -1475,12 +1501,15 @@ input::placeholder {
   .results-actions { min-width: 0; max-width: 100%; }
   /* Base de 150px (não `auto`): com auto o item media pelo max-content do
      <select> — "Valor (maior → menor)" inteiro — e a linha estourava. */
-  .results-actions .results-sort { flex: 0 1 150px; min-width: 0; max-width: 150px; gap: 0; }
-  .results-actions .results-sort label {
+  .results-actions .results-sort,
+  .results-header-sets .results-sort { flex: 0 1 150px; min-width: 0; max-width: 150px; gap: 0; }
+  .results-actions .results-sort label,
+  .results-header-sets .results-sort label {
     position: absolute; width: 1px; height: 1px; margin: 0; overflow: hidden;
     clip-path: inset(50%); white-space: nowrap;
   }
-  .results-actions .results-sort select {
+  .results-actions .results-sort select,
+  .results-header-sets .results-sort select {
     width: 100%; max-width: 150px; min-width: 0; height: 36px;
     padding: 0 28px 0 32px; font-size: 13px; font-weight: 700;
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
@@ -1510,6 +1539,15 @@ input::placeholder {
   .results-header-sets .set-region-chips { display: none; }
   .results-header-sets .set-region-select { display: block; }
   .results-header-sets .set-region-select select { width: auto; height: 44px; font-weight: 700; }
+  /* Ordenar dos Sets: o contador não quebra ("86 / resultados") e a
+     Visualização não encolhe — quem cede é o select-ícone. Com a origem
+     visível (Pokémon) os quatro não cabem em 390px: Ordenar e Visualização
+     descem pra uma 2ª linha, à direita. */
+  .results-header-sets .results-sort select { height: 44px; }
+  .results-header-sets > p { white-space: nowrap; }
+  .results-header-sets .view-toggle { flex: none; }
+  .results-header-sets:has(> .set-region:not([hidden])) { flex-wrap: wrap; row-gap: 10px; }
+  .results-header-sets:has(> .set-region:not([hidden])) .results-sort { margin-left: auto; }
 }
 /* Tela bem estreita: o "Filtros" vira só o ícone pra caber ao lado de "Novo
    showcase" + a Visualização numa linha (mesmo recurso dos botões de pasta ≤560px). */
@@ -5489,6 +5527,14 @@ a.vt-marca-hoje:active { box-shadow: 0 0 0 2px var(--accent); }
 .vt-acervo--grade .vt-texto { flex: 1 1 auto; margin-inline: 14px; }
 .vt-acervo--grade .vt-anos { align-self: flex-start; margin-inline: 14px; }
 .vt-acervo--grade .vt-faixa { display: none; }
+/* Abaixo de 1280 px a LISTA vira grade de áreas, com o logo centrado na
+   vertical e o texto encostado embaixo (`.vt-linha > .vt-logo-box` e
+   `> .vt-texto`, num @media mais abaixo). Na GRADE a linha é coluna flex, e
+   esse align-self virava horizontal: a caixa branca encolhia na largura do
+   logo (o SD Gundam World, quase quadrado, ficou com 99 de 170 px no celular)
+   e título curto ia pra direita. Aqui os dois voltam a ocupar a largura toda. */
+.vt-acervo--grade .vt-linha > .vt-logo-box,
+.vt-acervo--grade .vt-linha > .vt-texto { align-self: stretch; }
 @media (max-width: 1279px) {
   .vt-acervo--grade { --vt-cols: 4; }
 }
@@ -8988,7 +9034,13 @@ html[data-collector-mode] .hb-worth .collector-badge { font-size: 28px; font-wei
 }
 
 /* ── Destaque: o lançamento mais novo + "Em breve" ao lado ─────────────── */
-.sx-hero { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 2.2fr) minmax(0, 1fr); gap: 12px; margin-bottom: 10px; }
+/* Desde 2026-11-14 ele mora na caixa #setsTopo, FORA da grade e acima da
+   linha do contador/Ordenar/Visualização — o lugar e a margem do .sx-sobre
+   dos vintage. A reserva (.sx-topo-skel) guarda a altura enquanto o catálogo
+   chega, pra linha do contador não descer quando ele aparece. */
+.sx-topo:empty { display: none; }
+.sx-hero { display: grid; grid-template-columns: minmax(0, 2.2fr) minmax(0, 1fr); gap: 12px; margin: 2px 0 18px; }
+.sx-topo-skel { height: 236px; margin: 2px 0 18px; }
 .sx-hero-main {
   display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   min-height: 236px; background: var(--panel); border: 1px solid var(--line);
@@ -9015,7 +9067,7 @@ html[data-collector-mode] .hb-worth .collector-badge { font-size: 28px; font-wei
 .sx-hero-cta svg { width: 18px; height: 18px; }
 .sx-hero-side { display: flex; flex-direction: column; gap: 10px; padding: 18px; background: var(--panel); border: 1px solid var(--line); min-width: 0; }
 
-/* Linha compacta de set (Em breve, Também recentes, Continue completando). */
+/* Linha compacta de set (Em breve, Também recentes). */
 .sx-mini {
   display: grid; grid-template-columns: 92px minmax(0, 1fr); align-items: center; gap: 12px;
   min-height: 64px; padding: 8px; background: var(--panel-strong); border: 1px solid transparent;
@@ -9029,18 +9081,13 @@ html[data-collector-mode] .hb-worth .collector-badge { font-size: 28px; font-wei
 .sx-mini-info strong { font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .sx-mini-info > span:not(.sx-prog) { font-size: 12.5px; color: var(--muted); }
 
-/* Barra + "n/total · %" (destaque e Continue completando). */
+/* Barra + "n/total · %" do destaque. */
 .sx-prog { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .sx-bar { flex: 1 1 auto; height: 6px; background: var(--line); overflow: hidden; }
 .sx-bar > span { display: block; height: 100%; background: var(--accent); }
 .sx-prog-n { flex: none; font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
 .sx-prog-n b { color: var(--text); }
 .sx-hero-info .sx-prog { max-width: 340px; }
-
-/* ── Continue completando (só pra quem tem carta no jogo) ─────────────── */
-.sx-cont { grid-column: 1 / -1; margin: 6px 0 8px; }
-.sx-cont-title { margin: 0 0 10px; font-size: 17px; }
-.sx-cont-rail { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
 
 /* ── "Sobre" do jogo vintage (src/sobre-jogo.js, 2026-11-12) ──────────────
    No topo da tela de um jogo que acabou, no lugar do destaque do "Último
@@ -9242,7 +9289,6 @@ html:not([lang^="pt"]) .sx-sobre[data-idioma="pt"] { visibility: hidden; }
   .sx-hero-side { flex-direction: row; flex-wrap: wrap; }
   .sx-hero-side .sx-eyebrow { flex-basis: 100%; }
   .sx-hero-side .sx-mini { flex: 1 1 260px; }
-  .sx-cont-rail { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 700px) {
   /* Destaque empilhado: logo em cima, dados embaixo. */
@@ -9255,13 +9301,7 @@ html:not([lang^="pt"]) .sx-sobre[data-idioma="pt"] { visibility: hidden; }
   /* "Também recentes" sai no celular (já estão no topo da lista logo
      abaixo); "Em breve" fica, que é informação que a lista não dá. */
   .sx-hero-side.sx-so-desk { display: none; }
-  /* Continue completando: trilho que rola de lado, encostado nas bordas. */
-  .sx-cont-rail {
-    display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
-    margin-inline: -20px; padding: 0 20px 4px; scroll-padding-inline: 20px;
-  }
-  .sx-cont-rail::-webkit-scrollbar { display: none; }
-  .sx-cont-rail > .sx-mini { flex: 0 0 82%; scroll-snap-align: start; }
+  .sx-topo-skel { height: 300px; }
   .sx-grid .set-art { min-height: 96px; }
   .sx-grid .set-logo { max-height: 60px; }
   /* Selo mais justo no cartão de ~170px: com o respiro do desktop, os

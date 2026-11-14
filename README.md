@@ -33,7 +33,7 @@ catálogo completo só existe no build de produção.
 
 ## Os jogos
 
-O registro central é o `GAMES` em [src/game.js](src/game.js): **44 slugs**, 43 com
+O registro central é o `GAMES` em [src/game.js](src/game.js): **45 slugs**, 44 com
 catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do Pokémon
 é a raiz `data/` por motivo histórico (não movemos nada).
 
@@ -48,7 +48,7 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 | `swu` | Star Wars: Unlimited | TCGCSV cat. 79 (FFG; Hyperspace/Showcase = cartas próprias) + logos de set do site oficial (`mirror-swu-set-logos.mjs`) | USD |
 | `cyberpunk` | Cyberpunk TCG | TCGCSV cat. 92 (Weird Co.; edições Beta e Retail = sets próprios, setId fixo por groupId) + logo do Welcome to Night City curado do site oficial | USD |
 | `weiss` | Weiß Schwarz | TCGCSV cat. 20 (Bushiroad; só a edição inglesa, 2013+; paralelas SP/SSP/OFR = cartas próprias; setId fixo por groupId com o código impresso, `DDD-S118`; sem logo de set publicado) | USD |
-| `duelmasters` | Duel Masters | Banco oficial da Takara Tomy (dm.takaratomy.co.jp/card/; o jogo japonês, 2002+; cada impressão = carta própria; setId = código do produto, `DM26-RP3`) + preço de venda da Yuyu-tei em iene, convertido no sync. Fora da TCGCSV: o TCGplayer não vende o jogo | USD (convertido do iene) |
+| `duelmasters` | Duel Masters | Banco oficial da Takara Tomy (dm.takaratomy.co.jp/card/; o jogo japonês, 2002+; cada impressão = carta própria; setId = código do produto, `DM26-RP3`) ; preço DESLIGADO desde 14/11/2026 (ver a seção do jogo). Fora da TCGCSV: o TCGplayer não vende o jogo | — |
 | `vanguard` | Cardfight!! Vanguard | TCGCSV cat. 16 (Bushiroad 2011+; as cinco eras, só a edição inglesa; paralelas SP/FR/SEC = cartas próprias; setId do código impresso que abre o nome do grupo, `DZ-BT16`; sem logo de set) | USD |
 | `fftcg` | Final Fantasy TCG | TCGCSV cat. 24 (Square Enix 2016+, os Opus; Full Art = carta própria; setId fixo por groupId, `OP27`, porque a abreviação da fonte erra e repete; sem logo de set publicado) | USD |
 | `hololive` | hololive Official Card Game | TCGCSV cat. 87 (Bushiroad/COVER 2025+, só a edição EN; id do productId porque número e raridade repetem; cada produto é Normal ou Foil; sem logo de set) | USD |
@@ -60,6 +60,7 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 | `palworld` | Palworld Official Card Game | TCGCSV cat. 91 (Bushiroad com a Pocketpair, 2026; paralelas SR/OSR/SP/SSP = cartas próprias, com a raridade no número impresso, `EBP01-001OSR`; a 2ª edição do BP01, que o TCGplayer cadastra no grupo da 1ª, vira o set `EBP01-2E`; setId do código impresso, fixo por groupId; sem logo de set publicado) | USD |
 | `sorcery` | Sorcery: Contested Realm | TCGCSV cat. 77 (Erik's Curiosa 2023; foil é outro produto no TCGplayer e o sync junta o par, sem número de coleção, setId fixo por groupId) | USD |
 | `dbfw` | Dragon Ball Fusion World | TCGCSV cat. 80 (≠ Masters) | USD |
+| `dbs` | Dragon Ball Super Card Game Masters | TCGCSV cat. 27 (Bandai 2017+, "Masters" desde 2022; só a edição EN; id do productId, porque o número repete na Pre-Release, na Release Event, na 2nd Edition e nas promos; essas três sem foto pegam a da carta-irmã do set de origem; o BT26 das Pre-Release fica fixo como BT26_PR) | USD |
 | `ygo` | Yu-Gi-Oh! | TCGCSV cat. 2 (~46k impressões — o maior) | USD |
 | `digimon` | Digimon Card Game | TCGCSV cat. 63 | USD |
 | `riftbound` | Riftbound | TCGCSV cat. 89 (Riot) | USD |
@@ -168,12 +169,16 @@ catálogo.
   novo (o `cards.js` anterior é o cache). Nome, tipo, civilização (no
   `color`), raridade, custo, poder, raça e ilustrador; tudo em japonês, sem
   nome oficial em inglês.
-- **Preço = uma loja, não média de mercado**: o preço de venda da Yuyu-tei
+- **Preço DESLIGADO desde 14/11/2026** (`PRECO_LIGADO` no sync): os termos da
+  Yuyu-tei proíbem republicar conteúdo do site sem autorização, e ela barra o
+  servidor do GitHub. O pedido de permissão à loja está pendente; os preços
+  lidos em 13/11 ficam em `scripts/data/duelmasters-precos-yuyutei.json`, fora
+  do deploy. Ligado, era o preço de venda da Yuyu-tei
   (yuyu-tei.jp), em iene, casado pelo número impresso dentro do set
   (`chaveDoNumero`) e gravado no slot `u` em dólar pela cotação do dia. A
   loja mostra preço mesmo esgotada. Na tela, a fonte aparece como "Japão ·
   Yuyu-tei" (`market.jp`), não como TCGplayer. 20.814 (86,6%) cartas com preço
-  no lançamento; as temporadas de promo e os decks da CoroCoro não têm página
+  na carga de 13/11; as temporadas de promo e os decks da CoroCoro não têm página
   de set na loja.
 - **id = `dm-<id oficial>`** (`dm-dm26rp3-s001`): cada impressão (secreta,
   alternativa) é ficha própria na fonte e carta própria aqui.
@@ -974,6 +979,11 @@ o botão abre a impressão ("Salvar como PDF"). Tudo em `src/admin.js`
   (`data/<jogo>/sets/<setId>.json`), baixados sob demanda com concorrência
   limitada. A página de detalhe baixa só os sets das cartas exibidas; a Pokédex
   não baixa carta nenhuma (roda só com os índices + a coleção do `localStorage`).
+  Os crus do modo local (`cards.js`, `indexes.js`, `pricing.js`,
+  `indexes-<chave>.json`) **não sobem**: a poda do deploy
+  (`scripts/poda-deploy.mjs`, 2026-11-14) tira cada um que tem o par gerado do
+  lado, junto com os logos de set que nenhum arquivo cita. Probe de produção
+  confere o `manifest.generated.js`, nunca o cru.
 
 Também são fatiados no build, pela mesma lógica de "não baixe o que não usa":
 os índices (`indexes-sets.json`, `indexes-pokedex.json`, …), os preços por set
@@ -1401,8 +1411,8 @@ Secrets: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, `PPT_API_TOKEN`,
 dependem de secret são no-op sem ele — o build sai igual, só sem aquela fonte.
 
 Outros workflows: `ci.yml` (portão rápido em todo push/PR — testes, smoke de
-i18n e ordem de scripts, guardas de mobile, sintaxe dos scripts, minificação
-compila), `healthcheck.yml`, `uptime.yml` (probe de 30 em 30 min),
+i18n e ordem de scripts, guardas de mobile, sintaxe dos scripts, padrão dos
+logos que mudaram (`docs/LOGOS.md`), minificação compila), `healthcheck.yml`, `uptime.yml` (probe de 30 em 30 min),
 `push-wishlist.yml` (notificação de queda de preço, segunda 09:00 UTC),
 `cacar-logos-set.yml` (segunda 10:40 UTC: acha logo de set que falta e
 **propõe numa PR** a branch `bot/logos-de-set`, nunca publica; ver
@@ -1649,4 +1659,5 @@ comissão aparece embaixo dos chips. Loja BR segue só com o `utm_source`.
 node --test tests/*.test.mjs
 node scripts/check.mjs          # smoke estático: sintaxe, i18n pt/en/es, ordem de scripts
 node scripts/check-mobile.mjs   # guardas de layout mobile
+node scripts/check-logos.mjs --base origin/main   # logos que mudaram no padrão (docs/LOGOS.md)
 ```

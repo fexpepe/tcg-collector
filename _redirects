@@ -28,3 +28,17 @@
 # bytes com o Content-Type honesto (image/png), sem manter um segundo binário
 # no repo pra sair de sincronia com a marca.
 /favicon.ico   /icon-192.png   200
+
+# Logos de jogo vintage trocados em 2026-11-14 (fontes maiores, enviadas pelo
+# Fernando). /assets/* é immutable, então a arte nova tem nome novo, e o antigo
+# sai do repositório. O catálogo dos sets do HxH e do Naruto CCG guarda o
+# caminho do logo e o build rápido reaproveita o do último build completo:
+# sem o 301, esses chips ficariam sem logo até o próximo build completo.
+/assets/games/game_dbc-v2.webp              /assets/games/game_dbc-v3.webp              301
+/assets/games/game_hxh.webp                 /assets/games/game_hxh-v2.webp              301
+/assets/games/game_gw.webp                  /assets/games/game_gw-v2.webp               301
+/assets/games/game_gcd.webp                 /assets/games/game_gcd-v2.webp              301
+/assets/games/game_cdm.webp                 /assets/games/game_cdm-v2.webp              301
+/assets/games/game_onepiece_carddass.webp   /assets/games/game_onepiece_carddass-v2.webp   301
+/assets/games/game_onepiece_2002.webp       /assets/games/game_onepiece_2002-v2.webp       301
+/assets/games/game_naruto_ccg-v2.webp       /assets/games/game_naruto_ccg-v3.webp       301

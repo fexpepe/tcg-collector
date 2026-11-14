@@ -51,7 +51,7 @@ test("matriz: a melhor imagem que cada fonte publica", () => {
   assert.equal(matrizDe("https://archives.bulbagarden.net/media/upload/3/3a/OddishExpansionPack68.jpg"), "https://archives.bulbagarden.net/media/upload/3/3a/OddishExpansionPack68.jpg");
   assert.equal(chaveDe("https://archives.bulbagarden.net/media/upload/3/3a/OddishExpansionPack68.jpg", 300), "archives.bulbagarden.net/media/upload/3/3a/OddishExpansionPack68.jpg@300.webp");
   assert.equal(matrizDe("assets/games/game_pokemon.webp"), "");
-  assert.deepEqual(LARGURAS, [300, 600, 1000]);
+  assert.deepEqual(LARGURAS, [300, 450, 600, 1000]);   // a 450 desde 14/11/2026
   assert.equal(ORDEM[0], "wsrv.nl");
 });
 
@@ -139,8 +139,8 @@ test("status do job → o que o site usa: só host completo no esquema atual, e 
     "cards.lorcast.io": { esquema: 2, completo: false, geracao: 2 },   // não fechou: fora
     "tcgplayer-cdn.tcgplayer.com": { esquema: 1, completo: true }       // esquema velho: fora
   } };
-  assert.deepEqual(statusDoEspelho(st), { hosts: ["wsrv.nl", "assets.tcgdex.net", "cards.scryfall.io"], geracoes: { "assets.tcgdex.net": 2 } });
-  assert.deepEqual(statusDoEspelho(null), { hosts: [], geracoes: {} });
+  assert.deepEqual(statusDoEspelho(st), { hosts: ["wsrv.nl", "assets.tcgdex.net", "cards.scryfall.io"], geracoes: { "assets.tcgdex.net": 2 }, intermediaria: [] });
+  assert.deepEqual(statusDoEspelho(null), { hosts: [], geracoes: {}, intermediaria: [] });
 });
 
 test("deploy: injeta hosts E geração no game.js, e para se faltar um dos marcadores", () => {
@@ -200,4 +200,31 @@ test("host fora da lista segue na origem mesmo com outros hosts espelhados", () 
   assert.equal(src(html), "https://cards.lorcast.io/card/digital/normal/crd_x.avif");
   assert.ok(!html.includes("img.sleevu.app"));
   delete sb.SLEEVU;
+});
+
+// O job do espelho lê o catálogo do PACOTE de caminho fixo que o build
+// completo da main salva, não do cache do build rápido. O actions/cache
+// identifica a entrada pela lista de caminhos; enquanto o espelho restaurava o
+// cache do build rápido, cada jogo novo mudava a lista, o job não achava o
+// cache salvo antes dele e saía verde sem espelhar nada (13–14/11/2026).
+test("job do espelho: catálogo vem do pacote de caminho fixo do deploy, e faltar é erro", () => {
+  const ler = (f) => readFileSync(new URL(`../${f}`, import.meta.url), "utf8").replace(/\r\n/g, "\n");
+  const job = ler(".github/workflows/mirror-images.yml");
+  const deploy = ler(".github/workflows/deploy.yml");
+  const PACOTE = "path: ${{ runner.temp }}/catalogo-espelho.tar";
+  assert.ok(job.includes(PACOTE) && job.includes("restore-keys: catalogo-espelho-"), "o job restaura o pacote");
+  assert.ok(!/^\s+data\/[a-z0-9]+\/sets$/m.test(job), "nenhuma lista de jogos no job (é ela que desencontrava o cache)");
+  assert.ok(job.includes('tar -xf "$RUNNER_TEMP/catalogo-espelho.tar"'));
+  assert.match(job, /if \[ ! -s data\/manifest\.generated\.js \]; then\n\s+echo "::error::[^\n]*\n\s+exit 1/, "sem catálogo o job fica vermelho");
+
+  const i = deploy.indexOf("- name: Empacota o catálogo pro espelho de imagens");
+  const salva = deploy.indexOf("- name: Salva o pacote do catálogo (espelho de imagens)");
+  assert.ok(i > deploy.indexOf("- name: Salva catálogo construído (pro build rápido)"), "empacota depois do build completo");
+  assert.ok(salva > i && salva < deploy.indexOf("- name: Remove arquivos que não vão para o site"), "salva antes de a limpeza apagar data/magic/cards.js e cia.");
+  const empacota = deploy.slice(i, salva);
+  assert.ok(empacota.includes("env.RODA_SYNC == 'true' && github.ref == 'refs/heads/main'"));
+  // Padrões genéricos: jogo novo entra no pacote sem mexer no deploy.
+  for (const p of ["data/*/sets", "data/*/*.generated.js", "data/*/*.generated.json", "--exclude=data/magic/sets", "--exclude=data/ygo/sets"]) assert.ok(empacota.includes(p), p);
+  const passoSalva = deploy.slice(salva, deploy.indexOf("- name:", salva + 10));
+  assert.ok(passoSalva.includes(PACOTE) && passoSalva.includes("key: catalogo-espelho-${{ github.run_id }}"), "mesmo caminho dos dois lados");
 });

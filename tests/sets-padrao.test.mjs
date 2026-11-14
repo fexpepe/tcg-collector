@@ -37,11 +37,15 @@ const aninhaPorNome = new Function("sortByReleaseDesc", "edicaoDoSet",
   `${constante("VOLUME_SEGUINTE")}\n${corpo("aninhaPorNome")}\nreturn aninhaPorNome;`)(sortByReleaseDesc, edicaoDoSet);
 const set = (name, releaseDate, extra = {}) => Object.assign({ type: "set", name, displayName: name, releaseDate }, extra);
 
-test("a página de Sets tem UM caminho: aninha, agrupa pelo jogo e põe a Vitrine", () => {
+test("a página de Sets tem UM caminho: aninha, agrupa pelo jogo, põe a Vitrine e ordena", () => {
   const vista = corpo("getViewItems");
   const sets = vista.slice(vista.indexOf('if (view === "sets")'), vista.indexOf('if (view === "artists")'));
   assert.ok(sets.includes("const grupos = agrupaSetsDoJogo(aninhaPorNome(setItems));"));
-  assert.ok(sets.includes("vitrineDoTopo(grupos).concat(grupos)"));
+  // O destaque mora FORA da grade (2026-11-14), acima da linha do contador:
+  // nada da Vitrine entra na lista que o pager desenha.
+  assert.ok(sets.includes("pintaTopo(buscando ? [] : vitrineDoTopo(grupos));"));
+  assert.ok(!sets.includes(".concat(grupos)"), "a Vitrine voltou pra dentro da grade");
+  assert.ok(sets.includes("ordenaSets(grupos, ordem)"));
   assert.ok(!/return group\w+\(/.test(sets), "um jogo voltou a sair do getViewItems direto pelo agrupador, sem o padrão");
 });
 
@@ -132,9 +136,10 @@ test("aninhaPorNome: edição vai pro `edicoes` do original, sem chip e sem jane
   assert.deepEqual(raiz("Metal Raiders").edicoes.map((e) => e.rotulo), ["Worldwide English"]);
   assert.deepEqual(raiz("Tactical Evolution").filhos.map((f) => f.rotulo), ["Special Edition"], "caixa de promos segue chip");
   assert.ok(raiz("Legend of Blue Eyes White Dragon (Worldwide English)"));
-  // O cartão desenha só os `filhos`; as edições só entram no Continue completando.
+  // O cartão desenha só os `filhos`; a edição é achada pelo seletor "Edição"
+  // da página do set (entravam também no Continue completando, que saiu em
+  // 2026-11-14).
   assert.ok(!corpo("createSetCard").includes("edicoes"));
-  assert.ok(corpo("vitrineDoTopo").includes("item.edicoes"));
 });
 
 // A página do set (detail.js): o seletor lista o original e as edições, na
@@ -183,23 +188,24 @@ test("página do set: o seletor de edição sai no original e nas edições", ()
   assert.ok(corpoDetail("renderInsights").includes("edicoesDoSet()"));
 });
 
-function vitrine(grupos, hoje, { comSobre = false, colecao = 0 } = {}) {
-  const fn = new Function("sortByReleaseDesc", "sortByReleaseAsc", "colecaoTem", "Date", "comSobre",
-    `${constante("NAO_DESTAQUE")}\n${corpo("vitrineDoTopo")}\nreturn vitrineDoTopo;`);
+function vitrine(grupos, hoje, { comSobre = false } = {}) {
+  const fn = new Function("sortByReleaseDesc", "sortByReleaseAsc", "Date", "comSobre",
+    `${constante("NAO_DESTAQUE")}\n${corpo("foraDaSecao")}\n${corpo("vitrineDoTopo")}\nreturn vitrineDoTopo;`);
   const RealDate = Date;
   class Fixa extends RealDate { constructor(...a) { super(...(a.length ? a : [hoje])); } static parse(s) { return RealDate.parse(s); } }
-  return fn(sortByReleaseDesc, sortByReleaseAsc, () => colecao, Fixa, comSobre)(grupos);
+  return fn(sortByReleaseDesc, sortByReleaseAsc, Fixa, comSobre)(grupos);
 }
 
 // Jogo vintage com "Sobre" (src/sobre-jogo.js, 2026-11-12): o topo é a
-// história, sem o "Último set"; o "Continue completando" fica.
-test("jogo com \"Sobre\": sem destaque no topo, mas o Continue completando fica", () => {
+// história, sem o "Último set". E o "Continue completando" saiu de todo jogo
+// em 2026-11-14 (o Ordenar tem "Progresso: mais completos primeiro"): com
+// coleção ou sem, o topo é só o destaque.
+test("jogo com \"Sobre\": sem destaque no topo; e o topo não tem mais o Continue completando", () => {
   const meio = Object.assign(set("Part 2", "1989-07"), { totalCount: 42, ownedCount: 10 });
   const grupos = [set("Part 1", "1988-11"), meio];
-  assert.equal(vitrine(grupos, "2026-11-12T12:00:00Z")[0].type, "sx-hero", "sem o Sobre, o destaque de sempre");
+  assert.deepEqual(vitrine(grupos, "2026-11-12T12:00:00Z").map((i) => i.type), ["sx-hero"], "sem o Sobre, o destaque de sempre");
   assert.deepEqual(vitrine(grupos, "2026-11-12T12:00:00Z", { comSobre: true }), []);
-  const comColecao = vitrine(grupos, "2026-11-12T12:00:00Z", { comSobre: true, colecao: 10 });
-  assert.deepEqual(comColecao.map((i) => i.type), ["sx-continue"]);
+  assert.ok(!app.includes("sx-continue") && !app.includes("sets.sx.continue"), "o Continue completando voltou");
 });
 
 test("o destaque é sempre um set principal: seção de promo/deck/raid não disputa", () => {
@@ -243,8 +249,50 @@ test("data só com ano e mês não ganha dia inventado no estilo longo", () => {
   assert.match(formatReleaseDate("2002-10"), /out\.? de 2002/);
 });
 
-test("o topo da Vitrine não conta como resultado", () => {
-  assert.ok(corpo("render").includes("sx-hero|sx-continue"));
+// O destaque mora na caixa #setsTopo, ANTES da linha do contador — o lugar
+// do "Sobre" dos vintage, que a borda põe antes do .results-header. Assim a
+// linha de contador/Ordenar/Visualização fica embaixo do topo nos dois.
+test("o topo mora fora da grade, acima da linha do contador", () => {
+  const html = readFileSync(join(raiz, "sets.html"), "utf8");
+  const topo = html.indexOf('id="setsTopo"');
+  assert.ok(topo >= 0 && topo < html.indexOf('class="results-header results-header-sets"'));
+  assert.ok(corpo("pintaTopo").includes("createHero(heroi)"));
+  assert.ok(!corpo("createViewItem").includes("createHero"), "o destaque voltou a ser item da grade");
+});
+
+// Ordenar dos Sets (2026-11-14). "Padrão" = as seções; as outras ordens são
+// uma lista só, sem cabeçalho, com o nome cheio do set que a seção encurtou.
+function ordena(lista, ordem) {
+  const fn = new Function("sortByReleaseDesc", "sortByReleaseAsc", "shared",
+    `${corpo("foraDaSecao")}\n${corpo("ordenaSets")}\nreturn ordenaSets;`);
+  return fn(sortByReleaseDesc, sortByReleaseAsc, { getLocale: () => "pt-BR" })(lista, ordem);
+}
+test("Ordenar dos Sets: as opções do HTML são as do app.js", () => {
+  const html = readFileSync(join(raiz, "sets.html"), "utf8");
+  const select = html.slice(html.indexOf('<select id="setsSort"'), html.indexOf("</select>", html.indexOf('<select id="setsSort"')));
+  const doHtml = [...select.matchAll(/<option value="([^"]+)"/g)].map((m) => m[1]);
+  const doApp = JSON.parse(constante("ORDENS_DOS_SETS").replace(/^.*?=\s*/, "").replace(/;$/, "").replace(/'/g, '"'));
+  assert.deepEqual(doHtml, doApp);
+  assert.equal(doHtml[0], "padrao", "o padrão é a lista de sempre");
+  assert.ok(select.includes("data-ordenar"), "sem o data-ordenar o menu do src/ordenar.js não abre");
+});
+test("Ordenar dos Sets: padrão mantém as seções; o resto vira lista só", () => {
+  const cab = { type: "category-head", name: "Principais", count: 3 };
+  const a = Object.assign(set("Alpha", "2024-01-10"), { totalCount: 100, ownedCount: 90, value: 50 });
+  const b = Object.assign(set("Beta", "2025-05-02"), { totalCount: 10, ownedCount: 10, value: 900 });
+  const c = Object.assign(set("ナルティメットクロス 第7章", "2026-02-01", { displayName: "Ch. 7", nomeForaDaSecao: "Narutimate Cross — Ch. 7" }), { totalCount: 40, ownedCount: 0, value: 0 });
+  const d = Object.assign(set("Delta", "2023-03-03"), { totalCount: 80, ownedCount: 20, alt: { n: 60, langs: ["pt"] }, value: 10 });
+  const lista = [cab, a, b, c, d];
+  assert.equal(ordena(lista, "padrao"), lista, "padrão devolve a lista do jeito que veio");
+  const nomes = (ordem) => ordena(lista, ordem).map((s) => s.displayName);
+  // Progresso = o do cartão: Delta tem 20 aqui + 60 em PT = 100%, empata com
+  // Beta (10/10) e passa na frente por ter mais cartas; sem carta, no fim.
+  assert.deepEqual(nomes("progresso"), ["Delta", "Beta", "Alpha", "Narutimate Cross — Ch. 7"]);
+  assert.deepEqual(nomes("recentes"), ["Narutimate Cross — Ch. 7", "Beta", "Alpha", "Delta"]);
+  assert.deepEqual(nomes("antigos"), ["Delta", "Alpha", "Beta", "Narutimate Cross — Ch. 7"]);
+  assert.deepEqual(nomes("nome"), ["Alpha", "Beta", "Delta", "Narutimate Cross — Ch. 7"]);
+  assert.deepEqual(nomes("valor"), ["Beta", "Alpha", "Delta", "Narutimate Cross — Ch. 7"]);
+  assert.ok(ordena(lista, "nome").every((i) => i.type === "set"), "cabeçalho de seção ficou na lista ordenada");
 });
 
 // Bandai moderno (2026-11-11): One Piece, Gundam, Fusion World, Digimon, Union
@@ -314,6 +362,13 @@ test("Bandai moderno: coleção numerada, boosters extras, decks e promos, pelo 
   // o Start Cheer Set) pelo código oficial; as promos no resto.
   assert.deepEqual(secoesBandai("hololive", ["HBP01", "HBP07", "HEB01", "HSD01", "HSD19", "HYS01", "HPR"]), {
     main: ["HBP01", "HBP07"], extraBoosters: ["HEB01"], decks: ["HSD01", "HSD19", "HYS01"], promos: ["HPR"]
+  });
+  // Dragon Ball Super Card Game Masters: os boosters numerados das duas
+  // grafias (DBS-B01…, BT25…) e a 2nd Edition; Themed/Draft/Battle Evolution/
+  // Mythic/Collector's como extra; Expansion Deck Box e Anniversary nos decks;
+  // Pre-Release, Release Event, promos e Oversized no resto.
+  assert.deepEqual(secoesBandai("dbs", ["DBS-B01", "DBS-B10-RE", "BT31", "DBS-TB01", "DB1", "EB-01", "MB-01", "CSV1", "DBS-BE01", "BE25", "DBS-B12PRE", "BT31_PR", "PR", "OVRS"]), {
+    main: ["BT31", "DBS-B01", "DBS-B10-RE"], extraBoosters: ["CSV1", "DB1", "DBS-TB01", "EB-01", "MB-01"], decks: ["BE25", "DBS-BE01"], promos: ["BT31_PR", "DBS-B12PRE", "OVRS", "PR"]
   });
   // Grand Archive (Weebs of the Shore, na mesma forma): o booster de três
   // letras, a Alter Edition e os packs avulsos como extra, Starter Decks e

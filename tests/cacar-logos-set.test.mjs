@@ -30,8 +30,10 @@ test("guarda: os syncs do Lorcana e do FAB deixam o logo local vencer", () => {
 });
 
 test("arquivo: o nome que o caçador grava é o que cada sync procura", () => {
-  assert.match(fonte("sync-lorcana.mjs"), /hasLocal\(`\$\{code\}\.png`\)/);
-  assert.equal(JOGOS.lorcana.arquivo("14"), "14.png");
+  // O caçador grava WebP (padrão dos logos); o sync procura WebP e depois o
+  // PNG dos curados antigos.
+  assert.match(fonte("sync-lorcana.mjs"), /for \(const ext of \["webp", "png"\]\)[\s\S]{0,80}hasLocal\(`\$\{code\}\.\$\{ext\}`\)/);
+  assert.equal(JOGOS.lorcana.arquivo("14"), "14.webp");
   assert.match(fonte("sync-fab.mjs"), /winSafeName\(String\(setId\)\.toUpperCase\(\)\)/);
   assert.equal(JOGOS.fab.arquivo("24266"), "24266.webp");
   assert.equal(JOGOS.fab.arquivo("con"), "CON_.webp"); // nome reservado do Windows, como no sync

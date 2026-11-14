@@ -113,10 +113,16 @@
       <section class="toolbar" data-i18n-aria="filters.show" aria-label="Filtros">
       </section>
 
+      <!-- Topo do jogo moderno: o lançamento em destaque (o pintaTopo do app.js).
+           Mora ACIMA da linha do contador/Ordenar/Visualização (2026-11-14), o
+           mesmo lugar do "Sobre" dos vintage, que a borda põe logo antes do
+           .results-header. -->
+      <div id="setsTopo" class="sx-topo"></div>
+
       <!-- Sem o h2 "Sets" aqui: o título da página logo acima já diz Sets —
            repetir só comia uma linha de tela (pedido de 2026-08-28). -->
       <!-- Origem dos sets (EN/PT/JA/ZH): é um FILTRO, não um cabeçalho, então
-           mora na linha do contador, colada à esquerda da Visualização (grade/lista) — e não numa faixa
+           mora na linha do contador, à esquerda do Ordenar e da Visualização (grade/lista) — e não numa faixa
            própria acima (pedido de 2026-09-10: economiza a faixa e deixa a tela
            mais organizada). Desktop: chips; celular: <select>, porque 4 chips
            não cabem ao lado dos botões em 390px. O app.js mantém os dois em
@@ -141,6 +147,21 @@
             </select>
           </label>
         </div>
+        <!-- Ordenar (2026-11-14), colado à esquerda da Visualização. O menu é o
+             do src/ordenar.js (o mesmo das grades de cartas); as opções são
+             de SET e o app.js lê o select (ordenaSets). "Progresso" some sem
+             carta no jogo e "Valor" no modo colecionador (ordemDosSets). -->
+        <div class="results-sort srt-host">
+          <label for="setsSort" data-i18n="sort.label">Ordenar:</label>
+          <select id="setsSort" data-ordenar>
+            <option value="padrao" selected data-i18n="sets.sort.default">Padrão</option>
+            <option value="progresso" data-i18n="sets.sort.progress">Progresso: mais completos primeiro</option>
+            <option value="recentes" data-i18n="sets.sort.newest">Lançamento: mais recentes primeiro</option>
+            <option value="antigos" data-i18n="sets.sort.oldest">Lançamento: mais antigos primeiro</option>
+            <option value="nome" data-i18n="sets.sort.name">Nome: A a Z</option>
+            <option value="valor" data-i18n="sets.sort.value">Valor: maior para menor</option>
+          </select>
+        </div>
         <div id="setsViewToggle" class="view-toggle" role="group" data-i18n-aria="toolbar.view" aria-label="Visualização">
           <button type="button" class="view-toggle-btn" data-grid-view="grid" aria-pressed="true" data-i18n-aria="aria.viewGrid" aria-label="Grade" title="Grade"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="6.5" height="6.5"/><rect x="13.5" y="4" width="6.5" height="6.5"/><rect x="4" y="13.5" width="6.5" height="6.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5"/></svg></button>
           <button type="button" class="view-toggle-btn" data-grid-view="list" aria-pressed="false" data-i18n-aria="aria.viewList" aria-label="Lista" title="Lista"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6h1M4 12h1M4 18h1"/></svg></button>
@@ -154,6 +175,7 @@
     <script defer src="src/i18n.js"></script>
     <script defer src="src/nomes-sets.js"></script>
     <script defer src="src/shared.js"></script>
+    <script defer src="src/ordenar.js"></script>
     <!-- "Sobre" dos jogos vintage (o mesmo arquivo que a borda usa pra desenhar
          o bloco no HTML): antes do app.js, que lê window.SleevuSobre. -->
     <script defer src="src/sobre-jogo.js"></script>

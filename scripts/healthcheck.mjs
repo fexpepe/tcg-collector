@@ -85,6 +85,25 @@ function checkCatalog(name, path, varName, min) {
   });
 }
 
+// Catálogo de um jogo pelo MANIFEST (window.TCG_MANIFEST.sets[].count): é o
+// arquivo que o site e o app carregam (modo manifest). Até 2026-11-14 o probe
+// lia o cards.js cru de cada jogo, que só o modo dev local usa; a poda do
+// deploy (scripts/poda-deploy.mjs) tirou o cru do ar. Conferido no dia: a
+// soma dos count bate carta a carta com o cards.js nos 39 jogos, então os
+// mínimos de antes valem iguais.
+function checkManifest(name, path, min, { minSets = 1 } = {}) {
+  return check(name, async () => {
+    const res = await get(path);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const w = {};
+    new Function("window", await res.text())(w);
+    const sets = (w.TCG_MANIFEST && w.TCG_MANIFEST.sets) || [];
+    const total = sets.reduce((s, x) => s + (x.count || 0), 0);
+    if (sets.length < minSets || total < min) throw new Error(`${sets.length} sets / ${total} cartas (mínimo ${minSets}/${min})`);
+    return `${sets.length} sets, ${total} cartas`;
+  });
+}
+
 function checkJson(name, path, validate) {
   return check(name, async () => {
     const res = await get(path);
@@ -122,71 +141,68 @@ await checkPage("404 real em /users", "/users/healthcheck-handle-inexistente", {
 log("\n[catálogos]");
 // Manifest: o que importa é a LISTA de sets dentro dele (Pokémon tem centenas
 // de chunks entre 4 línguas), não as chaves do objeto.
-await check("manifest Pokémon", async () => {
-  const res = await get("/data/manifest.generated.js");
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  const w = {};
-  new Function("window", await res.text())(w);
-  const sets = (w.TCG_MANIFEST && w.TCG_MANIFEST.sets) || [];
-  const total = sets.reduce((s, x) => s + (x.count || 0), 0);
-  if (sets.length < 200 || total < 20000) throw new Error(`${sets.length} sets / ${total} cartas (mínimo 200/20000)`);
-  return `${sets.length} sets, ${total} cartas`;
-});
-await checkCatalog("cards Lorcana", "/data/lorcana/cards.js", "TCG_CARDS", 1500);
-await checkCatalog("cards One Piece", "/data/onepiece/cards.js", "TCG_CARDS", 4000);
-await checkCatalog("cards Naruto", "/data/naruto/cards.js", "TCG_CARDS", 400);
+await checkManifest("manifest Pokémon", "/data/manifest.generated.js", 20000, { minSets: 200 });
+// Magic e Yu-Gi-Oh! nunca tiveram o cards.js no ar (grande demais; o deploy
+// apaga): só o pricing era conferido. O manifest é pequeno e diz o mesmo.
+// 101.007 e 46.910 cartas em 14/11/2026; o mínimo é a metade, como os outros.
+await checkManifest("manifest Magic", "/data/magic/manifest.generated.js", 50000, { minSets: 300 });
+await checkManifest("manifest Yu-Gi-Oh", "/data/ygo/manifest.generated.js", 23000, { minSets: 300 });
+await checkManifest("manifest Lorcana", "/data/lorcana/manifest.generated.js", 1500);
+await checkManifest("manifest One Piece", "/data/onepiece/manifest.generated.js", 4000);
+await checkManifest("manifest Naruto", "/data/naruto/manifest.generated.js", 400);
 // NARUTO CARD GAME de 2027: hoje só as promos de evento (2 cartas).
-await checkCatalog("cards Naruto Card Game", "/data/narutocg/cards.js", "TCG_CARDS", 1);
-await checkCatalog("cards Hunter x Hunter", "/data/hxh/cards.js", "TCG_CARDS", 30);
-await checkCatalog("cards Dragon Ball Carddass", "/data/dbc/cards.js", "TCG_CARDS", 1200);
+await checkManifest("manifest Naruto Card Game", "/data/narutocg/manifest.generated.js", 1);
+await checkManifest("manifest Hunter x Hunter", "/data/hxh/manifest.generated.js", 30);
+await checkManifest("manifest Dragon Ball Carddass", "/data/dbc/manifest.generated.js", 1200);
 // As três séries do Carddass que viraram jogo (2026-11-13): 884, 342 e 168 cartas.
-await checkCatalog("cards DB Super Battle", "/data/dbsb/cards.js", "TCG_CARDS", 800);
-await checkCatalog("cards DB Visual Adventure", "/data/dbva/cards.js", "TCG_CARDS", 300);
-await checkCatalog("cards DB Super Barcode Wars", "/data/dbbw/cards.js", "TCG_CARDS", 150);
-await checkCatalog("cards LOTR", "/data/lotr/cards.js", "TCG_CARDS", 3000);
-await checkCatalog("cards Dragon Ball Z CCG", "/data/dbz/cards.js", "TCG_CARDS", 3500);
-await checkCatalog("cards Harry Potter", "/data/harrypotter/cards.js", "TCG_CARDS", 600);
-await checkCatalog("cards FAB", "/data/fab/cards.js", "TCG_CARDS", 5000);
-await checkCatalog("cards Gundam", "/data/gundam/cards.js", "TCG_CARDS", 800);
-await checkCatalog("cards Star Wars Unlimited", "/data/swu/cards.js", "TCG_CARDS", 4000);
-await checkCatalog("cards Cyberpunk", "/data/cyberpunk/cards.js", "TCG_CARDS", 300);
-await checkCatalog("cards Sorcery", "/data/sorcery/cards.js", "TCG_CARDS", 1200);
-await checkCatalog("cards Dragon Ball Fusion", "/data/dbfw/cards.js", "TCG_CARDS", 1800);
-await checkCatalog("cards Digimon", "/data/digimon/cards.js", "TCG_CARDS", 4000);
-await checkCatalog("cards Riftbound", "/data/riftbound/cards.js", "TCG_CARDS", 600);
-await checkCatalog("cards Union Arena", "/data/unionarena/cards.js", "TCG_CARDS", 3000);
-await checkCatalog("cards World of Warcraft", "/data/wow/cards.js", "TCG_CARDS", 4000);
-await checkCatalog("cards Weiß Schwarz", "/data/weiss/cards.js", "TCG_CARDS", 25000);
-await checkCatalog("cards Godzilla", "/data/godzilla/cards.js", "TCG_CARDS", 700);
+await checkManifest("manifest DB Super Battle", "/data/dbsb/manifest.generated.js", 800);
+await checkManifest("manifest DB Visual Adventure", "/data/dbva/manifest.generated.js", 300);
+await checkManifest("manifest DB Super Barcode Wars", "/data/dbbw/manifest.generated.js", 150);
+await checkManifest("manifest LOTR", "/data/lotr/manifest.generated.js", 3000);
+await checkManifest("manifest Dragon Ball Z CCG", "/data/dbz/manifest.generated.js", 3500);
+await checkManifest("manifest Harry Potter", "/data/harrypotter/manifest.generated.js", 600);
+await checkManifest("manifest FAB", "/data/fab/manifest.generated.js", 5000);
+await checkManifest("manifest Gundam", "/data/gundam/manifest.generated.js", 800);
+await checkManifest("manifest Star Wars Unlimited", "/data/swu/manifest.generated.js", 4000);
+await checkManifest("manifest Cyberpunk", "/data/cyberpunk/manifest.generated.js", 300);
+await checkManifest("manifest Sorcery", "/data/sorcery/manifest.generated.js", 1200);
+await checkManifest("manifest Dragon Ball Fusion", "/data/dbfw/manifest.generated.js", 1800);
+// DBS Masters: 11.734 cartas e 11.122 com preço no lançamento do catálogo (14/11/2026).
+await checkManifest("manifest DBS Masters", "/data/dbs/manifest.generated.js", 10000);
+await checkManifest("manifest Digimon", "/data/digimon/manifest.generated.js", 4000);
+await checkManifest("manifest Riftbound", "/data/riftbound/manifest.generated.js", 600);
+await checkManifest("manifest Union Arena", "/data/unionarena/manifest.generated.js", 3000);
+await checkManifest("manifest World of Warcraft", "/data/wow/manifest.generated.js", 4000);
+await checkManifest("manifest Weiß Schwarz", "/data/weiss/manifest.generated.js", 25000);
+await checkManifest("manifest Godzilla", "/data/godzilla/manifest.generated.js", 700);
 // Palworld: 647 cartas no lançamento do catálogo (11/11/2026).
-await checkCatalog("cards Palworld", "/data/palworld/cards.js", "TCG_CARDS", 500);
-await checkCatalog("cards Final Fantasy", "/data/fftcg/cards.js", "TCG_CARDS", 4500);
+await checkManifest("manifest Palworld", "/data/palworld/manifest.generated.js", 500);
+await checkManifest("manifest Final Fantasy", "/data/fftcg/manifest.generated.js", 4500);
 // Grand Archive: 5.356 cartas no lançamento do catálogo (13/11/2026).
-await checkCatalog("cards Grand Archive", "/data/grandarchive/cards.js", "TCG_CARDS", 4500);
+await checkManifest("manifest Grand Archive", "/data/grandarchive/manifest.generated.js", 4500);
 // hololive: 2.304 cartas no lançamento do catálogo (13/11/2026).
-await checkCatalog("cards hololive", "/data/hololive/cards.js", "TCG_CARDS", 1900);
+await checkManifest("manifest hololive", "/data/hololive/manifest.generated.js", 1900);
 // Shadowverse: Evolve: 7.447 cartas no lançamento do catálogo (13/11/2026).
-await checkCatalog("cards Shadowverse", "/data/shadowverse/cards.js", "TCG_CARDS", 6300);
+await checkManifest("manifest Shadowverse", "/data/shadowverse/manifest.generated.js", 6300);
 // Vanguard: 26.438 cartas no lançamento do catálogo (13/11/2026).
-await checkCatalog("cards Vanguard", "/data/vanguard/cards.js", "TCG_CARDS", 22000);
+await checkManifest("manifest Vanguard", "/data/vanguard/manifest.generated.js", 22000);
 // Duel Masters: 24.039 cartas no lançamento do catálogo (13/11/2026).
-await checkCatalog("cards Duel Masters", "/data/duelmasters/cards.js", "TCG_CARDS", 20000);
+await checkManifest("manifest Duel Masters", "/data/duelmasters/manifest.generated.js", 20000);
 // Naruto Mythos TCG: 646 cartas no lançamento do catálogo (12/11/2026); sem preço.
-await checkCatalog("cards Naruto Mythos", "/data/narutomythos/cards.js", "TCG_CARDS", 550);
+await checkManifest("manifest Naruto Mythos", "/data/narutomythos/manifest.generated.js", 550);
 // Naruto Kayou (edição em inglês): 1.188 cartas no lançamento do catálogo (12/11/2026); sem preço.
-await checkCatalog("cards Naruto Kayou", "/data/narutokayou/cards.js", "TCG_CARDS", 1000);
-await checkCatalog("cards Miracle Battle Carddass", "/data/mbc/cards.js", "TCG_CARDS", 900);
-await checkCatalog("cards Carddass Masters", "/data/cdm/cards.js", "TCG_CARDS", 250);
-await checkCatalog("cards Gundam Carddass", "/data/gcd/cards.js", "TCG_CARDS", 1200);
-await checkCatalog("cards Gundam War", "/data/gw/cards.js", "TCG_CARDS", 6000);
-await checkCatalog("cards Saint Seiya Carddass", "/data/seiya/cards.js", "TCG_CARDS", 380);
-await checkCatalog("cards Saint Seiya Trading Collection", "/data/seiyatc/cards.js", "TCG_CARDS", 800);
-await checkCatalog("cards Saint Seiya Crusade", "/data/seiyacr/cards.js", "TCG_CARDS", 450);
+await checkManifest("manifest Naruto Kayou", "/data/narutokayou/manifest.generated.js", 1000);
+await checkManifest("manifest Miracle Battle Carddass", "/data/mbc/manifest.generated.js", 900);
+await checkManifest("manifest Carddass Masters", "/data/cdm/manifest.generated.js", 250);
+await checkManifest("manifest Gundam Carddass", "/data/gcd/manifest.generated.js", 1200);
+await checkManifest("manifest Gundam War", "/data/gw/manifest.generated.js", 6000);
+await checkManifest("manifest Saint Seiya Carddass", "/data/seiya/manifest.generated.js", 380);
+await checkManifest("manifest Saint Seiya Trading Collection", "/data/seiyatc/manifest.generated.js", 800);
+await checkManifest("manifest Saint Seiya Crusade", "/data/seiyacr/manifest.generated.js", 450);
 // Naruto Boruto Card Game: 97 cartas (as Tournament Pack Cards), 13/11/2026; história encerrada.
-await checkCatalog("cards Naruto Boruto", "/data/narutoboruto/cards.js", "TCG_CARDS", 90);
+await checkManifest("manifest Naruto Boruto", "/data/narutoboruto/manifest.generated.js", 90);
 // Naruto Trading Cards: 255 cartas (Etching Card Collection 1–3 e 忍術大全), 13/11/2026; história encerrada.
-await checkCatalog("cards Naruto Trading Cards", "/data/narutotc/cards.js", "TCG_CARDS", 240);
-// Yu-Gi-Oh! não tem cards.js em produção (chunk-only, padrão Magic) — só o pricing.
+await checkManifest("manifest Naruto Trading Cards", "/data/narutotc/manifest.generated.js", 240);
 await checkJson("chunk Pokémon (base1)", "/data/sets/en/base1.json",
   (j) => Array.isArray(j) && j.length >= 100 ? null : "chunk vazio/curto");
 
@@ -194,8 +210,6 @@ log("\n[preços]");
 await checkCatalog("pricing Pokémon", "/data/pricing.generated.js", "TCG_PRICING", 20000);
 await checkCatalog("pricing Lorcana", "/data/lorcana/pricing.generated.js", "TCG_PRICING", 1000);
 await checkCatalog("pricing One Piece", "/data/onepiece/pricing.generated.js", "TCG_PRICING", 2000);
-// Magic: só o pricing (o cards.js dele é grande demais pra baixar no probe
-// diário; o lint-catalog do deploy já valida a integridade do catálogo).
 await checkCatalog("pricing Magic", "/data/magic/pricing.generated.js", "TCG_PRICING", 20000);
 await checkCatalog("pricing FAB", "/data/fab/pricing.generated.js", "TCG_PRICING", 3000);
 await checkCatalog("pricing Gundam", "/data/gundam/pricing.generated.js", "TCG_PRICING", 800);
@@ -203,6 +217,7 @@ await checkCatalog("pricing Star Wars Unlimited", "/data/swu/pricing.generated.j
 await checkCatalog("pricing Cyberpunk", "/data/cyberpunk/pricing.generated.js", "TCG_PRICING", 150);
 await checkCatalog("pricing Sorcery", "/data/sorcery/pricing.generated.js", "TCG_PRICING", 1200);
 await checkCatalog("pricing Dragon Ball Fusion", "/data/dbfw/pricing.generated.js", "TCG_PRICING", 1800);
+await checkCatalog("pricing DBS Masters", "/data/dbs/pricing.generated.js", "TCG_PRICING", 9000);
 await checkCatalog("pricing Yu-Gi-Oh", "/data/ygo/pricing.generated.js", "TCG_PRICING", 15000);
 await checkCatalog("pricing Digimon", "/data/digimon/pricing.generated.js", "TCG_PRICING", 4000);
 await checkCatalog("pricing Riftbound", "/data/riftbound/pricing.generated.js", "TCG_PRICING", 600);
@@ -217,8 +232,8 @@ await checkCatalog("pricing Grand Archive", "/data/grandarchive/pricing.generate
 await checkCatalog("pricing hololive", "/data/hololive/pricing.generated.js", "TCG_PRICING", 1600);
 await checkCatalog("pricing Shadowverse", "/data/shadowverse/pricing.generated.js", "TCG_PRICING", 6000);
 await checkCatalog("pricing Vanguard", "/data/vanguard/pricing.generated.js", "TCG_PRICING", 20000);
-await checkCatalog("pricing Duel Masters", "/data/duelmasters/pricing.generated.js", "TCG_PRICING", 15000);
-for (const [label, dir] of [["Pokémon", "/data/"], ["Lorcana", "/data/lorcana/"], ["One Piece", "/data/onepiece/"], ["Magic", "/data/magic/"], ["FAB", "/data/fab/"], ["Gundam", "/data/gundam/"], ["Star Wars Unlimited", "/data/swu/"], ["Cyberpunk", "/data/cyberpunk/"], ["Sorcery", "/data/sorcery/"], ["Dragon Ball Fusion", "/data/dbfw/"], ["Yu-Gi-Oh", "/data/ygo/"], ["Digimon", "/data/digimon/"], ["Riftbound", "/data/riftbound/"], ["Union Arena", "/data/unionarena/"], ["World of Warcraft", "/data/wow/"], ["Weiß Schwarz", "/data/weiss/"], ["Naruto Card Game", "/data/narutocg/"], ["Godzilla", "/data/godzilla/"], ["Palworld", "/data/palworld/"], ["Final Fantasy", "/data/fftcg/"], ["Grand Archive", "/data/grandarchive/"], ["hololive", "/data/hololive/"], ["Shadowverse", "/data/shadowverse/"], ["Vanguard", "/data/vanguard/"], ["Duel Masters", "/data/duelmasters/"]]) {
+// Duel Masters sem preço desde 14/11/2026 (PRECO_LIGADO no sync-duelmasters).
+for (const [label, dir] of [["Pokémon", "/data/"], ["Lorcana", "/data/lorcana/"], ["One Piece", "/data/onepiece/"], ["Magic", "/data/magic/"], ["FAB", "/data/fab/"], ["Gundam", "/data/gundam/"], ["Star Wars Unlimited", "/data/swu/"], ["Cyberpunk", "/data/cyberpunk/"], ["Sorcery", "/data/sorcery/"], ["Dragon Ball Fusion", "/data/dbfw/"], ["DBS Masters", "/data/dbs/"], ["Yu-Gi-Oh", "/data/ygo/"], ["Digimon", "/data/digimon/"], ["Riftbound", "/data/riftbound/"], ["Union Arena", "/data/unionarena/"], ["World of Warcraft", "/data/wow/"], ["Weiß Schwarz", "/data/weiss/"], ["Naruto Card Game", "/data/narutocg/"], ["Godzilla", "/data/godzilla/"], ["Palworld", "/data/palworld/"], ["Final Fantasy", "/data/fftcg/"], ["Grand Archive", "/data/grandarchive/"], ["hololive", "/data/hololive/"], ["Shadowverse", "/data/shadowverse/"], ["Vanguard", "/data/vanguard/"]]) {
   await checkJson(`deltas ${label}`, `${dir}price-deltas.generated.json`,
     (j) => j && typeof j === "object" && "c" in j ? null : "sem campo c");
   // Janela de 7 dias: é a que o aviso de queda da wishlist lê. Sem ela o push
