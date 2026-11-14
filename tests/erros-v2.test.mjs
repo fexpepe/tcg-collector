@@ -112,6 +112,31 @@ test("monta: contexto completo, terceiro marcado, extensão e ResizeObserver de 
   assert.equal(E.monta({ k: "js", m: "y", s: "" }, ctx).cb, undefined);
 });
 
+// 2026-11-14: o "erros a cada mil páginas" em 102,5. A maior parte não era o
+// site quebrando: transição entre páginas que o navegador pulou (87 em 30
+// dias) e a carteira de cripto de um navegador só (76).
+test("monta: transição pulada pelo navegador e carteira de cripto ficam de fora", () => {
+  const { E } = carregaErros();
+  const ctx = { origem: "https://sleevu.app", aparelho: { d: "m", b: "chrome 156", o: "android" }, v: "cfcdd120", vw: 410 };
+  for (const m of [
+    "Skipping view transition because skipTransition() was called.",
+    "Skipping view transition because viewport size changed.",
+    "Transition was aborted because of invalid state. ViewTransition opt-in disabled",
+    "Transition was aborted because of invalid state. Viewport size changed",
+    "Transition was aborted because of invalid state. Page already revealed",
+    "Transition was aborted because of invalid state",
+    "Transition was skipped",
+    "Transition was skipped. Navigation aborted"
+  ]) assert.equal(E.monta({ k: "promise", m }, ctx), null, m);
+  // A mesma frase fora de rejeição não é a da transição do navegador: segue.
+  assert.ok(E.monta({ k: "js", m: "Transition was skipped", s: "" }, ctx));
+  assert.equal(E.monta({ k: "promise", m: "Internal JSON-RPC error." }, ctx), null);
+  assert.equal(E.monta({ k: "js", m: "Internal JSON-RPC error.", s: "" }, ctx), null);
+  assert.equal(E.monta({ k: "js", m: "TypeError: undefined is not an object (evaluating 'window.ethereum.selectedAddress')", s: "https://sleevu.app/games/cyberpunk-tcg:1:16" }, ctx), null);
+  // Erro nosso de verdade continua indo.
+  assert.ok(E.monta({ k: "promise", m: "Cannot read properties of null (reading 'querySelector')" }, ctx));
+});
+
 test("despeja: manda com o contexto do aparelho, uma vez por erro, com .catch e teto por sessão", async () => {
   const fila = [
     { k: "js", m: "a", s: "https://sleevu.app/src/app.f88583a3.js:1:1" },
@@ -184,6 +209,12 @@ test("theme.js enfileira o que importa desde o 1º script, e avisa o shared.js",
   erro({ target: window, message: "x is undefined", filename: "https://sleevu.app/src/app.js", lineno: 3, colno: 9, error: { stack: "TypeError: x\n    at f (https://sleevu.app/src/app.js:3:9)" } });
   erro({ target: { tagName: "SCRIPT", src: "https://sleevu.app/src/scan.1234abcd.js" } });
   erro({ target: { tagName: "IMG", src: "https://sleevu.app/x.webp" } });               // imagem: tem cadeia própria
+  // <link> só conta se for folha de estilo: o preload da fonte (erro nº 1 do
+  // painel em 14/11/2026, robô que não baixa fonte) e o prefetch de preço do
+  // app.js são adiantamento, e falhar não quebra nada.
+  erro({ target: { tagName: "LINK", rel: "preload", href: "https://sleevu.app/assets/fonts/outfit-latin.woff2" } });
+  erro({ target: { tagName: "LINK", rel: "prefetch", href: "https://sleevu.app/data/ygo/pricing-chunks/ptp-eu.json" } });
+  erro({ target: { tagName: "LINK", rel: "stylesheet", href: "https://sleevu.app/styles.1234abcd.css" } });
   erro({ target: { tagName: "SCRIPT", src: "https://static.cloudflareinsights.com/beacon.min.js" } }); // de fora
   ouvintes["window:unhandledrejection"].fn({ reason: { message: "Load failed", stack: "No@https://sleevu.app/src/shared.js:1:1" } });
   ouvintes["document:securitypolicyviolation"].fn({ blockedURI: "inline", effectiveDirective: "script-src-elem", disposition: "enforce" }); // Cloudflare
@@ -195,11 +226,13 @@ test("theme.js enfileira o que importa desde o 1º script, e avisa o shared.js",
   assert.deepEqual(j(window.__sleevuErros.map((x) => [x.k, x.m])), [
     ["js", "x is undefined"],
     ["recurso", "script não carregou"],
+    ["recurso", "link não carregou"],
     ["promise", "Load failed"],
     ["csp", "img-src https://novo-host.com"]
   ]);
   assert.equal(window.__sleevuErros[0].s, "https://sleevu.app/src/app.js:3:9");
-  assert.equal(avisos, 4);
+  assert.equal(window.__sleevuErros[2].s, "https://sleevu.app/styles.1234abcd.css");
+  assert.equal(avisos, 5);
 });
 
 test("shared.js: nenhum fetch de medição sem .catch, e os ouvintes saíram dele", () => {
@@ -228,4 +261,9 @@ test("README das migrações registra a 20261112a como aplicada", () => {
   const aplicadas = readme.slice(readme.indexOf("### Já aplicadas"));
   assert.ok(!pend.includes("`20261112a`"), "a 20261112a saiu de Pendentes");
   assert.ok(aplicadas.includes("`20261112a`"), "a 20261112a está em Já aplicadas (2026-11-12)");
+  // A 20261114a cobre a 12a (aplicada em 2026-11-14): rodar a 12a de novo
+  // traria de volta o ruído que o cliente parou de mandar.
+  assert.ok(!pend.includes("`20261114a`"), "a 20261114a saiu de Pendentes");
+  assert.ok(aplicadas.includes("`20261114a`"), "a 20261114a está em Já aplicadas (2026-11-14)");
+  assert.ok(aplicadas.indexOf("`20261114a`") < aplicadas.indexOf("`20261112a`"), "a 14a vem antes da 12a (mais nova no topo)");
 });

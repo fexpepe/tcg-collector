@@ -5468,9 +5468,13 @@
   // carta sem a cotação de Cardmarket e TCGplayer — sem câmbio a seção some.
   // Quando a API falha, vale o data/fx.generated.json que o build grava
   // (scripts/build-fx.mjs: Banco Central, BCE): mesma origem, sem cota, sem
-  // CORS. A falha vai pro /admin como `falha` (aparelho junto), que é como se
-  // sabe se ela pega mais o celular. Sem o arquivo (dev local), segue sem
-  // câmbio como antes.
+  // CORS. Sem o arquivo (dev local), segue sem câmbio como antes.
+  //
+  // O /admin só fica sabendo quando a RESERVA também falha, que é quando a
+  // pessoa fica de fato sem cotação (2026-11-14). Até então toda falha da API
+  // ia como `falha`, e a reserva cobria todas: 187 de 551 erros em 30 dias, um
+  // terço do "erros a cada mil páginas" (429 sem CORS vira "Failed to fetch";
+  // um robô de Chrome 145 no Mac sozinho fez 69 "HTTP 429").
   const FX_KEY = "tcg-fx-brl-v1";
   function gravaFx(t, rates) {
     try { localStorage.setItem(FX_KEY, JSON.stringify({ t, r: rates })); } catch (e) { /* ignora */ }
@@ -5485,12 +5489,14 @@
       if (!rates.USD && !rates.EUR) throw new Error("vazio");
       return gravaFx(Date.now(), rates);
     } catch (error) {
-      logClientError(`câmbio: ${error && error.name === "TimeoutError" ? "demorou" : (error && error.message) || "falhou"}`, "awesomeapi", "falha");
       try {
         const r = await fetch("data/fx.generated.json");
         const j = r.ok ? await r.json() : null;
         if (j && j.r && Number(j.r.USD) > 0) return gravaFx(Number(j.t) || Date.now(), { USD: Number(j.r.USD), EUR: Number(j.r.EUR) || 0 });
       } catch (e) { /* sem reserva: segue sem câmbio */ }
+      // "câmbio e reserva", não "câmbio:": o prefixo novo separa no banco o
+      // que a pessoa sentiu do histórico de antes (que a 20261114a tira).
+      logClientError(`câmbio e reserva falharam: ${error && error.name === "TimeoutError" ? "demorou" : (error && error.message) || "falhou"}`, "awesomeapi", "falha");
       return null;
     }
   }
@@ -6300,9 +6306,11 @@
     let toqueNaCarta = false;
     document.addEventListener("touchstart", (event) => {
       toqueY = null;
-      const panel = event.target.closest("#cardPreviewModal .card-preview-panel");
+      // Alvo que não é elemento não tem closest() (ver initCompactHoverThumb).
+      const quem = event.target && typeof event.target.closest === "function" ? event.target : null;
+      const panel = quem && quem.closest("#cardPreviewModal .card-preview-panel");
       if (!panel || zoomAberto) return;
-      toqueNaCarta = !!event.target.closest(".cs-media");
+      toqueNaCarta = !!quem.closest(".cs-media");
       if (!toqueNaCarta && (modoPagina || panel.scrollTop > 0)) return;
       toqueY = event.touches[0].clientY;
       toqueX = event.touches[0].clientX;
@@ -8582,10 +8590,16 @@
     hoverThumbEl.classList.remove("is-press");
   }
   function initCompactHoverThumb() {
+    // Alvo que não é elemento (o document, um nó de texto) não tem closest():
+    // em 13/11/2026 um Chrome 157 no Android quebrou aqui na home ("s.target.
+    // closest is not a function"). Os dois ouvintes do documento inteiro
+    // passam pelo mesmo filtro.
+    const elementoDe = (ev) => (ev.target && typeof ev.target.closest === "function" ? ev.target : null);
     document.addEventListener("mouseover", (ev) => {
       // Enquanto o dedo segura a linha, o mouseover emulado do toque não manda.
       if (hoverThumbEl && hoverThumbEl.classList.contains("is-press")) return;
-      const alvo = ev.target.closest("[data-hover-thumb]");
+      const quem = elementoDe(ev);
+      const alvo = quem && quem.closest("[data-hover-thumb]");
       const url = alvo && alvo.dataset.hoverThumb;
       if (!url) { hoverThumbHide(); return; }
       const el = hoverThumbShow(url, false);
@@ -8608,10 +8622,11 @@
     }
     document.addEventListener("touchstart", (ev) => {
       pressReset();
-      if (ev.touches.length !== 1) return;
-      const row = ev.target.closest(".card-tile.tile-compact");
+      const quem = elementoDe(ev);
+      if (ev.touches.length !== 1 || !quem) return;
+      const row = quem.closest(".card-tile.tile-compact");
       // Os botões têm ação própria (segurar o + não é "ver a carta").
-      if (!row || ev.target.closest(".tile-btn, a")) return;
+      if (!row || quem.closest(".tile-btn, a")) return;
       const alvo = row.querySelector("[data-hover-thumb]");
       const url = alvo && alvo.dataset.hoverThumb;
       if (!url) return;
