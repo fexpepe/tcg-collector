@@ -41,7 +41,7 @@ const DB_BASE = "https://tcg-db.nikita.jp";
 const UA = { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Sleevu/1.0 (+sleevu.app)" };
 const NO_FETCH = process.argv.includes("--no-fetch");
 const GAME = "mbc";
-const LOGO = "/assets/games/game_mbc.webp";
+const LOGO = "/assets/games/game_mbc-v2.webp";
 
 // Séries: código de set -> prefixo de id e o que tirar do nome do set (a
 // franquia, que o nome em inglês e a seção já dizem). Prefixos mais longos

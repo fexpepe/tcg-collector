@@ -11,6 +11,7 @@
 import { writeFile, mkdir, access } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { writeGameCatalog } from "./lib/sync-common.mjs";
+import { logoNoPadrao } from "./lib/logo-espelho.mjs";
 
 const ROOT = new URL("../", import.meta.url);
 const OUT = new URL("data/lorcana/", ROOT);
@@ -38,22 +39,24 @@ function cardName(c) {
 
 // Logo do set: a Lorcast NÃO serve logo/capa de set. O MushuReport (wiki
 // MediaWiki da comunidade Lorcana) tem todos como "<Nome do Set> logo.png".
-// Baixamos o thumb (500px, via iiurlwidth) e hospedamos LOCAL em
-// data/lorcana/set-logos/<code>.png (mesmo padrão dos dados do Pokémon: baixa no
-// build, serve do próprio site). Retorna o caminho relativo ao site, ou null se
-// o set não tiver logo no wiki (promos/sets novos) — aí o chamador cai pra arte
-// da 1ª carta. Nunca derruba o sync (try/catch -> null).
+// Baixamos o thumb (até 1400px, via iiurlwidth) e hospedamos LOCAL em
+// data/lorcana/set-logos/<code>.webp, no padrão dos logos (docs/LOGOS.md:
+// normalizador do scripts/lib/logo-espelho.mjs, que precisa do SHARP_DIR; sem
+// ele o logo novo não entra). Retorna o caminho relativo ao site, ou null se o
+// set não tiver logo no wiki (promos/sets novos) — aí o set mostra o nome.
+// Nunca derruba o sync (try/catch -> null).
 const LOGOS_DIR = new URL("set-logos/", OUT);
 const WIKI_API = "https://wiki.mushureport.com/api.php";
-// Logo já existente em set-logos/ é CURADO (normalizado em 1000x500, alta
-// resolução) e vence: não re-baixa. Também evita regressão agora que o wiki
-// está atrás de challenge do Cloudflare (fetch de fora falha com 403).
+// Logo já existente em set-logos/ é CURADO e vence: não re-baixa. Também evita
+// regressão agora que o wiki está atrás de challenge do Cloudflare (fetch de
+// fora falha com 403).
 async function hasLocal(name) {
   try { await access(new URL(name, LOGOS_DIR)); return true; } catch { return false; }
 }
 async function fetchSetLogo(setName, code) {
-  // Logo no padrão (docs/LOGOS.md, desde 2026-11-14) é WebP; os 15 curados
-  // antes dele são PNG de quadro 1000×500. O WebP vence quando os dois existem.
+  // Logo no padrão (docs/LOGOS.md, desde 2026-11-14) é WebP; os 14 curados
+  // antes dele eram PNG de quadro 1000×500 (saíram, com 301 pro WebP no
+  // _redirects). O WebP vence se um PNG voltar a aparecer.
   for (const ext of ["webp", "png"]) {
     if (await hasLocal(`${code}.${ext}`)) return `data/lorcana/set-logos/${code}.${ext}`;
   }
@@ -61,7 +64,7 @@ async function fetchSetLogo(setName, code) {
     const u = new URL(WIKI_API);
     u.search = new URLSearchParams({
       action: "query", titles: `File:${setName} logo.png`,
-      prop: "imageinfo", iiprop: "url", iiurlwidth: "500", format: "json"
+      prop: "imageinfo", iiprop: "url", iiurlwidth: "1400", format: "json"
     }).toString();
     const r = await fetch(u, { headers: { "User-Agent": UA } });
     if (!r.ok) return null;
@@ -74,9 +77,11 @@ async function fetchSetLogo(setName, code) {
     if (!img.ok) return null;
     const buf = Buffer.from(await img.arrayBuffer());
     if (buf.length < 200 || buf.slice(1, 4).toString() !== "PNG") return null; // não é PNG
+    const final = await logoNoPadrao(buf, "set");
+    if (!final) return null; // sem sharp: logo novo não entra fora do padrão
     await mkdir(LOGOS_DIR, { recursive: true });
-    await writeFile(new URL(`${code}.png`, LOGOS_DIR), buf);
-    return `data/lorcana/set-logos/${code}.png`;
+    await writeFile(new URL(`${code}.webp`, LOGOS_DIR), final);
+    return `data/lorcana/set-logos/${code}.webp`;
   } catch (e) {
     console.warn(`  logo ${code} (${setName}): ${e.message}`);
     return null;

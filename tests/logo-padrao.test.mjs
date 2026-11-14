@@ -59,14 +59,20 @@ test("cabeçalho: JPEG não tem alfa; SVG é vetor", () => {
   assert.equal(lerCabecalho(Buffer.from('<?xml version="1.0"?>\n<svg viewBox="0 0 10 10"></svg>')).formato, "svg");
 });
 
-test("os logos de verdade do repositório são lidos (um de cada formato)", () => {
+// Desde 2026-11-14 não sobra PNG de logo no repositório (os 14 do Lorcana
+// viraram WebP): o PNG fica nos testes sintéticos acima, e aqui vão os
+// formatos que o site serve de verdade.
+test("os logos de verdade do repositório são lidos (WebP com e sem perda, SVG)", () => {
   const ler = (p) => lerCabecalho(readFileSync(new URL(`../${p}`, import.meta.url)));
-  const lorcana = ler("data/lorcana/set-logos/1.png");
-  assert.equal(lorcana.formato, "png");
-  assert.ok(lorcana.largura > 0 && lorcana.alfa);
-  const pokemon = ler("assets/games/game_pokemon.webp");
-  assert.equal(pokemon.formato, "webp");
-  assert.ok(pokemon.largura > 0 && pokemon.altura > 0 && pokemon.alfa);
+  const lorcana = ler("data/lorcana/set-logos/1.webp");
+  assert.equal(lorcana.formato, "webp");
+  assert.equal(lorcana.perda, "com perda");
+  assert.ok(lorcana.largura > 0 && lorcana.altura > 0 && lorcana.alfa);
+  const grandArchive = ler("assets/games/game_grandarchive-v2.webp");
+  assert.equal(grandArchive.formato, "webp");
+  assert.equal(grandArchive.perda, "sem perda");
+  assert.ok(grandArchive.largura > 0 && grandArchive.alfa);
+  assert.equal(ler("data/magic/set-logos/10e.svg").formato, "svg");
 });
 
 test("tipo pelo caminho", () => {

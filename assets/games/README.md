@@ -18,8 +18,11 @@ carrega e esconde o nome em texto (fallback sem erro).
 - `game_magic-v2.webp` — Magic: The Gathering (fonte: `../brand/Magic-The-Gathering-logo.png`)
 - `game_gundam-v2.webp` — Gundam Card Game (fonte: gundam-gcg.com/en/images/common/logo.png;
   162px nativo, upscalado p/ 512 — line-art aguenta)
-- `game_dbfw-v2.webp` — Dragon Ball Super Fusion World (fonte: `../brand/logo_title_dbfwcardgame.webp`)
-- `game_fab.webp` — Flesh and Blood (fonte: `../brand/Flesh_and_Blood_TCG_Logo.png`)
+- `game_dbfw-v2.webp` — Dragon Ball Super Fusion World (fonte: `../brand/logo_title_dbfwcardgame.webp`;
+  regravado no padrão em 2026-11-14: 479×260, cabe no teto)
+- `game_fab.webp` — Flesh and Blood (fonte: `../brand/Flesh_and_Blood_TCG_Logo.png`, 436×229;
+  regravado no padrão em 2026-11-14 a partir dela, 436×223: o arquivo de antes
+  era essa fonte esticada pra 512, com 9 px de margem embaixo)
 - `game_ygo-v2.webp` — Yu-Gi-Oh! (fonte: `../brand/yugioh.jpg` — JPG de fundo branco,
   funde no chip branco; sem alpha)
 - `game_digimon-v2.webp` — Digimon Card Game (fonte: `../brand/digimon.webp`)
@@ -158,12 +161,15 @@ carrega e esconde o nome em texto (fallback sem erro).
   transparente, recortado no conteúdo (+2px), alfa ≤12 zerado e reduzido pra
   512×182 com o Pillow em alfa pré-multiplicado. WebP com perda q88 e alfa
   sem perda: 34 KB.
-- `game_duelmasters.webp` — Duel Masters (tile da grade moderna do hub,
-  depois do Vanguard, 2026-11-13). Fonte: o logo do cabeçalho do site oficial
-  (`dm.takaratomy.co.jp/common/img/parts/logo01@2x.png`, 154×78, PNG com
-  alfa: "DUEL MASTERS" em amarelo sobre o dragão vermelho). É a maior versão
-  que o site publica; ampliado pra 512×259 com Lanczos no ffmpeg (fica macio:
-  PENDENTE um logo maior). WebP sem perda, 90 KB.
+- `game_duelmasters-v2.webp` — Duel Masters (tile da grade moderna do hub,
+  depois do Vanguard). O v1 (2026-11-13) era o logo do cabeçalho do site
+  oficial (`logo01@2x.png`, 154×78) ampliado pra 512×259: macio, 90 KB e com
+  véu de alfa. Fonte nova (2026-11-14): o logo das páginas de campanha do
+  mesmo site (`dm.takaratomy.co.jp/img/2025lp/logo.png`, igual ao de
+  `/img/2026lp/`), PNG de 600×285 com alfa, nítido no tamanho real: a mesma
+  arte (o dragão prateado e o "DUEL MASTERS"). Pelo normalizador: 547×260,
+  WebP q90, 47 KB. A ponta do rabo do dragão encosta na borda de baixo já na
+  fonte.
 - `game_vanguard.webp` — Cardfight!! Vanguard (tile da grade moderna do hub,
   depois do Final Fantasy, 2026-11-13). Fonte enviada pelo Fernando no mesmo
   dia: PNG de 600×269 com alfa, o logo "CARDFIGHT!! Vanguard overDress"
@@ -177,15 +183,16 @@ carrega e esconde o nome em texto (fallback sem erro).
   em cinza sobre o contorno de uma carta). Recortado no conteúdo (+2px) e
   alfa ≤12 zerado; como o Star Wars v1, **não** foi esticado pra 512 (bitmap
   pequeno). WebP sem perda, 17 KB. O cinza escuro lê bem na cápsula branca.
-- `game_grandarchive.webp` — Grand Archive TCG (21º tile da grade moderna
-  do hub, 2026-11-13). Fonte: o logo do cabeçalho do site oficial
-  (`www.gatcg.com/_nuxt/img/logo_navbar_stacked.63a3a6a.png`, 300×116, PNG
-  com alfa: "GRAND ARCHIVE" em duas linhas, BRANCO chapado — o site é
-  escuro). É a única versão publicada, e branco some na cápsula branca do
-  hub: o alfa foi mantido e a cor trocada por `#14161c` (o logo é de uma
-  cor só, então nada do desenho muda). Alfa ≤12 zerado; não foi esticado
-  (bitmap pequeno). WebP sem perda, 5 KB. **Decisão a confirmar pelo
-  Fernando**: se a marca publicar uma versão escura, ela entra no lugar.
+- `game_grandarchive-v2.webp` — Grand Archive TCG (21º tile da grade moderna
+  do hub). O v1 (2026-11-13) era o logo do cabeçalho do site oficial
+  (`logo_navbar_stacked`, 300×116, branco) recolorido pra `#14161c`: 1,24× no
+  hub, borrado em tela retina. Fonte nova (2026-11-14): a versão escura
+  oficial, no kit de mídia do produto (`gatcg.com/article/PRD-product-information`
+  → `PRD_Media_Kit_….zip`, pasta `Logos/`, `Grand Archive Logo Flat.png`):
+  7106×2752, preto chapado com alfa, o mesmo desenho empilhado. Resolve a
+  "decisão a confirmar" do v1: a marca publica a versão escura. Pelo
+  normalizador: 640×248, WebP sem perda, 15 KB. (O kit traz também a versão
+  colorida, azul metálico com contorno dourado, 1763×682.)
 - `game_hololive.webp` — hololive OFFICIAL CARD GAME (seção "Outros TCGs"
   do hub, 2026-11-13). Fonte: o logo do cabeçalho do site oficial em inglês
   (`en.hololive-official-cardgame.com/wp-content/themes/tcg_en/assets/img/global/logo.svg`,
@@ -226,8 +233,12 @@ carrega e esconde o nome em texto (fallback sem erro).
   Vintage da landing por enquanto: o One Piece Card Game de 2002 e o Gundam
   Carddass (2026-11-11) já levaram a fileira a 14 (7 + 7 no tablet); com ele
   seriam 15, e a grade se decide junto.
-- `game_naruto.webp` — logo NARUTO genérico (tile do jogo e `setLogo` do Data
-  Carddass Cross Formation nrt-nx/nrt-nf)
+- `game_naruto-v2.webp` — logo NARUTO genérico (tile do jogo e `setLogo` do Data
+  Carddass Cross Formation nrt-nx/nrt-nf e do 疾風伝 Card Game). Desde
+  2026-11-14 sai do vetor (`../brand/naruto.svg`, antes `game_naruto.svg`
+  aqui) pelo normalizador: 751×320, 2× no "Sobre". O v1 (`game_naruto.webp`,
+  512×218, 1,4× no "Sobre") saiu, com 301 pro v2 no `_redirects`: o build
+  rápido traz do cache os sets do 疾風伝 e do Naruto Trading Cards.
   Vale também como logo do jogo `narutotc` (Naruto Trading Cards, as cartas de
   coleção da Amada e da Ensky, 13/11/2026) e de todos os sets dele: nenhum
   produto tem logo recortado em fonte aberta, e o NARUTO é a marca impressa
@@ -284,11 +295,22 @@ carrega e esconde o nome em texto (fallback sem erro).
   do produto ("CARDDASS HYPER BATTLE" sobre o HUNTER×HUNTER azul), enviado pelo
   Fernando (WebP 1448×1086 com alfa), no padrão de logo da PR #315 (docs/LOGOS.md, normaliza-logo.mjs):
   580×320, 75 KB. Até ali era o `game_hxh.webp`, o logo da série em vermelho.
-- `game_mbc.webp` — Miracle Battle Carddass (tile vintage do jogo `mbc` e
+- `game_mbc-v2.webp` — Miracle Battle Carddass (tile vintage do jogo `mbc` e
   `setLogo` de todos os sets dele, via sync-miracle-battle.mjs). Até 2026-10-01
   eram três arquivos, `game_onepiece_miracle`, `game_naruto_miracle` e
   `game_hxh_miracle`, um por linha, com o MESMO conteúdo (md5 igual): o logo
   oficial do jogo, que não muda de franquia pra franquia.
+  O v1 (`game_mbc.webp`) era opaco, com o fundo branco: no chip cinza do set
+  aparecia o retângulo. O v2 (2026-11-14) sai do próprio v1, como o
+  `game_dbc-v2`: fundo por preenchimento a partir da borda (menor canal > 200),
+  que para no contorno preto e deixa o branco do katakana vazado; na faixa de
+  2 px da borda, alfa e cor desmisturados do branco contra a tinta mais escura
+  por perto. Pelo normalizador: 512×276, WebP q90, 42 KB (1,77× no "Sobre":
+  macio, só aviso). Fonte maior existe (a capa do livro de regras oficial,
+  `miraclebattle.com/pdf/rulemanual.pdf` no Wayback, logo a ~940×377), mas
+  sobre a ilustração da capa, com a ponta do raio coberta pelo título: fica
+  pra uma rodada de recorte à mão. O nome antigo tem 301 pro novo no
+  `_redirects` (o build rápido traz o `data/mbc/sets/` do cache).
 - `game_dbc-v3.webp` — Dragon Ball Carddass. Desde 2026-11-14 a fonte é a de
   2000×671 com alfa enviada pelo Fernando, no padrão de logo da PR #315 (docs/LOGOS.md, normaliza-logo.mjs):
   960×203, 60 KB. Até ali era o `game_dbc-v2.webp` descrito a seguir.
@@ -335,6 +357,19 @@ carrega e esconde o nome em texto (fallback sem erro).
   brilho de baixo ficou fora do recorte (as letras acabam na linha ~199 da
   fonte). Recortado no conteúdo +2px = 200×172, alfa abaixo de 12 zerado, sem
   esticar (bitmap pequeno, como o Union Arena v1).
+  **v2 (`game_lotr-v2.webp`, 2026-11-14):** o v1 dava 1,1× no "Sobre". Fonte
+  nova: a capa do livro de regras do Deluxe Starter do Set 04 (Decipher), no
+  acervo do Player's Council (`cdn.lotrtcgpc.net/files/rulebooks/decipher/starters/Rules-Deluxe-EN_Set-04.pdf`,
+  imagem da capa extraída do PDF com o PyMuPDF, 1819×1295): o mesmo logo,
+  com "TRADING CARD GAME", a ~430 px sobre quase preto. Mesmo método do v1
+  (alfa pelo canal mais claro, rampa 14→110, cor desmisturada do preto), mais
+  duas coisas: só cor QUENTE vira tinta (R − B, rampa 8→40), porque a torre
+  atrás das letras é cinza-azulada; e ilhas de menos de ~60 px saem. Máscara
+  em 4× e reduzida. Pelo normalizador: 339×320, 2,05× no "Sobre", WebP q90,
+  55 KB. A capa do livro completo (Comprehensive Rules 1.0) traz o logo a
+  ~775 px, mas sobre um mapa dourado com escrita élfica: a chave de cor não
+  separa. O v1 saiu, com 301 pro v2 no `_redirects` (o sync-lotr só roda no
+  build completo, e o rápido traz o `data/lotr/sets/` do cache).
 - `game_harrypotter.webp` — Harry Potter Trading Card Game (Wizards of the
   Coast, 2001–2002; tile vintage do jogo `harrypotter`). Fontes enviadas pelo
   Fernando em 2026-09-30: um scan 1587×1256 sobre fundo PRETO e uma versão
@@ -362,9 +397,20 @@ carrega e esconde o nome em texto (fallback sem erro).
   sumia na cápsula branca. Recortado no conteúdo +2px, alfa abaixo de 12
   zerado, reduzido pra 512×179 (Pillow, webp q90 com alfa sem perda). Script
   no scratchpad da sessão de 2026-11-02.
-- `game_naruto.svg` — FONTE vetorial do logo do Naruto (Inkscape). Se editar,
-  re-exporte o webp: @resvg/resvg-js (ou qualquer rasterizador) em 512px e
-  depois `ffmpeg -i logo.png -c:v libwebp -quality 90 game_naruto.webp`.
+  **v2 (`game_dbz-v2.webp`, 2026-11-14):** o v1 dava 1,33× no "Sobre", mas o
+  logo no sell sheet tem ~830 px: refeito da mesma fonte, sem reduzir. Mesmo
+  método, em JS com o sharp: preenchimento a partir da borda do recorte por
+  tudo que não é branco (menor canal > 170) nem amarelo, que para no filete;
+  fica o maior componente (sai o ®); preto do contorno fechado (luminância
+  < 85); o subtítulo pelo amarelo, sem ilhas de menos de 60 px, com contorno
+  de ~3,5 px (#120c0a) por dilatação. Máscara em 4× (fonte ampliada) e
+  reduzida, sem serrilhado. Pelo normalizador: 844×296, 2,2× no "Sobre",
+  WebP q90, 70 KB (o sem perda dava 231 KB, pela textura da impressão).
+- `../brand/naruto.svg` (até 2026-11-14, `game_naruto.svg` aqui) — FONTE
+  vetorial do logo do Naruto (Inkscape). Saiu desta pasta porque não é
+  servido como logo: aqui ele contava como logo de jogo e passava do peso de
+  SVG do padrão (38 KB). Se editar, re-exporte com nome novo:
+  `normaliza-logo.mjs ../brand/naruto.svg assets/games/game_naruto-v3.webp --vintage`.
 - `game_cdm-v2.webp` — Carddass Masters. Desde 2026-11-14 é o logo preto com o
   "A" vermelho enviado pelo Fernando (PNG 1254×1254 com alfa e muita margem),
   no padrão de logo da PR #315 (docs/LOGOS.md, normaliza-logo.mjs): 890×302, 49 KB. Até ali era o
@@ -429,6 +475,18 @@ mostrava lado a lado:
 Feitos no Chromium (canvas → `toBlob("image/webp", 0.9)`, alfa sem perda),
 que dá o mesmo peso dos originais: 181 KB contra 214 KB dos sete antigos.
 
+### Regravados no padrão sem trocar o nome (2026-11-14)
+
+Mesma arte, só menor ou sem margem, então o nome ficou (quem tem o antigo no
+cache vê a mesma figura): `game_pokemon` (508×260), `game_swu-v2` (363×260),
+`game_vanguard` (580×260), `game_narutokayou` (390×260), `game_narutomythos`
+(512×257, 36 KB em vez de 72), `game_harrypotter` (417×320) e
+`game_naruto_datacarddass` (476×320), `game_shadowverse` (301×260) e
+`game_dbs` (502×226, sem os 13 px de margem embaixo) passavam do teto, do
+peso ou tinham margem e foram regravados a partir do próprio arquivo; `game_dbfw-v2` e `game_fab`, a partir
+da fonte em `../brand/`. Quando a arte ganha nitidez (fonte maior), o nome
+muda (`-v2`, `-v3`), como sempre.
+
 ## Conversão (novo logo)
 
 Com a fonte já de fundo transparente (tirar o fundo é a parte à mão, como nos
@@ -461,7 +519,13 @@ deixava logo largo abaixo de 2× no hub.
   logo alto fica mais estreito), pra nenhum pesar mais que o vizinho.
 - **Troca de arte:** `/assets/*` é `immutable` (ver `_headers`) — suba com OUTRO
   nome (`-v2`, `-v3`…) e atualize as referências: `hub.html`, `index.html`,
-  `src/app.js` (`GAME_LOGO`) e `scripts/og/og-image.html`.
+  `vintage.html`, `src/app.js` (`GAME_LOGO`), `src/admin.js` (`KIT_LOGO`),
+  `functions/_lib/jogos.js`, `data/sobre/<jogo>.json` ("Sobre") e
+  `scripts/og/og-image.html`. Logo de jogo vintage que é `setLogo` dos sets:
+  também a constante `LOGO` do `scripts/sync-*.mjs` e o `data/<jogo>/cards.js`.
+  O build rápido traz o `data/<jogo>/sets/` do cache, com o caminho antigo:
+  o arquivo antigo sai do repositório e o nome dele ganha um 301 pro novo no
+  `_redirects` (como nos vintage da PR #318).
 - O CSP (`img-src 'self'`) já cobre arquivos locais.
 
 > São marcas registradas dos respectivos titulares; o uso aqui é nominativo (pra
