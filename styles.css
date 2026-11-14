@@ -9485,6 +9485,11 @@ html:not([lang^="pt"]) .sx-sobre[data-idioma="pt"] { visibility: hidden; }
 .cmdk-scan { display: inline-flex; align-items: center; justify-content: center; width: auto; max-width: 100%; min-height: 48px; margin: 0 auto; padding: 0 26px; gap: 10px; border-radius: 999px; background: var(--accent); color: var(--on-accent); font-size: 16px; font-weight: 800; }
 .cmdk-scan:hover { background: var(--accent-dark); }
 .cmdk-scan svg { width: 22px; height: 22px; flex: none; }
+/* Aviso de beta logo abaixo do scanner (2026-11-14): a leitura ainda erra ou
+   não acha algumas cartas, e quem toca no botão grande precisa saber disso
+   ANTES, pra não achar que o app quebrou. Texto pequeno e apagado, na largura
+   do botão, pra não competir com ele nem com o convite de cima. */
+.cmdk-scan-beta { max-width: 300px; margin: 10px auto 0; font-size: 12.5px; line-height: 1.4; color: var(--subtle); text-wrap: balance; }
 .cmdk-hint { margin: 0; padding: 8px 14px; border-top: 1px solid var(--line); font-size: 11.5px; color: var(--subtle); }
 /* Celular: a paleta vira uma TELA. Sem moldura, sem sombra, ocupando a
    viewport inteira (dvh acompanha a barra do navegador que some e volta), com
