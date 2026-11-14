@@ -296,9 +296,9 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   cartas dos 50 sets da TCGCSV (cat. 73), do Advent of Genesis ao Omens and
   Heirs, só a edição em inglês; 7.142 com preço. Pendências: a migração
   `20261114a` (aplicar no SQL Editor); a edição japonesa, que não está no
-  TCGplayer; o ilustrador; loja BR e Cardmarket não conferidos; a cor
-  (`#818cf8`, proposta) e o lugar no hub (seção "Outros TCGs", proposta: pelo
-  porte caberia na grade de cima); logo de set não pesquisado.
+  TCGplayer; o ilustrador; loja BR e Cardmarket não conferidos; logo de set
+  não pesquisado. A cor (`#818cf8`) e o lugar no hub (seção "Outros TCGs")
+  foram confirmados pelo Fernando em 14/11.
 - **Godzilla Card Game (`godzilla`, 2026-11-11)**: entrou com as 940 cartas
   da edição inglesa (TCGCSV cat. 88). Pendências: o Booster Set #5
   ("Overlord Zero", 18/12/2026) e os starters ESD03–05 (04/12/2026) entram

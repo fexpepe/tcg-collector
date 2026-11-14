@@ -481,7 +481,7 @@
   --accent: #0e7490; --accent-dark: #0b5f76; --accent-rgb: 14, 116, 144;
   --accent-soft: rgba(14, 116, 144, 0.1); --on-accent: #ffffff;
 }
-/* Shadowverse: Evolve: ÍNDIGO claro (13/11/2026, proposta: o ciano do logo já
+/* Shadowverse: Evolve: ÍNDIGO claro (13/11/2026, confirmada em 14/11; o ciano do logo já
    é do hololive e do WoW). Texto escuro no escuro (7.0:1); índigo fechado com
    branco no claro (7.9:1). */
 [data-game-accent="shadowverse"] {

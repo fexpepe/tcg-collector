@@ -9032,7 +9032,7 @@
     fftcg: "#93c5fd",      // azul-cristal (os cristais do Final Fantasy); 11.6:1 com preto, a 77 do Gundam War e a 86 do prata do DBFW (proposta, 2026-11-11)
     grandarchive: "#f0abfc", // lilás (proposta, 2026-11-13): o logo oficial é branco e não dá cor; 11.9:1 com preto, a 85 do branco do Weiß e a 97 do azul do Final Fantasy
     hololive: "#38d6f5",   // ciano: o azul-céu da marca hololive (proposta, 2026-11-13); 12.1:1 com preto, a 54 do Gundam War e a 70 do WoW
-    shadowverse: "#818cf8", // índigo claro (proposta, 2026-11-13): o ciano do logo já é do hololive e do WoW; 7.0:1 com preto, a 60 do Final Fantasy e a 83 do Yu-Gi-Oh!
+    shadowverse: "#818cf8", // índigo claro (confirmada pelo Fernando, 2026-11-14): o ciano do logo já é do hololive e do WoW; 7.0:1 com preto, a 60 do Final Fantasy e a 83 do Yu-Gi-Oh!
     narutomythos: "#fde68a", // ouro claro (a Legendary de folha de ouro 22K é a carta-símbolo); 16.9:1 com preto, a 88 do Sorcery (confirmada pelo Fernando, 2026-11-12)
     narutokayou: "#d946ef", // magenta; 6.1:1 com preto, a 94 do Yu-Gi-Oh! e do Carddass Masters. O coral #fb7185 que o Fernando confirmou em 12/11 ficou a 26 do Vanguard, que entrou no dia 13 com #ff5a7a (proposta, 2026-11-13)
     duelmasters: "#fde68a", // ouro-claro, o amarelo do logo; 16.9:1 com preto, a 88 do Sorcery, o vizinho mais próximo (proposta, 2026-11-13)
