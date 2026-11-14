@@ -676,7 +676,16 @@ jobs:
         run: |
           modo=""
           [ "$(date -u +%u)" = "7" ] && modo="--full"
-          node scripts/sync-duelmasters.mjs $modo || echo "sync-duelmasters falhou; mantém o catalogo versionado"
+          node scripts/sync-duelmasters.mjs $modo || { echo "sync-duelmasters falhou; remonta do catalogo versionado"; node scripts/sync-duelmasters.mjs --no-fetch; }
+
+      # O mesmo jogo no build RAPIDO (push), sem rede: remonta manifest, chunks
+      # e pricing.generated do cards.js e do pricing.js versionados (~5 s). No
+      # 1o deploy (14/11/2026) o sync caiu (a Yuyu-tei da 403 pro GitHub) e o
+      # jogo foi pro ar sem manifest: a tela de sets ficou vazia. Com este passo
+      # e o fallback de cima, o que esta na main e o que vai pro ar.
+      - name: Catálogo do Duel Masters (build rápido, sem rede)
+        if: env.RODA_SYNC != 'true'
+        run: node scripts/sync-duelmasters.mjs --no-fetch || echo "sync-duelmasters --no-fetch falhou; segue com o catalogo do cache"
 
       - name: Snapshot de preços (histórico Duel Masters)
         if: env.RODA_SYNC == 'true'
