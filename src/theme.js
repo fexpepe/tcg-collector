@@ -47,8 +47,13 @@
   // chegava ao /admin. Aqui só se enfileira; o shared.js liga a fila ao envio
   // (window.__sleevuErroNovo) e o src/erros.js monta o contexto. Ver
   // docs/PLANO-TECNICO.md (D1/D2).
-  //  - Recurso: só <script>/<link> do próprio site. Imagem de carta falha o
-  //    tempo todo e tem cadeia de reserva própria.
+  //  - Recurso: só <script> e FOLHA DE ESTILO do próprio site. Imagem de carta
+  //    falha o tempo todo e tem cadeia de reserva própria. Os outros <link>
+  //    (o preload da fonte em todo HTML, o prefetch de preço do app.js) são
+  //    adiantamento: se falham, a fonte reserva entra e o fetch de verdade
+  //    pede de novo, nada quebra. Até 2026-11-14 contavam, e o preload da
+  //    fonte era o erro nº 1 do painel (103 em 30 dias, 99 navegadores, todos
+  //    Chrome 114–140 no Mac — robô que não baixa fonte).
   //  - CSP: script inline barrado é o da detecção de robô do Cloudflare, que
   //    a política recusa de propósito (functions/_vitrine-csp.js) — fica fora.
   //    E só conta BLOQUEIO de verdade (disposition "enforce"). O monitor de
@@ -68,7 +73,8 @@
       var alvo = e.target;
       if (alvo && alvo !== window && alvo.tagName) {
         var u = String(alvo.src || alvo.href || "");
-        if ((alvo.tagName === "SCRIPT" || alvo.tagName === "LINK") && u.indexOf(location.origin + "/") === 0) {
+        var conta = alvo.tagName === "SCRIPT" || (alvo.tagName === "LINK" && /(^|\s)stylesheet(\s|$)/i.test(String(alvo.rel || "")));
+        if (conta && u.indexOf(location.origin + "/") === 0) {
           poe({ k: "recurso", m: alvo.tagName.toLowerCase() + " não carregou", s: u });
         }
         return;

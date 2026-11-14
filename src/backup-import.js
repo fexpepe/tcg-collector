@@ -183,6 +183,8 @@
     if (flat.includes("grandarchive")) return "grandarchive";
     // "hololive OFFICIAL CARD GAME" no TCGplayer e no Collectr.
     if (flat.includes("hololive")) return "hololive";
+    // "Shadowverse: Evolve" no TCGplayer e no Collectr.
+    if (flat.includes("shadowverse")) return "shadowverse";
     // "Cardfight Vanguard" no TCGplayer e "Cardfight!! Vanguard" no Collectr.
     if (flat.includes("vanguard")) return "vanguard";
     if (flat.includes("duelmasters")) return "duelmasters";

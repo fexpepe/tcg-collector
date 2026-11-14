@@ -478,6 +478,10 @@
     // as do Oshi (a carta que comanda o deck tem raridade própria), a secreta,
     // as Special (arte alternativa e Cheer) e a promo.
     hololive: ["Common", "Uncommon", "Rare", "Double Rare", "Super Rare", "Holomem Rare", "Ultra Rare", "Oshi Common", "Oshi Super Rare", "Oshi Ultra Rare", "Secret Rare", "Special", "Special Yell", "Promo"],
+    // Shadowverse: Evolve (13/11/2026): a escada de metal, a Premium (a foil
+    // de qualquer degrau), as paralelas de arte (Super Legendary, Special,
+    // Super Special, Ultimate), a de aniversário e a promo.
+    shadowverse: ["Bronze", "Silver", "Gold", "Legendary", "Premium", "Super Legendary", "Special", "Super Special", "Ultimate", "Anniversary", "Promo"],
     grandarchive: ["Common", "Uncommon", "Rare", "Super Rare", "Ultra Rare", "Promo", "Collector Super Rare", "Collector Ultra Rare", "Collector Promo"],
     // Naruto Mythos TCG (12/11/2026): a escada do guia de coleção oficial, da
     // base ao ouro; as Mission são tipo de carta, e as Mythos, fora de coleção.

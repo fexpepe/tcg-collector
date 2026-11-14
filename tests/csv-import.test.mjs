@@ -142,6 +142,8 @@ test("mapCsvGame: os 13 jogos, nas grafias do Collectr/TCGplayer", () => {
   assert.equal(api.mapCsvGame("Grand Archive"), "grandarchive");
   assert.equal(api.mapCsvGame("hololive OFFICIAL CARD GAME"), "hololive");
   assert.equal(api.mapCsvGame("Hololive Official Card Game"), "hololive");
+  assert.equal(api.mapCsvGame("Shadowverse: Evolve"), "shadowverse");
+  assert.equal(api.mapCsvGame("Shadowverse Evolve"), "shadowverse");
   assert.equal(api.mapCsvGame("Cardfight Vanguard"), "vanguard");
   assert.equal(api.mapCsvGame("Cardfight!! Vanguard"), "vanguard");
   assert.equal(api.mapCsvGame("Duel Masters"), "duelmasters");

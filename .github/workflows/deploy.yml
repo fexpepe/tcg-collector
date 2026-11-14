@@ -136,6 +136,7 @@ jobs:
             data/fftcg/sets
             data/grandarchive/sets
             data/hololive/sets
+            data/shadowverse/sets
             data/vanguard/sets
             data/duelmasters/sets
             data/narutomythos/sets
@@ -166,7 +167,7 @@ jobs:
           faltando=""
           # data/dbc/, data/swu/, data/cyberpunk/, data/wow/, data/lotr/,
           # data/sorcery/, data/harrypotter/, data/weiss/, data/mbc/, data/dbz/ e
-          # data/cdm/, data/gcd/, data/gw/, data/narutocg/, data/godzilla/, data/palworld/, data/fftcg/, data/vanguard/, data/grandarchive/, data/hololive/, data/duelmasters/, data/seiya/, data/seiyatc/ e data/seiyacr/: jogos novos (2026-09-24 a 2026-11-13);
+          # data/cdm/, data/gcd/, data/gw/, data/narutocg/, data/godzilla/, data/palworld/, data/fftcg/, data/vanguard/, data/grandarchive/, data/hololive/, data/duelmasters/, data/shadowverse/, data/seiya/, data/seiyatc/ e data/seiyacr/: jogos novos (2026-09-24 a 2026-11-13);
           # data/dbsb/, data/dbva/ e data/dbbw/ (2026-11-13), as séries do dbc que viraram jogo. Enquanto o cache
           # for de antes deles, o build rápido publicaria o tile do hub sem
           # catálogo nenhum atrás.
@@ -198,7 +199,8 @@ jobs:
                    data/narutokayou/manifest.generated.js \
                    data/grandarchive/manifest.generated.js \
                    data/hololive/manifest.generated.js \
-                   data/duelmasters/manifest.generated.js; do
+                   data/duelmasters/manifest.generated.js \
+                   data/shadowverse/manifest.generated.js; do
             [ -s "$f" ] || faltando="$faltando $f"
           done
           if [ -n "$faltando" ]; then
@@ -659,6 +661,18 @@ jobs:
         if: env.RODA_SYNC == 'true'
         run: node scripts/sync-price-history.mjs data/hololive
 
+      # Shadowverse: Evolve (TCGCSV cat. 73, Bushiroad/Cygames 2023+, so a
+      # edicao inglesa). Padrao Vanguard: cada versao (Premium, SL, Evolved) e
+      # um produto proprio, so com o subtipo Normal; setId = abreviacao da
+      # fonte; sem logo de set.
+      - name: Sincroniza catálogo do Shadowverse Evolve (TCGCSV)
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/sync-shadowverse.mjs || echo "sync-shadowverse falhou; mantém o catalogo versionado"
+
+      - name: Snapshot de preços (histórico Shadowverse Evolve)
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/sync-price-history.mjs data/shadowverse
+
       # Cardfight!! Vanguard (TCGCSV cat. 16, Bushiroad 2011+; as cinco eras,
       # so a edicao inglesa). Padrao Weiss: paralela = carta propria, setId do
       # codigo impresso que abre o nome do grupo; sem logo de set.
@@ -682,7 +696,16 @@ jobs:
         run: |
           modo=""
           [ "$(date -u +%u)" = "7" ] && modo="--full"
-          node scripts/sync-duelmasters.mjs $modo || echo "sync-duelmasters falhou; mantém o catalogo versionado"
+          node scripts/sync-duelmasters.mjs $modo || { echo "sync-duelmasters falhou; remonta do catalogo versionado"; node scripts/sync-duelmasters.mjs --no-fetch; }
+
+      # O mesmo jogo no build RAPIDO (push), sem rede: remonta manifest, chunks
+      # e pricing.generated do cards.js e do pricing.js versionados (~5 s). No
+      # 1o deploy (14/11/2026) o sync caiu (a Yuyu-tei da 403 pro GitHub) e o
+      # jogo foi pro ar sem manifest: a tela de sets ficou vazia. Com este passo
+      # e o fallback de cima, o que esta na main e o que vai pro ar.
+      - name: Catálogo do Duel Masters (build rápido, sem rede)
+        if: env.RODA_SYNC != 'true'
+        run: node scripts/sync-duelmasters.mjs --no-fetch || echo "sync-duelmasters --no-fetch falhou; segue com o catalogo do cache"
 
       - name: Snapshot de preços (histórico Duel Masters)
         if: env.RODA_SYNC == 'true'
@@ -1132,6 +1155,7 @@ jobs:
             data/fftcg/sets
             data/grandarchive/sets
             data/hololive/sets
+            data/shadowverse/sets
             data/vanguard/sets
             data/duelmasters/sets
             data/narutomythos/sets
@@ -1357,11 +1381,17 @@ jobs:
       # com semanas de antecedência — e o número real fica no log de todo build,
       # que é o dado que faltava pra decidir quanta imagem cabe aqui (o resto
       # vai pro R2). Rodar DEPOIS do rm acima: conta o que de fato sobe.
+      #
+      # 2026-11-14: o erro subiu de 18.000 pra 19.000, com o aval do Fernando.
+      # A main estava em 17.912 e o Shadowverse: Evolve (50 sets) levou a
+      # 18.093: todo jogo novo daqui pra frente batia aqui. Sobra 1.000 de
+      # margem até o teto real; cortar arquivos (chunks de preço → R2, por
+      # exemplo) fica pra antes do próximo jogo grande.
       - name: Conta arquivos (teto de 20.000 do Pages)
         run: |
           total=$(find . -type f | wc -l)
           echo "Arquivos no deploy: $total (teto do Pages: 20000)"
-          if [ "$total" -gt 18000 ]; then
+          if [ "$total" -gt 19000 ]; then
             echo "::error::$total arquivos — perto demais do teto de 20.000 do Cloudflare Pages. Reduza antes de crescer mais (candidatos: MAX_CARD_PAGES do prerender, chunks de preço, imagens espelhadas → R2)."
             exit 1
           fi
