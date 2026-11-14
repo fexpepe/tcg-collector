@@ -164,8 +164,9 @@ e cada fonte publica um tamanho diferente — nenhuma servia bem grade E popup
 em toda tela. O bucket `sleevu-img`, servido em `img.sleevu.app` com CORS pra
 `sleevu.app`, guarda **variantes geradas pelo próprio job**: a partir da
 melhor imagem de cada fonte (a "matriz", em `scripts/lib/img-mirror.mjs`),
-WebP em três larguras — 300 (grade em tela comum), 600 (grade em tela 2x/3x)
-e 1000 (popup), nunca ampliando. A chave é
+WebP em quatro larguras — 300 (grade em tela 1x), 450 (grade no notebook a
+125–150% e no celular 2x), 600 (grade no celular 3x e no desktop 2x) e 1000
+(popup), nunca ampliando. A chave é
 `<host><caminho da URL do catálogo>@<largura>.webp`; no `wsrv.nl` a base vem
 do parâmetro `url`.
 
@@ -181,7 +182,8 @@ do parâmetro `url`.
 - **Deploy:** `scripts/apply-img-mirror.mjs` lê o status e injeta os hosts
   COMPLETOS no esquema atual no `game.js` (`window.SLEEVU.imgMirrorHosts`).
   Só esses viram URL espelhada no cliente (`mirrorImg` no `shared.js`): grade
-  com `srcset` 300w/600w em todas as fontes, popup com a de 1000, e a origem
+  com `srcset` 300w/600w em todas as fontes (300w/450w/600w nos hosts da
+  `imgMirror450`, abaixo), popup com a de 1000, e a origem
   logo atrás na cadeia de fallback — carta nova de hoje continua aparecendo.
   Espelho vazio ou fora do ar = lista vazia = site como sempre.
 - **Gerações (13/10/2026):** mudar a forma de gerar (matriz, qualidade) não
@@ -194,6 +196,17 @@ do parâmetro `url`.
   geração antiga de um host até a nova fechar. A geração 2 tira a compressão
   dupla da TCGdex (matriz `high.png`, não mais o `high.webp`) e faz a 1000
   (popup) em q90 com `smartSubsample` — a grade segue em q80.
+- **Largura 450 (14/11/2026):** não é geração nova. Carta gerada daqui em
+  diante já sai com as quatro larguras; as que existiam ganham a 450 num passo
+  do job depois da manutenção e da regeração, a partir da 1000 que já está no
+  bucket (sem bater nas fontes). O índice marca a carta com a 450 (6º campo) e
+  o status publica `intermediaria: true` no host quando TODAS as cartas da
+  geração servida a têm; o deploy injeta esses hosts no `game.js`
+  (`window.SLEEVU.imgMirror450`) e só neles a 450 entra no `srcset`. Com o
+  `sizes` da grade (celular 54vw, desktop 300px), tela 1x pega a 300, 125%,
+  150% e celular 2x a 450, e 3x a 600: ~33% menos bytes na grade dessas
+  telas, ainda 1,3–1,5x o que elas desenham. Custo: ~300 mil objetos de ~40 KB
+  (~12 GB).
 - **Custo:** ~760 mil objetos, ~45 GB no R2 (os primeiros 10 GB grátis,
   US$ 0,015/GB depois), saída de dados grátis, leituras quase todas no cache
   da Cloudflare. A geração 2 soma outro tanto (~50 GB, o popup ficou maior):

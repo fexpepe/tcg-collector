@@ -5240,7 +5240,14 @@
   // (1,2–1,4x) e qualquer tela acima de 1x pega a de 600. Celular não muda:
   // em DPR 2/3 ele já pegava a de 600. Custo: ~3x bytes na grade do desktop
   // com zoom/escala acima de 100%.
-  const SIZES_CARD_TILE = "(max-width: 460px) 60vw, (max-width: 720px) 40vw, (max-width: 1000px) 34vw, 300px";
+  //
+  // Largura 450 (14/11/2026, scripts/lib/img-mirror.mjs): com ela no srcset,
+  // o notebook a 125%/150% e o celular 2x pegam a 450 em vez da 600 (~33%
+  // menos bytes, ainda 1,3–1,5x o que a tela desenha); 1x segue na 300 e 3x
+  // na 600. Até 460 px o tile ocupa 39,6–41,3vw (medido em 390 e 460): com
+  // a margem de 1,3x, 54vw. Era 60vw (1,5x), e com ele o celular 2x de 390
+  // pedia 468 px e pulava a 450.
+  const SIZES_CARD_TILE = "(max-width: 460px) 54vw, (max-width: 720px) 40vw, (max-width: 1000px) 34vw, 300px";
   // Binder: ate 700px a pagina empilha e ocupa a largura toda (3 colunas, o
   // padrao do --cols); no desktop a pagina para em cols*230px (slot de ~210).
   // Mesma margem de 1,3x da grade (ver acima).
@@ -5344,12 +5351,14 @@
     // 300 com srcset 300w/600w (tela 2x/3x recebe a 600 — em TODAS as fontes,
     // não só na TCGdex), popup pede a de 1000. A cadeia fica [src de origem,
     // cadeia de origem]: uma falha no espelho cai exatamente no que o site
-    // mostrava antes dele.
+    // mostrava antes dele. A 450 entra no meio só nos hosts em que toda carta
+    // já a tem (window.SLEEVU.imgMirror450, ver SIZES_CARD_TILE).
     const m = mirrorImg(url, thumb ? 300 : 1000);
     if (m) {
       chain.unshift(src);
       src = m;
-      srcset = thumb && sizes ? `${m} 300w, ${mirrorImg(url, 600)} 600w` : "";
+      const m450 = ((window.SLEEVU || {}).imgMirror450 || []).indexOf((/^https:\/\/([^/?#]+)/.exec(url) || [])[1]) >= 0 ? `, ${mirrorImg(url, 450)} 450w` : "";
+      srcset = thumb && sizes ? `${m} 300w${m450}, ${mirrorImg(url, 600)} 600w` : "";
     }
     return { src, chain, srcset };
   }

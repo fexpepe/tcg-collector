@@ -9,10 +9,11 @@
 //
 // Como: lê o catálogo construído (o mesmo do deploy), baixa a MATRIZ de cada
 // carta (a melhor imagem da fonte, scripts/lib/img-mirror.mjs), gera WebP nas
-// três larguras (300/600/1000, nunca ampliando) com o sharp e sobe as três no
-// bucket. O índice fica no próprio bucket (_index/<host>.json: base da chave
-// -> [tamanho da matriz, versão, dia, geração, fonte da matriz quando há
-// alternativa]) e o job só faz o que falta ou mudou,
+// quatro larguras (300/450/600/1000, nunca ampliando) com o sharp e sobe as
+// quatro no bucket. O índice fica no próprio bucket (_index/<host>.json: base
+// da chave -> [tamanho da matriz, versão, dia, geração, fonte da matriz quando
+// há alternativa ("" quando não), 1 quando a 450 existe]) e o job só faz o que
+// falta ou mudou,
 // dentro de um tempo de trabalho; grava o índice a cada 200 cartas e no fim —
 // a rodada seguinte continua de onde parou. No fim publica _index/status.json,
 // que o deploy consulta (scripts/apply-img-mirror.mjs): só host COMPLETO no
@@ -43,6 +44,13 @@
 // cada 30 dias — set novo costuma chegar antes na TCGdex — e por isso sobem
 // com o cache de 7 dias, não o imutável: a arte pode melhorar na mesma chave.
 //
+// Largura intermediária (14/11/2026, a 450 — ver scripts/lib/img-mirror.mjs):
+// carta gerada daqui em diante já sai com ela; as que existiam ganham a 450 no
+// passo "intermediária", depois da manutenção e da regeração, a partir da 1000
+// que já está no bucket (nada de bater nas fontes de novo). O status publica,
+// por host, `intermediaria: true` quando todas as cartas da geração servida
+// têm a 450, e só aí o site a põe no srcset.
+//
 //   node scripts/mirror-r2.mjs [--host <host>] [--limit N] [--minutes M] [--dry]
 // Env: R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, CLOUDFLARE_ACCOUNT_ID
 // (R2_BUCKET opcional, padrão sleevu-img), SHARP_DIR (pasta do pacote sharp
@@ -52,7 +60,7 @@
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 import { RAIZ, lerCatalogo } from "./lib/d1-catalogo.mjs";
-import { ESQUEMA_ESPELHO, FONTES, LARGURAS, ORDEM, chaveBase, chaveDe, geracaoDoHost, hostDe, matrizDe, versaoDe, webpDe } from "./lib/img-mirror.mjs";
+import { ESQUEMA_ESPELHO, FONTES, INTERMEDIARIA, LARGURAS, ORDEM, chaveBase, chaveDe, geracaoDoHost, hostDe, intermediariaDoHost, matrizDe, versaoDe, webpDe } from "./lib/img-mirror.mjs";
 import { alternativaDe, comparaAlternativa } from "./lib/mesma-carta.mjs";
 import { lerSetIdMap } from "./lib/pokemontcg-image.mjs";
 import { clienteR2 } from "./lib/r2.mjs";
@@ -69,6 +77,10 @@ const acabouTempo = () => Date.now() - INICIO > MINUTOS * 60000;
 const diasAtras = (n) => new Date(Date.now() - n * 86400000).toISOString().slice(0, 10);
 const UA = "Sleevu image mirror (+https://sleevu.app; github.com/fexpepe/tcg-collector)";
 const RECENTE_DIAS = 60, RECONFERE_DIAS = 7, FALTANDO_DIAS = 30, SALVA_A_CADA = 200;
+// O passo da 450 é rápido (bucket -> bucket) e o índice do Scryfall passa de
+// 10 MB: gravar a cada 200 seria subir gigabytes de índice. Perder até 2.000
+// numa queda é só refazer na rodada seguinte.
+const SALVA_INTERMEDIARIA = 2000, CONCORRENCIA_INTERMEDIARIA = 12;
 
 const r2 = clienteR2();
 if (!r2 && !SECO) {
@@ -161,6 +173,8 @@ async function purgaBorda() {
 // Manutenção: carta nova, arte trocada na origem, reconferência do host
 // mutável. Regeração: carta já espelhada, mas numa geração anterior à atual.
 const geracaoDe = (tem) => (tem && tem[3]) || 1;
+// 6º campo do índice: 1 = a 450 existe na geração da carta (ver o topo).
+const tem450 = (tem) => !!tem && tem[5] === 1;
 const hostsDaRodada = [];
 for (const host of ORDEM) {
   if (SO_HOST && host !== SO_HOST) continue;
@@ -184,7 +198,7 @@ for (const host of ORDEM) {
     if (o.alt && tem[4] === "t" && tem[2] < diasAtras(FALTANDO_DIAS)) manutencao.push([base, o, tem]);
   }
   console.log(`mirror-r2: ${host} — ${alvo.size} cartas no alvo, ${manutencao.length} de manutenção, ${regeracao.length} a regerar pra geração ${GERACAO}.`);
-  hostsDaRodada.push({ host, f, GERACAO, alvo, idx, manutencao, regeracao, n: { geradas: 0, conferidas: 0, sumidas: 0, erros: 0, alternativas: 0, recusadas: {} } });
+  hostsDaRodada.push({ host, f, GERACAO, alvo, idx, manutencao, regeracao, n: { geradas: 0, conferidas: 0, sumidas: 0, erros: 0, alternativas: 0, recusadas: {}, com450: 0, sem1000: 0 } });
 }
 
 // ── 4. Gera e sobe um lote de um host ───────────────────────────────────────
@@ -268,7 +282,8 @@ async function processa(h, lista, etapa) {
       if (mesma) LARGURAS.forEach((w) => regravadas.push(`https://img.sleevu.app/${host === "wsrv.nl" ? encodeURI(chaveDe(o.url, w, GERACAO)) : chaveDe(o.url, w, GERACAO)}`));
       // [0] é o tamanho da matriz da FONTE (a TCGdex), mesmo quando a imagem
       // saiu da alternativa: é o que a reconferência por HEAD compara.
-      idx.objetos[base] = fonte ? [matriz.length, o.versao, HOJE, GERACAO, fonte] : [matriz.length, o.versao, HOJE, GERACAO];
+      // O 6º campo (1) diz que as quatro larguras, a 450 inclusive, saíram aqui.
+      idx.objetos[base] = [matriz.length, o.versao, HOJE, GERACAO, fonte, 1];
       delete idx.faltando[base];
       n.geradas++; feitosNoTotal++;
       if (++desdeSalvo >= SALVA_A_CADA) { desdeSalvo = 0; await salva(); }
@@ -295,12 +310,65 @@ for (const host of ordemRegeracao) {
   if (h) await processa(h, h.regeracao, `regeração ${h.GERACAO}`);
 }
 
-// ── 6. Status por host ──────────────────────────────────────────────────────
-for (const { host, GERACAO, alvo, idx, n } of hostsDaRodada) {
-  let ok = 0, faltando = 0;
+// ── 5b. Largura intermediária (450) das cartas que já existiam ─────────────
+// Depois da manutenção e da regeração, que já geram as quatro larguras. Parte
+// da 1000 que está no bucket (WebP q90; reduzida a 450, a recompressão não se
+// vê) e só da geração ATUAL da carta: carta de geração anterior ganha a 450
+// quando for regerada. Hosts pequenos primeiro: fecham na rodada, e o deploy
+// seguinte já põe a 450 no srcset deles.
+async function processaIntermediaria(h) {
+  const { host, f, GERACAO, alvo, idx, n } = h;
+  if (SECO) return;
+  const lista = [];
   for (const [base, o] of alvo) {
     const tem = idx.objetos[base];
-    if (tem && tem[1] === o.versao && geracaoDe(tem) === GERACAO) ok++;
+    if (tem && tem[1] === o.versao && geracaoDe(tem) === GERACAO && !tem450(tem)) lista.push([base, o, tem]);
+  }
+  if (!lista.length) return;
+  if (acabouTempo() || feitosNoTotal >= LIMITE) { console.log(`mirror-r2: ${host} (450) fica pra próxima rodada (tempo/teto): ${lista.length} cartas.`); return; }
+  let desdeSalvo = 0, salvando = null;
+  const salva = () => { salvando = salvando || gravaJson(`_index/${host}.json`, idx).finally(() => { salvando = null; }); return salvando; };
+  await mapLimit(lista, CONCORRENCIA_INTERMEDIARIA, async ([base, o, tem]) => {
+    if (acabouTempo() || feitosNoTotal >= LIMITE) return;
+    try {
+      const r = await r2.get(chaveDe(o.url, 1000, GERACAO));
+      // Sem a 1000 no bucket (não devia acontecer: o índice só registra a carta
+      // depois das quatro subidas). Sai do índice, e a manutenção da rodada
+      // seguinte gera as quatro de novo da fonte; sem isso ela travaria a 450
+      // do host pra sempre. Enquanto isso o site segue na geração servida.
+      if (r.status === 404) { delete idx.objetos[base]; n.sem1000++; return; }
+      if (!r.ok) { n.erros++; return; }
+      const mil = Buffer.from(await r.arrayBuffer());
+      const saida = await sharp(mil).resize({ width: INTERMEDIARIA, withoutEnlargement: true }).webp(webpDe(INTERMEDIARIA)).toBuffer();
+      // Mesmo cache das outras larguras da carta: arte que pode mudar na mesma
+      // chave (host mutável, ou a "t" que ainda pode trocar pela pokemontcg.io)
+      // sobe com 7 dias; o resto, imutável.
+      const cacheControl = f.mutavel || tem[4] === "t" ? CACHE_MUTAVEL : undefined;
+      const p = await r2.put(chaveDe(o.url, INTERMEDIARIA, GERACAO), saida, { contentType: "image/webp", cacheControl });
+      if (!p.ok) { n.erros++; return; }
+      if (tem.length < 5) tem[4] = "";   // entrada antiga, sem o campo da fonte
+      tem[5] = 1;
+      n.com450++; feitosNoTotal++;
+      if (++desdeSalvo >= SALVA_INTERMEDIARIA) { desdeSalvo = 0; await salva(); }
+    } catch (e) {
+      n.erros++;
+      if (n.erros <= 3) console.log(`  ${host} (450): ${base} — ${String(e && e.message || e).slice(0, 120)}`);
+    }
+  });
+  await salva();
+}
+const PRIMEIRO_NA_450 = ["cards.lorcast.io", "images.pokemontcg.io", "archives.bulbagarden.net", "wsrv.nl", "assets.tcgdex.net", "tcgplayer-cdn.tcgplayer.com", "cards.scryfall.io"];
+for (const host of [...new Set([...PRIMEIRO_NA_450, ...ORDEM])]) {
+  const h = hostsDaRodada.find((x) => x.host === host);
+  if (h) await processaIntermediaria(h);
+}
+
+// ── 6. Status por host ──────────────────────────────────────────────────────
+for (const { host, GERACAO, alvo, idx, n } of hostsDaRodada) {
+  let ok = 0, faltando = 0, com450 = 0;
+  for (const [base, o] of alvo) {
+    const tem = idx.objetos[base];
+    if (tem && tem[1] === o.versao && geracaoDe(tem) === GERACAO) { ok++; if (tem450(tem)) com450++; }
     else if (idx.faltando[base]) faltando++;
   }
   const restam = alvo.size - ok - faltando;
@@ -311,10 +379,13 @@ for (const { host, GERACAO, alvo, idx, n } of hostsDaRodada) {
   // geração atual: no site ela cai na origem, pela cadeia de fallback.
   const antes = status.hosts[host];
   const servida = fechou ? GERACAO : (antes && antes.completo && antes.esquema === ESQUEMA_ESPELHO ? (Number(antes.geracao) || 1) : 0);
-  status.hosts[host] = { esquema: ESQUEMA_ESPELHO, geracao: servida || GERACAO, total: alvo.size, ok, faltando, pendentes: restam, completo: servida > 0, em: HOJE };
+  // A 450 entra no srcset do host quando TODA carta da geração servida a tem.
+  const intermediaria = intermediariaDoHost({ fechou, ok, com450, antes, servida });
+  status.hosts[host] = { esquema: ESQUEMA_ESPELHO, geracao: servida || GERACAO, total: alvo.size, ok, faltando, pendentes: restam, completo: servida > 0, intermediaria, com450, em: HOJE };
   console.log(`mirror-r2: ${host} — ${n.geradas} cartas geradas (${n.geradas * LARGURAS.length} objetos), ${n.conferidas} conferidas, ${n.sumidas} sumidas na origem, ${n.erros} erros; `
     + `na geração ${GERACAO}: ${ok} de ${alvo.size}${faltando ? ` (${faltando} não existem na origem)` : ""}; ${restam ? `${restam} ainda por fazer` : "COMPLETO"}`
-    + `${servida && servida !== GERACAO ? ` — o site segue na geração ${servida}` : ""}.`);
+    + `${servida && servida !== GERACAO ? ` — o site segue na geração ${servida}` : ""}.`
+    + ` Largura 450: ${com450} de ${ok}${n.com450 ? ` (${n.com450} feitas agora a partir da 1000)` : ""}${n.sem1000 ? `, ${n.sem1000} sem a 1000 no bucket` : ""}${intermediaria ? " — no srcset do site" : ""}.`);
   const recusas = Object.entries(n.recusadas);
   if (n.alternativas || recusas.length) {
     console.log(`  matriz da pokemontcg.io: ${n.alternativas} usada(s)${recusas.length ? `; ficaram na TCGdex: ${recusas.map(([m, q]) => `${q} ${m}`).join(", ")}` : ""}.`);
@@ -325,4 +396,4 @@ status.atualizadoEm = new Date().toISOString();
 await gravaJson("_index/status.json", status);
 if (!SECO) await purgaBorda();
 console.log(`mirror-r2: ${feitosNoTotal} cartas nesta rodada em ${Math.round((Date.now() - INICIO) / 60000)} min. Completos: `
-  + `${Object.entries(status.hosts).filter(([, s]) => s.completo && s.esquema === ESQUEMA_ESPELHO).map(([h, s]) => `${h} (g${s.geracao || 1})`).join(", ") || "nenhum ainda"}.`);
+  + `${Object.entries(status.hosts).filter(([, s]) => s.completo && s.esquema === ESQUEMA_ESPELHO).map(([h, s]) => `${h} (g${s.geracao || 1}${s.intermediaria ? ", 450" : ""})`).join(", ") || "nenhum ainda"}.`);

@@ -38,15 +38,16 @@ export function assetDoApp(rel) { return !ASSET_FORA.test(rel); }
 // Os mesmos marcadores que o deploy troca por sed (MANIFEST e o espelho de
 // imagens), mais o dataDir de cada jogo, que no app aponta pra ORIGEM: é dele
 // que saem o <script> do catálogo e o fetch das fatias de índice.
-export function transformaGameJs(texto, { origem = ORIGEM_PADRAO, hostsEspelho = [], geracoesEspelho = {} } = {}) {
+export function transformaGameJs(texto, { origem = ORIGEM_PADRAO, hostsEspelho = [], geracoesEspelho = {}, intermediariaEspelho = [] } = {}) {
   let out = texto;
   const troca = (re, por, oQue) => {
     if (!re.test(out)) throw new Error(`app-web: não achei ${oQue} no src/game.js — o formato mudou?`);
     out = out.replace(re, por);
   };
   troca(/var MANIFEST = false; \/\* SLEEVU_MANIFEST \*\//, "var MANIFEST = true; /* SLEEVU_MANIFEST */", "o marcador SLEEVU_MANIFEST");
-  // Hosts espelhados + a geração de cada um: a mesma injeção do deploy.
-  try { out = injetaEspelho(out, { hosts: hostsEspelho, geracoes: geracoesEspelho }); }
+  // Hosts espelhados, a geração de cada um e os que têm a 450: a mesma
+  // injeção do deploy.
+  try { out = injetaEspelho(out, { hosts: hostsEspelho, geracoes: geracoesEspelho, intermediaria: intermediariaEspelho }); }
   catch (e) { throw new Error(`app-web: ${e.message} — o formato mudou?`); }
   const antes = (out.match(/dataDir: "data\//g) || []).length;
   if (!antes) throw new Error("app-web: nenhum `dataDir: \"data/…\"` no src/game.js — o registro de jogos mudou?");
