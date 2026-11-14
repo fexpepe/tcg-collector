@@ -125,6 +125,7 @@ jobs:
             data/cdm/sets
             data/gcd/sets
             data/gw/sets
+            data/seiya/sets
             data/narutoboruto/sets
             data/narutotc/sets
             data/narutocg/sets
@@ -161,7 +162,7 @@ jobs:
           faltando=""
           # data/dbc/, data/swu/, data/cyberpunk/, data/wow/, data/lotr/,
           # data/sorcery/, data/harrypotter/, data/weiss/, data/mbc/, data/dbz/ e
-          # data/cdm/, data/gcd/, data/gw/, data/narutocg/, data/godzilla/, data/palworld/, data/fftcg/, data/vanguard/ e data/grandarchive/: jogos novos (2026-09-24 a 2026-11-13);
+          # data/cdm/, data/gcd/, data/gw/, data/narutocg/, data/godzilla/, data/palworld/, data/fftcg/, data/vanguard/, data/grandarchive/ e data/seiya/: jogos novos (2026-09-24 a 2026-11-13);
           # data/dbsb/, data/dbva/ e data/dbbw/ (2026-11-13), as séries do dbc que viraram jogo. Enquanto o cache
           # for de antes deles, o build rápido publicaria o tile do hub sem
           # catálogo nenhum atrás.
@@ -180,6 +181,7 @@ jobs:
                    data/cdm/manifest.generated.js \
                    data/gcd/manifest.generated.js \
                    data/gw/manifest.generated.js \
+                   data/seiya/manifest.generated.js \
                    data/narutoboruto/manifest.generated.js                    data/narutotc/manifest.generated.js \
                    data/narutocg/manifest.generated.js \
                    data/godzilla/manifest.generated.js \
@@ -781,6 +783,24 @@ jobs:
         if: env.RODA_SYNC != 'true'
         run: node scripts/sync-gundam-war.mjs --no-fetch || echo "sync-gundam-war --no-fetch falhou; segue com o catalogo do cache"
 
+      # Saint Seiya (Bandai e Amada, 1988-2023): o jogo vintage seiya, uma
+      # secao por familia (Carddass, Saint Paradise, Trading Collection,
+      # G Crusade, G Crusade Omega e Reborn Saint Paradise). Numero, raridade e
+      # scan pelo animecollection.fr (snapshot versionado em
+      # data/vintage/saint-seiya.json, nao regride, ids fixos); o nome e a cor
+      # do G Crusade foram transcritos dos scans (scripts/data/saint-seiya-*.json).
+      # Sem preco.
+      - name: Catalogo vintage Saint Seiya
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/sync-saint-seiya.mjs || echo "sync-saint-seiya falhou; segue com o snapshot versionado"
+
+      # O mesmo jogo no build RAPIDO (push), sem rede: correcao de nome ou de
+      # snapshot aparece no deploy do merge, e nao so no cron (a licao do dbc,
+      # PR #215).
+      - name: Catalogo vintage Saint Seiya (build rapido, sem rede)
+        if: env.RODA_SYNC != 'true'
+        run: node scripts/sync-saint-seiya.mjs --no-fetch || echo "sync-saint-seiya --no-fetch falhou; segue com o catalogo do cache"
+
       # Dragon Ball Carddass (Bandai 1988-1997): o jogo vintage dbc. Lista carta
       # a carta de todas as series pelo dbzcollection.fr (numero, raridade e
       # scan, snapshot em data/vintage/dbc-dbzcollection.json) e o nome do
@@ -1063,6 +1083,7 @@ jobs:
             data/cdm/sets
             data/gcd/sets
             data/gw/sets
+            data/seiya/sets
             data/narutoboruto/sets
             data/narutotc/sets
             data/narutocg/sets

@@ -30,7 +30,7 @@ const RAIZ = new URL("../", import.meta.url);
 const DIRS = [
   "data/", "data/lorcana/", "data/onepiece/", "data/magic/", "data/fab/",
   "data/gundam/", "data/swu/", "data/cyberpunk/", "data/sorcery/", "data/dbfw/", "data/ygo/", "data/digimon/", "data/riftbound/",
-  "data/unionarena/", "data/narutocg/", "data/naruto/", "data/hxh/", "data/dbc/", "data/dbsb/", "data/dbva/", "data/dbbw/", "data/dbz/", "data/wow/", "data/lotr/", "data/weiss/", "data/godzilla/", "data/palworld/", "data/fftcg/", "data/grandarchive/", "data/vanguard/", "data/narutomythos/", "data/narutokayou/", "data/harrypotter/", "data/mbc/", "data/cdm/", "data/gcd/", "data/gw/", "data/narutoboruto/", "data/narutotc/"
+  "data/unionarena/", "data/narutocg/", "data/naruto/", "data/hxh/", "data/dbc/", "data/dbsb/", "data/dbva/", "data/dbbw/", "data/dbz/", "data/wow/", "data/lotr/", "data/weiss/", "data/godzilla/", "data/palworld/", "data/fftcg/", "data/grandarchive/", "data/vanguard/", "data/narutomythos/", "data/narutokayou/", "data/harrypotter/", "data/mbc/", "data/cdm/", "data/gcd/", "data/gw/", "data/seiya/", "data/narutoboruto/", "data/narutotc/"
 ];
 
 const JANELAS = [7, 30];

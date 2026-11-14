@@ -120,6 +120,10 @@ test("mapCsvGame: os 13 jogos, nas grafias do Collectr/TCGplayer", () => {
   assert.equal(api.mapCsvGame("SD Gundam Carddass"), "gcd");
   // Gundam War (1999–2011) também vem antes do "gundam" genérico.
   assert.equal(api.mapCsvGame("Gundam War"), "gw");
+  // Saint Seiya pelos três nomes: o japonês, o do Brasil e o dos EUA.
+  assert.equal(api.mapCsvGame("Saint Seiya"), "seiya");
+  assert.equal(api.mapCsvGame("Cavaleiros do Zodíaco"), "seiya");
+  assert.equal(api.mapCsvGame("Knights of the Zodiac"), "seiya");
   // Jogo próprio desde 2026-11-13 (antes cairia no Naruto vintage).
   assert.equal(api.mapCsvGame("Naruto Boruto Card Game"), "narutoboruto");
   assert.equal(api.mapCsvGame("Chrono Clash System"), "narutoboruto");

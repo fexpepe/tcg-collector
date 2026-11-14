@@ -96,6 +96,7 @@
     cdm: ["Carddass Masters", "#a21caf"],
     gcd: ["Gundam Carddass", "#a3e635"],
     gw: ["Gundam War", "#5eead4"],
+    seiya: ["Saint Seiya", "#4400cc"],
     narutoboruto: ["Naruto Boruto", "#f9a8d4"],
     narutotc: ["Naruto Trading Cards", "#4ade80"]
   };

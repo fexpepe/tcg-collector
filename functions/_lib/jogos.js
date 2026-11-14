@@ -50,6 +50,7 @@ export const JOGOS_URL = [
   { url: "naruto-mythos-tcg", game: "narutomythos", nome: "Naruto Mythos TCG", logo: "assets/games/game_narutomythos.webp" },
   { url: "naruto-kayou", game: "narutokayou", nome: "Naruto Kayou", logo: "assets/games/game_narutokayou.webp" },
   { url: "gundam-carddass", game: "gcd", nome: "Gundam Carddass", logo: "assets/games/game_gcd.webp", vintage: "1988–1997" },
+  { url: "saint-seiya", game: "seiya", nome: "Saint Seiya", logo: "assets/games/game_seiya.webp", vintage: "1988–2023" },
   { url: "dragon-ball-carddass", game: "dbc", nome: "Dragon Ball Carddass", logo: "assets/games/game_dbc-v2.webp", vintage: "1988–1997" },
   // As três séries paralelas do Carddass de Dragon Ball, jogos próprios desde
   // 2026-11-13 (séries do dbc por um dia). Ainda sem logo: o tile mostra o nome.

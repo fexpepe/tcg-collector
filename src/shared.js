@@ -3270,6 +3270,7 @@
     cdm: SUBNAV_MIN,
     gcd: SUBNAV_MIN,
     gw: SUBNAV_ARTISTS,
+    seiya: SUBNAV_MIN,
     lotr: SUBNAV_MIN,
     harrypotter: SUBNAV_ARTISTS
   };
@@ -7292,6 +7293,9 @@
     cdm:       { usText: "carddass masters", noTcgplayer: true },
     gcd:       { usText: "gundam carddass", noTcgplayer: true },
     gw:        { usText: "gundam war", noTcgplayer: true },
+    // Saint Seiya (conferido em 12/11/2026): sem loja BR (nem Liga nem MYP
+    // têm seção) e sem TCGplayer; só a busca do eBay e do PriceCharting.
+    seiya:     { usText: "saint seiya", noTcgplayer: true },
     // Naruto Boruto Card Game (conferido em 13/11/2026): no TCGplayer é a linha
     // "chrono-clash-system", que tem as Tournament Pack Cards. Sem loja BR.
     narutoboruto: { tcgLine: "chrono-clash-system", usText: "naruto boruto card game" },
@@ -8967,6 +8971,7 @@
     "cdm",
     "gcd",
     "gw",
+    "seiya",
     "narutoboruto",
     "narutotc"
   ].map((game) => ({ game, dataDir: game === "pokemon" ? "data/" : `data/${game}/` }));
@@ -9022,7 +9027,8 @@
     gcd: "#a3e635",        // lima; 13.9:1 com preto, a 92 do Sorcery e a 99 do Cyberpunk (proposta, 2026-11-10)
     narutoboruto: "#f9a8d4", // rosa (o "BORUTO" do logo); 11.6:1 com preto, a 97 do Weiß e a 102 do prata do DBFW (proposta, 2026-11-13)
     narutotc: "#4ade80",   // verde-folha (a Vila da Folha; o laranja e o rosa da marca já são de outros jogos do Naruto); 12.1:1 com preto, a 87 do Gundam War e a 90 do Palworld (proposta, 2026-11-13)
-    gw: "#5eead4"          // turquesa; 14.2:1 com preto, a 100 do DBFW (proposta, 2026-11-11)
+    gw: "#5eead4",          // turquesa; 14.2:1 com preto, a 100 do DBFW (proposta, 2026-11-11)
+    seiya: "#4400cc"       // violeta-índigo (o cosmo de Athena; o lilás é do Grand Archive); 9.9:1 com branco, a 82 do Lorcana (proposta, 2026-11-13)
   };
   // Preto ou branco sobre a cor do jogo — o que der MAIOR contraste de verdade
   // (fórmula WCAG), não um limiar de luminância chutado: com limiar fixo o
@@ -9174,6 +9180,7 @@
     narutoboruto: ["nb-"],                    // Bandai 2019–2020 (Chrono Clash System): idem
     narutotc: ["ntc-"],                       // Amada/Ensky 2004–2005 (cartas de coleção): idem
     gw: ["gw-"],                              // Bandai 1999–2011: idem
+    seiya: ["ss-"],                           // Bandai e Amada 1988–2023: idem
     harrypotter: ["hp-"],                     // Wizards 2001–2002: idem
     naruto: ["nrt-"]                          // Bandai 2003–2013: idem (o NARUTO CARD GAME de 2027, nrt-ncg-, é o jogo narutocg)
   };

@@ -29,7 +29,7 @@
   // JSON de quem está aqui; o app.js tira o destaque do "Último set" deles.
   const COM_SOBRE = [
     "dragon-ball-carddass", "dragon-ball-visual-adventure", "dragon-ball-super-battle", "dragon-ball-super-barcode-wars",
-    "gundam-carddass", "gundam-war", "carddass-masters",
+    "gundam-carddass", "gundam-war", "carddass-masters", "saint-seiya",
     "naruto-card-game-2002", "naruto-data-carddass", "naruto-ccg", "naruto-shippuden-card-game", "naruto-trading-cards", "naruto-boruto-card-game",
     "hunter-x-hunter-carddass", "one-piece-carddass", "one-piece-card-game-2002", "miracle-battle-carddass",
     "harry-potter-tcg", "lord-of-the-rings-tcg", "dragon-ball-z-ccg", "world-of-warcraft-tcg"

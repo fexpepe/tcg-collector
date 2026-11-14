@@ -17,7 +17,7 @@
     ygo: "game_ygo-v2.webp", digimon: "game_digimon-v2.webp", riftbound: "game_riftbound-v2.webp",
     unionarena: "game_unionarena-v2.webp", narutocg: "game_naruto_2027.webp", naruto: "game_naruto.webp", hxh: "game_hxh.webp",
     dbc: "game_dbc-v2.webp", dbsb: "", dbva: "", dbbw: "", wow: "game_wow.webp", lotr: "game_lotr.webp", dbz: "game_dbz.webp", weiss: "game_weiss.webp", godzilla: "game_godzilla.webp", palworld: "game_palworld.webp", fftcg: "game_fftcg.webp", grandarchive: "game_grandarchive.webp", vanguard: "game_vanguard.webp", narutomythos: "game_narutomythos.webp", narutokayou: "game_narutokayou.webp", harrypotter: "game_harrypotter.webp",
-    mbc: "game_mbc.webp", cdm: "game_cdm.webp", gcd: "game_gcd.webp", gw: "game_gw.webp", narutoboruto: "game_naruto_boruto.webp", narutotc: "game_naruto.webp"
+    mbc: "game_mbc.webp", cdm: "game_cdm.webp", gcd: "game_gcd.webp", gw: "game_gw.webp", seiya: "game_seiya.webp", narutoboruto: "game_naruto_boruto.webp", narutotc: "game_naruto.webp"
   };
   function gameLogoUrl(game) {
     const f = GAME_LOGO[game];
@@ -1670,6 +1670,7 @@
       cdm: groupCdmSets,
       gcd: groupGundamCarddassSets,
       gw: groupGwSets,
+      seiya: groupSeiyaSets,
       narutotc: groupNarutoTradingSets,
       harrypotter: groupHarryPotterSets
     };
@@ -2291,6 +2292,44 @@
     const idOf = (set) => String(set.setId || "").trim().toLowerCase();
     const list = setItems.slice().sort((a, b) => idOf(a).localeCompare(idOf(b), "en", { numeric: true }));
     return list.length ? [cabecalhoDeSecao("sets.category.main", list.length)].concat(list) : [];
+  }
+
+  // Saint Seiya (jogo seiya, desde 2026-11-12): uma seção por FAMÍLIA de
+  // produto, na ordem em que cada uma estreou (Carddass de 1988 até o Reborn
+  // de 2022), e dentro dela as partes em ordem de lançamento (data e, no
+  // empate do ano, o setId). A família sai do setId (ss-cd02 = Carddass, Part
+  // 2; o código é fixado pelo sync-saint-seiya.mjs). O nome em inglês leva a
+  // família ("Saint Paradise Act 1 — …", pra Coleção e o popup não
+  // confundirem as "Part 1" de cada uma); dentro da seção ela sai, como no
+  // groupCdmSets. Set de promo da família (o do Crusade, que cobre 2012–2014 e
+  // tem só o ano) vai pro fim dela, em vez de abrir a seção.
+  function groupSeiyaSets(setItems) {
+    const FAMILIAS = [
+      ["cd", "sets.category.seiyaCarddass", "Carddass "], ["sp", "sets.category.seiyaSaintParadise", "Saint Paradise "],
+      ["tc", "sets.category.seiyaTrading", "Trading Collection "], ["cr", "sets.category.seiyaCrusade", "Crusade "],
+      ["rb", "sets.category.seiyaReborn", "Reborn Saint Paradise "]
+    ];
+    const familiaDe = (set) => (String(set.setId || "").toLowerCase().match(/^ss-([a-z]{2})/) || [])[1] || "";
+    const semFamilia = (set, prefixo) => {
+      const nome = String(set.displayName || "");
+      return nome.indexOf(prefixo) === 0 ? Object.assign({}, set, { displayName: nome.slice(prefixo.length).replace(/^— /, ""), nomeForaDaSecao: nome }) : set;
+    };
+    const promo = (set) => (/\bPromo/i.test(String(set.displayName || set.name || "")) ? 1 : 0);
+    const porData = (a, b) => promo(a) - promo(b) || String(a.releaseDate || "9999").localeCompare(String(b.releaseDate || "9999")) || String(a.setId).localeCompare(String(b.setId), "en", { numeric: true });
+    const items = [];
+    for (const [code, key, prefixo] of FAMILIAS) {
+      const list = setItems.filter((s) => familiaDe(s) === code).map((s) => semFamilia(s, prefixo)).sort(porData);
+      if (!list.length) continue;
+      items.push(cabecalhoDeSecao(key, list.length));
+      list.forEach((set) => items.push(set));
+    }
+    // Rede de segurança: família nova no sync sem seção aqui ainda aparece.
+    const rest = setItems.filter((s) => !FAMILIAS.some(([code]) => familiaDe(s) === code)).sort(porData);
+    if (rest.length) {
+      items.push(cabecalhoDeSecao("sets.category.promos", rest.length));
+      rest.forEach((set) => items.push(set));
+    }
+    return items;
   }
 
   function groupDbcSets(setItems) {

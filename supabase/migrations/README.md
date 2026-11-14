@@ -8,6 +8,20 @@ poucos.)
 
 ## Pendentes de aplicar
 
+- `20261113g` — libera o slug `seiya` (Saint Seiya: as cartas japonesas da
+  Bandai e da Amada de 1988 a 2023, o jogo vintage) nas duas whitelists de
+  jogo (`card_views`/`increment_card_view` e `contribute_price`;
+  `20261113g_add_seiya.sql`). Cópia da `20261113f` (narutotc, a última
+  aplicada) com o `seiya` a mais: **ela cobre a 20261113f** e todas as
+  anteriores (inclusive o `duelmasters` da 13e). Só a lista muda. Qualquer
+  uma das anteriores rodada **depois** desta tiraria o `seiya`. Sem ela, a
+  view de carta e o Preço da Comunidade do jogo são descartados em silêncio
+  (a coleção não depende dela). Conferir com o par de `curl` do fim do
+  arquivo: a view de `ss-cd02-1` tem de **criar a linha** no `card_views` (o
+  204 sozinho não prova nada), um jogo inventado não cria, e o
+  `contribute_price` anônimo segue 401. **A próxima migração de jogo copia
+  esta.**
+
 - `20261113f` — libera o slug `narutotc` (Naruto Trading Cards, as cartas de
   coleção japonesas da Amada e da Ensky, 2004–2005) nas duas whitelists de
   jogo (`card_views`/`increment_card_view` e `contribute_price`;
