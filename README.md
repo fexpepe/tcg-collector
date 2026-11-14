@@ -33,7 +33,7 @@ catálogo completo só existe no build de produção.
 
 ## Os jogos
 
-O registro central é o `GAMES` em [src/game.js](src/game.js): **43 slugs**, 42 com
+O registro central é o `GAMES` em [src/game.js](src/game.js): **44 slugs**, 43 com
 catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do Pokémon
 é a raiz `data/` por motivo histórico (não movemos nada).
 
@@ -59,6 +59,7 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 | `palworld` | Palworld Official Card Game | TCGCSV cat. 91 (Bushiroad com a Pocketpair, 2026; paralelas SR/OSR/SP/SSP = cartas próprias, com a raridade no número impresso, `EBP01-001OSR`; a 2ª edição do BP01, que o TCGplayer cadastra no grupo da 1ª, vira o set `EBP01-2E`; setId do código impresso, fixo por groupId; sem logo de set publicado) | USD |
 | `sorcery` | Sorcery: Contested Realm | TCGCSV cat. 77 (Erik's Curiosa 2023; foil é outro produto no TCGplayer e o sync junta o par, sem número de coleção, setId fixo por groupId) | USD |
 | `dbfw` | Dragon Ball Fusion World | TCGCSV cat. 80 (≠ Masters) | USD |
+| `dbs` | Dragon Ball Super Card Game Masters | TCGCSV cat. 27 (Bandai 2017+, "Masters" desde 2022; só a edição EN; id do productId, porque o número repete na Pre-Release, na Release Event, na 2nd Edition e nas promos; essas três sem foto pegam a da carta-irmã do set de origem; o BT26 das Pre-Release fica fixo como BT26_PR) | USD |
 | `ygo` | Yu-Gi-Oh! | TCGCSV cat. 2 (~46k impressões — o maior) | USD |
 | `digimon` | Digimon Card Game | TCGCSV cat. 63 | USD |
 | `riftbound` | Riftbound | TCGCSV cat. 89 (Riot) | USD |
