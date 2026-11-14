@@ -117,9 +117,9 @@
           </select>
         </label>
         <div class="view-toggle vt-visao" id="vtVisao" role="group" data-i18n-aria="toolbar.view" aria-label="Visualização">
-          <button type="button" class="view-toggle-btn" data-visao="tempo" aria-pressed="true" data-i18n-aria="vt.view.timeline" data-i18n-title="vt.view.timeline" aria-label="Linha do tempo" title="Linha do tempo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h9"/><path d="M8 12h10"/><path d="M12 18h9"/></svg></button>
+          <button type="button" class="view-toggle-btn" data-visao="tempo" aria-pressed="false" data-i18n-aria="vt.view.timeline" data-i18n-title="vt.view.timeline" aria-label="Linha do tempo" title="Linha do tempo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h9"/><path d="M8 12h10"/><path d="M12 18h9"/></svg></button>
           <button type="button" class="view-toggle-btn" data-visao="marcas" aria-pressed="false" data-i18n-aria="vt.view.brands" data-i18n-title="vt.view.brands" aria-label="Por marca" title="Por marca"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h7"/><path d="M6 9h12"/><path d="M3 15h7"/><path d="M6 19h9"/></svg></button>
-          <button type="button" class="view-toggle-btn" data-visao="grade" aria-pressed="false" data-i18n-aria="aria.viewGrid" data-i18n-title="aria.viewGrid" aria-label="Grade" title="Grade"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.5"/></svg></button>
+          <button type="button" class="view-toggle-btn" data-visao="grade" aria-pressed="true" data-i18n-aria="aria.viewGrid" data-i18n-title="aria.viewGrid" aria-label="Grade" title="Grade"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.5"/></svg></button>
         </div>
       </div>
 
@@ -127,7 +127,7 @@
            vintage.js preenche (e as linhas da marca ganham o resumo do jogo). -->
       <section class="vt-marca" id="vtMarca" hidden></section>
 
-      <section class="vt-acervo" id="vtAcervo">
+      <section class="vt-acervo vt-acervo--grade" id="vtAcervo">
         <!-- Régua dos anos, alinhada com as barras das linhas (vintage.js). -->
         <div class="vt-eixo" id="vtEixo" aria-hidden="true" hidden><div class="vt-eixo-anos"></div></div>
         <!-- UMA linha por jogo vintage do registro (functions/_lib/jogos.js), em

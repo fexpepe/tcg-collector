@@ -55,6 +55,11 @@
 
   var ORDENS = ["inicio", "recente", "fim", "duracao", "nome"];
   var VISOES = ["tempo", "marcas", "grade"];
+  // A grade abre a página (Fernando, 13/11/2026): quem chega no /vintage
+  // reconhece o jogo pelo logo antes de ler a régua dos anos. A linha do tempo
+  // e a por marca seguem no seletor (?ver=tempo, ?ver=marcas). O vintage.html
+  // já nasce com a grade marcada, pra não piscar a linha do tempo antes do JS.
+  var VISAO_PADRAO = "grade";
 
   // "1988-11" -> 1988,83 (ano com fração). Sem mês, o começo vale o início do
   // ano e o fim vale o FIM do ano: "1988"–"1997" cobre os dez anos inteiros.
@@ -177,13 +182,13 @@
   var tituloDaPagina = document.title;
 
   // ── Estado no endereço ────────────────────────────────────────────────────
-  var estado = { marca: "", ordem: "inicio", visao: "tempo" };
+  var estado = { marca: "", ordem: "inicio", visao: VISAO_PADRAO };
   function leEstado() {
     var sp = new URLSearchParams(location.search);
     var marca = sp.get("marca") || "";
     estado.marca = Object.prototype.hasOwnProperty.call(MARCAS, marca) ? marca : "";
     estado.ordem = ORDENS.indexOf(sp.get("ordem")) >= 0 ? sp.get("ordem") : "inicio";
-    estado.visao = VISOES.indexOf(sp.get("ver")) >= 0 ? sp.get("ver") : "tempo";
+    estado.visao = VISOES.indexOf(sp.get("ver")) >= 0 ? sp.get("ver") : VISAO_PADRAO;
   }
   // Só o que foge do padrão entra na barra: /vintage puro é a visão inicial.
   function gravaEstado(empilha) {
@@ -191,7 +196,7 @@
     var poe = function (nome, valor, padrao) { if (valor && valor !== padrao) sp.set(nome, valor); else sp.delete(nome); };
     poe("marca", estado.marca, "");
     poe("ordem", estado.ordem, "inicio");
-    poe("ver", estado.visao, "tempo");
+    poe("ver", estado.visao, VISAO_PADRAO);
     var busca = sp.toString();
     var destino = location.pathname + (busca ? "?" + busca : "") + location.hash;
     try { history[empilha ? "pushState" : "replaceState"](null, "", destino); } catch (e) { /* file:// e afins: segue sem endereço */ }
