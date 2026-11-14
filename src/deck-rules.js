@@ -19,7 +19,12 @@
 //   copyKey    o que é "a mesma carta" (One Piece limita por NÚMERO, não nome).
 //   exempt     isentas do limite (energia básica / terreno básico).
 //   identity   limite de cores próprias do deck (Lorcana: máx. 2 inks).
+//              `code` troca o texto do aviso (Union Arena: "séries", não cores).
 //   identityFrom  cores herdadas de uma zona (One Piece: Líder; Commander).
+//              `code` idem (Riftbound: "domínios da Legend").
+//   limits     [{ key, filter(card), min, max }] — quantas cartas de um GRUPO
+//              o deck pode ter (Vanguard: 16 gatilhos, no máx. 4 de cura). O
+//              rótulo do grupo é `decks.limit.<key>` no i18n.
 //   facets     campos que viram filtro na busca do editor.
 //   curve      campo numérico do histograma de custo.
 //   dist       campo categórico da distribuição (cor/tinta).
@@ -43,6 +48,27 @@
   // Confirmado na TCGdex: a básica vem como Normal (NÃO existe "Basic");
   // "Special" é a energia especial, que obedece o limite de 4.
   const isBasicEnergy = (c) => c.category === "Energy" && c.energyType === "Normal";
+
+  // "A mesma carta" pelo NOME, sem o que o TCGplayer (TCGCSV) pendura na
+  // impressão: "Darth Vader - Dark Lord of the Sith (Hyperspace)", "Cloud
+  // (Full Art)", "Snatch (Red) - FAB331", "Rose Queen (SL)". Sem isso a versão
+  // Hyperspace contaria como outra carta e o limite de cópias nunca pegaria
+  // quem mistura arte normal e alternativa — o caso mais comum de deck real.
+  // Só tira parêntese do FIM e o " - <número>" quando é o número da própria
+  // carta: o " - " do meio é parte do nome no SWU ("Título - Subtítulo").
+  function nomeBase(card) {
+    const nome = String((card && card.name) || "").trim();
+    const num = card && card.number ? String(card.number).trim() : "";
+    let s = nome;
+    for (;;) {
+      let t = s;
+      if (num && t.endsWith(" - " + num)) t = t.slice(0, -(num.length + 3)).trim();
+      t = t.replace(/\s*\([^()]*\)\s*$/, "").trim();
+      if (t === s) break;
+      s = t;
+    }
+    return s || nome;
+  }
 
   // Zonas dos formatos CONSTRUÍDOS do Magic (Standard/Pioneer/Modern/Legacy/
   // Vintage/Pauper): 60+ no deck, sideboard de 15, e o MAYBEBOARD — rascunho de
@@ -253,6 +279,17 @@
       return { ok: true, warn: { code: "zoneMax", vals: { zone: zoneKey, n: countIn(deck, zoneKey) + 1, max: zone.max } } };
     }
 
+    // Grupo cheio (o 5º gatilho de cura do Vanguard, a 4ª Signature do
+    // Riftbound): avisa no clique, como a zona cheia.
+    if (card) {
+      const lookup = (id) => (id === card.id ? card : cardById && cardById[id]);
+      for (const l of (pack.limits || [])) {
+        if (l.max == null || !l.filter(card)) continue;
+        const n = countGroup(deck, pack, l, lookup);
+        if (n >= l.max) return { ok: true, warn: { code: "limitMax", vals: { what: l.key, n: n + 1, max: l.max } } };
+      }
+    }
+
     if (pack.copyLimit && card && !(pack.exempt && pack.exempt(card))) {
       const key = pack.copyKey ? pack.copyKey(card) : card.name;
       let qty = 0;
@@ -343,7 +380,7 @@
         if (card) multi(card[pack.identity.field]).forEach((v) => set.add(v));
       }));
       if (set.size > pack.identity.max) {
-        issues.push({ level: "error", code: "identityMax", vals: { n: set.size, max: pack.identity.max, list: [...set].join(", ") } });
+        issues.push({ level: "error", code: pack.identity.code || "identityMax", vals: { n: set.size, max: pack.identity.max, list: [...set].join(", ") } });
       }
     }
 
@@ -366,11 +403,34 @@
             if (cols.length && !cols.every((c) => allowed.has(c))) bad.set(card.id, card.name);
           });
         });
-        bad.forEach((name, id) => issues.push({ level: "error", code: "identityMismatch", cardId: id, vals: { name: name, list: [...allowed].join(", ") } }));
+        bad.forEach((name, id) => issues.push({ level: "error", code: pack.identityFrom.code || "identityMismatch", cardId: id, vals: { name: name, list: [...allowed].join(", ") } }));
       }
     }
 
+    // 5) Limites por GRUPO de carta (Vanguard: 16 gatilhos, no máximo 4 de
+    //    cura; Riftbound: no máximo 3 Signature). Soma as zonas que contam — o
+    //    maybeboard fica fora, como no limite de cópias.
+    (pack.limits || []).forEach((lim) => {
+      const n = countGroup(deck, pack, lim, (id) => cardById && cardById[id]);
+      if (lim.min != null && n < lim.min) issues.push({ level: "error", code: "limitMin", vals: { what: lim.key, n: n, min: lim.min } });
+      if (lim.max != null && n > lim.max) issues.push({ level: "error", code: "limitMax", vals: { what: lim.key, n: n, max: lim.max } });
+    });
+
     return issues;
+  }
+
+  // `lookup(id)` em vez do mapa: o canAdd precisa enxergar a carta que está
+  // entrando sem copiar o catálogo inteiro (26 mil cartas no Vanguard) a cada
+  // clique.
+  function countGroup(deck, pack, lim, lookup) {
+    let n = 0;
+    (pack.zones || []).filter((z) => !z.scratch).forEach((z) => {
+      ((deck.zones && deck.zones[z.key]) || []).forEach((e) => {
+        const card = lookup(e.id);
+        if (card && lim.filter(card)) n += e.qty || 0;   // fora do catálogo: não conta
+      });
+    });
+    return n;
   }
 
   // ---------------------------------------------------------------------------
@@ -503,5 +563,5 @@
     };
   }
 
-  window.TCGDeckRules = { packFor, formatsOf, zoneForCard, zonesForCard, countIn, canAdd, validate, analyze, multi, FREE_PACK: FREE };
+  window.TCGDeckRules = { packFor, formatsOf, zoneForCard, zonesForCard, countIn, canAdd, validate, analyze, multi, nomeBase, FREE_PACK: FREE };
 })();
