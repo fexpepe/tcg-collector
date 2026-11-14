@@ -1,7 +1,8 @@
 // Passo do deploy: pergunta ao espelho de imagens (R2, img.sleevu.app) quais
 // hosts de origem já estão COMPLETOS — o status que scripts/mirror-r2.mjs
-// publica em _index/status.json — e em qual geração, e injeta as duas coisas
-// no src/game.js (marcadores SLEEVU_IMG_MIRROR e SLEEVU_IMG_MIRROR_GEN, o
+// publica em _index/status.json —, em qual geração e quais já têm a largura
+// intermediária (450), e injeta as três coisas no src/game.js (marcadores
+// SLEEVU_IMG_MIRROR, SLEEVU_IMG_MIRROR_GEN e SLEEVU_IMG_MIRROR_450, o
 // mesmo padrão do MANIFEST). O cliente só aponta pro espelho nesses hosts,
 // com a origem logo atrás na cadeia de fallback. Espelho vazio, fora do ar ou
 // este ambiente sem rede = lista vazia = site igual ao de sempre. Roda ANTES
@@ -11,7 +12,7 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { ESPELHO, injetaEspelho, statusDoEspelho } from "./lib/img-mirror.mjs";
 
 const RAIZ = new URL("../", import.meta.url);
-let espelho = { hosts: [], geracoes: {} };
+let espelho = { hosts: [], geracoes: {}, intermediaria: [] };
 try {
   const r = await fetch(`${ESPELHO}_index/status.json`, { signal: AbortSignal.timeout(15000), headers: { "cache-control": "no-cache" } });
   if (r.ok) {
@@ -34,5 +35,6 @@ try {
   console.error(`apply-img-mirror: ${e.message}.`);
   process.exit(1);
 }
-const { hosts, geracoes } = espelho;
-console.log(`apply-img-mirror: hosts espelhados neste build: ${hosts.length ? hosts.map((h) => (geracoes[h] ? `${h} (geração ${geracoes[h]})` : h)).join(", ") : "nenhum"}.`);
+const { hosts, geracoes, intermediaria } = espelho;
+const rotulo = (h) => [geracoes[h] ? `geração ${geracoes[h]}` : "", intermediaria.includes(h) ? "com a 450" : ""].filter(Boolean).join(", ");
+console.log(`apply-img-mirror: hosts espelhados neste build: ${hosts.length ? hosts.map((h) => (rotulo(h) ? `${h} (${rotulo(h)})` : h)).join(", ") : "nenhum"}.`);

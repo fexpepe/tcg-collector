@@ -51,7 +51,7 @@ test("matriz: a melhor imagem que cada fonte publica", () => {
   assert.equal(matrizDe("https://archives.bulbagarden.net/media/upload/3/3a/OddishExpansionPack68.jpg"), "https://archives.bulbagarden.net/media/upload/3/3a/OddishExpansionPack68.jpg");
   assert.equal(chaveDe("https://archives.bulbagarden.net/media/upload/3/3a/OddishExpansionPack68.jpg", 300), "archives.bulbagarden.net/media/upload/3/3a/OddishExpansionPack68.jpg@300.webp");
   assert.equal(matrizDe("assets/games/game_pokemon.webp"), "");
-  assert.deepEqual(LARGURAS, [300, 600, 1000]);
+  assert.deepEqual(LARGURAS, [300, 450, 600, 1000]);   // a 450 desde 14/11/2026
   assert.equal(ORDEM[0], "wsrv.nl");
 });
 
@@ -139,8 +139,8 @@ test("status do job → o que o site usa: só host completo no esquema atual, e 
     "cards.lorcast.io": { esquema: 2, completo: false, geracao: 2 },   // não fechou: fora
     "tcgplayer-cdn.tcgplayer.com": { esquema: 1, completo: true }       // esquema velho: fora
   } };
-  assert.deepEqual(statusDoEspelho(st), { hosts: ["wsrv.nl", "assets.tcgdex.net", "cards.scryfall.io"], geracoes: { "assets.tcgdex.net": 2 } });
-  assert.deepEqual(statusDoEspelho(null), { hosts: [], geracoes: {} });
+  assert.deepEqual(statusDoEspelho(st), { hosts: ["wsrv.nl", "assets.tcgdex.net", "cards.scryfall.io"], geracoes: { "assets.tcgdex.net": 2 }, intermediaria: [] });
+  assert.deepEqual(statusDoEspelho(null), { hosts: [], geracoes: {}, intermediaria: [] });
 });
 
 test("deploy: injeta hosts E geração no game.js, e para se faltar um dos marcadores", () => {

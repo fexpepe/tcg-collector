@@ -35,7 +35,7 @@ function arg(nome) {
 // espelho fora do ar = lista vazia = toda imagem vem da origem (o site igual
 // ao de sempre).
 async function espelhoDoStatus() {
-  const vazio = { hosts: [], geracoes: {} };
+  const vazio = { hosts: [], geracoes: {}, intermediaria: [] };
   try {
     const r = await fetch(`${ESPELHO}_index/status.json`, { signal: AbortSignal.timeout(15000), headers: { "cache-control": "no-cache" } });
     return r.ok ? statusDoEspelho(await r.json()) : vazio;
@@ -77,9 +77,9 @@ export async function montar({ saida = join(RAIZ, "mobile/www"), origem = ORIGEM
   // desenvolvimento local), com o game.js no modo de produção.
   const js = readdirSync(join(RAIZ, "src")).filter((f) => f.endsWith(".js"));
   for (const f of js) copyFileSync(join(RAIZ, "src", f), join(saida, "src", f));
-  const espelho = semRede ? { hosts: [], geracoes: {} } : await espelhoDoStatus();
+  const espelho = semRede ? { hosts: [], geracoes: {}, intermediaria: [] } : await espelhoDoStatus();
   const hostsEspelho = espelho.hosts;
-  const game = transformaGameJs(readFileSync(join(RAIZ, "src/game.js"), "utf8"), { origem, hostsEspelho, geracoesEspelho: espelho.geracoes });
+  const game = transformaGameJs(readFileSync(join(RAIZ, "src/game.js"), "utf8"), { origem, hostsEspelho, geracoesEspelho: espelho.geracoes, intermediariaEspelho: espelho.intermediaria });
   writeFileSync(join(saida, "src/game.js"), game.texto);
   const supabase = supabaseDoSite(readFileSync(join(RAIZ, "src/shared.js"), "utf8"));
   writeFileSync(join(saida, "src/app-nativo.js"), preenchePonte(readFileSync(PONTE, "utf8"), { origem, paginas, supabase }));
