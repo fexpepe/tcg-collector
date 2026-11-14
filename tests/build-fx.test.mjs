@@ -50,5 +50,10 @@ test("o deploy gera a reserva e o shared.js cai nela quando a API falha", () => 
   const iMin = deploy.indexOf("- name: Minifica JS e CSS"), iFx = deploy.indexOf("run: node scripts/build-fx.mjs");
   assert.ok(iFx > 0 && iFx < iMin, "a reserva tem de existir antes do deploy subir");
   assert.match(shared, /fetch\("data\/fx\.generated\.json"\)/);
-  assert.match(shared, /logClientError\(`câmbio: /, "a falha do câmbio precisa chegar ao /admin, com o aparelho");
+  // Só a falha que a pessoa sente vai ao /admin: a da API sozinha a reserva
+  // cobre (2026-11-14: eram um terço do "erros a cada mil páginas").
+  assert.doesNotMatch(shared, /logClientError\(`câmbio: /, "falha da API coberta pela reserva não é erro");
+  const iReserva = shared.indexOf('fetch("data/fx.generated.json")');
+  const iLog = shared.indexOf("logClientError(`câmbio e reserva falharam: ");
+  assert.ok(iReserva > 0 && iLog > iReserva, "o aviso ao /admin vem DEPOIS de a reserva também falhar");
 });
