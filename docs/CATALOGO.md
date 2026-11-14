@@ -237,9 +237,10 @@ v1"):
 A página de Sets (`/games/<jogo>`) tem **um visual só**, o do Pokémon e do
 Magic. Ele vale em todo jogo e em toda linha desde 2026-10-09 (antes, 13 jogos
 e as linhas vintage ficavam sem ele). Jogo ou linha nova já nasce assim; não
-há o que ligar. São três peças, todas no
+há o que ligar. São quatro peças, todas no
 [src/app.js](../src/app.js), num caminho só
-(`getViewItems` → `aninhaPorNome` → `agrupaSetsDoJogo` → `vitrineDoTopo`):
+(`getViewItems` → `aninhaPorNome` → `agrupaSetsDoJogo` → `vitrineDoTopo` →
+`ordenaSets`):
 
 1. **Produtos do lançamento dentro do cartão do set** (`aninhaPorNome`). O
    pai de um set é o set de nome mais longo que é prefixo do nome dele
@@ -288,7 +289,11 @@ há o que ligar. São três peças, todas no
    Agrupador novo entra no mapa `porJogo` e monta os cabeçalhos com
    `cabecalhoDeSecao(chave, n)`. Nunca é um `return` direto no
    `getViewItems`: o `tests/sets-padrao.test.mjs` barra os dois casos.
-3. **Topo da Vitrine** (`vitrineDoTopo`), só na lista inteira (sem busca):
+3. **Topo da Vitrine** (`vitrineDoTopo`), só na lista inteira (sem busca). Mora
+   fora da grade, na caixa `#setsTopo`, **acima** da linha do contador, do
+   Ordenar e da Visualização (`pintaTopo`, 2026-11-14) — o mesmo lugar do
+   "Sobre" dos vintage (3.5). Nos dois, a linha de filtros fica embaixo do
+   topo:
    - o **destaque** é o set principal mais novo já lançado. Não disputam as
      seções de promo, deck, raid e eventos (`SECOES_FORA_DO_DESTAQUE`); a de
      boosters extras disputa, porque é lançamento (o Extra Booster do One
@@ -302,8 +307,18 @@ há o que ligar. São três peças, todas no
      2002", sem dia inventado);
    - jogo vintage **com "Sobre"** (3.5) não tem destaque: o topo é a
      história do jogo;
-   - pra quem tem carta no jogo, **"Continue completando"**;
    - sem nenhum set com data (Miracle Battle), não há destaque.
+
+   O "Continue completando" (sets começados, abaixo do destaque) saiu em
+   2026-11-14, a pedido: era informação a mais. O lugar dele é o Ordenar.
+4. **Ordenar** (`ordenaSets`, 2026-11-14), ao lado da Visualização, guardado
+   em `tcg-sets-ordem` (vale em todo jogo). O **padrão** é a lista nas seções
+   do jogo (item 2). As outras ordens tiram as seções e põem os sets numa
+   lista só: **Progresso: mais completos primeiro** (o progresso do cartão,
+   com as cartas em outra língua somando; sem carta no fim), Lançamento (mais
+   recentes ou mais antigos), Nome e Valor. "Progresso" some do menu sem
+   carta no jogo e "Valor" no modo colecionador (`ordemDosSets`). O menu é o
+   do `src/ordenar.js`; as opções são de set e moram no `sets.html`.
 
 O cartão do set é o mesmo em todos (`createSetCard`): logo, ou o nome do set
 quando não há logo (política de logo); data; "N cartas" pra quem não tem
