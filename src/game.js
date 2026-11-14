@@ -58,7 +58,9 @@
     narutoboruto: { slug: "narutoboruto", name: "Naruto Boruto Card Game", dataDir: "data/narutoboruto/" }, // vintage Bandai 2019–2020, Chrono Clash System (TCGCSV cat. 60: só as Tournament Pack Cards; sem preço)
     narutotc: { slug: "narutotc", name: "Naruto Trading Cards", dataDir: "data/narutotc/" }, // vintage Amada/Ensky 2004–2005, cartas de coleção: Etching Card Collection 1–3 e 忍術大全 (lista do 火の国庵; sem imagem, sem preço)
     gw: { slug: "gw", name: "Gundam War", dataDir: "data/gw/" }, // vintage Bandai 1999–2011, o TCG japonês (listas do site oficial; sem imagem)
-    seiya: { slug: "seiya", name: "Saint Seiya", dataDir: "data/seiya/" }, // vintage Bandai e Amada 1988–2023, uma seção por família (animecollection.fr; nome transcrito dos scans)
+    seiya: { slug: "seiya", name: "Saint Seiya Carddass", dataDir: "data/seiya/" }, // vintage Bandai 1988–2023: Carddass, Saint Paradise e Reborn (animecollection.fr; nome transcrito dos scans)
+    seiyatc: { slug: "seiyatc", name: "Saint Seiya Trading Collection", dataDir: "data/seiyatc/" }, // vintage Amada 2000–2003 (sync-saint-seiya.mjs)
+    seiyacr: { slug: "seiyacr", name: "Saint Seiya Crusade", dataDir: "data/seiyacr/" }, // vintage Bandai 2012–2014, o TCG do sistema Crusade (sync-saint-seiya.mjs)
     // Em preparação (catálogo ainda vazio; tile "Em breve" no hub):
     jump: { slug: "jump", name: "JUMP", dataDir: "data/jump/" }            // promos curadas (Jump Festa, V-Jump…)
   };
@@ -84,16 +86,17 @@
     ["naruto-mythos-tcg", "narutomythos"], ["naruto-kayou", "narutokayou"],
     // Daqui em diante, os VINTAGE (o `vintage` do registro): o PRIMEIRO_VINTAGE
     // abaixo é a posição desta linha, e o teste confere um por um.
-    ["gundam-carddass", "gcd"], ["saint-seiya", "seiya"],
+    ["gundam-carddass", "gcd"], ["saint-seiya-carddass", "seiya"],
     ["gundam-war", "gw"],
     ["dragon-ball-carddass", "dbc"], ["dragon-ball-visual-adventure", "dbva"], ["dragon-ball-super-battle", "dbsb"],
     ["dragon-ball-super-barcode-wars", "dbbw"], ["hunter-x-hunter-carddass", "hxh"],
     ["one-piece-carddass", "onepiece", "opcd", "opcd-"], ["lord-of-the-rings-tcg", "lotr"], ["harry-potter-tcg", "harrypotter"],
-    ["dragon-ball-z-ccg", "dbz"],
+    ["dragon-ball-z-ccg", "dbz"], ["saint-seiya-trading-collection", "seiyatc"],
     ["one-piece-card-game-2002", "onepiece", "op2002", "op2002-"],
     ["naruto-card-game-2002", "naruto"], ["naruto-data-carddass", "naruto", "nrt-dc", "nrt-dc-,nrt-nf-,nrt-nx-"],
     ["naruto-ccg", "naruto", "nrt-ccg", "nrt-ccg-"], ["world-of-warcraft-tcg", "wow"],
     ["naruto-shippuden-card-game", "naruto", "nrt-scg", "nrt-scg-"], ["miracle-battle-carddass", "mbc"],
+    ["saint-seiya-crusade", "seiyacr"],
     ["naruto-trading-cards", "narutotc"],
     ["naruto-boruto-card-game", "narutoboruto"],
     ["carddass-masters", "cdm"]

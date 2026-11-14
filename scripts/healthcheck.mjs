@@ -173,7 +173,9 @@ await checkCatalog("cards Miracle Battle Carddass", "/data/mbc/cards.js", "TCG_C
 await checkCatalog("cards Carddass Masters", "/data/cdm/cards.js", "TCG_CARDS", 250);
 await checkCatalog("cards Gundam Carddass", "/data/gcd/cards.js", "TCG_CARDS", 1200);
 await checkCatalog("cards Gundam War", "/data/gw/cards.js", "TCG_CARDS", 6000);
-await checkCatalog("cards Saint Seiya", "/data/seiya/cards.js", "TCG_CARDS", 1600);
+await checkCatalog("cards Saint Seiya Carddass", "/data/seiya/cards.js", "TCG_CARDS", 380);
+await checkCatalog("cards Saint Seiya Trading Collection", "/data/seiyatc/cards.js", "TCG_CARDS", 800);
+await checkCatalog("cards Saint Seiya Crusade", "/data/seiyacr/cards.js", "TCG_CARDS", 450);
 // Naruto Boruto Card Game: 97 cartas (as Tournament Pack Cards), 13/11/2026; história encerrada.
 await checkCatalog("cards Naruto Boruto", "/data/narutoboruto/cards.js", "TCG_CARDS", 90);
 // Naruto Trading Cards: 255 cartas (Etching Card Collection 1–3 e 忍術大全), 13/11/2026; história encerrada.

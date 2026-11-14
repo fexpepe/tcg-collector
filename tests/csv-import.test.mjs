@@ -124,6 +124,9 @@ test("mapCsvGame: os 13 jogos, nas grafias do Collectr/TCGplayer", () => {
   assert.equal(api.mapCsvGame("Saint Seiya"), "seiya");
   assert.equal(api.mapCsvGame("Cavaleiros do Zodíaco"), "seiya");
   assert.equal(api.mapCsvGame("Knights of the Zodiac"), "seiya");
+  // Os outros dois jogos de Saint Seiya vencem o genérico.
+  assert.equal(api.mapCsvGame("Saint Seiya Crusade"), "seiyacr");
+  assert.equal(api.mapCsvGame("Saint Seiya Trading Collection"), "seiyatc");
   // Jogo próprio desde 2026-11-13 (antes cairia no Naruto vintage).
   assert.equal(api.mapCsvGame("Naruto Boruto Card Game"), "narutoboruto");
   assert.equal(api.mapCsvGame("Chrono Clash System"), "narutoboruto");

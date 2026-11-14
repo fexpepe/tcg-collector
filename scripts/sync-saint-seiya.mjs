@@ -1,23 +1,25 @@
-// 聖闘士星矢 (Saint Seiya / Os Cavaleiros do Zodíaco): o jogo vintage `seiya`,
-// em data/seiya/. Um jogo só pras cartas da marca, com uma seção por FAMÍLIA
-// de produto (como o gcd faz por série e o cdm por IP): não existia slug de
-// Saint Seiya, então a marca vira o jogo (regra 4.1 do docs/CATALOGO.md), e
-// cada família é um produto diferente, de fabricante e época diferentes.
-//
-// Famílias (SERIES, na ordem das seções da página de Sets):
-//   cd  カードダス (Bandai, 1988–1989): as partes de 42 cartas das máquinas
-//       Carddass 20, da primeira leva do sistema.
-//   sp  セイントパラダイス (Bandai Carddass, 1991–1992): três partes ("Act")
-//       numeradas em sequência, 1 a 126.
-//   tc  トレーディングコレクション (Amada, 2000–2003): as coleções de cenas do
-//       anime e dos filmes, em pacote.
-//   cr  クルセイド (Bandai, 2012–2014): o TCG de mesa do sistema Crusade
-//       (クルセイドシステムカードシリーズ), de cores e Gシンボル: os boosters do
-//       anime clássico e os do 聖闘士星矢Ω, numa seção só, por data. O
-//       "Carddass Masters G Crusade" do animecollection é o selo da caixa
-//       (CARDDASS MASTERS G) somado ao nome da linha, não o nome oficial.
-//   rb  新生セイントパラダイス (Bandai Carddass, 2022–2023): a volta da Saint
-//       Paradise, em caixa com fichário.
+// 聖闘士星矢 (Saint Seiya / Os Cavaleiros do Zodíaco): as cartas japonesas da
+// marca de 1988 a 2023, em TRÊS jogos vintage, um por produto (a regra de
+// 13/11/2026: jogo antigo diferente = jogo próprio; fica junto só o que é o
+// mesmo jogo). Um sync só, porque a fonte, o snapshot e os nomes são os
+// mesmos; cada família vai pro catálogo do jogo dela (JOGO, abaixo):
+//   seiya    Saint Seiya Carddass (Bandai, 1988–2023), em data/seiya/, uma
+//            seção por série:
+//     cd  as partes de 42 cartas das máquinas Carddass 20 (1988–1989), da
+//         primeira leva do sistema;
+//     sp  セイントパラダイス (1991–1992): três partes ("ACT") numeradas em
+//         sequência, 1 a 126, e a jumbo;
+//     rb  新生セイントパラダイス (2022–2023): a volta da Saint Paradise, em
+//         caixa com fichário, com a mesma numeração.
+//   seiyatc  Saint Seiya Trading Collection (Amada, 2000–2003), em
+//            data/seiyatc/: as coleções de cenas do anime e dos filmes, em
+//            pacote. Outro fabricante e outro produto (como o narutotc).
+//   seiyacr  Saint Seiya Crusade (Bandai, 2012–2014), em data/seiyacr/: o TCG
+//            de mesa do sistema Crusade (クルセイドシステムカードシリーズ), de
+//            cores e Gシンボル, os boosters do anime clássico e os do
+//            聖闘士星矢Ω. É um card game, não carta de coleção (como o gw). O
+//            "Carddass Masters G Crusade" do animecollection é o selo da caixa
+//            (CARDDASS MASTERS G) somado ao nome da linha, não o nome oficial.
 //
 // Fonte das cartas (levantamento de 2026-11-12):
 //   animecollection.fr — catálogo de fã (francês) com UMA página por parte:
@@ -37,9 +39,9 @@
 //                        scripts/data/saint-seiya-cores.json (lida na moldura
 //                        do scan e conferida a olho).
 //
-// IDs: ss-<família><parte>-<número impresso> (ss-cd02-1, ss-sp03-126,
-// ss-rb01-ex05); no Crusade, com a letra da cor antes do número
-// (ss-cr01-b-u-001 = 黄金十二宮編, azul, U-001). Número repetido sem cor que o
+// IDs: <prefixo do jogo><parte>-<número impresso> (ss-cd02-1, ss-sp03-126,
+// ss-rb01-ex05; sstc-m2-iii-001); no Crusade, com a letra da cor antes do
+// número (sscr-01-b-u-001 = 黄金十二宮編, azul, U-001). Número repetido sem cor que o
 // separe ganha sufixo pela ordem da fonte (b, c…). O id fica GRAVADO no
 // snapshot junto do id da carta na fonte (`src`), e o refresh reaproveita o id
 // da carta já conhecida: reordenar a página não troca id, e carta que some da
@@ -53,29 +55,33 @@ import { readGlobalVar, readSnapshot, writeSnapshot, snapshotCardCount, writeGam
 import { parseAnimeCollection } from "./sync-gundam-carddass.mjs";
 
 const ROOT = new URL("../", import.meta.url);
-const GAME = "seiya";
-const OUT = new URL(`data/${GAME}/`, ROOT);
 const SNAP = new URL("data/vintage/saint-seiya.json", ROOT);
 const NOMES = JSON.parse(readFileSync(new URL("scripts/data/saint-seiya-nomes.json", ROOT), "utf8"));
 const NOMES_EN = JSON.parse(readFileSync(new URL("scripts/data/saint-seiya-nomes-en.json", ROOT), "utf8"));
 const CORES_SRC = JSON.parse(readFileSync(new URL("scripts/data/saint-seiya-cores.json", ROOT), "utf8"));
 const UA = { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Sleevu/1.0 (+sleevu.app)" };
 const NO_FETCH = process.argv.includes("--no-fetch");
-export const ID_PREFIX = "ss-";
+// Prefixo de id de cada jogo (exclusivo, docs/CATALOGO.md 1.1).
+export const PREFIXO = { seiya: "ss-", seiyatc: "sstc-", seiyacr: "sscr-" };
+export const ID_PREFIX = PREFIXO.seiya;
 const FONTE = "www.animecollection.fr"; // sem esquema: o wsrv busca em HTTP, que é o que o site serve
 const LICENCA = 37; // idl da licença Saint Seiya no animecollection
 
-// Famílias. `ja` abre o NOME do set (contrato 7: sem o 聖闘士星矢 da frente,
-// que é a marca e já está no cabeçalho e no endereço); `en` abre o nome de
-// exibição (src/nomes-sets.js). A ordem aqui é a das seções na página de Sets
-// (groupSeiyaSets no app.js).
+// Famílias e o jogo de cada uma. `ja` abre o NOME do set (contrato 7: sem o
+// 聖闘士星矢 da frente, que é a marca, nem o nome do jogo, que já estão no
+// cabeçalho e no endereço); `en` abre o nome de exibição (src/nomes-sets.js).
+// No Saint Seiya Carddass a ordem é a das seções da página de Sets
+// (groupSeiyaSets no app.js); as partes de 1988–89 não levam prefixo (o jogo
+// É o Carddass). O Trading Collection e o Crusade são uma família cada, e o
+// nome do set é o do produto.
 export const SERIES = {
-  cd: { ja: "カードダス", en: "Carddass" },
-  sp: { ja: "セイントパラダイス", en: "Saint Paradise" },
-  tc: { ja: "トレーディングコレクション", en: "Trading Collection" },
-  cr: { ja: "クルセイド", en: "Crusade" },
-  rb: { ja: "新生セイントパラダイス", en: "Reborn Saint Paradise" }
+  cd: { jogo: "seiya", ja: "", en: "" },
+  sp: { jogo: "seiya", ja: "セイントパラダイス", en: "Saint Paradise" },
+  rb: { jogo: "seiya", ja: "新生セイントパラダイス", en: "Reborn Saint Paradise" },
+  tc: { jogo: "seiyatc", ja: "", en: "" },
+  cr: { jogo: "seiyacr", ja: "", en: "" }
 };
+export const JOGOS = Object.keys(PREFIXO);
 
 // Cores do Crusade (as do site oficial: blue, black, green, red e o purple
 // de Athena, das neutras e da 小宇宙レア) -> rótulo da faceta (em inglês, como o color do gw) e
@@ -113,39 +119,41 @@ export const SETS = [
   { code: "sp02", series: "sp", date: "1991", ac: [273, 578], ja: "ACT.2", en: "Act 2" },
   { code: "sp03", series: "sp", date: "1992", ac: [273, 581], ja: "ACT.3", en: "Act 3" },
   { code: "spx", series: "sp", date: "1991", ac: [273, 658], ja: "ジャンボカードダス", en: "Jumbo Carddass", promo: true },
-  // トレーディングコレクション da Amada (2000–2003): frames do anime e dos
+  // Saint Seiya Trading Collection (Amada, 2000–2003): frames do anime e dos
   // filmes, 10 cartas por pacote. O nome é o do produto como a Amada o
-  // publicou (sem o 聖闘士星矢), e por isso explícito (`name`); a promo de cada
-  // coleção leva o nome dela + "プロモ" e vira chip no cartão da coleção. A
-  // primeira, de 2000, não tem subtítulo. Datas: o site oficial no Wayback
+  // publicou, sem o 聖闘士星矢 e sem o トレーディングコレクション, que é o jogo;
+  // `id` é o código do set no catálogo (sstc-<id>). A primeira, de 2000, não
+  // tem subtítulo: o nome dela É トレーディングコレクション (exceção declarada
+  // no tests/nome-do-set.test.mjs). A promo de cada coleção leva o nome dela +
+  // "プロモ" e vira chip no cartão da coleção. Datas: o site oficial no Wayback
   // (amadagogo.com e amada-printing.co.jp) onde ele diz o mês; senão o
   // saint-seiya.it.
-  { code: "tcsa", series: "tc", date: "2000-03", ac: [126, 287], name: "トレーディングコレクション", nameEn: "Trading Collection" },
-  { code: "tcsap", series: "tc", date: "2000-03", ac: [126, 288], name: "トレーディングコレクション プロモ", nameEn: "Trading Collection Promo", promo: true },
-  { code: "tcm1", series: "tc", date: "2002-01", ac: [166, 349], name: "劇場版 トレーディングコレクション 第1弾", nameEn: "Trading Collection The Movie Part 1" },
-  { code: "tcm1p", series: "tc", date: "2002-01", ac: [166, 350], name: "劇場版 トレーディングコレクション 第1弾 プロモ", nameEn: "Trading Collection The Movie Part 1 Promo", promo: true },
-  { code: "tcm3", series: "tc", date: "2002-06", ac: [190, 414], name: "劇場版 トレーディングコレクション 第2弾", nameEn: "Trading Collection The Movie Part 2" },
-  { code: "tctv", series: "tc", date: "2003-02", ac: [157, 336], name: "トレーディングコレクション TVシリーズ＆冥王ハーデス十二宮編", nameEn: "Trading Collection TV Series & The Hades Chapter Sanctuary" },
-  { code: "tctvp", series: "tc", date: "2003-02", ac: [157, 337], name: "トレーディングコレクション TVシリーズ＆冥王ハーデス十二宮編 ボックスカード", nameEn: "Trading Collection TV Series & The Hades Chapter Sanctuary Box Cards", promo: true },
-  { code: "tchd", series: "tc", date: "2003-12", ac: [134, 302], name: "トレーディングコレクション 冥王ハーデス十二宮編［完全版］", nameEn: "Trading Collection The Hades Chapter Sanctuary Complete Edition" },
-  { code: "tchdp", series: "tc", date: "2003-12", ac: [134, 303], name: "トレーディングコレクション 冥王ハーデス十二宮編［完全版］ プロモ", nameEn: "Trading Collection The Hades Chapter Sanctuary Complete Edition Promo", promo: true },
-  // クルセイド (Bandai, 2012–2014): booster de 10 cartas + 1 índice, caixa de 15.
-  // O nome oficial é 【クルセイド】聖闘士星矢～…編～ (sem o 聖闘士星矢, que é a
-  // marca; o 聖闘士星矢Ω fica, porque é o título do anime). Datas e composição:
-  // as páginas de produto do site oficial no Wayback
-  // (carddas.com/crusade/item/…) e o Carddass Club; a 1ª saiu em janeiro de
-  // 2012 (a Bandai diz 中旬, o site Crusade 下旬: só o mês). A numeração é por
-  // cor e por série (a clássica e a Ω contam separado), e o 聖闘士星矢Ω～黄金十二宮編～,
-  // de preto e vermelho, recomeça no U-001. O de 2014 tem 91 cartas oficiais;
-  // a fonte tem 46.
-  { code: "cr01", series: "cr", date: "2012-01", ac: [115, 267], ja: "～黄金十二宮編～", en: "— The Twelve Temples Arc" },
-  { code: "cr02", series: "cr", date: "2012-06-22", ac: [173, 368], ja: "聖闘士星矢Ω", en: "— Saint Seiya Omega" },
-  { code: "cr03", series: "cr", date: "2012-11-16", ac: [115, 270], ja: "～アスガルド・海皇ポセイドン編～", en: "— Asgard & Sea Emperor Poseidon Arc" },
-  { code: "cr04", series: "cr", date: "2013-03-15", ac: [173, 433], ja: "聖闘士星矢Ω～黄金十二宮編～", en: "— Omega: The Twelve Temples Arc" },
-  { code: "cr05", series: "cr", date: "2013-06-21", ac: [115, 274], ja: "～冥王ハーデス編～", en: "— Hades Arc" },
-  { code: "cr06", series: "cr", date: "2013-08-23", ac: [173, 457], ja: "聖闘士星矢Ω～新生聖衣編～", en: "— Omega: New Cloth Arc" },
-  { code: "cr07", series: "cr", date: "2014-07-04", ac: [173, 695], ja: "～LEGEND of SANCTUARY／聖闘士星矢Ω～", en: "— Legend of Sanctuary / Omega", total: 91 },
-  { code: "crpr", series: "cr", date: "2012", ac: [115, 363], ja: "プロモーションカード", en: "Promotion Cards", promo: true },
+  { code: "tcsa", id: "2000", series: "tc", date: "2000-03", ac: [126, 287], name: "トレーディングコレクション", nameEn: "Trading Collection" },
+  { code: "tcsap", id: "2000p", series: "tc", date: "2000-03", ac: [126, 288], name: "トレーディングコレクション プロモ", nameEn: "Trading Collection Promo", promo: true },
+  { code: "tcm1", id: "m1", series: "tc", date: "2002-01", ac: [166, 349], name: "劇場版 第1弾", nameEn: "The Movie Part 1" },
+  { code: "tcm1p", id: "m1p", series: "tc", date: "2002-01", ac: [166, 350], name: "劇場版 第1弾 プロモ", nameEn: "The Movie Part 1 Promo", promo: true },
+  { code: "tcm3", id: "m2", series: "tc", date: "2002-06", ac: [190, 414], name: "劇場版 第2弾", nameEn: "The Movie Part 2" },
+  { code: "tctv", id: "tv", series: "tc", date: "2003-02", ac: [157, 336], name: "TVシリーズ＆冥王ハーデス十二宮編", nameEn: "TV Series & The Hades Chapter Sanctuary" },
+  { code: "tctvp", id: "tvp", series: "tc", date: "2003-02", ac: [157, 337], name: "TVシリーズ＆冥王ハーデス十二宮編 ボックスカード", nameEn: "TV Series & The Hades Chapter Sanctuary Box Cards", promo: true },
+  { code: "tchd", id: "hd", series: "tc", date: "2003-12", ac: [134, 302], name: "冥王ハーデス十二宮編［完全版］", nameEn: "The Hades Chapter Sanctuary Complete Edition" },
+  { code: "tchdp", id: "hdp", series: "tc", date: "2003-12", ac: [134, 303], name: "冥王ハーデス十二宮編［完全版］ プロモ", nameEn: "The Hades Chapter Sanctuary Complete Edition Promo", promo: true },
+  // Saint Seiya Crusade (Bandai, 2012–2014): booster de 10 cartas + 1 índice,
+  // caixa de 15. O nome oficial é 【クルセイド】聖闘士星矢～…編～ (sem o
+  // クルセイド, que é o jogo, nem o 聖闘士星矢, que é a marca; o 聖闘士星矢Ω fica,
+  // porque é o título do anime). Datas e composição: as páginas de produto do
+  // site oficial no Wayback (carddas.com/crusade/item/…) e o Carddass Club; a
+  // 1ª saiu em janeiro de 2012 (a Bandai diz 中旬, o site Crusade 下旬: só o
+  // mês). A numeração é por cor e por série (a clássica e a Ω contam
+  // separado), e o 聖闘士星矢Ω～黄金十二宮編～, de preto e vermelho, recomeça no
+  // U-001. O de 2014 tem 91 cartas oficiais; a fonte tem 46.
+  { code: "cr01", id: "01", series: "cr", date: "2012-01", ac: [115, 267], ja: "～黄金十二宮編～", en: "The Twelve Temples Arc" },
+  { code: "cr02", id: "02", series: "cr", date: "2012-06-22", ac: [173, 368], ja: "聖闘士星矢Ω", en: "Saint Seiya Omega" },
+  { code: "cr03", id: "03", series: "cr", date: "2012-11-16", ac: [115, 270], ja: "～アスガルド・海皇ポセイドン編～", en: "Asgard & Sea Emperor Poseidon Arc" },
+  { code: "cr04", id: "04", series: "cr", date: "2013-03-15", ac: [173, 433], ja: "聖闘士星矢Ω～黄金十二宮編～", en: "Omega: The Twelve Temples Arc" },
+  { code: "cr05", id: "05", series: "cr", date: "2013-06-21", ac: [115, 274], ja: "～冥王ハーデス編～", en: "Hades Arc" },
+  { code: "cr06", id: "06", series: "cr", date: "2013-08-23", ac: [173, 457], ja: "聖闘士星矢Ω～新生聖衣編～", en: "Omega: New Cloth Arc" },
+  { code: "cr07", id: "07", series: "cr", date: "2014-07-04", ac: [173, 695], ja: "～LEGEND of SANCTUARY／聖闘士星矢Ω～", en: "Legend of Sanctuary / Omega", total: 91 },
+  { code: "crpr", id: "pr", series: "cr", date: "2012", ac: [115, 363], ja: "プロモーションカード", en: "Promotion Cards", promo: true },
   // 新生セイントパラダイス (2022–2023): 36 regulares na sequência 1–126 e 7
   // prismas EX por parte.
   { code: "rb01", series: "rb", date: "2022-03", ac: [305, 653], ja: "～よみがえれ！英雄伝説～", en: "— A Heroic Legend Revived!" },
@@ -168,7 +176,9 @@ const SET_ORDER = new Map(SETS.map((s, i) => [s.code, i]));
 
 export function setName(def) { return def.name || [SERIES[def.series].ja, def.ja].filter(Boolean).join(" "); }
 export function setNameEn(def) { return def.nameEn || [SERIES[def.series].en, def.en].filter(Boolean).join(" "); }
-export const setIdOf = (code) => `${ID_PREFIX}${code}`;
+// Jogo, prefixo e setId de uma parte: <prefixo do jogo><id ou código>.
+export const jogoDe = (code) => SERIES[SET_BY_CODE.get(code).series].jogo;
+export const setIdOf = (code) => { const def = SET_BY_CODE.get(code); return `${PREFIXO[SERIES[def.series].jogo]}${def.id || def.code}`; };
 
 async function fetchPage(url) {
   for (let i = 0; i < 3; i++) {
@@ -233,7 +243,7 @@ export function assignIds(setCode, fresh, known = [], cor = corDe) {
     let id = antiga && antiga.id;
     if (!id) {
       const letra = CORES[cor(c.src)] ? `${CORES[cor(c.src)].id}-` : "";
-      const base = `${ID_PREFIX}${setCode}-${letra}${numKey(c.num) || "x"}`;
+      const base = `${setIdOf(setCode)}-${letra}${numKey(c.num) || "x"}`;
       id = base;
       for (let i = 1; used.has(id); i++) id = `${base}${String.fromCharCode(97 + i)}`; // 1, 1b, 1c…
       used.add(id);
@@ -267,7 +277,7 @@ async function refreshSnapshot(existing) {
     const known = knownSets.get(def.code) || [];
     const fresh = CARDDASS_P1.map(([num, arq, rar]) => ({ src: arq, num, rar, img: `${SSIT}${arq}` }));
     const porSrc = new Map(known.map((c) => [c.src, c]));
-    const cards = fresh.map((c) => porSrc.get(c.src) || { id: `${ID_PREFIX}${def.code}-${numKey(c.num)}`, ...c });
+    const cards = fresh.map((c) => porSrc.get(c.src) || { id: `${setIdOf(def.code)}-${numKey(c.num)}`, ...c });
     for (const k of known) if (!cards.some((c) => c.src === k.src)) cards.push(k);
     sets.push({ code: def.code, cards });
   }
@@ -337,9 +347,9 @@ export const SCAN_ERRADO = {
 };
 
 // Imagem CURADA do dono substitui o scan (mesmo mecanismo dos outros vintages).
-function curatedImg(id) {
+function curatedImg(id, jogo) {
   for (const ext of ["webp", "jpg", "png"]) {
-    if (existsSync(fileURLToPath(new URL(`assets/cards/${GAME}/${id}.${ext}`, ROOT)))) return `/assets/cards/${GAME}/${id}.${ext}`;
+    if (existsSync(fileURLToPath(new URL(`assets/cards/${jogo}/${id}.${ext}`, ROOT)))) return `/assets/cards/${jogo}/${id}.${ext}`;
   }
   return "";
 }
@@ -376,7 +386,7 @@ export function cartasDoJogo(snapshot, nomes = NOMES.nomes, nomesEn = NOMES_EN, 
         ...(CORES[k] ? { color: CORES[k].en } : {}),
         artist: "",
         language: "ja",
-        image: curatedImg(c.id) || (SCAN_ERRADO[c.src] ? "" : IMG(c.img || scanDe(c))),
+        image: curatedImg(c.id, SERIES[def.series].jogo) || (SCAN_ERRADO[c.src] ? "" : IMG(c.img || scanDe(c))),
         variants: ["Normal"],
         // Sem logo de set: nenhuma parte tem logo próprio no catálogo, e o
         // cartão do set mostra o nome (contrato 3 do docs/CATALOGO.md).
@@ -389,21 +399,32 @@ export function cartasDoJogo(snapshot, nomes = NOMES.nomes, nomesEn = NOMES_EN, 
   return out;
 }
 
+// Jogo de uma carta pelo setId (ss-sp01 -> seiya; sstc-m1 -> seiyatc).
+export function jogoDaCarta(c) {
+  const id = String((c && c.setId) || "");
+  return JOGOS.find((j) => id.startsWith(PREFIXO[j])) || "seiya";
+}
+
 async function build(snapshot) {
   const line = cartasDoJogo(snapshot);
-  const existing = (await readGlobalVar(new URL("cards.js", OUT), "TCG_CARDS")) || [];
-  // O catálogo é só deste sync; mas carta publicada nunca some.
-  const have = new Set(line.map((c) => c.id));
-  const merged = line.concat(existing.filter((c) => c && c.id && !have.has(c.id)));
-  const pricing = (await readGlobalVar(new URL("pricing.js", OUT), "TCG_PRICING")) || {}; // sem preço
-  await writeGameCatalog(OUT, { cards: merged, pricing, webDir: `data/${GAME}/` });
-  const semNome = line.filter((c) => /^No\. /.test(c.name)).length;
-  const comEn = line.filter((c) => c.nameJp).length;
-  console.log(`  ${GAME}: ${line.length} cartas em ${(snapshot.sets || []).length} partes (${comEn} com nome EN, ${semNome} sem nome) -> ${merged.length} totais`);
+  for (const jogo of JOGOS) {
+    const out = new URL(`data/${jogo}/`, ROOT);
+    const doJogo = line.filter((c) => jogoDaCarta(c) === jogo);
+    const existing = (await readGlobalVar(new URL("cards.js", out), "TCG_CARDS")) || [];
+    // O catálogo é só deste sync; mas carta publicada nunca some.
+    const have = new Set(doJogo.map((c) => c.id));
+    const merged = doJogo.concat(existing.filter((c) => c && c.id && !have.has(c.id) && jogoDaCarta(c) === jogo));
+    const pricing = (await readGlobalVar(new URL("pricing.js", out), "TCG_PRICING")) || {}; // sem preço
+    await writeGameCatalog(out, { cards: merged, pricing, webDir: `data/${jogo}/` });
+    const semNome = doJogo.filter((c) => /^No\. /.test(c.name)).length;
+    const comEn = doJogo.filter((c) => c.nameJp).length;
+    const partes = new Set(doJogo.map((c) => c.setId)).size;
+    console.log(`  ${jogo}: ${doJogo.length} cartas em ${partes} partes (${comEn} com nome EN, ${semNome} sem nome) -> ${merged.length} totais`);
+  }
 }
 
 async function run() {
-  console.log("Saint Seiya (Bandai e Amada, 1988–2023, vintage)");
+  console.log("Saint Seiya: Carddass, Trading Collection e Crusade (Bandai e Amada, 1988–2023, vintage)");
   let snapshot = await readSnapshot(SNAP);
   if (!NO_FETCH) snapshot = await refreshSnapshot(snapshot);
   if (!snapshot || !snapshot.sets) { console.log("  sem snapshot e sem fetch — nada a fazer."); return; }

@@ -135,8 +135,18 @@
   "imgPct": 0
  },
  "seiya": {
-  "cards": 1724,
-  "sets": 27,
+  "cards": 401,
+  "sets": 10,
+  "imgPct": 100
+ },
+ "seiyatc": {
+  "cards": 849,
+  "sets": 9,
+  "imgPct": 100
+ },
+ "seiyacr": {
+  "cards": 474,
+  "sets": 8,
   "imgPct": 100
  },
  "narutocg": {

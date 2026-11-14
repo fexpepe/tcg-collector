@@ -78,7 +78,9 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 | `cdm` | Carddass Masters | Bandai 1996–2011, a linha de cartas de coleção de várias IPs, uma seção por IP. HUNTER×HUNTER (2000–2001): número e nome pela lista impressa no verso das cartas (`scripts/data/carddass-masters-hxh.json`), scans da Hunterpedia (snapshot `data/vintage/carddass-masters-hxh.json`). 新世紀エヴァンゲリオン (1996–1997), as três CR de pachinko (2008–2010) e ヱヴァンゲリヲン新劇場版:破 第2章 (2011): listas de um colecionador e, nas CR e no 破, a frente das cartas lida nos scans (`scripts/data/carddass-masters-eva.json`), scans do animecollection.fr (snapshot `data/vintage/carddass-masters-eva.json`). NARUTO, a coleção do filme de 2005: lista do 火の国庵 (snapshot `data/vintage/carddass-masters-naruto.json`), sem imagem | sem preço |
 | `gcd` | Gundam Carddass | Bandai 1988–1997: SD Gundam World, Gaiden, Sengokuden, Seiden e G Gundam, uma seção por série; número, raridade e scan do animecollection.fr, sets do 80storage, nome transcrito dos scans (snapshot `data/vintage/gundam-carddass.json`). Foi linha do `gundam` por um dia (2026-11-10); `src/migra-mbc.js` leva a coleção de quem marcou | sem preço |
 | `gw` | Gundam War | Bandai 1999–2011, o TCG japonês do Gundam (vendido sob a marca Carddass Masters): número, nome, cor, tipo e raridade pelas listas do site oficial da Bandai, ainda no ar (snapshot `data/vintage/gundam-war.json`); sem imagem | sem preço |
-| `seiya` | Saint Seiya | Bandai e Amada 1988–2023, uma seção por família: Carddass (1988–89), Saint Paradise (1991–92), Trading Collection da Amada (2000–03), Crusade (2012–14) e Reborn Saint Paradise (2022–23); número, raridade e scan do animecollection.fr (a Part 1 do Carddass, do saint-seiya.it), nome transcrito dos scans | sem preço |
+| `seiya` | Saint Seiya Carddass | Bandai 1988–2023: Carddass Part 1–3 (1988–89), Saint Paradise (1991–92) e Reborn Saint Paradise (2022–23), uma seção por série; número, raridade e scan do animecollection.fr (a Part 1, do saint-seiya.it), nome transcrito dos scans | sem preço |
+| `seiyatc` | Saint Seiya Trading Collection | Amada 2000–2003: as cinco coleções de cenas do anime e dos filmes, com as promos; mesma fonte e mesmo sync do `seiya` | sem preço |
+| `seiyacr` | Saint Seiya Crusade | Bandai 2012–2014, o TCG do sistema Crusade: sete boosters (clássico e Ω) e as promos; mesma fonte e mesmo sync, cor da carta medida no scan | sem preço |
 | `jump` | JUMP | curadoria versionada em `data/jump/curated/` | — |
 
 **Linhas** (`GAME_LINES` em [src/shared.js](src/shared.js)): um jogo pode ter
@@ -406,59 +408,70 @@ o Gundam M.S. War americano e o NEX-A (2012) ficam de fora.
   o 拡張シート do 覇王の紋章.
 - **Lojas**: só eBay e PriceCharting, com "gundam war" na busca.
 
-### Saint Seiya (`seiya`)
+### Saint Seiya: Carddass (`seiya`), Trading Collection (`seiyatc`) e Crusade (`seiyacr`)
 
 聖闘士星矢 (Os Cavaleiros do Zodíaco), as cartas japonesas da marca de 1988 a
-2023, em [scripts/sync-saint-seiya.mjs](scripts/sync-saint-seiya.mjs). Um jogo
-só, com uma seção por FAMÍLIA de produto na página de Sets
-(`groupSeiyaSets`), como o `cdm` faz por IP e o `gcd` por série: foi o pedido
-(2026-11-12, "uma seção de Saint Seiya" com as famílias). Cada família é de um
-fabricante e de uma época, e uma delas é um card game de verdade (o Crusade);
-pela regra de 13/11 (jogo antigo diferente = jogo próprio, ver 4.1 do
-`docs/CATALOGO.md`), o Crusade e as Trading Collection podem virar jogos — o
-código de cada família já está no setId (`ss-cr…`, `ss-tc…`).
+2023, em TRÊS jogos vintage, um por produto (a regra de 13/11/2026: jogo antigo
+diferente = jogo próprio; ver 4.1 do `docs/CATALOGO.md`), todos pelo mesmo
+[scripts/sync-saint-seiya.mjs](scripts/sync-saint-seiya.mjs): a fonte, o
+snapshot (`data/vintage/saint-seiya.json`) e os nomes são os mesmos, e cada
+família vai pro catálogo do jogo dela (`SERIES[…].jogo`).
 
-| Família | Código | Fabricante | Sets | Anos | Cartas |
+| Jogo | Família (código) | Fabricante | Sets | Anos | Cartas |
 |---|---|---|---|---|---|
-| カードダス (Carddass 20) | `cd` | Bandai | Part 1 (Asgard), Part 2 「バトルメモリアル」, Part 3 「海皇の野望」 | 1988–1989 | 127 |
-| セイントパラダイス | `sp` | Bandai | ACT.1–3 (nº 1–126 corridos) e a jumbo do Tokyo Toy Show | 1991–1992 | 127 |
-| トレーディングコレクション | `tc` | Amada | a de 2000, os dois 劇場版, TVシリーズ＆冥王ハーデス十二宮編 e o 冥王ハーデス十二宮編［完全版］, com as promos | 2000–2003 | 849 |
-| クルセイド | `cr` | Bandai | sete boosters (o clássico e o 聖闘士星矢Ω) e as promos | 2012–2014 | 474 |
-| 新生セイントパラダイス (Reborn) | `rb` | Bandai (Premium Bandai) | três caixas com fichário | 2022–2023 | 147 |
+| Saint Seiya Carddass (`seiya`, `ss-`) | カードダス (`cd`) | Bandai | Part 1 (Asgard), Part 2 「バトルメモリアル」, Part 3 「海皇の野望」 | 1988–1989 | 127 |
+| | セイントパラダイス (`sp`) | Bandai | ACT.1–3 (nº 1–126 corridos) e a jumbo do Tokyo Toy Show | 1991–1992 | 127 |
+| | 新生セイントパラダイス, o Reborn (`rb`) | Bandai (Premium Bandai) | três caixas com fichário | 2022–2023 | 147 |
+| Saint Seiya Trading Collection (`seiyatc`, `sstc-`) | トレーディングコレクション (`tc`) | Amada | a de 2000, os dois 劇場版, TVシリーズ＆冥王ハーデス十二宮編 e o 冥王ハーデス十二宮編［完全版］, com as promos | 2000–2003 | 849 |
+| Saint Seiya Crusade (`seiyacr`, `sscr-`) | クルセイド (`cr`) | Bandai | sete boosters (o clássico e o 聖闘士星矢Ω) e as promos | 2012–2014 | 474 |
+
+O Carddass tem uma seção por série na página de Sets (`groupSeiyaSets`); o
+Trading Collection e o Crusade vão pelo padrão (por ano). Os três ficam juntos
+na marca "Saint Seiya" do /vintage.
 
 - **Cartas**: o [animecollection.fr](http://www.animecollection.fr/cartes.php?idl=37)
   (o mesmo catálogo de fã do `gcd`) dá, por parte, o número impresso, a
   raridade e o scan de cada carta (~1000 px, com a marca d'água do site).
-  Snapshot em `data/vintage/saint-seiya.json` (nunca regride). A **Part 1 do
-  Carddass** não está lá: vem da checklist do
-  [saint-seiya.it](https://www.saint-seiya.it/sito4/power/power.html) (scan de
-  350×510, também com marca d'água), que fica no próprio sync (`CARDDASS_P1`).
-  Ela não imprime número; vale o rótulo do site (S1–S7 as prismas, 1–36 as
-  normais). As imagens saem pelo `wsrv.nl` (o animecollection só tem HTTP).
+  Snapshot nunca regride. A **Part 1 do Carddass** não está lá: vem da
+  checklist do [saint-seiya.it](https://www.saint-seiya.it/sito4/power/power.html)
+  (scan de 350×510, também com marca d'água), que fica no próprio sync
+  (`CARDDASS_P1`). Ela não imprime número; vale o rótulo do site (S1–S7 as
+  prismas, 1–36 as normais). As imagens saem pelo `wsrv.nl` (o
+  animecollection só tem HTTP).
 - **Nome da carta**: nenhuma fonte acessível lista. Foi **transcrito dos
   scans** em `scripts/data/saint-seiya-nomes.json` (o cabeçalho de lá diz a
   convenção de cada família). Nas cenas das Trading Collection que não
   imprimem nada próprio, o nome é uma descrição NOSSA em inglês (campo
   `descricoes`), como as CR do `cdm`.
+- **Nome do set** sem a marca e sem o jogo (contrato 7): "パート2「…」",
+  "セイントパラダイス ACT.1", "劇場版 第1弾", "～冥王ハーデス編～". Exceções
+  declaradas no `tests/nome-do-set.test.mjs`: a Trading Collection de 2000,
+  cujo nome É トレーディングコレクション, e o 聖闘士星矢Ω (título do anime) no
+  Crusade.
 - **Crusade**: o "Carddass Masters G Crusade" do animecollection é o selo da
   caixa (CARDDASS MASTERS G) somado ao nome da linha; o nome oficial é
   【クルセイド】聖闘士星矢～…編～, do sistema Crusade da Bandai (o site oficial
   no Wayback). O número impresso (U-001, CH-001, C-001) **repete em cada cor**
-  da parte, então a cor entra no id: `ss-cr01-b-u-001` (azul), `-k-` (preto),
+  da parte, então a cor entra no id: `sscr-01-b-u-001` (azul), `-k-` (preto),
   `-g-` (verde), `-r-` (vermelho), `-p-` (roxo, o de Athena e da 小宇宙レア).
   A cor foi medida na moldura do scan e conferida contra a ordem da fonte
   (`scripts/data/saint-seiya-cores.json`); vira o filtro de cor e o de tipo
   (Unit, Character, Command).
-- **Id = família + parte + número**: `ss-cd02-1`, `ss-sp03-126`, `ss-rb01-ex05`,
-  `ss-tcm3-iii-001`. O id fica gravado no snapshot junto do id da carta na
-  fonte (`src`). Promo que a fonte rotula por extenso vira sigla
-  (`Promo 01` → `PR-01`, `Box card 1` → `BOX-1`).
-- **Erro da fonte** (`SCAN_ERRADO` no sync): o C-012 verde do Crusade
-  ～アスガルド・海皇ポセイドン編～ repete o scan do U-012; a carta fica, sem imagem,
-  com o nome da lista da loja BIGWEB.
+- **Id = prefixo do jogo + parte + número**: `ss-cd02-1`, `ss-sp03-126`,
+  `ss-rb01-ex05`, `sstc-m2-iii-001`, `sscr-05-g-u-020`. O id fica gravado no
+  snapshot junto do id da carta na fonte (`src`). Promo que a fonte rotula por
+  extenso vira sigla (`Promo 01` → `PR-01`, `Box card 1` → `BOX-1`).
+- **Erros da fonte** (no sync): o filme IV numerado como continuação do III, e
+  com dois blocos trocados (`NUMERO_IMPRESSO`: vale o IV-001…IV-036 da
+  carta); a jumbo que imprime SPECIAL; e o C-012 verde do Crusade
+  ～アスガルド・海皇ポセイドン編～, que repete o scan do U-012 (`SCAN_ERRADO`: a
+  carta fica, sem imagem, com o nome da lista da loja BIGWEB).
+- **Logo**: os três usam o 聖闘士星矢 dos displays de 1988, até achar o de cada
+  produto (como o `narutotc`).
 - **Faltam** (ROADMAP): o PP Card e o Card Game Collection (2004) da Amada, a
   outra metade do Crusade de 2014, e o CCG americano de 2004.
-- **Lojas**: só eBay e PriceCharting, com "saint seiya" na busca.
+- **Lojas**: só eBay e PriceCharting ("saint seiya carddass", "saint seiya
+  amada", "saint seiya crusade" na busca).
 
 ### Carddass Masters (`cdm`)
 

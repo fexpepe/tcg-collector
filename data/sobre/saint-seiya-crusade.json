@@ -1,0 +1,189 @@
+{
+  "url": "saint-seiya-crusade",
+  "nome": "Saint Seiya Crusade",
+  "nomeOriginal": {
+    "texto": "クルセイド 聖闘士星矢",
+    "lang": "ja",
+    "romaji": "Kuruseido Seinto Seiya"
+  },
+  "logo": "assets/games/game_seiya.webp",
+  "logoLargura": 249,
+  "logoAltura": 106,
+  "periodo": {
+    "inicio": "2012-01",
+    "fim": "2014-07"
+  },
+  "etiquetas": [
+    "Vintage",
+    {
+      "pt": "Japão",
+      "en": "Japan",
+      "es": "Japón"
+    },
+    "TCG"
+  ],
+  "resumo": {
+    "pt": "O card game de Os Cavaleiros do Zodíaco no sistema Crusade da Bandai: sete boosters de 2012 a 2014, do anime clássico e do Saint Seiya Ω.",
+    "en": "The Saint Seiya card game in Bandai's Crusade system: seven boosters from 2012 to 2014, from the classic anime and from Saint Seiya Omega.",
+    "es": "El juego de cartas de Los Caballeros del Zodiaco en el sistema Crusade de Bandai: siete sobres de 2012 a 2014, del anime clásico y de Omega."
+  },
+  "fatos": [
+    {
+      "chave": "lancamento",
+      "valor": {
+        "pt": "Janeiro de 2012",
+        "en": "January 2012",
+        "es": "Enero de 2012"
+      }
+    },
+    {
+      "chave": "encerramento",
+      "valor": {
+        "pt": "Julho de 2014",
+        "en": "July 2014",
+        "es": "Julio de 2014"
+      }
+    },
+    {
+      "chave": "fabricante",
+      "valor": "Bandai"
+    },
+    {
+      "chave": "licenca",
+      "valor": {
+        "pt": "Masami Kurumada, Shueisha e Toei Animation",
+        "en": "Masami Kurumada, Shueisha and Toei Animation",
+        "es": "Masami Kurumada, Shueisha y Toei Animation"
+      }
+    },
+    {
+      "chave": "origem",
+      "valor": {
+        "pt": "Japão",
+        "en": "Japan",
+        "es": "Japón"
+      }
+    },
+    {
+      "chave": "formato",
+      "valor": {
+        "pt": "TCG de mesa, booster de 10 cartas",
+        "en": "Tabletop TCG, 10-card boosters",
+        "es": "TCG de mesa, sobres de 10 cartas"
+      }
+    }
+  ],
+  "historia": {
+    "pt": [
+      "Em janeiro de 2012 a Bandai lançou Saint Seiya no Crusade, uma linha de card game de mesa em que cada anime tinha os seus boosters, ao lado de animes de robôs, como os da Sunrise e os de Go Nagai. As cartas são unidades, personagens e comandos de cinco cores, e o número impresso se repete em cada cor. O booster trazia 10 cartas e um índice.",
+      "Foram três boosters do anime clássico, das Doze Casas, de Asgard e Poseidon e de Hades, e três do Saint Seiya Ω, a série de 2012, entre junho de 2012 e agosto de 2013. O último, de julho de 2014, juntou o filme Legend of Sanctuary e o Ω."
+    ],
+    "en": [
+      "In January 2012 Bandai brought Saint Seiya to Crusade, a tabletop card game line in which each anime had its own boosters, alongside robot anime such as Sunrise shows and Go Nagai series. The cards are units, characters and commands in five colors, and the printed number repeats in each color. A booster held 10 cards and an index card.",
+      "There were three boosters from the classic anime, the Twelve Temples, Asgard and Poseidon, and Hades, and three from Saint Seiya Omega, the 2012 series, between June 2012 and August 2013. The last one, in July 2014, combined the Legend of Sanctuary movie and Omega."
+    ],
+    "es": [
+      "En enero de 2012 Bandai llevó Saint Seiya a Crusade, una línea de juego de cartas de mesa en la que cada anime tenía sus sobres, junto a animes de robots, como los de Sunrise y los de Go Nagai. Las cartas son unidades, personajes y comandos de cinco colores, y el número impreso se repite en cada color. El sobre traía 10 cartas y un índice.",
+      "Fueron tres sobres del anime clásico, de las Doce Casas, de Asgard y Poseidón y de Hades, y tres de Saint Seiya Omega, la serie de 2012, entre junio de 2012 y agosto de 2013. El último, de julio de 2014, juntó la película Legend of Sanctuary y Omega."
+    ]
+  },
+  "linhaDoTempo": [
+    {
+      "data": "2012-01",
+      "set": "sscr-01",
+      "texto": {
+        "pt": "Primeiro booster, das Doze Casas.",
+        "en": "First booster, from the Twelve Temples arc.",
+        "es": "Primer sobre, de las Doce Casas."
+      }
+    },
+    {
+      "data": "2012-06",
+      "set": "sscr-02",
+      "texto": {
+        "pt": "Chega o Saint Seiya Ω, a série nova do anime.",
+        "en": "Saint Seiya Omega arrives, the new anime series.",
+        "es": "Llega Saint Seiya Omega, la nueva serie del anime."
+      }
+    },
+    {
+      "data": "2012-11",
+      "set": "sscr-03",
+      "texto": {
+        "pt": "Asgard e Poseidon.",
+        "en": "Asgard and Poseidon.",
+        "es": "Asgard y Poseidón."
+      }
+    },
+    {
+      "data": "2013-03",
+      "set": "sscr-04",
+      "texto": {
+        "pt": "Ω nas Doze Casas, em preto e vermelho.",
+        "en": "Omega's Twelve Temples arc, in black and red.",
+        "es": "Omega en las Doce Casas, en negro y rojo."
+      }
+    },
+    {
+      "data": "2013-06",
+      "set": "sscr-05",
+      "texto": {
+        "pt": "Hades, o maior booster do clássico, com 91 cartas.",
+        "en": "Hades, the largest classic booster, with 91 cards.",
+        "es": "Hades, el sobre más grande del clásico, con 91 cartas."
+      }
+    },
+    {
+      "data": "2013-08",
+      "set": "sscr-06",
+      "texto": {
+        "pt": "Ω com as armaduras novas.",
+        "en": "Omega with the new Cloths.",
+        "es": "Omega con las armaduras nuevas."
+      }
+    },
+    {
+      "data": "2014-07",
+      "set": "sscr-07",
+      "texto": {
+        "pt": "Último booster: o filme Legend of Sanctuary e o Ω.",
+        "en": "Last booster: the Legend of Sanctuary movie and Omega.",
+        "es": "Último sobre: la película Legend of Sanctuary y Omega."
+      }
+    }
+  ],
+  "fontes": [
+    {
+      "nome": {
+        "pt": "Bandai, o primeiro booster no site do Crusade (Wayback)",
+        "en": "Bandai, the first booster on the Crusade site (Wayback)",
+        "es": "Bandai, el primer sobre en el sitio de Crusade (Wayback)"
+      },
+      "url": "https://web.archive.org/web/20120213174406/http://www.carddas.com/crusade/item/sec01.html"
+    },
+    {
+      "nome": {
+        "pt": "Bandai, o primeiro booster do Ω (Wayback)",
+        "en": "Bandai, the first Omega booster (Wayback)",
+        "es": "Bandai, el primer sobre de Omega (Wayback)"
+      },
+      "url": "https://web.archive.org/web/20120920112733/http://www.carddas.com/crusade/item/seiya-omega01.html"
+    },
+    {
+      "nome": {
+        "pt": "Bandai, o booster de 2014 (Wayback)",
+        "en": "Bandai, the 2014 booster (Wayback)",
+        "es": "Bandai, el sobre de 2014 (Wayback)"
+      },
+      "url": "https://web.archive.org/web/20140515002510/http://www.carddass.com/crusade/item/seiya4th.html"
+    },
+    {
+      "nome": {
+        "pt": "Carddass Club, ficha do produto",
+        "en": "Carddass Club, product page",
+        "es": "Carddass Club, ficha del producto"
+      },
+      "url": "https://sec.carddass.com/club/products/detail/4543112714404000"
+    }
+  ]
+}

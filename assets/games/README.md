@@ -171,8 +171,9 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
   Vintage da landing por enquanto: o One Piece Card Game de 2002 e o Gundam
   Carddass (2026-11-11) já levaram a fileira a 14 (7 + 7 no tablet); com ele
   seriam 15, e a grade se decide junto.
-- `game_seiya.webp` — Saint Seiya (Bandai e Amada, 1988–2023; linha da
-  página /vintage, página /games e o "Sobre"). É o logo 聖闘士星矢 da época das cartas,
+- `game_seiya.webp` — Saint Seiya (os três jogos: Carddass, Trading
+  Collection e Crusade, até cada produto ganhar o seu; linhas da página
+  /vintage, páginas /games e os "Sobre"). É o logo 聖闘士星矢 da época das cartas,
   recortado do DISPLAY da Carddass Part 2 「バトルメモリアル」 (1988), no scan
   do animecollection.fr (`packagings/118/271/h3000_1363_packaging.jpg`,
   600×926, o logo com ~240 px). Fonte melhor não achada em 2026-11-12: o

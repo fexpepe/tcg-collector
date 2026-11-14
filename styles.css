@@ -608,6 +608,15 @@
    texto branco (9.9:1). */
 [data-game-accent="seiya"] { --accent: #a78bfa; --accent-dark: #4400cc; --accent-rgb: 167, 139, 250; --accent-soft: rgba(167, 139, 250, 0.16); --on-accent: #0a0c10; }
 [data-theme="light"][data-game-accent="seiya"], [data-theme="light"] [data-game-accent="seiya"] { --accent: #4400cc; --accent-dark: #3700a6; --accent-rgb: 68, 0, 204; --accent-soft: rgba(68, 0, 204, 0.1); --on-accent: #ffffff; }
+/* Saint Seiya Trading Collection: AZUL-AÇO #5599cc (13/11/2026), com texto
+   escuro no escuro (6.8:1); no claro fecha pro #2b5f8f, com texto branco
+   (6.7:1). Saint Seiya Crusade: ROXO #660077, o de Athena e da 小宇宙レア no
+   jogo; no escuro clareia pro #d08be0, com texto escuro (8.5:1); no claro
+   fica o próprio roxo, com texto branco (11.5:1). */
+[data-game-accent="seiyatc"] { --accent: #5599cc; --accent-dark: #2b5f8f; --accent-rgb: 85, 153, 204; --accent-soft: rgba(85, 153, 204, 0.16); --on-accent: #0a0c10; }
+[data-theme="light"][data-game-accent="seiyatc"], [data-theme="light"] [data-game-accent="seiyatc"] { --accent: #2b5f8f; --accent-dark: #204a70; --accent-rgb: 43, 95, 143; --accent-soft: rgba(43, 95, 143, 0.1); --on-accent: #ffffff; }
+[data-game-accent="seiyacr"] { --accent: #d08be0; --accent-dark: #660077; --accent-rgb: 208, 139, 224; --accent-soft: rgba(208, 139, 224, 0.16); --on-accent: #0a0c10; }
+[data-theme="light"][data-game-accent="seiyacr"], [data-theme="light"] [data-game-accent="seiyacr"] { --accent: #660077; --accent-dark: #4d005a; --accent-rgb: 102, 0, 119; --accent-soft: rgba(102, 0, 119, 0.1); --on-accent: #ffffff; }
 /* Sorcery: Contested Realm: o PERGAMINHO da moldura das cartas (#c9a66b, o do
    GAME_COLOR) com texto escuro no escuro (8.5:1). No claro ele fica em 2.3:1
    com branco, então o accent escurece pro marrom de tinta #7d5f2c (5.9:1 com

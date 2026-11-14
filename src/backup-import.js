@@ -122,6 +122,9 @@
     if (flat.includes("gundamwar") || flat === "gw") return "gw";
     // Saint Seiya (Os Cavaleiros do Zodíaco; Knights of the Zodiac nos EUA). O
     // "í" sai no flat, por isso o "zod" sem o resto.
+    // Os dois outros jogos de Saint Seiya antes do genérico: "Saint Seiya Crusade".
+    if (flat.includes("seiyacrusade") || flat === "seiyacr") return "seiyacr";
+    if (flat.includes("seiyatrading") || flat === "seiyatc") return "seiyatc";
     if (flat.includes("saintseiya") || flat.includes("cavaleirosdozod") || flat.includes("knightsofthezodiac") || flat === "seiya") return "seiya";
     if (flat.includes("onepiece")) return "onepiece";
     if (flat.includes("magic") || flat === "mtg") return "magic";

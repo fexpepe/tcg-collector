@@ -7,7 +7,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import {
-  SETS, SERIES, CORES, ID_PREFIX, assignIds, raridade, nameEn, numeroDaFonte,
+  SETS, SERIES, CORES, ID_PREFIX, PREFIXO, JOGOS, jogoDe, jogoDaCarta, assignIds, raridade, nameEn, numeroDaFonte,
   setName, setNameEn, setIdOf, scanDe, IMG, cartasDoJogo, NUMERO_IMPRESSO, SCAN_ERRADO
 } from "../scripts/sync-saint-seiya.mjs";
 import { slugify } from "../functions/_lib/slug-carta.js";
@@ -34,13 +34,13 @@ test("id: família + parte + número impresso; repetido ganha sufixo e o id GRUD
 test("Crusade: o número repete em cada cor, e a cor entra no id e na carta", () => {
   const cor = (src) => ({ 10: "青", 11: "黒", 12: "緑", 13: "赤" })[src] || "";
   const pagina = [10, 11, 12, 13].map((src) => ({ src, num: "U-001", rar: "Rare", dir: "115/267" }));
-  assert.deepEqual(assignIds("cr01", pagina, [], cor).map((c) => c.id), ["ss-cr01-b-u-001", "ss-cr01-k-u-001", "ss-cr01-g-u-001", "ss-cr01-r-u-001"]);
+  assert.deepEqual(assignIds("cr01", pagina, [], cor).map((c) => c.id), ["sscr-01-b-u-001", "sscr-01-k-u-001", "sscr-01-g-u-001", "sscr-01-r-u-001"]);
   // toda carta do Crusade no snapshot tem cor conhecida, e o id leva a letra dela
   for (const s of SNAP.sets.filter((x) => /^cr/.test(x.code))) {
     for (const c of s.cards) {
       const k = CORES_SRC.cores[String(c.src)];
       assert.ok(CORES[k], `${c.id}: sem cor (${k})`);
-      assert.ok(c.id.startsWith(`${ID_PREFIX}${s.code}-${CORES[k].id}-`), `${c.id} não leva a cor ${k}`);
+      assert.ok(c.id.startsWith(`${setIdOf(s.code)}-${CORES[k].id}-`), `${c.id} não leva a cor ${k}`);
     }
   }
 });
@@ -61,7 +61,8 @@ test("snapshot: ids únicos, com o prefixo do jogo e a família da parte", () =>
     for (const c of s.cards) {
       assert.ok(!ids.has(c.id), `id repetido: ${c.id}`);
       ids.add(c.id);
-      assert.ok(c.id.startsWith(`${ID_PREFIX}${s.code}-`), c.id);
+      assert.ok(c.id.startsWith(`${setIdOf(s.code)}-`), c.id);
+      assert.ok(c.id.startsWith(PREFIXO[jogoDe(s.code)]), `${c.id}: prefixo de outro jogo`);
       // animecollection: id numérico da carta + pasta do scan; saint-seiya.it:
       // o arquivo do scan (é ele que gruda no id) e a URL de origem
       if (def.ac) assert.ok(Number.isInteger(c.src) && /^\d+\/\d+$/.test(c.dir), c.id);
@@ -92,7 +93,13 @@ test("set: a família abre o nome sem o 聖闘士星矢 da marca, e nenhum nome 
   for (const s of SETS) assert.ok(SERIES[s.series], `${s.code}: família desconhecida`);
   const nomes = SETS.map(setName);
   assert.equal(new Set(nomes).size, nomes.length, "dois sets com o mesmo nome");
-  for (const n of nomes) assert.ok(!/^(聖闘士星矢|Saint Seiya)/i.test(n), n);
+  // a marca não abre nome de set — salvo o 聖闘士星矢Ω, título do anime de 2012
+  for (const n of nomes) assert.ok(!/^(聖闘士星矢(?!Ω)|Saint Seiya)/i.test(n), n);
+  // e o nome do jogo também não (contrato 7): nada de カードダス, クルセイド ou
+  // トレーディングコレクション na frente, fora a coleção de 2000, que só se chama
+  // assim, e a promo dela
+  for (const s of SETS) assert.ok(!/^(カードダス|クルセイド|Carddass|Crusade )/.test(setName(s)), setName(s));
+  assert.deepEqual(SETS.filter((s) => /^トレーディングコレクション/.test(setName(s))).map((s) => s.code), ["tcsa", "tcsap"]);
   // Nome que é começo de outro + espaço vira CHIP do outro no aninhaPorNome
   // (src/app.js) quando os dois saem a até 400 dias. Só a promo da coleção
   // pode (é o chip que se quer: "Promo" no cartão da coleção); a coleção de
@@ -119,15 +126,17 @@ test("endereço do set: único sem desempate (não depende da ordem do catálogo
 
 test("nome em inglês dos sets (src/nomes-sets.js) é o setNameEn do sync, e só das partes com carta", () => {
   const fonte = ler("src/nomes-sets.js");
-  const noArquivo = Object.fromEntries([...fonte.matchAll(/^\s*"(ss-[a-z0-9]+)": ("(?:[^"\\]|\\.)*"),$/gm)].map((m) => [m[1], JSON.parse(m[2])]));
+  const noArquivo = Object.fromEntries([...fonte.matchAll(/^\s*"(ss(?:tc|cr)?-[a-z0-9]+)": ("(?:[^"\\]|\\.)*"),$/gm)].map((m) => [m[1], JSON.parse(m[2])]));
   const esperado = Object.fromEntries(SNAP.sets.map((s) => [setIdOf(s.code), setNameEn(SETS.find((d) => d.code === s.code))]));
   assert.deepEqual(noArquivo, esperado);
-  // o agrupador da página de Sets tira o prefixo da família que o sync põe
+  // o agrupador da página de Sets do Carddass tira o prefixo da série que o
+  // sync põe; Trading Collection e Crusade vão pelo padrão (por ano)
   const app = ler("src/app.js");
-  for (const [code, fam] of Object.entries(SERIES)) {
-    assert.ok(app.includes(`["${code}", "sets.category.`), `groupSeiyaSets sem a família ${code}`);
-    assert.ok(app.includes(`"${fam.en} "`), `groupSeiyaSets sem o prefixo "${fam.en} "`);
+  for (const [code, fam] of Object.entries(SERIES).filter(([, f]) => f.jogo === "seiya")) {
+    assert.ok(app.includes(`["${code}", "sets.category.`), `groupSeiyaSets sem a série ${code}`);
+    assert.ok(app.includes(`"${fam.en ? fam.en + " " : ""}"`), `groupSeiyaSets sem o prefixo "${fam.en} "`);
   }
+  assert.ok(!/\["(tc|cr)", "sets\.category\./.test(app), "Trading Collection e Crusade são jogos próprios, sem seção no Carddass");
 });
 
 test("imagem: o scan grande pelo wsrv, e o espelho do R2 guarda pela URL de origem", () => {
@@ -164,8 +173,8 @@ test("número impresso: o filme IV numera à parte, a fonte troca dois blocos, e
   assert.deepEqual(iv.sort(), Array.from({ length: 36 }, (_, i) => `IV-${String(i + 1).padStart(3, "0")}`));
   assert.deepEqual(SNAP.sets.find((s) => s.code === "spx").cards.map((c) => [c.id, c.num]), [["ss-spx-special", "SPECIAL"]]);
   const tcm3 = SNAP.sets.find((s) => s.code === "tcm3").cards;
-  assert.equal(tcm3.find((c) => c.src === 17237).id, "ss-tcm3-iv-016");
-  assert.equal(tcm3.find((c) => c.src === 17243).id, "ss-tcm3-iv-010");
+  assert.equal(tcm3.find((c) => c.src === 17237).id, "sstc-m2-iv-016");
+  assert.equal(tcm3.find((c) => c.src === 17243).id, "sstc-m2-iv-010");
   assert.ok(!tcm3.some((c) => /^1[4-8]\d$/.test(c.num)), "sobrou número 145–180 da fonte");
 });
 
@@ -184,4 +193,19 @@ test("catálogo: toda carta com nome (transcrito ou descrição nossa), set, fam
   // nome transcrito só de carta que existe
   const ids = new Set(cartas.map((c) => c.id));
   for (const id of Object.keys(NOMES.nomes)) assert.ok(ids.has(id), `nome de carta que não existe: ${id}`);
+});
+
+test("três jogos: cada família no catálogo do jogo dela, com o prefixo dele", () => {
+  assert.deepEqual(JOGOS, ["seiya", "seiyatc", "seiyacr"]);
+  assert.deepEqual(Object.fromEntries(Object.entries(SERIES).map(([k, f]) => [k, f.jogo])), { cd: "seiya", sp: "seiya", rb: "seiya", tc: "seiyatc", cr: "seiyacr" });
+  const cartas = cartasDoJogo(SNAP);
+  const porJogo = {};
+  for (const c of cartas) porJogo[jogoDaCarta(c)] = (porJogo[jogoDaCarta(c)] || 0) + 1;
+  assert.deepEqual(porJogo, { seiya: 401, seiyatc: 849, seiyacr: 474 });
+  for (const jogo of JOGOS) {
+    const s = ler(`data/${jogo}/cards.js`);
+    const cat = JSON.parse(s.slice(s.indexOf("["), s.lastIndexOf("]") + 1));
+    assert.equal(cat.length, porJogo[jogo], jogo);
+    assert.ok(cat.every((c) => c.id.startsWith(PREFIXO[jogo]) && jogoDaCarta(c) === jogo), `${jogo}: carta de outro jogo no catálogo`);
+  }
 });

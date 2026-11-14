@@ -288,37 +288,37 @@
     "gw-abs": "Always Beginning Set",
     "gw-promo": "Promotional Cards",
     "gw-prize": "Prize Cards",
-    // ---- Saint Seiya (jogo seiya, sync-saint-seiya.mjs). Com a FAMÍLIA na frente
-    // ("Saint Paradise Act 1", "Crusade — Hades Arc"): fora da página do jogo,
-    // "Promo" ou "Act 1" não diriam de qual família; dentro da seção dela o
-    // groupSeiyaSets tira o prefixo (e o travessão que vem depois dele). É o
-    // setNameEn do sync, travado no tests/saint-seiya.test.mjs; os subtítulos
-    // japoneses em inglês são tradução nossa, salvo os do Reborn, que o
-    // animecollection dá em inglês.
-    "ss-cd01": "Carddass Part 1",
-    "ss-cd02": "Carddass Part 2 — Battle Memorial",
-    "ss-cd03": "Carddass Part 3 — The Sea Emperor's Ambition",
+    // ---- Saint Seiya (sync-saint-seiya.mjs): os três jogos, seiya (Carddass),
+    // seiyatc (Trading Collection) e seiyacr (Crusade). No Carddass a SÉRIE vai
+    // na frente ("Saint Paradise Act 1"), e o groupSeiyaSets a tira dentro da
+    // seção (com o travessão que vem depois); as partes de 1988–89 não têm
+    // prefixo. É o setNameEn do sync, travado no tests/saint-seiya.test.mjs; os
+    // subtítulos japoneses em inglês são tradução nossa, salvo os do Reborn, que
+    // o animecollection dá em inglês.
+    "ss-cd01": "Part 1",
+    "ss-cd02": "Part 2 — Battle Memorial",
+    "ss-cd03": "Part 3 — The Sea Emperor's Ambition",
     "ss-sp01": "Saint Paradise Act 1",
     "ss-sp02": "Saint Paradise Act 2",
     "ss-sp03": "Saint Paradise Act 3",
     "ss-spx": "Saint Paradise Jumbo Carddass",
-    "ss-tcsa": "Trading Collection",
-    "ss-tcsap": "Trading Collection Promo",
-    "ss-tcm1": "Trading Collection The Movie Part 1",
-    "ss-tcm1p": "Trading Collection The Movie Part 1 Promo",
-    "ss-tcm3": "Trading Collection The Movie Part 2",
-    "ss-tctv": "Trading Collection TV Series & The Hades Chapter Sanctuary",
-    "ss-tctvp": "Trading Collection TV Series & The Hades Chapter Sanctuary Box Cards",
-    "ss-tchd": "Trading Collection The Hades Chapter Sanctuary Complete Edition",
-    "ss-tchdp": "Trading Collection The Hades Chapter Sanctuary Complete Edition Promo",
-    "ss-cr01": "Crusade — The Twelve Temples Arc",
-    "ss-cr02": "Crusade — Saint Seiya Omega",
-    "ss-cr03": "Crusade — Asgard & Sea Emperor Poseidon Arc",
-    "ss-cr04": "Crusade — Omega: The Twelve Temples Arc",
-    "ss-cr05": "Crusade — Hades Arc",
-    "ss-cr06": "Crusade — Omega: New Cloth Arc",
-    "ss-cr07": "Crusade — Legend of Sanctuary / Omega",
-    "ss-crpr": "Crusade Promotion Cards",
+    "sstc-2000": "Trading Collection",
+    "sstc-2000p": "Trading Collection Promo",
+    "sstc-m1": "The Movie Part 1",
+    "sstc-m1p": "The Movie Part 1 Promo",
+    "sstc-m2": "The Movie Part 2",
+    "sstc-tv": "TV Series & The Hades Chapter Sanctuary",
+    "sstc-tvp": "TV Series & The Hades Chapter Sanctuary Box Cards",
+    "sstc-hd": "The Hades Chapter Sanctuary Complete Edition",
+    "sstc-hdp": "The Hades Chapter Sanctuary Complete Edition Promo",
+    "sscr-01": "The Twelve Temples Arc",
+    "sscr-02": "Saint Seiya Omega",
+    "sscr-03": "Asgard & Sea Emperor Poseidon Arc",
+    "sscr-04": "Omega: The Twelve Temples Arc",
+    "sscr-05": "Hades Arc",
+    "sscr-06": "Omega: New Cloth Arc",
+    "sscr-07": "Legend of Sanctuary / Omega",
+    "sscr-pr": "Promotion Cards",
     "ss-rb01": "Reborn Saint Paradise — A Heroic Legend Revived!",
     "ss-rb02": "Reborn Saint Paradise — Clash! The Proud Assassins",
     "ss-rb03": "Reborn Saint Paradise — Assemble! Gold Saints",

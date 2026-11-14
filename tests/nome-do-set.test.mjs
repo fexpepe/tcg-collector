@@ -43,10 +43,15 @@ const NOMES_DO_JOGO = {
   // Gundam War: o set é o produto (第1弾, ドラマチックブースター「…」), sem o
   // "ガンダムウォー" da frente.
   gw: { nomes: ["Gundam War", "GUNDAM WAR", "GUNDAMWAR", "ガンダムウォー", "Carddass Masters", "カードダスマスターズ"] },
-  // Saint Seiya: o jogo é a MARCA, e a família de produto abre o nome do set
-  // ("カードダス パート2", "クルセイド ～冥王ハーデス編～"), como a IP no cdm. O
-  // "聖闘士星矢" da frente é que não entra.
-  seiya: { nomes: ["Saint Seiya", "SAINT SEIYA", "聖闘士星矢", "星矢"] },
+  // Saint Seiya, três jogos (2026-11-13): nem a marca (聖闘士星矢) nem o jogo
+  // abrem o nome do set. No Carddass, as partes de 1988–89 são "パート2「…」" e
+  // a série abre o resto ("セイントパラダイス ACT.1"). Exceções: a Trading
+  // Collection de 2000, cujo nome É トレーディングコレクション (não tem
+  // subtítulo), e a promo dela; e, no Crusade, o 聖闘士星矢Ω, que é o título do
+  // anime e abre o nome de três produtos.
+  seiya: { nomes: ["Saint Seiya", "SAINT SEIYA", "聖闘士星矢", "星矢", "Carddass", "カードダス"] },
+  seiyatc: { nomes: ["Saint Seiya", "聖闘士星矢", "Trading Collection", "トレーディングコレクション"], oficiais: ["トレーディングコレクション", "トレーディングコレクション プロモ"] },
+  seiyacr: { nomes: ["Saint Seiya", "聖闘士星矢", "Crusade", "クルセイド"], oficiais: ["聖闘士星矢Ω", "聖闘士星矢Ω～黄金十二宮編～", "聖闘士星矢Ω～新生聖衣編～"] },
   // Naruto Boruto Card Game: o grupo do TCGplayer é "NB Tournament Pack
   // Cards"; o set fica sem a sigla do jogo na frente.
   narutoboruto: { nomes: ["Naruto Boruto", "NARUTO BORUTO", "Chrono Clash", "NB "] },
