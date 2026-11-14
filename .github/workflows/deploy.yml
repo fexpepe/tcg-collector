@@ -1590,3 +1590,43 @@ jobs:
               *) echo "::warning::IndexNow respondeu HTTP $code para $(basename "$f"): $(head -c 300 "$resp")" ;;
             esac
           done
+
+  # Varredura pós-deploy (D8 do docs/PLANO-TECNICO.md): com a leva nova no ar,
+  # abre as telas principais num Chromium de verdade, em desktop 1366 e
+  # celular 412/390, e fica vermelho com erro de JS, 4xx/5xx de arquivo nosso,
+  # a saída de emergência do boot, CLS > 0,25 nas telas que pulavam (S3) ou o
+  # 103 com CSS de outra leva (S4). O que ela acha está no cabeçalho do
+  # scripts/varredura-producao.mjs; a falha só conta se repetir (2ª passada
+  # depois de 30 s), como no healthcheck. Job À PARTE, e não passo do
+  # build-deploy: o site já está no ar quando ela roda, então o vermelho dela
+  # é aviso de produção quebrada (e-mail do GitHub), não deploy que falhou —
+  # e o build pesado não espera o navegador.
+  #
+  # Só a main (produção). A medição do site (pageview, jserror, view de carta)
+  # e a rede de anúncio são seguradas dentro do navegador: robô não vira
+  # número no /admin nem impressão de AdSense.
+  varredura:
+    needs: build-deploy
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      # Só os scripts: o resto do repositório (catálogo, imagens) não entra
+      # na varredura, que lê tudo do site no ar.
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          sparse-checkout: scripts
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: 22
+      # Versão FIXA: navegador novo muda o que conta como layout shift e o
+      # que vira erro de console. Subir de versão é decisão, com uma rodada
+      # manual antes (node scripts/varredura-producao.mjs).
+      - name: Instala o Playwright e o Chromium
+        run: |
+          npm install --no-save --no-package-lock --no-audit --no-fund playwright@1.63.0
+          npx playwright install --with-deps chromium
+      - name: Varredura de produção (desktop 1366 + celular 412/390)
+        run: node scripts/varredura-producao.mjs --base https://sleevu.app

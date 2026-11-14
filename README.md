@@ -1406,6 +1406,17 @@ se o cache expirou. O que roda **sempre**: lint, prerender, fatias de índice,
 metadados do manifest, chunks de preço, split de i18n/CSS, minificação (esbuild),
 hash do app shell e deploy.
 
+Depois do deploy da `main`, o job `varredura` (mesmo workflow, job à parte)
+abre as telas principais **no ar** num Chromium de verdade, em desktop 1366 e
+celular 412/390, e fica vermelho com erro de JS, 4xx/5xx de arquivo do site,
+a saída de emergência do boot, CLS acima de 0,25 nas telas que pulavam ou o
+Early Hints (103) com o CSS de outra leva — `scripts/varredura-producao.mjs`,
+item D8 do [docs/PLANO-TECNICO.md](docs/PLANO-TECNICO.md). A medição do site e
+a rede de anúncio são seguradas no próprio navegador (robô não vira número no
+`/admin` nem impressão de anúncio); falha só conta se repetir numa 2ª passada.
+Roda à mão também: `node scripts/varredura-producao.mjs` (produção) ou
+`--base http://127.0.0.1:8899 --local` contra o `npx http-server`.
+
 Secrets: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, `PPT_API_TOKEN`,
 `MYP_API_TOKEN`, `PUSH_SENDER_KEY`, `VAPID_PRIVATE_KEY`. Todos os passos que
 dependem de secret são no-op sem ele — o build sai igual, só sem aquela fonte.

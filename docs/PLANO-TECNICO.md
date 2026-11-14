@@ -52,7 +52,8 @@ lista de erros. Este plano faz três coisas, nesta ordem:
 | S5 | feito | `data-iab` no `<html>` (theme.js); `pageview.props.iab` e `login_gate.props.iab` medem daqui pra frente |
 | S4, S7, S11 | configuração | Cloudflare (Early Hints, JS Detections) e um monitor externo: fora do repositório |
 | Fase 0 | a rodar | as consultas da seção 3.2 no SQL Editor; depois do S5, a Q5 pode separar por `props->>'iab'` |
-| S6, S8–S10, D2 (`report-to`), D4–D9 | próximos | ordem da seção 6 |
+| S6, S8–S10, D2 (`report-to`), D4–D7, D9 | próximos | ordem da seção 6 |
+| D8 | feito (2026-11-14), sem o relatório semanal | `scripts/varredura-producao.mjs` (lógica em `scripts/lib/varredura.mjs`, testada em `tests/varredura.test.mjs`) no job `varredura` do `deploy.yml`, depois do deploy da main. Na estreia achou o S9 (os três logos de loja, 404 na home a 1366) e nada mais: CLS ≤ 0,082 nas telas do S3, 103 com o mesmo hash do 200 nas quatro telas. Ver o D8 na seção 5 |
 
 ---
 
@@ -642,6 +643,47 @@ arquivo nosso, saída de emergência visível, 103 com hash diferente do 200 e
 CLS > 0,25 nas telas da tabela do S3; o desempenho com CPU/rede limitadas sai
 como relatório semanal.
 
+*Estado (2026-11-14): entrou, menos o relatório semanal.* O que ficou:
+
+- **Onde roda**: job `varredura` do `deploy.yml`, depois do `build-deploy`, só
+  na `main` — à parte, porque o site já está no ar quando ela roda: o
+  vermelho dela é produção quebrada (e-mail do GitHub), não deploy que
+  falhou. Playwright fixo na 1.63.0 (navegador novo muda o que conta como
+  layout shift). À mão: `node scripts/varredura-producao.mjs`, ou
+  `--base http://127.0.0.1:8899 --local` contra o `npx http-server` (aí o
+  `/data/` e o `/api/`, que só o deploy tem, não reprovam).
+- **Telas**: Início, Hub, `/games/pokemon`, Base Set, Charizard 4/102,
+  `/explore?q=charizard`, `/condition`, `/help`, `/lancamentos` e
+  `/novidades`, em desktop 1366, Pixel 7 (412) e iPhone 13 (390) — 30
+  aberturas, ~3,5 s cada em produção; mais o 103 de `/`, `/hub`,
+  `/games/pokemon` e `/pokedex`.
+- **Reprova**: `pageerror`; 4xx/5xx de arquivo nosso (mesma origem); a
+  saída de emergência (`html` sem `data-game`, ou sem `data-app` em 20 s);
+  a tela de erro do catálogo; CLS > 0,25 nas telas do S3 (a maior janela de
+  sessão, a conta do Core Web Vitals — o 0,1 é meta do D5, medido em gente);
+  o 103 mandando arquivo com hash que o 200 não pede.
+- **Só avisa**: terceiro com erro, imagem que o espelho (`img.sleevu.app`)
+  ainda não tem (a cadeia cai na fonte, S10), `/cdn-cgi/`, erro de console
+  e os `jserror` que o site mandaria. Na estreia: a CSP barrando o script
+  inline do Cloudflare fora do catálogo (o S11) e o câmbio da AwesomeAPI
+  respondendo 429 sem CORS nas telas de catálogo — do IP da sessão de
+  teste; a reserva do S2 (`fx.generated.json`) cobriu.
+- **Repetição**: o que falha na 1ª passada roda de novo depois de 30 s, e
+  só o que falhar nas duas reprova (a regra do `healthcheck.mjs`).
+- **Medição de fora**: as escritas de medição no Supabase (`events`,
+  `increment_card_view`, `increment_deck_view`, `contribute_price`,
+  `consent_tally`), o beacon do Cloudflare e a rede de anúncio são
+  respondidos dentro do navegador (robô não vira número no `/admin` nem
+  impressão de AdSense); o service worker fica bloqueado, porque pedido que
+  passa por ele escapa da interceptação.
+- **O 103 pelo curl**: o Playwright e o `fetch` do Node não mostram resposta
+  informativa; o `curl --http2 -D -` mostra. Com user-agent de navegador: com
+  um nome solto, a borda não manda 103 e a conferência passava sem conferir
+  (visto na estreia).
+- **Fica de fora (próximo passo)**: o relatório semanal de desempenho com
+  CPU e rede limitadas (LCP, bloqueio — o S8), que é medida, não guarda, e
+  o "103 diferente do 200" em mais telas que as quatro do S4.
+
 **D9. Uptime externo** (é o S7).
 
 ---
@@ -658,7 +700,7 @@ como relatório semanal.
 | 5 | PR: D0 + D3 (SQL antes do JS, como sempre) | migração + `admin.js` | depois da Fase 0 dizer o que importa |
 | 6 | PR: S5 (login em app embutido) | `login.js`, i18n | junto com o 5 |
 | 7 | PR: D2 + D4 + D5 (migração de whitelist antes) | `shared.js`, Function de CSP | semana seguinte |
-| 8 | PR: D6 + D7 + D8 | healthcheck, migração, script | semana seguinte |
+| 8 | PR: D6 + D7 + D8 | healthcheck, migração, script | semana seguinte — o D8 entrou em 2026-11-14 (PR própria) |
 | 9 | S6, S8, S9, S10 | deploy, telas, catálogo | conforme a Fase 0 e o D5 mostrarem o peso |
 
 ## 7. Como saber se melhorou
