@@ -66,7 +66,14 @@ const FAMILIAS = {
   // ("DZ-BT16/001EN", "BT01/046EN"), com o hífen da era (G-, V-, D-, DZ-;
   // a série original não tem). Boosters, extras e decks; as promos (PR, VPR,
   // D-PR), os marcadores (V-GM), os eventos e o "KA1-2" ficam sem.
-  vanguard: { re: /^((?:(?:DZ|D|V|G)-)?(?:BT|EB|LBT|TBP?|SS|CB|CMB|CHB|TCB|MB|VS|PV|RC|FC|TD|MT|SD|LD|LTD|TTD|PS|CS)\d{2})$/, inteiro: true }
+  vanguard: { re: /^((?:(?:DZ|D|V|G)-)?(?:BT|EB|LBT|TBP?|SS|CB|CMB|CHB|TCB|MB|VS|PV|RC|FC|TD|MT|SD|LD|LTD|TTD|PS|CS)\d{2})$/, inteiro: true },
+  // DUEL MASTERS: o setId já é o código do produto, na grafia da Takara Tomy
+  // (COM hífen: "DM26-RP3", "DMR-01", "DM-01" — é como a caixa e o site
+  // oficial escrevem; a grafia da PSA não foi conferida). Sem selo: as
+  // temporadas de promo e os decks da CoroCoro (PROMOY5, SPDECK13: valor do
+  // filtro da fonte, não código impresso) e os ids com sufixo de desempate ou
+  // de edição por extenso ("DMRP-04-RP04M", "DMR-16KIWAMI").
+  duelmasters: { re: /^(DM(?:R|RP|X|EX|C|D|SD|BD|SP|PCD|ART)?-\d{2}|DM\d{2}-(?:RP|EX|SD|BD|SP)\d+X?)$/, inteiro: true }
 };
 
 // Prefixo de número que aparece em pelo menos `minimo` das cartas do set.

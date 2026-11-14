@@ -505,6 +505,17 @@
   --accent: #c2264b; --accent-dark: #a81f40; --accent-rgb: 194, 38, 75;
   --accent-soft: rgba(194, 38, 75, 0.1); --on-accent: #ffffff;
 }
+/* Duel Masters: OURO-CLARO, o amarelo do logo (13/11/2026). Texto escuro no
+   escuro (16.9:1); um ocre fechado com texto branco no claro (4.9:1). */
+[data-game-accent="duelmasters"] {
+  --accent: #fde68a; --accent-dark: #f5d565; --accent-rgb: 253, 230, 138;
+  --accent-soft: rgba(253, 230, 138, 0.16); --on-accent: #0a0c10;
+}
+[data-theme="light"][data-game-accent="duelmasters"],
+[data-theme="light"] [data-game-accent="duelmasters"] {
+  --accent: #a16207; --accent-dark: #854d0e; --accent-rgb: 161, 98, 7;
+  --accent-soft: rgba(161, 98, 7, 0.1); --on-accent: #ffffff;
+}
 /* Naruto Mythos TCG: OURO CLARO, a folha de ouro 22K da Legendary (confirmada
    pelo Fernando em 12/11/2026). No escuro, com texto escuro (16:1); no claro
    o ouro some no branco, então o accent fecha pro âmbar-terra #92400e (7.1:1

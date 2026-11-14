@@ -134,6 +134,13 @@ test("Vanguard: o código impresso antes da barra, com o hífen da era", () => {
   for (const id of ["PR", "VPR", "D-PR", "V-GM", "EVENT", "CLN", "KA1-2"]) assert.equal(cod("vanguard", id), "", id);
 });
 
+test("Duel Masters: o código do produto, com o hífen da Takara Tomy", () => {
+  for (const id of ["DM-01", "DM-39", "DMR-01", "DMRP-22", "DMX-26", "DMEX-19", "DMC-68", "DMD-35", "DMSD-21", "DMBD-22", "DMART-26", "DM26-RP3", "DM23-RP2X", "DM26-EX5", "DM25-SP2"]) {
+    assert.equal(cod("duelmasters", id), id, id);
+  }
+  for (const id of ["PROMOY5", "SPDECK13", "COROCOROY19", "SI", "GUM1", "DMRP-04-RP04M", "DMR-16KIWAMI", "DMARTKIWAMI-01"]) assert.equal(cod("duelmasters", id), "", id);
+});
+
 test("Final Fantasy vira Opus (grafia da PSA), Lorcana vira Set N", () => {
   assert.equal(cod("fftcg", "OP1"), "Opus I");
   assert.equal(cod("fftcg", "OP14"), "Opus XIV");

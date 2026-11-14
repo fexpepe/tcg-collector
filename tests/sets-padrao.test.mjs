@@ -326,6 +326,13 @@ test("Bandai moderno: coleção numerada, boosters extras, decks e promos, pelo 
     main: ["BT01", "DZ-BT16", "G-BT14"], extraBoosters: ["D-VS06", "DZ-TBP01", "EB12", "V-SS10"],
     decks: ["D-TTD03", "DZ-PS03", "G-LD03", "TD17"], promos: ["D-PR", "EVENT", "KA1-2", "PR", "V-GM"]
   });
+  // Duel Masters (Takara Tomy): as expansões numeradas de cada fase são as
+  // principais (DM, DMR, DMRP, DMnn-RPn, com a 2ª edição e o desempate);
+  // extras, decks e promos pelo código do produto.
+  assert.deepEqual(secoesBandai("duelmasters", ["DM-01", "DMR-16KIWAMI", "DMRP-04-RP04M", "DM26-RP3", "DM23-RP2X", "DMX-01", "DMEX-19", "DM26-EX5", "DMART-26", "DMC-68", "DMD-35", "DMBD-22", "DM25-SP2", "DM26-SD1", "SPDECK13", "COROCOROY19", "PROMOY25", "SI"]), {
+    main: ["DM-01", "DM23-RP2X", "DM26-RP3", "DMR-16KIWAMI", "DMRP-04-RP04M"], extraBoosters: ["DM26-EX5", "DMART-26", "DMEX-19", "DMX-01"],
+    decks: ["COROCOROY19", "DM25-SP2", "DM26-SD1", "DMBD-22", "DMC-68", "DMD-35", "SPDECK13"], promos: ["PROMOY25", "SI"]
+  });
 });
 
 // Cartão sem chip na Bandai (2026-11-12): pre-release, release event e torneio

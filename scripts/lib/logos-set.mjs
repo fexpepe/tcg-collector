@@ -143,6 +143,7 @@ export const FORA = {
   grandarchive: "sem logo de set versionado (o site oficial só publica a arte de capa dos sets; visto em 2026-11-13)",
   hololive: "sem fonte de logo de set conferida (o sync grava vazio; 2026-11-13)",
   vanguard: "sem fonte de logo de set conferida (o sync grava vazio; 2026-11-13)",
+  duelmasters: "sem fonte de logo de set conferida (o sync grava vazio; 2026-11-13)",
   harrypotter: "logos recortados à mão do Wayback; o resto não tem logo publicado",
   cyberpunk: "logo curado à mão; sem fonte automática",
   ygo: "sem fonte de logo de set (o sync grava vazio)",

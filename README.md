@@ -33,7 +33,7 @@ catálogo completo só existe no build de produção.
 
 ## Os jogos
 
-O registro central é o `GAMES` em [src/game.js](src/game.js): **42 slugs**, 41 com
+O registro central é o `GAMES` em [src/game.js](src/game.js): **43 slugs**, 42 com
 catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do Pokémon
 é a raiz `data/` por motivo histórico (não movemos nada).
 
@@ -48,6 +48,7 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 | `swu` | Star Wars: Unlimited | TCGCSV cat. 79 (FFG; Hyperspace/Showcase = cartas próprias) + logos de set do site oficial (`mirror-swu-set-logos.mjs`) | USD |
 | `cyberpunk` | Cyberpunk TCG | TCGCSV cat. 92 (Weird Co.; edições Beta e Retail = sets próprios, setId fixo por groupId) + logo do Welcome to Night City curado do site oficial | USD |
 | `weiss` | Weiß Schwarz | TCGCSV cat. 20 (Bushiroad; só a edição inglesa, 2013+; paralelas SP/SSP/OFR = cartas próprias; setId fixo por groupId com o código impresso, `DDD-S118`; sem logo de set publicado) | USD |
+| `duelmasters` | Duel Masters | Banco oficial da Takara Tomy (dm.takaratomy.co.jp/card/; o jogo japonês, 2002+; cada impressão = carta própria; setId = código do produto, `DM26-RP3`) + preço de venda da Yuyu-tei em iene, convertido no sync. Fora da TCGCSV: o TCGplayer não vende o jogo | USD (convertido do iene) |
 | `vanguard` | Cardfight!! Vanguard | TCGCSV cat. 16 (Bushiroad 2011+; as cinco eras, só a edição inglesa; paralelas SP/FR/SEC = cartas próprias; setId do código impresso que abre o nome do grupo, `DZ-BT16`; sem logo de set) | USD |
 | `fftcg` | Final Fantasy TCG | TCGCSV cat. 24 (Square Enix 2016+, os Opus; Full Art = carta própria; setId fixo por groupId, `OP27`, porque a abreviação da fonte erra e repete; sem logo de set publicado) | USD |
 | `hololive` | hololive Official Card Game | TCGCSV cat. 87 (Bushiroad/COVER 2025+, só a edição EN; id do productId porque número e raridade repetem; cada produto é Normal ou Foil; sem logo de set) | USD |
@@ -152,6 +153,44 @@ inglesa está na TCGCSV. O que é só dele:
   boosters, trial decks e promos; o Sleeve and Card Set vai pras promos.
 - A 2ª edição do BP01 (EBP01-2E) é **edição** do set (docs/CATALOGO.md, 3.4):
   sem cartão na lista de Sets, aparece no seletor "Edição" da página do BP01.
+
+### Duel Masters (`duelmasters`)
+
+[scripts/sync-duelmasters.mjs](scripts/sync-duelmasters.mjs). O único jogo em
+atividade que **não vem da TCGCSV**: o TCGplayer não vende Duel Masters
+(conferidas as 94 categorias em 13/11/2026). É o jogo japonês da Takara Tomy,
+de 2002 até hoje: 396 produtos e 24.039 cartas no lançamento do
+catálogo.
+
+- **Catálogo = banco oficial** (dm.takaratomy.co.jp/card/): a lista de cada
+  produto por POST e uma ficha por carta. Ficha já conhecida não é pedida de
+  novo (o `cards.js` anterior é o cache). Nome, tipo, civilização (no
+  `color`), raridade, custo, poder, raça e ilustrador; tudo em japonês, sem
+  nome oficial em inglês.
+- **Preço = uma loja, não média de mercado**: o preço de venda da Yuyu-tei
+  (yuyu-tei.jp), em iene, casado pelo número impresso dentro do set
+  (`chaveDoNumero`) e gravado no slot `u` em dólar pela cotação do dia. A
+  loja mostra preço mesmo esgotada. Na tela, a fonte aparece como "Japão ·
+  Yuyu-tei" (`market.jp`), não como TCGplayer. 20.814 (86,6%) cartas com preço
+  no lançamento; as temporadas de promo e os decks da CoroCoro não têm página
+  de set na loja.
+- **id = `dm-<id oficial>`** (`dm-dm26rp3-s001`): cada impressão (secreta,
+  alternativa) é ficha própria na fonte e carta própria aqui.
+- **setId = o código do produto** (`DM26-RP3`, `DMR-01`); produto sem código
+  (promos, CoroCoro) fica com o valor do filtro oficial (`PROMOY5`). O kanji
+  de edição vai por extenso (`DMR-16KIWAMI`). Nome do set em japonês.
+- **Data do set**: a página do produto só traz 発売日 nos recentes. Os antigos
+  vêm do snapshot [scripts/data/duelmasters-datas.json](scripts/data/duelmasters-datas.json),
+  montado da wiki do Fandom por
+  [scripts/duelmasters-datas.mjs](scripts/duelmasters-datas.mjs); 48
+  produtos ficam sem data.
+- **Imagem** 650×908 do site oficial, pedida pelo wsrv.nl (sem host novo na
+  CSP) e guardada pelo espelho R2.
+- **Rodadas**: o build diário revisita os produtos novos, o topo do filtro e
+  as promos, e na loja os sets dos últimos dois anos mais um sétimo dos
+  antigos; no domingo roda inteiro (`--full`).
+- Sets no formato do `SECOES_BANDAI`: as expansões numeradas (DM, DMR, DMRP,
+  DMnn-RP) como principais, os extras, os decks e as promos, pelo código.
 
 ### Cardfight!! Vanguard (`vanguard`)
 

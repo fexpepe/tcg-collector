@@ -43,6 +43,10 @@ export const NOMES_DO_JOGO = {
   // Cardfight!! Vanguard: nenhum grupo traz o jogo na frente hoje (13/11/2026);
   // fica pra quando o TCGplayer criar um "Cardfight Vanguard Promo Cards".
   vanguard: ["Cardfight!! Vanguard", "Cardfight Vanguard"],
+  // Duel Masters: o rótulo do banco oficial abre com o código do produto, que
+  // o sync já tira; a marca na frente ("デュエル・マスターズTCG …") só aparece na
+  // página do produto, não no rótulo. Fica a guarda.
+  duelmasters: ["デュエル・マスターズTCG", "デュエル・マスターズ TCG", "デュエル・マスターズ", "Duel Masters"],
   // Grand Archive TCG: nenhum grupo traz o jogo no nome hoje; fica a regra
   // pro dia em que vier um "Grand Archive Promo Cards".
   grandarchive: ["Grand Archive Trading Card Game", "Grand Archive TCG", "Grand Archive"],
