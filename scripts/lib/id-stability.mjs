@@ -56,6 +56,7 @@ export const ID_DE_PRODUTO = {
   fftcg: /^fftcg-\d+$/,
   vanguard: /^vg-\d+$/,
   grandarchive: /^ga-\d+$/,
+  hololive: /^holo-\d+$/,
   narutoboruto: /^nb-\d+$/ // Chrono Clash System, TCGCSV cat. 60 (2026-11-13)
 };
 

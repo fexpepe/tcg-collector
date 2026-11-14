@@ -141,6 +141,7 @@ export const FORA = {
   godzilla: "sem logo de set publicado (o site oficial só tem a foto da caixa; auditado em 2026-11-11)",
   fftcg: "sem logo de set publicado (o site oficial só tem arte de capa, caixa e pacote; auditado em 2026-11-11)",
   grandarchive: "sem logo de set versionado (o site oficial só publica a arte de capa dos sets; visto em 2026-11-13)",
+  hololive: "sem fonte de logo de set conferida (o sync grava vazio; 2026-11-13)",
   vanguard: "sem fonte de logo de set conferida (o sync grava vazio; 2026-11-13)",
   harrypotter: "logos recortados à mão do Wayback; o resto não tem logo publicado",
   cyberpunk: "logo curado à mão; sem fonte automática",

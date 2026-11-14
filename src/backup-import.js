@@ -175,6 +175,8 @@
     if (flat.includes("finalfantasy") || flat === "fftcg") return "fftcg";
     // "Grand Archive" / "Grand Archive TCG" no TCGplayer e no Collectr.
     if (flat.includes("grandarchive")) return "grandarchive";
+    // "hololive OFFICIAL CARD GAME" no TCGplayer e no Collectr.
+    if (flat.includes("hololive")) return "hololive";
     // "Cardfight Vanguard" no TCGplayer e "Cardfight!! Vanguard" no Collectr.
     if (flat.includes("vanguard")) return "vanguard";
     if (flat.includes("harrypotter")) return "harrypotter";

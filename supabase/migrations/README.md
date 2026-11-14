@@ -8,6 +8,18 @@ poucos.)
 
 ## Pendentes de aplicar
 
+- `20261113g` — libera o slug `hololive` (hololive OFFICIAL CARD GAME,
+  Bushiroad/COVER, edição em inglês, 2025+) nas duas whitelists de jogo
+  (`card_views`/`increment_card_view` e `contribute_price`;
+  `20261113g_add_hololive.sql`). Cópia da `20261113f` (narutotc, a última
+  aplicada) com o `hololive` a mais: **ela cobre a 20261113f** e, por ela,
+  todas as do dia 13. Só a lista muda. Qualquer uma das anteriores rodada
+  **depois** desta tiraria o `hololive`. Sem ela, a view de carta e o Preço
+  da Comunidade do jogo novo são descartados em silêncio. Conferir com o par
+  de `curl` do fim do arquivo: a view de `holo-645575` tem de **criar a
+  linha** no `card_views` (o 204 sozinho não prova nada). **A próxima
+  migração de jogo copia esta.** **PENDENTE de aplicação** (2026-11-13).
+
 - `20261113f` — libera o slug `narutotc` (Naruto Trading Cards, as cartas de
   coleção japonesas da Amada e da Ensky, 2004–2005) nas duas whitelists de
   jogo (`card_views`/`increment_card_view` e `contribute_price`;

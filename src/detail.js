@@ -468,6 +468,10 @@
     // Grand Archive TCG (13/11/2026): a escada do booster, a promo e por fim
     // as de colecionador (CSR, CUR, CPR), na ordem em que o Index oficial as
     // numera.
+    // hololive OFFICIAL CARD GAME (13/11/2026): a escada do holomem, depois
+    // as do Oshi (a carta que comanda o deck tem raridade própria), a secreta,
+    // as Special (arte alternativa e Cheer) e a promo.
+    hololive: ["Common", "Uncommon", "Rare", "Double Rare", "Super Rare", "Holomem Rare", "Ultra Rare", "Oshi Common", "Oshi Super Rare", "Oshi Ultra Rare", "Secret Rare", "Special", "Special Yell", "Promo"],
     grandarchive: ["Common", "Uncommon", "Rare", "Super Rare", "Ultra Rare", "Promo", "Collector Super Rare", "Collector Ultra Rare", "Collector Promo"],
     // Naruto Mythos TCG (12/11/2026): a escada do guia de coleção oficial, da
     // base ao ouro; as Mission são tipo de carta, e as Mythos, fora de coleção.

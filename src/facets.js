@@ -206,6 +206,24 @@
     // na ordem em que o jogo os lançou. O TIPO vem multi e em ordem solta
     // ("Item;Regalia" e "Regalia;Item"): conta em cada parte. A CLASSE é a do
     // campeão que joga a carta; a de duas classes conta nas duas.
+    // hololive OFFICIAL CARD GAME (13/11/2026): a COR (seis, mais a Neutral
+    // das Cheer coringa; a de duas cores vem "Blue;Red" e conta nas duas), o
+    // TIPO e o BLOOM — o degrau do holomem, do Debut ao 2nd, mais o Spot.
+    hololive: [
+      {
+        key: "color", labelKey: "facet.color",
+        of: (c) => facetSplit(c.color, ";"),
+        label: (v) => v,
+        order: ["White", "Green", "Red", "Blue", "Purple", "Yellow", "Neutral"]
+      },
+      facetType(["Oshi holomem", "holomem", "buzz holomem", "Support", "Cheer"]),
+      {
+        key: "bloom", labelKey: "facet.bloom",
+        of: (c) => (c.bloom ? [String(c.bloom)] : []),
+        label: (v) => v,
+        order: ["Debut", "1st", "2nd", "Spot"]
+      }
+    ],
     grandarchive: [
       {
         key: "element", labelKey: "facet.element",

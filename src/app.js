@@ -16,7 +16,7 @@
     magic: "game_magic-v2.webp", fab: "game_fab.webp", gundam: "game_gundam-v2.webp", swu: "game_swu-v2.webp", cyberpunk: "game_cyberpunk.webp", sorcery: "game_sorcery-v2.webp", dbfw: "game_dbfw-v2.webp",
     ygo: "game_ygo-v2.webp", digimon: "game_digimon-v2.webp", riftbound: "game_riftbound-v2.webp",
     unionarena: "game_unionarena-v2.webp", narutocg: "game_naruto_2027.webp", naruto: "game_naruto.webp", hxh: "game_hxh.webp",
-    dbc: "game_dbc-v2.webp", dbsb: "", dbva: "", dbbw: "", wow: "game_wow.webp", lotr: "game_lotr.webp", dbz: "game_dbz.webp", weiss: "game_weiss.webp", godzilla: "game_godzilla.webp", palworld: "game_palworld.webp", fftcg: "game_fftcg.webp", grandarchive: "game_grandarchive.webp", vanguard: "game_vanguard.webp", narutomythos: "game_narutomythos.webp", narutokayou: "game_narutokayou.webp", harrypotter: "game_harrypotter.webp",
+    dbc: "game_dbc-v2.webp", dbsb: "", dbva: "", dbbw: "", wow: "game_wow.webp", lotr: "game_lotr.webp", dbz: "game_dbz.webp", weiss: "game_weiss.webp", godzilla: "game_godzilla.webp", palworld: "game_palworld.webp", fftcg: "game_fftcg.webp", grandarchive: "game_grandarchive.webp", hololive: "game_hololive.webp", vanguard: "game_vanguard.webp", narutomythos: "game_narutomythos.webp", narutokayou: "game_narutokayou.webp", harrypotter: "game_harrypotter.webp",
     mbc: "game_mbc.webp", cdm: "game_cdm.webp", gcd: "game_gcd.webp", gw: "game_gw.webp", narutoboruto: "game_naruto_boruto.webp", narutotc: "game_naruto.webp"
   };
   function gameLogoUrl(game) {
@@ -2020,6 +2020,14 @@
     //   deck  — Starter Decks (…SD), Re:Collection (as siglas próprias, as
     //           Lite e o "REC-" que o TCGplayer passou a usar) e Demo Decks.
     // Event Pack, Supporter Pack e promos caem em "Promos e eventos".
+    // hololive OFFICIAL CARD GAME (13/11/2026): o setId é o código oficial
+    // (sync-hololive.mjs) — hBP = Booster Pack, hEB = Extra Booster, hSD =
+    // Start Deck e hYS = Start Cheer Set. As promos (HPR) caem no resto.
+    hololive: {
+      main: /^HBP\d+$/,
+      extra: /^HEB\d+$/,
+      deck: /^H(SD|YS)\d+$/
+    },
     grandarchive: {
       main: /^(?!EVP|KSP|GSC|SLC|SLM|SHD)[A-Z]{3}(1E|-1ST)?$/,
       extra: /-ALTER$|^[A-Z]{3}(AE|DP|PD|P|G)$/,
