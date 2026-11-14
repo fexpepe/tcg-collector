@@ -727,9 +727,17 @@ function cardNamesFor(game) {
   return map;
 }
 
-// Zonas na ordem da página: comandante/líder (a cara do deck) primeiro.
-const DECK_ZONA_ROTULO = { commander: "Comandante", leader: "Líder", main: "Deck", side: "Side Deck", extra: "Extra Deck", egg: "Deck de Ovos", maybe: "Talvez" };
-const DECK_ZONA_TOPO = ["commander", "leader"];
+// Zonas na ordem da página: comandante/líder (a cara do deck) primeiro. Os
+// rótulos são os do i18n-decks.js em pt (as zonas do lote de 14/11/2026 —
+// Gundam, SWU, FAB, Riftbound, Vanguard, FFTCG e Grand Archive — inclusive);
+// zona sem rótulo aqui sai com a chave crua.
+const DECK_ZONA_ROTULO = {
+  commander: "Comandante", leader: "Líder", hero: "Herói", legend: "Lenda", base: "Base", main: "Deck",
+  side: "Side Deck", extra: "Extra Deck", egg: "Deck de Ovos", maybe: "Talvez",
+  resource: "Deck de Recursos", equipment: "Equipamento e armas", rune: "Deck de Runas",
+  battlefield: "Campos de batalha", ride: "Ride Deck", gdeck: "Deck G", lb: "Deck LB", material: "Deck de Material"
+};
+const DECK_ZONA_TOPO = ["commander", "leader", "hero", "legend", "base"];
 const ordemDasZonas = (zonas) => Object.keys(zonas).sort((a, b) => {
   const ia = DECK_ZONA_TOPO.indexOf(a), ib = DECK_ZONA_TOPO.indexOf(b);
   return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib);

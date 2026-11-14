@@ -115,6 +115,7 @@
     // A zona vai traduzida ("Principal"), não com a chave crua ("main").
     const vals = Object.assign({}, r.warn.vals || {});
     if (vals.zone) vals.zone = t("decks.zone." + vals.zone);
+    if (vals.what) vals.what = t("decks.limit." + vals.what);   // grupo (gatilhos, Signature…)
     const motivo = t("decks.blocked." + r.warn.code, vals);
     if (alvo) {
       alvo.classList.remove("deck-warned");
@@ -1705,8 +1706,9 @@
   function issueText(iss) {
     const v = iss.vals || {};
     const zone = v.zone ? t("decks.zone." + v.zone) : "";
+    const what = v.what ? t("decks.limit." + v.what) : "";
     return t("decks.issue." + iss.code)
-      .replace("{zone}", zone).replace("{n}", v.n).replace("{min}", v.min)
+      .replace("{zone}", zone).replace("{what}", what).replace("{n}", v.n).replace("{min}", v.min)
       .replace("{max}", v.max).replace("{name}", v.name || "").replace("{qty}", v.qty)
       .replace("{list}", v.list || "");
   }
