@@ -35,6 +35,7 @@
     "naruto": { nome: "Naruto", hoje: "naruto-card-game" },
     "one-piece": { nome: "One Piece", hoje: "one-piece-card-game" },
     "gundam": { nome: "Gundam", hoje: "gundam-card-game" },
+    "saint-seiya": { nome: "Saint Seiya" },
     "hunter-x-hunter": { nome: "Hunter × Hunter" },
     "evangelion": { nome: "Evangelion" },
     "toriko": { nome: "Toriko" },

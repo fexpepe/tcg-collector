@@ -17,7 +17,7 @@
     ygo: "game_ygo-v2.webp", digimon: "game_digimon-v2.webp", riftbound: "game_riftbound-v2.webp",
     unionarena: "game_unionarena-v2.webp", narutocg: "game_naruto_2027.webp", naruto: "game_naruto.webp", hxh: "game_hxh-v2.webp",
     dbc: "game_dbc-v3.webp", dbsb: "game_dbsb.webp", dbva: "game_dbva.webp", dbbw: "game_dbbw.webp", wow: "game_wow.webp", lotr: "game_lotr.webp", dbz: "game_dbz.webp", weiss: "game_weiss.webp", godzilla: "game_godzilla.webp", palworld: "game_palworld.webp", fftcg: "game_fftcg.webp", grandarchive: "game_grandarchive.webp", hololive: "game_hololive.webp", shadowverse: "game_shadowverse.webp", vanguard: "game_vanguard.webp", duelmasters: "game_duelmasters.webp", narutomythos: "game_narutomythos.webp", narutokayou: "game_narutokayou.webp", harrypotter: "game_harrypotter.webp",
-    mbc: "game_mbc.webp", cdm: "game_cdm-v2.webp", gcd: "game_gcd-v2.webp", gw: "game_gw-v2.webp", narutoboruto: "game_naruto_boruto.webp", narutotc: "game_naruto.webp"
+    mbc: "game_mbc.webp", seiya: "game_seiya.webp", seiyatc: "game_seiya.webp", seiyacr: "game_seiya.webp", cdm: "game_cdm-v2.webp", gcd: "game_gcd-v2.webp", gw: "game_gw-v2.webp", narutoboruto: "game_naruto_boruto.webp", narutotc: "game_naruto.webp"
   };
   function gameLogoUrl(game) {
     const f = GAME_LOGO[game];
@@ -1699,6 +1699,9 @@
       cdm: groupCdmSets,
       gcd: groupGundamCarddassSets,
       gw: groupGwSets,
+      seiya: groupSeiyaSets,
+      seiyatc: (raizes) => groupSetsByYear(raizes, true),
+      seiyacr: (raizes) => groupSetsByYear(raizes, true),
       narutotc: groupNarutoTradingSets,
       harrypotter: groupHarryPotterSets
     };
@@ -2408,6 +2411,44 @@
     return list.length ? [cabecalhoDeSecao("sets.category.main", list.length)].concat(list) : [];
   }
 
+  // Saint Seiya Carddass (jogo seiya, desde 2026-11-12): uma seção por SÉRIE
+  // do Carddass, na ordem em que cada uma estreou (as partes de 1988–89, a
+  // Saint Paradise de 1991 e o Reborn de 2022), e dentro dela as partes em
+  // ordem de lançamento (data e, no empate do ano, o setId). A série sai do
+  // setId (ss-sp01 = Saint Paradise ACT.1; o código é fixado pelo
+  // sync-saint-seiya.mjs). O nome em inglês leva a série ("Saint Paradise Act
+  // 1", pra Coleção e o popup não confundirem os "Act 1"); dentro da seção ela
+  // sai, como no groupCdmSets. Set de promo da série (a jumbo) vai pro fim
+  // dela. O Trading Collection e o Crusade, jogos à parte desde 2026-11-13,
+  // vão pelo padrão (por ano).
+  function groupSeiyaSets(setItems) {
+    const FAMILIAS = [
+      ["cd", "sets.category.seiyaCarddass", ""], ["sp", "sets.category.seiyaSaintParadise", "Saint Paradise "],
+      ["rb", "sets.category.seiyaReborn", "Reborn Saint Paradise "]
+    ];
+    const familiaDe = (set) => (String(set.setId || "").toLowerCase().match(/^ss-([a-z]{2})/) || [])[1] || "";
+    const semFamilia = (set, prefixo) => {
+      const nome = String(set.displayName || "");
+      return nome.indexOf(prefixo) === 0 ? Object.assign({}, set, { displayName: nome.slice(prefixo.length).replace(/^— /, ""), nomeForaDaSecao: nome }) : set;
+    };
+    const promo = (set) => (/\bPromo|\bJumbo/i.test(String(set.displayName || set.name || "")) ? 1 : 0);
+    const porData = (a, b) => promo(a) - promo(b) || String(a.releaseDate || "9999").localeCompare(String(b.releaseDate || "9999")) || String(a.setId).localeCompare(String(b.setId), "en", { numeric: true });
+    const items = [];
+    for (const [code, key, prefixo] of FAMILIAS) {
+      const list = setItems.filter((s) => familiaDe(s) === code).map((s) => semFamilia(s, prefixo)).sort(porData);
+      if (!list.length) continue;
+      items.push(cabecalhoDeSecao(key, list.length));
+      list.forEach((set) => items.push(set));
+    }
+    // Rede de segurança: família nova no sync sem seção aqui ainda aparece.
+    const rest = setItems.filter((s) => !FAMILIAS.some(([code]) => familiaDe(s) === code)).sort(porData);
+    if (rest.length) {
+      items.push(cabecalhoDeSecao("sets.category.promos", rest.length));
+      rest.forEach((set) => items.push(set));
+    }
+    return items;
+  }
+
   function groupDbcSets(setItems) {
     const idOf = (set) => String(set.setId || "").trim().toLowerCase();
     const SERIES = [["h", "sets.category.dbcHondan", "Hondan "]];
@@ -2624,9 +2665,13 @@
   // Seções por ANO de lançamento, do mais novo pro mais antigo: o Magic e os
   // jogos sem série nem agrupamento próprio (Yu-Gi-Oh, FAB, Riftbound…),
   // que antes caíam num "Outros" único. Set sem data vai pro fim.
-  function groupSetsByYear(setItems) {
+  // `crescente`: do mais antigo pro mais novo, a ordem de checklist dos vintage
+  // sem seção própria (Saint Seiya Trading Collection e Crusade), com o set de
+  // promo no fim do ano dele (a data dele costuma ser só o ano).
+  function groupSetsByYear(setItems, crescente) {
+    const promo = (set) => (crescente && /\bPromo/i.test(String(set.displayName || set.name || "")) ? 1 : 0);
     const porAno = new Map();
-    setItems.slice().sort(sortByReleaseDesc).forEach((set) => {
+    setItems.slice().sort(crescente ? (a, b) => promo(a) - promo(b) || sortByReleaseAsc(a, b) : sortByReleaseDesc).forEach((set) => {
       const ano = (set.releaseDate || "").slice(0, 4) || t("sets.category.noDate");
       if (!porAno.has(ano)) porAno.set(ano, []);
       porAno.get(ano).push(set);

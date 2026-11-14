@@ -226,6 +226,25 @@ carrega e esconde o nome em texto (fallback sem erro).
   Vintage da landing por enquanto: o One Piece Card Game de 2002 e o Gundam
   Carddass (2026-11-11) já levaram a fileira a 14 (7 + 7 no tablet); com ele
   seriam 15, e a grade se decide junto.
+- `game_seiya.webp` — Saint Seiya (os três jogos: Carddass, Trading
+  Collection e Crusade, até cada produto ganhar o seu; linhas da página
+  /vintage, páginas /games e os "Sobre"). É o logo 聖闘士星矢 da época das cartas,
+  recortado do DISPLAY da Carddass Part 2 「バトルメモリアル」 (1988), no scan
+  do animecollection.fr (`packagings/118/271/h3000_1363_packaging.jpg`,
+  600×926, o logo com ~240 px). Fonte melhor não achada em 2026-11-12: o
+  display da Part 3 e as caixas das Trading Collection têm o mesmo logo no
+  mesmo tamanho; o "Saint Seiya International logo" do Commons (CC0) tem 300
+  px e é o logo ocidental, não o das cartas japonesas; o site oficial da Toei
+  não publica o logo. Recorte: trabalhado em 4× (LANCZOS + unsharp leve), o
+  fundo vermelho do display e o cabelo cinza do Seiya tirados por
+  preenchimento a partir da borda (scipy `ndimage.label`), fica só o maior
+  componente (sem a furigana セイントセイヤ e sem o "©" de cima), buracos
+  preenchidos (a estrela vermelha), alfa suavizado e ≤12 zerado, e de volta
+  ao tamanho nativo: 249×106. Como o Gundam War, **não** foi esticado pra 512
+  (bitmap pequeno). WebP q88 com alfa sem perda, 9 KB. Fica fora da fileira
+  Vintage da landing pelo mesmo motivo do Gundam War (a grade de 14 se decide
+  junto). Trocar por uma fonte maior quando aparecer (scan do display ou do
+  álbum em boa resolução).
 - `game_naruto.webp` — logo NARUTO genérico (tile do jogo e `setLogo` do Data
   Carddass Cross Formation nrt-nx/nrt-nf)
   Vale também como logo do jogo `narutotc` (Naruto Trading Cards, as cartas de
