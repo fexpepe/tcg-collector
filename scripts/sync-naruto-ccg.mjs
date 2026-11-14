@@ -336,7 +336,7 @@ export function montaLinha(snap, complemento, impresso, promos) {
         language: "en",
         image: curatedImg(cardId) || c.scan,
         variants,
-        setLogo: "/assets/games/game_naruto_ccg-v2.webp",
+        setLogo: "/assets/games/game_naruto_ccg-v3.webp",
         vintage: true,
         vintageLine: "nrt-ccg"
       });

@@ -2,7 +2,9 @@
   "url": "dragon-ball-visual-adventure",
   "nome": "Dragon Ball Visual Adventure",
   "nomeOriginal": { "texto": "ドラゴンボール ビジュアルアドベンチャー", "lang": "ja", "romaji": "Doragon Bōru Bijuaru Adobenchā" },
-  "logo": "",
+  "logo": "assets/games/game_dbva.webp",
+  "logoLargura": 960,
+  "logoAltura": 260,
   "periodo": { "inicio": "1991-06", "fim": "1995-10" },
   "etiquetas": [
     "Vintage",

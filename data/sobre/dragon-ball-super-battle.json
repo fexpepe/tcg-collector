@@ -2,7 +2,9 @@
   "url": "dragon-ball-super-battle",
   "nome": "Dragon Ball Super Battle",
   "nomeOriginal": { "texto": "ドラゴンボール スーパーバトル", "lang": "ja", "romaji": "Doragon Bōru Sūpā Batoru" },
-  "logo": "",
+  "logo": "assets/games/game_dbsb.webp",
+  "logoLargura": 894,
+  "logoAltura": 320,
   "periodo": { "inicio": "1991-11", "fim": "1997-05" },
   "etiquetas": [
     "Vintage",

@@ -25,7 +25,10 @@ carrega e esconde o nome em texto (fallback sem erro).
 - `game_digimon-v2.webp` — Digimon Card Game (fonte: `../brand/digimon.webp`)
 - `game_riftbound-v2.webp` — Riftbound / League of Legends (fonte: `../brand/riftbound.webp`,
   1908×1908 com padding — cortado pro bbox do conteúdo antes de escalar)
-- `game_onepiece_carddass.webp` — Carddass Hyper Battle (tile vintage do OP)
+- `game_onepiece_carddass-v2.webp` — Carddass Hyper Battle (tile vintage do OP).
+  Desde 2026-11-14 é a placa marrom "From TV animation / ONE PIECE" enviada
+  pelo Fernando (WebP 2000×667 com alfa), no padrão de logo da PR #315 (docs/LOGOS.md, normaliza-logo.mjs):
+  735×320, 63 KB. Até ali era o `game_onepiece_carddass.webp`, o logo azul do anime.
 - `game_narutomythos.webp` — Naruto Mythos TCG (12/11/2026): o logo do site
   oficial (`irp.cdn-website.com/99e556bf/dms3rep/multi/Logo+Naruto+Mythos+TCG.png`,
   o mesmo do cabeçalho de narutotcgmythos.com), PNG de 933×472 já com fundo
@@ -46,7 +49,11 @@ carrega e esconde o nome em texto (fallback sem erro).
   Naruto adulto em cima do letreiro). Sem recorte: só ampliado pra 512×309 em
   alfa pré-multiplicado, alfa ≤12 zerado, WebP q90 com alfa sem perda (62 KB).
   Vai na página Vintage, no "Sobre" e no `setLogo` do set da linha.
-- `game_onepiece_2002.webp` — One Piece Card Game de 2002–2005 (linha
+- `game_onepiece_2002-v2.webp` — One Piece Card Game de 2002–2005 (linha
+  `op2002`). Desde 2026-11-14 é a mesma placa numa fonte maior enviada pelo
+  Fernando (WebP 2000×947 com alfa), no padrão de logo da PR #315 (docs/LOGOS.md, normaliza-logo.mjs):
+  676×320, 72 KB. Até ali era o `game_onepiece_2002.webp` (512×243), feito da
+  foto do verso descrita a seguir (linha
   `op2002`: tile vintage do hub, parede da landing e página /games). É a placa
   "From TV animation / ONE PIECE (ワンピース)" do verso de madeira das cartas.
   Fonte: foto do verso enviada pelo Fernando em 2026-11-11 (1200×1599; a placa
@@ -118,7 +125,11 @@ carrega e esconde o nome em texto (fallback sem erro).
   pré-multiplicado. WebP com perda q88 e alfa sem perda: 38 KB (o sem perda
   dava 95 KB, pelos gradientes prata). O contorno escuro do logo segura o
   branco das letras na cápsula branca do hub.
-- `game_gcd.webp` — Gundam Carddass (Bandai, 1988–1997; tile vintage do
+- `game_gcd-v2.webp` — Gundam Carddass. Desde 2026-11-14 é o logo da SD Gundam
+  World (スーパーディフォルメ ガンダムワールド, a linha Carddass do Gundam de 1988)
+  enviado pelo Fernando (WebP 2000×1915 com alfa), no padrão de logo da PR #315 (docs/LOGOS.md, normaliza-logo.mjs):
+  335×320, 36 KB. Até ali era o `game_gcd.webp` descrito a seguir.
+- `game_gcd.webp` (até 2026-11-14) — Gundam Carddass (Bandai, 1988–1997; tile vintage do
   jogo `gcd` no hub, parede da landing, página /games e kit). Logo "Carddass
   GUNDAM SELECTION / カードダス ガンダム セレクション" enviado pelo Fernando em
   2026-11-11 (JPG 894×409, fundo branco). O fundo saiu por flood fill a partir
@@ -191,7 +202,10 @@ carrega e esconde o nome em texto (fallback sem erro).
   não foi recortado (o desenho já encosta nas bordas) nem esticado (bitmap
   pequeno). WebP sem perda, 34 KB. O contorno escuro das letras segura a
   leitura na cápsula branca.
-- `game_gw.webp` — Gundam War (Bandai, 1999–2011). Fonte enviada pelo
+- `game_gw-v2.webp` — Gundam War. Desde 2026-11-14 a fonte é a de 2000×667 com
+  alfa enviada pelo Fernando, no padrão de logo da PR #315 (docs/LOGOS.md, normaliza-logo.mjs): 960×230,
+  70 KB. Até ali era o `game_gw.webp` descrito a seguir.
+- `game_gw.webp` (até 2026-11-14) — Gundam War (Bandai, 1999–2011). Fonte enviada pelo
   Fernando em 2026-11-11: WebP de 360×125 com alfa, o logo dourado "GUNDAM
   WAR / MOBILE SUIT GUNDAM THE CARD GAME". Recortado no conteúdo (+2px), com
   o alfa ≤12 zerado: 354×87. Como o Star Wars v1, **não** foi esticado pra 512
@@ -205,7 +219,12 @@ carrega e esconde o nome em texto (fallback sem erro).
   coleção da Amada e da Ensky, 13/11/2026) e de todos os sets dele: nenhum
   produto tem logo recortado em fonte aberta, e o NARUTO é a marca impressa
   em todos. Pendência: logo próprio do Etching Card Collection e da 忍術大全.
-- `game_naruto_ccg-v2.webp` — Naruto Collectible Card Game americano 2006+
+- `game_naruto_ccg-v3.webp` — Naruto Collectible Card Game americano 2006+.
+  Desde 2026-11-14 é o logo da fase Shippuden ("Shonen Jump / Naruto Shippuden
+  / Collectible Card Game"), enviado pelo Fernando (WebP 1672×941 com alfa),
+  no padrão de logo da PR #315 (docs/LOGOS.md, normaliza-logo.mjs): 590×320, 65 KB. Até ali era o
+  `game_naruto_ccg-v2.webp` descrito a seguir.
+- `game_naruto_ccg-v2.webp` (até 2026-11-14) — Naruto Collectible Card Game americano 2006+
   (tile vintage EN do hub, parede de logos do index e `setLogo` da linha
   `nrt-ccg`, via sync-naruto-ccg.mjs). Logo SOLTO, recortado como os outros
   vintage (2026-10-14). Até então era o medalhão do verso da carta num quadrado
@@ -247,14 +266,26 @@ carrega e esconde o nome em texto (fallback sem erro).
   o カードバトル são da ARTE — aparecem nas duas fontes, com fundos diferentes.
 - `game_naruto_2027.webp` — NARUTO CARD GAME novo (Bandai, mundial 2027; tile
   "Em breve" do hub; fonte: naruto-cardgame.com/images/common/logo.webp)
-- `game_hxh.webp` — HUNTER×HUNTER (tile do jogo no hub e `setLogo` dos sets do
-  Carddass Hyper Battle, via sync-hxh-hyper-battle.mjs)
+- `game_hxh-v2.webp` — HUNTER×HUNTER Carddass Hyper Battle (tile do jogo no hub e
+  `setLogo` dos sets, via sync-hxh-hyper-battle.mjs). Desde 2026-11-14 é o logo
+  do produto ("CARDDASS HYPER BATTLE" sobre o HUNTER×HUNTER azul), enviado pelo
+  Fernando (WebP 1448×1086 com alfa), no padrão de logo da PR #315 (docs/LOGOS.md, normaliza-logo.mjs):
+  580×320, 75 KB. Até ali era o `game_hxh.webp`, o logo da série em vermelho.
 - `game_mbc.webp` — Miracle Battle Carddass (tile vintage do jogo `mbc` e
   `setLogo` de todos os sets dele, via sync-miracle-battle.mjs). Até 2026-10-01
   eram três arquivos, `game_onepiece_miracle`, `game_naruto_miracle` e
   `game_hxh_miracle`, um por linha, com o MESMO conteúdo (md5 igual): o logo
   oficial do jogo, que não muda de franquia pra franquia.
-- `game_dbc-v2.webp` — Dragon Ball Carddass (Bandai, 1988→; tile vintage do
+- `game_dbc-v3.webp` — Dragon Ball Carddass. Desde 2026-11-14 a fonte é a de
+  2000×671 com alfa enviada pelo Fernando, no padrão de logo da PR #315 (docs/LOGOS.md, normaliza-logo.mjs):
+  960×203, 60 KB. Até ali era o `game_dbc-v2.webp` descrito a seguir.
+- `game_dbsb.webp`, `game_dbva.webp` e `game_dbbw.webp` — Super Battle, Visual
+  Adventure e Super Barcode Wars, os jogos que saíram do dbc em 2026-11-13 e
+  ficaram um dia sem logo (o tile mostrava o nome). Enviados pelo Fernando em
+  2026-11-14 (WebP de 2000 px com alfa), no padrão de logo da PR #315 (docs/LOGOS.md, normaliza-logo.mjs):
+  894×320 (77 KB), 960×260 (57 KB) e 827×320 (71 KB). Viram também o
+  `setLogo` dos sets de cada um (LOGO do sync-dbc-carddass.mjs).
+- `game_dbc-v2.webp` (até 2026-11-14) — Dragon Ball Carddass (Bandai, 1988→; tile vintage do
   jogo `dbc` e `setLogo` de todos os sets dele, via sync-dbc-carddass.mjs).
   Fonte enviada pelo Fernando em 2026-09-24: 414×260 com fundo branco e muita
   margem. Recortado no conteúdo + 2px, a regra dos -v2 (abaixo) = 373×82, e
@@ -321,7 +352,12 @@ carrega e esconde o nome em texto (fallback sem erro).
 - `game_naruto.svg` — FONTE vetorial do logo do Naruto (Inkscape). Se editar,
   re-exporte o webp: @resvg/resvg-js (ou qualquer rasterizador) em 512px e
   depois `ffmpeg -i logo.png -c:v libwebp -quality 90 game_naruto.webp`.
-- `game_cdm.webp` — Carddass Masters (Bandai, 1996–2011; tile vintage do
+- `game_cdm-v2.webp` — Carddass Masters. Desde 2026-11-14 é o logo preto com o
+  "A" vermelho enviado pelo Fernando (PNG 1254×1254 com alfa e muita margem),
+  no padrão de logo da PR #315 (docs/LOGOS.md, normaliza-logo.mjs): 890×302, 49 KB. Até ali era o
+  `game_cdm.webp` descrito a seguir. Os `set_cdm_*.webp` (abaixo) seguem com o
+  logo antigo dentro: são composições, e refazê-las é à parte.
+- `game_cdm.webp` (até 2026-11-14) — Carddass Masters (Bandai, 1996–2011; tile vintage do
   jogo `cdm` no hub, parede da landing, página /games e kit). Fonte: o tapete
   do Final Fantasy VIII Triple Triad, um produto da própria linha, na Final
   Fantasy Wiki (`File:Final Fantasy VIII Bandai Carddass Masters Triple Triad
@@ -417,3 +453,11 @@ deixava logo largo abaixo de 2× no hub.
 
 > São marcas registradas dos respectivos titulares; o uso aqui é nominativo (pra
 > identificar os jogos), e o site já traz o disclaimer no rodapé.
+
+## Nomes antigos (301)
+
+Arquivo de logo trocado sai do repositório, mas o nome antigo ganha um 301
+pro novo no `_redirects`: os sets do HxH e do Naruto CCG guardam o caminho do
+logo no catálogo, e o build rápido (push) reaproveita o catálogo do último
+build completo até o próximo. Sem o 301, o chip desses sets ficava sem logo
+nesse intervalo, e página guardada pelo service worker também.

@@ -29,7 +29,7 @@ const UA = { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Sleevu/1.0
 const NO_FETCH = process.argv.includes("--no-fetch");
 const GAME = "hxh";
 const ID_PREFIX = "hxh-hb";
-const LOGO = "/assets/games/game_hxh.webp";
+const LOGO = "/assets/games/game_hxh-v2.webp";
 
 // Sets da linha, na ordem de lançamento. `code` entra no id (hxh-hb-p1-c02).
 // Nomes JP/EN e datas: Hunterpedia + embalagens.
