@@ -222,10 +222,11 @@ test("a borda: bloco em pt, JSON-LD do jogo, título com a história e o resumo 
   assert.equal(ld.url, `https://sleevu.app/games/${url}`);
   assert.equal(ld.name, S.tx(d.nome, "pt"));
   assert.ok(ld.publisher && ld.publisher.name);
-  // Sem o "Sobre" (o JSON não veio, ou jogo moderno), a tela é a de sempre.
+  // Sem o "Sobre" (o JSON não veio, ou jogo moderno), a tela é a de sempre,
+  // e o JSON-LD é a CollectionPage dos jogos modernos (2026-11-14).
   const sem = metaDoJogo(jogo, sets);
   assert.equal(sem.sobreHtml, "");
-  assert.equal(sem.jsonLd, "");
+  assert.match(sem.jsonLd, /"@type":"CollectionPage"/);
   assert.doesNotMatch(sem.titulo, /história/);
 });
 

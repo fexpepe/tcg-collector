@@ -1073,6 +1073,15 @@ jobs:
       - name: Pré-renderiza páginas de set (SEO)
         run: node scripts/prerender-catalog.mjs
 
+      # Texto no HTML pra quem não roda JS (2026-11-14, o porquê no cabeçalho
+      # do script): o português dentro dos blocos das páginas de texto (/about,
+      # /faq, /help, /privacy, /terms, /comparar), o JSON-LD da /vintage e o
+      # /llms.txt. DEPOIS do prerender (o llms.txt conta os sets pelos mapas
+      # data/game-pages) e ANTES do split-i18n, que reparte os src/i18n*.js
+      # que este passo lê.
+      - name: Texto no HTML pra quem não roda JS (páginas de texto, /vintage, llms.txt)
+        run: node scripts/seo-estatico.mjs --write
+
       # IndexNow, parte 1 de 2 (o porquê em scripts/lib/indexnow.mjs): compara
       # o sitemap recém-gerado com o que está no ar e deixa os lotes prontos no
       # RUNNER_TEMP. Tem que ser AQUI, entre o prerender e o "Remove arquivos"
