@@ -1354,11 +1354,17 @@ jobs:
       # com semanas de antecedência — e o número real fica no log de todo build,
       # que é o dado que faltava pra decidir quanta imagem cabe aqui (o resto
       # vai pro R2). Rodar DEPOIS do rm acima: conta o que de fato sobe.
+      #
+      # 2026-11-14: o erro subiu de 18.000 pra 19.000, com o aval do Fernando.
+      # A main estava em 17.912 e o Shadowverse: Evolve (50 sets) levou a
+      # 18.093: todo jogo novo daqui pra frente batia aqui. Sobra 1.000 de
+      # margem até o teto real; cortar arquivos (chunks de preço → R2, por
+      # exemplo) fica pra antes do próximo jogo grande.
       - name: Conta arquivos (teto de 20.000 do Pages)
         run: |
           total=$(find . -type f | wc -l)
           echo "Arquivos no deploy: $total (teto do Pages: 20000)"
-          if [ "$total" -gt 18000 ]; then
+          if [ "$total" -gt 19000 ]; then
             echo "::error::$total arquivos — perto demais do teto de 20.000 do Cloudflare Pages. Reduza antes de crescer mais (candidatos: MAX_CARD_PAGES do prerender, chunks de preço, imagens espelhadas → R2)."
             exit 1
           fi

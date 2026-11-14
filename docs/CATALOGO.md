@@ -500,7 +500,7 @@ Ficha do jogo — <Nome completo> (`<slug>`)
 - Lojas: BR <…|nenhuma, conferido em <data>> · EUA <tcgLine/usText> · EU <cm|—>
 - Cor: <hex> — <x>:1 com texto <preto|branco>; vizinho mais próximo <jogo>, a <d> RGB
 - Logo: <arquivo | sem logo, tile em texto> · posição no hub: <…>
-- Orçamento: <n> sets ≈ <3n + 40> arquivos (último deploy: <total> de 18.000);
+- Orçamento: <n> sets ≈ <3n + 40> arquivos (último deploy: <total> de 19.000);
   shared.js +<b> B gz, CSS +<b> B gz (folga depois: <…>)
 - Migração: supabase/migrations/<arquivo>.sql (aplicar em ordem de nome)
 ```

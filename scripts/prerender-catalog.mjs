@@ -473,7 +473,8 @@ ${PR_STYLE}
 // /artists sem nenhuma página indexável por trás.
 //
 // TETO, e a razão dele: o deploy publica 13.791 arquivos de um limite de 20.000
-// no Cloudflare Pages, e a guarda do próprio workflow falha acima de 18.000.
+// no Cloudflare Pages, e a guarda do próprio workflow falha acima de 19.000
+// (era 18.000 até 2026-11-14).
 // Uma página por artista dos três jogos com dado (Pokémon, Magic e Lorcana —
 // os demais têm indexes-artists VAZIO) seria alguns milhares de arquivos e
 // comeria quase toda a folga que sobrou. O plano não tinha visto isso.
