@@ -196,6 +196,9 @@ await checkManifest("manifest Miracle Battle Carddass", "/data/mbc/manifest.gene
 await checkManifest("manifest Carddass Masters", "/data/cdm/manifest.generated.js", 250);
 await checkManifest("manifest Gundam Carddass", "/data/gcd/manifest.generated.js", 1200);
 await checkManifest("manifest Gundam War", "/data/gw/manifest.generated.js", 6000);
+await checkManifest("manifest Saint Seiya Carddass", "/data/seiya/manifest.generated.js", 380);
+await checkManifest("manifest Saint Seiya Trading Collection", "/data/seiyatc/manifest.generated.js", 800);
+await checkManifest("manifest Saint Seiya Crusade", "/data/seiyacr/manifest.generated.js", 450);
 // Naruto Boruto Card Game: 97 cartas (as Tournament Pack Cards), 13/11/2026; história encerrada.
 await checkManifest("manifest Naruto Boruto", "/data/narutoboruto/manifest.generated.js", 90);
 // Naruto Trading Cards: 255 cartas (Etching Card Collection 1–3 e 忍術大全), 13/11/2026; história encerrada.

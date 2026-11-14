@@ -233,31 +233,29 @@
   --accent: #a34a5e; --accent-dark: #86394b; --accent-rgb: 163, 74, 94;
   --accent-soft: rgba(163, 74, 94, 0.1); --on-accent: #ffffff;
 }
-/* Naruto: laranja. Texto escuro sobre o laranja claro do tema escuro; branco
-   sobre o laranja fechado do claro. */
-[data-game-accent="naruto"] {
-  --accent: #fb923c; --accent-dark: #f97316; --accent-rgb: 251, 146, 60;
-  --accent-soft: rgba(251, 146, 60, 0.16); --on-accent: #0a0c10;
-}
-[data-theme="light"][data-game-accent="naruto"],
-[data-theme="light"] [data-game-accent="naruto"] {
-  /* #c2410c e não #ea580c: com texto branco o laranja claro dava 3.56:1 —
-     reprovado (o mínimo é 4.5). Um degrau abaixo dá 5.18 e segue laranja. */
-  --accent: #c2410c; --accent-dark: #9a3412; --accent-rgb: 194, 65, 12;
-  --accent-soft: rgba(194, 65, 12, 0.1); --on-accent: #ffffff;
-}
-/* NARUTO CARD GAME de 2027 (narutocg, jogo próprio desde 11/11/2026): o
+/* NARUTO CARD GAME de 2027 (narutocg, jogo próprio desde 11/11/2026) e,
+   desde 14/11/2026, TODO jogo do Naruto (mesma IP = mesma cor): o vintage, o
+   Mythos, a Kayou, o Boruto e o Trading Cards usam este accent. Antes: o
    LARANJA do vintage, um tico mais saturado (pedido do Fernando, 11/11/2026;
    até então era um verde proposto). Mesmo matiz do naruto, com saturação
    100 %: no escuro o #ff7e29 com texto escuro (7.7:1), mais vivo que o
    #fb923c do vintage; no claro o #cc3d00, que segura texto branco (5.0:1),
    ao lado do #c2410c do vintage. */
-[data-game-accent="narutocg"] {
+[data-game-accent="narutocg"],
+[data-game-accent="naruto"],
+[data-game-accent="narutomythos"],
+[data-game-accent="narutokayou"],
+[data-game-accent="narutoboruto"],
+[data-game-accent="narutotc"] {
   --accent: #ff7e29; --accent-dark: #ff6600; --accent-rgb: 255, 126, 41;
   --accent-soft: rgba(255, 126, 41, 0.16); --on-accent: #0a0c10;
 }
-[data-theme="light"][data-game-accent="narutocg"],
-[data-theme="light"] [data-game-accent="narutocg"] {
+[data-theme="light"][data-game-accent="narutocg"], [data-theme="light"] [data-game-accent="narutocg"],
+[data-theme="light"][data-game-accent="naruto"], [data-theme="light"] [data-game-accent="naruto"],
+[data-theme="light"][data-game-accent="narutomythos"], [data-theme="light"] [data-game-accent="narutomythos"],
+[data-theme="light"][data-game-accent="narutokayou"], [data-theme="light"] [data-game-accent="narutokayou"],
+[data-theme="light"][data-game-accent="narutoboruto"], [data-theme="light"] [data-game-accent="narutoboruto"],
+[data-theme="light"][data-game-accent="narutotc"], [data-theme="light"] [data-game-accent="narutotc"] {
   --accent: #cc3d00; --accent-dark: #a83200; --accent-rgb: 204, 61, 0;
   --accent-soft: rgba(204, 61, 0, 0.1); --on-accent: #ffffff;
 }
@@ -271,19 +269,6 @@
 [data-theme="light"] [data-game-accent="hxh"] {
   --accent: #15803d; --accent-dark: #166534; --accent-rgb: 21, 128, 61;
   --accent-soft: rgba(21, 128, 61, 0.1); --on-accent: #ffffff;
-}
-/* Dragon Ball Carddass: ROSA (o único matiz livre: vermelho, laranja, amarelo
-   e vinho já são de Pokémon, Naruto, One Piece e FaB). Rosa claro com texto
-   escuro no escuro (7.4:1); o rosa do GAME_COLOR com texto branco no claro
-   (4.6:1, AA). */
-[data-game-accent="dbc"] {
-  --accent: #f472b6; --accent-dark: #ec4899; --accent-rgb: 244, 114, 182;
-  --accent-soft: rgba(244, 114, 182, 0.16); --on-accent: #0a0c10;
-}
-[data-theme="light"][data-game-accent="dbc"],
-[data-theme="light"] [data-game-accent="dbc"] {
-  --accent: #db2777; --accent-dark: #be185d; --accent-rgb: 219, 39, 119;
-  --accent-soft: rgba(219, 39, 119, 0.1); --on-accent: #ffffff;
 }
 /* World of Warcraft TCG: o AZUL da Blizzard (#00aeff, o do GAME_COLOR) com
    texto escuro no escuro (7.9:1). No claro ele fica em 2.5:1 com branco, então
@@ -309,18 +294,6 @@
   --accent: #4d7c0f; --accent-dark: #3f6212; --accent-rgb: 77, 124, 15;
   --accent-soft: rgba(77, 124, 15, 0.1); --on-accent: #ffffff;
 }
-/* Dragon Ball Z CCG da Score: CARMIM, o fundo do anúncio de lançamento (2000).
-   Rosa-avermelhado claro com texto escuro no escuro (7.3:1); o carmim do
-   GAME_COLOR com texto branco no claro (8.0:1). */
-[data-game-accent="dbz"] {
-  --accent: #fb7185; --accent-dark: #f43f5e; --accent-rgb: 251, 113, 133;
-  --accent-soft: rgba(251, 113, 133, 0.16); --on-accent: #0a0c10;
-}
-[data-theme="light"][data-game-accent="dbz"],
-[data-theme="light"] [data-game-accent="dbz"] {
-  --accent: #9f1239; --accent-dark: #881337; --accent-rgb: 159, 18, 57;
-  --accent-soft: rgba(159, 18, 57, 0.1); --on-accent: #ffffff;
-}
 /* Harry Potter TCG: ESCARLATE da Grifinória (#740001, a cor da casa). Vermelho
    claro com texto escuro no escuro (a ~110 do vermelho do Pokémon); o
    escarlate com texto branco no claro (12:1). */
@@ -334,39 +307,46 @@
   --accent-soft: rgba(116, 0, 1, 0.1); --on-accent: #ffffff;
 }
 /* Gundam: AZUL (herdou o tom que era do Magic antes do marrom). Azul claro com
-   texto escuro no escuro; azul fechado com texto branco no claro. */
-[data-game-accent="gundam"] {
+   texto escuro no escuro; azul fechado com texto branco no claro. Desde
+   14/11/2026 o Gundam Carddass e o Gundam War usam este accent (mesma IP =
+   mesma cor). */
+[data-game-accent="gundam"],
+[data-game-accent="gcd"],
+[data-game-accent="gw"] {
   --accent: #60a5fa; --accent-dark: #3b82f6; --accent-rgb: 96, 165, 250;
   --accent-soft: rgba(96, 165, 250, 0.16); --on-accent: #0a0c10;
 }
-[data-theme="light"][data-game-accent="gundam"],
-[data-theme="light"] [data-game-accent="gundam"] {
+[data-theme="light"][data-game-accent="gundam"], [data-theme="light"] [data-game-accent="gundam"],
+[data-theme="light"][data-game-accent="gcd"], [data-theme="light"] [data-game-accent="gcd"],
+[data-theme="light"][data-game-accent="gw"], [data-theme="light"] [data-game-accent="gw"] {
   --accent: #2563eb; --accent-dark: #1d4ed8; --accent-rgb: 37, 99, 235;
   --accent-soft: rgba(37, 99, 235, 0.1); --on-accent: #ffffff;
 }
 /* Dragon Ball Fusion World: PRATA. Prata claro no escuro (texto escuro); no
    claro o prata não segura texto nenhum, então fecha pra um aço #55606e com
-   texto branco (6.4:1) — mesma manobra do Magic marrom. */
-[data-game-accent="dbfw"] {
+   texto branco (6.4:1) — mesma manobra do Magic marrom. Desde 14/11/2026 todo
+   jogo de Dragon Ball usa este accent (mesma IP = mesma cor): o Super Card Game
+   Masters, o Carddass, o Super Battle, o Visual Adventure, o Super Barcode
+   Wars e o CCG da Score. */
+[data-game-accent="dbfw"],
+[data-game-accent="dbs"],
+[data-game-accent="dbc"],
+[data-game-accent="dbsb"],
+[data-game-accent="dbva"],
+[data-game-accent="dbbw"],
+[data-game-accent="dbz"] {
   --accent: #b7c0cb; --accent-dark: #9aa3ae; --accent-rgb: 183, 192, 203;
   --accent-soft: rgba(183, 192, 203, 0.16); --on-accent: #0a0c10;
 }
-[data-theme="light"][data-game-accent="dbfw"],
-[data-theme="light"] [data-game-accent="dbfw"] {
+[data-theme="light"][data-game-accent="dbfw"], [data-theme="light"] [data-game-accent="dbfw"],
+[data-theme="light"][data-game-accent="dbs"], [data-theme="light"] [data-game-accent="dbs"],
+[data-theme="light"][data-game-accent="dbc"], [data-theme="light"] [data-game-accent="dbc"],
+[data-theme="light"][data-game-accent="dbsb"], [data-theme="light"] [data-game-accent="dbsb"],
+[data-theme="light"][data-game-accent="dbva"], [data-theme="light"] [data-game-accent="dbva"],
+[data-theme="light"][data-game-accent="dbbw"], [data-theme="light"] [data-game-accent="dbbw"],
+[data-theme="light"][data-game-accent="dbz"], [data-theme="light"] [data-game-accent="dbz"] {
   --accent: #55606e; --accent-dark: #434c58; --accent-rgb: 85, 96, 110;
   --accent-soft: rgba(85, 96, 110, 0.1); --on-accent: #ffffff;
-}
-/* Dragon Ball Super Card Game Masters: AZUL ELÉTRICO (14/11/2026; o laranja
-   da marca não cabe ao lado do Naruto e do One Piece). No escuro um azul
-   claro com texto escuro (6.4:1); no claro o #1a0dff com branco (8.2:1). */
-[data-game-accent="dbs"] {
-  --accent: #7d88ff; --accent-dark: #5b6bff; --accent-rgb: 125, 136, 255;
-  --accent-soft: rgba(125, 136, 255, 0.16); --on-accent: #0a0c10;
-}
-[data-theme="light"][data-game-accent="dbs"],
-[data-theme="light"] [data-game-accent="dbs"] {
-  --accent: #1a0dff; --accent-dark: #1407cc; --accent-rgb: 26, 13, 255;
-  --accent-soft: rgba(26, 13, 255, 0.1); --on-accent: #ffffff;
 }
 /* Yu-Gi-Oh!: ROXO VIVO — um degrau mais magenta que o violeta do Lorcana
    (#a78bfa), pros dois roxos não se confundirem lado a lado. */
@@ -540,31 +520,6 @@
   --accent: #a16207; --accent-dark: #854d0e; --accent-rgb: 161, 98, 7;
   --accent-soft: rgba(161, 98, 7, 0.1); --on-accent: #ffffff;
 }
-/* Naruto Mythos TCG: OURO CLARO, a folha de ouro 22K da Legendary (confirmada
-   pelo Fernando em 12/11/2026). No escuro, com texto escuro (16:1); no claro
-   o ouro some no branco, então o accent fecha pro âmbar-terra #92400e (7.1:1
-   com branco). */
-[data-game-accent="narutomythos"] {
-  --accent: #fde68a; --accent-dark: #fcd34d; --accent-rgb: 253, 230, 138;
-  --accent-soft: rgba(253, 230, 138, 0.16); --on-accent: #0a0c10;
-}
-[data-theme="light"][data-game-accent="narutomythos"],
-[data-theme="light"] [data-game-accent="narutomythos"] {
-  --accent: #92400e; --accent-dark: #78350f; --accent-rgb: 146, 64, 14;
-  --accent-soft: rgba(146, 64, 14, 0.1); --on-accent: #ffffff;
-}
-/* Naruto Kayou: MAGENTA (proposta de 13/11/2026). O coral confirmado em 12/11
-   ficou colado no do Vanguard, que entrou no dia seguinte. No escuro, com
-   texto escuro (6.1:1); no claro fecha pro #86198f (9.1:1 com branco). */
-[data-game-accent="narutokayou"] {
-  --accent: #d946ef; --accent-dark: #c026d3; --accent-rgb: 217, 70, 239;
-  --accent-soft: rgba(217, 70, 239, 0.16); --on-accent: #0a0c10;
-}
-[data-theme="light"][data-game-accent="narutokayou"],
-[data-theme="light"] [data-game-accent="narutokayou"] {
-  --accent: #86198f; --accent-dark: #701a75; --accent-rgb: 134, 25, 143;
-  --accent-soft: rgba(134, 25, 143, 0.1); --on-accent: #ffffff;
-}
 /* Miracle Battle Carddass: o laranja-dourado do logo, num tom PÊSSEGO pra não
    repetir o Naruto, que tem carta dentro dele (01/10/2026). Pêssego claro com
    texto escuro no escuro (11:1); tijolo com texto branco no claro (7.8:1). */
@@ -589,65 +544,18 @@
   --accent: #a21caf; --accent-dark: #86198f; --accent-rgb: 162, 28, 175;
   --accent-soft: rgba(162, 28, 175, 0.1); --on-accent: #ffffff;
 }
-/* Gundam Carddass: LIMA, a cor do GAME_COLOR (10/11/2026; a linha não tem cor
-   de marca e o azul já é do Gundam Card Game). Lima com texto escuro no
-   escuro (13.9:1); o verde #4d7c0f com texto branco no claro (5.0:1). */
-[data-game-accent="gcd"] {
-  --accent: #a3e635; --accent-dark: #84cc16; --accent-rgb: 163, 230, 53;
-  --accent-soft: rgba(163, 230, 53, 0.16); --on-accent: #0a0c10;
-}
-[data-theme="light"][data-game-accent="gcd"],
-[data-theme="light"] [data-game-accent="gcd"] {
-  --accent: #4d7c0f; --accent-dark: #3f6212; --accent-rgb: 77, 124, 15;
-  --accent-soft: rgba(77, 124, 15, 0.1); --on-accent: #ffffff;
-}
-/* As três séries do Carddass de Dragon Ball que viraram jogo (2026-11-13):
-   Super Battle ferrugem, Visual Adventure esmeralda, Super Barcode Wars azul.
-   No escuro o tom claro com texto escuro; no claro o tom da marca com branco
-   (todos acima de 5:1). */
-[data-game-accent="dbsb"] { --accent: #e0601e; --accent-dark: #af3700; --accent-rgb: 224, 96, 30; --accent-soft: rgba(224, 96, 30, 0.16); --on-accent: #0a0c10; }
-[data-theme="light"][data-game-accent="dbsb"], [data-theme="light"] [data-game-accent="dbsb"] { --accent: #af3700; --accent-dark: #8a2b00; --accent-rgb: 175, 55, 0; --accent-soft: rgba(175, 55, 0, 0.1); --on-accent: #ffffff; }
-[data-game-accent="dbva"] { --accent: #0fa573; --accent-dark: #0b7a55; --accent-rgb: 15, 165, 115; --accent-soft: rgba(15, 165, 115, 0.16); --on-accent: #0a0c10; }
-[data-theme="light"][data-game-accent="dbva"], [data-theme="light"] [data-game-accent="dbva"] { --accent: #0b7a55; --accent-dark: #08603f; --accent-rgb: 11, 122, 85; --accent-soft: rgba(11, 122, 85, 0.1); --on-accent: #ffffff; }
-[data-game-accent="dbbw"] { --accent: #5b8def; --accent-dark: #0546b4; --accent-rgb: 91, 141, 239; --accent-soft: rgba(91, 141, 239, 0.16); --on-accent: #0a0c10; }
-[data-theme="light"][data-game-accent="dbbw"], [data-theme="light"] [data-game-accent="dbbw"] { --accent: #0546b4; --accent-dark: #043a96; --accent-rgb: 5, 70, 180; --accent-soft: rgba(5, 70, 180, 0.1); --on-accent: #ffffff; }
-/* Naruto Boruto Card Game: ROSA, o "BORUTO" do logo (proposta de 13/11/2026).
-   No escuro, com texto escuro (11.6:1); no claro o rosa some no branco, então
-   o accent fecha pro #9d174d (8.4:1 com branco). */
-[data-game-accent="narutoboruto"] {
-  --accent: #f9a8d4; --accent-dark: #f472b6; --accent-rgb: 249, 168, 212;
-  --accent-soft: rgba(249, 168, 212, 0.16); --on-accent: #0a0c10;
-}
-[data-theme="light"][data-game-accent="narutoboruto"],
-[data-theme="light"] [data-game-accent="narutoboruto"] {
-  --accent: #9d174d; --accent-dark: #831843; --accent-rgb: 157, 23, 77;
-  --accent-soft: rgba(157, 23, 77, 0.1); --on-accent: #ffffff;
-}
-/* Naruto Trading Cards: VERDE-FOLHA, a Vila da Folha (proposta de 13/11/2026).
-   No escuro, com texto escuro (12.1:1); no claro o verde some no branco, então
-   o accent fecha pro #166534 (7.1:1 com branco). */
-[data-game-accent="narutotc"] {
-  --accent: #4ade80; --accent-dark: #22c55e; --accent-rgb: 74, 222, 128;
-  --accent-soft: rgba(74, 222, 128, 0.16); --on-accent: #0a0c10;
-}
-[data-theme="light"][data-game-accent="narutotc"],
-[data-theme="light"] [data-game-accent="narutotc"] {
-  --accent: #166534; --accent-dark: #14532d; --accent-rgb: 22, 101, 52;
-  --accent-soft: rgba(22, 101, 52, 0.1); --on-accent: #ffffff;
-}
-/* Gundam War: TURQUESA, a cor do GAME_COLOR (11/11/2026; o jogo não tem cor de
-   marca, o azul é do Gundam Card Game e a lima do Gundam Carddass). Turquesa
-   com texto escuro no escuro (14.2:1); o #0f766e com texto branco no claro
-   (5.5:1). */
-[data-game-accent="gw"] {
-  --accent: #5eead4; --accent-dark: #2dd4bf; --accent-rgb: 94, 234, 212;
-  --accent-soft: rgba(94, 234, 212, 0.16); --on-accent: #0a0c10;
-}
-[data-theme="light"][data-game-accent="gw"],
-[data-theme="light"] [data-game-accent="gw"] {
-  --accent: #0f766e; --accent-dark: #115e59; --accent-rgb: 15, 118, 110;
-  --accent-soft: rgba(15, 118, 110, 0.1); --on-accent: #ffffff;
-}
+/* Saint Seiya: VIOLETA-ÍNDIGO #4400cc, a cor do GAME_COLOR (13/11/2026; o
+   cosmo de Athena — o lilás é do Grand Archive, e os dourados e os azuis claros
+   já são de outros jogos), nos três jogos da marca desde 14/11/2026 (mesma
+   IP = mesma cor: Carddass, Trading Collection e Crusade). No escuro o accent
+   clareia pro #a78bfa, com texto escuro (7.7:1); no claro fica o próprio
+   índigo, com texto branco (9.9:1). */
+[data-game-accent="seiya"],
+[data-game-accent="seiyatc"],
+[data-game-accent="seiyacr"] { --accent: #a78bfa; --accent-dark: #4400cc; --accent-rgb: 167, 139, 250; --accent-soft: rgba(167, 139, 250, 0.16); --on-accent: #0a0c10; }
+[data-theme="light"][data-game-accent="seiya"], [data-theme="light"] [data-game-accent="seiya"],
+[data-theme="light"][data-game-accent="seiyatc"], [data-theme="light"] [data-game-accent="seiyatc"],
+[data-theme="light"][data-game-accent="seiyacr"], [data-theme="light"] [data-game-accent="seiyacr"] { --accent: #4400cc; --accent-dark: #3700a6; --accent-rgb: 68, 0, 204; --accent-soft: rgba(68, 0, 204, 0.1); --on-accent: #ffffff; }
 /* Sorcery: Contested Realm: o PERGAMINHO da moldura das cartas (#c9a66b, o do
    GAME_COLOR) com texto escuro no escuro (8.5:1). No claro ele fica em 2.3:1
    com branco, então o accent escurece pro marrom de tinta #7d5f2c (5.9:1 com
@@ -6347,9 +6255,9 @@ html[data-login-app="ios"] .login-sep { display: none; }
 .sw-pokemon { background: #e23030; color: #000000; }
 .sw-lorcana { background: #3f3d96; color: #ffffff; }
 .sw-onepiece { background: #d9a400; color: #000000; }
-.sw-naruto { background: #ea580c; color: #000000; }
+.sw-naruto { background: #f65400; color: #000000; }
 .sw-hxh { background: #15803d; color: #ffffff; }
-.sw-dbc { background: #db2777; color: #000000; }
+.sw-dbc { background: #9aa3ae; color: #000000; }
 .sw-neutral { background: #1b1f27; color: #ffffff; }
 .settings.colors-off .setting-swatch { background: var(--line); color: var(--subtle); }
 /* Switch (toggle) iOS-like */

@@ -122,12 +122,29 @@ export function metaDoJogo(jogo, sets, sobre) {
   const resumo = sobre ? String(SOBRE.tx(sobre.resumo, "pt") || "").trim() : "";
   const desc = resumo
     ? resumo
+    : n === 1
+    ? `O set de ${jogo.nome}, com a lista de cartas. Acompanhe preços e o progresso da sua coleção no Sleevu, grátis.`
     : n
     ? `Todos os ${n} sets de ${jogo.nome}${periodo}, com a lista de cartas de cada um. Acompanhe preços e o progresso da sua coleção no Sleevu, grátis.`
     : `Sets e cartas de ${jogo.nome} no Sleevu: acompanhe preços e o progresso da sua coleção, grátis.`;
   const canonical = `${ORIGEM}/games/${jogo.url}`;
   const sobreHtml = sobre ? SOBRE.html(sobre, "pt") : "";
-  const jsonLd = sobre ? `<script type="application/ld+json">${jsonLdSeguro(SOBRE.jsonLd(sobre, canonical, "pt"))}</script>` : "";
+  // Jogo sem "Sobre" (os modernos, 2026-11-14): uma CollectionPage que diz
+  // de que jogo é a página e quantos sets ela lista. Sem isso, a página do
+  // Pokémon (3.500 palavras no HTML) não dizia a robô nenhum que é do jogo
+  // "Pokémon TCG", e busca e IA ligam página a assunto por essa entidade.
+  const ld = sobre ? SOBRE.jsonLd(sobre, canonical, "pt") : {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: `${jogo.nome} — sets e cartas`,
+    url: canonical,
+    description: desc,
+    inLanguage: "pt-BR",
+    about: { "@type": "Game", name: jogo.nome },
+    isPartOf: { "@type": "WebSite", name: "Sleevu", url: `${ORIGEM}/` },
+    ...(n ? { mainEntity: { "@type": "ItemList", name: `Sets de ${jogo.nome}`, numberOfItems: n } } : {})
+  };
+  const jsonLd = `<script type="application/ld+json">${jsonLdSeguro(ld)}</script>`;
   const indiceHtml = n ? `<section class="jogo-indice" data-indice-jogo="${escapeAttr(jogo.url)}">
         <style>html[data-game] #cardGrid:empty~.jogo-indice{display:none}.jogo-indice{margin:40px 0 8px}.jogo-indice h2{font-size:1.05rem;margin:0 0 8px}.jogo-indice summary{cursor:pointer;color:var(--muted,#9aa0aa)}.jogo-indice ul{list-style:none;padding:0;margin:12px 0 0;columns:3 220px;column-gap:24px}.jogo-indice li{margin:0 0 6px;break-inside:avoid}.jogo-indice a{color:var(--accent,#e63946);text-decoration:none}.jogo-indice small{color:var(--muted,#9aa0aa)}</style>
         <h2>Todos os sets de ${escapeHtml(jogo.nome)}</h2>

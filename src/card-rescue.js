@@ -18,7 +18,7 @@
   // em vez de virar link morto quando este mapa envelhecer. Auditado: nenhum
   // dos 163 prefixos do Pokémon colide com um destes.
   const ID_PREFIX_GAME = {
-    mtg: "magic", fab: "fab", gcg: "gundam", gcd: "gcd", gw: "gw", nb: "narutoboruto", ntc: "narutotc", swu: "swu", cpk: "cyberpunk", sor: "sorcery", dbfw: "dbfw", dbs: "dbs", ygo: "ygo",
+    mtg: "magic", fab: "fab", gcg: "gundam", gcd: "gcd", gw: "gw", ss: "seiya", sstc: "seiyatc", sscr: "seiyacr", nb: "narutoboruto", ntc: "narutotc", swu: "swu", cpk: "cyberpunk", sor: "sorcery", dbfw: "dbfw", dbs: "dbs", ygo: "ygo",
     dgm: "digimon", rb: "riftbound", ua: "unionarena", nrt: "naruto",
     hxh: "hxh", dbc: "dbc", wow: "wow", lotr: "lotr", dbz: "dbz", cdm: "cdm", hp: "harrypotter", ws: "weiss", gzc: "godzilla", pal: "palworld", fftcg: "fftcg", ga: "grandarchive", holo: "hololive", shv: "shadowverse", vg: "vanguard", dm: "duelmasters", nmy: "narutomythos", nky: "narutokayou", mb: "mbc", op: "onepiece", opcd: "onepiece", op2002: "onepiece", cp: "lorcana"
   };

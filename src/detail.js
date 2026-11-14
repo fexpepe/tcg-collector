@@ -465,6 +465,12 @@
     // no fim do número), o starter (S) e as promos. As cartas dos Boss Decks
     // vêm sem raridade.
     fftcg: ["Common", "Rare", "Hero", "Legend", "Starter", "Promo"],
+    // Saint Seiya (13/11/2026): o brilho do Carddass (Normal, Prism e a jumbo
+    // Special), as especiais das Trading Collection da Amada e a escada do
+    // Crusade (Common até Cosmo Rare).
+    seiya: ["Normal", "Prism", "Special"],
+    seiyatc: ["Normal", "Holographic", "Special", "SP", "Promo"],
+    seiyacr: ["Common", "Uncommon", "Rare", "Metal Rare", "Cosmo Rare", "Promo"],
     // Grand Archive TCG (13/11/2026): a escada do booster, a promo e por fim
     // as de colecionador (CSR, CUR, CPR), na ordem em que o Index oficial as
     // numera.

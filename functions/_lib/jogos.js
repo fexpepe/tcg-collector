@@ -54,6 +54,7 @@ export const JOGOS_URL = [
   { url: "naruto-mythos-tcg", game: "narutomythos", nome: "Naruto Mythos TCG", logo: "assets/games/game_narutomythos.webp" },
   { url: "naruto-kayou", game: "narutokayou", nome: "Naruto Kayou", logo: "assets/games/game_narutokayou.webp" },
   { url: "gundam-carddass", game: "gcd", nome: "Gundam Carddass", logo: "assets/games/game_gcd-v2.webp", vintage: "1988–1997" },
+  { url: "saint-seiya-carddass", game: "seiya", nome: "Saint Seiya Carddass", logo: "assets/games/game_seiya.webp", vintage: "1988–2023" },
   { url: "dragon-ball-carddass", game: "dbc", nome: "Dragon Ball Carddass", logo: "assets/games/game_dbc-v3.webp", vintage: "1988–1997" },
   // As três séries paralelas do Carddass de Dragon Ball, jogos próprios desde
   // 2026-11-13 (séries do dbc por um dia). Logo desde 2026-11-14, enviado pelo Fernando.
@@ -66,6 +67,9 @@ export const JOGOS_URL = [
   { url: "harry-potter-tcg", game: "harrypotter", nome: "Harry Potter Trading Card Game", logo: "assets/games/game_harrypotter.webp", vintage: "2001–2002" },
   { url: "lord-of-the-rings-tcg", game: "lotr", nome: "The Lord of the Rings TCG", logo: "assets/games/game_lotr-v2.webp", vintage: "2001–2007" },
   { url: "dragon-ball-z-ccg", game: "dbz", nome: "Dragon Ball Z CCG", logo: "assets/games/game_dbz-v2.webp", vintage: "2000–2006" },
+  // Saint Seiya Trading Collection e Crusade: o logo da marca (o 聖闘士星矢 dos
+  // displays de 1988), até achar o de cada produto; como o narutotc.
+  { url: "saint-seiya-trading-collection", game: "seiyatc", nome: "Saint Seiya Trading Collection", logo: "assets/games/game_seiya.webp", vintage: "2000–2003" },
   { url: "one-piece-card-game-2002", game: "onepiece", linha: "op2002", prefixos: ["op2002-"], nome: "One Piece Card Game (2002)", logo: "assets/games/game_onepiece_2002-v2.webp", vintage: "2002–2005" },
   { url: "naruto-card-game-2002", game: "naruto", nome: "Naruto Card Game (2002~2006)", logo: "assets/games/game_naruto_vintage.webp", vintage: "2002~2006" },
   { url: "naruto-data-carddass", game: "naruto", linha: "nrt-dc", prefixos: ["nrt-dc-", "nrt-nf-", "nrt-nx-"], nome: "Naruto Data Carddass", logo: "assets/games/game_naruto_datacarddass.webp", vintage: "2005–2010" },
@@ -74,6 +78,7 @@ export const JOGOS_URL = [
   // Sem logo recortado ainda: vale o genérico do Naruto, o mesmo dos sets da linha.
   { url: "naruto-shippuden-card-game", game: "naruto", linha: "nrt-scg", prefixos: ["nrt-scg-"], nome: "Naruto Shippuden Card Game", logo: "assets/games/game_naruto-v2.webp", vintage: "2007–2008" },
   { url: "miracle-battle-carddass", game: "mbc", nome: "Miracle Battle Carddass", logo: "assets/games/game_mbc-v2.webp", vintage: "2009–2014" },
+  { url: "saint-seiya-crusade", game: "seiyacr", nome: "Saint Seiya Crusade", logo: "assets/games/game_seiya.webp", vintage: "2012–2014" },
   // Cartas de coleção da Amada e da Ensky (2026-11-13): jogo próprio, sem logo recortado de nenhum produto; vale o do Naruto, a marca impressa.
   // O período é o da família (2003–2006); o catálogo tem os quatro produtos com lista carta a carta (2004–2005).
   { url: "naruto-trading-cards", game: "narutotc", nome: "Naruto Trading Cards", logo: "assets/games/game_naruto-v2.webp", vintage: "2003–2006" },

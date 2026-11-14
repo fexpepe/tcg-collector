@@ -3271,6 +3271,9 @@
     cdm: SUBNAV_MIN,
     gcd: SUBNAV_MIN,
     gw: SUBNAV_ARTISTS,
+    seiya: SUBNAV_MIN,
+    seiyatc: SUBNAV_MIN,
+    seiyacr: SUBNAV_MIN,
     lotr: SUBNAV_MIN,
     harrypotter: SUBNAV_ARTISTS
   };
@@ -7318,6 +7321,11 @@
     cdm:       { usText: "carddass masters", noTcgplayer: true },
     gcd:       { usText: "gundam carddass", noTcgplayer: true },
     gw:        { usText: "gundam war", noTcgplayer: true },
+    // Saint Seiya (conferido em 12/11/2026): sem loja BR (nem Liga nem MYP
+    // têm seção) e sem TCGplayer; só a busca do eBay e do PriceCharting.
+    seiya:     { usText: "saint seiya carddass", noTcgplayer: true },
+    seiyatc:   { usText: "saint seiya amada", noTcgplayer: true },
+    seiyacr:   { usText: "saint seiya crusade", noTcgplayer: true },
     // Naruto Boruto Card Game (conferido em 13/11/2026): no TCGplayer é a linha
     // "chrono-clash-system", que tem as Tournament Pack Cards. Sem loja BR.
     narutoboruto: { tcgLine: "chrono-clash-system", usText: "naruto boruto card game" },
@@ -9016,6 +9024,9 @@
     "cdm",
     "gcd",
     "gw",
+    "seiya",
+    "seiyatc",
+    "seiyacr",
     "narutoboruto",
     "narutotc"
   ].map((game) => ({ game, dataDir: game === "pokemon" ? "data/" : `data/${game}/` }));
@@ -9032,6 +9043,14 @@
   //      amarelo do One Piece; a 65 dá pra diferenciar de relance.
   // Pokémon × Naruto ficam a 54 (vermelho × laranja) — herdado e mantido a
   // pedido; os dois nunca aparecem no mesmo filtro por acaso, mas fica o registro.
+  //   3. MESMA IP = MESMA COR (Fernando, 14/11/2026): jogo da mesma franquia
+  //      usa a cor do jogo moderno dela (Dragon Ball = a do Fusion World,
+  //      Naruto = a do Naruto Card Game, Gundam = a do Gundam Card Game), e os
+  //      vintage de uma marca sem jogo moderno dividem uma cor só (Saint Seiya =
+  //      a do Carddass). A régua de 65
+  //      vale ENTRE franquias; dentro da mesma, a cor é a mesma de propósito.
+  //      Crossover (Carddass Masters, Miracle Battle) e jogo de várias IPs
+  //      (Weiß, Union Arena) seguem com cor própria.
   const GAME_COLOR = {
     pokemon: "#e23030",    // vermelho
     lorcana: "#3f3d96",    // roxo
@@ -9043,19 +9062,19 @@
     cyberpunk: "#fcee0a",  // amarelo da marca (o do logo oficial); 17:1 com preto, a 82 do One Piece
     sorcery: "#c9a66b",    // pergaminho (a moldura das cartas); 9.2:1 com preto, a 82 do DBFW
     dbfw: "#9aa3ae",       // prata
-    dbs: "#1a0dff",        // azul elétrico (14/11/2026): o laranja da marca não cabe (todo laranja vivo fica a menos de 65 do Naruto, do One Piece ou do Miracle Battle); 8.2:1 com branco, a 96 do Super Barcode Wars
+    dbs: "#9aa3ae", // = dbfw: mesma IP (Dragon Ball), mesma cor
     ygo: "#7c3aed",        // roxo-violeta
     digimon: "#123f6d",    // azul escuro
     riftbound: "#a67c00",  // ouro
     unionarena: "#0891b2", // ciano
-    naruto: "#ea580c",     // laranja
+    naruto: "#f65400", // = narutocg: mesma IP (Naruto), mesma cor
     narutocg: "#f65400",   // o laranja do naruto mais saturado (pedido do Fernando, 2026-11-11): 6.2:1 com preto; a 17 do naruto, abaixo da régua de 65 DE PROPÓSITO (é a mesma marca)
     hxh: "#15803d",        // verde
-    dbc: "#db2777",        // rosa (a 70 do FaB, o vizinho mais próximo; 4.6:1 com preto)
-    dbsb: "#af3700",       // ferrugem, a faixa do título da Super Battle; 6.2:1 com branco, a 69 do Naruto (2026-11-13)
-    dbva: "#0fa573",       // esmeralda, o logo DRAGON BALL da Visual Adventure; 6.6:1 com preto, a 66 do HxH e do Union Arena (2026-11-13)
-    dbbw: "#0546b4",       // azul-royal (Super Barcode Wars); 8.3:1 com branco, a 66 do Lorcana (2026-11-13)
-    dbz: "#9f1239",        // carmim (o fundo do anúncio de 2000); 8.0:1 com branco, a 67 do FaB e a 71 do DBC
+    dbc: "#9aa3ae", // = dbfw: mesma IP (Dragon Ball), mesma cor
+    dbsb: "#9aa3ae", // = dbfw: mesma IP (Dragon Ball), mesma cor
+    dbva: "#9aa3ae", // = dbfw: mesma IP (Dragon Ball), mesma cor
+    dbbw: "#9aa3ae", // = dbfw: mesma IP (Dragon Ball), mesma cor
+    dbz: "#9aa3ae", // = dbfw: mesma IP (Dragon Ball), mesma cor
     wow: "#00aeff",        // azul da Blizzard; 8.5:1 com preto, a 83 do Union Arena (os azuis estão cheios)
     lotr: "#4d7c0f"  ,      // verde-musgo (pedido do Fernando: "algum tom de verde"); 5.0:1 com branco, a 73 do verde do HxH
     weiss: "#ffffff",      // branco ("Weiß"; o preto é do Star Wars); 21:1 com preto, a 159 do prata do DBFW
@@ -9064,18 +9083,21 @@
     grandarchive: "#f0abfc", // lilás (proposta, 2026-11-13): o logo oficial é branco e não dá cor; 11.9:1 com preto, a 85 do branco do Weiß e a 97 do azul do Final Fantasy
     hololive: "#38d6f5",   // ciano: o azul-céu da marca hololive (proposta, 2026-11-13); 12.1:1 com preto, a 54 do Gundam War e a 70 do WoW
     shadowverse: "#818cf8", // índigo claro (confirmada pelo Fernando, 2026-11-14): o ciano do logo já é do hololive e do WoW; 7.0:1 com preto, a 60 do Final Fantasy e a 83 do Yu-Gi-Oh!
-    narutomythos: "#fde68a", // ouro claro (a Legendary de folha de ouro 22K é a carta-símbolo); 16.9:1 com preto, a 88 do Sorcery (confirmada pelo Fernando, 2026-11-12)
-    narutokayou: "#d946ef", // magenta; 6.1:1 com preto, a 94 do Yu-Gi-Oh! e do Carddass Masters. O coral #fb7185 que o Fernando confirmou em 12/11 ficou a 26 do Vanguard, que entrou no dia 13 com #ff5a7a (proposta, 2026-11-13)
+    narutomythos: "#f65400", // = narutocg: mesma IP (Naruto), mesma cor
+    narutokayou: "#f65400", // = narutocg: mesma IP (Naruto), mesma cor
     duelmasters: "#fde68a", // ouro-claro, o amarelo do logo; 16.9:1 com preto, a 88 do Sorcery, o vizinho mais próximo (proposta, 2026-11-13)
     vanguard: "#ff5a7a",   // coral: o vermelho do logo, clareado pra não colar no Pokémon (#e23030); 7.0:1 com preto, a 62 do DBC e a 84 do Miracle Battle (proposta, 2026-11-13)
     godzilla: "#5e7c68",   // verde-chumbo, a pele do Godzilla (o vermelho #e60012 do logo fica a 57 do Pokémon); 4.6:1 com branco, a 84 do Magic (proposta, 2026-11-11)
     harrypotter: "#740001", // escarlate da Grifinória; 12:1 com branco, a 85 do Magic (o vizinho mais próximo)
     mbc: "#fb923c",        // pêssego (o laranja-dourado do logo); 9.3:1 com preto, a 71 do One Piece e a 77 do Naruto
     cdm: "#a21caf",        // fúcsia; 6.3:1 com branco, a 79 do Yu-Gi-Oh! e a 81 do DBC (proposta, 2026-11-09)
-    gcd: "#a3e635",        // lima; 13.9:1 com preto, a 92 do Sorcery e a 99 do Cyberpunk (proposta, 2026-11-10)
-    narutoboruto: "#f9a8d4", // rosa (o "BORUTO" do logo); 11.6:1 com preto, a 97 do Weiß e a 102 do prata do DBFW (proposta, 2026-11-13)
-    narutotc: "#4ade80",   // verde-folha (a Vila da Folha; o laranja e o rosa da marca já são de outros jogos do Naruto); 12.1:1 com preto, a 87 do Gundam War e a 90 do Palworld (proposta, 2026-11-13)
-    gw: "#5eead4"          // turquesa; 14.2:1 com preto, a 100 do DBFW (proposta, 2026-11-11)
+    gcd: "#2563eb", // = gundam: mesma IP (Gundam), mesma cor
+    narutoboruto: "#f65400", // = narutocg: mesma IP (Naruto), mesma cor
+    narutotc: "#f65400", // = narutocg: mesma IP (Naruto), mesma cor
+    gw: "#2563eb", // = gundam: mesma IP (Gundam), mesma cor
+    seiya: "#4400cc",      // violeta-índigo (o cosmo de Athena; o lilás é do Grand Archive); 9.9:1 com branco, a 82 do Lorcana (proposta, 2026-11-13)
+    seiyatc: "#4400cc", // = seiya: mesma IP (Saint Seiya), mesma cor
+    seiyacr: "#4400cc" // = seiya: mesma IP (Saint Seiya), mesma cor
   };
   // Preto ou branco sobre a cor do jogo — o que der MAIOR contraste de verdade
   // (fórmula WCAG), não um limiar de luminância chutado: com limiar fixo o
@@ -9227,6 +9249,9 @@
     narutoboruto: ["nb-"],                    // Bandai 2019–2020 (Chrono Clash System): idem
     narutotc: ["ntc-"],                       // Amada/Ensky 2004–2005 (cartas de coleção): idem
     gw: ["gw-"],                              // Bandai 1999–2011: idem
+    seiya: ["ss-"],                           // Bandai 1988–2023: idem
+    seiyatc: ["sstc-"],                       // Amada 2000–2003: idem
+    seiyacr: ["sscr-"],                       // Bandai 2012–2014: idem
     harrypotter: ["hp-"],                     // Wizards 2001–2002: idem
     naruto: ["nrt-"]                          // Bandai 2003–2013: idem (o NARUTO CARD GAME de 2027, nrt-ncg-, é o jogo narutocg)
   };

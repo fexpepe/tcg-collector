@@ -281,6 +281,22 @@ test("tela do jogo: sets mais novos primeiro, título no orçamento, índice com
   assert.equal(metaDoJogo({ nome: "X".repeat(60), url: "x" }, []).titulo, `${"X".repeat(60)} | Sleevu`);
 });
 
+test("tela do jogo sem Sobre: JSON-LD de CollectionPage sobre o jogo", () => {
+  // 2026-11-14: a página dos jogos modernos não tinha JSON-LD nenhum.
+  const sets = [{ slug: "a", nome: "A", cartas: 3, data: "2024-01-01" }, { slug: "b", nome: "B", cartas: 2, data: "" }];
+  const m = metaDoJogo(jogoDaUrl("star-wars-unlimited"), sets);
+  const [ld] = [...m.jsonLd.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map((x) => JSON.parse(x[1]));
+  assert.equal(ld["@type"], "CollectionPage");
+  assert.equal(ld.url, "https://sleevu.app/games/star-wars-unlimited");
+  assert.deepEqual(ld.about, { "@type": "Game", name: "Star Wars: Unlimited" });
+  assert.equal(ld.mainEntity.numberOfItems, 2);
+  // Um set só: sem o "Todos os 1 sets".
+  assert.match(metaDoJogo(jogoDaUrl("star-wars-unlimited"), sets.slice(0, 1)).desc, /^O set de Star Wars: Unlimited, com a lista de cartas\./);
+  // Sem sets, sem a lista.
+  const vazio = JSON.parse(metaDoJogo(jogoDaUrl("naruto-card-game"), []).jsonLd.replace(/^<script[^>]*>|<\/script>$/g, ""));
+  assert.equal(vazio.mainEntity, undefined);
+});
+
 test("nome de set com HTML sai escapado no índice", () => {
   const m = metaDoJogo(jogoDaUrl("pokemon"), [{ slug: "x", nome: "<img src=x onerror=alert(1)>", cartas: 1, data: "" }]);
   assert.doesNotMatch(m.indiceHtml, /<img src=x/);

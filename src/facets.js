@@ -132,6 +132,17 @@
       },
       facetType(["Unit", "Character", "Command", "Operation", "G", "ACE"])
     ],
+    // Saint Seiya Crusade (o TCG de 2012–2014, da família do Gundam War): a cor
+    // e o tipo impressos no topo da carta.
+    seiyacr: [
+      {
+        key: "color", labelKey: "facet.color",
+        of: (c) => facetSplit(c.color, ";"),
+        label: (v) => v,
+        order: ["Blue", "Black", "Green", "Red", "Purple", "White", "Yellow"]
+      },
+      facetType(["Unit", "Character", "Command"])
+    ],
     gundam: [
       facetColor("color"),
       facetLevel,

@@ -1,0 +1,170 @@
+{
+  "url": "saint-seiya-trading-collection",
+  "nome": "Saint Seiya Trading Collection",
+  "nomeOriginal": {
+    "texto": "聖闘士星矢 トレーディングコレクション",
+    "lang": "ja"
+  },
+  "logo": "assets/games/game_seiya.webp",
+  "logoLargura": 249,
+  "logoAltura": 106,
+  "periodo": {
+    "inicio": "2000-03",
+    "fim": "2003-12"
+  },
+  "etiquetas": [
+    "Vintage",
+    {
+      "pt": "Japão",
+      "en": "Japan",
+      "es": "Japón"
+    },
+    "Amada"
+  ],
+  "resumo": {
+    "pt": "As coleções de cartas de Os Cavaleiros do Zodíaco da Amada: cenas do anime e dos filmes, em pacotes de 10 cartas, de 2000 a 2003.",
+    "en": "Amada's Saint Seiya trading card collections: scenes from the anime and the movies, in 10-card packs, from 2000 to 2003.",
+    "es": "Las colecciones de cartas de Los Caballeros del Zodiaco de Amada: escenas del anime y de las películas, en sobres de 10, de 2000 a 2003."
+  },
+  "fatos": [
+    {
+      "chave": "lancamento",
+      "valor": {
+        "pt": "Março de 2000",
+        "en": "March 2000",
+        "es": "Marzo de 2000"
+      }
+    },
+    {
+      "chave": "encerramento",
+      "valor": {
+        "pt": "Dezembro de 2003",
+        "en": "December 2003",
+        "es": "Diciembre de 2003"
+      }
+    },
+    {
+      "chave": "fabricante",
+      "valor": "Amada"
+    },
+    {
+      "chave": "licenca",
+      "valor": {
+        "pt": "Masami Kurumada, Shueisha e Toei Animation",
+        "en": "Masami Kurumada, Shueisha and Toei Animation",
+        "es": "Masami Kurumada, Shueisha y Toei Animation"
+      }
+    },
+    {
+      "chave": "origem",
+      "valor": {
+        "pt": "Japão",
+        "en": "Japan",
+        "es": "Japón"
+      }
+    },
+    {
+      "chave": "formato",
+      "valor": {
+        "pt": "Cartas de coleção, 10 por pacote (¥400)",
+        "en": "Collectible cards, 10 a pack (¥400)",
+        "es": "Cartas coleccionables, 10 por sobre (¥400)"
+      }
+    }
+  ],
+  "historia": {
+    "pt": [
+      "Em março de 2000 a Amada, gráfica japonesa de cartas colecionáveis, lançou a Trading Collection de Saint Seiya: 108 cartas, 90 normais e 18 especiais, com cenas do anime e, nas cartas de personagem, o nome do cavaleiro impresso em latim. O pacote trazia 10 cartas, a ¥400.",
+      "Em 2002 vieram as duas coleções dos filmes, com 212 cartas cada e a fala do personagem impressa no pé da carta; em fevereiro de 2003, a da série de TV junto com a saga de Hades, e em dezembro de 2003 a do capítulo do Santuário de Hades, a última da linha."
+    ],
+    "en": [
+      "In March 2000 Amada, a Japanese trading card printer, released the Saint Seiya Trading Collection: 108 cards, 90 regular and 18 special, with scenes from the anime and, on the character cards, the Saint's name printed in Latin letters. A pack held 10 cards, at ¥400.",
+      "In 2002 came the two movie collections, with 212 cards each and the character's line printed at the foot of the card; in February 2003, the TV series collection together with the Hades saga, and in December 2003 the Hades Sanctuary chapter collection, the last one of the line."
+    ],
+    "es": [
+      "En marzo de 2000 Amada, imprenta japonesa de cartas coleccionables, lanzó la Trading Collection de Saint Seiya: 108 cartas, 90 normales y 18 especiales, con escenas del anime y, en las de personaje, el nombre del caballero impreso en letras latinas. El sobre traía 10 cartas, a ¥400.",
+      "En 2002 llegaron las dos colecciones de las películas, con 212 cartas cada una y la frase del personaje impresa al pie; en febrero de 2003, la de la serie de TV junto con la saga de Hades, y en diciembre de 2003 la del capítulo del Santuario de Hades, la última de la línea."
+    ]
+  },
+  "linhaDoTempo": [
+    {
+      "data": "2000-03",
+      "set": "sstc-2000",
+      "texto": {
+        "pt": "Sai a Trading Collection: 108 cartas, com cenas do anime.",
+        "en": "The Trading Collection is released: 108 cards, with anime scenes.",
+        "es": "Sale la Trading Collection: 108 cartas, con escenas del anime."
+      }
+    },
+    {
+      "data": "2002-01",
+      "set": "sstc-m1",
+      "texto": {
+        "pt": "Coleção dos filmes 1 e 2, com a fala do personagem na carta.",
+        "en": "Movies 1 and 2 collection, with the character's line on the card.",
+        "es": "Colección de las películas 1 y 2, con la frase del personaje."
+      }
+    },
+    {
+      "data": "2002-06",
+      "set": "sstc-m2",
+      "texto": {
+        "pt": "Coleção dos filmes 3 e 4.",
+        "en": "Movies 3 and 4 collection.",
+        "es": "Colección de las películas 3 y 4."
+      }
+    },
+    {
+      "data": "2003-02",
+      "set": "sstc-tv",
+      "texto": {
+        "pt": "Coleção da série de TV e da saga de Hades: 208 cartas.",
+        "en": "TV series and Hades saga collection: 208 cards.",
+        "es": "Colección de la serie de TV y la saga de Hades: 208 cartas."
+      }
+    },
+    {
+      "data": "2003-12",
+      "set": "sstc-hd",
+      "texto": {
+        "pt": "Capítulo do Santuário de Hades, a última coleção da linha.",
+        "en": "Hades Sanctuary chapter, the last collection of the line.",
+        "es": "Capítulo del Santuario de Hades, la última colección de la línea."
+      }
+    }
+  ],
+  "fontes": [
+    {
+      "nome": {
+        "pt": "saint-seiya.it, a Trading Collection de 2000",
+        "en": "saint-seiya.it, the 2000 Trading Collection",
+        "es": "saint-seiya.it, la Trading Collection de 2000"
+      },
+      "url": "https://www.saint-seiya.it/sito4/trading/trading.html"
+    },
+    {
+      "nome": {
+        "pt": "Amada, Trading Collection dos filmes (2002, Wayback)",
+        "en": "Amada, movie Trading Collection (2002, Wayback)",
+        "es": "Amada, Trading Collection de las películas (2002, Wayback)"
+      },
+      "url": "https://web.archive.org/web/20020203190531/http://www.amadagogo.com:80/products/trc/datafile/seiya_movie/index_1221.html"
+    },
+    {
+      "nome": {
+        "pt": "Amada, Trading Collection da série de TV (2003, Wayback)",
+        "en": "Amada, TV series Trading Collection (2003, Wayback)",
+        "es": "Amada, Trading Collection de la serie de TV (2003, Wayback)"
+      },
+      "url": "https://web.archive.org/web/20030210154839/http://www.amada-printing.co.jp:80/amadagogo/products/trc/datafile/seiya/index.html"
+    },
+    {
+      "nome": {
+        "pt": "Mandarake, lista de compra das cartas de Saint Seiya",
+        "en": "Mandarake, Saint Seiya cards buying list",
+        "es": "Mandarake, lista de compra de cartas de Saint Seiya"
+      },
+      "url": "https://www.mandarake.co.jp/kaitori/cat/card/card_seiya.php"
+    }
+  ]
+}
