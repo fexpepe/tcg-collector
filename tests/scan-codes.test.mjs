@@ -136,7 +136,13 @@ test("só o formato do código: restringe aos jogos possíveis sem cravar", () =
   assert.equal(frac.confiante, false);
   assert.deepEqual(frac.restritos, ["duelmasters", "harrypotter", "lorcana", "narutomythos", "pokemon", "riftbound", "swu"]);
   assert.equal(detecta("LOB-EN001 1ST EDITION", ["LOB-EN001"]).top, "ygo");
-  assert.equal(detecta("BT1-001 R", ["BT1-001"]).top, "digimon");
+  // BT1-001 é Digimon E Dragon Ball Super Masters (2026-11-14): o formato
+  // sozinho não crava, e o rodapé decide.
+  const bt = detecta("BT1-001 R", ["BT1-001"]);
+  assert.deepEqual(bt.restritos, ["dbs", "digimon"]);
+  assert.equal(bt.confiante, false);
+  assert.equal(detecta("AKIYOSHI HONGO BT1-001", ["BT1-001"]).top, "digimon");
+  assert.equal(detecta("BIRD STUDIO/SHUEISHA BT1-001", ["BT1-001"]).top, "dbs");
 });
 
 test("o jogo da sessão desempata, mas não vence uma pista impressa", () => {

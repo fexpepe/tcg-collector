@@ -194,6 +194,19 @@ carrega e esconde o nome em texto (fallback sem erro).
   transparente, alfa ≤12 zerado e reduzido pra 512×140 com o Pillow em alfa
   pré-multiplicado. WebP sem perda, 52 KB. O roxo lê bem na cápsula branca;
   a versão `logo_w.svg` (branca) não foi usada.
+- `game_dbs.webp` — Dragon Ball Super Card Game Masters (seção "Outros TCGs"
+  do hub, 2026-11-14). Fonte: o botão do jogo na página de escolha da Bandai
+  (`www.dbs-cardgame.com/gameselect/images/btn_master.jpg`, JPG 471×667, o
+  logo preto "DRAGON BALL SUPER CARD GAME MASTERS" sobre um laranja #ff6700).
+  O site em inglês não publica o logo sozinho (ele vem dentro da arte do
+  topo). Recortado o retângulo do logo e tirado o laranja por color-to-alpha
+  (o do GIMP), com as fagulhas soltas apagadas. Os raios dourados dos lados
+  saíram: viravam verde no color-to-alpha. Ficam o letreiro preto, a esfera
+  branca com a estrela vermelha e o "SUPER" vazado. Ampliado pra 512×237 em
+  alfa pré-multiplicado, alfa ≤12 zerado, WebP q92 com alfa (43 KB, abaixo do
+  teto de 60 KB do docs/LOGOS.md). O preto
+  pede a cápsula branca, como o Naruto Mythos. Se a Bandai publicar o logo
+  avulso, ele entra no lugar.
 - `game_shadowverse.webp` — Shadowverse: Evolve (seção "Outros TCGs" do hub,
   2026-11-13). Fonte: o logo do cabeçalho do site oficial em inglês
   (`en.shadowverse-evolve.com/wordpress/wp-content/themes/en-shadowverse-evolve/assets/images/common/logo.png`,

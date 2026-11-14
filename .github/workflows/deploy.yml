@@ -136,6 +136,7 @@ jobs:
             data/shadowverse/sets
             data/vanguard/sets
             data/duelmasters/sets
+            data/dbs/sets
             data/narutomythos/sets
             data/narutokayou/sets
             data/jump/sets
@@ -164,7 +165,7 @@ jobs:
           faltando=""
           # data/dbc/, data/swu/, data/cyberpunk/, data/wow/, data/lotr/,
           # data/sorcery/, data/harrypotter/, data/weiss/, data/mbc/, data/dbz/ e
-          # data/cdm/, data/gcd/, data/gw/, data/narutocg/, data/godzilla/, data/palworld/, data/fftcg/, data/vanguard/, data/grandarchive/, data/hololive/, data/duelmasters/ e data/shadowverse/: jogos novos (2026-09-24 a 2026-11-13);
+          # data/cdm/, data/gcd/, data/gw/, data/narutocg/, data/godzilla/, data/palworld/, data/fftcg/, data/vanguard/, data/grandarchive/, data/hololive/, data/duelmasters/, data/shadowverse/ e data/dbs/: jogos novos (2026-09-24 a 2026-11-14);
           # data/dbsb/, data/dbva/ e data/dbbw/ (2026-11-13), as séries do dbc que viraram jogo. Enquanto o cache
           # for de antes deles, o build rápido publicaria o tile do hub sem
           # catálogo nenhum atrás.
@@ -194,7 +195,8 @@ jobs:
                    data/grandarchive/manifest.generated.js \
                    data/hololive/manifest.generated.js \
                    data/duelmasters/manifest.generated.js \
-                   data/shadowverse/manifest.generated.js; do
+                   data/shadowverse/manifest.generated.js \
+                   data/dbs/manifest.generated.js; do
             [ -s "$f" ] || faltando="$faltando $f"
           done
           if [ -n "$faltando" ]; then
@@ -512,6 +514,18 @@ jobs:
       - name: Snapshot de preços (histórico Dragon Ball Fusion)
         if: env.RODA_SYNC == 'true'
         run: node scripts/sync-price-history.mjs data/dbfw
+
+      # Dragon Ball Super Card Game MASTERS (TCGCSV cat. 27, Bandai 2017+), o
+      # classico que o Fusion World nao substituiu. Padrao do Fusion World: id
+      # pelo productId, Normal/Foil, foto da carta-irma pras Pre-Release,
+      # Release Event e 2nd Edition sem foto; sem logo de set.
+      - name: Sincroniza catálogo do Dragon Ball Super Masters (TCGCSV)
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/sync-dbs.mjs || echo "sync-dbs falhou; mantém o catalogo versionado"
+
+      - name: Snapshot de preços (histórico Dragon Ball Super Masters)
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/sync-price-history.mjs data/dbs
 
       # Yu-Gi-Oh! (TCGCSV cat. 2, Konami): o MAIOR catalogo (~46k impressoes).
       # Padrao MAGIC: chunks versionados, monolito cards.js fora do deploy (ver
@@ -1131,6 +1145,7 @@ jobs:
             data/shadowverse/sets
             data/vanguard/sets
             data/duelmasters/sets
+            data/dbs/sets
             data/narutomythos/sets
             data/narutokayou/sets
             data/jump/sets

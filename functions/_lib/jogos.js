@@ -34,6 +34,7 @@ export const JOGOS_URL = [
   { url: "flesh-and-blood", game: "fab", nome: "Flesh and Blood", logo: "assets/games/game_fab.webp" },
   { url: "yu-gi-oh", game: "ygo", nome: "Yu-Gi-Oh!", logo: "assets/games/game_ygo-v2.webp" },
   { url: "dragon-ball-fusion-world", game: "dbfw", nome: "Dragon Ball Fusion World", logo: "assets/games/game_dbfw-v2.webp" },
+  { url: "dragon-ball-super-card-game", game: "dbs", nome: "Dragon Ball Super Card Game Masters", logo: "assets/games/game_dbs.webp" },
   { url: "digimon-card-game", game: "digimon", nome: "Digimon Card Game", logo: "assets/games/game_digimon-v2.webp" },
   { url: "union-arena", game: "unionarena", nome: "Union Arena", logo: "assets/games/game_unionarena-v2.webp" },
   { url: "cyberpunk-tcg", game: "cyberpunk", nome: "Cyberpunk TCG", logo: "assets/games/game_cyberpunk.webp" },

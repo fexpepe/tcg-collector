@@ -69,6 +69,11 @@
   "sets": 50,
   "imgPct": 100
  },
+ "dbs": {
+  "cards": 11734,
+  "sets": 101,
+  "imgPct": 100
+ },
  "ygo": {
   "cards": 45793,
   "sets": 608,
