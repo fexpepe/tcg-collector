@@ -690,10 +690,14 @@ lugares; o prefixo de id, em 3 mapas (`binders.js`, `card-rescue.js`,
   catálogo, índices, histórico de preço e os logos de set (o Star Wars trouxe
   12). As páginas de carta e de artista têm teto global e não crescem com o
   jogo.
-- **138 deles são chunks de preço vazios**: Naruto 105, HxH 15 e DBC 18. Jogo
-  sem preço ganha um arquivo `{}` por set. Sem a flag `pc` no manifest, o
-  cliente já usa o monólito (um arquivo só), então esses chunks não fazem nada
-  (F2).
+- **Chunks de preço vazios: resolvido em 2026-11-14.** Jogo sem preço ganhava
+  um arquivo `{}` por set: eram 138 quando esta seção foi escrita e 471 no
+  deploy de 14/11 (17.912 arquivos), com 18 jogos sem preço. Desde então o
+  `split-pricing.mjs` não grava chunk de preço pra jogo sem preço nenhum e
+  tira a flag `pc` do manifest dele. O cliente usa o monólito, um `{}` só. Foi
+  o que abriu espaço pro Dragon Ball Super Masters (F2). Jogo COM preço segue
+  gravando o `{}` dos sets sem preço, porque o `pc` promete o irmão de todo
+  chunk de carta.
 
 ### 5.4 Orçamento de peso do núcleo
 
