@@ -1120,6 +1120,46 @@ jobs:
             data/ygo/indexes-*.json
           key: catalogo-build-${{ github.run_id }}
 
+      # O MESMO catálogo, num pacote de caminho FIXO, pro espelho de imagens
+      # (mirror-images.yml). O espelho restaurava o cache acima, e o
+      # actions/cache identifica a entrada pela LISTA de caminhos: cada jogo
+      # novo muda a lista, e até o próximo build completo salvar um cache com
+      # ela o job das 14h não achava nada ("Cache not found") e saía verde sem
+      # espelhar nenhum jogo. Foi o que aconteceu em 13/11/2026 (o narutoboruto
+      # entrou na lista e o último cache era de antes dele) e se repetiria a
+      # cada jogo novo. Um arquivo só, sempre no mesmo caminho, não tem esse
+      # problema; e os padrões abaixo são genéricos (data/*/sets), então jogo
+      # novo entra no pacote sem ninguém mexer aqui. As sets/ do Magic e do
+      # Yu-Gi-Oh são versionadas (o checkout do espelho já as tem) e ficam fora,
+      # como no cache acima. Só a main: o espelho roda na main, e cache salvo em
+      # branch não é visível pra ela. Nunca derruba o deploy: sem pacote, quem
+      # fica vermelho é o job do espelho, que avisa.
+      - name: Empacota o catálogo pro espelho de imagens
+        if: env.RODA_SYNC == 'true' && github.ref == 'refs/heads/main'
+        continue-on-error: true
+        run: |
+          shopt -s nullglob
+          # Só o que existe: o tar sai com erro em caminho literal ausente
+          # (ex.: data/search-index.json num build que não o gerou).
+          lista=()
+          for f in data/*.generated.js data/*.generated.json data/search-index.json \
+                   data/*/*.generated.js data/*/*.generated.json data/*/search-index.json \
+                   data/*/sets \
+                   data/magic/cards.js data/magic/indexes.js data/magic/pricing.js data/magic/indexes-*.json \
+                   data/ygo/cards.js data/ygo/indexes.js data/ygo/pricing.js data/ygo/indexes-*.json; do
+            [ -e "$f" ] && lista+=("$f")
+          done
+          tar -cf "$RUNNER_TEMP/catalogo-espelho.tar" --exclude=data/magic/sets --exclude=data/ygo/sets "${lista[@]}"
+          ls -l "$RUNNER_TEMP/catalogo-espelho.tar"
+
+      - name: Salva o pacote do catálogo (espelho de imagens)
+        if: env.RODA_SYNC == 'true' && github.ref == 'refs/heads/main'
+        continue-on-error: true
+        uses: actions/cache/save@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+        with:
+          path: ${{ runner.temp }}/catalogo-espelho.tar
+          key: catalogo-espelho-${{ github.run_id }}
+
       # Rede de segurança das FATIAS de índice (indexes-sets.js etc.), que é o
       # que as páginas carregam de verdade. Os syncs já as geram, mas cada sync
       # tem "|| echo ... mantém o catalogo versionado": se o do jogo X falhar,
