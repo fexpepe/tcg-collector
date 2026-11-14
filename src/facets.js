@@ -224,6 +224,23 @@
         order: ["Debut", "1st", "2nd", "Spot"]
       }
     ],
+    // Shadowverse: Evolve (13/11/2026): o "color" do catálogo é a CLASSE
+    // (sync-shadowverse.mjs), na ordem do jogo, com a Neutral no fim. O TIPO
+    // vem multi ("Follower;Evolved", "Spell;Token"): conta em cada parte.
+    shadowverse: [
+      {
+        key: "class", labelKey: "facet.class",
+        of: (c) => facetSplit(c.color, ";"),
+        label: (v) => v,
+        order: ["Forestcraft", "Swordcraft", "Runecraft", "Dragoncraft", "Abysscraft", "Havencraft", "Neutral"]
+      },
+      {
+        key: "type", labelKey: "facet.cardType",
+        of: (c) => facetSplit(c.cardType, ";"),
+        label: (v) => v,
+        order: ["Leader", "Follower", "Spell", "Amulet", "Equipment", "Evolved", "Advanced", "Token", "Crest", "Evolution Point"]
+      }
+    ],
     grandarchive: [
       {
         key: "element", labelKey: "facet.element",

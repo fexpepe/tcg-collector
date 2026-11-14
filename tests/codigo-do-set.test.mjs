@@ -80,6 +80,16 @@ test("DBS Masters: o código impresso na carta, sem as promos", () => {
   assert.equal(cod("dbs", "PR", "", cartas("P-001", "P-002")), "");
 });
 
+test("shadowverse: o código impresso do produto, sem promos nem eventos", () => {
+  assert.equal(cod("shadowverse", "BP01"), "BP01");
+  assert.equal(cod("shadowverse", "ECP02"), "ECP02");
+  assert.equal(cod("shadowverse", "CSD03"), "CSD03");
+  assert.equal(cod("shadowverse", "SDD06"), "SDD06");
+  assert.equal(cod("shadowverse", "PCS01"), "PCS01");
+  assert.equal(cod("shadowverse", "SVPR"), "");
+  assert.equal(cod("shadowverse", "GFE"), "");
+});
+
 test("hololive: o código oficial do produto, sem as promos", () => {
   assert.equal(cod("hololive", "HBP01"), "HBP01");
   assert.equal(cod("hololive", "HEB01"), "HEB01");

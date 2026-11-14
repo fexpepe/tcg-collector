@@ -62,6 +62,11 @@ const FAMILIAS = {
   // antes do hífen ("hBP01-001"), em caixa alta como os outros selos: HBP01,
   // HEB01, HSD12, HYS01. As promos (HPR) ficam sem.
   hololive: { re: /^(H(?:BP|EB|SD|YS)\d{2})$/, inteiro: true },
+  // SHADOWVERSE: EVOLVE: o setId já é o código que a carta imprime antes do
+  // hífen ("BP01-001EN"): BP01, CP01, ECP01, SD01, CSD01, SDD01, GFB01,
+  // GFD01, SS01, SP01, PCS01. Promos (SVPR, as cartas são "PR-…") e
+  // Gloryfinder Events (GFE) ficam sem.
+  shadowverse: { re: /^([A-Z]{2,3}\d{2})$/, inteiro: true },
   // CARDFIGHT!! VANGUARD: o código é o que a carta imprime antes da barra
   // ("DZ-BT16/001EN", "BT01/046EN"), com o hífen da era (G-, V-, D-, DZ-;
   // a série original não tem). Boosters, extras e decks; as promos (PR, VPR,

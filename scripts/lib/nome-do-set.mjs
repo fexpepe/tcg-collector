@@ -56,7 +56,11 @@ export const NOMES_DO_JOGO = {
   grandarchive: ["Grand Archive Trading Card Game", "Grand Archive TCG", "Grand Archive"],
   // hololive OFFICIAL CARD GAME: só o grupo de promos traz o jogo na frente
   // ("hololive OFFICIAL CARD GAME Promos" -> "Promos").
-  hololive: ["hololive OFFICIAL CARD GAME", "hololive Official Card Game"]
+  hololive: ["hololive OFFICIAL CARD GAME", "hololive Official Card Game"],
+  // Shadowverse: Evolve: só o grupo de promos traz o jogo na frente
+  // ("Shadowverse: Evolve Promo Cards" -> "Promo Cards"); os "Shadowverse:
+  // Evolve Bundles" são só selados.
+  shadowverse: ["Shadowverse: Evolve", "Shadowverse Evolve"]
 };
 
 // Títulos de outra obra que começam com a marca: ficam inteiros. No Yu-Gi-Oh!

@@ -189,6 +189,14 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
   alfa pré-multiplicado, alfa ≤12 zerado, WebP sem perda (81 KB). O preto
   pede a cápsula branca, como o Naruto Mythos. Se a Bandai publicar o logo
   avulso, ele entra no lugar.
+- `game_shadowverse.webp` — Shadowverse: Evolve (seção "Outros TCGs" do hub,
+  2026-11-13). Fonte: o logo do cabeçalho do site oficial em inglês
+  (`en.shadowverse-evolve.com/wordpress/wp-content/themes/en-shadowverse-evolve/assets/images/common/logo.png`,
+  456×394, PNG de paleta com alfa: o círculo mágico azul-ciano atrás de
+  "SHADOWVERSE" em branco com contorno e "EVOLVE" em ouro). Alfa ≤12 zerado;
+  não foi recortado (o desenho já encosta nas bordas) nem esticado (bitmap
+  pequeno). WebP sem perda, 34 KB. O contorno escuro das letras segura a
+  leitura na cápsula branca.
 - `game_gw.webp` — Gundam War (Bandai, 1999–2011). Fonte enviada pelo
   Fernando em 2026-11-11: WebP de 360×125 com alfa, o logo dourado "GUNDAM
   WAR / MOBILE SUIT GUNDAM THE CARD GAME". Recortado no conteúdo (+2px), com

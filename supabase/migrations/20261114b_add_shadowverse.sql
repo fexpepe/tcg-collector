@@ -1,22 +1,23 @@
 -- ============================================================================
--- Migração aditiva: libera o slug `dbs` (Dragon Ball Super Card Game Masters,
--- Bandai, 2017+, edição em inglês) nas whitelists de jogo do banco.
--- Aplicar no SQL Editor do Supabase (projeto dlnalopazitfdgnmdguu).
+-- 20261114b (era 20261114a; aplicada em 2026-11-14). Migração aditiva:
+-- libera o slug `shadowverse` (Shadowverse: Evolve, o jogo
+-- da Bushiroad com a Cygames, edição em inglês) nas whitelists de jogo do
+-- banco. Aplicar no SQL Editor do Supabase (projeto dlnalopazitfdgnmdguu).
 --
--- Cópia da 20261113g (hololive, a última aplicada) com o `dbs` a mais — só a
--- lista muda. As mesmas DUAS famílias de whitelist:
+-- Cópia da 20261113h (Saint Seiya) com um slug a mais — só a lista muda. As
+-- mesmas DUAS famílias de whitelist:
 --   1. card_views + increment_card_view  (corpo da 20260923a, com a linha do
 --      card_views_daily)
 --   2. contribute_price                  (corpo da 20260807c)
 -- Sem isto, no jogo novo a view de carta e o Preço da Comunidade são
 -- rejeitados EM SILÊNCIO (as funções só dão `return`).
 --
--- ESTA COBRE A 20261113g: a lista é a dela inteira (com `hololive`,
--- `vanguard`, `grandarchive`, os do Naruto, `dbsb`, `dbva`, `dbbw`,
--- `duelmasters` e `narutotc`) mais o `dbs`. Cada migração de jogo reescreve
--- a lista INTEIRA, então qualquer uma das anteriores rodada DEPOIS desta
--- tiraria o `dbs`. Aplicar esta por último; a próxima migração de jogo copia
--- esta.
+-- ESTA COBRE A 20261113h E A 20261113g: a lista é a da 13h inteira (com o
+-- `duelmasters` da 13e, o `narutotc` da 13f, o `hololive` da 13g e os três
+-- do Saint Seiya) mais o `shadowverse`. Cada migração de jogo reescreve a
+-- lista INTEIRA, então qualquer uma das anteriores rodada DEPOIS desta
+-- tiraria o `shadowverse`. Se a 13h ainda não tiver sido aplicada, esta a
+-- dispensa: os três slugs do Saint Seiya já estão aqui.
 --
 -- A coleção NÃO depende desta migração: a tabela `collections` não tem
 -- whitelist de jogo.
@@ -25,7 +26,7 @@
 --
 -- Sem cifrão dentro dos corpos de função (lição da 20260923a): o editor do
 -- Supabase se perde com `$` solto num corpo `$$…$$`. As âncoras de fim das
--- regex usam a âncora de fim de string do PostgreSQL, como nas anteriores.
+-- regex usam `\Z`, que no PostgreSQL casa só no fim da string.
 -- ============================================================================
 
 -- 1) CHECK de jogos válidos do card_views (dropa só o(s) CHECK que mencionam
@@ -42,14 +43,14 @@ begin
   end loop;
 end $$;
 alter table public.card_views add constraint card_views_game_check
-  check (game = any (array['pokemon','lorcana','onepiece','magic','fab','gundam','swu','cyberpunk','sorcery','dbfw','dbs','ygo','digimon','riftbound','unionarena','naruto','hxh','dbc','wow','lotr','harrypotter','weiss','mbc','dbz','cdm','gcd','gw','narutocg','godzilla','palworld','fftcg','narutomythos','narutokayou','narutoboruto','dbsb','dbva','dbbw','vanguard','grandarchive','duelmasters','narutotc','hololive','jump']));
+  check (game = any (array['pokemon','lorcana','onepiece','magic','fab','gundam','swu','cyberpunk','sorcery','dbfw','ygo','digimon','riftbound','unionarena','naruto','hxh','dbc','wow','lotr','harrypotter','weiss','mbc','dbz','cdm','gcd','gw','narutocg','godzilla','palworld','fftcg','narutomythos','narutokayou','narutoboruto','dbsb','dbva','dbbw','vanguard','grandarchive','duelmasters','narutotc','hololive','seiya','seiyatc','seiyacr','shadowverse','jump']));
 
 -- increment_card_view: corpo IDÊNTICO ao da 20261111d (e das anteriores) — só a lista de jogos muda.
 create or replace function public.increment_card_view(p_game text, p_card_id text)
 returns void language plpgsql security definer set search_path = public as $$
 begin
   if p_game is null or p_card_id is null then return; end if;
-  if not (p_game = any (array['pokemon','lorcana','onepiece','magic','fab','gundam','swu','cyberpunk','sorcery','dbfw','dbs','ygo','digimon','riftbound','unionarena','naruto','hxh','dbc','wow','lotr','harrypotter','weiss','mbc','dbz','cdm','gcd','gw','narutocg','godzilla','palworld','fftcg','narutomythos','narutokayou','narutoboruto','dbsb','dbva','dbbw','vanguard','grandarchive','duelmasters','narutotc','hololive','jump'])) then return; end if;
+  if not (p_game = any (array['pokemon','lorcana','onepiece','magic','fab','gundam','swu','cyberpunk','sorcery','dbfw','ygo','digimon','riftbound','unionarena','naruto','hxh','dbc','wow','lotr','harrypotter','weiss','mbc','dbz','cdm','gcd','gw','narutocg','godzilla','palworld','fftcg','narutomythos','narutokayou','narutoboruto','dbsb','dbva','dbbw','vanguard','grandarchive','duelmasters','narutotc','hololive','seiya','seiyatc','seiyacr','shadowverse','jump'])) then return; end if;
   if p_card_id !~ '^[A-Za-z0-9][A-Za-z0-9._-]{0,79}\Z' then return; end if;
   if not _rate_ok('cardview', 120) then return; end if;
   insert into card_views (game, card_id, views) values (p_game, p_card_id, 1)
@@ -69,7 +70,7 @@ create or replace function public.contribute_price(
 declare v numeric;
 begin
   if auth.uid() is null then return; end if;
-  if not (p_game = any (array['pokemon','lorcana','onepiece','magic','fab','gundam','swu','cyberpunk','sorcery','dbfw','dbs','ygo','digimon','riftbound','unionarena','naruto','hxh','dbc','wow','lotr','harrypotter','weiss','mbc','dbz','cdm','gcd','gw','narutocg','godzilla','palworld','fftcg','narutomythos','narutokayou','narutoboruto','dbsb','dbva','dbbw','vanguard','grandarchive','duelmasters','narutotc','hololive','jump'])) then return; end if;
+  if not (p_game = any (array['pokemon','lorcana','onepiece','magic','fab','gundam','swu','cyberpunk','sorcery','dbfw','ygo','digimon','riftbound','unionarena','naruto','hxh','dbc','wow','lotr','harrypotter','weiss','mbc','dbz','cdm','gcd','gw','narutocg','godzilla','palworld','fftcg','narutomythos','narutokayou','narutoboruto','dbsb','dbva','dbbw','vanguard','grandarchive','duelmasters','narutotc','hololive','seiya','seiyatc','seiyacr','shadowverse','jump'])) then return; end if;
   if p_card_id is null or p_card_id !~ '^[A-Za-z0-9][A-Za-z0-9._-]{0,79}\Z' then return; end if;
   if p_variant is null or length(p_variant) < 1 or length(p_variant) > 40 then return; end if;
   if p_cond is null or p_cond !~ '^[A-Za-z0-9 +-]{1,12}\Z' then return; end if;
@@ -95,21 +96,20 @@ notify pgrst, 'reload schema';
 -- ============================================================================
 -- Verificação (depois de aplicar):
 --
---   # 1) view de carta do Masters (dbs-650759, Vegeta, Taking Over, BT28-009 do
---   #    Prismatic Clash): 204 E a linha aparece em card_views com game
---   #    dbs (204 sozinho não prova nada: jogo inválido também devolve
---   #    204).
+--   # 1) view de carta do Shadowverse: Evolve (shv-502257, o White General do
+--   #    SD02): 204 E a linha aparece em card_views com game shadowverse (204
+--   #    sozinho não prova nada: jogo inválido também devolve 204).
 --   curl -s -o /dev/null -w "%{http_code}\n" -X POST \
 --     "https://dlnalopazitfdgnmdguu.supabase.co/rest/v1/rpc/increment_card_view" \
 --     -H "apikey: sb_publishable_0Qlei5ZvRcEsr18QRdWfGg_N3aR1zyL" -H "Content-Type: application/json" \
---     -d '{"p_game":"dbs","p_card_id":"dbs-650759"}'
+--     -d '{"p_game":"shadowverse","p_card_id":"shv-502257"}'
 --
---   curl -s "https://dlnalopazitfdgnmdguu.supabase.co/rest/v1/card_views?game=eq.dbs&select=card_id,views" \
+--   curl -s "https://dlnalopazitfdgnmdguu.supabase.co/rest/v1/card_views?game=eq.shadowverse&select=card_id,views" \
 --     -H "apikey: sb_publishable_0Qlei5ZvRcEsr18QRdWfGg_N3aR1zyL"
 --
 --   # 2) contribuição anônima segue 401 (o fechamento da 20260807b continua de pé)
 --   curl -s -o /dev/null -w "%{http_code}\n" -X POST \
 --     "https://dlnalopazitfdgnmdguu.supabase.co/rest/v1/rpc/contribute_price" \
 --     -H "apikey: sb_publishable_0Qlei5ZvRcEsr18QRdWfGg_N3aR1zyL" -H "Content-Type: application/json" \
---     -d '{"p_game":"dbs","p_card_id":"dbs-650759","p_variant":"Normal","p_cond":"NM","p_kind":"listed","p_company":"","p_grade":"","p_value_brl":10}'
+--     -d '{"p_game":"shadowverse","p_card_id":"shv-502257","p_variant":"Normal","p_cond":"NM","p_kind":"listed","p_company":"","p_grade":"","p_value_brl":10}'
 -- ============================================================================

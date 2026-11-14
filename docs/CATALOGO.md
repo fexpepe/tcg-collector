@@ -172,7 +172,7 @@ junto. Sem isso, o endereço antigo das cartas movidas dá 404.
   `setId` (`group<Jogo>Sets` em [src/app.js](../src/app.js)); os modernos da
   Bandai (One Piece, Gundam, Fusion World, Digimon, Union Arena e o
   `narutocg`), o Godzilla, o Palworld e o Vanguard (Bushiroad), o Final Fantasy
-  (Square Enix), o Grand Archive e o hololive, na mesma forma, pelas regras de código
+  (Square Enix), o Grand Archive, o hololive e o Shadowverse: Evolve, na mesma forma, pelas regras de código
   do `SECOES_BANDAI`, no mesmo arquivo
   (Principais, Boosters extras, Decks, Cartas de evento, Promos). Um formato
   de código inédito cai em "outros" ("Promos e eventos", nos da Bandai):
@@ -276,7 +276,7 @@ há o que ligar. São três peças, todas no
    - Pokémon por série;
    - Magic por ano, mais a seção de eventos e coleções especiais;
    - jogo com `group<Jogo>Sets` próprio pelas seções dele;
-   - os modernos da Bandai, o Godzilla, o Palworld, o Final Fantasy, o Vanguard, o Grand Archive, o hololive e o Duel Masters (`SECOES_BANDAI`) no formato do One Piece:
+   - os modernos da Bandai, o Godzilla, o Palworld, o Final Fantasy, o Vanguard, o Grand Archive, o hololive, o Duel Masters e o Shadowverse: Evolve (`SECOES_BANDAI`) no formato do One Piece:
      Principais (a coleção numerada), Boosters extras e especiais, Decks
      iniciais, Cartas de evento (2026-11-12, pelo nome) e Promos e eventos,
      pelo código do set (2026-11-11);
@@ -500,7 +500,7 @@ Ficha do jogo — <Nome completo> (`<slug>`)
 - Lojas: BR <…|nenhuma, conferido em <data>> · EUA <tcgLine/usText> · EU <cm|—>
 - Cor: <hex> — <x>:1 com texto <preto|branco>; vizinho mais próximo <jogo>, a <d> RGB
 - Logo: <arquivo | sem logo, tile em texto> · posição no hub: <…>
-- Orçamento: <n> sets ≈ <3n + 40> arquivos (último deploy: <total> de 18.000);
+- Orçamento: <n> sets ≈ <3n + 40> arquivos (último deploy: <total> de 19.000);
   shared.js +<b> B gz, CSS +<b> B gz (folga depois: <…>)
 - Migração: supabase/migrations/<arquivo>.sql (aplicar em ordem de nome)
 ```
@@ -690,10 +690,14 @@ lugares; o prefixo de id, em 3 mapas (`binders.js`, `card-rescue.js`,
   catálogo, índices, histórico de preço e os logos de set (o Star Wars trouxe
   12). As páginas de carta e de artista têm teto global e não crescem com o
   jogo.
-- **138 deles são chunks de preço vazios**: Naruto 105, HxH 15 e DBC 18. Jogo
-  sem preço ganha um arquivo `{}` por set. Sem a flag `pc` no manifest, o
-  cliente já usa o monólito (um arquivo só), então esses chunks não fazem nada
-  (F2).
+- **Chunks de preço vazios: resolvido em 2026-11-14.** Jogo sem preço ganhava
+  um arquivo `{}` por set: eram 138 quando esta seção foi escrita e 471 no
+  deploy de 14/11 (17.912 arquivos), com 18 jogos sem preço. Desde então o
+  `split-pricing.mjs` não grava chunk de preço pra jogo sem preço nenhum e
+  tira a flag `pc` do manifest dele. O cliente usa o monólito, um `{}` só. Foi
+  o que abriu espaço pro Dragon Ball Super Masters (F2). Jogo COM preço segue
+  gravando o `{}` dos sets sem preço, porque o `pc` promete o irmão de todo
+  chunk de carta.
 
 ### 5.4 Orçamento de peso do núcleo
 

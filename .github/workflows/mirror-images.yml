@@ -93,6 +93,7 @@ jobs:
             data/fftcg/sets
             data/grandarchive/sets
             data/hololive/sets
+            data/shadowverse/sets
             data/vanguard/sets
             data/duelmasters/sets
             data/dbs/sets

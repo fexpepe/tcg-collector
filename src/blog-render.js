@@ -91,6 +91,7 @@
     fftcg: ["Final Fantasy", "#93c5fd"],
     grandarchive: ["Grand Archive", "#f0abfc"],
     hololive: ["hololive", "#38d6f5"],
+    shadowverse: ["Shadowverse: Evolve", "#818cf8"],
     vanguard: ["Vanguard", "#ff5a7a"],
     duelmasters: ["Duel Masters", "#fde68a"],
     narutomythos: ["Naruto Mythos", "#fde68a"],

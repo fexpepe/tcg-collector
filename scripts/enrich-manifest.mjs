@@ -37,7 +37,7 @@ const RAIZ = new URL("../", import.meta.url);
 const DIRS = [
   "data/", "data/lorcana/", "data/onepiece/", "data/magic/", "data/fab/",
   "data/gundam/", "data/swu/", "data/cyberpunk/", "data/sorcery/", "data/dbfw/", "data/dbs/", "data/ygo/", "data/digimon/", "data/riftbound/",
-  "data/unionarena/", "data/narutocg/", "data/naruto/", "data/hxh/", "data/dbc/", "data/dbsb/", "data/dbva/", "data/dbbw/", "data/dbz/", "data/wow/", "data/lotr/", "data/harrypotter/", "data/weiss/", "data/godzilla/", "data/palworld/", "data/fftcg/", "data/grandarchive/", "data/hololive/", "data/vanguard/", "data/duelmasters/", "data/narutomythos/", "data/narutokayou/", "data/mbc/", "data/cdm/", "data/gcd/", "data/gw/", "data/narutoboruto/", "data/narutotc/", "data/jump/"
+  "data/unionarena/", "data/narutocg/", "data/naruto/", "data/hxh/", "data/dbc/", "data/dbsb/", "data/dbva/", "data/dbbw/", "data/dbz/", "data/wow/", "data/lotr/", "data/harrypotter/", "data/weiss/", "data/godzilla/", "data/palworld/", "data/fftcg/", "data/grandarchive/", "data/hololive/", "data/shadowverse/", "data/vanguard/", "data/duelmasters/", "data/narutomythos/", "data/narutokayou/", "data/mbc/", "data/cdm/", "data/gcd/", "data/gw/", "data/narutoboruto/", "data/narutotc/", "data/jump/"
 ];
 
 async function leGlobal(caminho, nomeDaVar) {

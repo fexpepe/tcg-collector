@@ -304,6 +304,12 @@ test("Bandai moderno: coleção numerada, boosters extras, decks e promos, pelo 
   assert.deepEqual(secoesBandai("fftcg", ["OP1", "OP30", "RE", "ST27", "BDC", "BD7", "PR", "W24", "DEC"]), {
     main: ["OP1", "OP30"], extraBoosters: ["RE"], decks: ["BD7", "BDC", "ST27"], promos: ["DEC", "PR", "W24"]
   });
+  // Shadowverse: Evolve: os Booster Sets numerados; colaboração, Seaside
+  // Memories, Summer Edition e Gloryfinder Bundle nos extras; os decks; e
+  // promos e Gloryfinder Events no resto.
+  assert.deepEqual(secoesBandai("shadowverse", ["BP01", "BP20", "CP01", "ECP02", "SP01", "PCS01", "GFB01", "SD01", "CSD03", "SDD06", "GFD02", "SS01", "SVPR", "GFE"]), {
+    main: ["BP01", "BP20"], extraBoosters: ["CP01", "ECP02", "GFB01", "PCS01", "SP01"], decks: ["CSD03", "GFD02", "SD01", "SDD06", "SS01"], promos: ["GFE", "SVPR"]
+  });
   // hololive OFFICIAL CARD GAME: Booster Pack, Extra Booster, Start Deck (e
   // o Start Cheer Set) pelo código oficial; as promos no resto.
   assert.deepEqual(secoesBandai("hololive", ["HBP01", "HBP07", "HEB01", "HSD01", "HSD19", "HYS01", "HPR"]), {

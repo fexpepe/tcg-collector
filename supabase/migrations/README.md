@@ -8,12 +8,12 @@ poucos.)
 
 ## Pendentes de aplicar
 
-- `20261114b` — libera o slug `dbs` (Dragon Ball Super Card Game Masters,
+- `20261114c` — libera o slug `dbs` (Dragon Ball Super Card Game Masters,
   Bandai, 2017+, edição em inglês) nas duas whitelists de jogo
   (`card_views`/`increment_card_view` e `contribute_price`;
-  `20261114b_add_dbs.sql`). Cópia da `20261113g` (hololive, a última
-  aplicada) com o `dbs` a mais: **ela cobre a 20261113g** e, por ela, todas
-  as do dia 13. Só a lista muda. Qualquer uma das anteriores rodada **depois**
+  `20261114c_add_dbs.sql`). Cópia da `20261114b` (Shadowverse, a última
+  aplicada) com o `dbs` a mais: **ela cobre a 20261114b** e, por ela, todas
+  as de jogo anteriores. Só a lista muda. Qualquer uma das anteriores rodada **depois**
   desta tiraria o `dbs`. Sem ela, a view de carta e o Preço da Comunidade do
   jogo novo são descartados em silêncio. Conferir com o par de `curl` do fim
   do arquivo: a view de `dbs-650759` tem de **criar a linha** no
@@ -394,6 +394,30 @@ poucos.)
   E, logado como admin, abrir `/admin`: as abas aparecem e o aviso amarelo some.
 
 ### Já aplicadas (verificado em produção)
+
+- `20261114b` — libera o slug `shadowverse` (Shadowverse: Evolve,
+  Bushiroad/Cygames, edição em inglês, 2023+) nas duas whitelists de jogo
+  (`card_views`/`increment_card_view` e `contribute_price`;
+  `20261114b_add_shadowverse.sql`). Cópia da `20261113h` (Saint Seiya, numa
+  PR ainda aberta) com o `shadowverse` a mais: **ela cobre a 20261113h e a
+  20261113g**, então dispensa a 13h se esta rodar primeiro. Só a lista muda.
+  Qualquer uma das anteriores rodada **depois** desta tiraria o
+  `shadowverse`. Conferida antes de escrever: nenhuma linha do `card_views`
+  em produção tem jogo fora da lista nova (GET anônimo, 14/11/2026).
+  Conferir depois de aplicar com o par de `curl` do fim do arquivo: a view
+  de `shv-502257` tem de **criar a linha** no `card_views`.
+
+  **Aplicada em 2026-11-14** pelo Fernando e verificada por curl anônimo no
+  mesmo dia: a view de `shv-502257` respondeu 204 e criou a linha no
+  `card_views` (game `shadowverse`, 1 view); um jogo inventado
+  (`shadowversex`) respondeu 204 e não criou linha; `contribute_price`
+  anônimo segue 401; a linha do `hololive` continua lá. Com ela, a
+  `20261113h` (Saint Seiya) **não precisa mais rodar**: os três slugs dela
+  já estão aqui, e rodada agora tiraria o `shadowverse`.
+  Era `20261114a` até o merge: outra sessão aplicou no mesmo dia a
+  `20261114a_erros_sem_ruido`, e a letra mudou pra não confundir as duas (o
+  conteúdo é o mesmo que rodou).
+  **A próxima migração de jogo copia esta.**
 
 - `20261114a` — /admin: "Erros a cada mil páginas" sem o ruído que o site
   deixou de mandar (`20261114a_erros_sem_ruido.sql`). Em 14/11 o Resumo

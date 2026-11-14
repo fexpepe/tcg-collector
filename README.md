@@ -33,7 +33,7 @@ catálogo completo só existe no build de produção.
 
 ## Os jogos
 
-O registro central é o `GAMES` em [src/game.js](src/game.js): **44 slugs**, 43 com
+O registro central é o `GAMES` em [src/game.js](src/game.js): **45 slugs**, 44 com
 catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do Pokémon
 é a raiz `data/` por motivo histórico (não movemos nada).
 
@@ -52,6 +52,7 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 | `vanguard` | Cardfight!! Vanguard | TCGCSV cat. 16 (Bushiroad 2011+; as cinco eras, só a edição inglesa; paralelas SP/FR/SEC = cartas próprias; setId do código impresso que abre o nome do grupo, `DZ-BT16`; sem logo de set) | USD |
 | `fftcg` | Final Fantasy TCG | TCGCSV cat. 24 (Square Enix 2016+, os Opus; Full Art = carta própria; setId fixo por groupId, `OP27`, porque a abreviação da fonte erra e repete; sem logo de set publicado) | USD |
 | `hololive` | hololive Official Card Game | TCGCSV cat. 87 (Bushiroad/COVER 2025+, só a edição EN; id do productId porque número e raridade repetem; cada produto é Normal ou Foil; sem logo de set) | USD |
+| `shadowverse` | Shadowverse: Evolve | TCGCSV cat. 73 (Bushiroad/Cygames 2023+, só a edição EN; id `shv-<productId>`; Premium, SL e Evolved = cartas próprias, só o subtipo Normal; sem logo de set) | USD |
 | `grandarchive` | Grand Archive TCG | TCGCSV cat. 74 (Weebs of the Shore 2023+; Normal/Foil no mesmo produto; id do productId porque o número repete dentro do set; sem logo de set) | USD |
 | `godzilla` | Godzilla Card Game | TCGCSV cat. 88 (Bushiroad/Yuhodo 2025; só a edição inglesa; paralelas +/++/+++ = cartas próprias; setId fixo por groupId com o código impresso, `EBP01`; sem logo de set publicado) | USD |
 | `narutomythos` | Naruto Mythos TCG | a galeria oficial do jogo (narutotcgmythos.com, JSON público; Cicaboom, 2026+, EN). Id pelo SKU oficial (`nmy-s1e1-c003fav1`); a 2ª edição do Set 1 vira o set "Konoha Shidō (2nd Edition)" e as cartas de torneio, "<set> Promos"; raridade por extenso; sem logo de set | sem preço |
@@ -269,6 +270,34 @@ inglês** (2025+): a japonesa não está no TCGplayer.
 - **Sem ilustrador**: a TCGCSV não publica.
 - **Scanner**: lê o código impresso (`hBP01-001`); a reimpressão e a arte
   alternativa imprimem o mesmo código, e quem separa é a arte.
+
+### Shadowverse: Evolve (`shadowverse`)
+
+[scripts/sync-shadowverse.mjs](scripts/sync-shadowverse.mjs), TCGCSV categoria
+73, no padrão do Vanguard. O jogo da Bushiroad com a Cygames, **só a edição em
+inglês** (desde 30/06/2023): a japonesa não está no TCGplayer.
+
+- **id = `shv-<productId>`**. O prefixo não é `sve-`: esse é do set "sve" do
+  Pokémon (Scarlet & Violet Energies). O número impresso é único no jogo
+  inteiro hoje, mas o id segue o productId como nos outros da TCGCSV.
+- **Cada versão é um produto próprio**, com número e preço próprios: a
+  Premium (foil, `BP19-P10EN`), a Super Legendary (`-SL01EN`), a Ultimate,
+  a Special e a face Evolved do seguidor. O preço só tem o subtipo Normal.
+- **setId = a abreviação do TCGplayer**, que é o código impresso (`BP01`,
+  `CP01`, `SD01`, `SDD01`…) e não falta nem repete; promos = `SVPR`.
+- **Nome do set sem o código** ("Advent of Genesis"); onde o título repete (os
+  dois boosters de uma colaboração), os dois guardam o nome inteiro.
+- **Nome da carta sem o número** que o TCGplayer cola ("Cannon Volley - P10EN
+  (Foil)" vira "Cannon Volley (Foil)"); os qualificadores de versão ficam.
+- **Imagem** de 459 a 716 px de largura (três por set, medidas em
+  13/11/2026); o site oficial serve 459×641 em tudo, então não há fonte maior.
+- Classe no `color`, traço no `trait`, custo, ataque e defesa; classe e tipo
+  viram facetas da página do set.
+- Sets no formato dos modernos da Bandai (`SECOES_BANDAI`): Booster Sets,
+  colaborações e extras, decks, promos.
+- **Sem ilustrador**: a TCGCSV não publica.
+- **Scanner**: lê o código impresso (`BP01-001EN`, `BP19-SL16EN`) com um
+  padrão próprio; 99,1 % do catálogo vira candidato certo.
 
 ### Grand Archive TCG (`grandarchive`)
 
