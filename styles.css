@@ -449,12 +449,14 @@
   --accent: #4a6654; --accent-dark: #3f5a49; --accent-rgb: 74, 102, 84;
   --accent-soft: rgba(74, 102, 84, 0.1); --on-accent: #ffffff;
 }
-/* Final Fantasy TCG: AZUL-CRISTAL, os cristais da série (11/11/2026). O
-   azul claro com texto escuro no escuro (10.9:1); um índigo fechado com texto
-   branco no claro (6.6:1), entre o azul do Gundam e o violeta do Lorcana. */
+/* Final Fantasy TCG: AZUL-CRISTAL, os cristais da série (11/11/2026; tom
+   definido em 14/11: o #93c5fd de antes ficava a 60 do índigo do Shadowverse,
+   abaixo da régua de 65 entre franquias). O azul claro com texto escuro no
+   escuro (12.9:1); um índigo fechado com texto branco no claro (6.6:1), entre
+   o azul do Gundam e o violeta do Lorcana. */
 [data-game-accent="fftcg"] {
-  --accent: #93c5fd; --accent-dark: #7fb3f5; --accent-rgb: 147, 197, 253;
-  --accent-soft: rgba(147, 197, 253, 0.16); --on-accent: #0a0c10;
+  --accent: #a5d8ff; --accent-dark: #8ccaf8; --accent-rgb: 165, 216, 255;
+  --accent-soft: rgba(165, 216, 255, 0.16); --on-accent: #0a0c10;
 }
 [data-theme="light"][data-game-accent="fftcg"],
 [data-theme="light"] [data-game-accent="fftcg"] {
@@ -462,7 +464,7 @@
   --accent-soft: rgba(58, 91, 160, 0.1); --on-accent: #ffffff;
 }
 /* hololive OFFICIAL CARD GAME: CIANO, o azul-céu da marca (13/11/2026,
-   proposta). Texto escuro no escuro (12.1:1); petróleo com branco no claro
+   definida em 14/11). Texto escuro no escuro (12.1:1); petróleo com branco no claro
    (5.4:1). */
 [data-game-accent="hololive"] {
   --accent: #38d6f5; --accent-dark: #1fc3e4; --accent-rgb: 56, 214, 245;
@@ -485,8 +487,8 @@
   --accent: #4338ca; --accent-dark: #3730a3; --accent-rgb: 67, 56, 202;
   --accent-soft: rgba(67, 56, 202, 0.1); --on-accent: #ffffff;
 }
-/* Grand Archive TCG: LILÁS (13/11/2026, proposta: o logo oficial é
-   branco e não dá cor). Lilás claro com texto escuro no escuro (11.9:1); um
+/* Grand Archive TCG: LILÁS (13/11/2026, definida em 14/11: o logo oficial
+   é branco e não dá cor). Lilás claro com texto escuro no escuro (11.9:1); um
    roxo-orquídea fechado com texto branco no claro (5.5:1). */
 [data-game-accent="grandarchive"] {
   --accent: #f0abfc; --accent-dark: #e596f5; --accent-rgb: 240, 171, 252;

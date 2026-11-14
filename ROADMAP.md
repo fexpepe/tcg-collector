@@ -248,6 +248,13 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   TCGCSV já listava a terceira, a Chakra Card da NYCC 2026). Quando sair o
   primeiro booster, conferir o código do set contra o `SECOES_BANDAI`
   (src/app.js), que hoje supõe BT/ST.
+- **Cores e posições no hub (14/11/2026):** o Fernando deixou a cor por conta
+  do Claude e manteve as posições de hoje. Ficaram as propostas de Duel Masters
+  (`#fde68a`), Vanguard (`#ff5a7a`), Grand Archive (`#f0abfc`), hololive
+  (`#38d6f5`), Godzilla (`#5e7c68`) e Palworld (`#81ad4c`); o Final Fantasy
+  passou de `#93c5fd` pra `#a5d8ff`, porque o antigo ficava a 60 do índigo do
+  Shadowverse, abaixo da régua de 65 entre franquias (`GAME_COLOR`, em
+  `src/shared.js`).
 - **Duel Masters (`duelmasters`, 2026-11-13)**: entrou com 24.039 cartas
   de 396 produtos, do banco oficial da Takara Tomy, SEM preço — o TCGplayer não vende o jogo, e
   o preço da Yuyu-tei (uma loja japonesa) foi desligado em 14/11: os termos
@@ -255,8 +262,7 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   em `scripts/data/duelmasters-precos-yuyutei.json`. A migração `20261113e` está aplicada (e a `20261113g`, mais
   nova, leva o `duelmasters`). Pendências: o pedido de
   permissão à Yuyu-tei (sem resposta, religar só com o aval); logo
-  melhor (o do site oficial tem 154 px e foi ampliado); a cor (`#fde68a`,
-  proposta) e a posição no hub (depois do Vanguard); nome em inglês das
+  melhor (o do site oficial tem 154 px e foi ampliado); nome em inglês das
   cartas e dos sets (não há oficial; a wiki do Fandom tem os dos sets);
   filtros de civilização, custo e raça; o verso das cartas de duas faces;
   data dos 48 produtos sem data; regra de deck; leitura do scanner;
@@ -268,31 +274,29 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   imagem melhor pras eras original e G (200 px no TCGplayer; medir a do site
   oficial, que carrega por JavaScript); loja BR e Cardmarket sem link
   (ligavanguard.com.br e o MYP responderam 403 ao robô, nada conferido à
-  mão); a cor (`#ff5a7a`, proposta) e a posição no hub (depois do Final
-  Fantasy); a tela de Sets junta as cinco eras nas mesmas quatro seções —
+  mão); a tela de Sets junta as cinco eras nas mesmas quatro seções —
   separar por era é melhoria, se o Fernando quiser; sem regra de deck.
 - **Final Fantasy TCG (`fftcg`, 2026-11-11)**: entrou com as 5.700 cartas
   dos 38 sets da TCGCSV (cat. 24), Opus I ao Memories of Life; a migração
   `20261111f` foi aplicada e conferida em 2026-11-12. Pendências: o próximo
   Opus entra sozinho como `OP31`, mas o pin no
   `ABREV_FIXA` do `sync-fftcg.mjs` tem de entrar antes do deploy que o
-  publica (o log avisa); a cor (`#93c5fd`, proposta) e a 19ª posição no hub;
-  Cardmarket sem link porque não deu pra conferir (anti-robô).
+  publica (o log avisa); Cardmarket sem link porque não deu pra conferir
+  (anti-robô).
 - **Grand Archive TCG (`grandarchive`, 2026-11-13)**: entrou com as 5.356
   cartas dos 52 sets da TCGCSV (cat. 74), do Dawn of Ashes ao
   .asphodel/paradise. Pendências: aplicar a migração `20261113d` (cópia da
   `20261113c` do Vanguard, a união do dia, com o `grandarchive` a mais);
   o ilustrador, que só o Index oficial (api.gatcg.com) tem — falta o
-  de-para dos códigos de set; loja BR e Cardmarket não conferidos; a cor
-  (`#f0abfc`, proposta), o logo (o branco oficial pintado de escuro pra ler
-  na cápsula) e a 21ª posição no hub; o scanner não lê o jogo (número solto).
+  de-para dos códigos de set; loja BR e Cardmarket não conferidos; o logo
+  (o branco oficial pintado de escuro pra ler na cápsula); o scanner não lê
+  o jogo (número solto).
 - **hololive Official Card Game (`hololive`, 2026-11-13)**: entrou com as
   2.304 cartas dos 25 sets da TCGCSV (cat. 87), do Blooming Radiance ao Diva
   Fever, só a edição em inglês. A migração `20261113g` foi aplicada e
   conferida no mesmo dia. Pendências: a edição
   japonesa, que só o banco oficial tem e vem sem preço; o ilustrador; loja BR
-  e Cardmarket não conferidos; a cor (`#38d6f5`, proposta) e o lugar no hub
-  (seção "Outros TCGs", proposta); logo de set não pesquisado.
+  e Cardmarket não conferidos; logo de set não pesquisado.
 - **Shadowverse: Evolve (`shadowverse`, 2026-11-13)**: entrou com as 7.447
   cartas dos 50 sets da TCGCSV (cat. 73), do Advent of Genesis ao Omens and
   Heirs, só a edição em inglês; 7.142 com preço. A migração `20261114b` foi
@@ -305,13 +309,11 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   ("Overlord Zero", 18/12/2026) e os starters ESD03–05 (04/12/2026) entram
   sozinhos com o setId do código impresso, mas o pin no `ABREV_FIXA` do
   `sync-godzilla.mjs` tem de entrar antes do deploy que os publica (o log
-  avisa); a cor (`#5e7c68`, proposta) e a 17ª posição no hub e na landing,
-  que deixa fileira incompleta nas duas grades, são decisão do Fernando; MYP
-  e Cardmarket ficaram sem link porque não deu pra conferir (anti-robô).
+  avisa); MYP e Cardmarket ficaram sem link porque não deu pra conferir
+  (anti-robô).
 - **Palworld Official Card Game (`palworld`, 2026-11-11)**: TCGCSV cat. 91,
   647 cartas em 8 sets (migração `20261111e` aplicada em 2026-11-12). Pendências:
-  confirmar a cor (verde do site oficial, proposta) e a posição do tile no hub e na
-  landing (18º, depois do Godzilla); conferir à mão Liga, MYP e Cardmarket
+  conferir à mão Liga, MYP e Cardmarket
   (os três barram acesso automatizado), que ainda não estão no `MARKETS`. O
   BP03 (29/01/2027) e os TD03/TD04 (18/12/2026) já estão pinados e entram
   sozinhos quando o TCGplayer listar as cartas; a 2ª edição do BP01 ganha
