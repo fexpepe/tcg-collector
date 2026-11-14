@@ -52,23 +52,23 @@ export const JOGOS_URL = [
   // cartas de coleção da Kayou, na edição em inglês. A Kayou usa o logo do Naruto, como o site oficial dela.
   { url: "naruto-mythos-tcg", game: "narutomythos", nome: "Naruto Mythos TCG", logo: "assets/games/game_narutomythos.webp" },
   { url: "naruto-kayou", game: "narutokayou", nome: "Naruto Kayou", logo: "assets/games/game_narutokayou.webp" },
-  { url: "gundam-carddass", game: "gcd", nome: "Gundam Carddass", logo: "assets/games/game_gcd.webp", vintage: "1988–1997" },
-  { url: "dragon-ball-carddass", game: "dbc", nome: "Dragon Ball Carddass", logo: "assets/games/game_dbc-v2.webp", vintage: "1988–1997" },
+  { url: "gundam-carddass", game: "gcd", nome: "Gundam Carddass", logo: "assets/games/game_gcd-v2.webp", vintage: "1988–1997" },
+  { url: "dragon-ball-carddass", game: "dbc", nome: "Dragon Ball Carddass", logo: "assets/games/game_dbc-v3.webp", vintage: "1988–1997" },
   // As três séries paralelas do Carddass de Dragon Ball, jogos próprios desde
-  // 2026-11-13 (séries do dbc por um dia). Ainda sem logo: o tile mostra o nome.
-  { url: "dragon-ball-visual-adventure", game: "dbva", nome: "Dragon Ball Visual Adventure", logo: "", vintage: "1991–1995" },
-  { url: "dragon-ball-super-battle", game: "dbsb", nome: "Dragon Ball Super Battle", logo: "", vintage: "1991–1997" },
-  { url: "dragon-ball-super-barcode-wars", game: "dbbw", nome: "Dragon Ball Super Barcode Wars", logo: "", vintage: "1992–1993" },
-  { url: "gundam-war", game: "gw", nome: "Gundam War", logo: "assets/games/game_gw.webp", vintage: "1999–2011" },
-  { url: "hunter-x-hunter-carddass", game: "hxh", nome: "Hunter × Hunter Carddass Hyper Battle", logo: "assets/games/game_hxh.webp", vintage: "1999–2001" },
-  { url: "one-piece-carddass", game: "onepiece", linha: "opcd", prefixos: ["opcd-"], nome: "One Piece Carddass Hyper Battle", logo: "assets/games/game_onepiece_carddass.webp", vintage: "1999–2002" },
+  // 2026-11-13 (séries do dbc por um dia). Logo desde 2026-11-14, enviado pelo Fernando.
+  { url: "dragon-ball-visual-adventure", game: "dbva", nome: "Dragon Ball Visual Adventure", logo: "assets/games/game_dbva.webp", vintage: "1991–1995" },
+  { url: "dragon-ball-super-battle", game: "dbsb", nome: "Dragon Ball Super Battle", logo: "assets/games/game_dbsb.webp", vintage: "1991–1997" },
+  { url: "dragon-ball-super-barcode-wars", game: "dbbw", nome: "Dragon Ball Super Barcode Wars", logo: "assets/games/game_dbbw.webp", vintage: "1992–1993" },
+  { url: "gundam-war", game: "gw", nome: "Gundam War", logo: "assets/games/game_gw-v2.webp", vintage: "1999–2011" },
+  { url: "hunter-x-hunter-carddass", game: "hxh", nome: "Hunter × Hunter Carddass Hyper Battle", logo: "assets/games/game_hxh-v2.webp", vintage: "1999–2001" },
+  { url: "one-piece-carddass", game: "onepiece", linha: "opcd", prefixos: ["opcd-"], nome: "One Piece Carddass Hyper Battle", logo: "assets/games/game_onepiece_carddass-v2.webp", vintage: "1999–2002" },
   { url: "harry-potter-tcg", game: "harrypotter", nome: "Harry Potter Trading Card Game", logo: "assets/games/game_harrypotter.webp", vintage: "2001–2002" },
   { url: "lord-of-the-rings-tcg", game: "lotr", nome: "The Lord of the Rings TCG", logo: "assets/games/game_lotr.webp", vintage: "2001–2007" },
   { url: "dragon-ball-z-ccg", game: "dbz", nome: "Dragon Ball Z CCG", logo: "assets/games/game_dbz.webp", vintage: "2000–2006" },
-  { url: "one-piece-card-game-2002", game: "onepiece", linha: "op2002", prefixos: ["op2002-"], nome: "One Piece Card Game (2002)", logo: "assets/games/game_onepiece_2002.webp", vintage: "2002–2005" },
+  { url: "one-piece-card-game-2002", game: "onepiece", linha: "op2002", prefixos: ["op2002-"], nome: "One Piece Card Game (2002)", logo: "assets/games/game_onepiece_2002-v2.webp", vintage: "2002–2005" },
   { url: "naruto-card-game-2002", game: "naruto", nome: "Naruto Card Game (2002~2006)", logo: "assets/games/game_naruto_vintage.webp", vintage: "2002~2006" },
   { url: "naruto-data-carddass", game: "naruto", linha: "nrt-dc", prefixos: ["nrt-dc-", "nrt-nf-", "nrt-nx-"], nome: "Naruto Data Carddass", logo: "assets/games/game_naruto_datacarddass.webp", vintage: "2005–2010" },
-  { url: "naruto-ccg", game: "naruto", linha: "nrt-ccg", prefixos: ["nrt-ccg-"], nome: "Naruto Collectible Card Game", logo: "assets/games/game_naruto_ccg-v2.webp", vintage: "2006–2013" },
+  { url: "naruto-ccg", game: "naruto", linha: "nrt-ccg", prefixos: ["nrt-ccg-"], nome: "Naruto Collectible Card Game", logo: "assets/games/game_naruto_ccg-v3.webp", vintage: "2006–2013" },
   { url: "world-of-warcraft-tcg", game: "wow", nome: "World of Warcraft TCG", logo: "assets/games/game_wow.webp", vintage: "2006–2013" },
   // Sem logo recortado ainda: vale o genérico do Naruto, o mesmo dos sets da linha.
   { url: "naruto-shippuden-card-game", game: "naruto", linha: "nrt-scg", prefixos: ["nrt-scg-"], nome: "Naruto Shippuden Card Game", logo: "assets/games/game_naruto.webp", vintage: "2007–2008" },
@@ -78,7 +78,7 @@ export const JOGOS_URL = [
   { url: "naruto-trading-cards", game: "narutotc", nome: "Naruto Trading Cards", logo: "assets/games/game_naruto.webp", vintage: "2003–2006" },
   // Chrono Clash System (2026-11-13): jogo próprio, só com as Tournament Pack Cards, o que o TCGplayer lista carta a carta.
   { url: "naruto-boruto-card-game", game: "narutoboruto", nome: "Naruto Boruto Card Game", logo: "assets/games/game_naruto_boruto.webp", vintage: "2019–2020" },
-  { url: "carddass-masters", game: "cdm", nome: "Carddass Masters", logo: "assets/games/game_cdm.webp", vintage: "1996–2011" }
+  { url: "carddass-masters", game: "cdm", nome: "Carddass Masters", logo: "assets/games/game_cdm-v2.webp", vintage: "1996–2011" }
 ];
 
 // Linha que virou SEÇÃO de outra: o mesmo LINE_ALIASES do shared.js.

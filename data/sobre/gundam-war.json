@@ -6,9 +6,9 @@
     "lang": "ja",
     "romaji": "Gandamu Wō"
   },
-  "logo": "assets/games/game_gw.webp",
-  "logoLargura": 354,
-  "logoAltura": 87,
+  "logo": "assets/games/game_gw-v2.webp",
+  "logoLargura": 960,
+  "logoAltura": 230,
   "periodo": {
     "inicio": "1999-02",
     "fim": "2011-05"

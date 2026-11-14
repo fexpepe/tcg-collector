@@ -2,9 +2,9 @@
   "url": "hunter-x-hunter-carddass",
   "nome": "Hunter × Hunter Carddass Hyper Battle",
   "nomeOriginal": { "texto": "ハイパーバトル ハンター×ハンター", "lang": "ja", "romaji": "Haipā Batoru Hantā × Hantā" },
-  "logo": "assets/games/game_hxh.webp",
-  "logoLargura": 512,
-  "logoAltura": 228,
+  "logo": "assets/games/game_hxh-v2.webp",
+  "logoLargura": 580,
+  "logoAltura": 320,
   "periodo": { "inicio": "1999-12", "fim": "2001-12" },
   "etiquetas": [
     "Vintage",

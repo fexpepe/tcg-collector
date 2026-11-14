@@ -2,7 +2,9 @@
   "url": "dragon-ball-super-barcode-wars",
   "nome": "Dragon Ball Super Barcode Wars",
   "nomeOriginal": { "texto": "スーパーバーコードウォーズ", "lang": "ja", "romaji": "Sūpā Bākōdo Wōzu" },
-  "logo": "",
+  "logo": "assets/games/game_dbbw.webp",
+  "logoLargura": 827,
+  "logoAltura": 320,
   "periodo": { "inicio": "1992-12", "fim": "1993-11" },
   "etiquetas": [
     "Vintage",

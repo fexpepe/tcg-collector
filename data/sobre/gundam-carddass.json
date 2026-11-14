@@ -6,9 +6,9 @@
     "lang": "ja",
     "romaji": "Esu Dī Gandamu Kādodasu"
   },
-  "logo": "assets/games/game_gcd.webp",
-  "logoLargura": 512,
-  "logoAltura": 234,
+  "logo": "assets/games/game_gcd-v2.webp",
+  "logoLargura": 335,
+  "logoAltura": 320,
   "periodo": {
     "inicio": "1988",
     "fim": "1997"
