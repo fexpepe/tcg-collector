@@ -431,6 +431,9 @@
     riftbound: [/RIOT ?GAMES/, /RIFTBOUND/, /LEAGUE ?OF ?LEGENDS/, /\d{4} ?RGI\b/],
     unionarena: [/UNION ?ARENA/],
     hololive: [/HOLOLIVE/],
+    // Duel Masters (2026-11-13): o nome do jogo no verso e a Takara Tomy no
+    // rodapé. O número é a fração "N/T", que cinco outros jogos também usam.
+    duelmasters: [/DUEL ?MASTERS/, /TOMY/],
     naruto: [/NARUTO/, /KISHIMOTO/],
     // O de 2027 imprime a mesma marca que o vintage: os dois empatam e a busca
     // vai nos dois (sem a pista, a carta nova era filtrada pro vintage).
@@ -523,7 +526,7 @@
     // 2026-11-12, "3/130"). SWU e Harry Potter não
     // estavam aqui, e a fração deles era filtrada pros outros três — só
     // achava se nenhum set de Pokémon/Lorcana/Riftbound tivesse o mesmo total.
-    [/^\d+[A-D]?\/\d+$/, ["pokemon", "lorcana", "riftbound", "swu", "harrypotter", "narutomythos"]],
+    [/^\d+[A-D]?\/\d+$/, ["pokemon", "lorcana", "riftbound", "swu", "harrypotter", "narutomythos", "duelmasters"]],
     // "SET NÚMERO": Magic ("MH3 123"), SWU ("JTL 760") e Riftbound ("RAD
     // 137"). Quem diz qual dos três é a pista impressa (Wizards, LFL/FFG,
     // RGI) ou o índice de sets do catálogo (ver indiceDeSets).

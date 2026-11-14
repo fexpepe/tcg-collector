@@ -100,6 +100,7 @@ const GAMES = [
   { slug: "grandarchive", label: "Grand Archive TCG" },
   { slug: "hololive", label: "hololive Official Card Game" },
   { slug: "vanguard", label: "Cardfight!! Vanguard" },
+  { slug: "duelmasters", label: "Duel Masters" },
   { slug: "narutomythos", label: "Naruto Mythos TCG" },
   { slug: "narutokayou", label: "Naruto Kayou" },
   { slug: "mbc", label: "Miracle Battle Carddass" },
@@ -683,7 +684,7 @@ const DECK_GAME_LABELS = {
   magic: "Magic: The Gathering", fab: "Flesh and Blood", gundam: "Gundam Card Game", swu: "Star Wars: Unlimited", cyberpunk: "Cyberpunk TCG", sorcery: "Sorcery: Contested Realm",
   dbfw: "Dragon Ball Fusion World", ygo: "Yu-Gi-Oh!", digimon: "Digimon Card Game",
   riftbound: "Riftbound", unionarena: "Union Arena", narutocg: "Naruto Card Game (2027)", naruto: "Naruto Card Game (2002~2006)",
-  hxh: "Hunter × Hunter", dbc: "Dragon Ball Carddass", dbsb: "Dragon Ball Super Battle", dbva: "Dragon Ball Visual Adventure", dbbw: "Dragon Ball Super Barcode Wars", dbz: "Dragon Ball Z CCG", wow: "World of Warcraft TCG", lotr: "The Lord of the Rings TCG", harrypotter: "Harry Potter TCG", weiss: "Weiß Schwarz", godzilla: "Godzilla Card Game", palworld: "Palworld Official Card Game", fftcg: "Final Fantasy TCG", grandarchive: "Grand Archive TCG", hololive: "hololive Official Card Game", vanguard: "Cardfight!! Vanguard", narutomythos: "Naruto Mythos TCG", narutokayou: "Naruto Kayou", mbc: "Miracle Battle Carddass", cdm: "Carddass Masters", gcd: "Gundam Carddass", gw: "Gundam War", narutoboruto: "Naruto Boruto Card Game", narutotc: "Naruto Trading Cards"
+  hxh: "Hunter × Hunter", dbc: "Dragon Ball Carddass", dbsb: "Dragon Ball Super Battle", dbva: "Dragon Ball Visual Adventure", dbbw: "Dragon Ball Super Barcode Wars", dbz: "Dragon Ball Z CCG", wow: "World of Warcraft TCG", lotr: "The Lord of the Rings TCG", harrypotter: "Harry Potter TCG", weiss: "Weiß Schwarz", godzilla: "Godzilla Card Game", palworld: "Palworld Official Card Game", fftcg: "Final Fantasy TCG", grandarchive: "Grand Archive TCG", hololive: "hololive Official Card Game", vanguard: "Cardfight!! Vanguard", duelmasters: "Duel Masters", narutomythos: "Naruto Mythos TCG", narutokayou: "Naruto Kayou", mbc: "Miracle Battle Carddass", cdm: "Carddass Masters", gcd: "Gundam Carddass", gw: "Gundam War", narutoboruto: "Naruto Boruto Card Game", narutotc: "Naruto Trading Cards"
 };
 
 async function fetchPublicDecks() {

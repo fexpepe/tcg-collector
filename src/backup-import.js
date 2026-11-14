@@ -179,6 +179,7 @@
     if (flat.includes("hololive")) return "hololive";
     // "Cardfight Vanguard" no TCGplayer e "Cardfight!! Vanguard" no Collectr.
     if (flat.includes("vanguard")) return "vanguard";
+    if (flat.includes("duelmasters")) return "duelmasters";
     if (flat.includes("harrypotter")) return "harrypotter";
     if (flat.includes("pok")) return "pokemon";
     return ""; // desconhecido: tenta todos

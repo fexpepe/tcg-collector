@@ -248,6 +248,18 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   TCGCSV já listava a terceira, a Chakra Card da NYCC 2026). Quando sair o
   primeiro booster, conferir o código do set contra o `SECOES_BANDAI`
   (src/app.js), que hoje supõe BT/ST.
+- **Duel Masters (`duelmasters`, 2026-11-13)**: entrou com 24.039 cartas
+  de 396 produtos, do banco oficial da Takara Tomy, e preço da Yuyu-tei
+  (uma loja japonesa, em iene, convertido pra dólar no sync) — o TCGplayer não
+  vende o jogo. A migração `20261113e` está aplicada (e a `20261113g`, mais
+  nova, leva o `duelmasters`). Pendências: Pendências:
+  os termos de uso da Yuyu-tei não foram lidos (o robots.txt não barra); logo
+  melhor (o do site oficial tem 154 px e foi ampliado); a cor (`#fde68a`,
+  proposta) e a posição no hub (depois do Vanguard); nome em inglês das
+  cartas e dos sets (não há oficial; a wiki do Fandom tem os dos sets);
+  filtros de civilização, custo e raça; o verso das cartas de duas faces;
+  data dos 48 produtos sem data; regra de deck; leitura do scanner;
+  o Duel Masters americano de 2004–2006 (sem fonte de preço).
 - **Cardfight!! Vanguard (`vanguard`, 2026-11-13)**: entrou com as 26.438
   cartas dos 268 sets da TCGCSV (cat. 16), as cinco eras. A migração
   `20261113c` foi aplicada e conferida no mesmo dia (ela cobre a 20261113a e

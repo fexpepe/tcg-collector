@@ -26,6 +26,15 @@ poucos.)
   respondeu 204 e não criou linha; `contribute_price` anônimo segue 401; as
   linhas do `narutotc` e do `grandarchive` continuam lá.
 
+- `20261113e` — liberou o slug `duelmasters` (Duel Masters, Takara Tomy, o
+  jogo japonês desde 2002; `20261113e_add_duelmasters.sql`). **Aplicada em
+  2026-11-13** pelo Fernando, antes da `20261113f`, e verificada por `curl`
+  no mesmo dia (a view de `dm-dm26rp3-s001` criou a linha; jogo inventado
+  não cria; `contribute_price` anônimo segue 401; reconferida depois da
+  `20261113g`: a view segue contando). **Não rodar de novo**: a lista dela
+  para no `duelmasters`, e rodada hoje tiraria o `narutotc` e o `hololive`.
+  A `20261113f` e a `20261113g` já levam o `duelmasters`.
+
 - `20261113f` — libera o slug `narutotc` (Naruto Trading Cards, as cartas de
   coleção japonesas da Amada e da Ensky, 2004–2005) nas duas whitelists de
   jogo (`card_views`/`increment_card_view` e `contribute_price`;

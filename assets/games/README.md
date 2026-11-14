@@ -141,6 +141,12 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
   transparente, recortado no conteúdo (+2px), alfa ≤12 zerado e reduzido pra
   512×182 com o Pillow em alfa pré-multiplicado. WebP com perda q88 e alfa
   sem perda: 34 KB.
+- `game_duelmasters.webp` — Duel Masters (tile da grade moderna do hub,
+  depois do Vanguard, 2026-11-13). Fonte: o logo do cabeçalho do site oficial
+  (`dm.takaratomy.co.jp/common/img/parts/logo01@2x.png`, 154×78, PNG com
+  alfa: "DUEL MASTERS" em amarelo sobre o dragão vermelho). É a maior versão
+  que o site publica; ampliado pra 512×259 com Lanczos no ffmpeg (fica macio:
+  PENDENTE um logo maior). WebP sem perda, 90 KB.
 - `game_vanguard.webp` — Cardfight!! Vanguard (tile da grade moderna do hub,
   depois do Final Fantasy, 2026-11-13). Fonte enviada pelo Fernando no mesmo
   dia: PNG de 600×269 com alfa, o logo "CARDFIGHT!! Vanguard overDress"

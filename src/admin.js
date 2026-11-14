@@ -1287,7 +1287,7 @@
     magic: "game_magic-v2.webp", fab: "game_fab.webp", gundam: "game_gundam-v2.webp", swu: "game_swu-v2.webp", cyberpunk: "game_cyberpunk.webp", sorcery: "game_sorcery-v2.webp", dbfw: "game_dbfw-v2.webp",
     ygo: "game_ygo-v2.webp", digimon: "game_digimon-v2.webp", riftbound: "game_riftbound-v2.webp",
     unionarena: "game_unionarena-v2.webp", narutocg: "game_naruto_2027.webp", naruto: "game_naruto.webp", hxh: "game_hxh.webp",
-    dbc: "game_dbc-v2.webp", dbsb: "", dbva: "", dbbw: "", wow: "game_wow.webp", lotr: "game_lotr.webp", dbz: "game_dbz.webp", weiss: "game_weiss.webp", godzilla: "game_godzilla.webp", palworld: "game_palworld.webp", fftcg: "game_fftcg.webp", grandarchive: "game_grandarchive.webp", hololive: "game_hololive.webp", vanguard: "game_vanguard.webp", narutomythos: "game_narutomythos.webp", narutokayou: "game_narutokayou.webp", harrypotter: "game_harrypotter.webp",
+    dbc: "game_dbc-v2.webp", dbsb: "", dbva: "", dbbw: "", wow: "game_wow.webp", lotr: "game_lotr.webp", dbz: "game_dbz.webp", weiss: "game_weiss.webp", godzilla: "game_godzilla.webp", palworld: "game_palworld.webp", fftcg: "game_fftcg.webp", grandarchive: "game_grandarchive.webp", hololive: "game_hololive.webp", vanguard: "game_vanguard.webp", duelmasters: "game_duelmasters.webp", narutomythos: "game_narutomythos.webp", narutokayou: "game_narutokayou.webp", harrypotter: "game_harrypotter.webp",
     mbc: "game_mbc.webp", cdm: "game_cdm.webp", gcd: "game_gcd.webp", gw: "game_gw.webp", narutoboruto: "game_naruto_boruto.webp", narutotc: "game_naruto.webp"
   };
   // Contato público: o mesmo da página Sobre e do data/ads.json (`contato`).

@@ -118,7 +118,8 @@ test("Pokémon: o rodapé impresso decide, mesmo com fração ambígua", () => {
   assert.equal(d.top, "pokemon");
   assert.equal(d.confiante, true);
   // Os cinco jogos que numeram em fração (SWU e Harry Potter entraram em 2026-11-10).
-  assert.deepEqual(d.restritos, ["pokemon", "harrypotter", "lorcana", "narutomythos", "riftbound", "swu"]);
+  // (O Duel Masters, "53/110", entrou em 2026-11-13.)
+  assert.deepEqual(d.restritos, ["pokemon", "duelmasters", "harrypotter", "lorcana", "narutomythos", "riftbound", "swu"]);
 });
 
 test("Magic e Lorcana pelo copyright; One Piece pelo autor", () => {
@@ -133,7 +134,7 @@ test("só o formato do código: restringe aos jogos possíveis sem cravar", () =
   assert.deepEqual(d.restritos, ["onepiece"]);
   const frac = detecta("4/102", ["4/102"]);
   assert.equal(frac.confiante, false);
-  assert.deepEqual(frac.restritos, ["harrypotter", "lorcana", "narutomythos", "pokemon", "riftbound", "swu"]);
+  assert.deepEqual(frac.restritos, ["duelmasters", "harrypotter", "lorcana", "narutomythos", "pokemon", "riftbound", "swu"]);
   assert.equal(detecta("LOB-EN001 1ST EDITION", ["LOB-EN001"]).top, "ygo");
   assert.equal(detecta("BT1-001 R", ["BT1-001"]).top, "digimon");
 });

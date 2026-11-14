@@ -91,6 +91,7 @@
     grandarchive: ["Grand Archive", "#f0abfc"],
     hololive: ["hololive", "#38d6f5"],
     vanguard: ["Vanguard", "#ff5a7a"],
+    duelmasters: ["Duel Masters", "#fde68a"],
     narutomythos: ["Naruto Mythos", "#fde68a"],
     narutokayou: ["Naruto Kayou", "#d946ef"],
     mbc: ["Miracle Battle", "#fb923c"],

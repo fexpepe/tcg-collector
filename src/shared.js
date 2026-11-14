@@ -3258,6 +3258,7 @@
     pokemon: [["cards", "nav.allCards", "cards"], ["sets", "nav.sets", "sets"], ["pokedex", "nav.pokedex", "pokedex"], ["lore", "nav.lore", "lore"], ["trainers", "nav.trainers", "trainers"], ["artists", "nav.artists", "artists"]],
     lorcana: SUBNAV_ARTISTS,
     magic: SUBNAV_ARTISTS,
+    duelmasters: SUBNAV_ARTISTS, // o banco oficial publica o ilustrador
     onepiece: SUBNAV_MIN,
     fab: SUBNAV_MIN,
     gundam: SUBNAV_MIN,
@@ -5595,14 +5596,16 @@
   // Linha de um acabamento (não-foil/foil): EUA (TCGplayer/USD) e Europa
   // (Cardmarket/EUR) são mercados distintos, então ficam em 2 cards — ambos
   // convertidos para a moeda escolhida. (BR vem do MYP, à parte.)
-  function marketFinishRow(label, finish, fx) {
+  // `jp`: o dólar do Duel Masters é o preço de UMA loja japonesa (Yuyu-tei)
+  // convertido do iene — não é TCGplayer, e o rótulo tem de dizer isso.
+  function marketFinishRow(label, finish, fx, jp) {
     if (!finish) return "";
     const has = (q) => q && (q.min || q.med || q.max);
     const conv = (q, src) => (q ? { min: toChosenCurrency(q.min, src, fx), med: toChosenCurrency(q.med, src, fx), max: toChosenCurrency(q.max, src, fx) } : null);
     const us = conv(finish.usd, "USD");
     const eu = conv(finish.eur, "EUR");
     const cards = [
-      has(us) ? marketSourceCard(t("market.us"), us) : "",
+      has(us) ? marketSourceCard(t(jp ? "market.jp" : "market.us"), us) : "",
       has(eu) ? marketSourceCard(t("market.eu"), eu) : ""
     ].join("");
     if (!cards) return "";
@@ -5644,6 +5647,7 @@
     // Lorcana e One Piece têm a MESMA forma de preço (TCGplayer market u/uf por
     // acabamento) — só muda o texto da fonte.
     const cardGame = card.game || currentGame();
+    const jp = cardGame === "duelmasters";
     if (cardGame === "lorcana" || cardGame === "onepiece") {
       const lor = lorcanaMarketHtml(card, fx);
       if (!lor) return "";
@@ -5674,13 +5678,13 @@
           // Cotação POR IMPRESSÃO (pricing `v`, Pokémon via TCGplayer): uma
           // linha por variante que a carta tem, com o nome dela. O EUR único do
           // Cardmarket vai junto da primeira linha, como na TCGdex ao vivo.
-          tcgdex = vars2.map((v, i) => marketFinishRow(variantDisplayLabel(card, v), { usd: med(usdForVariant(ref2, v)), eur: i === 0 ? med(ref2.e) : null }, fx)).join("");
+          tcgdex = vars2.map((v, i) => marketFinishRow(variantDisplayLabel(card, v), { usd: med(usdForVariant(ref2, v)), eur: i === 0 ? med(ref2.e) : null }, fx, jp)).join("");
         } else if (soFoil) {
-          tcgdex = marketFinishRow(foilLabel, { usd: med(ref2.u), eur: med(ref2.e) }, fx);
+          tcgdex = marketFinishRow(foilLabel, { usd: med(ref2.u), eur: med(ref2.e) }, fx, jp);
         } else {
           // O `e` (Cardmarket) é um preço único por carta: fica na linha do
           // não-foil, como o marketQuoteData faz com a "base" da TCGdex.
-          tcgdex = marketFinishRow(t("market.nonfoil"), { usd: med(ref2.u), eur: med(ref2.e) }, fx)
+          tcgdex = marketFinishRow(t("market.nonfoil"), { usd: med(ref2.u), eur: med(ref2.e) }, fx, jp)
             + (vars2.some(foilish) && ref2.uf > 0 ? marketFinishRow(foilLabel, { usd: med(ref2.uf), eur: null }, fx) : "");
         }
       }
@@ -5690,7 +5694,7 @@
     // 2026-10-13: aqui elas apareciam de novo, com os mesmos números.
     if (!tcgdex && !br) return "";
     const updated = data.updated ? `<span class="market-updated">${escapeHtml(t("market.updated", { date: data.updated }))}</span>` : "";
-    const srcMarket = `<p class="market-source">${escapeHtml(t("market.source"))}</p>`;
+    const srcMarket = `<p class="market-source">${escapeHtml(t(jp ? "market.jpSource" : "market.source"))}</p>`;
     return `<div class="market-quote-head"><h3>${escapeHtml(t("market.title"))}</h3>${updated}</div>`
       + tcgdex
       + br
@@ -6637,7 +6641,7 @@
       }
       const ref = pricingRefFor(activeCard.id);
       const fonte = cv.source === "manual" ? "cs.srcManual" : cv.source === "myp" ? "cs.srcMyp"
-        : (ref && usdForVariant(ref, v) > 0 ? "cs.srcUs" : "cs.srcEu");
+        : (ref && usdForVariant(ref, v) > 0 ? ((activeCard.game || currentGame()) === "duelmasters" ? "cs.srcJp" : "cs.srcUs") : "cs.srcEu");
       return `<div class="cs-price"><span class="cs-price-label">${rotulo}</span>`
         + `<span class="cs-price-row"><strong class="cs-price-val">${escapeHtml(fmtMoney(cv.currency, cv.value))}</strong><span data-cs-delta></span></span>`
         + `<span class="cs-price-src">${escapeHtml(t(fonte))}</span></div>`;
@@ -7346,6 +7350,10 @@
     // e Cardmarket ficam de fora: ligavanguard.com.br e a seção do MYP
     // responderam 403 (anti-robô) e nada foi conferido à mão.
     vanguard:  { tcgLine: "cardfight-vanguard", usText: "cardfight vanguard" },
+    // Duel Masters (13/11/2026): o TCGplayer não vende o jogo (não há
+    // categoria na TCGCSV) e nenhuma loja BR foi conferida. Fica a busca do
+    // eBay pelo nome; o preço do site vem da Yuyu-tei (sync-duelmasters.mjs).
+    duelmasters: { usText: "duel masters", noTcgplayer: true },
     // Naruto Mythos TCG e Naruto Kayou (conferido em 12/11/2026): o TCGplayer
     // não tem nenhum dos dois (TCGCSV, 94 categorias). Sem loja BR conferida;
     // o Mythos é europeu e deve estar no Cardmarket, que recusa acesso
@@ -8966,6 +8974,7 @@
     "grandarchive",
     "hololive",
     "vanguard",
+    "duelmasters",
     "narutomythos",
     "narutokayou",
     "mbc",
@@ -9020,6 +9029,7 @@
     hololive: "#38d6f5",   // ciano: o azul-céu da marca hololive (proposta, 2026-11-13); 12.1:1 com preto, a 54 do Gundam War e a 70 do WoW
     narutomythos: "#fde68a", // ouro claro (a Legendary de folha de ouro 22K é a carta-símbolo); 16.9:1 com preto, a 88 do Sorcery (confirmada pelo Fernando, 2026-11-12)
     narutokayou: "#d946ef", // magenta; 6.1:1 com preto, a 94 do Yu-Gi-Oh! e do Carddass Masters. O coral #fb7185 que o Fernando confirmou em 12/11 ficou a 26 do Vanguard, que entrou no dia 13 com #ff5a7a (proposta, 2026-11-13)
+    duelmasters: "#fde68a", // ouro-claro, o amarelo do logo; 16.9:1 com preto, a 88 do Sorcery, o vizinho mais próximo (proposta, 2026-11-13)
     vanguard: "#ff5a7a",   // coral: o vermelho do logo, clareado pra não colar no Pokémon (#e23030); 7.0:1 com preto, a 62 do DBC e a 84 do Miracle Battle (proposta, 2026-11-13)
     godzilla: "#5e7c68",   // verde-chumbo, a pele do Godzilla (o vermelho #e60012 do logo fica a 57 do Pokémon); 4.6:1 com branco, a 84 do Magic (proposta, 2026-11-11)
     harrypotter: "#740001", // escarlate da Grifinória; 12:1 com branco, a 85 do Magic (o vizinho mais próximo)

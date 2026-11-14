@@ -134,6 +134,7 @@ jobs:
             data/grandarchive/sets
             data/hololive/sets
             data/vanguard/sets
+            data/duelmasters/sets
             data/narutomythos/sets
             data/narutokayou/sets
             data/jump/sets
@@ -162,7 +163,7 @@ jobs:
           faltando=""
           # data/dbc/, data/swu/, data/cyberpunk/, data/wow/, data/lotr/,
           # data/sorcery/, data/harrypotter/, data/weiss/, data/mbc/, data/dbz/ e
-          # data/cdm/, data/gcd/, data/gw/, data/narutocg/, data/godzilla/, data/palworld/, data/fftcg/, data/vanguard/, data/grandarchive/ e data/hololive/: jogos novos (2026-09-24 a 2026-11-13);
+          # data/cdm/, data/gcd/, data/gw/, data/narutocg/, data/godzilla/, data/palworld/, data/fftcg/, data/vanguard/, data/grandarchive/, data/hololive/ e data/duelmasters/: jogos novos (2026-09-24 a 2026-11-13);
           # data/dbsb/, data/dbva/ e data/dbbw/ (2026-11-13), as séries do dbc que viraram jogo. Enquanto o cache
           # for de antes deles, o build rápido publicaria o tile do hub sem
           # catálogo nenhum atrás.
@@ -190,7 +191,8 @@ jobs:
                    data/narutomythos/manifest.generated.js \
                    data/narutokayou/manifest.generated.js \
                    data/grandarchive/manifest.generated.js \
-                   data/hololive/manifest.generated.js; do
+                   data/hololive/manifest.generated.js \
+                   data/duelmasters/manifest.generated.js; do
             [ -s "$f" ] || faltando="$faltando $f"
           done
           if [ -n "$faltando" ]; then
@@ -662,6 +664,24 @@ jobs:
         if: env.RODA_SYNC == 'true'
         run: node scripts/sync-price-history.mjs data/vanguard
 
+      # Duel Masters (Takara Tomy 2002+, o jogo japones). NAO esta na TCGCSV: o
+      # catalogo vem do banco oficial (dm.takaratomy.co.jp/card/) e o preco da
+      # Yuyu-tei, em iene, convertido pra dolar pela cotacao do dia. O modo
+      # padrao revisita so os produtos novos, o topo do filtro e as promos, e
+      # na loja os sets dos ultimos dois anos mais um setimo dos antigos; no
+      # domingo (UTC) roda inteiro (--full: ~700 paginas de lista e ~420 da
+      # loja, uns 30 minutos).
+      - name: Sincroniza catálogo do Duel Masters (banco oficial + Yuyu-tei)
+        if: env.RODA_SYNC == 'true'
+        run: |
+          modo=""
+          [ "$(date -u +%u)" = "7" ] && modo="--full"
+          node scripts/sync-duelmasters.mjs $modo || echo "sync-duelmasters falhou; mantém o catalogo versionado"
+
+      - name: Snapshot de preços (histórico Duel Masters)
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/sync-price-history.mjs data/duelmasters
+
       # NARUTO Mythos TCG (Cicaboom, 2026+): a galeria oficial do jogo, um JSON
       # publico que o site dela le. Id pelo SKU oficial; a 2a edicao do Set 1
       # vira set a parte e as cartas de torneio, "<set> Promos". Sem preco: o
@@ -1086,6 +1106,7 @@ jobs:
             data/grandarchive/sets
             data/hololive/sets
             data/vanguard/sets
+            data/duelmasters/sets
             data/narutomythos/sets
             data/narutokayou/sets
             data/jump/sets

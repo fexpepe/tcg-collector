@@ -276,7 +276,7 @@ há o que ligar. São três peças, todas no
    - Pokémon por série;
    - Magic por ano, mais a seção de eventos e coleções especiais;
    - jogo com `group<Jogo>Sets` próprio pelas seções dele;
-   - os modernos da Bandai, o Godzilla, o Palworld, o Final Fantasy, o Vanguard, o Grand Archive e o hololive (`SECOES_BANDAI`) no formato do One Piece:
+   - os modernos da Bandai, o Godzilla, o Palworld, o Final Fantasy, o Vanguard, o Grand Archive, o hololive e o Duel Masters (`SECOES_BANDAI`) no formato do One Piece:
      Principais (a coleção numerada), Boosters extras e especiais, Decks
      iniciais, Cartas de evento (2026-11-12, pelo nome) e Promos e eventos,
      pelo código do set (2026-11-11);

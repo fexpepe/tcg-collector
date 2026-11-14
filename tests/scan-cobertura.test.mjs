@@ -104,6 +104,10 @@ const JOGOS = {
   // Cardfight!! Vanguard (2026-11-13): SET/NÚMERO + EN, com a raridade da
   // paralela antes do número (DZ-BT16/001EN, V-BT02/SP01EN).
   vanguard: { min: 0.95, nota: "sobram os números sem o EN no fim ou com ano (VG-2020/TOYOU, V-PR/0209EN 2022)" },
+  // Duel Masters (2026-11-13): a fração "N/T" ("53/110"), como Pokémon e
+  // Lorcana. A raridade alta numera à parte, com letra na frente ("S1/S11",
+  // "㊙1/㊙24", "TR4/TR9", "P12/Y5"), e o scanner ainda não lê essas.
+  duelmasters: { min: 0.6, nota: "sobram as numerações com letra ou kanji na frente (S1/S11, ㊙1/㊙24, TR4/TR9) e as promos (P12/Y5)" },
   // Naruto Mythos TCG (2026-11-12): o rodapé é "C 3/130  1° EDITION NARUTO
   // MYTHOS TCG", com o número sem os zeros da frente.
   narutomythos: { min: 0.93, impresso: (c) => `${String(c.number).replace(/^0+(?=\d)/, "")}  1° EDITION NARUTO MYTHOS TCG`, nota: "sobram as Mission (MSS 05), que não numeram em fração" },
