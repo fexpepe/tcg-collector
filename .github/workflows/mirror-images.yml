@@ -46,69 +46,28 @@ jobs:
         with:
           node-version: 22
 
-      # O MESMO catálogo construído que o deploy usa (o cache que ele salva no
-      # build completo). Sem ele não há o que espelhar — e não se sincroniza
-      # nada aqui: fonte de verdade é uma só.
-      - name: Restaura catálogo construído (cache do deploy)
+      # O MESMO catálogo construído que o deploy publica, no pacote que o build
+      # completo da main salva (passo "Empacota o catálogo pro espelho de
+      # imagens" do deploy.yml). Sem ele não há o que espelhar — e não se
+      # sincroniza nada aqui: fonte de verdade é uma só. Até 14/11/2026 o job
+      # restaurava o cache do build rápido, que o actions/cache identifica pela
+      # lista de caminhos: cada jogo novo mudava a lista, o cache salvo antes
+      # dele deixava de ser achado e o job saía verde sem espelhar nada (de
+      # 12/11 em diante, nenhuma carta nova chegou ao img.sleevu.app). O pacote
+      # tem caminho fixo e não depende da lista de jogos.
+      - name: Restaura o pacote do catálogo (salvo pelo deploy)
         uses: actions/cache/restore@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         with:
-          path: |
-            data/*.generated.js
-            data/*.generated.json
-            data/search-index.json
-            data/*/*.generated.js
-            data/*/*.generated.json
-            data/*/search-index.json
-            data/lorcana/sets
-            data/onepiece/sets
-            data/fab/sets
-            data/gundam/sets
-            data/swu/sets
-            data/cyberpunk/sets
-            data/sorcery/sets
-            data/dbfw/sets
-            data/digimon/sets
-            data/riftbound/sets
-            data/unionarena/sets
-            data/naruto/sets
-            data/hxh/sets
-            data/dbc/sets
-            data/dbsb/sets
-            data/dbva/sets
-            data/dbbw/sets
-            data/wow/sets
-            data/lotr/sets
-            data/dbz/sets
-            data/weiss/sets
-            data/harrypotter/sets
-            data/mbc/sets
-            data/cdm/sets
-            data/gcd/sets
-            data/gw/sets
-            data/narutoboruto/sets
-            data/narutotc/sets
-            data/narutocg/sets
-            data/godzilla/sets
-            data/palworld/sets
-            data/fftcg/sets
-            data/grandarchive/sets
-            data/hololive/sets
-            data/shadowverse/sets
-            data/vanguard/sets
-            data/duelmasters/sets
-            data/narutomythos/sets
-            data/narutokayou/sets
-            data/jump/sets
-            data/magic/cards.js
-            data/magic/indexes.js
-            data/magic/pricing.js
-            data/magic/indexes-*.json
-            data/ygo/cards.js
-            data/ygo/indexes.js
-            data/ygo/pricing.js
-            data/ygo/indexes-*.json
-          key: catalogo-build-${{ github.run_id }}
-          restore-keys: catalogo-build-
+          path: ${{ runner.temp }}/catalogo-espelho.tar
+          key: catalogo-espelho-${{ github.run_id }}
+          restore-keys: catalogo-espelho-
+
+      - name: Abre o pacote do catálogo
+        run: |
+          if [ -s "$RUNNER_TEMP/catalogo-espelho.tar" ]; then
+            tar -xf "$RUNNER_TEMP/catalogo-espelho.tar"
+            echo "Catálogo: $(ls data/*/manifest.generated.js | wc -l) jogos com manifest."
+          fi
 
       # O sharp (redimensionamento) mora FORA do repositório: o site não tem
       # package.json nem bundler, e não vai ganhar um por causa do job. Versão
@@ -135,9 +94,11 @@ jobs:
           IN_LIMIT: ${{ inputs.limit }}
           IN_MINUTES: ${{ inputs.minutes }}
         run: |
+          # Sem catálogo = job VERMELHO. Saía verde (exit 0) e o espelho ficou
+          # parado dois dias sem ninguém ver (13–14/11/2026).
           if [ ! -s data/manifest.generated.js ]; then
-            echo "Sem catálogo construído no cache — rode o deploy do main primeiro (ele salva o cache no build completo)."
-            exit 0
+            echo "::error::Sem o pacote do catálogo — rode o deploy da main em modo completo (schedule ou manual): é ele que salva o pacote."
+            exit 1
           fi
           args=""
           [ -n "$IN_HOST" ] && args="$args --host $IN_HOST"

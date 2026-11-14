@@ -171,7 +171,8 @@ do parâmetro `url`.
 
 - **Job:** `scripts/mirror-r2.mjs`, diário às 14:00 UTC
   (`.github/workflows/mirror-images.yml`), sobre o mesmo catálogo construído
-  do deploy; o `sharp` é instalado fora do repositório pelo workflow. Guarda o
+  do deploy (o pacote `catalogo-espelho.tar` que o build completo da `main`
+  salva em cache; sem ele o job fica vermelho); o `sharp` é instalado fora do repositório pelo workflow. Guarda o
   índice no próprio bucket (`_index/<host>.json`) e publica
   `_index/status.json` com o que está completo. Retomável, educado com as
   fontes (concorrência e intervalo por host, 429 encerra o host), 404 na
