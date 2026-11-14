@@ -487,9 +487,16 @@ hub). A ficha preenchida vai na descrição da PR.
 - **Lojas** (`MARKETS`): Liga e MYP (BR), `tcgLine`/`usText` (EUA), `cm`
   (Cardmarket). Cada URL é aberta e conferida no dia, com a data no comentário,
   como no Union Arena ("sem loja BR, conferido em 07/08/2026").
-- **Cor**: contraste AA com texto preto ou branco (o `textOnColor` escolhe o
-  melhor) e pelo menos 65 de distância RGB do vizinho mais próximo (a régua que
-  o ouro do Riftbound fixou).
+- **Cor**: mesma IP = mesma cor (Fernando, 14/11/2026). Jogo de uma franquia
+  que já está no site usa a cor do jogo MODERNO dela (Dragon Ball = a do
+  Fusion World, Naruto = a do Naruto Card Game, Gundam = a do Gundam Card
+  Game); sem jogo moderno, a dos outros vintage da marca. No `GAME_COLOR` ele
+  repete o hex do jogo-cabeça, e no CSS entra no seletor do accent dele, sem
+  bloco próprio. Franquia nova ganha cor própria: contraste AA com texto
+  preto ou branco (o `textOnColor` escolhe o melhor) e pelo menos 65 de
+  distância RGB do vizinho mais próximo de OUTRA franquia (a régua que o ouro
+  do Riftbound fixou). Crossover e jogo de várias IPs (Carddass Masters,
+  Miracle Battle, Weiß, Union Arena) têm cor própria.
 - **Logo do jogo e posição no hub**: logo em `assets/games/game_<slug>.webp`,
   no padrão dos logos ([LOGOS.md](LOGOS.md)), com a procedência no
   [assets/games/README.md](../assets/games/README.md).
