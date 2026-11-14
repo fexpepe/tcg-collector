@@ -7291,6 +7291,11 @@
     // próprio Cardmarket), mas a página respondeu com verificação anti-robô e
     // o caminho não foi conferido.
     sorcery:   { liga: ["LigaSorcery", "https://www.ligasorcery.com.br"], myp: "sorcery", tcgLine: "sorcery-contested-realm", usText: "sorcery contested realm" },
+    // Dragon Ball Super Card Game Masters (14/11/2026): TCGplayer na linha
+    // "dragon-ball-super-ccg" (a busca filtrada abriu e devolveu cartas). A
+    // LigaDragonBall (www.) respondeu 403 ao acesso automatizado e o
+    // Cardmarket não foi conferido: entram quando forem conferidos à mão.
+    dbs:       { tcgLine: "dragon-ball-super-ccg", usText: "dragon ball super card game" },
     dbfw:      { liga: ["LigaDragonBall", "https://fusion.ligadragonball.com.br"], tcgLine: "dragon-ball-super-fusion-world", usText: "dragon ball fusion world", cm: "DragonBallSuper", cmq: 1 },
     riftbound: { liga: ["LigaRiftbound", "https://www.ligariftbound.com.br"], myp: "riftbound", tcgLine: "riftbound-league-of-legends-trading-card-game", usText: "riftbound", cm: "Riftbound" },
     // Union Arena (conferido em 07/08/2026): SEM loja BR. ligaunionarena.com.br
@@ -8980,6 +8985,7 @@
     "cyberpunk",
     "sorcery",
     "dbfw",
+    "dbs",
     "ygo",
     "digimon",
     "riftbound",
@@ -9037,6 +9043,7 @@
     cyberpunk: "#fcee0a",  // amarelo da marca (o do logo oficial); 17:1 com preto, a 82 do One Piece
     sorcery: "#c9a66b",    // pergaminho (a moldura das cartas); 9.2:1 com preto, a 82 do DBFW
     dbfw: "#9aa3ae",       // prata
+    dbs: "#1a0dff",        // azul elétrico (14/11/2026): o laranja da marca não cabe (todo laranja vivo fica a menos de 65 do Naruto, do One Piece ou do Miracle Battle); 8.2:1 com branco, a 96 do Super Barcode Wars
     ygo: "#7c3aed",        // roxo-violeta
     digimon: "#123f6d",    // azul escuro
     riftbound: "#a67c00",  // ouro

@@ -26,6 +26,7 @@
     swu: { slug: "swu", name: "Star Wars: Unlimited", dataDir: "data/swu/" }, // TCGCSV cat. 79 (FFG, EN; Hyperspace/Showcase = cartas próprias)
     cyberpunk: { slug: "cyberpunk", name: "Cyberpunk TCG", dataDir: "data/cyberpunk/" }, // TCGCSV cat. 92 (Weird Co. 2026, EN; edições Beta e Retail = sets próprios)
     sorcery: { slug: "sorcery", name: "Sorcery: Contested Realm", dataDir: "data/sorcery/" }, // TCGCSV cat. 77 (Erik's Curiosa 2023, EN; foil é outro produto, o sync junta)
+    dbs: { slug: "dbs", name: "Dragon Ball Super Card Game Masters", dataDir: "data/dbs/" }, // TCGCSV cat. 27 (Bandai 2017+, "Masters" desde 2022; só a edição EN)
     dbfw: { slug: "dbfw", name: "Dragon Ball Fusion World", dataDir: "data/dbfw/" }, // TCGCSV cat. 80 (Bandai, EN; Fusion World, ≠ Masters)
     ygo: { slug: "ygo", name: "Yu-Gi-Oh!", dataDir: "data/ygo/" }, // TCGCSV cat. 2 (Konami, EN; ~46k cartas, padrão Magic: chunks versionados)
     digimon: { slug: "digimon", name: "Digimon Card Game", dataDir: "data/digimon/" }, // TCGCSV cat. 63 (Bandai 2020+, EN)
@@ -83,7 +84,7 @@
     ["dragon-ball-fusion-world", "dbfw"], ["digimon-card-game", "digimon"], ["union-arena", "unionarena"],
     ["cyberpunk-tcg", "cyberpunk"], ["sorcery-contested-realm", "sorcery"], ["naruto-card-game", "narutocg"],
     ["weiss-schwarz", "weiss"], ["godzilla-card-game", "godzilla"], ["palworld-official-card-game", "palworld"], ["final-fantasy-tcg", "fftcg"], ["grand-archive", "grandarchive"], ["hololive-official-card-game", "hololive"], ["shadowverse-evolve", "shadowverse"], ["cardfight-vanguard", "vanguard"], ["duel-masters", "duelmasters"],
-    ["naruto-mythos-tcg", "narutomythos"], ["naruto-kayou", "narutokayou"],
+    ["naruto-mythos-tcg", "narutomythos"], ["naruto-kayou", "narutokayou"], ["dragon-ball-super-card-game", "dbs"],
     // Daqui em diante, os VINTAGE (o `vintage` do registro): o PRIMEIRO_VINTAGE
     // abaixo é a posição desta linha, e o teste confere um por um.
     ["gundam-carddass", "gcd"],
@@ -103,7 +104,7 @@
   // Quantos jogos em atividade vêm antes do primeiro vintage na lista acima.
   // É por ele que o menu sabe acender "Vintage", e não "Jogos", na tela de um
   // jogo que saiu de linha (SLEEVU.vintage, lido pelo shared.js).
-  var PRIMEIRO_VINTAGE = 26;
+  var PRIMEIRO_VINTAGE = 27;
   // Linha que virou seção de outra (o LINE_ALIASES do shared.js).
   var LINHA_APELIDO = { "nrt-nf": "nrt-dc", "nrt-nx": "nrt-dc" };
   // Linha que virou JOGO (o LINHAS_VIRARAM_JOGO do functions/_lib/jogos.js): o

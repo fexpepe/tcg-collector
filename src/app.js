@@ -13,7 +13,7 @@
   // assets/games/README.md) — nome novo porque /assets/* é immutable.
   const GAME_LOGO = {
     pokemon: "game_pokemon.webp", lorcana: "game_lorcana-v2.webp", onepiece: "game_onepiece.webp",
-    magic: "game_magic-v2.webp", fab: "game_fab.webp", gundam: "game_gundam-v2.webp", swu: "game_swu-v2.webp", cyberpunk: "game_cyberpunk.webp", sorcery: "game_sorcery-v2.webp", dbfw: "game_dbfw-v2.webp",
+    magic: "game_magic-v2.webp", fab: "game_fab.webp", gundam: "game_gundam-v2.webp", swu: "game_swu-v2.webp", cyberpunk: "game_cyberpunk.webp", sorcery: "game_sorcery-v2.webp", dbfw: "game_dbfw-v2.webp", dbs: "game_dbs.webp",
     ygo: "game_ygo-v2.webp", digimon: "game_digimon-v2.webp", riftbound: "game_riftbound-v2.webp",
     unionarena: "game_unionarena-v2.webp", narutocg: "game_naruto_2027.webp", naruto: "game_naruto.webp", hxh: "game_hxh-v2.webp",
     dbc: "game_dbc-v3.webp", dbsb: "game_dbsb.webp", dbva: "game_dbva.webp", dbbw: "game_dbbw.webp", wow: "game_wow.webp", lotr: "game_lotr.webp", dbz: "game_dbz.webp", weiss: "game_weiss.webp", godzilla: "game_godzilla.webp", palworld: "game_palworld.webp", fftcg: "game_fftcg.webp", grandarchive: "game_grandarchive.webp", hololive: "game_hololive.webp", shadowverse: "game_shadowverse.webp", vanguard: "game_vanguard.webp", duelmasters: "game_duelmasters.webp", narutomythos: "game_narutomythos.webp", narutokayou: "game_narutokayou.webp", harrypotter: "game_harrypotter.webp",
@@ -2044,6 +2044,18 @@
     onepiece: { main: /^OP\d+(-EB\d+)?$/, extra: /^(EB|PRB)-\d+$/, deck: /^(ST|LT|SD)-?\d+/ },
     gundam: { main: /^GD\d+$/, extra: /^(EB\d+|GD\d+_B)$/, deck: /^(ST|SC)\d+$/ },
     dbfw: { main: /^FB\d+$/, extra: /^(SB|ST)\d+$/, deck: /^FS\d+$/ },
+    // Dragon Ball Super Card Game Masters (14/11/2026): o setId é a abreviação
+    // do TCGplayer. Principais = os boosters numerados (DBS-B01…B24, BT25 em
+    // diante, e a 2nd Edition do B10/B11). Extras = Themed Booster (TB), Draft
+    // Box (DB), Battle Evolution (EB), Mythic Booster (MB), Collector's e Theme
+    // Selection (CSV, TS) e o Revision Pack (RP). Decks = as Expansion Deck Box
+    // e os Anniversary Sets (BE/EB). Pre-Release, Release Event, promos e as
+    // Oversized caem no resto.
+    dbs: {
+      main: /^(DBS-B\d+(-RE)?|BT\d+)$/,
+      extra: /^(DBS-TB\d+|DB\d+|EB-\d+|MB-\d+|CSV\d+|TS\d+|RP\d+)$/,
+      deck: /^(DBS-(BE|EB)\d+|BE\d+)$/
+    },
     digimon: { main: /^BT(-?\d+|\d+-\d+[AB]?)$/, extra: /^(EX|RB|AD|LM)-\d+/, deck: /^(ST|BD)-?\d+/ },
     unionarena: { main: /^UE\d+BT$/, extra: /^(UEX\d+BT|UP\d+BT|UE\d+NC)$/, deck: /^UE\d+(ST|DC)/ },
     // NARUTO CARD GAME de 2027 (até 11/11/2026, a linha nrt-ncg do naruto):

@@ -69,6 +69,7 @@
     cyberpunk: ["Cyberpunk", "#fcee0a"],
     sorcery: ["Sorcery", "#c9a66b"],
     dbfw: ["Dragon Ball Fusion", "#9aa3ae"],
+    dbs: ["DBS Masters", "#1a0dff"],
     ygo: ["Yu-Gi-Oh!", "#7c3aed"],
     digimon: ["Digimon", "#123f6d"],
     riftbound: ["Riftbound", "#a67c00"],
