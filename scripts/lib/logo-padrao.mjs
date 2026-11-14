@@ -342,7 +342,14 @@ export async function normaliza(sharp, entrada, { tipo, vintage = false, amplia 
     .raw().toBuffer({ resolveWithObject: true });
   const px = reduzido.data;
   for (let i = 3; i < px.length; i += 4) if (px[i] < LIMIAR_ALFA) { px[i] = 0; px[i - 1] = 0; px[i - 2] = 0; px[i - 3] = 0; }
-  const cru = () => sharp(px, { raw: reduzido.info });
+  // Relê SEM o `premultiplied` do info: o sharp devolve o raw do resize já
+  // desfeito da pré-multiplicação, mas marcado `premultiplied: true`; repassar
+  // o info inteiro o faz desfazer DE NOVO, e todo pixel semitransparente
+  // clareava. No Shadowverse (círculo mágico de brilho), +6,5 em média sobre o
+  // branco no círculo; medido em 2026-11-14 contra a fonte reduzida pelo Pillow
+  // (0,7 depois desta correção).
+  const { width: wOut, height: hOut, channels } = reduzido.info;
+  const cru = () => sharp(px, { raw: { width: wOut, height: hOut, channels } });
   const comPerda = ({ q, alfa }) => cru().webp({ quality: q, alphaQuality: alfa, effort: 6, smartSubsample: true }).toBuffer();
   const semPerda = await cru().webp({ lossless: true, effort: 6 }).toBuffer();
   const limite = pad.pesoKB * 1024;

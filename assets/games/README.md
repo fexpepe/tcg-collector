@@ -207,7 +207,12 @@ carrega e esconde o nome em texto (fallback sem erro).
   teto de 60 KB do docs/LOGOS.md). O preto
   pede a cápsula branca, como o Naruto Mythos. Se a Bandai publicar o logo
   avulso, ele entra no lugar.
-- `game_shadowverse.webp` — Shadowverse: Evolve (seção "Outros TCGs" do hub,
+- `game_shadowverse-v2.webp` — Shadowverse: Evolve. Desde 2026-11-14 é a mesma fonte
+  oficial (abaixo) pelo normaliza-logo: 301×260, 36 KB, WebP com perda. O de 456×394
+  passava do teto de logo de jogo (640×260 do docs/LOGOS.md): a altura é o que
+  conta num logo quase quadrado, e 260 ainda dá 2,1× no hub desktop. Até ali
+  era o `game_shadowverse.webp` descrito a seguir.
+- `game_shadowverse.webp` (até 2026-11-14) — Shadowverse: Evolve (seção "Outros TCGs" do hub,
   2026-11-13). Fonte: o logo do cabeçalho do site oficial em inglês
   (`en.shadowverse-evolve.com/wordpress/wp-content/themes/en-shadowverse-evolve/assets/images/common/logo.png`,
   456×394, PNG de paleta com alfa: o círculo mágico azul-ciano atrás de
