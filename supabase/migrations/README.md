@@ -404,6 +404,24 @@ poucos.)
 
 ### Já aplicadas (verificado em produção)
 
+- `20261114a` — /admin: "Erros a cada mil páginas" sem o ruído que o site
+  deixou de mandar (`20261114a_erros_sem_ruido.sql`). Em 14/11 o Resumo
+  marcou 102,5 (antes 35,1); dos 551 erros dos 30 dias, 460 eram quatro
+  ruídos que não quebram nada e que o cliente parou de mandar na mesma PR
+  (#312): falha da AwesomeAPI que a reserva de câmbio cobriu (187), preload
+  da fonte/prefetch de preço que não carregou (104, quase tudo robô),
+  transição entre páginas pulada pelo navegador (87) e carteira de cripto
+  (80, um navegador). A `admin_pulso` tira os quatro do histórico também,
+  pra régua de antes e de depois ser a mesma, e passa a contar o jserror v1
+  sem `k`, que o filtro de CSP da 20261112a descartava por NULL. Só o
+  `erros` muda; o resto sai idêntico (ensaio PGlite 12a × 14a). **Cobre a
+  20261112a**: rodar a 12a depois desta traz o ruído de volta. Conferir com
+  `select pg_get_functiondef('public.admin_pulso(int)'::regprocedure) ~ 'json-rpc'`
+  (true) e o Resumo do /admin com 30 dias (esperado perto de 17).
+
+  **Aplicada em 2026-11-14** pelo Fernando, antes do merge da PR #312 (a
+  ordem não importa: o admin.js não lê o `migration` que volta).
+
 - `20261112a` — /admin: "Erros a cada mil páginas" com a mesma régua
   (`20261112a_erros_mesma_regua.sql`). Em 12/11 o Resumo marcou 413,7 (antes
   96,7), sem o site quebrar (144 páginas de produção abertas: zero erro de
