@@ -20,6 +20,10 @@ export const NOMES_DO_JOGO = {
   fab: ["Flesh and Blood"],
   gundam: ["Gundam"],
   dbfw: ["Dragon Ball Super Fusion World", "Fusion World"],
+  // Dragon Ball Super Card Game (Masters, 14/11/2026): só os grupos de selado
+  // trazem o jogo na frente hoje ("Dragon Ball Super: Miscellaneous Sealed
+  // Product"); fica pra quando um grupo de cartas vier assim.
+  dbs: ["Dragon Ball Super Card Game", "Dragon Ball Super"],
   riftbound: ["Riftbound"],
   unionarena: ["Union Arena"],
   ygo: ["Yu-Gi-Oh!"],
