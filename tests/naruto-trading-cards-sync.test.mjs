@@ -154,5 +154,6 @@ test("registro: jogo vintage próprio, com a seção de cada produto, e não lin
   assert.ok(deploy.includes("node scripts/sync-naruto-trading-cards.mjs --no-fetch"));
   assert.equal((deploy.match(/^\s+data\/narutotc\/sets$/gm) || []).length, 2, "listas de cache do deploy (restore e save)");
   assert.ok(deploy.includes("data/narutotc/manifest.generated.js"), "guarda do modo do build");
-  assert.ok(ler(".github/workflows/mirror-images.yml").includes("data/narutotc/sets"));
+  // o espelho de imagens pega o jogo pelo pacote genérico do deploy (data/*/sets),
+  // sem lista própria — ver tests/img-mirror.test.mjs
 });
