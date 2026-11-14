@@ -1,8 +1,14 @@
 # Logos dos jogos (hub e sets)
 
-Padrão: **`game_<slug>.webp`**, 512px de largura, fundo transparente (o ffmpeg
-preserva o alpha). O `hub.html` aponta pra eles; o `hub.js` revela o `<img>`
-quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
+Padrão: **`game_<slug>.webp`** no padrão dos logos, em
+[docs/LOGOS.md](../../docs/LOGOS.md) (desde 2026-11-14): fundo transparente,
+recortado na tinta, cabe em 640×260 (jogo vintage, que tem o "Sobre": 960×320),
+no máximo 60 KB (vintage 80 KB), nítido (2×) no hub e onde mais aparece. O
+`scripts/normaliza-logo.mjs` gera o arquivo e o CI confere
+(`scripts/check-logos.mjs`). Os arquivos listados abaixo são de antes do padrão
+(512 px de largura, a regra antiga); o `check-logos --todos` diz quais estão
+fora. O `hub.html` aponta pra eles; o `hub.js` revela o `<img>` quando o arquivo
+carrega e esconde o nome em texto (fallback sem erro).
 
 ## Arquivos
 
@@ -376,14 +382,18 @@ que dá o mesmo peso dos originais: 181 KB contra 214 KB dos sete antigos.
 
 ## Conversão (novo logo)
 
+Com a fonte já de fundo transparente (tirar o fundo é a parte à mão, como nos
+casos acima):
+
 ```sh
-ffmpeg -i logo.png -vf "scale=512:-1" -c:v libwebp -quality 88 game_<slug>.webp
+SHARP_DIR=/tmp/sharp/node_modules/sharp node scripts/normaliza-logo.mjs logo.png assets/games/game_<slug>.webp
 ```
 
-Antes de subir, confira as duas regras dos -v2: **recorte no conteúdo** (sem
-margem dentro do arquivo) e **nenhum pixel de fundo com alfa baixo** — ponha o
-logo sobre branco com contraste no máximo; se aparecer um retângulo, o fundo tem
-véu.
+O script recorta na tinta, zera o véu de alfa (as duas regras dos -v2), encaixa
+no teto, escolhe o WebP mais leve e mostra a nitidez em cada lugar do site.
+Como instalar o sharp, a exceção pra fonte pequena e o resto: [docs/LOGOS.md](../../docs/LOGOS.md).
+O `ffmpeg -vf scale=512:-1` de antes não recortava nem limpava o alfa, e 512 px
+deixava logo largo abaixo de 2× no hub.
 
 ## Notas
 
