@@ -218,6 +218,16 @@ test("exceções: todo registro é de um logo, cala regra que existe e diz o mot
   }
 });
 
+// O raw que o sharp devolve do resize vem desfeito da pré-multiplicação mas
+// marcado `premultiplied: true`; relido com esse info, o sharp desfazia de novo e
+// todo pixel semitransparente clareava (brilho do Shadowverse +6,5 sobre o
+// branco, 2026-11-14). O normalizador relê só largura, altura e canais.
+test("normalizador: relê o raw do resize sem a marca de pré-multiplicado", () => {
+  const fonte = readFileSync(new URL("../scripts/lib/logo-padrao.mjs", import.meta.url), "utf8");
+  assert.ok(!/raw:\s*reduzido\.info/.test(fonte), "repassar o info inteiro desfaz a pré-multiplicação duas vezes");
+  assert.match(fonte, /const cru = \(\) => sharp\(px, \{ raw: \{ width: wOut, height: hOut, channels \} \}\);/);
+});
+
 test("o caçador de logos de set normaliza pelo padrão (sem quadro fixo próprio)", () => {
   const fonte = readFileSync(new URL("../scripts/cacar-logos-set.mjs", import.meta.url), "utf8");
   assert.match(fonte, /from "\.\/lib\/logo-padrao\.mjs"/);
