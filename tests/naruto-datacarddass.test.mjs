@@ -60,14 +60,18 @@ test("catálogo versionado: DN-001–050 no nrt-dc-s01 (第１弾) e DN-051–06
   const s01 = doSet("nrt-dc-s01");
   assert.deepEqual(codigos(s01), faixa("DN", 1, 50));
   // Sem "Data Carddass — " na frente desde o contrato 7 do docs/CATALOGO.md.
+  // O `set` é o inglês desde 14/11/2026 (translate-naruto-names.mjs traduz o
+  // set como já traduzia a carta); o nome da fonte fica no `setJp`.
   for (const c of s01) {
-    assert.equal(c.set, "ナルティメットカードバトル 第１弾");
+    assert.equal(c.set, "Narutimate Card Battle — Vol. 1");
+    assert.equal(c.setJp, "ナルティメットカードバトル 第１弾");
     assert.equal(c.setTotal, 50);
   }
   const s02 = doSet("nrt-dc-s02");
   assert.deepEqual(codigos(s02), faixa("DN", 51, 65));
   for (const c of s02) {
-    assert.equal(c.set, "ナルティメットカードバトル 第２弾");
+    assert.equal(c.set, "Narutimate Card Battle — Vol. 2");
+    assert.equal(c.setJp, "ナルティメットカードバトル 第２弾");
     assert.equal(c.setTotal, 15);
   }
   // Id de carta não muda com a correção: nrt-dc-<código>.
@@ -146,7 +150,9 @@ test("promos da Mission no catálogo: set nrt-dc-s16, id pelo código, CAN-001 c
   assert.equal(promo.length, 22);
   for (const c of promo) {
     assert.equal(c.id, `nrt-dc-${c.number.toLowerCase()}`);
-    assert.equal(c.set, PROMO_MISSION.name);
+    // O sync grava o nome da fonte; o passo de tradução o leva pro `setJp`.
+    assert.equal(c.setJp, PROMO_MISSION.name);
+    assert.equal(c.set, "Narutimate Mission — Promotional Cards");
     assert.equal(c.setTotal, 22);
     assert.equal(c.setReleaseDate, "2006-12");
     assert.equal(c.rarity, "P");

@@ -205,9 +205,6 @@ O catálogo está em EN v1 e o Scryfall já traz nome e imagem impressos em pt �
 reforça a tese "em português" no segundo jogo mais popular do site.
 
 ### 5. Polimento acumulado
-- **Nomes dos 67 sets do Naruto** seguem em japonês (aparecem no seletor, no tile
-  e 2× no modal). Decisão pendente do Fernando: traduzir (como já foi feito com
-  os nomes das cartas, com o original guardado em `nameJp`) ou manter.
 - **JUMP**: o slug existe e o compilador de curadoria roda, mas o catálogo está
   vazio — decidir se entra de verdade ou sai do registro.
 - **Peso do núcleo**: o `shared.js` saiu de 99% pra ~89% do teto em 2026-09-14
@@ -216,6 +213,11 @@ reforça a tese "em português" no segundo jogo mais popular do site.
   que toda página baixa, com o split por área rodando no CI. Bloco frio novo
   continua tendo que nascer fora do `shared.js` — o padrão está em
   `src/backup-import.js`.
+
+(Saiu daqui em 2026-11-14: os nomes dos 75 sets japoneses do Naruto, que o
+Fernando decidiu traduzir. O `set` do catálogo é o inglês e o original vai pro
+`setJp`, como o `name`/`nameJp` das cartas — `translate-naruto-names.mjs`; o
+endereço antigo de cada set tem 301 pelo `data/sets-renomeados-auto.json`.)
 
 (Saíram daqui em 2026-09-14, por já estarem no ar: o espanhol das páginas de
 conteúdo — `src/i18n-docs.js` cobre Sobre/Ajuda/FAQ/Privacidade/Termos nos três

@@ -7811,7 +7811,7 @@
     // o `name` delas é o japonês, e "boss's orders" tem que achar a carta.
     card._haystack = " " + normalize([
       card.name, card.nameJp, card.nameEn, card.pokemonName, card.dexId, ...cardCodeForms(card),
-      card.set, card.artist, card.rarity, card.language, card.cardType, ...(card.variants || [])
+      card.set, card.setJp, card.artist, card.rarity, card.language, card.cardType, ...(card.variants || [])
     ].join(" ") + jpNameAliases(`${card.name || ""} ${card.nameJp || ""}`)) + " ";
     return card._haystack;
   }
@@ -9169,7 +9169,12 @@
     return setEnName(setId, language) || name || "";
   }
   // O original só quando difere do que está sendo exibido (senão repetiria).
-  function setOriginalName(setId, name, language) {
+  // `original`: o nome de origem que o catálogo guarda quando o set já vem
+  // TRADUZIDO no build (setJp do Naruto vintage, 14/11/2026) — aí o `name` é o
+  // inglês e o japonês só existe nesse campo.
+  function setOriginalName(setId, name, language, original) {
+    const exibido = setDisplayName(setId, name, language);
+    if (original && original !== exibido) return original;
     const en = setEnName(setId, language);
     return en && name && en !== name ? name : "";
   }
