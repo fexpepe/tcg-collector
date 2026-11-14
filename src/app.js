@@ -550,7 +550,10 @@
       const file = card && card.dataset.chunk;
       if (!file || prefetchados.has(file)) return;
       prefetchados.add(file);
-      [file, file.includes("/sets/") ? file.replace("/sets/", "/pricing-chunks/") : ""].forEach((url) => {
+      // O irmão de preço só existe com `pc` no manifest: jogo sem preço não
+      // grava chunk de preço desde 2026-11-14 (split-pricing.mjs).
+      const comPreco = window.TCG_MANIFEST && window.TCG_MANIFEST.pc;
+      [file, comPreco && file.includes("/sets/") ? file.replace("/sets/", "/pricing-chunks/") : ""].forEach((url) => {
         if (!url) return;
         const l = document.createElement("link");
         l.rel = "prefetch";
