@@ -1317,6 +1317,20 @@ jobs:
       - name: Versiona o app shell pelo hash (cache imutável)
         run: node scripts/hash-assets.mjs
 
+      # Poda (2026-11-14): a main chegou a 18.903 arquivos com o Shadowverse,
+      # e uns 750 deles subiam sem ninguém pedir. Sai da árvore do runner (o
+      # repo e o cache do build rápido, salvo lá atrás, ficam inteiros):
+      #   - os crus do modo dev de cada jogo (cards.js, indexes.js, pricing.js,
+      #     indexes-<chave>.json): produção e app só ligam os .generated, e o
+      #     cru só sai quando o par gerado está do lado;
+      #   - os logos de set que nenhum arquivo de texto da árvore cita: o
+      #     mirror-magic-set-logos baixa os 1.068 símbolos do Scryfall e o
+      #     catálogo usa 654.
+      # O porquê de cada regra está em scripts/lib/poda-deploy.mjs. DEPOIS de
+      # tudo que lê data/ e ANTES do "Remove arquivos", que apaga scripts/.
+      - name: Poda o que o site não pede (crus do modo dev, logos sem uso)
+        run: node scripts/poda-deploy.mjs
+
       # data/magic/cards.js: o monolito do Magic (~37 MiB no build completo)
       # estoura o teto de 25 MiB/arquivo do Cloudflare Pages. Em produção NADA o
       # usa — o modo manifest carrega manifest.generated.js + chunks por set; o
@@ -1341,9 +1355,17 @@ jobs:
       # data/cartas-movidas.json (2026-11-02): o registro das cartas que mudaram
       # de set só serve ao prerender, que já o gravou nos mapas do jogo. O
       # data/sets-renomeados-auto.json (2026-11-10), o dos sets, idem.
+      #
+      # data/ja-enrich, data/zh-import, data/vintage, data/catalog-baseline.json
+      # e data/tcgcsv-set-map.json (2026-11-14): matéria-prima dos syncs (o
+      # cache da Bulbapedia do japonês e do chinês, os snapshots das fontes
+      # vintage, a régua do relatório de cobertura e o de-para da TCGCSV).
+      # Nenhuma página, Function, o sw.js ou o app pede; eram 339 arquivos na
+      # conta do teto abaixo.
       - name: Remove arquivos que não vão para o site
         run: |
           rm -rf .git .github .claude data/.cache data/cards.generated.js data/magic/cards.js data/ygo/cards.js data/cartas-movidas.json data/sets-renomeados-auto.json scripts out README.md ROADMAP.md CLAUDE.md docs supabase tests .gitattributes .gitignore mobile codemagic.yaml
+          rm -rf data/ja-enrich data/zh-import data/vintage data/catalog-baseline.json data/tcgcsv-set-map.json
           rm -f assets/brand/Flesh_and_Blood_TCG_Logo.png assets/brand/Magic-The-Gathering-logo.png assets/brand/digimon.webp assets/brand/logo_title_dbfwcardgame.webp assets/brand/riftbound.webp assets/brand/yugioh.jpg
           rm -f assets/games/README.md assets/shops/README.md
 
@@ -1360,6 +1382,9 @@ jobs:
       # 18.093: todo jogo novo daqui pra frente batia aqui. Sobra 1.000 de
       # margem até o teto real; cortar arquivos (chunks de preço → R2, por
       # exemplo) fica pra antes do próximo jogo grande.
+      #
+      # Mesmo dia, o primeiro corte: a poda e as pastas só do build lá em cima
+      # tiram uns 1.100 arquivos que subiam sem uso (18.903 → ~17.800).
       - name: Conta arquivos (teto de 20.000 do Pages)
         run: |
           total=$(find . -type f | wc -l)

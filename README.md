@@ -910,6 +910,11 @@ o botão abre a impressão ("Salvar como PDF"). Tudo em `src/admin.js`
   (`data/<jogo>/sets/<setId>.json`), baixados sob demanda com concorrência
   limitada. A página de detalhe baixa só os sets das cartas exibidas; a Pokédex
   não baixa carta nenhuma (roda só com os índices + a coleção do `localStorage`).
+  Os crus do modo local (`cards.js`, `indexes.js`, `pricing.js`,
+  `indexes-<chave>.json`) **não sobem**: a poda do deploy
+  (`scripts/poda-deploy.mjs`, 2026-11-14) tira cada um que tem o par gerado do
+  lado, junto com os logos de set que nenhum arquivo cita. Probe de produção
+  confere o `manifest.generated.js`, nunca o cru.
 
 Também são fatiados no build, pela mesma lógica de "não baixe o que não usa":
 os índices (`indexes-sets.json`, `indexes-pokedex.json`, …), os preços por set

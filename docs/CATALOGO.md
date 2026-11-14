@@ -562,7 +562,7 @@ valem só nesse caso.
 | C9 | `scripts/build-market.mjs` (`JOGOS`) | slug e dataDir | sem trilho de altas e quedas | — |
 | C10 | `scripts/build-set-trends.mjs` (`DIRS`) | dataDir | sem o chip de variação por set | — |
 | C11 | `scripts/send-wishlist-push.mjs` | só com preço | sem aviso de queda de preço | — |
-| C12 | `scripts/healthcheck.mjs` | cartas; preço e deltas se tem preço | queda do catálogo em produção não alerta | — |
+| C12 | `scripts/healthcheck.mjs` | cartas (`checkManifest` no `manifest.generated.js`: o `cards.js` cru não sobe desde 2026-11-14); preço e deltas se tem preço | queda do catálogo em produção não alerta | — |
 | C13 | `.github/workflows/deploy.yml` | passo do sync (com `\|\| echo`); passo `sync-price-history.mjs data/<slug>` se tem preço | catálogo não atualiza e fica sem histórico | — |
 | C14 | `deploy.yml` (restore e save) e `mirror-images.yml` (restore) | `data/<slug>/sets` (padrão FAB) ou os monólitos (padrão Magic) nas **três** listas de cache, idênticas e na mesma ordem | listas diferentes: o job de imagens deixa de achar o cache e o espelhamento para em **todos** os jogos (5.5) | — |
 | C15 | `deploy.yml` ("Decide o modo do build") | `data/<slug>/manifest.generated.js` na guarda | build rápido publica o tile sem catálogo atrás | — |
@@ -698,6 +698,15 @@ lugares; o prefixo de id, em 3 mapas (`binders.js`, `card-rescue.js`,
   o que abriu espaço pro Dragon Ball Super Masters (F2). Jogo COM preço segue
   gravando o `{}` dos sets sem preço, porque o `pc` promete o irmão de todo
   chunk de carta.
+- **Poda do deploy, também em 2026-11-14.** A main chegou a 18.903 (a guarda
+  passou a falhar acima de 19.000 no mesmo dia, com o aval do Fernando). O
+  segundo corte, sem tirar nada do ar: a poda do deploy
+  (`scripts/poda-deploy.mjs`) tira os crus do modo dev de cada jogo
+  (`cards.js`, `indexes.js`, `pricing.js`, `indexes-<chave>.json`, ~8 por
+  jogo) e os logos de set que nenhum arquivo cita (o Magic espelha 1.068
+  símbolos pra 654 sets); o "Remove arquivos" tira a matéria-prima dos syncs
+  (`data/ja-enrich`, `data/zh-import`, `data/vintage`). Jogo novo não precisa
+  fazer nada: a poda acha os crus dele sozinha.
 
 ### 5.4 Orçamento de peso do núcleo
 
