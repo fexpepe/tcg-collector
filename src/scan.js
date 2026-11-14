@@ -129,7 +129,9 @@
     // a ser candidato. Três letras por três: o comprimento não muda.
     const up = String(texto || "").toUpperCase().replace(/[‐‑–—]/g, "-").replace(/\s/g, " ")
       .replace(/\b0(?=[A-Z][A-Z0-9]{0,4}-[0-9OILSBZ])/g, "O")
-      .replace(/\b[6GCS][D0O][0O](?=[1-9]-[0-9OILSBZ])/g, "GD0");
+      // Menos quando o código termina em "EN": é o Starter Deck do Shadowverse:
+      // Evolve ("SD01-001EN"), que virava "GD01-001EN" (2026-11-13).
+      .replace(/\b[6GCS][D0O][0O](?=[1-9]-[0-9OILSBZ])(?![1-9]-[A-Z0-9]{2,6}EN\b)/g, "GD0");
     const alinhado = palavras && palavras.length && up.length === String(texto).length;
     const conf = (ini, fim) => {
       if (!alinhado) return 0;
@@ -197,6 +199,21 @@
       const d = soDigitos(m[3]);
       if (!/^\d+$/.test(d) || !/[A-Z]/.test(m[1])) continue;
       add(`${m[1]}/${m[2]}${d}${m[4]}EN`, 3, m);
+      tira(m);
+    }
+    // Shadowverse: Evolve (2026-11-13): SET-NÚMERO + "EN" — "BP01-001EN",
+    // "GFB01a-055EN", "PR-245EN". A paralela leva a sigla ANTES do número e é
+    // parte do código ("BP01-LD01EN", "BP19-SL16EN", "CP01-P40EN"): cada uma
+    // é carta própria no catálogo. Sai inteiro e antes do reHifen, que perdia
+    // as siglas (LD, SL, SP, PR): com ele só 49,5 % do catálogo virava
+    // candidato; com este, 99 %.
+    const reSVE = /\b([A-Z]{2,3}[0-9OIL]{2}[A-D]?|PR)-([A-Z]{0,3})([0-9OIL]{2,3})EN\b/g;
+    while ((m = reSVE.exec(resto))) {
+      const s = /^([A-Z]{2,3})([0-9OIL]{2})([A-D]?)$/.exec(m[1]);
+      const set = s ? s[1] + soDigitos(s[2]) + s[3] : m[1];
+      const d = soDigitos(m[3]);
+      if (!/^\d+$/.test(d) || (s && !/^\d+$/.test(soDigitos(s[2])))) continue;
+      add(`${set}-${m[2]}${d}EN`, 3, m);
       tira(m);
     }
     // Palworld OFFICIAL CARD GAME (2026-11-11): "<OSR> EBP01-001OSR". O E da
@@ -434,6 +451,7 @@
     // Duel Masters (2026-11-13): o nome do jogo no verso e a Takara Tomy no
     // rodapé. O número é a fração "N/T", que cinco outros jogos também usam.
     duelmasters: [/DUEL ?MASTERS/, /TOMY/],
+    shadowverse: [/SHADOWVERSE/, /CYGAMES/],
     naruto: [/NARUTO/, /KISHIMOTO/],
     // O de 2027 imprime a mesma marca que o vintage: os dois empatam e a busca
     // vai nos dois (sem a pista, a carta nova era filtrada pro vintage).
@@ -499,6 +517,11 @@
     // Cheer "hY01-001" / "hYS01-001" e a promo "hPR-012" (2026-11-13). O "h"
     // minúsculo da marca chega em caixa alta do extrair.
     [/^H(?:(?:BP|SD|EB|YS?)\d{2}|PR)-\d{3}$/, ["hololive"]],
+    // Shadowverse: Evolve: "BP01-001EN", a paralela com a sigla antes do
+    // número ("BP19-SL16EN", "CP01-P40EN"), o Gloryfinder com a letra do deck
+    // ("GFB01a-055EN") e a promo "PR-245EN" (2026-11-13). O "EN" colado no
+    // fim com hífen é só dele: o Vanguard usa barra ("BT01/046EN").
+    [/^(?:[A-Z]{2,3}\d{2}[A-D]?|PR)-[A-Z]{0,3}\d{2,3}EN$/, ["shadowverse"]],
     [/^[A-Z0-9]{2,4}-[A-Z]{2}\d{3}/, ["ygo"]],
     [/^U[EP][A-Z0-9]{2,5}\//, ["unionarena"]],
     [/^[A-Z0-9]{2,4}\/(?:EN-)?[SW][A-Z]{0,2}\d{2,3}-/, ["weiss"]],

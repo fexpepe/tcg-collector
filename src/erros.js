@@ -37,6 +37,17 @@
 
   const EXTENSAO = /(^|\()(chrome|moz|safari|safari-web|ms-browser)-extension:|webkit-masked-url:/i;
   const RUIDO = /ResizeObserver loop/i;
+  // Transição entre páginas (o @view-transition do styles.css) que o PRÓPRIO
+  // navegador pulou: a tela girou, o teclado abriu, a página já tinha
+  // aparecido, a navegação foi cancelada. As promessas do objeto da transição
+  // rejeitam e ninguém escuta (é CSS puro, o site não segura o objeto). Nada
+  // quebra, só não tem o crossfade. Eram 87 erros em 30 dias até 2026-11-14,
+  // em oito frases diferentes do Chrome e do Safari.
+  const TRANSICAO = /^(Skipping view transition\b|Transition was (aborted|skipped)\b)/i;
+  // Carteira de cripto (MetaMask e afins): a extensão injeta window.ethereum e
+  // rejeita promessa sem pilha, então o filtro de extensão pela pilha não a
+  // pega. Um navegador só mandou 76 em 30 dias (e 127 nos 30 de antes).
+  const CARTEIRA = /Internal JSON-RPC error|window\.ethereum\b/i;
   const TETO_SESSAO = 15;
   const CHAVE_SESSAO = "sleevu-jserror-n";
   const vistos = new Set();
@@ -95,7 +106,8 @@
     const it = item || {};
     const m = String(it.m == null ? "" : it.m).slice(0, 300);
     const fonte = String(it.s || "");
-    if (!m || RUIDO.test(m)) return null;
+    if (!m || RUIDO.test(m) || CARTEIRA.test(m)) return null;
+    if (it.k === "promise" && TRANSICAO.test(m)) return null;
     if (EXTENSAO.test(fonte) || EXTENSAO.test(String(it.p || ""))) return null;
     const pilha = quadros(it.p || fonte, ctx.origem);
     let k = it.k || "js";

@@ -383,6 +383,48 @@ poucos.)
 
 ### Já aplicadas (verificado em produção)
 
+- `20261114b` — libera o slug `shadowverse` (Shadowverse: Evolve,
+  Bushiroad/Cygames, edição em inglês, 2023+) nas duas whitelists de jogo
+  (`card_views`/`increment_card_view` e `contribute_price`;
+  `20261114b_add_shadowverse.sql`). Cópia da `20261113h` (Saint Seiya, numa
+  PR ainda aberta) com o `shadowverse` a mais: **ela cobre a 20261113h e a
+  20261113g**, então dispensa a 13h se esta rodar primeiro. Só a lista muda.
+  Qualquer uma das anteriores rodada **depois** desta tiraria o
+  `shadowverse`. Conferida antes de escrever: nenhuma linha do `card_views`
+  em produção tem jogo fora da lista nova (GET anônimo, 14/11/2026).
+  Conferir depois de aplicar com o par de `curl` do fim do arquivo: a view
+  de `shv-502257` tem de **criar a linha** no `card_views`.
+
+  **Aplicada em 2026-11-14** pelo Fernando e verificada por curl anônimo no
+  mesmo dia: a view de `shv-502257` respondeu 204 e criou a linha no
+  `card_views` (game `shadowverse`, 1 view); um jogo inventado
+  (`shadowversex`) respondeu 204 e não criou linha; `contribute_price`
+  anônimo segue 401; a linha do `hololive` continua lá. Com ela, a
+  `20261113h` (Saint Seiya) **não precisa mais rodar**: os três slugs dela
+  já estão aqui, e rodada agora tiraria o `shadowverse`.
+  Era `20261114a` até o merge: outra sessão aplicou no mesmo dia a
+  `20261114a_erros_sem_ruido`, e a letra mudou pra não confundir as duas (o
+  conteúdo é o mesmo que rodou).
+  **A próxima migração de jogo copia esta.**
+
+- `20261114a` — /admin: "Erros a cada mil páginas" sem o ruído que o site
+  deixou de mandar (`20261114a_erros_sem_ruido.sql`). Em 14/11 o Resumo
+  marcou 102,5 (antes 35,1); dos 551 erros dos 30 dias, 460 eram quatro
+  ruídos que não quebram nada e que o cliente parou de mandar na mesma PR
+  (#312): falha da AwesomeAPI que a reserva de câmbio cobriu (187), preload
+  da fonte/prefetch de preço que não carregou (104, quase tudo robô),
+  transição entre páginas pulada pelo navegador (87) e carteira de cripto
+  (80, um navegador). A `admin_pulso` tira os quatro do histórico também,
+  pra régua de antes e de depois ser a mesma, e passa a contar o jserror v1
+  sem `k`, que o filtro de CSP da 20261112a descartava por NULL. Só o
+  `erros` muda; o resto sai idêntico (ensaio PGlite 12a × 14a). **Cobre a
+  20261112a**: rodar a 12a depois desta traz o ruído de volta. Conferir com
+  `select pg_get_functiondef('public.admin_pulso(int)'::regprocedure) ~ 'json-rpc'`
+  (true) e o Resumo do /admin com 30 dias (esperado perto de 17).
+
+  **Aplicada em 2026-11-14** pelo Fernando, antes do merge da PR #312 (a
+  ordem não importa: o admin.js não lê o `migration` que volta).
+
 - `20261112a` — /admin: "Erros a cada mil páginas" com a mesma régua
   (`20261112a_erros_mesma_regua.sql`). Em 12/11 o Resumo marcou 413,7 (antes
   96,7), sem o site quebrar (144 páginas de produção abertas: zero erro de

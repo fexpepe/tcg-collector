@@ -5468,9 +5468,13 @@
   // carta sem a cotação de Cardmarket e TCGplayer — sem câmbio a seção some.
   // Quando a API falha, vale o data/fx.generated.json que o build grava
   // (scripts/build-fx.mjs: Banco Central, BCE): mesma origem, sem cota, sem
-  // CORS. A falha vai pro /admin como `falha` (aparelho junto), que é como se
-  // sabe se ela pega mais o celular. Sem o arquivo (dev local), segue sem
-  // câmbio como antes.
+  // CORS. Sem o arquivo (dev local), segue sem câmbio como antes.
+  //
+  // O /admin só fica sabendo quando a RESERVA também falha, que é quando a
+  // pessoa fica de fato sem cotação (2026-11-14). Até então toda falha da API
+  // ia como `falha`, e a reserva cobria todas: 187 de 551 erros em 30 dias, um
+  // terço do "erros a cada mil páginas" (429 sem CORS vira "Failed to fetch";
+  // um robô de Chrome 145 no Mac sozinho fez 69 "HTTP 429").
   const FX_KEY = "tcg-fx-brl-v1";
   function gravaFx(t, rates) {
     try { localStorage.setItem(FX_KEY, JSON.stringify({ t, r: rates })); } catch (e) { /* ignora */ }
@@ -5485,12 +5489,14 @@
       if (!rates.USD && !rates.EUR) throw new Error("vazio");
       return gravaFx(Date.now(), rates);
     } catch (error) {
-      logClientError(`câmbio: ${error && error.name === "TimeoutError" ? "demorou" : (error && error.message) || "falhou"}`, "awesomeapi", "falha");
       try {
         const r = await fetch("data/fx.generated.json");
         const j = r.ok ? await r.json() : null;
         if (j && j.r && Number(j.r.USD) > 0) return gravaFx(Number(j.t) || Date.now(), { USD: Number(j.r.USD), EUR: Number(j.r.EUR) || 0 });
       } catch (e) { /* sem reserva: segue sem câmbio */ }
+      // "câmbio e reserva", não "câmbio:": o prefixo novo separa no banco o
+      // que a pessoa sentiu do histórico de antes (que a 20261114a tira).
+      logClientError(`câmbio e reserva falharam: ${error && error.name === "TimeoutError" ? "demorou" : (error && error.message) || "falhou"}`, "awesomeapi", "falha");
       return null;
     }
   }
@@ -6300,9 +6306,11 @@
     let toqueNaCarta = false;
     document.addEventListener("touchstart", (event) => {
       toqueY = null;
-      const panel = event.target.closest("#cardPreviewModal .card-preview-panel");
+      // Alvo que não é elemento não tem closest() (ver initCompactHoverThumb).
+      const quem = event.target && typeof event.target.closest === "function" ? event.target : null;
+      const panel = quem && quem.closest("#cardPreviewModal .card-preview-panel");
       if (!panel || zoomAberto) return;
-      toqueNaCarta = !!event.target.closest(".cs-media");
+      toqueNaCarta = !!quem.closest(".cs-media");
       if (!toqueNaCarta && (modoPagina || panel.scrollTop > 0)) return;
       toqueY = event.touches[0].clientY;
       toqueX = event.touches[0].clientX;
@@ -7367,7 +7375,11 @@
     // hololive OFFICIAL CARD GAME (13/11/2026): TCGplayer na linha
     // "hololive-official-card-game" (o prefixo do endereço de produto de lá).
     // Loja BR e Cardmarket NÃO foram conferidos.
-    hololive: { tcgLine: "hololive-official-card-game", usText: "hololive official card game" }
+    hololive: { tcgLine: "hololive-official-card-game", usText: "hololive official card game" },
+    // Shadowverse: Evolve (13/11/2026): TCGplayer na linha "shadowverse-evolve"
+    // (o prefixo do endereço de produto de lá). Loja BR e Cardmarket NÃO foram
+    // conferidos.
+    shadowverse: { tcgLine: "shadowverse-evolve", usText: "shadowverse evolve" }
   };
   function marketOf(game) { return MARKETS[game] || MARKETS.pokemon; }
 
@@ -8577,10 +8589,16 @@
     hoverThumbEl.classList.remove("is-press");
   }
   function initCompactHoverThumb() {
+    // Alvo que não é elemento (o document, um nó de texto) não tem closest():
+    // em 13/11/2026 um Chrome 157 no Android quebrou aqui na home ("s.target.
+    // closest is not a function"). Os dois ouvintes do documento inteiro
+    // passam pelo mesmo filtro.
+    const elementoDe = (ev) => (ev.target && typeof ev.target.closest === "function" ? ev.target : null);
     document.addEventListener("mouseover", (ev) => {
       // Enquanto o dedo segura a linha, o mouseover emulado do toque não manda.
       if (hoverThumbEl && hoverThumbEl.classList.contains("is-press")) return;
-      const alvo = ev.target.closest("[data-hover-thumb]");
+      const quem = elementoDe(ev);
+      const alvo = quem && quem.closest("[data-hover-thumb]");
       const url = alvo && alvo.dataset.hoverThumb;
       if (!url) { hoverThumbHide(); return; }
       const el = hoverThumbShow(url, false);
@@ -8603,10 +8621,11 @@
     }
     document.addEventListener("touchstart", (ev) => {
       pressReset();
-      if (ev.touches.length !== 1) return;
-      const row = ev.target.closest(".card-tile.tile-compact");
+      const quem = elementoDe(ev);
+      if (ev.touches.length !== 1 || !quem) return;
+      const row = quem.closest(".card-tile.tile-compact");
       // Os botões têm ação própria (segurar o + não é "ver a carta").
-      if (!row || ev.target.closest(".tile-btn, a")) return;
+      if (!row || quem.closest(".tile-btn, a")) return;
       const alvo = row.querySelector("[data-hover-thumb]");
       const url = alvo && alvo.dataset.hoverThumb;
       if (!url) return;
@@ -8973,6 +8992,7 @@
     "fftcg",
     "grandarchive",
     "hololive",
+    "shadowverse",
     "vanguard",
     "duelmasters",
     "narutomythos",
@@ -9027,6 +9047,7 @@
     fftcg: "#93c5fd",      // azul-cristal (os cristais do Final Fantasy); 11.6:1 com preto, a 77 do Gundam War e a 86 do prata do DBFW (proposta, 2026-11-11)
     grandarchive: "#f0abfc", // lilás (proposta, 2026-11-13): o logo oficial é branco e não dá cor; 11.9:1 com preto, a 85 do branco do Weiß e a 97 do azul do Final Fantasy
     hololive: "#38d6f5",   // ciano: o azul-céu da marca hololive (proposta, 2026-11-13); 12.1:1 com preto, a 54 do Gundam War e a 70 do WoW
+    shadowverse: "#818cf8", // índigo claro (confirmada pelo Fernando, 2026-11-14): o ciano do logo já é do hololive e do WoW; 7.0:1 com preto, a 60 do Final Fantasy e a 83 do Yu-Gi-Oh!
     narutomythos: "#fde68a", // ouro claro (a Legendary de folha de ouro 22K é a carta-símbolo); 16.9:1 com preto, a 88 do Sorcery (confirmada pelo Fernando, 2026-11-12)
     narutokayou: "#d946ef", // magenta; 6.1:1 com preto, a 94 do Yu-Gi-Oh! e do Carddass Masters. O coral #fb7185 que o Fernando confirmou em 12/11 ficou a 26 do Vanguard, que entrou no dia 13 com #ff5a7a (proposta, 2026-11-13)
     duelmasters: "#fde68a", // ouro-claro, o amarelo do logo; 16.9:1 com preto, a 88 do Sorcery, o vizinho mais próximo (proposta, 2026-11-13)
@@ -9900,7 +9921,12 @@
   // ミラクルキラ, Ω, 超Ω).
   const RARITY_SIGLA = {
     c: 10, n: 10, normal: 10, u: 20, uc: 20, r: 30, p: 35, pr: 35, tr: 35, promo: 35, prism: 40,
-    b: 45, sr: 50, super_rare: 50, l: 55, m: 55, ur: 60, "ω": 60, "超ω": 65, memorial: 65, sec: 70
+    b: 45, sr: 50, super_rare: 50, l: 55, m: 55, ur: 60, "ω": 60, "超ω": 65, memorial: 65, sec: 70,
+    // Shadowverse: Evolve (2026-11-13): a escada é de metal (Bronze, Silver,
+    // Gold, Legendary) e as paralelas têm nome próprio; sem isto Bronze,
+    // Silver, Premium e Ultimate valiam 0, e a Super Legendary empatava com a
+    // Legendary.
+    bronze: 10, silver: 20, gold: 30, premium: 40, "super legendary": 62, "super special": 66, ultimate: 68
   };
   function rarityRank(rarity) {
     const s = String(rarity || "").toLowerCase().trim();
@@ -9910,9 +9936,9 @@
     if (/^☆+$/.test(s)) return 20 + 10 * s.length;
     if (/starter/.test(s)) return 12; // Starter Deck (Naruto CCG): logo acima da comum
     // hololive (2026-11-13): "Special" e "Special Yell" são as de arte
-    // alternativa e caíam abaixo da comum. Só lá: no Star Wars Unlimited a
-    // "Special" é carta de starter.
-    if (/^special/.test(s) && (window.SLEEVU || {}).game === "hololive") return 60;
+    // alternativa e caíam abaixo da comum. Só lá e no Shadowverse: Evolve (a
+    // SP): no Star Wars Unlimited a "Special" é carta de starter.
+    if (/^special/.test(s) && /^(holo|shadow)/.test((window.SLEEVU || {}).game)) return 60;
     if (/special illustration|ilustração rara especial|hyper|hiper|secret|secreta|enchanted|iconic/.test(s)) return 70;
     if (/illustration|ilustração|shiny|brilhante|full art|arte completa/.test(s)) return 60;
     if (/legendary|legend/.test(s)) return 55;
