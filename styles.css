@@ -544,6 +544,18 @@
   --accent: #a21caf; --accent-dark: #86198f; --accent-rgb: 162, 28, 175;
   --accent-soft: rgba(162, 28, 175, 0.1); --on-accent: #ffffff;
 }
+/* Saint Seiya: VIOLETA-ÍNDIGO #4400cc, a cor do GAME_COLOR (13/11/2026; o
+   cosmo de Athena — o lilás é do Grand Archive, e os dourados e os azuis claros
+   já são de outros jogos), nos três jogos da marca desde 14/11/2026 (mesma
+   IP = mesma cor: Carddass, Trading Collection e Crusade). No escuro o accent
+   clareia pro #a78bfa, com texto escuro (7.7:1); no claro fica o próprio
+   índigo, com texto branco (9.9:1). */
+[data-game-accent="seiya"],
+[data-game-accent="seiyatc"],
+[data-game-accent="seiyacr"] { --accent: #a78bfa; --accent-dark: #4400cc; --accent-rgb: 167, 139, 250; --accent-soft: rgba(167, 139, 250, 0.16); --on-accent: #0a0c10; }
+[data-theme="light"][data-game-accent="seiya"], [data-theme="light"] [data-game-accent="seiya"],
+[data-theme="light"][data-game-accent="seiyatc"], [data-theme="light"] [data-game-accent="seiyatc"],
+[data-theme="light"][data-game-accent="seiyacr"], [data-theme="light"] [data-game-accent="seiyacr"] { --accent: #4400cc; --accent-dark: #3700a6; --accent-rgb: 68, 0, 204; --accent-soft: rgba(68, 0, 204, 0.1); --on-accent: #ffffff; }
 /* Sorcery: Contested Realm: o PERGAMINHO da moldura das cartas (#c9a66b, o do
    GAME_COLOR) com texto escuro no escuro (8.5:1). No claro ele fica em 2.3:1
    com branco, então o accent escurece pro marrom de tinta #7d5f2c (5.9:1 com

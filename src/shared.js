@@ -3271,6 +3271,9 @@
     cdm: SUBNAV_MIN,
     gcd: SUBNAV_MIN,
     gw: SUBNAV_ARTISTS,
+    seiya: SUBNAV_MIN,
+    seiyatc: SUBNAV_MIN,
+    seiyacr: SUBNAV_MIN,
     lotr: SUBNAV_MIN,
     harrypotter: SUBNAV_ARTISTS
   };
@@ -7318,6 +7321,11 @@
     cdm:       { usText: "carddass masters", noTcgplayer: true },
     gcd:       { usText: "gundam carddass", noTcgplayer: true },
     gw:        { usText: "gundam war", noTcgplayer: true },
+    // Saint Seiya (conferido em 12/11/2026): sem loja BR (nem Liga nem MYP
+    // têm seção) e sem TCGplayer; só a busca do eBay e do PriceCharting.
+    seiya:     { usText: "saint seiya carddass", noTcgplayer: true },
+    seiyatc:   { usText: "saint seiya amada", noTcgplayer: true },
+    seiyacr:   { usText: "saint seiya crusade", noTcgplayer: true },
     // Naruto Boruto Card Game (conferido em 13/11/2026): no TCGplayer é a linha
     // "chrono-clash-system", que tem as Tournament Pack Cards. Sem loja BR.
     narutoboruto: { tcgLine: "chrono-clash-system", usText: "naruto boruto card game" },
@@ -9016,6 +9024,9 @@
     "cdm",
     "gcd",
     "gw",
+    "seiya",
+    "seiyatc",
+    "seiyacr",
     "narutoboruto",
     "narutotc"
   ].map((game) => ({ game, dataDir: game === "pokemon" ? "data/" : `data/${game}/` }));
@@ -9035,7 +9046,8 @@
   //   3. MESMA IP = MESMA COR (Fernando, 14/11/2026): jogo da mesma franquia
   //      usa a cor do jogo moderno dela (Dragon Ball = a do Fusion World,
   //      Naruto = a do Naruto Card Game, Gundam = a do Gundam Card Game), e os
-  //      vintage de uma marca sem jogo moderno dividem uma cor só. A régua de 65
+  //      vintage de uma marca sem jogo moderno dividem uma cor só (Saint Seiya =
+  //      a do Carddass). A régua de 65
   //      vale ENTRE franquias; dentro da mesma, a cor é a mesma de propósito.
   //      Crossover (Carddass Masters, Miracle Battle) e jogo de várias IPs
   //      (Weiß, Union Arena) seguem com cor própria.
@@ -9082,7 +9094,10 @@
     gcd: "#2563eb", // = gundam: mesma IP (Gundam), mesma cor
     narutoboruto: "#f65400", // = narutocg: mesma IP (Naruto), mesma cor
     narutotc: "#f65400", // = narutocg: mesma IP (Naruto), mesma cor
-    gw: "#2563eb" // = gundam: mesma IP (Gundam), mesma cor
+    gw: "#2563eb", // = gundam: mesma IP (Gundam), mesma cor
+    seiya: "#4400cc",      // violeta-índigo (o cosmo de Athena; o lilás é do Grand Archive); 9.9:1 com branco, a 82 do Lorcana (proposta, 2026-11-13)
+    seiyatc: "#4400cc", // = seiya: mesma IP (Saint Seiya), mesma cor
+    seiyacr: "#4400cc" // = seiya: mesma IP (Saint Seiya), mesma cor
   };
   // Preto ou branco sobre a cor do jogo — o que der MAIOR contraste de verdade
   // (fórmula WCAG), não um limiar de luminância chutado: com limiar fixo o
@@ -9234,6 +9249,9 @@
     narutoboruto: ["nb-"],                    // Bandai 2019–2020 (Chrono Clash System): idem
     narutotc: ["ntc-"],                       // Amada/Ensky 2004–2005 (cartas de coleção): idem
     gw: ["gw-"],                              // Bandai 1999–2011: idem
+    seiya: ["ss-"],                           // Bandai 1988–2023: idem
+    seiyatc: ["sstc-"],                       // Amada 2000–2003: idem
+    seiyacr: ["sscr-"],                       // Bandai 2012–2014: idem
     harrypotter: ["hp-"],                     // Wizards 2001–2002: idem
     naruto: ["nrt-"]                          // Bandai 2003–2013: idem (o NARUTO CARD GAME de 2027, nrt-ncg-, é o jogo narutocg)
   };

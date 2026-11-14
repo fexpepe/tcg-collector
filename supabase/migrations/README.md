@@ -424,6 +424,30 @@ poucos.)
   conteúdo é o mesmo que rodou).
   **A próxima migração de jogo copia esta.**
 
+- `20261113h` — libera os slugs dos três jogos vintage de Saint Seiya
+  (`seiya` = Saint Seiya Carddass, `seiyatc` = Trading Collection da Amada,
+  `seiyacr` = Crusade) nas duas whitelists de jogo
+  (`card_views`/`increment_card_view` e `contribute_price`;
+  `20261113h_add_seiya.sql`). Cópia da `20261113g` (hololive, a última
+  aplicada) com os três slugs a mais: **ela cobre a 20261113g** e todas as
+  anteriores (o `duelmasters` da 13e, o `narutotc` da 13f e o `hololive` da
+  13g). Só a lista muda. Qualquer uma das anteriores rodada **depois** desta tiraria os
+  três. A primeira versão, como 20261113g, falhou no SQL Editor (23514, o
+  CHECK violado pela linha do `hololive` que já existia): esta substitui
+  aquela, e rodá-la de novo é seguro. Sem ela, a view de carta e o Preço da
+  Comunidade dos jogos são descartados em silêncio (a coleção não depende
+  dela). Conferir com o par de `curl` do fim do arquivo: a view de
+  `ss-cd02-1` tem de **criar a linha** no `card_views` (o 204 sozinho não
+  prova nada), um jogo inventado não cria, e o `contribute_price` anônimo
+  segue 401. A `20261114b` (Shadowverse) já copiou esta.
+
+  **Aplicada em 2026-11-13** pelo Fernando e verificada por curl anônimo no
+  mesmo dia: as views de `ss-cd02-1`, `sstc-2000-001` e `sscr-01-b-u-001`
+  responderam 204 e criaram as linhas no `card_views` (games `seiya`,
+  `seiyatc` e `seiyacr`, 1 view cada); um jogo inventado (`seiyax`) respondeu
+  204 e não criou linha; `contribute_price` anônimo segue 401; as linhas do
+  `hololive`, do `narutotc` e do `grandarchive` continuam lá.
+
 - `20261114a` — /admin: "Erros a cada mil páginas" sem o ruído que o site
   deixou de mandar (`20261114a_erros_sem_ruido.sql`). Em 14/11 o Resumo
   marcou 102,5 (antes 35,1); dos 551 erros dos 30 dias, 460 eram quatro

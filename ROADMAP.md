@@ -420,6 +420,28 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   lista antiga não mostra; (4) raridade "comum" da lista antiga, que vem em
   branco; (5) logo do jogo (o do site oficial, a recortar); (6) o NEX-A
   (2012–2015) e a versão inglesa de 2005, se forem entrar.
+- **Saint Seiya (`seiya`, `seiyatc`, `seiyacr`)**: três jogos vintage desde
+  2026-11-13 (um por produto), do mesmo sync. Entraram 1.724 cartas em 27
+  sets, todas com scan: no Saint Seiya Carddass, as Part 1–3 (1988–89), a
+  Saint Paradise ACT.1–3 e a jumbo (1991–92) e o Reborn Saint Paradise 1–3
+  (2022–23); no Saint Seiya Trading Collection, as cinco coleções da Amada
+  (2000–03) com as promos; no Saint Seiya Crusade, os sete boosters (2012–14) e
+  as promos. Faltam: (1)
+  o PP Card da Amada (fim dos anos 80, 4 partes): sem número impresso, sem data
+  e sem lista de nomes (o saint-seiya.it tem scans de 3 partes, com descrição
+  em italiano; a 4ª, de Asgard, não tem scan em lugar nenhum); (2) o Card Game
+  Collection da Amada (2004: o starter 銀河戦争編 e os boosters 黄金聖衣争奪編
+  e 黄金十二宮編 ブースターパック2): número impresso (CH-, PL-, AC-) e scans de
+  370 px no saint-seiya.it, mas sem a divisão das 186 cartas por produto e com
+  37 nomes incertos; (3) metade do Crusade de 2014 (～LEGEND of
+  SANCTUARY／聖闘士星矢Ω～: 91 oficiais, 46 na fonte; a lista da loja BIGWEB
+  tem o resto, sem imagem); (4) o C-012 verde do Crusade
+  ～アスガルド・海皇ポセイドン編～ sem imagem (a fonte repete o scan do U-012);
+  (5) logo maior (o atual vem de um display de 1988, 249 px) e um logo pra cada produto (o Trading Collection e o Crusade usam o da marca, como o narutotc); (6) o Knights of
+  the Zodiac CCG da Bandai America (2004, 232 cartas, scans de 321 px), que
+  não estava no pedido; (7) a Kayou (圣斗士星矢 圣衣觉醒卡, China, 2023 em
+  diante): ainda à venda, sem regras de jogo e sem checklist com nome, fica de
+  fora do vintage.
 - **Dragon Ball Carddass (`dbc`)**: entrou só o Hondan 第1弾–第18弾, sem imagem.
   Faltam (1) o Hondan 第19弾–第30弾 e o 特別弾, que o sync pega sozinho quando o 80storage
   publicar; (2) Super Battle, Visual Adventure e Super Barcode Wars, sem fonte

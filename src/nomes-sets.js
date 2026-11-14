@@ -288,6 +288,40 @@
     "gw-abs": "Always Beginning Set",
     "gw-promo": "Promotional Cards",
     "gw-prize": "Prize Cards",
+    // ---- Saint Seiya (sync-saint-seiya.mjs): os três jogos, seiya (Carddass),
+    // seiyatc (Trading Collection) e seiyacr (Crusade). No Carddass a SÉRIE vai
+    // na frente ("Saint Paradise Act 1"), e o groupSeiyaSets a tira dentro da
+    // seção (com o travessão que vem depois); as partes de 1988–89 não têm
+    // prefixo. É o setNameEn do sync, travado no tests/saint-seiya.test.mjs; os
+    // subtítulos japoneses em inglês são tradução nossa, salvo os do Reborn, que
+    // o animecollection dá em inglês.
+    "ss-cd01": "Part 1",
+    "ss-cd02": "Part 2 — Battle Memorial",
+    "ss-cd03": "Part 3 — The Sea Emperor's Ambition",
+    "ss-sp01": "Saint Paradise Act 1",
+    "ss-sp02": "Saint Paradise Act 2",
+    "ss-sp03": "Saint Paradise Act 3",
+    "ss-spx": "Saint Paradise Jumbo Carddass",
+    "sstc-2000": "Trading Collection",
+    "sstc-2000p": "Trading Collection Promo",
+    "sstc-m1": "The Movie Part 1",
+    "sstc-m1p": "The Movie Part 1 Promo",
+    "sstc-m2": "The Movie Part 2",
+    "sstc-tv": "TV Series & The Hades Chapter Sanctuary",
+    "sstc-tvp": "TV Series & The Hades Chapter Sanctuary Box Cards",
+    "sstc-hd": "The Hades Chapter Sanctuary Complete Edition",
+    "sstc-hdp": "The Hades Chapter Sanctuary Complete Edition Promo",
+    "sscr-01": "The Twelve Temples Arc",
+    "sscr-02": "Saint Seiya Omega",
+    "sscr-03": "Asgard & Sea Emperor Poseidon Arc",
+    "sscr-04": "Omega: The Twelve Temples Arc",
+    "sscr-05": "Hades Arc",
+    "sscr-06": "Omega: New Cloth Arc",
+    "sscr-07": "Legend of Sanctuary / Omega",
+    "sscr-pr": "Promotion Cards",
+    "ss-rb01": "Reborn Saint Paradise — A Heroic Legend Revived!",
+    "ss-rb02": "Reborn Saint Paradise — Clash! The Proud Assassins",
+    "ss-rb03": "Reborn Saint Paradise — Assemble! Gold Saints",
     // ---- Gundam Carddass (linha gcd do jogo gundam, sync-gundam-carddass.mjs).
     // Com a SÉRIE na frente ("SD Gundam Gaiden Part 1"): fora da página da linha
     // "Part 1" seria de cinco séries; dentro da seção da série o
