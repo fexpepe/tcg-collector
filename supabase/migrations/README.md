@@ -25,6 +25,13 @@ poucos.)
   prova nada), um jogo inventado não cria, e o `contribute_price` anônimo
   segue 401. **A próxima migração de jogo copia esta.**
 
+  **Aplicada em 2026-11-13** pelo Fernando e verificada por curl anônimo no
+  mesmo dia: as views de `ss-cd02-1`, `sstc-2000-001` e `sscr-01-b-u-001`
+  responderam 204 e criaram as linhas no `card_views` (games `seiya`,
+  `seiyatc` e `seiyacr`, 1 view cada); um jogo inventado (`seiyax`) respondeu
+  204 e não criou linha; `contribute_price` anônimo segue 401; as linhas do
+  `hololive`, do `narutotc` e do `grandarchive` continuam lá.
+
 - `20261113g` — libera o slug `hololive` (hololive OFFICIAL CARD GAME,
   Bushiroad/COVER, edição em inglês, 2025+) nas duas whitelists de jogo
   (`card_views`/`increment_card_view` e `contribute_price`;
