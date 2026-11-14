@@ -33,7 +33,7 @@ catálogo completo só existe no build de produção.
 
 ## Os jogos
 
-O registro central é o `GAMES` em [src/game.js](src/game.js): **37 slugs**, 36 com
+O registro central é o `GAMES` em [src/game.js](src/game.js): **42 slugs**, 41 com
 catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do Pokémon
 é a raiz `data/` por motivo histórico (não movemos nada).
 
@@ -50,6 +50,7 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 | `weiss` | Weiß Schwarz | TCGCSV cat. 20 (Bushiroad; só a edição inglesa, 2013+; paralelas SP/SSP/OFR = cartas próprias; setId fixo por groupId com o código impresso, `DDD-S118`; sem logo de set publicado) | USD |
 | `vanguard` | Cardfight!! Vanguard | TCGCSV cat. 16 (Bushiroad 2011+; as cinco eras, só a edição inglesa; paralelas SP/FR/SEC = cartas próprias; setId do código impresso que abre o nome do grupo, `DZ-BT16`; sem logo de set) | USD |
 | `fftcg` | Final Fantasy TCG | TCGCSV cat. 24 (Square Enix 2016+, os Opus; Full Art = carta própria; setId fixo por groupId, `OP27`, porque a abreviação da fonte erra e repete; sem logo de set publicado) | USD |
+| `hololive` | hololive Official Card Game | TCGCSV cat. 87 (Bushiroad/COVER 2025+, só a edição EN; id do productId porque número e raridade repetem; cada produto é Normal ou Foil; sem logo de set) | USD |
 | `grandarchive` | Grand Archive TCG | TCGCSV cat. 74 (Weebs of the Shore 2023+; Normal/Foil no mesmo produto; id do productId porque o número repete dentro do set; sem logo de set) | USD |
 | `godzilla` | Godzilla Card Game | TCGCSV cat. 88 (Bushiroad/Yuhodo 2025; só a edição inglesa; paralelas +/++/+++ = cartas próprias; setId fixo por groupId com o código impresso, `EBP01`; sem logo de set publicado) | USD |
 | `narutomythos` | Naruto Mythos TCG | a galeria oficial do jogo (narutotcgmythos.com, JSON público; Cicaboom, 2026+, EN). Id pelo SKU oficial (`nmy-s1e1-c003fav1`); a 2ª edição do Set 1 vira o set "Konoha Shidō (2nd Edition)" e as cartas de torneio, "<set> Promos"; raridade por extenso; sem logo de set | sem preço |
@@ -204,6 +205,33 @@ da edição ocidental desde 2016. Não é o set "Final Fantasy" do Magic
   carta) no `series`, que vira faceta da página do set.
 - Sets no formato dos modernos da Bandai (`SECOES_BANDAI`): os Opus,
   o Legacy Collection como booster extra, starters e Boss Decks, promos.
+
+### hololive Official Card Game (`hololive`)
+
+[scripts/sync-hololive.mjs](scripts/sync-hololive.mjs), TCGCSV categoria 87,
+no padrão do Grand Archive. O jogo da Bushiroad com a COVER, **só a edição em
+inglês** (2025+): a japonesa não está no TCGplayer.
+
+- **id = `holo-<productId>`**, nunca o número: 341 cartas dividem número e
+  raridade com outra (a reimpressão num produto seguinte, a arte alternativa,
+  as de torneio), e o prefixo do número não é o set — um booster traz cartas
+  `hSD` e as Cheer `hY` de outros produtos. Cada produto é uma carta, e o
+  qualificador do nome ("(SR)", "(Alternate Art)") fica.
+- **Cada produto é Normal ou Foil**, nunca os dois; o preço base é o do
+  acabamento que existe.
+- **setId = o código oficial** (`HBP01`, `HSD12`, `HEB01`), tirado por regra da
+  abreviação do TCGplayer, que muda de grafia a cada grupo (`BP01E`,
+  `HBP03E`, `hBP08e`, `SD012E`). O Start Cheer Set (`HYS01`) e as promos
+  (`HPR`) ficam fixos no `SET_FIXO`.
+- **Imagem** de 500–699 px de largura em 81% das cartas (amostra de 219); o
+  site oficial serve só 400×559, então não há fonte maior.
+- Cor no `color`, degrau do holomem no `bloom`, tipo do Support no `subtype`;
+  cor, tipo e Bloom viram facetas da página do set.
+- Sets no formato dos modernos da Bandai (`SECOES_BANDAI`): Booster Pack,
+  Extra Booster, Start Decks, promos.
+- **Sem ilustrador**: a TCGCSV não publica.
+- **Scanner**: lê o código impresso (`hBP01-001`); a reimpressão e a arte
+  alternativa imprimem o mesmo código, e quem separa é a arte.
 
 ### Grand Archive TCG (`grandarchive`)
 

@@ -304,6 +304,11 @@ test("Bandai moderno: coleção numerada, boosters extras, decks e promos, pelo 
   assert.deepEqual(secoesBandai("fftcg", ["OP1", "OP30", "RE", "ST27", "BDC", "BD7", "PR", "W24", "DEC"]), {
     main: ["OP1", "OP30"], extraBoosters: ["RE"], decks: ["BD7", "BDC", "ST27"], promos: ["DEC", "PR", "W24"]
   });
+  // hololive OFFICIAL CARD GAME: Booster Pack, Extra Booster, Start Deck (e
+  // o Start Cheer Set) pelo código oficial; as promos no resto.
+  assert.deepEqual(secoesBandai("hololive", ["HBP01", "HBP07", "HEB01", "HSD01", "HSD19", "HYS01", "HPR"]), {
+    main: ["HBP01", "HBP07"], extraBoosters: ["HEB01"], decks: ["HSD01", "HSD19", "HYS01"], promos: ["HPR"]
+  });
   // Grand Archive (Weebs of the Shore, na mesma forma): o booster de três
   // letras, a Alter Edition e os packs avulsos como extra, Starter Decks e
   // Re:Collection nos decks, Event/Supporter Pack e promos no resto.

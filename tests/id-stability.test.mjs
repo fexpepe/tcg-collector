@@ -70,6 +70,8 @@ test("a exceção só vale pro formato <prefixo>-<productId> do próprio jogo", 
   assert.equal(ehIdDeProduto("fftcg", "ff-132375"), false);
   assert.equal(ehIdDeProduto("grandarchive", "ga-494129"), true);
   assert.equal(ehIdDeProduto("grandarchive", "grandarchive-494129"), false);
+  assert.equal(ehIdDeProduto("hololive", "holo-724234"), true);
+  assert.equal(ehIdDeProduto("hololive", "hololive-724234"), false);
   assert.equal(ehIdDeProduto("vanguard", "vg-727149"), true);
   assert.equal(ehIdDeProduto("vanguard", "vanguard-727149"), false);
   assert.equal(ehIdDeProduto("narutocg", "nrt-ncg-512345"), true); // jogo próprio desde 11/11/2026

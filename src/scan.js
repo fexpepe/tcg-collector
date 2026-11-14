@@ -430,6 +430,7 @@
     fab: [/LEGEND ?STORY/, /FLESH ?AND ?BLOOD/],
     riftbound: [/RIOT ?GAMES/, /RIFTBOUND/, /LEAGUE ?OF ?LEGENDS/, /\d{4} ?RGI\b/],
     unionarena: [/UNION ?ARENA/],
+    hololive: [/HOLOLIVE/],
     naruto: [/NARUTO/, /KISHIMOTO/],
     // O de 2027 imprime a mesma marca que o vintage: os dois empatam e a busca
     // vai nos dois (sem a pista, a carta nova era filtrada pro vintage).
@@ -491,6 +492,10 @@
     // tipo: B, A ou EB). O extrair devolve "NB02-48"; nenhum outro jogo usa
     // dois dígitos depois de "NB0x-".
     [/^NB\d{2}-\d{2}$/, ["narutoboruto"]],
+    // hololive OFFICIAL CARD GAME: "hBP01-001", "hSD12-003", "hEB01-020", as
+    // Cheer "hY01-001" / "hYS01-001" e a promo "hPR-012" (2026-11-13). O "h"
+    // minúsculo da marca chega em caixa alta do extrair.
+    [/^H(?:(?:BP|SD|EB|YS?)\d{2}|PR)-\d{3}$/, ["hololive"]],
     [/^[A-Z0-9]{2,4}-[A-Z]{2}\d{3}/, ["ygo"]],
     [/^U[EP][A-Z0-9]{2,5}\//, ["unionarena"]],
     [/^[A-Z0-9]{2,4}\/(?:EN-)?[SW][A-Z]{0,2}\d{2,3}-/, ["weiss"]],

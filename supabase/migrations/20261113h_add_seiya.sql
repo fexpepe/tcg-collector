@@ -3,8 +3,8 @@
 -- (`seiya` = Saint Seiya Carddass, `seiyatc` = Trading Collection da Amada,
 -- `seiyacr` = Crusade) nas whitelists de jogo do banco. Aplicar no SQL Editor do Supabase (projeto dlnalopazitfdgnmdguu).
 --
--- Cópia da 20261113g (hololive, a última aplicada; o arquivo dela está na
--- branch claude/hololive-9c41) com os três slugs a mais — só a lista muda. As mesmas DUAS famílias de whitelist:
+-- Cópia da 20261113g (hololive, a última aplicada) com os três slugs a mais —
+-- só a lista muda. As mesmas DUAS famílias de whitelist:
 --   1. card_views + increment_card_view  (corpo da 20260923a, com a linha do
 --      card_views_daily)
 --   2. contribute_price                  (corpo da 20260807c)

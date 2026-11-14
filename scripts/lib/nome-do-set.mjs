@@ -45,7 +45,10 @@ export const NOMES_DO_JOGO = {
   vanguard: ["Cardfight!! Vanguard", "Cardfight Vanguard"],
   // Grand Archive TCG: nenhum grupo traz o jogo no nome hoje; fica a regra
   // pro dia em que vier um "Grand Archive Promo Cards".
-  grandarchive: ["Grand Archive Trading Card Game", "Grand Archive TCG", "Grand Archive"]
+  grandarchive: ["Grand Archive Trading Card Game", "Grand Archive TCG", "Grand Archive"],
+  // hololive OFFICIAL CARD GAME: só o grupo de promos traz o jogo na frente
+  // ("hololive OFFICIAL CARD GAME Promos" -> "Promos").
+  hololive: ["hololive OFFICIAL CARD GAME", "hololive Official Card Game"]
 };
 
 // Títulos de outra obra que começam com a marca: ficam inteiros. No Yu-Gi-Oh!

@@ -13,10 +13,9 @@ poucos.)
   `seiyacr` = Crusade) nas duas whitelists de jogo
   (`card_views`/`increment_card_view` e `contribute_price`;
   `20261113h_add_seiya.sql`). Cópia da `20261113g` (hololive, a última
-  aplicada; o arquivo dela está na branch `claude/hololive-9c41`) com os três
-  slugs a mais: **ela cobre a 20261113g** e todas as anteriores (o
-  `duelmasters` da 13e, o `narutotc` da 13f e o `hololive` da 13g). Só a
-  lista muda. Qualquer uma das anteriores rodada **depois** desta tiraria os
+  aplicada) com os três slugs a mais: **ela cobre a 20261113g** e todas as
+  anteriores (o `duelmasters` da 13e, o `narutotc` da 13f e o `hololive` da
+  13g). Só a lista muda. Qualquer uma das anteriores rodada **depois** desta tiraria os
   três. A primeira versão, como 20261113g, falhou no SQL Editor (23514, o
   CHECK violado pela linha do `hololive` que já existia): esta substitui
   aquela, e rodá-la de novo é seguro. Sem ela, a view de carta e o Preço da
@@ -25,6 +24,24 @@ poucos.)
   `ss-cd02-1` tem de **criar a linha** no `card_views` (o 204 sozinho não
   prova nada), um jogo inventado não cria, e o `contribute_price` anônimo
   segue 401. **A próxima migração de jogo copia esta.**
+
+- `20261113g` — libera o slug `hololive` (hololive OFFICIAL CARD GAME,
+  Bushiroad/COVER, edição em inglês, 2025+) nas duas whitelists de jogo
+  (`card_views`/`increment_card_view` e `contribute_price`;
+  `20261113g_add_hololive.sql`). Cópia da `20261113f` (narutotc, a última
+  aplicada) com o `hololive` a mais: **ela cobre a 20261113f** e, por ela,
+  todas as do dia 13. Só a lista muda. Qualquer uma das anteriores rodada
+  **depois** desta tiraria o `hololive`. Sem ela, a view de carta e o Preço
+  da Comunidade do jogo novo são descartados em silêncio. Conferir com o par
+  de `curl` do fim do arquivo: a view de `holo-645575` tem de **criar a
+  linha** no `card_views` (o 204 sozinho não prova nada). **A próxima
+  migração de jogo copia esta.**
+
+  **Aplicada em 2026-11-13** pelo Fernando e verificada por curl anônimo no
+  mesmo dia: a view de `holo-645575` respondeu 204 e criou a linha no
+  `card_views` (game `hololive`, 1 view); um jogo inventado (`hololivex`)
+  respondeu 204 e não criou linha; `contribute_price` anônimo segue 401; as
+  linhas do `narutotc` e do `grandarchive` continuam lá.
 
 - `20261113f` — libera o slug `narutotc` (Naruto Trading Cards, as cartas de
   coleção japonesas da Amada e da Ensky, 2004–2005) nas duas whitelists de

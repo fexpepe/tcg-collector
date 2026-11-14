@@ -68,6 +68,14 @@ test("Godzilla e Palworld: código da edição inglesa, sem promo", () => {
   assert.equal(cod("palworld", "PC"), "");
 });
 
+test("hololive: o código oficial do produto, sem as promos", () => {
+  assert.equal(cod("hololive", "HBP01"), "HBP01");
+  assert.equal(cod("hololive", "HEB01"), "HEB01");
+  assert.equal(cod("hololive", "HSD12"), "HSD12");
+  assert.equal(cod("hololive", "HYS01"), "HYS01");
+  assert.equal(cod("hololive", "HPR"), "");
+});
+
 test("Pokémon: TCGdex no inglês/português (só SV e ME), setId no japonês", () => {
   const comCodigo = (c, serie = "sv") => [{ number: "001", setCode: c, setSerieId: serie }];
   assert.equal(codigoDoSet("pokemon", set("sv03.5"), comCodigo("MEW")), "MEW");
