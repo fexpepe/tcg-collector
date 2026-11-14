@@ -7360,7 +7360,7 @@
     vanguard:  { tcgLine: "cardfight-vanguard", usText: "cardfight vanguard" },
     // Duel Masters (13/11/2026): o TCGplayer não vende o jogo (não há
     // categoria na TCGCSV) e nenhuma loja BR foi conferida. Fica a busca do
-    // eBay pelo nome; o preço do site vem da Yuyu-tei (sync-duelmasters.mjs).
+    // eBay pelo nome. Preço desligado desde 14/11 (sync-duelmasters.mjs).
     duelmasters: { usText: "duel masters", noTcgplayer: true },
     // Naruto Mythos TCG e Naruto Kayou (conferido em 12/11/2026): o TCGplayer
     // não tem nenhum dos dois (TCGCSV, 94 categorias). Sem loja BR conferida;

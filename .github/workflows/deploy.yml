@@ -701,9 +701,9 @@ jobs:
         if: env.RODA_SYNC != 'true'
         run: node scripts/sync-duelmasters.mjs --no-fetch || echo "sync-duelmasters --no-fetch falhou; segue com o catalogo do cache"
 
-      - name: Snapshot de preços (histórico Duel Masters)
-        if: env.RODA_SYNC == 'true'
-        run: node scripts/sync-price-history.mjs data/duelmasters
+      # Sem o passo de histórico de preços: o preço do Duel Masters está
+      # DESLIGADO desde 14/11/2026 (PRECO_LIGADO no sync; os termos da Yuyu-tei
+      # proíbem republicar sem autorização). Volta junto quando religar.
 
       # NARUTO Mythos TCG (Cicaboom, 2026+): a galeria oficial do jogo, um JSON
       # publico que o site dela le. Id pelo SKU oficial; a 2a edicao do Set 1

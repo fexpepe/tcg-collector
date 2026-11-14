@@ -48,7 +48,7 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 | `swu` | Star Wars: Unlimited | TCGCSV cat. 79 (FFG; Hyperspace/Showcase = cartas próprias) + logos de set do site oficial (`mirror-swu-set-logos.mjs`) | USD |
 | `cyberpunk` | Cyberpunk TCG | TCGCSV cat. 92 (Weird Co.; edições Beta e Retail = sets próprios, setId fixo por groupId) + logo do Welcome to Night City curado do site oficial | USD |
 | `weiss` | Weiß Schwarz | TCGCSV cat. 20 (Bushiroad; só a edição inglesa, 2013+; paralelas SP/SSP/OFR = cartas próprias; setId fixo por groupId com o código impresso, `DDD-S118`; sem logo de set publicado) | USD |
-| `duelmasters` | Duel Masters | Banco oficial da Takara Tomy (dm.takaratomy.co.jp/card/; o jogo japonês, 2002+; cada impressão = carta própria; setId = código do produto, `DM26-RP3`) + preço de venda da Yuyu-tei em iene, convertido no sync. Fora da TCGCSV: o TCGplayer não vende o jogo | USD (convertido do iene) |
+| `duelmasters` | Duel Masters | Banco oficial da Takara Tomy (dm.takaratomy.co.jp/card/; o jogo japonês, 2002+; cada impressão = carta própria; setId = código do produto, `DM26-RP3`) ; preço DESLIGADO desde 14/11/2026 (ver a seção do jogo). Fora da TCGCSV: o TCGplayer não vende o jogo | — |
 | `vanguard` | Cardfight!! Vanguard | TCGCSV cat. 16 (Bushiroad 2011+; as cinco eras, só a edição inglesa; paralelas SP/FR/SEC = cartas próprias; setId do código impresso que abre o nome do grupo, `DZ-BT16`; sem logo de set) | USD |
 | `fftcg` | Final Fantasy TCG | TCGCSV cat. 24 (Square Enix 2016+, os Opus; Full Art = carta própria; setId fixo por groupId, `OP27`, porque a abreviação da fonte erra e repete; sem logo de set publicado) | USD |
 | `hololive` | hololive Official Card Game | TCGCSV cat. 87 (Bushiroad/COVER 2025+, só a edição EN; id do productId porque número e raridade repetem; cada produto é Normal ou Foil; sem logo de set) | USD |
@@ -165,12 +165,16 @@ catálogo.
   novo (o `cards.js` anterior é o cache). Nome, tipo, civilização (no
   `color`), raridade, custo, poder, raça e ilustrador; tudo em japonês, sem
   nome oficial em inglês.
-- **Preço = uma loja, não média de mercado**: o preço de venda da Yuyu-tei
+- **Preço DESLIGADO desde 14/11/2026** (`PRECO_LIGADO` no sync): os termos da
+  Yuyu-tei proíbem republicar conteúdo do site sem autorização, e ela barra o
+  servidor do GitHub. O pedido de permissão à loja está pendente; os preços
+  lidos em 13/11 ficam em `scripts/data/duelmasters-precos-yuyutei.json`, fora
+  do deploy. Ligado, era o preço de venda da Yuyu-tei
   (yuyu-tei.jp), em iene, casado pelo número impresso dentro do set
   (`chaveDoNumero`) e gravado no slot `u` em dólar pela cotação do dia. A
   loja mostra preço mesmo esgotada. Na tela, a fonte aparece como "Japão ·
   Yuyu-tei" (`market.jp`), não como TCGplayer. 20.814 (86,6%) cartas com preço
-  no lançamento; as temporadas de promo e os decks da CoroCoro não têm página
+  na carga de 13/11; as temporadas de promo e os decks da CoroCoro não têm página
   de set na loja.
 - **id = `dm-<id oficial>`** (`dm-dm26rp3-s001`): cada impressão (secreta,
   alternativa) é ficha própria na fonte e carta própria aqui.

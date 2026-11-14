@@ -249,11 +249,12 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   primeiro booster, conferir o código do set contra o `SECOES_BANDAI`
   (src/app.js), que hoje supõe BT/ST.
 - **Duel Masters (`duelmasters`, 2026-11-13)**: entrou com 24.039 cartas
-  de 396 produtos, do banco oficial da Takara Tomy, e preço da Yuyu-tei
-  (uma loja japonesa, em iene, convertido pra dólar no sync) — o TCGplayer não
-  vende o jogo. A migração `20261113e` está aplicada (e a `20261113g`, mais
-  nova, leva o `duelmasters`). Pendências: Pendências:
-  os termos de uso da Yuyu-tei não foram lidos (o robots.txt não barra); logo
+  de 396 produtos, do banco oficial da Takara Tomy, SEM preço — o TCGplayer não vende o jogo, e
+  o preço da Yuyu-tei (uma loja japonesa) foi desligado em 14/11: os termos
+  dela proíbem republicar sem autorização. Os preços de 13/11 estão guardados
+  em `scripts/data/duelmasters-precos-yuyutei.json`. A migração `20261113e` está aplicada (e a `20261113g`, mais
+  nova, leva o `duelmasters`). Pendências: o pedido de
+  permissão à Yuyu-tei (sem resposta, religar só com o aval); logo
   melhor (o do site oficial tem 154 px e foi ampliado); a cor (`#fde68a`,
   proposta) e a posição no hub (depois do Vanguard); nome em inglês das
   cartas e dos sets (não há oficial; a wiki do Fandom tem os dos sets);
