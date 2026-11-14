@@ -53,7 +53,9 @@
     totalCount: document.getElementById("totalCount"),
     completionRate: document.getElementById("completionRate"),
     resultCount: document.getElementById("resultCount"),
-    setsViewToggle: document.getElementById("setsViewToggle")
+    setsViewToggle: document.getElementById("setsViewToggle"),
+    setsSort: document.getElementById("setsSort"),
+    setsTopo: document.getElementById("setsTopo")
   };
   const view = elements.grid.dataset.view || "pokedex";
   // Artistas e Treinadores (2026-10-17): o desenho, a ordem e o resumo moram no
@@ -65,6 +67,13 @@
   // Visão grade/lista dos Sets (só na página de Sets). Mesma UI e persistência
   // da página de Cartas; a classe .is-list na grade faz o CSS virar linhas.
   let setsView = localStorage.getItem("tcg-sets-view") === "list" ? "list" : "grid";
+  // Ordenar dos Sets (2026-11-14), ao lado da Visualização e guardado do
+  // mesmo jeito (vale em todo jogo). "padrao" é a lista nas seções do jogo; as
+  // outras ordens estão em ordenaSets.
+  const ORDENS_DOS_SETS = ["padrao", "progresso", "recentes", "antigos", "nome", "valor"];
+  let ordemSets = (() => {
+    try { const v = localStorage.getItem("tcg-sets-ordem"); return ORDENS_DOS_SETS.includes(v) ? v : "padrao"; } catch (e) { return "padrao"; }
+  })();
   // Página de Sets filtrada por uma série específica (?serie=id).
   const serieParam = new URLSearchParams(window.location.search).get("serie") || "";
   // ?line=opcd|op2002 (atalho vintage do hub): mostra SÓ os sets daquela linha do
@@ -149,6 +158,13 @@
       const rotulo = botao.querySelector("span");
       if (rotulo) rotulo.textContent = botao.getAttribute(sobreAberto ? "data-menos" : "data-mais");
     });
+  }
+  // Topo da tela de um jogo moderno: o destaque do lançamento (pintaTopo) mora
+  // ACIMA da linha do contador desde 2026-11-14. Enquanto o catálogo chega, o
+  // lugar fica guardado — sem isto a linha do contador e a grade desceriam
+  // inteiras quando o destaque aparecesse.
+  if (view === "sets" && elements.setsTopo && !comSobre && !serieParam) {
+    elements.setsTopo.innerHTML = '<div class="skel sx-topo-skel" aria-hidden="true"></div>';
   }
   const pager = shared.createPager({
     grid: elements.grid,
@@ -238,6 +254,7 @@
       preview.openFromUrl(); // ?card=<id> compartilhado: reabre o popup
     })
     .catch((error) => {
+      if (elements.setsTopo) elements.setsTopo.replaceChildren(); // a reserva do destaque não fica pulsando em cima do erro
       shared.mostraErroDeCatalogo(elements.empty, error);
       elements.empty.hidden = false;
     });
@@ -506,6 +523,13 @@
         refineVisibleSets(); // na lista do celular o valor aparece: agora vale refinar
       });
     }
+    if (elements.setsSort) {
+      elements.setsSort.addEventListener("change", () => {
+        ordemSets = ORDENS_DOS_SETS.includes(elements.setsSort.value) ? elements.setsSort.value : "padrao";
+        try { localStorage.setItem("tcg-sets-ordem", ordemSets); } catch (e) { /* storage cheio ou bloqueado: a ordem vale só nesta visita */ }
+        render({ resetCount: true });
+      });
+    }
 
     if (elements.generationChips) {
       elements.generationChips.addEventListener("click", (event) => {
@@ -656,10 +680,10 @@
     }
     if (ent) ent.pintou(elements.grid);
 
-    // Cabeçalhos de série não contam como resultado, nem o topo da Vitrine
-    // (destaque e "Continue completando"): o Yu-Gi-Oh! dizia "595 resultados"
-    // com 594 sets.
-    const realCount = items.filter((item) => !item.cabecalho && !/^(series-head|category-head|sx-hero|sx-continue)$/.test(item.type)).length;
+    // Cabeçalhos de série não contam como resultado: o Yu-Gi-Oh! dizia "595
+    // resultados" com 594 sets. (O destaque do topo nem passa por aqui: mora
+    // fora da grade desde 2026-11-14, ver pintaTopo.)
+    const realCount = items.filter((item) => !item.cabecalho && !/^(series-head|category-head)$/.test(item.type)).length;
     elements.empty.hidden = realCount > 0;
     elements.resultCount.textContent = tn("results.count", realCount);
     if (view === "pokedex") { updatePokedexStats(); return; }
@@ -719,19 +743,24 @@
       const setItems = manifestMode()
         ? manifestSetItems()
         : indexedGroupsToItems(indexes.sets, visibleIds, toSetItem, null, splitGroupsBySetId).filter((set) => lineScope.includes(set.setId));
+      const ordem = ordemDosSets();
       // Página de uma série (?serie=id): só os sets dela, sem cabeçalhos — e
       // sem os decks/caixas, que a lista mostra na seção deles (o "X sets →"
       // do cabeçalho da série não os conta).
-      if (serieParam) return setItems.filter((set) => set.serieId === serieParam && set.kind !== "deck").sort(sortByReleaseDesc);
+      if (serieParam) return ordenaSets(setItems.filter((set) => set.serieId === serieParam && set.kind !== "deck").sort(sortByReleaseDesc), ordem);
       // PADRÃO da página de Sets (2026-10-09), o mesmo em todo jogo e linha —
       // até aqui só o Pokémon e o Magic tinham: os produtos de um lançamento
       // (pré-release, promos, Commander, Trainer Gallery…) moram DENTRO do
       // cartão do set (aninhaPorNome); as seções são as do jogo
       // (agrupaSetsDoJogo); e a lista inteira — sem busca — ganha no topo o
-      // lançamento em destaque e, pra quem tem coleção, os sets em andamento
-      // (vitrineDoTopo). Regra escrita em docs/CATALOGO.md, 3.4.
+      // lançamento em destaque (vitrineDoTopo), que mora FORA da grade, acima
+      // da linha do contador (pintaTopo). O Ordenar troca as seções por uma
+      // lista só (ordenaSets). Regra escrita em docs/CATALOGO.md, 3.4.
       const grupos = agrupaSetsDoJogo(aninhaPorNome(setItems));
-      if (normalize(elements.search.value)) return grupos;
+      const buscando = !!normalize(elements.search.value);
+      pintaTopo(buscando ? [] : vitrineDoTopo(grupos));
+      const lista = ordenaSets(grupos, ordem);
+      if (buscando) return lista;
       // Lista inteira em mãos: é dela que a linha do tempo do "Sobre" tira os
       // links (a 1ª vez redesenha o bloco com eles).
       if (comSobre) {
@@ -739,7 +768,7 @@
         setsPorId = new Map(setItems.map((set) => [set.setId, set]));
         if (primeira) sobrePromise.then(desenhaSobre);
       }
-      return vitrineDoTopo(grupos).concat(grupos);
+      return lista;
     }
 
     // Sem as cartas em mãos (abertura da página — ver soIndices), as cápsulas
@@ -1240,9 +1269,6 @@
       return createSetCard(item);
     }
 
-    if (item.type === "sx-hero") return createHero(item);
-    if (item.type === "sx-continue") return createContinue(item);
-
     return createGroupCard(item);
   }
 
@@ -1694,9 +1720,11 @@
   // Destaque = o set principal mais novo já lançado (sem promo, deck, energia
   // ou coleção do McDonald's; fora das seções de promo/deck/raid/eventos — ver
   // cabecalhoDeSecao). Ao lado, até dois "Em breve" (lançamento no futuro) e,
-  // se faltar, os outros lançamentos recentes. Pra quem tem carta no jogo,
-  // "Continue completando": os sets começados e não completos, do mais perto
-  // do fim pro mais longe.
+  // se faltar, os outros lançamentos recentes.
+  // O "Continue completando" (os sets começados, do mais perto do fim pro mais
+  // longe) saiu em 2026-11-14, a pedido: era informação a mais no topo. Quem
+  // quer os sets que mais tem pede no Ordenar ("Progresso: mais completos
+  // primeiro", ordenaSets).
   // Jogo que parou (vintage, ou sem set novo há mais de um ano): o destaque
   // é o "Último set", e os do lado são "Anteriores" — "Lançamento" e
   // "Também recentes" num set de 2002 seriam mentira.
@@ -1708,12 +1736,15 @@
   // Bundles" do Riftbound; o Union Arena, o Digimon e o "Deck Build Box" do
   // Gundam também, até ganharem as seções da Bandai em 11/11/2026).
   const NAO_DESTAQUE = /promo|mcdonald|energy|trainer kit|black star|pre-?release|event cards|tournament|championship|revision pack|starter deck|deck build box|bundle/i;
+  // Set mostrado FORA da seção dele (o destaque do topo, a lista do Ordenar):
+  // o que perdeu o título da série dentro dela (groupNarutoDataCarddass,
+  // groupDbcSets, groupMbcSets) volta com o nome cheio, senão o "Último set"
+  // seria só "Ch. 7".
+  function foraDaSecao(set) {
+    return set.nomeForaDaSecao ? Object.assign({}, set, { displayName: set.nomeForaDaSecao }) : set;
+  }
   function vitrineDoTopo(grupos) {
     const hoje = new Date().toISOString().slice(0, 10);
-    // O destaque fica FORA das seções: set que perdeu o título da série dentro
-    // dela (groupNarutoDataCarddass, groupDbcSets, groupMbcSets) volta com o
-    // nome cheio, senão o "Último set" seria só "Ch. 7".
-    const foraDaSecao = (set) => (set.nomeForaDaSecao ? Object.assign({}, set, { displayName: set.nomeForaDaSecao }) : set);
     const sets = [];
     let foraDoDestaque = false;
     grupos.forEach((item) => {
@@ -1725,7 +1756,7 @@
     const items = [];
     // Jogo com "Sobre" (vintage): o topo é a história do jogo, não o último
     // set — num jogo que acabou em 1997, o "Último set" só repetia o fim da
-    // lista logo abaixo. O "Continue completando" fica.
+    // lista logo abaixo.
     if (lancados.length && !comSobre) {
       const lado = futuros.slice(0, 2);
       const emBreve = lado.length > 0;
@@ -1733,16 +1764,63 @@
       const parado = !emBreve && Date.parse(hoje) - Date.parse(lancados[0].releaseDate) > 365 * 86400000;
       items.push({ type: "sx-hero", set: lancados[0], lado, emBreve, parado, hoje });
     }
-    if (colecaoTem()) {
-      const todos = [];
-      // As edições (2nd Edition…) também: não têm cartão, mas quem começou uma
-      // acha ela aqui.
-      grupos.forEach((item) => { if (item.type === "set") { todos.push(foraDaSecao(item)); (item.filhos || []).concat(item.edicoes || []).forEach((f) => todos.push(f)); } });
-      const andamento = todos.filter((set) => set.totalCount > 0 && set.ownedCount > 0 && set.ownedCount < set.totalCount)
-        .sort((a, b) => b.ownedCount / b.totalCount - a.ownedCount / a.totalCount || sortByReleaseDesc(a, b)).slice(0, 6);
-      if (andamento.length) items.push({ type: "sx-continue", sets: andamento });
-    }
     return items;
+  }
+
+  // O destaque na caixa #setsTopo, ACIMA da linha do contador, do Ordenar e da
+  // Visualização (2026-11-14) — o mesmo lugar do "Sobre" nos vintage, que a
+  // borda põe antes do .results-header. Até aqui ele era o 1º item da grade, e
+  // a linha de filtros ficava em cima do destaque nos modernos e embaixo do
+  // "Sobre" nos vintage. O HTML igual não é trocado: o render roda várias
+  // vezes na abertura, e trocar o <img> do logo fazia ele piscar.
+  function pintaTopo(itens) {
+    const caixa = elements.setsTopo;
+    if (!caixa) return;
+    const heroi = itens.find((item) => item.type === "sx-hero");
+    if (!heroi) { caixa.replaceChildren(); return; }
+    const novo = createHero(heroi);
+    if (caixa.firstElementChild && caixa.firstElementChild.outerHTML === novo.outerHTML) return;
+    caixa.replaceChildren(novo);
+  }
+
+  // ── Ordenar dos Sets (2026-11-14) ───────────────────────────────────────
+  // "Padrão" é a lista de sempre, nas seções do jogo (agrupaSetsDoJogo). As
+  // outras ordens tiram as seções e põem os sets numa lista só, sem
+  // cabeçalho: "mais completos primeiro" dividido em séries não juntaria os
+  // sets que a pessoa mais tem. O cartão é o mesmo (os produtos do lançamento
+  // seguem dentro dele) e o set que a seção encurtou volta com o nome cheio.
+  // Progresso = o do cartão (as cartas em outra língua somam, item.alt);
+  // empate vai pelo lançamento, e sets sem carta sua ficam no fim.
+  function ordenaSets(lista, ordem) {
+    if (ordem === "padrao") return lista;
+    const pct = (s) => (s.totalCount > 0 ? (s.ownedCount + (s.alt ? s.alt.n : 0)) / s.totalCount : 0);
+    const nome = (a, b) => String(a.displayName || a.name).localeCompare(String(b.displayName || b.name), shared.getLocale(), { numeric: true, sensitivity: "base" });
+    const comparador = {
+      progresso: (a, b) => pct(b) - pct(a) || b.ownedCount - a.ownedCount || sortByReleaseDesc(a, b),
+      recentes: sortByReleaseDesc,
+      antigos: sortByReleaseAsc,
+      nome: (a, b) => nome(a, b) || sortByReleaseDesc(a, b),
+      valor: (a, b) => (b.value || 0) - (a.value || 0) || sortByReleaseDesc(a, b)
+    }[ordem];
+    if (!comparador) return lista;
+    return lista.filter((item) => item.type === "set").map(foraDaSecao).sort(comparador);
+  }
+  // A ordem escolhida, quando ela vale aqui: "Progresso" sem carta no jogo e
+  // "Valor" no modo colecionador (que esconde preço) não teriam o que ordenar
+  // — a lista volta ao padrão e a opção some do menu, sem apagar a escolha
+  // guardada (vale de novo no jogo em que a pessoa tem carta).
+  function ordemDosSets() {
+    const semColecao = !colecaoTem();
+    const colecionador = document.documentElement.hasAttribute("data-collector-mode");
+    const sel = elements.setsSort;
+    if (sel) {
+      const opcao = (v) => sel.querySelector(`option[value="${v}"]`);
+      if (opcao("progresso")) opcao("progresso").hidden = semColecao;
+      if (opcao("valor")) opcao("valor").hidden = colecionador;
+    }
+    const ordem = (ordemSets === "progresso" && semColecao) || (ordemSets === "valor" && colecionador) ? "padrao" : ordemSets;
+    if (sel && sel.value !== ordem) sel.value = ordem;
+    return ordem;
   }
 
   // Arte do set no tamanho pedido: logo, ou o nome em título quando o set não
@@ -1791,15 +1869,6 @@
         <p class="sx-eyebrow">${escapeHtml(t(item.emBreve ? "sets.sx.soon" : item.parado ? "sets.sx.earlier" : "sets.sx.recent"))}</p>
         ${item.lado.map(mini).join("")}
       </div>` : ""}`;
-    return node;
-  }
-  function createContinue(item) {
-    const node = document.createElement("section");
-    node.className = "sx-cont";
-    node.innerHTML = `<h2 class="sx-cont-title">${escapeHtml(t("sets.sx.continue"))}</h2>
-      <div class="sx-cont-rail">${item.sets.map((s) => `<a class="sx-mini sx-mini-prog" href="${escapeAttribute(setDetailUrl(s))}">
-        <span class="sx-mini-art">${arteDoSet(s, "sx-mini-logo")}</span>
-        <span class="sx-mini-info"><strong>${escapeHtml(s.displayName)}</strong>${progressoDoSet(s)}</span></a>`).join("")}</div>`;
     return node;
   }
 
