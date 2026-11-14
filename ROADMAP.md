@@ -321,7 +321,8 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   e a posição dos tiles (fim da grade do hub e da landing) foram confirmados
   pelo Fernando no mesmo dia. A cor da Kayou mudou no merge: o coral que ele
   tinha confirmado ficou a 26 do coral do Vanguard, que entrou em 13/11, e
-  virou magenta (#d946ef), a confirmar. Pendências: preço (nenhum dos
+  virou magenta (#d946ef); desde 14/11 vale a do Naruto (mesma IP = mesma
+  cor), como em todo jogo da marca. Pendências: preço (nenhum dos
   dois está no TCGplayer; o Mythos deve estar no Cardmarket, que barra acesso
   automatizado); lojas do `MARKETS` conferidas à mão; no Mythos, as três
   versões das Common e Uncommon (standard, full art e holográfica), que a
@@ -343,7 +344,7 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   (chronoclashsystem.com, no Wayback) só tem a página de cada produto, sem
   lista carta a carta, e o TCGplayer só vende as caixas lacradas. Falta
   também foto das outras 69 cartas de torneio. O TCGplayer tem preço de 7
-  delas, que não entrou. A cor (rosa, #f9a8d4) é proposta, a confirmar.
+  delas, que não entrou. A cor é a do Naruto (mesma IP = mesma cor, 14/11).
 - **Linhas do Naruto que são jogos distintos** (Data Carddass, CCG americano
   e Shippuden Card Game): pela mesma regra viram jogos próprios. É o caminho
   que o `narutocg` e o `mbc` fizeram (ids mantidos, migração da coleção no
@@ -362,7 +363,7 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   japonês dos Etching 2 e 3, que a fonte só dá em romaji; (4) conferir numa
   carta real a numeração das especiais do Etching 3 (a fonte pula o SP.11) e
   o mês do Etching 1 (agosto ou setembro de 2004); (5) logo próprio (hoje
-  vale o do Naruto) e confirmar a cor (verde-folha, #4ade80, proposta). As
+  vale o do Naruto); a cor é a do Naruto (mesma IP = mesma cor, 14/11). As
   coleções da fase Shippuden da Ensky (2007 em diante) não foram levantadas.
 - **WJカードセット da Jump Festa (candidato ao `jump`)**: o set de 24 cartas
   que a Shueisha vendia na Jump Festa (2001 a 2005, segundo o Card Check Box)
