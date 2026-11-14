@@ -8,19 +8,23 @@ poucos.)
 
 ## Pendentes de aplicar
 
-- `20261113g` — libera os slugs dos três jogos vintage de Saint Seiya
+- `20261113h` — libera os slugs dos três jogos vintage de Saint Seiya
   (`seiya` = Saint Seiya Carddass, `seiyatc` = Trading Collection da Amada,
-  `seiyacr` = Crusade) nas duas whitelists de jogo (`card_views`/`increment_card_view` e `contribute_price`;
-  `20261113g_add_seiya.sql`). Cópia da `20261113f` (narutotc, a última
-  aplicada) com os três slugs a mais: **ela cobre a 20261113f** e todas as
-  anteriores (inclusive o `duelmasters` da 13e). Só a lista muda. Qualquer
-  uma das anteriores rodada **depois** desta tiraria os três. Sem ela, a
-  view de carta e o Preço da Comunidade dos jogos são descartados em silêncio
-  (a coleção não depende dela). Conferir com o par de `curl` do fim do
-  arquivo: a view de `ss-cd02-1` tem de **criar a linha** no `card_views` (o
-  204 sozinho não prova nada), um jogo inventado não cria, e o
-  `contribute_price` anônimo segue 401. **A próxima migração de jogo copia
-  esta.**
+  `seiyacr` = Crusade) nas duas whitelists de jogo
+  (`card_views`/`increment_card_view` e `contribute_price`;
+  `20261113h_add_seiya.sql`). Cópia da `20261113g` (hololive, a última
+  aplicada; o arquivo dela está na branch `claude/hololive-9c41`) com os três
+  slugs a mais: **ela cobre a 20261113g** e todas as anteriores (o
+  `duelmasters` da 13e, o `narutotc` da 13f e o `hololive` da 13g). Só a
+  lista muda. Qualquer uma das anteriores rodada **depois** desta tiraria os
+  três. A primeira versão, como 20261113g, falhou no SQL Editor (23514, o
+  CHECK violado pela linha do `hololive` que já existia): esta substitui
+  aquela, e rodá-la de novo é seguro. Sem ela, a view de carta e o Preço da
+  Comunidade dos jogos são descartados em silêncio (a coleção não depende
+  dela). Conferir com o par de `curl` do fim do arquivo: a view de
+  `ss-cd02-1` tem de **criar a linha** no `card_views` (o 204 sozinho não
+  prova nada), um jogo inventado não cria, e o `contribute_price` anônimo
+  segue 401. **A próxima migração de jogo copia esta.**
 
 - `20261113f` — libera o slug `narutotc` (Naruto Trading Cards, as cartas de
   coleção japonesas da Amada e da Ensky, 2004–2005) nas duas whitelists de

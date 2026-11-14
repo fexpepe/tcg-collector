@@ -3,17 +3,23 @@
 -- (`seiya` = Saint Seiya Carddass, `seiyatc` = Trading Collection da Amada,
 -- `seiyacr` = Crusade) nas whitelists de jogo do banco. Aplicar no SQL Editor do Supabase (projeto dlnalopazitfdgnmdguu).
 --
--- Cópia da 20261113f (narutotc, a última aplicada) com os três slugs a mais —
--- só a lista muda. As mesmas DUAS famílias de whitelist:
+-- Cópia da 20261113g (hololive, a última aplicada; o arquivo dela está na
+-- branch claude/hololive-9c41) com os três slugs a mais — só a lista muda. As mesmas DUAS famílias de whitelist:
 --   1. card_views + increment_card_view  (corpo da 20260923a, com a linha do
 --      card_views_daily)
 --   2. contribute_price                  (corpo da 20260807c)
 -- Sem isto, no jogo novo a view de carta e o Preço da Comunidade são
 -- rejeitados EM SILÊNCIO (as funções só dão `return`).
 --
--- ESTA COBRE A 20261113f: a lista é a dela inteira (com o `duelmasters` da
--- 20261113e) mais os três. Cada migração de jogo reescreve a lista INTEIRA,
+-- ESTA COBRE A 20261113g: a lista é a dela inteira (com o `duelmasters` da
+-- 20261113e, o `narutotc` da 13f e o `hololive` da 13g) mais os três. Cada migração de jogo reescreve a lista INTEIRA,
 -- então qualquer uma das anteriores rodada DEPOIS desta tiraria os três.
+--
+-- A letra é "h": a primeira versão desta migração era 20261113g e falhou no
+-- SQL Editor (23514, "card_views_game_check is violated by some row"), porque
+-- a 20261113g da hololive, de outra sessão, já tinha sido aplicada e a lista
+-- não tinha o `hololive`. Rodar de novo é seguro: ela derruba e recria o
+-- CHECK e as duas funções.
 --
 -- A coleção NÃO depende desta migração: a tabela `collections` não tem
 -- whitelist de jogo.
@@ -39,14 +45,14 @@ begin
   end loop;
 end $$;
 alter table public.card_views add constraint card_views_game_check
-  check (game = any (array['pokemon','lorcana','onepiece','magic','fab','gundam','swu','cyberpunk','sorcery','dbfw','ygo','digimon','riftbound','unionarena','naruto','hxh','dbc','wow','lotr','harrypotter','weiss','mbc','dbz','cdm','gcd','gw','narutocg','godzilla','palworld','fftcg','narutomythos','narutokayou','narutoboruto','dbsb','dbva','dbbw','vanguard','grandarchive','duelmasters','narutotc','seiya','seiyatc','seiyacr','jump']));
+  check (game = any (array['pokemon','lorcana','onepiece','magic','fab','gundam','swu','cyberpunk','sorcery','dbfw','ygo','digimon','riftbound','unionarena','naruto','hxh','dbc','wow','lotr','harrypotter','weiss','mbc','dbz','cdm','gcd','gw','narutocg','godzilla','palworld','fftcg','narutomythos','narutokayou','narutoboruto','dbsb','dbva','dbbw','vanguard','grandarchive','duelmasters','narutotc','hololive','seiya','seiyatc','seiyacr','jump']));
 
 -- increment_card_view: corpo IDÊNTICO ao da 20261111d (e das anteriores) — só a lista de jogos muda.
 create or replace function public.increment_card_view(p_game text, p_card_id text)
 returns void language plpgsql security definer set search_path = public as $$
 begin
   if p_game is null or p_card_id is null then return; end if;
-  if not (p_game = any (array['pokemon','lorcana','onepiece','magic','fab','gundam','swu','cyberpunk','sorcery','dbfw','ygo','digimon','riftbound','unionarena','naruto','hxh','dbc','wow','lotr','harrypotter','weiss','mbc','dbz','cdm','gcd','gw','narutocg','godzilla','palworld','fftcg','narutomythos','narutokayou','narutoboruto','dbsb','dbva','dbbw','vanguard','grandarchive','duelmasters','narutotc','seiya','seiyatc','seiyacr','jump'])) then return; end if;
+  if not (p_game = any (array['pokemon','lorcana','onepiece','magic','fab','gundam','swu','cyberpunk','sorcery','dbfw','ygo','digimon','riftbound','unionarena','naruto','hxh','dbc','wow','lotr','harrypotter','weiss','mbc','dbz','cdm','gcd','gw','narutocg','godzilla','palworld','fftcg','narutomythos','narutokayou','narutoboruto','dbsb','dbva','dbbw','vanguard','grandarchive','duelmasters','narutotc','hololive','seiya','seiyatc','seiyacr','jump'])) then return; end if;
   if p_card_id !~ '^[A-Za-z0-9][A-Za-z0-9._-]{0,79}\Z' then return; end if;
   if not _rate_ok('cardview', 120) then return; end if;
   insert into card_views (game, card_id, views) values (p_game, p_card_id, 1)
@@ -66,7 +72,7 @@ create or replace function public.contribute_price(
 declare v numeric;
 begin
   if auth.uid() is null then return; end if;
-  if not (p_game = any (array['pokemon','lorcana','onepiece','magic','fab','gundam','swu','cyberpunk','sorcery','dbfw','ygo','digimon','riftbound','unionarena','naruto','hxh','dbc','wow','lotr','harrypotter','weiss','mbc','dbz','cdm','gcd','gw','narutocg','godzilla','palworld','fftcg','narutomythos','narutokayou','narutoboruto','dbsb','dbva','dbbw','vanguard','grandarchive','duelmasters','narutotc','seiya','seiyatc','seiyacr','jump'])) then return; end if;
+  if not (p_game = any (array['pokemon','lorcana','onepiece','magic','fab','gundam','swu','cyberpunk','sorcery','dbfw','ygo','digimon','riftbound','unionarena','naruto','hxh','dbc','wow','lotr','harrypotter','weiss','mbc','dbz','cdm','gcd','gw','narutocg','godzilla','palworld','fftcg','narutomythos','narutokayou','narutoboruto','dbsb','dbva','dbbw','vanguard','grandarchive','duelmasters','narutotc','hololive','seiya','seiyatc','seiyacr','jump'])) then return; end if;
   if p_card_id is null or p_card_id !~ '^[A-Za-z0-9][A-Za-z0-9._-]{0,79}\Z' then return; end if;
   if p_variant is null or length(p_variant) < 1 or length(p_variant) > 40 then return; end if;
   if p_cond is null or p_cond !~ '^[A-Za-z0-9 +-]{1,12}\Z' then return; end if;
