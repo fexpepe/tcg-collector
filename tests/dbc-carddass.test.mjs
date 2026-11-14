@@ -296,8 +296,9 @@ test("os quatro catálogos versionados: cada carta no jogo da série dela, e nen
       assert.equal(jogoDaCarta(c), jogo, `${c.id} no catálogo do ${jogo}`);
       assert.ok(!ids.has(c.id), `${c.id} em ${ids.get(c.id)} e em ${jogo}`);
       ids.set(c.id, jogo);
-      // Só o dbc tem logo; os três novos mostram o nome no cartão do set.
-      assert.equal(Boolean(c.setLogo), jogo === "dbc", `${c.id}: setLogo`);
+      // Cada jogo com o próprio logo no cartão do set (os três novos ganharam
+      // logo em 2026-11-14; de 13 a 14/11 mostravam o nome).
+      assert.match(c.setLogo || "", new RegExp(`^/assets/games/game_${jogo}(-v\\d+)?\\.webp$`), `${c.id}: setLogo`);
     }
   }
   assert.equal(ids.size, 2737);

@@ -1,9 +1,9 @@
 {
   "url": "naruto-ccg",
   "nome": "Naruto Collectible Card Game",
-  "logo": "assets/games/game_naruto_ccg-v2.webp",
-  "logoLargura": 512,
-  "logoAltura": 262,
+  "logo": "assets/games/game_naruto_ccg-v3.webp",
+  "logoLargura": 590,
+  "logoAltura": 320,
   "periodo": {
     "inicio": "2006-04",
     "fim": "2013-05"

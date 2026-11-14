@@ -2,9 +2,9 @@
   "url": "one-piece-carddass",
   "nome": "One Piece Carddass Hyper Battle",
   "nomeOriginal": { "texto": "カードダスハイパーバトル ワンピース", "lang": "ja", "romaji": "Kādodasu Haipā Batoru Wan Pīsu" },
-  "logo": "assets/games/game_onepiece_carddass.webp",
-  "logoLargura": 512,
-  "logoAltura": 187,
+  "logo": "assets/games/game_onepiece_carddass-v2.webp",
+  "logoLargura": 735,
+  "logoAltura": 320,
   "periodo": { "inicio": "1999-11", "fim": "2002-01" },
   "etiquetas": [
     "Vintage",

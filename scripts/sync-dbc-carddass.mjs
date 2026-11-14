@@ -73,9 +73,15 @@ const ID_PREFIX = "dbc-";
 // coleção de quem marcou; MUDOU_DE_JOGO no lint). O sync segue um só, porque
 // as fontes são as mesmas, e grava os quatro catálogos.
 export const JOGO_DA_SERIE = { h: "dbc", sb: "dbsb", va: "dbva", bw: "dbbw" };
-// Os três novos ainda sem logo (decisão de 2026-11-13): o cartão do set mostra
-// o nome, como no Gundam Carddass.
-const LOGO = { dbc: "/assets/games/game_dbc-v2.webp" };
+// Logo do jogo vira o setLogo dos sets, como em todo vintage (regra 3 do
+// CATALOGO). Os três novos ficaram sem logo de 13 a 14/11/2026 (o cartão do
+// set mostrava o nome); os logos chegaram em 14/11, enviados pelo Fernando.
+const LOGO = {
+  dbc: "/assets/games/game_dbc-v3.webp",
+  dbsb: "/assets/games/game_dbsb.webp",
+  dbva: "/assets/games/game_dbva.webp",
+  dbbw: "/assets/games/game_dbbw.webp"
+};
 
 // Séries: `code` é o prefixo do setId (dbc-h06, dbc-sb01…); `ja` vai no nome
 // do set. A ordem aqui é a ordem das seções na página de Sets. O Hondan era

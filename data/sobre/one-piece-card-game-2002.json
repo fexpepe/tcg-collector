@@ -2,9 +2,9 @@
   "url": "one-piece-card-game-2002",
   "nome": "One Piece Card Game (2002)",
   "nomeOriginal": { "texto": "ワンピースカードゲーム", "lang": "ja", "romaji": "Wan Pīsu Kādo Gēmu" },
-  "logo": "assets/games/game_onepiece_2002.webp",
-  "logoLargura": 512,
-  "logoAltura": 243,
+  "logo": "assets/games/game_onepiece_2002-v2.webp",
+  "logoLargura": 676,
+  "logoAltura": 320,
   "periodo": { "inicio": "2002-02", "fim": "2005-09" },
   "etiquetas": [
     "Vintage",
