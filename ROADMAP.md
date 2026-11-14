@@ -294,8 +294,8 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   (seção "Outros TCGs", proposta); logo de set não pesquisado.
 - **Shadowverse: Evolve (`shadowverse`, 2026-11-13)**: entrou com as 7.447
   cartas dos 50 sets da TCGCSV (cat. 73), do Advent of Genesis ao Omens and
-  Heirs, só a edição em inglês; 7.142 com preço. Pendências: a migração
-  `20261114a` (aplicar no SQL Editor); a edição japonesa, que não está no
+  Heirs, só a edição em inglês; 7.142 com preço. A migração `20261114a` foi
+  aplicada e conferida em 14/11. Pendências: a edição japonesa, que não está no
   TCGplayer; o ilustrador; loja BR e Cardmarket não conferidos; logo de set
   não pesquisado. A cor (`#818cf8`) e o lugar no hub (seção "Outros TCGs")
   foram confirmados pelo Fernando em 14/11.

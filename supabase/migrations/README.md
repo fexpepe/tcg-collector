@@ -18,7 +18,15 @@ poucos.)
   `shadowverse`. Conferida antes de escrever: nenhuma linha do `card_views`
   em produção tem jogo fora da lista nova (GET anônimo, 14/11/2026).
   Conferir depois de aplicar com o par de `curl` do fim do arquivo: a view
-  de `shv-502257` tem de **criar a linha** no `card_views`. **PENDENTE.**
+  de `shv-502257` tem de **criar a linha** no `card_views`.
+
+  **Aplicada em 2026-11-14** pelo Fernando e verificada por curl anônimo no
+  mesmo dia: a view de `shv-502257` respondeu 204 e criou a linha no
+  `card_views` (game `shadowverse`, 1 view); um jogo inventado
+  (`shadowversex`) respondeu 204 e não criou linha; `contribute_price`
+  anônimo segue 401; a linha do `hololive` continua lá. Com ela, a
+  `20261113h` (Saint Seiya) **não precisa mais rodar**: os três slugs dela
+  já estão aqui, e rodada agora tiraria o `shadowverse`.
   **A próxima migração de jogo copia esta.**
 
 - `20261113g` — libera o slug `hololive` (hololive OFFICIAL CARD GAME,
