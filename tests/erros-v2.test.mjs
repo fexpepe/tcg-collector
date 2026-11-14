@@ -261,4 +261,9 @@ test("README das migrações registra a 20261112a como aplicada", () => {
   const aplicadas = readme.slice(readme.indexOf("### Já aplicadas"));
   assert.ok(!pend.includes("`20261112a`"), "a 20261112a saiu de Pendentes");
   assert.ok(aplicadas.includes("`20261112a`"), "a 20261112a está em Já aplicadas (2026-11-12)");
+  // A 20261114a cobre a 12a (aplicada em 2026-11-14): rodar a 12a de novo
+  // traria de volta o ruído que o cliente parou de mandar.
+  assert.ok(!pend.includes("`20261114a`"), "a 20261114a saiu de Pendentes");
+  assert.ok(aplicadas.includes("`20261114a`"), "a 20261114a está em Já aplicadas (2026-11-14)");
+  assert.ok(aplicadas.indexOf("`20261114a`") < aplicadas.indexOf("`20261112a`"), "a 14a vem antes da 12a (mais nova no topo)");
 });
