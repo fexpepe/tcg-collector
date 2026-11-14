@@ -38,7 +38,7 @@ const RAIZ = new URL("../", import.meta.url);
 const DIRS = [
   "data/", "data/lorcana/", "data/onepiece/", "data/magic/", "data/fab/",
   "data/gundam/", "data/swu/", "data/cyberpunk/", "data/sorcery/", "data/dbfw/", "data/ygo/", "data/digimon/", "data/riftbound/",
-  "data/unionarena/", "data/narutocg/", "data/naruto/", "data/hxh/", "data/dbc/", "data/dbsb/", "data/dbva/", "data/dbbw/", "data/dbz/", "data/wow/", "data/lotr/", "data/harrypotter/", "data/weiss/", "data/godzilla/", "data/palworld/", "data/fftcg/", "data/grandarchive/", "data/hololive/", "data/vanguard/", "data/duelmasters/", "data/narutomythos/", "data/narutokayou/", "data/mbc/", "data/cdm/", "data/gcd/", "data/gw/", "data/narutoboruto/", "data/narutotc/", "data/jump/"
+  "data/unionarena/", "data/narutocg/", "data/naruto/", "data/hxh/", "data/dbc/", "data/dbsb/", "data/dbva/", "data/dbbw/", "data/dbz/", "data/wow/", "data/lotr/", "data/harrypotter/", "data/weiss/", "data/godzilla/", "data/palworld/", "data/fftcg/", "data/grandarchive/", "data/hololive/", "data/shadowverse/", "data/vanguard/", "data/duelmasters/", "data/narutomythos/", "data/narutokayou/", "data/mbc/", "data/cdm/", "data/gcd/", "data/gw/", "data/narutoboruto/", "data/narutotc/", "data/jump/"
 ];
 
 async function leGlobal(caminho, nomeDaVar) {
@@ -65,6 +65,27 @@ for (const dir of DIRS) {
   }
   for (const r of raizChunks) {
     await rm(new URL(r, RAIZ), { recursive: true, force: true });
+  }
+
+  // Jogo SEM preço nenhum (2026-11-14): os vintage, o Naruto Mythos e a Kayou.
+  // Cada set deles ganhava um chunk de preço "{}", e eram 471 arquivos de
+  // 17.912 no deploy de 14/11 — o que faltava pro Dragon Ball Super Masters
+  // caber debaixo do teto de 18.000 do "Conta arquivos" (docs/CATALOGO.md,
+  // 5.3, a F2 do plano). Sem chunk, o manifest fica SEM a flag `pc` e o
+  // cliente baixa o monólito, um "{}" só (shared.js, loadGameCatalog); a
+  // página da carta na borda lê o chunk que falta como "sem preço", que é o
+  // que ele é. O jogo COM preço segue igual: lá, set sem preço nenhum ainda
+  // grava o "{}", porque o `pc` promete o irmão de todo chunk de carta.
+  if (!Object.keys(pricing).length) {
+    await rm(new URL(`${dir}history-shards/`, RAIZ), { recursive: true, force: true });
+    if ("pc" in manifest || "hs" in manifest) {
+      delete manifest.pc;
+      delete manifest.hs;
+      await writeFile(new URL(`${dir}manifest.generated.js`, RAIZ), `window.TCG_MANIFEST = ${JSON.stringify(manifest)};\n`, "utf8");
+    }
+    console.log(`split-pricing: ${dir} — sem preço: nenhum chunk de preço (o cliente usa o monólito vazio)`);
+    jogos++;
+    continue;
   }
 
   let escritos = 0, entradasTotais = 0;

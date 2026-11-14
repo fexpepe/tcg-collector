@@ -63,6 +63,14 @@ const OUT = new URL("data/duelmasters/", ROOT);
 const DATAS = new URL("scripts/data/duelmasters-datas.json", ROOT);
 const OFICIAL = "https://dm.takaratomy.co.jp";
 const LOJA = "https://yuyu-tei.jp/sell/dm/s/";
+// PREÇO DESLIGADO (decisão do Fernando, 14/11/2026). Os termos da Yuyu-tei
+// (yuyu-tei.jp/info/rule/) proíbem republicar conteúdo do site sem
+// autorização, e a loja barra o servidor do GitHub. Até ela autorizar, o
+// jogo vai pro ar SEM preço e o sync não pede nada à loja. Os preços lidos em
+// 13/11 ficam guardados em scripts/data/duelmasters-precos-yuyutei.json (fora
+// do deploy). Pra religar: true aqui, e devolver o passo de histórico de
+// preços no deploy.yml, o healthcheck do pricing e o send-wishlist-push.
+export const PRECO_LIGADO = false;
 const UA = "Mozilla/5.0 (compatible; Sleevu catalog sync; +https://sleevu.app)";
 
 const limpa = (s) => decodeEntities(String(s || "").replace(/<[^>]+>/g, " ")).replace(/\s+/g, " ").trim();
@@ -281,9 +289,20 @@ async function run() {
 
   const prev = (await readGlobalVar(new URL("cards.js", OUT), "TCG_CARDS")) || [];
   const prevPorId = new Map(prev.map((c) => [c.id, c]));
-  const prevPreco = (await readGlobalVar(new URL("pricing.js", OUT), "TCG_PRICING")) || {};
+  // Com o preço desligado, nem o pricing.js anterior entra (ele zera na 1ª rodada).
+  const prevPreco = PRECO_LIGADO ? ((await readGlobalVar(new URL("pricing.js", OUT), "TCG_PRICING")) || {}) : {};
   const datas = existsSync(DATAS) ? JSON.parse(await readFile(DATAS, "utf8")) : {};
   const setsPrev = new Set(prev.map((c) => c.setId));
+
+  // --no-fetch: só remonta o catálogo (manifest, chunks, pricing.generated) a
+  // partir do cards.js e do pricing.js versionados. É a rede de segurança do
+  // deploy: sem ela, um sync que cai no meio deixa o jogo sem manifest no ar
+  // (foi o que aconteceu no 1º deploy, 14/11/2026).
+  if (process.argv.includes("--no-fetch")) {
+    if (!prev.length) throw new Error("--no-fetch sem cards.js anterior");
+    await gravaCatalogo(prev, prevPreco);
+    return;
+  }
 
   const produtos = parseProdutos(await pega(`${OFICIAL}/card/`));
   if (produtos.length < 300) throw new Error(`filtro de produtos com ${produtos.length} itens (esperado 399+): a página mudou`);
@@ -396,19 +415,28 @@ async function run() {
   // 4) Preço: a página do set na loja, casada pelo número impresso.
   const pricing = {};
   let cotacao = 0;
-  try {
+  if (!PRECO_LIGADO) console.log("  preço desligado (PRECO_LIGADO = false): a loja não é consultada.");
+  else try {
     const j = JSON.parse(await pega("https://api.frankfurter.dev/v1/latest?base=USD&symbols=JPY"));
     cotacao = Number(j && j.rates && j.rates.JPY);
   } catch (e) { console.warn(`  cotação do iene: ${e.message}`); }
-  if (!(cotacao > 50 && cotacao < 400)) {
+  if (!PRECO_LIGADO) { /* sem preço */ } else if (!(cotacao > 50 && cotacao < 400)) {
     console.warn("  sem cotação USD/JPY confiável: o preço fica o do pricing.js anterior.");
     Object.assign(pricing, prevPreco);
   } else {
-    const setsDaLoja = parseSetsDaLoja(await pega(`${LOJA}search`));
+    // A loja barra o servidor do GitHub Actions (HTTP 403, nginx; visto no 1º
+    // deploy, 14/11/2026 — da máquina do Fernando ela responde). Sem a página
+    // de busca não há código de set: o preço fica o do pricing.js versionado
+    // e o catálogo segue, em vez de derrubar o sync inteiro.
+    let setsDaLoja = null;
+    try { setsDaLoja = parseSetsDaLoja(await pega(`${LOJA}search`)); } catch (e) {
+      console.warn(`  loja inacessível (${e.message}): o preço fica o do pricing.js anterior.`);
+    }
+    if (!setsDaLoja) Object.assign(pricing, prevPreco);
     const porSet = new Map();
     for (const c of cards) { if (!porSet.has(c.setId)) porSet.set(c.setId, []); porSet.get(c.setId).push(c); }
     let visitados = 0, semLoja = 0, casadas = 0, n = 0;
-    for (const s of sets) {
+    for (const s of setsDaLoja ? sets : []) {
       const doSet = porSet.get(s.id) || [];
       if (!doSet.length) continue;
       const pos = n++;
@@ -437,7 +465,7 @@ async function run() {
         mantem();
       }
     }
-    console.log(`  preço: ${visitados} sets visitados na loja, ${casadas} cartas casadas, ${semLoja} sets sem página lá; ¥${cotacao.toFixed(2)} por dólar.`);
+    if (setsDaLoja) console.log(`  preço: ${visitados} sets visitados na loja, ${casadas} cartas casadas, ${semLoja} sets sem página lá; ¥${cotacao.toFixed(2)} por dólar.`);
   }
 
   // União preservadora: carta que sumiu da fonte fica (do cards.js anterior).
@@ -449,7 +477,10 @@ async function run() {
     || a.id.localeCompare(b.id));
   console.log(`Total: ${merged.length} cartas, ${Object.keys(pricing).length} com preço, ${new Set(merged.map((c) => c.setId)).size} sets.`);
   if (merged.length < prev.length * 0.9) throw new Error(`catálogo encolheu de ${prev.length} pra ${merged.length}: não gravo`);
+  await gravaCatalogo(merged, pricing);
+}
 
+async function gravaCatalogo(merged, pricing) {
   // setLogo: o arquivo local quando existir; senão VAZIO, e o front desenha o
   // NOME do set (política única do site).
   for (const c of merged) {

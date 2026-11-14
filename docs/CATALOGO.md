@@ -172,7 +172,7 @@ junto. Sem isso, o endereço antigo das cartas movidas dá 404.
   `setId` (`group<Jogo>Sets` em [src/app.js](../src/app.js)); os modernos da
   Bandai (One Piece, Gundam, Fusion World, Digimon, Union Arena e o
   `narutocg`), o Godzilla, o Palworld e o Vanguard (Bushiroad), o Final Fantasy
-  (Square Enix), o Grand Archive e o hololive, na mesma forma, pelas regras de código
+  (Square Enix), o Grand Archive, o hololive e o Shadowverse: Evolve, na mesma forma, pelas regras de código
   do `SECOES_BANDAI`, no mesmo arquivo
   (Principais, Boosters extras, Decks, Cartas de evento, Promos). Um formato
   de código inédito cai em "outros" ("Promos e eventos", nos da Bandai):
@@ -189,9 +189,11 @@ junto. Sem isso, o endereço antigo das cartas movidas dá 404.
   [src/facets.js](../src/facets.js)) saem dos campos que o sync grava, e um
   valor inédito aparece sozinho no fim da lista.
 - **Logo**: vazio é o certo quando o set não tem logo próprio. Quando tem, o
-  arquivo vai em `data/<jogo>/set-logos/<setId>.<ext>`. Nos jogos com logo
-  local (Lorcana, One Piece, FAB e Star Wars), o sync usa o arquivo que existe
-  e não baixa por cima.
+  arquivo vai em `data/<jogo>/set-logos/<setId>.webp`, no padrão dos logos
+  ([LOGOS.md](LOGOS.md): recortado, sem véu, cabe em 960×320, até 60 KB,
+  nítido em tela retina), gerado pelo `scripts/normaliza-logo.mjs`; o CI
+  confere. Nos jogos com logo local (Lorcana, One Piece, FAB e Star Wars), o
+  sync usa o arquivo que existe e não baixa por cima.
   - **Caçador semanal** (`scripts/cacar-logos-set.mjs`, workflow "Caça logos
     de set", segunda 10:40 UTC e Run workflow): procura logo pros sets sem logo
     do Lorcana (página do produto + Fandom), One Piece (Bandai, identidade pelo
@@ -276,7 +278,7 @@ há o que ligar. São três peças, todas no
    - Pokémon por série;
    - Magic por ano, mais a seção de eventos e coleções especiais;
    - jogo com `group<Jogo>Sets` próprio pelas seções dele;
-   - os modernos da Bandai, o Godzilla, o Palworld, o Final Fantasy, o Vanguard, o Grand Archive, o hololive e o Duel Masters (`SECOES_BANDAI`) no formato do One Piece:
+   - os modernos da Bandai, o Godzilla, o Palworld, o Final Fantasy, o Vanguard, o Grand Archive, o hololive, o Duel Masters e o Shadowverse: Evolve (`SECOES_BANDAI`) no formato do One Piece:
      Principais (a coleção numerada), Boosters extras e especiais, Decks
      iniciais, Cartas de evento (2026-11-12, pelo nome) e Promos e eventos,
      pelo código do set (2026-11-11);
@@ -474,11 +476,13 @@ hub). A ficha preenchida vai na descrição da PR.
   melhor) e pelo menos 65 de distância RGB do vizinho mais próximo (a régua que
   o ouro do Riftbound fixou).
 - **Logo do jogo e posição no hub**: logo em `assets/games/game_<slug>.webp`,
-  pela especificação de [assets/games/README.md](../assets/games/README.md).
+  no padrão dos logos ([LOGOS.md](LOGOS.md)), com a procedência no
+  [assets/games/README.md](../assets/games/README.md).
   Sem logo, o tile mostra o nome. A ordem da grade moderna do hub é escolha do
-  Fernando, em fileiras de 4 (a de 11/11/2026, com 19 jogos, está no comentário
-  da grade no `hub.html`): a posição do jogo novo se pergunta, não vai pro fim
-  por padrão. As duas primeiras fileiras carregam o logo sem `loading="lazy"`.
+  Fernando, em fileiras de 4 (a de 14/11/2026, com 20 jogos, está no comentário
+  da grade no `hub.html`); abaixo dela fica a seção "Outros TCGs", em tiles
+  menores, pros jogos de menor porte. A posição do jogo novo (grade ou Outros,
+  e onde) se pergunta, não vai pro fim por padrão. As duas primeiras fileiras carregam o logo sem `loading="lazy"`.
   Jogo vintage não entra no hub: entra na página Vintage (3.6), na posição
   da data de lançamento.
 - **Orçamento** (5.3 e 5.4): arquivos no deploy e bytes no `shared.js` e no
@@ -500,7 +504,7 @@ Ficha do jogo — <Nome completo> (`<slug>`)
 - Lojas: BR <…|nenhuma, conferido em <data>> · EUA <tcgLine/usText> · EU <cm|—>
 - Cor: <hex> — <x>:1 com texto <preto|branco>; vizinho mais próximo <jogo>, a <d> RGB
 - Logo: <arquivo | sem logo, tile em texto> · posição no hub: <…>
-- Orçamento: <n> sets ≈ <3n + 40> arquivos (último deploy: <total> de 18.000);
+- Orçamento: <n> sets ≈ <3n + 40> arquivos (último deploy: <total> de 19.000);
   shared.js +<b> B gz, CSS +<b> B gz (folga depois: <…>)
 - Migração: supabase/migrations/<arquivo>.sql (aplicar em ordem de nome)
 ```
@@ -580,7 +584,7 @@ valem só nesse caso.
 | # | Onde | O que entra | Se faltar | Trava hoje |
 |---|---|---|---|---|
 | E1 | `README.md` ("Os jogos") | linha da tabela; seção própria só se o jogo tem peculiaridade | — | — |
-| E2 | `assets/games/game_<slug>.webp` e `assets/games/README.md` | logo e procedência (ou a pendência anotada) | tile em texto | — |
+| E2 | `assets/games/game_<slug>.webp` e `assets/games/README.md` | logo no padrão de [LOGOS.md](LOGOS.md) (`normaliza-logo.mjs`) e procedência (ou a pendência anotada) | tile em texto | `check-logos.mjs` no CI (só o que mudou) |
 | E3 | `index.html` (`.lp-stat`) e `src/i18n.js` (`home.lp.*`) | número de jogos; "de <ano>" se o jogo é mais antigo que o atual | landing desatualizada | — |
 | E4 | `src/i18n-docs.js` (`about.s.games` e `faq.a.games`, em pt, en e es) | número e lista de nomes | Sobre e FAQ desatualizados | — |
 | E5 | `scripts/og/og-image.html` e `og-image.png` | número de jogos e o "e mais N jogos"; PNG regerado com `node scripts/build-og-image.mjs` (Chrome local, fora do CI). Se cartas e sets mudarem de patamar ("240 mil+", "2.200+"), também o `KIT_CATALOGO` do `src/admin.js` e a landing | imagem de compartilhamento desatualizada | — |
@@ -690,10 +694,14 @@ lugares; o prefixo de id, em 3 mapas (`binders.js`, `card-rescue.js`,
   catálogo, índices, histórico de preço e os logos de set (o Star Wars trouxe
   12). As páginas de carta e de artista têm teto global e não crescem com o
   jogo.
-- **138 deles são chunks de preço vazios**: Naruto 105, HxH 15 e DBC 18. Jogo
-  sem preço ganha um arquivo `{}` por set. Sem a flag `pc` no manifest, o
-  cliente já usa o monólito (um arquivo só), então esses chunks não fazem nada
-  (F2).
+- **Chunks de preço vazios: resolvido em 2026-11-14.** Jogo sem preço ganhava
+  um arquivo `{}` por set: eram 138 quando esta seção foi escrita e 471 no
+  deploy de 14/11 (17.912 arquivos), com 18 jogos sem preço. Desde então o
+  `split-pricing.mjs` não grava chunk de preço pra jogo sem preço nenhum e
+  tira a flag `pc` do manifest dele. O cliente usa o monólito, um `{}` só. Foi
+  o que abriu espaço pro Dragon Ball Super Masters (F2). Jogo COM preço segue
+  gravando o `{}` dos sets sem preço, porque o `pc` promete o irmão de todo
+  chunk de carta.
 
 ### 5.4 Orçamento de peso do núcleo
 

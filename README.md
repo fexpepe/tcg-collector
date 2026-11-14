@@ -33,7 +33,7 @@ catálogo completo só existe no build de produção.
 
 ## Os jogos
 
-O registro central é o `GAMES` em [src/game.js](src/game.js): **43 slugs**, 42 com
+O registro central é o `GAMES` em [src/game.js](src/game.js): **44 slugs**, 43 com
 catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do Pokémon
 é a raiz `data/` por motivo histórico (não movemos nada).
 
@@ -48,10 +48,11 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 | `swu` | Star Wars: Unlimited | TCGCSV cat. 79 (FFG; Hyperspace/Showcase = cartas próprias) + logos de set do site oficial (`mirror-swu-set-logos.mjs`) | USD |
 | `cyberpunk` | Cyberpunk TCG | TCGCSV cat. 92 (Weird Co.; edições Beta e Retail = sets próprios, setId fixo por groupId) + logo do Welcome to Night City curado do site oficial | USD |
 | `weiss` | Weiß Schwarz | TCGCSV cat. 20 (Bushiroad; só a edição inglesa, 2013+; paralelas SP/SSP/OFR = cartas próprias; setId fixo por groupId com o código impresso, `DDD-S118`; sem logo de set publicado) | USD |
-| `duelmasters` | Duel Masters | Banco oficial da Takara Tomy (dm.takaratomy.co.jp/card/; o jogo japonês, 2002+; cada impressão = carta própria; setId = código do produto, `DM26-RP3`) + preço de venda da Yuyu-tei em iene, convertido no sync. Fora da TCGCSV: o TCGplayer não vende o jogo | USD (convertido do iene) |
+| `duelmasters` | Duel Masters | Banco oficial da Takara Tomy (dm.takaratomy.co.jp/card/; o jogo japonês, 2002+; cada impressão = carta própria; setId = código do produto, `DM26-RP3`) ; preço DESLIGADO desde 14/11/2026 (ver a seção do jogo). Fora da TCGCSV: o TCGplayer não vende o jogo | — |
 | `vanguard` | Cardfight!! Vanguard | TCGCSV cat. 16 (Bushiroad 2011+; as cinco eras, só a edição inglesa; paralelas SP/FR/SEC = cartas próprias; setId do código impresso que abre o nome do grupo, `DZ-BT16`; sem logo de set) | USD |
 | `fftcg` | Final Fantasy TCG | TCGCSV cat. 24 (Square Enix 2016+, os Opus; Full Art = carta própria; setId fixo por groupId, `OP27`, porque a abreviação da fonte erra e repete; sem logo de set publicado) | USD |
 | `hololive` | hololive Official Card Game | TCGCSV cat. 87 (Bushiroad/COVER 2025+, só a edição EN; id do productId porque número e raridade repetem; cada produto é Normal ou Foil; sem logo de set) | USD |
+| `shadowverse` | Shadowverse: Evolve | TCGCSV cat. 73 (Bushiroad/Cygames 2023+, só a edição EN; id `shv-<productId>`; Premium, SL e Evolved = cartas próprias, só o subtipo Normal; sem logo de set) | USD |
 | `grandarchive` | Grand Archive TCG | TCGCSV cat. 74 (Weebs of the Shore 2023+; Normal/Foil no mesmo produto; id do productId porque o número repete dentro do set; sem logo de set) | USD |
 | `godzilla` | Godzilla Card Game | TCGCSV cat. 88 (Bushiroad/Yuhodo 2025; só a edição inglesa; paralelas +/++/+++ = cartas próprias; setId fixo por groupId com o código impresso, `EBP01`; sem logo de set publicado) | USD |
 | `narutomythos` | Naruto Mythos TCG | a galeria oficial do jogo (narutotcgmythos.com, JSON público; Cicaboom, 2026+, EN). Id pelo SKU oficial (`nmy-s1e1-c003fav1`); a 2ª edição do Set 1 vira o set "Konoha Shidō (2nd Edition)" e as cartas de torneio, "<set> Promos"; raridade por extenso; sem logo de set | sem preço |
@@ -164,12 +165,16 @@ catálogo.
   novo (o `cards.js` anterior é o cache). Nome, tipo, civilização (no
   `color`), raridade, custo, poder, raça e ilustrador; tudo em japonês, sem
   nome oficial em inglês.
-- **Preço = uma loja, não média de mercado**: o preço de venda da Yuyu-tei
+- **Preço DESLIGADO desde 14/11/2026** (`PRECO_LIGADO` no sync): os termos da
+  Yuyu-tei proíbem republicar conteúdo do site sem autorização, e ela barra o
+  servidor do GitHub. O pedido de permissão à loja está pendente; os preços
+  lidos em 13/11 ficam em `scripts/data/duelmasters-precos-yuyutei.json`, fora
+  do deploy. Ligado, era o preço de venda da Yuyu-tei
   (yuyu-tei.jp), em iene, casado pelo número impresso dentro do set
   (`chaveDoNumero`) e gravado no slot `u` em dólar pela cotação do dia. A
   loja mostra preço mesmo esgotada. Na tela, a fonte aparece como "Japão ·
   Yuyu-tei" (`market.jp`), não como TCGplayer. 20.814 (86,6%) cartas com preço
-  no lançamento; as temporadas de promo e os decks da CoroCoro não têm página
+  na carga de 13/11; as temporadas de promo e os decks da CoroCoro não têm página
   de set na loja.
 - **id = `dm-<id oficial>`** (`dm-dm26rp3-s001`): cada impressão (secreta,
   alternativa) é ficha própria na fonte e carta própria aqui.
@@ -268,6 +273,34 @@ inglês** (2025+): a japonesa não está no TCGplayer.
 - **Sem ilustrador**: a TCGCSV não publica.
 - **Scanner**: lê o código impresso (`hBP01-001`); a reimpressão e a arte
   alternativa imprimem o mesmo código, e quem separa é a arte.
+
+### Shadowverse: Evolve (`shadowverse`)
+
+[scripts/sync-shadowverse.mjs](scripts/sync-shadowverse.mjs), TCGCSV categoria
+73, no padrão do Vanguard. O jogo da Bushiroad com a Cygames, **só a edição em
+inglês** (desde 30/06/2023): a japonesa não está no TCGplayer.
+
+- **id = `shv-<productId>`**. O prefixo não é `sve-`: esse é do set "sve" do
+  Pokémon (Scarlet & Violet Energies). O número impresso é único no jogo
+  inteiro hoje, mas o id segue o productId como nos outros da TCGCSV.
+- **Cada versão é um produto próprio**, com número e preço próprios: a
+  Premium (foil, `BP19-P10EN`), a Super Legendary (`-SL01EN`), a Ultimate,
+  a Special e a face Evolved do seguidor. O preço só tem o subtipo Normal.
+- **setId = a abreviação do TCGplayer**, que é o código impresso (`BP01`,
+  `CP01`, `SD01`, `SDD01`…) e não falta nem repete; promos = `SVPR`.
+- **Nome do set sem o código** ("Advent of Genesis"); onde o título repete (os
+  dois boosters de uma colaboração), os dois guardam o nome inteiro.
+- **Nome da carta sem o número** que o TCGplayer cola ("Cannon Volley - P10EN
+  (Foil)" vira "Cannon Volley (Foil)"); os qualificadores de versão ficam.
+- **Imagem** de 459 a 716 px de largura (três por set, medidas em
+  13/11/2026); o site oficial serve 459×641 em tudo, então não há fonte maior.
+- Classe no `color`, traço no `trait`, custo, ataque e defesa; classe e tipo
+  viram facetas da página do set.
+- Sets no formato dos modernos da Bandai (`SECOES_BANDAI`): Booster Sets,
+  colaborações e extras, decks, promos.
+- **Sem ilustrador**: a TCGCSV não publica.
+- **Scanner**: lê o código impresso (`BP01-001EN`, `BP19-SL16EN`) com um
+  padrão próprio; 99,1 % do catálogo vira candidato certo.
 
 ### Grand Archive TCG (`grandarchive`)
 
@@ -1304,8 +1337,8 @@ Secrets: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, `PPT_API_TOKEN`,
 dependem de secret são no-op sem ele — o build sai igual, só sem aquela fonte.
 
 Outros workflows: `ci.yml` (portão rápido em todo push/PR — testes, smoke de
-i18n e ordem de scripts, guardas de mobile, sintaxe dos scripts, minificação
-compila), `healthcheck.yml`, `uptime.yml` (probe de 30 em 30 min),
+i18n e ordem de scripts, guardas de mobile, sintaxe dos scripts, padrão dos
+logos que mudaram (`docs/LOGOS.md`), minificação compila), `healthcheck.yml`, `uptime.yml` (probe de 30 em 30 min),
 `push-wishlist.yml` (notificação de queda de preço, segunda 09:00 UTC),
 `cacar-logos-set.yml` (segunda 10:40 UTC: acha logo de set que falta e
 **propõe numa PR** a branch `bot/logos-de-set`, nunca publica; ver
@@ -1552,4 +1585,5 @@ comissão aparece embaixo dos chips. Loja BR segue só com o `utm_source`.
 node --test tests/*.test.mjs
 node scripts/check.mjs          # smoke estático: sintaxe, i18n pt/en/es, ordem de scripts
 node scripts/check-mobile.mjs   # guardas de layout mobile
+node scripts/check-logos.mjs --base origin/main   # logos que mudaram no padrão (docs/LOGOS.md)
 ```

@@ -249,11 +249,12 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   primeiro booster, conferir o código do set contra o `SECOES_BANDAI`
   (src/app.js), que hoje supõe BT/ST.
 - **Duel Masters (`duelmasters`, 2026-11-13)**: entrou com 24.039 cartas
-  de 396 produtos, do banco oficial da Takara Tomy, e preço da Yuyu-tei
-  (uma loja japonesa, em iene, convertido pra dólar no sync) — o TCGplayer não
-  vende o jogo. A migração `20261113e` está aplicada (e a `20261113g`, mais
-  nova, leva o `duelmasters`). Pendências: Pendências:
-  os termos de uso da Yuyu-tei não foram lidos (o robots.txt não barra); logo
+  de 396 produtos, do banco oficial da Takara Tomy, SEM preço — o TCGplayer não vende o jogo, e
+  o preço da Yuyu-tei (uma loja japonesa) foi desligado em 14/11: os termos
+  dela proíbem republicar sem autorização. Os preços de 13/11 estão guardados
+  em `scripts/data/duelmasters-precos-yuyutei.json`. A migração `20261113e` está aplicada (e a `20261113g`, mais
+  nova, leva o `duelmasters`). Pendências: o pedido de
+  permissão à Yuyu-tei (sem resposta, religar só com o aval); logo
   melhor (o do site oficial tem 154 px e foi ampliado); a cor (`#fde68a`,
   proposta) e a posição no hub (depois do Vanguard); nome em inglês das
   cartas e dos sets (não há oficial; a wiki do Fandom tem os dos sets);
@@ -292,6 +293,13 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   japonesa, que só o banco oficial tem e vem sem preço; o ilustrador; loja BR
   e Cardmarket não conferidos; a cor (`#38d6f5`, proposta) e o lugar no hub
   (seção "Outros TCGs", proposta); logo de set não pesquisado.
+- **Shadowverse: Evolve (`shadowverse`, 2026-11-13)**: entrou com as 7.447
+  cartas dos 50 sets da TCGCSV (cat. 73), do Advent of Genesis ao Omens and
+  Heirs, só a edição em inglês; 7.142 com preço. A migração `20261114b` foi
+  aplicada e conferida em 14/11. Pendências: a edição japonesa, que não está no
+  TCGplayer; o ilustrador; loja BR e Cardmarket não conferidos; logo de set
+  não pesquisado. A cor (`#818cf8`) e o lugar no hub (seção "Outros TCGs")
+  foram confirmados pelo Fernando em 14/11.
 - **Godzilla Card Game (`godzilla`, 2026-11-11)**: entrou com as 940 cartas
   da edição inglesa (TCGCSV cat. 88). Pendências: o Booster Set #5
   ("Overlord Zero", 18/12/2026) e os starters ESD03–05 (04/12/2026) entram

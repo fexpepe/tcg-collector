@@ -52,7 +52,11 @@ async function hasLocal(name) {
   try { await access(new URL(name, LOGOS_DIR)); return true; } catch { return false; }
 }
 async function fetchSetLogo(setName, code) {
-  if (await hasLocal(`${code}.png`)) return `data/lorcana/set-logos/${code}.png`;
+  // Logo no padrão (docs/LOGOS.md, desde 2026-11-14) é WebP; os 15 curados
+  // antes dele são PNG de quadro 1000×500. O WebP vence quando os dois existem.
+  for (const ext of ["webp", "png"]) {
+    if (await hasLocal(`${code}.${ext}`)) return `data/lorcana/set-logos/${code}.${ext}`;
+  }
   try {
     const u = new URL(WIKI_API);
     u.search = new URLSearchParams({
