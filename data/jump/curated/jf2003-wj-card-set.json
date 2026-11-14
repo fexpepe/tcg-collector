@@ -1,0 +1,205 @@
+{
+  "name": "Jump Festa 2003 WJ Card Set",
+  "date": "2002-12",
+  "language": "ja",
+  "vintage": true,
+  "logo": "",
+  "total": 24,
+  "note": "Vendida em 21/12/2002.",
+  "cards": [
+    {
+      "number": "1",
+      "name": "Kochikame",
+      "nameJp": "こちら葛飾区亀有公園前派出所",
+      "franchise": "Kochikame",
+      "rarity": "",
+      "image": ""
+    },
+    {
+      "number": "2",
+      "name": "JoJo's Bizarre Adventure Part 6: Stone Ocean",
+      "nameJp": "ジョジョの奇妙な冒険 第6部 ストーンオーシャン",
+      "franchise": "JoJo's Bizarre Adventure Part 6: Stone Ocean",
+      "rarity": "",
+      "image": ""
+    },
+    {
+      "number": "3",
+      "name": "Yu-Gi-Oh!",
+      "nameJp": "遊☆戯☆王",
+      "franchise": "Yu-Gi-Oh!",
+      "rarity": "",
+      "image": ""
+    },
+    {
+      "number": "4",
+      "name": "One Piece",
+      "nameJp": "ONE PIECE",
+      "franchise": "One Piece",
+      "rarity": "",
+      "image": ""
+    },
+    {
+      "number": "5",
+      "name": "Rookies",
+      "nameJp": "ROOKIES",
+      "franchise": "Rookies",
+      "rarity": "",
+      "image": ""
+    },
+    {
+      "number": "6",
+      "name": "Shaman King",
+      "nameJp": "シャーマンキング",
+      "franchise": "Shaman King",
+      "rarity": "",
+      "image": ""
+    },
+    {
+      "number": "7",
+      "name": "Hikaru no Go",
+      "nameJp": "ヒカルの碁",
+      "franchise": "Hikaru no Go",
+      "rarity": "",
+      "image": ""
+    },
+    {
+      "number": "8",
+      "name": "Hunter × Hunter",
+      "nameJp": "HUNTER×HUNTER",
+      "franchise": "Hunter × Hunter",
+      "rarity": "",
+      "image": ""
+    },
+    {
+      "number": "9",
+      "name": "The Prince of Tennis",
+      "nameJp": "テニスの王子様",
+      "franchise": "The Prince of Tennis",
+      "rarity": "",
+      "image": ""
+    },
+    {
+      "number": "10",
+      "name": "Naruto",
+      "nameJp": "NARUTO -ナルト-",
+      "franchise": "Naruto",
+      "rarity": "",
+      "image": ""
+    },
+    {
+      "number": "11",
+      "name": "Black Cat",
+      "nameJp": "BLACK CAT",
+      "franchise": "Black Cat",
+      "rarity": "",
+      "image": ""
+    },
+    {
+      "number": "12",
+      "name": "Pyu to Fuku! Jaguar",
+      "nameJp": "ピューと吹く!ジャガー",
+      "franchise": "Pyu to Fuku! Jaguar",
+      "rarity": "",
+      "image": ""
+    },
+    {
+      "number": "13",
+      "name": "Bobobo-bo Bo-bobo",
+      "nameJp": "ボボボーボ・ボーボボ",
+      "franchise": "Bobobo-bo Bo-bobo",
+      "rarity": "",
+      "image": ""
+    },
+    {
+      "number": "14",
+      "name": "Mr. Fullswing",
+      "nameJp": "Mr.FULLSWING",
+      "franchise": "Mr. Fullswing",
+      "rarity": "",
+      "image": ""
+    },
+    {
+      "number": "15",
+      "name": "Bleach",
+      "nameJp": "BLEACH",
+      "franchise": "Bleach",
+      "rarity": "",
+      "image": ""
+    },
+    {
+      "number": "16",
+      "name": "Strawberry 100%",
+      "nameJp": "いちご100%",
+      "franchise": "Strawberry 100%",
+      "rarity": "",
+      "image": ""
+    },
+    {
+      "number": "17",
+      "name": "Pretty Face",
+      "nameJp": "プリティフェイス",
+      "franchise": "Pretty Face",
+      "rarity": "",
+      "image": ""
+    },
+    {
+      "number": "18",
+      "name": "Eyeshield 21",
+      "nameJp": "アイシールド21",
+      "franchise": "Eyeshield 21",
+      "rarity": "",
+      "image": ""
+    },
+    {
+      "number": "19",
+      "name": "Ultra Red",
+      "nameJp": "Ultra Red",
+      "franchise": "Ultra Red",
+      "rarity": "",
+      "image": ""
+    },
+    {
+      "number": "20",
+      "name": "Granada",
+      "nameJp": "グラナダ -究極科学探検隊-",
+      "franchise": "Granada",
+      "rarity": "",
+      "image": ""
+    },
+    {
+      "number": "21",
+      "name": "Tattoo Hearts",
+      "nameJp": "TATTOO HEARTS",
+      "franchise": "Tattoo Hearts",
+      "rarity": "",
+      "image": ""
+    },
+    {
+      "number": "EX",
+      "name": "Dragon Ball",
+      "nameJp": "DRAGON BALL",
+      "franchise": "Dragon Ball",
+      "rarity": "EX",
+      "image": ""
+    },
+    {
+      "number": "SP1",
+      "name": "All Stars 1/2",
+      "nameJp": "ALL STARS 1/2",
+      "franchise": "Weekly Shōnen Jump",
+      "rarity": "SP",
+      "image": "",
+      "note": "prisma; as duas SP formam uma ilustração só"
+    },
+    {
+      "number": "SP2",
+      "name": "All Stars 2/2",
+      "nameJp": "ALL STARS 2/2",
+      "franchise": "Weekly Shōnen Jump",
+      "rarity": "SP",
+      "image": "",
+      "note": "prisma; as duas SP formam uma ilustração só"
+    }
+  ]
+}

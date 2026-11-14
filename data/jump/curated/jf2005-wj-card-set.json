@@ -1,0 +1,205 @@
+{
+  "name": "Jump Festa 2005 WJ Card Set",
+  "date": "2004-12",
+  "language": "ja",
+  "vintage": true,
+  "logo": "",
+  "total": 24,
+  "note": "Vendida em 18/12/2004.",
+  "cards": [
+    {
+      "number": "1",
+      "name": "Kochikame",
+      "nameJp": "こちら葛飾区亀有公園前派出所",
+      "franchise": "Kochikame",
+      "rarity": "",
+      "image": ""
+    },
+    {
+      "number": "2",
+      "name": "One Piece",
+      "nameJp": "ONE PIECE",
+      "franchise": "One Piece",
+      "rarity": "",
+      "image": ""
+    },
+    {
+      "number": "3",
+      "name": "Hunter × Hunter",
+      "nameJp": "HUNTER×HUNTER",
+      "franchise": "Hunter × Hunter",
+      "rarity": "",
+      "image": ""
+    },
+    {
+      "number": "4",
+      "name": "The Prince of Tennis",
+      "nameJp": "テニスの王子様",
+      "franchise": "The Prince of Tennis",
+      "rarity": "",
+      "image": ""
+    },
+    {
+      "number": "5",
+      "name": "Naruto",
+      "nameJp": "NARUTO -ナルト-",
+      "franchise": "Naruto",
+      "rarity": "",
+      "image": ""
+    },
+    {
+      "number": "6",
+      "name": "Pyu to Fuku! Jaguar",
+      "nameJp": "ピューと吹く!ジャガー",
+      "franchise": "Pyu to Fuku! Jaguar",
+      "rarity": "",
+      "image": ""
+    },
+    {
+      "number": "7",
+      "name": "Bobobo-bo Bo-bobo",
+      "nameJp": "ボボボーボ・ボーボボ",
+      "franchise": "Bobobo-bo Bo-bobo",
+      "rarity": "",
+      "image": ""
+    },
+    {
+      "number": "8",
+      "name": "Mr. Fullswing",
+      "nameJp": "Mr.FULLSWING",
+      "franchise": "Mr. Fullswing",
+      "rarity": "",
+      "image": ""
+    },
+    {
+      "number": "9",
+      "name": "Bleach",
+      "nameJp": "BLEACH",
+      "franchise": "Bleach",
+      "rarity": "",
+      "image": ""
+    },
+    {
+      "number": "10",
+      "name": "Strawberry 100%",
+      "nameJp": "いちご100%",
+      "franchise": "Strawberry 100%",
+      "rarity": "",
+      "image": ""
+    },
+    {
+      "number": "11",
+      "name": "Eyeshield 21",
+      "nameJp": "アイシールド21",
+      "franchise": "Eyeshield 21",
+      "rarity": "",
+      "image": ""
+    },
+    {
+      "number": "12",
+      "name": "Buso Renkin",
+      "nameJp": "武装錬金",
+      "franchise": "Buso Renkin",
+      "rarity": "",
+      "image": ""
+    },
+    {
+      "number": "13",
+      "name": "Death Note",
+      "nameJp": "DEATH NOTE",
+      "franchise": "Death Note",
+      "rarity": "",
+      "image": ""
+    },
+    {
+      "number": "14",
+      "name": "Gintama",
+      "nameJp": "銀魂",
+      "franchise": "Gintama",
+      "rarity": "",
+      "image": ""
+    },
+    {
+      "number": "15",
+      "name": "Mikakunin Shōnen Gedō",
+      "nameJp": "未確認少年ゲドー",
+      "franchise": "Mikakunin Shōnen Gedō",
+      "rarity": "",
+      "image": ""
+    },
+    {
+      "number": "16",
+      "name": "Reborn!",
+      "nameJp": "家庭教師ヒットマンREBORN!",
+      "franchise": "Reborn!",
+      "rarity": "",
+      "image": ""
+    },
+    {
+      "number": "17",
+      "name": "D.Gray-man",
+      "nameJp": "D.Gray-man",
+      "franchise": "D.Gray-man",
+      "rarity": "",
+      "image": ""
+    },
+    {
+      "number": "18",
+      "name": "Waqwaq",
+      "nameJp": "ワークワーク",
+      "franchise": "Waqwaq",
+      "rarity": "",
+      "image": ""
+    },
+    {
+      "number": "19",
+      "name": "Muhyo & Roji's Bureau of Supernatural Investigation",
+      "nameJp": "ムヒョとロージーの魔法律相談事務所",
+      "franchise": "Muhyo & Roji's Bureau of Supernatural Investigation",
+      "rarity": "",
+      "image": ""
+    },
+    {
+      "number": "EX1",
+      "name": "Jump Shop (Janta)",
+      "nameJp": "JUMP SHOP (ジャンタ)",
+      "franchise": "Weekly Shōnen Jump",
+      "rarity": "EX",
+      "image": ""
+    },
+    {
+      "number": "EX2",
+      "name": "Jump Land",
+      "nameJp": "JUMPLAND",
+      "franchise": "Weekly Shōnen Jump",
+      "rarity": "EX",
+      "image": ""
+    },
+    {
+      "number": "EX3",
+      "name": "Goku Tachi-Neputa",
+      "nameJp": "悟空立ちねぷた",
+      "franchise": "Dragon Ball",
+      "rarity": "EX",
+      "image": ""
+    },
+    {
+      "number": "SP1",
+      "name": "All Stars 1/2",
+      "nameJp": "ALL STARS 1/2",
+      "franchise": "Weekly Shōnen Jump",
+      "rarity": "SP",
+      "image": "",
+      "note": "prisma; as duas SP formam uma ilustração só"
+    },
+    {
+      "number": "SP2",
+      "name": "All Stars 2/2",
+      "nameJp": "ALL STARS 2/2",
+      "franchise": "Weekly Shōnen Jump",
+      "rarity": "SP",
+      "image": "",
+      "note": "prisma; as duas SP formam uma ilustração só"
+    }
+  ]
+}
