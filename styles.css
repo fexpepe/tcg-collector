@@ -5473,6 +5473,14 @@ a.vt-marca-hoje:active { box-shadow: 0 0 0 2px var(--accent); }
 .vt-acervo--grade .vt-texto { flex: 1 1 auto; margin-inline: 14px; }
 .vt-acervo--grade .vt-anos { align-self: flex-start; margin-inline: 14px; }
 .vt-acervo--grade .vt-faixa { display: none; }
+/* Abaixo de 1280 px a LISTA vira grade de áreas, com o logo centrado na
+   vertical e o texto encostado embaixo (`.vt-linha > .vt-logo-box` e
+   `> .vt-texto`, num @media mais abaixo). Na GRADE a linha é coluna flex, e
+   esse align-self virava horizontal: a caixa branca encolhia na largura do
+   logo (o SD Gundam World, quase quadrado, ficou com 99 de 170 px no celular)
+   e título curto ia pra direita. Aqui os dois voltam a ocupar a largura toda. */
+.vt-acervo--grade .vt-linha > .vt-logo-box,
+.vt-acervo--grade .vt-linha > .vt-texto { align-self: stretch; }
 @media (max-width: 1279px) {
   .vt-acervo--grade { --vt-cols: 4; }
 }
