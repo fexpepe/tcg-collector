@@ -196,9 +196,12 @@ limits, uptime, analytics, zero migração pendente. Antes de divulgar:
 A "Fase 0" (enriquecer o catálogo) **está feita**: `sync-magic.mjs` grava
 `type_line`/`mana_cost`/`cmc`/`colors`/`color_identity` e o `sync-tcgdex.mjs`
 grava `types`/`stage`, e os rule packs de Pokémon, Magic (8 formatos) e
-Yu-Gi-Oh! vivem em [src/deck-rules.js](src/deck-rules.js). O que falta é o
-mesmo tratamento nos outros jogos, que seguem em modo livre — cada um precisa
-do seu pack (zonas, limite por carta, formatos).
+Yu-Gi-Oh! vivem em [src/deck-rules.js](src/deck-rules.js). **Lote 1 no ar
+(2026-11-14):** Gundam, Star Wars: Unlimited, Flesh and Blood, Riftbound, Union
+Arena, Vanguard, Final Fantasy e Grand Archive, com as regras conferidas na
+fonte oficial (tabela e versões em [docs/DECKS.md](docs/DECKS.md), §4). O
+próximo lote — hololive, Shadowverse: Evolve, Weiß Schwarz, Sorcery, Duel
+Masters e DBS Masters — já tem a regra pesquisada; o resto segue em modo livre.
 
 ### 4. Magic em português
 O catálogo está em EN v1 e o Scryfall já traz nome e imagem impressos em pt —
