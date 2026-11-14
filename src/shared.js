@@ -6306,9 +6306,11 @@
     let toqueNaCarta = false;
     document.addEventListener("touchstart", (event) => {
       toqueY = null;
-      const panel = event.target.closest("#cardPreviewModal .card-preview-panel");
+      // Alvo que não é elemento não tem closest() (ver initCompactHoverThumb).
+      const quem = event.target && typeof event.target.closest === "function" ? event.target : null;
+      const panel = quem && quem.closest("#cardPreviewModal .card-preview-panel");
       if (!panel || zoomAberto) return;
-      toqueNaCarta = !!event.target.closest(".cs-media");
+      toqueNaCarta = !!quem.closest(".cs-media");
       if (!toqueNaCarta && (modoPagina || panel.scrollTop > 0)) return;
       toqueY = event.touches[0].clientY;
       toqueX = event.touches[0].clientX;
