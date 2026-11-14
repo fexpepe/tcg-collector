@@ -481,6 +481,18 @@
   --accent: #0e7490; --accent-dark: #0b5f76; --accent-rgb: 14, 116, 144;
   --accent-soft: rgba(14, 116, 144, 0.1); --on-accent: #ffffff;
 }
+/* Shadowverse: Evolve: ÍNDIGO claro (13/11/2026, proposta: o ciano do logo já
+   é do hololive e do WoW). Texto escuro no escuro (7.0:1); índigo fechado com
+   branco no claro (7.9:1). */
+[data-game-accent="shadowverse"] {
+  --accent: #818cf8; --accent-dark: #6b77f0; --accent-rgb: 129, 140, 248;
+  --accent-soft: rgba(129, 140, 248, 0.16); --on-accent: #0a0c10;
+}
+[data-theme="light"][data-game-accent="shadowverse"],
+[data-theme="light"] [data-game-accent="shadowverse"] {
+  --accent: #4338ca; --accent-dark: #3730a3; --accent-rgb: 67, 56, 202;
+  --accent-soft: rgba(67, 56, 202, 0.1); --on-accent: #ffffff;
+}
 /* Grand Archive TCG: LILÁS (13/11/2026, proposta: o logo oficial é
    branco e não dá cor). Lilás claro com texto escuro no escuro (11.9:1); um
    roxo-orquídea fechado com texto branco no claro (5.5:1). */

@@ -133,6 +133,7 @@ jobs:
             data/fftcg/sets
             data/grandarchive/sets
             data/hololive/sets
+            data/shadowverse/sets
             data/vanguard/sets
             data/duelmasters/sets
             data/narutomythos/sets
@@ -163,7 +164,7 @@ jobs:
           faltando=""
           # data/dbc/, data/swu/, data/cyberpunk/, data/wow/, data/lotr/,
           # data/sorcery/, data/harrypotter/, data/weiss/, data/mbc/, data/dbz/ e
-          # data/cdm/, data/gcd/, data/gw/, data/narutocg/, data/godzilla/, data/palworld/, data/fftcg/, data/vanguard/, data/grandarchive/, data/hololive/ e data/duelmasters/: jogos novos (2026-09-24 a 2026-11-13);
+          # data/cdm/, data/gcd/, data/gw/, data/narutocg/, data/godzilla/, data/palworld/, data/fftcg/, data/vanguard/, data/grandarchive/, data/hololive/, data/duelmasters/ e data/shadowverse/: jogos novos (2026-09-24 a 2026-11-13);
           # data/dbsb/, data/dbva/ e data/dbbw/ (2026-11-13), as séries do dbc que viraram jogo. Enquanto o cache
           # for de antes deles, o build rápido publicaria o tile do hub sem
           # catálogo nenhum atrás.
@@ -192,7 +193,8 @@ jobs:
                    data/narutokayou/manifest.generated.js \
                    data/grandarchive/manifest.generated.js \
                    data/hololive/manifest.generated.js \
-                   data/duelmasters/manifest.generated.js; do
+                   data/duelmasters/manifest.generated.js \
+                   data/shadowverse/manifest.generated.js; do
             [ -s "$f" ] || faltando="$faltando $f"
           done
           if [ -n "$faltando" ]; then
@@ -653,6 +655,18 @@ jobs:
         if: env.RODA_SYNC == 'true'
         run: node scripts/sync-price-history.mjs data/hololive
 
+      # Shadowverse: Evolve (TCGCSV cat. 73, Bushiroad/Cygames 2023+, so a
+      # edicao inglesa). Padrao Vanguard: cada versao (Premium, SL, Evolved) e
+      # um produto proprio, so com o subtipo Normal; setId = abreviacao da
+      # fonte; sem logo de set.
+      - name: Sincroniza catálogo do Shadowverse Evolve (TCGCSV)
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/sync-shadowverse.mjs || echo "sync-shadowverse falhou; mantém o catalogo versionado"
+
+      - name: Snapshot de preços (histórico Shadowverse Evolve)
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/sync-price-history.mjs data/shadowverse
+
       # Cardfight!! Vanguard (TCGCSV cat. 16, Bushiroad 2011+; as cinco eras,
       # so a edicao inglesa). Padrao Weiss: paralela = carta propria, setId do
       # codigo impresso que abre o nome do grupo; sem logo de set.
@@ -1105,6 +1119,7 @@ jobs:
             data/fftcg/sets
             data/grandarchive/sets
             data/hololive/sets
+            data/shadowverse/sets
             data/vanguard/sets
             data/duelmasters/sets
             data/narutomythos/sets

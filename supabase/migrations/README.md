@@ -8,6 +8,19 @@ poucos.)
 
 ## Pendentes de aplicar
 
+- `20261114a` — libera o slug `shadowverse` (Shadowverse: Evolve,
+  Bushiroad/Cygames, edição em inglês, 2023+) nas duas whitelists de jogo
+  (`card_views`/`increment_card_view` e `contribute_price`;
+  `20261114a_add_shadowverse.sql`). Cópia da `20261113h` (Saint Seiya, numa
+  PR ainda aberta) com o `shadowverse` a mais: **ela cobre a 20261113h e a
+  20261113g**, então dispensa a 13h se esta rodar primeiro. Só a lista muda.
+  Qualquer uma das anteriores rodada **depois** desta tiraria o
+  `shadowverse`. Conferida antes de escrever: nenhuma linha do `card_views`
+  em produção tem jogo fora da lista nova (GET anônimo, 14/11/2026).
+  Conferir depois de aplicar com o par de `curl` do fim do arquivo: a view
+  de `shv-502257` tem de **criar a linha** no `card_views`. **PENDENTE.**
+  **A próxima migração de jogo copia esta.**
+
 - `20261113g` — libera o slug `hololive` (hololive OFFICIAL CARD GAME,
   Bushiroad/COVER, edição em inglês, 2025+) nas duas whitelists de jogo
   (`card_views`/`increment_card_view` e `contribute_price`;
