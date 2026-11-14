@@ -18,7 +18,13 @@ poucos.)
   da Comunidade do jogo novo são descartados em silêncio. Conferir com o par
   de `curl` do fim do arquivo: a view de `holo-645575` tem de **criar a
   linha** no `card_views` (o 204 sozinho não prova nada). **A próxima
-  migração de jogo copia esta.** **PENDENTE de aplicação** (2026-11-13).
+  migração de jogo copia esta.**
+
+  **Aplicada em 2026-11-13** pelo Fernando e verificada por curl anônimo no
+  mesmo dia: a view de `holo-645575` respondeu 204 e criou a linha no
+  `card_views` (game `hololive`, 1 view); um jogo inventado (`hololivex`)
+  respondeu 204 e não criou linha; `contribute_price` anônimo segue 401; as
+  linhas do `narutotc` e do `grandarchive` continuam lá.
 
 - `20261113f` — libera o slug `narutotc` (Naruto Trading Cards, as cartas de
   coleção japonesas da Amada e da Ensky, 2004–2005) nas duas whitelists de

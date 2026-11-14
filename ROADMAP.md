@@ -275,8 +275,8 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   na cápsula) e a 21ª posição no hub; o scanner não lê o jogo (número solto).
 - **hololive Official Card Game (`hololive`, 2026-11-13)**: entrou com as
   2.304 cartas dos 25 sets da TCGCSV (cat. 87), do Blooming Radiance ao Diva
-  Fever, só a edição em inglês. Pendências: aplicar a migração `20261113g`
-  (cópia da `20261113f` do narutotc com o `hololive` a mais); a edição
+  Fever, só a edição em inglês. A migração `20261113g` foi aplicada e
+  conferida no mesmo dia. Pendências: a edição
   japonesa, que só o banco oficial tem e vem sem preço; o ilustrador; loja BR
   e Cardmarket não conferidos; a cor (`#38d6f5`, proposta) e o lugar no hub
   (seção "Outros TCGs", proposta); logo de set não pesquisado.
