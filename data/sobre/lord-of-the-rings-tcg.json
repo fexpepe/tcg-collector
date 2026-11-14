@@ -2,8 +2,8 @@
   "url": "lord-of-the-rings-tcg",
   "nome": "The Lord of the Rings TCG",
   "logo": "assets/games/game_lotr-v2.webp",
-  "logoLargura": 200,
-  "logoAltura": 172,
+  "logoLargura": 339,
+  "logoAltura": 320,
   "periodo": { "inicio": "2001-11", "fim": "2007-06" },
   "etiquetas": [
     "Vintage",

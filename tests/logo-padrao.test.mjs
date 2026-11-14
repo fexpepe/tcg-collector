@@ -5,7 +5,7 @@
 // Roda com: node --test tests/
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import {
   LUGARES, PADRAO, ALVO_DENSIDADE, PISO_DENSIDADE, tipoDoArquivo, lerCabecalho, densidades,
   pedidoPelosLugares, tamanhoMinimo, svgTemBitmap, medePixels, avalia, lugaresDo
@@ -228,4 +228,18 @@ test("o caçador de logos de set normaliza pelo padrão (sem quadro fixo própri
   const fonte = readFileSync(new URL("../scripts/cacar-logos-set.mjs", import.meta.url), "utf8");
   assert.match(fonte, /from "\.\/lib\/logo-padrao\.mjs"/);
   assert.ok(!/width: 1000, height: 500/.test(fonte));
+});
+
+// O "Sobre" do jogo vintage põe width/height no <img> (reserva a caixa antes
+// do arquivo chegar). Em 2026-11-14, na troca dos logos pro padrão, sete
+// data/sobre/*.json ficaram com a medida do arquivo antigo: o LOTR, de
+// 200×172 pra 339×320, desenhava numa caixa de proporção errada.
+test("o \"Sobre\" guarda a largura e a altura reais do logo", () => {
+  const dir = new URL("../data/sobre/", import.meta.url);
+  for (const f of readdirSync(dir).filter((n) => n.endsWith(".json"))) {
+    const s = JSON.parse(readFileSync(new URL(f, dir), "utf8"));
+    if (!s.logo) continue;
+    const c = lerCabecalho(readFileSync(new URL(`../${String(s.logo).replace(/^\//, "")}`, import.meta.url)));
+    assert.deepEqual([s.logoLargura, s.logoAltura], [c.largura, c.altura], `${f}: ${s.logo}`);
+  }
 });
