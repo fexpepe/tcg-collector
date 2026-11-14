@@ -309,6 +309,13 @@ test("Bandai moderno: coleção numerada, boosters extras, decks e promos, pelo 
   assert.deepEqual(secoesBandai("hololive", ["HBP01", "HBP07", "HEB01", "HSD01", "HSD19", "HYS01", "HPR"]), {
     main: ["HBP01", "HBP07"], extraBoosters: ["HEB01"], decks: ["HSD01", "HSD19", "HYS01"], promos: ["HPR"]
   });
+  // Dragon Ball Super Card Game Masters: os boosters numerados das duas
+  // grafias (DBS-B01…, BT25…) e a 2nd Edition; Themed/Draft/Battle Evolution/
+  // Mythic/Collector's como extra; Expansion Deck Box e Anniversary nos decks;
+  // Pre-Release, Release Event, promos e Oversized no resto.
+  assert.deepEqual(secoesBandai("dbs", ["DBS-B01", "DBS-B10-RE", "BT31", "DBS-TB01", "DB1", "EB-01", "MB-01", "CSV1", "DBS-BE01", "BE25", "DBS-B12PRE", "BT31_PR", "PR", "OVRS"]), {
+    main: ["BT31", "DBS-B01", "DBS-B10-RE"], extraBoosters: ["CSV1", "DB1", "DBS-TB01", "EB-01", "MB-01"], decks: ["BE25", "DBS-BE01"], promos: ["BT31_PR", "DBS-B12PRE", "OVRS", "PR"]
+  });
   // Grand Archive (Weebs of the Shore, na mesma forma): o booster de três
   // letras, a Alter Edition e os packs avulsos como extra, Starter Decks e
   // Re:Collection nos decks, Event/Supporter Pack e promos no resto.

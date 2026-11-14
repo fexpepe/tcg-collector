@@ -424,6 +424,10 @@
     lorcana: [/DISNEY/, /RAVENSBURGER/, /LORCANA/],
     onepiece: [/EIICHIRO/, /\bODA\b/],
     dbfw: [/BIRD ?STUDIO/, /TORIYAMA/, /DRAGON ?BALL/, /FUSION ?WORLD/],
+    // Dragon Ball Super Card Game Masters: o mesmo rodapé do Fusion World
+    // (BIRD STUDIO/SHUEISHA). Os dois empatam e o formato do código desempata
+    // (BT10-001 aqui, FB01-001 lá).
+    dbs: [/BIRD ?STUDIO/, /TORIYAMA/, /DRAGON ?BALL/],
     digimon: [/DIGIMON/, /AKIYOSHI/, /HONGO/],
     gundam: [/GUNDAM/, /SOTSU/, /SUNRISE/],
     ygo: [/KONAMI/, /TAKAHASHI/, /YU-?GI-?OH/],
@@ -482,8 +486,9 @@
     // cartas, que antes iam pra busca só como One Piece/Digimon).
     [/^ST\d{2}-\d{3}$/, ["onepiece", "gundam", "digimon", "dbfw"]],
     [/^ST\d{1,2}-\d{2}$/, ["digimon"]],
-    [/^(BT|EX|RB|LM)\d{1,2}-/, ["digimon"]],
-    [/^P-\d{3}$/, ["digimon", "onepiece"]],
+    // BT e EX também são do Dragon Ball Super Masters (BT10-001, EX21-05).
+    [/^(BT|EX|RB|LM)\d{1,2}-/, ["digimon", "dbs"]],
+    [/^P-\d{3}$/, ["digimon", "onepiece", "dbs"]],
     [/^(GD\d{2}|EXB|EXR|EXBP|EXRP)-/, ["gundam"]],
     [/^(FB|FS|FC|FP)\d{0,2}-/, ["dbfw"]],
     // Manga Booster do DBFW (SB01-001): sem isto o código valia peso 1, o
@@ -491,6 +496,12 @@
     // "©B.S./S., T.A", e o OCR não lê) e toda leitura ia até a carta inteira.
     // Dígitos exigidos: o Yu-Gi-Oh tem sets "SB" com letra (SBAD-EN001).
     [/^SB\d{2}-\d{3}$/, ["dbfw"]],
+    // Dragon Ball Super Masters (14/11/2026): Themed Booster (TB1-001), Draft
+    // Box (DB1-001), Expert Deck (XD1-01), starter (SD1-01, dois dígitos no
+    // número), Battle Evolution (EB1-01) e os marcadores de energia (M-24).
+    [/^(TB|DB|XD)\d{1,2}-\d{2,3}$/, ["dbs"]],
+    [/^(SD|EB)\d{1,2}-\d{2}$/, ["dbs"]],
+    [/^M-\d{2}$/, ["dbs"]],
     // Naruto Boruto Card Game: "NB02-48-EB" (set, número de dois dígitos e o
     // tipo: B, A ou EB). O extrair devolve "NB02-48"; nenhum outro jogo usa
     // dois dígitos depois de "NB0x-".

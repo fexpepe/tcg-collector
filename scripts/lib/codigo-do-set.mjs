@@ -161,6 +161,17 @@ export function codigoDoSet(jogo, entrada, cartas) {
     return prefixoDominante(cartas, /^([A-Z0-9]{3})\d{3}$/);
   }
 
+  if (jogo === "dbs") {
+    // Dragon Ball Super Card Game Masters (14/11/2026): o código que a carta
+    // imprime antes do hífen ("BT10-001", "TB1-001", "DB1-001", "EB1-01"),
+    // sem o zero, como na carta (a grafia da PSA não foi conferida). O setId
+    // do TCGplayer ("DBS-B10") não é o código. A Pre-Release e a 2nd Edition
+    // ficam com o código do set pai, como no One Piece. Expansion Sets (EX),
+    // starters (SD) e promos (P-) ficam sem: o EX numera a série de caixas,
+    // não o produto.
+    return prefixoDominante(cartas, /^((?:BT|TB|DB|EB)\d{1,2})-/);
+  }
+
   if (jogo === "fftcg") {
     // Final Fantasy: o set é um "Opus" numerado, e é assim que a PSA escreve
     // ("FINAL FANTASY OPUS I"). O "OP30" do setId foi o sync que estendeu a

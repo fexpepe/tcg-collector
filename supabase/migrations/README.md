@@ -8,6 +8,18 @@ poucos.)
 
 ## Pendentes de aplicar
 
+- `20261114a` — libera o slug `dbs` (Dragon Ball Super Card Game Masters,
+  Bandai, 2017+, edição em inglês) nas duas whitelists de jogo
+  (`card_views`/`increment_card_view` e `contribute_price`;
+  `20261114a_add_dbs.sql`). Cópia da `20261113g` (hololive, a última
+  aplicada) com o `dbs` a mais: **ela cobre a 20261113g** e, por ela, todas
+  as do dia 13. Só a lista muda. Qualquer uma das anteriores rodada **depois**
+  desta tiraria o `dbs`. Sem ela, a view de carta e o Preço da Comunidade do
+  jogo novo são descartados em silêncio. Conferir com o par de `curl` do fim
+  do arquivo: a view de `dbs-650759` tem de **criar a linha** no
+  `card_views` (o 204 sozinho não prova nada). **A próxima migração de jogo
+  copia esta.**
+
 - `20261113g` — libera o slug `hololive` (hololive OFFICIAL CARD GAME,
   Bushiroad/COVER, edição em inglês, 2025+) nas duas whitelists de jogo
   (`card_views`/`increment_card_view` e `contribute_price`;

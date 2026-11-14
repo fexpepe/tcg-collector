@@ -356,6 +356,18 @@
   --accent: #55606e; --accent-dark: #434c58; --accent-rgb: 85, 96, 110;
   --accent-soft: rgba(85, 96, 110, 0.1); --on-accent: #ffffff;
 }
+/* Dragon Ball Super Card Game Masters: AZUL ELÉTRICO (14/11/2026; o laranja
+   da marca não cabe ao lado do Naruto e do One Piece). No escuro um azul
+   claro com texto escuro (6.4:1); no claro o #1a0dff com branco (8.2:1). */
+[data-game-accent="dbs"] {
+  --accent: #7d88ff; --accent-dark: #5b6bff; --accent-rgb: 125, 136, 255;
+  --accent-soft: rgba(125, 136, 255, 0.16); --on-accent: #0a0c10;
+}
+[data-theme="light"][data-game-accent="dbs"],
+[data-theme="light"] [data-game-accent="dbs"] {
+  --accent: #1a0dff; --accent-dark: #1407cc; --accent-rgb: 26, 13, 255;
+  --accent-soft: rgba(26, 13, 255, 0.1); --on-accent: #ffffff;
+}
 /* Yu-Gi-Oh!: ROXO VIVO — um degrau mais magenta que o violeta do Lorcana
    (#a78bfa), pros dois roxos não se confundirem lado a lado. */
 [data-game-accent="ygo"] {

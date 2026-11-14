@@ -100,6 +100,11 @@ const JOGOS = {
   // código identifica o holomem; a reimpressão e a arte alternativa imprimem o
   // mesmo, e quem separa é a arte.
   hololive: { min: 0.98 },
+  // Dragon Ball Super Card Game Masters (2026-11-14): "BT10-001", "TB1-001",
+  // "P-123"… — 99,0 % medido. O que falha é o Battle Evolution ("EB1-07"),
+  // que o extrair normaliza pro formato do One Piece (EB01-007). O TCGplayer
+  // guarda as promos de evento com sufixo ("BT31-001_PR"); a carta não imprime.
+  dbs: { min: 0.97, impresso: (c) => String(c.number).replace(/[_ ]S?PR$/i, "") },
   grandarchive: { semCodigo: "número solto de três dígitos (069), repetido em todo set e até dentro do set" },
   // Cardfight!! Vanguard (2026-11-13): SET/NÚMERO + EN, com a raridade da
   // paralela antes do número (DZ-BT16/001EN, V-BT02/SP01EN).

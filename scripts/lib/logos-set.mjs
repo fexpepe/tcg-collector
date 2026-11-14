@@ -149,6 +149,7 @@ export const FORA = {
   ygo: "sem fonte de logo de set (o sync grava vazio)",
   digimon: "sem fonte de logo de set (o sync grava vazio)",
   dbfw: "sem fonte de logo de set (o sync grava vazio)",
+  dbs: "sem fonte de logo de set conferida (o sync grava vazio; 2026-11-14)",
   riftbound: "sem fonte de logo de set (o sync grava vazio)",
   unionarena: "sem fonte de logo de set (o sync grava vazio)",
   sorcery: "sem fonte de logo de set (o sync grava vazio)",

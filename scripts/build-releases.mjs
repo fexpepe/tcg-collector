@@ -29,7 +29,7 @@ const JOGOS = [
   ["pokemon", "data/"], ["lorcana", "data/lorcana/"], ["onepiece", "data/onepiece/"],
   ["magic", "data/magic/"], ["fab", "data/fab/"], ["gundam", "data/gundam/"],
   ["swu", "data/swu/"], ["cyberpunk", "data/cyberpunk/"], ["sorcery", "data/sorcery/"],
-  ["dbfw", "data/dbfw/"], ["ygo", "data/ygo/"], ["digimon", "data/digimon/"],
+  ["dbfw", "data/dbfw/"], ["dbs", "data/dbs/"], ["ygo", "data/ygo/"], ["digimon", "data/digimon/"],
   ["riftbound", "data/riftbound/"], ["unionarena", "data/unionarena/"],
   ["narutocg", "data/narutocg/"], ["naruto", "data/naruto/"], ["hxh", "data/hxh/"], ["dbc", "data/dbc/"], ["dbsb", "data/dbsb/"], ["dbva", "data/dbva/"], ["dbbw", "data/dbbw/"], ["dbz", "data/dbz/"], ["wow", "data/wow/"], ["lotr", "data/lotr/"], ["weiss", "data/weiss/"], ["godzilla", "data/godzilla/"], ["palworld", "data/palworld/"], ["fftcg", "data/fftcg/"], ["grandarchive", "data/grandarchive/"], ["hololive", "data/hololive/"], ["vanguard", "data/vanguard/"], ["duelmasters", "data/duelmasters/"], ["narutomythos", "data/narutomythos/"], ["narutokayou", "data/narutokayou/"], ["harrypotter", "data/harrypotter/"], ["mbc", "data/mbc/"], ["cdm", "data/cdm/"], ["gcd", "data/gcd/"], ["gw", "data/gw/"], ["narutoboruto", "data/narutoboruto/"], ["narutotc", "data/narutotc/"], ["jump", "data/jump/"]
 ];
@@ -137,7 +137,7 @@ function dobra(linha) {
 
 const ROTULOS = {
   pokemon: "Pokémon", lorcana: "Lorcana", onepiece: "One Piece", magic: "Magic",
-  fab: "Flesh and Blood", gundam: "Gundam", swu: "Star Wars: Unlimited", cyberpunk: "Cyberpunk TCG", sorcery: "Sorcery: Contested Realm", dbfw: "Dragon Ball Fusion World",
+  fab: "Flesh and Blood", gundam: "Gundam", swu: "Star Wars: Unlimited", cyberpunk: "Cyberpunk TCG", sorcery: "Sorcery: Contested Realm", dbfw: "Dragon Ball Fusion World", dbs: "Dragon Ball Super Card Game Masters",
   ygo: "Yu-Gi-Oh!", digimon: "Digimon", riftbound: "Riftbound",
   unionarena: "Union Arena", narutocg: "Naruto Card Game", naruto: "Naruto", hxh: "Hunter x Hunter", dbc: "Dragon Ball Carddass", dbsb: "Dragon Ball Super Battle", dbva: "Dragon Ball Visual Adventure", dbbw: "Dragon Ball Super Barcode Wars", dbz: "Dragon Ball Z CCG", wow: "World of Warcraft TCG", lotr: "The Lord of the Rings TCG", harrypotter: "Harry Potter TCG", weiss: "Weiß Schwarz", godzilla: "Godzilla Card Game", palworld: "Palworld", fftcg: "Final Fantasy TCG", grandarchive: "Grand Archive TCG", hololive: "hololive Official Card Game", vanguard: "Cardfight!! Vanguard", duelmasters: "Duel Masters", narutomythos: "Naruto Mythos TCG", narutokayou: "Naruto Kayou", mbc: "Miracle Battle Carddass", cdm: "Carddass Masters", gcd: "Gundam Carddass", gw: "Gundam War", narutoboruto: "Naruto Boruto Card Game", narutotc: "Naruto Trading Cards", jump: "Jump"
 };

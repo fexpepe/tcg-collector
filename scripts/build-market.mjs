@@ -29,7 +29,7 @@ const JOGOS = [
   ["pokemon", "data/"], ["lorcana", "data/lorcana/"], ["onepiece", "data/onepiece/"],
   ["magic", "data/magic/"], ["fab", "data/fab/"], ["gundam", "data/gundam/"],
   ["swu", "data/swu/"], ["cyberpunk", "data/cyberpunk/"], ["sorcery", "data/sorcery/"],
-  ["dbfw", "data/dbfw/"], ["ygo", "data/ygo/"], ["digimon", "data/digimon/"],
+  ["dbfw", "data/dbfw/"], ["dbs", "data/dbs/"], ["ygo", "data/ygo/"], ["digimon", "data/digimon/"],
   ["riftbound", "data/riftbound/"], ["unionarena", "data/unionarena/"],
   ["narutocg", "data/narutocg/"], ["naruto", "data/naruto/"], ["hxh", "data/hxh/"], ["dbc", "data/dbc/"], ["dbsb", "data/dbsb/"], ["dbva", "data/dbva/"], ["dbbw", "data/dbbw/"], ["dbz", "data/dbz/"], ["wow", "data/wow/"], ["lotr", "data/lotr/"], ["weiss", "data/weiss/"], ["godzilla", "data/godzilla/"], ["palworld", "data/palworld/"], ["fftcg", "data/fftcg/"], ["grandarchive", "data/grandarchive/"], ["hololive", "data/hololive/"], ["vanguard", "data/vanguard/"], ["duelmasters", "data/duelmasters/"], ["narutomythos", "data/narutomythos/"], ["narutokayou", "data/narutokayou/"], ["harrypotter", "data/harrypotter/"], ["mbc", "data/mbc/"], ["cdm", "data/cdm/"], ["gcd", "data/gcd/"], ["gw", "data/gw/"], ["narutoboruto", "data/narutoboruto/"], ["narutotc", "data/narutotc/"]
 ];

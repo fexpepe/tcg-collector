@@ -70,6 +70,8 @@ test("a exceção só vale pro formato <prefixo>-<productId> do próprio jogo", 
   assert.equal(ehIdDeProduto("fftcg", "ff-132375"), false);
   assert.equal(ehIdDeProduto("grandarchive", "ga-494129"), true);
   assert.equal(ehIdDeProduto("grandarchive", "grandarchive-494129"), false);
+  assert.equal(ehIdDeProduto("dbs", "dbs-650759"), true);
+  assert.equal(ehIdDeProduto("dbs", "dbsb-650759"), false);
   assert.equal(ehIdDeProduto("hololive", "holo-724234"), true);
   assert.equal(ehIdDeProduto("hololive", "hololive-724234"), false);
   assert.equal(ehIdDeProduto("vanguard", "vg-727149"), true);

@@ -95,6 +95,7 @@ jobs:
             data/hololive/sets
             data/vanguard/sets
             data/duelmasters/sets
+            data/dbs/sets
             data/narutomythos/sets
             data/narutokayou/sets
             data/jump/sets
