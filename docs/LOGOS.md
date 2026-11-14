@@ -138,8 +138,11 @@ Logo de jogo novo continua com nome novo a cada troca de arte (`-v2`,
 
 O passo "Padrão dos logos" do CI roda
 `node scripts/check-logos.mjs --base <base>`. Ele confere só os logos que a
-PR (ou o push) **mudou**, e cai em erro se algum está fora do padrão sem
-exceção. Aviso (macio) não barra.
+PR **mudou** (contra a base dela) ou que um push direto na `main` mudou
+(contra o commit anterior da `main`), e cai em erro se algum está fora do
+padrão sem exceção. Aviso (macio) não barra. Push de outra branch pula: o
+push anterior dela não é base confiável, porque um merge da `main` traria os
+logos da `main` como se fossem da branch. A PR dela confere certo.
 
 - Sem o sharp, o check lê só o cabeçalho do arquivo: formato, tamanho, alfa,
   peso e densidade. Com o sharp, confere também os pixels: recorte, véu e
