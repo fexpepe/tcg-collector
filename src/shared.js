@@ -2010,7 +2010,8 @@
           <div class="cmdk-results" hidden></div>
           <div class="cmdk-intro">
             <p class="cmdk-intro-text">${introParts[0]}${exHtml}${introParts[1] || ""}</p>
-            <button type="button" class="cmdk-scan" data-cmdk-scan>${SCAN_ICON}<span>${escapeHtml(t("cmdk.scanCards"))}</span></button>
+            <button type="button" class="cmdk-scan" data-cmdk-scan aria-describedby="cmdkScanBeta">${SCAN_ICON}<span>${escapeHtml(t("cmdk.scanCards"))}</span></button>
+            <p class="cmdk-scan-beta" id="cmdkScanBeta">${escapeHtml(t("cmdk.scanBeta"))}</p>
           </div>
           <p class="cmdk-hint">${escapeHtml(t("cmdk.hint"))}</p>
         </div>`;
