@@ -163,6 +163,14 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
   cor só, então nada do desenho muda). Alfa ≤12 zerado; não foi esticado
   (bitmap pequeno). WebP sem perda, 5 KB. **Decisão a confirmar pelo
   Fernando**: se a marca publicar uma versão escura, ela entra no lugar.
+- `game_hololive.webp` — hololive OFFICIAL CARD GAME (seção "Outros TCGs"
+  do hub, 2026-11-13). Fonte: o logo do cabeçalho do site oficial em inglês
+  (`en.hololive-official-cardgame.com/wp-content/themes/tcg_en/assets/img/global/logo.svg`,
+  283×78, SVG de uma cor só, o roxo-escuro `#534b88`, com um halo branco
+  suave atrás do emblema). Renderizado no Chrome a 2268×621 com fundo
+  transparente, alfa ≤12 zerado e reduzido pra 512×140 com o Pillow em alfa
+  pré-multiplicado. WebP sem perda, 52 KB. O roxo lê bem na cápsula branca;
+  a versão `logo_w.svg` (branca) não foi usada.
 - `game_gw.webp` — Gundam War (Bandai, 1999–2011). Fonte enviada pelo
   Fernando em 2026-11-11: WebP de 360×125 com alfa, o logo dourado "GUNDAM
   WAR / MOBILE SUIT GUNDAM THE CARD GAME". Recortado no conteúdo (+2px), com

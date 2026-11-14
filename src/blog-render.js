@@ -89,6 +89,7 @@
     godzilla: ["Godzilla", "#5e7c68"],
     fftcg: ["Final Fantasy", "#93c5fd"],
     grandarchive: ["Grand Archive", "#f0abfc"],
+    hololive: ["hololive", "#38d6f5"],
     vanguard: ["Vanguard", "#ff5a7a"],
     narutomythos: ["Naruto Mythos", "#fde68a"],
     narutokayou: ["Naruto Kayou", "#d946ef"],

@@ -469,6 +469,18 @@
   --accent: #3a5ba0; --accent-dark: #314d88; --accent-rgb: 58, 91, 160;
   --accent-soft: rgba(58, 91, 160, 0.1); --on-accent: #ffffff;
 }
+/* hololive OFFICIAL CARD GAME: CIANO, o azul-céu da marca (13/11/2026,
+   proposta). Texto escuro no escuro (12.1:1); petróleo com branco no claro
+   (5.4:1). */
+[data-game-accent="hololive"] {
+  --accent: #38d6f5; --accent-dark: #1fc3e4; --accent-rgb: 56, 214, 245;
+  --accent-soft: rgba(56, 214, 245, 0.16); --on-accent: #0a0c10;
+}
+[data-theme="light"][data-game-accent="hololive"],
+[data-theme="light"] [data-game-accent="hololive"] {
+  --accent: #0e7490; --accent-dark: #0b5f76; --accent-rgb: 14, 116, 144;
+  --accent-soft: rgba(14, 116, 144, 0.1); --on-accent: #ffffff;
+}
 /* Grand Archive TCG: LILÁS (13/11/2026, proposta: o logo oficial é
    branco e não dá cor). Lilás claro com texto escuro no escuro (11.9:1); um
    roxo-orquídea fechado com texto branco no claro (5.5:1). */

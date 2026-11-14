@@ -600,7 +600,7 @@
     ["op-mb-", "mbc"], ["nrt-mb-", "mbc"], ["hxh-mb-", "mbc"], ["mb-", "mbc"], ["nrt-ncg-", "narutocg"],
     ["mtg-", "magic"], ["ygo-", "ygo"], ["op-", "onepiece"], ["opcd-", "onepiece"], ["op2002-", "onepiece"],
     ["fab-", "fab"], ["gcg-", "gundam"], ["gcd-", "gcd"], ["gw-", "gw"], ["nb-", "narutoboruto"], ["ntc-", "narutotc"], ["swu-", "swu"], ["cpk-", "cyberpunk"], ["sor-", "sorcery"], ["dbfw-", "dbfw"], ["dgm-", "digimon"], ["rb-", "riftbound"],
-    ["ua-", "unionarena"], ["nrt-", "naruto"], ["hxh-", "hxh"], ["dbc-sb", "dbsb"], ["dbc-va", "dbva"], ["dbc-bw", "dbbw"], ["dbc-", "dbc"], ["wow-", "wow"], ["lotr-", "lotr"], ["dbz-", "dbz"], ["ws-", "weiss"], ["gzc-", "godzilla"], ["pal-", "palworld"], ["fftcg-", "fftcg"], ["ga-", "grandarchive"], ["vg-", "vanguard"], ["nmy-", "narutomythos"], ["nky-", "narutokayou"], ["hp-", "harrypotter"], ["cdm-", "cdm"]
+    ["ua-", "unionarena"], ["nrt-", "naruto"], ["hxh-", "hxh"], ["dbc-sb", "dbsb"], ["dbc-va", "dbva"], ["dbc-bw", "dbbw"], ["dbc-", "dbc"], ["wow-", "wow"], ["lotr-", "lotr"], ["dbz-", "dbz"], ["ws-", "weiss"], ["gzc-", "godzilla"], ["pal-", "palworld"], ["fftcg-", "fftcg"], ["ga-", "grandarchive"], ["holo-", "hololive"], ["vg-", "vanguard"], ["nmy-", "narutomythos"], ["nky-", "narutokayou"], ["hp-", "harrypotter"], ["cdm-", "cdm"]
   ];
   function jogosDoId(id) {
     const conhecido = cardGameMap.get(id);

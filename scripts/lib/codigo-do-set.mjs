@@ -58,6 +58,10 @@ const FAMILIAS = {
   // Promos (EPR) e protótipos (PC) sem.
   godzilla: { re: /^(E(?:BP|SD|SC|TD)\d{2})$/, inteiro: true },
   palworld: { re: /^(E(?:BP|SD|SC|TD|SS)\d{2})(?:$|-)/, inteiro: true },
+  // HOLOLIVE OFFICIAL CARD GAME: o setId já é o código que a carta imprime
+  // antes do hífen ("hBP01-001"), em caixa alta como os outros selos: HBP01,
+  // HEB01, HSD12, HYS01. As promos (HPR) ficam sem.
+  hololive: { re: /^(H(?:BP|EB|SD|YS)\d{2})$/, inteiro: true },
   // CARDFIGHT!! VANGUARD: o código é o que a carta imprime antes da barra
   // ("DZ-BT16/001EN", "BT01/046EN"), com o hífen da era (G-, V-, D-, DZ-;
   // a série original não tem). Boosters, extras e decks; as promos (PR, VPR,
