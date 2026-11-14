@@ -47,11 +47,24 @@
 // não têm fonte melhor e seguem no png. A geração passou a ser POR HOST
 // (`geracao` em FONTES): subir a global regeraria Scryfall e TCGplayer
 // (~250 mil cartas) sem mudar um pixel neles.
+//
+// Largura intermediária, 450 (14/11/2026): a grade tinha só 300 e 600, e
+// toda tela acima de 1x pegava a de 600 — o notebook com Windows a 125% ou
+// 150% (o tile de 235 px pede 294–352 px reais) e o celular 2x (155 px pedem
+// 310). A de 450 serve esses dois com folga de 1,3–1,5x e ~33% menos bytes
+// que a de 600 (42 contra 63 KB numa carta típica, WebP q80), sem diferença
+// na tela: a imagem continua maior que o que a tela desenha. O celular 3x
+// segue na de 600. Ela NÃO é uma geração nova: carta gerada daqui em diante
+// já sai com as quatro larguras, e as que existem ganham a 450 a partir da
+// própria 1000 do bucket (passo "intermediária" do job), sem baixar nada das
+// fontes. O site só põe a 450 no srcset de um host quando o status diz que
+// ela existe pra TODAS as cartas dele (`intermediaria`, ver statusDoEspelho).
 export const ESPELHO = "https://img.sleevu.app/";
 export const ESQUEMA_ESPELHO = 2;
 // Geração padrão de um host; quem regerou de novo declara a sua em FONTES.
 export const GERACAO = 2;
-export const LARGURAS = [300, 600, 1000];
+export const INTERMEDIARIA = 450;
+export const LARGURAS = [300, INTERMEDIARIA, 600, 1000];
 export const QUALIDADE_WEBP = 80;
 export const QUALIDADE_POPUP = 90;
 // Opções do sharp por largura: o popup (1000) com mais qualidade e croma
@@ -168,25 +181,41 @@ export function urlEspelho(u, hosts, w, geracoes) {
 
 // O que o site pode usar, a partir do _index/status.json que o job publica:
 // os hosts COMPLETOS no esquema atual e, de cada um, a geração completa (só
-// as acima de 1 — a 1 é o padrão do cliente). Usado pelo deploy
+// as acima de 1 — a 1 é o padrão do cliente) e se a largura intermediária
+// (450) existe pra todas as cartas dele. Usado pelo deploy
 // (apply-img-mirror.mjs) e pela montagem do app (app-web.mjs).
 export function statusDoEspelho(j) {
   const hs = (j && j.hosts) || {};
   const hosts = ORDEM.filter((h) => hs[h] && hs[h].completo && hs[h].esquema === ESQUEMA_ESPELHO);
   const geracoes = {};
   for (const h of hosts) if (Number(hs[h].geracao) > 1) geracoes[h] = Number(hs[h].geracao);
-  return { hosts, geracoes };
+  const intermediaria = hosts.filter((h) => hs[h].intermediaria === true);
+  return { hosts, geracoes, intermediaria };
 }
 
-// Os dois marcadores do src/game.js (o mesmo padrão do MANIFEST): os hosts
-// completos e a geração de cada um. Lança se faltar um: build com a lista de
-// hosts e SEM a geração montaria a chave errada (404 em toda imagem do host).
+// Os três marcadores do src/game.js (o mesmo padrão do MANIFEST): os hosts
+// completos, a geração de cada um e os que têm a 450. Lança se faltar um:
+// build com a lista de hosts e SEM a geração montaria a chave errada (404 em
+// toda imagem do host); sem o da 450, ela sumiria do site calada.
 const MARCA_HOSTS = /var IMG_MIRROR_HOSTS = \[[^\]]*\]; \/\* SLEEVU_IMG_MIRROR \*\//;
 const MARCA_GERACOES = /var IMG_MIRROR_GEN = \{[^}]*\}; \/\* SLEEVU_IMG_MIRROR_GEN \*\//;
-export function injetaEspelho(texto, { hosts = [], geracoes = {} } = {}) {
+const MARCA_INTERMEDIARIA = /var IMG_MIRROR_450 = \[[^\]]*\]; \/\* SLEEVU_IMG_MIRROR_450 \*\//;
+export function injetaEspelho(texto, { hosts = [], geracoes = {}, intermediaria = [] } = {}) {
   if (!MARCA_HOSTS.test(texto)) throw new Error("marcador SLEEVU_IMG_MIRROR não encontrado no src/game.js");
   if (!MARCA_GERACOES.test(texto)) throw new Error("marcador SLEEVU_IMG_MIRROR_GEN não encontrado no src/game.js");
+  if (!MARCA_INTERMEDIARIA.test(texto)) throw new Error("marcador SLEEVU_IMG_MIRROR_450 não encontrado no src/game.js");
   return texto
     .replace(MARCA_HOSTS, () => `var IMG_MIRROR_HOSTS = ${JSON.stringify(hosts)}; /* SLEEVU_IMG_MIRROR */`)
-    .replace(MARCA_GERACOES, () => `var IMG_MIRROR_GEN = ${JSON.stringify(geracoes)}; /* SLEEVU_IMG_MIRROR_GEN */`);
+    .replace(MARCA_GERACOES, () => `var IMG_MIRROR_GEN = ${JSON.stringify(geracoes)}; /* SLEEVU_IMG_MIRROR_GEN */`)
+    .replace(MARCA_INTERMEDIARIA, () => `var IMG_MIRROR_450 = ${JSON.stringify(intermediaria)}; /* SLEEVU_IMG_MIRROR_450 */`);
+}
+
+// Status da 450 de um host, no fim da rodada do job. `fechou`: a geração atual
+// está completa (o site passa a usá-la). `ok`/`com450`: cartas na geração
+// atual, e quantas delas já têm a 450. `antes`: o status anterior do host.
+// Geração que não fechou: o site segue na anterior, e a 450 dela vale o que
+// valia (a geração nova gera as quatro larguras, mas só conta quando fechar).
+export function intermediariaDoHost({ fechou, ok, com450, antes, servida }) {
+  if (fechou) return ok > 0 && com450 === ok;
+  return Boolean(antes && antes.intermediaria === true && servida === (Number(antes.geracao) || 1));
 }

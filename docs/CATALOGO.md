@@ -568,7 +568,7 @@ valem só nesse caso.
 | C11 | `scripts/send-wishlist-push.mjs` | só com preço | sem aviso de queda de preço | — |
 | C12 | `scripts/healthcheck.mjs` | cartas; preço e deltas se tem preço | queda do catálogo em produção não alerta | — |
 | C13 | `.github/workflows/deploy.yml` | passo do sync (com `\|\| echo`); passo `sync-price-history.mjs data/<slug>` se tem preço | catálogo não atualiza e fica sem histórico | — |
-| C14 | `deploy.yml` (restore e save) e `mirror-images.yml` (restore) | `data/<slug>/sets` (padrão FAB) ou os monólitos (padrão Magic) nas **três** listas de cache, idênticas e na mesma ordem | listas diferentes: o job de imagens deixa de achar o cache e o espelhamento para em **todos** os jogos (5.5) | — |
+| C14 | `deploy.yml` (restore e save do cache do build rápido) | `data/<slug>/sets` (padrão FAB) ou os monólitos (padrão Magic) nas **duas** listas de cache, idênticas e na mesma ordem | listas diferentes: o build rápido não acha o cache e todo push vira build completo (5.5). O espelho de imagens não tem lista: lê o pacote genérico (`data/*/sets`) | — |
 | C15 | `deploy.yml` ("Decide o modo do build") | `data/<slug>/manifest.generated.js` na guarda | build rápido publica o tile sem catálogo atrás | — |
 | C16 | `_headers`, `sw.js`, `scripts/lib/img-mirror.mjs` | só com host de imagem novo: `img-src` **e** `connect-src` (o SW baixa por `fetch`), `IMAGE_HOSTS` (e `MUTABLE_IMAGE_HOSTS` se a arte muda na mesma URL), `FONTES` do espelho | imagens bloqueadas pela CSP somem do site | — |
 | C17 | `functions/_lib/jogos.js` (`JOGOS_URL`) | endereço oficial em inglês e por extenso (`star-wars-unlimited`, o nome que o TCGplayer usa), nome, logo, e pra linha o `linha` e os `prefixos`; apelido novo em `APELIDOS` | sem `/games/<endereço>` (404), sem páginas de set e de carta, fora dos sitemaps e da página /games | `games-url.test.mjs` (todo jogo do app tem endereço; endereço único e fora das rotas reservadas) |
@@ -736,11 +736,17 @@ quando ele é tirado (método em 7.1).
   "Pendentes de aplicar" no [README das migrações](../supabase/migrations/README.md).
   Aplicada depois, ela tiraria o `swu` das duas whitelists. Saiu da lista no
   mesmo dia, e o README a registra como "não aplicar".
-- **Listas de cache**: as três listas de `path` do cache de catálogo
-  (restore e save no `deploy.yml`, restore no `mirror-images.yml`) precisam
-  ser idênticas e na mesma ordem, porque o `actions/cache` deriva a versão da
-  entrada dessa lista. Com listas diferentes, o cache não é encontrado. No job
-  de imagens, isso para o espelhamento de todos os jogos, sem erro.
+- **Listas de cache**: as duas listas de `path` do cache do build rápido
+  (restore e save no `deploy.yml`) precisam ser idênticas e na mesma ordem,
+  porque o `actions/cache` deriva a versão da entrada dessa lista. Com listas
+  diferentes, o cache não é encontrado e o push cai no build completo. Pelo
+  mesmo motivo, um jogo novo sempre "perde" o cache salvo antes dele, até o
+  próximo build completo. O `mirror-images.yml` restaurava esse mesmo cache
+  com uma terceira cópia da lista e, a cada jogo novo, saía verde sem espelhar
+  nada (13–14/11/2026). Desde então ele lê o pacote `catalogo-espelho.tar`,
+  que o build completo da `main` salva num caminho fixo com padrões genéricos
+  (`data/*/sets`): jogo novo entra sozinho, e pacote faltando deixa o job
+  vermelho.
 
 ### 5.6 Textos com contagem
 

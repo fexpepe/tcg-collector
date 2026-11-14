@@ -397,8 +397,11 @@
   // job de espelho publica. Vazia = toda imagem vem da origem, como sempre.
   // IMG_MIRROR_GEN: a geração completa de cada host (host -> n), quando passa
   // da 1 — a chave da imagem muda com ela (scripts/lib/img-mirror.mjs).
+  // IMG_MIRROR_450: os hosts em que TODA carta já tem a largura intermediária
+  // (450): só neles ela entra no srcset da grade.
   var IMG_MIRROR_HOSTS = []; /* SLEEVU_IMG_MIRROR */
   var IMG_MIRROR_GEN = {}; /* SLEEVU_IMG_MIRROR_GEN */
+  var IMG_MIRROR_450 = []; /* SLEEVU_IMG_MIRROR_450 */
 
   // dataset declarado -> arquivo real (depende do modo). set-id-map e os
   // pokemon-* não são mesclados, então são o mesmo arquivo nos dois modos.
@@ -535,6 +538,7 @@
     manifest: MANIFEST,
     imgMirrorHosts: IMG_MIRROR_HOSTS,
     imgMirrorGen: IMG_MIRROR_GEN,
+    imgMirror450: IMG_MIRROR_450,
     catalogReady: catalogReady,
     get catalogoAtrasado() { return catalogoAtrasado; },
     // "set" no endereço /games/<jogo>/<set>[/<carta>], senão o ?type= (ver tipoDaTela).

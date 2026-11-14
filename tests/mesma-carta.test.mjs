@@ -65,5 +65,6 @@ test("job: carta EN da TCGdex leva a alternativa, e o índice guarda de onde a m
   assert.ok(job.includes('const alt = game === "pokemon" ? alternativaDe(c.linha, u, setIdMap) : "";'));
   assert.ok(job.includes("const GERACAO = geracaoDoHost(host);"), "geração por host, não a global");
   assert.ok(job.includes('if (o.alt && tem[4] === "t" && tem[2] < diasAtras(FALTANDO_DIAS))'), "a que ficou na TCGdex tenta de novo");
-  assert.ok(job.includes('idx.objetos[base] = fonte ? [matriz.length, o.versao, HOJE, GERACAO, fonte]'));
+  // 5º campo: a fonte ("" sem alternativa); 6º: a 450 saiu junto (14/11/2026).
+  assert.ok(job.includes('idx.objetos[base] = [matriz.length, o.versao, HOJE, GERACAO, fonte, 1];'));
 });
