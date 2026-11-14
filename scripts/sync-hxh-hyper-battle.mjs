@@ -62,28 +62,47 @@ async function api(params) {
   return null;
 }
 
-// Todos os arquivos da wiki cujo nome começa com "Hyper battle" (a API é
-// case-sensitive no prefixo, mas os arquivos seguem esse padrão).
+// Prefixos dos arquivos de carta na wiki (a API é case-sensitive no prefixo).
+// Quase tudo começa com "Hyper battle"; o pacote da Jump Festa 2001 foi subido
+// por outra pessoa, com outro padrão de nome, e ficou de fora do catálogo até
+// 2026-11-14 justamente por isso (ver JF01_POR_ARQUIVO).
+const PREFIXOS = ["Hyper", "Jump_Festa_Edition_2001_Hyper_Battle"];
+
 async function fetchImages() {
   const out = [];
-  let cont = null;
-  for (let i = 0; i < 20; i++) {
-    const j = await api({ action: "query", list: "allimages", aiprefix: "Hyper", ailimit: "500", ...(cont ? { aicontinue: cont } : {}) });
-    if (!j) return out.length ? out : null;
-    out.push(...(j.query?.allimages || []).map((x) => ({ name: x.name, url: x.url })));
-    cont = j.continue?.aicontinue;
-    if (!cont) break;
+  for (const prefixo of PREFIXOS) {
+    let cont = null;
+    for (let i = 0; i < 20; i++) {
+      const j = await api({ action: "query", list: "allimages", aiprefix: prefixo, ailimit: "500", ...(cont ? { aicontinue: cont } : {}) });
+      if (!j) return out.length ? out : null;
+      out.push(...(j.query?.allimages || []).map((x) => ({ name: x.name, url: x.url })));
+      cont = j.continue?.aicontinue;
+      if (!cont) break;
+    }
   }
   return out;
 }
 
-// nome do arquivo -> { setCode, num, type }. Cobre os 3 padrões da wiki.
-function parseFile(name) {
+// Jump Festa 2001 (ジャンプフェスタ2001エディション パック, 8 cartas): os
+// arquivos são "Jump Festa Edition 2001 Hyper Battle Pack Card 1…8", sem o
+// número oficial no nome. O número abaixo foi LIDO no canto de baixo de cada
+// scan (2026-11-14) e confere com o buraco que a 2000 (S-J1) e a 2002 (C-J6…,
+// S-J5…) deixam na numeração: com estas 8, a linha fecha as 23 promos que a
+// Hunterpedia conta.
+export const JF01_POR_ARQUIVO = { 1: "C-J1", 2: "C-J2", 3: "C-J3", 4: "C-J4", 5: "C-J5", 6: "S-J2", 7: "S-J3", 8: "S-J4" };
+
+// nome do arquivo -> { setCode, num, type }. Cobre os 4 padrões da wiki.
+export function parseFile(name) {
   const f = name.replace(/\.(png|jpg|jpeg|webp)$/i, "").replace(/_/g, " ").toLowerCase();
   let m = f.match(/^hyper battle part (\d) card ([csenh])(\d+(?:-\d+)?)$/);
   if (m) return { setCode: `p${m[1]}`, type: m[2], num: `${m[2].toUpperCase()}${m[3].toUpperCase()}` };
   m = f.match(/^hyper battle jump festa (\d{4})(?: gon)? card ([cs])-j(\d+)$/);
   if (m) return { setCode: `jf${m[1].slice(2)}`, type: m[2], num: `${m[2].toUpperCase()}-J${m[3]}` };
+  m = f.match(/^jump festa edition 2001 hyper battle pack card (\d+)$/);
+  if (m && JF01_POR_ARQUIVO[m[1]]) {
+    const num = JF01_POR_ARQUIVO[m[1]];
+    return { setCode: "jf01", type: num[0].toLowerCase(), num };
+  }
   m = f.match(/^hyper battle game boy card ([cs])-k(\d+)$/);
   if (m) return { setCode: "gb", type: m[1], num: `${m[1].toUpperCase()}-K${m[2]}` };
   return null; // embalagem, box etc.
@@ -239,4 +258,5 @@ async function run() {
   if (!snapshot || !snapshot.sets) { console.log("  sem snapshot e sem fetch — nada a fazer."); return; }
   await build(snapshot);
 }
-run();
+// Só roda chamado direto: o teste importa o parseFile sem disparar o sync.
+if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) run();

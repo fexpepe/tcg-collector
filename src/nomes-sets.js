@@ -203,6 +203,7 @@
     "hxh-hb-p6": "Part 6 — September 4th × G・I × Hatsu Training",
     "hxh-hb-gb": "Game Boy — Hunter's Genealogy bonus",
     "hxh-hb-jf00": "Jump Festa 2000 limited card",
+    "hxh-hb-jf01": "Jump Festa 2001 Edition pack",
     "hxh-hb-jf02": "Jump Festa 2002 Edition pack",
     // ---- Carddass Masters (jogo cdm, sync-carddass-masters.mjs). Com a IP na
     // frente: fora da página do jogo "Part 2" seria de várias séries; dentro
