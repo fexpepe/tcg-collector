@@ -214,7 +214,12 @@ carrega e esconde o nome em texto (fallback sem erro).
   teto de 60 KB do docs/LOGOS.md). O preto
   pede a cápsula branca, como o Naruto Mythos. Se a Bandai publicar o logo
   avulso, ele entra no lugar.
-- `game_shadowverse.webp` — Shadowverse: Evolve (seção "Outros TCGs" do hub,
+- `game_shadowverse-v2.webp` — Shadowverse: Evolve. Desde 2026-11-14 é a mesma fonte
+  oficial (abaixo) pelo normaliza-logo: 301×260, 36 KB, WebP com perda. O de 456×394
+  passava do teto de logo de jogo (640×260 do docs/LOGOS.md): a altura é o que
+  conta num logo quase quadrado, e 260 ainda dá 2,1× no hub desktop. Até ali
+  era o `game_shadowverse.webp` descrito a seguir.
+- `game_shadowverse.webp` (até 2026-11-14) — Shadowverse: Evolve (seção "Outros TCGs" do hub,
   2026-11-13). Fonte: o logo do cabeçalho do site oficial em inglês
   (`en.shadowverse-evolve.com/wordpress/wp-content/themes/en-shadowverse-evolve/assets/images/common/logo.png`,
   456×394, PNG de paleta com alfa: o círculo mágico azul-ciano atrás de
@@ -499,8 +504,8 @@ que dá o mesmo peso dos originais: 181 KB contra 214 KB dos sete antigos.
 Mesma arte, só menor ou sem margem, então o nome ficou (quem tem o antigo no
 cache vê a mesma figura): `game_pokemon` (508×260), `game_swu-v2` (363×260),
 `game_vanguard` (580×260), `game_narutokayou` (390×260), `game_narutomythos`
-(512×257, 36 KB em vez de 72), `game_harrypotter` (417×320) e
-`game_naruto_datacarddass` (476×320), `game_shadowverse` (301×260) e
+(512×257, 36 KB em vez de 72), `game_harrypotter` (417×320),
+`game_naruto_datacarddass` (476×320) e
 `game_dbs` (502×226, sem os 13 px de margem embaixo) passavam do teto, do
 peso ou tinham margem e foram regravados a partir do próprio arquivo; `game_dbfw-v2` e `game_fab`, a partir
 da fonte em `../brand/`. Quando a arte ganha nitidez (fonte maior), o nome

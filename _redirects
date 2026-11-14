@@ -43,6 +43,9 @@
 /assets/games/game_onepiece_2002.webp       /assets/games/game_onepiece_2002-v2.webp       301
 /assets/games/game_naruto_ccg-v2.webp       /assets/games/game_naruto_ccg-v3.webp       301
 
+# Shadowverse (2026-11-14): o de 456×394 passava do teto do padrão de logo.
+/assets/games/game_shadowverse.webp         /assets/games/game_shadowverse-v2.webp         301
+
 # Logos trocados pelo padrão dos logos (docs/LOGOS.md) em 2026-11-14, mesma
 # razão do bloco de cima: o build rápido reaproveita o catálogo dos sets do
 # último build completo, com o caminho antigo, e o arquivo antigo saiu. Os
