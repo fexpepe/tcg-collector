@@ -100,6 +100,9 @@ const JOGOS = {
   // código identifica o holomem; a reimpressão e a arte alternativa imprimem o
   // mesmo, e quem separa é a arte.
   hololive: { min: 0.98 },
+  // Shadowverse: Evolve (2026-11-13): "BP01-001EN", único no jogo inteiro.
+  // Mediu 99,1 %.
+  shadowverse: { min: 0.97, nota: "sobram os números que a fonte grava sem o EN ou com ano (CP01-LD01, PR-245N, BSF2024-001EN 2024)" },
   grandarchive: { semCodigo: "número solto de três dígitos (069), repetido em todo set e até dentro do set" },
   // Cardfight!! Vanguard (2026-11-13): SET/NÚMERO + EN, com a raridade da
   // paralela antes do número (DZ-BT16/001EN, V-BT02/SP01EN).
