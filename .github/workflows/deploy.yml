@@ -1383,8 +1383,10 @@ jobs:
       # margem até o teto real; cortar arquivos (chunks de preço → R2, por
       # exemplo) fica pra antes do próximo jogo grande.
       #
-      # Mesmo dia, o primeiro corte: a poda e as pastas só do build lá em cima
-      # tiram uns 1.100 arquivos que subiam sem uso (18.903 → ~17.800).
+      # Mesmo dia, os primeiros cortes: o split-pricing parou de gravar chunk
+      # de preço pra jogo sem preço (#314) e o Duel Masters ficou sem preço
+      # (18.903 → 18.032); a poda e as pastas só do build lá em cima tiram
+      # mais 1.117 que subiam sem uso (build da branch: 16.915).
       - name: Conta arquivos (teto de 20.000 do Pages)
         run: |
           total=$(find . -type f | wc -l)
