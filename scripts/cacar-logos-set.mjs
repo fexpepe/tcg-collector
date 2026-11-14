@@ -26,12 +26,12 @@
 // set-logos/ vence a fonte remota). Sem ela o logo da PR sumiria no próximo
 // build completo; o jogo é pulado e o relatório diz por quê.
 //
-// Normalização, no padrão de cada jogo:
-//   Lorcana    PNG com paleta 1000×500 transparente, logo encaixado em 970×470
-//              (o padrão dos 14 curados);
-//   One Piece  WebP transparente recortado no alfa (até 1000 px de largura);
-//   FAB        WebP transparente recortado no alfa (até 600 px, como os do mirror).
-// Em todos: zera o véu de alfa, tira as manchas soltas (limpaAlfa) e recorta.
+// Normalização: a do padrão dos logos (docs/LOGOS.md, normaliza() em
+// lib/logo-padrao.mjs), igual pros três jogos desde 2026-11-14 — WebP
+// recortado na tinta, véu e manchas soltas limpos, encaixado no teto de logo
+// de set (960×320) sem ampliar. Antes cada jogo tinha o seu (Lorcana em PNG de
+// quadro fixo 1000×500 com margem, FAB até 600 px, One Piece até 1000 px). A
+// tabela da PR traz a nitidez no pior lugar do site.
 //
 // Precisa do sharp FORA do repositório (o site não tem package.json), como o
 // mirror-swu-set-logos: SHARP_DIR aponta a pasta do pacote. Sem ele, só lista.
@@ -52,6 +52,7 @@ import {
   metaRefresh, slugsDeProduto, slugsParaTentar, logoDaPaginaLorcana, logosDaFandom,
   logosDaPaginaBandai, logoDoFabCube, limpaAlfa, encaixa, mesmaArte
 } from "./lib/logos-set.mjs";
+import { normaliza as normalizaNoPadrao, densidades, ALVO_DENSIDADE, PISO_DENSIDADE } from "./lib/logo-padrao.mjs";
 
 const ROOT = new URL("../", import.meta.url);
 const args = process.argv.slice(2);
@@ -111,39 +112,14 @@ async function baixaImagem(url, headers = {}) {
   catch (e) { return { ok: false, motivo: `${e.message} (${url})` }; }
 }
 
-// Recorta no alfa e normaliza no padrão do jogo. Devolve o arquivo final.
-async function normaliza(jogo, { data, info, limpeza }) {
-  const { caixa } = limpeza;
-  const folga = jogo === "lorcana" ? 0 : 2; // no Lorcana a folga é a margem do canvas
-  const left = Math.max(0, caixa.x0 - folga), top = Math.max(0, caixa.y0 - folga);
-  const width = Math.min(info.width, caixa.x1 + 1 + folga) - left;
-  const height = Math.min(info.height, caixa.y1 + 1 + folga) - top;
-  const recorte = () => sharp(data, { raw: info }).extract({ left, top, width, height });
-  if (jogo === "lorcana") {
-    const { largura, altura } = encaixa(width, height, 970, 470, { aumenta: true });
-    const logo = await recorte().resize(largura, altura, { kernel: "lanczos3" }).png().toBuffer();
-    const tela = () => sharp({ create: { width: 1000, height: 500, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } } })
-      .composite([{ input: logo, left: Math.round((1000 - largura) / 2), top: Math.round((500 - altura) / 2) }]);
-    const antes = await tela().raw().toBuffer();
-    // Paleta (libimagequant) com q92, como os curados. O dither às vezes suja
-    // de alfa 1–3 o que era transparente (aparece no fundo escuro): se sujou,
-    // refaz sem dither.
-    let png = await tela().png({ palette: true, quality: 92, effort: 10, compressionLevel: 9 }).toBuffer();
-    if (await sujeiraDeDither(antes, png)) png = await tela().png({ palette: true, quality: 92, effort: 10, compressionLevel: 9, dither: 0 }).toBuffer();
-    return { buf: png, largura: 1000, altura: 500, logo: `${largura}×${altura}` };
-  }
-  const maxL = jogo === "fab" ? 600 : 1000;
-  const { largura, altura } = encaixa(width, height, maxL, 100000);
-  const webp = await recorte().resize(largura, altura, { kernel: "lanczos3" })
-    .webp({ quality: 90, alphaQuality: 100, effort: 6 }).toBuffer();
-  return { buf: webp, largura, altura, logo: `${largura}×${altura}` };
-}
-
-async function sujeiraDeDither(antesRaw, png) {
-  const depois = await sharp(png).ensureAlpha().raw().toBuffer();
-  let n = 0;
-  for (let i = 3; i < antesRaw.length; i += 4) if (antesRaw[i] === 0 && depois[i] !== 0) n++;
-  return n;
+// Normaliza no padrão dos logos de set e diz como fica a nitidez no pior lugar
+// do site (vai pra tabela da PR: logo "macio" ou "borrado" pede fonte maior).
+async function normaliza(original) {
+  const final = await normalizaNoPadrao(sharp, original, { tipo: "set" });
+  const pior = densidades("set", final.largura, final.altura)[0];
+  const nitidez = pior.densidade >= ALVO_DENSIDADE ? "nítido"
+    : `${pior.densidade < PISO_DENSIDADE ? "⚠️ borrado" : "macio"}: ${pior.densidade.toFixed(1)}× em ${pior.lugar}`;
+  return { ...final, logo: `${final.largura}×${final.altura}`, nitidez };
 }
 
 // ── Fontes ──────────────────────────────────────────────────────────────────
@@ -293,7 +269,7 @@ ${partes.join("\n")}
   for (let i = 0; i < propostas.length; i++) {
     const p = propostas[i];
     const meta = await sharp(p.buf).metadata();
-    // Lorcana: o canvas 1000×500 já traz a margem; o chip mostra o PNG inteiro.
+    // Como no chip do site: 88% da largura e a altura útil, sem ampliar demais.
     const { largura, altura } = encaixa(meta.width, meta.height, Math.round(celL * 0.88), celA - 40, { aumenta: true });
     const img = await sharp(p.buf).resize(largura, altura).png().toBuffer();
     const y = topo + i * linha + 12 + Math.round((celA - altura) / 2);
@@ -311,11 +287,11 @@ function relatorioMd({ hoje, propostas, semCandidato, erros, resumo }) {
   else {
     l.push(`${propostas.length} logo(s) novo(s). Confira cada um na galeria: o chip claro é como aparece no site; o fundo escuro mostra mancha e véu que o chip esconde.`, "");
     l.push("{{GALERIA}}", "");
-    l.push("| Jogo | Set | setId | Arquivo | Fonte | Original → final | Limpeza | Cartas |", "|---|---|---|---|---|---|---|---|");
+    l.push("| Jogo | Set | setId | Arquivo | Fonte | Original → final | Nitidez | Limpeza | Cartas |", "|---|---|---|---|---|---|---|---|---|");
     for (const p of propostas) {
       const limpeza = [p.manchas ? `${p.manchas} mancha(s)` : "", p.veu ? `véu ${p.veu} px` : ""].filter(Boolean).join(", ") || "—";
       const nota = (p.nota ? `<br>${p.nota}` : "") + (p.alerta ? `<br>⚠️ ${p.alerta}` : "");
-      l.push(`| ${p.jogo} | ${p.nome} | ${p.setIds.map((s) => `\`${s}\``).join(" ")} | \`${p.arquivoFinal}\` | [${p.fonteCurta}](${p.url})${nota} | ${p.original} → ${p.dimensoes} (${Math.round(p.bytes / 1024)} KB) | ${limpeza} | ${p.cartas} |`);
+      l.push(`| ${p.jogo} | ${p.nome} | ${p.setIds.map((s) => `\`${s}\``).join(" ")} | \`${p.arquivoFinal}\` | [${p.fonteCurta}](${p.url})${nota} | ${p.original} → ${p.dimensoes} (${Math.round(p.bytes / 1024)} KB) | ${p.nitidez} | ${limpeza} | ${p.cartas} |`);
     }
     l.push("");
   }
@@ -397,7 +373,7 @@ async function run() {
           continue;
         }
         const { buf: original, analise, fonte, url, nota = "", alerta = "" } = achado.escolhido;
-        const final = await normaliza(jogo, analise);
+        const final = await normaliza(original);
         const rel = `data/${jogo}/set-logos/${alvo.arquivo}`;
         const destino = SECO ? join(SAIDA, "logos", jogo, alvo.arquivo) : fileURLToPath(new URL(rel, ROOT));
         // O remendo do cards.js vem ANTES de gravar o logo: se o delta de bytes
@@ -410,7 +386,7 @@ async function run() {
         propostas.push({
           ...ident, arquivo: alvo.arquivo, arquivoFinal: rel, fonte, fonteCurta: fonte.length > 90 ? fonte.slice(0, 89) + "…" : fonte,
           url, nota, alerta, original: `${meta.width}×${meta.height} ${meta.format}`, dimensoes: `${final.largura}×${final.altura}`,
-          logo: final.logo, bytes: final.buf.length, manchas: limpeza.manchas, veu: limpeza.veu,
+          logo: final.logo, nitidez: final.nitidez, bytes: final.buf.length, manchas: limpeza.manchas, veu: limpeza.veu,
           cartas: remendo.cartas, deltaCardsJs: remendo.delta, buf: final.buf, bytesOriginal: original.length
         });
         console.log(`    ✓ ${fonte} → ${final.largura}×${final.altura} (${Math.round(final.buf.length / 1024)} KB), ${remendo.cartas} carta(s), cards.js +${remendo.delta} B`);

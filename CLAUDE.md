@@ -16,6 +16,7 @@ sozinho uma pull request para a `main` remota — não espera o Fernando pedir.
    node scripts/check.mjs          # sintaxe + i18n pt/en/es + ordem de scripts
    node scripts/check-mobile.mjs   # guardas de layout mobile
    node scripts/split-indexes.mjs --check   # só se mexeu em data/indexes*.js
+   node scripts/check-logos.mjs --base origin/main   # só se mexeu em logo (docs/LOGOS.md)
    ```
 3. Mudança visual foi conferida renderizando (a tela real via `npx http-server`
    ou um trecho com o `styles.css` real), em desktop e, quando afeta o celular,
