@@ -80,7 +80,7 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 | `harrypotter` | Harry Potter TCG | Wizards of the Coast 2001–2002: hpjson (GitHub) + imagens do accio.cards; premium, decks e promos = cartas próprias | sem preço |
 | `mbc` | Miracle Battle Carddass | Bandai 2009–2014, o crossover da Jump: sete séries (Dragon Ball Kai, One Piece, Toriko, Hunter × Hunter, Naruto Shippuden, Kuroko, J-Heroes), uma seção por série; tcg-db (snapshot `data/vintage/miracle-battle.json`). Até 2026-10-01 eram linhas do One Piece, do Naruto e do HxH (ids `op-mb-`/`nrt-mb-`/`hxh-mb-` mantidos; `src/migra-mbc.js` leva a coleção de quem marcou) | sem preço |
 | `cdm` | Carddass Masters | Bandai 1996–2011, a linha de cartas de coleção de várias IPs, uma seção por IP. HUNTER×HUNTER (2000–2001): número e nome pela lista impressa no verso das cartas (`scripts/data/carddass-masters-hxh.json`), scans da Hunterpedia (snapshot `data/vintage/carddass-masters-hxh.json`). 新世紀エヴァンゲリオン (1996–1997), as três CR de pachinko (2008–2010) e ヱヴァンゲリヲン新劇場版:破 第2章 (2011): listas de um colecionador e, nas CR e no 破, a frente das cartas lida nos scans (`scripts/data/carddass-masters-eva.json`), scans do animecollection.fr (snapshot `data/vintage/carddass-masters-eva.json`). NARUTO, a coleção do filme de 2005: lista do 火の国庵 (snapshot `data/vintage/carddass-masters-naruto.json`), sem imagem | sem preço |
-| `gcd` | Gundam Carddass | Bandai 1988–1997: SD Gundam World, Gaiden, Sengokuden, Seiden e G Gundam, uma seção por série; número, raridade e scan do animecollection.fr, sets do 80storage, nome transcrito dos scans (snapshot `data/vintage/gundam-carddass.json`). Foi linha do `gundam` por um dia (2026-11-10); `src/migra-mbc.js` leva a coleção de quem marcou | sem preço |
+| `gcd` | Gundam Carddass | Bandai 1988–1997: SD Gundam World, Gaiden, Sengokuden, Seiden e G Gundam, uma seção por série, e os prêmios de sorteio da Comic BomBom do 本弾; número, raridade e scan do animecollection.fr, sets do 80storage, nome transcrito dos scans (snapshot `data/vintage/gundam-carddass.json`). Foi linha do `gundam` por um dia (2026-11-10); `src/migra-mbc.js` leva a coleção de quem marcou | sem preço |
 | `gw` | Gundam War | Bandai 1999–2011, o TCG japonês do Gundam (vendido sob a marca Carddass Masters): número, nome, cor, tipo e raridade pelas listas do site oficial da Bandai, ainda no ar (snapshot `data/vintage/gundam-war.json`); sem imagem | sem preço |
 | `seiya` | Saint Seiya Carddass | Bandai 1988–2023: Carddass Part 1–3 (1988–89), Saint Paradise (1991–92) e Reborn Saint Paradise (2022–23), uma seção por série; número, raridade e scan do animecollection.fr (a Part 1, do saint-seiya.it), nome transcrito dos scans | sem preço |
 | `seiyatc` | Saint Seiya Trading Collection | Amada 2000–2003: as cinco coleções de cenas do anime e dos filmes, com as promos; mesma fonte e mesmo sync do `seiya` | sem preço |
@@ -426,7 +426,8 @@ mesmos ids e o mesmo endereço; quem marcou carta nesse intervalo é levado pro
 
 | Série | Código | Partes | Anos | No catálogo |
 |---|---|---|---|---|
-| SDガンダムワールド (本弾) | `wd` | 第1弾–第13弾, No.1–537 | 1988–1992 | as 13 (537 cartas; falta o No.124) |
+| SDガンダムワールド (本弾) | `wd` | 第1弾–第13弾, No.1–537 | 1988–1992 | as 13 (536 cartas: o No.124 não é de pacote) |
+| 本弾: prêmios da Comic BomBom | `wdp` | No.0, No.124 e o da edição 100 | — | os 3, sem imagem |
 | SDガンダム外伝 | `gd` | 第1弾–第16弾, No.1–704 | 1989–1993 | as 16 (706 cartas) |
 | SD戦国伝 | `sg` | 第1弾–第4弾, 一–八十四 | 1990–1991 | as 4 (83 cartas; falta o 六十) |
 | 新SD戦国伝 | `ns` | 第1弾–第4弾 | 1992–1996 | só o 第1弾 (20 cartas; falta o 十九) |
@@ -445,13 +446,44 @@ mesmos ids e o mesmo endereço; quem marcou carta nesse intervalo é levado pro
 - **Id = série + parte + número impresso**: `gcd-wd01-1`, `gcd-gd08-345`. O id
   fica gravado no snapshot junto do id da carta na fonte (`src`), e o refresh
   o reaproveita. Número com duas versões na mesma parte ganha sufixo:
-  `gcd-wd13-500` e `-500b` (o No.500 saiu em prisma e em prisma duplo),
-  `gcd-gd08-345`/`-345b` e `-347`/`-347b` (dois hologramas do mesmo prisma).
+  `gcd-gd08-345`/`-345b` e `-347`/`-347b` (dois padrões de prisma, duas
+  cartas na mão).
+- **Carta de duas camadas**: a No.500 do 本弾 第13弾 é a メモリアルカード em W
+  prism, a camada "MEMORIAL CARD No.500" sobre o 謎の最強武者. É UMA carta (a
+  parte tem 42), e a fonte lista as duas faces. A 2ª fica no snapshot com
+  `face: 2` e o mesmo id, como no Dragon Ball Carddass, e não vira carta. Até
+  2026-11-15 ela era a `gcd-wd13-500b`, juntada na `gcd-wd13-500` pelo
+  `data/card-id-merges.json` (quem marcou fica com a 500).
 - **Erros da fonte** (`CORRECOES` no sync, achados lendo o número impresso em
   cada scan): em três partes a página repete o scan de uma carta no lugar da
   seguinte — a repetida sai, e a carta de verdade fica faltando (戦国伝 六十,
-  新戦国伝 十九, Gガンダム No.031); e o Gガンダム numerava "31" a carta que
-  imprime No.032. O set mostra o total oficial (20/21, 41/42).
+  新戦国伝 十九, Gガンダム No.031); o Gガンダム numerava "31" a carta que
+  imprime No.032; e a ガンマスター (No.502 do 本弾 第13弾) vinha como comum,
+  sendo prisma (achada em 2026-11-15 pela contagem: a parte fecha 6 prismas,
+  como o 11〜13弾 inteiro). O set mostra o total oficial (20/21, 41/42).
+- **Partes de 41 e de 42** (auditoria de 2026-11-15, com o checklist do
+  [dream.uijin](https://dream.uijin.com/cardlist.html) e a ficha do
+  [manganokura](https://manganokura.com/carddass-kaitori-price/gundam-031)):
+  o 本弾 tem 41 cartas do 第1弾 ao 第10弾 e 42 do 第11弾 em diante. O 80storage
+  dá 42 pro 第3弾 porque conta o No.124, que fica entre ele e o 第4弾 e é
+  prêmio de sorteio. Até essa data o 第3弾 dizia 42 e "faltava o No.124"; os
+  41 endereços de carta dele trocaram "-42" por "-41", e a borda leva o
+  antigo pro novo (`cartaParecida`). O mesmo 80storage dá 44 pro 外伝 第2弾,
+  que tem 42 (No.43–84, o 第3弾 começa no 85): fica o que a numeração diz.
+- **Prêmios da Comic BomBom** (`gcd-wdp`, as `PROMOS` do sync): o No.0
+  (武者3人) e o No.124 (ガンダムチーム), que imprimem o número da linha, e o
+  da edição 100 da revista (武者5人衆), sem número. As tiragens relatadas pelo
+  colecionador (3.000, 6.000 e 10.000) não têm documento da Bandai. Não há
+  scan: entram sem imagem, com o nome que o checklist dá (nas fotos de 160 px
+  dele só o ガンダムチーム se lê), e sem ano. O scan entra sozinho quando
+  existir em `assets/cards/gcd/<id>.webp`. Ficaram de fora, por falta de
+  fonte além dele: a carta de cinema 武者ガンダム＆パトレイバー e a パラス
+  アテネ com erro de impressão.
+- **Número sem total**: a numeração é corrida entre as partes (o 第3弾 vai
+  do No.83 ao 123) e a carta não imprime total, então a tela mostra só o
+  número ("83"), não "83/41". Vale pras cartas `gcd-` no `cardCode` (navegador
+  e borda). O endereço da carta segue com o total
+  (`functions/_lib/slug-carta.js`).
 - **Nome da carta**: nenhuma fonte acessível lista (o Suruga-ya barra robô).
   Foi **transcrito dos scans**, do japonês impresso na frente, em
   `scripts/data/gundam-carddass-nomes.json` (o cabeçalho de lá diz como foi

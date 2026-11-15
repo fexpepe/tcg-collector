@@ -373,6 +373,7 @@
     "gcd-sd01": "SD Gundam Seiden Quest One — The Swordsman of Rion",
     "gcd-sd02": "SD Gundam Seiden Quest Two — The Strongest Fighter",
     "gcd-gg01": "Mobile Fighter G Gundam",
+    "gcd-wdp": "SD Gundam World — Comic BomBom Prize Cards",
     // ---- Dragon Ball Carddass (sync-dbc-carddass.mjs): as 30 partes do Hondan
     // e o 特別弾 que fechou a linha (dbc-h31, set/1997 — não há "Part 31"), a
     // Super Battle, a Visual Adventure e a Super Barcode Wars. As três séries
