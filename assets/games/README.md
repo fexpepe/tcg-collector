@@ -238,7 +238,20 @@ carrega e esconde o nome em texto (fallback sem erro).
   Vintage da landing por enquanto: o One Piece Card Game de 2002 e o Gundam
   Carddass (2026-11-11) já levaram a fileira a 14 (7 + 7 no tablet); com ele
   seriam 15, e a grade se decide junto.
-- `game_seiya.webp` — Saint Seiya (os três jogos: Carddass, Trading
+- `game_seiya-v2.webp`, `game_seiyatc.webp` e `game_seiyacr.webp` — Saint
+  Seiya Carddass, Trading Collection e Crusade (2026-11-15). Fontes enviadas
+  pelo Fernando, WebP com alfa: o 聖闘士星矢 sozinho (1536×1024), com a faixa
+  azul "TRADING COLLECTION" embaixo (1672×941) e com o "Crusade" azul em cima
+  (1479×806). O alfa delas veio com perda (o opaco em 248–254, não 255): antes
+  do normalizador, o que tinha alfa ≥ 240 subiu pra 255, senão o logo ficava
+  1% transparente. Depois, o `normaliza-logo` do docs/LOGOS.md (véu de alfa
+  ≤ 11 limpo, recorte na tinta, teto do vintage): 706×320 (33 KB), 546×320
+  (35 KB) e 592×320 (34 KB), WebP q90 com alfa sem perda, 2× ou mais em todo
+  lugar. Sai a exceção de nitidez do v1 e o
+  Trading Collection e o Crusade deixam de usar o logo do Carddass. Os sets
+  dos três seguem com o nome (`setLogo` vazio).
+- `game_seiya.webp` (até 2026-11-15; 301 pro v2 no `_redirects`) — Saint
+  Seiya (os três jogos: Carddass, Trading
   Collection e Crusade, até cada produto ganhar o seu; linhas da página
   /vintage, páginas /games e os "Sobre"). É o logo 聖闘士星矢 da época das cartas,
   recortado do DISPLAY da Carddass Part 2 「バトルメモリアル」 (1988), no scan

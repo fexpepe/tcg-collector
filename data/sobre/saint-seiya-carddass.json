@@ -6,9 +6,9 @@
     "lang": "ja",
     "romaji": "Seinto Seiya Kādodasu"
   },
-  "logo": "assets/games/game_seiya.webp",
-  "logoLargura": 249,
-  "logoAltura": 106,
+  "logo": "assets/games/game_seiya-v2.webp",
+  "logoLargura": 706,
+  "logoAltura": 320,
   "periodo": {
     "inicio": "1988-06",
     "fim": "2023-05"

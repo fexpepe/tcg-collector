@@ -6,9 +6,9 @@
     "lang": "ja",
     "romaji": "Kuruseido Seinto Seiya"
   },
-  "logo": "assets/games/game_seiya.webp",
-  "logoLargura": 249,
-  "logoAltura": 106,
+  "logo": "assets/games/game_seiyacr.webp",
+  "logoLargura": 592,
+  "logoAltura": 320,
   "periodo": {
     "inicio": "2012-01",
     "fim": "2014-07"
