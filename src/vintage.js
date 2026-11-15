@@ -177,7 +177,6 @@
   var elVisao = document.getElementById("vtVisao");
   var elMarca = document.getElementById("vtMarca");
   var elEixo = document.getElementById("vtEixo");
-  var elNumeros = document.getElementById("vtNumeros");
   var elVazio = document.getElementById("vtVazio");
   var elAcervo = document.getElementById("vtAcervo") || lista.parentNode;
   var tituloDaPagina = document.title;
@@ -348,20 +347,6 @@
     document.title = t("vt.brandTitle", { marca: m.nome });
   }
 
-  // ── Números do acervo ─────────────────────────────────────────────────────
-  function desenhaNumeros(visiveis) {
-    var partes = [tn("vt.n.games", visiveis.length, { n: visiveis.length })];
-    if (!estado.marca) partes.push(tn("vt.n.brands", marcasNaPagina.length, { n: marcasNaPagina.length }));
-    var per = periodoDe(visiveis);
-    if (per) partes.push(per);
-    if (contagem) {
-      var cartas = visiveis.reduce(function (s, j) { return s + ((contagem[j.url] || [])[1] || 0); }, 0);
-      if (cartas) partes.push(tn("vt.n.cards", cartas, { n: numero(cartas) }));
-    }
-    elNumeros.textContent = partes.join(" · ");
-    elNumeros.hidden = !visiveis.length;
-  }
-
   // ── Cabeçalho de grupo da visão "por marca" ───────────────────────────────
   function cabecalhoDoGrupo(slug, doGrupo) {
     var li = document.createElement("li");
@@ -424,7 +409,6 @@
     elAcervo.classList.toggle("vt-acervo--marca", !!estado.marca);
     desenhaEixo(e);
     desenhaMarca(visiveis);
-    desenhaNumeros(visiveis);
     if (estado.marca) buscaResumos(visiveis);
     elVazio.hidden = visiveis.length > 0;
 
@@ -524,7 +508,6 @@
       if (!dado || typeof dado !== "object") return;
       contagem = dado;
       poeContagem();
-      desenhaNumeros(jogos.filter(function (j) { return !j.li.hidden; }));
     })
-    .catch(function () { /* sem contagem: a página segue sem os números */ });
+    .catch(function () { /* sem contagem: as linhas seguem sem os números */ });
 })(typeof globalThis !== "undefined" ? globalThis : window);

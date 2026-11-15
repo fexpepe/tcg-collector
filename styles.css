@@ -5111,13 +5111,6 @@ a.hub-tile:active::after { opacity: 1; }
    (.vt-eixo) é irmã da lista e precisa da MESMA grade pra cair em cima das
    barras. */
 .vt-simbolos { position: absolute; width: 0; height: 0; overflow: hidden; }
-.vt-numeros {
-  margin: 10px 0 0;
-  color: var(--sepia);
-  font-size: 14px;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-}
 
 /* Filtros numa linha só: marca e ordem à esquerda, a visualização no canto
    direito. Os dois campos têm a mesma cara (rótulo fora, caixa de 44px). */
