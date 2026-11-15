@@ -84,7 +84,7 @@ const GAMES = [
   { slug: "sorcery", label: "Sorcery: Contested Realm" },
   { slug: "riftbound", label: "Riftbound" },
   { slug: "narutocg", label: "Naruto Card Game (2027)" },
-  { slug: "naruto", label: "Naruto Card Game (2002~2006)" },
+  { slug: "naruto", label: "Naruto Card Game" },
   { slug: "hxh", label: "Hunter × Hunter Carddass" },
   { slug: "dbc", label: "Dragon Ball Carddass" },
   { slug: "dbsb", label: "Dragon Ball Super Battle" },
@@ -689,7 +689,7 @@ const DECK_GAME_LABELS = {
   pokemon: "Pokémon TCG", lorcana: "Disney Lorcana", onepiece: "One Piece Card Game",
   magic: "Magic: The Gathering", fab: "Flesh and Blood", gundam: "Gundam Card Game", swu: "Star Wars: Unlimited", cyberpunk: "Cyberpunk TCG", sorcery: "Sorcery: Contested Realm",
   dbfw: "Dragon Ball Fusion World", dbs: "Dragon Ball Super Card Game Masters", ygo: "Yu-Gi-Oh!", digimon: "Digimon Card Game",
-  riftbound: "Riftbound", unionarena: "Union Arena", narutocg: "Naruto Card Game (2027)", naruto: "Naruto Card Game (2002~2006)",
+  riftbound: "Riftbound", unionarena: "Union Arena", narutocg: "Naruto Card Game (2027)", naruto: "Naruto Card Game",
   hxh: "Hunter × Hunter", dbc: "Dragon Ball Carddass", dbsb: "Dragon Ball Super Battle", dbva: "Dragon Ball Visual Adventure", dbbw: "Dragon Ball Super Barcode Wars", dbz: "Dragon Ball Z CCG", wow: "World of Warcraft TCG", lotr: "The Lord of the Rings TCG", harrypotter: "Harry Potter TCG", weiss: "Weiß Schwarz", godzilla: "Godzilla Card Game", palworld: "Palworld Official Card Game", fftcg: "Final Fantasy TCG", grandarchive: "Grand Archive TCG", hololive: "hololive Official Card Game", shadowverse: "Shadowverse: Evolve", vanguard: "Cardfight!! Vanguard", duelmasters: "Duel Masters", narutomythos: "Naruto Mythos TCG", narutokayou: "Naruto Kayou", mbc: "Miracle Battle Carddass", cdm: "Carddass Masters", gcd: "Gundam Carddass", gw: "Gundam War", seiya: "Saint Seiya Carddass", seiyatc: "Saint Seiya Trading Collection", seiyacr: "Saint Seiya Crusade", narutoboruto: "Naruto Boruto Card Game", narutotc: "Naruto Trading Cards"
 };
 

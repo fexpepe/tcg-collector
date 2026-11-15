@@ -72,7 +72,7 @@ export const JOGOS_URL = [
   // "Crusade" em cima), enviados pelo Fernando. Até ali usavam o do Carddass.
   { url: "saint-seiya-trading-collection", game: "seiyatc", nome: "Saint Seiya Trading Collection", logo: "assets/games/game_seiyatc.webp", vintage: "2000–2003" },
   { url: "one-piece-card-game-2002", game: "onepiece", linha: "op2002", prefixos: ["op2002-"], nome: "One Piece Card Game (2002)", logo: "assets/games/game_onepiece_2002-v2.webp", vintage: "2002–2005" },
-  { url: "naruto-card-game-2002", game: "naruto", nome: "Naruto Card Game (2002~2006)", logo: "assets/games/game_naruto_vintage.webp", vintage: "2002~2006" },
+  { url: "naruto-card-game-2002", game: "naruto", nome: "Naruto Card Game", logo: "assets/games/game_naruto_vintage.webp", vintage: "2002–2006" },
   { url: "naruto-data-carddass", game: "naruto", linha: "nrt-dc", prefixos: ["nrt-dc-", "nrt-nf-", "nrt-nx-"], nome: "Naruto Data Carddass", logo: "assets/games/game_naruto_datacarddass.webp", vintage: "2005–2010" },
   { url: "naruto-ccg", game: "naruto", linha: "nrt-ccg", prefixos: ["nrt-ccg-"], nome: "Naruto Collectible Card Game", logo: "assets/games/game_naruto_ccg-v3.webp", vintage: "2006–2013" },
   { url: "world-of-warcraft-tcg", game: "wow", nome: "World of Warcraft TCG", logo: "assets/games/game_wow.webp", vintage: "2006–2013" },
