@@ -139,6 +139,12 @@
   ! Link
 /.well-known/*
   ! Link
+# O /llms.txt nasce no deploy (scripts/seo-estatico.mjs), então o teste dos
+# arquivos da raiz não o via e ele ficou sem bloco: em 15/11/2026 saía com o
+# preload do CSS da leva do dia, e ia apontar pra um 404 na próxima troca de
+# CSS, como o /robots.txt (que nesse dia ainda mandava o styles.e9f506da.css).
+/llms.txt
+  ! Link
 
 # Catálogo (data/*): sem regra, caía no default do Pages (max-age=0,
 # must-revalidate) e toda revisita pagava uma requisição condicional por chunk —
