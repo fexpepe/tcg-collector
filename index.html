@@ -54,7 +54,10 @@
     </script>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
-    <link rel="preconnect" href="https://assets.tcgdex.net">
+    <!-- As cartas da landing (vitrine do topo e mini-mocks dos passos e das
+         features) vêm do espelho no R2, não da origem: ver o comentário das
+         FEATURES, mais abaixo. -->
+    <link rel="preconnect" href="https://img.sleevu.app">
     <link rel="preconnect" href="https://tcgplayer-cdn.tcgplayer.com">
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -305,7 +308,7 @@
           </li>
           <li class="lp-passo">
             <div class="lp-pm lp-pm-marca" aria-hidden="true">
-              <img src="https://assets.tcgdex.net/en/base/base1/2/low.webp" alt="" loading="lazy" decoding="async">
+              <img src="https://img.sleevu.app/assets.tcgdex.net/en/base/base1/2/high.png@300.webp" alt="" loading="lazy" decoding="async">
               <span class="lp-pm-linhas">
                 <span class="lp-pm-linha"><span>Holo</span><span class="lp-pm-qtd"><b>−</b><em>2</em><b>+</b></span></span>
                 <span class="lp-pm-linha"><span>1st Edition</span><span class="lp-pm-qtd"><b>−</b><em>1</em><b>+</b></span></span>
@@ -320,11 +323,11 @@
               <span class="lp-pm-set-topo"><strong>Base Set</strong><span>64/102</span></span>
               <span class="lp-pm-barra"><i></i></span>
               <span class="lp-pm-mini">
-                <img src="https://assets.tcgdex.net/en/base/base1/4/low.webp" alt="" loading="lazy" decoding="async">
-                <img src="https://assets.tcgdex.net/en/base/base1/2/low.webp" alt="" loading="lazy" decoding="async">
-                <img class="falta" src="https://assets.tcgdex.net/en/base/base1/15/low.webp" alt="" loading="lazy" decoding="async">
-                <img src="https://assets.tcgdex.net/en/base/base1/7/low.webp" alt="" loading="lazy" decoding="async">
-                <img class="falta" src="https://assets.tcgdex.net/en/base/base1/9/low.webp" alt="" loading="lazy" decoding="async">
+                <img src="https://img.sleevu.app/assets.tcgdex.net/en/base/base1/4/high.png@300.webp" alt="" loading="lazy" decoding="async">
+                <img src="https://img.sleevu.app/assets.tcgdex.net/en/base/base1/2/high.png@300.webp" alt="" loading="lazy" decoding="async">
+                <img class="falta" src="https://img.sleevu.app/assets.tcgdex.net/en/base/base1/15/high.png@300.webp" alt="" loading="lazy" decoding="async">
+                <img src="https://img.sleevu.app/assets.tcgdex.net/en/base/base1/7/high.png@300.webp" alt="" loading="lazy" decoding="async">
+                <img class="falta" src="https://img.sleevu.app/assets.tcgdex.net/en/base/base1/9/high.png@300.webp" alt="" loading="lazy" decoding="async">
               </span>
             </div>
             <h3 data-i18n="home.step3.title">Complete</h3>
@@ -333,7 +336,13 @@
         </ol>
       </section>
 
-      <!-- FEATURES: mini-mocks do produto real, não ícones genéricos -->
+      <!-- FEATURES: mini-mocks do produto real, não ícones genéricos.
+           As cartas dos mocks (aqui e nos passos acima) vêm do NOSSO espelho
+           (img.sleevu.app, @300: o maior mock tem 96 px CSS, 288 em tela 3×),
+           como a vitrine do topo, e não do assets.tcgdex.net. Até 2026-11-15
+           eram o low.webp da TCGdex direto: quando a origem não respondia, o
+           slab do "Graded e slabs" ficava vazio (o Fernando viu na home), e o
+           Charizard baixava duas vezes (a vitrine já traz o do espelho). -->
       <section class="lp-secao lp-features">
         <div class="lp-cab">
           <h2 data-i18n="home.lp.featTitle">Feito por colecionador, pra colecionador</h2>
@@ -351,12 +360,12 @@
 
           <article class="lp-card lp-card-wide">
             <div class="lp-mock lp-mock-binder" aria-hidden="true">
-              <img src="https://assets.tcgdex.net/en/base/base1/4/low.webp" alt="" loading="lazy">
-              <img src="https://assets.tcgdex.net/en/base/base1/2/low.webp" alt="" loading="lazy">
-              <img src="https://assets.tcgdex.net/en/base/base1/15/low.webp" alt="" loading="lazy">
-              <img src="https://assets.tcgdex.net/en/base/base1/7/low.webp" alt="" loading="lazy">
-              <img src="https://assets.tcgdex.net/en/base/base1/9/low.webp" alt="" loading="lazy">
-              <img src="https://assets.tcgdex.net/en/base/base1/16/low.webp" alt="" loading="lazy">
+              <img src="https://img.sleevu.app/assets.tcgdex.net/en/base/base1/4/high.png@300.webp" alt="" loading="lazy">
+              <img src="https://img.sleevu.app/assets.tcgdex.net/en/base/base1/2/high.png@300.webp" alt="" loading="lazy">
+              <img src="https://img.sleevu.app/assets.tcgdex.net/en/base/base1/15/high.png@300.webp" alt="" loading="lazy">
+              <img src="https://img.sleevu.app/assets.tcgdex.net/en/base/base1/7/high.png@300.webp" alt="" loading="lazy">
+              <img src="https://img.sleevu.app/assets.tcgdex.net/en/base/base1/9/high.png@300.webp" alt="" loading="lazy">
+              <img src="https://img.sleevu.app/assets.tcgdex.net/en/base/base1/16/high.png@300.webp" alt="" loading="lazy">
             </div>
             <h3 data-i18n="home.lp.f2">Binders visuais</h3>
             <p data-i18n="home.lp.f2d">Monte fichários página a página, com fotos das suas cartas físicas e link de compartilhamento.</p>
@@ -376,7 +385,7 @@
             <div class="lp-mock lp-mock-slab" aria-hidden="true">
               <span class="lp-slab">
                 <span class="lp-slab-label"><b>PSA</b><span>GEM MT</span><b>10</b></span>
-                <img src="https://assets.tcgdex.net/en/base/base1/4/low.webp" alt="" loading="lazy">
+                <img src="https://img.sleevu.app/assets.tcgdex.net/en/base/base1/4/high.png@300.webp" alt="" loading="lazy">
               </span>
             </div>
             <h3 data-i18n="home.lp.f4">Graded e slabs</h3>
