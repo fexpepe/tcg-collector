@@ -20,11 +20,18 @@ export function splitNumberTotal(card) {
   return { num, total };
 }
 
+// Numeração CORRIDA (o Gundam Carddass, ids gcd-): o número segue de uma
+// parte pra outra e a carta não imprime total, então o código é só o número
+// ("83", não "83/41"; auditoria de 15/11/2026). Quem chama com um objeto
+// montado (o prerender, a página de set) passa o id junto. O endereço da
+// carta (slug-carta.js) não passa por aqui: segue com o total.
+export const numeracaoCorrida = (card) => /^gcd-/.test(card && card.id);
+
 export function cardCode(card) {
   const number = String(card.number || "").trim();
   if (!number) return "";
   const total = String(card.setTotal || "").trim();
-  if (number.includes("/") || !total) return number;
+  if (number.includes("/") || !total || numeracaoCorrida(card)) return number;
   if (/^0\d+$/.test(number) && /^\d+$/.test(total)) return `${number}/${total.padStart(number.length, "0")}`;
   return `${number}/${total}`;
 }
@@ -81,7 +88,9 @@ export function cardCodeForms(card) {
 // Escritas ALTERNATIVAS do código com total, pra description/JSON-LD: as
 // frações que diferem do cardCode e não são só zero à esquerda duplicado —
 // "9/94" pra quem exibe "009/094" (e vice-versa). Ordem: do menor pro maior.
+// Na numeração corrida não há fração nenhuma pra oferecer.
 export function alternateCodes(card) {
+  if (numeracaoCorrida(card)) return [];
   const principal = cardCode(card);
   const { num, total } = splitNumberTotal(card);
   if (!/^\d+$/.test(num) || !/^\d+$/.test(total)) return [];

@@ -7619,11 +7619,17 @@
   // Número zero-preenchido ("009", como o Pokémon moderno e os catálogos JP/ZH
   // guardam) leva o total na MESMA largura — "009/094", que é o que a carta
   // imprime. Antes saía "009/94", forma que ninguém digita nem o Google indexa.
+  // Numeração CORRIDA (o Gundam Carddass): o número segue de uma parte pra
+  // outra (o 本弾 第3弾 vai do No.83 ao 123) e a carta não imprime total, então
+  // "83/41" misturava o número da linha com o tamanho da parte (auditoria de
+  // 15/11/2026): o código é só o número. Só a exibição: o endereço da carta
+  // (functions/_lib/slug-carta.js) segue com o total e nenhum link muda. A
+  // cópia da borda (functions/_lib/card-code.js) tem a mesma regra.
   function cardCode(card) {
     const number = String(card.number || "").trim();
     if (!number) return "";
     const total = String(card.setTotal || "").trim();
-    if (number.includes("/") || !total) return number;
+    if (number.includes("/") || !total || /^gcd-/.test(card.id)) return number;
     if (/^0\d+$/.test(number) && /^\d+$/.test(total)) return `${number}/${total.padStart(number.length, "0")}`;
     return `${number}/${total}`;
   }

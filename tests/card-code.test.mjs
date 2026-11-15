@@ -29,6 +29,14 @@ const lillia = { id: "rb-1", name: "Lillia", number: "001/003", setTotal: 3, set
 const luffy = { id: "op-1", name: "Monkey.D.Luffy", number: "OP05-119", setId: "OP-05" };
 // Magic moderno: guardada como "42" + total 321, impressa "0042/0321".
 const boat = { id: "mtg-hob-42", name: "Great Gilded Boat", number: "42", setTotal: 321, setId: "hob", set: "The Hobbit" };
+// Gundam Carddass: numeração CORRIDA entre as partes (o 本弾 第3弾 vai do No.83
+// ao 123, o 第13弾 do 496 ao 537) e a carta não imprime total. "83/41" e
+// "496/42" misturavam o número da linha com o tamanho da parte (auditoria de
+// 15/11/2026): o código é só o número. O endereço segue com o total
+// (tests/slug-carta.test.mjs), e a busca ainda acha a fração.
+const gcd83 = { id: "gcd-wd03-83", name: "フルアーマーZZ", number: "83", setTotal: 41, setId: "gcd-wd03" };
+const gcd500 = { id: "gcd-wd13-500", name: "Memorial Card", number: "500", setTotal: 42, setId: "gcd-wd13" };
+
 
 test("cardCode: total na largura do número zero-preenchido (o impresso), sem mexer no resto", () => {
   assert.equal(api.cardCode(nymbleJp), "009/094");   // antes saía "009/94"
@@ -114,7 +122,7 @@ test("paleta/scanner: fração 'número/total' resolve a carta pelo total do set
 });
 
 test("a cópia do build (scripts/lib/card-code.mjs) dá o mesmo resultado que o shared.js", () => {
-  const cartas = [nymble, nymbleJp, charizard, lillia, luffy, boat,
+  const cartas = [nymble, nymbleJp, charizard, lillia, luffy, boat, gcd83, gcd500,
     { number: "4", setTotal: 102 }, { number: "H01", setTotal: 42 }, { number: "RC1", setTotal: 113 },
     { number: "TG09", setTotal: 30 }, { number: "0123", setTotal: 281 }, { number: "" }, {}];
   for (const c of cartas) {
@@ -127,4 +135,18 @@ test("a cópia do build (scripts/lib/card-code.mjs) dá o mesmo resultado que o 
   assert.deepEqual(build.alternateCodes(nymbleJp), ["9/94"]);
   assert.deepEqual(build.alternateCodes(charizard), ["004/102"]);
   assert.deepEqual(build.alternateCodes(luffy), []);
+  assert.deepEqual(build.alternateCodes(gcd83), []);
+});
+
+test("cardCode: numeração corrida do Gundam Carddass sai só com o número, nos dois lados", () => {
+  assert.equal(api.cardCode(gcd83), "83");
+  assert.equal(api.cardCode(gcd500), "500");
+  assert.equal(build.cardCode(gcd83), "83");
+  assert.equal(api.cardLabel(gcd83), "フルアーマーZZ (83)");
+  // só o gcd: o mesmo número com outro prefixo segue com o total
+  assert.equal(api.cardCode({ ...gcd83, id: "dbc-h03-83" }), "83/41");
+  // quem monta o objeto sem o id (antes do prerender passar o id) cai na regra geral
+  assert.equal(build.cardCode({ number: "83", setTotal: 41 }), "83/41");
+  // a busca continua achando pela fração, que alguém pode digitar
+  assert.ok(api.cardCodeForms(gcd83).includes("83/41"));
 });

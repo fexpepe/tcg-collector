@@ -123,7 +123,7 @@ export function pecasDoSet({ jogo, slug, nome, cartas, slugs }) {
   const titulo = L.title(nome, jogo.nome);
   const desc = L.desc(lista.length, nome, jogo.nome, quando);
   const urlDaCarta = (c) => `${base}/${slugs.get(String(c.id))}`;
-  const codigo = (c) => (c.number ? cardCode({ number: c.number, setTotal: c.setTotal || total }) : "");
+  const codigo = (c) => (c.number ? cardCode({ id: c.id, number: c.number, setTotal: c.setTotal || total }) : "");
   const rotulo = (c) => `${c.name}${codigo(c) ? ` ${codigo(c)}` : ""}`;
 
   // CollectionPage com a lista (nome + endereço de cada carta). Sem a imagem de

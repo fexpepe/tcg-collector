@@ -356,7 +356,7 @@ function setPageHtml(page, canonical, otherSets, lang) {
       itemListElement: cards.map((c, i) => ({
         "@type": "ListItem",
         position: i + 1,
-        name: `${c.name}${c.number ? ` ${cardCode({ number: c.number, setTotal: c.setTotal || total })}` : ""}`,
+        name: `${c.name}${c.number ? ` ${cardCode({ id: c.id, number: c.number, setTotal: c.setTotal || total })}` : ""}`,
         url: `${ORIGIN}${urlDaCarta(c)}`,
         image: absUrl(c.image) || undefined
       }))
@@ -384,7 +384,7 @@ function setPageHtml(page, canonical, otherSets, lang) {
     // Rótulo visível com o código IMPRESSO ("009/094"), não "#009": é o texto
     // que a busca do Google casa quando a carta não tem página própria (só as
     // 1.500 mais valiosas têm) — a página do set é onde "Nymble 009/094" existe.
-    const code = c.number ? cardCode({ number: c.number, setTotal: c.setTotal || total }) : "";
+    const code = c.number ? cardCode({ id: c.id, number: c.number, setTotal: c.setTotal || total }) : "";
     const num = code ? escapeHtml(code) : "";
     const alt = `${c.name}${code ? ` ${code}` : ""} — ${name}`;
     const prioridade = i < ACIMA_DA_DOBRA
