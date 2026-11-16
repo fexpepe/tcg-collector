@@ -455,6 +455,21 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   não estava no pedido; (7) a Kayou (圣斗士星矢 圣衣觉醒卡, China, 2023 em
   diante): ainda à venda, sem regras de jogo e sem checklist com nome, fica de
   fora do vintage.
+- **Pokémon Carddass (`pcd`)**: jogo vintage desde 2026-11-16, com as Partes
+  1–4 (1996–97): 462 cartas em 4 sets. Faltam: (1) **imagem e raridade das
+  Partes 1 e 2** (309 cartas): os scans só existem no Bulbagarden Archives,
+  que devolve o desafio do Cloudflare ao Node (403; o curl passa, mas fonte
+  que recusa acesso automatizado não entra no sync, contrato 4), e nenhuma
+  fonte acessível diz quais são as 6 prismas de cada cor. Saídas: o Fernando
+  liberar o Archives (pelo espelho R2, que já tem o host) ou imagem curada em
+  `assets/cards/pcd/`; (2) **a série do anime** (アニメコレクション, 1998–2000:
+  8 partes de 45 em 1998–99 e o 金・銀編 em 2000, mais EX e MOVIE), que era o
+  pedido original: nenhuma fonte acessível tem a lista carta a carta nem as
+  imagens (o PriceCharting tem a lista mas devolve o desafio do Cloudflare, o
+  COMC barra robôs de IA, o EliteFourum só tem fotos e o Bulbagarden Archives
+  só 3 scans de exemplo); o site da Bandai de 1998 no Wayback não foi
+  conferido (Internet Archive fora do ar em 16/11). Pela regra de 13/11, é
+  outro produto: entra como jogo próprio, como o `dbva`; (3) logo.
 - **Dragon Ball Carddass (`dbc`)**: entrou só o Hondan 第1弾–第18弾, sem imagem.
   Faltam (1) o Hondan 第19弾–第30弾 e o 特別弾, que o sync pega sozinho quando o 80storage
   publicar; (2) Super Battle, Visual Adventure e Super Barcode Wars, sem fonte
