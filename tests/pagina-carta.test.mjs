@@ -54,9 +54,11 @@ test("preço e oferta só quando há preço", () => {
   assert.equal(produto.offers.priceCurrency, "USD");
   assert.equal(produto.brand.name, "Pokémon TCG");
   // Sem preço não sai Product nenhum: Product sem offers/review/aggregateRating
-  // é item inválido no Search Console (2026-10-02). Fica só a trilha.
+  // é item inválido no Search Console (2026-10-02). Desde 2026-11-16 sai um
+  // CreativeWork no lugar (nada de oferta nele), com a trilha.
   const semPreco = pecas(cartas[1], 0);
-  assert.deepEqual(jsonLds(semPreco).map((o) => o["@type"]), ["BreadcrumbList"]);
+  assert.deepEqual(jsonLds(semPreco).map((o) => o["@type"]), ["CreativeWork", "BreadcrumbList"]);
+  assert.doesNotMatch(JSON.stringify(jsonLds(semPreco)), /offers|Offer|priceCurrency/);
   assert.doesNotMatch(semPreco.corpoHtml, /seo-carta-preco">/);
   assert.equal(precoUSD({ u: 10 }), 10);
   assert.ok(Math.abs(precoUSD({ e: 10 }) - 11) < 1e-9, "sem US$, o do Cardmarket com a margem");

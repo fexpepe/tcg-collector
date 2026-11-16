@@ -72,25 +72,47 @@ function precoPtBr(valor, moeda) {
   return `${SIMBOLO[moeda] || moeda} ${inteiro.replace(/\B(?=(\d{3})+(?!\d))/g, ".")},${centavos}`;
 }
 
-const MESES = ["janeiro", "fevereiro", "março", "abril", "maio", "junho",
-  "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
-function dataPtBr(iso) {
-  const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(iso || ""));
-  if (!m) return "";
-  const mes = MESES[Number(m[2]) - 1];
-  return mes ? `${Number(m[3])} de ${mes} de ${m[1]}` : "";
+// DATA DO SET como o catálogo guarda (2026-11-16): o dia (2024-11-08), só o
+// mês (1997-09, quase todo o vintage: Carddass, Gundam War, Harry Potter) ou
+// só o ano (1999, o Gundam Carddass). Até aqui só a data completa passava, e
+// 265 sets, quase todos vintage, saíam sem data na descrição do set, no texto
+// da carta e na ficha. Logo os jogos em que "de quando é" mais pesa na busca.
+// Devolve { ano, mes (1-12, 0 = sem mês), dia (0 = sem dia) } ou null.
+export function partesDaData(iso) {
+  const m = /^(\d{4})(?:-(\d{2})(?:-(\d{2}))?)?(?![\d-])/.exec(String(iso || "").trim());
+  if (!m) return null;
+  const mes = m[2] ? Number(m[2]) : 0;
+  if (mes < 0 || mes > 12) return { ano: m[1], mes: 0, dia: 0 };
+  const dia = mes && m[3] ? Number(m[3]) : 0;
+  return { ano: m[1], mes, dia: dia >= 1 && dia <= 31 ? dia : 0 };
 }
 
+const MESES = ["janeiro", "fevereiro", "março", "abril", "maio", "junho",
+  "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
 const MESES_EN = ["January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"];
 const MESES_ES = ["enero", "febrero", "marzo", "abril", "mayo", "junio",
   "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
-function dataNaLingua(iso, lang) {
-  if (lang === "pt") return dataPtBr(iso);
-  const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(iso || ""));
-  const i = m ? Number(m[2]) - 1 : -1;
-  if (i < 0 || i > 11) return "";
-  return lang === "es" ? `${Number(m[3])} de ${MESES_ES[i]} de ${m[1]}` : `${MESES_EN[i]} ${Number(m[3])}, ${m[1]}`;
+// "8 de novembro de 2024", "setembro de 1997", "1999" (o "em" da frase serve
+// pros três). En e es mudam a preposição com a precisão: ver naData.
+export function dataNaLingua(iso, lang) {
+  const p = partesDaData(iso);
+  if (!p) return "";
+  if (!p.mes) return p.ano;
+  const i = p.mes - 1;
+  if (lang === "en") return p.dia ? `${MESES_EN[i]} ${p.dia}, ${p.ano}` : `${MESES_EN[i]} ${p.ano}`;
+  const mes = (lang === "es" ? MESES_ES : MESES)[i];
+  return p.dia ? `${p.dia} de ${mes} de ${p.ano}` : `${mes} de ${p.ano}`;
+}
+function dataPtBr(iso) { return dataNaLingua(iso, "pt"); }
+// A preposição antes da data: "on November 8, 2024" mas "in September 1997";
+// "el 8 de noviembre" mas "en septiembre de 1997". O pt diz "em" nos três.
+export function naData(dt, lang) {
+  if (!dt) return "";
+  const comDia = lang === "en" ? /\d, \d{4}$/.test(dt) : /^\d/.test(dt) && / de .* de /.test(dt);
+  if (lang === "en") return `${comDia ? "on" : "in"} ${dt}`;
+  if (lang === "es") return `${comDia ? "el" : "en"} ${dt}`;
+  return `em ${dt}`;
 }
 
 // ── O que a carta é, nas três línguas (2026-11-11) ──────────────────────────
@@ -428,7 +450,7 @@ export function textoDaCarta(lang, f) {
     if (secreta) frases.push(secreta);
     if (f.artista) frases.push(`The illustration is by ${f.artista}.`);
     if (acab) frases.push(`It comes in ${f.acab.length} finishes (${f.acab.join(", ")}), each priced separately on the market.`);
-    if (dt || t) frases.push(`The ${f.setNome}${jaDizSet ? "" : " set"}${dt ? ` was released on ${dt}` : ""}${dt && t ? " and" : ""}${t ? ` has ${t} cards` : ""}.`);
+    if (dt || t) frases.push(`The ${f.setNome}${jaDizSet ? "" : " set"}${dt ? ` was released ${naData(dt, "en")}` : ""}${dt && t ? " and" : ""}${t ? ` has ${t} cards` : ""}.`);
     if (f.nImpressoes) frases.push(`This card also appears ${f.nImpressoes === 1 ? "in another print" : `in ${f.nImpressoes} other prints`} in this set.`);
     if (mercado.length) frases.push(...mercado);
     else if (f.valor > 0) frases.push(`The reference price comes from the ${eur ? "European market (Cardmarket)" : "US market"}; on Sleevu it is shown in your currency, along with its price history.`);
@@ -439,7 +461,7 @@ export function textoDaCarta(lang, f) {
     if (secreta) frases.push(secreta);
     if (f.artista) frases.push(`La ilustración es de ${f.artista}.`);
     if (acab) frases.push(`Sale en ${f.acab.length} acabados (${f.acab.join(", ")}), que se cotizan por separado en el mercado.`);
-    if (dt || t) frases.push(`El set ${f.setNome}${dt ? ` salió el ${dt}` : ""}${dt && t ? " y" : ""}${t ? ` reúne ${t} cartas` : ""}.`);
+    if (dt || t) frases.push(`El set ${f.setNome}${dt ? ` salió ${naData(dt, "es")}` : ""}${dt && t ? " y" : ""}${t ? ` reúne ${t} cartas` : ""}.`);
     if (f.nImpressoes) frases.push(`Esta carta también aparece ${f.nImpressoes === 1 ? "en otra impresión" : `en otras ${f.nImpressoes} impresiones`} en este set.`);
     if (mercado.length) frases.push(...mercado);
     else if (f.valor > 0) frases.push(`El precio de referencia viene del mercado ${eur ? "europeo (Cardmarket)" : "estadounidense"}; en Sleevu aparece convertido a tu moneda, junto con su historial de precios.`);
@@ -471,13 +493,22 @@ export function codigoDoSet(card) {
   return code;
 }
 
-// Título: nome > número > código do set > nome do set, e o nome do set é o
-// primeiro a cair quando não cabe.
-export function tituloDaCarta(nome, numero, code, nomeDoSet) {
+// Título: nome > número > código do set > nome do set > nome do jogo. O nome
+// do set é o primeiro a cair quando não cabe. O jogo só vem no VINTAGE
+// (2026-11-16): ali o set sozinho não diz de onde a carta é ("本弾 特別弾",
+// "Part 3", "Base Set"), e é pelo jogo que se procura ("Goku Carddass 1997").
+// Set cujo nome já diz o jogo não o repete.
+export function tituloDaCarta(nome, numero, code, nomeDoSet, nomeDoJogo = "") {
   const base = [nome, numero, code].filter(Boolean).join(" ");
   const sufixo = " | Sleevu";
-  const comSet = nomeDoSet ? `${base} · ${nomeDoSet}` : base;
-  return ((comSet + sufixo).length <= TITULO_MAX ? comSet : base) + sufixo;
+  const jogo = nomeDoJogo && !String(nomeDoSet || "").toLowerCase().includes(nomeDoJogo.toLowerCase()) ? nomeDoJogo : "";
+  const variantes = [
+    nomeDoSet && jogo ? `${base} · ${nomeDoSet} · ${jogo}` : "",
+    nomeDoSet ? `${base} · ${nomeDoSet}` : "",
+    jogo ? `${base} · ${jogo}` : ""
+  ].filter(Boolean);
+  for (const v of variantes) if ((v + sufixo).length <= TITULO_MAX) return v + sufixo;
+  return base + sufixo;
 }
 
 // Ordena "4/102" < "10/102" pelo primeiro inteiro.
@@ -646,8 +677,13 @@ export function pecasDaCarta({ card, jogo, set, cartas, slugs, preco, moeda = "U
   // pt/en acha igual).
   const nomeEn = card.nameEn || card.pokemonName;
   const enBit = nomeEn && !/^[\x00-\x7F]/.test(card.name) ? ` (${nomeEn})` : "";
+  // O nome impresso do vintage japonês (2026-11-16): o Carddass, o One Piece
+  // Carddass, o Naruto e o Saint Seiya guardam o nome romanizado em `name` e o
+  // da carta em `nameJp` (~10 mil cartas), que só o app mostrava. Vai no texto,
+  // na descrição e no JSON-LD, não no título (o orçamento é do jogo e do set).
+  const jpBit = !enBit && card.nameJp && card.nameJp !== card.name && /^[\x00-\x7F]/.test(card.name) ? ` (${card.nameJp})` : "";
   const sCode = codigoDoSet(card);
-  const titulo = tituloDaCarta(`${card.name}${enBit}`, code, [sCode, desempate && `(${desempate})`].filter(Boolean).join(" "), set.nome);
+  const titulo = tituloDaCarta(`${card.name}${enBit}`, code, [sCode, desempate && `(${desempate})`].filter(Boolean).join(" "), set.nome, jogo.vintage ? jogo.nome : "");
   const valor = Number(preco) || 0;
   const moedaOk = SIMBOLO[moeda] ? moeda : "USD";
   const precoTxt = valor > 0 ? precoPtBr(valor, moedaOk) : "";
@@ -662,7 +698,7 @@ export function pecasDaCarta({ card, jogo, set, cartas, slugs, preco, moeda = "U
   // "Charizard ex 006/165 (português) … da edição em português".
   const desempateDesc = edicao ? rotuloDoDesempate(card, cartas, { semEdicao: true }) : desempate;
   const codeBitDescricao = `${code ? ` ${code}` : ""}${desempateDesc ? ` (${desempateDesc})` : ""}`;
-  const desc = `${card.name}${enBit}${codeBitDescricao}${altBit}${codeBitDesc}${edicaoBit} do set ${set.nome} de ${jogo.nome}.${priceBit} Veja a imagem, acompanhe o preço e marque na sua coleção grátis no Sleevu.`;
+  const desc = `${card.name}${enBit}${jpBit}${codeBitDescricao}${altBit}${codeBitDesc}${edicaoBit} do set ${set.nome} de ${jogo.nome}.${priceBit} Veja a imagem, acompanhe o preço e marque na sua coleção grátis no Sleevu.`;
   const img = absUrl(card.image) || "";
   const { impressoes, irmas } = vizinhas(card, cartas, slugs, baseDoSet);
 
@@ -673,7 +709,7 @@ export function pecasDaCarta({ card, jogo, set, cartas, slugs, preco, moeda = "U
   // Carta com nome em japonês/chinês leva o inglês junto, como no título
   // ("ゼルネアス (Xerneas)"): é por ele que a maioria procura.
   const fatos = {
-    nome: `${card.name}${enBit}`,
+    nome: `${card.name}${enBit}${jpBit}`,
     nomes: [card.name, nomeEn].filter(Boolean).map(String),
     rar: rarOk ? card.rarity : "",
     edicao,
@@ -715,6 +751,35 @@ export function pecasDaCarta({ card, jogo, set, cartas, slugs, preco, moeda = "U
     url: canonical,
     offers: { "@type": "AggregateOffer", priceCurrency: moedaOk, lowPrice: valor.toFixed(2), offerCount: 1, availability: "https://schema.org/InStock" }
   } : null;
+  // Carta SEM preço (2026-11-16): sem o Product, ela só tinha a trilha, e é o
+  // caso de todo o vintage, o diferencial do site. CreativeWork não pede
+  // oferta nem avaliação (não vira erro no Search Console, como o Product
+  // vazio virava) e diz o que a busca e as IAs usam pra entender a carta: o
+  // nome nas outras línguas, o número, a edição, a data, o ilustrador, o set e
+  // o jogo. Com preço, o Product segue sendo o bloco da carta.
+  const p = partesDaData(card.setReleaseDate);
+  const dataLd = p ? [p.ano, p.mes && String(p.mes).padStart(2, "0"), p.mes && p.dia && String(p.dia).padStart(2, "0")].filter(Boolean).join("-") : "";
+  const outrosNomes = [nomeEn, card.nameJp].filter((n) => n && n !== card.name);
+  const obra = produto ? null : {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    name: `${card.name}${codeBit} — ${set.nome}`,
+    alternateName: outrosNomes.length ? outrosNomes : undefined,
+    genre: "Trading card",
+    identifier: code || undefined,
+    image: img || undefined,
+    description: desc,
+    url: canonical,
+    inLanguage: card.language || undefined,
+    datePublished: dataLd || undefined,
+    creator: card.artist ? { "@type": "Person", name: String(card.artist) } : undefined,
+    isPartOf: {
+      "@type": "Collection",
+      name: set.nome,
+      url: `${ORIGEM}${baseDoSet}`,
+      isPartOf: { "@type": "Game", name: jogo.nome, url: `${ORIGEM}/games/${jogo.url}` }
+    }
+  };
   // Trilha Jogos > jogo > set > carta. O BreadcrumbList faz o Google mostrar o
   // caminho no lugar da URL crua, que é mais clicável.
   const trilha = [
@@ -761,7 +826,7 @@ export function pecasDaCarta({ card, jogo, set, cartas, slugs, preco, moeda = "U
     ogTitulo: `${nomeCompleto} — ${set.nome}`,
     ogImagem: img,
     alternates: [],
-    jsonLds: produto ? [produto, trilhaLd] : [trilhaLd],
+    jsonLds: [produto || obra, trilhaLd],
     corpoHtml
   };
 }

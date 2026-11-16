@@ -11,7 +11,7 @@
 // prerender com os MESMOS textos: por isso o SET_L10N e as réguas de título,
 // data e lista moram aqui e o prerender importa daqui.
 import { cardCode } from "./card-code.js";
-import { ORIGEM, escapeHtml, escapeAttr, imagemDePrevia } from "./pagina-carta.js";
+import { ORIGEM, escapeHtml, escapeAttr, imagemDePrevia, dataNaLingua, naData, partesDaData } from "./pagina-carta.js";
 
 // ORÇAMENTO DE TÍTULO. O Google mostra ~60-65 caracteres e corta o resto com
 // "…". O NOME do set nunca é truncado (é o que a pessoa digitou); quem sai são
@@ -28,18 +28,10 @@ export function tituloSet(nome, variantes) {
   return nome + sufixo;
 }
 
-const MONTHS_PT = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
-const MONTHS_EN = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-export function fmtDatePt(iso) {
-  const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso || "");
-  if (!m) return "";
-  return `${Number(m[3])} de ${MONTHS_PT[Number(m[2]) - 1]} de ${m[1]}`;
-}
-export function fmtDateEn(iso) {
-  const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso || "");
-  if (!m) return "";
-  return `${MONTHS_EN[Number(m[2]) - 1]} ${Number(m[3])}, ${m[1]}`;
-}
+// As réguas de data moram no pagina-carta.js (partesDaData): dia, só o mês
+// ou só o ano, como o vintage guarda (2026-11-16).
+export function fmtDatePt(iso) { return dataNaLingua(iso, "pt"); }
+export function fmtDateEn(iso) { return dataNaLingua(iso, "en"); }
 
 // Textos da página de set nos DOIS idiomas (pt = o endereço sem sufixo, en =
 // a variante -en, que é também o x-default do hreflang).
@@ -65,7 +57,7 @@ export const SET_L10N = {
     htmlLang: "en",
     fmtDate: fmtDateEn,
     title: (name, gameLabel) => tituloSet(name, [`${gameLabel} card list`, gameLabel]),
-    desc: (n, name, gameLabel, dateHuman) => `Complete list of all ${n} cards in the ${name} set of ${gameLabel}${dateHuman ? `, released on ${dateHuman}` : ""}. See images, numbers and rarities and build your collection on Sleevu.`,
+    desc: (n, name, gameLabel, dateHuman) => `Complete list of all ${n} cards in the ${name} set of ${gameLabel}${dateHuman ? `, released ${naData(dateHuman, "en")}` : ""}. See images, numbers and rarities and build your collection on Sleevu.`,
     sub: (gameLabel, total, dateHuman, n) => `${gameLabel} · ${total} official cards${dateHuman ? ` · released ${dateHuman}` : ""} · ${n} in Sleevu's catalog`,
     cta: "Open this set on Sleevu",
     othersAria: "Other sets",
@@ -106,6 +98,15 @@ export function repDoSet(cards) {
   return cards.find((c) => c.setLogo) || cards.find((c) => c.setReleaseDate) || cards[0] || {};
 }
 
+// O nome do set no TÍTULO, com o ano no vintage (2026-11-16): "本弾 特別弾
+// (1997)". É assim que se procura carta antiga, e o nome sozinho, muitas vezes
+// em japonês ou só "Part 3", não diz de quando é. O h1 e o resto da página
+// seguem com o nome puro. O prerender da variante -en usa o mesmo.
+export function nomeDoSetNoTitulo(nome, rep, jogo) {
+  const ano = jogo && jogo.vintage ? (partesDaData(rep && rep.setReleaseDate) || {}).ano : "";
+  return ano && !String(nome).includes(ano) ? `${nome} (${ano})` : nome;
+}
+
 // As peças da página pt do set, pra borda pôr na tela do app.
 // jogo: a entrada do registro (functions/_lib/jogos.js); slug: o do set no
 // endereço; cartas: todas as da página (as do mapa, fora as aposentadas);
@@ -120,7 +121,7 @@ export function pecasDoSet({ jogo, slug, nome, cartas, slugs }) {
   const quando = L.fmtDate(rep.setReleaseDate);
   const base = `/games/${jogo.url}/${slug}`;
   const canonical = `${ORIGEM}${base}`;
-  const titulo = L.title(nome, jogo.nome);
+  const titulo = L.title(nomeDoSetNoTitulo(nome, rep, jogo), jogo.nome);
   const desc = L.desc(lista.length, nome, jogo.nome, quando);
   const urlDaCarta = (c) => `${base}/${slugs.get(String(c.id))}`;
   const codigo = (c) => (c.number ? cardCode({ id: c.id, number: c.number, setTotal: c.setTotal || total }) : "");

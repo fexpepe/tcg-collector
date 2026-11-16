@@ -71,6 +71,19 @@ test("o llms.txt lista todo jogo do registro; o vintage com fabricante, anos e r
   assert.match(l, /\[B\]\(https:\/\/sleevu\.app\/games\/b\): 12 sets\n/);
 });
 
+// A política de uso de 16/11/2026 (a mesma do robots.txt e dos Termos): o texto
+// é aberto, inclusive pra treino; imagem e extração em massa, não.
+test("o llms.txt diz o que pode e o que não pode fazer com o conteúdo", () => {
+  const { llms } = montaTudo();
+  const uso = llms.slice(llms.indexOf("## Using this content"));
+  assert.ok(llms.includes("## Using this content"), "seção de uso fora do llms.txt");
+  assert.match(uso, /train models on their text/);
+  assert.match(uso, /Card images .* not licensed for AI training/);
+  assert.match(uso, /https:\/\/img\.sleevu\.app\/robots\.txt/);
+  assert.match(uso, /Bulk extraction .* not allowed/);
+  assert.match(uso, /https:\/\/sleevu\.app\/terms#uso-do-catalogo/);
+});
+
 test("o deploy roda o passo depois do prerender e antes do split-i18n", () => {
   const yml = ler(".github/workflows/deploy.yml");
   const passo = yml.indexOf("node scripts/seo-estatico.mjs --write");

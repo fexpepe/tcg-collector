@@ -159,6 +159,15 @@ export function llmsTxt({ jogos = JOGOS_URL, vintage, sobres = {}, sets = {} }) 
     `- [Help](${ORIGEM}/help)`,
     `- [About Sleevu](${ORIGEM}/about): what the site is and where its data comes from`,
     `- [Sitemap](${ORIGEM}/sitemap.xml): every game, set and card page`,
+    "",
+    // A política de uso (16/11/2026), a mesma do robots.txt e dos Termos: o
+    // texto é aberto pra busca e pra IA, inclusive treino; as imagens e o
+    // catálogo como base de dados, não.
+    "## Using this content",
+    "",
+    "- Search engines and AI assistants are welcome to read, index and cite these pages, and to train models on their text. Please link to the page you cite.",
+    `- Card images belong to their publishers, artists and the sources they come from. They are not licensed for AI training, AI answers or republishing (see ${ORIGEM.replace("https://", "https://img.")}/robots.txt).`,
+    `- Bulk extraction of the catalog, prices or images (scraping, mass downloads, using the site's data files as an API) to build or feed another database, API, site, app or service is not allowed. The data files are not a public API. Terms: ${ORIGEM}/terms#uso-do-catalogo`,
     ""
   ].join("\n");
 }

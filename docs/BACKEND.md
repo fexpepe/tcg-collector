@@ -211,6 +211,11 @@ do parâmetro `url`.
   US$ 0,015/GB depois), saída de dados grátis, leituras quase todas no cache
   da Cloudflare. A geração 2 soma outro tanto (~50 GB, o popup ficou maior):
   a geração 1 fica no bucket, sem uso depois da troca, até alguém limpar.
+- **robots.txt do img.sleevu.app (16/11/2026):** o objeto `robots.txt` na raiz
+  do bucket, gravado pelo job no começo de toda rodada (só quando o texto muda;
+  `scripts/lib/robots-espelho.mjs`): buscador indexa a imagem, treino e
+  resposta de IA não, porque as imagens são de terceiros. A política inteira
+  está no `docs/SEO.md`, "Política de robôs e de uso".
 - **Ainda na origem:** as páginas pré-renderizadas (`/set/`, `/card/`,
   `/artist/`) — são HTML estático sem a cadeia de fallback do app, então
   apontá-las pro espelho exige um tratamento de erro próprio. Fica pra depois.

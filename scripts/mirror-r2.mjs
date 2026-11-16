@@ -64,6 +64,7 @@ import { ESQUEMA_ESPELHO, FONTES, INTERMEDIARIA, LARGURAS, ORDEM, chaveBase, cha
 import { alternativaDe, comparaAlternativa } from "./lib/mesma-carta.mjs";
 import { lerSetIdMap } from "./lib/pokemontcg-image.mjs";
 import { clienteR2 } from "./lib/r2.mjs";
+import { publicaRobotsDoEspelho } from "./lib/robots-espelho.mjs";
 import { mapLimit, sleep } from "./lib/sync-common.mjs";
 
 const arg = (nome, padrao) => { const i = process.argv.indexOf(`--${nome}`); return i > -1 ? process.argv[i + 1] : padrao; };
@@ -86,6 +87,13 @@ const r2 = clienteR2();
 if (!r2 && !SECO) {
   console.log("mirror-r2: sem R2_ACCESS_KEY_ID / R2_SECRET_ACCESS_KEY / CLOUDFLARE_ACCOUNT_ID no ambiente — nada a fazer.");
   process.exit(0);
+}
+// O robots.txt do img.sleevu.app (imagens fora do treino de IA; ver
+// scripts/lib/robots-espelho.mjs). Antes de tudo, pra valer mesmo numa rodada
+// que pare no meio; falha aqui não derruba o espelho.
+if (r2 && !SECO) {
+  try { console.log(`mirror-r2: robots.txt do espelho ${await publicaRobotsDoEspelho(r2)}.`); }
+  catch (e) { console.log(`::warning::mirror-r2: não gravei o robots.txt do espelho (${e.message}).`); }
 }
 // sharp vem de fora do repo (sem package.json aqui, de propósito): o
 // workflow instala em $RUNNER_TEMP e aponta SHARP_DIR.
