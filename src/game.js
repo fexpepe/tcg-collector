@@ -65,6 +65,7 @@
     seiya: { slug: "seiya", name: "Saint Seiya Carddass", dataDir: "data/seiya/" }, // vintage Bandai 1988–2023: Carddass, Saint Paradise e Reborn (animecollection.fr; nome transcrito dos scans)
     seiyatc: { slug: "seiyatc", name: "Saint Seiya Trading Collection", dataDir: "data/seiyatc/" }, // vintage Amada 2000–2003 (sync-saint-seiya.mjs)
     seiyacr: { slug: "seiyacr", name: "Saint Seiya Crusade", dataDir: "data/seiyacr/" }, // vintage Bandai 2012–2014, o TCG do sistema Crusade (sync-saint-seiya.mjs)
+    pcd: { slug: "pcd", name: "Pokémon Carddass", dataDir: "data/pcd/" }, // vintage Bandai 1996–1997: as Partes 1–4 da Carddass com os 151 (checklists impressos + animecollection.fr)
     // Em preparação (catálogo ainda vazio; tile "Em breve" no hub):
     jump: { slug: "jump", name: "JUMP", dataDir: "data/jump/" }            // promos curadas (Jump Festa, V-Jump…)
   };
@@ -93,7 +94,7 @@
     ["gundam-carddass", "gcd"], ["saint-seiya-carddass", "seiya"],
     ["gundam-war", "gw"],
     ["dragon-ball-carddass", "dbc"], ["dragon-ball-visual-adventure", "dbva"], ["dragon-ball-super-battle", "dbsb"],
-    ["dragon-ball-super-barcode-wars", "dbbw"], ["hunter-x-hunter-carddass", "hxh"],
+    ["dragon-ball-super-barcode-wars", "dbbw"], ["pokemon-carddass", "pcd"], ["hunter-x-hunter-carddass", "hxh"],
     ["one-piece-carddass", "onepiece", "opcd", "opcd-"], ["lord-of-the-rings-tcg", "lotr"], ["harry-potter-tcg", "harrypotter"],
     ["dragon-ball-z-ccg", "dbz"], ["saint-seiya-trading-collection", "seiyatc"],
     ["one-piece-card-game-2002", "onepiece", "op2002", "op2002-"],

@@ -31,6 +31,7 @@
   // citada num data-marcas do vintage.html tem de estar aqui, e todo `hoje`
   // tem de estar em HOJE (o tests/vintage.test.mjs confere os dois).
   var MARCAS = {
+    "pokemon": { nome: "Pokémon", hoje: "pokemon" },
     "dragon-ball": { nome: "Dragon Ball", hoje: "dragon-ball-fusion-world" },
     "naruto": { nome: "Naruto", hoje: "naruto-card-game" },
     "one-piece": { nome: "One Piece", hoje: "one-piece-card-game" },
@@ -46,8 +47,9 @@
   };
   // Os jogos em atividade citados acima: [jogo do app, nome, logo], iguais aos
   // do registro (functions/_lib/jogos.js). Cópia curta de propósito: a página
-  // não carrega o registro, e são quatro linhas.
+  // não carrega o registro, e são cinco linhas.
   var HOJE = {
+    "pokemon": ["pokemon", "Pokémon TCG", "assets/games/game_pokemon.webp"],
     "dragon-ball-fusion-world": ["dbfw", "Dragon Ball Fusion World", "assets/games/game_dbfw-v2.webp"],
     "naruto-card-game": ["narutocg", "Naruto Card Game (2027)", "assets/games/game_naruto_2027.webp"],
     "one-piece-card-game": ["onepiece", "One Piece Card Game", "assets/games/game_onepiece.webp"],

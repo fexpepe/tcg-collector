@@ -61,6 +61,9 @@ export const JOGOS_URL = [
   { url: "dragon-ball-visual-adventure", game: "dbva", nome: "Dragon Ball Visual Adventure", logo: "assets/games/game_dbva.webp", vintage: "1991–1995" },
   { url: "dragon-ball-super-battle", game: "dbsb", nome: "Dragon Ball Super Battle", logo: "assets/games/game_dbsb.webp", vintage: "1991–1997" },
   { url: "dragon-ball-super-barcode-wars", game: "dbbw", nome: "Dragon Ball Super Barcode Wars", logo: "assets/games/game_dbbw.webp", vintage: "1992–1993" },
+  // Pokémon Carddass (2026-11-16): as Partes 1–4 de 1996–97, as cartas de máquina
+  // com os 151 de Red e Green. Sem logo publicado (o tile mostra o nome).
+  { url: "pokemon-carddass", game: "pcd", nome: "Pokémon Carddass", logo: "", vintage: "1996–1997" },
   { url: "gundam-war", game: "gw", nome: "Gundam War", logo: "assets/games/game_gw-v2.webp", vintage: "1999–2011" },
   { url: "hunter-x-hunter-carddass", game: "hxh", nome: "Hunter × Hunter Carddass Hyper Battle", logo: "assets/games/game_hxh-v2.webp", vintage: "1999–2001" },
   { url: "one-piece-carddass", game: "onepiece", linha: "opcd", prefixos: ["opcd-"], nome: "One Piece Carddass Hyper Battle", logo: "assets/games/game_onepiece_carddass-v2.webp", vintage: "1999–2002" },

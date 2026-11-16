@@ -1,0 +1,90 @@
+{
+  "url": "pokemon-carddass",
+  "nome": "Pokémon Carddass",
+  "nomeOriginal": { "texto": "ポケモンカードダス", "lang": "ja", "romaji": "Pokemon Kādodasu" },
+  "periodo": { "inicio": "1996-09", "fim": "1997-06" },
+  "etiquetas": [
+    "Vintage",
+    { "pt": "Japão", "en": "Japan", "es": "Japón" },
+    "Carddass"
+  ],
+  "resumo": {
+    "pt": "Cartas de máquina Carddass da Bandai com os 151 Pokémon de Red e Green, de 1996 e 1997: quatro partes e 462 cartas, as primeiras de Pokémon em tamanho de bolso.",
+    "en": "Bandai Carddass vending cards with the 151 Pokémon of Red and Green, from 1996 and 1997: four parts and 462 cards, the first pocket-size Pokémon cards.",
+    "es": "Cartas de máquina Carddass de Bandai con los 151 Pokémon de Red y Green, de 1996 y 1997: cuatro partes y 462 cartas, las primeras de Pokémon de bolsillo."
+  },
+  "fatos": [
+    { "chave": "lancamento", "valor": "1996-09" },
+    { "chave": "encerramento", "valor": "1997-06" },
+    { "chave": "fabricante", "valor": {
+      "pt": "Bandai (Banpresto nas Partes 3 e 4)",
+      "en": "Bandai (Banpresto on Parts 3 and 4)",
+      "es": "Bandai (Banpresto en las Partes 3 y 4)"
+    } },
+    { "chave": "licenca", "valor": {
+      "pt": "Nintendo, Creatures e Game Freak",
+      "en": "Nintendo, Creatures and Game Freak",
+      "es": "Nintendo, Creatures y Game Freak"
+    } },
+    { "chave": "origem", "valor": { "pt": "Japão", "en": "Japan", "es": "Japón" } },
+    { "chave": "distribuicao", "valor": {
+      "pt": "Máquinas Carddass, ¥20 a carta ou 5 por ¥100",
+      "en": "Carddass machines, ¥20 a card or 5 for ¥100",
+      "es": "Máquinas Carddass, ¥20 la carta o 5 por ¥100"
+    } }
+  ],
+  "historia": {
+    "pt": [
+      "A Parte 1 chegou às máquinas Carddass no fim de setembro de 1996, semanas antes do primeiro set do Pokémon TCG: são as primeiras cartas de Pokémon em tamanho de bolso. Não são de batalha. A frente traz a aquarela do Ken Sugimori, e o verso, a ficha do Pokémon em Red e Green, com o sprite, a altura e a chance de achá-lo em cada versão do jogo.",
+      "A Parte 2 saiu no começo de outubro e completou os 151. Nas duas, cada Pokémon tem uma carta vermelha e uma verde, como as duas versões do jogo; as prismas, holográficas, descolam como adesivo. A máquina vendia a carta a ¥20, ou 5 por ¥100.",
+      "As Partes 3 e 4 vieram em abril e junho de 1997, com arte nova em aquarela, cada Pokémon usando um golpe, que não voltou a ser usada em outro produto. São 16 prismas e uma Mew de holografia arco-íris. A carta No.000, com os três iniciais, saiu primeiro numa promoção de mil cópias da CoroCoro."
+    ],
+    "en": [
+      "Part 1 reached the Carddass machines in late September 1996, weeks before the first Pokémon TCG set: these are the first pocket-size Pokémon cards. They are not for battling. The front shows Ken Sugimori's watercolor art, and the back the Pokémon's Red and Green data, with its sprite, its height and the odds of finding it in each version of the game.",
+      "Part 2 came out in early October and completed the 151. In both, every Pokémon has a red card and a green one, like the two versions of the game; the holographic prism cards peel off like stickers. The machine sold a card for ¥20, or 5 for ¥100.",
+      "Parts 3 and 4 followed in April and June 1997, with new watercolor art of each Pokémon using a move, never reused on another product. They have 16 prism cards and a rainbow holofoil Mew. The No.000 card, with the three starters, first came out in a 1,000-copy CoroCoro giveaway."
+    ],
+    "es": [
+      "La Parte 1 llegó a las máquinas Carddass a fines de septiembre de 1996, semanas antes del primer set del Pokémon TCG: son las primeras cartas de Pokémon de bolsillo. No son para combatir. El frente trae la acuarela de Ken Sugimori, y el reverso, la ficha del Pokémon en Red y Green, con el sprite, la altura y la probabilidad de hallarlo en cada versión del juego.",
+      "La Parte 2 salió a comienzos de octubre y completó los 151. En las dos, cada Pokémon tiene una carta roja y una verde, como las dos versiones del juego; las prismas, holográficas, se despegan como pegatinas. La máquina vendía la carta a ¥20, o 5 por ¥100.",
+      "Las Partes 3 y 4 llegaron en abril y junio de 1997, con arte nuevo en acuarela, cada Pokémon usando un ataque, que no volvió a usarse en otro producto. Son 16 prismas y una Mew holográfica arcoíris. La carta No.000, con los tres iniciales, salió primero en una promoción de mil copias de CoroCoro."
+    ]
+  },
+  "linhaDoTempo": [
+    { "data": "1996-09", "set": "pcd-p1", "texto": {
+      "pt": "Parte 1: 75 Pokémon, cada um em vermelho e em verde.",
+      "en": "Part 1: 75 Pokémon, each in red and in green.",
+      "es": "Parte 1: 75 Pokémon, cada uno en rojo y en verde."
+    } },
+    { "data": "1996-10", "set": "pcd-p2", "texto": {
+      "pt": "Parte 2 completa os 151, com a Title Card EX azul.",
+      "en": "Part 2 completes the 151, with the blue Title Card EX.",
+      "es": "La Parte 2 completa los 151, con la Title Card EX azul."
+    } },
+    { "data": "1996-10", "texto": {
+      "pt": "Semanas depois sai o primeiro set do Pokémon TCG.",
+      "en": "Weeks later the first Pokémon TCG set comes out.",
+      "es": "Semanas después sale el primer set del Pokémon TCG."
+    } },
+    { "data": "1997-04", "set": "pcd-p3", "texto": {
+      "pt": "Parte 3, com arte nova: cada Pokémon usando um golpe.",
+      "en": "Part 3, with new art: each Pokémon using a move.",
+      "es": "Parte 3, con arte nuevo: cada Pokémon usando un ataque."
+    } },
+    { "data": "1997-06", "set": "pcd-p4", "texto": {
+      "pt": "Parte 4, a última, com a Mew de holografia arco-íris.",
+      "en": "Part 4, the last, with the rainbow holofoil Mew.",
+      "es": "Parte 4, la última, con la Mew holográfica arcoíris."
+    } },
+    { "data": "1998", "texto": {
+      "pt": "A Bandai passa à série do anime, a Anime Collection.",
+      "en": "Bandai moves on to the anime series, the Anime Collection.",
+      "es": "Bandai pasa a la serie del anime, la Anime Collection."
+    } }
+  ],
+  "fontes": [
+    { "nome": { "pt": "Bulbapedia, Pokémon Carddass Part 1 & 2", "en": "Bulbapedia, Pokémon Carddass Part 1 & 2", "es": "Bulbapedia, Pokémon Carddass Part 1 & 2" }, "url": "https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon_Carddass_Part_1_%26_2" },
+    { "nome": { "pt": "Bulbapedia, Pokémon Carddass Part 3 & 4", "en": "Bulbapedia, Pokémon Carddass Part 3 & 4", "es": "Bulbapedia, Pokémon Carddass Part 3 & 4" }, "url": "https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon_Carddass_Part_3_%26_4" },
+    { "nome": { "pt": "Bulbapedia, cartas Carddass de Pokémon da Bandai", "en": "Bulbapedia, Bandai Pokémon Carddass Cards", "es": "Bulbapedia, cartas Carddass de Pokémon de Bandai" }, "url": "https://bulbapedia.bulbagarden.net/wiki/Bandai_Pok%C3%A9mon_Carddass_Cards" }
+  ]
+}

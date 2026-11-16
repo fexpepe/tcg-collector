@@ -471,6 +471,10 @@
     seiya: ["Normal", "Prism", "Special"],
     seiyatc: ["Normal", "Holographic", "Special", "SP", "Promo"],
     seiyacr: ["Common", "Uncommon", "Rare", "Metal Rare", "Cosmo Rare", "Promo"],
+    // Pokémon Carddass (16/11/2026): só as Partes 3 e 4 têm raridade (a do
+    // animecollection): Normal, as 16 prismas, a Mew de metal (holografia
+    // arco-íris) e as duas SPECIAL CARDDASS.
+    pcd: ["Normal", "Prism", "Metal", "Promo"],
     // Grand Archive TCG (13/11/2026): a escada do booster, a promo e por fim
     // as de colecionador (CSR, CUR, CPR), na ordem em que o Index oficial as
     // numera.

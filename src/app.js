@@ -1702,6 +1702,9 @@
       seiya: groupSeiyaSets,
       seiyatc: (raizes) => groupSetsByYear(raizes, true),
       seiyacr: (raizes) => groupSetsByYear(raizes, true),
+      // Pokémon Carddass: por ano, do mais antigo pro mais novo (1996: Partes
+      // 1 e 2; 1997: Partes 3 e 4), como checklist.
+      pcd: (raizes) => groupSetsByYear(raizes, true),
       narutotc: groupNarutoTradingSets,
       harrypotter: groupHarryPotterSets
     };

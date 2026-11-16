@@ -103,6 +103,7 @@
     seiya: ["Saint Seiya Carddass", "#4400cc"],
     seiyatc: ["Saint Seiya Trading", "#4400cc"],
     seiyacr: ["Saint Seiya Crusade", "#4400cc"],
+    pcd: ["Pokémon Carddass", "#e23030"],
     narutoboruto: ["Naruto Boruto", "#f65400"],
     narutotc: ["Naruto Trading Cards", "#f65400"]
   };

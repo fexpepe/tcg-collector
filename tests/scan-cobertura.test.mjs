@@ -139,6 +139,7 @@ const JOGOS = {
   seiya: { semCodigo: "Saint Seiya Carddass: número solto, sem set impresso" },
   seiyatc: { semCodigo: "Saint Seiya Trading Collection: número solto (01, S-01), sem set impresso" },
   seiyacr: { semCodigo: "Saint Seiya Crusade: número por cor (cada cor tem seu U-001), sem set impresso" },
+  pcd: { semCodigo: "Pokémon Carddass: o número da Pokédex, repetido em cada parte e em cada cor, sem set impresso" },
   // Naruto Boruto Card Game (2026-11-13): o código impresso é "NB02-48-EB"
   // (set, número e tipo). A carta de torneio e a da caixa imprimem o MESMO.
   narutoboruto: { min: 0.98, impresso: (c) => `©2002 MASASHI KISHIMOTO / 2017 BORUTO All Rights Reserved. ©BANDAI NOT FOR SALE ${c.number}` },
