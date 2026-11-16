@@ -254,18 +254,51 @@ Em ordem de impacto:
    mentira que a Cloudflare documenta pra domínio sem servidor) e uma Redirect
    Rule pra `https://sleevu.app` com o caminho, 301. Se o domínio não vai ser
    usado, dá pra apagar a zona.
-5. **Cloudflare, AI Crawl Control**: hoje bloqueia os robôs de treino de IA. Os
-   de busca passam, então ChatGPT, Perplexity e Claude conseguem achar e citar
-   o site quando buscam. Liberar os de treino faz as próximas versões dos
-   modelos conhecerem o Sleevu sem precisar buscar. É decisão de produto. O
-   comentário do `robots.txt` ("nada aqui bloqueia crawler de IA") vale pro
-   arquivo, não pro painel.
+5. **Cloudflare, robôs de IA**: o Fernando decidiu em 16/11/2026 **liberar o
+   treino** (ver "Política de robôs e de uso", abaixo). No painel, em Security
+   → Settings, filtro *Bot traffic* → **AI Crawler and Agent access policies**:
+   *Search*, *Agent* e *Training* em **Allow (do not block)**, e salvar. Com as
+   três em Allow, a Cloudflare para de responder 403 pro GPTBot e pro ClaudeBot
+   e deixa de pôr a lista dela na frente do nosso `robots.txt` (o "robots.txt
+   gerenciado", que hoje sai nos dois endereços, sleevu.app e img.sleevu.app,
+   e manda `ai-train=no`). Conferir em AI Crawl Control → Crawlers que nenhum
+   robô ficou bloqueado à mão. Pra ver se pegou: `curl -A GPTBot
+   https://sleevu.app/games/pokemon` volta 200, e o `robots.txt` servido é o
+   do repositório.
 6. **Opcional, `tcg-collector.pages.dev`**: Bulk Redirect (nível de conta) pro
    sleevu.app. Não tem página indexada, então é só higiene. O `sync-ppt.mjs`,
    o `sync-price-history.mjs` e o `indexnow.mjs` leem o site pelo pages.dev no
    build. Com o redirect eles seguem funcionando (o fetch segue o 301), mas
    passam a depender do sleevu.app responder ao runner do GitHub, o que o Bot
    Fight Mode ligado impediria.
+
+## Política de robôs e de uso (2026-11-16)
+
+Decisão do Fernando: o Sleevu quer ser a referência que busca e IA citam pra
+carta vintage, e uma opção pros modernos. Então o **texto** do site fica aberto
+pra busca, pra resposta de IA e pra treino de modelo. Mas tudo no site é ou
+trabalho do Sleevu ou dado e imagem de terceiros (de parte das imagens o Sleevu
+não tem direito completo), e ninguém pode pegar o catálogo pra montar outra
+coisa. Cada peça diz isso no próprio formato:
+
+| Onde | O quê |
+|---|---|
+| `robots.txt` (sleevu.app) | grupo `*`: `Content-Signal: search=yes, ai-input=yes, ai-train=yes`. Grupo dos robôs de treino (GPTBot, ClaudeBot, CCBot, Google-Extended…): leem as páginas, mas não `/data/` (o catálogo cru e as imagens de lá), `/assets/cards/` (scans) nem `/api/`. Robô que acha o próprio nome num grupo ignora o `*`, por isso as regras se repetem (o `tests/robots.test.mjs` confere) |
+| `robots.txt` do img.sleevu.app | `search=yes, ai-input=no, ai-train=no` pra todos, e `Disallow: /` pros robôs de treino. É um objeto do bucket, gravado pelo job do espelho (`scripts/lib/robots-espelho.mjs`, no começo de toda rodada do `mirror-r2.mjs`) |
+| Termos, "Uso do catálogo, dos textos e das imagens" (`terms#uso-do-catalogo`) | o que é do Sleevu e o que é de terceiros; pode navegar, linkar, citar com link, indexar e treinar no texto; não pode raspar, extrair em volume, usar os arquivos de dados como API, montar outro banco/API/site/serviço nem republicar as imagens |
+| `llms.txt`, "Using this content" | a mesma regra, em inglês, pra quem lê o site por IA |
+
+**O que isso garante e o que não garante.** `robots.txt` e Termos dizem a
+regra; quem respeita, respeita (Google, Bing, OpenAI, Anthropic, Common Crawl
+e os outros grandes respeitam). Raspador mal-intencionado ignora os dois, e
+nada no site público impede tecnicamente a cópia sem também barrar os
+buscadores. O que os Termos dão é a base pra pedir a retirada (aviso ao
+hospedeiro, DMCA) e pra bloquear quem abusa. Pra dificultar: uma regra de
+*rate limiting* da Cloudflare em `/data/*` e `/api/*` (os robôs bons não pedem
+centenas de arquivos de dados por minuto) e o AI Crawl Control mostra quem
+desrespeita o `robots.txt` (aba Directives). O `/data/*` continua com
+`Access-Control-Allow-Origin: *` porque o app precisa; CORS não segura
+raspador de servidor de qualquer jeito.
 
 ## Como conferir
 
