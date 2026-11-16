@@ -216,19 +216,22 @@ test("No.500 do 本弾 第13弾: UMA carta em W prism, com as duas camadas no sn
   assert.deepEqual(assignIds("wd13", [], [{ id: "gcd-wd13-500", src: 26180, num: "500" }, { id: "gcd-wd13-500b", src: 26181, num: "500" }]).map((c) => c.id), ["gcd-wd13-500"]);
 });
 
-test("promos do 本弾: os três prêmios da Comic BomBom, sem imagem e sem número inventado", () => {
+test("promos do 本弾: os três prêmios da Comic BomBom, com o nome impresso e sem número inventado", () => {
   const cartas = cartasDasPromos();
   assert.deepEqual(cartas.map((c) => [c.id, c.number, c.name]), [
-    ["gcd-wdp-0", "0", "武者3人"],
+    // o No.0 imprime três unidades, uma por linha ("武者3人" era o apelido do checklist)
+    ["gcd-wdp-0", "0", "武者ガンダムMK-II／武者ZG／武者ガンダム"],
     ["gcd-wdp-124", "124", "Gundam Team"],
-    ["gcd-wdp-bb100", "", "武者5人衆"] // a da edição 100 da revista não tem número
+    ["gcd-wdp-bb100", "", "武者五人衆"] // a da edição 100 da revista não tem número; 五, como impresso
   ]);
   for (const c of cartas) {
     assert.equal(c.setId, "gcd-wdp");
     assert.equal(c.set, "本弾 コミックボンボン懸賞");
     assert.equal(c.setTotal, 3);
     assert.equal(c.setReleaseDate, ""); // nenhuma fonte dá o ano do sorteio
-    assert.equal(c.image, "");          // sem scan: entra quando houver (assets/cards/gcd/)
+    // nenhuma fonte tem scan: a imagem é a curada (assets/cards/gcd/, procedência no README de lá)
+    assert.equal(c.image, `/assets/cards/gcd/${c.id}.webp`);
+    assert.ok(readFileSync(new URL(`..${c.image}`, import.meta.url)).length > 10000, c.image);
     assert.equal(c.vintageLine, "wd");
     assert.ok(c.id.startsWith(ID_PREFIX) && c.vintage === true);
   }

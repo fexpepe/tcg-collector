@@ -408,12 +408,13 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   animecollection.fr cobre — SD Gundam World 本弾 (13弾), 外伝 (16弾), 戦国伝
   (4弾), 新戦国伝 第1弾, 聖伝 (2) e o Gガンダム, 1.474 cartas com scan e nome
   transcrito, mais os três prêmios de sorteio da Comic BomBom do 本弾 (No.0,
-  No.124 e o da edição 100), sem imagem (auditoria de 2026-11-15). Faltam:
+  No.124 e o da edição 100), com foto curada (auditoria de 2026-11-15; fotos
+  e nomes impressos de 2026-11-16). Faltam:
   (1) três cartas que a fonte não tem, onde ela repete o scan da carta
   anterior — o 六十 da 戦国伝 第3弾, o 十九 da 新戦国伝 第1弾 e o No.031 do
-  Gガンダム (os sets mostram o total oficial, 20/21 e 41/42) —, e o scan e o
-  nome impresso dos três prêmios (o nome hoje é o do checklist do
-  dream.uijin); o 謎の最強武者, camada de baixo da No.500, está no snapshot
+  Gガンダム (os sets mostram o total oficial, 20/21 e 41/42) —, um scan dos
+  três prêmios no lugar das fotos, e a carta de cinema 武者ガンダム＆パトレイバー
+  e as reedições (真124, 0番 復刻版), que não estão no catálogo; o 謎の最強武者, camada de baixo da No.500, está no snapshot
   (`face: 2`) esperando a tela mostrar 2ª face; (2) as séries sem fonte carta a carta — 新SDガンダム外伝 (11
   章), ネオバトル (10), SDコマンド戦記 (5), ガンドランダー (3), スーパーバトル
   (3), バトル・オブ・ナイツ (7) e a 新SD戦国伝 do 第2弾 em diante; (3) nome em
