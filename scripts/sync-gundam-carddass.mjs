@@ -395,17 +395,21 @@ export function cartasDaLinha(snapshot, nomes = NOMES.nomes, nomesEn = NOMES_EN)
 // do Fernando). Não saíram em pacote, então nenhuma página do animecollection
 // os tem. O No.0 e o No.124 imprimem o número da linha: "No.124とNo.0は抽選
 // プレゼント品で、市販はされていません" (manganokura), o mesmo que o checklist
-// do dream.uijin diz, com a tiragem. O da edição 100 da revista (ボンボン100号
-// 記念) não tem número: fica sem, nada inventado. Nome: o que o colecionador do
-// dream.uijin dá, porque não há scan legível. Nas fotos dele (160 px) só o
-// ガンダムチーム do No.124 se lê no campo do nome, e o brilho de prisma das três
-// também sai das fotos. Sem imagem até alguém ter um scan: o
-// assets/cards/gcd/<id>.webp entra sozinho (curatedImg). As tiragens ficam no
-// README como relatadas, porque não há documento da Bandai.
+// do dream.uijin diz. O da edição 100 da revista (コミックボンボン100号記念
+// スペシャルカード) não tem número: no lugar dele a carta imprime um "●", e
+// fica sem, nada inventado. Cada uma imprime a tiragem: LIMITED 3000, 6000 e
+// 10000. O No.124 manda o dono acessar www.carddas.com/no124, então é bem
+// posterior a 1988 (a página está no Wayback em 2008); ano não entra, porque
+// nenhuma fonte dá o do sorteio.
+// Nome e imagem (16/11/2026): lidos nas fotos das cartas que o Fernando
+// mandou, salvas em assets/cards/gcd/ (procedência no README de lá). O nome
+// é o impresso, na convenção do scripts/data/gundam-carddass-nomes.json: o
+// No.0 traz três unidades, uma por linha ("武者3人" era só o apelido do
+// checklist), e o da edição 100 é 武者五人衆, com 五.
 export const PROMOS = [
-  { id: "gcd-wdp-0", num: "0", ja: "武者3人" },
+  { id: "gcd-wdp-0", num: "0", ja: "武者ガンダムMK-II／武者ZG／武者ガンダム" },
   { id: "gcd-wdp-124", num: "124", ja: "ガンダムチーム", en: "Gundam Team" },
-  { id: "gcd-wdp-bb100", num: "", ja: "武者5人衆" }
+  { id: "gcd-wdp-bb100", num: "", ja: "武者五人衆" }
 ];
 
 export function cartasDasPromos(promos = PROMOS) {

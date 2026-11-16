@@ -427,7 +427,7 @@ mesmos ids e o mesmo endereço; quem marcou carta nesse intervalo é levado pro
 | Série | Código | Partes | Anos | No catálogo |
 |---|---|---|---|---|
 | SDガンダムワールド (本弾) | `wd` | 第1弾–第13弾, No.1–537 | 1988–1992 | as 13 (536 cartas: o No.124 não é de pacote) |
-| 本弾: prêmios da Comic BomBom | `wdp` | No.0, No.124 e o da edição 100 | — | os 3, sem imagem |
+| 本弾: prêmios da Comic BomBom | `wdp` | No.0, No.124 e o da edição 100 | — | os 3, com foto curada |
 | SDガンダム外伝 | `gd` | 第1弾–第16弾, No.1–704 | 1989–1993 | as 16 (706 cartas) |
 | SD戦国伝 | `sg` | 第1弾–第4弾, 一–八十四 | 1990–1991 | as 4 (83 cartas; falta o 六十) |
 | 新SD戦国伝 | `ns` | 第1弾–第4弾 | 1992–1996 | só o 第1弾 (20 cartas; falta o 十九) |
@@ -471,14 +471,19 @@ mesmos ids e o mesmo endereço; quem marcou carta nesse intervalo é levado pro
   antigo pro novo (`cartaParecida`). O mesmo 80storage dá 44 pro 外伝 第2弾,
   que tem 42 (No.43–84, o 第3弾 começa no 85): fica o que a numeração diz.
 - **Prêmios da Comic BomBom** (`gcd-wdp`, as `PROMOS` do sync): o No.0
-  (武者3人) e o No.124 (ガンダムチーム), que imprimem o número da linha, e o
-  da edição 100 da revista (武者5人衆), sem número. As tiragens relatadas pelo
-  colecionador (3.000, 6.000 e 10.000) não têm documento da Bandai. Não há
-  scan: entram sem imagem, com o nome que o checklist dá (nas fotos de 160 px
-  dele só o ガンダムチーム se lê), e sem ano. O scan entra sozinho quando
-  existir em `assets/cards/gcd/<id>.webp`. Ficaram de fora, por falta de
-  fonte além dele: a carta de cinema 武者ガンダム＆パトレイバー e a パラス
-  アテネ com erro de impressão.
+  (武者ガンダムMK-II／武者ZG／武者ガンダム) e o No.124 (ガンダムチーム), que
+  imprimem o número da linha, e o da edição 100 da revista (武者五人衆), que
+  não tem número. Cada uma imprime a tiragem: LIMITED 3000, 6000 e 10000. O
+  No.124 manda acessar `www.carddas.com/no124`, então é bem posterior a 1988.
+  Nenhuma fonte dá o ano do sorteio, e o set fica sem. Nenhuma fonte tem scan:
+  a imagem e o nome lido na frente vêm das fotos das cartas que o Fernando
+  mandou em 2026-11-16, em `assets/cards/gcd/` (procedência no README de lá).
+  Até essa data os nomes eram os do checklist do dream.uijin ("武者3人",
+  "武者5人衆"); o endereço antigo da BB100 está no `data/cartas-movidas.json`.
+  Ficaram de fora: a carta de cinema 武者ガンダム＆パトレイバー ("GOLDEN PRISM
+  CARD", 1989, 非売品, já com segunda fonte num anúncio do Yahoo! Auctions), a
+  パラスアテネ com erro de impressão e as reedições (o 真124 do 20º aniversário
+  e o 0番 復刻版 do box de DVD).
 - **Número sem total**: a numeração é corrida entre as partes (o 第3弾 vai
   do No.83 ao 123) e a carta não imprime total, então a tela mostra só o
   número ("83"), não "83/41". Vale pras cartas `gcd-` no `cardCode` (navegador

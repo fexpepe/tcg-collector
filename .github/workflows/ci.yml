@@ -82,10 +82,17 @@ jobs:
       # culparia a PR errada (o relatório geral é o --todos). O sharp, que
       # confere os pixels (recorte e véu), só é instalado quando algum logo
       # mudou — no resto das PRs o passo leva um segundo.
+      # Confere na PR (contra a base, HEAD^1 do merge de teste) e no push
+      # direto na main (contra o commit anterior da main). Push de OUTRA
+      # branch pula: comparado com o push anterior dela, um merge da main
+      # trazia os logos da main como se fossem da branch (2026-11-14, o
+      # game_shadowverse acusado na #313). A PR da branch confere certo.
       - name: Padrão dos logos (os que mudaram)
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             BASE=$(git rev-parse HEAD^1)
+          elif [ "${{ github.ref }}" != "refs/heads/main" ]; then
+            echo "Push de branch: a PR dela confere os logos."; exit 0
           else
             BASE="${{ github.event.before }}"
             if [ -z "$BASE" ] || [ "$BASE" = "0000000000000000000000000000000000000000" ]; then
