@@ -10,7 +10,8 @@
 //   node scripts/sync-lorcana.mjs
 import { writeFile, mkdir, access } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
-import { writeGameCatalog } from "./lib/sync-common.mjs";
+import { writeGameCatalog, readGlobalVar, preserveMissingCards } from "./lib/sync-common.mjs";
+import { logoNoPadrao } from "./lib/logo-espelho.mjs";
 
 const ROOT = new URL("../", import.meta.url);
 const OUT = new URL("data/lorcana/", ROOT);
@@ -19,16 +20,41 @@ const UA = "Sleevu (sleevu.app) catalog sync";
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
+// Resposta cortada no meio (o fetch acusa "terminated" ao ler o corpo) também
+// ganha nova tentativa: em 2026-11-15 o Lorcast passou a fechar a conexão
+// antes do fim nas listas grandes (~100–140 KB), e o build completo caiu.
 async function api(path) {
+  let ultimo = null;
   for (let attempt = 0; attempt < 4; attempt++) {
-    const r = await fetch(`${API}${path}`, { headers: { "User-Agent": UA, Accept: "application/json" } });
-    if (r.status === 429) { await sleep(2000 * (attempt + 1)); continue; }
-    if (!r.ok) throw new Error(`HTTP ${r.status} em ${path}`);
-    return r.json();
+    try {
+      const r = await fetch(`${API}${path}`, { headers: { "User-Agent": UA, Accept: "application/json" } });
+      if (r.status === 429) { ultimo = new Error(`429 repetido em ${path}`); await sleep(2000 * (attempt + 1)); continue; }
+      if (!r.ok) throw new Error(`HTTP ${r.status} em ${path}`);
+      return await r.json();
+    } catch (e) {
+      if (/^HTTP /.test(e.message)) throw e; // 4xx/5xx de verdade: não insiste
+      ultimo = e;
+      await sleep(1500 * (attempt + 1));
+    }
   }
-  throw new Error(`429 repetido em ${path}`);
+  throw ultimo || new Error(`falhou em ${path}`);
 }
 const listOf = (j) => Array.isArray(j) ? j : (j.results || j.cards || j.data || []);
+
+// Carta publicada nunca some (contrato 2 do docs/CATALOGO.md): set que a
+// Lorcast não entregou desta vez fica com as cartas e o preço do catálogo
+// anterior, em vez de sair do site. Antes disto, em 2026-11-15, os 14 sets
+// principais vieram cortados, o sync gravou só os 277 promos e o lint barrou
+// o deploy inteiro (3.242 ids publicados sumindo) — junto com o resto do
+// catálogo do dia. Devolve as cartas e o preço já mesclados.
+export function juntaComAnterior({ cards, pricing, prev, prevPricing }) {
+  const mantidas = preserveMissingCards(prev, cards);
+  const preco = { ...pricing };
+  for (const c of mantidas) {
+    if (!preco[c.id] && prevPricing && prevPricing[c.id]) preco[c.id] = prevPricing[c.id];
+  }
+  return { cards: cards.concat(mantidas), pricing: preco, mantidas };
+}
 
 // "Ariel" + "On Human Legs" -> "Ariel - On Human Legs" (nome completo do Lorcana).
 function cardName(c) {
@@ -38,22 +64,24 @@ function cardName(c) {
 
 // Logo do set: a Lorcast NÃO serve logo/capa de set. O MushuReport (wiki
 // MediaWiki da comunidade Lorcana) tem todos como "<Nome do Set> logo.png".
-// Baixamos o thumb (500px, via iiurlwidth) e hospedamos LOCAL em
-// data/lorcana/set-logos/<code>.png (mesmo padrão dos dados do Pokémon: baixa no
-// build, serve do próprio site). Retorna o caminho relativo ao site, ou null se
-// o set não tiver logo no wiki (promos/sets novos) — aí o chamador cai pra arte
-// da 1ª carta. Nunca derruba o sync (try/catch -> null).
+// Baixamos o thumb (até 1400px, via iiurlwidth) e hospedamos LOCAL em
+// data/lorcana/set-logos/<code>.webp, no padrão dos logos (docs/LOGOS.md:
+// normalizador do scripts/lib/logo-espelho.mjs, que precisa do SHARP_DIR; sem
+// ele o logo novo não entra). Retorna o caminho relativo ao site, ou null se o
+// set não tiver logo no wiki (promos/sets novos) — aí o set mostra o nome.
+// Nunca derruba o sync (try/catch -> null).
 const LOGOS_DIR = new URL("set-logos/", OUT);
 const WIKI_API = "https://wiki.mushureport.com/api.php";
-// Logo já existente em set-logos/ é CURADO (normalizado em 1000x500, alta
-// resolução) e vence: não re-baixa. Também evita regressão agora que o wiki
-// está atrás de challenge do Cloudflare (fetch de fora falha com 403).
+// Logo já existente em set-logos/ é CURADO e vence: não re-baixa. Também evita
+// regressão agora que o wiki está atrás de challenge do Cloudflare (fetch de
+// fora falha com 403).
 async function hasLocal(name) {
   try { await access(new URL(name, LOGOS_DIR)); return true; } catch { return false; }
 }
 async function fetchSetLogo(setName, code) {
-  // Logo no padrão (docs/LOGOS.md, desde 2026-11-14) é WebP; os 15 curados
-  // antes dele são PNG de quadro 1000×500. O WebP vence quando os dois existem.
+  // Logo no padrão (docs/LOGOS.md, desde 2026-11-14) é WebP; os 14 curados
+  // antes dele eram PNG de quadro 1000×500 (saíram, com 301 pro WebP no
+  // _redirects). O WebP vence se um PNG voltar a aparecer.
   for (const ext of ["webp", "png"]) {
     if (await hasLocal(`${code}.${ext}`)) return `data/lorcana/set-logos/${code}.${ext}`;
   }
@@ -61,7 +89,7 @@ async function fetchSetLogo(setName, code) {
     const u = new URL(WIKI_API);
     u.search = new URLSearchParams({
       action: "query", titles: `File:${setName} logo.png`,
-      prop: "imageinfo", iiprop: "url", iiurlwidth: "500", format: "json"
+      prop: "imageinfo", iiprop: "url", iiurlwidth: "1400", format: "json"
     }).toString();
     const r = await fetch(u, { headers: { "User-Agent": UA } });
     if (!r.ok) return null;
@@ -74,9 +102,11 @@ async function fetchSetLogo(setName, code) {
     if (!img.ok) return null;
     const buf = Buffer.from(await img.arrayBuffer());
     if (buf.length < 200 || buf.slice(1, 4).toString() !== "PNG") return null; // não é PNG
+    const final = await logoNoPadrao(buf, "set");
+    if (!final) return null; // sem sharp: logo novo não entra fora do padrão
     await mkdir(LOGOS_DIR, { recursive: true });
-    await writeFile(new URL(`${code}.png`, LOGOS_DIR), buf);
-    return `data/lorcana/set-logos/${code}.png`;
+    await writeFile(new URL(`${code}.webp`, LOGOS_DIR), final);
+    return `data/lorcana/set-logos/${code}.webp`;
   } catch (e) {
     console.warn(`  logo ${code} (${setName}): ${e.message}`);
     return null;
@@ -89,13 +119,14 @@ async function run() {
   const sets = listOf(await api("/sets"));
   console.log(`  ${sets.length} sets.`);
 
-  const cards = [];
-  const pricing = {}; // { id: { u: usd } } — preço de referência (Lorcast)
+  let cards = [];
+  let pricing = {}; // { id: { u: usd } } — preço de referência (Lorcast)
+  const falharam = [];
   for (const s of sets) {
     await sleep(250); // educado com a API comunitária
     let raw;
     try { raw = listOf(await api(`/sets/${s.id}/cards`)); }
-    catch (e) { console.warn(`  ${s.code}: erro ${e.message} (pulado)`); continue; }
+    catch (e) { falharam.push(s.code); console.warn(`  ${s.code}: erro ${e.message} (fica o do catálogo anterior)`); continue; }
     const total = raw.length;
     for (const c of raw) {
       if ((c.lang || "en") !== "en") continue;
@@ -135,6 +166,15 @@ async function run() {
     console.log(`  ${s.code} ${s.name}: ${total} cartas`);
   }
 
+  const prev = (await readGlobalVar(new URL("cards.js", OUT), "TCG_CARDS")) || [];
+  const prevPricing = (await readGlobalVar(new URL("pricing.js", OUT), "TCG_PRICING")) || {};
+  const junto = juntaComAnterior({ cards, pricing, prev, prevPricing });
+  ({ cards, pricing } = junto);
+  if (junto.mantidas.length) {
+    console.log(`  ${junto.mantidas.length} carta(s) do catálogo anterior mantidas` +
+      (falharam.length ? ` (sets que falharam: ${falharam.join(", ")})` : " (a fonte tirou)") + ".");
+  }
+
   cards.sort((a, b) => a.setId.localeCompare(b.setId) || (Number(a.number) || 0) - (Number(b.number) || 0));
   console.log(`Total: ${cards.length} cartas.`);
 
@@ -153,13 +193,9 @@ async function run() {
   // remota (foi exatamente o estrago do revert acidental de 2026-07-10 — com
   // esta guarda, mesmo um bug no resolve deixa os sets com o último logo bom).
   const prevLocal = {};
-  try {
-    const { readGlobalVar } = await import("./lib/sync-common.mjs");
-    const prev = (await readGlobalVar(new URL("cards.js", OUT), "TCG_CARDS")) || [];
-    for (const c of prev) {
-      if (c && c.setLogo && String(c.setLogo).indexOf("data/lorcana/set-logos/") === 0) prevLocal[c.setId] = c.setLogo;
-    }
-  } catch (e) { /* primeiro build: sem anterior */ }
+  for (const c of prev) {
+    if (c && c.setLogo && String(c.setLogo).indexOf("data/lorcana/set-logos/") === 0) prevLocal[c.setId] = c.setLogo;
+  }
   // Sem logo PRÓPRIO do set -> vazio, e o site desenha o nome do set como
   // título. Saíram os dois fallbacks antigos: a marca genérica (deixava todo
   // promo com a mesma figura, sem distinguir um do outro) e a arte da 1ª carta
@@ -184,4 +220,7 @@ async function run() {
   console.log(`Gravado em ${fileURLToPath(OUT)} (cards/indexes/pricing + manifest/chunks).`);
 }
 
-run().catch((e) => { console.error("Falhou:", e); process.exit(1); });
+// Só roda chamado direto: o teste importa o juntaComAnterior sem disparar o sync.
+if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
+  run().catch((e) => { console.error("Falhou:", e); process.exit(1); });
+}

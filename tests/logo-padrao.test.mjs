@@ -5,7 +5,7 @@
 // Roda com: node --test tests/
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import {
   LUGARES, PADRAO, ALVO_DENSIDADE, PISO_DENSIDADE, tipoDoArquivo, lerCabecalho, densidades,
   pedidoPelosLugares, tamanhoMinimo, svgTemBitmap, medePixels, avalia, lugaresDo
@@ -59,14 +59,20 @@ test("cabeçalho: JPEG não tem alfa; SVG é vetor", () => {
   assert.equal(lerCabecalho(Buffer.from('<?xml version="1.0"?>\n<svg viewBox="0 0 10 10"></svg>')).formato, "svg");
 });
 
-test("os logos de verdade do repositório são lidos (um de cada formato)", () => {
+// Desde 2026-11-14 não sobra PNG de logo no repositório (os 14 do Lorcana
+// viraram WebP): o PNG fica nos testes sintéticos acima, e aqui vão os
+// formatos que o site serve de verdade.
+test("os logos de verdade do repositório são lidos (WebP com e sem perda, SVG)", () => {
   const ler = (p) => lerCabecalho(readFileSync(new URL(`../${p}`, import.meta.url)));
-  const lorcana = ler("data/lorcana/set-logos/1.png");
-  assert.equal(lorcana.formato, "png");
-  assert.ok(lorcana.largura > 0 && lorcana.alfa);
-  const pokemon = ler("assets/games/game_pokemon.webp");
-  assert.equal(pokemon.formato, "webp");
-  assert.ok(pokemon.largura > 0 && pokemon.altura > 0 && pokemon.alfa);
+  const lorcana = ler("data/lorcana/set-logos/1.webp");
+  assert.equal(lorcana.formato, "webp");
+  assert.equal(lorcana.perda, "com perda");
+  assert.ok(lorcana.largura > 0 && lorcana.altura > 0 && lorcana.alfa);
+  const grandArchive = ler("assets/games/game_grandarchive-v2.webp");
+  assert.equal(grandArchive.formato, "webp");
+  assert.equal(grandArchive.perda, "sem perda");
+  assert.ok(grandArchive.largura > 0 && grandArchive.alfa);
+  assert.equal(ler("data/magic/set-logos/10e.svg").formato, "svg");
 });
 
 test("tipo pelo caminho", () => {
@@ -232,4 +238,18 @@ test("o caçador de logos de set normaliza pelo padrão (sem quadro fixo própri
   const fonte = readFileSync(new URL("../scripts/cacar-logos-set.mjs", import.meta.url), "utf8");
   assert.match(fonte, /from "\.\/lib\/logo-padrao\.mjs"/);
   assert.ok(!/width: 1000, height: 500/.test(fonte));
+});
+
+// O "Sobre" do jogo vintage põe width/height no <img> (reserva a caixa antes
+// do arquivo chegar). Em 2026-11-14, na troca dos logos pro padrão, sete
+// data/sobre/*.json ficaram com a medida do arquivo antigo: o LOTR, de
+// 200×172 pra 339×320, desenhava numa caixa de proporção errada.
+test("o \"Sobre\" guarda a largura e a altura reais do logo", () => {
+  const dir = new URL("../data/sobre/", import.meta.url);
+  for (const f of readdirSync(dir).filter((n) => n.endsWith(".json"))) {
+    const s = JSON.parse(readFileSync(new URL(f, dir), "utf8"));
+    if (!s.logo) continue;
+    const c = lerCabecalho(readFileSync(new URL(`../${String(s.logo).replace(/^\//, "")}`, import.meta.url)));
+    assert.deepEqual([s.logoLargura, s.logoAltura], [c.largura, c.altura], `${f}: ${s.logo}`);
+  }
 });

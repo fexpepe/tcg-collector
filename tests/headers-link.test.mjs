@@ -59,8 +59,8 @@ test("todo arquivo solto da raiz que vai pro site tira o Link de preload", () =>
   }
 });
 
-test("o que nasce na raiz só no deploy também tira o Link (favicon.ico, sitemaps, .well-known)", () => {
-  for (const bloco of ["/favicon.ico", "/sitemap*", "/.well-known/*", "/lancamentos.ics"]) {
+test("o que nasce na raiz só no deploy também tira o Link (favicon.ico, sitemaps, .well-known, llms.txt)", () => {
+  for (const bloco of ["/favicon.ico", "/sitemap*", "/.well-known/*", "/lancamentos.ics", "/llms.txt"]) {
     assert.ok(cabecalhosDoBloco(bloco).includes("! Link"), `${bloco} sem "! Link"`);
   }
 });

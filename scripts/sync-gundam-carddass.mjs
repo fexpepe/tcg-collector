@@ -28,6 +28,16 @@
 //                        cabeçalho de lá diz como). Inglês por glossário
 //                        (scripts/data/gundam-carddass-nomes-en.json); sem
 //                        tradução segura, fica o japonês.
+//   dream.uijin.com e  — o checklist de um colecionador do 本弾
+//   manganokura.com      (dream.uijin.com/cardlist.html e list4-9/list10-13)
+//                        e a ficha de uma loja de compra (manganokura.com,
+//                        carddass-kaitori-price/gundam-031). Usados na
+//                        auditoria de 15/11/2026: o 1〜10弾 tem 41 cartas e o
+//                        11〜13弾 42; o No.124 e o No.0 são prêmio de sorteio da
+//                        Comic BomBom, "市販はされていません" (os dois); a
+//                        No.500 é UMA carta, a メモリアルカード em W prism. Daí
+//                        o set de promos (PROMOS) e as correções do wd03 e do
+//                        No.500 abaixo.
 //
 // Séries sem lista carta a carta NÃO geram cartas (新外伝, ネオバトル,
 // コマンド戦記, ガンドランダー, スーパーバトル, バトル・オブ・ナイツ e a 新戦国伝
@@ -36,11 +46,13 @@
 // sozinhas no dia em que a fonte publicar.
 //
 // IDs: gcd-<série><parte>-<número impresso> (gcd-wd01-1 = World 第1弾 No.1;
-// gcd-gd08-345). Número repetido dentro da parte (o No.500 do World 第13弾
-// saiu em prisma e em prisma duplo) ganha sufixo pela ordem da fonte (500,
-// 500b). O id fica GRAVADO no snapshot junto do id da carta na fonte (`src`),
-// e o refresh reaproveita o id da carta já conhecida: reordenar a página não
-// troca id, e carta que some da fonte fica.
+// gcd-gd08-345). Número repetido dentro da parte ganha sufixo pela ordem da
+// fonte: o No.345 e o No.347 do 外伝 第8弾 saíram com dois padrões de prisma
+// (345 e 345b), que são cartas diferentes na mão. O id fica GRAVADO no
+// snapshot junto do id da carta na fonte (`src`), e o refresh reaproveita o id
+// da carta já conhecida: reordenar a página não troca id, e carta que some da
+// fonte fica — menos a que foi JUNTADA em outra no data/card-id-merges.json
+// (a gcd-wd13-500b, ver CORRECOES), que não volta.
 //
 //   node scripts/sync-gundam-carddass.mjs             # fetch (se der) + build
 //   node scripts/sync-gundam-carddass.mjs --no-fetch  # só build do snapshot
@@ -55,6 +67,10 @@ const GUNDAM = new URL("data/gundam/", ROOT);
 const SNAP = new URL("data/vintage/gundam-carddass.json", ROOT);
 const NOMES = JSON.parse(readFileSync(new URL("scripts/data/gundam-carddass-nomes.json", ROOT), "utf8"));
 const NOMES_EN = JSON.parse(readFileSync(new URL("scripts/data/gundam-carddass-nomes-en.json", ROOT), "utf8"));
+// Ids juntados em outro (data/card-id-merges.json, `cards`): nem o snapshot
+// nem o "carta publicada nunca some" do build os trazem de volta. A conta de
+// quem marcou migra pelo ID_MERGES do shared.js.
+const JUNTADAS = new Set(Object.keys(JSON.parse(readFileSync(new URL("data/card-id-merges.json", ROOT), "utf8")).cards || {}).filter((id) => id.startsWith("gcd-")));
 const UA = { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Sleevu/1.0 (+sleevu.app)" };
 const NO_FETCH = process.argv.includes("--no-fetch");
 export const ID_PREFIX = "gcd-";
@@ -93,9 +109,11 @@ const P = (series, n, date, ac, ja = "", en = "", extra = {}) => ({
 export const SETS = [
   // SDガンダムワールド 本弾: 13弾, No.1 a No.537. Sem subtítulo por 弾.
   P("wd", 1, "1988", [167, 351]), P("wd", 2, "1988", [167, 352]),
-  // O 第3弾 tem 42 cartas no 80storage (e a numeração confirma: o 第4弾 começa
-  // no 125), mas a fonte só tem do 83 ao 123: o No.124 falta lá.
-  P("wd", 3, "1988", [167, 353], "", "", { total: 42 }),
+  // O 第3弾 tem 41 cartas, do No.83 ao 123. O 80storage diz 42, mas o No.124,
+  // que fica entre ele e o 第4弾 (começa no 125), é o prêmio de sorteio da
+  // Comic BomBom (dream.uijin e manganokura, ver o cabeçalho): está nas
+  // PROMOS. Até 15/11/2026 o set dizia 42 e "faltava o No.124".
+  P("wd", 3, "1988", [167, 353]),
   P("wd", 4, "1989", [167, 385]), P("wd", 5, "1989", [167, 386]), P("wd", 6, "1989", [167, 387]),
   P("wd", 7, "1989", [167, 388]), P("wd", 8, "1990", [167, 620]), P("wd", 9, "1990", [167, 621]),
   P("wd", 10, "1991", [167, 622]), P("wd", 11, "1991", [167, 623]), P("wd", 12, "1991", [167, 624]),
@@ -134,7 +152,13 @@ export const SETS = [
   // 機動武闘伝Gガンダム: parte única (1994), a única série que não é SD… no
   // nome; a arte é SD. O 80storage não lista: ano e total do animecollection.
   // Falta o No.031 (CORRECOES): 41 das 42.
-  { code: "gg01", series: "gg", part: 1, date: "1994", ac: [342, 725], ja: "", en: "", total: 42 }
+  { code: "gg01", series: "gg", part: 1, date: "1994", ac: [342, 725], ja: "", en: "", total: 42 },
+  // Prêmios de sorteio da Comic BomBom do 本弾 (ver PROMOS). Sem `ac` (nenhuma
+  // página do animecollection) e sem ano: as fontes não dizem quando cada
+  // sorteio foi, e ano inventado não entra. O setId não segue a régua das
+  // partes (gcd-wd01): fica fora das seções de série e cai na de promos do
+  // groupGundamCarddassSets.
+  { code: "wdp", series: "wd", part: 0, date: "", ac: null, ja: "コミックボンボン懸賞", en: "— Comic BomBom Prize Cards" }
 ];
 const SET_BY_CODE = new Map(SETS.map((s) => [s.code, s]));
 const SET_ORDER = new Map(SETS.map((s, i) => [s.code, i]));
@@ -203,11 +227,25 @@ export function parseAnimeCollection(html) {
 // carta de verdade falta lá, e a repetida não é carta nenhuma (`null` = sai).
 // No Gガンダム a fonte ainda numera "31" a carta que imprime No.032. A chave é
 // o id da carta na fonte.
+//
+// Carta de DUAS CAMADAS (`face: 2`), como no Dragon Ball Carddass: a No.500
+// do 本弾 第13弾 é a メモリアルカード em W prism, a camada de cima ("MEMORIAL
+// CARD No.500", 26180) sobre a de baixo (謎の最強武者, 26181). É UMA carta
+// (as três fontes do cabeçalho; a parte tem 42), e a fonte lista as duas faces.
+// A 2ª face fica no snapshot com o id da 1ª e não vira carta: o scan dela fica
+// guardado pro dia em que a tela mostrar a 2ª face. Até 15/11/2026 ela era a
+// gcd-wd13-500b, juntada na 500 (data/card-id-merges.json).
 export const CORRECOES = {
+  26181: { face: 2 },
   29693: null,           // 戦国伝 第3弾: o mesmo scan do 五十九 (虐風乱); falta o 六十
   30029: null,           // 新戦国伝 第1弾: o mesmo scan do 十八; falta o 十九
   29795: null,           // Gガンダム: o mesmo scan do No.036; falta o No.031
-  29790: { num: "32" }   // Gガンダム: impresso No.032 (シャイニングVSネロス), a fonte diz 31
+  29790: { num: "32" },  // Gガンダム: impresso No.032 (シャイニングVSネロス), a fonte diz 31
+  // 本弾 第13弾: a ガンマスター (No.502) é prisma (o fundo do scan é o
+  // quadriculado dourado) e a fonte diz Regular. Com ela a parte fecha 6
+  // prismas e 36 comuns, como as outras do 11〜13弾, o 80storage e o
+  // manganokura (auditoria de 15/11/2026).
+  26183: { rar: "Prism" }
 };
 export function corrige(cartas) {
   return cartas.filter((c) => CORRECOES[c.src] !== null).map((c) => (CORRECOES[c.src] ? { ...c, ...CORRECOES[c.src] } : c));
@@ -217,7 +255,8 @@ const numKey = (num) => String(num).toLowerCase().replace(/[^a-z0-9]+/g, "-").re
 
 // Casa as cartas da página com as do snapshot pelo id DA FONTE (`src`) pra
 // manter o id. Carta nova: gcd-<set>-<número>, com sufixo (b, c…) se o número
-// já está tomado na parte. Carta do snapshot que saiu da fonte continua.
+// já está tomado na parte. A 2ª face (`face: 2`, ver CORRECOES) leva o id da
+// carta do mesmo número. Carta do snapshot que saiu da fonte continua.
 export function assignIds(setCode, fresh, known = []) {
   const porSrc = new Map(known.map((c) => [c.src, c]));
   const used = new Set(known.map((c) => c.id));
@@ -227,16 +266,18 @@ export function assignIds(setCode, fresh, known = []) {
     if (visto.has(c.src)) continue; // a mesma carta duas vezes na página
     visto.add(c.src);
     const antiga = porSrc.get(c.src);
-    let id = antiga && antiga.id;
+    const ehVerso = c.face === 2;
+    const par = ehVerso && (out.find((o) => o.num === c.num && !o.face) || known.find((k) => k.num === c.num && !k.face && !JUNTADAS.has(k.id)));
+    let id = ehVerso ? par && par.id : antiga && antiga.id;
     if (!id) {
       const base = `${ID_PREFIX}${setCode}-${numKey(c.num) || "x"}`;
       id = base;
       for (let i = 1; used.has(id); i++) id = `${base}${String.fromCharCode(97 + i)}`; // 500, 500b, 500c…
       used.add(id);
     }
-    out.push({ id, src: c.src, num: c.num, rar: c.rar, dir: c.dir });
+    out.push({ id, src: c.src, num: c.num, rar: c.rar, dir: c.dir, ...(ehVerso ? { face: 2 } : {}) });
   }
-  for (const k of known) if (!visto.has(k.src)) out.push(k);
+  for (const k of known) if (!visto.has(k.src) && !JUNTADAS.has(k.id)) out.push(k);
   return out;
 }
 
@@ -320,6 +361,7 @@ export function cartasDaLinha(snapshot, nomes = NOMES.nomes, nomesEn = NOMES_EN)
     // senão, quantos NÚMEROS a parte tem (a 2ª versão do mesmo número não conta).
     const total = def.total || new Set(s.cards.map((c) => c.num)).size;
     for (const c of s.cards) {
+      if (c.face === 2) continue; // a camada de baixo da mesma carta (CORRECOES)
       const ja = nomes[c.id] || "";
       const en = nameEn(ja, nomesEn);
       line.push({
@@ -349,6 +391,49 @@ export function cartasDaLinha(snapshot, nomes = NOMES.nomes, nomesEn = NOMES_EN)
   return line;
 }
 
+// Prêmios de sorteio da Comic BomBom do 本弾 (auditoria de 15/11/2026, pedido
+// do Fernando). Não saíram em pacote, então nenhuma página do animecollection
+// os tem. O No.0 e o No.124 imprimem o número da linha: "No.124とNo.0は抽選
+// プレゼント品で、市販はされていません" (manganokura), o mesmo que o checklist
+// do dream.uijin diz. O da edição 100 da revista (コミックボンボン100号記念
+// スペシャルカード) não tem número: no lugar dele a carta imprime um "●", e
+// fica sem, nada inventado. Cada uma imprime a tiragem: LIMITED 3000, 6000 e
+// 10000. O No.124 manda o dono acessar www.carddas.com/no124, então é bem
+// posterior a 1988 (a página está no Wayback em 2008); ano não entra, porque
+// nenhuma fonte dá o do sorteio.
+// Nome e imagem (16/11/2026): lidos nas fotos das cartas que o Fernando
+// mandou, salvas em assets/cards/gcd/ (procedência no README de lá). O nome
+// é o impresso, na convenção do scripts/data/gundam-carddass-nomes.json: o
+// No.0 traz três unidades, uma por linha ("武者3人" era só o apelido do
+// checklist), e o da edição 100 é 武者五人衆, com 五.
+export const PROMOS = [
+  { id: "gcd-wdp-0", num: "0", ja: "武者ガンダムMK-II／武者ZG／武者ガンダム" },
+  { id: "gcd-wdp-124", num: "124", ja: "ガンダムチーム", en: "Gundam Team" },
+  { id: "gcd-wdp-bb100", num: "", ja: "武者五人衆" }
+];
+
+export function cartasDasPromos(promos = PROMOS) {
+  const def = SET_BY_CODE.get("wdp");
+  return promos.map((p) => ({
+    id: p.id,
+    name: p.en || p.ja,
+    ...(p.en ? { nameJp: p.ja } : {}),
+    set: setName(def),
+    setId: setIdOf(def.code),
+    number: p.num,
+    setTotal: promos.length,
+    setReleaseDate: def.date,
+    rarity: "Prism",
+    artist: "",
+    language: "ja",
+    image: curatedImg(p.id),
+    variants: ["Normal"],
+    setLogo: "",
+    vintage: true,
+    vintageLine: def.series
+  }));
+}
+
 // As cartas gcd- moraram no catálogo do Gundam Card Game enquanto isto foi
 // linha dele. Tira de lá (cards, índices, chunks e manifest): o sync-gundam
 // também as descarta, mas ele não roda no build rápido, e o data/gundam/sets
@@ -369,11 +454,11 @@ async function tiraDoGundam() {
 }
 
 async function build(snapshot) {
-  const line = cartasDaLinha(snapshot);
+  const line = cartasDaLinha(snapshot).concat(cartasDasPromos());
   const existing = (await readGlobalVar(new URL("cards.js", OUT), "TCG_CARDS")) || [];
   // O catálogo é só deste sync; mas carta publicada nunca some.
   const have = new Set(line.map((c) => c.id));
-  const merged = line.concat(existing.filter((c) => c && c.id && !have.has(c.id)));
+  const merged = line.concat(existing.filter((c) => c && c.id && !have.has(c.id) && !JUNTADAS.has(c.id)));
   const pricing = (await readGlobalVar(new URL("pricing.js", OUT), "TCG_PRICING")) || {}; // sem preço
   await writeGameCatalog(OUT, { cards: merged, pricing, webDir: `data/${GAME}/` });
   const tiradas = await tiraDoGundam();

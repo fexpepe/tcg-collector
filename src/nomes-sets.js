@@ -110,7 +110,12 @@
     "nrt-s15": "Vol. 15 — Legend of the Young Days",
     "nrt-s16": "Vol. 16 — Heir of the Fire",
     "nrt-s17": "Vol. 17 — Island of the Mighty Beasts",
-    "nrt-promo": "Promotional Cards",
+    // "Promotion Cards", e não "Promotional Cards": desde 14/11/2026 este nome é
+    // também o do CATÁLOGO (translate-naruto-names.mjs), e "Promotional Cards" é
+    // o das promos do CCG americano, no mesmo jogo (o nome é a chave do set e do
+    // endereço, contrato 7 do docs/CATALOGO.md). É a tradução literal de
+    // プロモーションカード.
+    "nrt-promo": "Promotion Cards",
     "nrt-extra": "Expansions & Specials",
     "nrt-atari": "\"Atari\" Winner Cards",
     // ---- Naruto · Data Carddass (Narutimate Card Battle / Mission)
@@ -178,7 +183,9 @@
     "nrt-scg-s07": "Act 7 — Bonds of the Crimson Gale",
     "nrt-scg-st7": "Act 7 Starter Set",
     "nrt-scg-s08": "Act 8 — New Jutsu Unleashed! Power Beyond Legend",
-    "nrt-scg-promo": "Shippuden Promotional Cards",
+    // Espelha o japonês, プロモーションカード（疾風伝）: a linha no FIM, só pra
+    // separar do set de 2002 — "Shippuden …" na frente cairia no contrato 7.
+    "nrt-scg-promo": "Promotion Cards (Shippuden)",
     // ---- Naruto Trading Cards · cartas de coleção da Amada e da Ensky (jogo
     // narutotc, sync-naruto-trading-cards.mjs). "Etching Card Collection" e "Trading
     // Collection" são o katakana do próprio produto; "Ninjutsu Taizen" é a
@@ -196,6 +203,7 @@
     "hxh-hb-p6": "Part 6 — September 4th × G・I × Hatsu Training",
     "hxh-hb-gb": "Game Boy — Hunter's Genealogy bonus",
     "hxh-hb-jf00": "Jump Festa 2000 limited card",
+    "hxh-hb-jf01": "Jump Festa 2001 Edition pack",
     "hxh-hb-jf02": "Jump Festa 2002 Edition pack",
     // ---- Carddass Masters (jogo cdm, sync-carddass-masters.mjs). Com a IP na
     // frente: fora da página do jogo "Part 2" seria de várias séries; dentro
@@ -365,6 +373,7 @@
     "gcd-sd01": "SD Gundam Seiden Quest One — The Swordsman of Rion",
     "gcd-sd02": "SD Gundam Seiden Quest Two — The Strongest Fighter",
     "gcd-gg01": "Mobile Fighter G Gundam",
+    "gcd-wdp": "SD Gundam World — Comic BomBom Prize Cards",
     // ---- Dragon Ball Carddass (sync-dbc-carddass.mjs): as 30 partes do Hondan
     // e o 特別弾 que fechou a linha (dbc-h31, set/1997 — não há "Part 31"), a
     // Super Battle, a Visual Adventure e a Super Barcode Wars. As três séries

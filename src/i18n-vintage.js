@@ -12,7 +12,6 @@
 
   M.pt = Object.assign(M.pt || {}, {
     "title.vintage": "Jogos de cartas vintage: o acervo dos TCGs que saíram de linha · Sleevu",
-    "vt.sub": "Jogos de cartas que saíram de linha, na ordem em que a história aconteceu. Escolha uma marca pra ver a história dela em cartas.",
     "vt.brands": "Marcas",
     "vt.brand": "Marca",
     "vt.allBrands": "Todas as marcas",
@@ -37,8 +36,6 @@
     "vt.n.games.other": "{n} jogos",
     "vt.n.cross.one": "{n} com várias marcas",
     "vt.n.cross.other": "{n} com várias marcas",
-    "vt.n.brands.one": "{n} marca",
-    "vt.n.brands.other": "{n} marcas",
     "vt.n.sets.one": "{n} set",
     "vt.n.sets.other": "{n} sets",
     "vt.n.cards.one": "{n} carta",
@@ -47,7 +44,6 @@
 
   M.en = Object.assign(M.en || {}, {
     "title.vintage": "Vintage card games: the archive of discontinued TCGs · Sleevu",
-    "vt.sub": "Card games that went out of print, in the order history happened. Pick a franchise to see its story in cards.",
     "vt.brands": "Franchises",
     "vt.brand": "Franchise",
     "vt.allBrands": "All franchises",
@@ -72,8 +68,6 @@
     "vt.n.games.other": "{n} games",
     "vt.n.cross.one": "{n} multi-franchise",
     "vt.n.cross.other": "{n} multi-franchise",
-    "vt.n.brands.one": "{n} franchise",
-    "vt.n.brands.other": "{n} franchises",
     "vt.n.sets.one": "{n} set",
     "vt.n.sets.other": "{n} sets",
     "vt.n.cards.one": "{n} card",
@@ -82,7 +76,6 @@
 
   M.es = Object.assign(M.es || {}, {
     "title.vintage": "Juegos de cartas vintage: el archivo de los TCG descatalogados · Sleevu",
-    "vt.sub": "Juegos de cartas que dejaron de publicarse, en el orden en que ocurrió la historia. Elige una marca para ver su historia en cartas.",
     "vt.brands": "Marcas",
     "vt.brand": "Marca",
     "vt.allBrands": "Todas las marcas",
@@ -107,8 +100,6 @@
     "vt.n.games.other": "{n} juegos",
     "vt.n.cross.one": "{n} con varias marcas",
     "vt.n.cross.other": "{n} con varias marcas",
-    "vt.n.brands.one": "{n} marca",
-    "vt.n.brands.other": "{n} marcas",
     "vt.n.sets.one": "{n} set",
     "vt.n.sets.other": "{n} sets",
     "vt.n.cards.one": "{n} carta",

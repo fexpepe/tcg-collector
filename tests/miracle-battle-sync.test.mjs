@@ -53,7 +53,7 @@ test("as cartas: ids únicos, formato por série, re-impressão (_2) colapsada",
     assert.match(c.id, /^(op-mb|nrt-mb|hxh-mb|mb)-[a-z]+\d*-[^\s/]+$/, c.id);
     assert.ok(c.id.startsWith(`${c.setId}-`), `${c.id} fora do set ${c.setId}`);
     assert.equal(c.vintage, true);
-    assert.equal(c.setLogo, "/assets/games/game_mbc.webp");
+    assert.equal(c.setLogo, "/assets/games/game_mbc-v2.webp");
   }
   // Os três prefixos de marca não podem escapar das séries deles.
   assert.ok(cards.filter((c) => c.id.startsWith("op-mb-")).every((c) => c.vintageLine === "op"));

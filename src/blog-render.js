@@ -88,7 +88,7 @@
     harrypotter: ["Harry Potter", "#740001"],
     weiss: ["Weiß Schwarz", "#ffffff"],
     godzilla: ["Godzilla", "#5e7c68"],
-    fftcg: ["Final Fantasy", "#93c5fd"],
+    fftcg: ["Final Fantasy", "#a5d8ff"],
     grandarchive: ["Grand Archive", "#f0abfc"],
     hololive: ["hololive", "#38d6f5"],
     shadowverse: ["Shadowverse: Evolve", "#818cf8"],

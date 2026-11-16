@@ -2,9 +2,9 @@
   "url": "miracle-battle-carddass",
   "nome": "Miracle Battle Carddass",
   "nomeOriginal": { "texto": "ミラクルバトルカードダス", "lang": "ja", "romaji": "Mirakuru Batoru Kādodasu" },
-  "logo": "assets/games/game_mbc.webp",
+  "logo": "assets/games/game_mbc-v2.webp",
   "logoLargura": 512,
-  "logoAltura": 280,
+  "logoAltura": 276,
   "periodo": { "inicio": "2009-12", "fim": "2014-08" },
   "etiquetas": [
     "Vintage",

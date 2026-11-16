@@ -84,7 +84,7 @@ const GAMES = [
   { slug: "sorcery", label: "Sorcery: Contested Realm" },
   { slug: "riftbound", label: "Riftbound" },
   { slug: "narutocg", label: "Naruto Card Game (2027)" },
-  { slug: "naruto", label: "Naruto Card Game (2002~2006)" },
+  { slug: "naruto", label: "Naruto Card Game" },
   { slug: "hxh", label: "Hunter × Hunter Carddass" },
   { slug: "dbc", label: "Dragon Ball Carddass" },
   { slug: "dbsb", label: "Dragon Ball Super Battle" },
@@ -356,7 +356,7 @@ function setPageHtml(page, canonical, otherSets, lang) {
       itemListElement: cards.map((c, i) => ({
         "@type": "ListItem",
         position: i + 1,
-        name: `${c.name}${c.number ? ` ${cardCode({ number: c.number, setTotal: c.setTotal || total })}` : ""}`,
+        name: `${c.name}${c.number ? ` ${cardCode({ id: c.id, number: c.number, setTotal: c.setTotal || total })}` : ""}`,
         url: `${ORIGIN}${urlDaCarta(c)}`,
         image: absUrl(c.image) || undefined
       }))
@@ -384,7 +384,7 @@ function setPageHtml(page, canonical, otherSets, lang) {
     // Rótulo visível com o código IMPRESSO ("009/094"), não "#009": é o texto
     // que a busca do Google casa quando a carta não tem página própria (só as
     // 1.500 mais valiosas têm) — a página do set é onde "Nymble 009/094" existe.
-    const code = c.number ? cardCode({ number: c.number, setTotal: c.setTotal || total }) : "";
+    const code = c.number ? cardCode({ id: c.id, number: c.number, setTotal: c.setTotal || total }) : "";
     const num = code ? escapeHtml(code) : "";
     const alt = `${c.name}${code ? ` ${code}` : ""} — ${name}`;
     const prioridade = i < ACIMA_DA_DOBRA
@@ -689,7 +689,7 @@ const DECK_GAME_LABELS = {
   pokemon: "Pokémon TCG", lorcana: "Disney Lorcana", onepiece: "One Piece Card Game",
   magic: "Magic: The Gathering", fab: "Flesh and Blood", gundam: "Gundam Card Game", swu: "Star Wars: Unlimited", cyberpunk: "Cyberpunk TCG", sorcery: "Sorcery: Contested Realm",
   dbfw: "Dragon Ball Fusion World", dbs: "Dragon Ball Super Card Game Masters", ygo: "Yu-Gi-Oh!", digimon: "Digimon Card Game",
-  riftbound: "Riftbound", unionarena: "Union Arena", narutocg: "Naruto Card Game (2027)", naruto: "Naruto Card Game (2002~2006)",
+  riftbound: "Riftbound", unionarena: "Union Arena", narutocg: "Naruto Card Game (2027)", naruto: "Naruto Card Game",
   hxh: "Hunter × Hunter", dbc: "Dragon Ball Carddass", dbsb: "Dragon Ball Super Battle", dbva: "Dragon Ball Visual Adventure", dbbw: "Dragon Ball Super Barcode Wars", dbz: "Dragon Ball Z CCG", wow: "World of Warcraft TCG", lotr: "The Lord of the Rings TCG", harrypotter: "Harry Potter TCG", weiss: "Weiß Schwarz", godzilla: "Godzilla Card Game", palworld: "Palworld Official Card Game", fftcg: "Final Fantasy TCG", grandarchive: "Grand Archive TCG", hololive: "hololive Official Card Game", shadowverse: "Shadowverse: Evolve", vanguard: "Cardfight!! Vanguard", duelmasters: "Duel Masters", narutomythos: "Naruto Mythos TCG", narutokayou: "Naruto Kayou", mbc: "Miracle Battle Carddass", cdm: "Carddass Masters", gcd: "Gundam Carddass", gw: "Gundam War", seiya: "Saint Seiya Carddass", seiyatc: "Saint Seiya Trading Collection", seiyacr: "Saint Seiya Crusade", narutoboruto: "Naruto Boruto Card Game", narutotc: "Naruto Trading Cards"
 };
 
@@ -727,9 +727,17 @@ function cardNamesFor(game) {
   return map;
 }
 
-// Zonas na ordem da página: comandante/líder (a cara do deck) primeiro.
-const DECK_ZONA_ROTULO = { commander: "Comandante", leader: "Líder", main: "Deck", side: "Side Deck", extra: "Extra Deck", egg: "Deck de Ovos", maybe: "Talvez" };
-const DECK_ZONA_TOPO = ["commander", "leader"];
+// Zonas na ordem da página: comandante/líder (a cara do deck) primeiro. Os
+// rótulos são os do i18n-decks.js em pt (as zonas do lote de 14/11/2026 —
+// Gundam, SWU, FAB, Riftbound, Vanguard, FFTCG e Grand Archive — inclusive);
+// zona sem rótulo aqui sai com a chave crua.
+const DECK_ZONA_ROTULO = {
+  commander: "Comandante", leader: "Líder", hero: "Herói", legend: "Lenda", base: "Base", main: "Deck",
+  side: "Side Deck", extra: "Extra Deck", egg: "Deck de Ovos", maybe: "Talvez",
+  resource: "Deck de Recursos", equipment: "Equipamento e armas", rune: "Deck de Runas",
+  battlefield: "Campos de batalha", ride: "Ride Deck", gdeck: "Deck G", lb: "Deck LB", material: "Deck de Material"
+};
+const DECK_ZONA_TOPO = ["commander", "leader", "hero", "legend", "base"];
 const ordemDasZonas = (zonas) => Object.keys(zonas).sort((a, b) => {
   const ia = DECK_ZONA_TOPO.indexOf(a), ib = DECK_ZONA_TOPO.indexOf(b);
   return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib);

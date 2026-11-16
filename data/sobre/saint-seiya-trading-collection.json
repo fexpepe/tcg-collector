@@ -5,9 +5,9 @@
     "texto": "聖闘士星矢 トレーディングコレクション",
     "lang": "ja"
   },
-  "logo": "assets/games/game_seiya.webp",
-  "logoLargura": 249,
-  "logoAltura": 106,
+  "logo": "assets/games/game_seiyatc.webp",
+  "logoLargura": 546,
+  "logoAltura": 320,
   "periodo": {
     "inicio": "2000-03",
     "fim": "2003-12"

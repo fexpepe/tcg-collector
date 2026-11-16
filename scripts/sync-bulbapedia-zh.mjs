@@ -15,10 +15,11 @@
 //   4. grava data/zh-import/<setId>.json (versionado) — o build
 //      (scripts/import-zh.mjs, sem rede) transforma isso em cartas, com a
 //      imagem da impressão EN/JP que já está no catálogo.
-//   Com --logos, baixa também o logo de cada set (thumb de 520px, o mesmo
-//   tamanho do mirror-ja-set-logos) e grava data/set-logos/zh-cn/<setId>.webp,
-//   que o mirror-set-logos carimba no chunk como logo CURADO. Precisa do sharp
-//   instalado fora do repo (SHARP_DIR, como no mirror-r2).
+//   Com --logos, baixa também o logo de cada set (thumb de até 1400px, o
+//   mesmo do mirror-ja-set-logos) e grava data/set-logos/zh-cn/<setId>.webp no
+//   padrão dos logos (docs/LOGOS.md), que o mirror-set-logos carimba no chunk
+//   como logo CURADO. Precisa do sharp instalado fora do repo (SHARP_DIR, como
+//   no mirror-r2).
 //
 // Educação: uma requisição por vez, ~1,1 s entre elas, User-Agent
 // identificado. A rodada completa são ~250 requisições (~11 min). Página de
@@ -30,9 +31,8 @@
 //   node scripts/sync-bulbapedia-zh.mjs --logos         # + logos (precisa do SHARP_DIR)
 //   node scripts/sync-bulbapedia-zh.mjs --force         # relê as páginas de carta
 import { readdir, readFile, writeFile, mkdir } from "node:fs/promises";
-import { join } from "node:path";
-import { createRequire } from "node:module";
 import { API, UA } from "./lib/bulbapedia.mjs";
+import { sharpDoAmbiente, logoNoPadrao } from "./lib/logo-espelho.mjs";
 import { TEMPLATE, releasePages, parseSetPage, juntarSets, completarDatas, parseCardPage, desambiguacao, compactarImpressoes, ordemNumero } from "./lib/bulbapedia-zh.mjs";
 import { fetchJsonRetry, sleep } from "./lib/sync-common.mjs";
 
@@ -189,10 +189,11 @@ if (avisos.length) console.log(`\nAvisos:\n  ${avisos.join("\n  ")}`);
 
 // ── logos (opcional) ────────────────────────────────────────────────────────
 if (has("--logos")) {
-  // SHARP_DIR = a pasta do PACOTE sharp, como no mirror-r2. Carregado por
-  // require da pasta (o layout interno mudou entre versões do sharp).
-  let sharp = null;
-  try { const dir = process.env.SHARP_DIR || ""; sharp = dir ? createRequire(join(dir, "package.json"))(dir) : null; } catch { sharp = null; }
+  // SHARP_DIR = a pasta do PACOTE sharp, como no mirror-r2. O logo entra no
+  // padrão dos logos (docs/LOGOS.md, desde 2026-11-14) pelo mesmo
+  // normalizador dos espelhos: recorte na tinta, sem véu, teto 960×320. Antes
+  // era o thumb de 520 px regravado em WebP q82, borrado na vitrine do topo.
+  const sharp = await sharpDoAmbiente();
   if (!sharp) console.log("\n--logos: sem o sharp (SHARP_DIR=<pasta do pacote sharp>) — logos pulados.");
   if (sharp) {
     await mkdir(LOGOS, { recursive: true });
@@ -206,7 +207,7 @@ if (has("--logos")) {
     const arquivos = [...new Set(comLogo.map((s) => s.logo))];
     const urls = {};
     for (let i = 0; i < arquivos.length; i += LOTE) {
-      const j = await api({ action: "query", titles: arquivos.slice(i, i + LOTE).map((f) => `File:${f}`).join("|"), prop: "imageinfo", iiprop: "url", iiurlwidth: "520" });
+      const j = await api({ action: "query", titles: arquivos.slice(i, i + LOTE).map((f) => `File:${f}`).join("|"), prop: "imageinfo", iiprop: "url", iiurlwidth: "1400" });
       for (const p of (j.query && j.query.pages) || []) {
         const ii = p.imageinfo && p.imageinfo[0];
         if (ii) urls[p.title.replace(/^File:/, "").replace(/_/g, " ")] = ii.thumburl || ii.url;
@@ -220,8 +221,10 @@ if (has("--logos")) {
       const r = await fetch(u, { headers: { "user-agent": UA } });
       if (!r.ok) { console.log(`  logo ${s.setId}: HTTP ${r.status}`); continue; }
       const buf = Buffer.from(await r.arrayBuffer());
-      await sharp(buf).webp({ quality: 82, effort: 6 }).toFile(new URL(`${s.setId}.webp`, LOGOS).pathname);
-      feitos++;
+      try {
+        await writeFile(new URL(`${s.setId}.webp`, LOGOS), await logoNoPadrao(buf, "set"));
+        feitos++;
+      } catch (e) { console.log(`  logo ${s.setId}: ${e.message}`); }
     }
     console.log(`logos: ${feitos} de ${comLogo.length} gravados em data/set-logos/zh-cn/`);
   }

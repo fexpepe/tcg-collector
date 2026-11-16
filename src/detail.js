@@ -1322,7 +1322,7 @@
       // Vintage japonês: o título vai em inglês (igual à lista) e o nome
       // ORIGINAL aparece logo abaixo — é aqui, ao abrir o set, que ele importa.
       const nomeExibido = shared.setDisplayName(sample.setId, sample.set, sample.language);
-      const nomeOriginal = shared.setOriginalName(sample.setId, sample.set, sample.language);
+      const nomeOriginal = shared.setOriginalName(sample.setId, sample.set, sample.language, sample.setJp);
       const logo = sample.setLogo
         ? localizedImg(sample.setLogo, { alt: nomeExibido, className: "set-logo", priority: "high" })
         : `<span class="set-logo-placeholder">${escapeHtml(nomeExibido)}</span>`;

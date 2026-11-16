@@ -449,12 +449,14 @@
   --accent: #4a6654; --accent-dark: #3f5a49; --accent-rgb: 74, 102, 84;
   --accent-soft: rgba(74, 102, 84, 0.1); --on-accent: #ffffff;
 }
-/* Final Fantasy TCG: AZUL-CRISTAL, os cristais da série (11/11/2026). O
-   azul claro com texto escuro no escuro (10.9:1); um índigo fechado com texto
-   branco no claro (6.6:1), entre o azul do Gundam e o violeta do Lorcana. */
+/* Final Fantasy TCG: AZUL-CRISTAL, os cristais da série (11/11/2026; tom
+   definido em 14/11: o #93c5fd de antes ficava a 60 do índigo do Shadowverse,
+   abaixo da régua de 65 entre franquias). O azul claro com texto escuro no
+   escuro (12.9:1); um índigo fechado com texto branco no claro (6.6:1), entre
+   o azul do Gundam e o violeta do Lorcana. */
 [data-game-accent="fftcg"] {
-  --accent: #93c5fd; --accent-dark: #7fb3f5; --accent-rgb: 147, 197, 253;
-  --accent-soft: rgba(147, 197, 253, 0.16); --on-accent: #0a0c10;
+  --accent: #a5d8ff; --accent-dark: #8ccaf8; --accent-rgb: 165, 216, 255;
+  --accent-soft: rgba(165, 216, 255, 0.16); --on-accent: #0a0c10;
 }
 [data-theme="light"][data-game-accent="fftcg"],
 [data-theme="light"] [data-game-accent="fftcg"] {
@@ -462,7 +464,7 @@
   --accent-soft: rgba(58, 91, 160, 0.1); --on-accent: #ffffff;
 }
 /* hololive OFFICIAL CARD GAME: CIANO, o azul-céu da marca (13/11/2026,
-   proposta). Texto escuro no escuro (12.1:1); petróleo com branco no claro
+   definida em 14/11). Texto escuro no escuro (12.1:1); petróleo com branco no claro
    (5.4:1). */
 [data-game-accent="hololive"] {
   --accent: #38d6f5; --accent-dark: #1fc3e4; --accent-rgb: 56, 214, 245;
@@ -485,8 +487,8 @@
   --accent: #4338ca; --accent-dark: #3730a3; --accent-rgb: 67, 56, 202;
   --accent-soft: rgba(67, 56, 202, 0.1); --on-accent: #ffffff;
 }
-/* Grand Archive TCG: LILÁS (13/11/2026, proposta: o logo oficial é
-   branco e não dá cor). Lilás claro com texto escuro no escuro (11.9:1); um
+/* Grand Archive TCG: LILÁS (13/11/2026, definida em 14/11: o logo oficial
+   é branco e não dá cor). Lilás claro com texto escuro no escuro (11.9:1); um
    roxo-orquídea fechado com texto branco no claro (5.5:1). */
 [data-game-accent="grandarchive"] {
   --accent: #f0abfc; --accent-dark: #e596f5; --accent-rgb: 240, 171, 252;
@@ -5109,13 +5111,6 @@ a.hub-tile:active::after { opacity: 1; }
    (.vt-eixo) é irmã da lista e precisa da MESMA grade pra cair em cima das
    barras. */
 .vt-simbolos { position: absolute; width: 0; height: 0; overflow: hidden; }
-.vt-numeros {
-  margin: 10px 0 0;
-  color: var(--sepia);
-  font-size: 14px;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-}
 
 /* Filtros numa linha só: marca e ordem à esquerda, a visualização no canto
    direito. Os dois campos têm a mesma cara (rótulo fora, caixa de 44px). */
@@ -9485,6 +9480,11 @@ html:not([lang^="pt"]) .sx-sobre[data-idioma="pt"] { visibility: hidden; }
 .cmdk-scan { display: inline-flex; align-items: center; justify-content: center; width: auto; max-width: 100%; min-height: 48px; margin: 0 auto; padding: 0 26px; gap: 10px; border-radius: 999px; background: var(--accent); color: var(--on-accent); font-size: 16px; font-weight: 800; }
 .cmdk-scan:hover { background: var(--accent-dark); }
 .cmdk-scan svg { width: 22px; height: 22px; flex: none; }
+/* Aviso de beta logo abaixo do scanner (2026-11-14): a leitura ainda erra ou
+   não acha algumas cartas, e quem toca no botão grande precisa saber disso
+   ANTES, pra não achar que o app quebrou. Texto pequeno e apagado, na largura
+   do botão, pra não competir com ele nem com o convite de cima. */
+.cmdk-scan-beta { max-width: 300px; margin: 10px auto 0; font-size: 12.5px; line-height: 1.4; color: var(--subtle); text-wrap: balance; }
 .cmdk-hint { margin: 0; padding: 8px 14px; border-top: 1px solid var(--line); font-size: 11.5px; color: var(--subtle); }
 /* Celular: a paleta vira uma TELA. Sem moldura, sem sombra, ocupando a
    viewport inteira (dvh acompanha a barra do navegador que some e volta), com

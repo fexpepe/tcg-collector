@@ -21,7 +21,10 @@
 //      escuro do site da FFG e sumiam no chip branco FIXO do .set-art. Todo
 //      logo ganha uma sombra escura suave embutida (a silhueta do próprio
 //      logo, desfocada) — igual em todos, pra nenhum set destoar do vizinho.
-// Saída: data/swu/set-logos/<setId>.webp, até 600px de largura.
+// Saída: data/swu/set-logos/<setId>.webp no padrão dos logos (docs/LOGOS.md,
+// desde 2026-11-14): cabe em 960×320, passa pelo normalizador (recorte, véu,
+// menor peso). Até ali era até 600 px de largura, macio na vitrine do topo; a
+// sombra e o contorno crescem na mesma proporção, pra ter o mesmo peso no chip.
 //
 // Precisa do sharp FORA do repositório (o site não tem package.json), como o
 // mirror-r2.mjs: SHARP_DIR aponta a pasta do pacote.
@@ -34,6 +37,8 @@ import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { fetchRetry, winSafeName } from "./lib/sync-common.mjs";
+import { PADRAO } from "./lib/logo-padrao.mjs";
+import { logoNoPadrao } from "./lib/logo-espelho.mjs";
 
 const ROOT = new URL("../", import.meta.url);
 const OUT = new URL("data/swu/set-logos/", ROOT);
@@ -41,7 +46,11 @@ const CMS = "https://admin.starwarsunlimited.com/api";
 const TCGCSV_GROUPS = "https://tcgcsv.com/tcgplayer/79/groups";
 const UA = { "User-Agent": "Sleevu (sleevu.app) set logo mirror" };
 const FORCE = process.argv.includes("--force");
-const LARGURA = 600, SOMBRA = 3; // px de desfoque da sombra (e da folga em volta)
+// Sombra e contorno foram afinados (2026-09-30) num logo de 600 px de largura:
+// 3 px de desfoque/folga e 2 px de contorno. No teto do padrão eles escalam
+// junto (k = largura final ÷ 600), pra ficarem do mesmo tamanho no chip.
+const LARGURA_REF = 600, SOMBRA_REF = 3, CONTORNO_REF = 2;
+const [TETO_L, TETO_A] = PADRAO.set.teto;
 
 const dir = process.env.SHARP_DIR;
 if (!dir) { console.log("mirror-swu-set-logos: sem SHARP_DIR (pasta do pacote sharp) — ver o cabeçalho."); process.exit(0); }
@@ -62,7 +71,7 @@ async function logoDoProduto(p) {
   return originais.find((u) => /_EN_/i.test(u)) || originais[0] || "";
 }
 
-// PNG oficial -> webp recortado, sem véu, com sombra embutida.
+// PNG oficial -> webp recortado, sem véu, com sombra embutida, no padrão.
 async function trata(buf) {
   const { data, info } = await sharp(buf).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
   const { width: w, height: h } = info;
@@ -77,9 +86,16 @@ async function trata(buf) {
   if (x1 < 0) throw new Error("logo vazio");
   const left = Math.max(0, x0 - 2), top = Math.max(0, y0 - 2);
   const cw = Math.min(w, x1 + 3) - left, ch = Math.min(h, y1 + 3) - top;
-  const escala = Math.min(1, (LARGURA - 2 * SOMBRA) / cw);
+  // Cabe no teto do set com a folga da sombra (que depende da escala: duas
+  // passadas bastam, a folga é de poucos px).
+  let escala = Math.min(1, TETO_L / cw, TETO_A / ch), SOMBRA = SOMBRA_REF;
+  for (let i = 0; i < 2; i++) {
+    SOMBRA = Math.max(SOMBRA_REF, Math.round(SOMBRA_REF * (cw * escala) / LARGURA_REF));
+    escala = Math.min(1, (TETO_L - 2 * SOMBRA) / cw, (TETO_A - 2 * SOMBRA) / ch);
+  }
+  const k = Math.max(1, (cw * escala) / LARGURA_REF);
   const logo = await sharp(data, { raw: info }).extract({ left, top, width: cw, height: ch })
-    .resize({ width: Math.round(cw * escala) }).png().toBuffer();
+    .resize({ width: Math.round(cw * escala), kernel: "lanczos3" }).png().toBuffer();
   const meta = await sharp(logo).metadata();
   const lw = meta.width, lh = meta.height;
   const fw = lw + 2 * SOMBRA, fh = lh + 2 * SOMBRA;
@@ -94,7 +110,7 @@ async function trata(buf) {
     soma += 0.3 * la[i * 4] + 0.59 * la[i * 4 + 1] + 0.11 * la[i * 4 + 2]; n++;
   }
   const claro = n > 0 && soma / n >= 176;
-  const raio = claro ? 2 : 0, forca = claro ? 0.9 : 0.55;
+  const raio = claro ? Math.round(CONTORNO_REF * k) : 0, forca = claro ? 0.9 : 0.55;
   const alfa = (x, y) => (x >= 0 && y >= 0 && x < lw && y < lh ? la[(y * lw + x) * 4 + 3] : 0);
   const sil = Buffer.alloc(fw * fh * 4);
   for (let y = 0; y < fh; y++) {
@@ -113,8 +129,9 @@ async function trata(buf) {
     }
   }
   const sombra = await sharp(sil, { raw: { width: fw, height: fh, channels: 4 } })
-    .blur(claro ? 0.8 : SOMBRA / 2 + 0.5).png().toBuffer();
-  return sharp(sombra).composite([{ input: logo, left: SOMBRA, top: SOMBRA }]).webp({ quality: 90, alphaQuality: 100 }).toBuffer();
+    .blur(claro ? 0.8 * k : SOMBRA / 2 + 0.5).png().toBuffer();
+  const pronto = await sharp(sombra).composite([{ input: logo, left: SOMBRA, top: SOMBRA }]).png().toBuffer();
+  return logoNoPadrao(pronto, "set");
 }
 
 async function run() {

@@ -141,14 +141,49 @@ sem validação — mas com busca, valor e "tenho na coleção" funcionando.
 | Yu-Gi-Oh! | main 40–60 + extra 0–15 + side 0–15 | 3 | Extra derivado do `cardType` (Fusion/Synchro/Xyz/Link) |
 | Pokémon¹ | main 60 exato | 4 | energia básica isenta |
 | Magic¹ | main 60+ / side 15 · Commander 100 singleton | 4 | terreno básico isento; color identity |
-| Gundam / FAB / Riftbound | **⚠️ confirmar antes de codar** | — | — |
+| Gundam | main 50 + resource 10 (+ side 0–10 no melhor de 3) | 4 por número; recurso isento | máx. 2 cores |
+| Star Wars: Unlimited | Premier: leader 1 + base 1 + main 50+ + side 0–10 · Twin Suns: leader 2 + base 1 + main 80+ | 3 por título+subtítulo · Twin Suns singleton | — (aspecto fora só encarece) |
+| Flesh and Blood | CC: hero 1 + main 60+ + equipamento, pool ≤ 80 · Blitz: hero 1 + main 40, pool ≤ 52 | 3 por nome+pitch · Blitz singleton | — (classe do herói não está no catálogo) |
+| Riftbound | legend 1 + main 40 + rune 12 + battlefield 3 (distintos) + side 0–10 | 3 por nome; runa isenta; ≤ 3 Signature | domínios ⊆ Legend ("None" livre) |
+| Union Arena | main 50 (AP fora) | 4 por número; ≤ 4 Special, ≤ 4 Color, ≤ 4 Final | uma obra (`series`) |
+| Vanguard | main 50 + ride 4–5 (manual) + G 0–16 | 4 por nome; 16 gatilhos, ≤ 4 cura, ≤ 1 Over (Standard: ≤ 8 crítico/compra/Front) | Standard: uma nação ("Other" livre) · Premium: um clã |
+| Final Fantasy TCG | main 50 + LB 0–8 | 3 por número | — (elemento não restringe) |
+| Grand Archive | main 60+ + material 0–12 (singleton) + side 0–15 | 4 por nome; ≥ 1 campeão de nível 0 | — (elemento só no jogo) |
 
 ¹ depende da Fase 0.
 
-> ⚠️ **Não codar regra de cabeça.** Gundam, FAB e Riftbound são recentes e eu não
-> tenho certeza das listas oficiais (deck base/resource do Gundam, legalidade por
-> class/talent no FAB, runas do Riftbound). Confirmar na regra oficial e só então
-> escrever o pacote — até lá, modo livre.
+**Lote 1 (2026-11-14).** Gundam, Star Wars: Unlimited, Flesh and Blood,
+Riftbound, Union Arena, Vanguard, Final Fantasy e Grand Archive saíram do modo
+livre com as regras lidas na fonte oficial de cada um, no mesmo dia:
+
+| Jogo | Fonte | Versão lida |
+|---|---|---|
+| Gundam | gundam-gcg.com (Comprehensive Rules, BO3 Match Rules) | CR 1.10.0, 16/10/2026 |
+| Star Wars: Unlimited | starwarsunlimited.com (Comprehensive Rules) | v8.0, 08/07/2026 |
+| Flesh and Blood | rules.fabtcg.com (CR e Tournament Rules & Policy, seção 7) | arquivo de 05/11/2026 |
+| Riftbound | playriftbound.com (Core Rules e Tournament Rules) | 09/10/2026 |
+| Union Arena | unionarena-tcg.com (Rule Manual e Tournament Rules Manual) | 1.1 (30/08/2024) e 19/05/2025 |
+| Vanguard | en.cf-vanguard.com (CR, Deck Construction, Fighter's Rules) | CR 4.52 (20/03/2026); a 4.57 em inglês respondeu 404 |
+| Final Fantasy TCG | fftcg.square-enix-games.com (CR e floor rules) | CR 3.0 (12/03/2024); a 3.3 citada em guia de terceiros não foi achada |
+| Grand Archive | rules.gatcg.com e trg.gatcg.com (Standard Constructed) | 16/10/2026 |
+
+O que a regra pede e o catálogo não deixa conferir fica sem checagem (a
+validação só avisa, §5): classe e Legendary no FAB, Sentinel no Vanguard, o
+campeão escolhido do Riftbound ter a tag da Legend, a lista de banidas e
+restritas de todos, a rotação (Premier, Standard). "A mesma carta" muda por
+jogo — número (Gundam, Union Arena, FFTCG), nome (Riftbound, Vanguard, Grand
+Archive), nome+pitch (FAB), título+subtítulo (SWU) — e o nome sai pelo
+`nomeBase`, sem o que o TCGplayer pendura na impressão ("(Hyperspace)",
+"(Full Art)").
+
+**Próximo lote** (pesquisado em 14/11, regra conferida, falta só o pacote):
+hololive (oshi 1 + cheer 20 + deck 50, 4 por número), Shadowverse: Evolve
+(líder + 40–50 + evolve 0–10, 3 por nome EM CADA deck — pede limite por zona
+que some separado —, classe+Neutral ou universo), Weiß Schwarz (50, 4 por
+nome, ≤ 8 climax, Neo-Standard de um título só — falta o título no catálogo),
+Sorcery (avatar + atlas 30+ + spellbook 60+, limite por raridade), Duel Masters
+(40 + hiperespacial 0–8, 4 por nome) e DBS Masters (leader + 50–60 + Z-deck
+0–10, 4 por número com os tetos de [Dragon Ball], [Super Combo] e [Ultimate]).
 
 ---
 

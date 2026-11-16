@@ -34,6 +34,26 @@ test("número: total junto quando é só dígito, como impresso quando tem letra
   assert.equal(baseDoSlug({ name: "Pikachu", number: "4/102" }), "pikachu-4-102");
   assert.equal(baseDoSlug({ name: "Lightning Bolt", number: "161" }), "lightning-bolt-161");
   assert.equal(baseDoSlug({ name: "Sem Número" }), "sem-numero");
+  // Gundam Carddass: a TELA mostra só o número (numeração corrida, ver o
+  // cardCode), mas o endereço segue com o total, pra nenhum link mudar.
+  assert.equal(baseDoSlug({ id: "gcd-wd03-83", name: "Full Armor ZZ", number: "83", setTotal: 41, language: "ja" }), "full-armor-zz-83-41-jp");
+});
+
+test("Gundam Carddass: o 本弾 第3弾 passou de 42 pra 41 e todo endereço antigo acha a mesma carta", () => {
+  // Até 15/11/2026 a parte contava o No.124 (prêmio de sorteio, não carta da
+  // parte) e os endereços saíam com "-42". A borda leva o velho pro novo
+  // (cartaParecida); aqui, com as 41 cartas de verdade do catálogo.
+  const t = readFileSync(join(raiz, "data/gcd/cards.js"), "utf8");
+  const cartas = JSON.parse(t.slice(t.indexOf("["), t.lastIndexOf("]") + 1)).filter((c) => c.setId === "gcd-wd03");
+  assert.equal(cartas.length, 41);
+  assert.ok(cartas.every((c) => c.setTotal === 41));
+  const slugs = slugsDasCartas(cartas);
+  const antigos = slugsDasCartas(cartas.map((c) => ({ ...c, setTotal: 42 })));
+  for (const c of cartas) {
+    const velho = antigos.get(c.id);
+    assert.notEqual(velho, slugs.get(c.id), c.id);
+    assert.equal(cartaParecida(cartas, slugs, velho), slugs.get(c.id), `${velho} não levou à ${c.id}`);
+  }
 });
 
 test("idioma: nada pro inglês, sufixo pros outros (jp, não ja; zh pros dois chineses)", () => {

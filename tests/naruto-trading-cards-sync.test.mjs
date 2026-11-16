@@ -95,7 +95,7 @@ test("carta: vintage, japonesa, sem imagem, com o nome em inglês", () => {
   assert.deepEqual(cards[0], {
     id: "ntc-ecc1-1", name: "Naruto Uzumaki", nameJp: "うずまきナルト", set: "エッチングカードコレクション", setId: "ntc-ecc1",
     number: "1", setTotal: 45, setReleaseDate: "2004", rarity: "Normal", artist: "", language: "ja", image: "",
-    variants: ["Normal"], setLogo: "/assets/games/game_naruto.webp", vintage: true
+    variants: ["Normal"], setLogo: "/assets/games/game_naruto-v2.webp", vintage: true
   });
   for (const c of cards) {
     assert.ok(c.id.startsWith("ntc-"), c.id);

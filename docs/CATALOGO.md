@@ -99,6 +99,11 @@ que ordem e como saber que terminou**.
      é ela que separa os sets fora da página do jogo ("Narutimate Card Battle —
      Vol. 1"); dentro da seção da série, o `group<Jogo>Sets` tira o prefixo
      (`groupMbcSets`, `groupNarutoDataCarddass`);
+   - no Naruto vintage (`naruto`, desde 2026-11-14) o `VINTAGE_SET_EN` é também
+     o nome do CATÁLOGO: o `translate-naruto-names.mjs` grava o inglês no `set`
+     e o japonês no `setJp`, como faz com o nome da carta. Então a tradução de
+     set novo ali é chave de endereço e cai nas mesmas regras deste contrato
+     (única no jogo, sem a linha na frente) — `tests/naruto-sets-en.test.mjs`;
    - quem trava: `tests/nome-do-set.test.mjs`, nos catálogos vintage (o nome
      sai dos nossos syncs) e nos da família TCGCSV (o nome gravado tem de ser o
      que o `nomeDoSet` devolve). Pokémon, Magic e Lorcana usam o nome oficial

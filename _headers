@@ -110,7 +110,12 @@
 # Um bloco por arquivo porque o _headers não casa "tudo que não é HTML". O
 # tests/headers-link.test.mjs barra arquivo novo na raiz sem o bloco dele.
 # A cópia que a borda JÁ guardou não se corrige com o deploy (o 304 não tira
-# header): precisa de uma purga do cache da zona, uma vez.
+# header): precisa de uma purga do cache da zona, uma vez, OU de mudar o
+# conteúdo do arquivo. Com o conteúdo novo o ETag muda, a revalidação da borda
+# volta 200 em vez de 304 e a cópia é trocada com o header novo, em todo data
+# center. Em 16/11/2026 o /favicon.svg, o /icon.svg e o /robots.txt ainda
+# saíam de Chicago com o preload do styles.e9f506da.css (404) e foram
+# corrigidos assim, com um comentário em cada um.
 /favicon.svg
   ! Link
 /favicon.ico
@@ -138,6 +143,12 @@
 /sitemap*
   ! Link
 /.well-known/*
+  ! Link
+# O /llms.txt nasce no deploy (scripts/seo-estatico.mjs), então o teste dos
+# arquivos da raiz não o via e ele ficou sem bloco: em 15/11/2026 saía com o
+# preload do CSS da leva do dia, e ia apontar pra um 404 na próxima troca de
+# CSS, como o /robots.txt (que nesse dia ainda mandava o styles.e9f506da.css).
+/llms.txt
   ! Link
 
 # Catálogo (data/*): sem regra, caía no default do Pages (max-age=0,

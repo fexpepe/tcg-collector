@@ -1,6 +1,6 @@
 {
  "source": "https://hunterxhunter.fandom.com/wiki/Hunter_%C3%97_Hunter_Carddass_Collections",
- "updatedAt": "2026-07-23",
+ "updatedAt": "2026-11-14",
  "sets": [
   {
    "code": "p1",
@@ -3199,6 +3199,103 @@
      ],
      "file": "Hyper_battle_jump_festa_2000_gon_card_s-j1.png",
      "img": "https://static.wikia.nocookie.net/hunterxhunter/images/2/2c/Hyper_battle_jump_festa_2000_gon_card_s-j1.png"
+    }
+   ]
+  },
+  {
+   "code": "jf01",
+   "name": "ジャンプフェスタ2001エディション パック",
+   "cards": [
+    {
+     "set": "jf01",
+     "num": "C-J1",
+     "type": "Character",
+     "rarity": "Promo",
+     "chars": [
+      "Gon Freecss"
+     ],
+     "file": "Jump_Festa_Edition_2001_Hyper_Battle_Pack_Card_1.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/e/ed/Jump_Festa_Edition_2001_Hyper_Battle_Pack_Card_1.png"
+    },
+    {
+     "set": "jf01",
+     "num": "C-J2",
+     "type": "Character",
+     "rarity": "Promo",
+     "chars": [
+      "Kurapika"
+     ],
+     "file": "Jump_Festa_Edition_2001_Hyper_Battle_Pack_Card_2.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/d/d6/Jump_Festa_Edition_2001_Hyper_Battle_Pack_Card_2.png"
+    },
+    {
+     "set": "jf01",
+     "num": "C-J3",
+     "type": "Character",
+     "rarity": "Promo",
+     "chars": [
+      "Leorio Paradinight"
+     ],
+     "file": "Jump_Festa_Edition_2001_Hyper_Battle_Pack_Card_3.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/b/b0/Jump_Festa_Edition_2001_Hyper_Battle_Pack_Card_3.png"
+    },
+    {
+     "set": "jf01",
+     "num": "C-J4",
+     "type": "Character",
+     "rarity": "Promo",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Jump_Festa_Edition_2001_Hyper_Battle_Pack_Card_4.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/1/11/Jump_Festa_Edition_2001_Hyper_Battle_Pack_Card_4.png"
+    },
+    {
+     "set": "jf01",
+     "num": "C-J5",
+     "type": "Character",
+     "rarity": "Promo",
+     "chars": [
+      "Hisoka Morow"
+     ],
+     "file": "Jump_Festa_Edition_2001_Hyper_Battle_Pack_Card_5.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/2/20/Jump_Festa_Edition_2001_Hyper_Battle_Pack_Card_5.png"
+    },
+    {
+     "set": "jf01",
+     "num": "S-J2",
+     "type": "Hunter",
+     "rarity": "Promo",
+     "chars": [
+      "Kurapika"
+     ],
+     "file": "Jump_Festa_Edition_2001_Hyper_Battle_Pack_Card_6.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/0/06/Jump_Festa_Edition_2001_Hyper_Battle_Pack_Card_6.png"
+    },
+    {
+     "set": "jf01",
+     "num": "S-J3",
+     "type": "Hunter",
+     "rarity": "Promo",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Jump_Festa_Edition_2001_Hyper_Battle_Pack_Card_7.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/4/40/Jump_Festa_Edition_2001_Hyper_Battle_Pack_Card_7.png"
+    },
+    {
+     "set": "jf01",
+     "num": "S-J4",
+     "type": "Hunter",
+     "rarity": "Promo",
+     "chars": [
+      "Leorio Paradinight",
+      "Killua Zoldyck",
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Jump_Festa_Edition_2001_Hyper_Battle_Pack_Card_8.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/a/ab/Jump_Festa_Edition_2001_Hyper_Battle_Pack_Card_8.png"
     }
    ]
   },

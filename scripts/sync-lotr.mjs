@@ -336,7 +336,7 @@ async function build(snapshot) {
         // deixava a vitrine de Sets crua. Como no Naruto vintage, todo set
         // leva o logo do JOGO (pedido do Fernando, 2026-10-27); o nome do set
         // segue embaixo do tile.
-        setLogo: "/assets/games/game_lotr.webp",
+        setLogo: "/assets/games/game_lotr-v2.webp",
         vintage: true,
         ...(c.culture ? { culture: c.culture } : {}),
         ...(c.type ? { cardType: c.type } : {})

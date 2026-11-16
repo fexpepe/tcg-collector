@@ -90,7 +90,7 @@ const SNAP = new URL("data/vintage/naruto-trading-cards.json", ROOT);
 const NO_FETCH = process.argv.includes("--no-fetch");
 // Nenhum dos produtos tem logo próprio recortado: vale o do Naruto, a marca
 // impressa em todos (a exceção dos vintage na política de logo, contrato 3).
-const LOGO = "/assets/games/game_naruto.webp";
+const LOGO = "/assets/games/game_naruto-v2.webp";
 
 // Os produtos, na ordem de lançamento. Nome sem "NARUTO-ナルト-" na frente
 // (contrato 7); o inglês de exibição mora no src/nomes-sets.js. `romaji`: a

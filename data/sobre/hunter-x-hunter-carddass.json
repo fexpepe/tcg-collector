@@ -77,6 +77,10 @@
       "pt": "Parte 3 estreia as cartas de Nen.",
       "en": "Part 3 introduces Nen cards.",
       "es": "La Parte 3 estrena las cartas de Nen." } },
+    { "data": "2000-12", "set": "hxh-hb-jf01", "texto": {
+      "pt": "Jump Festa 2001: pacote de oito cartas vendido no evento.",
+      "en": "Jump Festa 2001: an eight-card pack sold at the event.",
+      "es": "Jump Festa 2001: sobre de ocho cartas vendido en el evento." } },
     { "data": "2001-01", "set": "hxh-hb-p4", "texto": {
       "pt": "Parte 4: a Trupe Fantasma e a primeira holo escondida.",
       "en": "Part 4: the Phantom Troupe and the first hidden holo.",

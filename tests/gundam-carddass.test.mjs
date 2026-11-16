@@ -8,7 +8,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import {
   SETS, SERIES, ID_PREFIX, parseAnimeCollection, assignIds, numeroArabico, nameEn,
-  setName, setNameEn, setIdOf, scanDe, IMG, cartasDaLinha, corrige, CORRECOES
+  setName, setNameEn, setIdOf, scanDe, IMG, cartasDaLinha, corrige, CORRECOES, PROMOS, cartasDasPromos
 } from "../scripts/sync-gundam-carddass.mjs";
 import { slugify } from "../functions/_lib/slug-carta.js";
 import { chaveBase } from "../scripts/lib/img-mirror.mjs";
@@ -17,6 +17,9 @@ const ler = (p) => readFileSync(new URL(`../${p}`, import.meta.url), "utf8");
 const SNAP = JSON.parse(ler("data/vintage/gundam-carddass.json"));
 const NOMES = JSON.parse(ler("scripts/data/gundam-carddass-nomes.json"));
 const NOMES_EN = JSON.parse(ler("scripts/data/gundam-carddass-nomes-en.json"));
+const MERGES = JSON.parse(ler("data/card-id-merges.json"));
+// Cartas do snapshot que viram carta: a 2ª face (`face: 2`) é a mesma carta.
+const CARTAS_DO_SNAP = SNAP.sets.flatMap((s) => s.cards.filter((c) => c.face !== 2));
 
 // Recorte fiel da página de uma parte: o bloco da EMBALAGEM (que também tem
 // "bc_cadre_numero", mas abre com afficher_detail_pack) e três cartas.
@@ -53,29 +56,36 @@ test("número em kanji da 戦国伝 vira arábico; o resto passa como veio", () 
 });
 
 test("id: linha + série e parte + número impresso; repetido ganha sufixo e o id GRUDA no src", () => {
-  const pagina = [{ src: 26180, num: "500", rar: "Double Prism", dir: "167/625" }, { src: 26181, num: "500", rar: "Prism", dir: "167/625" }, { src: 26182, num: "501", rar: "Normal", dir: "167/625" }];
-  const primeira = assignIds("wd13", pagina, []);
-  assert.deepEqual(primeira.map((c) => c.id), ["gcd-wd13-500", "gcd-wd13-500b", "gcd-wd13-501"]);
+  // o No.345 do 外伝 第8弾 saiu com dois padrões de prisma: duas cartas na mão
+  const pagina = [{ src: 27029, num: "345", rar: "Prism Pixel", dir: "7/642" }, { src: 27030, num: "345", rar: "Prism Pixel", dir: "7/642" }, { src: 27031, num: "346", rar: "Normal", dir: "7/642" }];
+  const primeira = assignIds("gd08", pagina, []);
+  assert.deepEqual(primeira.map((c) => c.id), ["gcd-gd08-345", "gcd-gd08-345b", "gcd-gd08-346"]);
   // a fonte reordena a página e corrige um número: nenhum id muda
-  const depois = assignIds("wd13", [pagina[2], { ...pagina[1], num: "500" }, { ...pagina[0], rar: "Prism" }], primeira);
-  assert.deepEqual(depois.map((c) => [c.src, c.id]), [[26182, "gcd-wd13-501"], [26181, "gcd-wd13-500b"], [26180, "gcd-wd13-500"]]);
+  const depois = assignIds("gd08", [pagina[2], { ...pagina[1], num: "345" }, { ...pagina[0], rar: "Prism" }], primeira);
+  assert.deepEqual(depois.map((c) => [c.src, c.id]), [[27031, "gcd-gd08-346"], [27030, "gcd-gd08-345b"], [27029, "gcd-gd08-345"]]);
   // carta que sumiu da fonte continua; carta nova não toma id já usado
-  const some = assignIds("wd13", [pagina[0], { src: 99999, num: "501", rar: "Normal", dir: "167/625" }], primeira);
-  assert.deepEqual(some.map((c) => c.id), ["gcd-wd13-500", "gcd-wd13-501b", "gcd-wd13-500b", "gcd-wd13-501"]);
+  const some = assignIds("gd08", [pagina[0], { src: 99999, num: "346", rar: "Normal", dir: "7/642" }], primeira);
+  assert.deepEqual(some.map((c) => c.id), ["gcd-gd08-345", "gcd-gd08-346b", "gcd-gd08-345b", "gcd-gd08-346"]);
 });
 
 test("snapshot: ids únicos, com o prefixo da linha e o número da carta", () => {
   const ids = new Set();
+  let entradas = 0;
   for (const s of SNAP.sets) {
     assert.ok(SETS.some((d) => d.code === s.code && d.ac), `${s.code} não está no SETS`);
     for (const c of s.cards) {
+      entradas++;
+      // a 2ª face divide o id com a carta do mesmo número (ver o teste da No.500)
+      if (c.face === 2) { assert.ok(s.cards.some((o) => o !== c && o.id === c.id && o.num === c.num && !o.face), c.id); continue; }
       assert.ok(!ids.has(c.id), `id repetido: ${c.id}`);
       ids.add(c.id);
       assert.match(c.id, new RegExp(`^${ID_PREFIX}${s.code}-${c.num.toLowerCase()}[b-z]?$`), c.id);
       assert.ok(Number.isInteger(c.src) && /^\d+\/\d+$/.test(c.dir), c.id);
     }
   }
-  assert.ok(ids.size >= 1475, `snapshot encolheu: ${ids.size}`);
+  // 1475 entradas da fonte; 1474 cartas, porque a No.500 tem duas faces
+  assert.ok(entradas >= 1475, `snapshot encolheu: ${entradas}`);
+  assert.ok(ids.size >= 1474, `snapshot encolheu: ${ids.size} cartas`);
 });
 
 test("set: a série abre o nome sem o SD da marca, e nenhum nome engole outro", () => {
@@ -111,6 +121,7 @@ test("nome em inglês dos sets (src/nomes-sets.js) é o setNameEn do sync, e só
   const fonte = ler("src/nomes-sets.js");
   const noArquivo = Object.fromEntries([...fonte.matchAll(/^\s*"(gcd-[a-z0-9]+)": ("(?:[^"\\]|\\.)*"),$/gm)].map((m) => [m[1], JSON.parse(m[2])]));
   const esperado = Object.fromEntries(SNAP.sets.map((s) => [setIdOf(s.code), setNameEn(SETS.find((d) => d.code === s.code))]));
+  esperado[setIdOf("wdp")] = setNameEn(SETS.find((d) => d.code === "wdp")); // as PROMOS, que não vêm do snapshot
   assert.deepEqual(noArquivo, esperado);
   // o agrupador da página de Sets tira o prefixo da série que o sync põe
   const app = ler("src/app.js");
@@ -165,12 +176,69 @@ test("cartas: nome transcrito (EN quando o glossário cobre), número, raridade 
   assert.equal(c.vintageLine, "wd"); // a série, como no dbc
 });
 
-test("total oficial vale onde a fonte tem buraco (o No.124 do 本弾 第3弾)", () => {
+test("本弾 第3弾: 41 cartas (No.83–123); o No.124 é prêmio de sorteio, nas promos", () => {
+  // Até 15/11/2026 o set dizia 42 (o 80storage) e "faltava o No.124". O
+  // dream.uijin e o manganokura: 1〜10弾 com 41 cartas, e o No.124 é prêmio
+  // da Comic BomBom, fora de pacote.
   const wd03 = SNAP.sets.find((s) => s.code === "wd03");
-  assert.ok(!wd03.cards.some((c) => c.num === "124"), "a fonte passou a ter o No.124: tire o `total` do wd03 no SETS");
+  assert.equal(SETS.find((s) => s.code === "wd03").total, undefined);
   const cartas = cartasDaLinha({ sets: [wd03] }, {}, { phrases: {}, atoms: {} });
   assert.equal(cartas.length, 41);
+  assert.ok(cartas.every((c) => c.setTotal === 41));
+  assert.deepEqual([cartas[0].number, cartas[40].number], ["83", "123"]);
+  assert.ok(PROMOS.some((p) => p.num === "124"));
+});
+
+test("No.500 do 本弾 第13弾: UMA carta em W prism, com as duas camadas no snapshot", () => {
+  const wd13 = SNAP.sets.find((s) => s.code === "wd13");
+  const faces = wd13.cards.filter((c) => c.num === "500");
+  assert.deepEqual(faces.map((c) => [c.src, c.id, c.face || 1]), [[26180, "gcd-wd13-500", 1], [26181, "gcd-wd13-500", 2]]);
+  const cartas = cartasDaLinha({ sets: [wd13] }, {}, { phrases: {}, atoms: {} });
+  assert.equal(cartas.length, 42);
+  assert.equal(cartas.filter((c) => c.number === "500").length, 1);
   assert.equal(cartas[0].setTotal, 42);
+  // 6 prismas (a No.500 em W prism entre elas) e 36 comuns, como o 11〜13弾
+  // inteiro: a ガンマスター (No.502) é prisma, e a fonte dizia Regular
+  assert.equal(cartas.filter((c) => c.rarity !== "Normal").length, 6);
+  assert.equal(cartas.find((c) => c.number === "502").rarity, "Prism");
+  // a camada de cima é a imagem da carta
+  assert.match(cartas.find((c) => c.number === "500").image, /h3000_26180_carte/);
+  // a 500b, publicada até 15/11/2026, foi juntada na 500 e não volta
+  assert.equal(MERGES.cards["gcd-wd13-500b"], "gcd-wd13-500");
+  assert.deepEqual(CORRECOES[26181], { face: 2 });
+  // a fonte devolve as duas faces: a 2ª leva o id da 1ª, com ou sem snapshot
+  const pagina = [{ src: 26180, num: "500", rar: "Double Prism", dir: "167/625" }, { src: 26181, num: "500", rar: "Prism", dir: "167/625" }];
+  const doZero = assignIds("wd13", corrige(pagina), []);
+  assert.deepEqual(doZero.map((c) => [c.id, c.face || 1]), [["gcd-wd13-500", 1], ["gcd-wd13-500", 2]]);
+  const comVelho = assignIds("wd13", corrige(pagina), [{ id: "gcd-wd13-500", src: 26180, num: "500" }, { id: "gcd-wd13-500b", src: 26181, num: "500" }]);
+  assert.deepEqual(comVelho.map((c) => [c.id, c.face || 1]), [["gcd-wd13-500", 1], ["gcd-wd13-500", 2]]);
+  // fonte fora do ar: a 500b velha do snapshot não volta como carta
+  assert.deepEqual(assignIds("wd13", [], [{ id: "gcd-wd13-500", src: 26180, num: "500" }, { id: "gcd-wd13-500b", src: 26181, num: "500" }]).map((c) => c.id), ["gcd-wd13-500"]);
+});
+
+test("promos do 本弾: os três prêmios da Comic BomBom, com o nome impresso e sem número inventado", () => {
+  const cartas = cartasDasPromos();
+  assert.deepEqual(cartas.map((c) => [c.id, c.number, c.name]), [
+    // o No.0 imprime três unidades, uma por linha ("武者3人" era o apelido do checklist)
+    ["gcd-wdp-0", "0", "武者ガンダムMK-II／武者ZG／武者ガンダム"],
+    ["gcd-wdp-124", "124", "Gundam Team"],
+    ["gcd-wdp-bb100", "", "武者五人衆"] // a da edição 100 da revista não tem número; 五, como impresso
+  ]);
+  for (const c of cartas) {
+    assert.equal(c.setId, "gcd-wdp");
+    assert.equal(c.set, "本弾 コミックボンボン懸賞");
+    assert.equal(c.setTotal, 3);
+    assert.equal(c.setReleaseDate, ""); // nenhuma fonte dá o ano do sorteio
+    // nenhuma fonte tem scan: a imagem é a curada (assets/cards/gcd/, procedência no README de lá)
+    assert.equal(c.image, `/assets/cards/gcd/${c.id}.webp`);
+    assert.ok(readFileSync(new URL(`..${c.image}`, import.meta.url)).length > 10000, c.image);
+    assert.equal(c.vintageLine, "wd");
+    assert.ok(c.id.startsWith(ID_PREFIX) && c.vintage === true);
+  }
+  assert.equal(cartas[1].nameJp, "ガンダムチーム");
+  // nenhum id de promo colide com carta de parte
+  const ids = new Set(CARTAS_DO_SNAP.map((c) => c.id));
+  assert.ok(cartas.every((c) => !ids.has(c.id)));
 });
 
 test("erros da fonte: scan repetido sai, e o número impresso vence o da página", () => {
@@ -216,7 +284,8 @@ test("glossário EN: só nome que existe nas cartas, sem valor vazio", () => {
 test("jogo próprio: o catálogo mora em data/gcd/ e nenhuma carta gcd- fica no do Gundam Card Game", () => {
   const cartas = (jogo) => { const t = ler(`data/${jogo}/cards.js`); return JSON.parse(t.slice(t.indexOf("["), t.lastIndexOf("]") + 1)); };
   const gcd = cartas("gcd");
-  assert.equal(gcd.length, SNAP.sets.reduce((n, s) => n + s.cards.length, 0));
+  assert.equal(gcd.length, CARTAS_DO_SNAP.length + PROMOS.length);
+  assert.ok(!gcd.some((c) => c.id === "gcd-wd13-500b"), "a 500b foi juntada na 500");
   assert.ok(gcd.every((c) => c.id.startsWith(ID_PREFIX) && c.vintage === true));
   assert.equal(cartas("gundam").filter((c) => String(c.id).startsWith(ID_PREFIX)).length, 0);
   // e o sync do TCGCSV não as preserva de volta

@@ -417,7 +417,7 @@ async function build(snapshot) {
         // deixavam a vitrine de Sets crua. Como no LOTR, no WoW e no Naruto,
         // todo set leva o logo do JOGO (pedido do Fernando, 2026-11-02); o
         // nome do set segue embaixo do tile.
-        setLogo: "/assets/games/game_dbz.webp",
+        setLogo: "/assets/games/game_dbz-v2.webp",
         vintage: true
       });
     }

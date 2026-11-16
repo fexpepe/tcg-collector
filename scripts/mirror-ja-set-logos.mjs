@@ -22,15 +22,17 @@
 // mirror-set-logos.mjs, que roda logo antes — a diferença é que lá a URL remota
 // existe e aqui ela não existe em lugar nenhum.
 //
-// Rodar LOCAL (rede aberta) e COMMITAR os PNGs novos.
+// Grava no padrão dos logos (docs/LOGOS.md, desde 2026-11-14): WebP recortado
+// na tinta, sem véu, no teto de 960×320. Precisa do sharp (SHARP_DIR) pra
+// baixar; o carimbo (--no-fetch) não precisa.
+//
+// Rodar LOCAL (rede aberta) e COMMITAR os arquivos novos.
+//   SHARP_DIR=<…>/node_modules/sharp node scripts/mirror-ja-set-logos.mjs [--force]
 import { readFile, writeFile, mkdir, readdir, rm } from "node:fs/promises";
 import { existsSync } from "node:fs";
-import { execFile } from "node:child_process";
 import { fileURLToPath } from "node:url";
-import { promisify } from "node:util";
-import { mapLimit, sleep } from "./lib/sync-common.mjs";
-
-const run = promisify(execFile);
+import { mapLimit, sleep, fetchRetry } from "./lib/sync-common.mjs";
+import { sharpDoAmbiente, logoNoPadrao } from "./lib/logo-espelho.mjs";
 
 const ROOT = new URL("../", import.meta.url);
 const OUT = new URL("data/set-logos/ja/", ROOT);
@@ -39,10 +41,11 @@ const API = "https://archives.bulbagarden.net/w/api.php";
 const HEADERS = { "User-Agent": "Sleevu/1.0 (https://sleevu.app)" };
 const FORCE = process.argv.includes("--force");
 const NO_FETCH = process.argv.includes("--no-fetch");
-// Largura do thumbnail pedido ao MediaWiki. O tile de set desenha ~200px e o
-// hero de detalhe ~400px; 520 cobre os dois em tela 2x sem trazer o original
-// (alguns passam de 1800px de largura e 400 KB).
-const WIDTH = 520;
+// Largura do thumbnail pedido ao MediaWiki. Até 2026-11-14 era 520, e o logo
+// ficava borrado na vitrine do topo (385 px CSS no desktop pede 770 px de
+// arquivo em tela 2×). 1400 cobre o teto de 960 px mesmo depois do recorte da
+// margem; o original de até 1800 px e 400 KB vem reduzido pelo normalizador.
+const WIDTH = 1400;
 
 // setId (o mesmo da TCGdex/ja) -> arquivo no Bulbagarden Archives.
 // Ausente = não existe logo publicado lá. Conferido arquivo por arquivo: os
@@ -110,33 +113,14 @@ const FILES = {
   // fallback de nome existe pra evitar (ver o comentário do tile em app.js).
 };
 
-// O wiki só serve PNG (100 KB por logo, contra ~20 KB dos .webp que a TCGdex
-// entrega no en/pt). Convertemos com o ffmpeg quando ele existe na máquina; sem
-// ffmpeg o PNG fica como está — pesa mais, mas funciona, e o carimbo aceita as
-// duas extensões. Por isso todo lugar que toca arquivo passa por localFile().
+// O wiki só serve PNG; o arquivo daqui é sempre o WebP do normalizador. O
+// carimbo ainda aceita .png (era o que ficava quando faltava o ffmpeg, antes
+// do padrão), por isso todo lugar que toca arquivo passa por localFile().
 const EXTS = ["webp", "png"];
 const fileUrl = (setId, ext) => new URL(`${setId}.${ext}`, OUT);
 function localFile(setId) {
   const ext = EXTS.find((e) => existsSync(fileUrl(setId, e)));
   return ext ? { ext, url: fileUrl(setId, ext), webPath: `data/set-logos/ja/${setId}.${ext}` } : null;
-}
-
-let ffmpegOk = null;
-async function toWebp(setId) {
-  if (ffmpegOk === null) {
-    try { await run("ffmpeg", ["-version"]); ffmpegOk = true; }
-    catch { ffmpegOk = false; console.warn("  Aviso: ffmpeg ausente; guardando os logos em PNG (~5x maiores)."); }
-  }
-  if (!ffmpegOk) return;
-  const png = fileUrl(setId, "png");
-  try {
-    // yuva420p preserva o alfa (logo é recortado); q 82 é o mesmo patamar de
-    // qualidade dos .webp que a TCGdex serve nos outros idiomas.
-    await run("ffmpeg", ["-hide_banner", "-loglevel", "error", "-y", "-i", fileURLToPath(png),
-      "-c:v", "libwebp", "-compression_level", "6", "-q:v", "82", "-pix_fmt", "yuva420p",
-      fileURLToPath(fileUrl(setId, "webp"))]);
-    await rm(png, { force: true });
-  } catch { /* conversão falhou: fica o PNG */ }
 }
 
 // Resolve o thumburl de cada arquivo numa chamada só a cada 40 (limite da API).
@@ -173,20 +157,24 @@ async function resolveUrls(files) {
 async function download(setId, url) {
   if (!FORCE && localFile(setId)) return "skip";
   try {
-    const r = await fetch(url, { headers: HEADERS, signal: AbortSignal.timeout(30000) });
-    if (!r.ok) return "fail";
+    // Com retry: em 2026-11-14 o --force (43 de uma vez) levou recusa em 37.
+    const r = await fetchRetry(url, { headers: HEADERS, timeoutMs: 30000 });
     const buf = Buffer.from(await r.arrayBuffer());
     // Guarda contra página de erro: logo de set é PNG de verdade.
     if (buf.length < 200 || buf.slice(1, 4).toString("ascii") !== "PNG") return "fail";
+    const final = await logoNoPadrao(buf, "set");
+    if (!final) return "fail";
     await mkdir(OUT, { recursive: true });
-    await writeFile(fileUrl(setId, "png"), buf);
-    await toWebp(setId);
+    await writeFile(fileUrl(setId, "webp"), final);
+    await rm(fileUrl(setId, "png"), { force: true }); // PNG de antes do padrão
     await sleep(120);
     return "ok";
   } catch { return "fail"; }
 }
 
-if (!NO_FETCH) {
+if (!NO_FETCH && !(await sharpDoAmbiente())) {
+  console.log("Logos JP: sem SHARP_DIR — logo novo não entra fora do padrão (docs/LOGOS.md); só carimbando.");
+} else if (!NO_FETCH) {
   const pendentes = Object.entries(FILES).filter(([setId]) => FORCE || !localFile(setId));
   if (!pendentes.length) {
     console.log(`Logos JP: os ${Object.keys(FILES).length} já estão em data/set-logos/ja/.`);
@@ -194,7 +182,7 @@ if (!NO_FETCH) {
     console.log(`Logos JP: resolvendo ${pendentes.length} arquivo(s) no Bulbagarden Archives…`);
     const urls = await resolveUrls(pendentes.map(([, file]) => file));
     let ok = 0, skip = 0, fail = 0;
-    await mapLimit(pendentes, 4, async ([setId, file]) => {
+    await mapLimit(pendentes, 2, async ([setId, file]) => {
       const url = urls.get(file);
       if (!url) { fail++; console.warn(`  sem arquivo no wiki: ${setId} (${file})`); return; }
       const r = await download(setId, url);

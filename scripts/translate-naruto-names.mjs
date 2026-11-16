@@ -28,6 +28,7 @@
 // Roda com: node scripts/translate-naruto-names.mjs
 import { readFile, writeFile } from "node:fs/promises";
 import { readGlobalVar, writeGameCatalog } from "./lib/sync-common.mjs";
+import { traduzSet } from "./lib/naruto-nomes.mjs";
 
 const dataDir = new URL("../data/naruto/", import.meta.url);
 const mapFile = new URL("data/naruto-names-en.json", import.meta.url);
@@ -59,6 +60,21 @@ for (const c of cards) {
   traduzidas++;
 }
 
+// O NOME DO SET também (14/11/2026, decisão do Fernando): os 75 sets japoneses
+// apareciam em kanji no seletor de set, no tile e no modal, que mostram o
+// `set` cru — só a lista de Sets e a página do set usavam o nome de exibição.
+// Mesma régua das cartas: `set` vira o inglês do VINTAGE_SET_EN e o original
+// vai pro `setJp` (a busca e a página do set o mostram). O endereço do set sai
+// do nome, então ele muda: o registra-cartas-movidas, logo adiante no deploy,
+// compara com o catálogo publicado e grava o 301 em
+// data/sets-renomeados-auto.json (docs/CATALOGO.md, 3.2).
+const setsTraduzidos = new Set();
+const setsSemTraducao = new Set();
+for (const c of cards) {
+  if (traduzSet(c)) setsTraduzidos.add(c.setId);
+  else if (temCjk(c.setJp || c.set)) setsSemTraducao.add(`${c.setId} (${c.set})`);
+}
+
 // Reescreve o catálogo INTEIRO (cards + chunks + índices + search-index): sem
 // isso o nome novo ficaria só no cards.js e a busca/grade continuariam com o
 // japonês, porque elas leem os artefatos derivados.
@@ -69,3 +85,5 @@ await writeGameCatalog(dataDir, { cards, indexes, pricing, webDir: "data/naruto/
 const pendentes = [...semTraducao];
 console.log(`translate-naruto-names: ${traduzidas} cartas com nome em inglês; ${pendentes.length} nomes ainda sem tradução.`);
 if (pendentes.length) console.log(`  faltando (10 primeiros): ${pendentes.slice(0, 10).join(" · ")}`);
+console.log(`translate-naruto-names: ${setsTraduzidos.size} sets com nome em inglês; ${setsSemTraducao.size} sem tradução no VINTAGE_SET_EN.`);
+if (setsSemTraducao.size) console.log(`  sets faltando: ${[...setsSemTraducao].join(" · ")}`);

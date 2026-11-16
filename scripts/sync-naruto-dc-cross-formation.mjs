@@ -181,7 +181,7 @@ async function run() {
         language: "ja",
         image: curatedImg(cardId) || "",
         variants: ["Normal"],
-        setLogo: "/assets/games/game_naruto.webp",
+        setLogo: "/assets/games/game_naruto-v2.webp",
         vintage: true,
         vintageLine: lineTag[s.line]
       });
