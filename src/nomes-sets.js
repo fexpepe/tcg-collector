@@ -330,6 +330,13 @@
     "ss-rb01": "Reborn Saint Paradise — A Heroic Legend Revived!",
     "ss-rb02": "Reborn Saint Paradise — Clash! The Proud Assassins",
     "ss-rb03": "Reborn Saint Paradise — Assemble! Gold Saints",
+    // ---- Pokémon Carddass (jogo pcd, sync-pokemon-carddass.mjs): as quatro
+    // partes de 1996–97, パート1 a パート4 (o `en` do SETS do sync, travado no
+    // tests/pokemon-carddass.test.mjs).
+    "pcd-p1": "Part 1",
+    "pcd-p2": "Part 2",
+    "pcd-p3": "Part 3",
+    "pcd-p4": "Part 4",
     // ---- Gundam Carddass (linha gcd do jogo gundam, sync-gundam-carddass.mjs).
     // Com a SÉRIE na frente ("SD Gundam Gaiden Part 1"): fora da página da linha
     // "Part 1" seria de cinco séries; dentro da seção da série o
