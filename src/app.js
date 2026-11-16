@@ -347,11 +347,13 @@
     const head = document.querySelector(".page-head");
     const h1 = head && head.querySelector("h1");
     if (!h1) return;
-    h1.removeAttribute("data-i18n");
-    h1.textContent = serieDisplayName(serieParam);
+    // Só o título: o nome do jogo (.h1-jogo) fica na frente, como na lista.
+    const titulo = h1.querySelector(".h1-titulo") || h1;
+    titulo.removeAttribute("data-i18n");
+    titulo.textContent = serieDisplayName(serieParam);
     // Desktop: "Jogos › Pokémon › Scarlet & Violet" no lugar do "← Sets", que
     // fica só pro celular (o CSS esconde um ou outro).
-    trilhaDoJogo(h1.textContent);
+    trilhaDoJogo(titulo.textContent);
     if (!head.querySelector(".serie-back")) {
       const back = document.createElement("a");
       back.className = "serie-back";
@@ -374,8 +376,9 @@
     const head = document.querySelector(".page-head");
     const h1 = head && head.querySelector("h1");
     if (!h1) return;
-    h1.removeAttribute("data-i18n");
-    h1.innerHTML = `${escapeHtml(t(lineDef.titleKey))} <span class="line-tag">${escapeHtml(t(lineDef.tagKey || "hub.vintageTagShort"))}</span>`;
+    const titulo = h1.querySelector(".h1-titulo") || h1;
+    titulo.removeAttribute("data-i18n");
+    titulo.innerHTML = `${escapeHtml(t(lineDef.titleKey))} <span class="line-tag">${escapeHtml(t(lineDef.tagKey || "hub.vintageTagShort"))}</span>`;
     trilhaDoJogo(t(lineDef.titleKey));
     if (!head.querySelector(".serie-back")) {
       const back = document.createElement("a");

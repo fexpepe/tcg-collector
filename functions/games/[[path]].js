@@ -180,9 +180,11 @@ async function telaDoJogo(context, jogo) {
       .on('meta[property="og:description"]', atributo("content", meta.desc))
       .on('meta[name="twitter:title"]', atributo("content", meta.ogTitulo))
       .on('meta[name="twitter:description"]', atributo("content", meta.desc))
-      // O nome do jogo no H1 já no HTML (o CSS o desenha antes de "Sets"): sem
-      // esperar o JS, a tela não pisca de "Sets" pra "Star Wars: Unlimited Sets".
-      .on(".page-head h1", atributo("data-game", jogo.nome))
+      // O nome do jogo no H1 já no HTML, como TEXTO (2026-11-16): sem esperar o
+      // JS, a tela não pisca de "Sets" pra "Star Wars: Unlimited Sets", e o
+      // robô lê "Star Wars: Unlimited Sets" (até aqui era um data-game que o
+      // CSS desenhava, e o h1 de toda tela de jogo era "Sets" pra busca).
+      .on(".page-head h1 .h1-jogo", { element(el) { el.setInnerContent(jogo.nome); el.removeAttribute("hidden"); } })
       // O "Sobre" entra logo acima da contagem de sets: é o topo da tela, no
       // lugar do destaque do "Último set" (que o app.js não desenha nesses jogos).
       .on("section.results-header", { element(el) { if (meta.sobreHtml) el.before(meta.sobreHtml, { html: true }); } })

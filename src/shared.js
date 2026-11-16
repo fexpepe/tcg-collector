@@ -12851,8 +12851,10 @@
 
   // Prefixa o título (H1) das páginas de explorar (Sets, Pokédex, Artistas,
   // Treinadores, Todas as cartas) com o nome do jogo que está sendo visto
-  // (Pokémon/Lorcana), pra não confundir. Usa data-game + ::before (CSS), que
-  // sobrevive ao re-translate do data-i18n (que reescreve só o textContent).
+  // (Pokémon/Lorcana), pra não confundir. O nome vai no .h1-jogo, irmão do
+  // .h1-titulo (o do data-i18n): o re-translate reescreve só o título e o nome
+  // fica. Até 2026-11-16 era data-game + ::before, que o robô não lê como
+  // texto; o HTML antigo (sem o .h1-jogo) ainda cai nele.
   function initPageGameTitle() {
     const nav = document.querySelector(".page-nav[data-active-page]");
     if (!nav) return;
@@ -12863,7 +12865,10 @@
     if (game === "hub" || !name) return;
     const h1 = document.querySelector(".page-head h1") || document.querySelector("main h1");
     const lineDef = lineDefOf(game, lineParamOf());
-    if (h1) h1.dataset.game = lineDef ? lineDef.label : name;
+    const rotulo = lineDef ? lineDef.label : name;
+    const nomeDoJogo = h1 && h1.querySelector(".h1-jogo");
+    if (nomeDoJogo) { nomeDoJogo.textContent = rotulo; nomeDoJogo.hidden = false; }
+    else if (h1) h1.dataset.game = rotulo;
     // Trilha: "Jogos › Pokémon". Só se ninguém montou antes (a vista de série
     // ou de linha, no app.js, estende a trilha com o próprio nível).
     const trilha = document.querySelector(".crumbs");

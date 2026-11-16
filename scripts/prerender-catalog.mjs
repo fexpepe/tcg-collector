@@ -46,7 +46,7 @@ import { ESTILO_DO_CABECALHO, cabecalhoEstatico } from "../functions/_lib/cabeca
 // Textos e réguas da página de set (título, data, uma carta por número): a
 // página pt é a tela do app decorada NA BORDA (functions/games/) e a -en sai
 // daqui, então os dois lados leem o mesmo módulo.
-import { SET_L10N, cardsForLang } from "../functions/_lib/pagina-set.js";
+import { SET_L10N, cardsForLang, nomeDoSetNoTitulo } from "../functions/_lib/pagina-set.js";
 import { imagemDePrevia } from "../functions/_lib/pagina-carta.js";
 
 const ORIGIN = "https://sleevu.app";
@@ -321,7 +321,7 @@ function setPageHtml(page, canonical, otherSets, lang) {
   const cards = cardsForLang(page.cards, isEn ? "en" : "pt");
   const total = rep.setTotal || cards.length;
   const dateHuman = L.fmtDate(rep.setReleaseDate);
-  const title = L.title(name, gameLabel);
+  const title = L.title(nomeDoSetNoTitulo(name, rep, jogoDaUrl(page.url)), gameLabel);
   const desc = L.desc(cards.length, name, gameLabel, dateHuman);
   const ogImage = imagemDePrevia(rep.setLogo) || `${ORIGIN}/og-image.png`;
   const baseDoJogo = `/games/${page.url}`;

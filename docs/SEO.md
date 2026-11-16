@@ -88,10 +88,11 @@ popup (antes só no pé da tela, atrás da grade do set).
 
 Ficou de fora, pra decidir: o texto das páginas institucionais (Sobre, FAQ,
 Privacidade) ainda nasce vazio no HTML e é escrito pelo i18n no navegador
-(o Google renderiza, mas robô sem JS e buscas de IA veem pouco); o `h1` da
-tela de cada jogo é "Sets" com o nome do jogo só no CSS; e as telas
-`/users/<@>/…` abaixo do perfil caem na casca da Coleção (canonical
-`/collection`).
+(o Google renderiza, mas robô sem JS e buscas de IA veem pouco; resolvido
+depois pelo `scripts/seo-estatico.mjs`); o `h1` da tela de cada jogo é "Sets"
+com o nome do jogo só no CSS (resolvido em 2026-11-16, ver "SEO do vintage");
+e as telas `/users/<@>/…` abaixo do perfil caem na casca da Coleção
+(canonical `/collection`).
 
 Tirar do índice as cartas sem imagem ou sem preço foi medido e **descartado**:
 numa amostra de produção, ficariam ~88% das cartas (corta pouco da escala) e
@@ -498,6 +499,41 @@ muda o endereço (o `cartaParecida` leva o antigo pro novo com 301).
 
 Ficou pra PRs à parte: os links do app direto pro endereço `/games/…`, o
 destino das telas de Pokémon, artista e treinador, e as cartas duplicadas.
+
+## SEO do vintage (2026-11-16)
+
+Pedido do Fernando: o Sleevu como referência de busca pra carta vintage, e uma
+opção pros modernos. O robô (e a busca das IAs, que quase nunca roda JS) lia
+as páginas vintage com quatro buracos:
+
+- **A data do set sumia.** O vintage guarda só o mês (`1997-09`: Carddass,
+  Gundam War, Harry Potter, One Piece Carddass) ou só o ano (`1999`: Gundam
+  Carddass), e a régua de data só aceitava a data completa. 265 sets, quase
+  todos vintage, saíam sem "lançado em" na descrição do set, no texto da carta
+  e na ficha. Agora `partesDaData`/`dataNaLingua` (`functions/_lib/pagina-carta.js`)
+  aceitam os três formatos, com a preposição de cada língua ("on November 8,
+  2024", "in September 1997"; "el 8 de noviembre", "en septiembre de 1997").
+- **O título não dizia de quando nem de qual jogo.** O set vintage leva o ano
+  no título ("本弾 特別弾 (1997) — lista de cartas de Dragon Ball Carddass"),
+  na borda e na variante `-en` (`nomeDoSetNoTitulo`); o h1 segue com o nome
+  puro. A carta vintage leva o jogo no título ("Goku 1/81 · 本弾 特別弾 ·
+  Dragon Ball Carddass"): o set sozinho ("本弾 特別弾", "Part 3") não diz de
+  onde a carta é. Sem caber tudo, fica o set; sem caber o set, o jogo. Os
+  modernos não mudam.
+- **O nome japonês impresso não aparecia.** ~10 mil cartas vintage guardam o
+  nome romanizado em `name` e o da carta em `nameJp`, que só o app mostrava.
+  Agora vai no texto, na descrição e no JSON-LD ("Goku (孫悟空)").
+- **Carta sem preço não tinha JSON-LD**, só a trilha (o Product sem oferta é
+  erro no Search Console). Agora sai um `CreativeWork` com os outros nomes, o
+  número, a edição, a data, o ilustrador, o set (`Collection`) e o jogo
+  (`Game`). Vale pro vintage inteiro e pro moderno sem cotação.
+- **O h1 da tela de cada jogo era "Sets"**: o nome do jogo era um `::before`
+  do CSS. Agora é texto (`.h1-jogo`, que a borda preenche), irmão do título
+  traduzível (`.h1-titulo`); as vistas de série e de linha trocam só o título.
+  No celular o h1 dessas telas continua escondido, como já era.
+
+`tests/seo-vintage.test.mjs` trava tudo isso com a carta de verdade do 本弾
+特別弾.
 
 ## O que o código não resolve
 
