@@ -14,4 +14,5 @@
 </defs>
 <use data-text="s" xlink:href="#font_2_205" transform="matrix(209.3461,0,0,-209.3461,16.6064,165.9551)" fill="#ffffff"/><path transform="matrix(1,0,0,-1,118.5846,167.4181)" stroke-width="9" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#ffffff" d="M0 0H-94.838C-101.866 0-107.564 5.698-107.564 12.726V143.651C-107.564 150.679-101.866 156.377-92.432 156.377H2.406C7.028 156.377 12.726 150.679 12.726 143.651V12.726C12.726 5.698 7.028 0 0 0Z"/>
 </g>
+<!-- 16/11/2026: este comentário troca o ETag, e a borda larga a cópia guardada com o Link de preload de um CSS antigo (ver o _headers). -->
 </svg>
