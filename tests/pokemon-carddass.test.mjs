@@ -97,11 +97,13 @@ test("catálogo: nome inglês e japonês, cor, raridade e imagem só onde há fo
   const cartas = cartasDoJogo(snap, ingles, LISTAS, semCurada);
   const por = new Map(cartas.map((c) => [c.id, c]));
   const g = por.get("pcd-p1-g-025");
-  assert.deepEqual([g.name, g.nameJp, g.color, g.set, g.setId, g.number, g.setTotal, g.rarity, g.image, g.artist], ["Pikachu", "ピカチュウ", "Green", "パート1", "pcd-p1", "025", 153, "", "", "Ken Sugimori"]);
-  assert.equal(por.get("pcd-p1-r-025").color, "Red");
+  assert.deepEqual([g.name, g.nameJp, g.color, g.set, g.setId, g.number, g.setTotal, g.rarity, g.image, g.artist], ["Pikachu (Green)", "ピカチュウ", "Green", "パート1", "pcd-p1", "025", 153, "", "", "Ken Sugimori"]);
+  // a verde e a vermelha levam a cor no nome (sem ela, dois quadros iguais na grade)
+  assert.deepEqual([por.get("pcd-p1-r-025").name, por.get("pcd-p1-r-025").color], ["Pikachu (Red)", "Red"]);
   const ex = por.get("pcd-p2-b-156");
   assert.deepEqual([ex.name, ex.nameJp, ex.color, ex.artist], ["Title Card EX", "タイトルカードEX", "Blue", ""]);
   const p3 = por.get("pcd-p3-025");
+  assert.equal(p3.name, "Pikachu");
   assert.deepEqual([p3.rarity, p3.color, p3.artist, p3.setReleaseDate], ["Prism", undefined, "", "1997-04"]);
   assert.equal(p3.image, IMG(scanDe({ src: 4811, dir: "59/130" })));
   const sp = por.get("pcd-p4-carddass");

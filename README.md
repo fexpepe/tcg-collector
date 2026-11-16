@@ -648,6 +648,8 @@ Pokémon. Jogo próprio, e não linha do `pokemon`, pela regra de 13/11/2026.
 - **Id**: `pcd-p1-g-025` / `pcd-p1-r-025` (a cor entra no id: as duas Pikachu
   da Parte 1 são cartas diferentes, como as cores do Crusade) e `pcd-p3-025`,
   `pcd-p4-carddass`. Sai direto do número impresso, que é fixo.
+  Nas Partes 1–2 a cor vai também no nome ("Pikachu (Green)"), no padrão do
+  TCGplayer pras variantes: sem ela a grade mostrava dois quadros iguais.
 - **Faltam** (ROADMAP): a série do anime (Anime Collection, 1998–2000), sem
   lista carta a carta nem imagem em fonte acessível, e o logo.
 - **Lojas**: só eBay e PriceCharting ("pokemon carddass" na busca).

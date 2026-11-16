@@ -171,7 +171,12 @@ export function cartasDoJogo(snapshot, ingles = {}, listas = LISTAS, curada = cu
   for (const def of SETS) {
     const cartas = cartasDaParte(def.code, listas);
     for (const c of cartas) {
-      const en = c.esp ? c.esp.en : (ingles[String(c.dex)] || "");
+      // Nas Partes 1 e 2 o Pokémon sai em verde E em vermelho, duas cartas com o
+      // mesmo nome e número: a cor vai no nome, no padrão do TCGplayer pras
+      // variantes ("Pikachu (Green)"), senão a grade mostra dois quadros iguais
+      // (e, sem imagem, não há o que os separe). As especiais têm uma cor só.
+      const especie = ingles[String(c.dex)] || "";
+      const en = c.esp ? c.esp.en : (especie && c.cor ? `${especie} (${CORES[c.cor]})` : especie);
       const ja = c.esp ? (c.esp.ja || "") : (listas.pokemon[c.num] || "");
       const ac = def.cores ? null : porNum.get(c.num);
       out.push({
