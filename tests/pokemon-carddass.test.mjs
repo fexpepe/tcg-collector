@@ -144,3 +144,32 @@ test("nome em inglês dos sets (src/nomes-sets.js) é o `en` do sync", () => {
   const noArquivo = Object.fromEntries([...fonte.matchAll(/^\s*"(pcd-p\d)": ("(?:[^"\\]|\\.)*"),?$/gm)].map((m) => [m[1], JSON.parse(m[2])]));
   assert.deepEqual(noArquivo, Object.fromEntries(SETS.map((s) => [setIdOf(s.code), s.en])));
 });
+
+// O importador dos scans das Partes 1 e 2, baixados à mão do Bulbagarden
+// Archives (scripts/importa-scans-pcd.mjs): nome do arquivo -> id da carta.
+test("importa-scans-pcd: nome do arquivo do Archives vira o id da carta", async () => {
+  const { idDoScan, arquivoDoArchives, cartasDoArchives } = await import("../scripts/importa-scans-pcd.mjs");
+  const cartas = cartasDoArchives();
+  assert.equal(cartas.length, 309);
+  const id = (nome) => (idDoScan(nome, cartas) || {}).id;
+  // a cor e a parte (a Pikachu está na Parte 1, a 045 na 2 — ver o cabeçalho
+  // das listas), com espaço ou sublinhado, a cópia " (1)" do navegador
+  assert.equal(id("Bandai - Carddass - red 25.jpg"), "pcd-p1-r-025");
+  assert.equal(id("Bandai_-_Carddass_-_green_25.jpg"), "pcd-p1-g-025");
+  const p = (n) => (LISTAS.partes.p1.includes(n) ? "p1" : "p2");
+  assert.equal(id("Bandai_-_Carddass_-_red_45.jpg"), `pcd-${p("045")}-r-045`);
+  assert.equal(id("Bandai_-_Carddass_-_green_46.jpg"), `pcd-${p("046")}-g-046`);
+  assert.deepEqual(idDoScan("Bandai_-_Carddass_-_red_25 (1).jpg", cartas), { id: "pcd-p1-r-025", copia: true });
+  // as especiais: cada parte tem a sua タイトルカード, e a EX é azul no catálogo
+  assert.equal(id("Bandai_-_Carddass_-_green_0.jpg"), "pcd-p1-g-000");
+  assert.equal(id("Bandai_-_Carddass_-_red_0.jpg"), "pcd-p2-r-000");
+  assert.equal(id("Bandai_-_Carddass_-_green_153.jpg"), "pcd-p1-g-153");
+  assert.equal(id("Bandai_-_Carddass_-_red_155.jpg"), "pcd-p2-r-155");
+  assert.equal(id("Bandai_-_Carddass_-_red_156.jpg"), "pcd-p2-b-156");
+  // o que não é carta das Partes 1 e 2
+  assert.equal(idDoScan("Bandai_-_Carddass_-_green_154.jpg", cartas), null);
+  assert.equal(idDoScan("Bandai_-_Carddass_-_red_0.jpg", cartas.filter((c) => c.id.startsWith("pcd-p1-"))), null);
+  assert.equal(idDoScan("Bandai - Carddass - Anime 3.jpg", cartas), null);
+  // ida e volta: o nome que a lista do que falta aponta casa com a própria carta
+  for (const c of cartas) assert.equal(id(arquivoDoArchives(c)), c.id, c.id);
+});
