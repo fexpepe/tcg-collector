@@ -11644,6 +11644,53 @@ html[data-detail="set"] .page-head-bar.page-head-stack,
   background: linear-gradient(#f1f3f6, #9aa2ad 55%, #d7dbe1);
   border: 1px solid rgba(0, 0, 0, 0.35);
 }
+/* Folha virando na troca de par (2026-11-16, binders.js › viraPara). O par
+   antigo volta como camada (.binder-turn) exatamente em cima do novo, sem
+   capa nem lombada (as de baixo são iguais). Indo pra frente: a folha direita
+   velha gira na lombada até ficar de perfil (1ª metade) e a esquerda nova
+   desce do perfil até deitar (2ª metade) — é o verso da mesma folha. Voltando,
+   espelhado. A dobradiça fica no meio da lombada (20px pra fora da folha).
+   Perspectiva longa (5000px) de propósito: com 2400 a folha crescia 35% no
+   meio do giro e passava por cima da barra de páginas.
+   A camada não cria contexto de empilhamento, então os z-index das folhas
+   velhas e da nova que pousa se resolvem juntos: velha parada (1) < velha
+   virando (2) < nova pousando (3). Só transform: nada de layout nem de
+   pintura por quadro. Quem pede menos movimento não passa por aqui (o JS
+   nem monta a camada); a regra de baixo é só a segunda trava. */
+.binder-stage { position: relative; }
+.binder-stage > .binder-spread.binder-turn {
+  /* grid-area: auto — filho absoluto de grid com área nomeada se posiciona
+     pela ÁREA, não pelo palco, e a camada saía 70px pro lado (seta + vão). */
+  grid-area: auto; position: absolute; max-width: none; background: none; pointer-events: none;
+}
+.binder-turn .binder-spine { visibility: hidden; }
+.binder-turn .binder-leaf { position: relative; z-index: 1; }
+.binder-turn.is-turn-next .binder-leaf:last-child,
+.binder-turn.is-turn-prev .binder-leaf:first-child {
+  z-index: 2;
+  animation: binder-turn-sobe 0.22s cubic-bezier(0.5, 0, 0.9, 0.6) forwards;
+}
+.binder-spread:not(.binder-turn).is-turn-next .binder-leaf:first-child,
+.binder-spread:not(.binder-turn).is-turn-prev .binder-leaf:last-child {
+  position: relative; z-index: 3;
+  animation: binder-turn-desce 0.26s cubic-bezier(0.1, 0.4, 0.3, 1) 0.22s backwards;
+}
+.is-turn-next .binder-leaf:last-child { --turn-de: -90deg; transform-origin: -20px 50%; }
+.is-turn-next .binder-leaf:first-child { --turn-de: 90deg; transform-origin: calc(100% + 20px) 50%; }
+.is-turn-prev .binder-leaf:first-child { --turn-de: 90deg; transform-origin: calc(100% + 20px) 50%; }
+.is-turn-prev .binder-leaf:last-child { --turn-de: -90deg; transform-origin: -20px 50%; }
+@keyframes binder-turn-sobe {
+  from { transform: perspective(5000px) rotateY(0deg); }
+  to { transform: perspective(5000px) rotateY(var(--turn-de)); }
+}
+@keyframes binder-turn-desce {
+  from { transform: perspective(5000px) rotateY(var(--turn-de)); }
+  to { transform: perspective(5000px) rotateY(0deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .binder-turn { display: none; }
+  .binder-spread .binder-leaf { animation: none !important; }
+}
 /* Compartilhado (somente leitura): todos os pares, um embaixo do outro. */
 .binder-book.is-shared { display: grid; justify-items: center; gap: 22px; }
 .binder-shared-head .binder-shared-cta, .binder-shared-banner .binder-shared-cta { display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; text-decoration: none; }

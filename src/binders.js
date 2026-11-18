@@ -2211,13 +2211,13 @@
     if (pagePrev) {
       const binder = eventBinder(pagePrev);
       // Navega por pares de páginas (o par começa sempre num índice par).
-      if (binder) { const p = currentPage(binder); setCurrentPage(binder, (p - (p % 2)) - 2); render(); }
+      if (binder) { const p = currentPage(binder); viraPara(binder, (p - (p % 2)) - 2); }
       return;
     }
     const pageNext = event.target.closest("[data-page-next]");
     if (pageNext) {
       const binder = eventBinder(pageNext);
-      if (binder) { const p = currentPage(binder); setCurrentPage(binder, (p - (p % 2)) + 2); render(); }
+      if (binder) { const p = currentPage(binder); viraPara(binder, (p - (p % 2)) + 2); }
       return;
     }
     const pageAdd = event.target.closest("[data-page-add]");
@@ -2236,7 +2236,7 @@
     const pageGo = event.target.closest("[data-page-go]");
     if (pageGo) {
       const binder = eventBinder(pageGo);
-      if (binder) { setCurrentPage(binder, Number(pageGo.dataset.pageGo)); render(); }
+      if (binder) viraPara(binder, Number(pageGo.dataset.pageGo));
       return;
     }
     // Configurar / Imprimir: o botão abre o painel dele e, aberto, fecha
@@ -2300,6 +2300,51 @@
     }
   });
 
+  // Troca de par com a folha virando (2026-11-16, só no fichário aberto do
+  // desktop; o modo fichário do celular já desliza na trilha dele). Barato de
+  // propósito: o par ANTIGO não é clonado — o render() troca o innerHTML e o
+  // nó velho sobra solto, com as imagens já decodificadas; ele volta por cima
+  // do par novo como camada (.binder-turn) e o CSS faz o resto só com
+  // transform, em duas metades: a folha velha sobe até ficar de perfil e o
+  // verso dela (a folha nova do outro lado) desce. Nada de layout por quadro,
+  // nada de sombra animada. Com "reduzir movimento" a troca segue seca.
+  const semMovimento = window.matchMedia ? window.matchMedia("(prefers-reduced-motion: reduce)") : null;
+  function viraPara(binder, idx) {
+    const antes = currentPage(binder);
+    setCurrentPage(binder, idx);
+    const depois = currentPage(binder);
+    const dir = Math.sign((depois - (depois % 2)) - (antes - (antes % 2)));
+    // Clique no meio de uma virada: a camada da anterior some com o render().
+    const velho = dir && !(semMovimento && semMovimento.matches)
+      ? elements.list.querySelector(".binder-stage > .binder-spread:not(.binder-turn)") : null;
+    render();
+    const novo = velho && elements.list.querySelector(".binder-stage > .binder-spread");
+    if (!novo) return;
+    velho.classList.add("binder-turn");
+    velho.inert = true; // botões do par velho fora do foco e do leitor de tela
+    velho.setAttribute("aria-hidden", "true");
+    velho.style.left = `${novo.offsetLeft}px`;
+    velho.style.top = `${novo.offsetTop}px`;
+    velho.style.width = `${novo.offsetWidth}px`;
+    velho.style.height = `${novo.offsetHeight}px`;
+    const lado = dir > 0 ? "is-turn-next" : "is-turn-prev";
+    novo.classList.add(lado);
+    velho.classList.add(lado);
+    novo.parentNode.appendChild(velho);
+    // A folha que pousa é a última a acabar; o timeout cobre a aba em segundo
+    // plano (animationend não dispara) pra camada nunca ficar por cima.
+    const pousa = novo.querySelector(dir > 0 ? ".binder-leaf:first-child" : ".binder-leaf:last-child");
+    let feito = false;
+    const fim = () => {
+      if (feito) return;
+      feito = true;
+      velho.remove();
+      novo.classList.remove(lado);
+    };
+    if (pousa) pousa.addEventListener("animationend", fim, { once: true });
+    setTimeout(fim, 700);
+  }
+
   // Virar folha como num fichário de verdade: SWIPE no celular (sobre o spread)
   // e setas ← → no teclado. Reusa os botões ‹ › (respeita o disabled das pontas).
   function flipPage(dir) {
@@ -2332,7 +2377,7 @@
     const pageSelect = event.target.closest("[data-page-select]");
     if (pageSelect) {
       const binder = eventBinder(pageSelect);
-      if (binder) { setCurrentPage(binder, Number(pageSelect.value)); render(); }
+      if (binder) viraPara(binder, Number(pageSelect.value));
       return;
     }
     const gridSelect = event.target.closest("[data-binder-grid]");
