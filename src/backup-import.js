@@ -120,6 +120,9 @@
     if (flat.includes("gundamcarddass") || flat === "gcd") return "gcd";
     // E o Gundam War (1999–2011), pelo mesmo motivo.
     if (flat.includes("gundamwar") || flat === "gw") return "gw";
+    // Pokémon Carddass (Bandai, 1996–97) ANTES do "pok" genérico, que é o
+    // Pokémon TCG. O "é" sai no flat ("pokmoncarddass").
+    if ((flat.includes("pok") && flat.includes("carddass")) || flat === "pcd") return "pcd";
     // Saint Seiya (Os Cavaleiros do Zodíaco; Knights of the Zodiac nos EUA). O
     // "í" sai no flat, por isso o "zod" sem o resto.
     // Os dois outros jogos de Saint Seiya antes do genérico: "Saint Seiya Crusade".

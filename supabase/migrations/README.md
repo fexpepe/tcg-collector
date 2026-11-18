@@ -8,6 +8,18 @@ poucos.)
 
 ## Pendentes de aplicar
 
+- `20261116a` — libera o slug `pcd` (Pokémon Carddass, Bandai, 1996–1997, o
+  jogo vintage das Partes 1–4) nas duas whitelists de jogo
+  (`card_views`/`increment_card_view` e `contribute_price`;
+  `20261116a_add_pcd.sql`). Cópia da `20261114c` (Dragon Ball Super Card Game
+  Masters, a última aplicada) com o `pcd` a mais: **ela cobre a 20261114c** e,
+  por ela, todas as de jogo anteriores. Só a lista muda. Qualquer uma das
+  anteriores rodada **depois** desta tiraria o `pcd`. Sem ela, a view de carta
+  e o Preço da Comunidade do jogo novo são descartados em silêncio. Conferir
+  com o par de `curl` do fim do arquivo: a view de `pcd-p3-025` tem de **criar
+  a linha** no `card_views` (o 204 sozinho não prova nada). **A próxima
+  migração de jogo copia esta.**
+
 - `20261114c` — libera o slug `dbs` (Dragon Ball Super Card Game Masters,
   Bandai, 2017+, edição em inglês) nas duas whitelists de jogo
   (`card_views`/`increment_card_view` e `contribute_price`;

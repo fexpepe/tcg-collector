@@ -549,6 +549,12 @@ deixava logo largo abaixo de 2× no hub.
   arte e o cartão do set mostra o nome. Logo novo entra por aqui (`game_<slug>.webp`)
   e troca o `""` no registro, no `GAME_LOGO`/`KIT_LOGO`, no `vintage.html`, no
   "Sobre" e no `LOGO` do `scripts/sync-dbc-carddass.mjs`.
+- **Pokémon Carddass (`pcd`, pendência, 2026-11-16):** entra sem logo, do mesmo
+  jeito (`logo: ""`, `.vt-logo-texto`, "Sobre" sem arte). O cartão das Partes
+  1–2 imprime "カードダス パート1/2" sob o logo do jogo ポケットモンスター, e
+  nenhum logo próprio do produto foi achado publicado. Logo novo troca o `""`
+  no registro, no `vintage.html`, no "Sobre" e entra no `GAME_LOGO`/`KIT_LOGO`
+  (hoje fora dos dois).
 - **Contraste:** o CSS põe um chip branco atrás do logo, então logos escuros
   ficam legíveis nos dois temas.
 - **Proporção:** paisagem; o CSS usa `object-fit: contain` — não precisa de

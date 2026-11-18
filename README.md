@@ -85,6 +85,7 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 | `seiya` | Saint Seiya Carddass | Bandai 1988–2023: Carddass Part 1–3 (1988–89), Saint Paradise (1991–92) e Reborn Saint Paradise (2022–23), uma seção por série; número, raridade e scan do animecollection.fr (a Part 1, do saint-seiya.it), nome transcrito dos scans | sem preço |
 | `seiyatc` | Saint Seiya Trading Collection | Amada 2000–2003: as cinco coleções de cenas do anime e dos filmes, com as promos; mesma fonte e mesmo sync do `seiya` | sem preço |
 | `seiyacr` | Saint Seiya Crusade | Bandai 2012–2014, o TCG do sistema Crusade: sete boosters (clássico e Ω) e as promos; mesma fonte e mesmo sync, cor da carta medida no scan | sem preço |
+| `pcd` | Pokémon Carddass | Bandai 1996–1997: as Partes 1–4 das máquinas Carddass, com os 151 de Red e Green (Partes 1–2 em verde e vermelho); lista e nome japonês transcritos dos checklists impressos, número, raridade e scan das Partes 3–4 do animecollection.fr | sem preço |
 | `jump` | JUMP | curadoria versionada em `data/jump/curated/` | — |
 
 **Linhas** (`GAME_LINES` em [src/shared.js](src/shared.js)): um jogo pode ter
@@ -610,6 +611,48 @@ na marca "Saint Seiya" do /vintage.
   outra metade do Crusade de 2014, e o CCG americano de 2004.
 - **Lojas**: só eBay e PriceCharting ("saint seiya carddass", "saint seiya
   amada", "saint seiya crusade" na busca).
+
+### Pokémon Carddass (`pcd`)
+
+ポケモンカードダス, as cartas de máquina Carddass da Bandai com os 151 Pokémon
+de Red e Green, de 1996 e 1997, em
+[scripts/sync-pokemon-carddass.mjs](scripts/sync-pokemon-carddass.mjs). Não é
+o Pokémon TCG (não tem HP nem ataque): a frente é a arte, o verso é a ficha do
+Pokémon. Jogo próprio, e não linha do `pokemon`, pela regra de 13/11/2026.
+
+| Set | Data | O que tem | Cartas |
+|---|---|---|---|
+| パート1 (`pcd-p1`) | 1996-09 | 75 Pokémon, cada um em verde e em vermelho; タイトルカード e カードリスト1–2 (verdes) | 153 |
+| パート2 (`pcd-p2`) | 1996-10 | os outros 76, nas duas cores; タイトルカード e カードリスト3–4 (vermelhas) e a タイトルカードEX (azul) | 156 |
+| パート3 (`pcd-p3`) | 1997-04 | 74 Pokémon, arte nova, e a SPECIAL CARDDASS FILE No.000 | 75 |
+| パート4 (`pcd-p4`) | 1997-06 | os outros 77 e a SPECIAL CARDDASS "CARDDASS" | 78 |
+
+- **Lista e nome**: quais Pokémon cada parte tem e o nome japonês saem dos
+  **checklists impressos** (as カードリスト1–4 das Partes 1–2 e o verso das
+  duas SPECIAL CARDDASS das 3–4), transcritos em
+  `scripts/data/pokemon-carddass.json`. A Bulbapedia tem a mesma lista e
+  serviu de conferência (ela troca a 045 e a 046 de parte; vale o impresso),
+  mas ela e o Bulbagarden Archives devolvem o desafio do Cloudflare ao Node
+  (403 em 16/11/2026), e fonte que recusa acesso automatizado não entra no
+  sync (contrato 4). O nome em inglês é o oficial da espécie
+  (`data/pokemon-names.js`).
+- **Partes 3–4**: número, raridade (Normal, 16 Prism, a Mew Metal e as duas
+  especiais Promo) e scan pelo [animecollection.fr](http://www.animecollection.fr/cartes.php?idl=19&idc=59&ids=130)
+  (o mesmo catálogo de fã do `gcd`, uma página pras duas partes), snapshot em
+  `data/vintage/pokemon-carddass.json`. O número da fonte foi conferido
+  contra o impresso nos 153 scans. Imagem pelo `wsrv.nl`.
+- **Partes 1–2 sem imagem e sem raridade**: os scans só existem no
+  Bulbagarden Archives (barrado, acima), e nenhuma fonte acessível diz quais
+  são as 6 prismas de cada cor. Imagem curada em `assets/cards/pcd/<id>.webp`
+  entra sozinha (`curatedImg`).
+- **Id**: `pcd-p1-g-025` / `pcd-p1-r-025` (a cor entra no id: as duas Pikachu
+  da Parte 1 são cartas diferentes, como as cores do Crusade) e `pcd-p3-025`,
+  `pcd-p4-carddass`. Sai direto do número impresso, que é fixo.
+  Nas Partes 1–2 a cor vai também no nome ("Pikachu (Green)"), no padrão do
+  TCGplayer pras variantes: sem ela a grade mostrava dois quadros iguais.
+- **Faltam** (ROADMAP): a série do anime (Anime Collection, 1998–2000), sem
+  lista carta a carta nem imagem em fonte acessível, e o logo.
+- **Lojas**: só eBay e PriceCharting ("pokemon carddass" na busca).
 
 ### Carddass Masters (`cdm`)
 

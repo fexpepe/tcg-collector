@@ -143,6 +143,17 @@
       },
       facetType(["Unit", "Character", "Command"])
     ],
+    // Pokémon Carddass (1996–97): nas Partes 1 e 2 cada Pokémon sai em VERDE e
+    // em VERMELHO (as versões do jogo), e a Title Card EX em azul. Nas Partes 3
+    // e 4 não há cor: a faceta só aparece onde ela existe.
+    pcd: [
+      {
+        key: "color", labelKey: "facet.color",
+        of: (c) => facetSplit(c.color, ";"),
+        label: (v) => v,
+        order: ["Green", "Red", "Blue"]
+      }
+    ],
     gundam: [
       facetColor("color"),
       facetLevel,

@@ -111,7 +111,7 @@
 /* --accent-ink nos DEMAIS jogos: o accent deles já é um tom claro (escolhido
    pra receber texto escuro em cima), então serve de tinta sem ajuste. Só o
    Pokémon precisa dos dois tons separados. */
-[data-game-accent]:not([data-game-accent="pokemon"]) { --accent-ink: var(--accent); }
+[data-game-accent]:not([data-game-accent="pokemon"]):not([data-game-accent="pcd"]) { --accent-ink: var(--accent); }
 
 /* Foco por TECLADO visível em qualquer interativo (a11y AA): anel na cor do
    jogo. :focus-visible não dispara em clique/touch — só navegação por Tab. */
@@ -180,12 +180,15 @@
    a variante de descendente `[data-theme="light"] [data-game-accent]`, com a
    mesma especificidade. O Pokémon não tinha regra (é o accent base do :root) e
    ganhou uma com os mesmos valores — no <html> ela não muda nada. */
-[data-game-accent="pokemon"] {
+/* A Pokémon Carddass (pcd, 2026-11-16) entra nos seletores do Pokémon: mesma
+   IP, mesma cor, com a tinta (--accent-ink) separada dele. */
+[data-game-accent="pokemon"], [data-game-accent="pcd"] {
   --accent: #dc2626; --accent-dark: #b91c1c; --accent-rgb: 220, 38, 38; --accent-ink: #ef4444;
   --accent-soft: rgba(220, 38, 38, 0.13); --on-accent: #ffffff;
 }
 [data-theme="light"][data-game-accent="pokemon"],
-[data-theme="light"] [data-game-accent="pokemon"] {
+[data-theme="light"] [data-game-accent="pokemon"],
+[data-theme="light"][data-game-accent="pcd"], [data-theme="light"] [data-game-accent="pcd"] {
   --accent: #df2c2c; --accent-dark: #b81e1e; --accent-rgb: 223, 44, 44; --accent-ink: #c62222;
   --accent-soft: rgba(223, 44, 44, 0.1); --on-accent: #ffffff;
 }

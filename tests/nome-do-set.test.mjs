@@ -52,6 +52,9 @@ const NOMES_DO_JOGO = {
   seiya: { nomes: ["Saint Seiya", "SAINT SEIYA", "聖闘士星矢", "星矢", "Carddass", "カードダス"] },
   seiyatc: { nomes: ["Saint Seiya", "聖闘士星矢", "Trading Collection", "トレーディングコレクション"], oficiais: ["トレーディングコレクション", "トレーディングコレクション プロモ"] },
   seiyacr: { nomes: ["Saint Seiya", "聖闘士星矢", "Crusade", "クルセイド"], oficiais: ["聖闘士星矢Ω", "聖闘士星矢Ω～黄金十二宮編～", "聖闘士星矢Ω～新生聖衣編～"] },
+  // Pokémon Carddass (2026-11-16): o set é a parte ("パート1"), sem a marca
+  // (ポケットモンスター, Pokémon) nem o produto (カードダス) na frente.
+  pcd: { nomes: ["Pokémon", "Pokemon", "POKEMON", "ポケモン", "ポケットモンスター", "Pocket Monsters", "Carddass", "カードダス"] },
   // Naruto Boruto Card Game: o grupo do TCGplayer é "NB Tournament Pack
   // Cards"; o set fica sem a sigla do jogo na frente.
   narutoboruto: { nomes: ["Naruto Boruto", "NARUTO BORUTO", "Chrono Clash", "NB "] },

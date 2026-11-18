@@ -127,6 +127,10 @@ test("mapCsvGame: os 13 jogos, nas grafias do Collectr/TCGplayer", () => {
   // Os outros dois jogos de Saint Seiya vencem o genérico.
   assert.equal(api.mapCsvGame("Saint Seiya Crusade"), "seiyacr");
   assert.equal(api.mapCsvGame("Saint Seiya Trading Collection"), "seiyatc");
+  // Pokémon Carddass vence o "pok" genérico (o Pokémon TCG), com e sem acento.
+  assert.equal(api.mapCsvGame("Pokémon Carddass"), "pcd");
+  assert.equal(api.mapCsvGame("Pokemon Carddass"), "pcd");
+  assert.equal(api.mapCsvGame("Pokemon"), "pokemon");
   // Jogo próprio desde 2026-11-13 (antes cairia no Naruto vintage).
   assert.equal(api.mapCsvGame("Naruto Boruto Card Game"), "narutoboruto");
   assert.equal(api.mapCsvGame("Chrono Clash System"), "narutoboruto");
