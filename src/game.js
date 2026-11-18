@@ -275,11 +275,22 @@
   // então cada visitante via um sufixo diferente na mesma página.
   // Só o carimbo é suprimido: a detecção de jogo segue igual, então o catálogo
   // carrega como antes e a página não muda de comportamento.
+  //
+  // MESMA EXCEÇÃO pras páginas que não mostram jogo nenhum (18/11/2026): quem
+  // abria sleevu.app/login via "/login?game=pokemon" na barra, e o mesmo valia
+  // pra Sobre, FAQ, Ajuda, Privacidade, Termos, Comparar, Ajustes, Novidades,
+  // Lançamentos, blog, admin e parceiro. Nenhuma delas lê o jogo da sessão (só
+  // o cabeçalho lê, e ele segue lendo: a detecção não muda), então o sufixo
+  // era só sujeira no link copiado. A 404 não tem caminho fixo (responde em
+  // qualquer endereço que não existe), por isso ela se marca no próprio <html>
+  // com data-sem-jogo.
+  var SEM_CARIMBO = /^\/(users|blog|admin)\/|^\/(login|about|faq|help|privacy|terms|comparar|settings|novidades|lancamentos|blog|blog-post|blog-editor|admin|parceiro)(\.html)?\/?$/i;
   function stampGame(slug) {
     try {
       var url = new URL(location.href);
       if (url.searchParams.get("game")) return;
-      if (/^\/users\//i.test(url.pathname)) return;
+      if (SEM_CARIMBO.test(url.pathname)) return;
+      if (document.documentElement.hasAttribute("data-sem-jogo")) return;
       url.searchParams.set("game", slug);
       history.replaceState(history.state, "", url);
     } catch (e) { /* history bloqueado: segue sem carimbar */ }
