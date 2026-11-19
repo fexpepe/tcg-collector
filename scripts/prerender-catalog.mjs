@@ -671,7 +671,9 @@ async function fetchBlogPosts() {
     return r.ok ? r.json() : null;
   };
   try {
-    const lista = (await pede("slug,lang,versoes,updated_at")) || (await pede("slug,updated_at")) || [];
+    // title e excerpt (2026-11-19) não vão pro sitemap: são do /llms.txt, que
+    // lista os posts (ver o blog.json no main).
+    const lista = (await pede("slug,title,excerpt,lang,versoes,updated_at")) || (await pede("slug,title,excerpt,updated_at")) || [];
     return Array.isArray(lista) ? lista.filter((p) => p && /^[a-z0-9]+(-[a-z0-9]+)*$/.test(String(p.slug || ""))) : [];
   } catch { return []; }
 }
@@ -1376,6 +1378,14 @@ async function main() {
   writeFileSync(join(MAPAS_DIR, "decks.json"), JSON.stringify(deckPages.map((d) => [d.slug, d.nome, d.jogo]).sort(porNome)));
 
   const blogPosts = await fetchBlogPosts();
+  // Os posts publicados, pro /llms.txt (2026-11-19). O seo-estatico.mjs roda
+  // logo depois deste passo e não vai à rede: lê daqui o título e o resumo de
+  // cada post (e os das traduções, em `versoes`). Medido em 19/11, dia do
+  // primeiro post: o llms.txt listava os 52 jogos e nenhuma linha do blog.
+  // Regravado a cada build; com o Supabase fora fica [], como o sitemap.
+  writeFileSync(join(MAPAS_DIR, "blog.json"), JSON.stringify(blogPosts.map((p) => ({
+    slug: p.slug, lang: p.lang || "", title: p.title || "", excerpt: p.excerpt || "", versoes: p.versoes || {}
+  }))));
   // Os sitemap-*.xml de uma rodada anterior saem antes: tipo que ficou sem
   // página não pode deixar arquivo órfão fora do índice.
   for (const f of readdirSync(".")) if (/^sitemap-[a-z0-9-]+\.xml$/.test(f)) rmSync(f);
