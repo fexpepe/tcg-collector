@@ -903,11 +903,16 @@ main {
    ~1010px com o botão "Entrar" no canto (o avatar de quem entrou é 44px mais
    estreito). Abaixo disso o logado ainda quebra, como já quebrava. Só o item
    de cima (`>`), não os links dos painéis; e só acima de 860px: no drawer as
-   medidas são outras. */
+   medidas são outras.
+   2026-11-19: o Blog virou item do topo (saiu do painel do "Mais") e o
+   deslogado voltou a quebrar entre 861px e ~890px. O piso do padding desceu
+   de 7px pra 4px; como a rampa é a mesma (2.2vw - 16px), só muda abaixo de
+   ~1045px, onde antes ela batia no piso. Remedido em pt, en e es: deslogado
+   cabe de novo desde os 861px; logado, desde ~970px (pt) e ~1020px (en/es). */
 @media (min-width: 861px) {
   .app-header-inner { gap: clamp(10px, 1.2vw, 18px); }
   .page-nav > a,
-  .page-nav .nav-group > a { padding: 0 clamp(7px, 2.2vw - 16px, 16px); font-size: clamp(14.5px, 1.2vw, 16px); }
+  .page-nav .nav-group > a { padding: 0 clamp(4px, 2.2vw - 16px, 16px); font-size: clamp(14.5px, 1.2vw, 16px); }
 }
 @media (min-width: 861px) and (max-width: 1180px) {
   .page-nav { gap: 2px; }

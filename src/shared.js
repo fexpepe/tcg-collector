@@ -3114,13 +3114,15 @@
     // "Meus Decks" é página PESSOAL (entra pelo Dashboard), então acende a
     // Coleção — diferente de "Decks", que é a galeria PÚBLICA e tem item próprio.
     const collectionActive = ["dashboard", "collection", "wishlist", "binders", "sales", "mydecks", "pastas"].includes(active);
-    // "Mais" (2026-10-01): as ferramentas e o Blog. O Guia de condição e o
+    // "Mais" (2026-10-01): as ferramentas. O Guia de condição e o
     // Sleeves moram nele (não na Coleção) desde que viraram ferramentas do
     // site; a Troca veio da Coleção em 2026-10-27, quando deixou de exigir
     // conta e virou página pública como as outras.
     // Endereços em inglês desde 2026-10-01 (pedido do Fernando): /tools,
     // /condition e /centering; os antigos têm 301 no _redirects.
-    const moreActive = ["blog", "tools", "condition", "centering", "sleeves", "troca"].includes(active);
+    // O Blog acendia o "Mais" enquanto morou no painel dele; desde 2026-11-19
+    // tem item próprio no topo e acende o seu.
+    const moreActive = ["tools", "condition", "centering", "sleeves", "troca"].includes(active);
 
     // O selo "beta" que Decks e Portfólio levavam desde 2026-08-25 saiu: Decks
     // em 2026-10-08 (redesign da PR #163) e Portfólio em 2026-10-10 (Portfólio
@@ -3162,24 +3164,27 @@
       megaCol("nav.colOrganize", link("binders", "nav.binders", "binders") + link("my-decks", "nav.myDecks", "mydecks")) +
       megaCol("nav.colMore", link("sales", "nav.sales", "sales") + link("troca", "trade.title", "troca") + link("badges", "dash.badges", "badges")));
     // Mais (2026-10-01, pedido do Fernando): o ÚLTIMO item do menu, logado ou
-    // não. O clique leva à página Ferramentas; o painel lista as ferramentas e
-    // o Blog, que saiu do meio do menu pra cá. O Centering Tool é página
-    // própria (/centering) desde a v2; o modal da v1 saiu.
+    // não. O clique leva à página Ferramentas; o painel lista as ferramentas.
+    // O Centering Tool é página própria (/centering) desde a v2; o modal da
+    // v1 saiu. O Blog morou aqui de 2026-10-01 a 2026-11-19 (ver abaixo).
     const moreMega = mega("tools", "nav.more", moreActive, "dash.tools", "nav.toolsHint",
       megaCol("nav.colCollect", link("condition", "nav.condicao", "condition") + link("centering", "ctr.title", "centering") + link("sleeves", "nav.sleeves", "sleeves")) +
-      megaCol("nav.colTrade", link("troca", "trade.title", "troca")) +
-      megaCol("nav.colRead", link("blog", "nav.blog", "blog")));
+      megaCol("nav.colTrade", link("troca", "trade.title", "troca")));
     // Decks fica FORA da Coleção e aparece deslogado de propósito: a galeria da
     // comunidade é conteúdo público (e indexável) — é a porta de entrada de quem
     // ainda não tem conta. Criar/salvar deck é que exige login, dentro da página.
-    // O Blog (2026-09-30) morou ao lado de Decks pelo mesmo motivo; desde
-    // 2026-10-01 ele fica no "Mais", que fecha o menu.
+    // O Blog é público pelo mesmo motivo. Morou ao lado de Decks (2026-09-30),
+    // depois dentro do "Mais" (2026-10-01) e, em 2026-11-19 (pedido do
+    // Fernando), voltou pro topo como item próprio: no computador, conteúdo
+    // escondido atrás de um hover quase ninguém achava. Fica logo antes do
+    // "Mais", que segue fechando o menu, depois do Portfólio de quem entrou.
     nav.innerHTML = `
       ${link(apexUrl, "nav.home", "home")}
       ${exploreMega}
       ${link("decks", "nav.decks", "decks")}
       ${loggedIn ? `${collectionMega}
       ${link("portfolio", "nav.portfolio", "portfolio")}` : ""}
+      ${link("blog", "nav.blog", "blog")}
       ${moreMega}
     `;
 

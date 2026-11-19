@@ -193,15 +193,22 @@ test("medidas: a sleeve é maior que a inner, que é maior que a carta", () => {
 
 // ── Menu "Mais", portão e sitemap (2026-10-01, 2ª rodada) ───────────────────
 
-test("o menu de topo FECHA com o Mais, depois da Coleção e do Portfólio", () => {
+// O Blog voltou pro topo em 2026-11-19: item próprio, logado ou não, entre o
+// Portfólio e o Mais (dentro do painel, no computador, ninguém achava).
+test("o menu de topo FECHA com o Mais, depois da Coleção, do Portfólio e do Blog", () => {
   const src = ler("src/shared.js");
   const m = src.match(/nav\.innerHTML = `([\s\S]*?)`;\n/);
   assert.ok(m, "sumiu o nav.innerHTML do initPageNav");
   const corpo = m[1];
-  const ordem = ["nav.home", "exploreMega", "nav.decks", "collectionMega", "nav.portfolio", "moreMega"].map((k) => corpo.indexOf(k));
+  const ordem = ["nav.home", "exploreMega", "nav.decks", "collectionMega", "nav.portfolio", "nav.blog", "moreMega"].map((k) => corpo.indexOf(k));
   ordem.forEach((i, n) => assert.ok(i >= 0, `item ${n} sumiu do menu`));
   assert.deepEqual([...ordem].sort((a, b) => a - b), ordem, "ordem do menu mudou");
-  assert.ok(!/link\("blog"/.test(corpo), "o Blog saiu do meio do menu: mora no painel do Mais");
+  // Fora do trecho que só aparece com login: o Blog é público.
+  assert.ok(!/loggedIn \?[^:]*nav\.blog/.test(corpo), "o Blog não pode depender de login");
+  const mais = src.match(/const moreMega = mega\(([\s\S]*?)\);\n/)[1];
+  assert.ok(!/"blog"/.test(mais), "o Blog saiu do painel do Mais: tem item próprio");
+  const ativos = JSON.parse(src.match(/const moreActive = (\[[^\]]*\])\.includes/)[1]);
+  assert.ok(!ativos.includes("blog"), "o Blog acende o item dele, não o Mais");
 });
 
 // Endereços em inglês desde 2026-10-01 (/tools, /condition, /centering): o
