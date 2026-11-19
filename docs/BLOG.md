@@ -20,6 +20,7 @@ publicar é instantâneo, sem commit nem deploy.
 | `blog.html` / `blog-post.html` | as cascas (o `blog-post.html` só existe pra Function preencher) |
 | `src/blog.js` | o que depende de quem lê: preço na moeda dele, Tenho/Quero, preview, filtros, compartilhar |
 | `blog-editor.html` / `src/blog-editor.js` | o editor (texto em pt fixo, como o /admin) |
+| `src/blog-importa.js` | lê um `.md` e devolve os campos do post (só o editor carrega) |
 | `src/i18n-blog.js` | textos de interface da lista e do post (pt/en/es) |
 
 **Um renderizador, dois lugares.** O `src/blog-render.js` é script clássico
@@ -122,6 +123,51 @@ A barra do editor escreve a sintaxe; o botão **?** mostra o resumo:
   do site; imagem só de host liberado na CSP (lista `IMG_HOSTS`, travada contra
   o `_headers` por teste). O teste do renderizador roda ataques conhecidos e um
   fuzz de 3 mil textos.
+
+## Importar um .md (desde 2026-11-19)
+
+O texto costuma chegar pronto de fora. Em vez de copiar campo por campo,
+**Importar .md** (na lista, ao lado de "Novo post"; no menu **⋯** do editor; ou
+soltando o arquivo no texto) abre o post já preenchido. Escolha, na mesma
+janela, o `.md` **e as imagens que ele cita**: cada uma sobe pro `blog-media`
+(com a versão de 640 px) e o nome do arquivo no texto vira o endereço.
+
+O arquivo diz os campos de dois jeitos, que podem vir juntos:
+
+```
+---
+title: Bandai Carddass and the 20-Yen Anime Card Boom
+slug: bandai-carddass-history
+description: The story of Bandai Carddass…      (descrição pro Google)
+excerpt: …            subtitle: …            seo_title: …
+category: historia    (a chave ou o rótulo: "History & Vintage")
+game: pokemon         (vazio/ausente = geral)
+lang: en              tags: carddass, bandai, vintage
+author: Sleevu        featured: sim          date: 2026-11-20
+cover: capa.jpg       cover_alt: …
+---
+```
+
+ou as linhas soltas no topo, como os textos costumam vir —
+``**Suggested slug** `…` ``, `**Meta description** …` e o título em `# Título`.
+As chaves aceitam pt, en e es (`título`, `endereço`, `resumo`, `capa`…). O
+`# Título` sai do corpo: o H1 da página é o campo Título.
+
+- **Imagem** no texto: `![descrição](1.jpg "legenda")`. Casa com o arquivo
+  escolhido pelo nome (sem pasta, sem diferenciar maiúscula; na falta, sem a
+  extensão). A que não veio fica no texto e aparece num aviso; a que veio e o
+  texto não cita não sobe.
+- **Nada é salvo na importação**: o post fica com "alterações não salvas" pra
+  conferir e salvar (as imagens já sobem, como ao soltar uma no texto).
+- Campo que o arquivo não diz fica como estava. O que passa do teto do banco é
+  cortado, com aviso dizendo qual.
+- Numa **aba de tradução** entram só os campos de texto daquela versão
+  (endereço, capa, jogo e datas são do post). Na original, o `lang` do arquivo
+  vira o idioma original.
+- Post que **já foi ao ar** não troca de endereço por importação.
+
+A leitura é função pura (`SleevuBlogImporta.le`), testada em
+`tests/blog-importa.test.mjs`.
 
 ## Publicar, agendar, histórico
 
