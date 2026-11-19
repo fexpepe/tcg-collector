@@ -61,6 +61,7 @@ import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 import { RAIZ, lerCatalogo } from "./lib/d1-catalogo.mjs";
 import { ESQUEMA_ESPELHO, FONTES, INTERMEDIARIA, LARGURAS, ORDEM, chaveBase, chaveDe, geracaoDoHost, hostDe, intermediariaDoHost, matrizDe, versaoDe, webpDe } from "./lib/img-mirror.mjs";
+import { aplicaAssinadas, chaveDaBase, listaCartas as listaCartasHeroRush } from "./lib/herorush-fonte.mjs";
 import { alternativaDe, comparaAlternativa } from "./lib/mesma-carta.mjs";
 import { lerSetIdMap } from "./lib/pokemontcg-image.mjs";
 import { clienteR2 } from "./lib/r2.mjs";
@@ -126,6 +127,25 @@ for await (const { game, cards } of lerCatalogo()) {
     n++;
   }
   console.log(`  ${game}: ${n} cartas a manter no espelho${comAlt ? ` (${comAlt} com matriz alternativa da pokemontcg.io)` : ""}`);
+}
+
+// ── 1b. Matriz ASSINADA: Marvel Hero Rush (19/11/2026) ──────────────────────
+// A fonte só entrega a imagem com uma assinatura que vence em um dia (ver
+// scripts/lib/herorush-fonte.mjs), então a matriz dessas cartas não sai da URL
+// do catálogo: pede-se a lista oficial agora e usa-se a URL assinada dela. A
+// rodada dura menos que a validade. Sem resposta da API, as cartas do jogo
+// saem do alvo desta rodada (não viram "não existe na origem") e o host segue
+// completo com o que já tinha.
+{
+  const wsrv = alvos.get("wsrv.nl");
+  const doJogo = [...wsrv.keys()].filter((b) => chaveDaBase(b)).length;
+  if (doJogo && !SECO && (!SO_HOST || SO_HOST === "wsrv.nl")) {
+    let cartas = null;
+    try { cartas = await listaCartasHeroRush({ idioma: "en" }); }
+    catch (e) { console.log(`::warning::mirror-r2: lista do Marvel Hero Rush inacessível (${String(e && e.message || e).slice(0, 100)}) — as imagens dele ficam pra próxima rodada.`); }
+    const r = aplicaAssinadas(wsrv, cartas);
+    console.log(`  herorush: ${r.trocadas} matrizes com a assinatura de agora${r.adiadas ? `, ${r.adiadas} sem assinatura (ficam pra próxima rodada)` : ""}.`);
+  }
 }
 
 // ── 2. Índice e status guardados no bucket ──────────────────────────────────

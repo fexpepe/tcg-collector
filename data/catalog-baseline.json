@@ -233,5 +233,10 @@
   "cards": 255,
   "sets": 4,
   "imgPct": 0
+ },
+ "herorush": {
+  "cards": 667,
+  "sets": 14,
+  "imgPct": 100
  }
 }
