@@ -10003,6 +10003,19 @@ html:not([data-game]) .falha-boot[hidden] { display: flex !important; animation:
 .pf-tip-row { display: block; }
 .pf-tip-dot { display: inline-block; width: 8px; height: 8px; margin-right: 5px; vertical-align: middle; }
 .pf-chart-empty { margin: 0; padding: 48px 12px; text-align: center; color: var(--subtle); font-size: 14px; }
+/* Esqueleto do primeiro paint (2026-11-19): enquanto as cartas não chegam, o
+   número sem retrato vira uma barra pulsando (não um "—" que parece resposta)
+   e as seções que vêm com certeza seguram o lugar. Mesmo pulso do .skel do
+   catálogo; aqui sem moldura própria porque já mora dentro de um .pf-card. */
+.pf-skel { display: grid; gap: 16px; padding: 2px 0 6px; animation: skel-pulse 1.2s ease-in-out infinite; }
+.pf-skel-l { display: block; height: 14px; background: var(--line); }
+.pf-skel-l.is-title { width: 170px; max-width: 60%; height: 18px; }
+.pf-skel-l.is-bar { height: 12px; margin: 6px 0 4px; }
+.pf-skel-l.is-short { width: 55%; }
+.pf-skel-num { display: inline-block; width: 5.5em; max-width: 100%; height: .72em; background: var(--line); vertical-align: baseline; animation: skel-pulse 1.2s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .pf-skel, .pf-skel-num { animation: none; } }
+/* Exportar aparece desde o primeiro paint, desligado até as cartas chegarem. */
+.pf-head-actions .icon-btn:disabled { opacity: .45; cursor: default; }
 /* Períodos EMBAIXO do gráfico (Collectr, Robinhood): o polegar está ali, e o
    número grande lá em cima fica sem nada competindo com ele. */
 .pf-ranges { display: flex; margin-top: 12px; align-self: flex-start; }
