@@ -111,23 +111,86 @@
   // RETRATO INSTANTÂNEO antes de qualquer rede (estilo Collectr): o último
   // valor conhecido (histórico sincronizado ou cookie, via shared.valueSnapshot)
   // pinta os números NA HORA, esmaecido de leve; o cálculo fresco do render()
-  // troca os números e tira o esmaecido quando os chunks chegam. Quem abre o
+  // troca os números e tira o esmaecido quando as cartas chegam. Quem abre o
   // Portfólio abre pra ver o número — ele não pode esperar 50 requisições.
+  //
+  // 2026-11-19: o retrato era SÓ os três números, e o resto da tela abria
+  // desmontado enquanto a carga não voltava — gráfico em branco, os chips de
+  // todos os jogos do catálogo (que depois sumiam e puxavam a tela pra cima),
+  // os botões do cabeçalho ausentes e "—" onde ia valor. Só que o gráfico, o
+  // escopo dos chips e a variação do dia saem do HISTÓRICO, que já está no
+  // aparelho: nada disso precisa de rede. Agora o retrato é a tela inteira que
+  // dá pra montar com dado local (retratoLocal, chamado no fim do arquivo), e
+  // o que depende mesmo das cartas ganha esqueleto em vez de buraco.
   const SNAP_ELS = ["grandTotal", "rawValue", "gradedValue"];
   // Ponto de partida do patrimônio "assentando" (ver pintaPatrimonio): é o
   // valor do retrato que o usuário JÁ está vendo — contar a partir do zero
   // animaria um número que nunca foi verdade.
   let snapStart = null;
-  (function paintSnapshot() {
-    const snap = shared.valueSnapshot();
-    if (!snap) return;
-    const fromBRL = (v) => { const r = shared.convertMoney(v, "BRL", shared.getCurrency()); return r == null ? v : r; };
-    const pinta = (el, v) => { if (el) { el.textContent = money(fromBRL(v)); el.style.opacity = "0.55"; } };
-    snapStart = fromBRL(snap.total);
-    pinta(elements.grandTotal, snap.total);
-    pinta(elements.rawValue, snap.raw);
-    pinta(elements.gradedValue, snap.graded);
-  })();
+  // As cartas (e o câmbio) chegaram: daqui pra frente quem pinta é o render().
+  // Antes disso, trocar de jogo repinta só o retrato — um render() sem cartas
+  // mostraria patrimônio zero e ainda gravaria esse zero como ponto do dia.
+  let carregado = false;
+  // Retrato do FILTRO atual, em BRL. Em "Todos" é o shared.valueSnapshot (que
+  // ainda cobre quem só tem o cookie antigo); num jogo, o último ponto do
+  // histórico dele — o mesmo que fecha a linha do gráfico logo abaixo.
+  function retratoDoFiltro() {
+    if (gameFilter === "all") return shared.valueSnapshot();
+    const h = loadHist(gameFilter);
+    const p = h[h.length - 1];
+    return p ? { raw: p.c || 0, graded: p.b || 0, total: (p.c || 0) + (p.b || 0) } : null;
+  }
+  function pintaRetrato() {
+    const snap = retratoDoFiltro();
+    snapStart = snap ? fromBRL(snap.total) : null;
+    const valores = snap ? { grandTotal: snap.total, rawValue: snap.raw, gradedValue: snap.graded } : null;
+    SNAP_ELS.forEach((k) => {
+      const el = elements[k];
+      if (!el) return;
+      if (valores) { el.textContent = money(fromBRL(valores[k])); el.style.opacity = "0.55"; return; }
+      // Sem retrato (primeira visita neste aparelho) mas com carta a buscar:
+      // uma barra pulsando no lugar do número, não um "—" que parece resposta.
+      el.style.opacity = "";
+      if (temOQueCarregar) el.innerHTML = '<span class="pf-skel-num" aria-hidden="true"></span>';
+      else el.textContent = "—";
+    });
+  }
+  // Tudo o que a tela mostra SEM as cartas: os números do retrato, os
+  // controles e o gráfico (histórico local) e a variação do dia. Não grava
+  // nada — o ponto do dia só é registrado pelo updateChart, com o valor fresco.
+  function retratoLocal() {
+    pintaRetrato();
+    if (!controlsBound) { bindControls(); controlsBound = true; }
+    renderControls();
+    const pts = chartHistory();
+    pintaDeltaDoDia(pts);
+    renderChart(pts);
+    if (pctMode) hidrataIndices(); // preferência já vinha ligada de outra visita
+  }
+  // Um caminho só pra "o filtro mudou, repinta": completo com as cartas na
+  // mão, só o retrato enquanto elas não chegam.
+  function repinta() { if (carregado) render(); else retratoLocal(); }
+  // Esqueleto das seções que SEMPRE aparecem pra quem tem valor ("Onde está o
+  // valor" e "Mais valiosas"): seguram o lugar e dizem que tem mais vindo.
+  // As outras (movimentos, posições, metas) dependem de dado que muita gente
+  // não tem — esqueleto ali prometeria uma seção que não vem.
+  const ESQUELETO = '<div class="pf-skel" aria-hidden="true"><span class="pf-skel-l is-title"></span><span class="pf-skel-l is-bar"></span><span class="pf-skel-l"></span><span class="pf-skel-l"></span><span class="pf-skel-l is-short"></span></div>';
+  function pintaEsqueletos() {
+    if (!temOQueCarregar) return;
+    [elements.alloc, elements.top].forEach((sec) => {
+      if (!sec) return;
+      sec.innerHTML = ESQUELETO;
+      sec.setAttribute("aria-busy", "true");
+      sec.hidden = false;
+    });
+  }
+  function tiraEsqueletos(esconde) {
+    [elements.alloc, elements.top].forEach((sec) => {
+      if (!sec || !sec.hasAttribute("aria-busy")) return;
+      sec.removeAttribute("aria-busy");
+      if (esconde) { sec.hidden = true; sec.innerHTML = ""; }
+    });
+  }
 
   // O patrimônio PRIMEIRO, só com as suas cartas; o mercado (variações da
   // semana) e as cartas de listas/binders que você não tem são segundas
@@ -149,6 +212,18 @@
   // rodava só depois dos dados, a tela abria com o cabeçalho antigo e "pulava"
   // pro novo segundos depois (2026-09-20).
   initMobileToolbar();
+  // Tem carta a buscar? Sem nenhuma (conta nova), a carga volta em
+  // milissegundos e esqueleto só piscaria.
+  const temOQueCarregar = Object.values(idsOwned).some((ids) => ids && ids.length > 0);
+  // ?filter=<jogo> na URL: abre já filtrado (o chip do Hub manda assim, e é
+  // o que faz o refresh/compartilhamento não perderem o filtro).
+  function aplicaPedidoDaUrl(escopo) {
+    const pedido = shared.gameFilterFromUrl();
+    if (!pedido || pedido === gameFilter || !escopo.includes(pedido)) return;
+    gameFilter = pedido;
+    shared.markGameFilterChip(pedido);
+    shared.applyGameAccent(pedido);
+  }
   Promise.all([shared.loadOwnedFast(idsOwned), shared.loadFxRates()])
     .then(([catalog]) => {
       indexaCartas(catalog.cards);
@@ -160,24 +235,22 @@
       // faltou aqui.
       if (catalog.parcial) cargaParcial = true;
       GAMES.forEach((g) => ownedByGame[g].migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId))));
+      // De novo, agora com as cartas: só com elas dá pra saber o jogo de um
+      // slab, então um jogo em que você só tem graded (e ainda sem histórico)
+      // entra no filtro aqui. O escopo local é sempre um subconjunto deste.
       const escopo = escopoDeJogos();
       shared.setGameFilterScope(escopo);
-      // ?filter=<jogo> na URL: abre já filtrado (o chip do Hub manda assim, e é
-      // o que faz o refresh/compartilhamento não perderem o filtro).
-      const pedido = shared.gameFilterFromUrl();
-      if (pedido && escopo.includes(pedido)) {
-        gameFilter = pedido;
-        shared.markGameFilterChip(pedido);
-        shared.applyGameAccent(pedido);
-      }
-      bindGameFilter();
-      bindSecoes();
-      bindExport();
+      aplicaPedidoDaUrl(escopo);
+      carregado = true;
+      if (elements.export) elements.export.disabled = false;
       render();
+      tiraEsqueletos(false); // o render já trocou (ou escondeu) o conteúdo
       hidrataListas();
       hidrataVariacoes();
     })
     .catch((error) => {
+      tiraEsqueletos(true);
+      SNAP_ELS.forEach((k) => { if (elements[k] && elements[k].querySelector(".pf-skel-num")) elements[k].textContent = "—"; });
       shared.mostraErroDeCatalogo(elements.empty, error);
       elements.empty.hidden = false;
     });
@@ -243,7 +316,7 @@
     shared.markGameFilterChip(slug);
     shared.applyGameAccent(slug);
     shared.stampGameFilter(slug);
-    render();
+    repinta();
     if (elements.gameFilter) elements.gameFilter.scrollIntoView({ block: "nearest", behavior: "smooth" });
   }
 
@@ -259,7 +332,7 @@
       // Na URL: refresh mantém o filtro e o link do Portfólio filtrado pode ser
       // compartilhado (ver shared.stampGameFilter).
       shared.stampGameFilter(gameFilter);
-      render();
+      repinta();
     });
   }
 
@@ -467,7 +540,10 @@
       recap.addEventListener("click", () => exportRetrospectiva(recap));
     }
     if (!elements.export) return;
+    // Aparece JÁ (pra linha de ações não ganhar um botão depois e empurrar os
+    // outros), mas desligado: o CSV sai das cartas, que ainda estão vindo.
     elements.export.hidden = false;
+    elements.export.disabled = !carregado;
     elements.export.addEventListener("click", exportPortfolioCsv);
   }
   // ---- Retrospectiva do ano (PNG pra compartilhar) ---------------------------
@@ -1928,4 +2004,22 @@
     svg.addEventListener("touchend", onLeave);
     svg.addEventListener("touchcancel", onLeave);
   }
+
+  // ---- Primeiro paint, SEM rede ----------------------------------------------
+  // Fica no fim do arquivo porque usa as consts do gráfico (SERIES, RANGES,
+  // as preferências), que só existem depois de a IIFE passar por elas; a
+  // carga das cartas já foi disparada lá em cima e volta depois disto.
+  // O escopo dos chips sai do que é local (cartas e desejos marcados,
+  // histórico); o .then da carga refaz com o jogo dos slabs.
+  (function primeiroPaint() {
+    const escopo = escopoDeJogos();
+    limpaMemo(); // o escopo memoizou os slabs sem jogo (gameOf ainda vazio)
+    shared.setGameFilterScope(escopo);
+    aplicaPedidoDaUrl(escopo);
+    bindGameFilter();
+    bindSecoes();
+    bindExport();
+    retratoLocal();
+    pintaEsqueletos();
+  })();
 })();
