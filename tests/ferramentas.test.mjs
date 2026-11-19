@@ -200,9 +200,22 @@ test("o menu de topo FECHA com o Mais, depois da Coleção, do Portfólio e do B
   const m = src.match(/nav\.innerHTML = `([\s\S]*?)`;\n/);
   assert.ok(m, "sumiu o nav.innerHTML do initPageNav");
   const corpo = m[1];
-  const ordem = ["nav.home", "exploreMega", "nav.decks", "collectionMega", "nav.portfolio", "nav.blog", "moreMega"].map((k) => corpo.indexOf(k));
+  const ordem = ["nav.home", "exploreMega", "nav.decks", "collectionMega", "nav.blog", "moreMega"].map((k) => corpo.indexOf(k));
   ordem.forEach((i, n) => assert.ok(i >= 0, `item ${n} sumiu do menu`));
   assert.deepEqual([...ordem].sort((a, b) => a - b), ordem, "ordem do menu mudou");
+  // O Portfólio saiu do topo em 2026-11-19 (pouca gente entrava): é link do
+  // painel da Coleção, e a página dele acende a Coleção.
+  assert.ok(!/nav\.portfolio/.test(corpo), "o Portfólio saiu do menu de cima: mora no painel da Coleção");
+  const colecao = src.match(/const collectionMega = mega\(([\s\S]*?)\);\n/)[1];
+  assert.ok(colecao.includes('link("portfolio", "nav.portfolio", "portfolio")'), "link do Portfólio no painel da Coleção");
+  assert.ok(JSON.parse(src.match(/const collectionActive = (\[[^\]]*\])\.includes/)[1]).includes("portfolio"), "o Portfólio acende a Coleção");
+  // Celular: a barra de baixo troca o Portfólio pelo Blog, entre Decks e Coleção.
+  const barra = src.match(/bar\.innerHTML =([\s\S]*?);\n/)[1];
+  assert.ok(!/portfolio/.test(barra), "o Portfólio saiu da barra do celular");
+  const abas = ['tab("decks"', 'tab("blog"', 'tab("collection"'].map((k) => barra.indexOf(k));
+  abas.forEach((i) => assert.ok(i >= 0, "aba sumiu da barra do celular"));
+  assert.deepEqual([...abas].sort((a, b) => a - b), abas, "no celular o Blog fica entre Decks e Coleção");
+  assert.ok(/\+ tab\("blog"/.test(barra), "a aba do Blog não pode depender de login");
   // Fora do trecho que só aparece com login: o Blog é público.
   assert.ok(!/loggedIn \?[^:]*nav\.blog/.test(corpo), "o Blog não pode depender de login");
   const mais = src.match(/const moreMega = mega\(([\s\S]*?)\);\n/)[1];

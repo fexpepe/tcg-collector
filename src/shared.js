@@ -3113,7 +3113,8 @@
     const exploreActive = !vintageActive && ["pokedex", "lore", "trainers", "sets", "artists", "cards", "hub"].includes(active);
     // "Meus Decks" é página PESSOAL (entra pelo Dashboard), então acende a
     // Coleção — diferente de "Decks", que é a galeria PÚBLICA e tem item próprio.
-    const collectionActive = ["dashboard", "collection", "wishlist", "binders", "sales", "mydecks", "pastas"].includes(active);
+    // O Portfólio também (2026-11-19): saiu do topo e mora no painel da Coleção.
+    const collectionActive = ["dashboard", "collection", "wishlist", "binders", "sales", "mydecks", "pastas", "portfolio"].includes(active);
     // "Mais" (2026-10-01): as ferramentas. O Guia de condição e o
     // Sleeves moram nele (não na Coleção) desde que viraram ferramentas do
     // site; a Troca veio da Coleção em 2026-10-27, quando deixou de exigir
@@ -3139,7 +3140,7 @@
     // que saíram de linha; "Explorar" = busca GLOBAL multi-jogo.
     const exploreMega = `<a href="hub"${exploreActive ? ' class="active"' : ""}>${escapeHtml(t("nav.games"))}</a><a href="vintage"${vintageActive ? ' class="active"' : ""}>${escapeHtml(t("hub.vintage"))}</a><a href="explore"${active === "explore" ? ' class="active"' : ""}>${escapeHtml(t("nav.explore"))}</a>`;
 
-    // Toda Coleção e Portfólio são páginas PESSOAIS: só existem no menu com
+    // A Coleção é PESSOAL: só existe no menu com
     // login (deslogado, o "Entrar" do header é o caminho — sem atalhos mortos).
     const loggedIn = !!getSession();
     // Mega-menu da Coleção: o hover/foco no item abre os MESMOS atalhos do
@@ -3162,7 +3163,7 @@
     const collectionMega = mega("dashboard", "nav.collection", collectionActive, "nav.hubItem", "nav.hubHint",
       megaCol("nav.colCards", link("collection", "nav.collectionMine", "collection") + link("pastas", "nav.lists", "pastas") + link("wishlist", "nav.wishlist", "wishlist") + link("collection?tab=graded", "nav.graded", "graded")) +
       megaCol("nav.colOrganize", link("binders", "nav.binders", "binders") + link("my-decks", "nav.myDecks", "mydecks")) +
-      megaCol("nav.colMore", link("sales", "nav.sales", "sales") + link("troca", "trade.title", "troca") + link("badges", "dash.badges", "badges")));
+      megaCol("nav.colMore", link("portfolio", "nav.portfolio", "portfolio") + link("sales", "nav.sales", "sales") + link("troca", "trade.title", "troca") + link("badges", "dash.badges", "badges")));
     // Mais (2026-10-01, pedido do Fernando): o ÚLTIMO item do menu, logado ou
     // não. O clique leva à página Ferramentas; o painel lista as ferramentas.
     // O Centering Tool é página própria (/centering) desde a v2; o modal da
@@ -3177,13 +3178,17 @@
     // depois dentro do "Mais" (2026-10-01) e, em 2026-11-19 (pedido do
     // Fernando), voltou pro topo como item próprio: no computador, conteúdo
     // escondido atrás de um hover quase ninguém achava. Fica logo antes do
-    // "Mais", que segue fechando o menu, depois do Portfólio de quem entrou.
+    // "Mais", que segue fechando o menu, depois da Coleção de quem entrou.
+    // O Portfólio (2026-11-19, pedido do Fernando) saiu do topo: pouca gente
+    // entrava por ali. Virou link do painel da Coleção (coluna "Mais", junto
+    // de Vendas, que também é dinheiro), e o caminho principal passou a ser o
+    // botão "Abrir o Portfólio" do cartão de patrimônio do Hub, que ganhou
+    // destaque (.hb-cta) pra compensar.
     nav.innerHTML = `
       ${link(apexUrl, "nav.home", "home")}
       ${exploreMega}
       ${link("decks", "nav.decks", "decks")}
-      ${loggedIn ? `${collectionMega}
-      ${link("portfolio", "nav.portfolio", "portfolio")}` : ""}
+      ${loggedIn ? collectionMega : ""}
       ${link("blog", "nav.blog", "blog")}
       ${moreMega}
     `;
@@ -3374,8 +3379,9 @@
   // tela — o polegar tinha que mirar no último milímetro. A pintura é a do
   // Sleevu (vidro do header, linha, accent), não a da Collectr.
   //
-  // Seis destinos: Coleção · Jogos (hub) · Decks · Busca (search.html) ·
-  // Portfólio · Perfil (account.html). Início saiu (2026-09-14): a marca no
+  // Seis destinos (lista de 2026-09-14; a de hoje está no comentário da
+  // ordem, dentro da função): Coleção · Jogos (hub) · Decks · Busca
+  // (search.html) · Portfólio · Perfil (account.html). Início saiu (2026-09-14): a marca no
   // header já leva pra lá, e a vaga virou o Perfil — que substitui o
   // hambúrguer no celular (preferências, conta, Sair).
   // Hub aponta pro dashboard (o hub PESSOAL), como no desktop; Coleção vai
@@ -3392,7 +3398,8 @@
       // a mesma coisa nos dois lugares.
       decks: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="3" width="12" height="16" rx="2"/><path d="M4.5 6.5v12a2 2 0 0 0 2 2h9"/></svg>',
       collection: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="12" height="16" rx="2" transform="rotate(-8 10 14)"/><rect x="9" y="4" width="12" height="16" rx="2" transform="rotate(6 15 12)"/></svg>',
-      portfolio: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18"/><path d="m4 15 5-6 4 3 6-8"/></svg>',
+      // Blog: a folha do post, com as linhas do texto.
+      blog: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5"/><path d="M9.5 12.5h6"/><path d="M9.5 16.5h6"/></svg>',
       // Jogos (catálogo): booster/caixinha com a carta saindo — não repete a
       // grade do Hub nem a pilha da Coleção.
       catalog: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M3 11h18"/><path d="M8 7V4.5A1.5 1.5 0 0 1 9.5 3h5A1.5 1.5 0 0 1 16 4.5V7"/></svg>',
@@ -3405,8 +3412,8 @@
     const bar = document.createElement("nav");
     bar.className = "mobile-tabbar";
     bar.setAttribute("aria-label", t("nav.menu"));
-    // Coleção e Portfólio são pessoais: as abas só existem com login (espelha
-    // o menu do header — deslogado fica Início / Busca / Jogos / Decks).
+    // Hub e Coleção são pessoais: as abas só existem com login (espelha o
+    // menu do header).
     const logged = !!getSession();
     // Explorar não tem aba própria (a Busca ocupa esse papel no dedo), então
     // acende Jogos: as duas são o caminho do CATÁLOGO.
@@ -3419,8 +3426,14 @@
     // (tinha saído da barra logada no mesmo dia; voltou a pedido — é o
     // caminho do catálogo). Perfil saiu da barra: virou o botão no canto
     // direito do header (ver initHeaderProfileButton).
-    // Deslogado não há Hub/Coleção/Portfólio: fica Jogos · Busca · Decks, com
+    // Deslogado não há Hub/Coleção: fica Jogos · Busca · Decks · Blog, com
     // a Busca na MESMA 2ª posição, pra não mudar de lugar quando a pessoa entra.
+    // 2026-11-19 (pedido do Fernando): o Portfólio saiu da barra, como saiu do
+    // menu do computador (pouca gente entrava; o caminho é o botão do cartão
+    // de patrimônio do Hub), e a vaga foi pro Blog, entre Decks e Coleção.
+    // Logado: Hub · Busca · Jogos · Decks · Blog · Coleção. O Blog é público,
+    // então aparece deslogado também, na mesma ordem (depois de Decks). Na
+    // página do Portfólio acende o Hub, que é de onde se chega nela.
     // Busca é uma PÁGINA (search.html), não mais a paleta em popup: o popup
     // cobria a tabbar e a navegação sumia (2026-09-13).
     // Ícones: Hub usa o mesmo desenho de grade do item "Hub" do mega-menu da
@@ -3432,8 +3445,8 @@
       + tab("search", t("tabbar.search"), "search", active === "search")
       + (logged ? tab("hub", t("nav.games"), "catalog", gamesActive) : "")
       + tab("decks", t("nav.decks"), "decks", active === "decks")
-      + (logged ? tab("collection", t("tabbar.collection"), "collection", active === "collection") : "")
-      + (logged ? tab("portfolio", t("nav.portfolio"), "portfolio", active === "portfolio") : "");
+      + tab("blog", t("nav.blog"), "blog", active === "blog")
+      + (logged ? tab("collection", t("tabbar.collection"), "collection", active === "collection") : "");
     document.body.appendChild(bar);
   }
 

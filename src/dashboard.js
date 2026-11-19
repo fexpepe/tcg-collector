@@ -492,9 +492,10 @@
     { href: "my-decks", icon: "decks", key: "nav.myDecks", stat: t("dash.decksHint") },
     { href: "sales", icon: "sales", key: "nav.sales", stat: tn("dash.salesCount", salesCount()) + (soldTotal ? ` · ${tn("dash.soldCount", soldTotal)}` : "") },
     { href: "badges", icon: "badges", key: "dash.badges", stat: t("dash.badgesHint") }
-    // Explorar, Jogos e Portfólio saíram daqui: já são itens fixos do menu do
-    // header, então repetir na dashboard era redundante. O patrimônio continua
-    // no cartão grande lá em cima, que também leva ao Portfólio.
+    // Explorar e Jogos saíram daqui: já são itens fixos do menu do header,
+    // então repetir na dashboard era redundante. O Portfólio também não está
+    // aqui, mesmo fora do menu de cima desde 2026-11-19: o caminho dele é o
+    // botão em destaque do cartão de patrimônio lá em cima (.hb-cta).
   ];
   // Ferramentas (2026-10-01): o que a pessoa USA, não lugar aonde vai — por
   // isso fora do "Ir para". Guia de condição e Sleeves são página própria
