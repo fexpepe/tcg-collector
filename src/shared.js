@@ -7391,6 +7391,10 @@
     // automatizado: entra quando alguém conferir o caminho à mão.
     narutomythos: { usText: "naruto mythos tcg", noTcgplayer: true },
     narutokayou: { usText: "naruto kayou", noTcgplayer: true },
+    // Marvel Hero Rush (conferido em 19/11/2026): o TCGplayer não tem o jogo
+    // (94 categorias da TCGCSV) e ele só é vendido na Ásia; sem loja BR. Fica
+    // a busca do eBay, onde os singles aparecem.
+    herorush: { usText: "marvel hero rush", noTcgplayer: true },
     // Grand Archive TCG (13/11/2026): TCGplayer na linha "grand-archive" (o
     // prefixo do endereço de produto de lá). Loja BR e Cardmarket NÃO foram
     // conferidos: entram quando alguém conferir à mão.
@@ -9027,6 +9031,7 @@
     "duelmasters",
     "narutomythos",
     "narutokayou",
+    "herorush",
     "mbc",
     "cdm",
     "gcd",
@@ -9092,6 +9097,7 @@
     shadowverse: "#818cf8", // índigo claro (confirmada pelo Fernando, 2026-11-14): o ciano do logo já é do hololive e do WoW; 7.0:1 com preto, a 60 do Final Fantasy e a 83 do Yu-Gi-Oh!
     narutomythos: "#f65400", // = narutocg: mesma IP (Naruto), mesma cor
     narutokayou: "#f65400", // = narutocg: mesma IP (Naruto), mesma cor
+    herorush: "#b0003a",   // carmim: o vermelho da Marvel (#ec1d24) fica a 25 do Pokémon; 7.2:1 com branco, a 70 do Pokémon e a 83 do Flesh and Blood e do Harry Potter (proposta, 2026-11-19)
     duelmasters: "#fde68a", // ouro-claro, o amarelo do logo; 16.9:1 com preto, a 88 do Sorcery, o vizinho mais próximo (definida em 14/11/2026)
     vanguard: "#ff5a7a",   // coral: o vermelho do logo, clareado pra não colar no Pokémon (#e23030); 7.0:1 com preto, a 84 do Miracle Battle e a 90 do Pokémon (definida em 14/11/2026)
     godzilla: "#5e7c68",   // verde-chumbo, a pele do Godzilla (o vermelho #e60012 do logo fica a 57 do Pokémon); 4.6:1 com branco, a 66 do Palworld e a 84 do Magic (definida em 14/11/2026)

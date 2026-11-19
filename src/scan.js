@@ -131,7 +131,10 @@
       .replace(/\b0(?=[A-Z][A-Z0-9]{0,4}-[0-9OILSBZ])/g, "O")
       // Menos quando o código termina em "EN": é o Starter Deck do Shadowverse:
       // Evolve ("SD01-001EN"), que virava "GD01-001EN" (2026-11-13).
-      .replace(/\b[6GCS][D0O][0O](?=[1-9]-[0-9OILSBZ])(?![1-9]-[A-Z0-9]{2,6}EN\b)/g, "GD0");
+      // E menos o "SD0" lido por inteiro: é o Starter Deck do Marvel Hero Rush
+      // ("SD01-001"), que virava "GD01-001" (2026-11-19). As leituras erradas
+      // do Gundam que motivaram a regra trocam também o D ("S002", "6001").
+      .replace(/\b(?!SD0)[6GCS][D0O][0O](?=[1-9]-[0-9OILSBZ])(?![1-9]-[A-Z0-9]{2,6}EN\b)/g, "GD0");
     const alinhado = palavras && palavras.length && up.length === String(texto).length;
     const conf = (ini, fim) => {
       if (!alinhado) return 0;
@@ -496,10 +499,23 @@
     // também; o "MYTHOS" e a fração desempatam.
     narutomythos: [/MYTHOS ?TCG/, /\bN\. ?M\. ?TCG\b/],
     // Naruto Kayou: a marca vai impressa no verso e em mosaico na frente.
-    narutokayou: [/KAYOU/]
+    narutokayou: [/KAYOU/],
+    // Marvel Hero Rush: o nome do jogo. "MARVEL" sozinho não entra: o Magic
+    // tem sets da Marvel (Universes Beyond) com o © dela no rodapé.
+    herorush: [/HERO ?RUSH/]
   };
   const FORMATOS = [
-    [/^(OP|EB|PRB)\d{2}-/, ["onepiece"]],
+    // "EB01-001" é o Extra Booster do One Piece e o Event Pack do Marvel Hero
+    // Rush (2026-11-19): vale pros dois, e a pista impressa ou o jogo da
+    // sessão desempatam.
+    [/^(OP|PRB)\d{2}-/, ["onepiece"]],
+    [/^EB\d{2}-/, ["onepiece", "herorush"]],
+    // Marvel Hero Rush: booster (BP01-001), Special e Lite Pack (SP01-, LP01-),
+    // Starter Deck (SD01-001, três dígitos: o starter do Dragon Ball Super
+    // Masters tem dois), Promotion Pack (PB01-) e Treasure Booster (TB01-001,
+    // que a regra do Themed Booster do Masters, mais abaixo, também aceita:
+    // nesse código valem os dois jogos, e a pista ou a sessão desempatam).
+    [/^(?:BP|SP|LP|SD|PB|TB)\d{2}-\d{3}$/, ["herorush"]],
     // "ST01-001" é starter de três jogos e o Story Booster do DBFW (144
     // cartas, que antes iam pra busca só como One Piece/Digimon).
     [/^ST\d{2}-\d{3}$/, ["onepiece", "gundam", "digimon", "dbfw"]],

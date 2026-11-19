@@ -2141,6 +2141,13 @@
       extra: /^(E?CP|SP|PCS|GFB)\d+$/,
       deck: /^(C?SD|SDD|GFD|SS)\d+$/
     },
+    // Marvel Hero Rush (19/11/2026): cabe na mesma forma. O setId é
+    // "mhr-<código do produto>": BP é o booster numerado; SP (Special Pack,
+    // "Era of Spiders") e LP (Lite Pack), os boosters extras; SD, os Starter
+    // Decks. O Event Pack (EB) vai pra "Cartas de evento" pelo CÓDIGO
+    // (`event`): o nome dele não tem as palavras do EVENTO_BANDAI. Promotion
+    // Pack (PB) e Treasure Booster (TB) caem nas promos.
+    herorush: { main: /^MHR-BP\d+$/, extra: /^MHR-(SP|LP)\d+$/, deck: /^MHR-SD\d+$/, event: /^MHR-EB\d+$/ },
     grandarchive: {
       main: /^(?!EVP|KSP|GSC|SLC|SLM|SHD)[A-Z]{3}(1E|-1ST)?$/,
       extra: /-ALTER$|^[A-Z]{3}(AE|DP|PD|P|G)$/,
@@ -2164,6 +2171,8 @@
     const secaoDe = (set) => {
       if (EVENTO_BANDAI.test(set.name)) return "event";
       const id = String(set.setId || "").trim().toUpperCase();
+      // `event`: jogo cujo produto de evento se reconhece pelo código, não pelo nome.
+      if (regras.event && regras.event.test(id)) return "event";
       return regras.main.test(id) ? "main" : regras.extra.test(id) ? "extra" : regras.deck.test(id) ? "deck" : "promo";
     };
     const grupos = [

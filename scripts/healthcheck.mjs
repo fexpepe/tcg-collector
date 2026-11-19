@@ -192,6 +192,8 @@ await checkManifest("manifest Duel Masters", "/data/duelmasters/manifest.generat
 await checkManifest("manifest Naruto Mythos", "/data/narutomythos/manifest.generated.js", 550);
 // Naruto Kayou (edição em inglês): 1.188 cartas no lançamento do catálogo (12/11/2026); sem preço.
 await checkManifest("manifest Naruto Kayou", "/data/narutokayou/manifest.generated.js", 1000);
+// Marvel Hero Rush: 667 cartas no lançamento do catálogo (19/11/2026); sem preço.
+await checkManifest("manifest Marvel Hero Rush", "/data/herorush/manifest.generated.js", 570);
 await checkManifest("manifest Miracle Battle Carddass", "/data/mbc/manifest.generated.js", 900);
 await checkManifest("manifest Carddass Masters", "/data/cdm/manifest.generated.js", 250);
 await checkManifest("manifest Gundam Carddass", "/data/gcd/manifest.generated.js", 1200);

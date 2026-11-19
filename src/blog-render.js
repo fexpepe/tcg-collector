@@ -96,6 +96,7 @@
     duelmasters: ["Duel Masters", "#fde68a"],
     narutomythos: ["Naruto Mythos", "#f65400"],
     narutokayou: ["Naruto Kayou", "#f65400"],
+    herorush: ["Marvel Hero Rush", "#b0003a"],
     mbc: ["Miracle Battle", "#fb923c"],
     cdm: ["Carddass Masters", "#a21caf"],
     gcd: ["Gundam Carddass", "#2563eb"],

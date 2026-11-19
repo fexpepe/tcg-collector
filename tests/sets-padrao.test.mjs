@@ -343,6 +343,10 @@ test("Bandai moderno: coleção numerada, boosters extras, decks e promos, pelo 
   assert.deepEqual(secoesBandai("godzilla", ["EBP01", "EBP05", "ESD01", "ESD05", "EPR", "ESC01"]), {
     main: ["EBP01", "EBP05"], decks: ["ESD01", "ESD05"], promos: ["EPR", "ESC01"]
   });
+  // Marvel Hero Rush: o Event Pack vai pra "Cartas de evento" pelo código.
+  assert.deepEqual(secoesBandai("herorush", ["mhr-bp01", "mhr-sp01", "mhr-lp01", "mhr-sd01", "mhr-sd06", "mhr-eb01", "mhr-pb01-a", "mhr-pb02", "mhr-tb01"]), {
+    main: ["mhr-bp01"], extraBoosters: ["mhr-lp01", "mhr-sp01"], decks: ["mhr-sd01", "mhr-sd06"], events: ["mhr-eb01"], promos: ["mhr-pb01-a", "mhr-pb02", "mhr-tb01"]
+  });
   // Palworld (Bushiroad, idem): a 2ª edição é principal, o Sleeve Set é promo.
   assert.deepEqual(secoesBandai("palworld", ["EBP01", "EBP01-2E", "EBP02", "ESS01", "ETD01", "ETD02", "EPR", "PC"]), {
     main: ["EBP01", "EBP01-2E", "EBP02"], decks: ["ETD01", "ETD02"], promos: ["EPR", "ESS01", "PC"]

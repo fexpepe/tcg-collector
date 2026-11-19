@@ -156,6 +156,8 @@
     if (flat.includes("unionarena")) return "unionarena";
     // "Palworld OFFICIAL CARD GAME" (a linha do TCGplayer) ou só "Palworld".
     if (flat.includes("palworld")) return "palworld";
+    // "Marvel Hero Rush" (ou "Marvel HeroRush", como as lojas da Ásia escrevem).
+    if (flat.includes("herorush")) return "herorush";
     // "Naruto Card Game" é a linha do TCGplayer do jogo de 2027 (narutocg): o
     // vintage de 2002 não está no TCGplayer. O resto fica no
     // naruto, como antes.

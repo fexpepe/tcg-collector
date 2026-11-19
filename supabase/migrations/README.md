@@ -8,6 +8,18 @@ poucos.)
 
 ## Pendentes de aplicar
 
+- `20261119a` — libera o slug `herorush` (Marvel Hero Rush, 2026+, edição em
+  inglês) nas duas whitelists de jogo (`card_views`/`increment_card_view` e
+  `contribute_price`; `20261119a_add_herorush.sql`). Cópia da `20261114c`
+  (Dragon Ball Super Masters, a última aplicada) com o `herorush` a mais:
+  **ela cobre a 20261114c** e, por ela, todas as de jogo anteriores. Só a
+  lista muda. Qualquer uma das anteriores rodada **depois** desta tiraria o
+  `herorush`. Sem ela, a view de carta e o Preço da Comunidade do jogo novo
+  são descartados em silêncio. Conferir com o par de `curl` do fim do
+  arquivo: a view de `mhr-bp01-001-mr` tem de **criar a linha** no
+  `card_views` (o 204 sozinho não prova nada). **A próxima migração de jogo
+  copia esta.**
+
 - `20261114c` — libera o slug `dbs` (Dragon Ball Super Card Game Masters,
   Bandai, 2017+, edição em inglês) nas duas whitelists de jogo
   (`card_views`/`increment_card_view` e `contribute_price`;

@@ -99,6 +99,8 @@ test("mapCsvGame: os 13 jogos, nas grafias do Collectr/TCGplayer", () => {
   assert.equal(api.mapCsvGame("Naruto Card Game"), "narutocg"); // a linha do TCGplayer, que só tem o de 2027
   // Jogos próprios desde 2026-11-12: a Kayou (como o Collectr escreve) e o Mythos.
   assert.equal(api.mapCsvGame("Naruto Kayou"), "narutokayou");
+  assert.equal(api.mapCsvGame("Marvel Hero Rush"), "herorush");
+  assert.equal(api.mapCsvGame("Marvel HeroRush"), "herorush");
   assert.equal(api.mapCsvGame("Naruto Mythos TCG"), "narutomythos");
   assert.equal(api.mapCsvGame("Naruto"), "naruto");
   // Categoria do TCGplayer: "Palworld OFFICIAL CARD GAME".

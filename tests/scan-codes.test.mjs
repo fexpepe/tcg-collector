@@ -329,6 +329,27 @@ test("Naruto Kayou: o código inteiro, de três trechos, e só dele (2026-11-12)
   assert.equal(Array.from(S.detectarJogo("", ["NR-001"], "hub").restritos).includes("narutokayou"), false);
 });
 
+test("Marvel Hero Rush: os códigos dele, o EB dividido com o One Piece e o SD que não vira Gundam (2026-11-19)", () => {
+  // Booster, Special/Lite Pack, Starter Deck e Promotion Pack: só dele.
+  for (const c of ["BP01-001", "SP01-021", "LP01-081", "SD05-001", "PB02-001"]) {
+    assert.deepEqual(Array.from(S.detectarJogo("", [c], "hub").restritos), ["herorush"], c);
+  }
+  // O Treasure Booster divide o formato com o Themed Booster do Masters.
+  assert.deepEqual(Array.from(S.detectarJogo("", ["TB01-001"], "hub").restritos).sort(), ["dbs", "herorush"]);
+  // "EB01-001" é o Extra Booster do One Piece e o Event Pack do Hero Rush:
+  // sem pista ficam os dois; o nome do jogo ou a sessão desempatam.
+  assert.deepEqual(Array.from(S.detectarJogo("", ["EB01-001"], "hub").restritos).sort(), ["herorush", "onepiece"]);
+  assert.equal(S.detectarJogo("MARVEL HERO RUSH", ["EB01-001"], "hub").jogos[0], "herorush");
+  assert.equal(S.detectarJogo("", ["EB01-001"], "onepiece").jogos[0], "onepiece");
+  assert.deepEqual(Array.from(S.detectarJogo("", ["OP05-119"], "hub").restritos), ["onepiece"]);
+  // O "SD01-001" lido certo não é reescrito pra "GD01-001"; as leituras erradas
+  // do Gundam (o D lido como zero) seguem sendo corrigidas.
+  assert.equal(codigos("SD01-001")[0], "SD01-001");
+  assert.equal(codigos("S002-030")[0], "GD02-030");
+  // O starter do Dragon Ball Super Masters tem dois dígitos no número.
+  assert.deepEqual(Array.from(S.detectarJogo("", ["SD1-01"], "hub").restritos), ["dbs"]);
+});
+
 test("Naruto Mythos TCG: a fração é de seis jogos, e o rodapé diz qual (2026-11-12)", () => {
   assert.deepEqual(codigos("C 3/130  1° EDITION NARUTO MYTHOS TCG"), ["3/130"]);
   const sem = S.detectarJogo("3/130", ["3/130"], "hub");

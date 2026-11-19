@@ -584,6 +584,19 @@
   --accent: #4a7322; --accent-dark: #3d6620; --accent-rgb: 74, 115, 34;
   --accent-soft: rgba(74, 115, 34, 0.1); --on-accent: #ffffff;
 }
+/* Marvel Hero Rush: carmim (#b0003a, o do GAME_COLOR; proposta de 19/11/2026
+   — o vermelho da Marvel fica colado no do Pokémon). No claro, com texto
+   branco (7.2:1); no escuro ele some no fundo, então o accent abre pro
+   #ff5c8a (7.0:1 com o texto escuro). */
+[data-game-accent="herorush"] {
+  --accent: #ff5c8a; --accent-dark: #e8447a; --accent-rgb: 255, 92, 138;
+  --accent-soft: rgba(255, 92, 138, 0.16); --on-accent: #0a0c10;
+}
+[data-theme="light"][data-game-accent="herorush"],
+[data-theme="light"] [data-game-accent="herorush"] {
+  --accent: #b0003a; --accent-dark: #930030; --accent-rgb: 176, 0, 58;
+  --accent-soft: rgba(176, 0, 58, 0.1); --on-accent: #ffffff;
+}
 [data-game-accent="all"] {
   --accent: #e3e7ee; --accent-dark: #c3c9d4; --accent-rgb: 227, 231, 238;
   --accent-soft: rgba(227, 231, 238, 0.12); --on-accent: #0a0c10;

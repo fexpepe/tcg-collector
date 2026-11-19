@@ -142,6 +142,7 @@ jobs:
             data/dbs/sets
             data/narutomythos/sets
             data/narutokayou/sets
+            data/herorush/sets
             data/jump/sets
             data/magic/cards.js
             data/magic/indexes.js
@@ -198,6 +199,7 @@ jobs:
                    data/vanguard/manifest.generated.js \
                    data/narutomythos/manifest.generated.js \
                    data/narutokayou/manifest.generated.js \
+                   data/herorush/manifest.generated.js \
                    data/grandarchive/manifest.generated.js \
                    data/hololive/manifest.generated.js \
                    data/duelmasters/manifest.generated.js \
@@ -740,6 +742,15 @@ jobs:
       # DESLIGADO desde 14/11/2026 (PRECO_LIGADO no sync; os termos da Yuyu-tei
       # proíbem republicar sem autorização). Volta junto quando religar.
 
+      # Marvel Hero Rush (2026+): a API publica do site oficial (lista de cartas
+      # e de produtos). Id pelo numero e pela raridade impressos. A imagem da
+      # fonte e assinada e vence em um dia: o catalogo guarda a chave e a
+      # imagem vem so do espelho (mirror-images.yml). Sem preco: o TCGplayer
+      # nao tem o jogo, entao nao ha passo de historico.
+      - name: Sincroniza catálogo do Marvel Hero Rush (API do site oficial)
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/sync-herorush.mjs || echo "sync-herorush falhou; mantém o catalogo versionado"
+
       # NARUTO Mythos TCG (Cicaboom, 2026+): a galeria oficial do jogo, um JSON
       # publico que o site dela le. Id pelo SKU oficial; a 2a edicao do Set 1
       # vira set a parte e as cartas de torneio, "<set> Promos". Sem preco: o
@@ -1199,6 +1210,7 @@ jobs:
             data/dbs/sets
             data/narutomythos/sets
             data/narutokayou/sets
+            data/herorush/sets
             data/jump/sets
             data/magic/cards.js
             data/magic/indexes.js

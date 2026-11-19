@@ -489,6 +489,10 @@
     // Naruto Kayou, edição em inglês (12/11/2026): as siglas impressas, na
     // ordem das tabelas de raridade do site oficial lidas de baixo pra cima; a
     // paralela (◇) logo depois da comum dela.
+    // Marvel Hero Rush (19/11/2026): a escada do booster, da comum à Secret,
+    // e a Hero Rare numerada de Era of Spiders; depois as de fora do booster
+    // (Promotion, Event e Treasure).
+    herorush: ["C", "R", "SR", "GR", "UR", "MR", "SEC", "HR", "PR", "ER", "TR"],
     narutokayou: ["R", "SR", "SSR", "UR", "◇UR", "PTR", "HR", "PU", "QR", "◇QR", "XR", "◇XR", "MR", "◇MR", "BP", "AR", "CR", "ASP", "◇ASP", "SP", "◇SP", "SE"],
     // One Piece Card Game (TCGCSV): as siglas da carta, Líder primeiro como no
     // jogo. Depois as vintage: o acabamento do Carddass Hyper Battle

@@ -53,6 +53,9 @@ export const JOGOS_URL = [
   // cartas de coleção da Kayou, na edição em inglês. A Kayou usa o logo do Naruto, como o site oficial dela.
   { url: "naruto-mythos-tcg", game: "narutomythos", nome: "Naruto Mythos TCG", logo: "assets/games/game_narutomythos.webp" },
   { url: "naruto-kayou", game: "narutokayou", nome: "Naruto Kayou", logo: "assets/games/game_narutokayou.webp" },
+  // Marvel Hero Rush (2026-11-19): o TCG da Marvel feito na China. Sem logo: o único oficial que achei é o do
+  // cabeçalho do site (154×64), pequeno demais pro padrão do docs/LOGOS.md. O tile sai em texto.
+  { url: "marvel-hero-rush", game: "herorush", nome: "Marvel Hero Rush", logo: "" },
   { url: "gundam-carddass", game: "gcd", nome: "Gundam Carddass", logo: "assets/games/game_gcd-v2.webp", vintage: "1988–1997" },
   { url: "saint-seiya-carddass", game: "seiya", nome: "Saint Seiya Carddass", logo: "assets/games/game_seiya-v2.webp", vintage: "1988–2023" },
   { url: "dragon-ball-carddass", game: "dbc", nome: "Dragon Ball Carddass", logo: "assets/games/game_dbc-v3.webp", vintage: "1988–1997" },

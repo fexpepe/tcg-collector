@@ -121,6 +121,8 @@ const JOGOS = {
   narutomythos: { min: 0.93, impresso: (c) => `${String(c.number).replace(/^0+(?=\d)/, "")}  1° EDITION NARUTO MYTHOS TCG`, nota: "sobram as Mission (MSS 05), que não numeram em fração" },
   // Naruto Kayou (2026-11-12): o código inteiro no canto ("NRSA01-SE-001L5").
   // O losango da paralela não é lido: o texto vai sem ele.
+  // Marvel Hero Rush (2026-11-19): o código impresso é o número ("BP01-001").
+  herorush: { min: 0.98 },
   narutokayou: { min: 0.98, impresso: (c) => String(c.number).replace(/◇/g, "") },
   wow: { semCodigo: "o catálogo não guarda o número da carta" },
   sorcery: { semCodigo: "o catálogo não guarda o número da carta" },

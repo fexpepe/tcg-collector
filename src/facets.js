@@ -277,6 +277,12 @@
       facetColor("color"),
       facetType(["Legend", "Unit", "Program", "Gear"])
     ],
+    // Marvel Hero Rush (19/11/2026): as seis cores (uma por Joia do Infinito;
+    // as RUSH POINT não têm cor) e os dois tipos de carta.
+    herorush: [
+      facetColor("color"),
+      facetType(["Character", "Impact"])
+    ],
     // Palworld OFFICIAL CARD GAME (11/11/2026): a cor da carta (as 4 mais a
     // Colorless, que vai pro fim), o ELEMENTO do Pal — os 9 do videogame, na
     // ordem dele; o Pal de dois ("Dragon;Fire") conta nos dois — e o tipo.
