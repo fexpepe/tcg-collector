@@ -39,6 +39,14 @@ carrega e esconde o nome em texto (fallback sem erro).
   no conteúdo, reduzido pra 512×257 em alfa pré-multiplicado, alfa ≤12 zerado,
   WebP sem perda (72 KB). O "MYTHOS TCG" é preto: lê bem na cápsula branca do
   hub e some em fundo escuro, então o logo só vai onde há cápsula.
+- `game_herorush.webp` — Marvel Hero Rush (19/11/2026): arte enviada pelo
+  Fernando no dia em que o jogo entrou, PNG de 1774×887 com fundo
+  transparente: a caixa vermelha da MARVEL, o "HERORUSH" preto e "TRADING CARD
+  GAME" embaixo. É o mesmo desenho do cabeçalho de marvelherorush.com, que lá
+  é branco e tem só 154×64 (0,66× no hub, recusado pelo check-logos). Gerado
+  pelo `normaliza-logo.mjs`: recortado na tinta (1683×684), 640×260, WebP q90
+  com alfa sem perda (24,8 KB). O "HERORUSH" é preto: lê na cápsula branca do
+  hub e some em fundo escuro, então o logo só vai onde há cápsula.
 - `game_narutokayou.webp` — Naruto Kayou (13/11/2026): até aqui o jogo usava o
   `game_naruto.webp` (o site oficial da Kayou só mostra o logo do Naruto); o
   Fernando mandou a arte com o "KAYOU" amarelo em cima do Naruto, PNG 1280×1280

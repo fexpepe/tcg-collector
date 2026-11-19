@@ -20,6 +20,11 @@ poucos.)
   `card_views` (o 204 sozinho não prova nada). **A próxima migração de jogo
   copia esta.**
 
+  **Aplicada em 2026-11-19** pelo Fernando ("feito, SQL subido"). A
+  verificação por curl anônimo ainda não foi feita: a sessão que preparou a
+  migração não pôde gravar no banco de produção. Falta rodar o par de `curl`
+  e anotar aqui o resultado.
+
 - `20261114c` — libera o slug `dbs` (Dragon Ball Super Card Game Masters,
   Bandai, 2017+, edição em inglês) nas duas whitelists de jogo
   (`card_views`/`increment_card_view` e `contribute_price`;
