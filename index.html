@@ -230,10 +230,12 @@
         <div class="lp-stat"><strong>R$ · $ · €</strong><span data-i18n="home.lp.statPrices">preços BR, EUA e Europa</span></div>
       </section>
 
-      <!-- JOGOS: a parede de logos no lugar do parágrafo que listava os nomes.
-           Mesma lista, ordem e logos do hub.html (os modernos e as linhas
-           vintage que têm logo); cada cápsula abre a tela de Sets do jogo
-           (/games/<jogo>). Jogo novo entra AQUI e no hub. -->
+      <!-- JOGOS: vitrine de logos, não o catálogo inteiro. Eram os 27 modernos
+           e as 14 linhas vintage (a parede crescia a cada jogo novo e empurrava
+           o resto da home); desde 2026-11-19 são 2 fileiras de 4 por bloco: os
+           7 primeiros do hub.html, na mesma ordem, e a 8ª cápsula é o "Ver
+           outros", que leva à página de Jogos (hub) ou ao acervo Vintage. Jogo
+           novo entra no hub; aqui só se ele entrar entre os 7 primeiros. -->
       <section class="lp-secao lp-jogos">
         <div class="lp-cab">
           <h2 data-i18n="home.lp.gamesTitle">Um app, todos os seus jogos</h2>
@@ -247,29 +249,10 @@
           <li data-game-accent="gundam"><a href="/games/gundam-card-game"><img src="assets/games/game_gundam-v2.webp" alt="Gundam Card Game" loading="lazy" decoding="async"></a></li>
           <li data-game-accent="riftbound"><a href="/games/riftbound"><img src="assets/games/game_riftbound-v2.webp" alt="Riftbound" loading="lazy" decoding="async"></a></li>
           <li data-game-accent="ygo"><a href="/games/yu-gi-oh"><img src="assets/games/game_ygo-v2.webp" alt="Yu-Gi-Oh!" loading="lazy" decoding="async"></a></li>
-          <li data-game-accent="lorcana"><a href="/games/disney-lorcana"><img src="assets/games/game_lorcana-v2.webp" alt="Disney Lorcana" loading="lazy" decoding="async"></a></li>
-          <li data-game-accent="unionarena"><a href="/games/union-arena"><img src="assets/games/game_unionarena-v2.webp" alt="Union Arena" loading="lazy" decoding="async"></a></li>
-          <li data-game-accent="dbfw"><a href="/games/dragon-ball-fusion-world"><img src="assets/games/game_dbfw-v2.webp" alt="Dragon Ball Fusion World" loading="lazy" decoding="async"></a></li>
-          <li data-game-accent="dbs"><a href="/games/dragon-ball-super-card-game"><img src="assets/games/game_dbs.webp" alt="Dragon Ball Super Card Game Masters" loading="lazy" decoding="async"></a></li>
-          <li data-game-accent="cyberpunk"><a href="/games/cyberpunk-tcg"><img src="assets/games/game_cyberpunk.webp" alt="Cyberpunk TCG" loading="lazy" decoding="async"></a></li>
-          <li data-game-accent="swu"><a href="/games/star-wars-unlimited"><img src="assets/games/game_swu-v2.webp" alt="Star Wars: Unlimited" loading="lazy" decoding="async"></a></li>
-          <li data-game-accent="fab"><a href="/games/flesh-and-blood"><img src="assets/games/game_fab.webp" alt="Flesh and Blood" loading="lazy" decoding="async"></a></li>
-          <li data-game-accent="digimon"><a href="/games/digimon-card-game"><img src="assets/games/game_digimon-v2.webp" alt="Digimon Card Game" loading="lazy" decoding="async"></a></li>
-          <li data-game-accent="fftcg"><a href="/games/final-fantasy-tcg"><img src="assets/games/game_fftcg.webp" alt="Final Fantasy Trading Card Game" loading="lazy" decoding="async"></a></li>
-          <li data-game-accent="vanguard"><a href="/games/cardfight-vanguard"><img src="assets/games/game_vanguard.webp" alt="Cardfight!! Vanguard" loading="lazy" decoding="async"></a></li>
-          <li data-game-accent="duelmasters"><a href="/games/duel-masters"><img src="assets/games/game_duelmasters-v2.webp" alt="Duel Masters" loading="lazy" decoding="async"></a></li>
-          <li data-game-accent="weiss"><a href="/games/weiss-schwarz"><img src="assets/games/game_weiss.webp" alt="Weiß Schwarz" loading="lazy" decoding="async"></a></li>
-          <li data-game-accent="palworld"><a href="/games/palworld-official-card-game"><img src="assets/games/game_palworld.webp" alt="Palworld Official Card Game" loading="lazy" decoding="async"></a></li>
-          <li data-game-accent="godzilla"><a href="/games/godzilla-card-game"><img src="assets/games/game_godzilla.webp" alt="Godzilla Card Game" loading="lazy" decoding="async"></a></li>
-          <li data-game-accent="sorcery"><a href="/games/sorcery-contested-realm"><img src="assets/games/game_sorcery-v2.webp" alt="Sorcery: Contested Realm" loading="lazy" decoding="async"></a></li>
-          <li data-game-accent="grandarchive"><a href="/games/grand-archive"><img src="assets/games/game_grandarchive-v2.webp" alt="Grand Archive TCG" loading="lazy" decoding="async"></a></li>
-          <li data-game-accent="hololive"><a href="/games/hololive-official-card-game"><img src="assets/games/game_hololive.webp" alt="hololive Official Card Game" loading="lazy" decoding="async"></a></li>
-          <li data-game-accent="shadowverse"><a href="/games/shadowverse-evolve"><img src="assets/games/game_shadowverse-v2.webp" alt="Shadowverse: Evolve" loading="lazy" decoding="async"></a></li>
-          <li data-game-accent="narutomythos"><a href="/games/naruto-mythos-tcg"><img src="assets/games/game_narutomythos.webp" alt="Naruto Mythos TCG" loading="lazy" decoding="async"></a></li>
-          <li data-game-accent="narutokayou"><a href="/games/naruto-kayou"><img src="assets/games/game_narutokayou.webp" alt="Naruto Kayou" loading="lazy" decoding="async"></a></li>
-          <li data-game-accent="herorush"><a href="/games/marvel-hero-rush"><img src="assets/games/game_herorush.webp" alt="Marvel Hero Rush" loading="lazy" decoding="async"></a></li>
+          <li class="lp-logo-mais"><a href="hub"><span data-i18n="home.lp.gamesMore">Ver outros</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></a></li>
         </ul>
-        <!-- Vintage: mesma ordem cronológica do hub. O ano não se traduz. -->
+        <!-- Vintage: as 7 linhas mais antigas, na ordem cronológica do hub. O ano
+             não se traduz. -->
         <h3 class="lp-logos-rotulo" data-i18n="hub.vintage">Vintage</h3>
         <ul class="lp-logos lp-logos-vintage">
           <li data-game-accent="gcd"><a href="/games/gundam-carddass"><img src="assets/games/game_gcd-v2.webp" alt="Gundam Carddass" loading="lazy" decoding="async"></a><span class="lp-logo-ano">1988–1997</span></li>
@@ -279,13 +262,7 @@
           <li data-game-accent="onepiece"><a href="/games/one-piece-carddass"><img src="assets/games/game_onepiece_carddass-v2.webp" alt="One Piece Carddass Hyper Battle" loading="lazy" decoding="async"></a><span class="lp-logo-ano">1999–2002</span></li>
           <li data-game-accent="dbz"><a href="/games/dragon-ball-z-ccg"><img src="assets/games/game_dbz-v2.webp" alt="Dragon Ball Z Collectible Card Game" loading="lazy" decoding="async"></a><span class="lp-logo-ano">2000–2006</span></li>
           <li data-game-accent="harrypotter"><a href="/games/harry-potter-tcg"><img src="assets/games/game_harrypotter.webp" alt="Harry Potter Trading Card Game" loading="lazy" decoding="async"></a><span class="lp-logo-ano">2001–2002</span></li>
-          <li data-game-accent="lotr"><a href="/games/lord-of-the-rings-tcg"><img src="assets/games/game_lotr-v2.webp" alt="The Lord of the Rings TCG" loading="lazy" decoding="async"></a><span class="lp-logo-ano">2001–2007</span></li>
-          <li data-game-accent="onepiece"><a href="/games/one-piece-card-game-2002"><img src="assets/games/game_onepiece_2002-v2.webp" alt="One Piece Card Game (classic)" loading="lazy" decoding="async"></a><span class="lp-logo-ano">2002–2005</span></li>
-          <li data-game-accent="naruto"><a href="/games/naruto-card-game-2002"><img src="assets/games/game_naruto_vintage.webp" alt="Naruto Card Game" loading="lazy" decoding="async"></a><span class="lp-logo-ano">2002–2006</span></li>
-          <li data-game-accent="naruto"><a href="/games/naruto-data-carddass"><img src="assets/games/game_naruto_datacarddass.webp" alt="Naruto Narutimate Card Battle (Data Carddass)" loading="lazy" decoding="async"></a><span class="lp-logo-ano">2005–2010</span></li>
-          <li data-game-accent="naruto"><a href="/games/naruto-ccg"><img src="assets/games/game_naruto_ccg-v3.webp" alt="Naruto Collectible Card Game" loading="lazy" decoding="async"></a><span class="lp-logo-ano">2006–2013</span></li>
-          <li data-game-accent="wow"><a href="/games/world-of-warcraft-tcg"><img src="assets/games/game_wow.webp" alt="World of Warcraft Trading Card Game" loading="lazy" decoding="async"></a><span class="lp-logo-ano">2006–2013</span></li>
-          <li data-game-accent="mbc"><a href="/games/miracle-battle-carddass"><img src="assets/games/game_mbc-v2.webp" alt="Miracle Battle Carddass" loading="lazy" decoding="async"></a><span class="lp-logo-ano">2009–2014</span></li>
+          <li class="lp-logo-mais"><a href="vintage"><span data-i18n="home.lp.gamesMore">Ver outros</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></a></li>
         </ul>
         <p class="lp-jogos-foot" data-i18n="hub.moreSoon">Mais jogos em breve</p>
       </section>
