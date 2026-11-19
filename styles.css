@@ -8050,6 +8050,16 @@ select.bed-input { padding: 0 10px; }
 /* Lista de posts. */
 .bed-list-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
 .bed-list-head h1 { margin-bottom: 8px; }
+/* "Importar .md" ao lado do "Novo post" (2026-11-19): os dois com a mesma
+   altura, a de toque (44px). No celular a dupla ocupa a linha inteira. */
+.bed-list-acoes { display: flex; flex-wrap: wrap; gap: 8px; }
+.bed-list-acoes .cta, .bed-importar { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 44px; }
+.bed-importar { padding: 0 14px; font-size: 14px; }
+.bed-importar svg { width: 18px; height: 18px; }
+@media (max-width: 560px) {
+  .bed-list-acoes { width: 100%; }
+  .bed-list-acoes > * { flex: 1 1 0; }
+}
 .bed-list-tools { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
 .bed-busca { flex: 1 1 260px; width: auto; }
 .bed-list { display: grid; gap: 8px; }

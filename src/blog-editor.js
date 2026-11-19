@@ -66,7 +66,8 @@
     ajuda: SVG('<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .8-1 1.5v.7"/><path d="M12 17h.01"/>'),
     config: SVG('<path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/>'),
     olho: SVG('<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>'),
-    check: SVG('<path d="M5 12.5l4.5 4.5L19 7.5"/>', ' stroke-width="2.6"')
+    check: SVG('<path d="M5 12.5l4.5 4.5L19 7.5"/>', ' stroke-width="2.6"'),
+    importa: SVG('<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M12 11v6M9.5 14.5L12 17l2.5-2.5"/>')
   };
 
   // ── Banco ────────────────────────────────────────────────────────────────
@@ -201,7 +202,10 @@
           <h1>Blog · editor</h1>
           <p class="page-head-sub">Assinando como <strong>${esc(eu.nome || "(sem nome)")}</strong>. Só quem está na lista de editores do blog vê esta tela.</p>
         </div>
-        <button type="button" class="cta bed-novo" data-novo>${I.mais}<span>Novo post</span></button>
+        <div class="bed-list-acoes">
+          <button type="button" class="lst-mini bed-importar" data-importa title="Escolha o .md do post e, junto, as imagens que ele cita">${I.importa}<span>Importar .md</span></button>
+          <button type="button" class="cta bed-novo" data-novo>${I.mais}<span>Novo post</span></button>
+        </div>
       </div>
       <div class="bed-list-tools">
         <input type="search" class="bed-input bed-busca" placeholder="Buscar por título ou endereço" data-busca aria-label="Buscar posts">
@@ -213,6 +217,14 @@
       <div class="bed-list" data-lista><p class="empty-state">Carregando…</p></div>`;
     const alvo = root.querySelector("[data-lista]");
     root.querySelector("[data-novo]").addEventListener("click", () => vaiPara("?novo"));
+    // Importar daqui abre um post NOVO já preenchido (o arquivo é escolhido
+    // antes de trocar de tela: o seletor só abre dentro do clique).
+    root.querySelector("[data-importa]").addEventListener("click", async () => {
+      const arquivos = await escolheImportacao();
+      if (!arquivos.length) return;
+      importePendente = arquivos;
+      vaiPara("?novo");
+    });
 
     let posts = [];
     try {
@@ -350,6 +362,22 @@
     });
   }
 
+  // Importação (src/blog-importa.js): o .md e, na mesma escolha, as imagens
+  // que ele cita. `importePendente` leva os arquivos da lista até o post novo.
+  const EH_TEXTO = (f) => /\.(md|markdown|mdown|txt)$/i.test(f.name || "") || /^text\/(markdown|plain|x-markdown)$/.test(f.type || "");
+  let importePendente = null;
+  function escolheImportacao() {
+    return new Promise((resolve) => {
+      const input = document.createElement("input");
+      input.type = "file";
+      input.multiple = true;
+      input.accept = ".md,.markdown,.txt,text/markdown,text/plain,image/jpeg,image/png,image/webp,image/gif,image/avif";
+      input.addEventListener("change", () => resolve([...(input.files || [])]));
+      input.addEventListener("cancel", () => resolve([]));
+      input.click();
+    });
+  }
+
   // ── Tela de escrever ─────────────────────────────────────────────────────
   async function abreEditor(id) {
     root.innerHTML = '<p class="empty-state">Carregando o post…</p>';
@@ -440,6 +468,7 @@
             <button type="button" class="bed-icon-btn" data-menu aria-haspopup="true" aria-expanded="false" aria-label="Mais ações">${I.menu}</button>
             <div class="bed-menu" data-menu-lista hidden>
               <a class="bed-menu-item" data-ver target="_blank" rel="noopener" hidden>${I.olho}<span>Ver no site</span></a>
+              <button type="button" class="bed-menu-item" data-importa>${I.importa}<span>Importar arquivo .md</span></button>
               <button type="button" class="bed-menu-item bed-narrow" data-historico2 hidden>Histórico</button>
               <button type="button" class="bed-menu-item" data-despublicar hidden>Despublicar (volta a rascunho)</button>
               <button type="button" class="bed-menu-item bed-perigo" data-excluir hidden>Excluir post</button>
@@ -461,7 +490,7 @@
               ${FERRAMENTAS.map((f) => (f ? `<button type="button" class="bed-tool" data-tool="${f[0]}" title="${attr(f[1])}" aria-label="${attr(f[1])}">${f[2]}</button>` : '<span class="bed-tool-sep" aria-hidden="true"></span>')).join("")}
             </div>
             <textarea class="bed-text" data-campo="body_md" spellcheck="true" placeholder="Escreva aqui. Linha em branco separa parágrafos; os botões acima fazem títulos, listas, imagens e cartas." aria-label="Texto do post"></textarea>
-            <p class="bed-foot"><span data-contagem></span><span class="bed-foot-dica">Solte ou cole imagens direto no texto.</span></p>
+            <p class="bed-foot"><span data-contagem></span><span class="bed-foot-dica">Solte ou cole imagens direto no texto. Soltar um .md importa o post.</span></p>
           </section>
           <section class="bed-preview" aria-label="Prévia">
             <div class="bed-preview-bar"><span data-previa-rotulo>Prévia — é assim que vai pro ar</span><button type="button" class="lst-mini bed-wide" data-cheia>Tela cheia</button></div>
@@ -953,6 +982,9 @@
     // Imagem solta ou colada no texto sobe e entra no ponto do cursor.
     ta.addEventListener("dragover", (ev) => { if (ev.dataTransfer && [...ev.dataTransfer.types].includes("Files")) ev.preventDefault(); });
     ta.addEventListener("drop", (ev) => {
+      // Um .md entre os arquivos soltos é importação (as imagens vão junto).
+      const soltos = [...((ev.dataTransfer && ev.dataTransfer.files) || [])];
+      if (soltos.some(EH_TEXTO)) { ev.preventDefault(); importa(soltos); return; }
       const f = ev.dataTransfer && ev.dataTransfer.files && ev.dataTransfer.files[0];
       if (!f || !/^image\//.test(f.type)) return;
       ev.preventDefault();
@@ -1005,6 +1037,103 @@
       } catch (e) { estado(e.status ? mensagemDeErro(e) : e.message, true); }
     });
     ui.capaTira.addEventListener("click", () => { post.cover_url = ""; desenhaCapa(); mudou(); });
+
+    // ── importar um .md (src/blog-importa.js) ──
+    // Preenche a versão ABERTA com o que o arquivo traz e sobe as imagens que
+    // ele cita por nome de arquivo. Nada vai pro banco aqui: o post fica com
+    // "alterações não salvas" pra quem escreve conferir e salvar. Numa aba de
+    // tradução entram só os campos de texto (endereço, jogo, capa e datas são
+    // do post, e o idioma é o da aba).
+    async function importa(arquivos) {
+      const Imp = window.SleevuBlogImporta;
+      const textos = arquivos.filter(EH_TEXTO);
+      const imagens = arquivos.filter((f) => !EH_TEXTO(f) && /^image\//.test(f.type));
+      if (!Imp || !textos.length) { estado("Escolha o arquivo .md do post (as imagens dele podem vir junto).", true); return; }
+      if ((texto("title").trim() || texto("body_md").trim())
+        && !window.confirm(`Importar troca o título e o texto da versão em ${NOME[versao]} pelos do arquivo. Continuar?`)) return;
+      let lido;
+      try { lido = Imp.le(await textos[0].text()); } catch (e) { estado("Não deu pra ler o arquivo.", true); return; }
+      const avisos = lido.avisos.slice();
+      if (textos.length > 1) avisos.push(`Vieram ${textos.length} arquivos de texto: só "${textos[0].name}" foi importado.`);
+      if (!lido.corpo.trim() && !lido.campos.title) { estado("O arquivo está vazio.", true); return; }
+
+      // Imagens: sobe cada arquivo citado UMA vez (a capa pode ser a mesma do
+      // corpo) e troca o nome pelo endereço.
+      const nomes = imagens.map((f) => f.name);
+      const subidas = new Map(); // índice do arquivo → endereço
+      const usadas = new Set();
+      let enviadas = 0;
+      async function enderecoDe(ref) {
+        const k = Imp.arquivoPara(ref, nomes);
+        if (k < 0) return "";
+        usadas.add(k);
+        if (!subidas.has(k)) {
+          estado(`Enviando imagens… ${enviadas + 1}`);
+          subidas.set(k, await enviaImagem(imagens[k]));
+          enviadas++;
+        }
+        return subidas.get(k);
+      }
+      ui.salvar.disabled = ui.publicar.disabled = true;
+      let corpo = lido.corpo;
+      let capaNova = "";
+      const faltam = [];
+      try {
+        const mapa = {};
+        for (const ref of Imp.imagensLocais(corpo)) {
+          const url = await enderecoDe(ref);
+          if (url) mapa[ref] = url; else faltam.push(ref);
+        }
+        corpo = Imp.trocaImagens(corpo, mapa);
+        if (lido.capa && ehOriginal()) {
+          capaNova = Imp.ehEndereco(lido.capa) ? B.safeImg(lido.capa) : await enderecoDe(lido.capa);
+          if (!capaNova) avisos.push(`A capa "${lido.capa}" não veio entre os arquivos escolhidos: suba em Configurações.`);
+        }
+      } catch (e) {
+        ui.salvar.disabled = ui.publicar.disabled = false;
+        estado(e.status ? mensagemDeErro(e) : e.message, true);
+        return;
+      }
+      ui.salvar.disabled = ui.publicar.disabled = false;
+      if (faltam.length) avisos.push(`${faltam.length === 1 ? "Imagem citada no texto que não veio" : "Imagens citadas no texto que não vieram"} entre os arquivos: ${faltam.join(", ")}. A prévia mostra onde; suba pelo botão de imagem.`);
+      const sobraram = imagens.filter((f, k) => !usadas.has(k)).map((f) => f.name);
+      if (sobraram.length) avisos.push(`${sobraram.length === 1 ? "Imagem escolhida que o texto não cita" : "Imagens escolhidas que o texto não cita"} (não ${sobraram.length === 1 ? "foi enviada" : "foram enviadas"}): ${sobraram.join(", ")}.`);
+
+      const c = lido.campos;
+      const original = ehOriginal();
+      // O idioma do arquivo vira o original ANTES de preencher, senão o texto
+      // em inglês entraria nos campos da versão em português.
+      if (original && c.lang && c.lang !== post.lang) { trocaOriginal(c.lang); versao = post.lang; }
+      TEXTO.forEach((k) => { if (k !== "body_md" && c[k] != null) poeTexto(k, c[k]); });
+      poeTexto("body_md", corpo);
+      if (original) {
+        ["game", "category", "author_name", "featured", "published_at", "tags"].forEach((k) => { if (c[k] != null) post[k] = c[k]; });
+        if (capaNova) post.cover_url = capaNova;
+        // Endereço: o do arquivo; sem ele, segue o título como num post novo.
+        // Post que já foi ao ar não troca de endereço por importação (o link
+        // antigo viraria 301 sem ninguém ter pedido).
+        if (atual.published_at) {
+          if (c.slug && c.slug !== post.slug) avisos.push(`O post já foi ao ar em /blog/${post.slug}: o endereço do arquivo (${c.slug}) não foi aplicado.`);
+        } else if (c.slug) { post.slug = c.slug; slugAuto = false; }
+        else if (slugAuto && c.title) post.slug = B.slugify(post.title, 80);
+      }
+      preenche();
+      mudou();
+      ta.scrollTop = 0;
+      const partes = [c.title ? "título" : "", original && c.slug && !atual.published_at ? "endereço" : "", "texto",
+        enviadas ? `${enviadas} ${enviadas === 1 ? "imagem" : "imagens"}` : ""].filter(Boolean);
+      estado(`Importado (${partes.join(", ")}). Confira e salve.`);
+      mostraAviso(avisos.length ? `<span><strong>Da importação:</strong> ${avisos.map(esc).join(" ")}</span>`
+        + '<span class="bed-aviso-btns"><button type="button" class="lst-mini" data-ok>Entendi</button></span>' : "", "info");
+      const ok = ui.aviso.querySelector("[data-ok]");
+      if (ok) ok.addEventListener("click", () => mostraAviso(""));
+    }
+    $("[data-menu-lista] [data-importa]").addEventListener("click", async () => {
+      ui.menuLista.hidden = true;
+      ui.menu.setAttribute("aria-expanded", "false");
+      const arquivos = await escolheImportacao();
+      if (arquivos.length) importa(arquivos);
+    });
 
     // ── cartas do catálogo ──
     function seletorDeCartas() {
@@ -1272,6 +1401,9 @@
     desenhaPrevia();
     ofereceRascunhoLocal();
     if (!atual.id) setTimeout(() => $(".bed-title").focus(), 30);
+    // Veio do "Importar .md" da lista: os arquivos já foram escolhidos.
+    if (importePendente && !atual.id) { const arquivos = importePendente; importePendente = null; importa(arquivos); }
+    else importePendente = null;
   }
 
   inicia();
