@@ -12841,13 +12841,18 @@ select,
 .lp-stat span { display: block; margin-top: 4px; font-size: 13px; color: var(--subtle); }
 
 /* --- Jogos: parede de logos ----------------------------------------------- */
-/* Vitrine, não catálogo (2026-11-19): 2 fileiras de 4 por bloco, 7 jogos + a
+/* Vitrine, não catálogo (2026-11-19): 2 fileiras por bloco, fechadas pela
    cápsula "Ver outros" (.lp-logo-mais), que leva à página de Jogos / Vintage.
-   Antes eram 8 por linha com os 27 modernos e uma fileira de 14 vintage. As 4
-   colunas valem do desktop ao celular: 8 cápsulas fecham as 2 fileiras em
-   qualquer largura, sem logo sozinho na última. */
+   Antes eram 8 por linha com os 27 modernos e uma fileira de 14 vintage. As
+   colunas (4 nos modernos, 5 no Vintage) valem do desktop ao celular: as
+   cápsulas fecham as 2 fileiras em qualquer largura, sem logo sozinho na
+   última. */
 .lp-logos { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
 .lp-logos > li { min-width: 0; }
+/* O bloco Vintage vai em 5 por fileira (2026-11-20, pedido do Fernando): 9
+   linhas + o "Ver outros". A cápsula menor assenta melhor os logos antigos, e
+   o destaque fica com os modernos, que seguem em 4 e maiores. */
+.lp-logos-vintage { grid-template-columns: repeat(5, minmax(0, 1fr)); }
 .lp-logos a {
   display: flex; align-items: center; justify-content: center;
   aspect-ratio: 250 / 112; padding: 12px 18px; box-sizing: border-box;
@@ -12867,6 +12872,12 @@ select,
 }
 .lp-logos .lp-logo-mais a:hover, .lp-logos .lp-logo-mais a:focus-visible { background: var(--surface-2, rgba(127, 127, 127, 0.12)); box-shadow: none; }
 .lp-logo-mais svg { flex: none; width: 18px; height: 18px; }
+/* No Vintage a cápsula é 1/5 da largura: rótulo e seta um ponto menores e
+   menos calha. Com os 16px e os 18px de calha dos modernos, o "Ver outros"
+   quebrava em duas linhas logo acima do corte do celular (cápsula de ~120px
+   em 701px) e a cápsula ficava mais alta que as vizinhas. */
+.lp-logos-vintage .lp-logo-mais a { padding-inline: 8px; font-size: 14px; }
+.lp-logos-vintage .lp-logo-mais svg { width: 16px; height: 16px; }
 .lp-logo-ano { display: block; margin-top: 6px; font-size: 11.5px; color: var(--subtle); font-variant-numeric: tabular-nums; }
 .lp-jogos-foot { margin: 22px 0 0; font-size: 13px; color: var(--subtle); }
 
@@ -13086,6 +13097,16 @@ select,
   .lp-logos .lp-logo-mais a { gap: 2px; font-size: 12px; }
   .lp-logo-mais svg { width: 14px; height: 14px; }
   .lp-logo-ano { margin-top: 4px; font-size: 10px; }
+  /* Vintage em 5: a cápsula tem ~65px num celular de 390 (51 num de 320, ainda
+     acima dos 44 do toque). Calha e respiro menores devolvem largura ao logo,
+     que aqui é o que limita o tamanho; o "Ver outros" vai em duas linhas. */
+  .lp-logos-vintage { gap: 6px; }
+  .lp-logos-vintage a { padding: 6px 5px; }
+  .lp-logos-vintage .lp-logo-mais a { gap: 1px; padding-inline: 3px; font-size: 11px; line-height: 1.2; }
+  .lp-logos-vintage .lp-logo-mais svg { width: 12px; height: 12px; }
+  /* "1988–1997" mede ~52px e a cápsula de um celular de 320 tem 51: o ano
+     quebrava no travessão. Numa linha só, o 1px que sobra cai na calha. */
+  .lp-logos-vintage .lp-logo-ano { white-space: nowrap; }
 
   .lp-pm { height: 150px; padding: 14px; }
   .lp-pm-marca { gap: 14px; }
