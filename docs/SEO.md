@@ -34,6 +34,7 @@ Medido ao vivo no dia em que este registro nasceu:
 | `functions/_lib/pagina-set.js`, `pagina-carta.js`, `decora-app.js` | os textos e o JSON-LD do set e da carta, e o que a borda põe no HTML da tela (inclusive a rota que o `detail.js` lê) |
 | `functions/_lib/jogos.js` | o registro dos jogos: endereço oficial, apelidos e linhas (a cópia do `src/game.js` tem que bater) |
 | `scripts/lib/sitemap.mjs` | o `sitemap.xml` é um índice, com um arquivo por tipo de página (tabela abaixo) |
+| `scripts/seo-estatico.mjs` | o que o robô sem JS lê: o texto das páginas institucionais, o JSON-LD da `/vintage` e o `/llms.txt` (jogos, posts do blog e páginas de referência) |
 | `src/theme.js` | robô vê o idioma que o HTML declara; página com `data-idioma-fixo` (as pré-renderizadas) nunca tem o `lang` trocado |
 | `index.html` | JSON-LD `WebSite` + `Organization`: nome do site, logo, perfis oficiais (`sameAs`) |
 | `scripts/indexnow.mjs` + `deploy.yml` | a cada deploy da main, avisa Bing, Yandex, Seznam, Naver e Yep do que entrou e saiu do sitemap |
@@ -534,6 +535,45 @@ as páginas vintage com quatro buracos:
 
 `tests/seo-vintage.test.mjs` trava tudo isso com a carta de verdade do 本弾
 特別弾.
+
+## Conferência de 2026-11-19
+
+Pedido do Fernando, depois de uma semana com dez jogos novos, o Marvel Hero
+Rush, o primeiro post do blog e o Blog no topo do menu. Medido ao vivo, com o
+user agent do Googlebot (o Search Console só o Fernando vê):
+
+- **Sitemap**: índice com 63 arquivos e **452.499 URLs** (eram 347.638 em
+  10/11). Numa amostra de 369 (seis de cada arquivo), todas 200, sem
+  `noindex`, canonical pra si mesmas, um `h1`, TTFB de 248 ms na mediana e
+  424 ms no p90. Os 52 jogos estão no `sitemap-games.xml`, no `/games` e no
+  `llms.txt`; o Marvel Hero Rush entrou com 14 sets e 667 cartas.
+- **`robots.txt`**: o que está no ar é o do repositório, nos dois endereços.
+  GPTBot, ClaudeBot, CCBot, Bytespider e Amazonbot recebem 200 (o item 5 de
+  "Fora do repositório" foi feito).
+- **Segue pendente fora do repositório**: `www.sleevu.app` responde 200 com o
+  site inteiro (item 3) e o `sleevu.com.br` segue fora do ar, a raiz sem DNS
+  e o www com erro 530 (item 4). O deploy também avisa que não tem
+  `CF_ZONE_ID` nem `CF_PURGE_TOKEN` e pula a purga dos índices do catálogo.
+- **Blog**: o post sai com `BlogPosting`, trilha, `og:image` e entra no
+  `sitemap-blog.xml` e no feed. O `/llms.txt` não tinha uma linha do blog;
+  agora lista os posts (na versão em inglês quando existe; o prerender grava
+  título e resumo em `data/game-pages/blog.json`) e ganhou `/games`, `/decks`
+  e `/lancamentos` nas páginas.
+
+**Links no HTML servido.** O menu e o rodapé são montados pelo `shared.js`,
+então no HTML que o servidor entrega nenhuma página linka `/blog`, `/games`,
+`/tools`, `/decks`, `/artists`, `/about`, `/faq` ou os Termos: quem não roda
+JS só os acha pelo sitemap. O catálogo não depende disso (a home linka o
+`/hub` e a `/vintage`, que linkam os 52 jogos, e cada jogo os sets dele). O
+Googlebot renderiza e vê o menu; Bing e os robôs das IAs, em geral, não. Dá
+pra resolver preenchendo o `<nav class="page-nav">` vazio no deploy com o menu
+de quem não entrou (o `shared.js` troca por cima), mas mexe no cabeçalho de
+toda página e ficou pra decidir.
+
+**Do post pro catálogo.** O post sobre o Carddass não tem um link pras
+páginas dos jogos de que fala (`/games/dragon-ball-carddass`,
+`/games/gundam-carddass`, `/vintage`…), e nenhuma página do catálogo linka o
+post. É edição de texto no editor do blog, não código.
 
 ## O que o código não resolve
 

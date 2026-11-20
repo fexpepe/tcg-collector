@@ -8,12 +8,14 @@
 //     texto derruba o passo;
 //   - o JSON-LD da /vintage sai da lista do HTML, na mesma ordem;
 //   - o llms.txt lista todo jogo do registro, vintage com o resumo em inglês;
+//   - o llms.txt lista os posts do blog (2026-11-19: no dia do primeiro post
+//     ele não tinha uma linha do blog), na versão em inglês quando existe;
 //   - o deploy roda o passo depois do prerender e antes do split-i18n.
 // Roda com: node --test tests/
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { PAGINAS_DE_TEXTO, mensagensPt, preencheTextos, jogosDoVintage, jsonLdDoVintage, comJsonLd, llmsTxt, montaTudo } from "../scripts/seo-estatico.mjs";
+import { PAGINAS_DE_TEXTO, mensagensPt, preencheTextos, jogosDoVintage, jsonLdDoVintage, comJsonLd, llmsTxt, postsDoLlms, montaTudo } from "../scripts/seo-estatico.mjs";
 import { JOGOS_URL } from "../functions/_lib/jogos.js";
 
 const ler = (f) => readFileSync(new URL(`../${f}`, import.meta.url), "utf8").replace(/\r\n/g, "\n");
@@ -69,6 +71,62 @@ test("o llms.txt lista todo jogo do registro; o vintage com fabricante, anos e r
   const l = llmsTxt({ jogos: [{ url: "a", nome: "A" }, { url: "b", nome: "B" }], vintage: [], sets: { a: 1, b: 12 } });
   assert.match(l, /\[A\]\(https:\/\/sleevu\.app\/games\/a\): 1 set\n/);
   assert.match(l, /\[B\]\(https:\/\/sleevu\.app\/games\/b\): 12 sets\n/);
+});
+
+// O blog no llms.txt (2026-11-19). O arquivo é em inglês: o post entra na
+// versão em inglês quando ela existe, no endereço dela; sem ela, na original,
+// dizendo o idioma.
+test("o llms.txt lista os posts do blog, em inglês quando há versão em inglês", () => {
+  const posts = [
+    { slug: "bandai-carddass-history", lang: "en", title: "Bandai Carddass and the 20-Yen\n  Anime Card Boom", excerpt: "In 1988, 20 yen got you one card.", versoes: {} },
+    { slug: "guia-de-condicao", lang: "pt", title: "Guia de condição", excerpt: "NM, SP ou MP?", versoes: { en: { title: "Card condition guide [NM, SP, MP]", excerpt: "NM, SP or MP?" }, es: { title: "Guía de condición", excerpt: "" } } },
+    { slug: "mercado-de-novembro", lang: "pt", title: "Mercado de novembro", excerpt: "", versoes: { en: { title: "  ", excerpt: "sem título não é versão" } } },
+    { slug: "sin-traduccion", lang: "es", title: "Sin traducción", excerpt: "Resumen.", versoes: {} },
+    { slug: "sem-titulo", lang: "en", title: "", excerpt: "fica de fora" },
+    { slug: "Endereço Torto", lang: "en", title: "Endereço que a Function não serviria" }
+  ];
+  const linhas = postsDoLlms(posts);
+  assert.deepEqual(linhas.map((p) => [p.caminho, p.idioma]), [
+    ["/blog/bandai-carddass-history", "en"],
+    ["/blog/en/guia-de-condicao", "en"],
+    ["/blog/mercado-de-novembro", "pt"],
+    ["/blog/sin-traduccion", "es"]
+  ]);
+  const l = llmsTxt({ jogos: [{ url: "a", nome: "A" }], vintage: [], posts });
+  const blog = l.slice(l.indexOf("## Blog"), l.indexOf("## Pages"));
+  assert.equal(blog, [
+    "## Blog",
+    "",
+    "- [Bandai Carddass and the 20-Yen Anime Card Boom](https://sleevu.app/blog/bandai-carddass-history): In 1988, 20 yen got you one card.",
+    "- [Card condition guide (NM, SP, MP)](https://sleevu.app/blog/en/guia-de-condicao): NM, SP or MP?",
+    "- [Mercado de novembro](https://sleevu.app/blog/mercado-de-novembro) (in Portuguese)",
+    "- [Sin traducción](https://sleevu.app/blog/sin-traduccion): Resumen. (in Spanish)",
+    "",
+    ""
+  ].join("\n"));
+  assert.ok(l.indexOf("## Card games in print") < l.indexOf("## Blog"), "o blog vem depois dos jogos");
+  assert.match(l, /- \[Blog\]\(https:\/\/sleevu\.app\/blog\): /);
+  // A lista de todos os jogos é a /games (o /hub só tem os em atividade).
+  assert.match(l, /- \[All games\]\(https:\/\/sleevu\.app\/games\): /);
+});
+
+// O /blog sem post leva noindex e fica fora do sitemap; no llms.txt, idem.
+test("sem post publicado o llms.txt não cita o blog", () => {
+  for (const posts of [undefined, [], [{ slug: "so-rascunho", lang: "pt", title: "" }]]) {
+    const l = llmsTxt({ jogos: [{ url: "a", nome: "A" }], vintage: [], posts });
+    assert.ok(!l.includes("## Blog") && !l.includes("sleevu.app/blog"), "blog citado sem post");
+    assert.match(l, /in print\n\n- \[A\]\(https:\/\/sleevu\.app\/games\/a\)\n\n## Pages\n/);
+  }
+});
+
+// Quem entrega os posts é o prerender, que roda antes e já os busca pro
+// sitemap: o seo-estatico não vai à rede. O que ele grava tem que ser o que o
+// postsDoLlms lê.
+test("o prerender pede título e resumo dos posts e os grava onde o llms.txt lê", () => {
+  const prerender = ler("scripts/prerender-catalog.mjs");
+  assert.match(prerender, /pede\("slug,title,excerpt,lang,versoes,updated_at"\)/);
+  assert.match(prerender, /join\(MAPAS_DIR, "blog\.json"\)[^\n]*\n\s*slug: p\.slug, lang: [^\n]*title: [^\n]*excerpt: [^\n]*versoes: /);
+  assert.match(ler("scripts/seo-estatico.mjs"), /lerJson\(`\$\{raiz\}data\/game-pages\/blog\.json`\)/);
 });
 
 // A política de uso de 16/11/2026 (a mesma do robots.txt e dos Termos): o texto

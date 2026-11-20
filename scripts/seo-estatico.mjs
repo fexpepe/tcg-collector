@@ -19,7 +19,8 @@
 //      o registro;
 //   3. escreve o /llms.txt (llmstxt.org): o que é o Sleevu, os jogos vintage
 //      com fabricante, período e o resumo do "Sobre" em inglês, os jogos em
-//      atividade e as páginas de referência.
+//      atividade, os posts do blog (desde 2026-11-19) e as páginas de
+//      referência.
 // O repositório não muda: só o workspace do runner, como o split-css.
 //
 //   node scripts/seo-estatico.mjs           # confere (chave que falta = erro)
@@ -122,10 +123,44 @@ const PAIS = { jp: "Japan", us: "USA", br: "Brazil", fr: "France", de: "Germany"
 const ano = (s) => String(s || "").slice(0, 4);
 const emIngles = (v) => (v && typeof v === "object" ? v.en || v.pt || "" : String(v || "")).replace(/\s+/g, " ").trim();
 
+// Os posts do blog como o /llms.txt os lista (2026-11-19). O arquivo é em
+// inglês, então cada post entra na versão em inglês quando ela existe (a
+// original, ou a tradução em /blog/en/<slug>, a mesma regra de endereço do
+// caminhoDaVersao do src/blog-render.js); sem ela, entra a original, com o
+// idioma dito na linha. Post sem título fica de fora. Colchete no título
+// quebraria o link do Markdown e vira parêntese. `posts` é o
+// data/game-pages/blog.json do prerender, do mais novo pro mais antigo.
+const TETO_POSTS = 100;
+const IDIOMA_DO_POST = { pt: "Portuguese", es: "Spanish" };
+const umaLinha = (s) => String(s || "").replace(/\s+/g, " ").trim();
+export function postsDoLlms(posts) {
+  const saida = [];
+  for (const p of Array.isArray(posts) ? posts : []) {
+    if (!p || !/^[a-z0-9]+(-[a-z0-9]+)*$/.test(String(p.slug || ""))) continue;
+    const original = ["pt", "en", "es"].includes(p.lang) ? p.lang : "pt";
+    const traducao = original !== "en" && p.versoes && p.versoes.en && umaLinha(p.versoes.en.title) ? p.versoes.en : null;
+    const fonte = traducao || p;
+    const titulo = umaLinha(fonte.title).replace(/\[/g, "(").replace(/\]/g, ")");
+    if (!titulo) continue;
+    saida.push({
+      caminho: traducao ? `/blog/en/${p.slug}` : `/blog/${p.slug}`,
+      titulo,
+      resumo: umaLinha(fonte.excerpt),
+      idioma: traducao ? "en" : original
+    });
+    if (saida.length === TETO_POSTS) break;
+  }
+  return saida;
+}
+
 // O /llms.txt. Em inglês de propósito: é a língua em que as IAs mais buscam, e
 // as páginas do site têm versão em inglês. `sobres`: url -> JSON do "Sobre";
-// `sets`: url -> nº de sets (do data/game-pages, quando o prerender já rodou).
-export function llmsTxt({ jogos = JOGOS_URL, vintage, sobres = {}, sets = {} }) {
+// `sets`: url -> nº de sets (do data/game-pages, quando o prerender já rodou);
+// `posts`: os posts publicados do blog (idem). Sem post, o blog não aparece:
+// o /blog vazio leva noindex e fica fora do sitemap, e aqui vale o mesmo.
+export function llmsTxt({ jogos = JOGOS_URL, vintage, sobres = {}, sets = {}, posts = [] }) {
+  const blog = postsDoLlms(posts);
+  const linhaPost = (p) => `- [${p.titulo}](${ORIGEM}${p.caminho})${p.resumo ? `: ${p.resumo}` : ""}${IDIOMA_DO_POST[p.idioma] ? ` (in ${IDIOMA_DO_POST[p.idioma]})` : ""}`;
   const urlsVintage = new Set(vintage.map((j) => j.url));
   const modernos = jogos.filter((j) => !urlsVintage.has(j.url));
   const total = modernos.length + vintage.length;
@@ -150,10 +185,18 @@ export function llmsTxt({ jogos = JOGOS_URL, vintage, sobres = {}, sets = {} }) 
     "",
     ...modernos.map((j) => `- [${j.nome}](${ORIGEM}/games/${j.url})${nSets(j.url)}`),
     "",
+    // O blog (2026-11-19): os artigos são o texto do site que mais serve de
+    // fonte pra uma resposta, e não tinham linha aqui.
+    ...(blog.length ? ["## Blog", "", ...blog.map(linhaPost), ""] : []),
     "## Pages",
     "",
     `- [Vintage timeline](${ORIGEM}/vintage): every out-of-print game on the site, by release date and by brand`,
-    `- [All games](${ORIGEM}/hub)`,
+    // /games e não /hub: o hub é a grade do app, só com os jogos em atividade;
+    // /games é a lista de todos, com o vintage.
+    `- [All games](${ORIGEM}/games): every game on the site, in print and out of print`,
+    ...(blog.length ? [`- [Blog](${ORIGEM}/blog): articles on the history, the market and the collecting of trading cards`] : []),
+    `- [Community decks](${ORIGEM}/decks): deck lists shared by the community, with the cards and the cost of each`,
+    `- [Release calendar](${ORIGEM}/lancamentos): release dates of the upcoming sets`,
     `- [Tools](${ORIGEM}/tools): collector tools (card condition, centering)`,
     `- [FAQ](${ORIGEM}/faq)`,
     `- [Help](${ORIGEM}/help)`,
@@ -189,10 +232,12 @@ export function montaTudo(raiz = RAIZ) {
     const mapa = lerJson(`${raiz}data/game-pages/${j.url}.json`);
     if (mapa && mapa.s) sets[j.url] = Object.keys(mapa.s).length;
   }
+  const posts = lerJson(`${raiz}data/game-pages/blog.json`) || [];
   return {
     paginas,
     vintage: { html: comJsonLd(htmlVintage, jsonLdDoVintage(vintage)), jogos: vintage.length },
-    llms: llmsTxt({ vintage, sobres, sets })
+    llms: llmsTxt({ vintage, sobres, sets, posts }),
+    posts: postsDoLlms(posts).length
   };
 }
 
@@ -205,5 +250,5 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
     writeFileSync(RAIZ + "llms.txt", r.llms, "utf8");
   }
   const blocos = r.paginas.map((p) => `${p.arquivo} ${p.blocos}`).join(", ");
-  console.log(`seo-estatico${grava ? "" : " (só conferindo)"}: texto em pt nos blocos (${blocos}); /vintage com ItemList de ${r.vintage.jogos} jogos; llms.txt com ${r.llms.length} bytes${existsSync(RAIZ + "data/game-pages") ? "" : " (sem contagem de sets: data/game-pages só existe depois do prerender)"}.`);
+  console.log(`seo-estatico${grava ? "" : " (só conferindo)"}: texto em pt nos blocos (${blocos}); /vintage com ItemList de ${r.vintage.jogos} jogos; llms.txt com ${r.llms.length} bytes e ${r.posts} post(s) do blog${existsSync(RAIZ + "data/game-pages") ? "" : " (sem contagem de sets: data/game-pages só existe depois do prerender)"}.`);
 }
