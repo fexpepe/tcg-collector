@@ -358,6 +358,17 @@ no contrato:
   Audiência (mapa-múndi do `src/admin-mundo.js`, gerado pelo
   `scripts/build-mapa-mundo.mjs`) e em Técnico › Medição. Sem histórico: o
   país existe a partir do dia em que a migração entra.
+- **Post do blog (`20261121a`).** O `path` de `/blog` e de `/blog/<post>` é o
+  mesmo `blog`. Desde 2026-11-21 o `mandaEvento` põe `props.bp` em todo
+  evento numa página de post: o que vem depois de `/blog/` no endereço
+  (`"<post>"`, ou `"<idioma>/<post>"` na tradução). Vai no pageview, no
+  `page_time` (o tempo de leitura por post) e no `card_added` e
+  `store_click` feitos no post; o erro de JS fica sem. O guard não muda. A
+  `admin_blog(days)` tira a barra do fim e o prefixo de idioma, casa com o
+  `slug` de um post publicado (o resto fica de fora) e devolve os números
+  por post, por tipo (categoria, jogo, assunto) e por origem da visita —
+  lida em Conteúdo › Blog. Sem histórico de antes do deploy. Ver
+  `docs/BLOG.md`, "Quem lê o quê".
 - **Linha da página (`20261112b`).** O `game` de um evento junta as linhas
   da marca (o `naruto` é o Card Game 2002~2006, o Data Carddass, o CCG e o
   Shippuden; o `onepiece`, o jogo de hoje, o Carddass e o Card Game 2002).

@@ -182,6 +182,35 @@ A leitura é função pura (`SleevuBlogImporta.le`), testada em
   o editor oferece recuperar. Se outra aba (ou outra pessoa) salvou o post
   depois que você abriu, o editor avisa em vez de sobrescrever.
 
+## Quem lê o quê (desde 2026-11-21)
+
+Pra decidir o que escrever: **/admin › Conteúdo › Blog**. Por post, quantos
+leitores e leituras, o tempo de leitura ao lado do tempo estimado do texto,
+quantas visitas começaram nele (o post trouxe a pessoa), quantos leitores
+seguiram pro resto do site, as cartas marcadas e os cliques em loja feitos na
+página e as contas criadas depois de ler. O mesmo por **tipo** — categoria,
+jogo e assunto, com "leituras por post" pra a categoria com mais posts não
+ganhar só por volume — e **de onde veio** a visita: busca, rede social, IA,
+campanha, outro site ou direto, com o domínio de origem, o país, o aparelho e
+o idioma da versão lida.
+
+- **Como mede.** O site manda o post em `props.bp` em todo evento de uma
+  página de post (`mandaEvento`, `src/shared.js`); a `admin_blog` (migração
+  `20261121a`) cruza com a tabela `posts`. É a mesma medição do resto do site:
+  só conta quem não desligou "Contar minhas visitas", robô fica de fora, e o
+  navegador da equipe (o do editor, se abriu o /admin) não conta.
+- **Sem histórico.** Antes de 21/11/2026 o evento só dizia "blog". A aba
+  avisa desde quando há dado, e só compara com o período anterior quando ele
+  inteiro já tiver sido medido.
+- **Saber qual publicação trouxe gente.** O painel vê o site de origem
+  (`instagram.com`), não qual post do Instagram. Ao divulgar, ponha uma
+  etiqueta no link: `/blog/<post>?utm_source=instagram&utm_campaign=<nome>`.
+  A origem aparece como `instagram / <nome>`, no canal "Campanha".
+- **O que o Google mostra e o painel não.** As palavras que as pessoas
+  buscaram e a posição de cada post ficam no Search Console (o
+  `sitemap-blog.xml` lista os posts). Quem lê sem rodar JavaScript (robô,
+  leitor de RSS) só aparece no Cloudflare Web Analytics.
+
 ## SEO e cache
 
 - A borda entrega o post com título, descrição, canonical, Open Graph (capa),

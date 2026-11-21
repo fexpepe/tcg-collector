@@ -29,8 +29,8 @@ const css = ler("styles.css");
 const linhas = admin.split("\n");
 const grupo = (id) => linhas.find((l) => l.trim().startsWith(`["${id}", `)) || "";
 
-test("grupo Conteúdo: Jogos, Coleções, Demanda e Sets; Mercado fica com loja e vitrine", () => {
-  assert.ok(grupo("conteudo").includes('[["jogos", "Jogos"], ["conteudo", "Coleções"], ["demanda", "Demanda"], ["sets", "Sets"]]'), grupo("conteudo"));
+test("grupo Conteúdo: Jogos, Coleções, Demanda, Sets e Blog (2026-11-21); Mercado fica com loja e vitrine", () => {
+  assert.ok(grupo("conteudo").includes('[["jogos", "Jogos"], ["conteudo", "Coleções"], ["demanda", "Demanda"], ["sets", "Sets"], ["blog", "Blog"]]'), grupo("conteudo"));
   assert.ok(grupo("mercado").includes('[["lojas", "Lojas"], ["portal", "Portal da loja"], ["anuncios", "Vitrine"]]'), grupo("mercado"));
   const ids = [...admin.matchAll(/\["(\w+)", "[^"]+"\]/g)].map((m) => m[1]);
   for (const id of ["conteudo", "demanda", "sets"]) assert.equal(ids.filter((x) => x === id).length, 1, `aba ${id} em um grupo só`);

@@ -4040,6 +4040,13 @@
       // balde dos eventos de antes deste deploy, que não têm como ser
       // separados.
       if (GAME_LINES[game] && /^\/games\//.test(location.pathname)) (props = props || {}).ln = lineParamOf();
+      // POST do blog (2026-11-21). O `path` de /blog e de /blog/<post> é o
+      // mesmo "blog", e o /admin não sabia qual post foi lido, de onde veio
+      // quem leu nem quanto tempo ficou. Em página de post, todo evento leva
+      // em props.bp o que vem depois de /blog/: "<post>" ou "<idioma>/<post>"
+      // (a tradução). Quem separa é a admin_blog (20261121a); aqui é só o
+      // corte, porque este arquivo vive no teto do check-size (+20 B gz).
+      if (/^\/blog\/./.test(location.pathname)) (props = props || {}).bp = location.pathname.slice(6);
       if (props) corpo.props = props;
       fetch(`${SUPABASE_URL}/rest/v1/events`, {
         method: "POST",

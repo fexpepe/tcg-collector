@@ -78,6 +78,7 @@ O pageview leva um contexto agregável em `props`:
 | `u` / `c` / `a` | utm source / campaign / content |
 | `k` | nome do parâmetro de clique pago |
 | `pl` / `av` | **v3**: plataforma e versão do app nativo |
+| `bp` | **v6** (2026-11-21, `20261121a`): o post do blog, em TODO evento de página de post (não só no pageview): `<post>` ou `<idioma>/<post>`, como está no endereço. Lido pela `admin_blog` em Conteúdo › Blog |
 | `co` | **v4** (2026-11-10, `20261110a`): país, 2 letras. Único campo que o BANCO põe (do cabeçalho `cf-ipcountry`); o cliente não manda, e o app das lojas fica sem (ver 4.6) |
 
 Os 24 nomes aceitos estão no `events_guard`. O que cada um carrega está no

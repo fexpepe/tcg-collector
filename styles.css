@@ -6542,6 +6542,13 @@ a.setting-open {
 .adm-sub-nome { display: block; padding-left: 10px; border-left: 2px solid var(--line); color: var(--muted); white-space: nowrap; }
 .admin-table tr.adm-sub-resto td, .adm-sub-resto .adm-sub-nome { color: var(--subtle); }
 .adm-linhas-aviso { margin: 0 0 12px; }
+/* Post por post (Conteúdo › Blog, 2026-11-21): a coluna do post leva o título
+   inteiro e é a que a tabela espreme primeiro — em 390px o título quebrava
+   numa palavra por linha e cada post ocupava meia tela. Largura mínima (a
+   tabela já rola de lado, .adm-scroll) e o tempo de leitura sem quebrar no
+   meio de "3min 51s". */
+.admin-table td.adm-post { min-width: 200px; }
+.admin-table td.adm-tempo { white-space: nowrap; }
 /* Botões com ícone (CSV, imprimir). */
 .adm-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 .adm-actions .chip, .adm-kit-head .chip { display: inline-flex; align-items: center; gap: 8px; }

@@ -693,7 +693,8 @@
     // (a antiga aba Conteúdo), Demanda e Sets moravam em Mercado — e quem
     // procurava "qual jogo é mais acessado" não achava. Os ids das abas ficam
     // os mesmos: link salvo (#conteudo, #demanda, #sets) segue abrindo.
-    ["conteudo", "Conteúdo", [["jogos", "Jogos"], ["conteudo", "Coleções"], ["demanda", "Demanda"], ["sets", "Sets"]]],
+    // v6 (2026-11-21): o Blog entra aqui, post por post (admin_blog, 20261121a).
+    ["conteudo", "Conteúdo", [["jogos", "Jogos"], ["conteudo", "Coleções"], ["demanda", "Demanda"], ["sets", "Sets"], ["blog", "Blog"]]],
     ["engajamento", "Engajamento", [["retencao", "Retenção"], ["funil", "Funil"], ["tempo", "Tempo de uso"], ["produto", "Produto"], ["experimentos", "Experimentos"]]],
     ["usuarios", "Usuários", [["usuarios", "Perfil"], ["colecoes", "Maiores coleções"], ["segmentos", "Segmentos"]]],
     ["mercado", "Mercado", [["lojas", "Lojas"], ["portal", "Portal da loja"], ["anuncios", "Vitrine"]]],
@@ -708,6 +709,7 @@
   const NEEDS = {
     geral: ["dash", "pulso", "notas", "geo", "jogos"], audiencia: ["dash", "pulso", "geo"], conteudo: ["dash"], produto: ["dash"], qualidade: ["dash", "erros"],
     jogos: ["jogos"],
+    blog: ["blog"],
     crescimento: ["growth", "notas"], parceiros: ["dash", "retention", "stores", "demand", "growth", "engagement", "users", "anuncios", "pulso", "geo", "jogos"],
     canais: ["retention", "growth"], retencao: ["retention"], funil: ["funnel", "retention", "engagement"],
     lojas: ["stores"], demanda: ["demand"], anuncios: ["anuncios"],
@@ -723,7 +725,8 @@
     users: "admin_users", campaigns: "admin_campaigns", engagement: "admin_engagement", experiments: "admin_experiments",
     partners: "admin_partner_links", health: "admin_health", erros: "admin_erros",
     pulso: "admin_pulso", paginas: "admin_paginas", plataformas: "admin_plataformas", descartes: "admin_descartes",
-    notas: "admin_notas", anunciosutm: "admin_anuncios", geo: "admin_geo", jogos: "admin_jogos"
+    notas: "admin_notas", anunciosutm: "admin_anuncios", geo: "admin_geo", jogos: "admin_jogos",
+    blog: "admin_blog"
   };
   // RPCs sem parâmetro: mandar { days } a elas faz o PostgREST procurar uma
   // assinatura que não existe (404) e o painel acharia que a migração falta.
@@ -2552,6 +2555,122 @@ if (v === "b") { /* versão nova */ }</pre>
           "Contagem de vezes no período. Ativação = a 1ª carta da vida daquele navegador.")}
       </div>`;
   }
+  // ══ v6 (2026-11-21): Conteúdo › Blog ══════════════════════════════════════
+  // O pedido: "quantas pessoas abriram cada post, de onde vieram e que tipo
+  // de post tem mais acesso — o dado pra decidir o que escrever". O painel não
+  // sabia: o `path` de /blog (a lista) e de /blog/<post> é o mesmo "blog".
+  // Desde o deploy desta mudança todo evento numa página de post leva o post
+  // em props.bp (mandaEvento, src/shared.js), e a admin_blog (20261121a)
+  // cruza isso com a tabela de posts: leitores e leituras por post, o canal
+  // da VISITA em que foi lido, o tempo com a aba à vista, o que a pessoa fez
+  // depois, e o mesmo por tipo (categoria, jogo, assunto). Sem histórico:
+  // antes do deploy o evento não guardou o post.
+  const pedeBlog = (oque) => `<p class="adm-banner">${esc(oque)} precisa da migração <code>supabase/migrations/20261121a_admin_blog.sql</code> — aplique no SQL Editor. Nada se perde enquanto isso: o site já grava o post de cada leitura desde o deploy desta mudança, e aparece tudo desde então quando ela entrar.</p>`;
+  // Nome das categorias: o pt do CATEGORIAS do src/blog-render.js, que o
+  // /admin não carrega. tests/admin-blog.test.mjs trava as duas listas iguais.
+  const BLOG_CAT = { guias: "Guias", mercado: "Mercado & Preços", lancamentos: "Lançamentos", historia: "História & Vintage", noticias: "Notícias" };
+  const catNome = (k) => proprio(BLOG_CAT, k) || k;
+  // "(geral)" é o post sem jogo: não é um jogo, então nome e cor neutros.
+  const blogJogoNome = (g) => (g === "(geral)" ? "Geral (sem jogo)" : gameName(g));
+  const blogJogoChip = (g) => `<span class="adm-game" style="--g:${esc(g === "(geral)" ? "#64748b" : gameColor(g))}">${esc(blogJogoNome(g))}</span>`;
+  const media = (a, b) => (b ? (a / b).toLocaleString("pt-BR", { maximumFractionDigits: 1 }) : "—");
+  function tabBlog(bl) {
+    const n = bl.days || state.days;
+    const A = bl.atual || {}, B = bl.anterior || {};
+    const posts = bl.posts || [];
+    if (!posts.length) return `<p class="admin-empty">Nenhum post publicado ainda. Quando o primeiro sair, ele aparece aqui com as leituras.</p>`;
+    // A régua contra o período anterior só aparece quando ele inteiro já
+    // tinha o post gravado (comparavel); antes disso o "antes" seria zero e
+    // tudo sairia "novo".
+    const cmp = !!bl.comparavel;
+    const dL = (a, b) => (cmp ? ` ${deltaChip(a, b)}` : "");
+    const num = (rot, val, a, b, nota) => (cmp ? kpi(rot, val, a, b, { nota }) : cartao(rot, val, nota));
+    const topo = posts.filter((p) => p.leitores > 0)[0];
+    // O tipo que mais rende é o de mais leituras POR POST publicado: a
+    // categoria com dez posts soma mais leitura que a com dois sem render mais.
+    const porPost = (x) => (x.posts ? x.leituras / x.posts : 0);
+    const rende = (bl.categorias || []).filter((c) => c.leituras > 0).slice().sort((p, q) => porPost(q) - porPost(p))[0];
+    // De onde veio a visita de quem leu cada post. Mapa sem protótipo: a
+    // chave é o endereço do post, e "constructor" é um endereço válido.
+    const canaisDe = Object.create(null), origensDe = Object.create(null);
+    (bl.post_canal || []).forEach((x) => (canaisDe[x.slug] = canaisDe[x.slug] || []).push(x));
+    (bl.post_origem || []).forEach((x) => (origensDe[x.slug] = origensDe[x.slug] || []).push(x));
+    const deOnde = (p) => {
+      const cs = (canaisDe[p.slug] || []).slice().sort((x, y) => y.n - x.n);
+      if (!cs.length) return "—";
+      const tot = cs.reduce((s, x) => s + x.n, 0);
+      const os = (origensDe[p.slug] || []).filter((o) => o.origem !== "(direto)").slice(0, 2);
+      return `${cs.slice(0, 2).map((x) => `${esc(CANAL[x.canal] || x.canal)} <small>${esc(pct(x.n, tot))}</small>`).join("<br>")}${os.length ? `<br><small class="adm-mono">${os.map((o) => esc(o.origem)).join(", ")}</small>` : ""}`;
+    };
+    const linha = (p) => `<tr><td class="adm-post"><a href="/blog/${esc(encodeURIComponent(p.slug))}">${esc(p.title || p.slug)}</a><br><small>${esc(catNome(p.category))} · ${esc(blogJogoNome(p.jogo))} · ${esc(dataBR(p.publicado))}</small></td>
+      <td class="num">${esc(fmt(p.leitores))}${dL(p.leitores, p.leitores_ant)}</td>
+      <td class="num">${esc(fmt(p.leituras))}</td>
+      <td class="num adm-tempo">${esc(p.tempo_ms == null ? "—" : dur(p.tempo_ms))}<br><small>de ~${esc(fmt(p.reading_min))} min</small></td>
+      <td class="num">${esc(taxaTxt(p.entradas, p.leituras))} <small>${esc(fmt(p.entradas))}</small></td>
+      <td class="num">${esc(taxaTxt(p.seguiram, p.leitores))} <small>${esc(fmt(p.seguiram))}</small></td>
+      <td class="num">${p.cartas || p.lojas ? `${esc(fmt(p.cartas))} <small>cartas</small><br>${esc(fmt(p.lojas))} <small>lojas</small>` : "—"}</td>
+      <td class="num">${p.cadastros ? esc(fmt(p.cadastros)) : "—"}</td>
+      <td>${deOnde(p)}</td></tr>`;
+    const tipo = (rotulo, lista, chip) => table([{ t: rotulo }, { t: "Posts", num: true }, { t: "Leitores", num: true }, { t: "Leituras", num: true }, { t: "Leituras por post", num: true }, { t: "Seguiram pro site", num: true }],
+      (lista || []).map((x) => `<tr><td>${chip(x.k)}</td><td class="num">${esc(fmt(x.posts))}</td><td class="num">${esc(fmt(x.leitores))}${dL(x.leitores, x.leitores_ant)}</td><td class="num">${esc(fmt(x.leituras))}</td><td class="num">${esc(media(x.leituras, x.posts))}</td><td class="num">${esc(taxaTxt(x.seguiram, x.leitores))}</td></tr>`));
+    // A série só traz os dias com leitura; os outros entram zerados no eixo.
+    const porDia = Object.create(null);
+    (bl.serie || []).forEach((x) => { porDia[x.day] = x; });
+    const dias = diasJanela(n).map((d) => ({ day: d, leitores: (porDia[d] || {}).leitores || 0, leituras: (porDia[d] || {}).leituras || 0 }));
+    const L = bl.lista || {};
+    const semDado = `Ainda não chegou nenhuma leitura com o post gravado neste período. O site grava o post de cada leitura a partir do deploy desta mudança (quem ainda roda a versão antiga em cache leva uns dias pra trocar). Não há histórico de antes — o evento só dizia "blog". Os posts publicados já estão na lista, zerados.`;
+    const aviso = !bl.desde ? `<p class="adm-banner adm-banner-info">${esc(semDado)}</p>`
+      : cmp ? ""
+        : `<p class="adm-banner adm-banner-info">O post de cada leitura é gravado desde <strong>${esc(desdeTxt(bl.desde))}</strong>: os números abaixo contam a partir daí. Não há histórico de antes (o evento só dizia "blog"), e a comparação com o período anterior aparece quando ele inteiro já tiver o post gravado.</p>`;
+    return `
+      ${aviso}
+      <div class="admin-stats adm-kpis">
+        ${num("Leitores", fmt(A.leitores), A.leitores, B.leitores, "navegadores que abriram um post")}
+        ${num("Leituras", fmt(A.leituras), A.leituras, B.leituras, `${media(A.leituras, A.leitores)} por leitor`)}
+        ${cartao("Tempo de leitura", A.tempo_ms == null ? "—" : dur(A.tempo_ms), "mediana por leitor, com a aba à vista")}
+        ${cartao("Chegaram pelo post", taxaTxt(A.entradas, A.leituras), `${fmt(A.entradas)} leituras foram a 1ª página da visita`)}
+        ${cartao("Seguiram pro site", taxaTxt(A.seguiram, A.leitores), `${fmt(A.seguiram)} leitores abriram outra área depois de ler`)}
+        ${num("Criaram conta depois de ler", fmt(A.cadastros), A.cadastros, B.cadastros, `${fmt(A.cartas)} cartas marcadas e ${fmt(A.lojas)} cliques em loja nos posts`)}
+      </div>
+      <div class="admin-stats adm-kpis">
+        ${cartao("Post mais lido", topo ? topo.title || topo.slug : "—", topo ? `${fmt(topo.leitores)} leitores · ${pct(topo.leitores, A.leitores)} de quem leu o blog` : "nenhuma leitura no período", true)}
+        ${cartao("Tipo que mais rende", rende ? catNome(rende.k) : "—", rende ? `${media(rende.leituras, rende.posts)} leituras por post · ${fmt(rende.posts)} ${rende.posts === 1 ? "post" : "posts"}` : "nenhuma leitura no período", true)}
+        ${cartao("Posts lidos", `${fmt(A.posts_lidos)} de ${fmt(bl.publicados)}`, "publicados com 1 leitura ou mais no período")}
+      </div>
+      ${section(`Leitores e leituras por dia (${n} dias)`, lines(dias, [
+        { key: "leituras", label: "Leituras", color: "#9aa3ae" },
+        { key: "leitores", label: "Leitores", color: "var(--accent)" }
+      ], Object.assign(CW(), { aria: "Leitores e leituras do blog por dia" })))}
+      ${section("Post por post", paged("blogposts", [{ t: "Post" }, { t: "Leitores", num: true }, { t: "Leituras", num: true }, { t: "Tempo de leitura", num: true }, { t: "Chegaram por ele", num: true }, { t: "Seguiram pro site", num: true }, { t: "Na página", num: true }, { t: "Contas", num: true }, { t: "De onde veio" }],
+        posts.map(linha), 12),
+        "Todo post publicado, do mais lido pro menos (o zerado também é resposta). Leitores = navegadores que abriram o post; leituras = páginas (quem volta conta de novo). Tempo = mediana, entre os leitores, do tempo com a aba à vista, ao lado do tempo estimado do texto; no celular é um piso (a última página da visita às vezes não manda o tempo). Chegaram por ele = leituras que foram a 1ª página da visita: o post trouxe a pessoa (busca, rede social, link). Seguiram pro site = leitores que, na mesma visita, abriram alguma página fora do blog depois. Na página = cartas marcadas com \"Tenho\" e cliques em loja feitos no próprio post. Contas = leitores que criaram conta depois da 1ª leitura, no período. De onde veio = o canal da visita em que o post foi lido, com os sites de origem embaixo.")}
+      <div class="adm-grid-2">
+        ${section("Por categoria", tipo("Categoria", bl.categorias, (k) => esc(catNome(k))),
+          "Que tipo de post rende: \"leituras por post\" divide as leituras pelos posts publicados da categoria, pra a que tem mais posts não ganhar só por volume. Um leitor de dois posts da mesma categoria conta uma vez.")}
+        ${section("Por jogo", tipo("Jogo", bl.jogos, blogJogoChip),
+          "O jogo marcado no post; \"Geral\" é o post sem jogo.")}
+      </div>
+      <div class="adm-grid-2">
+        ${section("Por assunto (tags)", hbars((bl.tags || []).filter((t) => t.leituras > 0).slice(0, 15).map((t) => ({ label: t.k, value: t.leituras, sub: `${fmt(t.leitores)} leitores · ${fmt(t.posts)} ${t.posts === 1 ? "post" : "posts"}` }))),
+          "Leituras dos posts que levam cada assunto. O post com três assuntos conta nos três.")}
+        ${section("A lista do blog (/blog)", funnel([
+          { label: "abriram a lista", value: L.visitantes, color: "var(--accent)" },
+          { label: "abriram um post a partir dela", value: L.abriram, color: "#16a34a", hint: "a página seguinte da visita foi um post" }
+        ]), "Quem chega ao post pela lista já estava no site; quem chega direto no post veio de fora (ver \"Chegaram pelo post\").")}
+      </div>
+      <div class="adm-grid-2">
+        ${section("De onde vêm os leitores (canal da visita)", partes((bl.canais || []).map((x, i) => ({ label: CANAL[x.canal] || x.canal, value: x.leitores, color: colorAt(i) })), { aria: "Leitores do blog por canal da visita" }),
+          "O canal é o da 1ª página da visita em que o post foi lido: busca (Google…), rede social, IA, campanha (link com utm), outro site ou direto. \"Direto\" junta link colado, app instalado e origem que o navegador não informa.")}
+        ${section("Sites e campanhas de origem", hbars((bl.origens || []).map((x) => ({ label: x.origem === "(direto)" ? "Direto (sem origem)" : x.origem, value: x.leitores, sub: `${CANAL[x.canal] || x.canal} · ${fmt(x.leituras)} leituras` }))),
+          "Só o domínio de onde a visita veio, ou a etiqueta utm_source do link. Pra saber qual publicação de rede social trouxe gente, divulgue o post com ?utm_source=instagram&utm_campaign=nome-do-post.")}
+      </div>
+      <div class="adm-grid-3">
+        ${section("País", hbars((bl.paises || []).map((x) => ({ label: nomePais(x.co), value: x.leitores }))), "Leitores por país (só no site; o app das lojas não grava país).")}
+        ${section("Aparelho", partes((bl.aparelhos || []).map((x, i) => ({ label: DEVICE[x.k] || x.k, value: x.leitores, color: colorAt(i) })), { aria: "Leitores do blog por tipo de aparelho" }))}
+        ${section("Idioma da versão lida", partes((bl.versoes || []).map((x, i) => ({ label: LANG[x.lang] || x.lang, value: x.leitores, color: colorAt(i) })), { aria: "Leitores do blog por idioma da versão lida" }),
+          "A versão do post que a pessoa abriu (original ou tradução), não o idioma do navegador.")}
+      </div>`;
+  }
   // Resumo: os jogos do período lado a lado — quem olha e o que entra na
   // coleção. Sem a 20261111g, o recorte antigo (páginas vistas por jogo, da
   // admin_pulso) e o aviso no lugar dos cadastros.
@@ -2856,7 +2975,7 @@ if (v === "b") { /* versão nova */ }</pre>
 
   const RENDER = {
     geral: (x) => tabResumo(x.dash, x.pulso, x.notas, x.geo, x.jogos),
-    jogos: (x) => tabJogos(x.jogos),
+    jogos: (x) => tabJogos(x.jogos), blog: (x) => tabBlog(x.blog),
     areas: (x) => tabAreas(x.paginas), paginas: (x) => tabTodasPaginas(x.paginas), caminhos: (x) => tabCaminhos(x.paginas),
     plataformas: (x) => tabPlataformas(x.plataformas), versoes: (x) => tabVersoes(x.plataformas), lojasapp: (x) => tabLojasApp(x.plataformas),
     marcos: (x) => tabMarcos(x.notas),
@@ -2970,10 +3089,11 @@ if (v === "b") { /* versão nova */ }</pre>
     erros: "20261003a_erros_v2.sql",
     pulso: "20261009a_admin_v3.sql", paginas: "20261009a_admin_v3.sql", plataformas: "20261009a_admin_v3.sql",
     descartes: "20261009a_admin_v3.sql", notas: "20261009a_admin_v3.sql", anunciosutm: "20261009a_admin_v3.sql",
-    geo: "20261110a_admin_geo.sql", jogos: "20261111g_admin_jogos.sql"
+    geo: "20261110a_admin_geo.sql", jogos: "20261111g_admin_jogos.sql", blog: "20261121a_admin_blog.sql"
   };
   function pendente(keys) {
     if (keys.every((k) => k === "jogos")) return pedeJogos("Esta tela");
+    if (keys.every((k) => k === "blog")) return pedeBlog("Esta tela");
     const arqs = Array.from(new Set(keys.map((k) => MIGRACAO[k])));
     const rpcs = keys.map(rpcDe);
     const v21 = keys.some((k) => MIGRACAO[k] === "20260928a_analytics_2_1.sql");

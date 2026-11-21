@@ -8,6 +8,50 @@ poucos.)
 
 ## Pendentes de aplicar
 
+- `20261121a` — /admin: o BLOG post por post (`20261121a_admin_blog.sql`).
+  O `path` do evento é o 1º segmento do endereço, então `/blog` (a lista) e
+  `/blog/<post>` viravam o mesmo "blog": o painel sabia quanta gente passou
+  pelo blog e nada de qual post. Desde o deploy da mesma PR o cliente manda
+  `props.bp` em todo evento de página de post (`"<post>"`, ou
+  `"<idioma>/<post>"` na tradução). Esta cria a `admin_blog(days)`, que cruza
+  o `bp` com a tabela `posts`: por post, leitores e leituras nos dois
+  períodos, visitas que começaram nele, leitores que seguiram pra fora do
+  blog, tempo mediano, cartas marcadas e cliques em loja na página e contas
+  criadas depois de ler; o mesmo por categoria, jogo e assunto; o canal e a
+  origem da visita (no blog e por post); país, aparelho e idioma da versão
+  lida; a lista `/blog` → post; a série por dia; `desde` e `comparavel`. Só
+  conta endereço que é de post publicado. O guard não muda (não filtra chave
+  de `props`, só o tamanho). **Sem histórico**: só existe post a partir do
+  deploy. Aditiva e sem ordem com o JS: sem ela, a aba Conteúdo › Blog mostra
+  o aviso amarelo, e o `bp` que chegar até lá aparece quando ela entrar
+  (dentro do período).
+
+  Ensaiada em 2026-11-21 no PGlite com as funções reais do repo (`_canal`,
+  `_is_admin`, `_int`) e a tabela `posts` da 20260930b, aplicada três vezes.
+  Sem evento: os 4 publicados zerados, rascunho e agendado fora. Com 28
+  eventos montados à mão, mais de 70 conferências: leitor que volta (2 leituras, 1
+  leitor), visita que começa no post × que vem da home, barra no fim do
+  endereço, tradução (`pt/<post>` de um post em inglês conta na versão pt),
+  canal da 1ª página da visita (busca, social, campanha, IA, direto), quem
+  seguiu pro catálogo, conta criada depois de ler (a criada ANTES não
+  conta), carta marcada e clique em loja no post, mediana do tempo com o
+  teto de 30 min, período anterior, robô fora, endereço que não é post
+  (inexistente, rascunho, agendado, 500 letras) fora, `props` número/lista
+  sem erro, `comparavel` falso e verdadeiro, `days` fora do intervalo,
+  não-admin/sem JWT/`anon` barrados e os 30 s no `proconfig`. Com 200 mil
+  eventos, `admin_blog(30)` levou 1,1 s no PGlite (a `admin_blog(7)`, 0,3 s).
+
+  Conferir depois de aplicar:
+  ```sql
+  select proname, proconfig from pg_proc where proname = 'admin_blog';  -- statement_timeout=30s
+  -- uns minutos depois de abrir um post no site (medição ligada, e num
+  -- navegador que não seja o da equipe):
+  select props->>'bp' as post, name, count(*) from events
+   where path = 'blog' and ts > now() - interval '1 hour' group by 1, 2 order by 3 desc;
+  ```
+  E, logado como admin: `/admin` › Conteúdo › Blog troca o aviso pela tabela
+  dos posts.
+
 - `20261119a` — libera o slug `herorush` (Marvel Hero Rush, 2026+, edição em
   inglês) nas duas whitelists de jogo (`card_views`/`increment_card_view` e
   `contribute_price`; `20261119a_add_herorush.sql`). Cópia da `20261114c`
