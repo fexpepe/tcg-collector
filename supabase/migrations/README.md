@@ -23,6 +23,16 @@ poucos.)
   `herorush`: quando ela entrar, a lista dela precisa do `herorush` e do
   `fma`. **A próxima migração de jogo copia esta.**
 
+  **Aplicada em 2026-11-22** pelo Fernando e conferida por curl anônimo no
+  mesmo dia: a view de `fma-f1-c-001` respondeu 204 e criou a linha no
+  `card_views` (`views: 1`); o `contribute_price` anônimo segue 401; um jogo
+  inventado responde 204 e não cria linha. A view de `mhr-bp01-001-mr` também
+  criou a linha do `herorush`, o que confere a lista inteira e fecha a
+  verificação que faltava na `20261119a`. A primeira tentativa falhou no SQL
+  Editor (42601, linha 105) porque o bloco de verificação do fim tinha saído
+  quebrado na geração do arquivo; o erro de sintaxe barra o script inteiro, e
+  nada foi aplicado até a versão corrigida.
+
 - `20261121a` — /admin: o BLOG post por post (`20261121a_admin_blog.sql`).
   O `path` do evento é o 1º segmento do endereço, então `/blog` (a lista) e
   `/blog/<post>` viravam o mesmo "blog": o painel sabia quanta gente passou
@@ -87,9 +97,9 @@ poucos.)
   copia esta.**
 
   **Aplicada em 2026-11-19** pelo Fernando ("feito, SQL subido"). A
-  verificação por curl anônimo ainda não foi feita: a sessão que preparou a
-  migração não pôde gravar no banco de produção. Falta rodar o par de `curl`
-  e anotar aqui o resultado.
+  verificação por curl anônimo ficou pra 2026-11-22, depois da `20261122a`
+  (que reescreve a lista com o `herorush` junto): a view de
+  `mhr-bp01-001-mr` respondeu 204 e criou a linha no `card_views`.
 
 - `20261114c` — libera o slug `dbs` (Dragon Ball Super Card Game Masters,
   Bandai, 2017+, edição em inglês) nas duas whitelists de jogo
