@@ -78,9 +78,17 @@ for (const c of cards) {
 // Reescreve o catálogo INTEIRO (cards + chunks + índices + search-index): sem
 // isso o nome novo ficaria só no cards.js e a busca/grade continuariam com o
 // japonês, porque elas leem os artefatos derivados.
-const indexes = await readGlobalVar(new URL("indexes.js", dataDir), "TCG_INDEXES");
+//
+// O ÍNDICE NÃO É LIDO DE VOLTA (22/11/2026). Até aqui este passo lia o
+// indexes.js antigo e o devolvia ao writeGameCatalog, que usa o índice passado
+// em vez de montar um (`indexes || buildSetIndexes(cards)`). Como o nome do set
+// acabou de mudar nas cartas, o índice velho ficava com o nome em japonês: 75
+// dos 112 sets apontavam pra um nome que nenhuma carta usa mais. Quem lê o
+// índice pelo NOME (o total por set da Coleção, a contagem de cartas do cartão
+// de set, o resgate de link com ?game= errado) não achava esses 75 sets. Sem
+// passar o índice, o writeGameCatalog o refaz das cartas já traduzidas.
 const pricing = await readGlobalVar(new URL("pricing.js", dataDir), "TCG_PRICING");
-await writeGameCatalog(dataDir, { cards, indexes, pricing, webDir: "data/naruto/" });
+await writeGameCatalog(dataDir, { cards, pricing, webDir: "data/naruto/" });
 
 const pendentes = [...semTraducao];
 console.log(`translate-naruto-names: ${traduzidas} cartas com nome em inglês; ${pendentes.length} nomes ainda sem tradução.`);
