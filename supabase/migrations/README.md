@@ -52,6 +52,13 @@ poucos.)
   E, logado como admin: `/admin` › Conteúdo › Blog troca o aviso pela tabela
   dos posts.
 
+  **Aplicada em 2026-11-21** pelo Fernando ("feito") e conferida por curl
+  anônimo no mesmo dia: `POST /rest/v1/rpc/admin_blog` respondeu 401 com
+  `42501` ("permission denied for function admin_blog": a função existe e
+  está fechada pro `anon`), e um nome inventado respondeu 404 `PGRST202`.
+  Falta o que só o dono vê: abrir Conteúdo › Blog logado depois do deploy e,
+  com uma leitura de verdade, rodar a consulta do `bp` acima.
+
 - `20261119a` — libera o slug `herorush` (Marvel Hero Rush, 2026+, edição em
   inglês) nas duas whitelists de jogo (`card_views`/`increment_card_view` e
   `contribute_price`; `20261119a_add_herorush.sql`). Cópia da `20261114c`
