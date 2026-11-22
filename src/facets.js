@@ -132,6 +132,11 @@
       },
       facetType(["Unit", "Character", "Command", "Operation", "G", "ACE"])
     ],
+    // Fullmetal Alchemist Carddass (22/11/2026): o tipo impresso no topo da
+    // carta do Alchemic Card Battle (as placas não têm tipo).
+    fma: [
+      facetType(["Main Character", "Support Character", "Battle", "Event"])
+    ],
     // Saint Seiya Crusade (o TCG de 2012–2014, da família do Gundam War): a cor
     // e o tipo impressos no topo da carta.
     seiyacr: [

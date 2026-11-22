@@ -566,7 +566,12 @@
     // PR-001 (promo), B-001 (Boss Deck), Re-001H (Legacy Collection) e
     // W24-001 (World Champion Decks), sozinhas ou no número duplo (2026-11-11).
     [/^\d{1,2}-\d{3}[CRHLS]$/, ["fftcg"]],
-    [/^(?:PR|RE|B|W\d{2})-\d{3}$/, ["fftcg"]],
+    [/^(?:PR|RE|W\d{2})-\d{3}$/, ["fftcg"]],
+    // O B-001 sozinho é também a carta de BATALHA do Alchemic Card Battle do
+    // Fullmetal Alchemist (B-001 a B-099, 2004–2005): os dois jogos empatam e
+    // a busca decide (22/11/2026). As C- e E- de lá são de uma letra só e não
+    // viram formato (o C-001 é também do Crusade).
+    [/^B-\d{3}$/, ["fftcg", "fma"]],
     [/^(?:PR|RE|B|W\d{2})-\d{3}[CRHLS]?\/\d{1,2}-\d{3}[CRHLS]$/, ["fftcg"]],
     // Cardfight!! Vanguard: SET/NÚMERO com o "EN" no fim (2026-11-13).
     [/^[A-Z0-9]+(?:-[A-Z0-9]+)?\/[A-Z0-9+]*\d{2,4}[A-Z]?EN$/, ["vanguard"]],

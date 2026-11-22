@@ -597,6 +597,19 @@
   --accent: #b0003a; --accent-dark: #930030; --accent-rgb: 176, 0, 58;
   --accent-soft: rgba(176, 0, 58, 0.1); --on-accent: #ffffff;
 }
+/* Fullmetal Alchemist Carddass: vermelho-tijolo (#b03000, o do GAME_COLOR;
+   aprovada pelo Fernando em 22/11/2026 — o casaco do Edward, puxado pro tijolo pra não
+   colar no Pokémon). No claro, com texto branco (6.4:1); no escuro o accent
+   abre pro salmão #ff8a5c, com texto escuro (8.4:1). */
+[data-game-accent="fma"] {
+  --accent: #ff8a5c; --accent-dark: #f0703f; --accent-rgb: 255, 138, 92;
+  --accent-soft: rgba(255, 138, 92, 0.16); --on-accent: #0a0c10;
+}
+[data-theme="light"][data-game-accent="fma"],
+[data-theme="light"] [data-game-accent="fma"] {
+  --accent: #b03000; --accent-dark: #922800; --accent-rgb: 176, 48, 0;
+  --accent-soft: rgba(176, 48, 0, 0.1); --on-accent: #ffffff;
+}
 [data-game-accent="all"] {
   --accent: #e3e7ee; --accent-dark: #c3c9d4; --accent-rgb: 227, 231, 238;
   --accent-soft: rgba(227, 231, 238, 0.12); --on-accent: #0a0c10;

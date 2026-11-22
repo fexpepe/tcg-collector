@@ -8,6 +8,31 @@ poucos.)
 
 ## Pendentes de aplicar
 
+- `20261122a` — libera o slug `fma` (Fullmetal Alchemist Carddass, Bandai
+  2004–2005: o Alchemic Card Battle e as placas da Jumbo Carddass) nas duas
+  whitelists de jogo (`card_views`/`increment_card_view` e
+  `contribute_price`; `20261122a_add_fma.sql`). Cópia da `20261119a` (Marvel
+  Hero Rush, a última aplicada) com o `fma` a mais: **ela cobre a 20261119a**
+  e, por ela, todas as de jogo anteriores. Só a lista muda. Qualquer uma das
+  anteriores rodada **depois** desta tiraria o `fma`. O Carddass Masters do
+  FMA é o `cdm`, que já está na lista. Sem ela, a view de carta e o Preço da
+  Comunidade do jogo novo são descartados em silêncio. Conferir com o par de
+  `curl` do fim do arquivo: a view de `fma-f1-c-001` tem de **criar a linha**
+  no `card_views` (o 204 sozinho não prova nada). A `20261116a` do Pokémon
+  Carddass (PR #336, aberta) é anterior à `20261119a` e não tem nem o
+  `herorush`: quando ela entrar, a lista dela precisa do `herorush` e do
+  `fma`. **A próxima migração de jogo copia esta.**
+
+  **Aplicada em 2026-11-22** pelo Fernando e conferida por curl anônimo no
+  mesmo dia: a view de `fma-f1-c-001` respondeu 204 e criou a linha no
+  `card_views` (`views: 1`); o `contribute_price` anônimo segue 401; um jogo
+  inventado responde 204 e não cria linha. A view de `mhr-bp01-001-mr` também
+  criou a linha do `herorush`, o que confere a lista inteira e fecha a
+  verificação que faltava na `20261119a`. A primeira tentativa falhou no SQL
+  Editor (42601, linha 105) porque o bloco de verificação do fim tinha saído
+  quebrado na geração do arquivo; o erro de sintaxe barra o script inteiro, e
+  nada foi aplicado até a versão corrigida.
+
 - `20261121a` — /admin: o BLOG post por post (`20261121a_admin_blog.sql`).
   O `path` do evento é o 1º segmento do endereço, então `/blog` (a lista) e
   `/blog/<post>` viravam o mesmo "blog": o painel sabia quanta gente passou
@@ -72,9 +97,9 @@ poucos.)
   copia esta.**
 
   **Aplicada em 2026-11-19** pelo Fernando ("feito, SQL subido"). A
-  verificação por curl anônimo ainda não foi feita: a sessão que preparou a
-  migração não pôde gravar no banco de produção. Falta rodar o par de `curl`
-  e anotar aqui o resultado.
+  verificação por curl anônimo ficou pra 2026-11-22, depois da `20261122a`
+  (que reescreve a lista com o `herorush` junto): a view de
+  `mhr-bp01-001-mr` respondeu 204 e criou a linha no `card_views`.
 
 - `20261114c` — libera o slug `dbs` (Dragon Ball Super Card Game Masters,
   Bandai, 2017+, edição em inglês) nas duas whitelists de jogo

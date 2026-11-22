@@ -248,9 +248,12 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
 - **Naruto Card Game (2027), jogo `narutocg` desde 2026-11-11** (era a linha
   `nrt-ncg` do `naruto`): a TCGCSV tem a categoria 93 desde 16/09/2026, e o
   dedupe com a promo curada já é o `PRODUTO_CURADO` do `sync-naruto.mjs`. O
-  deploy só a lê com a variável do repositório `NARUTO_TCGCSV_CATEGORY=93`
-  ligada; sem ela o catálogo fica nas 2 cartas publicadas (em 11/11/2026 a
-  TCGCSV já listava a terceira, a Chakra Card da NYCC 2026). Quando sair o
+  deploy a lê todo dia desde 2026-11-22 (a 93 virou o padrão do sync; antes
+  dependia da variável `NARUTO_TCGCSV_CATEGORY`, que nunca foi criada, e o
+  preço das 2 cartas publicadas ficou 50 dias parado). Com ela entrou a
+  terceira, que o TCGplayer chama de "NYCC 2026" e a Bandai só de "Chakra
+  Card"; a imagem é a do TCGplayer, com a marca "SAMPLE", até haver scan
+  próprio (curadoria, como a da Gen Con). Quando sair o
   primeiro booster, conferir o código do set contra o `SECOES_BANDAI`
   (src/app.js), que hoje supõe BT/ST.
 - **Cores e posições no hub (14/11/2026):** o Fernando deixou a cor por conta
@@ -387,10 +390,10 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   d'água do site); em 2026-11-11, a 新劇場版:破 第2章 (73 cartas) e as três
   CR de pachinko (55 cada), listas lidas na frente das cartas, todas com
   scan (nas CR, a maioria dos nomes é descrição nossa: a carta não imprime); em 2026-11-13, a coleção do
-  filme de 2005 do Naruto (63 cartas pela lista do 火の国庵, sem imagem e só com o ano). Faltam: (1) as outras edições (Gundam, Cowboy Bebop, One
+  filme de 2005 do Naruto (63 cartas pela lista do 火の国庵, sem imagem e só com o ano); em 2026-11-22, o 鋼の錬金術師 (PART 1–3, FINAL PART e a coleção do filme de 2005; 461 cartas, todas com scan do animecollection.fr, nome pelo rótulo do subset e quem aparece, nosso). Faltam: (1) as outras edições (Gundam, Cowboy Bebop, One
   Piece, Inuyasha, Bleach…, 1996–2009), sem fonte carta a carta achada
   (a Final Fantasy Wiki tem FF7 e FF8 com frente e verso; o
-  animecollection.fr tem scan numerado, sem nome, de Fullmetal Alchemist,
+  animecollection.fr tem scan numerado, sem nome, de
   Ghost in the Shell, Gunbuster, Lupin III, Nadia, Slam Dunk, Kochikame,
   Nuku Nuku, Steamboy, Gundam Chronicle e Saint Seiya G Crusade, cobertura
   não medida); (1b) no Evangelion: imagem da 第弐集, imagem própria no lugar
@@ -433,6 +436,21 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   lista antiga não mostra; (4) raridade "comum" da lista antiga, que vem em
   branco; (5) logo do jogo (o do site oficial, a recortar); (6) o NEX-A
   (2012–2015) e a versão inglesa de 2005, se forem entrar.
+- **Fullmetal Alchemist Carddass (`fma`)**: jogo próprio desde 2026-11-22, o
+  Carddass do anime de 2003 com uma seção por produto: o card game ALCHEMIC
+  CARD BATTLE (FILE.1–4, 297 cartas; nome e tipo transcritos dos scans) e as
+  placas da Jumbo Carddass (Alchemist Plate Collection 1–3, 29; nome por quem
+  aparece, nosso), tudo com scan do animecollection.fr e datas do Card Check
+  Box. Faltam: (1) a コインプラス (CC-001 a CC-008, 2004-11), o EXTRA FILE do
+  filme (2005-07-25, 45 cartas novas, C-109 a C-126, B-100 a B-108 e E-091 a
+  E-108, mais paralelas das antigas com arte nova) e as promos (P e PR), sem
+  lista carta a carta achada; (2) scan e nome de quatro cartas do FILE.4
+  (B-086, B-087, C-087, C-089), que a fonte lista só com a imagem genérica;
+  (3) logo do jogo (o tile e a Vintage saem em texto); (4) as 8 promos do
+  Carddass Masters do FMA no animecollection (fichário, campanha, jogo,
+  revista), sem número impresso; (5) o Fullmetal Alchemist TCG americano da
+  Joyride (2005) e as coleções do Brotherhood (Alchemist Card Collection,
+  Board Clear, 2009), fora deste jogo.
 - **Saint Seiya (`seiya`, `seiyatc`, `seiyacr`)**: três jogos vintage desde
   2026-11-13 (um por produto), do mesmo sync. Entraram 1.724 cartas em 27
   sets, todas com scan: no Saint Seiya Carddass, as Part 1–3 (1988–89), a

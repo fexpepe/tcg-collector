@@ -69,7 +69,7 @@ test("sem espelho (dev, ou host que saiu da lista), a origem do jogo volta a ser
 
 test("todo jogo que só tem imagem pelo wsrv.nl está na tabela do game.js", () => {
   // Oito estavam de fora até 2026-11-22 (item B2 do docs/CATALOGO.md).
-  for (const jogo of ["naruto", "hxh", "lotr", "dbz", "cdm", "gcd", "dbc", "dbsb", "dbva", "dbbw", "harrypotter",
+  for (const jogo of ["naruto", "hxh", "lotr", "dbz", "cdm", "fma", "gcd", "dbc", "dbsb", "dbva", "dbbw", "harrypotter",
     "mbc", "seiya", "seiyatc", "seiyacr", "duelmasters", "herorush", "narutomythos", "narutokayou"]) {
     assert.deepEqual(preconexoesDeImagem(jogo, []), ["https://wsrv.nl"], jogo);
   }
