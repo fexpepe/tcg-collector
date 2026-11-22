@@ -305,6 +305,12 @@ a #347 corrige na home.
   popup entra, sem salto de layout (CLS 0); a imagem de 300 px é pedida uma
   vez só; o arquivo do set é pedido uma vez só e o console não acusa preload
   sem uso.
+
+  > **Corrigido na execução (22/11).** Abrir pela forma `?type=set…&card=`
+  > não exercita o esqueleto: ele só existe no endereço bonito
+  > (`/games/<jogo>/<set>/<carta>`), que é onde a borda escreve. O ensaio da
+  > #360 usou um servidor fora do repo que responde nesse endereço chamando as
+  > mesmas funções da borda.
 - Ensaio do carimbo numa cópia em LF: rodar `node scripts/apply-img-mirror.mjs`
   e ver os dois arquivos com a lista de hosts.
 
@@ -473,6 +479,10 @@ e quem usa o site em inglês ou espanhol os vê em português pra sempre.
    `toLocaleString(locale, { useGrouping: "always" }) + "+"`. Não mexer no
    `index.html`: o número de lá é o que o robô lê, e
    `tests/admin-charts.test.mjs` ~158 trava o `<strong>` como está.
+
+   > **Corrigido na execução (22/11).** O "+" só volta onde já estava: a
+   > contagem de jogos ("48") não tem "+" e não pode ganhar um. A #359
+   > preserva o sufixo de cada número em vez de somar "+" a todos.
 4. **Data da venda.** `fmtDate` em `src/sales.js` ~875 escreve dd/mm/aa fixo.
    Passa a usar
    `new Date(s + "T00:00:00").toLocaleDateString(shared.getLocale(), { day: "2-digit", month: "2-digit", year: "2-digit" })`,
@@ -580,16 +590,19 @@ verdade (Naruto Boruto, 97 cartas).
 3. Testes com `node:test`: `[]` com régua > 0 é erro; `null` com régua > 0 é
    erro; `null` com régua 0 (o JUMP) passa; 13 cartas com régua 52.430 passa;
    catálogo cheio abaixo da régua segue como aviso.
-4. Atualizar a régua (`data/catalog-baseline.json`) só dos jogos cujo catálogo
-   inteiro é versionado. Rodar `node scripts/lint-catalog.mjs --update-baseline`
-   numa cópia LF e trazer de volta **apenas** as entradas desses jogos. Ficam
-   como estão: `pokemon`, `magic` e `ygo` (o dado completo deles não está no
-   repositório; localmente a régua sairia errada) e os jogos com menos de 100
-   cartas.
+4. Atualizar a régua (`data/catalog-baseline.json`) com
+   `node scripts/lint-catalog.mjs --update-baseline` numa cópia LF. Ficam como
+   estão só os jogos com menos de 100 cartas (a régua não se aplica a eles).
 
-**Não fazer.** Não transformar em erro a amostra local do Pokémon, do Magic ou
-do Yu-Gi-Oh!. Não ligar a atualização da régua no `deploy.yml` (fica como
-sugestão, seção 5).
+   > **Corrigido na execução (22/11).** A primeira versão deste passo mandava
+   > deixar `pokemon`, `magic` e `ygo` de fora, dizendo que o dado completo
+   > deles não está no repositório. **Está**: vai versionado em arquivos por
+   > set, e é deles que o lint lê quando não há `cards.js` inteiro. A régua dos
+   > três subiu junto com a dos outros 25 jogos (segundo commit da #357).
+
+**Não fazer.** Não transformar em erro o catálogo de 1 a 99 cartas (é a
+amostra de desenvolvimento do Pokémon, com 13). Não ligar a atualização da
+régua no `deploy.yml` (fica como sugestão, seção 5).
 
 **Como conferir.** Os testes; e o lint rodando limpo na cópia LF com o dado
 versionado (é o que o `ci.yml` faz). Ensaio: numa cópia, esvaziar o
@@ -823,11 +836,11 @@ exige redirecionamento.
 | Fase 1, itens 3 e 4 | `claude/dicas-de-carga-5b1d` | fexpepe/tcg-collector#347 | aberta |
 | Fase 1, item 10 | `claude/idioma-sem-portugues-na-frente-9d4c` | fexpepe/tcg-collector#348 | aberta |
 | Fase 1, item 13 | `claude/sets-escondidos-setid-4e7b` | fexpepe/tcg-collector#353 | aberta |
-| 2A | `claude/pouso-da-carta-e-do-set-2a71` | | a executar |
-| 2B | `claude/paginas-pelo-caminho-rapido-2b54` | | a executar |
-| 2C | `claude/textos-da-borda-no-idioma-2c38` | | a executar |
-| 2D | `claude/indice-de-sets-do-naruto-2d19` | | a executar |
-| 2E | `claude/lint-catalogo-zerou-2e63` | | a executar |
+| 2A | `claude/pouso-da-carta-e-do-set-2a71` | fexpepe/tcg-collector#360 | aberta |
+| 2B | `claude/paginas-pelo-caminho-rapido-2b54` | fexpepe/tcg-collector#358 | aberta |
+| 2C | `claude/textos-da-borda-no-idioma-2c38` | fexpepe/tcg-collector#359 | aberta |
+| 2D | `claude/indice-de-sets-do-naruto-2d19` | fexpepe/tcg-collector#356 | aberta |
+| 2E | `claude/lint-catalogo-zerou-2e63` | fexpepe/tcg-collector#357 | aberta |
 | 3A | `claude/decks-imagens-pelo-espelho-3a82` | | a executar |
 | 3B | `claude/catalogo-furos-de-padrao-3b47` | | a executar |
 | 3C | `claude/documentacao-em-dia-3c05` | | a executar |
