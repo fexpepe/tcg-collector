@@ -75,7 +75,9 @@
     if (hits && hits.length) {
       const idsByGame = Object.create(null);
       hits.forEach((h) => { const g = h.g || "pokemon"; (idsByGame[g] = idsByGame[g] || []).push(h.i); });
-      const catalog = await shared.loadOwnedAcrossGames(idsByGame).catch(() => ({ cards: [] }));
+      // Pela borda: a tela só lê id, nome, set, número e jogo (e a variante e o
+      // preço, que a borda traz), então não precisa do chunk inteiro do set.
+      const catalog = await shared.loadOwnedFast(idsByGame).catch(() => ({ cards: [] }));
       const byId = new Map((catalog.cards || []).map((c) => [c.id, c]));
       return hits.map((h) => byId.get(h.i)).filter(Boolean);
     }
