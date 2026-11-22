@@ -51,6 +51,9 @@ const NOMES_DO_JOGO = {
   // anime e abre o nome de três produtos.
   seiya: { nomes: ["Saint Seiya", "SAINT SEIYA", "聖闘士星矢", "星矢", "Carddass", "カードダス"] },
   seiyatc: { nomes: ["Saint Seiya", "聖闘士星矢", "Trading Collection", "トレーディングコレクション"], oficiais: ["トレーディングコレクション", "トレーディングコレクション プロモ"] },
+  // Fullmetal Alchemist Carddass: o produto abre o nome ("ALCHEMIC CARD
+  // BATTLE FILE.1", "アルケミストプレートコレクション"), a IP e o jogo não.
+  fma: { nomes: ["Fullmetal Alchemist", "FULLMETAL ALCHEMIST", "鋼の錬金術師", "Carddass", "カードダス"] },
   seiyacr: { nomes: ["Saint Seiya", "聖闘士星矢", "Crusade", "クルセイド"], oficiais: ["聖闘士星矢Ω", "聖闘士星矢Ω～黄金十二宮編～", "聖闘士星矢Ω～新生聖衣編～"] },
   // Naruto Boruto Card Game: o grupo do TCGplayer é "NB Tournament Pack
   // Cards"; o set fica sem a sigla do jogo na frente.

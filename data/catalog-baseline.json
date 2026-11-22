@@ -125,9 +125,9 @@
   "imgPct": 100
  },
  "cdm": {
-  "cards": 1208,
-  "sets": 13,
-  "imgPct": 81
+  "cards": 1669,
+  "sets": 18,
+  "imgPct": 86
  },
  "gcd": {
   "cards": 1475,
@@ -238,5 +238,10 @@
   "cards": 667,
   "sets": 14,
   "imgPct": 100
+ },
+ "fma": {
+  "cards": 326,
+  "sets": 7,
+  "imgPct": 99
  }
 }
