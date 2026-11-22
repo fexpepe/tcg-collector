@@ -26,10 +26,14 @@
 //    (ou o Fracture, ou o Rapture) e `v` = o preço próprio do Fracture e do
 //    Rapture, que o cliente lê pela versão do tile (usdForVariant, em
 //    scripts/lib/pricing.mjs e no shared.js). É o primeiro jogo da TCGCSV a
-//    usar o `v` (o Pokémon usa desde 14/09/2026). Versão foil SEM cotação
-//    própria cai no `uf`: o Rapture sem venda aparece com o preço do Foil
-//    comum, como o Cold Foil do FAB. Limitação aceita: o valor sai por baixo,
-//    nunca inventado pra cima.
+//    usar o `v` (o Pokémon usa desde 14/09/2026). Versão SEM cotação própria
+//    cai na regra do usdForVariant, a mesma do Pokémon e do Sorcery: foil
+//    vai pro `uf` (o Rapture sem venda aparece com o preço do Foil comum,
+//    como o Cold Foil do FAB) e o resto pro `u`. Como o `u` é a primeira
+//    versão com preço, a carta cujo Normal não tem venda (77 em 22/11/2026,
+//    quase todas UR em que o produto da carta nem tem linha de preço) mostra
+//    o Normal com o preço do foil. Limitação conhecida: o histórico, o índice
+//    de mercado e o manifest somam o `u`, então ele não pode faltar.
 //
 // 3. O id é PEGAJOSO entre os produtos da carta (como no Sorcery). Sai do
 //    produto da carta (o que tem foto); se o catálogo anterior já tem a carta
