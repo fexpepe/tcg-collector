@@ -68,3 +68,14 @@ test("vendas: a data da venda segue o idioma e valor fora do formato ISO sai com
     assert.equal(monta("en-US")(solto), solto, `${solto} sai como veio`);
   }
 });
+
+test("página de set em inglês: a trilha 'Games' aponta pro /hub, no link visível e no JSON-LD", () => {
+  const fonte = ler("scripts/prerender-catalog.mjs");
+  // O 1º nível da trilha: /hub em inglês, /games em português (o /games é uma
+  // página estática só em português).
+  assert.match(fonte, /\{ nome: isEn \? "Games" : "Jogos", url: `\$\{ORIGIN\}\$\{isEn \? "\/hub" : "\/games"\}` \}/);
+  // Os dois lugares leem a MESMA lista `trilha`: link visível e BreadcrumbList.
+  assert.match(fonte, /itemListElement: trilha\.map\(\(t, i\) => \(\{ "@type": "ListItem", position: i \+ 1, name: t\.nome, item: t\.url \}\)\)/);
+  assert.match(fonte, /const trilhaHtml = [^\n]*\$\{trilha\.slice\(0, -1\)\s*\n?\s*\.map\(\(t\) => `<a href="\$\{escapeAttr\(t\.url\.replace\(ORIGIN, ""\)\)\}">/);
+  assert.ok(ler("hub.html").length > 0, "o /hub existe (hub.html)");
+});

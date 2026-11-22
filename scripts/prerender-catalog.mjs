@@ -365,8 +365,12 @@ function setPageHtml(page, canonical, otherSets, lang) {
     }
   };
   // Trilha Jogos > jogo > set: o Google troca a URL crua do resultado por ela.
+  // Na variante em inglês o 1º nível é o /hub (2026-11-22): o /games é uma
+  // página estática SÓ em português (paginaDosJogos), e o "Games" em inglês
+  // levava quem lê em inglês pra ela. O /hub o cliente traduz. O link visível
+  // e o JSON-LD saem desta mesma lista, então dizem o mesmo.
   const trilha = [
-    { nome: isEn ? "Games" : "Jogos", url: `${ORIGIN}/games` },
+    { nome: isEn ? "Games" : "Jogos", url: `${ORIGIN}${isEn ? "/hub" : "/games"}` },
     { nome: gameLabel, url: `${ORIGIN}${baseDoJogo}` },
     { nome: name, url: canonical }
   ];
