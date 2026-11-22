@@ -22,6 +22,12 @@ poucos.)
   do Pokémon Carddass (PR #336), quando entrar, precisa do `ikorr` também.
   **A próxima migração de jogo copia esta.**
 
+  **Aplicada em 2026-11-22** pelo Fernando ("feito") e conferida por curl
+  anônimo no mesmo dia: antes não havia linha do `ikorr` no `card_views`; a
+  view de `ikr-723958` respondeu 204 e criou a linha (`views: 1`); o
+  `contribute_price` anônimo segue 401; um jogo inventado responde 204 e não
+  cria linha; a linha do `fma` (`fma-f1-c-001`) continua lá.
+
 - `20261122a` — libera o slug `fma` (Fullmetal Alchemist Carddass, Bandai
   2004–2005: o Alchemic Card Battle e as placas da Jumbo Carddass) nas duas
   whitelists de jogo (`card_views`/`increment_card_view` e
