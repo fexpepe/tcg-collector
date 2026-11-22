@@ -52,3 +52,19 @@ test("home: os números da faixa seguem o separador do idioma, no cliente, e o H
   assert.ok(!re.test("R$ · $ · €"));
   assert.equal(re.exec("48")[2], "");
 });
+
+test("vendas: a data da venda segue o idioma e valor fora do formato ISO sai como veio", () => {
+  const fonte = ler("src/sales.js");
+  const i = fonte.indexOf("const fmtDate = (s) => {");
+  assert.ok(i > 0, "sumiu o fmtDate");
+  // Extrai a função e roda com um `shared` de mentira (o idioma muda o formato).
+  const corpo = fonte.slice(i, fonte.indexOf("};", i) + 2);
+  const monta = (locale) => new Function("shared", `${corpo}; return fmtDate;`)({ getLocale: () => locale });
+  assert.match(corpo, /day: "2-digit", month: "2-digit", year: "2-digit"/);
+  assert.equal(monta("pt-BR")("2026-03-04"), "04/03/26");
+  assert.equal(monta("es-ES")("2026-03-04"), "04/03/26");
+  assert.equal(monta("en-US")("2026-03-04"), "03/04/26");
+  for (const solto of ["", "04/03/26", "2026-3-4", "2026-13-45", undefined]) {
+    assert.equal(monta("en-US")(solto), solto, `${solto} sai como veio`);
+  }
+});

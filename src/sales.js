@@ -877,7 +877,14 @@
     section.hidden = !items.length;
     if (!items.length) { listEl.innerHTML = ""; if (sumEl) sumEl.textContent = ""; return; }
     const cur = shared.getCurrency();
-    const fmtDate = (s) => { const m = String(s).match(/^(\d{4})-(\d{2})-(\d{2})$/); return m ? `${m[3]}/${m[2]}/${m[1].slice(2)}` : s; };
+    // Data da venda no formato do idioma (2026-11-22): dd/mm/aa em pt e es,
+    // mm/dd/aa em en (era dd/mm/aa fixo, e 03/04/26 lia como 3 de abril ou 4 de
+    // março conforme o país). Valor fora do formato ISO sai como veio.
+    const fmtDate = (s) => {
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(String(s))) return s;
+      const d = new Date(`${s}T00:00:00`);
+      return Number.isNaN(d.getTime()) ? s : d.toLocaleDateString(shared.getLocale(), { day: "2-digit", month: "2-digit", year: "2-digit" });
+    };
     let totalSold = 0, totalPnl = 0, pnlCount = 0, totalFee = 0;
     const rows = items.map(({ it, card }) => {
       // shared.soldValues: mesma fórmula do Portfólio, com o câmbio congelado na
