@@ -65,7 +65,12 @@
   // Filtro de jogo só com os jogos que têm carta na lista de desejos.
   shared.setGameFilterScope(shared.GAME_SLUGS.filter((g) => idsFor(g).length > 0));
   Promise.all([
-    shared.loadOwnedAcrossGames(Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, idsFor(g)]))),
+    // Pela BORDA (/api/collection): só as cartas desejadas/possuídas, em vez de
+    // baixar o chunk inteiro de cada set em que há uma delas. A borda não manda
+    // setTotal (fica pro enrichSetTotals, abaixo) nem pokemonName (o filtro de
+    // espécie já tem o speciesName de reserva, igual à Coleção). Borda fora do
+    // ar: os chunks, dentro do loadOwnedFast.
+    shared.loadOwnedFast(Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, idsFor(g)]))),
     shared.loadFxRates()
   ])
     .then(([catalog]) => {
@@ -76,6 +81,9 @@
         ownedByGame[g].migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId))));
       hydrateFilters();
       render();
+      // Sem o setTotal da borda o código sai "063" em vez de "063/197": completa
+      // pelo manifest do jogo e redesenha (mesmo padrão de Explorar e Cartas).
+      shared.enrichSetTotals(cards).then((mudou) => { if (mudou) render(); }).catch(() => { /* fica o número sozinho */ });
       renderDropNotice(); // quedas de preço da semana (histórico do build; async)
       renderTargetNotice(); // cartas que atingiram o preço-alvo do usuário
       renderSellers();    // trade matching: quem tem suas desejadas à venda (async)
