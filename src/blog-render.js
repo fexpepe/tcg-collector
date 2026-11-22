@@ -105,6 +105,7 @@
     seiya: ["Saint Seiya Carddass", "#4400cc"],
     seiyatc: ["Saint Seiya Trading", "#4400cc"],
     seiyacr: ["Saint Seiya Crusade", "#4400cc"],
+    fma: ["Fullmetal Alchemist Carddass", "#b03000"],
     narutoboruto: ["Naruto Boruto", "#f65400"],
     narutotc: ["Naruto Trading Cards", "#f65400"]
   };

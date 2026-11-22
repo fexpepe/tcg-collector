@@ -9,8 +9,8 @@
 // Cada IP tem fonte própria, então cada uma tem o seu bloco aqui (IPS, no
 // fim) e o seu snapshot (data/vintage/carddass-masters-<ip>.json, que só é
 // regravado quando não regride). Têm lista carta a carta o HUNTER×HUNTER
-// (2000–2001), o 新世紀エヴァンゲリオン (1996–2011) e o filme de 2005 do
-// NARUTO; IP nova entra como mais um bloco.
+// (2000–2001), o 新世紀エヴァンゲリオン (1996–2011), o filme de 2005 do
+// NARUTO e o 鋼の錬金術師 (2004–2005); IP nova entra como mais um bloco.
 //
 // IDs: cdm-<ip>-<set>-<número impresso> (cdm-hxh-p1-29, cdm-hxh-p2-sp4). O
 // número é o que a Bandai imprimiu; o id não depende da ordem da fonte.
@@ -351,12 +351,13 @@ async function paginaLatin1(url) {
 
 // Scans do animecollection.fr -> sets do snapshot, ou null se uma página não
 // respondeu (aí fica o snapshot versionado inteiro, e não meio catálogo).
-async function scansEva() {
+// `idl` é a licença no site (20 = Evangelion, 15 = Fullmetal Alchemist).
+async function scansAnimeCollection(idl, defs) {
   const sets = [];
-  for (const def of SETS_EVA) {
+  for (const def of defs) {
     if (!def.ac) continue;
     const [idc, ids] = def.ac;
-    const html = await paginaLatin1(`${ANIMECOLLECTION}/cartes.php?idl=20&idc=${idc}&ids=${ids}`);
+    const html = await paginaLatin1(`${ANIMECOLLECTION}/cartes.php?idl=${idl}&idc=${idc}&ids=${ids}`);
     if (!html) return null;
     const cards = parseAc(html, idc, ids).map((c) => ({ set: def.code, ...c }));
     if (cards.length) sets.push({ code: def.code, name: def.name, cards });
@@ -364,6 +365,7 @@ async function scansEva() {
   }
   return sets.length ? sets : null;
 }
+const scansEva = () => scansAnimeCollection(20, SETS_EVA);
 
 // ── 劇場版 NARUTO-ナルト- (2005) ────────────────────────────────────────────
 // CARDDASS MASTERS 劇場版 NARUTO 大激突!幻の地底遺跡だってばよ: a coleção do
@@ -442,6 +444,46 @@ async function listaNaruto() {
   return sets;
 }
 
+// ── 鋼の錬金術師 (2004–2005) ──────────────────────────────────────────────
+// CARDDASS MASTERS 鋼の錬金術師: as quatro partes do anime de 2003 (PART 1,
+// PART 2, PART 3 e a FINAL PART, que o checklist chama de PART 4) e a coleção
+// do filme 劇場版 鋼の錬金術師 シャンバラを征く者 (2005), em pacote de 10 a ¥300
+// (o filme, ¥400). Entrou em 2026-11-22, a pedido do Fernando. O card game da
+// mesma época (ALCHEMIC CARD BATTLE) e as placas da Jumbo Carddass são o jogo
+// `fma` (sync-fma.mjs).
+//
+// Fontes (levantamento de 2026-11-22):
+//   SCANS — animecollection.fr, licença idl=15, coleção 27, uma página por
+//           parte: número, raridade e scan da frente, com a marca d'água do
+//           site (aceita no Evangelion). 81 + 102 + 103 + 103 + 72, todas com
+//           scan, e cada contagem bate com a do Card Check Box (normais + SP +
+//           AR). As SP ("Rare" no site) e as AR ("Super Rare") ficam Special,
+//           como no resto do jogo; o número diz qual é qual. As 8 promos do
+//           site (fichário, campanha, jogo, revista) não têm número impresso
+//           nem origem na carta e ficam de fora.
+//   LISTA — scripts/data/carddass-masters-fma.json. A carta quase nunca
+//           imprime nome: traz o rótulo do subset (STORY, Illustration, as
+//           aberturas e encerramentos) e a imagem. O nome é o rótulo e quem
+//           aparece, lidos nos scans, NOSSOS ("traducao": "nossa"), o critério
+//           das CR do Evangelion; quando a carta imprime o nome do personagem,
+//           vale o impresso.
+//   FICHA — Card Check Box (cardcheckbox.com/a06a-bandai-3/cdm-hagaren.html):
+//           mês de cada parte e a numeração; o preço e o tamanho do pacote, da
+//           キャラクターグッズ研究所 (dream-hobby.hatenablog.com).
+export const LISTA_FMA = JSON.parse(readFileSync(new URL("scripts/data/carddass-masters-fma.json", ROOT), "utf8"));
+
+// `name` vai depois de "鋼の錬金術師 " (setPrefix). O filme tem título próprio
+// ("劇場版 鋼の錬金術師"), como o 新劇場版 do Evangelion. A FINAL PART leva o
+// subtítulo do pacote, como o Card Check Box o transcreve.
+export const SETS_FMA = [
+  { code: "p1", name: "PART 1", date: "2004-03", lista: "p1", ac: [27, 52] },
+  { code: "p2", name: "PART 2", date: "2004-07", lista: "p2", ac: [27, 81] },
+  { code: "p3", name: "PART 3", date: "2004-11", lista: "p3", ac: [27, 82] },
+  { code: "p4", name: "FINAL PART -from TV animation-", date: "2005-02", lista: "p4", ac: [27, 104] },
+  { code: "m1", prefix: "劇場版 鋼の錬金術師", name: "シャンバラを征く者", date: "2005-08", lista: "m1", ac: [27, 105] }
+];
+const scansFma = () => scansAnimeCollection(15, SETS_FMA);
+
 // ── Registro das IPs ────────────────────────────────────────────────────────
 // `setPrefix`: como a IP abre o nome de cada set dela (o logo da série). O
 // groupCdmSets tira o equivalente em inglês dentro da seção da IP.
@@ -466,7 +508,12 @@ export const IPS = [
   { ip: "naruto", setPrefix: "NARUTO-ナルト-", sets: SETS_NARUTO, scans: listaNaruto, nomes: nomeNaruto,
     logo: "/assets/games/set_cdm_naruto.webp",
     snap: new URL("data/vintage/carddass-masters-naruto.json", ROOT),
-    source: `${HINOKUNIAN}carddassmasters.html` }
+    source: `${HINOKUNIAN}carddassmasters.html` },
+  // Sem logo de série ainda: o tile do set mostra o nome.
+  { ip: "fma", setPrefix: "鋼の錬金術師", sets: SETS_FMA, lista: LISTA_FMA, scans: scansFma,
+    logo: "",
+    snap: new URL("data/vintage/carddass-masters-fma.json", ROOT),
+    source: "http://animecollection.fr/cartes.php?idl=15" }
 ];
 
 export const cardId = (ip, setCode, num) => `${ID_PREFIX}${ip}-${setCode}-${String(num).toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;

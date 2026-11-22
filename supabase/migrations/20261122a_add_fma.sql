@@ -1,10 +1,11 @@
 -- ============================================================================
--- 20261122a. Migração aditiva: libera o slug `ikorr` (Rush of Ikorr, Upper
--- Deck, 2025+) nas whitelists de jogo do banco. Aplicar no SQL Editor do
+-- 20261122a. Migração aditiva: libera o slug `fma` (Fullmetal Alchemist
+-- Carddass, Bandai 2004–2005: o Alchemic Card Battle e as placas da Jumbo
+-- Carddass) nas whitelists de jogo do banco. Aplicar no SQL Editor do
 -- Supabase (projeto dlnalopazitfdgnmdguu).
 --
 -- Cópia da 20261119a (Marvel Hero Rush, a última migração de jogo) com o
--- `ikorr` a mais — só a lista muda. As mesmas DUAS famílias de whitelist:
+-- `fma` a mais — só a lista muda. As mesmas DUAS famílias de whitelist:
 --   1. card_views + increment_card_view  (corpo da 20260923a, com a linha do
 --      card_views_daily)
 --   2. contribute_price                  (corpo da 20260807c)
@@ -12,12 +13,16 @@
 -- rejeitados EM SILÊNCIO (as funções só dão `return`).
 --
 -- ESTA COBRE A 20261119a: a lista é a dela inteira (com o `herorush` e os
--- anteriores) mais o `ikorr`. Cada migração de jogo reescreve a lista
+-- anteriores) mais o `fma`. Cada migração de jogo reescreve a lista
 -- INTEIRA, então qualquer uma das anteriores rodada DEPOIS desta tiraria o
--- `ikorr`. Aplicar esta por último; a próxima migração de jogo copia esta.
+-- `fma`. Aplicar esta por último; a próxima migração de jogo copia esta.
+-- (A 20261116a do Pokémon Carddass, na PR #336 ainda aberta, é anterior à
+-- 20261119a e não tem nem o `herorush`: quando ela for mesclada, a lista
+-- dela precisa levar o `herorush` e o `fma`.)
 --
--- A coleção NÃO depende desta migração: a tabela `collections` não tem
--- whitelist de jogo.
+-- O Carddass Masters do FMA não precisa de nada aqui: é o jogo `cdm`, que já
+-- está na lista. A coleção NÃO depende desta migração: a tabela
+-- `collections` não tem whitelist de jogo.
 --
 -- Conferir depois de aplicar: o par de `curl` no fim deste arquivo.
 --
@@ -40,14 +45,14 @@ begin
   end loop;
 end $$;
 alter table public.card_views add constraint card_views_game_check
-  check (game = any (array['pokemon','lorcana','onepiece','magic','fab','gundam','swu','cyberpunk','sorcery','dbfw','dbs','ygo','digimon','riftbound','unionarena','naruto','hxh','dbc','wow','lotr','harrypotter','weiss','mbc','dbz','cdm','gcd','gw','narutocg','godzilla','palworld','fftcg','narutomythos','narutokayou','narutoboruto','dbsb','dbva','dbbw','vanguard','grandarchive','duelmasters','narutotc','hololive','seiya','seiyatc','seiyacr','shadowverse','jump','herorush','ikorr']));
+  check (game = any (array['pokemon','lorcana','onepiece','magic','fab','gundam','swu','cyberpunk','sorcery','dbfw','dbs','ygo','digimon','riftbound','unionarena','naruto','hxh','dbc','wow','lotr','harrypotter','weiss','mbc','dbz','cdm','gcd','gw','narutocg','godzilla','palworld','fftcg','narutomythos','narutokayou','narutoboruto','dbsb','dbva','dbbw','vanguard','grandarchive','duelmasters','narutotc','hololive','seiya','seiyatc','seiyacr','shadowverse','jump','herorush','fma']));
 
--- increment_card_view: corpo IDÊNTICO ao da 20261114c (e das anteriores) — só a lista de jogos muda.
+-- increment_card_view: corpo IDÊNTICO ao da 20261119a (e das anteriores) — só a lista de jogos muda.
 create or replace function public.increment_card_view(p_game text, p_card_id text)
 returns void language plpgsql security definer set search_path = public as $$
 begin
   if p_game is null or p_card_id is null then return; end if;
-  if not (p_game = any (array['pokemon','lorcana','onepiece','magic','fab','gundam','swu','cyberpunk','sorcery','dbfw','dbs','ygo','digimon','riftbound','unionarena','naruto','hxh','dbc','wow','lotr','harrypotter','weiss','mbc','dbz','cdm','gcd','gw','narutocg','godzilla','palworld','fftcg','narutomythos','narutokayou','narutoboruto','dbsb','dbva','dbbw','vanguard','grandarchive','duelmasters','narutotc','hololive','seiya','seiyatc','seiyacr','shadowverse','jump','herorush','ikorr'])) then return; end if;
+  if not (p_game = any (array['pokemon','lorcana','onepiece','magic','fab','gundam','swu','cyberpunk','sorcery','dbfw','dbs','ygo','digimon','riftbound','unionarena','naruto','hxh','dbc','wow','lotr','harrypotter','weiss','mbc','dbz','cdm','gcd','gw','narutocg','godzilla','palworld','fftcg','narutomythos','narutokayou','narutoboruto','dbsb','dbva','dbbw','vanguard','grandarchive','duelmasters','narutotc','hololive','seiya','seiyatc','seiyacr','shadowverse','jump','herorush','fma'])) then return; end if;
   if p_card_id !~ '^[A-Za-z0-9][A-Za-z0-9._-]{0,79}\Z' then return; end if;
   if not _rate_ok('cardview', 120) then return; end if;
   insert into card_views (game, card_id, views) values (p_game, p_card_id, 1)
@@ -67,7 +72,7 @@ create or replace function public.contribute_price(
 declare v numeric;
 begin
   if auth.uid() is null then return; end if;
-  if not (p_game = any (array['pokemon','lorcana','onepiece','magic','fab','gundam','swu','cyberpunk','sorcery','dbfw','dbs','ygo','digimon','riftbound','unionarena','naruto','hxh','dbc','wow','lotr','harrypotter','weiss','mbc','dbz','cdm','gcd','gw','narutocg','godzilla','palworld','fftcg','narutomythos','narutokayou','narutoboruto','dbsb','dbva','dbbw','vanguard','grandarchive','duelmasters','narutotc','hololive','seiya','seiyatc','seiyacr','shadowverse','jump','herorush','ikorr'])) then return; end if;
+  if not (p_game = any (array['pokemon','lorcana','onepiece','magic','fab','gundam','swu','cyberpunk','sorcery','dbfw','dbs','ygo','digimon','riftbound','unionarena','naruto','hxh','dbc','wow','lotr','harrypotter','weiss','mbc','dbz','cdm','gcd','gw','narutocg','godzilla','palworld','fftcg','narutomythos','narutokayou','narutoboruto','dbsb','dbva','dbbw','vanguard','grandarchive','duelmasters','narutotc','hololive','seiya','seiyatc','seiyacr','shadowverse','jump','herorush','fma'])) then return; end if;
   if p_card_id is null or p_card_id !~ '^[A-Za-z0-9][A-Za-z0-9._-]{0,79}\Z' then return; end if;
   if p_variant is null or length(p_variant) < 1 or length(p_variant) > 40 then return; end if;
   if p_cond is null or p_cond !~ '^[A-Za-z0-9 +-]{1,12}\Z' then return; end if;
@@ -93,20 +98,20 @@ notify pgrst, 'reload schema';
 -- ============================================================================
 -- Verificação (depois de aplicar):
 --
---   # 1) view de carta do Rush of Ikorr (ikr-723958, Ammit, Soulgorger, de
---   #    Shattered Chaos): 204 E a linha aparece em card_views com game ikorr
---   #    (204 sozinho não prova nada: jogo inválido também devolve 204).
+--   # 1) view de carta do FMA (fma-f1-c-001, Edward Elric, do Alchemic Card
+--   #    Battle FILE.1): 204 E a linha aparece em card_views com game fma (204
+--   #    sozinho não prova nada: jogo inválido também devolve 204).
 --   curl -s -o /dev/null -w "%{http_code}\n" -X POST \
 --     "https://dlnalopazitfdgnmdguu.supabase.co/rest/v1/rpc/increment_card_view" \
 --     -H "apikey: sb_publishable_0Qlei5ZvRcEsr18QRdWfGg_N3aR1zyL" -H "Content-Type: application/json" \
---     -d '{"p_game":"ikorr","p_card_id":"ikr-723958"}'
+--     -d '{"p_game":"fma","p_card_id":"fma-f1-c-001"}'
 --
---   curl -s "https://dlnalopazitfdgnmdguu.supabase.co/rest/v1/card_views?game=eq.ikorr&select=card_id,views" \
+--   curl -s "https://dlnalopazitfdgnmdguu.supabase.co/rest/v1/card_views?game=eq.fma&select=card_id,views" \
 --     -H "apikey: sb_publishable_0Qlei5ZvRcEsr18QRdWfGg_N3aR1zyL"
 --
 --   # 2) contribuição anônima segue 401 (o fechamento da 20260807b continua de pé)
 --   curl -s -o /dev/null -w "%{http_code}\n" -X POST \
 --     "https://dlnalopazitfdgnmdguu.supabase.co/rest/v1/rpc/contribute_price" \
 --     -H "apikey: sb_publishable_0Qlei5ZvRcEsr18QRdWfGg_N3aR1zyL" -H "Content-Type: application/json" \
---     -d '{"p_game":"ikorr","p_card_id":"ikr-723958","p_variant":"Normal","p_cond":"NM","p_kind":"listed","p_company":"","p_grade":"","p_value_brl":10}'
+--     -d '{"p_game":"fma","p_card_id":"fma-f1-c-001","p_variant":"Normal","p_cond":"NM","p_kind":"listed","p_company":"","p_grade":"","p_value_brl":10}'
 -- ============================================================================

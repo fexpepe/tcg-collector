@@ -557,6 +557,13 @@ deixava logo largo abaixo de 2× no hub.
   arte e o cartão do set mostra o nome. Logo novo entra por aqui (`game_<slug>.webp`)
   e troca o `""` no registro, no `GAME_LOGO`/`KIT_LOGO`, no `vintage.html`, no
   "Sobre" e no `LOGO` do `scripts/sync-dbc-carddass.mjs`.
+- **Fullmetal Alchemist Carddass (`fma`, pendência, 2026-11-22):** entrou sem
+  logo, do mesmo jeito (tile, Vintage e "Sobre" em texto). Candidato: o logo
+  da embalagem do ALCHEMIC CARD BATTLE ("鋼の錬金術師 FULLMETAL ALCHEMIST" com
+  o nome do card game), que nenhuma fonte achada tem em boa resolução. Logo
+  novo troca o `""` no registro, no `GAME_LOGO`/`KIT_LOGO`, no `vintage.html`
+  e no "Sobre". O Carddass Masters do FMA também ficou sem `set_cdm_fma.webp`
+  (o tile do set mostra o nome; `logo: ""` no `IPS` do sync).
 - **Rush of Ikorr (`ikorr`, pendência, 2026-11-22):** sem logo. O site da
   Upper Deck (upperdeck.com/rush-of-ikorr) só publica banners em JPG com
   fundo, nenhum logo recortado. O tile do hub sai em texto e o registro leva

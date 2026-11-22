@@ -7352,6 +7352,10 @@
     seiya:     { usText: "saint seiya carddass", noTcgplayer: true },
     seiyatc:   { usText: "saint seiya amada", noTcgplayer: true },
     seiyacr:   { usText: "saint seiya crusade", noTcgplayer: true },
+    // Fullmetal Alchemist Carddass (conferido em 22/11/2026): o TCGplayer não
+    // tem o jogo, e não há loja BR; fica a busca do eBay, pelo nome da IP
+    // junto do nome da carta.
+    fma:       { usText: "fullmetal alchemist", noTcgplayer: true },
     // Naruto Boruto Card Game (conferido em 13/11/2026): no TCGplayer é a linha
     // "chrono-clash-system", que tem as Tournament Pack Cards. Sem loja BR.
     narutoboruto: { tcgLine: "chrono-clash-system", usText: "naruto boruto card game" },
@@ -9071,7 +9075,8 @@
     "seiyatc",
     "seiyacr",
     "narutoboruto",
-    "narutotc"
+    "narutotc",
+    "fma"
   ].map((game) => ({ game, dataDir: game === "pokemon" ? "data/" : `data/${game}/` }));
   // Slugs e cor de cada jogo, num lugar só (adicionar um jogo = 1 entrada aqui
   // + 1 no game.js + labels no i18n; as páginas iteram em vez de hardcodear).
@@ -9142,7 +9147,8 @@
     gw: "#2563eb", // = gundam: mesma IP (Gundam), mesma cor
     seiya: "#4400cc",      // violeta-índigo (o cosmo de Athena; o lilás é do Grand Archive); 9.9:1 com branco, a 82 do Lorcana (proposta, 2026-11-13)
     seiyatc: "#4400cc", // = seiya: mesma IP (Saint Seiya), mesma cor
-    seiyacr: "#4400cc" // = seiya: mesma IP (Saint Seiya), mesma cor
+    seiyacr: "#4400cc", // = seiya: mesma IP (Saint Seiya), mesma cor
+    fma: "#b03000"         // vermelho-tijolo, o casaco do Edward (o vermelho puro fica colado no Pokémon); 6.4:1 com branco, a 69 do Pokémon e a 74 do Magic (aprovada pelo Fernando, 2026-11-22)
   };
   // Preto ou branco sobre a cor do jogo — o que der MAIOR contraste de verdade
   // (fórmula WCAG), não um limiar de luminância chutado: com limiar fixo o
@@ -9302,6 +9308,7 @@
     seiya: ["ss-"],                           // Bandai 1988–2023: idem
     seiyatc: ["sstc-"],                       // Amada 2000–2003: idem
     seiyacr: ["sscr-"],                       // Bandai 2012–2014: idem
+    fma: ["fma-"],                            // Bandai 2004–2005: idem
     harrypotter: ["hp-"],                     // Wizards 2001–2002: idem
     naruto: ["nrt-"]                          // Bandai 2003–2013: idem (o NARUTO CARD GAME de 2027, nrt-ncg-, é o jogo narutocg)
   };

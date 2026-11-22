@@ -158,6 +158,9 @@
     if (flat.includes("palworld")) return "palworld";
     // "Marvel Hero Rush" (ou "Marvel HeroRush", como as lojas da Ásia escrevem).
     if (flat.includes("herorush")) return "herorush";
+    // Fullmetal Alchemist Carddass (Alchemic Card Battle e as placas da Jumbo
+    // Carddass, 2004–2005). Depois do Union Arena, que também tem um set do FMA.
+    if (flat === "fma" || flat.includes("fullmetalalchemist") || flat.includes("alchemiccardbattle")) return "fma";
     // "Rush of Ikorr" (a linha do TCGplayer e o Collectr).
     if (flat.includes("ikorr")) return "ikorr";
     // "Naruto Card Game" é a linha do TCGplayer do jogo de 2027 (narutocg): o

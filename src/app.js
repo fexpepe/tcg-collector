@@ -17,7 +17,7 @@
     ygo: "game_ygo-v2.webp", digimon: "game_digimon-v2.webp", riftbound: "game_riftbound-v2.webp",
     unionarena: "game_unionarena-v2.webp", narutocg: "game_naruto_2027.webp", naruto: "game_naruto-v2.webp", hxh: "game_hxh-v2.webp",
     dbc: "game_dbc-v3.webp", dbsb: "game_dbsb.webp", dbva: "game_dbva.webp", dbbw: "game_dbbw.webp", wow: "game_wow.webp", lotr: "game_lotr-v2.webp", dbz: "game_dbz-v2.webp", weiss: "game_weiss.webp", godzilla: "game_godzilla.webp", palworld: "game_palworld.webp", herorush: "game_herorush.webp", fftcg: "game_fftcg.webp", grandarchive: "game_grandarchive-v2.webp", hololive: "game_hololive.webp", shadowverse: "game_shadowverse-v2.webp", vanguard: "game_vanguard.webp", duelmasters: "game_duelmasters-v2.webp", narutomythos: "game_narutomythos.webp", narutokayou: "game_narutokayou.webp", harrypotter: "game_harrypotter.webp",
-    mbc: "game_mbc-v2.webp", seiya: "game_seiya-v2.webp", seiyatc: "game_seiyatc.webp", seiyacr: "game_seiyacr.webp", cdm: "game_cdm-v2.webp", gcd: "game_gcd-v2.webp", gw: "game_gw-v2.webp", narutoboruto: "game_naruto_boruto.webp", narutotc: "game_naruto-v2.webp"
+    mbc: "game_mbc-v2.webp", seiya: "game_seiya-v2.webp", seiyatc: "game_seiyatc.webp", seiyacr: "game_seiyacr.webp", fma: "", cdm: "game_cdm-v2.webp", gcd: "game_gcd-v2.webp", gw: "game_gw-v2.webp", narutoboruto: "game_naruto_boruto.webp", narutotc: "game_naruto-v2.webp"
   };
   function gameLogoUrl(game) {
     const f = GAME_LOGO[game];
@@ -1705,6 +1705,7 @@
       seiya: groupSeiyaSets,
       seiyatc: (raizes) => groupSetsByYear(raizes, true),
       seiyacr: (raizes) => groupSetsByYear(raizes, true),
+      fma: groupFmaSets,
       narutotc: groupNarutoTradingSets,
       harrypotter: groupHarryPotterSets
     };
@@ -2466,6 +2467,34 @@
     return items;
   }
 
+  // Fullmetal Alchemist Carddass (22/11/2026): uma seção por produto, o card
+  // game (ALCHEMIC CARD BATTLE, fma-f1…f4) e as placas da Jumbo Carddass
+  // (fma-pl1…pl3), cada uma em ordem de lançamento. O produto sai do setId
+  // (fixado pelo sync-fma.mjs). Dentro da seção do card game o "Alchemic Card
+  // Battle " da frente do nome em inglês sai, como no groupSeiyaSets.
+  function groupFmaSets(setItems) {
+    const PRODUTOS = [["f", "sets.category.fmaAcb", "Alchemic Card Battle "], ["pl", "sets.category.fmaJumbo", ""]];
+    const produtoDe = (set) => (String(set.setId || "").toLowerCase().match(/^fma-([a-z]+)\d+$/) || [])[1] || "";
+    const porData = (a, b) => String(a.releaseDate || "9999").localeCompare(String(b.releaseDate || "9999")) || String(a.setId).localeCompare(String(b.setId), "en", { numeric: true });
+    const items = [];
+    for (const [code, key, prefixo] of PRODUTOS) {
+      const list = setItems.filter((s) => produtoDe(s) === code).sort(porData).map((s) => {
+        const nome = String(s.displayName || "");
+        return prefixo && nome.indexOf(prefixo) === 0 ? Object.assign({}, s, { displayName: nome.slice(prefixo.length), nomeForaDaSecao: nome }) : s;
+      });
+      if (!list.length) continue;
+      items.push(cabecalhoDeSecao(key, list.length));
+      list.forEach((set) => items.push(set));
+    }
+    // Rede de segurança: produto novo no sync sem seção aqui ainda aparece.
+    const rest = setItems.filter((s) => !PRODUTOS.some(([code]) => produtoDe(s) === code)).sort(porData);
+    if (rest.length) {
+      items.push(cabecalhoDeSecao("sets.category.promos", rest.length));
+      rest.forEach((set) => items.push(set));
+    }
+    return items;
+  }
+
   function groupDbcSets(setItems) {
     const idOf = (set) => String(set.setId || "").trim().toLowerCase();
     const SERIES = [["h", "sets.category.dbcHondan", "Hondan "]];
@@ -2546,7 +2575,7 @@
   function groupCdmSets(setItems) {
     // Naruto sem prefixo a tirar: a coleção é a do filme, e "Naruto the Movie
     // 2: …" é o título dele, não a IP na frente do nome do set.
-    const IPS = { eva: ["sets.category.cdmEva", "Neon Genesis Evangelion "], hxh: ["sets.category.cdmHxh", "Hunter × Hunter "], naruto: ["sets.category.cdmNaruto", ""] };
+    const IPS = { eva: ["sets.category.cdmEva", "Neon Genesis Evangelion "], hxh: ["sets.category.cdmHxh", "Hunter × Hunter "], naruto: ["sets.category.cdmNaruto", ""], fma: ["sets.category.cdmFma", "Fullmetal Alchemist "] };
     const ipDe = (set) => (String(set.setId || "").toLowerCase().match(/^cdm-([a-z0-9]+)-/) || [])[1] || "";
     const semIp = (set) => {
       const nome = String(set.displayName || ""), ip = (IPS[ipDe(set)] || [])[1] || "";

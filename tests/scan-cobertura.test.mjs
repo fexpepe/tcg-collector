@@ -144,6 +144,12 @@ const JOGOS = {
   seiya: { semCodigo: "Saint Seiya Carddass: número solto, sem set impresso" },
   seiyatc: { semCodigo: "Saint Seiya Trading Collection: número solto (01, S-01), sem set impresso" },
   seiyacr: { semCodigo: "Saint Seiya Crusade: número por cor (cada cor tem seu U-001), sem set impresso" },
+  // Fullmetal Alchemist Carddass (2026-11-22): o Alchemic Card Battle imprime
+  // o número sozinho (C-001, B-001, E-001), único no jogo. O B- é formato
+  // dividido com o Boss Deck do Final Fantasy; C- e E- são de uma letra e
+  // ficam sem formato (o C-001 é também do Crusade). As placas não imprimem
+  // número e ficam fora da taxa.
+  fma: { min: 0.98, filtro: (c) => /^[BCE]-\d{3}$/.test(String(c.number)) },
   // Naruto Boruto Card Game (2026-11-13): o código impresso é "NB02-48-EB"
   // (set, número e tipo). A carta de torneio e a da caixa imprimem o MESMO.
   narutoboruto: { min: 0.98, impresso: (c) => `©2002 MASASHI KISHIMOTO / 2017 BORUTO All Rights Reserved. ©BANDAI NOT FOR SALE ${c.number}` },
