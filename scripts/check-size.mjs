@@ -182,8 +182,17 @@ import { join } from "node:path";
 // bloco) passaram 36 B do teto de 35.840 (35.876). Cada jogo novo traz os dois
 // blocos do [data-game-accent]: com a folga larga, não precisa de uma decisão
 // a cada jogo, e o teto segue barrando um salto de verdade.
+//
+// 2026-11-22: teto do shared.js sobe de 86.272 pra 86.528 (+256 B), com o
+// aval do Fernando ("Sim, subir 256 B"). O Fullmetal Alchemist (fma) entrou
+// na main e a deixou em 86.270, a 2 B do teto; o Rush of Ikorr (ikorr), PR
+// aberta no mesmo dia, soma ~34 B de registro (DATA_GAMES, GAME_COLOR e a
+// linha do MARKETS) e os dois juntos dão 86.304. A varredura de export morto
+// (chave do TCGShared sem leitor fora do shared.js) não achou nenhuma das
+// 258. Com 256 B cabem uns 6 jogos no mesmo formato; a saída de verdade
+// segue sendo tirar o MARKETS (só o popup da carta usa) do núcleo.
 const TETOS = [
-  { arquivo: "shared.js", teto: 86272, nota: "núcleo JS de toda página" },
+  { arquivo: "shared.js", teto: 86528, nota: "núcleo JS de toda página" },
   { arquivo: "styles.min.css", teto: 40960, nota: "núcleo do CSS, depois do split por área" },
 ];
 
