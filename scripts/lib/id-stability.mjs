@@ -59,6 +59,7 @@ export const ID_DE_PRODUTO = {
   grandarchive: /^ga-\d+$/,
   hololive: /^holo-\d+$/,
   shadowverse: /^shv-\d+$/,
+  ikorr: /^ikr-\d+$/, // Rush of Ikorr, TCGCSV cat. 94 (2026-11-22)
   narutoboruto: /^nb-\d+$/ // Chrono Clash System, TCGCSV cat. 60 (2026-11-13)
 };
 

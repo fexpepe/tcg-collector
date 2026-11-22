@@ -60,7 +60,11 @@ export const NOMES_DO_JOGO = {
   // Shadowverse: Evolve: só o grupo de promos traz o jogo na frente
   // ("Shadowverse: Evolve Promo Cards" -> "Promo Cards"); os "Shadowverse:
   // Evolve Bundles" são só selados.
-  shadowverse: ["Shadowverse: Evolve", "Shadowverse Evolve"]
+  shadowverse: ["Shadowverse: Evolve", "Shadowverse Evolve"],
+  // Rush of Ikorr: só o grupo de promos traz o jogo na frente ("Rush of
+  // Ikorr Promotional Cards" -> "Promotional Cards"); os boosters já vêm
+  // limpos ("Shattered Chaos Act 1 Part 1").
+  ikorr: ["Rush of Ikorr"]
 };
 
 // Títulos de outra obra que começam com a marca: ficam inteiros. No Yu-Gi-Oh!
