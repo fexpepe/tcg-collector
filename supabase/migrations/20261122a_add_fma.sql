@@ -28,7 +28,7 @@
 --
 -- Sem cifrão dentro dos corpos de função (lição da 20260923a): o editor do
 -- Supabase se perde com `$` solto num corpo `$$…$$`. As âncoras de fim das
--- regex usam `Z`, que no PostgreSQL casa só no fim da string.
+-- regex usam `\Z`, que no PostgreSQL casa só no fim da string.
 -- ============================================================================
 
 -- 1) CHECK de jogos válidos do card_views (dropa só o(s) CHECK que mencionam
@@ -101,12 +101,17 @@ notify pgrst, 'reload schema';
 --   # 1) view de carta do FMA (fma-f1-c-001, Edward Elric, do Alchemic Card
 --   #    Battle FILE.1): 204 E a linha aparece em card_views com game fma (204
 --   #    sozinho não prova nada: jogo inválido também devolve 204).
---   curl -s -o /dev/null -w "%{http_code}
-" -X POST --     "https://dlnalopazitfdgnmdguu.supabase.co/rest/v1/rpc/increment_card_view" --     -H "apikey: sb_publishable_0Qlei5ZvRcEsr18QRdWfGg_N3aR1zyL" -H "Content-Type: application/json" --     -d '{"p_game":"fma","p_card_id":"fma-f1-c-001"}'
+--   curl -s -o /dev/null -w "%{http_code}\n" -X POST \
+--     "https://dlnalopazitfdgnmdguu.supabase.co/rest/v1/rpc/increment_card_view" \
+--     -H "apikey: sb_publishable_0Qlei5ZvRcEsr18QRdWfGg_N3aR1zyL" -H "Content-Type: application/json" \
+--     -d '{"p_game":"fma","p_card_id":"fma-f1-c-001"}'
 --
---   curl -s "https://dlnalopazitfdgnmdguu.supabase.co/rest/v1/card_views?game=eq.fma&select=card_id,views" --     -H "apikey: sb_publishable_0Qlei5ZvRcEsr18QRdWfGg_N3aR1zyL"
+--   curl -s "https://dlnalopazitfdgnmdguu.supabase.co/rest/v1/card_views?game=eq.fma&select=card_id,views" \
+--     -H "apikey: sb_publishable_0Qlei5ZvRcEsr18QRdWfGg_N3aR1zyL"
 --
 --   # 2) contribuição anônima segue 401 (o fechamento da 20260807b continua de pé)
---   curl -s -o /dev/null -w "%{http_code}
-" -X POST --     "https://dlnalopazitfdgnmdguu.supabase.co/rest/v1/rpc/contribute_price" --     -H "apikey: sb_publishable_0Qlei5ZvRcEsr18QRdWfGg_N3aR1zyL" -H "Content-Type: application/json" --     -d '{"p_game":"fma","p_card_id":"fma-f1-c-001","p_variant":"Normal","p_cond":"NM","p_kind":"listed","p_company":"","p_grade":"","p_value_brl":10}'
+--   curl -s -o /dev/null -w "%{http_code}\n" -X POST \
+--     "https://dlnalopazitfdgnmdguu.supabase.co/rest/v1/rpc/contribute_price" \
+--     -H "apikey: sb_publishable_0Qlei5ZvRcEsr18QRdWfGg_N3aR1zyL" -H "Content-Type: application/json" \
+--     -d '{"p_game":"fma","p_card_id":"fma-f1-c-001","p_variant":"Normal","p_cond":"NM","p_kind":"listed","p_company":"","p_grade":"","p_value_brl":10}'
 -- ============================================================================
