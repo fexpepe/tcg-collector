@@ -36,7 +36,7 @@ import { slugify, slugsDasCartas, cartasDoSet, cartaParecida } from "../_lib/slu
 import { pecasDaCarta, precoDeReferencia, escapeHtml, escapeAttr, ORIGEM } from "../_lib/pagina-carta.js";
 import { pecasDoSet } from "../_lib/pagina-set.js";
 import { verLista, nCartas } from "../_lib/indices.js";
-import { decoraApp } from "../_lib/decora-app.js";
+import { decoraApp, tituloDaTela } from "../_lib/decora-app.js";
 import { naoAchou, redireciona, jsonDoSite, daBorda, guardaNaBorda, hasOwn, setRenomeado, setDoDePara } from "../_lib/borda.js";
 import { jsonLdSeguro } from "../_lib/json-ld.js";
 import { basePricingId } from "../api/_search-sql.js";
@@ -112,12 +112,19 @@ export function listaDeSets(mapa) {
 // é o resumo do bloco: é o texto que diz o que o jogo FOI, e o Google mostra.
 export function metaDoJogo(jogo, sets, sobre) {
   const n = sets.length;
-  const titulo = (() => {
-    const t = sobre ? `${jogo.nome} — história, sets e cartas | Sleevu` : `${jogo.nome} — sets e cartas | Sleevu`;
+  // O título nos três idiomas (2026-11-22): o <title> do HTML é o português
+  // (o que o robô lê); o inglês e o espanhol vão em data-titulo-en/-es do
+  // <title> e o cliente os põe no document.title de quem lê noutro idioma
+  // (src/app.js). Mesma régua de 65 caracteres e mesma ordem de queda em cada.
+  const tituloEm = (completo, curto) => {
+    const t = sobre ? `${jogo.nome} — ${completo} | Sleevu` : `${jogo.nome} — ${curto} | Sleevu`;
     if (t.length <= 65) return t;
-    const curto = `${jogo.nome} — sets e cartas | Sleevu`;
-    return curto.length <= 65 ? curto : `${jogo.nome} | Sleevu`;
-  })();
+    const c = `${jogo.nome} — ${curto} | Sleevu`;
+    return c.length <= 65 ? c : `${jogo.nome} | Sleevu`;
+  };
+  const titulo = tituloEm("história, sets e cartas", "sets e cartas");
+  const tituloEn = tituloEm("history, sets and cards", "sets and cards");
+  const tituloEs = tituloEm("historia, sets y cartas", "sets y cartas");
   const anos = sets.map((s) => String(s.data).slice(0, 4)).filter((a) => /^\d{4}$/.test(a)).sort();
   const periodo = anos.length > 1 && anos[0] !== anos[anos.length - 1] ? `, de ${anos[0]} a ${anos[anos.length - 1]}` : "";
   const resumo = sobre ? String(SOBRE.tx(sobre.resumo, "pt") || "").trim() : "";
@@ -152,14 +159,10 @@ export function metaDoJogo(jogo, sets, sobre) {
         <details><summary>${verLista(n)}</summary><ul>${sets.map((s) =>
           `<li><a href="/games/${escapeAttr(jogo.url)}/${escapeAttr(s.slug)}">${escapeHtml(s.nome)}</a>${s.cartas ? ` <small>${nCartas(Number(s.cartas))}</small>` : ""}</li>`).join("")}</ul></details>
       </section>` : "";
-  return { titulo, desc, canonical, ogTitulo: `${jogo.nome} — Sleevu`, indiceHtml, sobreHtml, jsonLd };
+  return { titulo, tituloEn, tituloEs, desc, canonical, ogTitulo: `${jogo.nome} — Sleevu`, indiceHtml, sobreHtml, jsonLd };
 }
 
 const atributo = (nome, valor) => ({ element(el) { el.setAttribute(nome, valor); } });
-// O <title> da tela vem com data-i18n: sem tirar o atributo, a tradução do
-// cliente trocava o título do jogo por "Sets - Sleevu" (o mesmo cuidado do
-// functions/detail.js).
-const texto = (valor) => ({ element(el) { el.removeAttribute("data-i18n"); el.setInnerContent(valor, { html: false }); } });
 
 async function telaDoJogo(context, jogo) {
   const { env, request } = context;
@@ -173,7 +176,11 @@ async function telaDoJogo(context, jogo) {
     ]);
     const meta = metaDoJogo(jogo, listaDeSets(mapa), sobre);
     const rw = new HTMLRewriter()
-      .on("title", texto(meta.titulo))
+      // O <title> da tela vem com data-i18n: sem tirar o atributo, a tradução do
+      // cliente trocava o título do jogo por "Sets - Sleevu" (o mesmo cuidado do
+      // functions/detail.js). O tituloDaTela (decora-app.js) tira o atributo, põe
+      // o português no texto e o inglês e o espanhol em data-titulo-en/-es.
+      .on("title", tituloDaTela(meta))
       .on('meta[name="description"]', atributo("content", meta.desc))
       .on('link[rel="canonical"]', atributo("href", meta.canonical))
       .on('meta[property="og:url"]', atributo("content", meta.canonical))

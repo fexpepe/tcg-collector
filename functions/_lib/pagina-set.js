@@ -122,7 +122,14 @@ export function pecasDoSet({ jogo, slug, nome, cartas, slugs }) {
   const quando = L.fmtDate(rep.setReleaseDate);
   const base = `/games/${jogo.url}/${slug}`;
   const canonical = `${ORIGEM}${base}`;
-  const titulo = L.title(nomeDoSetNoTitulo(nome, rep, jogo), jogo.nome);
+  const nomeNoTitulo = nomeDoSetNoTitulo(nome, rep, jogo);
+  const titulo = L.title(nomeNoTitulo, jogo.nome);
+  // O título que o cliente põe na aba de quem lê em outro idioma (2026-11-22,
+  // ver atributosDoTitulo em decora-app.js). Inglês = o da página -en (o mesmo
+  // SET_L10N.en que o prerender usa). Espanhol = o texto do português: "lista de
+  // cartas de ..." é espanhol válido, e não há variante es do set.
+  const tituloEn = SET_L10N.en.title(nomeNoTitulo, jogo.nome);
+  const tituloEs = titulo;
   const desc = L.desc(lista.length, nome, jogo.nome, quando);
   const urlDaCarta = (c) => `${base}/${slugs.get(String(c.id))}`;
   const codigo = (c) => (c.number ? cardCode({ id: c.id, number: c.number, setTotal: c.setTotal || total }) : "");
@@ -177,6 +184,8 @@ export function pecasDoSet({ jogo, slug, nome, cartas, slugs }) {
 
   return {
     titulo,
+    tituloEn,
+    tituloEs,
     desc,
     canonical,
     h1: nome,
