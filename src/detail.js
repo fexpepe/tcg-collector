@@ -94,7 +94,13 @@
   if (rotaDeCarta) {
     document.body.classList.add("carta-pagina");
     const main = document.querySelector("main");
-    if (main) main.insertAdjacentHTML("afterbegin", '<div class="cs-esqueleto" aria-hidden="true"><span></span><span></span></div>');
+    // A borda já manda o esqueleto da carta no HTML, com o nome e a imagem
+    // (2026-11-22, functions/_lib/pagina-carta.js, esqueletoDaCarta): um
+    // segundo, aqui, empurrava o primeiro pra baixo. Ele só vale quando a
+    // rota da borda bate com este endereço; o de uma cópia guardada que chegue
+    // pra OUTRA carta sai, senão mostraria o nome da carta errada.
+    if (main && !rotaDaBorda) main.querySelectorAll(".cs-esqueleto").forEach((el) => el.remove());
+    if (main && !main.querySelector(".cs-esqueleto")) main.insertAdjacentHTML("afterbegin", '<div class="cs-esqueleto" aria-hidden="true"><span></span><span></span></div>');
   }
   // O game.js carimba data-carta no <html> antes do primeiro paint, pra tela do
   // set não pintar no lugar da carta enquanto este arquivo (defer) não roda.

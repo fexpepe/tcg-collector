@@ -1,7 +1,8 @@
 // Passo do deploy: pergunta ao espelho de imagens (R2, img.sleevu.app) quais
 // hosts de origem já estão COMPLETOS — o status que scripts/mirror-r2.mjs
 // publica em _index/status.json —, em qual geração e quais já têm a largura
-// intermediária (450), e injeta as três coisas no src/game.js (marcadores
+// intermediária (450), e injeta as três coisas no src/game.js e no
+// functions/_lib/img-espelho.js, o da borda (marcadores
 // SLEEVU_IMG_MIRROR, SLEEVU_IMG_MIRROR_GEN e SLEEVU_IMG_MIRROR_450, o
 // mesmo padrão do MANIFEST). O cliente só aponta pro espelho nesses hosts,
 // com a origem logo atrás na cadeia de fallback. Espelho vazio, fora do ar ou
@@ -28,12 +29,19 @@ try {
 mkdirSync(new URL("out/", RAIZ), { recursive: true });
 writeFileSync(new URL("out/img-mirror.json", RAIZ), JSON.stringify(espelho));
 
-const arquivo = new URL("src/game.js", RAIZ);
-try {
-  writeFileSync(arquivo, injetaEspelho(readFileSync(arquivo, "utf8"), espelho));
-} catch (e) {
-  console.error(`apply-img-mirror: ${e.message}.`);
-  process.exit(1);
+// Dois arquivos levam o carimbo, com os mesmos três marcadores: o src/game.js
+// (o cliente) e o functions/_lib/img-espelho.js (a borda, que põe a imagem da
+// carta no HTML, 2026-11-22). Faltar marcador em qualquer um para o deploy com
+// erro: lista num lado e não no outro montaria a URL do espelho num e a da
+// origem no outro.
+for (const caminho of ["src/game.js", "functions/_lib/img-espelho.js"]) {
+  const arquivo = new URL(caminho, RAIZ);
+  try {
+    writeFileSync(arquivo, injetaEspelho(readFileSync(arquivo, "utf8"), espelho));
+  } catch (e) {
+    console.error(`apply-img-mirror: ${caminho}: ${e.message}.`);
+    process.exit(1);
+  }
 }
 const { hosts, geracoes, intermediaria } = espelho;
 const rotulo = (h) => [geracoes[h] ? `geração ${geracoes[h]}` : "", intermediaria.includes(h) ? "com a 450" : ""].filter(Boolean).join(", ");

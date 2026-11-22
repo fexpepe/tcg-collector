@@ -12,7 +12,8 @@
 // Roda com: node --test tests/
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { pecasDaCarta, precoUSD, precoDeReferencia, tituloDaCarta } from "../functions/_lib/pagina-carta.js";
+import { readFileSync } from "node:fs";
+import { pecasDaCarta, precoUSD, precoDeReferencia, tituloDaCarta, esqueletoDaCarta } from "../functions/_lib/pagina-carta.js";
 import { cabecaDaRota } from "../functions/_lib/decora-app.js";
 import { slugsDasCartas } from "../functions/_lib/slug-carta.js";
 import { jogoDaUrl } from "../functions/_lib/jogos.js";
@@ -102,6 +103,47 @@ test("o parágrafo da carta vem também em en e es, e o nome dela num h2", () =>
   const hostil = { ...cartas[1], id: "x-2", name: "<b>x</b>" };
   const h = pecasDaCarta({ card: hostil, jogo, set, cartas: [hostil], slugs: slugsDasCartas([hostil]), preco: 0 }).corpoHtml;
   assert.doesNotMatch(h, /<b>x<\/b>/, "o template também sai escapado");
+});
+
+// O esqueleto no HTML (2026-11-22): a borda manda a tela da carta com o NOME
+// (texto: bloco de fundo não conta como primeira pintura) e, com o host da
+// imagem espelhado, a imagem de 300 px, a mesma URL que o popup pede.
+test("esqueleto da carta: nome em texto, imagem só com host espelhado, tudo escapado", () => {
+  const esp = (u, w) => (/^https:\/\/assets\.tcgdex\.net\//.test(u || "") ? `https://img.sleevu.app/assets.tcgdex.net/x@${w}.webp` : "");
+  const com = esqueletoDaCarta(cartas[0], "Charmander 004/165", esp);
+  assert.match(com, /^<div class="cs-esqueleto" aria-hidden="true">/, "a classe é a que o CSS que esconde o set poupa");
+  assert.match(com, /<p>Charmander 004\/165<\/p>/);
+  assert.match(com, /<img src="https:\/\/img\.sleevu\.app\/assets\.tcgdex\.net\/x@300\.webp" fetchpriority="high" alt="" decoding="async">/);
+  assert.equal((com.match(/<img /g) || []).length, 1);
+  assert.doesNotMatch(com, /<h1/, "o #detailTitle já é o h1");
+  // Host fora do espelho (ou carta sem imagem): só o nome, nenhuma <img>.
+  const fora = esqueletoDaCarta({ image: "https://cards.scryfall.io/normal/a.jpg" }, "Carta", esp);
+  assert.doesNotMatch(fora, /<img/);
+  assert.match(fora, /<p>Carta<\/p>/);
+  assert.doesNotMatch(esqueletoDaCarta({}, "Sem imagem", esp), /<img/);
+  // Nome hostil não vira HTML.
+  const hostil = esqueletoDaCarta(cartas[0], "<img src=x onerror=alert(1)>", esp);
+  assert.doesNotMatch(hostil, /<img src=x/);
+  assert.match(hostil, /&lt;img src=x onerror=alert\(1\)&gt;/);
+  // pecasDaCarta devolve o campo, com o nome do h1; sem o carimbo do deploy a
+  // lista de hosts é vazia e a borda não monta imagem (a página sai como sempre).
+  const p = pecas(cartas[2], 120.5);
+  assert.match(p.esqueletoHtml, /<p>Charizard ex 006\/165<\/p>/);
+  assert.doesNotMatch(p.esqueletoHtml, /<img/);
+});
+
+test("o decoraApp põe o esqueleto no COMEÇO do main e o texto no fim", () => {
+  const src = readFileSync(new URL("../functions/_lib/decora-app.js", import.meta.url), "utf8").replace(/\r\n/g, "\n");
+  const i = src.indexOf("el.prepend(pecas.esqueletoHtml");
+  assert.ok(i > 0, "sumiu o prepend do esqueleto");
+  assert.ok(src.indexOf("el.append(pecas.corpoHtml") > i);
+});
+
+test("o detail.js não insere um segundo esqueleto quando a borda já mandou o dela", () => {
+  const src = readFileSync(new URL("../src/detail.js", import.meta.url), "utf8").replace(/\r\n/g, "\n");
+  assert.ok(src.includes('if (main && !main.querySelector(".cs-esqueleto")) main.insertAdjacentHTML("afterbegin"'));
+  // Cópia guardada que chegue pra OUTRA carta (a rota do <meta> não bate): o esqueleto dela sai.
+  assert.ok(src.includes('if (main && !rotaDaBorda) main.querySelectorAll(".cs-esqueleto").forEach((el) => el.remove());'));
 });
 
 test("outras impressões e vizinhas de número apontam pras páginas certas", () => {
