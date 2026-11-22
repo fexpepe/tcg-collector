@@ -9141,7 +9141,7 @@
     seiya: "#4400cc",      // violeta-índigo (o cosmo de Athena; o lilás é do Grand Archive); 9.9:1 com branco, a 82 do Lorcana (proposta, 2026-11-13)
     seiyatc: "#4400cc", // = seiya: mesma IP (Saint Seiya), mesma cor
     seiyacr: "#4400cc", // = seiya: mesma IP (Saint Seiya), mesma cor
-    fma: "#b03000"         // vermelho-tijolo, o casaco do Edward (o vermelho puro fica colado no Pokémon); 6.4:1 com branco, a 69 do Pokémon e a 74 do Magic (proposta, 2026-11-22)
+    fma: "#b03000"         // vermelho-tijolo, o casaco do Edward (o vermelho puro fica colado no Pokémon); 6.4:1 com branco, a 69 do Pokémon e a 74 do Magic (aprovada pelo Fernando, 2026-11-22)
   };
   // Preto ou branco sobre a cor do jogo — o que der MAIOR contraste de verdade
   // (fórmula WCAG), não um limiar de luminância chutado: com limiar fixo o
