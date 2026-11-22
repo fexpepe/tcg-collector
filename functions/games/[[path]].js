@@ -35,6 +35,7 @@ import { jogoDaUrl, urlOficial, jogoNovoDoSet } from "../_lib/jogos.js";
 import { slugify, slugsDasCartas, cartasDoSet, cartaParecida } from "../_lib/slug-carta.js";
 import { pecasDaCarta, precoDeReferencia, escapeHtml, escapeAttr, ORIGEM } from "../_lib/pagina-carta.js";
 import { pecasDoSet } from "../_lib/pagina-set.js";
+import { verLista, nCartas } from "../_lib/indices.js";
 import { decoraApp } from "../_lib/decora-app.js";
 import { naoAchou, redireciona, jsonDoSite, daBorda, guardaNaBorda, hasOwn, setRenomeado, setDoDePara } from "../_lib/borda.js";
 import { jsonLdSeguro } from "../_lib/json-ld.js";
@@ -147,9 +148,9 @@ export function metaDoJogo(jogo, sets, sobre) {
   const jsonLd = `<script type="application/ld+json">${jsonLdSeguro(ld)}</script>`;
   const indiceHtml = n ? `<section class="jogo-indice" data-indice-jogo="${escapeAttr(jogo.url)}">
         <style>html[data-game] #cardGrid:empty~.jogo-indice{display:none}.jogo-indice{margin:40px 0 8px}.jogo-indice h2{font-size:1.05rem;margin:0 0 8px}.jogo-indice summary{cursor:pointer;color:var(--muted,#9aa0aa)}.jogo-indice ul{list-style:none;padding:0;margin:12px 0 0;columns:3 220px;column-gap:24px}.jogo-indice li{margin:0 0 6px;break-inside:avoid}.jogo-indice a{color:var(--accent,#e63946);text-decoration:none}.jogo-indice small{color:var(--muted,#9aa0aa)}</style>
-        <h2>Todos os sets de ${escapeHtml(jogo.nome)}</h2>
-        <details><summary>Ver a lista (${n})</summary><ul>${sets.map((s) =>
-          `<li><a href="/games/${escapeAttr(jogo.url)}/${escapeAttr(s.slug)}">${escapeHtml(s.nome)}</a>${s.cartas ? ` <small>${s.cartas} cartas</small>` : ""}</li>`).join("")}</ul></details>
+        <h2><span data-i18n="idx.setsOf">Todos os sets de</span> ${escapeHtml(jogo.nome)}</h2>
+        <details><summary>${verLista(n)}</summary><ul>${sets.map((s) =>
+          `<li><a href="/games/${escapeAttr(jogo.url)}/${escapeAttr(s.slug)}">${escapeHtml(s.nome)}</a>${s.cartas ? ` <small>${nCartas(Number(s.cartas))}</small>` : ""}</li>`).join("")}</ul></details>
       </section>` : "";
   return { titulo, desc, canonical, ogTitulo: `${jogo.nome} — Sleevu`, indiceHtml, sobreHtml, jsonLd };
 }
