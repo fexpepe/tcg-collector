@@ -58,7 +58,6 @@
          features) vêm do espelho no R2, não da origem: ver o comentário das
          FEATURES, mais abaixo. -->
     <link rel="preconnect" href="https://img.sleevu.app">
-    <link rel="preconnect" href="https://tcgplayer-cdn.tcgplayer.com">
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <!-- Duas tags com media: o primeiro paint ja acerta a barra do navegador
@@ -455,7 +454,7 @@
     </main>
 
     <script defer src="src/i18n.js"></script>
-    <script defer src="src/shared.js"></script>
+    <script defer src="src/shared.js" fetchpriority="high"></script>
     <script defer src="src/home.js"></script>
   </body>
 </html>
