@@ -212,7 +212,10 @@
       (idsByGame[game] = idsByGame[game] || []).push(ref.slice(barra + 1));
     });
     if (!Object.keys(idsByGame).length) return porRef;
-    const catalogo = await shared.loadOwnedAcrossGames(idsByGame);
+    // Página PÚBLICA: o visitante de um post não deve baixar o chunk inteiro de
+    // cada set citado só pra ler nome, set, número, imagem e preço. A borda
+    // devolve exatamente as cartas dos refs (e cai nos chunks se estiver fora).
+    const catalogo = await shared.loadOwnedFast(idsByGame);
     (catalogo && catalogo.cards || []).forEach((card) => {
       if (!card || !card.game) return;
       stores.cardGameMap.set(card.id, card.game);
