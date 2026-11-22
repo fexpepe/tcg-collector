@@ -31,6 +31,16 @@
       const v = Number(el.dataset.lpPct);
       el.textContent = `${v < 0 ? "−" : "+"}${pct(v)}`;
     });
+    // Números da faixa "Sleevu em números" (2026-11-22): o HTML traz "300.000+"
+    // e "2.800+" com o ponto de milhar do português (é o que o robô lê, e o
+    // admin-charts.test trava o <strong>); em inglês viram "300,000+". O
+    // useGrouping "always" mantém o separador também nos 4 dígitos (o es põe
+    // "2800" sem ele). Só o que é número puro (dígitos, pontos e um "+" no
+    // fim); o "+" fica só onde já estava (o "48" de jogos não ganha um).
+    document.querySelectorAll(".lp-stat strong").forEach((el) => {
+      const m = /^(\d[\d.]*)(\+?)$/.exec(el.textContent.trim());
+      if (m) el.textContent = Number(m[1].replace(/\./g, "")).toLocaleString(locale, { useGrouping: "always" }) + m[2];
+    });
   }
 
   const pixButton = document.getElementById("pixButton");

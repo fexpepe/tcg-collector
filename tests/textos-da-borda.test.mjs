@@ -28,3 +28,27 @@ test("título da aba: o cliente troca pelo data-titulo-<idioma> da borda, sem p�
   assert.match(dec, /el\.removeAttribute\("data-i18n"\)/);
   assert.doesNotMatch(dec, /setAttribute\("data-i18n"/);
 });
+
+test("home: os números da faixa seguem o separador do idioma, no cliente, e o HTML segue em pt", () => {
+  const home = ler("src/home.js");
+  assert.match(home, /querySelectorAll\("\.lp-stat strong"\)/);
+  assert.match(home, /toLocaleString\(locale, \{ useGrouping: "always" \}\)/);
+  // O número que o robô lê continua no HTML (e o admin-charts.test o trava).
+  const html = ler("index.html");
+  assert.match(html, /<strong>300\.000\+<\/strong>/);
+  assert.match(html, /<strong>2\.800\+<\/strong>/);
+  // O que o Intl devolve pra esses números nos três idiomas (o "always" segura
+  // o separador também nos 4 dígitos, onde o es o tiraria).
+  const fmt = (loc, n) => n.toLocaleString(loc, { useGrouping: "always" });
+  assert.equal(fmt("en-US", 300000), "300,000");
+  assert.equal(fmt("es-ES", 300000), "300.000");
+  assert.equal(fmt("pt-BR", 300000), "300.000");
+  assert.equal(fmt("en-US", 2800), "2,800");
+  assert.equal(fmt("es-ES", 2800), "2.800");
+  assert.equal(fmt("pt-BR", 2800), "2.800");
+  // Só número puro é reescrito, e o "+" fica onde estava (o "48" não ganha um).
+  const re = /^(\d[\d.]*)(\+?)$/;
+  assert.ok(re.test("300.000+") && re.test("2.800+") && re.test("48"));
+  assert.ok(!re.test("R$ · $ · €"));
+  assert.equal(re.exec("48")[2], "");
+});
