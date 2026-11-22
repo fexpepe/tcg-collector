@@ -216,11 +216,14 @@
     // pro público que mais chega por link de rede social (ver caixaDeTexto).
     shared.caixaDeTexto({
       titulo: t("wish.target.prompt", { name: card ? card.name : cardId, cur: shared.getCurrency() }),
-      valor: cur ? String(cur.v).replace(".", ",") : ""
+      valor: shared.moneyInput(cur && cur.v)
     }).then((raw) => {
       if (raw === null) return; // cancelou
-      const v = parseFloat(String(raw).replace(/[^\d.,]/g, "").replace(",", "."));
-      targets.set(cardId, Number.isFinite(v) && v > 0 ? v : 0, shared.getCurrency());
+      // Lê na régua do idioma (shared.parseMoney), como os outros campos de
+      // dinheiro. Aqui a vírgula era SEMPRE a decimal, com uma conta própria:
+      // em inglês, o alvo "1,250" gravava 1.25 (2026-11-22).
+      const v = shared.parseMoney(raw);
+      targets.set(cardId, v > 0 ? v : 0, shared.getCurrency());
       const fresh = targets.get(cardId);
       btn.classList.toggle("has-target", !!fresh);
       const label = fresh ? t("wish.target.editAria", { v: shared.formatMoney(fresh.cur, fresh.v) }) : t("wish.target.setAria");

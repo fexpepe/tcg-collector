@@ -46,14 +46,15 @@
   };
   if (!el.itens.give) return;
 
-  // Aceita "1.234,56" e "1234.56" (mesma régua do cadastro de itens manuais).
+  // Lê e escreve o valor na régua do idioma (shared.parseMoney e
+  // shared.moneyInput), como os outros campos de dinheiro. Tinha uma conta
+  // própria em que a vírgula era SEMPRE a decimal: em inglês, "1,250" numa
+  // troca valia 1.25 (2026-11-22).
   const numDeTexto = (s) => {
-    let x = String(s || "").trim();
-    if (x.includes(",")) x = x.replace(/\./g, "").replace(",", ".");
-    const v = parseFloat(x);
-    return isFinite(v) && v >= 0 ? Math.round(v * 100) / 100 : 0;
+    const v = shared.parseMoney(s);
+    return v > 0 ? Math.round(v * 100) / 100 : 0;
   };
-  const fmtNum = (v) => (Number(v) > 0 ? String(Math.round(Number(v) * 100) / 100).replace(".", ",") : "");
+  const fmtNum = (v) => shared.moneyInput(Math.round(Number(v) * 100) / 100);
 
   function valorCalculado(item) {
     const card = cardsById.get(item.id);

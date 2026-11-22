@@ -1192,13 +1192,12 @@
   // FORA do patrimônio de propósito (a nota na tela diz): somar tocaria a
   // fórmula única "Portfólio = Coleção no centavo", decisão do Fernando.
   const manualStore = shared.createManualItemsStore();
-  // Aceita "1.234,56" (pt) e "1234.56" (en): vírgula presente decide o papel
-  // do ponto.
+  // Lê na régua do idioma (shared.parseMoney), como os outros campos de
+  // dinheiro. Tinha uma conta própria em que a vírgula era SEMPRE a decimal:
+  // em inglês, "1,250" num selado gravava 1.25 (2026-11-22).
   const numDeTexto = (s) => {
-    let x = String(s || "").trim();
-    if (x.includes(",")) x = x.replace(/\./g, "").replace(",", ".");
-    const v = parseFloat(x);
-    return isFinite(v) && v > 0 ? Math.round(v * 100) / 100 : 0;
+    const v = shared.parseMoney(s);
+    return v > 0 ? Math.round(v * 100) / 100 : 0;
   };
   const manuaisDoFiltro = (gf) => {
     const todos = manualStore.list();
@@ -1247,7 +1246,7 @@
     if (old) old.remove();
     const wrap = document.createElement("div");
     wrap.className = "ts-modal pfmi-modal";
-    const fmtNum = (v) => (Number(v) > 0 ? String(Math.round(Number(v) * 100) / 100).replace(".", ",") : "");
+    const fmtNum = (v) => shared.moneyInput(Math.round(Number(v) * 100) / 100);
     const opcoes = ['<option value="">—</option>']
       .concat(GAMES.map((g) => `<option value="${g}"${it && it.g === g ? " selected" : ""}>${escapeHtml(shared.gameLabel(g))}</option>`)).join("");
     const cur = shared.getCurrency();
