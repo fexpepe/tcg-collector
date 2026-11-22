@@ -65,7 +65,12 @@
   // Filtro de jogo só com os jogos que têm carta na lista de desejos.
   shared.setGameFilterScope(shared.GAME_SLUGS.filter((g) => idsFor(g).length > 0));
   Promise.all([
-    shared.loadOwnedAcrossGames(Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, idsFor(g)]))),
+    // Pela BORDA (/api/collection): só as cartas desejadas/possuídas, em vez de
+    // baixar o chunk inteiro de cada set em que há uma delas. A borda não manda
+    // setTotal (fica pro enrichSetTotals, abaixo) nem pokemonName (o filtro de
+    // espécie já tem o speciesName de reserva, igual à Coleção). Borda fora do
+    // ar: os chunks, dentro do loadOwnedFast.
+    shared.loadOwnedFast(Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, idsFor(g)]))),
     shared.loadFxRates()
   ])
     .then(([catalog]) => {
@@ -76,6 +81,9 @@
         ownedByGame[g].migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId))));
       hydrateFilters();
       render();
+      // Sem o setTotal da borda o código sai "063" em vez de "063/197": completa
+      // pelo manifest do jogo e redesenha (mesmo padrão de Explorar e Cartas).
+      shared.enrichSetTotals(cards).then((mudou) => { if (mudou) render(); }).catch(() => { /* fica o número sozinho */ });
       renderDropNotice(); // quedas de preço da semana (histórico do build; async)
       renderTargetNotice(); // cartas que atingiram o preço-alvo do usuário
       renderSellers();    // trade matching: quem tem suas desejadas à venda (async)
@@ -216,11 +224,14 @@
     // pro público que mais chega por link de rede social (ver caixaDeTexto).
     shared.caixaDeTexto({
       titulo: t("wish.target.prompt", { name: card ? card.name : cardId, cur: shared.getCurrency() }),
-      valor: cur ? String(cur.v).replace(".", ",") : ""
+      valor: shared.moneyInput(cur && cur.v)
     }).then((raw) => {
       if (raw === null) return; // cancelou
-      const v = parseFloat(String(raw).replace(/[^\d.,]/g, "").replace(",", "."));
-      targets.set(cardId, Number.isFinite(v) && v > 0 ? v : 0, shared.getCurrency());
+      // Lê na régua do idioma (shared.parseMoney), como os outros campos de
+      // dinheiro. Aqui a vírgula era SEMPRE a decimal, com uma conta própria:
+      // em inglês, o alvo "1,250" gravava 1.25 (2026-11-22).
+      const v = shared.parseMoney(raw);
+      targets.set(cardId, v > 0 ? v : 0, shared.getCurrency());
       const fresh = targets.get(cardId);
       btn.classList.toggle("has-target", !!fresh);
       const label = fresh ? t("wish.target.editAria", { v: shared.formatMoney(fresh.cur, fresh.v) }) : t("wish.target.setAria");

@@ -20,6 +20,11 @@
 
   const { unique, t, tn, debounce, escapeHtml, escapeAttribute } = shared;
   const esc = escapeHtml, escA = escapeAttribute;
+  // Placeholder dos campos de preço no decimal do IDIOMA ("0,00" em pt/es,
+  // "0.00" em en). Era "0,00" fixo, e o valor inicial também saía com vírgula
+  // em inglês — quem corrigia por cima digitava "1,250" e gravava 1.25
+  // (2026-11-22). Valor e placeholder passam pelo shared.moneyInput.
+  const PRECO_ZERO = shared.moneyInput(0, 1, 1);
 
   let cards = [];
   let cardsById = new Map();
@@ -689,7 +694,7 @@
     const src = shared.cardImageSources(card);
     const img = shared.localizedImg(src.url, { alt: card.name, fallback: src.fallback, loading: "lazy", thumb: true, sizes: shared.SIZES_CARD_TILE }) || shared.cardBackPlaceholder();
     const price = it.price;
-    const priceStr = price > 0 ? String(price).replace(".", ",") : "";
+    const priceStr = shared.moneyInput(price);
     const current = it.cond || "NM";
     const condOpts = shared.CARD_CONDITIONS.map((c) => `<option value="${c}"${c === current ? " selected" : ""}>${c}</option>`).join("");
     // Preço automático (TCGplayer, não editado) = laranja; revisado à mão = preto.
@@ -703,7 +708,7 @@
         <h3>${esc(card.name)}</h3>
         <p class="tile-variant">${shared.cardFlag(card.language)}<span>${esc(it.variant)}</span></p>
         <div class="sale-fields">
-          <label class="sale-price-field${autoCls}"><span class="sale-cur">${esc(sym)}</span><input type="text" inputmode="decimal" class="sale-price${autoCls}" data-sale-price value="${escA(priceStr)}" placeholder="0,00" aria-label="${escA(t("sales.sell"))}"></label>
+          <label class="sale-price-field${autoCls}"><span class="sale-cur">${esc(sym)}</span><input type="text" inputmode="decimal" class="sale-price${autoCls}" data-sale-price value="${escA(priceStr)}" placeholder="${PRECO_ZERO}" aria-label="${escA(t("sales.sell"))}"></label>
           <select class="sale-cond" data-sale-cond aria-label="${escA(t("sales.condition"))}" title="${escA(t("sales.condition"))}">${condOpts}</select>
         </div>
         <button type="button" class="sale-sold-btn" data-sale-sold title="${escA(t("sales.sold.hint"))}">${esc(t("sales.sold.btn"))}</button>
@@ -777,7 +782,7 @@
           </div>
           <label class="sold-confirm-field"><span>${esc(t("sales.sold.price"))}</span>
             <span class="sale-price-field"><span class="sale-cur">${esc(sym)}</span>
-            <input type="text" inputmode="decimal" class="sale-price" id="soldPriceInput" value="${escA(price > 0 ? price.toFixed(2).replace(".", ",") : "")}" placeholder="0,00"></span></label>
+            <input type="text" inputmode="decimal" class="sale-price" id="soldPriceInput" value="${escA(shared.moneyInput(price, 1))}" placeholder="${PRECO_ZERO}"></span></label>
           <label class="sold-confirm-field"><span>${esc(t("sales.sold.date"))}</span>
             <input type="date" id="soldDateInput" value="${new Date().toISOString().slice(0, 10)}"></label>
           <!-- Taxa/frete: a comissão do marketplace (a Liga fica com ~10%) e o
@@ -786,9 +791,9 @@
                valor sozinho; quem preferir digita direto em dinheiro. -->
           <label class="sold-confirm-field"><span>${esc(t("sales.sold.fee"))}</span>
             <span class="sold-fee-fields">
-              <span class="sale-price-field sold-fee-pct"><input type="text" inputmode="decimal" class="sale-price" id="soldFeePctInput" value="${escA(feePct > 0 ? String(feePct).replace(".", ",") : "")}" placeholder="0"><span class="sale-cur">%</span></span>
+              <span class="sale-price-field sold-fee-pct"><input type="text" inputmode="decimal" class="sale-price" id="soldFeePctInput" value="${escA(shared.moneyInput(feePct))}" placeholder="0"><span class="sale-cur">%</span></span>
               <span class="sale-price-field"><span class="sale-cur">${esc(sym)}</span>
-              <input type="text" inputmode="decimal" class="sale-price" id="soldFeeInput" value="${escA(feeInicial > 0 ? feeInicial.toFixed(2).replace(".", ",") : "")}" placeholder="0,00"></span>
+              <input type="text" inputmode="decimal" class="sale-price" id="soldFeeInput" value="${escA(shared.moneyInput(feeInicial, 1))}" placeholder="${PRECO_ZERO}"></span>
             </span></label>
           <!-- Custo EDITÁVEL na hora da venda. Antes era só um texto informativo:
                quem não tinha preenchido o custo na Coleção vendia com paid=0 e a
@@ -796,7 +801,7 @@
                com o custo da carta, quando existe. -->
           <label class="sold-confirm-field"><span>${esc(t("sales.sold.paid"))}</span>
             <span class="sale-price-field"><span class="sale-cur">${esc(sym)}</span>
-            <input type="text" inputmode="decimal" class="sale-price" id="soldPaidInput" value="${escA(paidNow > 0 ? paidNow.toFixed(2).replace(".", ",") : "")}" placeholder="0,00"></span></label>
+            <input type="text" inputmode="decimal" class="sale-price" id="soldPaidInput" value="${escA(shared.moneyInput(paidNow, 1))}" placeholder="${PRECO_ZERO}"></span></label>
           <p class="sold-confirm-hint">${esc(t("sales.sold.paidHint"))}</p>
           <p class="sold-confirm-note">${esc(t("sales.sold.removeNote"))}</p>
         </div>
@@ -818,10 +823,10 @@
       const preco = lerPreco();
       if (event.target === pctEl || event.target.id === "soldPriceInput") {
         const pct = shared.parseMoney(String(pctEl.value).trim());
-        if (pct > 0 && preco > 0) feeEl.value = (preco * (pct / 100)).toFixed(2).replace(".", ",");
+        if (pct > 0 && preco > 0) feeEl.value = shared.moneyInput(preco * (pct / 100), 1);
       } else if (event.target === feeEl) {
         const fee = shared.parseMoney(String(feeEl.value).trim());
-        pctEl.value = preco > 0 && fee > 0 ? (Math.round((fee / preco) * 1000) / 10).toString().replace(".", ",") : "";
+        pctEl.value = preco > 0 && fee > 0 ? shared.moneyInput(Math.round((fee / preco) * 1000) / 10, 0, 1) : "";
       }
     });
     modal.addEventListener("click", (event) => {
@@ -872,7 +877,14 @@
     section.hidden = !items.length;
     if (!items.length) { listEl.innerHTML = ""; if (sumEl) sumEl.textContent = ""; return; }
     const cur = shared.getCurrency();
-    const fmtDate = (s) => { const m = String(s).match(/^(\d{4})-(\d{2})-(\d{2})$/); return m ? `${m[3]}/${m[2]}/${m[1].slice(2)}` : s; };
+    // Data da venda no formato do idioma (2026-11-22): dd/mm/aa em pt e es,
+    // mm/dd/aa em en (era dd/mm/aa fixo, e 03/04/26 lia como 3 de abril ou 4 de
+    // março conforme o país). Valor fora do formato ISO sai como veio.
+    const fmtDate = (s) => {
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(String(s))) return s;
+      const d = new Date(`${s}T00:00:00`);
+      return Number.isNaN(d.getTime()) ? s : d.toLocaleDateString(shared.getLocale(), { day: "2-digit", month: "2-digit", year: "2-digit" });
+    };
     let totalSold = 0, totalPnl = 0, pnlCount = 0, totalFee = 0;
     const rows = items.map(({ it, card }) => {
       // shared.soldValues: mesma fórmula do Portfólio, com o câmbio congelado na

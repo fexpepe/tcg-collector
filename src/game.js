@@ -52,7 +52,8 @@
     hololive: { slug: "hololive", name: "hololive Official Card Game", dataDir: "data/hololive/" }, // TCGCSV cat. 87 (Bushiroad/COVER 2025+, só a edição EN; reimpressão e arte alternativa = cartas próprias)
     shadowverse: { slug: "shadowverse", name: "Shadowverse: Evolve", dataDir: "data/shadowverse/" }, // TCGCSV cat. 73 (Bushiroad/Cygames 2023+, só a edição EN; Premium, SL e Evolved = cartas próprias)
     narutomythos: { slug: "narutomythos", name: "Naruto Mythos TCG", dataDir: "data/narutomythos/" }, // galeria oficial (Cicaboom 2026+, EN; a 2ª edição do Set 1 = set próprio; sem preço)
-    herorush: { slug: "herorush", name: "Marvel Hero Rush", dataDir: "data/herorush/" }, // API do site oficial (marvelherorush.com, 2026+, EN; imagem só pelo espelho: a URL da fonte é assinada e vence; sem preço)
+    herorush: { slug: "herorush", name: "Marvel Hero Rush", dataDir: "data/herorush/" },
+    ikorr: { slug: "ikorr", name: "Rush of Ikorr", dataDir: "data/ikorr/" }, // TCGCSV cat. 94 (Upper Deck 2025+, EN; o Fracture e o Rapture Foil = versões da carta, não cartas próprias) // API do site oficial (marvelherorush.com, 2026+, EN; imagem só pelo espelho: a URL da fonte é assinada e vence; sem preço)
     narutokayou: { slug: "narutokayou", name: "Naruto Kayou", dataDir: "data/narutokayou/" }, // kayouofficial.com (Kayou, só a edição em inglês, 2025+; coleção, não jogo de mesa; sem preço)
     vanguard: { slug: "vanguard", name: "Cardfight!! Vanguard", dataDir: "data/vanguard/" }, // TCGCSV cat. 16 (Bushiroad 2011+, as cinco eras, só a edição EN; paralelas = cartas próprias)
     duelmasters: { slug: "duelmasters", name: "Duel Masters", dataDir: "data/duelmasters/" }, // banco oficial da Takara Tomy + preço da Yuyu-tei (o jogo japonês, 2002+; fora da TCGCSV)
@@ -89,7 +90,7 @@
     ["dragon-ball-fusion-world", "dbfw"], ["digimon-card-game", "digimon"], ["union-arena", "unionarena"],
     ["cyberpunk-tcg", "cyberpunk"], ["sorcery-contested-realm", "sorcery"], ["naruto-card-game", "narutocg"],
     ["weiss-schwarz", "weiss"], ["godzilla-card-game", "godzilla"], ["palworld-official-card-game", "palworld"], ["final-fantasy-tcg", "fftcg"], ["grand-archive", "grandarchive"], ["hololive-official-card-game", "hololive"], ["shadowverse-evolve", "shadowverse"], ["cardfight-vanguard", "vanguard"], ["duel-masters", "duelmasters"],
-    ["naruto-mythos-tcg", "narutomythos"], ["naruto-kayou", "narutokayou"], ["marvel-hero-rush", "herorush"], ["dragon-ball-super-card-game", "dbs"],
+    ["naruto-mythos-tcg", "narutomythos"], ["naruto-kayou", "narutokayou"], ["marvel-hero-rush", "herorush"], ["rush-of-ikorr", "ikorr"], ["dragon-ball-super-card-game", "dbs"],
     // Daqui em diante, os VINTAGE (o `vintage` do registro): o PRIMEIRO_VINTAGE
     // abaixo é a posição desta linha, e o teste confere um por um.
     ["gundam-carddass", "gcd"], ["saint-seiya-carddass", "seiya"],
@@ -110,7 +111,7 @@
   // Quantos jogos em atividade vêm antes do primeiro vintage na lista acima.
   // É por ele que o menu sabe acender "Vintage", e não "Jogos", na tela de um
   // jogo que saiu de linha (SLEEVU.vintage, lido pelo shared.js).
-  var PRIMEIRO_VINTAGE = 28;
+  var PRIMEIRO_VINTAGE = 29;
   // Linha que virou seção de outra (o LINE_ALIASES do shared.js).
   var LINHA_APELIDO = { "nrt-nf": "nrt-dc", "nrt-nx": "nrt-dc" };
   // Linha que virou JOGO (o LINHAS_VIRARAM_JOGO do functions/_lib/jogos.js): o
@@ -302,41 +303,8 @@
   var cfg = (GAME_SLUGS.indexOf(game) >= 0 && GAMES[game]) || GAMES.pokemon;
   document.documentElement.setAttribute("data-game", cfg.slug);
 
-  // Handshake do CDN de imagem ADIANTADO. O <head> das páginas é o mesmo pra
-  // todos os jogos, então ele só consegue pré-conectar os dois hosts do Pokémon
-  // e do TCGplayer — quem abre Magic ou Lorcana descobre o host da imagem só
-  // quando a primeira carta é desenhada, e paga DNS + TCP + TLS inteiros dentro
-  // do caminho do LCP. Aqui o jogo já é conhecido (isto roda síncrono no head,
-  // antes do CSS), então dá pra abrir a conexão junto com o resto.
-  // Só os hosts que NÃO estão no HTML: tcgdex e tcgplayer-cdn já têm a tag.
-  // Todos estão no img-src/connect-src da CSP (ver _headers).
-  var IMG_HOST = {
-    magic: ["https://cards.scryfall.io", "https://svgs.scryfall.io"],
-    lorcana: ["https://cards.lorcast.io"],
-    naruto: ["https://wsrv.nl"],
-    hxh: ["https://wsrv.nl"],
-    lotr: ["https://wsrv.nl"],
-    dbz: ["https://wsrv.nl"],
-    cdm: ["https://wsrv.nl"],
-    fma: ["https://wsrv.nl"],
-    gcd: ["https://wsrv.nl"],
-    dbc: ["https://wsrv.nl"],
-    dbsb: ["https://wsrv.nl"],
-    dbva: ["https://wsrv.nl"],
-    dbbw: ["https://wsrv.nl"],
-    harrypotter: ["https://wsrv.nl"]
-  };
-  // SEM crossorigin, igual às tags que já existem no HTML: na PRIMEIRA visita —
-  // a única em que o handshake pesa — o service worker ainda não controla a
-  // página (ele só é registrado no evento load), então as imagens saem pelo
-  // <img> comum, que não é CORS. Marcar `anonymous` aqui prepararia um pool de
-  // conexão que essa requisição não reusaria, e o TLS sairia duas vezes.
-  (IMG_HOST[cfg.slug] || []).forEach(function (host) {
-    var l = document.createElement("link");
-    l.rel = "preconnect";
-    l.href = host;
-    (document.head || document.documentElement).appendChild(l);
-  });
+  // (O handshake do CDN de imagem mora mais abaixo, depois do IMG_MIRROR_HOSTS:
+  // ele precisa saber quais hosts o espelho já cobre.)
 
   // Hosts de DADO das páginas com dinheiro/coleção: o câmbio (awesomeapi, que o
   // primeiro render espera) e o Supabase (a carga /api/collection e o pull do
@@ -420,6 +388,47 @@
   var IMG_MIRROR_HOSTS = []; /* SLEEVU_IMG_MIRROR */
   var IMG_MIRROR_GEN = {}; /* SLEEVU_IMG_MIRROR_GEN */
   var IMG_MIRROR_450 = []; /* SLEEVU_IMG_MIRROR_450 */
+
+  // Handshake do CDN de imagem ADIANTADO, só pra ORIGEM que o espelho ainda não
+  // cobre. Quem abre um jogo descobre o host da imagem só quando a primeira
+  // carta é desenhada, e paga DNS + TCP + TLS inteiros dentro do caminho do
+  // LCP; aqui o jogo já é conhecido (isto roda síncrono no head, antes do CSS).
+  //
+  // 2026-11-22: as dicas eram de ANTES do espelho. O HTML pré-conectava em
+  // tcgdex e tcgplayer-cdn e esta tabela em Scryfall, Lorcast e wsrv.nl, mas
+  // em produção os seis hosts de carta já saem de img.sleevu.app (a origem
+  // virou só a reserva da cadeia de fallback). Resultado medido no pouso frio
+  // da carta em 4G lento: a imagem pedida aos 4,2 s só chegava aos 7,3 s, com
+  // o handshake do host certo dentro da conta, e duas conexões abertas à toa.
+  // Agora a tag do HTML aponta pro espelho e isto abre a origem só quando o
+  // host do jogo NÃO está em IMG_MIRROR_HOSTS (dev local, host novo ainda não
+  // espelhado, ou host que saiu da lista porque o espelho ficou incompleto).
+  // Jogo fora da tabela usa os dois hosts que o HTML tinha: TCGdex (Pokémon) e
+  // TCGplayer (os jogos da TCGCSV). Todos estão no img-src/connect-src da CSP
+  // (ver _headers). O svgs.scryfall.io (símbolo de set do Magic) não tem
+  // espelho: segue sempre.
+  var WSRV = ["https://wsrv.nl"];
+  var IMG_HOST = {
+    magic: ["https://cards.scryfall.io", "https://svgs.scryfall.io"],
+    lorcana: ["https://cards.lorcast.io"],
+    naruto: WSRV, hxh: WSRV, lotr: WSRV, dbz: WSRV, cdm: WSRV, fma: WSRV, gcd: WSRV,
+    dbc: WSRV, dbsb: WSRV, dbva: WSRV, dbbw: WSRV, harrypotter: WSRV,
+    // Faltavam (2026-11-22): oito jogos que também só têm imagem pelo wsrv.nl.
+    mbc: WSRV, seiya: WSRV, seiyatc: WSRV, seiyacr: WSRV, duelmasters: WSRV,
+    herorush: WSRV, narutomythos: WSRV, narutokayou: WSRV
+  };
+  // SEM crossorigin, igual à tag do HTML: na PRIMEIRA visita — a única em que o
+  // handshake pesa — o service worker ainda não controla a página (ele só é
+  // registrado no evento load), então as imagens saem pelo <img> comum, que não
+  // é CORS. Marcar `anonymous` aqui prepararia um pool de conexão que essa
+  // requisição não reusaria, e o TLS sairia duas vezes.
+  (IMG_HOST[cfg.slug] || ["https://assets.tcgdex.net", "https://tcgplayer-cdn.tcgplayer.com"]).forEach(function (host) {
+    if (IMG_MIRROR_HOSTS.indexOf(host.slice(8)) >= 0) return; // espelhado: a tag do HTML já abriu img.sleevu.app
+    var l = document.createElement("link");
+    l.rel = "preconnect";
+    l.href = host;
+    (document.head || document.documentElement).appendChild(l);
+  });
 
   // dataset declarado -> arquivo real (depende do modo). set-id-map e os
   // pokemon-* não são mesclados, então são o mesmo arquivo nos dois modos.

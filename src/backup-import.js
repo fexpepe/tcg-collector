@@ -161,6 +161,8 @@
     // Fullmetal Alchemist Carddass (Alchemic Card Battle e as placas da Jumbo
     // Carddass, 2004–2005). Depois do Union Arena, que também tem um set do FMA.
     if (flat === "fma" || flat.includes("fullmetalalchemist") || flat.includes("alchemiccardbattle")) return "fma";
+    // "Rush of Ikorr" (a linha do TCGplayer e o Collectr).
+    if (flat.includes("ikorr")) return "ikorr";
     // "Naruto Card Game" é a linha do TCGplayer do jogo de 2027 (narutocg): o
     // vintage de 2002 não está no TCGplayer. O resto fica no
     // naruto, como antes.

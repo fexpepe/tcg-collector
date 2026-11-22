@@ -58,7 +58,6 @@
          features) vêm do espelho no R2, não da origem: ver o comentário das
          FEATURES, mais abaixo. -->
     <link rel="preconnect" href="https://img.sleevu.app">
-    <link rel="preconnect" href="https://tcgplayer-cdn.tcgplayer.com">
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <!-- Duas tags com media: o primeiro paint ja acerta a barra do navegador
@@ -225,7 +224,7 @@
              og-image (scripts/og/og-image.html) e o KIT_CATALOGO do kit de
              parceiros (src/admin.js); o tests/admin-charts.test.mjs cobra. -->
         <div class="lp-stat"><strong>300.000+</strong><span data-i18n="home.lp.statCards">cartas catalogadas</span></div>
-        <div class="lp-stat"><strong>48</strong><span data-i18n="home.lp.statGames">jogos — modernos e vintage</span></div>
+        <div class="lp-stat"><strong>49</strong><span data-i18n="home.lp.statGames">jogos — modernos e vintage</span></div>
         <div class="lp-stat"><strong>2.800+</strong><span data-i18n="home.lp.statSets">sets, de 1988 a hoje</span></div>
         <div class="lp-stat"><strong>R$ · $ · €</strong><span data-i18n="home.lp.statPrices">preços BR, EUA e Europa</span></div>
       </section>
@@ -455,7 +454,7 @@
     </main>
 
     <script defer src="src/i18n.js"></script>
-    <script defer src="src/shared.js"></script>
+    <script defer src="src/shared.js" fetchpriority="high"></script>
     <script defer src="src/home.js"></script>
   </body>
 </html>

@@ -10,8 +10,7 @@
     <link rel="canonical" href="https://sleevu.app/my-decks">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
-    <link rel="preconnect" href="https://assets.tcgdex.net">
-    <link rel="preconnect" href="https://tcgplayer-cdn.tcgplayer.com">
+    <link rel="preconnect" href="https://img.sleevu.app">
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <!-- Duas tags com media: o primeiro paint ja acerta a barra do navegador
@@ -65,7 +64,7 @@
     <script defer src="src/i18n.js"></script>
     <!-- Textos dos decks: fora do i18n.js pra as outras paginas nao carregarem 20 KB a toa. -->
     <script defer src="src/i18n-decks.js"></script>
-    <script defer src="src/shared.js"></script>
+    <script defer src="src/shared.js" fetchpriority="high"></script>
     <script defer src="src/facets.js"></script>
     <script defer src="src/deck-rules.js"></script>
     <!-- Testar mao (goldfish): arquivo proprio, so nas paginas do editor.

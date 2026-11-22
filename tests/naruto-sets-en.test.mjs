@@ -17,6 +17,7 @@
 // Roda com: node --test tests/
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import { readGlobalVar } from "../scripts/lib/sync-common.mjs";
 import { mapaDeSetsEn, traduzSet } from "../scripts/lib/naruto-nomes.mjs";
 
@@ -75,4 +76,28 @@ test("nome traduzido: único no jogo e sem o nome do jogo ou da linha na frente"
     const prefixo = LINHAS.find((l) => nome.startsWith(l) && !/^[A-Za-z0-9]/.test(nome.slice(l.length)));
     assert.equal(prefixo, undefined, `"${nome}" abre com "${prefixo}" (contrato 7)`);
   }
+});
+
+// 22/11/2026: o translate-naruto-names lia o índice antigo e o devolvia ao
+// writeGameCatalog, que prefere o índice passado a montar um. O nome do set
+// mudava nas cartas e o índice ficava com o japonês: 75 dos 112 sets sem
+// nenhuma carta com aquele nome. Quem lê o índice pelo nome (total por set da
+// Coleção, contagem do cartão de set, resgate de link) não os achava.
+test("índice de sets: todo nome existe em alguma carta e todo set das cartas está no índice", async () => {
+  const indexes = await readGlobalVar(new URL("../data/naruto/indexes.js", import.meta.url), "TCG_INDEXES");
+  const doIndice = indexes.sets.map((s) => s.name);
+  const dasCartas = new Set(cards.map((c) => c.set));
+  assert.equal(new Set(doIndice).size, doIndice.length, "nome de set repetido no índice");
+  const orfaos = doIndice.filter((n) => !dasCartas.has(n));
+  assert.deepEqual(orfaos, [], "nome no índice que nenhuma carta usa: rode node scripts/translate-naruto-names.mjs");
+  const noIndice = new Set(doIndice);
+  const faltando = [...dasCartas].filter((n) => !noIndice.has(n));
+  assert.deepEqual(faltando, [], "set das cartas fora do índice");
+});
+
+test("translate-naruto-names não devolve o índice antigo ao writeGameCatalog", async () => {
+  const fonte = (await readFile(new URL("../scripts/translate-naruto-names.mjs", import.meta.url), "utf8")).replace(/\r\n/g, "\n");
+  const codigo = fonte.split("\n").filter((l) => !l.trim().startsWith("//")).join("\n");
+  assert.ok(!/indexes\.js/.test(codigo), "o script voltou a ler o indexes.js");
+  assert.ok(!/writeGameCatalog\([^)]*\bindexes\b/.test(codigo), "o script voltou a passar `indexes` ao writeGameCatalog");
 });

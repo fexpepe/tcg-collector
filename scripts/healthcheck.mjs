@@ -194,6 +194,8 @@ await checkManifest("manifest Naruto Mythos", "/data/narutomythos/manifest.gener
 await checkManifest("manifest Naruto Kayou", "/data/narutokayou/manifest.generated.js", 1000);
 // Marvel Hero Rush: 667 cartas no lançamento do catálogo (19/11/2026); sem preço.
 await checkManifest("manifest Marvel Hero Rush", "/data/herorush/manifest.generated.js", 570);
+// Rush of Ikorr: 1.184 cartas no lançamento do catálogo (22/11/2026).
+await checkManifest("manifest Rush of Ikorr", "/data/ikorr/manifest.generated.js", 1000);
 await checkManifest("manifest Miracle Battle Carddass", "/data/mbc/manifest.generated.js", 900);
 await checkManifest("manifest Carddass Masters", "/data/cdm/manifest.generated.js", 250);
 await checkManifest("manifest Gundam Carddass", "/data/gcd/manifest.generated.js", 1200);
@@ -235,9 +237,11 @@ await checkCatalog("pricing Final Fantasy", "/data/fftcg/pricing.generated.js", 
 await checkCatalog("pricing Grand Archive", "/data/grandarchive/pricing.generated.js", "TCG_PRICING", 4000);
 await checkCatalog("pricing hololive", "/data/hololive/pricing.generated.js", "TCG_PRICING", 1600);
 await checkCatalog("pricing Shadowverse", "/data/shadowverse/pricing.generated.js", "TCG_PRICING", 6000);
+// Rush of Ikorr: 1.111 cartas com preço (22/11/2026).
+await checkCatalog("pricing Rush of Ikorr", "/data/ikorr/pricing.generated.js", "TCG_PRICING", 900);
 await checkCatalog("pricing Vanguard", "/data/vanguard/pricing.generated.js", "TCG_PRICING", 20000);
 // Duel Masters sem preço desde 14/11/2026 (PRECO_LIGADO no sync-duelmasters).
-for (const [label, dir] of [["Pokémon", "/data/"], ["Lorcana", "/data/lorcana/"], ["One Piece", "/data/onepiece/"], ["Magic", "/data/magic/"], ["FAB", "/data/fab/"], ["Gundam", "/data/gundam/"], ["Star Wars Unlimited", "/data/swu/"], ["Cyberpunk", "/data/cyberpunk/"], ["Sorcery", "/data/sorcery/"], ["Dragon Ball Fusion", "/data/dbfw/"], ["DBS Masters", "/data/dbs/"], ["Yu-Gi-Oh", "/data/ygo/"], ["Digimon", "/data/digimon/"], ["Riftbound", "/data/riftbound/"], ["Union Arena", "/data/unionarena/"], ["World of Warcraft", "/data/wow/"], ["Weiß Schwarz", "/data/weiss/"], ["Naruto Card Game", "/data/narutocg/"], ["Godzilla", "/data/godzilla/"], ["Palworld", "/data/palworld/"], ["Final Fantasy", "/data/fftcg/"], ["Grand Archive", "/data/grandarchive/"], ["hololive", "/data/hololive/"], ["Shadowverse", "/data/shadowverse/"], ["Vanguard", "/data/vanguard/"]]) {
+for (const [label, dir] of [["Pokémon", "/data/"], ["Lorcana", "/data/lorcana/"], ["One Piece", "/data/onepiece/"], ["Magic", "/data/magic/"], ["FAB", "/data/fab/"], ["Gundam", "/data/gundam/"], ["Star Wars Unlimited", "/data/swu/"], ["Cyberpunk", "/data/cyberpunk/"], ["Sorcery", "/data/sorcery/"], ["Dragon Ball Fusion", "/data/dbfw/"], ["DBS Masters", "/data/dbs/"], ["Yu-Gi-Oh", "/data/ygo/"], ["Digimon", "/data/digimon/"], ["Riftbound", "/data/riftbound/"], ["Union Arena", "/data/unionarena/"], ["World of Warcraft", "/data/wow/"], ["Weiß Schwarz", "/data/weiss/"], ["Naruto Card Game", "/data/narutocg/"], ["Godzilla", "/data/godzilla/"], ["Palworld", "/data/palworld/"], ["Final Fantasy", "/data/fftcg/"], ["Grand Archive", "/data/grandarchive/"], ["hololive", "/data/hololive/"], ["Shadowverse", "/data/shadowverse/"], ["Rush of Ikorr", "/data/ikorr/"], ["Vanguard", "/data/vanguard/"]]) {
   await checkJson(`deltas ${label}`, `${dir}price-deltas.generated.json`,
     (j) => j && typeof j === "object" && "c" in j ? null : "sem campo c");
   // Janela de 7 dias: é a que o aviso de queda da wishlist lê. Sem ela o push

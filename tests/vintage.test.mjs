@@ -170,7 +170,8 @@ test("periodoDe e grupoDe", () => {
 });
 
 test("a página carrega os textos e o script dela, na ordem, e as duas folhas de CSS", () => {
-  const scripts = [...html.matchAll(/<script defer src="src\/([a-z0-9-]+\.js)"><\/script>/g)].map((m) => m[1]);
+  // [^>]*: o shared.js leva fetchpriority="high" desde 2026-11-22.
+  const scripts = [...html.matchAll(/<script defer src="src\/([a-z0-9-]+\.js)"[^>]*><\/script>/g)].map((m) => m[1]);
   assert.deepEqual(scripts, ["i18n.js", "i18n-vintage.js", "shared.js", "vintage.js"]);
   assert.match(html, /data-active-page="vintage"/);
   assert.match(html, /<link rel="canonical" href="https:\/\/sleevu\.app\/vintage">/);

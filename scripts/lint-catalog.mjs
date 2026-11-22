@@ -27,12 +27,12 @@ import { readFile, writeFile, readdir } from "node:fs/promises";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { resolveMergedId } from "./lib/set-supersede.mjs";
-import { classificaMudanca, assinatura, idiomaDe, numDe } from "./lib/id-stability.mjs";
+import { classificaMudanca, assinatura, idiomaDe, numDe, setIdsComVariosNomes } from "./lib/id-stability.mjs";
 import { avaliaRegua, medeCatalogo } from "./lib/regua-catalogo.mjs";
 
 const ROOT = new URL("../", import.meta.url);
 const BASELINE = new URL("data/catalog-baseline.json", ROOT);
-const GAMES = { pokemon: "data/", lorcana: "data/lorcana/", onepiece: "data/onepiece/", magic: "data/magic/", fab: "data/fab/", gundam: "data/gundam/", swu: "data/swu/", cyberpunk: "data/cyberpunk/", sorcery: "data/sorcery/", dbfw: "data/dbfw/", dbs: "data/dbs/", ygo: "data/ygo/", digimon: "data/digimon/", riftbound: "data/riftbound/", unionarena: "data/unionarena/", naruto: "data/naruto/", hxh: "data/hxh/", dbc: "data/dbc/", dbsb: "data/dbsb/", dbva: "data/dbva/", dbbw: "data/dbbw/", dbz: "data/dbz/", wow: "data/wow/", lotr: "data/lotr/", harrypotter: "data/harrypotter/", weiss: "data/weiss/", mbc: "data/mbc/", cdm: "data/cdm/", gcd: "data/gcd/", gw: "data/gw/", seiya: "data/seiya/", seiyatc: "data/seiyatc/", seiyacr: "data/seiyacr/", fma: "data/fma/", narutocg: "data/narutocg/", godzilla: "data/godzilla/", fftcg: "data/fftcg/", grandarchive: "data/grandarchive/", hololive: "data/hololive/", shadowverse: "data/shadowverse/", vanguard: "data/vanguard/", duelmasters: "data/duelmasters/", narutomythos: "data/narutomythos/", narutokayou: "data/narutokayou/", herorush: "data/herorush/", palworld: "data/palworld/", narutoboruto: "data/narutoboruto/", narutotc: "data/narutotc/", jump: "data/jump/" };
+const GAMES = { pokemon: "data/", lorcana: "data/lorcana/", onepiece: "data/onepiece/", magic: "data/magic/", fab: "data/fab/", gundam: "data/gundam/", swu: "data/swu/", cyberpunk: "data/cyberpunk/", sorcery: "data/sorcery/", dbfw: "data/dbfw/", dbs: "data/dbs/", ygo: "data/ygo/", digimon: "data/digimon/", riftbound: "data/riftbound/", unionarena: "data/unionarena/", naruto: "data/naruto/", hxh: "data/hxh/", dbc: "data/dbc/", dbsb: "data/dbsb/", dbva: "data/dbva/", dbbw: "data/dbbw/", dbz: "data/dbz/", wow: "data/wow/", lotr: "data/lotr/", harrypotter: "data/harrypotter/", weiss: "data/weiss/", mbc: "data/mbc/", cdm: "data/cdm/", gcd: "data/gcd/", gw: "data/gw/", seiya: "data/seiya/", seiyatc: "data/seiyatc/", seiyacr: "data/seiyacr/", fma: "data/fma/", narutocg: "data/narutocg/", godzilla: "data/godzilla/", fftcg: "data/fftcg/", grandarchive: "data/grandarchive/", hololive: "data/hololive/", shadowverse: "data/shadowverse/", vanguard: "data/vanguard/", duelmasters: "data/duelmasters/", narutomythos: "data/narutomythos/", narutokayou: "data/narutokayou/", herorush: "data/herorush/", ikorr: "data/ikorr/", palworld: "data/palworld/", narutoboruto: "data/narutoboruto/", narutotc: "data/narutotc/", jump: "data/jump/" };
 const UPDATE = process.argv.includes("--update-baseline");
 const ACEITA_ID = process.argv.includes("--aceitar-mudanca-de-id");
 
@@ -106,6 +106,15 @@ for (const [game, dir] of Object.entries(GAMES)) {
   if (dupes) errors.push(`${game}: ${dupes} id(s) duplicado(s)`);
   if (broken) errors.push(`${game}: ${broken} carta(s) sem id/nome/set`);
 
+  // Um setId = um set. AVISO, não erro, de propósito: o lint roda no build
+  // completo e um erro aqui derruba o deploy inteiro. Carta congelada pelo
+  // preserveMissingCards guarda o nome antigo do set, e um set renomeado na
+  // fonte cairia aqui sem ser o bug. Quem impede o bug de voltar pelo código
+  // é o teste tests/setid-unico.test.mjs (todo sync que tira o setId da
+  // abreviação passa pelo desempate); isto é o retrato no dado.
+  for (const [sig, nomes] of setIdsComVariosNomes(cards)) {
+    warnings.push(`${game}: setId "${sig}" com ${nomes.length} nomes de set (${nomes.slice(0, 3).map(([n, q]) => `${n}: ${q}`).join(" · ")}) — só um deles ganha cartão na tela de Sets`);
+  }
   lidos[game] = cards;                        // reaproveitado pela trava de id
   const sample = regua.amostra;
   // Amostra ou catálogo vazio com régua: a régua antiga fica (regravar com o

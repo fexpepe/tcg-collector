@@ -90,6 +90,12 @@ test("shadowverse: o código impresso do produto, sem promos nem eventos", () =>
   assert.equal(cod("shadowverse", "GFE"), "");
 });
 
+test("ikorr: o código impresso do set, sem as promos", () => {
+  assert.equal(cod("ikorr", "ROI"), "ROI");
+  assert.equal(cod("ikorr", "REJ"), "REJ");
+  assert.equal(cod("ikorr", "RIPC"), "");
+});
+
 test("hololive: o código oficial do produto, sem as promos", () => {
   assert.equal(cod("hololive", "HBP01"), "HBP01");
   assert.equal(cod("hololive", "HEB01"), "HEB01");

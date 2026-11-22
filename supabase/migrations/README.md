@@ -8,6 +8,26 @@ poucos.)
 
 ## Pendentes de aplicar
 
+- `20261122b` — libera o slug `ikorr` (Rush of Ikorr, Upper Deck, 2025+) nas
+  duas whitelists de jogo (`card_views`/`increment_card_view` e
+  `contribute_price`; `20261122b_add_ikorr.sql`). Cópia da `20261122a`
+  (Fullmetal Alchemist Carddass, a última aplicada) com o `ikorr` a mais:
+  **ela cobre a 20261122a** e, por ela, todas as de jogo anteriores. Só a
+  lista muda. Qualquer uma das anteriores rodada **depois** desta tiraria o
+  `ikorr`. Sem ela, a view de carta e o Preço da Comunidade do jogo novo são
+  descartados em silêncio. Conferir com o par de `curl` do fim do arquivo:
+  a view de `ikr-723958` tem de **criar a linha** no `card_views` (o 204
+  sozinho não prova nada). O bloco de verificação foi copiado do da
+  `20261122a` (o gerado à parte quebrou o SQL Editor naquela). A `20261116a`
+  do Pokémon Carddass (PR #336), quando entrar, precisa do `ikorr` também.
+  **A próxima migração de jogo copia esta.**
+
+  **Aplicada em 2026-11-22** pelo Fernando ("feito") e conferida por curl
+  anônimo no mesmo dia: antes não havia linha do `ikorr` no `card_views`; a
+  view de `ikr-723958` respondeu 204 e criou a linha (`views: 1`); o
+  `contribute_price` anônimo segue 401; um jogo inventado responde 204 e não
+  cria linha; a linha do `fma` (`fma-f1-c-001`) continua lá.
+
 - `20261122a` — libera o slug `fma` (Fullmetal Alchemist Carddass, Bandai
   2004–2005: o Alchemic Card Battle e as placas da Jumbo Carddass) nas duas
   whitelists de jogo (`card_views`/`increment_card_view` e

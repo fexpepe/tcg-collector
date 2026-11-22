@@ -4466,12 +4466,13 @@
       return out;
     } catch (e) { return {}; }
   }
-  // Top de views de um jogo (leitura pública do agregado).
+  // Top de views (leitura pública do agregado). Com `game`, o de um jogo. SEM
+  // jogo (2026-11-22, Explorar), o de TODOS numa consulta só, cada linha com o
+  // jogo dela: a abertura do Explorar fazia um pedido por jogo, 47 de uma vez.
   async function fetchTopViewed(game, limit) {
     if (!AUTH_ENABLED) return [];
     try {
-      const g = normalizeGame(game);
-      const r = await fetch(`${SUPABASE_URL}/rest/v1/card_views?game=eq.${g}&order=views.desc&limit=${limit || 8}&select=card_id,views`, { headers: authHeaders() });
+      const r = await fetch(`${SUPABASE_URL}/rest/v1/card_views?${game ? "game=eq." + normalizeGame(game) : "views=gte.2"}&order=views.desc&limit=${limit}&select=card_id,views,game`, { headers: authHeaders() });
       return r.ok ? await r.json() : [];
     } catch (e) { return []; }
   }
@@ -5590,15 +5591,44 @@
     };
   }
 
-  // Valor digitado -> número, tolerante a pt-BR e en. Com vírgula, pontos são
-  // milhar ("1.250,50"). SEM vírgula, "1.500"/"12.345.678" (grupos de 3) são
-  // milhar — antes viravam 1.5/12.3 e um preço de venda saía 1000× menor.
+  // Separador decimal do IDIOMA da interface ("," em pt e es, "." em en),
+  // tirado do mesmo locale que o fmtMoney usa: o campo de dinheiro lê e
+  // escreve como a pessoa vê os preços na tela.
+  const MONEY_DEC = (1.5).toLocaleString(getLocale())[1];
+
+  // Valor digitado -> número, na régua do idioma da interface. Até 2026-11-22
+  // toda vírgula era decimal, em qualquer idioma: em inglês, "1,250" gravava
+  // 1.25 e "$2,000" gravava 2 — preço de venda, pago, alvo da wishlist, slab
+  // e preço manual saíam 1000× menores. A 1ª troca põe o texto na forma do pt
+  // (o decimal do idioma vira ","; o outro separador, "."), e daí pra baixo a
+  // conta é uma só nos três idiomas:
+  //   - com os dois separadores, o ÚLTIMO é o decimal ("1.250,50" e
+  //     "1,250.50" dão 1250.5 em qualquer idioma);
+  //   - só o decimal do idioma: uma vez é decimal (pt "1,250" = 1.25, como
+  //     sempre foi; en "1.500" = 1.5), várias é milhar (pt "1,234,567");
+  //   - só o outro: milhar se fechar grupos de 3 (pt "1.500", en "1,250");
+  //     senão é decimal, pra quem digita no costume do outro idioma (pt
+  //     "1.5", en "1,25").
+  // Símbolo e espaço saem antes; vazio ou lixo dá 0.
   function parseMoney(text) {
-    const s = String(text || "").trim().replace(/[^\d.,-]/g, "");
-    if (!s) return 0;
-    if (s.includes(",")) return Number(s.replace(/\./g, "").replace(",", ".")) || 0;
-    if (/^-?\d{1,3}(\.\d{3})+$/.test(s)) return Number(s.replace(/\./g, "")) || 0;
-    return Number(s) || 0;
+    let s = String(text).replace(/[^\d.,-]/g, "").replace(/[.,]/g, (c) => (c === MONEY_DEC ? "," : "."));
+    // Vírgula com outro separador depois dela não é a decimal, é milhar: sai,
+    // e o ponto que sobrar (o último separador) passa a ser a vírgula decimal.
+    if (/,.*[.,]/.test(s)) s = s.replace(/,/g, "").replace(".", ",");
+    return Number(/,|^-?\d{1,3}(\.\d{3})+$/.test(s) ? s.replace(/\./g, "").replace(",", ".") : s) || 0;
+  }
+
+  // Número -> texto de CAMPO de dinheiro: sem símbolo nem milhar, com o
+  // decimal do idioma — exatamente o que o parseMoney lê de volta. Eram ~20
+  // `.replace(".", ",")` espalhados (e oito placeholder="0,00"), que punham
+  // vírgula no campo também em inglês; quem corrigia o valor por cima dela
+  // caía no bug acima. Sem valor (0, vazio) devolve "", pro placeholder
+  // aparecer. `fixo` pede duas casas; `zero` escreve até o zero — é como se
+  // pede o próprio placeholder: moneyInput(0, 1, 1) dá "0,00" ou "0.00".
+  // Sem `zero` só sai texto de número (o `> 0` barra o resto), então entra
+  // em atributo sem escape.
+  function moneyInput(value, fixo, zero) {
+    return value > 0 || zero ? (fixo ? value.toFixed(2) : String(value)).replace(".", MONEY_DEC) : "";
   }
 
   // O separador segue o IDIOMA da interface, não o "pt-BR" fixo de antes: quem
@@ -6363,28 +6393,25 @@
       if (!modoPagina && panel && panel.scrollTop <= 0 && dy > 80 && Math.abs(dy) > 2 * Math.abs(dx)) close();
     }, { passive: true });
     // Salva o preço BR digitado ao sair do campo (change = blur ou Enter).
-    // Aceita vírgula ou ponto como decimal ("12,50", "12.50", "1.250,00").
+    // Quem lê o texto é o parseMoney, na régua do idioma da interface (ele
+    // mesmo tira espaço e símbolo: o campo vai cru).
     document.addEventListener("change", (event) => {
       const saleInput = event.target.closest("#cardPreviewModal [data-preview-sale]");
       if (saleInput && sale && activeCard) {
-        const text = String(saleInput.value).trim();
-        const amount = parseMoney(text);
-        sale.onChange(activeCard.id, activeVariant || defaultVariant(activeCard), amount);
+        sale.onChange(activeCard.id, activeVariant || defaultVariant(activeCard), parseMoney(saleInput.value));
         return;
       }
       // "Paguei": custo unitário da carta×variante (modo investidor). Vazio apaga.
       const costInput = event.target.closest("#cardPreviewModal [data-preview-cost]");
       if (costInput && activeCard) {
-        const text = String(costInput.value).trim();
-        const amount = parseMoney(text);
         const variant = activeVariant || defaultVariant(activeCard);
-        previewCosts.set(activeCard.id, variant, amount, getCurrency());
+        previewCosts.set(activeCard.id, variant, parseMoney(costInput.value), getCurrency());
         // Reescreve com duas casas na hora, igual ao atalho "Preço NM": o valor
         // gravado JÁ era 0,00 (o render usa toFixed(2)), mas só aparecia assim
         // no próximo paint do painel — digitar "12" e ver "12" dava a impressão
         // de que o campo aceita formato diferente do outro.
         const salvo = previewCosts.get(activeCard.id, variant);
-        costInput.value = salvo && salvo.v > 0 ? salvo.v.toFixed(2).replace(".", ",") : "";
+        costInput.value = moneyInput(salvo && salvo.v, 1);
         return;
       }
       const folderSelect = event.target.closest("#cardPreviewModal [data-preview-folder]");
@@ -6394,15 +6421,11 @@
       }
       const input = event.target.closest("#cardPreviewModal input[data-price-card-id]");
       if (!input || !prices) return;
-      const text = String(input.value).trim();
-      const amount = parseMoney(text);
-      prices.setPrice(input.dataset.priceCardId, input.dataset.priceVariant, input.dataset.priceCondition, amount, "manual");
+      prices.setPrice(input.dataset.priceCardId, input.dataset.priceVariant, input.dataset.priceCondition, parseMoney(input.value), "manual");
       const saved = prices.getPrice(input.dataset.priceCardId, input.dataset.priceVariant, input.dataset.priceCondition);
       // data-price-fmt="2": campo largo (o atalho "Preço NM") mostra duas casas
       // pra casar com o "Paguei" ao lado. Célula da grade fica compacta.
-      input.value = saved > 0
-        ? (input.dataset.priceFmt === "2" ? saved.toFixed(2) : String(saved)).replace(".", ",")
-        : "";
+      input.value = moneyInput(saved, input.dataset.priceFmt);
     });
     document.addEventListener("keydown", (event) => {
       // ← → percorrem a grade de onde a carta veio (fora de campo de texto).
@@ -6913,18 +6936,17 @@
                    (subgrid): cada rótulo tem largura diferente. -->
               <div class="preview-money">
               ${sale ? `<label class="preview-sale-row"><span>${escapeHtml(t("sales.sell"))}</span><span class="preview-sale-cur">${escapeHtml(saleCurrencySymbol())}</span>
-                <input type="text" inputmode="decimal" class="preview-sale-price" data-preview-sale value="${escapeAttribute((function () { const p = sale.priceOf(activeCard.id, activeVariant || defaultVariant(activeCard)); return p > 0 ? String(p).replace(".", ",") : ""; })())}" placeholder="0,00"></label>` : ""}
+                <input type="text" inputmode="decimal" class="preview-sale-price" data-preview-sale value="${moneyInput(sale.priceOf(activeCard.id, activeVariant || defaultVariant(activeCard)))}" placeholder="${moneyInput(0, 1, 1)}"></label>` : ""}
               ${isOwned ? `<label class="preview-sale-row preview-cost-row" title="${escapeAttribute(t("cost.hint"))}"><span>${escapeHtml(t("cost.label"))}</span><span class="preview-sale-cur">${escapeHtml(saleCurrencySymbol())}</span>
-                <input type="text" inputmode="decimal" class="preview-sale-price" data-preview-cost value="${escapeAttribute((function () { const c = previewCosts.get(activeCard.id, activeVariant || defaultVariant(activeCard)); if (!c) return ""; const v = moneyToCurrent(c.v, c.cur); return v > 0 ? v.toFixed(2).replace(".", ",") : ""; })())}" placeholder="0,00"></label>` : ""}
+                <input type="text" inputmode="decimal" class="preview-sale-price" data-preview-cost value="${((c) => moneyInput(c && moneyToCurrent(c.v, c.cur), 1))(previewCosts.get(activeCard.id, activeVariant || defaultVariant(activeCard)))}" placeholder="${moneyInput(0, 1, 1)}"></label>` : ""}
               ${prices ? (function () {
                 // ATALHO do preço MANUAL na condição padrão (NM) da versão
                 // escolhida, com os mesmos data-price-* da grade de condições
                 // (o listener de preço já existente grava e reformata isto).
                 const v = activeVariant || defaultVariant(activeCard);
                 const atual = prices.getPrice(activeCard.id, v, DEFAULT_CONDITION);
-                const display = atual > 0 ? atual.toFixed(2).replace(".", ",") : "";
                 return `<label class="preview-sale-row preview-price-row" title="${escapeAttribute(t("price.nmHint"))}"><span>${escapeHtml(t("price.nmLabel"))}</span><span class="preview-sale-cur">${escapeHtml(brCurrencySymbol())}</span>
-                  <input type="text" inputmode="decimal" class="preview-sale-price" placeholder="0,00" value="${escapeAttribute(display)}" data-price-fmt="2"
+                  <input type="text" inputmode="decimal" class="preview-sale-price" placeholder="${moneyInput(0, 1, 1)}" value="${moneyInput(atual, 1)}" data-price-fmt="2"
                     data-price-card-id="${escapeAttribute(activeCard.id)}" data-price-variant="${escapeAttribute(v)}" data-price-condition="${DEFAULT_CONDITION}"
                     aria-label="${escapeAttribute(t("price.inputAria", { variant: v, condition: t(`condition.${DEFAULT_CONDITION}`) }))}"></label>`;
               })() : ""}
@@ -7435,7 +7457,12 @@
     // Shadowverse: Evolve (13/11/2026): TCGplayer na linha "shadowverse-evolve"
     // (o prefixo do endereço de produto de lá). Loja BR e Cardmarket NÃO foram
     // conferidos.
-    shadowverse: { tcgLine: "shadowverse-evolve", usText: "shadowverse evolve" }
+    shadowverse: { tcgLine: "shadowverse-evolve", usText: "shadowverse evolve" },
+    // Rush of Ikorr (conferido em 22/11/2026): TCGplayer na linha
+    // "rush-of-ikorr" (o productLineUrlName da API de linhas de lá). Sem loja
+    // BR (MYP e Liga não têm o jogo) e sem Cardmarket: só vendem nos EUA e no
+    // Canadá.
+    ikorr: { tcgLine: "rush-of-ikorr", usText: "rush of ikorr" }
   };
   function marketOf(game) { return MARKETS[game] || MARKETS.pokemon; }
 
@@ -7961,11 +7988,10 @@
     const entry = prices.entry(card.id, variant);
     const cells = CARD_CONDITIONS.map((condition) => {
       const value = prices.getPrice(card.id, variant, condition);
-      const display = value > 0 ? String(value).replace(".", ",") : "";
       return `
         <label class="price-cell">
           <span>${condition}</span>
-          <input type="text" inputmode="decimal" placeholder="–" value="${escapeAttribute(display)}"
+          <input type="text" inputmode="decimal" placeholder="–" value="${moneyInput(value)}"
             data-price-card-id="${escapeAttribute(card.id)}" data-price-variant="${escapeAttribute(variant)}" data-price-condition="${condition}"
             aria-label="${escapeAttribute(t("price.inputAria", { variant, condition: t(`condition.${condition}`) }))}">
         </label>
@@ -9061,6 +9087,7 @@
     "narutomythos",
     "narutokayou",
     "herorush",
+    "ikorr",
     "mbc",
     "cdm",
     "gcd",
@@ -9127,6 +9154,7 @@
     shadowverse: "#818cf8", // índigo claro (confirmada pelo Fernando, 2026-11-14): o ciano do logo já é do hololive e do WoW; 7.0:1 com preto, a 60 do Final Fantasy e a 83 do Yu-Gi-Oh!
     narutomythos: "#f65400", // = narutocg: mesma IP (Naruto), mesma cor
     narutokayou: "#f65400", // = narutocg: mesma IP (Naruto), mesma cor
+    ikorr: "#70f0c8",      // menta (proposta, 2026-11-22): a Upper Deck não tem cor de marca no jogo; 15.0:1 com preto, a 73 do vizinho mais próximo contando também os accents do styles.css (o verde #4ade80 é o do Hunter × Hunter no escuro)
     herorush: "#b0003a",   // carmim: o vermelho da Marvel (#ec1d24) fica a 25 do Pokémon; 7.2:1 com branco, a 70 do Pokémon e a 83 do Flesh and Blood e do Harry Potter (proposta, 2026-11-19)
     duelmasters: "#fde68a", // ouro-claro, o amarelo do logo; 16.9:1 com preto, a 88 do Sorcery, o vizinho mais próximo (definida em 14/11/2026)
     vanguard: "#ff5a7a",   // coral: o vermelho do logo, clareado pra não colar no Pokémon (#e23030); 7.0:1 com preto, a 84 do Miracle Battle e a 90 do Pokémon (definida em 14/11/2026)
@@ -9548,19 +9576,26 @@
     if (n) lotes.push(atual);
     if (!lotes.length) return { cards: [], pricing: {} };
 
-    const cards = [], pricing = {};
-    for (const lote of lotes) {
-      let r;
-      try {
-        r = await fetch("/api/collection", {
+    // Os lotes saem JUNTOS (2026-11-22). Em fila, uma coleção de 3.000 cartas
+    // pagava três idas à borda, uma atrás da outra, antes de a tela desenhar.
+    // O Promise.all devolve na ordem dos lotes, então as cartas chegam na
+    // mesma ordem de antes. Qualquer falha devolve null e os chunks assumem:
+    // rede caída ou JSON torto só nesta carga; 503/404 desliga a borda pra
+    // sessão (o `throw` abaixo liga a marca antes de sair).
+    let partes;
+    try {
+      partes = await Promise.all(lotes.map(async (lote) => {
+        const r = await fetch("/api/collection", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(lote)
         });
-      } catch (e) { return null; }                 // rede caiu: chunks assumem
-      if (!r.ok) { collectionApiOff = true; return null; }  // 503/404: desliga pra sessão
-      let j;
-      try { j = await r.json(); } catch (e) { return null; }
+        if (!r.ok) throw (collectionApiOff = true);
+        return r.json();
+      }));
+    } catch (e) { return null; }
+    const cards = [], pricing = {};
+    for (const j of partes) {
       Object.keys(j.c || {}).forEach((game) => {
         (j.c[game] || []).forEach((card) => { card.game = game; cards.push(card); });
       });
@@ -10431,6 +10466,7 @@
     sumCardsValue,
     formatMoney: fmtMoney,
     parseMoney,
+    moneyInput,
     mergeData, // exposto p/ testes (offline) e diagnóstico
     convertMoney,
     applyGameAccent,

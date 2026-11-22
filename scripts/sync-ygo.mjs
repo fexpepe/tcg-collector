@@ -20,6 +20,7 @@
 //   node scripts/sync-ygo.mjs
 import { fileURLToPath } from "node:url";
 import { writeGameCatalog, readGlobalVar, preserveMissingCards } from "./lib/sync-common.mjs";
+import { desempataSetIds } from "./lib/setid-unico.mjs";
 import { nomeDoSet } from "./lib/nome-do-set.mjs";
 import { fotosDasIrmas } from "./lib/imagem-da-irma.mjs";
 
@@ -63,6 +64,7 @@ async function run() {
   console.log(`  ${groups.length} sets.`);
 
   const cards = [];
+  const marcas = []; // onde começam as cartas de cada grupo (desempate de setId, depois do laço)
   const pricing = {}; // { id: { u } } — USD market do TCGplayer (edição canônica)
   // Produtos de TODOS os grupos: a irmã com foto pode estar em outro set.
   const irmas = fotosDasIrmas(REGRAS_YGO);
@@ -90,6 +92,7 @@ async function run() {
     if (!setCards.length) continue;
 
     const setId = g.abbreviation || String(g.groupId);
+    marcas.push({ groupId: g.groupId, setId, de: cards.length });
     const release = (g.publishedOn || "").slice(0, 10);
     for (const p of setCards) {
       const id = `ygo-${p.productId}`;
@@ -130,6 +133,11 @@ async function run() {
 
   // União preservadora: carta que sumiu do espelho fica (do cards.js anterior).
   const prev = (await readGlobalVar(new URL("cards.js", OUT), "TCG_CARDS")) || [];
+  // Dois grupos com a mesma abreviação não podem dividir um setId: um dos
+  // sets some da tela de Sets (ver scripts/lib/setid-unico.mjs). Tem de rodar
+  // aqui, com `cards` ainda na ordem em que os grupos entraram.
+  desempataSetIds(cards, marcas);
+
   const merged = cards.concat(preserveMissingCards(prev, cards));
 
   merged.sort((a, b) =>

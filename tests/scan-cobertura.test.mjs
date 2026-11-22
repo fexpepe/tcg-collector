@@ -123,6 +123,9 @@ const JOGOS = {
   // O losango da paralela não é lido: o texto vai sem ele.
   // Marvel Hero Rush (2026-11-19): o código impresso é o número ("BP01-001").
   herorush: { min: 0.98 },
+  // Rush of Ikorr (2026-11-22): o rodapé traz o ilustrador e o código com a
+  // raridade ao lado ("©2025 UDC. Artist: Narendra Adi  ROI-001 R").
+  ikorr: { min: 0.98, impresso: (c) => `©2025 UDC. Artist: X  ${c.number}` },
   narutokayou: { min: 0.98, impresso: (c) => String(c.number).replace(/◇/g, "") },
   wow: { semCodigo: "o catálogo não guarda o número da carta" },
   sorcery: { semCodigo: "o catálogo não guarda o número da carta" },

@@ -347,6 +347,11 @@ test("Bandai moderno: coleção numerada, boosters extras, decks e promos, pelo 
   assert.deepEqual(secoesBandai("herorush", ["mhr-bp01", "mhr-sp01", "mhr-lp01", "mhr-sd01", "mhr-sd06", "mhr-eb01", "mhr-pb01-a", "mhr-pb02", "mhr-tb01"]), {
     main: ["mhr-bp01"], extraBoosters: ["mhr-lp01", "mhr-sp01"], decks: ["mhr-sd01", "mhr-sd06"], events: ["mhr-eb01"], promos: ["mhr-pb01-a", "mhr-pb02", "mhr-tb01"]
   });
+  // Rush of Ikorr: os quatro "Act/Part" do booster são os principais; as
+  // promos (RIPC) caem no resto.
+  assert.deepEqual(secoesBandai("ikorr", ["ROI", "RMB", "RLS", "REJ", "RIPC"]), {
+    main: ["REJ", "RLS", "RMB", "ROI"], promos: ["RIPC"]
+  });
   // Palworld (Bushiroad, idem): a 2ª edição é principal, o Sleeve Set é promo.
   assert.deepEqual(secoesBandai("palworld", ["EBP01", "EBP01-2E", "EBP02", "ESS01", "ETD01", "ETD02", "EPR", "PC"]), {
     main: ["EBP01", "EBP01-2E", "EBP02"], decks: ["ETD01", "ETD02"], promos: ["EPR", "ESS01", "PC"]

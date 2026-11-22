@@ -144,6 +144,7 @@ jobs:
             data/narutomythos/sets
             data/narutokayou/sets
             data/herorush/sets
+            data/ikorr/sets
             data/jump/sets
             data/magic/cards.js
             data/magic/indexes.js
@@ -170,7 +171,7 @@ jobs:
           faltando=""
           # data/dbc/, data/swu/, data/cyberpunk/, data/wow/, data/lotr/,
           # data/sorcery/, data/harrypotter/, data/weiss/, data/mbc/, data/dbz/ e
-          # data/cdm/, data/gcd/, data/gw/, data/narutocg/, data/godzilla/, data/palworld/, data/fftcg/, data/vanguard/, data/grandarchive/, data/hololive/, data/duelmasters/, data/shadowverse/, data/dbs/, data/seiya/, data/seiyatc/, data/seiyacr/ e data/fma/: jogos novos (2026-09-24 a 2026-11-22);
+          # data/cdm/, data/gcd/, data/gw/, data/narutocg/, data/godzilla/, data/palworld/, data/fftcg/, data/vanguard/, data/grandarchive/, data/hololive/, data/duelmasters/, data/shadowverse/, data/dbs/, data/seiya/, data/seiyatc/, data/seiyacr/, data/fma/ e data/ikorr/: jogos novos (2026-09-24 a 2026-11-22);
           # data/dbsb/, data/dbva/ e data/dbbw/ (2026-11-13), as séries do dbc que viraram jogo. Enquanto o cache
           # for de antes deles, o build rápido publicaria o tile do hub sem
           # catálogo nenhum atrás.
@@ -202,6 +203,7 @@ jobs:
                    data/narutomythos/manifest.generated.js \
                    data/narutokayou/manifest.generated.js \
                    data/herorush/manifest.generated.js \
+                   data/ikorr/manifest.generated.js \
                    data/grandarchive/manifest.generated.js \
                    data/hololive/manifest.generated.js \
                    data/duelmasters/manifest.generated.js \
@@ -705,6 +707,18 @@ jobs:
       - name: Snapshot de preços (histórico Shadowverse Evolve)
         if: env.RODA_SYNC == 'true'
         run: node scripts/sync-price-history.mjs data/shadowverse
+
+      # Rush of Ikorr (TCGCSV cat. 94, Upper Deck 2025+). Padrao Sorcery: o
+      # Fracture Foil e o Rapture Foil sao produtos proprios no TCGplayer, sem
+      # foto, e o sync os junta na carta como versoes, com o preco de cada uma
+      # no `v`; setId fixo pelo codigo impresso; sem logo de set.
+      - name: Sincroniza catálogo do Rush of Ikorr (TCGCSV)
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/sync-ikorr.mjs || echo "sync-ikorr falhou; mantém o catalogo versionado"
+
+      - name: Snapshot de preços (histórico Rush of Ikorr)
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/sync-price-history.mjs data/ikorr
 
       # Cardfight!! Vanguard (TCGCSV cat. 16, Bushiroad 2011+; as cinco eras,
       # so a edicao inglesa). Padrao Weiss: paralela = carta propria, setId do
@@ -1232,6 +1246,7 @@ jobs:
             data/narutomythos/sets
             data/narutokayou/sets
             data/herorush/sets
+            data/ikorr/sets
             data/jump/sets
             data/magic/cards.js
             data/magic/indexes.js

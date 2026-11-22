@@ -12,7 +12,8 @@
 // Roda com: node --test tests/
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { pecasDaCarta, precoUSD, precoDeReferencia, tituloDaCarta } from "../functions/_lib/pagina-carta.js";
+import { readFileSync } from "node:fs";
+import { pecasDaCarta, precoUSD, precoDeReferencia, tituloDaCarta, esqueletoDaCarta } from "../functions/_lib/pagina-carta.js";
 import { cabecaDaRota } from "../functions/_lib/decora-app.js";
 import { slugsDasCartas } from "../functions/_lib/slug-carta.js";
 import { jogoDaUrl } from "../functions/_lib/jogos.js";
@@ -104,6 +105,47 @@ test("o parágrafo da carta vem também em en e es, e o nome dela num h2", () =>
   assert.doesNotMatch(h, /<b>x<\/b>/, "o template também sai escapado");
 });
 
+// O esqueleto no HTML (2026-11-22): a borda manda a tela da carta com o NOME
+// (texto: bloco de fundo não conta como primeira pintura) e, com o host da
+// imagem espelhado, a imagem de 300 px, a mesma URL que o popup pede.
+test("esqueleto da carta: nome em texto, imagem só com host espelhado, tudo escapado", () => {
+  const esp = (u, w) => (/^https:\/\/assets\.tcgdex\.net\//.test(u || "") ? `https://img.sleevu.app/assets.tcgdex.net/x@${w}.webp` : "");
+  const com = esqueletoDaCarta(cartas[0], "Charmander 004/165", esp);
+  assert.match(com, /^<div class="cs-esqueleto" aria-hidden="true">/, "a classe é a que o CSS que esconde o set poupa");
+  assert.match(com, /<p>Charmander 004\/165<\/p>/);
+  assert.match(com, /<img src="https:\/\/img\.sleevu\.app\/assets\.tcgdex\.net\/x@300\.webp" fetchpriority="high" alt="" decoding="async">/);
+  assert.equal((com.match(/<img /g) || []).length, 1);
+  assert.doesNotMatch(com, /<h1/, "o #detailTitle já é o h1");
+  // Host fora do espelho (ou carta sem imagem): só o nome, nenhuma <img>.
+  const fora = esqueletoDaCarta({ image: "https://cards.scryfall.io/normal/a.jpg" }, "Carta", esp);
+  assert.doesNotMatch(fora, /<img/);
+  assert.match(fora, /<p>Carta<\/p>/);
+  assert.doesNotMatch(esqueletoDaCarta({}, "Sem imagem", esp), /<img/);
+  // Nome hostil não vira HTML.
+  const hostil = esqueletoDaCarta(cartas[0], "<img src=x onerror=alert(1)>", esp);
+  assert.doesNotMatch(hostil, /<img src=x/);
+  assert.match(hostil, /&lt;img src=x onerror=alert\(1\)&gt;/);
+  // pecasDaCarta devolve o campo, com o nome do h1; sem o carimbo do deploy a
+  // lista de hosts é vazia e a borda não monta imagem (a página sai como sempre).
+  const p = pecas(cartas[2], 120.5);
+  assert.match(p.esqueletoHtml, /<p>Charizard ex 006\/165<\/p>/);
+  assert.doesNotMatch(p.esqueletoHtml, /<img/);
+});
+
+test("o decoraApp põe o esqueleto no COMEÇO do main e o texto no fim", () => {
+  const src = readFileSync(new URL("../functions/_lib/decora-app.js", import.meta.url), "utf8").replace(/\r\n/g, "\n");
+  const i = src.indexOf("el.prepend(pecas.esqueletoHtml");
+  assert.ok(i > 0, "sumiu o prepend do esqueleto");
+  assert.ok(src.indexOf("el.append(pecas.corpoHtml") > i);
+});
+
+test("o detail.js não insere um segundo esqueleto quando a borda já mandou o dela", () => {
+  const src = readFileSync(new URL("../src/detail.js", import.meta.url), "utf8").replace(/\r\n/g, "\n");
+  assert.ok(src.includes('if (main && !main.querySelector(".cs-esqueleto")) main.insertAdjacentHTML("afterbegin"'));
+  // Cópia guardada que chegue pra OUTRA carta (a rota do <meta> não bate): o esqueleto dela sai.
+  assert.ok(src.includes('if (main && !rotaDaBorda) main.querySelectorAll(".cs-esqueleto").forEach((el) => el.remove());'));
+});
+
 test("outras impressões e vizinhas de número apontam pras páginas certas", () => {
   const { corpoHtml } = pecas(cartas[2]);
   assert.match(corpoHtml, /Outras impressões desta carta[\s\S]*href="\/games\/pokemon\/sv03-5-151\/charizard-ex-006-165-pt">Charizard ex 006\/165 \(Português\)/);
@@ -126,6 +168,39 @@ test("título: o nome da carta nunca é cortado, o nome do set é o primeiro a s
   assert.equal(tituloDaCarta("Charizard ex", "006/165", "", "151"), "Charizard ex 006/165 · 151 | Sleevu");
   const longo = tituloDaCarta("Um Nome De Carta Bem Comprido Mesmo", "OP16-119", "OP16", "Um Set Com Nome Enorme Também");
   assert.equal(longo, "Um Nome De Carta Bem Comprido Mesmo OP16-119 OP16 | Sleevu");
+});
+
+// Os dados do set pedidos mais cedo (2026-11-22): um preload por arquivo do
+// set no <head>, em modo CORS (o fetch do cliente é CORS: sem o crossorigin o
+// preload não casa e o arquivo desce duas vezes), no máximo 3, e nenhum
+// quando a tela estreita a lista (?setId=/?region=).
+test("preload dos arquivos do set: 1, 3 e 5 arquivos, e nenhum quando a tela estreita", () => {
+  const preloads = (arquivos, extra = {}) => [...cabecaDaRota({}, { caminho: "/games/pokemon/151", arquivos, ...extra })
+    .matchAll(/<link rel="preload" as="fetch" crossorigin href="([^"]*)">/g)].map((m) => m[1]);
+  const f = ["data/sets/en/a.json", "data/sets/ja/a.json", "data/sets/pt/a.json", "data/sets/zh-cn/a.json", "data/sets/zh-tw/a.json"];
+  assert.deepEqual(preloads(f.slice(0, 1)), ["/data/sets/en/a.json"], "o href é absoluto: é o que o cliente pede com o <base href=\"/\">");
+  assert.deepEqual(preloads(f.slice(0, 3)), f.slice(0, 3).map((x) => "/" + x));
+  assert.deepEqual(preloads(f), f.slice(0, 3).map((x) => "/" + x), "no máximo 3");
+  assert.deepEqual(preloads(f, { estreita: true }), [], "?setId=/?region=: o cliente baixa uma edição só");
+  assert.deepEqual(preloads([]), []);
+  assert.deepEqual(preloads(undefined), [], "rota sem arquivos (a tela do jogo, o teste antigo) não emite nada");
+  assert.match(preloads(['data/sets/"x".json'])[0], /&quot;/, "escapado");
+  // O preload vai depois do <meta> da rota, no mesmo acréscimo ao <head>.
+  const cabeca = cabecaDaRota({}, { caminho: "/games/x/y", arquivos: f.slice(0, 1) });
+  assert.ok(cabeca.indexOf('<meta name="sleevu-rota"') < cabeca.indexOf('<link rel="preload"'));
+  // A borda passa o `f` do mapa e a marca de lista estreita, e a resposta
+  // estreita não lê nem grava o cache (a chave dele não leva a query).
+  const borda = readFileSync(new URL("../functions/games/[[path]].js", import.meta.url), "utf8").replace(/\r\n/g, "\n");
+  assert.ok(borda.includes("arquivos: entrada.f, estreita }"));
+  assert.ok(borda.includes("const estreita = /[?&](setId|region)=/.test(busca);"));
+  assert.ok(borda.includes("estreita ? null : await daBorda(chave)") && borda.includes("if (!estreita) guardaNaBorda("));
+});
+
+test("o detail.js reaproveita as cartas da tela no preparaEnderecos e pede o mapa com prioridade baixa", () => {
+  const src = readFileSync(new URL("../src/detail.js", import.meta.url), "utf8").replace(/\r\n/g, "\n");
+  assert.ok(src.includes("let doSet = detailSetId || detailRegion ? [] : cards.filter((c) => c && c.set === entrada.n && !c.retired);"));
+  assert.ok(src.includes("if (!doSet.length) {\n      const listas = await Promise.all((entrada.f || []).map((f) => fetch(f)"), "sem cartas na tela, busca como antes");
+  assert.ok(src.includes("fetch(`data/game-pages/${url}.json`, { priority: \"low\" })"));
 });
 
 test("a rota no <head>: o caminho, o set e a carta, escapados", () => {

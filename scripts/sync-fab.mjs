@@ -26,7 +26,9 @@
 import { fileURLToPath } from "node:url";
 import { existsSync } from "node:fs";
 import { writeGameCatalog, readGlobalVar, preserveMissingCards, winSafeName } from "./lib/sync-common.mjs";
+import { desempataSetIds } from "./lib/setid-unico.mjs";
 import { nomeDoSet } from "./lib/nome-do-set.mjs";
+import { codigoDoSet } from "./lib/codigo-do-set.mjs";
 
 const ROOT = new URL("../", import.meta.url);
 const OUT = new URL("data/fab/", ROOT);
@@ -60,12 +62,38 @@ const VARIANT_ORDER = [
 ];
 const pick = (map, names) => { for (const n of names) { if (map.get(n) > 0) return map.get(n); } return 0; };
 
+// Logo do set em data/fab/set-logos/<CÓDIGO>.webp (mirror-fab-set-logos.mjs).
+// O arquivo leva o código IMPRESSO do set ("1HB", "AIO"), mas o setId do
+// TCGplayer nem sempre é ele: em 46 dos 104 sets é o número do grupo ("23760")
+// e em outros é uma abreviação do TCGplayer ("ADD" para o Armory Deck: Dash,
+// impresso AIO). Procurar só pelo setId deixava nove sets sem logo com o
+// arquivo no disco (os seis Historic Pack 1 Blitz Deck e os Armory Deck AIO,
+// AJV e AMX; conferido em 2026-11-22). Então, sem achar pelo setId, tenta o
+// código impresso, o mesmo que a tela de Sets mostra no selo do set
+// (codigoDoSet("fab"): prefixo dominante dos números das cartas).
+// Travas: o set precisa ter mais de 5 cartas (promo e set de poucas cartas
+// pegariam o prefixo de outro set) e o arquivo precisa existir. Na dúvida, sem
+// logo: o site desenha o nome do set.
+export const logoExiste = (code) => existsSync(new URL(`set-logos/${code}.webp`, OUT));
+export function arquivoDoLogo(setId, cartasDoSet, existe = logoExiste) {
+  const procura = (codigo) => {
+    if (!codigo) return null;
+    const arquivo = winSafeName(String(codigo).toUpperCase());
+    return existe(arquivo) ? `data/fab/set-logos/${arquivo}.webp` : null;
+  };
+  const pelaSetId = procura(setId);
+  if (pelaSetId) return pelaSetId;
+  if (cartasDoSet.length <= 5) return null;
+  return procura(codigoDoSet("fab", { id: setId }, cartasDoSet));
+}
+
 async function run() {
   console.log("FAB: buscando sets (TCGCSV cat. 62)…");
   const groups = listOf(await api("/groups"));
   console.log(`  ${groups.length} sets.`);
 
   const cards = [];
+  const marcas = []; // onde começam as cartas de cada grupo (desempate de setId, depois do laço)
   const pricing = {}; // { id: { u, uf } } — USD market do TCGplayer
 
   for (const g of groups) {
@@ -92,6 +120,7 @@ async function run() {
     if (!setCards.length) { console.log(`  ${g.abbreviation || g.groupId} ${g.name}: 0 cartas (só selados)`); continue; }
 
     const setId = g.abbreviation || String(g.groupId);
+    marcas.push({ groupId: g.groupId, setId, de: cards.length });
     const release = (g.publishedOn || "").slice(0, 10);
     for (const p of setCards) {
       const id = `fab-${p.productId}`;
@@ -135,6 +164,11 @@ async function run() {
 
   // União preservadora: carta que sumiu do espelho fica (do cards.js anterior).
   const prev = (await readGlobalVar(new URL("cards.js", OUT), "TCG_CARDS")) || [];
+  // Dois grupos com a mesma abreviação não podem dividir um setId: um dos
+  // sets some da tela de Sets (ver scripts/lib/setid-unico.mjs). Tem de rodar
+  // aqui, com `cards` ainda na ordem em que os grupos entraram.
+  desempataSetIds(cards, marcas);
+
   const merged = cards.concat(preserveMissingCards(prev, cards));
 
   // Ordena por data de lançamento, set e número oficial (MON000 < MON001…).
@@ -148,15 +182,15 @@ async function run() {
   // setLogo: logo oficial espelhado em data/fab/set-logos/<CODE>.webp quando
   // existe (mirror-fab-set-logos.mjs, ~41 sets principais); senão a arte da 1ª
   // carta do set (a LSS não tem logo público para todos os sets).
-  const localLogo = (setId) => {
-    const code = winSafeName(String(setId).toUpperCase());
-    return existsSync(new URL(`set-logos/${code}.webp`, OUT)) ? `data/fab/set-logos/${code}.webp` : null;
-  };
   // setLogo: VAZIO quando o set nao tem logo proprio. Antes caia na arte da
   // 1a carta, o que dava um "logo" arbitrario (Freedom Ascension aparecia como
   // uma carta de token) e enganava mais do que ajudava. Sem logo, o site desenha
   // o NOME do set como titulo (.set-logo-placeholder no app.js).
-  for (const c of merged) { c.setLogo = localLogo(c.setId) || ""; }
+  const cartasPorSet = new Map();
+  for (const c of merged) { if (!cartasPorSet.has(c.setId)) cartasPorSet.set(c.setId, []); cartasPorSet.get(c.setId).push(c); }
+  const logoDoSet = new Map();
+  for (const [setId, cartasDoSet] of cartasPorSet) logoDoSet.set(setId, arquivoDoLogo(setId, cartasDoSet, logoExiste) || "");
+  for (const c of merged) { c.setLogo = logoDoSet.get(c.setId); }
 
   // Índices { name, cardIds } (página Sets; Artistas fica vazio como no OP).
   const bySet = new Map();
@@ -170,4 +204,5 @@ async function run() {
   console.log(`Gravado em ${fileURLToPath(OUT)} (cards/indexes/pricing + manifest/chunks).`);
 }
 
-await run();
+// Só roda quando é o script chamado (o teste importa arquivoDoLogo sem rede).
+if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) await run();

@@ -19,7 +19,7 @@
 import { buildCards, buildPrices, idsComBase, LOTE_IDS } from "./_search-sql.js";
 
 const GAMES = new Set(["pokemon", "lorcana", "onepiece", "magic", "fab", "gundam", "swu", "cyberpunk", "sorcery",
-  "dbfw", "dbs", "ygo", "digimon", "riftbound", "unionarena", "narutocg", "naruto", "hxh", "dbc", "dbsb", "dbva", "dbbw", "dbz", "wow", "lotr", "harrypotter", "weiss", "godzilla", "palworld", "fftcg", "grandarchive", "hololive", "shadowverse", "vanguard", "duelmasters", "narutomythos", "narutokayou", "herorush", "mbc", "cdm", "gcd", "gw", "seiya", "seiyatc", "seiyacr", "fma", "narutoboruto", "narutotc", "jump"]);
+  "dbfw", "dbs", "ygo", "digimon", "riftbound", "unionarena", "narutocg", "naruto", "hxh", "dbc", "dbsb", "dbva", "dbbw", "dbz", "wow", "lotr", "harrypotter", "weiss", "godzilla", "palworld", "fftcg", "grandarchive", "hololive", "shadowverse", "vanguard", "duelmasters", "narutomythos", "narutokayou", "herorush", "ikorr", "mbc", "cdm", "gcd", "gw", "seiya", "seiyatc", "seiyacr", "fma", "narutoboruto", "narutotc", "jump"]);
 
 // Teto por requisição: uma coleção gigante vira várias chamadas do cliente, em
 // vez de uma consulta que varre o banco inteiro (no D1, linha lida é linha
@@ -75,43 +75,57 @@ export async function onRequestPost(context) {
   };
 
   try {
-    const cartas = {}, precos = {};
+    // UMA ida ao banco pra todos os jogos (2026-11-22). Antes cada jogo esperava
+    // o anterior (`await` dentro do laço), e o tempo crescia com o número de
+    // JOGOS, não de cartas — medido em produção com 6 ids por jogo: 162 ms com
+    // 1 jogo, 598 ms com 4, 1.176 ms com 8, 2.050 ms com 14 (~147 ms por jogo);
+    // 72 ids de um jogo só, 169 ms. É o que Coleção, Portfólio, Painel,
+    // Fichários e Explorar pagavam a cada abertura. O batch() manda todas as
+    // consultas numa viagem e devolve os resultados NA ORDEM em que entraram;
+    // são leituras por PK que não dependem uma da outra. Um Promise.all das
+    // consultas soltas não serviria: o Worker só mantém 6 conexões com o D1 ao
+    // mesmo tempo, e um pedido de vários jogos passa disso.
+    const consultas = [];
+    const donos = [];   // de quem é cada consulta: { game, preco }
     for (const game of Object.keys(porJogo)) {
       const ids = porJogo[game];
       // Cada lote é uma consulta por PK — sem varredura, sem LIKE.
-      const consultas = [];
       for (const lote of fatias(ids)) {
         const q = buildCards(game, lote);
-        if (q) consultas.push(env.DB.prepare(q.sql).bind(...q.params).all());
+        if (q) { consultas.push(env.DB.prepare(q.sql).bind(...q.params)); donos.push({ game, preco: false }); }
       }
       for (const lote of fatias(idsComBase(ids))) {
         const q = buildPrices(game, lote);
-        if (q) consultas.push(env.DB.prepare(q.sql).bind(...q.params).all().then((r) => ({ precos: r })));
+        if (q) { consultas.push(env.DB.prepare(q.sql).bind(...q.params)); donos.push({ game, preco: true }); }
       }
-      const partes = await Promise.all(consultas);
-      const lista = [], tabela = {};
-      for (const parte of partes) {
-        if (parte && parte.precos) {
-          for (const linha of parte.precos.results || []) {
-            try { tabela[linha.id] = JSON.parse(linha.j); } catch (e) { /* entrada corrompida: sem preço */ }
-          }
-          continue;
-        }
-        for (const linha of (parte && parte.results) || []) {
-          // De volta ao formato do CHUNK: é o contrato que o cliente já sabe ler.
-          lista.push({
-            id: linha.id, name: linha.name, set: linha.set_name, setId: linha.set_id,
-            number: linha.number, rarity: linha.rarity, artist: linha.artist,
-            language: linha.language, image: linha.image,
-            variants: parseVariants(linha.variants),
-            setReleaseDate: linha.released,
-            cardType: linha.card_type || undefined, cost: linha.cost || undefined
-          });
-        }
-      }
-      if (lista.length) cartas[game] = lista;
-      if (Object.keys(tabela).length) precos[game] = tabela;
     }
+    const partes = consultas.length ? await env.DB.batch(consultas) : [];
+    const cartas = {}, precos = {};
+    partes.forEach((parte, i) => {
+      const { game, preco } = donos[i];
+      const linhas = (parte && parte.results) || [];
+      // Jogo sem linha nenhuma continua FORA da resposta, como antes.
+      if (!linhas.length) return;
+      if (preco) {
+        const tabela = precos[game] || (precos[game] = {});
+        for (const linha of linhas) {
+          try { tabela[linha.id] = JSON.parse(linha.j); } catch (e) { /* entrada corrompida: sem preço */ }
+        }
+        return;
+      }
+      const lista = cartas[game] || (cartas[game] = []);
+      for (const linha of linhas) {
+        // De volta ao formato do CHUNK: é o contrato que o cliente já sabe ler.
+        lista.push({
+          id: linha.id, name: linha.name, set: linha.set_name, setId: linha.set_id,
+          number: linha.number, rarity: linha.rarity, artist: linha.artist,
+          language: linha.language, image: linha.image,
+          variants: parseVariants(linha.variants),
+          setReleaseDate: linha.released,
+          cardType: linha.card_type || undefined, cost: linha.cost || undefined
+        });
+      }
+    });
     return json({ c: cartas, p: precos }, 200);
   } catch (e) {
     // Banco fora ou tabela ainda não carregada: mesma degradação da /api/search

@@ -600,7 +600,7 @@
     ["op-mb-", "mbc"], ["nrt-mb-", "mbc"], ["hxh-mb-", "mbc"], ["mb-", "mbc"], ["nrt-ncg-", "narutocg"],
     ["mtg-", "magic"], ["ygo-", "ygo"], ["op-", "onepiece"], ["opcd-", "onepiece"], ["op2002-", "onepiece"],
     ["fab-", "fab"], ["gcg-", "gundam"], ["gcd-", "gcd"], ["gw-", "gw"], ["ss-", "seiya"], ["sstc-", "seiyatc"], ["sscr-", "seiyacr"], ["fma-", "fma"], ["nb-", "narutoboruto"], ["ntc-", "narutotc"], ["swu-", "swu"], ["cpk-", "cyberpunk"], ["sor-", "sorcery"], ["dbfw-", "dbfw"], ["dbs-", "dbs"], ["dgm-", "digimon"], ["rb-", "riftbound"],
-    ["ua-", "unionarena"], ["nrt-", "naruto"], ["mhr-", "herorush"], ["hxh-", "hxh"], ["dbc-sb", "dbsb"], ["dbc-va", "dbva"], ["dbc-bw", "dbbw"], ["dbc-", "dbc"], ["wow-", "wow"], ["lotr-", "lotr"], ["dbz-", "dbz"], ["ws-", "weiss"], ["gzc-", "godzilla"], ["pal-", "palworld"], ["fftcg-", "fftcg"], ["ga-", "grandarchive"], ["holo-", "hololive"], ["shv-", "shadowverse"], ["vg-", "vanguard"], ["dm-", "duelmasters"], ["nmy-", "narutomythos"], ["nky-", "narutokayou"], ["hp-", "harrypotter"], ["cdm-", "cdm"]
+    ["ua-", "unionarena"], ["nrt-", "naruto"], ["mhr-", "herorush"], ["ikr-", "ikorr"], ["hxh-", "hxh"], ["dbc-sb", "dbsb"], ["dbc-va", "dbva"], ["dbc-bw", "dbbw"], ["dbc-", "dbc"], ["wow-", "wow"], ["lotr-", "lotr"], ["dbz-", "dbz"], ["ws-", "weiss"], ["gzc-", "godzilla"], ["pal-", "palworld"], ["fftcg-", "fftcg"], ["ga-", "grandarchive"], ["holo-", "hololive"], ["shv-", "shadowverse"], ["vg-", "vanguard"], ["dm-", "duelmasters"], ["nmy-", "narutomythos"], ["nky-", "narutokayou"], ["hp-", "harrypotter"], ["cdm-", "cdm"]
   ];
   function jogosDoId(id) {
     const conhecido = cardGameMap.get(id);
@@ -1365,7 +1365,7 @@
     const saleFields = isSale ? `
       <div class="binder-editor-sale">
         <label>${escapeHtml(t("binders.editor.price"))}
-          <input type="text" inputmode="decimal" data-edit-price value="${escapeAttribute(draft.price ? String(draft.price).replace(".", ",") : "")}">
+          <input type="text" inputmode="decimal" data-edit-price value="${escapeAttribute(shared.moneyInput(draft.price))}">
         </label>
         <label>${escapeHtml(t("binders.editor.condition"))}
           <select data-edit-condition>${conditionOptions}</select>

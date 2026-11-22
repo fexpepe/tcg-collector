@@ -350,6 +350,16 @@ test("Marvel Hero Rush: os códigos dele, o EB dividido com o One Piece e o SD q
   assert.deepEqual(Array.from(S.detectarJogo("", ["SD1-01"], "hub").restritos), ["dbs"]);
 });
 
+test("Rush of Ikorr: o código do set com a raridade ao lado, e só dele (2026-11-22)", () => {
+  assert.deepEqual(codigos("©2025 UDC. Artist: Narendra Adi  ROI-001 R"), ["ROI-001"]);
+  assert.equal(codigos("RIPC-007 R")[0], "RIPC-007");
+  for (const c of ["ROI-001", "REJ-226", "RIPC-007", "RIA-001"]) {
+    assert.deepEqual(Array.from(S.detectarJogo("", [c], "hub").restritos), ["ikorr"], c);
+  }
+  // O "UDC" do rodapé não decide: a Upper Deck também publicou o WoW TCG.
+  assert.equal(Array.from(S.detectarJogo("©2006 UDC", [], "hub").restritos).includes("ikorr"), false);
+});
+
 test("Naruto Mythos TCG: a fração é de seis jogos, e o rodapé diz qual (2026-11-12)", () => {
   assert.deepEqual(codigos("C 3/130  1° EDITION NARUTO MYTHOS TCG"), ["3/130"]);
   const sem = S.detectarJogo("3/130", ["3/130"], "hub");

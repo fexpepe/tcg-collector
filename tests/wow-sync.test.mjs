@@ -74,3 +74,11 @@ test("carta: sem preço fica sem preço e com Normal; só Foil vira u e uf", () 
   assert.deepEqual(foil.price, { u: 5, uf: 5 });
   assert.deepEqual(foil.card.variants, ["Foil"]);
 });
+
+test("vintage: o sync marca TODAS as cartas, as preservadas inclusive (como o LOTR)", async () => {
+  // O laço que percorre `merged` fica dentro de run() (precisa de rede), então
+  // a conferência é de fonte: a marca tem de estar no mesmo laço do setLogo.
+  const { readFileSync } = await import("node:fs");
+  const src = readFileSync(new URL("../scripts/sync-wow.mjs", import.meta.url), "utf8").replace(/\r\n/g, "\n");
+  assert.match(src, /for \(const c of merged\) \{[^}]*c\.setLogo = [^;]+;[^}]*c\.vintage = true;[^}]*\}/);
+});

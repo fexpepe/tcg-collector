@@ -12,8 +12,16 @@
 //   node scripts/sync-digimon.mjs
 import { fileURLToPath } from "node:url";
 import { writeGameCatalog, readGlobalVar, preserveMissingCards } from "./lib/sync-common.mjs";
+import { desempataSetIds } from "./lib/setid-unico.mjs";
 import { nomeDoSet } from "./lib/nome-do-set.mjs";
 import { fotosDasIrmas, REGRAS_BANDAI } from "./lib/imagem-da-irma.mjs";
+
+// setIds FIXOS por groupId (vencem o desempate do scripts/lib/setid-unico.mjs).
+// 24824 = "Timeless Bonds Release Event Cards": o TCGplayer deu a ele a mesma
+// abreviação do booster (BT-26). Sem isto ele viraria "BT-26-24824" e perderia o
+// selo do código; "_PR" é como a fonte escreve os outros eventos de lançamento
+// (BT-25_PR), e o código do cartão segue saindo BT26.
+const SETID_FIXO = { 24824: "BT-26_PR" };
 
 const ROOT = new URL("../", import.meta.url);
 const OUT = new URL("data/digimon/", ROOT);
@@ -49,6 +57,7 @@ async function run() {
   console.log(`  ${groups.length} sets.`);
 
   const cards = [];
+  const marcas = []; // onde começam as cartas de cada grupo (desempate de setId, depois do laço)
   const pricing = {};
   // Produtos de TODOS os grupos: a irmã com foto pode estar em outro set.
   const irmas = fotosDasIrmas(REGRAS_BANDAI);
@@ -75,6 +84,7 @@ async function run() {
     if (!setCards.length) { console.log(`  ${g.abbreviation || g.groupId} ${g.name}: 0 cartas (só selados)`); continue; }
 
     const setId = g.abbreviation || String(g.groupId);
+    marcas.push({ groupId: g.groupId, setId, de: cards.length });
     const release = (g.publishedOn || "").slice(0, 10);
     for (const p of setCards) {
       const id = `dgm-${p.productId}`;
@@ -117,6 +127,11 @@ async function run() {
   console.log((await irmas.aplica(imagemDoProduto)).resumo);
 
   const prev = (await readGlobalVar(new URL("cards.js", OUT), "TCG_CARDS")) || [];
+  // Dois grupos com a mesma abreviação não podem dividir um setId: um dos
+  // sets some da tela de Sets (ver scripts/lib/setid-unico.mjs). Tem de rodar
+  // aqui, com `cards` ainda na ordem em que os grupos entraram.
+  desempataSetIds(cards, marcas, SETID_FIXO);
+
   const merged = cards.concat(preserveMissingCards(prev, cards));
 
   merged.sort((a, b) =>

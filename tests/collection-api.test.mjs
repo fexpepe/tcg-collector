@@ -344,3 +344,125 @@ test("termo repetido não vira operando duplicado (linha lida é linha cobrada)"
   assert.equal((duas.sql.match(/UNION ALL/g) || []).length, 0);
   assert.deepEqual(roda(db, duas).map((h) => h.id).sort(), roda(db, uma).map((h) => h.id).sort());
 });
+
+// ── A borda: uma viagem ao banco pra todos os jogos (2026-11-22) ────────────
+// D1 de mentira em cima do banco de verdade: conta quantas VIAGENS a função
+// faz (cada .all() solto é uma; o batch() é uma só, com tudo dentro).
+function d1Falso(db, { falha } = {}) {
+  const viagens = { all: 0, batch: 0, porBatch: [] };
+  const stmt = (sql, params) => ({
+    sql, params,
+    bind: (...p) => stmt(sql, p),
+    all: async () => { viagens.all++; return { results: db.prepare(sql).all(...params) }; }
+  });
+  return {
+    viagens,
+    prepare: (sql) => stmt(sql, []),
+    batch: async (lista) => {
+      viagens.batch++;
+      viagens.porBatch.push(lista.length);
+      if (falha) throw new Error("D1 fora");
+      return lista.map((s) => ({ results: db.prepare(s.sql).all(...s.params) }));
+    }
+  };
+}
+const pede = async (DB, corpo) => {
+  const { onRequestPost } = await import("../functions/api/collection.js");
+  const texto = JSON.stringify(corpo);
+  return onRequestPost({
+    env: { DB },
+    request: new Request("https://sleevu.app/api/collection", {
+      method: "POST", body: texto,
+      headers: { "Content-Type": "application/json", "content-length": String(texto.length) }
+    })
+  });
+};
+
+test("a borda vai ao banco UMA vez, seja qual for o número de jogos", async () => {
+  // Em fila (um `await` por jogo) o tempo crescia ~147 ms por JOGO em produção:
+  // 162 ms com 1 jogo, 2.050 ms com 14. Uma viagem só não cresce com eles.
+  const DB = d1Falso(banco());
+  const r = await pede(DB, { pokemon: ["base1-4", "base1-4-pt"], lorcana: ["tfc-1"] });
+  assert.equal(r.status, 200);
+  assert.equal(DB.viagens.batch, 1, "um batch pra tudo");
+  assert.equal(DB.viagens.all, 0, "nenhuma consulta solta fora do batch");
+  // cartas + preços de cada jogo: 2 jogos × 2 consultas
+  assert.deepEqual(DB.viagens.porBatch, [4]);
+  const j = await r.json();
+  assert.deepEqual(j.c.pokemon.map((c) => c.id), ["base1-4", "base1-4-pt"]);
+  assert.deepEqual(j.c.lorcana.map((c) => c.id), ["tfc-1"]);
+  // contrato do chunk preservado, e cada jogo com o SEU preço
+  assert.equal(j.c.pokemon[0].set, "Base Set");
+  assert.equal(j.c.pokemon[0].setId, "base1");
+  assert.deepEqual(j.c.pokemon[0].variants, ["1st Edition", "Holo"]);
+  assert.equal(j.p.pokemon["base1-4"].u, 320.5);
+  assert.equal(j.p.lorcana["tfc-1"].u, 1.5);
+  assert.equal(j.p.lorcana["base1-4"], undefined, "preço não vaza entre jogos");
+});
+
+test("a borda: jogo sem linha fica FORA da resposta e lote grande segue fatiado", async () => {
+  const DB = d1Falso(banco());
+  // 200 ids de um jogo = 3 lotes de cartas (LOTE_IDS) e os de preço, ainda numa viagem.
+  const muitos = Array.from({ length: 200 }, (_, i) => `nao-existe-${i}`).concat("base1-4");
+  const r = await pede(DB, { pokemon: muitos, onepiece: ["OP01-001"] });
+  const j = await r.json();
+  assert.equal(DB.viagens.batch, 1);
+  assert.ok(DB.viagens.porBatch[0] >= Math.ceil(201 / LOTE_IDS) * 2, "os lotes continuam no teto de parâmetros");
+  assert.deepEqual(j.c.pokemon.map((c) => c.id), ["base1-4"]);
+  assert.equal(j.c.onepiece, undefined, "jogo sem carta achada não entra em c");
+  assert.equal(j.p.onepiece, undefined, "nem em p");
+});
+
+test("a borda: banco fora devolve 503 {off:1} (o cliente cai nos chunks)", async () => {
+  const DB = d1Falso(banco(), { falha: true });
+  const r = await pede(DB, { pokemon: ["base1-4"] });
+  assert.equal(r.status, 503);
+  assert.deepEqual(await r.json(), { off: 1 });
+});
+
+test("o cliente manda os lotes JUNTOS e junta as cartas na ordem dos lotes", async () => {
+  // 2.300 ids = 3 lotes de 1.000. Em fila eram três idas à borda, uma atrás da
+  // outra, antes de a Coleção desenhar.
+  let emVoo = 0, pico = 0;
+  const corpos = [];
+  const sb = loadShared("window.__test = { fetchCollectionApi };", {
+    antes: (s) => {
+      s.fetch = (url, opts) => {
+        if (url !== "/api/collection") return Promise.resolve({ ok: false, status: 599, json: async () => null, text: async () => "" });
+        const pedido = JSON.parse(opts.body);
+        corpos.push(pedido);
+        emVoo++; pico = Math.max(pico, emVoo);
+        return new Promise((ok) => setImmediate(() => {
+          emVoo--;
+          ok({ ok: true, json: async () => ({ c: { pokemon: pedido.pokemon.map((id) => ({ id })) }, p: {} }) });
+        }));
+      };
+    }
+  });
+  const ids = Array.from({ length: 2300 }, (_, i) => `c-${i}`);
+  const r = await sb.__test.fetchCollectionApi({ pokemon: ids });
+  assert.equal(corpos.length, 3, "três lotes");
+  assert.equal(pico, 3, "os três em voo ao mesmo tempo");
+  assert.deepEqual(Array.from(r.cards, (c) => c.id), ids, "ordem das cartas = ordem dos lotes");
+  assert.equal(r.cards[0].game, "pokemon");
+});
+
+test("o cliente: um lote recusado desliga a borda pra sessão (chunks assumem)", async () => {
+  let n = 0;
+  const sb = loadShared("window.__test = { fetchCollectionApi };", {
+    antes: (s) => {
+      s.fetch = (url) => {
+        if (url !== "/api/collection") return Promise.resolve({ ok: false, status: 599, json: async () => null, text: async () => "" });
+        n++;
+        return Promise.resolve(n === 2 ? { ok: false, status: 503, json: async () => ({ off: 1 }) }
+          : { ok: true, json: async () => ({ c: { pokemon: [{ id: "x" }] }, p: {} }) });
+      };
+    }
+  });
+  const ids = Array.from({ length: 2300 }, (_, i) => `c-${i}`);
+  assert.equal(await sb.__test.fetchCollectionApi({ pokemon: ids }), null);
+  // desligada: a chamada seguinte nem vai à rede
+  const antes = n;
+  assert.equal(await sb.__test.fetchCollectionApi({ pokemon: ["c-1"] }), null);
+  assert.equal(n, antes);
+});

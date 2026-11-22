@@ -78,7 +78,9 @@
     // confusões mais comuns), só com 3+ letras ("EB01" e "PRB01" são reais) e,
     // sem dígito nenhum no prefixo, só com sufixo numérico — o Yu-Gi-Oh tem
     // sets de 4 letras terminados em I/O (SHVI, PRIO), sempre com "-EN".
-    const movivel = /[OI]$/.test(letras) && letras.length > 2
+    // Fica de fora o código de set que TERMINA mesmo em I: o ROI do Rush of
+    // Ikorr ("ROI-001 R") virava "RO1-001" (2026-11-22).
+    const movivel = /[OI]$/.test(letras) && letras.length > 2 && letras !== "ROI"
       && (/\d/.test(resto) || (sufixoNumerico && letras.length === 3 && !resto));
     if (movivel) {
       resto = letras.slice(-1) + resto;
@@ -502,7 +504,10 @@
     narutokayou: [/KAYOU/],
     // Marvel Hero Rush: o nome do jogo. "MARVEL" sozinho não entra: o Magic
     // tem sets da Marvel (Universes Beyond) com o © dela no rodapé.
-    herorush: [/HERO ?RUSH/]
+    herorush: [/HERO ?RUSH/],
+    // Rush of Ikorr: o nome do jogo (verso). O "©2025 UDC" do rodapé fica de
+    // fora: a Upper Deck também publicou o WoW TCG.
+    ikorr: [/IKORR/]
   };
   const FORMATOS = [
     // "EB01-001" é o Extra Booster do One Piece e o Event Pack do Marvel Hero
@@ -544,6 +549,11 @@
     // Cheer "hY01-001" / "hYS01-001" e a promo "hPR-012" (2026-11-13). O "h"
     // minúsculo da marca chega em caixa alta do extrair.
     [/^H(?:(?:BP|SD|EB|YS?)\d{2}|PR)-\d{3}$/, ["hololive"]],
+    // Rush of Ikorr: o código do set, de três ou quatro letras com R na
+    // frente, e o número ("ROI-001 R", "RIPC-007 R"; a raridade ao lado fica
+    // de fora). Nenhum outro jogo do catálogo numera assim (medido em
+    // 22/11/2026), então o formato basta pra dizer o jogo.
+    [/^R[A-Z]{2,3}-\d{3}$/, ["ikorr"]],
     // Shadowverse: Evolve: "BP01-001EN", a paralela com a sigla antes do
     // número ("BP19-SL16EN", "CP01-P40EN"), o Gloryfinder com a letra do deck
     // ("GFB01a-055EN") e a promo "PR-245EN" (2026-11-13). O "EN" colado no
@@ -2517,8 +2527,12 @@
       btnSom.setAttribute("aria-label", rot);
       btnSom.title = rot;
     }
-    // Número no jeito da moeda: vírgula decimal em reais ("5,5"), ponto no resto.
-    const numeroBr = (n) => (moedaAgora() === "BRL" ? String(n).replace(".", ",") : String(n));
+    // Número no decimal do IDIOMA da interface (shared.moneyInput), como todo
+    // campo de dinheiro do site — o mesmo que o shared.parseMoney lê de volta
+    // no lerFaixas. Antes seguia a MOEDA (vírgula em reais, ponto no resto),
+    // e quem usa o site em inglês com reais via "5,5" (2026-11-22). O `zero`
+    // é porque a faixa de baixo pode ser 0.
+    const numeroBr = (n) => (shared.moneyInput ? shared.moneyInput(n, 0, 1) : String(n));
     function abrirSom() {
       const [baixo, alto] = faixasAgora();
       const simbolo = shared.currencySymbol ? shared.currencySymbol() : "";
@@ -2558,8 +2572,10 @@
     // baixo, que por um instante passa a de cima — desfazer ali apagava o
     // número que a pessoa acabou de escrever.
     function lerFaixas() {
-      // Com vírgula, ela é a decimal e o ponto é milhar ("1.000,50"); sem, o ponto é a decimal.
-      const num = (el) => { const tx = String(el.value).trim(); return tx ? Number(tx.indexOf(",") >= 0 ? tx.replace(/\./g, "").replace(",", ".") : tx) : NaN; };
+      // Lê na régua do idioma (shared.parseMoney). A conta própria daqui tomava
+      // toda vírgula por decimal: em inglês, a faixa "1,000" virava 1. Sem
+      // dígito nenhum segue inválido (o parseMoney devolveria 0).
+      const num = (el) => (/\d/.test(el.value) ? shared.parseMoney(el.value) : NaN);
       const baixo = num(inBaixo), alto = num(inAlto);
       const ok = Number.isFinite(baixo) && Number.isFinite(alto) && baixo >= 0 && baixo < alto;
       marcarFaixas(ok);

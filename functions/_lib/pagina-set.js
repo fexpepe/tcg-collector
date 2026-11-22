@@ -11,6 +11,7 @@
 // prerender com os MESMOS textos: por isso o SET_L10N e as réguas de título,
 // data e lista moram aqui e o prerender importa daqui.
 import { cardCode } from "./card-code.js";
+import { verLista } from "./indices.js";
 import { ORIGEM, escapeHtml, escapeAttr, imagemDePrevia, dataNaLingua, naData, partesDaData } from "./pagina-carta.js";
 
 // ORÇAMENTO DE TÍTULO. O Google mostra ~60-65 caracteres e corta o resto com
@@ -121,7 +122,14 @@ export function pecasDoSet({ jogo, slug, nome, cartas, slugs }) {
   const quando = L.fmtDate(rep.setReleaseDate);
   const base = `/games/${jogo.url}/${slug}`;
   const canonical = `${ORIGEM}${base}`;
-  const titulo = L.title(nomeDoSetNoTitulo(nome, rep, jogo), jogo.nome);
+  const nomeNoTitulo = nomeDoSetNoTitulo(nome, rep, jogo);
+  const titulo = L.title(nomeNoTitulo, jogo.nome);
+  // O título que o cliente põe na aba de quem lê em outro idioma (2026-11-22,
+  // ver atributosDoTitulo em decora-app.js). Inglês = o da página -en (o mesmo
+  // SET_L10N.en que o prerender usa). Espanhol = o texto do português: "lista de
+  // cartas de ..." é espanhol válido, e não há variante es do set.
+  const tituloEn = SET_L10N.en.title(nomeNoTitulo, jogo.nome);
+  const tituloEs = titulo;
   const desc = L.desc(lista.length, nome, jogo.nome, quando);
   const urlDaCarta = (c) => `${base}/${slugs.get(String(c.id))}`;
   const codigo = (c) => (c.number ? cardCode({ id: c.id, number: c.number, setTotal: c.setTotal || total }) : "");
@@ -168,14 +176,16 @@ export function pecasDoSet({ jogo, slug, nome, cartas, slugs }) {
   // no navegador). data-indice-set deixa o detail.js tirar o índice de uma
   // cópia guardada que chegue pra OUTRO set.
   const corpoHtml = lista.length ? `<section class="set-indice" data-indice-set="${escapeAttr(base)}">
-        <style>html[data-game] #detailGrid:empty~.set-indice{display:none}.set-indice{margin:40px 0 8px}.set-indice h2{font-size:1.05rem;margin:0 0 8px}.set-indice summary{cursor:pointer;color:var(--muted,#9aa0aa);min-height:44px;display:flex;align-items:center}.set-indice ul{list-style:none;padding:0;margin:12px 0 0;columns:3 220px;column-gap:24px}.set-indice li{margin:0 0 6px;break-inside:avoid}.set-indice a{color:var(--accent,#e63946);text-decoration:none}.set-indice small{color:var(--muted,#9aa0aa)}</style>
-        <h2>Todas as cartas de ${escapeHtml(nome)}</h2>
-        <details><summary>Ver a lista (${lista.length})</summary><ul>${lista.map((c) =>
+        <style>html[data-game] #detailGrid:empty~.set-indice{display:none}.set-indice{margin:40px 0 8px}.set-indice h2{font-size:1.05rem;margin:0 0 8px}.set-indice summary{cursor:pointer;color:var(--muted,#9aa0aa);min-height:44px;display:flex;align-items:center;gap:.3em}.set-indice ul{list-style:none;padding:0;margin:12px 0 0;columns:3 220px;column-gap:24px}.set-indice li{margin:0 0 6px;break-inside:avoid}.set-indice a{color:var(--accent,#e63946);text-decoration:none}.set-indice small{color:var(--muted,#9aa0aa)}</style>
+        <h2><span data-i18n="idx.cardsOf">Todas as cartas de</span> ${escapeHtml(nome)}</h2>
+        <details><summary>${verLista(lista.length)}</summary><ul>${lista.map((c) =>
           `<li><a href="${escapeAttr(urlDaCarta(c))}">${escapeHtml(c.name)}</a>${codigo(c) ? ` <small>${escapeHtml(codigo(c))}</small>` : ""}</li>`).join("")}</ul></details>
       </section>` : "";
 
   return {
     titulo,
+    tituloEn,
+    tituloEs,
     desc,
     canonical,
     h1: nome,

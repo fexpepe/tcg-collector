@@ -97,6 +97,13 @@
     document.querySelectorAll("[data-indice-jogo]").forEach((el) => {
       if (`/games/${el.getAttribute("data-indice-jogo")}` !== telaDoJogo) el.remove();
     });
+    // Título da aba no idioma de quem lê (2026-11-22). A borda escreve o <title>
+    // em português (é o que o robô lê) e põe o inglês e o espanhol em
+    // data-titulo-en/-es; o título não leva data-i18n (o Google rodaria o JS em
+    // português e indexaria o genérico "Sets - Sleevu"), então ninguém o trocava.
+    const tituloDaAba = document.querySelector("title");
+    const tituloNoIdioma = tituloDaAba && tituloDaAba.getAttribute(`data-titulo-${shared.getLanguage()}`);
+    if (tituloNoIdioma) document.title = tituloNoIdioma;
   }
   // "Sobre" do jogo vintage (src/sobre-jogo.js, 2026-11-12): o bloco com a
   // história no topo da tela, no lugar do destaque do "Último set". A borda já
@@ -2149,6 +2156,11 @@
     // (`event`): o nome dele não tem as palavras do EVENTO_BANDAI. Promotion
     // Pack (PB) e Treasure Booster (TB) caem nas promos.
     herorush: { main: /^MHR-BP\d+$/, extra: /^MHR-(SP|LP)\d+$/, deck: /^MHR-SD\d+$/, event: /^MHR-EB\d+$/ },
+    // Rush of Ikorr (22/11/2026): o setId é o código que a carta imprime, de
+    // três letras (ROI, RMB, RLS, REJ), e cada um é um "Act/Part" do booster.
+    // Os starters não são set à parte (as cartas deles moram no ROI); as
+    // promos (RIPC) caem no resto.
+    ikorr: { main: /^R[A-Z]{2}$/, extra: /^$/, deck: /^$/ },
     grandarchive: {
       main: /^(?!EVP|KSP|GSC|SLC|SLM|SHD)[A-Z]{3}(1E|-1ST)?$/,
       extra: /-ALTER$|^[A-Z]{3}(AE|DP|PD|P|G)$/,

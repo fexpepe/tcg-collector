@@ -610,6 +610,19 @@
   --accent: #b03000; --accent-dark: #922800; --accent-rgb: 176, 48, 0;
   --accent-soft: rgba(176, 48, 0, 0.1); --on-accent: #ffffff;
 }
+/* Rush of Ikorr: menta (#70f0c8, o do GAME_COLOR; proposta de 22/11/2026 —
+   o verde #4ade80 já é o accent do Hunter × Hunter no escuro). Com texto
+   escuro no escuro (14:1 no fundo); no claro some no branco, então fecha
+   pro #047a63 com texto branco (5.3:1). */
+[data-game-accent="ikorr"] {
+  --accent: #70f0c8; --accent-dark: #4fd9ad; --accent-rgb: 112, 240, 200;
+  --accent-soft: rgba(112, 240, 200, 0.16); --on-accent: #0a0c10;
+}
+[data-theme="light"][data-game-accent="ikorr"],
+[data-theme="light"] [data-game-accent="ikorr"] {
+  --accent: #047a63; --accent-dark: #036150; --accent-rgb: 4, 122, 99;
+  --accent-soft: rgba(4, 122, 99, 0.1); --on-accent: #ffffff;
+}
 [data-game-accent="all"] {
   --accent: #e3e7ee; --accent-dark: #c3c9d4; --accent-rgb: 227, 231, 238;
   --accent-soft: rgba(227, 231, 238, 0.12); --on-accent: #0a0c10;
@@ -9632,6 +9645,17 @@ html:not([lang^="pt"]) .sx-sobre[data-idioma="pt"] { visibility: hidden; }
 html:not([data-app]) .falha-boot[hidden] { display: flex !important; animation: falha-boot-aparece 0s 15s both; }
 html:not([data-game]) .falha-boot[hidden] { display: flex !important; animation: none; }
 @keyframes falha-boot-aparece { from { visibility: hidden; } to { visibility: visible; } }
+
+/* Quem não lê português (2026-11-22): o HTML nasce em pt, e o texto traduzível
+   fica INVISÍVEL enquanto o pacote do idioma não chega, em vez de piscar em
+   português e trocar. Medido antes disto, com o navegador em inglês e 4G
+   lento: a home ficava de 1,5 s a 8,0 s em português. Quem põe e tira o
+   data-i18n-espera é o src/theme.js (só fora do pt, só em produção, com prazo
+   de 3 s). visibility, não display: a caixa continua ocupando o lugar e nada
+   pula quando o texto entra. */
+html[data-i18n-espera] [data-i18n],
+html[data-i18n-espera] [data-i18n-html] { visibility: hidden; }
+html[data-i18n-espera] [data-i18n-placeholder]::placeholder { color: transparent; }
 .falha-boot {
   position: fixed; z-index: 90; left: 16px; right: 16px; margin: 0 auto; max-width: 440px;
   bottom: max(env(safe-area-inset-bottom, 0px), 16px);

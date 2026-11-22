@@ -13,7 +13,7 @@ import { decideRota, listaDeSets, metaDoJogo, buildDaCasca, cartaQueMudouDeSet, 
 import { agrupaPorSet, paginasDoJogo } from "../scripts/lib/paginas-de-set.mjs";
 import { cartasQueMudaramDeSet, destinosDasMovidas } from "../scripts/lib/cartas-movidas.mjs";
 import { pecasDoSet } from "../functions/_lib/pagina-set.js";
-import { cabecaDaRota } from "../functions/_lib/decora-app.js";
+import { cabecaDaRota, atributosDoTitulo } from "../functions/_lib/decora-app.js";
 import { slugsDasCartas } from "../functions/_lib/slug-carta.js";
 import { destinoDoSets } from "../functions/sets.js";
 import { destinoDoSetAntigo } from "../functions/set/[slug].js";
@@ -272,6 +272,15 @@ test("tela do jogo: sets mais novos primeiro, título no orçamento, índice com
   assert.match(m.desc, /Todos os 3 sets de Star Wars: Unlimited, de 2024 a 2025/);
   assert.match(m.indiceHtml, /data-indice-jogo="star-wars-unlimited"/);
   assert.match(m.indiceHtml, /<a href="\/games\/star-wars-unlimited\/spark-of-rebellion">Spark of Rebellion<\/a>/);
+  // Texto fixo no idioma de quem lê (2026-11-22): span só na parte fixa; sem
+  // as tags, o bloco segue em português e "1 carta" concorda.
+  assert.match(m.indiceHtml, /<h2><span data-i18n="idx\.setsOf">Todos os sets de<\/span> Star Wars: Unlimited<\/h2>/);
+  assert.match(m.indiceHtml, /<span data-i18n="idx\.viewList">Ver a lista<\/span> \(3\)/);
+  assert.match(m.indiceHtml, /<small>252 <span data-i18n="idx\.cardsWord">cartas<\/span><\/small>/);
+  const semTags = m.indiceHtml.replace(/<style>[\s\S]*?<\/style>/g, "").replace(/<[^>]+>/g, "");
+  assert.match(semTags, /Todos os sets de Star Wars: Unlimited\s*Ver a lista \(3\)/);
+  assert.match(metaDoJogo(jogo, [{ slug: "a", nome: "A", cartas: 1, data: "" }]).indiceHtml,
+    /<small>1 <span data-i18n="idx\.cardWord">carta<\/span><\/small>/);
   // Sem sets (jogo "em breve"): descrição sem número e sem índice.
   const vazio = metaDoJogo(jogoDaUrl("naruto-card-game"), []);
   assert.equal(vazio.indiceHtml, "");
@@ -279,6 +288,28 @@ test("tela do jogo: sets mais novos primeiro, título no orçamento, índice com
   // Nome longo perde a parte descritiva, nunca o nome (a regra de título do
   // site: o que a pessoa digitou não é cortado).
   assert.equal(metaDoJogo({ nome: "X".repeat(60), url: "x" }, []).titulo, `${"X".repeat(60)} | Sleevu`);
+});
+
+test("tela do jogo: o título da aba tem versão em inglês e espanhol, na mesma régua de 65", () => {
+  const sets = [{ slug: "a", nome: "A", cartas: 3, data: "2024-01-01" }];
+  const m = metaDoJogo(jogoDaUrl("star-wars-unlimited"), sets);
+  assert.equal(m.titulo, "Star Wars: Unlimited — sets e cartas | Sleevu");
+  assert.equal(m.tituloEn, "Star Wars: Unlimited — sets and cards | Sleevu");
+  assert.equal(m.tituloEs, "Star Wars: Unlimited — sets y cartas | Sleevu");
+  assert.deepEqual(atributosDoTitulo(m), [["data-titulo-en", m.tituloEn], ["data-titulo-es", m.tituloEs]]);
+  // Jogo com "Sobre": "história" / "history" / "historia" entram.
+  const sobre = { resumo: { pt: "x", en: "x", es: "x" } };
+  const s = metaDoJogo({ nome: "Naruto", url: "x" }, sets, sobre);
+  assert.equal(s.titulo, "Naruto — história, sets e cartas | Sleevu");
+  assert.equal(s.tituloEn, "Naruto — history, sets and cards | Sleevu");
+  assert.equal(s.tituloEs, "Naruto — historia, sets y cartas | Sleevu");
+  // Nome longo: cada idioma cai pro curto e depois pro só-nome, sempre <= 65
+  // (menos o nome sozinho + marca, que nunca é cortado).
+  for (const nome of ["N".repeat(22), "N".repeat(30), "N".repeat(50)]) {
+    const t = metaDoJogo({ nome, url: "x" }, sets, sobre);
+    for (const x of [t.titulo, t.tituloEn, t.tituloEs]) assert.ok(x.length <= 65 && x.startsWith(nome) && x.endsWith("| Sleevu"), x);
+  }
+  assert.equal(metaDoJogo({ nome: "X".repeat(60), url: "x" }, []).tituloEn, `${"X".repeat(60)} | Sleevu`);
 });
 
 test("tela do jogo sem Sobre: JSON-LD de CollectionPage sobre o jogo", () => {
@@ -321,6 +352,11 @@ test("tela do set: título, descrição, canonical, hreflang, JSON-LD e índice 
   ];
   const p = pecasDoSet({ jogo, slug: "base-set", nome: "Base Set", cartas, slugs: slugsDasCartas(cartas) });
   assert.equal(p.titulo, "Base Set — lista de cartas de Pokémon TCG | Sleevu");
+  // 2026-11-22: o título da aba nos outros idiomas (atributos do <title>). Em
+  // inglês é o da página -en (SET_L10N.en); em espanhol, o do português.
+  assert.equal(p.tituloEn, "Base Set — Pokémon TCG card list | Sleevu");
+  assert.equal(p.tituloEs, p.titulo);
+  assert.deepEqual(atributosDoTitulo(p), [["data-titulo-en", p.tituloEn], ["data-titulo-es", p.tituloEs]]);
   assert.equal(p.desc, "Lista completa das 2 cartas do set Base Set de Pokémon TCG, lançado em 9 de janeiro de 1999. Veja imagens, números e raridades e monte sua coleção no Sleevu.");
   assert.equal(p.canonical, "https://sleevu.app/games/pokemon/base-set");
   assert.equal(p.h1, "Base Set");
@@ -342,6 +378,8 @@ test("tela do set: título, descrição, canonical, hreflang, JSON-LD e índice 
   assert.equal(trilha.itemListElement.length, 3);
   assert.match(p.corpoHtml, /data-indice-set="\/games\/pokemon\/base-set"/);
   assert.match(p.corpoHtml, /<a href="\/games\/pokemon\/base-set\/mewtwo-10-102">Mewtwo<\/a> <small>10\/102<\/small>/);
+  assert.match(p.corpoHtml, /<h2><span data-i18n="idx\.cardsOf">Todas as cartas de<\/span> Base Set<\/h2>/);
+  assert.match(p.corpoHtml, /<span data-i18n="idx\.viewList">Ver a lista<\/span> \(2\)/);
   // Set sem cartas: sem índice (e sem quebrar).
   assert.equal(pecasDoSet({ jogo, slug: "x", nome: "X", cartas: [], slugs: new Map() }).corpoHtml, "");
 });

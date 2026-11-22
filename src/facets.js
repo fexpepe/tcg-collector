@@ -288,6 +288,24 @@
       facetColor("color"),
       facetType(["Character", "Impact"])
     ],
+    // Rush of Ikorr (22/11/2026): a LEALDADE (o panteão, no `color` do
+    // catálogo), os ASPECTOS (a carta de dois conta nos dois; Colorless e
+    // Aspectless no fim) e o tipo da carta.
+    ikorr: [
+      {
+        key: "culture", labelKey: "facet.culture",
+        of: (c) => facetSplit(c.color, ";"),
+        label: (v) => v,
+        order: ["Greek", "Egyptian", "Japanese", "Maya", "Chinese"]
+      },
+      {
+        key: "aspect", labelKey: "facet.aspect",
+        of: (c) => facetSplit(c.aspect, ";"),
+        label: (v) => v,
+        order: ["Ambition", "Curiosity", "Devotion", "Fear", "Intuition", "Prophecy", "Colorless", "Aspectless"]
+      },
+      facetType(["Avatar", "Champion", "Fabled Champion", "Spell", "Location", "Fabled Location", "Influence", "Infusion", "Unique Infusion", "Token"])
+    ],
     // Palworld OFFICIAL CARD GAME (11/11/2026): a cor da carta (as 4 mais a
     // Colorless, que vai pro fim), o ELEMENTO do Pal — os 9 do videogame, na
     // ordem dele; o Pal de dois ("Dragon;Fire") conta nos dois — e o tipo.

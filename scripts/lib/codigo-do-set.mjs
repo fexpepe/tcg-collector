@@ -67,6 +67,11 @@ const FAMILIAS = {
   // GFD01, SS01, SP01, PCS01. Promos (SVPR, as cartas são "PR-…") e
   // Gloryfinder Events (GFE) ficam sem.
   shadowverse: { re: /^([A-Z]{2,3}\d{2})$/, inteiro: true },
+  // RUSH OF IKORR: o setId já é o código que a carta imprime antes do hífen
+  // ("ROI-001 R"): ROI, RMB, RLS, REJ, três letras com R na frente. As
+  // promos (RIPC, abreviação do TCGplayer; as cartas são "RIPC-" e "RIA-")
+  // ficam sem.
+  ikorr: { re: /^(R[A-Z]{2})$/, inteiro: true },
   // CARDFIGHT!! VANGUARD: o código é o que a carta imprime antes da barra
   // ("DZ-BT16/001EN", "BT01/046EN"), com o hífen da era (G-, V-, D-, DZ-;
   // a série original não tem). Boosters, extras e decks; as promos (PR, VPR,

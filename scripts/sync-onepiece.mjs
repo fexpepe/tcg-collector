@@ -22,6 +22,7 @@
 import { writeFile, mkdir, access } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { writeGameCatalog } from "./lib/sync-common.mjs";
+import { desempataSetIds } from "./lib/setid-unico.mjs";
 import { nomeDoSet } from "./lib/nome-do-set.mjs";
 import { fotosDasIrmas, REGRAS_BANDAI } from "./lib/imagem-da-irma.mjs";
 
@@ -163,6 +164,7 @@ async function run() {
   console.log(`  ${groups.length} sets.`);
 
   const cards = [];
+  const marcas = []; // onde começam as cartas de cada grupo (desempate de setId, depois do laço)
   const pricing = {}; // { id: { u, uf } } — USD market do TCGplayer
   // Produtos de TODOS os grupos: a irmã da Release Event está no set base.
   const irmas = fotosDasIrmas(REGRAS_BANDAI);
@@ -190,6 +192,7 @@ async function run() {
     if (!setCards.length) { console.log(`  ${g.abbreviation || g.groupId} ${g.name}: 0 cartas (só selados)`); continue; }
 
     const setId = ABREV_FIXA[g.groupId] || g.abbreviation || String(g.groupId);
+    marcas.push({ groupId: g.groupId, setId, de: cards.length });
     const release = (g.publishedOn || "").slice(0, 10);
     for (const p of setCards) {
       const id = `op-${p.productId}`;
@@ -228,6 +231,11 @@ async function run() {
     console.log(`  ${setId} ${g.name}: ${setCards.length} cartas`);
   }
   console.log((await irmas.aplica(imagemDoProduto)).resumo);
+
+  // Dois grupos com a mesma abreviação não podem dividir um setId: um dos
+  // sets some da tela de Sets (ver scripts/lib/setid-unico.mjs). Tem de rodar
+  // aqui, com `cards` ainda na ordem em que os grupos entraram.
+  desempataSetIds(cards, marcas);
 
   // Ordena por set e número oficial (OP16-001 < OP16-002 < ... < OP16-118).
   cards.sort((a, b) => a.setId.localeCompare(b.setId) || a.number.localeCompare(b.number, undefined, { numeric: true }) || a.id.localeCompare(b.id));

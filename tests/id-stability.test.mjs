@@ -77,6 +77,8 @@ test("a exceção só vale pro formato <prefixo>-<productId> do próprio jogo", 
   assert.equal(ehIdDeProduto("shadowverse", "shv-720490"), true);
   // "sve-" é o set Scarlet & Violet Energies do Pokémon, não o Shadowverse.
   assert.equal(ehIdDeProduto("shadowverse", "sve-720490"), false);
+  assert.equal(ehIdDeProduto("ikorr", "ikr-723666"), true);
+  assert.equal(ehIdDeProduto("ikorr", "roi-723666"), false);
   assert.equal(ehIdDeProduto("vanguard", "vg-727149"), true);
   assert.equal(ehIdDeProduto("vanguard", "vanguard-727149"), false);
   assert.equal(ehIdDeProduto("narutocg", "nrt-ncg-512345"), true); // jogo próprio desde 11/11/2026

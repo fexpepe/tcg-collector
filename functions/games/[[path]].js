@@ -35,7 +35,8 @@ import { jogoDaUrl, urlOficial, jogoNovoDoSet } from "../_lib/jogos.js";
 import { slugify, slugsDasCartas, cartasDoSet, cartaParecida } from "../_lib/slug-carta.js";
 import { pecasDaCarta, precoDeReferencia, escapeHtml, escapeAttr, ORIGEM } from "../_lib/pagina-carta.js";
 import { pecasDoSet } from "../_lib/pagina-set.js";
-import { decoraApp } from "../_lib/decora-app.js";
+import { verLista, nCartas } from "../_lib/indices.js";
+import { decoraApp, tituloDaTela } from "../_lib/decora-app.js";
 import { naoAchou, redireciona, jsonDoSite, daBorda, guardaNaBorda, hasOwn, setRenomeado, setDoDePara } from "../_lib/borda.js";
 import { jsonLdSeguro } from "../_lib/json-ld.js";
 import { basePricingId } from "../api/_search-sql.js";
@@ -111,12 +112,19 @@ export function listaDeSets(mapa) {
 // é o resumo do bloco: é o texto que diz o que o jogo FOI, e o Google mostra.
 export function metaDoJogo(jogo, sets, sobre) {
   const n = sets.length;
-  const titulo = (() => {
-    const t = sobre ? `${jogo.nome} — história, sets e cartas | Sleevu` : `${jogo.nome} — sets e cartas | Sleevu`;
+  // O título nos três idiomas (2026-11-22): o <title> do HTML é o português
+  // (o que o robô lê); o inglês e o espanhol vão em data-titulo-en/-es do
+  // <title> e o cliente os põe no document.title de quem lê noutro idioma
+  // (src/app.js). Mesma régua de 65 caracteres e mesma ordem de queda em cada.
+  const tituloEm = (completo, curto) => {
+    const t = sobre ? `${jogo.nome} — ${completo} | Sleevu` : `${jogo.nome} — ${curto} | Sleevu`;
     if (t.length <= 65) return t;
-    const curto = `${jogo.nome} — sets e cartas | Sleevu`;
-    return curto.length <= 65 ? curto : `${jogo.nome} | Sleevu`;
-  })();
+    const c = `${jogo.nome} — ${curto} | Sleevu`;
+    return c.length <= 65 ? c : `${jogo.nome} | Sleevu`;
+  };
+  const titulo = tituloEm("história, sets e cartas", "sets e cartas");
+  const tituloEn = tituloEm("history, sets and cards", "sets and cards");
+  const tituloEs = tituloEm("historia, sets y cartas", "sets y cartas");
   const anos = sets.map((s) => String(s.data).slice(0, 4)).filter((a) => /^\d{4}$/.test(a)).sort();
   const periodo = anos.length > 1 && anos[0] !== anos[anos.length - 1] ? `, de ${anos[0]} a ${anos[anos.length - 1]}` : "";
   const resumo = sobre ? String(SOBRE.tx(sobre.resumo, "pt") || "").trim() : "";
@@ -147,18 +155,14 @@ export function metaDoJogo(jogo, sets, sobre) {
   const jsonLd = `<script type="application/ld+json">${jsonLdSeguro(ld)}</script>`;
   const indiceHtml = n ? `<section class="jogo-indice" data-indice-jogo="${escapeAttr(jogo.url)}">
         <style>html[data-game] #cardGrid:empty~.jogo-indice{display:none}.jogo-indice{margin:40px 0 8px}.jogo-indice h2{font-size:1.05rem;margin:0 0 8px}.jogo-indice summary{cursor:pointer;color:var(--muted,#9aa0aa)}.jogo-indice ul{list-style:none;padding:0;margin:12px 0 0;columns:3 220px;column-gap:24px}.jogo-indice li{margin:0 0 6px;break-inside:avoid}.jogo-indice a{color:var(--accent,#e63946);text-decoration:none}.jogo-indice small{color:var(--muted,#9aa0aa)}</style>
-        <h2>Todos os sets de ${escapeHtml(jogo.nome)}</h2>
-        <details><summary>Ver a lista (${n})</summary><ul>${sets.map((s) =>
-          `<li><a href="/games/${escapeAttr(jogo.url)}/${escapeAttr(s.slug)}">${escapeHtml(s.nome)}</a>${s.cartas ? ` <small>${s.cartas} cartas</small>` : ""}</li>`).join("")}</ul></details>
+        <h2><span data-i18n="idx.setsOf">Todos os sets de</span> ${escapeHtml(jogo.nome)}</h2>
+        <details><summary>${verLista(n)}</summary><ul>${sets.map((s) =>
+          `<li><a href="/games/${escapeAttr(jogo.url)}/${escapeAttr(s.slug)}">${escapeHtml(s.nome)}</a>${s.cartas ? ` <small>${nCartas(Number(s.cartas))}</small>` : ""}</li>`).join("")}</ul></details>
       </section>` : "";
-  return { titulo, desc, canonical, ogTitulo: `${jogo.nome} — Sleevu`, indiceHtml, sobreHtml, jsonLd };
+  return { titulo, tituloEn, tituloEs, desc, canonical, ogTitulo: `${jogo.nome} — Sleevu`, indiceHtml, sobreHtml, jsonLd };
 }
 
 const atributo = (nome, valor) => ({ element(el) { el.setAttribute(nome, valor); } });
-// O <title> da tela vem com data-i18n: sem tirar o atributo, a tradução do
-// cliente trocava o título do jogo por "Sets - Sleevu" (o mesmo cuidado do
-// functions/detail.js).
-const texto = (valor) => ({ element(el) { el.removeAttribute("data-i18n"); el.setInnerContent(valor, { html: false }); } });
 
 async function telaDoJogo(context, jogo) {
   const { env, request } = context;
@@ -172,7 +176,11 @@ async function telaDoJogo(context, jogo) {
     ]);
     const meta = metaDoJogo(jogo, listaDeSets(mapa), sobre);
     const rw = new HTMLRewriter()
-      .on("title", texto(meta.titulo))
+      // O <title> da tela vem com data-i18n: sem tirar o atributo, a tradução do
+      // cliente trocava o título do jogo por "Sets - Sleevu" (o mesmo cuidado do
+      // functions/detail.js). O tituloDaTela (decora-app.js) tira o atributo, põe
+      // o português no texto e o inglês e o espanhol em data-titulo-en/-es.
+      .on("title", tituloDaTela(meta))
       .on('meta[name="description"]', atributo("content", meta.desc))
       .on('link[rel="canonical"]', atributo("href", meta.canonical))
       .on('meta[property="og:url"]', atributo("content", meta.canonical))
@@ -310,7 +318,12 @@ async function telaDoSetDecorada(context, rota) {
   if (casca.status !== 200) return casca;
   const cascaHtml = await casca.text();
   const chave = new Request(`${ORIGEM}${caminho}?b=${encodeURIComponent(buildDaCasca(cascaHtml) || "dev")}`);
-  const guardada = await daBorda(chave);
+  // Com ?setId= ou ?region= a tela baixa UMA edição do set, e o preload dos
+  // arquivos (cabecaDaRota) não vale. A chave do cache não leva a query, então
+  // essa resposta nem lê nem grava o cache: se a primeira visita do dia fosse
+  // uma dessas, a página sem preload ficaria guardada pra todo mundo (2026-11-22).
+  const estreita = /[?&](setId|region)=/.test(busca);
+  const guardada = estreita ? null : await daBorda(chave);
   if (guardada) return comVitrine(guardada, request);
 
   const { cartas, arquivo } = await cartasDaPagina(env, request, entrada);
@@ -334,7 +347,7 @@ async function telaDoSetDecorada(context, rota) {
     pecas = pecasDoSet({ jogo: rota.jogo, slug: rota.set, nome: entrada.n, cartas, slugs });
   }
   const decorada = decoraApp(new Response(cascaHtml, casca), pecas,
-    { caminho, game: rota.jogo.game, set: entrada.n, card: card ? String(card.id) : "" });
+    { caminho, game: rota.jogo.game, set: entrada.n, card: card ? String(card.id) : "", arquivos: entrada.f, estreita });
   // Os cabeçalhos da casca trazem a CSP e o resto do _headers; o comVitrine
   // troca a CSP pela com nonce a cada resposta, por isso o que vai pro cache
   // da borda é a página ANTES dele.
@@ -343,7 +356,7 @@ async function telaDoSetDecorada(context, rota) {
   headers.set("content-type", "text/html; charset=utf-8");
   headers.set("cache-control", `public, max-age=0, s-maxage=${BORDA_S}, must-revalidate`);
   const resposta = new Response(await decorada.text(), { status: 200, headers });
-  guardaNaBorda(context.waitUntil, chave, resposta);
+  if (!estreita) guardaNaBorda(context.waitUntil, chave, resposta);
   return comVitrine(resposta, request);
 }
 

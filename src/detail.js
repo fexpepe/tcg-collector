@@ -94,7 +94,13 @@
   if (rotaDeCarta) {
     document.body.classList.add("carta-pagina");
     const main = document.querySelector("main");
-    if (main) main.insertAdjacentHTML("afterbegin", '<div class="cs-esqueleto" aria-hidden="true"><span></span><span></span></div>');
+    // A borda já manda o esqueleto da carta no HTML, com o nome e a imagem
+    // (2026-11-22, functions/_lib/pagina-carta.js, esqueletoDaCarta): um
+    // segundo, aqui, empurrava o primeiro pra baixo. Ele só vale quando a
+    // rota da borda bate com este endereço; o de uma cópia guardada que chegue
+    // pra OUTRA carta sai, senão mostraria o nome da carta errada.
+    if (main && !rotaDaBorda) main.querySelectorAll(".cs-esqueleto").forEach((el) => el.remove());
+    if (main && !main.querySelector(".cs-esqueleto")) main.insertAdjacentHTML("afterbegin", '<div class="cs-esqueleto" aria-hidden="true"><span></span><span></span></div>');
   }
   // O game.js carimba data-carta no <html> antes do primeiro paint, pra tela do
   // set não pintar no lugar da carta enquanto este arquivo (defer) não roda.
@@ -496,6 +502,9 @@
     // e a Hero Rare numerada de Era of Spiders; depois as de fora do booster
     // (Promotion, Event e Treasure).
     herorush: ["C", "R", "SR", "GR", "UR", "MR", "SEC", "HR", "PR", "ER", "TR"],
+    // Rush of Ikorr (22/11/2026): a escada do booster (C, U, R, UR), a Alt Art
+    // (A) e o Token (T), como o TCGplayer grava.
+    ikorr: ["C", "U", "R", "UR", "A", "T"],
     narutokayou: ["R", "SR", "SSR", "UR", "◇UR", "PTR", "HR", "PU", "QR", "◇QR", "XR", "◇XR", "MR", "◇MR", "BP", "AR", "CR", "ASP", "◇ASP", "SP", "◇SP", "SE"],
     // One Piece Card Game (TCGCSV): as siglas da carta, Líder primeiro como no
     // jogo. Depois as vintage: o acabamento do Carddass Hyper Battle
@@ -980,6 +989,16 @@
   // (rotaDaBorda) nunca é tocada: o título da carta de nome longo nem leva o
   // nome do set, e é o que o Google lê.
   function acertaTituloDaAba() {
+    // Fora do português, o título da borda (set) tem a versão no idioma de quem
+    // lê em data-titulo-en/-es (2026-11-22; sem data-i18n no <title>, o Google
+    // rodaria o JS em português e indexaria "Detalhe - Sleevu"). Vem ANTES da
+    // saída da página da borda: é exatamente nela que ele existe. Em pt, e na
+    // página da carta (sem atributo), segue o título da borda. Só vale pra
+    // página montada PARA este endereço (rotaDaBorda): a cópia guardada de
+    // OUTRO set traz o título dele, e essa cai no `${detailName}` abaixo.
+    const tituloDaBorda = rotaDaBorda && document.querySelector("title");
+    const noIdioma = tituloDaBorda && tituloDaBorda.getAttribute(`data-titulo-${shared.getLanguage()}`);
+    if (noIdioma) { document.title = noIdioma; return; }
     if (!detailName || rotaDaBorda || document.title.indexOf(detailName) >= 0) return;
     const el = document.querySelector("title");
     if (el) el.removeAttribute("data-i18n");
@@ -1026,7 +1045,10 @@
   // lê pra montar esta tela; uma leitura por página.
   function carregaMapa(url) {
     if (!mapaDoJogo) {
-      mapaDoJogo = fetch(`data/game-pages/${url}.json`)
+      // priority "low" (2026-11-22): são ~26 KB que só servem aos endereços e
+      // desciam junto com as primeiras imagens da tela. A rota de carta e a
+      // de set já chegam resolvidas pela borda (o <meta> sleevu-rota).
+      mapaDoJogo = fetch(`data/game-pages/${url}.json`, { priority: "low" })
         .then((r) => (r.ok ? r.json() : null))
         .catch(() => null);
     }
@@ -1115,11 +1137,20 @@
     const slugDoSet = Object.keys(sets).find((k) => sets[k].n === detailName);
     if (!slugDoSet) return;
     const entrada = sets[slugDoSet];
-    const listas = await Promise.all((entrada.f || []).map((f) => fetch(f)
-      .then((r) => (r.ok ? r.json() : []))
-      .catch(() => [])));
-    const doSet = [].concat(...listas.map((l) => (Array.isArray(l) ? l : [])))
-      .filter((c) => c && c.set === entrada.n && !c.retired);
+    // As cartas do set JÁ estão na tela (resolveCards baixou os mesmos chunks
+    // do mapa): pedir os arquivos de novo era o segundo download do mesmo set
+    // (2026-11-22). Só vale quando a tela não estreitou a lista: com ?setId= ou
+    // ?region= o entradasDoSet baixa uma edição só, e o endereço (o sufixo de
+    // idioma das cartas) é calculado sobre o set INTEIRO. Aí, e se o catálogo
+    // da tela não trouxe nenhuma carta do set, busca como antes.
+    let doSet = detailSetId || detailRegion ? [] : cards.filter((c) => c && c.set === entrada.n && !c.retired);
+    if (!doSet.length) {
+      const listas = await Promise.all((entrada.f || []).map((f) => fetch(f)
+        .then((r) => (r.ok ? r.json() : []))
+        .catch(() => [])));
+      doSet = [].concat(...listas.map((l) => (Array.isArray(l) ? l : [])))
+        .filter((c) => c && c.set === entrada.n && !c.retired);
+    }
     const semente = slugsDoSet;
     slugsDoSet = slugsDasCartas(doSet);
     // A carta aberta pela rota da borda segue achável mesmo se o chunk não veio.
