@@ -38,6 +38,7 @@
     "saint-seiya": { nome: "Saint Seiya" },
     "hunter-x-hunter": { nome: "Hunter × Hunter" },
     "evangelion": { nome: "Evangelion" },
+    "fullmetal-alchemist": { nome: "Fullmetal Alchemist" },
     "toriko": { nome: "Toriko" },
     "kuroko-no-basket": { nome: "Kuroko no Basket" },
     "harry-potter": { nome: "Harry Potter" },
