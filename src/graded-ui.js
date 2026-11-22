@@ -71,7 +71,10 @@
     const eff = effectiveValue(shared, it, card);
     const isAuto = eff.auto && eff.value > 0;
     const autoCls = isAuto ? " is-auto" : "";
-    const valStr = it.value > 0 ? String(it.value).replace(".", ",") : (isAuto ? eff.value.toFixed(2).replace(".", ",") : "");
+    // Valor e placeholder no decimal do IDIOMA (shared.moneyInput): com a
+    // vírgula fixa, quem usa o site em inglês digitava "1,250" por cima e o
+    // slab gravava 1.25 (2026-11-22).
+    const valStr = shared.moneyInput(it.value) || (isAuto ? shared.moneyInput(eff.value, 1) : "");
     const valTitle = isAuto ? t("graded.autoHint", { n: eff.n }) : t("graded.value");
     const companyOpts = GRADERS.map((g) => `<option value="${g.code}"${g.code === it.company ? " selected" : ""}>${escapeHtml(g.label)}</option>`).join("");
     const canPristine = !!graderOf(it.company).pristine;
@@ -91,7 +94,7 @@
             <select class="graded-company" data-graded-company aria-label="${escapeAttribute(t("graded.company"))}" title="${escapeAttribute(t("graded.company"))}">${companyOpts}</select>
             <input type="text" inputmode="decimal" class="graded-grade" data-graded-grade value="${escapeAttribute(it.grade)}" maxlength="4" placeholder="10" aria-label="${escapeAttribute(t("graded.grade"))}" title="${escapeAttribute(t("graded.grade"))}">
           </div>
-          <label class="sale-price-field${autoCls}" title="${escapeAttribute(valTitle)}"><span class="sale-cur">${escapeHtml(sym)}</span><input type="text" inputmode="decimal" class="sale-price${autoCls}" data-graded-value value="${escapeAttribute(valStr)}" placeholder="0,00" aria-label="${escapeAttribute(t("graded.value"))}"></label>
+          <label class="sale-price-field${autoCls}" title="${escapeAttribute(valTitle)}"><span class="sale-cur">${escapeHtml(sym)}</span><input type="text" inputmode="decimal" class="sale-price${autoCls}" data-graded-value value="${escapeAttribute(valStr)}" placeholder="${shared.moneyInput(0, 1, 1)}" aria-label="${escapeAttribute(t("graded.value"))}"></label>
           <input type="text" class="graded-cert" data-graded-cert value="${escapeAttribute(it.cert)}" placeholder="${escapeAttribute(t("graded.certPlaceholder"))}" aria-label="${escapeAttribute(t("graded.cert"))}">
           ${pristineRow}
         </div>

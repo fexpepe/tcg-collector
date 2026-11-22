@@ -2517,8 +2517,12 @@
       btnSom.setAttribute("aria-label", rot);
       btnSom.title = rot;
     }
-    // Número no jeito da moeda: vírgula decimal em reais ("5,5"), ponto no resto.
-    const numeroBr = (n) => (moedaAgora() === "BRL" ? String(n).replace(".", ",") : String(n));
+    // Número no decimal do IDIOMA da interface (shared.moneyInput), como todo
+    // campo de dinheiro do site — o mesmo que o shared.parseMoney lê de volta
+    // no lerFaixas. Antes seguia a MOEDA (vírgula em reais, ponto no resto),
+    // e quem usa o site em inglês com reais via "5,5" (2026-11-22). O `zero`
+    // é porque a faixa de baixo pode ser 0.
+    const numeroBr = (n) => (shared.moneyInput ? shared.moneyInput(n, 0, 1) : String(n));
     function abrirSom() {
       const [baixo, alto] = faixasAgora();
       const simbolo = shared.currencySymbol ? shared.currencySymbol() : "";
@@ -2558,8 +2562,10 @@
     // baixo, que por um instante passa a de cima — desfazer ali apagava o
     // número que a pessoa acabou de escrever.
     function lerFaixas() {
-      // Com vírgula, ela é a decimal e o ponto é milhar ("1.000,50"); sem, o ponto é a decimal.
-      const num = (el) => { const tx = String(el.value).trim(); return tx ? Number(tx.indexOf(",") >= 0 ? tx.replace(/\./g, "").replace(",", ".") : tx) : NaN; };
+      // Lê na régua do idioma (shared.parseMoney). A conta própria daqui tomava
+      // toda vírgula por decimal: em inglês, a faixa "1,000" virava 1. Sem
+      // dígito nenhum segue inválido (o parseMoney devolveria 0).
+      const num = (el) => (/\d/.test(el.value) ? shared.parseMoney(el.value) : NaN);
       const baixo = num(inBaixo), alto = num(inAlto);
       const ok = Number.isFinite(baixo) && Number.isFinite(alto) && baixo >= 0 && baixo < alto;
       marcarFaixas(ok);

@@ -1365,7 +1365,7 @@
     const saleFields = isSale ? `
       <div class="binder-editor-sale">
         <label>${escapeHtml(t("binders.editor.price"))}
-          <input type="text" inputmode="decimal" data-edit-price value="${escapeAttribute(draft.price ? String(draft.price).replace(".", ",") : "")}">
+          <input type="text" inputmode="decimal" data-edit-price value="${escapeAttribute(shared.moneyInput(draft.price))}">
         </label>
         <label>${escapeHtml(t("binders.editor.condition"))}
           <select data-edit-condition>${conditionOptions}</select>
