@@ -348,8 +348,15 @@
     render(); finish();
     return;
   }
-  shared.loadOwnedAcrossGames(idsByGame).then((catalog) => {
+  // Pela BORDA (/api/collection): só as cartas que a pessoa tem, em vez do chunk
+  // inteiro de cada set. A borda não manda setTotal nem a marca `vintage`, e as
+  // duas conquistas dependem disso — por isso o await do enrichSetTotals logo
+  // abaixo e o isVintageCard mais adiante. Sem o total, todo set ficava com
+  // total 0 e "set completo" nunca desbloqueava, sem erro nenhum.
+  shared.loadOwnedFast(idsByGame).then(async (catalog) => {
     const cards = catalog.cards || [];
+    // Completa o setTotal pelo manifest do jogo ANTES de contar os sets.
+    await shared.enrichSetTotals(cards);
     const cardGameMap = new Map(cards.map((c) => [c.id, c.game]));
     const owned = shared.mergedCollectionStore(ownedByGame, (id) => cardGameMap.get(id) || "pokemon");
     const seenIds = new Set();
@@ -372,7 +379,11 @@
     const complete = [...bySet.values()].filter((e) => e.total > 0 && e.have >= e.total).length;
     const langs = new Set(mine.map((c) => shared.cardLanguageRegion(c.language)));
     const topRarity = mine.some((c) => shared.rarityRank(c.rarity) >= 70);
-    const hasVintage = mine.some((c) => c.vintage);
+    // Carta de jogo ou linha vintage (o Pokémon antigo tem a conquista dele, old2005,
+    // por data). isVintageCard reconhece pelo prefixo do id, então vale também pra
+    // quem vem da borda sem a marca `c.vintage` — e conserta o World of Warcraft,
+    // cujas cartas nunca tiveram a marca.
+    const hasVintage = mine.some((c) => c.game !== "pokemon" && shared.isVintageCard(c));
     const hasOld = mine.some((c) => (c.setReleaseDate || "9999") < "2005");
 
     // Sazonais: contam cartas de sets pela DATA de lançamento (rotaciona sozinho
