@@ -5,14 +5,14 @@
   "imgPct": 79
  },
  "lorcana": {
-  "cards": 3192,
-  "sets": 22,
+  "cards": 3519,
+  "sets": 27,
   "imgPct": 100
  },
  "onepiece": {
-  "cards": 8691,
-  "sets": 119,
-  "imgPct": 85
+  "cards": 9403,
+  "sets": 124,
+  "imgPct": 100
  },
  "magic": {
   "cards": 97533,
@@ -20,8 +20,8 @@
   "imgPct": 100
  },
  "fab": {
-  "cards": 10035,
-  "sets": 103,
+  "cards": 10853,
+  "sets": 110,
   "imgPct": 100
  },
  "naruto": {
@@ -30,8 +30,8 @@
   "imgPct": 81
  },
  "hxh": {
-  "cards": 283,
-  "sets": 9,
+  "cards": 291,
+  "sets": 10,
   "imgPct": 100
  },
  "mbc": {
@@ -45,32 +45,32 @@
   "imgPct": 0
  },
  "gundam": {
-  "cards": 1833,
-  "sets": 22,
+  "cards": 2201,
+  "sets": 27,
   "imgPct": 100
  },
  "swu": {
-  "cards": 8904,
-  "sets": 30,
+  "cards": 9743,
+  "sets": 32,
   "imgPct": 100
  },
  "cyberpunk": {
-  "cards": 459,
-  "sets": 12,
+  "cards": 528,
+  "sets": 14,
   "imgPct": 100
  },
  "sorcery": {
-  "cards": 1689,
-  "sets": 8,
+  "cards": 1812,
+  "sets": 9,
   "imgPct": 100
  },
  "dbfw": {
-  "cards": 4099,
-  "sets": 50,
+  "cards": 4374,
+  "sets": 51,
   "imgPct": 100
  },
  "dbs": {
-  "cards": 11734,
+  "cards": 11775,
   "sets": 101,
   "imgPct": 100
  },
@@ -80,24 +80,24 @@
   "imgPct": 100
  },
  "digimon": {
-  "cards": 9106,
-  "sets": 98,
+  "cards": 9583,
+  "sets": 104,
   "imgPct": 100
  },
  "riftbound": {
-  "cards": 1472,
-  "sets": 8,
+  "cards": 1803,
+  "sets": 13,
   "imgPct": 100
  },
  "unionarena": {
-  "cards": 6485,
-  "sets": 72,
+  "cards": 7206,
+  "sets": 81,
   "imgPct": 100
  },
  "dbc": {
-  "cards": 758,
-  "sets": 18,
-  "imgPct": 0
+  "cards": 1343,
+  "sets": 31,
+  "imgPct": 100
  },
  "dbz": {
   "cards": 4092,
@@ -120,8 +120,8 @@
   "imgPct": 100
  },
  "weiss": {
-  "cards": 31209,
-  "sets": 169,
+  "cards": 31639,
+  "sets": 171,
   "imgPct": 100
  },
  "cdm": {
@@ -130,8 +130,8 @@
   "imgPct": 86
  },
  "gcd": {
-  "cards": 1475,
-  "sets": 37,
+  "cards": 1477,
+  "sets": 38,
   "imgPct": 100
  },
  "gw": {
@@ -170,7 +170,7 @@
   "imgPct": 100
  },
  "fftcg": {
-  "cards": 5700,
+  "cards": 5708,
   "sets": 38,
   "imgPct": 100
  },
@@ -190,18 +190,18 @@
   "imgPct": 100
  },
  "vanguard": {
-  "cards": 26438,
-  "sets": 268,
+  "cards": 27011,
+  "sets": 270,
   "imgPct": 100
  },
  "duelmasters": {
-  "cards": 24039,
-  "sets": 396,
+  "cards": 24106,
+  "sets": 397,
   "imgPct": 100
  },
  "grandarchive": {
-  "cards": 5356,
-  "sets": 52,
+  "cards": 5484,
+  "sets": 53,
   "imgPct": 100
  },
  "hololive": {
@@ -210,8 +210,8 @@
   "imgPct": 100
  },
  "shadowverse": {
-  "cards": 7447,
-  "sets": 50,
+  "cards": 7956,
+  "sets": 52,
   "imgPct": 100
  },
  "narutoboruto": {
@@ -235,8 +235,8 @@
   "imgPct": 0
  },
  "herorush": {
-  "cards": 667,
-  "sets": 14,
+  "cards": 682,
+  "sets": 15,
   "imgPct": 100
  },
  "fma": {

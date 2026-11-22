@@ -7,7 +7,8 @@
 //   node scripts/lint-catalog.mjs --aceitar-mudanca-de-id   # libera id que sumiu/repontou
 //
 // Erro DURO (exit 1): ids duplicados, carta sem id/nome/set, catálogo zerado
-//   quando a régua diz que havia cartas, e — a trava que importa pras CONTAS —
+//   OU não lido quando a régua diz que havia cartas (scripts/lib/regua-catalogo.mjs;
+//   de 1 a 99 cartas vale o atalho de amostra), e — a trava que importa pras CONTAS —
 //   id publicado que SUMIU ou passou a apontar pra outra carta.
 // AVISO (exit 0): contagem caiu vs a régua (data/catalog-baseline.json), % de
 //   imagem baixou muito, id renumerado, id de produto do TCGplayer que a fonte
@@ -27,6 +28,7 @@ import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { resolveMergedId } from "./lib/set-supersede.mjs";
 import { classificaMudanca, assinatura, idiomaDe, numDe } from "./lib/id-stability.mjs";
+import { avaliaRegua, medeCatalogo } from "./lib/regua-catalogo.mjs";
 
 const ROOT = new URL("../", import.meta.url);
 const BASELINE = new URL("data/catalog-baseline.json", ROOT);
@@ -87,32 +89,28 @@ const nextBaseline = {};
 
 for (const [game, dir] of Object.entries(GAMES)) {
   const cards = await readCards(dir);
-  if (!cards) { console.log(`  ${game}: sem catálogo (ok se o jogo ainda não tem dados)`); continue; }
+  const base = baseline[game];
+  // A decisão da régua mora em scripts/lib/regua-catalogo.mjs (testada). Antes
+  // daqui, catálogo vazio caía no atalho de "amostra" e catálogo ausente era
+  // pulado calado — a trava de "ZEROU" nunca disparava (22/11/2026).
+  const regua = avaliaRegua(game, cards, base);
+  errors.push(...regua.errors);
+  warnings.push(...regua.warnings);
+  if (!cards) {
+    console.log(`  ${game}: sem catálogo${regua.errors.length ? " — ERRO: a régua diz que havia cartas" : " (ok se o jogo ainda não tem dados)"}`);
+    continue;   // sem catálogo lido não há o que gravar na régua: a entrada antiga fica
+  }
 
   // Erros duros: integridade básica.
-  const seen = new Set();
-  let dupes = 0, broken = 0, withImage = 0;
-  for (const c of cards) {
-    if (!c || !c.id || !c.name || !c.set) { broken++; continue; }
-    if (seen.has(c.id)) dupes++;
-    seen.add(c.id);
-    if (c.image) withImage++;
-  }
+  const { sets, imgPct, dupes, broken } = medeCatalogo(cards);
   if (dupes) errors.push(`${game}: ${dupes} id(s) duplicado(s)`);
   if (broken) errors.push(`${game}: ${broken} carta(s) sem id/nome/set`);
 
   lidos[game] = cards;                        // reaproveitado pela trava de id
-  const sets = new Set(cards.map((c) => c.set)).size;
-  const imgPct = cards.length ? Math.round((withImage / cards.length) * 100) : 0;
-  const base = baseline[game];
-  const sample = cards.length < 100; // amostra local (ex.: Pokémon dev): não aplica régua
-  if (base && !sample) {
-    if (cards.length === 0 && base.cards > 0) errors.push(`${game}: catálogo ZEROU (régua: ${base.cards})`);
-    else if (cards.length < base.cards) warnings.push(`${game}: ${cards.length} cartas < régua ${base.cards} (regressão?)`);
-    if (sets < base.sets) warnings.push(`${game}: ${sets} sets < régua ${base.sets}`);
-    if (base.imgPct && imgPct < base.imgPct - 10) warnings.push(`${game}: imagens ${imgPct}% (régua ${base.imgPct}%)`);
-  }
-  nextBaseline[game] = sample && base ? base : { cards: cards.length, sets, imgPct };
+  const sample = regua.amostra;
+  // Amostra ou catálogo vazio com régua: a régua antiga fica (regravar com o
+  // número ruim apagaria o que a trava acabou de acusar).
+  nextBaseline[game] = base && (sample || regua.errors.length) ? base : { cards: cards.length, sets, imgPct };
   console.log(`  ${game}: ${cards.length} cartas · ${sets} sets · ${imgPct}% com imagem${sample ? " (amostra: régua não aplicada)" : ""}`);
 }
 
