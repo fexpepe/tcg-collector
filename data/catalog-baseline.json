@@ -1,8 +1,8 @@
 {
  "pokemon": {
-  "cards": 52430,
-  "sets": 434,
-  "imgPct": 79
+  "cards": 78638,
+  "sets": 731,
+  "imgPct": 84
  },
  "lorcana": {
   "cards": 3519,
@@ -15,8 +15,8 @@
   "imgPct": 100
  },
  "magic": {
-  "cards": 97533,
-  "sets": 648,
+  "cards": 101149,
+  "sets": 657,
   "imgPct": 100
  },
  "fab": {
@@ -75,8 +75,8 @@
   "imgPct": 100
  },
  "ygo": {
-  "cards": 45793,
-  "sets": 608,
+  "cards": 46910,
+  "sets": 616,
   "imgPct": 100
  },
  "digimon": {
