@@ -272,6 +272,15 @@ test("tela do jogo: sets mais novos primeiro, título no orçamento, índice com
   assert.match(m.desc, /Todos os 3 sets de Star Wars: Unlimited, de 2024 a 2025/);
   assert.match(m.indiceHtml, /data-indice-jogo="star-wars-unlimited"/);
   assert.match(m.indiceHtml, /<a href="\/games\/star-wars-unlimited\/spark-of-rebellion">Spark of Rebellion<\/a>/);
+  // Texto fixo no idioma de quem lê (2026-11-22): span só na parte fixa; sem
+  // as tags, o bloco segue em português e "1 carta" concorda.
+  assert.match(m.indiceHtml, /<h2><span data-i18n="idx\.setsOf">Todos os sets de<\/span> Star Wars: Unlimited<\/h2>/);
+  assert.match(m.indiceHtml, /<span data-i18n="idx\.viewList">Ver a lista<\/span> \(3\)/);
+  assert.match(m.indiceHtml, /<small>252 <span data-i18n="idx\.cardsWord">cartas<\/span><\/small>/);
+  const semTags = m.indiceHtml.replace(/<style>[\s\S]*?<\/style>/g, "").replace(/<[^>]+>/g, "");
+  assert.match(semTags, /Todos os sets de Star Wars: Unlimited\s*Ver a lista \(3\)/);
+  assert.match(metaDoJogo(jogo, [{ slug: "a", nome: "A", cartas: 1, data: "" }]).indiceHtml,
+    /<small>1 <span data-i18n="idx\.cardWord">carta<\/span><\/small>/);
   // Sem sets (jogo "em breve"): descrição sem número e sem índice.
   const vazio = metaDoJogo(jogoDaUrl("naruto-card-game"), []);
   assert.equal(vazio.indiceHtml, "");
@@ -342,6 +351,8 @@ test("tela do set: título, descrição, canonical, hreflang, JSON-LD e índice 
   assert.equal(trilha.itemListElement.length, 3);
   assert.match(p.corpoHtml, /data-indice-set="\/games\/pokemon\/base-set"/);
   assert.match(p.corpoHtml, /<a href="\/games\/pokemon\/base-set\/mewtwo-10-102">Mewtwo<\/a> <small>10\/102<\/small>/);
+  assert.match(p.corpoHtml, /<h2><span data-i18n="idx\.cardsOf">Todas as cartas de<\/span> Base Set<\/h2>/);
+  assert.match(p.corpoHtml, /<span data-i18n="idx\.viewList">Ver a lista<\/span> \(2\)/);
   // Set sem cartas: sem índice (e sem quebrar).
   assert.equal(pecasDoSet({ jogo, slug: "x", nome: "X", cartas: [], slugs: new Map() }).corpoHtml, "");
 });
