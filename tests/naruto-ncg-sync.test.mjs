@@ -5,7 +5,7 @@
 // Roda com: node --test tests/
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { setIdOf, montaLinha, precosPorProduto, absorve, CURATED, PRODUTO_CURADO, SET_FIXO } from "../scripts/sync-naruto.mjs";
+import { setIdOf, montaLinha, precosPorProduto, absorve, categoriaDaRodada, CATEGORIA_TCGCSV, CURATED, PRODUTO_CURADO, SET_FIXO } from "../scripts/sync-naruto.mjs";
 
 const chakra = (productId, name) => ({
   productId,
@@ -79,7 +79,7 @@ test("Yankees: entra pelo productId com o nome oficial e os campos de set da cur
   }
 });
 
-test("sem categoria (variável desligada): o que já foi publicado fica, congelado", () => {
+test("categoria desligada (--category 0): o que já foi publicado fica, congelado", () => {
   const publicada = { ...montaLinha([promos()]).cards[1] };
   const { cards, pricing, congeladas } = montaLinha([], { anteriores: [publicada, { id: "nrt-S-001", setId: "nrt-s01" }] });
   assert.deepEqual(cards.map((c) => c.id), ["nrt-ncg-cp-001", "nrt-ncg-717838"]);
@@ -88,6 +88,52 @@ test("sem categoria (variável desligada): o que já foi publicado fica, congela
   // A curada não pode mudar conforme a variável: com ou sem a fonte, igual.
   assert.deepEqual(cards[0], montaLinha([promos()]).cards[0]);
   assert.deepEqual(pricing, {});
+});
+
+// A fonte ficou desligada de 30/09 a 22/11/2026: o sync só a lia com a variável
+// NARUTO_TCGCSV_CATEGORY do repositório, que nunca foi criada. O deploy entrega
+// variável que não existe como string VAZIA, e era isso que desligava: o preço
+// versionado se repetiu por 50 dias e a terceira carta não entrou.
+test("categoria: a 93 vale sozinha; env vazia não desliga; flag ganha da env; 0 desliga", () => {
+  assert.equal(CATEGORIA_TCGCSV, "93");
+  assert.equal(categoriaDaRodada(null, undefined), "93");
+  assert.equal(categoriaDaRodada(null, ""), "93", "variável do repositório ausente chega vazia");
+  assert.equal(categoriaDaRodada(null, "94"), "94");
+  assert.equal(categoriaDaRodada("95", "94"), "95");
+  assert.equal(categoriaDaRodada("0", "94"), null);
+  assert.equal(categoriaDaRodada(null, "0"), null);
+  assert.equal(categoriaDaRodada(null, "off"), null, "só número liga");
+});
+
+// A TCGCSV de 22/11/2026: a terceira CP-001 (listada em 15/10) e venda nas três.
+const promosDeNovembro = () => {
+  const grupo = promos();
+  grupo.prods.push(chakra(723456, "Chakra Card (NYCC 2026)"));
+  grupo.prices = [
+    { productId: 717832, lowPrice: 991.88, midPrice: 1072, highPrice: 2500, marketPrice: 959.92, subTypeName: "Normal" },
+    { productId: 717838, lowPrice: 200, midPrice: 249.99, highPrice: 2000, marketPrice: 202.96, subTypeName: "Normal" },
+    { productId: 723456, lowPrice: 87.01, midPrice: 89.4, highPrice: 108.87, marketPrice: 89.9, subTypeName: "Normal" }
+  ];
+  return grupo;
+};
+
+test("a terceira CP-001: entra com o nome da Bandai, sem versão, e não mexe nas duas publicadas", () => {
+  const antes = montaLinha([promos()]).cards;
+  const { cards, pricing } = montaLinha([promosDeNovembro()], { anteriores: antes });
+  assert.deepEqual(cards.map((c) => c.id), ["nrt-ncg-cp-001", "nrt-ncg-717838", "nrt-ncg-723456"]);
+  const nova = cards[2];
+  // "Chakra Card (NYCC 2026)" é apelido do TCGplayer; a Bandai publica só
+  // "CP-001 Chakra Card" (a mesma carta saiu em outros seis eventos).
+  assert.equal(nova.name, "Chakra Card");
+  assert.equal(nova.number, "CP-001");
+  assert.equal(nova.image, "https://tcgplayer-cdn.tcgplayer.com/product/723456_in_1000x1000.jpg");
+  // O nome entra no endereço da carta: os três têm de seguir diferentes.
+  assert.equal(new Set(cards.map((c) => c.name)).size, 3);
+  // Das publicadas só o total do set muda (2 -> 3), e ele não entra no endereço
+  // de carta com letra no número (functions/_lib/slug-carta.js).
+  for (const [i, c] of antes.entries()) assert.deepEqual({ ...cards[i], setTotal: 2 }, c);
+  // Com venda, vale o market, e não o mid dos anúncios.
+  assert.deepEqual(pricing, { "nrt-ncg-cp-001": { u: 959.92 }, "nrt-ncg-717838": { u: 202.96 }, "nrt-ncg-723456": { u: 89.9 } });
 });
 
 test("absorção: a fonte só preenche o que a curadoria deixou vazio", () => {

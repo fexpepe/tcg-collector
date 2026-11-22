@@ -10,24 +10,33 @@
 //      em assets/cards/naruto/ (scan recortado).
 //   2. TCGCSV (dados públicos do TCGplayer), mesmo modelo do Cyberpunk: id =
 //      "nrt-ncg-<productId>", imagem do CDN do TCGplayer, preço market (ou mid
-//      quando não há venda). A categoria vem de --category ou da env
-//      NARUTO_TCGCSV_CATEGORY (variável do repositório no GitHub, lida pelo
-//      deploy.yml); sem ela, só a curadoria e o que já foi publicado.
+//      quando não há venda). A categoria é a 93 (CATEGORIA_TCGCSV, abaixo);
+//      --category ou a env NARUTO_TCGCSV_CATEGORY (variável do repositório no
+//      GitHub, lida pelo deploy.yml) trocam, e "0" desliga: aí fica só a
+//      curadoria e o que já foi publicado.
 //
-// Conferido em 30/09/2026: a TCGCSV lista a categoria 93 "Naruto Card Game"
-// com UM grupo, 24885 "Promotion Cards" (publishedOn 2026-09-16), e dois
-// produtos, as duas CP-001 que já existem: Gen Con (717832) e New York Yankees
-// (717838, distribuída no NARUTO Night at Yankee Stadium, 08/09/2026). A
-// terceira (New York Comic Con, 8–11/10/2026) ainda não estava listada.
+// Ligada por padrão desde 22/11/2026 (pedido do Fernando). Até ali dependia
+// da variável do repositório, que nunca foi criada: o deploy rodava sem
+// categoria e repetia o preço versionado. A Gen Con ficou em US$ 999,59 e a
+// dos Yankees em US$ 200 por 50 dias, com a fonte em 959,92 e 202,96, e a
+// terceira carta não entrava.
 //
-//   node scripts/sync-naruto.mjs                    # curadoria (+ TCGCSV se houver categoria)
+// Conferido em 22/11/2026: a TCGCSV lista a categoria 93 "Naruto Card Game"
+// com UM grupo, 24885 "Promotion Cards" (publishedOn 2026-09-16), e três
+// produtos, todos CP-001: Gen Con (717832), New York Yankees (717838,
+// distribuída no NARUTO Night at Yankee Stadium, 08/09/2026) e a que o
+// TCGplayer chama de "NYCC 2026" (723456, listada em 15/10/2026), que é a
+// Chakra Card sem versão — ver NOME_OFICIAL.
+//
+//   node scripts/sync-naruto.mjs                    # curadoria + TCGCSV (categoria 93)
 //   node scripts/sync-naruto.mjs --discover         # lista categorias com "naruto"
-//   node scripts/sync-naruto.mjs --category 93      # sincroniza a categoria
+//   node scripts/sync-naruto.mjs --category 0       # sem rede: curadoria + o publicado
 //
 // O catálogo é só deste sync. Carta da TCGCSV que a fonte tirar fica
 // CONGELADA, sem preço (id publicado nunca some — docs/CATALOGO.md, contrato
-// 2). Isso vale também enquanto a variável não está ligada no GitHub: o build
-// segue com o que está versionado em vez de apagar a carta.
+// 2). Com a categoria desligada, o build segue com o que está versionado em
+// vez de apagar a carta; com a TCGCSV fora do ar o sync falha e o deploy
+// também fica com o versionado (contrato 5).
 //
 // As cartas que moravam no catálogo do Naruto (a linha, até 11/11/2026) entram
 // como "anteriores", com o preço que tinham, e saem de lá (tiraDoNaruto) — no
@@ -44,6 +53,17 @@ const NARUTO = new URL("data/naruto/", ROOT);
 const BASE = "https://tcgcsv.com/tcgplayer";
 const HEADERS = { "User-Agent": "Sleevu (sleevu.app) catalog sync", Accept: "application/json" };
 const DESTE_JOGO = /^nrt-ncg-/;
+
+// Categoria "Naruto Card Game" na TCGCSV (existe desde 16/09/2026).
+export const CATEGORIA_TCGCSV = "93";
+// De onde sai a categoria da rodada: --category, senão a env, senão a 93.
+// Env vazia conta como ausente: é assim que o deploy.yml entrega a variável do
+// repositório que não existe. Só número vale, e "0" (ou qualquer outra coisa,
+// como "off") desliga a fonte e devolve null.
+export function categoriaDaRodada(flag, env) {
+  const pedida = String(flag || env || CATEGORIA_TCGCSV).trim();
+  return /^[1-9]\d*$/.test(pedida) ? pedida : null;
+}
 
 // ── Curadoria: promos com scan próprio ───────────────────────────────────────
 // CP-001 "Chakra Card -Gen Con 2026 Ver.-" — a primeira carta do jogo, dada nas
@@ -95,8 +115,17 @@ export const SET_FIXO = {
 // Nome oficial da Bandai quando o do TCGplayer é só um apelido ("Chakra Card
 // (New York Yankees)"). Mesmo padrão da curadoria ("-<Evento> Ver.-"), sem o ™.
 // Fonte: naruto-cardgame.com/en/news/nyy-collab.php (conferida em 30/09/2026).
+//
+// A 723456 é "Chakra Card (NYCC 2026)" no TCGplayer, pelo primeiro evento em
+// que saiu (New York Comic Con, 8–11/10/2026), mas a Bandai a chama só de
+// "CP-001 Chakra Card", sem "Ver.": é a mesma carta, sem marca de evento, dada
+// também em Lucca, Paris Games Week, CCXP, SPIEL Essen, PAX Aus e Manga
+// Barcelona (a imagem das páginas é o mesmo arquivo). Fonte:
+// naruto-cardgame.com/en/news/nycc-2026.php e lucca-2026.php (conferidas em
+// 22/11/2026). Um "-New York Comic Con 2026 Ver.-" seria nome inventado.
 export const NOME_OFICIAL = {
-  717838: "Chakra Card -New York Yankees Ver.-"
+  717838: "Chakra Card -New York Yankees Ver.-",
+  723456: "Chakra Card"
 };
 
 export const ext = (p, key) => {
@@ -261,7 +290,7 @@ async function tiraDoNaruto() {
 }
 
 async function run() {
-  const CATEGORY = argAt("--category") || process.env.NARUTO_TCGCSV_CATEGORY;
+  const CATEGORY = categoriaDaRodada(argAt("--category"), process.env.NARUTO_TCGCSV_CATEGORY);
   const proprias = (await readGlobalVar(new URL("cards.js", OUT), "TCG_CARDS")) || [];
   const precosProprios = (await readGlobalVar(new URL("pricing.js", OUT), "TCG_PRICING")) || {};
   // O que ainda está no catálogo do Naruto (a 1ª rodada depois da separação)
@@ -277,7 +306,7 @@ async function run() {
 
   const grupos = [];
   if (!CATEGORY) {
-    console.log(`Naruto Card Game (${GAME}): sem categoria TCGCSV — curadoria (${CURATED.length}) + o que já foi publicado.`);
+    console.log(`Naruto Card Game (${GAME}): TCGCSV desligada — curadoria (${CURATED.length}) + o que já foi publicado.`);
   } else {
     console.log(`Naruto Card Game (${GAME}): sincronizando TCGCSV categoria ${CATEGORY}…`);
     const groups = (await json(`${BASE}/${CATEGORY}/groups`)).results || [];

@@ -788,12 +788,15 @@ jobs:
 
       # NARUTO CARD GAME novo (o jogo narutocg, em data/narutocg/; até
       # 11/11/2026 a linha nrt-ncg- do Naruto): curadoria + TCGCSV categoria 93
-      # (existe desde 16/09/2026) quando a variável do repositório
-      # NARUTO_TCGCSV_CATEGORY está ligada. Sem ela, regrava só a curadoria e
-      # mantém congelado o que já foi publicado, com o preço versionado. TIRA
-      # do catálogo do Naruto as cartas nrt-ncg- que moravam lá -- por isso
-      # roda ANTES dos syncs do Naruto, que não as preservam mais.
-      - name: Sincroniza catálogo do Naruto Card Game (TCGCSV, se configurado)
+      # (existe desde 16/09/2026), que é o padrão do próprio sync desde
+      # 22/11/2026. A variável do repositório NARUTO_TCGCSV_CATEGORY é
+      # opcional: troca a categoria, e "0" desliga a fonte (aí regrava só a
+      # curadoria e mantém congelado o que já foi publicado, com o preço
+      # versionado). Enquanto a fonte dependeu de a variável existir, ela nunca
+      # foi criada e o preço ficou 50 dias parado. TIRA do catálogo do Naruto
+      # as cartas nrt-ncg- que moravam lá -- por isso roda ANTES dos syncs do
+      # Naruto, que não as preservam mais.
+      - name: Sincroniza catálogo do Naruto Card Game (TCGCSV)
         if: env.RODA_SYNC == 'true'
         run: node scripts/sync-naruto.mjs || echo "sync-naruto falhou; mantém o catalogo versionado"
         env:

@@ -248,9 +248,12 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
 - **Naruto Card Game (2027), jogo `narutocg` desde 2026-11-11** (era a linha
   `nrt-ncg` do `naruto`): a TCGCSV tem a categoria 93 desde 16/09/2026, e o
   dedupe com a promo curada já é o `PRODUTO_CURADO` do `sync-naruto.mjs`. O
-  deploy só a lê com a variável do repositório `NARUTO_TCGCSV_CATEGORY=93`
-  ligada; sem ela o catálogo fica nas 2 cartas publicadas (em 11/11/2026 a
-  TCGCSV já listava a terceira, a Chakra Card da NYCC 2026). Quando sair o
+  deploy a lê todo dia desde 2026-11-22 (a 93 virou o padrão do sync; antes
+  dependia da variável `NARUTO_TCGCSV_CATEGORY`, que nunca foi criada, e o
+  preço das 2 cartas publicadas ficou 50 dias parado). Com ela entrou a
+  terceira, que o TCGplayer chama de "NYCC 2026" e a Bandai só de "Chakra
+  Card"; a imagem é a do TCGplayer, com a marca "SAMPLE", até haver scan
+  próprio (curadoria, como a da Gen Con). Quando sair o
   primeiro booster, conferir o código do set contra o `SECOES_BANDAI`
   (src/app.js), que hoje supõe BT/ST.
 - **Cores e posições no hub (14/11/2026):** o Fernando deixou a cor por conta
