@@ -66,6 +66,7 @@
     seiya: { slug: "seiya", name: "Saint Seiya Carddass", dataDir: "data/seiya/" }, // vintage Bandai 1988–2023: Carddass, Saint Paradise e Reborn (animecollection.fr; nome transcrito dos scans)
     seiyatc: { slug: "seiyatc", name: "Saint Seiya Trading Collection", dataDir: "data/seiyatc/" }, // vintage Amada 2000–2003 (sync-saint-seiya.mjs)
     seiyacr: { slug: "seiyacr", name: "Saint Seiya Crusade", dataDir: "data/seiyacr/" }, // vintage Bandai 2012–2014, o TCG do sistema Crusade (sync-saint-seiya.mjs)
+    fma: { slug: "fma", name: "Fullmetal Alchemist Carddass", dataDir: "data/fma/" }, // vintage Bandai 2004–2005: Alchemic Card Battle e as placas da Jumbo Carddass (animecollection.fr; nome transcrito dos scans)
     // Em preparação (catálogo ainda vazio; tile "Em breve" no hub):
     jump: { slug: "jump", name: "JUMP", dataDir: "data/jump/" }            // promos curadas (Jump Festa, V-Jump…)
   };
@@ -98,7 +99,7 @@
     ["one-piece-carddass", "onepiece", "opcd", "opcd-"], ["lord-of-the-rings-tcg", "lotr"], ["harry-potter-tcg", "harrypotter"],
     ["dragon-ball-z-ccg", "dbz"], ["saint-seiya-trading-collection", "seiyatc"],
     ["one-piece-card-game-2002", "onepiece", "op2002", "op2002-"],
-    ["naruto-card-game-2002", "naruto"], ["naruto-data-carddass", "naruto", "nrt-dc", "nrt-dc-,nrt-nf-,nrt-nx-"],
+    ["naruto-card-game-2002", "naruto"], ["fullmetal-alchemist-carddass", "fma"], ["naruto-data-carddass", "naruto", "nrt-dc", "nrt-dc-,nrt-nf-,nrt-nx-"],
     ["naruto-ccg", "naruto", "nrt-ccg", "nrt-ccg-"], ["world-of-warcraft-tcg", "wow"],
     ["naruto-shippuden-card-game", "naruto", "nrt-scg", "nrt-scg-"], ["miracle-battle-carddass", "mbc"],
     ["saint-seiya-crusade", "seiyacr"],
@@ -317,6 +318,7 @@
     lotr: ["https://wsrv.nl"],
     dbz: ["https://wsrv.nl"],
     cdm: ["https://wsrv.nl"],
+    fma: ["https://wsrv.nl"],
     gcd: ["https://wsrv.nl"],
     dbc: ["https://wsrv.nl"],
     dbsb: ["https://wsrv.nl"],

@@ -471,6 +471,9 @@
     seiya: ["Normal", "Prism", "Special"],
     seiyatc: ["Normal", "Holographic", "Special", "SP", "Promo"],
     seiyacr: ["Common", "Uncommon", "Rare", "Metal Rare", "Cosmo Rare", "Promo"],
+    // Fullmetal Alchemist Carddass (22/11/2026): a escada do Alchemic Card
+    // Battle como o animecollection a marca (as placas usam Common e Rare).
+    fma: ["Common", "Uncommon", "Rare", "Super Rare"],
     // Grand Archive TCG (13/11/2026): a escada do booster, a promo e por fim
     // as de colecionador (CSR, CUR, CPR), na ordem em que o Index oficial as
     // numera.

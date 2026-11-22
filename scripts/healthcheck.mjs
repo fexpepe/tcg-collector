@@ -201,6 +201,8 @@ await checkManifest("manifest Gundam War", "/data/gw/manifest.generated.js", 600
 await checkManifest("manifest Saint Seiya Carddass", "/data/seiya/manifest.generated.js", 380);
 await checkManifest("manifest Saint Seiya Trading Collection", "/data/seiyatc/manifest.generated.js", 800);
 await checkManifest("manifest Saint Seiya Crusade", "/data/seiyacr/manifest.generated.js", 450);
+// Fullmetal Alchemist Carddass: 326 cartas (Alchemic Card Battle FILE.1–4 e as três placas), 22/11/2026; história encerrada.
+await checkManifest("manifest Fullmetal Alchemist Carddass", "/data/fma/manifest.generated.js", 300);
 // Naruto Boruto Card Game: 97 cartas (as Tournament Pack Cards), 13/11/2026; história encerrada.
 await checkManifest("manifest Naruto Boruto", "/data/narutoboruto/manifest.generated.js", 90);
 // Naruto Trading Cards: 255 cartas (Etching Card Collection 1–3 e 忍術大全), 13/11/2026; história encerrada.

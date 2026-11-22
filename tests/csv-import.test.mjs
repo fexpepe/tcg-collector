@@ -129,6 +129,11 @@ test("mapCsvGame: os 13 jogos, nas grafias do Collectr/TCGplayer", () => {
   // Os outros dois jogos de Saint Seiya vencem o genérico.
   assert.equal(api.mapCsvGame("Saint Seiya Crusade"), "seiyacr");
   assert.equal(api.mapCsvGame("Saint Seiya Trading Collection"), "seiyatc");
+  // Fullmetal Alchemist Carddass (2004–2005); o set do FMA do Union Arena
+  // segue no Union Arena.
+  assert.equal(api.mapCsvGame("Fullmetal Alchemist Carddass"), "fma");
+  assert.equal(api.mapCsvGame("Fullmetal Alchemist Alchemic Card Battle"), "fma");
+  assert.equal(api.mapCsvGame("Union Arena Fullmetal Alchemist"), "unionarena");
   // Jogo próprio desde 2026-11-13 (antes cairia no Naruto vintage).
   assert.equal(api.mapCsvGame("Naruto Boruto Card Game"), "narutoboruto");
   assert.equal(api.mapCsvGame("Chrono Clash System"), "narutoboruto");

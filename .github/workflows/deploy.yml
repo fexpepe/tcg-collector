@@ -128,6 +128,7 @@ jobs:
             data/seiya/sets
             data/seiyatc/sets
             data/seiyacr/sets
+            data/fma/sets
             data/narutoboruto/sets
             data/narutotc/sets
             data/narutocg/sets
@@ -169,7 +170,7 @@ jobs:
           faltando=""
           # data/dbc/, data/swu/, data/cyberpunk/, data/wow/, data/lotr/,
           # data/sorcery/, data/harrypotter/, data/weiss/, data/mbc/, data/dbz/ e
-          # data/cdm/, data/gcd/, data/gw/, data/narutocg/, data/godzilla/, data/palworld/, data/fftcg/, data/vanguard/, data/grandarchive/, data/hololive/, data/duelmasters/, data/shadowverse/, data/dbs/, data/seiya/, data/seiyatc/ e data/seiyacr/: jogos novos (2026-09-24 a 2026-11-14);
+          # data/cdm/, data/gcd/, data/gw/, data/narutocg/, data/godzilla/, data/palworld/, data/fftcg/, data/vanguard/, data/grandarchive/, data/hololive/, data/duelmasters/, data/shadowverse/, data/dbs/, data/seiya/, data/seiyatc/, data/seiyacr/ e data/fma/: jogos novos (2026-09-24 a 2026-11-22);
           # data/dbsb/, data/dbva/ e data/dbbw/ (2026-11-13), as séries do dbc que viraram jogo. Enquanto o cache
           # for de antes deles, o build rápido publicaria o tile do hub sem
           # catálogo nenhum atrás.
@@ -191,6 +192,7 @@ jobs:
                    data/seiya/manifest.generated.js \
                    data/seiyatc/manifest.generated.js \
                    data/seiyacr/manifest.generated.js \
+                   data/fma/manifest.generated.js \
                    data/narutoboruto/manifest.generated.js                    data/narutotc/manifest.generated.js \
                    data/narutocg/manifest.generated.js \
                    data/godzilla/manifest.generated.js \
@@ -902,6 +904,21 @@ jobs:
         if: env.RODA_SYNC != 'true'
         run: node scripts/sync-saint-seiya.mjs --no-fetch || echo "sync-saint-seiya --no-fetch falhou; segue com o catalogo do cache"
 
+      # Fullmetal Alchemist Carddass (Bandai 2004-2005): o jogo vintage fma, o
+      # card game ALCHEMIC CARD BATTLE (FILE.1 a 4) e as placas da Jumbo
+      # Carddass. Numero, raridade e scan pelo animecollection.fr (snapshot
+      # versionado em data/vintage/fma-carddass.json, nao regride, ids fixos);
+      # o nome foi transcrito dos scans (scripts/data/fma-nomes.json). Sem preco.
+      # O Carddass Masters do FMA sai no passo do Carddass Masters.
+      - name: Catalogo vintage Fullmetal Alchemist Carddass
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/sync-fma.mjs || echo "sync-fma falhou; segue com o snapshot versionado"
+
+      # O mesmo jogo no build RAPIDO (push), sem rede (a licao do dbc, PR #215).
+      - name: Catalogo vintage Fullmetal Alchemist Carddass (build rapido, sem rede)
+        if: env.RODA_SYNC != 'true'
+        run: node scripts/sync-fma.mjs --no-fetch || echo "sync-fma --no-fetch falhou; segue com o catalogo do cache"
+
       # Dragon Ball Carddass (Bandai 1988-1997): o jogo vintage dbc. Lista carta
       # a carta de todas as series pelo dbzcollection.fr (numero, raridade e
       # scan, snapshot em data/vintage/dbc-dbzcollection.json) e o nome do
@@ -1196,6 +1213,7 @@ jobs:
             data/seiya/sets
             data/seiyatc/sets
             data/seiyacr/sets
+            data/fma/sets
             data/narutoboruto/sets
             data/narutotc/sets
             data/narutocg/sets

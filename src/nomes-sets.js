@@ -227,6 +227,15 @@
     "cdm-eva-cr3": "CR Evangelion — Evangelical of the Beginnings",
     // 新劇場版: o título em inglês do filme (2.0); "Chapter 2" é nosso (第2章).
     "cdm-eva-ha2": "Evangelion: 2.0 You Can (Not) Advance Chapter 2",
+    // Fullmetal Alchemist (2026-11-22): as partes como o pacote as escreve
+    // (PART 1–3, FINAL PART) e o título em inglês do filme ("Fullmetal
+    // Alchemist the Movie: Conqueror of Shamballa"; o "The" maiúsculo é pra
+    // ler bem dentro da seção, onde o groupCdmSets tira o nome da IP).
+    "cdm-fma-p1": "Fullmetal Alchemist Part 1",
+    "cdm-fma-p2": "Fullmetal Alchemist Part 2",
+    "cdm-fma-p3": "Fullmetal Alchemist Part 3",
+    "cdm-fma-p4": "Fullmetal Alchemist Final Part",
+    "cdm-fma-m1": "Fullmetal Alchemist The Movie: Conqueror of Shamballa",
     // ---- Gundam War (jogo gw, sync-gundam-war.mjs). Tradução nossa (o SET_EN
     // do sync, travado no tests/gundam-war.test.mjs): "第N弾" vira "Part N".
     "gw-s01": "Part 1",
@@ -330,6 +339,17 @@
     "ss-rb01": "Reborn Saint Paradise — A Heroic Legend Revived!",
     "ss-rb02": "Reborn Saint Paradise — Clash! The Proud Assassins",
     "ss-rb03": "Reborn Saint Paradise — Assemble! Gold Saints",
+    // ---- Fullmetal Alchemist Carddass (sync-fma.mjs). O card game com o
+    // nome do produto na frente ("Alchemic Card Battle File 1"), que o
+    // groupFmaSets tira dentro da seção; as placas pelo nome do produto
+    // (tradução nossa de アルケミストプレートコレクション). É o setNameEn do sync.
+    "fma-f1": "Alchemic Card Battle File 1",
+    "fma-f2": "Alchemic Card Battle File 2",
+    "fma-f3": "Alchemic Card Battle File 3",
+    "fma-f4": "Alchemic Card Battle File 4",
+    "fma-pl1": "Alchemist Plate Collection",
+    "fma-pl2": "Alchemist Plate Collection 2",
+    "fma-pl3": "Alchemist Plate Collection 3",
     // ---- Gundam Carddass (linha gcd do jogo gundam, sync-gundam-carddass.mjs).
     // Com a SÉRIE na frente ("SD Gundam Gaiden Part 1"): fora da página da linha
     // "Part 1" seria de cinco séries; dentro da seção da série o
