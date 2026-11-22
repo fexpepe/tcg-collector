@@ -210,7 +210,16 @@ async function run() {
     || a.id.localeCompare(b.id));
   console.log(`Total: ${merged.length} cartas, ${Object.keys(pricing).length} com preço.`);
 
-  for (const c of merged) c.setLogo = "/assets/games/game_wow.webp";
+  // `vintage: true` em TODAS as cartas, inclusive as preservadas (por isso aqui
+  // e não em cardOf): os outros jogos vintage (LOTR, Harry Potter, Naruto…) já
+  // gravam a marca no sync, e o WoW foi o único a ficar sem — 0 das 4.672
+  // cartas a tinham em 2026-11-22. Sem ela a busca do eBay não leva o ano
+  // (vintageSearchYear, shared.js) e o selo de vintage dos badges não conta a
+  // carta; o filtro Vintage já funcionava pelo prefixo "wow-".
+  for (const c of merged) {
+    c.setLogo = "/assets/games/game_wow.webp";
+    c.vintage = true;
+  }
 
   const bySet = new Map();
   for (const c of merged) { if (!bySet.has(c.set)) bySet.set(c.set, []); bySet.get(c.set).push(c.id); }
