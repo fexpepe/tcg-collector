@@ -9541,19 +9541,26 @@
     if (n) lotes.push(atual);
     if (!lotes.length) return { cards: [], pricing: {} };
 
-    const cards = [], pricing = {};
-    for (const lote of lotes) {
-      let r;
-      try {
-        r = await fetch("/api/collection", {
+    // Os lotes saem JUNTOS (2026-11-22). Em fila, uma coleção de 3.000 cartas
+    // pagava três idas à borda, uma atrás da outra, antes de a tela desenhar.
+    // O Promise.all devolve na ordem dos lotes, então as cartas chegam na
+    // mesma ordem de antes. Qualquer falha devolve null e os chunks assumem:
+    // rede caída ou JSON torto só nesta carga; 503/404 desliga a borda pra
+    // sessão (o `throw` abaixo liga a marca antes de sair).
+    let partes;
+    try {
+      partes = await Promise.all(lotes.map(async (lote) => {
+        const r = await fetch("/api/collection", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(lote)
         });
-      } catch (e) { return null; }                 // rede caiu: chunks assumem
-      if (!r.ok) { collectionApiOff = true; return null; }  // 503/404: desliga pra sessão
-      let j;
-      try { j = await r.json(); } catch (e) { return null; }
+        if (!r.ok) throw (collectionApiOff = true);
+        return r.json();
+      }));
+    } catch (e) { return null; }
+    const cards = [], pricing = {};
+    for (const j of partes) {
       Object.keys(j.c || {}).forEach((game) => {
         (j.c[game] || []).forEach((card) => { card.game = game; cards.push(card); });
       });
