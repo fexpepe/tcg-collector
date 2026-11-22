@@ -10,6 +10,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { loadShared } from "./lib/shared-sandbox.mjs";
 import { ESPELHO, GERACAO, LARGURAS, ORDEM, chaveBase, chaveDe, geracaoDoHost, injetaEspelho, matrizDe, statusDoEspelho, urlEspelho, versaoDe, webpDe } from "../scripts/lib/img-mirror.mjs";
+import { urlDoEspelho, urlDoEspelhoCom } from "../functions/_lib/img-espelho.js";
 import { readFileSync } from "node:fs";
 
 const sb = loadShared("window.__test = { mirrorImg };");
@@ -85,6 +86,49 @@ test("URL espelhada: só host COMPLETO — igual no build e no cliente", () => {
     assert.equal(mirrorImg(u, w), esperado, `cliente: ${u}`);
   }
   delete sb.SLEEVU;
+});
+
+// A terceira ponta (2026-11-22): a borda também calcula a URL, pra página da
+// carta já levar a imagem no HTML. functions/_lib/img-espelho.js é cópia de
+// propósito (o deploy apaga scripts/ antes do wrangler), então as três são
+// travadas contra os mesmos casos: build, cliente e borda.
+test("URL espelhada na borda = a do build = a do cliente (host comum, wsrv.nl, geração, host fora)", async () => {
+  const fonte = readFileSync(new URL("../functions/_lib/img-espelho.js", import.meta.url), "utf8");
+  const geracoes = { "assets.tcgdex.net": 3, "wsrv.nl": 2 };
+  const casos = [
+    [TCGDEX, 300], [TCGDEX, 1000], [TCGP, 300], [SCRY, 600], [WSRV, 300], [WSRV_WE, 600],
+    [LORCAST, 300], ["https://images.pokemontcg.io/base1/4.png", 300],
+    ["assets/games/game_pokemon.webp", 300], ["https://wsrv.nl/?w=440&output=webp", 300], ["", 300], [undefined, 300]
+  ];
+  // Só uma parte dos hosts espelhada (os outros caem no ""), com e sem geração.
+  for (const hosts of [ORDEM, ["assets.tcgdex.net", "wsrv.nl"], []]) {
+    for (const g of [{}, geracoes]) {
+      sb.SLEEVU = { imgMirrorHosts: hosts, imgMirrorGen: g };
+      for (const [u, w] of casos) {
+        const build = urlEspelho(u, hosts, w, g);
+        assert.equal(urlDoEspelhoCom(u, w, hosts, g), build, `borda × build: ${u} @${w}`);
+        assert.equal(mirrorImg(u, w), build, `cliente × build: ${u} @${w}`);
+      }
+    }
+  }
+  delete sb.SLEEVU;
+  // O arquivo CARIMBADO pelo deploy (o mesmo injetaEspelho do game.js) usa a lista carimbada.
+  const carimbado = injetaEspelho(fonte, { hosts: ["assets.tcgdex.net", "wsrv.nl"], geracoes });
+  const mod = await import("data:text/javascript;base64," + Buffer.from(carimbado).toString("base64"));
+  for (const [u, w] of casos) assert.equal(mod.urlDoEspelho(u, w), urlEspelho(u, ["assets.tcgdex.net", "wsrv.nl"], w, geracoes), `carimbado: ${u} @${w}`);
+  assert.equal(mod.urlDoEspelho(TCGDEX, 300), `${ESPELHO}assets.tcgdex.net/en/base/base1/4/high.png@300.g3.webp`);
+  assert.equal(mod.urlDoEspelho(SCRY, 300), "", "host fora da lista");
+  // Sem o carimbo (dev, espelho fora do ar no deploy) a borda não espelha nada.
+  assert.equal(urlDoEspelho(TCGDEX, 300), "");
+  // Arquivo sem marcador: o carimbo para com erro, como no game.js.
+  for (const m of ["IMG_MIRROR_HOSTS", "IMG_MIRROR_GEN", "IMG_MIRROR_450"]) {
+    assert.throws(() => injetaEspelho(fonte.replace(new RegExp(`var ${m} [^\\n]*`), ""), {}), /marcador SLEEVU_IMG_MIRROR/, m);
+  }
+});
+
+test("deploy: o apply-img-mirror carimba o game.js E o espelho da borda", () => {
+  const src = readFileSync(new URL("../scripts/apply-img-mirror.mjs", import.meta.url), "utf8").replace(/\r\n/g, "\n");
+  assert.ok(src.includes('["src/game.js", "functions/_lib/img-espelho.js"]'));
 });
 
 // Geração (13/10/2026): imagem regerada vai pra chave NOVA (.g<n>) — o cache

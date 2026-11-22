@@ -68,7 +68,12 @@ export function decoraApp(casca, pecas, rota) {
     .on('meta[name="twitter:description"]', conteudo(pecas.desc))
     .on("head", { element(el) { el.append(cabecaDaRota(pecas, rota), { html: true }); } })
     .on("#detailTitle", texto(pecas.h1))
-    .on("main", { element(el) { if (pecas.corpoHtml) el.append(pecas.corpoHtml, { html: true }); } });
+    .on("main", { element(el) {
+      // O esqueleto da carta no COMEÇO do main (2026-11-22): o detail.js só o
+      // punha depois do shared.js, e a rota da carta esconde o resto da tela.
+      if (pecas.esqueletoHtml) el.prepend(pecas.esqueletoHtml, { html: true });
+      if (pecas.corpoHtml) el.append(pecas.corpoHtml, { html: true });
+    } });
   if (pecas.ogImagem) {
     rw = rw
       .on('meta[property="og:image"]', conteudo(pecas.ogImagem))

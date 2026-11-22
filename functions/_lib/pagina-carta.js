@@ -15,6 +15,7 @@
 import { cardCode, alternateCodes } from "./card-code.js";
 import { jsonLdSeguro } from "./json-ld.js";
 import { rotuloDoDesempate } from "./desempate-carta.js";
+import { urlDoEspelho } from "./img-espelho.js";
 
 export const ORIGEM = "https://sleevu.app";
 // Mesmo orçamento de título das páginas de set (ver o prerender): o Google
@@ -656,6 +657,35 @@ const ESTILO = `<style>
         .seo-carta a { color: var(--accent, #e63946); text-decoration: none; }
       </style>`;
 
+// O ESQUELETO da tela da carta, já no HTML (2026-11-22). A rota da carta
+// esconde a tela do set por CSS (html[data-carta]) e só o detail.js, depois do
+// shared.js, punha o esqueleto: no celular em rede lenta a primeira pintura com
+// conteúdo ficava em 3,1 s e a imagem da carta só aos 7,3 s. Agora a borda
+// manda o esqueleto no HTML com o NOME da carta (texto, que conta como
+// conteúdo; um bloco de fundo não conta) e, quando o host da imagem está
+// espelhado, a imagem de 300 px: é a MESMA URL que o brilho e a miniatura do
+// popup pedem, então o popup a acha no cache. A de 1.000 px (150 a 250 KB)
+// fica de fora de propósito: pedida cedo, disputaria banda com o CSS e o JS.
+// A classe tem de ser .cs-esqueleto: é ela que a regra que esconde o set
+// poupa (styles.css, travada por tests/tela-carta.test.mjs). O que falta de
+// estilo mora aqui dentro, e não no styles.css (o núcleo está no teto de
+// peso). A caixa da imagem tem a proporção 63/88 do esqueleto de antes, pra
+// nada pular quando o popup entra; os filhos são <div> porque o nome é um <p>.
+const ESTILO_ESQUELETO = `<style>
+        .cs-esqueleto .cs-esq-img { aspect-ratio: 63 / 88; background: var(--panel); overflow: hidden; }
+        .cs-esqueleto .cs-esq-img img { display: block; width: 100%; height: 100%; object-fit: contain; }
+        .cs-esqueleto .cs-esq-nome { min-height: 260px; }
+        .cs-esqueleto .cs-esq-nome p { margin: 0; font-size: clamp(1.5rem, 4.5vw, 2.25rem); font-weight: 800; line-height: 1.15; overflow-wrap: anywhere; }
+      </style>`;
+// `espelhar` só existe pro teste (o carimbo do deploy não está em disco).
+export function esqueletoDaCarta(card, nome, espelhar = urlDoEspelho) {
+  const espelho = espelhar(card && card.image, 300);
+  const img = espelho
+    ? `<img src="${escapeAttr(espelho)}" fetchpriority="high" alt="" decoding="async">`
+    : "";
+  return `<div class="cs-esqueleto" aria-hidden="true">${ESTILO_ESQUELETO}<div class="cs-esq-img">${img}</div><div class="cs-esq-nome"><p>${escapeHtml(nome)}</p></div></div>`;
+}
+
 // As peças da página da carta, pra borda pôr na casca do app (detail.html). Desde
 // 2026-10-13 o endereço da carta mostra a CARTA como página (a tela da carta no
 // fluxo, ver createCardPreview no shared.js); antes era a tela do set com o
@@ -831,6 +861,8 @@ export function pecasDaCarta({ card, jogo, set, cartas, slugs, preco, moeda = "U
     ogImagem: img,
     alternates: [],
     jsonLds: [produto || obra, trilhaLd],
+    // O nome do esqueleto é o do h1 (a carta com o número e o desempate).
+    esqueletoHtml: esqueletoDaCarta(card, `${card.name}${codeBit}`),
     corpoHtml
   };
 }
