@@ -311,12 +311,64 @@
     if (!/^[A-Za-z0-9+\/=]+$/.test(nonce)) nonce = "";
     if (I18N && pacotes) {
       var uiLang = window.SLEEVU_LANG || "pt";
+      // Quem NÃO lê português (2026-11-22). O HTML nasce em pt e quem traduzia
+      // era só o shared.js, o último script a rodar: medido em produção com o
+      // navegador em inglês, 4G lento, a home pintava em português aos 1,5 s e
+      // só virava inglês aos 8,0 s. Agora (1) o pacote do idioma desce com
+      // prioridade alta, (2) o texto traduzível fica invisível enquanto ele não
+      // chega (data-i18n-espera + uma regra no styles.css; o layout não muda) e
+      // (3) assim que o ÚLTIMO pacote da página executa, o traduzCedo() abaixo
+      // já troca o texto, sem esperar o shared.js, que depois reaplica o mesmo.
+      // Prazo de 3 s: pacote lento ou perdido solta o português em vez de
+      // deixar a tela muda. Em português e pra robô (que fica no idioma do
+      // HTML) nada disto acontece. Em dev também não: lá não há pacote por
+      // idioma (I18N é null).
+      var cedo = uiLang !== "pt";
+      var faltam = 0;
+      var chegou = function () { if (--faltam > 0) return; traduzCedo(); soltaTexto(); };
       pacotes.split(",").forEach(function (base) {
         var arq = I18N[base] && (I18N[base][uiLang] || I18N[base].pt);
-        if (arq) document.write('<script defer src="' + arq + '"' + (nonce ? ' nonce="' + nonce + '"' : "") + '><\/script>');
+        if (!arq) return;
+        document.write('<script defer src="' + arq + '" fetchpriority="high"' + (nonce ? ' nonce="' + nonce + '"' : "") + '><\/script>');
+        if (!cedo) return;
+        // O script recém-escrito é o último do documento neste instante.
+        var escrito = document.scripts[document.scripts.length - 1];
+        if (!escrito || escrito.getAttribute("src") !== arq) return;
+        faltam++;
+        escrito.addEventListener("load", chegou);
+        escrito.addEventListener("error", chegou);
       });
+      if (cedo && faltam) {
+        document.documentElement.setAttribute("data-i18n-espera", "");
+        setTimeout(soltaTexto, 3000);
+      }
     }
   } catch (e) { /* i18n quebrado é melhor que página quebrada: t() devolve a chave */ }
+
+  function soltaTexto() { document.documentElement.removeAttribute("data-i18n-espera"); }
+
+  // Tradução do HTML estático assim que a tabela do idioma existe. É o mesmo
+  // efeito do applyTranslations do shared.js pro que está À VISTA (texto, HTML
+  // de confiança e placeholder), com a mesma troca do {game}; title e
+  // aria-label ficam pro shared.js. Chave que a tabela não tem fica como está
+  // no HTML: quem decide o que fazer com ela continua sendo o t().
+  function traduzCedo() {
+    try {
+      var tabela = (window.TCG_MESSAGES || {})[window.SLEEVU_LANG];
+      if (!tabela) return;
+      var jogo = (window.SLEEVU && window.SLEEVU.name) || "Pokémon";
+      var aplica = function (attr, poe) {
+        var els = document.querySelectorAll("[" + attr + "]");
+        for (var i = 0; i < els.length; i++) {
+          var texto = tabela[els[i].getAttribute(attr)];
+          if (texto != null) poe(els[i], String(texto).split("{game}").join(jogo));
+        }
+      };
+      aplica("data-i18n", function (el, v) { el.textContent = v; });
+      aplica("data-i18n-html", function (el, v) { el.innerHTML = v; });
+      aplica("data-i18n-placeholder", function (el, v) { el.placeholder = v; });
+    } catch (e) { /* o shared.js traduz depois, como sempre */ }
+  }
 
   // Varre a lista NA ORDEM de preferência do usuário: ["es","pt"] cai em
   // espanhol (temos), ["en-US","pt-BR"] cai em inglês (ele prefere inglês).
