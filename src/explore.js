@@ -137,42 +137,107 @@
   // cartas e mostra ~4-5 fileiras no GRID (tiles normais, com preview e +). Ao
   // digitar, o render() troca pros resultados da busca. O mini-row antigo
   // (exploreTopViewed) some — as mais-vistas agora vivem no grid.
+  //
+  // 2026-11-22: o ranking vem de UMA consulta e fica guardado no aparelho.
+  // Antes eram 47 pedidos ao Supabase (o top 6 de cada jogo), esperados todos,
+  // a cada abertura — medido em produção: conteúdo aos 3,1 s navegando e aos
+  // 5,7 s na primeira visita em 4G lento, com a grade vazia até lá. Agora:
+  //  - a lista global já vem em ordem de views e o corte de 6 por jogo é feito
+  //    aqui (escolheTop): o mesmo ranking, uma ida ao banco;
+  //  - o ranking guardado pinta sem ir ao Supabase, e só é buscado de novo
+  //    depois de 30 min (o novo vale pra PRÓXIMA abertura: trocar a ordem das
+  //    cartas debaixo do dedo de quem já está na tela seria pior);
+  //  - enquanto as cartas não chegam, a grade mostra esqueletos.
+  const TOP_GUARDADO = "tcg-explore-top-v1";
+  const TOP_VALE_MS = 30 * 60 * 1000;
   let topViewedReady = false;
   let topViewedPairs = [];
+  let topCarregando = false;
+
+  // As 30 mais vistas, com no máximo 6 por jogo e pelo menos 2 views, a partir
+  // da lista global. É a mesma conta de antes (top 6 de cada jogo, juntar,
+  // ordenar, ficar com 30): percorrer a lista em ordem de views contando por
+  // jogo dá o mesmo conjunto. Empate de views pode cair em outra ordem.
+  // <escolhe-top>
+  function escolheTop(linhas, games) {
+    const porJogo = {}, tops = [];
+    const emOrdem = (linhas || []).filter((x) => x && x.views >= 2 && games.indexOf(x.game) >= 0)
+      .sort((a, b) => b.views - a.views);
+    for (const x of emOrdem) {
+      porJogo[x.game] = (porJogo[x.game] || 0) + 1;
+      if (porJogo[x.game] > 6) continue;
+      tops.push({ id: x.card_id, views: x.views, game: x.game });
+      if (tops.length === 30) break;
+    }
+    return tops;
+  }
+  // </escolhe-top>
+
+  function leTopGuardado() {
+    try {
+      const j = JSON.parse(localStorage.getItem(TOP_GUARDADO) || "null");
+      return j && Array.isArray(j.tops) && j.tops.length >= 4 ? j : null;
+    } catch (e) { return null; }
+  }
+
+  // Resolve as cartas do ranking e deixa as mais vistas prontas pra pintar.
+  async function preparaTop(tops, games) {
+    const idsByGame = {};
+    games.forEach((g) => { idsByGame[g] = tops.filter((x) => x.game === g).map((x) => x.id); });
+    // Pela BORDA (/api/collection: só as ~30 cartas, já com preço). Antes a
+    // carga cruzada injetava, por jogo das mais vistas, o manifest e o
+    // indexes.generated.js INTEIRO (663 KB no Pokémon, 514 KB no Magic) e os
+    // chunks dos sets — 1,5 MB de dado medido em produção só pra abrir o
+    // Explorar. Borda fora do ar: os chunks, dentro do loadOwnedFast.
+    const [catalog] = await Promise.all([shared.loadOwnedFast(idsByGame), cambioPronto]);
+    shared.enrichSetTotals(catalog.cards || []).then((mudou) => { if (mudou) atualizaRotulos(); }).catch(() => { /* fica o número sozinho */ });
+    const byId = new Map((catalog.cards || []).map((c) => [c.id, c]));
+    const pairs = [];
+    for (const { id } of tops) {
+      const card = byId.get(id);
+      if (!card) continue;
+      // registra pro preview/posse funcionarem antes da 1ª busca (o
+      // ensureCatalog depois reescreve cardsById com o catálogo completo).
+      cardGameMap.set(card.id, card.game);
+      cardsById.set(card.id, card);
+      pairs.push({ card, variant: shared.defaultVariant(card) });
+    }
+    if (pairs.length < 4) return;
+    topViewedPairs = pairs;
+    topViewedReady = true;
+    if (!isSearching()) render({ resetCount: true });
+  }
+
   (async function loadTopViewed() {
     if (!shared.fetchTopViewed) return;
+    const games = shared.GAME_SLUGS || ["pokemon", "lorcana"];
+    const guardado = leTopGuardado();
+    topCarregando = true;
+    // Esqueleto direto na grade: o render() ainda não pode ser chamado aqui (o
+    // resto do módulo não foi declarado). Quem chega com ?q= já busca.
+    if (!new URLSearchParams(window.location.search).get("q")) shared.showSkeletons(elements.grid, "card", 8);
+    // Pedido que não volta (rede presa) não pode deixar esqueleto na tela pra
+    // sempre: aos 8 s eles saem. Se a resposta chegar depois, a grade entra.
+    const desiste = setTimeout(() => {
+      if (topViewedReady) return;
+      topCarregando = false;
+      if (!isSearching()) render({ resetCount: true });
+    }, 8000);
     try {
-      const games = shared.GAME_SLUGS || ["pokemon", "lorcana"];
-      const perGame = await Promise.all(games.map((g) => shared.fetchTopViewed(g, 6)));
-      const tops = games.flatMap((g, i) => perGame[i].map((x) => ({ id: x.card_id, views: x.views, game: g })))
-        .filter((x) => x.views >= 2)
-        .sort((a, b) => b.views - a.views)
-        .slice(0, 30);
-      if (tops.length < 4) return;
-      const idsByGame = {};
-      games.forEach((g) => { idsByGame[g] = tops.filter((x) => x.game === g).map((x) => x.id); });
-      // Pela BORDA (/api/collection: só as ~30 cartas, já com preço). Antes a
-      // carga cruzada injetava, por jogo das mais vistas, o manifest e o
-      // indexes.generated.js INTEIRO (663 KB no Pokémon, 514 KB no Magic) e os
-      // chunks dos sets — 1,5 MB de dado medido em produção só pra abrir o
-      // Explorar. Borda fora do ar: os chunks, dentro do loadOwnedFast.
-      const [catalog] = await Promise.all([shared.loadOwnedFast(idsByGame), cambioPronto]);
-      shared.enrichSetTotals(catalog.cards || []).then((mudou) => { if (mudou) atualizaRotulos(); }).catch(() => { /* fica o número sozinho */ });
-      const byId = new Map((catalog.cards || []).map((c) => [c.id, c]));
-      const pairs = [];
-      for (const { id } of tops) {
-        const card = byId.get(id);
-        if (!card) continue;
-        // registra pro preview/posse funcionarem antes da 1ª busca (o
-        // ensureCatalog depois reescreve cardsById com o catálogo completo).
-        cardGameMap.set(card.id, card.game);
-        cardsById.set(card.id, card);
-        pairs.push({ card, variant: shared.defaultVariant(card) });
+      if (guardado) await preparaTop(guardado.tops.filter((x) => x && games.indexOf(x.game) >= 0), games);
+      // Sem ranking guardado, guardado que não fechou 4 cartas, ou vencido.
+      if (!topViewedReady || Date.now() - guardado.t > TOP_VALE_MS) {
+        const tops = escolheTop(await shared.fetchTopViewed("", 200), games);
+        if (tops.length >= 4) {
+          try { localStorage.setItem(TOP_GUARDADO, JSON.stringify({ t: Date.now(), tops })); } catch (e) { /* sem storage: busca de novo na próxima */ }
+          if (!topViewedReady) await preparaTop(tops, games);
+        }
       }
-      topViewedPairs = pairs;
-      topViewedReady = pairs.length >= 4;
-      if (topViewedReady && !isSearching()) render({ resetCount: true });
     } catch (e) { /* seção é opcional */ }
+    clearTimeout(desiste);
+    topCarregando = false;
+    // Não deu (sem dados, rede): tira os esqueletos e volta à tela de entrada.
+    if (!topViewedReady && !isSearching()) render({ resetCount: true });
   })();
 
   // Comparador do Ordenar (src/ordenar.js, o mesmo de toda grade). Aqui mora
@@ -396,6 +461,9 @@
       if (!showTop) {
         elements.empty.hidden = true;
         pintaGrade([], { resetCount: true });
+        // As mais vistas ainda estão a caminho: esqueletos no lugar da grade
+        // vazia (qualquer re-render no meio da carga cai aqui e os mantém).
+        if (topCarregando) shared.showSkeletons(elements.grid, "card", 8);
         return;
       }
       if (elements.resultsTitle) elements.resultsTitle.textContent = t("home.topViewed");
