@@ -121,7 +121,9 @@ export const JOGOS = {
   },
   fab: {
     sync: "sync-fab.mjs",
-    guarda: ["localLogo(c.setId)", "data/fab/set-logos/"],
+    // 2026-11-22: o sync procura o arquivo pelo setId e, sem achar, pelo código
+    // impresso do set (arquivoDoLogo); o do setId continua valendo primeiro.
+    guarda: ["arquivoDoLogo(setId", "data/fab/set-logos/"],
     doSync: (c) => /^fab-/.test(String(c.id)),
     arquivo: (setId) => (SETID_SIMPLES.test(setId) ? `${winSafeName(String(setId).toUpperCase())}.webp` : null),
     fontes: "the-fab-cube (set.json, set_logo)"
