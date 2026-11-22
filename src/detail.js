@@ -493,6 +493,9 @@
     // e a Hero Rare numerada de Era of Spiders; depois as de fora do booster
     // (Promotion, Event e Treasure).
     herorush: ["C", "R", "SR", "GR", "UR", "MR", "SEC", "HR", "PR", "ER", "TR"],
+    // Rush of Ikorr (22/11/2026): a escada do booster (C, U, R, UR), a Alt Art
+    // (A) e o Token (T), como o TCGplayer grava.
+    ikorr: ["C", "U", "R", "UR", "A", "T"],
     narutokayou: ["R", "SR", "SSR", "UR", "◇UR", "PTR", "HR", "PU", "QR", "◇QR", "XR", "◇XR", "MR", "◇MR", "BP", "AR", "CR", "ASP", "◇ASP", "SP", "◇SP", "SE"],
     // One Piece Card Game (TCGCSV): as siglas da carta, Líder primeiro como no
     // jogo. Depois as vintage: o acabamento do Carddass Hyper Battle

@@ -97,6 +97,7 @@
     narutomythos: ["Naruto Mythos", "#f65400"],
     narutokayou: ["Naruto Kayou", "#f65400"],
     herorush: ["Marvel Hero Rush", "#b0003a"],
+    ikorr: ["Rush of Ikorr", "#70f0c8"],
     mbc: ["Miracle Battle", "#fb923c"],
     cdm: ["Carddass Masters", "#a21caf"],
     gcd: ["Gundam Carddass", "#2563eb"],

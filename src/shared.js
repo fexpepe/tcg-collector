@@ -7431,7 +7431,12 @@
     // Shadowverse: Evolve (13/11/2026): TCGplayer na linha "shadowverse-evolve"
     // (o prefixo do endereço de produto de lá). Loja BR e Cardmarket NÃO foram
     // conferidos.
-    shadowverse: { tcgLine: "shadowverse-evolve", usText: "shadowverse evolve" }
+    shadowverse: { tcgLine: "shadowverse-evolve", usText: "shadowverse evolve" },
+    // Rush of Ikorr (conferido em 22/11/2026): TCGplayer na linha
+    // "rush-of-ikorr" (o productLineUrlName da API de linhas de lá). Sem loja
+    // BR (MYP e Liga não têm o jogo) e sem Cardmarket: só vendem nos EUA e no
+    // Canadá.
+    ikorr: { tcgLine: "rush-of-ikorr", usText: "rush of ikorr" }
   };
   function marketOf(game) { return MARKETS[game] || MARKETS.pokemon; }
 
@@ -9057,6 +9062,7 @@
     "narutomythos",
     "narutokayou",
     "herorush",
+    "ikorr",
     "mbc",
     "cdm",
     "gcd",
@@ -9122,6 +9128,7 @@
     shadowverse: "#818cf8", // índigo claro (confirmada pelo Fernando, 2026-11-14): o ciano do logo já é do hololive e do WoW; 7.0:1 com preto, a 60 do Final Fantasy e a 83 do Yu-Gi-Oh!
     narutomythos: "#f65400", // = narutocg: mesma IP (Naruto), mesma cor
     narutokayou: "#f65400", // = narutocg: mesma IP (Naruto), mesma cor
+    ikorr: "#70f0c8",      // menta (proposta, 2026-11-22): a Upper Deck não tem cor de marca no jogo; 15.0:1 com preto, a 73 do vizinho mais próximo contando também os accents do styles.css (o verde #4ade80 é o do Hunter × Hunter no escuro)
     herorush: "#b0003a",   // carmim: o vermelho da Marvel (#ec1d24) fica a 25 do Pokémon; 7.2:1 com branco, a 70 do Pokémon e a 83 do Flesh and Blood e do Harry Potter (proposta, 2026-11-19)
     duelmasters: "#fde68a", // ouro-claro, o amarelo do logo; 16.9:1 com preto, a 88 do Sorcery, o vizinho mais próximo (definida em 14/11/2026)
     vanguard: "#ff5a7a",   // coral: o vermelho do logo, clareado pra não colar no Pokémon (#e23030); 7.0:1 com preto, a 84 do Miracle Battle e a 90 do Pokémon (definida em 14/11/2026)

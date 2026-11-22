@@ -52,7 +52,8 @@
     hololive: { slug: "hololive", name: "hololive Official Card Game", dataDir: "data/hololive/" }, // TCGCSV cat. 87 (Bushiroad/COVER 2025+, só a edição EN; reimpressão e arte alternativa = cartas próprias)
     shadowverse: { slug: "shadowverse", name: "Shadowverse: Evolve", dataDir: "data/shadowverse/" }, // TCGCSV cat. 73 (Bushiroad/Cygames 2023+, só a edição EN; Premium, SL e Evolved = cartas próprias)
     narutomythos: { slug: "narutomythos", name: "Naruto Mythos TCG", dataDir: "data/narutomythos/" }, // galeria oficial (Cicaboom 2026+, EN; a 2ª edição do Set 1 = set próprio; sem preço)
-    herorush: { slug: "herorush", name: "Marvel Hero Rush", dataDir: "data/herorush/" }, // API do site oficial (marvelherorush.com, 2026+, EN; imagem só pelo espelho: a URL da fonte é assinada e vence; sem preço)
+    herorush: { slug: "herorush", name: "Marvel Hero Rush", dataDir: "data/herorush/" },
+    ikorr: { slug: "ikorr", name: "Rush of Ikorr", dataDir: "data/ikorr/" }, // TCGCSV cat. 94 (Upper Deck 2025+, EN; o Fracture e o Rapture Foil = versões da carta, não cartas próprias) // API do site oficial (marvelherorush.com, 2026+, EN; imagem só pelo espelho: a URL da fonte é assinada e vence; sem preço)
     narutokayou: { slug: "narutokayou", name: "Naruto Kayou", dataDir: "data/narutokayou/" }, // kayouofficial.com (Kayou, só a edição em inglês, 2025+; coleção, não jogo de mesa; sem preço)
     vanguard: { slug: "vanguard", name: "Cardfight!! Vanguard", dataDir: "data/vanguard/" }, // TCGCSV cat. 16 (Bushiroad 2011+, as cinco eras, só a edição EN; paralelas = cartas próprias)
     duelmasters: { slug: "duelmasters", name: "Duel Masters", dataDir: "data/duelmasters/" }, // banco oficial da Takara Tomy + preço da Yuyu-tei (o jogo japonês, 2002+; fora da TCGCSV)
@@ -88,7 +89,7 @@
     ["dragon-ball-fusion-world", "dbfw"], ["digimon-card-game", "digimon"], ["union-arena", "unionarena"],
     ["cyberpunk-tcg", "cyberpunk"], ["sorcery-contested-realm", "sorcery"], ["naruto-card-game", "narutocg"],
     ["weiss-schwarz", "weiss"], ["godzilla-card-game", "godzilla"], ["palworld-official-card-game", "palworld"], ["final-fantasy-tcg", "fftcg"], ["grand-archive", "grandarchive"], ["hololive-official-card-game", "hololive"], ["shadowverse-evolve", "shadowverse"], ["cardfight-vanguard", "vanguard"], ["duel-masters", "duelmasters"],
-    ["naruto-mythos-tcg", "narutomythos"], ["naruto-kayou", "narutokayou"], ["marvel-hero-rush", "herorush"], ["dragon-ball-super-card-game", "dbs"],
+    ["naruto-mythos-tcg", "narutomythos"], ["naruto-kayou", "narutokayou"], ["marvel-hero-rush", "herorush"], ["rush-of-ikorr", "ikorr"], ["dragon-ball-super-card-game", "dbs"],
     // Daqui em diante, os VINTAGE (o `vintage` do registro): o PRIMEIRO_VINTAGE
     // abaixo é a posição desta linha, e o teste confere um por um.
     ["gundam-carddass", "gcd"], ["saint-seiya-carddass", "seiya"],
@@ -109,7 +110,7 @@
   // Quantos jogos em atividade vêm antes do primeiro vintage na lista acima.
   // É por ele que o menu sabe acender "Vintage", e não "Jogos", na tela de um
   // jogo que saiu de linha (SLEEVU.vintage, lido pelo shared.js).
-  var PRIMEIRO_VINTAGE = 28;
+  var PRIMEIRO_VINTAGE = 29;
   // Linha que virou seção de outra (o LINE_ALIASES do shared.js).
   var LINHA_APELIDO = { "nrt-nf": "nrt-dc", "nrt-nx": "nrt-dc" };
   // Linha que virou JOGO (o LINHAS_VIRARAM_JOGO do functions/_lib/jogos.js): o

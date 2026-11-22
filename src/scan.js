@@ -78,7 +78,9 @@
     // confusões mais comuns), só com 3+ letras ("EB01" e "PRB01" são reais) e,
     // sem dígito nenhum no prefixo, só com sufixo numérico — o Yu-Gi-Oh tem
     // sets de 4 letras terminados em I/O (SHVI, PRIO), sempre com "-EN".
-    const movivel = /[OI]$/.test(letras) && letras.length > 2
+    // Fica de fora o código de set que TERMINA mesmo em I: o ROI do Rush of
+    // Ikorr ("ROI-001 R") virava "RO1-001" (2026-11-22).
+    const movivel = /[OI]$/.test(letras) && letras.length > 2 && letras !== "ROI"
       && (/\d/.test(resto) || (sufixoNumerico && letras.length === 3 && !resto));
     if (movivel) {
       resto = letras.slice(-1) + resto;
@@ -502,7 +504,10 @@
     narutokayou: [/KAYOU/],
     // Marvel Hero Rush: o nome do jogo. "MARVEL" sozinho não entra: o Magic
     // tem sets da Marvel (Universes Beyond) com o © dela no rodapé.
-    herorush: [/HERO ?RUSH/]
+    herorush: [/HERO ?RUSH/],
+    // Rush of Ikorr: o nome do jogo (verso). O "©2025 UDC" do rodapé fica de
+    // fora: a Upper Deck também publicou o WoW TCG.
+    ikorr: [/IKORR/]
   };
   const FORMATOS = [
     // "EB01-001" é o Extra Booster do One Piece e o Event Pack do Marvel Hero
@@ -544,6 +549,11 @@
     // Cheer "hY01-001" / "hYS01-001" e a promo "hPR-012" (2026-11-13). O "h"
     // minúsculo da marca chega em caixa alta do extrair.
     [/^H(?:(?:BP|SD|EB|YS?)\d{2}|PR)-\d{3}$/, ["hololive"]],
+    // Rush of Ikorr: o código do set, de três ou quatro letras com R na
+    // frente, e o número ("ROI-001 R", "RIPC-007 R"; a raridade ao lado fica
+    // de fora). Nenhum outro jogo do catálogo numera assim (medido em
+    // 22/11/2026), então o formato basta pra dizer o jogo.
+    [/^R[A-Z]{2,3}-\d{3}$/, ["ikorr"]],
     // Shadowverse: Evolve: "BP01-001EN", a paralela com a sigla antes do
     // número ("BP19-SL16EN", "CP01-P40EN"), o Gloryfinder com a letra do deck
     // ("GFB01a-055EN") e a promo "PR-245EN" (2026-11-13). O "EN" colado no

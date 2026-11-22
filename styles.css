@@ -597,6 +597,19 @@
   --accent: #b0003a; --accent-dark: #930030; --accent-rgb: 176, 0, 58;
   --accent-soft: rgba(176, 0, 58, 0.1); --on-accent: #ffffff;
 }
+/* Rush of Ikorr: menta (#70f0c8, o do GAME_COLOR; proposta de 22/11/2026 —
+   o verde #4ade80 já é o accent do Hunter × Hunter no escuro). Com texto
+   escuro no escuro (14:1 no fundo); no claro some no branco, então fecha
+   pro #047a63 com texto branco (5.3:1). */
+[data-game-accent="ikorr"] {
+  --accent: #70f0c8; --accent-dark: #4fd9ad; --accent-rgb: 112, 240, 200;
+  --accent-soft: rgba(112, 240, 200, 0.16); --on-accent: #0a0c10;
+}
+[data-theme="light"][data-game-accent="ikorr"],
+[data-theme="light"] [data-game-accent="ikorr"] {
+  --accent: #047a63; --accent-dark: #036150; --accent-rgb: 4, 122, 99;
+  --accent-soft: rgba(4, 122, 99, 0.1); --on-accent: #ffffff;
+}
 [data-game-accent="all"] {
   --accent: #e3e7ee; --accent-dark: #c3c9d4; --accent-rgb: 227, 231, 238;
   --accent-soft: rgba(227, 231, 238, 0.12); --on-accent: #0a0c10;

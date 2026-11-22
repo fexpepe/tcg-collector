@@ -8,6 +8,17 @@ poucos.)
 
 ## Pendentes de aplicar
 
+- `20261122a` — libera o slug `ikorr` (Rush of Ikorr, Upper Deck, 2025+) nas
+  duas whitelists de jogo (`card_views`/`increment_card_view` e
+  `contribute_price`; `20261122a_add_ikorr.sql`). Cópia da `20261119a`
+  (Marvel Hero Rush, a última aplicada) com o `ikorr` a mais: **ela cobre a
+  20261119a** e, por ela, todas as de jogo anteriores. Só a lista muda.
+  Qualquer uma das anteriores rodada **depois** desta tiraria o `ikorr`. Sem
+  ela, a view de carta e o Preço da Comunidade do jogo novo são descartados
+  em silêncio. Conferir com o par de `curl` do fim do arquivo: a view de
+  `ikr-723958` tem de **criar a linha** no `card_views` (o 204 sozinho não
+  prova nada). **A próxima migração de jogo copia esta.**
+
 - `20261121a` — /admin: o BLOG post por post (`20261121a_admin_blog.sql`).
   O `path` do evento é o 1º segmento do endereço, então `/blog` (a lista) e
   `/blog/<post>` viravam o mesmo "blog": o painel sabia quanta gente passou

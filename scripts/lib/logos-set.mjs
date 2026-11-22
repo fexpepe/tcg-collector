@@ -172,6 +172,7 @@ export const FORA = {
   narutocg: "o set de promos usa o logo do jogo (curadoria do sync); sem set de booster ainda",
   narutomythos: "sem logo de set publicado (o site oficial só tem a arte de capa de cada set; auditado em 2026-11-12)",
   herorush: "sem logo de set publicado (a página de produtos do site oficial só tem a foto da caixa; auditado em 2026-11-19)",
+  ikorr: "só o Epic Journey tem logo publicado (upperdeck.com, 565×265, auditado em 2026-11-22); falta curar, os outros sets ficam no nome",
   narutokayou: "o site oficial usa o logo do Naruto em toda série; nenhuma série tem logo próprio publicado (auditado em 2026-11-12)",
   palworld: "sem logo de set publicado (páginas de produto do site oficial auditadas em 2026-11-11: só arte)"
 };
