@@ -170,6 +170,39 @@ test("título: o nome da carta nunca é cortado, o nome do set é o primeiro a s
   assert.equal(longo, "Um Nome De Carta Bem Comprido Mesmo OP16-119 OP16 | Sleevu");
 });
 
+// Os dados do set pedidos mais cedo (2026-11-22): um preload por arquivo do
+// set no <head>, em modo CORS (o fetch do cliente é CORS: sem o crossorigin o
+// preload não casa e o arquivo desce duas vezes), no máximo 3, e nenhum
+// quando a tela estreita a lista (?setId=/?region=).
+test("preload dos arquivos do set: 1, 3 e 5 arquivos, e nenhum quando a tela estreita", () => {
+  const preloads = (arquivos, extra = {}) => [...cabecaDaRota({}, { caminho: "/games/pokemon/151", arquivos, ...extra })
+    .matchAll(/<link rel="preload" as="fetch" crossorigin href="([^"]*)">/g)].map((m) => m[1]);
+  const f = ["data/sets/en/a.json", "data/sets/ja/a.json", "data/sets/pt/a.json", "data/sets/zh-cn/a.json", "data/sets/zh-tw/a.json"];
+  assert.deepEqual(preloads(f.slice(0, 1)), ["/data/sets/en/a.json"], "o href é absoluto: é o que o cliente pede com o <base href=\"/\">");
+  assert.deepEqual(preloads(f.slice(0, 3)), f.slice(0, 3).map((x) => "/" + x));
+  assert.deepEqual(preloads(f), f.slice(0, 3).map((x) => "/" + x), "no máximo 3");
+  assert.deepEqual(preloads(f, { estreita: true }), [], "?setId=/?region=: o cliente baixa uma edição só");
+  assert.deepEqual(preloads([]), []);
+  assert.deepEqual(preloads(undefined), [], "rota sem arquivos (a tela do jogo, o teste antigo) não emite nada");
+  assert.match(preloads(['data/sets/"x".json'])[0], /&quot;/, "escapado");
+  // O preload vai depois do <meta> da rota, no mesmo acréscimo ao <head>.
+  const cabeca = cabecaDaRota({}, { caminho: "/games/x/y", arquivos: f.slice(0, 1) });
+  assert.ok(cabeca.indexOf('<meta name="sleevu-rota"') < cabeca.indexOf('<link rel="preload"'));
+  // A borda passa o `f` do mapa e a marca de lista estreita, e a resposta
+  // estreita não lê nem grava o cache (a chave dele não leva a query).
+  const borda = readFileSync(new URL("../functions/games/[[path]].js", import.meta.url), "utf8").replace(/\r\n/g, "\n");
+  assert.ok(borda.includes("arquivos: entrada.f, estreita }"));
+  assert.ok(borda.includes("const estreita = /[?&](setId|region)=/.test(busca);"));
+  assert.ok(borda.includes("estreita ? null : await daBorda(chave)") && borda.includes("if (!estreita) guardaNaBorda("));
+});
+
+test("o detail.js reaproveita as cartas da tela no preparaEnderecos e pede o mapa com prioridade baixa", () => {
+  const src = readFileSync(new URL("../src/detail.js", import.meta.url), "utf8").replace(/\r\n/g, "\n");
+  assert.ok(src.includes("let doSet = detailSetId || detailRegion ? [] : cards.filter((c) => c && c.set === entrada.n && !c.retired);"));
+  assert.ok(src.includes("if (!doSet.length) {\n      const listas = await Promise.all((entrada.f || []).map((f) => fetch(f)"), "sem cartas na tela, busca como antes");
+  assert.ok(src.includes("fetch(`data/game-pages/${url}.json`, { priority: \"low\" })"));
+});
+
 test("a rota no <head>: o caminho, o set e a carta, escapados", () => {
   const cabeca = cabecaDaRota({ alternates: [{ hreflang: "pt-BR", href: "https://sleevu.app/games/x/y" }] },
     { caminho: "/games/x/y/z", game: "pokemon", set: 'Set "A" & <B>', card: "id-1" });

@@ -318,7 +318,12 @@ async function telaDoSetDecorada(context, rota) {
   if (casca.status !== 200) return casca;
   const cascaHtml = await casca.text();
   const chave = new Request(`${ORIGEM}${caminho}?b=${encodeURIComponent(buildDaCasca(cascaHtml) || "dev")}`);
-  const guardada = await daBorda(chave);
+  // Com ?setId= ou ?region= a tela baixa UMA edição do set, e o preload dos
+  // arquivos (cabecaDaRota) não vale. A chave do cache não leva a query, então
+  // essa resposta nem lê nem grava o cache: se a primeira visita do dia fosse
+  // uma dessas, a página sem preload ficaria guardada pra todo mundo (2026-11-22).
+  const estreita = /[?&](setId|region)=/.test(busca);
+  const guardada = estreita ? null : await daBorda(chave);
   if (guardada) return comVitrine(guardada, request);
 
   const { cartas, arquivo } = await cartasDaPagina(env, request, entrada);
@@ -342,7 +347,7 @@ async function telaDoSetDecorada(context, rota) {
     pecas = pecasDoSet({ jogo: rota.jogo, slug: rota.set, nome: entrada.n, cartas, slugs });
   }
   const decorada = decoraApp(new Response(cascaHtml, casca), pecas,
-    { caminho, game: rota.jogo.game, set: entrada.n, card: card ? String(card.id) : "" });
+    { caminho, game: rota.jogo.game, set: entrada.n, card: card ? String(card.id) : "", arquivos: entrada.f, estreita });
   // Os cabeçalhos da casca trazem a CSP e o resto do _headers; o comVitrine
   // troca a CSP pela com nonce a cada resposta, por isso o que vai pro cache
   // da borda é a página ANTES dele.
@@ -351,7 +356,7 @@ async function telaDoSetDecorada(context, rota) {
   headers.set("content-type", "text/html; charset=utf-8");
   headers.set("cache-control", `public, max-age=0, s-maxage=${BORDA_S}, must-revalidate`);
   const resposta = new Response(await decorada.text(), { status: 200, headers });
-  guardaNaBorda(context.waitUntil, chave, resposta);
+  if (!estreita) guardaNaBorda(context.waitUntil, chave, resposta);
   return comVitrine(resposta, request);
 }
 

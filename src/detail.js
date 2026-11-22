@@ -1045,7 +1045,10 @@
   // lê pra montar esta tela; uma leitura por página.
   function carregaMapa(url) {
     if (!mapaDoJogo) {
-      mapaDoJogo = fetch(`data/game-pages/${url}.json`)
+      // priority "low" (2026-11-22): são ~26 KB que só servem aos endereços e
+      // desciam junto com as primeiras imagens da tela. A rota de carta e a
+      // de set já chegam resolvidas pela borda (o <meta> sleevu-rota).
+      mapaDoJogo = fetch(`data/game-pages/${url}.json`, { priority: "low" })
         .then((r) => (r.ok ? r.json() : null))
         .catch(() => null);
     }
@@ -1134,11 +1137,20 @@
     const slugDoSet = Object.keys(sets).find((k) => sets[k].n === detailName);
     if (!slugDoSet) return;
     const entrada = sets[slugDoSet];
-    const listas = await Promise.all((entrada.f || []).map((f) => fetch(f)
-      .then((r) => (r.ok ? r.json() : []))
-      .catch(() => [])));
-    const doSet = [].concat(...listas.map((l) => (Array.isArray(l) ? l : [])))
-      .filter((c) => c && c.set === entrada.n && !c.retired);
+    // As cartas do set JÁ estão na tela (resolveCards baixou os mesmos chunks
+    // do mapa): pedir os arquivos de novo era o segundo download do mesmo set
+    // (2026-11-22). Só vale quando a tela não estreitou a lista: com ?setId= ou
+    // ?region= o entradasDoSet baixa uma edição só, e o endereço (o sufixo de
+    // idioma das cartas) é calculado sobre o set INTEIRO. Aí, e se o catálogo
+    // da tela não trouxe nenhuma carta do set, busca como antes.
+    let doSet = detailSetId || detailRegion ? [] : cards.filter((c) => c && c.set === entrada.n && !c.retired);
+    if (!doSet.length) {
+      const listas = await Promise.all((entrada.f || []).map((f) => fetch(f)
+        .then((r) => (r.ok ? r.json() : []))
+        .catch(() => [])));
+      doSet = [].concat(...listas.map((l) => (Array.isArray(l) ? l : [])))
+        .filter((c) => c && c.set === entrada.n && !c.retired);
+    }
     const semente = slugsDoSet;
     slugsDoSet = slugsDasCartas(doSet);
     // A carta aberta pela rota da borda segue achável mesmo se o chunk não veio.

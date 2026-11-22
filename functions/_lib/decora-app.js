@@ -14,7 +14,24 @@ import { jsonLdSeguro } from "./json-ld.js";
 
 // O que entra no <head> além do que a casca já tem. Pura (o HTMLRewriter não
 // roda em node; tests/games-rota.test.mjs testa daqui).
-// rota: { caminho, game, set, setId?, card? }
+// rota: { caminho, game, set, setId?, card?, arquivos?, estreita? }
+//
+// Os dados do set pedidos MAIS CEDO (2026-11-22): o arquivo do set só era
+// pedido depois do detail.js rodar, no fim da fila (na página de set a grade
+// saía aos 4,2 s e a primeira imagem aos 7,3 s, no 4G lento). Um preload pra
+// cada arquivo do set (`rota.arquivos`, o `f` do mapa do jogo) põe o pedido no
+// começo do HTML. O `crossorigin` é obrigatório: o fetch do cliente é em modo
+// CORS, e sem o atributo o preload não casa e o arquivo desce duas vezes. O
+// href é o caminho absoluto, que é o que o cliente pede (relativo, com o
+// <base href="/">). No máximo 3 arquivos: um set com mais edições que isso
+// disputaria banda com o CSS e o JS. Com ?setId= ou ?region= (`estreita`) o
+// cliente baixa só uma edição (entradasDoSet), e o preload sobraria.
+export const PRELOADS_DO_SET_MAX = 3;
+export function preloadsDoSet(rota) {
+  if (!rota || rota.estreita) return "";
+  return (Array.isArray(rota.arquivos) ? rota.arquivos : []).slice(0, PRELOADS_DO_SET_MAX)
+    .map((f) => `<link rel="preload" as="fetch" crossorigin href="/${escapeAttr(String(f).replace(/^\/+/, ""))}">`).join("");
+}
 export function cabecaDaRota(pecas, rota) {
   const alternates = (pecas.alternates || [])
     .map((a) => `<link rel="alternate" hreflang="${escapeAttr(a.hreflang)}" href="${escapeAttr(a.href)}">`).join("");
@@ -22,7 +39,7 @@ export function cabecaDaRota(pecas, rota) {
     .map((o) => `<script type="application/ld+json">${jsonLdSeguro(o)}</script>`).join("");
   const dado = (nome, valor) => (valor ? ` data-${nome}="${escapeAttr(valor)}"` : "");
   const meta = `<meta name="sleevu-rota" content="${escapeAttr(rota.caminho)}"${dado("game", rota.game)}${dado("set", rota.set)}${dado("set-id", rota.setId)}${dado("card", rota.card)}>`;
-  return alternates + jsonLds + meta;
+  return alternates + jsonLds + meta + preloadsDoSet(rota);
 }
 
 const conteudo = (valor) => ({ element(el) { el.setAttribute("content", valor); } });
