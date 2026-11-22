@@ -4466,12 +4466,13 @@
       return out;
     } catch (e) { return {}; }
   }
-  // Top de views de um jogo (leitura pública do agregado).
+  // Top de views (leitura pública do agregado). Com `game`, o de um jogo. SEM
+  // jogo (2026-11-22, Explorar), o de TODOS numa consulta só, cada linha com o
+  // jogo dela: a abertura do Explorar fazia um pedido por jogo, 47 de uma vez.
   async function fetchTopViewed(game, limit) {
     if (!AUTH_ENABLED) return [];
     try {
-      const g = normalizeGame(game);
-      const r = await fetch(`${SUPABASE_URL}/rest/v1/card_views?game=eq.${g}&order=views.desc&limit=${limit || 8}&select=card_id,views`, { headers: authHeaders() });
+      const r = await fetch(`${SUPABASE_URL}/rest/v1/card_views?${game ? "game=eq." + normalizeGame(game) : "views=gte.2"}&order=views.desc&limit=${limit}&select=card_id,views,game`, { headers: authHeaders() });
       return r.ok ? await r.json() : [];
     } catch (e) { return []; }
   }
