@@ -71,12 +71,26 @@ const NOMES_DO_JOGO = {
   cdm: { nomes: ["Carddass", "CARDDASS", "カードダス", "Masters", "MASTERS", "マスターズ"] },
   hxh: { nomes: ["Hunter", "HUNTER", "ハンター", "Hyper Battle", "ハイパーバトル", "Carddass", "カードダス"] },
   dbc: { nomes: ["Dragon Ball", "DRAGON BALL", "ドラゴンボール", "Carddass", "カードダス"] },
+  // As três séries paralelas do Carddass (jogos próprios desde 2026-11-13): o
+  // set é o número da série ("第1弾", "第1集", "パート1", "'95EX"), sem a IP, a
+  // marca nem o nome da linha na frente.
+  dbsb: { nomes: ["Dragon Ball", "DRAGON BALL", "ドラゴンボール", "Carddass", "カードダス", "Super Battle", "スーパーバトル"] },
+  dbva: { nomes: ["Dragon Ball", "DRAGON BALL", "ドラゴンボール", "Carddass", "カードダス", "Visual Adventure", "ビジュアルアドベンチャー"] },
+  dbbw: { nomes: ["Dragon Ball", "DRAGON BALL", "ドラゴンボール", "Carddass", "カードダス", "Barcode Wars", "バーコードウォーズ"] },
   dbz: { nomes: ["Dragon Ball", "DBZ"] },
   harrypotter: { nomes: ["Harry Potter"] },
   // "LOTR Online" é o jogo DIGITAL da Decipher, outro produto: sem ele o nome
   // viraria "Online Promos".
   lotr: { nomes: ["The Lord of the Rings", "Lord of the Rings", "LOTR"], oficiais: ["LOTR Online Promos"] },
-  wow: { nomes: ["World of Warcraft", "Warcraft", "WoW"] }
+  wow: { nomes: ["World of Warcraft", "Warcraft", "WoW"] },
+  // Jogos de fonte própria (fora da TCGCSV) que entraram depois do contrato 7 e
+  // não estavam aqui: o set é o produto ("Starter Deck REALITY", "Konoha Shidō",
+  // "Heaven Scroll Series 1"), sem a marca na frente. "Marvel" sozinho entra
+  // porque o jogo é a licença da Marvel e nenhum set abre com ela; "Naruto" é a
+  // IP e o jogo ("Naruto Mythos", "Naruto Kayou") nunca abre o nome.
+  herorush: { nomes: ["Marvel Hero Rush", "Hero Rush", "Marvel"] },
+  narutomythos: { nomes: ["Naruto Mythos", "Naruto", "NARUTO"] },
+  narutokayou: { nomes: ["Naruto Kayou", "Naruto", "NARUTO", "火影忍者", "Kayou"] }
 };
 
 // Começa com o nome do jogo: em latim, seguido de fim ou de algo que não é
