@@ -31,13 +31,32 @@ const remove = { element(el) { el.remove(); } };
 // tradução do cliente trocava o texto do set por "Detalhe"/"Carregando".
 const texto = (valor) => ({ element(el) { el.removeAttribute("data-i18n"); el.setInnerContent(valor, { html: false }); } });
 
+// Os títulos em inglês e espanhol, nos atributos do <title> (2026-11-22). O
+// <title> da borda é o português (é o que o robô do Google lê, e ele roda o JS
+// em português) e o cliente nunca o traduzia: quem lê em inglês ou espanhol via
+// o título da aba em português. O data-i18n NÃO volta pro <title> (indexaria o
+// genérico "Sets - Sleevu"); o cliente só troca o document.title pelo atributo
+// do idioma quando o idioma não é o português. Sem título no idioma, sem
+// atributo (a página da carta, por exemplo, não tem idioma).
+export function atributosDoTitulo(pecas) {
+  const attrs = [];
+  if (pecas.tituloEn) attrs.push(["data-titulo-en", pecas.tituloEn]);
+  if (pecas.tituloEs) attrs.push(["data-titulo-es", pecas.tituloEs]);
+  return attrs;
+}
+export const tituloDaTela = (pecas) => ({ element(el) {
+  el.removeAttribute("data-i18n");
+  el.setInnerContent(pecas.titulo, { html: false });
+  for (const [nome, valor] of atributosDoTitulo(pecas)) el.setAttribute(nome, valor);
+} });
+
 // Resposta da casca -> resposta decorada (streaming).
 export function decoraApp(casca, pecas, rota) {
   let rw = new HTMLRewriter()
     // O CSS esconde o cabeçalho de texto das páginas de SET antes do 1º paint
     // (html[data-detail]); o game.js carimba o mesmo, isto só adianta.
     .on("html", { element(el) { el.setAttribute("data-detail", "set"); } })
-    .on("title", texto(pecas.titulo))
+    .on("title", tituloDaTela(pecas))
     .on('meta[name="description"]', conteudo(pecas.desc))
     // A casca é noindex (em /detail?type=set a indexável é esta); aqui é ela.
     .on('meta[name="robots"]', conteudo("index, follow"))

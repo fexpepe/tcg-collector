@@ -97,6 +97,13 @@
     document.querySelectorAll("[data-indice-jogo]").forEach((el) => {
       if (`/games/${el.getAttribute("data-indice-jogo")}` !== telaDoJogo) el.remove();
     });
+    // Título da aba no idioma de quem lê (2026-11-22). A borda escreve o <title>
+    // em português (é o que o robô lê) e põe o inglês e o espanhol em
+    // data-titulo-en/-es; o título não leva data-i18n (o Google rodaria o JS em
+    // português e indexaria o genérico "Sets - Sleevu"), então ninguém o trocava.
+    const tituloDaAba = document.querySelector("title");
+    const tituloNoIdioma = tituloDaAba && tituloDaAba.getAttribute(`data-titulo-${shared.getLanguage()}`);
+    if (tituloNoIdioma) document.title = tituloNoIdioma;
   }
   // "Sobre" do jogo vintage (src/sobre-jogo.js, 2026-11-12): o bloco com a
   // história no topo da tela, no lugar do destaque do "Último set". A borda já

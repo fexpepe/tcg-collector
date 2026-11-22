@@ -980,6 +980,16 @@
   // (rotaDaBorda) nunca é tocada: o título da carta de nome longo nem leva o
   // nome do set, e é o que o Google lê.
   function acertaTituloDaAba() {
+    // Fora do português, o título da borda (set) tem a versão no idioma de quem
+    // lê em data-titulo-en/-es (2026-11-22; sem data-i18n no <title>, o Google
+    // rodaria o JS em português e indexaria "Detalhe - Sleevu"). Vem ANTES da
+    // saída da página da borda: é exatamente nela que ele existe. Em pt, e na
+    // página da carta (sem atributo), segue o título da borda. Só vale pra
+    // página montada PARA este endereço (rotaDaBorda): a cópia guardada de
+    // OUTRO set traz o título dele, e essa cai no `${detailName}` abaixo.
+    const tituloDaBorda = rotaDaBorda && document.querySelector("title");
+    const noIdioma = tituloDaBorda && tituloDaBorda.getAttribute(`data-titulo-${shared.getLanguage()}`);
+    if (noIdioma) { document.title = noIdioma; return; }
     if (!detailName || rotaDaBorda || document.title.indexOf(detailName) >= 0) return;
     const el = document.querySelector("title");
     if (el) el.removeAttribute("data-i18n");
