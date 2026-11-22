@@ -131,3 +131,23 @@ export function classificaMudanca(jogo, id, antiga, nova) {
   if (numDe(antiga) !== numDe(nova)) return "renumerado";
   return "ok";
 }
+
+// Um setId = um set (2026-11-22). Devolve as assinaturas (idioma|setId) que
+// carregam MAIS DE UM nome de set. É o retrato do bug dos sets escondidos: o
+// manifesto grava uma entrada por setId, com o nome da primeira carta, e a
+// tela do set filtra por nome, então o segundo nome fica sem cartão na tela
+// de Sets. Em 21/11/2026 eram 27 sets e 1.847 cartas assim, por dois grupos
+// do TCGplayer com a mesma abreviação (ver scripts/lib/setid-unico.mjs).
+export function setIdsComVariosNomes(cards) {
+  const nomes = new Map();
+  for (const c of cards || []) {
+    if (!c || !c.set) continue;
+    const sig = assinatura(c);
+    if (!nomes.has(sig)) nomes.set(sig, new Map());
+    const m = nomes.get(sig);
+    m.set(c.set, (m.get(c.set) || 0) + 1);
+  }
+  const fora = new Map();
+  for (const [sig, m] of nomes) if (m.size > 1) fora.set(sig, [...m].sort((a, b) => b[1] - a[1]));
+  return fora;
+}

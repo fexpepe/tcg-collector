@@ -16,6 +16,7 @@
 //   node scripts/sync-gundam.mjs
 import { fileURLToPath } from "node:url";
 import { writeGameCatalog, readGlobalVar, preserveMissingCards } from "./lib/sync-common.mjs";
+import { desempataSetIds } from "./lib/setid-unico.mjs";
 import { nomeDoSet } from "./lib/nome-do-set.mjs";
 
 const ROOT = new URL("../", import.meta.url);
@@ -51,6 +52,7 @@ async function run() {
   console.log(`  ${groups.length} sets.`);
 
   const cards = [];
+  const marcas = []; // onde começam as cartas de cada grupo (desempate de setId, depois do laço)
   const pricing = {}; // { id: { u, uf } } — USD market do TCGplayer
 
   for (const g of groups) {
@@ -76,6 +78,7 @@ async function run() {
     if (!setCards.length) { console.log(`  ${g.abbreviation || g.groupId} ${g.name}: 0 cartas (só selados)`); continue; }
 
     const setId = g.abbreviation || String(g.groupId);
+    marcas.push({ groupId: g.groupId, setId, de: cards.length });
     const release = (g.publishedOn || "").slice(0, 10);
     for (const p of setCards) {
       const id = `gcg-${p.productId}`;
@@ -116,6 +119,11 @@ async function run() {
 
   // União preservadora: carta que sumiu do espelho fica (do cards.js anterior).
   const prev = (await readGlobalVar(new URL("cards.js", OUT), "TCG_CARDS")) || [];
+  // Dois grupos com a mesma abreviação não podem dividir um setId: um dos
+  // sets some da tela de Sets (ver scripts/lib/setid-unico.mjs). Tem de rodar
+  // aqui, com `cards` ainda na ordem em que os grupos entraram.
+  desempataSetIds(cards, marcas);
+
   // Menos as gcd-: o Gundam Carddass morou aqui como linha por algumas horas
   // (10/11/2026) e virou o jogo gcd; preservá-las devolveria os 37 sets.
   const merged = cards.concat(preserveMissingCards(prev, cards).filter((c) => !String(c.id).startsWith("gcd-")));

@@ -487,7 +487,11 @@ export function textoDaCarta(lang, f) {
 export function codigoDoSet(card) {
   const bruto = String(card.setId || "").trim();
   if (!/[A-Z]/.test(bruto)) return "";
-  const code = bruto.replace(/_.*$/, "");
+  // O "-<groupId>" do fim é do desempate de setId (dois grupos do TCGplayer com
+  // a mesma abreviação, ver scripts/lib/setid-unico.mjs), não é código que
+  // alguém digita. Sem tirar, o título da carta sairia "… MRD-EN-23052", e já
+  // saía "P26-24784" em 193 cartas de Star Wars (2026-11-22).
+  const code = bruto.replace(/-\d{3,}$/, "").replace(/_.*$/, "");
   const semTraco = (s) => s.toUpperCase().replace(/[^A-Z0-9]/g, "");
   if (semTraco(String(card.number || "")).includes(semTraco(code))) return "";
   return code;
