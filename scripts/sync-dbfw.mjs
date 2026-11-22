@@ -18,8 +18,15 @@
 //   node scripts/sync-dbfw.mjs
 import { fileURLToPath } from "node:url";
 import { writeGameCatalog, readGlobalVar, preserveMissingCards } from "./lib/sync-common.mjs";
+import { desempataSetIds } from "./lib/setid-unico.mjs";
 import { nomeDoSet } from "./lib/nome-do-set.mjs";
 import { fotosDasIrmas, REGRAS_BANDAI } from "./lib/imagem-da-irma.mjs";
+
+// setIds FIXOS por groupId (vencem o desempate do scripts/lib/setid-unico.mjs).
+// 24311 = "New Adventure Alternate Art Reprints": a fonte repetiu a abreviação
+// do Raging Roar (FB03_AR), mas o New Adventure é o FB05 (a carta dele é a
+// FB05-115). Sem isto o código do cartão sairia FB03.
+const SETID_FIXO = { 24311: "FB05_AR" };
 
 const ROOT = new URL("../", import.meta.url);
 const OUT = new URL("data/dbfw/", ROOT);
@@ -55,6 +62,7 @@ async function run() {
   console.log(`  ${groups.length} sets.`);
 
   const cards = [];
+  const marcas = []; // onde começam as cartas de cada grupo (desempate de setId, depois do laço)
   const pricing = {}; // { id: { u, uf } } — USD market do TCGplayer
   // Produtos de TODOS os grupos: a irmã com foto pode estar em outro set.
   const irmas = fotosDasIrmas(REGRAS_BANDAI);
@@ -82,6 +90,7 @@ async function run() {
     if (!setCards.length) { console.log(`  ${g.abbreviation || g.groupId} ${g.name}: 0 cartas (só selados)`); continue; }
 
     const setId = g.abbreviation || String(g.groupId);
+    marcas.push({ groupId: g.groupId, setId, de: cards.length });
     const release = (g.publishedOn || "").slice(0, 10);
     for (const p of setCards) {
       const id = `dbfw-${p.productId}`;
@@ -122,6 +131,11 @@ async function run() {
   console.log((await irmas.aplica(imagemDoProduto)).resumo);
 
   const prev = (await readGlobalVar(new URL("cards.js", OUT), "TCG_CARDS")) || [];
+  // Dois grupos com a mesma abreviação não podem dividir um setId: um dos
+  // sets some da tela de Sets (ver scripts/lib/setid-unico.mjs). Tem de rodar
+  // aqui, com `cards` ainda na ordem em que os grupos entraram.
+  desempataSetIds(cards, marcas, SETID_FIXO);
+
   const merged = cards.concat(preserveMissingCards(prev, cards));
 
   merged.sort((a, b) =>

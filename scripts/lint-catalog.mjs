@@ -26,7 +26,7 @@ import { readFile, writeFile, readdir } from "node:fs/promises";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { resolveMergedId } from "./lib/set-supersede.mjs";
-import { classificaMudanca, assinatura, idiomaDe, numDe } from "./lib/id-stability.mjs";
+import { classificaMudanca, assinatura, idiomaDe, numDe, setIdsComVariosNomes } from "./lib/id-stability.mjs";
 
 const ROOT = new URL("../", import.meta.url);
 const BASELINE = new URL("data/catalog-baseline.json", ROOT);
@@ -101,6 +101,15 @@ for (const [game, dir] of Object.entries(GAMES)) {
   if (dupes) errors.push(`${game}: ${dupes} id(s) duplicado(s)`);
   if (broken) errors.push(`${game}: ${broken} carta(s) sem id/nome/set`);
 
+  // Um setId = um set. AVISO, não erro, de propósito: o lint roda no build
+  // completo e um erro aqui derruba o deploy inteiro. Carta congelada pelo
+  // preserveMissingCards guarda o nome antigo do set, e um set renomeado na
+  // fonte cairia aqui sem ser o bug. Quem impede o bug de voltar pelo código
+  // é o teste tests/setid-unico.test.mjs (todo sync que tira o setId da
+  // abreviação passa pelo desempate); isto é o retrato no dado.
+  for (const [sig, nomes] of setIdsComVariosNomes(cards)) {
+    warnings.push(`${game}: setId "${sig}" com ${nomes.length} nomes de set (${nomes.slice(0, 3).map(([n, q]) => `${n}: ${q}`).join(" · ")}) — só um deles ganha cartão na tela de Sets`);
+  }
   lidos[game] = cards;                        // reaproveitado pela trava de id
   const sets = new Set(cards.map((c) => c.set)).size;
   const imgPct = cards.length ? Math.round((withImage / cards.length) * 100) : 0;

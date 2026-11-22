@@ -763,8 +763,18 @@ quando ele é tirado (método em 7.1).
   Wars). O do Union Arena difere do Riftbound em ~50 linhas de diff, quase tudo
   mapeamento de campo. Os 9 têm o mesmo `api()` copiado, com 4 tentativas em
   ~15 s, e não usam o `fetchJsonRetry`, que nasceu quando uma queda da TCGdex
-  derrubou o deploy (15/09/2026). A correção de abreviação repetida (dois
-  grupos "P26") existe só no `sync-swu.mjs`; os outros 8 não a têm.
+  derrubou o deploy (15/09/2026). A abreviação repetida (dois grupos "P26") é
+  tratada de dois jeitos: o `sync-swu.mjs` e os syncs mais novos dão o sufixo
+  do grupo a todo repetido; os 8 que tiravam o `setId` direto da abreviação
+  (One Piece, FAB, Gundam, DBFW, Yu-Gi-Oh!, Digimon, Riftbound, Union Arena)
+  passam desde 22/11/2026 pelo `desempataSetIds` do
+  `scripts/lib/setid-unico.mjs`: entre os grupos com carta, o de menor
+  `groupId` fica com o código e os outros viram `<código>-<groupId>`, com uma
+  tabela de `setId` fixo por grupo quando o desempate daria um id ruim. Sem
+  isso, dois grupos dividiam um `setId` e um dos sets ficava sem cartão na
+  tela de Sets (27 sets e 1.847 cartas em 21/11/2026). Sync novo que tire o
+  `setId` da abreviação tem de passar pelo desempate; o
+  `tests/setid-unico.test.mjs` cobra.
 - **Migração de jogo novo**: copia os corpos inteiros de `increment_card_view`
   e `contribute_price`, com a lista de jogos em três lugares, e cada uma
   reescreve a lista inteira. Isso já aconteceu: a `20260930a` (`swu`),
