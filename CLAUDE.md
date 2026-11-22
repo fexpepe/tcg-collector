@@ -84,6 +84,23 @@ perder uma trava. O Claude:
 
 Merge na `main`, inclusive push direto, **não** autoriza live update.
 
+## SQL pro Supabase: sempre com os dois caminhos
+
+Quem aplica migração é o Fernando, no SQL Editor do Supabase (o Claude não
+grava no banco de produção). Toda vez que o Claude manda um SQL pra ele subir,
+o arquivo vai com estas duas linhas, preenchidas com a branch e a worktree
+reais, e só depois do push:
+
+- No GitHub: [`<arquivo>.sql` na branch](https://github.com/fexpepe/tcg-collector/blob/<branch>/supabase/migrations/<arquivo>.sql)
+- No disco: `D:\Projetos\TCG Collector\.claude\worktrees\<worktree>\supabase\migrations\<arquivo>.sql`
+
+O link aponta pra **branch**, não pra `main`: até o merge o arquivo só existe
+nela, e a `main` local do Fernando costuma estar atrás. Se o SQL for
+corrigido depois de enviado, os dois caminhos vão de novo, dizendo que é a
+versão nova (em 2026-11-22 a 20261122a saiu quebrada e foi refeita). Depois
+que ele aplica, o Claude confere com o par de `curl` do próprio arquivo e
+anota o resultado no `supabase/migrations/README.md`.
+
 ## Carta, set, linha ou jogo novo no catálogo
 
 Segue o [docs/CATALOGO.md](docs/CATALOGO.md). Jogo ou linha nova só vira PR com
