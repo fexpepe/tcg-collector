@@ -166,12 +166,52 @@ Nada disto dá pra medir antes de estar no ar.
   de 25 anos em cartão próprio. O Yu-Gi-Oh! é o único dos quatro jogos que não
   foi ensaiado antes do merge.
 
+#### Medido em 22/11, com as Fases 1 e 2 no ar
+
+Mesmas condições de antes: celular emulado (390 px, tela 3x), 4G lento, CPU 4×
+mais lenta, contexto novo do navegador a cada carga a frio. Uma medição por
+caso; outras tarefas rodavam na mesma máquina, então o que vale é a ordem de
+grandeza.
+
+| O quê | Antes | Depois |
+|---|---|---|
+| #346, `POST /api/collection` com 6 ids por jogo, 1 / 4 / 8 / 14 jogos (mediana de 4) | 162 / 598 / 1.176 / 2.050 ms | 183 / 182 / 201 / 214 ms |
+| #347, home a frio: `shared.js` termina | 6,8 s | 2,0 s |
+| #347, home a frio: página pronta pra uso (`TCGShared` existe) | 6,9 s | 2,2 s |
+| #348, home com o navegador em inglês: texto em português na tela | aos 1,5 s | nunca |
+| #348, home com o navegador em inglês: texto em inglês | 8,0 s | 2,5 s |
+| #349, Explorar, primeira visita: pedidos ao Supabase pro ranking | 47 | 1 |
+| #349, Explorar, primeira visita: cartas na tela | 3,1 s | 3,0 s (esqueleto aos 1,3 s) |
+| #349, Explorar, segunda visita: cartas na tela | 3,1 s | 1,7 s, sem pedido de ranking |
+| #360, pouso da carta: imagem da carta pedida | depois do `shared.js` e do arquivo do set | aos 0,7 s, junto com o HTML |
+| #360, pouso da carta: imagem na tela (é o LCP) | 3,1 s depois de pedida | aos 2,3 s da navegação |
+| #360, pouso da carta: arquivo do set | 2 pedidos | 1 pedido |
+| #353, Digimon em produção | `BT-26` com dois sets dentro | `BT-26` e `BT-26_PR` no manifesto |
+
+Duas previsões do plano não se confirmaram:
+
+- **Explorar abaixo de 1 s.** Na segunda visita o ranking sai do aparelho, mas
+  as cartas ainda dependem de um `POST /api/collection` (cerca de 0,6 s nesse
+  4G). Deu 1,7 s, não menos de 1.
+- **Explorar na primeira visita não ficou mais rápido**, só mais leve: uma
+  consulta em vez de 47, e o esqueleto aparece aos 1,3 s.
+
+No pouso da carta o `shared.js` termina aos 3,1 s (na home, 2,0 s): ele divide
+a banda com a imagem da carta e com o arquivo do set, que agora descem juntos.
+A carta aparece antes; o popup interativo abre aos 4,1 s.
+
+Não medido: as páginas pessoais (Coleção, Desejos, Badges), que pedem login, e
+a tela de Sets do Yu-Gi-Oh! depois da #353.
+
 ### 1.3 O teto do `shared.js`
 
 Com a Fase 1 inteira no ar sobram 3 bytes. Um jogo novo custa cerca de 70. A
 saída é uma destas duas, e a escolha é do Fernando (seção 4): subir o teto, ou
 tirar do núcleo o `JP_NAME_ALIASES` (1,8 KB, é a metade que faltou da F3 do
 `docs/CATALOGO.md`).
+
+**Decidido em 22/11:** o teto subiu pra 86.528 B (+256), junto com o Rush of
+Ikorr. Com tudo o que entrou no dia, a `main` está em 86.311 B: sobram 217.
 
 ## 2. Fase 2
 
@@ -771,7 +811,7 @@ exige redirecionamento.
 
 | # | Decisão | Hoje | Alternativa |
 |---|---|---|---|
-| D1 | Teto do `shared.js` | 86.272 B, sobram 3 com a Fase 1 no ar | Subir 256 B, ou tirar o `JP_NAME_ALIASES` do núcleo |
+| D1 | Teto do `shared.js` | **Decidido em 22/11:** subiu pra 86.528 B; a `main` está em 86.311 | Segue aberto tirar o `JP_NAME_ALIASES` do núcleo (1,8 KB), que resolve de vez |
 | D2 | Preço pra quem usa dólar ou euro (item 12) | O valor da carta prefere o preço brasileiro (MYP) convertido, em qualquer moeda (`cardValue`, `src/shared.js`); o texto que a borda escreve na mesma página cita o dólar do TCGplayer | O preço brasileiro só vence quando a moeda é real |
 | D3 | Home em inglês indexável (item 12) | A home não tem `hreflang` nem versão `-en`; a busca em inglês mostra título e descrição em português | Página estática em inglês, como os sets já têm |
 | D4 | Formato de número em espanhol (item 12) | Todo espanhol usa o formato da Espanha (1.234,56) | Usar a região do navegador (México escreve 1,234.56) |
@@ -825,24 +865,53 @@ exige redirecionamento.
   e ainda disputam banda com as primeiras imagens.
 - **Arquivos de logo repetidos do Flesh and Blood** (nove pares do mesmo logo
   com nomes diferentes).
+- **Miniatura de 300/600 nos Decks pra todo jogo.** Hoje só o Magic usa; os
+  outros baixam a imagem inteira da fonte (seção 6, 3A). Pede uma opção no
+  `shared.cardImgChain` que deixe a variante reduzida do host fora da cadeia
+  de reserva, e a candidata de 1000 no `srcset` pra tela entre 460 e 700 px.
+- **Faixa de preço no endereço.** Cartas grava em `?pmin=` e `?pmax=` o texto
+  digitado; gravar o número já lido faz o link valer em qualquer idioma
+  (sobra da #365).
+- **Explorar: as cartas da segunda visita ainda esperam a borda** (1,7 s no 4G
+  lento). Guardar no aparelho também as cartas do ranking, e não só os ids,
+  tiraria esse pedido.
 
 ## 6. Registro de execução
 
 | Pacote | Branch | PR | Estado |
 |---|---|---|---|
-| Fase 1, item 9 | `claude/preco-digitado-segue-idioma-2b9d` | fexpepe/tcg-collector#354 | aberta |
-| Fase 1, item 1 | `claude/api-colecao-paralela-3f8a` | fexpepe/tcg-collector#346 | aberta |
-| Fase 1, item 2 | `claude/explorar-uma-consulta-6a2f` | fexpepe/tcg-collector#349 | aberta |
-| Fase 1, itens 3 e 4 | `claude/dicas-de-carga-5b1d` | fexpepe/tcg-collector#347 | aberta |
-| Fase 1, item 10 | `claude/idioma-sem-portugues-na-frente-9d4c` | fexpepe/tcg-collector#348 | aberta |
-| Fase 1, item 13 | `claude/sets-escondidos-setid-4e7b` | fexpepe/tcg-collector#353 | aberta |
-| 2A | `claude/pouso-da-carta-e-do-set-2a71` | fexpepe/tcg-collector#360 | aberta |
-| 2B | `claude/paginas-pelo-caminho-rapido-2b54` | fexpepe/tcg-collector#358 | aberta |
-| 2C | `claude/textos-da-borda-no-idioma-2c38` | fexpepe/tcg-collector#359 | aberta |
-| 2D | `claude/indice-de-sets-do-naruto-2d19` | fexpepe/tcg-collector#356 | aberta |
-| 2E | `claude/lint-catalogo-zerou-2e63` | fexpepe/tcg-collector#357 | aberta |
-| 3A | `claude/decks-imagens-pelo-espelho-3a82` | | a executar |
-| 3B | `claude/catalogo-furos-de-padrao-3b47` | | a executar |
-| 3C | `claude/documentacao-em-dia-3c05` | | a executar |
-| 3D | `claude/filtro-de-preco-no-idioma-3d90` | | depende da #354 |
+| Fase 1, item 9 | `claude/preco-digitado-segue-idioma-2b9d` | fexpepe/tcg-collector#354 | na `main` (22/11) |
+| Fase 1, item 1 | `claude/api-colecao-paralela-3f8a` | fexpepe/tcg-collector#346 | na `main` (22/11) |
+| Fase 1, item 2 | `claude/explorar-uma-consulta-6a2f` | fexpepe/tcg-collector#349 | na `main` (22/11) |
+| Fase 1, itens 3 e 4 | `claude/dicas-de-carga-5b1d` | fexpepe/tcg-collector#347 | na `main` (22/11) |
+| Fase 1, item 10 | `claude/idioma-sem-portugues-na-frente-9d4c` | fexpepe/tcg-collector#348 | na `main` (22/11) |
+| Fase 1, item 13 | `claude/sets-escondidos-setid-4e7b` | fexpepe/tcg-collector#353 | na `main` (22/11), dado já no ar |
+| 2A | `claude/pouso-da-carta-e-do-set-2a71` | fexpepe/tcg-collector#360 | na `main` (22/11) |
+| 2B | `claude/paginas-pelo-caminho-rapido-2b54` | fexpepe/tcg-collector#358 | na `main` (22/11) |
+| 2C | `claude/textos-da-borda-no-idioma-2c38` | fexpepe/tcg-collector#359 | na `main` (22/11) |
+| 2D | `claude/indice-de-sets-do-naruto-2d19` | fexpepe/tcg-collector#356 | na `main` (22/11) |
+| 2E | `claude/lint-catalogo-zerou-2e63` | fexpepe/tcg-collector#357 | na `main` (22/11) |
+| 3A | `claude/decks-imagens-pelo-espelho-3a82` | fexpepe/tcg-collector#366 | aberta |
+| 3B | `claude/catalogo-furos-de-padrao-3b47` | fexpepe/tcg-collector#361 | na `main` (22/11); o dado muda no build completo |
+| 3C | `claude/documentacao-em-dia-3c05` | fexpepe/tcg-collector#364 | aberta |
+| 3D | `claude/filtro-de-preco-no-idioma-3d90` | fexpepe/tcg-collector#365 | aberta |
+
+O que a execução da Fase 3 mostrou e o plano não previa:
+
+- **3A.** Com `thumb`, a cadeia de reserva do `shared.cardImgChain` passa pela
+  variante reduzida do host (TCGdex 245 px, Lorcast 488, TCGplayer 400) antes
+  da origem. Por isso, nos Decks, a miniatura grande só usa a de 300/600 no
+  Magic; os outros jogos recebem a imagem inteira pelo espelho. Fazer a de
+  300/600 valer pra todo jogo pede uma opção no `shared.js` que tire a
+  variante reduzida da cadeia (fica pra depois, 5.1).
+- **3B.** O filtro Vintage já pegava o World of Warcraft pelo prefixo do id; a
+  marca `vintage` que faltava só mudava o ano na busca do eBay e o selo de
+  vintage dos Badges.
+- **3C.** A linha do `src/admin.js` que o plano listava como comentário é
+  texto da capa do kit de parceiros ("sets, de 1996 a hoje"); foi corrigida
+  pra 1988 em commit separado. "Outros TCGs" nunca teve 7 cartões: eram 8 e
+  hoje são 9.
+- **3D.** O `parsePrice` do Explorar fica em ~259, não em ~194. Sobrou um caso
+  do mesmo problema: Cartas grava no endereço (`?pmin=`) o texto como foi
+  digitado, e um link feito em inglês lê outro número em português.
 
