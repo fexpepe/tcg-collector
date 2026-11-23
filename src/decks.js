@@ -13,6 +13,51 @@
   const escA = shared.escapeAttribute;
 
   // ---------------------------------------------------------------------------
+  // Imagens de carta pelo ESPELHO (img.sleevu.app), 2026-11-22.
+  // Até aqui a galeria e o visualizador pediam a URL crua da origem
+  // (cards.scryfall.io, cards.lorcast.io...) em JPG de tamanho único: medido em
+  // produção, 6 pedidos ao Scryfall e 7 ao Lorcast só pra abrir a galeria, e a
+  // capa principal chegava aos 2,6 s. O resto do site usa shared.localizedImg:
+  // WebP na largura da tela vindo do espelho, com a origem logo atrás na cadeia
+  // de reserva (data-img-fallbacks) — espelho fora do ar cai no que já aparecia.
+  //
+  // REGRA DE NITIDEZ (a exigência do Fernando: foto não pode piorar): a imagem
+  // que o navegador escolhe tem de cobrir a largura DESENHADA × a densidade da
+  // tela (3x no celular). O espelho oferece 300/(450)/600 com `thumb`+`sizes` e
+  // 1000 sem `thumb` (src único). Medido em 390 e 1280 px de viewport:
+  //   destaque da galeria (capa)        92 / 172 px   -> thumb, 600 cobre 3x (516)
+  //   banner do deck (carta da capa)    92 / 164-184  -> thumb, 600 cobre 3x (552)
+  //   pilha publicada / tile / pilha    170 / 117-170 -> thumb, 600 cobre 3x (510)
+  //   miniatura da lista / da busca     26 / 34       -> thumb, 300 sobra
+  //   card da galeria (arte recortada)  169-231 x1,35-1,42 de zoom (CSS scale)
+  //                                     até 328 px -> 3x pede 984: SEM thumb (1000)
+  //   fundo borrado do banner/destaque  409 / 1286    -> nenhuma cobre; SEM thumb
+  //                                     (1000, a maior), nunca abaixo da origem
+  //   preview de hover                  240 / 244     -> 3x pede 732: SEM thumb (1000)
+  // Os `sizes` repetem a largura medida (com folga pra cima, nunca pra baixo):
+  // quem escolhe a candidata é o navegador, pela densidade real.
+  const SZ_CAPA_DESTAQUE = "(max-width: 700px) 92px, 172px";
+  const SZ_CAPA_BANNER = "(max-width: 700px) 92px, 184px";
+  const SZ_CARTA_PILHA = "(max-width: 700px) 50vw, 200px";
+  // <img> de carta com o espelho na frente. A cobertura decorativa (aria-hidden)
+  // o localizedImg nao emite, entao entra por aqui.
+  const imgCarta = (url, opts) => shared.localizedImg(url, opts);
+  const imgDecor = (url, opts) => imgCarta(url, opts).replace("<img", '<img aria-hidden="true"');
+  // Com `thumb` o localizedImg põe na cadeia de reserva, ANTES da URL de origem,
+  // a variante menor do host (shared.gridThumbUrl): Lorcast large (674 px) ->
+  // normal (488 px), TCGplayer 1000 -> 400. Espelho fora do ar (ou carta ainda
+  // não espelhada) cairia nela, e numa miniatura maior que 488/3 = 162 px a
+  // imagem ficaria abaixo da regra E abaixo do que a origem entregava (medido: o
+  // tile de 170 px em tela 3x pede 510 px e receberia 488, contra os 674 de
+  // antes). Nesses hosts, miniatura grande vai SEM thumb (1000 no espelho,
+  // origem inteira na reserva); as pequenas (26/34 px) seguem com thumb.
+  const MINIATURA_REDUZIDA = [[/\/card\/digital\/large\//, 488], [/_in_1000x1000\.jpg/, 400]];
+  const larguraDaReserva = (url) => { const m = MINIATURA_REDUZIDA.find((r) => r[0].test(url)); return m ? m[1] : Infinity; };
+  // maxCss = a MAIOR largura desenhada do ponto (px de CSS).
+  const imgMini = (url, opts, sizes, maxCss) => imgCarta(url,
+    larguraDaReserva(url) >= maxCss * 3 ? Object.assign({ thumb: true, sizes: sizes }, opts) : opts);
+
+  // ---------------------------------------------------------------------------
   // Store — GLOBAL (cross-game), igual aos binders: uma lista só, cada deck
   // carrega o próprio `game`. Entra de graça no sync da nuvem depois.
   // ---------------------------------------------------------------------------
@@ -592,8 +637,12 @@
       const txt = falta === 0 ? t("decks.completeWord") : t("decks.v.havePct", { pct });
       return `<span class="dkc-v-prog${falta === 0 ? " is-ok" : ""}"><span class="dkc-v-prog-bar"><i style="width:${pct}%"></i></span><span class="dkc-v-prog-txt">${esc(txt)}</span></span>`;
     };
+    // Capa do destaque (172/92 px): thumb com srcset. Capa do card (arte
+    // recortada com zoom de até 1,42x): tamanho de 1000, sem srcset.
     const capaHtml = (r, cls) => r.cover
-      ? `<img class="${cls}" src="${escA(r.cover)}" alt="" loading="lazy" decoding="async">`
+      ? (cls === "dkc-v-hero-img"
+        ? imgMini(r.cover, { className: cls, alt: "", loading: "lazy" }, SZ_CAPA_DESTAQUE, 172)
+        : imgCarta(r.cover, { className: cls, alt: "", loading: "lazy" }))
       : `<span class="${cls} deck-noimg"></span>`;
     const statsDe = (r) => {
       const n = Number(r.total) || 0;
@@ -631,7 +680,7 @@
       // direita. <img> e não background-image: a URL vem do payload (dado de
       // usuário) e num url('...') de CSS uma aspa escaparia do atributo.
       const heroHtml = `<a class="dkc-v-hero" href="decks?s=${encodeURIComponent(hero.id)}" data-game-accent="${escA(gHero)}">
-        ${hero.cover ? `<img class="dkc-v-hero-bg" src="${escA(hero.cover)}" alt="" aria-hidden="true" decoding="async">` : ""}
+        ${hero.cover ? imgDecor(hero.cover, { className: "dkc-v-hero-bg", alt: "" }) : ""}
         <span class="dkc-v-hero-txt">
           <span class="dkc-v-eyebrow">${IC_STAR}${esc(t(heroForte ? "decks.featured" : "decks.spotlight"))}</span>
           <span class="dkc-v-hero-name">${esc(nomeDe(hero))}</span>
@@ -925,7 +974,7 @@
       const card = byId[e.id];
       const unit = unitOf(e);
       const have = haveOf(e);
-      const thumb = card && card.image ? `<img src="${escA(card.image)}" alt="" loading="lazy">` : `<span class="deck-noimg"></span>`;
+      const thumb = card && card.image ? imgMini(card.image, { alt: "", loading: "lazy" }, "26px", 26) : `<span class="deck-noimg"></span>`;
       // data-art: fonte do preview que segue o cursor (ver hoverPreview).
       return `<li class="deck-row dkc-row"${card && card.image ? ` data-art="${escA(card.image)}"` : ""}>
         <span class="deck-qty">${esc(String(e.qty))}×</span>
@@ -940,7 +989,7 @@
     };
     const tileHtml = (e) => {
       const card = byId[e.id];
-      const img = card && card.image ? `<img src="${escA(card.image)}" alt="${escA(card.name || "")}" loading="lazy">` : `<span class="deck-noimg"></span>`;
+      const img = card && card.image ? imgMini(card.image, { alt: card.name || "", loading: "lazy" }, SZ_CARTA_PILHA, 200) : `<span class="deck-noimg"></span>`;
       return `<div class="deck-tile" title="${escA((card && card.name) || e.id)}">
         <span class="deck-tile-img">${img}</span>
         <span class="deck-tile-qty">${esc(String(e.qty))}×</span>
@@ -959,7 +1008,7 @@
       const have = haveOf(e);
       const own = logged ? (have >= e.qty ? " is-have" : have > 0 ? " is-part" : "") : "";
       const nome = (card && card.name) || e.id;
-      const img = card && card.image ? `<img src="${escA(card.image)}" alt="${escA(nome)}" loading="lazy" decoding="async">` : `<span class="deck-noimg"></span>`;
+      const img = card && card.image ? imgMini(card.image, { alt: nome, loading: "lazy" }, SZ_CARTA_PILHA, 200) : `<span class="deck-noimg"></span>`;
       return `<div class="dkc-v-pc${own}"${card && card.image ? ` data-art="${escA(card.image)}"` : ""} title="${escA(nome)}">
         ${img}<span class="dkc-v-pc-qty">${esc(String(e.qty))}×</span>
       </div>`;
@@ -1041,11 +1090,11 @@
     const paint = () => {
       box.innerHTML = `
       <section class="dkc-v-banner" data-game-accent="${escA(deck.game)}">
-        ${capaCard ? `<img class="dkc-v-banner-bg" src="${escA(capaCard)}" alt="" aria-hidden="true" decoding="async">` : ""}
+        ${capaCard ? imgDecor(capaCard, { className: "dkc-v-banner-bg", alt: "" }) : ""}
         <div class="dkc-v-banner-in">
           <a href="decks" class="dkc-v-back">${esc(t("decks.backCommunity"))}</a>
           <div class="dkc-v-banner-grid">
-            ${capaCard ? `<span class="dkc-v-banner-card" data-art="${escA(capaCard)}"><img src="${escA(capaCard)}" alt="" decoding="async"></span>` : ""}
+            ${capaCard ? `<span class="dkc-v-banner-card" data-art="${escA(capaCard)}">${imgMini(capaCard, { alt: "" }, SZ_CAPA_BANNER, 184)}</span>` : ""}
             <div class="dkc-v-banner-txt">
               <div class="dkc-view-meta">
                 ${shared.gameTagHtml(deck.game)}
@@ -1230,7 +1279,12 @@
     cx.hidden = true;
     cx.innerHTML = '<img alt="">';
     document.body.appendChild(cx);
-    const img = cx.querySelector("img");
+    // hoverThumb troca o NÓ a cada carta (o estado de reserva do TCGImg é por
+    // elemento; reaproveitar o <img> deixava o retry de uma carta gravar a URL
+    // dela sobre a que está sob o mouse) e põe o espelho na frente, com a
+    // origem na cadeia de reserva. Sem `thumb`: 1000 px, que cobre os 240 px
+    // desenhados em tela 3x (720). `art` segue sendo a URL de ORIGEM.
+    let img = cx.querySelector("img");
     let atual = "";
     const mover = (ev) => {
       // Prende na janela: perto da borda direita/baixo, a arte vira pro outro
@@ -1246,11 +1300,13 @@
       const art = row ? row.dataset.art : "";
       if (art !== atual) {
         atual = art;
-        if (art) { img.src = art; cx.hidden = false; } else { cx.hidden = true; img.removeAttribute("src"); }
+        if (art) { img = shared.hoverThumb(img, art); cx.hidden = false; } else { cx.hidden = true; }
       }
       if (art) mover(ev);
     });
-    box.addEventListener("mouseleave", () => { atual = ""; cx.hidden = true; img.removeAttribute("src"); });
+    // Esconde sem esvaziar o src: com hoverThumb, tirar o src deixaria o nó
+    // sem imagem quando a MESMA carta voltasse (ele reconhece a URL e não recria).
+    box.addEventListener("mouseleave", () => { atual = ""; cx.hidden = true; });
   }
 
   const el = {
@@ -1392,7 +1448,8 @@
         el.gallery.querySelectorAll(`.dkc-v-mine[data-game-accent="${g}"] .dkc-v-art[data-capa]`).forEach((art) => {
           const card = cat.byId[art.dataset.capa];
           if (!card || !card.image || art.querySelector("img")) return;
-          art.innerHTML = `<img class="dkc-v-art-img" src="${escA(card.image)}" alt="" loading="lazy" decoding="async">`;
+          // Arte recortada com zoom (ver o bloco do topo): 1000, sem thumb.
+          art.innerHTML = imgCarta(card.image, { className: "dkc-v-art-img", alt: "", loading: "lazy" });
         });
       }).catch(() => { /* sem catálogo: fica o fundo neutro */ });
     });
@@ -1853,7 +1910,7 @@
           : `<span class="deck-own no">${esc(t("decks.ownNone"))}</span>`;
     };
     const imgOf = (card) => (card && card.image)
-      ? `<img src="${escA(card.image)}" alt="" loading="lazy">`
+      ? imgMini(card.image, { alt: "", loading: "lazy" }, SZ_CARTA_PILHA, 200)
       : `<span class="deck-noimg"></span>`;
 
     function entriesHtml(zoneKey, list) {
@@ -1947,11 +2004,11 @@
       : `<p class="dkc-v-legal">${IC_OK}<span>${esc(pack.free ? t("decks.freeMode") : t("decks.legal"))}</span></p>`;
     el.editor.innerHTML = `
       <section class="dkc-v-banner dkc-v-ed" data-game-accent="${escA(deck.game)}">
-        ${capaImg ? `<img class="dkc-v-banner-bg" src="${escA(capaImg)}" alt="" aria-hidden="true" decoding="async">` : ""}
+        ${capaImg ? imgDecor(capaImg, { className: "dkc-v-banner-bg", alt: "" }) : ""}
         <div class="dkc-v-banner-in">
           <a href="my-decks" class="dkc-v-back">${esc(t("decks.backList"))}</a>
           <div class="dkc-v-banner-grid">
-            ${capaImg ? `<span class="dkc-v-banner-card"><img src="${escA(capaImg)}" alt="" decoding="async"></span>` : ""}
+            ${capaImg ? `<span class="dkc-v-banner-card">${imgMini(capaImg, { alt: "" }, SZ_CAPA_BANNER, 184)}</span>` : ""}
             <div class="dkc-v-banner-txt">
               <div class="dkc-view-meta">
                 ${gameTag(deck.game)}
@@ -2216,7 +2273,7 @@
       const have = ownedCountOf(deck, c.id);
       const zones = rules.zonesForCard(pack, c);       // todas as que aceitam
       const def = rules.zoneForCard(pack, c);          // a padrão do "+"
-      const img = c.image ? `<img src="${escA(c.image)}" alt="" loading="lazy">` : `<span class="deck-noimg"></span>`;
+      const img = c.image ? imgMini(c.image, { alt: "", loading: "lazy" }, "34px", 34) : `<span class="deck-noimg"></span>`;
       // Mais de uma zona possível (main × side, main × commander): mostra um
       // botão por zona em vez de escolher pelo usuário.
       const btns = zones.length > 1
@@ -2520,6 +2577,10 @@
     document.body.appendChild(hoverEl);
     return hoverEl;
   }
+  // Aponta o preview pra carta com o espelho na frente (mesma razão do
+  // hoverPreview, no visualizador: nó novo por carta, 1000 px sem `thumb`).
+  // Mesma URL = mesmo nó, sem pedido novo.
+  function hoverArt(box, url) { shared.hoverThumb(box.querySelector("img"), url); }
   // Segue o CURSOR. (Ancorar na linha deixava o preview sempre no mesmo X, já que
   // todas as linhas terminam na mesma borda — parecia preso no meio da tela.)
   function placeHover(x, y) {
@@ -2543,8 +2604,7 @@
   function showHover(card, x, y) {
     if (!card || !card.image) return hideHover();
     const box = hoverBox();
-    const img = box.querySelector("img");
-    if (img.getAttribute("src") !== card.image) img.setAttribute("src", card.image);
+    hoverArt(box, card.image);
     box.hidden = false;
     placeHover(x, y);
   }
@@ -2572,8 +2632,7 @@
       const card = cat && cat.byId ? cat.byId[row.dataset.card] : null;
       if (!card || !card.image) return hideHover();
       const box = hoverBox();
-      const img = box.querySelector("img");
-      if (img.getAttribute("src") !== card.image) img.setAttribute("src", card.image);
+      hoverArt(box, card.image);
       box.hidden = false;
       placeHoverAtRow(row);
     });
