@@ -56,9 +56,9 @@ export const JOGOS_URL = [
   // Marvel Hero Rush (2026-11-19): o TCG da Marvel feito na China. Logo enviado pelo Fernando no mesmo dia
   // (o do cabeçalho do site oficial tem só 154×64).
   { url: "marvel-hero-rush", game: "herorush", nome: "Marvel Hero Rush", logo: "assets/games/game_herorush.webp" },
-  // Rush of Ikorr (2026-11-22): o TCG de mitologia da Upper Deck (2025). Sem logo: o site oficial só publica
-  // banners em JPG com fundo; o tile sai em texto até alguém curar um.
-  { url: "rush-of-ikorr", game: "ikorr", nome: "Rush of Ikorr", logo: "" },
+  // Rush of Ikorr (2026-11-22): o TCG de mitologia da Upper Deck (2025). Logo enviado pelo Fernando no mesmo
+  // dia (o site oficial só publica banners em JPG com fundo).
+  { url: "rush-of-ikorr", game: "ikorr", nome: "Rush of Ikorr", logo: "assets/games/game_ikorr.webp" },
   { url: "gundam-carddass", game: "gcd", nome: "Gundam Carddass", logo: "assets/games/game_gcd-v2.webp", vintage: "1988–1997" },
   { url: "saint-seiya-carddass", game: "seiya", nome: "Saint Seiya Carddass", logo: "assets/games/game_seiya-v2.webp", vintage: "1988–2023" },
   { url: "dragon-ball-carddass", game: "dbc", nome: "Dragon Ball Carddass", logo: "assets/games/game_dbc-v3.webp", vintage: "1988–1997" },
