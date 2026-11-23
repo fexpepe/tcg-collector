@@ -94,3 +94,8 @@ nenhum. Webp q88 sem metadado. As curadas do dono (fotos, ~420 px:
 `nrt-dc-can-001`, `nrt-nx-nxp-spi`) ficaram como estavam: a leva do Wayback
 não sobrescreve arquivo que existe. Scan melhor de uma carta substitui o
 arquivo dela, com o mesmo nome; depois rode os dois syncs (o CI também roda).
+
+**NXP-003 うずまきナルト (`nrt-nx-nxp-003`, promo da Cross, 2009)**
+(2026-11-23): scan do dono, pela receita das três do Card Game lá em cima
+(recorte na borda, cantos transparentes), 640×894 em q80. É a segunda das 13
+promos da Cross com imagem, depois da `nrt-nx-nxp-spi`.
