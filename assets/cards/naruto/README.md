@@ -41,6 +41,13 @@ Scans do dono no Card Game 2002~2006:
 - **PR忍-7 うずまきナルト (`nrt-PRN-007`, promo NOT FOR SALE, 2003)**
   (2026-11-23): mesma receita, com 1 px aparado em volta (a borda esquerda
   do scan tinha 1 px do fundo numa parte da altura); 640×884, q80.
+- **術-211 千鳥 (`nrt-jutsu-211`, 巻ノ十, UR)** (2026-11-23): carta do starter
+  巻ノ十 烈火の書, fora da lista de booster da TV Tokyo, então nenhuma fonte
+  tinha imagem. A que o Fernando mandou é pequena (350×512), já recortada
+  rente à carta, de cantos retos, e achatada como a NXP-002 (0,684). Lado a
+  lado com a PR忍-7 escaneada, ela tem a carta inteira; levada a 63:88 na
+  largura que veio (350×489, sem ampliar), com cantos arredondados no raio
+  relativo dos scans (13,9 px). q90, porque a 350 px a compressão aparece.
 
 ## Data Carddass (`nrt-dc-*`, `nrt-nf-*`, `nrt-nx-*`)
 
