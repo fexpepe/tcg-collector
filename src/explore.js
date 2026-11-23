@@ -256,10 +256,15 @@
   // antes dela. As opções saem dessa mesma lista: o Explorar não tem "catálogo
   // da página" pra listar set e raridade de antemão (o catálogo dos 15 jogos
   // só desce quando precisa), e um <select> com todos os sets seria ilegível.
+  // Faixa de preço lida na régua do idioma da interface (shared.parseMoney):
+  // em inglês "1,000" é mil, não 1 (até 2026-11-22 toda vírgula era decimal).
+  // Vazio, sem dígito, negativo e lixo = sem limite (null); só o "0" digitado
+  // de fato vale 0 — o parseMoney devolve 0 pra vazio e pra lixo.
   function parsePrice(el) {
-    if (!el) return null;
-    const v = parseFloat(String(el.value || "").replace(/[^\d.,]/g, "").replace(",", "."));
-    return Number.isFinite(v) && v >= 0 ? v : null;
+    const texto = el ? String(el.value || "") : "";
+    if (!/\d/.test(texto)) return null;
+    const v = shared.parseMoney(texto);
+    return v > 0 || (v === 0 && !/[1-9]/.test(texto)) ? v : null;
   }
   const valorDe = shared.memoValue((card) =>
     (shared.cardValue(card, shared.defaultVariant(card), prices, shared.DEFAULT_CONDITION) || {}).value || 0);
