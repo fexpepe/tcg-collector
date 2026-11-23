@@ -33,9 +33,10 @@ catálogo completo só existe no build de produção.
 
 ## Os jogos
 
-O registro central é o `GAMES` em [src/game.js](src/game.js): **45 slugs**, 44 com
-catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do Pokémon
-é a raiz `data/` por motivo histórico (não movemos nada).
+O registro central é o `GAMES` em [src/game.js](src/game.js): **51 chaves**: o `hub`
+(Início, que não é jogo) e 50 jogos, 49 com catálogo e o JUMP em preparação.
+Cada jogo tem um `dataDir` próprio — o do Pokémon é a raiz `data/` por motivo
+histórico (não movemos nada).
 
 | Slug | Jogo | Fonte do catálogo | Preço |
 |---|---|---|---|
@@ -789,10 +790,10 @@ Ordem de decisão do jogo:
 
 Páginas **neutras** são as que não pertencem a um jogo só: Início, HUB, Explorar,
 Decks, e todas as pessoais (Coleção, Portfólio, Vendas, Binders, Wishlist,
-Graded, Hub pessoal, Badges, Backup). Elas leem os 14 jogos de uma vez e filtram
-por jogo *dentro* da página — por isso **não** carimbam `?game=` na URL (link
-copiado de `/collection` não deve parecer preso ao Pokémon). Nas demais, o jogo
-resolvido é carimbado com `replaceState`, senão compartilhar "os sets do Gundam"
+Graded, Hub pessoal, Badges, Backup). Elas leem os 49 jogos com catálogo de uma
+vez e filtram por jogo *dentro* da página — por isso **não** carimbam `?game=`
+na URL (link copiado de `/collection` não deve parecer preso ao Pokémon). Nas
+demais, o jogo resolvido é carimbado com `replaceState`, senão compartilhar "os sets do Gundam"
 entregaria os sets da sessão de quem abre. `/users/<handle>` é exceção: nunca
 carimba.
 
@@ -1428,7 +1429,8 @@ dia de lançamento de set do Pokémon, pra pegar o set novo sem esperar a manhã
 seguinte. As fontes têm custos diferentes:
 
 - **grátis** (TCGdex, TCGCSV — inclusive o preço por impressão do Pokémon EN/JP —,
-  Scryfall, Lorcast e os vintage): **todo dia**. Cobrem os 14 jogos e não custam nada.
+  Scryfall, Lorcast e os vintage): **todo dia**. Cobrem os 49 jogos com
+  catálogo e não custam nada.
 - **por crédito** (PPT e MYP): 3x/semana — segunda e quarta pelo cron diário,
   sexta pelo da noite. Cabem na cota diária (o plano da PPT dá 20.000 créditos
   por dia e um run gasta no máximo 8.000); a PPT hoje responde pelo graded.
