@@ -29,6 +29,11 @@ Scans do dono no Card Game 2002~2006:
   640×916 em q72: a trama prateada do holo pesa (q80 dava 209 KB, q72 171 KB)
   e o texto segue nítido. A carta sai mais estreita que a COIN-8 no scan
   (0,699 contra 0,711); não foi esticada.
+- **忍-367 うちはイタチ＆干柿鬼鮫 (`nrt-nin-367`, 巻ノ十五, R)** (2026-11-23):
+  este veio já recortado, 1075×1463 com os cantos em PRETO (sem alfa) e uma
+  lasca escura de 1–2 px em volta. Aparado 2 px de cada lado antes da mesma
+  receita, com o preto dos cantos em transparente; 640×875, q80. Proporção
+  0,732, também sem esticar.
 
 ## Data Carddass (`nrt-dc-*`, `nrt-nf-*`, `nrt-nx-*`)
 
