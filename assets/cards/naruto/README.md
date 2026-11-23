@@ -15,6 +15,15 @@ original 2002 (fundo laranja) é a que deve aparecer.
 - Depois de salvar, rode `node scripts/sync-naruto-vintage.mjs --no-fetch` (o CI
   também aplica em todo deploy).
 
+Scans do dono no Card Game 2002~2006:
+
+- **COIN-8 うちはイタチ (`nrt-COIN-008`)** (2026-11-23): a lista oficial da
+  Bandai dá número e nome das 16 cartas COIN+, mas nenhuma fonte tem a imagem.
+  Scan de 1086 px recortado na borda da carta e reduzido a 640 px (q80). O
+  fundo do scanner que sobrava fora dos cantos arredondados ficou
+  transparente (webp com alfa): na ampliação o raio da tela é menor que o da
+  carta, e o canto claro apareceria.
+
 ## Data Carddass (`nrt-dc-*`, `nrt-nf-*`, `nrt-nx-*`)
 
 Os syncs do arcade (`sync-naruto-datacarddass.mjs` e
