@@ -29,11 +29,11 @@
 // (mapeado pelo número oficial), mesmo que a fonte da imagem mude — coleções de
 // usuários referenciam esses ids.
 import { readFile, writeFile, mkdir } from "node:fs/promises";
-import { existsSync } from "node:fs";
+import { readdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { readGlobalVar, readSnapshot, writeSnapshot, snapshotCardCount, writeGameCatalog, sleep } from "./lib/sync-common.mjs";
 import { aplicaRaridade } from "./naruto-raridade-hinokunian.mjs";
-import { parseTvtCards } from "./lib/naruto-vintage-fontes.mjs";
+import { parseTvtCards, indiceDeCuradas } from "./lib/naruto-vintage-fontes.mjs";
 const SNAP_RARIDADE = new URL("../data/vintage/naruto-raridade.json", import.meta.url);
 const SNAP_BANDAI = new URL("../data/vintage/naruto-bandai-oficial.json", import.meta.url);
 
@@ -208,13 +208,14 @@ function classifyByRange(num) {
 // Imagens CURADAS: um arquivo assets/cards/naruto/<id>.(webp|jpg|png) no repo
 // SUBSTITUI a imagem da fonte (ex.: 忍-2 — o tcg-db só tem o scan do reprint
 // 2003; a impressão original 2002 entra curada). Nada existe -> segue a fonte.
+// Arte trocada entra como <id>-v2, -v3… e vale a versão mais alta (o porquê
+// está no indiceDeCuradas: /assets/* é immutable).
+const CURADAS = indiceDeCuradas((() => {
+  try { return readdirSync(fileURLToPath(new URL("assets/cards/naruto/", ROOT))); } catch { return []; }
+})());
 function curatedImg(id) {
-  for (const ext of ["webp", "jpg", "png"]) {
-    if (existsSync(fileURLToPath(new URL(`assets/cards/naruto/${id}.${ext}`, ROOT)))) {
-      return `/assets/cards/naruto/${id}.${ext}`;
-    }
-  }
-  return null;
+  const nome = CURADAS.get(id);
+  return nome ? `/assets/cards/naruto/${nome}` : null;
 }
 
 const IMG_DB = (code) => `https://wsrv.nl/?url=${encodeURIComponent(`tcg-db.nikita.jp/img/card/nrt/${code}.jpg`)}&w=440&output=webp`;
@@ -308,10 +309,17 @@ async function run() {
   // numa carta que já veio com scan — o snapshot/tcg-db sempre manda. Vêm
   // ANTES da lista da Bandai: o nome curado (ex.: うちはサスケ（金箔押し）) é
   // escolha feita à mão e já tem tradução.
+  //
+  // `variants` é a exceção: o acabamento é da CARTA, não da fonte que trouxe o
+  // scan, então vale mesmo quando o número já veio de outra fonte. Sem ele, a
+  // carta sai "Normal" como todas. A PR忍-1-R (箔押し, a versão com estampa em
+  // foil da PR忍-1) só existe em foil e saía "Normal" até 2026-11-23.
+  const variantesCuradas = new Map();
   try {
     const curated = JSON.parse(await readFile(CURATED_PROMOS, "utf8"));
     let added = 0;
     for (const c of curated.cards || []) {
+      if (Array.isArray(c.variants) && c.variants.length) variantesCuradas.set(c.num, c.variants.map(String));
       if (byNum.has(c.num)) { if (c.rarity && !byNum.get(c.num).rarity) byNum.get(c.num).rarity = c.rarity; continue; }
       // `set`/`id` explícitos permitem sets curados fora das promos (ex.: あたり).
       byNum.set(c.num, { num: c.num, name: c.name, code: "", img: "", dbSet: c.set || PROMO_SET, rarity: c.rarity || "", curatedId: c.id || "" });
@@ -417,7 +425,7 @@ async function run() {
         artist: "",
         language: "ja",
         image: curated || (c.code ? IMG_DB(c.code) : (c.img ? IMG_TVT(c.img) : "")),
-        variants: ["Normal"],
+        variants: variantesCuradas.get(c.num) || ["Normal"],
         setLogo: "/assets/games/game_naruto_vintage.webp",
         vintage: true,
         vintageLine: "nrtcg"

@@ -5,8 +5,8 @@
 // Roda com: node --test tests/
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
-import { parseTvtCards, parseBandaiCardlist, normNumBandai } from "../scripts/lib/naruto-vintage-fontes.mjs";
+import { readFileSync, existsSync, readdirSync } from "node:fs";
+import { parseTvtCards, parseBandaiCardlist, normNumBandai, indiceDeCuradas } from "../scripts/lib/naruto-vintage-fontes.mjs";
 
 // Trechos de verdade das páginas da TV Tokyo (card_04, 08, 09 e 13), só sem
 // os <table> de volta.
@@ -88,6 +88,27 @@ test("Bandai: a numeração das promos vira a grafia do catálogo", () => {
   assert.equal(normNumBandai("COIN-8"), "COIN-8");
 });
 
+// ── Imagem curada com versão ─────────────────────────────────────────────────
+test("imagem curada: a arte trocada entra como -v2 e vence o arquivo sem versão", () => {
+  const idx = indiceDeCuradas([
+    "README.md", "nrt-N-002.webp",
+    "nrt-PRN-001R.webp", "nrt-PRN-001R-v2.webp",          // as duas no disco: vale a v2
+    "nrt-PRN-007-v3.webp", "nrt-PRN-007-v2.webp",          // a mais alta, em qualquer ordem
+    "nrt-PRN-018.png", "nrt-PRN-018.jpg", "nrt-PRN-018.webp", // mesma versão: webp > jpg > png
+    "nrt-COIN-008-v10.jpg", "nrt-COIN-008-v9.webp",        // versão é número, não texto
+    "nrt-nin-365-v1.webp", "nrt-nin-367.gif"               // -v1 não é versão; .gif não é imagem curada
+  ]);
+  assert.equal(idx.get("nrt-N-002"), "nrt-N-002.webp");
+  assert.equal(idx.get("nrt-PRN-001R"), "nrt-PRN-001R-v2.webp");
+  assert.equal(idx.get("nrt-PRN-007"), "nrt-PRN-007-v3.webp");
+  assert.equal(idx.get("nrt-PRN-018"), "nrt-PRN-018.webp");
+  assert.equal(idx.get("nrt-COIN-008"), "nrt-COIN-008-v10.jpg");
+  assert.equal(idx.get("nrt-nin-365"), undefined);
+  assert.equal(idx.get("nrt-nin-365-v1"), "nrt-nin-365-v1.webp");
+  assert.equal(idx.get("nrt-nin-367"), undefined);
+  assert.equal(idx.get("README"), undefined);
+});
+
 // ── O catálogo versionado ────────────────────────────────────────────────────
 const lerCatalogo = () => {
   const s = readFileSync(new URL("../data/naruto/cards.js", import.meta.url), "utf8");
@@ -140,5 +161,43 @@ test("catálogo: volume com a faixa inteira bate com o total oficial", () => {
   for (const c of vintage) porSet.set(c.setId, (porSet.get(c.setId) || 0) + 1);
   for (const c of vintage.filter((x) => /^nrt-s\d\d$/.test(x.setId) && x.setId !== "nrt-s10")) {
     assert.equal(porSet.get(c.setId), c.setTotal, `${c.setId}: ${porSet.get(c.setId)} de ${c.setTotal}`);
+  }
+});
+
+test("catálogo: a PR忍-1-R (箔押し) é só Foil e usa o scan novo, com outro nome de arquivo", () => {
+  // Até 2026-11-23 saía "Normal", com uma foto de 313 px. A imagem nova tem
+  // OUTRO nome porque /assets/* é immutable: sobrescrever deixaria a velha em
+  // quem já viu a carta.
+  const c = porNumero.get("PR忍-1-R");
+  assert.equal(c.id, "nrt-PRN-001R");
+  assert.deepEqual(c.variants, ["Foil"]);
+  assert.equal(c.image, "/assets/cards/naruto/nrt-PRN-001R-v2.webp");
+  // É a única: o resto da linha segue "Normal". Trava de propósito: a cópia
+  // que alguém marcou fica guardada pelo NOME da variante, então trocar a de
+  // uma carta publicada é decisão, não efeito colateral de um sync.
+  assert.deepEqual(vintage.filter((x) => x.variants.join() !== "Normal").map((x) => x.number), ["PR忍-1-R"]);
+});
+
+test("catálogo: a PR忍-1, a normal da mesma carta, também troca de imagem e segue Normal", () => {
+  const c = porNumero.get("PR忍-1");
+  assert.equal(c.id, "nrt-PRN-001");
+  assert.deepEqual(c.variants, ["Normal"]);
+  assert.equal(c.image, "/assets/cards/naruto/nrt-PRN-001-v2.webp");
+});
+
+test("catálogo: imagem curada aponta pra arquivo que existe, e é a versão mais nova dele", () => {
+  const pasta = new URL("../assets/cards/naruto/", import.meta.url);
+  const idx = indiceDeCuradas(readdirSync(pasta));
+  const locais = vintage.filter((c) => c.image.startsWith("/assets/cards/naruto/"));
+  assert.ok(locais.length >= 9);
+  for (const c of locais) {
+    const nome = c.image.slice("/assets/cards/naruto/".length);
+    assert.ok(existsSync(new URL(nome, pasta)), `${c.number}: ${c.image} não existe`);
+    assert.equal(nome, idx.get(c.id), `${c.number}: o catálogo não usa a versão mais nova`);
+  }
+  // A vitrine da home aponta pro arquivo à mão: tem de ser um que existe.
+  const home = readFileSync(new URL("../index.html", import.meta.url), "utf8");
+  for (const m of home.matchAll(/src="(assets\/cards\/naruto\/[^"]+)"/g)) {
+    assert.ok(existsSync(new URL("../" + m[1], import.meta.url)), `index.html: ${m[1]} não existe`);
   }
 });
