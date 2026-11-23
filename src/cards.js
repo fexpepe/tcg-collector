@@ -35,11 +35,15 @@
     filtersBar: document.getElementById("cardsFilters")
   };
 
-  // Faixa de preço na MOEDA DO TOPO (aceita vírgula decimal). Vazio = sem limite.
+  // Faixa de preço na MOEDA DO TOPO, lida na régua do idioma da interface
+  // (shared.parseMoney). Vazio, sem dígito, negativo e lixo = sem limite (null);
+  // só o "0" digitado de fato vale 0. Até 2026-11-22 toda vírgula era decimal:
+  // em inglês, "1,000" no mínimo filtrava por 1, não por mil.
   function parsePrice(el) {
-    if (!el) return null;
-    const v = parseFloat(String(el.value || "").replace(/[^\d.,]/g, "").replace(",", "."));
-    return Number.isFinite(v) && v >= 0 ? v : null;
+    const texto = el ? String(el.value || "") : "";
+    if (!/\d/.test(texto)) return null;
+    const v = shared.parseMoney(texto);
+    return v > 0 || (v === 0 && !/[1-9]/.test(texto)) ? v : null;
   }
   // Valor de mercado memoizado por carta (ordenar/filtrar por preço varre o
   // catálogo inteiro — sem memo seria uma conversão de moeda por comparação).
