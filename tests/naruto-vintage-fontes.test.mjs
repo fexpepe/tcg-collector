@@ -178,6 +178,13 @@ test("catálogo: a PR忍-1-R (箔押し) é só Foil e usa o scan novo, com outr
   assert.deepEqual(vintage.filter((x) => x.variants.join() !== "Normal").map((x) => x.number), ["PR忍-1-R"]);
 });
 
+test("catálogo: a PR忍-1, a normal da mesma carta, também troca de imagem e segue Normal", () => {
+  const c = porNumero.get("PR忍-1");
+  assert.equal(c.id, "nrt-PRN-001");
+  assert.deepEqual(c.variants, ["Normal"]);
+  assert.equal(c.image, "/assets/cards/naruto/nrt-PRN-001-v2.webp");
+});
+
 test("catálogo: imagem curada aponta pra arquivo que existe, e é a versão mais nova dele", () => {
   const pasta = new URL("../assets/cards/naruto/", import.meta.url);
   const idx = indiceDeCuradas(readdirSync(pasta));

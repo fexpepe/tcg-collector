@@ -68,6 +68,13 @@ Scans do dono no Card Game 2002~2006:
   passou de `Normal` pra `Foil` (`variants` em
   `data/vintage/naruto-promos-curated.json`): é a versão com estampa em foil
   da PR忍-1 e só existe assim.
+- **PR忍-1 うずまきナルト (`nrt-PRN-001`, promo, 2002)** (2026-11-23): a
+  normal da mesma carta. Tinha uma foto de 628×917 (`nrt-PRN-001.webp`); o
+  scan do dono, 1086×1448, entra como **`nrt-PRN-001-v2.webp`**. Mesma
+  receita, caixa em x 54–1031, y 28–1400 (as colunas 53 e 1032 e a linha
+  1401 são meio fundo); a carta ocupa menos do scan que a da `-001R`, então
+  sai de 978 px de largura em vez de 1001. 640×898, q80, 137 KB. Segue
+  `Normal`.
 
 ## Data Carddass (`nrt-dc-*`, `nrt-nf-*`, `nrt-nx-*`)
 
