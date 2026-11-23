@@ -21,21 +21,27 @@
   // WebP na largura da tela vindo do espelho, com a origem logo atrás na cadeia
   // de reserva (data-img-fallbacks) — espelho fora do ar cai no que já aparecia.
   //
-  // REGRA DE NITIDEZ (a exigência do Fernando: foto não pode piorar): a imagem
-  // que o navegador escolhe tem de cobrir a largura DESENHADA × a densidade da
-  // tela (3x no celular). O espelho oferece 300/(450)/600 com `thumb`+`sizes` e
-  // 1000 sem `thumb` (src único). Medido em 390 e 1280 px de viewport:
-  //   destaque da galeria (capa)        92 / 172 px   -> thumb, 600 cobre 3x (516)
-  //   banner do deck (carta da capa)    92 / 164-184  -> thumb, 600 cobre 3x (552)
-  //   pilha publicada / tile / pilha    170 / 117-170 -> thumb, 600 cobre 3x (510)
-  //   miniatura da lista / da busca     26 / 34       -> thumb, 300 sobra
+  // REGRA DE NITIDEZ (a exigência do Fernando: foto não pode piorar), em duas
+  // partes: (1) a imagem que o navegador escolhe cobre a largura DESENHADA × a
+  // densidade da tela (3x no celular) sempre que a fonte tem esses pixels; e
+  // (2) onde a tela pede mais do que a imagem tem, nunca chega menos pixel do
+  // que a URL de origem entregava antes — nem com o espelho falhando. O
+  // espelho oferece 300/(450)/600 com
+  // `thumb`+`sizes` e, sem `thumb`, a de 1000 (a melhor imagem da fonte, que
+  // ele nunca amplia). Medido em 390 e 1280 px de viewport:
+  //   destaque da galeria (capa)        92 / 172 px   -> miniatura grande
+  //   banner do deck (carta da capa)    92 / 164-184  -> miniatura grande
+  //   pilha publicada / tile / pilha    170 / 117-170 -> miniatura grande
+  //                                     (entre 460 e 700 px de tela chega a 325)
+  //   miniatura da lista / da busca     26 / 34       -> thumb, a de 300 sobra
   //   card da galeria (arte recortada)  169-231 x1,35-1,42 de zoom (CSS scale)
   //                                     até 328 px -> 3x pede 984: SEM thumb (1000)
   //   fundo borrado do banner/destaque  409 / 1286    -> nenhuma cobre; SEM thumb
   //                                     (1000, a maior), nunca abaixo da origem
   //   preview de hover                  240 / 244     -> 3x pede 732: SEM thumb (1000)
-  // Os `sizes` repetem a largura medida (com folga pra cima, nunca pra baixo):
-  // quem escolhe a candidata é o navegador, pela densidade real.
+  // "Miniatura grande" = ver usaThumb, logo abaixo. Os `sizes` repetem a largura
+  // medida (com folga pra cima, nunca pra baixo): quem escolhe a candidata é o
+  // navegador, pela densidade real.
   const SZ_CAPA_DESTAQUE = "(max-width: 700px) 92px, 172px";
   const SZ_CAPA_BANNER = "(max-width: 700px) 92px, 184px";
   const SZ_CARTA_PILHA = "(max-width: 700px) 50vw, 200px";
@@ -43,19 +49,26 @@
   // o localizedImg nao emite, entao entra por aqui.
   const imgCarta = (url, opts) => shared.localizedImg(url, opts);
   const imgDecor = (url, opts) => imgCarta(url, opts).replace("<img", '<img aria-hidden="true"');
-  // Com `thumb` o localizedImg põe na cadeia de reserva, ANTES da URL de origem,
-  // a variante menor do host (shared.gridThumbUrl): Lorcast large (674 px) ->
-  // normal (488 px), TCGplayer 1000 -> 400. Espelho fora do ar (ou carta ainda
-  // não espelhada) cairia nela, e numa miniatura maior que 488/3 = 162 px a
-  // imagem ficaria abaixo da regra E abaixo do que a origem entregava (medido: o
-  // tile de 170 px em tela 3x pede 510 px e receberia 488, contra os 674 de
-  // antes). Nesses hosts, miniatura grande vai SEM thumb (1000 no espelho,
-  // origem inteira na reserva); as pequenas (26/34 px) seguem com thumb.
-  const MINIATURA_REDUZIDA = [[/\/card\/digital\/large\//, 488], [/_in_1000x1000\.jpg/, 400]];
-  const larguraDaReserva = (url) => { const m = MINIATURA_REDUZIDA.find((r) => r[0].test(url)); return m ? m[1] : Infinity; };
+  // Quando a miniatura pode usar `thumb` (srcset 300/600) sem ferir a parte (2)
+  // da regra. O `thumb` tem dois custos que a URL crua de antes não tinha:
+  //  - a maior candidata é a de 600, e a origem de vários hosts é maior
+  //    (Lorcast 674, pokemontcg.io 734, TCGplayer 1000);
+  //  - a cadeia de reserva passa ANTES pela variante reduzida do host
+  //    (shared.cardImgChain: TCGdex low 245 px, Lorcast normal 488, TCGplayer
+  //    400x400) — carta ainda não espelhada, ou espelho fora do ar, cairia
+  //    nela em vez da origem inteira (medido: tile de 170 px em tela 3x pede
+  //    510 e receberia 488 no Lorcast, contra os 674 de antes).
+  // Então: miniatura PEQUENA (a menor reserva, 245 px, cobre a largura × 3)
+  // usa thumb em todo host; miniatura GRANDE só usa thumb no Scryfall, em que
+  // o catálogo guarda a `normal` (488 px), a 600 do espelho sai da `large` e
+  // não há variante reduzida na reserva. Nos outros hosts a miniatura grande
+  // vai sem thumb: a de 1000 do espelho em WebP, origem inteira na reserva.
+  const MENOR_RESERVA = 245;
+  const ORIGEM_ABAIXO_DE_600 = /^https:\/\/cards\.scryfall\.io\/normal\//;
   // maxCss = a MAIOR largura desenhada do ponto (px de CSS).
+  const usaThumb = (url, maxCss) => maxCss * 3 <= MENOR_RESERVA || ORIGEM_ABAIXO_DE_600.test(String(url));
   const imgMini = (url, opts, sizes, maxCss) => imgCarta(url,
-    larguraDaReserva(url) >= maxCss * 3 ? Object.assign({ thumb: true, sizes: sizes }, opts) : opts);
+    usaThumb(url, maxCss) ? Object.assign({ thumb: true, sizes: sizes }, opts) : opts);
 
   // ---------------------------------------------------------------------------
   // Store — GLOBAL (cross-game), igual aos binders: uma lista só, cada deck
