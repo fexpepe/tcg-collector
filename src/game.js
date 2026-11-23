@@ -34,7 +34,7 @@
     unionarena: { slug: "unionarena", name: "Union Arena", dataDir: "data/unionarena/" }, // TCGCSV cat. 81 (Bandai, EN; um set por anime)
     narutocg: { slug: "narutocg", name: "Naruto Card Game", dataDir: "data/narutocg/" }, // TCGCSV cat. 93 (Bandai, lançamento mundial 2027; até 11/11/2026, a linha nrt-ncg do naruto)
     naruto: { slug: "naruto", name: "Naruto Card Game", dataDir: "data/naruto/" },   // vintage Bandai 2003–2006 e as linhas dele (Data Carddass, CCG, 疾風伝)
-    hxh: { slug: "hxh", name: "Hunter × Hunter", dataDir: "data/hxh/" },             // vintage Bandai: Miracle Battle (2011–12); Hyper Battle 1999–2001 em curadoria
+    hxh: { slug: "hxh", name: "Hunter × Hunter", dataDir: "data/hxh/" },             // vintage Bandai 1999–2001: só o Carddass Hyper Battle (o Miracle Battle que ele já teve virou o jogo mbc em 2026-10-01)
     dbc: { slug: "dbc", name: "Dragon Ball Carddass", dataDir: "data/dbc/" },       // vintage Bandai 1988–1997 (本弾 e 特別弾)
     // As três séries paralelas do Carddass, jogos próprios desde 2026-11-13
     // (até ali, séries do dbc; os ids dbc-sb…/dbc-va…/dbc-bw… ficaram).
@@ -52,8 +52,8 @@
     hololive: { slug: "hololive", name: "hololive Official Card Game", dataDir: "data/hololive/" }, // TCGCSV cat. 87 (Bushiroad/COVER 2025+, só a edição EN; reimpressão e arte alternativa = cartas próprias)
     shadowverse: { slug: "shadowverse", name: "Shadowverse: Evolve", dataDir: "data/shadowverse/" }, // TCGCSV cat. 73 (Bushiroad/Cygames 2023+, só a edição EN; Premium, SL e Evolved = cartas próprias)
     narutomythos: { slug: "narutomythos", name: "Naruto Mythos TCG", dataDir: "data/narutomythos/" }, // galeria oficial (Cicaboom 2026+, EN; a 2ª edição do Set 1 = set próprio; sem preço)
-    herorush: { slug: "herorush", name: "Marvel Hero Rush", dataDir: "data/herorush/" },
-    ikorr: { slug: "ikorr", name: "Rush of Ikorr", dataDir: "data/ikorr/" }, // TCGCSV cat. 94 (Upper Deck 2025+, EN; o Fracture e o Rapture Foil = versões da carta, não cartas próprias) // API do site oficial (marvelherorush.com, 2026+, EN; imagem só pelo espelho: a URL da fonte é assinada e vence; sem preço)
+    herorush: { slug: "herorush", name: "Marvel Hero Rush", dataDir: "data/herorush/" }, // API do site oficial (marvelherorush.com, 2026+, EN; imagem só pelo espelho: a URL da fonte é assinada e vence; sem preço)
+    ikorr: { slug: "ikorr", name: "Rush of Ikorr", dataDir: "data/ikorr/" }, // TCGCSV cat. 94 (Upper Deck 2025+, EN; o Fracture e o Rapture Foil = versões da carta, não cartas próprias)
     narutokayou: { slug: "narutokayou", name: "Naruto Kayou", dataDir: "data/narutokayou/" }, // kayouofficial.com (Kayou, só a edição em inglês, 2025+; coleção, não jogo de mesa; sem preço)
     vanguard: { slug: "vanguard", name: "Cardfight!! Vanguard", dataDir: "data/vanguard/" }, // TCGCSV cat. 16 (Bushiroad 2011+, as cinco eras, só a edição EN; paralelas = cartas próprias)
     duelmasters: { slug: "duelmasters", name: "Duel Masters", dataDir: "data/duelmasters/" }, // banco oficial da Takara Tomy + preço da Yuyu-tei (o jogo japonês, 2002+; fora da TCGCSV)
@@ -68,7 +68,7 @@
     seiyatc: { slug: "seiyatc", name: "Saint Seiya Trading Collection", dataDir: "data/seiyatc/" }, // vintage Amada 2000–2003 (sync-saint-seiya.mjs)
     seiyacr: { slug: "seiyacr", name: "Saint Seiya Crusade", dataDir: "data/seiyacr/" }, // vintage Bandai 2012–2014, o TCG do sistema Crusade (sync-saint-seiya.mjs)
     fma: { slug: "fma", name: "Fullmetal Alchemist Carddass", dataDir: "data/fma/" }, // vintage Bandai 2004–2005: Alchemic Card Battle e as placas da Jumbo Carddass (animecollection.fr; nome transcrito dos scans)
-    // Em preparação (catálogo ainda vazio; tile "Em breve" no hub):
+    // Em preparação (catálogo ainda vazio; sem tile no hub nem endereço em /games):
     jump: { slug: "jump", name: "JUMP", dataDir: "data/jump/" }            // promos curadas (Jump Festa, V-Jump…)
   };
 
