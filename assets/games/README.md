@@ -47,6 +47,14 @@ carrega e esconde o nome em texto (fallback sem erro).
   pelo `normaliza-logo.mjs`: recortado na tinta (1683×684), 640×260, WebP q90
   com alfa sem perda (24,8 KB). O "HERORUSH" é preto: lê na cápsula branca do
   hub e some em fundo escuro, então o logo só vai onde há cápsula.
+- `game_ikorr.webp` — Rush of Ikorr (22/11/2026): arte enviada pelo Fernando
+  no dia em que o jogo entrou, WebP de 1753×1059 com fundo transparente (o
+  "RUSH OF IKORR" azul com filete dourado e o anel com o cristal vermelho no
+  lugar do "O"). O site oficial da Upper Deck só publica banners em JPG com
+  fundo. Gerado pelo `normaliza-logo.mjs` sem recorte (a tinta encosta nas
+  bordas), 430×260, WebP q90 (34,5 KB); a limpeza tirou uma mancha solta à
+  direita do "R" final. O azul com filete lê nos dois fundos, na cápsula
+  branca e no escuro.
 - `game_narutokayou.webp` — Naruto Kayou (13/11/2026): até aqui o jogo usava o
   `game_naruto.webp` (o site oficial da Kayou só mostra o logo do Naruto); o
   Fernando mandou a arte com o "KAYOU" amarelo em cima do Naruto, PNG 1280×1280
