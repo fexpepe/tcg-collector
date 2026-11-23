@@ -6,10 +6,10 @@
   // do jogo como stand-in do logo de set.)
   // Logo do jogo (assets/games/game_<slug>.webp): usado como stand-in do logo de
   // set quando o set não tem um próprio, e como último fallback quando o logo do
-  // set quebra. "" pros jogos sem arquivo de logo (hoje nenhum; o ikorr e o
-  // jump nem entram no mapa) — aí cai no texto. Entrou o arquivo em
-  // assets/games/? Basta preencher aqui e pôr o <img> no tile do hub.html (o
-  // hub revela o logo sozinho quando ele carrega).
+  // set quebra. Jogo sem arquivo de logo leva "" ou fica fora do mapa (é o
+  // caso do jump, que ainda não tem catálogo) — aí cai no texto. Entrou o
+  // arquivo em assets/games/? Basta preencher aqui e pôr o <img> no tile do
+  // hub.html (o hub revela o logo sozinho quando ele carrega).
   // Os -v2 são os mesmos logos sem o véu de alfa e sem padding interno (ver
   // assets/games/README.md) — nome novo porque /assets/* é immutable.
   const GAME_LOGO = {
@@ -1426,7 +1426,7 @@
       : "";
     // Set sem logo próprio: usa o logo do JOGO no lugar do texto (e, quando o
     // set tem logo, o do jogo vira o último fallback se ele quebrar). Jogo sem
-    // arquivo de logo (hoje só o ikorr e o jump, que nem têm entrada) cai no
+    // arquivo de logo (entrada vazia ou ausente no GAME_LOGO) cai no
     // placeholder de texto, como antes.
     // Sem logo próprio -> NOME DO SET como título preto sobre o chip claro.
     // Antes caía no logo do JOGO, e aí todo set de Gundam/YGO/Digimon ficava
