@@ -58,9 +58,11 @@
   }
 
   // Tile EDITÁVEL do slab (graduadora/nota/valor/cert/pristine inline).
-  // Estrutura IGUAL em todo card da grade (2026-09-29): nome numa linha,
-  // "set · nº" sempre em duas (.graded-set, no CSS) e os campos na mesma
-  // ordem — graduadora+nota, valor, certificado e, por último, o Pristine.
+  // Estrutura IGUAL em todo card da grade (2026-09-29): a ficha de toda
+  // cápsula (capsula.js, altura fixa — desde 2026-11-23; antes era nome numa
+  // linha e "set · nº" em duas) e os campos na mesma ordem — graduadora+nota,
+  // valor, certificado e, por último, o Pristine. Sem selo da graduadora nas
+  // etiquetas: aqui graduadora e nota são os campos logo abaixo.
   // Ele só existe pra BGS/CGC/TAG; no meio dos campos, empurrava valor e
   // certificado desses cards pra baixo dos vizinhos de PSA/SGC.
   function editableTileHtml(ctx, card, it, sym) {
@@ -87,8 +89,7 @@
         <button type="button" class="sale-remove" data-graded-remove title="${escapeAttribute(t("graded.remove"))}" aria-label="${escapeAttribute(t("graded.remove"))}">${shared.CLOSE_ICON}</button>
       </div>
       <div class="tile-info">
-        <h3>${escapeHtml(card.name)}</h3>
-        <p class="tile-variant graded-set">${shared.cardFlag(card.language)}<span>${escapeHtml(shared.dotJoin(card.set, card.number))}</span></p>
+        ${window.TCGCapsula.ficha(card, { variant: it.variant })}
         <div class="graded-fields">
           <div class="graded-row">
             <select class="graded-company" data-graded-company aria-label="${escapeAttribute(t("graded.company"))}" title="${escapeAttribute(t("graded.company"))}">${companyOpts}</select>

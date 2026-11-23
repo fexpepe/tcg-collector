@@ -195,6 +195,8 @@
   // no src/ordenar.js; as famílias oferecidas são o data-ordenar do
   // collection.html (a Nota só aparece na aba Graded — ver render()).
   const ordenar = window.TCGOrdenar;
+  // A ficha de toda cápsula (etiquetas, "Nome (código)", bandeira · set · jogo).
+  const capsula = window.TCGCapsula;
   const CARDS_SORTS = (document.getElementById("cardsSortSelect") || document.body).getAttribute("data-ordenar");
   // Nota do slab como número ("9.5", "10", "8,5"); carta solta = 0 (vai pro fim).
   const gradeNum = (g) => { const n = parseFloat(String(g || "").replace(",", ".")); return isFinite(n) ? n : 0; };
@@ -1338,17 +1340,17 @@
       .filter((p) => p.card && inGameFilter(p.card) && (!q || shared.matchesCardQuery(p.card, q)));
   }
 
-  // A mesma etiqueta de jogo do variantTile (opts.gameTag) no slab, que monta o
-  // próprio HTML: na "Toda Coleção" misturada, slab e carta comum lado a lado
-  // precisam dizer o jogo do mesmo jeito.
+  // A mesma etiqueta de jogo do variantTile (opts.gameTag) na linha COMPACTA
+  // do slab, que monta o próprio HTML: na "Toda Coleção" misturada, slab e
+  // carta comum lado a lado precisam dizer o jogo do mesmo jeito. Na grade
+  // quem põe a etiqueta é a ficha (capsula.ficha, o.jogo).
   function etiquetaJogo(card, gameTag) {
     return gameTag && card.game ? shared.gameTagHtml(card.game, "tile-game") : "";
   }
 
-  // Nó do slab (somente leitura) pra grade: MESMO formato da carta normal pra ficar
-  // coeso — imagem limpa em cima, e embaixo Nome → bandeira+badge da graduadora/nota
-  // (no lugar da variante) → Coleção · nº → Preço. O badge (ex.: "PSA 9") com a cor
-  // da graduadora é o que diferencia das cartas comuns.
+  // Nó do slab (somente leitura) pra grade: a MESMA ficha da carta normal
+  // (capsula.js), com o selo da graduadora — "PSA 9", na cor dela — como
+  // primeira etiqueta. É o que diferencia das cartas comuns.
   function makeGradedNode(p, editable, gameTag) {
     const { it, card } = p;
     // MODO COMPACTO: o slab vira uma LINHA como as cartas comuns (mesmas
@@ -1365,20 +1367,16 @@
       w.innerHTML = window.TCGGradedUI.editableTileHtml(gradedUiCtx(), card, it, shared.currencySymbol());
       return w.firstElementChild;
     }
-    const [bg, fg] = GRADED_COLORS[it.company] || GRADED_COLORS.psa;
     const src = shared.cardImageSources(card);
     const img = shared.localizedImg(src.url, { alt: card.name, fallback: src.fallback, loading: "lazy", thumb: true, sizes: shared.SIZES_CARD_TILE }) || shared.cardBackPlaceholder();
     const val = it.value > 0 ? it.value : (shared.gradedValue(card, it.company, it.grade).value || 0);
     const priceHtml = val > 0 ? `<p class="tile-price sale-price-tag">${escapeHtml(shared.formatMoney(shared.getCurrency(), val))}</p>` : "";
-    const badge = `<span class="graded-badge" style="--slab-bg:${bg};--slab-fg:${fg}">${escapeHtml((it.company || "").toUpperCase())} ${escapeHtml(shared.gradedGradeText(it.grade, it.pristine))}</span>`;
     const wrap = document.createElement("div");
     wrap.innerHTML = `<article class="card-tile graded-tile graded-grid-tile" data-graded-gid="${escapeAttribute(it.gid)}">
       <div class="card-image"><button type="button" class="image-open" data-preview-card-id="${escapeAttribute(card.id)}" data-preview-variant="${escapeAttribute(it.variant)}" data-graded-company="${escapeAttribute(it.company)}" data-graded-grade="${escapeAttribute(it.grade)}" data-graded-pristine="${it.pristine ? "1" : ""}" aria-label="${escapeAttribute(t("card.zoom", { name: card.name }))}">${img}</button></div>
       <div class="tile-info">
-        <h3>${escapeHtml(card.name)}</h3>
-        <p class="tile-variant">${shared.cardFlag(card.language)}${badge}${etiquetaJogo(card, gameTag)}</p>
-        <p class="tile-set">${shared.tileSetHtml(card)}</p>
-        ${priceHtml}
+        ${capsula.ficha(card, { variant: it.variant, graded: it, jogo: gameTag })}
+        ${capsula.base(priceHtml)}
       </div>
     </article>`;
     return wrap.firstElementChild;
@@ -1397,10 +1395,11 @@
     const wrap = document.createElement("div");
     wrap.innerHTML = `<article class="card-tile graded-tile graded-grid-tile tile-compact" data-graded-gid="${escapeAttribute(it.gid)}">
       <button type="button" class="tile-name" data-preview-card-id="${escapeAttribute(card.id)}" data-preview-variant="${escapeAttribute(it.variant)}" data-graded-company="${escapeAttribute(it.company)}" data-graded-grade="${escapeAttribute(it.grade)}" data-graded-pristine="${it.pristine ? "1" : ""}" data-hover-thumb="${escapeAttribute(src.url || "")}">
-        ${shared.cardFlag(card.language)}<span>${escapeHtml(card.name)}</span>
+        ${shared.cardFlag(card.language)}<span>${escapeHtml(capsula.nomeLimpo(card, it.variant).nome)}</span>
       </button>
       <span class="tile-c-num">${escapeHtml(card.number || "")}</span>
       <span class="tile-c-set">${etiquetaJogo(card, gameTag)}${escapeHtml(card.set || "")}</span>
+      <span class="tile-c-rar">${escapeHtml(capsula.raridade(card))}</span>
       <span class="tile-c-var">${badge}</span>
       <span class="tile-c-price">${priceHtml}</span>
       <div class="tile-actions">${removeBtn}</div>
@@ -2306,64 +2305,61 @@
     });
   }
 
+  // O item do payload (perfil público, link compartilhado) no formato que a
+  // ficha lê. Raridade e total do set vêm do catálogo quando a carta está
+  // carregada: payload antigo não trazia a raridade, e nenhum traz o total.
+  function cartaDoItem(it) {
+    const c = cardsById.get(it.id) || {};
+    return { name: it.n, number: it.num, set: it.s, setId: c.setId, setTotal: c.setTotal, rarity: it.r || c.rarity, language: it.lang, game: it.g };
+  }
+  // Preço do item: graded mostra o valor graded (gv); venda, o PREÇO DE VENDA
+  // (sp); senão, mercado. A CONDIÇÃO da carta à venda vem aqui, colada no
+  // preço: ela é parte da oferta, não do tipo — até 2026-11-23 ia na linha da
+  // versão ("Normal NM"), como se fosse um acabamento.
+  function precoDoItem(it) {
+    if (it.gv != null && it.gv > 0) return `<p class="tile-price sale-price-tag">${escapeHtml(shared.formatMoney(it.cur || "BRL", it.gv))}</p>`;
+    if (it.sp != null && it.sp > 0) {
+      return `<p class="tile-price sale-price-tag">${escapeHtml(shared.formatMoney(it.cur || "BRL", it.sp))}${it.cond ? `<span class="cond-badge">${escapeHtml(it.cond)}</span>` : ""}</p>`;
+    }
+    const val = fromBRL(it.vbrl || 0);
+    return val > 0 ? `<p class="tile-price">${escapeHtml(shared.formatMoney(shared.getCurrency(), val))}</p>` : "";
+  }
+  // Versão do item com a quantidade ("Foil ×2"), pro tipo da ficha.
+  const versaoDoItem = (it) => `${escapeHtml(it.v)}${it.q > 1 ? ` ×${it.q}` : ""}`;
+
   function sharedTile(it) {
     // sizes: é a mesma .card-grid da página do set. Sem ele o <img> não ganha
     // srcset e fica preso na variante de 300 px — num celular DPR 3 o tile
     // pede ~420 px e a carta aparecia esticada 1,4x (medido em 13/10/2026).
     const img = shared.localizedImg(it.img, { alt: it.n, fallback: it.fb, loading: "lazy", thumb: true, sizes: shared.SIZES_CARD_TILE }) || shared.cardBackPlaceholder();
-    const flag = shared.cardFlag(it.lang);
-    // Graded: mostra o valor graded (gv). Venda: o PREÇO DE VENDA (sp). Senão, mercado.
-    let priceHtml = "";
-    if (it.gv != null && it.gv > 0) {
-      priceHtml = `<p class="tile-price sale-price-tag">${escapeHtml(shared.formatMoney(it.cur || "BRL", it.gv))}</p>`;
-    } else if (it.sp != null && it.sp > 0) {
-      priceHtml = `<p class="tile-price sale-price-tag">${escapeHtml(shared.formatMoney(it.cur || "BRL", it.sp))}</p>`;
-    } else {
-      const val = fromBRL(it.vbrl || 0);
-      if (val > 0) priceHtml = `<p class="tile-price">${escapeHtml(shared.formatMoney(shared.getCurrency(), val))}</p>`;
-    }
-    // Slab graduado: MESMO visual da coleção (makeGradedNode) — imagem limpa e o
-    // badge da graduadora (cor do slab) na linha da variante, em vez do overlay.
-    if (it.co) {
-      return `<article class="card-tile graded-tile graded-grid-tile shared-tile">
-        <div class="card-image"><button type="button" class="image-open" data-preview-card-id="${escapeAttribute(it.id)}" data-preview-variant="${escapeAttribute(it.v)}" aria-label="${escapeAttribute(t("card.zoom", { name: it.n }))}">${img}</button></div>
-        <div class="tile-info">
-          <h3>${escapeHtml(it.n)}</h3>
-          <p class="tile-variant">${flag}${shared.gradedBadgeHtml({ company: it.co, grade: it.gr, pristine: it.pr })}</p>
-          <p class="tile-set">${shared.tileSetHtml({ set: it.s, number: it.num, game: it.g, setId: (cardsById.get(it.id) || {}).setId })}</p>
-          ${priceHtml}
-        </div>
-      </article>`;
-    }
-    return `<article class="card-tile shared-tile">
+    // A MESMA ficha da coleção do dono (capsula.js). Slab graduado: o selo da
+    // graduadora é a primeira etiqueta; carta comum: a versão leva a
+    // quantidade ("Foil ×2").
+    const ficha = capsula.ficha(cartaDoItem(it), it.co
+      ? { variant: it.v, graded: { company: it.co, grade: it.gr, pristine: it.pr } }
+      : { variant: it.v, tipo: versaoDoItem(it) });
+    return `<article class="card-tile shared-tile${it.co ? " graded-tile graded-grid-tile" : ""}">
       <div class="card-image"><button type="button" class="image-open" data-preview-card-id="${escapeAttribute(it.id)}" data-preview-variant="${escapeAttribute(it.v)}" aria-label="${escapeAttribute(t("card.zoom", { name: it.n }))}">${img}</button></div>
       <div class="tile-info">
-        <h3>${escapeHtml(it.n)}</h3>
-        <p class="tile-set">${shared.tileSetHtml({ set: it.s, number: it.num, game: it.g, setId: (cardsById.get(it.id) || {}).setId })}</p>
-        <p class="tile-variant">${flag}<span>${escapeHtml(it.v)}${it.q > 1 ? ` ×${it.q}` : ""}</span>${it.sp > 0 && it.cond ? `<span class="cond-badge">${escapeHtml(it.cond)}</span>` : ""}</p>
-        ${priceHtml}
+        ${ficha}
+        ${capsula.base(precoDoItem(it))}
       </div>
     </article>`;
   }
 
   // Linha COMPACTA do tile do share/perfil: o mesmo molde do tile-compact do
-  // shared.js (nome com bandeira · nº · set · variante/badge · preço), SEM
-  // imagem no DOM (o nome carrega a miniatura em data-hover-thumb).
+  // shared.js (nome com bandeira · nº · set · raridade · variante/badge ·
+  // preço), SEM imagem no DOM (o nome carrega a miniatura em data-hover-thumb).
   function sharedTileCompact(it) {
-    const flag = shared.cardFlag(it.lang);
-    let priceHtml = "";
-    if (it.gv != null && it.gv > 0) priceHtml = `<p class="tile-price sale-price-tag">${escapeHtml(shared.formatMoney(it.cur || "BRL", it.gv))}</p>`;
-    else if (it.sp != null && it.sp > 0) priceHtml = `<p class="tile-price sale-price-tag">${escapeHtml(shared.formatMoney(it.cur || "BRL", it.sp))}</p>`;
-    else { const val = fromBRL(it.vbrl || 0); if (val > 0) priceHtml = `<p class="tile-price">${escapeHtml(shared.formatMoney(shared.getCurrency(), val))}</p>`; }
-    const variante = it.co
-      ? shared.gradedBadgeHtml({ company: it.co, grade: it.gr, pristine: it.pr })
-      : `${escapeHtml(it.v)}${it.q > 1 ? ` ×${it.q}` : ""}${it.sp > 0 && it.cond ? ` <span class="cond-badge">${escapeHtml(it.cond)}</span>` : ""}`;
+    const carta = cartaDoItem(it);
+    const variante = it.co ? shared.gradedBadgeHtml({ company: it.co, grade: it.gr, pristine: it.pr }) : versaoDoItem(it);
     return `<article class="card-tile shared-tile tile-compact${it.co ? " graded-tile graded-grid-tile" : ""}">
-      <button type="button" class="tile-name" data-preview-card-id="${escapeAttribute(it.id)}" data-preview-variant="${escapeAttribute(it.v)}" data-hover-thumb="${escapeAttribute(it.img || "")}">${flag}<span>${escapeHtml(it.n)}</span></button>
+      <button type="button" class="tile-name" data-preview-card-id="${escapeAttribute(it.id)}" data-preview-variant="${escapeAttribute(it.v)}" data-hover-thumb="${escapeAttribute(it.img || "")}">${shared.cardFlag(it.lang)}<span>${escapeHtml(capsula.nomeLimpo(carta, it.v).nome)}</span></button>
       <span class="tile-c-num">${escapeHtml(it.num || "")}</span>
       <span class="tile-c-set">${escapeHtml(it.s || "")}</span>
+      <span class="tile-c-rar">${escapeHtml(capsula.raridade(carta))}</span>
       <span class="tile-c-var">${variante}</span>
-      <span class="tile-c-price">${priceHtml}</span>
+      <span class="tile-c-price">${precoDoItem(it)}</span>
     </article>`;
   }
 
@@ -3168,7 +3164,6 @@
       const owned = ownedItems.length > 0;
       const src = shared.cardImageSources(card);
       const img = shared.localizedImg(src.url, { alt: card.name, fallback: src.fallback || "", loading: "lazy", thumb: true, sizes: shared.SIZES_CARD_TILE }) || shared.cardBackPlaceholder();
-      const flag = shared.cardFlag(card.language);
       const variant = owned ? ownedItems[0].v : shared.defaultVariant(card);
       let priceHtml = "";
       if (owned) {
@@ -3184,10 +3179,8 @@
       return `<article class="card-tile shared-tile${owned ? " owned" : ""}">
         <div class="card-image"><button type="button" class="image-open" data-preview-card-id="${escapeAttribute(card.id)}" data-preview-variant="${escapeAttribute(variant)}" aria-label="${escapeAttribute(t("card.zoom", { name: card.name }))}">${img}</button></div>
         <div class="tile-info">
-          <h3>${escapeHtml(card.name)}</h3>
-          <p class="tile-set"><span>${escapeHtml(shared.dotJoin(card.set, card.number))}</span></p>
-          <p class="tile-variant">${flag}<span>${escapeHtml(variantTxt)}</span></p>
-          ${priceHtml}
+          ${capsula.ficha(card, { variant, tipo: escapeHtml(variantTxt), grupo: owned && ownedItems.length === 1 ? "" : variantTxt, setAtual: card.set })}
+          ${capsula.base(priceHtml)}
         </div>
       </article>`;
     }

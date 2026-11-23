@@ -1891,37 +1891,19 @@ input::placeholder {
   border-color: rgba(var(--accent-rgb), 0.55);
   box-shadow: 0 0 0 1px rgba(var(--accent-rgb), 0.25);
 }
-/* Badge da graduadora+nota (ex.: "PSA 9") na linha da variante do tile graded —
-   no lugar do "Foil"/variante, com a cor da graduadora. Diferencia das cartas
-   normais sem mudar o formato do card (imagem limpa em cima, infos embaixo). */
+/* Badge da graduadora+nota (ex.: "PSA 9"), com a cor da graduadora: no tile
+   graded é a PRIMEIRA etiqueta da ficha (.cap-etqs, bloco "Cápsula"), o que
+   diferencia das cartas normais sem mudar o formato do card (imagem limpa em
+   cima, infos embaixo). Na linha compacta ocupa a coluna da versão. */
 .graded-badge {
   display: inline-flex; align-items: center; padding: 1px 8px; border-radius: 6px;
   background: var(--slab-bg, #c8102e); color: var(--slab-fg, #fff);
   font-size: 11px; font-weight: 800; letter-spacing: .02em; margin-left: 2px;
 }
-/* No tile da grade, a tag vira uma FAIXA: começa no texto (depois da bandeira) e
-   estica até a borda direita do card, como uma tarja da graduadora. */
-.graded-grid-tile .tile-variant .graded-badge {
-  flex: 1; justify-content: flex-start; margin-left: 0; padding: 3px 10px;
-}
 /* Selo da nota + preço graded na linha de metadados do popup (junto do ano,
    bandeira e número) quando a carta é graduada. */
 .cs-eyebrow .graded-badge { margin-left: 2px; font-size: 12px; padding: 2px 9px; }
 .preview-graded-price { font-weight: 800; color: var(--gold); font-size: 14px; }
-/* "Set · nº" do slab editável na GRADE (2026-09-29): SEMPRE duas linhas —
-   reservadas quando o texto é curto ("151 · 198"), cortadas com reticências
-   quando é longo. Com altura livre, "MEGA Starter Set Mega Gengar ex · 003"
-   quebrava em duas linhas (até quatro no celular) e descia graduadora, nota,
-   valor e certificado daquele card: cada um da fileira tinha os campos numa
-   altura. flex-start deixa a bandeira na 1ª linha, e o 1px centra os 14px
-   dela nos 16px da linha. Na lista não vale — a linha é larga, o set cabe
-   numa só e a reserva viraria um buraco. */
-.card-grid:not(.is-list) .graded-set { align-items: flex-start; min-height: 32px; line-height: 16px; }
-.card-grid:not(.is-list) .graded-set > .card-flag { margin-top: 1px; }
-.card-grid:not(.is-list) .graded-set > span:not(.card-flag) {
-  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2;
-  overflow: hidden; overflow-wrap: anywhere; min-width: 0;
-}
 /* Campos do slab, na mesma ordem em todo card: graduadora + nota numa linha;
    valor numa linha própria (largura cheia, pra caber valores grandes sem
    espremer); certificado; e o Pristine por último, quando existe. */
@@ -7500,47 +7482,177 @@ a.progress-row:hover {
 }
 .tile-foot .tile-actions { margin-left: auto; flex: none; }
 
-.tile-info h3 {
-  margin: 0 0 2px;
-  font-size: 15px;
-  line-height: 1.25;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+/* ===========================================================================
+   CÁPSULA — a ficha de toda carta em grade (2026-11-23, docs/CAPSULA.md)
+   Quem monta é o src/capsula.js, uma função só pra catálogo, Coleção,
+   Wishlist, Pastas, Vendas, graduadas e perfil público. As classes cap- saem
+   pra folha própria no deploy (split-css, área "capsula": só as páginas com
+   grade de carta).
+
+   Quatro faixas, sempre nesta ordem e sempre com a mesma altura — é o que faz
+   a linha de um tile bater com a do vizinho, com ou sem o dado:
+     1. ETIQUETAS  graduação · raridade · tipo · extras   20px, coladas na imagem
+     2. TÍTULO     Nome (código)                           20px
+     3. ORIGEM     bandeira · set · jogo                   20px (o jogo pode descer)
+     4. BASE       preço, depois os botões                 colada no fundo
+   Antes eram nome, "bandeira + versão" e "set · número", montados à mão em seis
+   lugares: a raridade não aparecia, o código era o primeiro a ser cortado e a
+   pasta punha a condição da cópia no lugar do tipo ("Normal · NM").
+   =========================================================================== */
+
+/* 1. ETIQUETAS. Mesma altura, mesma fonte e canto reto pra todas (o passe
+   FLAT do site: sem raio fora de carta e círculo); só o preenchimento muda,
+   e ele diz a CATEGORIA, como o rótulo de um slab:
+     graduação  cor da graduadora, cheia        raridade  tinta sobre fundo tingido,
+     tipo       contorno; texto na cor do                 em 5 faixas (ver abaixo)
+                acabamento                       extras    contorno tracejado
+   Ordem fixa. Sem espaço, quem cede é a RARIDADE (reticências): o tipo é
+   curto e é o que decide o valor. */
+.cap-etqs {
+  display: flex; align-items: center; gap: 4px;
+  height: 20px; margin: 0 0 8px; min-width: 0;
+}
+.cap-etq, .cap-etqs > .graded-badge {
+  display: block; flex: 0 1 auto; min-width: 0;
+  height: 20px; margin: 0; padding: 0 7px; border-radius: 0;
+  font-size: 11px; line-height: 20px; font-weight: 600; letter-spacing: 0;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  color: var(--muted);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--text) 22%, transparent);
+}
+.cap-etqs > .graded-badge { flex: none; box-shadow: none; color: var(--slab-fg, #fff); font-weight: 800; letter-spacing: .02em; }
+/* Raridade: 5 faixas na escada que já ordena as grades (rarityRank) — comum
+   cinza, incomum verde, rara azul, as de brilho roxo, o topo dourado. As
+   faixas também se separam por CLARO/ESCURO, não só por matiz. Raridade que
+   a escada não conhece (data-faixa="d") fica no cinza: melhor sem cor do que
+   com a cor errada. */
+.cap-rar {
+  min-width: 26px; box-shadow: none; font-weight: 700;
+  background: var(--rar-bg); color: var(--rar-fg);
+  --rar-fg: #b6bfcc; --rar-bg: rgba(155, 164, 179, .16);
+}
+.cap-rar[data-faixa="2"] { --rar-fg: #5fd4a0; --rar-bg: rgba(52, 199, 133, .16); }
+.cap-rar[data-faixa="3"] { --rar-fg: #7db3ff; --rar-bg: rgba(77, 148, 255, .18); }
+.cap-rar[data-faixa="4"] { --rar-fg: #c9a0ff; --rar-bg: rgba(168, 113, 255, .2); }
+.cap-rar[data-faixa="5"] { --rar-fg: #f5c451; --rar-bg: rgba(240, 184, 75, .2); }
+/* No tema claro a tinta escurece e o fundo vira pastel (todas ≥ 4.5:1). */
+[data-theme="light"] .cap-rar { --rar-fg: #525b68; --rar-bg: #eef1f6; }
+[data-theme="light"] .cap-rar[data-faixa="2"] { --rar-fg: #0c7a54; --rar-bg: #dff5ea; }
+[data-theme="light"] .cap-rar[data-faixa="3"] { --rar-fg: #1d5fd0; --rar-bg: #e1ecff; }
+[data-theme="light"] .cap-rar[data-faixa="4"] { --rar-fg: #7a3fd0; --rar-bg: #efe5ff; }
+[data-theme="light"] .cap-rar[data-faixa="5"] { --rar-fg: #8a5a00; --rar-bg: #fbefcf; }
+/* Tipo (a versão: Normal, Foil, Holofoil, Reverse, 1st Edition…). O de UMA
+   versão não encolhe; o agrupado ("Normal · Foil · Reverse") cede. A cor do
+   texto é a do acabamento (as mesmas do .variant-* da linha compacta), e o
+   contorno acompanha. */
+.cap-tipo { flex-shrink: 0; }
+.cap-tipo.is-grupo { flex-shrink: 1; }
+/* No tile de UMA versão o texto fica na cor do acabamento mesmo quando você
+   tem a carta: a posse já está na borda do tile e no ✓, e na Coleção (onde
+   tudo é "tenho") a cor do jogo apagaria a de todo acabamento. No AGRUPADO a
+   versão que você tem segue acesa — ali é o que diz qual delas é. */
+.cap-tipo:not(.is-grupo) .tile-vn.is-have { color: inherit; font-weight: inherit; }
+/* As cores vão ESCRITAS aqui, com duas classes, em vez de herdadas do
+   .variant-* do núcleo: aquela regra tem a mesma especificidade do .cap-etq e
+   ganharia ou perderia conforme a ordem das folhas (uma no repositório, outra
+   no deploy). */
+.cap-tipo.variant-foil, .cap-tipo.variant-holo, .cap-tipo.variant-holofoil { color: #c084fc; box-shadow: inset 0 0 0 1px rgba(192, 132, 252, .5); }
+.cap-tipo.variant-reverse { color: #f0b84b; box-shadow: inset 0 0 0 1px rgba(240, 184, 75, .5); }
+.cap-tipo.variant-1st-edition { color: #fbbf24; box-shadow: inset 0 0 0 1px rgba(251, 191, 36, .5); }
+[data-theme="light"] .cap-tipo.variant-foil, [data-theme="light"] .cap-tipo.variant-holo, [data-theme="light"] .cap-tipo.variant-holofoil { color: #7a3fd0; box-shadow: inset 0 0 0 1px rgba(122, 63, 208, .45); }
+[data-theme="light"] .cap-tipo.variant-reverse, [data-theme="light"] .cap-tipo.variant-1st-edition { color: #8a5a00; box-shadow: inset 0 0 0 1px rgba(138, 90, 0, .45); }
+/* Extras: o que saiu do nome e diz QUAL impressão é ("Alternate Art",
+   "Manga", "Box Topper"). Ocupam o que sobrar da linha. A primeira encurta
+   até 44px e abaixo disso some; as demais só aparecem inteiras — a que não
+   cabe desce pra uma segunda linha que fica escondida. O item fantasma na
+   frente existe porque o PRIMEIRO item de um flex nunca quebra de linha: sem
+   ele a primeira extra viraria um toco de 10px. */
+.cap-extras {
+  display: flex; flex-wrap: wrap; gap: 4px; flex: 1 1 0; min-width: 0;
+  height: 20px; overflow: hidden;
+}
+.cap-extras::before { content: ""; flex: none; width: 0; margin-left: -4px; }
+.cap-extra { flex: none; min-width: 44px; max-width: 100%; box-shadow: none; outline: 1px dashed color-mix(in srgb, var(--text) 26%, transparent); outline-offset: -1px; }
+
+/* 2. TÍTULO: Nome (código). Uma linha só. Quem cede é o NOME (reticências);
+   o CÓDIGO nunca é cortado — é ele que separa duas cartas de mesmo nome, e
+   era o primeiro a sumir quando vinha colado no fim do nome. */
+.cap-titulo {
+  display: flex; align-items: baseline; gap: 5px;
+  margin: 0; min-width: 0; height: 20px;
+  font-size: 15px; line-height: 20px; font-weight: 700;
+  white-space: nowrap; overflow: hidden;
+}
+.cap-nome { min-width: 3ch; overflow: hidden; text-overflow: ellipsis; }
+.cap-cod {
+  flex: none; max-width: 62%; overflow: hidden; text-overflow: ellipsis;
+  color: var(--muted); font-size: 13px; font-weight: 500;
+  font-variant-numeric: tabular-nums;
 }
 
-.tile-variant {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin: 0 0 8px;
-  font-size: 13px;
-  font-weight: 700;
-  color: #7aa2ff;
+/* 3. ORIGEM: bandeira, set (link — é ele que cede) e, em grade que mistura
+   jogos, a etiqueta do jogo na ponta direita. O set tem direito a 64px (uns
+   nove caracteres): se o jogo não cabe ao lado, desce pra uma linha só dele —
+   nenhum dos dois é cortado até sumir. No celular isso é o caso normal. */
+.cap-origem {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 4px 6px;
+  margin: 4px 0 0; min-width: 0; min-height: 20px;
+  color: var(--subtle); font-size: 12px; line-height: 16px;
 }
-/* O azul do nome da variante passa folgado no escuro (6.7:1), mas dava 2.48
-   sobre o painel branco do tema claro — reprovado em TODO tile de carta. Tom
-   próprio no claro (4.71), mantendo a mesma família de azul. */
-[data-theme="light"] .tile-variant { color: #5672b4; }
-/* Etiqueta do JOGO na linha da versão (opts.gameTag do variantTile — grades
-   que misturam jogos: Explorar, Coleção e Wishlist; 2026-09-28/29): o
-   .game-tag de sempre, menor. Mora no núcleo porque três páginas sem folha
-   em comum a desenham. Nem ela nem a versão cortam: sem espaço (tile de
-   celular, "Dragon Ball Fusion" + "1st Edition"), a etiqueta desce pra uma
-   linha só dela. A versão só ganha reticências se sozinha não couber (o
-   "Normal · Foil · Reverse…" do modo agrupado). */
-.tile-variant:has(> .tile-game) { flex-wrap: wrap; row-gap: 4px; }
-.tile-variant:has(> .tile-game) > span:not(.card-flag):not(.tile-game) { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-/* .card-tile na frente: o .game-tag base vem DEPOIS no arquivo e, com a
-   mesma especificidade, desfaria o tamanho menor. */
+.cap-set {
+  flex: 1 1 0; min-width: 64px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  color: inherit; text-decoration: none;
+}
+a.cap-set:hover { color: var(--text); text-decoration: underline; }
+/* A etiqueta do jogo entra no padrão das outras: 20px de altura. Três
+   classes de propósito: a regra-base (.card-tile .tile-game, do núcleo) vem
+   DEPOIS neste arquivo e ANTES em produção (a folha da cápsula carrega depois
+   do núcleo) — com a mesma especificidade, o resultado mudaria no deploy. */
+.card-tile .cap-origem .tile-game { flex: none; height: 20px; padding: 0 7px; font-size: 11px; line-height: 20px; }
+/* No dedo o link do set ganha os 44px de alvo sem mexer no layout: padding
+   vertical com margem negativa do mesmo tamanho. Os botões da base vêm depois
+   no DOM e ganham na sobreposição. */
+@media (pointer: coarse) {
+  a.cap-set { padding-block: 14px; margin-block: -14px; }
+}
+
+/* 4. BASE: o que já existia (preço em cima, botões embaixo, à direita), só
+   separado da ficha por um fio e sempre colado no fundo do tile. O preço
+   guarda a linha mesmo vazio, pros botões e o fio dos vizinhos baterem. */
+.cap-base { margin-top: auto; padding-top: 10px; }
+.cap-base::before { content: ""; display: block; height: 1px; margin-bottom: 8px; background: var(--line); }
+.cap-base .tile-price { margin: 0; min-height: 20px; line-height: 20px; }
+.cap-base .tile-foot { margin-top: 0; padding-top: 8px; }
+/* Condição da carta À VENDA no perfil público: é parte da oferta, então anda
+   com o preço — não com o tipo. */
+.cap-base .cond-badge { vertical-align: 1px; }
+
+/* LISTA (uma carta por linha, da largura da página): a mesma ficha, sem o que
+   só existe pra alinhar vizinhos. O jogo cola no set — na ponta da linha
+   ficaria a um palmo da carta a que pertence —, o fio some (a linha já é uma
+   caixa) e a carta sem preço não guarda a linha vazia. */
+.card-grid.is-list .cap-set { flex: 0 1 auto; }
+.card-grid.is-list .cap-base { padding-top: 0; }
+.card-grid.is-list .cap-base::before { display: none; }
+.card-grid.is-list .cap-base .tile-price { min-height: 0; margin-top: 4px; }
+.card-grid.is-list .cap-base .tile-foot { padding-top: 0; }
+
+/* Celular (2 colunas, ~150px úteis): mesma anatomia, um ponto a menos no
+   título e respiro menor entre as faixas. */
+@media (max-width: 600px) {
+  .cap-etqs { margin-bottom: 6px; }
+  .cap-titulo { font-size: 14px; }
+  .cap-cod { font-size: 11.5px; }
+}
+
+/* Etiqueta do JOGO nos tiles (grades que misturam jogos: Explorar, Coleção e
+   Wishlist; 2026-09-28/29): o .game-tag de sempre, menor. Mora no núcleo
+   porque a linha COMPACTA de três páginas sem folha em comum a desenha antes
+   do set; na grade, quem a posiciona é a ficha (.cap-origem, mais abaixo).
+   .card-tile na frente: o .game-tag base vem DEPOIS no arquivo e, com a mesma
+   especificidade, desfaria o tamanho menor. */
 .card-tile .tile-game { padding: 2px 6px; font-size: 10.5px; line-height: 1.25; }
-/* Na grade do desktop, cabendo, ela vai pra ponta direita (a coluna da
-   versão fica limpa). Na lista, não: a linha é da largura da página e, na
-   ponta, a etiqueta ficaria a um palmo da versão a que pertence. No
-   compacto ela abre a coluna do set. */
-@media (min-width: 601px) {
-  .card-grid:not(.is-list) .tile-variant .tile-game { margin-left: auto; }
-}
 .tile-c-set .tile-game { margin-right: 6px; }
 
 /* Versão POSSUÍDA acesa na cor do jogo: no rótulo agrupado ("Normal · Foil")
@@ -7566,15 +7678,6 @@ a.progress-row:hover {
 
 .variant-unlimited {
   color: #9ba4b3;
-}
-
-.tile-set {
-  margin: 0 0 10px;
-  color: var(--subtle);
-  font-size: 12px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 /* Ações da carta (querer / coleção) sozinhas na própria linha, à direita. */
@@ -10447,46 +10550,11 @@ button.pf-alloc-row:hover .pf-alloc-name, a.pf-alloc-row:hover .pf-alloc-name { 
   align-items: center;
 }
 
-.tile-set {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  min-width: 0;
-}
-
-.tile-set > span {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* Nome do set CLICÁVEL (2026-11-01): leva pra página do set. O link é quem
-   encolhe com reticências e o número fica sempre à mostra — antes um span só
-   cortava "Set · 123" inteiro, e em set de nome comprido o número sumia
-   primeiro. Cor herdada: o link não grita na cápsula, só responde ao mouse. */
-.tile-set > .tile-set-link {
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: inherit;
-  text-decoration: none;
-}
-.tile-set-link:hover {
-  color: var(--text);
-  text-decoration: underline;
-}
-.tile-set > .tile-set-num { flex: none; }
+/* Nome do set CLICÁVEL na linha compacta (2026-11-01): leva pra página do
+   set. Cor herdada: o link não grita, só responde ao mouse. Na grade o link é
+   da ficha (.cap-set, bloco "Cápsula"). */
 .tile-c-set .tile-set-link { color: inherit; text-decoration: none; }
 .tile-c-set .tile-set-link:hover { color: var(--text); text-decoration: underline; }
-/* No dedo o link ganha os 44px de alvo sem mexer no layout: padding vertical
-   com margem negativa do mesmo tamanho. O .tile-set deixa de cortar (overflow
-   visível) pra área extra receber o toque — quem corta o texto agora é cada
-   item lá dentro. Os botões do pé vêm depois no DOM e ganham na sobreposição. */
-@media (pointer: coarse) {
-  .tile-set { overflow: visible; }
-  .tile-set > .tile-set-link { padding-block: 14px; margin-block: -14px; }
-}
 
 .preview-year {
   font-weight: 700;
@@ -14464,10 +14532,13 @@ select,
    fixo pro caso menor fazia os 5 botões da Coleção vazarem por cima do preço.
    As linhas continuam alinhadas entre si porque o conteúdo é uniforme na
    página: o − escondido reserva o lugar (visibility, logo abaixo) e o badge
-   ×N é absoluto — não alarga o +. */
+   ×N é absoluto — não alarga o +.
+   Colunas: nome · nº · set · RARIDADE · versão · preço · ações. A raridade
+   entrou em 2026-11-23, com a ficha nova da grade (bloco "Cápsula"): 112px,
+   por extenso, cortando com reticências ("Special Illustration…"). */
 .card-tile.tile-compact {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 66px minmax(0, 150px) 92px 104px max-content;
+  grid-template-columns: minmax(0, 1fr) 66px minmax(0, 150px) minmax(0, 112px) 92px 104px max-content;
   align-items: center;
   gap: 10px;
   min-height: 48px;
@@ -14492,7 +14563,7 @@ select,
 .tile-name { display: flex; justify-content: flex-start; align-items: center; gap: 6px; min-width: 0; padding: 0; border: 0; background: none; color: var(--text); font: inherit; font-size: 13.5px; font-weight: 600; text-align: left; cursor: pointer; }
 .tile-name > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .tile-name:hover { color: var(--accent-ink); text-decoration: underline; }
-.tile-c-num, .tile-c-set, .tile-c-var, .tile-c-price { color: var(--muted); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.tile-c-num, .tile-c-set, .tile-c-rar, .tile-c-var, .tile-c-price { color: var(--muted); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-variant-numeric: tabular-nums; }
 /* Preço à DIREITA: é o único valor que se compara entre linhas, e com
    tabular-nums os dígitos caem na mesma coluna (R$ 9,58 embaixo de R$ 5.988,30). */
 .tile-c-price { text-align: right; }
@@ -14535,7 +14606,7 @@ select,
    regras-base de propósito — mesmo peso de seletor, a ordem decide. */
 @media (pointer: coarse), (max-width: 700px) {
   .card-tile.tile-compact {
-    grid-template-columns: minmax(0, 1fr) 66px minmax(0, 150px) 92px 104px max-content;
+    grid-template-columns: minmax(0, 1fr) 66px minmax(0, 150px) minmax(0, 112px) 92px 104px max-content;
     min-height: 48px;
   }
   .card-tile.tile-compact .tile-actions { gap: 6px; }
@@ -14622,7 +14693,7 @@ select,
      busca, e um fixo pro caso menor fazia vazarem). O ×N é absoluto e não
      alarga o +, então as linhas seguem em esquadro. */
   .card-tile.tile-compact { grid-template-columns: minmax(0, 1fr) 56px max-content; gap: 8px; }
-  .tile-c-set, .tile-c-var, .tile-c-price { display: none; }
+  .tile-c-set, .tile-c-rar, .tile-c-var, .tile-c-price { display: none; }
   /* Sem hover no toque: só a versão do toque longo (is-press) aparece aqui. */
   .tile-hover-thumb:not(.is-press) { display: none; }
 }

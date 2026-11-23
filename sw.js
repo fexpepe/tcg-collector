@@ -176,6 +176,10 @@ const SHELL_ASSETS = [
   "src/grafico-preco.js",
   // Ordenar (2026-09-30): o menu e os critérios de toda grade de cartas.
   "src/ordenar.js",
+  // Cápsula (2026-11-23): a ficha de toda grade de cartas (etiquetas, "Nome
+  // (código)", bandeira · set · jogo). Sem ela no shell, offline a grade não
+  // desenha: o variantTile do shared.js depende dela.
+  "src/capsula.js",
   // Nomes em inglês dos sets vintage/japoneses (2026-10-08, saíram do shared.js):
   // carregado pelas telas de Sets, set e Coleção.
   "src/nomes-sets.js",

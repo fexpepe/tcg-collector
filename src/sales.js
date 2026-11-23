@@ -688,8 +688,10 @@
     ajustaValorHero();
   }
 
-  // Tile de venda: imagem (→ preview) + campo de preço editável + condição +
-  // remover. idx = índice da cópia (várias cópias da mesma carta podem estar à venda).
+  // Tile de venda: imagem (→ preview) + a ficha de toda grade (capsula.js) +
+  // campo de preço editável + condição + remover. idx = índice da cópia
+  // (várias cópias da mesma carta podem estar à venda). A condição aqui é
+  // CAMPO da oferta, embaixo, junto do preço — não etiqueta da ficha.
   function saleTileHtml(card, it, sym) {
     const src = shared.cardImageSources(card);
     const img = shared.localizedImg(src.url, { alt: card.name, fallback: src.fallback, loading: "lazy", thumb: true, sizes: shared.SIZES_CARD_TILE }) || shared.cardBackPlaceholder();
@@ -705,8 +707,7 @@
         <button type="button" class="sale-remove" data-sale-remove title="${escA(t("sales.remove"))}" aria-label="${escA(t("sales.remove"))}">${shared.CLOSE_ICON}</button>
       </div>
       <div class="tile-info">
-        <h3>${esc(card.name)}</h3>
-        <p class="tile-variant">${shared.cardFlag(card.language)}<span>${esc(it.variant)}</span></p>
+        ${window.TCGCapsula.ficha(card, { variant: it.variant })}
         <div class="sale-fields">
           <label class="sale-price-field${autoCls}"><span class="sale-cur">${esc(sym)}</span><input type="text" inputmode="decimal" class="sale-price${autoCls}" data-sale-price value="${escA(priceStr)}" placeholder="${PRECO_ZERO}" aria-label="${escA(t("sales.sell"))}"></label>
           <select class="sale-cond" data-sale-cond aria-label="${escA(t("sales.condition"))}" title="${escA(t("sales.condition"))}">${condOpts}</select>

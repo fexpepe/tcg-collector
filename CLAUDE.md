@@ -124,6 +124,10 @@ e pede o de-para do 301. Contrato 7 e "Set renomeado" (3.2) do CATALOGO.
   entra nos três idiomas, senão o `check.mjs` reclama.
 - Ícones em SVG inline (traço, `currentColor`), nunca emoji nem glifo de
   texto em botão.
+- Carta em grade usa a ficha do `src/capsula.js`
+  ([docs/CAPSULA.md](docs/CAPSULA.md)): etiquetas, "Nome (código)" e
+  bandeira · set · jogo, sempre nessa ordem. Nenhuma tela monta título, versão
+  ou set à mão, e condição (NM, SP…) não é tipo de carta.
 - Alvo de toque mínimo de 44px no celular; campo de texto com 16px no toque
   (iOS dá zoom abaixo disso).
 
