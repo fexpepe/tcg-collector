@@ -1414,7 +1414,7 @@
         <div class="adm-kit-fatos">
           <div><strong>${esc(String(nJogos))} jogos</strong><span>modernos e vintage</span></div>
           <div><strong>${esc(KIT_CATALOGO.cartas)}</strong><span>cartas no catálogo</span></div>
-          <div><strong>${esc(KIT_CATALOGO.sets)}</strong><span>sets, de 1996 a hoje</span></div>
+          <div><strong>${esc(KIT_CATALOGO.sets)}</strong><span>sets, de 1988 a hoje</span></div>
           <div><strong>R$ · US$ · €</strong><span>preços em real, dólar e euro</span></div>
         </div>
       </header>
