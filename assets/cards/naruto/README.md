@@ -14,6 +14,16 @@ original 2002 (fundo laranja) é a que deve aparecer.
   `.jpg`/`.png` também funcionam.
 - Depois de salvar, rode `node scripts/sync-naruto-vintage.mjs --no-fetch` (o CI
   também aplica em todo deploy).
+- **Trocar a imagem de uma carta que já tem arquivo aqui não é sobrescrever.**
+  `/assets/*` sai com um ano de `immutable` (ver o `_headers`) e o service
+  worker serve do cache sem perguntar: com o mesmo nome, quem já viu a carta
+  segue vendo a imagem velha. A nova entra como `<id>-v2.webp` (depois `-v3`…)
+  e a anterior sai do repositório; o sync do Card Game 2002 pega a versão mais
+  alta (`indiceDeCuradas`, em `scripts/lib/naruto-vintage-fontes.mjs`). Quem
+  aponta pro arquivo à mão também muda: hoje, só a vitrine do `index.html`.
+  Os syncs das outras linhas (Data Carddass, CCG, 疾風伝) ainda só leem
+  `<id>.<ext>`: na primeira troca de uma carta deles, passam a usar o mesmo
+  índice.
 
 Scans do dono no Card Game 2002~2006:
 
@@ -48,6 +58,16 @@ Scans do dono no Card Game 2002~2006:
   lado com a PR忍-7 escaneada, ela tem a carta inteira; levada a 63:88 na
   largura que veio (350×489, sem ampliar), com cantos arredondados no raio
   relativo dos scans (13,9 px). q90, porque a 350 px a compressão aparece.
+- **PR忍-1-R うずまきナルト（箔押し）(`nrt-PRN-001R`, promo, 2002)**
+  (2026-11-23): tinha uma foto de 313×453 (`nrt-PRN-001R.webp`); o scan do
+  dono de 1086×1448 entra no lugar como **`nrt-PRN-001R-v2.webp`**, pela regra
+  de cima. Mesma receita: caixa da carta em x 42–1042, y 15–1432 (a coluna 41
+  e a 1043 são meio fundo, e a borda direita anda 2 px da ponta de cima à de
+  baixo, então ficaram de fora), fundo dos quatro cantos em transparente com
+  1 px comido ao longo do arco; 640×907, q80, 116 KB. No mesmo dia a carta
+  passou de `Normal` pra `Foil` (`variants` em
+  `data/vintage/naruto-promos-curated.json`): é a versão com estampa em foil
+  da PR忍-1 e só existe assim.
 
 ## Data Carddass (`nrt-dc-*`, `nrt-nf-*`, `nrt-nx-*`)
 
@@ -107,7 +127,8 @@ nenhum. Webp q88 sem metadado. As curadas do dono (fotos, ~420 px:
 `nrt-dc-dn-004`, `-008`, `-051`, `-083`, `-214`, `nrt-dc-nm-003`, `-016`,
 `nrt-dc-can-001`, `nrt-nx-nxp-spi`) ficaram como estavam: a leva do Wayback
 não sobrescreve arquivo que existe. Scan melhor de uma carta substitui o
-arquivo dela, com o mesmo nome; depois rode os dois syncs (o CI também roda).
+arquivo dela; depois rode os dois syncs (o CI também roda). Atenção ao nome:
+vale a regra do `-v2` lá de cima, e estes dois syncs ainda não a entendem.
 
 **NXP-003 うずまきナルト (`nrt-nx-nxp-003`, promo da Cross, 2009)**
 (2026-11-23): scan do dono, pela receita das três do Card Game lá em cima

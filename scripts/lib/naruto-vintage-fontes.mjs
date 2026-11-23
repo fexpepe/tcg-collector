@@ -103,3 +103,36 @@ export function parseBandaiCardlist(html) {
   }
   return cards;
 }
+
+// ── Imagem curada: arquivo de cada carta em assets/cards/naruto/ ─────────────
+// A imagem curada é `<id>.(webp|jpg|png)`. TROCAR a arte de uma carta não pode
+// ser sobrescrever esse arquivo: /assets/* sai com um ano de `immutable` (ver o
+// _headers) e o service worker serve do cache sem perguntar, então quem já viu
+// a carta ficaria com a imagem velha. A troca entra com OUTRO NOME,
+// `<id>-v2.webp`, `-v3`…, como os logos de jogo, e o arquivo anterior sai do
+// repositório. Aqui vale a versão mais alta; sem versão, o `<id>.<ext>` de
+// sempre (webp antes de jpg antes de png).
+//
+// Entrou em 2026-11-23, quando a PR忍-1-R ganhou um scan de 640 px no lugar da
+// foto de 313 px: com o mesmo nome, a foto continuaria aparecendo.
+//
+// Um `X-v2.webp` também responde pelo id "X-v2", se um dia existir (versão 1
+// dele). Nenhum id do jogo termina em -vN; se terminar, o arquivo fica sendo
+// das duas cartas.
+const EXT_CURADA = ["webp", "jpg", "png"];
+export function indiceDeCuradas(nomes) {
+  const melhor = new Map(); // id -> { v, ext, nome }
+  const entra = (id, v, ext, nome) => {
+    const cur = melhor.get(id);
+    if (!cur || v > cur.v || (v === cur.v && ext < cur.ext)) melhor.set(id, { v, ext, nome });
+  };
+  for (const nome of nomes || []) {
+    const m = /^(.+)\.(webp|jpg|png)$/.exec(String(nome));
+    if (!m) continue;
+    const ext = EXT_CURADA.indexOf(m[2]);
+    entra(m[1], 1, ext, nome);
+    const versao = /^(.+)-v(\d+)$/.exec(m[1]);
+    if (versao && Number(versao[2]) >= 2) entra(versao[1], Number(versao[2]), ext, nome);
+  }
+  return new Map([...melhor].map(([id, o]) => [id, o.nome]));
+}
