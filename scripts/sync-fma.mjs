@@ -215,9 +215,10 @@ export function cartasDoJogo(snapshot, nomes = NOMES) {
         language: "ja",
         image: curatedImg(c.id) || (SEM_SCAN[c.src] ? "" : IMG(c.img || scanDe(c))),
         variants: ["Normal"],
-        // Sem logo de set: nenhuma parte tem logo próprio no catálogo, e o
-        // cartão do set mostra o nome (contrato 3 do docs/CATALOGO.md).
-        setLogo: "",
+        // Nenhuma parte tem logo próprio publicado: vale o logo do jogo, a
+        // exceção vintage da regra 3 do docs/CATALOGO.md (como o Naruto e o
+        // Miracle Battle).
+        setLogo: "/assets/games/game_fma.webp",
         vintage: true,
         vintageLine: def.series
       });

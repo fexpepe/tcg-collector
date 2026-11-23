@@ -509,9 +509,8 @@ export const IPS = [
     logo: "/assets/games/set_cdm_naruto.webp",
     snap: new URL("data/vintage/carddass-masters-naruto.json", ROOT),
     source: `${HINOKUNIAN}carddassmasters.html` },
-  // Sem logo de série ainda: o tile do set mostra o nome.
   { ip: "fma", setPrefix: "鋼の錬金術師", sets: SETS_FMA, lista: LISTA_FMA, scans: scansFma,
-    logo: "",
+    logo: "/assets/games/set_cdm_fma.webp",
     snap: new URL("data/vintage/carddass-masters-fma.json", ROOT),
     source: "http://animecollection.fr/cartes.php?idl=15" }
 ];
