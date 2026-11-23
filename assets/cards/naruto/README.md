@@ -34,6 +34,10 @@ Scans do dono no Card Game 2002~2006:
   lasca escura de 1–2 px em volta. Aparado 2 px de cada lado antes da mesma
   receita, com o preto dos cantos em transparente; 640×875, q80. Proporção
   0,732, também sem esticar.
+- **PR忍-18 はたけカカシ (`nrt-PRN-018`, promo NOT FOR SALE, 2006)**
+  (2026-11-23): das promos curadas sem scan. Mesma receita da COIN-8,
+  640×887 em q80. Junto com a `nrt-PRN-001`/`-001R` do dono, é uma das 10
+  das 68 promos com imagem.
 
 ## Data Carddass (`nrt-dc-*`, `nrt-nf-*`, `nrt-nx-*`)
 
