@@ -23,6 +23,12 @@ Scans do dono no Card Game 2002~2006:
   fundo do scanner que sobrava fora dos cantos arredondados ficou
   transparente (webp com alfa): na ampliação o raio da tela é menor que o da
   carta, e o canto claro apareceria.
+- **忍-365 うちはイタチ (`nrt-nin-365`, 巻ノ十五, UR)** (2026-11-23): o tcg-db
+  só tem 3 scans do vol. 15 (作-294, 術-313 e 忍-362) e a TV Tokyo só lista
+  até o 13. Mesma receita,
+  640×916 em q72: a trama prateada do holo pesa (q80 dava 209 KB, q72 171 KB)
+  e o texto segue nítido. A carta sai mais estreita que a COIN-8 no scan
+  (0,699 contra 0,711); não foi esticada.
 
 ## Data Carddass (`nrt-dc-*`, `nrt-nf-*`, `nrt-nx-*`)
 
