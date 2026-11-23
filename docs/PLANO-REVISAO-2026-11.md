@@ -891,10 +891,10 @@ exige redirecionamento.
 | 2C | `claude/textos-da-borda-no-idioma-2c38` | fexpepe/tcg-collector#359 | na `main` (22/11) |
 | 2D | `claude/indice-de-sets-do-naruto-2d19` | fexpepe/tcg-collector#356 | na `main` (22/11) |
 | 2E | `claude/lint-catalogo-zerou-2e63` | fexpepe/tcg-collector#357 | na `main` (22/11) |
-| 3A | `claude/decks-imagens-pelo-espelho-3a82` | fexpepe/tcg-collector#366 | aberta |
+| 3A | `claude/decks-imagens-pelo-espelho-3a82` | fexpepe/tcg-collector#366 | na `main` (23/11) |
 | 3B | `claude/catalogo-furos-de-padrao-3b47` | fexpepe/tcg-collector#361 | na `main` (22/11); o dado muda no build completo |
-| 3C | `claude/documentacao-em-dia-3c05` | fexpepe/tcg-collector#364 | aberta |
-| 3D | `claude/filtro-de-preco-no-idioma-3d90` | fexpepe/tcg-collector#365 | aberta |
+| 3C | `claude/documentacao-em-dia-3c05` | fexpepe/tcg-collector#364 | na `main` (23/11) |
+| 3D | `claude/filtro-de-preco-no-idioma-3d90` | fexpepe/tcg-collector#365 | na `main` (23/11) |
 
 O que a execução da Fase 3 mostrou e o plano não previa:
 
