@@ -99,6 +99,6 @@ test("cartas: nome, japonês, tipo e imagem; as sem scan ficam sem imagem e com 
   const placa = cards.find((c) => c.id === "fma-pl1-1");
   assert.equal(placa.cardType, undefined);
   assert.equal(placa.vintageLine, "jumbo");
-  assert.ok(cards.every((c) => c.vintage && c.language === "ja" && !c.setLogo));
+  assert.ok(cards.every((c) => c.vintage && c.language === "ja" && c.setLogo === "/assets/games/game_fma.webp"));
   assert.equal(IMG(scanDe({ dir: "30/62", src: 2416 })), "https://wsrv.nl/?url=www.animecollection.fr%2Fcartes%2F30%2F62%2Fh3000_2416_carte.jpg&w=440&output=webp");
 });

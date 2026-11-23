@@ -6,6 +6,9 @@
     "lang": "ja",
     "romaji": "Hagane no Renkinjutsushi"
   },
+  "logo": "assets/games/game_fma.webp",
+  "logoLargura": 764,
+  "logoAltura": 320,
   "periodo": {
     "inicio": "2004-05",
     "fim": "2005-07"

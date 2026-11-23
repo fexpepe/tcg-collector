@@ -246,6 +246,14 @@ carrega e esconde o nome em texto (fallback sem erro).
   Vintage da landing por enquanto: o One Piece Card Game de 2002 e o Gundam
   Carddass (2026-11-11) já levaram a fileira a 14 (7 + 7 no tablet); com ele
   seriam 15, e a grade se decide junto.
+- `game_fma.webp` — Fullmetal Alchemist Carddass (jogo vintage `fma`), o
+  logo do anime de 2003 (鋼の錬金術師 FULLMETAL ALCHEMIST, a placa do 鋼 em
+  metal e o contorno branco). Fonte enviada pelo Fernando em 2026-11-22,
+  1942×810 com fundo transparente; passada pelo `normaliza-logo.mjs`
+  (`--vintage`): véu de alfa limpo, 764×320, 59 KB, 2,05× no "Sobre" do
+  desktop. Vale também como `setLogo` dos sets do jogo (exceção vintage da
+  regra 3 do CATALOGO) e entra no `set_cdm_fma.webp` (abaixo). No chip branco
+  o contorno some; no escuro, fica o contorno, como no CCG do Naruto.
 - `game_seiya-v2.webp`, `game_seiyatc.webp` e `game_seiyacr.webp` — Saint
   Seiya Carddass, Trading Collection e Crusade (2026-11-15). Fontes enviadas
   pelo Fernando, WebP com alfa: o 聖闘士星矢 sozinho (1536×1024), com a faixa
@@ -479,7 +487,7 @@ carrega e esconde o nome em texto (fallback sem erro).
   q88 e alfa sem perda: 17 KB. Na cápsula branca do hub o contorno some e fica
   o grafite com o "A" vermelho, como no verso das cartas. Nos sets ele entra
   pequeno, dentro dos `set_cdm_<ip>.webp` (abaixo).
-- `set_cdm_eva.webp`, `set_cdm_hxh.webp` e `set_cdm_naruto.webp` — `setLogo` de todos os sets de cada
+- `set_cdm_eva.webp`, `set_cdm_hxh.webp`, `set_cdm_naruto.webp` e `set_cdm_fma.webp` — `setLogo` de todos os sets de cada
   IP do Carddass Masters (registro `IPS` do sync-carddass-masters.mjs). Pedido
   do Fernando em 2026-11-11: o jogo junta dezenas de IPs, e o tile com só o
   nome do set não dizia de que série nem de que jogo era. Uma imagem só, pra
@@ -498,6 +506,12 @@ carrega e esconde o nome em texto (fallback sem erro).
   - Naruto (2026-11-13): o `game_naruto.webp` a 420px de largura, 40px pra
     direita do selo; o logo sobe até a primeira linha dele com tinta debaixo
     do selo ficar 2px abaixo do MASTERS (460×214, 35 KB).
+  - Fullmetal Alchemist (2026-11-22): o logo do `game_fma.webp` (fonte
+    enviada pelo Fernando, ver abaixo) a 900px de largura e o selo a 320px,
+    o dobro dos anteriores, porque o padrão do docs/LOGOS.md pede 2× na
+    vitrine do topo. O canto esquerdo do logo (a placa do 鋼) sobe até a
+    altura da tinta, então o logo fica inteiro abaixo do selo, a 4px. Passado
+    pelo `normaliza-logo.mjs`: 588×320, 49 KB, 2,05× na vitrine do desktop.
   IP nova: mesma montagem, e o `logo` no bloco dela no sync.
 
 ### Os `-v2` (2026-09-28)
@@ -557,13 +571,6 @@ deixava logo largo abaixo de 2× no hub.
   arte e o cartão do set mostra o nome. Logo novo entra por aqui (`game_<slug>.webp`)
   e troca o `""` no registro, no `GAME_LOGO`/`KIT_LOGO`, no `vintage.html`, no
   "Sobre" e no `LOGO` do `scripts/sync-dbc-carddass.mjs`.
-- **Fullmetal Alchemist Carddass (`fma`, pendência, 2026-11-22):** entrou sem
-  logo, do mesmo jeito (tile, Vintage e "Sobre" em texto). Candidato: o logo
-  da embalagem do ALCHEMIC CARD BATTLE ("鋼の錬金術師 FULLMETAL ALCHEMIST" com
-  o nome do card game), que nenhuma fonte achada tem em boa resolução. Logo
-  novo troca o `""` no registro, no `GAME_LOGO`/`KIT_LOGO`, no `vintage.html`
-  e no "Sobre". O Carddass Masters do FMA também ficou sem `set_cdm_fma.webp`
-  (o tile do set mostra o nome; `logo: ""` no `IPS` do sync).
 - **Rush of Ikorr (`ikorr`, pendência, 2026-11-22):** sem logo. O site da
   Upper Deck (upperdeck.com/rush-of-ikorr) só publica banners em JPG com
   fundo, nenhum logo recortado. O tile do hub sai em texto e o registro leva
