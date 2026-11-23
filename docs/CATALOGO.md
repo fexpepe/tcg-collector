@@ -6,12 +6,14 @@ catálogo — carta, set, linha ou jogo — segue este documento. Os mecanismos
 [README.md](../README.md) e não se repetem aqui. Aqui fica **o que fazer, em
 que ordem e como saber que terminou**.
 
-> **Estado (2026-09-30):** as seções 1 a 4 descrevem o processo que vale hoje.
-> A seção 5 mede de onde vem o ruído, e a seção 6 é o plano pra reduzir o custo
-> de um jogo novo: hoje são 38 pontos de registro, e só 4 deles têm alguma trava
-> automática. O plano tem as fases F1–F8, uma PR cada, e nenhuma foi feita
-> ainda. Os números foram medidos na `main` em `f1df1aae`, já com o Star Wars,
-> e no deploy dela.
+> **Estado (2026-11-22):** as seções 1 a 4 descrevem o processo que vale hoje.
+> A seção 5 mede de onde vem o ruído (números de 2026-09-30, medidos na `main`
+> em `f1df1aae`, já com o Star Wars, e no deploy dela), e a seção 6 é o plano
+> pra reduzir o custo de um jogo novo: hoje são 41 pontos de registro por jogo
+> no caso típico, e só 8 deles têm alguma trava automática (a conta está no fim
+> da 4.2). O plano tem as fases F1–F8, uma PR cada: a F2 está feita e a F3
+> pela metade, e o resto não começou (a situação de cada fase está no fim da
+> seção 6).
 
 ## 0. Resumo
 
@@ -19,7 +21,7 @@ que ordem e como saber que terminou**.
 |---|---|---|---|
 | Carta nova num set que já existe | tudo: o build completo (diário 06:20 UTC, e sexta 21:00) roda os syncs | nada | `lint-catalog`: id publicado que some ou passa a apontar pra outra carta barra o deploy |
 | Set novo | quase tudo: entra pelo sync, com filtros e página de SEO | conferir a tela (3.2); logo e nome em inglês quando existirem; no Pokémon, pin quando a janela automática não pega (3.3) | `lint-catalog` e os relatórios de cobertura |
-| Linha ou jogo novo | nada | a ficha (4.1) e o checklist (4.2) inteiros | só 5 dos 40 pontos têm trava automática (4.2) |
+| Linha ou jogo novo | nada | a ficha (4.1) e o checklist (4.2) inteiros | só 8 dos 41 pontos têm trava automática (4.2) |
 
 ## 1. Contratos que valem pra toda adição
 
@@ -138,8 +140,9 @@ junto. Sem isso, o endereço antigo das cartas movidas dá 404.
 |---|---|---|---|---|
 | TCGdex, com a TCGCSV no lançamento | Pokémon | pela TCGdex; no lançamento a TCGCSV antecipa (3.3) | o da TCGdex (o provisório é aposentado) | espelhado por `mirror-set-logos` (EN/PT) e `mirror-ja-set-logos` (JA, de-para curado, passo local) |
 | API própria | Lorcana (Lorcast), Magic (Scryfall) | sozinho no sync | código oficial | Lorcana: curado em `data/lorcana/set-logos/`; Magic: símbolo espelhado |
-| TCGCSV (espelho do TCGplayer) | One Piece, FAB, Gundam, DBFW, Yu-Gi-Oh!, Digimon, Riftbound, Union Arena, Star Wars | sozinho no sync (grupo novo da categoria) | abreviação do grupo; rename da fonte é re-fixado sozinho (`repinSetIdsRenomeados`) | vazio, salvo curadoria local (One Piece, FAB e Star Wars) |
-| Fã (ou site oficial antigo), com snapshot | Naruto, HxH, DBC, vintages do One Piece, Gundam Carddass, Gundam War, Saint Seiya (Carddass, Trading Collection e Crusade) | quando a fonte publica e o snapshot não regride; set sem lista carta a carta não gera carta | fixo no script | curado ou vazio |
+| TCGCSV (espelho do TCGplayer) | One Piece, FAB, Gundam, DBFW, Dragon Ball Super Masters, Yu-Gi-Oh!, Digimon, Riftbound, Union Arena, Star Wars, Cyberpunk, Sorcery, Weiß Schwarz, Godzilla, Palworld, Final Fantasy, Grand Archive, hololive, Shadowverse: Evolve, Vanguard, `narutocg`, WoW, Rush of Ikorr | sozinho no sync (grupo novo da categoria) | abreviação do grupo; rename da fonte é re-fixado sozinho (`repinSetIdsRenomeados`) | vazio, salvo curadoria local (One Piece, FAB e Star Wars) |
+| Site oficial do jogo, fora da TCGCSV | Marvel Hero Rush, Naruto Mythos, Naruto Kayou, Duel Masters | no sync, pelo produto, edição ou série que a fonte publica (Hero Rush e Duel Masters por produto; Mythos pelo trecho `S<set>E<edição>` do SKU; Kayou pela série pinada no `SERIES`, e o sync avisa das que não conhece) | montado no script, estável (código do produto, SKU ou série pinada) | vazio, salvo o arquivo local do Duel Masters |
+| Fã (ou site oficial antigo), com snapshot em `data/vintage/` | Naruto (e as linhas dele), Naruto Boruto, Naruto Trading Cards, HxH, Dragon Ball (Carddass, Super Battle, Visual Adventure, Barcode Wars e o CCG da Score), LOTR, Harry Potter, Miracle Battle, Carddass Masters, Gundam Carddass, Gundam War, Saint Seiya (Carddass, Trading Collection e Crusade), Fullmetal Alchemist e os vintages do One Piece | quando a fonte publica e o snapshot não regride; set sem lista carta a carta não gera carta | fixo no script | curado ou vazio |
 | Curadoria | JUMP | à mão em `data/jump/curated/` | — | — |
 
 ### 3.2 O que conferir quando um set novo aparece
@@ -175,10 +178,11 @@ junto. Sem isso, o endereço antigo das cartas movidas dá 404.
   vintage e 16 grupos do TCGplayer).
 - O set caiu na **categoria certa**. Lorcana, Naruto, HxH e DBC agrupam pelo
   `setId` (`group<Jogo>Sets` em [src/app.js](../src/app.js)); os modernos da
-  Bandai (One Piece, Gundam, Fusion World, Digimon, Union Arena e o
-  `narutocg`), o Godzilla, o Palworld e o Vanguard (Bushiroad), o Final Fantasy
-  (Square Enix), o Grand Archive, o hololive e o Shadowverse: Evolve, na mesma forma, pelas regras de código
-  do `SECOES_BANDAI`, no mesmo arquivo
+  Bandai (One Piece, Gundam, Fusion World, Dragon Ball Super Masters, Digimon,
+  Union Arena e o `narutocg`), o Godzilla, o Palworld e o Vanguard (Bushiroad),
+  o Final Fantasy (Square Enix), o Duel Masters (Takara Tomy), o Grand Archive,
+  o hololive, o Shadowverse: Evolve, o Marvel Hero Rush e o Rush of Ikorr, na
+  mesma forma, pelas regras de código do `SECOES_BANDAI`, no mesmo arquivo
   (Principais, Boosters extras, Decks, Cartas de evento, Promos). Um formato
   de código inédito cai em "outros" ("Promos e eventos", nos da Bandai):
   booster ou deck com código novo entra na regra do jogo, com o caso no
@@ -214,9 +218,12 @@ junto. Sem isso, o endereço antigo das cartas movidas dá 404.
     "Allow GitHub Actions to create and approve pull requests", desligada por
     padrão), a rodada sobe a branch e abre uma issue com o link de um clique.
 - **Nome em inglês** (set japonês do Pokémon e vintages): `JA_SET_EN` e
-  `VINTAGE_SET_EN` no [src/shared.js](../src/shared.js), com a fonte verbatim
-  (Bulbapedia no japonês). Cada nome **custa bytes do `shared.js`**, que está no
-  teto (5.4). É por isso que a F3 tira esses mapas de lá.
+  `VINTAGE_SET_EN` no [src/nomes-sets.js](../src/nomes-sets.js), com a fonte
+  verbatim (Bulbapedia no japonês). Os dois mapas saíram do `shared.js` em
+  2026-10-08, então um nome novo não pesa no teto do núcleo (5.4); só as
+  páginas que mostram nome de set carregam o arquivo. O que a F3 ainda não fez
+  é gravar o nome em inglês no catálogo de todo jogo (o Naruto vintage já
+  grava, contrato 7).
 - **Preço**: aparece no build seguinte ao da listagem dos singles no
   TCGplayer. Set em pré-venda pode entrar sem preço.
 
@@ -284,7 +291,7 @@ há o que ligar. São quatro peças, todas no
    - Pokémon por série;
    - Magic por ano, mais a seção de eventos e coleções especiais;
    - jogo com `group<Jogo>Sets` próprio pelas seções dele;
-   - os modernos da Bandai, o Godzilla, o Palworld, o Final Fantasy, o Vanguard, o Grand Archive, o hololive, o Duel Masters e o Shadowverse: Evolve (`SECOES_BANDAI`) no formato do One Piece:
+   - os modernos da Bandai (o Dragon Ball Super Masters entre eles), o Godzilla, o Palworld, o Final Fantasy, o Vanguard, o Grand Archive, o hololive, o Duel Masters, o Shadowverse: Evolve, o Marvel Hero Rush e o Rush of Ikorr (`SECOES_BANDAI`) no formato do One Piece:
      Principais (a coleção numerada), Boosters extras e especiais, Decks
      iniciais, Cartas de evento (2026-11-12, pelo nome) e Promos e eventos,
      pelo código do set (2026-11-11);
@@ -572,7 +579,7 @@ valem só nesse caso.
 | B11 | `src/app.js` (`GAME_LOGO`) e `src/admin.js` (`KIT_LOGO`) | arquivo do logo, ou `""` sem logo | sem logo no lugar do set e no kit | — |
 | B12 | `src/binders.js` (`PREFIXO_JOGO`) e `src/card-rescue.js` (`ID_PREFIX_GAME`) | o prefixo de id | carta do jogo no binder sem jogo atribuído ("Tenho" e preço manual olham a coleção errada); link de carta resolve em duas ondas | — |
 | B13 | `src/backup-import.js` (`mapCsvGame`) e `tests/csv-import.test.mjs` | o nome do jogo como Collectr e TCGplayer escrevem | import de CSV tenta todos os jogos (mais lento; pode casar carta homônima de outro jogo) | — |
-| B14 | `src/portfolio.js` (`CSV_GAME_NAMES`) | nome no CSV do Portfólio, até a F6 | CSV sai com o slug (hoje já sai assim em 9 jogos, 5.2) | — |
+| B14 | `src/portfolio.js` (`csvGameName`) | nada: o nome no CSV do Portfólio sai do `GAMES` do `game.js` desde 2026-09-30 (o `CSV_GAME_LEGACY` só guarda a grafia antiga do Naruto e do HxH) | — | — |
 | B15 | `hub.html` (em atividade) ou `vintage.html` (vintage, 3.6) | em atividade: tile na grade, com a posição da ficha; vintage: a linha, com período, país e marcas; nos dois, `href="/games/<endereço>"` e `data-game="<slug>"` (desde 2026-09-30) | jogo sem porta de entrada | `games-url.test.mjs` (todo endereço tem porta, na página certa) e `vintage.test.mjs` |
 | B16 | opcionais: `src/facets.js`, `src/detail.js` (`RARITY_LISTED_GAMES`), `src/app.js` (`group<Jogo>Sets`, registrado no `agrupaSetsDoJogo` — padrão da página de Sets em 3.4), `src/deck-rules.js` | filtros, agrupamento e regras de deck próprios | tudo genérico (funciona) | `tests/sets-padrao.test.mjs` (agrupador fora do padrão) |
 | B17 | `src/game.js` (`URL_DOS_JOGOS`) | a cópia do C17: `[endereço, slug, linha, prefixos]` | a tela do jogo em `/games/<endereço>` não sabe qual jogo abrir e cai no da sessão | `games-url.test.mjs` (a cópia bate com o C17) |
@@ -617,11 +624,16 @@ valem só nesse caso.
 | E5 | `scripts/og/og-image.html` e `og-image.png` | número de jogos e o "e mais N jogos"; PNG regerado com `node scripts/build-og-image.mjs` (Chrome local, fora do CI). Se cartas e sets mudarem de patamar ("240 mil+", "2.200+"), também o `KIT_CATALOGO` do `src/admin.js` e a landing | imagem de compartilhamento desatualizada | — |
 | E6 | `src/i18n-docs.js` (`vs.s.table`, linha "Jogos" da página /comparar, em pt, en e es) | número de jogos com catálogo | o CI falha | `tests/comparar-veracidade.test.mjs` (compara com o `catalog-baseline.json`, então depende do A4) |
 
-Contagem: um jogo TCGCSV com preço, sem host novo e sem opcionais, passa por
-**40 itens** (A1, A3–A7; B1, B3–B6, B10–B15, B18; C1–C15; D1; E1–E6). Só 5
-têm alguma trava automática: A3 (pela guarda C15), A5 (pelo lint, que derruba o
-deploy agendado), B5 (pelo `check.mjs`, por acaso), B18 (pelo teste de
-cobertura do scanner) e E6 (pelo teste do /comparar). Os outros 35 dependem de
+Contagem (refeita em 2026-11-22 sobre as tabelas acima, que têm 49 linhas, A1 a
+E6): um jogo TCGCSV com preço, sem host novo e sem opcionais, passa por
+**41 itens** (A1, A3–A7; B1, B3–B6, B10–B13, B15, B17, B18; C1–C15, C17; D1;
+E1–E6). Ficam de fora os condicionais (A2, B2, B7, B8, B9, B16, C16) e o B14,
+que não pede mais nada. Só 8 têm alguma trava que pega o esquecimento do
+passo: A3 (pela guarda C15), A5 (pelo lint, que derruba o deploy agendado),
+B5 (pelo `rotulo-jogo.test.mjs`), B15, B17 e C17 (pelo `games-url.test.mjs`),
+B18 (pelo teste de cobertura do scanner) e E6 (pelo teste do /comparar). A7 e
+E2 citam um teste e uma checagem, mas eles só olham o que já foi registrado ou
+o arquivo de logo que mudou; esquecer o passo passa. Os outros 33 dependem de
 alguém lembrar. Parte aparece na tela quando se testa (tile, cor, página do
 jogo), mas os da borda, do build, do banco e os mapas que caem no Pokémon vão
 calados pro ar.
@@ -630,7 +642,7 @@ calados pro ar.
 
 - **Chips estáticos** de `collection.html` e `wishlist.html`: o
   `initGameFilterChips` (shared.js) reconstrói a fileira a partir de
-  `GAME_SLUGS`. O HTML traz 6 dos 15 jogos e não faz falta.
+  `GAME_SLUGS`. O HTML traz 6 dos 49 jogos e não faz falta.
 - **`<option>` do `explore.html`**: também é reconstruída (`src/explore.js`).
   Mas hoje é ela que faz o `check.mjs` exigir a chave `filter.game<X>`: a
   regra dele só enxerga `t("…")` e `data-i18n`, e o `GAME_LABEL_KEY` é um
@@ -699,14 +711,17 @@ O commit do `dbc` mexeu em 51 arquivos, e os 3 commits do Star Wars (`swu`),
 em 62. A lista de jogos (slug, dataDir ou os dois) se repete em 10 scripts, nas
 3 Functions, no `DATA_GAMES` e no `game.js`; o nome completo, em pelo menos 5
 lugares; o prefixo de id, em 3 mapas (`binders.js`, `card-rescue.js`,
-`id-stability.mjs`). São 39 itens por jogo, e 35 deles sem trava automática
-(4.2).
+`id-stability.mjs`). Eram 39 itens por jogo, e 35 deles sem trava automática;
+a conta de hoje, sobre o checklist da 4.2, é 41 itens e 33 sem trava.
 
 ### 5.2 Mapas que envelhecem e caem no Pokémon
 
 - `CSV_GAME_NAMES` ([src/portfolio.js](../src/portfolio.js)) parou nos 6
-  primeiros jogos. O CSV do Portfólio exporta `magic`, `ygo`, `fab`, `gundam`,
-  `dbfw`, `digimon`, `riftbound`, `unionarena` e `swu` como slug cru.
+  primeiros jogos. O CSV do Portfólio exportava `magic`, `ygo`, `fab`,
+  `gundam`, `dbfw`, `digimon`, `riftbound`, `unionarena` e `swu` como slug cru.
+  **Resolvido em 2026-09-30:** o mapa saiu, e o `csvGameName` lê o nome do
+  `GAMES` do `game.js` (`window.SLEEVU.games`), então jogo novo já nasce com
+  nome.
 - Todo mapa por jogo sem a entrada cai no **Pokémon**, sem erro: rótulo
   (`gameLabel`), cor (`GAME_COLOR` e o accent base do CSS), lojas
   (`marketOf`), jogo (`normalizeGame`) e diretório (`gameDataDir`).
@@ -742,7 +757,8 @@ lugares; o prefixo de id, em 3 mapas (`binders.js`, `card-rescue.js`,
 ### 5.4 Orçamento de peso do núcleo
 
 Medido como o CI (minificado e gzip -9). O custo de cada bloco é o que sai
-quando ele é tirado (método em 7.1).
+quando ele é tirado (método em 7.1). Os números desta seção são de
+2026-09-30; o teto de hoje está no `scripts/check-size.mjs`.
 
 - `shared.js`: 83.883 de 83.968 bytes gz (folga de **85**). CSS núcleo: 33.552
   de 33.792 (folga de 240).
@@ -754,7 +770,10 @@ quando ele é tirado (método em 7.1).
 - O que é dado por jogo dentro do núcleo: `VINTAGE_SET_EN` 2.456 B,
   `JP_NAME_ALIASES` (apelidos em romaji da busca dos vintages) 1.776 B e
   `JA_SET_EN` 1.367 B, cerca de 5,6 KB, ou 7% do teto. O `JA_SET_EN` cresce a
-  cada set japonês novo. No CSS, os accents dos 15 jogos somam 960 B.
+  cada set japonês novo. No CSS, os accents dos 15 jogos de então somam 960 B
+  (hoje o `styles.css` tem accent pra 49 jogos, e os da mesma IP dividem o
+  bloco, 4.1). Em 2026-10-08 o `VINTAGE_SET_EN` e o `JA_SET_EN` saíram do
+  núcleo pro `src/nomes-sets.js`; ficou o `JP_NAME_ALIASES`.
 
 ### 5.5 Cópias que divergem
 
@@ -801,7 +820,7 @@ idiomas, com a lista de nomes) e no `og-image.html` (e no PNG, regerado com um
 Chrome local). O kit do `/admin` já faz o certo: conta pelo `GAME_SLUGS`. Nos
 comentários, 31 das 41 menções já estão erradas.
 
-## 6. Plano: de 38 pontos pra ~10, com trava nos que sobram
+## 6. Plano: de 41 pontos pra ~10, com trava nos que sobram
 
 Cada fase é uma PR que entrega sozinha, na ordem recomendada: primeiro a trava
 (F1), depois o que abre espaço pro próximo jogo (F2 e F3), e por fim o que
@@ -817,6 +836,20 @@ encolhe o checklist (F4 a F8).
 | **F6** registro único no Node | scripts e Functions leem uma lista só | −15 itens do checklist | médio | baixo |
 | **F7** accent fora do CSS núcleo | cor do jogo sai do registro | até −960 B gz do CSS núcleo, e jogo novo custa zero ali | médio | médio |
 | **F8** textos e CI derivados | contagens e listas de cache saem do registro | −5 itens do checklist | pequeno | baixo |
+
+**Situação em 2026-11-22.** Feita: a **F2** (14/11, #314: o `split-pricing.mjs`
+pula o jogo sem preço, ver 5.3). Pela metade: a **F3**. O `VINTAGE_SET_EN` e o
+`JA_SET_EN` saíram do `shared.js` pro `src/nomes-sets.js` em 2026-10-08, e em
+14/11 os 75 sets japoneses do Naruto vintage passaram a levar o nome em inglês
+no próprio catálogo; o `JP_NAME_ALIASES` segue no `shared.js`, e o
+`setDisplayName` ainda lê os mapas. A **F6** tem dois pedaços feitos: o CSV do
+Portfólio lê o nome do `GAMES` (2026-09-30) e o dataDir do `DATA_GAMES` sai do
+slug (B3). Não começaram: a **F1** (não há `tests/registro-jogos.test.mjs`;
+as travas que existem estão na 4.2), a **F4** (não há `scripts/lib/tcgcsv.mjs`),
+a **F5** (não há tabela `public.jogos`: a migração do `ikorr`, a 20261122b, ainda
+reescreve as listas), a **F7** (os accents seguem no `styles.css`) e a **F8** (a
+contagem do `index.html` segue escrita à mão, e as listas de cache do
+`deploy.yml` seguem uma por jogo).
 
 **F1 — Trava do registro.** Um `tests/registro-jogos.test.mjs` que toma o
 `GAMES` do `src/game.js` como fonte da verdade e, com as exceções declaradas no
@@ -879,12 +912,16 @@ revokes das funções.
 dataDir, prefixo, família, preço) importado pelos scripts. As Functions leem
 de um `functions/_jogos.js`: falta confirmar se o build das Functions importa
 de fora de `functions/`, e se não importar, fica uma cópia travada pela F1. No
-front, o `DATA_GAMES` passa a derivar do `GAMES` do `game.js` (hoje repete
-slug e dataDir), e o `CSV_GAME_NAMES`, o `KIT_LOGO` e os rótulos do prerender
-saem do registro.
+front, o `DATA_GAMES` passa a derivar do `GAMES` do `game.js` (hoje repete o
+slug; o dataDir já sai dele, B3), e o `KIT_LOGO` e os rótulos do
+prerender saem do registro. O `CSV_GAME_NAMES` já saiu: o CSV do Portfólio lê o
+`GAMES` desde 2026-09-30.
 
-**F7 — Accent fora do CSS núcleo.** Hoje são 15 pares de blocos (960 B gz) no
-CSS que toda página baixa, e cada jogo novo soma mais um (58 B). Há duas opções
+**F7 — Accent fora do CSS núcleo.** Eram 15 pares de blocos (960 B gz) no CSS
+que toda página baixa quando isto foi medido (2026-09-30), e cada jogo novo
+somava mais um (58 B). Hoje o `styles.css` tem accent pra 49 jogos, e os da
+mesma IP dividem o par (4.1): jogo de franquia nova soma um par, jogo de
+franquia que já está no site entra no seletor do par dela. Há duas opções
 pra medir antes de escolher: aplicar as cores do registro pelo `game.js`, que
 roda síncrono no `<head>` antes do primeiro paint; ou uma regra genérica que
 lê as cores de variáveis.
