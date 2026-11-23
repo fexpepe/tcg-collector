@@ -8131,27 +8131,12 @@
     return `<p class="${cls}" title="${escapeAttribute(title)}">${escapeHtml(prefix + fmtMoney(val.currency, val.value))}</p>`;
   }
 
-  // NOME DO SET CLICÁVEL na cápsula (2026-11-01, pedido do Fernando): achar uma
-  // carta boa na busca e querer ver o set dela era voltar, abrir Sets e
-  // procurar. Leva pra página do set com o MESMO detailUrl do modal da carta
-  // (o setId desambigua sets homônimos EN/PT). Na página do próprio set o
-  // link levaria pra onde a pessoa já está: lá a página passa opts.setAtual
-  // (o nome do set aberto) e o nome fica texto.
-  function tileSetLink(card, opts) {
-    const nome = escapeHtml(card.set || "");
-    if (!card.set || (opts && opts.setAtual === card.set)) return card.set ? `<span>${nome}</span>` : "";
-    const href = detailUrl("set", card.set, "", card.game || currentGame(), { setId: card.setId });
-    return `<a class="tile-set-link" href="${escapeAttribute(href)}">${nome}</a>`;
-  }
-  // A linha "Set · número" inteira da cápsula, com o set clicável. Exportada
-  // pras cápsulas que a Coleção monta à mão (slab, perfil público).
-  function tileSetHtml(card, opts) {
-    const numero = escapeHtml(String(card.number == null ? "" : card.number).trim());
-    if (!card.set) return `<span>${numero}</span>`;
-    return tileSetLink(card, opts) + (numero ? `<span class="tile-set-num">· ${numero}</span>` : "");
-  }
-
+  // A FICHA do tile (etiquetas, "Nome (código)", bandeira · set · jogo) e o
+  // link do set moram no src/capsula.js desde 2026-11-23: uma ficha só pra
+  // toda grade, fora do núcleo. Quem chama o variantTile carrega o arquivo
+  // (tests/capsula.test.mjs confere página por página).
   function variantTile(card, variant, store, wishlist, prices, opts) {
+    const cap = window.TCGCapsula;
     // addMode (página de busca): o botão sempre é "+" e cada clique soma +1 (com
     // feedback de ✓ por 2s). Fora dele, o botão alterna posse (liga/desliga).
     const addMode = !!(opts && opts.addMode);
@@ -8176,11 +8161,13 @@
     article.className = `card-tile${isOwned ? " owned" : ""}${isWanted ? " wanted" : ""}`;
     article.dataset.tileCardId = card.id;
     article.dataset.tileVariant = variant;
+    // Rótulos de exibição das versões (Surge Foil…): pro menu de versões do +,
+    // que lê o tile em vez de precisar do catálogo da página, e pro title da
+    // etiqueta de tipo do tile agrupado.
+    const rotulos = variants.map((v) => variantDisplayLabel(card, v));
     if (grouped) {
       article.dataset.tileGrouped = variants.join("|");
-      // Rótulos de exibição (Surge Foil…) pro menu de versões do +, que lê o
-      // tile em vez de precisar do catálogo da página.
-      article.dataset.tileGroupedLabels = variants.map((v) => variantDisplayLabel(card, v)).join("|");
+      article.dataset.tileGroupedLabels = rotulos.join("|");
     }
     const img = cardImageSources(card, false);
     const imageInner = img.url
@@ -8256,11 +8243,11 @@
       ? `<button type="button" class="tile-btn tile-list" data-list-card-id="${escapeAttribute(card.id)}" data-list-variant="${escapeAttribute(grouped ? "" : variant)}" aria-label="${escapeAttribute(t("tile.addToList"))}" title="${escapeAttribute(t("tile.addToList"))}">${TILE_ICONS.list}</button>`
       : "";
 
-    // Etiqueta do JOGO (opts.gameTag, 2026-09-29): o .game-tag na linha da
-    // versão (no compacto, antes do set). Quem liga é a página, e só quando a
-    // grade MISTURA jogos — Explorar, Coleção e Wishlist em "Todos"/"Vintage".
-    // Com um jogo só, a mesma palavra em todo tile seria ruído.
-    const gameTag = opts && opts.gameTag && card.game ? gameTagHtml(card.game, "tile-game") : "";
+    // Etiqueta do JOGO (opts.gameTag, 2026-09-29): o .game-tag na linha do set
+    // (no compacto, antes dele). Quem liga é a página, e só quando a grade
+    // MISTURA jogos — Explorar, Coleção e Wishlist em "Todos"/"Vintage". Com
+    // um jogo só, a mesma palavra em todo tile seria ruído.
+    const jogo = !!(opts && opts.gameTag && card.game);
 
     // Ordem: lista, pasta, coração, −, +. O − precisa colar no + (é o par de
     // ajuste de quantidade), e o coração cedeu esse lugar. As TAGS saíram daqui:
@@ -8286,14 +8273,17 @@
     // Os BOTÕES são exatamente os mesmos do tile normal — mesmas classes, mesmos
     // data-*: o refreshTileOwnership e os handlers das páginas seguem valendo
     // sem saber que existe um modo novo.
+    // O nome é o LIMPO (sem código, raridade e acabamento — ver capsula.js): o
+    // código e a raridade têm coluna própria, e a versão também.
     if (opts && opts.compact) {
       article.classList.add("tile-compact");
       article.innerHTML = semEspacos(`
         <button class="tile-name" data-preview-card-id="${escapeAttribute(card.id)}"${previewVariantAttr} data-hover-thumb="${escapeAttribute(img.url || "")}">
-          ${cardFlag(card.language)}<span>${escapeHtml(card.name)}</span>
+          ${cardFlag(card.language)}<span>${escapeHtml(cap.nomeLimpo(card, grouped ? "" : variant).nome)}</span>
         </button>
         <span class="tile-c-num">${escapeHtml(card.number || "")}</span>
-        <span class="tile-c-set">${gameTag}${tileSetLink(card, opts)}</span>
+        <span class="tile-c-set">${jogo ? gameTagHtml(card.game, "tile-game") : ""}${cap.setLink(card, opts)}</span>
+        <span class="tile-c-rar">${escapeHtml(cap.raridade(card))}</span>
         <span class="tile-c-var variant-${escapeAttribute(variantSlug(variant))}">${variantLabel}</span>
         <span class="tile-c-price">${tilePriceHtml(card, variant, prices)}</span>
         ${actionsHtml}`);
@@ -8303,13 +8293,8 @@
     article.innerHTML = semEspacos(`
       <div class="card-image">${image}</div>
       <div class="tile-info">
-        <h3>${escapeHtml(cardLabel(card))}</h3>
-        <p class="tile-variant variant-${escapeAttribute(variantSlug(variant))}">${cardFlag(card.language)}<span>${variantLabel}</span>${gameTag}</p>
-        <p class="tile-set">${tileSetHtml(card, opts)}</p>
-        ${tilePriceHtml(card, variant, prices)}
-        <div class="tile-foot">
-          ${actionsHtml}
-        </div>
+        ${cap.ficha(card, { variant, tipo: variantLabel, grupo: grouped && rotulos.join(" · "), jogo, setAtual: opts && opts.setAtual })}
+        ${cap.base(tilePriceHtml(card, variant, prices), actionsHtml)}
       </div>
     `);
 
@@ -10044,10 +10029,12 @@
   // Siglas EXATAS: One Piece (C/UC/R/SR/L/SEC/PR/TR), Lorcana (Super_rare) e
   // as dos vintage (2026-11-01) — N/Normal/UR/Memorial do Naruto japonês e
   // do Data Carddass, e o Miracle Battle (U, P, B = ブーストキラ, M =
-  // ミラクルキラ, Ω, 超Ω).
+  // ミラクルキラ, Ω, 超Ω). LR (2026-11-23): a Legend Rare do Gundam em sigla,
+  // que o catálogo só traz com marca (LR+, LR++) — a cor da raridade na
+  // cápsula (capsula.js) tira a marca e consulta a base aqui.
   const RARITY_SIGLA = {
     c: 10, n: 10, normal: 10, u: 20, uc: 20, r: 30, p: 35, pr: 35, tr: 35, promo: 35, prism: 40,
-    b: 45, sr: 50, super_rare: 50, l: 55, m: 55, ur: 60, "ω": 60, "超ω": 65, memorial: 65, sec: 70,
+    b: 45, sr: 50, super_rare: 50, l: 55, lr: 55, m: 55, ur: 60, "ω": 60, "超ω": 65, memorial: 65, sec: 70,
     // Shadowverse: Evolve (2026-11-13): a escada é de metal (Bronze, Silver,
     // Gold, Legendary) e as paralelas têm nome próprio; sem isto Bronze,
     // Silver, Premium e Ultimate valiam 0, e a Super Legendary empatava com a
@@ -10442,7 +10429,6 @@
     DEFAULT_CONDITION,
     cardVariantPairs,
     variantTile,
-    tileSetHtml,
     gridViewValue,
     applyGridViewClasses,
     refreshTileOwnership,

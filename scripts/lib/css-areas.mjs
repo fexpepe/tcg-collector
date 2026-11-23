@@ -121,6 +121,12 @@ export const AREAS = [
   // páginas que carregam o script — toda grade de cartas que ordena.
   // sets.html desde 2026-11-14: o Ordenar dos Sets usa o mesmo menu.
   { nome: "ordenar",   prefixos: ["srt-"],                         paginas: ["cards.html", "collection.html", "detail.html", "explore.html", "wishlist.html", "sales.html", "binders.html", "pastas.html", "sets.html"] },
+  // cap- (2026-11-23): a FICHA da cápsula de carta (src/capsula.js) — as
+  // etiquetas, o "Nome (código)", a linha do set e a base. EXATAMENTE as
+  // páginas que carregam o script: toda grade de carta. Folha própria porque
+  // o resto do site (~28 páginas) não desenha carta em grade, e as classes só
+  // existem no capsula.js — o shared.js chama a ficha, não escreve cap-.
+  { nome: "capsula",   prefixos: ["cap-"],                         paginas: ["cards.html", "collection.html", "detail.html", "explore.html", "wishlist.html", "sales.html", "pastas.html"] },
   // vitrine (o espaço de anúncio, 2026-09-27): EXATAMENTE as páginas que
   // carregam o src/ads.js. O check.mjs cruza as duas listas (a guarda 9 barra
   // o script numa página pessoal; a 8, a classe numa página fora daqui).

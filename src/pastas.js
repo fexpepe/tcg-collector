@@ -523,10 +523,15 @@
       </div>`;
   }
 
-  // Tile de uma entrada da pasta: o MESMO .card-tile da Coleção (imagem, nome,
-  // versão, set · número, preço), com o rodapé trocado — em vez de ♥/−/+ da
-  // posse, o stepper da quantidade NA PASTA e o "tirar da pasta". A imagem abre
-  // o popup do card (data-preview-card-id, como em toda grade).
+  // Tile de uma entrada da pasta: o MESMO .card-tile da Coleção, com a mesma
+  // ficha (capsula.js: etiquetas, "Nome (código)", bandeira · set) e o rodapé
+  // trocado — em vez de ♥/−/+ da posse, o stepper da quantidade NA PASTA e o
+  // "tirar da pasta". A imagem abre o popup do card (data-preview-card-id,
+  // como em toda grade).
+  // A CONDIÇÃO da entrada (NM, SP…) não aparece mais no tile (2026-11-23,
+  // pedido do Fernando): ia colada na versão — "Normal · NM" — e condição é o
+  // estado da cópia, não um tipo de carta. Ela segue valendo no preço (o
+  // entryUnit desconta por condição) e aparece no popup do card.
   function entryTileHtml(entry) {
     const card = cat.byId[entry.id];
     const name = card ? card.name : entry.id;
@@ -538,6 +543,9 @@
       ? shared.localizedImg(img.url, { alt: name, fallback: img.fallback || "", loading: "lazy", thumb: true, sizes: shared.SIZES_CARD_TILE })
       : shared.cardBackPlaceholder();
     const varLabel = card ? shared.variantDisplayLabel(card, variant) : variant;
+    const capsula = window.TCGCapsula;
+    // Entrada de carta que saiu do catálogo: só o id, sem bandeira nem set.
+    const carta = card || { name: name };
     const preco = unit ? esc(shared.formatMoney(shared.getCurrency(), unit)) : "";
     const abre = `data-entry="${escA(entry.id)}" data-entry-variant="${escA(entry.v || "")}"`;
     // O stepper é o MESMO nos dois modos (mesmas classes, mesmos data-*): a
@@ -558,11 +566,12 @@
       return `
       <article class="card-tile pasta-tile tile-compact" ${abre}>
         <button type="button" class="tile-name"${card ? ` data-preview-card-id="${escA(card.id)}" data-preview-variant="${escA(variant)}" data-hover-thumb="${escA(img.url || "")}"` : ""}>
-          ${card ? shared.cardFlag(card.language) : ""}<span>${esc(name)}</span>
+          ${card ? shared.cardFlag(card.language) : ""}<span>${esc(capsula.nomeLimpo(carta, variant).nome)}</span>
         </button>
         <span class="tile-c-num">${card ? esc(card.number || "") : ""}</span>
         <span class="tile-c-set">${card ? esc(card.set || "") : ""}</span>
-        <span class="tile-c-var">${esc(varLabel)}${entry.c ? ` · ${esc(entry.c)}` : ""}</span>
+        <span class="tile-c-rar">${esc(capsula.raridade(carta))}</span>
+        <span class="tile-c-var">${esc(varLabel)}</span>
         <span class="tile-c-price">${preco ? `<p class="tile-price">${preco}</p>` : ""}</span>
         ${stepper}
       </article>`;
@@ -574,12 +583,8 @@
           ? `<button class="image-open" data-preview-card-id="${escA(card.id)}" data-preview-variant="${escA(variant)}" aria-label="${escA(t("card.zoom", { name }))}">${image}</button>`
           : `<span class="pasta-noimg" aria-hidden="true"></span>`}</div>
         <div class="tile-info">
-          <h3>${esc(name)}</h3>
-          <p class="tile-variant">${card ? shared.cardFlag(card.language) : ""}<span>${esc(varLabel)}${entry.c ? ` · ${esc(entry.c)}` : ""}</span></p>
-          <p class="tile-set"><span>${card ? esc(shared.dotJoin(card.set, card.number)) : ""}</span></p>
-          ${preco ? `<p class="tile-price">${preco}</p>` : ""}
-          <div class="tile-foot">${stepper}
-          </div>
+          ${capsula.ficha(carta, { variant })}
+          ${capsula.base(preco ? `<p class="tile-price">${preco}</p>` : "", stepper)}
         </div>
       </article>`;
   }

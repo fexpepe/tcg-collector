@@ -12,7 +12,9 @@ O **plano** e as **decisões** ficam no [ROADMAP.md](ROADMAP.md); o backend em
 [docs/BACKEND.md](docs/BACKEND.md); os decks em [docs/DECKS.md](docs/DECKS.md); o
 portfólio em [docs/PORTFOLIO.md](docs/PORTFOLIO.md); o SQL do Supabase em
 [supabase/migrations/README.md](supabase/migrations/README.md); SEO e indexação
-(sitemaps, IndexNow, Search Console) em [docs/SEO.md](docs/SEO.md).
+(sitemaps, IndexNow, Search Console) em [docs/SEO.md](docs/SEO.md); a ficha das
+cartas em grade (o que vai em cada posição do tile) em
+[docs/CAPSULA.md](docs/CAPSULA.md).
 
 ---
 

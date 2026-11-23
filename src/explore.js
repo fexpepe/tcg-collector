@@ -528,12 +528,11 @@
   // Rótulos dos tiles JÁ na tela depois que as cartas da borda ganham o
   // setTotal (enrichSetTotals): o título passa de "Mewtwo (063)" pra
   // "Mewtwo (063/197)" sem redesenhar a grade — recriar o tile faria a imagem
-  // piscar e devolveria quem rolou pro começo.
+  // piscar e devolveria quem rolou pro começo. Só o código muda (capsula.js).
   function atualizaRotulos() {
     elements.grid.querySelectorAll(".card-tile").forEach((tile) => {
       const card = cardsById.get(tile.dataset.tileCardId);
-      const h3 = card && tile.querySelector(".tile-info h3");
-      if (h3) h3.textContent = shared.cardLabel(card);
+      if (card) window.TCGCapsula.atualizaCodigo(tile, card);
     });
   }
 
