@@ -38,6 +38,9 @@ Scans do dono no Card Game 2002~2006:
   (2026-11-23): das promos curadas sem scan. Mesma receita da COIN-8,
   640×887 em q80. Junto com a `nrt-PRN-001`/`-001R` do dono, é uma das 10
   das 68 promos com imagem.
+- **PR忍-7 うずまきナルト (`nrt-PRN-007`, promo NOT FOR SALE, 2003)**
+  (2026-11-23): mesma receita, com 1 px aparado em volta (a borda esquerda
+  do scan tinha 1 px do fundo numa parte da altura); 640×884, q80.
 
 ## Data Carddass (`nrt-dc-*`, `nrt-nf-*`, `nrt-nx-*`)
 
