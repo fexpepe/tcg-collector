@@ -99,3 +99,14 @@ arquivo dela, com o mesmo nome; depois rode os dois syncs (o CI também roda).
 (2026-11-23): scan do dono, pela receita das três do Card Game lá em cima
 (recorte na borda, cantos transparentes), 640×894 em q80. É a segunda das 13
 promos da Cross com imagem, depois da `nrt-nx-nxp-spi`.
+
+**NXP-002 うちはサスケ (`nrt-nx-nxp-002`, promo da Cross, 2009)**
+(2026-11-23): esta veio diferente: já recortada rente à carta, 702×1024,
+cantos em fundo escuro, e ACHATADA na largura (0,686). A proporção certa é a
+da NXP-003, escaneada e do mesmo tipo de carta (0,716): lado a lado, com a
+mesma largura, as faixas do layout (código de barras, 忍力, 奥義, rodapé) só
+batem com a NXP-002 levada a 640×894. Sem isso, a tela da carta (cover em
+63:88) cortaria o rodapé com o número. Os cantos são uma máscara arredondada
+com o raio medido na NXP-003 (25,5 px a 640), mais uma rampa de alfa pelo
+escuro só ao longo do arco dos dois cantos de cima, onde sobrava um fio do
+fundo. q80, 132 KB.
