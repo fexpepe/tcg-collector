@@ -171,6 +171,8 @@ test("catálogo: a PR忍-1-R (箔押し) é só Foil e usa o scan novo, com outr
   const c = porNumero.get("PR忍-1-R");
   assert.equal(c.id, "nrt-PRN-001R");
   assert.deepEqual(c.variants, ["Foil"]);
+  // Raridade Promo (2026-11-24, pedido do Fernando): era "R", da lista curada.
+  assert.equal(c.rarity, "Promo");
   assert.equal(c.image, "/assets/cards/naruto/nrt-PRN-001R-v2.webp");
   // É a única: o resto da linha segue "Normal". Trava de propósito: a cópia
   // que alguém marcou fica guardada pelo NOME da variante, então trocar a de
@@ -182,6 +184,8 @@ test("catálogo: a PR忍-1, a normal da mesma carta, também troca de imagem e s
   const c = porNumero.get("PR忍-1");
   assert.equal(c.id, "nrt-PRN-001");
   assert.deepEqual(c.variants, ["Normal"]);
+  // Raridade Promo (2026-11-24): saía sem raridade, como a maior parte das promos.
+  assert.equal(c.rarity, "Promo");
   assert.equal(c.image, "/assets/cards/naruto/nrt-PRN-001-v2.webp");
 });
 
