@@ -123,7 +123,10 @@
            (≤600px) ele volta pra cá, ao lado do select das abas, como sempre.
            Sem JS os chips ficam aqui e seguem funcionando. -->
       <div class="collection-toolbar collection-toolbar-centered">
-        <div id="gameFilter" class="chip-filter game-filter game-filter-panel" role="group" data-i18n-aria="pfmi.game" aria-label="Jogo">
+        <!-- data-select-all: no dropdown (o select espelho do shared.js) o
+             "Todos" vira "Todos os jogos" — fechado, ele aparece sozinho no
+             cartão-herói, sem a fileira de jogos pra dar o contexto. -->
+        <div id="gameFilter" class="chip-filter game-filter game-filter-panel" role="group" data-i18n-aria="pfmi.game" aria-label="Jogo" data-select-all="filter.gameAllSelect">
           <button type="button" class="chip" data-game-filter="all" aria-pressed="true" data-i18n="filter.gameAll">Todos</button>
           <button type="button" class="chip" data-game-filter="pokemon" aria-pressed="false" data-i18n="filter.gamePokemon">Pokémon</button>
           <button type="button" class="chip" data-game-filter="lorcana" aria-pressed="false" data-i18n="filter.gameLorcana">Lorcana</button>

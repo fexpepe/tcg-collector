@@ -2341,8 +2341,12 @@
     sel.hidden = box.hidden || chips.length < 2;
     const ativo = (chips.find((c) => c.getAttribute("aria-pressed") === "true") || chips[0] || { dataset: {} })
       .dataset.gameFilter || "all";
+    // A caixa pode pedir outro rótulo pro "Todos" do select (data-select-all =
+    // chave i18n). No chip ele se explica pela fileira de jogos ao lado; no
+    // dropdown fechado aparece sozinho, e a Coleção pede "Todos os jogos".
+    const rotulo = (c) => c.dataset.gameFilter === "all" && box.dataset.selectAll ? t(box.dataset.selectAll) : c.textContent.trim();
     sel.innerHTML = chips.map((c) =>
-      `<option value="${escapeAttribute(c.dataset.gameFilter)}">${escapeHtml(c.textContent.trim())}</option>`).join("");
+      `<option value="${escapeAttribute(c.dataset.gameFilter)}">${escapeHtml(rotulo(c))}</option>`).join("");
     sel.value = ativo;
   }
   const chipsDe = (box) => [...box.querySelectorAll("[data-game-filter]")];

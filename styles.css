@@ -3407,19 +3407,22 @@ html[data-detail="set"]:not([data-set-pronto]):not([data-carta]) body:not(.carta
 .coll-hero .dash-stat-label { font-size: 12px; }
 /* As ações no rodapé do cartão (margin-top auto empurra pra baixo), lado a
    lado e quebrando linha se faltar largura. Id na frente: vence o
-   `margin-left: auto` de `#collectionDashboard .collection-toolbar-actions`. */
-#collectionDashboard .coll-hero .collection-toolbar-actions { display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 8px; margin: auto 0 0; width: auto; }
+   `margin-left: auto` de `#collectionDashboard .collection-toolbar-actions`.
+   Folga de 6px (era 8) desde que o select de jogo mora aqui: ver abaixo. */
+#collectionDashboard .coll-hero .collection-toolbar-actions { display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 6px; margin: auto 0 0; width: auto; }
 /* Filtro de jogo NO CARTÃO (desktop, 2026-11-24): a faixa de chips acima do
    resumo saiu e o collection.js (initGamePickPlacement) traz o embrulho
    .chip-scroll pro rodapé do cartão, no lugar do antigo "Selecionar". Aqui só
    o select aparece — o mesmo dropdown do celular; chips e setas ficam
    escondidos (os chips seguem no DOM: guardam o estado e recebem o clique do
    select). Ele estica e deixa os três ícones (Selecionar, Exportar,
-   Compartilhar) à direita. Base de 96px: o cartão tem 320px (282 úteis) em
-   quase toda largura de desktop e os 3 ícones levam 150 com as folgas — uma
-   base maior jogava o Compartilhar sozinho pra 2ª linha. Só com menos de
-   ~246px úteis o select fica com a linha dele e os ícones descem. Com um jogo só (select hidden) o embrulho some e os ícones
-   ficam sozinhos, como antes. Id na frente: vence o `.game-filter-select
+   Compartilhar) à direita. A conta: o cartão tem 320px (282 úteis) em quase
+   toda largura de desktop; os 3 ícones de 40 com folgas de 6 levam 138, e
+   sobram 144 pro select — ~106px de texto, onde cabem "Todos os jogos"
+   (93px em 14px) e o "Todos los juegos" (104). Com ícones de 42 e folgas de
+   8 eram 88px, e o rótulo padrão nascia cortado. Base de 96px: só com menos
+   de ~234px úteis o select fica com a linha dele e os ícones descem. Com um
+   jogo só (select hidden) o embrulho some e os ícones ficam sozinhos. Id na frente: vence o `.game-filter-select
    { display: none }` do desktop e o `flex: 1 1 100%` do .chip-scroll. */
 #collectionDashboard .collection-toolbar-actions > .chip-scroll { flex: 1 1 96px; min-width: 0; }
 #collectionDashboard .collection-toolbar-actions > .chip-scroll:not(:has(> .game-filter-select:not([hidden]))) { display: none; }
@@ -3427,25 +3430,30 @@ html[data-detail="set"]:not([data-set-pronto]):not([data-carta]) body:not(.carta
 #collectionDashboard .chip-scroll > .chip-scroll-btn { display: none; }
 /* Texto com reticências e a MESMA cetinha custom dos selects da barra de
    filtros (.toolbar select): rótulo de jogo chega a "Fullmetal Alchemist
-   Carddass" (~190px em 14px) e o select tem ~130px no cartão de 320px — a
-   seta nativa cortava o nome no meio da letra e ainda comia uns 20px. */
+   Carddass" (~190px em 14px), bem mais que o select — a seta nativa cortava o
+   nome no meio da letra e ainda comia uns 20px. Respiro interno curto (10px
+   à esquerda, 26 à direita com a cetinha a 9px da borda) pelo mesmo motivo
+   da conta acima. */
 #collectionDashboard .chip-scroll > .game-filter-select {
-  display: block; width: 100%; height: 42px; margin: 0;
-  padding: 0 30px 0 12px; font-size: 14px; font-weight: 700;
+  display: block; width: 100%; height: 40px; margin: 0;
+  padding: 0 26px 0 10px; font-size: 14px; font-weight: 700;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   -webkit-appearance: none; appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238a93a3' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 11px center;
+  background-position: right 9px center;
   background-size: 12px 12px;
 }
 #collectionDashboard .chip-scroll > .game-filter-select[hidden] { display: none; }
-/* Selecionar SÓ-ÍCONE no cartão, quadrado de 42px como os vizinhos .icon-btn
-   (o rótulo fica pro leitor de tela, no mesmo visually-hidden do .icon-btn;
-   o estado ligado é o fundo de destaque do .bulk-toggle[aria-pressed]). No
-   celular o botão desce pra linha dos Filtros (initBulkBtnPlacement), sai do
-   #collectionDashboard e volta a mostrar "Selecionar". */
-#collectionDashboard .bulk-toggle { position: relative; width: 42px; min-width: 42px; padding: 0; justify-content: center; }
+/* Selecionar SÓ-ÍCONE no cartão (o rótulo fica pro leitor de tela, no mesmo
+   visually-hidden do .icon-btn; o estado ligado é o fundo de destaque do
+   .bulk-toggle[aria-pressed]). No celular o botão desce pra linha dos
+   Filtros (initBulkBtnPlacement), sai do #collectionDashboard e volta a
+   mostrar "Selecionar". Os três ícones do cartão ficam quadrados de 40px,
+   a medida que o cartão já usa no celular (≤720px), e o select acompanha a
+   altura: os 2px de cada um pagam o espaço do rótulo do select. */
+#collectionDashboard .bulk-toggle { position: relative; width: 40px; min-width: 40px; min-height: 40px; padding: 0; justify-content: center; }
+#collectionDashboard .coll-hero .icon-btn { width: 40px; min-width: 40px; min-height: 40px; }
 #collectionDashboard .bulk-toggle > span {
   position: absolute; width: 1px; height: 1px; margin: 0; overflow: hidden;
   clip-path: inset(50%); white-space: nowrap;
