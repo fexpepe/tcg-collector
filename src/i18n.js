@@ -742,6 +742,11 @@ window.TCG_MESSAGES = window.TCG_MESSAGES || {};
       "tile.removeAria": "Remover {variant} da coleção",
       "tile.removeOne": "Remover uma cópia",
       "tile.chooseVersion": "Abrir a carta pra escolher a versão",
+      // Etiqueta de premiação na cápsula (src/capsula.js). "Tournament" em
+      // inglês nos três idiomas, como a raridade e as extras: termo de mercado
+      // (pedido do Fernando, 24/11/2026). A dica do hover é traduzida.
+      "cap.tournament": "Tournament",
+      "cap.tournamentHint": "Carta de torneio: prêmio por participar ou por colocação, de juiz, de liga ou de pack de campeonato",
       "toolbar.variants": "Versões",
       "filter.groupVariants": "Agrupar",
       "tile.removeOneAria": "Remover uma cópia de {variant}",
@@ -2407,6 +2412,8 @@ window.TCG_MESSAGES = window.TCG_MESSAGES || {};
       "tile.removeAria": "Remove {variant} from collection",
       "tile.removeOne": "Remove one copy",
       "tile.chooseVersion": "Open the card to choose a version",
+      "cap.tournament": "Tournament",
+      "cap.tournamentHint": "Tournament card: a prize for playing or placing, a judge, league or championship pack card",
       "toolbar.variants": "Versions",
       "filter.groupVariants": "Group",
       "tile.removeOneAria": "Remove one copy of {variant}",
@@ -4064,6 +4071,8 @@ window.TCG_MESSAGES = window.TCG_MESSAGES || {};
       "tile.removeAria": "Quitar {variant} de la colección",
       "tile.removeOne": "Quitar una copia",
       "tile.chooseVersion": "Abrir la carta para elegir la versión",
+      "cap.tournament": "Tournament",
+      "cap.tournamentHint": "Carta de torneo: premio por participar o por posición, de juez, de liga o de pack de campeonato",
       "toolbar.variants": "Versiones",
       "filter.groupVariants": "Agrupar",
       "tile.removeOneAria": "Quitar una copia de {variant}",

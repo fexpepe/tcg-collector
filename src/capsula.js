@@ -10,7 +10,7 @@
 // separa duas cartas de mesmo nome.
 //
 // Agora a ficha é uma só, com as faixas sempre na mesma ordem:
-//   1. ETIQUETAS  graduação · raridade · tipo · extras   (coladas na imagem)
+//   1. ETIQUETAS  graduação · raridade · torneio · tipo · extras (+N)
 //   2. TÍTULO     Nome (código)
 //   3. ORIGEM     bandeira · set · jogo
 //   4. BASE       preço e botões, como já eram
@@ -95,7 +95,15 @@
   // Código solto no fim: "Koala - OP05-006", "Michelle PR-286EN", "Awakened
   // Feelings - SAO/S26-E083 PR". Só código com cara de código (letra + dígito,
   // 4+ caracteres) e nunca quando o nome É o código ("No. B-086", do FMA).
+  // O Digimon guarda a raridade colada no número ("BT1-021 U"), e o nome traz
+  // só o código ("MetalGreymon - BT1-021"): quem não bate com o número inteiro
+  // tenta a primeira parte dele (2026-11-24, 841 cartas).
   function tiraCodigoSolto(base, num, rar) {
+    const curto = num.split(/\s+/)[0];
+    const r = tiraCodigo(base, num, rar);
+    return r === base && curto !== num ? tiraCodigo(base, curto, rar) : r;
+  }
+  function tiraCodigo(base, num, rar) {
     if (!num || num.length < 4 || !/[a-z]/i.test(num) || !/\d/.test(num)) return base;
     const m = new RegExp("^(.*?)\\s*(?:[-–—]\\s*)?" + escRe(num) + "[+*]*(?:\\s+([A-Z]{1,4}))?\\s*$", "i").exec(base);
     if (!m) return base;
@@ -120,7 +128,10 @@
       if (ehCodigo(g, num) || ehRaridade(g, rar)) continue;
       if (ehSigla(g)) { (SIGLA_EXTRA.has(semMarca(g.toLowerCase())) ? extras : ficam).push(g); continue; }
       // Ano sozinho é a versão do personagem (o Godzilla de 2016), não tiragem.
-      if (/^\d{4}$/.test(g) || !TRATAMENTO.test(g)) { ficam.push(g); continue; }
+      // Sufixo de torneio (a regra da etiqueta Tournament, mais abaixo) também
+      // é tiragem: "(Masters Cup 2024)" sai do nome mesmo sem palavra da lista.
+      const deTorneio = TORNEIO_SUFIXO.test(g) && !TORNEIO_SUFIXO_FORA.test(g);
+      if (/^\d{4}$/.test(g) || !(TRATAMENTO.test(g) || deTorneio)) { ficam.push(g); continue; }
       const n = junta(g);
       if (n === v || (n === "holo" && v === "holofoil")) continue;
       // "Hyperspace Foil" num tile Foil: sobra "Hyperspace".
@@ -269,6 +280,46 @@
     return (agrupado ? shared.cardVariants(card) : [variant]).some((v) => shared.variantDisplayLabel(card, v) === alvo);
   }
 
+  // ── TORNEIO ───────────────────────────────────────────────────────────────
+  // Carta que se GANHA jogando, e não se compra: prêmio por participar, por
+  // colocação (Winner, Champion, Finalist, Top 8, Prize Wall), carta de juiz,
+  // de liga e os packs de torneio e campeonato (Store Championship, Regionals,
+  // Judge Pack, Tournament Pack…). Pedido do Fernando em 24/11/2026: uma
+  // etiqueta só, genérica, entre a raridade e o tipo — o detalhe (Champion,
+  // Top 8, qual pack) continua na etiqueta extra que sai do nome.
+  // O catálogo não tem campo pra isso: a marca vem em três lugares, e a regra
+  // olha os três (medido em 24/11/2026: 8.774 cartas em 24 catálogos).
+  //   1. sufixo do nome, como a loja escreve ("(Winner)", "(Judge Pack Vol.
+  //      3)", "(2023 Regionals Participant)") — a maioria do TCGCSV;
+  //   2. o set inteiro ("Tournament Promotion Cards", "Store Championships",
+  //      "Duelist League Promo", "Tournament Pack 1", os "Organized Play" e
+  //      "Weekly Play Promos" — o prêmio de participação da loja);
+  //   3. a raridade, onde o catálogo guarda assim (DBZ: League, Judge).
+  // O que tem "Tournament"/"Champion" no nome mas é PRODUTO vendido fica de
+  // fora de propósito: boosters ("Tournament of Power", "World Martial Arts
+  // Tournament", "Champions of Kamigawa", "Champion's Path"), os decks de
+  // campeão ("World Championship Decks") e os bundles de Worlds do Riftbound.
+  const TORNEIO_SUFIXO = /\b(winner|champion|finalist|top ?\d{1,2}|\d{1,2}(?:st|nd|rd|th) place|participa(?:nt|tion)|prize|judge|tournament|championship|regionals?|nationals|qualifier|store (?:champ\w*|tournament)|world finals?|road to worlds?|masters (?:cup|league)|shop league|league(?: foil| promo)?|grand prix|invitational)\b/i;
+  const TORNEIO_SUFIXO_FORA = /\bworld tour\b|\bbest of\b|\bbundle\b|martial arts tournament|selection box/i;
+  const TORNEIO_SET = /\btournament (?:promo\w*|packs?|cards?)\b|tournament and championship|\bjudge\b|\bleague (?:promo|&)|duelist league|arena league|\bprize\b|\bwinner\b|\bregional\b|store championships?|grand prix|player rewards|friday night|\bfnm\b|participation|galactic championship|limited pack world championship|planeswalker championship|japan junior tournament|championship (?:promos|series|pack)|organi[sz]ed play|weekly play/i;
+  const TORNEIO_SET_FORA = /champions?(?:hip)? decks?|champion's path|premium champion|champions? of\b|tournament of power|martial arts tournament|dark tournament|monster league|\bbundles?\b/i;
+  const TORNEIO_RARIDADE = /^(league|judge|winner|champion|prize)\b/i;
+  function torneio(card) {
+    if (!card) return false;
+    if (gruposFinais(String(card.name || "")).grupos.some((g) => TORNEIO_SUFIXO.test(g) && !TORNEIO_SUFIXO_FORA.test(g))) return true;
+    const set = String(card.set || "");
+    if (TORNEIO_SET.test(set) && !TORNEIO_SET_FORA.test(set)) return true;
+    return TORNEIO_RARIDADE.test(String(card.rarity || ""));
+  }
+  // Troféu (traço, currentColor): no celular, sem espaço, a etiqueta encolhe
+  // até sobrar só ele.
+  const TROFEU = '<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM17 6h3v1a3 3 0 0 1-3 3M7 6H4v1a3 3 0 0 0 3 3"/></svg>';
+  // Coluna de raridade da linha COMPACTA: o troféu na frente, quando é de
+  // torneio, e a raridade por extenso.
+  function colunaRaridade(card) {
+    return (torneio(card) ? `<span class="cap-trofeu" title="${escapeAttribute(t("cap.tournamentHint"))}">${TROFEU}</span>` : "") + escapeHtml(raridade(card));
+  }
+
   // ── SET ───────────────────────────────────────────────────────────────────
   // O nome do set, clicável: leva pra página do set com o MESMO detailUrl do
   // modal da carta (o setId desambigua sets homônimos EN/PT). Na página do
@@ -317,9 +368,23 @@
     const etqs = [];
     if (o.graded) etqs.push(shared.gradedBadgeHtml(o.graded));
     if (rar) etqs.push(`<span class="cap-etq cap-rar" data-faixa="${faixa(card.rarity)}" title="${escapeAttribute(rar)}">${escapeHtml(rar)}</span>`);
+    if (torneio(card)) etqs.push(`<span class="cap-etq cap-torneio" title="${escapeAttribute(t("cap.tournamentHint"))}">${TROFEU}<span>${escapeHtml(t("cap.tournament"))}</span></span>`);
     etqs.push(`<span class="cap-etq cap-tipo ${o.grupo ? "is-grupo" : classeDaVersao(variant, shared.variantDisplayLabel(card, variant))}"${o.grupo ? ` title="${escapeAttribute(o.grupo)}"` : ""}>${o.tipo || escapeHtml(shared.variantDisplayLabel(card, variant))}</span>`);
-    if (limpo.extras.length) {
-      etqs.push(`<span class="cap-extras">${limpo.extras.map((x) => `<span class="cap-etq cap-extra" title="${escapeAttribute(x)}">${escapeHtml(x)}</span>`).join("")}</span>`);
+    // EXTRAS e o "+N" (2026-11-24): a extra que não cabe desce pra uma linha
+    // escondida, e o "+N" diz quantas ficaram de fora. Sem JS e sem medir: cada
+    // extra carrega o "+N" das que vêm DELA em diante, posicionado uma linha
+    // acima, na ponta direita da faixa. Só o da primeira extra escondida cai
+    // na linha visível (as visíveis jogam o delas pra cima do topo; as da
+    // terceira linha, pra segunda), e o z-index decrescente põe o dela por
+    // cima das outras da mesma linha. O title lista as escondidas pro mouse;
+    // no toque não há hover, e a carta aberta mostra tudo. aria-hidden: as
+    // extras escondidas continuam no DOM, e o leitor de tela lê todas.
+    // Detalhe do posicionamento no bloco "Cápsula" do styles.css.
+    const n = limpo.extras.length;
+    if (n) {
+      // O espaço de largura zero (U+200B) antes de cada extra é o ponto onde a
+      // linha pode quebrar — sem ele a PRIMEIRA extra nunca desce (ver CSS).
+      etqs.push(`<span class="cap-extras">${limpo.extras.map((x, i) => `\u200B<span class="cap-etq cap-extra" title="${escapeAttribute(x)}"><span class="cap-mais" style="z-index:${n - i}" title="${escapeAttribute(limpo.extras.slice(i).join(" · "))}" aria-hidden="true">+${n - i}</span>${escapeHtml(x)}</span>`).join("")}</span>`);
     }
     return `<p class="cap-etqs">${etqs.join("")}</p>`
       // O espaço entre nome e código é pro texto copiado e pro leitor de
@@ -347,7 +412,7 @@
   }
 
   window.TCGCapsula = {
-    nomeLimpo, codigo, titulo, raridade, faixa, setLink, ficha, base, atualizaCodigo,
+    nomeLimpo, codigo, titulo, raridade, faixa, torneio, colunaRaridade, setLink, ficha, base, atualizaCodigo,
     nomeRaridade, rotuloRaridade, acabamentoDaRaridade, opcoesRaridade, opcoesAcabamento, casaAcabamento
   };
 })();

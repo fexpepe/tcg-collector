@@ -1,0 +1,16 @@
+{
+ "source": "curadoria manual — produto pela lista oficial da Bandai (data/vintage/naruto-bandai-oficial.json) e pelas páginas do hinokunian (scripts/naruto-raridade-hinokunian.mjs), ano pelo rodapé impresso da carta; ver scripts/sync-naruto-vintage.mjs",
+ "updatedAt": "2026-11-24",
+ "note": "Reimpressões do NARUTO カードゲーム com DESENHO NOVO e o mesmo número impresso: cada uma é uma carta à parte no catálogo (id próprio, set 拡張・スペシャル), não a original. Reimpressão com o mesmo desenho (só fundo ou moldura novos, como o 忍-2 de 2003) continua sendo a carta original e NÃO entra aqui. id = <id da original>-alt. scan = código do scan no tcg-db (o sync tira esse scan da original); sem scan, a imagem vem de assets/cards/naruto/<id>.webp. rarity = a raridade NO PRODUTO da reimpressão (o hinokunian lista cada produto à parte; vazio quando o produto não foi identificado).",
+ "cards": [
+  { "num": "忍-1",   "name": "うずまきナルト",   "id": "nrt-N-001-alt",   "scan": "N-001_2", "rarity": "N", "produto": "拡張シート 雪姫忍法帖 (2004.8)",       "prova": "rodapé BANDAI 2004 + ©劇場版NARUTO製作委員会2004; a original (N-001) é de moldura escura, 2002" },
+  { "num": "忍-4",   "name": "山中いの",         "id": "nrt-N-004-alt",   "scan": "N-004_2", "rarity": "N", "produto": "拡張ファイリングシート２ (2006.3.17)", "prova": "rodapé BANDAI 2006 MADE IN CHINA. O N-004_3 (BANDAI 2003) é o mesmo desenho com fundo novo: fica na original" },
+  { "num": "忍-19",  "name": "うずまきナルト",   "id": "nrt-nin-19-alt",  "scan": "",        "rarity": "N", "produto": "拡張シート 極意忍法帖 (2003.12)",      "prova": "foto do Fernando (2026-11-24), rodapé BANDAI 2003; o tcg-db não tem scan. A Bandai só lista o 忍-19 no 巻ノ壱 e no 極意忍法帳" },
+  { "num": "忍-20",  "name": "うちはサスケ",     "id": "nrt-nin-20-alt",  "scan": "",        "rarity": "N", "produto": "拡張シート 極意忍法帖 (2003.12)",      "prova": "foto do Fernando (2026-11-24), na mesma folha 13 (第七班) do 忍-19 e do 忍-21" },
+  { "num": "忍-21",  "name": "春野サクラ",       "id": "nrt-N-021-alt",   "scan": "",        "rarity": "N", "produto": "拡張シート 極意忍法帖 (2003.12)",      "prova": "foto do Fernando (2026-11-24); a original é o scan N-021 do tcg-db (BANDAI 2002, fundo vermelho)" },
+  { "num": "忍-227", "name": "奈良シカマル",     "id": "nrt-N-227-alt",   "scan": "N-227_2", "rarity": "N", "produto": "拡張ファイリングシート２ (2006.3.17)", "prova": "rodapé BANDAI 2006 MADE IN CHINA; a original (N-227) é do 巻ノ十 迅雷の書, BANDAI 2004" },
+  { "num": "忍-239", "name": "秋道チョウジ",     "id": "nrt-N-239-alt",   "scan": "N-239_2", "rarity": "N", "produto": "拡張ファイリングシート２ (2006.3.17)", "prova": "rodapé BANDAI 2006 MADE IN CHINA; a original (N-239) é do 巻ノ十一, BANDAI 2005" },
+  { "num": "作-22",  "name": "木ノ葉忍軍",       "id": "nrt-S-022_2-alt", "scan": "S-022",   "rarity": "",  "produto": "não identificado (reimpressão de 2006)", "prova": "rodapé BANDAI 2006 MADE IN JAPAN, moldura verde-clara. Aqui o tcg-db inverte: o S-022 é a reimpressão e o S-022_2 (moldura escura, 2002) é o 巻ノ壱 — que já tinha o id nrt-S-022_2 e mostrava o S-022 até 2026-11-24" },
+  { "num": "作-43",  "name": "極限状態での戦い", "id": "nrt-S-043-alt",   "scan": "S-043_2", "rarity": "N", "produto": "拡張シート 雪姫忍法帖 (2004.8)",       "prova": "rodapé BANDAI 2004 + ©劇場版NARUTO製作委員会2004; a original (S-043) é de moldura escura, 巻ノ参" }
+ ]
+}

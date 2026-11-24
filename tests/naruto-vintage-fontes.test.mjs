@@ -6,7 +6,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync, existsSync, readdirSync } from "node:fs";
-import { parseTvtCards, parseBandaiCardlist, normNumBandai, indiceDeCuradas } from "../scripts/lib/naruto-vintage-fontes.mjs";
+import { parseTvtCards, parseBandaiCardlist, normNumBandai, indiceDeCuradas, lerArtesAlternativas } from "../scripts/lib/naruto-vintage-fontes.mjs";
 
 // Trechos de verdade das páginas da TV Tokyo (card_04, 08, 09 e 13), só sem
 // os <table> de volta.
@@ -109,6 +109,24 @@ test("imagem curada: a arte trocada entra como -v2 e vence o arquivo sem versão
   assert.equal(idx.get("README"), undefined);
 });
 
+// ── Arte alternativa (lista curada) ──────────────────────────────────────────
+test("arte alternativa: a lista curada vira cartas, scans e ids; linha sem número ou id, ou id repetido, fica de fora", () => {
+  const { cartas, ids, scans } = lerArtesAlternativas({ cards: [
+    { num: "忍-1", name: "うずまきナルト", id: "nrt-N-001-alt", scan: "N-001_2", rarity: "N", produto: "雪姫忍法帖" },
+    { num: "忍-19", name: "うずまきナルト", id: "nrt-nin-19-alt", scan: "", rarity: "N" },
+    { num: "忍-20", id: "nrt-nin-19-alt", scan: "X-1" },   // id repetido: vale a 1ª
+    { num: "", id: "nrt-x-alt" },                         // sem número
+    { num: "忍-4", scan: "N-004_2" }                     // sem id
+  ] });
+  assert.deepEqual(cartas, [
+    { num: "忍-1", id: "nrt-N-001-alt", name: "うずまきナルト", scan: "N-001_2", rarity: "N" },
+    { num: "忍-19", id: "nrt-nin-19-alt", name: "うずまきナルト", scan: "", rarity: "N" }
+  ]);
+  assert.deepEqual([...ids], ["nrt-N-001-alt", "nrt-nin-19-alt"]);
+  assert.deepEqual([...scans], ["N-001_2"]);
+  assert.deepEqual(lerArtesAlternativas(null).cartas, []);
+});
+
 // ── O catálogo versionado ────────────────────────────────────────────────────
 const lerCatalogo = () => {
   const s = readFileSync(new URL("../data/naruto/cards.js", import.meta.url), "utf8");
@@ -116,7 +134,9 @@ const lerCatalogo = () => {
 };
 const cards = lerCatalogo();
 const vintage = cards.filter((c) => c.vintageLine === "nrtcg");
-const porNumero = new Map(vintage.map((c) => [c.number, c]));
+const artesAlt = lerArtesAlternativas(JSON.parse(readFileSync(new URL("../data/vintage/naruto-arte-alternativa.json", import.meta.url), "utf8")));
+// Número -> carta ORIGINAL: a arte alternativa tem o mesmo número impresso.
+const porNumero = new Map(vintage.filter((c) => !artesAlt.ids.has(c.id)).map((c) => [c.number, c]));
 const oficial = JSON.parse(readFileSync(new URL("../data/vintage/naruto-bandai-oficial.json", import.meta.url), "utf8"));
 
 test("catálogo: todo número da lista oficial da Bandai está no catálogo", () => {
@@ -204,4 +224,39 @@ test("catálogo: imagem curada aponta pra arquivo que existe, e é a versão mai
   for (const m of home.matchAll(/src="(assets\/cards\/naruto\/[^"]+)"/g)) {
     assert.ok(existsSync(new URL("../" + m[1], import.meta.url)), `index.html: ${m[1]} não existe`);
   }
+});
+
+test("catálogo: cada arte alternativa é uma carta à parte, no set de extras, com o número e o nome da original", () => {
+  assert.equal(artesAlt.cartas.length, 9);
+  for (const a of artesAlt.cartas) {
+    const c = cards.find((x) => x.id === a.id);
+    const original = porNumero.get(a.num);
+    assert.ok(c, `${a.id} não está no catálogo`);
+    assert.ok(original && original.id !== a.id, `${a.num}: a original sumiu ou ficou com o id da alternativa`);
+    assert.equal(c.setId, "nrt-extra", a.id);
+    assert.equal(c.number, original.number);
+    assert.equal(c.nameJp, original.nameJp, a.id);
+    assert.equal(c.name, original.name, a.id);
+    assert.deepEqual(c.variants, ["Normal"]);
+    // raridade do produto da reimpressão, não a da estreia (o 忍-19 é UR no 巻ノ壱)
+    assert.equal(c.rarity, a.rarity, a.id);
+    // imagem: o scan da reimpressão, ou a curada quando o tcg-db não tem scan
+    if (a.scan) assert.ok(c.image.includes(encodeURIComponent(`/nrt/${a.scan}.jpg`)), `${a.id}: ${c.image}`);
+    else assert.equal(c.image, `/assets/cards/naruto/${a.id}.webp`);
+    // e a original nunca fica com o scan da reimpressão
+    if (a.scan) assert.ok(!original.image.includes(encodeURIComponent(`/nrt/${a.scan}.jpg`)), `${a.num} original com o scan ${a.scan}`);
+  }
+  assert.equal(porNumero.get("忍-19").rarity, "UR");
+  assert.equal(cards.find((x) => x.id === "nrt-nin-19-alt").rarity, "N");
+});
+
+test("catálogo: o 作-22 do 巻ノ壱 mostra o scan de 2002 (S-022_2), não o da reimpressão de 2006", () => {
+  // O tcg-db inverte este par: o S-022 (moldura verde-clara, BANDAI 2006) é a
+  // reimpressão e o S-022_2 (moldura escura) é o original. Até 2026-11-24 a
+  // carta do Vol. 1, de id nrt-S-022_2, mostrava o S-022.
+  const c = porNumero.get("作-22");
+  assert.equal(c.id, "nrt-S-022_2");
+  assert.equal(c.setId, "nrt-s01");
+  assert.ok(c.image.includes(encodeURIComponent("/nrt/S-022_2.jpg")), c.image);
+  assert.ok(cards.find((x) => x.id === "nrt-S-022_2-alt").image.includes(encodeURIComponent("/nrt/S-022.jpg")));
 });

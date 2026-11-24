@@ -91,6 +91,21 @@ Scans do dono no Card Game 2002~2006:
   de texto laranja, o metal do shuriken), não do fundo. 640×902, q80,
   147 KB. Proporção 0,710, sem esticar.
 
+- **忍-19/20/21 do 拡張シート 極意忍法帖 (`nrt-nin-19-alt`, `nrt-nin-20-alt`,
+  `nrt-N-021-alt`)** (2026-11-24): as artes alternativas (fundo de céu azul,
+  rodapé BANDAI 2003) da うずまきナルト, うちはサスケ e 春野サクラ do 巻ノ壱 —
+  cartas à parte desde esse dia (`data/vintage/naruto-arte-alternativa.json`).
+  O tcg-db não tem scan; veio uma FOTO das três lado a lado, 826×425, sobre
+  tapete cinza e um pouco de lado. Borda de cada carta medida no cruzamento
+  do brilho 120 (moldura vermelha × tapete), com precisão de subpixel, em
+  linhas e colunas fixas, uma reta por borda (a base só até ~55% da largura e
+  a direita até ~55% da altura: depois vêm o kunai preto e o selo verde); os
+  cantos são os cruzamentos das retas. Perspectiva corrigida pra 63:88 na
+  largura medida, sem ampliar (a foto dava 0,68–0,70, achatada pelo ângulo),
+  com supersample 4× e cantos transparentes no raio relativo dos scans (13,9
+  px a 350). q90, como o 術-211: 273×381 e 264×369, ~33 KB cada. Um scan de
+  verdade substitui pela regra do `-v2`.
+
 ## Data Carddass (`nrt-dc-*`, `nrt-nf-*`, `nrt-nx-*`)
 
 Os syncs do arcade (`sync-naruto-datacarddass.mjs` e

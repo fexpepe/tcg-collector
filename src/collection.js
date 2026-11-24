@@ -1404,7 +1404,7 @@
       </button>
       <span class="tile-c-num">${escapeHtml(card.number || "")}</span>
       <span class="tile-c-set">${etiquetaJogo(card, gameTag)}${escapeHtml(card.set || "")}</span>
-      <span class="tile-c-rar">${escapeHtml(capsula.raridade(card))}</span>
+      <span class="tile-c-rar">${capsula.colunaRaridade(card)}</span>
       <span class="tile-c-var">${badge}</span>
       <span class="tile-c-price">${priceHtml}</span>
       <div class="tile-actions">${removeBtn}</div>
@@ -2363,7 +2363,7 @@
       <button type="button" class="tile-name" data-preview-card-id="${escapeAttribute(it.id)}" data-preview-variant="${escapeAttribute(it.v)}" data-hover-thumb="${escapeAttribute(it.img || "")}">${shared.cardFlag(it.lang)}<span>${escapeHtml(capsula.nomeLimpo(carta, it.v).nome)}</span></button>
       <span class="tile-c-num">${escapeHtml(it.num || "")}</span>
       <span class="tile-c-set">${escapeHtml(it.s || "")}</span>
-      <span class="tile-c-rar">${escapeHtml(capsula.raridade(carta))}</span>
+      <span class="tile-c-rar">${capsula.colunaRaridade(carta)}</span>
       <span class="tile-c-var">${variante}</span>
       <span class="tile-c-price">${precoDoItem(it)}</span>
     </article>`;
