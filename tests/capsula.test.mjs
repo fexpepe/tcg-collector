@@ -195,6 +195,76 @@ test("o que entra no HTML é escapado", () => {
   assert.ok(!/<b>|<i>|<R>|X-<1>/.test(html), html);
 });
 
+// ── Raridade e acabamento por jogo (2026-11-24) ───────────────────────────
+// O Naruto japonês grava N/R/SR/UR/P e a tela mostra o nome; o Carddass grava
+// o brilho (Normal/Prism) como raridade, e ele vira o acabamento do tile.
+const nrt = (rarity, extra) => ({ name: "うずまきナルト", number: "忍-1", set: "Vol. 1", rarity, language: "ja", game: "naruto", variants: ["Normal"], ...extra });
+const dbcCard = (rarity) => ({ name: "Son Goku", number: "1", set: "Part 1", rarity, language: "ja", game: "dbc", variants: ["Normal"] });
+
+test("Naruto: a sigla da raridade aparece pelo nome; o que não tem nome seguro fica em sigla", () => {
+  for (const [sigla, nome] of [["N", "Normal"], ["R", "Rare"], ["SR", "Super Rare"], ["UR", "Ultra Rare"], ["P", "Promo"], ["Memorial", "Memorial"], ["NR", "NR"]]) {
+    assert.equal(C.nomeRaridade(nrt(sigla)), nome, sigla);
+    assert.equal(C.raridade(nrt(sigla)), nome, sigla);
+  }
+  // A ficha mostra o nome, e a cor continua vindo da escada da sigla.
+  assert.match(C.ficha(nrt("UR"), { variant: "Normal" }), /class="cap-etq cap-rar" data-faixa="5"[^>]*>Ultra Rare</);
+  // Outro jogo com a MESMA sigla não muda: no One Piece "R" é R.
+  assert.equal(C.raridade({ rarity: "R", game: "onepiece" }), "R");
+  assert.equal(C.raridade({ rarity: "L", game: "onepiece" }), "L");
+});
+
+test("filtro de raridade: chave pelo nome, na escada; R do Card Game e Rare do CCG viram uma opção", () => {
+  const cartas = [nrt("UR"), nrt("N"), nrt("R"), nrt("Rare"), nrt("Memorial"), nrt("P"), nrt(""), nrt("None"), nrt("Silver Holo")];
+  assert.deepEqual(Array.from(C.opcoesRaridade(cartas)), ["Normal", "Rare", "Promo", "Ultra Rare", "Memorial"]);
+  assert.equal(C.rotuloRaridade("Super_rare"), "Super Rare");
+});
+
+test("Carddass: o brilho gravado como raridade é o acabamento do tile, não raridade", () => {
+  const prism = dbcCard("Prism");
+  assert.equal(C.nomeRaridade(prism), "");
+  assert.equal(C.raridade(prism), "");
+  assert.equal(C.acabamentoDaRaridade(prism, "Normal"), "Prism");
+  // O shared.variantDisplayLabel consulta a tabela: tile, popup e filtro dizem o mesmo.
+  assert.equal(sb.window.TCGShared.variantDisplayLabel(prism, "Normal"), "Prism");
+  const html = C.ficha(prism, { variant: "Normal" });
+  assert.ok(!html.includes("cap-rar"), html);
+  assert.match(html, /class="cap-etq cap-tipo variant-normal is-brilho">Prism</);
+  // Valor fora da lista do jogo segue raridade (a Promo da HxH).
+  assert.equal(C.raridade({ rarity: "Promo", game: "hxh", variants: ["Normal"] }), "Promo");
+  assert.equal(C.acabamentoDaRaridade({ rarity: "Holo", game: "hxh", variants: ["Normal"] }, "Normal"), "Holo");
+  // Jogo sem a tabela: "Normal" na raridade (o Carddass Masters) segue raridade.
+  assert.equal(C.raridade({ rarity: "Normal", game: "cdm" }), "Normal");
+  assert.equal(C.acabamentoDaRaridade({ rarity: "Normal", game: "cdm", variants: ["Normal"] }, "Normal"), "");
+});
+
+test("filtro de acabamento: as versões do tile, Normal primeiro e a escada do jogo", () => {
+  const pares = [dbcCard("Gold"), dbcCard("Prism"), dbcCard("Normal"), dbcCard("Double Prism")].map((card) => ({ card, variant: "Normal" }));
+  assert.deepEqual(Array.from(C.opcoesAcabamento(pares, "dbc")), ["Normal", "Prism", "Double Prism", "Gold"]);
+  // TCG moderno: o acabamento é a versão (Normal/Foil/Diamond Foil…), a raridade fica como é.
+  const ccg = { name: "Naruto", rarity: "Rare", game: "naruto", variants: ["Normal", "Diamond Foil", "Wavy Foil"] };
+  const paresCcg = ccg.variants.map((variant) => ({ card: ccg, variant }));
+  assert.deepEqual(Array.from(C.opcoesAcabamento(paresCcg, "")), ["Normal", "Diamond Foil", "Wavy Foil"]);
+  assert.ok(C.casaAcabamento(ccg, "Wavy Foil", "Wavy Foil"));
+  assert.ok(!C.casaAcabamento(ccg, "Normal", "Wavy Foil"));
+  assert.ok(C.casaAcabamento(ccg, "Normal", ""), "sem filtro passa tudo");
+  // Tile agrupado (uma carta = um tile): passa se alguma versão casa.
+  assert.ok(C.casaAcabamento(ccg, "Normal", "Diamond Foil", true));
+  assert.ok(!C.casaAcabamento(ccg, "Normal", "Foil", true));
+  // A Prism do Carddass casa pelo acabamento, não pela chave "Normal".
+  assert.ok(C.casaAcabamento(dbcCard("Prism"), "Normal", "Prism"));
+  assert.ok(!C.casaAcabamento(dbcCard("Prism"), "Normal", "Normal"));
+});
+
+test("toda grade com filtro de raridade tem o de acabamento, e as duas réguas vêm do capsula.js", () => {
+  for (const [html, js] of [["cards.html", "src/cards.js"], ["collection.html", "src/collection.js"], ["detail.html", "src/detail.js"], ["wishlist.html", "src/wishlist.js"], ["explore.html", "src/explore.js"]]) {
+    assert.match(ler(html), /<select id="(explore)?[fF]inishFilter">/, `${html} sem o campo de acabamento`);
+    assert.match(ler(html), /data-i18n="toolbar\.finish"/, html);
+    const src = ler(js);
+    assert.ok(/opcoesAcabamento\(/.test(src) && /casaAcabamento\(/.test(src), `${js} não usa a régua de acabamento`);
+    assert.ok(/nomeRaridade/.test(src) && !/card\.rarity (===|!==) rarityValue/.test(src), `${js} filtra a raridade crua`);
+  }
+});
+
 // ── Ligação com as páginas ────────────────────────────────────────────────
 const paginas = readdirSync(root).filter((f) => f.endsWith(".html"));
 const carregam = paginas.filter((f) => ler(f).includes('src="src/capsula.js"')).sort();

@@ -23,6 +23,7 @@
     setFilter: document.getElementById("exploreSetFilter"),
     langFilter: document.getElementById("exploreLangFilter"),
     rarityFilter: document.getElementById("exploreRarityFilter"),
+    finishFilter: document.getElementById("exploreFinishFilter"),
     priceMin: document.getElementById("explorePriceMin"),
     priceMax: document.getElementById("explorePriceMax")
   };
@@ -269,7 +270,7 @@
   const valorDe = shared.memoValue((card) =>
     (shared.cardValue(card, shared.defaultVariant(card), prices, shared.DEFAULT_CONDITION) || {}).value || 0);
   const campo = (el) => (el ? el.value : "");
-  const temFiltro = () => !!(campo(elements.setFilter) || campo(elements.langFilter) || campo(elements.rarityFilter)
+  const temFiltro = () => !!(campo(elements.setFilter) || campo(elements.langFilter) || campo(elements.rarityFilter) || campo(elements.finishFilter)
     || parsePrice(elements.priceMin) != null || parsePrice(elements.priceMax) != null);
 
   function passaNosFiltros(card) {
@@ -278,7 +279,7 @@
     const idioma = campo(elements.langFilter);
     if (idioma && shared.normalizeCardLanguage(card.language) !== idioma) return false;
     const raridade = campo(elements.rarityFilter);
-    if (raridade && card.rarity !== raridade) return false;
+    if (raridade && window.TCGCapsula.nomeRaridade(card) !== raridade) return false;
     const pMin = parsePrice(elements.priceMin), pMax = parsePrice(elements.priceMax);
     if (pMin != null || pMax != null) {
       const v = valorDe(card);
@@ -303,7 +304,11 @@
     const uniq = (arr) => Array.from(new Set(arr.filter(Boolean)));
     preencheFiltro(elements.setFilter, uniq(lista.map((c) => c.set)).sort((a, b) => a.localeCompare(b)));
     preencheFiltro(elements.langFilter, uniq(lista.map((c) => shared.normalizeCardLanguage(c.language))), (v) => shared.cardLanguageLabel(v));
-    preencheFiltro(elements.rarityFilter, shared.sortRarities(uniq(lista.map((c) => c.rarity))));
+    // Raridade pelo nome do jogo e acabamento (Normal/Foil/Prism…): a régua do
+    // capsula.js, a mesma das outras grades.
+    const cap = window.TCGCapsula;
+    preencheFiltro(elements.rarityFilter, cap.opcoesRaridade(lista), cap.rotuloRaridade);
+    preencheFiltro(elements.finishFilter, cap.opcoesAcabamento(shared.cardVariantPairs(lista), gameFilter));
   }
 
   // Decididos pelo render ANTES de pintar (o pager chama o tileDe item a item,
@@ -508,7 +513,9 @@
     const matched = base.list;
     pintaAviso(base);
     atualizaOpcoes(matched);
-    const pairs = shared.cardVariantPairs(matched.filter(passaNosFiltros), { group: agrupaVersoes });
+    const acab = campo(elements.finishFilter);
+    const pairs = shared.cardVariantPairs(matched.filter(passaNosFiltros), { group: agrupaVersoes })
+      .filter(({ card, variant }) => window.TCGCapsula.casaAcabamento(card, variant, acab, agrupaVersoes));
     const cmp = sortComparator();
     pairs.sort((a, b) =>
       (Number(shared.cardHasImage(b.card)) - Number(shared.cardHasImage(a.card))) || cmp(a, b));
@@ -753,7 +760,7 @@
   }
 
   // Campos da barra: refazem a GRADE, não a busca (a lista base é a mesma).
-  [elements.setFilter, elements.langFilter, elements.rarityFilter].forEach((el) => {
+  [elements.setFilter, elements.langFilter, elements.rarityFilter, elements.finishFilter].forEach((el) => {
     if (el) el.addEventListener("change", () => render({ resetCount: true }));
   });
   [elements.priceMin, elements.priceMax].forEach((el) => {

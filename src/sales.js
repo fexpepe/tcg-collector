@@ -976,14 +976,14 @@
       const base = ownedPool.filter((c) => pickGame === "all" || c.game === pickGame);
       const pairs = sortPairs(shared.cardVariantPairs(base)
         .filter(({ card, variant }) => owned.variantTotal(card.id, variant) > 0)
-        .filter(({ card }) => !pickRarity || card.rarity === pickRarity)
+        .filter(({ card }) => !pickRarity || window.TCGCapsula.nomeRaridade(card) === pickRarity)
         .filter(({ card }) => !q.trim() || shared.matchesCardQuery(card, q)))
         .slice(0, 200);
       modal.querySelector(".sales-picker-results").innerHTML = pairs.map(({ card, variant }) => pickHtml(card, variant)).join("")
         || `<p class="empty-state">${esc(t("sales.pickerEmpty"))}</p>`;
     };
     const rarityOpts = `<option value="">${esc(t("filter.all.f"))}</option>`
-      + unique(ownedPool.map((c) => c.rarity).filter(Boolean)).sort().map((r) => `<option value="${escA(r)}">${esc(r)}</option>`).join("");
+      + window.TCGCapsula.opcoesRaridade(ownedPool).map((r) => `<option value="${escA(r)}">${esc(window.TCGCapsula.rotuloRaridade(r))}</option>`).join("");
     const sortOpts = ordenar.opcoes(PICK_SORTS, pickSort);
     const gameField = jogos.length > 1
       ? `<label class="sales-picker-field"><span>${esc(t("pfmi.game"))}</span>

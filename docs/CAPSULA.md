@@ -54,7 +54,32 @@ que faz a linha de um tile bater com a do vizinho.
   cinza: melhor sem cor do que com a cor errada.
 - **Tipo** é a versão da carta (Normal, Foil, Holofoil, Reverse, 1st Edition).
   **Condição (NM, SP…) não é tipo e não entra na ficha.** Onde ela faz parte
-  da oferta (carta à venda), anda com o preço, na base.
+  da oferta (carta à venda), anda com o preço, na base. Acabamento com brilho
+  que não é Foil/Holo/Holofoil (Prism, Diamond Foil, Rainbow Foil…) ganha a
+  classe `is-brilho`, na mesma cor roxa.
+
+### 2.5 Raridade e acabamento por jogo (24/11/2026)
+
+O catálogo grava a raridade como a fonte escreve; **a tela** usa o nome do
+jogo. Duas tabelas no topo do `src/capsula.js`:
+
+- `NOMES_DA_RARIDADE`: sigla → nome, por jogo. Hoje só o Naruto japonês (Card
+  Game de 2002 e Data Carddass): N, R, SR, UR e P aparecem como Normal, Rare,
+  Super Rare, Ultra Rare e Promo. Jogo que usa sigla no próprio sistema (One
+  Piece, Vanguard, Kayou…) não entra: lá a sigla é o nome.
+- `ACABAMENTO_NA_RARIDADE`: o Carddass que grava o **brilho** no campo de
+  raridade (Normal, Prism, Holo, Gold Stamp…). Esses valores deixam de ser
+  raridade e viram o **tipo** da carta: a etiqueta mostra "Prism" no lugar de
+  "Normal" (via `shared.variantDisplayLabel`), a de raridade some, e o popup
+  mostra "Acabamento: Prism". Lista fechada por jogo; valor fora dela (a
+  Promo da HxH) segue raridade.
+
+As grades montam os dois filtros daqui — **Raridade** (`opcoesRaridade`, a
+chave é o `nomeRaridade`, igual nos três idiomas) e **Acabamento**
+(`opcoesAcabamento` + `casaAcabamento`, sobre os pares carta × versão). Assim
+"R" do Card Game e "Rare" do CCG americano viram uma opção só, e Foil/Normal
+nunca mais aparecem no filtro de raridade. Página sem o `capsula.js`
+(Portfólio, Fichários…) mostra a raridade crua, como antes.
 - No tile de uma versão só, o tipo fica na cor do acabamento mesmo quando você
   tem a carta (a posse está na borda e no ✓). No tile agrupado ("Normal ·
   Foil"), a versão que você tem acende na cor do jogo.
@@ -139,5 +164,8 @@ O `tests/capsula.test.mjs` confere os itens 1 e 3 página por página.
   ordenação por raridade ainda trata "LR++" como desconhecida. Entra junto com
   o item de cima.
 - **Popup da carta.** O título do popup segue com o nome do catálogo.
+- **Nome de raridade fora das grades.** O Portfólio ("por raridade"), o CSV
+  exportado e a página da carta servida pela borda (SEO) mostram a raridade
+  crua (N, UR): não carregam o `capsula.js`.
 - **Sufixos não reconhecidos.** Siglas de tiragem do Weiß Schwarz (`OFR`,
   `JJR`, `BDR`) e da Vanguard seguem no nome.

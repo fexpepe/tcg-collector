@@ -158,7 +158,7 @@
   // cartas que você TEM. Cada toque adiciona 1 slab (PSA 10; edita depois).
   function openPicker(ctx) {
     const { shared, graded, owned, prices } = ctx;
-    const { t, unique, debounce, escapeHtml, escapeAttribute } = shared;
+    const { t, debounce, escapeHtml, escapeAttribute } = shared;
     let modal = document.getElementById("gradedPickerModal");
     if (!modal) { modal = document.createElement("div"); modal.id = "gradedPickerModal"; modal.className = "sales-picker-modal"; document.body.appendChild(modal); }
     let pickGame = ctx.gameFilter ? ctx.gameFilter() : "all";
@@ -176,7 +176,7 @@
       const base = cards.filter((c) => owned.has(c.id) && (pickGame === "all" || c.game === pickGame));
       const pairs = sortPairs(shared.cardVariantPairs(base)
         .filter(({ card, variant }) => owned.variantTotal(card.id, variant) > 0)
-        .filter(({ card }) => !pickRarity || card.rarity === pickRarity)
+        .filter(({ card }) => !pickRarity || window.TCGCapsula.nomeRaridade(card) === pickRarity)
         .filter(({ card }) => !q.trim() || shared.matchesCardQuery(card, q)))
         .slice(0, 200);
       const html = pairs.map(({ card, variant }) => {
@@ -195,7 +195,7 @@
     };
     const ownedPool = cards.filter((c) => owned.has(c.id));
     const rarityOpts = `<option value="">${escapeHtml(t("filter.all.f"))}</option>`
-      + unique(ownedPool.map((c) => c.rarity).filter(Boolean)).sort().map((r) => `<option value="${escapeAttribute(r)}">${escapeHtml(r)}</option>`).join("");
+      + window.TCGCapsula.opcoesRaridade(ownedPool).map((r) => `<option value="${escapeAttribute(r)}">${escapeHtml(window.TCGCapsula.rotuloRaridade(r))}</option>`).join("");
     const sortOpts = ordenar.opcoes(PICK_SORTS, pickSort);
     modal.innerHTML = `<div class="sales-picker-backdrop" data-graded-picker-close></div>
       <section class="sales-picker-panel" role="dialog" aria-modal="true" aria-label="${escapeAttribute(t("graded.add"))}">

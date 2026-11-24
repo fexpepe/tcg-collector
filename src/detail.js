@@ -217,6 +217,8 @@
     ownedChips: document.getElementById("ownedChips"),
     viewToggle: document.getElementById("viewToggle"),
     rarityField: document.getElementById("rarityField"),
+    finishFilter: document.getElementById("finishFilter"),
+    finishField: document.getElementById("finishField"),
     rarityFilter: document.getElementById("rarityFilter"),
     facets: document.getElementById("detailFacets"),
     sortSelect: document.getElementById("sortSelect"),
@@ -381,7 +383,11 @@
   let selectedOwned = "all";
   let selectedSort = "value-desc";
   let gridView = shared.gridViewValue(localStorage.getItem("tcg-detail-view"));
-  let selectedRarity = ""; // "" = todas; senão a raridade crua (ou "base" | "special" no Pokémon)
+  let selectedRarity = ""; // "" = todas; senão o nome da raridade no jogo (capsula.nomeRaridade) ou "base" | "special" no Pokémon
+  let selectedFinish = ""; // "" = todos; senão o acabamento do tile (Normal, Foil, Prism…)
+  // Raridade pelo nome do jogo e acabamento: a régua do capsula.js, a mesma
+  // das outras grades.
+  const cap = window.TCGCapsula;
   // Fichário: motor compartilhado com a Minha Coleção (src/binder-view.js). A
   // chave guarda quantos bolsos por página (preferência global, como o modo de
   // visualização); o motor cuida das páginas, da navegação e do teclado.
@@ -471,11 +477,13 @@
     // no fim do número), o starter (S) e as promos. As cartas dos Boss Decks
     // vêm sem raridade.
     fftcg: ["Common", "Rare", "Hero", "Legend", "Starter", "Promo"],
-    // Saint Seiya (13/11/2026): o brilho do Carddass (Normal, Prism e a jumbo
-    // Special), as especiais das Trading Collection da Amada e a escada do
-    // Crusade (Common até Cosmo Rare).
-    seiya: ["Normal", "Prism", "Special"],
-    seiyatc: ["Normal", "Holographic", "Special", "SP", "Promo"],
+    // Saint Seiya (13/11/2026): a jumbo Special do Carddass, as especiais das
+    // Trading Collection da Amada e a escada do Crusade (Common até Cosmo
+    // Rare). O brilho (Normal, Prism, Holographic) é acabamento desde
+    // 2026-11-24 — ACABAMENTO_NA_RARIDADE no capsula.js, como os outros
+    // Carddass abaixo.
+    seiya: ["Special"],
+    seiyatc: ["Special", "SP", "Promo"],
     seiyacr: ["Common", "Uncommon", "Rare", "Metal Rare", "Cosmo Rare", "Promo"],
     // Fullmetal Alchemist Carddass (22/11/2026): a escada do Alchemic Card
     // Battle como o animecollection a marca (as placas usam Common e Rare).
@@ -507,38 +515,34 @@
     ikorr: ["C", "U", "R", "UR", "A", "T"],
     narutokayou: ["R", "SR", "SSR", "UR", "◇UR", "PTR", "HR", "PU", "QR", "◇QR", "XR", "◇XR", "MR", "◇MR", "BP", "AR", "CR", "ASP", "◇ASP", "SP", "◇SP", "SE"],
     // One Piece Card Game (TCGCSV): as siglas da carta, Líder primeiro como no
-    // jogo. Depois as vintage: o acabamento do Carddass Hyper Battle
-    // (sync-onepiece-vintage.mjs) e as estrelas do Card Game 2002
-    // (sync-onepiece-2002.mjs; "Holo" nos sets do começo).
-    onepiece: ["L", "C", "UC", "R", "SR", "SEC", "SP", "TR", "PR",
-      "Normal", "Holo", "☆", "☆☆", "☆☆☆", "Gold Stamp", "Secret Rare"],
+    // jogo. Depois as estrelas do Card Game 2002 (sync-onepiece-2002.mjs). O
+    // acabamento do Carddass Hyper Battle (Normal, Holo, Gold Stamp) virou
+    // filtro de Acabamento em 2026-11-24 (capsula.js).
+    onepiece: ["L", "C", "UC", "R", "SR", "SEC", "SP", "TR", "PR", "☆", "☆☆", "☆☆☆", "Secret Rare"],
     // Miracle Battle Carddass (sync-miracle-battle.mjs): a marca impressa — C
     // (sem marca), U, R, SR, as kira (B = ブースト, M = ミラクル), Ω, 超Ω e P.
     mbc: ["C", "U", "R", "SR", "B", "M", "Ω", "超Ω", "P"],
-    // Dragon Ball Carddass e as três séries que viraram jogo (sync-dbc-carddass.mjs,
-    // a raridade do dbzcollection): a comum, a prisma (キラ), as de duas
-    // camadas (W = duas prismas, リバース/両面 no Hondan; 隠れ = escondida
-    // sob a comum e a メタル隠れ "silver" da Super Battle 19–20) e as
-    // impressões especiais (o ouro do Hondan, a laser da VA Especial).
-    dbc: ["Normal", "Prism", "Double Prism", "Reverse Prism", "Gold"],
-    dbsb: ["Normal", "Prism", "Hidden Prism", "Double Prism", "Metal Hidden Prism"],
-    dbva: ["Normal", "Prism", "Laser"],
-    dbbw: ["Normal", "Prism"],
+    // Dragon Ball Carddass (dbc, dbsb, dbva, dbbw) e Gundam Carddass (gcd):
+    // a "raridade" deles é o brilho (comum, prisma, as de duas camadas, o
+    // ouro, a laser). Desde 2026-11-24 é ACABAMENTO, não raridade — a escada
+    // mora no ACABAMENTO_NA_RARIDADE do capsula.js e ordena aquele filtro.
     // Naruto: uma página de set é de UMA linha, então as escadas convivem.
     // CCG americano (2006–2013): os nomes do verso (sync-naruto-ccg.mjs).
-    // Card Game japonês (2002–06) e Data Carddass: as siglas — N → R → SR →
-    // UR (e a Memorial do 巻ノ十三) do hinokunian (naruto-raridade-
-    // hinokunian.mjs); as especiais e as promos do Formation/Cross no fim
-    // (sync-naruto-dc-cross-formation.mjs).
-    naruto: ["Common", "Uncommon", "Rare", "Super Rare", "Starter Deck",
-      "N", "NP", "R", "SR", "UR", "Memorial", "HR", "NR", "WNR", "SP", "Silver Holo", "Design Rare", "P", "Promo"],
-    // HxH Carddass Hyper Battle: Normal, a Holo do booster e a Secret Holo.
-    hxh: ["Normal", "Holo", "Secret Holo", "Promo"],
+    // Card Game japonês (2002–06) e Data Carddass: as siglas N → R → SR → UR
+    // (e a Memorial do 巻ノ十三) do hinokunian (naruto-raridade-
+    // hinokunian.mjs), que na tela são Normal → Rare → Super Rare → Ultra
+    // Rare desde 2026-11-24 (NOMES_DA_RARIDADE no capsula.js) — por isso a
+    // Normal vem logo depois da Common, e Rare/Super Rare valem pras duas
+    // linhas. As especiais e as promos do Formation/Cross no fim
+    // (sync-naruto-dc-cross-formation.mjs); a Silver Holo virou acabamento.
+    naruto: ["Common", "Normal", "NP", "Uncommon", "Rare", "Super Rare", "Ultra Rare", "Memorial", "Starter Deck",
+      "HR", "NR", "WNR", "SP", "Design Rare", "Promo"],
+    // HxH Carddass Hyper Battle: só a Promo é raridade; Normal, Holo e Secret
+    // Holo são o acabamento (capsula.js).
+    hxh: ["Promo"],
     // Carddass Masters: a regular, as スペシャルカード (SP), as SSP e SSSP do
     // 新劇場版 (acima da SP) e os brindes.
     cdm: ["Normal", "Special", "SSP", "SSSP", "Promo"],
-    // Gundam Carddass: a comum e os prismas (duplo e o de mosaico são raros).
-    gcd: ["Normal", "Prism", "Prism Pixel", "Double Prism"]
   };
   const jogoDaPagina = (window.SLEEVU && window.SLEEVU.game) || "";
   const rarityListOrder = RARITY_BUCKET_GAMES.has(jogoDaPagina) ? null : (RARITY_LISTED_GAMES[jogoDaPagina] || []);
@@ -1581,7 +1585,27 @@
     ], selectedOwned);
 
     renderRarityFilter();
+    renderFinishFilter();
     renderFacets();
+  }
+
+  // Acabamento (2026-11-24): a versão de cada tile — Normal, Foil, Holofoil,
+  // Diamond Foil, a Prism do Carddass. Opções só do que esta página tem, na
+  // escada do jogo; com um só (o set inteiro é Normal), o campo some, como o
+  // de raridade.
+  function renderFinishFilter() {
+    if (!elements.finishFilter || !elements.finishField) return;
+    const present = cap.opcoesAcabamento(shared.cardVariantPairs(pageCards), jogoDaPagina);
+    if (present.length < 2) {
+      elements.finishField.hidden = true;
+      selectedFinish = "";
+      return;
+    }
+    elements.finishField.hidden = false;
+    elements.finishFilter.innerHTML = `<option value="">${escapeHtml(t("filter.all.m"))}</option>`
+      + present.map((v) => `<option value="${escapeAttribute(v)}">${escapeHtml(v)}</option>`).join("");
+    if (!present.includes(selectedFinish)) selectedFinish = "";
+    elements.finishFilter.value = selectedFinish;
   }
 
   // Raridade como lista suspensa. Dois modos:
@@ -1665,7 +1689,7 @@
     // Jogo com faceta de raridade (Magic): o select some — quem manda é a faceta.
     if (rarityAsFacet) { elements.rarityField.hidden = true; selectedRarity = ""; return; }
     if (rarityListOrder) {
-      const present = [...new Set(pageCards.map((card) => String(card.rarity || "")).filter((r) => r && r !== "None"))];
+      const present = [...new Set(pageCards.map(cap.nomeRaridade).filter(Boolean))];
       const pos = (r) => { const i = rarityListOrder.indexOf(r); return i < 0 ? rarityListOrder.length : i; };
       present.sort((a, b) => (pos(a) - pos(b)) || (shared.rarityRank(a) - shared.rarityRank(b)) || a.localeCompare(b));
       if (present.length < 2) {
@@ -1675,7 +1699,7 @@
       }
       elements.rarityField.hidden = false;
       elements.rarityFilter.innerHTML = `<option value="">${escapeHtml(t("filter.all.f"))}</option>`
-        + present.map((r) => `<option value="${escapeAttribute(r)}">${escapeHtml(r)}</option>`).join("");
+        + present.map((r) => `<option value="${escapeAttribute(r)}">${escapeHtml(cap.rotuloRaridade(r))}</option>`).join("");
       if (!present.includes(selectedRarity)) selectedRarity = "";
       elements.rarityFilter.value = selectedRarity;
       return;
@@ -1806,6 +1830,12 @@
         render({ resetCount: true });
       });
     }
+    if (elements.finishFilter) {
+      elements.finishFilter.addEventListener("input", () => {
+        selectedFinish = elements.finishFilter.value;
+        render({ resetCount: true });
+      });
+    }
 
     elements.grid.addEventListener("click", (event) => {
       // + de tile agrupado: menu de versões (adicionar direto, sem abrir o card).
@@ -1836,7 +1866,8 @@
   function render({ resetCount = false } = {}) {
     sameCardIdx = null;
     const visibleCards = filterCards();
-    const tiles = sortTiles(shared.cardVariantPairs(visibleCards, { group: agrupaVersoes }));
+    const tiles = sortTiles(shared.cardVariantPairs(visibleCards, { group: agrupaVersoes })
+      .filter(({ card, variant }) => cap.casaAcabamento(card, variant, selectedFinish, agrupaVersoes)));
     // Cartas sem imagem vão para o fim (sort estável preserva a ordem da ordenação escolhida).
     tiles.sort((a, b) => Number(shared.cardHasImage(b.card)) - Number(shared.cardHasImage(a.card)));
     const tileOf = ({ card, variant }) => {
@@ -2236,7 +2267,7 @@
         || (ownedValue === "missing" && !isOwned)
         || (ownedValue === "wanted" && wishlist.hasCard(card.id));
       const matchesRarity = !selectedRarity || (rarityListOrder
-        ? String(card.rarity || "") === selectedRarity
+        ? cap.nomeRaridade(card) === selectedRarity
         : rarityBucket(card) === selectedRarity);
       // Facetas do jogo: OU dentro de cada uma, E entre elas.
       const matchesFacets = facetDefs.every((f) => {

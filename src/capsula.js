@@ -148,14 +148,75 @@
     return cod ? `${nome} (${cod})` : nome;
   }
 
+  // ── RARIDADE E ACABAMENTO, POR JOGO (2026-11-24) ─────────────────────────
+  // Cada jogo diz como a SUA raridade aparece na tela, e o catálogo continua
+  // gravando o que a fonte escreve (id, preço, busca e export não mudam).
+  // Dois casos, a pedido do Fernando:
+  //   NOMES: o jogo que escreve a raridade em sigla e tem nome por extenso pra
+  //   ela. O Naruto japonês (o Card Game de 2002 e o Data Carddass) grava
+  //   N/R/SR/UR/P, como o tcg-db e o Suruga-ya — na tela, Normal, Rare… Ficam
+  //   em sigla as que não têm nome seguro (NR, NP, WNR, HR do Formation/Cross)
+  //   e todo jogo que usa sigla de verdade no próprio sistema (One Piece,
+  //   Vanguard, Kayou…).
+  //   ACABAMENTO: o Carddass que grava o BRILHO da carta (ノーマル/キラ) no
+  //   campo de raridade. "Normal" e "Prism" no filtro de raridade era misturar
+  //   acabamento com raridade; agora esses valores são o TIPO da carta (a
+  //   etiqueta do tile, o filtro de Acabamento) e saem da raridade. Lista
+  //   fechada por jogo, a mesma escada que o detail.js usava pra ordenar.
+  //   Valor fora dela (a Promo da HxH, a jumbo Special do Saint Seiya) segue
+  //   raridade.
+  const NOMES_DA_RARIDADE = {
+    naruto: { N: "Normal", R: "Rare", SR: "Super Rare", UR: "Ultra Rare", P: "Promo" }
+  };
+  const ACABAMENTO_NA_RARIDADE = {
+    dbc: ["Normal", "Prism", "Double Prism", "Reverse Prism", "Gold"],
+    dbsb: ["Normal", "Prism", "Hidden Prism", "Double Prism", "Metal Hidden Prism"],
+    dbva: ["Normal", "Prism", "Laser"],
+    dbbw: ["Normal", "Prism"],
+    gcd: ["Normal", "Prism", "Prism Pixel", "Double Prism"],
+    seiya: ["Normal", "Prism"],
+    seiyatc: ["Normal", "Holographic"],
+    hxh: ["Normal", "Holo", "Secret Holo"],
+    // O Carddass Hyper Battle e o Card Game 2002 dentro do One Piece; o resto
+    // do jogo tem Normal/Foil na versão, como todo TCG moderno.
+    onepiece: ["Normal", "Holo", "Gold Stamp"],
+    // As promos prateadas do Narutimate Formation.
+    naruto: ["Silver Holo"]
+  };
+  const jogoDa = (card) => (card && card.game) || (window.SLEEVU && window.SLEEVU.game) || "";
+  const acabamentosDo = (card) => ACABAMENTO_NA_RARIDADE[jogoDa(card)] || [];
+
+  // A raridade da carta com o nome do jogo dela: a CHAVE dos filtros, crua e
+  // igual nos três idiomas (dá pra ir no endereço). "" = sem raridade — vazio,
+  // "None", "-" e o acabamento gravado como raridade.
+  function nomeRaridade(card) {
+    const s = String((card && card.rarity) || "").trim();
+    if (!s || /^(none|-|n\/a)$/i.test(s) || acabamentosDo(card).includes(s)) return "";
+    return (NOMES_DA_RARIDADE[jogoDa(card)] || {})[s] || s;
+  }
+
+  // O acabamento que a carta grava como raridade ("Prism"), na versão padrão
+  // dela — a única que esses jogos têm. "" no resto: lá o acabamento é a
+  // própria versão (Normal, Foil, Holofoil…). O shared.variantDisplayLabel
+  // consulta isto, então a etiqueta do tile, o popup e o filtro dizem o mesmo.
+  function acabamentoDaRaridade(card, variant) {
+    const s = String((card && card.rarity) || "").trim();
+    return s && acabamentosDo(card).includes(s) && variant === shared.defaultVariant(card) ? s : "";
+  }
+
   // ── RARIDADE ──────────────────────────────────────────────────────────────
   // Por extenso, como o catálogo traz, só com a caixa acertada: "Super_rare"
   // → "Super Rare", "Special illustration rare" → "Special Illustration Rare".
   // Sigla fica como é. "None", "-" e vazio não viram etiqueta. As do Magic
   // (common, mythic…) têm rótulo traduzido, o mesmo do filtro.
+  // rotuloRaridade(valor) é o rótulo de uma chave do nomeRaridade — o que o
+  // <option> do filtro mostra.
   function raridade(card) {
-    let s = String((card && card.rarity) || "").trim();
-    if (!s || /^(none|-|n\/a)$/i.test(s)) return "";
+    return rotuloRaridade(nomeRaridade(card));
+  }
+  function rotuloRaridade(valor) {
+    let s = String(valor || "").trim();
+    if (!s) return "";
     const chave = `mtg.rarity.${s}`;
     const traduzida = t(chave);
     if (traduzida !== chave) return traduzida;
@@ -182,6 +243,32 @@
     return n >= 60 ? 5 : n >= 40 ? 4 : n >= 30 ? 3 : n >= 20 ? 2 : 1;
   }
 
+  // ── FILTROS DE RARIDADE E DE ACABAMENTO ───────────────────────────────────
+  // As grades (Cartas, set, Coleção, Desejos, Explorar) montam os dois
+  // <select> daqui, pra opção, rótulo e casamento serem a mesma régua em
+  // todas. A raridade filtra pela CHAVE (nomeRaridade): no Naruto, "R" do
+  // Card Game e "Rare" do CCG americano viram uma opção só.
+  function opcoesRaridade(cards) {
+    return shared.sortRarities([...new Set(cards.map(nomeRaridade).filter(Boolean))]);
+  }
+  // O ACABAMENTO do tile é o rótulo da versão (Normal, Foil, Holofoil,
+  // Diamond Foil, a Surge Foil do Magic, a Prism do Carddass) — o mesmo
+  // texto da etiqueta de tipo. Opções a partir de PARES carta×versão: no
+  // catálogo, todas as versões da carta; na Coleção, só as que a pessoa tem.
+  // Ordem: Normal primeiro, a escada do jogo (página de um jogo só), o resto
+  // em ordem alfabética.
+  function opcoesAcabamento(pares, jogo) {
+    const escada = ACABAMENTO_NA_RARIDADE[jogo] || [];
+    const pos = (v) => (v === "Normal" ? -1 : escada.includes(v) ? escada.indexOf(v) : escada.length);
+    return [...new Set(pares.map((p) => shared.variantDisplayLabel(p.card, p.variant)))]
+      .sort((a, b) => (pos(a) - pos(b)) || a.localeCompare(b));
+  }
+  // Tile agrupado (uma carta = um tile) passa se QUALQUER versão dela casa.
+  function casaAcabamento(card, variant, alvo, agrupado) {
+    if (!alvo) return true;
+    return (agrupado ? shared.cardVariants(card) : [variant]).some((v) => shared.variantDisplayLabel(card, v) === alvo);
+  }
+
   // ── SET ───────────────────────────────────────────────────────────────────
   // O nome do set, clicável: leva pra página do set com o MESMO detailUrl do
   // modal da carta (o setId desambigua sets homônimos EN/PT). Na página do
@@ -196,7 +283,14 @@
     return `<a class="cap-set tile-set-link" href="${escapeAttribute(href)}" title="${nome}">${nome}</a>`;
   }
 
-  const classeDaVersao = (v) => "variant-" + shared.normalize(v).replace(/\s+/g, "-");
+  // A cor da etiqueta de tipo vem da versão gravada (variant-foil…); acabamento
+  // com brilho que não é uma dessas (Prism, Diamond Foil, Rainbow Foil…) ganha
+  // o is-brilho, a mesma cor das foil.
+  function classeDaVersao(v, rotulo) {
+    const slug = shared.normalize(v).replace(/\s+/g, "-");
+    const brilho = !/^(foil|holo|holofoil)$/.test(slug) && /foil|holo|prism|laser|gold|stamp/i.test(rotulo || "");
+    return "variant-" + slug + (brilho ? " is-brilho" : "");
+  }
 
   // ── A FICHA ───────────────────────────────────────────────────────────────
   // Devolve as três faixas de cima (etiquetas, título, origem). `card` pode
@@ -223,7 +317,7 @@
     const etqs = [];
     if (o.graded) etqs.push(shared.gradedBadgeHtml(o.graded));
     if (rar) etqs.push(`<span class="cap-etq cap-rar" data-faixa="${faixa(card.rarity)}" title="${escapeAttribute(rar)}">${escapeHtml(rar)}</span>`);
-    etqs.push(`<span class="cap-etq cap-tipo ${o.grupo ? "is-grupo" : classeDaVersao(variant)}"${o.grupo ? ` title="${escapeAttribute(o.grupo)}"` : ""}>${o.tipo || escapeHtml(shared.variantDisplayLabel(card, variant))}</span>`);
+    etqs.push(`<span class="cap-etq cap-tipo ${o.grupo ? "is-grupo" : classeDaVersao(variant, shared.variantDisplayLabel(card, variant))}"${o.grupo ? ` title="${escapeAttribute(o.grupo)}"` : ""}>${o.tipo || escapeHtml(shared.variantDisplayLabel(card, variant))}</span>`);
     if (limpo.extras.length) {
       etqs.push(`<span class="cap-extras">${limpo.extras.map((x) => `<span class="cap-etq cap-extra" title="${escapeAttribute(x)}">${escapeHtml(x)}</span>`).join("")}</span>`);
     }
@@ -252,5 +346,8 @@
     cod.parentNode.title = `${cod.parentNode.firstChild.textContent} ${cod.textContent}`;
   }
 
-  window.TCGCapsula = { nomeLimpo, codigo, titulo, raridade, faixa, setLink, ficha, base, atualizaCodigo };
+  window.TCGCapsula = {
+    nomeLimpo, codigo, titulo, raridade, faixa, setLink, ficha, base, atualizaCodigo,
+    nomeRaridade, rotuloRaridade, acabamentoDaRaridade, opcoesRaridade, opcoesAcabamento, casaAcabamento
+  };
 })();

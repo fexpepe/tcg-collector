@@ -18,8 +18,10 @@ import { dirname, join } from "node:path";
 const raiz = join(dirname(fileURLToPath(import.meta.url)), "..");
 const cards = readFileSync(join(raiz, "src/cards.js"), "utf8");
 
-test("focar a busca não baixa o catálogo: só raridade e preço adiantam", () => {
-  assert.ok(cards.includes("[elements.rarityFilter, elements.priceMin, elements.priceMax].forEach((element) => {"));
+// O acabamento (Normal/Foil/Prism…, 2026-11-24) é como a raridade: só existe
+// na carta, então focar nele também adianta o catálogo.
+test("focar a busca não baixa o catálogo: só raridade, acabamento e preço adiantam", () => {
+  assert.ok(cards.includes("[elements.rarityFilter, elements.finishFilter, elements.priceMin, elements.priceMax].forEach((element) => {"));
   assert.ok(!/\[elements\.search, elements\.setFilter/.test(cards), "o foco da busca voltou a disparar o catálogo inteiro");
 });
 

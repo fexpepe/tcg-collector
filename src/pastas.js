@@ -499,7 +499,7 @@
           ${esc(card.name)}
         </button>
         <span class="lst-num">${esc(card.number || "")}</span>
-        <span class="lst-rar">${esc(card.rarity || "")}</span>
+        <span class="lst-rar">${esc(window.TCGCapsula.raridade(card))}</span>
         <button type="button" class="lst-add" data-src-add="${escA(card.id)}" title="${escA(t("lists.addOne"))}">+</button>
         ${picker}
       </div>`;
@@ -619,7 +619,7 @@
         && (!fJogo || jogoDaEntrada(e) === fJogo)
         && (!fSet || (c && c.set) === fSet)
         && (!fIdioma || shared.normalizeCardLanguage(c && c.language) === fIdioma)
-        && (!fRaridade || (c && c.rarity) === fRaridade)
+        && (!fRaridade || (c && window.TCGCapsula.nomeRaridade(c)) === fRaridade)
         && naFaixa(e);
     });
     if (ordem === "added-asc") return arr;
@@ -646,14 +646,15 @@
     const jogos = jogosDaPasta();
     const sets = uniq(cartas.map((c) => c.set)).sort((a, b) => a.localeCompare(b));
     const idiomas = uniq(cartas.map((c) => shared.normalizeCardLanguage(c.language)));
-    const raridades = uniq(cartas.map((c) => c.rarity)).sort((a, b) => a.localeCompare(b));
+    // Raridade pelo nome do jogo, na escada (a régua do capsula.js).
+    const raridades = window.TCGCapsula.opcoesRaridade(cartas);
     const sym = shared.currencySymbol();
     const faixas = [["0-10", `≤ ${sym} 10`], ["10-50", `${sym} 10–50`], ["50-200", `${sym} 50–200`], ["200-", `${sym} 200+`]];
     return `<section id="pastaFilters" class="toolbar collection-filters${filtrosAbertos ? "" : " is-collapsed"}" aria-label="${escA(t("filters.show"))}" data-own-toggle>
       ${jogos.length > 1 ? `<div><label>${esc(t("pfmi.game"))}</label><select data-pf-filter="jogo">${opts(jogos, fJogo, shared.gameLabel)}</select></div>` : ""}
       <div><label>${esc(t("toolbar.set"))}</label><select data-pf-filter="set">${opts(sets, fSet)}</select></div>
       <div><label>${esc(t("toolbar.language"))}</label><select data-pf-filter="idioma">${opts(idiomas, fIdioma, shared.cardLanguageLabel)}</select></div>
-      <div><label>${esc(t("toolbar.rarity"))}</label><select data-pf-filter="raridade">${`<option value="">${esc(t("filter.all.f"))}</option>` + raridades.map((v) => `<option value="${escA(v)}"${v === fRaridade ? " selected" : ""}>${esc(v)}</option>`).join("")}</select></div>
+      <div><label>${esc(t("toolbar.rarity"))}</label><select data-pf-filter="raridade">${`<option value="">${esc(t("filter.all.f"))}</option>` + raridades.map((v) => `<option value="${escA(v)}"${v === fRaridade ? " selected" : ""}>${esc(window.TCGCapsula.rotuloRaridade(v))}</option>`).join("")}</select></div>
       <div><label>${esc(t("toolbar.value"))}</label><select data-pf-filter="valor">${`<option value="">${esc(t("filter.all.m"))}</option>` + faixas.map(([v, l]) => `<option value="${v}"${v === fValor ? " selected" : ""}>${esc(l)}</option>`).join("")}</select></div>
       <div class="sort-select srt-host"><label>${esc(t("sort.label"))}</label><select data-pasta-sort data-ordenar>${window.TCGOrdenar.opcoes(PASTA_SORTS, ordem)}</select></div>
     </section>`;
