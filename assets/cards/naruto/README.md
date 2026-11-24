@@ -75,6 +75,13 @@ Scans do dono no Card Game 2002~2006:
   1401 são meio fundo); a carta ocupa menos do scan que a da `-001R`, então
   sai de 978 px de largura em vez de 1001. 640×898, q80, 137 KB. Segue
   `Normal`.
+- **忍-19 うずまきナルト (`nrt-nin-19`, 巻ノ壱, UR)** (2026-11-24): a
+  impressão original, de fundo holo roxo. A imagem era a miniatura da TV
+  Tokyo (`cardimg/n19.jpg`, 80×117), que é a outra impressão, de fundo
+  claro. Sem arquivo anterior aqui, entra como `nrt-nin-19.webp` (o endereço
+  já muda, de wsrv.nl pra `/assets/`). Mesma receita, caixa em x 31–1052,
+  y 13–1430 (as colunas 30 e 1053 e as linhas 12 e 1431 são meio fundo);
+  640×888, q80, 137 KB. Proporção 0,721, sem esticar.
 
 ## Data Carddass (`nrt-dc-*`, `nrt-nf-*`, `nrt-nx-*`)
 
