@@ -33,7 +33,7 @@ import { readdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { readGlobalVar, readSnapshot, writeSnapshot, snapshotCardCount, writeGameCatalog, sleep } from "./lib/sync-common.mjs";
 import { aplicaRaridade } from "./naruto-raridade-hinokunian.mjs";
-import { parseTvtCards, indiceDeCuradas } from "./lib/naruto-vintage-fontes.mjs";
+import { parseTvtCards, indiceDeCuradas, lerArtesAlternativas } from "./lib/naruto-vintage-fontes.mjs";
 const SNAP_RARIDADE = new URL("../data/vintage/naruto-raridade.json", import.meta.url);
 const SNAP_BANDAI = new URL("../data/vintage/naruto-bandai-oficial.json", import.meta.url);
 
@@ -44,6 +44,10 @@ const SNAP_TVT = new URL("data/vintage/naruto-tvtokyo.json", ROOT);
 // Promos confirmadas publicamente sem scan no tcg-db (curadoria manual):
 // entram com placeholder de imagem; um scan futuro do tcg-db assume na hora.
 const CURATED_PROMOS = new URL("data/vintage/naruto-promos-curated.json", ROOT);
+// Reimpressões com desenho novo e o mesmo número (o 忍-19 do 極意忍法帖): uma
+// carta à parte cada, no set de extras. Curadoria manual; ver
+// lerArtesAlternativas em scripts/lib/naruto-vintage-fontes.mjs.
+const SNAP_ARTE_ALT = new URL("data/vintage/naruto-arte-alternativa.json", ROOT);
 const CACHE_DIR = new URL("data/.cache/", ROOT);
 const DB_BASE = "https://tcg-db.nikita.jp";
 const TVT_BASE = "https://www.tv-tokyo.co.jp/anime/naruto2002/goods";
@@ -280,17 +284,24 @@ async function run() {
     snapTvt = await refreshTvtSnapshot(snapTvt);
   }
   if (!snapDb && !snapTvt) { console.log("  sem snapshot algum — nada a construir."); return; }
+  const artesAlt = lerArtesAlternativas(await readSnapshot(SNAP_ARTE_ALT));
 
   // União por NÚMERO oficial. tcg-db manda no nome/scan quando tem a carta;
   // TV Tokyo completa o resto (nome oficial + thumb).
   const byNum = new Map(); // num -> { num, name, code (scan tcg-db), img (thumb tvt), dbSet, tvtVol }
   for (const s of (snapDb && snapDb.sets) || []) {
     for (const c0 of s.cards || []) {
+      // Scan de arte alternativa é da carta alternativa, não da original: sem
+      // isto, o 作-22 do 巻ノ壱 ficava com o scan da reimpressão de 2006 (o
+      // tcg-db chama ESSE de S-022 e a original de S-022_2).
+      if (artesAlt.scans.has(c0.code)) continue;
       const c = { ...c0, num: numCanonico(c0.num) };
       const cur = byNum.get(c.num);
-      // O tcg-db tem 2+ scans pro mesmo número (re-impressões: N-001 e N-001_2).
-      // É a MESMA carta física: fica um registro só, com o scan de código base
-      // (sem sufixo _N) — o id nrt-<código> derivado dele é o estável.
+      // O tcg-db tem 2+ scans pro mesmo número (re-impressões: N-004 e N-004_3).
+      // Com o MESMO desenho (só fundo ou moldura novos) é a mesma carta: fica
+      // um registro só, com o scan de código base (sem sufixo _N) — o id
+      // nrt-<código> derivado dele é o estável. Com desenho novo, o scan é de
+      // uma arte alternativa e já saiu logo acima.
       if (!cur) byNum.set(c.num, { num: c.num, name: c.name, code: c.code, img: "", dbSet: s.name });
       else if (cur.code.includes("_") && !c.code.includes("_")) { cur.code = c.code; cur.name = c.name; }
     }
@@ -359,6 +370,7 @@ async function run() {
   // sobras, então o id base (nrt-N-001) ganha do scan repetido (nrt-N-001_2).
   for (const c of existing) {
     if (!String(c.id).startsWith("nrt-") || !c.number) continue;
+    if (artesAlt.ids.has(c.id)) continue; // mesmo número da original, outra carta
     // Só a linha desta carta passa pela grafia canônica (K-7 -> 騎-7): o
     // número de outra linha (CCG americano, Data Carddass) fica como está.
     const num = ID_DO_NUMERO[c.id] || (c.vintageLine === "nrtcg" ? numCanonico(c.number) : c.number);
@@ -369,7 +381,7 @@ async function run() {
   // id já usado ganha sufixo (-2, -3…): o 作-35 do vol. 2 daria nrt-saku-35,
   // que é o id da エミナ (ver TVT_ERRATA).
   const idDe = new Map();
-  const usados = new Set();
+  const usados = new Set(artesAlt.ids);
   for (const c of byNum.values()) {
     const id = idByNum.get(c.num) || c.curatedId || (c.code ? `nrt-${c.code}` : "");
     if (id) { idDe.set(c.num, id); usados.add(id); }
@@ -398,6 +410,19 @@ async function run() {
     setsOut.get(setName).cards.push(card);
   }
 
+  // Artes alternativas: no set de extras (folhas de expansão, starters,
+  // coletâneas — os produtos de reimpressão), com o nome japonês da ORIGINAL
+  // (a tradução casa pelo nome, então as duas saem com o mesmo inglês).
+  let altSemOriginal = 0;
+  for (const a of artesAlt.cartas) {
+    const original = byNum.get(a.num);
+    if (!original) { altSemOriginal++; console.log(`  ⚠ arte alternativa ${a.id}: número ${a.num} não está no catálogo — fica de fora.`); continue; }
+    if (a.name && a.name !== original.name) console.log(`  ⚠ arte alternativa ${a.id}: nome curado ${a.name} ≠ ${original.name} (vale o da original).`);
+    if (!setsOut.has(EXTRA_SET)) setsOut.set(EXTRA_SET, { meta: null, cards: [] });
+    setsOut.get(EXTRA_SET).cards.push({ num: a.num, name: original.name, alt: a });
+  }
+  console.log(`  artes alternativas: ${artesAlt.cartas.length - altSemOriginal} cartas à parte (de ${artesAlt.cartas.length} curadas).`);
+
   // Ordem dos sets: volumes 1..17, depois promo, extras e o resto.
   const orderedNames = [
     ...OFFICIAL_VOLUMES.map((v) => v.name).filter((n) => setsOut.has(n)),
@@ -411,8 +436,28 @@ async function run() {
     const setId = meta ? `nrt-s${String(meta.vol).padStart(2, "0")}` : (setName === PROMO_SET ? "nrt-promo" : setName === EXTRA_SET ? "nrt-extra" : setName === ATARI_SET ? "nrt-atari" : `nrt-unk${i}`);
     const cmp = (a, b) => String(a.num).localeCompare(String(b.num), "ja", { numeric: true });
     for (const c of cards.sort(cmp)) {
-      const cardId = idDe.get(c.num);
+      const cardId = c.alt ? c.alt.id : idDe.get(c.num);
       const curated = curatedImg(cardId);
+      if (c.alt) {
+        cardsNrt.push({
+          id: cardId,
+          name: c.name,
+          set: setName,
+          setId,
+          number: c.num,
+          setTotal: meta ? meta.total : cards.length,
+          setReleaseDate: meta ? meta.date : "",
+          rarity: c.alt.rarity,
+          artist: "",
+          language: "ja",
+          image: curated || (c.alt.scan ? IMG_DB(c.alt.scan) : ""),
+          variants: ["Normal"],
+          setLogo: "/assets/games/game_naruto_vintage.webp",
+          vintage: true,
+          vintageLine: "nrtcg"
+        });
+        continue;
+      }
       cardsNrt.push({
         id: cardId,
         name: c.name,
@@ -435,7 +480,10 @@ async function run() {
   // Raridade carta a carta (N/R/SR/UR/Memorial) do snapshot do hinokunian
   // (scripts/naruto-raridade-hinokunian.mjs): só entra com número E nome
   // batendo. O nome aqui ainda é o japonês (a tradução roda depois, no CI).
-  const rar = aplicaRaridade(cardsNrt, await readSnapshot(SNAP_RARIDADE), { nomeDe: (c) => c.name });
+  // A arte alternativa fica de fora: ela tem o número E o nome da original e
+  // levaria a raridade da estreia (o 忍-19 do 極意忍法帖 sairia UR); a dela é a
+  // do produto da reimpressão, que vem da lista curada.
+  const rar = aplicaRaridade(cardsNrt.filter((c) => !artesAlt.ids.has(c.id)), await readSnapshot(SNAP_RARIDADE), { nomeDe: (c) => c.name });
   console.log(`  raridade: ${rar.aplicadas} cartas (hinokunian); ${rar.nomeDiferente} com nome diferente ficaram sem.`);
   const withScan = cardsNrt.filter((c) => c.image.includes("tcg-db")).length;
   const withThumb = cardsNrt.filter((c) => c.image.includes("tv-tokyo")).length;

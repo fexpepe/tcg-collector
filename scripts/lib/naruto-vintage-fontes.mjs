@@ -136,3 +136,37 @@ export function indiceDeCuradas(nomes) {
   }
   return new Map([...melhor].map(([id, o]) => [id, o.nome]));
 }
+
+// ── Arte alternativa: reimpressão com desenho NOVO e o mesmo número ──────────
+// Folhas de expansão, starters e coletâneas reimprimiram cartas com o número
+// de estreia, e várias vieram com outro desenho (o 忍-19 うずまきナルト do 巻ノ壱
+// e o do 拡張シート 極意忍法帖, por exemplo). Até 2026-11-24 o catálogo tinha
+// uma carta por número, então a reimpressão sumia dentro da original — e
+// quando o scan da reimpressão era o único (ou o "base" do tcg-db, como no
+// 作-22), a original aparecia com a arte da outra.
+//
+// Agora cada uma é uma carta à parte, listada à mão em
+// data/vintage/naruto-arte-alternativa.json (o tcg-db não diz qual scan é de
+// qual produto: o ano do rodapé é que diz). Reimpressão com o MESMO desenho,
+// só fundo ou moldura novos (o 忍-2 de 2003), segue sendo a original.
+//
+// Devolve as cartas da lista, os códigos de scan delas (o sync tira esses
+// scans da carta original) e os ids (o sync não deixa a original herdar um).
+export function lerArtesAlternativas(snap) {
+  const cartas = [];
+  const ids = new Set();
+  for (const c of (snap && snap.cards) || []) {
+    const num = String((c && c.num) || "").trim();
+    const id = String((c && c.id) || "").trim();
+    if (!num || !id || ids.has(id)) continue;
+    ids.add(id);
+    cartas.push({
+      num,
+      id,
+      name: String(c.name || "").trim(),
+      scan: String(c.scan || "").trim(),
+      rarity: String(c.rarity || "").trim()
+    });
+  }
+  return { cartas, ids, scans: new Set(cartas.map((c) => c.scan).filter(Boolean)) };
+}
