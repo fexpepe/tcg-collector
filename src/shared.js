@@ -410,7 +410,12 @@
     firstplacefoil: "First Place Foil", chocobotrackfoil: "Chocobo Track Foil",
     dazzlefoil: "Dazzle Foil", facetfoil: "Facet Foil", cosmicfoil: "Cosmic Foil"
   };
+  // Carddass que grava o brilho como raridade ("Prism"): a versão padrão
+  // dela se chama pelo acabamento (tabela no capsula.js, 2026-11-24). Página
+  // sem o capsula.js mostra a chave, como antes.
   function variantDisplayLabel(card, variant) {
+    const cap = window.TCGCapsula, acab = cap && cap.acabamentoDaRaridade(card, variant);
+    if (acab) return acab;
     if (variant !== "Foil" || !card || !card.treat) return variant;
     for (const tok of String(card.treat).split(";")) {
       if (SPECIAL_FOILS[tok]) return SPECIAL_FOILS[tok];
@@ -6843,6 +6848,11 @@
       const ano = String(activeCard.setReleaseDate || "").slice(0, 4);
       const codigo = cardCode(activeCard);
       const tratamentos = String(activeCard.treat || "").split(";").filter((tk) => tk && !TREAT_NOISE.has(tk)).map(treatLabel);
+       // Raridade pelo nome do jogo (N do Naruto = Normal) — a régua do
+       // capsula.js, onde ele existe. O brilho que o Carddass grava como
+       // raridade ("Prism") aparece como Acabamento, no mesmo lugar.
+       const cap = window.TCGCapsula, acab = cap ? cap.acabamentoDaRaridade(activeCard, defaultVariant(activeCard)) : "";
+       const raridade = (cap ? cap.raridade(activeCard) : activeCard.rarity) || acab;
       const navOk = navIdx >= 0 && listaNav.length > 1;
       const navBtn = (passo) => `<button type="button" class="cs-nav" data-cs-nav="${passo}" aria-label="${escapeAttribute(t(passo < 0 ? "cs.prev" : "cs.next"))}"${listaNav[navIdx + passo] ? "" : " disabled"}>${passo < 0 ? CS_PREV : CS_NEXT}</button>`;
       const Titulo = modoPagina ? "h1" : "h2";
@@ -6890,8 +6900,8 @@
               })()}` : ""}</p>
               <${Titulo} class="cs-name">${escapeHtml(activeCard.name)}</${Titulo}>
               <div data-preview-lang-slot>${langPanelHtml()}</div>
-              ${activeCard.rarity || tratamentos.length || activeCard.artist ? `<p class="cs-chips">
-                ${activeCard.rarity ? `<span>${escapeHtml(activeCard.rarity)}</span>` : ""}
+              ${raridade || tratamentos.length || activeCard.artist ? `<p class="cs-chips">
+                ${raridade ? `<span>${escapeHtml(raridade)}</span>` : ""}
                 ${tratamentos.map((x) => `<span>${escapeHtml(x)}</span>`).join("")}
                 ${activeCard.artist ? (jogo === "pokemon"
                   ? `<a href="${escapeAttribute(detailUrl("artist", activeCard.artist, "", jogo))}" rel="nofollow">${escapeHtml(t("cs.byArtist", { name: activeCard.artist }))}</a>`
@@ -6969,7 +6979,7 @@
             <details class="cs-sec preview-details" data-preview-details open>
               <summary><h3>${escapeHtml(t("modal.details"))}</h3>${PREVIEW_CARET}</summary>
               <dl>
-                <div><dt>${escapeHtml(t("modal.rarity"))}</dt><dd>${escapeHtml(activeCard.rarity || "-")}</dd></div>
+                <div><dt>${escapeHtml(t(acab ? "toolbar.finish" : "modal.rarity"))}</dt><dd>${escapeHtml(raridade || "-")}</dd></div>
                 ${tratamentos.length ? `<div><dt>${escapeHtml(t("facet.treatment"))}</dt><dd>${escapeHtml(tratamentos.join(" · "))}</dd></div>` : ""}
                 <div><dt>${escapeHtml(t("modal.artist"))}</dt><dd>${escapeHtml(activeCard.artist || t("card.unknownArtist"))}</dd></div>
                 <div><dt>${escapeHtml(t("modal.set"))}</dt><dd>${setLink("preview-set-link")}</dd></div>

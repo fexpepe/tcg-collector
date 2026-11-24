@@ -7556,10 +7556,13 @@ a.progress-row:hover {
    .variant-* do núcleo: aquela regra tem a mesma especificidade do .cap-etq e
    ganharia ou perderia conforme a ordem das folhas (uma no repositório, outra
    no deploy). */
-.cap-tipo.variant-foil, .cap-tipo.variant-holo, .cap-tipo.variant-holofoil { color: #c084fc; box-shadow: inset 0 0 0 1px rgba(192, 132, 252, .5); }
+/* .is-brilho (2026-11-24): acabamento com brilho que não é uma dessas três
+   versões — a Prism/Laser/Gold do Carddass, Diamond/Rainbow/Cold Foil —, na
+   mesma cor das foil (capsula.js, classeDaVersao). */
+.cap-tipo.variant-foil, .cap-tipo.variant-holo, .cap-tipo.variant-holofoil, .cap-tipo.is-brilho { color: #c084fc; box-shadow: inset 0 0 0 1px rgba(192, 132, 252, .5); }
 .cap-tipo.variant-reverse { color: #f0b84b; box-shadow: inset 0 0 0 1px rgba(240, 184, 75, .5); }
 .cap-tipo.variant-1st-edition { color: #fbbf24; box-shadow: inset 0 0 0 1px rgba(251, 191, 36, .5); }
-[data-theme="light"] .cap-tipo.variant-foil, [data-theme="light"] .cap-tipo.variant-holo, [data-theme="light"] .cap-tipo.variant-holofoil { color: #7a3fd0; box-shadow: inset 0 0 0 1px rgba(122, 63, 208, .45); }
+[data-theme="light"] .cap-tipo.variant-foil, [data-theme="light"] .cap-tipo.variant-holo, [data-theme="light"] .cap-tipo.variant-holofoil, [data-theme="light"] .cap-tipo.is-brilho { color: #7a3fd0; box-shadow: inset 0 0 0 1px rgba(122, 63, 208, .45); }
 [data-theme="light"] .cap-tipo.variant-reverse, [data-theme="light"] .cap-tipo.variant-1st-edition { color: #8a5a00; box-shadow: inset 0 0 0 1px rgba(138, 90, 0, .45); }
 /* Extras: o que saiu do nome e diz QUAL impressão é ("Alternate Art",
    "Manga", "Box Topper"). Ocupam o que sobrar da linha. A primeira encurta

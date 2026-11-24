@@ -29,6 +29,7 @@
     setFilter: document.getElementById("setFilter"),
     languageFilter: document.getElementById("languageFilter"),
     rarityFilter: document.getElementById("rarityFilter"),
+    finishFilter: document.getElementById("finishFilter"),
     valueFilter: document.getElementById("valueFilter"),
     cardsSortSelect: document.getElementById("cardsSortSelect"),
     cardsViewToggle: document.getElementById("cardsViewToggle"),
@@ -271,7 +272,13 @@
       const emoji = shared.cardFlagEmoji(value);
       return (emoji ? emoji + " " : "") + shared.cardLanguageLabel(value);
     });
-    fillFilter(elements.rarityFilter, unique(myCards.map((card) => card.rarity).filter(Boolean)).sort());
+    // Raridade pelo nome do jogo e acabamento só das versões desejadas — a
+    // régua do capsula.js, a mesma da Coleção. A raridade ia em ordem
+    // alfabética; agora vai na escada, como nas outras grades.
+    const cap = window.TCGCapsula;
+    fillFilter(elements.rarityFilter, cap.opcoesRaridade(myCards), cap.rotuloRaridade);
+    const pares = shared.cardVariantPairs(myCards).filter(({ card, variant }) => wishlist.has(card.id, variant));
+    fillFilter(elements.finishFilter, cap.opcoesAcabamento(pares, gameFilter));
   }
 
   function hydrateFilters() {
@@ -351,7 +358,7 @@
 
     const applyFilters = () => render({ resetCount: true });
     elements.search.addEventListener("input", debounce(applyFilters, 200));
-    [elements.pokemonFilter, elements.setFilter, elements.languageFilter, elements.rarityFilter, elements.valueFilter].forEach((element) => {
+    [elements.pokemonFilter, elements.setFilter, elements.languageFilter, elements.rarityFilter, elements.finishFilter, elements.valueFilter].forEach((element) => {
       if (element) element.addEventListener("input", applyFilters);
     });
 
@@ -383,8 +390,9 @@
   // Critério primário: carta com imagem antes; secundário: a ordenação escolhida.
   function wantedPairs() {
     const cmp = sortComparator();
+    const acab = elements.finishFilter ? elements.finishFilter.value : "";
     return shared.cardVariantPairs(filterCards())
-      .filter(({ card, variant }) => wishlist.has(card.id, variant))
+      .filter(({ card, variant }) => wishlist.has(card.id, variant) && window.TCGCapsula.casaAcabamento(card, variant, acab))
       .sort((a, b) =>
         (Number(shared.cardHasImage(b.card)) - Number(shared.cardHasImage(a.card))) || cmp(a, b));
   }
@@ -487,7 +495,7 @@
       const matchesPokemon = !pokemonValue || (card.pokemonName || speciesName(card.name)) === pokemonValue;
       const matchesSet = !setValue || card.set === setValue;
       const matchesLanguage = !languageValue || shared.normalizeCardLanguage(card.language) === languageValue;
-      const matchesRarity = !rarityValue || card.rarity === rarityValue;
+      const matchesRarity = !rarityValue || window.TCGCapsula.nomeRaridade(card) === rarityValue;
       const matchesValue = !range || (function () { const v = valueOf(card); return (vMin == null || v >= vMin) && (vMax == null || v <= vMax); })();
 
       return matchesQuery && matchesPokemon && matchesSet && matchesLanguage && matchesRarity && matchesValue;

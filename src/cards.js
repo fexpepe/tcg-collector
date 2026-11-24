@@ -1,6 +1,9 @@
 (function () {
   const shared = window.TCGShared;
   const { addOptions, unique, debounce, t, tn } = shared;
+  // Raridade pelo nome do jogo e acabamento (Normal/Foil/Prism…): a régua
+  // dos filtros mora no capsula.js, a mesma das outras grades.
+  const cap = window.TCGCapsula;
 
   let cards = [];
   let cardsById = new Map();
@@ -27,6 +30,7 @@
     setFilter: document.getElementById("setFilter"),
     languageFilter: document.getElementById("languageFilter"),
     rarityFilter: document.getElementById("rarityFilter"),
+    finishFilter: document.getElementById("finishFilter"),
     priceMin: document.getElementById("priceMin"),
     priceMax: document.getElementById("priceMax"),
     cardsSortSelect: document.getElementById("cardsSortSelect"),
@@ -57,11 +61,14 @@
 
   // Filtros ↔ URL (deep-link compartilhável): lê os params no boot e regrava
   // com replaceState a cada mudança. ?q= já existia (busca global).
-  const URL_FILTERS = [["set", "setFilter"], ["lang", "languageFilter"], ["rarity", "rarityFilter"], ["pmin", "priceMin"], ["pmax", "priceMax"]];
+  const URL_FILTERS = [["set", "setFilter"], ["lang", "languageFilter"], ["rarity", "rarityFilter"], ["finish", "finishFilter"], ["pmin", "priceMin"], ["pmax", "priceMax"]];
   function readFiltersFromUrl() {
     const sp = new URLSearchParams(window.location.search);
     URL_FILTERS.forEach(([param, key]) => {
-      const v = sp.get(param);
+      let v = sp.get(param);
+      // Link antigo com a sigla (?rarity=UR do Naruto): a opção agora é o
+      // nome do jogo, "Ultra Rare" (capsula.nomeRaridade).
+      if (v && param === "rarity") v = cap.nomeRaridade({ rarity: v }) || v;
       if (v != null && elements[key]) elements[key].value = v;
     });
     const sort = sp.get("sort");
@@ -152,7 +159,7 @@
   // o módulo inteiro — a página ficava sem NENHUM listener.
   // O erro só aparecia em PRODUÇÃO: sem manifest (dev), hydrateFiltersDoManifest
   // volta na primeira linha e nunca chega no reidratando.
-  const FILTER_SELECTS = ["setFilter", "languageFilter", "rarityFilter"];
+  const FILTER_SELECTS = ["setFilter", "languageFilter", "rarityFilter", "finishFilter"];
 
   // ── Busca pela BORDA, catálogo inteiro só quando nada mais responde ────────
   // (2026-10-08) Tocar no campo de busca baixava o jogo INTEIRO — medido em
@@ -276,7 +283,7 @@
       addOptions(elements.setFilter, unique(sets.map((s) => s.name)));
       addOptions(elements.languageFilter, unique(sets.map((s) => shared.normalizeCardLanguage(s.language))), (value) => shared.cardLanguageLabel(value));
       applyCardLangDefault(elements.languageFilter);
-      if (raridadesDe) addOptions(elements.rarityFilter, shared.sortRarities(unique(raridadesDe.map((card) => card.rarity).filter(Boolean))));
+      if (raridadesDe) addCardOptions(raridadesDe);
     });
   }
 
@@ -285,8 +292,15 @@
       addOptions(elements.setFilter, unique(cards.map((card) => card.set)));
       addOptions(elements.languageFilter, unique(cards.map((card) => shared.normalizeCardLanguage(card.language))), (value) => shared.cardLanguageLabel(value));
       applyCardLangDefault(elements.languageFilter);
-      addOptions(elements.rarityFilter, shared.sortRarities(unique(cards.map((card) => card.rarity))));
+      addCardOptions(cards);
     });
+  }
+
+  // Raridade e acabamento só existem na carta: saem das cartas em memória
+  // (o catálogo, ou o resultado da borda enquanto ele não desce).
+  function addCardOptions(base) {
+    addOptions(elements.rarityFilter, cap.opcoesRaridade(base), cap.rotuloRaridade);
+    addOptions(elements.finishFilter, cap.opcoesAcabamento(shared.cardVariantPairs(base), (window.SLEEVU && window.SLEEVU.game) || ""));
   }
 
   // Idioma de carta preferido como valor inicial do filtro (se existir nas opções).
@@ -314,13 +328,13 @@
     // opções com cartas em memória). Focar a busca não adianta mais nada — a
     // borda responde o que for digitado.
     const adiantar = () => { if (!parcialValida() && !elements.search.value.trim() && !elements.setFilter.value) ensureCatalog().catch(() => { /* erro já exibido */ }); };
-    [elements.rarityFilter, elements.priceMin, elements.priceMax].forEach((element) => {
+    [elements.rarityFilter, elements.finishFilter, elements.priceMin, elements.priceMax].forEach((element) => {
       if (element) element.addEventListener("focus", adiantar);
     });
 
     elements.search.addEventListener("input", debounce(apply, 200));
-    [elements.setFilter, elements.languageFilter, elements.rarityFilter].forEach((element) => {
-      element.addEventListener("input", apply);
+    [elements.setFilter, elements.languageFilter, elements.rarityFilter, elements.finishFilter].forEach((element) => {
+      if (element) element.addEventListener("input", apply);
     });
     [elements.priceMin, elements.priceMax].forEach((element) => {
       if (element) element.addEventListener("input", debounce(apply, 300));
@@ -392,6 +406,9 @@
   // pela borda existe pra evitar (conferido em produção). É a régua do
   // Explorar (2+ letras). Com o catálogo já em memória (dev, ou depois de um
   // filtro de raridade), a letra filtra na hora, como sempre.
+  // Declaração (não const): isSearching roda no boot, antes desta linha.
+  function valorDoAcabamento() { return elements.finishFilter ? elements.finishFilter.value : ""; }
+
   function textoDaBusca() {
     const q = elements.search.value.trim();
     return (q.length >= 2 || catalogPronto) ? q : "";
@@ -399,7 +416,7 @@
   // Só busca quando há texto na busca ou um filtro de set/raridade ativo. Sem
   // isso, a página fica "vazia" (placeholder do futuro "em alta").
   function isSearching() {
-    return !!(textoDaBusca() || elements.setFilter.value || elements.rarityFilter.value
+    return !!(textoDaBusca() || elements.setFilter.value || elements.rarityFilter.value || valorDoAcabamento()
       || parsePrice(elements.priceMin) != null || parsePrice(elements.priceMax) != null);
   }
 
@@ -423,7 +440,7 @@
       if (!textoJaCasado && !shared.matchesCardQuery(card, elements.search.value)) return false;
       if (setValue && card.set !== setValue) return false;
       if (languageValue && shared.normalizeCardLanguage(card.language) !== languageValue) return false;
-      if (rarityValue && card.rarity !== rarityValue) return false;
+      if (rarityValue && cap.nomeRaridade(card) !== rarityValue) return false;
       if (pMin != null || pMax != null) {
         const v = priceOf(card);
         if (pMin != null && v < pMin) return false;
@@ -441,7 +458,9 @@
   shared.initGroupVariantsChip((on) => { agrupaVersoes = on; render({ resetCount: true }); });
 
   function tilePairs() {
-    const pairs = shared.cardVariantPairs(filterCards(), { group: agrupaVersoes });
+    const acab = valorDoAcabamento();
+    const pairs = shared.cardVariantPairs(filterCards(), { group: agrupaVersoes })
+      .filter(({ card, variant }) => cap.casaAcabamento(card, variant, acab, agrupaVersoes));
     const cmp = sortComparator();
     // Critério primário: carta com imagem antes (sem-imagem sempre por último);
     // secundário: a ordenação escolhida pelo usuário.

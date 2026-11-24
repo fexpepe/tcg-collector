@@ -347,6 +347,7 @@
     setFilter: document.getElementById("setFilter"),
     languageFilter: document.getElementById("languageFilter"),
     rarityFilter: document.getElementById("rarityFilter"),
+    finishFilter: document.getElementById("finishFilter"),
     valueFilter: document.getElementById("valueFilter"),
     cardsSortSelect: document.getElementById("cardsSortSelect"),
     cardsViewToggle: document.getElementById("cardsViewToggle"),
@@ -596,7 +597,11 @@
     fillFilter(elements.pokemonFilter, unique(myCards.map((card) => card.pokemonName || speciesName(card.name))));
     fillFilter(elements.setFilter, unique(myCards.map((card) => card.set)));
     fillFilter(elements.languageFilter, unique(myCards.map((card) => shared.normalizeCardLanguage(card.language))), (value) => langOptionLabel(value));
-    fillFilter(elements.rarityFilter, shared.sortRarities(unique(myCards.map((card) => card.rarity).filter(Boolean))));
+    // Raridade pelo nome do jogo (o N do Naruto é "Normal") e acabamento só das
+    // versões que você TEM — a régua do capsula.js, a mesma das outras grades.
+    fillFilter(elements.rarityFilter, capsula.opcoesRaridade(myCards), capsula.rotuloRaridade);
+    const meusPares = shared.cardVariantPairs(myCards).filter(({ card, variant }) => owned.variantTotal(card.id, variant) > 0);
+    fillFilter(elements.finishFilter, capsula.opcoesAcabamento(meusPares, gameFilter));
     aplicaSetDaUrl();
   }
 
@@ -768,7 +773,7 @@
 
     const applyFilters = () => render({ resetCount: true });
     elements.search.addEventListener("input", debounce(applyFilters, 200));
-    [elements.pokemonFilter, elements.setFilter, elements.languageFilter, elements.rarityFilter, elements.valueFilter].forEach((element) => {
+    [elements.pokemonFilter, elements.setFilter, elements.languageFilter, elements.rarityFilter, elements.finishFilter, elements.valueFilter].forEach((element) => {
       if (element) element.addEventListener("input", applyFilters);
     });
 
@@ -1825,8 +1830,9 @@
   }
 
   function ownedTilePairs() {
+    const acab = elements.finishFilter ? elements.finishFilter.value : "";
     const pairs = shared.cardVariantPairs(filterCards())
-      .filter(({ card, variant }) => owned.variantTotal(card.id, variant) > 0);
+      .filter(({ card, variant }) => owned.variantTotal(card.id, variant) > 0 && capsula.casaAcabamento(card, variant, acab));
     return sortTiles(pairs);
   }
 
@@ -1908,7 +1914,7 @@
       const matchesPokemon = !pokemonValue || (card.pokemonName || speciesName(card.name)) === pokemonValue;
       const matchesSet = !setValue || card.set === setValue;
       const matchesLanguage = !languageValue || shared.normalizeCardLanguage(card.language) === languageValue;
-      const matchesRarity = !rarityValue || card.rarity === rarityValue;
+      const matchesRarity = !rarityValue || capsula.nomeRaridade(card) === rarityValue;
       const matchesValue = !range || (function () { const v = valueOf(card); return (vMin == null || v >= vMin) && (vMax == null || v <= vMax); })();
 
       return matchesQuery && matchesPokemon && matchesSet && matchesLanguage && matchesRarity && matchesValue;

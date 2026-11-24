@@ -231,6 +231,14 @@
             <option value="" data-i18n="filter.all.f">Todas</option>
           </select>
         </div>
+        <!-- Acabamento (Normal, Foil, Holo, Prism…): a versão do tile. Some
+             quando o set só tem um (ver renderFinishFilter no detail.js). -->
+        <div id="finishField" hidden>
+          <label for="finishFilter" data-i18n="toolbar.finish">Acabamento</label>
+          <select id="finishFilter">
+            <option value="" data-i18n="filter.all.m">Todos</option>
+          </select>
+        </div>
         <!-- Facetas por JOGO (GAME_FACETS no shared.js): grupos de caixinhas com
              contagem, preenchidos a partir das cartas desta página — set novo do
              mesmo jogo já vem filtrável. O TÍTULO fica no wrapper: é ele que o
