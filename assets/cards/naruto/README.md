@@ -107,6 +107,19 @@ Scans do dono no Card Game 2002~2006:
   px a 350). q90, como o 術-211: 273×381 e 264×369, ~33 KB cada. Um scan de
   verdade substitui pela regra do `-v2`.
 
+## 疾風伝 カードゲーム (`nrt-scg-*`, 2007–2008)
+
+O `sync-naruto-shippuden.mjs` lê esta pasta do mesmo jeito (`<id>.<ext>`;
+o `-v2` ainda não). Das 573 cartas, só 13 têm scan no tcg-db.
+
+- **PR忍伝-3 はたけカカシ (`nrt-scg-pr-nin-003`, promo NOT FOR SALE, 2007)**
+  (2026-11-24): scan do dono; a carta estava sem imagem. Receita da COIN-8.
+  O scan tem sombra à esquerda e embaixo, e a carta está levemente torta (a
+  borda esquerda vai de x 42 a 41 e a direita de 1044 a 1045, de cima pra
+  baixo): caixa por dentro, em x 43–1043, y 17–1394. O cinza que encosta
+  embaixo e à esquerda é o painel prateado da carta, não a sombra. 640×881,
+  q80, 129 KB. Proporção 0,726, sem esticar.
+
 ## Data Carddass (`nrt-dc-*`, `nrt-nf-*`, `nrt-nx-*`)
 
 Os syncs do arcade (`sync-naruto-datacarddass.mjs` e
