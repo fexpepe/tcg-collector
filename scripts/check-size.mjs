@@ -191,8 +191,19 @@ import { join } from "node:path";
 // (chave do TCGShared sem leitor fora do shared.js) não achou nenhuma das
 // 258. Com 256 B cabem uns 6 jogos no mesmo formato; a saída de verdade
 // segue sendo tirar o MARKETS (só o popup da carta usa) do núcleo.
+//
+// 2026-11-24: teto do shared.js sobe de 86.528 pra 86.784 (+256 B), com o
+// aval do Fernando ("Subir o teto +256 B"). A PR忍-1-R do Naruto 2002 passou
+// de Normal pra Foil em 23/11 e as cópias guardadas no nome antigo ficaram
+// órfãs: a carta dizia "Tenho 6" e o resto do site, 3. O conserto
+// (VARIANTES_RENOMEADAS) leva a versão antiga pra nova em todo store e no
+// blob da nuvem: +279 B gz depois de enxuto (tabela sem protótipo, a
+// varredura do localStorage dividida com o ID_MERGES). Uma versão que só
+// cobria coleção, pastas e listas ainda passava 58 B. A main estava em
+// 86.354 (os filtros da #375 gastaram 115 B no mesmo dia) e fica em 86.633:
+// sobram 151 B. A saída de verdade segue sendo o MARKETS fora do núcleo.
 const TETOS = [
-  { arquivo: "shared.js", teto: 86528, nota: "núcleo JS de toda página" },
+  { arquivo: "shared.js", teto: 86784, nota: "núcleo JS de toda página" },
   { arquivo: "styles.min.css", teto: 40960, nota: "núcleo do CSS, depois do split por área" },
 ];
 

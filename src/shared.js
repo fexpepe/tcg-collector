@@ -258,30 +258,109 @@
   }
   // Migração one-shot por navegador, refeita quando o build carimba regra nova
   // (a assinatura guardada muda). Varre as chaves "tcg-" do localStorage porque
-  // store novo não pode ficar de fora por esquecimento; o teste de texto antes
-  // do JSON.parse evita reescrever blob grande à toa.
-  (function migrateMergedCardIds() {
-    if (!TEM_ID_MERGES) return;
+  // store novo não pode ficar de fora por esquecimento; o teste de texto (as
+  // `pistas`) antes do JSON.parse evita reescrever blob grande à toa. Serve às
+  // duas migrações: de id (aqui) e de versão (VARIANTES_RENOMEADAS, abaixo).
+  function reescreveGuardado(marca, assinatura, pistas, reescreve) {
     try {
-      const assinatura = ID_MERGES_PREFIXOS.join(",") + "|" + Object.keys(ID_MERGES.c).length;
-      if (localStorage.getItem(ID_MERGES_KEY) === assinatura) return;
+      if (localStorage.getItem(marca) === assinatura) return;
       const chaves = [];
       for (let i = 0; i < localStorage.length; i++) {
         const k = localStorage.key(i);
-        if (k && k.indexOf("tcg-") === 0 && k !== ID_MERGES_KEY) chaves.push(k);
+        if (k && k.indexOf("tcg-") === 0 && k !== marca) chaves.push(k);
       }
       chaves.forEach((k) => {
         const cru = localStorage.getItem(k);
-        if (!cru || !ID_MERGES_PISTAS.some((pista) => cru.indexOf(pista) >= 0)) return;
+        if (!cru || !pistas.some((pista) => cru.indexOf(pista) >= 0)) return;
         let lido;
         try { lido = JSON.parse(cru); } catch (e) { return; }
-        // A coleção de cada jogo soma as cópias na colisão (ver remapIdsDeep).
-        const r = remapIdsDeep(lido, { somar: /-collection-v3$/.test(k) });
+        const r = reescreve(lido, k);
         if (r.mudou) localStorage.setItem(k, JSON.stringify(r.v));
       });
-      localStorage.setItem(ID_MERGES_KEY, assinatura);
+      localStorage.setItem(marca, assinatura);
     } catch (e) { /* storage bloqueado: ignora */ }
-  })();
+  }
+  // A coleção de cada jogo soma as cópias na colisão (ver remapIdsDeep).
+  if (TEM_ID_MERGES) {
+    reescreveGuardado(ID_MERGES_KEY, ID_MERGES_PREFIXOS.join(",") + "|" + Object.keys(ID_MERGES.c).length,
+      ID_MERGES_PISTAS, (lido, k) => remapIdsDeep(lido, { somar: /-collection-v3$/.test(k) }));
+  }
+
+  // ── Versão renomeada de carta já publicada ────────────────────────────────
+  // Coleção, desejos, custos, vendas, preço-alvo, pastas e listas guardam a
+  // cópia pelo NOME da versão. Quando a lista de versões de uma carta muda, o
+  // que estava no nome antigo fica órfão: entra no "Tenho N" da carta (que soma
+  // tudo o que está guardado), some do resto (Coleção, valor, grade) e nenhuma
+  // tela alcança pra tirar. Foi a PR忍-1-R do Naruto 2002: "Normal" até
+  // 23/11/2026, "Foil" depois (só existe em foil). O Fernando tinha 3 no
+  // Normal, marcou 3 no Foil quando elas sumiram da Coleção, e a carta passou
+  // a dizer "Tenho 6" enquanto o resto do site dizia 3 (24/11).
+  //
+  // Esta tabela leva a versão antiga pra nova em todo store, como o ID_MERGES
+  // faz com o id, no aparelho (uma vez) e no blob que vem da nuvem (sempre).
+  // Diferença deliberada na colisão: quem JÁ tem cópia na versão nova fica com
+  // ela, e a antiga sai, em vez de somar. A nova foi marcada depois que a
+  // antiga tinha sumido de todas as telas: são as mesmas cartas, e somar
+  // dobraria. Sem cópia na nova, a antiga só muda de nome e nada se perde.
+  //
+  // Entrada nova quando a curadoria ou um sync trocar a versão de carta já
+  // publicada; o tests/variantes-renomeadas.test.mjs confere cada uma contra o
+  // catálogo. Fica de fora o import de backup antigo (o de-para de id também
+  // não passa por lá): versão que a carta não tem é descartada na importação.
+  // Sem protótipo (`__proto__: null`): id ou versão vindo do dado guardado
+  // ("constructor", "__proto__") não acha nada herdado na tabela.
+  const VARIANTES_RENOMEADAS = { __proto__: null, "nrt-PRN-001R": { __proto__: null, Normal: "Foil" } };
+  const VARIANTES_RENOMEADAS_KEY = "tcg-collector-variantes-v1";
+  // Versão nova de (carta, versão); "" quando não mudou.
+  function varianteRenomeada(cardId, variant) {
+    const t = VARIANTES_RENOMEADAS[cardId];
+    return (t && t[variant]) || "";
+  }
+  // Reescreve em profundidade sem saber o formato de cada store (a ideia do
+  // remapIdsDeep). A versão aparece de quatro jeitos:
+  //   { "<id>": { Normal: … } }    coleção, preço manual (versão é CHAVE)
+  //   { "<id>": ["Normal"] }       desejos (lista de versões da carta)
+  //   "<id>|Normal", "<id>|Normal|0"   custos, preço-alvo; vendas (por cópia)
+  //   { cardId|id: "<id>", variant|v: "Normal" }   casa de pasta, item de
+  //                                    lista, venda, slab, histórico de vendas
+  // Na colisão vale o que já estava na versão nova (ver acima), em qualquer
+  // ordem de chave. Devolve { v, mudou }.
+  function remapVariantesDeep(valor) {
+    let mudou = false;
+    const troca = (id, versao) => {
+      const nova = varianteRenomeada(id, versao);
+      if (nova) mudou = true;
+      return nova;
+    };
+    const composta = (s) => {
+      const p = s.split("|");
+      const nova = p[1] && troca(p[0], p[1]);
+      return nova ? (p[1] = nova, p.join("|")) : "";
+    };
+    // `carta`: o objeto/lista é o conteúdo de uma carta renomeada, então as
+    // chaves (ou os itens) dele SÃO versões. Id ou versão que não é texto não
+    // casa com a tabela, então não precisa de checagem de tipo.
+    const anda = (v, carta) => {
+      if (typeof v === "string") return (carta ? troca(carta, v) : composta(v)) || v;
+      if (!v || typeof v !== "object") return v;
+      if (Array.isArray(v)) {
+        const lista = v.map((x) => anda(x, carta));
+        return carta ? [...new Set(lista)] : lista;
+      }
+      const out = {};
+      for (const k of Object.keys(v)) {
+        const nova = carta ? troca(carta, k) : composta(k);
+        // Nome antigo não passa por cima do novo que já estava lá.
+        if (nova && nova in out) continue;
+        out[nova || k] = (/^v(ariant)?$/.test(k) && troca(v.cardId || v.id, v[k]))
+          || anda(v[k], !carta && VARIANTES_RENOMEADAS[k] ? k : "");
+      }
+      return out;
+    };
+    return { v: anda(valor, ""), mudou };
+  }
+  // Uma vez por navegador, refeita quando a tabela muda.
+  reescreveGuardado(VARIANTES_RENOMEADAS_KEY, JSON.stringify(VARIANTES_RENOMEADAS), Object.keys(VARIANTES_RENOMEADAS), remapVariantesDeep);
 
   // ── PWA (instalar na tela inicial) ────────────────────────────────────────
   // Captura o prompt de instalação cedo (Android/desktop disparam beforeinstall-
@@ -11370,6 +11449,10 @@
       const colecao = remoteD.collection ? remapIdsDeep(remoteD.collection, { somar: true }).v : remoteD.collection;
       remoteD = Object.assign(remapIdsDeep(remoteD).v, remoteD.collection ? { collection: colecao } : {});
     }
+    // Versão renomeada (VARIANTES_RENOMEADAS): mesma passada, mesmo motivo —
+    // aparelho que não migrou (o app sem live update, por exemplo) sobe o nome
+    // antigo, e ele voltaria a cada pull.
+    if (remoteD) remoteD = remapVariantesDeep(remoteD).v;
     const a = localD || {}, b = remoteD || {};
     const col = mergeCollection(a.collection, a.collectionMeta, b.collection, b.collectionMeta);
     const wl = mergeWishlist(a.wishlist, a.wishlistMeta, b.wishlist, b.wishlistMeta);
