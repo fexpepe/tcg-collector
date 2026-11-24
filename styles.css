@@ -7504,13 +7504,19 @@ a.progress-row:hover {
    FLAT do site: sem raio fora de carta e círculo); só o preenchimento muda,
    e ele diz a CATEGORIA, como o rótulo de um slab:
      graduação  cor da graduadora, cheia        raridade  tinta sobre fundo tingido,
-     tipo       contorno; texto na cor do                 em 5 faixas (ver abaixo)
-                acabamento                       extras    contorno tracejado
-   Ordem fixa. Sem espaço, quem cede é a RARIDADE (reticências): o tipo é
-   curto e é o que decide o valor. */
+     torneio    laranja claro, cheio, com troféu          em 5 faixas (ver abaixo)
+     tipo       contorno; texto na cor do        extras    contorno tracejado, e o
+                acabamento                                 "+N" das que não couberam
+   Ordem fixa. Sem espaço, cede primeiro a RARIDADE (reticências), depois o
+   TORNEIO (até sobrar o troféu) e, em último caso, o tipo: o tipo é curto e
+   é o que decide o valor. A proporção vem do flex-shrink de cada uma. */
 .cap-etqs {
   display: flex; align-items: center; gap: 4px;
   height: 20px; margin: 0 0 8px; min-width: 0;
+  /* A faixa é contêiner: a etiqueta de torneio decide pela LARGURA DA
+     FICHA se cabe a palavra (ver .cap-torneio), não pela da tela — a mesma
+     ficha mora em grade de 6 colunas, de 2 no celular e na lista. */
+  container: etqs / inline-size;
 }
 .cap-etq, .cap-etqs > .graded-badge {
   display: block; flex: 0 1 auto; min-width: 0;
@@ -7527,7 +7533,7 @@ a.progress-row:hover {
    a escada não conhece (data-faixa="d") fica no cinza: melhor sem cor do que
    com a cor errada. */
 .cap-rar {
-  min-width: 26px; box-shadow: none; font-weight: 700;
+  flex-shrink: 20; min-width: 26px; box-shadow: none; font-weight: 700;
   background: var(--rar-bg); color: var(--rar-fg);
   --rar-fg: #b6bfcc; --rar-bg: rgba(155, 164, 179, .16);
 }
@@ -7541,12 +7547,41 @@ a.progress-row:hover {
 [data-theme="light"] .cap-rar[data-faixa="3"] { --rar-fg: #1d5fd0; --rar-bg: #e1ecff; }
 [data-theme="light"] .cap-rar[data-faixa="4"] { --rar-fg: #7a3fd0; --rar-bg: #efe5ff; }
 [data-theme="light"] .cap-rar[data-faixa="5"] { --rar-fg: #8a5a00; --rar-bg: #fbefcf; }
-/* Tipo (a versão: Normal, Foil, Holofoil, Reverse, 1st Edition…). O de UMA
-   versão não encolhe; o agrupado ("Normal · Foil · Reverse") cede. A cor do
-   texto é a do acabamento (as mesmas do .variant-* da linha compacta), e o
-   contorno acompanha. */
-.cap-tipo { flex-shrink: 0; }
-.cap-tipo.is-grupo { flex-shrink: 1; }
+/* Torneio (2026-11-24): carta que se ganha jogando — prêmio de participação
+   ou colocação, de juiz, de liga, pack de campeonato (a regra é a do
+   capsula.js). Laranja CLARO e cheio, como o selo da graduadora: é o que se
+   procura de longe numa grade. Fica longe do dourado da raridade de topo,
+   que é tinta sobre fundo escuro, e do laranja forte das etiquetas de jogo
+   (Naruto), que moram em outra linha. Sem espaço encolhe até sobrar só o
+   troféu (26px: 12 do ícone + 7 de cada lado). Contraste: 9:1 no escuro e
+   7:1 no claro. */
+.cap-torneio {
+  display: flex; align-items: center; gap: 3px;
+  flex-shrink: 4; min-width: 26px;
+  background: #fdba74; color: #431407; box-shadow: none; font-weight: 700;
+}
+[data-theme="light"] .cap-torneio { background: #fed7aa; color: #7c2d12; }
+.cap-torneio > svg { flex: none; width: 12px; height: 12px; }
+.cap-torneio > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+/* Só o troféu, sem a palavra, onde ela viraria "T…": ficha estreita (o
+   celular, ~150px) e carta graduada (o selo da graduadora já come o espaço).
+   O title segue explicando no mouse. */
+}
+.cap-etqs:has(> .graded-badge) .cap-torneio > span { display: none; }
+/* (a ficha estreita está no fim da seção das etiquetas, depois do "+N": ela
+   sobrescreve regras de lá, e com a mesma especificidade vence quem vem
+   depois.) */
+/* O troféu na coluna de raridade da linha compacta. */
+.cap-trofeu { display: inline-flex; vertical-align: -1px; margin-right: 4px; color: #fdba74; }
+[data-theme="light"] .cap-trofeu { color: #c2410c; }
+
+/* Tipo (a versão: Normal, Foil, Holofoil, Reverse, 1st Edition…). É o último
+   a encolher (só quando nem a raridade nem o torneio têm mais o que ceder:
+   graduada de torneio no celular); o agrupado ("Normal · Foil · Reverse")
+   cede antes. A cor do texto é a do acabamento (as mesmas do .variant-* da
+   linha compacta), e o contorno acompanha. */
+.cap-tipo { flex-shrink: 1; min-width: 32px; }
+.cap-tipo.is-grupo { flex-shrink: 6; }
 /* No tile de UMA versão o texto fica na cor do acabamento mesmo quando você
    tem a carta: a posse já está na borda do tile e no ✓, e na Coleção (onde
    tudo é "tenho") a cor do jogo apagaria a de todo acabamento. No AGRUPADO a
@@ -7565,17 +7600,63 @@ a.progress-row:hover {
 [data-theme="light"] .cap-tipo.variant-foil, [data-theme="light"] .cap-tipo.variant-holo, [data-theme="light"] .cap-tipo.variant-holofoil, [data-theme="light"] .cap-tipo.is-brilho { color: #7a3fd0; box-shadow: inset 0 0 0 1px rgba(122, 63, 208, .45); }
 [data-theme="light"] .cap-tipo.variant-reverse, [data-theme="light"] .cap-tipo.variant-1st-edition { color: #8a5a00; box-shadow: inset 0 0 0 1px rgba(138, 90, 0, .45); }
 /* Extras: o que saiu do nome e diz QUAL impressão é ("Alternate Art",
-   "Manga", "Box Topper"). Ocupam o que sobrar da linha. A primeira encurta
-   até 44px e abaixo disso some; as demais só aparecem inteiras — a que não
-   cabe desce pra uma segunda linha que fica escondida. O item fantasma na
-   frente existe porque o PRIMEIRO item de um flex nunca quebra de linha: sem
-   ele a primeira extra viraria um toco de 10px. */
+   "Manga", "Box Topper", "Winner"). Ocupam o que sobrar da linha e só
+   aparecem INTEIRAS: a que não cabe desce pra uma segunda linha, escondida,
+   e entra na conta do "+N" (2026-11-24 — até então a primeira encurtava, e
+   virava "Offl…" ou "Cha", que não diz nada).
+   Linha de TEXTO, não flex: as extras são inline-block, cada uma precedida
+   de um espaço de largura zero (o capsula.js escreve), que é onde a linha
+   pode quebrar. Em flex o PRIMEIRO item nunca desce, nem com um item
+   fantasma de largura zero na frente (testado no Chromium em 24/11/2026):
+   a primeira extra ficava na linha 1, cortada no meio. A fonte 0 na faixa
+   some com a largura dos próprios espaços; a altura da linha (20px) segue. */
 .cap-extras {
-  display: flex; flex-wrap: wrap; gap: 4px; flex: 1 1 0; min-width: 0;
+  position: relative;
+  display: block; flex: 1 1 0; min-width: 0;
   height: 20px; overflow: hidden;
+  white-space: normal; font-size: 0; line-height: 20px;
+  /* Lugar do "+N", reservado sempre: com ele aparecendo ou não, a largura é
+     a mesma e nada pula quando muda. Sem "+N" é só um respiro no fim. */
+  padding-right: 26px;
 }
-.cap-extras::before { content: ""; flex: none; width: 0; margin-left: -4px; }
-.cap-extra { flex: none; min-width: 44px; max-width: 100%; box-shadow: none; outline: 1px dashed color-mix(in srgb, var(--text) 26%, transparent); outline-offset: -1px; }
+.cap-extra { display: inline-block; vertical-align: top; margin-right: 4px; font-size: 11px; box-shadow: none; outline: 1px dashed color-mix(in srgb, var(--text) 26%, transparent); outline-offset: -1px; }
+/* "+N" (2026-11-24) — quantas extras ficaram de fora, sem JS. Cada extra
+   carrega o seu (o capsula.js escreve "+N" = ela e as que vêm depois),
+   absoluto em relação à faixa: na ponta direita (o lugar reservado acima) e
+   UMA LINHA ACIMA da extra dona dele (margin-top: -20px, a altura da linha).
+   Assim:
+     extra visível (linha 1)      → o "+N" dela vai pra cima do topo: cortado
+     1ª linha escondida (linha 2) → o "+N" cai na linha 1: aparece
+     linha 3 em diante            → cai na linha 2: cortado
+   Na linha 2 pode haver várias extras; o z-index decrescente (inline, do
+   capsula.js) põe o da PRIMEIRA por cima, que é o número certo. O "+N" vem
+   antes do texto da extra pra a posição de partida ser o topo dela, e o
+   overflow da própria extra não o corta (quem posiciona é a faixa). O title
+   dele lista as escondidas, pro mouse; o aria-hidden deixa o leitor de tela
+   com as extras de verdade, que seguem no DOM. */
+.cap-mais {
+  position: absolute; right: 0; margin-top: -20px;
+  min-width: 22px; height: 20px; padding: 0 5px;
+  font-weight: 700; text-align: center; color: var(--text);
+  background: var(--panel-strong); cursor: default;
+}
+
+/* FICHA ESTREITA (o celular, ~150px; 129px num de 360). Só o troféu na
+   etiqueta de torneio — a palavra viraria "T…" —, e as etiquetas apertam o
+   respiro (7 → 5px de cada lado, o lugar do "+N" de 26 → 22px). Na graduada
+   de torneio nem assim cabe tudo (PSA 10 · raridade · troféu · tipo já são
+   ~130px), e quem sai é o "+N" com as extras: é o de menor prioridade, e a
+   carta aberta mostra o que ficou de fora. Fica DEPOIS das regras-base da
+   seção: mesma especificidade, quem vem depois ganha. */
+@container etqs (max-width: 189px) {
+  .cap-torneio > span { display: none; }
+  .cap-etq, .cap-etqs > .graded-badge { padding: 0 5px; }
+  .cap-rar, .cap-torneio { min-width: 22px; }
+  .cap-tipo { min-width: 26px; }
+  .cap-extras { padding-right: 22px; }
+  .cap-mais { min-width: 20px; padding: 0 4px; }
+  .cap-etqs:has(> .graded-badge):has(> .cap-torneio) > .cap-extras { display: none; }
+}
 
 /* 2. TÍTULO: Nome (código). Uma linha só. Quem cede é o NOME (reticências);
    o CÓDIGO nunca é cortado — é ele que separa duas cartas de mesmo nome, e

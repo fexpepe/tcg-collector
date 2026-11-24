@@ -140,12 +140,17 @@ test("a ficha: etiquetas, título e origem, sempre nessa ordem", () => {
   assert.match(html, /href="[^"]*setId=GD05[^"]*"/);
 });
 
-test("etiquetas em ordem fixa: graduação, raridade, tipo, extras", () => {
+test("etiquetas em ordem fixa: graduação, raridade, torneio, tipo, extras", () => {
   const luffy = { name: "Monkey.D.Luffy (Alternate Art) (Manga)", number: "OP05-119", set: "Awakening of the New Era", rarity: "SEC", language: "en", game: "onepiece" };
   const html = C.ficha(luffy, { variant: "Foil", graded: { company: "psa", grade: "9" } });
   assert.ok(crescente(ordem(html, "graded-badge", "cap-rar", "cap-tipo", "cap-extras")), html);
   assert.match(html, /graded-badge[^>]*>PSA 9</);
-  assert.match(html, /<span class="cap-extras"><span class="cap-etq cap-extra"[^>]*>Alternate Art<\/span><span class="cap-etq cap-extra"[^>]*>Manga<\/span><\/span>/);
+  // Cada extra vem depois de um espaço de largura zero (onde a linha quebra)
+  // e leva o "+N" dela em diante: +2 na primeira, +1 na segunda.
+  const extras = html.match(/<span class="cap-extras">(.*?)<\/span><\/p>/)[1];
+  assert.deepEqual(Array.from(extras.split("\u200B").filter(Boolean), (x) => x.replace(/<span class="cap-mais"[^>]*>\+\d+<\/span>/, "").replace(/<[^>]+>/g, "")), ["Alternate Art", "Manga"]);
+  assert.deepEqual(Array.from(html.matchAll(/class="cap-mais" style="z-index:(\d+)" title="([^"]*)" aria-hidden="true">\+(\d+)</g), (m) => [m[1], m[2], m[3]]),
+    [["2", "Alternate Art · Manga", "2"], ["1", "Manga", "1"]]);
   // Sem raridade não há etiqueta de raridade — e nenhum espaço reservado em texto.
   const semRar = C.ficha({ name: "Naruto Uzumaki", number: "NM-003", set: "Narutimate Mission", rarity: "", language: "ja", game: "naruto" }, { variant: "Normal" });
   assert.ok(!semRar.includes("cap-rar"), semRar);
@@ -164,7 +169,7 @@ test("tile agrupado e tipo pronto: a página manda o HTML, a ficha não escapa d
   const html = C.ficha({ ...gundam, name: "Bludger (Foil)", rarity: "Rare" }, { variant: "Normal", tipo, grupo: "Normal · Foil" });
   assert.ok(html.includes(`class="cap-etq cap-tipo is-grupo" title="Normal · Foil">${tipo}</span>`), html);
   // Agrupado: o "(Foil)" do nome não some (não há UMA versão), vira extra.
-  assert.match(html, /cap-extra"[^>]*>Foil</);
+  assert.match(html, /cap-extra"[^>]*><span class="cap-mais"[^>]*>\+1<\/span>Foil</);
 });
 
 test("condição não é tipo: NM/SP nunca aparecem na ficha", () => {
@@ -262,6 +267,76 @@ test("toda grade com filtro de raridade tem o de acabamento, e as duas réguas v
     const src = ler(js);
     assert.ok(/opcoesAcabamento\(/.test(src) && /casaAcabamento\(/.test(src), `${js} não usa a régua de acabamento`);
     assert.ok(/nomeRaridade/.test(src) && !/card\.rarity (===|!==) rarityValue/.test(src), `${js} filtra a raridade crua`);
+  }
+});
+
+// ── Torneio (2026-11-24) ─────────────────────────────────────────────────
+const tor = (name, extra) => C.torneio({ name, number: "X-001", set: "Booster", rarity: "R", ...extra });
+
+test("torneio: prêmio de participação, de colocação, de juiz, de liga e packs de campeonato", () => {
+  for (const name of [
+    "Mace Windu - Party Crasher (Champion)", "Mace Windu - Party Crasher (Finalist)", "Long Sword (Top 8)",
+    "Anakin Skywalker - Protect Her At All Costs (Prize Wall)", "Kid & Killer (Offline Regional Champion Card Set 2025 Vol.2)",
+    "MetalGreymon - BT1-021 (2023 Regionals Participant)", "Edward Weevil (Judge Pack Vol. 4)", "Jegan (Store Tournament Winner Pack 01)",
+    "Power Burst (Masters Cup 2024) (Winner Gold Stamped)", "Soul - ESOUL-015 (Masters League 1st Place)", "Godzilla (2023) (EBP01-010++) (Champion Prize)",
+    "Blazing Throw (Wildcard Nationals Qualifier)", "Sakura: Still Slumber (2018 World Finals)", "\"Running Through\" Megumin & Yunyun (Shop League 2020)",
+    "Diffindo (League Foil)", "Zidane (Road to World Championship)", "Action Point Card (AP04) (25-26 Finals Participation)", "Day of Judgment (Judge Promo)"
+  ]) assert.equal(tor(name), true, name);
+  // Pelo set inteiro, sem marca no nome.
+  for (const set of ["Tournament Promotion Cards", "Judge Promotion Cards", "Tournament and Championship Promos", "Store Championships", "Duelist League Promo",
+    "Tournament Pack 1", "Tournament Pack Cards", "Sector and Regional Promos: Season 1", "Galactic Championship 2026", "Friday Night Magic 2004",
+    "Magic Player Rewards 2008", "Arena League 2001", "Organized Play Promos", "Organized Play Promotional Cards", "Homeworlds: Weekly Play Promos",
+    "Awakening of the New Era: 1st Anniversary Tournament Cards", "League & Judge Promos", "\"Atari\" Winner Cards"
+  ]) assert.equal(C.torneio({ name: "Carta", set }), true, set);
+  // Pela raridade, onde o catálogo guarda assim (DBZ).
+  assert.equal(C.torneio({ name: "Gohan Season Wild Card", set: "Promos", rarity: "League" }), true);
+  assert.equal(C.torneio({ name: "Carta", set: "Promos", rarity: "Judge" }), true);
+});
+
+test("torneio: produto vendido com Tournament/Champion no nome NÃO conta, nem nome de carta", () => {
+  for (const set of ["Tournament of Power", "World Martial Arts Tournament", "Champions of Kamigawa", "Champion's Path", "Premium Champion Pack",
+    "World Championship Decks 1997", "World Champion Decks 2024", "Champions of the Asia Circuit", "Battle Pack 3: Monster League", "T1 2025 Worlds Champion Bundles",
+    "Worlds Bundle 2025", "Champion of the East Blue", "Magic Premiere Shop 2005", "Trial Deck 16: Divine Judgement of the Bluish Flames"
+  ]) assert.equal(C.torneio({ name: "Carta", set }), false, set);
+  for (const name of ["Robin Hood - Champion of Sherwood", "Judge", "Elvish Champion", "Prized Galea", "Power Burst (Power Booster: World Martial Arts Tournament)",
+    "Upamon (Gundam Base Pop-Up World Tour)", "Annie (T1 Worlds Champion Signature Edition Bundle)", "Rengar (Best Of)", "Agumon (Tamer's Selection Box Ver. Championship 2023)",
+    "Monkey.D.Luffy (Alternate Art) (Manga)", "Pikachu (Box Topper)"
+  ]) assert.equal(tor(name), false, name);
+  assert.equal(C.torneio(null), false);
+});
+
+test("torneio: a etiqueta vem entre a raridade e o tipo, e o detalhe segue como extra", () => {
+  const html = C.ficha({ name: "Mace Windu - Party Crasher (Champion)", number: "2/2", set: "Organized Play Promos", rarity: "Legendary", language: "en", game: "swu" },
+    { variant: "Foil", graded: { company: "psa", grade: "10" } });
+  assert.ok(crescente(ordem(html, "graded-badge", "cap-rar", "cap-torneio", "cap-tipo", "cap-extras")), html);
+  assert.match(html, /<span class="cap-etq cap-torneio" title="cap\.tournamentHint"><svg[^>]*aria-hidden="true">.*<\/svg><span>cap\.tournament<\/span><\/span>/);
+  assert.match(html, /cap-extra"[^>]*><span class="cap-mais"[^>]*>\+1<\/span>Champion</);
+  assert.equal(html.match(/<h3[^>]*>(.*?)<\/h3>/)[1].replace(/<[^>]+>/g, ""), "Mace Windu - Party Crasher (2/2)");
+  // Sem torneio, nenhuma etiqueta no lugar.
+  assert.ok(!C.ficha(gundam, { variant: "Holofoil" }).includes("cap-torneio"));
+});
+
+test("sufixo de torneio sai do nome mesmo sem palavra da lista de tiragem", () => {
+  assert.deepEqual(limpa({ name: "Power Burst (Masters Cup 2024) (Winner Gold Stamped)", number: "BT5-115", rarity: "Promo" }, "Foil"), ["Power Burst", ["Masters Cup 2024", "Winner Gold Stamped"]]);
+});
+
+test("código com a raridade colada no número (Digimon) também sai do nome", () => {
+  assert.deepEqual(limpa({ name: "MetalGreymon - BT1-021 (2023 Regionals Champion)", number: "BT1-021 U", rarity: "Promo" }, "Normal"), ["MetalGreymon", ["2023 Regionals Champion"]]);
+  assert.deepEqual(limpa({ name: "Impmon - BT2-068 (Alternate Art)", number: "BT2-068 R", rarity: "Rare" }, "Foil"), ["Impmon", ["Alternate Art"]]);
+});
+
+test("linha compacta: o troféu vem antes da raridade, só na carta de torneio", () => {
+  assert.match(C.colunaRaridade({ name: "Carta (Winner)", rarity: "Promo" }), /^<span class="cap-trofeu" title="cap\.tournamentHint"><svg[^]*<\/span>Promo$/);
+  assert.equal(C.colunaRaridade({ name: "Carta", rarity: "Super_rare" }), "Super Rare");
+});
+
+test("i18n: as chaves da etiqueta de torneio existem nos três idiomas", () => {
+  const sbi = { window: {} };
+  vm.runInNewContext(ler("src/i18n.js"), sbi);
+  const M = sbi.window.TCG_MESSAGES;
+  for (const lang of ["pt", "en", "es"]) {
+    assert.equal(M[lang]["cap.tournament"], "Tournament", lang);
+    assert.ok(M[lang]["cap.tournamentHint"], lang);
   }
 });
 

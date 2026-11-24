@@ -6,10 +6,10 @@ mostra carta em grade monta o texto embaixo da imagem pelo
 com que formato, e o que cede quando falta espaço**. O CSS é o bloco "Cápsula"
 do `styles.css` (classes `cap-`).
 
-> **Estado (2026-11-23):** vale em Catálogo (página de set, Cartas, Explorar),
-> Coleção, Wishlist, Pastas, Vendas, graduadas e perfil público. O popup da
-> carta segue com o nome do catálogo. A escada de raridade ainda tem furo em
-> alguns jogos (seção 6).
+> **Estado (2026-11-24):** vale em Catálogo (página de set, Cartas, Explorar),
+> Coleção, Wishlist, Pastas, Vendas, graduadas e perfil público. A etiqueta de
+> torneio e o "+N" entraram em 24/11. O popup da carta segue com o nome do
+> catálogo. A escada de raridade ainda tem furo em alguns jogos (seção 6).
 
 ## 1. Por que existe
 
@@ -27,15 +27,15 @@ que faz a linha de um tile bater com a do vizinho.
 
 | # | Faixa | O que leva | Altura |
 |---|---|---|---|
-| 1 | Etiquetas | graduação · raridade · tipo · extras | 20px, colada na imagem |
+| 1 | Etiquetas | graduação · raridade · torneio · tipo · extras (+N) | 20px, colada na imagem |
 | 2 | Título | Nome (código) | 20px |
 | 3 | Origem | bandeira · set · jogo | 20px (40 quando o jogo desce) |
 | 4 | Base | preço, depois os botões | colada no fundo do tile |
 
 ### 2.1 Etiquetas
 
-- Ordem fixa: **graduação → raridade → tipo → extras**. Quem não tem o dado
-  não tem a etiqueta.
+- Ordem fixa: **graduação → raridade → torneio → tipo → extras**. Quem não
+  tem o dado não tem a etiqueta.
 - Todas com 20px de altura, fonte 11px e canto reto (o passe flat do site). Só
   o preenchimento muda, e ele diz a categoria:
 
@@ -43,8 +43,10 @@ que faz a linha de um tile bater com a do vizinho.
 |---|---|---|
 | Graduação | cheio, cor da graduadora | "PSA 9", peso 800 |
 | Raridade | fundo tingido, em 5 faixas | por extenso, peso 700 |
+| Torneio | cheio, laranja claro, com troféu | "Tournament", peso 700 |
 | Tipo | contorno | a versão; cor do acabamento |
 | Extra | contorno tracejado | o que saiu do nome |
+| +N | cheio, neutro | quantas extras não couberam |
 
 - **Raridade** vem por extenso, como o catálogo traz, com a caixa acertada
   ("Super_rare" vira "Super Rare"). Sigla fica como é. "None", "-" e vazio não
@@ -57,35 +59,48 @@ que faz a linha de um tile bater com a do vizinho.
   da oferta (carta à venda), anda com o preço, na base. Acabamento com brilho
   que não é Foil/Holo/Holofoil (Prism, Diamond Foil, Rainbow Foil…) ganha a
   classe `is-brilho`, na mesma cor roxa.
-
-### 2.5 Raridade e acabamento por jogo (24/11/2026)
-
-O catálogo grava a raridade como a fonte escreve; **a tela** usa o nome do
-jogo. Duas tabelas no topo do `src/capsula.js`:
-
-- `NOMES_DA_RARIDADE`: sigla → nome, por jogo. Hoje só o Naruto japonês (Card
-  Game de 2002 e Data Carddass): N, R, SR, UR e P aparecem como Normal, Rare,
-  Super Rare, Ultra Rare e Promo. Jogo que usa sigla no próprio sistema (One
-  Piece, Vanguard, Kayou…) não entra: lá a sigla é o nome.
-- `ACABAMENTO_NA_RARIDADE`: o Carddass que grava o **brilho** no campo de
-  raridade (Normal, Prism, Holo, Gold Stamp…). Esses valores deixam de ser
-  raridade e viram o **tipo** da carta: a etiqueta mostra "Prism" no lugar de
-  "Normal" (via `shared.variantDisplayLabel`), a de raridade some, e o popup
-  mostra "Acabamento: Prism". Lista fechada por jogo; valor fora dela (a
-  Promo da HxH) segue raridade.
-
-As grades montam os dois filtros daqui — **Raridade** (`opcoesRaridade`, a
-chave é o `nomeRaridade`, igual nos três idiomas) e **Acabamento**
-(`opcoesAcabamento` + `casaAcabamento`, sobre os pares carta × versão). Assim
-"R" do Card Game e "Rare" do CCG americano viram uma opção só, e Foil/Normal
-nunca mais aparecem no filtro de raridade. Página sem o `capsula.js`
-(Portfólio, Fichários…) mostra a raridade crua, como antes.
 - No tile de uma versão só, o tipo fica na cor do acabamento mesmo quando você
   tem a carta (a posse está na borda e no ✓). No tile agrupado ("Normal ·
   Foil"), a versão que você tem acende na cor do jogo.
-- Sem espaço, quem encurta é a **raridade**. O tipo de uma versão não encurta.
-  A primeira extra encurta até 44px e abaixo disso some; as outras só aparecem
-  inteiras.
+- **Torneio** marca a carta que se ganha jogando, e não se compra (seção 2.1.1).
+  O texto é "Tournament" nos três idiomas, como a raridade e as extras; a
+  explicação aparece ao passar o mouse.
+- **Extras aparecem inteiras ou não aparecem.** A que não cabe sai da linha e
+  entra no **"+N"**, na ponta direita. No computador, passar o mouse no "+N"
+  lista as escondidas. No celular não há hover: o "+N" avisa que tem mais, e a
+  carta aberta mostra o nome completo.
+- Sem espaço, encolhe primeiro a **raridade** (reticências), depois o
+  **torneio** e, em último caso, o **tipo**.
+- **Ficha estreita** (celular, menos de 190px): o torneio fica só com o
+  troféu (a palavra viraria "T…") e as etiquetas apertam o respiro. Na
+  graduada o troféu também vai sem a palavra, porque o selo come o espaço.
+  Graduada de torneio no celular não mostra as extras nem o "+N": é o único
+  caso em que não cabe tudo, e o "+N" é o de menor prioridade.
+
+#### 2.1.1 Quando é de torneio
+
+Prêmio por participar ou por colocação (Winner, Champion, Finalist, Top 8,
+Prize Wall, Participant), carta de juiz, de liga e os packs de torneio e
+campeonato (Store Championship, Regionals, Judge Pack, Tournament Pack,
+Weekly Play). O catálogo não tem campo pra isso; a regra (`torneio()` no
+`capsula.js`) olha três lugares:
+
+| Onde | Exemplos |
+|---|---|
+| Sufixo do nome | `(Champion)`, `(Prize Wall)`, `(Judge Pack Vol. 4)`, `(2023 Regionals Participant)`, `(Masters Cup 2024)` |
+| Set inteiro | Tournament Promotion Cards, Store Championships, Duelist League Promo, Tournament Pack 1, Organized Play Promos, Weekly Play Promos, Friday Night Magic |
+| Raridade | `League` e `Judge` (DBZ CCG) |
+
+Fica de fora o **produto vendido** com essas palavras no nome: boosters
+("Tournament of Power", "World Martial Arts Tournament", "Champions of
+Kamigawa", "Champion's Path"), os decks de campeão ("World Championship
+Decks") e os bundles de Worlds do Riftbound. Nome de carta também não conta
+("Robin Hood - Champion of Sherwood"). O sufixo que marca torneio sai do nome
+e vira extra, então o detalhe (qual colocação, qual pack) continua visível.
+
+Medido em 24/11/2026: 8.774 cartas em 24 catálogos (Yu-Gi-Oh! 2.412, DBS
+1.704, Digimon 827, Star Wars 798, One Piece 724, Magic 662…). No Pokémon só
+1: a fonte (TCGdex) não cataloga os Prize Packs do Play! Pokémon à parte.
 
 ### 2.2 Título: Nome (código)
 
@@ -114,6 +129,29 @@ nunca mais aparecem no filtro de raridade. Página sem o `capsula.js`
 - Tile com campos próprios (venda, graduada editável) põe os campos no lugar
   da base.
 
+### 2.5 Raridade e acabamento por jogo (24/11/2026)
+
+O catálogo grava a raridade como a fonte escreve; **a tela** usa o nome do
+jogo. Duas tabelas no topo do `src/capsula.js`:
+
+- `NOMES_DA_RARIDADE`: sigla → nome, por jogo. Hoje só o Naruto japonês (Card
+  Game de 2002 e Data Carddass): N, R, SR, UR e P aparecem como Normal, Rare,
+  Super Rare, Ultra Rare e Promo. Jogo que usa sigla no próprio sistema (One
+  Piece, Vanguard, Kayou…) não entra: lá a sigla é o nome.
+- `ACABAMENTO_NA_RARIDADE`: o Carddass que grava o **brilho** no campo de
+  raridade (Normal, Prism, Holo, Gold Stamp…). Esses valores deixam de ser
+  raridade e viram o **tipo** da carta: a etiqueta mostra "Prism" no lugar de
+  "Normal" (via `shared.variantDisplayLabel`), a de raridade some, e o popup
+  mostra "Acabamento: Prism". Lista fechada por jogo; valor fora dela (a
+  Promo da HxH) segue raridade.
+
+As grades montam os dois filtros daqui — **Raridade** (`opcoesRaridade`, a
+chave é o `nomeRaridade`, igual nos três idiomas) e **Acabamento**
+(`opcoesAcabamento` + `casaAcabamento`, sobre os pares carta × versão). Assim
+"R" do Card Game e "Rare" do CCG americano viram uma opção só, e Foil/Normal
+nunca mais aparecem no filtro de raridade. Página sem o `capsula.js`
+(Portfólio, Fichários…) mostra a raridade crua, como antes.
+
 ## 3. O que sai do nome
 
 Só exibição: o `name` do catálogo, a busca, o id e os endereços não mudam.
@@ -137,7 +175,8 @@ Medido no catálogo em 23/11/2026: 240.630 cartas, 53.341 nomes mais curtos,
 - **Lista** (uma carta por linha): a mesma ficha. O jogo cola no set, o fio
   some e a carta sem preço não guarda a linha vazia.
 - **Compacto** (sem imagem): colunas nome · nº · set · raridade · versão ·
-  preço · ações. O nome é o limpo. No celular ficam nome, nº e ações.
+  preço · ações. O nome é o limpo, e a carta de torneio ganha o troféu na
+  frente da raridade. No celular ficam nome, nº e ações.
 - **Celular** (2 colunas): mesma anatomia, título um ponto menor.
 
 ## 5. Como usar numa tela nova
@@ -169,3 +208,7 @@ O `tests/capsula.test.mjs` confere os itens 1 e 3 página por página.
   crua (N, UR): não carregam o `capsula.js`.
 - **Sufixos não reconhecidos.** Siglas de tiragem do Weiß Schwarz (`OFR`,
   `JJR`, `BDR`) e da Vanguard seguem no nome.
+- **Filtro de torneio.** A etiqueta existe, mas ainda não há filtro "Prêmios de
+  torneio" nas grades. A regra (`torneio()`) já é a que um filtro usaria.
+- **Prize Packs do Pokémon.** Não existem no catálogo como cartas separadas
+  (a TCGdex não os cataloga), então não têm como ganhar a etiqueta.
