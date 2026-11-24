@@ -8372,7 +8372,7 @@
         </button>
         <span class="tile-c-num">${escapeHtml(card.number || "")}</span>
         <span class="tile-c-set">${jogo ? gameTagHtml(card.game, "tile-game") : ""}${cap.setLink(card, opts)}</span>
-        <span class="tile-c-rar">${escapeHtml(cap.raridade(card))}</span>
+        <span class="tile-c-rar">${cap.colunaRaridade(card)}</span>
         <span class="tile-c-var variant-${escapeAttribute(variantSlug(variant))}">${variantLabel}</span>
         <span class="tile-c-price">${tilePriceHtml(card, variant, prices)}</span>
         ${actionsHtml}`);

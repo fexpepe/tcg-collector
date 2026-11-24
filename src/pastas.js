@@ -570,7 +570,7 @@
         </button>
         <span class="tile-c-num">${card ? esc(card.number || "") : ""}</span>
         <span class="tile-c-set">${card ? esc(card.set || "") : ""}</span>
-        <span class="tile-c-rar">${esc(capsula.raridade(carta))}</span>
+        <span class="tile-c-rar">${capsula.colunaRaridade(carta)}</span>
         <span class="tile-c-var">${esc(varLabel)}</span>
         <span class="tile-c-price">${preco ? `<p class="tile-price">${preco}</p>` : ""}</span>
         ${stepper}
