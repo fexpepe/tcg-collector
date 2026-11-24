@@ -216,6 +216,8 @@
       elements.bulkBtn.setAttribute("aria-pressed", String(on));
       // No span, não no botão: escrever no textContent do botão apagaria o ícone.
       (elements.bulkBtn.querySelector("span") || elements.bulkBtn).textContent = t(on ? "bulk.exit" : "bulk.enter");
+      // No cartão-herói o botão é só ícone: a dica do hover acompanha o estado.
+      elements.bulkBtn.title = t(on ? "bulk.exit" : "bulk.enter");
     }
     if (elements.grid) elements.grid.classList.toggle("bulk-mode", on);
     updateBulkBar();
@@ -663,8 +665,37 @@
     mq.addEventListener("change", aplicar);
   }
 
+  // Desktop (2026-11-24, pedido do Fernando): a faixa de chips de jogo acima do
+  // resumo saiu — com 10+ jogos ela era uma linha inteira só de filtro. O
+  // filtro vira o MESMO dropdown do celular (o select espelho do shared.js) e
+  // mora no rodapé do cartão-herói, no lugar onde ficava o "Selecionar" (que
+  // virou ícone ao lado do Exportar/Compartilhar). Move o embrulho .chip-scroll
+  // INTEIRO: dentro dele estão os chips (escondidos, seguem sendo a fonte da
+  // verdade e recebem o clique) e o select irmão, que o syncGameFilterSelect
+  // reencontra por nextElementSibling. No celular (≤600px, o corte do bloco
+  // mobile que troca chips por select) ele volta pra faixa do topo, ao lado do
+  // select das abas. A faixa sem o filtro fica só com o select das abas, que
+  // é coisa do celular: a classe coll-toolbar-vazia a esconde no desktop.
+  function initGamePickPlacement() {
+    const box = elements.gameFilter;
+    const acoes = document.querySelector("#collectionDashboard .collection-toolbar-actions");
+    const peca = box && box.closest(".chip-scroll");
+    const faixa = peca && peca.parentElement;
+    if (!acoes || !peca || !faixa) return;
+    const mq = window.matchMedia("(max-width: 600px)");
+    const aplicar = () => {
+      const noCartao = !mq.matches;
+      if (noCartao && peca.parentElement !== acoes) acoes.insertBefore(peca, acoes.firstChild);
+      else if (!noCartao && peca.parentElement !== faixa) faixa.insertBefore(peca, faixa.firstChild);
+      faixa.classList.toggle("coll-toolbar-vazia", noCartao);
+    };
+    aplicar();
+    mq.addEventListener("change", aplicar);
+  }
+
   function bindEvents() {
     initBulkBtnPlacement();
+    initGamePickPlacement();
     if (elements.cardsSortSelect) {
       elements.cardsSortSelect.value = cardsSort;
       elements.cardsSortSelect.addEventListener("change", () => {

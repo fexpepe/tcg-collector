@@ -3409,6 +3409,47 @@ html[data-detail="set"]:not([data-set-pronto]):not([data-carta]) body:not(.carta
    lado e quebrando linha se faltar largura. Id na frente: vence o
    `margin-left: auto` de `#collectionDashboard .collection-toolbar-actions`. */
 #collectionDashboard .coll-hero .collection-toolbar-actions { display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 8px; margin: auto 0 0; width: auto; }
+/* Filtro de jogo NO CARTÃO (desktop, 2026-11-24): a faixa de chips acima do
+   resumo saiu e o collection.js (initGamePickPlacement) traz o embrulho
+   .chip-scroll pro rodapé do cartão, no lugar do antigo "Selecionar". Aqui só
+   o select aparece — o mesmo dropdown do celular; chips e setas ficam
+   escondidos (os chips seguem no DOM: guardam o estado e recebem o clique do
+   select). Ele estica e deixa os três ícones (Selecionar, Exportar,
+   Compartilhar) à direita. Base de 96px: o cartão tem 320px (282 úteis) em
+   quase toda largura de desktop e os 3 ícones levam 150 com as folgas — uma
+   base maior jogava o Compartilhar sozinho pra 2ª linha. Só com menos de
+   ~246px úteis o select fica com a linha dele e os ícones descem. Com um jogo só (select hidden) o embrulho some e os ícones
+   ficam sozinhos, como antes. Id na frente: vence o `.game-filter-select
+   { display: none }` do desktop e o `flex: 1 1 100%` do .chip-scroll. */
+#collectionDashboard .collection-toolbar-actions > .chip-scroll { flex: 1 1 96px; min-width: 0; }
+#collectionDashboard .collection-toolbar-actions > .chip-scroll:not(:has(> .game-filter-select:not([hidden]))) { display: none; }
+#collectionDashboard .chip-scroll > .game-filter,
+#collectionDashboard .chip-scroll > .chip-scroll-btn { display: none; }
+/* Texto com reticências e a MESMA cetinha custom dos selects da barra de
+   filtros (.toolbar select): rótulo de jogo chega a "Fullmetal Alchemist
+   Carddass" (~190px em 14px) e o select tem ~130px no cartão de 320px — a
+   seta nativa cortava o nome no meio da letra e ainda comia uns 20px. */
+#collectionDashboard .chip-scroll > .game-filter-select {
+  display: block; width: 100%; height: 42px; margin: 0;
+  padding: 0 30px 0 12px; font-size: 14px; font-weight: 700;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  -webkit-appearance: none; appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238a93a3' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 11px center;
+  background-size: 12px 12px;
+}
+#collectionDashboard .chip-scroll > .game-filter-select[hidden] { display: none; }
+/* Selecionar SÓ-ÍCONE no cartão, quadrado de 42px como os vizinhos .icon-btn
+   (o rótulo fica pro leitor de tela, no mesmo visually-hidden do .icon-btn;
+   o estado ligado é o fundo de destaque do .bulk-toggle[aria-pressed]). No
+   celular o botão desce pra linha dos Filtros (initBulkBtnPlacement), sai do
+   #collectionDashboard e volta a mostrar "Selecionar". */
+#collectionDashboard .bulk-toggle { position: relative; width: 42px; min-width: 42px; padding: 0; justify-content: center; }
+#collectionDashboard .bulk-toggle > span {
+  position: absolute; width: 1px; height: 1px; margin: 0; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap;
+}
 .coll-overview { grid-template-columns: minmax(0, 1fr); }
 /* O resumo antigo era full-bleed no celular (margem negativa e cartão sem
    borda lateral); o trilho tem a calha de 16px como na página do set.
@@ -11509,6 +11550,13 @@ html[data-detail="set"] .page-head-bar.page-head-stack,
    20px padrão: quem fecha o bloco com o filtro passa a ser o subtítulo (16px
    embaixo). Mesma especificidade (0,2,0) da regra acima; depois dela, vence. */
 .page-head:has(+ .collection-subtitle) { margin-bottom: 20px; }
+/* Minha Coleção no desktop (2026-11-24): o filtro de jogo foi pro cartão-herói
+   (initGamePickPlacement) e a faixa ficou só com o select das abas, que é
+   coisa do celular — some inteira, senão sobrava a margem de 16px vazia. O
+   título volta aos 20px padrão embaixo: os 10px de cima são pra quando a
+   faixa aparece. No celular o JS tira a classe e a faixa volta. */
+.collection-toolbar.coll-toolbar-vazia { display: none; }
+.page-head:has(~ .collection-toolbar.coll-toolbar-vazia) { margin-bottom: 20px; }
 /* No Portfólio o filtro de jogo fica colado no box do gráfico (o .game-filter é
    margin:0 e o .pf-chart não tem margin-top) — dá respiro em cima e embaixo pra
    as cápsulas não encavalarem, inclusive quando quebram pra 2 linhas.
