@@ -82,6 +82,14 @@ Scans do dono no Card Game 2002~2006:
   já muda, de wsrv.nl pra `/assets/`). Mesma receita, caixa em x 31–1052,
   y 13–1430 (as colunas 30 e 1053 e as linhas 12 e 1431 são meio fundo);
   640×888, q80, 137 KB. Proporção 0,721, sem esticar.
+- **忍-343 うずまきナルト (`nrt-nin-343`, 拡張ファイリングシート2, N)**
+  (2026-11-24): só a lista oficial da Bandai tinha a carta, sem imagem.
+  Este scan tem a sombra da carta no fundo, embaixo e à direita (cinza
+  neutro, nw ~100–230), que o limiar de sempre (nw > 150) pegava como
+  carta: a caixa saiu pela cor, em x 43–1042, y 14–1422 (a linha 1423 já é
+  sombra). Nas bordas retas, o que sobra claro é da própria carta (a caixa
+  de texto laranja, o metal do shuriken), não do fundo. 640×902, q80,
+  147 KB. Proporção 0,710, sem esticar.
 
 ## Data Carddass (`nrt-dc-*`, `nrt-nf-*`, `nrt-nx-*`)
 
