@@ -2421,15 +2421,22 @@
     const convite = (shared.getSession && shared.getSession()) ? ""
       : `<a class="primary binder-shared-cta" href="login">${escapeHtml(t("collection.shared.cta"))}</a>`;
 
-    // Filtro de jogo (Todos/Pokémon/Lorcana) — igual à página da coleção. Só
+    // Filtro de jogo (Todos + os jogos do link) — igual à página da coleção. Só
     // aparece quando o share tem MAIS DE UM jogo, pra quem está vendo conseguir
     // separar as coleções. O dashboard e a grade reagem ao filtro.
-    const gamesPresent = [...new Set(allItems.map((it) => it.g).filter(Boolean))];
+    // Os chips são SÓ os jogos que estão no link, na ordem de GAME_SLUGS (o
+    // mesmo conserto que o perfil público já tinha): antes saía o GAME_SLUGS
+    // inteiro, ~50 chips quase todos sem carta, empurrando a grade pra baixo.
+    // Pasta, showcase e tag não ganham filtro nenhum (pedido do Fernando,
+    // 2026-11-24): são um recorte que o dono já montou, e o painel
+    // "Distribuição por jogo" logo abaixo já mostra a divisão.
+    const gamesPresent = [...new Set(allItems.map((it) => it.g || "pokemon"))];
+    const semFiltroDeJogo = isPasta || isFolder || isTag;
     let sharedFilter = "all";
-    const filterHtml = gamesPresent.length > 1
+    const filterHtml = !semFiltroDeJogo && gamesPresent.length > 1
       ? `<div class="collection-toolbar"><div id="sharedGameFilter" class="chip-filter game-filter" role="group" aria-label="Jogo">
           <button type="button" class="chip" data-game-filter="all" aria-pressed="true">${escapeHtml(t("filter.gameAll"))}</button>
-          ${shared.GAME_SLUGS.map((g) => `<button type="button" class="chip" data-game-filter="${g}" aria-pressed="false">${escapeHtml(gameLabelOf(g))}</button>`).join("")}
+          ${shared.GAME_SLUGS.filter((g) => gamesPresent.indexOf(g) >= 0).map((g) => `<button type="button" class="chip" data-game-filter="${g}" aria-pressed="false">${escapeHtml(gameLabelOf(g))}</button>`).join("")}
         </div></div>`
       : "";
 
