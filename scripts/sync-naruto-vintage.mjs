@@ -325,12 +325,16 @@ async function run() {
   // scan, então vale mesmo quando o número já veio de outra fonte. Sem ele, a
   // carta sai "Normal" como todas. A PR忍-1-R (箔押し, a versão com estampa em
   // foil da PR忍-1) só existe em foil e saía "Normal" até 2026-11-23.
+  // `tournament: true` segue a mesma regra: é da carta (prêmio de torneio) e
+  // vira a etiqueta Tournament da cápsula (src/capsula.js, torneio()).
   const variantesCuradas = new Map();
+  const torneiosCurados = new Set();
   try {
     const curated = JSON.parse(await readFile(CURATED_PROMOS, "utf8"));
     let added = 0;
     for (const c of curated.cards || []) {
       if (Array.isArray(c.variants) && c.variants.length) variantesCuradas.set(c.num, c.variants.map(String));
+      if (c.tournament === true) torneiosCurados.add(c.num);
       if (byNum.has(c.num)) { if (c.rarity && !byNum.get(c.num).rarity) byNum.get(c.num).rarity = c.rarity; continue; }
       // `set`/`id` explícitos permitem sets curados fora das promos (ex.: あたり).
       byNum.set(c.num, { num: c.num, name: c.name, code: "", img: "", dbSet: c.set || PROMO_SET, rarity: c.rarity || "", curatedId: c.id || "" });
@@ -473,7 +477,9 @@ async function run() {
         variants: variantesCuradas.get(c.num) || ["Normal"],
         setLogo: "/assets/games/game_naruto_vintage.webp",
         vintage: true,
-        vintageLine: "nrtcg"
+        vintageLine: "nrtcg",
+        // Só na carta marcada: nas outras o campo não existe (peso do catálogo).
+        ...(torneiosCurados.has(c.num) ? { tournament: true } : {})
       });
     }
   });

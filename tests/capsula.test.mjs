@@ -293,6 +293,19 @@ test("torneio: prêmio de participação, de colocação, de juiz, de liga e pac
   assert.equal(C.torneio({ name: "Carta", set: "Promos", rarity: "Judge" }), true);
 });
 
+test("torneio: o campo tournament do catálogo marca o que nome, set e raridade não dizem", () => {
+  // A PR忍-1-R do Naruto 2002 (25/11/2026): prêmio de torneio no set de
+  // promos de sempre, com raridade Promo.
+  const pr1r = { name: "Naruto Uzumaki (Foil)", number: "PR忍-1-R", set: "Promotion Cards", rarity: "Promo" };
+  assert.equal(C.torneio(pr1r), false);
+  assert.equal(C.torneio({ ...pr1r, tournament: true }), true);
+  // Só o booleano: texto ou número vindo de dado torto não liga a etiqueta.
+  assert.equal(C.torneio({ ...pr1r, tournament: "true" }), false);
+  assert.equal(C.torneio({ ...pr1r, tournament: 1 }), false);
+  const html = C.ficha({ ...pr1r, id: "nrt-PRN-001R", tournament: true, variants: ["Foil"] }, { variant: "Foil" });
+  assert.ok(html.includes("cap-torneio"), html);
+});
+
 test("torneio: produto vendido com Tournament/Champion no nome NÃO conta, nem nome de carta", () => {
   for (const set of ["Tournament of Power", "World Martial Arts Tournament", "Champions of Kamigawa", "Champion's Path", "Premium Champion Pack",
     "World Championship Decks 1997", "World Champion Decks 2024", "Champions of the Asia Circuit", "Battle Pack 3: Monster League", "T1 2025 Worlds Champion Bundles",
