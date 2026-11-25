@@ -118,6 +118,14 @@ Scans do dono no Card Game 2002~2006:
   4× e cantos transparentes no raio relativo dos scans (20,7 px a 520).
   520×726, q90, 149 KB. Lado a lado com o 忍-343 (mesma moldura), as faixas
   do layout batem. Um scan de verdade substitui pela regra do `-v2`.
+- **忍-176 ガマブン太 (`nrt-nin-176`, 巻ノ八, UR)** (2026-11-25): a carta
+  estava sem imagem. Veio já recortada (845×1217) e com os cantos
+  transparentes, mas com franja clara nas bordas retas: 1 px em cima e dos
+  lados e ~5 px embaixo (o brilho médio da linha só estabiliza na 6ª).
+  Aparada pra 843×1211 e reduzida a 640×919, sem esticar: proporção 0,696,
+  como o 忍-365 (0,699); na tela o rodapé aparece inteiro. Alfa = o da
+  origem fechado em 1 px (o recorte dela tinha um halo claro no arco) E o
+  arco dos scans (25,5 px a 640). q80, 84 KB.
 
 - **忍-19/20/21 do 拡張シート 極意忍法帖 (`nrt-nin-19-alt`, `nrt-nin-20-alt`,
   `nrt-N-021-alt`)** (2026-11-24): as artes alternativas (fundo de céu azul,
