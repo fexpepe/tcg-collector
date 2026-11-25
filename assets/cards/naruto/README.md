@@ -103,6 +103,21 @@ Scans do dono no Card Game 2002~2006:
   mais pela borda direita), então o alfa é o arco dos scans (25,5 px a 640)
   E o contorno da carta na origem, com 2 px de folga sobre o fundo: sem
   isso sobrava uma franja clara no canto de cima à direita. q80, 81 KB.
+- **忍-333 はたけカカシ (`nrt-nin-333`, 巻ノ十四)** (2026-11-25): a carta
+  estava sem imagem. Veio uma FOTO (600×801), a carta sobre um tapete
+  escuro com textura e em leve perspectiva (a borda esquerda vai de x 51 a
+  38, a direita de 563 a 571; 512 px de largura em cima, 532 embaixo). Pelo
+  brilho, a moldura laranja quase não se separa do tapete; pela croma (R−B:
+  tapete ~0, moldura 50–170) a borda fica nítida. Cada borda medida no
+  cruzamento da croma 50, com subpixel, a cada 4 px longe dos cantos, e uma
+  reta por borda com descarte de ponto fora (resíduo 0,16–0,41 px). A de
+  baixo só vale em x 90–162 e 222–402: no resto, a perna do Kakashi e o
+  kunai escurecem a moldura. Cantos = cruzamento das retas, recuados 1 px
+  pra dentro (sem meio pixel de tapete na borda). Perspectiva corrigida pra
+  63:88 na largura medida, sem ampliar (a foto dava 0,690), com supersample
+  4× e cantos transparentes no raio relativo dos scans (20,7 px a 520).
+  520×726, q90, 149 KB. Lado a lado com o 忍-343 (mesma moldura), as faixas
+  do layout batem. Um scan de verdade substitui pela regra do `-v2`.
 
 - **忍-19/20/21 do 拡張シート 極意忍法帖 (`nrt-nin-19-alt`, `nrt-nin-20-alt`,
   `nrt-N-021-alt`)** (2026-11-24): as artes alternativas (fundo de céu azul,
