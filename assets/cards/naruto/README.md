@@ -133,6 +133,16 @@ Scans do dono no Card Game 2002~2006:
   transparente de 6×3 px DENTRO da carta, sobre o "B" do "BANDAI" do
   rodapé, que na tela mostraria o fundo da página: fechado, com a cor dos
   vizinhos. q80, 74 KB.
+- **忍-354 綱手姫 (`nrt-nin-354`, 巻ノ十五, UR)** (2026-11-25): a carta
+  estava sem imagem. Origem 781×1133, recortada e com cantos transparentes,
+  mas tirada de uma foto: a borda física da carta aparece como um filete
+  dourado-escuro em cima (3–4 linhas) e nas laterais (1–2 colunas) e claro
+  embaixo (2 linhas), e a carta está levemente girada no recorte, então a
+  espessura varia. Aparada pelo maior valor (2, 1, 4, 2 px), ficou com
+  0,690: em 63:88 com cover, a tela cortaria 17 px embaixo, e o texto
+  "BANDAI 2006" do rodapé termina a 16 px da borda. Levada a 640×894
+  (63:88), como o 忍-1; a faixa verde fica a 1–5 px da do 忍-343 escaneado
+  (mesmo layout). Alfa como no 忍-176. q80, 119 KB.
 
 - **忍-19/20/21 do 拡張シート 極意忍法帖 (`nrt-nin-19-alt`, `nrt-nin-20-alt`,
   `nrt-N-021-alt`)** (2026-11-24): as artes alternativas (fundo de céu azul,
