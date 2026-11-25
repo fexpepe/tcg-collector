@@ -193,6 +193,10 @@ test("catálogo: a PR忍-1-R (箔押し) é só Foil e usa o scan novo, com outr
   assert.deepEqual(c.variants, ["Foil"]);
   // Raridade Promo (2026-11-24, pedido do Fernando): era "R", da lista curada.
   assert.equal(c.rarity, "Promo");
+  // Prêmio de torneio (2026-11-25): a etiqueta Tournament da cápsula. É a
+  // única da linha com o campo; nas outras ele nem existe.
+  assert.equal(c.tournament, true);
+  assert.deepEqual(vintage.filter((x) => "tournament" in x).map((x) => x.number), ["PR忍-1-R"]);
   assert.equal(c.image, "/assets/cards/naruto/nrt-PRN-001R-v2.webp");
   // É a única: o resto da linha segue "Normal". Trava de propósito: a cópia
   // que alguém marcou fica guardada pelo NOME da variante, então trocar a de

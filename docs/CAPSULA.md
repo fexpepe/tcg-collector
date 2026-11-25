@@ -82,14 +82,15 @@ que faz a linha de um tile bater com a do vizinho.
 Prêmio por participar ou por colocação (Winner, Champion, Finalist, Top 8,
 Prize Wall, Participant), carta de juiz, de liga e os packs de torneio e
 campeonato (Store Championship, Regionals, Judge Pack, Tournament Pack,
-Weekly Play). O catálogo não tem campo pra isso; a regra (`torneio()` no
-`capsula.js`) olha três lugares:
+Weekly Play). A regra (`torneio()` no `capsula.js`) olha quatro lugares; o
+último é um campo opcional do catálogo, pra quando só a curadoria sabe:
 
 | Onde | Exemplos |
 |---|---|
 | Sufixo do nome | `(Champion)`, `(Prize Wall)`, `(Judge Pack Vol. 4)`, `(2023 Regionals Participant)`, `(Masters Cup 2024)` |
 | Set inteiro | Tournament Promotion Cards, Store Championships, Duelist League Promo, Tournament Pack 1, Organized Play Promos, Weekly Play Promos, Friday Night Magic |
 | Raridade | `League` e `Judge` (DBZ CCG) |
+| Campo `tournament: true` | PR忍-1-R うずまきナルト（箔押し）do Naruto 2002, prêmio de torneio no set de promos de sempre (25/11/2026). Na busca digitada não aparece: ela vem do D1, que não guarda o campo |
 
 Fica de fora o **produto vendido** com essas palavras no nome: boosters
 ("Tournament of Power", "World Martial Arts Tournament", "Champions of

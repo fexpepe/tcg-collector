@@ -294,7 +294,11 @@
   //   2. o set inteiro ("Tournament Promotion Cards", "Store Championships",
   //      "Duelist League Promo", "Tournament Pack 1", os "Organized Play" e
   //      "Weekly Play Promos" — o prêmio de participação da loja);
-  //   3. a raridade, onde o catálogo guarda assim (DBZ: League, Judge).
+  //   3. a raridade, onde o catálogo guarda assim (DBZ: League, Judge);
+  //   4. o campo `tournament: true` da carta, quando a curadoria sabe e nada
+  //      no nome, no set nem na raridade diz (a PR忍-1-R do Naruto 2002, no
+  //      set de promos de sempre: pedido do Fernando em 25/11/2026). A busca
+  //      digitada vem do D1, que não guarda o campo: lá ele não aparece.
   // O que tem "Tournament"/"Champion" no nome mas é PRODUTO vendido fica de
   // fora de propósito: boosters ("Tournament of Power", "World Martial Arts
   // Tournament", "Champions of Kamigawa", "Champion's Path"), os decks de
@@ -306,6 +310,7 @@
   const TORNEIO_RARIDADE = /^(league|judge|winner|champion|prize)\b/i;
   function torneio(card) {
     if (!card) return false;
+    if (card.tournament === true) return true;
     if (gruposFinais(String(card.name || "")).grupos.some((g) => TORNEIO_SUFIXO.test(g) && !TORNEIO_SUFIXO_FORA.test(g))) return true;
     const set = String(card.set || "");
     if (TORNEIO_SET.test(set) && !TORNEIO_SET_FORA.test(set)) return true;

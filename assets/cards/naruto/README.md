@@ -118,6 +118,31 @@ Scans do dono no Card Game 2002~2006:
   4× e cantos transparentes no raio relativo dos scans (20,7 px a 520).
   520×726, q90, 149 KB. Lado a lado com o 忍-343 (mesma moldura), as faixas
   do layout batem. Um scan de verdade substitui pela regra do `-v2`.
+- **忍-176 ガマブン太 (`nrt-nin-176`, 巻ノ八, UR)** (2026-11-25): a carta
+  estava sem imagem. Veio já recortada (845×1217) e com os cantos
+  transparentes, mas com franja clara nas bordas retas: 1 px em cima e dos
+  lados e ~5 px embaixo (o brilho médio da linha só estabiliza na 6ª).
+  Aparada pra 843×1211 e reduzida a 640×919, sem esticar: proporção 0,696,
+  como o 忍-365 (0,699); na tela o rodapé aparece inteiro. Alfa = o da
+  origem fechado em 1 px (o recorte dela tinha um halo claro no arco) E o
+  arco dos scans (25,5 px a 640). q80, 84 KB.
+- **忍-177 砂の守鶴 (`nrt-nin-177`, 巻ノ八, UR)** (2026-11-25): a mesma
+  origem do 忍-176 (817×1176, recortada, cantos transparentes) e a mesma
+  receita: franja aparada (2 px dos lados, 3 em cima e embaixo, pra
+  813×1170), 640×921 sem esticar (0,695). A origem tinha um furo
+  transparente de 6×3 px DENTRO da carta, sobre o "B" do "BANDAI" do
+  rodapé, que na tela mostraria o fundo da página: fechado, com a cor dos
+  vizinhos. q80, 74 KB.
+- **忍-354 綱手姫 (`nrt-nin-354`, 巻ノ十五, UR)** (2026-11-25): a carta
+  estava sem imagem. Origem 781×1133, recortada e com cantos transparentes,
+  mas tirada de uma foto: a borda física da carta aparece como um filete
+  dourado-escuro em cima (3–4 linhas) e nas laterais (1–2 colunas) e claro
+  embaixo (2 linhas), e a carta está levemente girada no recorte, então a
+  espessura varia. Aparada pelo maior valor (2, 1, 4, 2 px), ficou com
+  0,690: em 63:88 com cover, a tela cortaria 17 px embaixo, e o texto
+  "BANDAI 2006" do rodapé termina a 16 px da borda. Levada a 640×894
+  (63:88), como o 忍-1; a faixa verde fica a 1–5 px da do 忍-343 escaneado
+  (mesmo layout). Alfa como no 忍-176. q80, 119 KB.
 
 - **忍-19/20/21 do 拡張シート 極意忍法帖 (`nrt-nin-19-alt`, `nrt-nin-20-alt`,
   `nrt-N-021-alt`)** (2026-11-24): as artes alternativas (fundo de céu azul,
