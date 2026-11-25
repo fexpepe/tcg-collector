@@ -91,6 +91,18 @@ Scans do dono no Card Game 2002~2006:
   sombra). Nas bordas retas, o que sobra claro é da própria carta (a caixa
   de texto laranja, o metal do shuriken), não do fundo. 640×902, q80,
   147 KB. Proporção 0,710, sem esticar.
+- **忍-1 うずまきナルト (`nrt-N-001`, 巻ノ壱, N)** (2026-11-24): a
+  impressão original (moldura escura, BANDAI 2002); a do 雪姫忍法帖 é o
+  `nrt-N-001-alt` e segue com o scan dela. A imagem era o scan N-001 do
+  tcg-db. Esta veio como a NXP-002: já recortada rente à carta (1000×1466,
+  cantos em branco) e fora da proporção, 0,682 contra 0,706–0,724 dos scans
+  de verdade do jogo; na tela (cover em 63:88) ela perderia o rodapé com o
+  número. Levada a 640×894 (63:88): na mesma largura, a barra do nome e a
+  faixa vermelha ficam a ~5 px das da PR忍-1 escaneada, com a mesma altura
+  (50 e 24 px contra 49 e 23). O canto branco da origem não é um arco (desce
+  mais pela borda direita), então o alfa é o arco dos scans (25,5 px a 640)
+  E o contorno da carta na origem, com 2 px de folga sobre o fundo: sem
+  isso sobrava uma franja clara no canto de cima à direita. q80, 81 KB.
 
 - **忍-19/20/21 do 拡張シート 極意忍法帖 (`nrt-nin-19-alt`, `nrt-nin-20-alt`,
   `nrt-N-021-alt`)** (2026-11-24): as artes alternativas (fundo de céu azul,
