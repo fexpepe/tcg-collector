@@ -126,6 +126,13 @@ Scans do dono no Card Game 2002~2006:
   como o 忍-365 (0,699); na tela o rodapé aparece inteiro. Alfa = o da
   origem fechado em 1 px (o recorte dela tinha um halo claro no arco) E o
   arco dos scans (25,5 px a 640). q80, 84 KB.
+- **忍-177 砂の守鶴 (`nrt-nin-177`, 巻ノ八, UR)** (2026-11-25): a mesma
+  origem do 忍-176 (817×1176, recortada, cantos transparentes) e a mesma
+  receita: franja aparada (2 px dos lados, 3 em cima e embaixo, pra
+  813×1170), 640×921 sem esticar (0,695). A origem tinha um furo
+  transparente de 6×3 px DENTRO da carta, sobre o "B" do "BANDAI" do
+  rodapé, que na tela mostraria o fundo da página: fechado, com a cor dos
+  vizinhos. q80, 74 KB.
 
 - **忍-19/20/21 do 拡張シート 極意忍法帖 (`nrt-nin-19-alt`, `nrt-nin-20-alt`,
   `nrt-N-021-alt`)** (2026-11-24): as artes alternativas (fundo de céu azul,
