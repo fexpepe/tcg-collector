@@ -33,24 +33,27 @@ test("home: os números da faixa seguem o separador do idioma, no cliente, e o H
   const home = ler("src/home.js");
   assert.match(home, /querySelectorAll\("\.lp-stat strong"\)/);
   assert.match(home, /toLocaleString\(locale, \{ useGrouping: "always" \}\)/);
-  // O número que o robô lê continua no HTML (e o admin-charts.test o trava).
+  // O número que o robô lê continua no HTML, com o ponto de milhar do
+  // português (o admin-charts.test trava o VALOR contra o og-image e o kit).
+  // Aqui só o formato: travar o valor quebrava o teste a cada recontagem
+  // (2026-11-25, 300.000+ → 440.000+).
   const html = ler("index.html");
-  assert.match(html, /<strong>300\.000\+<\/strong>/);
-  assert.match(html, /<strong>2\.800\+<\/strong>/);
+  assert.match(html, /<strong>\d{1,3}(\.\d{3})+\+<\/strong><span data-i18n="home\.lp\.statCards"/);
+  assert.match(html, /<strong>\d{1,3}(\.\d{3})+\+<\/strong><span data-i18n="home\.lp\.statSets"/);
   // O que o Intl devolve pra esses números nos três idiomas (o "always" segura
   // o separador também nos 4 dígitos, onde o es o tiraria).
   const fmt = (loc, n) => n.toLocaleString(loc, { useGrouping: "always" });
-  assert.equal(fmt("en-US", 300000), "300,000");
-  assert.equal(fmt("es-ES", 300000), "300.000");
-  assert.equal(fmt("pt-BR", 300000), "300.000");
-  assert.equal(fmt("en-US", 2800), "2,800");
-  assert.equal(fmt("es-ES", 2800), "2.800");
-  assert.equal(fmt("pt-BR", 2800), "2.800");
-  // Só número puro é reescrito, e o "+" fica onde estava (o "48" não ganha um).
+  assert.equal(fmt("en-US", 440000), "440,000");
+  assert.equal(fmt("es-ES", 440000), "440.000");
+  assert.equal(fmt("pt-BR", 440000), "440.000");
+  assert.equal(fmt("en-US", 4200), "4,200");
+  assert.equal(fmt("es-ES", 4200), "4.200");
+  assert.equal(fmt("pt-BR", 4200), "4.200");
+  // Só número puro é reescrito, e o "+" fica onde estava (o "49" não ganha um).
   const re = /^(\d[\d.]*)(\+?)$/;
-  assert.ok(re.test("300.000+") && re.test("2.800+") && re.test("48"));
+  assert.ok(re.test("440.000+") && re.test("4.200+") && re.test("49"));
   assert.ok(!re.test("R$ · $ · €"));
-  assert.equal(re.exec("48")[2], "");
+  assert.equal(re.exec("49")[2], "");
 });
 
 test("vendas: a data da venda segue o idioma e valor fora do formato ISO sai como veio", () => {
