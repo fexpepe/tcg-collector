@@ -85,7 +85,11 @@ const OPAQUE_TS_CACHE = "tcg-images-opaque-ts-v2"; // TTL das entradas opacas do
 // em cache é o da rede — ver confirmadoHaPouco). Cache Storage e não memória
 // porque o navegador mata o SW ocioso em ~30 s e um global zeraria toda hora.
 const META_CACHE = "tcg-meta-v1";
-const CACHES = [SHELL_CACHE, IMAGE_CACHE, DATA_CACHE, OPAQUE_TS_CACHE, META_CACHE];
+// Cópia das cartas da coleção e das mais vistas (2026-11-27). Quem escreve e lê
+// é a PÁGINA (src/colecao-guardada.js), não este SW: o nome está aqui só pra o
+// activate não apagar a cópia a cada deploy, que é quando ela mais serve.
+const COLECAO_CACHE = "tcg-colecao-v1";
+const CACHES = [SHELL_CACHE, IMAGE_CACHE, DATA_CACHE, OPAQUE_TS_CACHE, META_CACHE, COLECAO_CACHE];
 
 const IMAGE_HOSTS = new Set([
   "img.sleevu.app",               // espelho das imagens de carta no R2 (scripts/mirror-r2.mjs); imutável por URL
@@ -186,6 +190,9 @@ const SHELL_ASSETS = [
   // Fichário (2026-09-16): motor das páginas de bolsos, carregado pelo set e pela Coleção.
   // Resumo (2026-09-16): gráficos de raridade/tipo, carregados pelo set e pela Coleção.
   "src/binder-view.js", "src/insights.js",
+  // As telas com as cartas da pessoa (Coleção, Painel, Explorar, Portfólio,
+  // Desejos, Badges, Fichários) desenham da cópia guardada (2026-11-27).
+  "src/colecao-guardada.js",
   // Vitrine (2026-09-27): o espaço das páginas de catálogo. Offline ele mostra
   // a vitrine da casa (a config vem do cache de dado); sem ele no shell a
   // página funcionaria igual, só sem o espaço.

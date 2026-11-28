@@ -9717,7 +9717,9 @@
       // `parcial`: veio menos carta do que se pediu (ver fetchCollectionApi).
       // Quem grava o ponto do dia no histórico deve PULAR nesse caso, senão
       // registra uma queda de patrimônio que não existiu.
-      return { cards: viaApi.cards, indexesByGame: {}, viaApi: true, parcial: !!viaApi.parcial };
+      // `pricing` vai junto (2026-11-27): a cópia que o src/colecao-guardada.js
+      // guarda no aparelho precisa da tabela desta resposta, não da união.
+      return Object.assign(viaApi, { indexesByGame: {}, viaApi: true, parcial: !!viaApi.parcial });
     }
     // O caminho de chunks também devolve `parcial` (ver loadAcrossGames): os
     // dois caminhos falham diferente, mas o contrato pro gravador é um só.
@@ -12672,6 +12674,7 @@
       pendingWrites.clear();
       try { Object.keys(localStorage).filter((k) => /^tcg-/.test(k)).forEach((k) => localStorage.removeItem(k)); } catch (e) { /* ignora */ }
       try { if (window.indexedDB) indexedDB.deleteDatabase("tcg-collector"); } catch (e) { /* fotos de binder */ }
+      try { await caches.delete("tcg-colecao-v1"); } catch (e) { /* cópia das cartas da coleção (src/colecao-guardada.js) */ }
       try { setSession(null); } catch (e) { /* cookie de sessão não pode sobreviver à exclusão da conta */ }
       forgetLastAccount(); // conta que não existe mais não pode seguir sendo oferecida no login
       window.location.replace(window.location.pathname);

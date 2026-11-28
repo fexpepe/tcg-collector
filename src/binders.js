@@ -619,18 +619,31 @@
     ids.forEach((id) => precoPedido.add(id));
     const porJogo = {};
     ids.forEach((id) => jogosDoId(id).forEach((g) => { (porJogo[g] = porJogo[g] || []).push(id); }));
+    // Cópia guardada (2026-11-28, src/colecao-guardada.js). Os bolsos já
+    // desenham do aparelho (o bolso guarda nome e imagem); o que esperava a
+    // rede eram os PREÇOS, e o Valor total / Já gasto / Falta abriam só com o
+    // preço digitado à mão e pulavam quando a borda respondia. Na primeira
+    // carga de um fichário SEU nesta visita (o fichário inteiro) os preços da
+    // última resposta entram na hora. Uma cópia só, a do último fichário
+    // aberto: abrir outro não acha as cartas dele na cópia e segue pela rede.
+    // As cargas seguintes (carta nova no bolso) pedem só os ids novos e não
+    // mexem na cópia, que tem de ser a do fichário inteiro.
+    const inteiro = !shareId && ids.length === new Set((binder.slots || []).map((slot) => slot && slot.cardId).filter(Boolean)).size;
     const anterior = precoPromise || Promise.resolve();
     precoPromise = anterior.then(() => {
       const antes = window.TCG_PRICING || {};
-      return shared.loadOwnedFast(porJogo).then((r) => {
+      const recebe = (r, repetido) => {
         // A borda TROCA a tabela pela da resposta; mescla de volta o que já havia.
         window.TCG_PRICING = Object.assign({}, antes, window.TCG_PRICING || {});
+        if (repetido) return; // a rede confirmou os preços que a cópia já pôs na tela
         guardaCartas(r.cards); // as cartas do binder ficam: Info e imprimir não pedem de novo
-      });
+        if (!elements.detail.hidden && !shareId) render();
+      };
+      return inteiro
+        ? window.TCGGuardada.carrega(porJogo, "fichario", recebe)
+        : shared.loadOwnedFast(porJogo).then((r) => recebe(r, false));
     }).catch(() => {
       ids.forEach((id) => precoPedido.delete(id)); // falhou: a próxima visita tenta de novo
-    }).then(() => {
-      if (!elements.detail.hidden && !shareId) render();
     });
   }
 

@@ -224,30 +224,56 @@
     shared.markGameFilterChip(pedido);
     shared.applyGameAccent(pedido);
   }
-  Promise.all([shared.loadOwnedFast(idsOwned), shared.loadFxRates()])
-    .then(([catalog]) => {
+  // Cópia guardada (2026-11-28, src/colecao-guardada.js): `recebe` roda duas
+  // vezes. Primeiro com a última resposta da borda, que está no aparelho
+  // (`catalog.guardado`, sempre `parcial`): "Onde está o valor" e "Mais
+  // valiosas" saem do esqueleto sem esperar a rede. Depois com a resposta de
+  // agora; se ela veio igual à cópia (`repetido`), só o ponto do dia e o
+  // gráfico são atualizados.
+  let primeiraPassada = true;
+  let listasPedidas = false;
+  // As cartas de lista/binder que você não tem (2ª etapa) só são pedidas com
+  // a resposta da REDE: pela cópia, uma carta sua que ela ainda não tinha
+  // seria pedida de novo, e pelo caminho que baixa o set inteiro.
+  const pedeListas = () => { if (!listasPedidas) { listasPedidas = true; hidrataListas(); } };
+  const recebe = (catalog, repetido) => {
+    // Carga incompleta (ver fetchCollectionApi e loadAcrossGames — os dois
+    // caminhos marcam `parcial`, e a cópia guardada vem sempre marcada): os
+    // totais não são os de agora, então NÃO grava o ponto do dia — ele
+    // substituiria o de hoje e o gráfico mostraria uma queda que não houve.
+    // Quem decide é a ÚLTIMA carga das suas cartas: as cargas seguintes
+    // (listas, binders) não completam o que faltou aqui.
+    cargaParcial = !!catalog.parcial;
+    if (repetido) {
+      // A rede confirmou o que a cópia já pôs na tela: falta só o ponto do
+      // dia, que o updateChart grava e desenha.
+      updateChart();
+    } else {
       indexaCartas(catalog.cards);
-      // Carga incompleta (ver fetchCollectionApi e loadAcrossGames — os dois
-      // caminhos marcam `parcial`): os totais desta sessão estão
-      // subestimados, então NÃO grava o ponto do dia — ele substituiria o de
-      // hoje e o gráfico mostraria uma queda que não houve. Vale pra sessão
-      // inteira: as cargas seguintes (listas, binders) não completam o que
-      // faltou aqui.
-      if (catalog.parcial) cargaParcial = true;
       GAMES.forEach((g) => ownedByGame[g].migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId))));
       // De novo, agora com as cartas: só com elas dá pra saber o jogo de um
       // slab, então um jogo em que você só tem graded (e ainda sem histórico)
       // entra no filtro aqui. O escopo local é sempre um subconjunto deste.
       const escopo = escopoDeJogos();
       shared.setGameFilterScope(escopo);
-      aplicaPedidoDaUrl(escopo);
+      // O ?filter= da URL só na primeira passada; na segunda os chips foram
+      // refeitos e o que vale é o jogo que a pessoa já está vendo.
+      if (primeiraPassada) aplicaPedidoDaUrl(escopo);
+      else shared.markGameFilterChip(gameFilter);
       carregado = true;
       if (elements.export) elements.export.disabled = false;
       render();
       tiraEsqueletos(false); // o render já trocou (ou escondeu) o conteúdo
-      hidrataListas();
-      hidrataVariacoes();
-    })
+      if (primeiraPassada) hidrataVariacoes();
+      primeiraPassada = false;
+    }
+    if (!catalog.guardado) pedeListas();
+  };
+  // "desejos": a cópia das possuídas + desejadas, a mesma da Lista de Desejos
+  // (as duas telas fazem o mesmo pedido).
+  window.TCGGuardada.carrega(idsOwned, "desejos", recebe, shared.loadFxRates())
+    // Rede fora com a cópia na tela (resolve null): as listas saem com o que há.
+    .then((daRede) => { if (!daRede) pedeListas(); })
     .catch((error) => {
       tiraEsqueletos(true);
       SNAP_ELS.forEach((k) => { if (elements[k] && elements[k].querySelector(".pf-skel-num")) elements[k].textContent = "—"; });

@@ -327,7 +327,11 @@
 
   // ── Hidratação (medalhas de catálogo) ──────────────────────────────────────
   const ownedByGame = Object.fromEntries(games.map((g, i) => [g, stores[i]]));
-  const idsByGame = Object.fromEntries(games.map((g) => [g, ownedByGame[g].knownCardIds()]));
+  // O MESMO pedido da Coleção e do Painel (2026-11-28; antes eram só as
+  // possuídas): com ele a cópia guardada "colecao" serve aqui também, sem uma
+  // segunda cópia da coleção no aparelho. A carta que só existe em slab vem a
+  // mais e sai no filtro `mine`, logo abaixo.
+  const idsByGame = shared.collectionLoadIds(ownedByGame);
   const finish = () => {
     // marca tudo que está desbloqueado como visto (o selo de novo desta visita permanece)
     const earnedDefs = defs.filter((d) => d.cur != null && d.cur >= d.target);
@@ -353,10 +357,23 @@
   // duas conquistas dependem disso — por isso o await do enrichSetTotals logo
   // abaixo e o isVintageCard mais adiante. Sem o total, todo set ficava com
   // total 0 e "set completo" nunca desbloqueava, sem erro nenhum.
-  shared.loadOwnedFast(idsByGame).then(async (catalog) => {
+  //
+  // Cópia guardada (2026-11-28, src/colecao-guardada.js): `calcula` roda duas
+  // vezes. Primeiro com a última resposta da borda, que está no aparelho, e as
+  // medalhas de catálogo saem do "…" sem esperar a rede. Depois com a resposta
+  // de agora; se ela veio igual à cópia (`repetido`), nada é recalculado. O
+  // "novo" de cada medalha não se perde entre as duas: o `seenSet` foi lido
+  // uma vez, lá em cima.
+  let passada = 0;
+  const calcula = async (catalog, repetido) => {
+    if (repetido) return;
+    const vez = ++passada;
     const cards = catalog.cards || [];
     // Completa o setTotal pelo manifest do jogo ANTES de contar os sets.
     await shared.enrichSetTotals(cards);
+    // A resposta da rede chegou enquanto esta passada esperava o total do
+    // set: vale a conta dela, não a da cópia.
+    if (vez !== passada) return;
     const cardGameMap = new Map(cards.map((c) => [c.id, c.game]));
     const owned = shared.mergedCollectionStore(ownedByGame, (id) => cardGameMap.get(id) || "pokemon");
     const seenIds = new Set();
@@ -403,11 +420,13 @@
     set("season90", recent90);
     set("seasonYear", thisYear);
     render(); finish();
-  }).catch(() => {
-    // Catálogo não veio (soluço de rede/CDN): NÃO zerar. Zerar pintava todas as
-    // medalhas de catálogo como "0/target" e o usuário via progresso PERDIDO. Deixar
-    // cur == null as mantém no estado pending ("…", barra vazia) — "ainda não calculado",
-    // que é a verdade. As medalhas que não dependem de catálogo já têm cur e aparecem.
-    render(); finish();
-  });
+  };
+  // Catálogo não veio (soluço de rede/CDN): NÃO zerar. Zerar pintava todas as
+  // medalhas de catálogo como "0/target" e o usuário via progresso PERDIDO. Deixar
+  // cur == null as mantém no estado pending ("…", barra vazia) — "ainda não calculado",
+  // que é a verdade. As medalhas que não dependem de catálogo já têm cur e aparecem.
+  // Com a cópia já calculada, fica a conta dela.
+  const naoVeio = () => { render(); finish(); };
+  window.TCGGuardada.carrega(idsByGame, "colecao", (catalog, repetido) => { calcula(catalog, repetido).catch(naoVeio); })
+    .catch(naoVeio);
 })();

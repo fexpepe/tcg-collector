@@ -65,31 +65,54 @@
   }
   // Filtro de jogo só com os jogos que têm carta na lista de desejos.
   shared.setGameFilterScope(shared.GAME_SLUGS.filter((g) => idsFor(g).length > 0));
-  Promise.all([
-    // Pela BORDA (/api/collection): só as cartas desejadas/possuídas, em vez de
-    // baixar o chunk inteiro de cada set em que há uma delas. A borda não manda
-    // setTotal (fica pro enrichSetTotals, abaixo) nem pokemonName (o filtro de
-    // espécie já tem o speciesName de reserva, igual à Coleção). Borda fora do
-    // ar: os chunks, dentro do loadOwnedFast.
-    shared.loadOwnedFast(Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, idsFor(g)]))),
-    shared.loadFxRates()
-  ])
-    .then(([catalog]) => {
-      cards = catalog.cards;
-      cards.forEach((card) => cardGameMap.set(card.id, card.game));
-      cardsById = new Map(cards.map((card) => [card.id, card]));
-      Object.keys(ownedByGame).forEach((g) =>
-        ownedByGame[g].migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId))));
-      hydrateFilters();
-      render();
-      // Sem o setTotal da borda o código sai "063" em vez de "063/197": completa
-      // pelo manifest do jogo e redesenha (mesmo padrão de Explorar e Cartas).
-      shared.enrichSetTotals(cards).then((mudou) => { if (mudou) render(); }).catch(() => { /* fica o número sozinho */ });
-      renderDropNotice(); // quedas de preço da semana (histórico do build; async)
-      renderTargetNotice(); // cartas que atingiram o preço-alvo do usuário
-      renderSellers();    // trade matching: quem tem suas desejadas à venda (async)
-      preview.openFromUrl(); // ?card=<id>: reabre o popup (ver collection.js)
-    })
+  // Pela BORDA (/api/collection): só as cartas desejadas/possuídas, em vez de
+  // baixar o chunk inteiro de cada set em que há uma delas. A borda não manda
+  // setTotal (fica pro enrichSetTotals, abaixo) nem pokemonName (o filtro de
+  // espécie já tem o speciesName de reserva, igual à Coleção). Borda fora do
+  // ar: os chunks, dentro do loadOwnedFast.
+  //
+  // Cópia guardada (2026-11-28, src/colecao-guardada.js): `recebe` roda duas
+  // vezes. Primeiro com a última resposta da borda, que está no aparelho, e a
+  // grade sai do esqueleto sem esperar a rede. Depois com a resposta de agora;
+  // se ela veio igual à cópia (`repetido`), nada é redesenhado.
+  let primeiraPassada = true;
+  let abriuDaUrl = false;
+  const recebe = (catalog, repetido) => {
+    if (repetido) return;
+    cards = catalog.cards;
+    cards.forEach((card) => cardGameMap.set(card.id, card.game));
+    cardsById = new Map(cards.map((card) => [card.id, card]));
+    Object.keys(ownedByGame).forEach((g) =>
+      ownedByGame[g].migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId))));
+    // Na segunda passada só as opções dos filtros: o hydrateFilters reporia o
+    // idioma padrão por cima do que a pessoa já escolheu.
+    if (primeiraPassada) hydrateFilters(); else refreshFilters();
+    render();
+    // Sem o setTotal da borda o código sai "063" em vez de "063/197": completa
+    // pelo manifest do jogo e redesenha (mesmo padrão de Explorar e Cartas).
+    // `cards` pode ter sido trocado pela passada seguinte: só redesenha se
+    // estas ainda são as cartas da tela.
+    const destas = cards;
+    shared.enrichSetTotals(destas).then((mudou) => { if (mudou && cards === destas) render(); }).catch(() => { /* fica o número sozinho */ });
+    renderDropNotice(); // quedas de preço da semana (histórico do build; async)
+    renderTargetNotice(); // cartas que atingiram o preço-alvo do usuário
+    // Trade matching (quem tem suas desejadas à venda; async) consulta o
+    // Supabase pelos ids da lista, que não mudam entre as duas passadas.
+    if (primeiraPassada) renderSellers();
+    primeiraPassada = false;
+    // ?card=<id>: reabre o popup (ver collection.js). Uma vez só: a carta que
+    // a cópia não tinha abre na passada da rede.
+    if (!abriuDaUrl) abriuDaUrl = preview.openFromUrl();
+  };
+  // O MESMO pedido do Portfólio (possuídas + desejadas + as que estão em slab;
+  // antes iam só as duas primeiras): com ele as duas telas dividem a cópia
+  // "desejos", em vez de cada uma guardar a sua. A carta que só existe em slab
+  // vem a mais e não aparece: a grade daqui só mostra o que está na lista.
+  const pedido = shared.collectionLoadIds(
+    ownedByGame,
+    Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, wishlistByGame[g].knownCardIds()]))
+  );
+  window.TCGGuardada.carrega(pedido, "desejos", recebe, shared.loadFxRates())
     .catch((error) => {
       shared.mostraErroDeCatalogo(elements.empty, error);
       elements.empty.hidden = false;

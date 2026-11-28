@@ -182,31 +182,44 @@
   }
 
   // Resolve as cartas do ranking e deixa as mais vistas prontas pra pintar.
-  async function preparaTop(tops, games) {
+  function preparaTop(tops, games) {
     const idsByGame = {};
     games.forEach((g) => { idsByGame[g] = tops.filter((x) => x.game === g).map((x) => x.id); });
+    const pinta = (catalog, repetido) => {
+      // A rede confirmou as cartas que a cópia já pôs na grade.
+      if (repetido) return;
+      shared.enrichSetTotals(catalog.cards || []).then((mudou) => { if (mudou) atualizaRotulos(); }).catch(() => { /* fica o número sozinho */ });
+      const byId = new Map((catalog.cards || []).map((c) => [c.id, c]));
+      const pairs = [];
+      for (const { id } of tops) {
+        const card = byId.get(id);
+        if (!card) continue;
+        // registra pro preview/posse funcionarem antes da 1ª busca (o
+        // ensureCatalog depois reescreve cardsById com o catálogo completo).
+        cardGameMap.set(card.id, card.game);
+        cardsById.set(card.id, card);
+        pairs.push({ card, variant: shared.defaultVariant(card) });
+      }
+      if (pairs.length < 4) return;
+      topViewedPairs = pairs;
+      topViewedReady = true;
+      if (!isSearching()) render({ resetCount: true });
+    };
     // Pela BORDA (/api/collection: só as ~30 cartas, já com preço). Antes a
     // carga cruzada injetava, por jogo das mais vistas, o manifest e o
     // indexes.generated.js INTEIRO (663 KB no Pokémon, 514 KB no Magic) e os
     // chunks dos sets — 1,5 MB de dado medido em produção só pra abrir o
     // Explorar. Borda fora do ar: os chunks, dentro do loadOwnedFast.
-    const [catalog] = await Promise.all([shared.loadOwnedFast(idsByGame), cambioPronto]);
-    shared.enrichSetTotals(catalog.cards || []).then((mudou) => { if (mudou) atualizaRotulos(); }).catch(() => { /* fica o número sozinho */ });
-    const byId = new Map((catalog.cards || []).map((c) => [c.id, c]));
-    const pairs = [];
-    for (const { id } of tops) {
-      const card = byId.get(id);
-      if (!card) continue;
-      // registra pro preview/posse funcionarem antes da 1ª busca (o
-      // ensureCatalog depois reescreve cardsById com o catálogo completo).
-      cardGameMap.set(card.id, card.game);
-      cardsById.set(card.id, card);
-      pairs.push({ card, variant: shared.defaultVariant(card) });
-    }
-    if (pairs.length < 4) return;
-    topViewedPairs = pairs;
-    topViewedReady = true;
-    if (!isSearching()) render({ resetCount: true });
+    //
+    // 2026-11-27: com o ranking guardado sobrava este POST a cada abertura
+    // (0,63 s no 4G lento, com a grade em esqueleto). As cartas da última
+    // resposta ficam no aparelho (src/colecao-guardada.js) e pintam na hora; a
+    // rede confere por trás e só redesenha se algo mudou. Quem chama segue
+    // adiante na PRIMEIRA pintura, venha ela da cópia ou da rede.
+    return new Promise((segue) => {
+      window.TCGGuardada.carrega(idsByGame, "explorar", (catalog, repetido) => { pinta(catalog, repetido); segue(); }, cambioPronto)
+        .then(segue, segue);
+    });
   }
 
   (async function loadTopViewed() {

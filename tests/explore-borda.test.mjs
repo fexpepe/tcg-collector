@@ -19,7 +19,10 @@ const raiz = join(dirname(fileURLToPath(import.meta.url)), "..");
 const explore = readFileSync(join(raiz, "src/explore.js"), "utf8");
 
 test("as mais vistas vêm pela borda, não pela carga cruzada com o índice inteiro", () => {
-  assert.ok(explore.includes("shared.loadOwnedFast(idsByGame)"));
+  // Desde 2026-11-27 o pedido passa pela cópia guardada no aparelho
+  // (src/colecao-guardada.js), que é quem chama o loadOwnedFast.
+  assert.ok(explore.includes('window.TCGGuardada.carrega(idsByGame, "explorar",'));
+  assert.ok(readFileSync(join(raiz, "src/colecao-guardada.js"), "utf8").includes("shared.loadOwnedFast(pedido)"));
   assert.ok(!explore.includes("shared.loadOwnedAcrossGames(idsByGame)"));
 });
 
