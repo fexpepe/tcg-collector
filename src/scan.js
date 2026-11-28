@@ -2068,7 +2068,7 @@
   function valorDe(card) {
     const v = precoDe(card);
     if (!v) return "";
-    const n = v.value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const n = v.value.toLocaleString(shared.getLocale(), { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     return (v.currency === "BRL" ? "R$ " : v.currency === "USD" ? "US$ " : "€ ") + n;
   }
 
@@ -2625,7 +2625,7 @@
     const pendentes = (it) => Math.max(0, it.qtd - it.adicionadas);
     const varianteDaSessao = (card) => varianteDe(shared.cardVariants(card), prefVar);
     function fmtPreco(v, casas) {
-      const n = v.value.toLocaleString(undefined, { minimumFractionDigits: casas, maximumFractionDigits: casas });
+      const n = v.value.toLocaleString(shared.getLocale(), { minimumFractionDigits: casas, maximumFractionDigits: casas });
       return (v.currency === "BRL" ? "R$ " : v.currency === "USD" ? "US$ " : "€ ") + n;
     }
     function totalLista() {

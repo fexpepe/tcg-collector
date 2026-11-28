@@ -64,7 +64,7 @@
           outras.cartas ? t("ptn.others", { n: fmt(outras.cartas), c: fmt(outras.cliques) }) : "")}`
         : `<p class="empty-state">${esc(t("ptn.empty"))}</p>`}
       <p class="admin-note">${esc(t("ptn.method"))}</p>
-      <p class="admin-note">${esc(t("ptn.updated", { data: new Date(r.gerado).toLocaleString() }))}</p>`;
+      <p class="admin-note">${esc(t("ptn.updated", { data: new Date(r.gerado).toLocaleString(shared.getLocale()) }))}</p>`;
   }
 
   async function carrega() {
