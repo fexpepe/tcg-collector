@@ -20,7 +20,8 @@
 //    do Suruga-ya barra robô e pede verificação no navegador; a busca do
 //    Rakuten responde a fetch comum e o robots.txt dela libera a paginação
 //    (?p=). Só aparece o que a loja tem anunciado, então cada coleta SOMA à
-//    anterior (nunca regride).
+//    anterior (nunca regride). Desde 28/11 também o próprio site, lido no
+//    navegador (a categoria inteira, com os esgotados): ver leSurugaSite.
 //
 // Vocabulário → sigla do catálogo:
 //   - Card Battle (nao-yoshi): 爆 = 爆レア = UR, 激 = 激レア = SR, Ｒ, Ｎ — a
@@ -45,6 +46,7 @@
 //   node scripts/naruto-dc-raridade.mjs              # as duas fontes
 //   node scripts/naruto-dc-raridade.mjs --nao-yoshi  # só relê o Wayback
 //   node scripts/naruto-dc-raridade.mjs --rakuten    # só soma uma coleta nova do Rakuten
+//   node scripts/naruto-dc-raridade.mjs --suruga-site <titulos.json>  # soma uma coleta do site
 import { readFile, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { nomeChave, mesmoNome } from "./naruto-raridade-hinokunian.mjs";
@@ -91,7 +93,8 @@ export function parseNaoYoshi(html, { de, ate } = {}) {
   return out;
 }
 
-const SIGLAS = new Set(["N", "R", "SR", "UR", "NR", "WNR"]);
+// As siglas que o nao-yoshi escreve na Mission e na Cross.
+const SIGLAS_NAO_YOSHI = new Set(["N", "R", "SR", "UR", "NR", "WNR"]);
 // Linha crua → [número do catálogo, sigla, nome], ou null quando não entra.
 export function siglaNaoYoshi([bruto, rar, nome]) {
   // Verso branco, mesma carta: no Card Battle o 白 vem colado no número
@@ -110,7 +113,7 @@ export function siglaNaoYoshi([bruto, rar, nome]) {
     const sigla = { "爆": "UR", "激": "SR", R: "R", N: "N" }[rar] || (rar === "-" && n >= 141 && n <= 171 ? "N" : "");
     return sigla ? [num, sigla, nome] : null;
   }
-  return SIGLAS.has(rar) ? [num, rar, nome] : null;
+  return SIGLAS_NAO_YOSHI.has(rar) ? [num, rar, nome] : null;
 }
 
 // Suruga-ya: o mesmo vocabulário do sync da Formation/Cross, mais os nomes
@@ -126,23 +129,40 @@ export const RARIDADE_SURUGA = {
   "レア": "R",
   "ノーマル": "N"
 };
-// Página de busca do Rakuten → [[número, sigla, nome]]. Raridade fora do
-// vocabulário conhecido vai crua (o relatório do script mostra).
+// As siglas que o catálogo usa. Raridade de anúncio fora disso (o Suruga-ya
+// tem nomes de raridade especial da Formation, "暁レア", "爆破創造レア", que
+// nenhuma outra fonte explica) fica guardada crua no snapshot — o relatório
+// do script mostra — mas NÃO vai pro catálogo (completaRaridade).
+export const SIGLAS = new Set(["N", "R", "SR", "UR", "NR", "WNR", "HR", "NP", "SP", "P", "Silver Holo", "Design Rare"]);
+
+// Número, raridade e nome de um título do Suruga-ya → [número, sigla, nome],
+// ou null. Card Battle: só a impressão de estreia (DN-120T). As relistagens
+// (T2–T8, TC2, TJ…) podem ter outra raridade, e a do catálogo é a da estreia.
+function linhaSuruga(num, rar, nome) {
+  if (/^DN-/.test(num) && !/^DN-\d{3}T$/.test(num)) return null;
+  const r = rar.trim();
+  // O mesmo título volta no JSON da página do Rakuten com as aspas
+  // escapadas: a barra do escape não é do nome.
+  return [num.replace(/^(DN-\d{3})T$/, "$1"), RARIDADE_SURUGA[r] || r, nome.replace(/\\+$/, "").trim()];
+}
+
+// Página de busca do Rakuten → [[número, sigla, nome]].
 export function parseRakuten(html) {
   const out = [];
   const re = /NARUTOデータカードダス\s*([A-Za-z]{1,5}-[0-9A-Za-z]+)\s*\[([^\]]+)\]\s*[：:]\s*([^"<]{1,60})/g;
   for (const m of html.normalize("NFKC").matchAll(re)) {
-    // Card Battle: só a impressão de estreia (DN-120T). As relistagens
-    // (T2–T8, TC2, TJ…) podem ter outra raridade, e a do catálogo é a da
-    // estreia.
-    if (/^DN-/.test(m[1]) && !/^DN-\d{3}T$/.test(m[1])) continue;
-    const num = m[1].replace(/^(DN-\d{3})T$/, "$1");
-    const rar = m[2].trim();
-    // O mesmo título volta no JSON da página com as aspas escapadas: a barra
-    // do escape não é do nome.
-    out.push([num, RARIDADE_SURUGA[rar] || rar, m[3].replace(/\\+$/, "").trim()]);
+    const l = linhaSuruga(m[1], m[2], m[3]);
+    if (l) out.push(l);
   }
   return out;
+}
+
+// Título de anúncio do próprio site do Suruga-ya, sem o prefixo que a loja
+// põe no Rakuten: "NF-185[SR]：自来也" (às vezes com o NF em largura cheia,
+// "ＮＦM-005[R]：…"). Lido no navegador, ver --suruga-site.
+export function parseTituloSuruga(titulo) {
+  const m = String(titulo || "").normalize("NFKC").trim().match(/^([A-Za-z]{1,5}-[0-9A-Za-z]+)\s*\[([^\]]+)\]\s*[：:]\s*(.{1,60})$/);
+  return m ? linhaSuruga(m[1], m[2], m[3]) : null;
 }
 
 // Aplica nas cartas SEM raridade, só com número e nome batendo (a mesma
@@ -154,6 +174,8 @@ export function parseRakuten(html) {
 //   - Suruga-ya e nao-yoshi com raridades diferentes: a carta fica sem.
 //     Nas 141 em que os dois falam, discordam em 4 (DN-152 e DN-153, que
 //     parecem trocadas numa das listas, NM-144 e NM-180).
+// Raridade fora das SIGLAS não é aplicada, mas conta pra trava da paralela
+// (o "暁レア" anunciado junto da normal do mesmo número também é outra carta).
 // Devolve as contagens e os conflitos pro log do sync.
 export function completaRaridade(cards, snap, { nomeDe = (c) => c.nameJp || c.name } = {}) {
   const indice = (linhas) => {
@@ -176,7 +198,7 @@ export function completaRaridade(cards, snap, { nomeDe = (c) => c.nameJp || c.na
     const meu = nomeChave(nomeDe(c));
     const a = escolhe(su.get(c.number) || [], meu);
     const b = escolhe(ny.get(c.number) || [], meu);
-    const doSuruga = a && !a.ambigua ? a.rar : "";
+    const doSuruga = a && !a.ambigua && SIGLAS.has(a.rar) ? a.rar : "";
     if (doSuruga && b && doSuruga !== b.rar) { out.conflitos.push(`${c.number} (Suruga-ya ${doSuruga} × nao-yoshi ${b.rar})`); continue; }
     if (doSuruga) { c.rarity = doSuruga; out.suruga++; } else if (b) { c.rarity = b.rar; out.naoYoshi++; }
   }
@@ -240,22 +262,63 @@ async function leRakuten(anteriores) {
   return [...linhas.values()].sort((x, y) => x[0].localeCompare(y[0], "en", { numeric: true }) || x[2].localeCompare(y[2]));
 }
 
+// Junta linhas novas às do snapshot, sem repetir e sem tirar nenhuma.
+const somaLinhas = (anteriores, novas) => {
+  const m = new Map((anteriores || []).map((l) => [l.join("|"), l]));
+  for (const l of novas) if (!m.has(l.join("|"))) m.set(l.join("|"), l);
+  return [...m.values()].sort((x, y) => x[0].localeCompare(y[0], "en", { numeric: true }) || x[2].localeCompare(y[2]));
+};
+
+// Coleta no próprio site do Suruga-ya (2026-11-28): a busca do Rakuten só
+// mostra o que a loja tem à venda lá e corta pedido depois de uns 60
+// (503 "アクセスが集中しております"); o site tem a categoria inteira, com os
+// esgotados (categoria 501080113, ~590 anúncios em 25 páginas). Só que ele
+// pede verificação de navegador, então a coleta é no navegador — uma página
+// a cada 30 s, o Crawl-delay do robots.txt dele, que libera /search?… — e
+// o resultado (lista de títulos, ou de { t } como no naruto-dc-suruga.json)
+// entra por aqui:
+//   node scripts/naruto-dc-raridade.mjs --suruga-site <titulos.json>
+async function leSurugaSite(arquivo, anteriores) {
+  const lista = JSON.parse(await readFile(arquivo, "utf8"));
+  const novas = lista.map((x) => parseTituloSuruga(typeof x === "string" ? x : x.t)).filter(Boolean);
+  const out = somaLinhas(anteriores, novas);
+  console.log(`  Suruga-ya (site): ${lista.length} títulos, ${novas.length} com número e raridade, ${out.length - (anteriores || []).length} linhas novas (${out.length} no total).`);
+  return out;
+}
+
+// Anúncios do Suruga-ya que a própria estrutura do set desmente, e que o
+// nao-yoshi também contradiz. Ficam FORA do snapshot: no conflito eles
+// apagariam a raridade certa (2026-11-28, coleta do site):
+//   - DN-140 [N] 暗部のカカシ: a スペシャルコンボシート２ (DN-136–140) é só
+//     de R — as outras quatro são R pelas duas fontes, e o nao-yoshi dá R;
+//   - NM-084 [N] うちはイタチ: com ela SR, o 第2章 da Mission fecha 2 UR,
+//     6 SR e 12 R, a mesma conta do 第1章 e do 第3章; o nao-yoshi dá SR.
+// Os outros conflitos (DN-152/153, NM-144/180) não têm set completo que
+// desempate: seguem sem raridade.
+export const ERROS_SURUGA = new Set(["DN-140|N|暗部のカカシ", "NM-084|N|うちはイタチ"]);
+
 async function run() {
-  const so = process.argv.includes("--nao-yoshi") ? "nao" : process.argv.includes("--rakuten") ? "rakuten" : "";
+  const arg = process.argv.indexOf("--suruga-site");
+  const so = arg > 0 ? "site" : process.argv.includes("--nao-yoshi") ? "nao" : process.argv.includes("--rakuten") ? "rakuten" : "";
   const atual = JSON.parse(await readFile(SNAP, "utf8").catch(() => "null")) || {};
-  const naoYoshi = so === "rakuten" ? atual.naoYoshi : await leNaoYoshi();
+  const naoYoshi = so === "rakuten" || so === "site" ? atual.naoYoshi : await leNaoYoshi();
   if (!naoYoshi) { process.exitCode = 1; return; }
-  const suruga = so === "nao" ? atual.suruga : await leRakuten(atual.suruga);
+  const suruga = so === "site" ? await leSurugaSite(process.argv[arg + 1], atual.suruga)
+    : so === "nao" ? atual.suruga : await leRakuten(atual.suruga);
   const snap = {
-    _: "Raridade do Data Carddass NARUTO por número, pras cartas que as outras fontes deixaram sem. naoYoshi = colunas レア do blog nao-yoshi (Wayback, capturas em fontes); suruga = títulos do Suruga-ya na busca do Rakuten (soma a cada coleta). [número, sigla, nome]. Gerado por scripts/naruto-dc-raridade.mjs; os syncs só aplicam em carta sem raridade, com número E nome batendo.",
+    _: "Raridade do Data Carddass NARUTO por número, pras cartas que as outras fontes deixaram sem. naoYoshi = colunas レア do blog nao-yoshi (Wayback, capturas em fontes); suruga = títulos de anúncio do Suruga-ya, na busca do Rakuten e no próprio site (soma a cada coleta). [número, sigla, nome]. Gerado por scripts/naruto-dc-raridade.mjs; os syncs só aplicam em carta sem raridade, com número E nome batendo, e só raridade das SIGLAS.",
     updatedAt: new Date().toISOString().slice(0, 10),
-    fontes: [...NAO_YOSHI.map((p) => `${p.ts} ${p.url}`), "https://search.rakuten.co.jp/search/mall/NARUTOデータカードダス <família>/"],
+    fontes: [
+      ...NAO_YOSHI.map((p) => `${p.ts} ${p.url}`),
+      "https://search.rakuten.co.jp/search/mall/NARUTOデータカードダス <família>/",
+      "https://www.suruga-ya.jp/search?category=501080113&search_word=&page=<n> (no navegador)"
+    ],
     naoYoshi,
-    suruga: suruga || []
+    suruga: (suruga || []).filter((l) => !ERROS_SURUGA.has(l.join("|")))
   };
   await writeFile(SNAP, JSON.stringify(snap, null, 1) + "\n", "utf8");
-  const cru = snap.suruga.filter(([, r]) => !/^(N|R|SR|UR|NR|WNR|HR|NP|SP|P|Silver Holo|Design Rare)$/.test(r));
-  if (cru.length) console.log(`  raridades do Suruga-ya fora do vocabulário: ${[...new Set(cru.map(([, r]) => r))].join(", ")}`);
+  const cru = snap.suruga.filter(([, r]) => !SIGLAS.has(r));
+  if (cru.length) console.log(`  raridades do Suruga-ya fora das SIGLAS (guardadas, não aplicadas): ${cru.map(([n, r]) => `${n} ${r}`).join(", ")}`);
   console.log(`Gravado ${fileURLToPath(SNAP)} — nao-yoshi ${snap.naoYoshi.length}, Suruga-ya ${snap.suruga.length}.`);
 }
 

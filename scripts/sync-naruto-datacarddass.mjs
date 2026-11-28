@@ -262,9 +262,9 @@ async function run() {
     console.log(`  ${s.name}: ${cartas.length} cartas (lista oficial no Wayback).`);
   }
   // Por último, o que segue sem raridade (Card Battle 第5弾 em diante, a
-  // Mission e os 疾風クリアカード): Suruga-ya no Rakuten, depois o nao-yoshi.
+  // Mission e os 疾風クリアカード): anúncios do Suruga-ya, depois o nao-yoshi.
   const rarDc = completaRaridade(line, await readSnapshot(SNAP_RARIDADE_DC), { nomeDe: (c) => c.name });
-  console.log(`  raridade completada: ${rarDc.suruga} pelo Suruga-ya no Rakuten, ${rarDc.naoYoshi} pelo nao-yoshi; ${line.filter((c) => !c.rarity).length} seguem sem.`);
+  console.log(`  raridade completada: ${rarDc.suruga} pelos anúncios do Suruga-ya, ${rarDc.naoYoshi} pelo nao-yoshi; ${line.filter((c) => !c.rarity).length} seguem sem.`);
   if (rarDc.conflitos.length) console.log(`  fontes discordando, carta fica sem: ${rarDc.conflitos.join(", ")}`);
 
   const setsExtras = extras.filter((e) => e.cartas.length).length;

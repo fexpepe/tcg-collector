@@ -4,7 +4,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { parseNaoYoshi, siglaNaoYoshi, parseRakuten, completaRaridade } from "../scripts/naruto-dc-raridade.mjs";
+import { parseNaoYoshi, siglaNaoYoshi, parseRakuten, parseTituloSuruga, completaRaridade, SIGLAS, ERROS_SURUGA } from "../scripts/naruto-dc-raridade.mjs";
 
 // Post do Card Battle: coluna 種 antes do número. Post da Cross: sem ela.
 const linhaCb = (num, nome, rar) => `<TR><TD>-</TD><TD>${num}</TD><TD>${nome}</TD><TD>${rar}</TD><TD>A</TD><TD>NR9AB4Y86</TD><TD>GS</TD><TD>stop</TD></TR>`;
@@ -53,6 +53,31 @@ test("Rakuten: título do Suruga-ya vira [número, sigla, nome]; relistagem do C
   ]);
 });
 
+test("Suruga-ya (site): título sem o prefixo do Rakuten, NF em largura cheia, relistagem e selo de preço de fora", () => {
+  assert.deepEqual(parseTituloSuruga("NF-185[SR]：自来也"), ["NF-185", "SR", "自来也"]);
+  assert.deepEqual(parseTituloSuruga("ＮＦM-005[R]：木ノ葉VS暁"), ["NFM-005", "R", "木ノ葉VS暁"]);
+  assert.deepEqual(parseTituloSuruga("NF-002[ホログラフィックレア]：うずまきナルト(疾風伝)（Cランク）"), ["NF-002", "HR", "うずまきナルト(疾風伝)(Cランク)"]);
+  assert.deepEqual(parseTituloSuruga("DN-067T[爆レア]：うちはイタチ"), ["DN-067", "UR", "うちはイタチ"]);
+  assert.deepEqual(parseTituloSuruga("NF-193[暁レア]：うちはイタチ"), ["NF-193", "暁レア", "うちはイタチ"], "fica crua no snapshot");
+  assert.equal(parseTituloSuruga("DN-025T2[N]：大蛇丸"), null);
+  assert.equal(parseTituloSuruga("値下げ"), null);
+  assert.equal(parseTituloSuruga("NARUTO 3ポケットバインダー"), null);
+});
+
+test("completaRaridade: raridade fora das SIGLAS não entra, mas a normal anunciada junto dela fica ambígua", () => {
+  const cartas = [
+    { number: "NF-193", name: "うちはイタチ", rarity: "" },
+    { number: "NF-139", name: "デイダラ", rarity: "" },
+    { number: "NF-140", name: "サソリ", rarity: "" }
+  ];
+  const snap = {
+    suruga: [["NF-193", "暁レア", "うちはイタチ"], ["NF-139", "爆破創造レア", "デイダラ"], ["NF-139", "UR", "デイダラ"], ["NF-140", "SR", "サソリ"]],
+    naoYoshi: []
+  };
+  assert.deepEqual(completaRaridade(cartas, snap, { nomeDe: (c) => c.name }), { suruga: 1, naoYoshi: 0, conflitos: [] });
+  assert.deepEqual(cartas.map((c) => c.rarity), ["", "", "SR"]);
+});
+
 test("completaRaridade: só carta vazia; as duas fontes discordando = fica sem; N e NP do mesmo nome no Suruga-ya = ele não conta", () => {
   const cartas = [
     { number: "NF-001", name: "うずまきナルト(疾風伝)", rarity: "" },
@@ -82,6 +107,10 @@ test("snapshot versionado: Card Battle 第5〜8弾 inteiro, sem relistagem abaix
   const dn = new Set(snap.naoYoshi.filter(([n]) => /^DN-/.test(n)).map(([n]) => n));
   for (let i = 108; i <= 249; i++) assert.ok(dn.has(`DN-${i}`), `falta DN-${i}`);
   assert.equal(dn.size, 142);
-  const siglas = new Set([...snap.naoYoshi, ...snap.suruga].map(([, r]) => r));
-  for (const s of siglas) assert.match(s, /^(N|R|SR|UR|NR|WNR|HR|NP|SP|P|Silver Holo|Design Rare)$/, `sigla fora do vocabulário: ${s}`);
+  for (const [n, r] of snap.naoYoshi) assert.ok(SIGLAS.has(r), `nao-yoshi com sigla fora do vocabulário: ${n} ${r}`);
+  // Do Suruga-ya pode ficar raridade crua (não é aplicada), mas só nome por
+  // extenso em japonês: sigla latina desconhecida é mapeamento que faltou.
+  for (const [n, r] of snap.suruga) assert.ok(SIGLAS.has(r) || !/^[\x20-\x7e]+$/.test(r), `Suruga-ya com sigla desconhecida: ${n} ${r}`);
+  // Os anúncios que a estrutura do set desmente não voltam numa coleta nova.
+  for (const l of snap.suruga) assert.ok(!ERROS_SURUGA.has(l.join("|")), `anúncio desmentido no snapshot: ${l.join(" ")}`);
 });

@@ -36,7 +36,7 @@ const OFICIAL = new URL("data/vintage/naruto-dc-oficial.json", ROOT);
 // Raridade lida nos PDFs de checklist oficiais (estrelas do 第5章–第7章 da
 // Cross); vale só onde o Suruga-ya não tem a carta. Ver o "_" do arquivo.
 const CHECKLISTS = new URL("data/vintage/naruto-dc-checklists.json", ROOT);
-// Raridade de fora pras cartas que sobram sem (Suruga-ya no Rakuten e o blog
+// Raridade de fora pras cartas que sobram sem (anúncios do Suruga-ya e o blog
 // do nao-yoshi): ver scripts/naruto-dc-raridade.mjs.
 const RARIDADE_DC = new URL("data/vintage/naruto-dc-raridade.json", ROOT);
 
@@ -193,10 +193,10 @@ async function run() {
   });
 
   // O que ficou sem raridade depois do Suruga-ya do snapshot e do PDF:
-  // Suruga-ya pela busca do Rakuten e o blog do nao-yoshi (naruto-dc-
+  // anúncios do Suruga-ya (Rakuten e site) e o blog do nao-yoshi (naruto-dc-
   // raridade.mjs, 2026-11-28). Só carta vazia, só com número e nome batendo.
   const rarDc = completaRaridade(cardsNew, await readSnapshot(RARIDADE_DC), { nomeDe: (c) => c.name });
-  console.log(`  raridade completada: ${rarDc.suruga} pelo Suruga-ya no Rakuten, ${rarDc.naoYoshi} pelo nao-yoshi; ${cardsNew.filter((c) => !c.rarity).length} seguem sem.`);
+  console.log(`  raridade completada: ${rarDc.suruga} pelos anúncios do Suruga-ya, ${rarDc.naoYoshi} pelo nao-yoshi; ${cardsNew.filter((c) => !c.rarity).length} seguem sem.`);
   if (rarDc.conflitos.length) console.log(`  fontes discordando, carta fica sem: ${rarDc.conflitos.join(", ")}`);
 
   const kept = existing.filter((c) => c && !/^nrt-(nx|nf)-/.test(String(c.id)));
