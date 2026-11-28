@@ -1394,12 +1394,23 @@
   // cartas (assets da TCGdex levam o idioma na URL; se a imagem não existir no
   // idioma escolhido, um onerror volta para a URL original do catálogo).
   // ---------------------------------------------------------------------------
+  // Idiomas do navegador na ordem de preferência: é a mesma lista que o
+  // theme.js varre pra escolher o idioma da interface, e daqui sai a REGIÃO
+  // (2026-11-28). O texto em espanhol serve a América Latina inteira (a
+  // tradução evita regionalismos de propósito), mas número e data seguem o
+  // costume de cada país: es-MX escreve 1,234.56 e es-AR/es-ES, 1.234,56.
+  const navTags = [].concat(Array.from(navigator.languages || []), navigator.language || "");
+  const navTag = (re) => navTags.find((c) => re.test(c)) || "";
   const UI_LANGUAGES = [
     { code: "pt", label: "Português (BR)", htmlLang: "pt-BR", locale: "pt-BR" },
     { code: "en", label: "English", htmlLang: "en", locale: "en-US" },
-    // es-ES como locale de FORMATO (datas/números); o texto serve LatAm igual —
-    // a tradução evita regionalismos de propósito.
-    { code: "es", label: "Español", htmlLang: "es", locale: "es-ES" }
+    // Locale de FORMATO (datas/números) = o 1º "es-XX" do navegador; "es" puro,
+    // "es-ES" e quem não tem espanhol na lista (escolheu o idioma na mão) ficam
+    // em es-ES. Tag que o Intl recusa também cai em es-ES, senão o shared.js
+    // inteiro morreria no MONEY_DEC. Data e número saem do MESMO getLocale().
+    { code: "es", label: "Español", htmlLang: "es", locale: (function () {
+      try { return Intl.NumberFormat.supportedLocalesOf(navTag(/^es-/i))[0] || "es-ES"; } catch (e) { return "es-ES"; }
+    })() }
   ];
   const languageStorageKey = "tcg-collector-ui-lang-v1";
   const currentLanguage = (function () {
@@ -1467,10 +1478,14 @@
   // em inglês. Só a exibição muda: todo valor guardado leva a própria moeda
   // (cur) e o histórico é gravado em BRL. Como no idioma, o padrão NÃO é
   // gravado: só a escolha explícita (setCurrency).
+  // Exceção (2026-11-28): português de PORTUGAL (o 1º "pt" do navegador é
+  // pt-PT) abre em euro. Era o único caso em que a moeda padrão não era a do
+  // país nem a do hobby. O texto segue o português do site e o formato de
+  // número segue pt-BR; só a moeda muda. Os outros pt seguem em real.
   const currentCurrency = (function () {
     const saved = localStorage.getItem(currencyStorageKey);
     if (CURRENCIES.includes(saved)) return saved;
-    return currentLanguage === "pt" ? "BRL" : "USD";
+    return currentLanguage === "pt" ? (/^pt-pt$/i.test(navTag(/^pt/i)) ? "EUR" : "BRL") : "USD";
   })();
   function getCurrency() {
     return currentCurrency;

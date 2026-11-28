@@ -1075,7 +1075,7 @@
 
     // Data de publicação (created_at do share) — contexto de "quão atual é isto".
     let quando = "";
-    try { if (row.created_at) quando = new Date(row.created_at).toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" }); } catch (e) { /* ignora */ }
+    try { if (row.created_at) quando = new Date(row.created_at).toLocaleDateString(shared.getLocale(), { day: "numeric", month: "short", year: "numeric" }); } catch (e) { /* ignora */ }
     const formatLabel = deck.format ? `<span class="dkc-meta-item">${esc(t("decks.format." + deck.format))}</span>` : "";
 
     // CAPA do banner: o comandante/líder (é a cara do deck); sem ele, a capa
