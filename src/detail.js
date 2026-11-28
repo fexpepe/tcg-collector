@@ -189,7 +189,10 @@
   const setIdAposentado = shared.mergedSetId(setIdPedido);
   // `let`: a página de SET aceita URL só com ?setId= (sem ?name=) — o nome é
   // resolvido do catálogo em resolveSetNameFromId(), assim que ele chega.
-  let detailName = setIdAposentado ? "" : (params.get("name") || "");
+  // trim: link compartilhado quando a TCGdex ainda mandava "Sintonia Mental " e
+  // "Destinos Brilhantes " (pt) com espaço no fim (2026-11-28) — o catálogo de
+  // hoje vem aparado e o link velho abria o set com 0 cartas.
+  let detailName = setIdAposentado ? "" : (params.get("name") || "").trim();
   // O nome veio do CATÁLOGO (resolveSetNameFromId), não da URL: quando o
   // manifest é lido de novo (ver manifestFresco), ele é resolvido de novo.
   let nomePeloId = false;

@@ -8,7 +8,7 @@ import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 import {
   slug, decodeEntities, buildSetIndexes, writeGameCatalog,
-  readGlobalVar, preserveMissingCards, snapshotCardCount,
+  readGlobalVar, preserveMissingCards, alinhaSetDasCongeladas, snapshotCardCount,
   normNum, numDoId, fetchJsonRetry
 } from "../scripts/lib/sync-common.mjs";
 
@@ -40,6 +40,44 @@ test("preserveMissingCards: mantém o que sumiu, ignora o que continua", () => {
   assert.deepEqual(preserveMissingCards(prev, fresh).map((c) => c.id), ["a", "c"]);
   assert.deepEqual(preserveMissingCards(null, fresh), []);
   assert.equal(preserveMissingCards(prev, null).length, 3);
+});
+
+test("alinhaSetDasCongeladas: a congelada adota o nome que a fonte entrega hoje pro setId", () => {
+  // SV4a em 2026-11-11: a TCGdex consertou o nome das 320 que lista; as 40
+  // que ela não lista ficavam com o nome do SV3a e o setId com dois nomes.
+  const vivas = [
+    { id: "SV4a-001-ja", setId: "SV4a", set: "シャイニートレジャーex" },
+    { id: "SV4a-002-ja", setId: "SV4a", set: "シャイニートレジャーex" },
+    { id: "SV3a-001-ja", setId: "SV3a", set: "レイジングサーフ" }
+  ];
+  const congeladas = [
+    { id: "SV4a-167-ja", setId: "SV4a", set: "レイジングサーフ", name: "Leftovers" },
+    { id: "SV3a-099-ja", setId: "SV3a", set: "レイジングサーフ" }
+  ];
+  const out = alinhaSetDasCongeladas(congeladas, vivas);
+  assert.equal(out[0].set, "シャイニートレジャーex");
+  assert.equal(out[0].name, "Leftovers");                 // só o set muda
+  assert.equal(out[1], congeladas[1]);                    // já certa: o mesmo objeto
+  assert.equal(congeladas[0].set, "レイジングサーフ");      // não mexe no que recebeu
+});
+
+test("alinhaSetDasCongeladas: sem carta viva do setId só tira o espaço das pontas; nome mais comum vence", () => {
+  const out = alinhaSetDasCongeladas(
+    [{ id: "a", setId: "X", set: "Sintonia Mental " }, { id: "b", setId: "Y", set: " Y velho" }, { id: "c" }],
+    [{ setId: "Y", set: "Y novo " }, { setId: "Y", set: "Y novo" }, { setId: "Y", set: "Y outro" }]
+  );
+  assert.equal(out[0].set, "Sintonia Mental");
+  assert.equal(out[1].set, "Y novo");
+  assert.deepEqual(out[2], { id: "c" });
+  assert.deepEqual(alinhaSetDasCongeladas(null, null), []);
+});
+
+test("sync-tcgdex: o nome do set sai aparado do card e do manifest, e as congeladas passam pelo alinhamento", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const fonte = (await readFile(new URL("../scripts/sync-tcgdex.mjs", import.meta.url), "utf8")).replace(/\r\n/g, "\n");
+  assert.match(fonte, /set: String\(card\.set\?\.name \|\| card\.set\?\.id \|\| ""\)\.trim\(\)/);
+  assert.match(fonte, /name: String\(entry\.set\.name \|\| set\.id\)\.trim\(\)/);
+  assert.match(fonte, /alinhaSetDasCongeladas\(preserveMissingCards\(/);
 });
 
 test("snapshotCardCount: soma cartas dos sets do snapshot", () => {

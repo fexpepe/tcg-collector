@@ -389,6 +389,40 @@ export async function writeGameCatalog(outDirUrl, { cards, indexes, pricing, web
 
 // União preservadora: cartas do catálogo ANTERIOR que sumiram do novo são
 // mantidas (append no fim). Carta indexada nunca some — API removeu = congela.
+// Carta CONGELADA (a fonte parou de listar) conta a história do set do dia em
+// que foi gravada: o nome do set, em especial. Quando a fonte conserta o nome
+// das cartas que ainda lista, as congeladas ficavam com o antigo e o setId
+// passava a ter DOIS nomes — e a tela de Sets só dá cartão a um deles. Caso
+// real, 2026-11-11: a TCGdex entregava o SV4a com o nome do SV3a
+// (レイジングサーフ) e passou a mandar o certo (シャイニートレジャーex) pras 320
+// cartas que lista; as 40 que ela não lista (as "Mirror Holofoil" que o
+// TCGCSV acrescentou) ficaram com o nome errado. Idem o WCS23 em 2026-11-08
+// (1 carta em japonês, 29 em inglês).
+// Então a congelada adota o nome que as cartas VIVAS do mesmo setId têm (o mais
+// comum, se por acaso divergirem) e sai sem espaço nas pontas. Set sem nenhuma
+// carta viva (a fonte largou o set inteiro) só perde o espaço. Devolve cópias:
+// não mexe nas cartas de quem chamou.
+export function alinhaSetDasCongeladas(congeladas, vivas) {
+  const nomes = new Map();
+  for (const c of vivas || []) {
+    const nome = c && typeof c.set === "string" ? c.set.trim() : "";
+    if (!nome || !c.setId) continue;
+    const conta = nomes.get(c.setId) || new Map();
+    conta.set(nome, (conta.get(nome) || 0) + 1);
+    nomes.set(c.setId, conta);
+  }
+  const doSet = new Map();
+  for (const [setId, conta] of nomes) {
+    // Empate: o que apareceu primeiro (a ordem de inserção do Map).
+    doSet.set(setId, [...conta].reduce((a, b) => (b[1] > a[1] ? b : a))[0]);
+  }
+  return (congeladas || []).map((c) => {
+    if (!c || typeof c.set !== "string") return c;
+    const alvo = doSet.get(c.setId) || c.set.trim();
+    return alvo === c.set ? c : { ...c, set: alvo };
+  });
+}
+
 export function preserveMissingCards(previousCards, newCards) {
   const have = new Set((newCards || []).map((c) => c && c.id).filter(Boolean));
   return (previousCards || []).filter((c) => c && c.id && !have.has(c.id));

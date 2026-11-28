@@ -580,8 +580,10 @@
     SV3a: "Raging Surf",
     SV4K: "Ancient Roar",
     SV4M: "Future Flash",
-    // A TCGdex manda SV4a com o nome do SV3a (レイジングサーフ) — bug da fonte.
-    // Aqui o certo já aparece; o dia em que eles corrigirem, nada muda.
+    // A TCGdex mandava SV4a com o nome do SV3a (レイジングサーフ) — bug da
+    // fonte, corrigido por ela em 2026-11-11 (as 40 cartas que ela não lista
+    // seguiram com o nome errado até o sync alinhá-las: sync-common
+    // alinhaSetDasCongeladas). Aqui o certo aparece desde antes.
     SV4a: "Shiny Treasure ex",
     SV5K: "Wild Force",
     SV5a: "Crimson Haze",
@@ -609,7 +611,12 @@
     M5: "Abyss Eye",
     M6: "Storm Emeralda",
     M6a: "30th Celebration",
-    MC: "Start Deck 100 Battle Collection"
+    MC: "Start Deck 100 Battle Collection",
+    // O WCS23 vinha do TCGplayer com este nome em inglês; desde 2026-11-08 a
+    // TCGdex lista a carta 001 em japonês, e o set inteiro passou a ter o nome
+    // japonês da fonte (sync-tcgdex, alinhaSetDasCongeladas). O inglês é o do
+    // TCGplayer, que era o que o site já mostrava.
+    WCS23: "2023 World Championships Yokohama Deck: Pikachu"
   };
 
   // Nome da SÉRIE, pelo original japonês (não pelo id: `neo`/`SV` colidem com o
