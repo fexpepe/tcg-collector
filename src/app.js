@@ -969,12 +969,16 @@
   // Soma de preço do manifest (por moeda de ORIGEM) convertida pra moeda atual.
   // Sem câmbio, convertMoney devolve null e a parcela fica de fora — mesmo
   // comportamento do cardValue carta a carta.
+  // Em dólar e euro a ordem das fontes é outra (USD > EUR > MYP, ver cardValue):
+  // o build grava essa segunda soma em `vx`, só no set em que ela difere. Sem
+  // `vx` (manifest de antes dele, ou set igual nas duas réguas) vale vb/vu/ve.
   function entryRefValue(entry) {
     const cur = shared.getCurrency();
+    const src = (cur !== "BRL" && entry.vx) || entry;
     let total = 0;
     [["vb", "BRL"], ["vu", "USD"], ["ve", "EUR"]].forEach(([field, from]) => {
-      if (!entry[field]) return;
-      const value = shared.convertMoney(entry[field], from, cur);
+      if (!src[field]) return;
+      const value = shared.convertMoney(src[field], from, cur);
       if (value != null) total += value;
     });
     return total;

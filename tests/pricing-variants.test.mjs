@@ -111,8 +111,23 @@ test("shared.js espelha a lib: mesmos números pra os mesmos casos", () => {
     [null, "Normal"]
   ];
   for (const [ref, v] of casos) assert.equal(api.usdForVariant(ref, v), usdForVariant(ref, v), `${JSON.stringify(ref)} ${v}`);
-  const pares = [[{ e: 5 }, { u: 9 }], [{ u: 5 }, { u: 9 }], [{ b: { md: 1 } }, { u: 9 }], [undefined, { u: 9 }], [{ e: 1 }, undefined]];
+  const pares = [[{ e: 5 }, { u: 9 }], [{ u: 5 }, { u: 9 }], [{ b: { md: 1 } }, { u: 9 }], [undefined, { u: 9 }], [{ e: 1 }, undefined],
+    [{ b: { md: 1 } }, { e: 9 }], [{ e: 9 }, { b: { md: 1 } }], [{ b: { md: 1 } }, { b: { md: 2 } }], [{ u: 1, b: { md: 3 } }, { e: 4 }]];
+  // As duas réguas (real: MYP primeiro; dólar e euro: MYP por último) têm de
+  // sair iguais no cliente e na lib — é o que o manifest soma.
+  for (const brPrimeiro of [true, false]) {
+    for (const [a, b] of pares) assert.deepEqual(api.pickPricingRef(a, b, brPrimeiro), pickPricingRef(a, b, brPrimeiro), `${JSON.stringify([a, b])} brPrimeiro=${brPrimeiro}`);
+  }
+  // Sem o terceiro argumento vale a régua do real nos dois lados.
   for (const [a, b] of pares) assert.deepEqual(api.pickPricingRef(a, b), pickPricingRef(a, b));
+});
+
+test("pickPricingRef: em dólar e euro o MYP é reserva — a base USD vence a carta localizada só com MYP", () => {
+  const pt = { b: { md: 12 } }, en = { u: 8 };
+  assert.equal(pickPricingRef(pt, en, true), pt);    // real: BR > USD
+  assert.equal(pickPricingRef(pt, en, false), en);   // dólar/euro: USD > BR
+  assert.equal(pickPricingRef({ b: { md: 12 } }, { e: 5 }, false).e, 5); // EUR > BR
+  assert.equal(pickPricingRef({ e: 5 }, { u: 9 }, false).u, 9);          // o resto da ordem não muda
 });
 
 test("cardValue: o tile do Reverse usa o preço do Reverse (USD→USD, sem câmbio)", () => {

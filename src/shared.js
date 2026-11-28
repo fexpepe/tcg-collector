@@ -1621,17 +1621,22 @@
     if (/foil/i.test(variant || "") && ref.uf > 0) return ref.uf;
     return ref.u > 0 ? ref.u : 0;
   }
-  function pickPricingRef(own, base) {
+  // A ordem das fontes segue a moeda (2026-11-28): real = MYP > USD > EUR;
+  // dólar e euro = USD > EUR > MYP (reserva). `brFirst` = a moeda é real.
+  function pickPricingRef(own, base, brFirst = true) {
     if (!own) return base || null;
     if (!base || own === base) return own;
-    const rank = (r) => (r.b && r.b.md > 0 ? 3 : (r.u > 0 ? 2 : (r.e > 0 ? 1 : 0)));
+    const rank = (r) => {
+      const b = r.b && r.b.md > 0, u = r.u > 0, e = r.e > 0;
+      return brFirst ? (b ? 3 : u ? 2 : e ? 1 : 0) : (u ? 3 : e ? 2 : b ? 1 : 0);
+    };
     return rank(base) > rank(own) ? base : own;
   }
   // Entrada de preço que vale pra esta carta (própria × base, pela melhor fonte).
   function pricingRefFor(cardId) {
     const table = window.TCG_PRICING;
     if (!table || !cardId) return null;
-    return pickPricingRef(table[cardId], table[basePricingId(cardId)]);
+    return pickPricingRef(table[cardId], table[basePricingId(cardId)], currentCurrency === "BRL");
   }
 
   function cardValue(card, variant, prices, condition) {
@@ -1662,14 +1667,19 @@
         const v = convertMoney(raw * mult, from, cur);
         return v == null ? null : { value: v, currency: cur, source, estimated: true };
       };
-      // Preço BR (MYP) tem prioridade sobre a referência internacional.
-      if (ref.b && ref.b.md > 0) { const r = byCondition(ref.b.md, "BRL", "myp"); if (r) return r; }
+      // Preço BR (MYP): em real vence a referência internacional; em dólar e
+      // euro é a RESERVA (2026-11-28), pra o valor ser o do mercado que a
+      // pessoa lê (o mesmo dólar do TCGplayer que a página da carta escreve).
+      const myp = () => (ref.b && ref.b.md > 0 ? byCondition(ref.b.md, "BRL", "myp") : null);
+      const brFirst = cur === "BRL";
+      if (brFirst) { const r = myp(); if (r) return r; }
       // Impressão: a variante do tile tem cotação própria em `v` (Pokémon:
       // Normal/Holo/Reverse/1st Edition, ver scripts/lib/pricing.mjs); Foil tem
       // `uf` (Lorcana/One Piece/Magic); senão a principal `u`.
       const usd = usdForVariant(ref, variant);
       if (usd > 0) { const r = byCondition(usd, "USD", "ref"); if (r) return r; }
       if (ref.e > 0) { const r = byCondition(ref.e, "EUR", "ref"); if (r) return r; }
+      if (!brFirst) { const r = myp(); if (r) return r; }
     }
     return { value: 0, currency: cur, source: null, estimated: false };
   }

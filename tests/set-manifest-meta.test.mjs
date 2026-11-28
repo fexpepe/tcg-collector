@@ -17,7 +17,10 @@ test("precedência de moeda: BR ganha do USD, que ganha do EUR", () => {
     "sx-2": { u: 5, e: 4 },                  // sem BR -> USD
     "sx-3": { e: 4 }                         // só EUR
   });
-  assert.deepEqual(buckets, { vb: 30, vu: 5, ve: 4 });
+  // vb/vu/ve é a régua do REAL (BR primeiro). A carta com MYP muda de bucket na
+  // régua de dólar/euro (USD > EUR > BR): o `vx` traz essa soma, só porque aqui
+  // ela difere (tests/preco-na-moeda.test.mjs).
+  assert.deepEqual(buckets, { vb: 30, vu: 5, ve: 4, vx: { vu: 10, ve: 4 } });
 });
 
 test("variante padrão foil usa o preço foil (uf), como o cardValue", () => {

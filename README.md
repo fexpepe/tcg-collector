@@ -1074,8 +1074,19 @@ graded PSA (PPT). O cliente (`cardValue`) e o manifest (`setValueBuckets`)
 escolhem a impressão da variante do tile em `v` e caem em `u` — a régua vive em
 [scripts/lib/pricing.mjs](scripts/lib/pricing.mjs) e é espelhada no `shared.js`
 (teste cruzado em `tests/pricing-variants.test.mjs`). Entre a entrada da carta
-localizada (-pt/-ja) e a da carta base vale a de melhor fonte (BR > USD > EUR),
-pra mesma impressão não mostrar dois valores conforme a bandeira.
+localizada (-pt/-ja) e a da carta base vale a de melhor fonte, pra mesma
+impressão não mostrar dois valores conforme a bandeira.
+
+**A ordem das fontes segue a moeda de quem lê** (decisão D2, 28/11/2026): em
+real vale BR (MYP) > USD > EUR; em dólar e euro vale USD > EUR > BR, e o MYP
+convertido fica de reserva — assim o valor é o do mercado que a pessoa lê, o
+mesmo dólar do TCGplayer que a borda escreve na página da carta. A régua é uma
+só no `cardValue`, no `pickPricingRef` (cliente e `scripts/lib/pricing.mjs`) e na
+soma do set: o manifest guarda `vb/vu/ve` na ordem do real e, **só no set em que
+a soma de dólar/euro difere**, o `vx` (`{ vb?, vu?, ve? }`) com a outra. Sem `vx`
+(manifest de antes dele, ou set igual nas duas réguas) o `src/app.js` usa
+`vb/vu/ve`. O `enrich-manifest` zera os campos de valor a cada passada, porque o
+manifest do cache do build rápido traz os do build anterior.
 
 **Quem manda em quê (decisão de 19/09/2026).** A pergunta volta sempre que a
 TCGCSV chega na frente num lançamento, então fica escrita: a **TCGdex é o

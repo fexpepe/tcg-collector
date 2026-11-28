@@ -87,6 +87,11 @@ for (const dir of DIRS) {
     let cartas;
     try { cartas = JSON.parse(cru); } catch { semChunk.push(entrada.id); vivas.push(entrada); continue; }
     if (!Array.isArray(cartas) || !cartas.length) { semChunk.push(entrada.id); vivas.push(entrada); continue; }
+    // O valor (vb/vu/ve/vn/vx) sai do zero a cada passada: o manifest do cache
+    // do build rápido traz o do build anterior, e Object.assign só SOBREPÕE —
+    // um `vx` que deixou de diferir (o set perdeu o preço MYP) ficaria no
+    // arquivo e o cliente em dólar somaria um valor velho.
+    for (const k of ["vb", "vu", "ve", "vn", "vx"]) delete entrada[k];
     Object.assign(entrada, setManifestMeta(cartas, pricing));
     // Código oficial do set (OP-17, GD05, MEW…) pro selo da tela de Sets. Aqui
     // e não no sync: este passo roda em todo build e vê as cartas, e o código
