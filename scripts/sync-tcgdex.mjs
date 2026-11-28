@@ -1,6 +1,6 @@
 import { writeFile, readFile, mkdir, readdir } from "node:fs/promises";
 import { parseArgs } from "node:util";
-import { preserveMissingCards, writeSplitIndexes, fetchJsonRetry } from "./lib/sync-common.mjs";
+import { preserveMissingCards, alinhaSetDasCongeladas, writeSplitIndexes, fetchJsonRetry } from "./lib/sync-common.mjs";
 import { compactTcgdexPrice } from "./lib/pricing.mjs";
 
 const { values: options, positionals } = parseArgs({
@@ -168,7 +168,10 @@ for (const [index, set] of sets.entries()) {
   const setCards = entry.cards.map((rawCard) => toAppCard(rawCard, language, entry.set));
   // Cartas que EXISTIAM no chunk versionado e sumiram da API: preserva no fim.
   const chunkFile = new URL(`${set.id}.json`, chunksDir);
-  const kept = preserveMissingCards(await readExistingChunk(chunkFile), setCards);
+  // A congelada adota o nome de set que a fonte entrega HOJE pras cartas vivas
+  // (SV4a com 40 cartas no nome do SV3a, WCS23 com um nome em inglês e outro
+  // em japonês: 2026-11-08/11) — ver alinhaSetDasCongeladas.
+  const kept = alinhaSetDasCongeladas(preserveMissingCards(await readExistingChunk(chunkFile), setCards), setCards);
   if (kept.length) { setCards.push(...kept); preservedCards += kept.length; }
   if (!setCards.length) continue; // sets sem cartas na TCGdex (comuns em ja/zh antigos)
   cards.push(...setCards);
@@ -176,7 +179,7 @@ for (const [index, set] of sets.entries()) {
   await writeFile(chunkFile, JSON.stringify(setCards), "utf8");
   manifestSets.push({
     id: set.id,
-    name: entry.set.name || set.id,
+    name: String(entry.set.name || set.id).trim(),
     count: setCards.length,
     file: `data/sets/${language}/${set.id}.json`
   });
@@ -192,7 +195,7 @@ try {
     const existing = await readExistingChunk(new URL(f, chunksDir));
     if (!existing.length) continue;
     cards.push(...existing);
-    manifestSets.push({ id: setId, name: existing[0].set || setId, count: existing.length, file: `data/sets/${language}/${f}` });
+    manifestSets.push({ id: setId, name: String(existing[0].set || setId).trim(), count: existing.length, file: `data/sets/${language}/${f}` });
     preservedSets++;
   }
 } catch { /* diretório recém-criado */ }
@@ -389,7 +392,11 @@ function toAppCard(card, fallbackLanguage, fullSet) {
     generation: generationFromDexId(primaryDexId(card)),
     pokemonImage: pokemonImageUrl(primaryDexId(card)),
     number: card.localId || "",
-    set: card.set?.name || card.set?.id || "",
+    // trim: a TCGdex manda "Sintonia Mental " (sm11) e "Destinos Brilhantes "
+    // (swsh4.5) em português com espaço no fim (2026-11-28). Nome de set é
+    // chave (lista, perfil, índice de Sets): o espaço faz o mesmo set ter
+    // dois nomes pra quem compara por igualdade.
+    set: String(card.set?.name || card.set?.id || "").trim(),
     setId: card.set?.id || fullSet?.id || "",
     setLogo: imageUrl(card.set?.logo || fullSet?.logo),
     setSymbol: imageUrl(card.set?.symbol || fullSet?.symbol),

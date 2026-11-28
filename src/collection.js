@@ -3182,7 +3182,7 @@
         cardsById.forEach((card) => { if (card.set && !map.has(card.set)) map.set(card.set, card); });
         setFieldCache = { size: cardsById.size, map };
       }
-      const card = setFieldCache.map.get(setName);
+      const card = setFieldCache.map.get(setName) || setFieldCache.map.get(String(setName).trim());
       return card ? (card[field] || "") : "";
     }
     function setCatalogCards(gp) {
@@ -3193,7 +3193,9 @@
       const langs = new Set(gp.items.map((it) => it.lang || ""));
       const cards = [];
       cardsById.forEach((card) => {
-        if (card.set !== gp.name) return;
+        // trim: perfil publicado antes de 2026-11-28 guarda "Sintonia Mental " e
+        // "Destinos Brilhantes " (pt) com o espaço que a TCGdex mandava.
+        if (String(card.set).trim() !== String(gp.name).trim()) return;
         if (!games.has(card.game || gameOf(card.id) || "pokemon")) return;
         if (!langs.has(card.language || "")) return;
         cards.push(card);

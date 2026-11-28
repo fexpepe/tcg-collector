@@ -119,7 +119,10 @@
   // hoje é só o nome (contrato 7 do docs/CATALOGO.md). Pasta criada antes
   // segue achando o set e mostra o nome de hoje.
   const PREFIXO_ANTIGO = /^(?:Naruto CCG — |Data Carddass — |Carddass — |OP 2002 — |Miracle Battle |Hyper Battle |カードダス(?=本弾)|Harry Potter (?=League Promos$))/;
-  const nomeDoSetDaPasta = (nome) => String(nome || "").replace(PREFIXO_ANTIGO, "");
+  // E sem espaço nas pontas: a TCGdex mandava "Sintonia Mental " e "Destinos
+  // Brilhantes " (pt) com espaço no fim, e a pasta criada nessa época guarda o
+  // nome assim; o catálogo de hoje já vem aparado (2026-11-28).
+  const nomeDoSetDaPasta = (nome) => String(nome || "").replace(PREFIXO_ANTIGO, "").trim();
 
   // Stores por jogo, criados UMA vez cada (leem e parseiam o localStorage inteiro).
   const ownedCache = {}, priceCache = {};
