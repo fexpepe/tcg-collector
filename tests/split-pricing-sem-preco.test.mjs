@@ -20,10 +20,13 @@ function copiaMinima() {
   const dir = mkdtempSync(join(tmpdir(), "split-pricing-"));
   mkdirSync(join(dir, "scripts", "lib"), { recursive: true });
   copyFileSync(join(raiz, "scripts", "split-pricing.mjs"), join(dir, "scripts", "split-pricing.mjs"));
-  // (sync-common.mjs importa o apelidos-jp.mjs desde 2026-11-28: a cópia leva junto)
-  for (const f of ["sync-common.mjs", "history-shards.mjs", "bonus-cards.mjs", "pricing.mjs", "apelidos-jp.mjs"]) {
+  for (const f of ["sync-common.mjs", "history-shards.mjs", "bonus-cards.mjs", "pricing.mjs"]) {
     copyFileSync(join(raiz, "scripts", "lib", f), join(dir, "scripts", "lib", f));
   }
+  // O sync-common importa functions/_lib/apelidos-jp.js desde 2026-11-28 (a
+  // borda também usa a tabela): a cópia leva junto, no mesmo caminho relativo.
+  mkdirSync(join(dir, "functions", "_lib"), { recursive: true });
+  copyFileSync(join(raiz, "functions", "_lib", "apelidos-jp.js"), join(dir, "functions", "_lib", "apelidos-jp.js"));
   return dir;
 }
 

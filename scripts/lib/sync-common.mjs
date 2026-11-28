@@ -3,7 +3,7 @@
 import { writeFile, readFile, mkdir, rm } from "node:fs/promises";
 import { isBonusCardId } from "./bonus-cards.mjs";
 import { usdForVariant, pickPricingRef } from "./pricing.mjs";
-import { carimbaApelidos } from "./apelidos-jp.mjs";
+import { carimbaApelidos } from "../../functions/_lib/apelidos-jp.js";
 
 export const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -308,7 +308,7 @@ export async function writeGameCatalog(outDirUrl, { cards, indexes, pricing, web
   await mkdir(outDirUrl, { recursive: true });
   // Apelidos em romaji ("sasuke" acha うちはサスケ): o texto sai do name/nameJp e
   // vai gravado na carta, pra o cliente só juntar `card.apelidos` ao texto de
-  // busca (a tabela saiu do shared.js em 2026-11-28; ver lib/apelidos-jp.mjs).
+  // busca (a tabela saiu do shared.js em 2026-11-28; ver functions/_lib/apelidos-jp.js).
   // Aqui porque TODO jogo fora o Pokémon grava por este escritor (o Pokémon
   // grava pelo merge-catalogs.mjs, que faz o mesmo). Recalcula sempre: nome que
   // mudou na fonte leva o campo junto, e carta que deixou de casar o perde.

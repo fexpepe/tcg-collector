@@ -13,8 +13,19 @@
 // Pokémon) recalcula em toda gravação: carta que ganhou ou perdeu o nome em
 // japonês ganha ou perde o campo sozinha, sem ninguém lembrar de tocá-lo.
 //
-// A busca da borda (functions/api/_search-sql.js, D1) NUNCA teve os apelidos e
-// segue sem eles: o banco não tem a coluna.
+// Mora em functions/_lib (e não em scripts/lib) porque a BORDA também usa: o D1
+// não tem `nameJp` nem a coluna de apelidos, e a Coleção, o Portfólio, o Painel,
+// os Fichários e o Explorar recebem as cartas de /api/collection, não dos
+// chunks. Antes do pacote o cliente calculava os apelidos do `name` que a borda
+// devolve (japonês nos vintage); agora a /api/collection acrescenta o campo
+// calculado do mesmo `name`. Sem ISSO a busca em romaji sumia dessas telas em
+// produção (em desenvolvimento a borda responde 405 e as telas caem nos chunks,
+// que já têm o campo). Os scripts do build importam daqui (o caminho contrário
+// já existe: scripts/prerender-catalog.mjs importa functions/_lib/slug-carta.js).
+// Sem dependência de Node: roda na borda.
+//
+// A busca da borda (functions/api/search.js, D1) NUNCA teve os apelidos e segue
+// sem eles: o resultado dela não é refiltrado no cliente pelo texto.
 //
 // Os dois blocos abaixo (tabela e função) são os do shared.js, sem mudar uma
 // entrada: o tests/apelidos-jp.test.mjs trava a tabela.

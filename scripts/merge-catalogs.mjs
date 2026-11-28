@@ -10,7 +10,7 @@ import { chunkNumberPrefixes, missAllowed, applyVariantPrices } from "./lib/pric
 import { isRetiredChunk, resolveMergedId, stampIdMerges } from "./lib/set-supersede.mjs";
 import { extraNumbersOf } from "./lib/tcgcsv-pokemon.mjs";
 import { fillFromEn, learnLabels, findTwins } from "./lib/provisional-ids.mjs";
-import { carimbaApelido } from "./lib/apelidos-jp.mjs";
+import { carimbaApelido } from "../functions/_lib/apelidos-jp.js";
 
 const langs = process.argv.slice(2).filter((arg) => !arg.startsWith("-"));
 if (!langs.length) {
@@ -265,7 +265,7 @@ for (const lang of langs) {
         changed = true;
       }
       // Apelidos em romaji (JA/ZH): o texto de busca que o cliente lia do
-      // JP_NAME_ALIASES do shared.js, agora gravado na carta (lib/apelidos-jp.mjs).
+      // JP_NAME_ALIASES do shared.js, agora gravado na carta (functions/_lib/apelidos-jp.js).
       // O sync-tcgdex reescreve o chunk sem o campo a cada rodada, então carimba
       // em TODO merge; roda depois da canonização porque só lê name/nameJp.
       if (carimbaApelido(card)) changed = true;

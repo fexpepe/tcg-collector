@@ -843,7 +843,7 @@ pula o jogo sem preço, ver 5.3). Pela metade: a **F3**. O `VINTAGE_SET_EN` e o
 `JA_SET_EN` saíram do `shared.js` pro `src/nomes-sets.js` em 2026-10-08, e em
 14/11 os 75 sets japoneses do Naruto vintage passaram a levar o nome em inglês
 no próprio catálogo; o `JP_NAME_ALIASES` saiu do `shared.js` em 28/11 (pacote 4A
-da Fase 4 do plano de revisão: a tabela é o `scripts/lib/apelidos-jp.mjs`, e o
+da Fase 4 do plano de revisão: a tabela é o `functions/_lib/apelidos-jp.js` (a borda também usa), e o
 escritor grava o texto na carta, campo `apelidos`), e o `setDisplayName` ainda
 lê os mapas. A **F6** tem dois pedaços feitos: o CSV do
 Portfólio lê o nome do `GAMES` (2026-09-30) e o dataDir do `DATA_GAMES` sai do

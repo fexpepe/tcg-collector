@@ -7910,7 +7910,7 @@
   // "sasuke" acha うちはサスケ, "luffy" acha モンキー・D・ルフィ, em qualquer busca
   // do site (coleção, jogo, Explorar). A tabela e a função moraram aqui até
   // 2026-11-28 (~1,8 KB gz no núcleo, varridas em toda carta de todo jogo); agora
-  // vivem em scripts/lib/apelidos-jp.mjs e o build grava o resultado na própria
+  // vivem em functions/_lib/apelidos-jp.js e o build grava o resultado na própria
   // carta, no campo `apelidos` (termos em romaji separados por espaço, só nas
   // cartas que casam). Aqui só se junta o campo ao texto de busca.
   function cardSearchHaystack(card) {

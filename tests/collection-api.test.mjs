@@ -420,6 +420,29 @@ test("a borda: banco fora devolve 503 {off:1} (o cliente cai nos chunks)", async
   assert.deepEqual(await r.json(), { off: 1 });
 });
 
+// Apelidos em romaji (2026-11-28): a tabela saiu do shared.js e o cliente só lê
+// `card.apelidos`. O D1 tem `name` e não tem `nameJp` nem a coluna, então a
+// borda calcula o campo do `name` — senão "sasuke" deixava de achar o
+// うちはサスケ na Coleção, no Portfólio, no Painel, nos Fichários e no Explorar
+// de produção (que recebem as cartas daqui, não dos chunks).
+test("a borda: carta de nome japonês volta com apelidos; a de nome latino, sem o campo", async () => {
+  const db = banco();
+  db.prepare(`INSERT INTO cards
+    (game,id,name,set_name,number,card_type,cost,rarity,color,set_id,artist,language,image,variants,released)
+    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`)
+    .run("naruto", "nrt-1", "うちはサスケ", "Vol. 1", "1", "", "", "Rare", "", "nrt-v1", "", "ja", "", "[]", "2002-01-01");
+  const DB = d1Falso(db);
+  const r = await pede(DB, { naruto: ["nrt-1"], pokemon: ["base1-4"] });
+  const j = await r.json();
+  assert.equal(j.c.naruto[0].apelidos, "sasuke");
+  assert.equal("apelidos" in j.c.pokemon[0], false, "nome latino: o formato do chunk, sem campo novo");
+  // De ponta a ponta no cliente: a carta como a borda a devolve é achada pelo
+  // romaji, que é o que o cardSearchHaystack lê.
+  const { matchesCardQuery } = loadShared().window.TCGShared;
+  assert.equal(matchesCardQuery(j.c.naruto[0], "sasuke"), true);
+  assert.equal(matchesCardQuery(j.c.pokemon[0], "sasuke"), false);
+});
+
 test("o cliente manda os lotes JUNTOS e junta as cartas na ordem dos lotes", async () => {
   // 2.300 ids = 3 lotes de 1.000. Em fila eram três idas à borda, uma atrás da
   // outra, antes de a Coleção desenhar.

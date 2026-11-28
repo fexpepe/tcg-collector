@@ -1,6 +1,6 @@
 // Apelidos em romaji das cartas japonesas ("sasuke" acha うちはサスケ) saíram do
 // núcleo (2026-11-28, pacote 4A do plano de revisão): a tabela mora em
-// scripts/lib/apelidos-jp.mjs, o build grava o texto na carta (campo
+// functions/_lib/apelidos-jp.js, o build grava o texto na carta (campo
 // `apelidos`) e o cardSearchHaystack só junta `card.apelidos`.
 //
 // Este teste trava as três pontas:
@@ -20,7 +20,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { dirname, join } from "node:path";
 import {
   JP_NAME_ALIASES, jpNameAliases, apelidosDaCarta, carimbaApelido, carimbaApelidos
-} from "../scripts/lib/apelidos-jp.mjs";
+} from "../functions/_lib/apelidos-jp.js";
 import { writeGameCatalog } from "../scripts/lib/sync-common.mjs";
 import { loadShared } from "./lib/shared-sandbox.mjs";
 
@@ -128,11 +128,19 @@ test("writeGameCatalog carimba o campo em cards.js e no chunk do set, e tira de 
 
 test("o merge-catalogs (Pokémon) carimba as cartas dos dois caminhos: chunk existente e set só da fonte de preço", () => {
   const merge = lerFonte("scripts/merge-catalogs.mjs");
-  assert.ok(merge.includes('import { carimbaApelido } from "./lib/apelidos-jp.mjs";'));
+  assert.ok(merge.includes('import { carimbaApelido } from "../functions/_lib/apelidos-jp.js";'));
   // laço dos chunks que já existem: o carimbo marca o chunk como mudado pra regravar
   assert.ok(merge.includes("if (carimbaApelido(card)) changed = true;"));
   // set criado do zero a partir da fonte de preço: carimba antes de gravar
   assert.ok(/carimbaApelido\(card\); \/\/ set que só existe na fonte de preço[^\n]*\n\s*cards\.push\(card\); have\.add\(nc\.id\);/.test(merge));
+});
+
+test("a borda usa o mesmo módulo: o /api/collection acrescenta os apelidos (o contrato está em collection-api.test.mjs)", () => {
+  const colecao = lerFonte("functions/api/collection.js");
+  assert.ok(colecao.includes('import { apelidosDaCarta } from "../_lib/apelidos-jp.js";'));
+  assert.ok(colecao.includes("apelidosDaCarta({ name: linha.name })"));
+  // O módulo da borda não pode depender de Node (roda no Worker).
+  assert.ok(!/^\s*import\s/m.test(lerFonte("functions/_lib/apelidos-jp.js")), "o módulo da borda ganhou um import");
 });
 
 // ── 4. O dado versionado ────────────────────────────────────────────────────
