@@ -19,6 +19,7 @@ import { JOGOS_URL, urlDoSet } from "../functions/_lib/jogos.js";
 import { slugify } from "../functions/_lib/slug-carta.js";
 import { setDoDePara } from "../functions/_lib/borda.js";
 import { enderecosRenomeados } from "../scripts/lib/sets-renomeados.mjs";
+import { baseDoEnderecoDoSet } from "../scripts/lib/paginas-de-set.mjs";
 import { nomeDoSet, NOMES_DO_JOGO as NOMES_TCGCSV } from "../scripts/lib/nome-do-set.mjs";
 
 function catalogo(jogo) {
@@ -26,6 +27,14 @@ function catalogo(jogo) {
   if (jogo === "ygo") {
     const dir = new URL("../data/ygo/sets/", import.meta.url);
     return readdirSync(dir).filter((f) => f.endsWith(".json")).flatMap((f) => JSON.parse(readFileSync(new URL(f, dir), "utf8")));
+  }
+  // Pokémon: os chunks data/sets/<idioma>/<set>.json (o cards.js da raiz é amostra).
+  if (jogo === "pokemon") {
+    const raiz = new URL("../data/sets/", import.meta.url);
+    return readdirSync(raiz).flatMap((lang) => {
+      const dir = new URL(`${lang}/`, raiz);
+      return readdirSync(dir).filter((f) => f.endsWith(".json")).flatMap((f) => JSON.parse(readFileSync(new URL(f, dir), "utf8")));
+    }).filter((c) => !c.retired);
   }
   const s = readFileSync(new URL(`../data/${jogo}/cards.js`, import.meta.url), "utf8");
   return JSON.parse(s.slice(s.indexOf("["), s.lastIndexOf("]") + 1));
@@ -199,7 +208,9 @@ test("sets-renomeados.json: todo endereço antigo leva a um set que existe naque
   for (const [url, dePara] of Object.entries(tabela.games)) {
     const cartas = doUrl(url);
     const setIds = new Set(cartas.map((c) => c.setId));
-    const slugsDeHoje = new Set(cartas.map((c) => slugify(c.set)));
+    // O slug de hoje é o da régua do prerender (nome, ou o setId quando o nome
+    // japonês só deixa ruído: "30-db" é hoje "dbc-h30", 2026-11-28).
+    const slugsDeHoje = new Set(cartas.map((c) => baseDoEnderecoDoSet(c.set, c.setId).base));
     for (const [antigo, setId] of Object.entries(dePara)) {
       total++;
       assert.match(antigo, /^[a-z0-9]+(-[a-z0-9]+)*$/, `${url}: "${antigo}" não é slug`);

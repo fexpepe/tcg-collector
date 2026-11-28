@@ -176,6 +176,17 @@ junto. Sem isso, o endereço antigo das cartas movidas dá 404.
   no set, na variante `-en`, nas cartas e no link de compartilhar com o nome
   antigo. Foi assim com os 213 sets que perderam o prefixo em 2026-11-02 (197
   vintage e 16 grupos do TCGplayer).
+- **Nome em japonês com sobra de letras latinas**: o slug do set é o `setId`
+  quando o nome tem kana ou kanji e o que sobra do nome é só ruído, isto é,
+  4 ou mais caracteres sem nenhuma palavra (3 letras seguidas) e sem código
+  (`30-db`, `29-4`, `2000`, `20th` viram `dbc-h30`, `dbc-h29`, `hxh-hb-jf00`,
+  `dmbd-16`). Sobra com palavra (`naruto`, `seed-destiny`) ou com código
+  (`as01-j-1`) fica como está. A regra mora em `baseDoEnderecoDoSet`
+  ([scripts/lib/paginas-de-set.mjs](../scripts/lib/paginas-de-set.mjs)); os 52
+  endereços que ela trocou em 2026-11-28 estão em `games` no
+  `sets-renomeados.json`, e o `tests/endereco-set-pelo-codigo.test.mjs` trava a
+  regra e os 301. Set novo com nome assim ganha o endereço pelo código desde o
+  primeiro build, então não precisa de de-para.
 - O set caiu na **categoria certa**. Lorcana, Naruto, HxH e DBC agrupam pelo
   `setId` (`group<Jogo>Sets` em [src/app.js](../src/app.js)); os modernos da
   Bandai (One Piece, Gundam, Fusion World, Dragon Ball Super Masters, Digimon,
