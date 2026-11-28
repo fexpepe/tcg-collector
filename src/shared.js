@@ -7906,58 +7906,13 @@
   // raridade, idioma e variantes), normalizado. Memoizado na própria carta — a
   // busca varre o catálogo inteiro (ex.: Sets/Artistas) a cada tecla, então
   // construir o texto uma vez só evita refazer ~48k normalizações por busca.
-  // Busca EN/romaji -> japonês (vintages de Naruto e One Piece): quando o nome
-  // JP da carta contém a forma japonesa, o nome romanizado entra no haystack —
-  // "sasuke" acha うちはサスケ, "luffy" acha モンキー・D・ルフィ, em qualquer
-  // busca do site (coleção, jogo, Explorar). Custo: uma passada por carta,
-  // cacheada no _haystack. Personagens principais + termos icônicos.
-  const JP_NAME_ALIASES = [
-    // NARUTO
-    ["naruto", ["ナルト"]], ["sasuke", ["サスケ"]], ["sakura", ["サクラ", "春野"]],
-    ["kakashi", ["カカシ"]], ["lee", ["リー"]], ["rock", ["ロック"]],
-    ["neji", ["ネジ"]], ["hinata", ["ヒナタ"]], ["gaara", ["我愛羅"]],
-    ["shikamaru", ["シカマル"]], ["ino", ["山中いの"]], ["choji", ["チョウジ"]], ["chouji", ["チョウジ"]],
-    ["kiba", ["キバ", "犬塚"]], ["shino", ["油女", "シノ"]], ["temari", ["テマリ"]],
-    ["kankuro", ["カンクロウ"]], ["tsunade", ["綱手"]], ["jiraiya", ["自来也"]],
-    ["orochimaru", ["大蛇丸"]], ["itachi", ["イタチ"]], ["kisame", ["鬼鮫", "干柿"]],
-    ["zabuza", ["再不斬", "桃地"]], ["haku", ["白"]], ["guy", ["マイト", "ガイ"]], ["gai", ["ガイ"]],
-    ["kabuto", ["薬師", "カブト"]], ["anko", ["アンコ", "みたらし"]], ["shizune", ["シズネ"]],
-    ["kimimaro", ["君麻呂"]], ["tayuya", ["多由也"]], ["asuma", ["アスマ", "猿飛"]],
-    ["tenten", ["テンテン"]], ["hokage", ["火影"]], ["akatsuki", ["暁"]],
-    ["rasengan", ["螺旋丸"]], ["chidori", ["千鳥"]], ["sharingan", ["写輪眼"]], ["byakugan", ["白眼"]],
-    ["kyuubi", ["九尾"]], ["deidara", ["デイダラ"]], ["sai", ["サイ"]], ["yamato", ["ヤマト"]],
-    // ONE PIECE
-    ["luffy", ["ルフィ"]], ["zoro", ["ゾロ", "ロロノア"]], ["nami", ["ナミ"]],
-    ["usopp", ["ウソップ"]], ["sanji", ["サンジ"]], ["chopper", ["チョッパー"]],
-    ["robin", ["ロビン"]], ["franky", ["フランキー"]], ["brook", ["ブルック"]],
-    ["jinbe", ["ジンベエ"]], ["ace", ["エース", "ポートガス"]], ["shanks", ["シャンクス"]],
-    ["buggy", ["バギー"]], ["crocodile", ["クロコダイル"]], ["mihawk", ["ミホーク"]],
-    ["hancock", ["ハンコック"]], ["blackbeard", ["ティーチ", "黒ひげ"]], ["teach", ["ティーチ"]],
-    ["whitebeard", ["白ひげ", "ニューゲート"]], ["marco", ["マルコ"]], ["garp", ["ガープ"]],
-    ["sengoku", ["センゴク"]], ["ivankov", ["イワンコフ"]], ["bonney", ["ボニー"]],
-    ["kidd", ["キッド"]], ["kid", ["キッド"]], ["drake", ["ドレーク"]], ["law", ["トラファルガー", "ロー"]],
-    ["vivi", ["ビビ"]], ["smoker", ["スモーカー"]], ["arlong", ["アーロン"]], ["sabo", ["サボ"]],
-    ["monkey", ["モンキー"]], ["gomu", ["ゴムゴム"]], ["merry", ["メリー"]], ["sunny", ["サニー"]],
-    // HUNTER×HUNTER
-    ["gon", ["ゴン"]], ["freecss", ["フリークス"]], ["killua", ["キルア"]], ["zoldyck", ["ゾルディック"]],
-    ["kurapika", ["クラピカ"]], ["leorio", ["レオリオ"]], ["hisoka", ["ヒソカ"]], ["kuroro", ["クロロ"]],
-    ["chrollo", ["クロロ"]], ["lucilfer", ["ルシルフル"]], ["biscuit", ["ビスケット"]], ["bisky", ["ビスケット"]],
-    ["kruger", ["クルーガー"]], ["shizuku", ["シズク"]], ["shalnark", ["シャルナーク"]], ["feitan", ["フェイタン"]],
-    ["machi", ["マチ"]], ["nobunaga", ["ノブナガ"]], ["uvogin", ["ウボォー"]], ["pakunoda", ["パクノダ"]],
-    ["netero", ["ネテロ"]], ["zushi", ["ズシ"]], ["wing", ["ウイング"]], ["kite", ["カイト"]],
-    ["ging", ["ジン"]], ["illumi", ["イルミ"]], ["genthru", ["ゲンスルー"]], ["meruem", ["メルエム"]],
-    ["nen", ["念"]], ["kurta", ["クルタ"]], ["ryodan", ["旅団"]], ["phantom", ["幻影旅団"]]
-  ];
-  const JP_CHARS = /[぀-ヿ一-鿿]/;
-  function jpNameAliases(jpName) {
-    if (!JP_CHARS.test(jpName)) return "";
-    let out = "";
-    for (const [en, jps] of JP_NAME_ALIASES) {
-      for (const jp of jps) { if (jpName.includes(jp)) { out += " " + en; break; } }
-    }
-    return out;
-  }
-
+  // Busca EN/romaji -> japonês (vintages de Naruto, One Piece e Hunter×Hunter):
+  // "sasuke" acha うちはサスケ, "luffy" acha モンキー・D・ルフィ, em qualquer busca
+  // do site (coleção, jogo, Explorar). A tabela e a função moraram aqui até
+  // 2026-11-28 (~1,8 KB gz no núcleo, varridas em toda carta de todo jogo); agora
+  // vivem em functions/_lib/apelidos-jp.js e o build grava o resultado na própria
+  // carta, no campo `apelidos` (termos em romaji separados por espaço, só nas
+  // cartas que casam). Aqui só se junta o campo ao texto de busca.
   function cardSearchHaystack(card) {
     if (card._haystack) return card._haystack;
     // Número em TODAS as escritas (cardCodeForms): com e sem zeros à esquerda,
@@ -7970,8 +7925,8 @@
     // o `name` delas é o japonês, e "boss's orders" tem que achar a carta.
     card._haystack = " " + normalize([
       card.name, card.nameJp, card.nameEn, card.pokemonName, card.dexId, ...cardCodeForms(card),
-      card.set, card.setJp, card.artist, card.rarity, card.language, card.cardType, ...(card.variants || [])
-    ].join(" ") + jpNameAliases(`${card.name || ""} ${card.nameJp || ""}`)) + " ";
+      card.set, card.setJp, card.artist, card.rarity, card.language, card.cardType, ...(card.variants || []), card.apelidos
+    ].join(" ")) + " ";
     return card._haystack;
   }
 

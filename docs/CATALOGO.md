@@ -773,7 +773,8 @@ quando ele é tirado (método em 7.1). Os números desta seção são de
   cada set japonês novo. No CSS, os accents dos 15 jogos de então somam 960 B
   (hoje o `styles.css` tem accent pra 49 jogos, e os da mesma IP dividem o
   bloco, 4.1). Em 2026-10-08 o `VINTAGE_SET_EN` e o `JA_SET_EN` saíram do
-  núcleo pro `src/nomes-sets.js`; ficou o `JP_NAME_ALIASES`.
+  núcleo pro `src/nomes-sets.js`; ficou o `JP_NAME_ALIASES` (que saiu em
+  2026-11-28: ver a F3 na seção 6).
 
 ### 5.5 Cópias que divergem
 
@@ -841,8 +842,10 @@ encolhe o checklist (F4 a F8).
 pula o jogo sem preço, ver 5.3). Pela metade: a **F3**. O `VINTAGE_SET_EN` e o
 `JA_SET_EN` saíram do `shared.js` pro `src/nomes-sets.js` em 2026-10-08, e em
 14/11 os 75 sets japoneses do Naruto vintage passaram a levar o nome em inglês
-no próprio catálogo; o `JP_NAME_ALIASES` segue no `shared.js`, e o
-`setDisplayName` ainda lê os mapas. A **F6** tem dois pedaços feitos: o CSV do
+no próprio catálogo; o `JP_NAME_ALIASES` saiu do `shared.js` em 28/11 (pacote 4A
+da Fase 4 do plano de revisão: a tabela é o `functions/_lib/apelidos-jp.js` (a borda também usa), e o
+escritor grava o texto na carta, campo `apelidos`), e o `setDisplayName` ainda
+lê os mapas. A **F6** tem dois pedaços feitos: o CSV do
 Portfólio lê o nome do `GAMES` (2026-09-30) e o dataDir do `DATA_GAMES` sai do
 slug (B3). Não começaram: a **F1** (não há `tests/registro-jogos.test.mjs`;
 as travas que existem estão na 4.2), a **F4** (não há `scripts/lib/tcgcsv.mjs`),
@@ -885,7 +888,8 @@ flag. Ele passa a olhar, senão vira 404.
 **F3 — Dados de vintage e JA no catálogo.** O sync grava o nome de exibição
 do set no catálogo (chunk e manifest), e o `setDisplayName` lê de lá em vez do
 `JA_SET_EN`/`VINTAGE_SET_EN`. Os apelidos em romaji do `JP_NAME_ALIASES` vão
-pra carta no sync, como texto de busca. Fica a resolver: a borda (a tabela
+pra carta no sync, como texto de busca (feito em 2026-11-28: campo `apelidos`,
+gravado pelo `writeGameCatalog` e pelo `merge-catalogs`). Fica a resolver: a borda (a tabela
 `cards` do D1 não tem essas colunas), o prerender (que hoje mostra o nome
 original do set) e o `tests/set-display-name.test.mjs`, que trava a regra de
 idioma do JA (`neo1` existe no EN e no JA). É a fase que abre espaço de verdade

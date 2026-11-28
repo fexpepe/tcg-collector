@@ -10,6 +10,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { PRODUTOS, RARIDADE, numeroDaCarta, idDaCarta, nomeDaCarta, NOME_CORRIGIDO, montaCatalogo } from "../scripts/sync-naruto-trading-cards.mjs";
+import { carimbaApelidos } from "../functions/_lib/apelidos-jp.js";
 
 // Normaliza CRLF: a checkout Windows do repo usa core.autocrlf=true.
 const ler = (p) => readFileSync(new URL(`../${p}`, import.meta.url), "utf8").replace(/\r\n/g, "\n");
@@ -119,8 +120,11 @@ test("datas: o dia quando uma fonte dá e nenhuma contradiz; só o ano quando di
 });
 
 test("catálogo versionado: o jogo inteiro em data/narutotc/, e nada dele no catálogo do Naruto", () => {
-  // igual ao que o sync monta do snapshot
-  assert.deepEqual(catalogo("narutotc"), montaCatalogo(snapshot));
+  // igual ao que o sync monta do snapshot — depois do carimbo de `apelidos` que
+  // o writeGameCatalog faz em toda gravação (2026-11-28, functions/_lib/apelidos-jp.js)
+  const montado = montaCatalogo(snapshot);
+  carimbaApelidos(montado);
+  assert.deepEqual(catalogo("narutotc"), montado);
   // nome de set único dentro do jogo (é a chave do set e do endereço)
   const setIdDoNome = new Map();
   for (const c of catalogo("narutotc")) {

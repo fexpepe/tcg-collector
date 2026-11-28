@@ -64,6 +64,9 @@ function montaRaiz({ cache = {}, artefato = null, chunks = {} } = {}) {
   mkdirSync(join(dir, "scripts"), { recursive: true });
   cpSync(join(raiz, "scripts", "sync-ppt.mjs"), join(dir, "scripts", "sync-ppt.mjs"));
   cpSync(join(raiz, "scripts", "lib"), join(dir, "scripts", "lib"), { recursive: true });
+  // o sync-common importa functions/_lib/apelidos-jp.js (a borda também usa a tabela)
+  mkdirSync(join(dir, "functions", "_lib"), { recursive: true });
+  cpSync(join(raiz, "functions", "_lib", "apelidos-jp.js"), join(dir, "functions", "_lib", "apelidos-jp.js"));
   mkdirSync(join(dir, "data", ".cache", "ppt", "sets"), { recursive: true });
   for (const [nome, corpo] of Object.entries(cache)) {
     writeFileSync(join(dir, "data", ".cache", "ppt", nome), JSON.stringify(corpo), "utf8");

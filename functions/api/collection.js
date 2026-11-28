@@ -17,6 +17,7 @@
 // entrada verbatim do pricing — então o cliente injeta os dois nos globais de
 // sempre e nada mais muda.
 import { buildCards, buildPrices, idsComBase, LOTE_IDS } from "./_search-sql.js";
+import { apelidosDaCarta } from "../_lib/apelidos-jp.js";
 
 const GAMES = new Set(["pokemon", "lorcana", "onepiece", "magic", "fab", "gundam", "swu", "cyberpunk", "sorcery",
   "dbfw", "dbs", "ygo", "digimon", "riftbound", "unionarena", "narutocg", "naruto", "hxh", "dbc", "dbsb", "dbva", "dbbw", "dbz", "wow", "lotr", "harrypotter", "weiss", "godzilla", "palworld", "fftcg", "grandarchive", "hololive", "shadowverse", "vanguard", "duelmasters", "narutomythos", "narutokayou", "herorush", "ikorr", "mbc", "cdm", "gcd", "gw", "seiya", "seiyatc", "seiyacr", "fma", "narutoboruto", "narutotc", "jump"]);
@@ -116,14 +117,23 @@ export async function onRequestPost(context) {
       const lista = cartas[game] || (cartas[game] = []);
       for (const linha of linhas) {
         // De volta ao formato do CHUNK: é o contrato que o cliente já sabe ler.
-        lista.push({
+        const carta = {
           id: linha.id, name: linha.name, set: linha.set_name, setId: linha.set_id,
           number: linha.number, rarity: linha.rarity, artist: linha.artist,
           language: linha.language, image: linha.image,
           variants: parseVariants(linha.variants),
           setReleaseDate: linha.released,
           cardType: linha.card_type || undefined, cost: linha.cost || undefined
-        });
+        };
+        // Apelidos em romaji ("sasuke" acha うちはサスケ). O chunk traz o campo
+        // gravado no build; o D1 não tem a coluna nem o `nameJp`, então sai do
+        // `name` — o mesmo texto que o cliente calculava aqui antes de a tabela
+        // sair do shared.js (2026-11-28). Só quando casa: carta latina segue
+        // com o formato de sempre. Coleção, Portfólio, Painel, Fichários e
+        // Explorar filtram por texto com estas cartas, não com as dos chunks.
+        const apelidos = apelidosDaCarta({ name: linha.name });
+        if (apelidos) carta.apelidos = apelidos;
+        lista.push(carta);
       }
     });
     return json({ c: cartas, p: precos }, 200);
