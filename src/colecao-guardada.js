@@ -1,8 +1,9 @@
 // Coleção guardada no aparelho (2026-11-27): Coleção, Painel e Explorar
 // desenham na hora a partir da ÚLTIMA resposta da borda, e a rede atualiza por
-// trás.
+// trás. Em 2026-11-28 entraram Portfólio, Desejos, Badges e os preços dos
+// Fichários.
 //
-// Por quê: nessas três telas o conteúdo dependia de um POST /api/collection a
+// Por quê: nessas telas o conteúdo dependia de um POST /api/collection a
 // cada abertura, que só saía depois de o JS subir, e nada ficava no aparelho
 // (a resposta é `no-store`). Medido em produção em 23/11, com 1.464 cartas: a
 // página pronta aos 0,09 s e em esqueleto até 0,65–0,92 s no desktop, ~2 s num
@@ -24,8 +25,16 @@
 //    cópia é trocada;
 //  - sem rede, com cópia: a tela fica com a cópia, em vez de erro.
 //
-// Fica FORA do shared.js de propósito: só três telas usam, e o núcleo está no
-// teto de peso (scripts/check-size.mjs).
+// Fica FORA do shared.js de propósito: só as telas que mostram as cartas da
+// pessoa usam, e o núcleo está no teto de peso (scripts/check-size.mjs).
+//
+// As cópias (uma por NOME; tela que divide o nome faz o mesmo pedido, senão
+// uma pinta só um pedaço da cópia da outra e a regrava a cada abertura):
+//   "colecao"  possuídas + as que estão em slab: Coleção, Painel e Badges;
+//   "desejos"  as de cima + as desejadas: Portfólio e Lista de Desejos;
+//   "explorar" as mais vistas do Explorar;
+//   "fichario" as cartas do último fichário aberto (só os preços dependem
+//              dela: os bolsos já desenham do aparelho).
 (function () {
   const shared = window.TCGShared;
   // O MESMO nome está no CACHES do sw.js e no deleteAccountFlow do shared.js
@@ -58,8 +67,7 @@
   // </do-pedido>
 
   // carrega(idsByGame, nome, pinta, espera)
-  //   nome   — qual cópia ("colecao" serve à Coleção e ao Painel, que pedem os
-  //            mesmos ids; "explorar", às mais vistas);
+  //   nome   — qual cópia (a lista está no cabeçalho deste arquivo);
   //   pinta(resultado, repetido) — chamada uma vez com a cópia (se houver) e
   //            outra com a resposta da rede. `resultado` tem o contrato do
   //            loadOwnedFast, mais `guardado: true` quando é a cópia;

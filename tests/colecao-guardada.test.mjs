@@ -291,11 +291,15 @@ test("o loadOwnedFast devolve a tabela de preços DESTA resposta, que é o que a
   assert.ok(shared.includes("return Object.assign(viaApi, { indexesByGame: {}, viaApi: true, parcial: !!viaApi.parcial });"));
 });
 
-test("as três telas usam a cópia e carregam o módulo antes do script delas; o sw.js o precacheia", () => {
+test("as sete telas usam a cópia e carregam o módulo antes do script delas; o sw.js o precacheia", () => {
   const telas = [
     ["collection", 'window.TCGGuardada.carrega(shared.collectionLoadIds(ownedByGame), "colecao", recebe, shared.loadFxRates())'],
     ["dashboard", 'window.TCGGuardada.carrega(idsByGame, "colecao", hidrata, shared.loadFxRates())'],
-    ["explore", 'window.TCGGuardada.carrega(idsByGame, "explorar",']
+    ["explore", 'window.TCGGuardada.carrega(idsByGame, "explorar",'],
+    ["portfolio", 'window.TCGGuardada.carrega(idsOwned, "desejos", recebe, shared.loadFxRates())'],
+    ["wishlist", 'window.TCGGuardada.carrega(pedido, "desejos", recebe, shared.loadFxRates())'],
+    ["badges", 'window.TCGGuardada.carrega(idsByGame, "colecao",'],
+    ["binders", '? window.TCGGuardada.carrega(porJogo, "fichario", recebe)']
   ];
   for (const [tela, chamada] of telas) {
     assert.ok(fonte(`src/${tela}.js`).includes(chamada), `${tela}.js não usa a cópia guardada`);
@@ -324,4 +328,45 @@ test("Coleção e Painel não gravam o ponto do dia nem republicam o perfil com 
   const grava = hidrata.indexOf("if (!catalog.parcial) {");
   const sai = hidrata.indexOf("if (repetido) return;");
   assert.ok(grava > 0 && sai > grava, "o ponto do dia é gravado antes de o `repetido` sair sem redesenhar");
+});
+
+// Um pedido diferente com o mesmo nome faz as duas telas se atropelarem: cada
+// uma pinta só um pedaço da cópia da outra (nunca `repetido`) e a regrava.
+test("telas que dividem uma cópia fazem o MESMO pedido", () => {
+  const badges = fonte("src/badges.js");
+  assert.ok(badges.includes("const idsByGame = shared.collectionLoadIds(ownedByGame);"),
+    'Badges usa a cópia "colecao": o pedido é o da Coleção e do Painel');
+  assert.ok(fonte("src/dashboard.js").includes("const idsByGame = shared.collectionLoadIds(ownedByGame);"));
+  const desejadas = (jogos) => `Object.fromEntries(${jogos}.map((g) => [g, wishlistByGame[g].knownCardIds()]))`;
+  const semEspaco = (s) => s.split(String.fromCharCode(10)).map((l) => l.trim()).join("");
+  assert.ok(semEspaco(fonte("src/wishlist.js")).includes(`const pedido = shared.collectionLoadIds(ownedByGame,${desejadas("shared.GAME_SLUGS")});`));
+  assert.ok(semEspaco(fonte("src/portfolio.js")).includes(`const idsOwned = shared.collectionLoadIds(ownedByGame,${desejadas("GAMES")});`));
+  assert.ok(fonte("src/portfolio.js").includes("const GAMES = shared.GAME_SLUGS;"));
+});
+
+test("Portfólio: a cópia não grava o ponto do dia, e a rede que confirma só atualiza o gráfico", () => {
+  const pf = fonte("src/portfolio.js");
+  const recebe = pf.slice(pf.indexOf("const recebe = (catalog, repetido) => {"), pf.indexOf('window.TCGGuardada.carrega(idsOwned, "desejos"'));
+  // A última carga das suas cartas é que decide (a cópia vem sempre parcial).
+  assert.ok(recebe.includes("cargaParcial = !!catalog.parcial;"));
+  assert.ok(pf.includes("if (!snapshotGravado && !cargaParcial) {"), "o ponto do dia segue atrás do cargaParcial");
+  const confirma = recebe.indexOf("if (repetido) {");
+  assert.ok(confirma > recebe.indexOf("cargaParcial = !!catalog.parcial;"));
+  assert.ok(recebe.slice(confirma, recebe.indexOf("} else {", confirma)).includes("updateChart();"));
+  // As cartas de lista/binder (caminho dos chunks) só com a resposta da rede.
+  assert.ok(recebe.includes("if (!catalog.guardado) pedeListas();"));
+  assert.equal(pf.split("hidrataListas();").length - 1, 1, "hidrataListas só é chamada pelo pedeListas");
+});
+
+test("Fichários: a cópia é só a do fichário inteiro e nunca a de um link compartilhado", () => {
+  const b = fonte("src/binders.js");
+  assert.ok(b.includes("const inteiro = !shareId && ids.length === new Set((binder.slots || []).map((slot) => slot && slot.cardId).filter(Boolean)).size;"));
+  assert.ok(b.includes(": shared.loadOwnedFast(porJogo).then((r) => recebe(r, false));"), "carga de ids novos não mexe na cópia");
+});
+
+test("Desejos e Badges: a passada antiga não redesenha por cima da nova", () => {
+  assert.ok(fonte("src/wishlist.js").includes("if (mudou && cards === destas) render();"));
+  const badges = fonte("src/badges.js");
+  const espera = badges.indexOf("await shared.enrichSetTotals(cards);");
+  assert.ok(badges.indexOf("if (vez !== passada) return;") > espera && espera > 0);
 });

@@ -190,7 +190,8 @@ const SHELL_ASSETS = [
   // Fichário (2026-09-16): motor das páginas de bolsos, carregado pelo set e pela Coleção.
   // Resumo (2026-09-16): gráficos de raridade/tipo, carregados pelo set e pela Coleção.
   "src/binder-view.js", "src/insights.js",
-  // Coleção, Painel e Explorar desenham da cópia guardada (2026-11-27).
+  // As telas com as cartas da pessoa (Coleção, Painel, Explorar, Portfólio,
+  // Desejos, Badges, Fichários) desenham da cópia guardada (2026-11-27).
   "src/colecao-guardada.js",
   // Vitrine (2026-09-27): o espaço das páginas de catálogo. Offline ele mostra
   // a vitrine da casa (a config vem do cache de dado); sem ele no shell a

@@ -124,16 +124,24 @@ Duas regras de projeto:
   sempre. Por isso a função pode existir em produção antes do banco.
 
 **Cópia no aparelho (2026-11-27).** A resposta do `POST /api/collection` é
-`no-store`, e a Coleção, o Painel e o Explorar a pediam de novo a cada abertura,
+`no-store`, e as telas com as cartas da pessoa a pediam de novo a cada abertura,
 com a tela em esqueleto até ela chegar (0,5 a 1,0 s no desktop, cerca de 2 s num
-celular lento, medido em produção com 1.464 cartas). Essas três telas passam
-pelo `src/colecao-guardada.js`: a última resposta fica no Cache Storage
+celular lento, medido em produção com 1.464 cartas). Coleção, Painel, Explorar,
+Portfólio, Desejos, Badges e os preços dos Fichários passam pelo
+`src/colecao-guardada.js`: a última resposta fica no Cache Storage
 (`tcg-colecao-v1`, que o `sw.js` mantém entre deploys e o "apagar conta e dados"
 apaga), pinta na hora e a rede confere por trás. A cópia vai pra tela marcada
 `guardado` e `parcial`: quem grava o ponto do dia do patrimônio ou republica o
 perfil público espera a resposta da rede. Se ela vier igual à cópia, a página não
-redesenha nada. As outras telas que usam o `loadOwnedFast` (Portfólio, Desejos,
-Badges, Fichários) seguem só pela rede.
+redesenha nada.
+
+São quatro cópias, uma por nome: `colecao` (possuídas + as que estão em slab:
+Coleção, Painel, Badges), `desejos` (as de cima + as desejadas: Portfólio, Lista
+de Desejos), `explorar` (as mais vistas) e `fichario` (o último fichário
+aberto). **Tela que divide um nome tem de fazer o mesmo pedido** (por isso Badges
+e Desejos usam o `collectionLoadIds`): com pedidos diferentes, cada tela pinta
+só um pedaço da cópia da outra e a regrava a cada abertura. Troca, Blog, Sleeves
+e o editor dos Fichários seguem só pela rede.
 
 O D1 é criado e carregado pelo próprio deploy (`build-d1.mjs` + `deploy-d1.mjs`)
 a partir do **mesmo** catálogo do site. Sem permissão de D1 no token, o passo

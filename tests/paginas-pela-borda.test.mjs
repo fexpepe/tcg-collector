@@ -38,9 +38,12 @@ const troca = fonte("src/troca.js");
 const blog = fonte("src/blog.js");
 
 test("Desejos, Badges, Troca e Blog carregam pela borda (loadOwnedFast)", () => {
-  assert.ok(wishlist.includes("shared.loadOwnedFast("));
+  // Desde 2026-11-28 Desejos e Badges passam pela cópia guardada no aparelho
+  // (src/colecao-guardada.js), que é quem chama o loadOwnedFast.
+  assert.ok(fonte("src/colecao-guardada.js").includes("shared.loadOwnedFast(pedido)"));
+  assert.ok(wishlist.includes('window.TCGGuardada.carrega(pedido, "desejos", recebe, shared.loadFxRates())'));
   assert.ok(!wishlist.includes("loadOwnedAcrossGames"));
-  assert.ok(badges.includes("shared.loadOwnedFast(idsByGame)"));
+  assert.ok(badges.includes('window.TCGGuardada.carrega(idsByGame, "colecao",'));
   assert.ok(!badges.includes("loadOwnedAcrossGames"));
   assert.ok(troca.includes("shared.loadOwnedFast(idsByGame).catch("));
   assert.ok(blog.includes("shared.loadOwnedFast(idsByGame)"));
@@ -48,7 +51,9 @@ test("Desejos, Badges, Troca e Blog carregam pela borda (loadOwnedFast)", () => 
 });
 
 test("Desejos completa o setTotal e redesenha quando ele muda", () => {
-  assert.ok(wishlist.includes("shared.enrichSetTotals(cards).then((mudou) => { if (mudou) render(); })"));
+  // `destas` = as cartas da passada que pediu o total: com a cópia guardada a
+  // tela recebe as cartas duas vezes, e o redesenho só vale pras que estão nela.
+  assert.ok(wishlist.includes("shared.enrichSetTotals(destas).then((mudou) => { if (mudou && cards === destas) render(); })"));
 });
 
 test("Badges: o total do set vem antes do laço por set, e o vintage não depende da marca da borda", () => {
@@ -58,8 +63,11 @@ test("Badges: o total do set vem antes do laço por set, e o vintage não depend
   assert.ok(laco > enrich, "o enrichSetTotals tem de rodar ANTES do laço bySet");
   assert.ok(badges.includes('mine.some((c) => c.game !== "pokemon" && shared.isVintageCard(c))'));
   assert.ok(!/\bc\.vintage\b/.test(badges), "a marca c.vintage não chega da borda");
-  // O .catch que impede zerar as conquistas continua.
-  assert.ok(badges.includes("}).catch(() => {"));
+  // O que impede zerar as conquistas continua, nas duas saídas: a conta que
+  // quebra no meio e a carga que não veio (sem rede e sem cópia).
+  assert.ok(badges.includes("const naoVeio = () => { render(); finish(); };"));
+  assert.ok(badges.includes("calcula(catalog, repetido).catch(naoVeio);"));
+  assert.ok(badges.includes(".catch(naoVeio);\n})();"));
 });
 
 test("Troca: só a busca migrou; a reserva do índice estático segue no caminho antigo", () => {
