@@ -123,6 +123,18 @@ Duas regras de projeto:
   (inclusive o 503 de "API desligada") como sinal pra cair no caminho estático de
   sempre. Por isso a função pode existir em produção antes do banco.
 
+**Cópia no aparelho (2026-11-27).** A resposta do `POST /api/collection` é
+`no-store`, e a Coleção, o Painel e o Explorar a pediam de novo a cada abertura,
+com a tela em esqueleto até ela chegar (0,5 a 1,0 s no desktop, cerca de 2 s num
+celular lento, medido em produção com 1.464 cartas). Essas três telas passam
+pelo `src/colecao-guardada.js`: a última resposta fica no Cache Storage
+(`tcg-colecao-v1`, que o `sw.js` mantém entre deploys e o "apagar conta e dados"
+apaga), pinta na hora e a rede confere por trás. A cópia vai pra tela marcada
+`guardado` e `parcial`: quem grava o ponto do dia do patrimônio ou republica o
+perfil público espera a resposta da rede. Se ela vier igual à cópia, a página não
+redesenha nada. As outras telas que usam o `loadOwnedFast` (Portfólio, Desejos,
+Badges, Fichários) seguem só pela rede.
+
 O D1 é criado e carregado pelo próprio deploy (`build-d1.mjs` + `deploy-d1.mjs`)
 a partir do **mesmo** catálogo do site. Sem permissão de D1 no token, o passo
 explica o que falta e sai com sucesso.

@@ -544,7 +544,13 @@
 
   // Mesma carga do Portfólio: a borda devolve só as cartas que você tem, em
   // vez dos chunks inteiros dos sets delas (esta tela usa apenas catalog.cards).
-  Promise.all([shared.loadOwnedFast(idsByGame), shared.loadFxRates()]).then(([catalog]) => {
+  //
+  // Cópia guardada (2026-11-27, src/colecao-guardada.js): `hidrata` roda duas
+  // vezes. Primeiro com a última resposta da borda, que está no aparelho
+  // (`catalog.guardado`, sempre `parcial`), e a vitrine sai sem esperar a
+  // rede. Depois com a resposta de agora; se ela veio igual à cópia
+  // (`repetido`), só o ponto do dia é gravado e a tela não é redesenhada.
+  const hidrata = (catalog, repetido) => {
     const cards = catalog.cards || [];
     cards.forEach((c) => cardGameMap.set(c.id, c.game));
     const owned = shared.mergedCollectionStore(ownedByGame, gameOf);
@@ -558,6 +564,30 @@
     // patrimônio. Sair aqui deixava essa pessoa com o retrato velho do cookie
     // pra sempre; o collectionNetWorth abaixo já soma os slabs.
     if (!myCards.length && !shared.gradedCardIds().length) { someTop(); return; }
+
+    // Ponto do dia no histórico do Portfólio. O Hub já tem a conta na mão, então
+    // quem nunca abre o Portfólio não fica mais com buracos no gráfico. Manda
+    // raw e graded SEPARADOS (as duas séries do gráfico) e omite `wish`: esta
+    // tela não carrega as cartas desejadas, e mandar 0 apagaria o valor que o
+    // Portfólio gravou hoje — campo ausente preserva o que já está lá.
+    // `parcial` (a carga veio incompleta — borda com menos carta que o pedido,
+    // ou jogo/chunk que falhou no caminho de chunks — ou é a cópia guardada,
+    // que pode ter o preço de ontem): o total não é o de agora e gravá-lo
+    // marcaria no gráfico uma queda que não aconteceu. priced/copies:
+    // cobertura de preços, pra guarda de queda falsa do recordValueSnapshot.
+    // A mesma conta por jogo alimenta o histórico E a composição do topo — duas
+    // somas separadas divergiriam (a regra do patrimônio: uma fórmula só).
+    const valoresPorJogo = shared.GAME_SLUGS.map((g) => {
+      const linhas = shared.collectionValueLines(myCards, owned, prices, { gameFilter: g });
+      return { g, raw: linhas.total, graded: shared.gradedTotalValue(gameOf, g), priced: linhas.pricedCopies, copies: linhas.totalCopies };
+    });
+    if (!catalog.parcial) {
+      shared.recordValueSnapshot(Object.fromEntries(valoresPorJogo.map((x) => [x.g, {
+        raw: x.raw, graded: x.graded, priced: x.priced, copies: x.copies
+      }])));
+    }
+    // A rede confirmou o que a cópia já pôs na tela: nada a redesenhar.
+    if (repetido) return;
 
     // Vintage no "Por jogo": conta agora (a regra precisa da carta), guarda
     // pro próximo primeiro paint e redesenha só se o número mudou.
@@ -580,31 +610,14 @@
     // diferentes nas duas telas. Só aparece quando falta preço em alguma cópia
     // — com tudo precificado, o aviso seria ruído.
     const contagem = shared.collectionValueLines(myCards, owned, prices, {});
-    if (el.priced && contagem.totalCopies > 0 && contagem.pricedCopies < contagem.totalCopies) {
-      el.priced.textContent = `${contagem.pricedCopies}/${contagem.totalCopies} ${t("dash.priced")}`;
-      el.priced.hidden = false;
+    if (el.priced) {
+      // Liga E desliga: a cópia guardada pode ter mostrado o aviso por um preço
+      // que a resposta de agora já traz.
+      const falta = contagem.totalCopies > 0 && contagem.pricedCopies < contagem.totalCopies;
+      if (falta) el.priced.textContent = `${contagem.pricedCopies}/${contagem.totalCopies} ${t("dash.priced")}`;
+      el.priced.hidden = !falta;
     }
 
-    // Ponto do dia no histórico do Portfólio. O Hub já tem a conta na mão, então
-    // quem nunca abre o Portfólio não fica mais com buracos no gráfico. Manda
-    // raw e graded SEPARADOS (as duas séries do gráfico) e omite `wish`: esta
-    // tela não carrega as cartas desejadas, e mandar 0 apagaria o valor que o
-    // Portfólio gravou hoje — campo ausente preserva o que já está lá.
-    // `parcial` (a carga veio incompleta — borda com menos carta que o pedido,
-    // ou jogo/chunk que falhou no caminho de chunks): o total está subestimado
-    // e gravá-lo marcaria no gráfico uma queda que não aconteceu. priced/copies:
-    // cobertura de preços, pra guarda de queda falsa do recordValueSnapshot.
-    // A mesma conta por jogo alimenta o histórico E a composição do topo — duas
-    // somas separadas divergiriam (a regra do patrimônio: uma fórmula só).
-    const valoresPorJogo = shared.GAME_SLUGS.map((g) => {
-      const linhas = shared.collectionValueLines(myCards, owned, prices, { gameFilter: g });
-      return { g, raw: linhas.total, graded: shared.gradedTotalValue(gameOf, g), priced: linhas.pricedCopies, copies: linhas.totalCopies };
-    });
-    if (!catalog.parcial) {
-      shared.recordValueSnapshot(Object.fromEntries(valoresPorJogo.map((x) => [x.g, {
-        raw: x.raw, graded: x.graded, priced: x.priced, copies: x.copies
-      }])));
-    }
     renderAlloc(valoresPorJogo.map((x) => ({ g: x.g, label: shared.gameLabel(x.g), cor: corDe(x.g), n: distinctOf(x.g), val: x.raw + x.graded })));
     renderSplit(valoresPorJogo.reduce((n, x) => n + x.raw, 0), valoresPorJogo.reduce((n, x) => n + x.graded, 0));
     if (patrimonio > 0) renderDelta(patrimonio);
@@ -627,7 +640,10 @@
       }).filter((x) => x && Math.abs(x.chg) >= 0.01);
       const ups = linhas.filter((x) => x.chg > 0).sort((a, b) => b.chg - a.chg).slice(0, 3);
       const downs = linhas.filter((x) => x.chg < 0).sort((a, b) => a.chg - b.chg).slice(0, 3);
-      if (!el.movers || (!ups.length && !downs.length)) return;
+      if (!el.movers) return;
+      // Some também: a cópia guardada pode ter mostrado um mexido que a
+      // resposta de agora não confirma.
+      if (!ups.length && !downs.length) { el.movers.hidden = true; return; }
       const loc = shared.getLocale();
       const linha = ({ card, p, chg }) => {
         const src = shared.cardImageSources(card);
@@ -662,6 +678,7 @@
     }).sort((a, b) => b.val - a.val || b.mod - a.mod).slice(0, TOP_N);
     if (!top.length) someTop();
     else {
+      el.top.hidden = false; // a passada da cópia pode ter escondido a vitrine
       const resto = Math.max(0, counts.distinct - top.length);
       el.topList.innerHTML = top.map(({ card, val }) => {
         const src = shared.cardImageSources(card);
@@ -705,5 +722,8 @@
     });
 
     el.dist.hidden = false;
-  }).catch(() => { someTop(); /* rede: o resto do dashboard já está renderizado */ });
+  };
+  // "colecao": a mesma cópia da Coleção (as duas pedem os mesmos ids). Sem rede
+  // E sem cópia, a vitrine some; o resto do dashboard já está renderizado.
+  window.TCGGuardada.carrega(idsByGame, "colecao", hidrata, shared.loadFxRates()).catch(() => { someTop(); });
 })();

@@ -475,11 +475,18 @@
     // caminho que o Portfólio e o Dashboard já usam. Se a borda estiver fora, cai
     // sozinho no caminho de chunks de sempre (viaApi=false), sem o usuário notar.
     const gamesComCarta = shared.GAME_SLUGS.filter((g) => ownedByGame[g].size > 0);
-    Promise.all([
-      shared.loadOwnedFast(shared.collectionLoadIds(ownedByGame)),
-      shared.loadFxRates()
-    ])
-      .then(([result]) => {
+    // Cópia guardada (2026-11-27, src/colecao-guardada.js): `recebe` roda duas
+    // vezes. Primeiro com a ÚLTIMA resposta da borda, que está no aparelho
+    // (`result.guardado`): as cartas vão pra tela sem esperar a rede. Depois
+    // com a resposta de agora; se ela veio igual à cópia (`repetido`), nada é
+    // redesenhado. Só a resposta da rede grava o ponto do dia e republica o
+    // perfil: a cópia pode ter o preço de ontem.
+    let primeira = true;      // botões e filtros ligam uma vez só
+    let confirmado = false;   // a rede já respondeu nesta abertura
+    let indicesPedidos = false;
+    let abriuDaUrl = false;
+    const recebe = (result, repetido) => {
+      if (!repetido) {
         cards = result.cards;
         cards.forEach((card) => cardGameMap.set(card.id, card.game));
         cardsById = new Map(cards.map((card) => [card.id, card]));
@@ -492,54 +499,70 @@
           shared.setGameFilterScope(gamesComCarta, { vintage: true });
           shared.markGameFilterChip(gameFilter);
         }
-        hydrateFilters();
-        bindShareButton();
-        bindExportButton();
-        // Ponto do dia no histórico do Portfólio (mesmo motivo do Hub: quem vive
-        // na Coleção não deixa mais buraco no gráfico). Sobre `cards` — a lista
-        // INTEIRA, não o ownedCards() da tela: aquele já vem filtrado pelo chip
-        // de jogo, e gravar por ele zeraria os outros jogos no dia. `wish` fica
-        // de fora aqui: a tela não carrega as cartas desejadas.
-        // `parcial`: a carga veio incompleta (borda devolveu menos carta que o
-        // pedido, ou — no caminho de chunks — um jogo/chunk falhou), então este
-        // total está subestimado — gravá-lo marcaria uma queda que não houve.
-        // priced/copies: cobertura de preços, pra guarda de queda falsa do
-        // recordValueSnapshot (o furo que o `parcial` não vê: carta que veio
-        // sem cotação).
-        if (!result.parcial) {
-          shared.recordValueSnapshot(Object.fromEntries(shared.GAME_SLUGS.map((g) => {
-            const linhas = shared.collectionValueLines(cards, owned, prices, { gameFilter: g });
-            return [g, {
-              raw: linhas.total,
-              graded: shared.gradedTotalValue(gameOf, g),
-              priced: linhas.pricedCopies,
-              copies: linhas.totalCopies
-            }];
-          })));
+        if (primeira) {
+          hydrateFilters();
+          bindShareButton();
+          bindExportButton();
+        } else {
+          // Segunda passada com carta nova: só as opções dos filtros, sem
+          // repor o idioma padrão por cima do que a pessoa já escolheu.
+          refreshFilters();
         }
-        if (result.viaApi) {
-          // Cartas na tela JÁ; os denominadores de progresso (X/Y por set/artista)
-          // vêm das FATIAS de índice em 2º plano — sem esse índice, totalsForTab
-          // cai no total das cartas carregadas (número válido, só sem o "de Y").
-          render();
-          shared.publishProfile(cards, owned, prices);
+        primeira = false;
+      }
+      if (!result.guardado) confirmado = true;
+      // Ponto do dia no histórico do Portfólio (mesmo motivo do Hub: quem vive
+      // na Coleção não deixa mais buraco no gráfico). Sobre `cards` — a lista
+      // INTEIRA, não o ownedCards() da tela: aquele já vem filtrado pelo chip
+      // de jogo, e gravar por ele zeraria os outros jogos no dia. `wish` fica
+      // de fora aqui: a tela não carrega as cartas desejadas.
+      // `parcial`: a carga veio incompleta (borda devolveu menos carta que o
+      // pedido, ou — no caminho de chunks — um jogo/chunk falhou), então este
+      // total está subestimado — gravá-lo marcaria uma queda que não houve.
+      // priced/copies: cobertura de preços, pra guarda de queda falsa do
+      // recordValueSnapshot (o furo que o `parcial` não vê: carta que veio
+      // sem cotação).
+      if (!result.parcial) {
+        shared.recordValueSnapshot(Object.fromEntries(shared.GAME_SLUGS.map((g) => {
+          const linhas = shared.collectionValueLines(cards, owned, prices, { gameFilter: g });
+          return [g, {
+            raw: linhas.total,
+            graded: shared.gradedTotalValue(gameOf, g),
+            priced: linhas.pricedCopies,
+            copies: linhas.totalCopies
+          }];
+        })));
+      }
+      if (result.viaApi) {
+        // Cartas na tela JÁ; os denominadores de progresso (X/Y por set/artista)
+        // vêm das FATIAS de índice em 2º plano — sem esse índice, totalsForTab
+        // cai no total das cartas carregadas (número válido, só sem o "de Y").
+        if (!repetido) render();
+        if (confirmado) shared.publishProfile(cards, owned, prices);
+        if (!indicesPedidos) {
+          indicesPedidos = true;
           loadCollectionIndexes(gamesComCarta).then((byGame) => {
             indexes = mergeIndexes(byGame);
             render();
-            shared.publishProfile(cards, owned, prices); // agora com os totais no payload
+            // Agora com os totais no payload. Se a rede ainda não respondeu,
+            // quem publica é a passada dela (o índice já vai estar aqui).
+            if (confirmado) shared.publishProfile(cards, owned, prices);
           });
-        } else {
-          // Fallback (borda fora): o caminho de chunks já trouxe o índice inteiro.
-          indexes = mergeIndexes(result.indexesByGame);
-          render();
-          shared.publishProfile(cards, owned, prices);
         }
-        // ?card=<id>: reabre o popup da carta. A Coleção ESTAMPAVA o param (todo
-        // popup faz) e nunca o lia — então nem o próprio dono reabria a carta
-        // dando F5. Carta que não é sua não chega aqui: o rescueSharedCard do
-        // shared.js já a mandou pra página canônica antes desta página montar.
-        preview.openFromUrl();
-      })
+      } else {
+        // Fallback (borda fora): o caminho de chunks já trouxe o índice inteiro.
+        indexes = mergeIndexes(result.indexesByGame);
+        render();
+        shared.publishProfile(cards, owned, prices);
+      }
+      // ?card=<id>: reabre o popup da carta. A Coleção ESTAMPAVA o param (todo
+      // popup faz) e nunca o lia — então nem o próprio dono reabria a carta
+      // dando F5. Carta que não é sua não chega aqui: o rescueSharedCard do
+      // shared.js já a mandou pra página canônica antes desta página montar.
+      // Uma vez só: a carta que a cópia não tinha abre na passada da rede.
+      if (!abriuDaUrl) abriuDaUrl = preview.openFromUrl();
+    };
+    window.TCGGuardada.carrega(shared.collectionLoadIds(ownedByGame), "colecao", recebe, shared.loadFxRates())
       .catch((error) => {
         shared.mostraErroDeCatalogo(elements.groupsEmpty, error);
         elements.groupsEmpty.hidden = false;
