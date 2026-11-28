@@ -4,6 +4,14 @@
       "digimon-demo-deck-exclusive-cards": "DEMO",
       "digimon-promotion-cards": "D-PR"
     },
+    "dragon-ball-carddass": {
+      "12-3": "dbc-h12",
+      "16-z": "dbc-h16",
+      "29-4": "dbc-h29",
+      "30-db": "dbc-h30",
+      "6-vs": "dbc-h06",
+      "9-vs": "dbc-h09"
+    },
     "dragon-ball-fusion-world": {
       "fusion-world-energy-markers": "DBSFW_EM",
       "fusion-world-promotion-cards-and-packs": "DBSFW_PR"
@@ -13,16 +21,61 @@
       "dragon-ball-z-league-judge-promos": "dbz-lg",
       "dragon-ball-z-promos": "dbz-pr"
     },
+    "duel-masters": {
+      "2010": "DMC-59",
+      "2016": "DMD-32",
+      "2018": "DMBD-05",
+      "2019": "DMBD-09",
+      "100-gr-100": "DMEX-05",
+      "20th": "DMBD-16",
+      "20th-2": "DMBD-17",
+      "20-20": "DMEX-16",
+      "sp-jr": "GUM2",
+      "3-vs-3": "DMR-09",
+      "2010-2": "DMC-60",
+      "4-dx-gr": "DMBD-11",
+      "4-dx": "DMBD-12",
+      "2018-2": "DMBD-06",
+      "e1-e2-e3": "DMX-25",
+      "2016-2": "DMD-33",
+      "3-qx": "DMRP-07",
+      "no-1": "DMEX-04",
+      "2-b-a-d": "DMRP-02",
+      "3-j-o-e-2": "DMRP-03",
+      "3-vs": "DM-26",
+      "3-vs-4": "DMRP-19",
+      "w-1-vs": "DM25-RP1",
+      "w-2-vs-ii": "DM25-RP2",
+      "w-3-vs": "DM25-RP3",
+      "4-vs": "DM-35",
+      "3-vs-2": "DM-38",
+      "7-dg": "DMBD-04",
+      "7-j-o-e": "DMBD-03",
+      "1-gr": "DMRP-09",
+      "2-c-a-p": "DMRP-10",
+      "3-1059": "DMRP-11",
+      "4-vs-2": "DMRP-12",
+      "80-j-vs": "DMBD-07",
+      "80-vs": "DMBD-08",
+      "1-vs": "DM26-RP1",
+      "vs-x": "DMR-23"
+    },
     "flesh-and-blood": {
       "flesh-and-blood-promo-cards": "PR"
     },
     "gundam-card-game": {
       "gundam-promotional-cards": "GCG-PR"
     },
+    "gundam-carddass": {
+      "10-vs": "gcd-gd10"
+    },
     "harry-potter-tcg": {
       "harry-potter-league-promos": "hp-league"
     },
     "hunter-x-hunter-carddass": {
+      "2000": "hxh-hb-jf00",
+      "2001": "hxh-hb-jf01",
+      "2002": "hxh-hb-jf02",
       "hyper-battle": "hxh-hb-gb",
       "hyper-battle-1": "hxh-hb-p1",
       "hyper-battle-2": "hxh-hb-p2",
@@ -31,7 +84,8 @@
       "hyper-battle-5": "hxh-hb-p5",
       "hyper-battle-6-9-4-g-i": "hxh-hb-p6",
       "hyper-battle-2000": "hxh-hb-jf00",
-      "hyper-battle-2002": "hxh-hb-jf02"
+      "hyper-battle-2002": "hxh-hb-jf02",
+      "6-9-4-g-i": "hxh-hb-p6"
     },
     "miracle-battle-carddass": {
       "miracle-battle-as": "mb-as",
@@ -231,6 +285,12 @@
       "carddass-grand-line-compilation-1": "opcd-grand-line-compilation-1",
       "carddass-grand-line-compilation-2": "opcd-grand-line-compilation-2",
       "carddass-grand-line-compilation-3": "opcd-grand-line-compilation-3"
+    },
+    "pokemon": {
+      "2023": "WCS23",
+      "ex-ex": "SVAL",
+      "ex-ex-2": "SVAM",
+      "ex-q-ex": "SVAW"
     },
     "riftbound": {
       "riftbound-judge-promotional-cards": "JDG",

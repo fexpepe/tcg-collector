@@ -28,6 +28,11 @@
 // nome de hoje: se o set mudar de nome de novo, o 301 continua achando a
 // página certa.
 //
+// Em 2026-11-28 (pacote 4G) a regra do setId passou a valer também pro nome em
+// japonês de que sobram letras latinas sem palavra nem código ("30-db" virou
+// "dbc-h30"; baseDoEnderecoDoSet, em paginas-de-set.mjs). Os 52 endereços de
+// antes estão em `games`: quem trocar a regra de novo registra os que sumirem.
+//
 // Mudança de sync que renomeie set já publicado: rodar o prerender sem rede
 // antes e depois, acrescentar em `games` os slugs que sumiram e, em `set`, as
 // chaves do legado-sets.json que passaram a levar a outro set

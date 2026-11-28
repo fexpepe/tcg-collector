@@ -26,6 +26,39 @@ export function agrupaPorSet(cards) {
   return byName;
 }
 
+// Kana (U+3040–U+30FF) e kanji (U+3400–U+4DBF, U+4E00–U+9FFF), montados por
+// código e não escritos como escape: as ferramentas de edição já trocaram
+// escape unicode pelo caractere literal sem avisar (ver slug-carta.js).
+const KANA_KANJI = new RegExp("[" + String.fromCharCode(0x3040) + "-" + String.fromCharCode(0x30ff) +
+  String.fromCharCode(0x3400) + "-" + String.fromCharCode(0x4dbf) +
+  String.fromCharCode(0x4e00) + "-" + String.fromCharCode(0x9fff) + "]");
+// Sobra do nome que já traz um código no endereço ("as01-j-1", "db01", "op13-z"):
+// trocar pelo setId não ganha leitura, só endereço novo pra indexar.
+const CODIGO_NO_ENDERECO = /(^|-)[a-z]{2,}[0-9]{2,}(-|$)/;
+// Base do endereço de um set: { base, legado }.
+//   legado: a régua de sempre — o slug do NOME e, quando sobra pouco (menos de
+//     4 caracteres, ex.: ※確認中1 -> "1", que colidiria), `<setId>-<resto>`.
+//     Alimenta só o slug do /set/ antigo.
+//   base: a de hoje. Nome em japonês cujas letras que sobram NÃO formam
+//     nenhuma palavra (nenhuma sequência de 3 letras: "30-db", "29-4", "16-z",
+//     "9-vs", "2000", "20th", "3-qx") vira o setId puro. A sobra de "本弾
+//     第30弾「出現！究極の敵DB！？」" é ruído do título; o "本弾 特別弾" vizinho
+//     (nome só em japonês) já era "dbc-h31" desde 2026-11-02, e "dbc-h30" é o
+//     mesmo padrão. Sobra com palavra
+//     ("naruto", "seed-destiny", "act-1", "vstar", "ver-1") fica como está.
+//     Sobra com código ("as01-j-1") também: já tem o que o setId diria.
+//   Só vale com 4 ou mais caracteres sobrando: abaixo disso `legado` já
+//   levava o setId na frente ("dbc-h10-10"), e esses endereços não mudam.
+export function baseDoEnderecoDoSet(name, setId) {
+  const nome = slugify(name);
+  const id = slugify(setId);
+  let legado = nome || id || "set";
+  if (legado.length < 4) legado = id ? `${id}-${legado}` : `set-${legado}`;
+  if (id && nome.length >= 4 && KANA_KANJI.test(String(name)) && !/[a-z]{3,}/.test(nome) &&
+    !CODIGO_NO_ENDERECO.test(nome)) return { base: id, legado };
+  return { base: legado, legado };
+}
+
 // Páginas de set de UM jogo, na ordem do byName. Dois slugs por set: o NOVO,
 // único dentro do seu /games/<jogo>/ (usadosPorJogo, por endereço do jogo), e
 // o ANTIGO do diretório plano /set/, que só o prerender usa — ele passa
@@ -37,11 +70,10 @@ export function paginasDoJogo(game, byName, { usadosPorJogo = new Map(), slugAnt
   for (const [name, cards] of byName) {
     cards.sort((a, b) => cmpNumber(a.number, b.number));
     const rep = cards.find((c) => c.setLogo) || cards.find((c) => c.setReleaseDate) || cards[0];
-    let base = slugify(name) || slugify(rep.setId) || "set";
-    // Nome quase todo CJK (sobra só um dígito, ex.: ※確認中1 -> "1"): slug
-    // curto demais colide — prefixa o setId.
-    if (base.length < 4) base = slugify(rep.setId) ? `${slugify(rep.setId)}-${base}` : `set-${base}`;
-    const antigo = slugAntigo ? slugAntigo(base) : undefined;
+    const { base, legado } = baseDoEnderecoDoSet(name, rep.setId);
+    // O slug do /set/ antigo segue a régua de ANTES de 2026-11-28 (`legado`):
+    // trocar a base mudaria as chaves de legado-sets.json e a ordem dos -2.
+    const antigo = slugAntigo ? slugAntigo(legado) : undefined;
     const url = urlDoSet(game, rep.setId);
     if (!url) {
       if (aoPular) aoPular(name);
