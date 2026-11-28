@@ -457,6 +457,10 @@ teste de deliverability — está em
 
 Pendência: o template de `magic-link.html` está colado no **Confirm signup**, mas
 não na aba **Magic Link** — quem já tem conta ainda recebe o padrão em inglês.
+O modelo agora tem pt, en e es num arquivo só e escolhe pelo `user_metadata.lang`
+(o site grava no pedido do link e, pra quem já tem conta, com a sessão aberta —
+`gravaIdiomaDoEmail` no `shared.js`); o que colar em cada aba e no assunto está
+no README da pasta.
 
 Armadilha conhecida: endereço `@example.com` é **recusado pelo Resend** e vira um
 `500 Error sending confirmation email`, que parece SMTP quebrado e não é. Testar

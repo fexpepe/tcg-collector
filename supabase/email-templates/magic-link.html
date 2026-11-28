@@ -1,9 +1,16 @@
-<!-- Template do e-mail de login do Sleevu (magic link).
+<!-- Template do e-mail de login do Sleevu (magic link), em três idiomas.
      Colar em: Supabase Dashboard → Authentication → Email Templates,
      nos DOIS templates: "Magic Link" E "Confirm signup" (o primeiro login
      de um e-mail novo usa o Confirm signup; os seguintes usam o Magic Link).
-     Assunto sugerido: Seu link de entrada — Sleevu
-     Variáveis Go template do Supabase: {{ .ConfirmationURL }} = link de login. -->
+     O assunto dos dois também muda por idioma: ver o README.md desta pasta.
+
+     Idioma: o site grava user_metadata.lang (pt, en ou es) na conta, e o
+     Supabase entrega isso ao modelo em .Data.lang. Inglês e espanhol têm o
+     texto abaixo; português é o resto (conta sem o campo, valor estranho).
+     O texto de cada idioma é a mesma mensagem do modelo em português.
+     O lang só serve de condição: nunca é impresso no e-mail.
+     Variável do Supabase usada: .ConfirmationURL = link de login. -->
+{{ $l := "pt" }}{{ with .Data }}{{ if eq (printf "%v" .lang) "en" }}{{ $l = "en" }}{{ else if eq (printf "%v" .lang) "es" }}{{ $l = "es" }}{{ end }}{{ end }}
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#e8ecf1;padding:32px 12px;">
   <tr>
     <td align="center">
@@ -15,30 +22,34 @@
         </tr>
         <tr>
           <td style="padding:20px 32px 0;font-family:Arial,Helvetica,sans-serif;color:#1b1f27;font-size:15px;line-height:1.55;">
-            <strong style="font-size:17px;">Seu link de entrada</strong><br><br>
-            Toque no botão abaixo pra entrar na sua conta do Sleevu. O link vale por 1&nbsp;hora e só funciona uma vez.
+            <strong style="font-size:17px;">{{ if eq $l "en" }}Your sign-in link{{ else if eq $l "es" }}Tu enlace de acceso{{ else }}Seu link de entrada{{ end }}</strong><br><br>
+            {{ if eq $l "en" }}Tap the button below to sign in to your Sleevu account. The link is valid for 1&nbsp;hour and only works once.{{ else if eq $l "es" }}Toca el botón de abajo para entrar en tu cuenta de Sleevu. El enlace vale por 1&nbsp;hora y solo funciona una vez.{{ else }}Toque no botão abaixo pra entrar na sua conta do Sleevu. O link vale por 1&nbsp;hora e só funciona uma vez.{{ end }}
           </td>
         </tr>
         <tr>
           <td style="padding:24px 32px;font-family:Arial,Helvetica,sans-serif;">
             <a href="{{ .ConfirmationURL }}"
                style="display:inline-block;background:#e23030;color:#ffffff;text-decoration:none;font-size:15px;font-weight:700;padding:13px 28px;">
-              Entrar no Sleevu
+              {{ if eq $l "en" }}Sign in to Sleevu{{ else if eq $l "es" }}Entrar en Sleevu{{ else }}Entrar no Sleevu{{ end }}
             </a>
           </td>
         </tr>
         <tr>
           <td style="padding:0 32px 24px;font-family:Arial,Helvetica,sans-serif;color:#5a6270;font-size:12px;line-height:1.6;">
-            Se o botão não funcionar, copie e cole este endereço no navegador:<br>
+            {{ if eq $l "en" }}If the button doesn't work, copy and paste this address into your browser:{{ else if eq $l "es" }}Si el botón no funciona, copia y pega esta dirección en el navegador:{{ else }}Se o botão não funcionar, copie e cole este endereço no navegador:{{ end }}<br>
             <a href="{{ .ConfirmationURL }}" style="color:#e23030;word-break:break-all;">{{ .ConfirmationURL }}</a>
           </td>
         </tr>
         <tr>
           <td style="padding:0 32px 28px;font-family:Arial,Helvetica,sans-serif;color:#8a93a0;font-size:12px;line-height:1.6;border-top:1px solid #e8ecf1;">
-            <br>Você recebeu este e-mail porque alguém pediu pra entrar no
+            <br>{{ if eq $l "en" }}You received this email because someone asked to sign in to
+            <a href="https://sleevu.app" style="color:#5a6270;">sleevu.app</a> with this address.
+            If it wasn't you, just ignore it — nothing happens without the link.{{ else if eq $l "es" }}Recibiste este correo porque alguien pidió entrar en
+            <a href="https://sleevu.app" style="color:#5a6270;">sleevu.app</a> con esta dirección.
+            Si no fuiste tú, simplemente ignóralo: no pasa nada sin el enlace.{{ else }}Você recebeu este e-mail porque alguém pediu pra entrar no
             <a href="https://sleevu.app" style="color:#5a6270;">sleevu.app</a> com este endereço.
             Se não foi você, é só ignorar — nada acontece sem o link.<br><br>
-            <span style="color:#b0b7c1;">This is your Sleevu sign-in link. If you didn't request it, you can safely ignore this e-mail.</span>
+            <span style="color:#b0b7c1;">This is your Sleevu sign-in link. If you didn't request it, you can safely ignore this e-mail.</span>{{ end }}
           </td>
         </tr>
       </table>
