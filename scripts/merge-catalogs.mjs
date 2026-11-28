@@ -10,6 +10,7 @@ import { chunkNumberPrefixes, missAllowed, applyVariantPrices } from "./lib/pric
 import { isRetiredChunk, resolveMergedId, stampIdMerges } from "./lib/set-supersede.mjs";
 import { extraNumbersOf } from "./lib/tcgcsv-pokemon.mjs";
 import { fillFromEn, learnLabels, findTwins } from "./lib/provisional-ids.mjs";
+import { carimbaApelido } from "./lib/apelidos-jp.mjs";
 
 const langs = process.argv.slice(2).filter((arg) => !arg.startsWith("-"));
 if (!langs.length) {
@@ -263,6 +264,11 @@ for (const lang of langs) {
         delete card.price;
         changed = true;
       }
+      // Apelidos em romaji (JA/ZH): o texto de busca que o cliente lia do
+      // JP_NAME_ALIASES do shared.js, agora gravado na carta (lib/apelidos-jp.mjs).
+      // O sync-tcgdex reescreve o chunk sem o campo a cada rodada, então carimba
+      // em TODO merge; roda depois da canonização porque só lê name/nameJp.
+      if (carimbaApelido(card)) changed = true;
       // Black Star Promo: força o selo universal como logo do set (todas as eras).
       if (/black star promo/i.test(card.set || "") && card.setLogo !== BLACK_STAR_PROMO_LOGO) {
         card.setLogo = BLACK_STAR_PROMO_LOGO; changed = true;
@@ -326,6 +332,7 @@ for (const [key, news] of Object.entries(newBySet)) {
       if (card.price) { pricing[card.id] = card.price; delete card.price; }
       const canonical = speciesByDex.get(speciesDexId(card));
       if (canonical) card.pokemonName = canonical;
+      carimbaApelido(card); // set que só existe na fonte de preço: mesmo carimbo do laço acima
       cards.push(card); have.add(nc.id);
     }
     if (!cards.length) continue;
