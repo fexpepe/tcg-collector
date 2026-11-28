@@ -935,7 +935,7 @@ recomendação por decisão; ela está aqui, com o motivo, e é o que se executa
 | D5 | Português de Portugal com euro como moeda padrão; e-mail de entrada no idioma da interface | Português de Portugal em real é o único caso em que a moeda padrão não é a do país nem a do hobby. O e-mail em português pra quem se cadastrou em inglês parece spam | 4D (moeda) e 4E (e-mail) |
 | D6 | Uma regra só, a do contrato 3 do `docs/CATALOGO.md`: set sem logo próprio mostra o nome; o logo do jogo em todo set é exceção decidida jogo a jogo. Os outros dois textos passam a dizer isso, e o One Piece Carddass para de usar a arte da primeira carta | A regra 3 é a única que o Fernando decidiu; o `LOGOS.md` e o sync do Dragon Ball generalizaram sem decisão. A arte de carta como logo é o que a regra proíbe com todas as letras | 4F |
 | D7 | Set de nome em japonês ganha endereço pelo código mesmo quando sobram letras latinas no nome, com 301 do endereço antigo | A regra do código já vale desde 02/11 pro nome só em japonês; os nove casos são os que escaparam dela, e o 301 já existe (`scripts/data/sets-renomeados.json`) | 4G |
-| D8 | Aposentar o `svpj`, com de-para de id em `data/card-id-merges.json` | São as mesmas 217 cartas do `SV-P` em dois sets. O mecanismo de aposentar set importado com de-para já existe (`scripts/retire-imported-sets.mjs`) | 4H |
+| D8 | Aposentar o `svpj`, com de-para de id em `data/card-id-merges.json` | São as mesmas 217 cartas do `SV-P` em dois sets. O mecanismo de aposentar set importado com de-para já existe (`scripts/retire-imported-sets.mjs`). **Parado na execução (28/11):** o de-para soma a quantidade de quem marcou nos dois sets; ver 7.1 | 4H |
 | D8b, D8c | Corrigir os nomes de set na origem do dado (SV4a, WCS23) e tirar o espaço do fim (sm11, swsh4.5), com de-para do nome antigo | Erro de dado. O D8c mexe em chave de lista, de conquista e de perfil, por isso o de-para | 4I |
 | D9 | Fica como está | Os dois tins imprimem `BPT` (e os dois de Duelist Pack, `DPCT`), e o cartão mostra o código impresso (`code` do manifesto) nos dois; o id da carta e o endereço do set não mudaram na #353. Trocar agora mudaria de novo o destino dos links `?setId=` que estão no ar desde 22/11 | — |
 | D10 | Fica como aviso | Desde a #353 os oito syncs da TCGCSV separam o código sozinhos; o que sobra vem de dado de fonte que não controlamos (os dois casos do Pokémon japonês, que o 4I conserta). Como erro, um set escondido pararia o build diário de catálogo e preço | — |
@@ -1145,6 +1145,20 @@ em japonês com algumas letras latinas escapa da regra e vira o que sobra:
 **Pronto quando.** No ensaio local da borda, `/games/dbc/30-db` e uma carta
 abaixo dele respondem 301 pro endereço novo (porta 4366).
 
+**Corrigido na execução (28/11).** O agente parou no passo 2, como pedido. A
+regra "nome com kana ou kanji usa o `setId`" mudaria 550 endereços, e mesmo a
+leitura estreita (só quem hoje escapa da regra do prefixo) mudaria 191. A
+maioria tem palavra legível que sobrou do nome (`seed-destiny`, `vstar`,
+`act-1`) e piorava trocada por código. Regra adotada: o set usa o `setId`
+quando o nome tem kana ou kanji, o endereço de hoje escapou da regra do
+prefixo (4 caracteres ou mais), não tem nenhuma sequência de três letras
+(`/[a-z]{3,}/`) e não traz já um código (`as01`, `hh01`). Ficam 51: as sobras
+sem palavra do Dragon Ball Carddass (6), do Gundam Carddass (o `10-vs` é do
+`gcd`), do HxH (4), do Duel Masters (37, como `2010`, `20th`, `3-qx`) e três
+sets chineses do Pokémon (`ex-ex`). Ficam como estão: o `naruto` do Carddass
+Masters, que é legível; os 52 do Miracle Battle, que já têm o código no
+endereço; e o `WCS23`, porque o 4I mexe no nome dele.
+
 ### 4H. Pokémon japonês: aposentar o `svpj` (D8)
 
 **Hoje.** `scripts/sync-ppt.mjs` ~223: `JP_IMPORT_SETS` importa da
@@ -1194,13 +1208,41 @@ português mostra "Sintonia Mental" e "Destinos Brilhantes" (porta 4368).
 
 | Pacote | Decisão | Branch | PR | Estado |
 |---|---|---|---|---|
-| 4A | D1 | | | |
-| 4B | D2 | | | |
-| 4C | D3 | | | |
-| 4D | D4, D5 (moeda) | | | |
-| 4E | D5 (e-mail) | | | |
-| 4F | D6 | | | |
-| 4G | D7 | | | |
-| 4H | D8 | | | |
-| 4I | D8b, D8c | | | |
+| 4A | D1 | `claude/apelidos-jp-no-catalogo-4a17` | fexpepe/tcg-collector#392 | aberta |
+| 4B | D2 | `claude/preco-na-moeda-4b84` | fexpepe/tcg-collector#395 | aberta, sobre a #392; sem efeito até o MYP ser ligado |
+| 4C | D3 | `claude/home-em-ingles-4c28` | fexpepe/tcg-collector#390 | aberta; `/en/` conferido no preview |
+| 4D | D4, D5 (moeda) | `claude/regiao-e-euro-4d95` | fexpepe/tcg-collector#393 | aberta, sobre a #392 |
+| 4E | D5 (e-mail) | `claude/email-no-idioma-4e06` | fexpepe/tcg-collector#394 | aberta, sobre a #392; modelo pro painel do Supabase |
+| 4F | D6 | `claude/logo-set-vintage-regra-4f62` | fexpepe/tcg-collector#388 | aberta |
+| 4G | D7 | `claude/endereco-set-pelo-codigo-4g39` | fexpepe/tcg-collector#391 | aberta |
+| 4H | D8 | — | — | parado antes do commit; espera o Fernando |
+| 4I | D8b, D8c | `claude/nomes-de-set-pokemon-4i51` | fexpepe/tcg-collector#389 | aberta |
+
+O que a execução da Fase 4 mostrou e o plano não previa:
+
+- **4A.** Em produção, Coleção, Portfólio, Painel, Fichários e Explorar recebem
+  as cartas da `/api/collection`, montadas da linha do D1 (só `name`). Com a
+  tabela fora do núcleo, a busca em romaji sumiria dessas telas; a borda passa
+  a calcular o campo, e por isso o módulo mora em `functions/_lib/apelidos-jp.js`.
+  O teste local não pegava: o servidor estático cai nos chunks.
+- **4B.** Em produção não existe preço MYP: o `pricing.generated.js` de 28/11
+  não tem nenhuma entrada `b`, porque o `sync-myp` não roda sem o secret
+  `MYP_API_TOKEN`. A regra fica pronta pro dia em que ele for ligado. Nesse dia
+  ficam duas coisas pra decidir: o degrau no histórico de patrimônio de quem usa
+  dólar, e o gráfico de preço da carta (`sync-price-history.mjs`), que grava uma
+  série por carta com o MYP na frente pra todo mundo.
+- **4C.** O endereço é `/en/`, com barra: o rodapé da home só é montado quando o
+  último pedaço do caminho é vazio, e o núcleo está no teto pra mudar isso.
+- **4F.** `narutoboruto` e `narutocg` levam o logo do jogo no set sem decisão
+  registrada; entraram na lista da exceção como estão no dado.
+- **4G.** Ver "Corrigido na execução" no pacote: 52 endereços, não 15.
+- **4H.** O mecanismo de de-para SOMA a quantidade de quem marcou a mesma carta
+  nos dois sets (a regra foi feita pro id provisório que ganha gêmea oficial),
+  65 das 217 cartas mudam de versão (Holo no `svpj`, Normal no `SV-P`) e o
+  preço da PokemonPriceTracker só cai no `SV-P` com uma mudança no `sync-ppt`
+  que se valida com a chave da API. Mexe em coleção sem volta: parado, a
+  decisão volta pro Fernando.
+- **4I.** A causa dos nomes trocados era a carta congelada pelo
+  `preserveMissingCards` no `sync-tcgdex`, não os scripts que o plano apontava.
+  O WCS23 fica com o nome japonês, e o endereço `2023` que isso cria entra no 4G.
 
