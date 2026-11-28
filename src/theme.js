@@ -120,8 +120,9 @@
   // e ele já manda pro /dashboard depois. Só a PRESENÇA da sessão (cookie ou
   // o localStorage fora de *.sleevu.app, como o getSession do shared.js): se
   // ela estiver vencida, o portão do /dashboard resolve como sempre.
+  // A home em inglês (/en/, 2026-11-28) é a mesma landing: vale igual.
   try {
-    if (/^\/(index(\.html)?)?$/.test(location.pathname)
+    if (/^\/(index(\.html)?|en\/?)?$/.test(location.pathname)
       && !/access_token|error_description/.test(location.hash)
       && (document.referrer || "").indexOf(location.origin + "/") !== 0
       && (/(?:^|; )sleevu_session=/.test(document.cookie) || localStorage.getItem("tcg-supabase-session-v1"))) {
@@ -260,7 +261,13 @@
       window.SLEEVU_LANG = doHtml;
     } else {
       var savedLang = localStorage.getItem("tcg-collector-ui-lang-v1");
-      var lang = LANGS[savedLang] ? savedLang : (pareceRobo() ? doHtml : detectLang());
+      // data-idioma-padrao (2026-11-28): a home em inglês (/en/, functions/en.js)
+      // vem com o HTML já em inglês e esse atributo. Quem NÃO escolheu idioma
+      // abre nele, e não no do navegador: o endereço /en/ é a escolha. Quem
+      // escolheu continua na escolha (é a regra do app).
+      var padrao = raiz.getAttribute("data-idioma-padrao");
+      var lang = LANGS[savedLang] ? savedLang
+        : (LANGS[padrao] ? padrao : (pareceRobo() ? doHtml : detectLang()));
       window.SLEEVU_LANG = lang;
       raiz.setAttribute("lang", LANGS[lang]);
       // Post do blog com mais de um idioma (2026-10-06): a borda põe no <html>
@@ -323,7 +330,13 @@
       // deixar a tela muda. Em português e pra robô (que fica no idioma do
       // HTML) nada disto acontece. Em dev também não: lá não há pacote por
       // idioma (I18N é null).
-      var cedo = uiLang !== "pt";
+      // O idioma em que os textos do HTML JÁ vêm: pt, e en na home em inglês
+      // (/en/). Quem lê no idioma do HTML não espera pacote nenhum: segurar o
+      // texto que já está certo atrasaria a página à toa; quem escolheu outro
+      // idioma (pt no /en/, por exemplo) segue o mesmo caminho de quem lê en na
+      // home em português.
+      var htmlEm = document.documentElement.getAttribute("data-idioma-padrao") === "en" ? "en" : "pt";
+      var cedo = uiLang !== htmlEm;
       var faltam = 0;
       var chegou = function () { if (--faltam > 0) return; traduzCedo(); soltaTexto(); };
       pacotes.split(",").forEach(function (base) {

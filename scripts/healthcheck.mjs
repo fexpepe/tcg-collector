@@ -118,6 +118,10 @@ log(`Healthcheck ${PROD} — ${new Date().toISOString()}`);
 
 log("\n[páginas]");
 await checkPage("home", "/", { contains: "Sleevu" });
+// A home em inglês (functions/en.js, 2026-11-28): o HTML já sai em inglês, sem
+// depender do JS, e /en leva 301 pra /en/.
+await checkPage("home em inglês", "/en/", { contains: '<html lang="en"' });
+await checkPage("home em inglês sem a barra (301)", "/en", { status: 301 });
 // O sitemap.xml é um ÍNDICE desde 2026-09-30 (um arquivo por tipo de página,
 // ver prerender-catalog.mjs); as URLs de set moram no sitemap-sets.xml.
 await checkPage("sitemap (índice)", "/sitemap.xml", { contains: "<sitemapindex" });

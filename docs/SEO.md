@@ -35,14 +35,15 @@ Medido ao vivo no dia em que este registro nasceu:
 | `functions/_lib/jogos.js` | o registro dos jogos: endereço oficial, apelidos e linhas (a cópia do `src/game.js` tem que bater) |
 | `scripts/lib/sitemap.mjs` | o `sitemap.xml` é um índice, com um arquivo por tipo de página (tabela abaixo) |
 | `scripts/seo-estatico.mjs` | o que o robô sem JS lê: o texto das páginas institucionais, o JSON-LD da `/vintage` e o `/llms.txt` (jogos, posts do blog e páginas de referência) |
-| `src/theme.js` | robô vê o idioma que o HTML declara; página com `data-idioma-fixo` (as pré-renderizadas) nunca tem o `lang` trocado |
-| `index.html` | JSON-LD `WebSite` + `Organization`: nome do site, logo, perfis oficiais (`sameAs`) |
+| `src/theme.js` | robô vê o idioma que o HTML declara; página com `data-idioma-fixo` (as pré-renderizadas) nunca tem o `lang` trocado; com `data-idioma-padrao` (a `/en/`), quem não escolheu idioma abre nele |
+| `index.html` | JSON-LD `WebSite` + `Organization`: nome do site, logo, perfis oficiais (`sameAs`); o trio `hreflang` da home (pt-BR `/`, en `/en/`, x-default `/en/`) |
+| `functions/en.js` + `functions/_lib/home-en.js` | a home em inglês em `/en/` (2026-11-28): o mesmo `index.html` com `lang="en"`, título, descrição, Open Graph, canonical, JSON-LD e os textos `data-i18n` já em inglês no HTML. O texto sai do `src/i18n.js` pela tabela `functions/_lib/home-en-textos.js`, gerada por `node scripts/gen-home-en.mjs` (o `tests/home-en.test.mjs` reprova se ela ficar pra trás). O endereço termina em barra de propósito: o rodapé da home só nasce quando o último segmento do caminho é vazio. `/en` leva 301 pra `/en/` |
 | `scripts/indexnow.mjs` + `deploy.yml` | a cada deploy da main, avisa Bing, Yandex, Seznam, Naver e Yep do que entrou e saiu do sitemap |
 | `robots.txt` | o que fica fora: telas pessoais, conta e parâmetros de filtro |
 
 | Sitemap | Conteúdo |
 |---|---|
-| `sitemap-pages.xml` | páginas fixas (home, hub, /games, FAQ…); o `/blog` só com post publicado |
+| `sitemap-pages.xml` | páginas fixas (home e home em inglês `/en/`, as duas com o `hreflang` uma da outra; hub, /games, FAQ…); o `/blog` só com post publicado |
 | `sitemap-games.xml` | a tela de cada jogo (`/games/<jogo>`) |
 | `sitemap-sets.xml` | páginas de set em português |
 | `sitemap-sets-en.xml` | as mesmas em inglês |
